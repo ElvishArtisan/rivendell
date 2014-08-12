@@ -1,0 +1,10 @@
+                   RDCATCH Table Layout for Rivendell
+
+The RDCATCH table holds non-deck specific configuration data for the 
+RDCatch module.  Following is the layout of a record in the RDAIRPLAY table:
+
+FIELD NAME           TYPE              REMARKS
+------------------------------------------------------------------------------
+ID                   int(10) unsigned  * Primary key, Auto Increment
+STATION              char(64)          Workstation, Indexed
+ERROR_RML            char(255)

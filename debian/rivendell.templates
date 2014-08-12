@@ -1,0 +1,228 @@
+Template: rivendell/debconfenable
+Type: boolean
+Default: true
+Description: Configure Rivendell and rd.conf through debconf?
+ The rest of the configuration of Rivendell deals with questions that
+ affect parameters in /etc/rd.conf, which is the file used to configure
+ the Rivendell programs.
+ .
+ If you don't use debconf to configure rd.conf, you will have to handle
+ any configuration changes yourself, and will not be able to take
+ advantage of periodic configuration enhancements.
+
+Template: rivendell/postrm_remove_data
+Type: boolean
+Default: false
+Description: Remove Rivendell audio store and database if purging Rivendell?
+ Should the Rivendell audio store (the contents of /var/snd) and the Rivendell
+ database be removed when the Rivendell package is purged?
+
+Template: rivendell/run_mode
+Type: select
+Choices: init.d, pam_rd
+Default: init.d
+Description: How should the Rivendell daemons be started?
+ The Rivendell daemons can be started by the init.d scripts during system boot,
+ or the pam_rd PAM module can be used to start the Rivendell daemons as
+ needed by each user when they use a Rivendell app.
+ .
+ init.d - only a single UNIX user account should be used to run Rivendell apps
+ .
+ pam_rd - multiple UNIX user accounts can be used, with pam_rd clearing any old
+ daemons when a user logs in to an X session.
+
+Template: rivendell/identity/password
+Type: string
+Default: letmein
+Description: Password for Rivendell:
+ The password used to identify Rivendell.
+ .
+ This is used within Rivendell by ripcd to authenticate.
+
+Template: rivendell/identity/audioowner
+Type: string
+Default: rduser
+Description: UNIX user account for Rivendell:
+ The unix user account to use for Rivendell.
+
+Template: rivendell/identity/audiogroup
+Type: string
+Default: rivendell
+Description: UNIX group account for Rivendell:
+ The unix group account to use for Rivendell.
+
+Template: rivendell/format/samplerate
+Type: select
+Choices: 32000, 44100, 48000
+Default: 44100
+Description: Select the samplerate to use for Rivendell:
+ Select the samplerate to use for Rivendell.  The sample rate is in Hz.
+
+Template: rivendell/format/channels
+Type: select
+Choices: 1, 2
+Default: 2
+Description: Select the numer of system channels to use in Rivendell:
+ Select the number of system channels to use in Rivendell.  One (1)
+ channel is for each input to be treated seperately, while two (2)
+ channels is for treating the inputs as stereo pairs.
+ .
+ NOTE: This is different from channels used to record files within
+ Rivendell, that is configured via rdadmin and the Rivendell
+ applications.
+
+Template: rivendell/mysql/hostname
+Type: string
+Default: localhost
+Description: Enter the hostname of the Rivendell MySQL server:
+ The hostname of the MySQL server for Rivendell to connect to.  If the
+ server is running locally, localhost should work.
+
+Template: rivendell/mysql/loginname
+Type: string
+Default: rduser
+Description: Enter the MySQL account with which to connect to the MySQL server:
+ The MySQL user account which should be used to connect to the MySQL
+ server.  
+ .
+ This account will be created during the initial database creation.
+
+Template: rivendell/mysql/password
+Type: string
+Default: letmein
+Description: Enter the MySQL account password to use when connecting to the MySQL server:
+ This is the password used to authenticate when connecting to the MySQL
+ serer.
+
+Template: rivendell/mysql/database
+Type: string
+Default: Rivendell
+Description: Enter the name of the database for Rivendell in the MySQL server:
+ This is the name of the database within the MySQL server.
+ .
+ It will be created during the initial database creation when running
+ rdadmin.
+
+Template: rivendell/mysql/driver
+Type: select
+Choices: QMYSQL3, FIXME
+Description: Select the driver used to connect to the database:
+ This is the driver used to connect to the database, which may or may
+ not be a MySQL database.
+
+Template: rivendell/cae/audioroot
+Type: string
+Default: /var/snd
+Description: Enter the path to the audio store directory:
+ Path to the directory for Rivendell to store audio.  This may be a
+ local directory or an NFS mounted directory from a remote server.
+ .
+ The directory must be read/write by the UNIX user account specified
+ above.
+
+Template: rivendell/cae/audioextension
+Type: string
+Default: wav
+Description: Enter the default extension to use for audio files:
+ This will be the extention used for audio files in the audio store.
+
+Template: rivendell/cae/allownonstandardrates
+Type: boolean
+Default: true
+Description: Should non standard sample rates be permitted
+ If true, then non-standard rates can exist in the audio store.
+ .
+ FIXME: is this samplerate or bitrate or both.
+
+Template: rivendell/tuning/userealtime
+Type: boolean
+Default: true
+Description: Use realtime scheduling for CAE?
+ Use realtime scheduling for the core audio engine (CAE), when talking
+ via JACK and or ALSA.
+
+Template: rivendell/rdairplay/logfile
+Type: string
+Default: /var/log/rivendell/rdairplay.log
+Description: Enter the path to the rdairplay log file:
+ This is the path to the rdairplay log file.
+ .
+ NOTE: If a non-default value is used, the path may have to be created.
+
+Template: rivendell/rdcatchd/logfile
+Type: string
+Default: /var/log/rivendell/rdcatchd.log
+Description: Enter the path to the rdcatchd log file:
+ This is the path to the rdcatchd log file.
+ .
+ NOTE: If a non-default value is used, the path may have to be created.
+
+Template: rivendell/ripcd/logfile
+Type: string
+Default: /var/log/rivendell/ripcd.log
+Description: Enter the path to the ripcd log file:
+ This is the path to the ripcd log file.
+ .
+ NOTE: If a non-default value is used, the path may have to be created.
+
+Template: rivendell/caed/logfile
+Type: string
+Default: /var/log/rivendell/caed.log
+Description: Enter the path to the caed log file:
+ This is the path to the caed log file.
+ .
+ NOTE: If a non-default value is used, the path may have to be created.
+
+Template: rivendell/audioadapters/selections
+Type: multiselect
+Choices: Audioscience HPI, ALSA, JACK
+Default: JACK
+Description: Select the audio adapters to use:
+ Rivendell can use several different types of audio adapters, both
+ independantly or simultaneously.
+
+Template: rivendell/audioadapters/alsaintro
+Type: note
+Description: ALSA Rivendell integration.
+ In order for Rivendell to recognize an ALSA sound adapter, there must
+ exist a standard ALSA configuration file with a card named "rd0"
+ defined. 
+ .
+ The ALSA configuration file can be global (/etc/asound.conf) or per
+ user (~/.asoundrc).
+ .
+ Sample contents for the configuration file to define rd0 follow:
+    pcm.rd0 {
+      type hw
+      card 1
+    }
+    ctl.rd0 {
+      type hw
+      card 1
+    }
+ .
+ More information on ALSA configuration files can be found here:
+    http://www.alsa-project.org/alsa-doc/doc-php/asoundrc.php
+ .
+ More information on Rivendell and ALSA can also be found in
+ /usr/share/doc/rivendell/ALSA.txt .
+ .
+ This information is repeated in /usr/share/doc/rivendell/README.Debian
+
+Template: rivendell/intro
+Type: note
+Description: Rivendell introduction.
+ The Rivendell radio broadcast automation solution has been installed.
+ .
+ The next step is to run the "rdadmin" command with a user that has permissions
+ to the rivendell system.  The first time it will prompt for a MySQL userid and
+ password that has permissions to connect and create the database.
+ .
+ Once the database has been created, run the "rdadmin" command again.
+ From this point on, rdadmin will allow for configuring of Rivendell.
+ .
+ The default user accounts within Rivendell are "admin" and "user", both
+ with no password.
+ .
+ This information is repeated in /usr/share/doc/rivendell/README.Debian
+

@@ -1,0 +1,83 @@
+#!/bin/bash -e
+#
+# /etc/init.d/rivendell
+#
+
+DAEMONS="caed ripcd rdcatchd"
+PIDDIR=/var/run/rivendell
+NAME=rivendell
+LABEL="Rivendell daemons"
+
+# Defaults
+RUN_MODE="init.d"
+
+# Read config file (will override defaults above)
+[ -r /etc/default/rivendell ] && . /etc/default/rivendell
+
+if [ ! -f "/etc/rd.conf" ]; then
+    echo "No /etc/rd.conf found. See documentation and /usr/share/doc/rivendell/examples/." >&2
+    exit 0
+fi
+
+DAEMON_USER=`sed -n 's/^AudioOwner=\(.*\)$/\1/p' /etc/rd.conf`
+
+# For Ubuntu, create run directory to store pid files.
+AUDIOGROUP=`sed -n 's/^AudioGroup=\(.*\)$/\1/p' /etc/rd.conf`
+if [ ! -d /var/run/rivendell ]; then
+    install --directory --mode 02775 --owner="$DAEMON_USER" --group="$AUDIOGROUP" /var/run/rivendell
+fi
+
+
+# Check if Rivendell daemons are started by init scripts or pam_rd.
+if [ "$RUN_MODE" != "init.d" ]; then
+    exit 0
+fi
+
+for daemon in $DAEMONS; do
+    test -x /usr/bin/$daemon || exit 0
+done
+
+function start() {
+    echo -n "Starting $LABEL:"
+    for daemon in $DAEMONS; do
+	start-stop-daemon --start --oknodo --chuid $DAEMON_USER --exec "/usr/bin/$daemon"
+	echo -n " $daemon"
+    done
+    echo "."
+}
+
+function stop() {
+    echo -n "Stopping $LABEL:"
+    for daemon in $DAEMONS; do
+	start-stop-daemon --stop --pidfile "$PIDDIR/$daemon.pid" --oknodo --user $DAEMON_USER  --exec "/usr/bin/$daemon"
+	echo -n " $daemon"
+    done
+    echo "."
+
+    # caed forgets sometimes the shared memory 0x5005
+    ipcrm -M 0x5005 2> /dev/null || true
+}
+
+case "$1" in
+  start)
+    if ! /usr/bin/rdadmin --check-db; then
+	echo "No database available, check that MySQL is running" >&2;
+	exit 0;
+    fi
+
+    start
+    ;;
+  stop)
+    stop
+      ;;
+  restart)
+    stop
+    start
+    ;;
+  *)
+    echo "Usage: /etc/init.d/$NAME {start|stop|restart|force-reload}"
+    exit 1
+    ;;
+esac
+
+exit 0

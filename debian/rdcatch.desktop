@@ -1,0 +1,9 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=rdcatch
+Comment=Rivendell Catch
+Exec=rdcatch
+Terminal=false
+Type=Application
+Icon=/usr/share/srlabs/rdcatch.xpm
+Categories=Application;AudioVideo;

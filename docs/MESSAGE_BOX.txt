@@ -1,0 +1,9 @@
+                          Message Box RML Notes
+
+When using the 'Message Box' ['MB'} RML, it may be necessary to configure
+the X server to allow local connections from other processes.  One way to
+do this is to execute the following command as the local Rivendell user:
+
+   xhost +local:
+
+For more information, see the xhost(1) man page.

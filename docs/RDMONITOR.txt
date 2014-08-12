@@ -1,0 +1,58 @@
+                    RDMonitor / RDSelect Configuration
+
+The Rivendell RDMonitor module can be used to monitor the health state
+(Database + Audio Store) of a system.  Optionally, it can also be used
+with RDSelect to allow a host to be switched between multiple Database +
+AudioStore setups.  This document describes the procedure for converting
+an existing Rivendell setup to allow this functionality.
+
+1) OVERVIEW
+Rivendell requires that a configuration file exist at '/etc/rd.conf'
+that describes basic parameters (such as login information for the MySQL
+database server).  RDMonitor/RDSelect build on this foundation by
+utilizing a set of one or more configuration files located in the
+'/etc/rivendell/' directory, with the 'current' configuration indicated
+by a symbolic link at '/etc/rd.conf' that points to the desired configuration
+in '/etc/rivendell.d/'.  Several new parameters have been added to
+rd.conf(5) to support this mode of operation, including:
+
+[Identity]
+Label=<label>
+
+[AudioStore]
+MountSource=<mnt-src>
+MountType=<mnt-type>
+MountOptions=<mnt-opts>
+
+Where:
+<label> - A text string that is displayed to indicate the overall name
+of this configuration.
+
+<mnt-src> - The filesystem to be mounted at '/var/snd' when using this
+configuration, such as would be provided in fstab(5).  If the desired
+audio store resides on the root filesystem, then this field should be
+left blank.
+
+<mnt-type> - The type of audio store mount, such as would be specified in
+fstab(5).
+
+<mnt-opts> - The mount point options for the audio store, such as would
+be specified in fstab(5).
+
+
+2) CONVERTING AN OLD-STYLE SETUP
+An 'old-style' setup --i.e. one that consists of a single configuration
+file at '/etc/rd.conf'-- can be converted to the new layout through the
+following steps:
+
+A) Create the configuration directory:
+
+   mkdir -p /etc/rivendell.d
+
+B) Move the original configuration file:
+
+   mv /etc/rd.conf /etc/rivendell.d/rd-default.conf
+
+C) Create the symbolic link:
+
+   ln -s /etc/rivendell.d/rd-default.conf /etc/rd.conf

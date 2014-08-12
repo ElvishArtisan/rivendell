@@ -1,0 +1,28 @@
+               DROPBOXES Table Layout for Rivendell
+
+The DROPBOXES table holds data concerning dropbox 'services'.
+
+FIELD NAME                   TYPE          REMARKS
+-------------------------------------------------------------------------
+ID                           int(11)       Primary Key, Not Null, Unique
+                                           Auto-Increment
+STATION_NAME                 char(64)      From STATIONS.NAME
+GROUP_NAME                   char(10)      From GROUPS.NAME
+PATH                         char(255)
+NORMALIZATION_LEVEL          int(11)
+AUTOTRIM_LEVEL               int(11)
+SINGLE_CART                  enum('N','Y')
+TO_CART                      uint(10)
+USE_CARTCHUNK_ID             enum('N','Y')
+TITLE_FROM_CARTCHUNK_ID      enum('N','Y') Set Rivendell cart title from cartchunk cutid.
+DELETE_CUTS                  enum('N','Y')
+DELETE_SOURCE                enum('N','Y')
+METADATA_PATTERN             char(64)
+STARTDATE_OFFSET             int(11)
+ENDDATE_OFFSET               int(11)
+FIX_BROKEN_FORMATS           enum('N','Y')
+LOG_PATH                     char(255)
+IMPORT_CREATE_DATES          enum('N','Y')
+CREATE_STARTDATE_OFFSET      int(11)
+CREATE_ENDDATE_OFFSET        int(11)
+SET_USER_DEFINED             char(255)

@@ -1,0 +1,11 @@
+[Desktop Entry]
+Encoding=UTF-8
+Categories=Qt;KDE;Rivendell
+Terminal=false
+Name=RDCastManager
+GenericName=Rivendell RSS Feed Management
+Exec=rdcastmanager
+Icon=rivendell
+Type=Application
+Terminal=false
+

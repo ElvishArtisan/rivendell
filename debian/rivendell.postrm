@@ -1,0 +1,77 @@
+#!/bin/sh -e
+
+
+# dh_makeshlibs doesn't add it automaticaly (?!)
+if [ "$1" = "remove" ]; then
+        ldconfig
+fi
+
+
+case "$1" in
+    purge)
+        # Default values, in case debconf was not used to set them.  These will
+        # be used for system configurations down below after debconf values are
+        # read.
+        # NOTE: make sure to match these defaults with the rivendell.postinst script
+        AUDIOUSER="rduser"
+        AUDIOGROUP="rivendell"
+        AUDIOROOT="/var/snd"
+        REMOVEDATA="false"
+
+        # get debconf entries if used.
+        . /usr/share/debconf/confmodule
+
+        # Is the user configuring with debconf?
+        db_get rivendell/debconfenable || true
+        if [ "$RET" = "true" ]; then
+            db_get rivendell/identity/audioowner || true
+            [ -n ${RET} ] && AUDIOUSER="$RET"
+            db_get rivendell/identity/audiogroup || true
+            [ -n ${RET} ] && AUDIOGROUP="$RET"
+            db_get rivendell/cae/audioroot || true
+            [ -n ${RET} ] && AUDIOROOT="$RET"
+            db_get rivendell/postrm_remove_data || true
+            [ -n ${RET} ] && REMOVEDATA="$RET"
+        fi
+        
+        # Remove init.d configuration file
+        rm -f /etc/default/rivendell
+
+        # Remove pam_rd hooks from PAM scripts
+        DISPLAY_MANAGER=`cat /etc/X11/default-display-manager`
+        DISPLAY_MANAGER=`basename "$DISPLAY_MANAGER"`
+        dc="/etc/pam.d/$DISPLAY_MANAGER"
+        grep -v "pam_rd.so" "$dc" > "${dc}.dpkg-tmp"
+        mv -f "${dc}.dpkg-tmp" "$dc"
+
+        # Remove user and group
+        deluser $AUDIOUSER $AUDIOGROUP 2> /dev/null || true
+        deluser $AUDIOUSER 2> /dev/null || true
+        groupdel $AUDIOGROUP 2> /dev/null || true
+        if [ "$REMOVEDATA" = "true" ]; then
+            [ -d "$AUDIOROOT" ] && rm -rf "$AUDIOROOT" || true
+            mysqladmin --force drop Rivendell || true
+        fi
+        [ -d /var/run/rivendell ] && rm -rf /var/run/rivendell || true
+        [ -d /var/log/rivendell ] && rm -rf /var/log/rivendell || true
+
+        # Clean out debconf stuff
+        if [ -e /usr/share/debconf/confmodule ]; then
+            . /usr/share/debconf/confmodule
+            db_purge
+        fi
+    ;;
+
+    remove|upgrade|failed-upgrade|abort-install|abort-upgrade|disappear)
+        # Nothing to do here
+    ;;
+
+    *)
+        echo "$0 called with unknown argument \`$1'" >&2
+        exit 1
+    ;;
+esac
+
+# NOTE: debhelper section is at the end, so the debconf values can be used during a purge
+
+#DEBHELPER#

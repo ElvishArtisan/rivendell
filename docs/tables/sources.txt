@@ -1,0 +1,15 @@
+                SOURCES Table Layout for Rivendell
+
+The SOURCES table holds data concerning each configured netcatcher
+feed source on the system.  Following is the layout of a
+record in the SOURCES table:
+
+FIELD NAME           TYPE              REMARKS
+------------------------------------------------------------------
+ID                   int(10) unsigned  Primary key, auto increment
+STATION_NAME         char(64)          From DECKS.STATION_NAME
+CHANNEL              int(10) unsigned  From DECKS.CHANNEL
+SOURCE_NAME          char(64)
+SERIAL_COMMAND       char(64)
+GPO_LINE             int(10) unsigned
+

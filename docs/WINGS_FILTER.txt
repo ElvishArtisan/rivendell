@@ -1,0 +1,67 @@
+          Usage Notes for the 'wings_filter' Import Script.
+
+Wings_filter is a script designed to be used to import existing audio
+and meta-data from an AirForce 'Wings' automation system.  It is
+invoked as follows:
+
+USAGE
+
+wings_filter -g <default-group> -d <db-file> -A <audio-dir> [-e <audio-ext>]
+
+Where:
+  <default-group> = The name of the group in which to place carts
+                    belonging to a source tab in Wings for which there
+                    is no corresponding Rivendell Group.
+
+        <db-file> = The name of the Wings database file.
+
+      <audio-dir> = The name of the directory containing the Wings ATX
+                    audio files.
+
+      <audio-ext> = The filetype extension fo the Wings ATX files.  By
+                    default, this is 'ATX', but can be changed to
+                    other values here if necessary.
+
+
+OVERVIEW
+In order import audio from an existing Wings system, proceed as
+follows:
+
+1) CREATE RIVENDELL GROUPS
+In RDAdmin->ManageGroups, create a Group to correspond to each Wings
+Tab value that exists in the library to be imported, and an additional
+group to catch any Wings entries that may not have a valid Group.
+When creating these groups, it is essential that a default cart number
+range be configured for each group that is large enough to accomodate
+all anticipated imports.
+
+2) LOCATE THE 'WINGS' DATABASE AND AUDIO FILES
+These can be mounted from a remote system if needs be.  Read-only
+access is adequate, as the script does not modify these items in any
+way.
+
+3) VERIFY AVAILABLE DISK SPACE
+Verify that enough disk space is available in the '/var/snd/'
+directory to accomodate the audio to be imported.  You should have at
+least the amount of space currently occupied by the Wings ATX files,
+plus 5 percent additional.  
+
+4) INVOKE SCRIPT
+Start up the script, as described in the USAGE section above.  The
+script will print progress reports as it proceeds, or notify you of
+error conditions as required.
+
+5) CLEAN UP
+If desired, use RDAdmin->ManageGroups to rename the single-letter
+import groups to more intuitive names.
+
+
+NOTE ON AUDIO PROCESSING
+Wings_filter does not alter or reencode the audio sample data in any
+way, and thus does *not* incurr any generation or transcoding loss of
+quality.  At the same time, this means that the incoming audio will be
+brought into Rivendell *exactly* as it exists in the Wings system,
+with all parameters (e.g. sample rate, bit rate, level, etc)
+unaltered.  If you need to alter one or more of these parameters as
+part of the import process, we suggest you use the RDImport script
+instead.

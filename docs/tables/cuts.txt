@@ -1,0 +1,63 @@
+                   CUTS Table Layout for Rivendell
+
+The CUTS table holds data concerning each individual audio cut on the
+system, as opposed to CART (where individual entries may reference
+more than one cut, as in the case of rotators).  Following is the
+layout of a record in the CUTS table:
+
+FIELD NAME           TYPE              REMARKS
+---------------------------------------------------------------
+CUT_NAME             char(12)          * Primary key, Base name of WAV file
+CART_NUMBER          int(10) unsigned  Parent Cart Entry, Indexed
+EVERGREEN            enum('N','Y')
+DESCRIPTION          char(64)          Indexed
+OUTCUE               char(64)          Indexed
+ISRC                 char(12)          International Standard Recording Code
+ISCI                 char(32)          ISCI Code
+LENGTH               int(10) unsigned  Overall length in ms.
+ORIGIN_DATETIME      datetime          Date/Time when recorded
+START_DATETIME       datetime
+END_DATETIME         datetime
+START_DAYPART        time
+END_DAYPART          time
+SUN                  enum('N','Y')
+MON                  enum('N','Y')
+TUE                  enum('N','Y')
+WED                  enum('N','Y')
+THU                  enum('N','Y')
+FRI                  enum('N','Y')
+SAT                  enum('N','Y')
+ORIGIN_NAME          char(64)          Workstation ID where recorded
+WEIGHT               int(10) unsigned  Relative airplay frequency, 1 = normal
+LAST_PLAY_DATETIME   datetime
+UPLOAD_DATETIME      datetime          Copy-split upload timestamp
+PLAY_COUNTER         int(10) unsigned
+LOCAL_COUNTER        int(10)           Resets when cart structure changes
+VALIDITY             int(10)           0 = Invalid, 1 = Conditionally Valid,
+                                       2 = Valid
+CODING_FORMAT        int(10) unsigned  0 = PCM16, 2 = Layer-2, 3 = Layer-3 
+SAMPLE_RATE          int(10) unsigned  In samples/sec
+BIT_RATE             int(10) unsigned  In bits/sec,  PCM16 = 0
+CHANNELS             int(10) unsigned  1 = mono, 2 = stereo
+PLAY_GAIN            int(11) signed    In 1/100 dB
+START_POINT          int(10) unsigned  Offset to Start point in ms
+FADEUP_POINT         int(10) unsigned  Offset to FadeUp point in ms
+FADEDOWN_POINT       int(10) unsigned  Offset to FadeDown point in ms
+END_POINT            int(10) unsigned  Offset to End point in ms
+HOOK_START_POINT     int(10) unsigned  Offset to Hook Start point in ms
+HOOK_END_POINT       int(10) unsigned  Offset to Hook End point in ms
+TALK_START_POINT     int(10) unsigned  Offset to Talk Start point in ms
+TALK_END_POINT       int(10) unsigned  Offset to Talk End point in ms
+
+
+* Names of WAV files are calculated as follows:
+
+    CCCCCC_NNN.wav
+
+  where:
+    CCCCCC = The cart number (000000 - 999999)
+       NNN = The rotator offset (000 - 999)
+
+  Thus, we can accomodate up to 1000 cuts in a single rotator.  The
+  base name is that part of the name prior to '.wav'.
+

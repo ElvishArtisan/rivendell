@@ -1,0 +1,59 @@
+# kill_rd
+#
+# Shutdown down the Rivendell system daemons
+#
+# (C) Copyright 2003 Fred Gleason <fredg@paravelsystems.com>
+#
+#      $Id: kill_rd,v 1.5 2007/02/14 21:59:12 fredg Exp $
+#
+#   This program is free software; you can redistribute it and/or modify
+#   it under the terms of the GNU General Public License version 2 as
+#   published by the Free Software Foundation.
+#
+#   This program is distributed in the hope that it will be useful,
+#   but WITHOUT ANY WARRANTY; without even the implied warranty of
+#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#   GNU General Public License for more details.
+#
+#   You should have received a copy of the GNU General Public
+#   License along with this program; if not, write to the Free Software
+#   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+#
+
+#
+# Site Configuration
+#
+RD_CAED_PID=/var/snd/caed.pid
+RD_RIPCD_PID=/var/snd/ripcd.pid
+RD_RDCATCHD_PID=/var/snd/rdcatchd.pid
+
+
+# End of site configuration
+# ##########################################################################
+
+echo "Shutting down Rivendell daemons"
+
+#
+# Shut Down Rivendell Daemons
+#
+if [ -z `ps c --no-headers -o "%a" -C caed` ] ; then
+  echo -n
+else
+  kill `cat $RD_CAED_PID`
+fi
+rm -f $RD_CAED_PID
+if [ -z `ps c --no-headers -o "%a" -C ripcd` ] ; then
+  echo -n
+else
+  kill `cat $RD_RIPCD_PID`
+fi
+rm -f $RD_RIPCD_PID
+if [ -z `ps c --no-headers -o "%a" -C rdcatchd` ] ; then
+  echo -n
+else
+  kill `cat $RD_RDCATCHD_PID`
+fi
+rm -f $RD_RDCATCHD_PID
+
+
+# End of kill_rd

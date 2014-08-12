@@ -1,0 +1,24 @@
+          Automating Required Weekly Tests on a Sage Digital ENDEC
+
+Rivendell can be configured to allow Required Weekly Tests (RWTs) for the
+Emergency Alert System (EAS) to be executed directly from a macro cart,
+using the Digital ENDEC Emergency Alert (EAS) Unit Manufactured by Sage
+Systems.
+
+PROCEDURES
+Create a macro cart and populate it with the following RML:
+
+   RN sage_endec_rwt.sh <ip-addr> <web-user> <web-password>!
+
+where:
+
+     <ip-addr> - The IP address of the ENDEC system..
+    <web-user> - The name used to log in to the ENDEC's web interface.
+<web-password> - The password used to log into the ENDEC's web interface.
+
+For example, for an ENDEC at 192.168.0.1 with a login name of 'admin'
+and a login password of 'letmein', you'd use:
+
+    RN sage_endec_rwt.sh 192.168.0.1 admin letmein!
+
+Whenever this macro cart is executed, the ENDEC will run an RWT.

@@ -1,0 +1,49 @@
+ <!DOCTYPE Menu PUBLIC "-//freedesktop//DTD Menu 1.0//EN"
+  "http://www.freedesktop.org/standards/menu-spec/1.0/menu.dtd">
+
+<Menu>
+<Name>Applications</Name>
+<Menu>
+  <Name>Rivendell</Name>
+  <Directory>rivendell-rivendell.directory</Directory>
+  <Include>
+    <Filename>rivendell-rdairplay.desktop</Filename>
+    <Filename>rivendell-rdcartslots.desktop</Filename>
+    <Filename>rivendell-rdcastmanager.desktop</Filename>
+    <Filename>rivendell-rdcatch.desktop</Filename>
+    <Filename>rivendell-rdlibrary.desktop</Filename>
+    <Filename>rivendell-rdlogin.desktop</Filename>
+    <Filename>rivendell-rdpanel.desktop</Filename>
+  </Include>
+  <Menu>
+    <Name>Configuration</Name>
+    <Directory>rivendell-configuration.directory</Directory>
+    <Include>
+      <Filename>rivendell-rdadmin.desktop</Filename>
+      <Filename>rivendell-rdalsaconfig.desktop</Filename>
+      <Filename>rivendell-rdalsaconfig-root.desktop</Filename>
+      <Filename>rivendell-rdhpiinfo.desktop</Filename>
+      <Filename>rivendell-rdhpiinfo-root.desktop</Filename>
+    </Include>
+  </Menu>
+  <Menu>
+    <Name>Log Tools</Name>
+    <Directory>rivendell-logtools.directory</Directory>
+    <Include>
+      <Filename>rivendell-rdlogedit.desktop</Filename>
+      <Filename>rivendell-rdlogmanager.desktop</Filename>
+    </Include>
+  </Menu>
+  <Menu>
+    <Name>Utilities</Name>
+    <Directory>rivendell-utilities.directory</Directory>
+    <Include>
+      <Filename>rivendell-rdgpimon.desktop</Filename>
+      <Filename>rivendell-rdsoftkeys.desktop</Filename>
+      <Filename>rivendell-rmlsend.desktop</Filename>
+      <Filename>rivendell-rddgimport.desktop</Filename>
+      <Filename>rivendell-rddiscimport.desktop</Filename>
+    </Include>
+  </Menu>
+</Menu>
+</Menu>

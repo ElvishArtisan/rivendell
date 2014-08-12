@@ -1,0 +1,47 @@
+The following folks have contributed to Rivendell:
+
+Todd Baker <bakert@rfa.org>
+   --create-startdate-offset and --create-enddate-offset options for
+   RDImport(1).
+   Hotkey system.
+
+Luigino Bracci <lbracci@gmail.com>
+   Spanish translation.
+
+Michael Cheng <mikecheng@planckenergy.com>
+   The tooLame MPEG Layer 2 encoder.
+
+Pavel Fric <pavelfric@seznam.cz>.
+   Czech Translation (cs)
+
+Stefan Gabriel <stg@st-gabriel.de>
+   Integrated Music Scheduler
+   RDLibrary MultiCart Editing Mode
+
+Federico Grau <grauf@rfa.org>
+   JACK driver cleanups, RDAdmin Audio Ports Dialog enhancements.
+   PAM Authentication Module
+
+Fred Gleason <fredg@paravelsystems.com>
+   Application Architect
+
+Dan Mills <dmills@spamblock.demon.co.uk>
+   General Bughunter Extrordinaire
+
+Eivind Ødegård <gingermig@yahoo.no>
+   Norwegian Translation (nb_NO and nn_NO)
+
+Michael Papsdorf <info@emitworks.com>
+   German translation (de).
+
+Alban Peignier <alban.peignier@free.fr>
+   RDImport batch file importer.
+   RDScheduler music scheduler.
+   Debian Packaging.
+
+Daniel Roviriego <danifernando@gmail.com>
+   Portuguese Translation (pt_BR).
+
+Scott Spillers <scotts@paravelsystems.com>
+   The Icon set
+

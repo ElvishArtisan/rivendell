@@ -1,0 +1,2743 @@
+The NEWS file for the Rivendell package.
+
+-------------------------------------------------------------------------------
+v2.9.0 --  6/4/2014
+
+Changes:
+   Cart Notes Display.  'Cart Notes' information can now be displayed in
+   the 'Edit Events' dialog in RDAirPlay.
+
+   RDLogManger Command Line Enhancements.  A '-P' switch has been added
+   to prevent existing logs from being overwritten by batched jobs.
+
+   Report Enhancements.  Added a 'Classical Music' as-played report,
+   as well as the ability to filter all reports on the basis of daypart
+   range.
+
+   New Scheduler Code Support.  Added an '--add-scheduler-code=' switch
+   to rdimport(1) and the ability to specify a set of scheduler codes to
+   be added to new carts on a per-dropbox basis in
+   RDAdmin->ManageHosts->Dropboxes. 
+
+   RDLibrary Cart Status Highlighting.  Carts whose dayparting indicates
+   a start time in the future are now highlighted in cyan rather than red.
+
+   New RML.  An 'Append Log' ['AL'] RML has been added.
+
+   Full Disc Ripper Enhancements.  The Full Disc Ripper ('Rip Disk' in
+   RDLibrary) has undergone a major overhaul, now allowing for multi-track
+   rips to a single cut and streamlined assignments of selected tracks to
+   new carts.
+
+   Various bug fixes.  See the ChangeLog for details.
+
+Database Update:
+   This version of Rivendell uses database schema version 239, and will
+   automatically upgrade any earlier versions.  To see the current schema
+   version prior to upgrade, see RDAdmin->SystemInfo.
+
+   As always, be sure to run RDAdmin immediately after upgrading to allow 
+   any necessary changes to the database schema to be applied.
+-------------------------------------------------------------------------------
+v2.8.2 --  5/16/2014
+
+Changes:
+   This is a maintenance release of Rivendell.  It fixes several bugs,
+   but provides no new functionality.  Some of the fixes include:
+
+   UTF-8 Character Handling.  Improved handling of multi-byte UTF-8
+   characters, especially in the RLM subsystem.
+
+   More robust MPEG-1 import support (contributed by Chris Smowden).
+
+   See the ChangeLog for additional details.
+
+Database Update:
+   This version of Rivendell uses database schema version 234, and will
+   automatically upgrade any earlier versions.  To see the current schema
+   version prior to upgrade, see RDAdmin->SystemInfo.
+
+   As always, be sure to run RDAdmin immediately after upgrading to allow 
+   any necessary changes to the database schema to be applied.
+-------------------------------------------------------------------------------
+v2.8.1 --  2/28/2014
+
+Changes:
+   New Switcher Device.  Added support for the Broadcast Tools Sentinel4Web
+   AES Switcher.
+
+   Cart Recuing.  Added a 'Recue' button in RDAirPlay's Edit Event dialog
+   to allow fast recuing of carts that were inadvertently started.
+
+   Various bug fixes.  See the ChangeLog for details.
+
+Database Update:
+   This version of Rivendell uses database schema version 234, and will
+   automatically upgrade any earlier versions.  To see the current schema
+   version prior to upgrade, see RDAdmin->SystemInfo.
+
+   As always, be sure to run RDAdmin immediately after upgrading to allow 
+   any necessary changes to the database schema to be applied.
+-------------------------------------------------------------------------------
+v2.8.0 --  2/14/2014
+
+Changes:
+   Drag and Drop Configurability.  It is now possible to enable/disable
+   drag and drop capability on a per-host basis as well as configure cart drops
+   to honor the Setup mode on Sound Panels.  See RDAdmin->ManageHosts to
+   configure.
+
+   Metadata Fields.  Added 'Album' and 'Label' to the fields
+   displayed in Cart List in RDLibrary and the Full Log widget in
+   RDAirPlay.
+
+   Independent Log Modes.  It is now possible to configure RDAirPlay so
+   that log modes (LiveAssist vs. Automatic vs. Manual) can be set
+   independently for each log machine.  See RDAdmin->ManageHosts->RDAirPlay
+   to configure.
+
+   Cue Channel Assignments.  Channel assignments for cue output from all
+   modules (include that for RDAirPlay) is now configured in
+   'RDAdmin->ManageHosts.
+
+   Various bug fixes.  See the ChangeLog for details.
+
+Database Update:
+   This version of Rivendell uses database schema version 234, and will
+   automatically upgrade any earlier versions.  To see the current schema
+   version prior to upgrade, see RDAdmin->SystemInfo.
+
+   As always, be sure to run RDAdmin immediately after upgrading to allow 
+   any necessary changes to the database schema to be applied.
+-------------------------------------------------------------------------------
+v2.7.0 --  1/17/2014
+
+Changes:
+   Cart Label Customization.  It is now possible to customize the fields
+   displayed in the Button Log widgets in RDAirPlay and RDCartSlots by
+   means of templates defined in the 'Display Settings' section of
+   RDAdmin->ManageHosts->RDAirPlay.
+
+   RLM API Extensions.  Added support for 'Outcue' and 'Description' fields
+   to the RLM API.
+
+   'Limit Searches' Configuration.  Added the ability to specify the
+   state of the 'Show Only First 100 Matches' checkbox in RDLibrary at
+   module startup.
+
+   Log Description Template.  Added the ability to generate custom log
+   descriptions by means of a template specified in RDAdmin->ManageServices.
+
+   CD Ripper Optimizations.  Optimized CD ripping to work faster and
+   more reliably.
+
+   Updated Spanish [es] Translation.  Provided by Luigino Bracci
+   <lbracci@gamil.com>.
+
+   Import Format Support.  Added support for AIFF audio file imports.
+
+   RDMarkerSet Utility.  Added an rdmarkerset(8) command-line utility
+   to allow Start/End Library markers to be modified on a bulk basis.
+
+   Various bug fixes.  See the ChangeLog for details.
+
+Database Update:
+   This version of Rivendell uses database schema version 231, and will
+   automatically upgrade any earlier versions.  To see the current schema
+   version prior to upgrade, see RDAdmin->SystemInfo.
+
+   As always, be sure to run RDAdmin immediately after upgrading to allow 
+   any necessary changes to the database schema to be applied.
+-------------------------------------------------------------------------------
+v2.6.2 --  1/03/2014
+
+Changes:
+   Fixed a bug in RDLogEdit that threw a segfault when dropping a cart
+   onto the end of a log.
+
+Database Update:
+   This version of Rivendell uses database schema version 224, and will
+   automatically upgrade any earlier versions.  To see the current schema
+   version prior to upgrade, see RDAdmin->SystemInfo.
+
+   As always, be sure to run RDAdmin immediately after upgrading to allow 
+   any necessary changes to the database schema to be applied.
+-------------------------------------------------------------------------------
+v2.6.1 --  1/02/2014
+
+Changes:
+   Drag and Drop.  Added the ability to drag and drop carts within and
+   between Rivendell modules.
+
+   Useability Tweaks.  Modified UI behavior to improve ease of use for
+   SoundPanels and RDLibrary.  See the ChangeLog for details.
+
+   Multiple bug fixes.  See the ChangeLog for details.
+
+Database Update:
+   This version of Rivendell uses database schema version 224, and will
+   automatically upgrade any earlier versions.  To see the current schema
+   version prior to upgrade, see RDAdmin->SystemInfo.
+
+   As always, be sure to run RDAdmin immediately after upgrading to allow 
+   any necessary changes to the database schema to be applied.
+-------------------------------------------------------------------------------
+v2.6.0 -- 12/13/2013
+
+Changes:
+   RDDiscImport Utility.  A utility has been added for bulk importation
+   of material from audio CDs using external metadata.
+
+   Audio Importation Enhancements.  Added support for reading metadata
+   from WAV files containing 'AIR1' metadata chunks.
+
+   NaturalLog Support.  Added a log import preset and reconciliation report
+   for the 'NaturalLog' traffic system.
+
+   New Library Metadata Fields.  Added Library metadata fields for
+   'Conductor', 'Song ID' and 'Beats per Minute'.
+
+   New RDImport Option.  Added a '--set-user-defined' option to RDImport.
+
+   Multiple bug fixes.  See the ChangeLog for details.
+
+Database Update:
+   This version of Rivendell uses database schema version 224, and will
+   automatically upgrade any earlier versions.  To see the current schema
+   version prior to upgrade, see RDAdmin->SystemInfo.
+
+   As always, be sure to run RDAdmin immediately after upgrading to allow 
+   any necessary changes to the database schema to be applied.
+-------------------------------------------------------------------------------
+v2.5.5 -- 11/19/2013
+
+If upgrading from a v1.x version of Rivendell, be sure to read the
+'UPGRADING' file before proceeding for important information.
+
+Changes:
+   RLM API Extension.  Added new fields to the 'rlm_pad' struct to
+   allow plug-ins to determine actual and predicted start times for events.
+
+   RDMonitor Enhancements.  Extended RDMonitor to allow proper positioning
+   on multi-head displays.
+
+   LiveWire Switcher Driver Changes.  The switcher drivers for LiveWire
+   have been refactored into three separate drivers:
+      LWRP Audio - Allows switching of audio routes on LiveWire devices.
+
+      LWRP GPIO - Allows monitoring and control of LiveWire GPIO devices
+      via LWRP (both virtual and direct).
+
+      Multicast GPIO - Allows monitoring and control of LiveWire console
+      GPIO without the need for a virtual LWRP device.
+
+   See 'SWITCHERS.txt' for details.
+
+   RDSelect Enhancements.  Added support for specifying CAE and RDXport
+   service assignments via RDSelect configurations.
+
+   Multiple bug fixes.  See the ChangeLog for details.
+
+Database Update:
+   This version of Rivendell uses database schema version 220, and will
+   automatically upgrade any earlier versions.  To see the current schema
+   version prior to upgrade, see RDAdmin->SystemInfo.
+
+   As always, be sure to run RDAdmin immediately after upgrading to allow 
+   any necessary changes to the database schema to be applied.
+-------------------------------------------------------------------------------
+v2.5.4 -- 11/01/2013
+
+If upgrading from a v1.x version of Rivendell, be sure to read the
+'UPGRADING' file before proceeding for important information.
+
+Changes:
+   RLM API Extension.  A RLMResolveNowNextEncoded() function has been
+   added to the RLM API to provide efficient support for generating XML
+   and URL encoded data in plug-ins.
+
+   Voice Tracker Fixes.  Corrected a bug in the voice tracker that caused
+   peak data errors when employing MPEG encoding on voice tracks.
+
+   Multiple bug fixes.  See the ChangeLog for details.
+
+Database Update:
+   This version of Rivendell uses database schema version 220, and will
+   automatically upgrade any earlier versions.  To see the current schema
+   version prior to upgrade, see RDAdmin->SystemInfo.
+
+   As always, be sure to run RDAdmin immediately after upgrading to allow 
+   any necessary changes to the database schema to be applied.
+-------------------------------------------------------------------------------
+v2.5.3 -- 10/04/2013
+
+If upgrading from a v1.x version of Rivendell, be sure to read the
+'UPGRADING' file before proceeding for important information.
+
+Changes:
+   Multitrack Rip Support.  It is now possible to rip multiple CD tracks
+   into a single cut using the single cut ripper in RDLibrary.
+
+   RDCartSlot Enhancements.  It is now possible to set custom 'one off'
+   Start and End cuepoints for events.
+
+   Spinitron Integration.  A 'spinitron_plus' RLM has been added that can
+   be used to log PAD data to the Spinitron playlist service
+   (http://www.spinitron.com), as well as a cart data export that can be
+   used to populate Spinitron MusicDB libraries.  See the Spinitron
+   'Automation Integration' document for details.
+
+   Multiple bug fixes.  See the ChangeLog for details.
+
+Database Update:
+   This version of Rivendell uses database schema version 220, and will
+   automatically upgrade any earlier versions.  To see the current schema
+   version prior to upgrade, see RDAdmin->SystemInfo.
+
+   As always, be sure to run RDAdmin immediately after upgrading to allow 
+   any necessary changes to the database schema to be applied.
+-------------------------------------------------------------------------------
+v2.5.2 -- 07/03/2013
+
+If upgrading from a v1.x version of Rivendell, be sure to read the
+'UPGRADING' file before proceeding for important information.
+
+Changes:
+   Binary Escape Codes.  It is now possible to craft messages for the
+   'Serial Out' ['SO'] and 'UDP Out' ['UO'] RMLs containing arbitrary
+   binary sequences.  See the 'BINARY DATA' section of 'docs/rml.sxw'
+   for details.
+
+   New Switcher Device.  A switcher driver has been added for the
+   360 Systems AM16 Audio Crosspoint Switcher.  See 'docs/SWITCHERS.txt'
+   for details.
+
+   Multiple bug fixes.  See the ChangeLog for details.
+
+Database Update:
+   This version of Rivendell uses database schema version 220, and will
+   automatically upgrade any earlier versions.  To see the current schema
+   version prior to upgrade, see RDAdmin->SystemInfo.
+
+   As always, be sure to run RDAdmin immediately after upgrading to allow 
+   any necessary changes to the database schema to be applied.
+-------------------------------------------------------------------------------
+v2.5.1 -- 05/22/2013
+
+If upgrading from a v1.x version of Rivendell, be sure to read the
+'UPGRADING' file before proceeding for important information.
+
+Changes:
+   Mass Object Deletion.  Added an rddelete(1) command-line tool to
+   aid in the mass deletion of carts and logs.  Do rddelete --help
+   for more information.
+
+   NexGen Importer.  Added PKT file support to nexgen_filter(1).
+
+   Multiple bug fixes.  See the ChangeLog for details.
+
+Database Update:
+   This version of Rivendell uses database schema version 220, and will
+   automatically upgrade any earlier versions.  To see the current schema
+   version prior to upgrade, see RDAdmin->SystemInfo.
+
+   As always, be sure to run RDAdmin immediately after upgrading to allow 
+   any necessary changes to the database schema to be applied.
+-------------------------------------------------------------------------------
+v2.5.0 -- 04/01/2013
+
+If upgrading from a v1.x version of Rivendell, be sure to read the
+'UPGRADING' file before proceeding for important information.
+
+Changes:
+   LiveWire Virtual GPIO Driver.  Added a fully native virtual GPIO
+   LiveWire driver for situations where the proprietary software
+   LiveWire/ALSA driver is not available (e.g. when using an ASI6x85
+   adapter).  See 'SWITCHERS.txt' for details.
+
+   Console Channel Control.  Added the capability to automate
+   console channel ON/OFF control bidirectionally from RDAirPlay.
+   (Configured in RDAdmin->ManageHosts->RDAirPlay).
+
+   Multiple bug fixes.  See the ChangeLog for details.
+
+Database Update:
+   This version of Rivendell uses database schema version 220, and will
+   automatically upgrade any earlier versions.  To see the current schema
+   version prior to upgrade, see RDAdmin->SystemInfo.
+
+   As always, be sure to run RDAdmin immediately after upgrading to allow 
+   any necessary changes to the database schema to be applied.
+-------------------------------------------------------------------------------
+v2.4.0 -- 01/28/2013
+
+If upgrading from a v1.x version of Rivendell, be sure to read the
+'UPGRADING' file before proceeding for important information.
+
+Changes:
+   New Translation.  A Czech [CS] translation has been added by
+   Pavel Fric <pavelfric@seznam.cz>.
+
+   New Cart/Cut Purge Option.  A new option has been added in
+   RDAdmin->ManageGroups to allow empty carts to be automatically deleted
+   after purging.
+
+   New Reports.  'NPR SoundExchange' and 'Music Playout' reports
+   have been added in RDAdmin->ManageReports.
+
+   Multiple bug fixes.  See the ChangeLog for details.
+
+Database Update:
+   This version of Rivendell uses database schema version 216, and will
+   automatically upgrade any earlier versions.  To see the current schema
+   version prior to upgrade, see RDAdmin->SystemInfo.
+
+   As always, be sure to run RDAdmin immediately after upgrading to allow 
+   any necessary changes to the database schema to be applied.
+-------------------------------------------------------------------------------
+v2.3.0 -- 12/21/2012
+
+If upgrading from a v1.x version of Rivendell, be sure to read the
+'UPGRADING' file before proceeding for important information.
+
+Changes:
+   RDCartSlots Module.  A new Rivendell module has been added that is
+   optimized for use in busy live assist environments, along with four
+   new RMLs ('Load Slot' ['DL'], 'Play Slot' ['DP'], 'Stop Slot' ['DS']
+   and 'Execute Breakaway' ['DX']) for automating its operation.
+
+   RDAirPlay Enhancements.  A set of buttons for quickly locating a given
+   hour has been added to the Full Log widget, enabled by checking the
+   'Show Hour Selector' box in RDAdmin->ManageHost->RDAirPlay.
+
+   JACK Enhancements.  It is now possible to specify the command-line
+   used to start jackd(8) and a list of clients to start when
+   starting the Rivendell service.  See RDAdmin->ManageHosts->JackSettings.
+
+   Switcher/GPIO Device Support.  Added support for the Sine Systems ACU-1
+   switcher.  See 'SWITCHERS.txt' for details.
+
+   Cue Output Assignments.  Cue output assignments for all modules
+   except RDAirPlay have now been consolidated into one setting in
+   RDAirPlay->ManageHosts.
+
+   Multiple bug fixes.  See the ChangeLog for details.
+
+Database Update:
+   This version of Rivendell uses database schema version 213, and will
+   automatically upgrade any earlier versions.  To see the current schema
+   version prior to upgrade, see RDAdmin->SystemInfo.
+
+   As always, be sure to run RDAdmin immediately after upgrading to allow 
+   any necessary changes to the database schema to be applied.
+-------------------------------------------------------------------------------
+v2.2.1 -- 10/23/2012
+
+If upgrading from a v1.x version of Rivendell, be sure to read the
+'UPGRADING' file before proceeding for important information.
+
+Changes:
+   RDMonitor Module.  A persistent desktop applet has been added that
+   continuously monitors the health of the system and alerts the operator
+   in the event of any detected problems.  See 'RDMONITOR.txt' for usage
+   and configuration info.
+
+   Sage Digital ENDEC Control.  A 'sage_endec_rwt.sh' script has been
+   added that allows a Required Weekly Test (RWT) to be executed on a
+   Sage Digital ENDEC via TCP/IP.  See 'SAGE_ENDEC.txt' for usage and 
+   configuration info.
+
+   Cut Attribute Searching.  The cart filter will now include the
+   attributes of underlying cuts when searching the library.
+
+   RDCheckCuts Utility.  An rdcheckcuts(1) command-line utility has
+   been added for checking the integrity of the audio store.
+   
+   Multiple bug fixes.  See the ChangeLog for details.
+
+Database Update:
+   This version of Rivendell uses database schema version 207, and will
+   automatically upgrade any earlier versions.  To see the current schema
+   version prior to upgrade, see RDAdmin->SystemInfo.
+
+   As always, be sure to run RDAdmin immediately after upgrading to allow 
+   any necessary changes to the database schema to be applied.
+-------------------------------------------------------------------------------
+v2.2.0 -- 8/31/2012
+
+If upgrading from a v1.x version of Rivendell, be sure to read the
+'UPGRADING' file before proceeding for important information.
+
+Changes:
+   HPI Enhancements.  Support for setting input modes for AudioScience
+   adapters has been added (requires support in the hardware as well).
+
+   Scripting Enhancements.  The rdcollect(1) script has been modified
+   to allow multiple source files to be used.
+
+   Report Enhancements.  It is now possible to filter data for reports
+   by Group membership as well as Service and Host.  A new 'Music Summary'
+   report has also been added.
+
+   New Traffic System Preset.  A preset for 'WideOrbit Traffic' has been
+   added.
+
+   New Rivendell Loadable Module.  An 'rlm_padpoint' RLM has been added
+   that can be used to send PAD data to a PadPoint processor system.
+
+   Multiple bug fixes.  See the ChangeLog for details.
+
+Database Update:
+   This version of Rivendell uses database schema version 207, and will
+   automatically upgrade any earlier versions.  To see the current schema
+   version prior to upgrade, see RDAdmin->SystemInfo.
+
+   As always, be sure to run RDAdmin immediately after upgrading to allow 
+   any necessary changes to the database schema to be applied.
+-------------------------------------------------------------------------------
+v2.1.5 -- 7/27/2012
+
+If upgrading from a v1.x version of Rivendell, be sure to read the
+'UPGRADING' file before proceeding for important information.
+
+Changes:
+   This is a maintenance release of Rivendell.  Some of the issues
+   addressed include:
+
+   New Rivendell Loadable Module.  An 'rlm_filewrite' RLM has been added
+   that can be used to write PAD data to filesystems.
+
+   NexGen Import Filter.  An filter for importing audio from a Prophet
+   NexGen system has been added.
+
+   New RML.  A 'Label Panel' ['PC'] RML has been added that allows
+   the text and color of SoundPanel buttons to be changed programmatically.
+
+   Multiple System Selector.  An 'RDSelect' utility has been added to
+   allow hosts to be easily switched between multiple database/audio
+   store instances [experimental].
+
+   Multiple bug fixes.  See the ChangeLog for details.
+
+Database Update:
+   This version of Rivendell uses database schema version 205, and will
+   automatically upgrade any earlier versions.  To see the current schema
+   version prior to upgrade, see RDAdmin->SystemInfo.
+
+   As always, be sure to run RDAdmin immediately after upgrading to allow 
+   any necessary changes to the database schema to be applied.
+-------------------------------------------------------------------------------
+v2.1.4 -- 5/11/2012
+
+If upgrading from a v1.x version of Rivendell, be sure to read the
+'UPGRADING' file before proceeding for important information.
+
+Changes:
+   This is a maintenance release of Rivendell.  Some of the issues
+   addressed include:
+
+   RDCatch XLoad Wildcards.  Several new wildcards and meta-characters
+   have been added for specifying URLs in RDCatch, including:
+     $e -- Day of the month, space padded ( 1 - 12)
+     $E -- Day of the month, unpadded (1 - 12)
+     ^ --  Convert value indicated by following format character to all
+           uppercase.
+     $ --  Convert the initial character of the value indicated by the
+           following format character to uppercase.
+   A complete list of wildcards can be found in 'docs/datetime_wildcards.txt'.
+
+   HPI Compatibility.  Updated HPI subsystem to work with the latest
+   AudioScience driver versions (v4.10.x).
+
+   RDLibrary Reports.  Fixed a problem where generated reports would
+   not accurately reflect the current cart filters.
+
+   A detailed list of all bugfixes can be found in the ChangeLog.
+
+Database Update:
+   This version of Rivendell uses database schema version 205, and will
+   automatically upgrade any earlier versions.  To see the current schema
+   version prior to upgrade, see RDAdmin->SystemInfo.
+
+   As always, be sure to run RDAdmin immediately after upgrading to allow 
+   any necessary changes to the database schema to be applied.
+-------------------------------------------------------------------------------
+v2.1.3 -- 2/20/2012
+
+If upgrading from a v1.x version of Rivendell, be sure to read the
+'UPGRADING' file before proceeding for important information.
+
+Changes:
+   This is a maintemnance release of Rivendell.  Some of the inssues
+   addressed include:
+
+   Temporary File Cleanup.  Fixed a bug the resulted in a failure to
+   removed temporary files after processing audio imports and exports.
+
+   Audio Conversion Processing.  Fixed a bug that caused audio distoration
+   when normalizing files with levels at or near full sample resolution.
+
+   RDLogManager Hard Times.  Fixed a bug in RDLogManager that resulted in
+   incorrect hard start time parameters being inserted when using sources
+   from the internal music scheduler.
+
+   A detailed list of all bugfixes can be found in the ChangeLog.
+
+Database Update:
+   This version of Rivendell uses database schema version 205, and will
+   automatically upgrade any earlier versions.  To see the current schema
+   version prior to upgrade, see RDAdmin->SystemInfo.
+
+   As always, be sure to run RDAdmin immediately after upgrading to allow 
+   any necessary changes to the database schema to be applied.
+-------------------------------------------------------------------------------
+v2.1.2 -- 12/30/2011
+
+If upgrading from a v1.x version of Rivendell, be sure to read the
+'UPGRADING' file before proceeding for important information.
+
+Changes:
+   Shoutcast RLM.  Added an RLM plug-in for ShoutCast D.N.A.S. v1.x.
+
+   Import/Export Error Handling.  Reworked error handling for audio
+   import and export so as to provide more informative and useful
+   error messages.
+
+   Spanish Translation.  Updated Spanish (es) translation, provided
+   by Luigino Bracci.
+
+   Various Bugfixes.  See the ChangeLog for details.
+
+Database Update:
+   This version of Rivendell uses database schema version 205, and will
+   automatically upgrade any earlier versions.  To see the current schema
+   version prior to upgrade, see RDAdmin->SystemInfo.
+
+   As always, be sure to run RDAdmin immediately after upgrading to allow 
+   any necessary changes to the database schema to be applied.
+-------------------------------------------------------------------------------
+v2.1.1 -- 11/03/2011
+
+Changes:
+   Fixed a regression that broke display of the Library in the Edit Event
+   dialog in RDLogManager.
+
+Database Update:
+   This version of Rivendell uses database schema version 205, and will
+   automatically upgrade any earlier versions.  To see the current schema
+   version prior to upgrade, see RDAdmin->SystemInfo.
+
+   As always, be sure to run RDAdmin immediately after upgrading to allow 
+   any necessary changes to the database schema to be applied.
+-------------------------------------------------------------------------------
+v2.1.0 -- 11/02/2011
+
+If upgrading from a v1.x version of Rivendell, be sure to read the
+'UPGRADING' file before proceeding for important information.
+
+Changes:
+   Database Skew Detection.  All Rivendell modules will now check that the
+   correct database schema is in use when starting up; a mismatched schema
+   will cause the module to abort with a 'database version mismatch' error.
+   While, for code debugging purposes, this check can be bypassed by adding
+   the '--skip-db-check' flag to the command line, its use is *strongly*
+   discouraged in production settings as operating with a skewed database
+   schema can cause severe database corruption!
+
+   Library Filtering by Scheduler Code.  It is now possible to filter
+   carts by scheduler code in both RDLibrary and the system-wide cart
+   selector dialog.
+
+   Traffic Light Support.  A preset for 'The Traffic Light' traffic system
+   has been added to list of available scheduler systems in
+   RDAdmin->ManageServices.
+
+   Enhanced JACK Support.  A 'JACK Settings' dialog has been added in
+   RDAdmin->ManageHosts, making it possible to specify the startup behavior
+   and name of the JACK server instance for Rivendell to use.  Accordingly,
+   the old syscontrol-based method for specifying JACK startup behavior
+   should be considered deprecated and will be removed in a future version.
+
+   New RMLs.  Two new RMLs, 'Connect JACK Ports' ['JC'] and 'Disconnect
+   JACK Ports' ['JD'] have been added.  Accordingly, use of the [JackSession]
+   section of rd.conf(5) should be considered deprecated; support for it
+   will be removed in a future version.
+
+   Miscelaneous Bugfixes.  See the ChangeLog for details.
+
+Database Update:
+   This version of Rivendell uses database schema version 205, and will
+   automatically upgrade any earlier versions.  To see the current schema
+   version prior to upgrade, see RDAdmin->SystemInfo.
+
+   As always, be sure to run RDAdmin immediately after upgrading to allow 
+   any necessary changes to the database schema to be applied.
+-------------------------------------------------------------------------------
+v2.0.2 -- 06/01/2011
+
+If upgrading from a v1.x version of Rivendell, be sure to read the
+'UPGRADING' file before proceeding for important information.
+
+Changes:
+   SAS USI Enhancements.  Several enhancements have been added to Universal
+   Serial Driver for Sierra Automated Systems devices, including the ability
+   to process opto inputs and source state changes as GPI events.
+
+   RDLogManager X11 Dependencies. It is now possible to run RDLogManager
+   in batch mode without the need for an active X11 server instance.
+
+   RLM Changes.  A new callback has been added to the RLM API to allow
+   for reception of data from serial devices.
+
+   Full System Backup/Restore Scripts.  Sample scripts for performing a
+   full Rivendell backup and restore (DB+audio) have been added.  See
+   'scripts/rd_backup_system.sh' and 'scripts/rd_restore_system.sh'.
+
+   AudioScience HPI Cleanups.  The HPI driver has been refactored to 
+   eliminate use of deprecated/obsolete functions and data structures.
+
+   RMLSend Smartphone App (Experimental).  A version of the RMLSend utility
+   for Apple iOS has been added.
+
+   Miscelaneous Bugfixes.  See the ChangeLog for details.
+
+Database Update:
+   This version of Rivendell uses database schema version 202, and will
+   automatically upgrade any earlier versions.  To see the current schema
+   version prior to upgrade, see RDAdmin->SystemInfo.
+
+   As always, be sure to run RDAdmin immediately after upgrading to allow 
+   any necessary changes to the database schema to be applied.
+-------------------------------------------------------------------------------
+v2.0.1 -- 04/05/2011
+
+This is the first production release of Rivendell 2.x.  All changes made
+since 2.0.0rc1 have involved fixes for reported bugs and improved 
+integration with various distributions and desktop environments.  See
+the ChangeLog for specifics.
+
+If upgrading from a v1.x version of Rivendell, be sure to read the
+'UPGRADING' file before proceeding for important information.
+
+Database Update:
+   This version of Rivendell uses database schema version 202, and will
+   automatically upgrade any earlier versions.  To see the current schema
+   version prior to upgrade, see RDAdmin->SystemInfo.
+
+   As always, be sure to run RDAdmin immediately after upgrading to allow 
+   any necessary changes to the database schema to be applied.  Due to the
+   complexity of the schema changes required for this update, the process
+   may take significantly longer to execute than is commonly the case;
+   users are cautioned to allow for ample time operationally.
+-------------------------------------------------------------------------------
+v2.0.0rc1 -- 03/11/2011
+
+This is the second release candidate of Rivendell 2.x.  All changes made
+since 2.0.0rc0 have involved fixes for reported bugs and improved 
+integration with various distributions and desktop environments.  See
+the ChangeLog for specifics.
+
+If upgrading from a v1.x version of Rivendell, be sure to read the
+'UPGRADING' file before proceeding for important information.
+
+Database Update:
+   This version of Rivendell uses database schema version 202, and will
+   automatically upgrade any earlier versions.  To see the current schema
+   version prior to upgrade, see RDAdmin->SystemInfo.
+
+   As always, be sure to run RDAdmin immediately after upgrading to allow 
+   any necessary changes to the database schema to be applied.  Due to the
+   complexity of the schema changes required for this update, the process
+   may take significantly longer to execute than is commonly the case;
+   users are cautioned to allow for ample time operationally.
+-------------------------------------------------------------------------------
+v2.0.0rc0 -- 02/16/2011
+
+This is the first release candidate of Rivendell 2.x.  All changes made
+since 2.0.0beta1 have involved fixes for reported bugs and improved 
+integration with various distributions and desktop environments.  See
+the ChangeLog for specifics.
+
+If upgrading from a v1.x version of Rivendell, be sure to read the
+'UPGRADING' file before proceeding for important information.
+
+Database Update:
+   This version of Rivendell uses database schema version 202, and will
+   automatically upgrade any earlier versions.  To see the current schema
+   version prior to upgrade, see RDAdmin->SystemInfo.
+
+   As always, be sure to run RDAdmin immediately after upgrading to allow 
+   any necessary changes to the database schema to be applied.  Due to the
+   complexity of the schema changes required for this update, the process
+   may take significantly longer to execute than is commonly the case;
+   users are cautioned to allow for ample time operationally.
+-------------------------------------------------------------------------------
+v2.0.0beta1 -- 10/11/2010
+
+This is the second BETA release of Rivendell 2.x.  Some of the changes
+include:
+
+   Component Unbundling.  It is now possible to run the caed(8) and rdxport
+   audio service components on separate hardware from that hosting the other
+   Rivendell components.  Configured in RDAdmin->ManageHosts.
+
+   Configurable Hotkeys.  It is now possible to assign shortcut keys for
+   various functions in RDAirPlay on a host-by-host basis.  Configured in
+   RDAdmin->ManageHost->RDAirPlay->ConfigureHotKeys.
+
+   Various bugfixes.  See the ChangeLog for details.
+
+Database Update:
+   This version of Rivendell uses database schema version 202, and will
+   automatically upgrade any earlier versions.  To see the current schema
+   version prior to upgrade, see RDAdmin->SystemInfo.
+
+   As always, be sure to run RDAdmin immediately after upgrading to allow 
+   any necessary changes to the database schema to be applied.  Due to the
+   complexity of the schema changes required for this update, the process
+   may take significantly longer to execute than is commonly the case;
+   users are cautioned to allow for ample time operationally.
+-------------------------------------------------------------------------------
+v2.0.0beta0 -- 08/19/2010
+
+This is the initial BETA release of Rivendell 2.x.  Some of the major changes
+over 1.x include:
+
+   MPEG Capture/Playout.  Rivendell can now be optionally compiled to
+   support use of MPEG Layer 2 in the core storage library for all audio
+   driver families (ALSA and JACK as well as AudioScience HPI).
+
+   Web Services Architecture.  Many internal services within Rivendell are now
+   implemented via a web services API.  Among other benefits, this approach
+   allows these services to be easily accessed by third-party systems by means
+   of the widely support HTTP protocol.
+
+   Linux User Support.  Any 'regular' user account can now access Rivendell; 
+   gone is the concept of a single 'Rivendell User' under which all Rivendell
+   operations must occur.
+
+   Replicators.  Rivendell now sports a generic replication interface that can
+   be used to create services to transport audio and other Rivendell data
+   to/from external systems.
+
+Many other changes too numerous to list here have occurred as well; see the
+ChangeLog for details.  For a concise summary of changes from the point of 
+view of a system administator looking to upgrade an existing Rivendell 1.x
+system to 2.x, see the file 'UPGRADING'.
+
+Database Update:
+   This version of Rivendell uses database schema version 199, and will
+   automatically upgrade any earlier versions.  To see the current schema
+   version prior to upgrade, see RDAdmin->SystemInfo.
+
+   As always, be sure to run RDAdmin immediately after upgrading to allow 
+   any necessary changes to the database schema to be applied.  Due to the
+   complexity of the schema changes required for this update, the process
+   may take significantly longer to execute than is commonly the case;
+   users are cautioned to allow for ample time operationally.
+-------------------------------------------------------------------------------
+v1.7.0 -- 02/22/2010
+
+Changes:
+   Log Import Format Presets.  Added preset import configurations in 
+   RDAdmin->ManageServices for several third-party scheduler systems.
+   The following systems are supported:
+      CounterPoint Software
+      Music 1
+      PowerGold
+      RadioTraffic.com
+      Rivendell Standard Import
+      Visual Traffic
+
+   New AsPlayed Report Format.  An ELR format for Music 1 in has been
+   added in RDAdmin->ManageReports.
+
+   Log Import Scripts.  It is now possible to specify an optional script to be
+   run at log import time before regular import processing takes place.  This
+   can be configured in RDAdmin->ManageServices with the 'Preimport Command'
+   fields.  These fields accept the same wildcard sequences as 'Path' fields.
+
+   High-Resolution Timing.  This version of Rivendell debuts the ability to
+   specify the start times and lengths of log events with 1/10 second
+   precision.
+
+   New Translations.  Two Norwegian translations (nn_NO and nb_NO) and a
+   Spanish translation (es) have been added.
+
+Database Update:
+   This version of Rivendell uses database schema version 186, and will
+   automatically upgrade any earlier versions.  To see the current schema
+   version prior to upgrade, see RDAdmin->SystemInfo.
+
+   As always, be sure to run RDAdmin immediately after upgrading to allow 
+   any necessary changes to the database schema to be applied.  Due to the
+   complexity of the schema changes required for this update, the process
+   may take significantly longer to execute than is commonly the case;
+   users are cautioned to allow for ample time operationally.
+-------------------------------------------------------------------------------
+v1.6.0 -- 12/17/2009
+
+Changes:
+   New RLM Plug-in.  A new plug-in for the Liquid Compass Internet encoder has
+   been added.
+
+   Cart Notes.  Added the ability to enter free-form text for each cart in the
+   Library.  This text can then be displayed in a 'help bubble' when floating
+   the mouse cursor over the cart's entry in the Library cart list.
+
+   Bugfixes.  See the ChangeLog for details.
+
+Database Update:
+   This version of Rivendell uses database schema version 182, and will
+   automatically upgrade any earlier versions.  To see the current schema
+   version prior to upgrade, see RDAdmin->SystemInfo.
+
+   As always, be sure to run RDAdmin immediately after upgrading to allow 
+   any necessary changes to the database schema to be applied.
+-------------------------------------------------------------------------------
+v1.5.2 -- 08/25/2009
+
+This is a maintenance release of Rivendell.  The following issues have been
+corrected:
+
+  Fixed problems with build the Rivendell Pluggable Authentication Module
+  (PAM) plug-in.
+
+  Fixed problems with hard-start events in RDAirPlay.
+
+  Added checks in rddbcheck(8) to verify cart/cut/audio consistency.
+
+  Fixed a regression that caused audio exports to fail when the path contained
+  one or more spaces.
+
+Database Update:
+   This version of Rivendell uses database schema version 179, and will
+   automatically upgrade any earlier versions.  To see the current schema
+   version prior to upgrade, see RDAdmin->SystemInfo.
+
+   As always, be sure to run RDAdmin immediately after upgrading to allow 
+   any necessary changes to the database schema to be applied.
+-------------------------------------------------------------------------------
+v1.5.1 -- 08/12/2009
+
+Changes:
+  New Translation.  A German-language (DE) translation has been added.
+
+  ALSA Configuration Tool.  An RDAlsaConfig application has been added that
+  allows ALSA device configuration to be done completely by means of a GUI
+  interface.
+
+  Removed the requirement for sox(1).
+
+  New Switcher Driver.  Added a driver for the BroadcastTools SS4.4 switcher.
+
+  New Report.  Added an AsPlayed report for the RadioTraffic traffic system.
+
+  Bugfixes.  See the ChangeLog for details.
+
+Database Update:
+   This version of Rivendell uses database schema version 179, and will
+   automatically upgrade any earlier versions.  To see the current schema
+   version prior to upgrade, see RDAdmin->SystemInfo.
+
+   As always, be sure to run RDAdmin immediately after upgrading to allow 
+   any necessary changes to the database schema to be applied.
+-------------------------------------------------------------------------------
+v1.5.0 -- 07/08/2009
+
+Changes:
+  New RLM Plug-in.  A new plugin-in for the Innovonics model 713 RDS
+  encoder has been added.
+
+  Podcast System Enhancements.  It is now possible to post new episodes via
+  the remote web interface.
+
+  Bugfixes, particularly affecting the Post Point Counter in RDAirPlay, stream
+  leakage issues in caed(8) and various database consistency issues in
+  RDLogManager.  See the ChangeLog for details.
+
+Database Update:
+   This version of Rivendell uses database schema version 179, and will
+   automatically upgrade any earlier versions.  To see the current schema
+   version prior to upgrade, see RDAdmin->SystemInfo.
+
+   As always, be sure to run RDAdmin immediately after upgrading to allow 
+   any necessary changes to the database schema to be applied.
+-------------------------------------------------------------------------------
+v1.4.0 -- 04/10/2009
+
+Changes:
+  Unique Cart Titles.  It is now possible to configure the system (in
+  RDAdmin->SystemSettings) to disallow duplicate cart titles.
+
+  RDAirPlay Full Log Controls.  New controls have been added to the Full Log
+  widget in RDAirPlay to allow the head and tail of carts to be auditioned, as
+  well as a set of log runtime counters.  To make these controls visible, it
+  is necessary to check the 'Show Extra Buttons/Counters' box in
+  RDAdmin->ManageHosts->RDAirPlay.
+
+  RDCastManager Enhancements.  An Podcast episode filter has been added.  Also
+  added to the online version is the ability to audition each episode by
+  downloading the media file to the local system.
+
+  Bugfixes.  See the ChangeLog for details.
+
+Database Update:
+   This version of Rivendell uses database schema version 177, and will
+   automatically upgrade any earlier versions.  To see the current schema
+   version prior to upgrade, see RDAdmin->SystemInfo.
+
+   As always, be sure to run RDAdmin immediately after upgrading to allow 
+   any necessary changes to the database schema to be applied.
+-------------------------------------------------------------------------------
+v1.3.0 -- 03/18/2009
+
+Changes:
+   Podcast System Enhancements.  Support has been added to allow
+   interoperation with third-party podcast traffic measurement and
+   verification systems.  It is also now possible to override the default
+   ordering of episodes and configure automatic redirection of feed
+   subscriptions.
+
+   RDLogManager Enhancements.  It is now possible to configure log import
+   under-/over-fill warnings even for non-autofill events.  When generating
+   import warnings, RDLogManager will now warn if the dayparting parameters
+   would cause a scheduled event to be unplayable at its scheduled time.  An
+   overall length counter has also been added for the Pre- and Post-Import
+   lists in the Edit Event dialog.
+
+   New RML.  A new 'Message Box' ['MB'] RML has been added that allows a
+   popup message to sent to any Rivendell workstation. (Be sure to see the
+   'MESSAGE_BOX.txt' file for information on configuring X11 to work properly
+   with this feature).
+
+   RLM Changes.  An 'rlm_album' field has been added to the metadata fields
+   and the API version incremented to '1'.  A new plugin ('rlm_ando') has been
+   added to allow interconnection with the Ando Media Ad Injector System.
+
+   Bugfixes.  See the ChangeLog for details.
+
+Database Update:
+   This version of Rivendell uses database schema version 170, and will
+   automatically upgrade any earlier versions.  To see the current schema
+   version prior to upgrade, see RDAdmin->SystemInfo.
+
+   As always, be sure to run RDAdmin immediately after upgrading to allow 
+   any necessary changes to the database schema to be applied.
+-------------------------------------------------------------------------------
+v1.2.2 -- 01/13/2009
+
+This is a maintenance release of Rivendell.  The following issues have been
+corrected:
+
+   Fixed a bug in RDAirPlay that caused a segfault when loading a log with no
+   SoundPanels enabled.
+
+   Improved heiristics to detect more reliably mal-formed MPEG import files.
+
+   Fixed a bug in RDLogManager that would generate truncated reports when the
+   ELR metadata contained double-quote characters.
+
+   Fixed a bug in RDAdmin that caused backslash characters to be 'doubled'
+   when saved as part of a Windows report export path.
+
+Database Update:
+   This version of Rivendell uses database schema version 170, and will
+   automatically upgrade any earlier versions.  To see the current schema
+   version prior to upgrade, see RDAdmin->SystemInfo.
+
+   As always, be sure to run RDAdmin immediately after upgrading to allow 
+   any necessary changes to the database schema to be applied.
+-------------------------------------------------------------------------------
+v1.2.1 -- 12/29/2008
+
+This is a maintenance release of Rivendell.  The following issues have been
+corrected:
+
+   Several errors in handling metadata values in file imports have been
+   corrected, and support for detecting Ogg metadata tags added.
+
+   Fixed a bug in RDAirPlay that could cause a segfault when loading a log
+   over an existing log.
+   
+Database Update:
+   This version of Rivendell uses database schema version 170, and will
+   automatically upgrade any earlier versions.  To see the current schema
+   version prior to upgrade, see RDAdmin->SystemInfo.
+
+   As always, be sure to run RDAdmin immediately after upgrading to allow 
+   any necessary changes to the database schema to be applied.
+-------------------------------------------------------------------------------
+v1.2.0 -- 12/11/2008
+
+Changes:
+   RDCatch Download Events.  An 'Event Offset' setting has been added to
+   Download Events to allow date wildcards used in the URL field to be offset
+   by the indicated number of days.
+
+   Hard Time Handling in Logs.  The logic for processing hard start times in
+   logs has been changed so that a hard time event will be executed when wall
+   clock time matches regardless of it's place relative to other hard timed
+   events.
+
+   Now & Next Changes.  A new plugin architecture has been added that makes it
+   possible to create "Rivendell Loadable Modules" (RLMs for short) that can
+   be used to generate Now & Next PAD data to a wide array of external devices
+   and services.  Runtime plugin configuration is accomplished in
+   RDAdmin->ManageHosts->RDAirPlay->ConfigureNow&Next.  A set of sample
+   plugins is provided for transmitting data via UDP and serial ports as well
+   as for interfacing to 'social networking' services such as Twitter and
+   FaceBook.  Information on writing new plugins can be found in the 'rlm.h'
+   header file.
+
+   Dropbox Changes.  Several new dropbox features have been added, including
+   the ability to configure a box not to delete source files after import
+   (particularly useful in conjunction with satellite-based audio delivery
+   services such as AMB-OS and PRSS ContentDepot).  Also new is the ability to
+   apply an automatic date offset to any encoded Start or End Date value of
+   imported files.
+
+   Automated System Management.  It is now possible to configure various
+   objects to be automatically purged from the system after they expire.  For
+   audio cuts, this can be configured on a group-wide basis in
+   RDAdmin->ManageGroups, while Logs and ELR data purging can be configured in
+   RDAdmin->ManageServices.
+
+   RDLogManager Enhancements.  A 'Remarks' field has been added to the Event
+   and Clock dialogs to provide an area for entering free-form text notes.
+
+   GPIO Enhancements.  It is now possible to configure separate and
+   independent macro carts to execute upon the rising and falling state of a
+   GPIO line.
+
+   Username Length.  The previous limit of a maximum of eight characters in a
+   Rivendell username has been increased to 255, thus allowing for better
+   integration with external authentication systems such as Active Directory.
+
+   Bugfixes.  Several bugfixes have been implemented --  see the ChangeLog for
+   details.
+
+Database Update:
+   This version of Rivendell uses database schema version 170, and will
+   automatically upgrade any earlier versions.  To see the current schema
+   version prior to upgrade, see RDAdmin->SystemInfo.
+
+   As always, be sure to run RDAdmin immediately after upgrading to allow 
+   any necessary changes to the database schema to be applied.
+-------------------------------------------------------------------------------
+v1.1.1 -- 11/11/2008
+
+This is a maintenance release of Rivendell.  The following issues have been
+corrected:
+
+   Fixed problems in RDLogManager with saving clocks and events with names
+   longer than 58 characters.
+
+   Removed vestigal 'Overlap' transition type in RDAdmin.
+
+   Corrected a problem in RDAdmin where certain services could not be selected
+   for inclusion in a report.
+
+   Added support for the '^' metacharacter in import paths in
+   RDAdmin->ManageServices to allow for uppercasing of date values [see the
+   date(1) man page for usage].
+
+   Corrected log machine behavior so that a hard start time event occuring 
+   during a previously deferred hard start event will cancel the deferred 
+   event.
+
+   Added logging for GPIO state transitions in the ripcd(8) log.
+
+Database Update:
+   This version of Rivendell uses database schema version 162, and will
+   automatically upgrade any earlier versions.  To see the current schema
+   version prior to upgrade, see RDAdmin->SystemInfo.
+
+   As always, be sure to run RDAdmin immediately after upgrading to allow 
+   any necessary changes to the database schema to be applied.
+-------------------------------------------------------------------------------
+v1.1.0 -- 10/23/2008
+
+Changes:
+   Custom Encoders.  It's now possible to configure Rivendell on a
+   host-by-host basis to use any command-line audio encoder (e.g. FAAC, 
+   FFmpeg) to drive exports, uploads and podcasts.  Information on setting it
+   up can be found in 'ENCODERS.txt'.
+
+   GPIO Enhancements.  The syntax of the 'GPI Set' [GI], 'GPO Set' [GO]
+   and 'GPI Enable' [GE] RMLs has been extended and the underlying system
+   modified to allow operation of all three commands with both GPI and GPO
+   devices.  The old syntax is now deprecated, but still supported for
+   backwards compatibiity.  Information on the new syntax can be found in
+   'rml.sxw'.
+
+   New Record RMLs.  Two new RMLs, 'Start Record Deck' [RS] and 'Stop Record
+   Deck' [RR] have been added, allowing any RDCatch record deck to be
+   controlled via RML.  Information on the new RMLs can be found in 'rml.sxw'.
+
+   RDLogEdit Runtime Counters.  Time counters have been added in the Edit Log
+   screen in RDLogEdit that show the predicted running time of log events from
+   the currently selected event to the next STOP and the end of the log, while
+   highlighting multiple events will display the runtime of the selected
+   events.
+
+   Metadata Import Enhancements.  Support has been added for importing
+   metadata from files generated by the BE AudioVault system (chunk type
+   'av10').
+
+
+Database Update:
+   This version of Rivendell uses database schema version 162, and will
+   automatically upgrade any earlier versions.  To see the current schema
+   version prior to upgrade, see RDAdmin->SystemInfo.
+
+   As always, be sure to run RDAdmin immediately after upgrading to allow 
+   any necessary changes to the database schema to be applied.
+-------------------------------------------------------------------------------
+v1.0.1 -- 08/15/2008
+
+Changes:
+   Incremented the version number to 1.0.1.
+
+Database Update:
+   This version of Rivendell uses database schema version 159, and will
+   automatically upgrade any earlier versions.  To see the current schema
+   version prior to upgrade, see RDAdmin->SystemInfo.
+
+   As always, be sure to run RDAdmin immediately after upgrading to allow 
+   any necessary changes to the database schema to be applied.
+-------------------------------------------------------------------------------
+v1.0.0rc6 -- 08/19/2008
+
+Changes:
+   Fixed a problem where ripped cuts would show an incorrect length if
+   Autotrim was enabled.
+
+   Fixed a problem with saving the 'Editor Command' field in 
+   RDAdmin->ManageHosts.
+
+   Brought the 'build slack' target for making a Slackware package up to date.
+
+   Fixed a minor build problem when building without JACK support.
+
+Database Update:
+   This version of Rivendell uses database schema version 159, and will
+   automatically upgrade any earlier versions.  To see the current schema
+   version prior to upgrade, see RDAdmin->SystemInfo.
+
+   As always, be sure to run RDAdmin immediately after upgrading to allow 
+   any necessary changes to the database schema to be applied.
+-------------------------------------------------------------------------------
+v1.0.0rc5 -- 08/08/2008
+
+Changes:
+   Fixed broken compile on gcc-4.3.x.
+
+   Removed limitations on using various 'special' (e.g. quotation and
+   apostrophe) characters in database fields.
+
+   Fixed problems with importing files with UTF-8-encoded names.
+
+Database Update:
+   This version of Rivendell uses database schema version 159, and will
+   automatically upgrade any earlier versions.  To see the current schema
+   version prior to upgrade, see RDAdmin->SystemInfo.
+
+   As always, be sure to run RDAdmin immediately after upgrading to allow 
+   any necessary changes to the database schema to be applied.
+-------------------------------------------------------------------------------
+v1.0.0rc4 -- 07/23/2008
+
+Changes:
+   Fixed a bug that caused audio imports to be assigned incorrect Start and
+   End dates.
+
+Database Update:
+   This version of Rivendell uses database schema version 159, and will
+   automatically upgrade any earlier versions.  To see the current schema
+   version prior to upgrade, see RDAdmin->SystemInfo.
+
+   As always, be sure to run RDAdmin immediately after upgrading to allow 
+   any necessary changes to the database schema to be applied.
+-------------------------------------------------------------------------------
+v1.0.0rc3 -- 07/22/2008
+
+Changes:
+   Rivendell Import Filter.  An import filter for importing carts from
+   another Rivendell system has been added.  See the 'rivendell_filter.TXT'
+   file for usage information.
+
+   Bugfixes.  See the ChangeLog for details.
+
+Database Update:
+   This version of Rivendell uses database schema version 159, and will
+   automatically upgrade any earlier versions.  To see the current schema
+   version prior to upgrade, see RDAdmin->SystemInfo.
+
+   As always, be sure to run RDAdmin immediately after upgrading to allow 
+   any necessary changes to the database schema to be applied.
+-------------------------------------------------------------------------------
+v1.0.0rc2 -- 07/07/2008
+
+Changes:
+   AMB-OS AMR-100 Receiver Support.  Support has been added for importing
+   the 'Native MP2' format files generated by the Westport Communications
+   AMR-100 satellite receiver used by the AMB-OS system.
+
+   RDDbCheck Enhancements.  Added a check for orphaned database tables to
+   RDDbCheck.
+
+   Timescaling Fixes.  A bug has been fixed that affected the precision of
+   timescaling parameters when applied to long-form programs.
+
+   Temp File Cleanup.  A bug has been fixed that was causing temporary files
+   to be left behind after manually posting audio to a podcast feed.
+
+Database Update:
+   This version of Rivendell uses database schema version 159, and will
+   automatically upgrade any earlier versions.  To see the current schema
+   version prior to upgrade, see RDAdmin->SystemInfo.
+
+   As always, be sure to run RDAdmin immediately after upgrading to allow 
+   any necessary changes to the database schema to be applied.
+-------------------------------------------------------------------------------
+v1.0.0rc1 -- 04/24/2008
+
+Changes:
+   Skinnable Modules.  It's now possible to specify a 1024x738 pixel 
+   'Background Image' for RDAirPlay and RDPanel in RDAdmin->ManageHosts.
+
+   Bugfixes.  See the ChangeLog for details.
+-------------------------------------------------------------------------------
+v1.0.0rc0 -- 04/10/2008
+
+Changes:
+   New Switcher Device.  Support has been added for the 'Quartz' line
+   of video routing switchers made by Evertz.  See the relevant
+   section in 'docs/SWITCHERS.txt' for details.
+
+   Logging Changes.  A [Logs] section has been added to rd.conf(5) for
+   configuring event logging.  Logging can now be done directly to
+   files (as before) or through the syslog facility.  See the comments
+   in 'conf/rd.conf-sample' for details on setting this up.
+
+   Overlap Transition Retired.  The ability to schedule 'Overlap' 
+   transitions in program logs has been removed.  The equivalent 
+   functionality can still be achieved by scheduling a 'Segue'
+   transition with the 'No Fade at Event End' attribute enabled.  Any
+   existing overlap transitions will be automatically converted when
+   the database schema update is applied.
+
+   Random Cut Rotation Retired.  The ability to schedule cuts to rotate
+   'randomly' within a cart has been removed, with all cut rotation now
+   using the original 'sequential' algorithm.
+
+   Bugfixes.  See the ChangeLog for details.
+
+Database Update:
+   This version of Rivendell uses database schema version 158, and will
+   automatically upgrade any earlier versions.  To see the current schema
+   version prior to upgrade, see RDAdmin->SystemInfo.
+
+   As always, be sure to run RDAdmin immediately after upgrading to allow 
+   any necessary changes to the database schema to be applied.
+-------------------------------------------------------------------------------
+v0.9.84 -- 01/03/2008
+
+Changes:
+   Podcasting Subsystem.  A major new subsystem has been added that permits
+   automated generation and posting of audio podcasts from RDCatch, as well as
+   a new RDCastManager module for manual content posting and management of
+   existing podcast episodes.  RDCastManager is available in both Desktop and
+   online web-based environments.
+
+   Axia LiveWire Support.  Full switcher support for LiveWire node devices has
+   been added.  See the relevant section in 'SWITCHERS.txt' for details.
+
+   Backup Supervisor Support.  It is now possible to configure the Logitek
+   vGuest driver to automatically fail over to a backup Supervisor instance in
+   the event of failure of the primary Supervisor.
+
+   Cart Auditioning.  It is now possible to audition audio in the cart picker
+   dialog before placement of the cart into a log.
+
+   Audio Editor Integration.  It is now possible to configure an external
+   audio editor to be send audio directly from the cart picker dialog.
+
+   Asynchronous Library Searches.  Added the ability to search the Library
+   asynchronously to allow efficient use with very large libraries.
+
+   BugFixes.  A major emphasis in this version of Rivendell has been in
+   finding and correcting known bugs.  See the ChangeLog for details.
+
+Database Update:
+   This version of Rivendell uses database schema version 155, and will
+   automatically upgrade any earlier versions.  To see the current schema
+   version prior to upgrade, see RDAdmin->SystemInfo.
+
+   As always, be sure to run RDAdmin immediately after upgrading to allow 
+   any necessary changes to the database schema to be applied.
+-------------------------------------------------------------------------------
+v0.9.82 -- 09/17/2007
+
+Changes:
+   OVERLAP Transition.  A new transition type, called 'OVERLAP' has been
+   added.  Operation is similar to that of a SEGUE, except that audio from
+   the finishing event is not faded out, but will play at full volumne to the
+   end of the event.
+
+   Scheduler Integration Enhancements.  A number of additions have been 
+   made to allow for greater control and integration between Rivendell and
+   third-party scheduling tools.  These include:
+
+     Music Log Reconciliation.  Additional data fields have been added to the
+     Music Log parser to allow for proper Electronic Log Reconciliation (ELR)
+     to be configured for Music as well as Traffic logs.
+
+     It's now possible to schedule voice tracks from imported Traffic logs by
+     means of the 'Insert Voice Track' string setting in
+     RDAdmin->ManageServices.
+
+     It's now possible to insert a Log Note from imported Music logs by means
+     of the 'Note Cart String' setting in RDAdmin->ManageServices.
+
+  RDImport Options.  A new '--title-from-cartchunk-cutid' switch has been
+  added to RDImport to allow title data to be extracted from CartChunk CutID
+  field of imported files.
+
+  Dependency Changes.  As of this release, the LibRadio and LibRHpi packages
+  are supplied 'built-in' as part of the core Rivendell distribution.  Thus,
+  it is NO LONGER NECESSARY to install these packages separately.  As part of
+  this process, a new utility called 'RDHPIInfo' (formerly the 'RHPIInfo
+  utility in LibRadio) has been added.
+
+  Bug Fixes.  A major emphasis of this release has been to fix as many known
+  bugs as possible.  See the ChangeLog for details.
+
+Database Update:
+   This version of Rivendell uses database schema version 141, and will
+   automatically upgrade any earlier versions.  To see the current schema
+   version prior to upgrade, see RDAdmin->SystemInfo.
+
+   As always, be sure to run RDAdmin immediately after upgrading to allow 
+   any necessary changes to the database schema to be applied.
+
+-------------------------------------------------------------------------------
+v0.9.81 -- 07/13/2007
+
+Changes:
+   Automatic Dropbox Mode.  A new dialog, 'RDAdmin->ManageHosts->Dropboxes'
+   has been added that allows multiple dropbox import services to be easily
+   configured and modified.
+
+   Integrated Music Scheduler.  It is now possible to define music categories
+   and schedule music playouts with RDLogManager.
+
+   RDPanel Module.  A new 'RDPanel' module has been added that consists of a
+   'full screen' version of the SoundPanel widget found in RDAirPlay.
+   Configuration is done in RDAdmin->ManageHosts->RDPanel, and is completely
+   independent of the configuration of the SoundPanel in RDAirPlay.
+
+   SoundPanel Changes.  Several changes in the operation of the SoundPanels
+   (both in RDAirPlay and RDPanel) have been made, including:
+
+     1) Improved Panel Navigation.  Instead of traversing the set of available
+        panels linearly by means of left- and right-arrow buttons, the desired
+        panel can now be selected directly by means of a drop-down menu.
+
+     2) Nameable Panels.  It's now possible to give each panel a user-defined
+        name.
+
+     3) Hook Mode.  Playouts can be set to play either the full audio content
+        or just the designated hook material on a playout-by-playout basis.
+
+     4) Customizable Default Labels.  Default button labels can be now defined
+        by means of wildcards in the 'Label Template' control in
+        RDAdmin->ManageHosts->RDAirPlay or RDAdmin->ManageHosts->RDPanel.
+
+   Many bugfixes.  See the ChangeLog for details.
+
+Library Versions:
+   This version requires that, at a minimum, libradio-0.98.0 and
+   librhpi-0.94.8 be installed.  If installing from RPM, the version of
+   the currently installed libraries can be determined by doing:
+
+      rpm -q libradio
+      rpm -q librhpi
+
+Database Update:
+   This version of Rivendell uses database schema version 139, and will
+   automatically upgrade any earlier versions.  To see the current schema
+   version prior to upgrade, see RDAdmin->SystemInfo.
+
+   As always, be sure to run RDAdmin immediately after upgrading to allow 
+   any necessary changes to the database schema to be applied.
+-------------------------------------------------------------------------------
+v0.9.80 -- 03/01/2007
+
+Changes:
+   SAS Router Support.  The SAS USI driver has been enhanced so that 
+   channel names are now automatically updated from the USI server whenever
+   the Rivendell daemons are started.
+
+   RDImport Improvements.  A 'metadata-pattern=' switch has been added to
+   RDImport that allows metadata to be read from fields within the filename of
+   imported files.  Do 'rdimport --help' for details.
+
+   New Metadata Format.  RDImport and RDLibrary will now import metadata from
+   WAV files from Scott Studios systems.
+
+   RDCatch Error Alarms.  RDCatch can now be configured to generate alarms
+   (e.g. via e-mail or GPIO) whenever an event encounters an error.  See
+   RDAdmin->ManageHosts->RDCatch.
+
+   RDAirPlay Log Autoloading.  RDAirPlay can now be configured to
+   automatically load and run specified logs at startup time.  It can also 
+   be set to automatically load and resume execution of whatever log was 
+   playing at the time of an unexpected system shutdown (e.g. due to power 
+   failure).  See RDAdmin->ManageHosts->RDAirPlay.
+
+   Various Bugfixes.  See the ChangeLog for details.
+
+Database Update:
+   This version of Rivendell uses database schema version 130, and will
+   automatically upgrade any earlier versions.  To see the current schema
+   version prior to upgrade, see RDAdmin->SystemInfo.
+
+   As always, be sure to run RDAdmin immediately after
+   upgrading to allow any necessary changes to the database schema to
+   be applied.
+-------------------------------------------------------------------------------
+v0.9.79 -- 12/05/2006
+
+Changes:
+   Pausing SoundPanel Buttons -- It is now possible to configure
+   RDAirPlay so that touching a playing SoundPanel button causes the
+   playout to pause rather than stop.  This is enabled by checking the
+   'Enable Button Pausing' checkbox in
+   RDAdmin->ManageHosts->RDAirPlay.
+
+   Bugfixes -- Fixed a database schema problem that was causing Pre-
+   and Post-Import lists in RDLogManager to appear empty when editing
+   events.
+
+See the ChangeLog for further details.
+
+Library Versions:
+   This version requires that, at a minimum, libradio-0.97.4 and
+   librhpi-0.94.7 be installed.  If installing from RPM, the version of
+   the currently installed libraries can be determined by doing:
+
+      rpm -q libradio
+      rpm -q librhpi
+
+Database Update:
+   This version of Rivendell uses database schema version 128, and will
+   automatically upgrade any earlier versions.  To see the current schema
+   version prior to upgrade, see RDAdmin->SystemInfo.
+
+   As always, be sure to run RDAdmin immediately after
+   upgrading to allow any necessary changes to the database schema to
+   be applied.
+
+-------------------------------------------------------------------------------
+v0.9.77 -- 12/01/2006
+
+This is a bugfix version of Rivendell.  Issues addressed include the
+following:
+   Broken PLAY Transitions -- Fixes random hangs and log stopdowns
+   between events with PLAY transition type.
+
+   Audio Importation Issues -- Fixes various issues with autotrimming
+   and level normalization.
+
+   RDLogManager Timed-Start Attributes -- Fixes a problem where an
+   event would fail receive a Hard Time 'Start Immediately' attribute
+   if the Pre-Import Carts list was empty.
+
+See the ChangeLog for further details.
+
+Library Versions:
+   This version requires that, at a minimum, libradio-0.97.4 and
+   librhpi-0.94.7 be installed.  If installing from RPM, the version of
+   the currently installed libraries can be determined by doing:
+
+      rpm -q libradio
+      rpm -q librhpi
+
+Database Update:
+   This version of Rivendell uses database schema version 126, and will
+   automatically upgrade any earlier versions.  To see the current schema
+   version prior to upgrade, see RDAdmin->SystemInfo.
+
+   As always, be sure to run RDAdmin immediately after
+   upgrading to allow any necessary changes to the database schema to
+   be applied.
+
+-------------------------------------------------------------------------------
+v0.9.76 -- 11/27/2006
+
+Changes:
+   New/Extended RMLs -- A new 'Toggle On Air Flag' [TA] RML has been
+   added that toggles the 'On Air Mode' of RDAirPlay.  A new argument
+   added to the 'Start Next' [PN] RML allows log meta-events to be
+   automatically skipped (useful primarily when integrating with mixer
+   surfaces in Manual or LiveAssist modes).
+
+   Log Refreshing -- It is now possible to 'refresh' a log while
+   playing out, thus preserving the view of what has already been
+   played in the Full Log widget while still loading updated log
+   elements.  Such refreshing can be done either manually or
+   configured on either a log-by-log or service-by-service basis to 
+   happen automatically whenever log updates are saved to the database.
+
+   New AsPlayed Reports -- A 'Technical Report' has been added that
+   captures extended playout information from RDAirPlay (such as the 
+   cause of an event start).  A 'SoundExchange Statutory License
+   Report' has also been added that can be used to generate data in a
+   format suitable for direct submission of music playout data to
+   SoundExchange.
+
+   Printable Reports -- It's now possible to generate ASCII-formatted
+   and printable reports about virtually every aspect of Rivendell
+   operation, including Cart/Cut lists, Logs, RDCatch events and
+   more, by touching the 'Reports' button in the respective Rivendell
+   modules.  The choice of external viewer/editor used can be set by
+   means of the VISUAL environmental variable (default is 'vi' on
+   Linux, 'Notepad' on Win32).
+
+   Log Data Importer Changes -- The parser parameters for 'Length' in
+   RDADmin->ManageServices has been split into sections to allow
+   specification by hours, minutes and seconds as well as the previously
+   supported plain seconds.
+
+   Audio Auditioning -- It's now possible to audition audio directly
+   from the Edit Log dialog in RDLogEdit and the Edit Event dialog in
+   RDLogManager.  No attempt is made evaluate rotation logic when
+   auditioning -- merely the first valid audio found in the selected 
+   cart is played.
+
+   Cart Validity Indication (EXPERIMENTAL) -- The color-coding of
+   Carts and Cuts in RDLibrary has been altered so as to show the
+   event's 'playability' *at the instant the event is viewed*.  The
+   yellow 'conditional' indication has been retired.
+
+   Many Bugfixes -- See the ChangeLog for details.
+
+Library Versions:
+   This version requires that, at a minimum, libradio-0.97.4 and
+   librhpi-0.94.7 be installed.  If installing from RPM, the version of
+   the currently installed libraries can be determined by doing:
+
+      rpm -q libradio
+      rpm -q librhpi
+
+Database Update:
+   This version of Rivendell uses database schema version 126, and will
+   automatically upgrade any earlier versions.  To see the current schema
+   version prior to upgrade, see RDAdmin->SystemInfo.
+
+   As always, be sure to run RDAdmin immediately after
+   upgrading to allow any necessary changes to the database schema to
+   be applied.
+
+-------------------------------------------------------------------------------
+v0.9.74 -- 09/18/2006
+
+This is a bugfix version of Rivendell.  Issues addressed include the
+following:
+   Security Vulnerability -- Allowed users to execute commands with
+   the Run Shell Command macro with permissions of the user running
+   the ripcd(8) daemon (normally 'root').
+
+   Timescaling Playouts -- Fixed a bug that was causing timescaled
+   events to terminate prematurely under certain circumstances.
+
+   Log Error Checking -- Fixed issues that were preventing changes in
+   a cart's status in RDLibrary from being properly reflected in an
+   already-loaded RDAirPlay log.
+
+   JACK/ALSA Playout Optimization -- Increased the size of the audio
+   ringbuffer for JACK and ALSA drivers.
+
+See the ChangeLog for further details.
+
+Library Versions:
+   This version requires that, at a minimum, libradio-0.97.2 and
+   librhpi-0.94.7 be installed.  If installing from RPM, the version of
+   the currently installed libraries can be determined by doing:
+
+      rpm -q libradio
+      rpm -q librhpi
+
+Database Update:
+   This version of Rivendell uses database schema version 120, and will
+   automatically upgrade any earlier versions.  To see the current schema
+   version prior to upgrade, see RDAdmin->SystemInfo.
+
+   As always, be sure to run RDAdmin immediately after
+   upgrading to allow any necessary changes to the database schema to
+   be applied.
+-------------------------------------------------------------------------------
+v0.9.73 -- 09/11/2006
+
+Changes:
+   Group Colors -- It is now possible to assign a color to each cart
+   group, allowing the group to be easily discerned within library
+   lists and logs.
+
+   RDAirPlay User Interface Tweaks -- The Estimated and Scheduled
+   start time columns in the Full Log widget have been swapped.
+
+   RDLogManager -- Embedded breaks from the music log are now
+   associated with the start time of the following music event, rather
+   than the preceding event.
+
+   Many Bugfixes, especially pertaining to voicetracking and correct
+   log playout.  See the ChangeLog for details.
+
+AudioScience Driver:
+   Due to stability issues with the 3.xx ASI driver versions, it is
+   recommended that v 2.96 or earlier ASI drivers be used with this
+   version of Rivendell.
+
+Library Versions:
+   This version requires that, at a minimum, libradio-0.97.2 and
+   librhpi-0.94.7 be installed.  If installing from RPM, the version of
+   the currently installed libraries can be determined by doing:
+
+      rpm -q libradio
+      rpm -q librhpi
+
+Database Update:
+   As always, be sure to run RDAdmin immediately after
+   upgrading to allow any necessary changes to the database schema to
+   be applied.
+
+-------------------------------------------------------------------------------
+v0.9.71 -- 08/14/2006
+
+Changes:
+   Copying Carts from SoundPanel in RDAirPlay.  It's now possible to
+   copy carts from the SoundPanel button in RDAirPlay when touching the
+   COPY button.
+
+   VoiceTracker Rubberbanding.  Audio fadeup/fadedown points and
+   levels can now be set independently of the segue overlap in the
+   Voice Tracker dialog by moving the 'rubberbands' in the waveform
+   windows.
+
+   Bugfixes.  See the ChangeLog for details.
+
+Library Versions:
+   This version requires that, at a minimum, libradio-0.97.2 and
+   librhpi-0.94.7 be installed.  If installing from RPM, the version of
+   the currently installed libraries can be determined by doing:
+
+      rpm -q libradio
+      rpm -q librhpi
+
+Database Update:
+   As always, be sure to run RDAdmin immediately after
+   upgrading to allow any necessary changes to the database schema to
+   be applied.
+
+-------------------------------------------------------------------------------
+v0.9.70 -- 08/03/2006
+
+Changes:
+   PAM Authentication Module.  Allows the Rivendell user/group
+   assignment to be dynamically managed by PAM-based login systems.
+
+   Play-While-Recording/Play-While-Importing Capability.  It is now
+   possible to update cut audio content even while the selfsame cut is
+   playing out in RDAirPlay.  (This capability also requires that
+   the libradio and librhpi packages be upgraded to the indicated
+   versions in order to function properly).
+
+   BugFixes, especially concerning voicetracking, RDLogManager log
+   generation and automated downloads in RDCatch.  See the ChangeLog
+   for details.
+
+Library Versions:
+   This version requires that, at a minimum, libradio-0.97.2 and
+   librhpi-0.94.7 be installed.  If installing from RPM, the version of
+   the currently installed libraries can be determined by doing:
+
+      rpm -q libradio
+      rpm -q librhpi
+
+Database Update:
+   As always, be sure to run RDAdmin immediately after
+   upgrading to allow any necessary changes to the database schema to
+   be applied.
+
+-------------------------------------------------------------------------------
+v0.9.69 -- 07/20/2006
+
+Changes:
+   Voicetracking.  A major new feature in this version, voicetracking
+   gives operators the ability to insert dynamic, "one-off" audio content to
+   individual logs as well as the ability to individually customize each segue
+   transition of a log.  Carts for voicetracked content are automatically
+   created and deleted "on-the-fly" by the system, with no need for individual
+   cart management in the Library.
+
+   RDLogManager Changes.  The sequence for generating logs in RDLogManager has
+   been completely overhauled, making it now possible to generate a log and
+   apply voice tracks even before Traffic import data are available (so-called 
+   "incremental log linking").  Several features have also been added to
+   support operation with music-intensive formats, such as the ability to
+   schedule embedded voicetracks and spots sets from external music scheduling
+   systems (currently only tested with RCS Selector).
+
+   RDDBCheck.  A utility for checking consistency of the Rivendell database.
+   For information, do (as root):
+
+       rddbcheck --help
+
+   Many, Many Bugfixes.  See the ChangeLog for details.
+
+Library Versions:
+   This version requires that, at a minimum, libradio-0.97.1 and
+   librhpi-0.94.6 be installed.  If installing from RPM, the version of
+   the currently installed libraries can be determined by doing:
+
+      rpm -q libradio
+      rpm -q librhpi
+
+Database Update:
+   As always, be sure to run RDAdmin immediately after
+   upgrading to allow any necessary changes to the database schema to
+   be applied.
+
+-------------------------------------------------------------------------------
+v0.9.68 -- 03/20/2006
+
+Changes:
+   Fixed a bug that broke CHAIN-TO events.
+
+Library Versions:
+   This version requires that, at a minimum, libradio-0.97.0 and
+   librhpi-0.94.6 be installed.  If installing from RPM, the version of
+   the currently installed libraries can be determined by doing:
+
+      rpm -q libradio
+      rpm -q librhpi
+
+Database Update:
+   As always, be sure to run RDAdmin immediately after
+   upgrading to allow any necessary changes to the database schema to
+   be applied.
+
+-------------------------------------------------------------------------------
+v0.9.67 -- 03/16/2006
+
+Changes:
+   Audio Metadata Import Enhancements.  Rivendell will now recognize
+   and import a wide variety of audio metadata formats, including:
+
+      AES46-2002 (aka "CartChunk")
+      ID3v1 and ID3v2 Tags
+      TM Century "GoldWave" Extensions
+      TM Century "GoldDrive" Format
+
+   RDImport Enhancements.  RDImport has been completely rewritten from
+   scratch, with an eye to improved stability and features (including
+   'SingleCart' and 'DropBox' modes).  Do 'rdimport --help' at a
+   command prompt to get a list of the possibilities.
+
+   RDCatch Enhancements.  It's now possible to configure AutoTrim and
+   Normalization of Download Events, as well as Normalization of
+   Record Events.
+
+   New Report Type.  An 'ASCAP/BMI Electronic Music Report' report
+   format has been added.  This uses the so-called "Paris" format to
+   generate EDI records that can be submitted directly to ASCAP/BMI
+   for satisfaction of a station's music reporting requirements.  New
+   data fields (including Composer, Publisher and Usage Type) have
+   also been added to the library to accomodate this functionality.
+
+   Many BugFixes.  See the ChangeLog for details.
+
+-------------------------------------------------------------------------------
+v0.9.66 -- 02/15/2006
+
+Changes:
+   CD Ripper Enhancements.  Major enhancements have been made to the
+   CD ripper functionality in the RDLibrary module, including:
+
+      CD-TEXT Support. The rippers now use CD-TEXT data in
+      preference to the FreeDB.  If no CD-TEXT data is found on a
+      disk, then the FreeDB is searched as before.
+
+      International Standard Recording Code (ISRC) Support.  If
+      found, the rippers will now record the ISRC string from each
+      track.  These strings can be viewed and/or edited in the
+      'CutInfo/Record' dialog box.
+
+      Automatic Cart/Cut Generation.  In the Full Disk ripper, it's
+      now possible to rip an entire CD into the system with just a few
+      mouse clicks.  This can be done on a track-by-track basis by
+      clicking the 'Add New Cart' button in the Select Cut dialog, or
+      for all the tracks at once by clicking the 'Set All New Carts'
+      button.
+
+   New Build Targets.  It's now possible to build Rivendell as a 
+   Slackware package by doing 'make slack' (requires the Slackware
+   packaging tools) or as a SLAX module by doing 'make slax' (requires
+   the Linux-live scripts and the Slackware packaging tools).
+
+   RDCatch Enhancements.  The previous hard-coded system-wide limit of
+   16 RDCatch decks has been removed, making it possible to configure
+   and use an arbitrarily large number of decks.
+
+   Miscellaneous Bugfixes.  See the ChangeLog.
+
+Library Versions:
+   This version requires that, at a minimum, libradio-0.96.1 and
+   librhpi-0.94.5 be installed.  If installing from RPM, the version of
+   the currently installed libraries can be determined by doing:
+
+      rpm -q libradio
+      rpm -q librhpi
+
+Database Update:
+   As always, be sure to run RDAdmin immediately after
+   upgrading to allow any necessary changes to the database schema to
+   be applied.
+
+ 
+-------------------------------------------------------------------------------
+v0.9.65 -- 01/25/2006
+
+This is a bugfix release of Rivendell.  Among the issues corrected
+are:
+
+   RDLogManager issues, including a problem with autofill events when
+   the associated traffic or music import source had no matching
+   events.
+
+   Problems with Services whose name contained one or more spaces.
+
+   Full details are in the ChangeLog.
+
+Library Versions:
+   This version requires that, at a minimum, libradio-0.95.1 and
+   librhpi-0.94.4 be installed.  If installing from RPM, the version of
+   the currently installed libraries can be determined by doing:
+
+      rpm -q libradio
+      rpm -q librhpi
+
+Database Update:
+   As always, be sure to run RDAdmin immediately after
+   upgrading to allow any necessary changes to the database schema to
+   be applied.
+
+-------------------------------------------------------------------------------
+v0.9.64 -- 01/04/2006
+
+Changes:
+   Waveform Visualization Optimization.  Major work has been done on
+   decreasing the time required to open a cart in RDLibrary's Marker
+   Editor, for both PCM16 and MPEG formatted audio.
+
+   Bugfixes.  See the ChangeLog.
+
+Library Versions:
+   This version requires that, at a minimum, libradio-0.95.0 and
+   librhpi-0.94.4 be installed.  If installing from RPM, the version of
+   the currently installed libraries can be determined by doing:
+
+      rpm -q libradio
+      rpm -q librhpi
+
+Database Update:
+   As always, be sure to run RDAdmin immediately after
+   upgrading to allow any necessary changes to the database schema to
+   be applied.
+
+-------------------------------------------------------------------------------
+v0.9.63 -- 12/16/2005
+
+Changes:
+   Version and Help Switches.  Every Rivendell module can now be
+   invoked with a '--version' switch to display the current version,
+   or a '--help' switch to display a short usage summary.
+
+   Scriptibility Enhancements.  Additional command switches have been
+   added to RMLSend to enable it (and hence, other Rivendell modules)
+   to be scripted using the full set of Linux CLI utilities (cron(1), 
+   cat(1), etc).  Do 'rmlsend --help' for a full list of options.
+
+   Startup Logs in RDAirPlay.  It's now possible to specify the
+   initial logs to load upon startup of RDAirPlay on the command line.
+   Do 'rdairplay --help' for the options.
+
+   New Switcher Devices.  Support has been added for the Broadcast
+   Tools SS 4.2 audio switcher and StarGuide III satellite receiver.
+   See the file 'SWITCHERS.txt' for details.
+
+   Bugfixes.  See the ChangeLog for details.
+
+Library Versions:
+   This version requires that, at a minimum, libradio-0.94.0 and
+   librhpi-0.94.4 be installed.  If installing from RPM, the version of
+   the currently installed libraries can be determined by doing:
+
+      rpm -q libradio
+      rpm -q librhpi
+
+Database Update:
+   As always, be sure to run RDAdmin immediately after
+   upgrading to allow any necessary changes to the database schema to
+   be applied.
+
+-------------------------------------------------------------------------------
+v0.9.62 -- 11/29/2005
+
+This is a bugfix release of Rivendell.  Among the issues corrected
+are:
+
+   A PATH problem in the init script that was causing RDCatch Upload
+   and Download events to fail.
+
+   Problems with RDAirPlay starting a Hard Timed event reliably under
+   certain situations.
+
+   See the ChangeLog for a full list.
+
+Library Versions:
+   This version requires that, at a minimum, libradio-0.94.0 and
+   librhpi-0.94.4 be installed.  If installing from RPM, the version of
+   the currently installed libraries can be determined by doing:
+
+      rpm -q libradio
+      rpm -q librhpi
+
+Database Update:
+   As always, be sure to run RDAdmin immediately after
+   upgrading to allow any necessary changes to the database schema to
+   be applied.
+
+-------------------------------------------------------------------------------
+v0.9.61 -- 11/22/2005
+
+Changes:
+   RDLibrary Useability Tweaks.  When new carts are created in
+   RDLibrary, they are now considered to officially exist upon clicking
+   the 'OK' button in the Add Cart dialog, in contradistinction to the
+   old policy where they didn't 'stick' until 'OK' was clicked in the
+   Edit Cart dialog.  The old way tended to be confusing for many
+   opertors, as clicking 'Cancel' in the Edit Cart dialog would result
+   in any recorded audio being deleted.  Also then creating a new
+   cart, RDLibrary will now create a single empty cut within the cart
+   by default.
+
+   Various Bugfixes.  See the ChangeLog for details.
+
+Library Versions:
+   This version requires that, at a minimum, libradio-0.94.0 and
+   librhpi-0.94.4 be installed.  If installing from RPM, the version of
+   the currently installed libraries can be determined by doing:
+
+      rpm -q libradio
+      rpm -q librhpi
+
+Database Update:
+   As always, be sure to run RDAdmin immediately after
+   upgrading to allow any necessary changes to the database schema to
+   be applied.
+
+-------------------------------------------------------------------------------
+v0.9.60 -- 11/15/2005
+
+Changes:
+   ELR/Report Data Handling.  ELR/Report data is now managed on a
+   Service-wide basis, rather than being associated with individual
+   logs.  This is reflected in a revamped interface in RDLogManager,
+   where 'Generate Reports' and 'Delete Report Data' buttons have been
+   merged into a single 'Manager Report Data' button.
+
+   SoundPanel Configuration Permissioning.  A new user right,
+   'Configure System Panels', can be used to control which users are
+   allowed to configure System (type 'S') Sound Panel buttons in
+   RDAirPlay.
+
+   Various Bugfixes.  Including bugs affecting the ability to
+   generate a new Rivendell database and account lockouts when used
+   with certain version of mySQL.
+
+Library Versions:
+   This version requires that, at a minimum, libradio-0.94.0 and
+   librhpi-0.94.4 be installed.  If installing from RPM, the version of
+   the currently installed libraries can be determined by doing:
+
+      rpm -q libradio
+      rpm -q librhpi
+
+Database Update:
+   As always, be sure to run RDAdmin immediately after
+   upgrading to allow any necessary changes to the database schema to
+   be applied.
+
+-------------------------------------------------------------------------------
+v0.9.58 -- 11/04/2005
+
+This release fixes a minor bug in the KDE desktop integration code for
+the RPM packaging.  For users who do not install from RPM, there is no
+difference between this version and v0.9.57. 
+
+-------------------------------------------------------------------------------
+v0.9.57 -- 11/03/2005
+
+This is primarily a bugfix release of Rivendell.  Some minor user
+interface tweaks have also been added:
+
+Changes:
+   SuSE Desktop Integration.  When installing from RPM, items for the
+   various Rivendell modules will now be added to the Panel Menu in
+   the 'Applications' and 'System->Desktop Applet' sections.
+
+   Rivendell Icons.  A set of Rivendell icons at various resolutions
+   have been added.  They can be found in the package documentation
+   directory on an RPM installation, or in 'icons/' in the sources.
+
+   Report Data Management.  It's now possible to manage report/ELR
+   data independently of the log it originated from.  A new user
+   attribute, called 'Delete Report Data' configures the right to
+   delete Report data in the Edit User dialog.  Report data can be
+   deleted either when the parent log is deleted, or by means of a new
+   'Delete Report Data' button in RDLogManager.
+
+   Numerous Bugfixes.  Including the dilly that was causing responses
+   to Yes|No dialog boxes to be ignored.  See the ChangeLog for details.
+
+Library Versions:
+   This version requires that, at a minimum, libradio-0.94.0 and
+   librhpi-0.94.4 be installed.  If installing from RPM, the version of
+   the currently installed libraries can be determined by doing:
+
+      rpm -q libradio
+      rpm -q librhpi
+
+Database Update:
+   As always, be sure to run RDAdmin immediately after
+   upgrading to allow any necessary changes to the database schema to
+   be applied.
+
+-------------------------------------------------------------------------------
+v0.9.55 -- 10/11/2005
+
+This is a maintenance/bugfix release of Rivendell.  The following
+issues have been addressed:
+
+   RDLibrary.
+     Fixed broken marker editor.
+
+     Fixed loss of 'Day of Week' settings when setting a cut to
+     'Evergreen' (Mantis bug #85).
+
+
+   RDAirPlay.
+     Fixed corrupt Hard Time display in Full Log Widget (Mantis bug
+     #82).
+
+     Fixed failure of space bar to advance events after clicking Full
+     Log widget (Mantis bug #60).
+
+Library Versions:
+   This version requires that, at a minimum, libradio-0.94.0 and
+   librhpi-0.94.4 be installed.  If installing from RPM, the version of
+   the currently installed libraries can be determined by doing:
+
+      rpm -q libradio
+      rpm -q librhpi
+
+Database Update:
+   As always, be sure to run RDAdmin immediately after
+   upgrading to allow any necessary changes to the database schema to
+   be applied.
+
+-------------------------------------------------------------------------------
+v0.9.54 -- 10/06/2005
+
+This is primarily a bugfix release of Rivendell.  Some minor user
+interface tweaks have also been added:
+
+Changes:
+   RDLibrary Tweaks.  Evergreen cuts in the Edit Cart dialog now show
+   with a green background.
+
+   RML Behavior.  It is now possible to STOP a macro cart running a
+   'Sleep' [SP] command in RDAirPlay.
+
+   RDCatch Source Monitoring Tweaks.  It is now possible to set the
+   default state of the source monitors for record decks in RDAdmin,
+   and have the monitor's state be preserved across multiple
+   invocations of RDCatch.
+
+   RDLogManagerTweaks.  Unneeded and misleading 'Hour' fields have
+   been removed from time entry fields where appropriate.
+
+Library Versions:
+   This version requires that, at a minimum, libradio-0.94.0 and
+   librhpi-0.94.4 be installed.  If installing from RPM, the version of
+   the currently installed libraries can be determined by doing:
+
+      rpm -q libradio
+      rpm -q librhpi
+
+Database Update:
+   As always, be sure to run RDAdmin immediately after
+   upgrading to allow any necessary changes to the database schema to
+   be applied.
+
+-------------------------------------------------------------------------------
+v0.9.53 -- 09/28/2005
+
+Changes:
+   RDCatch Enhancements.  It is now possible to configure a single
+   record 'window' in RDCatch and configure multiple shorter
+   recordings within that window to be started by means of GPI
+   closures.
+
+   Asynchronous Macro Carts.  It's now possible to designate a macro
+   cart as to be executed 'Asynchronously', meaning that, when
+   executed within a log in RDAirPlay, any Sleep ['SP'] RMLs contained 
+   within the cart  will not delay subsequent log events, but *will* 
+   delay subsequent RML statements within the cart itself.  This can
+   be useful for achieving various special effects, such as starting a
+   music bed and then playing a seperately carted dry voiceover on top
+   of it.  
+
+   RDLibrary Enhancements.  RDLibrary will now give explicit warning
+   about various out-of-parameter conditions (like audio carts that
+   contain no audio).  It's now also possible to specify the 'Forced
+   Length' of a cart (for timescaling purposes) without obscuring the
+   actual average length of the cart.
+
+   Many Bugfixes.  Especially with regard to RDCatch, MPEG encoding
+   and electronic log reconciliation (ELR) functionality.  See the 
+   ChangeLog for details.
+
+Library Versions:
+   This version requires that, at a minimum, libradio-0.94.0 and
+   librhpi-0.94.4 be installed.  If installing from RPM, the version of
+   the currently installed libraries can be determined by doing:
+
+      rpm -q libradio
+      rpm -q librhpi
+
+Database Update:
+   As always, be sure to run RDAdmin immediately after
+   upgrading to allow any necessary changes to the database schema to
+   be applied.
+
+-------------------------------------------------------------------------------
+v0.9.51 -- 08/31/2005
+
+This version of Rivendell is mostly a bugfix/cleanup release.  Changes
+are noted below.
+
+Changes:
+   Rdcatch_copy(1).  This is a new importer filter that can be used to
+   copy RDCatch events from one Rivendell Host to another, both within
+   a single database and between two different Rivendell databases.
+
+   Importer Packaging Changes.  The utilities in the 'importers/'
+   subdirectory (wings_filter(1), sas_filter(1), crc-unity4k.sh(1) 
+   and rdcatch_copy(1)) now come packaged in their own seperate RPM, 
+   called 'rivendell-importers'.  This is because these utilities are
+   typically only used once, during system installation, and then
+   removed.
+
+   Usability Tweaks.  Several here and there, mostly to make the
+   various user interfaces more consistent with each other.  See the
+   ChangeLog for details.
+
+   Various bugfixes.  See the ChangeLog for details.
+
+-------------------------------------------------------------------------------
+v0.9.49 -- 08/09/2005
+
+Changes:
+   Fixed a stupid bug that broke browsing in the Cart Selector and Cut
+   Selector dialog boxes when the group selector was set to 'ALL'.
+
+   RDCatch Enhancements.  It's now possible to schedule overlapping
+   Record events with the same deck but with different GPI and 
+   destination cut parameters.  RDCatch will record to the correct 
+   cut on the basis of which GPI was received.
+
+Library Versions:
+   This version requires that, at a minimum, libradio-0.93.2 and
+   librhpi-94.1 be installed.  If installing from RPM, the version of
+   the currently installed libraries can be determined by doing:
+
+      rpm -q libradio
+      rpm -q librhpi
+
+Database Update:
+   As always, be sure to run RDAdmin immediately after
+   upgrading to allow any necessary changes to the database schema to
+   be applied.
+
+-------------------------------------------------------------------------------
+v0.9.48 -- 08/07/2005
+
+Changes:
+   Upload Events in RDCatch.  It's now possible to schedule the
+   automatic export and upload of audio files in RDCatch.  The
+   following upload protocols are supported:
+      FILE
+      FTP
+      SMB
+
+   Database Support Cleanups.  Added directives to rd.conf(5) to make
+   it possible for Rivendell to work with RDBMS back-ends other than
+   mySQL.  This feature has not been at all well tested as of yet.
+
+   Import Filter for AirForce 'Wings' System.  The filter can be used
+   to import the entire audio archive of an AirForce 'Wings' system
+   *in situ*, without requiring reencoding of audio and while
+   preserving much of the library meta-data from the original system.
+   See the 'WINGS_FILTER.txt' file in the documentation directory for
+   more information.
+
+   New Swticher Device Support.  Added support for the BroadcastTools
+   SS16.4 swticher.
+
+   MPEG Cleanups.  Many bugfixes regarding the use and handling of
+   MPEG audio.
+
+   RDLogEdit Fixes.  Fixed all known outstanding issues with
+   RDLogEdit.
+
+   Miscellaneous Bugfixes.  See the ChangeLog for details.
+
+Library Versions:
+   This version requires that, at a minimum, libradio-0.93.2 and
+   librhpi-94.1 be installed.  If installing from RPM, the version of
+   the currently installed libraries can be determined by doing:
+
+      rpm -q libradio
+      rpm -q librhpi
+
+Database Update:
+   As always, be sure to run RDAdmin immediately after
+   upgrading to allow any necessary changes to the database schema to
+   be applied.
+
+-------------------------------------------------------------------------------
+v0.9.47 -- 07/29/2005
+
+Changes:
+   Download Events in RDCatch.  It's now possible to schedule the
+   automatic download and import of audio files in RDCatch.  The
+   following download protocols are supported:
+      FILE
+      FTP
+      HTTP
+      HTTPS
+      SMB
+
+   RDAdmin Changes.  A number of features have been added to RDAdmin
+   to make configuration and management of Rivendell systems easier,
+   especially for larger sites.  These include the ability to create
+   new Host and Service entries using an already existing Host or
+   Service as a prototype, as well as the ability to remotely inspect the
+   audio configuration and capabilities of all systems on the Rivendell
+   network from a single instance of RDAdmin.  Users of the ALSA
+   driver may also want to consult the 'ALSA.txt' for instructions on
+   adding an ALSA control device definition to their '.asoundrc'
+   file.  While not strictly necessary, such a control device will
+   allow Rivendell to provide more specific audio configurtion
+   information.
+
+   Numerous bugfixes, including the infamous ripcd(8) race condition.
+   See the ChangeLog for details.
+
+New Dependencies:
+   Several new dependencies have been added in this release, for which
+   new packages may need to be installed.  They are:
+
+      lukemftp
+      samba-client
+      wget
+
+Library Versions:
+   This version requires that, at a minimum, libradio-0.93.1 and
+   librhpi-94.1 be installed.  If installing from RPM, the version of
+   the currently installed libraries can be determined by doing:
+
+      rpm -q libradio
+      rpm -q librhpi
+
+Database Update:
+   As always, be sure to run RDAdmin immediately after
+   upgrading to allow any necessary changes to the database schema to
+   be applied.
+
+-------------------------------------------------------------------------------
+v0.9.45 -- 07/18/2005
+
+Changes:
+   Full Disk Ripping.  It's now possible (by touching the 'Rip Disk'
+   button in RDLibrary's main window) to rip all of the tracks on a CD
+   to multiple Cart/Cut destinations in a single operation.  The 
+   individual track ripper accessed from RDLibrary's Edit Cart dialog 
+   remains as well.
+
+   RDLogin User List.  The list of available user names is now shown
+   in RDLogin as a pulldown list, rather than requiring the user to
+   enter the name.
+
+   Security System.  It's now impossible for the same user to be both
+   an Administrator and a regular user, and checking the 'Administer
+   System' box in RDAdmin's User Dialog will now gray out all the
+   other checkbox choices.  This was done to discourage trolling for
+   admin accounts when using RDLogin (see 'RDLogin User List' above).
+
+   Logitek Audio Engine Support.  Full Rivendell integration with
+   Logitek's Audio Engine system is now possible through use of Logitek's
+   'vGuest' control API (part of their 'Supervisor' application).  I
+   would like especially to thank John Davis from Logitek for his 
+   invaluable assistance in getting this working.
+
+   Bugfixes.  In particular, bugs affecting audio playout from
+   RDLibrary's Edit Audio window, as well as problems with saving long
+   logs.  See the ChangeLog for details.
+  
+-------------------------------------------------------------------------------
+v0.9.38 -- 07/01/2005
+
+Changes:
+   Security System Cleanups.  A lot of time in this release has gone 
+   into ensuring that the various user permission attributes are 
+   correctly and consistently enforced across all of Rivendell's modules.
+
+   Group Permissioning by User.  It is now possible to define which
+   Library Groups will be visible in RDLibrary on a user-by-user
+   basis.  This can be used to effectively 'partition' the Library
+   into multiple 'sub-libraries'.
+
+   RDAdmin Overhaul.  RDAdmin's UI has been overhauled to make it
+   stylebook-compliant (e.g. doubleclicks now work, focus problems
+   fixed, etc).  In addition, the List Groups dialog has been
+   substantially expanded and enhanced.
+
+   RDLogManager Overhaul.  Likewise, RDLogManager's UI has been
+   overhauled, with many focus issues corrected.  Additionally,
+   right-click menus have been added in the Edit Clock and Edit Grid
+   dialogs to permit an underlying Event/Clock object to be directly 
+   edited without having to reascend to the main RDLogManager window.
+
+   Electronic Log Reconciliation.  Lots of bugfixes in the ELR
+   generation routines.  Right now, this works only with the Wicks/CBSI
+   'DeltaFlex' system.
+
+   Miscellaneous Bugfixes.  A great many.  See the ChangeLog for
+   details.
+
+-------------------------------------------------------------------------------
+v0.9.34 -- 06/01/2005
+
+Changes:
+   TSX Timescaling Support.  If you have an AudioScience series 61xx
+   or 62xx card, it is now possible to have playout events in RDAirPlay be
+   automatically timescaled to the correct length using these cards'
+   'TSX Timescaling' feature, by checking the 'Enforce Length' box on
+   the respective cart label in RDLibrary.
+
+   Event and Clock Filtering.  It's now possible to filter the
+   display of Events and Clocks in RDLogManager in accordance with
+   their association with one or more Services.
+
+   Audio Passthrough.  It's now possible to configure a 'Local Audio
+   Adapter' switcher device, making it possible to control audio
+   passing from the inputs to the outputs of the soundcards using
+   standard switcher control RMLs.  See the file 'docs/SWITCHERS.txt'
+   for details.
+
+   RDCatch Record Deck Monitoring.  It's now possible configure a
+   'Monitor Port' for each Record Deck in RDCatch for realtime
+   monitoring of the source audio.
+
+   Bugfixes, especially in the direct ALSA driver.  See the ChangeLog
+   for details.
+
+-------------------------------------------------------------------------------
+v0.9.32 -- 05/10/2005
+
+Changes:
+   Direct ALSA Support.  It is now possible to use up to eight ALSA
+   sound devices directly, without the need to use JACK. See the file
+   'docs/ALSA.txt' for information on setting this up.
+
+   RDCatch Changes.  RDCatch has been extensively rewritten to support
+   the use GPI closures for controlling Record Events.  The Record
+   Event dialog has been reorganized accordingly.
+
+   Multiple Sample Rate Support.  The JACK driver will now properly
+   deal with playout of audio that has been encoded with a sampling
+   rate different from that being used in the active JACK graph.
+
+   Stream Meters Hack.  It is now possible to get usable audio meters
+   in all modules except RDAirPlay with older ASI cards that lack port
+   metering capability.  See the file 'SupportedCards' for details.
+
+   Default Transition Type.  It is now possible to specify the default
+   transition type of newly added events in RDAdmin.
+
+   New Switcher Types.  The BroadcastTools 16x2 and 12.4 switchers are
+   now supported.
+
+   Usability Tweaks.  Added many UI tweaks designed to enhance
+   usability.  See the ChangeLog for details.
+
+   Bugfixed.  As always, lots of these!  See the ChangeLog for details. 
+
+-------------------------------------------------------------------------------
+v0.9.26 -- 02/14/2005
+
+Changes:
+   RDLogManger:  Change the log generation logic to allow event
+   overscheduling.
+
+-------------------------------------------------------------------------------
+v0.9.25 -- 02/08/2005
+
+Changes:
+   RDLogManager bugfixes.  See the ChangeLog.
+
+-------------------------------------------------------------------------------
+v0.9.24 -- 02/01/2005
+
+Changes:
+   RDLogManager usability enhancements.
+
+   Various bugfixes.  See the ChangeLog.
+
+-------------------------------------------------------------------------------
+v0.9.23 -- 01/31/2005
+
+Changes:
+   Various bugfixes.  See the ChangeLog.
+
+-------------------------------------------------------------------------------
+v0.9.22 -- 01/31/2005
+
+Changes:
+   Various bugfixes.  See the ChangeLog.
+
+-------------------------------------------------------------------------------
+v0.9.21 -- 01/28/2005
+
+Changes:
+   Various bugfixes.  See the ChangeLog.
+
+-------------------------------------------------------------------------------
+v0.9.20 -- 01/27/2005
+
+Changes:   
+   Various bugfixes.  See the ChangeLog.
+
+-------------------------------------------------------------------------------
+v0.9.19 -- 01/26/2005
+
+Changes:
+   Various bugfixes.  See the ChangeLog.
+
+-------------------------------------------------------------------------------
+v0.9.18 -- 01/21/2005
+
+Changes:
+   Added support for the SAS 32KD Audio Switcher.
+
+   Added new RMLs:
+     'Console Label' [CL]
+     'Fire Salvo' [FS]
+     'Switch Take With Gain' [SG]
+     'Switch Crosspoint Gain' [SX]
+-------------------------------------------------------------------------------
+v0.9.17 -- 01/17/2005
+
+Changes:
+   Added RDImport to the RPM build for SuSE 9.2.
+
+   Overhauled the Event Editor dialog in RDAirPlay.  The new layout is
+   hopefully more intuitive as well as more stable!
+
+   Added support for the BroadcastTools ACS8.2 switcher.
+
+   Added a 'Run Shell Command' [RN] RML.
+
+   Lots of bugfixes.  See the ChangeLog.
+-------------------------------------------------------------------------------
+v0.9.16 -- 12/27/2004
+
+Changes:
+   Bugfixes for RDAirPlay and the init script.  See the ChangeLog.
+-------------------------------------------------------------------------------
+v0.9.15 -- 12/17/2004
+
+Changes:
+   Bugfixes for RDLibrary and RDAirPlay.  See the ChangeLog.
+-------------------------------------------------------------------------------
+v0.9.14 -- 12/15/2004
+
+Changes:
+   Added automated database backups -- see the 'Database Backup' [DB] RML.
+
+   Added a Windows port for RDLogEdit and RDLogManager.
+
+   Added a 'Gas Gauge' to RDLibrary to show how much free disk space
+   remains.
+
+   Added a 'SendCommand' [CC] RML, to allow remote execution of RMLs.
+
+   Added Host Variables, a feature that allows RML called to called
+   with values specific to a given host.  See
+   RDAdmin->ManageHosts->HostVariables.
+
+   Added support for BroadcastTools 8.2 and 16.1 switchers.
+
+   Added a 'Binary Serial Out' [BO] RML.
+
+   Added RDGpiMon, a utility for monitoring the current status of GPI
+   lines.
+
+   Added a 'SpaceBar Action' control to
+   RDAdmin->ManageHosts->RDAirPlay to allow the user to specify what
+   pressing the spacebar does.
+
+   Added a 'Flash Active Events' control to
+   RDAdmin->ManageHosts->RDAirPlay to specify that active SoundPanel
+   buttons should flash.
+
+   Added the ability to AutoTrim CD rips and recordings in RDLibrary.
+
+   Added the ability to specify a 'heartbeat cart' to be run
+   periodically, in RDAdmin->ManageHosts.
+
+   Added a 'Set Color Label' [LC] RML.
+
+   Implemented Service permissions enforcement.
+
+   Implemented Report Exports.  See RDAdmin->ManageReports and the
+   'reports.txt' file.
+
+   Added LiveAssist mode to RDAirPlay.
+
+   Added the ability to PAUSE active events in RDAirPlay.  Must be
+   enabled in RDAdmin->ManageHosts->RDAirPlay first.
+
+   Added the ability for RDAirPlay to send data concern the
+   currently-playing and next-to-play events to external systems via
+   TCP-IP packets.  See the 'NOW+NEXT.txt' file for details.
+
+   And, as always, swatted a huge slew of bugs.  See the ChangeLog for
+   details.
+-------------------------------------------------------------------------------
+v0.9.0 -- 08/18/2004
+
+Changes:
+   A new log generation and merge utility has been added, called
+   RDLogManager, with the ability to import schedules from most any
+   third-party traffic or music scheduling system.
+
+   More JACK tweaks -- it's now possible to configure Rivendell's init
+   script to automatically start and stop jackd(1) as required.  See
+   the 'JACK.txt' file in the 'docs/' directory for details.
+
+   Numerous bugfixes.  See the ChangeLog.
+-------------------------------------------------------------------------------
+v0.8.0 -- 06/26/2004
+
+Changes:
+   The audio driver infrastructure has been completely rewritten to
+   use dynamic output stream allocation instead of the previous
+   statically assigned stream values.
+
+   Direct ALSA support has been dropped.  In it's place, JACK support
+   has been implemented.  For more information, see 'docs/JACK.txt'.
+
+   Major stability improvements have been made on the primary
+   Rivendell on-air component, RDAirPlay.
+
+   A bushel of bugfixes throughout.  See the ChangeLog for details.
+-------------------------------------------------------------------------------
+v0.7.9 -- 02/11/2004
+
+RDCatch improvements.
+
+-------------------------------------------------------------------------------
+v0.7.8 -- 02/11/2004
+
+Test build for Sherrod Munday at SRN.
+
+-------------------------------------------------------------------------------
+v0.7.3 -- 01/28/2004
+
+Various bugfixes and UI tweaks.
+
+-------------------------------------------------------------------------------
+v0.7.1 -- 01/27/2004
+
+Major changes:
+   It's now possible to schedule a "switcher event" in RDCatch.
+
+-------------------------------------------------------------------------------
+v0.7.0 -- 01/22/2004
+
+Major changes:
+
+   Macro carts are now implemented.
+
+-------------------------------------------------------------------------------
+v0.5.0 -- 12/09/2004
+
+The initial BETA release.  Testing version only!!
+
+A complete set of basic tools now exists, as follows:
+
+RDAdmin -- System administration and configuration
+
+RDLibrary -- Production library application.
+
+RDCatch -- Netcatcher control and monitoring
+
+RDLogin -- Set the current system user
+
+RDLogEdit -- Generate and edit air logs
+
+RDAirPlay -- On-air playout application
+
+-------------------------------------------------------------------------------
+v0.1.0 -- 4/28/2002
+
+The initial "Friendship 7" release.  Contains two programs:
+
+    RDRecord -- A WAV file recorder.
+
+    RDPlay -- A WAV file player.
+
+Boths utilities support PCM16 and MPEG-1 Layer 2 format and most of
+the common meta-data types found in broadcast applications --i.e. BWF
+and CartChunk.
+
+This release has the following major goals:
+
+1) Provide a thorough shakedown of the AudioScience HPI driver.
+
+2) Test the wave file implementation (RWaveFile and friends) for
+   correctness and compatibility with existing systems in the field.
+
+3) Test the build mechanism in a variety of different distro environments. 
+
+4) Start defining a standard look-and-feel (looking for feedback on
+   this one).
+
+-------------------------------------------------------------------------------

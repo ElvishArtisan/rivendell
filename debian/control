@@ -1,0 +1,38 @@
+Source: rivendell
+Section: sound
+Priority: optional
+Maintainer: Alban Peignier <alban.peignier@free.fr>
+Build-Depends: debhelper, autoconf, automake1.9, dpatch, libtool, libjack0.80.0-dev | libjack0.100.0-dev, libqt3-mt-dev, libasound2-dev, libsamplerate0-dev, libvorbis-dev, libtag1-dev, libid3-dev, libflac-dev, libpam0g-dev, libhpi-dev
+Standards-Version: 3.6.1
+ 
+Package: rivendell
+Architecture: i386
+Depends: ${shlibs:Depends}, bc, cdda2wav, cdparanoia, flac, lame, libqt3-mt-mysql | libqt3c102-mt-mysql, libhpi, mpg321, vorbis-tools
+Recommends: jackd, logrotate
+Description: Rivendell binaries - contains a full set of functionality needed to operate a radio
+ automation system, consisting of the following components:
+ .
+ RDAdmin: a comprehensive application for the administration and configuration
+ of Rivendell.
+ .
+ RDLibrary: the production audio interface.
+ .
+ RDCatch: the automatic recorder interface.
+ .
+ RDLogin: a small utility for logging users into and out of the system.
+ .
+ RDLogEdit: a basic air log creation and editing tool.
+ .
+ RDLogManager: a utility for the automatic generation of logs, based on 
+ templates. It also supports importation of schedule information from a wide
+ variety of third-party traffic and music scheduling systems.
+ .
+ RDAirPlay: the on-air playout application.
+
+Package: librivendell
+Architecture: i386
+Depends: ${shlibs:Depends}
+Description: Rivendell library - C++ runtime library
+ Contains a full set of functionality needed to operate a radio
+ automation system, consisting of the following components.
+

@@ -1,0 +1,9 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=rdlogin
+Comment=Rivendell Login Utility
+Exec=rdlogin
+Terminal=false
+Type=Application
+Icon=/usr/share/srlabs/rdlogin.xpm
+Categories=Application;AudioVideo;

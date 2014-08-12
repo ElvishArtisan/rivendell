@@ -1,0 +1,11 @@
+               JACK_CLIENTS Table Layout for Rivendell
+
+The JACK_CLIENTS table contains data about jackd(1) clients to start
+when starting the rivendell daemons.
+
+FIELD NAME           TYPE               REMARKS
+-------------------------------------------------------------------------
+ID                   int unsigned(10)   Primary Key
+STATION_NAME         char(64)           From STATIONS.NAME
+DESCRIPTION          char(64)
+COMMAND_LINE         char(255)

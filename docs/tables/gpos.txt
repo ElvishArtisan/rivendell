@@ -1,0 +1,14 @@
+                GPOS Table Layout for Rivendell
+
+The GPOS table holds data concerning the gpo lines of each
+configured switcher device on the system.  Following is the layout 
+of a record in the GPOS table:
+
+FIELD NAME           TYPE              REMARKS
+------------------------------------------------------------------
+ID                   int(10) unsigned  Primary key, auto increment
+STATION_NAME         char(64)          From STATIONS.NAME
+MATRIX               int(10) unsigned
+NUMBER               int(11)
+MACRO_CART           int(10) unsigned
+OFF_MACRO_CART       int(10) unsigned

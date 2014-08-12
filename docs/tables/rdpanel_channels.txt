@@ -1,0 +1,32 @@
+               RDPANEL_CHANNELS Table Layout for Rivendell
+
+The RDPANEL_CHANNELS table holds configuration data for the RDPanel
+channels assignments and related information.
+
+FIELD NAME           TYPE              REMARKS
+------------------------------------------------------------------------------
+ID                     int(10) unsigned  * Primary key, Auto Increment
+STATION_NAME           char(64)          From STATIONS.NAME
+INSTANCE               int(10) unsigned  0 = Main Log Output 1 (Not Used)
+                                         1 = Main Log Output 2 (Not Used)
+                                         2 = Sound Panel Output 1
+                                         3 = Cue Output
+                                         4 = Aux Log 1 Output (Not Used)
+                                         5 = Aux Log 2 Output (Not Used)
+                                         6 = Sound Panel Output 2
+                                         7 = Sound Panel Output 3
+                                         8 = Sound Panel Output 4
+                                         9 = Sound Panel Output 5
+CARD                   int(11)
+PORT                   int(11)
+START_RML              char(255)
+STOP_RML               char(255)
+GPIO_TYPE              int unsigned      0 = Edge, 1 = Level
+START_GPI_MATRIX       int(11)
+START_GPI_LINE         int(11)
+START_GPO_MATRIX       int(11)
+START_GPO_LINE         int(11)
+STOP_GPI_MATRIX        int(11)
+STOP_GPI_LINE          int(11)
+STOP_GPO_MATRIX        int(11)
+STOP_GPO_LINE          int(11)

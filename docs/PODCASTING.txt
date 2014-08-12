@@ -1,0 +1,132 @@
+Rivendell has the ability to manage multiple RSS audio feeds, including
+capabilities for posting and expiring audio automatically as well as updating
+associated cast metadata.  
+
+
+CREATING AND POPULATING RSS FEEDS
+--------------------------------
+Setting up a new RSS feed is a matter of accomplishing the following steps:
+
+1) Create and configure the feed in RDAdmin
+
+2) Schedule the audio posts by means of one or more Upload Events in RDCatch.
+
+3) Manage the metadata in RDCastManager.
+
+We'll cover each of these steps in turn.
+
+
+1) Creating RSS Feeds
+Base parameters for each RSS feed are configured in RDAdmin->ManageFeeds.  The
+'CHANNEL VALUES' section shows metadata values that will be common to the feed
+as a whole (as opposed to specific podcasts within it).  The other parameters
+are used as follows:
+
+       Key Name - A unique name, eight-characters or less in length, used to
+                  identify the feed within Rivendell.
+
+  Audio Upload URL - This is the URL of the directory to which the audio
+                     files will be uploaded.  It is also the URL that the
+                     system will use when deleting expired audio from the
+                     system (e.g. by means of an FTP 'DELETE' command);  
+                     hence the specified 'Username' and 'Password' should grant
+                     sufficient rights to allow  contents in the directory
+                     to be deleted.  Currently supported protocols are 
+                     'file:', 'ftp:' and 'smb:'.
+
+Audio Download URL - This is the URL of the directory from which the audio 
+                     files will be downloaded.  The URL listed should be 
+                     world-readable by 'anonymous' users.  Often, this will
+                     be the same as the 'Audio Upload URL' above.  
+
+   Enable AutoPost - If enabled, each new cast in the feed will become
+                     'visible' immediately following upload, using the
+                     default metadata as configured in the channel values.
+                     If not enabled, then all new casts are placed on hold
+                     pending the customization of the metadata for the
+                     particular cast in RDCastManager.   
+
+   Audio Extension - The file extension to use for files posted to the feed
+                     (default: 'mp3').  NOTE: when using a non-default value,
+                     it is necessary to manually create a corresponding 
+                     symbolic link on the web server running the 'rdfeed.xml' 
+                     script with the appropriate extension that points to the
+                     script.  For example, if using an extension of 'aac', one
+                     would do:
+
+                         cd <rd-bin-dir>
+                         ln -s rdfeed.xml rdfeed.aac
+
+   Max. Shelf Life - Sets the maximum period (in days) that a piece of audio 
+                     can be set in RDCastManager to remain in the feed until 
+                     purged.  If set to 'None', then no limit is enforced.
+                     This value also establishes the default expiration date
+                     for each cast (with 'Off' resulting in no expiration
+                     date being set --i.e. the cast remains TFN).
+
+
+
+XML Data Fields - The various 'XML' fields contain customizable templates that 
+Rivendell uses to construct the actual XML code that goes into the RSS file.
+The following variables are automatically substituted on-the-fly when the XML
+is rendered by the 'rdfeed.xml' script:
+
+CHANNEL PARAMETERS (from CHANNEL PARAMETERS)
+-- VARIABLE --  -- Meaning -------------------
+----------------------------------------------
+%TITLE%         Channel Title
+%CATEGORY%      Channel Category
+%LINK%          Channel Link
+%COPYRIGHT%     Channel Copyright Notice
+%WEBMASTER%     Channel Webmaster Address
+%DESCRIPTION%   Channel Description
+%BUILD_DATE%    Last Build Date
+%PUBLISH_DATE%  Date of feed creation
+%GENERATOR%     Name and Version of RSS Generator
+
+
+ITEM PARAMETERS (from individual cast record in RDCastManager)
+-- VARIABLE -------  -- Meaning -----------------------------
+-------------------------------------------------------------
+%ITEM_TITLE%         Item Title
+%ITEM_CATEGORY%      ITem Category
+%ITEM_DESCRIPTION%   Item Description
+%ITEM_LINK%          Item Link
+%ITEM_AUTHOR%        Item Author
+%ITEM_SOURCE_TEXT%   Item Third-Party Source - Human Readable
+%ITEM_SOURCE_URL%    Item Third-Party Source - URL Link
+%ITEM_COMMENTS%      Item Comments
+%ITEM_AUDIO_URL%     Item Audio Download URL
+%ITEM_AUDIO_LENGTH%  Item Audio File Length in bytes
+%ITEM_AUDIO_TIME%    Item Audio Playout Time in MM:SS format
+%ITEM_PUBLISH_DATE%  Date of cast creation
+%ITEM_GUID%          Globally Unique ID String
+
+
+2) Posting Audio
+Once the RSS feed(s) are set up, individual podcasts can be added by
+scheduling one or more Upload events in RDCatch.  To associate a given upload
+to a particular feed, simply select the desired feed in the 'RSS Feed' 
+control of the Edit Upload dialog, being sure that it gets uploaded to the
+location specified in the 'Audio Base URL' for the feed.  RDCatch will
+automatically add the audio to the feed's XML file after the upload.
+
+
+3) Editing Podcast Metadata
+The metadata for individual podcasts (including the cast's expiration date and
+posting status) can be edited by means of the RDCastManager module.  Operation
+of the module should be largely self-explanatory.
+
+
+POSTING THE RSS FEED FILE
+-------------------------
+The RSS file for each feed is generated dynamically by the RDFeed
+script.  The specific location of the script is determined by the value
+given in the '--libexecdir=' parameter to './configure' (see the
+'INSTALL' file for more details) and will also be influenced by the specific
+configuration used by the web server.  A typical link would looks as 
+follows:
+
+   http://www.example.com/rd-bin/rdfeed.xml?TEST
+
+This link would serve the RSS file for the feed with the Key Name 'TEST'.

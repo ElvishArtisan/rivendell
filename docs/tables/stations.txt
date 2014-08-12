@@ -1,0 +1,77 @@
+                  STATIONS Table Layout for Rivendell
+
+The STATIONS table contains data about each workstation in the system.
+Following is the layout of a record in the SERVICES table:
+
+FIELD NAME           TYPE               REMARKS
+---------------------------------------------------------------
+NAME                 char(64)           Primary Key
+DESCRIPTION          char(64)           Indexed
+USER_NAME            char(255)          Current User
+DEFAULT_NAME         char(255)          Default User
+IPV4_ADDRESS	     char(15)
+HTTP_STATION	     char(64)           From STATIONS.NAME
+CAE_STATION          char(64)           From STATIONS.NAME
+TIME_OFFSET          int(11)
+BACKUP_DIR           char(255)
+BACKUP_LIFE          int(11)
+BROADCAST_SECURITY   int(10) unsigned   0=HostSec, 1=UserSec
+HEARTBEAT_CART       int(10) unsigned
+HEARTBEAT_INTERVAL   int(10) unsigned
+STARTUP_CART         int(10) unsigned
+EDITOR_PATH          char(255)
+FILTER_MODE          int(11)            0=Synchronous, 1=Asynchronous
+START_JACK           enum('Y','N')
+JACK_SERVER_NAME     char(64)
+JACK_COMMAND_LINE    char(255)
+CUE_CARD             int(11) signed
+CUE_PORT             int(11) signed
+CUE_START_CART       int(10) unsigned
+CUE_STOP_CART        int(10) unsigned
+CARTSLOT_COLUMNS     int(11) signed
+CARTSLOT_ROWS        int(11) signed
+ENABLE_DRAGDROP      enum('N','Y')
+ENFORCE_PANEL_SETUP  enum('N','Y')
+SYSTEM_MAINT         enum('N','Y')
+STATION_SCANNED      enum('N','Y')
+HAVE_OGGENC          enum('N','Y')
+HAVE_OGG123          enum('N','Y')
+HAVE_FLAC            enum('N','Y')
+HAVE_TWOLAME         enum('N','Y')
+HAVE_LAME            enum('N','Y')
+HAVE_MPG321          enum('N','Y')
+HPI_VERSION          char(16)
+JACK_VERSION         char(16)
+ALSA_VERSION         char(16)
+CARD0_DRIVER         int(11) signed     0=None, 1=Hpi, 2=Jack, 3=ALSA
+CARD0_NAME           char(64)
+CARD0_INPUTS         int(11) signed
+CARD0_OUTPUTS        int(11) signed
+CARD1_DRIVER         int(11) signed     0=None, 1=Hpi, 2=Jack, 3=ALSA
+CARD1_NAME           char(64)
+CARD1_INPUTS         int(11) signed
+CARD1_OUTPUTS        int(11) signed
+CARD2_DRIVER         int(11) signed     0=None, 1=Hpi, 2=Jack, 3=ALSA
+CARD2_NAME           char(64)
+CARD2_INPUTS         int(11) signed
+CARD2_OUTPUTS        int(11) signed
+CARD3_DRIVER         int(11) signed     0=None, 1=Hpi, 2=Jack, 3=ALSA
+CARD3_NAME           char(64)
+CARD3_INPUTS         int(11) signed
+CARD3_OUTPUTS        int(11) signed
+CARD4_DRIVER         int(11) signed     0=None, 1=Hpi, 2=Jack, 3=ALSA
+CARD4_NAME           char(64)
+CARD4_INPUTS         int(11) signed
+CARD4_OUTPUTS        int(11) signed
+CARD5_DRIVER         int(11) signed     0=None, 1=Hpi, 2=Jack, 3=ALSA
+CARD5_NAME           char(64)
+CARD5_INPUTS         int(11) signed
+CARD5_OUTPUTS        int(11) signed
+CARD6_DRIVER         int(11) signed     0=None, 1=Hpi, 2=Jack, 3=ALSA
+CARD6_NAME           char(64)
+CARD6_INPUTS         int(11) signed
+CARD6_OUTPUTS        int(11) signed
+CARD7_DRIVER         int(11) signed     0=None, 1=Hpi, 2=Jack, 3=ALSA
+CARD7_NAME           char(64)
+CARD7_INPUTS         int(11) signed
+CARD7_OUTPUTS        int(11) signed

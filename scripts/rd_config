@@ -1,0 +1,80 @@
+#!/bin/bash
+
+# rd_config
+#
+# Manage Rivendell configurations.
+#
+#   (C) Copyright 2004 Fred Gleason <fredg@paravelsystems.com>
+#
+#      $Id: rd_config,v 1.4 2011/01/20 15:33:02 cvs Exp $
+#
+#   This program is free software; you can redistribute it and/or modify
+#   it under the terms of the GNU General Public License version 2 as
+#   published by the Free Software Foundation.
+#
+#   This program is distributed in the hope that it will be useful,
+#   but WITHOUT ANY WARRANTY; without even the implied warranty of
+#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#   GNU General Public License for more details.
+#
+#   You should have received a copy of the GNU General Public
+#   License along with this program; if not, write to the Free Software
+#   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+#
+# Usage:
+#  rd_config master|standby
+#
+
+#
+# Configuration and Paths
+#
+MAIN_CONF=/etc/rd.conf
+MAIN_SND=/var/snd
+MASTER_CONF=/etc/rd.conf.master
+STANDBY_CONF=/etc/rd.conf.standby
+MASTER_SND=/var/snd.master
+STANDBY_SND=/var/snd.standby
+INIT_SCRIPT=/etc/init.d/rivendell
+RM=/bin/rm
+LN=/bin/ln
+
+case "$1" in
+    master)
+    $INIT_SCRIPT stop
+    if [ $? -ne 0 ] ; then
+      echo "rd_config: can't stop current config, aborting"
+      exit 1
+    fi
+    $RM -f $MAIN_CONF
+    $RM -f $MAIN_SND
+    $LN -s $MASTER_CONF $MAIN_CONF
+    $LN -s $MASTER_SND $MAIN_SND
+    $INIT_SCRIPT start
+    if [ $? -ne 0 ] ; then
+      echo "rd_config: can't start new config"
+      exit 2
+    fi
+    ;;
+
+    standby)
+    $INIT_SCRIPT stop
+    if [ $? -ne 0 ] ; then
+      echo "rd_config: can't stop current config, aborting"
+      exit 1
+    fi
+    $RM -f $MAIN_CONF
+    $RM -f $MAIN_SND
+    $LN -s $STANDBY_CONF $MAIN_CONF
+    $LN -s $STANDBY_SND $MAIN_SND
+    $INIT_SCRIPT start
+    if [ $? -ne 0 ] ; then
+      echo "rd_config: can't start new config"
+      exit 2
+    fi
+    ;;
+esac
+
+# End of rd_config
+
+
+

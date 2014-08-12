@@ -1,0 +1,62 @@
+               PAM and multi-user support in Rivendell
+
+In order to support a multi-user environment, the PAM (Pluggable
+Authentication Module) infrastructure is used to activate a Rivendell
+user.  
+
+First of all, a distinction should be made between *nix user accounts
+and Rivendell user accounts.  The former are accounts used by the
+operating system; they may be local accounts in the /etc/passwd file
+or they may be centraly administered accounts such as in an LDAP
+server.  The Rivendell user accounts are used only within the
+Rivendell system and are stored within the Rivendell SQL database.
+Rivendell users can be used to distinguish what groups of audio a user
+can create or delete within Rivendell.
+
+For the multi-user Rivendell environment, users should each have a
+unique *nix system account and a matching Rivendell account.  The *nix
+user accounts should be members of a "rivendell" *nix system group and
+also any group required to access audio hardware devices (ex: the
+"audio" group on a debian system).   The files in the Rivendell system
+(/var/snd, PID files, log files) will be owned by "foouser.rivendell"
+with appropiate group writable permissions.  Commands to create the
+*nix accounts are:
+    adduser foouser # create a new *nix user called foouser
+    adduser foouser rivendell # add foouser to the rivendll *nix group
+    adduser foouser audio # add foouser to the audio *nix group
+Rivendell user accounts can be added with the "rdadmin" utility.
+
+Instead of requiring users to log in multiple times (once for their
+*nix account and again for their Rivendell account), the pam_rd module
+allows for the Rivendell user to be set during the authentication
+process of PAM.  
+
+Options the pam_rd module recognizes include:
+
+    debug - to increase logging to syslog
+    use_first_pass - to use only the first password entered by the
+    try_first_pass - to try the first password, and if that is not
+                     found succeed prompt the user to enter their
+                     password.
+    kill_rd_daemons - kill any previously running rivendell daemons
+                     (caed, ripcd, rdcatchd)
+    destroy_shm - destroy and release the rivendell shared memory
+                  segment, id "0x5005
+    ignore_pass - log a valid Rivendell user account into Rivendell,
+                  ignoring any password check.  the idea is to "trust"
+                  the network logon credentials and ignore the
+                  rivendell credentials 
+    fail_default_user - if a corresponding Rivendell user account is not found
+                        or if the entered password does not authenticate a
+                        Rivendell user, the Rivendell user account is set to
+                        the the user specified by this option (defaults to
+                        "user").
+
+
+We have had success tying the pam_rd module into the "kdm" PAM module.
+The following entry was added as the last "auth" entry for "kdm" in
+/etc/pam.d/kdm:
+
+    auth       required     pam_rd.so   debug kill_rd_daemons destroy_shm ignore_pass fail_default_user=user
+    
+

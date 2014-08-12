@@ -1,0 +1,69 @@
+#!/sbin/runscript
+
+##
+##    A Rivendell init script for Gentoo Linux.
+##
+##    (C) Copyright 2005 Fred Gleason <fredg@paravelsystems.com>
+##
+##      $Id: rivendell-gentoo,v 1.6 2011/05/02 18:49:36 cvs Exp $
+##
+##    Adapted from the Gentoo init script for Rivendell 
+##    by Andres Toomsalu <andres@active.ee>
+##
+##    Modified 2011 by Emery Hemingway <emery@icmlf.net>
+##
+##    This program is free software; you can redistribute it and/or modify
+##    it under the terms of version 2 of the GNU General Public License as
+##    published by the Free Software Foundation;
+##
+##    This program is distributed in the hope that it will be useful,
+##    but WITHOUT ANY WARRANTY; without even the implied warranty of
+##    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+##    GNU General Public License for more details.
+##
+##    You should have received a copy of the GNU General Public License
+##    along with this program; if not, write to the Free Software
+##    Foundation, Inc., 59 Temple Place, Suite 330, 
+##    Boston, MA  02111-1307  USA
+##
+
+description="Rivendell system daemons"
+
+user="rivendell"
+group="rivendell"
+pid_dir="/var/run/rivendell"
+
+daemons="caed ripcd rdcatchd"
+
+depend() {
+        use alsasound apache2 jackd mysql
+}
+
+start() {
+        ebegin "Starting Rivendell"
+
+        checkpath --directory --mode 0775 --owner $user:$group /var/snd
+        checkpath --file --mode 0664 --owner $user:$group /var/snd/*
+        
+        ipcrm -M 0x5005 2> /dev/null
+
+        for daemon in $daemons
+            do 
+                veinfo "Starting $daemon"
+                start-stop-daemon --start --pidfile $pid_dir/$daemon.pid \
+			--user $user:$group --umask 0113 \
+                        	--exec /usr/bin/$daemon
+            done
+        eend $?
+}
+
+stop() {
+        ebegin "Stopping Rivendell"
+        killall rdimport > /dev/null 2> /dev/null
+
+        for daemon in $daemons
+            do 
+                start-stop-daemon --stop --pidfile $pid_dir/$daemon.pid
+            done
+        eend $?
+}

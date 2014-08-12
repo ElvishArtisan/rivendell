@@ -1,0 +1,13 @@
+            NOWNEXT_PLUGINS Table Layout for Rivendell
+
+The NOWNEXT_PLUGINS table holds data concerning each Now & Next
+plugins configured on the system.  Following is the layout 
+of a record in the NOWNEXT_PLUGINS table:
+
+FIELD NAME           TYPE              REMARKS
+------------------------------------------------------------------
+ID                   int(10) unsigned  Primary key, auto increment
+STATION_NAME         char(64)          From STATIONS.NAME
+LOG_MACHINE          int(10) unsigned  0=Main, 1=Aux1, 2=Aux2
+PLUGIN_PATH          char(255)
+PLUGIN_ARG           char(255)

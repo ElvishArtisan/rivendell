@@ -1,0 +1,74 @@
+#!/bin/bash
+
+# export_slax
+#
+# Export the current Rivendell archive as a SLAX module.
+#
+# (C) Copyright 2006 Fred Gleason <fredg@paravelsystems.com>
+#
+#      $Id: export_slax,v 1.4 2007/02/14 21:48:41 fredg Exp $
+#      $Date: 2007/02/14 21:48:41 $
+#
+#   This program is free software; you can redistribute it and/or modify
+#   it under the terms of the GNU General Public License version 2 as
+#   published by the Free Software Foundation.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with this program; if not, write to the Free Software
+#    Foundation, Inc., 59 Temple Place, Suite 330, 
+#    Boston, MA  02111-1307  USA
+#
+
+#
+# Check arguments
+#
+if test -z $1 ; then
+  echo
+  echo "  export_slax <module-name> [<audio-owner>]"
+  echo
+  exit 256
+fi
+if test -z $2 ; then
+  AUDIO_OWNER=500
+else
+  AUDIO_OWNER=$2
+fi
+
+#
+# Clean the build tree
+#
+BUILD_DIR=/var/tmp/export_slax
+rm -rf $BUILD_DIR
+
+#
+# Build the package tree
+#
+mkdir -p $BUILD_DIR/var/lib/mysql/mysql
+mkdir -p $BUILD_DIR/var/lib/mysql/Rivendell
+chown -R mysql:users $BUILD_DIR/var/lib/mysql
+cp -a /var/lib/mysql/mysql $BUILD_DIR/var/lib/mysql/
+cp -a /var/lib/mysql/Rivendell $BUILD_DIR/var/lib/mysql/
+cp -a /var/snd $BUILD_DIR/var/
+chown -R $AUDIO_OWNER:root $BUILD_DIR/var/snd
+
+#
+# Generate the package
+#
+SOURCE_DIR=`pwd`
+cd $BUILD_DIR
+makepkg --prepend --linkadd y --chown n export_slax.tgz
+tgz2mo export_slax.tgz $SOURCE_DIR/$1
+cd $SOURCE_DIR
+
+#
+# Clean up and exit
+#
+#rm -r $BUILD_DIR
+
+
+# End of export_slax

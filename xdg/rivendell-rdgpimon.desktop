@@ -1,0 +1,11 @@
+[Desktop Entry]
+Encoding=UTF-8
+Terminal=false
+Categories=Qt:KDE;Rivendell;
+Name=RDGpiMon
+GenericName=Rivendell GPI Monitor
+Exec=rdgpimon
+Icon=rivendell
+Type=Application
+Terminal=false
+

@@ -1,0 +1,23 @@
+                CARTSLOTS Table Layout for Rivendell
+
+The CARTSLOTS table holds data concerning configuration of RDCartSlot
+decks in a Rivendell system.  Following is the layout of a record in the
+CARTS table:
+
+FIELD NAME           TYPE              REMARKS
+------------------------------------------------------------------------------
+ID                   int(10) unsigned  Primary key, Auto Increment
+STATION_NAME         char(64)          From STATIONS.NAME
+SLOT_NUMBER          int(10) unsigned
+MODE                 int(11) signed    0=Cart Deck, 1=Breakaway
+DEFAULT_MODE         int(11) signed    -1=Previous, 0=Cart Deck, 1=Breakaway
+STOP_ACTION          int(11) signed    0=Unload, 1=Recue, 2=Loop
+DEFAULT_STOP_ACTION  int(11) signed    -1=Previous, 0=Unload, 1=Recue, 2=Loop
+CART_NUMBER          int(11) signed
+DEFAULT_CART_NUMBER  int(11) signed    -1=Previous, 0=None, >0=Cart
+HOOK_MODE            int(11) signed
+DEFAULT_HOOK_MODE    int(11) signed    -1=Previous, 0=Off, 1=On
+SERVICE_NAME         char(10)          From SERVICES.NAME
+CARD                 int(11) signed
+INPUT_PORT           int(11) signed
+OUTPUT_PORT          int(11) signed

@@ -1,0 +1,110 @@
+                      JACK Support in Rivendell
+
+Rivendell can optionally be compiled to provide full support for the 
+JACK Audio Connection Kit.  Instructions on enabling such support can
+be found in the INSTALL file.  Information about JACK itself can be
+found at:
+
+    http://jackit.sourceforge.net/
+
+
+STARTING UP RIVENDELL WITH JACK
+When Rivendell's audio daemon, caed(8) is started, and JACK support is
+enabled, caed(8) will look for a running jackd(1).  If it finds one,
+it will attempt to join the graph and create the following ports:
+
+   rivendell_<N>:capture_<M>L
+   rivendell_<N>:capture_<M>R
+   ...
+   rivendell_<N>:playout_<M>L
+   rivendell_<N>:playout_<M>R
+   ...
+
+where <N> is the number of the virtual 'card' Rivendell will use to
+access JACK, and <M> is the number of the virtual 'port' within that
+'card'.  The card number is selected automatically by caed(8), and
+will be the first unused card number after any ASI adapters found in
+the system are initialized.  The 'L' and 'R' stand for 'left' and
+'right' stereo channels, respectively.  These card/port pairs can be 
+assigned within RDAdmin just like any other Rivendell audio resource. 
+
+
+JACK DAEMON MANAGEMENT
+On distros that use a SysV-ish init system (such as SuSE), it's
+possible to configure Rivendell to automatically start and stop the
+jackd(8) daemon as needed.  To do this, proceed as follows:
+
+  On SuSE
+  Fire up Yast2, click 'System' and then select 'Editor for
+  /etc/sysconfig Files'.  Under 'Configuration Options', select
+  'Applications' and then 'Rivendell'.  Configure the parameters there
+  as desired, then click 'Finish' to save them.
+
+  Other Distros
+  Edit the file '/etc/sysconfig/rivendell' and set the variables to
+  the desired settings.
+
+
+JACK SESSION MANAGEMENT
+Simple session connection management is possible by placing entries 
+within the [JackSession] section of /etc/rd.conf.  The format is as 
+follows:
+
+[JackSession]
+Source<n>=<src-port>
+Destination<n>=<dest-port>
+
+where:
+    <n> = Arbitrary connection number, must start at '1' and go up
+    consecutively.
+
+    <src-port> = The name of the source JACK port to connect, in
+    standard CLIENTNAME:PORTNAME format.
+
+    <dest-port> = The name of the destination JACK port to connect, in
+    standard CLIENTNAME:PORTNAME format.
+
+Here is an example [JackSession] section:
+
+    [JackSession]
+    Source1=rivendell_1:playout_0L
+    Destination1=alsa_pcm:playback_1
+
+    Source2=rivendell_1:playout_0R
+    Destination2=alsa_pcm:playback_2
+
+    Source3=rivendell_1:playout_1L
+    Destination3=alsa_pcm:playback_3
+
+    Source4=rivendell_1:playout_1R
+    Destination4=alsa_pcm:playback_4
+
+    Source5=rivendell_1:playout_2L
+    Destination5=alsa_pcm:playback_9
+
+    Source6=rivendell_1:playout_2R
+    Destination6=alsa_pcm:playback_10
+
+    Source7=alsa_pcm:capture_1
+    Destination7=rivendell_1:record_0L
+
+    Source8=alsa_pcm:capture_2
+    Destination8=rivendell_1:record_0R
+
+    Source9=alsa_pcm:capture_3
+    Destination9=rivendell_1:record_1L
+
+    Source10=alsa_pcm:capture_4
+    Destination10=rivendell_1:record_1R
+
+    Source11=alsa_pcm:capture_9
+    Destination11=rivendell_1:record_2L
+
+    Source12=alsa_pcm:capture_10
+    Destination12=rivendell_1:record_2R
+
+This example sets up an ICE1712-based soundcard (a Midiman Delta-66,
+in this case) to use the first three playout and record ports of Card
+1 in Rivendell.  It is, of course, fully possible to dynamically
+manage the port assignments through use of a JACK patchbay (such as
+QJackConnect) as well.

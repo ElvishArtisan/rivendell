@@ -1,0 +1,34 @@
+                  CLIPBOARD Table Layout for Rivendell
+
+The CLIPBOARD table holds data concerning the audio cut in the clipboard.
+The layout is a duplicate of the CUTS table.  Following is the
+layout of a record in the CLIPBOARD table:
+
+FIELD NAME           TYPE              REMARKS
+---------------------------------------------------------------
+CUT_NAME             char(12)          * Primary key, Base name of WAV file
+CART_NUMBER          int(10) unsigned  Parent Cart Entry, Indexed
+DESCRIPTION          char(64)          Indexed
+OUTCUE               char(64)          Indexed
+LENGTH               int(10) unsigned  Overall length in ms.
+ORIGIN_DATETIME      datetime          Date/Time when recorded
+ORIGIN_NAME          char(64)          Workstation ID where recorded
+WEIGHT               int(10) unsigned  Relative airplay frequency, 1 = normal
+LAST_PLAY_DATETIME   datetime
+PLAY_COUNTER         int(10) unsigned
+CODING_FORMAT        int(10) unsigned  0 = PCM16, 2 = Layer-2, 3 = Layer-3 
+SAMPLE_RATE          int(10) unsigned  In samples/sec
+BIT_RATE             int(10) unsigned  In bits/sec,  PCM16 = 0
+CHANNELS             int(10) unsigned  1 = mono, 2 = stereo
+START_POINT          int(10) unsigned  Offset to Start point in ms
+FADEUP_POINT         int(10) unsigned  Offset to FadeUp point in ms
+FADEDOWN_POINT       int(10) unsigned  Offset to FadeDown point in ms
+END_POINT            int(10) unsigned  Offset to End point in ms
+HOOK_START_POINT     int(10) unsigned  Offset to Hook Start point in ms
+HOOK_END_POINT       int(10) unsigned  Offset to Hook End point in ms
+TALK_START_POINT     int(10) unsigned  Offset to Talk Start point in ms
+TALK_END_POINT       int(10) unsigned  Offset to Talk End point in ms
+
+
+
+* Should always be 'clip.wav'.

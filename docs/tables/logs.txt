@@ -1,0 +1,28 @@
+               LOGS Table Layout for Rivendell
+
+The LOGS table holds data concerning each log object that exists
+on the system.  Following is the layout of a record in the LOGS
+table:
+
+FIELD NAME           TYPE             REMARKS
+-------------------------------------------------------------------
+NAME                 char(64)         Table name, ends with '_LOG'
+LOG_EXISTS           enum('N','Y')
+TYPE                 int(11)          0=Log, 1=Event, 2=Clock, 3=Grid
+SERVICE              char(10)         From SERVICES.NAME
+DESCRIPTION          char(64)
+ORIGIN_USER          char(255)        From USERS.LOGIN_NAME
+ORIGIN_DATETIME      datetime    
+LINK_DATETIME        datetime
+MODIFIED_DATETIME    datetime
+AUTO_REFRESH         enum('N','Y')
+START_DATE	     date
+END_DATE	     date
+PURGE_DATE           date
+IMPORT_DATE          date
+SCHEDULED_TRACKS     int unsigned(10)
+COMPLETED_TRACKS     int unsigned(10)
+MUSIC_LINKS          int
+MUSIC_LINKED         enum('N','Y')
+TRAFFIC_LINKS        int
+TRAFFIC_LINKED       enum('N','Y')

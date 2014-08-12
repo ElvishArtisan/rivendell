@@ -1,0 +1,42 @@
+                      ALSA Support in Rivendell
+
+Rivendell can optionally be compiled to provide direct support for 
+soundcards using the Advanced Linux Sound Architecture (ALSA).  
+Instructions on enabling such support can be found in the INSTALL
+file.  Information about ALSA itself can be found at:
+
+    http://www.alsa-project.org/
+
+
+STARTING UP RIVENDELL WITH ALSA
+When Rivendell's audio daemon, caed(8) is started, and ALSA support is
+enabled, caed(8) will look for PCM devices named rd<n>, where <n> is a
+number between 0 and 7.  If it finds one or more, it will attempt to
+open the devices(s) for both playback and capture.  If successful, the
+devices will then be available as Rivendell virtual 'card' resources,
+starting with the next available card number after any HPI or JACK
+devices have been started.
+
+
+CONFIGURING PCM DEVICE NAMES
+PCM device names for ALSA can be configured by means of entries in the ALSA
+configuration file.  The ALSA configuration file can either be an '.asoundrc'
+file in the home directory of the user running the Rivendell daemons (normally
+'root') or an '/etc/asound.conf' file which will apply to all users.  For the
+simple case of a single ALSA soundcard to be made visible to Rivendell, one
+would create an ALSA configuration file containing the following lines:
+
+pcm.rd0 {
+  type hw
+  card 0
+}
+ctl.rd0 {
+  type hw
+  card 0
+}
+
+This would create an 'alias' for the first ALSA soundcard in the
+system, called 'rd0'.
+
+More details regarding the syntax and uses of .asoundrc can be found
+on the ALSA web site in the documentation section.

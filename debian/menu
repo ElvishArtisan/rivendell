@@ -1,0 +1,42 @@
+?package(rivendell):\
+  needs="x11"\
+  section="Apps/Sound"\
+  title="rdadmin" command="/usr/bin/rdadmin" \
+  icon="/usr/share/srlabs/rdadmin.xpm"
+
+?package(rivendell):\
+  needs="x11"\
+  section="Apps/Sound"\
+  title="rdairplay" command="/usr/bin/rdairplay" \
+  icon="/usr/share/srlabs/rdairplay.xpm"
+
+?package(rivendell):\
+  needs="x11"\
+  section="Apps/Sound"\
+  title="rdcatch" command="/usr/bin/rdcatch" \
+  icon="/usr/share/srlabs/rdcatch.xpm"
+
+?package(rivendell):\
+  needs="x11"\
+  section="Apps/Sound"\
+  title="rdlibrary" command="/usr/bin/rdlibrary" \
+  icon="/usr/share/srlabs/rdlibrary.xpm"
+
+?package(rivendell):\
+  needs="x11"\
+  section="Apps/Sound"\
+  title="rdlogedit" command="/usr/bin/rdlogedit" \
+  icon="/usr/share/srlabs/rdlogedit.xpm"
+
+?package(rivendell):\
+  needs="x11"\
+  section="Apps/Sound"\
+  title="rdlogin" command="/usr/bin/rdlogin" \
+  icon="/usr/share/srlabs/rdlogin.xpm"
+
+?package(rivendell):\
+  needs="x11"\
+  section="Apps/Sound"\
+  title="rdlogmanager" command="/usr/bin/rdlogmanager" \
+  icon="/usr/share/srlabs/rdlogmanager.xpm"
+

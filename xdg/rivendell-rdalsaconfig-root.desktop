@@ -1,0 +1,10 @@
+[Desktop Entry]
+Encoding=UTF-8
+Terminal=false
+Categories=Qt;KDE;Rivendell;
+Name=RDAlsaConfig
+GenericName=Rivendell ALSA Configuration
+Exec=rdalsaconfig-root --manage-daemons
+Icon=rivendell
+Type=Application
+Terminal=false

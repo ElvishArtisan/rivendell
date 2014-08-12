@@ -1,0 +1,81 @@
+                  RDAIRPLAY Table Layout for Rivendell
+
+The RDAIRPLAY table holds configuration data for the RDAirPlay widget.
+Following is the layout of a record in the RDAIRPLAY table:
+
+FIELD NAME           TYPE              REMARKS
+------------------------------------------------------------------------------
+ID                     int(10) unsigned  * Primary key, Auto Increment
+STATION                char(40)          Workstation, Indexed
+SEGUE_LENGTH           int(11)
+TRANS_LENGTH           int(11)
+OP_MODE                int(11)           *** RETIRED @ DB v233 ***
+START_MODE             int(11)           *** RETIRED @ DB v233 ***
+LOG_MODE_STYLE         int(11)           0=Unified, 1=Independent
+PIE_COUNT_LENGTH       int(11)
+PIE_COUNT_ENDPOINT     int(11)           0=EOF, 1=Segue Point
+CHECK_TIMESYNC         enum('N','Y')
+STATION_PANELS         int(11)
+USER_PANELS            int(11)
+SHOW_AUX_1             enum('N','Y')
+SHOW_AUX_2             enum('N','Y')
+CLEAR_FILTER           enum('N','Y')
+DEFAULT_TRANS_TYPE     int(11)
+BAR_ACTION             int(10) unsigned  0=None, 1=Start Next
+FLASH_PANEL            enum('N','Y')
+PANEL_PAUSE_ENABLED    enum('N','Y')
+BUTTON_LABEL_TEMPLATE  char(32)
+PAUSE_ENABLED          enum('N','Y')
+DEFAULT_SERVICE        char(10)          From SERVICES.NAME
+HOUR_SELECTOR_ENABLED  enum('N','Y')
+UDP_ADDR0              char(255)
+UDP_PORT0              int(10) unsigned
+UDP_STRING0            char(255)
+LOG_RML0               char(255)
+UDP_ADDR1              char(255)
+UDP_PORT1              int(10) unsigned
+UDP_STRING1            char(255)
+LOG_RML1               char(255)
+UDP_ADDR2              char(255)
+UDP_PORT2              int(10) unsigned
+UDP_STRING2            char(255)
+LOG_RML2               char(255)
+EXIT_CODE              int(11)           0=clean, 1=dirty
+EXIT_PASSWORD          char(41)
+SKIN_PATH              char(255)
+SHOW_COUNTERS          enum('N','Y')
+AUDITION_PREROLL       int(11)
+TITLE_TEMPLATE         char(64)
+ARTIST_TEMPLATE        char(64)
+OUTCUE_TEMPLATE        char(64)
+DESCRIPTION_TEMPLATE   char(64)
+LOG0_START_MODE        int(11)           0=start empty, 1=load last, 
+                                       2=load specified
+LOG0_AUTO_RESTART      enum('N','Y')
+LOG0_LOG_NAME          char(64)          From LOGS.NAME
+LOG0_CURRENT_LOG       char(64)          From LOGS.NAME
+LOG0_RUNNING           enum('N','Y')
+LOG0_LOG_ID            int(11)
+LOG0_LOG_LINE          int(11)
+LOG0_NOW_CART          int(10) unsigned
+LOG0_NEXT_CART         int(10) unsigned
+LOG1_START_MODE        int(11)           0=start empty, 1=load last, 
+                                       2=load specified
+LOG1_AUTO_RESTART      enum('N','Y')
+LOG1_LOG_NAME          char(64)          From LOGS.NAME
+LOG1_CURRENT_LOG       char(64)          From LOGS.NAME
+LOG1_RUNNING           enum('N','Y')
+LOG1_LOG_ID            int(11)
+LOG1_LOG_LINE          int(11)
+LOG1_NOW_CART          int(10) unsigned
+LOG1_NEXT_CART         int(10) unsigned
+LOG2_START_MODE        int(11)           0=start empty, 1=load last, 
+                                       2=load specified
+LOG2_AUTO_RESTART      enum('N','Y')
+LOG2_LOG_NAME          char(64)          From LOGS.NAME
+LOG2_CURRENT_LOG       char(64)          From LOGS.NAME
+LOG2_RUNNING           enum('N','Y')
+LOG2_LOG_ID            int(11)
+LOG2_LOG_LINE          int(11)
+LOG2_NOW_CART          int(10) unsigned
+LOG2_NEXT_CART         int(10) unsigned

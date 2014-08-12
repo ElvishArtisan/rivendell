@@ -1,0 +1,11 @@
+[Desktop Entry]
+Encoding=UTF-8
+Terminal=false
+Categories=Qt;KDE;Rivendell;
+Name=RDLogManager
+GenericName=Rivendell Log Management
+Exec=rdlogmanager
+Icon=rivendell
+Type=Application
+Terminal=false
+

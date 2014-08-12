@@ -1,0 +1,67 @@
+## Path:	Applications/Rivendell
+## Description:	Configure the Rivendell system daemons.
+
+## Type:	yesno
+## Default	no
+#
+# Start the MeasurementComputing GPIO driver?
+#
+GPIO_START="no"
+
+## Type:	yesno
+## Default	no
+#
+# Start the AudioScience HPI driver?
+#
+HPI_START="no"
+
+## Type:	yesno
+## Default	no
+#
+# Start the Axia LiveWire driver?
+#
+LIVEWIRE_START="no"
+
+## Type:	yesno
+## Default	no
+#
+# Start jackd? 
+# (NOTE: this option is here for backwards compatibity only!
+# A much better method for controlling JACK is to set the 'JACK_START_SERVER'
+# environmental variable and use '/etc/jackdrc' for configuration.  See
+# the jackd man page for details.)
+#
+JACK_START="no"
+
+## Type:	integer
+## Default	48000
+#
+# Set the sample rate of the jackd daemon. 
+# (NOTE: this option is here for backwards compatibity only!
+# A much better method for controlling JACK is to set the 'JACK_START_SERVER'
+# environmental variable and use '/etc/jackdrc' for configuration.  See
+# the jackd man page for details.)
+#
+JACK_SAMPLE_RATE="48000"
+
+## Type:	string
+## Default	hw:0
+#
+# Set the ALSA device for the jackd daemon to use.
+# (NOTE: this option is here for backwards compatibity only!
+# A much better method for controlling JACK is to set the 'JACK_START_SERVER'
+# environmental variable and use '/etc/jackdrc' for configuration.  See
+# the jackd man page for details.)
+#
+JACK_ALSA_DEVICE="hw:0"
+
+## Type:	yesno
+## Default	no
+#
+# Use realtime scheduling for audio threads.
+# (NOTE: this option is here for backwards compatibity only!
+# A much better method for controlling JACK is to set the 'JACK_START_SERVER'
+# environmental variable and use '/etc/jackdrc' for configuration.  See
+# the jackd man page for details.)
+#
+JACK_USE_REALTIME="no"

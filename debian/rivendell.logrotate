@@ -1,0 +1,27 @@
+/var/log/rivendell/rdairplay.log {
+  rotate 30
+  daily
+  compress
+  missingok
+}
+
+/var/log/rivendell/rdcatchd.log {
+  rotate 30
+  daily
+  compress
+  missingok
+}
+
+/var/log/rivendell/ripcd.log {
+  rotate 30
+  daily
+  compress
+  missingok
+}
+
+/var/log/rivendell/caed.log {
+  rotate 30
+  daily
+  compress
+  missingok
+}

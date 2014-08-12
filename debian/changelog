@@ -1,0 +1,387 @@
+rivendell (1.0.0~rc0-1) unstable; urgency=low
+
+  * New release.
+
+ -- Federico Grau <grauf@rfa.org>  Thu, 10 Apr 2008 10:00:25 -0400
+
+rivendell (0.9.83-1) unstable; urgency=low
+
+  * New release.
+
+ -- Federico Grau <grauf@rfa.org>  Thu, 27 Dec 2007 10:00:58 -0500
+
+rivendell (0.9.82-1) unstable; urgency=low
+
+  * New release.
+
+ -- Federico Grau <grauf@rfa.org>  Wed, 12 Sep 2007 13:43:18 -0400
+
+rivendell (0.9.81-1) unstable; urgency=low
+
+  * New release.
+
+ -- Federico Grau <grauf@rfa.org>  Fri, 13 Jul 2007 10:45:59 -0400
+
+rivendell (0.9.79-5) unstable; urgency=low
+
+  * Updated copyright with Fred Gleason's new email address.
+
+ -- Federico Grau <grauf@rfa.org>  Thu, 15 Feb 2007 12:59:23 -0500
+
+rivendell (0.9.79-4) unstable; urgency=low
+
+  * More work on the Audacity integration with Rivendell patch.
+
+ -- Federico Grau <grauf@rfa.org>  Tue, 30 Jan 2007 14:44:07 -0500
+
+rivendell (0.9.79-3) unstable; urgency=low
+
+  * Test build with 08_audacity patch which add audacity integration to
+    rivendell (thanks to Panvid Co and Pavel Domsa <pdomsa@seznam.cz> for the
+    initial patch).
+
+ -- Federico Grau <grauf@rfa.org>  Mon, 29 Jan 2007 18:12:14 -0500
+
+rivendell (0.9.79-2) unstable; urgency=low
+
+  * Added 07_extra_paren patch which corrects rdadmin/createdb.cpp bug
+    creating db. 
+
+ -- Federico Grau <grauf@rfa.org>  Tue, 12 Dec 2006 16:35:52 -0500
+
+rivendell (0.9.79-1) unstable; urgency=low
+
+  * New upstream release.
+
+ -- Federico Grau <grauf@rfa.org>  Thu,  7 Dec 2006 12:13:31 -0500
+
+rivendell (0.9.77-1) unstable; urgency=low
+
+  * New upstream release.
+
+ -- Federico Grau <grauf@rfa.org>  Mon,  4 Dec 2006 18:18:10 -0500
+
+rivendell (0.9.74-2) unstable; urgency=low
+
+  * Added (and enabled) a patch to escape SQL column names when generating
+    reports 06_escapesql.dpatch .
+
+ -- Federico Grau <grauf@rfa.org>  Fri, 29 Sep 2006 18:42:30 -0400
+
+rivendell (0.9.74-1) unstable; urgency=low
+
+  * New upstream release.
+  * Disabled music scheduler patch.
+
+ -- Federico Grau <grauf@rfa.org>  Thu, 28 Sep 2006 12:49:51 -0400
+
+rivendell (0.9.73-1.2) unstable; urgency=low
+
+  * Added libhpi-dev to the build-dep list.
+  * Recompiling with libhpi-dev installed locally.
+
+ -- Henry Rivera <riverah@rfa.org>  Thu, 14 Sep 2006 20:46:40 -0400
+
+rivendell (0.9.73-1.1) unstable; urgency=low
+
+  * Enabled music scheduler patch.
+
+ -- Henry Rivera <riverah@rfa.org>  Thu, 14 Sep 2006 07:31:04 -0400
+
+rivendell (0.9.73-1) unstable; urgency=low
+
+  * New upstream release.
+  * Added libpam0g-dev to the build-dep package list.
+
+ -- Henry Rivera <riverah@rfa.org>  Thu, 14 Sep 2006 06:04:49 -0400
+
+rivendell (0.9.71-1) unstable; urgency=low
+
+  * New upstream release.
+  * corrected package description in control.
+  * Added rdlogin icon (xpm, desktop, menu) to debian dir.
+
+ -- Federico Grau <grauf@rfa.org>  Mon, 14 Aug 2006 18:05:46 -0400
+
+rivendell (0.9.70-4) unstable; urgency=low
+
+  * This time with the patch enabled :-/ . 
+
+ -- Federico Grau <grauf@rfa.org>  Wed,  9 Aug 2006 16:38:15 -0400
+
+rivendell (0.9.70-3) unstable; urgency=low
+
+  * Add patch 05_pam_rd_hack, with edits to set the DEFAULTUSER instead of
+    regular user (thus no changes will be required to ripcd to pickup the user
+    change).
+
+ -- Federico Grau <grauf@rfa.org>  Wed,  9 Aug 2006 15:08:19 -0400
+
+rivendell (0.9.70-2) unstable; urgency=low
+
+  * Add patch 04_pam_rd_cvs_fixes.dpatch with pam_rd efforts in CVS since
+    0.9.70.
+  * disabled music scheduler patch for now.
+
+ -- Federico Grau <grauf@rfa.org>  Wed,  9 Aug 2006 13:43:00 -0400
+
+rivendell (0.9.70-1.4) unstable; urgency=low
+
+  * Update with a new music scheduler patch. 
+
+ -- Federico Grau <grauf@rfa.org>  Wed,  9 Aug 2006 12:44:56 -0400
+
+rivendell (0.9.70-1.3) unstable; urgency=low
+
+  * This time with the patch enabled :-/ . 
+
+ -- Federico Grau <grauf@rfa.org>  Tue,  8 Aug 2006 13:50:23 -0400
+
+rivendell (0.9.70-1.2) unstable; urgency=low
+
+  * Update the patch from Stefan Gabrial. 
+
+ -- Federico Grau <grauf@rfa.org>  Tue,  8 Aug 2006 12:35:46 -0400
+
+rivendell (0.9.70-1.1) unstable; urgency=low
+
+  * Applied music scheduler patch from Stefan Gabriel <stg@st-gabriel.de> .
+    This is debian/patches/10_music_scheduler.
+
+ -- Federico Grau <grauf@rfa.org>  Tue,  8 Aug 2006 11:14:27 -0400
+
+rivendell (0.9.70-1) unstable; urgency=low
+
+  * New upstream release.
+
+ -- Federico Grau <grauf@rfa.org>  Mon,  7 Aug 2006 15:54:57 -0400
+
+rivendell (0.9.68-0) unstable; urgency=low
+
+  * new upstream release
+ 
+ -- Alban Peignier <alban.peignier@free.fr>  Thu,25 May 2006 12:15:00 +0200
+
+rivendell (0.9.64-0) unstable; urgency=low
+
+  * new upstream release
+ 
+ -- Alban Peignier <alban.peignier@free.fr>  Mon,23 Jan 2005 10:30:00 +0100
+ 
+rivendell (0.9.63-0) unstable; urgency=low
+
+  * new upstream release
+ 
+ -- Alban Peignier <alban.peignier@free.fr>  Sat,17 Dec 2005 11:30:00 +0100
+
+rivendell (0.9.62-0) unstable; urgency=low
+
+  * new upstream release
+  * added alsa dependency
+ 
+ -- Alban Peignier <alban.peignier@free.fr>  Thu,1 Dec 2005 10:00:00 +0100
+ 
+rivendell (0.9.55-0) unstable; urgency=low
+
+  * new upstream release
+ 
+ -- Alban Peignier <alban.peignier@free.fr>  Wed,12 Oct 2005 09:30:00 +0200
+
+rivendell (0.9.53-0) unstable; urgency=low
+
+  * added menus (patch from Federico Grau <grauf@rfa.org>)
+  * new upstream release
+ 
+ -- Alban Peignier <alban.peignier@free.fr>  Sat,01 Oct 2005 11:45:00 +0200
+
+rivendell (0.9.51-0) unstable; urgency=low
+
+  * new upstream release
+ 
+ -- Alban Peignier <alban.peignier@free.fr>  Wed,31 Aug 2005 22:30:00 +0200
+
+rivendell (0.9.49) unstable; urgency=low
+
+  * new upstream release
+ 
+ -- Alban Peignier <alban.peignier@free.fr>  Thu,18 Aug 2005 19:10:00 +0200
+
+rivendell (0.9.44) unstable; urgency=low
+
+  * new upstream release
+ 
+ -- Alban Peignier <alban.peignier@free.fr>  Sat,16 Jul 2005 13:30:00 +0200
+
+rivendell (0.9.39) unstable; urgency=low
+
+  * new upstream release
+ 
+ -- Alban Peignier <alban.peignier@free.fr>  Mon,11 Jul 2005 12:30:00 +0200
+
+rivendell (0.9.38) unstable; urgency=low
+
+  * new upstream release
+ 
+ -- Alban Peignier <alban.peignier@free.fr>  Thu,07 Jul 2005 10:30:00 +0200
+
+rivendell (0.9.34) unstable; urgency=low
+
+  * new upstream release
+ 
+ -- Alban Peignier <alban.peignier@free.fr>  Fri,03 Jun 2005 00:30:00 +0200
+
+rivendell (0.9.33+cvs20050523) unstable; urgency=low
+
+  * new upstream release
+ 
+ -- Alban Peignier <alban.peignier@free.fr>  Mon,23 May 2005 15:30:00 +0200
+
+rivendell (0.9.33) unstable; urgency=low
+
+  * new upstream release
+ 
+ -- Alban Peignier <alban.peignier@free.fr>  Sat,21 May 2005 11:50:00 +0200
+
+rivendell (0.9.32) unstable; urgency=low
+
+  * new upstream release
+ 
+ -- Alban Peignier <alban.peignier@free.fr>  Tue,10 May 2005 23:50:00 +0200
+
+rivendell (0.9.28+cvs20050430) unstable; urgency=low
+
+  * new upstream release
+ 
+ -- Alban Peignier <alban.peignier@free.fr>  Sat,30 Apr 2005 10:15:00 +0200
+
+rivendell (0.9.28) unstable; urgency=low
+
+  * new upstream release
+ 
+ -- Alban Peignier <alban.peignier@free.fr>  Wed,09 Mar 2005 10:30:00 +0100
+
+rivendell (0.9.26) unstable; urgency=low
+
+  * new upstream release
+ 
+ -- Alban Peignier <alban.peignier@free.fr>  Fri,18 Feb 2005 08:45:00 +0100
+
+rivendell (0.9.21) unstable; urgency=low
+
+  * new upstream release
+ 
+ -- Alban Peignier <alban.peignier@free.fr>  Sun,30 Jan 2005 23:20:00 +0100
+
+rivendell (0.9.17-1) unstable; urgency=low
+
+  * fixed the toolame dependency problem (notified by Richard Lamont)
+ 
+ -- Alban Peignier <alban.peignier@free.fr>  Sat,22 Jan 2005 14:40:00 +0100
+
+rivendell (0.9.17) unstable; urgency=low
+
+  * new upstream release
+ 
+ -- Alban Peignier <alban.peignier@free.fr>  Tue,18 Jan 2005 20:55:00 +0100
+
+rivendell (0.9.16) unstable; urgency=low
+
+  * new upstream release
+ 
+ -- Alban Peignier <alban.peignier@free.fr>  Tue,28 Dec 2004 10:00:00 +0100
+
+rivendell (0.9.15) unstable; urgency=low
+
+  * new upstream release
+ 
+ -- Alban Peignier <alban.peignier@free.fr>  Sat,18 Dec 2004 17:00:00 +0100
+
+rivendell (0.9.13+cvs20041216-1) unstable; urgency=low
+
+  * new upstream release
+ 
+ -- Alban Peignier <alban.peignier@free.fr>  Fri,17 Dec 2004 09:00:00 +0100
+
+rivendell (0.9.13+cvs20041209-1) unstable; urgency=low
+
+  * new upstream release
+  * use "rdadmin --check-db" into the init script
+ 
+ -- Alban Peignier <alban.peignier@free.fr>  Thu,09 Dec 2004 19:40:00 +0100
+
+rivendell (0.9.12+cvs20041207-1) unstable; urgency=low
+
+  * fixed a startup daemon problems, now use the AudioOwner defined into rd.conf
+ 
+ -- Alban Peignier <alban.peignier@free.fr>  Mon,07 Dec 2004 19:40:00 +0100
+
+rivendell (0.9.12+cvs20041206-1) unstable; urgency=low
+
+  * new upstream release
+ 
+ -- Alban Peignier <alban.peignier@free.fr>  Mon,06 Dec 2004 21:40:00 +0100
+
+rivendell (0.9.12+cvs20041124-1) unstable; urgency=low
+
+  * new upstream release
+ 
+ -- Alban Peignier <alban.peignier@free.fr>  Wed,24 Nov 2004 23:30:00 +0100
+
+rivendell (0.9.12+cvs20041124) unstable; urgency=low
+
+  * new upstream release
+ 
+ -- Alban Peignier <alban.peignier@free.fr>  Wed,24 Nov 2004 10:30:00 +0100
+
+rivendell (0.9.12+cvs20041118) unstable; urgency=low
+
+  * new upstream release
+ 
+ -- Alban Peignier <alban.peignier@free.fr>  Thu,18 Nov 2004 08:30:00 +0100
+
+rivendell (0.9.12) unstable; urgency=low
+
+  * new upstream release
+ 
+ -- Alban Peignier <alban.peignier@free.fr>  Tue,16 Nov 2004 09:30:00 +0100
+
+rivendell (0.9.11) unstable; urgency=low
+
+  * new upstream release
+ 
+ -- Alban Peignier <alban.peignier@free.fr>  Sat,13 Nov 2004 11:30:00 +0100
+
+rivendell (0.9.9) unstable; urgency=low
+
+  * new upstream release
+ 
+ -- Alban Peignier <alban.peignier@free.fr>  Mon,04 Nov 2004 20:00:00 +0100
+
+rivendell (0.9.4) unstable; urgency=low
+
+  * new upstream release
+ 
+ -- Alban Peignier <alban.peignier@free.fr>  Thu, 28 Oct 2004 12:00:00 +0200
+
+rivendell (0.9.0+cvs20040831-1) unstable; urgency=low
+
+  * docs directory now is packaged
+  * ChangeLog is now used as upstream changelog
+  * new upstream release
+ 
+ -- Alban Peignier <alban.peignier@free.fr>  Tue, 31 Aug 2004 14:15:00 +0200
+
+rivendell (0.9.0+cvs20040829-1) unstable; urgency=low
+
+  * add post installation operations to directories and a rivendell group
+  * add init.d script to start the daemon
+  * add configuration examples     
+  * new upstream release
+ 
+ -- Alban Peignier <alban.peignier@free.fr>  Sun, 29 Aug 2004 11:50:00 +0200
+
+rivendell (0.9.0-1) unstable; urgency=low
+             
+  * new upstream release
+ 
+ -- Alban Peignier <alban.peignier@free.fr>  Mon, 24 Aug 2004 22:50:00 +0200

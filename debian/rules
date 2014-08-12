@@ -1,0 +1,117 @@
+#!/usr/bin/make -f
+# Sample debian/rules that uses debhelper.
+# This file is public domain software, originally written by Joey Hess. 
+
+# Uncomment this to turn on verbose mode.
+#export DH_VERBOSE=1
+
+export QTDIR=/usr/share/qt3
+
+# Include dpatch stuff.
+PACKAGE=rivendell	
+include /usr/share/dpatch/dpatch.make
+
+configure: configure-stamp
+configure-stamp: patch-stamp
+	dh_testdir
+
+	[ -x ./autogen.sh ] && ./autogen.sh
+	./configure --libexecdir=/usr/lib/cgi-bin/rivendell/
+
+	touch configure-stamp
+
+build: build-stamp
+build-stamp: configure
+	dh_testdir
+
+	# Add here commands to compile the package.
+	$(MAKE)
+
+	touch build-stamp
+
+clean: clean-patched unpatch
+clean-patched:
+	dh_testdir
+	dh_testroot
+	rm -f build-stamp configure-stamp
+
+	# Add here commands to clean up after the build process.
+	-$(MAKE) clean
+	-$(MAKE) distclean
+
+	dh_clean
+
+install: build
+	dh_testdir
+	dh_testroot
+	dh_clean -k
+	dh_installdirs
+
+	# Add here commands to install the package into debian/<packagename>
+	$(MAKE) DESTDIR=`pwd`/debian/tmp prefix=/usr install-debian	
+#	rm -f `pwd`/debian/tmp/usr/bin/toolame
+
+	install -m 644 $(CURDIR)/debian/rdadmin.xpm $(CURDIR)/debian/tmp/usr/share/srlabs
+	install -m 644 $(CURDIR)/debian/rdairplay.xpm $(CURDIR)/debian/tmp/usr/share/srlabs
+	install -m 644 $(CURDIR)/debian/rdcatch.xpm $(CURDIR)/debian/tmp/usr/share/srlabs
+	install -m 644 $(CURDIR)/debian/rdlibrary.xpm $(CURDIR)/debian/tmp/usr/share/srlabs
+	install -m 644 $(CURDIR)/debian/rdlogedit.xpm $(CURDIR)/debian/tmp/usr/share/srlabs
+	install -m 644 $(CURDIR)/debian/rdlogin.xpm $(CURDIR)/debian/tmp/usr/share/srlabs
+	install -m 644 $(CURDIR)/debian/rdlogmanager.xpm $(CURDIR)/debian/tmp/usr/share/srlabs
+
+	# FIXME: there may be a better way to get this directory created...
+	install -d -m 755 $(CURDIR)/debian/tmp/usr/share/applications
+	install -m 644 $(CURDIR)/debian/rdadmin.desktop $(CURDIR)/debian/tmp/usr/share/applications
+	install -m 644 $(CURDIR)/debian/rdairplay.desktop $(CURDIR)/debian/tmp/usr/share/applications
+	install -m 644 $(CURDIR)/debian/rdcatch.desktop $(CURDIR)/debian/tmp/usr/share/applications
+	install -m 644 $(CURDIR)/debian/rdlibrary.desktop $(CURDIR)/debian/tmp/usr/share/applications
+	install -m 644 $(CURDIR)/debian/rdlogedit.desktop $(CURDIR)/debian/tmp/usr/share/applications
+	install -m 644 $(CURDIR)/debian/rdlogin.desktop $(CURDIR)/debian/tmp/usr/share/applications
+	install -m 644 $(CURDIR)/debian/rdlogmanager.desktop $(CURDIR)/debian/tmp/usr/share/applications
+
+	dh_install --sourcedir=debian/tmp --autodest
+
+# Build architecture-independent files here.
+binary-indep: build install
+# We have nothing to do by default.
+
+# Build architecture-dependent files here.
+binary-arch: build install
+	dh_testdir
+	dh_testroot
+	dh_installchangelogs ChangeLog
+	#
+	cat debian/rivendell.docs.in > debian/rivendell.docs
+	find docs -type f -and ! \( -regex ".*CVS.*" -or -regex ".*Makefile.*" \) >> debian/rivendell.docs
+	dh_installdocs
+	#dh_installdocs -X CVS -X Makefile
+	#
+	dh_installexamples
+#	dh_install
+	dh_installmenu
+	dh_installdebconf
+	dh_installlogrotate
+#	dh_installemacsen
+#	dh_installcatalogs
+#	dh_installpam
+#	dh_installmime
+	dh_installinit
+#	dh_installcron
+#	dh_installinfo
+#	dh_undocumented
+	dh_installman
+	dh_link
+	dh_strip
+	dh_compress
+	dh_fixperms
+#	dh_perl
+#	dh_python
+	dh_makeshlibs
+	dh_installdeb
+	dh_shlibdeps -ldebian/librivendell/usr/lib
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
+
+binary: binary-indep binary-arch
+.PHONY: build clean binary-indep binary-arch binary install

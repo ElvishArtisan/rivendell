@@ -1,0 +1,17 @@
+                  PANELS Table Layout for Rivendell
+
+The PANELS table holds configuration data for all the SoundPanels in
+Rivendell.  Following is the layout of a record in the PANELS table:
+
+FIELD NAME           TYPE              REMARKS
+------------------------------------------------------------------------------
+ID                   int(10) unsigned  * Primary key, Auto Increment
+TYPE                 int(11)           0=Station Panel, 1=User Panel
+OWNER                char(64)
+PANEL_NO             int(11)
+ROW_NO               int(11)
+COLUMN_NO            int(11)
+LABEL                char(64)
+CART                 int(11)
+DEFAULT_COLOR        char(7)           Background color, in hex format 
+                                       "#RRGGBB".

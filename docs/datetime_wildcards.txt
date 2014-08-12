@@ -1,0 +1,122 @@
+                      Rivendell Date/Time Wildcards
+
+A date/time wildcard in Rivendell has the following form:
+
+  %<meta-char><fmt-char>
+
+where:
+
+  % -- A literal '%'
+
+<meta-char> -- Optional.  One of the following meta-characters:
+    ^ -- Convert value indicated by <fmt-char> to all uppercase.
+    $ -- Convert the initial character of the value indicated by <fmt-char>
+         to uppercase.
+
+<fmt-char> -- One of the following letters:
+
+    a -- Abbreviated weekday name --e.g. 'mon', 'tue'
+
+    A -- Full weekday name --e.g. 'monday', 'tuesday'
+
+    b -- Abbreviated month name --e.g. 'jan', 'feb'
+
+    B -- Full month name --e.g. 'january', 'february'
+
+    c -- [unassigned]
+
+    C -- Century
+
+    d -- Day of the month, zero padded (01 - 31)
+
+    D -- Date (mm/dd/yy)
+
+    e -- Day of the month, space padded ( 1 - 12)
+
+    E -- Day of the month, unpadded (1 - 12)
+
+    f -- [unassigned]
+
+    F -- Date (yyyy-mm-dd)
+
+    g -- Two digit year, as per ISO 8601
+
+    G -- Four digit year, as per ISO 8601
+
+    h -- Abbreviated month name --e.g. 'jan', 'feb'
+
+    H -- Hour, 24 hour, zero padded (00 - 23)
+
+    i -- Hour, 12 hour, space padded ( 0 - 12)
+
+    I -- Hour, 12 hour, zero padded (00 - 12)
+
+    j -- Day of year, zero padded (000 - 355)
+
+    J -- Hour, 12 hour, unpadded (1 - 12)
+
+    k -- Hour, 24 hour, space padded ( 0 - 23)
+
+    K -- [unassigned]
+
+    l -- [unassigned]
+
+    L -- [unassigned]
+
+    m -- Month, zero padded (01 - 12)
+
+    M -- Minute, zero padded (00 - 59)
+
+    n -- [unassigned]
+
+    N -- [unassigned]
+
+    o -- [unassigned]
+
+    O -- [unassigned]
+
+    p -- AM/PM string
+
+    P -- [unassigned]
+
+    q -- [unassigned]
+
+    Q -- [unassigned]
+
+    r -- [unassigned]
+
+    R -- [unassigned]
+
+    s -- [unassigned]
+
+    S -- Seconds, zero padded (00 - 60)
+
+    t -- [unassigned]
+
+    T -- [unassigned]
+
+    u -- Day of the week, numeric, 1=Monday, 7=Sunday
+
+    U -- [unassigned]
+
+    v -- [unassigned]
+
+    V -- Week number, as per ISO 8601
+
+    w -- Day of the week, numeric, 0=Sunday,6=Saturday
+
+    W -- Week number, as per ISO 8601
+
+    x -- [unassigned]
+
+    X -- [unassigned]
+
+    y -- Two digit year
+
+    Y -- Four digit year
+
+    z -- [unassigned]
+
+    Z -- [unassigned]
+
+    % -- A literal '%'.

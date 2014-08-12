@@ -1,0 +1,82 @@
+#!/bin/bash
+
+# rd_audio_sync
+#
+# Syncronize a Rivendell audio archive with the master server.
+#
+#   (C) Copyright 2004 Fred Gleason <fredg@paravelsystems.com>
+#
+#      $Id: rd_audio_sync,v 1.4 2007/05/16 21:07:08 grauf Exp $
+#
+#   This program is free software; you can redistribute it and/or modify
+#   it under the terms of the GNU General Public License version 2 as
+#   published by the Free Software Foundation.
+#
+#   This program is distributed in the hope that it will be useful,
+#   but WITHOUT ANY WARRANTY; without even the implied warranty of
+#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#   GNU General Public License for more details.
+#
+#   You should have received a copy of the GNU General Public
+#   License along with this program; if not, write to the Free Software
+#   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+#
+# Usage:
+#  rd_audio_sync <master-hostname>
+#
+
+#
+# Configuration and Paths
+#
+MODULE_NAME=rivendell
+CHECK_FILE=repl.chk
+BACKUP_DIR=/var/snd.standby
+NICE_ADJ=15
+RSYNC=/usr/bin/rsync
+NICE=/usr/bin/nice
+
+#
+# Check that rd_audio_sync is not already running
+#
+lockdir=/var/tmp/rd_audio_sync.lock
+if mkdir "$lockdir" 2> /dev/null ; then
+        #echo >&2 "successfully acquired lock"
+
+        # Remove lockdir when the script finishes, or when it receives a signal
+        trap 'rm -rf "$lockdir"' 0    # remove directory when script finishes
+        trap "exit 2" 1 2 3 15        # terminate script when receiving signal
+else
+        echo >&2 "cannot acquire lock, giving up on $lockdir"
+        exit 0
+fi
+
+#
+# Check that the master is alive and well
+#
+$RSYNC $1::$MODULE_NAME/$CHECK_FILE > /dev/null 2> /dev/null
+if [ $? -ne 0 ] ; then
+   echo "rd_audio_sync: check file not found, aborting"
+  exit 1
+fi
+
+#
+# Replicate
+#
+$NICE -n $NICE_ADJ $RSYNC --times --dirs --delete $1::$MODULE_NAME/*.wav $BACKUP_DIR > /dev/null 2> /dev/null
+if [ $? -ne 0 ] ; then
+  echo "rd_audio_sync: replication returned an error, check rsyncd logs"
+  exit 2
+fi
+
+#
+# Cleanup partially transferred files left by buggy versions of rsync (i.e. 2.6.8)
+#
+$NICE -n $NICE_ADJ rm $BACKUP_DIR/.*wav.* 2> /dev/null
+
+exit 0
+
+
+# End of rd_audio_sync
+
+
+

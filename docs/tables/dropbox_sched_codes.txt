@@ -1,0 +1,11 @@
+               DROPBOX_SCHED_CODES Table Layout for Rivendell
+
+The DROPBOX_SCHED_CODES table holds the scheduler codes to be applied for
+each dropbox.
+
+FIELD NAME                   TYPE          REMARKS
+-------------------------------------------------------------------------
+ID                           int(11)       Primary Key, Not Null, Unique
+                                           Auto-Increment
+DROPBOX_ID                   int(11)       From DROPBOXES.ID
+SCHED_CODE                   char(11)

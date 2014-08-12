@@ -1,0 +1,21 @@
+               REPLICATORS Table Layout for Rivendell
+
+The REPLICATORS table holds data concerning each individual replicator
+configuration on the system.
+
+FIELD NAME           TYPE              REMARKS
+------------------------------------------------------------------
+NAME                 char(32)          not null, primary key
+DESCRIPTION          char(64)
+TYPE_ID              int(10) unsigned  not null
+STATION_NAME         char(64)          from STATIONS.NAME
+FORMAT               int(10) unsigned
+CHANNELS             int(10) unsigned
+SAMPRATE             int(10) unsigned
+BITRATE              int(10) unsigned
+QUALITY              int(10) unsigned
+URL                  char(255)
+URL_USERNAME         char(64)
+URL_PASSWORD         char(64)
+ENABLE_METADATA      enum('N','Y')
+NORMALIZATION_LEVEL  int(11) signed

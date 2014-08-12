@@ -1,0 +1,133 @@
+; rd.conf
+;
+; This is the default configuration file for Rivendell
+;
+; by Fred Gleason <fredg@paravelsystems.com>
+;
+
+[Identity]
+; These entries are used to define the system user and group that will
+; own the audio files.
+AudioOwner=rivendell
+AudioGroup=rivendell
+
+; This password is used by the various Rivendell modules to log into 
+; Rivendell system services [caed(8), ripcd(8), rdcatchd(8)].
+Password=letmein
+
+; This entry is what will appear in RDSelect's list for this configuration.
+Label=Default (Local)
+
+[mySQL]
+; The connection parameters for the MySQL server.
+Hostname=localhost
+Loginname=rduser
+Password=letmein
+Database=Rivendell
+Driver=QMYSQL3
+
+[AudioStore]
+MountSource=
+MountType=
+MountOptions=defaults
+CaeHostname=
+XportHostname=
+
+[Logs]
+; Set the method to be used for logging.  Possible values are:
+;  Syslog = Use the syslog facility.
+;    File = Log directly to a file.  See also the 'LogDirectory='
+;           and 'LogPattern=' parameters below.
+;    None = Don't generate logs at all.
+Facility=Syslog
+
+; The directory to write logs to.  Used only if the 'Facility=' 
+; parameter is set to 'File'.
+LogDirectory=/home/rd/rdlogs
+
+; The directory to to put core files in in the event of a daemon
+; crash.  For this to work, you must also configure your environment
+; to allow the generation of core dumps (e.g. 'ulimit -c unlimited').
+CoreDumpDirectory=/home/rd/rdlogs
+
+; The name of the file to send logs to.  The following wildcards can
+; be used:
+;  %d - The day of the month (01 - 31)
+;  %h - The hour (00 - 23)
+;  %M - The month (01 - 12)
+;  %m - The minute (00 - 59)
+;  %n - The name of the originating module --e.g. 'rdairplay', 'caed'.
+;  %s - The second (00 - 60)
+;  %Y - The four digit year
+; This parameter is used only if the 'Facility=' parameter is set to
+; 'File'.
+LogPattern=%n-%Y%M%d.log
+
+; Log upload/download debug data.  You generally want to enable this only
+; when debugging a specific upload/download problem, as *lots* of data
+; can be generated.  Valid arguments are 'Yes' or 'No'.
+LogXloadDebugData=No
+
+[Alsa]
+; ALSA Parameters
+; (It should seldom be necessary to tweak these)
+PeriodQuantity=4
+PeriodSize=1024
+ChannelsPerPcm=-1
+
+; [SoftKeys]
+;
+; This section can be used to program the RDSoftKeys applet, or you
+; can use the --map-file=<filename> switch to configure multiple soft
+; key setups on the same host.
+; 
+; Columns=10
+;
+; Command1=hithlum.srlabs.loc:GO 3 1 1 0!
+; Legend1=Telos 1 ON
+; Color1=red
+; 
+; Command2=hithlum.srlabs.loc:GO 3 2 1 0!
+; Legend2=Telos 2 ON
+; Color2=red
+;
+
+[Tuning]
+; This section defines the realtime parameters used when running
+; audio components.  Normally, these are useful only for debugging.
+UseRealtime=Yes
+RealtimePriority=9
+
+[Format]
+; This value is used when testing and developing new features in the
+; audio drivers.  It should never be altered on a production system.
+Channels=2
+
+[Hacks]
+; If you are getting no output level meter indications with an older
+; ASI card (such as the ASI4215, ASI4113 or ASI4111), try uncommenting
+; the following line:
+; UseStreamMeters=Yes
+
+; Completely disable maintenance checks on this host.
+; DisableMaintChecks=Yes
+
+;
+; Log Generation (old method, deprecated)
+;
+;  These sections are here strictly for backward compatibility.  See
+;  the [Logs] section for a much more powerful way to configure
+;  logging.
+;
+; [RDAirPlay]
+; Logfile=/home/rd/rdairplay.log
+;
+; [RDCatchd]
+; Logfile=/home/rd/rdcatchd.log
+;
+; [Ripcd]
+; Logfile=/home/rd/ripcd.log
+;
+; [Caed]
+; Logfile=/home/rd/caed.log
+; EnableMixerLogging=No

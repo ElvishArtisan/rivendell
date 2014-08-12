@@ -1,0 +1,70 @@
+          Usage Notes for the 'rivendell_filter' Import Script.
+
+Rivendell_filter is a script designed to be used to import existing audio
+and meta-data from another Rivendell system.  It is invoked as follows:
+
+USAGE
+
+rivendell_filter -h <hostname> -u <username> -p <password> -A <audio-dir>
+-g <default-group> -s <start-cartnum> -e <end-cartnum>
+Where:
+       <hostname> = The MySQL hostname of the source Rivendell database.
+
+       <username> = The MySQL username of the source Rivendell database.
+
+       <password> = The MySQL password of the source Rivendell database.
+
+      <audio-dir> = The name of the directory containing the source
+                    Rivendell audio files.
+
+  <default-group> = The name of the group in which to place carts
+                    belonging to a source Group for which there
+                    is no corresponding destination Group.
+
+  <start-cartnum> = The first cart in the range of those to be transferred.
+
+    <end-cartnum> = The last cart in the range of those to be trasnferred.
+
+OVERVIEW
+In order transfer carts from an external Rivendell system, proceed as
+follows:
+
+1) CREATE RIVENDELL GROUPS
+In RDAdmin->ManageGroups, create a Group to correspond to each Rivendell
+Group that exists in the library to be imported, and an additional
+group to catch any carts that may not have a corresponding Group.
+
+2) LOCATE THE EXTERNAL RIVENDELL DATABASE AND AUDIO FILES
+The directory containing the audio files can be mounted from a remote
+system if needs be.  Read-only access is adequate (and in fact recommended),
+as the script does not modify these items in any way.
+
+3) VERIFY AVAILABLE DISK SPACE
+Verify that enough disk space is available in the '/var/snd/'
+directory of the destination system to accomodate the audio to be 
+imported.  You should have at least the amount of space currently occupied
+by the source files, plus 5 percent additional.  
+
+4) INVOKE SCRIPT
+Start up the script, as described in the USAGE section above.  The
+script will print progress reports as it proceeds, or notify you of
+error conditions as required.
+
+WARNING
+If a cart from the source system has the same number as one one the
+destination, the destination cart (data and *all* audio) will be overwritten!
+
+NOTE ON AUDIO PROCESSING
+Rivendell_filter does not alter or reencode the audio sample data in any
+way, and thus does *not* incurr any generation or transcoding loss of
+quality.  At the same time, this means that the incoming audio will be
+brought into the new Rivendell system *exactly* as it exists in the 
+source system, with all parameters (e.g. sample rate, bit rate, level,
+etc) unaltered.  If you need to alter one or more of these parameters as
+part of the import process, we suggest you use the RDImport script
+instead.
+
+NOTE ON GROUP ASSIGNMENTS
+WARNING: Rivendell_filter makes no attempt to enforce group numbering rules!
+If a group to which a given source cart belongs exists on the destination
+system, the cart will be placed in that group, regardless of numbering rules.

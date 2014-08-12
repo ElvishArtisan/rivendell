@@ -1,0 +1,12 @@
+                  TRIGGERS Table Layout for Rivendell
+
+The TRIGGERS table holds data concerning all triggers on the system.
+Following is the layout of a record in the SERVICES table:
+
+FIELD NAME           TYPE               REMARKS
+-------------------------------------------------------------------------
+ID                   int(10) unsigned   Primary Key, Autoincrement
+CUT_NAME             char(12)           Indexed
+TRIGGER_CODE         int(10) unsigned
+OFFSET               int(10)            Location
+

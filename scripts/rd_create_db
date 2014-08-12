@@ -1,0 +1,771 @@
+# create_db
+#
+# Create and initialize a new database for Rivendell.
+#
+#   (C) Copyright 2002-2003 Fred Gleason <fredg@paravelsystems.com>
+#
+#      $Id: rd_create_db,v 1.25 2007/02/14 21:59:12 fredg Exp $
+#
+#   This program is free software; you can redistribute it and/or modify
+#   it under the terms of the GNU General Public License version 2 as
+#   published by the Free Software Foundation.
+#
+#   This program is distributed in the hope that it will be useful,
+#   but WITHOUT ANY WARRANTY; without even the implied warranty of
+#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#   GNU General Public License for more details.
+#
+#   You should have received a copy of the GNU General Public
+#   License along with this program; if not, write to the Free Software
+#   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+#
+
+#
+# Site Configuration
+#
+
+#
+# Rivendell mySQL Application Account
+#
+RD_USER=rduser@localhost
+RD_PASSWORD=letmein
+
+#
+# Default Rivendell Administrator 
+#
+RDA_LOGIN_NAME=admin
+RDA_PASSWORD=
+RDA_FULL_NAME="System Administrator"
+RDA_DESCRIPTION="Default Administrator Account"
+
+#
+# Default Rivendell User
+#
+USER_LOGIN_NAME=user
+USER_PASSWORD=
+USER_FULL_NAME="Rivendell User"
+USER_DESCRIPTION="Default User Account"
+
+#
+# Default Rivendell Service
+#
+RD_SVC_NAME="Production"
+RD_SVC_DESC="Default Audio Service"
+
+#
+# Rivendell Audio Repository
+#
+RD_AUDIO_ROOT=/var/snd
+
+# Nothing should need to be changed below here!
+# ############################################################################
+
+# ############################################################################
+# Create a Rivendell Database
+# ############################################################################
+function CreateDB {
+#
+# Create the database
+#
+mysql -u $USER -p$PASSWORD -e"CREATE DATABASE IF NOT EXISTS Rivendell"
+
+#
+# Set Security Privledges
+#
+mysql -u $USER -p$PASSWORD -e"USE Rivendell;
+    GRANT ALL ON * TO $RD_USER IDENTIFIED BY \"$RD_PASSWORD\""
+
+#
+# Create USERS table
+#
+mysql -u $USER -p$PASSWORD -e"USE Rivendell;
+CREATE TABLE IF NOT EXISTS USERS (
+    LOGIN_NAME CHAR(8) NOT NULL PRIMARY KEY,
+    FULL_NAME CHAR(64),
+    PHONE_NUMBER CHAR(20),
+    DESCRIPTION CHAR(255),
+    PASSWORD CHAR(32) NOT NULL,
+    ADMIN_USERS_PRIV ENUM('N','Y') NOT NULL DEFAULT 'N',
+    ADMIN_CONFIG_PRIV ENUM('N','Y') NOT NULL DEFAULT 'N',
+    CREATE_CARTS_PRIV ENUM('N','Y') NOT NULL DEFAULT 'N',
+    DELETE_CARTS_PRIV ENUM('N','Y') NOT NULL DEFAULT 'N',
+    MODIFY_CARTS_PRIV ENUM('N','Y') NOT NULL DEFAULT 'N',
+    EDIT_AUDIO_PRIV ENUM('N','Y') NOT NULL DEFAULT 'N',
+    ASSIGN_CART_PRIV ENUM('N','Y') NOT NULL DEFAULT 'N',
+    CREATE_LOG_PRIV ENUM('N','Y') NOT NULL DEFAULT 'N',
+    DELETE_LOG_PRIV ENUM('N','Y') NOT NULL DEFAULT 'N',
+    PLAYOUT_LOG_PRIV ENUM('N','Y') NOT NULL DEFAULT 'N',
+    ARRANGE_LOG_PRIV ENUM('N','Y') NOT NULL DEFAULT 'N',
+    ADDTO_LOG_PRIV ENUM('N','Y') NOT NULL DEFAULT 'N',
+    REMOVEFROM_LOG_PRIV ENUM('N','Y') NOT NULL DEFAULT 'N',
+    EDIT_CATCHES_PRIV ENUM('N','Y') NOT NULL DEFAULT 'N',
+    INDEX FULL_NAME_IDX (FULL_NAME)
+)"
+mysql -u $USER -p$PASSWORD -e"USE Rivendell;
+    GRANT ALL ON USERS TO $RD_USER IDENTIFIED BY \"$RD_PASSWORD\""
+
+#
+# Create STATIONS table
+#
+mysql -u $USER -p$PASSWORD -e"USE Rivendell;
+      CREATE TABLE IF NOT EXISTS STATIONS (
+      NAME CHAR(64) PRIMARY KEY NOT NULL,
+      DESCRIPTION CHAR(64),
+      USER_NAME CHAR(8),
+      DEFAULT_NAME CHAR(8),
+      INDEX DESCRIPTION_IDX (DESCRIPTION)
+)"
+mysql -u $USER -p$PASSWORD -e"USE Rivendell;
+      GRANT ALL ON STATIONS TO $RD_USER IDENTIFIED BY \"$RD_PASSWORD\""
+
+#
+# Create CART table
+#
+mysql -u $USER -p$PASSWORD -e"USE Rivendell;
+      CREATE TABLE IF NOT EXISTS CART (
+      NUMBER INT UNSIGNED NOT NULL PRIMARY KEY,
+      TYPE INT UNSIGNED NOT NULL,
+      GROUP_NAME CHAR(10) NOT NULL,
+      TITLE CHAR(255),
+      ARTIST CHAR(255),
+      ALBUM CHAR(255),
+      YEAR DATE,
+      ISRC CHAR(12),
+      LABEL CHAR(64),
+      CLIENT CHAR(64),
+      AGENCY CHAR(64),
+      USER_DEFINED CHAR(255),
+      FORCED_LENGTH INT UNSIGNED,
+      CUT_QUANTITY INT UNSIGNED,
+      LAST_CUT_PLAYED INT UNSIGNED,
+      PLAY_ORDER INT UNSIGNED,
+      START_DATETIME DATETIME,
+      END_DATETIME DATETIME,
+      ENFORCE_LENGTH ENUM('N','Y') DEFAULT 'N',
+      PRESERVE_PITCH ENUM('N','Y') DEFAULT 'N',
+      INDEX GROUP_NAME_IDX (GROUP_NAME),
+      INDEX TITLE_IDX (TITLE),
+      INDEX ARTIST_IDX (ARTIST),
+      INDEX ALBUM_IDX (ALBUM),
+      INDEX LABEL_IDX (LABEL),
+      INDEX CLIENT_IDX (CLIENT),
+      INDEX AGENCY_IDX (AGENCY),
+      INDEX USER_DEFINED_IDX (USER_DEFINED)
+)"
+mysql -u $USER -p$PASSWORD -e"USE Rivendell;
+      GRANT ALL ON CART TO $RD_USER IDENTIFIED BY \"$RD_PASSWORD\""
+
+#
+# Create CUTS table
+#
+mysql -u $USER -p$PASSWORD -e"USE Rivendell;
+      CREATE TABLE IF NOT EXISTS CUTS (
+      CUT_NAME CHAR(12) PRIMARY KEY NOT NULL,
+      CART_NUMBER INT UNSIGNED NOT NULL,
+      DESCRIPTION CHAR(64),
+      OUTCUE CHAR(64),
+      LENGTH INT UNSIGNED,
+      ORIGIN_DATETIME DATETIME DEFAULT '0/0/0000 24:00:00',
+      START_DATETIME DATETIME DEFAULT '0/0/0000 24:00:00',
+      END_DATETIME DATETIME DEFAULT '0/0/0000 24:00:00',
+      START_DAYPART TIME DEFAULT '24:00:00',
+      END_DAYPART TIME DEFAULT '24:00:00',
+      ORIGIN_NAME CHAR(64),
+      WEIGHT INT UNSIGNED DEFAULT 1,
+      LAST_PLAY_DATETIME DATETIME,
+      PLAY_COUNTER INT UNSIGNED DEFAULT 0,
+      CODING_FORMAT INT UNSIGNED,
+      SAMPLE_RATE INT UNSIGNED,
+      BIT_RATE INT UNSIGNED,
+      CHANNELS INT UNSIGNED,
+      PLAY_GAIN INT DEFAULT 0,
+      START_POINT INT DEFAULT -1,
+      END_POINT INT DEFAULT -1,
+      FADEUP_POINT INT DEFAULT -1,
+      FADEDOWN_POINT INT DEFAULT -1,
+      SEGUE_START_POINT INT DEFAULT -1,
+      SEGUE_END_POINT INT DEFAULT -1,
+      HOOK_START_POINT INT DEFAULT -1,
+      HOOK_END_POINT INT DEFAULT -1,
+      TALK_START_POINT INT DEFAULT -1,
+      TALK_END_POINT INT DEFAULT -1,
+      INDEX CART_NUMBER_IDX (CART_NUMBER),
+      INDEX DESCRIPTION_IDX (DESCRIPTION),
+      INDEX OUTCUE_IDX (OUTCUE),
+      INDEX ORIGIN_DATETIME_IDX (ORIGIN_DATETIME),
+      INDEX START_DATETIME_IDX (START_DATETIME),
+      INDEX END_DATETIME_IDX (END_DATETIME)
+)"
+mysql -u $USER -p$PASSWORD -e"USE Rivendell;
+      GRANT ALL ON CUTS TO $RD_USER IDENTIFIED BY \"$RD_PASSWORD\""
+
+#
+# Create CLIPBOARD table
+#
+mysql -u $USER -p$PASSWORD -e"USE Rivendell;
+      CREATE TABLE IF NOT EXISTS CLIPBOARD (
+      CUT_NAME CHAR(12) PRIMARY KEY NOT NULL,
+      CART_NUMBER INT UNSIGNED NOT NULL,
+      DESCRIPTION CHAR(64),
+      OUTCUE CHAR(64),
+      LENGTH INT UNSIGNED,
+      ORIGIN_DATETIME DATETIME,
+      ORIGIN_NAME CHAR(64),
+      WEIGHT INT UNSIGNED DEFAULT 1,
+      LAST_PLAY_DATETIME DATETIME,
+      PLAY_COUNTER INT UNSIGNED DEFAULT 0,
+      CODING_FORMAT INT UNSIGNED,
+      SAMPLE_RATE INT UNSIGNED,
+      BIT_RATE INT UNSIGNED,
+      CHANNELS INT UNSIGNED,
+      PLAY_GAIN INT DEFAULT 0,
+      START_POINT INT DEFAULT -1,
+      END_POINT INT DEFAULT -1,
+      FADEUP_POINT INT DEFAULT -1,
+      FADEDOWN_POINT INT DEFAULT -1,
+      SEGUE_START_POINT INT DEFAULT -1,
+      SEGUE_END_POINT INT DEFAULT -1,
+      HOOK_START_POINT INT DEFAULT -1,
+      HOOK_END_POINT INT DEFAULT -1,
+      TALK_START_POINT INT DEFAULT -1,
+      TALK_END_POINT INT DEFAULT -1,
+      INDEX CART_NUMBER_IDX (CART_NUMBER),
+      INDEX DESCRIPTION_IDX (DESCRIPTION),
+      INDEX OUTCUE_IDX (OUTCUE)
+)"
+mysql -u $USER -p$PASSWORD -e"USE Rivendell;
+      GRANT ALL ON CLIPBOARD TO $RD_USER IDENTIFIED BY \"$RD_PASSWORD\""
+
+#
+# Create SERVICES table
+#
+mysql -u $USER -p$PASSWORD -e"USE Rivendell;
+      CREATE TABLE IF NOT EXISTS SERVICES (
+      NAME CHAR(10) NOT NULL PRIMARY KEY,
+      DESCRIPTION CHAR(255)
+)"
+mysql -u $USER -p$PASSWORD -e"USE Rivendell;
+      GRANT ALL ON SERVICES TO $RD_USER IDENTIFIED BY \"$RD_PASSWORD\""
+
+#
+# Create GROUPS table
+#
+mysql -u $USER -p$PASSWORD -e"USE Rivendell;
+      CREATE TABLE IF NOT EXISTS GROUPS (
+      NAME CHAR(10) NOT NULL PRIMARY KEY,
+      DESCRIPTION CHAR(255)
+)"
+mysql -u $USER -p$PASSWORD -e"USE Rivendell;
+      GRANT ALL ON GROUPS TO $RD_USER IDENTIFIED BY \"$RD_PASSWORD\""
+
+#
+# Create AUDIO_PERMS table
+#
+mysql -u $USER -p$PASSWORD -e"USE Rivendell;
+      CREATE TABLE IF NOT EXISTS AUDIO_PERMS (
+      ID INT UNSIGNED AUTO_INCREMENT NOT NULL PRIMARY KEY,
+      GROUP_NAME CHAR(10),
+      SERVICE_NAME CHAR(10),
+      INDEX GROUP_IDX (GROUP_NAME),
+      INDEX SERVICE_IDX (SERVICE_NAME)
+)"
+mysql -u $USER -p$PASSWORD -e"USE Rivendell;
+      GRANT ALL ON AUDIO_PERMS TO $RD_USER IDENTIFIED BY \"$RD_PASSWORD\""
+
+#
+# Create RDLIBRARY table
+#
+mysql -u $USER -p$PASSWORD -e"USE Rivendell;
+      CREATE TABLE IF NOT EXISTS RDLIBRARY (
+      ID INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+      STATION CHAR(40) NOT NULL,
+      INSTANCE INT UNSIGNED NOT NULL,
+      INPUT_CARD INT DEFAULT -1,
+      INPUT_STREAM INT DEFAULT -1,
+      INPUT_PORT INT DEFAULT -1,
+      INPUT_TYPE ENUM('A','D') DEFAULT 'A',
+      OUTPUT_CARD INT DEFAULT -1,
+      OUTPUT_STREAM INT DEFAULT -1,
+      OUTPUT_PORT INT DEFAULT -1,
+      VOX_THRESHOLD INT DEFAULT -5000,
+      TRIM_THRESHOLD INT DEFAULT -3000,
+      RECORD_GPI INT DEFAULT -1,
+      PLAY_GPI INT DEFAULT -1,
+      STOP_GPI INT DEFAULT -1,
+      DEFAULT_FORMAT INT UNSIGNED DEFAULT 0,
+      DEFAULT_CHANNELS INT UNSIGNED DEFAULT 2,
+      DEFAULT_SAMPRATE INT UNSIGNED DEFAULT 44100,
+      DEFAULT_LAYER INT UNSIGNED DEFAULT 0,
+      DEFAULT_BITRATE INT UNSIGNED DEFAULT 0,
+      DEFAULT_RECORD_MODE INT UNSIGNED DEFAULT 0,
+      DEFAULT_TRIM_STATE ENUM('N','Y') DEFAULT 'N',
+      MAXLENGTH INT,
+      TAIL_PREROLL INT UNSIGNED DEFAULT 1500,
+      RIPPER_DEVICE CHAR(64) DEFAULT \"/dev/cdrom\",
+      PARANOIA_LEVEL INT DEFAULT 0,
+      RIPPER_LEVEL INT DEFAULT 0,
+      CDDB_SERVER CHAR(64) DEFAULT \"freedb.freedb.org\",
+      INDEX STATION_IDX (STATION,INSTANCE)
+)"
+mysql -u $USER -p$PASSWORD -e"USE Rivendell;
+      GRANT ALL ON RDLIBRARY TO $RD_USER IDENTIFIED BY \"$RD_PASSWORD\""
+
+#
+# Create TRIGGERS table
+#
+mysql -u $USER -p$PASSWORD -e"USE Rivendell;
+      CREATE TABLE IF NOT EXISTS TRIGGERS (
+      ID INT UNSIGNED AUTO_INCREMENT NOT NULL PRIMARY KEY,
+      CUT_NAME CHAR(12),
+      TRIGGER_CODE INT UNSIGNED,
+      OFFSET INT UNSIGNED,
+      INDEX CUT_NAME_IDX (CUT_NAME)
+)"
+mysql -u $USER -p$PASSWORD -e"USE Rivendell;
+      GRANT ALL ON TRIGGERS TO $RD_USER IDENTIFIED BY \"$RD_PASSWORD\""
+
+#
+# Create TTYS table
+#
+mysql -u $USER -p$PASSWORD -e"USE Rivendell;
+      CREATE TABLE IF NOT EXISTS TTYS (
+      ID INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+      PORT_ID INT UNSIGNED NOT NULL,
+      ACTIVE ENUM('N','Y') NOT NULL DEFAULT 'N',
+      STATION_NAME CHAR(64) NOT NULL,
+      PORT CHAR(20),
+      BAUD_RATE INT DEFAULT 9600,
+      DATA_BITS INT DEFAULT 8,
+      STOP_BITS INT DEFAULT 1,      
+      PARITY INT DEFAULT 0,
+      TERMINATION INT DEFAULT 0,
+      INDEX STATION_NAME_IDX (STATION_NAME),
+      INDEX ACTIVE_IDX (ACTIVE),
+      INDEX PORT_ID_IDX (PORT_ID)
+)"
+mysql -u $USER -p$PASSWORD -e"USE Rivendell;
+      GRANT ALL ON TTYS TO $RD_USER IDENTIFIED BY \"$RD_PASSWORD\""
+
+#
+# Create DECKS table
+#
+mysql -u $USER -p$PASSWORD -e"USE Rivendell;
+      CREATE TABLE IF NOT EXISTS DECKS (
+      ID INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+      STATION_NAME CHAR(64) NOT NULL,
+      CHANNEL INT UNSIGNED NOT NULL,
+      CARD_NUMBER INT DEFAULT -1,
+      STREAM_NUMBER INT DEFAULT -1,
+      PORT_NUMBER INT DEFAULT -1,
+      PORT_TYPE ENUM('A','D') DEFAULT 'A',
+      DEFAULT_FORMAT INT DEFAULT 0,
+      DEFAULT_CHANNELS INT DEFAULT 2,
+      DEFAULT_SAMPRATE INT DEFAULT 44100,
+      DEFAULT_BITRATE INT DEFAULT 0,
+      DEFAULT_THRESHOLD INT DEFAULT 0,
+      SWITCH_TYPE INT DEFAULT 0,
+      TTY_ID INT,
+      INDEX STATION_NAME_IDX (STATION_NAME),
+      INDEX CHANNEL_IDX (CHANNEL)
+)"
+mysql -u $USER -p$PASSWORD -e"USE Rivendell;
+      GRANT ALL ON DECKS TO $RD_USER IDENTIFIED BY \"$RD_PASSWORD\""
+
+#
+# Create SOURCES table
+#
+mysql -u $USER -p$PASSWORD -e"USE Rivendell;
+      CREATE TABLE IF NOT EXISTS SOURCES (
+      ID INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+      STATION_NAME CHAR(64) NOT NULL,
+      CHANNEL INT UNSIGNED NOT NULL,
+      SOURCE_NAME CHAR(64) NOT NULL,
+      SERIAL_COMMAND CHAR(64),
+      GPO_LINE INT UNSIGNED,
+      INDEX STATION_NAME_IDX (STATION_NAME),
+      INDEX CHANNEL_IDX (CHANNEL),
+      INDEX SOURCE_NAME_IDX (SOURCE_NAME)
+)"
+mysql -u $USER -p$PASSWORD -e"USE Rivendell;
+      GRANT ALL ON SOURCES TO $RD_USER IDENTIFIED BY \"$RD_PASSWORD\""
+
+#
+# Create RECORDINGS table
+#
+mysql -u $USER -p$PASSWORD -e"USE Rivendell;
+      CREATE TABLE IF NOT EXISTS RECORDINGS (
+      ID INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+      STATION_NAME CHAR(64) NOT NULL,
+      CHANNEL INT UNSIGNED NOT NULL,
+      CUT_NAME CHAR(12) NOT NULL,
+      SUN ENUM('N','Y') DEFAULT 'N',
+      MON ENUM('N','Y') DEFAULT 'N',
+      TUE ENUM('N','Y') DEFAULT 'N',
+      WED ENUM('N','Y') DEFAULT 'N',
+      THU ENUM('N','Y') DEFAULT 'N',
+      FRI ENUM('N','Y') DEFAULT 'N',
+      SAT ENUM('N','Y') DEFAULT 'N',
+      SOURCE_NAME CHAR(64),
+      DESCRIPTION CHAR(64),
+      START_TIME TIME,
+      LENGTH INT UNSIGNED,
+      START_GPI INT DEFAULT -1,
+      END_GPI INT DEFAULT -1,
+      TRIM_THRESHOLD INT UNSIGNED,
+      STARTDATE_OFFSET INT UNSIGNED DEFAULT 0,
+      ENDDATE_OFFSET INT UNSIGNED DEFAULT 0,
+      FORMAT INT DEFAULT 0,
+      CHANNELS INT DEFAULT 2,
+      SAMPRATE INT DEFAULT 44100,
+      BITRATE INT DEFAULT 0,
+      INDEX STATION_NAME_IDX (STATION_NAME),
+      INDEX CHANNEL_IDX (CHANNEL),
+      INDEX CUT_NAME_IDX (CUT_NAME),
+      INDEX SOURCE_NAME_IDX (SOURCE_NAME),
+      INDEX SUN_IDX (SUN),
+      INDEX MON_IDX (MON),
+      INDEX TUE_IDX (TUE),
+      INDEX WED_IDX (WED),
+      INDEX THU_IDX (THU),
+      INDEX FRI_IDX (FRI),
+      INDEX SAT_IDX (SAT)
+)"
+mysql -u $USER -p$PASSWORD -e"USE Rivendell;
+      GRANT ALL ON RECORDINGS TO $RD_USER IDENTIFIED BY \"$RD_PASSWORD\""
+
+#
+# Create AUDIO_PORTS table
+#
+mysql -u $USER -p$PASSWORD -e"USE Rivendell;
+      CREATE TABLE IF NOT EXISTS AUDIO_PORTS (
+      ID INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+      STATION_NAME CHAR(64) NOT NULL,
+      CARD_NUMBER INT NOT NULL,
+      CLOCK_SOURCE INT DEFAULT 0,
+      INPUT_0_LEVEL INT DEFAULT 0,
+      INPUT_0_TYPE INT DEFAULT 0,
+      INPUT_1_LEVEL INT DEFAULT 0,
+      INPUT_1_TYPE INT DEFAULT 0,
+      INPUT_2_LEVEL INT DEFAULT 0,
+      INPUT_2_TYPE INT DEFAULT 0,
+      INPUT_3_LEVEL INT DEFAULT 0,
+      INPUT_3_TYPE INT DEFAULT 0,
+      INPUT_4_LEVEL INT DEFAULT 0,
+      INPUT_4_TYPE INT DEFAULT 0,
+      INPUT_5_LEVEL INT DEFAULT 0,
+      INPUT_5_TYPE INT DEFAULT 0,
+      INPUT_6_LEVEL INT DEFAULT 0,
+      INPUT_6_TYPE INT DEFAULT 0,
+      INPUT_7_LEVEL INT DEFAULT 0,
+      INPUT_7_TYPE INT DEFAULT 0,
+      OUTPUT_0_LEVEL INT DEFAULT 0,
+      OUTPUT_1_LEVEL INT DEFAULT 0,
+      OUTPUT_2_LEVEL INT DEFAULT 0,
+      OUTPUT_3_LEVEL INT DEFAULT 0,
+      OUTPUT_4_LEVEL INT DEFAULT 0,
+      OUTPUT_5_LEVEL INT DEFAULT 0,
+      OUTPUT_6_LEVEL INT DEFAULT 0,
+      OUTPUT_7_LEVEL INT DEFAULT 0,
+      INDEX STATION_NAME_IDX (STATION_NAME),
+      INDEX CARD_NUMBER_IDX (CARD_NUMBER)
+)"
+mysql -u $USER -p$PASSWORD -e"USE Rivendell;
+      GRANT ALL ON AUDIO_PORTS TO $RD_USER IDENTIFIED BY \"$RD_PASSWORD\""
+
+#
+# Create LOGS table
+#
+mysql -u $USER -p$PASSWORD -e"USE Rivendell;
+      CREATE TABLE IF NOT EXISTS LOGS (
+      NAME CHAR(64) NOT NULL PRIMARY KEY,
+      SERVICE CHAR(10) NOT NULL,
+      DESCRIPTION CHAR(64),
+      ORIGIN_USER CHAR(8) NOT NULL,
+      ORIGIN_DATETIME DATETIME NOT NULL,
+      START_DATE DATE NOT NULL,
+      END_DATE DATE NOT NULL,
+      INDEX SERVICE_IDX (SERVICE),
+      INDEX DESCRIPTION_IDX (DESCRIPTION),
+      INDEX ORIGIN_USER_IDX (ORIGIN_USER),
+      INDEX START_DATE_IDX (START_DATE),
+      INDEX END_DATE_IDX (END_DATE)
+)"
+mysql -u $USER -p$PASSWORD -e"USE Rivendell;
+      GRANT ALL ON LOGS TO $RD_USER IDENTIFIED BY \"$RD_PASSWORD\""
+}
+# ############################################################################
+
+
+# ############################################################################
+# Initialize a Rivendell Database
+# ############################################################################
+function InitDB {
+#
+# Create Default Admin Account
+#
+mysql -u $USER -p$PASSWORD -e"USE Rivendell;
+      INSERT INTO USERS (LOGIN_NAME,PASSWORD,FULL_NAME,DESCRIPTION,ADMIN_USERS_PRIV,ADMIN_CONFIG_PRIV)
+      VALUES (\"$RDA_LOGIN_NAME\",PASSWORD(\"$RDA_PASSWORD\"),\"$RDA_FULL_NAME\",\"$RDA_DESCRIPTION\",'Y','Y')"
+
+#
+# Create Default User Account
+#
+mysql -u $USER -p$PASSWORD -e"USE Rivendell;
+      INSERT INTO USERS (LOGIN_NAME,PASSWORD,FULL_NAME,DESCRIPTION,
+		  CREATE_CARTS_PRIV,DELETE_CARTS_PRIV,MODIFY_CARTS_PRIV,
+		  EDIT_AUDIO_PRIV,ASSIGN_CART_PRIV,CREATE_LOG_PRIV,
+		  DELETE_LOG_PRIV,PLAYOUT_LOG_PRIV,ARRANGE_LOG_PRIV,
+		  ADDTO_LOG_PRIV,REMOVEFROM_LOG_PRIV,EDIT_CATCHES_PRIV)
+      VALUES (\"$USER_LOGIN_NAME\",PASSWORD(\"$USER_PASSWORD\"),\"$USER_FULL_NAME\",\"$USER_DESCRIPTION\",
+              'Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y')"
+
+#
+# Create Default Workstation
+#
+mysql -u $USER -p$PASSWORD -e"USE Rivendell;
+      INSERT INTO STATIONS (NAME,DESCRIPTION,USER_NAME,DEFAULT_NAME)
+      VALUES (\"DEFAULT\",\"Default Workstation\",
+      \"$USER_LOGIN_NAME\",\"$USER_LOGIN_NAME\")"
+
+#
+# Create Test Tone Cart
+#
+mysql -u $USER -p$PASSWORD -e"USE Rivendell;
+      INSERT INTO CART(TYPE,NUMBER,GROUP_NAME,TITLE,ARTIST,CUT_QUANTITY,
+      FORCED_LENGTH)
+      VALUES (1,999999,\"TEST\",\"Test Tone\",\"Salem Radio Labs\",1,10000)"
+
+#
+# Create Default Audio Cut
+#
+mysql -u $USER -p$PASSWORD -e"USE Rivendell;
+      INSERT INTO CUTS SET CUT_NAME=\"999999_000\",CART_NUMBER=999999,
+      DESCRIPTION=\"1 kHz at Reference Level [-16 dBFS]\",
+      OUTCUE=\"[tone]\",CODING_FORMAT=0,
+      SAMPLE_RATE=44100,BIT_RATE=0,
+      CHANNELS=2,LENGTH=10000,START_POINT=0,END_POINT=10000,
+      ORIGIN_DATETIME=NOW(),ORIGIN_NAME=\"RDGen\""
+
+#
+# Create Clipboard Entry
+#
+mysql -u $USER -p$PASSWORD -e"USE Rivendell;
+      INSERT INTO CLIPBOARD SET CUT_NAME=\"clip\",CART_NUMBER=0,
+      DESCRIPTION=\"Default Clipboard\""
+
+#
+# Create Default Service
+#
+mysql -u $USER -p$PASSWORD -e"USE Rivendell;
+      INSERT INTO SERVICES (NAME,DESCRIPTION) 
+      VALUES (\"$RD_SVC_NAME\",\"$RD_SVC_DESC\")"
+
+#
+# Create Default Groups
+#
+mysql -u $USER -p$PASSWORD -e"USE Rivendell;
+      INSERT INTO GROUPS (NAME,DESCRIPTION) 
+      VALUES (\"TEMP\",\"Temporary Carts\")"
+mysql -u $USER -p$PASSWORD -e"USE Rivendell;
+      INSERT INTO GROUPS (NAME,DESCRIPTION) 
+      VALUES (\"TEST\",\"Test Carts\")"
+
+#
+# Create Default Audio Permissions
+#
+mysql -u $USER -p$PASSWORD -e"USE Rivendell;
+      INSERT INTO AUDIO_PERMS (GROUP_NAME,SERVICE_NAME) 
+      VALUES (\"TEMP\",\"Production\")"
+mysql -u $USER -p$PASSWORD -e"USE Rivendell;
+      INSERT INTO AUDIO_PERMS (GROUP_NAME,SERVICE_NAME) 
+      VALUES (\"TEST\",\"Production\")"
+
+#
+# Create Default Library Configuration
+#
+mysql -u $USER -p$PASSWORD -e"USE Rivendell;
+      INSERT INTO RDLIBRARY (STATION,INSTANCE) 
+      VALUES (\"0.0.0.0|0.0.0.0:0\",0)"
+
+#
+# Create Sample Log
+#
+mysql -u $USER -p$PASSWORD -e"USE Rivendell;
+      CREATE TABLE IF NOT EXISTS SAMPLE_LOG (
+      ID INT NOT NULL PRIMARY KEY,
+      COUNT INT NOT NULL,
+      START_TIME TIME NOT NULL,
+      CART_NUMBER INT UNSIGNED NOT NULL,
+      TIME_TYPE INT NOT NULL,
+      TRANS_TYPE INT NOT NULL,
+      START_POINT INT NOT NULL DEFAULT -1,
+      END_POINT INT NOT NULL DEFAULT -1,
+      SEGUE_START_POINT INT NOT NULL DEFAULT -1,
+      SEGUE_END_POINT INT NOT NULL DEFAULT -1,
+      INDEX COUNT_IDX (COUNT),
+      INDEX CART_NUMBER_IDX (CART_NUMBER),
+      INDEX START_TIME_IDX (START_TIME)
+)"
+mysql -u $USER -p$PASSWORD -e"USE Rivendell;
+      GRANT ALL ON SAMPLE_LOG TO $RD_USER IDENTIFIED BY \"$RD_PASSWORD\""
+mysql -u $USER -p$PASSWORD -e"USE Rivendell;
+      INSERT INTO LOGS (NAME,SERVICE,DESCRIPTION,ORIGIN_USER,ORIGIN_DATETIME) 
+      VALUES (\"SAMPLE\",\"Production\",\"Sample Log\",\"user\",NOW())"
+}
+
+# ############################################################################
+
+
+# ############################################################################
+# Generate Default Audio
+# ############################################################################
+function GenerateAudio {
+if [ -d $RD_AUDIO_ROOT ] ; then
+  echo -n
+else
+  mkdir $RD_AUDIO_ROOT
+fi
+rdgen -t 10 -l 16 $RD_AUDIO_ROOT/999999_000.wav
+chown -R $SHELL_NAME: $RD_AUDIO_ROOT
+}
+# ############################################################################
+
+
+# ############################################################################
+# Upgrade a Rivendell Database
+# ############################################################################
+function UpgradeDB {
+#
+# Create the temporary database
+#
+mysql -u $USER -p$PASSWORD -e"CREATE DATABASE IF NOT EXISTS Rivendell_TEMP"
+
+#
+# Dump primary database to temporary
+#
+mysqldump -u $USER -p$PASSWORD --opt Rivendell \
+| mysql -u $USER -p$PASSWORD -C Rivendell_TEMP
+
+#
+# Delete the primary database
+#
+mysql -u $USER -p$PASSWORD -e"DROP DATABASE Rivendell"
+
+#
+# Create Upgraded Rivendell Database
+#
+CreateDB
+
+#
+# Restore Data from temporary Database
+#
+mysqldump -u $USER -p$PASSWORD --opt Rivendell_TEMP \
+| mysql -u $USER -p$PASSWORD -C Rivendell
+
+#
+# Delete the temporary database
+#
+mysql -u $USER -p$PASSWORD -e"DROP DATABASE Rivendell_TEMP"
+}
+# ############################################################################
+
+
+# ############################################################################
+# Main Routine
+# ############################################################################
+#
+# Get the mySQL Administrator Login
+#
+read -p "mySQL account with Admin access []: " USER
+if [ -z $USER ] ; then
+  echo "You must supply a mySQL administrator account name!"
+  exit 1
+fi
+read -s -p "mySQL Password: " PASSWORD
+echo
+
+#
+# Get the shell account user and group names
+#
+read -p "User account name that will be running Rivendell []: " SHELL_NAME
+echo
+if [ -z $SHELL_NAME ] ; then
+  echo "You must supply a valid user account name!"
+  echo
+  exit 1
+fi
+
+#
+# Check that mySQL is running and accessible
+#
+mysql -s -u $USER -p$PASSWORD -e"use mysql" 2> /dev/null
+if [ $? -ne 0 ] ; then
+  echo
+  echo "*** Unable to connect to the mySQL server. ***"
+  echo "It's possible that the server is not currently running, or that"
+  echo "the name/password you've supplied are not correct.  Please"
+  echo "correct the problem and try again."
+  echo
+  exit 1
+fi
+
+#
+# Check for an existing Rivendell database
+#
+mysql -s -u $USER -p$PASSWORD -e"use Rivendell" 2> /dev/null
+if [ $? -eq 0 ] ; then
+  echo
+  echo "*** A Rivendell database already exists! ***"
+  echo "You can:"
+  echo "  1) Overwrite it and create a new one."
+  echo "     [WARNING: overwriting the database will COMPLETELY DESTROY"
+  echo "     any existing data and audio!]"
+  echo
+  echo "  2) Upgrade the existing database."
+  echo
+  echo "  3) Exit this utility."
+  echo
+  read -p "Your choice [3]: " OVERWRITE
+  echo
+  case "$OVERWRITE" in
+    "1")
+      echo -n "Deleting old Rivendell database..."
+      mysql -s -u $USER -p$PASSWORD -e"drop database Rivendell"
+      echo "done."
+      echo -n "Deleting old audio data..."
+      rm $RD_AUDIO_ROOT/*
+      echo "done."
+      echo -n "Creating new Rivendell database..."
+      CreateDB
+      echo "done."
+      echo -n "Initializing new Rivendell database..."
+      InitDB
+      echo "done."
+      echo -n "Generating new audio data..."
+      GenerateAudio
+      echo "done."
+      echo
+      exit 0
+    ;;
+
+   "2")
+     echo -n "Upgrading Rivendell database..."
+     UpgradeDB
+     echo "done."
+     echo
+     exit 0
+   ;;
+
+   "3" | "")
+    echo "Database NOT overwritten or upgraded."
+    echo
+    exit 0
+    ;;
+  esac
+fi 
+# ############################################################################
+
+# End of rd_create_db
+
+
+

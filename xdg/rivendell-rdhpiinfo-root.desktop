@@ -1,0 +1,10 @@
+[Desktop Entry]
+Encoding=UTF-8
+Terminal=false
+Categories=Qt;KDE;Rivendell;
+Name=RDHPIInfo
+GenericName=AudioScience Card Information
+Exec=rdhpiinfo-root
+Icon=rivendell
+Type=Application
+Terminal=false

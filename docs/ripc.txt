@@ -1,0 +1,86 @@
+          Rivendell Interprocess Communication Protocol
+
+This defines the IP protocol used for communication between different
+modules of Rivendell and the 'ripcd' daemon.
+
+Connection to ripcd is by means of a TCP SOCK_STREAM connection to TCP
+port 5006.  The format of a message is as follows:
+
+     <cmd>[<arg>][...]!
+
+where:
+
+<cmd> is a two-letter code indicating the nature of the message.
+<arg> is zero or more arguments.
+! is an ASCII character 0x21.
+
+
+UNPRIVILEDGED COMMANDS -- no authentication is required to execute these.
+
+DC! -- DROP CONNECTION
+End the session and drop the TCP connection.
+
+PW <passwd>! -- SEND PASSWORD
+Send a password to authenticate the connection.  Ripcd will respond
+with 'PW +!' or 'PW -!', indicating the success or failure of the
+authentication.
+
+
+PRIVILEDGED - a connection must be authenticated before these can be
+executed.
+
+RU! -- Request User
+Request the LOGIN_NAME of the user currently logged in.
+Ripcd will respond with RU <user>!.
+
+SU <user>! -- SET USER
+Log <user> in.  Ripcd will respond with RU <user>!
+
+MS <ip-addr> <echo> <rml-cmd>!
+Send an RML command to the specified destination.
+
+ME <ip-addr> <echo> <rml-echo>!
+Send an RML echo to the specified destination.
+
+GC <matrix>!
+Return the current GPI line cart numbers for matrix <matrix>.
+Return for each line:
+  GC <matrix> <gpi-line> <off-cart-num> <on-cart-num>!
+  Indicates a change in a GPI line cart number (receive only).
+
+GD <matrix>!
+Return the current GPO line cart numbers for matrix <matrix>.
+Return for each line:
+  GD <matrix> <gpo-line> <off-cart-num> <on-cart-num>!
+  Indicates a change in a GPO line cart number (receive only).
+
+GI <matrix>!
+Return the current GPI line states for matrix <matrix>.
+Return for each line:
+  GI <matrix> <gpi-line> <gpi-state> <mask-state>!
+  Indicates a change in a GPI line status (receive only).
+
+GO <matrix>!
+Return the current GPO line states for matrix <matrix>.
+Return for each line:
+  GO <matrix> <gpo-line> <gpo-state> <mask-state>!
+  Indicates a change in a GPO line status (receive only).
+
+GM <matrix>!
+Return the current GPI line mask states for matrix <matrix>.
+Return for each line:
+  GM <matrix> <gpi-line> <state>!
+  Indicates a change in a GPI line mask status (receive only).
+
+GN <matrix>!
+Return the current GPO line mask states for matrix <matrix>.
+Return for each line:
+  GN <matrix> <gpo-line> <state>!
+  Indicates a change in a GPO line mask status (receive only).
+
+RG!
+Reload the GPI table.
+
+TA!
+Request the current state of the On Air flag.
+Ripcd will respond with TA 0|1!, with 0 = Off and 1 = On.

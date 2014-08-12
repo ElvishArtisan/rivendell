@@ -1,0 +1,11 @@
+         ENCODER_SAMPLERATES Table Layout for Rivendell
+
+The ENCODER_SAMPLERATES table holds data concerning the allowed 
+sample rates in samples/sec for each custom encoder format on the system.  
+Following is the layout of a record in the ENCODER_SAMPLERATES table:
+
+FIELD NAME           TYPE             REMARKS
+-------------------------------------------------------------------
+ID                   int(11)
+ENCODER_ID           int(11)          From ENCODERS.ID
+SAMPLERATE           int(11)

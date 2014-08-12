@@ -1,0 +1,74 @@
+IMPORTANT NOTE: BE SURE TO SEE THE SECTION ON 'PASSWORD STORAGE' BELOW,
+OTHERWISE YOU MAY BE LOCKED OUT OF THE SYSTEM AFTER THE UPDATE!
+
+This file provides some notes to those performing an upgrade from a v1.x
+version to Rivendell.  It is an attempt to provide some pointers about things
+which have changed, but is in no way a substitute for reading the 'INSTALL' 
+file and other documentation!
+
+1) DEPENDENCIES
+The set of external packages required to build and run Rivendell has changed
+significantly from that required for a 1.x system.  See 'INSTALL' for a full
+list.
+
+2) MPEG SUPPORT
+This version of Rivendell inaugurates optional support for MPEG Layer 2 
+encoding within the core Rivendell audio library for all classes of audio 
+device (JACK and ALSA as well as AudioScience HPI).  To make use of this 
+feature, it will be necessary to have the appropriate MPEG libraries 
+properly installed at both build- and run-time.  See 'INSTALL' for the 
+specifics.
+
+3) FILE OWNERSHIP AND PERMISSIONS
+Recommended file ownership and permissions for the '/var/snd' directory and 
+its contents have changed.  These items should be owned by system user and 
+group accounts created specifically for Rivendell; no 'real' user on the 
+system should use these accounts.  The Rivendell system user and group 
+accounts are specified in the 'AudioOwner=' and 'AudioGroup=' directives in
+the '[Identity]' section of rd.conf(5); see 'conf/rd.conf-sample' for an
+example.  Permissions for '/var/snd' should be read, write and execute bits
+set for User and Group and read, execute for Others (0775), while the contents
+should have read, write set for user and group and just read for others (0664).
+
+4) WEB SERVICES
+This version of Rivendell makes use of a web services protocol to accomplish
+many functions (audio import, export, ripping, etc).  These services require
+that a CGI-compliant web server be installed and active on the system.  
+Any server that complies with CGI-1.1 should work, although as of this writing
+only Apache 2.2 has been well tested.  A configuration file snippet for Apache
+that will configure the target web services directory (set by the
+'--libexecdir=' switch passed to './configure') correctly is generated 
+automatically as part of the build process; it can be found in
+'conf/rd-bin.conf' after the build is complete.
+
+5) PASSWORD STORAGE
+The method of storing passwords in the database has changed in Rivendell 2.x,
+requiring that all non-null passwords be reset after performing the upgrade.
+This means that it is important that the account used to access RDAdmin be set
+to use a null (blank) password *before* applying the update, otherwise you
+will not be able to access RDAdmin afterwards!  Once the update has been
+applied, passwords should be re-entered for all user accounts in RDAdmin
+(including administrative ones) in the usual manner.
+
+6) AUDIO SAMPLE RATE
+The sample rate to be used for the Rivendell audio library is now a single
+system-wide setting (found in RDAdmin->SystemSettings); it is no longer
+possible to set sample rates individually per module/workstation.  When 
+updating the schema, Rivendell will default this to the value previously
+configured for RDLibrary on a randomly selected host; since this may or may
+not be appropriate for your site, checking this value after the update is 
+recommended.
+
+7) RDCATCH CHANGES
+Upload and Download events in RDCatch that use the 'file:' protocol now 
+require that a username/password for an appropriate shell user account be 
+entered.  'Appropriate' here means one with write or read permissions for 
+the target file, respectively.
+
+The 'smb:' protocol is no longer supported.
+
+8) RLM API CHANGES
+The parameters passed to the RLMPadDataSent() callback in RLMs have changed;
+private plug-ins written for RD 1.x will need to be modified to work with the
+new API.  (All plug-ins supplied with the Rivendell sources have already been
+modified appropriately.)

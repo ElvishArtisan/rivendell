@@ -1,0 +1,14 @@
+            LIVEWIRE_GPIO_SLOTS Table Layout for Rivendell
+
+This table holds the 'mapping' between LiveWire source numbers and
+the Rivendell GPIO 'slots' used by the LiveWire Virtual GPIO driver.
+Each slot consist of five Rivendell GPIO lines.
+
+FIELD NAME           TYPE               REMARKS
+------------------------------------------------------------------------
+ID                   int(11) signed     Primary key, auto-increment
+STATION_NAME         char(64)           From STATIONS.NAME
+MATRIX               int(11)            From MATRICES.MATRIX
+SLOT                 int(11)
+IP_ADDRESS           char(15)
+SOURCE_NUMBER        int(11)

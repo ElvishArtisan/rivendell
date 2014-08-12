@@ -1,0 +1,9 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=rdlogmanager
+Comment=Rivendell Log Manager
+Exec=rdlogmanager
+Terminal=false
+Type=Application
+Icon=/usr/share/srlabs/rdlogmanager.xpm
+Categories=Application;AudioVideo;

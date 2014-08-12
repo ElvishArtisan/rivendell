@@ -1,0 +1,6 @@
+    |00:05:00|018585    |Wildfire Homework                      |Ad Council                     |0030
+    |00:05:30|017417    |GEICO 9160 WIG                         |GLOBAL                         |0030
+    |00:14:00|017668    |Swiss America                          |SFR                            |0060
+    |00:15:00|018073    |GEICO 9644 CYCLE SAVER                 |GLOBAL                         |0030
+    |00:15:01|017911    |Live United Mary                       |Ad Council                     |0030
+    |00:15:02|018427    |GM 9385 BROKEN KNEES                   |GLOBAL                         |0060

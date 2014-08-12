@@ -1,0 +1,52 @@
+                  CART Table Layout for Rivendell
+
+The CARTS table holds data concerning all of the available events
+in a Rivendell system that are capable of being individually
+scheduled.  Following is the layout of a record in the CARTS table:
+
+FIELD NAME           TYPE              REMARKS
+--------------------------------------------------------------------------
+NUMBER               int(10) unsigned  Primary key
+TYPE                 int(10) unsigned  1 = Audio, 2 = Command, 3 = Split
+GROUP_NAME           char(10)          Index
+TITLE                char(255)         Index
+ARTIST               char(255)         Index
+ALBUM                char(255)         Name of release album
+YEAR                 date              Year of release
+ISRC                 char(12)          RETIRED as of DB v100
+CONDUCTOR            char(64)
+LABEL                char(64)          Release Record Label 
+CLIENT               char(64)          Index
+AGENCY               char(64)          Index
+PUBLISHER            char(64)          Index
+COMPOSER             char(64)          Index
+USER_DEFINED         char(255)         For use by local user
+SONG_ID              char(32)
+BPM                  int(10) unsigned  Beats per minute
+USAGE_CODE           int(11)           0=Feature, 1=Theme Open,
+                                       2=Theme Close, 3=Theme Open/Close,
+                                       4=Background, 5=Comm/Promo
+FORCED_LENGTH        int(10)           Playout this length, 0 = don't timeshift
+AVERAGE_LENGTH       int(10)
+LENGTH_DEVIATION     int(10)           Maximum variation of underlying cuts
+AVERAGE_SEGUE_LENGTH int(10)
+AVERAGE_HOOK_LENGTH  int(10)
+CUT_QUANTITY         int(10)           > 1 for rotators
+LAST_CUT_PLAYED      int(10)           Offset for rotators
+PLAY_ORDER           int(10)           0 = Sequence, 1 = Random
+VALIDITY             int(10)           0 = Always invalid, 1 = Conditionally
+                                       valid, 2 = Always valid, 3 = Evergreen
+START_DATETIME       datetime         
+END_DATETIME         datetime         
+ENFORCE_LENGTH       enum('N','Y')     Timeshift?
+PRESERVE_PITCH       enum('N','Y')     Preserve Pitch?
+ASYNCRONOUS          enum('N','Y')
+OWNER                char(64)          From LOGS.NAME or STATIONS.NAME
+MACROS               text              RML Macros
+NOTES                text              User notes (freeform)
+METADATA_DATETIME    datetime          Metadata last modified
+USE_EVENT_LENGTH     enum('N','Y')     Use RDLogManager event lengths for
+                                       macro cart PAD updates.
+PENDING_STATION      char(64)
+PENDING_DATETIME     datetime
+PENDING_PID          int(11)

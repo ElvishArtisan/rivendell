@@ -1,0 +1,11 @@
+[Desktop Entry]
+Encoding=UTF-8
+Terminal=false
+Categories=Qt:KDE;Rivendell;
+Name=RDDiscImport
+GenericName=Rivendell Batch CD Importer
+Exec=rddiscimport
+Icon=rivendell
+Type=Application
+Terminal=false
+

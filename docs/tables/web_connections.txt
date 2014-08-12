@@ -1,0 +1,11 @@
+            WEB_CONNECTIONS Table Layout for Rivendell
+
+The WEB_CONNECTIONS table holds data concerning each authenticated web
+browser connection.
+
+FIELD NAME           TYPE             REMARKS
+--------------------------------------------------------------------------
+SESSION_ID           unsigned int(10) Primary key
+LOGIN_NAME           char(255)        From USERS.LOGIN_NAME
+IP_ADDRESS           char(16)
+TIMESTAMP            datetime

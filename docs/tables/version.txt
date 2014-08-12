@@ -1,0 +1,11 @@
+                   VERSION Table Layout for Rivendell
+
+The VERSION table holds data concerning the current version level
+of various Rivendell components as well as other 'system-wide' parameters.
+Following is the layout of a record in the VERSION table:
+
+FIELD NAME           TYPE             REMARKS
+--------------------------------------------------------------------------
+DATABASE             int(11)          Primary key
+LAST_MAINT_DATETIME  datetime
+LAST_ISCI_XREFERENCE datetime

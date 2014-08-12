@@ -1,0 +1,38 @@
+#! /bin/sh /usr/share/dpatch/dpatch-run
+#
+# template file for dpatch.  see dpatch-edit-patch(1) for more details.
+#
+## 
+##
+## All lines beginning with `## DP:' are a description of the patch.
+## DP: No description.
+
+[ -f debian/patches/00patch-opts ] && . debian/patches/00patch-opts
+patch_opts="${patch_opts:--f --no-backup-if-mismatch ${2:+-d $2}}"
+
+if [ $# -lt 1 ]; then
+    echo >&2 "`basename $0`: script expects -patch|-unpatch as argument"
+    exit 1
+fi
+case "$1" in
+       -patch) patch $patch_opts -p1 < $0;;
+       -unpatch) patch $patch_opts -p1 -R < $0;;
+	*)
+		echo >&2 "`basename $0`: script expects -patch|-unpatch as argument"
+		exit 1;;
+esac
+
+exit 0
+@DPATCH@
+diff -urNad rivendell-0.9.79/rdadmin/createdb.cpp /home/grauf/tmp/dpep.gHhh0y/rivendell-0.9.79/rdadmin/createdb.cpp
+--- rivendell-0.9.79/rdadmin/createdb.cpp	2006-12-05 14:25:32.000000000 -0500
++++ /home/grauf/tmp/dpep.gHhh0y/rivendell-0.9.79/rdadmin/createdb.cpp	2006-12-12 16:34:49.000000000 -0500
+@@ -706,7 +706,7 @@
+       DEFAULT_TRANS_TYPE int default 0,\
+       BAR_ACTION int unsigned default 0,\
+       FLASH_PANEL enum('N','Y') default 'N',\
+-      PANEL_PAUSE_ENABLED enum('N','Y') default 'N'),\
++      PANEL_PAUSE_ENABLED enum('N','Y') default 'N',\
+       PAUSE_ENABLED enum('N','Y'),\
+       DEFAULT_SERVICE char(10),\
+       UDP_ADDR0 char(255),\

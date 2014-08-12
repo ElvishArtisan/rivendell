@@ -1,0 +1,57 @@
+                 CONFIGURING NOW & NEXT IN RIVENDELL
+
+SCOPE
+Rivendell has the ability to automatically send information regarding
+the current and next-to-play events in RDAirPlay logs to external
+systems (such as RDS/RDBS encoders or web servers) using TCP/IP UDP 
+datagrams.  This capability is referred to in Rivendell as 'Now &
+Next'.  This document provides some pointers on setting up this
+capability.
+
+CONFIGURATION
+Now and Next is configured in RDAdmin->ManageHosts->RDAirPlay.
+Pressing the 'Configure Now & Next Parameters' button here will open a
+dialog.  Each RDAirPlay log machine can be seperately configured, as
+follows:
+
+  IP ADDRESS:  The IP address, in dotted-quad notation, to which
+               packets should be sent.
+
+    UDP PORT:  The UDP port number to which packets should be sent.
+
+  UDP STRING:  The contents of the update string.  The following
+               placeholder macros can be used, which will be replaced 
+               appropriately when a packet is sent:
+
+	       %n - The currently-playing CART NUMBER
+	       %g - The currently-playing GROUP NAME
+	       %t - The currently-playing TITLE field
+	       %a - The currently-playing ARTIST field
+	       %l - The currently-playing ALBUM field
+	       %y - The currently-playing YEAR field
+	       %b - The currently-playing LABEL field
+	       %c - The currently-playing CLIENT field
+	       %e - The currently-playing AGENCY field
+	       %u - The currently-playing USER DEFINED field
+	       %h - The length of the currently playing cut, in mS.
+	       %r - A "Unix" style newline (naked ASCII 10)
+	       %R - An "MS-DOS" style newsline (ASCII 13/10)
+	       %% - A literal '%'.
+
+	       Additionally, with the exception of the '%r', '%R' and '%%'
+               placeholders, the corresponding field for the next-to-play 
+	       event can be specified by simply uppercasing the above 
+	       placeholders.  Any other characters will be sent unchanged.
+
+
+ENABLING AUDIO
+Before any data is sent, RDAirPlay checks to see that the Group
+to which the event's cart belongs has been enabled to send Now & Next
+data.  This can be set on a group-by-group basis in
+RDAdmin->ManageGroups by setting the 'Transmit Now & Next data' box
+appropriately.
+
+
+OPERATION
+Once properly configured, RDAirPlay will send a UDP packet as
+specified every time the corresponding log changes status.

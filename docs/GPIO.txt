@@ -1,0 +1,185 @@
+                       GPIO Notes for Rivendell
+
+Rivendell supports the following General Purpose Input/Output (GPIO)
+devices:
+
+Gameport Joystick Buttons
+USB Joystick Buttons
+Measurement Computing PCI-PDIS08 Board
+Measurement Computing PCI-PDIS16 Board
+Measurement Computing PCI-DIO24 Board
+
+Several supported switcher devices feature GPIO capabiities as well,
+see the file 'SWITCHERS.txt' for more info.
+
+JOYSTICK DEVICES
+Joystick support utilizes the Linux Input Device subsystem.  Inputs
+are active-low, and should be wired as follows:
+
+02: Input 1
+04: Ground
+
+07: Input 2
+05: Ground
+
+10: Input 3
+12: Ground
+
+14: Input 4
+12: Ground
+
+In addition, you will need to connect 47 kohm resistors between the
+following pins:  1-3, 6-8, 9-11 and 13-15.  While not strictly needed
+for the GPI portion of the interface to work, the kernel's analog
+joystick driver will refuse to initialize the port if these resistors
+(or a real joystick) are not present.
+
+The device name of the joystick will be one of the /dev/input/event<n>
+devices.
+
+NOTE: There have been reports that some port models do not internally 
+connect pin 12 to ground.  The symptom of this situation will be that
+Inputs 1 and 2 work, but not Inputs 3 and 4.  If this is the case, 
+connecting the ground for Inputs 3 and 4 to pins 04 or 05 should remedy
+the problem.
+
+
+MEASUREMENT COMPUTER GPIO BOARDS
+To configure one of the supported MeasurementComputing GPIO boards,
+proceed as follows:
+
+1) Install the card(s) in the computer.  In the case of the PCI-DIO24,
+   two cards may be necessary, as each seperate card is entirely
+   utilized as either inputs or outputs. 
+
+
+2) Test it out.  Two programs exist for this purpose:  'gpitest' tests
+   GPI inputs, and 'gpotest' tests GPO outputs.  These programs come
+   with the 'libradio' package.
+
+3) Define a GPIO device in RDAdmin->Stations->Switcher/GPIO.  Use
+   a device type of 'Local GPIO'.
+
+-----------------------------------------------------------------------------
+GPIO BOARD-SPECIFIC NOTES
+
+The Measurement Computing PCI-PDIS08 and PCI-PDIS16 boards feature
+floating, opto-isolated inputs.  The inputs are not polarity sensitive 
+and may be driven by either AC or DC.  The outputs are electro-mechanical
+relays with dry contacts.  Connector pinouts are as follows:
+
+PCI-PDIS08 -- DB37 Male Connector
+PCI-PDIS16 -- DB37 Male Connector (using C50F-37F Cable)
+Pin  Signal
+----------------
+  1  Input 8/16
+ 20  Input 8/16
+
+  2  Input 7/15
+ 21  Input 7/15
+
+  3  Input 6/14
+ 22  Input 6/14
+
+  4  Input 5/13
+ 23  Input 5/13
+
+  5  Input 4/12
+ 24  Input 4/12
+
+  6  Input 3/11
+ 25  Input 3/11
+
+  7  Input 2/10
+ 26  Input 2/10
+
+  8  Input 1/9
+ 27  Input 1/9
+
+  9  Output 8/16 C
+ 28  Output 8/16 N/O
+
+ 10  Output 7/15 C
+ 29  Output 7/15 N/O
+
+ 11  Output 6/14 C
+ 30  Output 6/14 N/O
+
+ 12  Output 5/13 N/C
+ 13  Output 5/13 N/O
+ 31  Output 5/13 C
+
+ 14  Output 4/12 C
+ 32  Output 4/12 N/C
+ 33  Output 4/12 N/O
+
+ 15  Output 3/11 N/C
+ 16  Output 3/11 N/O
+ 34  Output 3/11 C
+
+ 17  Output 2/10 C
+ 35  Output 2/10 N/C
+ 36  Output 2/10 N/O
+
+ 18  Output 1/9 N/C
+ 19  Output 1/9 N/O
+
+ 37  Output 1/9 C
+----------------------
+C = Common
+N/O = Normally Open
+N/C = Normally Closed
+
+-----------------------------------------------------------------------------
+
+The Measurement Computing PCI-DIO24 board features TTL logic-level 
+connections, which can be configured to operate either as inputs or
+outputs.  Connector pinouts are as follows:
+
+PCI-DIO24 -- DB37 Male Connector
+Pin  Signal
+---------------------
+ 37  Input/Output 1
+ 36  Input/Output 2
+ 35  Input/Output 3
+ 34  Input/Output 4
+ 33  Input/Output 5
+ 32  Input/Output 6
+ 31  Input/Output 7
+ 30  Input/Output 8
+ 10  Input/Output 9
+  9  Input/Output 10
+  8  Input/Output 11
+  7  Input/Output 12
+  6  Input/Output 13
+  5  Input/Output 14
+  4  Input/Output 15
+  3  Input/Output 16
+ 29  Input/Output 17
+ 28  Input/Output 18
+ 27  Input/Output 19
+ 26  Input/Output 20
+ 25  Input/Output 21
+ 24  Input/Output 22
+ 23  Input/Output 23
+ 22  Input/Output 24
+
+ 11  Ground
+ 13  Ground
+ 15  Ground
+ 17  Ground
+ 19  Ground
+ 21  Ground
+
+ 18  +5 VDC
+ 20  +5 VDC
+
+ 16  +12 VDC
+
+ 14  -12 VDC
+
+WARNING: The +5 VDC, +12 VDC and -12 VDC pins are connected directly to
+the power supply buss of the host PC.  Improper use of these pins can
+cause serious damage to your computer!
+
+-----------------------------------------------------------------------------

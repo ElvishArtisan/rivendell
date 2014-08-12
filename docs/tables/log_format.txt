@@ -1,0 +1,47 @@
+              Log Format Table Layout for Rivendell
+
+This is the generic layout of all log tables.  Each of these tables
+will be have a name ending in '_LOG' and be listed in the 'LOGS'
+table.
+
+FIELD NAME           TYPE               REMARKS
+------------------------------------------------------------------------
+ID                   int(11) signed     Primary key, auto-increment
+COUNT                int(11) signed     Order of records
+TYPE                 int(11) signed     0=Cart, 1=Marker, 2=OpenBracket,
+                                        3=CloseBracket, 4=Link
+SOURCE               int(11) signed     0=Manual, 1=Traffic, 2=Music,
+                                        3=Template
+START_TIME           int(11)            Milliseconds after 00:00:00
+GRACE_TIME           int(11) signed
+CART_NUMBER          int(10) unsigned   From CART.NUMBER
+TIME_TYPE            int(11) signed
+POST_POINT           enum('N','Y')
+TRANS_TYPE           int(11) signed     0 = Play, 1 = Stop, 2 = Segue
+START_POINT          int(11) signed     Overloads CUTS.START_POINT
+END_POINT            int(11) signed     Overloads CUTS.END_POINT
+FADEUP_POINT         int(11) signed     Overloads CUTS.FADEUP_POINT
+FADEUP_GAIN          int(11) signed
+FADEDOWN_POINT       int(11) signed     Overloads CUTS.FADEDOWN_POINT
+FADEDOWN_GAIN        int(11) signed
+SEGUE_START_POINT    int(11) signed     Overloads CUTS.SEGUE_START_POINT
+SEGUE_END_POINT      int(11) signed     Overloads CUTS.SEGUE_END_POINT
+SEGUE_GAIN           int(11) signed
+COMMENT              char(255)
+LABEL                char(64)
+ORIGIN_USER          char(255)          From USERS.LOGIN_NAME
+ORIGIN_DATETIME      datetime
+EVENT_LENGTH         int(11)            Length of parent RDLogManager event
+LINK_EVENT_NAME      char(64)
+LINK_START_TIME      int(11)            Milliseconds after 00:00:00
+LINK_LENGTH          int(11)
+LINK_START_SLOP      int(11)
+LINK_END_SLOP        int(11)
+LINK_ID              int(11)
+LINK_EMBEDDED        enum('N','Y')
+EXT_START_TIME       time               External Scheduler Start Time
+EXT_LENGTH           int(11)            External Scheduler Event Length
+EXT_CART_NAME        char(32)           External Scheduler Cart Name
+EXT_DATA             char(32)           External Scheduler Data
+EXT_EVENT_ID         char(8)            External Scheduler Event ID
+EXT_ANNC_TYPE        char(8)            External Scheduler Announcement Type

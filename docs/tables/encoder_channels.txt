@@ -1,0 +1,11 @@
+            ENCODER_CHANNELS Table Layout for Rivendell
+
+The ENCODER_CHANNELS table holds data concerning the allowed channel
+count for each custom encoder format on the system.  
+Following is the layout of a record in the ENCODER_CHANNELS table:
+
+FIELD NAME           TYPE             REMARKS
+-------------------------------------------------------------------
+ID                   int(11)
+ENCODER_ID           int(11)          From ENCODERS.ID
+CHANNELS             int(11)

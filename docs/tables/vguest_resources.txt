@@ -1,0 +1,20 @@
+              VGUEST_RESOURCES Table Layout for Rivendell
+
+The VGUEST_RESOURCES table holds data concerning the the mapping of 
+various Rivendell objects to resources in a Logitek Audio Engine
+system.
+Following is the layout of a record in the VGUEST_RESOURCES table:
+
+FIELD NAME           TYPE             REMARKS
+--------------------------------------------------------------------------
+ID                   unsigned int(10) Primary key
+STATION_NAME         char(64)         from STATIONS.NAME
+MATRIX_NUM           int(11)          from MATRICES.MATRIX
+VGUEST_TYPE          int(11)
+NUMBER               int(11)
+ENGINE_NUM           int(11)
+DEVICE_NUM           int(11)
+SURFACE_NUM          int(11)
+RELAY_NUM            int(11)
+BUSS_NUM             int(11)
+

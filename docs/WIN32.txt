@@ -1,0 +1,25 @@
+                    WINDOWS SUPPORT FOR RIVENDELL
+
+A Windows port of Rivendell exists, consisting of just the RDLogEdit,
+RDLogManager and RMLSend tools, primarily intended for use on systems 
+employing Windows-based traffic and music schedulers.  Current binary
+versions can be found at:
+
+   ftp://ftp.salemradiolabs.com/pub/srlabs/rivendell/win32/
+
+If you wish to build the Windows port from source, please see the
+'INSTALL' file.
+
+
+INSTALLING THE BIANRY VERSION
+The binary version comes with a standard setup program that will do
+most of the work of getting Rivendell installed.  After the
+installation is complete, you will need to edit the 'rd.ini' file,
+located in the Rivendell installation directory (by default, 
+'C:\ProgramFiles\SalemRadioLabs\Rivendell\') and supply the hostname
+and login password to the 'rduser' account on the site's mySQL server.
+This file can contain all of the directives and arguments used in
+Rivendell's standard '/etc/rd.conf' file (although only a few will
+have any real effect in the Windows envrionment).  The default
+file provided should help get you started.
+

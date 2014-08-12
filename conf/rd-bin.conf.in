@@ -1,0 +1,51 @@
+# rdfeed.conf
+#
+# This is the Apache Web Server configuration for Rivendell.
+#
+#   (C) Copyright 2007,2010 Fred Gleason <fredg@paravelsystems.com>
+#
+#      $Id: rd-bin.conf.in,v 1.5 2011/06/23 19:47:28 cvs Exp $
+#
+#   This program is free software; you can redistribute it and/or modify
+#   it under the terms of the GNU General Public License version 2 as
+#   published by the Free Software Foundation.
+#
+#   This program is distributed in the hope that it will be useful,
+#   but WITHOUT ANY WARRANTY; without even the implied warranty of
+#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#   GNU General Public License for more details.
+#
+#   You should have received a copy of the GNU General Public
+#   License along with this program; if not, write to the Free Software
+#   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+#
+
+<Directory "@libexecdir@">
+  Options ExecCGI FollowSymLinks
+  AllowOverride None
+  Order allow,deny
+  Allow from all
+  <Files *.gif>
+    SetHandler default-handler
+  </Files>
+  <Files *.png>
+    SetHandler default-handler
+  </Files>
+  <Files *.js>
+    SetHandler default-handler
+  </Files>
+  <Files *.html>
+    SetHandler default-handler
+  </Files>
+  <Files *.xml>
+    SetHandler cgi-script
+  </Files>
+  <Files *.cgi>
+    SetHandler cgi-script
+  </Files>
+  <Files *.mp3>
+    SetHandler cgi-script
+  </Files>
+</Directory>
+ScriptAlias /rd-bin/ "@libexecdir@/"
+TimeOut 1200

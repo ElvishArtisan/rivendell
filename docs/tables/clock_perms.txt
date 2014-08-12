@@ -1,0 +1,12 @@
+                  CLOCK_PERMS Table Layout for Rivendell
+
+The CLOCK_PERMS table holds data concerning which clocks in RDLogManager are 
+are associated with which services.  Following is the layout of a record 
+in the CLOCK_PERMS table:
+
+
+FIELD NAME           TYPE              REMARKS
+---------------------------------------------------------------
+ID                   int(10) unsigned  Primary key, auto increment
+CLOCK_NAME           char(64)          Index
+SERVICE_NAME         char(10)          Index

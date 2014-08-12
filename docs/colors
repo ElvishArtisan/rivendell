@@ -1,0 +1,44 @@
+                      System Color Table
+
+RDAirPlay
+StartButton
+---------------------------------------------------
+Playable    green
+OnAir       red
+Disabled    darkGray
+Add         yellow
+Delete      blue
+Move        magenta
+
+FullLog / Log Source
+---------------------------------------------------
+Playing     pale green
+Selected    blue
+Traffic     pale cyan
+Music       pale yellow
+Template    pale magenta
+Manual      white
+Error       red
+
+Cart Label
+---------------------------------------------------
+Playing     pale green
+Loaded      white
+Error       red
+Macro       pale blue
+LogNote     lightGray
+Empty       darkGray
+
+Operation Mode
+---------------------------------------------------
+Manual      red
+Automatic   green
+
+RDLibrary
+Marker Colors
+---------------------------------------------------
+Start/End         red
+FadeUp/Down       yellow
+TalkStart/End     blue
+SegueStart/End    cyan
+HookStart/End     magenta

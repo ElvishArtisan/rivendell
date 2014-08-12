@@ -1,0 +1,11 @@
+               REPLICATOR_MAP Table Layout for Rivendell
+
+The REPLICATOR_MAP table holds the mapping data between replicator
+configurations and groups.
+
+FIELD NAME           TYPE              REMARKS
+------------------------------------------------------------------
+ID                   int(10) unsigned  auto_increment, not null,
+                                       primary key
+REPLICATOR_NAME      char(32)          from REPLICATORS.NAME
+GROUP_NAME           char(10)          from GROUPS.NAME

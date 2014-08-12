@@ -1,0 +1,22 @@
+/* XPM */
+static const char *download_xpm[]={
+"16 16 3 1",
+"# c None",
+". c None",
+"a c #0000c0",
+"..###aaaaaa###..",
+"..###aaaaaa###..",
+"..###aaaaaa###..",
+"..###aaaaaa###..",
+"..###aaaaaa###..",
+"..###aaaaaa###..",
+"..###aaaaaa###..",
+"..###aaaaaa###..",
+"aaaaaaaaaaaaaaaa",
+".aaaaaaaaaaaaaa.",
+".#aaaaaaaaaaaa#.",
+"..#aaaaaaaaaa#..",
+"..##aaaaaaaa##..",
+"..###aaaaaa###..",
+"..####aaaa####..",
+"..#####aa######."};

@@ -1,0 +1,11 @@
+[Desktop Entry]
+Encoding=UTF-8
+Terminal=false
+Categories=Qt;KDE;Rivendell;
+Name=RDLogin
+GenericName=Rivendell Login
+Exec=rdlogin
+Icon=rivendell
+Type=Application
+Terminal=false
+

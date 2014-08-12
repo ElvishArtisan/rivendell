@@ -1,0 +1,117 @@
+          Rivendell Netcatcher Communication Protocol
+
+This defines the IP protocol used for communication between different
+modules of Rivendell and the 'rdcatchd' daemon.
+
+Connection to ripcd is by means of a TCP SOCK_STREAM connection to TCP
+port 6006.  The format of a message is as follows:
+
+     <cmd>[<arg>][...]!
+
+where:
+
+<cmd> is a two-letter code indicating the nature of the message.
+<arg> is zero or more arguments.
+! is an ASCII character 0x21.
+
+
+UNPRIVILEDGED COMMANDS -- no authentication is required to execute these.
+
+DC! -- DROP CONNECTION
+End the session and drop the TCP connection.
+
+PW <passwd>! -- SEND PASSWORD
+Send a password to authenticate the connection.  Ripcd will respond
+with 'PW +!' or 'PW -!', indicating the success or failure of the
+authentication.
+
+
+PRIVILEDGED - a connection must be authenticated before these can be
+executed.
+
+RD! -- Reload Deck List
+Reload the record/play deck configuration.  Rdcatchd will respond with RD
++!.
+
+RS! -- Reload Event List
+Reload the list of scheduled events.  Rdcatchd will respond with
+RS +!.
+
+RA <id>! -- Add Event
+Add event number <id> to the event list.  Rdcatchd will respond with
+RA <id> +!
+
+RR <id>! -- Remove Event
+Remove event number <id> from the event list.  Rdcatchd will respond with
+RR <id> +!
+
+RU <id>! -- Update Event
+Refresh event number <id> in the event list.  Rdcatchd will respond with
+RU <id> +!
+
+RE <channel>! -- Request Status
+<channel> = Channel number
+
+If <channel> is greater than zero, rdcatchd will respond with 
+RE <channel> <status> <id> <cutname>!
+<channel> = Channel number
+
+<status> = 0 - Deck is offline
+           1 - Deck is Idle
+           2 - Deck is Ready
+           3 - Deck is active (playing or recording)
+           4 - Deck is waiting for GPI
+
+<id> = ID number of current event (from RECORDINGS table)
+
+<cutname> = The cutname of the event (present only for <status>==3).
+
+If <channel> is zero, rdcatchd will respond for every event whose
+status is non-idle.
+
+An RE packet will also be sent automatically to all active connections 
+upon any change of deck status.
+
+
+RM <state>! -- Enable/Disable Metering
+<state> = 0 - Turn metering off
+          1 - Turn metering on
+
+When metering is active, meter data packets will be periodically sent,
+as follows:
+
+RM <deck> <chan> <level>!
+<deck> = Deck number
+
+<chan> = Channel, 0 = Left, 1 = Right
+
+<level> = Left audio level, in 1/100 of dbFS
+
+
+SR <deck>! -- Stop
+<deck> = Deck Number
+
+
+PE <id>! -- Purge Event
+Received from the daemon upon completion of an event with the ONE_SHOT
+flag set, meaning that the event has been removed from the database.
+
+
+RO! -- Reload Time Offset
+
+
+RH! -- Reload Heartbeat Configuration
+
+
+HB! -- Heartbeat Pulse
+
+
+MN <deck> <state>! -- Monitor State
+Turn the input monitor for deck <deck> on or off.
+
+
+RX! -- Restart dropbox instances
+
+
+SC <id> <code> <msg>!
+Set exit code of event <id> to <code>.

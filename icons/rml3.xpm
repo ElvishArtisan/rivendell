@@ -1,0 +1,23 @@
+/* XPM */
+const static char *rml3_xpm[]={
+"16 16 4 1",
+"b c #0000c0",
+"a c #0080ff",
+"# c #a8dcff",
+". c #ffff00",
+"......#abbbbbbbb",
+".bbba...#abbbbbb",
+".b..b.....#abbbb",
+".b..b.......#abb",
+".bbba.b...#...#a",
+".bba..bb.bb.....",
+".b.ba.babab.....",
+".b..b.b.b.b.b...",
+"....a.b...b.b...",
+"......b...b.b...",
+"#.....a...b.b...",
+"ba#.......a.b...",
+"bbba#.......b...",
+"bbbbba#.....bbba",
+"bbbbbbba#.......",
+"bbbbbbbbba#....."};

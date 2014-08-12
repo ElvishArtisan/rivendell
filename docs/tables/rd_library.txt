@@ -1,0 +1,38 @@
+                  RDLIBRARY Table Layout for Rivendell
+
+The RDLIBRARY table holds configuration data for the RDLibrary widget.
+Following is the layout of a record in the RDLIBRARY table:
+
+FIELD NAME           TYPE              REMARKS
+------------------------------------------------------------------------------
+ID                   int(10) unsigned  * Primary key, Auto Increment
+STATION              char(40)          Workstation, Indexed
+INSTANCE             int(10) unsigned
+INPUT_CARD           int(11)           None=-1
+INPUT_STREAM         int(11)           RETIRED
+INPUT_TYPE           enum('A','D')
+OUTPUT_CARD          int(11)           None=-1
+OUTPUT_STREAM        int(11)           RETIRED
+OUTPUT_PORT          int(11)           None=-1
+VOX_THRESHOLD        int(11)           dBFS * 100
+TRIM_THRESHOLD       int(11)           dBFS * 100
+RECORD_GPI           int(11)           RETIRED
+PLAY_GPI             int(11)           RETIRED
+STOP_GPI             int(11)           RETIRED
+DEFAULT_FORMAT       int(10) unsigned  0 = PCM16, 1 = Layer-2, 2 = Layer-3
+DEFAULT_CHANNELS     int(10) unsigned 
+DEFAULT_SAMPRATE     int(10) unsigned  RETIRED
+DEFAULT_LAYER        int(10) unsigned
+DEFAULT_BITRATE      int(10) unsigned
+DEFAULT_RECORD_MODE  int(10) unsigned  0 = Manual, 1 = VOX
+DEFAULT_TRIM_STATE   enum('Y','N')
+MAXLENGTH            int(11)           Max record length, in sec
+TAIL_PREROLL	     int(10) unsigned
+RIPPER_DEVICE        char(64)
+PARANOIA_LEVEL       int(11)
+RIPPER_LEVEL         int(11)
+CDDB_SERVER          char(64)
+ENABLE_EDITOR        enum('N','Y')
+SRC_CONVERTER        int(11)
+LIMIT_SEARCH         int(11)           0 = No, 1 = Yes, 2 = Previous
+SEARCH_LIMITED       enum('N','Y')

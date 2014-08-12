@@ -1,0 +1,9 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=rdadmin
+Comment=Rivendell Admin
+Exec=rdadmin
+Terminal=false
+Type=Application
+Icon=/usr/share/srlabs/rdadmin.xpm
+Categories=Application;AudioVideo;

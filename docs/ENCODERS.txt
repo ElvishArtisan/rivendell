@@ -1,0 +1,93 @@
+                 File Exporting and Encoders in Rivendell
+
+Rivendell has the capability to export audio in many different formats using
+several different modules (RDLibrary, RDCatch and RDCastManager).  To
+accomplish this, Rivendell uses audio *encoder* objects, each of which enable
+one or more particular 'export formats'.  A list of all
+recognized export formats for each host can be found by looking in
+RDAdmin->ManageHosts->AudioResources, under 'Supported Export Formats'.
+
+Encoders in Rivendell come in two different basic types, "built-in", and
+"custom".  Each type is discussed separately below.
+
+
+BUILT-IN ENCODERS
+Some built-in encoders are enabled automatically as part of the basic
+Rivendell installation process, while others require one or more external
+library packages in order to be recognized and used.  The following chart
+shows the dependencies:
+
+FORMAT                REQUIRED PACKAGE(S)   AVAILABLE AT
+-------------------------------------------------------------------------
+Linear PCM16          [included]
+MPEG 1,2 Layer 2      [included]
+MPEG 1,2 Layer 3      Lame                  http://lame.sourceforge.net
+FLAC                  Flac                  http://flac.sourceforge.net
+OggVorbis             LibOgg, LibVorbis	    http://www.vorbis.com
+
+
+CUSTOM ENCODERS
+It is possible to configure a Rivendell host to export audio in a format not
+supported by one of the built-in encoders by configuring a 'custom' encoder.
+Generally, all that is needed is an encoder program that can be invoked from
+the Linux command-line.  The configuration is done in
+RDAdmin->ManageHosts->CustomEncoders.  Each encoder needs the following
+information:
+
+NAME
+A unique-per-host name for the encoder.
+
+DEFAULT EXTENSION
+A typically two- or three-letter long file extension to associate with this
+encoder.
+
+COMMAND LINE
+The command line that Rivendell should invoke to encode a file.  When invoked,
+Rivendell will pipe the source audio data into standard input of the program
+shown here, using sixteen-bit little-endian format with no headers (so-called
+'raw' mode) and with channelization and sample rate as indicated in the 
+configuration for the specific export being executed.  The following 
+wildcard characters can be used to pass parameters from the specfic export 
+configuration:
+
+     %f - Full destination path/name.
+     %c - Number of channels
+     %r - Sample rate, in samples/sec
+     %b - Bitrate, in bits/sec
+
+ALLOWABLE PARAMETERS
+Finally, each encoder can be provided with a list of zero or more 'allowed'
+values for Channel, Sample Rate and Bit Rate.  Rivendell will use these values
+(along with the 'NAME' value, see above) to populate the approriate controls
+in the Edit Export Settings dialog.  If no values are configured for a 
+particular parameter, then the correponding control in the dialog will be
+shown as disabled ("greyed-out"), in which case it is assumed that the encoder
+being invoked either does not need the parameter or has had it hard-coded in
+the configured command line.
+
+
+EXAMPLE
+As an example, let's set up a custom encoder to produce 'Flash' encoded audio
+files using the FFmpeg multimedia transcoder (http://ffmpeg.mplayerhq.hu/) and
+the Freeware Advanced Audio Coder (http://sourceforge.net/projects/faac/).
+After installing these packages and verifying that Flash files can be
+successfully generated from the command line, we go into
+RDAdmin->ManageHosts->CustomEncoders, click the 'Add' button and fill out the
+name:
+
+	New Encoder Name: Flash AAC
+
+Click 'Ok', and the Edit Encoder dialog will open.  Fill out the parameters
+as follows:
+
+  Default Extension: flv
+       Command Line: ffmpeg -y -vn -f s16le -ac %c -ar %r -i - -vn -f flv -acodec libfaac -ac %c -ar %r -ab %b %f
+     Allow Channels: 1,2
+ Allow Sample Rates: 22050,44100
+    Allow Bit Rates: 8,16
+
+Note that the bit rates here are specified in kbps!
+
+Click 'OK' to save, then go to RDAdmin->ManageHosts->AudioResources.  You
+should now see a 'Flash AAC [Custom]' entry in the 'SUPPORTED EXPORT FORMATS'
+list.

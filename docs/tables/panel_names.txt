@@ -1,0 +1,13 @@
+                 PANEL_NAMES Table Layout for Rivendell
+
+The PANEL_NAMES table holds configuration data for the names of the
+SoundPanels in Rivendell.  Following is the layout of a record in the
+PANEL_NAMES table:
+
+FIELD NAME           TYPE              REMARKS
+------------------------------------------------------------------------------
+ID                   int(10) unsigned  * Primary key, Auto Increment
+TYPE                 int(11)           0=Station Panel, 1=User Panel
+OWNER                char(64)
+PANEL_NO             int(11)
+NAME                 char(64)

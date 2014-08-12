@@ -1,0 +1,147 @@
+#! /bin/sh
+##
+##    A Rivendell init script for LSB-compliant Linux systems.
+##
+##    (C) Copyright 2010 Fred Gleason <fredg@paravelsystems.com>
+##
+##      $Id: rdrepld-suse.in,v 1.3 2010/12/16 13:15:37 cvs Exp $
+##
+##    This program is free software; you can redistribute it and/or modify
+##    it under the terms of version 2 of the GNU General Public License as
+##    published by the Free Software Foundation;
+##
+##    This program is distributed in the hope that it will be useful,
+##    but WITHOUT ANY WARRANTY; without even the implied warranty of
+##    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+##    GNU General Public License for more details.
+##
+##    You should have received a copy of the GNU General Public License
+##    along with this program; if not, write to the Free Software
+##    Foundation, Inc., 59 Temple Place, Suite 330, 
+##    Boston, MA  02111-1307  USA
+##
+
+# chkconfig: 35 66 34
+# description: Rivendell replication daemon
+# config: /etc/rc.conf
+
+### BEGIN INIT INFO
+# Provides:          rdrepld
+# Required-Start:    rivendell
+# Required-Stop:     rivendell
+# Default-Start:     2 3 5
+# Default-Stop:      0 1 6
+# Description:       Start the Rivendell replication daemon
+### END INIT INFO
+
+
+function StartDaemons {
+  @LOCAL_PREFIX@/bin/rdrepld 2> /dev/null
+}
+
+
+function StopDaemons {
+  if [ -f /var/run/rivendell/rdrepld.pid ] ; then
+    kill `cat /var/run/rivendell/rdrepld.pid` > /dev/null 2> /dev/null
+  fi
+  sleep 2
+}
+
+# Set path for script functions
+export PATH=$PATH:/usr/local/bin:/usr/local/sbin
+
+#
+# If the LSB Init functions exist, use them, otherwise roll our own
+#
+if test -f /lib/lsb/init-functions ; then
+  . /lib/lsb/init-functions
+else
+  function log_success_msg() {
+    echo "$1 ... done."
+  }
+  function log_failure_msg() {
+    echo "$1 ... done."
+  }
+fi
+
+# Check for missing binaries
+if [ ! -x @LOCAL_PREFIX@/bin/rdrepld ] ; then
+  echo "rdrepld not installed"
+  exit 5
+fi
+
+# Check for existence of needed config file and read it
+if [ ! -r /etc/rd.conf ] ; then
+  echo "Missing /etc/rd.conf"
+  exit 6
+fi
+
+
+case "$1" in
+    start)
+	$0 silent-status
+	if test $? -eq 3 ; then
+	    StartDaemons
+	fi
+	$0 silent-status
+	if test $? -eq 0 ; then
+	    log_success_msg "Starting Rivendell replication daemon"
+	    exit 0
+	else
+	    log_failure_msg "Starting Rivendell replication daemon"
+	    exit 1
+	fi
+	;;
+    stop)
+	StopDaemons
+	$0 silent-status
+	if test $? -eq 0 ; then
+	    log_failure_msg "Stopping Rivendell replication daemon"
+	    exit 1
+	else
+	    log_success_msg "Stopping Rivendell replication daemon"
+	    exit 0
+	fi
+	;;
+    restart)
+	$0 silent-status
+	if test $? -eq 0 ; then
+	    $0 stop
+	fi
+	$0 silent-status
+	if test $? -eq 0 ; then
+	    exit 1
+	fi
+	$0 start
+	$0 silent-status
+	if test $? -eq 0 ; then
+	    exit 0
+	fi
+	exit 1
+	;;
+    force-reload)
+	$0 restart
+	;;
+    status)
+	$0 silent-status
+	EXIT_CODE=$?
+	if test $EXIT_CODE -eq 0 ; then
+	    echo "Rivendell replication daemon running."
+	else 
+	    echo "Rivendell replication daemon stopped."
+	fi
+	exit $EXIT_CODE
+	;;
+    silent-status)
+	if test -f /var/run/rivendell/rdrepld.pid ; then
+	    if test -d /proc/`cat /var/run/rivendell/rdrepld.pid` ; then
+	      exit 0
+	    fi
+	fi
+	exit 3
+	;;
+    *)
+	echo "Usage: $0 {start|stop|restart|force-reload|status}"
+	exit 1
+	;;
+esac

@@ -1,0 +1,12 @@
+                USER_PERMS Table Layout for Rivendell
+
+The USER_PERMS table holds data concerning which audio groups are 
+are allowed to be accessed by which users.  Following is the layout 
+of a record in the USER_PERMS table:
+
+
+FIELD NAME           TYPE              REMARKS
+---------------------------------------------------------------
+ID                   int(10) unsigned  Primary key, auto increment
+USER_NAME            char(255)         From USERS.LOGIN_NAME
+GROUP_NAME           char(10)          From GROUPS.NAME

@@ -1,0 +1,35 @@
+                   USERS Table Layout for Rivendell
+
+The USERS table holds data concerning each individual user configured
+on the system.  Following is the layout of a record in the USERS
+table:
+
+FIELD NAME           TYPE             REMARKS
+--------------------------------------------------------------------------
+LOGIN_NAME           char(255)        Primary key
+FULL_NAME            char(255)        Indexed
+PHONE_NUMBER         char(20)
+DESCRIPTION          char(255)
+PASSWORD             char(32)         Not-NULL, Hashed
+ENABLE_WEB           enum('N','Y')
+ADMIN_USERS_PRIV     enum('N','Y')    Retired
+ADMIN_CONFIG_PRIV    enum('N','Y')
+CREATE_CARTS_PRIV    enum('N','Y')
+DELETE_CARTS_PRIV    enum('N','Y')
+MODIFY_CARTS_PRIV    enum('N','Y')
+EDIT_AUDIO_PRIV      enum('N','Y')
+ASSIGN_CART_PRIV     enum('N','Y')    Retired
+CREATE_LOG_PRIV      enum('N','Y')
+DELETE_LOG_PRIV      enum('N','Y')
+DELETE_REC_PRIV      enum('N','Y')
+PLAYOUT_LOG_PRIV     enum('N','Y')
+ARRANGE_LOG_PRIV     enum('N','Y')
+MODIFY_TEMPLATE_PRIV enum('N','Y')
+ADDTO_LOG_PRIV       enum('N','Y')
+REMOVEFROM_LOG_PRIV  enum('N','Y')
+CONFIG_PANELS_PRIV   enum('N','Y')
+VOICETRACK_LOG_PRIV  enum('N','Y')
+EDIT_CATCHES_PRIV    enum('N','Y')
+ADD_PODCAST_PRIV     enum('N','Y')
+EDIT_PODCAST_PRIV    enum('N','Y')
+DELETE_PODCAST_PRIV  enum('N','Y')

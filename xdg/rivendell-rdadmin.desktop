@@ -1,0 +1,10 @@
+[Desktop Entry]
+Encoding=UTF-8
+Terminal=false
+Categories=Qt;KDE;Rivendell;
+Name=RDAdmin
+GenericName=Rivendell Configuration
+Exec=rdadmin
+Icon=rivendell
+Type=Application
+Terminal=false

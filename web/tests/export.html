@@ -1,0 +1,90 @@
+<html>
+<head>
+<title>Rivendell EXPORT Service Test Harness</title>
+<body>
+<form action="/rd-bin/rdxport.cgi" method="post" enctype="multipart/form-data">
+<input type="hidden" name="COMMAND" value="1">
+<table cellpadding="0" cellspacing="2" border="0">
+<tr>
+<td align="right">LOGIN NAME:</td>
+<td><input type="text" name="LOGIN_NAME" size="20" maxlength="255"></td>
+</tr>
+<tr>
+<td align="right">PASSWORD:</td>
+<td><input type="password" name="PASSWORD" size="20" maxlength="32"></td>
+</tr>
+<tr>
+<td align="right">CART NUMBER:</td>
+<td><input type="text" name="CART_NUMBER" size="8" maxlength="6"></td>
+</tr>
+<tr>
+<td align="right">CUT NUMBER:</td>
+<td><input type="text" name="CUT_NUMBER" size="6" maxlength="3"></td>
+</tr>
+<tr>
+<td align="right">FORMAT:</td>
+<td><select name="FORMAT">
+  <option value="0">PCM16</option>
+  <option value="2">MPEG Layer 2</option>
+  <option value="3">MPEG Layer 3</option>
+  <option value="4">FLAC</option>
+  <option value="5">OggVorbis</option>
+  <option value="6">MPEG Layer 2 - WAV</option>
+</select>
+</td>
+</tr>
+<tr>
+<td align="right">CHANNELS:</td>
+<td><input type="text" name="CHANNELS" size="3" maxlength="1"></td>
+</tr>
+<tr>
+<td align="right">SAMPLE RATE:</td>
+<td><input type="text" name="SAMPLE_RATE" size="8" maxlength="5"></td>
+</tr>
+<tr>
+<td align="right">BIT RATE:</td>
+<td><input type="text" name="BIT_RATE" size="6" maxlength="6"></td>
+</tr>
+<tr>
+<td align="right">QUALITY:</td>
+<td><select name="QUALITY">
+  <option value="-1">None</option>
+  <option value="0">0</option>
+  <option value="1">1</option>
+  <option value="2">2</option>
+  <option value="3">3</option>
+  <option value="4">4</option>
+  <option value="5">5</option>
+  <option value="6">6</option>
+  <option value="7">7</option>
+  <option value="8">8</option>
+  <option value="9">9</option>
+  <option value="10">10</option>
+</select>
+</tr>
+<tr>
+<td align="right">START POINT:</td>
+<td><input type="text" name="START_POINT" size="10" value="-1"></td>
+</tr>
+<tr>
+<td align="right">END POINT:</td>
+<td><input type="text" name="END_POINT" size="10" value="-1"></td>
+</tr>
+<tr>
+<td align="right">NORMALIZATION LEVEL:</td>
+<td><input type="text" name="NORMALIZATION_LEVEL" size="6" maxlength="4"></td>
+</tr>
+<tr>
+<td align="right">ENABLE METADATA:</td>
+<td><input type="text" name="ENABLE_METADATA" size="6" maxlength="4"></td>
+</tr>
+<tr>
+<td colspan="2" align="right">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" align="right"><input type="submit" value="OK"></td>
+</tr>
+</table>
+</form>
+</body>
+</html>

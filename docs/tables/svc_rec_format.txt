@@ -1,0 +1,41 @@
+          Reconciliation Format Table Layout for Rivendell
+
+This is the generic layout of all reconciliation tables.  Each of 
+these tables will be have a name ending in '_SRT' and be listed in 
+the 'SERVICES' table.
+
+FIELD NAME           TYPE               REMARKS
+------------------------------------------------------------------------
+ID                   int(10) unsigned   Primary key, auto-increment
+LENGTH               int(11) signed
+LOG_NAME             char(64)           From LOGS.NAME
+LOG_ID               int(11) signed     From *_LOG.ID
+CART_NUMBER          int(10) unsigned   From CART.NUMBER
+CUT_NUMBER           int(11)
+TITLE                char(255)          From CART.TITLE
+ARTIST               char(255)          From CART.ARTIST
+PUBLISHER            char(64)           From CART.PUBLISHER
+COMPOSER             char(64)           From CART.COMPOSER
+ALBUM                char(255)          From CART.ALBUM
+LABEL                char(64)           From CART.LABEL
+CONDUCTOR            char(64)           From CART.CONDUCTOR
+USER_DEFINED         char(255)          From CART.USER_DEFINED
+SONG_ID              char(32)           From CART.SONG_ID
+USAGE_CODE           int                From CART.USAGE_CODE
+ISRC                 char(12)           From CUTS.ISRC
+ISCI                 char(32)           From CUTS.ISCI
+STATION_NAME         char(64)           From STATIONS.NAME
+EVENT_DATETIME       datetime           
+SCHEDULED_TIME       time               From *_LOG.START_TIME
+EVENT_TYPE           int(11)            1=Start, 2=Stop
+EVENT_SOURCE         int(11)            0=Manual,1=Traffic,2=Music,3=Template
+PLAY_SOURCE          int(11)            0=Unknown,1=MainLog,
+                                        2=AuxLog1,3=AuxLog2,4=SoundPanel
+START_SOURCE         int(11)            0=Unknown
+ONAIR_FLAG           enum('N','Y')
+EXT_START_TIME       time               Scheduler Start Time
+EXT_LENGTH           int(11)            Scheduler Length
+EXT_CART_NAME        char(32)           Scheduler Cart Name
+EXT_DATA             char(32)           Scheduler Data
+EXT_EVENT_ID         char(8)            Scheduler Event ID
+EXT_ANNC_TYPE        char(8)            External Scheduler Announcement Type

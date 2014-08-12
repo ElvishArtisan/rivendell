@@ -1,0 +1,1084 @@
+## rivendell.spec.in
+##
+##    The Rivendell Radio Automation System
+##    Copyright (C) 2002-2010  Fred Gleason <fredg@paravelsystems.com>
+##
+##      $Id: rivendell.spec.in,v 1.98.4.28 2014/01/16 02:44:58 cvs Exp $
+##
+##    This program is free software; you can redistribute it and/or modify
+##    it under the terms of version 2 of the GNU General Public License as
+##    published by the Free Software Foundation;
+##
+##    This program is distributed in the hope that it will be useful,
+##    but WITHOUT ANY WARRANTY; without even the implied warranty of
+##    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+##    GNU General Public License for more details.
+##
+##    You should have received a copy of the GNU General Public License
+##    along with this program; if not, write to the Free Software
+##    Foundation, Inc., 59 Temple Place, Suite 330, 
+##    Boston, MA  02111-1307  USA
+##
+
+Summary: Radio Broadcast Automation System
+Name: rivendell
+Version: @VERSION@
+Release: @RPM_RELEASE@
+License: GPL
+Packager: Fred Gleason <fredg@paravelsystems.com>
+Group: Productivity/Multimedia/Other
+Source: rivendell-@VERSION@.tar.gz
+Requires: @QT3_MYSQL_PKG@ @APACHE_PKG@ @QT3_DEVEL_PKG@ curl @USERMODE_PKG@ rivendell-base
+BuildRoot: /var/tmp/rivendell-@VERSION@
+
+%package base
+Summary: The base components for the Rivendell Radio Automation System
+Group: Productivity/Multimedia/Other
+Requires: @QT3_MYSQL_PKG@
+
+%package importers
+Summary: Library importers for the Rivendell Broadcast Automation System
+Group: Productivity/Multimedia/Other
+Requires: rivendell madplay
+
+
+%package devel
+Summary: Header files and example code for developing Rivendell Loadable Modules
+Group: Productivity/Multimedia/Other
+
+%package select
+Summary: The RDSelect system selector tool for Rivendell.
+Group: Productivity/Multimedia/Other
+Requires: rivendell
+
+
+%description
+Rivendell is a complete radio broadcast automation solution, with
+facilities for the acquisition, management, scheduling and playout of
+audio content.  Modules for the production and management of podcast
+audio are also included.
+
+
+%description base
+This package contains the common base components for the Rivendell
+Radio Broadcast Automation system, including the applications libraries
+and Core Audio Engine (CAE) daemon.
+
+
+%description importers
+This package contains various importer scripts, which can be used to
+import audio from existing legacy automation systems into Rivendell.
+Currently, scripts exist for the AirForce Wings, Prophet NexGen and Sierra
+Automated Systems SASAuto systems, as well as from another Rivendell system
+(useful for 'merging' multiple databases).  Additionally, scripts for
+initializing switcher matrices for the Christian Radio Consortium
+(CRC) Unity4000 network and copying RDCatch event lists between hosts
+are included.
+
+
+%description devel
+This package contains header files and example code for developing Rivendell 
+Loadable Modules (RLMs), which can be used to generate custom Now & Next data
+outputs for a wide variety of external devices.
+
+
+%description select
+This package contains the RDMonitor/RDSelect tool for Rivendell, which can
+be used to select which amoung multiple Rivendell instances a host should be
+associated with.
+
+%prep
+
+
+%setup
+
+
+%build
+./configure --prefix=@LOCAL_PREFIX@ --libexecdir=@libexecdir@
+make
+
+
+%install
+rm -rf $RPM_BUILD_ROOT
+
+mkdir -p $RPM_BUILD_ROOT@LOCAL_PREFIX@/@RD_LIB_PATH@
+cp lib/.libs/librd-@VERSION@.so $RPM_BUILD_ROOT@LOCAL_PREFIX@/@RD_LIB_PATH@/
+ln -s @LOCAL_PREFIX@/@RD_LIB_PATH@/librd-@VERSION@.so $RPM_BUILD_ROOT@LOCAL_PREFIX@/@RD_LIB_PATH@/librd.so
+cp lib/.libs/librd.a $RPM_BUILD_ROOT@LOCAL_PREFIX@/@RD_LIB_PATH@/
+cp lib/.libs/librd.la $RPM_BUILD_ROOT@LOCAL_PREFIX@/@RD_LIB_PATH@/
+if test -f rdhpi/.libs/librdhpi-@VERSION@.so ; then
+  cp rdhpi/.libs/librdhpi-@VERSION@.so $RPM_BUILD_ROOT@LOCAL_PREFIX@/@RD_LIB_PATH@/
+  ln -s @LOCAL_PREFIX@/@RD_LIB_PATH@/librdhpi-@VERSION@.so $RPM_BUILD_ROOT@LOCAL_PREFIX@/@RD_LIB_PATH@/librdhpi.so
+  cp rdhpi/.libs/librdhpi.a $RPM_BUILD_ROOT@LOCAL_PREFIX@/@RD_LIB_PATH@/
+  cp rdhpi/.libs/librdhpi.la $RPM_BUILD_ROOT@LOCAL_PREFIX@/@RD_LIB_PATH@/
+fi
+mkdir -p $RPM_BUILD_ROOT@LOCAL_PREFIX@/bin
+cp cae/.libs/caed $RPM_BUILD_ROOT@LOCAL_PREFIX@/bin/
+cp rdadmin/.libs/rdadmin $RPM_BUILD_ROOT@LOCAL_PREFIX@/bin/
+cp rdairplay/.libs/rdairplay $RPM_BUILD_ROOT@LOCAL_PREFIX@/bin/
+cp rdpanel/.libs/rdpanel $RPM_BUILD_ROOT@LOCAL_PREFIX@/bin/
+cp rdcartslots/.libs/rdcartslots $RPM_BUILD_ROOT@LOCAL_PREFIX@/bin/
+cp rdcatch/.libs/rdcatch $RPM_BUILD_ROOT@LOCAL_PREFIX@/bin/
+cp rdcatchd/.libs/rdcatchd $RPM_BUILD_ROOT@LOCAL_PREFIX@/bin/
+cp rdrepld/.libs/rdrepld $RPM_BUILD_ROOT@LOCAL_PREFIX@/bin/
+cp rdlibrary/.libs/rdlibrary $RPM_BUILD_ROOT@LOCAL_PREFIX@/bin/
+cp rdlogedit/.libs/rdlogedit $RPM_BUILD_ROOT@LOCAL_PREFIX@/bin/
+cp rdlogmanager/.libs/rdlogmanager $RPM_BUILD_ROOT@LOCAL_PREFIX@/bin/
+cp rdcastmanager/.libs/rdcastmanager $RPM_BUILD_ROOT@LOCAL_PREFIX@/bin/
+cp rdlogin/.libs/rdlogin $RPM_BUILD_ROOT@LOCAL_PREFIX@/bin/
+cp rdselect/.libs/rdselect $RPM_BUILD_ROOT@LOCAL_PREFIX@/bin/
+cp rdmonitor/.libs/rdmonitor $RPM_BUILD_ROOT@LOCAL_PREFIX@/bin/
+cp utils/rdalsaconfig/.libs/rdalsaconfig $RPM_BUILD_ROOT@LOCAL_PREFIX@/bin/
+if test "@DISTRO@" = "redhat" ; then
+  ln -s /usr/bin/consolehelper $RPM_BUILD_ROOT@LOCAL_PREFIX@/bin/rdalsaconfig-root
+fi
+cp utils/rdcheckcuts/.libs/rdcheckcuts $RPM_BUILD_ROOT@LOCAL_PREFIX@/bin/
+cp utils/rdcollect/.libs/rdcollect $RPM_BUILD_ROOT@LOCAL_PREFIX@/bin/
+cp utils/rddgimport/.libs/rddgimport $RPM_BUILD_ROOT@LOCAL_PREFIX@/bin/
+cp utils/rddiscimport/.libs/rddiscimport $RPM_BUILD_ROOT@LOCAL_PREFIX@/bin/
+cp utils/rdgen/rdgen $RPM_BUILD_ROOT@LOCAL_PREFIX@/bin/
+cp utils/rdgpimon/.libs/rdgpimon $RPM_BUILD_ROOT@LOCAL_PREFIX@/bin/
+if test -f rdhpi/.libs/librdhpi-@VERSION@.so ; then
+  cp utils/rdhpiinfo/.libs/rdhpiinfo $RPM_BUILD_ROOT@LOCAL_PREFIX@/bin/
+  if test "@DISTRO@" = "redhat" ; then
+    ln -s /usr/bin/consolehelper $RPM_BUILD_ROOT@LOCAL_PREFIX@/bin/rdhpiinfo-root
+  fi
+fi
+cp utils/rddelete/.libs/rddelete $RPM_BUILD_ROOT@LOCAL_PREFIX@/bin/
+cp utils/rdimport/.libs/rdimport $RPM_BUILD_ROOT@LOCAL_PREFIX@/bin/
+cp utils/rdmaint/.libs/rdmaint $RPM_BUILD_ROOT@LOCAL_PREFIX@/bin/
+cp utils/rdpopup/.libs/rdpopup $RPM_BUILD_ROOT@LOCAL_PREFIX@/bin/
+cp utils/rdpurgecasts/.libs/rdpurgecasts $RPM_BUILD_ROOT@LOCAL_PREFIX@/bin/
+cp utils/rdsoftkeys/.libs/rdsoftkeys $RPM_BUILD_ROOT@LOCAL_PREFIX@/bin/
+cp utils/rmlsend/.libs/rmlsend $RPM_BUILD_ROOT@LOCAL_PREFIX@/bin/
+cp scripts/rd_audio_sync $RPM_BUILD_ROOT@LOCAL_PREFIX@/bin/
+cp scripts/rd_config $RPM_BUILD_ROOT@LOCAL_PREFIX@/bin/
+cp scripts/sage_endec_rwt.sh $RPM_BUILD_ROOT@LOCAL_PREFIX@/bin/
+cp ripcd/.libs/ripcd $RPM_BUILD_ROOT@LOCAL_PREFIX@/bin/
+cp importers/.libs/wings_filter $RPM_BUILD_ROOT@LOCAL_PREFIX@/bin/
+cp importers/.libs/rivendell_filter $RPM_BUILD_ROOT@LOCAL_PREFIX@/bin/
+cp importers/.libs/nexgen_filter $RPM_BUILD_ROOT@LOCAL_PREFIX@/bin/
+cp importers/.libs/sas_filter $RPM_BUILD_ROOT@LOCAL_PREFIX@/bin/
+cp scripts/crc-unity4k.sh $RPM_BUILD_ROOT@LOCAL_PREFIX@/bin/
+cp importers/.libs/rdcatch_copy $RPM_BUILD_ROOT@LOCAL_PREFIX@/bin/
+cp importers/.libs/panel_copy $RPM_BUILD_ROOT@LOCAL_PREFIX@/bin/
+mkdir -p $RPM_BUILD_ROOT@LOCAL_PREFIX@/sbin
+cp utils/sas_shim/.libs/sas_shim $RPM_BUILD_ROOT@LOCAL_PREFIX@/sbin/
+cp utils/rddbcheck/.libs/rddbcheck $RPM_BUILD_ROOT@LOCAL_PREFIX@/sbin/
+cp utils/rdmarkerset/.libs/rdmarkerset $RPM_BUILD_ROOT@LOCAL_PREFIX@/sbin/
+mkdir -p $RPM_BUILD_ROOT@libexecdir@
+cp web/rdfeed/.libs/rdfeed.xml $RPM_BUILD_ROOT@libexecdir@/
+cp web/rdcastmanager/.libs/rdcastmanager.cgi $RPM_BUILD_ROOT@libexecdir@/
+cat web/rdcastmanager/rdcastmanager.js | helpers/jsmin > $RPM_BUILD_ROOT@libexecdir@/rdcastmanager.js
+ln -s @libexecdir@/rdfeed.xml $RPM_BUILD_ROOT@libexecdir@/rdfeed.mp3
+cp icons/greencheckmark.png $RPM_BUILD_ROOT@libexecdir@/
+cp icons/redx.png $RPM_BUILD_ROOT@libexecdir@/
+cp icons/greenball.png $RPM_BUILD_ROOT@libexecdir@/
+cp icons/redball.png $RPM_BUILD_ROOT@libexecdir@/
+cp icons/whiteball.png $RPM_BUILD_ROOT@libexecdir@/
+cp icons/progressbar.gif $RPM_BUILD_ROOT@libexecdir@/
+cp web/rdxport/.libs/rdxport.cgi $RPM_BUILD_ROOT@libexecdir@/
+mkdir -p $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/rivendell/
+cp lib/librd_es.qm $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/rivendell/
+cp rdadmin/rdadmin_es.qm $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/rivendell/
+cp rdairplay/rdairplay_es.qm $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/rivendell/
+cp rdcastmanager/rdcastmanager_es.qm $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/rivendell/
+cp rdcatch/rdcatch_es.qm $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/rivendell/
+if test -f rdhpi/.libs/librdhpi-@VERSION@.so ; then
+  cp rdhpi/rdhpi_es.qm $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/rivendell/
+fi
+cp rdlibrary/rdlibrary_es.qm $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/rivendell/
+cp rdlogedit/rdlogedit_es.qm $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/rivendell/
+cp rdlogin/rdlogin_es.qm $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/rivendell/
+cp rdselect/rdselect_es.qm $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/rivendell/
+cp rdmonitor/rdmonitor_es.qm $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/rivendell/
+cp rdlogmanager/rdlogmanager_es.qm $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/rivendell/
+cp utils/rdgpimon/rdgpimon_es.qm $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/rivendell/
+cp utils/rmlsend/rmlsend_es.qm $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/rivendell/
+
+cp lib/librd_de.qm $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/rivendell/
+cp rdadmin/rdadmin_de.qm $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/rivendell/
+cp rdairplay/rdairplay_de.qm $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/rivendell/
+cp rdcastmanager/rdcastmanager_de.qm $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/rivendell/
+cp rdcatch/rdcatch_de.qm $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/rivendell/
+if test -f rdhpi/.libs/librdhpi-@VERSION@.so ; then
+  cp rdhpi/rdhpi_de.qm $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/rivendell/
+fi
+cp rdlibrary/rdlibrary_de.qm $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/rivendell/
+cp rdlogedit/rdlogedit_de.qm $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/rivendell/
+cp rdlogin/rdlogin_de.qm $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/rivendell/
+cp rdselect/rdselect_de.qm $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/rivendell/
+cp rdmonitor/rdmonitor_de.qm $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/rivendell/
+cp rdlogmanager/rdlogmanager_de.qm $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/rivendell/
+cp utils/rdgpimon/rdgpimon_de.qm $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/rivendell/
+cp utils/rmlsend/rmlsend_de.qm $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/rivendell/
+cp lib/librd_cs.qm $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/rivendell/
+cp rdadmin/rdadmin_cs.qm $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/rivendell/
+cp rdairplay/rdairplay_cs.qm $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/rivendell/
+cp rdcastmanager/rdcastmanager_cs.qm $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/rivendell/
+cp rdcatch/rdcatch_cs.qm $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/rivendell/
+if test -f rdhpi/.libs/librdhpi-@VERSION@.so ; then
+  cp rdhpi/rdhpi_cs.qm $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/rivendell/
+fi
+cp rdlibrary/rdlibrary_cs.qm $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/rivendell/
+cp rdlogedit/rdlogedit_cs.qm $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/rivendell/
+cp rdlogin/rdlogin_cs.qm $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/rivendell/
+cp rdselect/rdselect_cs.qm $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/rivendell/
+cp rdmonitor/rdmonitor_cs.qm $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/rivendell/
+cp rdlogmanager/rdlogmanager_cs.qm $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/rivendell/
+cp utils/rdgpimon/rdgpimon_cs.qm $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/rivendell/
+cp utils/rmlsend/rmlsend_cs.qm $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/rivendell/
+cp lib/librd_nn.qm $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/rivendell/
+cp rdadmin/rdadmin_nn.qm $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/rivendell/
+cp rdairplay/rdairplay_nn.qm $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/rivendell/
+cp rdcastmanager/rdcastmanager_nn.qm $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/rivendell/
+cp rdcatch/rdcatch_nn.qm $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/rivendell/
+if test -f rdhpi/.libs/librdhpi-@VERSION@.so ; then
+  cp rdhpi/rdhpi_nn.qm $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/rivendell/
+fi
+cp rdlibrary/rdlibrary_nn.qm $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/rivendell/
+cp rdlogedit/rdlogedit_nn.qm $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/rivendell/
+cp rdlogin/rdlogin_nn.qm $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/rivendell/
+cp rdselect/rdselect_nn.qm $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/rivendell/
+cp rdmonitor/rdmonitor_nn.qm $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/rivendell/
+cp rdlogmanager/rdlogmanager_nn.qm $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/rivendell/
+cp utils/rdgpimon/rdgpimon_nn.qm $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/rivendell/
+cp utils/rmlsend/rmlsend_nn.qm $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/rivendell/
+cp lib/librd_nb.qm $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/rivendell/
+cp rdadmin/rdadmin_nb.qm $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/rivendell/
+cp rdairplay/rdairplay_nb.qm $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/rivendell/
+cp rdcastmanager/rdcastmanager_nb.qm $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/rivendell/
+cp rdcatch/rdcatch_nb.qm $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/rivendell/
+if test -f rdhpi/.libs/librdhpi-@VERSION@.so ; then
+  cp rdhpi/rdhpi_nb.qm $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/rivendell/
+fi
+cp rdlibrary/rdlibrary_nb.qm $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/rivendell/
+cp rdlogedit/rdlogedit_nb.qm $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/rivendell/
+cp rdlogin/rdlogin_nb.qm $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/rivendell/
+cp rdselect/rdselect_nb.qm $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/rivendell/
+cp rdmonitor/rdmonitor_nb.qm $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/rivendell/
+cp rdlogmanager/rdlogmanager_nb.qm $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/rivendell/
+cp utils/rdgpimon/rdgpimon_nb.qm $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/rivendell/
+cp utils/rmlsend/rmlsend_nb.qm $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/rivendell/
+cp lib/librd_pt_BR.qm $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/rivendell/
+cp rdadmin/rdadmin_pt_BR.qm $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/rivendell/
+cp rdairplay/rdairplay_pt_BR.qm $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/rivendell/
+cp rdcastmanager/rdcastmanager_pt_BR.qm $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/rivendell/
+cp rdcatch/rdcatch_pt_BR.qm $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/rivendell/
+if test -f rdhpi/.libs/librdhpi-@VERSION@.so ; then
+  cp rdhpi/rdhpi_pt_BR.qm $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/rivendell/
+fi
+cp rdlibrary/rdlibrary_pt_BR.qm $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/rivendell/
+cp rdlogedit/rdlogedit_pt_BR.qm $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/rivendell/
+cp rdlogin/rdlogin_pt_BR.qm $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/rivendell/
+cp rdselect/rdselect_pt_BR.qm $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/rivendell/
+cp rdmonitor/rdmonitor_pt_BR.qm $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/rivendell/
+cp rdlogmanager/rdlogmanager_pt_BR.qm $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/rivendell/
+cp utils/rdgpimon/rdgpimon_pt_BR.qm $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/rivendell/
+cp utils/rmlsend/rmlsend_pt_BR.qm $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/rivendell/
+mkdir -p $RPM_BUILD_ROOT@APACHE_CONFIG_DIR@
+cp conf/rd-bin.conf $RPM_BUILD_ROOT@APACHE_CONFIG_DIR@/
+mkdir -p $RPM_BUILD_ROOT/etc/init.d
+cp rivendell $RPM_BUILD_ROOT/etc/init.d
+cp rdrepld-suse $RPM_BUILD_ROOT/etc/init.d/rdrepld
+mkdir -p $RPM_BUILD_ROOT/etc/sysconfig
+cp rivendell.sys $RPM_BUILD_ROOT/etc/sysconfig/rivendell
+mkdir -p $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/icons/hicolor/16x16/apps
+cp icons/rivendell-16x16.png $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/icons/hicolor/16x16/apps/rivendell.png
+mkdir -p $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/icons/hicolor/22x22/apps
+cp icons/rivendell-22x22.png $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/icons/hicolor/22x22/apps/rivendell.png
+mkdir -p $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/icons/hicolor/32x32/apps
+cp icons/rivendell-32x32.png $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/icons/hicolor/32x32/apps/rivendell.png
+mkdir -p $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/icons/hicolor/48x48/apps
+cp icons/rivendell-48x48.png $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/icons/hicolor/48x48/apps/rivendell.png
+mkdir -p $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/icons/hicolor/64x64/apps
+cp icons/rivendell-64x64.png $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/icons/hicolor/64x64/apps/rivendell.png
+mkdir -p $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/icons/hicolor/128x128/apps
+cp icons/rivendell-128x128.png $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/icons/hicolor/128x128/apps/rivendell.png
+mkdir -p $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/X11/fvwm2/pixmaps
+cp icons/rivendell-16x16.xpm $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/X11/fvwm2/pixmaps/mini.rivendell.xpm
+cp icons/rivendell-32x32.xpm $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/X11/fvwm2/pixmaps/rivendell.xpm
+mkdir -p $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/applications
+cp xdg/rivendell-rdadmin.desktop $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/applications/
+cp xdg/rivendell-rdairplay.desktop $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/applications/
+cp xdg/rivendell-rdalsaconfig-root.desktop $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/applications/
+cp xdg/rivendell-rdcartslots.desktop $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/applications/
+cp xdg/rivendell-rdcastmanager.desktop $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/applications/
+cp xdg/rivendell-rdcatch.desktop $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/applications/
+cp xdg/rivendell-rddgimport.desktop $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/applications/
+cp xdg/rivendell-rddiscimport.desktop $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/applications/
+cp xdg/rivendell-rdgpimon.desktop $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/applications/
+if test -f rdhpi/.libs/librdhpi-@VERSION@.so ; then
+  cp xdg/rivendell-rdhpiinfo-root.desktop $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/applications/
+fi
+cp xdg/rivendell-rdlibrary.desktop $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/applications/
+cp xdg/rivendell-rdlogedit.desktop $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/applications/
+cp xdg/rivendell-rdlogin.desktop $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/applications/
+cp xdg/rivendell-rdlogmanager.desktop $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/applications/
+cp xdg/rivendell-rdmonitor.desktop $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/applications/
+cp xdg/rivendell-rdpanel.desktop $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/applications/
+cp xdg/rivendell-rdsoftkeys.desktop $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/applications/
+cp xdg/rivendell-rmlsend.desktop $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/applications/
+mkdir -p $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/desktop-directories
+cp xdg/*.directory $RPM_BUILD_ROOT@LOCAL_PREFIX@/share/desktop-directories/
+mkdir -p $RPM_BUILD_ROOT/etc/xdg/menus/applications-merged
+cp xdg/*.menu $RPM_BUILD_ROOT/etc/xdg/menus/applications-merged/
+mkdir $RPM_BUILD_ROOT/.qt
+touch $RPM_BUILD_ROOT/.qt/qt
+mkdir -p $RPM_BUILD_ROOT@LOCAL_PREFIX@/@RD_LIB_PATH@/rivendell
+cp rlm/rlm_test.rlm $RPM_BUILD_ROOT@LOCAL_PREFIX@/@RD_LIB_PATH@/rivendell/
+cp rlm/rlm_serial.rlm $RPM_BUILD_ROOT@LOCAL_PREFIX@/@RD_LIB_PATH@/rivendell/
+cp rlm/rlm_twitter.rlm $RPM_BUILD_ROOT@LOCAL_PREFIX@/@RD_LIB_PATH@/rivendell/
+cp rlm/rlm_facebook.rlm $RPM_BUILD_ROOT@LOCAL_PREFIX@/@RD_LIB_PATH@/rivendell/
+cp rlm/rlm_udp.rlm $RPM_BUILD_ROOT@LOCAL_PREFIX@/@RD_LIB_PATH@/rivendell/
+cp rlm/rlm_xmpad.rlm $RPM_BUILD_ROOT@LOCAL_PREFIX@/@RD_LIB_PATH@/rivendell/
+cp rlm/rlm_ando.rlm $RPM_BUILD_ROOT@LOCAL_PREFIX@/@RD_LIB_PATH@/rivendell/
+cp rlm/rlm_liqcomp.rlm $RPM_BUILD_ROOT@LOCAL_PREFIX@/@RD_LIB_PATH@/rivendell/
+cp rlm/rlm_padpoint.rlm $RPM_BUILD_ROOT@LOCAL_PREFIX@/@RD_LIB_PATH@/rivendell/
+cp rlm/rlm_inno713.rlm $RPM_BUILD_ROOT@LOCAL_PREFIX@/@RD_LIB_PATH@/rivendell/
+cp rlm/rlm_xds.rlm $RPM_BUILD_ROOT@LOCAL_PREFIX@/@RD_LIB_PATH@/rivendell/
+cp rlm/rlm_icecast2.rlm $RPM_BUILD_ROOT@LOCAL_PREFIX@/@RD_LIB_PATH@/rivendell/
+cp rlm/rlm_shoutcast1.rlm $RPM_BUILD_ROOT@LOCAL_PREFIX@/@RD_LIB_PATH@/rivendell/
+cp rlm/rlm_spottrap.rlm $RPM_BUILD_ROOT@LOCAL_PREFIX@/@RD_LIB_PATH@/rivendell/
+cp rlm/rlm_filewrite.rlm $RPM_BUILD_ROOT@LOCAL_PREFIX@/@RD_LIB_PATH@/rivendell/
+cp rlm/rlm_spinitron_plus.rlm $RPM_BUILD_ROOT@LOCAL_PREFIX@/@RD_LIB_PATH@/rivendell/
+mkdir -p $RPM_BUILD_ROOT@LOCAL_PREFIX@/include/rlm
+cp rlm/rlm.h $RPM_BUILD_ROOT@LOCAL_PREFIX@/include/rlm/
+mkdir -p $RPM_BUILD_ROOT/@LOCAL_PREFIX@/src/rlm
+cp rlm/Makefile-example $RPM_BUILD_ROOT/@LOCAL_PREFIX@/src/rlm/Makefile
+cp rlm/rlm_test.c $RPM_BUILD_ROOT/@LOCAL_PREFIX@/src/rlm/
+cp rlm/rlm_serial.c $RPM_BUILD_ROOT/@LOCAL_PREFIX@/src/rlm/
+cp rlm/rlm_udp.c $RPM_BUILD_ROOT/@LOCAL_PREFIX@/src/rlm/
+cp rlm/rlm_twitter.c $RPM_BUILD_ROOT/@LOCAL_PREFIX@/src/rlm/
+cp rlm/rlm_facebook.c $RPM_BUILD_ROOT/@LOCAL_PREFIX@/src/rlm/
+cp rlm/rlm_xmpad.c $RPM_BUILD_ROOT/@LOCAL_PREFIX@/src/rlm/
+cp rlm/rlm_ando.c $RPM_BUILD_ROOT/@LOCAL_PREFIX@/src/rlm/
+cp rlm/rlm_liqcomp.c $RPM_BUILD_ROOT/@LOCAL_PREFIX@/src/rlm/
+cp rlm/rlm_padpoint.c $RPM_BUILD_ROOT/@LOCAL_PREFIX@/src/rlm/
+cp rlm/rlm_inno713.c $RPM_BUILD_ROOT/@LOCAL_PREFIX@/src/rlm/
+cp rlm/rlm_xds.c $RPM_BUILD_ROOT/@LOCAL_PREFIX@/src/rlm/
+cp rlm/rlm_icecast2.c $RPM_BUILD_ROOT/@LOCAL_PREFIX@/src/rlm/
+cp rlm/rlm_shoutcast1.c $RPM_BUILD_ROOT/@LOCAL_PREFIX@/src/rlm/
+cp rlm/rlm_spottrap.c $RPM_BUILD_ROOT/@LOCAL_PREFIX@/src/rlm/
+cp rlm/rlm_filewrite.c $RPM_BUILD_ROOT/@LOCAL_PREFIX@/src/rlm/
+cp rlm/rlm_spinitron_plus.c $RPM_BUILD_ROOT/@LOCAL_PREFIX@/src/rlm/
+mkdir -p $RPM_BUILD_ROOT/@RD_LIB_PATH@/security
+cp pam_rd/.libs/pam_rd.so $RPM_BUILD_ROOT/@RD_LIB_PATH@/security/
+if test "@WIN32_SOURCE@" ; then
+  mkdir -p $RPM_BUILD_ROOT/var/win32
+  cp @WIN32_SOURCE@ $RPM_BUILD_ROOT/var/win32/
+fi
+mkdir -p $RPM_BUILD_ROOT/etc/pam.d
+cp xdg/rdalsaconfig-root-pam $RPM_BUILD_ROOT/etc/pam.d/rdalsaconfig-root
+if test -f rdhpi/.libs/librdhpi-@VERSION@.so ; then
+  cp xdg/rdhpiinfo-root-pam $RPM_BUILD_ROOT/etc/pam.d/rdhpiinfo-root
+fi
+mkdir -p $RPM_BUILD_ROOT/etc/security/console.apps
+cp xdg/rdalsaconfig-root-consolehelper $RPM_BUILD_ROOT/etc/security/console.apps/rdalsaconfig-root
+if test -f rdhpi/.libs/librdhpi-@VERSION@.so ; then
+  cp xdg/rdhpiinfo-root-consolehelper $RPM_BUILD_ROOT/etc/security/console.apps/rdhpiinfo-root
+fi
+
+%post
+ldconfig
+if test "@DISTRO@" = "suse" ; then
+  PACKAGE_DOC_DIR=%_docdir/%{name}
+fi
+if test "@DISTRO@" = "redhat" ; then
+  PACKAGE_DOC_DIR=%_docdir/%{name}-@VERSION@
+fi
+/usr/sbin/groupadd -r -g 150 %{name} &>/dev/null || :
+/usr/sbin/useradd -o -u 150 -g %{name} -s /bin/false -r -c "Rivendell radio automation system" -d /var/snd %{name} &>/dev/null || :
+if test ! -e /var/snd ; then
+  mkdir -p /var/snd
+  chown rivendell:rivendell /var/snd
+  chmod 775 /var/snd
+fi
+mkdir -p -m 777 /var/run/rivendell
+if test ! -d /etc/rivendell.d ; then
+  mkdir -p /etc/rivendell.d
+  chmod 775 /etc/rivendell.d
+fi
+if test ! -e /etc/rd.conf ; then
+  cp $PACKAGE_DOC_DIR/rd.conf-sample /etc/rivendell.d/rd-default.conf
+  ln -s /etc/rivendell.d/rd-default.conf /etc/rd.conf
+fi
+if test ! -h /etc/rd.conf ; then
+  mv /etc/rd.conf /etc/rivendell.d/rd-default.conf
+  ln -s /etc/rivendell.d/rd-default.conf /etc/rd.conf
+fi
+if test ! -e /etc/asound.conf ; then
+  cp $PACKAGE_DOC_DIR/asound.conf-sample /etc/asound.conf
+fi
+if test -f /etc/init.d/mysql ; then
+  /etc/init.d/mysql start
+  MYSQL_INIT="/etc/init.d/mysql"
+fi
+if test -f /etc/init.d/mysqld ; then
+  /etc/init.d/mysqld start
+  MYSQL_INIT="/etc/init.d/mysqld"
+fi
+@LOCAL_PREFIX@/bin/rdadmin --check-db --mysql-admin-user=root --mysql-admin-password
+/etc/init.d/rivendell restart
+if test "@DISTRO@" = "suse" ; then
+  /etc/init.d/apache2 restart
+  insserv -d -f /etc/init.d/apache2 /etc/init.d/rivendell $MYSQL_INIT
+fi
+if test "@DISTRO@" = "redhat" ; then
+  /etc/init.d/httpd restart
+  chkconfig --add httpd
+  chkconfig --levels 35 httpd on
+  chkconfig --add rivendell
+  chkconfig --levels 35 rivendell on
+  if test $MYSQL_INIT ; then
+    chkconfig --add mysqld
+    chkconfig --levels 35 mysqld on
+  fi
+fi
+exit 0
+
+%preun
+if test "$1" = "0" ; then
+  /etc/init.d/rivendell stop
+  if test "@DISTRO@" = "suse" ; then
+    insserv -r -d -f /etc/init.d/rivendell
+  fi
+  if test "@DISTRO@" = "redhat" ; then
+    chkconfig --levels 35 rivendell off
+    chkconfig --del rivendell
+  fi
+fi
+exit 0
+
+%clean
+rm -rf $RPM_BUILD_ROOT
+
+%files
+%defattr(-,root,root)
+@LOCAL_PREFIX@/@RD_LIB_PATH@/rivendell/rlm_test.rlm
+@LOCAL_PREFIX@/@RD_LIB_PATH@/rivendell/rlm_serial.rlm
+@LOCAL_PREFIX@/@RD_LIB_PATH@/rivendell/rlm_udp.rlm
+@LOCAL_PREFIX@/@RD_LIB_PATH@/rivendell/rlm_twitter.rlm
+@LOCAL_PREFIX@/@RD_LIB_PATH@/rivendell/rlm_facebook.rlm
+@LOCAL_PREFIX@/@RD_LIB_PATH@/rivendell/rlm_xmpad.rlm
+@LOCAL_PREFIX@/@RD_LIB_PATH@/rivendell/rlm_ando.rlm
+@LOCAL_PREFIX@/@RD_LIB_PATH@/rivendell/rlm_liqcomp.rlm
+@LOCAL_PREFIX@/@RD_LIB_PATH@/rivendell/rlm_padpoint.rlm
+@LOCAL_PREFIX@/@RD_LIB_PATH@/rivendell/rlm_inno713.rlm
+@LOCAL_PREFIX@/@RD_LIB_PATH@/rivendell/rlm_xds.rlm
+@LOCAL_PREFIX@/@RD_LIB_PATH@/rivendell/rlm_icecast2.rlm
+@LOCAL_PREFIX@/@RD_LIB_PATH@/rivendell/rlm_shoutcast1.rlm
+@LOCAL_PREFIX@/@RD_LIB_PATH@/rivendell/rlm_spottrap.rlm
+@LOCAL_PREFIX@/@RD_LIB_PATH@/rivendell/rlm_filewrite.rlm
+@LOCAL_PREFIX@/@RD_LIB_PATH@/rivendell/rlm_spinitron_plus.rlm
+@LOCAL_PREFIX@/bin/rdadmin
+@LOCAL_PREFIX@/bin/rdairplay
+@LOCAL_PREFIX@/bin/rdpanel
+@LOCAL_PREFIX@/bin/rdcartslots
+@LOCAL_PREFIX@/bin/rdcatch
+%attr(4755,root,root)@LOCAL_PREFIX@/bin/rdcatchd
+%attr(4755,root,root)@LOCAL_PREFIX@/bin/rdrepld
+@LOCAL_PREFIX@/bin/rdgen
+@LOCAL_PREFIX@/bin/rdlibrary
+@LOCAL_PREFIX@/bin/rdlogedit
+@LOCAL_PREFIX@/bin/rdlogmanager
+@LOCAL_PREFIX@/bin/rdcastmanager
+@LOCAL_PREFIX@/bin/rdlogin
+@LOCAL_PREFIX@/bin/rmlsend
+@LOCAL_PREFIX@/bin/rdsoftkeys
+@LOCAL_PREFIX@/bin/rdpopup
+@LOCAL_PREFIX@/bin/rdalsaconfig
+@CONSOLEHELPER_RDALSACONFIG@
+@LOCAL_PREFIX@/bin/rdgpimon
+@LOCAL_PREFIX@/bin/rddelete
+@LOCAL_PREFIX@/bin/rdimport
+@LOCAL_PREFIX@/bin/rdpurgecasts
+@LOCAL_PREFIX@/bin/rdmaint
+@LOCAL_PREFIX@/bin/rdcollect
+@LOCAL_PREFIX@/bin/rdcheckcuts
+@LOCAL_PREFIX@/bin/rd_audio_sync
+@LOCAL_PREFIX@/bin/rd_config
+@LOCAL_PREFIX@/bin/sage_endec_rwt.sh
+%attr(4755,root,root)@LOCAL_PREFIX@/bin/ripcd
+@LOCAL_PREFIX@/sbin/sas_shim
+@LOCAL_PREFIX@/sbin/rddbcheck
+@LOCAL_PREFIX@/sbin/rdmarkerset
+@LOCAL_PREFIX@/share/rivendell/librd_es.qm
+@LOCAL_PREFIX@/share/rivendell/rdadmin_es.qm
+@LOCAL_PREFIX@/share/rivendell/rdairplay_es.qm
+@LOCAL_PREFIX@/share/rivendell/rdcastmanager_es.qm
+@LOCAL_PREFIX@/share/rivendell/rdcatch_es.qm
+@LOCAL_PREFIX@/share/rivendell/rdgpimon_es.qm
+@LOCAL_PREFIX@/share/rivendell/rdlibrary_es.qm
+@LOCAL_PREFIX@/share/rivendell/rdlogedit_es.qm
+@LOCAL_PREFIX@/share/rivendell/rdlogin_es.qm
+@LOCAL_PREFIX@/share/rivendell/rdlogmanager_es.qm
+@LOCAL_PREFIX@/share/rivendell/rmlsend_es.qm
+@LOCAL_PREFIX@/share/rivendell/librd_cs.qm
+@LOCAL_PREFIX@/share/rivendell/rdadmin_cs.qm
+@LOCAL_PREFIX@/share/rivendell/rdairplay_cs.qm
+@LOCAL_PREFIX@/share/rivendell/rdcastmanager_cs.qm
+@LOCAL_PREFIX@/share/rivendell/rdcatch_cs.qm
+@LOCAL_PREFIX@/share/rivendell/rdgpimon_cs.qm
+@LOCAL_PREFIX@/share/rivendell/rdlibrary_cs.qm
+@LOCAL_PREFIX@/share/rivendell/rdlogedit_cs.qm
+@LOCAL_PREFIX@/share/rivendell/rdlogin_cs.qm
+@LOCAL_PREFIX@/share/rivendell/rdlogmanager_cs.qm
+@LOCAL_PREFIX@/share/rivendell/rmlsend_cs.qm
+@LOCAL_PREFIX@/share/rivendell/librd_de.qm
+@LOCAL_PREFIX@/share/rivendell/rdadmin_de.qm
+@LOCAL_PREFIX@/share/rivendell/rdairplay_de.qm
+@LOCAL_PREFIX@/share/rivendell/rdcastmanager_de.qm
+@LOCAL_PREFIX@/share/rivendell/rdcatch_de.qm
+@LOCAL_PREFIX@/share/rivendell/rdgpimon_de.qm
+@LOCAL_PREFIX@/share/rivendell/rdlibrary_de.qm
+@LOCAL_PREFIX@/share/rivendell/rdlogedit_de.qm
+@LOCAL_PREFIX@/share/rivendell/rdlogin_de.qm
+@LOCAL_PREFIX@/share/rivendell/rdlogmanager_de.qm
+@LOCAL_PREFIX@/share/rivendell/rmlsend_de.qm
+@LOCAL_PREFIX@/share/rivendell/librd_nn.qm
+@LOCAL_PREFIX@/share/rivendell/rdadmin_nn.qm
+@LOCAL_PREFIX@/share/rivendell/rdairplay_nn.qm
+@LOCAL_PREFIX@/share/rivendell/rdcastmanager_nn.qm
+@LOCAL_PREFIX@/share/rivendell/rdcatch_nn.qm
+@LOCAL_PREFIX@/share/rivendell/rdgpimon_nn.qm
+@LOCAL_PREFIX@/share/rivendell/rdlibrary_nn.qm
+@LOCAL_PREFIX@/share/rivendell/rdlogedit_nn.qm
+@LOCAL_PREFIX@/share/rivendell/rdlogin_nn.qm
+@LOCAL_PREFIX@/share/rivendell/rdlogmanager_nn.qm
+@LOCAL_PREFIX@/share/rivendell/rmlsend_nn.qm
+@LOCAL_PREFIX@/share/rivendell/librd_nb.qm
+@LOCAL_PREFIX@/share/rivendell/rdadmin_nb.qm
+@LOCAL_PREFIX@/share/rivendell/rdairplay_nb.qm
+@LOCAL_PREFIX@/share/rivendell/rdcastmanager_nb.qm
+@LOCAL_PREFIX@/share/rivendell/rdcatch_nb.qm
+@LOCAL_PREFIX@/share/rivendell/rdgpimon_nb.qm
+@LOCAL_PREFIX@/share/rivendell/rdlibrary_nb.qm
+@LOCAL_PREFIX@/share/rivendell/rdlogedit_nb.qm
+@LOCAL_PREFIX@/share/rivendell/rdlogin_nb.qm
+@LOCAL_PREFIX@/share/rivendell/rdlogmanager_nb.qm
+@LOCAL_PREFIX@/share/rivendell/rmlsend_nb.qm
+@LOCAL_PREFIX@/share/rivendell/librd_pt_BR.qm
+@LOCAL_PREFIX@/share/rivendell/rdadmin_pt_BR.qm
+@LOCAL_PREFIX@/share/rivendell/rdairplay_pt_BR.qm
+@LOCAL_PREFIX@/share/rivendell/rdcastmanager_pt_BR.qm
+@LOCAL_PREFIX@/share/rivendell/rdcatch_pt_BR.qm
+@LOCAL_PREFIX@/share/rivendell/rdgpimon_pt_BR.qm
+@LOCAL_PREFIX@/share/rivendell/rdlibrary_pt_BR.qm
+@LOCAL_PREFIX@/share/rivendell/rdlogedit_pt_BR.qm
+@LOCAL_PREFIX@/share/rivendell/rdlogin_pt_BR.qm
+@LOCAL_PREFIX@/share/rivendell/rdlogmanager_pt_BR.qm
+@LOCAL_PREFIX@/share/rivendell/rmlsend_pt_BR.qm
+/etc/init.d/rdrepld
+@LOCAL_PREFIX@/share/icons/hicolor/16x16/apps/rivendell.png
+@LOCAL_PREFIX@/share/icons/hicolor/22x22/apps/rivendell.png
+@LOCAL_PREFIX@/share/icons/hicolor/32x32/apps/rivendell.png
+@LOCAL_PREFIX@/share/icons/hicolor/48x48/apps/rivendell.png
+@LOCAL_PREFIX@/share/icons/hicolor/64x64/apps/rivendell.png
+@LOCAL_PREFIX@/share/icons/hicolor/128x128/apps/rivendell.png
+@LOCAL_PREFIX@/share/X11/fvwm2/pixmaps/mini.rivendell.xpm
+@LOCAL_PREFIX@/share/X11/fvwm2/pixmaps/rivendell.xpm
+@LOCAL_PREFIX@/share/applications/rivendell-rdadmin.desktop
+@LOCAL_PREFIX@/share/applications/rivendell-rdlogin.desktop
+@LOCAL_PREFIX@/share/applications/rivendell-rdairplay.desktop
+@LOCAL_PREFIX@/share/applications/rivendell-rdmonitor.desktop
+@LOCAL_PREFIX@/share/applications/rivendell-rdpanel.desktop
+@LOCAL_PREFIX@/share/applications/rivendell-rdcartslots.desktop
+@LOCAL_PREFIX@/share/applications/rivendell-rdcatch.desktop
+@LOCAL_PREFIX@/share/applications/rivendell-rdgpimon.desktop
+@LOCAL_PREFIX@/share/applications/rivendell-rdalsaconfig-root.desktop
+@LOCAL_PREFIX@/share/applications/rivendell-rdlibrary.desktop
+@LOCAL_PREFIX@/share/applications/rivendell-rdlogedit.desktop
+@LOCAL_PREFIX@/share/applications/rivendell-rdlogmanager.desktop
+@LOCAL_PREFIX@/share/applications/rivendell-rdcastmanager.desktop
+@LOCAL_PREFIX@/share/applications/rivendell-rmlsend.desktop
+@LOCAL_PREFIX@/share/applications/rivendell-rdsoftkeys.desktop
+@LOCAL_PREFIX@/share/desktop-directories/rivendell-configuration.directory
+@LOCAL_PREFIX@/share/desktop-directories/rivendell-logtools.directory
+@LOCAL_PREFIX@/share/desktop-directories/rivendell-rivendell.directory
+@LOCAL_PREFIX@/share/desktop-directories/rivendell-utilities.directory
+/etc/xdg/menus/applications-merged/rivendell-rivendell.menu
+/@RD_LIB_PATH@/security/pam_rd.so
+/.qt/qt
+@libexecdir@/rdfeed.xml
+@libexecdir@/rdfeed.mp3
+@libexecdir@/rdcastmanager.cgi
+@libexecdir@/rdcastmanager.js
+@libexecdir@/greencheckmark.png
+@libexecdir@/redx.png
+@libexecdir@/greenball.png
+@libexecdir@/redball.png
+@libexecdir@/whiteball.png
+@libexecdir@/progressbar.gif
+%attr(6755,root,root) @libexecdir@/rdxport.cgi
+@APACHE_CONFIG_DIR@/rd-bin.conf
+@WIN32_PATH@
+/etc/pam.d/rdalsaconfig-root
+/etc/security/console.apps/rdalsaconfig-root
+%doc AUTHORS
+%doc ChangeLog
+%doc COPYING 
+%doc INSTALL 
+%doc NEWS 
+%doc README 
+%doc UPGRADING
+%doc CODINGSTYLE
+%doc conf/rd.conf-sample
+%doc conf/my.cnf-master
+%doc conf/my.cnf-standby
+%doc docs/cae.sxw 
+%doc docs/catchd.txt 
+%doc docs/colors 
+%doc docs/GPIO.txt 
+%doc docs/ripc.txt 
+%doc docs/SWITCHERS.txt
+%doc docs/JACK.txt
+%doc docs/ENCODERS.txt
+%doc docs/pam_rd.txt
+%doc docs/rml.sxw
+%doc docs/MESSAGE_BOX.txt
+%doc docs/tables/audio_perms.txt 
+%doc docs/tables/audio_ports.txt 
+%doc docs/tables/cart.txt 
+%doc docs/tables/cartslots.txt 
+%doc docs/tables/clipboard.txt 
+%doc docs/tables/cuts.txt 
+%doc docs/tables/decks.txt 
+%doc docs/tables/groups.txt 
+%doc docs/tables/isci_xreference.txt
+%doc docs/tables/log_format.txt 
+%doc docs/tables/logs.txt 
+%doc docs/tables/panels.txt 
+%doc docs/tables/rd_airplay.txt 
+%doc docs/tables/rd_library.txt 
+%doc docs/tables/rd_logedit.txt 
+%doc docs/tables/recordings.txt 
+%doc docs/tables/services.txt 
+%doc docs/tables/sources.txt 
+%doc docs/tables/svc_rec_format.txt
+%doc docs/tables/stations.txt 
+%doc docs/tables/triggers.txt 
+%doc docs/tables/ttys.txt 
+%doc docs/tables/users.txt 
+%doc docs/tables/version.txt 
+%doc docs/asound.conf-sample
+%doc docs/web_api.odt
+%doc conf/rlm_serial.conf
+%doc conf/rlm_udp.conf
+%doc conf/rlm_twitter.conf
+%doc conf/rlm_facebook.conf
+%doc conf/rlm_xmpad.conf
+%doc conf/rlm_ando.conf
+%doc conf/rlm_liqcomp.conf
+%doc conf/rlm_padpoint.conf
+%doc conf/rlm_inno713.conf
+%doc conf/rlm_xds.conf
+%doc conf/rlm_icecast2.conf
+%doc conf/rlm_shoutcast1.conf
+%doc conf/rlm_spottrap.conf
+%doc conf/rlm_filewrite.conf
+%doc conf/rlm_spinitron_plus.conf
+%doc docs/implemented_macros.txt
+%doc utils/sas_shim/rc.sas_shim
+%doc docs/datetime_wildcards.txt
+%doc docs/reports.txt
+%doc docs/NOW+NEXT.txt
+%doc docs/WIN32.txt
+%doc docs/ALSA.txt
+%doc docs/RDMONITOR.txt
+%doc docs/scheduler_formats.ods
+%doc docs/copy_split_format.odt
+%doc docs/ando_interface.odt
+%doc scripts/rd_backup
+%doc scripts/start_traverso.sh
+%doc icons/rivendell-16x16.png
+%doc icons/rivendell-22x22.png
+%doc icons/rivendell-32x32.png
+%doc icons/rivendell-48x48.png
+%doc icons/rivendell-64x64.png
+%doc icons/rivendell-128x128.png
+%doc scripts/rd_mysql_enable_host.sh
+%doc scripts/rd_backup_system.sh
+%doc scripts/rd_restore_system.sh
+
+
+%files base
+%defattr(-,root,root)
+@LOCAL_PREFIX@/@RD_LIB_PATH@/librd-@VERSION@.so
+@LOCAL_PREFIX@/@RD_LIB_PATH@/librd.a
+@LOCAL_PREFIX@/@RD_LIB_PATH@/librd.la
+@LOCAL_PREFIX@/@RD_LIB_PATH@/librd.so
+%attr(4755,root,root) @LOCAL_PREFIX@/bin/caed
+/etc/init.d/rivendell
+%config /etc/sysconfig/rivendell
+@HPI_FILE1@
+@HPI_FILE2@
+@HPI_FILE3@
+@HPI_FILE4@
+@HPI_FILE5@
+@HPI_FILE6@
+@HPI_FILE7@
+@HPI_FILE8@
+@HPI_FILE9@
+@HPI_FILE10@
+@HPI_FILE11@
+@HPI_FILE12@
+@HPI_FILE13@
+@HPI_FILE14@
+@HPI_FILE15@
+
+
+%files importers
+@LOCAL_PREFIX@/bin/wings_filter
+@LOCAL_PREFIX@/bin/rivendell_filter
+@LOCAL_PREFIX@/bin/nexgen_filter
+@LOCAL_PREFIX@/bin/sas_filter
+@LOCAL_PREFIX@/bin/crc-unity4k.sh
+@LOCAL_PREFIX@/bin/rdcatch_copy
+@LOCAL_PREFIX@/bin/panel_copy
+@LOCAL_PREFIX@/bin/rddgimport
+@LOCAL_PREFIX@/bin/rddiscimport
+@LOCAL_PREFIX@/share/applications/rivendell-rddgimport.desktop
+@LOCAL_PREFIX@/share/applications/rivendell-rddiscimport.desktop
+%doc docs/WINGS_FILTER.txt
+%doc docs/RIVENDELL_FILTER.txt
+%doc docs/NEXGEN_FILTER.txt
+
+
+%files devel
+@LOCAL_PREFIX@/include/rlm/rlm.h
+@LOCAL_PREFIX@/src/rlm/Makefile
+@LOCAL_PREFIX@/src/rlm/rlm_test.c
+@LOCAL_PREFIX@/src/rlm/rlm_serial.c
+@LOCAL_PREFIX@/src/rlm/rlm_udp.c
+@LOCAL_PREFIX@/src/rlm/rlm_twitter.c
+@LOCAL_PREFIX@/src/rlm/rlm_facebook.c
+@LOCAL_PREFIX@/src/rlm/rlm_xmpad.c
+@LOCAL_PREFIX@/src/rlm/rlm_ando.c
+@LOCAL_PREFIX@/src/rlm/rlm_liqcomp.c
+@LOCAL_PREFIX@/src/rlm/rlm_padpoint.c
+@LOCAL_PREFIX@/src/rlm/rlm_inno713.c
+@LOCAL_PREFIX@/src/rlm/rlm_xds.c
+@LOCAL_PREFIX@/src/rlm/rlm_icecast2.c
+@LOCAL_PREFIX@/src/rlm/rlm_shoutcast1.c
+@LOCAL_PREFIX@/src/rlm/rlm_spottrap.c
+@LOCAL_PREFIX@/src/rlm/rlm_filewrite.c
+@LOCAL_PREFIX@/src/rlm/rlm_spinitron_plus.c
+
+
+%files select
+%attr(4755,root,root) @LOCAL_PREFIX@/bin/rdselect
+@LOCAL_PREFIX@/share/rivendell/rdselect_cs.qm
+@LOCAL_PREFIX@/share/rivendell/rdselect_de.qm
+@LOCAL_PREFIX@/share/rivendell/rdselect_es.qm
+@LOCAL_PREFIX@/share/rivendell/rdselect_nb.qm
+@LOCAL_PREFIX@/share/rivendell/rdselect_nn.qm
+@LOCAL_PREFIX@/share/rivendell/rdselect_pt_BR.qm
+@LOCAL_PREFIX@/bin/rdmonitor
+@LOCAL_PREFIX@/share/rivendell/rdmonitor_cs.qm
+@LOCAL_PREFIX@/share/rivendell/rdmonitor_de.qm
+@LOCAL_PREFIX@/share/rivendell/rdmonitor_es.qm
+@LOCAL_PREFIX@/share/rivendell/rdmonitor_nb.qm
+@LOCAL_PREFIX@/share/rivendell/rdmonitor_nn.qm
+@LOCAL_PREFIX@/share/rivendell/rdmonitor_pt_BR.qm
+
+
+%changelog
+* Tue Jan 15 2014 Fred Gleason <fredg@paravelsystems.com>
+-- Added RDMarkerSet utility.
+* Thu Dec 26 2013 Fred Gleason <fredg@paravelsystems.com>
+-- Added desktop entry for RDMonitor.
+* Tue Dec 03 2013 Fred Gleason <fredg@paravelsystems.com>
+-- Added RDDiscImport(1).
+* Tue Nov 13 2013 Fred Gleason <fredg@paravelsystems.com>
+-- Split application library and caed(8) into a 'rivendell-base' subpackage.
+* Tue Aug 26 2013 Fred Gleason <fredg@paravelsystems.com>
+-- Added the 'rlm_spinitron_plus' RLM.
+* Tue May 14 2013 Fred Gleason <fredg@paravelsystems.com>
+-- Added conditional build for HPI components.
+* Mon Apr 29 2013 Fred Gleason <fredg@paravelsystems.com>
+-- Added RDDelete(1).
+* Fri Mar 29 2013 Fred Gleason <fredg@paravelsystems.com>
+-- Modified XDG system to use consolehelper(1) to start RDAlsaConfig and RDHpiInfo.
+-- Added a 'usermode' dependency.
+* Tue Mar 26 2013 Fred Gleason <fredg@paravelsystems.com>
+-- Added PNG icons.
+* Mon Jan 07 2013 Fred Gleason <fredg@paravelsystems.com>
+-- Added RDDgImport(1).
+-- Removed stripping code.
+* Tue Jan 01 2013 Fred Gleason <fredg@paravelsystems.com>
+-- Added Czech [CS] translation.
+* Fri Nov 16 2012 Fred Gleason <fredg@paravelsystems.com>
+-- Added RDCartSlots
+* Mon Oct 22 2012 Fred Gleason <fredg@paravelsystems.com>
+-- Modified the post-installation script to convert rd.conf(5) layout to
+be compatible with rdmonitor(1).
+* Fri Oct 19 2012 Fred Gleason <fredg@paravelsystems.com>
+-- Added the 'start-rdmonitor.sh' script.
+-- Set rdselect(1) SETUID 0.
+-- Removed 'rivendell-rdselect.desktop'
+* Fri Oct 12 2012 Fred Gleason <fredg@paravelsystems.com>
+-- Added the 'sage_endec_rwt.sh' script.
+-- Added a 'curl' dependency.
+-- Added rdmonitor(1).
+-- Added rdcheckcuts(1).
+* Thu Aug 23 2012 Fred Gleason <fredg@paravelsystems.com>
+-- Added the 'rlm_padpoint' RLM.
+* Wed Aug 01 2012 Fred Gleason <fredg@paravelsystems.com>
+-- Added a 'qt-devel' dependency.
+* Mon Jul 16 2012 Fred Gleason <fredg@paravelsystems.com>
+-- Added rdselect(8).
+* Sun Jul 15 2012 Fred Gleason <fredg@paravelsystems.com>
+-- Added 'nextgen_filter' to the 'importers' package.
+-- Added a 'madplay' dependency to the 'importers' package.
+-- Added 'docs/RIVENDELL_FILTER.txt'.
+* Thu Jul 07 2012 Fred Gleason <fredg@paravelsystems.com>
+-- Added the 'rlm_filewrite' RLM.
+* Mon May 07 2012 Fred Gleason <fredg@paravelsystems.com>
+-- Added 'doc/datetime_wildcards.txt'.
+* Mon Apr 02 2012 Fred Gleason <fredg@paravelsystems.com>
+-- Backported the 'rlm_spottrap' RLM from CVS-Head.
+* Wed Dec 21 2011 Fred Gleason <fredg@paravelsystems.com>
+-- Added Shoutcast1 RLM.
+* Fri May 20 2011 Fred Gleason <fredg@paravelsystems.com>
+-- Added 'scripts/rd_backup_system.sh' and 'rd_restore_systems.sh'.
+* Wed May 11 2011 Fred Gleason <fredg@paravelsystems.com>
+-- Added 'scripts/rd_mysql_enable_host.sh'.
+* Mon Feb 14 2011 Fred Gleason <fredg@paravelsystems.com>
+-- Added Win32 setup support.
+* Tue Dec 07 2010 Fred Gleason <fredg@paravelsystems.com>
+-- Refactored XDG entries.
+* Wed Nov 24 2010 Fred Gleason <fredg@paravelsystems.com>
+-- Removed ivman(8) dependency.
+* Mon Nov 08 2010 Fred Gleason <fredg@paravelsystems.com>
+-- Added 'docs/ando_interface.odt'.
+* Fri Aug 6 2010 Fred Gleason <fredg@paravelsystems.com>
+-- Added the 'icecast2_rlm' RLM.
+* Wed Aug 4 2010 Fred Gleason <fredg@paravelsystems.com>
+-- Added pt_BR translation.
+* Mon Jul 26 2010 Fred Gleason <fredg@paravelsystems.com>
+-- Corrected 'web_api.ods' to 'web_api.odt' in the docs list.
+* Fri Jul 23 2010 Fred Gleason <fredg@paravelsystems.com>
+-- Added 'isci_xreference.txt'.
+* Thu Jul 10 2010 Fred Gleason <fredg@paravelsystems.com>
+-- Added 'web_api.ods' to the docs list.
+* Thu Jul 8 2010 Fred Gleason <fredg@paravelsystems.com>
+-- Added rdrepld(8).
+* Tue Jul 6 2010 Fred Gleason <fredg@paravelsystems.com>
+-- Added arguments to the post-install script to create the 'rivendell' 
+user with a UID of '150'.
+-- Added arguments to the post-install script to create the 'rivendell' 
+group with a GID of '150'.
+* Fri Jul 2 2010 Fred Gleason <fredg@paravelsystems.com>
+-- Added dependency for ivman(8).
+* Fri Jun 25 2010 Fred Gleason <fredg@paravelsystems.com>
+-- Added icons for fvwm(1).
+* Wed Jun 16 2010 Fred Gleason <fredg@paravelsystems.com>
+-- Changed invocation order of services in the post script.
+* Fri Jun 11 2010 Fred Gleason <fredg@paravelsystems.com>
+-- Removed 'SupportedCards'.
+-- Removed 'ToDo'.
+* Thu Jun 10 2010 Fred Gleason <fredg@paravelsystems.com>
+-- Added 'UPGRADING'.
+-- Removed 'conf/rd.conf-complete-sample'
+* Tue May 18 2010 Fred Gleason <fredg@paravelsystems.com>
+-- Added 'asound.conf-sample'.
+-- Changed post-install script to use static ALSA configuration.
+* Mon May 17 2010 Fred Gleason <fredg@paravelsystems.com>
+-- Enabled binary stripping.
+* Tue Apr 27 2010 Fred Gleason <fredg@paravelsystems.com>
+-- Removed rdaconvert(1).
+-- Removed rdfilewrite(1).
+* Wed Apr 07 2010 Fred Gleason <fredg@paravelsystems.com>
+-- Merged the 'web' subpackage into the main package.
+-- Removed toolame(1).
+-- Removed 'rd_import_audio', 'rd_export_audio' and 'rd_rip_cd'.
+-- Added the 'rlm_xds' RLM.
+-- Added 'rdxport.cgi'.
+* Mon Feb 01 2010 Fred Gleason <fredg@paravelsystems.com>
+-- Added rdcollect(1).
+* Wed Jan 21 2010 Fred Gleason <fredg@paravelsystems.com>
+-- Added German and Nowegian translations.
+* Wed Sep 02 2009 Fred Gleason <fredg@paravelsystems.com>
+-- Added the 'rlm_liqcomp' RLM.
+* Wed Aug 19 2009 Fred Gleason <fredg@paravelsystems.com>
+-- Added 'docs/scheduler_formats.ods'.
+* Tue Aug 04 2009 Fred Gleason <fredg@paravelsystems.com>
+-- Removed the sox(1) dependency.
+-- Added rdaconvert(1).
+* Mon Aug 03 2009 Fred Gleason <fredg@paravelsystems.com>
+-- Added RDAlsaConfig.
+* Tue Jun 30 2009 Fred Gleason <fredg@paravelsystems.com>
+-- Added 'progressbar.gif' and 'rdcastmanager.js'.
+* Wed May 13 2009 Fred Gleason <fredg@paravelsystems.com>
+-- Added the 'rlm_inno713' RLM.
+* Thu Apr 30 2009 Fred Gleason <fredg@paravelsystems.com>
+-- Corrected the install location of 'rlm.h'.
+* Tue Mar 17 2009 Fred Gleason <fredg@paravelsystems.com>
+-- Added 'MESSAGE_BOX.txt'.
+* Mon Feb 23 2009 Fred Gleason <fredg@paravelsystems.com>
+-- Added the 'rlm_ando' RLM.
+* Tue Feb 10 2009 Fred Gleason <fredg@paravelsystems.com>
+-- Added RDPopup.
+* Mon Feb 09 2009 Fred Gleason <fredg@paravelsystems.com>
+-- Added RDSoftKeys.
+* Tue Dec 02 2008 Fred Gleason <fredg@paravelsystems.com>
+-- Added the 'rlm_facebook' RLM.
+* Mon Dec 01 2008 Fred Gleason <fredg@paravelsystems.com>
+-- Added the 'rlm_udp' and 'rlm_twitter' RLMs.
+* Sun Nov 30 2008 Fred Gleason <fredg@paravelsystems.com>
+-- Added the 'pam_rd.so' PAM plugin.
+* Sun Nov 30 2008 Fred Gleason <fredg@paravelsystems.com>
+-- Added the 'rlm_xmpad' RLM.
+* Sat Nov 29 2008 Fred Gleason <fredg@paravelsystems.com>
+-- Added rdmaint(1).
+* Tue Nov 25 2008 Fred Gleason <fredg@paravelsystems.com>
+-- Added the 'rivendell-devel' package.
+* Thu Nov 20 2008 Fred Gleason <fredg@paravelsystems.com>
+-- Added 'scripts/start_traverso.sh'.
+* Thu Sep 18 2008 Fred Gleason <fredg@paravelsystems.com>
+-- Added 'ENCODERS.txt'.
+* Thu Aug 21 2008 Fred Gleason <fredg@paravelsystems.com>
+-- Added a '/.qt/' directory to suppress QSettings error in the apache log
+for 'rdfeed.cgi'.
+* Thu Jul 17 2008 Fred Gleason <fredg@paravelsystems.com>
+-- Added 'rivendell-filter' to the 'importers' package.
+-- Added 'docs/RIVENDELL_FILTER.txt'.
+* Thu Apr 03 2008 Fred Gleason <fredg@paravelsystems.com>
+-- Removed the 'displays.txt' file.
+* Mon Dec 17 2007 Fred Gleason <fredg@paravelsystems.com>
+-- Fixed broken symlink library paths for x86_64.
+* Fri Dec 14 2007 Fred Gleason <fredg@paravelsystems.com>
+-- Added support for x86_64 architecture.
+-- Fixed broken symlink creation for 'rdfeed.mp3'.
+-- Fixed broken cdda2wav dependency for OpenSuSE 10.3.
+* Mon Nov 27 2007 Fred Gleason <fredg@paravelsystems.com>
+-- Added 'rdfeed.mp3' symlink to 'rdfeed.xml'.
+-- Added 'whiteball.png' to the web subpackage.
+* Tue Oct 10 2007 Fred Gleason <fredg@paravelsystems.com>
+-- Added 'rdcastmanager.cgi'.
+* Mon Sep 24 2007 Fred Gleason <fredg@paravelsystems.com>
+-- Added the 'web' subpackage.
+-- Added RDCastManager.
+-- Added rdpurgecast.
+* Mon Sep 24 2007 Fred Gleason <fredg@paravelsystems.com>
+-- Replaced the 'lukemftp' dependency with 'lftp'.
+* Fri Sep 14 2007 Fred Gleason <fredg@paravelsystems.com>
+-- Added RDHPIInfo.
+* Fri Sep 14 2007 Fred Gleason <fredg@paravelsystems.com>
+-- Added librhpi.
+* Fri Jun 08 2007 Fred Gleason <fredg@paravelsystems.com>
+-- Added RDPanel.
+* Sun Sep 03 2006 Fred Gleason <fredg@salemradiolabs.com>
+-- Removed the rdbackup script.
+-- Added the rd_backup script.
+* Tue Aug 29 2006 Fred Gleason <fredg@salemradiolabs.com>
+-- Added RDDbCheck and RDBackup scripts.
+* Thu Jul 06 2006 Fred Gleason <fredg@salemradiolabs.com>
+-- Added the '%config' tag to /etc/sysconfig/rivendell.
+* Thu Jun 25 2006 Fred Gleason <fredg@salemradiolabs.com>
+-- Added an XDG file for RDLogin.
+* Fri Mar 24 2006 Fred Gleason <fredg@salemradiolabs.com>
+-- Updated to reflect new layout of the 'utils/' directory.
+* Thu Mar 09 2006 Fred Gleason <fredg@salemradiolabs.com>
+-- Removed the conditional installation of RDImport.
+* Mon Feb 14 2006 Fred Gleason <fredg@salemradiolabs.com>
+-- Altered the install section so as not to use 'make install'.
+* Tue Feb 14 2006 Fred Gleason <fredg@salemradiolabs.com>
+-- Removed RDPanel.
+* Wed Feb 08 2006 Fred Gleason <fredg@salemradiolabs.com>
+-- Altered install paths to use $prefix value from Autoconf.
+* Fri Feb 03 2006 Fred Gleason <fredg@salemradiolabs.com>
+-- Added a 'cdda2wav' dependency.
+* Wed Jan 04 2006 Fred Gleason <fredg@salemradiolabs.com>
+-- Added the 'rdfilewrite' utility.
+* Wed Dec 14 2005 Fred Gleason <fredg@salemradiolabs.com>
+-- Added the 'panel_copy' filter script.
+* Mon Nov 07 2005 Fred Gleason <fredg@salemradiolabs.com>
+-- Added 'docs/tables/svc_rec_format.txt'.
+* Fri Nov 04 2005 Fred Gleason <fredg@salemradiolabs.com>
+-- Removed dependencies for 'update-desktop-files' and 'gettext'.
+* Thu Nov 04 2005 Fred Gleason <fredg@salemradiolabs.com>
+-- Added dependencies for 'update-desktop-files' and 'gettext'.
+* Tue Nov 01 2005 Fred Gleason <fredg@salemradiolabs.com>
+-- Added SuSE desktop integration.
+* Thu Oct 27 2005 Fred Gleason <fredg@salemradiolabs.com>
+-- Added the 'rivendell.xpm' icon.
+* Mon Oct 24 2005 Fred Gleason <fredg@salemradiolabs.com>
+-- Added the 'rd_logedit.txt' table description.
+* Mon Aug 29 2005 Fred Gleason <fredg@salemradiolabs.com>
+-- Added the 'rdcatch_copy' filter script.
+* Fri Aug 12 2005 Fred Gleason <fredg@salemradiolabs.com>
+-- Added an 'importers' subpackage.
+* Sun Aug 07 2005 Fred Gleason <fredg@salemradiolabs.com>
+-- Added 'docs/WINGS_FILTER.txt'.
+* Tue Aug 02 2005 Fred Gleason <fredg@salemradiolabs.com>
+-- Added the /usr/local/bin/rd_export_file script.
+* Sun Jul 24 2005 Fred Gleason <fredg@salemradiolabs.com>
+-- Added dependencies for 'wget', 'samba-client' and 'lukemftp'.
+* Fri Jun 10 2005 Fred Gleason <fredg@salemradiolabs.com>
+-- Added a Spanish [es] translation.
+* Wed Jun 01 2005 Fred Gleason <fredg@salemradiolabs.com>
+-- Changed the 'mpg123' dependency to 'mpg321'.
+* Fri Apr 29 2005 Fred Gleason <fredg@salemradiolabs.com>
+-- Added 'docs/ALSA.txt' to the %doc rule.
+* Mon Feb 21 2005 Fred Gleason <fredg@salemradiolabs.com>
+-- Changed the invocation of '/sbin/ldconfig' to 'ldconfig'.
+* Mon Jan 31 2005 Fred Gleason <fredg@salemradiolabs.com>
+-- Added 'bc' to Requires:
+* Fri Jan 28 2005 Fred Gleason <fredg@salemradiolabs.com>
+-- Added 'mpg123' to Requires:
+* Tue Jan 04 2005 Fred Gleason <fredg@salemradiolabs.com>
+-- Added RDImport to the files list.
+* Thu Dec 09 2004 Fred Gleason <fredg@salemradiolabs.com>
+-- Added 'docs/WIN32.txt' to the %doc rule.
+* Wed Dec 08 2004 Fred Gleason <fredg@salemradiolabs.com>
+-- Added 'docs/NOW+NEXT.txt' to the %doc rule.
+* Tue Nov 23 2004 Fred Gleason <fredg@salemradiolabs.com>
+-- Added 'docs/reports.txt' to the %doc rule.
+* Thu Nov 04 2004 Fred Gleason <fredg@salemradiolabs.com>
+-- Added 'conf/my.cnf-master' to the %doc rule.
+-- Added 'conf/my.cnf-standby' to the %doc rule.
+-- Added 'docs/rml.sxw' to the %doc rule.
+-- Added '/usr/local/bin/rd_audio_sync'.
+-- Added '/usr/local/bin/rd_config'.
+* Mon Nov 01 2004 Fred Gleason <fredg@salemradiolabs.com>
+-- Added RDGpiMon.
+* Tue Sep 14 2004 Fred Gleason <fredg@salemradiolabs.com>
+-- Removed GPITest and GPOTest.
+* Thu Aug 26 2004 Fred Gleason <fredg@salemradiolabs.com>
+-- Added RDImport.
+* Wed Jul 28 2004 Fred Gleason <fredg@salemradiolabs.com>
+-- Added '/etc/sysconfig/rivendell'.
+* Fri Jun 26 2004 Fred Gleason <fredg@salemradiolabs.com>
+-- Added 'docs/JACK.txt'.
+* Wed Jun 09 2004 Fred Gleason <fredg@salemradiolabs.com>
+-- Added a rule to %post to create the pidfile directory.
+-- Made 'caed', 'ripcd' and 'rdcatchd' SETUID root.
+* Mon Jun 07 2004 Fred Gleason <fredg@salemradiolabs.com>
+-- Added 'RDLogManager'
+* Tue Jun 01 2004 Fred Gleason <fredg@salemradiolabs.com>
+-- Removed 'RDPlay', 'RDRecord' and 'mpeg2wav'.
+* Tue May 04 2004 Fred Gleason <fredg@salemradiolabs.com>
+-- Added 'librd' shared library.
+* Mon May 03 2004 Fred Gleason <fredg@salemradiolabs.com>
+-- Added a dependency for 'mysql-shared'.
+-- Added 'rd_import_file'.
+* Wed Apr 28 2004 Fred Gleason <fredg@salemradiolabs.com>
+-- Added 'rdpanel'
+* Thu Feb 05 2004 Fred Gleason <fredg@salemradiolabs.com>
+-- Added 'docs/SWITCHERS.txt'.
+* Thu Jan 29 2004 Fred Gleason <fredg@salemradiolabs.com>
+-- Added 'sas_shim'.
+* Wed Jan 28 2004 Fred Gleason <fredg@salemradiolabs.com>
+-- Added 'docs/implemented_macros.txt' to the documentation directory.
+* Wed Dec 23 2003 Fred Gleason <fredg@salemradiolabs.com>
+-- Added a dependency for 'qt3-mysql'.
+-- Added install rule for 'rc.rivendell'.
+* Thu Dec 11 2003 Fred Gleason <fredg@salemradiolabs.com>
+-- Added 'conf/rd.conf-sample' and 'conf/rd.conf-complete-sample' to
+   the doc directory
+* Tue Dec 09 2003 Fred Gleason <fredg@salemradiolabs.com>
+-- Added dependencies for sox and cdparanoia.
+* Sun Dec 07 2003 Fred Gleason <fredg@salemradiolabs.com>
+-- Initial spec file creation.

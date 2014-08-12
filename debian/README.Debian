@@ -1,0 +1,55 @@
+#
+# Rivendell introduction:
+#
+
+The Rivendell radio broadcast automation solution has been installed.
+
+The next step is to run the "rdadmin" command with a user that has permissions
+to the rivendell system.  The first time it will prompt for a MySQL userid and
+password that has permissions to connect and create the database.
+
+Once the database has been created, run the "rdadmin" command again.  From this
+point on, rdadmin will allow for configuring of Rivendell.
+
+The default user accounts within Rivendell are "admin" and "user", both with no
+password.
+
+
+#
+# Creating *nix user accounts that have permission to access Rivendell
+#
+
+# first create the user, such as foouser
+adduser foouser
+
+# add the user to the audio group, so they can access the sound card
+adduser foouser audio
+
+# add the user to the rivendell group, so they can access rivendell resources.
+adduser foouser rivendell
+
+
+#
+# ALSA Rivendell integration
+#
+In order for Rivendell to recognize an ALSA sound adapter, there must exist a
+standard ALSA configuration file with a card named "rd0" defined. 
+
+The ALSA configuration file can be global (/etc/asound.conf) or per user
+(~/.asoundrc).
+
+Sample contents for the configuration file to define rd0 follow:
+pcm.rd0 {
+  type hw
+  card 1
+}
+ctl.rd0 {
+  type hw
+  card 1
+}
+
+More information on ALSA configuration files can be found here:
+http://www.alsa-project.org/alsa-doc/doc-php/asoundrc.php
+
+More information on Rivendell and ALSA can also be found in
+/usr/share/doc/rivendell/ALSA.txt .

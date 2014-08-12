@@ -1,0 +1,201 @@
+This is the CODINGSTYLE file for the Rivendell package.
+
+
+OVERVIEW:
+
+Rivendell is a Free Software project to develop a radio broadcast automation
+system.  This file, CODINGSTYLE, describes how to get the Rivendell code,
+coding style guidelines for writing new code, how to submit patches to be
+incorporated into the official Rivendell CVS repository, and other code related
+information.  General info on the Rivendell project can be found at the
+http://www.rivendellaudio.org/ web page and also in the README and INSTALLATION
+files.  
+
+
+
+CODING STYLE GUIDELINES:
+Please try to write code that fits with the formating style already present.
+Some good basic guidelines:
+
+   LINE LENGTH -- Should be short enough to fit onto an eighty character line
+                  without wrapping.  This applies to ChangeLog 
+                  entries too!  While it's not always possible to follow this 
+                  rule (quoted literal strings being one place in particular 
+                  where it is sometimes necessary to violate it), sticking 
+                  with it wherever possible makes life much easier for those 
+                  using character mode editing sessions.
+
+   INDENTATION -- Should be two characters per level.
+
+   CLASS NAMES -- Should have the initial letter of each word capitalized, 
+                  e.g. 'ThisIsMyClass'.  If the class is part of librd, the
+                  name should be prefaced with the uppercase letters 'RD', 
+                  e.g. 'RDThisIsMyClass'.
+
+  METHOD NAMES -- Names of class methods should follow the general style used
+                  by Qt.  A special convention for Rivendell is to reserve
+                  names beginning with an uppercase letter for private classes
+                  only.
+
+VARIABLE NAMES -- Class variables should be prefaced with a short base name 
+                  that is common to all, followed by an underscore.  For
+                  example, the class 'MyClass' might use 'myclass_', as 
+                  in 'myclass_foo1', 'myclass_foo2', etc.  *All* variables
+                  should be lowercase only, with uppercase being reserved for
+                  class and method names.
+
+Doxygen is the code documenting system in place.  Doxygen style comments placed
+in header files can then be processed to generate friendly code documentation.
+More information on doxygen can be found here (
+http://www.stack.nl/~dimitri/doxygen/ ).  
+FIXME: doxygen code samples
+
+
+
+CVS GENERAL INFO:
+
+CVS allows multiple developers to work simultaneously on a project. CVS does
+this by keeping a master version of the source code in a central repository on
+the cvs.rivendellaudio.org server.  Each developer "checks out" a copy of the
+source code to their personal workspace. This local copy of the source is
+called a sandbox.  Developers test and work on the source in their sandboxes
+until they reach a mile-point, such as implementing a new feature or fixing a
+bug.  Developers can then create a patch or commit their changes back to the
+central repository.  The CVS server auto-magically merges changes from multiple
+developers together.  Other developers periodically update their sandboxes to
+merge changes others have committed to the server.
+
+Conflicts normally are prevented by developers communicating and by working on
+different areas of the source code. It is important that only working code is
+committed back into the repository.
+
+Though CVS has one main program, cvs, that program has a lot of functionality
+which is accessed by giving the program different commands. The general syntax
+of the cvs program is:
+
+    cvs CVS_OPTIONS COMMAND COMMAND_OPTIONS
+
+A brief overview of CVS can be found online here (
+http://techweb.rfa.org/grauf/cvs.html ).
+
+
+
+CVS READ:
+
+Any user can get anonymous read-only access to the CVS repository using the
+pserver protocol.  The module one wishes to check out must be specified as the
+module-name (ex: rivendell).  cvs.rivendellaudio.org is configured with the
+username "cvs" and the password "cvs".  Access via the pserver protocol
+requires that a user login/logout.
+
+    cvs -d:pserver:cvs@cvs.rivendellaudio.org:/home/cvs/cvsroot login
+    cvs -d:pserver:cvs@cvs.rivendellaudio.org:/home/cvs/cvsroot checkout rivendell
+    cvs -d:pserver:cvs@cvs.rivendellaudio.org:/home/cvs/cvsroot logout
+
+
+
+
+SUBMITTING PATCHES:
+
+Contributions of patches with fixes or enhancements are welcome.  Posting a
+patch to the rivendell programmer mailing list (
+rivendell-prog@rivendellaudio.org
+http://www.rivendellaudio.org/mailman/listinfo/rivendell-prog ) is the best
+approach for anyone to contribute to the project.  Established Rivendell
+programmers can then review the patch and apply it to the official CVS tree.
+Users who contribute significant patches over time may earn the privilege of
+CVS write access.
+
+The cvs diff command may be used to generate patches from a CVS sandbox.  This
+allows for a user to checkout a cvs sandbox and make changes as needed by
+directly editing the files checked out.  When done making changes, the cvs
+utility can generate the differences, in patch file format, of the sandbox
+version to the repository version of a file.  Run the following commands from
+within the sandbox.
+
+    # see changes made to sandbox against what was checked out from the
+    # repository
+    cvs diff FILE
+
+    # see the difference between two versions of a file in the repository
+    cvs diff -rVERSION_NUMBER -rVERSION_NUMBER FILE
+
+Additional flags, such as "-u" can be added to produce a "unified context"
+style diff.  Similarly the output redirector can be used to send the patch to a
+file (which can then be emailed to the mailing list).   A sample command
+follows:
+
+    cvs diff -u FILE > /tmp/FILE_bugfix_2007.03.26.patch
+
+
+
+CVS WRITE:
+
+Contributors who have write access to the Rivendell CVS repository must use
+Secure Shell (ssh) as the secure transport for all non-anonymous CVS access.
+
+To get this set up, you will need to generate a public key and send it to
+Federico Grau <grauf@rfa.org> and the sysadmin team <sysadmins@rfa.org> at
+Radio Free Asia (RFA), along with the username one wishes to use.  As an
+example of how to create a public key, use the following command:
+
+	ssh-keygen -t dsa
+
+This should prompt you for the base filename to put the public and private keys
+in, as well as a passphrase (be sure to use a secure one).  Assuming that the
+default filenames were accepted, you should then have the following two files
+in '~/.ssh/':
+
+	id_dsa
+	id_dsa.pub
+
+The 'id_dsa.pub' file is the one that gets sent to don Fede.  The other is your
+secret key, and should be guarded accordingly.  You will need this key every
+time you access the CVS archive using your selected username.  Once (RFA) has
+set up your account, all you will need to do is change the CVSROOT string in
+your environment or set the cvs command to point to the new server.  The form
+of the environment string and a sample checkout command follow:
+
+	export CVSROOT=:ext:<username>@cvs.rivendellaudio.org:/home/cvs/cvsroot
+    cvs checkout rivendell
+
+A sample checkout command that does not use the environment variable follows:
+
+    cvs -d:ext:<username>@cvs.rivendellaudio.org:/home/cvs/cvsroot checkout rivendell
+
+You should now be able to checkout, update and commit material as before, the
+only difference being that CVS will prompt you for the passphrase of your
+private key each time you access the archive.  As a convenience the
+ssh-agent(1) and ssh-add(1) utilities can be used to securely hold private keys
+used for public key authentication without repeatedly prompting for
+passphrases.
+
+
+CVS WRITE COMMIT CHECKLIST:
+
+Before committing changes back to the Rivendell CVS repository the following
+guidelines should be completed:
+
+1) Successful update of CVS without conflicts.
+2) Successful compile of CVS without errors.
+3) Update the ChangeLog file at the base of the Rivendell source code tree.
+   The format of the ChangeLog file has the most recent changes at the bottom
+   of the file.  Entries start with a date stamp and have a format like:
+
+    YYYY-MM-DD [HH:MM TIMEZONE] NAME <EMAIL>
+    * Description of change
+
+    A couple examples follow:
+    2007-01-09 19:00 EST Federico Grau <grauf@rfa.org> <donfede@casagrau.org>
+	* lib/rdcart.cpp lib/rdcut.cpp rdcatch/rdcatch.cpp; corrected i18n 
+        bug by replacing use of QT shortDayName() with libradio 
+        RGetShortDayNameEN() which will always return english day names 
+        regardless of configured locale.
+
+    2007-02-23 Fred Gleason <fredg@paravelsystems.com>
+	* Modified the code in 'lib/rdimport_audio.cpp' to use the
+	'RDCart::setMetadata()' and 'RDCut::setMetadata()' methods.
+4) CVS Commit of the files changed using the ChangeLog snippet.
+
+
+

@@ -1,0 +1,62 @@
+                  AUDIO_PORTS Table Layout for Rivendell
+
+The AUDIO_PORTS table holds data concerning which configuration of the 
+physical audio interfaces.  Following is the layout of a record 
+in the AUDIO_PERMS table:
+
+
+FIELD NAME           TYPE              REMARKS
+---------------------------------------------------------------
+ID                   int(10) unsigned  Primary key, auto increment
+STATION_NAME	     char(64)
+CARD_NUMBER	     int(11) signed
+CLOCK_SOURCE         int(11) signed    0 = Internal, 1 = AES/EBU, 
+                                       2 = SP/DIFF, 3 = Word Clock
+INPUT_0_TYPE         int(11) signed    0 = Analog, 1 = AES/EBU,
+                                       2 = SP/DIFF
+INPUT_0_LEVEL        int(11) signed    Gain offset, in 1/100 dB
+INPUT_0_MODE         int(11) signed    0 = Normal, 1 = Swap,
+                                       2 = Left Only, 3 = Right Only
+INPUT_1_TYPE         int(11) signed    0 = Analog, 1 = AES/EBU,
+                                       2 = SP/DIFF
+INPUT_1_LEVEL        int(11) signed    Gain offset, in 1/100 dB
+INPUT_1_MODE         int(11) signed    0 = Normal, 1 = Swap,
+                                       2 = Left Only, 3 = Right Only
+INPUT_2_TYPE         int(11) signed    0 = Analog, 1 = AES/EBU,
+                                       2 = SP/DIFF
+INPUT_2_LEVEL        int(11) signed    Gain offset, in 1/100 dB
+INPUT_2_MODE         int(11) signed    0 = Normal, 1 = Swap,
+                                       2 = Left Only, 3 = Right Only
+INPUT_3_TYPE         int(11) signed    0 = Analog, 1 = AES/EBU,
+                                       2 = SP/DIFF
+INPUT_3_LEVEL        int(11) signed    Gain offset, in 1/100 dB
+INPUT_3_MODE         int(11) signed    0 = Normal, 1 = Swap,
+                                       2 = Left Only, 3 = Right Only
+INPUT_4_TYPE         int(11) signed    0 = Analog, 1 = AES/EBU,
+                                       2 = SP/DIFF
+INPUT_4_LEVEL        int(11) signed    Gain offset, in 1/100 dB
+INPUT_4_MODE         int(11) signed    0 = Normal, 1 = Swap,
+                                       2 = Left Only, 3 = Right Only
+INPUT_5_TYPE         int(11) signed    0 = Analog, 1 = AES/EBU,
+                                       2 = SP/DIFF
+INPUT_5_LEVEL        int(11) signed    Gain offset, in 1/100 dB
+INPUT_5_MODE         int(11) signed    0 = Normal, 1 = Swap,
+                                       2 = Left Only, 3 = Right Only
+INPUT_6_TYPE         int(11) signed    0 = Analog, 1 = AES/EBU,
+                                       2 = SP/DIFF
+INPUT_6_LEVEL        int(11) signed    Gain offset, in 1/100 dB
+INPUT_6_MODE         int(11) signed    0 = Normal, 1 = Swap,
+                                       2 = Left Only, 3 = Right Only
+INPUT_7_TYPE         int(11) signed    0 = Analog, 1 = AES/EBU,
+                                       2 = SP/DIFF
+INPUT_7_LEVEL        int(11) signed    Gain offset, in 1/100 dB
+INPUT_7_MODE         int(11) signed    0 = Normal, 1 = Swap,
+                                       2 = Left Only, 3 = Right Only
+OUTPUT_0_LEVEL       int(11) signed    Gain offset, in 1/100 dB
+OUTPUT_1_LEVEL       int(11) signed    Gain offset, in 1/100 dB
+OUTPUT_2_LEVEL       int(11) signed    Gain offset, in 1/100 dB
+OUTPUT_3_LEVEL       int(11) signed    Gain offset, in 1/100 dB
+OUTPUT_4_LEVEL       int(11) signed    Gain offset, in 1/100 dB
+OUTPUT_5_LEVEL       int(11) signed    Gain offset, in 1/100 dB
+OUTPUT_6_LEVEL       int(11) signed    Gain offset, in 1/100 dB
+OUTPUT_7_LEVEL       int(11) signed    Gain offset, in 1/100 dB

@@ -1,0 +1,12 @@
+                  AUDIO_PERMS Table Layout for Rivendell
+
+The AUDIO_PERMS table holds data concerning which audio services are 
+are allowed to air which GROUPS.  Following is the layout of a record 
+in the AUDIO_PERMS table:
+
+
+FIELD NAME           TYPE              REMARKS
+---------------------------------------------------------------
+ID                   int(10) unsigned  Primary key, auto increment
+GROUP_NAME           char(10)          Index
+SERVICE_NAME         char(10)          Index

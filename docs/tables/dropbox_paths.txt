@@ -1,0 +1,11 @@
+            DROPBOXES_PATHS Table Layout for Rivendell
+
+The DROPBOXES_PATHS table holds timestamps for 'persistent' dropbox files.
+
+FIELD NAME                   TYPE          REMARKS
+-------------------------------------------------------------------------
+ID                           int(11)       Primary Key, Not Null, Unique
+                                           Auto-Increment
+DROPBOX_ID                   int(11)       From DROPBOXES.ID
+FILE_PATH                    char(255)
+FILE_DATETIME                datetime

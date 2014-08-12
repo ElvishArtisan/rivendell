@@ -1,0 +1,14 @@
+               COPY_SPLITS Table Layout for Rivendell
+
+The COPY_SPLITS table holds data concerning the National=>Regional 
+copy mapping for the copy-split subsystem.
+
+
+FIELD NAME           TYPE               REMARKS
+-------------------------------------------------------------------
+ID                   int unsigned(10)   Primary key
+SLOT                 int unsigned(10)
+CART_NUMBER          int unsigned(10)   From CART.NUMBER
+ISCI_CODE            char(32)
+DESCRIPTION          char(255)
+FILENAME             char(64)

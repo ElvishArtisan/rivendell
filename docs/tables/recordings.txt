@@ -1,0 +1,64 @@
+               RECORDINGS Table Layout for Rivendell
+
+The RECORDINGS table holds data concerning each individual automatic
+recording programmed on the system.  Following is the layout of a
+record in the RECORDINGS table:
+
+FIELD NAME           TYPE              REMARKS
+------------------------------------------------------------------
+ID                   int(10) unsigned  Primary key, auto increment
+IS_ACTIVE            enum('N','Y')
+TYPE                 int(11)           0=Recording,1=Macro Event,
+                                       2=Switch Event,3=Playout,
+                                       4=Download,5=Upload
+STATION_NAME         char(64)          From STATIONS.NAME
+CHANNEL              int(10) unsigned
+CUT_NAME             char(12)          From CUTS.CUT_NAME
+SUN                  enum('N','Y')
+MON                  enum('N','Y')
+TUE                  enum('N','Y')
+WED                  enum('N','Y')
+THU                  enum('N','Y')
+FRI                  enum('N','Y')
+SAT                  enum('N','Y')
+DESCRIPTION          char(64)          Remarks
+
+START_TYPE           int(10)           0=Hard Timed,1=GPI
+START_TIME           time
+START_LENGTH         int(11)
+START_MATRIX         int(11)           from MATRICES.MATRIX
+START_LINE           int(11)
+START_OFFSET         int(11)
+END_TYPE             int(10)           0=Hard Timed,1=GPI,2=Length
+END_TIME             time
+END_LENGTH           int(11)
+END_MATRIX           int(11)           from MATRICES.MATRIX
+END_LINE             int(11)
+
+LENGTH               int(10) unsigned  in milliseconds
+START_GPI            int(11) signed    -1 = None
+END_GPI              int(11) signed    -1 = None
+ALLOW_MULT_RECS      enum('N','Y')
+MAX_GPI_REC_LENGTH   int(10) unsigned
+TRIM_THRESHOLD       int(11)           in 1/100 dBFS
+NORMALIZE_LEVEL      int(11)           in 1/100 dBFS
+STARTDATE_OFFSET     int(10) unsigned
+ENDDATE_OFFSET	     int(10) unsigned
+EVENTDATE_OFFSET     int(11)
+FORMAT               int(11) signed    0 = PCM16, 2 = Layer 2, 3 = Layer 3
+CHANNELS             int(11) signed
+SAMPRATE             int(11) signed    RETIRED
+BITRATE              int(11) signed
+QUALITY              int(11) signed
+MACRO_CART	     int(10) unsigned
+SWITCH_INPUT         int(11)
+SWITCH_OUTPUT        int(11)
+EXIT_CODE            int(11)           0 = Ok, 1 = Short Length, 
+                                       2 = Low Level, 3 = High Level
+EXIT_TEXT            text
+ONE_SHOT             enum ('N','Y')
+URL                  char(255)
+URL_USERNAME         char(64)
+URL_PASSWORD         char(64)
+ENABLE_METADATA      enum('N','Y')
+FEED_ID              int               From FEEDS.ID

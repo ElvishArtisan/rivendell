@@ -1,0 +1,12 @@
+              REPL_CUT_STATE Table Layout for Rivendell
+
+The REPL_CUT_STATE table holds replication tracking data for cut
+objects.
+
+FIELD NAME           TYPE              REMARKS
+------------------------------------------------------------------
+ID                   int(10) unsigned  auto_increment, not null
+                                       primary key
+REPLICATOR_NAME      char(32)          from REPLICATORS.NAME
+CUT_NAME             char(12)          from CUTS.CUT_NAME
+ITEM_DATETIME        datetime

@@ -1,0 +1,72 @@
+#!/bin/bash
+
+# rd_backup
+#
+# Dump the local Rivendell database and copy the dump to one or more 
+# remote hosts.
+#
+# Copyright (C) 2006 Fred Gleason <fredg@paravelsystems.com>
+#
+#      $Id: rd_backup,v 1.5 2007/10/08 18:37:33 fredg Exp $
+#
+#   This program is free software; you can redistribute it and/or modify
+#   it under the terms of the GNU General Public License version 2 as
+#   published by the Free Software Foundation.
+#
+#   This program is distributed in the hope that it will be useful,
+#   but WITHOUT ANY WARRANTY; without even the implied warranty of
+#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#   GNU General Public License for more details.
+#
+#   You should have received a copy of the GNU General Public
+#   License along with this program; if not, write to the Free Software
+#   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+#
+
+#
+# Site Settings
+#
+SITE_ID="kgu"
+SHELF_LIFE=7
+DB_NAME=Rivendell
+DB_USER=root
+DB_PASSWORD=letmein
+BACKUP_DIR=/home/salem/rd_backup
+
+#
+# Generate the backup filename
+#
+BACKUP_FILE=`date +$BACKUP_DIR/$SITE_ID-%Y%m%d.sql`
+
+#
+# Dump the database
+#
+mysqldump --opt -u $DB_USER -p$DB_PASSWORD $DB_NAME > $BACKUP_FILE
+
+#
+# Purge old backups
+#
+find $BACKUP_DIR -mtime +$SHELF_LIFE -type f -exec rm \{\} \;
+
+#
+# Copy to remote hosts
+#
+# Customize this section to list the remote hosts you wish to copy the
+# dump to.  Yoou will need two lines for each host:  one to copy the data,
+# and another to purge old data.
+#
+# For example, let's say you have a host called 'rivendell.example.com',
+# where you want to put the backups into a directory called 
+# '/home/salem/rdbackup'.  You would do:
+#
+#   scp -q $BACKUP_FILE salem@rivendell.example.com:rd_backup/
+#   ssh salem@rdkaim "find /home/salem/rd_backup -mtime $SHELF_LIFE -type f -exec rm \{\} \;"
+#
+#
+# Note that the remote machine must be set up to accept automatic logins via
+# ssh(1) in order for this to work!
+#
+
+
+
+# End of rd_backup

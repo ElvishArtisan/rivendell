@@ -1,0 +1,95 @@
+                Configuring Reports in Rivendell
+
+Following are some filter-specific notes concerning configuring
+reports in Rivendell:
+
+
+CBSI DeltaFlex
+Report files should be named according to the following scheme:
+
+       <ii><yy><mm><dd>.201
+
+where:
+  <ii> -- the two digit Station ID of the corresponding CBSI system.
+          This same value should be set in the 'Station ID' field of the
+          report configuration.
+ 
+  <yy> -- The last two digits of the year.
+
+  <mm> -- The two digit month, in the range 01 - 12.
+
+  <dd> -- The two digit day, in the range 01 - 31.
+
+Thus, for example, for a system with a station ID of '01', the name
+part of the export path would be:  '01%y%m%d.201'.
+
+
+ASCAP/BMI Electronic Music Reports
+Sometimes also known as the "Paris" format, these reports can be
+directly submitted to ASCAP/BMI as part of their EMR (Electronic Music
+Reporting) initiatives.  For more information, see:
+
+	   http://www.ascap.com/licensing/radio/
+	   http://emr.bmi.com/
+
+When setting up generation of an ASCAP/BMI Music Report, output files
+should be named in the scheme:
+
+   <id><yy><mm>.emr
+
+where:
+  <id> -- Your identifier string (assigned by ASCAP/BMI).  Normally,
+          this will be a station's call letters.
+
+  <yy> -- The last two digits of the year for the data covered in the
+          report.
+
+  <mm> -- The two digit month for the data covered in the report, in
+          the range 01 - 12.
+
+Thus, for a station called 'WAVA', the 'Station ID' box in the Edit
+Report dialog would be set to 'WAVA', and the name part of the export
+path would be:  'wava%y%m.emr'.
+
+You will also need to specify a 'Station Type' and 'Station Format'
+for the report.  'Station Type' is self-explanatory, while 'Station
+Format' is simply a phrase describing the programming format of the
+station --e.g. "Jazz", "Top Country", etc.
+ 
+Another setting that will effect any Music Reports generated is the
+'Usage' field on the Cart Label in RDLibrary.  You should set the
+value for each cart to best reflect the use that is made of the
+material in it.
+
+Music Reports are customarily generated on a monthly basis, so when
+generating one in RDLogManger, be sure to select the first and last
+days of the month in question for the 'Start Date' and 'End Date'
+respectively, otherwise the resulting report may not include all of
+the relevant playout activity.
+
+
+SoundExchange Statutory License Report
+This report can be imported into a spreadsheet program (such as
+OpenOffice.org or Excel) and then saved as an 'XLS' file, which can then be
+directly submitted to SoundExchange to satisfy their reporting
+requirements for streaming music on the Internet.  When configuring
+the report in RDAdmin->ManageReports, fill in the fields as follows:
+
+Station ID:	The "Name of Service" as assigned by SoundExchange.
+		This will normally be the name of the entity operating
+		the service -- e.g. "SALEM COMMUNICATIONS".
+
+Service Name:	The "Channel Name" of the service, as assigned by
+		SoundExchange.  For radio staions, this will normally be
+		the station's call letters -- e.g. "WAVA-FM".
+
+Station Format:	The "Transmission Category" of the service.  This is
+		a single-letter code assigned by the U.S. Copyright
+		Office.  For a list of possible values, see:  
+		http://www.copyright.gov/fedreg/2004/69fr11515.pdf
+
+When generating a report in RDLogManager->ManageReports, the system
+will prompt for an 'Aggreggate Tuning Hours (ATH)' value for the
+report period.  This is a measure of the total amount of listenership
+to the audio stream, and can normally be obtained from your streaming
+provider.

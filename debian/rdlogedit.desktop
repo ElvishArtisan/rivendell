@@ -1,0 +1,9 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=rdlogedit
+Comment=Rivendell Logedit
+Exec=rdlogedit
+Terminal=false
+Type=Application
+Icon=/usr/share/srlabs/rdlogedit.xpm
+Categories=Application;AudioVideo;

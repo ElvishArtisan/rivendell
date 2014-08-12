@@ -1,0 +1,187 @@
+#!/bin/bash
+
+# make_slack
+#
+# Make a Slackware package.
+#
+# (C) Copyright 2006 Fred Gleason <fredg@paravelsystems.com>
+#
+#      $Id: make_slack.in,v 1.15 2010/07/29 19:32:30 cvs Exp $
+#
+#    This program is free software; you can redistribute it and/or modify
+#    it under the terms of version 2 of the GNU General Public License as
+#    published by the Free Software Foundation;
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with this program; if not, write to the Free Software
+#    Foundation, Inc., 59 Temple Place, Suite 330, 
+#    Boston, MA  02111-1307  USA
+#
+
+#
+# USAGE
+#    make_slack [<rd-conf-file>]
+#
+
+#
+# Clean the build tree
+#
+BUILD_DIR=/var/tmp/rivendell-@VERSION@
+rm -rf $BUILD_DIR
+
+#
+# Build the package tree
+#
+mkdir -p $BUILD_DIR@LOCAL_PREFIX@/bin
+cp cae/.libs/caed $BUILD_DIR@LOCAL_PREFIX@/bin/
+chmod 4755 $BUILD_DIR@LOCAL_PREFIX@/bin/caed
+cp ripcd/.libs/ripcd $BUILD_DIR@LOCAL_PREFIX@/bin/
+chmod 4755 $BUILD_DIR@LOCAL_PREFIX@/bin/ripcd
+cp rdcatchd/.libs/rdcatchd $BUILD_DIR@LOCAL_PREFIX@/bin/
+chmod 4755 $BUILD_DIR@LOCAL_PREFIX@/bin/rdcatchd
+cp rdadmin/.libs/rdadmin $BUILD_DIR@LOCAL_PREFIX@/bin/
+cp rdairplay/.libs/rdairplay $BUILD_DIR@LOCAL_PREFIX@/bin/
+cp rdpanel/.libs/rdpanel $BUILD_DIR@LOCAL_PREFIX@/bin/
+cp rdcatch/.libs/rdcatch $BUILD_DIR@LOCAL_PREFIX@/bin/
+cp utils/rdgen/rdgen $BUILD_DIR@LOCAL_PREFIX@/bin/
+cp rdlibrary/.libs/rdlibrary $BUILD_DIR@LOCAL_PREFIX@/bin/
+cp rdlogedit/.libs/rdlogedit $BUILD_DIR@LOCAL_PREFIX@/bin/
+cp rdlogmanager/.libs/rdlogmanager $BUILD_DIR@LOCAL_PREFIX@/bin/
+cp rdcastmanager/.libs/rdcastmanager $BUILD_DIR@LOCAL_PREFIX@/bin/
+cp rdlogin/.libs/rdlogin $BUILD_DIR@LOCAL_PREFIX@/bin/
+mkdir -p /$BUILD_DIR@LOCAL_PREFIX@/lib
+cp lib/.libs/librd-@VERSION@.so $BUILD_DIR@LOCAL_PREFIX@/lib/
+ln -s @LOCAL_PREFIX@/lib/librd-@VERSION@ $BUILD_DIR@LOCAL_PREFIX@/lib/librd.so
+cp utils/rmlsend/.libs/rmlsend $BUILD_DIR@LOCAL_PREFIX@/bin/
+cp utils/rdgpimon/.libs/rdgpimon $BUILD_DIR@LOCAL_PREFIX@/bin/
+cp utils/rdfilewrite/.libs/rdfilewrite $BUILD_DIR@LOCAL_PREFIX@/bin/
+cp utils/rdimport/.libs/rdimport $BUILD_DIR@LOCAL_PREFIX@/bin/
+cp scripts/rd_audio_sync $BUILD_DIR@LOCAL_PREFIX@/bin/
+cp scripts/rd_config $BUILD_DIR@LOCAL_PREFIX@/bin/
+mkdir -p $BUILD_DIR@LOCAL_PREFIX@/sbin
+cp utils/sas_shim/.libs/sas_shim $BUILD_DIR@LOCAL_PREFIX@/sbin/
+cp utils/rddbcheck/.libs/rddbcheck $BUILD_DIR@LOCAL_PREFIX@/sbin/
+mkdir -p $BUILD_DIR@libexecdir@
+cp web/rdfeed/.libs/rdfeed.xml $BUILD_DIR@libexecdir@/
+cp web/rdcastmanager/.libs/rdcastmanager.cgi $BUILD_DIR@libexecdir@/
+ln -s @libexecdir@/rdfeed.xml $BUILD_DIR@libexecdir@/rdfeed.mp3
+cp icons/greencheckmark.png $BUILD_DIR@libexecdir@/
+cp icons/redx.png $BUILD_DIR@libexecdir@/
+cp icons/greenball.png $BUILD_DIR@libexecdir@/
+cp icons/redball.png $BUILD_DIR@libexecdir@/
+cp icons/whiteball.png $BUILD_DIR@libexecdir@/
+mkdir -p $BUILD_DIR/etc/httpd/extra
+cp conf/rd-bin.conf $BUILD_DIR/etc/httpd/extra/
+mkdir -p $BUILD_DIR@LOCAL_PREFIX@/share/srlabs
+cp lib/librd_es.qm $BUILD_DIR@LOCAL_PREFIX@/share/srlabs/
+cp rdadmin/rdadmin_es.qm $BUILD_DIR@LOCAL_PREFIX@/share/srlabs/
+cp rdairplay/rdairplay_es.qm $BUILD_DIR@LOCAL_PREFIX@/share/srlabs/
+cp rdpanel/rdpanel_es.qm $BUILD_DIR@LOCAL_PREFIX@/share/srlabs/
+cp rdcatch/rdcatch_es.qm $BUILD_DIR@LOCAL_PREFIX@/share/srlabs/
+cp rdlibrary/rdlibrary_es.qm $BUILD_DIR@LOCAL_PREFIX@/share/srlabs/
+cp rdlogedit/rdlogedit_es.qm $BUILD_DIR@LOCAL_PREFIX@/share/srlabs/
+cp rdlogin/rdlogin_es.qm $BUILD_DIR@LOCAL_PREFIX@/share/srlabs/
+cp rdlogmanager/rdlogmanager_es.qm @LOCAL_PREFIX@/share/srlabs/
+cp utils/rdgpimon/rdgpimon_es.qm $BUILD_DIR@LOCAL_PREFIX@/share/srlabs/
+cp utils/rmlsend/rmlsend_es.qm $BUILD_DIR@LOCAL_PREFIX@/share/srlabs/
+mkdir -p $BUILD_DIR/etc/init.d
+cp rivendell-suse $BUILD_DIR/etc/init.d/rivendell
+mkdir -p $BUILD_DIR/usr/share/icons/hicolor/16x16/apps
+cp icons/rivendell-16x16.xpm $BUILD_DIR/usr/share/icons/hicolor/16x16/apps/rivendell.xpm
+mkdir -p $BUILD_DIR/usr/share/icons/hicolor/22x22/apps
+cp icons/rivendell-22x22.xpm $BUILD_DIR/usr/share/icons/hicolor/22x22/apps/rivendell.xpm
+mkdir -p $BUILD_DIR/usr/share/icons/hicolor/32x32/apps
+cp icons/rivendell-32x32.xpm $BUILD_DIR/usr/share/icons/hicolor/32x32/apps/rivendell.xpm
+mkdir -p $BUILD_DIR/usr/share/icons/hicolor/48x48/apps
+cp icons/rivendell-48x48.xpm $BUILD_DIR/usr/share/icons/hicolor/48x48/apps/rivendell.xpm
+mkdir -p $BUILD_DIR/usr/share/icons/hicolor/64x64/apps
+cp icons/rivendell-64x64.xpm $BUILD_DIR/usr/share/icons/hicolor/64x64/apps/rivendell.xpm
+mkdir -p $BUILD_DIR/usr/share/icons/hicolor/128x128/apps
+cp icons/rivendell-128x128.xpm $BUILD_DIR/usr/share/icons/hicolor/128x128/apps/rivendell.xpm
+mkdir -p $BUILD_DIR/usr/share/applications
+cp xdg/rdadmin.desktop $BUILD_DIR/usr/share/applications/
+cp xdg/rdairplay.desktop $BUILD_DIR/usr/share/applications/
+cp xdg/rdpanel.desktop $BUILD_DIR/usr/share/applications/
+cp xdg/rdcatch.desktop $BUILD_DIR/usr/share/applications/
+cp xdg/rdgpimon.desktop $BUILD_DIR/usr/share/applications/
+cp xdg/rdlibrary.desktop $BUILD_DIR/usr/share/applications/
+cp xdg/rdlogedit.desktop $BUILD_DIR/usr/share/applications/
+cp xdg/rdlogmanager.desktop $BUILD_DIR/usr/share/applications/
+cp xdg/rmlsend.desktop $BUILD_DIR/usr/share/applications/
+mkdir -p $BUILD_DIR/usr/doc/rivendell-@VERSION@
+cp AUTHORS $BUILD_DIR/usr/doc/rivendell-@VERSION@
+cp ChangeLog $BUILD_DIR/usr/doc/rivendell-@VERSION@
+cp COPYING $BUILD_DIR/usr/doc/rivendell-@VERSION@
+cp INSTALL $BUILD_DIR/usr/doc/rivendell-@VERSION@
+cp NEWS $BUILD_DIR/usr/doc/rivendell-@VERSION@
+cp README $BUILD_DIR/usr/doc/rivendell-@VERSION@
+cp SupportedCards $BUILD_DIR/usr/doc/rivendell-@VERSION@
+cp ToDo $BUILD_DIR/usr/doc/rivendell-@VERSION@
+cp conf/rd.conf-sample $BUILD_DIR/usr/doc/rivendell-@VERSION@
+cp conf/rd.conf-complete-sample $BUILD_DIR/usr/doc/rivendell-@VERSION@
+cp conf/my.cnf-master $BUILD_DIR/usr/doc/rivendell-@VERSION@
+cp conf/my.cnf-standby $BUILD_DIR/usr/doc/rivendell-@VERSION@
+cp docs/cae.sxw $BUILD_DIR/usr/doc/rivendell-@VERSION@
+cp docs/catchd.txt $BUILD_DIR/usr/doc/rivendell-@VERSION@
+cp docs/colors $BUILD_DIR/usr/doc/rivendell-@VERSION@
+cp docs/GPIO.txt $BUILD_DIR/usr/doc/rivendell-@VERSION@
+cp docs/ripc.txt $BUILD_DIR/usr/doc/rivendell-@VERSION@
+cp docs/SWITCHERS.txt $BUILD_DIR/usr/doc/rivendell-@VERSION@
+cp docs/JACK.txt $BUILD_DIR/usr/doc/rivendell-@VERSION@
+cp docs/ENCODERS.txt $BUILD_DIR/usr/doc/rivendell-@VERSION@
+cp docs/pam_rd.txt $BUILD_DIR/usr/doc/rivendell-@VERSION@
+cp docs/rml.sxw $BUILD_DIR/usr/doc/rivendell-@VERSION@
+cp docs/tables/audio_perms.txt $BUILD_DIR/usr/doc/rivendell-@VERSION@
+cp docs/tables/audio_ports.txt $BUILD_DIR/usr/doc/rivendell-@VERSION@
+cp docs/tables/cart.txt $BUILD_DIR/usr/doc/rivendell-@VERSION@
+cp docs/tables/clipboard.txt $BUILD_DIR/usr/doc/rivendell-@VERSION@
+cp docs/tables/cuts.txt $BUILD_DIR/usr/doc/rivendell-@VERSION@
+cp docs/tables/decks.txt $BUILD_DIR/usr/doc/rivendell-@VERSION@
+cp docs/tables/groups.txt $BUILD_DIR/usr/doc/rivendell-@VERSION@
+cp docs/tables/log_format.txt $BUILD_DIR/usr/doc/rivendell-@VERSION@
+cp docs/tables/logs.txt $BUILD_DIR/usr/doc/rivendell-@VERSION@
+cp docs/tables/panels.txt $BUILD_DIR/usr/doc/rivendell-@VERSION@
+cp docs/tables/rd_airplay.txt $BUILD_DIR/usr/doc/rivendell-@VERSION@
+cp docs/tables/rd_library.txt $BUILD_DIR/usr/doc/rivendell-@VERSION@
+cp docs/tables/rd_logedit.txt $BUILD_DIR/usr/doc/rivendell-@VERSION@
+cp docs/tables/recordings.txt $BUILD_DIR/usr/doc/rivendell-@VERSION@
+cp docs/tables/services.txt $BUILD_DIR/usr/doc/rivendell-@VERSION@
+cp docs/tables/sources.txt $BUILD_DIR/usr/doc/rivendell-@VERSION@
+cp docs/tables/svc_rec_format.txt $BUILD_DIR/usr/doc/rivendell-@VERSION@
+cp docs/tables/stations.txt $BUILD_DIR/usr/doc/rivendell-@VERSION@
+cp docs/tables/triggers.txt $BUILD_DIR/usr/doc/rivendell-@VERSION@
+cp docs/tables/ttys.txt $BUILD_DIR/usr/doc/rivendell-@VERSION@
+cp docs/tables/users.txt $BUILD_DIR/usr/doc/rivendell-@VERSION@
+cp docs/tables/version.txt $BUILD_DIR/usr/doc/rivendell-@VERSION@
+mkdir -p $BUILD_DIR/var/run/rivendell
+cp docs/implemented_macros.txt $BUILD_DIR/usr/doc/rivendell-@VERSION@
+cp utils/sas_shim/rc.sas_shim $BUILD_DIR/usr/doc/rivendell-@VERSION@
+cp docs/reports.txt $BUILD_DIR/usr/doc/rivendell-@VERSION@
+cp docs/NOW+NEXT.txt $BUILD_DIR/usr/doc/rivendell-@VERSION@
+cp docs/WIN32.txt $BUILD_DIR/usr/doc/rivendell-@VERSION@
+cp docs/ALSA.txt $BUILD_DIR/usr/doc/rivendell-@VERSION@
+mkdir -p $BUILD_DIR/install
+cp slack-desc $BUILD_DIR/install/
+cp slack_doinst.sh $BUILD_DIR/install/doinst.sh
+
+#
+# Generate the package
+#
+SOURCE_DIR=`pwd`
+cd $BUILD_DIR
+makepkg --prepend --linkadd y --chown n rivendell.tgz
+cd $SOURCE_DIR
+cp $BUILD_DIR/rivendell.tgz ./rivendell-@VERSION@-i586-@RPM_RELEASE@.tgz
+
+#
+# Clean up and exit
+#
+rm -r $BUILD_DIR
+
+
+# End of make_slack

@@ -1,0 +1,23 @@
+/* XPM */
+const static char *marker_xpm[]={
+"16 16 4 1",
+". c None",
+"# c #000000",
+"b c #0000c0",
+"a c #ffff00",
+".....#####......",
+"...##aaaaa##....",
+"..#aaaaaaaaa#...",
+".#aabaaaaabaa#..",
+".#aabbaaabbaa#..",
+"#aaabbbabbbaaa#.",
+"#aaabbbbbbbaaa#.",
+"#aaabbababbaaa#.",
+"#aaabbaaabbaaa#.",
+"#aaabbaaabbaaa#.",
+".#aabbaaabbaa#..",
+".#aabbaaabbaa#..",
+"..#aaaaaaaaa#...",
+"...##aaaaa##....",
+".....#####......",
+"................"};
