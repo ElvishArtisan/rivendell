@@ -14300,3 +14300,7 @@
 	to fix broken compilation on RHEL 7.
 	* Fixed a regression in 'lib/rdcreate_log.cpp' that broke creation
 	of new logs.
+2014-08-14 Fred Gleason <fredg@paravelsystems.com>
+	* Amalgamated INCLUDE Makefile entries into AM_CPPFLAGS.
+	* Added '-Wno-portability' to the invocation of 'automake' in
+	'autogen.sh'.
