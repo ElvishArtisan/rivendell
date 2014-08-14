@@ -1,12 +1,9 @@
-4dnl configure.in
+dnl configure.ac
 dnl
 dnl Autoconf configuration for Rivendell.
 dnl Use autoconf to process this into a configure script
 dnl
-dnl   (C) Copyright 2002-2007 Fred Gleason <fredg@paravelsystems.com>
-dnl
-dnl      $Id: configure.in,v 1.247.6.14.2.1 2014/07/15 18:49:45 cvs Exp $
-dnl      $Date: 2014/07/15 18:49:45 $
+dnl   (C) Copyright 2002-2007,2014 Fred Gleason <fredg@paravelsystems.com>
 dnl
 dnl   This program is free software; you can redistribute it and/or modify
 dnl   it under the terms of the GNU General Public License version 2 as
@@ -22,11 +19,11 @@ dnl   License along with this program; if not, write to the Free Software
 dnl   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 dnl
 
-AC_INIT(rivendell,`cat PACKAGE_VERSION`,Fred Gleason <fredg@paravelsystems.com>)
-AM_INIT_AUTOMAKE(rivendell,`cat PACKAGE_VERSION`)
+AC_INIT([rivendell],m4_esyscmd_s(echo PACKAGE_VERSION))
+AM_INIT_AUTOMAKE
 AC_SUBST(RPM_RELEASE,1)
 m4_ifdef([AM_SILENT_RULES],[AM_SILENT_RULES([yes])])
-AC_CONFIG_MACRO_DIR([m4])
+m4_ifdef([AC_CONFIG_MACRO_DIR],[AC_CONFIG_MACRO_DIR([m4])])
 
 #
 # Some Fully Resolved Install Paths

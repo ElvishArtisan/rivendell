@@ -14307,3 +14307,5 @@
 2014-08-14 Fred Gleason <fredg@paravelsystems.com>
 	* Added 'AC_CONFIG_MACRO_DIR' invocation in 'configure.ac'.
 	* Added a 'maintainer-clean-local' target in 'Makefile.am'.
+2014-08-14 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored the AM_INIT() invocation in 'configure.ac'.
