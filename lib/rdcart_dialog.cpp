@@ -719,7 +719,6 @@ void RDCartDialog::RefreshCarts()
   QString sql;
   RDSqlQuery *q;
   RDListViewItem *l;
-  RDListViewItem *active_item=NULL;
 
   cart_cart_list->clear();
   QString group=cart_group_box->currentText();
@@ -796,9 +795,6 @@ void RDCartDialog::RefreshCarts()
     }
     else {
       l->setText(12,"TFN");
-    }
-    if(*cart_cartnum==q->value(0).toInt()) {
-      active_item=l;
     }
     if(count++>RDCART_DIALOG_STEP_SIZE) {
       cart_progress_dialog->setProgress(++step);

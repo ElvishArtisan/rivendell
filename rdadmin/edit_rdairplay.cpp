@@ -635,9 +635,8 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
   //
   air_bar_group=new QButtonGroup(1,Qt::Vertical,tr("Space Bar Action"),this);
   air_bar_group->setGeometry(805,532,sizeHint().width()-815,55);
-  QRadioButton *rbutton=
-    new QRadioButton(tr("None"),air_bar_group);
-  rbutton=new QRadioButton(tr("Start Next"),air_bar_group);
+  new QRadioButton(tr("None"),air_bar_group);
+  new QRadioButton(tr("Start Next"),air_bar_group);
 
   //
   // Start/Stop Section

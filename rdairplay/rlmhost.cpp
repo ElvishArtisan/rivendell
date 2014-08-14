@@ -86,7 +86,7 @@ void RLMHost::sendEvent(const QString &svcname,const QString &logname,
     struct rlm_log *log=new struct rlm_log;
     struct rlm_pad *now=new struct rlm_pad;
     struct rlm_pad *next=new struct rlm_pad;
-    memset(svc,0,sizeof(svc));
+    memset(svc,0,sizeof(struct rlm_svc));
     RDSvc *service=new RDSvc(svcname);
     if(!svcname.isEmpty()) {
       sprintf(svc->svc_name,"%s",(const char *)svcname.left(255));
@@ -102,7 +102,7 @@ void RLMHost::sendEvent(const QString &svcname,const QString &logname,
       svc->svc_pgmcode[0]=0;
     }
     delete service;
-    memset(log,0,sizeof(log));
+    memset(log,0,sizeof(struct rlm_log));
     if(!logname.isEmpty()) {
       sprintf(log->log_name,"%s",(const char *)logname.left(64));
     }

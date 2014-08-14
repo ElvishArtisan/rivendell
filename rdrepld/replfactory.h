@@ -30,7 +30,7 @@ class ReplFactory
 {
  public:
   ReplFactory(ReplConfig *config);
-  ~ReplFactory();
+  virtual ~ReplFactory();
   ReplConfig *config() const;
   virtual void startProcess()=0;
   virtual bool processCart(const unsigned cartnum)=0;

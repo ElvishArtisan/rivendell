@@ -927,7 +927,7 @@ int RDWaveFile::readWave(void *buf,int count)
   if ( c <0 ) return 0; // read error
   // Fixup the buffer for big endian hosts (Wav is defined as LE).
   if (htonl (1l) == 1){ // Big endian host
-    for (unsigned int i = 0; i < c/2; i++){
+    for(int i = 0; i < c/2; i++){
       ((short*)buf)[i] = ReadSword((unsigned char *)buf,2*i);
     }
   }
@@ -1000,7 +1000,7 @@ int RDWaveFile::writeWave(void *buf,int count)
 	data_length+=count;
 	// Fixup the buffer for big endian hosts (Wav is defined as LE).
 	if (htonl (1l) == 1l){ // Big endian host
-	  for (unsigned int i = 0; i < count/2; i++){
+	  for(int i = 0; i < count/2; i++) {
 	    unsigned short s = ((unsigned short*)buf)[i];
 	    WriteSword((unsigned char *)buf,2*i,s);
 	  }
@@ -1134,6 +1134,7 @@ void RDWaveFile::getSettings(RDSettings *settings)
 {
   switch(type()) {
   case RDWaveFile::Pcm8:
+  case RDWaveFile::Aiff:
     // FIXME
     break;
 
@@ -1180,6 +1181,7 @@ void RDWaveFile::setSettings(const RDSettings *settings)
 int RDWaveFile::seekWave(int offset,int whence)
 {
   int pos;
+  unsigned abspos;
 
   switch(wave_type) {
       case RDWaveFile::Ogg:
@@ -1209,35 +1211,44 @@ int RDWaveFile::seekWave(int offset,int whence)
 	return -1;
 	break;
 
-      case RDWaveFile::Wave:// FIXME: how fix comparing singed (data_start, offset, pos) vs. unsigned (data_length) ... WAVE standard is 32 bit, but not sure if signed or not... grauf@rfa.org Tue, 04 Apr 2006 21:02:51 -0400
+      case RDWaveFile::Wave:
         switch(whence) {
             case SEEK_SET:
-              if (offset<0) {
+              if(offset<0) {
                 offset=0;
               }
-              if (offset>data_length) {
+              if((unsigned)offset>data_length) {
                 offset=data_length;
               }
               return lseek(wave_file.handle(),
                            offset+data_start,SEEK_SET)-data_start;
               break;
+
             case SEEK_CUR:
               pos = lseek(wave_file.handle(),0,SEEK_CUR);
-              if ((pos+offset)<data_start) {
-                offset=offset + (data_start - (pos+offset));
+	      abspos=pos+offset;
+	      if((pos+offset)<0) {
+		abspos=0;
+	      }
+              if (abspos<(unsigned)data_start) {
+                offset=offset + (data_start - abspos);
               }
-              if ((pos+offset)>(data_start+data_length)) { 
-                offset=offset - ((pos+offset) - (data_start+data_length));
+              if (abspos>(data_start+data_length)) { 
+                offset=offset - (abspos - (data_start+data_length));
               }
               return lseek(wave_file.handle(),offset,SEEK_CUR)-data_start;
               break;
             case SEEK_END:
               pos = lseek(wave_file.handle(),0,SEEK_END);
-              if ((pos+offset)<data_start) {
+	      abspos=pos+offset;
+	      if((pos+offset)<0) {
+		abspos=0;
+	      }
+              if (abspos<(unsigned)data_start) {
                 offset=offset + (data_start - (pos+offset));
               }
-              if ((pos+offset)>(data_start+data_length)) {
-                offset=offset - ((pos+offset) - (data_start+data_length));
+              if (abspos>(data_start+data_length)) {
+                offset=offset - (abspos - (data_start+data_length));
               }
               return lseek(wave_file.handle(),offset,SEEK_END)-data_start;
               break;
@@ -2201,15 +2212,14 @@ bool RDWaveFile::IsAiff(int fd)
 }
 
 
-off_t RDWaveFile::FindChunk(int fd,char *chunk_name,unsigned *chunk_size,
+off_t RDWaveFile::FindChunk(int fd,const char *chunk_name,unsigned *chunk_size,
 			    bool big_end)
 {
   int i;
   char name[5]={0,0,0,0,0};
   unsigned char buffer[4];
-  off_t offset;
 
-  offset=lseek(fd,12,SEEK_SET);
+  lseek(fd,12,SEEK_SET);
   i=read(fd,name,4);
   i=read(fd,buffer,4);
   if(big_end) {
@@ -2240,7 +2250,7 @@ off_t RDWaveFile::FindChunk(int fd,char *chunk_name,unsigned *chunk_size,
 }
 
 
-bool RDWaveFile::GetChunk(int fd,char *chunk_name,unsigned *chunk_size,
+bool RDWaveFile::GetChunk(int fd,const char *chunk_name,unsigned *chunk_size,
 			  unsigned char *chunk,size_t size,bool big_end)
 {
   off_t pos;
@@ -2253,8 +2263,8 @@ bool RDWaveFile::GetChunk(int fd,char *chunk_name,unsigned *chunk_size,
 }
 
 
-void RDWaveFile::WriteChunk(int fd,char *cname,unsigned char *buf,unsigned size,
-			    bool big_end)
+void RDWaveFile::WriteChunk(int fd,const char *cname,unsigned char *buf,
+			    unsigned size,bool big_end)
 {
   unsigned char size_buf[4];
   unsigned csize;
@@ -2620,11 +2630,9 @@ bool RDWaveFile::GetScot(int fd)
   unsigned chunk_size;
   int start_day;
   int start_month;
-  int start_year;
   int start_hour;
   int end_day;
   int end_month;
-  int end_year;
   int end_hour;
   unsigned cartnum;
   unsigned segue_start;
@@ -2641,7 +2649,7 @@ bool RDWaveFile::GetScot(int fd)
   scot_etc=cutString((char *)scot_chunk_data,301,33);
   scot_year=cutString((char *)scot_chunk_data,338,4).toInt();
   scot_intro_length=cutString((char *)scot_chunk_data,335,2).toInt()*1000;
-  start_year=cutString((char *)scot_chunk_data,69,2).toInt()+2000;
+  //start_year=cutString((char *)scot_chunk_data,69,2).toInt()+2000;
   start_month=cutString((char *)scot_chunk_data,65,2).toInt();
   start_day=cutString((char *)scot_chunk_data,67,2).toInt();
   cartnum=cutString((char *)scot_chunk_data,47,4).toUInt();
@@ -2653,7 +2661,7 @@ bool RDWaveFile::GetScot(int fd)
   if((start_hour>=129)&&(start_hour<=151)) {
     scot_start_time=QTime(start_hour-128,0,0);
   }
-  end_year=cutString((char *)scot_chunk_data,75,2).toInt()+2000;
+  //end_year=cutString((char *)scot_chunk_data,75,2).toInt()+2000;
   end_month=cutString((char *)scot_chunk_data,71,2).toInt();
   end_day=cutString((char *)scot_chunk_data,73,2).toInt();
   if((end_month>0)&&(end_month<13)&&(end_day>0)&&(end_day<32)&&
@@ -2725,7 +2733,7 @@ bool RDWaveFile::GetAv10(int fd)
   //
   // Walk through the fields
   //
-  for(int i=2;i<chunk_size;i++) {
+  for(unsigned i=2;i<chunk_size;i++) {
     switch(istate) {
       case 0:  // Label
 	if(av10_chunk_data[i]==0) {
@@ -2869,7 +2877,6 @@ bool RDWaveFile::GetAir1(int fd)
 bool RDWaveFile::GetComm(int fd)
 {
   unsigned chunk_size;
-  float samprate;
 
   /*
    * Load the chunk
@@ -3760,7 +3767,8 @@ void RDWaveFile::ReadFlacMetadata()
 	    sprintf("%s",(const char *)wave_file.name().utf8()),&tags)) {
     return;
   }
-  for(int iCommentIndex=0;iCommentIndex<tags->data.vorbis_comment.num_comments;
+  for(unsigned iCommentIndex=0;
+      iCommentIndex<tags->data.vorbis_comment.num_comments;
       ++iCommentIndex)
   {
     FLAC__StreamMetadata_VorbisComment_Entry&
@@ -4207,8 +4215,6 @@ unsigned RDWaveFile::LoadEnergy()
   int offset;
   unsigned energy_size;
 
-  short max=0;
-
   energy_data.clear();
 
   energy_size=getSampleLength()*getChannels()/1152;
@@ -4248,7 +4254,6 @@ unsigned RDWaveFile::LoadEnergy()
 	    return i;
 	  }
 	  for(int j=0;j<channels;j++) {
-	    max=0;
 	    energy_data.push_back(0);
 	    for(int k=0;k<1152;k++) {
 	      offset=2*k*channels+2*j;
@@ -4271,7 +4276,6 @@ unsigned RDWaveFile::LoadEnergy()
 	    return i;
 	  }
 	  for(int j=0;j<channels;j++) {
-	    max=0;
 	    energy_data.push_back(0);
 	    for(int k=0;k<1152;k++) {
 	      offset=2*k*channels+2*j;

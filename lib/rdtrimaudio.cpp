@@ -138,6 +138,7 @@ RDTrimAudio::ErrorCode RDTrimAudio::runTrim(const QString &username,
   case CURLE_OUT_OF_MEMORY:
   case CURLE_OPERATION_TIMEDOUT:
   case CURLE_HTTP_POST_ERROR:
+  default:
     //fprintf(stderr,"CURL Error: %s [%d]\n",curl_easy_strerror(curl_err),
     //curl_err);
     curl_easy_cleanup(curl);

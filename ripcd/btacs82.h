@@ -51,8 +51,8 @@ class BtAcs82 : public Switcher
 
  private slots:
   void processStatus();
-  void gpiOneshotData(void *data);
-  void gpoOneshotData(void *data);
+  void gpiOneshotData(int value);
+  void gpoOneshotData(int value);
 
  private:
   RDTTYDevice *bt_device;

@@ -195,7 +195,7 @@ PAM_EXTERN int pam_sm_authenticate (pam_handle_t *pamh,
     const char *username=NULL;
     char *password=NULL;
     char *tmp_buf=NULL; // Temporary buffer to get default_username option.
-    char *fail_default_username=RD_USER_LOGIN_NAME; // Initialize default value.
+    const char *fail_default_username=RD_USER_LOGIN_NAME; // Initialize default value.
     RDConfig *login_config;
     RDStation *login_station;
     RDUser * login_user;

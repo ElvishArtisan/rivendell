@@ -162,17 +162,17 @@ MainObject::MainObject(QObject *parent,const char *name)
   // Initialize Data Structures
   //
   debug=false;
-  for(int i=0;i<RDCATCHD_MAX_CONNECTIONS;i++) {
+  for(unsigned i=0;i<RDCATCHD_MAX_CONNECTIONS;i++) {
     socket[i]=NULL;
     istate[i]=0;
     argnum[i]=0;
     argptr[i]=0;
     auth[i]=false;
-    catch_record_deck_status[i]=RDDeck::Offline;
-    catch_playout_deck_status[i]=RDDeck::Offline;
     catch_meter_enabled[i]=false;
   }
   for(int i=0;i<MAX_DECKS;i++) {
+    catch_record_deck_status[i]=RDDeck::Offline;
+    catch_playout_deck_status[i]=RDDeck::Offline;
     catch_record_status[i]=false;
     catch_record_id[i]=0;
     catch_record_aborting[i]=false;
@@ -438,7 +438,7 @@ void MainObject::log(RDConfig::LogPriority prio,const QString &msg)
 
 void MainObject::newConnection(int fd)
 {
-  int i=0;
+  unsigned i=0;
 
   while((i<RDCATCHD_MAX_CONNECTIONS)&&(socket[i]!=NULL)) {
     i++;
@@ -537,13 +537,13 @@ void MainObject::startTimerData(int id)
 {
   int event=GetEvent(id);
   unsigned deck=catch_events[event].channel()-1;
-  bool waiting=false;
+  //  bool waiting=false;
 
   catch_events[event].setStatus(RDDeck::Idle);
   for(unsigned i=0;i<catch_events.size();i++) {
     if((catch_events[i].status()==RDDeck::Waiting)&&
        ((catch_events[i].channel()-1)==deck)) {
-      waiting=true;
+      //      waiting=true;
     }
   }
   WriteExitCodeById(id,RDRecording::Ok);
@@ -1533,7 +1533,7 @@ void MainObject::SendFullStatus(int ch)
 
 void MainObject::SendMeterLevel(int deck,short levels[2])
 {
-  for(int i=0;i<RDCATCHD_MAX_CONNECTIONS;i++) {
+  for(unsigned i=0;i<RDCATCHD_MAX_CONNECTIONS;i++) {
     if(catch_meter_enabled[i]) {
       EchoCommand(i,QString().sprintf("RM %d 0 %d!",deck,(int)levels[0]));
       EchoCommand(i,QString().sprintf("RM %d 1 %d!",deck,(int)levels[1]));
@@ -1838,9 +1838,9 @@ void MainObject::EchoCommand(int ch,const char *command)
 void MainObject::BroadcastCommand(const char *command,int except_ch)
 {
 //  LogLine(RDConfig::LogDebug,QString().sprintf("rdcatchd: BroadcastCommand(%s)",command));
-  for(int i=0;i<RDCATCHD_MAX_CONNECTIONS;i++) {
+  for(unsigned i=0;i<RDCATCHD_MAX_CONNECTIONS;i++) {
     if(socket[i]!=NULL) {
-      if(i!=except_ch) {
+      if((int)i!=except_ch) {
 	EchoCommand(i,command);
       }
     }

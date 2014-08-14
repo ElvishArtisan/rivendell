@@ -38,8 +38,6 @@
 MainWidget::MainWidget(QWidget *parent,const char *name)
   :QWidget(parent,name)
 {
-  hpi_err_t hpi_err;
-
   setCaption(tr("RDHPIInfo")+" v"+VERSION);
 
   //
@@ -78,7 +76,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // HPI Version
   //
-  hpi_err=HPI_SubSysGetVersionEx(NULL,&hpi_version);
+  HpiErr(HPI_SubSysGetVersionEx(NULL,&hpi_version),"HPI_SubSysGetVersionEx");
   QLabel *label=new QLabel(tr("HPI Version:"),this,"hpi_version_label");
   label->setGeometry(10,10,85,20);
   label->setFont(label_font);
@@ -360,11 +358,12 @@ void MainWidget::changeModeData()
 void MainWidget::LoadAdapters()
 {
   int num_adapters;
-  hpi_err_t hpi_err;
 
-  hpi_err=HPI_SubSysGetNumAdapters(NULL,&num_adapters);
+  HpiErr(HPI_SubSysGetNumAdapters(NULL,&num_adapters),
+	 "HPI_SubSysGetNumAdapters");
   for(int i=0;i<num_adapters;i++) {
-    hpi_err=HPI_SubSysGetAdapter(NULL,i,hpi_indexes+i,hpi_type+i);
+    HpiErr(HPI_SubSysGetAdapter(NULL,i,hpi_indexes+i,hpi_type+i),
+	   "HPI_SubSysGetAdapter");
     hpi_ostreams[i]=0;
     hpi_istreams[i]=0;
     hpi_card_version[i]=0;

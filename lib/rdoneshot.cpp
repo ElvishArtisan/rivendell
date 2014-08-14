@@ -4,8 +4,6 @@
 //
 //   (C) Copyright 2008 Fred Gleason <fredg@paravelsystems.com>
 //
-//      $Id: rdoneshot.cpp,v 1.3 2010/07/29 19:32:33 cvs Exp $
-//
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
 //   published by the Free Software Foundation.
@@ -40,9 +38,9 @@ RDOneShot::RDOneShot(QObject *parent,const char *name)
 }
 
 
-void RDOneShot::start(void *data,int msecs)
+void RDOneShot::start(int value,int msecs)
 {
-  shot_pointers[shot_count]=data;
+  shot_values[shot_count]=value;
   shot_timers[shot_count]=new QTimer(this);
   shot_mapper->setMapping(shot_timers[shot_count],shot_count);
   connect(shot_timers[shot_count],SIGNAL(timeout()),
@@ -54,7 +52,7 @@ void RDOneShot::start(void *data,int msecs)
 
 void RDOneShot::timeoutData(int id)
 {
-  emit timeout(shot_pointers[id]);
+  emit timeout(shot_values[id]);
   shot_zombie_timer->start(10,true);
 }
 
@@ -64,7 +62,7 @@ void RDOneShot::zombieData()
   for(std::map<int,QTimer *>::iterator it=shot_timers.begin();
       it!=shot_timers.end();it++) {
     if(!it->second->isActive()) {
-      shot_pointers.erase(it->first);
+      shot_values.erase(it->first);
       delete it->second;
       shot_timers.erase(it);
     }

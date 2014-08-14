@@ -1196,10 +1196,9 @@ bool MainObject::FindChunk(int fd,const char *chunk_name,bool *fix_needed)
   int i;
   char name[5]={0,0,0,0,0};
   unsigned char buffer[4];
-  off_t offset;
   unsigned chunk_size;
 
-  offset=lseek(fd,12,SEEK_SET);
+  lseek(fd,12,SEEK_SET);
   i=read(fd,name,4);
   i=read(fd,buffer,4);
   chunk_size=buffer[0]+(256*buffer[1])+(65536*buffer[2])+(16777216*buffer[3]);
@@ -1234,7 +1233,6 @@ bool MainObject::FixChunkSizes(const QString &filename)
   int i;
   char name[5]={0,0,0,0,0};
   unsigned char buffer[4];
-  off_t offset;
   unsigned chunk_size;
   int fd;
 
@@ -1244,7 +1242,7 @@ bool MainObject::FixChunkSizes(const QString &filename)
   if((fd=open(filename,O_RDWR))<0) {
     return false;
   }
-  offset=lseek(fd,12,SEEK_SET);
+  lseek(fd,12,SEEK_SET);
   i=read(fd,name,4);
   i=read(fd,buffer,4);
   off_t last_offset=lseek(fd,0,SEEK_CUR);

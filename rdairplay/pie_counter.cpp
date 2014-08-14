@@ -299,8 +299,8 @@ void PieCounter::paintEvent(QPaintEvent *e)
     p->setPen(pie_color);
     p->drawPie(ring,ring,PIE_COUNTER_SIZE,PIE_COUNTER_SIZE,1440+angle,5760-angle);
     if(((pie_time<pie_count_length)&&(pie_time>0))||
-       (((750+pie_talk_end-pie_pos)/1000)<100)&&
-       ((pie_pos>=pie_talk_start)&&(pie_pos<=pie_talk_end))) {
+       ((((750+pie_talk_end-pie_pos)/1000)<100)&&
+	((pie_pos>=pie_talk_start)&&(pie_pos<=pie_talk_end)))) {
       p->setBrush(backgroundColor());
       p->setPen(backgroundColor());
       p->drawPie(ring+20,ring+20,PIE_COUNTER_SIZE-40,PIE_COUNTER_SIZE-40,0,5760);

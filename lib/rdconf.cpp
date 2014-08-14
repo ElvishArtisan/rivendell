@@ -736,7 +736,6 @@ int RDSetTimeLength(const QString &str)
   int istate=2;
   QString field;
   int res=0;
-  bool decimalpt=false;
 
   if(str.isEmpty()) {
     return -1;
@@ -770,9 +769,6 @@ int RDSetTimeLength(const QString &str)
 	    case 2:
 	      res+=1000*field.toInt();
 	      break;
-	}
-	if(str.at(i)=='.') {
-	  decimalpt=true;
 	}
 	istate++;
 	field="";

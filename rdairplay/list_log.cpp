@@ -1054,12 +1054,10 @@ void ListLog::selectionChangedData()
 
 void ListLog::transportChangedData()
 {
-  int count=0;
   int transport_line[TRANSPORT_QUANTITY];
 
   SetColor();
 
-  count=0;
   list_log->transportEvents(transport_line);
   for(int i=0;i<TRANSPORT_QUANTITY;i++) {
     if(transport_line[i]!=-1) {

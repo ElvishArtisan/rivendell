@@ -206,6 +206,7 @@ RDAudioImport::ErrorCode RDAudioImport::runImport(const QString &username,
   case CURLE_OPERATION_TIMEDOUT:
   case CURLE_HTTP_POST_ERROR:
     curl_easy_cleanup(curl);
+  default:
     return RDAudioImport::ErrorInternal;
 
   case CURLE_URL_MALFORMAT:

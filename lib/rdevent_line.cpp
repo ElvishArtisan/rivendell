@@ -448,7 +448,6 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
   RDSqlQuery *q;
   RDSqlQuery *q1;
   QTime time=event_start_time;
-  QTime end_time=event_start_time.addMSecs(event_length);
   QTime fill_start_time;
   int count=0;
   logname.replace(" ","_");

@@ -2,9 +2,7 @@
 //
 // Rivendell web service portal -- Export service
 //
-//   (C) Copyright 2010 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: export.cpp,v 1.6.2.2 2013/10/02 18:25:12 cvs Exp $
+//   (C) Copyright 2010,2014 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -172,6 +170,9 @@ void Xport::Export()
       }
     }
     close(fd);
+    unlink(tmpfile);
+    rmdir(tmpdir);
+    Exit(0);
     break;
 
   case RDAudioConvert::ErrorFormatNotSupported:
@@ -198,5 +199,5 @@ void Xport::Export()
   }
   unlink(tmpfile);
   rmdir(tmpdir);
-  exit(0);
+  Exit(resp_code);
 }

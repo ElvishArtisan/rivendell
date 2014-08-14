@@ -56,8 +56,8 @@ class Acu1p : public Switcher
  private slots:
   void pollData();
   void readyReadData(int sock);
-  void gpiOneshotData(void *data);
-  void gpoOneshotData(void *data);
+  void gpiOneshotData(int value);
+  void gpoOneshotData(int value);
 
  private:
   void ProcessGpi(uint16_t gpi_data);

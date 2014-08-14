@@ -65,7 +65,7 @@ class VGuest : public Switcher
   void connectionClosedData(int id);
   void readyReadData(int id);
   void errorData(int err,int id);
-  void gpioOneshotData(void *data);
+  void gpioOneshotData(int value);
   void pingData(int id);
   void pingResponseData(int id);
 

@@ -65,11 +65,9 @@ BtSrc8Iii::BtSrc8Iii(RDMatrix *matrix,QObject *parent,const char *name)
   // Interval OneShots
   //
   bt_gpi_oneshot=new RDOneShot(this);
-  connect(bt_gpi_oneshot,SIGNAL(timeout(void *)),
-	  this,SLOT(gpiOneshotData(void*)));
+  connect(bt_gpi_oneshot,SIGNAL(timeout(int)),this,SLOT(gpiOneshotData(int)));
   bt_gpo_oneshot=new RDOneShot(this);
-  connect(bt_gpo_oneshot,SIGNAL(timeout(void *)),
-	  this,SLOT(gpoOneshotData(void*)));
+  connect(bt_gpo_oneshot,SIGNAL(timeout(int)),this,SLOT(gpoOneshotData(int)));
 
   //
   // The Poll Timer
@@ -189,7 +187,7 @@ void BtSrc8Iii::processCommand(RDMacro *cmd)
 		  bt_gpi_state[cmd->arg(2).toInt()-1]=true;
 		}
 		bt_gpi_mask[cmd->arg(2).toInt()-1]=true;
-		bt_gpi_oneshot->start((void *)(cmd->arg(2).toInt()-1),500);
+		bt_gpi_oneshot->start(cmd->arg(2).toInt()-1,500);
 	      }
 	      if(cmd->arg(1).toString().lower()=="o") {
 		sprintf(str,"*%dOR%dP%02d\r\n",
@@ -197,7 +195,7 @@ void BtSrc8Iii::processCommand(RDMacro *cmd)
 			cmd->arg(4).toInt()/100+1);
 		bt_device->writeBlock(str,10);
 		emit gpoChanged(bt_matrix,cmd->arg(2).toInt()-1,true);
-		bt_gpo_oneshot->start((void *)(cmd->arg(2).toInt()-1),500);
+		bt_gpo_oneshot->start(cmd->arg(2).toInt()-1,500);
 	      }
 	    }
 	  }
@@ -317,14 +315,14 @@ void BtSrc8Iii::processStatus()
 }
 
 
-void BtSrc8Iii::gpiOneshotData(void *data)
+void BtSrc8Iii::gpiOneshotData(int value)
 {
-  bt_gpi_mask[(long)data]=false;
+  bt_gpi_mask[value]=false;
   bt_device->writeBlock("*0SPA",5);
 }
 
 
-void BtSrc8Iii::gpoOneshotData(void *data)
+void BtSrc8Iii::gpoOneshotData(int value)
 {
-  emit gpoChanged(bt_matrix,(long)data,false);
+  emit gpoChanged(bt_matrix,value,false);
 }

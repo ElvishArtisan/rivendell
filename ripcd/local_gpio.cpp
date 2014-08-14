@@ -64,8 +64,7 @@ LocalGpio::LocalGpio(RDMatrix *matrix,QObject *parent,const char *name)
   // Interval OneShot
   //
   gpio_gpi_oneshot=new RDOneShot(this);
-  connect(gpio_gpi_oneshot,SIGNAL(timeout(void *)),
-	  this,SLOT(gpiOneshotData(void*)));
+  connect(gpio_gpi_oneshot,SIGNAL(timeout(int)),this,SLOT(gpiOneshotData(int)));
 }
 
 
@@ -126,7 +125,7 @@ void LocalGpio::processCommand(RDMacro *cmd)
 	    gpio_gpi_mask[cmd->arg(2).toInt()-1]=true;
 	    if(cmd->arg(4).toInt()>0) {
 	      gpio_gpi_oneshot->
-		start((void *)(cmd->arg(2).toInt()-1),cmd->arg(4).toInt());
+		start(cmd->arg(2).toInt()-1,cmd->arg(4).toInt());
 	    }
 	  }
 	  else {
@@ -135,11 +134,11 @@ void LocalGpio::processCommand(RDMacro *cmd)
 	      gpio_gpi_mask[cmd->arg(2).toInt()-1]=true;
 	      if(cmd->arg(4).toInt()>0) {
 		gpio_gpi_oneshot->
-		  start((void *)(cmd->arg(2).toInt()-1),cmd->arg(4).toInt());
+		  start(cmd->arg(2).toInt()-1,cmd->arg(4).toInt());
 	      }
 	    }
 	    else {
-	      gpiOneshotData((void *)(cmd->arg(2).toInt()-1));
+	      gpiOneshotData(cmd->arg(2).toInt()-1);
 	    }
 	  }
 	  cmd->acknowledge(true);
@@ -186,8 +185,8 @@ void LocalGpio::gpoChangedData(int line,bool state)
 }
 
 
-void LocalGpio::gpiOneshotData(void *data)
+void LocalGpio::gpiOneshotData(int value)
 {
-  gpio_gpi_mask[(long)data]=false;
-  gpiChangedData((long)data,gpio_gpio->inputState((long)data));
+  gpio_gpi_mask[value]=false;
+  gpiChangedData(value,gpio_gpio->inputState(value));
 }

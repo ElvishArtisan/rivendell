@@ -70,11 +70,9 @@ Acu1p::Acu1p(RDMatrix *matrix,QObject *parent,const char *name)
   // Interval OneShots
   //
   bt_gpi_oneshot=new RDOneShot(this);
-  connect(bt_gpi_oneshot,SIGNAL(timeout(void *)),
-	  this,SLOT(gpiOneshotData(void*)));
+  connect(bt_gpi_oneshot,SIGNAL(timeout(int)),this,SLOT(gpiOneshotData(int)));
   bt_gpo_oneshot=new RDOneShot(this);
-  connect(bt_gpo_oneshot,SIGNAL(timeout(void *)),
-	  this,SLOT(gpoOneshotData(void*)));
+  connect(bt_gpo_oneshot,SIGNAL(timeout(int)),this,SLOT(gpoOneshotData(int)));
 
   //
   // Poll Timer
@@ -192,12 +190,12 @@ void Acu1p::processCommand(RDMacro *cmd)
 	      bt_gpi_state[cmd->arg(2).toInt()-1]=true;
 	    }
 	    bt_gpi_mask[cmd->arg(2).toInt()-1]=true;
-	    bt_gpi_oneshot->start((void *)(cmd->arg(2).toInt()-1),500);
+	    bt_gpi_oneshot->start(cmd->arg(2).toInt()-1,500);
 	  }
 	  if(cmd->arg(1).toString().lower()=="o") {
 	    PulseRelay(cmd->arg(2).toInt()-1);
 	    emit gpoChanged(bt_matrix,cmd->arg(2).toInt()-1,true);
-	    bt_gpo_oneshot->start((void *)(cmd->arg(2).toInt()-1),500);
+	    bt_gpo_oneshot->start(cmd->arg(2).toInt()-1,500);
 	  }
 	}
       }
@@ -277,8 +275,8 @@ void Acu1p::processCommand(RDMacro *cmd)
 
 void Acu1p::pollData()
 {
-  char data[]={0xAA,ACU1P_UNIT_ID,0x39};
-  bt_device->writeBlock(data,3);
+  uint8_t data[]={0xAA,ACU1P_UNIT_ID,0x39};
+  bt_device->writeBlock((char *)data,3);
 }
 
 
@@ -295,14 +293,14 @@ void Acu1p::readyReadData(int sock)
 }
 
 
-void Acu1p::gpiOneshotData(void *data)
+void Acu1p::gpiOneshotData(int value)
 {
 }
 
 
-void Acu1p::gpoOneshotData(void *data)
+void Acu1p::gpoOneshotData(int value)
 {
-  emit gpoChanged(bt_matrix,(long)data,false);
+  emit gpoChanged(bt_matrix,value,false);
 }
 
 

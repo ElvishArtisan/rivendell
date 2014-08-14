@@ -273,12 +273,11 @@ int FixWav(int hFilename,unsigned dSamples,unsigned dBytes)
 int FindChunk(int hFilename,struct wavChunk *wavChunk)
 {
   int i;
-  off_t oOffset;
   char sName[5]={0,0,0,0,0};
   unsigned char dBuffer[4];
   off_t oSize;
 
-  oOffset=lseek(hFilename,12,SEEK_SET);
+  lseek(hFilename,12,SEEK_SET);
   i=read(hFilename,sName,4);
   i=read(hFilename,dBuffer,4);
   oSize=dBuffer[0]+(256*dBuffer[1])+(65536*dBuffer[2])+(16777216*dBuffer[3]);
@@ -335,7 +334,7 @@ int GetListChunk(int hFilename,struct wavList *wavList)
   /*
    * Initialize Data Structures 
    */
-  memset(wavList,0,sizeof(wavList));
+  memset(wavList,0,sizeof(struct wavList));
 
   /*
    * Find the list chunk

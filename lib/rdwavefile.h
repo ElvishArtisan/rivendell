@@ -1046,11 +1046,11 @@ class RDWaveFile
    bool IsTmc(int fd);
    bool IsFlac(int fd);
    bool IsAiff(int fd);
-   off_t FindChunk(int fd,char *chunk_name,unsigned *chunk_size,
+   off_t FindChunk(int fd,const char *chunk_name,unsigned *chunk_size,
 		   bool big_end=false);
-   bool GetChunk(int fd,char *chunk_name,unsigned *chunk_size,
+   bool GetChunk(int fd,const char *chunk_name,unsigned *chunk_size,
 		 unsigned char *chunk,size_t size,bool big_end=false);
-   void WriteChunk(int fd,char *cname,unsigned char *buf,unsigned size,
+   void WriteChunk(int fd,const char *cname,unsigned char *buf,unsigned size,
 		   bool big_end=false);
    bool GetFmt(int fd);
    bool GetFact(int fd);

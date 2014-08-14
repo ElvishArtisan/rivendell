@@ -202,8 +202,8 @@ VGuest::VGuest(RDMatrix *matrix,QObject *parent,const char *name)
   // Interval OneShots
   //
   vguest_gpio_oneshot=new RDOneShot(this);
-  connect(vguest_gpio_oneshot,SIGNAL(timeout(void *)),
-	  this,SLOT(gpioOneshotData(void*)));
+  connect(vguest_gpio_oneshot,SIGNAL(timeout(int)),
+	  this,SLOT(gpioOneshotData(int)));
 
   //
   // Initialize the connection
@@ -394,7 +394,7 @@ void VGuest::processCommand(RDMacro *cmd)
 	      SendCommand(buffer,9);
 	      emit gpiChanged(vguest_matrix,cmd->arg(2).toInt()-1,true);
 	      emit gpoChanged(vguest_matrix,cmd->arg(2).toInt()-1,true);
-	      vguest_gpio_oneshot->start((void *)(cmd->arg(2).toInt()-1),2000);
+	      vguest_gpio_oneshot->start(cmd->arg(2).toInt()-1,2000);
 	      break;
 
 	    case 0x52:
@@ -555,10 +555,10 @@ void VGuest::errorData(int err,int id)
 }
 
 
-void VGuest::gpioOneshotData(void *data)
+void VGuest::gpioOneshotData(int value)
 {
-  emit gpiChanged(vguest_matrix,(long)data,false);
-  emit gpoChanged(vguest_matrix,(long)data,false);
+  emit gpiChanged(vguest_matrix,value,false);
+  emit gpoChanged(vguest_matrix,value,false);
 }
 
 

@@ -96,6 +96,7 @@ class RDHPIRecordStream : public QObject,public RDWaveFile
  private:
   bool GetStream();
   void FreeStream();
+  hpi_err_t LogHpi(hpi_err_t err);
   RDHPISoundCard *sound_card;
   bool debug;
   bool xrun;

@@ -895,22 +895,15 @@ void EditLog::deleteButtonData()
   int count=0;
 
   QListViewItem *next=edit_log_list->firstChild();
-  QListViewItem *item=NULL;
   int line=0;
-  bool select_end=false;
 
   while(next!=NULL) {
     if(edit_log_list->isSelected(next)) {
       if(next->text(12).toInt()!=END_MARKER_ID) {
 	if(count==0) {
 	  line=next->text(13).toInt();
-	  item=next;
 	}
 	count++;
-	if(next->text(13).toInt()==edit_log_event->size()-1) {
-	  select_end=true;
-	}
-	item=next->nextSibling();
       }
     }
     next=next->nextSibling();

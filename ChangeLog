@@ -14309,3 +14309,48 @@
 	* Added a 'maintainer-clean-local' target in 'Makefile.am'.
 2014-08-14 Fred Gleason <fredg@paravelsystems.com>
 	* Refactored the AM_INIT() invocation in 'configure.ac'.
+2014-08-14 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed warnings in 'lib/rdaudioconvert.cpp'.
+	* Fixed warnings in 'lib/rdaudioexport.cpp'.
+	* Fixed warnings in 'lib/rdaudioimport.cpp'.
+	* Fixed warnings in 'lib/rdcart_dialog.cpp'.
+	* Fixed warnings in 'lib/rdconf.cpp'.
+	* Fixed warnings in 'lib/rdcopyaudio.cpp'.
+	* Fixed warnings in 'lib/rdescape_string.cpp'.
+	* Fixed warnings in 'lib/rdevent_line.cpp'.
+	* Fixed warnings in 'lib/rdfeed.cpp'.
+	* Refactored 'RDOneShot' to use int values in 'lib/rdoneshot.cpp'
+	and 'lib/rdoneshot.h'.
+	* Fixed warnings in 'lib/rdpeaksexport.cpp'.
+	* Fixed warnings in 'lib/rdtrimaudio.cpp'.
+	* Fixed warnings in 'lib/rdwavefile.cpp'.
+	* Fixed warnings in 'rdhpi/rdhpiplaystream.cpp'.
+	* Fixed warnings in 'rdhpi/rdhpirecordstream.cpp'.
+	* Fixed warnings in 'rdhpi/rdhpisoundcard.cpp'.
+	* Fixed warnings in 'pam_rd/pam_rd.cpp'.
+	* Fixed warnings in 'rdadmin/edit_rdairplay.cpp'.
+	* Fixed warnings in 'rdairplay/list_log.cpp'.
+	* Fixed warnings in 'rdairplay/log_play.cpp'.
+	* Fixed warnings in 'rdairplay/pie_counter.cpp'.
+	* Fixed warnings in 'rdairplay/rlm_host.cpp'.
+	* Fixed warnings in 'rdcatchd/rdcatchd.cpp'.
+	* Fixed warnings in 'rdlogedit/editlog.cpp'.
+	* Fixed warnings in 'rdlogmanager/rdlogmanager.cpp'.
+	* Fixed warnings in 'rdrepl/replfactory.h'.
+	* Fixed warnings in 'ripcd/acu1p.cpp' and 'ripcd/acu1p.h'.
+	* Fixed warnings in 'ripcd/bt16x2.cpp' and 'ripcd/bt16x2.h'.
+	* Fixed warnings in 'ripcd/btss164.cpp' and 'ripcd/btss164.h'.
+	* Fixed warnings in 'ripcd/btss42.cpp' and 'ripcd/btss42.h'.
+	* Fixed warnings in 'ripcd/btss44.cpp' and 'ripcd/btss44.h'.
+	* Fixed warnings in 'ripcd/btss82.cpp' and 'ripcd/btss82.h'.
+	* Fixed warnings in 'ripcd/btsrc16.cpp' and 'ripcd/btsrc16.h'.
+	* Fixed warnings in 'ripcd/btsrc8iii.cpp' and 'ripcd/btsrc8iii.h'.
+	* Fixed warnings in 'ripcd/livewire_mcastgpio.cpp'.
+	* Fixed warnings in 'ripcd/local_gpio.cpp' and 'ripcd/local_gpio.h'.
+	* Fixed warnings in 'ripcd/sas64000gpi.cpp' and 'ripcd/sas64000gpi.h'.
+	* Fixed warnings in 'ripcd/vguest.cpp' and 'ripcd/vguest.h'.
+	* Fixed warnings in 'utils/rdhpiinfo/rdhpiinfo.cpp'
+	* Fixed warnings in 'utils/rdgen/wavlib.cpp'
+	* Fixed warnings in 'utils/rdimport/rdimport.cpp'
+	* Fixed warnings in 'utils/rdsoftkeys/rdsoftkeys.cpp'
+	* Fixed warnings in 'web/rdxport/export.cpp'

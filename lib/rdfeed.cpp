@@ -798,8 +798,6 @@ unsigned RDFeed::CreateCast(QString *filename,int bytes,int msecs) const
   RDSqlQuery *q;
   RDSqlQuery *q1;
   unsigned cast_id=0;
-  QDateTime current_datetime=
-    QDateTime(QDate::currentDate(),QTime::currentTime());
 
   sql=QString().sprintf("select CHANNEL_TITLE,CHANNEL_DESCRIPTION,\
                          CHANNEL_CATEGORY,CHANNEL_LINK,MAX_SHELF_LIFE,\

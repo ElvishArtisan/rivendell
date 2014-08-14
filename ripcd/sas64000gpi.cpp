@@ -57,8 +57,8 @@ Sas64000Gpi::Sas64000Gpi(RDMatrix *matrix,QObject *parent,const char *name)
   // Interval OneShots
   //
   sas_gpo_oneshot=new RDOneShot(this);
-  connect(sas_gpo_oneshot,SIGNAL(timeout(void *)),
-	  this,SLOT(gpoOneshotData(void*)));
+  connect(sas_gpo_oneshot,SIGNAL(timeout(int value)),
+	  this,SLOT(gpoOneshotData(int)));
 }
 
 
@@ -147,7 +147,7 @@ void Sas64000Gpi::processCommand(RDMacro *cmd)
 	    return;
 	  }
 	  cmd_byte=0xFB;
-	  sas_gpo_oneshot->start((void *)(cmd->arg(2).toInt()-1),500);
+	  sas_gpo_oneshot->start(cmd->arg(2).toInt()-1,500);
 	  emit gpoChanged(sas_matrix,cmd->arg(2).toInt()-1,true);
 	}
 	sprintf(str,"%c%c\xFF",cmd_byte,cmd->arg(2).toInt()-1);
@@ -164,7 +164,7 @@ void Sas64000Gpi::processCommand(RDMacro *cmd)
 }
 
 
-void Sas64000Gpi::gpoOneshotData(void *data)
+void Sas64000Gpi::gpoOneshotData(int value)
 {
-  emit gpoChanged(sas_matrix,(long)data,false);
+  emit gpoChanged(sas_matrix,value,false);
 }

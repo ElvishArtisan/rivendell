@@ -418,7 +418,6 @@ int main(int argc,char *argv[])
   QString cmd_report=NULL;
   int cmd_start_offset=0;
   int cmd_end_offset=0;
-  QDate cmd_start_date = QDate::currentDate().addDays(1);
 
   RDCmdSwitch *cmd=
     new RDCmdSwitch(argc,argv,"rdlogmanager",RDLOGMANAGER_USAGE);

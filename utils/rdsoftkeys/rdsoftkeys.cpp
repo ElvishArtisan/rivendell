@@ -177,15 +177,12 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
 QSize MainWidget::sizeHint() const
 {
   unsigned x=0;
-  unsigned y=0;
 
   if(key_macros.size()>=key_columns) {
     x=10+90*key_columns;
-    y=10+60*key_macros.size()/key_columns;
   }
   else {
     x=10+90*key_macros.size();
-    y=70;
   }
   return QSize(x,key_ysize);
 }

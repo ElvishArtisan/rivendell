@@ -34,10 +34,10 @@ class RDOneShot : public QObject
   Q_OBJECT
  public:
   RDOneShot(QObject *parent=0,const char *name=0);
-  void start(void *data,int msecs);
+  void start(int value,int msecs);
 
  signals:
-  void timeout(void *data);
+  void timeout(int value);
 
  private slots:
   void timeoutData(int id);
@@ -45,7 +45,7 @@ class RDOneShot : public QObject
 
  private:
   std::map<int,QTimer *> shot_timers;
-  std::map<int,void *> shot_pointers;
+  std::map<int,int> shot_values;
   QSignalMapper *shot_mapper;
   QTimer *shot_zombie_timer;
   int shot_count;

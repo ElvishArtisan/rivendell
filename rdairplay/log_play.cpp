@@ -2075,13 +2075,11 @@ void LogPlay::UpdateStartTimes(int line)
   int running=0;
   int prev_total_length=0;
   int prev_segue_length=0;
-  bool playing=false;
   bool stop_set=false;
   bool stop;
   RDLogLine *logline;
   RDLogLine *next_logline;
   RDLogLine::TransType next_trans;
-  int next_length=0;
   int lines[TRANSPORT_QUANTITY];
 
   if((running=runningEvents(lines,false))>0) {
@@ -2094,7 +2092,6 @@ void LogPlay::UpdateStartTimes(int line)
     if((logline=logLine(i))!=NULL) {
       if((next_logline=logLine(nextLine(i)))!=NULL) {
 	next_trans=next_logline->transType();
-	next_length=next_logline->segueLength(next_trans);
       }
       else {
 	next_trans=RDLogLine::Stop;
@@ -2104,7 +2101,6 @@ void LogPlay::UpdateStartTimes(int line)
 	  case RDLogLine::Playing:
 	  case RDLogLine::Finishing:
 	    time=logline->startTime(RDLogLine::Actual);
-	    playing=true;
 	    break;
 
 	  default:

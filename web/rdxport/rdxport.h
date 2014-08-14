@@ -2,9 +2,7 @@
 //
 // Rivendell web service portal
 //
-//   (C) Copyright 2010 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdxport.h,v 1.7.2.3 2013/10/14 04:23:54 cvs Exp $
+//   (C) Copyright 2010,2014 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as

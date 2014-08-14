@@ -47,7 +47,7 @@ class LocalGpio : public Switcher
  private slots:
   void gpiChangedData(int line,bool state);
   void gpoChangedData(int line,bool state);
-  void gpiOneshotData(void *data);
+  void gpiOneshotData(int value);
 
  private:
   RDGpio *gpio_gpio;

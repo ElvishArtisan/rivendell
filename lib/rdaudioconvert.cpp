@@ -309,6 +309,7 @@ RDAudioConvert::ErrorCode RDAudioConvert::Stage1Convert(const QString &srcfile,
       delete wave;
       return err;
 
+    case RDWaveFile::Aiff:
     case RDWaveFile::Unknown:
       break;
     }
@@ -1378,7 +1379,6 @@ RDAudioConvert::ErrorCode RDAudioConvert::Stage3Layer2Wav(SNDFILE *src_sf,
 							  const QString &dstfile)
 {
 #ifdef HAVE_TWOLAME
-  short *sf_buffer=NULL;
   sf_count_t n;
   ssize_t s;
   RDWaveFile *wave=NULL;
@@ -1432,7 +1432,6 @@ RDAudioConvert::ErrorCode RDAudioConvert::Stage3Layer2Wav(SNDFILE *src_sf,
   wave->setMextChunk(true);
   wave->setCartChunk(conv_dst_wavedata!=NULL);
   wave->setLevlChunk(true);
-  sf_buffer=new int16_t[2048*src_sf_info->channels];
   unlink(dstfile);
   if(!wave->createWave(conv_dst_wavedata)) {
     return RDAudioConvert::ErrorNoDestination;

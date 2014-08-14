@@ -176,6 +176,7 @@ RDAudioExport::ErrorCode RDAudioExport::runExport(const QString &username,
   case CURLE_OUT_OF_MEMORY:
   case CURLE_OPERATION_TIMEDOUT:
   case CURLE_HTTP_POST_ERROR:
+  default:
     curl_easy_cleanup(curl);
     return RDAudioExport::ErrorInternal;
 

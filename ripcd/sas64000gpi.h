@@ -46,7 +46,7 @@ class Sas64000Gpi : public Switcher
   void processCommand(RDMacro *cmd);
 
  private slots:
-  void gpoOneshotData(void *data);
+  void gpoOneshotData(int value);
 
  private:
   RDTTYDevice *sas_device;

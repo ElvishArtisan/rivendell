@@ -91,6 +91,7 @@ class RDHPIPlayStream : public QObject,public RDWaveFile
   void Drained();
   int GetStream();
   void FreeStream();
+  hpi_err_t LogHpi(hpi_err_t err);
   RDHPISoundCard *sound_card;
   RDHPIPlayStream::State stream_state;
   QString wave_name;
