@@ -26,6 +26,7 @@ AC_INIT(rivendell,`cat PACKAGE_VERSION`,Fred Gleason <fredg@paravelsystems.com>)
 AM_INIT_AUTOMAKE(rivendell,`cat PACKAGE_VERSION`)
 AC_SUBST(RPM_RELEASE,1)
 m4_ifdef([AM_SILENT_RULES],[AM_SILENT_RULES([yes])])
+AC_CONFIG_MACRO_DIR([m4])
 
 #
 # Some Fully Resolved Install Paths

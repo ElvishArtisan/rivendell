@@ -14304,3 +14304,6 @@
 	* Amalgamated INCLUDE Makefile entries into AM_CPPFLAGS.
 	* Added '-Wno-portability' to the invocation of 'automake' in
 	'autogen.sh'.
+2014-08-14 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'AC_CONFIG_MACRO_DIR' invocation in 'configure.ac'.
+	* Added a 'maintainer-clean-local' target in 'Makefile.am'.

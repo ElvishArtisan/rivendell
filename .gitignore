@@ -19,6 +19,7 @@ depcomp
 install-sh
 libtool
 ltmain.sh
+m4
 make_slack
 missing
 Makefile.in
