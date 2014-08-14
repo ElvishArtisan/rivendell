@@ -14295,3 +14295,8 @@
 	'RDWaveData:setDaypartStartTime()', 'RDWaveData::daypartEndTime()'
 	and 'RDWaveData::setDaypartEndTime()' methods in 'lib/rdwavdata.cpp'
 	and 'lib/rdwavedata.h'.
+2014-08-14 Fred Gleason <fredg@paravelsystems.com>
+	* Added '-lm' and '-lpthread' to @LIB_RDLIBS@ in 'configure.in'
+	to fix broken compilation on RHEL 7.
+	* Fixed a regression in 'lib/rdcreate_log.cpp' that broke creation
+	of new logs.

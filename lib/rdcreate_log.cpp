@@ -38,7 +38,7 @@ void RDCreateLogTable(const QString &name)
 
 QString RDCreateLogTableSql(QString name)
 {
-  return QString("create table if not exits `")+RDLog::tableName(name)+"`"+
+  return QString("create table if not exists `")+RDLog::tableName(name)+"`"+
     "(ID INT NOT NULL PRIMARY KEY,"+
     "COUNT INT NOT NULL,"+
     "TYPE INT DEFAULT 0,"+
