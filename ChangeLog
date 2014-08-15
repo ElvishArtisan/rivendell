@@ -14379,3 +14379,5 @@
 	to break on RHEL 5.
 2014-08-15 Fred Gleason <fredg@paravelsystems.com>
 	* Reverted changes to AC_INIT invocation for RHEL 5 compatibility.
+2014-08-15 Fred Gleason <fredg@paravelsystems.com>
+	* Removed extraneous comments from 'configure.ac'.
