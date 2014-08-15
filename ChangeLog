@@ -14354,3 +14354,20 @@
 	* Fixed warnings in 'utils/rdimport/rdimport.cpp'
 	* Fixed warnings in 'utils/rdsoftkeys/rdsoftkeys.cpp'
 	* Fixed warnings in 'web/rdxport/export.cpp'
+2014-08-14 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'Makefile.am' that broke the 'make install' rule
+	when using DESTDIR.
+	* Fixed a bug in 'icons/Makefile.am' that broke the 'make install'
+	rule when using DESTDIR.
+	* Fixed a bug in 'rlm/Makefile.am' that broke the 'make install'
+	rule when using DESTDIR.
+	* Fixed a bug in 'scripts/Makefile.am' that broke the 'make install'
+	rule when using DESTDIR.
+	* Fixed a bug in 'xdg/Makefile.am' that broke the 'make install'
+	rule when using DESTDIR.
+	* Fixed a bug in 'rdselect/Makefile.am' that broke the 'make install'
+	rule when using DESTDIR.
+	* Fixed a bug in 'web/rdxport/Makefile.am' that broke the
+	'make install' rule when using DESTDIR.
+	* Fixed a bug in 'configure.ac' that cause an incorrect VERSION
+	string to be generated.

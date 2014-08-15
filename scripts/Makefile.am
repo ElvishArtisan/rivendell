@@ -23,11 +23,11 @@
 ## Use automake to process this into a Makefile.in
 
 install-exec-local:	
-	mkdir -p /etc/X11/xinit/xinitrc.d
-	cp start-rdmonitor.sh /etc/X11/xinit/xinitrc.d/
+	mkdir -p $(DESTDIR)/etc/X11/xinit/xinitrc.d
+	cp start-rdmonitor.sh $(DESTDIR)/etc/X11/xinit/xinitrc.d/
 
 uninstall-local:	
-	rm -f /etc/X11/xinit/xinitrc.d/start-rdmonitor.sh
+	rm -f $(DESTDIR)/etc/X11/xinit/xinitrc.d/start-rdmonitor.sh
 
 bin_SCRIPTS = crc-unity4k.sh\
               rd_audio_sync\

@@ -23,19 +23,22 @@
 #
 
 if test ! -f ./building-debian ; then
-  mkdir -p /etc/init.d
-  cp rivendell /etc/init.d/rivendell
-  cp rdrepld-suse /etc/init.d/rdrepld
-  mkdir -p /etc/sysconfig
-  cp rivendell.sys /etc/sysconfig/rivendell
-  mkdir -p /var/run/rivendell
-  chmod 777 /var/run/rivendell
-  ldconfig
+  mkdir -p $2/etc/init.d
+  cp rivendell $2/etc/init.d/rivendell
+  cp rdrepld-suse $2/etc/init.d/rdrepld
+  mkdir -p $2/etc/sysconfig
+  cp rivendell.sys $2/etc/sysconfig/rivendell
+  mkdir -p $2/var/run/rivendell
+  if test -z $2 ; then
+    chmod 777 /var/run/rivendell
+    ldconfig
+  fi
 fi
 
-chmod 4755 $1/bin/caed
-chmod 4755 $1/bin/ripcd
-chmod 4755 $1/bin/rdcatchd
-
+if test -z $2 ; then
+  chmod 4755 $1/bin/caed
+  chmod 4755 $1/bin/ripcd
+  chmod 4755 $1/bin/rdcatchd
+fi
 
 # End of install-init.sh

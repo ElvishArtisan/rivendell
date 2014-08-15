@@ -48,8 +48,8 @@ all:	$(RLM_MODULES)
 install:	all
 	mkdir -p $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell
 	cp $(RLM_MODULES) $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/
-	mkdir -p $(headerdir)
-	cp rlm.h $(headerdir)
+	mkdir -p $(DESTDIR)$(headerdir)
+	cp rlm.h $(DESTDIR)$(headerdir)
 
 headerdir = $(includedir)/rlm
 header_HEADERS = rlm.h

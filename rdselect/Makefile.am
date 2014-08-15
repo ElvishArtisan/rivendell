@@ -34,7 +34,7 @@ moc_%.cpp:	%.h
 install-exec-local:	
 	mkdir -p $(DESTDIR)$(prefix)/share/rivendell
 	cp rdselect_*.qm $(DESTDIR)$(prefix)/share/rivendell
-	chmod 4755 $(prefix)/bin/rdselect
+	chmod 4755 $(DESTDIR)$(prefix)/bin/rdselect
 
 uninstall:
 	rm -f $(DESTDIR)$(prefix)/share/rivendell/rdselect_*.qm

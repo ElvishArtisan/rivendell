@@ -31,18 +31,18 @@ install-exec-am:
 	cp redball.png $(DESTDIR)@libexecdir@
 	cp whiteball.png $(DESTDIR)@libexecdir@
 	cp progressbar.gif $(DESTDIR)@libexecdir@
-	mkdir -p @prefix@/share/icons/hicolor/16x16/apps
-	cp rivendell-16x16.png @prefix@/share/icons/hicolor/16x16/apps/rivendell.png
-	mkdir -p @prefix@/share/icons/hicolor/22x22/apps
-	cp rivendell-22x22.png @prefix@/share/icons/hicolor/22x22/apps/rivendell.png
-	mkdir -p @prefix@/share/icons/hicolor/32x32/apps
-	cp rivendell-32x32.png @prefix@/share/icons/hicolor/32x32/apps/rivendell.png
-	mkdir -p @prefix@/share/icons/hicolor/48x48/apps
-	cp rivendell-48x48.png @prefix@/share/icons/hicolor/48x48/apps/rivendell.png
-	mkdir -p @prefix@/share/icons/hicolor/64x64/apps
-	cp rivendell-64x64.png @prefix@/share/icons/hicolor/64x64/apps/rivendell.png
-	mkdir -p @prefix@/share/icons/hicolor/128x128/apps
-	cp rivendell-128x128.png @prefix@/share/icons/hicolor/128x128/apps/rivendell.png
+	mkdir -p $(DESTDIR)@prefix@/share/icons/hicolor/16x16/apps
+	cp rivendell-16x16.png $(DESTDIR)@prefix@/share/icons/hicolor/16x16/apps/rivendell.png
+	mkdir -p $(DESTDIR)@prefix@/share/icons/hicolor/22x22/apps
+	cp rivendell-22x22.png $(DESTDIR)@prefix@/share/icons/hicolor/22x22/apps/rivendell.png
+	mkdir -p $(DESTDIR)@prefix@/share/icons/hicolor/32x32/apps
+	cp rivendell-32x32.png $(DESTDIR)@prefix@/share/icons/hicolor/32x32/apps/rivendell.png
+	mkdir -p $(DESTDIR)@prefix@/share/icons/hicolor/48x48/apps
+	cp rivendell-48x48.png $(DESTDIR)@prefix@/share/icons/hicolor/48x48/apps/rivendell.png
+	mkdir -p $(DESTDIR)@prefix@/share/icons/hicolor/64x64/apps
+	cp rivendell-64x64.png $(DESTDIR)@prefix@/share/icons/hicolor/64x64/apps/rivendell.png
+	mkdir -p $(DESTDIR)@prefix@/share/icons/hicolor/128x128/apps
+	cp rivendell-128x128.png $(DESTDIR)@prefix@/share/icons/hicolor/128x128/apps/rivendell.png
 
 uninstall:	
 	rm -f $(DESTDIR)@libexecdir@/greencheckmark.png
@@ -51,12 +51,12 @@ uninstall:
 	rm -f $(DESTDIR)@libexecdir@/redball.png
 	rm -f $(DESTDIR)@libexecdir@/whiteball.png
 	rm -f $(DESTDIR)@libexecdir@/progressbar.gif
-	rm -f @prefix@/share/icons/hicolor/16x16/apps/rivendell.png
-	rm -f @prefix@/share/icons/hicolor/22x22/apps/rivendell.png
-	rm -f @prefix@/share/icons/hicolor/32x32/apps/rivendell.png
-	rm -f @prefix@/share/icons/hicolor/48x48/apps/rivendell.png
-	rm -f @prefix@/share/icons/hicolor/64x64/apps/rivendell.png
-	rm -f @prefix@/share/icons/hicolor/128x128/apps/rivendell-128x128.png
+	rm -f $(DESTDIR)@prefix@/share/icons/hicolor/16x16/apps/rivendell.png
+	rm -f $(DESTDIR)@prefix@/share/icons/hicolor/22x22/apps/rivendell.png
+	rm -f $(DESTDIR)@prefix@/share/icons/hicolor/32x32/apps/rivendell.png
+	rm -f $(DESTDIR)@prefix@/share/icons/hicolor/48x48/apps/rivendell.png
+	rm -f $(DESTDIR)@prefix@/share/icons/hicolor/64x64/apps/rivendell.png
+	rm -f $(DESTDIR)@prefix@/share/icons/hicolor/128x128/apps/rivendell-128x128.png
 
 EXTRA_DIST = admin.xpm\
              blueball.xpm\

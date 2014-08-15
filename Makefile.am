@@ -68,7 +68,7 @@ maintainer-clean-local:
 	rm -rf m4
 
 install-exec-local:	
-	./install-init.sh $(DESTDIR)$(prefix)
+	./install-init.sh $(DESTDIR)$(prefix) $(DESTDIR)
 
 install-debian:	
 	touch ./building-debian
@@ -76,9 +76,9 @@ install-debian:
 	rm -f ./building-debian
 
 uninstall-exec:
-	rm -f /etc/init.d/rdrepld
-	rm -f /etc/init.d/rivendell
-	rm -f /etc/sysconfig/rivendell
+	rm -f $(DESTDIR)/etc/init.d/rdrepld
+	rm -f $(DESTDIR)/etc/init.d/rivendell
+	rm -f $(DESTDIR)/etc/sysconfig/rivendell
 
 rpm:	dist
 	cp rivendell-$(VERSION).tar.gz $(RPM_ROOT)/SOURCES/

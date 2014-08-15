@@ -22,34 +22,34 @@
 ## Use automake to process this into a Makefile.in
 
 install-exec-am:	
-	mkdir -p @prefix@/share/applications
-	cp rivendell-rdadmin.desktop @prefix@/share/applications/
-	cp rivendell-rdairplay.desktop @prefix@/share/applications/
-	cp rivendell-rdalsaconfig.desktop @prefix@/share/applications/
-	cp rivendell-rdcartslots.desktop @prefix@/share/applications/
-	cp rivendell-rdcastmanager.desktop @prefix@/share/applications/
-	cp rivendell-rdcatch.desktop @prefix@/share/applications/
-	cp rivendell-rddgimport.desktop @prefix@/share/applications/
-	cp rivendell-rddiscimport.desktop @prefix@/share/applications/
-	cp rivendell-rdgpimon.desktop @prefix@/share/applications/
-	cp rivendell-rdhpiinfo.desktop @prefix@/share/applications/
-	cp rivendell-rdlibrary.desktop @prefix@/share/applications/
-	cp rivendell-rdlogedit.desktop @prefix@/share/applications/
-	cp rivendell-rdlogin.desktop @prefix@/share/applications/
-	cp rivendell-rdlogmanager.desktop @prefix@/share/applications/
-	cp rivendell-rdmonitor.desktop @prefix@/share/applications/
-	cp rivendell-rdpanel.desktop @prefix@/share/applications/
-	cp rivendell-rdsoftkeys.desktop @prefix@/share/applications/
-	cp rivendell-rmlsend.desktop @prefix@/share/applications/
-	mkdir -p @prefix@/share/desktop-directories
-	cp *.directory @prefix@/share/desktop-directories/
-	mkdir -p /etc/xdg/menus/applications-merged
-	cp *.menu /etc/xdg/menus/applications-merged/
+	mkdir -p $(DESTDIR)@prefix@/share/applications
+	cp rivendell-rdadmin.desktop $(DESTDIR)@prefix@/share/applications/
+	cp rivendell-rdairplay.desktop $(DESTDIR)@prefix@/share/applications/
+	cp rivendell-rdalsaconfig.desktop $(DESTDIR)@prefix@/share/applications/
+	cp rivendell-rdcartslots.desktop $(DESTDIR)@prefix@/share/applications/
+	cp rivendell-rdcastmanager.desktop $(DESTDIR)@prefix@/share/applications/
+	cp rivendell-rdcatch.desktop $(DESTDIR)@prefix@/share/applications/
+	cp rivendell-rddgimport.desktop $(DESTDIR)@prefix@/share/applications/
+	cp rivendell-rddiscimport.desktop $(DESTDIR)@prefix@/share/applications/
+	cp rivendell-rdgpimon.desktop $(DESTDIR)@prefix@/share/applications/
+	cp rivendell-rdhpiinfo.desktop $(DESTDIR)@prefix@/share/applications/
+	cp rivendell-rdlibrary.desktop $(DESTDIR)@prefix@/share/applications/
+	cp rivendell-rdlogedit.desktop $(DESTDIR)@prefix@/share/applications/
+	cp rivendell-rdlogin.desktop $(DESTDIR)@prefix@/share/applications/
+	cp rivendell-rdlogmanager.desktop $(DESTDIR)@prefix@/share/applications/
+	cp rivendell-rdmonitor.desktop $(DESTDIR)@prefix@/share/applications/
+	cp rivendell-rdpanel.desktop $(DESTDIR)@prefix@/share/applications/
+	cp rivendell-rdsoftkeys.desktop $(DESTDIR)@prefix@/share/applications/
+	cp rivendell-rmlsend.desktop $(DESTDIR)@prefix@/share/applications/
+	mkdir -p $(DESTDIR)@prefix@/share/desktop-directories
+	cp *.directory $(DESTDIR)@prefix@/share/desktop-directories/
+	mkdir -p $(DESTDIR)/etc/xdg/menus/applications-merged
+	cp *.menu $(DESTDIR)/etc/xdg/menus/applications-merged/
 
 uninstall:	
-	rm -f @prefix@/share/applications/rivendell-*.desktop
-	rm -f @prefix@/share/desktop-directories/rivendell-*.directory
-	rm -f /etc/xdg/menus/applications-merged/rivendell-*.menu
+	rm -f $(DESTDIR)@prefix@/share/applications/rivendell-*.desktop
+	rm -f $(DESTDIR)@prefix@/share/desktop-directories/rivendell-*.directory
+	rm -f $(DESTDIR)/etc/xdg/menus/applications-merged/rivendell-*.menu
 
 EXTRA_DIST = rdalsaconfig-root-consolehelper\
              rdalsaconfig-root-pam\

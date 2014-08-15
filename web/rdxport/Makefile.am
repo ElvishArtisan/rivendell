@@ -28,8 +28,7 @@ MOC = @QT_MOC@
 libexec_PROGRAMS = rdxport.cgi
 
 install-exec-hook:	
-	chown root $(libexecdir)/rdxport.cgi
-	chmod 4755 $(libexecdir)/rdxport.cgi
+	if test -z $(DESTDIR) ; then chown root $(DESTDIR)$(libexecdir)/rdxport.cgi ; chmod 4755 $(DESTDIR)$(libexecdir)/rdxport.cgi ; fi
 
 dist_rdxport_cgi_SOURCES = audioinfo.cpp\
                            carts.cpp\
