@@ -22,7 +22,7 @@
 ##
 ## Use automake to process this into a Makefile.in
 
-AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" @QT_CXXFLAGS@
+AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" @QT_CXXFLAGS@ -Wno-strict-aliasing
 MOC = @QT_MOC@
 CWRAP = ../helpers/cwrap
 

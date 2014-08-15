@@ -21,7 +21,7 @@
 ##
 ## Use automake to process this into a Makefile.in
 
-AM_CPPFLAGS = -Wall @QT_CXXFLAGS@ -I$(top_srcdir)/lib -I$(top_srcdir)/rdhpi
+AM_CPPFLAGS = -Wall @QT_CXXFLAGS@ -I$(top_srcdir)/lib -I$(top_srcdir)/rdhpi -Wno-strict-aliasing
 LIBS = @QT_LIBS@ -L$(top_srcdir)/lib -L$(top_srcdir)/rdhpi
 MOC = @QT_MOC@
 

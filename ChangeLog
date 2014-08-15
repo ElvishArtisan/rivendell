@@ -14371,3 +14371,6 @@
 	'make install' rule when using DESTDIR.
 	* Fixed a bug in 'configure.ac' that cause an incorrect VERSION
 	string to be generated.
+2014-08-14 Fred Gleason <fredg@paravelsystems.com>
+	* Modified the AC_INIT invocation in 'configure.ac' so as not
+	to break on RHEL 6.
