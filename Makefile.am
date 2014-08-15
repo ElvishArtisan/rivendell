@@ -62,6 +62,8 @@ SUBDIRS = icons\
           utils\
           web
 
+ACLOCAL_AMFLAGS = -I m4
+
 maintainer-clean-local:	
 	rm -rf m4
 
