@@ -14374,3 +14374,7 @@
 2014-08-14 Fred Gleason <fredg@paravelsystems.com>
 	* Modified the AC_INIT invocation in 'configure.ac' so as not
 	to break on RHEL 6.
+	* Added '--Wno-strict-aliasing' to 'AM_CPPFLAGS' in 'cae/Makefile.am'.
+	* Added '--Wno-strict-aliasing' to 'AM_CPPFLAGS' in 'lib/Makefile.am'.
+	* Added '--Wno-strict-aliasing' to 'AM_CPPFLAGS' in
+	'rdairplay/Makefile.am'.
