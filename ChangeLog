@@ -14378,3 +14378,18 @@
 	* Added '--Wno-strict-aliasing' to 'AM_CPPFLAGS' in 'lib/Makefile.am'.
 	* Added '--Wno-strict-aliasing' to 'AM_CPPFLAGS' in
 	'rdairplay/Makefile.am'.
+2014-08-15 Fred Gleason <fredg@paravelsystems.com>
+	* Modified the AC_INIT invocation in 'configure.ac' so as not
+	to break on RHEL 5.
+2014-08-15 Fred Gleason <fredg@paravelsystems.com>
+	* Reverted changes to AC_INIT invocation for RHEL 5 compatibility.
+2014-08-15 Fred Gleason <fredg@paravelsystems.com>
+	* Removed extraneous comments from 'configure.ac'.
+2014-08-15 Fred Gleason <fredg@paravelsystems.com>
+	* Modified 'conf/Makefile.am' to install 'rd-bin.conf' in
+	$(sysconfdir).
+	* Updated 'INSTALL' to include information about the '--sysconfdir'
+	flag.
+	* Updated 'get_distro.sh' to detect RHEL 7 correctly.
+	* Modified the installation script to work on RHEL 7 in
+	'rivendell.spec.in'.

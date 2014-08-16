@@ -141,16 +141,24 @@ Be sure to see the important additional information regarding
 configuration in the 'docs/JACK.txt' or 'docs/ALSA.txt' files if you
 plan on using those sound driver architectures.
 
-Rivendell's web services components are installed in the directory specified
-by the '--libexecdir=' parameter given to './configure' (default 
-'EPREFIX/bin').  The proper location will vary widely on different distros 
-according to how Apache is installed.  On SuSE (assuming the default setup),
-the proper invocation is '--libexecdir=/srv/www/rd-bin'.  Additionally, 
-Apache itself must be configured to use the specified directory.  The 
-'./configure' script generates a configuration file snippet that can be
-included into the Apache configuration to accomplish this in 
-'conf/rd-bin.conf'.  On Ubuntu copy that file to the /etc/apache2/conf.d/
-directory.
+The installation of Rivendell's web services components are controlled
+by two parameters passed to 'configure', as follows:
+
+--libexecdir	  Location to install web scripts and static content
+
+--sysconfdir	  Location to install Apache configuration
+
+The specific values to pass will vary widely depending upon the specific
+distro in question.  Some known good values (assuming a default Apache
+setup):
+
+RHEL 5:	  --libexecdir=/var/httpd/rd-bin --sysconfdir=/etc/httpd/conf.d
+
+RHEL 6/7: --libexecdir=/var/www/rd-bin --sysconfdir=/etc/httpd/conf.d
+
+SuSE:	  --libexecdir=/srv/www/rd-bin --sysconfdir=/etc/apache2/conf.d
+
+After doing 'make install', be sure to restart the Apache web service.
 
 
 3)  Initial Configuration
