@@ -79,7 +79,7 @@ int main(int argc,char *argv[])
   //
   // Set Variable Name
   //
-  for(int j=0;j<strlen(output_name);j++) {
+  for(unsigned j=0;j<strlen(output_name);j++) {
     if(output_name[j]!='.') {
       var_name[j]=output_name[j];
     }
@@ -109,7 +109,7 @@ int main(int argc,char *argv[])
     perror("wrapdat");
     exit(1);
   }
-  fprintf(output_desc,"const unsigned char %s[%d] = {\n",
+  fprintf(output_desc,"const unsigned char %s[%ld] = {\n",
 	  var_name,stat.st_size+1);
 
   //

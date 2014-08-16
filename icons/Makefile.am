@@ -43,6 +43,10 @@ install-exec-am:
 	cp rivendell-64x64.png $(DESTDIR)@prefix@/share/icons/hicolor/64x64/apps/rivendell.png
 	mkdir -p $(DESTDIR)@prefix@/share/icons/hicolor/128x128/apps
 	cp rivendell-128x128.png $(DESTDIR)@prefix@/share/icons/hicolor/128x128/apps/rivendell.png
+	mkdir -p $(DESTDIR)@prefix@/share/X11/fvwm2/pixmaps
+	cp rivendell-16x16.xpm $(DESTDIR)@prefix@/share/X11/fvwm2/pixmaps/mini.rivendell.xpm
+	cp rivendell-32x32.xpm $(DESTDIR)@prefix@/share/X11/fvwm2/pixmaps/rivendell.xpm
+
 
 uninstall:	
 	rm -f $(DESTDIR)@libexecdir@/greencheckmark.png

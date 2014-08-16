@@ -14381,3 +14381,11 @@
 	* Reverted changes to AC_INIT invocation for RHEL 5 compatibility.
 2014-08-15 Fred Gleason <fredg@paravelsystems.com>
 	* Removed extraneous comments from 'configure.ac'.
+2014-08-15 Fred Gleason <fredg@paravelsystems.com>
+	* Modified 'conf/Makefile.am' to install 'rd-bin.conf' in
+	$(sysconfdir).
+	* Updated 'INSTALL' to include information about the '--sysconfdir'
+	flag.
+	* Updated 'get_distro.sh' to detect RHEL 7 correctly.
+	* Modified the installation script to work on RHEL 7 in
+	'rivendell.spec.in'.

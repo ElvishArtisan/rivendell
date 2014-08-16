@@ -2,7 +2,7 @@
 ##
 ## Top level automake.am for Rivendell
 ##
-## (C) Copyright 2002-2006 Fred Gleason <fredg@paravelsystems.com>
+## (C) Copyright 2002-2014 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##      $Id: Makefile.am,v 1.16.4.5 2013/09/12 23:26:09 cvs Exp $
 ##      $Date: 2013/09/12 23:26:09 $
@@ -23,6 +23,12 @@
 ##
 ## Use automake to process this into a Makefile.in
 
+install-exec-am:	
+	mkdir -p $(DESTDIR)/$(sysconfdir)
+	cp rd-bin.conf $(DESTDIR)/$(sysconfdir)/
+
+uninstall:	
+	rm -f $(DESTDIR)/$(sysconfdir)/rd-bin.conf
 
 EXTRA_DIST = my.cnf-master\
              my.cnf-standby\

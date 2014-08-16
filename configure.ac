@@ -119,13 +119,21 @@ else
   AC_SUBST(APACHE_CONFIG_DIR,"/etc/httpd/conf.d")
   AC_SUBST(CONSOLEHELPER_RDALSACONFIG,"/usr/bin/rdalsaconfig-root")
   AC_SUBST(USERMODE_PKG,"usermode")
-  AC_SUBST(QT3_MYSQL_PKG,"qt-MySQL")
-  if test $ar_distro_major -ge 6 ; then
+  if test $ar_distro_major -ge 7 ; then
+    AC_SUBST(QT3_MYSQL_PKG,"qt3-MySQL")
     AC_SUBST(QT3_DEVEL_PKG,"qt3-devel")
+    AC_SUBST(MYSQL_PKG,"mariadb")
   else
-    AC_SUBST(QT3_DEVEL_PKG,"qt-devel")
+    if test $ar_distro_major -ge 6 ; then
+      AC_SUBST(QT3_MYSQL_PKG,"qt-MySQL")
+      AC_SUBST(QT3_DEVEL_PKG,"qt3-devel")
+      AC_SUBST(MYSQL_PKG,"mysqld")
+    else
+      AC_SUBST(QT3_MYSQL_PKG,"qt-MySQL")
+      AC_SUBST(QT3_DEVEL_PKG,"qt-devel")
+      AC_SUBST(MYSQL_PKG,"mysqld")
+    fi
   fi
-  AC_SUBST(MYSQL_PKG,"mysqld")
 fi
 
 #
@@ -391,12 +399,13 @@ else
   AC_SUBST(RPMBUILD,rpmbuild)
 fi
 if test -d /usr/src/redhat ; then
-  AC_SUBST(RPM_ROOT,/usr/src/redhat)
+dnl  AC_SUBST(RPM_ROOT,/usr/src/redhat)
   AC_SUBST(VENDOR,redhat)
 else
-  AC_SUBST(RPM_ROOT,/usr/src/packages)
+dnl  AC_SUBST(RPM_ROOT,/usr/src/packages)
   AC_SUBST(VENDOR,suse)
 fi 
+AC_SUBST(RPM_DATESTAMP,`date +%a\ %b\ %d\ %Y`)
 
 AC_CONFIG_FILES([rivendell.spec \
     Makefile \
