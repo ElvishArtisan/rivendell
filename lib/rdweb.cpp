@@ -30,6 +30,7 @@
 #include <qdatetime.h>
 #include <qstringlist.h>
 
+#include <rdescape_string.h>
 #include <rduser.h>
 #include <rddb.h>
 #include <rdconf.h>
@@ -686,14 +687,11 @@ long int RDAuthenticateLogin(const QString &username,const QString &passwd,
   timeval=time(&timeval);
   srandom(timeval);
   long int session=random();
-  QString sql=QString().sprintf("insert into WEB_CONNECTIONS set \
-                                 SESSION_ID=%ld,\
-                                 LOGIN_NAME=\"%s\",\
-                                 IP_ADDRESS=\"%s\",\
-                                 TIME_STAMP=now()",
-				session,
-				(const char *)username,
-				(const char *)addr.toString());
+  QString sql=QString("insert into WEB_CONNECTIONS set ")+
+    QString().sprintf("SESSION_ID=%ld,",session)+
+    "LOGIN_NAME=\""+RDEscapeString(username)+"\","+
+    "IP_ADDRESS=\""+addr.toString()+"\","+
+    "TIME_STAMP=now()";
   RDSqlQuery *q=new RDSqlQuery(sql);
   delete q;
 
@@ -703,25 +701,25 @@ long int RDAuthenticateLogin(const QString &username,const QString &passwd,
 
 QString RDAuthenticateSession(long int session_id,const QHostAddress &addr)
 {
+  QString sql;
+  RDSqlQuery *q;
+
   //
   // Expire Stale Sessions
   //
   QDateTime current_datetime=
     QDateTime(QDate::currentDate(),QTime::currentTime());
-  QString sql=QString().sprintf("delete from WEB_CONNECTIONS \
-                                 where TIME_STAMP<\"%s\"",
-				(const char *)current_datetime.
-				addSecs(-RD_WEB_SESSION_TIMEOUT).
-				toString("yyyy-MM-dd hh:mm:ss"));
-  RDSqlQuery *q=new RDSqlQuery(sql);
+  sql=QString("delete from WEB_CONNECTIONS where ")+
+    "TIME_STAMP<\""+current_datetime.addSecs(-RD_WEB_SESSION_TIMEOUT).
+    toString("yyyy-MM-dd hh:mm:ss")+"\"";
+  q=new RDSqlQuery(sql);
   delete q;
 
   //
   // Check for Session
   //
-  sql=QString().sprintf("select LOGIN_NAME,IP_ADDRESS from WEB_CONNECTIONS \
-                         where SESSION_ID=%ld",
-			session_id);
+  sql=QString("select LOGIN_NAME,IP_ADDRESS from WEB_CONNECTIONS where ")+
+    QString().sprintf("SESSION_ID=%ld",session_id);
   q=new RDSqlQuery(sql);
   if(!q->first()) {
     delete q;
@@ -737,11 +735,9 @@ QString RDAuthenticateSession(long int session_id,const QHostAddress &addr)
   //
   // Update Session
   //
-  sql=QString().sprintf("update WEB_CONNECTIONS set TIME_STAMP=\"%s\" \
-                         where SESSION_ID=%ld",
-			(const char *)current_datetime.
-			toString("yyyy-MM-dd hh:mm:dd"),
-			session_id);
+  sql=QString("update WEB_CONNECTIONS set ")+
+    "TIME_STAMP=\""+current_datetime.toString("yyyy-MM-dd hh:mm:dd")+"\" "+
+    QString().sprintf("where SESSION_ID=%ld",session_id);
   q=new RDSqlQuery(sql);
   delete q;
 

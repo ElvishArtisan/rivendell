@@ -14393,3 +14393,7 @@
 	* Updated 'get_distro.sh' to detect RHEL 7 correctly.
 	* Modified the installation script to work on RHEL 7 in
 	'rivendell.spec.in'.
+2014-08-17 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in 'web/rdcastmanager/Makefile.am' that caused
+	the incorrect executable to be installed for 'rdcastmanager.cgi'.
+	* Refactored SQL statements in 'lib/rdweb.cpp'.

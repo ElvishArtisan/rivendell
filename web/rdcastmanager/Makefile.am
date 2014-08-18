@@ -31,7 +31,7 @@ moc_%.cpp:	%.h
 
 install-exec-am:	
 	mkdir -p $(DESTDIR)/$(libexecdir)
-	cp rdcastmanager.cgi $(DESTDIR)$(libexecdir)/
+	cp .libs/rdcastmanager.cgi $(DESTDIR)$(libexecdir)/
 	cat rdcastmanager.js | $(top_srcdir)/helpers/jsmin > $(DESTDIR)$(libexecdir)/rdcastmanager.js
 
 uninstall:	
