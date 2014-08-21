@@ -115,8 +115,6 @@ EditDropbox::EditDropbox(int id,QWidget *parent,const char *name)
     new QPushButton(tr("Select"),this);
   box_select_cart_button->setGeometry(190,52,50,23);
   box_select_cart_button->setFont(normal_font);
-  connect(box_to_cart_edit,SIGNAL(textChanged(const QString &)),
-	  this,SLOT(toCartChangedData(const QString &)));
   connect(box_select_cart_button,SIGNAL(clicked()),
 	  this,SLOT(selectCartData()));
 
@@ -393,7 +391,6 @@ EditDropbox::EditDropbox(int id,QWidget *parent,const char *name)
   box_create_dates_box->setChecked(box_dropbox->createDates());
   box_create_startdate_offset_spin->setValue(box_dropbox->createStartdateOffset());
   box_create_enddate_offset_spin->setValue(box_dropbox->createEnddateOffset());
-  toCartChangedData(box_to_cart_edit->text());
   normalizationToggledData(box_normalization_box->isChecked());
   autotrimToggledData(box_autotrim_box->isChecked());
   createDatesToggledData(box_create_dates_box->isChecked());
@@ -438,13 +435,6 @@ void EditDropbox::selectCartData()
   if(cartnum>0) {
     box_to_cart_edit->setText(QString().sprintf("%06d",cartnum));
   }
-}
-
-
-void EditDropbox::toCartChangedData(const QString &str)
-{
-  box_delete_cuts_box->setDisabled(str.isEmpty());
-  box_delete_cuts_label->setDisabled(str.isEmpty());
 }
 
 

@@ -14397,3 +14397,7 @@
 	* Fixed a regression in 'web/rdcastmanager/Makefile.am' that caused
 	the incorrect executable to be installed for 'rdcastmanager.cgi'.
 	* Refactored SQL statements in 'lib/rdweb.cpp'.
+2014-08-21 Fred Gleason <fredg@paravelsystems.com>
+	* Removed code that disabled 'Delete cuts before importing' checkbox
+	when no 'To Cart' value was specified in the 'Dropbox Configuration'
+	dialog in 'rdadmin/edit_dropbox.cpp'.

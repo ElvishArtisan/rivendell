@@ -52,7 +52,6 @@ class EditDropbox : public QDialog
  private slots:
   void selectPathData();
   void selectCartData();
-  void toCartChangedData(const QString &str);
   void selectLogPathData();
   void schedcodesData();
   void normalizationToggledData(bool state);
