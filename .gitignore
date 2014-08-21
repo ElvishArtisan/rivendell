@@ -6,6 +6,8 @@
 *.qm
 *.rlm
 *.so
+rivendell-*.tar.gz
+rivendell-*.zip
 .deps
 .libs
 aclocal.m4
