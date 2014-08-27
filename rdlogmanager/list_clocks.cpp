@@ -247,7 +247,7 @@ void ListClocks::addData()
 			(const char *)clockname);
   q=new RDSqlQuery(sql);
   delete q;
-  sql=RDCreateClockTableSql(clockname);
+  sql=RDCreateClockTableSql(RDClock::tableName(clockname));
   q=new RDSqlQuery(sql);
   delete q;
   EditClock *clock_dialog=new EditClock(clockname,true,&new_clocks,

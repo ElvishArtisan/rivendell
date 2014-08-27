@@ -1326,7 +1326,7 @@ void RDSvc::create(const QString exemplar) const
   //
   // Create Service Reconciliation Table
   //
-  sql=RDCreateReconciliationTableSql(svc_name);
+  sql=RDCreateReconciliationTableSql(RDSvc::svcTableName(svc_name));
   q=new RDSqlQuery(sql);
   delete q;
 }

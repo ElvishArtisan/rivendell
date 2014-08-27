@@ -38,7 +38,7 @@ void RDCreateLogTable(const QString &name)
 
 QString RDCreateLogTableSql(QString name)
 {
-  return QString("create table if not exists `")+RDLog::tableName(name)+"`"+
+  return QString("create table if not exists `")+name+"`"+
     "(ID INT NOT NULL PRIMARY KEY,"+
     "COUNT INT NOT NULL,"+
     "TYPE INT DEFAULT 0,"+
@@ -86,7 +86,7 @@ QString RDCreateLogTableSql(QString name)
 
 QString RDCreateClockTableSql(QString name)
 {
-  return QString("create table `")+RDClock::tableName(name)+"` ("+
+  return QString("create table `")+name+"` ("+
     "ID int unsigned auto_increment not null primary key,"+
     "EVENT_NAME char(64) not null,"+
     "START_TIME int not null,"+
@@ -97,7 +97,7 @@ QString RDCreateClockTableSql(QString name)
 
 QString RDCreateReconciliationTableSql(QString name)
 {
-  QString sql=QString("create table `")+RDSvc::svcTableName(name)+"` ("+
+  QString sql=QString("create table `")+name+"` ("+
     "ID int unsigned auto_increment primary key,"+
     "LENGTH int,"+
     "LOG_NAME char(64),"+

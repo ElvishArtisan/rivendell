@@ -37,6 +37,7 @@
 #include <rddbcheck.h>
 #include <rdcart.h>
 #include <rdlog.h>
+#include <rdclock.h>
 #include <rdcreate_log.h>
 #include <rdescape_string.h>
 #include <rdwavefile.h>
@@ -283,20 +284,16 @@ void MainObject::CheckClocks()
   QSqlQuery *q1;
   QSqlQuery *q2;
   QSqlQuery *q3;
-  QString clockname;
   QString eventname;
 
   sql="select NAME from CLOCKS";
   q=new QSqlQuery(sql);
   while(q->next()) {
-    clockname=q->value(0).toString();
-    clockname.replace(" ","_");
-
     //
     // Check the CLK Table
     //
-    sql=QString().sprintf ("select EVENT_NAME,ID from %s_CLK",
-			   (const char *)clockname);
+    sql=QString("select EVENT_NAME,ID from ")+
+      RDClock::tableName(q->value(0).toString());
     q1=new QSqlQuery(sql);
     if(q1->isActive()) {
       //
@@ -309,15 +306,14 @@ void MainObject::CheckClocks()
 	if(q2->first()) {
 	  if(q1->value(0)!=q2->value(0)) {  // Make sure the cases match!
 	    printf("  Clock %s's linkage to event %s is broken -- fix (y/N)? ",
-		   (const char *)clockname,
+		   (const char *)q->value(0).toString(),
 		   (const char *)q2->value(0).toString());
 	    fflush(NULL);
 	    if(UserResponse()) {
-	      sql=QString().sprintf("update %s_CLK set EVENT_NAME=\"%s\"\
-                                     where ID=%d",
-				    (const char *)clockname,
-				    (const char *)q2->value(0).toString(),
-				    q1->value(1).toInt());
+	      sql=QString("update ")+
+		RDClock::tableName(q->value(0).toString())+
+		" set EVENT_NAME=\""+RDEscapeString(q2->value(0).toString())+
+		"\""+QString().sprintf(" where ID=%d",q1->value(1).toInt());
 	      q3=new QSqlQuery(sql);
 	      delete q3;
 	    }
@@ -331,7 +327,7 @@ void MainObject::CheckClocks()
 	     (const char *)q->value(0).toString());
       fflush(NULL);
       if(UserResponse()) {
-	sql=RDCreateClockTableSql(clockname);
+	sql=RDCreateClockTableSql(RDClock::tableName(q->value(0).toString()));
 	q2=new QSqlQuery(sql);
 	delete q2;
       }
@@ -339,7 +335,6 @@ void MainObject::CheckClocks()
     delete q1;
   }
   delete q;
-
 }
 
 

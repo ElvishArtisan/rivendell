@@ -461,7 +461,7 @@ void EditClock::saveAsData()
   }
   delete q;
   edit_clock->setName(clockname);
-  sql=RDCreateClockTableSql(clockname);
+  sql=RDCreateClockTableSql(RDClock::tableName(clockname));
   q=new RDSqlQuery(sql);
   delete q;
 

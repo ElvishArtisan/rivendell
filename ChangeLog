@@ -14401,3 +14401,6 @@
 	* Removed code that disabled 'Delete cuts before importing' checkbox
 	when no 'To Cart' value was specified in the 'Dropbox Configuration'
 	dialog in 'rdadmin/edit_dropbox.cpp'.
+2014-08-27 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in 'lib/rdcreate_log.cpp' that caused auxiliary
+	table creation to fail.
