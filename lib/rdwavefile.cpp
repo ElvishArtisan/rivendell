@@ -2343,6 +2343,15 @@ bool RDWaveFile::GetFmt(int fd)
       fmt_chunk_data[34]+16777216*fmt_chunk_data[35];
   }
 
+  if(format_tag==WAVE_FORMAT_MPEGLAYER3) {
+    if(!GetChunk(wave_file.handle(),"data",&data_length,NULL,0)) {
+      return false;
+    }
+    data_start=lseek(wave_file.handle(),0,SEEK_CUR);
+    GetMpegHeader(fd,data_start);
+    format_tag=WAVE_FORMAT_MPEG;
+  }
+
   return true;
 }
 

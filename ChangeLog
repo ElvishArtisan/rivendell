@@ -14404,3 +14404,6 @@
 2014-08-27 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in 'lib/rdcreate_log.cpp' that caused auxiliary
 	table creation to fail.
+2014-08-27 Fred Gleason <fredg@paravelsystems.com>
+	* Added support for RIFF WAV files with WAVE_FORMAT_MPEGLAYER3
+	format in 'lib/rdwavefile.cpp' and 'lib/rdwavefile.h'.
