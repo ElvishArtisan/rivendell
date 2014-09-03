@@ -14407,3 +14407,6 @@
 2014-08-27 Fred Gleason <fredg@paravelsystems.com>
 	* Added support for RIFF WAV files with WAVE_FORMAT_MPEGLAYER3
 	format in 'lib/rdwavefile.cpp' and 'lib/rdwavefile.h'.
+2014-09-03 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'rdlogedit/rdlogedit.cpp' that caused the
+	'Select Cart' dialog to use a non-default font. [GitHub Issue #1].

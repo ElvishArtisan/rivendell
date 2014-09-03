@@ -209,6 +209,26 @@ MainWidget::MainWidget(QWidget *parent,const char *name,WFlags f)
   //
   rdlogedit_conf=new RDLogeditConf(log_config->stationName());
 
+  // 
+  // Create Fonts
+  //
+  QFont default_font("Helvetica",12,QFont::Normal);
+  default_font.setPixelSize(12);
+  qApp->setFont(default_font);
+  QFont button_font=QFont("Helvetica",12,QFont::Bold);
+  button_font.setPixelSize(12);
+
+  //
+  // Create Icons
+  //
+  log_rivendell_map=new QPixmap(rivendell_xpm);
+  setIcon(*log_rivendell_map);
+  log_greencheckmark_map=new QPixmap(greencheckmark_xpm);
+  log_redx_map=new QPixmap(redx_xpm);
+  log_whiteball_map=new QPixmap(whiteball_xpm);
+  log_greenball_map=new QPixmap(greenball_xpm);
+  log_redball_map=new QPixmap(redball_xpm);
+
   //
   // Cart Picker
   //
@@ -235,26 +255,6 @@ MainWidget::MainWidget(QWidget *parent,const char *name,WFlags f)
 #else 
   rduser=new RDUser(RD_USER_LOGIN_NAME);
 #endif  // WIN32
-
-  // 
-  // Create Fonts
-  //
-  QFont default_font("Helvetica",12,QFont::Normal);
-  default_font.setPixelSize(12);
-  qApp->setFont(default_font);
-  QFont button_font=QFont("Helvetica",12,QFont::Bold);
-  button_font.setPixelSize(12);
-
-  //
-  // Create Icons
-  //
-  log_rivendell_map=new QPixmap(rivendell_xpm);
-  setIcon(*log_rivendell_map);
-  log_greencheckmark_map=new QPixmap(greencheckmark_xpm);
-  log_redx_map=new QPixmap(redx_xpm);
-  log_whiteball_map=new QPixmap(whiteball_xpm);
-  log_greenball_map=new QPixmap(greenball_xpm);
-  log_redball_map=new QPixmap(redball_xpm);
 
   //
   // Service Selector
