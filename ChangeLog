@@ -14410,3 +14410,10 @@
 2014-09-03 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in 'rdlogedit/rdlogedit.cpp' that caused the
 	'Select Cart' dialog to use a non-default font. [GitHub Issue #1].
+2014-09-03 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'RDLiveWire::loadSettings()' method in 'lib/rdlivewire.cpp'
+	and 'lib/rdlivewire.h'.
+	* Fixed a bug in the 'Configure RDCatch' dialog that caused
+	the 'Switcher Matrix' and 'Switcher Output' dropdowns to fail to
+	be populated for a LiveWire LWRP Audio switcher device in
+	'rdadmin/edit_decks.cpp' and 'rdadmin/edit_decks.h'.

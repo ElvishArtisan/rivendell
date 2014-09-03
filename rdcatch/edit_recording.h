@@ -43,7 +43,7 @@ class EditRecording : public QDialog
  Q_OBJECT
  public:
   EditRecording(int id,std::vector<int> *adds,QString *filter,
-		QWidget *parent=0,const char *name=0);
+		QWidget *parent=0);
   ~EditRecording();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;

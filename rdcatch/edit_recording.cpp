@@ -2,9 +2,7 @@
 //
 // Edit a Rivendell RDCatch Recording
 //
-//   (C) Copyright 2002-2005 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: edit_recording.cpp,v 1.53 2012/02/13 19:26:16 cvs Exp $
+//   (C) Copyright 2002-2005,2014 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -35,6 +33,7 @@
 #include <rd.h>
 #include <rdcut_dialog.h>
 #include <rdcut_path.h>
+#include <rdescape_string.h>
 #include <rdtextvalidator.h>
 #include <rdmatrix.h>
 
@@ -43,8 +42,8 @@
 
 
 EditRecording::EditRecording(int id,std::vector<int> *adds,QString *filter,
-			     QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+			     QWidget *parent)
+  : QDialog(parent,"",true)
 {
   QString temp;
 
@@ -75,7 +74,7 @@ EditRecording::EditRecording(int id,std::vector<int> *adds,QString *filter,
   //
   // Text Validator
   //
-  RDTextValidator *validator=new RDTextValidator(this,"validator");
+  RDTextValidator *validator=new RDTextValidator(this);
 
   //
   // The Recording Record
@@ -85,7 +84,7 @@ EditRecording::EditRecording(int id,std::vector<int> *adds,QString *filter,
   //
   // Active Button
   //
-  edit_active_button=new QCheckBox(tr("Event Active"),this,"edit_active_button");
+  edit_active_button=new QCheckBox(tr("Event Active"),this);
   edit_active_button->setGeometry(10,11,145,20);
   edit_active_button->setFont(label_font);
 
@@ -94,8 +93,7 @@ EditRecording::EditRecording(int id,std::vector<int> *adds,QString *filter,
   //
   edit_station_box=new QComboBox(this,"edit_station_box");
   edit_station_box->setGeometry(200,10,140,23);
-  QLabel * label=new QLabel(edit_station_box,tr("Location:"),this,
-				       "edit_station_label");
+  QLabel * label=new QLabel(edit_station_box,tr("Location:"),this);
   label->setGeometry(125,10,70,23);
   label->setFont(label_font);
   label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
@@ -110,80 +108,74 @@ EditRecording::EditRecording(int id,std::vector<int> *adds,QString *filter,
   connect(edit_starttype_group,SIGNAL(clicked(int)),
 	  this,SLOT(startTypeClickedData(int)));
 
-  label=new QLabel(tr("Start Parameters"),this,"start_params_label");
+  label=new QLabel(tr("Start Parameters"),this);
   label->setGeometry(47,38,120,19);
   label->setFont(label_font);
   label->setAlignment(AlignHCenter|ShowPrefix);
 
-  QRadioButton *rbutton=new QRadioButton(tr("Use Hard Time"),this,"hard_button");
+  QRadioButton *rbutton=new QRadioButton(tr("Use Hard Time"),this);
   rbutton->setGeometry(20,57,100,15);
   edit_starttype_group->insert(rbutton,RDRecording::HardStart);  
   rbutton->setFont(day_font);
   
-  edit_starttime_edit=new QTimeEdit(this,"edit_starttime_edit");
+  edit_starttime_edit=new QTimeEdit(this);
   edit_starttime_edit->setGeometry(235,53,80,20);
   edit_starttime_label=new QLabel(edit_starttime_edit,tr("Record Start Time:"),
-				  this,"edit_starttime_label");
+				  this);
   edit_starttime_label->setGeometry(125,57,105,15);
   edit_starttime_label->setFont(day_font);
   edit_starttime_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
 
-  rbutton=new QRadioButton(tr("Use GPI"),this,"gpi_button");
+  rbutton=new QRadioButton(tr("Use GPI"),this);
   rbutton->setGeometry(20,81,100,15);
   rbutton->setFont(day_font);
   
-  edit_start_startwindow_edit=
-    new QTimeEdit(this,"edit_start_startwindow_edit");
+  edit_start_startwindow_edit=new QTimeEdit(this);
   edit_start_startwindow_edit->setGeometry(235,77,80,20);
   edit_start_startwindow_label=
-    new QLabel(edit_start_startwindow_edit,tr("Window Start Time:"),
-	       this,"edit_start_startwindow_label");
+    new QLabel(edit_start_startwindow_edit,tr("Window Start Time:"),this);
   edit_start_startwindow_label->setGeometry(125,81,105,15);
   edit_start_startwindow_label->setFont(day_font);
   edit_start_startwindow_label->
     setAlignment(AlignRight|AlignVCenter|ShowPrefix);
 
-  edit_start_endwindow_edit=
-    new QTimeEdit(this,"edit_start_endwindow_edit");
+  edit_start_endwindow_edit=new QTimeEdit(this);
   edit_start_endwindow_edit->setGeometry(435,77,80,20);
   edit_start_endwindow_label=
-    new QLabel(edit_start_endwindow_edit,"Window End Time:",
-	       this,"edit_start_endwindow_label");
+    new QLabel(edit_start_endwindow_edit,"Window End Time:",this);
   edit_start_endwindow_label->setGeometry(325,81,105,15);
   edit_start_endwindow_label->setFont(day_font);
   edit_start_endwindow_label->
     setAlignment(AlignRight|AlignVCenter|ShowPrefix);
 
-  edit_startmatrix_spin=new QSpinBox(this,"edit_startmatrix_spin");
+  edit_startmatrix_spin=new QSpinBox(this);
   edit_startmatrix_spin->setGeometry(185,99,30,20);
   edit_startmatrix_spin->setRange(0,MAX_MATRICES-1);
-  edit_startmatrix_label=new QLabel(edit_startmatrix_spin,tr("GPI Matrix:"),
-				    this,"edit_startmatrix_label");
+  edit_startmatrix_label=
+    new QLabel(edit_startmatrix_spin,tr("GPI Matrix:"),this);
   edit_startmatrix_label->setGeometry(100,100,80,20);
   edit_startmatrix_label->setFont(day_font);
   edit_startmatrix_label->setAlignment(AlignRight|AlignVCenter);
 
-  edit_startline_spin=new QSpinBox(this,"edit_startline_spin");
+  edit_startline_spin=new QSpinBox(this);
   edit_startline_spin->setGeometry(295,99,30,20);
   edit_startline_spin->setRange(1,MAX_GPIO_PINS);
-  edit_startline_label=new QLabel(edit_startline_spin,tr("GPI Line:"),
-				    this,"edit_startline_label");
+  edit_startline_label=new QLabel(edit_startline_spin,tr("GPI Line:"),this);
   edit_startline_label->setGeometry(230,100,60,20);
   edit_startline_label->setFont(day_font);
   edit_startline_label->setAlignment(AlignRight|AlignVCenter);
 
-  edit_startoffset_edit=
-    new QTimeEdit(this,"edit_startoffset_edit");
+  edit_startoffset_edit=new QTimeEdit(this);
   edit_startoffset_edit->setGeometry(435,99,80,20);
   edit_startoffset_label=
-    new QLabel(edit_startoffset_edit,tr("Start Delay:"),
-	       this,"edit_startoffset_label");
+    new QLabel(edit_startoffset_edit,tr("Start Delay:"),this);
   edit_startoffset_label->setGeometry(325,100,105,20);
   edit_startoffset_label->setFont(day_font);
   edit_startoffset_label->
     setAlignment(AlignRight|AlignVCenter|ShowPrefix);
 
-  edit_multirec_box=new QCheckBox(tr("Allow Multiple Recordings within this Window"),this,"edit_multirec_box");
+  edit_multirec_box=
+    new QCheckBox(tr("Allow Multiple Recordings within this Window"),this);
   edit_multirec_box->setGeometry(140,124,sizeHint().width()-170,15);
   edit_multirec_box->setFont(day_font);
 
@@ -192,36 +184,34 @@ EditRecording::EditRecording(int id,std::vector<int> *adds,QString *filter,
   //
   // End Parameters
   //
-  edit_endtype_group=new QButtonGroup(this,"edit_endtype_group");
+  edit_endtype_group=new QButtonGroup(this);
   edit_endtype_group->setGeometry(10,171,sizeHint().width()-20,104);
   connect(edit_endtype_group,SIGNAL(clicked(int)),
 	  this,SLOT(endTypeClickedData(int)));
 
-  label=new QLabel(tr("End Parameters"),this,"end_params_label");
+  label=new QLabel(tr("End Parameters"),this);
   label->setGeometry(47,162,120,19);
   label->setFont(label_font);
   label->setAlignment(AlignHCenter|ShowPrefix);
 
-  rbutton=new QRadioButton(tr("Use Length"),this,"length_button");
+  rbutton=new QRadioButton(tr("Use Length"),this);
   rbutton->setGeometry(20,205,100,15);
   edit_endtype_group->insert(rbutton,RDRecording::LengthEnd);  
   rbutton->setFont(day_font);
-  edit_endlength_edit=new QTimeEdit(this,"edit_endlength_edit");
+  edit_endlength_edit=new QTimeEdit(this);
   edit_endlength_edit->setGeometry(235,201,80,20);
-  edit_endlength_label=new QLabel(tr("Record Length:"),
-				  this,"edit_endlength_label");
+  edit_endlength_label=new QLabel(tr("Record Length:"),this);
   edit_endlength_label->setGeometry(125,205,105,15);
   edit_endlength_label->setFont(day_font);
   edit_endlength_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
 
-  rbutton=new QRadioButton(tr("Use Hard Time"),this,"hard_button");
+  rbutton=new QRadioButton(tr("Use Hard Time"),this);
   rbutton->setGeometry(20,181,1100,15);
   edit_endtype_group->insert(rbutton,RDRecording::HardEnd);  
   rbutton->setFont(day_font);
-  edit_endtime_edit=new QTimeEdit(this,"edit_endtime_edit");
+  edit_endtime_edit=new QTimeEdit(this);
   edit_endtime_edit->setGeometry(235,177,80,20);
-  edit_endtime_label=new QLabel(edit_endtime_edit,tr("Record End Time:"),
-				  this,"edit_endtime_label");
+  edit_endtime_label=new QLabel(edit_endtime_edit,tr("Record End Time:"),this);
   edit_endtime_label->setGeometry(125,177,105,15);
   edit_endtime_label->setFont(day_font);
   edit_endtime_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
@@ -229,52 +219,44 @@ EditRecording::EditRecording(int id,std::vector<int> *adds,QString *filter,
   rbutton=new QRadioButton(tr("Use GPI"),this,"gpi_button");
   rbutton->setGeometry(20,229,100,15);
   rbutton->setFont(day_font);
-  edit_end_startwindow_edit=
-    new QTimeEdit(this,"edit_end_startwindow_edit");
+  edit_end_startwindow_edit=new QTimeEdit(this);
   edit_end_startwindow_edit->setGeometry(235,225,80,20);
   edit_end_startwindow_label=
-    new QLabel(edit_end_startwindow_edit,tr("Window Start Time:"),
-	       this,"edit_end_startwindow_label");
+    new QLabel(edit_end_startwindow_edit,tr("Window Start Time:"),this);
   edit_end_startwindow_label->setGeometry(125,229,105,15);
   edit_end_startwindow_label->setFont(day_font);
   edit_end_startwindow_label->
     setAlignment(AlignRight|AlignVCenter|ShowPrefix);
 
-  edit_end_endwindow_edit=
-    new QTimeEdit(this,"edit_end_endwindow_edit");
+  edit_end_endwindow_edit=new QTimeEdit(this);
   edit_end_endwindow_edit->setGeometry(435,225,80,20);
   edit_end_endwindow_label=
-    new QLabel(edit_end_endwindow_edit,tr("Window End Time:"),
-	       this,"edit_end_endwindow_label");
+    new QLabel(edit_end_endwindow_edit,tr("Window End Time:"),this);
   edit_end_endwindow_label->setGeometry(325,229,105,15);
   edit_end_endwindow_label->setFont(day_font);
   edit_end_endwindow_label->
     setAlignment(AlignRight|AlignVCenter|ShowPrefix);
 
-  edit_endmatrix_spin=new QSpinBox(this,"edit_endmatrix_spin");
+  edit_endmatrix_spin=new QSpinBox(this);
   edit_endmatrix_spin->setGeometry(185,247,30,20);
   edit_endmatrix_spin->setRange(0,MAX_MATRICES-1);
-  edit_endmatrix_label=new QLabel(edit_endmatrix_spin,tr("GPI Matrix:"),
-				    this,"edit_endmatrix_label");
+  edit_endmatrix_label=new QLabel(edit_endmatrix_spin,tr("GPI Matrix:"),this);
   edit_endmatrix_label->setGeometry(100,248,80,20);
   edit_endmatrix_label->setFont(day_font);
   edit_endmatrix_label->setAlignment(AlignRight|AlignVCenter);
 
-  edit_endline_spin=new QSpinBox(this,"edit_endline_spin");
+  edit_endline_spin=new QSpinBox(this);
   edit_endline_spin->setGeometry(295,247,30,20);
   edit_endline_spin->setRange(1,MAX_GPIO_PINS);
-  edit_endline_label=new QLabel(edit_endline_spin,tr("GPI Line:"),
-				    this,"edit_endline_label");
+  edit_endline_label=new QLabel(edit_endline_spin,tr("GPI Line:"),this);
   edit_endline_label->setGeometry(230,248,60,20);
   edit_endline_label->setFont(day_font);
   edit_endline_label->setAlignment(AlignRight|AlignVCenter);
 
-  edit_maxlength_edit=
-    new QTimeEdit(this,"edit_maxlength_edit");
+  edit_maxlength_edit=new QTimeEdit(this);
   edit_maxlength_edit->setGeometry(435,247,80,20);
   edit_maxlength_label=
-    new QLabel(edit_maxlength_edit,tr("Max Record Length:"),
-	       this,"edit_maxlength_label");
+    new QLabel(edit_maxlength_edit,tr("Max Record Length:"),this);
   edit_maxlength_label->setGeometry(325,248,105,20);
   edit_maxlength_label->setFont(day_font);
   edit_maxlength_label->
@@ -285,11 +267,10 @@ EditRecording::EditRecording(int id,std::vector<int> *adds,QString *filter,
   //
   // Description
   //
-  edit_description_edit=new QLineEdit(this,"edit_description_edit");
+  edit_description_edit=new QLineEdit(this);
   edit_description_edit->setGeometry(105,291,sizeHint().width()-115,20);
   edit_description_edit->setValidator(validator);
-  label=new QLabel(edit_description_edit,
-		   tr("Description:"),this,"edit_description_label");
+  label=new QLabel(edit_description_edit,tr("Description:"),this);
   label->setGeometry(10,291,90,20);
   label->setFont(label_font);
   label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
@@ -297,10 +278,9 @@ EditRecording::EditRecording(int id,std::vector<int> *adds,QString *filter,
   //
   // Source Name
   //
-  edit_source_box=new QComboBox(this,"edit_source_box");
+  edit_source_box=new QComboBox(this);
   edit_source_box->setGeometry(105,317,sizeHint().width()-115,24);
-  label=new QLabel(edit_source_box,
-		   tr("Source:"),this,"edit_source_label");
+  label=new QLabel(edit_source_box,tr("Source:"),this);
   label->setGeometry(10,317,90,24);
   label->setFont(label_font);
   label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
@@ -308,15 +288,14 @@ EditRecording::EditRecording(int id,std::vector<int> *adds,QString *filter,
   //
   // Destination
   //
-  edit_destination_edit=new QLineEdit(this,"edit_destination_edit");
+  edit_destination_edit=new QLineEdit(this);
   edit_destination_edit->setGeometry(105,345,sizeHint().width()-185,20);
   edit_destination_edit->setReadOnly(true);
-  label=new QLabel(edit_destination_edit,
-		   tr("Destination:"),this,"edit_destination_label");
+  label=new QLabel(edit_destination_edit,tr("Destination:"),this);
   label->setGeometry(10,345,90,20);
   label->setFont(label_font);
   label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
-  QPushButton *button=new QPushButton(this,"destination_button");
+  QPushButton *button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-70,344,60,24);
   button->setFont(day_font);
   button->setText(tr("&Select"));
@@ -325,12 +304,11 @@ EditRecording::EditRecording(int id,std::vector<int> *adds,QString *filter,
   //
   // Channels
   //
-  edit_channels_box=new QComboBox(this,"edit_channels_box");
+  edit_channels_box=new QComboBox(this);
   edit_channels_box->setGeometry(190,370,40,20);
   edit_channels_box->insertItem("1");
   edit_channels_box->insertItem("2");
-  label=
-    new QLabel(edit_channels_box,tr("Channels:"),this,"edit_channels_label");
+  label=new QLabel(edit_channels_box,tr("Channels:"),this);
   label->setGeometry(120,370,70,20);
   label->setFont(label_font);
   label->setAlignment(AlignVCenter|AlignLeft);
@@ -338,21 +316,21 @@ EditRecording::EditRecording(int id,std::vector<int> *adds,QString *filter,
   //
   // Autotrim Controls
   //
-  edit_autotrim_box=new QCheckBox(tr("Autotrim"),this,"edit_autotrim_box");
+  edit_autotrim_box=new QCheckBox(tr("Autotrim"),this);
   edit_autotrim_box->setGeometry(120,395,100,15);
   edit_autotrim_box->setFont(label_font);
   connect(edit_autotrim_box,SIGNAL(toggled(bool)),
 	  this,SLOT(autotrimToggledData(bool)));
-  edit_autotrim_spin=new QSpinBox(this,"edit_autotrim_spin");
+  edit_autotrim_spin=new QSpinBox(this);
   edit_autotrim_spin->setGeometry(265,393,40,20);
   edit_autotrim_spin->setRange(-99,-1);
   edit_autotrim_label=
-    new QLabel(edit_autotrim_spin,tr("Level:"),this,"edit_autotrim_label");
+    new QLabel(edit_autotrim_spin,tr("Level:"),this);
   edit_autotrim_label->setGeometry(220,393,40,20);
   edit_autotrim_label->setFont(label_font);
   edit_autotrim_label->setAlignment(AlignVCenter|AlignRight);
   edit_autotrim_unit=
-    new QLabel(edit_autotrim_spin,tr("dBFS"),this,"edit_autotrim_unit");
+    new QLabel(edit_autotrim_spin,tr("dBFS"),this);
   edit_autotrim_unit->setGeometry(310,393,40,20);
   edit_autotrim_unit->setFont(label_font);
   edit_autotrim_unit->setAlignment(AlignVCenter|AlignLeft);
@@ -360,21 +338,21 @@ EditRecording::EditRecording(int id,std::vector<int> *adds,QString *filter,
   //
   // Normalize Controls
   //
-  edit_normalize_box=new QCheckBox(tr("Normalize"),this,"edit_normalize_box");
+  edit_normalize_box=new QCheckBox(tr("Normalize"),this);
   edit_normalize_box->setGeometry(120,420,100,15);
   connect(edit_normalize_box,SIGNAL(toggled(bool)),
 	  this,SLOT(normalizeToggledData(bool)));
   edit_normalize_box->setFont(label_font);
-  edit_normalize_spin=new QSpinBox(this,"edit_normalize_spin");
+  edit_normalize_spin=new QSpinBox(this);
   edit_normalize_spin->setGeometry(265,418,40,20);
   edit_normalize_spin->setRange(-99,-1);
   edit_normalize_label=
-    new QLabel(edit_normalize_spin,tr("Level:"),this,"edit_normalize_label");
+    new QLabel(edit_normalize_spin,tr("Level:"),this);
   edit_normalize_label->setGeometry(220,418,40,20);
   edit_normalize_label->setFont(label_font);
   edit_normalize_label->setAlignment(AlignVCenter|AlignRight);
   edit_normalize_unit=
-    new QLabel(edit_normalize_spin,tr("dBFS"),this,"edit_normalize_unit");
+    new QLabel(edit_normalize_spin,tr("dBFS"),this);
   edit_normalize_unit->setGeometry(310,418,40,20);
   edit_normalize_unit->setFont(label_font);
   edit_normalize_unit->setAlignment(AlignVCenter|AlignLeft);
@@ -382,7 +360,7 @@ EditRecording::EditRecording(int id,std::vector<int> *adds,QString *filter,
   //
   // Button Label
   //
-  label=new QLabel(tr("Active Days"),this,"active_days_label");
+  label=new QLabel(tr("Active Days"),this);
   label->setGeometry(47,440,90,19);
   label->setFont(label_font);
   label->setAlignment(AlignHCenter|ShowPrefix);
@@ -390,61 +368,60 @@ EditRecording::EditRecording(int id,std::vector<int> *adds,QString *filter,
   //
   // Monday Button
   //
-  edit_mon_button=new QCheckBox(tr("Monday"),this,"edit_mon_button");
+  edit_mon_button=new QCheckBox(tr("Monday"),this);
   edit_mon_button->setGeometry(20,459,135,20);
   edit_mon_button->setFont(day_font);
 
   //
   // Tuesday Button
   //
-  edit_tue_button=new QCheckBox(tr("Tuesday"),this,"edit_tue_button");
+  edit_tue_button=new QCheckBox(tr("Tuesday"),this);
   edit_tue_button->setGeometry(115,459,135,20);
   edit_tue_button->setFont(day_font);
 
   //
   // Wednesday Button
   //
-  edit_wed_button=new QCheckBox(tr("Wednesday"),this,"edit_wed_button");
+  edit_wed_button=new QCheckBox(tr("Wednesday"),this);
   edit_wed_button->setGeometry(215,459,135,20);
   edit_wed_button->setFont(day_font);
 
   //
   // Thursday Button
   //
-  edit_thu_button=new QCheckBox(tr("Thursday"),this,"edit_thu_button");
+  edit_thu_button=new QCheckBox(tr("Thursday"),this);
   edit_thu_button->setGeometry(335,459,135,20);
   edit_thu_button->setFont(day_font);
 
   //
   // Friday Button
   //
-  edit_fri_button=new QCheckBox(tr("Friday"),this,"edit_fri_button");
+  edit_fri_button=new QCheckBox(tr("Friday"),this);
   edit_fri_button->setGeometry(440,459,135,20);
   edit_fri_button->setFont(day_font);
 
   //
   // Saturday Button
   //
-  edit_sat_button=new QCheckBox(tr("Saturday"),this,"edit_sat_button");
+  edit_sat_button=new QCheckBox(tr("Saturday"),this);
   edit_sat_button->setGeometry(130,484,80,20);
   edit_sat_button->setFont(day_font);
 
   //
   // Sunday Button
   //
-  edit_sun_button=new QCheckBox(tr("Sunday"),this,"edit_sun_button");
+  edit_sun_button=new QCheckBox(tr("Sunday"),this);
   edit_sun_button->setGeometry(300,484,80,20);
   edit_sun_button->setFont(day_font);
 
   //
   // Start Date Offset
   //
-  edit_startoffset_box=new QSpinBox(this,"edit_startoffset_box");
+  edit_startoffset_box=new QSpinBox(this);
   edit_startoffset_box->setGeometry(140,516,55,24);
   edit_startoffset_box->setRange(0,355);
   edit_startoffset_box->setSpecialValueText(tr("None"));
-  label=new QLabel(edit_startoffset_box,
-		   tr("Start Date Offset:"),this,"edit_startoffset_label");
+  label=new QLabel(edit_startoffset_box,tr("Start Date Offset:"),this);
   label->setGeometry(10,516,125,24);
   label->setFont(label_font);
   label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
@@ -452,12 +429,11 @@ EditRecording::EditRecording(int id,std::vector<int> *adds,QString *filter,
   //
   // End Date Offset
   //
-  edit_endoffset_box=new QSpinBox(this,"edit_endoffset_box");
+  edit_endoffset_box=new QSpinBox(this);
   edit_endoffset_box->setGeometry(440,516,55,24);
   edit_endoffset_box->setRange(0,355);
   edit_endoffset_box->setSpecialValueText(tr("None"));
-  label=new QLabel(edit_endoffset_box,
-		   tr("End Date Offset:"),this,"edit_endoffset_label");
+  label=new QLabel(edit_endoffset_box,tr("End Date Offset:"),this);
   label->setGeometry(310,516,125,24);
   label->setFont(label_font);
   label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
@@ -465,14 +441,14 @@ EditRecording::EditRecording(int id,std::vector<int> *adds,QString *filter,
   //
   // OneShot Button
   //
-  edit_oneshot_box=new QCheckBox(tr("Make OneShot"),this,"edit_oneshot_box");
+  edit_oneshot_box=new QCheckBox(tr("Make OneShot"),this);
   edit_oneshot_box->setGeometry(20,553,125,15);
   edit_oneshot_box->setFont(label_font);
 
   //
   //  Save As Button
   //
-  button=new QPushButton(this,"saveas_button");
+  button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-300,sizeHint().height()-60,80,50);
   button->setFont(button_font);
   button->setText(tr("&Save As\nNew"));
@@ -484,7 +460,7 @@ EditRecording::EditRecording(int id,std::vector<int> *adds,QString *filter,
   //
   //  Ok Button
   //
-  button=new QPushButton(this,"ok_button");
+  button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
   button->setDefault(true);
   button->setFont(button_font);
@@ -494,7 +470,7 @@ EditRecording::EditRecording(int id,std::vector<int> *adds,QString *filter,
   //
   //  Cancel Button
   //
-  button=new QPushButton(this,"cancel_button");
+  button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,80,50);
   button->setFont(button_font);
   button->setText(tr("&Cancel"));
@@ -626,6 +602,7 @@ void EditRecording::activateStationData(int id,bool use_temp)
   char station[65];
   char gunk[3];
   int chan;
+  QString sql;
   RDSqlQuery *q;
   
   if(edit_station_box->currentText().isEmpty()) {
@@ -642,10 +619,11 @@ void EditRecording::activateStationData(int id,bool use_temp)
     edit_channels_box->setCurrentItem(edit_deck->defaultChannels()-1);
   }
   edit_source_box->clear();
-  q=new RDSqlQuery(QString().sprintf("select NAME from INPUTS where \
-                                    (STATION_NAME=\"%s\")&&(MATRIX=%d)",
-				    (const char *)edit_deck->switchStation(),
-				    edit_deck->switchMatrix()));
+  sql=QString("select NAME from INPUTS where ")+
+    "(STATION_NAME=\""+RDEscapeString(edit_deck->switchStation())+"\")&&"+
+    QString().sprintf("(MATRIX=%d)",edit_deck->switchMatrix());
+  q=new RDSqlQuery(sql);
+  
   while(q->next()) {
     edit_source_box->insertItem(q->value(0).toString());
   }

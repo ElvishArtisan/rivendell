@@ -49,6 +49,8 @@ class RDLiveWire : public QObject
   unsigned baseOutput();
   void connectToHost(const QString &hostname,Q_UINT16 port,
 		     const QString &passwd,unsigned base_output);
+  bool loadSettings(const QString &hostname,Q_UINT16 port,
+		    const QString &passwd,unsigned base_output);
   QString deviceName() const;
   QString protocolVersion() const;
   QString systemVersion() const;
@@ -128,6 +130,7 @@ class RDLiveWire : public QObject
   QTimer *live_watchdog_timer;
   QTimer *live_watchdog_timeout_timer;
   QTimer *live_holdoff_timer;
+  int live_load_ver_count;
 };
 
 

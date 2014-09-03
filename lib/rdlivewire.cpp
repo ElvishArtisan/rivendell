@@ -22,7 +22,9 @@
 
 #include <stdlib.h>
 #include <syslog.h>
+#include <unistd.h>
 
+#include <qapplication.h>
 #include <qsignalmapper.h>
 
 #include <rd.h>
@@ -42,6 +44,7 @@ RDLiveWire::RDLiveWire(unsigned id,QObject *parent,const char *name)
   live_base_output=0;
   live_ptr=0;
   live_connected=false;
+  live_load_ver_count=0;
 
   //
   // Connection Socket
@@ -100,6 +103,24 @@ void RDLiveWire::connectToHost(const QString &hostname,Q_UINT16 port,
   live_password=passwd;
   live_base_output=base_output;
   live_socket->connectToHost(hostname,port);
+}
+
+
+bool RDLiveWire::loadSettings(const QString &hostname,Q_UINT16 port,
+			      const QString &passwd,unsigned base_output)
+{
+  int passes=50;
+
+  live_load_ver_count=1;
+  connectToHost(hostname,port,passwd,base_output);
+  while(--passes>0) {
+    usleep(100000);
+    qApp->processEvents();
+    if(live_load_ver_count==0) {
+      return true;
+    }
+  }
+  return false;
 }
 
 
@@ -592,6 +613,9 @@ void RDLiveWire::ReadVersion(const QString &cmd)
     }
     live_connected=true;
     emit connected(live_id);
+  }
+  if(live_load_ver_count>0) {
+    live_load_ver_count--;
   }
   if(live_watchdog_state) {
     live_watchdog_state=false;

@@ -23,6 +23,8 @@
 #ifndef EDIT_DECKS_H
 #define EDIT_DECKS_H
 
+#include <vector>
+
 #include <qdialog.h>
 #include <qsqldatabase.h>
 #include <qcombobox.h>
@@ -40,8 +42,7 @@ class EditDecks : public QDialog
 {
   Q_OBJECT
   public:
-  EditDecks(RDStation *station,RDStation *cae_station,
-	    QWidget *parent=0,const char *name=0);
+  EditDecks(RDStation *station,RDStation *cae_station,QWidget *parent=0);
    ~EditDecks();
    QSize sizeHint() const;
    QSizePolicy sizePolicy() const;
@@ -64,6 +65,7 @@ class EditDecks : public QDialog
    void WriteRecord(int chan);
    int GetMatrix();
    int GetOutput();
+   QStringList GetActiveOutputMatrices();
    RDCatchConf *edit_catch_conf;
    RDDeck *edit_record_deck;
    RDDeck *edit_play_deck;
@@ -87,6 +89,7 @@ class EditDecks : public QDialog
    QComboBox *edit_swstation_box;
    QLabel *edit_swmatrix_label;
    QComboBox *edit_swmatrix_box;
+   std::vector<int> edit_matrix_ids;
    QLabel *edit_swoutput_label;
    QComboBox *edit_swoutput_box;
    QLabel *edit_swdelay_label;

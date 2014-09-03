@@ -39,7 +39,7 @@ class AddRecording : public QDialog
 {
   Q_OBJECT
  public:
-  AddRecording(int id,QString *filter,QWidget *parent=0,const char *name=0);
+  AddRecording(int id,QString *filter,QWidget *parent=0);
   ~AddRecording();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;

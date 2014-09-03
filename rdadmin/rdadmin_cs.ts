@@ -1104,6 +1104,18 @@ nastaveném pro běh služby CAE pro naplnění databáze se zdroji zvuku.</tran
         <source>Host-Wide Settings</source>
         <translation>Nastavení serveru-wide</translation>
     </message>
+    <message>
+        <source>Connection Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to connect to node at</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Check that the unit is online and try again.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditDropbox</name>

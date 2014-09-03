@@ -1059,6 +1059,18 @@ configured to run the CAE service in order to populate the audio resources datab
         <source>Host-Wide Settings</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Connection Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to connect to node at</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Check that the unit is online and try again.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditDropbox</name>

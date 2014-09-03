@@ -693,7 +693,7 @@ void MainWidget::addData()
   }
   EnableScroll(false);
   int n=AddRecord();
-  AddRecording *recording=new AddRecording(n,&catch_filter,this,"recording");
+  AddRecording *recording=new AddRecording(n,&catch_filter,this);
   switch((RDRecording::Type)recording->exec()) {
       case RDRecording::Recording:
       case RDRecording::Playout:
@@ -768,8 +768,7 @@ void MainWidget::editData()
   }
   switch((RDRecording::Type)item->text(29).toInt()) {
       case RDRecording::Recording:
-	recording=new EditRecording(id,&new_events,&catch_filter,
-				    this,"recording");
+	recording=new EditRecording(id,&new_events,&catch_filter,this);
 	if(recording->exec()>=0) {
 	  RefreshLine(item);
 	  new_conn=GetConnection(item->text(24));

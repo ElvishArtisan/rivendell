@@ -50,9 +50,8 @@
 extern RDStation *rdstation_conf;
 
 
-AddRecording::AddRecording(int id,QString *filter,
-			   QWidget *parent,const char *name)
-  : QDialog(parent,name,true,Qt::WStyle_Customize|Qt::WStyle_DialogBorder)
+AddRecording::AddRecording(int id,QString *filter,QWidget *parent)
+  : QDialog(parent,"",true,Qt::WStyle_Customize|Qt::WStyle_DialogBorder)
 {
   setCaption("");
 
@@ -192,8 +191,7 @@ void AddRecording::closeEvent(QCloseEvent *e)
 
 void AddRecording::recordingData()
 {
-  EditRecording *recording=new EditRecording(add_id,NULL,add_filter,
-					     this,"recording");
+  EditRecording *recording=new EditRecording(add_id,NULL,add_filter,this);
   if(recording->exec()<0) {
     delete recording;
     done(-1);
@@ -206,7 +204,7 @@ void AddRecording::recordingData()
 
 void AddRecording::playoutData()
 {
-  EditPlayout *playout=new EditPlayout(add_id,NULL,add_filter,this,"playout");
+  EditPlayout *playout=new EditPlayout(add_id,NULL,add_filter,this);
   if(playout->exec()<0) {
     delete playout;
     done(-1);
@@ -220,7 +218,7 @@ void AddRecording::playoutData()
 void AddRecording::downloadData()
 {
   EditDownload *recording=
-    new EditDownload(add_id,NULL,add_filter,this,"recording");
+    new EditDownload(add_id,NULL,add_filter,this);
   if(recording->exec()<0) {
     delete recording;
     done(-1);
@@ -233,8 +231,7 @@ void AddRecording::downloadData()
 
 void AddRecording::uploadData()
 {
-  EditUpload *recording=new EditUpload(add_id,NULL,add_filter,
-				       this,"recording");
+  EditUpload *recording=new EditUpload(add_id,NULL,add_filter,this);
   if(recording->exec()<0) {
     delete recording;
     done(-1);
@@ -247,7 +244,7 @@ void AddRecording::uploadData()
 
 void AddRecording::macroData()
 {
-  EditCartEvent *recording=new EditCartEvent(add_id,NULL,this,"recording");
+  EditCartEvent *recording=new EditCartEvent(add_id,NULL,this);
   if(recording->exec()<0) {
     delete recording;
     done(-1);
@@ -260,7 +257,7 @@ void AddRecording::macroData()
 
 void AddRecording::switchData()
 {
-  EditSwitchEvent *recording=new EditSwitchEvent(add_id,NULL,this,"recording");
+  EditSwitchEvent *recording=new EditSwitchEvent(add_id,NULL,this);
   if(recording->exec()<0) {
     delete recording;
     done(-1);
