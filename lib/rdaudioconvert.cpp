@@ -432,7 +432,7 @@ RDAudioConvert::ErrorCode RDAudioConvert::Stage1Vorbis(const QString &dstfile,
 	ogg_stream_init(&ogg_stream,serialno);
       }
       if(ogg_stream_pagein(&ogg_stream,&ogg_page)==0) {
-	if(ogg_stream_packetout(&ogg_stream,&ogg_packet)==1) {
+	while(ogg_stream_packetout(&ogg_stream,&ogg_packet)==1) {
 	  switch(ogg_packet.packetno) {
 	  case 0:  // Start Packet
 	  case 1:  // Comment Packet
