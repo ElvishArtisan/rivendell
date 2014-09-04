@@ -74,7 +74,7 @@ void LogPlay::SendNowNext()
   for(int i=nextLine();i<size();i++) {
     if((ll=logLine(i))!=NULL) {
       if((ll->status()==RDLogLine::Scheduled)&&
-	 logLine(i)->nowNextEnabled()) {
+	 logLine(i)->nowNextEnabled()&&(!logLine(i)->asyncronous())) {
 	logline[1]=logLine(i);
 	i=size();
       }
@@ -91,7 +91,9 @@ void LogPlay::SendNowNext()
   unsigned nowcart=0;
   unsigned nextcart=0;
   if(logline[0]!=NULL) {
-    nowcart=logline[0]->cartNumber();
+    if(!logline[0]->asyncronous()) {
+      nowcart=logline[0]->cartNumber();
+    }
   }
   if(logline[1]!=NULL) {
     nextcart=logline[1]->cartNumber();

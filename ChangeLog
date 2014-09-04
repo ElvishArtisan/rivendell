@@ -14420,3 +14420,6 @@
 2014-09-04 Fred Gleason <fredg@paravelsystems.com>
 	* Removed object names in 'rdairplay/log_play.cpp' and
 	'rdairplay/log_play.h'.
+2014-09-04 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'rdairplay/nownext.cpp' that caused PAD updates
+	to be sent for macro carts with the asyncronous attribute set.
