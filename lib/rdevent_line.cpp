@@ -244,6 +244,16 @@ void RDEventLine::setHaveCode(QString str)
   event_have_code=str;
 }
 
+QString RDEventLine::HaveCode2() const
+{
+  return event_have_code2;
+}
+
+
+void RDEventLine::setHaveCode2(QString str)
+{
+  event_have_code2=str;
+}
 
 unsigned RDEventLine::titleSep() const
 {
@@ -317,6 +327,7 @@ void RDEventLine::clear()
    event_autofill_slop=-1;
    event_sched_group="";
    event_have_code="";
+   event_have_code2="";
    event_title_sep=100;
    event_nested_event="";
 }
@@ -328,7 +339,7 @@ bool RDEventLine::load()
                                  GRACE_TIME,POST_POINT,USE_AUTOFILL,\
                                  USE_TIMESCALE,IMPORT_SOURCE,START_SLOP,\
                                  END_SLOP,FIRST_TRANS_TYPE,DEFAULT_TRANS_TYPE,\
-                                 COLOR,AUTOFILL_SLOP,NESTED_EVENT,SCHED_GROUP,TITLE_SEP,HAVE_CODE \
+                                 COLOR,AUTOFILL_SLOP,NESTED_EVENT,SCHED_GROUP,TITLE_SEP,HAVE_CODE,HAVE_CODE2 \
                                  from EVENTS where NAME=\"%s\"",
 				(const char *)event_name);
   RDSqlQuery *q=new RDSqlQuery(sql);
@@ -361,7 +372,8 @@ bool RDEventLine::load()
   event_sched_group=q->value(15).toString();
   event_title_sep=q->value(16).toUInt();
   event_have_code=q->value(17).toString();
-  
+  event_have_code2=q->value(18).toString();
+
   delete q;
   event_preimport_log->load();
   event_postimport_log->load();
@@ -383,7 +395,7 @@ bool RDEventLine::save()
                            END_SLOP=%d,FIRST_TRANS_TYPE=%d,\
                            DEFAULT_TRANS_TYPE=%d,COLOR=\"%s\"\
                            AUTOFILL_SLOP=%d,NESTED_EVENT=\"%s\",\
-                           SCHED_GROUP=\"%s\",TITLE_SEP=%d,HAVE_CODE=\"%s\" \
+                           SCHED_GROUP=\"%s\",TITLE_SEP=%d,HAVE_CODE=\"%s\",HAVE_CODE2=\"%s\" \
                            where NAME=\"%s\"",
 			  (const char *)RDEscapeString(event_properties),
 			  event_preposition,event_time_type,
@@ -400,6 +412,7 @@ bool RDEventLine::save()
 			  (const char *)RDEscapeString(event_sched_group),
 			  event_title_sep,
 			  (const char*)event_have_code,
+			  (const char*)event_have_code2,
 			  (const char *)RDEscapeString(event_name));
   }
   else {
@@ -696,8 +709,25 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
 	  *errors+=QString().sprintf("%s Rule broken: Must have code %s\n",(const char *)time.toString("hh:mm:ss"),(const char*)event_have_code);
 	schedCL->restore();
       }
-      
-      // Scheduler Codes 
+
+      // Must have second scheduler code
+      if(event_have_code2!="")
+      {
+	schedCL->save();
+	for(counter=0;counter<schedCL->getNumberOfItems();counter++)
+	{
+	  if(!schedCL->itemHasCode(counter,event_have_code2))
+	  {
+	    schedCL->removeItem(counter);
+	    counter--;
+	  }
+	}
+	if(schedCL->getNumberOfItems()==0)
+	  *errors+=QString().sprintf("%s Rule broken: Must have second code %s\n",(const char *)time.toString("hh:mm:ss"),(const char*)event_have_code2);
+	schedCL->restore();
+      }
+
+      // Scheduler Codes
       sql=QString().sprintf("select CODE,MAX_ROW,MIN_WAIT,NOT_AFTER, OR_AFTER,OR_AFTER_II from %s_RULES",(const char *)clockname);
       q=new RDSqlQuery(sql);
       while (q->next())

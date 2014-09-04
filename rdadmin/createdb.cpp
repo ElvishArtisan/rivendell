@@ -8034,8 +8034,12 @@ int UpdateDb(int ver)
     delete q;
   }
 
-
-      
+  if(ver<240) {
+    sql=QString("alter table EVENTS add column ")+
+      "HAVE_CODE2 VARCHAR(10) after HAVE_CODE";
+    q=new QSqlQuery(sql);
+    delete q;
+  }
   // **** End of version updates ****
   
   //
