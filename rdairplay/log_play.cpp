@@ -32,9 +32,8 @@
 #include <globals.h>
 
 LogPlay::LogPlay(RDCae *cae,int id,QSocketDevice *nn_sock,QString logname,
-		 std::vector<RLMHost *> *rlm_hosts,
-		 QObject *parent,const char *name)
-  : QObject(parent,name),RDLogEvent(logname)
+		 std::vector<RLMHost *> *rlm_hosts,QObject *parent)
+  : QObject(parent),RDLogEvent(logname)
 {
   //
   // Initialize Data Structures
@@ -89,8 +88,7 @@ LogPlay::LogPlay(RDCae *cae,int id,QSocketDevice *nn_sock,QString logname,
   //
   // Macro Cart Decks
   //
-  play_macro_deck=new RDMacroEvent(rdstation_conf->address(),rdripc,
-				   this,"play_macro_deck");
+  play_macro_deck=new RDMacroEvent(rdstation_conf->address(),rdripc,this);
   connect(play_macro_deck,SIGNAL(started()),this,SLOT(macroStartedData()));
   connect(play_macro_deck,SIGNAL(finished()),this,SLOT(macroFinishedData()));
   connect(play_macro_deck,SIGNAL(stopped()),this,SLOT(macroStoppedData()));
@@ -131,19 +129,18 @@ LogPlay::LogPlay(RDCae *cae,int id,QSocketDevice *nn_sock,QString logname,
   //
   // Transition Timers
   //
-  play_trans_timer=new QTimer(this,"play_trans_timer");
+  play_trans_timer=new QTimer(this);
   connect(play_trans_timer,SIGNAL(timeout()),
 	  this,SLOT(transTimerData()));
-  play_grace_timer=new QTimer(this,"play_grace_timer");
+  play_grace_timer=new QTimer(this);
   connect(play_grace_timer,SIGNAL(timeout()),
 	  this,SLOT(graceTimerData()));
 
   //
   // Rescan Timer
   //
-  play_rescan_timer=new QTimer(this,"play_rescan_timer");
-  connect(play_rescan_timer,SIGNAL(timeout()),
-	  this,SLOT(rescanEventsData()));
+  play_rescan_timer=new QTimer(this);
+  connect(play_rescan_timer,SIGNAL(timeout()),this,SLOT(rescanEventsData()));
   play_rescan_timer->start(LOGPLAY_RESCAN_INTERVAL);
 }
 
