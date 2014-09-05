@@ -74,6 +74,7 @@ class RDCutDialog : public QDialog
   void RefreshCuts();
   void SelectCut(QString cutname);
   void BuildGroupList();
+  QString StateFile();
   void LoadState();
   void SaveState();
   RDListView *cut_cart_list;
