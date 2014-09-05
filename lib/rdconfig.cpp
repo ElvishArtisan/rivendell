@@ -354,6 +354,11 @@ int RDConfig::realtimePriority()
   return conf_realtime_priority;
 }
 
+// Don't use this method in application code, use RDTempDirectory()
+QString RDConfig::tempDirectory()
+{
+  return conf_temp_directory;
+}
 
 QString RDConfig::sasStation() const
 {
@@ -485,6 +490,7 @@ void RDConfig::load()
   conf_enable_mixer_logging=profile->boolValue("Caed","EnableMixerLogging");
   conf_use_realtime=profile->boolValue("Tuning","UseRealtime",false);
   conf_realtime_priority=profile->intValue("Tuning","RealtimePriority",9);
+  conf_temp_directory=profile->stringValue("Tuning","TempDirectory",NULL);
   conf_sas_station=profile->stringValue("SASFilter","Station","");
   conf_sas_matrix=profile->intValue("SASFilter","Matrix",0);
   conf_sas_base_cart=profile->intValue("SASFilter","BaseCart",0);
@@ -554,6 +560,7 @@ void RDConfig::clear()
   conf_enable_mixer_logging=false;
   conf_use_realtime=false;
   conf_realtime_priority=9;
+  conf_temp_directory=NULL;
   conf_sas_station="";
   conf_sas_matrix=-1;
   conf_sas_base_cart=1;

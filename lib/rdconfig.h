@@ -97,6 +97,7 @@ class RDConfig
 #endif
   bool useRealtime();
   int realtimePriority();
+  QString tempDirectory();
   QString sasStation() const;
   int sasMatrix() const;
   unsigned sasBaseCart() const;
@@ -148,6 +149,7 @@ class RDConfig
   bool conf_enable_mixer_logging;
   bool conf_use_realtime;
   int conf_realtime_priority;
+  QString conf_temp_directory;
   QString conf_sas_station;
   int conf_sas_matrix;
   unsigned conf_sas_base_cart;
