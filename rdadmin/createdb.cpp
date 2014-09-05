@@ -48,6 +48,7 @@
 #include "rdconfig.h"
 #include <createdb.h>
 #include <globals.h>
+#include <rdconf.h>
 
 //
 // NOTE TO MAINTAINERS:
@@ -2729,11 +2730,10 @@ int UpdateDb(int ver)
   //
   if(!admin_skip_backup) {
     if(admin_backup_filename.isEmpty()) {
-      if(getenv("HOME")==NULL) {
-	admin_backup_filename="/tmp";
-      }
-      else {
-	admin_backup_filename=getenv("HOME");
+      bool home_found = false;
+      admin_backup_filename = RDGetHomeDir(&home_found);
+      if (!home_found) {
+        admin_backup_filename = RDTempDir();
       }
       admin_backup_filename+=
 	QString().sprintf("/rdbackup-%s-%d.sql.gz",
