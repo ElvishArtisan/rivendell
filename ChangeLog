@@ -14437,3 +14437,5 @@
 	* Implemented support for the '%y' ['Release Year'] wildcard in
 	rdimport(1)'s '--metadata-pattern' switch in
 	'utils/rdimport/rdimport.cpp'.
+2014-09-05 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'docs/Makefile.am' that broke the 'make dist' target.

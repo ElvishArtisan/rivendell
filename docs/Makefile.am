@@ -38,7 +38,7 @@ EXTRA_DIST = ALSA.txt\
              GPIO.txt\
              JACK.txt\
              MESSAGE_BOX.txt\
-             metadata_filecards.txt\
+             metadata_wildcards.txt\
              NEXGEN_FILTER.txt\
              NOW+NEXT.txt\
              pam_rd.txt\
