@@ -249,7 +249,7 @@ void MainWidget::loadWaveFile()
   wave_name=QFileDialog::getOpenFileName(wave_path,RD_AUDIO_FILE_FILTER,this);
   if(wave_name.isEmpty()) {
     wave_loaded=false;
-    wave_path=getenv("HOME");
+    wave_path=RDHomeDir();
     wave_base=tr("RHPIPlay");
     update();
     return;
