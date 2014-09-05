@@ -154,6 +154,19 @@ void RDGroup::setDefaultTitle(const QString &str)
 }
 
 
+QString RDGroup::generateTitle(const QString &pathname)
+{
+  QString title=defaultTitle();
+  QString basename=RDGetBasePart(pathname);
+  int ptr=basename.findRev(".");
+  title.replace("%p",RDGetPathPart(pathname));
+  title.replace("%f",basename.left(ptr));
+  title.replace("%e",basename.right(basename.length()-ptr-1));
+
+  return title;
+}
+
+
 bool RDGroup::enforceCartRange() const
 {
   return RDBool(RDGetSqlValue("GROUPS","NAME",group_name,"ENFORCE_CART_RANGE",

@@ -1,0 +1,65 @@
+                         RIVENDELL METADATA WILDCARDS
+
+These codes are used in Rivendell to indicate when a substitution of the
+indicated cart metadata field should be performed --e.g. in the
+'--metadata-pattern' switch of rdimport(1) or the RLMResolveNowNext*()
+functions in the Rivendell Loadable Module API.
+
+Now       Next       Field
+--------------------------------------------------------------------------
+ %a        %A        Artist
+ %b        %B        Record Label
+ %c        %C        Client
+ %d        %D        Date/Time (see below)
+ %e        %E        Agency
+ %f        %F        [Unassigned]
+ %g        %G        The Rivendell group name
+ %h        %H        Event length (in milliseconds)
+ %i        %I        Cut Description
+ %j        %J        [Unassigned]
+ %k        %K        [Unassigned]
+ %l        %L        Album
+ %m        %M        Composer
+ %n        %N        The Rivendell cart number
+ %o        %O        Outcue
+ %p        %P        Publisher
+ %q        %Q        [Unassigned]
+ %r        %R        Conductor
+ %s        %S        Song ID
+ %t        %T        Title
+ %u        %U        User Definied
+ %v        %V        [Unassigned]
+ %y        %Y        Release Year
+ %z        %Z        [Unassigned]
+ \r        \r        Carriage Return (ASCII 13)
+ \n        \n        Linefeed (ASCII 10)
+
+DATE/TIME SPECIFICATION
+ %d(<dt>)  %D(<dt>)  The start date/time, formatted according to <dt>.  The
+                     following wildcards are available for <dt>:
+                   d - The day as a number without a leading zero (1 to 31).
+                  dd - The day as a number with a leading zero (01 to 31).
+                 ddd - The abbreviated localized day name ('Mon' or 'Sun').
+                dddd - The long localized day name ('Monday' or 'Sunday').
+                   M - The month as a number without a leading zero
+                       (1 to 12).
+                  MM - The month as a number with a leading zero (01 to 12).
+                 MMM - The abbreviated localized month name ('Jan' or 'Dec').
+                MMMM - The long localized month name ("January' or
+                       'December').
+                  yy - The last two digits of the year.
+                yyyy - The full four digits of the year.
+                   h - The hour without a leading zero (0 - 23, or 1 - 12
+                       if using AM/PM display).
+                  hh - The hour with a leading zero (00 - 23, or 01 -12 if
+                       using AM/PM display).
+                   m - The minute without a leading zero (0 - 59).
+                  mm - The minute with a leading zero (00 - 59).
+                   s - The second without a leading zero (00 - 60).
+                  ss - The second with a leading zero (00 - 60).
+                   z - The milliseconds without a leading zero (0 - 999).
+                 zzz - The milliseconds with leading zeros (000 - 999).
+                  AP - Use AM/PM display.  The 'AP' will be replaced by
+                       'AM' or 'PM' as appropriate.
+                  ap - Use AM/PM display.  The 'ap' will be replaced by
+                       'am' or 'pm' as appropriate.

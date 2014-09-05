@@ -802,6 +802,9 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
 	effective_group=new RDGroup(import_group->name());
       }
     }
+    if(wavedata->metadataFound()&&wavedata->title().isEmpty()) {
+      wavedata->setTitle(effective_group->generateTitle(filename));
+    }
   }
 
   if(import_use_cartchunk_cutid||found_cart) {
@@ -861,7 +864,7 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
     delete cart;
     return MainObject::NoCut;
   }
-  RDCut *cut=new RDCut(QString().sprintf("%06u_%03d",*cartnum,cutnum));
+  RDCut *cut=new RDCut(*cartnum,cutnum);
   RDAudioImport *conv=new RDAudioImport(import_station,import_config,this);
   conv->setCartNumber(cart->number());
   conv->setCutNumber(cutnum);
@@ -944,20 +947,19 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
   cut->autoSegue(import_segue_level,import_segue_length);
   if((wavedata->title().length()==0)||
      ((wavedata->title().length()>0)&&(wavedata->title()[0] == '\0'))) {
-    QString title=effective_group->defaultTitle();
-    QString basename=RDGetBasePart(filename);
-    int ptr=basename.findRev(".");
-    title.replace("%p",RDGetPathPart(filename));
-    title.replace("%f",basename.left(ptr));
-    title.replace("%e",basename.right(basename.length()-ptr-1));
-    cut->setDescription(title.utf8());
+    QString title=effective_group->generateTitle(filename);
+    if((!wavedata->metadataFound())&&(!wavedata->description().isEmpty())) {
+      cut->setDescription(title.utf8());
+    }
     if(cart_created) {
       cart->setTitle(title.utf8());
     }
   }
   if(import_title_from_cartchunk_cutid) {    
     if((wavedata->cutId().length()>0)&&(wavedata->cutId()[0]!='\0')) {
-      if(cut->description().isEmpty()) {
+      if(cut->description().isEmpty()&&
+	 (!wavedata->metadataFound())&&
+	 (!wavedata->description().isEmpty())) {
 	cut->setDescription(wavedata->cutId());
       }
       cart->setTitle(wavedata->cutId());
@@ -1341,6 +1343,11 @@ bool MainObject::RunPattern(const QString &pattern,const QString &filename,
 	    *groupname=value;
 	    break;
 
+	  case 'i':
+	    wavedata->setDescription(value);
+	    wavedata->setMetadataFound(true);
+	    break;
+
 	  case 'l':
 	    wavedata->setAlbum(value);
 	    wavedata->setMetadataFound(true);
@@ -1355,6 +1362,11 @@ bool MainObject::RunPattern(const QString &pattern,const QString &filename,
 	    wavedata->setCutId(value);
 	    wavedata->setMetadataFound(true);
 	    found_cartnum=true;
+	    break;
+
+	  case 'o':
+	    wavedata->setOutCue(value);
+	    wavedata->setMetadataFound(true);
 	    break;
 
 	  case 'p':
@@ -1379,6 +1391,11 @@ bool MainObject::RunPattern(const QString &pattern,const QString &filename,
 
 	  case 'u':
 	    wavedata->setUserDefined(value);
+	    wavedata->setMetadataFound(true);
+	    break;
+
+	  case 'y':
+	    wavedata->setReleaseYear(value.toInt());
 	    wavedata->setMetadataFound(true);
 	    break;
 	}
@@ -1436,24 +1453,27 @@ bool MainObject::VerifyPattern(const QString &pattern)
       }
       macro_active=true;
       switch(pattern.at(++i)) {
-	case 'a':
-	case 'b':
-	case 'c':
-	case 'e':
-	case 'g':
-	case 'l':
-	case 'm':
-	case 'n':
-	case 'p':
-	case 'r':
-	case 's':
-	case 't':
-	case 'u':
-	case '%':
-	  break;
+      case 'a':
+      case 'b':
+      case 'c':
+      case 'e':
+      case 'g':
+      case 'i':
+      case 'l':
+      case 'm':
+      case 'n':
+      case 'o':
+      case 'p':
+      case 'r':
+      case 's':
+      case 't':
+      case 'u':
+      case 'y':
+      case '%':
+	break;
 
-	default:
-	  return false;
+      default:
+	return false;
       }
     }
     else {

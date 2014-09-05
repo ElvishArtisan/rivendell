@@ -14423,3 +14423,17 @@
 2014-09-04 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in 'rdairplay/nownext.cpp' that caused PAD updates
 	to be sent for macro carts with the asyncronous attribute set.
+2014-09-05 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'lib/rdcut.cpp' that caused the 'Title' value
+	to be applied to the 'Description' field in the 'RDCut::setMetadata()'
+	method.
+	* Added 'docs/metadata_wildcards.txt'.
+	* Implemented support for the '%i' ['Cut Description'] wildcard in
+	rdimport(1)'s '--metadata-pattern' switch in
+	'utils/rdimport/rdimport.cpp' [Github Issue #6].
+	* Implemented support for the '%o' ['Outcue'] wildcard in
+	rdimport(1)'s '--metadata-pattern' switch in
+	'utils/rdimport/rdimport.cpp'.
+	* Implemented support for the '%y' ['Release Year'] wildcard in
+	rdimport(1)'s '--metadata-pattern' switch in
+	'utils/rdimport/rdimport.cpp'.

@@ -939,9 +939,10 @@ void RDCut::getMetadata(RDWaveData *data) const
 void RDCut::setMetadata(RDWaveData *data) const
 {
   QString sql="update CUTS set ";
-  if(!data->title().isEmpty()) {
+  if(!data->description().isEmpty()) {
     sql+=QString().sprintf("DESCRIPTION=\"%s\",",
-	      (const char *)RDTextValidator::stripString(data->title()).utf8());
+	      (const char *)RDTextValidator::stripString(data->description()).
+			   utf8());
   }
   if(!data->outCue().isEmpty()) {
     sql+=QString().sprintf("OUTCUE=\"%s\",",
@@ -1079,11 +1080,11 @@ void RDCut::setMetadata(RDWaveData *data) const
   }
   if(sql.right(1)==",") {
     sql=sql.left(sql.length()-1);
-    sql+=QString().
-      sprintf(" where CUT_NAME=\"%s\"",(const char *)cut_name.utf8());
-    RDSqlQuery *q=new RDSqlQuery(sql);
-    delete q;
   }
+  sql+=QString().
+    sprintf(" where CUT_NAME=\"%s\"",(const char *)cut_name.utf8());
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  delete q;
 }
 
 

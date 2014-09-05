@@ -321,28 +321,9 @@ extern "C" {
  *
  * Returns a pointer to a null-terminated string resulting from resolving
  * the 'standard' Rivendell Now & Next wildcards in accordance with the
- * data values in the <now> and <next> parameters.  The following wildcards
- * are supported:
- *
- *  Now  Next  Field
- *  ----------------------------------------------
- *   %n   %N   The Rivendell cart number
- *   %h   %H   Event length (in milliseconds)
- *   %g   %G   The Rivendell group name
- *   %t   %T   Title
- *   %a   %A   Artist
- *   %l   %L   Album
- *   %y   %Y   Year
- *   %b   %B   Record Label
- *   %c   %C   Client
- *   %e   %E   Agency
- *   %m   %M   Composer
- *   %p   %P   Publisher
- *   %r   %R   Conductor
- *   %s   %S   Song ID
- *   %u   %U   User Definied
- *   %o   %O   Outcue
- *   %d   %D   Cut Description
+ * data values in the <now> and <next> parameters.  The list of available
+ * wildcards can be found in the 'metadata_wildcards.txt' file in the
+ * Rivendell documentation directory.
  *
  * RETURNS: A pointer to a null terminated string.  This string is statically
  * allocated, and may be reused in subsequent calls to the utility functions.

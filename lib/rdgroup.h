@@ -49,6 +49,7 @@ class RDGroup
   void setDeleteEmptyCarts(bool state) const;
   QString defaultTitle() const;
   void setDefaultTitle(const QString &str);
+  QString generateTitle(const QString &pathname);
   bool enforceCartRange() const;
   void setEnforceCartRange(bool state) const;
   bool exportReport(ExportType type) const;
