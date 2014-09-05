@@ -28,13 +28,17 @@
 #include <rdprofile.h>
 
 #include <rdmonitor_config.h>
+#include <rdconf.h>
 
 RDMonitorConfig::RDMonitorConfig()
 {
   clear();
   mon_filename="/.rdmonitorrc";
-  if(getenv("HOME")!=NULL) {
-    mon_filename=QString(getenv("HOME"))+mon_filename;
+
+  bool home_found = false;
+  QString home = RDGetHomeDir(&home_found);
+  if (home_found) {
+    mon_filename=home+mon_filename;
   }
 }
 

@@ -783,13 +783,7 @@ bool RDParsePost(std::map<QString,QString> *vars)
   //
   // Initialize Temp Directory Path
   //
-  if(getenv("TMPDIR")!=NULL) {
-    tempdir=getenv("TMPDIR");
-  }
-  else {
-    tempdir="/tmp";
-  }
-  tempdir+="/rivendellXXXXXX";
+  tempdir = RDTempDir() + "/rivendellXXXXXX";
 
   //
   // Get message part separator

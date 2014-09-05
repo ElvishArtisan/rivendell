@@ -65,7 +65,7 @@ bool RDTextFile(const QString &data)
   proc->launch("");
   delete proc;
 #else
-  strcpy(tmpfile,"/tmp/rdreportXXXXXX");
+  strcpy(tmpfile,RDTempDir()+"/rdreportXXXXXX");
   int fd=mkstemp(tmpfile);
   if(fd<0) {
     QMessageBox::warning(NULL,"File Error","Unable to create temporary file");

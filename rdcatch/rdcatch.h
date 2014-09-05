@@ -126,6 +126,7 @@ class MainWidget : public QWidget
   RDListViewItem *GetItem(int id);
   int GetMonitor(int serial,int chan);
   int GetConnection(QString station,unsigned chan=0);
+  QString GeometryFile();
   void LoadGeometry();
   void SaveGeometry();
   std::vector<CatchMonitor *> catch_monitor;

@@ -71,12 +71,7 @@ RDFormPost::RDFormPost(RDFormPost::Encoding encoding,unsigned maxsize,
   //
   // Initialize Temp Directory Path
   //
-  if(getenv("TMPDIR")!=NULL) {
-    strcpy(tempdir,getenv("TMPDIR"));
-  }
-  else {
-    strcpy(tempdir,"/tmp");
-  }
+  strcpy(tempdir,RDTempDir());
   strcat(tempdir,"/rivendellXXXXXX");
   post_tempdir=mkdtemp(tempdir);
   if(post_tempdir.isNull()) {

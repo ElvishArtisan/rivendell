@@ -2513,15 +2513,24 @@ int MainWidget::GetConnection(QString station,unsigned chan)
   return -1;
 }
 
+QString MainWidget::GeometryFile() {
+  bool home_found = false;
+  QString home = RDGetHomeDir(&home_found);
+  if (home_found) {
+    return home + "/" + RDCATCH_GEOMETRY_FILE;
+  } else {
+    return NULL;
+  }
+}
 
 void MainWidget::LoadGeometry()
 {
-  if(getenv("HOME")==NULL) {
+  QString geometry_file = GeometryFile();
+  if(geometry_file==NULL) {
     return;
   }
   RDProfile *profile=new RDProfile();
-  profile->
-    setSource(QString().sprintf("%s/%s",getenv("HOME"),RDCATCH_GEOMETRY_FILE));
+  profile->setSource(geometry_file);
   resize(profile->intValue("RDCatch","Width",sizeHint().width()),
 	 profile->intValue("RDCatch","Height",sizeHint().height()));
 
@@ -2531,12 +2540,11 @@ void MainWidget::LoadGeometry()
 
 void MainWidget::SaveGeometry()
 {
-  if(getenv("HOME")==NULL) {
+  QString geometry_file = GeometryFile();
+  if(geometry_file==NULL) {
     return;
   }
-  FILE *file=fopen((const char *)QString().
-		   sprintf("%s/%s",getenv("HOME"),RDCATCH_GEOMETRY_FILE),
-		   "w");
+  FILE *file=fopen(geometry_file,"w");
   if(file==NULL) {
     return;
   }

@@ -105,6 +105,7 @@ class MainWidget : public QWidget
 		       const QDateTime &current_datetime); 
   void SetCaption(QString user);
   QString GetTypeFilter();
+  QString GeometryFile();
   void LoadGeometry();
   void SaveGeometry();
   void LockUser();

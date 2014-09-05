@@ -46,6 +46,7 @@
 #include <rd.h>
 #include <rdaudioconvert.h>
 #include <rdlibrary_conf.h>
+#include <rdconf.h>
 
 #define STAGE2_XFER_SIZE 2048
 #define STAGE2_BUFFER_SIZE 49152
@@ -152,10 +153,7 @@ RDAudioConvert::ErrorCode RDAudioConvert::convert()
   //
   // Generate Temporary Filenames
   //
-  strcpy(tmpdir,"/tmp");
-  if(getenv("TEMP")!=NULL) {
-    strncpy(tmpdir,getenv("TEMP"),PATH_MAX-20);
-  }
+  strcpy(tmpdir,RDTempDir());
   strcat(tmpdir,"/rdaudioconvertXXXXXX");
   if(mkdtemp(tmpdir)==NULL) {
     return RDAudioConvert::ErrorInternal;

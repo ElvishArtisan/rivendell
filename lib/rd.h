@@ -354,7 +354,6 @@
  * Ripper Settings
  */
 #define RIPPER_BAR_INTERVAL 500
-#define RIPPER_TEMP_DIR "/tmp"
 #define RIPPER_TEMP_WAV "rdlibrary_rip.wav"
 #define RIPPER_TEMP_PEAK "rdlibrary_rip.dat"
 #define RIPPER_CDDB_USER "rdlibrary"

@@ -84,6 +84,7 @@ class RDCartDialog : public QDialog
   void BuildGroupList();
   QString GetSearchFilter(const QString &filter,const QString &group,
 			  const QString &schedcode);
+  QString StateFile();
   void LoadState();
   void SaveState();
   int *cart_cartnum;
