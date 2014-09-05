@@ -86,7 +86,7 @@ DiskRipper::DiskRipper(QString *filter,QString *group,QString *schedcode,
   // Create Temporary Directory
   //
   char path[PATH_MAX];
-  strncpy(path,RIPPER_TEMP_DIR,PATH_MAX);
+  strncpy(path,RDTempDir(),PATH_MAX);
   strcat(path,"/XXXXXX");
   if(mkdtemp(path)==NULL) {
     QMessageBox::warning(this,"RDLibrary - "+tr("Ripper Error"),
