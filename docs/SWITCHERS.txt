@@ -7,6 +7,7 @@ Broadcast Tools 10x1 Audio Switcher
 Broadcast Tools 16x1 Audio Switcher
 Broadcast Tools 16x2 Audio Switcher
 Broadcast Tools 8x2 Audio Switcher
+Broadcast Tools GPI-16 General Purpose Input Module
 Broadcast Tools Sentinel 4 Web AES Switcher
 Broadcast Tools SS 12.4 Audio Switcher
 Broadcast Tools SS 16.4 Audio Switcher
@@ -126,6 +127,25 @@ Operation in 'multidrop' mode is not supported.
 
 
 ----------------------------------------------------------------------------
+BROADCAST TOOLS GPI-16 General Purpose Input Module
+
+Driver Name: BroadcastTools GPI-16
+
+Supported RML Commands:
+  GPI Enable ('GE')
+  GPI Set ('GI')
+
+GENERAL NOTES:
+Control is done by means of a serial connection to the unit's integrated
+serial port.  There is also a 'plus' version that features an integrated
+type B USB interface that simulates a serial port.
+
+The unit should work correctly with factory default settings.  The Rivendell
+serial interface should be set to use 9600 bits/sec, 8 bits, 1 stop bit and
+no flow control.
+
+
+----------------------------------------------------------------------------
 BROADCAST TOOLS SENTINEL 4 WEB AES SWITCHER
 
 Driver Name: BroadcastTools Sentinel 4 Web
@@ -166,6 +186,7 @@ by setting DIP switches SW1-7 and SW-1-3 to OFF.
 Operation in 'multidrop' mode is not supported.
 
 
+----------------------------------------------------------------------------
 Driver Name: BroadcastTools SS 16.4
 
 Supported RML Commands:

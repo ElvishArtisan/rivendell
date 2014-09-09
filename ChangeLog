@@ -14439,3 +14439,8 @@
 	'utils/rdimport/rdimport.cpp'.
 2014-09-05 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in 'docs/Makefile.am' that broke the 'make dist' target.
+2014-09-09 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'RDMatrix::BtGpi16' value to the 'RDMatrix::Type'
+	enumeration in 'lib/rdmatrix.cpp' and 'lib/rdmatrix.cpp'.
+	* Implemented a driver for the Broadcast Tools GPI-16 in
+	'ripcd/btgpi16.cpp' and 'ripcd/btgpi16.h'.

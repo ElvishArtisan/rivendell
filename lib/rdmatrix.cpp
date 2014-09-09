@@ -61,7 +61,8 @@ bool __mx_primary_controls[RDMatrix::LastType][RDMatrix::LastControl]=
     {0,0,1,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,1,1,0,0,0,0,1,0,0,0,1},  // LiveWire Multicast GPIO
     {0,0,0,0,0,0,0,0,0,1,0,1,1,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0},  // 360 AM16
     {0,0,1,0,0,1,0,0,0,0,1,0,0,0,0,0,0,0,1,1,0,0,0,0,1,0,0,0,0},  // LiveWire LWRP GPIO
-    {0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0}   // BT Sentinel 4 Web
+    {0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0},  // BT Sentinel 4 Web
+    {0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0}   // BT GPI-16
   };
 bool __mx_backup_controls[RDMatrix::LastType][RDMatrix::LastControl]=
   {
@@ -97,7 +98,8 @@ bool __mx_backup_controls[RDMatrix::LastType][RDMatrix::LastControl]=
     {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},  // LiveWire Multicast GPIO
     {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},  // 360 AM16
     {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},  // LiveWire LWRP GPIO
-    {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}   // BT Sentinel 4 Web
+    {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},  // BT Sentinel 4 Web
+    {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}   // BT GPI-16
   };
 
 int __mx_default_values[RDMatrix::LastType][RDMatrix::LastControl]=
@@ -134,7 +136,8 @@ int __mx_default_values[RDMatrix::LastType][RDMatrix::LastControl]=
     {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5,0},    // LiveWire  Multicast GPIO
     {0,0,0,0,0,0,0,0,0,0,0,16,16,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0},  // 360 AM16
     {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5,0},    // LiveWire  LWRP GPIO
-    {1,0,0,0,0,0,0,0,0,0,0,4,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0}    // BT Sentinel 4 Web
+    {1,0,0,0,0,0,0,0,0,0,0,4,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0},   // BT Sentinel 4 Web
+    {0,0,0,0,0,0,0,0,0,0,0,0,0,16,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0}   // BT GPI-16
   };
 
 RDMatrix::RDMatrix(const QString &station,int matrix)
@@ -668,6 +671,10 @@ QString RDMatrix::typeString(RDMatrix::Type type)
 
       case RDMatrix::BtSentinel4Web:
 	return QString("BroadcastTools Sentinel 4 Web");
+	break;
+
+      case RDMatrix::BtGpi16:
+	return QString("BroadcastTools GPI-16");
 	break;
 
       default:

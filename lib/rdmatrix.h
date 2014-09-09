@@ -39,7 +39,7 @@ class RDMatrix
 	     LogitekVguest=16,BtSs164=17,StarGuideIII=18,BtSs42=19,
 	     LiveWireLwrpAudio=20,Quartz1=21,BtSs44=22,BtSrc8III=23,BtSrc16=24,
 	     Harlond=25,Acu1p=26,LiveWireMcastGpio=27,Am16=28,
-	     LiveWireLwrpGpio=29,BtSentinel4Web=30,LastType=31};
+	     LiveWireLwrpGpio=29,BtSentinel4Web=30,BtGpi16=31,LastType=32};
   enum Endpoint {Input=0,Output=1};
   enum Mode {Stereo=0,Left=1,Right=2};
   enum VguestAttribute {VguestEngine=0,VguestDevice=1,VguestSurface=2,

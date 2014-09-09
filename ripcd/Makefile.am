@@ -4,8 +4,6 @@
 ##
 ## (C) Copyright 2002-2006 Fred Gleason <fredg@paravelsystems.com>
 ##
-##      $Id: Makefile.am,v 1.43.8.10 2014/02/17 02:19:02 cvs Exp $
-##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
 ##   published by the Free Software Foundation.
@@ -40,6 +38,7 @@ dist_ripcd_SOURCES = acu1p.cpp acu1p.h\
                      bt16x2.cpp bt16x2.h\
                      bt8x2.cpp bt8x2.h\
                      btacs82.cpp btacs82.h\
+                     btgpi16.cpp btgpi16.h\
                      btsentinel4web.cpp btsentinel4web.h\
                      btss124.cpp btss124.h\
                      btss164.cpp btss164.h\
@@ -78,6 +77,7 @@ nodist_ripcd_SOURCES = moc_am16.cpp\
                        moc_bt16x2.cpp\
                        moc_bt8x2.cpp\
                        moc_btacs82.cpp\
+                       moc_btgpi16.cpp\
                        moc_btsentinel4web.cpp\
                        moc_btsrc16.cpp\
                        moc_btsrc8iii.cpp\
