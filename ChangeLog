@@ -14444,3 +14444,6 @@
 	enumeration in 'lib/rdmatrix.cpp' and 'lib/rdmatrix.cpp'.
 	* Implemented a driver for the Broadcast Tools GPI-16 in
 	'ripcd/btgpi16.cpp' and 'ripcd/btgpi16.h'.
+2014-09-10 Fred Gleason <fredg@paravelsystems.com>
+	* Updated 'NEWS'.
+	* Incremented the package version to 2.9.1.

@@ -1,6 +1,31 @@
 The NEWS file for the Rivendell package.
 
 -------------------------------------------------------------------------------
+v2.9.1 --  9/10/2014
+
+Changes:
+   RDImport Enhancements.  Added '--cart-number-offset' and
+   '--set-daypart-times' switches to rdimport(1) while also extending
+   metadata import for SCOT chunks to include segue marker data.
+   
+   New Device Support.  Added support for the Broadcast Tools
+   GPI-16 General Purpose Input Module.  See the 'SWITCHERS.txt' file
+   for details.
+
+   Build System Cleanups.  Cleaned up many autotool and compiler warnings
+   while also implementing a '--sysconfdir=' switch in 'configure'.  See
+   the 'INSTALL' file for details.
+
+   Various bug fixes.  See the ChangeLog for details.
+
+Database Update:
+   This version of Rivendell uses database schema version 239, and will
+   automatically upgrade any earlier versions.  To see the current schema
+   version prior to upgrade, see RDAdmin->SystemInfo.
+
+   As always, be sure to run RDAdmin immediately after upgrading to allow 
+   any necessary changes to the database schema to be applied.
+-------------------------------------------------------------------------------
 v2.9.0 --  6/4/2014
 
 Changes:
