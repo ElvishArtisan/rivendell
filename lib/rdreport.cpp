@@ -416,11 +416,12 @@ bool RDReport::generateReport(const QDate &startdate,const QDate &enddate,
   // Generate Mixdown Table
   //
   QString mixname="MIXDOWN"+station->name();
-  sql=QString().sprintf("drop table `%s_SRT`",(const char *)mixname);
+  sql=QString("drop table `")+mixname+"_SRT`";
+  //  sql=QString().sprintf("drop table `%s_SRT`",(const char *)mixname);
   QSqlQuery *p;
   p=new QSqlQuery(sql);
   delete p;
-  sql=RDCreateReconciliationTableSql(mixname);
+  sql=RDCreateReconciliationTableSql(mixname+"_SRT");
   q=new RDSqlQuery(sql);
   delete q;
   sql=QString().sprintf("select SERVICE_NAME from REPORT_SERVICES \
