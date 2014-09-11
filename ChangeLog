@@ -14448,5 +14448,8 @@
 	* Updated 'NEWS'.
 	* Incremented the package version to 2.9.1.
 2014-09-11 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in 'liob/rdreport.cpp' that broke report
+	generation.
+2014-09-11 Fred Gleason <fredg@paravelsystems.com>
 	* Updated 'NEWS'.
 	* Incremented the package version to 2.9.2.
