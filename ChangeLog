@@ -14459,3 +14459,5 @@
 	host.
 	* Fixed a bug in 'rdadmin/edit_decks.cpp' that caused spurious
 	entries to appear in the list of available matrix output sources.
+2014-09-13 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.9.2int00.
