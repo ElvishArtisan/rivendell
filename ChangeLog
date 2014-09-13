@@ -14450,6 +14450,12 @@
 2014-09-11 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in 'liob/rdreport.cpp' that broke report
 	generation.
-2014-09-11 Fred Gleason <fredg@paravelsystems.com>
+2014-09-12 Fred Gleason <fredg@paravelsystems.com>
 	* Updated 'NEWS'.
 	* Incremented the package version to 2.9.2.
+2014-09-13 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'rdadmin/edit_decks.cpp' that caused the incorrect
+	switcher matrix value to be loaded when selecting a new switcher
+	host.
+	* Fixed a bug in 'rdadmin/edit_decks.cpp' that caused spurious
+	entries to appear in the list of available matrix output sources.

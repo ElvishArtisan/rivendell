@@ -428,7 +428,11 @@ void EditDecks::stationActivatedData(const QString &str)
 
   edit_swmatrix_box->clear();
   edit_swmatrix_box->insertStringList(GetActiveOutputMatrices());
-
+  for(unsigned i=0;i<edit_matrix_ids.size();i++) {
+    if(edit_matrix_ids[i]==edit_record_deck->switchMatrix()) {
+      edit_swmatrix_box->setCurrentItem(i);
+    }
+  }
   matrixActivatedData(edit_swmatrix_box->currentText());
 }
 
@@ -457,10 +461,11 @@ void EditDecks::matrixActivatedData(const QString &str)
     return;
   }
   int matrix=edit_matrix_ids[edit_swmatrix_box->currentItem()];
-  sql=QString().sprintf("select NAME from OUTPUTS where \
-                         STATION_NAME=\"%s\"&&MATRIX=%d",
-			(const char *)edit_swstation_box->currentText(),
-			matrix);
+  sql=QString("select NAME from OUTPUTS where ")+
+    "(STATION_NAME=\""+RDEscapeString(edit_swstation_box->currentText())+
+    "\")&&"+
+    QString().sprintf("(MATRIX=%d)&&",matrix)+
+    "(NAME!=\"\")";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     edit_swoutput_box->insertItem(q->value(0).toString());
