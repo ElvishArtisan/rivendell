@@ -14461,3 +14461,8 @@
 	entries to appear in the list of available matrix output sources.
 2014-09-13 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 2.9.2int00.
+2014-09-16 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'cae/cae_alsa.cpp' that caused induced noise
+	when routing passthrough audio.
+	* Reversed format detection order so as to prefer S32_LE format
+	over S16_LE in 'cae/cae_alsa.cpp'.
