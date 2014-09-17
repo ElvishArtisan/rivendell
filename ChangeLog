@@ -14469,3 +14469,6 @@
 2014-09-17 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a formatting bug in the window title for the 'Edit Audio'
 	dialog in 'lib/rdedit_audio.cpp'.
+2014-09-17 Fred Gleason <fredg@paravelsystems.com>
+	* Merged pull request from WMTH to correct invalid check for
+	duplicate cart titles [GitHub issue #000012].
