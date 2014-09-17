@@ -14472,3 +14472,5 @@
 2014-09-17 Fred Gleason <fredg@paravelsystems.com>
 	* Merged pull request from WMTH to correct invalid check for
 	duplicate cart titles [GitHub issue #000012].
+2014-09-17 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.9.2int01.
