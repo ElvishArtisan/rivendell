@@ -815,7 +815,7 @@ void EditCart::okData()
     if(!system->allowDuplicateCartTitles()) {
       sql=QString("select NUMBER from CART where ")+
 	"(TITLE=\""+RDEscapeString(rdcart_controls.title_edit->text())+"\") &&"+
-	QString().sprintf("(NUMBER=%u)",rdcart_cart->number());
+	QString().sprintf("(NUMBER!=%u)",rdcart_cart->number());
       q=new RDSqlQuery(sql);
       if(q->first()) {
 	QMessageBox::warning(this,tr("Duplicate Title"),
