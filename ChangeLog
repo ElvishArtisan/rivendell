@@ -14466,3 +14466,6 @@
 	when routing passthrough audio.
 	* Reversed format detection order so as to prefer S32_LE format
 	over S16_LE in 'cae/cae_alsa.cpp'.
+2014-09-17 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a formatting bug in the window title for the 'Edit Audio'
+	dialog in 'lib/rdedit_audio.cpp'.

@@ -101,8 +101,7 @@ RDEditAudio::RDEditAudio(RDCart *cart,QString cut_name,RDCae *cae,RDUser *user,
   // The Cut
   //
   edit_cut=new RDCut(cut_name);
-  setCaption(QString().sprintf("Edit Markers - %s\n",
-			       (const char *)edit_cut->description()));
+  setCaption("RDLibrary - "+tr("Edit Audio"));
 
   //
   // The Audio
