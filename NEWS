@@ -1,6 +1,22 @@
 The NEWS file for the Rivendell package.
 
 -------------------------------------------------------------------------------
+v2.9.3 --  9/18/2014
+
+Changes:
+   Fixed a DSP bug that caused audio distortion in the Local Audio Adapter
+   device for ALSA.
+
+   Various other bug fixes.  See the ChangeLog for details.
+
+Database Update:
+   This version of Rivendell uses database schema version 239, and will
+   automatically upgrade any earlier versions.  To see the current schema
+   version prior to upgrade, see RDAdmin->SystemInfo.
+
+   As always, be sure to run RDAdmin immediately after upgrading to allow 
+   any necessary changes to the database schema to be applied.
+-------------------------------------------------------------------------------
 v2.9.2 --  9/11/2014
 
 Changes:

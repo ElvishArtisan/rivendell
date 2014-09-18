@@ -14474,3 +14474,6 @@
 	duplicate cart titles [GitHub issue #000012].
 2014-09-17 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 2.9.2int01.
+2014-09-18 Fred Gleason <fredg@paravelsystems.com>
+	* Updated 'NEWS'.
+	* Incremented the package version to 2.9.3.
