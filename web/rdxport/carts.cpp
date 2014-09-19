@@ -73,7 +73,7 @@ void Xport::AddCart()
   if(!xport_user->groupAuthorized(group_name)) {
     XmlExit("No such group",404);
   }
-  group=new RDGroup(group_name,this);
+  group=new RDGroup(group_name);
   if(cart_number==0) {
     if((cart_number=group->nextFreeCart())==0) {
       delete group;
