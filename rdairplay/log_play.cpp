@@ -109,12 +109,10 @@ LogPlay::LogPlay(RDCae *cae,int id,QSocketDevice *nn_sock,QString logname,
   // Audition Player
   //
   play_audition_line=-1;
-  if((rdairplay_conf->card(RDAirPlayConf::CueChannel)>=0)&&
-     (rdairplay_conf->port(RDAirPlayConf::CueChannel)>=0)) {
+  if((rdstation_conf->cueCard()>=0)&&
+     (rdstation_conf->cuePort()>=0)) {
     play_audition_player=new RDSimplePlayer(rdcae,rdripc,
-			  rdairplay_conf->card(RDAirPlayConf::CueChannel),
-		       	  rdairplay_conf->port(RDAirPlayConf::CueChannel),
-					    0,0);
+			  rdstation_conf->cueCard(),rdstation_conf->cuePort(),0,0);
     play_audition_player->playButton()->hide();
     play_audition_player->stopButton()->hide();
     connect(play_audition_player,SIGNAL(played()),
