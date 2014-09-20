@@ -969,7 +969,7 @@ QString RDHomeDir()
 QString RDTempDir()
 {
   QString conf_temp_directory = RDConfiguration()->tempDirectory();
-  if (conf_temp_directory != NULL) {
+  if (!conf_temp_directory.isEmpty()) {
     return conf_temp_directory;
   }
 #ifdef WIN32
