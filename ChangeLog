@@ -14480,3 +14480,5 @@
 2014-09-18 Fred Gleason <fredg@paravelsystems.com>
 	* Merged patch from albanpeignier to allow [Tuning] entry in
 	rd.conf(5) to specify temporary directory [GitHub Issue #000011].
+2014-09-20 Alban Peignier <alban@tryphon.eu>
+	* Fixes 'Next Timed Start: [nn:nn:nn]' encoding in RdAirPlay
