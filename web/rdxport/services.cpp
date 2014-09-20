@@ -67,7 +67,7 @@ void Xport::ListServices()
   printf("<serviceList>\n");
   while(q->next()) {
     svc=new RDSvc(q->value(0).toString());
-    printf("%s",(const char *)svc->xml());
+    printf("%s",(const char *)svc->xml().utf8());
     delete svc;
   }
   printf("</serviceList>\n");

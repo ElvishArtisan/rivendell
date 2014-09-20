@@ -76,7 +76,7 @@ void Xport::ListLogs()
   printf("<logList>\n");
   while(q->next()) {
     log=new RDLog(q->value(0).toString());
-    printf("%s",(const char *)log->xml());
+    printf("%s",(const char *)log->xml().utf8());
     delete log;
   }
   printf("</logList>\n");
@@ -117,7 +117,7 @@ void Xport::ListLog()
   printf("Content-type: application/xml\n");
   printf("Status: 200\n\n");
   printf("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
-  printf("%s\n",(const char *)log_event->xml());
+  printf("%s\n",(const char *)log_event->xml().utf8());
 
   Exit(0);
 }

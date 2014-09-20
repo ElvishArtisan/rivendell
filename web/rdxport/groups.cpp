@@ -58,7 +58,7 @@ void Xport::ListGroups()
   printf("<groupList>\n");
   while(q->next()) {
     group=new RDGroup(q->value(0).toString());
-    printf("%s",(const char *)group->xml());
+    printf("%s",(const char *)group->xml().utf8());
     delete group;
   }
   printf("</groupList>\n");
@@ -102,7 +102,7 @@ void Xport::ListGroup()
   printf("Status: 200\n\n");
   printf("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
   group=new RDGroup(q->value(0).toString());
-  printf("%s",(const char *)group->xml());
+  printf("%s",(const char *)group->xml().utf8());
   delete group;
 
   delete q;
