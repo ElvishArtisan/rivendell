@@ -14484,3 +14484,5 @@
 	* Merged patch from albanpeignier to process
 	'RdConfig->tempDirectory()' as an empty string
 	[GitHub issue #000019].
+2014-09-20 Alban Peignier <alban@tryphon.eu>
+	* Updated the French (fr) translation for RdAirPlay.
