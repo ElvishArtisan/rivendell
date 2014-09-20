@@ -22,7 +22,7 @@
 
 #include <rddb.h>
 #include <rdsimpleplayer.h>
-
+#include <rdcart.h>
 
 RDSimplePlayer::RDSimplePlayer(RDCae *cae,RDRipc *ripc,int card,int port,
 			       unsigned start_cart,unsigned end_cart,
@@ -114,30 +114,36 @@ void RDSimplePlayer::play(int start_pos)
   if(play_is_playing) {
     stop();
   }
-  sql=QString().sprintf("select CUT_NAME,START_POINT,END_POINT,PLAY_GAIN\
-                         from CUTS where (CART_NUMBER=%u)&&(LENGTH>0)",
-			play_cart);
-  q=new RDSqlQuery(sql);
-  if(q->first()) {
+
+  QString cut = "";
+  RDCart *cart=new RDCart(play_cart);
+  if (cart->selectCut(&cut)) {
     play_cae->
-      loadPlay(play_card,q->value(0).toString(),&play_stream,&handle);
-    play_cut_gain=q->value(3).toInt(); 
+      loadPlay(play_card,cut,&play_stream,&handle);
+
     if(play_stream<0) {
-      delete q;
       return;
     }
-    play_handles.push(handle);
-    for(int i=0;i<RD_MAX_PORTS;i++) {
-      play_cae->setOutputVolume(play_card,play_stream,i,RD_MUTE_DEPTH);
+
+    sql=QString().sprintf("select START_POINT,END_POINT,PLAY_GAIN \
+                          from CUTS where CUT_NAME='%s'", (const char *)cut);
+    q=new RDSqlQuery(sql);
+    if(q->first()) {
+      play_cut_gain=q->value(2).toInt(); 
+      play_handles.push(handle);
+      for(int i=0;i<RD_MAX_PORTS;i++) {
+        play_cae->setOutputVolume(play_card,play_stream,i,RD_MUTE_DEPTH);
+      }
+      play_cae->setOutputVolume(play_card,play_stream,play_port,0+play_cut_gain);
+      play_cae->positionPlay(play_handles.back(),q->value(1).toUInt()+start_pos);
+      play_cae->play(play_handles.back(),
+                     q->value(1).toUInt()-(q->value(0).toUInt()+start_pos),
+                     RD_TIMESCALE_DIVISOR,false);
+      play_cae->setPlayPortActive(play_card,play_port,play_stream);
     }
-    play_cae->setOutputVolume(play_card,play_stream,play_port,0+play_cut_gain);
-    play_cae->positionPlay(play_handles.back(),q->value(1).toUInt()+start_pos);
-    play_cae->play(play_handles.back(),
-		   q->value(2).toUInt()-(q->value(1).toUInt()+start_pos),
-		   RD_TIMESCALE_DIVISOR,false);
-    play_cae->setPlayPortActive(play_card,play_port,play_stream);
+    delete q;
   }
-  delete q;
+  delete cart;
 }
 
 
