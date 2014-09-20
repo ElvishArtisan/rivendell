@@ -14486,3 +14486,6 @@
 	[GitHub issue #000019].
 2014-09-20 Alban Peignier <alban@tryphon.eu>
 	* Updated the French (fr) translation for RdAirPlay.
+2014-09-20 Alban Peignier <alban@tryphon.eu>
+	* Merged patch from albanpeignier to use global cue assignments
+	for RDCueEdit, Audition Hea/Tail in RDAirPlay [GitHub issue #000024].
