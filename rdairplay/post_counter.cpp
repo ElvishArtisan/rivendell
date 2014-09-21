@@ -138,9 +138,8 @@ void PostCounter::UpdateDisplay()
   }
 
   if(isEnabled()&&(!post_time.isNull())) {
-    str=QString(tr("Next Timed Start"));
-    point=QString().sprintf("%s [%s]",(const char *)str,
-			    (const char *)post_time.toString(post_time_format));
+    point= trUtf8("Next Timed Start") + " [" + post_time.toString(post_time_format) + "]";
+
     if(post_offset_valid) {
       if(offset<-POST_COUNTER_MARGIN) {
 	state=QString().sprintf("-%s",(const char *)
