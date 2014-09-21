@@ -14494,3 +14494,6 @@
 	during cart creation
 2014-09-20 Alban Peignier <alban@tryphon.eu>
 	* Fixes 'Next Timed Start: [nn:nn:nn]' encoding in RdAirPlay
+2014-09-20 Alban Peignier <alban@tryphon.eu>
+	* Merged patch from albanpeignier to use RDCart::selectCut()
+	in RDSimplePlayer [GitHub issue #000025].
