@@ -23,11 +23,13 @@
 #include <stdlib.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <sys/wait.h>
 #include <fcntl.h>
 #include <unistd.h>
 #include <math.h>
 #include <dlfcn.h>
 #include <errno.h>
+#include <unistd.h>
 
 #include <sndfile.h>
 #include <samplerate.h>
@@ -304,6 +306,11 @@ RDAudioConvert::ErrorCode RDAudioConvert::Stage1Convert(const QString &srcfile,
 
     case RDWaveFile::Flac:
       err=Stage1Flac(dstfile,wave);
+      delete wave;
+      return err;
+
+    case RDWaveFile::M4A:
+      err=Stage1M4A(dstfile,wave);
       delete wave;
       return err;
 
@@ -673,6 +680,73 @@ RDAudioConvert::ErrorCode RDAudioConvert::Stage1Mpeg(const QString &dstfile,
 #endif  // HAVE_MAD
 }
 
+RDAudioConvert::ErrorCode RDAudioConvert::Stage1M4A(const QString &dstfile,
+						    RDWaveFile *wave) {
+
+  const char* args[7];
+  int childstatus = 0; 
+ 
+  pid_t child = fork();
+
+  QString tmpname = dstfile + ".m4a_temp.wav";
+ 
+  if(child == 0) {
+
+    freopen("/dev/null", "w", stdout);
+    freopen("/dev/null", "w", stderr);
+
+    args[0] = "faad";
+    args[1] = wave->getName();
+    args[2] = "-o";
+    args[3] = tmpname;
+    args[4] = "-b";
+    args[5] = "4"; // Emit a Float32 format wave file, like the other stage 1s.
+    args[6] = 0;
+    execvp("faad", (char* const*)args);
+    exit(109);
+
+  }
+  else {
+
+    waitpid(child, &childstatus, 0);
+
+    // Killed by a signal (e.g. OOM?)
+    if(!WIFEXITED(childstatus)) {
+      unlink(tmpname);
+      return RDAudioConvert::ErrorInternal;
+    }
+
+    // Returned 109, probably because we could't find faad?
+    if(WEXITSTATUS(childstatus) == 109)
+      return RDAudioConvert::ErrorFormatNotSupported;
+
+    // Two elements are missing: 
+    // 1. need to measure the peak amplitude;
+    // 2. need to trim if a subrange was requested.
+    // For now just use the sndfile import path to accomplish both tasks.
+
+    {
+
+      SF_INFO sf_src_info;
+      SNDFILE* sf_src;
+
+      memset(&sf_src_info, 0, sizeof(sf_src_info));
+      // If this fails it is likely because faad could not decode.
+      if((sf_src = sf_open(tmpname, SFM_READ, &sf_src_info)) == NULL)
+	return RDAudioConvert::ErrorFormatError;
+
+      RDAudioConvert::ErrorCode err = Stage1SndFile(dstfile, sf_src, &sf_src_info);
+
+      sf_close(sf_src);
+      unlink(tmpname);
+
+      return err;
+
+    }
+
+  }
+
+}
 
 RDAudioConvert::ErrorCode RDAudioConvert::Stage1SndFile(const QString &dstfile,
 							SNDFILE *sf_src,

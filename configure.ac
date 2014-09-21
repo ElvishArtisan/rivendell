@@ -78,6 +78,8 @@ AC_ARG_ENABLE(lame,[  --disable-lame          disable MPEG Layer 3 encode suppor
 		      [LAME_DISABLED=yes],[])
 AC_ARG_ENABLE(flac,[  --disable-flac          disable FLAC encode/decode support],
 		      [FLAC_DISABLED=yes],[])
+AC_ARG_ENABLE(mp4v2,[ --disable-mp4           disable M4A decode support],
+		      [MP4V2_DISABLED=yes],[])
 
 #
 # Check for Qt
@@ -207,9 +209,23 @@ if test -z $FLAC_DISABLED ; then
 fi
 
 #
+# Check for MP4V2
+#
+if test -z $MP4V2_DISABLED ; then
+  AC_CHECK_HEADER(mp4v2/mp4v2.h,[MP4V2_HEADER_FOUND=yes],[])
+  if test $MP4V2_HEADER_FOUND ; then
+    AC_CHECK_LIB(mp4v2,MP4Read,[MP4V2_FOUND=yes],[])
+  fi
+  if test $MP4V2_FOUND ; then
+    MP4V2_LIBS="-lmp4v2"
+    AC_DEFINE(HAVE_MP4V2)
+  fi
+fi
+
+#
 # Set Hard Library Dependencies
 #
-AC_SUBST(LIB_RDLIBS,"-lm -lpthread -lqui -lrd -lcurl -lid3 $FLAC_LIBS -lsndfile -lsamplerate -lcdda_interface -lcdda_paranoia -lcrypt -ldl -lpam -lSoundTouch")
+AC_SUBST(LIB_RDLIBS,"-lm -lpthread -lqui -lrd -lcurl -lid3 $FLAC_LIBS $MP4V2_LIBS -lsndfile -lsamplerate -lcdda_interface -lcdda_paranoia -lcrypt -ldl -lpam -lSoundTouch")
 
 #
 # Setup MPEG Dependencies
@@ -530,6 +546,11 @@ if test -z $VORBIS_FOUND ; then
 AC_MSG_NOTICE("|       OggVorbis Encoding/Decoding Support ... No    |")
 else
 AC_MSG_NOTICE("|       OggVorbis Encoding/Decoding Support ... Yes   |")
+fi
+if test -z $MP4V2_FOUND ; then
+AC_MSG_NOTICE("|                      M4A Decoding Support ... No    |")
+else
+AC_MSG_NOTICE("|                      M4A Decoding Support ... Yes   |")
 fi
 AC_MSG_NOTICE("|                                                     |")
 AC_MSG_NOTICE("| Optional Components:                                |")

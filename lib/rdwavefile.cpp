@@ -48,6 +48,10 @@
 #include <rdwavefile.h>
 #include <rdconf.h>
 
+#ifdef HAVE_MP4V2
+#include <mp4v2/mp4v2.h>
+#endif
+
 RDWaveFile::RDWaveFile(QString file_name)
 {
   // 
@@ -321,6 +325,94 @@ bool RDWaveFile::openWave(RDWaveData *data)
     wave_type=RDWaveFile::Mpeg;
     ReadId3Metadata();
     break;
+
+  case RDWaveFile::M4A:
+    {
+#ifdef HAVE_MP4V2   
+
+      format_tag=WAVE_FORMAT_M4A;
+
+      MP4FileHandle f = MP4Read(getName());
+      if(f == MP4_INVALID_FILE_HANDLE)
+	return false;
+
+      // Find an audio track, and populate sample rate, bits/sample etc.
+      uint32_t nTracks = MP4GetNumberOfTracks(f);
+
+      MP4TrackId audioTrack = MP4_INVALID_TRACK_ID;
+      for(uint32_t trackIndex = 0; trackIndex < nTracks && audioTrack == MP4_INVALID_TRACK_ID; ++trackIndex) {
+
+	MP4TrackId thisTrack = MP4FindTrackId(f, trackIndex);
+	const char* trackType = MP4GetTrackType(f, thisTrack);
+	if(trackType && !strcmp(trackType, MP4_AUDIO_TRACK_TYPE)) {
+   
+	  const char* dataName = MP4GetTrackMediaDataName(f, thisTrack);
+	  // The M4A format is only currently useful for AAC in an M4A container:
+	  if(dataName && 
+	     (!strcasecmp(dataName, "mp4a")) && 
+	     MP4GetTrackEsdsObjectTypeId(f, thisTrack) == MP4_MPEG4_AUDIO_TYPE) {
+
+	    audioTrack = thisTrack;
+
+	  }
+
+	}
+
+      }
+
+      if(audioTrack == MP4_INVALID_TRACK_ID) {
+	MP4Close(f);
+	return false;
+      }
+
+      // Found audio track. Get audio data:
+      avg_bytes_per_sec = MP4GetTrackBitRate(f, audioTrack);
+      channels = MP4GetTrackAudioChannels(f, audioTrack);
+
+      MP4Duration trackDuration = MP4GetTrackDuration(f, audioTrack);
+      ext_time_length = (unsigned)MP4ConvertFromTrackDuration(f, audioTrack, trackDuration, 
+							      MP4_MSECS_TIME_SCALE);
+      time_length = ext_time_length / 1000;
+      samples_per_sec = MP4GetTrackTimeScale(f, audioTrack);
+      bits_per_sample = 16;
+      data_start = 0;
+      sample_length = MP4GetTrackNumberOfSamples(f, audioTrack);
+      data_length = sample_length * 2 * channels;
+      data_chunk = true;
+      format_chunk = true;
+      wave_type = RDWaveFile::M4A;
+
+      // Now extract metadata (title, artist, etc)
+
+      if(wave_data) {
+
+	const MP4Tags* tags = MP4TagsAlloc();
+	MP4TagsFetch(tags, f);
+	
+	wave_data->setMetadataFound(true);
+	
+	if(tags->name)
+	  wave_data->setTitle(tags->name);
+	if(tags->artist)
+	  wave_data->setArtist(tags->artist);
+	if(tags->composer)
+	  wave_data->setComposer(tags->composer);
+	if(tags->album)
+	  wave_data->setAlbum(tags->album);
+
+	MP4TagsFree(tags);
+
+      }
+
+      MP4Close(f);
+
+      return true;
+
+#else
+      return false;
+#endif
+      break;
+    }
 
   case RDWaveFile::Ogg:
 #ifdef HAVE_VORBIS
@@ -2020,6 +2112,9 @@ RDWaveFile::Type RDWaveFile::GetType(int fd)
   if(IsOgg(fd)) {
     return RDWaveFile::Ogg;
   }
+  if(IsM4A(fd)) {
+    return RDWaveFile::M4A;
+  }
   if(IsMpeg(fd)) {
     return RDWaveFile::Mpeg;
   }
@@ -2211,6 +2306,18 @@ bool RDWaveFile::IsAiff(int fd)
   return true;
 }
 
+bool RDWaveFile::IsM4A(int fd)
+{
+#ifdef HAVE_MP4V2
+  MP4FileHandle f = MP4Read(getName());
+  bool ret = f != MP4_INVALID_FILE_HANDLE;
+  if(ret)
+    MP4Close(f);
+  return ret;
+#else
+  return false;
+#endif
+}
 
 off_t RDWaveFile::FindChunk(int fd,const char *chunk_name,unsigned *chunk_size,
 			    bool big_end)

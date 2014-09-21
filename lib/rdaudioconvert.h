@@ -70,6 +70,8 @@ class RDAudioConvert : public QObject
 					 RDWaveFile *wave);
   RDAudioConvert::ErrorCode Stage1Mpeg(const QString &dstfile,
 				       RDWaveFile *wave);
+  RDAudioConvert::ErrorCode Stage1M4A(const QString &dstfile,
+				      RDWaveFile *wave);
   RDAudioConvert::ErrorCode Stage1SndFile(const QString &dstfile,
 					  SNDFILE *sf_src,
 					  SF_INFO *sf_src_info);
