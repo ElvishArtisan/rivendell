@@ -14492,3 +14492,5 @@
 2014-09-19 Alban Peignier <alban@tryphon.eu>
 	* Fixed 'web/rdxport/carts.cpp' which tried to create associated group
 	during cart creation
+2014-09-20 Alban Peignier <alban@tryphon.eu>
+	* Fixes 'Next Timed Start: [nn:nn:nn]' encoding in RdAirPlay
