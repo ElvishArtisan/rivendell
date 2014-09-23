@@ -123,16 +123,25 @@ EditClock::EditClock(QString clockname,bool new_clock,
   //  Add Button
   //
   QPushButton *button=new QPushButton(this,"add_button");
-  button->setGeometry(70,sizeHint().height()-210,80,50);
+  button->setGeometry(10,sizeHint().height()-210,80,50);
   button->setFont(bold_font);
   button->setText(tr("&Add"));
   connect(button,SIGNAL(clicked()),this,SLOT(addData()));
 
   //
+  //  Clone Button
+  //
+  button=new QPushButton(this,"clone_button");
+  button->setGeometry(110,sizeHint().height()-210,80,50);
+  button->setFont(bold_font);
+  button->setText(tr("&Clone"));
+  connect(button,SIGNAL(clicked()),this,SLOT(cloneData()));
+  
+  //
   //  Edit Button
   //
   button=new QPushButton(this,"edit_button");
-  button->setGeometry(160,sizeHint().height()-210,80,50);
+  button->setGeometry(210,sizeHint().height()-210,80,50);
   button->setFont(bold_font);
   button->setText(tr("&Edit"));
   connect(button,SIGNAL(clicked()),this,SLOT(editData()));
@@ -141,7 +150,7 @@ EditClock::EditClock(QString clockname,bool new_clock,
   //  Delete Button
   //
   button=new QPushButton(this,"delete_button");
-  button->setGeometry(250,sizeHint().height()-210,80,50);
+  button->setGeometry(310,sizeHint().height()-210,80,50);
   button->setFont(bold_font);
   button->setText(tr("&Delete"));
   connect(button,SIGNAL(clicked()),this,SLOT(deleteData()));
@@ -330,6 +339,39 @@ void EditClock::editData()
   RefreshList();
 }
 
+void EditClock::cloneData()
+{
+  RDListViewItem *item=(RDListViewItem *)edit_clocks_list->selectedItem();
+  if(item==NULL) {
+    return;
+  }
+  if(item->text(4).isEmpty()) {
+    return;
+  }
+  int line=item->text(4).toInt();
+  line=item->text(4).toInt();
+  
+  RDEventLine *selectedEventLine = edit_clock->eventLine(line);
+
+  RDEventLine eventline;
+  eventline.setName(selectedEventLine->name());
+  eventline.setStartTime(selectedEventLine->startTime().addMSecs(selectedEventLine->length()));
+  eventline.setLength(selectedEventLine->length());
+  
+  EditEventLine *edit_eventline=new EditEventLine(&eventline,edit_clock,-1,
+						  this,"edit_eventline");
+  if(edit_eventline->exec()<0) {
+    delete edit_eventline;
+    return;
+  }
+  delete edit_eventline;
+  edit_clock->insert(eventline.name(),line);
+  edit_clock->eventLine(line)->setStartTime(eventline.startTime());
+  edit_clock->eventLine(line)->setLength(eventline.length());
+  edit_clock->eventLine(line)->load();
+  edit_modified=true;
+  RefreshList(line);
+}
 
 void EditClock::deleteData()
 {
