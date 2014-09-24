@@ -14509,3 +14509,6 @@
 2014-09-24 Fred Gleason <fredg@paravelsystems.com>
 	* Added code in 'rdlogedit/edit_log.cpp' to append a cart to the
 	log when the 'End of Log' marker is double-clicked.
+2014-09-24 Fred Gleason <fredg@paravelsystems.com>
+	* Applied a patch from smowton that fixed a clashing id problem
+	when auto-refreshing logs in RDAirPlay [GitHub pull request #000028].
