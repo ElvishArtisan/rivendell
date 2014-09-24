@@ -325,7 +325,6 @@ void EditClock::editData()
     return;
   }
   int line=item->text(4).toInt();
-  line=item->text(4).toInt();
   EditEventLine *edit_eventline=new EditEventLine(edit_clock->eventLine(line),
 						  edit_clock,line,
 						  this,"edit_eventline");
@@ -349,7 +348,6 @@ void EditClock::cloneData()
     return;
   }
   int line=item->text(4).toInt();
-  line=item->text(4).toInt();
   
   RDEventLine *selectedEventLine = edit_clock->eventLine(line);
 

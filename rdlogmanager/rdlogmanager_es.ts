@@ -187,6 +187,10 @@ horario</translation>
         <source>Remarks</source>
         <translation>Comentarios</translation>
     </message>
+    <message>
+        <source>&amp;Clone</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditEvent</name>
