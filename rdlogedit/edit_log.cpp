@@ -818,7 +818,12 @@ void EditLog::selectionChangedData()
 
 void EditLog::doubleClickData(QListViewItem *item)
 {
-  editButtonData();
+  if(item->text(12).toInt()==END_MARKER_ID) {
+    insertCartButtonData();
+  }
+  else {
+    editButtonData();
+  }
 }
 
 

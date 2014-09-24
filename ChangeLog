@@ -14506,3 +14506,6 @@
 	* Applied a patch from albanpeignier for RDLogEdit that appends
 	a new cart to a log if 'Add' is touch with no long line highlighted
 	[GitHub pull request #000031.
+2014-09-24 Fred Gleason <fredg@paravelsystems.com>
+	* Added code in 'rdlogedit/edit_log.cpp' to append a cart to the
+	log when the 'End of Log' marker is double-clicked.
