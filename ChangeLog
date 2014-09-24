@@ -14497,3 +14497,5 @@
 2014-09-20 Alban Peignier <alban@tryphon.eu>
 	* Merged patch from albanpeignier to use RDCart::selectCut()
 	in RDSimplePlayer [GitHub issue #000025].
+2014-09-24 Fred Gleason <fredg@paravelsystems.com>
+	* Removed redundant line assignments in 'rdlogmanager/edit_clock.cpp'.

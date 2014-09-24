@@ -57,6 +57,7 @@ class EditClock : public QDialog
  private slots:
   void selectionChangedData(QListViewItem *);
   void addData();
+  void cloneData();
   void editData();
   void deleteData();
   void svcData();
