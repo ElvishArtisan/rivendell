@@ -61,8 +61,8 @@ class RDLogEvent
    QTime blockStartTime(int line);
    RDLogLine *logLine(int line) const;
    void setLogLine(int line,RDLogLine *ll);
-   RDLogLine *loglineById(int id) const;
-   int lineById(int id) const;
+   RDLogLine *loglineById(int id, bool ignore_holdovers=false) const;
+   int lineById(int id, bool ignore_holdovers=false) const;
    int lineByStartHour(int hour,RDLogLine::StartTimeType type) const;
    int lineByStartHour(int hour) const;
    int nextTimeStart(QTime after);

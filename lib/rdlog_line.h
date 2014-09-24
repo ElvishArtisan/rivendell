@@ -265,6 +265,8 @@ class RDLogLine
   static QString typeText(RDLogLine::Type type);
   static QString timeTypeText(RDLogLine::TimeType type);
   static QString sourceText(RDLogLine::Source src);
+  bool isHoldover() const;
+  void setHoldover(bool);
 
  private:
   int log_id;
@@ -368,6 +370,7 @@ class RDLogLine
   int log_link_end_slop;
   int log_link_id;
   bool log_link_embedded;
+  bool is_holdover;
 };
 
 
