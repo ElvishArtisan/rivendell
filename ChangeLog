@@ -14499,3 +14499,6 @@
 	in RDSimplePlayer [GitHub issue #000025].
 2014-09-24 Fred Gleason <fredg@paravelsystems.com>
 	* Removed redundant line assignments in 'rdlogmanager/edit_clock.cpp'.
+	* Applied a patch from albanpeignier that adds a 'Clone' button
+	to the 'Edit Clock' dialog in 'rdlogmanager/edit_clock.cpp' and
+	'rdlogmanager/edit_clock.h' [GitHub pull request #000030].
