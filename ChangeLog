@@ -14502,3 +14502,7 @@
 	* Applied a patch from albanpeignier that adds a 'Clone' button
 	to the 'Edit Clock' dialog in 'rdlogmanager/edit_clock.cpp' and
 	'rdlogmanager/edit_clock.h' [GitHub pull request #000030].
+2014-09-24 Fred Gleason <fredg@paravelsystems.com>
+	* Applied a patch from albanpeignier for RDLogEdit that appends
+	a new cart to a log if 'Add' is touch with no long line highlighted
+	[GitHub pull request #000031.

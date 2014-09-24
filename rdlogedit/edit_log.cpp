@@ -686,13 +686,12 @@ void EditLog::insertCartButtonData()
   int id;
 
   QListViewItem *item=SingleSelection();
-  if(item==NULL) {
-    return;
+  if(item==NULL || (line=item->text(13).toInt())<0) {
+    line=edit_log_event->size();
+    id=END_MARKER_ID;
+  } else {
+    id=item->text(12).toInt();
   }
-  if((line=item->text(13).toInt())<0) {
-    line=0;
-  }
-  id=item->text(12).toInt();
   edit_log_event->insert(line,1);
   edit_log_event->logLine(line)->setTransType(edit_default_trans);
   edit_log_event->logLine(line)->setFadeupGain(-3000);
