@@ -503,13 +503,19 @@ void LogPlay::load()
     if(lines[running-1]<(size()-1)) {
       remove(lines[running-1]+1,size()-lines[running-1]-1,false);
     }
-    for(int i=running-2;i>0;i--) {
+    for(int i=running-1;i>0;i--) {
       remove(lines[i-1]+1,lines[i]-lines[i-1]-1,false);
     }
     if(lines[0]!=0) {
       remove(0,lines[0],false);
     }
   }
+
+  // Note that events left in the log are holdovers from a previous log.
+  // Their IDs may clash with those of events in the log we will now load,
+  // and it may be appropriate to ignore them in that case.
+  for(int i = 0, ilim = size(); i != ilim; ++i)
+    logLine(i)->setHoldover(true);
 
   //
   // Load Events
@@ -588,6 +594,7 @@ bool LogPlay::refresh()
   int current_id=-1;
   int lines[TRANSPORT_QUANTITY];
   int running;
+  int first_non_holdover = 0;
 
   if(play_macro_running) {
     play_refresh_pending=true;
@@ -633,7 +640,12 @@ bool LogPlay::refresh()
   for(int i=0;i<size();i++) {
     d=logLine(i);
     if(d->status()!=RDLogLine::Scheduled) {
-      if((s=e->loglineById(d->id()))!=NULL) {
+      if((!d->isHoldover()) && (s=e->loglineById(d->id()))!=NULL) {
+	// A holdover event may be finished or active,
+	// but should not supress the addition of an
+	// event with the same ID in this log.
+	// Incrementing its ID here may flag it as an orphan
+	// to be removed in step 4.
 	s->incrementPass();
       }
       d->incrementPass();
@@ -649,6 +661,15 @@ bool LogPlay::refresh()
     }
   }
 
+  // Find first non-holdover event, where start-of-log
+  // new events should be added:
+  for(int i=0;i<e->size();i++) {
+    if(logLine(i)->isHoldover())
+      ++first_non_holdover;
+    else
+      break;
+  }
+
   //
   // Pass 3: Add New Events
   //
@@ -656,15 +677,15 @@ bool LogPlay::refresh()
     s=e->logLine(i);
     if(s->pass()==0) {
       if((prev_line=(i-1))<0) {  // First Event
-	insert(0,s,false,true);
+	insert(first_non_holdover,s,false,true);
       }
       else {
 	prev_id=e->logLine(prev_line)->id();   
-	insert(lineById(prev_id)+1,s,false,true);   
+	insert(lineById(prev_id, /*ignore_holdovers=*/true)+1,s,false,true);   
       }
     }
     else {
-      loglineById(s->id())->incrementPass();
+      loglineById(s->id(), /*ignore_holdovers=*/true)->incrementPass();
     }
   }
 
@@ -681,13 +702,16 @@ bool LogPlay::refresh()
   //
   // Restore Next Event
   //
-  if(current_id!=-1 && e->loglineById(current_id)!=NULL) {    //Make Next after currently playing cart
-    if((next_line=lineById(current_id))>=0) {    
+  if(current_id!=-1 && e->loglineById(current_id)!=NULL) {    
+    // Make Next after currently playing cart
+    // The next event cannot have been a holdover,
+    // as holdovers are always either active or finished.
+    if((next_line=lineById(current_id, /*ignore_holdovers=*/true))>=0) {    
       makeNext(next_line+1,false);              
     }
   }
   else {
-    if((next_line=lineById(next_id))>=0) {     
+    if((next_line=lineById(next_id, /*ignore_holdovers=*/true))>=0) {     
      makeNext(next_line,false);               
     }
   } 

@@ -626,20 +626,22 @@ void RDLogEvent::setLogLine(int line,RDLogLine *ll)
 }
 
 
-RDLogLine *RDLogEvent::loglineById(int id) const
+RDLogLine *RDLogEvent::loglineById(int id, bool ignore_holdovers) const
 {
-  for(int i=0;i<size();i++) {
-    if(log_line[i]->id()==id) {
-      return log_line[i];
-    }
-  }
-  return NULL;
+  int line = lineById(id, ignore_holdovers);
+  if(line == -1)
+    return NULL;
+  else
+    return log_line[line];
 }
 
 
-int RDLogEvent::lineById(int id) const
+int RDLogEvent::lineById(int id, bool ignore_holdovers) const
 {
   for(int i=0;i<size();i++) {
+    if(ignore_holdovers && log_line[i]->isHoldover()) {
+      continue;
+    }    
     if(log_line[i]->id()==id) {
       return i;
     }
