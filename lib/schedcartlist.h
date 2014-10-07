@@ -21,43 +21,32 @@
 //
 
 #include <qsqldatabase.h>
-
+#include <qdatetime.h>
+#include <schedcart.h>
 
 #ifndef SCHEDCARTLIST_H
 #define SCHEDCARTLIST_H
 
-
 class SchedCartList
 {
   public:
-   SchedCartList(int listsize);
+   SchedCartList();
    ~SchedCartList();
-   void insertItem(unsigned cartnumber,int cartlength,int stack_id,QString stack_artist,QString stack_schedcodes);
-   void removeItem(int itemnumber);
-   bool removeIfCode(int itemnumber,QString test_code);
-   bool itemHasCode(int itemnumber,QString test_code);
-   unsigned getItemCartnumber(int itemnumber);
-   int getItemCartlength(int itemnumber);
-   int getItemStackid(int itemnumber);
-   QString getItemArtist(int itemnumber);
-   QString getItemSchedCodes(int itemnumber);
-   int getNumberOfItems(void);
-   void save(void);
-   void restore(void);
+
+   void insert(unsigned cartnumber,QString stack_artist,QString stack_schedcodes);
+   SchedCart *first();
+   void excludeIfCode(QString code);
+   void saveOrBreakRule(QString ruleName, QTime time, QString *errors);
+   SchedCart *sample();
    
-  private:
-   int itemcounter;
-   int saveitemcounter;
-   unsigned* cartnum;
-   unsigned* savecartnum;
-   int* cartlen;
-   int* savecartlen;
-   int* stackid;
-   int* savestackid;
-   QString* saveartist;
-   QString* artist;
-   QString* sched_codes;
-   QString* save_sched_codes;
+ private:
+   SchedCart *first_sched_cart;
+
+   bool allExcluded();
+   void clearExclusions();
+   void save();
+   
+   int size();
 };
 
 
