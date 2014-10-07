@@ -623,13 +623,11 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
       }
       delete q;
 
-      int stackid;
-      sql=QString().sprintf("SELECT SCHED_STACK_ID from %s_STACK order by SCHED_STACK_ID",(const char*)svcname_rp);
+      int stackid = 0;
+      sql=QString().sprintf("SELECT SCHED_STACK_ID from %s_STACK order by SCHED_STACK_ID desc limit 1",(const char*)svcname_rp);
       q=new RDSqlQuery(sql);
-      if (q->last()) { 
+      if (q->next()) { 
         stackid=q->value(0).toUInt();
-      } else { 
-        stackid=0;
       }
       stackid++;    
       delete q;
