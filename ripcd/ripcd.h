@@ -83,6 +83,7 @@ class MainObject : public QObject
  private:
   void SetUser(QString username);
   void ExecCart(int cartnum);
+  void LogGpioEvent(int matrix,int line,RDMatrix::GpioType type,bool state);
   void ParseCommand(int);
   void DispatchCommand(int);
   void KillSocket(int);

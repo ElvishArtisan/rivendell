@@ -41,6 +41,7 @@ EXTRA_DIST = audio_perms.txt\
              encoders.txt\
              extended_panel_names.txt\
              feed_perms.txt\
+             gpio_events.txt\
              gpis.txt\
              gpos.txt\
              groups.txt\

@@ -14504,7 +14504,7 @@
 	'rdlogmanager/edit_clock.h' [GitHub pull request #000030].
 2014-09-24 Fred Gleason <fredg@paravelsystems.com>
 	* Applied a patch from albanpeignier for RDLogEdit that appends
-	a new cart to a log if 'Add' is touch with no long line highlighted
+	a new cart to a log if 'Add' is touched with no log line highlighted
 	[GitHub pull request #000031.
 2014-09-24 Fred Gleason <fredg@paravelsystems.com>
 	* Added code in 'rdlogedit/edit_log.cpp' to append a cart to the
@@ -14512,3 +14512,12 @@
 2014-09-24 Fred Gleason <fredg@paravelsystems.com>
 	* Applied a patch from smowton that fixed a clashing id problem
 	when auto-refreshing logs in RDAirPlay [GitHub pull request #000028].
+2014-10-07 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'GPIO_EVENTS' table to the database.
+	* Incremented the database version to 240.
+	* Implemented GPIO event logging in 'ripcd/local_macros.cpp' and
+	'ripcd/ripcd.h'.
+	* Added an 'Events Log' area to RDGpiMon(1) in
+	'utils/rdgpimon/rdgpimon.cpp' and 'utils/rdgpimon/rdgpimon.h'.
+	* Added code in rdmaint(1) to purge logged GPIO events in
+	'utils/rdmaint/rdmaint.cpp' and 'utils/rdmaint/rdmaint.h'.

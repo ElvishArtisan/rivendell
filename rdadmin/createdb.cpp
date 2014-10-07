@@ -2345,16 +2345,32 @@ bool CreateDb(QString name,QString pwd)
   //
   // Create DROPBOX_SCHED_CODES table
   //
-    sql=QString("create table if not exists DROPBOX_SCHED_CODES(")+
-      "ID int auto_increment not null primary key,"+
-      "DROPBOX_ID int not null,"+
-      "SCHED_CODE char(11) not null,"
-      "index DROPBOX_ID_IDX(DROPBOX_ID),"+
-      "index SCHED_CODE_IDX(SCHED_CODE))";
+  sql=QString("create table if not exists DROPBOX_SCHED_CODES(")+
+    "ID int auto_increment not null primary key,"+
+    "DROPBOX_ID int not null,"+
+    "SCHED_CODE char(11) not null,"
+    "index DROPBOX_ID_IDX(DROPBOX_ID),"+
+    "index SCHED_CODE_IDX(SCHED_CODE))";
   if(!RunQuery(sql)) {
      return false;
   }
-  
+
+  //
+  // Create GPIO_EVENTS table
+  //
+  sql=QString("create table if not exists GPIO_EVENTS(")+
+    "ID int auto_increment not null primary key,"+
+    "STATION_NAME char(64) not null,"+
+    "MATRIX int not null,"+
+    "NUMBER int not null,"+
+    "TYPE int not null,"+
+    "EDGE int not null,"+
+    "EVENT_DATETIME datetime not null,"+
+    "index STATION_NAME_IDX(STATION_NAME,MATRIX,TYPE,EVENT_DATETIME,EDGE))";
+  if(!RunQuery(sql)) {
+     return false;
+  }
+
   return true;
 }
 
@@ -8030,6 +8046,20 @@ int UpdateDb(int ver)
       "SCHED_CODE char(11) not null,"
       "index DROPBOX_ID_IDX(DROPBOX_ID),"+
       "index SCHED_CODE_IDX(SCHED_CODE))";
+    q=new QSqlQuery(sql);
+    delete q;
+  }
+
+  if(ver<240) {
+  sql=QString("create table if not exists GPIO_EVENTS(")+
+    "ID int auto_increment not null primary key,"+
+    "STATION_NAME char(64) not null,"+
+    "MATRIX int not null,"+
+    "NUMBER int not null,"+
+    "TYPE int not null,"+
+    "EDGE int not null,"+
+    "EVENT_DATETIME datetime not null,"+
+    "index STATION_NAME_IDX(STATION_NAME,MATRIX,TYPE,EVENT_DATETIME,EDGE))";
     q=new QSqlQuery(sql);
     delete q;
   }
