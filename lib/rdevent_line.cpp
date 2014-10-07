@@ -732,43 +732,38 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
         delete q1;
 
         schedulerList->saveOrBreakRule(QString("Max. in a Row/Min. Wait for ") + code, time, errors);
-          
+
         // do not play after
-        if (!notAfterCode1.isEmpty()) {
-          QString wstr= (notAfterCode1 + QString("          ")).left(11);
-          sql=QString().sprintf("select CART from %s_STACK where SCHED_STACK_ID = %d and SCHED_CODES like \"%%%s%%\"",(const char*)svcname_rp,(stackid-1),(const char *)wstr);
+        if (!notAfterCode1.isEmpty() || !notAfterCode2.isEmpty() || !notAfterCode3.isEmpty()) {
+          sql=QString().sprintf("select SCHED_CODES from %s_STACK where SCHED_STACK_ID = %d",(const char*)svcname_rp,stackid-1);
           q1=new RDSqlQuery(sql);
-          if (q1->size()>0)	{
-            schedulerList->excludeIfCode(notAfterCode1);
-          }
-          delete q1;
+          if (q1->next())	{
+            QString lastSchedulerCodes = q1->value(0).toString();
 
-          schedulerList->saveOrBreakRule(QString("Do not schedule ") + code + QString(" after ") + notAfterCode1, time, errors);
-        }
-        // or after
-        if (!notAfterCode2.isEmpty()) {
-          QString wstr= (notAfterCode2 + QString("          ")).left(11);
-          sql=QString().sprintf("select CART from %s_STACK where SCHED_STACK_ID = %d and SCHED_CODES like \"%%%s%%\"",(const char*)svcname_rp,(stackid-1),(const char *)wstr);
-          q1=new RDSqlQuery(sql);
-          if (q1->size()>0)	{
-            schedulerList->excludeIfCode(notAfterCode2);
-          }
-          delete q1;
+            if (!notAfterCode1.isEmpty()) {
+              QString test= (notAfterCode1 + QString("          ")).left(11);
+              if (lastSchedulerCodes.find(test) >= 0) {
+                schedulerList->excludeIfCode(code);
+                schedulerList->saveOrBreakRule(QString("Do not schedule ") + code + QString(" after ") + notAfterCode1, time, errors);
+              }
+            }
 
-          schedulerList->saveOrBreakRule(QString("Do not schedule ") + code + QString(" after ") + notAfterCode2, time, errors);
-        }
-        
-        // or after II
-        if (!notAfterCode3.isEmpty()) {
-          QString wstr= (notAfterCode3 + QString("          ")).left(11);
-          sql=QString().sprintf("select CART from %s_STACK where SCHED_STACK_ID = %d and SCHED_CODES like \"%%%s%%\"",(const char*)svcname_rp,(stackid-1),(const char *)wstr);
-          q1=new RDSqlQuery(sql);
-          if (q1->size()>0)	{
-            schedulerList->excludeIfCode(notAfterCode3);
-          }
-          delete q1;
+            if (!notAfterCode2.isEmpty()) {
+              QString test= (notAfterCode2 + QString("          ")).left(11);
+              if (lastSchedulerCodes.find(test) >= 0) {
+                schedulerList->excludeIfCode(code);
+                schedulerList->saveOrBreakRule(QString("Do not schedule ") + code + QString(" after ") + notAfterCode2, time, errors);
+              }
+            }
 
-          schedulerList->saveOrBreakRule(QString("Do not schedule ") + code + QString(" after ") + notAfterCode3, time, errors);
+            if (!notAfterCode3.isEmpty()) {
+              QString test= (notAfterCode3 + QString("          ")).left(11);
+              if (lastSchedulerCodes.find(test) >= 0) {
+                schedulerList->excludeIfCode(code);
+                schedulerList->saveOrBreakRule(QString("Do not schedule ") + code + QString(" after ") + notAfterCode3, time, errors);
+              }
+            }
+          }
         }
       }
       delete q;
