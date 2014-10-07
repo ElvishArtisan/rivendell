@@ -605,7 +605,7 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
     
     time.addMSecs(postimport_length);
     
-    sql=QString().sprintf("select NUMBER,ARTIST,SCHED_CODES from CART where GROUP_NAME='%s'",(const char *)SchedGroup()); 
+    sql=QString().sprintf("select NUMBER,ARTIST,SCHED_CODES from CART where GROUP_NAME='%s' order by NUMBER desc",(const char *)SchedGroup());
     
     q=new RDSqlQuery(sql);
     if (q->size()>0) {
@@ -636,13 +636,29 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
       
       // Add deconflicting rules here		  
       // Title separation 
-      sql=QString().sprintf("select CART from %s_STACK where SCHED_STACK_ID >= %d",(const char*)svcname_rp,(stackid-titlesep));
+      sql=QString().sprintf("select DISTINCT(CART) from %s_STACK where SCHED_STACK_ID >= %d order by CART",(const char*)svcname_rp,(stackid-titlesep));
       q=new RDSqlQuery(sql);
-      while (q->next())	{
-        unsigned cartStack = q->value(0).toUInt();
-        for (current = schedulerList->first(); current != NULL; current = current->next()) {
+      q->next();
+
+      current = schedulerList->first();
+
+      while (current != NULL && q->isValid()) {
+        while (q->value(0).toUInt() < current->getCartNumber() && q->next()) {
+          // skip no candidate CART
+        }
+
+        if (q->isValid()) {
+          unsigned cartStack = q->value(0).toUInt();
+
           if (current->getCartNumber() == cartStack) {
+            // exckude candidate CART present in stack
             current->exclude();
+            current = current->next();
+          }
+
+          while (current != NULL && current->getCartNumber() < cartStack) {
+            // skip candidate CART not present in stack
+            current = current->next();
           }
         }
       }      
