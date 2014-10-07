@@ -667,7 +667,7 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
       schedulerList->saveOrBreakRule(QString("Title Separation"), time, errors);
       
       // Artist separation
-      sql=QString().sprintf("select ARTIST from %s_STACK where SCHED_STACK_ID >= %d",(const char*)svcname_rp,(stackid-artistsep));
+      sql=QString().sprintf("select DISTINCT(ARTIST) from %s_STACK where SCHED_STACK_ID >= %d",(const char*)svcname_rp,(stackid-artistsep));
       q=new RDSqlQuery(sql);
       while (q->next())	{
         QString stack_artist = q->value(0).toString();
