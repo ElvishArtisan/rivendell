@@ -3759,6 +3759,8 @@ bool RDWaveFile::GetFlacStreamInfo()
   bits_per_sample=sinfo.data.stream_info.bits_per_sample;
   sample_length=sinfo.data.stream_info.total_samples;
   channels=sinfo.data.stream_info.channels;
+  ext_time_length=(unsigned)(1000.0*(double)sample_length/(double)samples_per_sec);
+  time_length=ext_time_length/1000;
   return true;
 #else
   return false;
