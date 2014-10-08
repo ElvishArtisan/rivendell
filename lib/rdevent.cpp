@@ -408,6 +408,17 @@ void RDEvent::setHaveCode(QString str)
   SetRow("HAVE_CODE",str,true);
 }
 
+QString RDEvent::HaveCode2()
+{
+  bool ok;
+  return GetStringValue("HAVE_CODE2",&ok);
+}
+
+
+void RDEvent::setHaveCode2(QString str)
+{
+  SetRow("HAVE_CODE2",str,true);
+}
 
 unsigned RDEvent::titleSep()
 {

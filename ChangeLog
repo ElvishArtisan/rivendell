@@ -14527,3 +14527,8 @@
 2014-10-08 Fred Gleason <fredg@paravelsystems.com>
 	* Added code in 'utils/rdimport/rdimport.cpp' to ensure that
 	imports do not end up with an empty cut description field.
+2014-10-08 Fred Gleason <fredg@paravelsystems.com>
+	* Applied a patch from albanpeignier that adds a second scheduler
+	code for music events.
+	* Added an 'EVENTS.HAVE_CODE2' field to the database.
+	* Incremented the database version to 241.
