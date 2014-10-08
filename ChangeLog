@@ -14532,3 +14532,6 @@
 	code for music events.
 	* Added an 'EVENTS.HAVE_CODE2' field to the database.
 	* Incremented the database version to 241.
+2014-10-08 Fred Gleason <fredg@paravelsystems.com>
+	* Applied a patch from albanpeignier that fixed a random/null
+	end point with FLAC imports [GitHub pull request #000034].
