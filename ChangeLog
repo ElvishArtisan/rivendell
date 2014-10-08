@@ -14521,3 +14521,6 @@
 	'utils/rdgpimon/rdgpimon.cpp' and 'utils/rdgpimon/rdgpimon.h'.
 	* Added code in rdmaint(1) to purge logged GPIO events in
 	'utils/rdmaint/rdmaint.cpp' and 'utils/rdmaint/rdmaint.h'.
+2014-10-07 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'Report' button to RDGpiMon(1) in
+	'utils/rdgpimon/rdgpimon.cpp' and 'utils/rdgpimon/rdgpimon.h'.

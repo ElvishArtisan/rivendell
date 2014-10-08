@@ -23,10 +23,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&amp;Close</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Show:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -80,6 +76,18 @@
     </message>
     <message>
         <source>Events Log</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Report</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ON </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OFF</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

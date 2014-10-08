@@ -24,7 +24,7 @@
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation>&amp;Cerrar</translation>
+        <translation type="obsolete">&amp;Cerrar</translation>
     </message>
     <message>
         <source>RDGpiMon - User:</source>
@@ -84,6 +84,18 @@
     </message>
     <message>
         <source>Events Log</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Report</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ON </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OFF</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

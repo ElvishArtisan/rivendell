@@ -68,6 +68,7 @@ class MainWidget : public QWidget
   void eventsDateChangedData(const QDate &date);
   void eventsStateChangedData(int n);
   void eventsScrollData();
+  void eventsReportData();
   void gpiStateChangedData(int matrix,int line,bool state);
   void gpoStateChangedData(int matrix,int line,bool state);
   void gpiMaskChangedData(int matrix,int line,bool state);
@@ -91,7 +92,6 @@ class MainWidget : public QWidget
   RDMatrix *gpi_matrix;
   QComboBox *gpi_type_box;
   QComboBox *gpi_matrix_box;
-  QPushButton *gpi_close_button;
   QPixmap *gpi_rivendell_map;
   GpiLabel *gpi_labels[GPIMON_ROWS*GPIMON_COLS];
   RDTransportButton *gpi_up_button;
@@ -107,6 +107,7 @@ class MainWidget : public QWidget
   QTimer *gpi_events_startup_timer;
   bool gpi_scroll_mode;
   QPalette gpi_scroll_color;
+  QPushButton *gpi_events_report_button;
 };
 
 
