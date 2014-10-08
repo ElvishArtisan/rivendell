@@ -529,6 +529,10 @@ Vil du byta henne ut?</translation>
         <source>IMPORT</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>and code</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditEventLine</name>

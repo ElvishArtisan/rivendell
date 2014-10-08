@@ -8051,21 +8051,28 @@ int UpdateDb(int ver)
   }
 
   if(ver<240) {
-  sql=QString("create table if not exists GPIO_EVENTS(")+
-    "ID int auto_increment not null primary key,"+
-    "STATION_NAME char(64) not null,"+
-    "MATRIX int not null,"+
-    "NUMBER int not null,"+
-    "TYPE int not null,"+
-    "EDGE int not null,"+
-    "EVENT_DATETIME datetime not null,"+
-    "index STATION_NAME_IDX(STATION_NAME,MATRIX,TYPE,EVENT_DATETIME,EDGE))";
+    sql=QString("create table if not exists GPIO_EVENTS(")+
+      "ID int auto_increment not null primary key,"+
+      "STATION_NAME char(64) not null,"+
+      "MATRIX int not null,"+
+      "NUMBER int not null,"+
+      "TYPE int not null,"+
+      "EDGE int not null,"+
+      "EVENT_DATETIME datetime not null,"+
+      "index STATION_NAME_IDX(STATION_NAME,MATRIX,TYPE,EVENT_DATETIME,EDGE))";
+    q=new QSqlQuery(sql);
+    delete q;
+  }
+
+  if(ver<241) {
+    sql=QString("alter table EVENTS add column ")+
+      "HAVE_CODE2 VARCHAR(10) after HAVE_CODE";
     q=new QSqlQuery(sql);
     delete q;
   }
 
 
-      
+
   // **** End of version updates ****
   
   //

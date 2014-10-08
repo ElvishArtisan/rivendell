@@ -529,6 +529,23 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   }
   delete q2;
 
+  // And code
+
+  event_have_code2_label=
+    new QLabel(tr("and code"),this,"event_have_code2_label");
+  event_have_code2_label->setFont(bold_font);
+  event_have_code2_label->setGeometry(CENTER_LINE+420,425,100,20);
+
+  event_have_code2_box=new QComboBox(this,"event_have_code2_box");
+  event_have_code2_box->setGeometry(CENTER_LINE+510,425,100,20);
+  event_have_code2_box->insertItem("");
+  sql2="select CODE from SCHED_CODES order by CODE";
+  q2=new RDSqlQuery(sql2);
+  while(q2->next()) {
+    event_have_code2_box->insertItem(q2->value(0).toString());
+  }
+  delete q2;
+
 
   //
   // Start Slop Time
@@ -798,6 +815,7 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   }
   event_title_sep_spinbox->setValue(event_event->titleSep());
   event_have_code_box->setCurrentText(event_event->HaveCode());
+  event_have_code2_box->setCurrentText(event_event->HaveCode2());
   QColor color=event_event->color();
   if(color.isValid()) {
     event_color_button->setPalette(QPalette(color,backgroundColor()));
@@ -1070,6 +1088,8 @@ void EditEvent::importClickedData(int id)
   event_title_sep_spinbox->setEnabled(stateschedinv);
   event_have_code_box->setEnabled(stateschedinv);
   event_have_code_label->setEnabled(stateschedinv);
+  event_have_code2_box->setEnabled(stateschedinv);
+  event_have_code2_label->setEnabled(stateschedinv);
 }
 
 
@@ -1511,7 +1531,14 @@ void EditEvent::Save()
   event_event->setProperties(GetProperties());
   event_event->setSchedGroup(event_sched_group_box->currentText());  
   event_event->setTitleSep(event_title_sep_spinbox->value());
-  event_event->setHaveCode(event_have_code_box->currentText()); 
+  event_event->setHaveCode(event_have_code_box->currentText());
+  if (event_have_code_box->currentText() != QString("")) {
+    event_event->setHaveCode2(event_have_code2_box->currentText());
+  } else {
+    // save second code as first code when first code isn't defined
+    event_event->setHaveCode(event_have_code2_box->currentText());
+    event_event->setHaveCode2(QString(""));
+  }
   listname=event_name;
   listname.replace(" ","_");
   event_preimport_list->logEvent()->

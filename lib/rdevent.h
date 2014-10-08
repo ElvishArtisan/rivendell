@@ -73,6 +73,8 @@ class RDEvent
   void setSchedGroup(QString str);
   QString HaveCode();
   void setHaveCode(QString str);
+  QString HaveCode2();
+  void setHaveCode2(QString str);
   unsigned titleSep();
   void setTitleSep(unsigned titlesep);
   static QString preimportTableName(const QString event_name);

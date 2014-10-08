@@ -70,6 +70,8 @@ class RDEventLine
   void setSchedGroup(QString str);
   QString HaveCode() const;
   void setHaveCode(QString str);
+  QString HaveCode2() const;
+  void setHaveCode2(QString str);
   unsigned titleSep() const;
   void setTitleSep(unsigned titlesep);
   RDLogEvent *preimportCarts();
@@ -112,6 +114,7 @@ class RDEventLine
   QString event_nested_event;
   QString event_sched_group;
   QString event_have_code;
+  QString event_have_code2;
   unsigned event_title_sep;
 };
 
