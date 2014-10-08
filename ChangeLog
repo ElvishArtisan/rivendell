@@ -14524,3 +14524,6 @@
 2014-10-07 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'Report' button to RDGpiMon(1) in
 	'utils/rdgpimon/rdgpimon.cpp' and 'utils/rdgpimon/rdgpimon.h'.
+2014-10-08 Fred Gleason <fredg@paravelsystems.com>
+	* Added code in 'utils/rdimport/rdimport.cpp' to ensure that
+	imports do not end up with an empty cut description field.

@@ -965,6 +965,9 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
       cart->setTitle(wavedata->cutId());
     }
   }
+  if(cut->description().isEmpty()) {      // Final backstop, so we don't end up
+    cut->setDescription(cart->title());   // with an empty description field.
+  }
   if(!import_metadata_pattern.isEmpty()) {
     cart->setTitle(wavedata->title());
   }
