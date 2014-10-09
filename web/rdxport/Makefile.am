@@ -31,6 +31,7 @@ install-exec-hook:
 	if test -z $(DESTDIR) ; then chown root $(DESTDIR)$(libexecdir)/rdxport.cgi ; chmod 4755 $(DESTDIR)$(libexecdir)/rdxport.cgi ; fi
 
 dist_rdxport_cgi_SOURCES = audioinfo.cpp\
+                           audiostore.cpp\
                            carts.cpp\
                            copyaudio.cpp\
                            deleteaudio.cpp\

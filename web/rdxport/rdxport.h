@@ -54,6 +54,7 @@ class Xport : public QObject
   void TrimAudio();
   void CopyAudio();
   void AudioInfo();
+  void AudioStore();
   void ListLogs();
   void ListLog();
   void ListServices();

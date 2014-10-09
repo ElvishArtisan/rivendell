@@ -14535,3 +14535,12 @@
 2014-10-08 Fred Gleason <fredg@paravelsystems.com>
 	* Applied a patch from albanpeignier that fixed a random/null
 	end point with FLAC imports [GitHub pull request #000034].
+2014-10-09 Fred Gleason <fredg@paravelsystems.com>
+	* Implemented the 'RDXPORT_COMMAND_AUDIOSTORE' web API call in
+	'web/rdxport/audiostore.cpp', 'web/rdxport/rdxport.cpp' and
+	'web/rdxport/rdxport.h'.
+	* Added an 'RDAudioStore' class in 'lib/rdaudiostore.cpp' and
+	'lib/rdaudiostore.h'.
+	* Modified the Desk Gauge widget in 'rdlibrary/disk_gauge.cpp'
+	and 'rdlibrary/disk_gauge.h' to use the 'RDAudioStore' class
+	[fixes GitHub issue #000035].
