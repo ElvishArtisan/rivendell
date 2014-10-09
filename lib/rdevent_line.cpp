@@ -693,20 +693,14 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
       }
 
       // Must have second scheduler code
-      if(event_have_code2!="")
-      {
-	schedCL->save();
-	for(counter=0;counter<schedCL->getNumberOfItems();counter++)
-	{
-	  if(!schedCL->itemHasCode(counter,event_have_code2))
-	  {
-	    schedCL->removeItem(counter);
-	    counter--;
-	  }
-	}
-	if(schedCL->getNumberOfItems()==0)
-	  *errors+=QString().sprintf("%s Rule broken: Must have second code %s\n",(const char *)time.toString("hh:mm:ss"),(const char*)event_have_code2);
-	schedCL->restore();
+      if(!event_have_code2.isEmpty()) {
+        for (current = schedulerList->first(); current != NULL; current = current->next()) {
+          if (!current->hasSchedulerCode(event_have_code2)) {
+            current->exclude();
+          }
+        }
+
+        schedulerList->saveOrBreakRule(QString("Must have second code ") + event_have_code2, time, errors);
       }
 
       // Scheduler Codes
