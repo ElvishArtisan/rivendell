@@ -14550,3 +14550,6 @@
 2014-10-10 Fred Gleason <fredg@paravelsystems.com>
 	* Tweaked sensitivity for initiating drags on Sound Panel buttons
 	in '/lib/rdpanel_button.cpp' [GitHub issue #000032].
+2014-10-10 Fred Gleason <fredg@paravelsystems.com>
+	* Adjusted display of Talk Time in button widget to allow for display
+	of lengths greater than :59 [GitHub issue #000018].

@@ -38,7 +38,7 @@ class RDLabel : public QLabel
   Q_OBJECT
 
  public:
-  RDLabel(QWidget *parent,const char *name,WFlags f=0);
+  RDLabel(QWidget *parent=0,const char *name=0,WFlags f=0);
   RDLabel(const QString &text,QWidget *parent,const char *name,WFlags f=0);
   RDLabel(QWidget *buddy,const QString &text,QWidget *parent,const char *name,
 	  WFlags f=0);
