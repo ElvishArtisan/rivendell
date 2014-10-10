@@ -14547,3 +14547,6 @@
 2014-10-10 Fred Gleason <fredg@paravelsystems.com>
 	* Corrected an error in 'rdlibrary/disk_gauge.cpp' that generated
 	incorrect free time values.
+2014-10-10 Fred Gleason <fredg@paravelsystems.com>
+	* Tweaked sensitivity for initiating drags on Sound Panel buttons
+	in '/lib/rdpanel_button.cpp' [GitHub issue #000032].
