@@ -23,6 +23,8 @@
 #ifndef DISK_GAUGE_H
 #define DISK_GAUGE_H
 
+#include <stdint.h>
+
 #include <qwidget.h>
 #include <qlabel.h>
 #include <qtimer.h>
@@ -45,6 +47,7 @@ class DiskGauge : public QWidget
   void resizeEvent(QResizeEvent *e);
 
  private:
+  unsigned GetMinutes(uint64_t bytes);
   QLabel *disk_label;
   QProgressBar *disk_bar;
   QLabel *disk_space_label;

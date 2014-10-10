@@ -89,10 +89,8 @@ void DiskGauge::update()
   RDAudioStore *conv=new RDAudioStore(rdstation_conf,lib_config,this);
   if((conv_err=conv->runStore(lib_user->name(),lib_user->password()))==
      RDAudioStore::ErrorOk) {
-    uint64_t free_min=conv->freeBytes()/
-      (60*rdlibrary_conf->defaultChannels()*lib_system->sampleRate());
-    uint64_t total_min=conv->totalBytes()/
-      (60*rdlibrary_conf->defaultChannels()*lib_system->sampleRate());
+    uint64_t free_min=GetMinutes(conv->freeBytes());
+    uint64_t total_min=GetMinutes(conv->totalBytes());
     disk_bar->setTotalSteps(total_min);
     disk_bar->setProgress(free_min);
     disk_space_label->setText(QString().sprintf("%luh %02lum",free_min/60,
@@ -117,3 +115,22 @@ void DiskGauge::resizeEvent(QResizeEvent *e)
     setGeometry(0,size().height()/2,size().width(),size().height()/2);
   delete fm;
 }
+
+
+unsigned DiskGauge::GetMinutes(uint64_t bytes)
+{
+  unsigned ret=0;
+
+  switch(rdlibrary_conf->defaultFormat()) {
+  case 1:   // MPEG Layer 2
+    ret=bytes*2/(rdlibrary_conf->defaultChannels()*
+		 rdlibrary_conf->defaultBitrate()*15);
+    break;
+
+  default:  // PCM16
+    ret=bytes/(rdlibrary_conf->defaultChannels()*2*lib_system->sampleRate()*60);
+    break;
+  }
+  return ret;
+}
+

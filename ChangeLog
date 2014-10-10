@@ -14544,3 +14544,6 @@
 	* Modified the Desk Gauge widget in 'rdlibrary/disk_gauge.cpp'
 	and 'rdlibrary/disk_gauge.h' to use the 'RDAudioStore' class
 	[fixes GitHub issue #000035].
+2014-10-10 Fred Gleason <fredg@paravelsystems.com>
+	* Corrected an error in 'rdlibrary/disk_gauge.cpp' that generated
+	incorrect free time values.
