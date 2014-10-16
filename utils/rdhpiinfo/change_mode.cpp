@@ -2,9 +2,7 @@
 //
 // Change the mode of an AudioScience Adapter.
 //
-//   (C) Copyright 2002-2005 Fred Gleason <fredg@paravelsystems.com>
-//
-//    $Id: change_mode.cpp,v 1.6 2011/05/18 14:38:13 cvs Exp $
+//   (C) Copyright 2002-2014 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -40,7 +38,7 @@ ChangeMode::ChangeMode(unsigned short card,unsigned short type,int mode,
   setMinimumHeight(sizeHint().height());
   setMaximumHeight(sizeHint().height());
 
-  setCaption(tr("RdhpiInfo - Change Mode"));
+  setCaption(tr("RdHPIInfo - Change Mode"));
 
   //
   // Create Fonts
@@ -53,8 +51,7 @@ ChangeMode::ChangeMode(unsigned short card,unsigned short type,int mode,
   //
   // Adapter Type
   //
-  QLabel *label=new QLabel(QString().sprintf("AudioScience %X",type),
-			   this,"type_label");
+  QLabel *label=new QLabel(QString().sprintf("AudioScience %X",type),this);
   label->setGeometry(10,10,sizeHint().width()-20,15);
   label->setFont(label_font);
   label->setAlignment(AlignCenter);
@@ -62,11 +59,11 @@ ChangeMode::ChangeMode(unsigned short card,unsigned short type,int mode,
   //
   // Adapter Mode
   //
-  change_mode_box=new QComboBox(this,"change_type_box");
+  change_mode_box=new QComboBox(this);
   change_mode_box->setGeometry(10,35,sizeHint().width()-20,22);
   change_mode_box->setFont(font);
   int index=0;
-  for(uint32_t i=1;i<11;i++) {
+  for(uint32_t i=1;i<14;i++) {
     if(HPI_AdapterSetModeEx(NULL,card,i,HPI_ADAPTER_MODE_QUERY)==0) {
       switch(i) {
 	  case HPI_ADAPTER_MODE_4OSTREAM:
@@ -86,16 +83,7 @@ ChangeMode::ChangeMode(unsigned short card,unsigned short type,int mode,
 	    break;
 	    
 	  case HPI_ADAPTER_MODE_16OSTREAM:
-	    switch(type) {
-	      case 0x6585:
-		change_mode_box->
-		  insertItem(tr("Multichannel Surround (Two Output Streams)"));
-		break;
-
-	      default:
-		change_mode_box->insertItem(tr("Sixteen Output Streams"));
-		break;
-	    }
+	    change_mode_box->insertItem(tr("Sixteen Output Streams"));
 	    break;
 	    
 	  case HPI_ADAPTER_MODE_1OSTREAM:
@@ -118,6 +106,18 @@ ChangeMode::ChangeMode(unsigned short card,unsigned short type,int mode,
 	    change_mode_box->insertItem(tr("Surround Sound [SSX]"));
 	    break;
 	    
+	  case HPI_ADAPTER_MODE_9OSTREAM:
+	    change_mode_box->insertItem(tr("Nine Output Stream"));
+	    break;
+	    
+	  case HPI_ADAPTER_MODE_MONO:
+	    change_mode_box->insertItem(tr("Mono Mode"));
+	    break;
+	    
+	  case HPI_ADAPTER_MODE_LOW_LATENCY:
+	    change_mode_box->insertItem(tr("Low Latency Mode"));
+	    break;
+	    
 	  default:
 	    str=QString(tr("Unknown"));
 	    change_mode_box->
@@ -137,7 +137,7 @@ ChangeMode::ChangeMode(unsigned short card,unsigned short type,int mode,
   //
   //  Ok Button
   //
-  QPushButton *ok_button=new QPushButton(this,"ok_button");
+  QPushButton *ok_button=new QPushButton(this);
   ok_button->setGeometry(sizeHint().width()-140,sizeHint().height()-40,60,30);
   ok_button->setDefault(true);
   ok_button->setFont(font);

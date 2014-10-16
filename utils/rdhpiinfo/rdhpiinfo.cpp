@@ -2,9 +2,7 @@
 //
 // A Qt-based application for display information on ASI cards.
 //
-//   (C) Copyright 2002-2005 Fred Gleason <fredg@paravelsystems.com>
-//
-//    $Id: rdhpiinfo.cpp,v 1.8.6.4 2014/01/21 21:59:34 cvs Exp $
+//   (C) Copyright 2002-2014 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -77,25 +75,23 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   // HPI Version
   //
   HpiErr(HPI_SubSysGetVersionEx(NULL,&hpi_version),"HPI_SubSysGetVersionEx");
-  QLabel *label=new QLabel(tr("HPI Version:"),this,"hpi_version_label");
+  QLabel *label=new QLabel(tr("HPI Version:"),this);
   label->setGeometry(10,10,85,20);
   label->setFont(label_font);
-  label=new QLabel(QString().sprintf("%X.%02X.%02X",
+  label=new QLabel(QString().sprintf("%d.%02d.%02d",
 				     (unsigned)((hpi_version>>16)&0xffff),
 				     (unsigned)((hpi_version>>8)&0xff),
-				     (unsigned)hpi_version&0xff),
-		   this,"hpi_version");
+				     (unsigned)hpi_version&0xff),this);
   label->setGeometry(100,10,100,20);
   label->setFont(font);
 
   //
   // Adapter Name
   //
-  info_name_box=new QComboBox(this,"info_name_box");
+  info_name_box=new QComboBox(this);
   info_name_box->setGeometry(100,34,sizeHint().width()-110,20);
   info_name_box->setFont(font);
-  info_name_label=new QLabel(info_name_box,tr("Adapter:"),
-			     this,"info_name_label");
+  info_name_label=new QLabel(info_name_box,tr("Adapter:"),this);
   info_name_label->setGeometry(10,34,85,20);
   info_name_label->setFont(label_font);
   info_name_label->setAlignment(AlignRight|AlignVCenter);
@@ -105,11 +101,11 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // Adapter Index
   //
-  label=new QLabel(tr("Adapter Index:"),this,"index_number_label");
+  label=new QLabel(tr("Adapter Index:"),this);
   label->setGeometry(10,58,105,20);
   label->setFont(label_font);
   label->setAlignment(AlignRight|AlignVCenter);
-  info_index_label=new QLabel(this,"info_index_label");
+  info_index_label=new QLabel(this);
   info_index_label->setGeometry(120,58,100,20);
   info_index_label->setFont(font);
   info_index_label->setAlignment(AlignLeft|AlignVCenter);
@@ -117,11 +113,11 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // Serial Number
   //
-  label=new QLabel(tr("Serial Number:"),this,"serial_number_label");
+  label=new QLabel(tr("Serial Number:"),this);
   label->setGeometry(10,78,105,20);
   label->setFont(label_font);
   label->setAlignment(AlignRight|AlignVCenter);
-  info_serial_label=new QLabel(this,"info_serial_label");
+  info_serial_label=new QLabel(this);
   info_serial_label->setGeometry(120,78,100,20);
   info_serial_label->setFont(font);
   info_serial_label->setAlignment(AlignLeft|AlignVCenter);
@@ -129,11 +125,11 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // Output Streams
   //
-  label=new QLabel(tr("Input Streams:"),this,"input_streams_label");
+  label=new QLabel(tr("Input Streams:"),this);
   label->setGeometry(10,98,105,20);
   label->setFont(label_font);
   label->setAlignment(AlignRight|AlignVCenter);
-  info_istreams_label=new QLabel(this,"info_istreams_label");
+  info_istreams_label=new QLabel(this);
   info_istreams_label->setGeometry(120,98,100,20);
   info_istreams_label->setFont(font);
   info_istreams_label->setAlignment(AlignLeft|AlignVCenter);
@@ -141,11 +137,11 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // Input Streams
   //
-  label=new QLabel(tr("Output Streams:"),this,"output_streams_label");
+  label=new QLabel(tr("Output Streams:"),this);
   label->setGeometry(10,118,105,20);
   label->setFont(label_font);
   label->setAlignment(AlignRight|AlignVCenter);
-  info_ostreams_label=new QLabel(this,"info_ostreams_label");
+  info_ostreams_label=new QLabel(this);
   info_ostreams_label->setGeometry(120,118,100,20);
   info_ostreams_label->setFont(font);
   info_ostreams_label->setAlignment(AlignLeft|AlignVCenter);
@@ -153,11 +149,11 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // DSP Version
   //
-  label=new QLabel(tr("DSP Version:"),this,"dsp_version_label");
+  label=new QLabel(tr("DSP Version:"),this);
   label->setGeometry(10,138,105,20);
   label->setFont(label_font);
   label->setAlignment(AlignRight|AlignVCenter);
-  info_dsp_label=new QLabel(this,"info_dsp_label");
+  info_dsp_label=new QLabel(this);
   info_dsp_label->setGeometry(120,138,100,20);
   info_dsp_label->setFont(font);
   info_dsp_label->setAlignment(AlignLeft|AlignVCenter);
@@ -165,11 +161,11 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // Adapter Version
   //
-  label=new QLabel(tr("Adapter Version:"),this,"adapter_version_label");
+  label=new QLabel(tr("Adapter Version:"),this);
   label->setGeometry(10,158,105,20);
   label->setFont(label_font);
   label->setAlignment(AlignRight|AlignVCenter);
-  info_adapter_label=new QLabel(this,"info_adapter_label");
+  info_adapter_label=new QLabel(this);
   info_adapter_label->setGeometry(120,158,100,20);
   info_adapter_label->setFont(font);
   info_adapter_label->setAlignment(AlignLeft|AlignVCenter);
@@ -177,11 +173,11 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // Adapter Mode
   //
-  label=new QLabel(tr("Adapter Mode:"),this,"adapter_mode_label");
+  label=new QLabel(tr("Adapter Mode:"),this);
   label->setGeometry(10,178,105,20);
   label->setFont(label_font);
   label->setAlignment(AlignRight|AlignVCenter);
-  info_mode_label=new QLabel(this,"info_mode_label");
+  info_mode_label=new QLabel(this);
   info_mode_label->setGeometry(120,178,sizeHint().width()-130,20);
   info_mode_label->setFont(font);
   info_mode_label->setAlignment(AlignLeft|AlignVCenter);
@@ -190,7 +186,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   // Change Mode Button
   //
   info_changemode_button=
-    new QPushButton(tr("Change Card Mode"),this,"info_changemode_button");
+    new QPushButton(tr("Change Card Mode"),this);
   info_changemode_button->setGeometry(130,200,170,30);
   info_changemode_button->setFont(label_font);
   connect(info_changemode_button,SIGNAL(clicked()),
@@ -199,7 +195,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // Close Button
   //
-  QPushButton *button=new QPushButton(tr("Close"),this,"close_button");
+  QPushButton *button=new QPushButton(tr("Close"),this);
   button->setGeometry(sizeHint().width()-60,sizeHint().height()-40,50,30);
   button->setFont(label_font);
   connect(button,SIGNAL(clicked()),qApp,SLOT(quit()));
@@ -275,16 +271,7 @@ void MainWidget::nameActivatedData(int id)
     break;
 
   case HPI_ADAPTER_MODE_16OSTREAM:
-    switch(hpi_type[card]) {
-    case 0x6585:
-      info_mode_label->
-	setText(tr("Multichannel Surround (Two Output Streams)"));
-      break;
-      
-    default:
-      info_mode_label->setText(tr("Sixteen Output Streams"));
-      break;
-    }
+    info_mode_label->setText(tr("Sixteen Output Streams"));
     info_changemode_button->setEnabled(true);
     break;
 
@@ -313,6 +300,21 @@ void MainWidget::nameActivatedData(int id)
     info_changemode_button->setEnabled(true);
     break;
  
+  case HPI_ADAPTER_MODE_9OSTREAM:
+    info_mode_label->setText(tr("Nine Output Stream"));
+    info_changemode_button->setEnabled(true);
+    break;
+	    
+  case HPI_ADAPTER_MODE_MONO:
+    info_mode_label->setText(tr("Mono Mode"));
+    info_changemode_button->setEnabled(true);
+    break;
+	    
+  case HPI_ADAPTER_MODE_LOW_LATENCY:
+    info_mode_label->setText(tr("Low Latency Mode"));
+    info_changemode_button->setEnabled(true);
+    break;
+	    
   default:
     info_mode_label->setText(tr("N/A"));
     info_changemode_button->setDisabled(true);

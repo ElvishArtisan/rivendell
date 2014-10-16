@@ -14553,3 +14553,10 @@
 2014-10-10 Fred Gleason <fredg@paravelsystems.com>
 	* Adjusted display of Talk Time in button widget to allow for display
 	of lengths greater than :59 [GitHub issue #000018].
+2014-10-16 Fred Gleason <fredg@paravelsystems.com>
+	* Added support for 'HPI_ADAPTER_MODE_9OSTREAM',
+	'HPI_ADAPTER_MODE_9OSTREAM' and 'HPI_ADAPTER_MODE_9OSTREAM' modes
+	in 'utils/rdhpiinfo/change_mode.cpp' and
+	'utils/rdhpiinfo/rdhpiinfo.cpp'.
+	* Implemented proper labeling for 'HPI_ADAPTER_MODE_16OSTREAM' mode
+	with ASI6x85 adapters.
