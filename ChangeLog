@@ -14560,3 +14560,7 @@
 	'utils/rdhpiinfo/rdhpiinfo.cpp'.
 	* Implemented proper labeling for 'HPI_ADAPTER_MODE_16OSTREAM' mode
 	with ASI6x85 adapters.
+2014-10-23 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in the 'Edit Audio' dialog in 'lib/rdedit_audio.cpp'
+	that caused loss of precision when loading the Cut Gain control
+	[GitHub issue #000037].

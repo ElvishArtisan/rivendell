@@ -892,8 +892,6 @@ RDEditAudio::RDEditAudio(RDCart *cart,QString cut_name,RDCae *cae,RDUser *user,
     edit_cursors[RDEditAudio::HookEnd]=-1;
   }
   edit_gain_control->setValue(edit_cut->playGain());
-  edit_gain_edit->setText(QString().sprintf("%4.1f dB",
-			     (double)edit_gain_control->value()/100.0));
   edit_trim_box->setValue(trim_level/100);
   if(edit_cut->segueGain()==0) {
     edit_overlap_box->setChecked(true);
@@ -2232,7 +2230,7 @@ bool RDEditAudio::SaveMarkers()
   //
   // Save Settings
   //
-  edit_cut->setPlayGain(10*edit_gain_control->value());
+  //  edit_cut->setPlayGain(10*edit_gain_control->value());
   edit_cut->setStartPoint((int)((double)(edit_cursors[RDEditAudio::Start])*
 				1152000.0/
 				(double)edit_sample_rate));
