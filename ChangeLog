@@ -14564,3 +14564,14 @@
 	* Fixed a bug in the 'Edit Audio' dialog in 'lib/rdedit_audio.cpp'
 	that caused loss of precision when loading the Cut Gain control
 	[GitHub issue #000037].
+2014-10-24 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'REPORTS.POST_EXPORT_CMD' and 'REPORTS.WIN_POST_EXPORT_CMD'
+	fields to the database.
+	* Incremented the database version to 242.
+	* Added 'RDReport::postExportCommand()' and
+	'RDReport::setPostExportCommand()' methods in 'lib/rdreport.cpp' and
+	'lib/rdreport.h'.
+	* Added 'Linux Post Export Cmd' and 'Windows Post Export Cmd' controls
+	to the 'Edit Report' dialog in 'rdadmin/edit_report.cpp' and
+	'rdadmin/edit_report.h'.
+	* Implemented post export commands in 'lib/rdreport.cpp'.

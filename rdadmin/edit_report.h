@@ -65,7 +65,9 @@ class EditReport : public QDialog
   QLineEdit *edit_stationformat_edit;
   QSpinBox *edit_linesperpage_spin;
   QLineEdit *edit_path_edit;
+  QLineEdit *edit_postexport_cmd_edit;
   QLineEdit *edit_winpath_edit;
+  QLineEdit *edit_winpostexport_cmd_edit;
   QLabel *edit_traffic_label;
   QCheckBox *edit_traffic_box;
   QLabel *edit_music_label;

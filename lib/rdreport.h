@@ -51,6 +51,8 @@ class RDReport
   void setFilter(ExportFilter filter) const;
   QString exportPath(ExportOs ostype) const;
   void setExportPath(ExportOs ostype,const QString &path) const;
+  QString postExportCommand(ExportOs ostype) const;
+  void setPostExportCommand(ExportOs ostype,const QString &cmd) const;
   bool exportTypeEnabled(ExportType type) const;
   void setExportTypeEnabled(ExportType type,bool state) const;
   bool exportTypeForced(ExportType type) const;

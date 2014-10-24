@@ -1562,7 +1562,9 @@ bool CreateDb(QString name,QString pwd)
                DESCRIPTION char(64),\
                EXPORT_FILTER int,\
                EXPORT_PATH char(255),\
+               POST_EXPORT_CMD text,\
                WIN_EXPORT_PATH char(255),\
+               WIN_POST_EXPORT_CMD text,\
                EXPORT_TFC enum('N','Y') default 'N',\
                FORCE_TFC enum('N','Y') default 'N',\
                EXPORT_MUS enum('N','Y') default 'N',\
@@ -8067,6 +8069,18 @@ int UpdateDb(int ver)
   if(ver<241) {
     sql=QString("alter table EVENTS add column ")+
       "HAVE_CODE2 VARCHAR(10) after HAVE_CODE";
+    q=new QSqlQuery(sql);
+    delete q;
+  }
+
+  if(ver<242) {
+    sql=QString("alter table REPORTS add column ")+
+      "POST_EXPORT_CMD text after EXPORT_PATH";
+    q=new QSqlQuery(sql);
+    delete q;
+
+    sql=QString("alter table REPORTS add column ")+
+      "WIN_POST_EXPORT_CMD text after WIN_EXPORT_PATH";
     q=new QSqlQuery(sql);
     delete q;
   }
