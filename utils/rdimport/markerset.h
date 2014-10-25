@@ -31,7 +31,10 @@ class MarkerSet
   int startValue(int lo_limit=-1,int hi_limit=-1) const;
   bool hasEndValue() const;
   int endValue(int lo_limit=-1,int hi_limit=-1) const;
-  void load(RDCmdSwitch *cmd,const QString &marker);
+  bool hasFadeValue() const;
+  int fadeValue(int lo_limit=-1,int hi_limit=-1) const;
+  void loadMarker(RDCmdSwitch *cmd,const QString &marker);
+  void loadFade(RDCmdSwitch *cmd,const QString &marker);
   void setAudioLength(int msecs);
   void dump();
 
@@ -43,6 +46,8 @@ class MarkerSet
   int marker_start_value;
   bool marker_end_valid;
   int marker_end_value;
+  bool marker_fade_valid;
+  int marker_fade_value;
   int marker_audio_length;
 };
 

@@ -29,6 +29,8 @@ MarkerSet::MarkerSet()
   marker_start_value=0;
   marker_end_valid=false;
   marker_end_value=0;
+  marker_fade_valid=false;
+  marker_fade_value=0;
   marker_audio_length=0;
 }
 
@@ -41,7 +43,7 @@ bool MarkerSet::hasStartValue() const
 
 int MarkerSet::startValue(int lo_limit,int hi_limit) const
 {
-  return LimitCheck(marker_start_value,lo_limit,hi_limit);
+  return LimitCheck(FrontReference(marker_start_value),lo_limit,hi_limit);
 }
 
 
@@ -53,11 +55,23 @@ bool MarkerSet::hasEndValue() const
 
 int MarkerSet::endValue(int lo_limit,int hi_limit) const
 {
-  return LimitCheck(marker_end_value,lo_limit,hi_limit);
+  return LimitCheck(FrontReference(marker_end_value),lo_limit,hi_limit);
 }
 
 
-void MarkerSet::load(RDCmdSwitch *cmd,const QString &marker)
+bool MarkerSet::hasFadeValue() const
+{
+  return marker_fade_valid;
+}
+
+
+int MarkerSet::fadeValue(int lo_limit,int hi_limit) const
+{
+  return LimitCheck(FrontReference(marker_fade_value),lo_limit,hi_limit);
+}
+
+
+void MarkerSet::loadMarker(RDCmdSwitch *cmd,const QString &marker)
 {
   QString start_key="--set-marker-start-"+marker;
   QString end_key="--set-marker-end-"+marker;
@@ -85,6 +99,24 @@ void MarkerSet::load(RDCmdSwitch *cmd,const QString &marker)
   if(marker_end_valid&&(!marker_start_valid)) {
     marker_start_value=0;
     marker_start_valid=true;
+  }
+}
+
+
+void MarkerSet::loadFade(RDCmdSwitch *cmd,const QString &marker)
+{
+  QString key="--set-marker-"+marker;
+  marker_marker=marker;
+  for(unsigned i=0;i<cmd->keys();i++) {
+    if(cmd->key(i)==key) {
+      marker_fade_value=cmd->value(i).toInt(&marker_fade_valid);
+      if(!marker_fade_valid) {
+	fprintf(stderr,"rdimport: invalid argment to %s\n",
+		(const char *)key);
+	exit(255);
+      }
+      cmd->setProcessed(i,true);
+    }
   }
 }
 

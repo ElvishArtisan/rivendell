@@ -14582,3 +14582,8 @@
 	options for rdimport(1) in 'utils/rdimport/markerset.cpp',,
 	'utils/rdimport/markerset.h', 'utils/rdimport/rdimport.cpp' and
 	'utils/rdimport/rdimport.h'.
+2014-10-25 Fred Gleason <fredg@paravelsystems.com>
+	* Implemented '--set-marker-fadedown=' and '--set-marker-fadeup*='
+	options for rdimport(1) in 'utils/rdimport/markerset.cpp',,
+	'utils/rdimport/markerset.h', 'utils/rdimport/rdimport.cpp' and
+	'utils/rdimport/rdimport.h'.

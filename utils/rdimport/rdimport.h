@@ -133,6 +133,8 @@ class MainObject : public QObject
   MarkerSet *import_talk_markers;
   MarkerSet *import_hook_markers;
   MarkerSet *import_segue_markers;
+  MarkerSet *import_fadedown_marker;
+  MarkerSet *import_fadeup_marker;
 };
 
 

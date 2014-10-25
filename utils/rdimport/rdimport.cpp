@@ -247,13 +247,17 @@ MainObject::MainObject(QObject *parent,const char *name)
     }
   }
   import_cut_markers=new MarkerSet();
-  import_cut_markers->load(import_cmd,"cut");
+  import_cut_markers->loadMarker(import_cmd,"cut");
   import_talk_markers=new MarkerSet();
-  import_talk_markers->load(import_cmd,"talk");
+  import_talk_markers->loadMarker(import_cmd,"talk");
   import_hook_markers=new MarkerSet();
-  import_hook_markers->load(import_cmd,"hook");
+  import_hook_markers->loadMarker(import_cmd,"hook");
   import_segue_markers=new MarkerSet();
-  import_segue_markers->load(import_cmd,"segue");
+  import_segue_markers->loadMarker(import_cmd,"segue");
+  import_fadedown_marker=new MarkerSet();
+  import_fadedown_marker->loadFade(import_cmd,"fadedown");
+  import_fadeup_marker=new MarkerSet();
+  import_fadeup_marker->loadFade(import_cmd,"fadeup");
 
   //
   // Read Configuration
@@ -520,6 +524,8 @@ MainObject::MainObject(QObject *parent,const char *name)
     import_talk_markers->dump();
     import_hook_markers->dump();
     import_segue_markers->dump();
+    import_fadedown_marker->dump();
+    import_fadeup_marker->dump();
     printf(" Files to process:\n");
     for(unsigned i=import_file_key;i<import_cmd->keys();i++) {
       printf("   \"%s\"\n",(const char *)import_cmd->key(i));
@@ -1040,6 +1046,14 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
   if(import_segue_markers->hasStartValue()) {
     cut->setSegueStartPoint(import_segue_markers->startValue(lo,hi));
     cut->setSegueEndPoint(import_segue_markers->endValue(lo,hi));
+  }
+  import_fadedown_marker->setAudioLength(wavefile->getExtTimeLength());
+  if(import_fadedown_marker->hasFadeValue()) {
+    cut->setFadedownPoint(import_fadedown_marker->fadeValue(lo,hi));
+  }
+  import_fadeup_marker->setAudioLength(wavefile->getExtTimeLength());
+  if(import_fadeup_marker->hasFadeValue()) {
+    cut->setFadeupPoint(import_fadeup_marker->fadeValue(lo,hi));
   }
   delete settings;
   delete conv;
