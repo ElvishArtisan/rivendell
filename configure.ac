@@ -448,8 +448,9 @@ AC_CONFIG_FILES([rivendell.spec \
     web/tests/Makefile \
     conf/Makefile \
     docs/Makefile \
-    docs/tables/Makefile \
     docs/examples/Makefile \
+    docs/man/Makefile \
+    docs/tables/Makefile \
     debian/Makefile \
     debian/patches/Makefile \
     xdg/Makefile \

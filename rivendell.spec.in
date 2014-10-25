@@ -283,6 +283,7 @@ rm -rf $RPM_BUILD_ROOT
 @WIN32_PATH@
 /etc/pam.d/rdalsaconfig-root
 /etc/security/console.apps/rdalsaconfig-root
+%{_mandir}/man1/rdimport.1.gz
 %doc AUTHORS
 %doc ChangeLog
 %doc COPYING 

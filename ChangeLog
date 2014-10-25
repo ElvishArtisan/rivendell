@@ -14575,3 +14575,5 @@
 	to the 'Edit Report' dialog in 'rdadmin/edit_report.cpp' and
 	'rdadmin/edit_report.h'.
 	* Implemented post export commands in 'lib/rdreport.cpp'.
+2014-10-25 Fred Gleason <fredg@paravelsystems.com>
+	* Created an rdimport(1) man page in 'docs/man/rdimport.1'.

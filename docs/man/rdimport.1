@@ -1,0 +1,213 @@
+.TH rdimport 1 "October 2014" Linux "Rivendell Radio Automation System"
+.SH NAME
+rdimport \- Audio importation tool for the Rivendell Radio Automation System
+
+.SH SYNOPSIS
+rdimport [OPTIONS] <group-name> <filespec> [<filespec>]*
+
+.SH DESCRIPTION
+\fBRdimport\fP is a command-line tool for importing one or more audio files
+into the Rivendell Radio Automation System.  By default, a new cart will be
+created for each file imported, although this behavior can be modified by
+use of the appropriate options (see the \fB--single-cart\fP and
+\fB--to-cart\fP options, below).  A <\fIfilespec\fP> of '-' will cause the
+list of filespecs to be read from standard input.
+
+
+.SH OPTIONS
+.TP
+.B --verbose
+Print progress messages during processing.
+.TP
+.B --help
+Print a short usage message and exit.
+.TP
+.B --version
+Output version information and exit.
+.TP
+.B --log-mode
+Prepend date/time information to each line of printed status (implies
+the '--verbose' option).
+.TP
+.B --normalization-level=<\fIlevel\fP>
+Specify the level to use for peak normalizing the audio, in dBFS.
+Specifying '0' will turn off normalization.
+.TP
+.B --autotrim-level=<level>
+Specify the threshold level to use for autotrimming the audio, in dBFS.
+Specifying '0' will turn off autotrimming.
+.TP
+.B --single-cart
+If more than one file is imported, place them within multiple cuts within a
+single cart, rather than creating separate carts for each file.
+.TP
+.B --segue-level=<\fIlevel\fP>
+Specify the threshold level to use for setting the segue markers, in dBFS.
+Default action is not to create segue markers.
+.TP
+.B --segue-length=<\fIlength\fP>
+Length of the added segue in msecs.  See \fB--segue-level\fP above.
+.TP
+.B --to-cart=<\fIcartnum\fP>
+Specify the cart to import the audio into, rather than using the next
+available cart number for the group.  If the cart does not exist, it will
+be created.  Each file will be imported into a separate new cut within the
+cart.  Use of this option implies the \fB--single-cart\fP option as well,
+and is mutually exclusive with the \fB--use-cartchunk-cutid\fP option.
+.TP
+.B --use-cartchunk-cutid
+Import the audio into the cart specified by the CartChunk CutID parameter
+associated with the file.  If the cart does not exist, it will be
+created.  Use of this option is mutually exclusive with the \fB--to-cart\fP
+option.
+.TP
+.B --title-from-cartchunk-cutid
+Set the cart title from CartChunk CutID.
+.TP
+.B --cart-number-offset=<\fIoffset\fP>
+Add <\fIoffset\fP> to the cart number as determined from metadata pattern
+or --use-cartchunk-cutid.
+.TP
+.B --delete-source
+Delete each source file after successful import.  Use with caution!
+.TP
+.B --delete-cuts
+Delete all cuts within the destination cart before importing.  Use
+with caution!
+.TP
+.B --drop-box
+Operate in DropBox mode, causing \fIrdimport(1)\fP to run continuously,
+periodically scanning for files matching the specified <\fIfilespec\fP>,
+importing and then deleting them when found.  WARNING:  use of this option
+also implies the \fB--delete-source\fP option!
+.TP
+.B --metadata-pattern=<\fIpattern\fP>
+Attempt to read metadata parameters from the source filename, using
+the pattern <\fIpattern\fP>.  Patterns consist of a sequence of wildcards and
+regular characters to indicate boundaries between metadata fields.
+
+The available wildcards are:
+.RS
+.TP
+%a
+Artist
+.TP
+%b
+Record Label
+.TP
+%c
+Client
+.TP
+%e
+Agency
+.TP
+%g
+Rivendell Group (overrides the <\fIgroup-name\fP> parameter)
+.TP
+%i
+Cut Description
+.TP
+%l
+Album
+.TP
+%m
+Composer
+.TP
+%n
+Rivendell Cart Number
+.TP
+%o
+Cut Outcue
+.TP
+%p
+Publisher
+.TP
+%r
+Conductor
+.TP
+%s
+Song ID
+.TP
+%t
+Title
+.TP
+%u
+User Defined
+.TP
+%y
+Release Year (four digit numeric)
+.TP
+%%
+A literal '%'
+.RE
+.RE
+
+Detection of either the Rivendell Group [%g] or Rivendell Cart [%n]
+will cause RDImport to attempt to import the file to the specified Group
+and/or Cart, overriding whatever values were specified elsewhere on the
+command line.  If the \fB--set-user-defined\fP option has been used,
+then the value specified there will be used instead of %u.
+
+Boundaries between metadata fields are indicated by placing regular
+characters between macros.  For example, the pattern '%t_%a_%g_%n.',
+when processing a filename of 'My Song_My Artist_TEMP_123456.mp3',
+would extract 'My Song' as the title and 'My Artist' as the artist,
+while importing it into cart 123456 in the TEMP group.
+.TP
+.B --startdate-offset=<\fIdays\fP>
+If the imported file references a start date, offset the value by <\fIdays\fP>
+days.
+.TP
+.B --enddate-offset=<days>
+If the imported file references an end date, offset the value by <\fIdays\fP>
+days.
+.TP
+.B --create-startdate-offset=<\fIdays\fP>
+If the imported file does not reference a start date, create with 
+startdate offset by <\fIdays\fP> days relative to the current date.
+Cannot be greater than the value for \fB--create-enddate-offset\fP
+(default = 0).
+.TP
+.B --create-enddate-offset=<\fIdays\fP>
+If the imported file does not reference an end date, create with
+end date offset by <\fIdays\fP> days relative to the current date.
+Cannot be less than the value the value for \fB--create-startdate-offset\fP
+(default = 0).
+.TP
+.B --set-daypart-times=<\fIstart-time\fP>,<\fIend-time\fP>
+Set the start and end daypart times, in the format HHMMSS.
+.TP
+.B --fix-broken-formats
+Attempt to work around malformed audio input data.
+.TP
+.B --add-scheduler-code=<\fIstr\fP>
+Add Scheduler Code <\fIstr\fP> to the target cart.  The specified
+code must exist in RDAdmin->SchedulerCodes.  This option may be
+specified multiple times.
+.TP
+.B --set-user-defined=<\fIstr\fP>
+Set the User Defined field for the target cart to <\fIstr\fP>.  This will
+override any value that might otherwise be set --e.g. by using the
+\fB--metadata-pattern\fP option.
+
+.SH NOTES
+It may be necessary to enclose individual <\fIfilespec\fP> clauses in quotes
+in order to protect wildcard characters from expansion by the shell.  A typical
+indicator that this is necessary is the failure of \fBrdimport(1)\fP to process
+newly added files when running in DropBox mode.
+
+.SH BUGS
+It could be argued that RMS rather peak normalization would be more appropriate
+for use with the \fB--normalization-level\fP option.
+
+.SH AUTHOR
+Fred Gleason <fredg@paravelsystems.com>
+.SH "SEE ALSO"
+.BR http://www.cartchunk.org/
+
+
+
+
+
+
+
