@@ -14577,3 +14577,8 @@
 	* Implemented post export commands in 'lib/rdreport.cpp'.
 2014-10-25 Fred Gleason <fredg@paravelsystems.com>
 	* Created an rdimport(1) man page in 'docs/man/rdimport.1'.
+2014-10-25 Fred Gleason <fredg@paravelsystems.com>
+	* Implemented '--set-marker-end-*=' and '--set-marker-start-*='
+	options for rdimport(1) in 'utils/rdimport/markerset.cpp',,
+	'utils/rdimport/markerset.h', 'utils/rdimport/rdimport.cpp' and
+	'utils/rdimport/rdimport.h'.

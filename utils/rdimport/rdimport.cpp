@@ -246,6 +246,14 @@ MainObject::MainObject(QObject *parent,const char *name)
       import_create_dates=true;
     }
   }
+  import_cut_markers=new MarkerSet();
+  import_cut_markers->load(import_cmd,"cut");
+  import_talk_markers=new MarkerSet();
+  import_talk_markers->load(import_cmd,"talk");
+  import_hook_markers=new MarkerSet();
+  import_hook_markers->load(import_cmd,"hook");
+  import_segue_markers=new MarkerSet();
+  import_segue_markers->load(import_cmd,"segue");
 
   //
   // Read Configuration
@@ -508,6 +516,10 @@ MainObject::MainObject(QObject *parent,const char *name)
     if(import_persistent_dropbox_id>=0) {
       printf(" Persistent DropBox ID = %d\n",import_persistent_dropbox_id);
     }
+    import_cut_markers->dump();
+    import_talk_markers->dump();
+    import_hook_markers->dump();
+    import_segue_markers->dump();
     printf(" Files to process:\n");
     for(unsigned i=import_file_key;i<import_cmd->keys();i++) {
       printf("   \"%s\"\n",(const char *)import_cmd->key(i));
@@ -785,7 +797,6 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
       return MainObject::FileBad;
     }
   }
-
   if(!import_metadata_pattern.isEmpty()) {
     QString groupname=effective_group->name();
     found_cart=RunPattern(import_metadata_pattern,RDGetBasePart(filename),
@@ -1005,6 +1016,30 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
   if((!import_dayparts[0].isNull())||(!import_dayparts[1].isNull())) {
     cut->setStartDaypart(import_dayparts[0],true);
     cut->setEndDaypart(import_dayparts[1],true);
+  }
+  import_cut_markers->setAudioLength(wavefile->getExtTimeLength());
+  if(import_cut_markers->hasStartValue()) {
+    cut->setStartPoint(import_cut_markers->startValue());
+    cut->setEndPoint(import_cut_markers->endValue());
+    cut->setLength(cut->endPoint()-cut->startPoint());
+    cart->updateLength();
+  }
+  int lo=cut->startPoint();
+  int hi=cut->endPoint();
+  import_talk_markers->setAudioLength(wavefile->getExtTimeLength());
+  if(import_talk_markers->hasStartValue()) {
+    cut->setTalkStartPoint(import_talk_markers->startValue(lo,hi));
+    cut->setTalkEndPoint(import_talk_markers->endValue(lo,hi));
+  }
+  import_hook_markers->setAudioLength(wavefile->getExtTimeLength());
+  if(import_hook_markers->hasStartValue()) {
+    cut->setHookStartPoint(import_hook_markers->startValue(lo,hi));
+    cut->setHookEndPoint(import_hook_markers->endValue(lo,hi));
+  }
+  import_segue_markers->setAudioLength(wavefile->getExtTimeLength());
+  if(import_segue_markers->hasStartValue()) {
+    cut->setSegueStartPoint(import_segue_markers->startValue(lo,hi));
+    cut->setSegueEndPoint(import_segue_markers->endValue(lo,hi));
   }
   delete settings;
   delete conv;

@@ -44,6 +44,8 @@
 #include <rdsystem.h>
 #include <rdstation.h>
 
+#include "markerset.h"
+
 #define RDIMPORT_TEMP_BASENAME "rdimp"
 #define RDIMPORT_STDIN_BUFFER_LENGTH 1024
 #define RDIMPORT_DROPBOX_SCAN_INTERVAL 5
@@ -127,6 +129,10 @@ class MainObject : public QObject
   QString import_temp_fix_filename;
   RDSystem *import_system;
   RDStation *import_station;
+  MarkerSet *import_cut_markers;
+  MarkerSet *import_talk_markers;
+  MarkerSet *import_hook_markers;
+  MarkerSet *import_segue_markers;
 };
 
 
