@@ -141,6 +141,10 @@ void MarkerSet::dump()
   printf(" Marker End %s: ",(const char *)marker_marker);
     printf("%d mS\n",marker_end_value);
   }
+  if(marker_fade_valid) {
+  printf(" Marker %s: ",(const char *)marker_marker);
+    printf("%d mS\n",marker_fade_value);
+  }
 }
 
 
