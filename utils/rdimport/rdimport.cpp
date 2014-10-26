@@ -279,12 +279,20 @@ MainObject::MainObject(QObject *parent,const char *name)
       import_string_conductor=import_cmd->value(i);
       import_cmd->setProcessed(i,true);
     }
-    if(import_cmd->key(i)=="--set-string-publisher") {
-      import_string_publisher=import_cmd->value(i);
+    if(import_cmd->key(i)=="--set-string-description") {
+      import_string_description=import_cmd->value(i);
       import_cmd->setProcessed(i,true);
     }
     if(import_cmd->key(i)=="--set-string-label") {
       import_string_label=import_cmd->value(i);
+      import_cmd->setProcessed(i,true);
+    }
+    if(import_cmd->key(i)=="--set-string-outcue") {
+      import_string_outcue=import_cmd->value(i);
+      import_cmd->setProcessed(i,true);
+    }
+    if(import_cmd->key(i)=="--set-string-publisher") {
+      import_string_publisher=import_cmd->value(i);
       import_cmd->setProcessed(i,true);
     }
     if(import_cmd->key(i)=="--set-string-song-id") {
@@ -311,7 +319,6 @@ MainObject::MainObject(QObject *parent,const char *name)
       }
       import_cmd->setProcessed(i,true);
     }
-
   }
   import_cut_markers=new MarkerSet();
   import_cut_markers->loadMarker(import_cmd,"cut");
@@ -608,8 +615,15 @@ MainObject::MainObject(QObject *parent,const char *name)
     if(!import_string_conductor.isNull()) {
       printf(" Conductor set to: %s\n",(const char *)import_string_conductor);
     }
+    if(!import_string_description.isNull()) {
+      printf(" Description set to: %s\n",
+	     (const char *)import_string_description);
+    }
     if(!import_string_label.isNull()) {
       printf(" Label set to: %s\n",(const char *)import_string_label);
+    }
+    if(!import_string_outcue.isNull()) {
+      printf(" Outcue set to: %s\n",(const char *)import_string_outcue);
     }
     if(!import_string_publisher.isNull()) {
       printf(" Publisher set to: %s\n",(const char *)import_string_publisher);
@@ -1151,8 +1165,14 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
   if(!import_string_conductor.isNull()) {
     cart->setConductor(import_string_conductor);
   }
+  if(!import_string_description.isNull()) {
+    cut->setDescription(import_string_description);
+  }
   if(!import_string_label.isNull()) {
     cart->setLabel(import_string_label);
+  }
+  if(!import_string_outcue.isNull()) {
+    cut->setOutcue(import_string_outcue);
   }
   if(!import_string_publisher.isNull()) {
     cart->setPublisher(import_string_publisher);

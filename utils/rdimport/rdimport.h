@@ -125,6 +125,8 @@ class MainObject : public QObject
   QString import_string_client;
   QString import_string_composer;
   QString import_string_conductor;
+  QString import_string_description;
+  QString import_string_outcue;
   QString import_string_publisher;
   QString import_string_label;
   QString import_string_song_id;
