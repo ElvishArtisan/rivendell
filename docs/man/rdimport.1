@@ -215,10 +215,56 @@ Set a start marker to a given offset value.  See the discussion of the
 <\fImarker\fP> and <\fIoffset\fP> parameters.
 
 .TP
+.B --set-string-<\fIfield\fP>=<\fIstring\fP>
+Set the cart label field <\fIfield\fP> to <\fIstring\fP>.  This will override
+any other values --e.g. from \fB--metadata-pattern\fP.  Values recognized
+for <\fIfield\fP> are:
+.RS
+.TP
+.B agency
+Agency Name
+.TP
+.B album
+Album Name
+.TP
+.B artist
+Artist Name
+.TP
+.B bpm
+Beats per Minute (integer numeric)
+.TP
+.B client
+Client Name
+.TP
+.B composer
+Music Composer Name
+.TP
+.B conductor
+Conductor Name
+.TP
+.B publisher
+Music Publisher (rights holder)
+.TP
+.B label
+Record Label Name (rights holder)
+.TP
+.B song-id
+Song ID
+.TP
+.B title
+Title
+.TP
+.B user-defined
+Miscelaneous Information
+.TP
+.B year
+Year Released (four digit numeric)
+.RE
+.RE
+
+.TP
 .B --set-user-defined=<\fIstr\fP>
-Set the User Defined field for the target cart to <\fIstr\fP>.  This will
-override any value that might otherwise be set --e.g. by using the
-\fB--metadata-pattern\fP option.
+Deprecated.  Use the \fB--set-string-user-defined\fP option instead.
 
 .TP
 .B --single-cart

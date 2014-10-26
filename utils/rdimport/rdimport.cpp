@@ -87,6 +87,8 @@ MainObject::MainObject(QObject *parent,const char *name)
   import_create_dates=false;
   import_create_startdate_offset=0;
   import_create_enddate_offset=0;
+  import_string_bpm=0;
+  import_string_year=0;
 
   //
   // Read Command Options
@@ -245,6 +247,71 @@ MainObject::MainObject(QObject *parent,const char *name)
       }
       import_create_dates=true;
     }
+    if(import_cmd->key(i)=="--set-string-agency") {
+      import_string_agency=import_cmd->value(i);
+      import_cmd->setProcessed(i,true);
+    }
+    if(import_cmd->key(i)=="--set-string-album") {
+      import_string_album=import_cmd->value(i);
+      import_cmd->setProcessed(i,true);
+    }
+    if(import_cmd->key(i)=="--set-string-artist") {
+      import_string_artist=import_cmd->value(i);
+      import_cmd->setProcessed(i,true);
+    }
+    if(import_cmd->key(i)=="--set-string-bpm") {
+      import_string_bpm=import_cmd->value(i).toInt(&ok);
+      if(!ok) {
+	fprintf(stderr,"rdimport: invalid value for --set-string-bpm\n");
+	exit(255);
+      }
+      import_cmd->setProcessed(i,true);
+    }
+    if(import_cmd->key(i)=="--set-string-client") {
+      import_string_client=import_cmd->value(i);
+      import_cmd->setProcessed(i,true);
+    }
+    if(import_cmd->key(i)=="--set-string-composer") {
+      import_string_composer=import_cmd->value(i);
+      import_cmd->setProcessed(i,true);
+    }
+    if(import_cmd->key(i)=="--set-string-conductor") {
+      import_string_conductor=import_cmd->value(i);
+      import_cmd->setProcessed(i,true);
+    }
+    if(import_cmd->key(i)=="--set-string-publisher") {
+      import_string_publisher=import_cmd->value(i);
+      import_cmd->setProcessed(i,true);
+    }
+    if(import_cmd->key(i)=="--set-string-label") {
+      import_string_label=import_cmd->value(i);
+      import_cmd->setProcessed(i,true);
+    }
+    if(import_cmd->key(i)=="--set-string-song-id") {
+      import_string_song_id=import_cmd->value(i);
+      import_cmd->setProcessed(i,true);
+    }
+    if(import_cmd->key(i)=="--set-string-title") {
+      if(import_cmd->value(i).isEmpty()) {
+	fprintf(stderr,"title field cannot be empty\n");
+	exit(255);
+      }
+      import_string_title=import_cmd->value(i);
+      import_cmd->setProcessed(i,true);
+    }
+    if(import_cmd->key(i)=="--set-string-user-defined") {
+      import_string_user_defined=import_cmd->value(i);
+      import_cmd->setProcessed(i,true);
+    }
+    if(import_cmd->key(i)=="--set-string-year") {
+      import_string_year=import_cmd->value(i).toInt(&ok);
+      if(!ok) {
+	fprintf(stderr,"rdimport: invalid value for --set-string-year\n");
+	exit(255);
+      }
+      import_cmd->setProcessed(i,true);
+    }
+
   }
   import_cut_markers=new MarkerSet();
   import_cut_markers->loadMarker(import_cmd,"cut");
@@ -519,6 +586,46 @@ MainObject::MainObject(QObject *parent,const char *name)
     }
     if(import_persistent_dropbox_id>=0) {
       printf(" Persistent DropBox ID = %d\n",import_persistent_dropbox_id);
+    }
+    if(!import_string_agency.isNull()) {
+      printf(" Agency set to: %s\n",(const char *)import_string_agency);
+    }
+    if(!import_string_album.isNull()) {
+      printf(" Album set to: %s\n",(const char *)import_string_album);
+    }
+    if(!import_string_artist.isNull()) {
+      printf(" Artist set to: %s\n",(const char *)import_string_artist);
+    }
+    if(import_string_bpm!=0) {
+      printf(" BPM set to: %d\n",import_string_bpm);
+    }
+    if(!import_string_client.isNull()) {
+      printf(" Client set to: %s\n",(const char *)import_string_client);
+    }
+    if(!import_string_composer.isNull()) {
+      printf(" Composer set to: %s\n",(const char *)import_string_composer);
+    }
+    if(!import_string_conductor.isNull()) {
+      printf(" Conductor set to: %s\n",(const char *)import_string_conductor);
+    }
+    if(!import_string_label.isNull()) {
+      printf(" Label set to: %s\n",(const char *)import_string_label);
+    }
+    if(!import_string_publisher.isNull()) {
+      printf(" Publisher set to: %s\n",(const char *)import_string_publisher);
+    }
+    if(!import_string_song_id.isNull()) {
+      printf(" Song ID set to: %s\n",(const char *)import_string_song_id);
+    }
+    if(!import_string_title.isNull()) {
+      printf(" Title set to: %s\n",(const char *)import_string_title);
+    }
+    if(!import_string_user_defined.isNull()) {
+      printf(" User Defined set to: %s\n",
+	     (const char *)import_string_user_defined);
+    }
+    if(import_string_year!=0) {
+      printf(" Year set to: %d\n",import_string_year);
     }
     import_cut_markers->dump();
     import_talk_markers->dump();
@@ -908,9 +1015,16 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
 	     (const char *)RDGetBasePart(filename).utf8(),*cartnum);
     }
     else {
-      printf(" Importing file \"%s\" [%s] to cart %06u ... ",
-	     (const char *)RDGetBasePart(filename).utf8(),
-	     (const char *)wavedata->title().stripWhiteSpace(),*cartnum);
+      if(import_string_title.isNull()) {
+	printf(" Importing file \"%s\" [%s] to cart %06u ... ",
+	       (const char *)RDGetBasePart(filename).utf8(),
+	       (const char *)wavedata->title().stripWhiteSpace(),*cartnum);
+      }
+      else {
+	printf(" Importing file \"%s\" [%s] to cart %06u ... ",
+	       (const char *)RDGetBasePart(filename).utf8(),
+	       (const char *)import_string_title.stripWhiteSpace(),*cartnum);
+      }
     }
     fflush(stdout);
   }
@@ -1016,8 +1130,47 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
   for(unsigned i=0;i<import_add_scheduler_codes.size();i++) {
     cart->addSchedCode(import_add_scheduler_codes[i]);
   }
+  if(!import_string_agency.isNull()) {
+    cart->setAgency(import_string_agency);
+  }
+  if(!import_string_album.isNull()) {
+    cart->setAlbum(import_string_album);
+  }
+  if(!import_string_artist.isNull()) {
+    cart->setArtist(import_string_artist);
+  }
+  if(import_string_bpm!=0) {
+    cart->setBeatsPerMinute(import_string_bpm);
+  }
+  if(!import_string_client.isNull()) {
+    cart->setClient(import_string_client);
+  }
+  if(!import_string_composer.isNull()) {
+    cart->setComposer(import_string_composer);
+  }
+  if(!import_string_conductor.isNull()) {
+    cart->setConductor(import_string_conductor);
+  }
+  if(!import_string_label.isNull()) {
+    cart->setLabel(import_string_label);
+  }
+  if(!import_string_publisher.isNull()) {
+    cart->setPublisher(import_string_publisher);
+  }
+  if(!import_string_song_id.isNull()) {
+    cart->setSongId(import_string_song_id);
+  }
+  if(!import_string_title.isNull()) {
+    cart->setTitle(import_string_title);
+  }
   if(!import_set_user_defined.isEmpty()) {
     cart->setUserDefined(import_set_user_defined);
+  }
+  if(!import_string_user_defined.isNull()) {
+    cart->setUserDefined(import_string_user_defined);
+  }
+  if(import_string_year!=0) {
+    cart->setYear(import_string_year);
   }
   if((!import_dayparts[0].isNull())||(!import_dayparts[1].isNull())) {
     cut->setStartDaypart(import_dayparts[0],true);

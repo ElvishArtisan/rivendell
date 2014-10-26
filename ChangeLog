@@ -14590,3 +14590,6 @@
 2014-10-25 Fred Gleason <fredg@paravelsystems.com>
 	* Added fade markers to the 'MarkerSet::dump()' method in
 	'utils/rdimport/markerset.cpp'.
+2014-10-25 Fred Gleason <fredg@paravelsystems.com>
+	* Implemented '--set-string-*=' options for rdimport(1) in
+	'utils/rdimport/rdimport.cpp' and 'utils/rdimport/rdimport.h'.

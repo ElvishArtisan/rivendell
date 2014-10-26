@@ -118,6 +118,19 @@ class MainObject : public QObject
   int import_segue_length;
   unsigned import_cart_number;
   QString import_metadata_pattern;
+  QString import_string_agency;
+  QString import_string_album;
+  QString import_string_artist;
+  int import_string_bpm;
+  QString import_string_client;
+  QString import_string_composer;
+  QString import_string_conductor;
+  QString import_string_publisher;
+  QString import_string_label;
+  QString import_string_song_id;
+  QString import_string_title;
+  QString import_string_user_defined;
+  int import_string_year;
   struct DropboxList {
     QString filename;
     unsigned size;
