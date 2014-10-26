@@ -14597,3 +14597,6 @@
 	* Implemented '--set-string-description' and '--set-string-outcue'
 	options for rdimport(1) in 'utils/rdimport/rdimport.cpp' and
 	'utils/rdimport/rdimport.h'.
+2014-10-26 Fred Gleason <fredg@paravelsystems.com>
+	* Implemented '--set-datetimes' option for rdimport(1) in
+	'utils/rdimport/rdimport.cpp' and 'utils/rdimport/rdimport.h'.

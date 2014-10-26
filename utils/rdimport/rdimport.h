@@ -104,6 +104,7 @@ class MainObject : public QObject
   bool import_create_dates;
   int import_create_startdate_offset;
   int import_create_enddate_offset;
+  QDateTime import_datetimes[2];
   QTime import_dayparts[2];
   bool import_fix_broken_formats;
   int import_persistent_dropbox_id;

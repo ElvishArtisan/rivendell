@@ -164,6 +164,58 @@ MainObject::MainObject(QObject *parent,const char *name)
 	exit(256);
       }
     }
+    if(import_cmd->key(i)=="--set-datetimes") {
+      QStringList f0=QStringList().split(",",import_cmd->value(i));
+      if(f0.size()!=2) {
+	fprintf(stderr,"rdimport: invalid argument to --set-datetimes\n");
+	exit(256);
+      }
+      for(unsigned j=0;j<2;j++) {
+	if((f0[j].length()!=15)||(f0[j].mid(8,1)!="-")) {
+	  fprintf(stderr,"rdimport: invalid argument to --set-datetimes\n");
+	  exit(256);
+	}
+	unsigned year=f0[j].left(4).toUInt(&ok);
+	if(!ok) {
+	  fprintf(stderr,"rdimport: invalid year argument to --set-datetimes\n");
+	  exit(256);
+	}
+	unsigned month=f0[j].mid(4,2).toUInt(&ok);
+	if((!ok)||(month>12)) {
+	  fprintf(stderr,"rdimport: invalid month argument to --set-datetimes\n");
+	  exit(256);
+	}
+	unsigned day=f0[j].mid(6,2).toUInt(&ok);
+	if((!ok)||(day>31)) {
+	  fprintf(stderr,"rdimport: invalid day argument to --set-datetimes\n");
+	  exit(256);
+	}
+	unsigned hour=f0[j].mid(9,2).toUInt(&ok);
+	if((!ok)||(hour>23)) {
+	  fprintf(stderr,"rdimport: invalid hour argument to --set-datetimes\n");
+	  exit(256);
+	}
+	unsigned min=f0[j].mid(11,2).toUInt(&ok);
+	if((!ok)||(min>59)) {
+	  fprintf(stderr,"rdimport: invalid minute argument to --set-datetimes\n");
+	  exit(256);
+	}
+	unsigned sec=f0[j].right(2).toUInt(&ok);
+	if((!ok)||(sec>59)) {
+	  fprintf(stderr,"rdimport: invalid seconds argument to --set-datetimes\n");
+	  exit(256);
+	}
+	import_datetimes[j]=QDateTime(QDate(year,month,day),
+				      QTime(hour,min,sec));
+	if(!import_datetimes[j].isValid()) {
+	  fprintf(stderr,"rdimport: invalid argument to --set-datetimes\n");
+	}
+      }
+      if(import_datetimes[0]>=import_datetimes[1]) {
+	fprintf(stderr,"rdimport: datetime cannot end before it begins\n");
+	exit(256);
+      }
+    }
     if(import_cmd->key(i)=="--set-daypart-times") {
       QStringList f0=QStringList().split(",",import_cmd->value(i));
       if(f0.size()!=2) {
@@ -576,6 +628,12 @@ MainObject::MainObject(QObject *parent,const char *name)
 	     (const char *)import_dayparts[0].toString("hh:mm:ss"));
       printf(" End Daypart = %s\n",
 	     (const char *)import_dayparts[1].toString("hh:mm:ss"));
+    }
+    if((!import_datetimes[0].isNull())||(!import_datetimes[1].isNull())) {
+      printf(" Start DateTime = %s\n",
+	     (const char *)import_datetimes[0].toString("MM/dd/yyyy hh:mm:ss"));
+      printf(" End DateTime = %s\n",
+	     (const char *)import_datetimes[1].toString("MM/dd/yyyy hh:mm:ss"));
     }
     if(import_fix_broken_formats) {
       printf(" Broken format workarounds are ENABLED\n");
@@ -1195,6 +1253,10 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
   if((!import_dayparts[0].isNull())||(!import_dayparts[1].isNull())) {
     cut->setStartDaypart(import_dayparts[0],true);
     cut->setEndDaypart(import_dayparts[1],true);
+  }
+  if((!import_datetimes[0].isNull())||(!import_datetimes[1].isNull())) {
+    cut->setStartDatetime(import_datetimes[0],true);
+    cut->setEndDatetime(import_datetimes[1],true);
   }
   import_cut_markers->setAudioLength(wavefile->getExtTimeLength());
   if(import_cut_markers->hasStartValue()) {

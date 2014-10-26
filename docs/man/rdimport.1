@@ -168,8 +168,12 @@ Specify the threshold level to use for setting the segue markers, in dBFS.
 Default action is not to create segue markers.
 
 .TP
+.B --set-datetimes=<\fIstart-datetime\fP>,<\fIend-datetime\fP>
+Set the cut start and end datetimes, in the format YYYYMMDD-HHMMSS.
+
+.TP
 .B --set-daypart-times=<\fIstart-time\fP>,<\fIend-time\fP>
-Set the start and end daypart times, in the format HHMMSS.
+Set the cut start and end daypart times, in the format HHMMSS.
 
 .TP
 .B --set-marker-end-<\fImarker\fP>=<\fIoffset\fP>
@@ -223,45 +227,59 @@ for <\fIfield\fP> are:
 .TP
 .B agency
 Agency Name
+
 .TP
 .B album
 Album Name
+
 .TP
 .B artist
 Artist Name
+
 .TP
 .B bpm
 Beats per Minute (integer numeric)
+
 .TP
 .B client
 Client Name
+
 .TP
 .B composer
 Music Composer Name
-.TP
-.B description
-Cut Description
-.TP
-.B outcue
-Cut Outcue
+
 .TP
 .B conductor
 Conductor Name
+
 .TP
-.B publisher
-Music Publisher (rights holder)
+.B description
+Cut Description
+
 .TP
 .B label
 Record Label Name (rights holder)
+
+.TP
+.B outcue
+Cut Outcue
+
+.TP
+.B publisher
+Music Publisher (rights holder)
+
 .TP
 .B song-id
 Song ID
+
 .TP
 .B title
 Title
+
 .TP
 .B user-defined
 Miscelaneous Information
+
 .TP
 .B year
 Year Released (four digit numeric)
