@@ -14602,3 +14602,9 @@
 	'utils/rdimport/rdimport.cpp' and 'utils/rdimport/rdimport.h'.
 2014-10-26 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 2.9.3int00.
+2014-10-27 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in 'lib/rdreport.cpp' that caused RDLogManager
+	events to be omitted from reports even when the
+	'Export Event Types - All' checkbox was selected in combination with
+	'Traffic Log' or 'Music Log' checkboxes.  [Fixes GitHub issue
+	#000021].

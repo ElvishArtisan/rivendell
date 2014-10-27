@@ -279,7 +279,7 @@ EditReport::EditReport(QString rptname,QWidget *parent,const char *name)
   edit_forcetraffic_box=new QCheckBox(this);
   edit_forcetraffic_box->setGeometry(170,264,15,15);
   label=new QLabel(tr("Traffic Log"),this);
-  label->setGeometry(187,242,80,19);
+  label->setGeometry(187,262,80,19);
   label->setFont(check_font);
   label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
   

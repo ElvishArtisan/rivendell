@@ -430,15 +430,20 @@ bool RDReport::generateReport(const QDate &startdate,const QDate &enddate,
   //
   // Generate Mixdown Table
   //
+  // Create Table
+  //
   QString mixname="MIXDOWN"+station->name();
   sql=QString("drop table `")+mixname+"_SRT`";
-  //  sql=QString().sprintf("drop table `%s_SRT`",(const char *)mixname);
   QSqlQuery *p;
   p=new QSqlQuery(sql);
   delete p;
   sql=RDCreateReconciliationTableSql(mixname+"_SRT");
   q=new RDSqlQuery(sql);
   delete q;
+
+  //
+  // Iterate Selected Services
+  //
   sql=QString().sprintf("select SERVICE_NAME from REPORT_SERVICES \
                          where REPORT_NAME=\"%s\"",
 			(const char *)name());
@@ -448,19 +453,30 @@ bool RDReport::generateReport(const QDate &startdate,const QDate &enddate,
     if(svc->exists()) {
       rec_name=q->value(0).toString();
       rec_name.replace(" ","_");
+
+      //
+      // Generate Type Filters
+      //
       force_sql="";
-      if(exportTypeForced(RDReport::Traffic)) {
-	force_sql+=QString().sprintf("(`%s_SRT`.EVENT_SOURCE=%d)||",
+      if(!exportTypeEnabled(RDReport::Generic)) {
+	if(exportTypeForced(RDReport::Traffic)||
+	   exportTypeEnabled(RDReport::Traffic)) {
+	  force_sql+=QString().sprintf("(`%s_SRT`.EVENT_SOURCE=%d)||",
 				       (const char *)rec_name,
 				       RDLogLine::Traffic);
-      }
-      if(exportTypeForced(RDReport::Music)) {
-	force_sql+=QString().sprintf("(`%s_SRT`.EVENT_SOURCE=%d)||",
+	}
+	if(exportTypeForced(RDReport::Music)||
+	   exportTypeEnabled(RDReport::Music)) {
+	  force_sql+=QString().sprintf("(`%s_SRT`.EVENT_SOURCE=%d)||",
 				       (const char *)rec_name,
 				       RDLogLine::Music);
+	}
+	force_sql=force_sql.left(force_sql.length()-2);
       }
-      force_sql=force_sql.left(force_sql.length()-2);
 
+      //
+      // Selected Fields
+      //
       sql=QString().sprintf("select LENGTH,LOG_ID,CART_NUMBER,STATION_NAME,\
                            EVENT_DATETIME,EVENT_TYPE,EXT_START_TIME,\
                            EXT_LENGTH,EXT_DATA,EXT_EVENT_ID,EXT_ANNC_TYPE,\
@@ -490,9 +506,17 @@ bool RDReport::generateReport(const QDate &startdate,const QDate &enddate,
 			    (const char *)rec_name,
 			    (const char *)rec_name,
 			    (const char *)rec_name);
+
+      //
+      // OnAir Flag Filter
+      //
       if(filterOnairFlag()) {
 	sql+="(ONAIR_FLAG=\"Y\")&&";
       }
+
+      //
+      // Group Filter
+      //
       sql+="(";
       if(!group_sql.isEmpty()) {
 	sql+=QString("(")+group_sql+")&&";
@@ -500,6 +524,10 @@ bool RDReport::generateReport(const QDate &startdate,const QDate &enddate,
       if(!force_sql.isEmpty()) {
 	sql+=QString("(")+force_sql+")&&";
       }
+
+      //
+      // Daypart Filter
+      //
       if(daypart_sql.isEmpty()) {
 	sql+=QString("(EVENT_DATETIME>=\"")+startdate.toString("yyyy-MM-dd")+
 	  " 00:00:00\")&&"+
