@@ -14608,3 +14608,5 @@
 	'Export Event Types - All' checkbox was selected in combination with
 	'Traffic Log' or 'Music Log' checkboxes.  [Fixes GitHub issue
 	#000021].
+2014-10-27 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.9.3int01.
