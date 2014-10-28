@@ -14610,3 +14610,6 @@
 	#000021].
 2014-10-27 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 2.9.3int01.
+2014-10-28 Fred Gleason <fredg@paravelsystems.com>
+	* Updated 'NEWS'.
+	* Incremented the package version to 2.10.0.

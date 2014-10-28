@@ -1,6 +1,39 @@
 The NEWS file for the Rivendell package.
 
 -------------------------------------------------------------------------------
+v2.10.0 --  10/28/2014
+
+Changes:
+   Updated Translation.  A new French translation has applied, courtesy
+   of the good folks at Tryphon [http://www.tryphon.eu/].
+
+   Log Tools Enhancements.  Added various UI enhancements in RDLogManager
+   and RDLogEdit.
+
+   GPIO Logging.  Added an event viewer in RDGpiMon to allow GPIO events
+   to be logged and viewed.
+
+   Music Scheduler Enhancements.  Added the ability to utilize a second
+   Scheduler Code in music events in RDLogManager.
+
+   Report Generation Enhancements.  Added the ability to specify a
+   post-export script when generating reports (analogous to pre-import
+   scripts for log imports).
+
+   RDImport Enhancements.  Added  -set-marker-start-*=',
+   '--set-marker-end-*=', '--set-marker-fadeup*=' '--set-marker-fadedown*=',
+    '--set-string-*=' and  '--set-datetimes' options for rdimport(1).
+
+   Various other bug fixes.  See the ChangeLog for details.
+
+Database Update:
+   This version of Rivendell uses database schema version 242, and will
+   automatically upgrade any earlier versions.  To see the current schema
+   version prior to upgrade, see RDAdmin->SystemInfo.
+
+   As always, be sure to run RDAdmin immediately after upgrading to allow 
+   any necessary changes to the database schema to be applied.
+-------------------------------------------------------------------------------
 v2.9.3 --  9/18/2014
 
 Changes:
