@@ -14613,3 +14613,6 @@
 2014-10-28 Fred Gleason <fredg@paravelsystems.com>
 	* Updated 'NEWS'.
 	* Incremented the package version to 2.10.0.
+2014-10-30 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in 'lib/rdsimpleplayer.cpp' that cause play
+	start position to be set incorrectly.
