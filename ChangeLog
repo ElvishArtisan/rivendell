@@ -14616,3 +14616,8 @@
 2014-10-30 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in 'lib/rdsimpleplayer.cpp' that cause play
 	start position to be set incorrectly.
+2014-10-30 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'DSP Utilization' readout for rdhpiinfo(8) in
+	'utils/rdhpiinfo/rdhpiinfo.cpp' and 'utils/rdhpiinfo/rdhpiinfo.h'.
+	* Added a 'Profile Details' dialog for rdhpiinfo(8) in
+	'utils/rdhpiinfo/virtdetails.cpp' and 'utils/rdhpiinfo/virtdetails.h'.

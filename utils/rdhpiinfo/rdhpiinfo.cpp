@@ -30,8 +30,9 @@
 
 #include <rdcmd_switch.h>
 
-#include <rdhpiinfo.h>
-#include <change_mode.h>
+#include "rdhpiinfo.h"
+#include "change_mode.h"
+#include "virtdetails.h"
 
 MainWidget::MainWidget(QWidget *parent,const char *name)
   :QWidget(parent,name)
@@ -171,24 +172,41 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   info_adapter_label->setAlignment(AlignLeft|AlignVCenter);
 
   //
+  // DSP Utilization
+  //
+  info_utilization_label=new QLabel(tr("DSP Utilization")+":",this);
+  info_utilization_label->setGeometry(10,183,105,20);
+  info_utilization_label->setFont(label_font);
+  info_utilization_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
+  info_utilization_label->setDisabled(true);
+  info_utilization_edit=new QLineEdit(this);
+  info_utilization_edit->setGeometry(120,183,60,20);
+  info_utilization_edit->setFont(font);
+  info_utilization_edit->setReadOnly(true);
+  info_utilization_edit->setDisabled(true);
+  info_utilization_button=new QPushButton(tr("Details"),this);
+  info_utilization_button->setGeometry(190,180,70,26);
+  info_utilization_button->setFont(font);
+  info_utilization_button->setDisabled(true);
+  connect(info_utilization_button,SIGNAL(clicked()),
+	  this,SLOT(utilizationData()));
+
+  //
   // Adapter Mode
   //
   label=new QLabel(tr("Adapter Mode:"),this);
-  label->setGeometry(10,178,105,20);
+  label->setGeometry(10,213,105,20);
   label->setFont(label_font);
   label->setAlignment(AlignRight|AlignVCenter);
-  info_mode_label=new QLabel(this);
-  info_mode_label->setGeometry(120,178,sizeHint().width()-130,20);
-  info_mode_label->setFont(font);
-  info_mode_label->setAlignment(AlignLeft|AlignVCenter);
-
-  //
-  // Change Mode Button
-  //
+  info_mode_edit=new QLineEdit(this);
+  info_mode_edit->setGeometry(120,213,sizeHint().width()-210,20);
+  info_mode_edit->setReadOnly(true);
+  info_mode_edit->setFont(font);
+  info_mode_edit->setAlignment(AlignLeft|AlignVCenter);
   info_changemode_button=
-    new QPushButton(tr("Change Card Mode"),this);
-  info_changemode_button->setGeometry(130,200,170,30);
-  info_changemode_button->setFont(label_font);
+    new QPushButton(tr("Change"),this);
+  info_changemode_button->setGeometry(sizeHint().width()-80,210,70,26);
+  info_changemode_button->setFont(font);
   connect(info_changemode_button,SIGNAL(clicked()),
 	  this,SLOT(changeModeData()));
 
@@ -201,8 +219,14 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   connect(button,SIGNAL(clicked()),qApp,SLOT(quit()));
 
   LoadAdapters();
+
+  hpi_profile_timer=new QTimer(this);
+  connect(hpi_profile_timer,SIGNAL(timeout()),
+	  this,SLOT(updateDspUtilization()));
+
   if(info_name_box->count()>0) {
     nameActivatedData(0);
+    hpi_profile_timer->start(1000);
   }
 }
 
@@ -215,7 +239,7 @@ MainWidget::~MainWidget()
 
 QSize MainWidget::sizeHint() const
 {
-  return QSize(400,250);
+  return QSize(400,290);
 }
 
 
@@ -246,77 +270,77 @@ void MainWidget::nameActivatedData(int id)
 			      hpi_card_version[card]&7));
   switch(hpi_mode[card]) {
   case 0:  // No mode support
-    info_mode_label->setText(tr("Standard"));
+    info_mode_edit->setText(tr("Standard"));
     info_changemode_button->setDisabled(true);
     break;
 
   case HPI_ADAPTER_MODE_4OSTREAM:
-    info_mode_label->setText(tr("Four Output Streams"));
+    info_mode_edit->setText(tr("Four Output Streams"));
     info_changemode_button->setEnabled(true);
     break;
 	
   case HPI_ADAPTER_MODE_6OSTREAM:
-    info_mode_label->setText(tr("Six Output Streams"));
+    info_mode_edit->setText(tr("Six Output Streams"));
     info_changemode_button->setEnabled(true);
     break;
 	
   case HPI_ADAPTER_MODE_8OSTREAM:
-    info_mode_label->setText(tr("Eight Output Streams"));
+    info_mode_edit->setText(tr("Eight Output Streams"));
     info_changemode_button->setEnabled(true);
     break;
 
   case HPI_ADAPTER_MODE_12OSTREAM:
-    info_mode_label->setText(tr("Twelve Output Streams"));
+    info_mode_edit->setText(tr("Twelve Output Streams"));
     info_changemode_button->setEnabled(true);
     break;
 
   case HPI_ADAPTER_MODE_16OSTREAM:
-    info_mode_label->setText(tr("Sixteen Output Streams"));
+    info_mode_edit->setText(tr("Sixteen Output Streams"));
     info_changemode_button->setEnabled(true);
     break;
 
   case HPI_ADAPTER_MODE_1OSTREAM:
-    info_mode_label->setText(tr("One Output Stream"));
+    info_mode_edit->setText(tr("One Output Stream"));
     info_changemode_button->setEnabled(true);
     break;
 
   case HPI_ADAPTER_MODE_1:
-    info_mode_label->setText(tr("Mode 1"));
+    info_mode_edit->setText(tr("Mode 1"));
     info_changemode_button->setEnabled(true);
     break;
 
   case HPI_ADAPTER_MODE_2:
-    info_mode_label->setText(tr("Mode 2"));
+    info_mode_edit->setText(tr("Mode 2"));
     info_changemode_button->setEnabled(true);
     break;
 
   case HPI_ADAPTER_MODE_3:
-    info_mode_label->setText(tr("Mode 3"));
+    info_mode_edit->setText(tr("Mode 3"));
     info_changemode_button->setEnabled(true);
     break;
 
   case HPI_ADAPTER_MODE_MULTICHANNEL:
-    info_mode_label->setText(tr("Surround Sound [SSX]"));
+    info_mode_edit->setText(tr("Surround Sound [SSX]"));
     info_changemode_button->setEnabled(true);
     break;
  
   case HPI_ADAPTER_MODE_9OSTREAM:
-    info_mode_label->setText(tr("Nine Output Stream"));
+    info_mode_edit->setText(tr("Nine Output Stream"));
     info_changemode_button->setEnabled(true);
     break;
 	    
   case HPI_ADAPTER_MODE_MONO:
-    info_mode_label->setText(tr("Mono Mode"));
+    info_mode_edit->setText(tr("Mono Mode"));
     info_changemode_button->setEnabled(true);
     break;
 	    
   case HPI_ADAPTER_MODE_LOW_LATENCY:
-    info_mode_label->setText(tr("Low Latency Mode"));
+    info_mode_edit->setText(tr("Low Latency Mode"));
     info_changemode_button->setEnabled(true);
     break;
 	    
   default:
-    info_mode_label->setText(tr("N/A"));
+    info_mode_edit->setText(tr("N/A"));
     info_changemode_button->setDisabled(true);
     if(hpi_mode[card]!=hpi_serial[card]) {
       str=QString(tr("rdhpiinfo: unknown adapter mode"));
@@ -357,6 +381,41 @@ void MainWidget::changeModeData()
 }
 
 
+void MainWidget::utilizationData()
+{
+  VirtDetails *d=new VirtDetails(hpi_indexes[info_name_box->currentItem()],
+				 hpi_profile[info_name_box->currentItem()],
+				 hpi_profile_quan[info_name_box->currentItem()],
+				 this);
+  hpi_profile_timer->stop();
+  d->exec();
+  hpi_profile_timer->start(1000);
+  delete d;
+}
+
+
+void MainWidget::updateDspUtilization()
+{
+  uint32_t util=0;
+
+  if(HpiErr(HPI_ProfileGetUtilization(NULL,
+				      hpi_profile[info_name_box->currentItem()],
+				      &util))==0) {
+    info_utilization_edit->setText(QString().sprintf("%5.1lf%%",
+						     (double)util/100.0));
+    info_utilization_label->setEnabled(true);
+    info_utilization_edit->setEnabled(true);
+    info_utilization_button->setEnabled(true);
+  }
+  else {
+    info_utilization_edit->setText("xx.x");
+    info_utilization_label->setDisabled(true);
+    info_utilization_edit->setDisabled(true);
+    info_utilization_button->setDisabled(true);
+  }
+}
+
+
 void MainWidget::LoadAdapters()
 {
   int num_adapters;
@@ -382,17 +441,19 @@ void MainWidget::LoadAdapters()
       HpiErr(HPI_AdapterGetMode(NULL,hpi_indexes[i],&hpi_mode[i]),
 	     "HPI_AdapterGetMode");
       HpiErr(HPI_AdapterClose(NULL,hpi_indexes[i]),"HPI_AdapterClose");
+      HpiErr(HPI_ProfileOpenAll(NULL,hpi_indexes[i],0,&hpi_profile[i],
+				&hpi_profile_quan[i]));
     }
   }
 }
 
 
-void MainWidget::HpiErr(hpi_err_t err,const char *func_name) const
+hpi_err_t MainWidget::HpiErr(hpi_err_t err,const char *func_name) const
 {
   char hpi_str[200];
 
   if(err==HPI_ERROR_INVALID_FUNC) {
-    return;
+    return err;
   }
   if(err!=0) {
     HPI_GetErrorText(err,hpi_str);
@@ -403,6 +464,7 @@ void MainWidget::HpiErr(hpi_err_t err,const char *func_name) const
       fprintf(stderr,"rdhpiinfo[%s]: %s\n",func_name,hpi_str);
     }
   }
+  return err;
 }
 
 
