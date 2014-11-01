@@ -14624,3 +14624,5 @@
 2014-11-01 Fred Gleason <fredg@paravelsystems.com>
 	* Changed policy in 'rdlogedit/edit_log.cpp' so that pasted events
 	retain external data attributes.
+2014-11-01 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.10.0int00.
