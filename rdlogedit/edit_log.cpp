@@ -989,7 +989,7 @@ void EditLog::pasteButtonData()
   for(unsigned i=0;i<edit_clipboard->size();i++) {
     edit_clipboard->at(i).setId(edit_log_event->logLine(line+i)->id());
     *edit_log_event->logLine(line+i)=edit_clipboard->at(i);
-    edit_log_event->logLine(line+i)->clearExternalData();
+    //    edit_log_event->logLine(line+i)->clearExternalData();
     edit_log_event->logLine(line+i)->setSource(RDLogLine::Manual);
   }
   edit_changed=true;

@@ -14614,10 +14614,13 @@
 	* Updated 'NEWS'.
 	* Incremented the package version to 2.10.0.
 2014-10-30 Fred Gleason <fredg@paravelsystems.com>
-	* Fixed a regression in 'lib/rdsimpleplayer.cpp' that cause play
+	* Fixed a regression in 'lib/rdsimpleplayer.cpp' that caused play
 	start position to be set incorrectly.
 2014-10-30 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'DSP Utilization' readout for rdhpiinfo(8) in
 	'utils/rdhpiinfo/rdhpiinfo.cpp' and 'utils/rdhpiinfo/rdhpiinfo.h'.
 	* Added a 'Profile Details' dialog for rdhpiinfo(8) in
 	'utils/rdhpiinfo/virtdetails.cpp' and 'utils/rdhpiinfo/virtdetails.h'.
+2014-11-01 Fred Gleason <fredg@paravelsystems.com>
+	* Changed policy in 'rdlogedit/edit_log.cpp' so that pasted events
+	retain external data attributes.
