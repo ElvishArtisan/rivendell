@@ -14631,3 +14631,5 @@
 2014-11-02 Fred Gleason <fredg@paravelsystems.com>
 	* Added an 'EXT DATA' column to the Edit Log dialog on rdlogedit(1)
 	in 'rdlogedit/edit_log.cpp'.
+2014-11-02 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.10.0int01.
