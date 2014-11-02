@@ -102,6 +102,7 @@ class EditLog : public QDialog
   void UpdateTracks();
   bool DeleteTracks();
   bool ValidateSvc();
+  void LoadClipboard(bool clear_ext);
   RDListViewItem *SingleSelection();
   RDLog *edit_log;
   RDLogEvent *edit_log_event;

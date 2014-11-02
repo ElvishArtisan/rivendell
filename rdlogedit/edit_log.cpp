@@ -954,7 +954,7 @@ void EditLog::downButtonData()
 
 void EditLog::cutButtonData()
 {
-  copyButtonData();
+  LoadClipboard(false);
   deleteButtonData();
   UpdateTracks();
   UpdateSelection();
@@ -963,17 +963,7 @@ void EditLog::cutButtonData()
 
 void EditLog::copyButtonData()
 {
-  QListViewItem *next=edit_log_list->firstChild();
-
-  edit_clipboard->clear();
-  while(next!=NULL) {
-    if((edit_log_list->isSelected(next))&&
-       (next->text(12).toInt()!=END_MARKER_ID)) {
-      edit_clipboard->
-	push_back(*edit_log_event->logLine(next->text(13).toInt()));
-    }
-    next=next->nextSibling();
-  }
+  LoadClipboard(true);
 }
 
 
@@ -991,6 +981,7 @@ void EditLog::pasteButtonData()
     *edit_log_event->logLine(line+i)=edit_clipboard->at(i);
     //    edit_log_event->logLine(line+i)->clearExternalData();
     edit_log_event->logLine(line+i)->setSource(RDLogLine::Manual);
+    edit_clipboard->at(i).clearExternalData();
   }
   edit_changed=true;
   RefreshList();
@@ -1742,4 +1733,23 @@ bool EditLog::DeleteTracks()
     delete cart;
   }
   return true;
+}
+
+
+void EditLog::LoadClipboard(bool clear_ext)
+{
+  QListViewItem *next=edit_log_list->firstChild();
+
+  edit_clipboard->clear();
+  while(next!=NULL) {
+    if((edit_log_list->isSelected(next))&&
+       (next->text(12).toInt()!=END_MARKER_ID)) {
+      edit_clipboard->
+	push_back(*edit_log_event->logLine(next->text(13).toInt()));
+      if(clear_ext) {
+	edit_clipboard->back().clearExternalData();
+      }
+    }
+    next=next->nextSibling();
+  }
 }
