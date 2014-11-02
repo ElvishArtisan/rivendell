@@ -399,6 +399,10 @@ para o serviço selecionado!</translation>
         <source>Unable to save log, audio deletion error!</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>EXT DATA</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditLogLine</name>

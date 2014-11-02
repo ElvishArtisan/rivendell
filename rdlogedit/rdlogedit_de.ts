@@ -397,6 +397,10 @@ die für den gewählten Service ungültig sind!</translation>
         <source>Unable to save log, audio deletion error!</source>
         <translation>Kann Logdatei nicht speichern, Audiolöschfehler!</translation>
     </message>
+    <message>
+        <source>EXT DATA</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditLogLine</name>
