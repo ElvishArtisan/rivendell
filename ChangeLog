@@ -14625,5 +14625,6 @@
 	* Changed policy in 'rdlogedit/edit_log.cpp' so that pasted events
 	retain external data attributes.
 2014-11-01 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.10.0int00.
 	* Modified 'rdlogedit/edit_log.cpp' so as to retain external data
 	attributes only when pasting from a 'cut' operation.
