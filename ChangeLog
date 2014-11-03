@@ -14633,3 +14633,5 @@
 	in 'rdlogedit/edit_log.cpp'.
 2014-11-02 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 2.10.0int01.
+2014-11-03 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'usermode-gtk' dependency for RHEL 7 in 'configure.ac'.

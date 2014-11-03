@@ -118,17 +118,19 @@ else
   AC_SUBST(APACHE_PKG,"httpd")
   AC_SUBST(APACHE_CONFIG_DIR,"/etc/httpd/conf.d")
   AC_SUBST(CONSOLEHELPER_RDALSACONFIG,"/usr/bin/rdalsaconfig-root")
-  AC_SUBST(USERMODE_PKG,"usermode")
   if test $ar_distro_major -ge 7 ; then
+    AC_SUBST(USERMODE_PKG,"usermode usermode-gtk")
     AC_SUBST(QT3_MYSQL_PKG,"qt3-MySQL")
     AC_SUBST(QT3_DEVEL_PKG,"qt3-devel")
     AC_SUBST(MYSQL_PKG,"mariadb")
   else
     if test $ar_distro_major -ge 6 ; then
+    AC_SUBST(USERMODE_PKG,"usermode")
       AC_SUBST(QT3_MYSQL_PKG,"qt-MySQL")
       AC_SUBST(QT3_DEVEL_PKG,"qt3-devel")
       AC_SUBST(MYSQL_PKG,"mysqld")
     else
+      AC_SUBST(USERMODE_PKG,"usermode")
       AC_SUBST(QT3_MYSQL_PKG,"qt-MySQL")
       AC_SUBST(QT3_DEVEL_PKG,"qt-devel")
       AC_SUBST(MYSQL_PKG,"mysqld")
