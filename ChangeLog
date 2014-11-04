@@ -14637,3 +14637,6 @@
 	* Added a 'usermode-gtk' dependency for RHEL 7 in 'configure.ac'.
 2014-11-04 Fred Gleason <fredg@paravelsystems.com>
 	* Removed debugging printf from 'utils/rdhpiinfo/rdhpiinfo.cpp'.
+2014-11-04 Fred Gleason <fredg@paravelsystems.com>
+	* Updated 'NEWS'.
+	* Incremented the package version to 2.10.1.
