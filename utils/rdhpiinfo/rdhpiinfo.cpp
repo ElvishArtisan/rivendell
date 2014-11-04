@@ -66,7 +66,6 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   // Open HPI
   //
   if(HPI_SubSysCreate()==NULL) {
-    printf("HERE\n");
     QMessageBox::warning(this,tr("HPI Error"),
 			 tr("The ASI HPI Driver is not loaded!"));
     exit(1);
