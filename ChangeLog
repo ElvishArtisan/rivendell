@@ -14640,3 +14640,6 @@
 2014-11-04 Fred Gleason <fredg@paravelsystems.com>
 	* Updated 'NEWS'.
 	* Incremented the package version to 2.10.1.
+2014-11-04 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'rdlogedit/drop_listview.cpp' that caused a
+	segfault when dropping a cart on the log list.
