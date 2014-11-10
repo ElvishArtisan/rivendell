@@ -1153,6 +1153,9 @@ void EditLog::okData()
 #ifndef WIN32
   edit_player->stop();
 #endif  // WIN32
+  for(unsigned i=0;i<edit_clipboard->size();i++) {
+    edit_clipboard->at(i).clearExternalData();
+  }
   done(0);
 }
 
@@ -1183,6 +1186,9 @@ void EditLog::cancelData()
 #ifndef WIN32
   edit_player->stop();
 #endif  // WIN32
+  for(unsigned i=0;i<edit_clipboard->size();i++) {
+    edit_clipboard->at(i).clearExternalData();
+  }
   done(1);
 }
 

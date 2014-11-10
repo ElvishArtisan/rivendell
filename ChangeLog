@@ -14645,3 +14645,6 @@
 	segfault when dropping a cart on the log list.
 2014-11-06 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 2.10.1int00.
+2014-11-10 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'rdlogedit/edit_log.cpp' that allowed GUID data
+	in the clipboard to be transferred between logs.
