@@ -90,6 +90,7 @@ MainObject::MainObject(QObject *parent,const char *name)
   import_string_bpm=0;
   import_string_year=0;
   import_clear_datetimes=false;
+  import_clear_dayparts=false;
 
   //
   // Read Command Options
@@ -254,6 +255,10 @@ MainObject::MainObject(QObject *parent,const char *name)
 	exit(256);
       }
     }
+    if(import_cmd->key(i)=="--clear-daypart-times") {
+      import_clear_dayparts=true;
+      import_cmd->setProcessed(i,true);
+    }
     if(import_cmd->key(i)=="--drop-box") {
       import_drop_box=true;
       if(import_persistent_dropbox_id<0) {
@@ -379,6 +384,10 @@ MainObject::MainObject(QObject *parent,const char *name)
   }
   if(import_datetimes[0].isValid()&&import_clear_datetimes) {
     fprintf(stderr,"rdimport: --set-datetimes and --clear-datetimes are mutually exclusive\n");
+    exit(255);
+  }
+  if((!import_dayparts[1].isNull())&&import_clear_dayparts) {
+    fprintf(stderr,"rdimport: --set-daypart-times and --clear-daypart-times are mutually exclusive\n");
     exit(255);
   }
 
@@ -638,6 +647,9 @@ MainObject::MainObject(QObject *parent,const char *name)
 	     (const char *)import_dayparts[0].toString("hh:mm:ss"));
       printf(" End Daypart = %s\n",
 	     (const char *)import_dayparts[1].toString("hh:mm:ss"));
+    }
+    if(import_clear_dayparts) {
+      printf(" Clearing daypart times\n");
     }
     if((!import_datetimes[0].isNull())||(!import_datetimes[1].isNull())) {
       printf(" Start DateTime = %s\n",
@@ -1267,6 +1279,10 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
     cut->setStartDaypart(import_dayparts[0],true);
     cut->setEndDaypart(import_dayparts[1],true);
   }
+  if(import_clear_dayparts) {
+    cut->setStartDaypart(QTime(),false);
+    cut->setEndDaypart(QTime(),false);
+  }
   if((!import_datetimes[0].isNull())||(!import_datetimes[1].isNull())) {
     cut->setStartDatetime(import_datetimes[0],true);
     cut->setEndDatetime(import_datetimes[1],true);
@@ -1280,7 +1296,6 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
     cut->setStartPoint(import_cut_markers->startValue());
     cut->setEndPoint(import_cut_markers->endValue());
     cut->setLength(cut->endPoint()-cut->startPoint());
-    //    cart->updateLength();
   }
   int lo=cut->startPoint();
   int hi=cut->endPoint();

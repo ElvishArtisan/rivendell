@@ -107,6 +107,7 @@ class MainObject : public QObject
   QDateTime import_datetimes[2];
   bool import_clear_datetimes;
   QTime import_dayparts[2];
+  bool import_clear_dayparts;
   bool import_fix_broken_formats;
   int import_persistent_dropbox_id;
   unsigned import_format;

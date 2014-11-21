@@ -38,6 +38,12 @@ the file's import metadata.  Mutually exclusive with the \fB--set-datetimes\fP
 option.
 
 .TP
+.B --clear-daypart-times
+Do not set the cut start and end daypart times, even if such are found in
+the file's import metadata.  Mutually exclusive with the
+\fB--set-daypart-times\fP option.
+
+.TP
 .B --create-enddate-offset=<\fIdays\fP>
 If the imported file does not reference an end date, create with
 end date offset by <\fIdays\fP> days relative to the current date.
@@ -175,11 +181,13 @@ Default action is not to create segue markers.
 
 .TP
 .B --set-datetimes=<\fIstart-datetime\fP>,<\fIend-datetime\fP>
-Set the cut start and end datetimes, in the format YYYYMMDD-HHMMSS.
+Set the cut start and end datetimes, in the format YYYYMMDD-HHMMSS.  Mutually
+exclusive with \fB--clear-datetimes\fP.
 
 .TP
 .B --set-daypart-times=<\fIstart-time\fP>,<\fIend-time\fP>
-Set the cut start and end daypart times, in the format HHMMSS.
+Set the cut start and end daypart times, in the format HHMMSS.  Mutually
+exclusive with \fB--clear-daypart-times\fP.
 
 .TP
 .B --set-marker-end-<\fImarker\fP>=<\fIoffset\fP>
