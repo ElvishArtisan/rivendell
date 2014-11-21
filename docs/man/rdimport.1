@@ -32,6 +32,12 @@ Add <\fIoffset\fP> to the cart number as determined from metadata pattern
 or --use-cartchunk-cutid.
 
 .TP
+.B --clear-datetimes
+Do not set the cut start and end datetimes, even if such are found in
+the file's import metadata.  Mutually exclusive with the \fB--set-datetimes\fP
+option.
+
+.TP
 .B --create-enddate-offset=<\fIdays\fP>
 If the imported file does not reference an end date, create with
 end date offset by <\fIdays\fP> days relative to the current date.

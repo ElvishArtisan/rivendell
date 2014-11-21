@@ -89,6 +89,7 @@ MainObject::MainObject(QObject *parent,const char *name)
   import_create_enddate_offset=0;
   import_string_bpm=0;
   import_string_year=0;
+  import_clear_datetimes=false;
 
   //
   // Read Command Options
@@ -163,6 +164,10 @@ MainObject::MainObject(QObject *parent,const char *name)
 	delete import_cmd;
 	exit(256);
       }
+    }
+    if(import_cmd->key(i)=="--clear-datetimes") {
+      import_clear_datetimes=true;
+      import_cmd->setProcessed(i,true);
     }
     if(import_cmd->key(i)=="--set-datetimes") {
       QStringList f0=QStringList().split(",",import_cmd->value(i));
@@ -372,6 +377,11 @@ MainObject::MainObject(QObject *parent,const char *name)
       import_cmd->setProcessed(i,true);
     }
   }
+  if(import_datetimes[0].isValid()&&import_clear_datetimes) {
+    fprintf(stderr,"rdimport: --set-datetimes and --clear-datetimes are mutually exclusive\n");
+    exit(255);
+  }
+
   import_cut_markers=new MarkerSet();
   import_cut_markers->loadMarker(import_cmd,"cut");
   import_talk_markers=new MarkerSet();
@@ -634,6 +644,9 @@ MainObject::MainObject(QObject *parent,const char *name)
 	     (const char *)import_datetimes[0].toString("MM/dd/yyyy hh:mm:ss"));
       printf(" End DateTime = %s\n",
 	     (const char *)import_datetimes[1].toString("MM/dd/yyyy hh:mm:ss"));
+    }
+    if(import_clear_datetimes) {
+      printf(" Clearing datetimes\n");
     }
     if(import_fix_broken_formats) {
       printf(" Broken format workarounds are ENABLED\n");
@@ -1258,12 +1271,16 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
     cut->setStartDatetime(import_datetimes[0],true);
     cut->setEndDatetime(import_datetimes[1],true);
   }
+  if(import_clear_datetimes) {
+    cut->setStartDatetime(QDateTime(),false);
+    cut->setEndDatetime(QDateTime(),false);
+  }
   import_cut_markers->setAudioLength(wavefile->getExtTimeLength());
   if(import_cut_markers->hasStartValue()) {
     cut->setStartPoint(import_cut_markers->startValue());
     cut->setEndPoint(import_cut_markers->endValue());
     cut->setLength(cut->endPoint()-cut->startPoint());
-    cart->updateLength();
+    //    cart->updateLength();
   }
   int lo=cut->startPoint();
   int hi=cut->endPoint();
@@ -1290,6 +1307,7 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
   if(import_fadeup_marker->hasFadeValue()) {
     cut->setFadeupPoint(import_fadeup_marker->fadeValue(lo,hi));
   }
+  cart->updateLength();
   delete settings;
   delete conv;
   delete cut;

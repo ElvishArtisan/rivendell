@@ -14648,3 +14648,6 @@
 2014-11-10 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in 'rdlogedit/edit_log.cpp' that allowed GUID data
 	in the clipboard to be transferred between logs.
+2014-11-21 Fred Gleason <fredg@paravelsystems.com>
+	* Added a '--clear-datetimes' option to rdimport(1) in
+	'utils/rdimport/rdimport.cpp' and 'utils/rdimport/rdimport.h'.
