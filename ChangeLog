@@ -14659,3 +14659,6 @@
 2014-11-24 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in 'rdhpi/rdsoundcard.cpp' that caused AES3-only output
 	ports to fail to be detected under HPI.
+2014-11-24 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in 'rdairplay/log_traffic.cpp' that broke
+	when writing ELR data to a service with a space in its name.
