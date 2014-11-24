@@ -14656,3 +14656,6 @@
 	'utils/rdimport/rdimport.cpp' and 'utils/rdimport/rdimport.h'.
 2014-11-24 Fred Gleason <fredg@paravelsystems.com>
 	* Added support for the ASI5211 in 'rdhpi/rdhpisoundcard.cpp'.
+2014-11-24 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'rdhpi/rdsoundcard.cpp' that caused AES3-only output
+	ports to fail to be detected under HPI.
