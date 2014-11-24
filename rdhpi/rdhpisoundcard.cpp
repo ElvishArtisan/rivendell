@@ -668,6 +668,7 @@ void RDHPISoundCard::HPIProbe()
     }
     switch(hpi_adapter_list[i]) {
 	case 0x5111:
+	case 0x5211:
 	  input_mux_type[i]=true;
 	  break;
 

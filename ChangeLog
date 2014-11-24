@@ -14654,3 +14654,5 @@
 2014-11-21 Fred Gleason <fredg@paravelsystems.com>
 	* Added a '--clear-daypart-times' option to rdimport(1) in
 	'utils/rdimport/rdimport.cpp' and 'utils/rdimport/rdimport.h'.
+2014-11-24 Fred Gleason <fredg@paravelsystems.com>
+	* Added support for the ASI5211 in 'rdhpi/rdhpisoundcard.cpp'.
