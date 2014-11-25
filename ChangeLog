@@ -14665,3 +14665,5 @@
 2014-11-24 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in 'lib/rdsound_panel.cpp that caused action mode colors
 	be cleared prematurely [GitHub issue #000038].
+2014-11-24 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.10.1int01.
