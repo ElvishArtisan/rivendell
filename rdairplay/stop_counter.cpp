@@ -131,6 +131,7 @@ void StopCounter::tickCounter()
 void StopCounter::UpdateTime()
 {
   QString text;
+  QColor system_button_text_color = palette().active().buttonText();
   int msecs=QTime::currentTime().
     addMSecs(rdstation_conf->timeOffset()).msecsTo(stop_time);
 
@@ -143,7 +144,8 @@ void StopCounter::UpdateTime()
 	  p->fillRect(0,0,sizeHint().width(),sizeHint().height(),
 		      backgroundColor());
 	  //p->eraseRect(0,0,sizeHint().width(),sizeHint().height());
-	  p->setPen(QColor(color1));
+          //p->setPen(QColor(color1));
+          p->setPen(QColor(system_button_text_color));
 	  p->setFont(stop_text_font);
 	  p->drawText((sizeHint().width()-p->fontMetrics().width(stop_text))/2,22,
 		      stop_text);

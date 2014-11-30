@@ -127,6 +127,7 @@ class LogLineBox : public QWidget
   QPalette line_hard_palette;
   QPalette line_timescale_palette;
   QPalette line_transition_palette;
+  QPalette line_text_palette;
   RDLogLine::TransType line_next_type;
   RDAirPlayConf::TimeMode line_time_mode;
   RDLogLine::Type line_type;
