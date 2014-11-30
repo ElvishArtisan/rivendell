@@ -1493,6 +1493,7 @@ bool CreateDb(QString name,QString pwd)
       SCHED_GROUP VARCHAR(10),\
       TITLE_SEP INT(10) UNSIGNED,\
       HAVE_CODE VARCHAR(10),\
+      HAVE_CODE2 VARCHAR(10),\
       HOR_SEP INT(10) UNSIGNED,\
       HOR_DIST INT(10) UNSIGNED,\
       NESTED_EVENT char(64),\
