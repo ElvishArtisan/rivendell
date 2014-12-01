@@ -14676,3 +14676,15 @@
 2014-12-01 Fred Gleason <fredg@paravelsystems.com>
 	* Adjust value of 'STAGE1BUFSIZE' to '16384' in
 	'lib/rdaudioconvert.cpp'.
+2014-12-01 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'utils/rdimport/rdimport.cpp' that failed to
+	apply automatic segues correctly when the audio store was not
+	locally accessible.
+	* Fixed a bug in 'utils/rdimport/rdimport.cpp' that caused the
+	value of the '--segue-level' options to be wrong by a factor of
+	100.
+	* Refactored the 'RDCut::autoSegue()' method to fetch trim data
+	via 'RDTrimAudio'.
+	* Added language in the rdimport(1) man page to resolve ambiguity
+	regarding how the --segue-level location is dteremined when
+	normalization is specified.
