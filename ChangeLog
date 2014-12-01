@@ -14670,3 +14670,6 @@
 2014-11-25 Fred Gleason <fredg@paravelsystems.com>
 	* Updated 'NEWS'.
 	* Incremented the package version to 2.10.2.
+2014-11-30 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed missing 'EVENTS.HAVE_CODE2' field in the DB creation code
+	in 'rdadmin/createdb.cpp'.
