@@ -14673,3 +14673,6 @@
 2014-11-30 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed missing 'EVENTS.HAVE_CODE2' field in the DB creation code
 	in 'rdadmin/createdb.cpp'.
+2014-12-01 Fred Gleason <fredg@paravelsystems.com>
+	* Adjust value of 'STAGE1BUFSIZE' to '16384' in
+	'lib/rdaudioconvert.cpp'.
