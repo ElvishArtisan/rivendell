@@ -158,11 +158,11 @@ void WallClock::tickClock()
   }
   else {
     p.fillRect(0,0,width(),height(),backgroundColor());
+    p.setPen(QColor(system_button_text_color));
   }
   //p.eraseRect(0,0,width(),height());
 //  p.setPen(color1);
 //  p.setBrush(color1);
-  p.setPen(QColor(system_button_text_color));
   p.setFont(label_font);
   p.drawText((sizeHint().width()-p.fontMetrics().width(date))/2,22,date);
   p.setFont(time_font);
