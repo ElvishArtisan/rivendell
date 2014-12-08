@@ -14688,3 +14688,5 @@
 	* Added language in the rdimport(1) man page to resolve ambiguity
 	regarding how the --segue-level location is dteremined when
 	normalization is specified.
+2014-12-08 Fred Gleason <fredg@paravelsystems.com>
+	* Added an RLM for Live 365 in 'rlm/rlm_live365.c'.

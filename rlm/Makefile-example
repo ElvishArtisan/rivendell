@@ -23,6 +23,7 @@ OBJS = rlm_ando.rlm\
        rlm_icecast2.rlm\
        rlm_inno713.rlm\
        rlm_liqcomp.rlm\
+       rlm_live365.rlm\
        rlm_padpoint.rlm\
        rlm_serial.rlm\
        rlm_shoutcast1.rlm\
