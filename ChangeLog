@@ -14690,3 +14690,6 @@
 	normalization is specified.
 2014-12-08 Fred Gleason <fredg@paravelsystems.com>
 	* Added an RLM for Live 365 in 'rlm/rlm_live365.c'.
+2014-12-08 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'rlm/rlm_live365.c' where the 'album' field was
+	not escaped correctly.

@@ -210,7 +210,8 @@ void rlm_live365_RLMStart(void *ptr,const char *arg)
 			  (rlm_live365_devs+1)*sizeof(int));
     rlm_live365_aux2s[rlm_live365_devs]=
       rlm_live365_GetLogStatus(ptr,arg,section,"Aux2Log");
-    //    sprintf(errtext,"rlm_live365: configured server \"%s:%d\"",rlm_live365_hostnames+256*rlm_live365_devs,rlm_live365_tcpports[rlm_live365_devs]);
+    sprintf(errtext,"rlm_live365: configured station \"%s\"",
+	    rlm_live365_stations+256*rlm_live365_devs);
     rlm_live365_devs++;
     RLMLog(ptr,LOG_INFO,errtext);
     sprintf(section,"Station%d",i++);
@@ -279,6 +280,7 @@ void rlm_live365_RLMPadDataSent(void *ptr,const struct rlm_svc *svc,
       rlm_live365_EncodeString(artist,1023);
       strncpy(album,RLMResolveNowNext(ptr,now,next,
 				      rlm_live365_albums+256*i),256);
+      rlm_live365_EncodeString(album,1023);
       snprintf(url,8192,"http://www.live365.com/cgi-bin/add_song.cgi?member_name=%s&password=%s&version=2&filename=Rivendell&seconds=%u&title=%s&artist=%s&album=%s",
 	       station,
 	       password,
@@ -286,21 +288,9 @@ void rlm_live365_RLMPadDataSent(void *ptr,const struct rlm_svc *svc,
 	       title,
 	       artist,
 	       album);
-      printf("URL: %s\n",url);
-      /*
-       * D.N.A.S v1.9.8 refuses to process updates with the default CURL
-       * user-agent value, hence we lie to it.
-       */
-      /*
-      strncpy(user_agent,"User-agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.2) Gecko/20070219 Firefox/2.0.0.2",255);
-      */
       if(strlen(now->rlm_title)!=0) {
 	if(fork()==0) {
 	  execlp("curl","curl","-o","/dev/null","-s",url,(char *)NULL);
-	  /*
-	  execlp("curl","curl","-o","/dev/null","-s","--header",user_agent,
-		 url,(char *)NULL);
-	  */
 	  RLMLog(ptr,LOG_WARNING,"rlm_live365: unable to execute curl(1)");
 	  exit(0);
 	}
