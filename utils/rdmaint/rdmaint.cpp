@@ -132,6 +132,7 @@ void MainObject::RunSystemMaintenance()
   PurgeCuts();
   PurgeLogs();
   PurgeElr();
+  PurgeGpioEvents();
   sql="update VERSION set LAST_MAINT_DATETIME=now()";
   q=new RDSqlQuery(sql);
   delete q;
@@ -265,6 +266,19 @@ void MainObject::PurgeDropboxes()
       delete q1;
     }
   }
+  delete q;
+}
+
+
+void MainObject::PurgeGpioEvents()
+{
+  QString sql;
+  RDSqlQuery *q;
+
+  sql=QString("delete from GPIO_EVENTS where ")+
+    "EVENT_DATETIME<\""+
+    QDate::currentDate().addDays(-30).toString("yyyy-MM-dd")+" 00:00:00\"";
+  q=new RDSqlQuery(sql);
   delete q;
 }
 

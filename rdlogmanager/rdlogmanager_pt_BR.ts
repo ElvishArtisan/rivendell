@@ -187,6 +187,10 @@ Você quer salvar?</translation>
         <source>That code is already in use!</source>
         <translation>Este Código já está em uso!</translation>
     </message>
+    <message>
+        <source>&amp;Clone</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditEvent</name>
@@ -516,6 +520,10 @@ Você quer sobreescrêve-lo?</translation>
     </message>
     <message>
         <source>IMPORT</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>and code</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

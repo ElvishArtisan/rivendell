@@ -14497,3 +14497,199 @@
 2014-09-20 Alban Peignier <alban@tryphon.eu>
 	* Merged patch from albanpeignier to use RDCart::selectCut()
 	in RDSimplePlayer [GitHub issue #000025].
+2014-09-24 Fred Gleason <fredg@paravelsystems.com>
+	* Removed redundant line assignments in 'rdlogmanager/edit_clock.cpp'.
+	* Applied a patch from albanpeignier that adds a 'Clone' button
+	to the 'Edit Clock' dialog in 'rdlogmanager/edit_clock.cpp' and
+	'rdlogmanager/edit_clock.h' [GitHub pull request #000030].
+2014-09-24 Fred Gleason <fredg@paravelsystems.com>
+	* Applied a patch from albanpeignier for RDLogEdit that appends
+	a new cart to a log if 'Add' is touched with no log line highlighted
+	[GitHub pull request #000031.
+2014-09-24 Fred Gleason <fredg@paravelsystems.com>
+	* Added code in 'rdlogedit/edit_log.cpp' to append a cart to the
+	log when the 'End of Log' marker is double-clicked.
+2014-09-24 Fred Gleason <fredg@paravelsystems.com>
+	* Applied a patch from smowton that fixed a clashing id problem
+	when auto-refreshing logs in RDAirPlay [GitHub pull request #000028].
+2014-10-07 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'GPIO_EVENTS' table to the database.
+	* Incremented the database version to 240.
+	* Implemented GPIO event logging in 'ripcd/local_macros.cpp' and
+	'ripcd/ripcd.h'.
+	* Added an 'Events Log' area to RDGpiMon(1) in
+	'utils/rdgpimon/rdgpimon.cpp' and 'utils/rdgpimon/rdgpimon.h'.
+	* Added code in rdmaint(1) to purge logged GPIO events in
+	'utils/rdmaint/rdmaint.cpp' and 'utils/rdmaint/rdmaint.h'.
+2014-10-07 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'Report' button to RDGpiMon(1) in
+	'utils/rdgpimon/rdgpimon.cpp' and 'utils/rdgpimon/rdgpimon.h'.
+2014-10-08 Fred Gleason <fredg@paravelsystems.com>
+	* Added code in 'utils/rdimport/rdimport.cpp' to ensure that
+	imports do not end up with an empty cut description field.
+2014-10-08 Fred Gleason <fredg@paravelsystems.com>
+	* Applied a patch from albanpeignier that adds a second scheduler
+	code for music events.
+	* Added an 'EVENTS.HAVE_CODE2' field to the database.
+	* Incremented the database version to 241.
+2014-10-08 Fred Gleason <fredg@paravelsystems.com>
+	* Applied a patch from albanpeignier that fixed a random/null
+	end point with FLAC imports [GitHub pull request #000034].
+2014-10-09 Fred Gleason <fredg@paravelsystems.com>
+	* Implemented the 'RDXPORT_COMMAND_AUDIOSTORE' web API call in
+	'web/rdxport/audiostore.cpp', 'web/rdxport/rdxport.cpp' and
+	'web/rdxport/rdxport.h'.
+	* Added an 'RDAudioStore' class in 'lib/rdaudiostore.cpp' and
+	'lib/rdaudiostore.h'.
+	* Modified the Desk Gauge widget in 'rdlibrary/disk_gauge.cpp'
+	and 'rdlibrary/disk_gauge.h' to use the 'RDAudioStore' class
+	[fixes GitHub issue #000035].
+2014-10-10 Fred Gleason <fredg@paravelsystems.com>
+	* Corrected an error in 'rdlibrary/disk_gauge.cpp' that generated
+	incorrect free time values.
+2014-10-10 Fred Gleason <fredg@paravelsystems.com>
+	* Tweaked sensitivity for initiating drags on Sound Panel buttons
+	in '/lib/rdpanel_button.cpp' [GitHub issue #000032].
+2014-10-10 Fred Gleason <fredg@paravelsystems.com>
+	* Adjusted display of Talk Time in button widget to allow for display
+	of lengths greater than :59 [GitHub issue #000018].
+2014-10-16 Fred Gleason <fredg@paravelsystems.com>
+	* Added support for 'HPI_ADAPTER_MODE_9OSTREAM',
+	'HPI_ADAPTER_MODE_MONO' and 'HPI_ADAPTER_MODE_LOWLATENCY' modes
+	in 'utils/rdhpiinfo/change_mode.cpp' and
+	'utils/rdhpiinfo/rdhpiinfo.cpp'.
+	* Implemented proper labeling for 'HPI_ADAPTER_MODE_16OSTREAM' mode
+	with ASI6x85 adapters.
+2014-10-23 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in the 'Edit Audio' dialog in 'lib/rdedit_audio.cpp'
+	that caused loss of precision when loading the Cut Gain control
+	[GitHub issue #000037].
+2014-10-24 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'REPORTS.POST_EXPORT_CMD' and 'REPORTS.WIN_POST_EXPORT_CMD'
+	fields to the database.
+	* Incremented the database version to 242.
+	* Added 'RDReport::postExportCommand()' and
+	'RDReport::setPostExportCommand()' methods in 'lib/rdreport.cpp' and
+	'lib/rdreport.h'.
+	* Added 'Linux Post Export Cmd' and 'Windows Post Export Cmd' controls
+	to the 'Edit Report' dialog in 'rdadmin/edit_report.cpp' and
+	'rdadmin/edit_report.h'.
+	* Implemented post export commands in 'lib/rdreport.cpp'.
+2014-10-25 Fred Gleason <fredg@paravelsystems.com>
+	* Created an rdimport(1) man page in 'docs/man/rdimport.1'.
+2014-10-25 Fred Gleason <fredg@paravelsystems.com>
+	* Implemented '--set-marker-end-*=' and '--set-marker-start-*='
+	options for rdimport(1) in 'utils/rdimport/markerset.cpp',,
+	'utils/rdimport/markerset.h', 'utils/rdimport/rdimport.cpp' and
+	'utils/rdimport/rdimport.h'.
+2014-10-25 Fred Gleason <fredg@paravelsystems.com>
+	* Implemented '--set-marker-fadedown=' and '--set-marker-fadeup*='
+	options for rdimport(1) in 'utils/rdimport/markerset.cpp',,
+	'utils/rdimport/markerset.h', 'utils/rdimport/rdimport.cpp' and
+	'utils/rdimport/rdimport.h'.
+2014-10-25 Fred Gleason <fredg@paravelsystems.com>
+	* Added fade markers to the 'MarkerSet::dump()' method in
+	'utils/rdimport/markerset.cpp'.
+2014-10-25 Fred Gleason <fredg@paravelsystems.com>
+	* Implemented '--set-string-*=' options for rdimport(1) in
+	'utils/rdimport/rdimport.cpp' and 'utils/rdimport/rdimport.h'.
+2014-10-26 Fred Gleason <fredg@paravelsystems.com>
+	* Implemented '--set-string-description' and '--set-string-outcue'
+	options for rdimport(1) in 'utils/rdimport/rdimport.cpp' and
+	'utils/rdimport/rdimport.h'.
+2014-10-26 Fred Gleason <fredg@paravelsystems.com>
+	* Implemented '--set-datetimes' option for rdimport(1) in
+	'utils/rdimport/rdimport.cpp' and 'utils/rdimport/rdimport.h'.
+2014-10-26 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.9.3int00.
+2014-10-27 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in 'lib/rdreport.cpp' that caused RDLogManager
+	events to be omitted from reports even when the
+	'Export Event Types - All' checkbox was selected in combination with
+	'Traffic Log' or 'Music Log' checkboxes.  [Fixes GitHub issue
+	#000021].
+2014-10-27 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.9.3int01.
+2014-10-28 Fred Gleason <fredg@paravelsystems.com>
+	* Updated 'NEWS'.
+	* Incremented the package version to 2.10.0.
+2014-10-30 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in 'lib/rdsimpleplayer.cpp' that caused play
+	start position to be set incorrectly.
+2014-10-30 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'DSP Utilization' readout for rdhpiinfo(8) in
+	'utils/rdhpiinfo/rdhpiinfo.cpp' and 'utils/rdhpiinfo/rdhpiinfo.h'.
+	* Added a 'Profile Details' dialog for rdhpiinfo(8) in
+	'utils/rdhpiinfo/virtdetails.cpp' and 'utils/rdhpiinfo/virtdetails.h'.
+2014-11-01 Fred Gleason <fredg@paravelsystems.com>
+	* Changed policy in 'rdlogedit/edit_log.cpp' so that pasted events
+	retain external data attributes.
+2014-11-01 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.10.0int00.
+	* Modified 'rdlogedit/edit_log.cpp' so as to retain external data
+	attributes only when pasting from a 'cut' operation.
+2014-11-02 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'EXT DATA' column to the Edit Log dialog on rdlogedit(1)
+	in 'rdlogedit/edit_log.cpp'.
+2014-11-02 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.10.0int01.
+2014-11-03 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'usermode-gtk' dependency for RHEL 7 in 'configure.ac'.
+2014-11-04 Fred Gleason <fredg@paravelsystems.com>
+	* Removed debugging printf from 'utils/rdhpiinfo/rdhpiinfo.cpp'.
+2014-11-04 Fred Gleason <fredg@paravelsystems.com>
+	* Updated 'NEWS'.
+	* Incremented the package version to 2.10.1.
+2014-11-04 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'rdlogedit/drop_listview.cpp' that caused a
+	segfault when dropping a cart on the log list.
+2014-11-06 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.10.1int00.
+2014-11-10 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'rdlogedit/edit_log.cpp' that allowed GUID data
+	in the clipboard to be transferred between logs.
+2014-11-21 Fred Gleason <fredg@paravelsystems.com>
+	* Added a '--clear-datetimes' option to rdimport(1) in
+	'utils/rdimport/rdimport.cpp' and 'utils/rdimport/rdimport.h'.
+2014-11-21 Fred Gleason <fredg@paravelsystems.com>
+	* Added a '--clear-daypart-times' option to rdimport(1) in
+	'utils/rdimport/rdimport.cpp' and 'utils/rdimport/rdimport.h'.
+2014-11-24 Fred Gleason <fredg@paravelsystems.com>
+	* Added support for the ASI5211 in 'rdhpi/rdhpisoundcard.cpp'.
+2014-11-24 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'rdhpi/rdsoundcard.cpp' that caused AES3-only output
+	ports to fail to be detected under HPI.
+2014-11-24 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in 'rdairplay/log_traffic.cpp' that broke
+	when writing ELR data to a service with a space in its name.
+2014-11-24 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'lib/rdsound_panel.cpp that caused action mode colors
+	be cleared prematurely [GitHub issue #000038].
+2014-11-24 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.10.1int01.
+2014-11-25 Fred Gleason <fredg@paravelsystems.com>
+	* Updated 'NEWS'.
+	* Incremented the package version to 2.10.2.
+2014-11-30 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed missing 'EVENTS.HAVE_CODE2' field in the DB creation code
+	in 'rdadmin/createdb.cpp'.
+2014-12-01 Fred Gleason <fredg@paravelsystems.com>
+	* Adjust value of 'STAGE1BUFSIZE' to '16384' in
+	'lib/rdaudioconvert.cpp'.
+2014-12-01 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'utils/rdimport/rdimport.cpp' that failed to
+	apply automatic segues correctly when the audio store was not
+	locally accessible.
+	* Fixed a bug in 'utils/rdimport/rdimport.cpp' that caused the
+	value of the '--segue-level' options to be wrong by a factor of
+	100.
+	* Refactored the 'RDCut::autoSegue()' method to fetch trim data
+	via 'RDTrimAudio'.
+	* Added language in the rdimport(1) man page to resolve ambiguity
+	regarding how the --segue-level location is dteremined when
+	normalization is specified.
+2014-12-08 Fred Gleason <fredg@paravelsystems.com>
+	* Added an RLM for Live 365 in 'rlm/rlm_live365.c'.
+2014-12-08 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'rlm/rlm_live365.c' where the 'album' field was
+	not escaped correctly.

@@ -33,10 +33,12 @@ moc_%.cpp:	%.h
 bin_PROGRAMS = rdhpiinfo
 
 dist_rdhpiinfo_SOURCES = change_mode.cpp change_mode.h\
-                         rdhpiinfo.cpp rdhpiinfo.h
+                         rdhpiinfo.cpp rdhpiinfo.h\
+                         virtdetails.cpp virtdetails.h
 
 nodist_rdhpiinfo_SOURCES = moc_change_mode.cpp\
-                           moc_rdhpiinfo.cpp
+                           moc_rdhpiinfo.cpp\
+                           moc_virtdetails.cpp
 
 rdhpiinfo_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @LIBHPI@
 

@@ -40,6 +40,7 @@
 #include <rdescape_string.h>
 #include <rdweb.h>
 #include <rdcopyaudio.h>
+#include <rdtrimaudio.h>
 
 //
 // Global Classes
@@ -1295,11 +1296,12 @@ void RDCut::autoTrim(RDCut::AudioEnd end,int level)
 }
 
 
-void RDCut::autoSegue(int level,int length)
+void RDCut::autoSegue(int level,int length,RDStation *station,RDUser *user,
+		      RDConfig *config)
 {
 #ifndef WIN32
   int point;
-  int start_point;
+  //  int start_point;
 
   if(!exists()) {
     return;
@@ -1311,17 +1313,23 @@ void RDCut::autoSegue(int level,int length)
     return;
   }
   if(level<0) {
-    if((point=wave->endTrim(+REFERENCE_LEVEL-level))>-1) {
-      start_point=(int)(1000.0*(double)point/(double)wave->getSamplesPerSec());
-      setSegueStartPoint(start_point);
-      if(length>0 && (start_point+length)<endPoint()){
-        setSegueEndPoint(start_point+length);
-        }
-      else {
-        setSegueEndPoint(endPoint());
-        }
+    RDTrimAudio *trim=new RDTrimAudio(station,config);
+    trim->setCartNumber(cart_number);
+    trim->setCutNumber(cut_number);
+    trim->setTrimLevel(level);
+    if(trim->runTrim(user->name(),user->password())==RDTrimAudio::ErrorOk) {
+      if((point=trim->endPoint())>=0) {
+	setSegueStartPoint(trim->endPoint());
+	if(length>0 && (trim->endPoint()+length)<endPoint()){
+	  setSegueEndPoint(trim->endPoint()+length);
+	}
+	else {
+	  setSegueEndPoint(endPoint());
+	}
       }
     }
+    delete trim;
+  }
   else {
     if(length>0) {
        if((endPoint()-length)>startPoint()){

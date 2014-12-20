@@ -182,6 +182,10 @@ Do you want to save?</source>
         <source>Remarks</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>&amp;Clone</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditEvent</name>
@@ -509,6 +513,10 @@ Do you want to overwrite it?</source>
     </message>
     <message>
         <source>IMPORT</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>and code</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

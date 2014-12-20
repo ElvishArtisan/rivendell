@@ -31,7 +31,8 @@ moc_%.cpp:	%.h
 
 bin_PROGRAMS = rdimport
 
-dist_rdimport_SOURCES = rdimport.cpp rdimport.h
+dist_rdimport_SOURCES = markerset.cpp markerset.h\
+                        rdimport.cpp rdimport.h
 
 nodist_rdimport_SOURCES = moc_rdimport.cpp
 

@@ -131,7 +131,8 @@ class RDCut
   bool checkInRecording(const QString &stationname,RDSettings *settings,
 			unsigned msecs) const;
   void autoTrim(RDCut::AudioEnd end,int level);
-  void autoSegue(int level,int length);
+  void autoSegue(int level,int length,RDStation *station,RDUser *user,
+		 RDConfig *config);
   void reset() const;
   void connect(QObject *receiver,const char *member) const;
   void disconnect(QObject *receiver,const char *member) const;

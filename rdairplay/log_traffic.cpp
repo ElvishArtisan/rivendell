@@ -25,6 +25,7 @@
 #include <rdconf.h>
 #include <rddb.h>
 #include <rdescape_string.h>
+#include <rdsvc.h>
 
 #include <log_traffic.h>
 #include <globals.h>
@@ -46,7 +47,7 @@ void LogTraffic(const QString &svcname,const QString &logname,
   if((logline==NULL)||(svcname.isEmpty())) {
     return;
   }
-  sql=QString("insert into `")+svcname+"_SRT` set "+
+  sql=QString("insert into `")+RDSvc::svcTableName(svcname)+"` set "+
     QString().sprintf("LENGTH=%d,",length)+
     "LOG_NAME=\""+RDEscapeString(logname.utf8())+"\","+
     QString().sprintf("LOG_ID=%d,",logline->id())+

@@ -27,7 +27,9 @@
 #include <qwidget.h>
 #include <qcombobox.h>
 #include <qlabel.h>
+#include <qlineedit.h>
 #include <qpushbutton.h>
+#include <qtimer.h>
 
 #include <asihpi/hpi.h>
 #if HPI_VER < 0x040600
@@ -49,19 +51,24 @@ class MainWidget : public QWidget
  private slots:
   void nameActivatedData(int id);
   void changeModeData();
+  void utilizationData();
+  void updateDspUtilization();
 
  private:
   void LoadAdapters();
-  void HpiErr(hpi_err_t err,const char *func_name=0) const;
+  hpi_err_t HpiErr(hpi_err_t err,const char *func_name=0) const;
   QLabel *info_name_label;
   QComboBox *info_name_box;
+  QLabel *info_utilization_label;
+  QLineEdit *info_utilization_edit;
+  QPushButton *info_utilization_button;
   QLabel *info_index_label;
   QLabel *info_serial_label;
   QLabel *info_istreams_label;
   QLabel *info_ostreams_label;
   QLabel *info_dsp_label;
   QLabel *info_adapter_label;
-  QLabel *info_mode_label;
+  QLineEdit *info_mode_edit;
   QPushButton *info_changemode_button;
   uint32_t hpi_version;
   QString hpi_name[HPI_MAX_ADAPTERS];
@@ -73,6 +80,9 @@ class MainWidget : public QWidget
   uint32_t hpi_serial[HPI_MAX_ADAPTERS];
   uint16_t hpi_type[HPI_MAX_ADAPTERS];
   uint32_t hpi_mode[HPI_MAX_ADAPTERS];
+  hpi_handle_t hpi_profile[HPI_MAX_ADAPTERS];
+  uint16_t hpi_profile_quan[HPI_MAX_ADAPTERS];
+  QTimer *hpi_profile_timer;
 };
 
 

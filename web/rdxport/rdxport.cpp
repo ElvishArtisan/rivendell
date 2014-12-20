@@ -219,6 +219,10 @@ Xport::Xport(QObject *parent,const char *name)
     AudioInfo();
     break;
 
+  case RDXPORT_COMMAND_AUDIOSTORE:
+    AudioStore();
+    break;
+
   case RDXPORT_COMMAND_LISTLOGS:
     ListLogs();
     break;

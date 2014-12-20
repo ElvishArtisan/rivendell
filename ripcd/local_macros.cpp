@@ -50,6 +50,7 @@ void MainObject::gpiChangedData(int matrix,int line,bool state)
   if(ripcd_gpi_macro[matrix][line][state]>0) {
     ExecCart(ripcd_gpi_macro[matrix][line][state]);
   }
+  LogGpioEvent(matrix,line,RDMatrix::GpioInput,state);
 }
 
 
@@ -70,6 +71,7 @@ void MainObject::gpoChangedData(int matrix,int line,bool state)
   if(ripcd_gpo_macro[matrix][line][state]>0) {
     ExecCart(ripcd_gpo_macro[matrix][line][state]);
   }
+  LogGpioEvent(matrix,line,RDMatrix::GpioOutput,state);
 }
 
 
@@ -122,6 +124,24 @@ void MainObject::ExecCart(int cartnum)
   rml.setArgQuantity(1);
   rml.setArg(0,cartnum);
   sendRml(&rml);
+}
+
+
+void MainObject::LogGpioEvent(int matrix,int line,RDMatrix::GpioType type,
+			      bool state)
+{
+  QString sql;
+  RDSqlQuery *q;
+
+  sql=QString("insert into GPIO_EVENTS set ")+
+    "STATION_NAME=\""+RDEscapeString(rdstation->name())+"\","+
+    QString().sprintf("MATRIX=%d,",matrix)+
+    QString().sprintf("NUMBER=%d,",line+1)+
+    QString().sprintf("TYPE=%d,",type)+
+    QString().sprintf("EDGE=%d,",state)+
+    "EVENT_DATETIME=now()";
+  q=new RDSqlQuery(sql);
+  delete q;
 }
 
 

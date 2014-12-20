@@ -35,7 +35,10 @@
 #include <qsqldatabase.h>
 #include <qcombobox.h>
 #include <qpixmap.h>
+#include <qdatetimeedit.h>
+#include <qtimer.h>
 
+#include <rdlistview.h>
 #include <rdmatrix.h>
 #include <rdconfig.h>
 #include <rdripc.h>
@@ -62,6 +65,10 @@ class MainWidget : public QWidget
   void userData();
   void typeActivatedData(int index);
   void matrixActivatedData(int index);
+  void eventsDateChangedData(const QDate &date);
+  void eventsStateChangedData(int n);
+  void eventsScrollData();
+  void eventsReportData();
   void gpiStateChangedData(int matrix,int line,bool state);
   void gpoStateChangedData(int matrix,int line,bool state);
   void gpiMaskChangedData(int matrix,int line,bool state);
@@ -76,6 +83,8 @@ class MainWidget : public QWidget
  private:
   void UpdateLabelsUp(int last_line);
   void UpdateLabelsDown(int first_line);
+  void RefreshEventsList();
+  void AddEventsItem(int line,bool state);
   RDConfig *gpi_config;
   QSqlDatabase *gpi_db;
   RDRipc *gpi_ripc;
@@ -83,14 +92,23 @@ class MainWidget : public QWidget
   RDMatrix *gpi_matrix;
   QComboBox *gpi_type_box;
   QComboBox *gpi_matrix_box;
-  QPushButton *gpi_close_button;
   QPixmap *gpi_rivendell_map;
   GpiLabel *gpi_labels[GPIMON_ROWS*GPIMON_COLS];
   RDTransportButton *gpi_up_button;
   RDTransportButton *gpi_down_button;
   int gpi_first_line;
   int gpi_last_line;
+  QLabel *gpi_events_date_label;
+  QDateEdit *gpi_events_date_edit;
+  QLabel *gpi_events_state_label;
+  QComboBox *gpi_events_state_box;
+  QPushButton *gpi_events_scroll_button;
+  RDListView *gpi_events_list;
+  QTimer *gpi_events_startup_timer;
+  bool gpi_scroll_mode;
+  QPalette gpi_scroll_color;
+  QPushButton *gpi_events_report_button;
 };
 
 
-#endif 
+#endif  // MAIN_WIDGET_H

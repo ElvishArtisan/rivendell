@@ -397,6 +397,10 @@ jež jsou pro vybranou službu zakázány!</translation>
         <source>Unable to save log, audio deletion error!</source>
         <translation>Soubor se zápisem nelze uložit, chyba při mazání zvuku!</translation>
     </message>
+    <message>
+        <source>EXT DATA</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditLogLine</name>

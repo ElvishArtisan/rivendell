@@ -185,6 +185,10 @@ Chcete je uložit?</translation>
         <source>Remarks</source>
         <translation>Poznámky</translation>
     </message>
+    <message>
+        <source>&amp;Clone</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditEvent</name>
@@ -514,6 +518,10 @@ Chcete ji přepsat?</translation>
     </message>
     <message>
         <source>IMPORT</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>and code</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

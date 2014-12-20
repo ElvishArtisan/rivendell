@@ -26,6 +26,7 @@ install-exec-am:
 	cp addcart.html $(DESTDIR)@libexecdir@
 	cp addcut.html $(DESTDIR)@libexecdir@
 	cp audioinfo.html $(DESTDIR)@libexecdir@
+	cp audiostore.html $(DESTDIR)@libexecdir@
 	cp copyaudio.html $(DESTDIR)@libexecdir@
 	cp delete_audio.html $(DESTDIR)@libexecdir@
 	cp editcart.html $(DESTDIR)@libexecdir@
@@ -50,6 +51,7 @@ uninstall:
 	rm -f $(DESTDIR)@libexecdir@/addcart.html
 	rm -f $(DESTDIR)@libexecdir@/addcut.html
 	rm -f $(DESTDIR)@libexecdir@/audioinfo.html
+	rm -f $(DESTDIR)@libexecdir@/audiostore.html
 	rm -f $(DESTDIR)@libexecdir@/copyaudio.html
 	rm -f $(DESTDIR)@libexecdir@/delete_audio.html
 	rm -f $(DESTDIR)@libexecdir@/editcart.html
@@ -72,6 +74,7 @@ uninstall:
 EXTRA_DIST = addcart.html\
              addcut.html\
              audioinfo.html\
+             audiostore.html\
              copyaudio.html\
              delete_audio.html\
              editcart.html\

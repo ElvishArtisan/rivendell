@@ -886,7 +886,9 @@ void RDSoundPanel::onairFlagChangedData(bool state)
 
 void RDSoundPanel::scanPanelData()
 {
-  LoadPanel(panel_type,panel_number);
+  if(panel_action_mode==RDAirPlayConf::Normal) {
+    LoadPanel(panel_type,panel_number);
+  }
 }
 
 

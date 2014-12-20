@@ -388,6 +388,10 @@ for the selected service!</source>
         <source>Unable to save log, audio deletion error!</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>EXT DATA</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditLogLine</name>

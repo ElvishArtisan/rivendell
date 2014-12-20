@@ -47,6 +47,7 @@ class MainObject : public QObject
   void PurgeLogs();
   void PurgeElr();
   void PurgeDropboxes();
+  void PurgeGpioEvents();
   RDConfig *maint_config;
   bool maint_verbose;
   bool maint_system;

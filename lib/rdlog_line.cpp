@@ -174,6 +174,7 @@ void RDLogLine::clear()
   log_link_id=-1;
   log_link_embedded=false;
   log_start_source=RDLogLine::StartUnknown;
+  is_holdover = false;
 }
 
 
@@ -2092,4 +2093,14 @@ QString RDLogLine::sourceText(RDLogLine::Source src)
 	return QObject::tr("Tracker");
   }
   return QObject::tr("Unknown");
+}
+
+bool RDLogLine::isHoldover() const
+{
+  return is_holdover;
+}
+
+void RDLogLine::setHoldover(bool b)
+{
+  is_holdover = b;
 }

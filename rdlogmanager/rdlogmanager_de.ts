@@ -185,6 +185,10 @@ Wollen Sie sie speichern?</translation>
         <source>Remarks</source>
         <translation>Bemerkungen</translation>
     </message>
+    <message>
+        <source>&amp;Clone</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditEvent</name>
@@ -514,6 +518,10 @@ Wollen Sie es überschreiben?</translation>
     </message>
     <message>
         <source>IMPORT</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>and code</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

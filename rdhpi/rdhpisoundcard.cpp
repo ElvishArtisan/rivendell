@@ -668,6 +668,7 @@ void RDHPISoundCard::HPIProbe()
     }
     switch(hpi_adapter_list[i]) {
 	case 0x5111:
+	case 0x5211:
 	  input_mux_type[i]=true;
 	  break;
 
@@ -687,10 +688,6 @@ void RDHPISoundCard::HPIProbe()
 			      &dummy_type));
     hpi_info[i].setSerialNumber(dummy_serial);
     hpi_info[i].setHpiVersion(dummy_hpi);
-    /*
-    hpi_info[i].setHpiMajorVersion(dummy_hpi>>8);
-    hpi_info[i].setHpiMinorVersion(dummy_hpi&255);
-    */
     hpi_info[i].setDspMajorVersion((dummy_version>>13)&7);
     hpi_info[i].setDspMinorVersion((dummy_version>>7)&63);
     hpi_info[i].setPcbVersion((char)(((dummy_version>>3)&7)+'A'));
@@ -749,11 +746,16 @@ void RDHPISoundCard::HPIProbe()
     //
     str=QString(tr("Output Port"));
     for(int k=0;k<HPI_MAX_NODES;k++) {
-      if(HPI_MixerGetControl(NULL,hpi_mixer[i],
+      if((HPI_MixerGetControl(NULL,hpi_mixer[i],
 			     HPI_SOURCENODE_OSTREAM,0,
 			     HPI_DESTNODE_LINEOUT,k,
 			     HPI_CONTROL_VOLUME,
-			     &output_stream_volume_control[i][0][k])==0) {
+			      &output_stream_volume_control[i][0][k])==0)||
+	 (HPI_MixerGetControl(NULL,hpi_mixer[i],
+			      HPI_SOURCENODE_OSTREAM,0,
+			      HPI_DESTNODE_AESEBU_OUT,k,
+			      HPI_CONTROL_VOLUME,
+			      &output_stream_volume_control[i][0][k])==0)) {
 	output_stream_volume[i][0][k]=true;
 	card_output_ports[i]++;
 	output_port_description[i][k]=
@@ -778,7 +780,6 @@ void RDHPISoundCard::HPIProbe()
       else {
 	input_stream_vox[i][j]=false;
       }
-
 
       if(input_mux_type[i]) {
 	if(HPI_MixerGetControl(NULL,hpi_mixer[i],  // MUX Controls
@@ -822,11 +823,16 @@ void RDHPISoundCard::HPIProbe()
 	else {
 	  input_stream_volume[i][j][k]=false;
 	}
-	if(HPI_MixerGetControl(NULL,hpi_mixer[i],
-			       HPI_SOURCENODE_OSTREAM,j,
-			       HPI_DESTNODE_LINEOUT,k,
-			       HPI_CONTROL_VOLUME,
-			       &output_stream_volume_control[i][j][k])==0) {
+	if((HPI_MixerGetControl(NULL,hpi_mixer[i],
+				HPI_SOURCENODE_OSTREAM,j,
+				HPI_DESTNODE_LINEOUT,k,
+				HPI_CONTROL_VOLUME,
+				&output_stream_volume_control[i][j][k])==0)||
+	   (HPI_MixerGetControl(NULL,hpi_mixer[i],
+				HPI_SOURCENODE_OSTREAM,j,
+				HPI_DESTNODE_AESEBU_OUT,k,
+				HPI_CONTROL_VOLUME,
+				&output_stream_volume_control[i][j][k])==0)) {
 	  output_stream_volume[i][j][k]=true;
 	}
 	else {
@@ -865,11 +871,16 @@ void RDHPISoundCard::HPIProbe()
       else {
 	input_port_level[i][j]=false;
       }
-      if(HPI_MixerGetControl(NULL,hpi_mixer[i],  // Output Level Controls
-			     0,0,
+      if((HPI_MixerGetControl(NULL,hpi_mixer[i],  // Output Level Controls
+			      0,0,
 			     HPI_DESTNODE_LINEOUT,j,
 			     HPI_CONTROL_LEVEL,
-			     &output_port_level_control[i][j])==0) {
+			      &output_port_level_control[i][j])==0)||
+	 (HPI_MixerGetControl(NULL,hpi_mixer[i],
+			      0,0,
+			      HPI_DESTNODE_AESEBU_OUT,j,
+			      HPI_CONTROL_LEVEL,
+			      &output_port_level_control[i][j])==0)) {
 	output_port_level[i][j]=true;
       }
       else {
@@ -885,11 +896,16 @@ void RDHPISoundCard::HPIProbe()
       else {
 	input_port_meter[i][j]=false;
       }
-      if(HPI_MixerGetControl(NULL,hpi_mixer[i],  // Output Port Meter
-			     0,0,
-			     HPI_DESTNODE_LINEOUT,j,
-			     HPI_CONTROL_METER,
-			     &output_port_meter_control[i][j])==0) {
+      if((HPI_MixerGetControl(NULL,hpi_mixer[i],  // Output Port Meter
+			      0,0,
+			      HPI_DESTNODE_LINEOUT,j,
+			      HPI_CONTROL_METER,
+			      &output_port_meter_control[i][j])==0)||
+	 (HPI_MixerGetControl(NULL,hpi_mixer[i],
+			      0,0,
+			      HPI_DESTNODE_AESEBU_OUT,j,
+			      HPI_CONTROL_METER,
+			      &output_port_meter_control[i][j])==0)) {
 	output_port_meter[i][j]=true;
       }
       else {
@@ -941,11 +957,16 @@ void RDHPISoundCard::HPIProbe()
     //
     for(int j=0;j<HPI_MAX_NODES;j++) {
       for(int k=0;k<HPI_MAX_NODES;k++) {
-	if(HPI_MixerGetControl(NULL,hpi_mixer[i],
-			       HPI_SOURCENODE_LINEIN,j,
-			       HPI_DESTNODE_LINEOUT,k,
-			       HPI_CONTROL_VOLUME,
-			       &passthrough_port_volume_control[i][j][k])==0) {
+	if((HPI_MixerGetControl(NULL,hpi_mixer[i],
+				HPI_SOURCENODE_LINEIN,j,
+				HPI_DESTNODE_LINEOUT,k,
+				HPI_CONTROL_VOLUME,
+				&passthrough_port_volume_control[i][j][k])==0)||
+	   (HPI_MixerGetControl(NULL,hpi_mixer[i],
+				HPI_SOURCENODE_LINEIN,j,
+				HPI_DESTNODE_AESEBU_OUT,k,
+				HPI_CONTROL_VOLUME,
+				&passthrough_port_volume_control[i][j][k])==0)) {
 	  passthrough_port_volume[i][j][k]=true;
 	}
 	else {

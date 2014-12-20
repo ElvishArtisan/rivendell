@@ -20,6 +20,8 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
+#include <stdlib.h>
+
 #include <qfile.h>
 #include <qobject.h>
 
@@ -87,14 +89,27 @@ void RDReport::setFilter(ExportFilter filter) const
 
 QString RDReport::exportPath(ExportOs ostype) const
 {
-  return RDGetSqlValue("REPORTS","NAME",report_name,OsFieldName(ostype)).
-    toString();
+  return RDGetSqlValue("REPORTS","NAME",report_name,
+		       OsFieldName(ostype)+"EXPORT_PATH").toString();
 }
 
 
 void RDReport::setExportPath(ExportOs ostype,const QString &path) const
 {
-  SetRow(OsFieldName(ostype),path);
+  SetRow(OsFieldName(ostype)+"EXPORT_PATH",path);
+}
+
+
+QString RDReport::postExportCommand(ExportOs ostype) const
+{
+  return RDGetSqlValue("REPORTS","NAME",report_name,
+		       OsFieldName(ostype)+"POST_EXPORT_CMD").toString();
+}
+
+
+void RDReport::setPostExportCommand(ExportOs ostype,const QString &cmd) const
+{
+  SetRow(OsFieldName(ostype)+"POST_EXPORT_CMD",cmd);
 }
 
 
@@ -415,15 +430,20 @@ bool RDReport::generateReport(const QDate &startdate,const QDate &enddate,
   //
   // Generate Mixdown Table
   //
+  // Create Table
+  //
   QString mixname="MIXDOWN"+station->name();
   sql=QString("drop table `")+mixname+"_SRT`";
-  //  sql=QString().sprintf("drop table `%s_SRT`",(const char *)mixname);
   QSqlQuery *p;
   p=new QSqlQuery(sql);
   delete p;
   sql=RDCreateReconciliationTableSql(mixname+"_SRT");
   q=new RDSqlQuery(sql);
   delete q;
+
+  //
+  // Iterate Selected Services
+  //
   sql=QString().sprintf("select SERVICE_NAME from REPORT_SERVICES \
                          where REPORT_NAME=\"%s\"",
 			(const char *)name());
@@ -433,19 +453,30 @@ bool RDReport::generateReport(const QDate &startdate,const QDate &enddate,
     if(svc->exists()) {
       rec_name=q->value(0).toString();
       rec_name.replace(" ","_");
+
+      //
+      // Generate Type Filters
+      //
       force_sql="";
-      if(exportTypeForced(RDReport::Traffic)) {
-	force_sql+=QString().sprintf("(`%s_SRT`.EVENT_SOURCE=%d)||",
+      if(!exportTypeEnabled(RDReport::Generic)) {
+	if(exportTypeForced(RDReport::Traffic)||
+	   exportTypeEnabled(RDReport::Traffic)) {
+	  force_sql+=QString().sprintf("(`%s_SRT`.EVENT_SOURCE=%d)||",
 				       (const char *)rec_name,
 				       RDLogLine::Traffic);
-      }
-      if(exportTypeForced(RDReport::Music)) {
-	force_sql+=QString().sprintf("(`%s_SRT`.EVENT_SOURCE=%d)||",
+	}
+	if(exportTypeForced(RDReport::Music)||
+	   exportTypeEnabled(RDReport::Music)) {
+	  force_sql+=QString().sprintf("(`%s_SRT`.EVENT_SOURCE=%d)||",
 				       (const char *)rec_name,
 				       RDLogLine::Music);
+	}
+	force_sql=force_sql.left(force_sql.length()-2);
       }
-      force_sql=force_sql.left(force_sql.length()-2);
 
+      //
+      // Selected Fields
+      //
       sql=QString().sprintf("select LENGTH,LOG_ID,CART_NUMBER,STATION_NAME,\
                            EVENT_DATETIME,EVENT_TYPE,EXT_START_TIME,\
                            EXT_LENGTH,EXT_DATA,EXT_EVENT_ID,EXT_ANNC_TYPE,\
@@ -475,9 +506,17 @@ bool RDReport::generateReport(const QDate &startdate,const QDate &enddate,
 			    (const char *)rec_name,
 			    (const char *)rec_name,
 			    (const char *)rec_name);
+
+      //
+      // OnAir Flag Filter
+      //
       if(filterOnairFlag()) {
 	sql+="(ONAIR_FLAG=\"Y\")&&";
       }
+
+      //
+      // Group Filter
+      //
       sql+="(";
       if(!group_sql.isEmpty()) {
 	sql+=QString("(")+group_sql+")&&";
@@ -485,6 +524,10 @@ bool RDReport::generateReport(const QDate &startdate,const QDate &enddate,
       if(!force_sql.isEmpty()) {
 	sql+=QString("(")+force_sql+")&&";
       }
+
+      //
+      // Daypart Filter
+      //
       if(daypart_sql.isEmpty()) {
 	sql+=QString("(EVENT_DATETIME>=\"")+startdate.toString("yyyy-MM-dd")+
 	  " 00:00:00\")&&"+
@@ -549,69 +592,72 @@ bool RDReport::generateReport(const QDate &startdate,const QDate &enddate,
 
   bool ret=false;
   switch(filter()) {
-      case RDReport::CbsiDeltaFlex:
-	ret=ExportDeltaflex(startdate,enddate,mixname);
-	break;
+  case RDReport::CbsiDeltaFlex:
+    ret=ExportDeltaflex(startdate,enddate,mixname);
+    break;
 
-      case RDReport::TextLog:
-	ret=ExportTextLog(startdate,enddate,mixname);
-	break;
+  case RDReport::TextLog:
+    ret=ExportTextLog(startdate,enddate,mixname);
+    break;
 
-      case RDReport::BmiEmr:
-	ret=ExportBmiEmr(startdate,enddate,mixname);
-	break;
+  case RDReport::BmiEmr:
+    ret=ExportBmiEmr(startdate,enddate,mixname);
+    break;
 
-      case RDReport::NaturalLog:
-      case RDReport::Technical:
-	ret=ExportTechnical(startdate,enddate,mixname);
-	break;
+  case RDReport::NaturalLog:
+  case RDReport::Technical:
+    ret=ExportTechnical(startdate,enddate,mixname);
+    break;
 
-      case RDReport::SoundExchange:
-	ret=ExportSoundEx(startdate,enddate,mixname);
-	break;
+  case RDReport::SoundExchange:
+    ret=ExportSoundEx(startdate,enddate,mixname);
+    break;
 
-      case RDReport::NprSoundExchange:
-	ret=ExportNprSoundEx(startdate,enddate,mixname);
-	break;
+  case RDReport::NprSoundExchange:
+    ret=ExportNprSoundEx(startdate,enddate,mixname);
+    break;
 
-      case RDReport::RadioTraffic:
-	ret=ExportRadioTraffic(startdate,enddate,mixname);
-	break;
+  case RDReport::RadioTraffic:
+    ret=ExportRadioTraffic(startdate,enddate,mixname);
+    break;
 
-      case RDReport::VisualTraffic:
-	ret=ExportDeltaflex(startdate,enddate,mixname);
-	break;
+  case RDReport::VisualTraffic:
+    ret=ExportDeltaflex(startdate,enddate,mixname);
+    break;
 
-      case RDReport::CounterPoint:
-      case RDReport::WideOrbit:
-	ret=ExportRadioTraffic(startdate,enddate,mixname);
-	break;
+  case RDReport::CounterPoint:
+  case RDReport::WideOrbit:
+    ret=ExportRadioTraffic(startdate,enddate,mixname);
+    break;
 
-      case RDReport::Music1:
-	ret=ExportRadioTraffic(startdate,enddate,mixname);
-	break;
+  case RDReport::Music1:
+    ret=ExportRadioTraffic(startdate,enddate,mixname);
+    break;
 
-      case RDReport::MusicClassical:
-	ret=ExportMusicClassical(startdate,enddate,mixname);
-	break;
+  case RDReport::MusicClassical:
+    ret=ExportMusicClassical(startdate,enddate,mixname);
+    break;
 
-      case RDReport::MusicPlayout:
-	ret=ExportMusicPlayout(startdate,enddate,mixname);
-	break;
+  case RDReport::MusicPlayout:
+    ret=ExportMusicPlayout(startdate,enddate,mixname);
+    break;
 
-      case RDReport::MusicSummary:
-	ret=ExportMusicSummary(startdate,enddate,mixname);
-	break;
+  case RDReport::MusicSummary:
+    ret=ExportMusicSummary(startdate,enddate,mixname);
+    break;
 
-      default:
-	return false;
-	break;
+  default:
+    return false;
+    break;
   }
 #ifdef WIN32
   *out_path=RDDateDecode(exportPath(RDReport::Windows),startdate);
+  QString post_cmd=RDDateDecode(postExportCommand(RDReport::Windows),startdate);
 #else
   *out_path=RDDateDecode(exportPath(RDReport::Linux),startdate);
+  QString post_cmd=RDDateDecode(postExportCommand(RDReport::Linux),startdate);
 #endif
+  system(post_cmd);
   //  printf("MIXDOWN TABLE: %s_SRT\n",(const char *)mixname);
   sql=QString().sprintf("drop table `%s_SRT`",(const char *)mixname);
   q=new RDSqlQuery(sql);
@@ -866,10 +912,10 @@ QString RDReport::OsFieldName(ExportOs os) const
 {
   switch(os) {
       case RDReport::Linux:
-	return QString("EXPORT_PATH");
+	return QString("");
 	
       case RDReport::Windows:
-	return QString("WIN_EXPORT_PATH");
+	return QString("WIN_");
   }
   return QString();
 }

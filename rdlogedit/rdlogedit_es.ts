@@ -397,6 +397,10 @@ desactivados para el servicio actual!
         <source>Unable to save log, audio deletion error!</source>
         <translation>No es posible guardar la Lista, ¡error por eliminación de audio!</translation>
     </message>
+    <message>
+        <source>EXT DATA</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditLogLine</name>

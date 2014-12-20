@@ -22,12 +22,13 @@
 
 #include <sys/vfs.h>
 
-#include <qtimer.h>
 #include <qfontmetrics.h>
 
+#include <globals.h>
 #include <rd.h>
 #include <disk_gauge.h>
 #include <rdconfig.h>
+#include <rdaudiostore.h>
 
 DiskGauge::DiskGauge(int samp_rate,int chans,QWidget *parent,const char *name)
   : QWidget(parent,name)
@@ -41,27 +42,29 @@ DiskGauge::DiskGauge(int samp_rate,int chans,QWidget *parent,const char *name)
   QFont label_font("Helvetica",12,QFont::Bold);
   label_font.setPixelSize(12);
 
-  disk_label=new QLabel("Free:",this,"free_label");
+  disk_label=new QLabel("Free:",this);
   disk_label->setGeometry(0,0,50,sizeHint().height());
   disk_label->setFont(label_font);
   disk_label->setAlignment(AlignRight|AlignVCenter);
+  disk_label->setDisabled(true);
 
   disk_bar=new QProgressBar(this);
   disk_bar->setPercentageVisible(false);
   disk_bar->setGeometry(55,0,sizeHint().width()-55,sizeHint().height());
+  disk_bar->setDisabled(true);
 
   disk_space_label=new QLabel(this);
   disk_space_label->setFont(label_font);
   disk_space_label->setAlignment(AlignCenter);
+  disk_space_label->setDisabled(true);
 
-  struct statfs diskstat;
-  statfs(RDConfiguration()->audioRoot().ascii(),&diskstat);
-  disk_bar->setTotalSteps(GetMinutes(diskstat.f_blocks,diskstat.f_bsize));
+  /*
   update();
+  */
 
-  QTimer *timer=new QTimer(this,"update_timer");
-  connect(timer,SIGNAL(timeout()),this,SLOT(update()));
-  timer->start(DISK_GAUGE_UPDATE_INTERVAL);
+  disk_timer=new QTimer(this);
+  connect(disk_timer,SIGNAL(timeout()),this,SLOT(update()));
+  disk_timer->start(100);
 }
 
 
@@ -79,12 +82,26 @@ QSizePolicy DiskGauge::sizePolicy() const
 
 void DiskGauge::update()
 {
-  struct statfs diskstat;
-  statfs(RDConfiguration()->audioRoot().ascii() ,&diskstat);
-  int mins=GetMinutes(diskstat.f_bavail,diskstat.f_bsize);
-  disk_bar->setProgress(mins);
-  disk_space_label->
-    setText(QString().sprintf("%dh %02dm",mins/60,mins-60*(mins/60)));
+  if(lib_user==NULL) {
+    return;
+  }
+  RDAudioStore::ErrorCode conv_err;
+  RDAudioStore *conv=new RDAudioStore(rdstation_conf,lib_config,this);
+  if((conv_err=conv->runStore(lib_user->name(),lib_user->password()))==
+     RDAudioStore::ErrorOk) {
+    uint64_t free_min=GetMinutes(conv->freeBytes());
+    uint64_t total_min=GetMinutes(conv->totalBytes());
+    disk_bar->setTotalSteps(total_min);
+    disk_bar->setProgress(free_min);
+    disk_space_label->setText(QString().sprintf("%luh %02lum",free_min/60,
+						free_min-60*(free_min/60)));
+    disk_label->setEnabled(true);
+    disk_bar->setEnabled(true);
+    disk_space_label->setEnabled(true);
+  }
+  delete conv;
+  disk_timer->stop();
+  disk_timer->start(DISK_GAUGE_UPDATE_INTERVAL,true);
 }
 
 
@@ -100,8 +117,20 @@ void DiskGauge::resizeEvent(QResizeEvent *e)
 }
 
 
-int DiskGauge::GetMinutes(long blocks,long block_size)
+unsigned DiskGauge::GetMinutes(uint64_t bytes)
 {
-  return (int)(((double)blocks*(double)block_size)/
-	       (disk_sample_rate*disk_channels*120.0));
+  unsigned ret=0;
+
+  switch(rdlibrary_conf->defaultFormat()) {
+  case 1:   // MPEG Layer 2
+    ret=bytes*2/(rdlibrary_conf->defaultChannels()*
+		 rdlibrary_conf->defaultBitrate()*15);
+    break;
+
+  default:  // PCM16
+    ret=bytes/(rdlibrary_conf->defaultChannels()*2*lib_system->sampleRate()*60);
+    break;
+  }
+  return ret;
 }
+

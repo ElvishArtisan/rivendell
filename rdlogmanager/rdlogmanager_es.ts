@@ -187,6 +187,10 @@ horario</translation>
         <source>Remarks</source>
         <translation>Comentarios</translation>
     </message>
+    <message>
+        <source>&amp;Clone</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditEvent</name>
@@ -517,6 +521,10 @@ Do you want to overwrite it?</source>
     <message>
         <source>IMPORT</source>
         <translation>IMPORTAR</translation>
+    </message>
+    <message>
+        <source>and code</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

@@ -1493,6 +1493,7 @@ bool CreateDb(QString name,QString pwd)
       SCHED_GROUP VARCHAR(10),\
       TITLE_SEP INT(10) UNSIGNED,\
       HAVE_CODE VARCHAR(10),\
+      HAVE_CODE2 VARCHAR(10),\
       HOR_SEP INT(10) UNSIGNED,\
       HOR_DIST INT(10) UNSIGNED,\
       NESTED_EVENT char(64),\
@@ -1562,7 +1563,9 @@ bool CreateDb(QString name,QString pwd)
                DESCRIPTION char(64),\
                EXPORT_FILTER int,\
                EXPORT_PATH char(255),\
+               POST_EXPORT_CMD text,\
                WIN_EXPORT_PATH char(255),\
+               WIN_POST_EXPORT_CMD text,\
                EXPORT_TFC enum('N','Y') default 'N',\
                FORCE_TFC enum('N','Y') default 'N',\
                EXPORT_MUS enum('N','Y') default 'N',\
@@ -2345,16 +2348,32 @@ bool CreateDb(QString name,QString pwd)
   //
   // Create DROPBOX_SCHED_CODES table
   //
-    sql=QString("create table if not exists DROPBOX_SCHED_CODES(")+
-      "ID int auto_increment not null primary key,"+
-      "DROPBOX_ID int not null,"+
-      "SCHED_CODE char(11) not null,"
-      "index DROPBOX_ID_IDX(DROPBOX_ID),"+
-      "index SCHED_CODE_IDX(SCHED_CODE))";
+  sql=QString("create table if not exists DROPBOX_SCHED_CODES(")+
+    "ID int auto_increment not null primary key,"+
+    "DROPBOX_ID int not null,"+
+    "SCHED_CODE char(11) not null,"
+    "index DROPBOX_ID_IDX(DROPBOX_ID),"+
+    "index SCHED_CODE_IDX(SCHED_CODE))";
   if(!RunQuery(sql)) {
      return false;
   }
-  
+
+  //
+  // Create GPIO_EVENTS table
+  //
+  sql=QString("create table if not exists GPIO_EVENTS(")+
+    "ID int auto_increment not null primary key,"+
+    "STATION_NAME char(64) not null,"+
+    "MATRIX int not null,"+
+    "NUMBER int not null,"+
+    "TYPE int not null,"+
+    "EDGE int not null,"+
+    "EVENT_DATETIME datetime not null,"+
+    "index STATION_NAME_IDX(STATION_NAME,MATRIX,TYPE,EVENT_DATETIME,EDGE))";
+  if(!RunQuery(sql)) {
+     return false;
+  }
+
   return true;
 }
 
@@ -8034,8 +8053,41 @@ int UpdateDb(int ver)
     delete q;
   }
 
+  if(ver<240) {
+    sql=QString("create table if not exists GPIO_EVENTS(")+
+      "ID int auto_increment not null primary key,"+
+      "STATION_NAME char(64) not null,"+
+      "MATRIX int not null,"+
+      "NUMBER int not null,"+
+      "TYPE int not null,"+
+      "EDGE int not null,"+
+      "EVENT_DATETIME datetime not null,"+
+      "index STATION_NAME_IDX(STATION_NAME,MATRIX,TYPE,EVENT_DATETIME,EDGE))";
+    q=new QSqlQuery(sql);
+    delete q;
+  }
 
-      
+  if(ver<241) {
+    sql=QString("alter table EVENTS add column ")+
+      "HAVE_CODE2 VARCHAR(10) after HAVE_CODE";
+    q=new QSqlQuery(sql);
+    delete q;
+  }
+
+  if(ver<242) {
+    sql=QString("alter table REPORTS add column ")+
+      "POST_EXPORT_CMD text after EXPORT_PATH";
+    q=new QSqlQuery(sql);
+    delete q;
+
+    sql=QString("alter table REPORTS add column ")+
+      "WIN_POST_EXPORT_CMD text after WIN_EXPORT_PATH";
+    q=new QSqlQuery(sql);
+    delete q;
+  }
+
+
+
   // **** End of version updates ****
   
   //

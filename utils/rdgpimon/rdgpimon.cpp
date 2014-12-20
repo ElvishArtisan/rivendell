@@ -2,9 +2,7 @@
 //
 // A Qt-based application for testing General Purpose Input (GPI) devices.
 //
-//   (C) Copyright 2002-2003 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdgpimon.cpp,v 1.14.6.4 2014/01/21 21:59:34 cvs Exp $
+//   (C) Copyright 2002-2014 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -39,6 +37,9 @@
 #include <rdgpimon.h>
 #include <rdcmd_switch.h>
 #include <rddbheartbeat.h>
+#include <rdescape_string.h>
+#include <rdlistviewitem.h>
+#include <rdtextfile.h>
 
 //
 // Icons
@@ -49,6 +50,8 @@
 MainWidget::MainWidget(QWidget *parent,const char *name)
   :QWidget(parent,name)
 {
+  gpi_scroll_mode=false;
+  
   //
   // Read Command Options
   //
@@ -64,13 +67,17 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   setMaximumHeight(sizeHint().height());
 
   //
-  // Create Font
+  // Create Fonts
   //
   QFont font("helvetica",10,QFont::Normal);
   font.setPixelSize(10);
   setFont(font);
+  QFont list_font("helvetica",12,QFont::Normal);
+  list_font.setPixelSize(12);
   QFont main_font("helvetica",12,QFont::Bold);
   main_font.setPixelSize(12);
+  QFont title_font("helvetica",14,QFont::Bold);
+  title_font.setPixelSize(14);
 
   //
   // Create And Set Icon
@@ -138,12 +145,11 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // Type Selector
   //
-  gpi_type_box=new QComboBox(this,"gpi_type_box");
+  gpi_type_box=new QComboBox(this);
   gpi_type_box->setGeometry(80,10,120,21);
   gpi_type_box->insertItem(tr("GPI (Inputs)"));
   gpi_type_box->insertItem(tr("GPO (Outputs)"));
-  QLabel *label=
-    new QLabel(gpi_type_box,tr("Show:"),this,"gpi_type_label");
+  QLabel *label=new QLabel(gpi_type_box,tr("Show:"),this);
   label->setGeometry(20,10,55,21);
   label->setFont(main_font);
   label->setAlignment(AlignRight|AlignVCenter);
@@ -153,12 +159,12 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // Matrix Selector
   //
-  gpi_matrix_box=new QComboBox(this,"gpi_matrix_box");
+  gpi_matrix_box=new QComboBox(this);
   gpi_matrix_box->setGeometry(280,10,80,21);
   for(int i=0;i<MAX_MATRICES;i++) {
     gpi_matrix_box->insertItem(QString().sprintf("%d",i));
   }
-  label=new QLabel(gpi_matrix_box,tr("Matrix:"),this,"gpi_matrix_label");
+  label=new QLabel(gpi_matrix_box,tr("Matrix:"),this);
   label->setGeometry(220,10,55,21);
   label->setFont(main_font);
   label->setAlignment(AlignRight|AlignVCenter);
@@ -183,23 +189,23 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   // Up Button
   //
   gpi_up_button=
-    new RDTransportButton(RDTransportButton::Up,this,"gpi_up_button");
-  gpi_up_button->setGeometry(10,sizeHint().height()-60,80,50);
+    new RDTransportButton(RDTransportButton::Up,this);
+  gpi_up_button->setGeometry(10,360,80,50);
   connect(gpi_up_button,SIGNAL(clicked()),this,SLOT(upData()));
 
   //
   // Down Button
   //
   gpi_down_button=
-    new RDTransportButton(RDTransportButton::Down,this,"gpi_down_button");
-  gpi_down_button->setGeometry(100,sizeHint().height()-60,80,50);
+    new RDTransportButton(RDTransportButton::Down,this);
+  gpi_down_button->setGeometry(100,360,80,50);
   connect(gpi_down_button,SIGNAL(clicked()),this,SLOT(downData()));
 
   //
   // Color Key
   //
   label=new QLabel(tr("Green = ON Cart"),this);
-  label->setGeometry(200,sizeHint().height()-50,300,12);
+  label->setGeometry(200,370,300,12);
   label->setFont(main_font);
   label->setAlignment(AlignLeft|AlignVCenter);
   QPalette p=palette();
@@ -209,7 +215,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   label->setPalette(p);
 
   label=new QLabel(tr("Red = OFF Cart"),this);
-  label->setGeometry(200,sizeHint().height()-32,300,12);
+  label->setGeometry(200,392,300,12);
   label->setFont(main_font);
   label->setAlignment(AlignLeft|AlignVCenter);
   p.setColor(QPalette::Active,QColorGroup::Foreground,darkRed);
@@ -217,23 +223,84 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   p.setColor(QPalette::Disabled,QColorGroup::Foreground,darkRed);
   label->setPalette(p);
 
+  //
+  // Events Log
+  //
+  label=new QLabel(tr("Events Log"),this);
+  label->setFont(title_font);
+  label->setAlignment(Qt::AlignCenter);
+  label->setGeometry(110,423,sizeHint().width()-220,30);
 
-  //
-  // Close Button
-  //
-  gpi_close_button=new QPushButton(this,"gpi_close_button");
-  gpi_close_button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,
-				80,50);
-  gpi_close_button->setFont(main_font);
-  gpi_close_button->setText(tr("&Close"));
-  connect(gpi_close_button,SIGNAL(clicked()),this,SLOT(quitMainWidget()));
+  gpi_events_date_edit=new QDateEdit(this);
+  gpi_events_date_edit->setGeometry(155,453,90,20);
+  gpi_events_date_edit->setDate(QDate::currentDate());
+  connect(gpi_events_date_edit,SIGNAL(valueChanged(const QDate &)),
+	  this,SLOT(eventsDateChangedData(const QDate &)));
+  gpi_events_date_label=new QLabel(gpi_events_date_edit,tr("Date")+":",this);
+  gpi_events_date_label->setGeometry(100,453,50,20);
+  gpi_events_date_label->setFont(main_font);
+  gpi_events_date_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
+
+  gpi_events_state_box=new QComboBox(this);
+  gpi_events_state_box->setGeometry(280,453,55,20);
+  gpi_events_state_box->insertItem(tr("On"));
+  gpi_events_state_box->insertItem(tr("Off"));
+  gpi_events_state_box->insertItem(tr("Both"));
+  connect(gpi_events_state_box,SIGNAL(activated(int)),
+	  this,SLOT(eventsStateChangedData(int)));
+  gpi_events_state_label=new QLabel(gpi_events_state_box,tr("State")+":",this);
+  gpi_events_state_label->setGeometry(225,453,50,20);
+  gpi_events_state_label->setFont(main_font);
+  gpi_events_state_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
+
+  gpi_events_list=new RDListView(this);
+  gpi_events_list->setFont(main_font);
+  gpi_events_list->setGeometry(110,480,sizeHint().width()-220,230);
+  gpi_events_list->setItemMargin(5);
+  gpi_events_list->setSelectionMode(QListView::NoSelection);
+
+  gpi_events_list->addColumn("Time");
+  gpi_events_list->setColumnAlignment(0,Qt::AlignHCenter);
+  gpi_events_list->setColumnSortType(1,RDListView::TimeSort);
+
+  gpi_events_list->addColumn(tr("Line"));
+  gpi_events_list->setColumnAlignment(1,Qt::AlignHCenter);
+  gpi_events_list->setColumnSortType(1,RDListView::GpioSort);
+
+  gpi_events_list->addColumn(tr("State"));
+  gpi_events_list->setColumnAlignment(2,Qt::AlignHCenter);
+
+  gpi_events_scroll_button=new QPushButton(tr("Scroll"),this);
+  gpi_events_scroll_button->setGeometry(sizeHint().width()-100,510,80,50);
+  gpi_events_scroll_button->setFont(main_font);
+  connect(gpi_events_scroll_button,SIGNAL(clicked()),
+	  this,SLOT(eventsScrollData()));
+  gpi_scroll_color=palette();
+  gpi_scroll_color.setColor(QPalette::Active,QColorGroup::ButtonText,
+			    Qt::white);
+  gpi_scroll_color.setColor(QPalette::Active,QColorGroup::Button,
+			    Qt::blue);
+  gpi_scroll_color.setColor(QPalette::Active,QColorGroup::Background,
+			    lightGray);
+  gpi_scroll_color.setColor(QPalette::Inactive,QColorGroup::ButtonText,
+			    Qt::white);
+  gpi_scroll_color.setColor(QPalette::Inactive,QColorGroup::Button,
+			    Qt::blue);
+  gpi_scroll_color.setColor(QPalette::Inactive,QColorGroup::Background,
+			    lightGray);
+
+  gpi_events_report_button=new QPushButton(tr("Report"),this);
+  gpi_events_report_button->setGeometry(sizeHint().width()-100,570,80,50);
+  gpi_events_report_button->setFont(main_font);
+  connect(gpi_events_report_button,SIGNAL(clicked()),
+	  this,SLOT(eventsReportData()));
 
   //
   // Start Up Timer
   //
-  QTimer *timer=new QTimer(this,"start_up_timer");
-  connect(timer,SIGNAL(timeout()),this,SLOT(startUpData()));
-  timer->start(GPIMON_START_UP_DELAY,true);
+  gpi_events_startup_timer=new QTimer(this);
+  connect(gpi_events_startup_timer,SIGNAL(timeout()),this,SLOT(startUpData()));
+  gpi_events_startup_timer->start(GPIMON_START_UP_DELAY,true);
 }
 
 
@@ -244,7 +311,7 @@ MainWidget::~MainWidget()
 
 QSize MainWidget::sizeHint() const
 {
-  return QSize(528,78*GPIMON_ROWS+110);
+  return QSize(528,78*GPIMON_ROWS+410);
 }
 
 
@@ -290,6 +357,88 @@ void MainWidget::matrixActivatedData(int index)
       gpi_ripc->sendGpoCart(gpi_matrix_box->currentItem());
       break;
   }
+  RefreshEventsList();
+  gpi_events_startup_timer->start(1000,true);
+}
+
+
+void MainWidget::eventsDateChangedData(const QDate &date)
+{
+  RefreshEventsList();
+}
+
+
+void MainWidget::eventsStateChangedData(int n)
+{
+  RefreshEventsList();
+}
+
+
+void MainWidget::eventsScrollData()
+{
+  if(gpi_scroll_mode) {
+    gpi_events_scroll_button->setPalette(palette());
+    gpi_scroll_mode=false;
+  }
+  else {
+    gpi_events_scroll_button->setPalette(gpi_scroll_color);
+    gpi_scroll_mode=true;
+    RDListViewItem *item=(RDListViewItem *)gpi_events_list->firstChild();
+    RDListViewItem *last=NULL;
+    while(item!=NULL) {
+      last=item;
+      item=(RDListViewItem *)item->nextSibling();
+    }
+    if(last!=NULL) {
+      gpi_events_list->ensureItemVisible(last);
+    }
+  }
+}
+
+
+void MainWidget::eventsReportData()
+{
+  QString report;
+  QString sql;
+  RDSqlQuery *q;
+
+  report="                          Rivendell GPIO Event Report\n";
+  report+="     Date: "+gpi_events_date_edit->date().toString("MM/dd/yyyy")+
+    "       Station/Matrix: "+gpi_station->name()+":"+
+    QString().sprintf("%d     ",gpi_matrix_box->currentItem())+
+    " State Filter: "+gpi_events_state_box->currentText()+"\n";
+  report+="\n";
+
+  sql=QString("select EVENT_DATETIME,NUMBER,EDGE from GPIO_EVENTS where ")+
+    "(STATION_NAME=\""+RDEscapeString(gpi_station->name())+"\")&&"+
+    QString().sprintf("(MATRIX=%d)&&",gpi_matrix_box->currentItem())+
+    QString().sprintf("(TYPE=%d)&&",gpi_type_box->currentItem())+
+    "(EVENT_DATETIME>=\""+gpi_events_date_edit->date().toString("yyyy-MM-dd")+
+    " 00:00:00\")&&"+
+    "(EVENT_DATETIME<\""+gpi_events_date_edit->date().addDays(1).
+    toString("yyyy-MM-dd")+" 00:00:00\")";
+  if(gpi_events_state_box->currentItem()==0) {
+    sql+="&&(EDGE=1)";
+  }
+  if(gpi_events_state_box->currentItem()==1) {
+    sql+="&&(EDGE=0)";
+  }
+  report+="                       -- Time --   - Line -   - State -\n";
+  q=new RDSqlQuery(sql);
+  while(q->next()) {
+    report+="                        ";
+    report+=q->value(0).toDateTime().toString("hh:mm:ss")+"   ";
+    report+=QString().sprintf("   %5d       ",q->value(1).toInt());
+    if(q->value(2).toInt()==0) {
+      report+=tr("OFF");
+    }
+    else {
+      report+=tr("ON ");
+    }
+    report+="\n";
+  }
+  delete q;
+  RDTextFile(report);
 }
 
 
@@ -308,6 +457,7 @@ void MainWidget::gpiStateChangedData(int matrix,int line,bool state)
       gpi_labels[i]->setState(state);
     }
   }
+  AddEventsItem(line,state);
 }
 
 
@@ -326,6 +476,7 @@ void MainWidget::gpoStateChangedData(int matrix,int line,bool state)
       gpi_labels[i]->setState(state);
     }
   }
+  AddEventsItem(line,state);
 }
 
 
@@ -412,6 +563,7 @@ void MainWidget::gpoCartChangedData(int matrix,int line,int off_cartnum,
 
 void MainWidget::startUpData()
 {
+  gpi_events_startup_timer->disconnect();
   matrixActivatedData(0);
 }
 
@@ -526,6 +678,76 @@ void MainWidget::UpdateLabelsDown(int first_line)
   }
   gpi_down_button->setEnabled(q->next());
   delete q;
+}
+
+
+void MainWidget::RefreshEventsList()
+{
+  QString sql;
+  RDSqlQuery *q;
+
+  sql=QString("select EVENT_DATETIME,NUMBER,EDGE from GPIO_EVENTS where ")+
+    "(STATION_NAME=\""+RDEscapeString(gpi_station->name())+"\")&&"+
+    QString().sprintf("(MATRIX=%d)&&",gpi_matrix_box->currentItem())+
+    QString().sprintf("(TYPE=%d)&&",gpi_type_box->currentItem())+
+    "(EVENT_DATETIME>=\""+gpi_events_date_edit->date().toString("yyyy-MM-dd")+
+    " 00:00:00\")&&"+
+    "(EVENT_DATETIME<\""+gpi_events_date_edit->date().addDays(1).
+    toString("yyyy-MM-dd")+" 00:00:00\")";
+  if(gpi_events_state_box->currentItem()==0) {
+    sql+="&&(EDGE=1)";
+  }
+  if(gpi_events_state_box->currentItem()==1) {
+    sql+="&&(EDGE=0)";
+  }
+  q=new RDSqlQuery(sql);
+  gpi_events_list->clear();
+  RDListViewItem *item=NULL;
+  while(q->next()) {
+    item=new RDListViewItem(gpi_events_list);
+    item->setText(0,q->value(0).toDateTime().toString("hh:mm:ss"));
+    item->setText(1,QString().sprintf("%d",q->value(1).toInt()));
+    if(q->value(2).toInt()==0) {
+      item->setText(2,tr("Off"));
+      item->setTextColor(Qt::darkRed);
+    }
+    else {
+      item->setText(2,tr("On"));
+      item->setTextColor(Qt::darkGreen);
+    }
+  }
+  if(gpi_scroll_mode&&(item!=NULL)) {
+    gpi_events_list->ensureItemVisible(item);
+  }
+  delete q;
+}
+
+
+void MainWidget::AddEventsItem(int line,bool state)
+{
+  if(gpi_events_startup_timer->isActive()) {
+    return;
+  }
+  if((gpi_events_state_box->currentItem()==0)&&(!state)) {
+    return;
+  }
+  if((gpi_events_state_box->currentItem()==1)&&state) {
+    return;
+  }
+  RDListViewItem *item=new RDListViewItem(gpi_events_list);
+  item->setText(0,QTime::currentTime().toString("hh:mm:ss"));
+  item->setText(1,QString().sprintf("%d",line+1));
+  if(state) {
+    item->setText(2,tr("On"));
+    item->setTextColor(Qt::darkGreen);
+  }
+  else {
+    item->setText(2,tr("Off"));
+    item->setTextColor(Qt::darkRed);
+  }  
+  if(gpi_scroll_mode) {
+    gpi_events_list->ensureItemVisible(item);
+  }
 }
 
 

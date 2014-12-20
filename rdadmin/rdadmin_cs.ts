@@ -3336,6 +3336,14 @@ pro naplnění databáze zdroji zvuku.</translation>
         <source>End Time:</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Linux Post Export Cmd:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Windows Post Export Cmd:</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditSettings</name>

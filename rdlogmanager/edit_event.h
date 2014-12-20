@@ -110,6 +110,8 @@ class EditEvent : public QDialog
   QLabel *event_title_sep_label;
   QComboBox* event_have_code_box;
   QLabel *event_have_code_label;
+  QComboBox* event_have_code2_box;
+  QLabel *event_have_code2_label;
   LibListView *event_lib_list;
   QPixmap *event_playout_map;
   QPixmap *event_macro_map;

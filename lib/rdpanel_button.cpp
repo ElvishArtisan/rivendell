@@ -357,7 +357,7 @@ void RDPanelButton::keyReleaseEvent(QKeyEvent *e)
 
 void RDPanelButton::mousePressEvent(QMouseEvent *e)
 {
-  button_move_count=3;
+  button_move_count=10;
   QPushButton::mousePressEvent(e);
 }
 

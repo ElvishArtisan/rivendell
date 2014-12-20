@@ -73,6 +73,7 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdaudioinfo.cpp rdaudioinfo.h\
                         rdaudiosettings_dialog.cpp rdaudiosettings_dialog.h\
                         rdaudiosettings.cpp rdaudiosettings.h\
+                        rdaudiostore.cpp rdaudiostore.h\
                         rdbusybar.cpp rdbusybar.h\
                         rdbusydialog.cpp rdbusydialog.h\
                         rdbutton_dialog.cpp rdbutton_dialog.h\
@@ -243,6 +244,7 @@ nodist_librd_la_SOURCES = moc_rdadd_cart.cpp\
                           moc_rdaudioimport.cpp\
                           moc_rdaudioinfo.cpp\
                           moc_rdaudiosettings_dialog.cpp\
+                          moc_rdaudiostore.cpp\
                           moc_rdbusybar.cpp\
                           moc_rdbusydialog.cpp\
                           moc_rdbutton_dialog.cpp\

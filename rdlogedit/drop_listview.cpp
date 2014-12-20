@@ -49,7 +49,7 @@ void DropListView::dropEvent(QDropEvent *e)
   if(RDCartDrag::decode(e,&ll)) {
     RDListViewItem *item=(RDListViewItem *)itemAt(pos);
     if(item!=NULL) {
-      line=item->text(13).toInt();
+      line=item->text(14).toInt();
     }
     emit cartDropped(line,&ll);
   }

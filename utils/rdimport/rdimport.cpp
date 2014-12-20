@@ -2,9 +2,7 @@
 //
 // A Batch Importer for Rivendell.
 //
-//   (C) Copyright 2002-2008 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdimport.cpp,v 1.34.4.9.2.3 2014/07/15 00:45:16 cvs Exp $
+//   (C) Copyright 2002-2014 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -87,6 +85,10 @@ MainObject::MainObject(QObject *parent,const char *name)
   import_create_dates=false;
   import_create_startdate_offset=0;
   import_create_enddate_offset=0;
+  import_string_bpm=0;
+  import_string_year=0;
+  import_clear_datetimes=false;
+  import_clear_dayparts=false;
 
   //
   // Read Command Options
@@ -162,6 +164,62 @@ MainObject::MainObject(QObject *parent,const char *name)
 	exit(256);
       }
     }
+    if(import_cmd->key(i)=="--clear-datetimes") {
+      import_clear_datetimes=true;
+      import_cmd->setProcessed(i,true);
+    }
+    if(import_cmd->key(i)=="--set-datetimes") {
+      QStringList f0=QStringList().split(",",import_cmd->value(i));
+      if(f0.size()!=2) {
+	fprintf(stderr,"rdimport: invalid argument to --set-datetimes\n");
+	exit(256);
+      }
+      for(unsigned j=0;j<2;j++) {
+	if((f0[j].length()!=15)||(f0[j].mid(8,1)!="-")) {
+	  fprintf(stderr,"rdimport: invalid argument to --set-datetimes\n");
+	  exit(256);
+	}
+	unsigned year=f0[j].left(4).toUInt(&ok);
+	if(!ok) {
+	  fprintf(stderr,"rdimport: invalid year argument to --set-datetimes\n");
+	  exit(256);
+	}
+	unsigned month=f0[j].mid(4,2).toUInt(&ok);
+	if((!ok)||(month>12)) {
+	  fprintf(stderr,"rdimport: invalid month argument to --set-datetimes\n");
+	  exit(256);
+	}
+	unsigned day=f0[j].mid(6,2).toUInt(&ok);
+	if((!ok)||(day>31)) {
+	  fprintf(stderr,"rdimport: invalid day argument to --set-datetimes\n");
+	  exit(256);
+	}
+	unsigned hour=f0[j].mid(9,2).toUInt(&ok);
+	if((!ok)||(hour>23)) {
+	  fprintf(stderr,"rdimport: invalid hour argument to --set-datetimes\n");
+	  exit(256);
+	}
+	unsigned min=f0[j].mid(11,2).toUInt(&ok);
+	if((!ok)||(min>59)) {
+	  fprintf(stderr,"rdimport: invalid minute argument to --set-datetimes\n");
+	  exit(256);
+	}
+	unsigned sec=f0[j].right(2).toUInt(&ok);
+	if((!ok)||(sec>59)) {
+	  fprintf(stderr,"rdimport: invalid seconds argument to --set-datetimes\n");
+	  exit(256);
+	}
+	import_datetimes[j]=QDateTime(QDate(year,month,day),
+				      QTime(hour,min,sec));
+	if(!import_datetimes[j].isValid()) {
+	  fprintf(stderr,"rdimport: invalid argument to --set-datetimes\n");
+	}
+      }
+      if(import_datetimes[0]>=import_datetimes[1]) {
+	fprintf(stderr,"rdimport: datetime cannot end before it begins\n");
+	exit(256);
+      }
+    }
     if(import_cmd->key(i)=="--set-daypart-times") {
       QStringList f0=QStringList().split(",",import_cmd->value(i));
       if(f0.size()!=2) {
@@ -194,6 +252,10 @@ MainObject::MainObject(QObject *parent,const char *name)
 	fprintf(stderr,"rdimport: daypart cannot end before it begins\n");
 	exit(256);
       }
+    }
+    if(import_cmd->key(i)=="--clear-daypart-times") {
+      import_clear_dayparts=true;
+      import_cmd->setProcessed(i,true);
     }
     if(import_cmd->key(i)=="--drop-box") {
       import_drop_box=true;
@@ -245,7 +307,100 @@ MainObject::MainObject(QObject *parent,const char *name)
       }
       import_create_dates=true;
     }
+    if(import_cmd->key(i)=="--set-string-agency") {
+      import_string_agency=import_cmd->value(i);
+      import_cmd->setProcessed(i,true);
+    }
+    if(import_cmd->key(i)=="--set-string-album") {
+      import_string_album=import_cmd->value(i);
+      import_cmd->setProcessed(i,true);
+    }
+    if(import_cmd->key(i)=="--set-string-artist") {
+      import_string_artist=import_cmd->value(i);
+      import_cmd->setProcessed(i,true);
+    }
+    if(import_cmd->key(i)=="--set-string-bpm") {
+      import_string_bpm=import_cmd->value(i).toInt(&ok);
+      if(!ok) {
+	fprintf(stderr,"rdimport: invalid value for --set-string-bpm\n");
+	exit(255);
+      }
+      import_cmd->setProcessed(i,true);
+    }
+    if(import_cmd->key(i)=="--set-string-client") {
+      import_string_client=import_cmd->value(i);
+      import_cmd->setProcessed(i,true);
+    }
+    if(import_cmd->key(i)=="--set-string-composer") {
+      import_string_composer=import_cmd->value(i);
+      import_cmd->setProcessed(i,true);
+    }
+    if(import_cmd->key(i)=="--set-string-conductor") {
+      import_string_conductor=import_cmd->value(i);
+      import_cmd->setProcessed(i,true);
+    }
+    if(import_cmd->key(i)=="--set-string-description") {
+      import_string_description=import_cmd->value(i);
+      import_cmd->setProcessed(i,true);
+    }
+    if(import_cmd->key(i)=="--set-string-label") {
+      import_string_label=import_cmd->value(i);
+      import_cmd->setProcessed(i,true);
+    }
+    if(import_cmd->key(i)=="--set-string-outcue") {
+      import_string_outcue=import_cmd->value(i);
+      import_cmd->setProcessed(i,true);
+    }
+    if(import_cmd->key(i)=="--set-string-publisher") {
+      import_string_publisher=import_cmd->value(i);
+      import_cmd->setProcessed(i,true);
+    }
+    if(import_cmd->key(i)=="--set-string-song-id") {
+      import_string_song_id=import_cmd->value(i);
+      import_cmd->setProcessed(i,true);
+    }
+    if(import_cmd->key(i)=="--set-string-title") {
+      if(import_cmd->value(i).isEmpty()) {
+	fprintf(stderr,"title field cannot be empty\n");
+	exit(255);
+      }
+      import_string_title=import_cmd->value(i);
+      import_cmd->setProcessed(i,true);
+    }
+    if(import_cmd->key(i)=="--set-string-user-defined") {
+      import_string_user_defined=import_cmd->value(i);
+      import_cmd->setProcessed(i,true);
+    }
+    if(import_cmd->key(i)=="--set-string-year") {
+      import_string_year=import_cmd->value(i).toInt(&ok);
+      if(!ok) {
+	fprintf(stderr,"rdimport: invalid value for --set-string-year\n");
+	exit(255);
+      }
+      import_cmd->setProcessed(i,true);
+    }
   }
+  if(import_datetimes[0].isValid()&&import_clear_datetimes) {
+    fprintf(stderr,"rdimport: --set-datetimes and --clear-datetimes are mutually exclusive\n");
+    exit(255);
+  }
+  if((!import_dayparts[1].isNull())&&import_clear_dayparts) {
+    fprintf(stderr,"rdimport: --set-daypart-times and --clear-daypart-times are mutually exclusive\n");
+    exit(255);
+  }
+
+  import_cut_markers=new MarkerSet();
+  import_cut_markers->loadMarker(import_cmd,"cut");
+  import_talk_markers=new MarkerSet();
+  import_talk_markers->loadMarker(import_cmd,"talk");
+  import_hook_markers=new MarkerSet();
+  import_hook_markers->loadMarker(import_cmd,"hook");
+  import_segue_markers=new MarkerSet();
+  import_segue_markers->loadMarker(import_cmd,"segue");
+  import_fadedown_marker=new MarkerSet();
+  import_fadedown_marker->loadFade(import_cmd,"fadedown");
+  import_fadeup_marker=new MarkerSet();
+  import_fadeup_marker->loadFade(import_cmd,"fadeup");
 
   //
   // Read Configuration
@@ -375,8 +530,8 @@ MainObject::MainObject(QObject *parent,const char *name)
     if(import_cmd->key(i)=="--segue-level") {
       n=import_cmd->value(i).toInt(&ok);
       if(ok&&(n<=0)) {
-	import_segue_level=100*n;
-        }
+	import_segue_level=n;
+      }
       else {
 	fprintf(stderr,"rdimport: invalid segue level\n");
 	delete import_cmd;
@@ -491,6 +646,18 @@ MainObject::MainObject(QObject *parent,const char *name)
       printf(" End Daypart = %s\n",
 	     (const char *)import_dayparts[1].toString("hh:mm:ss"));
     }
+    if(import_clear_dayparts) {
+      printf(" Clearing daypart times\n");
+    }
+    if((!import_datetimes[0].isNull())||(!import_datetimes[1].isNull())) {
+      printf(" Start DateTime = %s\n",
+	     (const char *)import_datetimes[0].toString("MM/dd/yyyy hh:mm:ss"));
+      printf(" End DateTime = %s\n",
+	     (const char *)import_datetimes[1].toString("MM/dd/yyyy hh:mm:ss"));
+    }
+    if(import_clear_datetimes) {
+      printf(" Clearing datetimes\n");
+    }
     if(import_fix_broken_formats) {
       printf(" Broken format workarounds are ENABLED\n");
     }
@@ -508,6 +675,59 @@ MainObject::MainObject(QObject *parent,const char *name)
     if(import_persistent_dropbox_id>=0) {
       printf(" Persistent DropBox ID = %d\n",import_persistent_dropbox_id);
     }
+    if(!import_string_agency.isNull()) {
+      printf(" Agency set to: %s\n",(const char *)import_string_agency);
+    }
+    if(!import_string_album.isNull()) {
+      printf(" Album set to: %s\n",(const char *)import_string_album);
+    }
+    if(!import_string_artist.isNull()) {
+      printf(" Artist set to: %s\n",(const char *)import_string_artist);
+    }
+    if(import_string_bpm!=0) {
+      printf(" BPM set to: %d\n",import_string_bpm);
+    }
+    if(!import_string_client.isNull()) {
+      printf(" Client set to: %s\n",(const char *)import_string_client);
+    }
+    if(!import_string_composer.isNull()) {
+      printf(" Composer set to: %s\n",(const char *)import_string_composer);
+    }
+    if(!import_string_conductor.isNull()) {
+      printf(" Conductor set to: %s\n",(const char *)import_string_conductor);
+    }
+    if(!import_string_description.isNull()) {
+      printf(" Description set to: %s\n",
+	     (const char *)import_string_description);
+    }
+    if(!import_string_label.isNull()) {
+      printf(" Label set to: %s\n",(const char *)import_string_label);
+    }
+    if(!import_string_outcue.isNull()) {
+      printf(" Outcue set to: %s\n",(const char *)import_string_outcue);
+    }
+    if(!import_string_publisher.isNull()) {
+      printf(" Publisher set to: %s\n",(const char *)import_string_publisher);
+    }
+    if(!import_string_song_id.isNull()) {
+      printf(" Song ID set to: %s\n",(const char *)import_string_song_id);
+    }
+    if(!import_string_title.isNull()) {
+      printf(" Title set to: %s\n",(const char *)import_string_title);
+    }
+    if(!import_string_user_defined.isNull()) {
+      printf(" User Defined set to: %s\n",
+	     (const char *)import_string_user_defined);
+    }
+    if(import_string_year!=0) {
+      printf(" Year set to: %d\n",import_string_year);
+    }
+    import_cut_markers->dump();
+    import_talk_markers->dump();
+    import_hook_markers->dump();
+    import_segue_markers->dump();
+    import_fadedown_marker->dump();
+    import_fadeup_marker->dump();
     printf(" Files to process:\n");
     for(unsigned i=import_file_key;i<import_cmd->keys();i++) {
       printf("   \"%s\"\n",(const char *)import_cmd->key(i));
@@ -785,7 +1005,6 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
       return MainObject::FileBad;
     }
   }
-
   if(!import_metadata_pattern.isEmpty()) {
     QString groupname=effective_group->name();
     found_cart=RunPattern(import_metadata_pattern,RDGetBasePart(filename),
@@ -891,9 +1110,16 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
 	     (const char *)RDGetBasePart(filename).utf8(),*cartnum);
     }
     else {
-      printf(" Importing file \"%s\" [%s] to cart %06u ... ",
-	     (const char *)RDGetBasePart(filename).utf8(),
-	     (const char *)wavedata->title().stripWhiteSpace(),*cartnum);
+      if(import_string_title.isNull()) {
+	printf(" Importing file \"%s\" [%s] to cart %06u ... ",
+	       (const char *)RDGetBasePart(filename).utf8(),
+	       (const char *)wavedata->title().stripWhiteSpace(),*cartnum);
+      }
+      else {
+	printf(" Importing file \"%s\" [%s] to cart %06u ... ",
+	       (const char *)RDGetBasePart(filename).utf8(),
+	       (const char *)import_string_title.stripWhiteSpace(),*cartnum);
+      }
     }
     fflush(stdout);
   }
@@ -944,7 +1170,8 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
     }
     cut->setMetadata(wavedata);
   }
-  cut->autoSegue(import_segue_level,import_segue_length);
+  cut->autoSegue(import_segue_level,import_segue_length,import_station,
+		 import_user,import_config);
   if((wavedata->title().length()==0)||
      ((wavedata->title().length()>0)&&(wavedata->title()[0] == '\0'))) {
     QString title=effective_group->generateTitle(filename);
@@ -964,6 +1191,9 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
       }
       cart->setTitle(wavedata->cutId());
     }
+  }
+  if(cut->description().isEmpty()) {      // Final backstop, so we don't end up
+    cut->setDescription(cart->title());   // with an empty description field.
   }
   if(!import_metadata_pattern.isEmpty()) {
     cart->setTitle(wavedata->title());
@@ -996,13 +1226,102 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
   for(unsigned i=0;i<import_add_scheduler_codes.size();i++) {
     cart->addSchedCode(import_add_scheduler_codes[i]);
   }
+  if(!import_string_agency.isNull()) {
+    cart->setAgency(import_string_agency);
+  }
+  if(!import_string_album.isNull()) {
+    cart->setAlbum(import_string_album);
+  }
+  if(!import_string_artist.isNull()) {
+    cart->setArtist(import_string_artist);
+  }
+  if(import_string_bpm!=0) {
+    cart->setBeatsPerMinute(import_string_bpm);
+  }
+  if(!import_string_client.isNull()) {
+    cart->setClient(import_string_client);
+  }
+  if(!import_string_composer.isNull()) {
+    cart->setComposer(import_string_composer);
+  }
+  if(!import_string_conductor.isNull()) {
+    cart->setConductor(import_string_conductor);
+  }
+  if(!import_string_description.isNull()) {
+    cut->setDescription(import_string_description);
+  }
+  if(!import_string_label.isNull()) {
+    cart->setLabel(import_string_label);
+  }
+  if(!import_string_outcue.isNull()) {
+    cut->setOutcue(import_string_outcue);
+  }
+  if(!import_string_publisher.isNull()) {
+    cart->setPublisher(import_string_publisher);
+  }
+  if(!import_string_song_id.isNull()) {
+    cart->setSongId(import_string_song_id);
+  }
+  if(!import_string_title.isNull()) {
+    cart->setTitle(import_string_title);
+  }
   if(!import_set_user_defined.isEmpty()) {
     cart->setUserDefined(import_set_user_defined);
+  }
+  if(!import_string_user_defined.isNull()) {
+    cart->setUserDefined(import_string_user_defined);
+  }
+  if(import_string_year!=0) {
+    cart->setYear(import_string_year);
   }
   if((!import_dayparts[0].isNull())||(!import_dayparts[1].isNull())) {
     cut->setStartDaypart(import_dayparts[0],true);
     cut->setEndDaypart(import_dayparts[1],true);
   }
+  if(import_clear_dayparts) {
+    cut->setStartDaypart(QTime(),false);
+    cut->setEndDaypart(QTime(),false);
+  }
+  if((!import_datetimes[0].isNull())||(!import_datetimes[1].isNull())) {
+    cut->setStartDatetime(import_datetimes[0],true);
+    cut->setEndDatetime(import_datetimes[1],true);
+  }
+  if(import_clear_datetimes) {
+    cut->setStartDatetime(QDateTime(),false);
+    cut->setEndDatetime(QDateTime(),false);
+  }
+  import_cut_markers->setAudioLength(wavefile->getExtTimeLength());
+  if(import_cut_markers->hasStartValue()) {
+    cut->setStartPoint(import_cut_markers->startValue());
+    cut->setEndPoint(import_cut_markers->endValue());
+    cut->setLength(cut->endPoint()-cut->startPoint());
+  }
+  int lo=cut->startPoint();
+  int hi=cut->endPoint();
+  import_talk_markers->setAudioLength(wavefile->getExtTimeLength());
+  if(import_talk_markers->hasStartValue()) {
+    cut->setTalkStartPoint(import_talk_markers->startValue(lo,hi));
+    cut->setTalkEndPoint(import_talk_markers->endValue(lo,hi));
+  }
+  import_hook_markers->setAudioLength(wavefile->getExtTimeLength());
+  if(import_hook_markers->hasStartValue()) {
+    cut->setHookStartPoint(import_hook_markers->startValue(lo,hi));
+    cut->setHookEndPoint(import_hook_markers->endValue(lo,hi));
+  }
+  import_segue_markers->setAudioLength(wavefile->getExtTimeLength());
+  if(import_segue_markers->hasStartValue()) {
+    cut->setSegueStartPoint(import_segue_markers->startValue(lo,hi));
+    cut->setSegueEndPoint(import_segue_markers->endValue(lo,hi));
+  }
+  import_fadedown_marker->setAudioLength(wavefile->getExtTimeLength());
+  if(import_fadedown_marker->hasFadeValue()) {
+    cut->setFadedownPoint(import_fadedown_marker->fadeValue(lo,hi));
+  }
+  import_fadeup_marker->setAudioLength(wavefile->getExtTimeLength());
+  if(import_fadeup_marker->hasFadeValue()) {
+    cut->setFadeupPoint(import_fadeup_marker->fadeValue(lo,hi));
+  }
+  cart->updateLength();
   delete settings;
   delete conv;
   delete cut;
