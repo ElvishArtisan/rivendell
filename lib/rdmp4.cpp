@@ -28,7 +28,7 @@
 MP4TrackId DLMP4::getMP4AACTrack(MP4FileHandle f)
 {
   
-  uint32_t nTracks = this->MP4GetNumberOfTracks(f);
+  uint32_t nTracks = this->MP4GetNumberOfTracks(f, NULL, 0);
 
   for(uint32_t trackIndex = 0; trackIndex < nTracks; ++trackIndex) {
 

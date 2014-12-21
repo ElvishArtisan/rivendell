@@ -61,7 +61,7 @@ DLMP4() : loadSuccess(false) {}
     MP4Duration   duration,
     uint32_t      timeScale);
   uint32_t (*MP4GetTrackTimeScale) (MP4FileHandle hFile, MP4TrackId trackId);
-  uint32_t (*MP4GetNumberOfTracks) (MP4FileHandle hFile);
+  uint32_t (*MP4GetNumberOfTracks) (MP4FileHandle hFile, const char* type, uint8_t subType);
   MP4TrackId (*MP4FindTrackId) (MP4FileHandle hFile, uint32_t trackIdx);
   const char* (*MP4GetTrackType) (MP4FileHandle hFile, MP4TrackId);
   const char* (*MP4GetTrackMediaDataName) (MP4FileHandle hFile, MP4TrackId);
