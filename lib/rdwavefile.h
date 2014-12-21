@@ -1241,6 +1241,10 @@ class RDWaveFile
    ogg_page ogg_pg;
    ogg_packet ogg_pack;
 #endif  // HAVE_VORBIS
+#ifdef HAVE_MP4_LIBS
+   DLMP4 dlmp4;
+#endif
+
 };
 
 

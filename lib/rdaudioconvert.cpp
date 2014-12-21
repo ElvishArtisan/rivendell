@@ -42,6 +42,10 @@
 #include <FLAC++/encoder.h>
 #include <rdflacdecode.h>
 #endif  // HAVE_FLAC
+#ifdef HAVE_MP4_LIBS
+#include <mp4v2/mp4v2.h>
+#include <neaacdec.h>
+#endif // HAVE_MP4_LIBS
 #include <id3/tag.h>
 #include <qfile.h>
 
@@ -680,72 +684,160 @@ RDAudioConvert::ErrorCode RDAudioConvert::Stage1Mpeg(const QString &dstfile,
 #endif  // HAVE_MAD
 }
 
+// Based on libfaad's frontend/main.c, but using libmp4v2 for MP4 access.
 RDAudioConvert::ErrorCode RDAudioConvert::Stage1M4A(const QString &dstfile,
-						    RDWaveFile *wave) {
+						    RDWaveFile *wave) 
+{
+#ifdef HAVE_MP4_LIBS
+  SNDFILE *sf_dst=NULL;
+  SF_INFO sf_dst_info;
+  int ret = RDAudioConvert::ErrorOk;
 
-  const char* args[7];
-  int childstatus = 0; 
- 
-  pid_t child = fork();
-
-  QString tmpname = dstfile + ".m4a_temp.wav";
- 
-  if(child == 0) {
-
-    freopen("/dev/null", "w", stdout);
-    freopen("/dev/null", "w", stderr);
-
-    args[0] = "faad";
-    args[1] = wave->getName();
-    args[2] = "-o";
-    args[3] = tmpname;
-    args[4] = "-b";
-    args[5] = "4"; // Emit a Float32 format wave file, like the other stage 1s.
-    args[6] = 0;
-    execvp("faad", (char* const*)args);
-    exit(109);
-
+  if(!LoadMP4Libs()) {
+    return RDAudioConvert::ErrorFormatNotSupported;
   }
-  else {
 
-    waitpid(child, &childstatus, 0);
+  //
+  // Open source
+  //
+  MP4FileHandle f = dlmp4.MP4Read(getName());
+  if(f == MP4_INVALID_FILE_HANDLE)
+    return RDAudioConvert::ErrorNoSource;
 
-    // Killed by a signal (e.g. OOM?)
-    if(!WIFEXITED(childstatus)) {
-      unlink(tmpname);
-      return RDAudioConvert::ErrorInternal;
-    }
-
-    // Returned 109, probably because we could't find faad?
-    if(WEXITSTATUS(childstatus) == 109)
-      return RDAudioConvert::ErrorFormatNotSupported;
-
-    // Two elements are missing: 
-    // 1. need to measure the peak amplitude;
-    // 2. need to trim if a subrange was requested.
-    // For now just use the sndfile import path to accomplish both tasks.
-
-    {
-
-      SF_INFO sf_src_info;
-      SNDFILE* sf_src;
-
-      memset(&sf_src_info, 0, sizeof(sf_src_info));
-      // If this fails it is likely because faad could not decode.
-      if((sf_src = sf_open(tmpname, SFM_READ, &sf_src_info)) == NULL)
-	return RDAudioConvert::ErrorFormatError;
-
-      RDAudioConvert::ErrorCode err = Stage1SndFile(dstfile, sf_src, &sf_src_info);
-
-      sf_close(sf_src);
-      unlink(tmpname);
-
-      return err;
-
+  MP4TrackId audioTrack = dlmp4.getMP4AACTrack(f);
+  MP4SampleId firstSample = 0;
+  MP4SampleId lastSample = dlmp4.MP4GetTrackNumberOfSamples(f, audioTrack) - 1;
+  if(conv_start_point > 0) {
+    
+    double startsecs = ((double)conv_start_point) / 1000;
+    MP4Timestamp startts = (MP4Timestamp)(startsecs * wave->getSamplesPerSec());
+    firstSample = dlmp4.MP4GetSampleIdFromTime(f, audioTrack, startts, /*need_sync=*/false);
+    if(firstSample == MP4_INVALID_SAMPLE_ID) {
+      ret = RDAudioConvert::ErrorInvalidSource;
+      goto out_mp4;
     }
 
   }
 
+  if(conv_end_point > 0) {
+
+    double stopsecs = ((double)conv_end_point) / 1000;
+    MP4Timestamp stopts = (MP4Timestamp)(stopsecs * wave->getSamplesPerSec());
+    lastSample = dlmp4.MP4GetSampleIdFromTime(f, audioTrack, stopts, /*need_sync=*/false);
+    if(lastSample == MP4_INVALID_SAMPLE_ID) {
+      ret = RDAudioConvert::ErrorInvalidSource;
+      goto out_mp4;
+    }
+
+  }
+
+  uint32_t aacBufSize = dlmp4.MP4GetTrackMaxSampleSize(f, audioTrack);
+  uint8_t* aacBuf = malloc(aacBufSize);
+  if(!aacBufSize || !aacBuf) {
+    // Probably the source's fault for specifying a massive buffer.
+    ret = RDAudioConvert::ErrorInvalidSource;
+    goto out_mp4;
+  }
+
+  uint8_t* aacConfigBuffer;
+  uint32_t* aacConfigSize;
+  
+  dlmp4.MP4GetTrackESConfiguration(f, audioTrack, &aacConfigBuffer, &aacConfigSize);
+  if(!aacConfigBuffer) {
+    ret = RDAudioConvert::ErrorInvalidSource;
+    goto out_mp4_buf;
+  }
+
+  //
+  // Open Destination
+  //
+  
+  memset(&sf_dst_info,0,sizeof(sf_dst_info));
+  sf_dst_info.format=SF_FORMAT_WAV|SF_FORMAT_FLOAT;
+  sf_dst_info.channels=wave->getChannels();
+  sf_dst_info.samplerate=wave->getSamplesPerSec();
+  if((sf_dst=sf_open(dstfile,SFM_WRITE,&sf_dst_info))==NULL) {
+    ret = RDAudioConvert::ErrorNoDestination;
+    goto out_mp4_configbuf;
+  }
+  sf_command(sf_dst,SFC_SET_NORM_DOUBLE,NULL,SF_FALSE);
+  
+  //
+  // Initialize Decoder
+  //
+  NeAACDecHandle hDecoder = dlmp4.NeAACDecOpen();
+
+  NeAACDecConfigurationPtr config = dlmp4.NeAACDecGetCurrentConfiguration(hDecoder);
+  config->outputFormat = FAAD_FMT_FLOAT;
+  config->downMatrix = 1; // Downmix >2 channels to stereo.
+  if(!dlmp4.NeAACDecSetConfiguration(hDecoder, config)) {
+    ret = RDAudioConvert::ErrorInvalidSource;
+    goto out_decoder;
+  }
+
+  unsigned long foundSampleRate;
+  unsigned char foundChannels;
+  if(dlmp4.NeAACDecInit2(hDecoder, aacConfigBuffer, aacConfigSize, &foundSampleRate, &foundChannels) < 0) {
+    ret = RDAudioConvert::ErrorInvalidSource;
+    goto out_decoder;
+  }
+
+  if(foundSampleRate != wave->getSamplesPerSec() || foundChannels != wave->getChannels()) {
+    fprintf(stderr, "M4A header information inconsistent with actual file? Header: %lu/%u; file: %lu/%u\n",
+	    wave->getSamplesPerSec(), (unsigned)wave->getChannels(), foundSampleRate, (unsigned)foundChannels);
+    ret = RDAudioConvert::ErrorInvalidSource;
+    goto out_decoder;
+  }
+
+  //
+  // Decode
+  //
+  for(MP4SampleId i = firstSample; i <= lastSample; ++i) {
+
+    uint32_t aacBytes = aacBufSize;
+    if(!dlmp4.MP4ReadSample(f, audioTrack, i, &aacBuf, &aacBytes, 0, 0, 0, 0)) {
+      ret = RDAudioConvert::ErrorInvalidSource;
+      break;
+    }
+
+    NeAACDecFrameInfo frameInfo;
+    // The library docs are not clear about the lifetime or cleanup of sample_buffer.
+    // I hope it lives until the next NeAACDecDecode call, and is cleaned up by NeAACDecClose
+    void* sample_buffer = dlmp4.NeAACDecDecode(hDecoder, &frameInfo, aacBuf, aacBytes);
+    if(!sample_buffer) {
+      ret = RDAudioConvert::ErrorInvalidSource;
+      break;
+    }
+
+    UpdatePeak(sample_buffer, frameInfo.samples);
+    
+    if(sf_write_float(dst_sf, sample_buffer, frameInfo.samples) != frameInfo.samples) {
+      ret = RDAudioConvert::ErrorInternal;
+      break;
+    }
+
+  }
+
+  //
+  // Cleanup
+  //
+
+ out_decoder:
+  dlmp4.NeAACDecClose(hDecoder);
+ out_sf:
+  sf_close(sf_dst);
+ out_mp4_configbuf:
+  free(aacConfigBuffer);
+ out_mp4_buf:
+  free(aacBuf);
+ out_mp4:
+  dlmp4.MP4Close(f, 0);
+
+  return ret;
+  
+#else
+  return RDAudioConvert::ErrorFormatNotSupported;
+#endif
 }
 
 RDAudioConvert::ErrorCode RDAudioConvert::Stage1SndFile(const QString &dstfile,

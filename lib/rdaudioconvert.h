@@ -152,6 +152,9 @@ class RDAudioConvert : public QObject
   int (*lame_encode_flush)(lame_global_flags *,unsigned char *,int);
   int (*lame_set_bWriteVbrTag)(lame_global_flags *, int);
 #endif  // HAVE_LAME
+#ifdef HAVE_MP4_LIBS
+  DLMP4 dlmp4;
+#endif
 };
 
 

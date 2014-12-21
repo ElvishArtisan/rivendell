@@ -47,8 +47,9 @@
 #include <rd.h>
 #include <rdwavefile.h>
 #include <rdconf.h>
+#include <rdmp4.h>
 
-#ifdef HAVE_MP4V2
+#ifdef HAVE_MP4_LIBS
 #include <mp4v2/mp4v2.h>
 #endif
 
@@ -328,55 +329,36 @@ bool RDWaveFile::openWave(RDWaveData *data)
 
   case RDWaveFile::M4A:
     {
-#ifdef HAVE_MP4V2   
+#ifdef HAVE_MP4_LIBS   
 
+      // MP4 libs must already be loaded by now for file to have that type.
+      assert(dlmp4.load());
       format_tag=WAVE_FORMAT_M4A;
 
-      MP4FileHandle f = MP4Read(getName());
+      MP4FileHandle f = dlmp4.MP4Read(getName());
       if(f == MP4_INVALID_FILE_HANDLE)
 	return false;
 
       // Find an audio track, and populate sample rate, bits/sample etc.
-      uint32_t nTracks = MP4GetNumberOfTracks(f);
-
-      MP4TrackId audioTrack = MP4_INVALID_TRACK_ID;
-      for(uint32_t trackIndex = 0; trackIndex < nTracks && audioTrack == MP4_INVALID_TRACK_ID; ++trackIndex) {
-
-	MP4TrackId thisTrack = MP4FindTrackId(f, trackIndex);
-	const char* trackType = MP4GetTrackType(f, thisTrack);
-	if(trackType && !strcmp(trackType, MP4_AUDIO_TRACK_TYPE)) {
-   
-	  const char* dataName = MP4GetTrackMediaDataName(f, thisTrack);
-	  // The M4A format is only currently useful for AAC in an M4A container:
-	  if(dataName && 
-	     (!strcasecmp(dataName, "mp4a")) && 
-	     MP4GetTrackEsdsObjectTypeId(f, thisTrack) == MP4_MPEG4_AUDIO_TYPE) {
-
-	    audioTrack = thisTrack;
-
-	  }
-
-	}
-
-      }
+      MP4TrackId audioTrack = dlmp4.getMP4AACTrack(f);
 
       if(audioTrack == MP4_INVALID_TRACK_ID) {
-	MP4Close(f);
+	dlmp4.MP4Close(f, 0);
 	return false;
       }
 
       // Found audio track. Get audio data:
-      avg_bytes_per_sec = MP4GetTrackBitRate(f, audioTrack);
-      channels = MP4GetTrackAudioChannels(f, audioTrack);
+      avg_bytes_per_sec = dlmp4.MP4GetTrackBitRate(f, audioTrack);
+      channels = dlmp4.MP4GetTrackAudioChannels(f, audioTrack);
 
-      MP4Duration trackDuration = MP4GetTrackDuration(f, audioTrack);
-      ext_time_length = (unsigned)MP4ConvertFromTrackDuration(f, audioTrack, trackDuration, 
-							      MP4_MSECS_TIME_SCALE);
+      MP4Duration trackDuration = dlmp4.MP4GetTrackDuration(f, audioTrack);
+      ext_time_length = (unsigned)dlmp4.MP4ConvertFromTrackDuration(f, audioTrack, trackDuration, 
+								    MP4_MSECS_TIME_SCALE);
       time_length = ext_time_length / 1000;
-      samples_per_sec = MP4GetTrackTimeScale(f, audioTrack);
+      samples_per_sec = dlmp4.MP4GetTrackTimeScale(f, audioTrack);
       bits_per_sample = 16;
       data_start = 0;
-      sample_length = MP4GetTrackNumberOfSamples(f, audioTrack);
+      sample_length = dlmp4.MP4GetTrackNumberOfSamples(f, audioTrack);
       data_length = sample_length * 2 * channels;
       data_chunk = true;
       format_chunk = true;
@@ -386,8 +368,8 @@ bool RDWaveFile::openWave(RDWaveData *data)
 
       if(wave_data) {
 
-	const MP4Tags* tags = MP4TagsAlloc();
-	MP4TagsFetch(tags, f);
+	const MP4Tags* tags = dlmp4.MP4TagsAlloc();
+	dlmp4.MP4TagsFetch(tags, f);
 	
 	wave_data->setMetadataFound(true);
 	
@@ -400,11 +382,11 @@ bool RDWaveFile::openWave(RDWaveData *data)
 	if(tags->album)
 	  wave_data->setAlbum(tags->album);
 
-	MP4TagsFree(tags);
+	dlmp4.MP4TagsFree(tags);
 
       }
 
-      MP4Close(f);
+      dlmp4.MP4Close(f, 0);
 
       return true;
 
@@ -2308,11 +2290,13 @@ bool RDWaveFile::IsAiff(int fd)
 
 bool RDWaveFile::IsM4A(int fd)
 {
-#ifdef HAVE_MP4V2
-  MP4FileHandle f = MP4Read(getName());
+#ifdef HAVE_MP4_LIBS
+  if(!dlmp4.load())
+    return false;
+  MP4FileHandle f = dlmp4.MP4Read(getName());
   bool ret = f != MP4_INVALID_FILE_HANDLE;
   if(ret)
-    MP4Close(f);
+    dlmp4.MP4Close(f, 0);
   return ret;
 #else
   return false;
