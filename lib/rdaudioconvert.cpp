@@ -714,8 +714,8 @@ RDAudioConvert::ErrorCode RDAudioConvert::Stage1M4A(const QString &dstfile,
     return RDAudioConvert::ErrorNoSource;
 
   audioTrack = dlmp4.getMP4AACTrack(f);
-  firstSample = 0;
-  lastSample = dlmp4.MP4GetTrackNumberOfSamples(f, audioTrack) - 1;
+  firstSample = 1;
+  lastSample = dlmp4.MP4GetTrackNumberOfSamples(f, audioTrack);
   if(conv_start_point > 0) {
     
     double startsecs = ((double)conv_start_point) / 1000;
