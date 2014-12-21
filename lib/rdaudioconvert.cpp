@@ -691,22 +691,31 @@ RDAudioConvert::ErrorCode RDAudioConvert::Stage1M4A(const QString &dstfile,
 #ifdef HAVE_MP4_LIBS
   SNDFILE *sf_dst=NULL;
   SF_INFO sf_dst_info;
-  int ret = RDAudioConvert::ErrorOk;
+  MP4FileHandle f;
+  MP4TrackId audioTrack;
+  MP4SampleId firstSample, lastSample;
+  uint32_t aacBufSize, aacConfigSize;
+  uint8_t *aacBuf, *aacConfigBuffer;
+  NeAACDecHandle hDecoder;
+  NeAACDecConfigurationPtr config;
+  unsigned long foundSampleRate;
+  unsigned char foundChannels;
+  RDAudioConvert::ErrorCode ret = RDAudioConvert::ErrorOk;
 
-  if(!LoadMP4Libs()) {
+  if(!dlmp4.load()) {
     return RDAudioConvert::ErrorFormatNotSupported;
   }
 
   //
   // Open source
   //
-  MP4FileHandle f = dlmp4.MP4Read(getName());
+  f = dlmp4.MP4Read(wave->getName());
   if(f == MP4_INVALID_FILE_HANDLE)
     return RDAudioConvert::ErrorNoSource;
 
-  MP4TrackId audioTrack = dlmp4.getMP4AACTrack(f);
-  MP4SampleId firstSample = 0;
-  MP4SampleId lastSample = dlmp4.MP4GetTrackNumberOfSamples(f, audioTrack) - 1;
+  audioTrack = dlmp4.getMP4AACTrack(f);
+  firstSample = 0;
+  lastSample = dlmp4.MP4GetTrackNumberOfSamples(f, audioTrack) - 1;
   if(conv_start_point > 0) {
     
     double startsecs = ((double)conv_start_point) / 1000;
@@ -731,17 +740,14 @@ RDAudioConvert::ErrorCode RDAudioConvert::Stage1M4A(const QString &dstfile,
 
   }
 
-  uint32_t aacBufSize = dlmp4.MP4GetTrackMaxSampleSize(f, audioTrack);
-  uint8_t* aacBuf = malloc(aacBufSize);
+  aacBufSize = dlmp4.MP4GetTrackMaxSampleSize(f, audioTrack);
+  aacBuf = (uint8_t*)malloc(aacBufSize);
   if(!aacBufSize || !aacBuf) {
     // Probably the source's fault for specifying a massive buffer.
     ret = RDAudioConvert::ErrorInvalidSource;
     goto out_mp4;
   }
 
-  uint8_t* aacConfigBuffer;
-  uint32_t* aacConfigSize;
-  
   dlmp4.MP4GetTrackESConfiguration(f, audioTrack, &aacConfigBuffer, &aacConfigSize);
   if(!aacConfigBuffer) {
     ret = RDAudioConvert::ErrorInvalidSource;
@@ -765,9 +771,9 @@ RDAudioConvert::ErrorCode RDAudioConvert::Stage1M4A(const QString &dstfile,
   //
   // Initialize Decoder
   //
-  NeAACDecHandle hDecoder = dlmp4.NeAACDecOpen();
+  hDecoder = dlmp4.NeAACDecOpen();
 
-  NeAACDecConfigurationPtr config = dlmp4.NeAACDecGetCurrentConfiguration(hDecoder);
+  config = dlmp4.NeAACDecGetCurrentConfiguration(hDecoder);
   config->outputFormat = FAAD_FMT_FLOAT;
   config->downMatrix = 1; // Downmix >2 channels to stereo.
   if(!dlmp4.NeAACDecSetConfiguration(hDecoder, config)) {
@@ -775,15 +781,13 @@ RDAudioConvert::ErrorCode RDAudioConvert::Stage1M4A(const QString &dstfile,
     goto out_decoder;
   }
 
-  unsigned long foundSampleRate;
-  unsigned char foundChannels;
   if(dlmp4.NeAACDecInit2(hDecoder, aacConfigBuffer, aacConfigSize, &foundSampleRate, &foundChannels) < 0) {
     ret = RDAudioConvert::ErrorInvalidSource;
     goto out_decoder;
   }
 
   if(foundSampleRate != wave->getSamplesPerSec() || foundChannels != wave->getChannels()) {
-    fprintf(stderr, "M4A header information inconsistent with actual file? Header: %lu/%u; file: %lu/%u\n",
+    fprintf(stderr, "M4A header information inconsistent with actual file? Header: %u/%u; file: %lu/%u\n",
 	    wave->getSamplesPerSec(), (unsigned)wave->getChannels(), foundSampleRate, (unsigned)foundChannels);
     ret = RDAudioConvert::ErrorInvalidSource;
     goto out_decoder;
@@ -809,9 +813,9 @@ RDAudioConvert::ErrorCode RDAudioConvert::Stage1M4A(const QString &dstfile,
       break;
     }
 
-    UpdatePeak(sample_buffer, frameInfo.samples);
+    UpdatePeak((const float*)sample_buffer, frameInfo.samples);
     
-    if(sf_write_float(dst_sf, sample_buffer, frameInfo.samples) != frameInfo.samples) {
+    if(sf_write_float(sf_dst, (const float*)sample_buffer, frameInfo.samples) != (sf_count_t)frameInfo.samples) {
       ret = RDAudioConvert::ErrorInternal;
       break;
     }
@@ -824,7 +828,7 @@ RDAudioConvert::ErrorCode RDAudioConvert::Stage1M4A(const QString &dstfile,
 
  out_decoder:
   dlmp4.NeAACDecClose(hDecoder);
- out_sf:
+  // out_sf: 
   sf_close(sf_dst);
  out_mp4_configbuf:
   free(aacConfigBuffer);

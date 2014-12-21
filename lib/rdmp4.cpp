@@ -23,6 +23,7 @@
 
 #include <rdmp4.h>
 #include <string.h>
+#include <dlfcn.h>
 
 MP4TrackId DLMP4::getMP4AACTrack(MP4FileHandle f)
 {
@@ -98,6 +99,7 @@ bool DLMP4::load()
   check_dlsym(this->NeAACDecClose, neaac_handle, "NeAACDecClose");
 
   loadSuccess = true;
+  return true;
 
 }
 

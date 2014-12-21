@@ -25,13 +25,15 @@
 
 #include <mp4v2/mp4v2.h>
 #include <neaacdec.h>
+// neaacdec.h defines "LC", as in "low-complexity AAC", which clashes with a Rivendell Command.
+#undef LC
 
 struct DLMP4 {
 
 DLMP4() : loadSuccess(false) {}
 
-  void *conv_neaac_handle;
-  void *conv_mp4_handle;
+  void *neaac_handle;
+  void *mp4_handle;
   bool loadSuccess;
 
   // MP4v2 Functions

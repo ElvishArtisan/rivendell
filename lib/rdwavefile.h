@@ -40,6 +40,8 @@
 #include <vorbis/vorbisenc.h>
 #endif  // HAVE_VORBIS
 
+#include <rdmp4.h>
+
 #include <rdwavedata.h>
 #include <rdringbuffer.h>
 #include <rdsettings.h>

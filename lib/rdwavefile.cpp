@@ -33,6 +33,7 @@
 #include <arpa/inet.h>
 #include <unistd.h>
 #include <errno.h>
+#include <assert.h>
 
 #include <id3/tag.h>
 #include <id3/misc_support.h>
@@ -3861,7 +3862,7 @@ bool RDWaveFile::GetFlacStreamInfo()
 
 void RDWaveFile::ReadFlacMetadata()
 {
-#ifdef HAVE_FLAC_METADATA
+#ifdef HAVE_FLAC
   QString artist;
   QString composer;
   FLAC__StreamMetadata* tags;

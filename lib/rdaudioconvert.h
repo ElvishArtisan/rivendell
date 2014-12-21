@@ -33,6 +33,9 @@
 #ifdef HAVE_MAD
 #include <mad.h>
 #endif  // HAVE_MAD
+
+#include <rdmp4.h>
+
 #include <qobject.h>
 
 #include <rdwavedata.h>
