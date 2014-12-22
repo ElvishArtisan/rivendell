@@ -3862,7 +3862,7 @@ bool RDWaveFile::GetFlacStreamInfo()
 
 void RDWaveFile::ReadFlacMetadata()
 {
-#ifdef HAVE_FLAC
+#ifdef HAVE_FLAC_METADATA
   QString artist;
   QString composer;
   FLAC__StreamMetadata* tags;
