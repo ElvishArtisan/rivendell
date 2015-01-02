@@ -14696,3 +14696,5 @@
 2015-01-02 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in 'lib/rdlivewire.cpp' and 'lib/rdlivewire.h' that
 	caused GPIO event reporting to fail after a watchdog reset.
+2015-01-02 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.10.2int00.
