@@ -131,6 +131,8 @@ class RDLiveWire : public QObject
   QTimer *live_watchdog_timeout_timer;
   QTimer *live_holdoff_timer;
   int live_load_ver_count;
+  bool live_gpi_initialized;
+  bool live_gpo_initialized;
 };
 
 

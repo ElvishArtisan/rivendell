@@ -14686,10 +14686,13 @@
 	* Refactored the 'RDCut::autoSegue()' method to fetch trim data
 	via 'RDTrimAudio'.
 	* Added language in the rdimport(1) man page to resolve ambiguity
-	regarding how the --segue-level location is dteremined when
+	regarding how the --segue-level location is determined when
 	normalization is specified.
 2014-12-08 Fred Gleason <fredg@paravelsystems.com>
 	* Added an RLM for Live 365 in 'rlm/rlm_live365.c'.
 2014-12-08 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in 'rlm/rlm_live365.c' where the 'album' field was
 	not escaped correctly.
+2015-01-02 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'lib/rdlivewire.cpp' and 'lib/rdlivewire.h' that
+	caused GPIO event reporting to fail after a watchdog reset.
