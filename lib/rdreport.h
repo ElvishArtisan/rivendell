@@ -37,7 +37,7 @@ class RDReport
 		     SoundExchange=4,RadioTraffic=5,VisualTraffic=6,
 		     CounterPoint=7,Music1=8,MusicSummary=9,WideOrbit=10,
 		     NprSoundExchange=11,MusicPlayout=12,NaturalLog=13,
-		     MusicClassical=14,LastFilter=15};
+		     MusicClassical=14,MrMaster=15,LastFilter=16};
   enum ExportOs {Linux=0,Windows=1};
   enum ExportType {Generic=0,Traffic=1,Music=2};
   enum StationType {TypeOther=0,TypeAm=1,TypeFm=2,TypeLast=3};
@@ -101,7 +101,7 @@ class RDReport
   bool ExportBmiEmr(const QDate &startdate,const QDate &enddate,
 		    const QString &mixtable);
   bool ExportTechnical(const QDate &startdate,const QDate &enddate,
-		       const QString &mixtable);
+		       bool incl_hdr,bool incl_crs,const QString &mixtable);
   bool ExportSoundEx(const QDate &startdate,const QDate &enddate,
 		     const QString &mixtable);
   bool ExportNprSoundEx(const QDate &startdate,const QDate &enddate,

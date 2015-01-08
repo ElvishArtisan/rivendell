@@ -419,6 +419,10 @@
         <source>reserved</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Mr. Master Reconciliation</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RDAddCart</name>

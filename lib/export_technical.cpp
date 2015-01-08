@@ -33,6 +33,7 @@
 
 
 bool RDReport::ExportTechnical(const QDate &startdate,const QDate &enddate,
+			       bool incl_hdr,bool incl_crs,
 			       const QString &mixtable)
 {
   QString sql;
@@ -42,11 +43,15 @@ bool RDReport::ExportTechnical(const QDate &startdate,const QDate &enddate,
   QString str;
   QString cart_fmt;
   QString cart_num;
+  char eol[3]="\n";
 
 #ifdef WIN32
   QString filename=RDDateDecode(exportPath(RDReport::Windows),startdate);
 #else
   QString filename=RDDateDecode(exportPath(RDReport::Linux),startdate);
+  if(incl_crs) {
+    strcpy(eol,"\r\n");
+  }
 #endif
 
   QFile file(filename);
@@ -91,22 +96,24 @@ bool RDReport::ExportTechnical(const QDate &startdate,const QDate &enddate,
   //
   // Write File Header
   //
-  if(startdate==enddate) {
-    fprintf(f,"           Rivendell RDAirPlay Technical Playout Report for %s\n",
-	    (const char *)startdate.toString("MM/dd/yyyy"));
+  if(incl_hdr) {
+    if(startdate==enddate) {
+      fprintf(f,"           Rivendell RDAirPlay Technical Playout Report for %s%s",
+	      (const char *)startdate.toString("MM/dd/yyyy"),eol);
+    }
+    else {
+      fprintf(f,"      Rivendell RDAirPlay Technical Playout Report for %s - %s%s",
+	      (const char *)startdate.toString("MM/dd/yyyy"),
+	      (const char *)enddate.toString("MM/dd/yyyy"),eol);
+    }
+    str=QString().sprintf("%s -- %s%s",(const char *)name(),
+			  (const char *)description(),eol);
+    for(unsigned i=0;i<(80-str.length())/2;i++) {
+      fprintf(f," ");
+    }
+    fprintf(f,"%s%s",(const char *)str,eol);
+    fprintf(f,"--Time--  -Cart-  Cut  --Title----------------  A-Len  N-Len  --Host----  Srce  StartedBy  OnAir%s",eol);
   }
-  else {
-    fprintf(f,"      Rivendell RDAirPlay Technical Playout Report for %s - %s\n",
-	    (const char *)startdate.toString("MM/dd/yyyy"),
-	    (const char *)enddate.toString("MM/dd/yyyy"));
-  }
-  str=QString().sprintf("%s -- %s\n",(const char *)name(),
-			(const char *)description());
-  for(unsigned i=0;i<(80-str.length())/2;i++) {
-    fprintf(f," ");
-  }
-  fprintf(f,"%s\n",(const char *)str);
-  fprintf(f,"--Time--  -Cart-  Cut  --Title----------------  A-Len  N-Len  --Host----  Srce  StartedBy  OnAir\n");
 
   //
   // Write Data Rows
@@ -168,7 +175,7 @@ bool RDReport::ExportTechnical(const QDate &startdate,const QDate &enddate,
     else {
       fprintf(f,"  No  ");
     }
-    fprintf(f,"\n");
+    fprintf(f,"%s",eol);
   }
   delete q;
   fclose(f);

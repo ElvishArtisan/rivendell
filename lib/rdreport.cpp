@@ -606,7 +606,7 @@ bool RDReport::generateReport(const QDate &startdate,const QDate &enddate,
 
   case RDReport::NaturalLog:
   case RDReport::Technical:
-    ret=ExportTechnical(startdate,enddate,mixname);
+    ret=ExportTechnical(startdate,enddate,true,false,mixname);
     break;
 
   case RDReport::SoundExchange:
@@ -644,6 +644,10 @@ bool RDReport::generateReport(const QDate &startdate,const QDate &enddate,
 
   case RDReport::MusicSummary:
     ret=ExportMusicSummary(startdate,enddate,mixname);
+    break;
+
+  case RDReport::MrMaster:
+    ret=ExportTechnical(startdate,enddate,false,true,mixname);
     break;
 
   default:
@@ -695,6 +699,9 @@ QString RDReport::filterText(RDReport::ExportFilter filter)
 
   case RDReport::CounterPoint:
     return QObject::tr("CounterPoint Traffic Reconciliation");
+
+  case RDReport::MrMaster:
+    return QObject::tr("Mr. Master Reconciliation");
 
   case RDReport::Music1:
     return QObject::tr("Music1 Reconciliation");
@@ -749,6 +756,7 @@ bool RDReport::multipleDaysAllowed(RDReport::ExportFilter filter)
   case RDReport::VisualTraffic:
   case RDReport::CounterPoint:
   case RDReport::LastFilter:
+  case RDReport::MrMaster:
   case RDReport::Music1:
   case RDReport::MusicClassical:
   case RDReport::MusicPlayout:
@@ -777,6 +785,7 @@ bool RDReport::multipleMonthsAllowed(RDReport::ExportFilter filter)
   case RDReport::VisualTraffic:
   case RDReport::CounterPoint:
   case RDReport::LastFilter:
+  case RDReport::MrMaster:
   case RDReport::Music1:
   case RDReport::MusicClassical:
   case RDReport::MusicPlayout:
