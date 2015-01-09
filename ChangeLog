@@ -14705,3 +14705,7 @@
 	* Fixed a bug in 'rdlogmanager/editschedrules.cpp' and
 	'rdlogmanager/editschedrules.h' that caused scheduling rule data
 	to be corrupt if the rules list was resorted [GitHub issue #000054].
+2015-01-09 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'rdlogmanager/edit_eventline.cpp' that caused
+	an invalid event line to be created when the dialog was closed
+	by means of the 'X' button [GitHub issue #000053].

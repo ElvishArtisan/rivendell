@@ -46,6 +46,9 @@ class EditEventLine : public QDialog
   void okData();
   void cancelData();
 
+ protected:
+  void closeEvent(QCloseEvent *e);
+
  private:
   RDEventLine *edit_eventline;
   QLineEdit *edit_eventname_edit;

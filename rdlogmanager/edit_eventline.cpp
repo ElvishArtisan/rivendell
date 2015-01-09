@@ -237,3 +237,9 @@ void EditEventLine::cancelData()
 {
   done(-1);
 }
+
+
+void EditEventLine::closeEvent(QCloseEvent *e)
+{
+  cancelData();
+}
