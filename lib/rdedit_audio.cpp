@@ -169,8 +169,8 @@ RDEditAudio::RDEditAudio(RDCart *cart,QString cut_name,RDCae *cae,RDUser *user,
   edit_play_cursor_button=new RDTransportButton(RDTransportButton::PlayBetween,
 					this,"edit_play_cursor_button");
   edit_play_cursor_button->setGeometry(20,425,65,45);
-  edit_play_cursor_button->
-    setPalette(QPalette(backgroundColor(),QColor(EDITAUDIO_HIGHLIGHT_COLOR)));
+//  edit_play_cursor_button->
+//    setPalette(QPalette(backgroundColor(),QColor(EDITAUDIO_HIGHLIGHT_COLOR)));
   edit_play_cursor_button->setEnabled((edit_card>=0)&&(edit_port>=0));
   connect(edit_play_cursor_button,SIGNAL(clicked()),
 	  this,SLOT(playCursorData()));
@@ -178,8 +178,8 @@ RDEditAudio::RDEditAudio(RDCart *cart,QString cut_name,RDCae *cae,RDUser *user,
   edit_play_start_button=new RDTransportButton(RDTransportButton::Play,
 					this,"edit_play_start_button");
   edit_play_start_button->setGeometry(90,425,65,45);
-  edit_play_start_button->
-    setPalette(QPalette(backgroundColor(),QColor(EDITAUDIO_HIGHLIGHT_COLOR)));
+//  edit_play_start_button->
+//    setPalette(QPalette(backgroundColor(),QColor(EDITAUDIO_HIGHLIGHT_COLOR)));
   edit_play_start_button->setEnabled((edit_card>=0)&&(edit_port>=0));
   connect(edit_play_start_button,SIGNAL(clicked()),
 	  this,SLOT(playStartData()));
@@ -188,8 +188,8 @@ RDEditAudio::RDEditAudio(RDCart *cart,QString cut_name,RDCae *cae,RDUser *user,
 					 this,"edit_pause_button");
   edit_pause_button->setGeometry(160,425,65,45);
   edit_pause_button->setOnColor(QColor(red));
-  edit_pause_button->
-    setPalette(QPalette(backgroundColor(),QColor(EDITAUDIO_HIGHLIGHT_COLOR)));
+//  edit_pause_button->
+//    setPalette(QPalette(backgroundColor(),QColor(EDITAUDIO_HIGHLIGHT_COLOR)));
   edit_pause_button->setEnabled((edit_card>=0)&&(edit_port>=0));
   connect(edit_pause_button,SIGNAL(clicked()),this,SLOT(pauseData()));
 
@@ -198,8 +198,8 @@ RDEditAudio::RDEditAudio(RDCart *cart,QString cut_name,RDCae *cae,RDUser *user,
   edit_stop_button->setGeometry(230,425,65,45);
   edit_stop_button->on();
   edit_stop_button->setOnColor(QColor(red));
-  edit_stop_button->
-    setPalette(QPalette(backgroundColor(),QColor(EDITAUDIO_HIGHLIGHT_COLOR)));
+//  edit_stop_button->
+//    setPalette(QPalette(backgroundColor(),QColor(EDITAUDIO_HIGHLIGHT_COLOR)));
   edit_stop_button->setEnabled((edit_card>=0)&&(edit_port>=0));
   connect(edit_stop_button,SIGNAL(clicked()),this,SLOT(stopData()));
 
@@ -207,8 +207,8 @@ RDEditAudio::RDEditAudio(RDCart *cart,QString cut_name,RDCae *cae,RDUser *user,
 					this,"edit_loop_button");
   edit_loop_button->setGeometry(300,425,65,45);
   edit_loop_button->off();
-  edit_loop_button->
-    setPalette(QPalette(backgroundColor(),QColor(EDITAUDIO_HIGHLIGHT_COLOR)));
+//  edit_loop_button->
+//    setPalette(QPalette(backgroundColor(),QColor(EDITAUDIO_HIGHLIGHT_COLOR)));
   edit_loop_button->setEnabled((edit_card>=0)&&(edit_port>=0));
   connect(edit_loop_button,SIGNAL(clicked()),this,SLOT(loopData()));
 
@@ -714,11 +714,11 @@ RDEditAudio::RDEditAudio(RDCart *cart,QString cut_name,RDCae *cae,RDUser *user,
   // Segue Fade Box
   //
   edit_overlap_box=new QCheckBox(this,"edit_overlap_box");
-  edit_overlap_box->setGeometry(570,510,15,15);
+  edit_overlap_box->setGeometry(570,515,15,15);
   label=new QLabel(edit_overlap_box,tr("No Fade on Segue Out"),
 		   this,"label");
-  label->setGeometry(590,508,130,20);
-  label->setFont(button_font);
+  label->setGeometry(590,513,130,20);
+  label->setFont(small_font);
   label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
   
   //

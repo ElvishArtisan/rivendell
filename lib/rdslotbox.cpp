@@ -98,6 +98,12 @@ RDSlotBox::RDSlotBox(RDPlayDeck *deck,RDAirPlayConf *conf,QWidget *parent)
   line_timescale_palette.setColor(QPalette::Inactive,QColorGroup::Foreground,
 				  QColor(LABELBOX_TIMESCALE_COLOR));
 
+  line_text_palette=palette();
+  line_text_palette.setColor(QPalette::Active,QColorGroup::Foreground,
+				  QColor(black));
+  line_text_palette.setColor(QPalette::Inactive,QColorGroup::Foreground,
+				  QColor(black));
+
   //
   // Audio Meter
   //
@@ -557,16 +563,26 @@ void RDSlotBox::SetColor(QColor color)
 {
   setBackgroundColor(color);
   line_cart_label->setBackgroundColor(color);
+  line_cart_label->setPalette(line_text_palette);
   line_cut_label->setBackgroundColor(color);
+  line_cut_label->setPalette(line_text_palette);
   line_group_label->setBackgroundColor(color);
   line_title_label->setBackgroundColor(color);
+  line_title_label->setPalette(line_text_palette);
   line_description_label->setBackgroundColor(color);
+  line_description_label->setPalette(line_text_palette);
   line_artist_label->setBackgroundColor(color);
+  line_artist_label->setPalette(line_text_palette);
   line_outcue_label->setBackgroundColor(color);
+  line_outcue_label->setPalette(line_text_palette);
   line_length_label->setBackgroundColor(color);
+  line_length_label->setPalette(line_text_palette);
   line_talktime_label->setBackgroundColor(color);
+  line_talktime_label->setPalette(line_text_palette);
   line_up_label->setBackgroundColor(color);
-  line_position_bar->setBackgroundColor(QColor(Qt::lightGray));
+  line_up_label->setPalette(line_text_palette);
+  line_position_bar->setBackgroundColor(QColor(lightGray));
   line_down_label->setBackgroundColor(color);
+  line_down_label->setPalette(line_text_palette);
   line_icon_label->setBackgroundColor(color);
 }

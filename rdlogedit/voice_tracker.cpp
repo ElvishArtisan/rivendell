@@ -136,6 +136,8 @@ VoiceTracker::VoiceTracker(const QString &logname,QString *import_path,
   track_start_palette=QPalette(TRACKER_START_BUTTON_COLOR,backgroundColor());
   track_done_palette=QPalette(TRACKER_DONE_BUTTON_COLOR,backgroundColor());
   track_abort_palette=QPalette(TRACKER_ABORT_BUTTON_COLOR,backgroundColor());
+  QColor system_mid_color = colorGroup().mid();
+  QColor system_button_color = palette().active().button();
 
   //
   // Create Track and Target Region
@@ -342,8 +344,9 @@ VoiceTracker::VoiceTracker(const QString &logname,QString *import_path,
   track_play_button=new RDTransportButton(RDTransportButton::Play,this,
 					 "track_play_button");
   track_play_button->setGeometry(20,265,80,50);
-  track_play_button->
-    setPalette(QPalette(backgroundColor(),colorGroup().mid()));
+  track_play_button->setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
+//  track_play_button->
+//    setPalette(QPalette(backgroundColor(),colorGroup().mid()));
   connect(track_play_button,SIGNAL(clicked()),
 	  this,SLOT(playData()));
 
@@ -353,8 +356,9 @@ VoiceTracker::VoiceTracker(const QString &logname,QString *import_path,
   track_stop_button=new RDTransportButton(RDTransportButton::Stop,this,
 					 "track_stop_button");
   track_stop_button->setGeometry(110,265,80,50);
-  track_stop_button->
-    setPalette(QPalette(backgroundColor(),colorGroup().mid()));
+  track_stop_button->setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
+//  track_stop_button->
+//    setPalette(QPalette(backgroundColor(),colorGroup().mid()));
   track_stop_button->setOnColor(red);
   track_stop_button->on();
   connect(track_stop_button,SIGNAL(clicked()),this,SLOT(stopData()));
@@ -375,7 +379,7 @@ VoiceTracker::VoiceTracker(const QString &logname,QString *import_path,
   edit_length_label=new QLabel(this,"edit_length_label");
   edit_length_label->setText("-:--:--.-");
   edit_length_label->setGeometry(565,255,110,25);
-  edit_length_label->setBackgroundColor(white);
+//  edit_length_label->setBackgroundColor(white);
   edit_length_label->setAlignment(AlignCenter);
   edit_length_label->setFont(timer_font);
 
@@ -390,7 +394,7 @@ VoiceTracker::VoiceTracker(const QString &logname,QString *import_path,
   edit_tracks_remaining_label=new QLabel(this,"edit_tracks_remaining_label");
   edit_tracks_remaining_label->setText("0");
   edit_tracks_remaining_label->setGeometry(565,313,40,18);
-  edit_tracks_remaining_label->setBackgroundColor(white);
+//  edit_tracks_remaining_label->setBackgroundColor(white);
   edit_tracks_remaining_label->setAlignment(AlignCenter);
   edit_tracks_remaining_label->setFont(label_font);
   label=new QLabel(tr("Tracks"),this,"label");
@@ -402,7 +406,7 @@ VoiceTracker::VoiceTracker(const QString &logname,QString *import_path,
   edit_time_remaining_label=new QLabel(this,"edit_time_remaining_label");
   edit_time_remaining_label->setText("0:00:00.0");
   edit_time_remaining_label->setGeometry(615,313,60,18);
-  edit_time_remaining_label->setBackgroundColor(white);
+//  edit_time_remaining_label->setBackgroundColor(white);
   edit_time_remaining_label->setAlignment(AlignCenter);
   edit_time_remaining_label->setFont(label_font);
   edit_time_remaining_palette[0]=edit_time_remaining_label->palette();

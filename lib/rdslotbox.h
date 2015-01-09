@@ -106,6 +106,7 @@ class RDSlotBox : public QWidget
   QPalette line_time_palette;
   QPalette line_hard_palette;
   QPalette line_timescale_palette;
+  QPalette line_text_palette;
   RDLogLine::Type line_type;
   QPixmap *line_playout_map;
   QPixmap *line_macro_map;
