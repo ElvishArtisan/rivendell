@@ -127,6 +127,7 @@ void PostCounter::keyPressEvent(QKeyEvent *e)
 void PostCounter::UpdateDisplay()
 {
   QColor color=backgroundColor();
+  QColor system_button_text_color=palette().active().buttonText();
   QString str;
   QString point;
   QString state;
@@ -160,6 +161,7 @@ void PostCounter::UpdateDisplay()
 	  color=POSTPOINT_ONTIME_COLOR;
 	}
       }
+      system_button_text_color = color1;
     }
     else {
       state="--------";
@@ -175,7 +177,8 @@ void PostCounter::UpdateDisplay()
   QPainter *p=new QPainter(&pix);
   p->fillRect(0,0,sizeHint().width(),sizeHint().height(),color);
   //  p->eraseRect(0,0,sizeHint().width(),sizeHint().height());
-  p->setPen(color1);
+  //p->setPen(color1);
+  p->setPen(QColor(system_button_text_color));
   p->setFont(post_small_font);
   p->drawText((sizeHint().width()-p->
 	       fontMetrics().width(point))/2,22,point);

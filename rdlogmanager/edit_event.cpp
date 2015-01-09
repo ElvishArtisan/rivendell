@@ -190,8 +190,8 @@ EditEvent::EditEvent(QString eventname,bool new_event,
 			 this,"event_player");
     event_player->playButton()->
       setGeometry(CENTER_LINE-180,sizeHint().height()-210,80,50);
-    event_player->stopButton()->
-      setPalette(QPalette(backgroundColor(),QColor(lightGray)));
+//    event_player->stopButton()->
+//      setPalette(QPalette(backgroundColor(),QColor(lightGray)));
     event_player->stopButton()->setGeometry(CENTER_LINE-90,sizeHint().height()-210,80,50);
     event_player->stopButton()->setOnColor(red);
   }

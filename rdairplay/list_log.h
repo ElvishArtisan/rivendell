@@ -118,6 +118,7 @@ class ListLog : public QWidget
   RDAirPlayConf::ActionMode list_action_mode;
   ListLog::PlayButtonMode list_playbutton_mode;
   EditEvent *list_event_edit;
+  QLabel *list_endtime_label;
   QLineEdit *list_endtime_edit;
   QLabel *list_stoptime_label;
   QLineEdit *list_stoptime_edit;

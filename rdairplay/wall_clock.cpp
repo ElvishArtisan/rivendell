@@ -21,6 +21,7 @@
 //
 
 #include <qpainter.h>
+#include <qpalette.h>
 #include <qpixmap.h>
 #include <qdatetime.h>
 #include <qfontmetrics.h>
@@ -109,6 +110,7 @@ void WallClock::tickClock()
 {
   static QString date;
   QString accum;
+  QColor system_button_text_color = palette().active().buttonText();
   static QPixmap *pix=new QPixmap(sizeHint().width(),sizeHint().height());
   static bool synced=true;
 
@@ -152,13 +154,15 @@ void WallClock::tickClock()
   QPainter p(pix);
   if(flash_state) {
     p.fillRect(0,0,width(),height(),BUTTON_TIME_SYNC_LOST_COLOR);
+    p.setPen(QColor(color1));
   }
   else {
     p.fillRect(0,0,width(),height(),backgroundColor());
+    p.setPen(QColor(system_button_text_color));
   }
   //p.eraseRect(0,0,width(),height());
-  p.setPen(color1);
-  p.setBrush(color1);
+//  p.setPen(color1);
+//  p.setBrush(color1);
   p.setFont(label_font);
   p.drawText((sizeHint().width()-p.fontMetrics().width(date))/2,22,date);
   p.setFont(time_font);

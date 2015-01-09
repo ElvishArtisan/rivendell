@@ -79,6 +79,7 @@ AudioCart::AudioCart(AudioControls *controls,RDCart *cart,QString *path,
   button_font.setPixelSize(12);
   QFont line_edit_font=QFont("Helvetica",12,QFont::Normal);
   line_edit_font.setPixelSize(12);
+  QColor system_button_text_color = palette().active().buttonText();
 
   //
   // Progress Dialog
@@ -185,7 +186,8 @@ AudioCart::AudioCart(AudioControls *controls,RDCart *cart,QString *path,
   QPainter *p=new QPainter(pix);
   QFontMetrics *m=new QFontMetrics(button_font);
   p->fillRect(0,0,80,50,palette().color(QPalette::Active,QColorGroup::Button));
-  p->setPen(QColor(color1));
+  //p->setPen(QColor(color1));
+  p->setPen(QColor(system_button_text_color));
   p->setFont(button_font);
   p->drawText((80-m->width(tr("Cut Info")))/2,20,tr("Cut Info"));
   p->moveTo(10,24);
@@ -229,7 +231,8 @@ AudioCart::AudioCart(AudioControls *controls,RDCart *cart,QString *path,
   p=new QPainter(pix);
   m=new QFontMetrics(button_font);
   p->fillRect(0,0,80,50,palette().color(QPalette::Active,QColorGroup::Button));
-  p->setPen(QColor(color1));
+  //p->setPen(QColor(color1));
+  p->setPen(QColor(system_button_text_color));
   p->setFont(button_font);
   p->drawText((80-m->width(tr("Import")))/2,20,tr("Import"));
   p->moveTo(10,24);
