@@ -4,8 +4,6 @@
 //
 //   (C) Copyright 2002-2006 Fred Gleason <fredg@paravelsystems.com>
 //
-//      $Id: voice_tracker.cpp,v 1.84.2.4.2.2 2014/05/21 18:19:43 cvs Exp $
-//
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
 //   published by the Free Software Foundation.
@@ -345,8 +343,6 @@ VoiceTracker::VoiceTracker(const QString &logname,QString *import_path,
 					 "track_play_button");
   track_play_button->setGeometry(20,265,80,50);
   track_play_button->setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
-//  track_play_button->
-//    setPalette(QPalette(backgroundColor(),colorGroup().mid()));
   connect(track_play_button,SIGNAL(clicked()),
 	  this,SLOT(playData()));
 
@@ -357,8 +353,6 @@ VoiceTracker::VoiceTracker(const QString &logname,QString *import_path,
 					 "track_stop_button");
   track_stop_button->setGeometry(110,265,80,50);
   track_stop_button->setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
-//  track_stop_button->
-//    setPalette(QPalette(backgroundColor(),colorGroup().mid()));
   track_stop_button->setOnColor(red);
   track_stop_button->on();
   connect(track_stop_button,SIGNAL(clicked()),this,SLOT(stopData()));
@@ -379,7 +373,6 @@ VoiceTracker::VoiceTracker(const QString &logname,QString *import_path,
   edit_length_label=new QLabel(this,"edit_length_label");
   edit_length_label->setText("-:--:--.-");
   edit_length_label->setGeometry(565,255,110,25);
-//  edit_length_label->setBackgroundColor(white);
   edit_length_label->setAlignment(AlignCenter);
   edit_length_label->setFont(timer_font);
 
@@ -394,7 +387,6 @@ VoiceTracker::VoiceTracker(const QString &logname,QString *import_path,
   edit_tracks_remaining_label=new QLabel(this,"edit_tracks_remaining_label");
   edit_tracks_remaining_label->setText("0");
   edit_tracks_remaining_label->setGeometry(565,313,40,18);
-//  edit_tracks_remaining_label->setBackgroundColor(white);
   edit_tracks_remaining_label->setAlignment(AlignCenter);
   edit_tracks_remaining_label->setFont(label_font);
   label=new QLabel(tr("Tracks"),this,"label");
@@ -406,7 +398,6 @@ VoiceTracker::VoiceTracker(const QString &logname,QString *import_path,
   edit_time_remaining_label=new QLabel(this,"edit_time_remaining_label");
   edit_time_remaining_label->setText("0:00:00.0");
   edit_time_remaining_label->setGeometry(615,313,60,18);
-//  edit_time_remaining_label->setBackgroundColor(white);
   edit_time_remaining_label->setAlignment(AlignCenter);
   edit_time_remaining_label->setFont(label_font);
   edit_time_remaining_palette[0]=edit_time_remaining_label->palette();
@@ -660,13 +651,6 @@ void VoiceTracker::updateMenuData()
   else {
     track_menu->setItemEnabled(4,false);
   }
-//  if(edit_wave_name[edit_rightclick_track].isEmpty() 
-//      || edit_logline[edit_rightclick_track]->segueGain()==0) {
-//    track_menu->setItemEnabled(5,false);
-//  }
-//  else {
-//    track_menu->setItemEnabled(5,true);
-//  }
   menu_clicked_point=edit_rightclick_pos;
   DrawTrackMap(edit_rightclick_track);
   WriteTrackMap(edit_rightclick_track);
@@ -1730,7 +1714,6 @@ void VoiceTracker::positionData(int id,int msecs)
   p->end();
   delete p;
   edit_cursor_pos=x;
-//  edit_wave_pos[id]=msecs;
 }
 
 
@@ -1862,13 +1845,8 @@ void VoiceTracker::recordingData(int card,int stream)
 	edit_logline[0]->endPoint();
     }
   }
-//  edit_segue_gain[0]=0;
   edit_wave_origin[1]=edit_wave_origin[0]+
                       edit_deck[0]->currentPosition();
-   // rdcae->fadeOutputVolume(edit_deck[0]->card(),edit_deck[0]->stream(),
-//			  edit_deck[0]->port(),edit_segue_gain[0],
-//			  edit_logline[0]->endPoint(RDLogLine::CartPointer)-
-//			  edit_segue_start_point[0]);
   if(!track_meter_timer->isActive()) {
     track_meter_timer->start(RD_METER_UPDATE_INTERVAL);
   }
@@ -2213,9 +2191,6 @@ void VoiceTracker::LoadTrack(int line)
     }
     else {
       if(segue_loaded) {
-//	edit_track_line[0]=line-1;
-//	edit_track_line[1]=-1;
-//	edit_track_line[2]=line;
 	edit_track_line[0]=line-1;
 	edit_track_line[1]=line;
 	edit_track_line[2]=line+1;
@@ -2669,11 +2644,6 @@ QString VoiceTracker::GetCutName(int line,RDCut **cut)
   if(!logline->cutName().isEmpty()) {
     *cut=new RDCut(logline->cutName());
     pathname=RDCut::pathName(logline->cutName());
-    /*
-    if(!QFile::exists(pathname)) {
-      return QString();
-    }
-    */
   }
   return pathname;
 }
@@ -2706,7 +2676,6 @@ void VoiceTracker::DragTrack(int trackno,int xdiff)
   if(edit_wave_name[trackno].isEmpty()) {
     return;
   }
-//  if((!track_changed)&&(trackno>0)&&(track_line!=0)) {
   if((!track_changed)&&(trackno>0)) {
     PushSegues();
   }
@@ -2733,7 +2702,6 @@ void VoiceTracker::DragTrack(int trackno,int xdiff)
 	  edit_logline[0]->
 	    setSegueStartPoint(edit_logline[0]->segueStartPoint()+tdiff,
 			       RDLogLine::LogPointer);
-//	  edit_logline[0]->setSegueGain(0);
 	  edit_logline[0]->
 	    setAverageSegueLength(edit_logline[0]->
 				  segueStartPoint()-
@@ -2759,7 +2727,6 @@ void VoiceTracker::DragTrack(int trackno,int xdiff)
 	    edit_logline[0]->
 	      setSegueStartPoint(edit_logline[0]->segueStartPoint()+tdiff,
 				 RDLogLine::LogPointer);
-//	    edit_logline[0]->setSegueGain(0);
 	    edit_logline[0]->
 	      setAverageSegueLength(edit_logline[0]->
 				    segueStartPoint()-
@@ -2782,7 +2749,6 @@ void VoiceTracker::DragTrack(int trackno,int xdiff)
 	  edit_logline[1]->
 	    setSegueStartPoint(edit_logline[1]->segueStartPoint()+tdiff,
 			       RDLogLine::LogPointer);
-	//  edit_logline[1]->setSegueGain(0);
 	  edit_logline[1]->
 	    setAverageSegueLength(edit_logline[1]->
 				  segueStartPoint()-
@@ -3986,7 +3952,6 @@ bool VoiceTracker::InitTrack()
   edit_sliding=false;
   for(unsigned i=0;i<3;i++) {
     edit_segue_start_point[i]=-1;
-//    edit_segue_gain[i]=-1;
   }
   edit_logline[1]->
     setFadeupPoint(edit_logline[1]->startPoint(),RDLogLine::LogPointer);
@@ -4040,11 +4005,6 @@ bool VoiceTracker::IsTrack(int line,bool *offset)
   if(track_log_event->logLine(line-1)==NULL) {
     return false;
   }
-/*  if((track_log_event->logLine(line-1)->type()==RDLogLine::Track)||
-     (track_log_event->logLine(line-1)->source()==RDLogLine::Tracker)) {
-    *offset=true;
-    return true;
-  }*/
   return false;
 }
 

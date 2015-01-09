@@ -176,8 +176,6 @@ void PostCounter::UpdateDisplay()
   QPixmap pix(sizeHint().width(),sizeHint().height());
   QPainter *p=new QPainter(&pix);
   p->fillRect(0,0,sizeHint().width(),sizeHint().height(),color);
-  //  p->eraseRect(0,0,sizeHint().width(),sizeHint().height());
-  //p->setPen(color1);
   p->setPen(QColor(system_button_text_color));
   p->setFont(post_small_font);
   p->drawText((sizeHint().width()-p->

@@ -147,13 +147,11 @@ EditLog::EditLog(QString logname,vector<RDLogLine> *clipboard,
   //
   edit_logname_label=new QLabel(logname,this,"edit_logname_label");
   edit_logname_label->setBackgroundColor(QColor(system_mid_color));
-//  edit_logname_label->setBackgroundColor(QColor(lightGray));
   edit_logname_label->setAlignment(AlignLeft|AlignVCenter);
   edit_logname_label->setFont(title_font);
   edit_logname_label_label=new QLabel(tr("Log Name:"),
 				      this,"edit_logname_label_label");
   edit_logname_label_label->setBackgroundColor(QColor(system_mid_color));
-//  edit_logname_label_label->setBackgroundColor(QColor(lightGray));
   edit_logname_label_label->setFont(label_font);
   edit_logname_label_label->setAlignment(AlignRight|AlignVCenter);
 
@@ -162,13 +160,11 @@ EditLog::EditLog(QString logname,vector<RDLogLine> *clipboard,
   //
   edit_track_label=new QLabel(this,"edit_track_label");
   edit_track_label->setBackgroundColor(QColor(system_mid_color));
-//  edit_track_label->setBackgroundColor(QColor(lightGray));
   edit_track_label->setAlignment(AlignLeft|AlignVCenter);
   edit_track_label->setFont(title_font);
   edit_track_label_label=new QLabel(tr("Tracks:"),
 				      this,"edit_track_label_label");
   edit_track_label_label->setBackgroundColor(QColor(system_mid_color));
-//  edit_track_label_label->setBackgroundColor(QColor(lightGray));
   edit_track_label_label->setFont(label_font);
   edit_track_label_label->setAlignment(AlignRight|AlignVCenter);
 
@@ -179,13 +175,11 @@ EditLog::EditLog(QString logname,vector<RDLogLine> *clipboard,
 		  edit_log->originDatetime().toString("MM/dd/yyyy - hh:mm:ss"),
 	          this,"edit_origin_label");
   edit_origin_label->setBackgroundColor(QColor(system_mid_color));
-//  edit_origin_label->setBackgroundColor(QColor(lightGray));
   edit_origin_label->setAlignment(AlignLeft|AlignVCenter);
   edit_origin_label->setFont(title_font);
   edit_origin_label_label=new QLabel(tr("Origin:"),
 				     this,"edit_origin_label_label");
   edit_origin_label_label->setBackgroundColor(QColor(system_mid_color));
-//  edit_origin_label_label->setBackgroundColor(QColor(lightGray));
   edit_origin_label_label->setFont(label_font);
   edit_origin_label_label->setAlignment(AlignRight|AlignVCenter);
 
@@ -322,7 +316,6 @@ EditLog::EditLog(QString logname,vector<RDLogLine> *clipboard,
   edit_log_list->setAllColumnsShowFocus(true);
   edit_log_list->setSelectionMode(QListView::Extended);
   edit_log_list->setItemMargin(5);
-  //edit_log_list->setSorting(-1);
   edit_log_list->addColumn("");
   edit_log_list->setColumnAlignment(0,Qt::AlignHCenter);
   edit_log_list->addColumn(tr("TIME"));
@@ -371,7 +364,6 @@ EditLog::EditLog(QString logname,vector<RDLogLine> *clipboard,
   //
   edit_cart_button=new QPushButton(this,"edit_cart_button");
   edit_cart_button->setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
-//  edit_cart_button->setPalette(QPalette(backgroundColor(),QColor(lightGray)));
   edit_cart_button->setFont(button_font);
   edit_cart_button->setText(tr("Insert\nCart"));
   connect(edit_cart_button,SIGNAL(clicked()),
@@ -382,8 +374,6 @@ EditLog::EditLog(QString logname,vector<RDLogLine> *clipboard,
   //
   edit_marker_button=new QPushButton(this,"edit_marker_button");
   edit_marker_button->setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
-//  edit_marker_button->
-//    setPalette(QPalette(backgroundColor(),QColor(lightGray)));
   edit_marker_button->setFont(button_font);
   edit_marker_button->setText(tr("Insert\nMeta"));
   connect(edit_marker_button,SIGNAL(clicked()),
@@ -394,7 +384,6 @@ EditLog::EditLog(QString logname,vector<RDLogLine> *clipboard,
   //
   edit_edit_button=new QPushButton(this,"edit_edit_button");
   edit_edit_button->setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
-//  edit_edit_button->setPalette(QPalette(backgroundColor(),QColor(lightGray)));
   edit_edit_button->setFont(button_font);
   edit_edit_button->setText(tr("Edit"));
   connect(edit_edit_button,SIGNAL(clicked()),this,SLOT(editButtonData()));
@@ -404,8 +393,6 @@ EditLog::EditLog(QString logname,vector<RDLogLine> *clipboard,
   //
   edit_delete_button=new QPushButton(this,"edit_delete_button");
   edit_delete_button->setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
-//  edit_delete_button->
-//    setPalette(QPalette(backgroundColor(),QColor(lightGray)));
   edit_delete_button->setFont(button_font);
   edit_delete_button->setText(tr("Delete"));
   connect(edit_delete_button,SIGNAL(clicked()),this,SLOT(deleteButtonData()));
@@ -416,7 +403,6 @@ EditLog::EditLog(QString logname,vector<RDLogLine> *clipboard,
   edit_up_button=new RDTransportButton(RDTransportButton::Up,
 				      this,"delete_button");
   edit_up_button->setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
-//  edit_up_button->setPalette(QPalette(backgroundColor(),QColor(lightGray)));
   connect(edit_up_button,SIGNAL(clicked()),this,SLOT(upButtonData()));
 
   //
@@ -425,7 +411,6 @@ EditLog::EditLog(QString logname,vector<RDLogLine> *clipboard,
   edit_down_button=new RDTransportButton(RDTransportButton::Down,
 					this,"delete_button");
   edit_down_button->setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
-//  edit_down_button->setPalette(QPalette(backgroundColor(),QColor(lightGray)));
   connect(edit_down_button,SIGNAL(clicked()),this,SLOT(downButtonData()));
 
   //
@@ -433,7 +418,6 @@ EditLog::EditLog(QString logname,vector<RDLogLine> *clipboard,
   //
   edit_cut_button=new QPushButton(this,"edit_cut_button");
   edit_cut_button->setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
-//  edit_cut_button->setPalette(QPalette(backgroundColor(),QColor(lightGray)));
   edit_cut_button->setFont(button_font);
   edit_cut_button->setText(tr("Cut"));
   connect(edit_cut_button,SIGNAL(clicked()),this,SLOT(cutButtonData()));
@@ -443,7 +427,6 @@ EditLog::EditLog(QString logname,vector<RDLogLine> *clipboard,
   //
   edit_copy_button=new QPushButton(this,"edit_copy_button");
   edit_copy_button->setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
-//  edit_copy_button->setPalette(QPalette(backgroundColor(),QColor(lightGray)));
   edit_copy_button->setFont(button_font);
   edit_copy_button->setText(tr("Copy"));
   connect(edit_copy_button,SIGNAL(clicked()),this,SLOT(copyButtonData()));
@@ -453,7 +436,6 @@ EditLog::EditLog(QString logname,vector<RDLogLine> *clipboard,
   //
   edit_paste_button=new QPushButton(this,"edit_paste_button");
   edit_paste_button->setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
-//  edit_paste_button->setPalette(QPalette(backgroundColor(),QColor(lightGray)));
   edit_paste_button->setFont(button_font);
   edit_paste_button->setText(tr("Paste"));
   connect(edit_paste_button,SIGNAL(clicked()),this,SLOT(pasteButtonData()));
@@ -491,10 +473,6 @@ EditLog::EditLog(QString logname,vector<RDLogLine> *clipboard,
   edit_player=
     new RDSimplePlayer(rdcae,rdripc,edit_output_card,edit_output_port,
 		       edit_start_macro,edit_end_macro,this,"edit_player");
-//  edit_player->playButton()->
-//    setPalette(QPalette(backgroundColor(),QColor(lightGray)));
-//  edit_player->stopButton()->
-//    setPalette(QPalette(backgroundColor(),QColor(lightGray)));
   edit_player->stopButton()->setOnColor(red);
 #endif  // WIN32
 
@@ -998,7 +976,6 @@ void EditLog::pasteButtonData()
   for(unsigned i=0;i<edit_clipboard->size();i++) {
     edit_clipboard->at(i).setId(edit_log_event->logLine(line+i)->id());
     *edit_log_event->logLine(line+i)=edit_clipboard->at(i);
-    //    edit_log_event->logLine(line+i)->clearExternalData();
     edit_log_event->logLine(line+i)->setSource(RDLogLine::Manual);
     edit_clipboard->at(i).clearExternalData();
   }
@@ -1283,10 +1260,8 @@ void EditLog::paintEvent(QPaintEvent *e)
   QColor system_mid_color = colorGroup().mid();
   QPainter *p=new QPainter(this);
   p->fillRect(60,8,size().width()-120,24,QColor(system_mid_color));
-//  p->fillRect(60,8,size().width()-120,24,QColor(lightGray));
   p->fillRect(9,size().height()-130,size().width()-20,60,
 	      QColor(system_mid_color));
-//	      QColor(lightGray));
 
   p->setPen(black);
   p->setBrush(black);

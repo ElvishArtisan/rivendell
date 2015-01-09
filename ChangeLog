@@ -14709,3 +14709,6 @@
 	* Fixed a bug in 'rdlogmanager/edit_eventline.cpp' that caused
 	an invalid event line to be created when the dialog was closed
 	by means of the 'X' button [GitHub issue #000053].
+2015-01-09 Fred Gleason <fredg@paravelsystems.com>
+	* Applied patch by Daniel Bair to add support for dark themes
+	[GitHub pull request #000046].
