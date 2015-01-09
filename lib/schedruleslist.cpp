@@ -37,12 +37,7 @@ SchedRulesList::SchedRulesList(QString clockname)
       NOT_AFTER varchar(10),\
       OR_AFTER varchar(10),\
       OR_AFTER_II varchar(10))",(const char*)clockname.replace(" ","_")); 
-
   q=new RDSqlQuery(sql);
-  if(!q->isActive()) {
-    printf("SQL: %s\n",(const char *)sql);
-    printf("SQL Error: %s\n",(const char *)q->lastError().databaseText());
-  }
   delete q;
 
   sql=QString().sprintf("select CODE,DESCRIPTION from SCHED_CODES order by `CODE` asc"); 

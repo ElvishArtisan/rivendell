@@ -14701,3 +14701,7 @@
 2015-01-07 Fred Gleason <fredg@paravelsystems.com>
 	* Added an 'RDReport::MrMaster' value to the 'RDReport::ExportFilter
 	enumeration in 'lib/rdreport.cpp' and 'lib/rdreport.h'.
+2015-01-09 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'rdlogmanager/editschedrules.cpp' and
+	'rdlogmanager/editschedrules.h' that caused scheduling rule data
+	to be corrupt if the rules list was resorted [GitHub issue #000054].

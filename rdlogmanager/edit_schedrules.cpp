@@ -4,8 +4,6 @@
 //
 //   Stefan Gabriel <stg@st-gabriel.de>
 //
-//   
-//
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
 //   published by the Free Software Foundation.
@@ -31,21 +29,21 @@
 
 #include <rd.h>
 #include <rddb.h>
+#include <rdlistviewitem.h>
+
 #include <edit_schedrules.h>
 #include <edit_schedcoderules.h>
 #include <schedruleslist.h>
 #include <list_clocks.h>
 
 
-EditSchedRules::EditSchedRules(QString clock,unsigned *artistsep,SchedRulesList *schedruleslist,bool *rules_modified,QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+EditSchedRules::EditSchedRules(QString clock,unsigned *artistsep,SchedRulesList *schedruleslist,bool *rules_modified,QWidget *parent)
+  : QDialog(parent,"",true)
 {
   edit_artistsep=artistsep;
   edit_rules_modified=rules_modified;
   sched_rules_list = schedruleslist;
   clockname = clock;
-
-  
 
   //
   // Fix the Window Size
@@ -113,7 +111,7 @@ EditSchedRules::EditSchedRules(QString clock,unsigned *artistsep,SchedRulesList 
 
 
   // List
-  list_schedCodes_view=new QListView(this,"list_schedCodes_view");
+  list_schedCodes_view=new RDListView(this,"list_schedCodes_view");
   list_schedCodes_view->setGeometry(10,60,size().width()-20,size().height()-140);
   list_schedCodes_view->setAllColumnsShowFocus(true);
   list_schedCodes_view->addColumn(tr("CODE"));
@@ -156,12 +154,12 @@ QSizePolicy EditSchedRules::sizePolicy() const
 void EditSchedRules::Load()
 {
   QString str;
-  QListViewItem *item;
+  RDListViewItem *item;
 
   list_schedCodes_view->clear();
-  for (int i=0; i<sched_rules_list->getNumberOfItems(); i++)  
-    {
-    item=new QListViewItem(list_schedCodes_view);
+  for (int i=0; i<sched_rules_list->getNumberOfItems(); i++) {
+    item=new RDListViewItem(list_schedCodes_view);
+    item->setId(i);
     item->setText(0,sched_rules_list->getItemSchedCode(i));
     str=QString().sprintf("%d",sched_rules_list->getItemMaxRow(i));
     item->setText(1,str);
@@ -171,31 +169,28 @@ void EditSchedRules::Load()
     item->setText(4,sched_rules_list->getItemOrAfter(i));
     item->setText(5,sched_rules_list->getItemOrAfterII(i));
     item->setText(6,sched_rules_list->getItemDescription(i));
-    }
+  }
 }
 
 
 void EditSchedRules::Close()
 {
-  QListViewItem *item;
-  int number_of_items;
-
-  number_of_items = list_schedCodes_view->childCount();
+  RDListViewItem *item=(RDListViewItem *)list_schedCodes_view->firstChild();
 
   *edit_rules_modified=true;
 
-  for (int i=0; i< number_of_items; i++)  
-   {
-   item=list_schedCodes_view->firstChild();
-   sched_rules_list->insertItem(i,item->text(1).toInt(),item->text(2).toInt(),item->text(3),item->text(4),item->text(5));
-   list_schedCodes_view->takeItem(item);
-   }
+  while(item!=NULL) {
+    sched_rules_list->
+      insertItem(item->id(),item->text(1).toInt(),item->text(2).toInt(),
+		 item->text(3),item->text(4),item->text(5));
+    item=(RDListViewItem *)item->nextSibling();
+  }
 }
 
 
 void EditSchedRules::editData()
 {
-  QListViewItem *item=list_schedCodes_view->selectedItem();
+  RDListViewItem *item=(RDListViewItem *)list_schedCodes_view->selectedItem();
   if(item==NULL) {
     return;
   }
@@ -213,7 +208,7 @@ void EditSchedRules::importData()
 {
   QString clockname = "";
   QString str;
-  QListViewItem *item;
+  RDListViewItem *item;
   QString sql;
   RDSqlQuery *q;
 
@@ -229,7 +224,8 @@ void EditSchedRules::importData()
   list_schedCodes_view->clear();
   for (int i=0; i<import_list->getNumberOfItems(); i++)  
     {
-    item=new QListViewItem(list_schedCodes_view);
+    item=new RDListViewItem(list_schedCodes_view);
+    item->setId(i);
     item->setText(0,import_list->getItemSchedCode(i));
     str=QString().sprintf("%d",import_list->getItemMaxRow(i));
     item->setText(1,str);

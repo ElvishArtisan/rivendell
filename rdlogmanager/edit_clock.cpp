@@ -402,7 +402,9 @@ void EditClock::schedRules()
   QString clock_name = edit_clock->name();
   bool rules_modified = edit_clock->getRulesModified();
 
-  EditSchedRules *dialog=new EditSchedRules(clock_name,&edit_artistsep,sched_rules_list,&rules_modified,this,"dialog");
+  EditSchedRules *dialog=
+    new EditSchedRules(clock_name,&edit_artistsep,sched_rules_list,
+		       &rules_modified,this);
   dialog->exec();
   
   if (edit_clock->getArtistSep()!=edit_artistsep)
