@@ -186,7 +186,6 @@ AudioCart::AudioCart(AudioControls *controls,RDCart *cart,QString *path,
   QPainter *p=new QPainter(pix);
   QFontMetrics *m=new QFontMetrics(button_font);
   p->fillRect(0,0,80,50,palette().color(QPalette::Active,QColorGroup::Button));
-  //p->setPen(QColor(color1));
   p->setPen(QColor(system_button_text_color));
   p->setFont(button_font);
   p->drawText((80-m->width(tr("Cut Info")))/2,20,tr("Cut Info"));
@@ -231,7 +230,6 @@ AudioCart::AudioCart(AudioControls *controls,RDCart *cart,QString *path,
   p=new QPainter(pix);
   m=new QFontMetrics(button_font);
   p->fillRect(0,0,80,50,palette().color(QPalette::Active,QColorGroup::Button));
-  //p->setPen(QColor(color1));
   p->setPen(QColor(system_button_text_color));
   p->setFont(button_font);
   p->drawText((80-m->width(tr("Import")))/2,20,tr("Import"));
@@ -293,7 +291,6 @@ void AudioCart::addCutData()
   rdcart_cut_list->clearSelection();
   RDListViewItem *item=new RDListViewItem(rdcart_cut_list);
   item->setText(11,next_name);
-  //  UpdateCutCount();
   RefreshLine(item);
   rdcart_cut_list->setSelected(item,true);
   rdcart_cut_list->ensureItemVisible(item);

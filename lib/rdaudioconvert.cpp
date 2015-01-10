@@ -519,7 +519,7 @@ RDAudioConvert::ErrorCode RDAudioConvert::Stage1Vorbis(const QString &dstfile,
 #endif  // HAVE_VORBIS
 }
 
-#define STAGE1BUFSIZE 2500
+#define STAGE1BUFSIZE 16384
 
 RDAudioConvert::ErrorCode RDAudioConvert::Stage1Mpeg(const QString &dstfile,
 						     RDWaveFile *wave)

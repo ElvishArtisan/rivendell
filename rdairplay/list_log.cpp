@@ -94,13 +94,11 @@ ListLog::ListLog(LogPlay *log,int id,bool allow_pause,
   QColor system_mid_color = colorGroup().mid();
   list_from_color=
     QPalette(QColor(BUTTON_FROM_BACKGROUND_COLOR),QColor(system_mid_color));
- //   QPalette(QColor(BUTTON_FROM_BACKGROUND_COLOR),QColor(lightGray));
   list_from_color.
     setColor(QColorGroup::ButtonText,QColor(BUTTON_FROM_TEXT_COLOR));
 
   list_to_color=
     QPalette(QColor(BUTTON_TO_BACKGROUND_COLOR),QColor(system_mid_color));
-  //  QPalette(QColor(BUTTON_TO_BACKGROUND_COLOR),QColor(lightGray));
   list_to_color.
     setColor(QColorGroup::ButtonText,QColor(BUTTON_TO_TEXT_COLOR));
   list_list_to_color=palette();
@@ -129,32 +127,25 @@ ListLog::ListLog(LogPlay *log,int id,bool allow_pause,
 			BUTTON_LOG_ACTIVE_BACKGROUND_COLOR);
   list_scroll_color[0].setColor(QPalette::Active,QColorGroup::Background,
 			system_mid_color);
-//			lightGray);
   list_scroll_color[0].setColor(QPalette::Inactive,QColorGroup::ButtonText,
 			BUTTON_LOG_ACTIVE_TEXT_COLOR);
   list_scroll_color[0].setColor(QPalette::Inactive,QColorGroup::Button,
 			BUTTON_LOG_ACTIVE_BACKGROUND_COLOR);
   list_scroll_color[0].setColor(QPalette::Inactive,QColorGroup::Background,
 			system_mid_color);
-//			lightGray);
-//  list_scroll_color[1]=QPalette(backgroundColor(),QColor(system_button_text_color));
   list_scroll_color[1]=palette();
   list_scroll_color[1].setColor(QPalette::Active,QColorGroup::ButtonText,
                        system_button_text_color);
   list_scroll_color[1].setColor(QPalette::Active,QColorGroup::Button,
-//                       backgroundColor());
                        system_button_color);
   list_scroll_color[1].setColor(QPalette::Active,QColorGroup::Background,
 			system_mid_color);
-//                       lightGray);
   list_scroll_color[1].setColor(QPalette::Inactive,QColorGroup::ButtonText,
                        system_button_text_color);
   list_scroll_color[1].setColor(QPalette::Inactive,QColorGroup::Button,
-//                       backgroundColor());
                        system_button_color);
   list_scroll_color[1].setColor(QPalette::Inactive,QColorGroup::Background,
 			system_mid_color);
-//                       lightGray);
 
   //
   // Hour Selector
@@ -243,7 +234,6 @@ ListLog::ListLog(LogPlay *log,int id,bool allow_pause,
   label->setFont(label_font);
   label->setAlignment(AlignCenter);  
   label->setBackgroundColor(QColor(system_mid_color));
-//  label->setBackgroundColor(QColor(lightGray));
   if(!rdairplay_conf->showCounters()) {
     label->hide();
   }
@@ -258,7 +248,6 @@ ListLog::ListLog(LogPlay *log,int id,bool allow_pause,
   list_stoptime_label->setFont(label_font);
   list_stoptime_label->setAlignment(AlignRight|AlignVCenter);  
   list_stoptime_label->setBackgroundColor(QColor(system_mid_color));
-//  list_stoptime_label->setBackgroundColor(QColor(lightGray));
   if(!rdairplay_conf->showCounters()) {
     list_stoptime_edit->hide();
     list_stoptime_label->hide();
@@ -274,7 +263,6 @@ ListLog::ListLog(LogPlay *log,int id,bool allow_pause,
   list_endtime_label->setFont(label_font);
   list_endtime_label->setAlignment(AlignRight|AlignVCenter);  
   list_endtime_label->setBackgroundColor(QColor(system_mid_color));
-//  list_endtime_label->setBackgroundColor(QColor(lightGray));
   if(!rdairplay_conf->showCounters()) {
     list_endtime_edit->hide();
     list_endtime_label->hide();
@@ -287,7 +275,6 @@ ListLog::ListLog(LogPlay *log,int id,bool allow_pause,
   list_take_button->setGeometry(10,sizeHint().height()-55,80,50);
   list_take_button->setFont(font);
   list_take_button->setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
-//  list_take_button->setPalette(QPalette(backgroundColor(),QColor(lightGray)));
   list_take_button->setText(tr("Select"));
   list_take_button->setFocusPolicy(QWidget::NoFocus);
   connect(list_take_button,SIGNAL(clicked()),this,SLOT(takeButtonData()));
@@ -300,7 +287,6 @@ ListLog::ListLog(LogPlay *log,int id,bool allow_pause,
   list_head_button->setGeometry(10,sizeHint().height()-113,80,50);
   list_head_button->setFont(font);
   list_head_button->setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
-//  list_head_button->setPalette(QPalette(backgroundColor(),QColor(lightGray)));
   list_head_button->setText(tr("Audition\nHead"));
   list_head_button->setFocusPolicy(QWidget::NoFocus);
   connect(list_head_button,SIGNAL(clicked()),this,SLOT(headButtonData()));
@@ -315,7 +301,6 @@ ListLog::ListLog(LogPlay *log,int id,bool allow_pause,
   list_tail_button->setGeometry(90,sizeHint().height()-113,80,50);
   list_tail_button->setFont(font);
   list_tail_button->setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
-//  list_tail_button->setPalette(QPalette(backgroundColor(),QColor(lightGray)));
   list_tail_button->setText(tr("Audition\nTail"));
   list_tail_button->setFocusPolicy(QWidget::NoFocus);
   connect(list_tail_button,SIGNAL(clicked()),this,SLOT(tailButtonData()));
@@ -330,7 +315,6 @@ ListLog::ListLog(LogPlay *log,int id,bool allow_pause,
   list_play_button->setGeometry(10,sizeHint().height()-55,80,50);
   list_play_button->setFont(font);
   list_play_button->setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
-//  list_play_button->setPalette(QPalette(backgroundColor(),QColor(lightGray)));
   list_play_button->setText(tr("Start"));
   list_play_button->setDisabled(true);
   list_play_button->setFocusPolicy(QWidget::NoFocus);
@@ -343,8 +327,6 @@ ListLog::ListLog(LogPlay *log,int id,bool allow_pause,
   list_next_button->setGeometry(90,sizeHint().height()-55,80,50);
   list_next_button->setFont(font);
   list_next_button->setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
-//  list_next_button->setPalette(QPalette(backgroundColor(),
-//					  QColor(lightGray)));
   list_next_button->setText(tr("Make\nNext"));
   list_next_button->setDisabled(true);
   list_next_button->setFocusPolicy(QWidget::NoFocus);
@@ -357,8 +339,6 @@ ListLog::ListLog(LogPlay *log,int id,bool allow_pause,
   list_modify_button->setGeometry(170,sizeHint().height()-55,80,50);
   list_modify_button->setFont(font);
   list_modify_button->setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
-//  list_modify_button->setPalette(QPalette(backgroundColor(),
-//					  QColor(lightGray)));
   list_modify_button->setText(tr("Modify"));
   list_modify_button->setDisabled(true);
   list_modify_button->setFocusPolicy(QWidget::NoFocus);
@@ -371,8 +351,6 @@ ListLog::ListLog(LogPlay *log,int id,bool allow_pause,
   list_scroll_button->setGeometry(250,sizeHint().height()-55,80,50);
   list_scroll_button->setFont(font);
   list_scroll_button->setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
-//  list_scroll_button->setPalette(QPalette(backgroundColor(),
-//					  QColor(lightGray)));
   list_scroll_button->setText(tr("Scroll"));
   list_scroll_button->setFocusPolicy(QWidget::NoFocus);
   connect(list_scroll_button,SIGNAL(clicked()),this,SLOT(scrollButtonData()));
@@ -385,8 +363,6 @@ ListLog::ListLog(LogPlay *log,int id,bool allow_pause,
   list_refresh_button->setGeometry(330,sizeHint().height()-55,80,50);
   list_refresh_button->setFont(font);
   list_refresh_button->setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
-//  list_refresh_button->
-//    setPalette(QPalette(backgroundColor(),QColor(lightGray)));
   list_refresh_button->setText(tr("Refresh\nLog"));
   list_refresh_button->setDisabled(true);
   list_refresh_button->setFocusPolicy(QWidget::NoFocus);
@@ -401,7 +377,6 @@ ListLog::ListLog(LogPlay *log,int id,bool allow_pause,
 				80,50);
   list_load_button->setFont(font);
   list_load_button->setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
-//  list_load_button->setPalette(QPalette(backgroundColor(),QColor(lightGray)));
   list_load_button->setText(tr("Select\nLog"));
   list_load_button->setFocusPolicy(QWidget::NoFocus);
   connect(list_load_button,SIGNAL(clicked()),this,SLOT(loadButtonData()));
@@ -434,7 +409,6 @@ ListLog::ListLog(LogPlay *log,int id,bool allow_pause,
 	  this,SLOT(auditionStoppedData(int)));
 
   setBackgroundColor(QColor(system_mid_color));
-//  setBackgroundColor(QColor(lightGray));
 
   RefreshList();
   UpdateTimes();

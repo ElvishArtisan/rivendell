@@ -143,8 +143,6 @@ void StopCounter::UpdateTime()
 	  
 	  p->fillRect(0,0,sizeHint().width(),sizeHint().height(),
 		      backgroundColor());
-	  //p->eraseRect(0,0,sizeHint().width(),sizeHint().height());
-          //p->setPen(QColor(color1));
           p->setPen(QColor(system_button_text_color));
 	  p->setFont(stop_text_font);
 	  p->drawText((sizeHint().width()-p->fontMetrics().width(stop_text))/2,22,

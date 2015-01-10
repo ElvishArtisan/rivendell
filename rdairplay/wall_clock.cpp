@@ -44,7 +44,6 @@ WallClock::WallClock(QWidget *parent,const char *name)
   time_mode=RDAirPlayConf::TwentyFourHour;
   previous_time_mode = RDAirPlayConf::TwentyFourHour;
   show_date=true;
-  //  setFlashColor(QColor(BUTTON_TIME_SYNC_LOST_COLOR));
   check_sync=true;
   flash_state=false;
 
@@ -117,7 +116,6 @@ void WallClock::tickClock()
   if(check_sync) {
     if(RDTimeSynced()!=synced) {
       synced=RDTimeSynced();
-      //setFlashingEnabled(!synced);
     }
   }
   current_time=QTime::currentTime().addMSecs(time_offset);
@@ -160,9 +158,6 @@ void WallClock::tickClock()
     p.fillRect(0,0,width(),height(),backgroundColor());
     p.setPen(QColor(system_button_text_color));
   }
-  //p.eraseRect(0,0,width(),height());
-//  p.setPen(color1);
-//  p.setBrush(color1);
   p.setFont(label_font);
   p.drawText((sizeHint().width()-p.fontMetrics().width(date))/2,22,date);
   p.setFont(time_font);
@@ -177,7 +172,6 @@ void WallClock::flashButton(bool state)
   printf("flashButton()\n");
   flash_state=state;
   tickClock();
-  //  RDPushButton::flashButton(state);
 }
 
 

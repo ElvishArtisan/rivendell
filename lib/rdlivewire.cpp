@@ -45,6 +45,8 @@ RDLiveWire::RDLiveWire(unsigned id,QObject *parent,const char *name)
   live_ptr=0;
   live_connected=false;
   live_load_ver_count=0;
+  live_gpi_initialized=false;
+  live_gpo_initialized=false;
 
   //
   // Connection Socket
@@ -466,6 +468,9 @@ void RDLiveWire::watchdogData()
 void RDLiveWire::watchdogTimeoutData()
 {
   live_watchdog_state=true;
+  live_connected=false;
+  live_gpi_initialized=false;
+  live_gpo_initialized=false;
   int holdoff=GetHoldoff();
   emit watchdogStateChanged(live_id,QString().sprintf(
 	 "Connection to LiveWire node at %s:%d lost, attempting reconnect, holdoff = %d mS",
@@ -584,8 +589,9 @@ void RDLiveWire::ReadVersion(const QString &cmd)
 	    connect(live_gpi_timers.back(),SIGNAL(timeout()),mapper,SLOT(map()));
 	  }	
 	}
-	if(live_gpis>0) {
+	if(!live_gpi_initialized) {
 	  live_socket->writeBlock("ADD GPI\r\n",9);
+	  live_gpi_initialized=true;
 	}
       }
       if(tag=="NGPO") {
@@ -605,9 +611,10 @@ void RDLiveWire::ReadVersion(const QString &cmd)
 	    connect(live_gpo_timers.back(),SIGNAL(timeout()),mapper,SLOT(map()));
 	  }
 	}
-	if(live_gpos>0) {
+	if(!live_gpo_initialized) {
 	  live_socket->writeBlock("CFG GPO\r\n",9);
 	  live_socket->writeBlock("ADD GPO\r\n",9);
+	  live_gpo_initialized=true;
 	}
       }
     }

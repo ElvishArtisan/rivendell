@@ -14673,3 +14673,42 @@
 2014-11-30 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed missing 'EVENTS.HAVE_CODE2' field in the DB creation code
 	in 'rdadmin/createdb.cpp'.
+2014-12-01 Fred Gleason <fredg@paravelsystems.com>
+	* Adjust value of 'STAGE1BUFSIZE' to '16384' in
+	'lib/rdaudioconvert.cpp'.
+2014-12-01 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'utils/rdimport/rdimport.cpp' that failed to
+	apply automatic segues correctly when the audio store was not
+	locally accessible.
+	* Fixed a bug in 'utils/rdimport/rdimport.cpp' that caused the
+	value of the '--segue-level' options to be wrong by a factor of
+	100.
+	* Refactored the 'RDCut::autoSegue()' method to fetch trim data
+	via 'RDTrimAudio'.
+	* Added language in the rdimport(1) man page to resolve ambiguity
+	regarding how the --segue-level location is determined when
+	normalization is specified.
+2014-12-08 Fred Gleason <fredg@paravelsystems.com>
+	* Added an RLM for Live 365 in 'rlm/rlm_live365.c'.
+2014-12-08 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'rlm/rlm_live365.c' where the 'album' field was
+	not escaped correctly.
+2015-01-02 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'lib/rdlivewire.cpp' and 'lib/rdlivewire.h' that
+	caused GPIO event reporting to fail after a watchdog reset.
+2015-01-02 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.10.2int00.
+2015-01-07 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'RDReport::MrMaster' value to the 'RDReport::ExportFilter
+	enumeration in 'lib/rdreport.cpp' and 'lib/rdreport.h'.
+2015-01-09 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'rdlogmanager/editschedrules.cpp' and
+	'rdlogmanager/editschedrules.h' that caused scheduling rule data
+	to be corrupt if the rules list was resorted [GitHub issue #000054].
+2015-01-09 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'rdlogmanager/edit_eventline.cpp' that caused
+	an invalid event line to be created when the dialog was closed
+	by means of the 'X' button [GitHub issue #000053].
+2015-01-09 Fred Gleason <fredg@paravelsystems.com>
+	* Applied patch by Daniel Bair to add support for dark themes
+	[GitHub pull request #000046].

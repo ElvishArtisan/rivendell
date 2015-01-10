@@ -169,8 +169,6 @@ RDEditAudio::RDEditAudio(RDCart *cart,QString cut_name,RDCae *cae,RDUser *user,
   edit_play_cursor_button=new RDTransportButton(RDTransportButton::PlayBetween,
 					this,"edit_play_cursor_button");
   edit_play_cursor_button->setGeometry(20,425,65,45);
-//  edit_play_cursor_button->
-//    setPalette(QPalette(backgroundColor(),QColor(EDITAUDIO_HIGHLIGHT_COLOR)));
   edit_play_cursor_button->setEnabled((edit_card>=0)&&(edit_port>=0));
   connect(edit_play_cursor_button,SIGNAL(clicked()),
 	  this,SLOT(playCursorData()));
@@ -178,8 +176,6 @@ RDEditAudio::RDEditAudio(RDCart *cart,QString cut_name,RDCae *cae,RDUser *user,
   edit_play_start_button=new RDTransportButton(RDTransportButton::Play,
 					this,"edit_play_start_button");
   edit_play_start_button->setGeometry(90,425,65,45);
-//  edit_play_start_button->
-//    setPalette(QPalette(backgroundColor(),QColor(EDITAUDIO_HIGHLIGHT_COLOR)));
   edit_play_start_button->setEnabled((edit_card>=0)&&(edit_port>=0));
   connect(edit_play_start_button,SIGNAL(clicked()),
 	  this,SLOT(playStartData()));
@@ -188,8 +184,6 @@ RDEditAudio::RDEditAudio(RDCart *cart,QString cut_name,RDCae *cae,RDUser *user,
 					 this,"edit_pause_button");
   edit_pause_button->setGeometry(160,425,65,45);
   edit_pause_button->setOnColor(QColor(red));
-//  edit_pause_button->
-//    setPalette(QPalette(backgroundColor(),QColor(EDITAUDIO_HIGHLIGHT_COLOR)));
   edit_pause_button->setEnabled((edit_card>=0)&&(edit_port>=0));
   connect(edit_pause_button,SIGNAL(clicked()),this,SLOT(pauseData()));
 
@@ -198,8 +192,6 @@ RDEditAudio::RDEditAudio(RDCart *cart,QString cut_name,RDCae *cae,RDUser *user,
   edit_stop_button->setGeometry(230,425,65,45);
   edit_stop_button->on();
   edit_stop_button->setOnColor(QColor(red));
-//  edit_stop_button->
-//    setPalette(QPalette(backgroundColor(),QColor(EDITAUDIO_HIGHLIGHT_COLOR)));
   edit_stop_button->setEnabled((edit_card>=0)&&(edit_port>=0));
   connect(edit_stop_button,SIGNAL(clicked()),this,SLOT(stopData()));
 
@@ -207,8 +199,6 @@ RDEditAudio::RDEditAudio(RDCart *cart,QString cut_name,RDCae *cae,RDUser *user,
 					this,"edit_loop_button");
   edit_loop_button->setGeometry(300,425,65,45);
   edit_loop_button->off();
-//  edit_loop_button->
-//    setPalette(QPalette(backgroundColor(),QColor(EDITAUDIO_HIGHLIGHT_COLOR)));
   edit_loop_button->setEnabled((edit_card>=0)&&(edit_port>=0));
   connect(edit_loop_button,SIGNAL(clicked()),this,SLOT(loopData()));
 
@@ -2230,7 +2220,6 @@ bool RDEditAudio::SaveMarkers()
   //
   // Save Settings
   //
-  //  edit_cut->setPlayGain(10*edit_gain_control->value());
   edit_cut->setStartPoint((int)((double)(edit_cursors[RDEditAudio::Start])*
 				1152000.0/
 				(double)edit_sample_rate));
