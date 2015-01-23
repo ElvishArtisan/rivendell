@@ -14712,3 +14712,6 @@
 2015-01-09 Fred Gleason <fredg@paravelsystems.com>
 	* Applied patch by Daniel Bair to add support for dark themes
 	[GitHub pull request #000046].
+2015-01-23 Fred Gleason <fredg@paravelsystems.com>
+	* Reversed the GPI logic polarity for the Broadcast Tools GPI-16 in
+	'ripcd/btgpi16.cpp' and 'ripcd/btgpi16.h'.
