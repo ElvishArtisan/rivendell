@@ -14717,3 +14717,8 @@
 	'ripcd/btgpi16.cpp' and 'ripcd/btgpi16.h'.
 2015-01-24 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 2.10.2int01.
+2015-01-25 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'RDMatrix::ModemLines' to the 'RDMatrix::Type' enumeration
+	in 'lib/rdmatrix.cpp' and 'lib/rdmatrix.h'.
+	* Added a driver for using tty modem lines for GPIO in
+	'ripcd/modemlines.cpp' and 'ripcd/modemlines.h'.

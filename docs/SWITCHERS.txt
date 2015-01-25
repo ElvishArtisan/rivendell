@@ -22,6 +22,7 @@ LiveWire Multicast GPIO
 Local Audio Adapter
 Logitek vGuest
 Quartz Electronics Type 1 Routing Protocol
+Serial Port Modem Control Lines
 Sierra Automated Systems 32000 Audio Router
 Sierra Automated Systems 64000 Audio Router
 Sierra Automated Systems Universal Serial Interface (USI)
@@ -508,6 +509,32 @@ Control can done either by means of an RS-232C connection or by means of
 TCP/IP to TCP port 23.
 
 
+----------------------------------------------------------------------------
+SERIAL PORT MODEM CONTROL LINES
+
+Driver Name: Serial Port Modem Control Lines
+
+Supported RML Commands:
+  GPO Set ('GO')
+
+GENERAL NOTES:
+This driver enables GPIO via the modem control lines on an RS-232C serial
+device.  The lines map as follows:
+
+ GPI  SIGNAL
+ -------------------------------
+  1   Data Set Ready      (DSR)
+  2   Clear To Send       (CTS)
+  3   Carrier Detect      (CI)
+  4   Ring Indicator      (RI)
+
+ GPO  SIGNAL
+ -------------------------------
+  1   Data Terminal Ready (DTR)
+  2   Ready To Send       (RTS)
+
+
+----------------------------------------------------------------------------
 SIERRA AUTOMATED SYSTEMS 32000 AUDIO ROUTER
 
 Driver Name: SAS 32000
