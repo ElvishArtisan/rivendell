@@ -14722,3 +14722,6 @@
 	in 'lib/rdmatrix.cpp' and 'lib/rdmatrix.h'.
 	* Added a driver for using tty modem lines for GPIO in
 	'ripcd/modemlines.cpp' and 'ripcd/modemlines.h'.
+2015-01-26 Fred Gleason <fredg@paravelsystems.com>
+	* Reverted GPI logic reversal for the Broadcast Tools GPI-16 in
+	'ripcd/btgpi16.cpp' and 'ripcd/btgpi16.h'.

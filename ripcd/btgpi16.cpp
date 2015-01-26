@@ -201,7 +201,7 @@ void BtGpi16::processStatus()
 	  case 32:
 	  case 34:
 	  case 36:
-	    if(buffer[i]=='1') {
+	    if(buffer[i]=='0') {
 	      gpi=(bt_istate-6)/2;
 	      if(bt_gpi_state[gpi]&&(!bt_gpi_mask[gpi])) {
 		emit gpiChanged(bt_matrix,gpi,false);
@@ -209,7 +209,7 @@ void BtGpi16::processStatus()
 	      }
 	      bt_istate++;
 	    }
-	    if(buffer[i]=='0') {
+	    if(buffer[i]=='1') {
 	      gpi=(bt_istate-6)/2;
 	      if((!bt_gpi_state[gpi])&&(!bt_gpi_mask[gpi])) {
 		emit gpiChanged(bt_matrix,gpi,true);
