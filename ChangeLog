@@ -14725,3 +14725,5 @@
 2015-01-26 Fred Gleason <fredg@paravelsystems.com>
 	* Reverted GPI logic reversal for the Broadcast Tools GPI-16 in
 	'ripcd/btgpi16.cpp' and 'ripcd/btgpi16.h'.
+2015-01-26 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.10.2int02.
