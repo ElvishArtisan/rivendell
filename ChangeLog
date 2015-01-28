@@ -14725,5 +14725,11 @@
 2015-01-26 Fred Gleason <fredg@paravelsystems.com>
 	* Reverted GPI logic reversal for the Broadcast Tools GPI-16 in
 	'ripcd/btgpi16.cpp' and 'ripcd/btgpi16.h'.
-2015-01-26 Fred Gleason <fredg@paravelsystems.com>
+2015-01-27 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 2.10.2int02.
+2015-01-28 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'rdlibrary/list_reports.cpp' that broke the
+	'Cart Data Dump (CSV)' report when the library was filtered by
+	group.
+	* Added 'CONDUCTOR', 'SONG_ID' and 'SCHED_CODE' fields to the
+	'Cart Data Dump (CSV)' report in 'rdlibrary/list_reports.cpp'.

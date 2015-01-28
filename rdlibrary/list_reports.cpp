@@ -22,6 +22,7 @@
 
 #include <qdialog.h>
 #include <qpushbutton.h>
+#include <qstringlist.h>
 
 #include <rddb.h>
 #include <rdconf.h>
@@ -688,17 +689,11 @@ void ListReports::GenerateCartDumpCsv(QString *report,bool prepend_names)
   QString sql;
   RDSqlQuery *q;
   QString schedcode="";
+  QStringList f0;
+  unsigned code_quan=0;
 
   if(list_schedcode!=tr("ALL")) {
     schedcode=list_schedcode;
-  }
-
-  //
-  // Prepend Field Names
-  //
-  if(prepend_names) {
-    *report="CART,CUT,GROUP_NAME,TITLE,ARTIST,ALBUM,YEAR,ISRC,ISCI,LABEL,";
-    *report+="CLIENT,AGENCY,PUBLISHER,COMPOSER,USER_DEFINED,LENGTH\n";
   }
 
   //
@@ -707,21 +702,52 @@ void ListReports::GenerateCartDumpCsv(QString *report,bool prepend_names)
   if(list_type_filter.isEmpty()) {
     return;
   }
-  sql="select CUTS.CUT_NAME,CART.GROUP_NAME,CART.TITLE,CART.ARTIST,CART.ALBUM,\
-       CART.YEAR,CUTS.ISRC,CUTS.ISCI,CART.LABEL,CART.CLIENT,CART.AGENCY,\
-       CART.PUBLISHER,CART.COMPOSER,CART.USER_DEFINED,CUTS.LENGTH from CART \
-       join CUTS on CART.NUMBER=CUTS.CART_NUMBER";
+  sql=QString("select CUTS.CUT_NAME,CART.GROUP_NAME,CART.TITLE,CART.ARTIST,")+
+    "CART.ALBUM,CART.YEAR,CUTS.ISRC,CUTS.ISCI,CART.LABEL,CART.CLIENT,"+
+    "CART.AGENCY,CART.PUBLISHER,CART.COMPOSER,CART.CONDUCTOR,CART.SONG_ID,"+
+    "CART.USER_DEFINED,CUTS.LENGTH,SCHED_CODES from CART "+
+    "join CUTS on CART.NUMBER=CUTS.CART_NUMBER";
   if(list_group==QString("ALL")) {
     sql+=QString(" where ")+
       RDAllCartSearchText(list_filter,schedcode,lib_user->name(),true)+" && "+
       list_type_filter+" order by CUTS.CUT_NAME";
   }
   else {
-    sql=QString(" where ")+
+    sql+=QString(" where ")+
       RDCartSearchText(list_filter,list_group,schedcode,true)+" && "+
       list_type_filter+" order by CUTS.CUT_NAME";
   }
   q=new RDSqlQuery(sql);
+
+  //
+  // Get max number of scheduler codes
+  //
+  while(q->next()) {
+    f0=f0.split(" ",q->value(17).toString());
+    if(f0.size()>code_quan) {
+      code_quan=f0.size();
+    }
+  }
+  code_quan--;
+
+  //
+  // Prepend Field Names
+  //
+  if(prepend_names) {
+    *report="CART,CUT,GROUP_NAME,TITLE,ARTIST,ALBUM,YEAR,ISRC,ISCI,LABEL,";
+    *report+="CLIENT,AGENCY,PUBLISHER,COMPOSER,CONDUCTOR,SONG_ID,USER_DEFINED,";
+    *report+="LENGTH,";
+    for(unsigned i=0;i<code_quan;i++) {
+      *report+=QString().sprintf("SCHED_CODE%u,",i+1);
+    } 
+    *report=report->left(report->length()-1);
+    *report+="\n";
+  }
+
+  //
+  // Generate Rows
+  //
+  q->seek(-1);
   while(q->next()) {
     *report+=QString().sprintf("%u,",RDCut::cartNumber(q->value(0).toString()));
     *report+=QString().sprintf("%u,",RDCut::cutNumber(q->value(0).toString()));
@@ -729,7 +755,7 @@ void ListReports::GenerateCartDumpCsv(QString *report,bool prepend_names)
     *report+="\""+q->value(2).toString()+"\",";
     *report+="\""+q->value(3).toString()+"\",";
     *report+="\""+q->value(4).toString()+"\",";
-    *report+="\""+q->value(5).toString()+"\",";
+    *report+="\""+q->value(5).toDate().toString("yyyy")+"\",";
     *report+="\""+q->value(6).toString()+"\",";
     *report+="\""+q->value(7).toString()+"\",";
     *report+="\""+q->value(8).toString()+"\",";
@@ -738,7 +764,20 @@ void ListReports::GenerateCartDumpCsv(QString *report,bool prepend_names)
     *report+="\""+q->value(11).toString()+"\",";
     *report+="\""+q->value(12).toString()+"\",";
     *report+="\""+q->value(13).toString()+"\",";
-    *report+="\""+RDGetTimeLength(q->value(14).toInt(),false,false)+"\",";
+    *report+="\""+q->value(14).toString()+"\",";
+    *report+="\""+q->value(15).toString()+"\",";
+    *report+="\""+
+      RDGetTimeLength(q->value(16).toInt(),false,false).stripWhiteSpace()+"\",";
+    f0=f0.split(" ",q->value(17).toString());
+    for(unsigned i=0;i<code_quan;i++) {
+      if((f0.size()>i)&&(f0[i]!=".")) {
+	*report+="\""+f0[i].stripWhiteSpace()+"\",";
+      }
+      else {
+	*report+="\"\",";
+      }
+    }
+    *report=report->left(report->length()-1);
     *report+="\n";
   }
 }
