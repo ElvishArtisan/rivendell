@@ -14736,3 +14736,5 @@
 2015-01-29 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in 'lib/rdidvalidator.cpp' that caused an empty
 	string to be evaluated as invalid.
+2015-01-29 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.10.2int03.
