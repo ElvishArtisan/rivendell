@@ -30,7 +30,6 @@ RDIdValidator::RDIdValidator(QObject *parent)
   banned_chars.push_back('\\');
   banned_chars.push_back('.');
   banned_chars.push_back(96);    // Apostrophe Quote
-  banned_chars.push_back(0);   // NULL
 }
 
 

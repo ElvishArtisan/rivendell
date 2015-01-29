@@ -14733,3 +14733,6 @@
 	group.
 	* Added 'CONDUCTOR', 'SONG_ID' and 'SCHED_CODE' fields to the
 	'Cart Data Dump (CSV)' report in 'rdlibrary/list_reports.cpp'.
+2015-01-29 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'lib/rdidvalidator.cpp' that caused an empty
+	string to be evaluated as invalid.
