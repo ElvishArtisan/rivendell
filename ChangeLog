@@ -14743,3 +14743,5 @@
 	'utils/rdmarkerset.cpp' and 'utils/rdmarkerset.h'.
 	* Created a man page for rdmarkerset(8).
 	* Added a reference to rdmarkerset(8) in the rdimport(1) man page.
+2015-02-06 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.10.2int04.
