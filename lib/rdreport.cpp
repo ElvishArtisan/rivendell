@@ -642,6 +642,10 @@ bool RDReport::generateReport(const QDate &startdate,const QDate &enddate,
     ret=ExportMusicPlayout(startdate,enddate,mixname);
     break;
 
+  case RDReport::SpinCount:
+    ret=ExportSpinCount(startdate,enddate,mixname);
+    break;
+
   case RDReport::MusicSummary:
     ret=ExportMusicSummary(startdate,enddate,mixname);
     break;
@@ -718,6 +722,9 @@ QString RDReport::filterText(RDReport::ExportFilter filter)
   case RDReport::NaturalLog:
     return QObject::tr("NaturalLog Reconciliation");
 
+  case RDReport::SpinCount:
+    return QObject::tr("Spin Count");
+
   case RDReport::WideOrbit:
     return QObject::tr("WideOrbit Traffic Reconciliation");
 
@@ -761,6 +768,7 @@ bool RDReport::multipleDaysAllowed(RDReport::ExportFilter filter)
   case RDReport::MusicClassical:
   case RDReport::MusicPlayout:
   case RDReport::NaturalLog:
+  case RDReport::SpinCount:
   case RDReport::WideOrbit:
     return false;
 
@@ -796,6 +804,7 @@ bool RDReport::multipleMonthsAllowed(RDReport::ExportFilter filter)
   case RDReport::MusicSummary:
   case RDReport::NprSoundExchange:
   case RDReport::SoundExchange:
+  case RDReport::SpinCount:
   case RDReport::Technical:
     return true;
   }

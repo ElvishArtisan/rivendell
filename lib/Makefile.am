@@ -59,6 +59,7 @@ dist_librd_la_SOURCES = dbversion.h\
                         export_nprsoundex.cpp\
                         export_radiotraffic.cpp\
                         export_soundex.cpp\
+                        export_spincount.cpp\
                         export_technical.cpp\
                         export_textlog.cpp\
                         html_gpl2.cpp\

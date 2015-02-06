@@ -37,7 +37,8 @@ class RDReport
 		     SoundExchange=4,RadioTraffic=5,VisualTraffic=6,
 		     CounterPoint=7,Music1=8,MusicSummary=9,WideOrbit=10,
 		     NprSoundExchange=11,MusicPlayout=12,NaturalLog=13,
-		     MusicClassical=14,MrMaster=15,LastFilter=16};
+		     MusicClassical=14,MrMaster=15,SpinCount=16,
+		     LastFilter=17};
   enum ExportOs {Linux=0,Windows=1};
   enum ExportType {Generic=0,Traffic=1,Music=2};
   enum StationType {TypeOther=0,TypeAm=1,TypeFm=2,TypeLast=3};
@@ -114,6 +115,8 @@ class RDReport
 			  const QString &mixtable);
   bool ExportMusicSummary(const QDate &startdate,const QDate &enddate,
 			  const QString &mixtable);
+  bool ExportSpinCount(const QDate &startdate,const QDate &enddate,
+		       const QString &mixtable);
   QString StringField(const QString &str,const QString &null_text="") const;
   void SetRow(const QString &param,const QString &value) const;
   void SetRow(const QString &param,int value) const;

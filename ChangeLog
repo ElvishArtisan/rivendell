@@ -14747,3 +14747,6 @@
 	* Incremented the package version to 2.10.2int04.
 2015-02-06 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a typo in the rdmarkerset(8) man page.
+2015-02-06 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'Spin Count' report in 'lib/export_spincount.cpp',
+	'lib/rdreport.cpp' and 'lib/rdreport.h'.

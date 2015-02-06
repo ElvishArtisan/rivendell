@@ -37,6 +37,7 @@ SOURCES += export_musicplayout.cpp
 SOURCES += export_musicsummary.cpp
 SOURCES += export_nprsoundex.cpp
 SOURCES += export_radiotraffic.cpp
+SOURCES += export_spincount.cpp
 SOURCES += export_soundex.cpp
 SOURCES += export_technical.cpp
 SOURCES += export_textlog.cpp
