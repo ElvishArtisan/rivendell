@@ -55,6 +55,8 @@ MainObject::MainObject(QObject *parent,const char *name)
   set_all_groups=false;
   set_auto_trim=1;
   set_verbose=false;
+  set_auto_trim=1;
+  set_auto_segue=1;
 
   //
   // Read Command Options
@@ -82,6 +84,14 @@ MainObject::MainObject(QObject *parent,const char *name)
       }
       cmd->setProcessed(i,true);
     }    
+    if(cmd->key(i)=="--auto-segue") {
+      set_auto_segue=cmd->value(i).toInt(&ok);
+      if((!ok)||(set_auto_segue>0)) {
+	fprintf(stderr,
+	       "rdmarkerset: invalid level value specified for --auto-segue\n");
+      }
+      cmd->setProcessed(i,true);
+    }    
     if(cmd->key(i)=="--verbose") {
       set_verbose=true;
       cmd->setProcessed(i,true);
@@ -101,6 +111,10 @@ MainObject::MainObject(QObject *parent,const char *name)
   }
   if(set_all_groups&&(set_group_names.size()>0)) {
     fprintf(stderr,"rdmarkerset: the --all-groups and --group=<group> options are mutually exclusive\n");
+    exit(256);
+  }
+  if((set_auto_trim<0)&&(set_auto_segue<0)&&(set_auto_trim>set_auto_segue)) {
+    fprintf(stderr,"rdmarkerset: segue cannot be placed after the end marker\n");
     exit(256);
   }
 
@@ -218,9 +232,23 @@ void MainObject::ProcessGroup(const QString &group_name)
 		  q->value(1).toString(),q->value(2).toString());
     }
     else {
-      ClearAutoTrim(RDCut::cartNumber(q->value(0).toString()),
-		    RDCut::cutNumber(q->value(0).toString()),
-		    q->value(1).toString(),q->value(2).toString());
+      if(set_auto_trim==0) {
+	ClearAutoTrim(RDCut::cartNumber(q->value(0).toString()),
+		      RDCut::cutNumber(q->value(0).toString()),
+		      q->value(1).toString(),q->value(2).toString());
+      }
+    }
+    if(set_auto_segue<0) {
+      SetAutoSegue(RDCut::cartNumber(q->value(0).toString()),
+		  RDCut::cutNumber(q->value(0).toString()),
+		  q->value(1).toString(),q->value(2).toString());
+    }
+    else {
+      if(set_auto_segue==0) {
+	ClearAutoSegue(RDCut::cartNumber(q->value(0).toString()),
+		       RDCut::cutNumber(q->value(0).toString()),
+		       q->value(1).toString(),q->value(2).toString());
+      }
     }
   }
   delete q;
@@ -330,6 +358,55 @@ void MainObject::ClearAutoTrim(unsigned cartnum,int cutnum,const QString &title,
   delete info;
   delete cut;
   delete cart;
+}
+
+
+void MainObject::SetAutoSegue(unsigned cartnum,int cutnum,const QString &title,
+			      const QString &desc)
+{
+  RDTrimAudio::ErrorCode err;
+  RDCart *cart=new RDCart(cartnum);
+  RDCut *cut=new RDCut(cartnum,cutnum);
+  RDTrimAudio *trimmer=new RDTrimAudio(set_station,set_config,this);
+  trimmer->setCartNumber(cartnum);
+  trimmer->setCutNumber(cutnum);
+  trimmer->setTrimLevel(100*set_auto_segue);
+  if((err=trimmer->runTrim(set_user->name(),set_user->password()))==
+     RDTrimAudio::ErrorOk) {
+    int end=trimmer->endPoint();
+    if(end<cut->endPoint()) {
+      cut->setSegueStartPoint(end);
+      cut->setSegueEndPoint(cut->endPoint());
+      Print(QString().sprintf("  setting segue-start for %06u / %03d [",
+			      cartnum,cutnum)+title+" / "+desc+
+	    QString().sprintf("] at %d dBFS",set_auto_segue));
+    }
+    else {
+      Print(QString().sprintf("  segue-start for %06u / %03d [",
+			      cartnum,cutnum)+title+" / "+desc+
+	    "] cannot be set beyond end marker");
+    }
+  }
+  else {
+    if(err!=RDTrimAudio::ErrorNoAudio) {
+      fprintf(stderr,"rdmarkerset: cart %06u, cut %d trimmer error [%s]\n",
+	      cartnum,cutnum,(const char *)RDTrimAudio::errorText(err));
+      exit(256);
+    }
+  }
+  delete trimmer;
+  delete cut;
+  delete cart;
+}
+
+
+void MainObject::ClearAutoSegue(unsigned cartnum,int cutnum,
+				const QString &title,const QString &desc)
+{
+  RDCut *cut=new RDCut(cartnum,cutnum);
+  cut->setSegueStartPoint(-1);
+  cut->setSegueEndPoint(-1);
+  delete cut;
 }
 
 

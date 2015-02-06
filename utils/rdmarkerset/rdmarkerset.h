@@ -37,7 +37,7 @@
 #include <rdcmd_switch.h>
 #include <rdstation.h>
 
-#define RDMARKERSET_USAGE "[options]\nThe following options are recognized:\n\n--group=<group>\n     Apply marker changes to the group specified by <group>.  This\n     option may be given multiple times.\n\n--all-groups\n     Apply marker changes to ALL groups.\n\n--auto-trim=<level>\n     Auto-trim the specified cuts to the level indicated by <level> dBFS.\n     Specifying a '0' for <level> will remove auto-trim --i.e. move the\n     Start and End markers to the extreme start and end of the audio data.\n\n--verbose\n     Print messages to stdout describing progress.\n\n"
+#define RDMARKERSET_USAGE "[options]\nThe following options are recognized:\n\n--group=<group>\n     Apply marker changes to the group specified by <group>.  This\n     option may be given multiple times.\n\n--all-groups\n     Apply marker changes to ALL groups.\n\n--auto-trim=<level>\n     Auto-trim the specified cuts to the level indicated by <level> dBFS.\n     Specifying a '0' for <level> will remove auto-trim --i.e. move the\n     Start and End markers to the extreme start and end of the audio data.\n     Default action is to leave the Start and End markers unaltered.\n\n--auto-segue=<level>\n     Set the Segue Start marker on the specified cuts to the level indicated\n     by <level> dBFS and the Segue End marker to the position of the End\n     marker.  Specifying a '0' for <level> will remove the segue markers.\n     Default action is to leave the segue markers unaltered.\n\n--verbose\n     Print messages to stdout describing progress.\n\n"
 
 class MainObject : public QObject
 {
@@ -54,10 +54,15 @@ class MainObject : public QObject
 		   const QString &desc);
   void ClearAutoTrim(unsigned cartnum,int cutnum,const QString &title,
 		     const QString &desc);
+  void SetAutoSegue(unsigned cartnum,int cutnum,const QString &title,
+		    const QString &desc);
+  void ClearAutoSegue(unsigned cartnum,int cutnum,const QString &title,
+		      const QString &desc);
   void Print(const QString &msg);
   bool set_all_groups;
   std::vector<QString> set_group_names;
   int set_auto_trim;
+  int set_auto_segue;
   bool set_verbose;
   RDStation *set_station;
   RDRipc *set_ripc;

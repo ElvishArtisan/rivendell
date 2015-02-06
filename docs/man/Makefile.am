@@ -19,7 +19,8 @@
 ##
 ## Use automake to process this into a Makefile.in
 
-man_MANS = rdimport.1
+man_MANS = rdimport.1\
+           rdmarkerset.8
 EXTRA_DIST = $(man_MANS)
 
 CLEANFILES = *~
