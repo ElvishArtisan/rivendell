@@ -2,9 +2,7 @@
 //
 // Edit Rivendell Log Grid
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: edit_grid.cpp,v 1.12.8.2 2014/01/21 21:28:34 cvs Exp $
+//   (C) Copyright 2002-2015 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -42,8 +40,8 @@
 #include <edit_clock.h>
 
 
-EditGrid::EditGrid(QString servicename,QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+EditGrid::EditGrid(QString servicename,QWidget *parent)
+  : QDialog(parent,"",true)
 {
   QString sql;
   QString str;
@@ -75,15 +73,15 @@ EditGrid::EditGrid(QString servicename,QWidget *parent,const char *name)
   // Hour Buttons
   //
   QLabel *label;
-  QSignalMapper *mapper=new QSignalMapper(this,"hour_button_mapper");
+  QSignalMapper *mapper=new QSignalMapper(this);
   connect(mapper,SIGNAL(mapped(int)),this,SLOT(hourButtonData(int)));
   for(int i=0;i<5;i++) {
-    label=new QLabel(QDate::longDayName(i+1),this,"day_label");
+    label=new QLabel(QDate::longDayName(i+1),this);
     label->setGeometry(20,14+75*i,90,16);
     label->setFont(bold_font);
     label->setAlignment(AlignCenter);
     for(int j=0;j<24;j++) {
-      edit_hour_button[i][j]=new RDPushButton(this,"hour_button");
+      edit_hour_button[i][j]=new RDPushButton(this);
       edit_hour_button[i][j]->setGeometry(10+42*j,30+75*i,42,40);
       edit_hour_button[i][j]->setFont(button_font);
       edit_hour_button[i][j]->setId(24*i+j);
@@ -95,12 +93,12 @@ EditGrid::EditGrid(QString servicename,QWidget *parent,const char *name)
     }
   }
   for(int i=5;i<7;i++) {
-    label=new QLabel(QDate::longDayName(i+1),this,"day_label");
+    label=new QLabel(QDate::longDayName(i+1),this);
     label->setGeometry(20,44+75*i,90,16);
     label->setFont(bold_font);
     label->setAlignment(AlignCenter);
     for(int j=0;j<24;j++) {
-      edit_hour_button[i][j]=new RDPushButton(this,"hour_button");
+      edit_hour_button[i][j]=new RDPushButton(this);
       edit_hour_button[i][j]->setGeometry(10+42*j,60+75*i,42,40);
       edit_hour_button[i][j]->setFont(button_font);
       edit_hour_button[i][j]->setId(24*i+j);
@@ -115,7 +113,7 @@ EditGrid::EditGrid(QString servicename,QWidget *parent,const char *name)
   //
   // Right Button Menu
   //
-  edit_right_menu=new QPopupMenu(this,"edit_right_menu");
+  edit_right_menu=new QPopupMenu(this);
   connect(edit_right_menu,SIGNAL(aboutToShow()),this,SLOT(aboutToShowData()));
   edit_right_menu->
     insertItem(tr("Edit Clock"),this,SLOT(editClockData()),0,0);
@@ -125,7 +123,7 @@ EditGrid::EditGrid(QString servicename,QWidget *parent,const char *name)
   //
   // Change All Button
   //
-  QPushButton *all_button=new QPushButton(this,"change_all_button");
+  QPushButton *all_button=new QPushButton(this);
   all_button->setGeometry(10,sizeHint().height()-60,80,50);
   all_button->setDefault(false);
   all_button->setFont(bold_font);
@@ -135,7 +133,7 @@ EditGrid::EditGrid(QString servicename,QWidget *parent,const char *name)
   //
   //  Close Button
   //
-  QPushButton *button=new QPushButton(this,"close_button");
+  QPushButton *button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,80,50);
   button->setDefault(true);
   button->setFont(bold_font);
@@ -169,7 +167,7 @@ void EditGrid::hourButtonData(int id)
   if(clockname.isEmpty()) {
     clockname=current_clockname;
   }
-  ListClocks *listclocks=new ListClocks(&clockname,this,"listclocks");
+  ListClocks *listclocks=new ListClocks(&clockname,this);
   if(listclocks->exec()<0) {
     delete listclocks;
     return;
@@ -189,7 +187,7 @@ void EditGrid::hourButtonData(int id)
 void EditGrid::allHourButtonData()
 {
   QString clockname="";
-  ListClocks *listclocks=new ListClocks(&clockname,this,"listclocks");
+  ListClocks *listclocks=new ListClocks(&clockname,this);
   if(listclocks->exec()<0) {
     delete listclocks;
     return;
@@ -247,7 +245,7 @@ void EditGrid::editClockData()
   if(clockname.isEmpty()) {
     return;
   }
-  EditClock *dialog=new EditClock(clockname,false,&new_clocks,this,"dialog");
+  EditClock *dialog=new EditClock(clockname,false,&new_clocks,this);
   if(dialog->exec()<0) {
     delete dialog;
     return;

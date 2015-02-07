@@ -100,8 +100,8 @@ void SigHandler(int signo)
 #endif  // WIN32
 
 
-MainWidget::MainWidget(QWidget *parent,const char *name)
-  :QWidget(parent,name)
+MainWidget::MainWidget(QWidget *parent)
+  :QWidget(parent)
 {
   unsigned schema=0;
 
@@ -158,7 +158,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   // CAE Connection
   //
 #ifndef WIN32
-  rdcae=new RDCae(rdstation_conf,log_config,parent,name);
+  rdcae=new RDCae(rdstation_conf,log_config,parent);
   rdcae->connectHost();
 #endif  // WIN32
 
@@ -202,11 +202,11 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // Title Label
   //
-  QLabel *label=new QLabel(tr("RDLogManager"),this,"title_label");
+  QLabel *label=new QLabel(tr("RDLogManager"),this);
   label->setGeometry(0,5,sizeHint().width(),32);
   label->setFont(label_font);
   label->setAlignment(AlignHCenter);
-  label=new QLabel(tr("Select an operation:"),this,"instruction_label");
+  label=new QLabel(tr("Select an operation:"),this);
   label->setGeometry(0,25,sizeHint().width(),16);
   label->setFont(day_font);
   label->setAlignment(AlignCenter);
@@ -214,7 +214,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   //  Edit Events Button
   //
-  log_events_button=new QPushButton(this,"events_button");
+  log_events_button=new QPushButton(this);
   log_events_button->setGeometry(10,45,sizeHint().width()-20,50);
   log_events_button->setFont(button_font);
   log_events_button->setText(tr("Edit &Events"));
@@ -223,7 +223,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   //  Edit Clocks Button
   //
-  log_clocks_button=new QPushButton(this,"clocks_button");
+  log_clocks_button=new QPushButton(this);
   log_clocks_button->setGeometry(10,95,sizeHint().width()-20,50);
   log_clocks_button->setFont(button_font);
   log_clocks_button->setText(tr("Edit C&locks"));
@@ -232,7 +232,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   //  Edit Grids Button
   //
-  log_grids_button=new QPushButton(this,"grid_button");
+  log_grids_button=new QPushButton(this);
   log_grids_button->setGeometry(10,145,sizeHint().width()-20,50);
   log_grids_button->setFont(button_font);
   log_grids_button->setText(tr("Edit G&rids"));
@@ -241,7 +241,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   //  Generate Logs Button
   //
-  log_logs_button=new QPushButton(this,"logs_button");
+  log_logs_button=new QPushButton(this);
   log_logs_button->setGeometry(10,195,sizeHint().width()-20,50);
   log_logs_button->setFont(button_font);
   log_logs_button->setText(tr("&Generate Logs"));
@@ -250,7 +250,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   //  Generate Reports Button
   //
-  log_reports_button=new QPushButton(this,"reports_button");
+  log_reports_button=new QPushButton(this);
   log_reports_button->setGeometry(10,245,sizeHint().width()-20,50);
   log_reports_button->setFont(button_font);
   log_reports_button->setText(tr("Manage &Reports"));
@@ -259,7 +259,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   //  Close Button
   //
-  log_close_button=new QPushButton(this,"close_button");
+  log_close_button=new QPushButton(this);
   log_close_button->setGeometry(10,sizeHint().height()-60,
 				sizeHint().width()-20,50);
   log_close_button->setFont(button_font);
@@ -312,7 +312,7 @@ void MainWidget::userData()
 
 void MainWidget::eventsData()
 {
-  ListEvents *events=new ListEvents(NULL,this,"list_events");
+  ListEvents *events=new ListEvents(NULL,this);
   events->exec();
   delete events;
 }
@@ -320,7 +320,7 @@ void MainWidget::eventsData()
 
 void MainWidget::clocksData()
 {
-  ListClocks *clocks=new ListClocks(NULL,this,"list_clocks");
+  ListClocks *clocks=new ListClocks(NULL,this);
   clocks->exec();
   delete clocks;
 }
@@ -328,7 +328,7 @@ void MainWidget::clocksData()
 
 void MainWidget::gridsData()
 {
-  ListGrids *grids=new ListGrids(this,"list_grids");
+  ListGrids *grids=new ListGrids(this);
   grids->exec();
   delete grids;
 }
@@ -336,7 +336,7 @@ void MainWidget::gridsData()
 
 void MainWidget::generateData()
 {
-  GenerateLog *generatelog=new GenerateLog(this,"list_grids");
+  GenerateLog *generatelog=new GenerateLog(this);
   generatelog->exec();
   delete generatelog;
 }
@@ -344,7 +344,7 @@ void MainWidget::generateData()
 
 void MainWidget::reportsData()
 {
-  ListSvcs *recs=new ListSvcs(this,"list_recs");
+  ListSvcs *recs=new ListSvcs(this);
   recs->exec();
   delete recs;
 }
@@ -396,7 +396,7 @@ int gui_main(int argc,char *argv[])
   //
   // Start Event Loop
   //
-  MainWidget *w=new MainWidget(NULL,"main");
+  MainWidget *w=new MainWidget();
   a.setMainWidget(w);
   w->setGeometry(QRect(QPoint(w->geometry().x(),w->geometry().y()),
 		       w->sizeHint()));

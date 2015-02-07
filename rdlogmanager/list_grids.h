@@ -37,7 +37,7 @@ class ListGrids : public QDialog
 {
  Q_OBJECT
  public:
-  ListGrids(QWidget *parent=0,const char *name=0);
+  ListGrids(QWidget *parent=0);
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
 

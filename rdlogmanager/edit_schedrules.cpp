@@ -212,7 +212,7 @@ void EditSchedRules::importData()
   QString sql;
   RDSqlQuery *q;
 
-  ListClocks *listclocks=new ListClocks(&clockname,this,"listclocks");
+  ListClocks *listclocks=new ListClocks(&clockname,this);
   listclocks->setCaption(tr("Import Rules from Clock"));
   if(listclocks->exec()<0) {
     delete listclocks;

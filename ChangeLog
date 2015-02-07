@@ -14750,3 +14750,5 @@
 2015-02-06 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'Spin Count' report in 'lib/export_spincount.cpp',
 	'lib/rdreport.cpp' and 'lib/rdreport.h'.
+2015-02-06 Fred Gleason <fredg@paravelsystems.com>
+	* Cleaned up Qt object calls in 'rdlogmanager/'.

@@ -2,9 +2,7 @@
 //
 // List Rivendell Log Clocks
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: list_clocks.cpp,v 1.28.8.2 2014/01/10 19:32:54 cvs Exp $
+//   (C) Copyright 2002-2015 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -40,8 +38,8 @@
 #include <rename_item.h>
 
 
-ListClocks::ListClocks(QString *clockname,QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+ListClocks::ListClocks(QString *clockname,QWidget *parent)
+  : QDialog(parent,"",true)
 {
   QStringList services_list;
   QString str1=tr("Log Clocks - User: ");
@@ -66,7 +64,7 @@ ListClocks::ListClocks(QString *clockname,QWidget *parent,const char *name)
   //
   // Event Filter
   //
-  edit_filter_box=new QComboBox(this,"edit_filter_box");
+  edit_filter_box=new QComboBox(this);
   edit_filter_label=new QLabel(edit_filter_box,tr("Filter:"),this);
   edit_filter_label->setFont(bold_font);
   edit_filter_label->setAlignment(AlignRight|AlignVCenter);
@@ -76,7 +74,7 @@ ListClocks::ListClocks(QString *clockname,QWidget *parent,const char *name)
   //
   // Clocks List
   //
-  edit_clocks_list=new QListView(this,"edit_clocks_list");
+  edit_clocks_list=new QListView(this);
   edit_clocks_list->setAllColumnsShowFocus(true);
   edit_clocks_list->setItemMargin(5);
   edit_clocks_list->addColumn(tr("Name"));
@@ -250,8 +248,7 @@ void ListClocks::addData()
   sql=RDCreateClockTableSql(RDClock::tableName(clockname));
   q=new RDSqlQuery(sql);
   delete q;
-  EditClock *clock_dialog=new EditClock(clockname,true,&new_clocks,
-					this,"clock_dialog");
+  EditClock *clock_dialog=new EditClock(clockname,true,&new_clocks,this);
   if(clock_dialog->exec()<0) {
     clockname_esc=clockname;
     clockname_esc.replace(" ","_");
@@ -305,8 +302,7 @@ void ListClocks::editData()
   if(item==NULL) {
     return;
   }
-  EditClock *clock_dialog=
-    new EditClock(item->text(0),false,&new_clocks,this,"clock_dialog");
+  EditClock *clock_dialog=new EditClock(item->text(0),false,&new_clocks,this);
   if(clock_dialog->exec()<0) {
     delete clock_dialog;
     return;

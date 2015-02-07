@@ -38,8 +38,8 @@
 
 
 EditEventLine::EditEventLine(RDEventLine *eventline,RDClock *clock,int line,
-			     QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+			     QWidget *parent)
+  : QDialog(parent,"",true)
 {
   setCaption(tr("Edit Event Assignment"));
   edit_eventline=eventline;
@@ -97,12 +97,11 @@ EditEventLine::EditEventLine(RDEventLine *eventline,RDClock *clock,int line,
   //
   // Event Name
   //
-  edit_eventname_edit=new QLineEdit(this,"edit_eventname_edit");
+  edit_eventname_edit=new QLineEdit(this);
   edit_eventname_edit->setGeometry(65,12,sizeHint().width()-140,18);
   edit_eventname_edit->setMaxLength(64);
   edit_eventname_edit->setValidator(validator);
-  QLabel *label=new QLabel(edit_eventname_edit,tr("Event:"),
-			   this,"edit_eventname_label");
+  QLabel *label=new QLabel(edit_eventname_edit,tr("Event:"),this);
   label->setGeometry(10,12,50,18);
   label->setFont(bold_font);
   label->setAlignment(AlignRight|AlignVCenter);
@@ -110,7 +109,7 @@ EditEventLine::EditEventLine(RDEventLine *eventline,RDClock *clock,int line,
   //
   // Event Select Button
   //
-  QPushButton *button=new QPushButton(this,"select_button");
+  QPushButton *button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-60,7,50,30);
   button->setFont(font);
   button->setText(tr("Select"));
@@ -119,13 +118,12 @@ EditEventLine::EditEventLine(RDEventLine *eventline,RDClock *clock,int line,
   //
   // Start Time
   //
-  edit_starttime_edit=new RDTimeEdit(this,"edit_starttime_edit");
+  edit_starttime_edit=new RDTimeEdit(this);
   edit_starttime_edit->setGeometry(150,40,70,20);
   edit_starttime_edit->
     setDisplay(RDTimeEdit::Minutes|RDTimeEdit::Seconds|RDTimeEdit::Tenths);
   edit_starttime_edit->setFont(font);
-  label=new QLabel(edit_starttime_edit,tr("Start Time:"),
-			   this,"edit_starttime_label");
+  label=new QLabel(edit_starttime_edit,tr("Start Time:"),this);
   label->setGeometry(65,42,80,20);
   label->setFont(bold_font);
   label->setAlignment(AlignRight|AlignVCenter);
@@ -133,12 +131,11 @@ EditEventLine::EditEventLine(RDEventLine *eventline,RDClock *clock,int line,
   //
   // End Time
   //
-  edit_endtime_edit=new RDTimeEdit(this,"edit_length_edit");
+  edit_endtime_edit=new RDTimeEdit(this);
   edit_endtime_edit->setGeometry(325,40,70,20);
   edit_endtime_edit->
     setDisplay(RDTimeEdit::Minutes|RDTimeEdit::Seconds|RDTimeEdit::Tenths);
-  label=new QLabel(edit_endtime_edit,tr("End Time:"),
-		   this,"edit_endtime_label");
+  label=new QLabel(edit_endtime_edit,tr("End Time:"),this);
   label->setGeometry(250,42,70,20);
   label->setFont(bold_font);
   label->setAlignment(AlignRight|AlignVCenter);
@@ -146,7 +143,7 @@ EditEventLine::EditEventLine(RDEventLine *eventline,RDClock *clock,int line,
   //
   //  OK Button
   //
-  button=new QPushButton(this,"ok_button");
+  button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
   button->setDefault(true);
   button->setFont(bold_font);
@@ -156,7 +153,7 @@ EditEventLine::EditEventLine(RDEventLine *eventline,RDClock *clock,int line,
   //
   //  Cancel Button
   //
-  button=new QPushButton(this,"cancel_button");
+  button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,80,50);
   button->setFont(bold_font);
   button->setText(tr("&Cancel"));
@@ -189,7 +186,7 @@ QSizePolicy EditEventLine::sizePolicy() const
 void EditEventLine::selectData()
 {
   QString eventname;
-  ListEvents *list_events=new ListEvents(&eventname,this,"add_dialog");
+  ListEvents *list_events=new ListEvents(&eventname,this);
   if(list_events->exec()<0) {
     delete list_events;
     return;

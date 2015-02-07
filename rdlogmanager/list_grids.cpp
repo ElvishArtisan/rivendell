@@ -2,9 +2,7 @@
 //
 // List Rivendell Log Grids
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: list_grids.cpp,v 1.10 2010/07/29 19:32:37 cvs Exp $
+//   (C) Copyright 2002-2015 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -35,8 +33,8 @@
 #include <edit_grid.h>
 #include <globals.h>
 
-ListGrids::ListGrids(QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+ListGrids::ListGrids(QWidget *parent)
+  : QDialog(parent,"",true)
 {
   setCaption(tr("Log Grids"));
 
@@ -59,7 +57,7 @@ ListGrids::ListGrids(QWidget *parent,const char *name)
   //
   // Grids List
   //
-  edit_grids_list=new QListView(this,"edit_grids_list");
+  edit_grids_list=new QListView(this);
   edit_grids_list->setGeometry(10,10,
 				sizeHint().width()-20,sizeHint().height()-80);
   edit_grids_list->setAllColumnsShowFocus(true);
@@ -73,7 +71,7 @@ ListGrids::ListGrids(QWidget *parent,const char *name)
   //
   //  Edit Button
   //
-  QPushButton *button=new QPushButton(this,"edit_button");
+  QPushButton *button=new QPushButton(this);
   button->setGeometry(10,sizeHint().height()-60,80,50);
   button->setFont(bold_font);
   button->setText(tr("&Edit"));
@@ -82,7 +80,7 @@ ListGrids::ListGrids(QWidget *parent,const char *name)
   //
   //  Close Button
   //
-  button=new QPushButton(this,"close_button");
+  button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,80,50);
   button->setDefault(true);
   button->setFont(bold_font);
@@ -111,7 +109,7 @@ void ListGrids::editData()
   if(item==NULL) {
     return;
   }
-  EditGrid *grid_dialog=new EditGrid(item->text(0),this,"grid_dialog");
+  EditGrid *grid_dialog=new EditGrid(item->text(0),this);
   grid_dialog->exec();
   delete grid_dialog;
 }

@@ -2,9 +2,7 @@
 //
 // Edit Rivendell Log Clock
 //
-//   (C) Copyright 2002-2005 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: edit_clock.cpp,v 1.27.10.1 2014/06/24 18:27:05 cvs Exp $
+//   (C) Copyright 2002-2015 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -50,9 +48,8 @@
 
 
 EditClock::EditClock(QString clockname,bool new_clock,
-		     std::vector<QString> *new_clocks,
-		     QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+		     std::vector<QString> *new_clocks,QWidget *parent)
+  : QDialog(parent,"",true)
 {
   QString str;
 
@@ -85,14 +82,13 @@ EditClock::EditClock(QString clockname,bool new_clock,
   //
   // Clock Names
   //
-  edit_clockname_label=new QLabel(clockname,this,"edit_clockname_label");
+  edit_clockname_label=new QLabel(clockname,this);
   edit_clockname_label->setGeometry(10,10,280,20);
   edit_clockname_label->setFont(bold_font);
-  edit_shortname_edit=new QLineEdit(this,"edit_shortname_edit");
+  edit_shortname_edit=new QLineEdit(this);
   edit_shortname_edit->setGeometry(350,10,40,20);
   edit_shortname_edit->setMaxLength(3);
-  QLabel *label=new QLabel(edit_shortname_edit,tr("Code:"),
-			   this,"edit_shortname_label");
+  QLabel *label=new QLabel(edit_shortname_edit,tr("Code:"),this);
   label->setGeometry(295,10,50,20);
   label->setFont(bold_font);
   label->setAlignment(AlignRight|AlignVCenter);
@@ -100,7 +96,7 @@ EditClock::EditClock(QString clockname,bool new_clock,
   //
   // Clock List
   //
-  edit_clocks_list=new ClockListView(this,"edit_clocks_list");
+  edit_clocks_list=new ClockListView(this);
   edit_clocks_list->setGeometry(10,35,CENTER_LINE-20,sizeHint().height()-250);
   edit_clocks_list->setAllColumnsShowFocus(true);
   edit_clocks_list->setItemMargin(5);
@@ -122,7 +118,7 @@ EditClock::EditClock(QString clockname,bool new_clock,
   //
   //  Add Button
   //
-  QPushButton *button=new QPushButton(this,"add_button");
+  QPushButton *button=new QPushButton(this);
   button->setGeometry(10,sizeHint().height()-210,80,50);
   button->setFont(bold_font);
   button->setText(tr("&Add"));
@@ -131,7 +127,7 @@ EditClock::EditClock(QString clockname,bool new_clock,
   //
   //  Clone Button
   //
-  button=new QPushButton(this,"clone_button");
+  button=new QPushButton(this);
   button->setGeometry(110,sizeHint().height()-210,80,50);
   button->setFont(bold_font);
   button->setText(tr("&Clone"));
@@ -140,7 +136,7 @@ EditClock::EditClock(QString clockname,bool new_clock,
   //
   //  Edit Button
   //
-  button=new QPushButton(this,"edit_button");
+  button=new QPushButton(this);
   button->setGeometry(210,sizeHint().height()-210,80,50);
   button->setFont(bold_font);
   button->setText(tr("&Edit"));
@@ -149,7 +145,7 @@ EditClock::EditClock(QString clockname,bool new_clock,
   //
   //  Delete Button
   //
-  button=new QPushButton(this,"delete_button");
+  button=new QPushButton(this);
   button->setGeometry(310,sizeHint().height()-210,80,50);
   button->setFont(bold_font);
   button->setText(tr("&Delete"));
@@ -158,10 +154,10 @@ EditClock::EditClock(QString clockname,bool new_clock,
   //
   // Remarks
   //
-  edit_remarks_edit=new QTextEdit(this,"edit_remarks_edit");
+  edit_remarks_edit=new QTextEdit(this);
   edit_remarks_edit->setGeometry(10,sizeHint().height()-140,CENTER_LINE-20,130);
   edit_remarks_edit->setTextFormat(QTextEdit::PlainText);
-  label=new QLabel(edit_remarks_edit,tr("Remarks"),this,"edit_remarks_label");
+  label=new QLabel(edit_remarks_edit,tr("Remarks"),this);
   label->setGeometry(15,sizeHint().height()-155,CENTER_LINE-20,15);
   label->setFont(bold_font);
   label->setAlignment(AlignLeft|AlignVCenter);
@@ -169,7 +165,7 @@ EditClock::EditClock(QString clockname,bool new_clock,
   //
   //  Scheduler-Rules button
   //
-  button=new QPushButton(this,"schedrules_button");
+  button=new QPushButton(this);
   button->setGeometry(CENTER_LINE+20,sizeHint().height()-60,70,50);
   button->setFont(bold_font);
   button->setText(tr("Scheduler\nRules"));
@@ -178,7 +174,7 @@ EditClock::EditClock(QString clockname,bool new_clock,
   //
   //  Save Button
   //
-  button=new QPushButton(this,"save_button");
+  button=new QPushButton(this);
   button->setGeometry(CENTER_LINE+110,sizeHint().height()-60,70,50);
   button->setFont(bold_font);
   button->setText(tr("&Save"));
@@ -187,7 +183,7 @@ EditClock::EditClock(QString clockname,bool new_clock,
   //
   //  Save As Button
   //
-  button=new QPushButton(this,"saveas_button");
+  button=new QPushButton(this);
   button->setGeometry(CENTER_LINE+190,sizeHint().height()-60,70,50);
   button->setFont(bold_font);
   button->setText(tr("Save &As"));
@@ -196,7 +192,7 @@ EditClock::EditClock(QString clockname,bool new_clock,
   //
   //  Service Associations Button
   //
-  button=new QPushButton(this,"svc_button");
+  button=new QPushButton(this);
   button->setGeometry(CENTER_LINE+(sizeHint().width()-CENTER_LINE)/2-25,
 		      sizeHint().height()-60,70,50);
   button->setFont(bold_font);
@@ -206,7 +202,7 @@ EditClock::EditClock(QString clockname,bool new_clock,
   //
   //  Color Button
   //
-  edit_color_button=new QPushButton(this,"edit_color_button");
+  edit_color_button=new QPushButton(this);
   edit_color_button->
     setGeometry(CENTER_LINE+(sizeHint().width()-CENTER_LINE)/2+55,
 		sizeHint().height()-60,70,50);
@@ -217,7 +213,7 @@ EditClock::EditClock(QString clockname,bool new_clock,
   //
   // Clock Display
   //
-  edit_clock_label=new QLabel(this,"edit_clock_label");
+  edit_clock_label=new QLabel(this);
   edit_clock_label->
     setGeometry(CENTER_LINE+10,10,
 		sizeHint().width()-CENTER_LINE-20,sizeHint().height()-80);
@@ -225,7 +221,7 @@ EditClock::EditClock(QString clockname,bool new_clock,
   //
   //  OK Button
   //
-  button=new QPushButton(this,"ok_button");
+  button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-160,sizeHint().height()-60,70,50);
   button->setDefault(true);
   button->setFont(bold_font);
@@ -235,7 +231,7 @@ EditClock::EditClock(QString clockname,bool new_clock,
   //
   //  Cancel Button
   //
-  button=new QPushButton(this,"cancel_button");
+  button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-80,sizeHint().height()-60,70,50);
   button->setFont(bold_font);
   button->setText(tr("&Cancel"));
@@ -300,8 +296,8 @@ void EditClock::addData()
       line=item->text(4).toInt();
     }
   }
-  EditEventLine *edit_eventline=new EditEventLine(&eventline,edit_clock,-1,
-						  this,"edit_eventline");
+  EditEventLine *edit_eventline=
+    new EditEventLine(&eventline,edit_clock,-1,this);
   if(edit_eventline->exec()<0) {
     return;
   }
@@ -325,9 +321,8 @@ void EditClock::editData()
     return;
   }
   int line=item->text(4).toInt();
-  EditEventLine *edit_eventline=new EditEventLine(edit_clock->eventLine(line),
-						  edit_clock,line,
-						  this,"edit_eventline");
+  EditEventLine *edit_eventline=
+    new EditEventLine(edit_clock->eventLine(line),edit_clock,line,this);
   if(edit_eventline->exec()<0) {
     delete edit_eventline;
     return;
@@ -356,8 +351,8 @@ void EditClock::cloneData()
   eventline.setStartTime(selectedEventLine->startTime().addMSecs(selectedEventLine->length()));
   eventline.setLength(selectedEventLine->length());
   
-  EditEventLine *edit_eventline=new EditEventLine(&eventline,edit_clock,-1,
-						  this,"edit_eventline");
+  EditEventLine *edit_eventline=
+    new EditEventLine(&eventline,edit_clock,-1,this);
   if(edit_eventline->exec()<0) {
     delete edit_eventline;
     return;

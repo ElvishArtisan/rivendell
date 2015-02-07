@@ -37,7 +37,7 @@ class EditEventLine : public QDialog
  Q_OBJECT
  public:
   EditEventLine(RDEventLine *eventline,RDClock *clock,int line,
-		QWidget *parent=0,const char *name=0);
+		QWidget *parent=0);
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
 
