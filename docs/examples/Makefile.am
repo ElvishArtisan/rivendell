@@ -27,6 +27,7 @@ EXTRA_DIST = 0320090805.tfc\
              0320090805.cpi\
              0320090805.vti\
              080509T3.LOG\
+             cart_manifest\
              cart_report.asc
 
 CLEANFILES = *~

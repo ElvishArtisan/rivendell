@@ -39,8 +39,8 @@
 #include <edit_settings.h>
 #include <globals.h>
 
-EditSettings::EditSettings(QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+EditSettings::EditSettings(QWidget *parent)
+  : QDialog(parent,"",true)
 {
   QString sql;
   RDSqlQuery *q;
@@ -71,21 +71,29 @@ EditSettings::EditSettings(QWidget *parent,const char *name)
   edit_system=new RDSystem();
 
   //
-  // System Sample Rate
+  // Site Name
   //
-  edit_sample_rate_box=new QComboBox(this,"edit_sample_rate_box");
-  edit_sample_rate_box->setGeometry(200,10,70,20);
-  edit_sample_rate_box->insertItem("32000");
-  edit_sample_rate_box->insertItem("44100");
-  edit_sample_rate_box->insertItem("48000");
-  QLabel *label=new QLabel(edit_sample_rate_box,
-			   tr("System Sample Rate:"),this,
-			   "edit_sample_rate_label");
+  edit_sitename_edit=new QLineEdit(this);
+  edit_sitename_edit->setGeometry(200,10,sizeHint().width()-210,20);
+  QLabel *label=new QLabel(edit_sitename_edit,tr("Site Name:"),this);
   label->setGeometry(10,10,185,20);
   label->setFont(font);
   label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
-  label=new QLabel(tr("samples/second"),this,"edit_sample_rate_unit");
-  label->setGeometry(275,10,sizeHint().width()-285,20);
+
+  //
+  // System Sample Rate
+  //
+  edit_sample_rate_box=new QComboBox(this,"edit_sample_rate_box");
+  edit_sample_rate_box->setGeometry(200,32,70,20);
+  edit_sample_rate_box->insertItem("32000");
+  edit_sample_rate_box->insertItem("44100");
+  edit_sample_rate_box->insertItem("48000");
+  label=new QLabel(edit_sample_rate_box,tr("System Sample Rate:"),this);
+  label->setGeometry(10,32,185,20);
+  label->setFont(font);
+  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  label=new QLabel(tr("samples/second"),this);
+  label->setGeometry(275,32,sizeHint().width()-285,20);
   label->setFont(font);
   label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
 
@@ -93,39 +101,35 @@ EditSettings::EditSettings(QWidget *parent,const char *name)
   // Allow Duplicate Cart Titles Box
   //
   edit_duplicate_carts_box=new QCheckBox(this,"edit_duplicate_carts_box");
-  edit_duplicate_carts_box->setGeometry(20,32,15,15);
+  edit_duplicate_carts_box->setGeometry(20,54,15,15);
   label=new QLabel(edit_duplicate_carts_box,
-		   tr("Allow Duplicate Cart Titles"),this,
-		   "edit_duplicate_carts_box");
-  label->setGeometry(40,30,sizeHint().width()-50,20);
+		   tr("Allow Duplicate Cart Titles"),this);
+  label->setGeometry(40,52,sizeHint().width()-50,20);
   label->setFont(font);
   label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
 
   //
   // ISCI Cross Reference Path
   //
-  edit_isci_path_edit=new QLineEdit(this,"edit_isci_path_box");
-  edit_isci_path_edit->setGeometry(200,54,sizeHint().width()-210,20);
-  label=new QLabel(edit_isci_path_edit,tr("ISCI Cross Reference Path:"),this,
-		   "edit_isci_path_label");
-  label->setGeometry(10,54,185,20);
+  edit_isci_path_edit=new QLineEdit(this);
+  edit_isci_path_edit->setGeometry(200,76,sizeHint().width()-210,20);
+  label=new QLabel(edit_isci_path_edit,tr("ISCI Cross Reference Path:"),this);
+  label->setGeometry(10,76,185,20);
   label->setFont(font);
   label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
 
   //
   // Maximum POST Size
   //
-  edit_maxpost_spin=new QSpinBox(this,"edit_maxpost_spin");
-  edit_maxpost_spin->setGeometry(200,76,60,20);
+  edit_maxpost_spin=new QSpinBox(this);
+  edit_maxpost_spin->setGeometry(200,98,60,20);
   edit_maxpost_spin->setRange(1,1000);
-  label=new QLabel(edit_maxpost_spin,
-		   tr("Maximum Remote Post Length:"),this,
-		   "edit_maxpost_label");
-  label->setGeometry(10,76,185,20);
+  label=new QLabel(edit_maxpost_spin,tr("Maximum Remote Post Length:"),this);
+  label->setGeometry(10,98,185,20);
   label->setFont(font);
   label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
-  label=new QLabel(tr("Mbytes"),this,"edit_maxpost_unit");
-  label->setGeometry(265,76,60,20);
+  label=new QLabel(tr("Mbytes"),this);
+  label->setGeometry(265,98,60,20);
   label->setFont(font);
   label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
 
@@ -133,7 +137,7 @@ EditSettings::EditSettings(QWidget *parent,const char *name)
   // Temporary Cart Group
   //
   edit_temp_cart_group_box=new QComboBox(this);
-  edit_temp_cart_group_box->setGeometry(200,97,100,20);
+  edit_temp_cart_group_box->setGeometry(200,119,100,20);
   sql="select NAME from GROUPS order by NAME";
   q=new RDSqlQuery(sql);
   while(q->next()) {
@@ -141,21 +145,21 @@ EditSettings::EditSettings(QWidget *parent,const char *name)
   }
   delete q;
   label=new QLabel(edit_temp_cart_group_box,tr("Temporary Cart Group:"),this);
-  label->setGeometry(10,97,185,20);
+  label->setGeometry(10,119,185,20);
   label->setFont(font);
   label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
 
   //
   // Duplicate List (initially hidden)
   //
-  edit_duplicate_label=new RDLabel(this,"edit_duplicate_label");
+  edit_duplicate_label=new RDLabel(this);
   edit_duplicate_label->setText(tr("The following duplicate titles must be corrected before \"Allow Duplicate Values\" can be turned off."));
   edit_duplicate_label->setWordWrapEnabled(true);
-  edit_duplicate_label->setGeometry(15,120,sizeHint().width()-30,50);
+  edit_duplicate_label->setGeometry(15,142,sizeHint().width()-30,50);
   edit_duplicate_label->setFont(normal_font);
   edit_duplicate_label->hide();
   edit_duplicate_list=new QListView(this);
-  edit_duplicate_list->setGeometry(10,165,sizeHint().width()-20,200);
+  edit_duplicate_list->setGeometry(10,187,sizeHint().width()-20,200);
   edit_duplicate_list->setItemMargin(5);
   edit_duplicate_list->setAllColumnsShowFocus(true);
   edit_duplicate_list->addColumn(tr("CART"));
@@ -163,9 +167,9 @@ EditSettings::EditSettings(QWidget *parent,const char *name)
   edit_duplicate_list->addColumn(tr("TITLE"));
   edit_duplicate_list->setColumnAlignment(1,AlignLeft);
   edit_duplicate_list->hide();
-  edit_save_button=new QPushButton(this,"save_button");
+  edit_save_button=new QPushButton(this);
   edit_save_button->
-    setGeometry(sizeHint().width()-85,370,70,25);
+    setGeometry(sizeHint().width()-85,392,70,25);
   edit_save_button->setFont(normal_font);
   edit_save_button->setText(tr("&Save List"));
   connect(edit_save_button,SIGNAL(clicked()),this,SLOT(saveData()));
@@ -174,7 +178,7 @@ EditSettings::EditSettings(QWidget *parent,const char *name)
   //
   //  Ok Button
   //
-  edit_ok_button=new QPushButton(this,"ok_button");
+  edit_ok_button=new QPushButton(this);
   edit_ok_button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,
 				  80,50);
   edit_ok_button->setFont(font);
@@ -184,7 +188,7 @@ EditSettings::EditSettings(QWidget *parent,const char *name)
   //
   //  Cancel Button
   //
-  edit_cancel_button=new QPushButton(this,"cancel_button");
+  edit_cancel_button=new QPushButton(this);
   edit_cancel_button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,
 				  80,50);
   edit_cancel_button->setFont(font);
@@ -194,6 +198,7 @@ EditSettings::EditSettings(QWidget *parent,const char *name)
   edit_duplicate_carts_box->setChecked(edit_system->allowDuplicateCartTitles());
   edit_maxpost_spin->setValue(edit_system->maxPostLength()/1000000);
   edit_isci_path_edit->setText(edit_system->isciXreferencePath());
+  edit_sitename_edit->setText(edit_system->siteName());
 
   for(int i=0;i<edit_sample_rate_box->count();i++) {
     if(edit_sample_rate_box->text(i).toUInt()==edit_system->sampleRate()) {
@@ -219,7 +224,7 @@ EditSettings::~EditSettings()
 
 QSize EditSettings::sizeHint() const
 {
-  return QSize(500,196+y_pos);
+  return QSize(500,218+y_pos);
 } 
 
 
@@ -366,6 +371,7 @@ void EditSettings::okData()
     }
     delete pd;
   }
+  edit_system->setSiteName(edit_sitename_edit->text());
   edit_system->setSampleRate(edit_sample_rate_box->currentText().toUInt());
   edit_system->setMaxPostLength(edit_maxpost_spin->value()*1000000);
   edit_system->setIsciXreferencePath(edit_isci_path_edit->text());

@@ -4,8 +4,6 @@
 //
 //   (C) Copyright 2010 Fred Gleason <fredg@paravelsystems.com>
 //
-//      $Id: rdreplicator.h,v 1.3 2010/08/03 17:52:18 cvs Exp $
-//
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
 //   published by the Free Software Foundation.
@@ -30,8 +28,11 @@
 class RDReplicator
 {
  public:
-  enum Type {TypeCitadelXds=0,TypeLast=1};
+  enum Type {TypeCitadelXds=0,
+	     TypeRivendellSource=1,TypeRivendellSink=2,
+	     TypeLast=3};
   RDReplicator(const QString &name);
+  bool exists() const;
   QString name() const;
   RDReplicator::Type type() const;
   void setType(RDReplicator::Type type) const;

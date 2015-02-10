@@ -157,6 +157,7 @@ x11 {
   SOURCES += rdpasswd.cpp
   SOURCES += rdplay_deck.cpp
   SOURCES += rdrecording.cpp
+  SOURCES += rdrepl_conveyor.cpp
   SOURCES += rdsettings.cpp
   SOURCES += rdsimpleplayer.cpp
   SOURCES += rdsound_panel.cpp
@@ -289,6 +290,7 @@ x11 {
   HEADERS += rdpasswd.h
   HEADERS += rdplay_deck.h
   HEADERS += rdrecording.h
+  HEADERS += rdrepl_conveyor.h
   HEADERS += rdsettings.h
   HEADERS += rdsimpleplayer.h
   HEADERS += rdsound_panel.h

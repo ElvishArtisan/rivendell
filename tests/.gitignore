@@ -1,6 +1,7 @@
 audio_convert_test
 audio_export_test
 audio_import_test
+conveyor_test
 datedecode_test
 reserve_carts_test
 sas_switch_torture

@@ -405,7 +405,7 @@ void MainWidget::manageStationsData()
 
 void MainWidget::systemSettingsData()
 {
-  EditSettings *edit_settings=new EditSettings(this,"edit_settings");
+  EditSettings *edit_settings=new EditSettings(this);
   edit_settings->exec();
   delete edit_settings;
 }

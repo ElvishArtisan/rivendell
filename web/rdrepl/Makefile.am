@@ -1,15 +1,12 @@
 ## automake.am
 ##
-## Automake.am for rivendell/web
+## Automake.am for rivendell/web/rdrepl
 ##
-##   (C) Copyright 2002-2007 Fred Gleason <fredg@paravelsystems.com>
-##
-##      $Id: Makefile.am,v 1.4.8.1 2012/11/29 01:37:38 cvs Exp $
+##   (C) Copyright 2015 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
-##   it under the terms of the GNU General Public License as
-##   published by the Free Software Foundation; either version 2 of
-##   the License, or (at your option) any later version.
+##   it under the terms of the GNU General Public License version 2 as
+##   published by the Free Software Foundation.
 ##
 ##   This program is distributed in the hope that it will be useful,
 ##   but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -22,21 +19,22 @@
 ##
 ## Use automake to process this into a Makefile.in
 
-SUBDIRS = rdcastmanager\
-          rdfeed\
-          rdrepl\
-          rdxport\
-          tests
-
 AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" -DQTDIR=\"@QT_DIR@\" @QT_CXXFLAGS@ -I$(top_srcdir)/lib
 LIBS = @QT_LIBS@ -L$(top_srcdir)/lib
 MOC = @QT_MOC@
 
-# The dependency for qt's Meta Object Compiler (moc)
-moc_%.cpp:	%.h
-	$(MOC) $< -o $@
+libexec_PROGRAMS = rdrepl.cgi
 
-EXTRA_DIST = web.pro
+install-exec-hook:	
+	if test -z $(DESTDIR) ; then chown root $(DESTDIR)$(libexecdir)/rdrepl.cgi ; chmod 4755 $(DESTDIR)$(libexecdir)/rdrepl.cgi ; fi
+
+dist_rdrepl_cgi_SOURCES = export.cpp\
+                          import.cpp\
+                          rdrepl.cpp rdrepl.h
+
+rdrepl_cgi_LDADD = @LIB_RDLIBS@ -lsndfile @LIBVORBIS@
+
+EXTRA_DIST = rdrepl.pro
 
 CLEANFILES = *~\
              *.idb\

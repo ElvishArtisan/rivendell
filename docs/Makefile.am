@@ -35,6 +35,7 @@ EXTRA_DIST = ALSA.txt\
              ENCODERS.txt\
              GPIO.txt\
              JACK.txt\
+             manifest_format.odt\
              MESSAGE_BOX.txt\
              metadata_wildcards.txt\
              NEXGEN_FILTER.txt\
@@ -42,6 +43,7 @@ EXTRA_DIST = ALSA.txt\
              pam_rd.txt\
              PODCASTING.txt\
              RDMONITOR.txt\
+             repl_api.odt\
              reports.txt\
              ripc.txt\
              RIVENDELL_FILTER.txt\

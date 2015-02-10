@@ -1,10 +1,8 @@
-// dbversion.h
+// rdrepl_conveyor.h
 //
-// The Current Database Schema Version for Rivendell
+// Manage replicator conveyor queues.
 //
-//   (C) Copyright 2002-2008 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: dbversion.h,v 1.34.4.29.2.4 2014/06/03 18:23:34 cvs Exp $
+//   (C) Copyright 2015 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,13 +18,24 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#ifndef DBVERSION_H
-#define DBVERSION_H
+#ifndef RDREPL_CONVEYOR_H
+#define RDREPL_CONVEYOR_H
 
-/*
- * Current Database Version
- */
-#define RD_VERSION_DATABASE 244
+#define RD_REPL_DIR "/var/cache/rivendell"
+
+class RDReplConveyor
+{
+ public:
+  enum Direction {Inbound=0,Outbound=1};
+  RDReplConveyor(const QString &repl_name);
+  bool push(Direction dir,const QString &filename) const;
+  bool nextPackage(int *id,Direction dir,const QString &outfile) const;
+  void pop(int id) const;
+  static QString fileName(int id);
+
+ private:
+  QString conv_repl_name;
+};
 
 
-#endif  // DBVERSION_H
+#endif  // RDREPL_CONVEYOR_H

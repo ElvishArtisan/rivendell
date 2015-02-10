@@ -29,6 +29,8 @@ class RDSystem
 {
  public:
   RDSystem();
+  QString siteName() const;
+  void setSiteName(const QString &str);
   unsigned sampleRate() const;
   void setSampleRate(unsigned rate) const;
   bool allowDuplicateCartTitles() const;

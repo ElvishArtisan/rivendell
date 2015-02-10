@@ -399,7 +399,7 @@ y un respaldo de la base de datos se guardó en </translation>
     </message>
     <message>
         <source>&amp;New Replicator Name:</source>
-        <translation>&amp;Nombre del Replicad.:</translation>
+        <translation type="obsolete">&amp;Nombre del Replicad.:</translation>
     </message>
     <message>
         <source>&amp;OK</source>
@@ -424,6 +424,14 @@ y un respaldo de la base de datos se guardó en </translation>
     <message>
         <source>A replicator with that name already exists!</source>
         <translation>¡Un replicador con ese nombre ya existe!</translation>
+    </message>
+    <message>
+        <source>Type:</source>
+        <translation type="unfinished">Tipo:</translation>
+    </message>
+    <message>
+        <source>&amp;Name:</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3428,6 +3436,10 @@ Overwrite?</source>
     </message>
     <message>
         <source>Temporary Cart Group:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Site Name:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

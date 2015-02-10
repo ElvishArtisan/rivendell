@@ -3,9 +3,7 @@
 // 
 // Adopted from conflib
 //
-//   (C) Copyright 1996-2003 Fred Gleason <fredg@paravelsystems.com>
-//
-//    $Id: rdconf.cpp,v 1.15.4.7.2.1 2014/06/24 18:27:04 cvs Exp $
+//   (C) Copyright 1996-2015 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -27,6 +25,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <string.h>
+#include <errno.h>
 
 #include <qhostaddress.h>
 #include <qvariant.h>
@@ -842,6 +841,26 @@ bool RDCopy(const QString &srcfile,const QString &destfile)
   close(dest_fd);
   return true;
 }
+
+
+bool RDMove(const QString &srcfile,const QString &destfile)
+{
+  bool ret=false;
+
+  if(rename(srcfile,destfile)==0) {
+    ret=true;
+  }
+  else {
+    if(errno==EXDEV) {
+      if(RDCopy(srcfile,destfile)) {
+	unlink(srcfile);
+	ret=true;
+      }
+    }
+  }
+  return ret;
+}
+
 #endif  // WIN32
 
 

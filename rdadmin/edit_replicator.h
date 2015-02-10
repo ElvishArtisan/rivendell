@@ -58,7 +58,7 @@ class EditReplicator : public QDialog
   RDReplicator *repl_replicator;
   QLineEdit *repl_name_edit;
   QLineEdit *repl_description_edit;
-  QComboBox *repl_type_box;
+  QLineEdit *repl_type_edit;
   QComboBox *repl_station_box;
   QLineEdit *repl_url_edit;
   QLabel *repl_username_label;

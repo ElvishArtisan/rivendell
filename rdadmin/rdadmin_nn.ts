@@ -381,10 +381,6 @@ oppdatert til versjon </translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&amp;New Replicator Name:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;OK</source>
         <translation type="unfinished">&amp;OK</translation>
     </message>
@@ -406,6 +402,14 @@ oppdatert til versjon </translation>
     </message>
     <message>
         <source>A replicator with that name already exists!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Type:</source>
+        <translation type="unfinished">Type:</translation>
+    </message>
+    <message>
+        <source>&amp;Name:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3388,6 +3392,10 @@ Overwrite?</source>
     </message>
     <message>
         <source>Temporary Cart Group:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Site Name:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -32,6 +32,23 @@ RDReplicator::RDReplicator(const QString &name)
 }
 
 
+bool RDReplicator::exists() const
+{
+  QString sql;
+  RDSqlQuery *q;
+  bool ret=false;
+
+  sql=QString("select NAME from REPLICATORS where ")+
+    "NAME=\""+RDEscapeString(replicator_name)+"\"";
+  q=new RDSqlQuery(sql);
+  if(q->first()) {
+    ret=true;
+  }
+  delete q;
+  return ret;
+}
+
+
 QString RDReplicator::name() const
 {
   return replicator_name;
@@ -206,6 +223,14 @@ QString RDReplicator::typeString(RDReplicator::Type type)
   switch(type) {
   case RDReplicator::TypeCitadelXds:
     ret="Citadel X-Digital Portal";
+    break;
+
+  case RDReplicator::TypeRivendellSource:
+    ret="Rivendell (Source)";
+    break;
+
+  case RDReplicator::TypeRivendellSink:
+    ret="Rivendell (Sink)";
     break;
 
   case RDReplicator::TypeLast:

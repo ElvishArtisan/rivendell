@@ -124,6 +124,11 @@ if test ! -e /var/snd ; then
   chown rivendell:rivendell /var/snd
   chmod 775 /var/snd
 fi
+if test ! -e /var/cache/rivendell ; then
+  mkdir -p /var/cache/rivendell
+  chown rivendell:rivendell /var/cache/rivendell
+  chmod 770 /var/cache/rivendell
+fi
 mkdir -p -m 777 /var/run/rivendell
 if test ! -d /etc/rivendell.d ; then
   mkdir -p /etc/rivendell.d
@@ -299,6 +304,7 @@ rm -rf $RPM_BUILD_ROOT
 %doc docs/catchd.txt 
 %doc docs/colors 
 %doc docs/GPIO.txt 
+%doc docs/manifest_format.odt
 %doc docs/ripc.txt 
 %doc docs/SWITCHERS.txt
 %doc docs/JACK.txt

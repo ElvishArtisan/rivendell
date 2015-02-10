@@ -14727,3 +14727,18 @@
 	'ripcd/btgpi16.cpp' and 'ripcd/btgpi16.h'.
 2015-01-26 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 2.10.2int02.
+2015-02-08 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'SYSTEM.SITE_NAME' field to the database.
+	* Incremented the database version to 243.
+	* Added 'RDSystem::siteName()' and 'RDSystem::setSiteName()' methods
+	in 'lib/rdsystem.cpp' and 'lib/rdsystem.h'.
+	* Added a 'Site Name' control to the 'Edit System Settings' dialog
+	in 'rdadmin/edit_settings.cpp' and 'rdadmin/edit_settings.h'.
+	* Added a 'rdrepl.cpi' CGI program in 'web/rdrepl/rdrepl.cpp' and
+	'web/rdrepl/rdrepl.h'.
+	* Added a 'REPL_PACKAGES' table to the database.
+	* Incremented the database version to 244.
+	* Added an 'RDMove()' function in 'lib/rdconf.cpp' and
+	'lib/rdconf.h'.
+	* Added an 'RDReplConveyor' class in 'lib/rdrepl_conveyor.cpp'
+	and 'lib/rdrepl_conveyor.h'.

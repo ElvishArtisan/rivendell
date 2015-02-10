@@ -434,7 +434,7 @@ a záloha původní databáze uložena v </translation>
     </message>
     <message>
         <source>&amp;New Replicator Name:</source>
-        <translation>Název nového &amp;kopírovacího stroje:</translation>
+        <translation type="obsolete">Název nového &amp;kopírovacího stroje:</translation>
     </message>
     <message>
         <source>&amp;OK</source>
@@ -459,6 +459,14 @@ a záloha původní databáze uložena v </translation>
     <message>
         <source>A replicator with that name already exists!</source>
         <translation>Kopírovací stroj s tímto názvem již existuje!</translation>
+    </message>
+    <message>
+        <source>Type:</source>
+        <translation type="unfinished">Typ:</translation>
+    </message>
+    <message>
+        <source>&amp;Name:</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3429,6 +3437,10 @@ Přepsat?</translation>
     </message>
     <message>
         <source>Temporary Cart Group:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Site Name:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

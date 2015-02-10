@@ -2,7 +2,7 @@
 //
 // Create, Initialize and/or Update a Rivendell Database
 //
-//   (C) Copyright 2002-2010 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2015 Fred Gleason <fredg@paravelsystems.com>
 //
 //      $Id: createdb.cpp,v 1.195.2.32.2.5 2014/06/05 19:04:25 cvs Exp $
 //
@@ -2084,6 +2084,7 @@ bool CreateDb(QString name,QString pwd)
   //
   sql=QString().sprintf("create table if not exists SYSTEM (\
                          ID int auto_increment not null primary key,\
+                         SITE_NAME char(32) not null default \"Rivendell\",\
                          SAMPLE_RATE int unsigned default %d,\
                          DUP_CART_TITLES enum('N','Y') not null default 'Y',\
                          MAX_POST_LENGTH int unsigned default %u,\
@@ -2374,6 +2375,19 @@ bool CreateDb(QString name,QString pwd)
      return false;
   }
 
+  //
+  // Create REPL_PACKAGES table
+  //
+  sql=QString("create table if not exists REPL_PACKAGES(")+
+    "ID int auto_increment not null primary key,"+
+    "DIRECTION int unsigned not null,"+
+    "REPLICATOR_NAME char(32) not null,"+
+    "DATESTAMP datetime not null,"+
+    "index REPL_IDX(REPLICATOR_NAME,DIRECTION,DATESTAMP))";
+  if(!RunQuery(sql)) {
+     return false;
+  }
+  
   return true;
 }
 
@@ -8086,6 +8100,23 @@ int UpdateDb(int ver)
     delete q;
   }
 
+  if(ver<243) {
+    sql=QString("alter table SYSTEM add column ")+
+      "SITE_NAME char(32) not null default \"Rivendell\" after ID";
+    q=new QSqlQuery(sql);
+    delete q;
+  }
+
+  if(ver<244) {
+    sql=QString("create table if not exists REPL_PACKAGES(")+
+      "ID int auto_increment not null primary key,"+
+      "DIRECTION int unsigned not null,"+
+      "REPLICATOR_NAME char(32) not null,"+
+      "DATESTAMP datetime not null,"+
+      "index REPL_IDX(REPLICATOR_NAME,DIRECTION,DATESTAMP))";
+    q=new QSqlQuery(sql);
+    delete q;
+  }
 
 
   // **** End of version updates ****

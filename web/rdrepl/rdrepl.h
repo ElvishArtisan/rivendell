@@ -1,10 +1,8 @@
-// dbversion.h
+// rdrepl.h
 //
-// The Current Database Schema Version for Rivendell
+// Rivendell replicator portal
 //
-//   (C) Copyright 2002-2008 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: dbversion.h,v 1.34.4.29.2.4 2014/06/03 18:23:34 cvs Exp $
+//   (C) Copyright 2015 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,13 +18,32 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#ifndef DBVERSION_H
-#define DBVERSION_H
 
-/*
- * Current Database Version
- */
-#define RD_VERSION_DATABASE 244
+#ifndef RDREPL_H
+#define RDREPL_H
+
+#include <qobject.h>
+
+#include <rdconfig.h>
+#include <rduser.h>
+#include <rdsystem.h>
+
+class Repl : public QObject
+{
+ public:
+  Repl(QObject *parent=0,const char *name=0);
+
+ private:
+  bool Authenticate();
+  void Export();
+  void Import();
+  void Exit(int code);
+  void XmlExit(const QString &str,int code,
+	       RDAudioConvert::ErrorCode err=RDAudioConvert::ErrorOk);
+  RDFormPost *repl_post;
+  RDConfig *repl_config;
+  RDSystem *repl_system;
+};
 
 
-#endif  // DBVERSION_H
+#endif  // RDREPL_H

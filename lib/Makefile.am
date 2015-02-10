@@ -191,6 +191,8 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdprofilesection.cpp rdprofilesection.h\
                         rdpushbutton.cpp rdpushbutton.h\
                         rdrecording.cpp rdrecording.h\
+                        rdrepl_conveyor.cpp rdrepl_conveyor.h\
+                        rdrepl_interface.h\
                         rdreplicator.cpp rdreplicator.h\
                         rdreport.cpp rdreport.h\
                         rdringbuffer.cpp rdringbuffer.h\

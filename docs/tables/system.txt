@@ -1,0 +1,13 @@
+                  SYSTEM Table Layout for Rivendell
+
+The TRIGGERS table holds system-wide settings.
+
+FIELD NAME           TYPE               REMARKS
+-------------------------------------------------------------------------
+ID                   int(11) signed     Primary Key, Autoincrement
+SITE_NAME            char(32)
+SAMPLE_RATE          int(10) unsigned
+DUP_CART_TITLES      enum('N','Y')
+MAX_POST_LENGTH      int(10) unsigned
+ISCI_XREFERENCE_PATH char(255)
+TEMP_CART_GROUP      char(10)

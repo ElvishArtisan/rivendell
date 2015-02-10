@@ -446,6 +446,7 @@ AC_CONFIG_FILES([rivendell.spec \
     web/Makefile \
     web/rdfeed/Makefile \
     web/rdcastmanager/Makefile \
+    web/rdrepl/Makefile \
     web/rdxport/Makefile \
     web/tests/Makefile \
     conf/Makefile \

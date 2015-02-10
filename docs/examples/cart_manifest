@@ -1,0 +1,54 @@
+[Global]
+Type=Cart
+
+[Cart]
+Action=Add/Update/Delete
+Number=123456
+Type=Audio
+Group=TRAFFIC
+EnforceLength=No
+ForcedLength=1000
+Title=Title Field
+Artist=Artist Field
+Year=1962
+Usage=Feature
+SongId=Song ID
+BeatsPerMinute=100
+Album=Album Title
+Label=Record Label
+Client=Client Field
+Agency=Agency Field
+Publisher=Publisher Field
+Composer=Composer Field
+Conductor=Conductor Field
+UserDefined=User Defined Field
+SchedulerCode1=Code 1
+SchedulerCode2=Code 2
+RmlCode=LC green Hello World!PN 1!
+
+
+[Cut1]
+Action=Add/Update/Delete
+Number=1
+Description=Description Field
+Outcue=Outcue Field
+Isci=ISCI Code
+Isrc=ISRC Code
+OriginStation=Station Name
+OriginDatetime=2015-01-31 00:00:00
+Weight=1
+LastPlayed=2015-01031 00:00:00
+PlayQuantity=10
+Evergreen=No
+StartDatetime=2015-01-31 00:00:00
+EndDatetime=2015-02-28 23:59:59
+StartDaypart=00:00:00
+EndDaypart=23:59:59
+Mon=Yes
+Tue=Yes
+Wed=Yes
+Thu=Yes
+Fri=Yes
+Sat=Yes
+Sun=Yes
+Filename=audio.wav

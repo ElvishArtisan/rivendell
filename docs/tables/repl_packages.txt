@@ -1,0 +1,11 @@
+               REPL_PACKAGES Table Layout for Rivendell
+
+The REPL_PACKAGES table holds data concerning each package in the replicator
+conveyor queue. 
+
+FIELD NAME           TYPE              REMARKS
+------------------------------------------------------------------
+ID                   int signed(11)    Primary key, auto increment
+DIRECTION            int unsigned(10)  0=Inbound, 1=Outbound
+REPLICATOR_NAME      char(32)          From REPLICATORS.NAME
+DATESTAMP            datetime

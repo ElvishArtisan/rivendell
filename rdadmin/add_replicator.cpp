@@ -31,6 +31,8 @@
 #include <qmessagebox.h>
 #include <qcheckbox.h>
 #include <qbuttongroup.h>
+
+#include <rdescape_string.h>
 #include <rddb.h>
 
 #include <edit_replicator.h>
@@ -39,8 +41,8 @@
 #include <rdtextvalidator.h>
 
 
-AddReplicator::AddReplicator(QString *rname,QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+AddReplicator::AddReplicator(QString *rname,QWidget *parent)
+  : QDialog(parent,"",true)
 {
   repl_name=rname;
 
@@ -65,25 +67,37 @@ AddReplicator::AddReplicator(QString *rname,QWidget *parent,const char *name)
   //
   // Text Validator
   //
-  RDTextValidator *validator=new RDTextValidator(this,"validator");
+  RDTextValidator *validator=new RDTextValidator(this);
 
   //
   // Replicator Name
   //
-  repl_name_edit=new QLineEdit(this,"repl_name_edit");
-  repl_name_edit->setGeometry(145,11,sizeHint().width()-150,19);
-  repl_name_edit->setMaxLength(10);
+  repl_name_edit=new QLineEdit(this);
+  repl_name_edit->setGeometry(70,11,sizeHint().width()-80,20);
+  repl_name_edit->setMaxLength(32);
   repl_name_edit->setValidator(validator);
-  QLabel *label=new QLabel(repl_name_edit,tr("&New Replicator Name:"),
-				      this,"repl_name_label");
-  label->setGeometry(10,11,130,19);
+  QLabel *label=new QLabel(repl_name_edit,tr("&Name:"),this);
+  label->setGeometry(10,11,55,20);
   label->setFont(font);
   label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
 
   //
+  // Replicator Type
+  //
+  repl_type_box=new QComboBox(this);
+  repl_type_box->setGeometry(70,33,sizeHint().width()-80,20);
+  for(unsigned i=0;i<(int)RDReplicator::TypeLast;i++) {
+    repl_type_box->insertItem(RDReplicator::typeString((RDReplicator::Type)i));
+  }
+  QLabel *repl_type_label=new QLabel(repl_type_box,tr("Type:"),this);
+  repl_type_label->setGeometry(10,33,55,20);
+  repl_type_label->setFont(font);
+  repl_type_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+
+  //
   //  Ok Button
   //
-  QPushButton *ok_button=new QPushButton(this,"ok_button");
+  QPushButton *ok_button=new QPushButton(this);
   ok_button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
   ok_button->setDefault(true);
   ok_button->setFont(font);
@@ -93,7 +107,7 @@ AddReplicator::AddReplicator(QString *rname,QWidget *parent,const char *name)
   //
   //  Cancel Button
   //
-  QPushButton *cancel_button=new QPushButton(this,"cancel_button");
+  QPushButton *cancel_button=new QPushButton(this);
   cancel_button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,
 			     80,50);
   cancel_button->setFont(font);
@@ -110,7 +124,7 @@ AddReplicator::~AddReplicator()
 
 QSize AddReplicator::sizeHint() const
 {
-  return QSize(250,108);
+  return QSize(250,130);
 } 
 
 
@@ -130,8 +144,9 @@ void AddReplicator::okData()
     return;
   }
 
-  sql=QString().sprintf("insert into REPLICATORS set NAME=\"%s\"",
-			(const char *)repl_name_edit->text());
+  sql=QString("insert into REPLICATORS set NAME=\"")+
+    RDEscapeString(repl_name_edit->text())+"\","+
+    QString().sprintf("TYPE_ID=%d",repl_type_box->currentItem());
 
   q=new RDSqlQuery(sql);
   if(!q->isActive()) {

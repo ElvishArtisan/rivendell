@@ -30,6 +30,18 @@ RDSystem::RDSystem()
 }
 
 
+QString RDSystem::siteName() const
+{
+  return GetValue("SITE_NAME").toString();
+}
+
+
+void RDSystem::setSiteName(const QString &str)
+{
+  SetRow("SITE_NAME",str);
+}
+
+
 unsigned RDSystem::sampleRate() const
 {
   return GetValue("SAMPLE_RATE").toUInt();
