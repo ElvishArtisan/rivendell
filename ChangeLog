@@ -14752,3 +14752,8 @@
 	'lib/rdreport.cpp' and 'lib/rdreport.h'.
 2015-02-06 Fred Gleason <fredg@paravelsystems.com>
 	* Cleaned up Qt object calls in 'rdlogmanager/'.
+2015-02-11 Fred Gleason <fredg@paravelsystems.com>
+	* Added support for 'Conductor', 'Song-ID', 'Year', 'Outcue' and
+	'Description' fields in 'rlm/rlm_padpoint.c'.
+	* Fixed a bug when generating the 'Year' field in RLM updates
+	in 'rdairplay/rlmhost.cpp'.

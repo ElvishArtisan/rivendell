@@ -1,6 +1,6 @@
 /* rlm_padpoint.c
  *
- *   (C) Copyright 2012 Fred Gleason <fredg@paravelsystems.com>
+ *   (C) Copyright 2012-2015 Fred Gleason <fredg@paravelsystems.com>
  *
  *   This program is free software; you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License version 2
@@ -150,7 +150,8 @@ void rlm_padpoint_RLMPadDataSent(void *ptr,const struct rlm_svc *svc,
 	break;
     }
     if((flag==1)||((flag==2)&&(log->log_onair!=0))) {
-      snprintf(str,1501,"%06u~%u~%s~%s~%s~%s~%s~%s~%s~%s~%s~%s~%s~%s~%s",
+      snprintf(str,1501,
+	       "%06u~%u~%s~%s~%s~%s~%s~%s~%s~%s~%s~%s~%s~%s~%s~%s~%s~%s~%s~%s",
 	       now->rlm_cartnum,
 	       now->rlm_len,
 	       now->rlm_year,
@@ -165,7 +166,12 @@ void rlm_padpoint_RLMPadDataSent(void *ptr,const struct rlm_svc *svc,
 	       now->rlm_pub,
 	       now->rlm_userdef,
 	       now->rlm_isrc,
-	       now->rlm_isci);
+	       now->rlm_isci,
+	       now->rlm_conductor,
+	       now->rlm_song_id,
+	       now->rlm_year,
+	       now->rlm_outcue,
+	       now->rlm_description);
       RLMSendUdp(ptr,rlm_padpoint_addresses+i*16,rlm_padpoint_ports[i],
 		 str,strlen(str));
       snprintf(msg,1500,"rlm_padpoint: sending pad update: \"%s\"",str);

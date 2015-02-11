@@ -188,7 +188,7 @@ void RLMHost::loadMetadata(const RDLogLine *logline,struct rlm_pad *pad,
     pad->rlm_carttype=logline->cartType();
     if(!logline->year().isNull()) {
       snprintf(pad->rlm_year,5,"%s",
-	       (const char *)logline->year().toString("YYYY"));
+	       (const char *)logline->year().toString("yyyy"));
     }
     if(!logline->groupName().isEmpty()) {
       snprintf(pad->rlm_group,11,"%s",
