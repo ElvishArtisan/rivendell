@@ -66,6 +66,7 @@ dist_ripcd_SOURCES = acu1p.cpp acu1p.h\
                      sasusi.cpp sasusi.h\
                      starguide3.cpp starguide3.h\
                      starguide_feed.cpp starguide_feed.h\
+                     swauthority.cpp swauthority.h\
                      switcher.cpp switcher.h\
                      unity4000.cpp unity4000.h\
                      unity_feed.cpp unity_feed.h\
@@ -102,6 +103,7 @@ nodist_ripcd_SOURCES = moc_am16.cpp\
                        moc_sas64000gpi.cpp\
                        moc_sasusi.cpp\
                        moc_starguide3.cpp\
+                       moc_swauthority.cpp\
                        moc_switcher.cpp\
                        moc_unity4000.cpp\
                        moc_vguest.cpp

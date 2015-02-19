@@ -27,6 +27,7 @@ Sierra Automated Systems 32000 Audio Router
 Sierra Automated Systems 64000 Audio Router
 Sierra Automated Systems Universal Serial Interface (USI)
 Sine Systems ACU-1 (Prophet version)
+Software Authority Protocol
 StarGuide III Satellite Receiver
 Wegener Unity4000 DVB Satellite Receiver
 
@@ -630,6 +631,22 @@ rate, even parity, 8 data bits, 1 stop bit and no terminator.
 The ACU-1 should be set to use factory default settings.  This can be done
 by simultaneously pressing buttons 1 and 8 on the front panel of the unit
 for at least one second.
+
+
+----------------------------------------------------------------------------
+SOFTWARE AUTHORITY PROTOCOL
+
+Driver Name: Software Authority Protocol
+
+Supported RML Commands:
+  Switch Take ('ST')
+
+GENERAL NOTES:
+Used to control devices (such as the Axia 'PathFinder' system) by means of
+the 'Software Authority' protocol.  Control is by means of a
+TCP/IP connection (typically to port 9500) on the controled system.  Most
+parameters, including the number of inputs and outputs as well as the
+endpoint names, are autodetected by the driver.
 
 
 ----------------------------------------------------------------------------

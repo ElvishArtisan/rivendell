@@ -188,6 +188,7 @@ ViewNodeInfo::ViewNodeInfo(QWidget *parent,const char *name)
   view_sources_view->setItemMargin(5);
   view_sources_view->addColumn(tr("#"));
   view_sources_view->setColumnAlignment(0,Qt::AlignCenter);
+  view_sources_view->setColumnSortType(0,RDListView::LineSort);
   view_sources_view->addColumn(tr("CHAN"));
   view_sources_view->setColumnAlignment(1,Qt::AlignCenter);
   view_sources_view->addColumn(tr("NAME"));
@@ -325,6 +326,7 @@ void ViewNodeInfo::closeData()
 
 void ViewNodeInfo::WriteSourceItem(RDLiveWireSource *src,RDListViewItem *item)
 {
+
   item->setText(1,QString().sprintf("%05d",src->channelNumber()));
   item->setText(2,src->primaryName());
   if(src->rtpEnabled()) {

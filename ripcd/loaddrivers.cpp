@@ -54,6 +54,7 @@
 #include <sas64000gpi.h>
 #include <sasusi.h>
 #include <starguide3.h>
+#include <swauthority.h>
 #include <unity4000.h>
 #include <vguest.h>
 
@@ -176,6 +177,10 @@ bool MainObject::LoadSwitchDriver(int matrix_num)
 
   case RDMatrix::SasUsi:
     ripcd_switcher[matrix_num]=new SasUsi(matrix,this);
+    break;
+
+  case RDMatrix::SoftwareAuthority:
+    ripcd_switcher[matrix_num]=new SoftwareAuthority(matrix,this);
     break;
 
   case RDMatrix::StarGuideIII:

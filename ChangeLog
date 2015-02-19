@@ -14757,3 +14757,8 @@
 	'Description' fields in 'rlm/rlm_padpoint.c'.
 	* Fixed a bug when generating the 'Year' field in RLM updates
 	in 'rdairplay/rlmhost.cpp'.
+2015-02-18 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'RDMatrix::SoftwareAuthority' to the 'RDMatrix::Type'
+	enumeration in 'lib/rdmatrix.cpp' and 'lib/rdmatrix.h'.
+	* Implemented a switcher driver for systems using Software Authority
+	Protocol in 'ripcd/swauthority.cpp' and 'ripcd/swauthority.h'.
