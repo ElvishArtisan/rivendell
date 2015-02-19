@@ -139,7 +139,9 @@ MainObject::MainObject(QObject *parent)
   }
   RDReplConveyor *conv=new RDReplConveyor(repl_name);
   if(!add_file.isEmpty()) {
-    conv->push(repl_direction,add_file);
+    if(!conv->push(repl_direction,add_file)) {
+      fprintf(stderr,"conveyor_test: --add-file failed\n");
+    }
   }
   if(!recv_file.isEmpty()) {
     int id=0;

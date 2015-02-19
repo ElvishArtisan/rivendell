@@ -14742,3 +14742,5 @@
 	'lib/rdconf.h'.
 	* Added an 'RDReplConveyor' class in 'lib/rdrepl_conveyor.cpp'
 	and 'lib/rdrepl_conveyor.h'.
+2015-02-19 Fred Gleason <fredg@paravelsystems.com>
+	* Added an error check for '--add-file' in 'tests/conveyor_test.cpp'.
