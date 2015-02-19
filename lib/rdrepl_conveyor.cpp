@@ -66,6 +66,27 @@ bool RDReplConveyor::push(Direction dir,const QString &filename) const
 }
 
 
+bool RDReplConveyor::nextPackageReady(int *id,Direction dir) const
+{
+  QString sql;
+  RDSqlQuery *q;
+  bool ret=false;
+
+  sql=QString("select ID from REPL_PACKAGES where ")+
+    QString().sprintf("(DIRECTION=%u)&&",dir)+
+    "(REPLICATOR_NAME=\""+RDEscapeString(conv_repl_name)+"\") "+
+    "order by ID";
+  q=new RDSqlQuery(sql);
+  if(q->first()) {
+    *id=q->value(0).toInt();
+    ret=true;
+  }
+  delete q;
+
+  return ret;
+}
+
+
 bool RDReplConveyor::nextPackage(int *id,Direction dir,
 				 const QString &outfile) const
 {
@@ -105,6 +126,16 @@ void RDReplConveyor::pop(int id) const
   delete q;
 
   unlink(fileName(id));
+}
+
+
+void RDReplConveyor::popNextPackage(Direction dir)
+{
+  int id=-1;
+
+  if(nextPackageReady(&id,dir)) {
+    pop(id);
+  }
 }
 
 

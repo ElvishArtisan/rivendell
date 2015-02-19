@@ -46,6 +46,7 @@ install-exec-am:
 	cp removecart.html $(DESTDIR)@libexecdir@
 	cp removecut.html $(DESTDIR)@libexecdir@
 	cp repl_export.html $(DESTDIR)@libexecdir@
+	cp repl_acknowledge.html $(DESTDIR)@libexecdir@
 	cp repl_import.html $(DESTDIR)@libexecdir@
 	cp trimaudio.html $(DESTDIR)@libexecdir@
 
@@ -71,6 +72,7 @@ uninstall:
 	rm -f $(DESTDIR)@libexecdir@/listservices.html
 	rm -f $(DESTDIR)@libexecdir@/removecart.html
 	rm -f $(DESTDIR)@libexecdir@/removecut.html
+	rm -f $(DESTDIR)@libexecdir@/repl_acknowledge.html
 	rm -f $(DESTDIR)@libexecdir@/repl_export.html
 	rm -f $(DESTDIR)@libexecdir@/repl_import.html
 	rm -f $(DESTDIR)@libexecdir@/trimaudio.html
@@ -96,6 +98,7 @@ EXTRA_DIST = addcart.html\
              listservices.html\
              removecart.html\
              removecut.html\
+             repl_acknowledge.html\
              repl_export.html\
              repl_import.html\
              trimaudio.html

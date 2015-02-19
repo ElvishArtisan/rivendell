@@ -1,6 +1,6 @@
-// rdrepl.h
+// ack.cpp
 //
-// Rivendell replicator portal
+// Rivendell replicator portal -- Acknowledge service
 //
 //   (C) Copyright 2015 Fred Gleason <fredg@paravelsystems.com>
 //
@@ -18,35 +18,25 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
+#include <stdio.h>
+#include <stdint.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 
-#ifndef RDREPL_H
-#define RDREPL_H
+#include <rdformpost.h>
+#include <rdweb.h>
+#include <rdcart.h>
+#include <rdaudioconvert.h>
+#include <rdsettings.h>
+#include <rdconf.h>
 
-#include <qobject.h>
+#include <rdrepl.h>
+#include <rdrepl_conveyor.h>
 
-#include <rdconfig.h>
-#include <rdreplicator.h>
-#include <rduser.h>
-#include <rdsystem.h>
-
-class Repl : public QObject
+void Repl::Acknowledge()
 {
- public:
-  Repl(QObject *parent=0,const char *name=0);
-
- private:
-  void Authenticate();
-  void Export();
-  void Import();
-  void Acknowledge();
-  void Exit(int code);
-  void XmlExit(const QString &str,int code,
-	       RDAudioConvert::ErrorCode err=RDAudioConvert::ErrorOk);
-  RDFormPost *repl_post;
-  RDConfig *repl_config;
-  RDSystem *repl_system;
-  RDReplicator *repl_replicator;
-};
-
-
-#endif  // RDREPL_H
+  RDReplConveyor *conv=new RDReplConveyor(repl_replicator->name());
+  conv->popNextPackage(RDReplConveyor::Outbound);
+  XmlExit("OK",200);
+}

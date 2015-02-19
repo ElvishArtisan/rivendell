@@ -843,6 +843,18 @@ bool RDCopy(const QString &srcfile,const QString &destfile)
 }
 
 
+bool RDCopy(FILE *src_stream,FILE *dest_stream)
+{
+  char buffer[8192];
+  size_t n;
+
+  while((n=fread(buffer,1,8192,src_stream))>0) {
+    fwrite(buffer,1,n,dest_stream);
+  }
+  return feof(src_stream)!=0;
+}
+
+
 bool RDMove(const QString &srcfile,const QString &destfile)
 {
   bool ret=false;

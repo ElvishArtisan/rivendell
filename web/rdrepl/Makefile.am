@@ -28,7 +28,8 @@ libexec_PROGRAMS = rdrepl.cgi
 install-exec-hook:	
 	if test -z $(DESTDIR) ; then chown root $(DESTDIR)$(libexecdir)/rdrepl.cgi ; chmod 4755 $(DESTDIR)$(libexecdir)/rdrepl.cgi ; fi
 
-dist_rdrepl_cgi_SOURCES = export.cpp\
+dist_rdrepl_cgi_SOURCES = ack.cpp\
+                          export.cpp\
                           import.cpp\
                           rdrepl.cpp rdrepl.h
 

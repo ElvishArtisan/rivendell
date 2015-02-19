@@ -44,6 +44,8 @@
 Repl::Repl(QObject *parent,const char *name)
   :QObject(parent,name)
 {
+  repl_replicator=NULL;
+
   //
   // Read Configuration
   //
@@ -132,9 +134,7 @@ Repl::Repl(QObject *parent,const char *name)
   //
   // Authenticate Connection
   //
-  if(!Authenticate()) {
-    XmlExit("Invalid login",403);
-  }
+  Authenticate();
 
   //
   // Read Command Variable and Dispatch 
@@ -149,6 +149,10 @@ Repl::Repl(QObject *parent,const char *name)
     Import();
     break;
 
+  case RDREPL_COMMAND_ACK:
+    Acknowledge();
+    break;
+
   default:
     printf("Content-type: text/html\n\n");
     printf("rdrepl: missing/invalid command\n");
@@ -157,34 +161,28 @@ Repl::Repl(QObject *parent,const char *name)
     break;
   }
 
-  Exit(0);
+  XmlExit("OK",200);
 }
 
 
-bool Repl::Authenticate()
+void Repl::Authenticate()
 {
   QString name;
   QString passwd;
-  QString sql;
-  RDSqlQuery *q;
-  bool ret=false;
 
   if(!repl_post->getValue("REPLICATOR_NAME",&name)) {
-    return false;
+    XmlExit("Missing REPLICATOR_NAME",400);
   }
   if(!repl_post->getValue("PASSWORD",&passwd)) {
-    return false;
+    XmlExit("Missing PASSWORD",400);
   }
-  sql=QString("select URL_PASSWORD,TYPE_ID from REPLICATORS where ")+
-    "NAME=\""+RDEscapeString(name)+"\"";
-  q=new RDSqlQuery(sql);
-  if(q->first()) {
-    ret=(q->value(1).toInt()==RDReplicator::TypeRivendellSink)&&
-      (q->value(0).toString()==passwd);
+  repl_replicator=new RDReplicator(name);
+  if((!repl_replicator->exists())||(repl_replicator->urlPassword()!=passwd)) {
+    XmlExit("Invalid login",403);
   }
-  delete q;
-
-  return ret;
+  if(repl_replicator->type()!=RDReplicator::TypeRivendellSink) {
+    XmlExit("Inappropriate replicator type",400);
+  }
 }
 
 

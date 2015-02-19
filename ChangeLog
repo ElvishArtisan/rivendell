@@ -14744,3 +14744,10 @@
 	and 'lib/rdrepl_conveyor.h'.
 2015-02-19 Fred Gleason <fredg@paravelsystems.com>
 	* Added an error check for '--add-file' in 'tests/conveyor_test.cpp'.
+2015-02-19 Fred Gleason <fredg@paravelsystems.com>
+	* Added an additional 'RDCopy()' function in 'lib/rdconf.cpp' and
+	'lib/rdconf.h'.
+	* Implemented the RDREPL_COMMAND_IMPORT web method in
+	'web/rdrepl/import.cpp'.
+	* Implemented the RDREPL_COMMAND_ACK web method in
+	'web/rdrepl/ack.cpp'.

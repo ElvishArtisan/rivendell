@@ -90,6 +90,7 @@ QString RDGetTimeLength(int mseconds,bool leadzero=false,bool tenths=true);
 int RDSetTimeLength(const QString &string);
 #ifndef WIN32
 bool RDCopy(const QString &srcfile,const QString &destfile);
+bool RDCopy(FILE *src_stream,FILE *dest_stream);
 bool RDMove(const QString &srcfile,const QString &destfile);
 bool RDWritePid(const QString &dirname,const QString &filename,int owner=-1,
 		int group=-1);
