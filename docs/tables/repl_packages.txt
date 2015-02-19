@@ -6,6 +6,7 @@ conveyor queue.
 FIELD NAME           TYPE              REMARKS
 ------------------------------------------------------------------
 ID                   int signed(11)    Primary key, auto increment
+TYPE                 int unisgned(10)  0=Package, 1=Ack
 DIRECTION            int unsigned(10)  0=Inbound, 1=Outbound
 REPLICATOR_NAME      char(32)          From REPLICATORS.NAME
 DATESTAMP            datetime

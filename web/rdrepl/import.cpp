@@ -47,7 +47,7 @@ void Repl::Import()
   // Process Package
   //
   RDReplConveyor *conv=new RDReplConveyor(repl_replicator->name());
-  if(!conv->push(RDReplConveyor::Inbound,filename)) {
+  if(!conv->pushPackage(RDReplConveyor::Inbound,filename)) {
     XmlExit("Package import failed",500);
   }
   XmlExit("OK",200);

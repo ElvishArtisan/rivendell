@@ -2380,6 +2380,7 @@ bool CreateDb(QString name,QString pwd)
   //
   sql=QString("create table if not exists REPL_PACKAGES(")+
     "ID int auto_increment not null primary key,"+
+    "TYPE int unsigned not null,"+
     "DIRECTION int unsigned not null,"+
     "REPLICATOR_NAME char(32) not null,"+
     "DATESTAMP datetime not null,"+
@@ -8117,6 +8118,14 @@ int UpdateDb(int ver)
     q=new QSqlQuery(sql);
     delete q;
   }
+
+  if(ver<245) {
+    sql=QString("alter table REPL_PACKAGES add column ")+
+      "TYPE int unsigned not null after ID";
+    q=new QSqlQuery(sql);
+    delete q;
+  }
+
 
 
   // **** End of version updates ****

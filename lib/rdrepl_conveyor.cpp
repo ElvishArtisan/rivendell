@@ -33,7 +33,7 @@ RDReplConveyor::RDReplConveyor(const QString &repl_name)
 }
 
 
-bool RDReplConveyor::push(Direction dir,const QString &filename) const
+bool RDReplConveyor::pushPackage(Direction dir,const QString &filename) const
 {
   QString sql;
   RDSqlQuery *q;
@@ -41,6 +41,7 @@ bool RDReplConveyor::push(Direction dir,const QString &filename) const
   bool ret=true;
 
   sql=QString("insert into REPL_PACKAGES set ")+
+    QString().sprintf("TYPE=%u,",RDReplConveyor::Package)+
     QString().sprintf("DIRECTION=%u,",dir)+
     "REPLICATOR_NAME=\""+RDEscapeString(conv_repl_name)+"\","+
     "DATESTAMP=now()";
@@ -87,54 +88,33 @@ bool RDReplConveyor::nextPackageReady(int *id,Direction dir) const
 }
 
 
-bool RDReplConveyor::nextPackage(int *id,Direction dir,
-				 const QString &outfile) const
+void RDReplConveyor::ackNextPackage(Direction dir)
 {
   QString sql;
   RDSqlQuery *q;
-  bool ret=true;
+  int id=-1;
 
-  sql=QString("select ID from REPL_PACKAGES where ")+
-    QString().sprintf("(DIRECTION=%u)&&",dir)+
-    "(REPLICATOR_NAME=\""+RDEscapeString(conv_repl_name)+"\") "+
-    "order by ID";
-  q=new RDSqlQuery(sql);
-  if(q->first()) {
-    *id=q->value(0).toInt();
-    if(!RDCopy(RDReplConveyor::fileName(*id),outfile)) {
-      ret=false;
-      syslog(LOG_WARNING,"unable to retrive replicator package \"%s\"",
-	     (const char *)RDReplConveyor::fileName(*id));
-    }
+  if(nextPackageReady(&id,dir)) {
+    sql=QString("update REPL_PACKAGES set ")+
+      QString().sprintf("TYPE=%u ",RDReplConveyor::Ack)+
+      QString().sprintf("where ID=%d",id);
+    q=new RDSqlQuery(sql);
+    delete q;
   }
-  else {
-    ret=false;
-  }
-  delete q;
-
-  return ret;
-}
-
-
-void RDReplConveyor::pop(int id) const
-{
-  QString sql;
-  RDSqlQuery *q;
-
-  sql=QString().sprintf("delete from REPL_PACKAGES where ID=%d",id);
-  q=new RDSqlQuery(sql);
-  delete q;
-
-  unlink(fileName(id));
 }
 
 
 void RDReplConveyor::popNextPackage(Direction dir)
 {
+  QString sql;
+  RDSqlQuery *q;
   int id=-1;
 
   if(nextPackageReady(&id,dir)) {
-    pop(id);
+    sql=QString().sprintf("delete from REPL_PACKAGES where ID=%d",id);
+    q=new RDSqlQuery(sql);
+    delete q;
+    unlink(fileName(id));
   }
 }
 

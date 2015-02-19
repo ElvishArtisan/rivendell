@@ -25,6 +25,7 @@
 #include <qapplication.h>
 
 #include <rdcmd_switch.h>
+#include <rdconf.h>
 #include <rdconfig.h>
 #include <rddb.h>
 #include <rdrepl_conveyor.h>
@@ -139,14 +140,15 @@ MainObject::MainObject(QObject *parent)
   }
   RDReplConveyor *conv=new RDReplConveyor(repl_name);
   if(!add_file.isEmpty()) {
-    if(!conv->push(repl_direction,add_file)) {
+    if(!conv->pushPackage(repl_direction,add_file)) {
       fprintf(stderr,"conveyor_test: --add-file failed\n");
     }
   }
   if(!recv_file.isEmpty()) {
     int id=0;
-    if(conv->nextPackage(&id,repl_direction,recv_file)) {
-      conv->pop(id);
+    if(conv->nextPackageReady(&id,repl_direction)) {
+      RDCopy(RDReplConveyor::fileName(id),recv_file);
+      conv->popNextPackage(repl_direction);
     }
     else {
       fprintf(stderr,"conveyor_test: no package available\n");

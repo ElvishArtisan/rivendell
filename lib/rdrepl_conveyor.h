@@ -27,11 +27,11 @@ class RDReplConveyor
 {
  public:
   enum Direction {Inbound=0,Outbound=1};
+  enum Type {Package=0,Ack=1};
   RDReplConveyor(const QString &repl_name);
-  bool push(Direction dir,const QString &filename) const;
+  bool pushPackage(Direction dir,const QString &filename) const;
   bool nextPackageReady(int *id,Direction dir) const;
-  bool nextPackage(int *id,Direction dir,const QString &outfile) const;
-  void pop(int id) const;
+  void ackNextPackage(Direction dir);
   void popNextPackage(Direction dir);
   static QString fileName(int id);
 

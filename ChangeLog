@@ -14751,3 +14751,9 @@
 	'web/rdrepl/import.cpp'.
 	* Implemented the RDREPL_COMMAND_ACK web method in
 	'web/rdrepl/ack.cpp'.
+2015-02-19 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'REPL_PACKAGES.TYPE' field to the database.
+	* Incremented the database version to 245.
+2015-02-19 Fred Gleason <fredg@paravelsystems.com>
+	* Removed superfluous methods from 'RDReplConveyor' in
+	'lib/rdrepl_conveyor.cpp' and 'lib/rdrepl_conveyor.h'.
