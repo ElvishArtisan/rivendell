@@ -67,6 +67,7 @@ class SoftwareAuthority : public Switcher
   QString swa_username;
   QString swa_password;
   int swa_matrix;
+  int swa_card;
   int swa_ipport;
   int swa_inputs;
   int swa_outputs;

@@ -14769,3 +14769,7 @@
 	* Fixed a bug in 'lib/rdmatrix.cpp' that caused the configuration
 	for 'Software Authority Protocol' to grey out the 'IP Address'
 	field when creating a new matrix.
+2015-02-21 Fred Gleason <fredg@paravelsystems.com>
+	* Added support for selecting router number when using Software
+	Authority Protocol in 'ripcd/swauthority.cpp' and
+	'ripcd/swauthority.h'.

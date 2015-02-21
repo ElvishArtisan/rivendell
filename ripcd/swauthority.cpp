@@ -42,6 +42,7 @@ SoftwareAuthority::SoftwareAuthority(RDMatrix *matrix,QObject *parent,const char
   swa_porttype=matrix->portType(RDMatrix::Primary);
   swa_ipaddress=matrix->ipAddress(RDMatrix::Primary);
   swa_ipport=matrix->ipPort(RDMatrix::Primary);
+  swa_card=matrix->card();
   swa_inputs=0;
   swa_outputs=0;
   swa_gpis=matrix->gpis();
@@ -124,7 +125,7 @@ void SoftwareAuthority::processCommand(RDMacro *cmd)
 	  emit rmlEcho(cmd);
 	  return;
 	}
-	SendCommand(QString().sprintf("activateroute 1 %d %d",
+	SendCommand(QString().sprintf("activateroute %d %d %d",swa_card,
 				      cmd->arg(2).toInt(),cmd->arg(1).toInt()));
 	cmd->acknowledge(true);
 	emit rmlEcho(cmd);
@@ -294,9 +295,9 @@ void SoftwareAuthority::DispatchCommand()
   // Startup Sequence.  Get the input and output lists.
   //
   if(section=="login successful") {
-    sprintf(buffer,"sourcenames 1\x0D\x0A");  // Request Input List
+    sprintf(buffer,"sourcenames %d\x0D\x0A",swa_card);  // Request Input List
     SendCommand(buffer);
-    sprintf(buffer,"destnames 1\x0D\x0A");    // Request Output List
+    sprintf(buffer,"destnames %d\x0D\x0A",swa_card);    // Request Output List
     SendCommand(buffer);
     return;
   }
@@ -311,12 +312,12 @@ void SoftwareAuthority::DispatchCommand()
 
   switch(swa_istate) {
   case 0:   // No section selected
-    if(section=="begin sourcenames - 1") {
+    if(section==QString().sprintf("begin sourcenames - %d",swa_card)) {
       swa_istate=1;
       swa_inputs=0;
       return;
     }
-    if(section=="begin destnames - 1") {
+    if(section==QString().sprintf("begin destnames - %d",swa_card)) {
       swa_istate=2;
       swa_outputs=0;
       return;
@@ -324,7 +325,7 @@ void SoftwareAuthority::DispatchCommand()
     break;
 
   case 1:   // Source List
-    if(section=="end sourcenames - 1") {
+    if(section==QString().sprintf("end sourcenames - %d",swa_card)) {
       swa_istate=0;
       sql=QString("update MATRICES set ")+
 	QString().sprintf("INPUTS=%d ",swa_inputs)+
@@ -367,7 +368,7 @@ void SoftwareAuthority::DispatchCommand()
     break;
 
   case 2:   // Destinations List
-    if(section=="end destnames - 1") {
+    if(section==QString().sprintf("end destnames - %d",swa_card)) {
       swa_istate=0;
       sql=QString("update MATRICES set ")+
 	QString().sprintf("OUTPUTS=%d ",swa_outputs)+
