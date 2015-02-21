@@ -14765,3 +14765,7 @@
 2015-02-21 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in 'ripcd/swauthority.cpp' that failed to log
 	notification when reconnecting.
+2015-02-21 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'lib/rdmatrix.cpp' that caused the configuration
+	for 'Software Authority Protocol' to grey out the 'IP Address'
+	field when creating a new matrix.

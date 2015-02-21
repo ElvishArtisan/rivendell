@@ -64,7 +64,7 @@ bool __mx_primary_controls[RDMatrix::LastType][RDMatrix::LastControl]=
     {0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0},  // BT Sentinel 4 Web
     {0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0},  // BT GPI-16
     {0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0},  // Modem Lines
-    {0,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,1,1,1,1,0,0,0,0,0,0,0,0,0}   // Software Authority
+    {0,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,1,1,1,1,0,0,0,0,0,0,0,0,0}   // Software Authority
   };
 bool __mx_backup_controls[RDMatrix::LastType][RDMatrix::LastControl]=
   {
@@ -143,7 +143,7 @@ int __mx_default_values[RDMatrix::LastType][RDMatrix::LastControl]=
     {1,0,0,0,0,0,0,0,0,0,0,4,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0},   // BT Sentinel 4 Web
     {0,0,0,0,0,0,0,0,0,0,0,0,0,16,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0},  // BT GPI-16
     {0,0,0,0,0,0,0,0,0,0,0,0,0,4,2,0,0,0,0,0,0,0,0,0,0,0,0,1,0},   // Modem Lines
-    {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0}    // Software Authority
+    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0}    // Software Authority
   };
 
 RDMatrix::RDMatrix(const QString &station,int matrix)
