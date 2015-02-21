@@ -14762,3 +14762,6 @@
 	enumeration in 'lib/rdmatrix.cpp' and 'lib/rdmatrix.h'.
 	* Implemented a switcher driver for systems using Software Authority
 	Protocol in 'ripcd/swauthority.cpp' and 'ripcd/swauthority.h'.
+2015-02-21 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'ripcd/swauthority.cpp' that failed to log
+	notification when reconnecting.

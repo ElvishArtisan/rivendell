@@ -288,7 +288,7 @@ void SoftwareAuthority::DispatchCommand()
   //  LogLine(RDConfig::LogNotice,QString().sprintf("RECEIVED: %s",(const char *)swa_buffer));
 
   QString line_in=swa_buffer;
-  QString section=line_in.lower();
+  QString section=line_in.lower().replace(">>","");
 
   //
   // Startup Sequence.  Get the input and output lists.
@@ -311,12 +311,12 @@ void SoftwareAuthority::DispatchCommand()
 
   switch(swa_istate) {
   case 0:   // No section selected
-    if(section==">>begin sourcenames - 1") {
+    if(section=="begin sourcenames - 1") {
       swa_istate=1;
       swa_inputs=0;
       return;
     }
-    if(section==">>begin destnames - 1") {
+    if(section=="begin destnames - 1") {
       swa_istate=2;
       swa_outputs=0;
       return;
