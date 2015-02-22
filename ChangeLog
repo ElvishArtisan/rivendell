@@ -14776,3 +14776,7 @@
 2015-02-21 Fred Gleason <fredg@paravelsystems.com>
 	* Added support for GPIO to the Software Authority Protocol driver
 	in 'ripcd/swauthority.cpp' and 'ripcd/swauthority.h'.
+2015-02-22 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in 'rdairplay/log_play.cpp' that caused
+	the 'Play Tail' button to start from an incorrect position when
+	non-zero Start Marker position was set for the cut.

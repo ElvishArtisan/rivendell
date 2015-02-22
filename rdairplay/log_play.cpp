@@ -271,7 +271,7 @@ void LogPlay::auditionTail(int line)
   if(start_pos<0) {
     start_pos=0;
   }
-  play_audition_player->play(start_pos);
+  play_audition_player->play(start_pos-logline->startPoint());
 }
 
 
