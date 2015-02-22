@@ -14773,3 +14773,6 @@
 	* Added support for selecting router number when using Software
 	Authority Protocol in 'ripcd/swauthority.cpp' and
 	'ripcd/swauthority.h'.
+2015-02-21 Fred Gleason <fredg@paravelsystems.com>
+	* Added support for GPIO to the Software Authority Protocol driver
+	in 'ripcd/swauthority.cpp' and 'ripcd/swauthority.h'.

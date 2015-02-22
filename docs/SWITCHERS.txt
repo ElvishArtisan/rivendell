@@ -640,12 +640,15 @@ Driver Name: Software Authority Protocol
 
 Supported RML Commands:
   Switch Take ('ST')
+  GPO Set ('GO')
 
 GENERAL NOTES:
 Used to control devices (such as the Axia 'PathFinder' system) by means of
 the 'Software Authority' protocol.  Control is by means of a
-TCP/IP connection (typically to port 9500) on the controled system.  Most
-parameters, including the number of inputs and outputs as well as the
+TCP/IP connection (typically to port 9500) on the controled system.  The 'Card'
+parameter should be set to the 'Router Number' of the router to be controlled.
+
+Most parameters, including the number of inputs and outputs as well as the
 endpoint names, are autodetected by the driver.
 
 

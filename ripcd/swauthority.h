@@ -21,6 +21,7 @@
 #ifndef SWAUTHORITY_H
 #define SWAUTHORITY_H
 
+#include <map>
 #include <vector>
 
 #include <qsocket.h>
@@ -60,6 +61,7 @@ class SoftwareAuthority : public Switcher
   void DispatchCommand();
   void ExecuteMacroCart(unsigned cartnum);
   QString PrettifyCommand(const char *cmd) const;
+  QString BundleString(int offset,bool state);
   QSocket *swa_socket;
   char swa_buffer[SWAUTHORITY_MAX_LENGTH];
   unsigned swa_ptr;
@@ -78,6 +80,8 @@ class SoftwareAuthority : public Switcher
   unsigned swa_stop_cart;
   int swa_istate;
   RDMatrix::PortType swa_porttype;
+  std::map<int,QString> swa_gpi_states;
+  std::map<int,QString> swa_gpo_states;
 };
 
 

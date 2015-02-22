@@ -45,8 +45,8 @@ SoftwareAuthority::SoftwareAuthority(RDMatrix *matrix,QObject *parent,const char
   swa_card=matrix->card();
   swa_inputs=0;
   swa_outputs=0;
-  swa_gpis=matrix->gpis();
-  swa_gpos=matrix->gpos();
+  swa_gpis=0;
+  swa_gpos=0;
   swa_start_cart=matrix->startCart(RDMatrix::Primary);
   swa_stop_cart=matrix->stopCart(RDMatrix::Primary);
 
@@ -102,22 +102,9 @@ bool SoftwareAuthority::secondaryTtyActive()
 
 void SoftwareAuthority::processCommand(RDMacro *cmd)
 {
-  switch(cmd->command()) {
-    /*
-      case RDMacro::FS:
-	if((cmd->arg(1).toInt()<1)||(cmd->arg(1).toInt()>256)||
-	   (swa_porttype!=RDMatrix::TcpPort)) {
-	  cmd->acknowledge(false);
-	  emit rmlEcho(cmd);
-	  return;
-	}
-	snprintf(str,256,"%c1%03d\x0D\x0A",0x13,cmd->arg(1).toInt());
-	SendCommand(str);
-	cmd->acknowledge(true);
-	emit rmlEcho(cmd);
-	break;
+  QString str;
 
-    */
+  switch(cmd->command()) {
       case RDMacro::ST:
 	if((cmd->arg(1).toInt()<0)||(cmd->arg(1).toInt()>swa_inputs)||
 	   (cmd->arg(2).toInt()<1)||(cmd->arg(2).toInt()>swa_outputs)) {
@@ -130,58 +117,32 @@ void SoftwareAuthority::processCommand(RDMacro *cmd)
 	cmd->acknowledge(true);
 	emit rmlEcho(cmd);
 	break;
-	/*
+
       case RDMacro::GO:
-	if((cmd->arg(1).toString().lower()!="o")||
+	if(((cmd->arg(1).toString().lower()!="i")&&
+	    (cmd->arg(1).toString().lower()!="o"))||
 	   (cmd->arg(2).toInt()<1)||(cmd->arg(2).toInt()>swa_gpos)) {
 	  cmd->acknowledge(false);
 	  emit rmlEcho(cmd);
 	  return;
 	}
-	if(cmd->arg(4).toInt()==0) {   // Latch
-	  if(cmd->arg(3).toInt()==0) {   // Off
-	    cmd_byte=0x03;
-	  }
-	  else {
-	    cmd_byte=0x02;
-	  }
+	if(cmd->arg(1).toString().lower()=="i") {
+	  str="triggergpi";
 	}
 	else {
-	  if(cmd->arg(3).toInt()==0) {
-	    cmd->acknowledge(false);
-	    emit rmlEcho(cmd);
-	    return;
-	  }
-	  cmd_byte=0x01;
+	  str="triggergpo";
 	}
-	if(cmd->arg(2).toUInt()<swa_relay_numbers.size()) {
-	  if(swa_relay_numbers[cmd->arg(2).toUInt()-1]>=0) {
-	    snprintf(str,256,"\x05R%d%04d\x0D\x0A",cmd_byte,
-		    swa_relay_numbers[cmd->arg(2).toUInt()-1]);
-	    SendCommand(str);
-	    cmd->acknowledge(true);
-	    emit rmlEcho(cmd);
-	  }
-	  else {
-	    if((swa_console_numbers[cmd->arg(2).toUInt()-1]>=0)&&
-	       (swa_source_numbers[cmd->arg(2).toUInt()-1]>=0)) {
-	      if(cmd->arg(3).toInt()==0) {   // Off
-		cmd_byte=0;
-	      }
-	      else {
-		cmd_byte=1;
-	      }
-	      snprintf(str,256,"\x1A%s%d%03d%04d\x0D\x0A","20",cmd_byte,
-		      swa_console_numbers[cmd->arg(2).toUInt()-1],
-		      swa_source_numbers[cmd->arg(2).toUInt()-1]);
-	      SendCommand(str);
-	      cmd->acknowledge(true);
-	      emit rmlEcho(cmd);
-	    }
-	  }
+	str+=QString().sprintf(" %d",swa_card);
+	str+=QString().sprintf(" %d ",
+		      1+(cmd->arg(2).toInt()-1)/RD_LIVEWIRE_GPIO_BUNDLE_SIZE);
+	str+=BundleString((cmd->arg(2).toInt()-1)%RD_LIVEWIRE_GPIO_BUNDLE_SIZE,
+			  cmd->arg(3).toInt()!=0);
+	if(cmd->arg(4).toInt()>0) {   // Momentary
+	  str+=QString().sprintf(" %d",cmd->arg(4).toInt());
 	}
+	SendCommand(str);
 	break;
-    */
+
       default:
 	cmd->acknowledge(false);
 	emit rmlEcho(cmd);
@@ -295,6 +256,10 @@ void SoftwareAuthority::DispatchCommand()
   // Startup Sequence.  Get the input and output lists.
   //
   if(section=="login successful") {
+    sprintf(buffer,"gpistat %d\x0D\x0A",swa_card);      // Request GPI States
+    SendCommand(buffer);
+    sprintf(buffer,"gpostat %d\x0D\x0A",swa_card);      // Request GPO States
+    SendCommand(buffer);
     sprintf(buffer,"sourcenames %d\x0D\x0A",swa_card);  // Request Input List
     SendCommand(buffer);
     sprintf(buffer,"destnames %d\x0D\x0A",swa_card);    // Request Output List
@@ -326,6 +291,9 @@ void SoftwareAuthority::DispatchCommand()
 
   case 1:   // Source List
     if(section==QString().sprintf("end sourcenames - %d",swa_card)) {
+      //
+      // Write Sources Data
+      //
       swa_istate=0;
       sql=QString("update MATRICES set ")+
 	QString().sprintf("INPUTS=%d ",swa_inputs)+
@@ -369,6 +337,9 @@ void SoftwareAuthority::DispatchCommand()
 
   case 2:   // Destinations List
     if(section==QString().sprintf("end destnames - %d",swa_card)) {
+      //
+      // Write Destinations Data
+      //
       swa_istate=0;
       sql=QString("update MATRICES set ")+
 	QString().sprintf("OUTPUTS=%d ",swa_outputs)+
@@ -416,7 +387,56 @@ void SoftwareAuthority::DispatchCommand()
     delete q;
     q=new RDSqlQuery(sql);
     delete q;
+
+    //
+    // Write GPIO Data
+    //
+    sql=QString("update MATRICES set ")+
+      QString().sprintf("GPIS=%d,GPOS=%d where ",swa_gpis,swa_gpos)+
+      "(STATION_NAME=\""+RDEscapeString(rdstation->name())+"\")&&"+
+      QString().sprintf("(MATRIX=%d)",swa_matrix);
+    q=new RDSqlQuery(sql);
+    delete q;
     break;
+  }
+
+  //
+  // GPIO State Parser
+  //
+  f0=f0.split(" ",section);
+  if((f0.size()==4)&&(f0[0].lower()=="gpistat")&&(f0[1].toInt()==swa_card)) {
+    if(swa_gpi_states[f0[2].toInt()].isEmpty()) {
+      swa_gpi_states[f0[2].toInt()]=f0[3];
+      if((RD_LIVEWIRE_GPIO_BUNDLE_SIZE*f0[2].toInt())>swa_gpis) {
+	swa_gpis=RD_LIVEWIRE_GPIO_BUNDLE_SIZE*f0[2].toInt();
+      }
+    }
+    else {
+      for(unsigned i=0;i<RD_LIVEWIRE_GPIO_BUNDLE_SIZE;i++) {
+	int gpi=(f0[2].toInt()-1)*RD_LIVEWIRE_GPIO_BUNDLE_SIZE+i;
+	if(f0[3].at(i)!=swa_gpi_states[f0[2].toInt()].at(i)) {
+	  emit gpiChanged(swa_matrix,gpi,f0[3].at(i)=='l');
+	}
+      }
+      swa_gpi_states[f0[2].toInt()]=f0[3];
+    }
+  }
+  if((f0.size()==4)&&(f0[0].lower()=="gpostat")&&(f0[1].toInt()==swa_card)) {
+    if(swa_gpo_states[f0[2].toInt()].isEmpty()) {
+      swa_gpo_states[f0[2].toInt()]=f0[3];
+      if((RD_LIVEWIRE_GPIO_BUNDLE_SIZE*f0[2].toInt())>swa_gpos) {
+	swa_gpos=RD_LIVEWIRE_GPIO_BUNDLE_SIZE*f0[2].toInt();
+      }
+    }
+    else {
+      for(unsigned i=0;i<RD_LIVEWIRE_GPIO_BUNDLE_SIZE;i++) {
+	int gpo=(f0[2].toInt()-1)*RD_LIVEWIRE_GPIO_BUNDLE_SIZE+i;
+	if(f0[3].at(i)!=swa_gpo_states[f0[2].toInt()].at(i)) {
+	  emit gpoChanged(swa_matrix,gpo,f0[3].at(i)=='l');
+	}
+      }
+      swa_gpo_states[f0[2].toInt()]=f0[3];
+    }
   }
 }
 
@@ -443,5 +463,27 @@ QString SoftwareAuthority::PrettifyCommand(const char *cmd) const
   else {
     ret=cmd;
   }
+  return ret;
+}
+
+
+QString SoftwareAuthority::BundleString(int offset,bool state)
+{
+  QString ret="";
+
+  for(int i=0;i<RD_LIVEWIRE_GPIO_BUNDLE_SIZE;i++) {
+    if(i==offset) {
+      if(state) {
+	ret+="l";
+      }
+      else {
+	ret+="h";
+      }
+    }
+    else {
+      ret+="x";
+    }
+  }
+  
   return ret;
 }
