@@ -14789,3 +14789,5 @@
 	slots to be sorted in incorrect order.
 	* Renamed the 'STREAMING' column to 'ACTIVE' in
 	'rdadmin/view_node_info.cpp'.
+2015-02-23 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.10.2int05.
