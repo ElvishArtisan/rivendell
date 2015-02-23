@@ -25,8 +25,10 @@
 
 #include <vector>
 
+#include <qstring.h>
 #include <qobject.h>
 #include <qsocket.h>
+#include <qstringlist.h>
 #include <qtimer.h>
 
 #include <rd.h>
@@ -37,6 +39,16 @@
 #define RDLIVEWIRE_WATCHDOG_TIMEOUT 30000
 #define RDLIVEWIRE_RECONNECT_MIN_INTERVAL 5000
 #define RDLIVEWIRE_RECONNECT_MAX_INTERVAL 30000
+
+class AString : public QString
+{
+ public:
+  AString();
+  AString(const AString &lhs);
+  AString(const QString &lhs);  
+  QStringList split(const QString &sep,const QString &esc="") const;
+};
+
 
 class RDLiveWire : public QObject
 {
@@ -98,8 +110,6 @@ class RDLiveWire : public QObject
   void ReadGpis(const QString &cmd);
   void ReadGpos(const QString &cmd);
   void ReadGpioConfig(const QString &cmd);
-  int ParseString(const QString &str,int ptr,QString *tag,
-		  QString *value) const;
   QString PruneUrl(const QString &str);
   void ResetConnection();
   int GetHoldoff();

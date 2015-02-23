@@ -14780,3 +14780,12 @@
 	* Fixed a regression in 'rdairplay/log_play.cpp' that caused
 	the 'Play Tail' button to start from an incorrect position when
 	non-zero Start Marker position was set for the cut.
+2015-02-22 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'lib/rdlivewire.cpp' that caused long LWRP
+	messages to be truncated.
+	* Refactored parser code in 'lib/rdlivewire.cpp' for greater
+	robustness.
+	* Fixed a bug in 'rdadmin/view_node_info.cpp' that caused
+	slots to be sorted in incorrect order.
+	* Renamed the 'STREAMING' column to 'ACTIVE' in
+	'rdadmin/view_node_info.cpp'.

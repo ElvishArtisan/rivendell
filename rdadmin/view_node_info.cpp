@@ -193,7 +193,7 @@ ViewNodeInfo::ViewNodeInfo(QWidget *parent,const char *name)
   view_sources_view->setColumnAlignment(1,Qt::AlignCenter);
   view_sources_view->addColumn(tr("NAME"));
   view_sources_view->setColumnAlignment(2,Qt::AlignLeft);
-  view_sources_view->addColumn(tr("STREAMING"));
+  view_sources_view->addColumn(tr("ACTIVE"));
   view_sources_view->setColumnAlignment(3,Qt::AlignCenter);
   view_sources_view->addColumn(tr("SHAREABLE"));
   view_sources_view->setColumnAlignment(4,Qt::AlignCenter);
@@ -217,6 +217,7 @@ ViewNodeInfo::ViewNodeInfo(QWidget *parent,const char *name)
   view_destinations_view->setItemMargin(5);
   view_destinations_view->addColumn(tr("#"));
   view_destinations_view->setColumnAlignment(0,Qt::AlignCenter);
+  view_destinations_view->setColumnSortType(0,RDListView::LineSort);
   view_destinations_view->addColumn(tr("CHAN"));
   view_destinations_view->setColumnAlignment(1,Qt::AlignCenter);
   view_destinations_view->addColumn(tr("NAME"));
@@ -326,7 +327,7 @@ void ViewNodeInfo::closeData()
 
 void ViewNodeInfo::WriteSourceItem(RDLiveWireSource *src,RDListViewItem *item)
 {
-
+  item->setLine(src->slotNumber());
   item->setText(1,QString().sprintf("%05d",src->channelNumber()));
   item->setText(2,src->primaryName());
   if(src->rtpEnabled()) {
@@ -349,6 +350,7 @@ void ViewNodeInfo::WriteSourceItem(RDLiveWireSource *src,RDListViewItem *item)
 void ViewNodeInfo::WriteDestinationItem(RDLiveWireDestination *dst,
 					RDListViewItem *item)
 {
+  item->setLine(dst->slotNumber());
   item->
     setText(1,QString().sprintf("%05u",view_base_output+dst->slotNumber()-1));
   item->setText(2,dst->primaryName());
