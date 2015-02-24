@@ -1,6 +1,34 @@
 The NEWS file for the Rivendell package.
 
 -------------------------------------------------------------------------------
+v2.10.3 --  2/24/2015
+
+Changes:
+   New RLM.  Added a Rivendell Loadable Module for the Live365 'Add Song'
+   service.
+
+   New AsPlayed Reports.  Added 'Mr. Master' and 'Spin Count' reports.
+
+   Modem Lines Switcher Driver.  Added support for using RS-232C modem
+   handshake lines for GPIO.
+
+   Software Authority Switcher Driver.  Added support for switcher devices
+   using the 'Software Authority' protocol (such as PathFinder PC/PRO).
+
+   rdmarkerset(8) Enhancements.  Added the ability to set segue marker
+   positions in rdmarkerset(8).
+
+   Various other bug fixes.  See the ChangeLog for details.
+
+Database Update:
+   This version of Rivendell uses database schema version 242, and will
+   automatically upgrade any earlier versions.  To see the current schema
+   version prior to upgrade, see RDAdmin->SystemInfo.
+
+   As always, be sure to run RDAdmin immediately after upgrading to allow 
+   any necessary changes to the database schema to be applied.
+
+-------------------------------------------------------------------------------
 v2.10.2 --  11/26/2014
 
 Changes:
@@ -22,6 +50,7 @@ Database Update:
 
    As always, be sure to run RDAdmin immediately after upgrading to allow 
    any necessary changes to the database schema to be applied.
+
 -------------------------------------------------------------------------------
 v2.10.1 --  11/4/2014
 
