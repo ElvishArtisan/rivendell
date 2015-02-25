@@ -14794,3 +14794,6 @@
 2015-02-24 Fred Gleason <fredg@paravelsystems.com>
 	* Updated 'NEWS'.
 	* Incremented the package version to 2.10.3.
+2015-02-25 Fred Gleason <fredg@paravelsystems.com>
+	* Updated 'conf/rlm_padpoint.conf' to reflect new 'standard' port
+	value.
