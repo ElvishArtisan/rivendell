@@ -1,4 +1,4 @@
-// sasusi.cpp
+// sasusi3digit.cpp
 //
 // A Rivendell switcher driver for the SAS USI Protocol (3 digit)
 //

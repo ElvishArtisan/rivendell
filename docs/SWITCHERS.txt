@@ -25,6 +25,7 @@ Quartz Electronics Type 1 Routing Protocol
 Serial Port Modem Control Lines
 Sierra Automated Systems 32000 Audio Router
 Sierra Automated Systems 64000 Audio Router
+Sierra Automated Systems User Serial Interface (USI) (2 digit)
 Sierra Automated Systems User Serial Interface (USI) (3 digit)
 Sine Systems ACU-1 (Prophet version)
 Software Authority Protocol
@@ -588,6 +589,25 @@ RS-232' port on a GPI-1600 GPIO interface.  Serial port parameters
 should be set to 19200 baud rate, no parity, 8 data bits, 1 stop bit
 and no terminator.  This driver allows control of the system's GPO
 outputs as well as audio crosspoints.
+
+
+----------------------------------------------------------------------------
+SIERRA AUTOMATED SYSTEMS User Serial Interface (USI) (2 digit)
+
+Driver Name: SAS USI (2 digit)
+
+Supported RML Commands:
+  Switch Take ('ST')
+
+GENERAL NOTES:
+Control can done by means of an RS-232C connection to the 'User Serial
+Interface' port on the unit.  Serial port parameters should be:
+
+Baud Rate: 9600
+Parity: None
+Data Bits: 8
+Stop Bits: 1
+Terminator: None
 
 
 ----------------------------------------------------------------------------

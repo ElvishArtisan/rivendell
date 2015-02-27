@@ -52,6 +52,7 @@
 #include <sas32000.h>
 #include <sas64000.h>
 #include <sas64000gpi.h>
+#include <sasusi2digit.h>
 #include <sasusi3digit.h>
 #include <starguide3.h>
 #include <swauthority.h>
@@ -173,6 +174,10 @@ bool MainObject::LoadSwitchDriver(int matrix_num)
 
   case RDMatrix::Sas64000Gpi:
     ripcd_switcher[matrix_num]=new Sas64000Gpi(matrix,this);
+    break;
+
+  case RDMatrix::SasUsi2Digit:
+    ripcd_switcher[matrix_num]=new SasUsi2Digit(matrix,this);
     break;
 
   case RDMatrix::SasUsi3Digit:

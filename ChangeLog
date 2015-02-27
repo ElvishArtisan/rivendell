@@ -14800,3 +14800,5 @@
 2015-02-27 Fred Gleason <fredg@paravelsystems.com>
 	* Renamed the 'SAS User Serial Interface' driver to
 	'SAS USI (3 digit)'.
+	* Added an 'SAS USI (2 digit)' swticher driver in
+	'ripcd/sasusi2digit.cpp' and 'ripcd/sasusi2digit.h'.
