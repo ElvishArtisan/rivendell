@@ -14797,3 +14797,6 @@
 2015-02-25 Fred Gleason <fredg@paravelsystems.com>
 	* Updated 'conf/rlm_padpoint.conf' to reflect new 'standard' port
 	value.
+2015-02-27 Fred Gleason <fredg@paravelsystems.com>
+	* Renamed the 'SAS User Serial Interface' driver to
+	'SAS USI (3 digit)'.

@@ -603,8 +603,8 @@ QString RDMatrix::typeString(RDMatrix::Type type)
 	return QString("BroadcastTools ACS 8.2");
 	break;
 
-      case RDMatrix::SasUsi:
-	return QString("SAS User Serial Interface");
+      case RDMatrix::SasUsi3Digit:
+	return QString("SAS USI (3 digit)");
 	break;
 
       case RDMatrix::Bt16x2:

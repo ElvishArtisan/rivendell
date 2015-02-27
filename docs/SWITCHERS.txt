@@ -25,7 +25,7 @@ Quartz Electronics Type 1 Routing Protocol
 Serial Port Modem Control Lines
 Sierra Automated Systems 32000 Audio Router
 Sierra Automated Systems 64000 Audio Router
-Sierra Automated Systems Universal Serial Interface (USI)
+Sierra Automated Systems User Serial Interface (USI) (3 digit)
 Sine Systems ACU-1 (Prophet version)
 Software Authority Protocol
 StarGuide III Satellite Receiver
@@ -591,9 +591,9 @@ outputs as well as audio crosspoints.
 
 
 ----------------------------------------------------------------------------
-SIERRA AUTOMATED SYSTEMS Universal Serial Interface (USI)
+SIERRA AUTOMATED SYSTEMS User Serial Interface (USI) (3 digit)
 
-Driver Name: SAS User Serial Interface
+Driver Name: SAS USI (3 digit)
 
 Supported RML Commands:
   Switch Take ('ST')

@@ -1,10 +1,8 @@
 // sasusi.cpp
 //
-// A Rivendell switcher driver for the SAS User Serial Interface Protocol
+// A Rivendell switcher driver for the SAS USI Protocol (3 digit)
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: sasusi.cpp,v 1.24 2011/12/28 18:59:19 cvs Exp $
+//   (C) Copyright 2002-2015 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -23,9 +21,9 @@
 #include <stdlib.h>
 #include <rddb.h>
 #include <globals.h>
-#include <sasusi.h>
+#include <sasusi3digit.h>
 
-SasUsi::SasUsi(RDMatrix *matrix,QObject *parent,const char *name)
+SasUsi3Digit::SasUsi3Digit(RDMatrix *matrix,QObject *parent,const char *name)
   : Switcher(matrix,parent,name)
 {
   QString sql;
@@ -104,37 +102,37 @@ SasUsi::SasUsi(RDMatrix *matrix,QObject *parent,const char *name)
 }
 
 
-RDMatrix::Type SasUsi::type()
+RDMatrix::Type SasUsi3Digit::type()
 {
-  return RDMatrix::SasUsi;
+  return RDMatrix::SasUsi3Digit;
 }
 
 
-unsigned SasUsi::gpiQuantity()
+unsigned SasUsi3Digit::gpiQuantity()
 {
   return sas_gpis;
 }
 
 
-unsigned SasUsi::gpoQuantity()
+unsigned SasUsi3Digit::gpoQuantity()
 {
   return sas_gpos;
 }
 
 
-bool SasUsi::primaryTtyActive()
+bool SasUsi3Digit::primaryTtyActive()
 {
   return sas_porttype==RDMatrix::TtyPort;
 }
 
 
-bool SasUsi::secondaryTtyActive()
+bool SasUsi3Digit::secondaryTtyActive()
 {
   return false;
 }
 
 
-void SasUsi::processCommand(RDMacro *cmd)
+void SasUsi3Digit::processCommand(RDMacro *cmd)
 {
   char str[256];
   char cmd_byte;
@@ -326,13 +324,13 @@ void SasUsi::processCommand(RDMacro *cmd)
 }
 
 
-void SasUsi::ipConnect()
+void SasUsi3Digit::ipConnect()
 {
   sas_socket->connectToHost(sas_ipaddress.toString(),sas_ipport);
 }
 
 
-void SasUsi::connectedData()
+void SasUsi3Digit::connectedData()
 {
   LogLine(RDConfig::LogInfo,QString().
 	  sprintf("Connection to SasUsi device at %s:%d established",
@@ -344,7 +342,7 @@ void SasUsi::connectedData()
 }
 
 
-void SasUsi::connectionClosedData()
+void SasUsi3Digit::connectionClosedData()
 {
   LogLine(RDConfig::LogNotice,QString().
 	  sprintf("Connection to SasUsi device at %s:%d closed unexpectedly, attempting reconnect",
@@ -353,11 +351,11 @@ void SasUsi::connectionClosedData()
   if(sas_stop_cart>0) {
     ExecuteMacroCart(sas_stop_cart);
   }
-  sas_reconnect_timer->start(SASUSI_RECONNECT_INTERVAL,true);
+  sas_reconnect_timer->start(SASUSI3DIGIT_RECONNECT_INTERVAL,true);
 }
 
 
-void SasUsi::readyReadData()
+void SasUsi3Digit::readyReadData()
 {
   char buffer[256];
   unsigned n;
@@ -371,7 +369,7 @@ void SasUsi::readyReadData()
 	sas_ptr=0;
       }
       else {
-	if(sas_ptr==SASUSI_MAX_LENGTH) {  // Buffer overflow
+	if(sas_ptr==SASUSI3DIGIT_MAX_LENGTH) {  // Buffer overflow
 	  sas_ptr=0;
 	}
 	sas_buffer[sas_ptr++]=buffer[i];
@@ -381,7 +379,7 @@ void SasUsi::readyReadData()
 }
 
 
-void SasUsi::errorData(int err)
+void SasUsi3Digit::errorData(int err)
 {
   switch((QSocket::Error)err) {
       case QSocket::ErrConnectionRefused:
@@ -389,7 +387,7 @@ void SasUsi::errorData(int err)
 	  "Connection to SasUsi device at %s:%d refused, attempting reconnect",
 		  (const char *)sas_ipaddress.toString(),
 		  sas_ipport));
-	sas_reconnect_timer->start(SASUSI_RECONNECT_INTERVAL,true);
+	sas_reconnect_timer->start(SASUSI3DIGIT_RECONNECT_INTERVAL,true);
 	break;
 
       case QSocket::ErrHostNotFound:
@@ -409,7 +407,7 @@ void SasUsi::errorData(int err)
 }
 
 
-void SasUsi::SendCommand(char *str)
+void SasUsi3Digit::SendCommand(char *str)
 {
   LogLine(RDConfig::LogDebug,QString().sprintf("sending USI cmd: %s",(const char *)PrettifyCommand(str)));
   switch(sas_porttype) {
@@ -427,9 +425,9 @@ void SasUsi::SendCommand(char *str)
 }
 
 
-void SasUsi::DispatchCommand()
+void SasUsi3Digit::DispatchCommand()
 {
-  char buffer[SASUSI_MAX_LENGTH];
+  char buffer[SASUSI3DIGIT_MAX_LENGTH];
   unsigned input;
   unsigned output;
   int line;
@@ -615,7 +613,7 @@ void SasUsi::DispatchCommand()
 }
 
 
-void SasUsi::ExecuteMacroCart(unsigned cartnum)
+void SasUsi3Digit::ExecuteMacroCart(unsigned cartnum)
 {
   RDMacro rml;
   rml.setRole(RDMacro::Cmd);
@@ -628,7 +626,7 @@ void SasUsi::ExecuteMacroCart(unsigned cartnum)
 }
 
 
-QString SasUsi::PrettifyCommand(const char *cmd) const
+QString SasUsi3Digit::PrettifyCommand(const char *cmd) const
 {
   QString ret;
   if(cmd[0]<26) {
