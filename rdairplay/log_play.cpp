@@ -1445,9 +1445,9 @@ void LogPlay::graceTimerData()
 
 void LogPlay::playStateChangedData(int id,RDPlayDeck::State state)
 {
-  //#ifdef SHOW_SLOTS
+#ifdef SHOW_SLOTS
   printf("playStateChangedData(%d,%d), log: %s\n",id,state,(const char *)logName());
-  //#endif
+#endif
   switch(state) {
       case RDPlayDeck::Playing:
 	Playing(id);
@@ -1842,11 +1842,11 @@ bool LogPlay::StartEvent(int line,RDLogLine::TransType trans_type,
 	  rdevent_player->
 	    exec(logline->resolveWildcards(play_start_rml[aport]));
 	}
-
+	/*
 	printf("channelStarted(%d,%d,%d,%d)\n",
 	       play_id,playdeck->channel(),
 	       playdeck->card(),playdeck->port());
-
+	*/
 	emit channelStarted(play_id,playdeck->channel(),
 			    playdeck->card(),playdeck->port());
 	LogLine(RDConfig::LogInfo,QString().sprintf(
@@ -2757,12 +2757,12 @@ void LogPlay::ClearChannel(int deckid)
 
   if(play_deck[deckid]->channel()>=0) {
     rdevent_player->exec(play_stop_rml[play_deck[deckid]->channel()]);
-
+    /*
     printf("Deck: %d  channelStopped(%d,%d,%d,%d\n",deckid,
 	   play_id,play_deck[deckid]->channel(),
 	   play_deck[deckid]->card(),
 	   play_deck[deckid]->port());
-
+    */
     emit channelStopped(play_id,play_deck[deckid]->channel(),
 			play_deck[deckid]->card(),
 			play_deck[deckid]->port());
