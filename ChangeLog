@@ -14802,3 +14802,8 @@
 	'SAS USI (3 digit)'.
 	* Added an 'SAS USI (2 digit)' swticher driver in
 	'ripcd/sasusi2digit.cpp' and 'ripcd/sasusi2digit.h'.
+2015-03-04 Fred Gleason <fredg@paravelsystems.com>
+	* Added support for 'scp' and 'sftp' protocols in
+	'rdcatch/edit_upload.cpp'.
+	* Added support for 'scp' and 'sftp' protocols in
+	'rdcatch/edit_download.cpp'.
