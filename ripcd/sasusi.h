@@ -1,4 +1,4 @@
-// sasusi3digit.h
+// sasusi.h
 //
 // A Rivendell switcher driver for the SAS USI Protocol (3 digit)
 //
@@ -18,8 +18,8 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#ifndef SASUSI3DIGIT_H
-#define SASUSI3DIGIT_H
+#ifndef SASUSI_H
+#define SASUSI_H
 
 #include <vector>
 
@@ -34,14 +34,14 @@
 
 #include <switcher.h>
 
-#define SASUSI3DIGIT_RECONNECT_INTERVAL 10000
-#define SASUSI3DIGIT_MAX_LENGTH 256
+#define SASUSI_RECONNECT_INTERVAL 10000
+#define SASUSI_MAX_LENGTH 256
 
-class SasUsi3Digit : public Switcher
+class SasUsi : public Switcher
 {
  Q_OBJECT
  public:
-  SasUsi3Digit(RDMatrix *matrix,QObject *parent=0,const char *name=0);
+  SasUsi(RDMatrix *matrix,QObject *parent=0,const char *name=0);
   RDMatrix::Type type();
   unsigned gpiQuantity();
   unsigned gpoQuantity();
@@ -63,7 +63,7 @@ class SasUsi3Digit : public Switcher
   QString PrettifyCommand(const char *cmd) const;
   RDTTYDevice *sas_device;
   QSocket *sas_socket;
-  char sas_buffer[SASUSI3DIGIT_MAX_LENGTH];
+  char sas_buffer[SASUSI_MAX_LENGTH];
   unsigned sas_ptr;
   QHostAddress sas_ipaddress;
   int sas_matrix;
@@ -82,4 +82,4 @@ class SasUsi3Digit : public Switcher
 };
 
 
-#endif  // SASUSI3DIGIT_H
+#endif  // SASUSI_H

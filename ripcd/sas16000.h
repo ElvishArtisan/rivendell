@@ -1,6 +1,6 @@
-// sasusi2digit.h
+// sas16000.h
 //
-// A Rivendell switcher driver for the SAS USI Protocol (2 digit)
+// A Rivendell switcher driver for the SAS 16000(D) Audio Switcher
 //
 //   (C) Copyright 2002-2015 Fred Gleason <fredg@paravelsystems.com>
 //
@@ -18,8 +18,8 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#ifndef SASUSI2DIGIT_H
-#define SASUSI2DIGIT_H
+#ifndef SAS16000_H
+#define SAS16000_H
 
 #include <vector>
 
@@ -33,13 +33,13 @@
 
 #include <switcher.h>
 
-#define SASUSI2DIGIT_MAX_LENGTH 256
+#define SAS16000_MAX_LENGTH 256
 
-class SasUsi2Digit : public Switcher
+class Sas16000 : public Switcher
 {
  Q_OBJECT
  public:
-  SasUsi2Digit(RDMatrix *matrix,QObject *parent=0,const char *name=0);
+  Sas16000(RDMatrix *matrix,QObject *parent=0,const char *name=0);
   RDMatrix::Type type();
   unsigned gpiQuantity();
   unsigned gpoQuantity();
@@ -51,7 +51,7 @@ class SasUsi2Digit : public Switcher
   void SendCommand(char *str);
   QString PrettifyCommand(const char *cmd) const;
   RDTTYDevice *sas_device;
-  char sas_buffer[SASUSI2DIGIT_MAX_LENGTH];
+  char sas_buffer[SAS16000_MAX_LENGTH];
   unsigned sas_ptr;
   int sas_matrix;
   int sas_ipport;
@@ -62,4 +62,4 @@ class SasUsi2Digit : public Switcher
 };
 
 
-#endif  // SASUSI2DIGIT_H
+#endif  // SAS16000_H

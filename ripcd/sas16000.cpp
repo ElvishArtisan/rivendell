@@ -1,4 +1,4 @@
-// sasusi2digit.cpp
+// sas16000.cpp
 //
 // A Rivendell switcher driver for the SAS USI Protocol (2 digit)
 //
@@ -21,9 +21,9 @@
 #include <stdlib.h>
 #include <rddb.h>
 #include <globals.h>
-#include <sasusi2digit.h>
+#include <sas16000.h>
 
-SasUsi2Digit::SasUsi2Digit(RDMatrix *matrix,QObject *parent,const char *name)
+Sas16000::Sas16000(RDMatrix *matrix,QObject *parent,const char *name)
   : Switcher(matrix,parent,name)
 {
   RDTty *tty;
@@ -54,37 +54,37 @@ SasUsi2Digit::SasUsi2Digit(RDMatrix *matrix,QObject *parent,const char *name)
 }
 
 
-RDMatrix::Type SasUsi2Digit::type()
+RDMatrix::Type Sas16000::type()
 {
-  return RDMatrix::SasUsi2Digit;
+  return RDMatrix::Sas16000;
 }
 
 
-unsigned SasUsi2Digit::gpiQuantity()
+unsigned Sas16000::gpiQuantity()
 {
   return sas_gpis;
 }
 
 
-unsigned SasUsi2Digit::gpoQuantity()
+unsigned Sas16000::gpoQuantity()
 {
   return sas_gpos;
 }
 
 
-bool SasUsi2Digit::primaryTtyActive()
+bool Sas16000::primaryTtyActive()
 {
   return true;
 }
 
 
-bool SasUsi2Digit::secondaryTtyActive()
+bool Sas16000::secondaryTtyActive()
 {
   return false;
 }
 
 
-void SasUsi2Digit::processCommand(RDMacro *cmd)
+void Sas16000::processCommand(RDMacro *cmd)
 {
   char str[256];
 
@@ -111,7 +111,7 @@ void SasUsi2Digit::processCommand(RDMacro *cmd)
 }
 
 
-void SasUsi2Digit::SendCommand(char *str)
+void Sas16000::SendCommand(char *str)
 {
   LogLine(RDConfig::LogDebug,QString().sprintf("sending USI cmd: %s",(const char *)PrettifyCommand(str)));
 
@@ -119,7 +119,7 @@ void SasUsi2Digit::SendCommand(char *str)
 }
 
 
-QString SasUsi2Digit::PrettifyCommand(const char *cmd) const
+QString Sas16000::PrettifyCommand(const char *cmd) const
 {
   QString ret;
   if(cmd[0]<26) {

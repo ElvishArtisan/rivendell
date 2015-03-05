@@ -1,4 +1,4 @@
-// sasusi3digit.cpp
+// sasusi.cpp
 //
 // A Rivendell switcher driver for the SAS USI Protocol (3 digit)
 //
@@ -21,9 +21,9 @@
 #include <stdlib.h>
 #include <rddb.h>
 #include <globals.h>
-#include <sasusi3digit.h>
+#include <sasusi.h>
 
-SasUsi3Digit::SasUsi3Digit(RDMatrix *matrix,QObject *parent,const char *name)
+SasUsi::SasUsi(RDMatrix *matrix,QObject *parent,const char *name)
   : Switcher(matrix,parent,name)
 {
   QString sql;
@@ -102,37 +102,37 @@ SasUsi3Digit::SasUsi3Digit(RDMatrix *matrix,QObject *parent,const char *name)
 }
 
 
-RDMatrix::Type SasUsi3Digit::type()
+RDMatrix::Type SasUsi::type()
 {
-  return RDMatrix::SasUsi3Digit;
+  return RDMatrix::SasUsi;
 }
 
 
-unsigned SasUsi3Digit::gpiQuantity()
+unsigned SasUsi::gpiQuantity()
 {
   return sas_gpis;
 }
 
 
-unsigned SasUsi3Digit::gpoQuantity()
+unsigned SasUsi::gpoQuantity()
 {
   return sas_gpos;
 }
 
 
-bool SasUsi3Digit::primaryTtyActive()
+bool SasUsi::primaryTtyActive()
 {
   return sas_porttype==RDMatrix::TtyPort;
 }
 
 
-bool SasUsi3Digit::secondaryTtyActive()
+bool SasUsi::secondaryTtyActive()
 {
   return false;
 }
 
 
-void SasUsi3Digit::processCommand(RDMacro *cmd)
+void SasUsi::processCommand(RDMacro *cmd)
 {
   char str[256];
   char cmd_byte;
@@ -324,13 +324,13 @@ void SasUsi3Digit::processCommand(RDMacro *cmd)
 }
 
 
-void SasUsi3Digit::ipConnect()
+void SasUsi::ipConnect()
 {
   sas_socket->connectToHost(sas_ipaddress.toString(),sas_ipport);
 }
 
 
-void SasUsi3Digit::connectedData()
+void SasUsi::connectedData()
 {
   LogLine(RDConfig::LogInfo,QString().
 	  sprintf("Connection to SasUsi device at %s:%d established",
@@ -342,7 +342,7 @@ void SasUsi3Digit::connectedData()
 }
 
 
-void SasUsi3Digit::connectionClosedData()
+void SasUsi::connectionClosedData()
 {
   LogLine(RDConfig::LogNotice,QString().
 	  sprintf("Connection to SasUsi device at %s:%d closed unexpectedly, attempting reconnect",
@@ -351,11 +351,11 @@ void SasUsi3Digit::connectionClosedData()
   if(sas_stop_cart>0) {
     ExecuteMacroCart(sas_stop_cart);
   }
-  sas_reconnect_timer->start(SASUSI3DIGIT_RECONNECT_INTERVAL,true);
+  sas_reconnect_timer->start(SASUSI_RECONNECT_INTERVAL,true);
 }
 
 
-void SasUsi3Digit::readyReadData()
+void SasUsi::readyReadData()
 {
   char buffer[256];
   unsigned n;
@@ -369,7 +369,7 @@ void SasUsi3Digit::readyReadData()
 	sas_ptr=0;
       }
       else {
-	if(sas_ptr==SASUSI3DIGIT_MAX_LENGTH) {  // Buffer overflow
+	if(sas_ptr==SASUSI_MAX_LENGTH) {  // Buffer overflow
 	  sas_ptr=0;
 	}
 	sas_buffer[sas_ptr++]=buffer[i];
@@ -379,7 +379,7 @@ void SasUsi3Digit::readyReadData()
 }
 
 
-void SasUsi3Digit::errorData(int err)
+void SasUsi::errorData(int err)
 {
   switch((QSocket::Error)err) {
       case QSocket::ErrConnectionRefused:
@@ -387,7 +387,7 @@ void SasUsi3Digit::errorData(int err)
 	  "Connection to SasUsi device at %s:%d refused, attempting reconnect",
 		  (const char *)sas_ipaddress.toString(),
 		  sas_ipport));
-	sas_reconnect_timer->start(SASUSI3DIGIT_RECONNECT_INTERVAL,true);
+	sas_reconnect_timer->start(SASUSI_RECONNECT_INTERVAL,true);
 	break;
 
       case QSocket::ErrHostNotFound:
@@ -407,7 +407,7 @@ void SasUsi3Digit::errorData(int err)
 }
 
 
-void SasUsi3Digit::SendCommand(char *str)
+void SasUsi::SendCommand(char *str)
 {
   LogLine(RDConfig::LogDebug,QString().sprintf("sending USI cmd: %s",(const char *)PrettifyCommand(str)));
   switch(sas_porttype) {
@@ -425,9 +425,9 @@ void SasUsi3Digit::SendCommand(char *str)
 }
 
 
-void SasUsi3Digit::DispatchCommand()
+void SasUsi::DispatchCommand()
 {
-  char buffer[SASUSI3DIGIT_MAX_LENGTH];
+  char buffer[SASUSI_MAX_LENGTH];
   unsigned input;
   unsigned output;
   int line;
@@ -613,7 +613,7 @@ void SasUsi3Digit::DispatchCommand()
 }
 
 
-void SasUsi3Digit::ExecuteMacroCart(unsigned cartnum)
+void SasUsi::ExecuteMacroCart(unsigned cartnum)
 {
   RDMacro rml;
   rml.setRole(RDMacro::Cmd);
@@ -626,7 +626,7 @@ void SasUsi3Digit::ExecuteMacroCart(unsigned cartnum)
 }
 
 
-QString SasUsi3Digit::PrettifyCommand(const char *cmd) const
+QString SasUsi::PrettifyCommand(const char *cmd) const
 {
   QString ret;
   if(cmd[0]<26) {

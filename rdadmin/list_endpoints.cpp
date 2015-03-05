@@ -138,7 +138,7 @@ ListEndpoints::ListEndpoints(RDMatrix *matrix,RDMatrix::Endpoint endpoint,
       list_list_view->setColumnAlignment(3,Qt::AlignHCenter);
       break;
 
-    case RDMatrix::SasUsi3Digit:
+    case RDMatrix::SasUsi:
       list_readonly=true;
       break;
 

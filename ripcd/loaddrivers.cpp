@@ -49,11 +49,11 @@
 #include <local_gpio.h>
 #include <modemlines.h>
 #include <quartz1.h>
+#include <sas16000.h>
 #include <sas32000.h>
 #include <sas64000.h>
 #include <sas64000gpi.h>
-#include <sasusi2digit.h>
-#include <sasusi3digit.h>
+#include <sasusi.h>
 #include <starguide3.h>
 #include <swauthority.h>
 #include <unity4000.h>
@@ -164,6 +164,10 @@ bool MainObject::LoadSwitchDriver(int matrix_num)
     ripcd_switcher[matrix_num]=new Quartz1(matrix,this);
     break;
 
+  case RDMatrix::Sas16000:
+    ripcd_switcher[matrix_num]=new Sas16000(matrix,this);
+    break;
+
   case RDMatrix::Sas32000:
     ripcd_switcher[matrix_num]=new Sas32000(matrix,this);
     break;
@@ -176,12 +180,8 @@ bool MainObject::LoadSwitchDriver(int matrix_num)
     ripcd_switcher[matrix_num]=new Sas64000Gpi(matrix,this);
     break;
 
-  case RDMatrix::SasUsi2Digit:
-    ripcd_switcher[matrix_num]=new SasUsi2Digit(matrix,this);
-    break;
-
-  case RDMatrix::SasUsi3Digit:
-    ripcd_switcher[matrix_num]=new SasUsi3Digit(matrix,this);
+  case RDMatrix::SasUsi:
+    ripcd_switcher[matrix_num]=new SasUsi(matrix,this);
     break;
 
   case RDMatrix::SoftwareAuthority:

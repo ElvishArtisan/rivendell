@@ -63,8 +63,8 @@ dist_ripcd_SOURCES = acu1p.cpp acu1p.h\
                      sas32000.cpp sas32000.h\
                      sas64000.cpp sas64000.h\
                      sas64000gpi.cpp sas64000gpi.h\
-                     sasusi2digit.cpp sasusi2digit.h\
-                     sasusi3digit.cpp sasusi3digit.h\
+                     sas16000.cpp sas16000.h\
+                     sasusi.cpp sasusi.h\
                      starguide3.cpp starguide3.h\
                      starguide_feed.cpp starguide_feed.h\
                      swauthority.cpp swauthority.h\
@@ -102,8 +102,8 @@ nodist_ripcd_SOURCES = moc_am16.cpp\
                        moc_sas32000.cpp\
                        moc_sas64000.cpp\
                        moc_sas64000gpi.cpp\
-                       moc_sasusi2digit.cpp\
-                       moc_sasusi3digit.cpp\
+                       moc_sas16000.cpp\
+                       moc_sasusi.cpp\
                        moc_starguide3.cpp\
                        moc_swauthority.cpp\
                        moc_switcher.cpp\

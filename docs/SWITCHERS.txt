@@ -23,10 +23,10 @@ Local Audio Adapter
 Logitek vGuest
 Quartz Electronics Type 1 Routing Protocol
 Serial Port Modem Control Lines
+Sierra Automated Systems 16000(D) Audio Router
 Sierra Automated Systems 32000 Audio Router
 Sierra Automated Systems 64000 Audio Router
-Sierra Automated Systems User Serial Interface (USI) (2 digit)
-Sierra Automated Systems User Serial Interface (USI) (3 digit)
+Sierra Automated Systems User Serial Interface (USI)
 Sine Systems ACU-1 (Prophet version)
 Software Authority Protocol
 StarGuide III Satellite Receiver
@@ -537,6 +537,26 @@ device.  The lines map as follows:
 
 
 ----------------------------------------------------------------------------
+SIERRA AUTOMATED SYSTEMS 16000(D) AUDIO ROUTER
+
+Driver Name: SAS 16000(D)
+
+Supported RML Commands:
+  Switch Take ('ST')
+
+GENERAL NOTES:
+Both analog and AES3 digital (D) variants are supported.  Control can done
+by means of an RS-232C connection to the 'User Serial Interface' port on
+the unit.  Serial port parameters should be:
+
+Baud Rate: 9600
+Parity: None
+Data Bits: 8
+Stop Bits: 1
+Terminator: None
+
+
+----------------------------------------------------------------------------
 SIERRA AUTOMATED SYSTEMS 32000 AUDIO ROUTER
 
 Driver Name: SAS 32000
@@ -592,28 +612,9 @@ outputs as well as audio crosspoints.
 
 
 ----------------------------------------------------------------------------
-SIERRA AUTOMATED SYSTEMS User Serial Interface (USI) (2 digit)
+SIERRA AUTOMATED SYSTEMS User Serial Interface (USI)
 
-Driver Name: SAS USI (2 digit)
-
-Supported RML Commands:
-  Switch Take ('ST')
-
-GENERAL NOTES:
-Control can done by means of an RS-232C connection to the 'User Serial
-Interface' port on the unit.  Serial port parameters should be:
-
-Baud Rate: 9600
-Parity: None
-Data Bits: 8
-Stop Bits: 1
-Terminator: None
-
-
-----------------------------------------------------------------------------
-SIERRA AUTOMATED SYSTEMS User Serial Interface (USI) (3 digit)
-
-Driver Name: SAS USI (3 digit)
+Driver Name: SAS USI
 
 Supported RML Commands:
   Switch Take ('ST')
