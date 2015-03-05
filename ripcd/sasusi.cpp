@@ -1,6 +1,6 @@
 // sasusi.cpp
 //
-// A Rivendell switcher driver for the SAS USI Protocol (3 digit)
+// A Rivendell switcher driver for the SAS USI Protocol
 //
 //   (C) Copyright 2002-2015 Fred Gleason <fredg@paravelsystems.com>
 //
@@ -258,7 +258,7 @@ void SasUsi::processCommand(RDMacro *cmd)
 	  emit rmlEcho(cmd);
 	  return;
 	}
-	snprintf(str,256,"%c%03d%03d\x0D\x0A",20,
+	snprintf(str,256,"%cT%04d%04d\x0D\x0A",5,
 		cmd->arg(1).toInt(),cmd->arg(2).toInt());
 	SendCommand(str);
 	cmd->acknowledge(true);

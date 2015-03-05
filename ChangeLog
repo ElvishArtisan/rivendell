@@ -14809,8 +14809,11 @@
 	'rdcatch/edit_download.cpp'.
 2015-03-04 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 2.10.3int00.
-2015-03-04 Fred Gleason <fredg@paravelsystems.com>
+2015-03-05 Fred Gleason <fredg@paravelsystems.com>
 	* Renamed the 'SAS USI (3 digit)' driver to
 	'SAS User Serial Interface'.
 	* Renamed the 'SAS USI (2 digit)' driver to
 	'SAS 16000(D)'.
+2015-03-05 Fred Gleason <fredg@paravelsystems.com>
+	* Modified the 'SAS USI' driver in 'ripcd/sasusi.cpp' to support
+	four digit endpoint numbers.

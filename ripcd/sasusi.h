@@ -1,6 +1,6 @@
 // sasusi.h
 //
-// A Rivendell switcher driver for the SAS USI Protocol (3 digit)
+// A Rivendell switcher driver for the SAS USI Protocol
 //
 //   (C) Copyright 2002-2015 Fred Gleason <fredg@paravelsystems.com>
 //
