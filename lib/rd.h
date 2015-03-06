@@ -157,7 +157,7 @@
 /*
  * Max number of inputs or outputs in a switcher
  */
-#define MAX_ENDPOINTS 1024
+#define MAX_ENDPOINTS 2048
 
 /*
  * Max number of attached switcher matrices per workstation
