@@ -14819,3 +14819,6 @@
 	four digit endpoint numbers.
 2015-03-05 Fred Gleason <fredg@paravelsystems.com>
 	* Increased 'MAX_ENDPOINTS' in 'lib/rd.h' from 1024 to 2048.
+2015-03-05 Fred Gleason <fredg@paravelsystems.com>
+	* Increased digit count on endpoints from 3 to 4 in
+	'rdadmin/list_endpoints.cpp'.

@@ -267,7 +267,7 @@ ListEndpoints::ListEndpoints(RDMatrix *matrix,RDMatrix::Endpoint endpoint,
     q->first();
     for(int i=0;i<list_size;i++) {
       l=new QListViewItem(list_list_view); 
-      l->setText(0,QString().sprintf("%03d",i+1));
+      l->setText(0,QString().sprintf("%04d",i+1));
       if(q->isValid()&&(q->value(0).toInt()==(i+1))){
 	l->setText(1,q->value(1).toString());
 	switch(list_matrix->type()) {
@@ -539,7 +539,7 @@ void ListEndpoints::okData()
       modecol=4;
     }
     for(int i=0;i<list_size;i++) {
-      item=list_list_view->findItem(QString().sprintf("%03d",i+1),0);
+      item=list_list_view->findItem(QString().sprintf("%04d",i+1),0);
       if(item->text(modecol).lower()==QString(tr("stereo"))) {
 	mode=RDMatrix::Stereo;
       }
