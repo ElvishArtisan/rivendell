@@ -177,6 +177,7 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdmeteraverage.cpp rdmeteraverage.h\
                         rdmixer.cpp rdmixer.h\
                         rdmonitor_config.cpp rdmonitor_config.h\
+			rdmp4.cpp rdmp4.h\
                         rdnownext.cpp rdnownext.h\
                         rdoneshot.cpp rdoneshot.h\
                         rdpam.cpp rdpam.h\
