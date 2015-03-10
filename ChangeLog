@@ -14824,3 +14824,7 @@
 	'rdadmin/list_endpoints.cpp'.
 2015-03-06 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 2.10.3int01.
+2015-03-09 Fred Gleason <fredg@paravelsystems.com>
+	* Merged patch from Chris Smowton to enable importation of
+	MP4 files [GitHub pull request #000029].
+	* Added prerequisites for MP4 importation in 'INSTALL'.
