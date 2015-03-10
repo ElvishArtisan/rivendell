@@ -201,13 +201,15 @@ int RDCdPlayer::rightVolume()
 
 void RDCdPlayer::setCddbRecord(RDCddbRecord *rec)
 {  
-  rec->setTracks(cdrom_track_count);
-  rec->setDiscId(cdrom_disc_id);
-  rec->setDiscLength(75*(60*cdrom_track_start[cdrom_track_count].msf.minute+
-    cdrom_track_start[cdrom_track_count].msf.second)+
-		     cdrom_track_start[cdrom_track_count].msf.frame);
-  for(int i=0;i<cdrom_track_count;i++) {
-    rec->setTrackOffset(i,trackOffset(i));
+  if(cdrom_track_count>0) {
+    rec->setTracks(cdrom_track_count);
+    rec->setDiscId(cdrom_disc_id);
+    rec->setDiscLength(75*(60*cdrom_track_start[cdrom_track_count].msf.minute+
+			   cdrom_track_start[cdrom_track_count].msf.second)+
+		       cdrom_track_start[cdrom_track_count].msf.frame);
+    for(int i=0;i<cdrom_track_count;i++) {
+      rec->setTrackOffset(i,trackOffset(i));
+    }
   }
 }
 
@@ -460,6 +462,7 @@ void RDCdPlayer::ReadToc()
   //
   if(ioctl(cdrom_fd,CDROMREADTOCHDR,&tochdr)<0) {
     cdrom_track_count=0;
+    return;
   }
   cdrom_track_count=tochdr.cdth_trk1-tochdr.cdth_trk0+1;
 

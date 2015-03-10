@@ -14834,3 +14834,6 @@
 	* Added a 'Capability::HaveMp4Decode' value to the
 	'RDStation::Capability' enumeration in 'lib/rdstation.cpp' and
 	'lib/rdstation.h'.
+2015-03-10 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'lib/rdcdplayer.cpp' that threw a segfault
+	when opening the ripper with no CD inserted under RHEL 7.
