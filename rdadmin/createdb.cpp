@@ -644,6 +644,7 @@ bool CreateDb(QString name,QString pwd)
       HAVE_TWOLAME enum('N','Y') default 'N',\
       HAVE_LAME enum('N','Y') default 'N',\
       HAVE_MPG321 enum('N','Y') default 'N',\
+      HAVE_MP4_DECODE enum('N','Y') default 'N',\
       HPI_VERSION char(16),\
       JACK_VERSION char(16),\
       ALSA_VERSION char(16),\
@@ -8082,6 +8083,13 @@ int UpdateDb(int ver)
 
     sql=QString("alter table REPORTS add column ")+
       "WIN_POST_EXPORT_CMD text after WIN_EXPORT_PATH";
+    q=new QSqlQuery(sql);
+    delete q;
+  }
+
+  if(ver<243) {
+    sql=QString("alter table STATIONS add column ")+
+      "HAVE_MP4_DECODE enum('N','Y') default 'N' after HAVE_MPG321";
     q=new QSqlQuery(sql);
     delete q;
   }

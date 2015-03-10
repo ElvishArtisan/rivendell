@@ -5902,5 +5902,10 @@ pro naplnění databáze zdroji zvuku.</translation>
         <source>&amp;Close</source>
         <translation>&amp;Zavřít</translation>
     </message>
+    <message>
+        <source>    MP-4/AAC
+</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 </TS>

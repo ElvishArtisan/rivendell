@@ -14828,3 +14828,9 @@
 	* Merged patch from Chris Smowton to enable importation of
 	MP4 files [GitHub pull request #000029].
 	* Added prerequisites for MP4 importation in 'INSTALL'.
+2015-03-09 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'STATIONS.HAVE_MP4_DECODE' field to the database.
+	* Incremented the database version to 243.
+	* Added a 'Capability::HaveMp4Decode' value to the
+	'RDStation::Capability' enumeration in 'lib/rdstation.cpp' and
+	'lib/rdstation.h'.

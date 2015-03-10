@@ -352,6 +352,7 @@ class MainObject : public QObject
 #endif  // ALSA
 
   bool CheckLame();
+  bool CheckMp4Decode();
 
   //
   // TwoLAME Encoder

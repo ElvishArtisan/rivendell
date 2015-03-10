@@ -487,6 +487,10 @@ bool RDStation::haveCapability(Capability cap) const
 				  "HAVE_LAME").toString());
 	break;
 
+      case RDStation::HaveMp4Decode:
+	return RDBool(RDGetSqlValue("STATIONS","NAME",station_name,
+				  "HAVE_MP4_DECODE").toString());
+
       case RDStation::HaveMpg321:
 	return RDBool(RDGetSqlValue("STATIONS","NAME",station_name,
 				  "HAVE_MPG321").toString());
@@ -517,6 +521,10 @@ void RDStation::setHaveCapability(Capability cap,bool state) const
 
       case RDStation::HaveLame:
 	SetRow("HAVE_LAME",state);
+	break;
+
+      case RDStation::HaveMp4Decode:
+	SetRow("HAVE_MP4_DECODE",state);
 	break;
 
       case RDStation::HaveMpg321:

@@ -5839,5 +5839,10 @@ Sjekk oppsettet ditt og prøv att.</translation>
         <source>&amp;Close</source>
         <translation>&amp;Lukk</translation>
     </message>
+    <message>
+        <source>    MP-4/AAC
+</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 </TS>
