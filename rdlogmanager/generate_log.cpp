@@ -366,7 +366,7 @@ void GenerateLog::createData()
   QString sql;
   RDSqlQuery *q;
 
-  srand(QTime::currentTime().msec());
+  srand(1000 * time(NULL) + QTime::currentTime().msec());
   sql=RDCreateStackTableSql(gen_service_box->currentText().replace(" ","_")); 
 
   q=new RDSqlQuery(sql);

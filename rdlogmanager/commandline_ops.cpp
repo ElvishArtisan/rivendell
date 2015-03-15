@@ -98,7 +98,7 @@ int RunLogOperation(int argc,char *argv[],const QString &svcname,
       exit(256);
     }
     log->removeTracks(rdstation_conf,rduser,config);
-    srand(QTime::currentTime().msec());
+    srand(1000 * time(NULL) + QTime::currentTime().msec());
     sql=RDCreateStackTableSql(svcname_table);
     q=new RDSqlQuery(sql);
     if(!q->isActive()) {
