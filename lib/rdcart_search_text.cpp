@@ -162,7 +162,7 @@ QString RDAllCartSearchText(const QString &filter,const QString &schedcode,
 			      (const char *)q->value(0).toString());
   }
   delete q;
-  search=search.left(search.length()-2)+QString(")");
+  search+=QString("0)");
   search+=QString("&&")+RDBaseSearchText(filter,incl_cuts);
 
   if(!schedcode.isEmpty()) {
