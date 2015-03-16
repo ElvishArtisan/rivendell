@@ -14834,3 +14834,6 @@
 	* Added a 'Capability::HaveMp4Decode' value to the
 	'RDStation::Capability' enumeration in 'lib/rdstation.cpp' and
 	'lib/rdstation.h'.
+2015-03-16 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'DESCRIPTION', 'OUTCUE', 'FILENAME' and '*_POINT' fields
+	to the 'Cart CSV Report' in 'rdlibrary/list_reports.cpp'.

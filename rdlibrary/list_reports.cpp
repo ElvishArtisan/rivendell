@@ -690,7 +690,7 @@ void ListReports::GenerateCartDumpCsv(QString *report,bool prepend_names)
   RDSqlQuery *q;
   QString schedcode="";
   QStringList f0;
-  unsigned code_quan=0;
+  int code_quan=0;
 
   if(list_schedcode!=tr("ALL")) {
     schedcode=list_schedcode;
@@ -702,20 +702,27 @@ void ListReports::GenerateCartDumpCsv(QString *report,bool prepend_names)
   if(list_type_filter.isEmpty()) {
     return;
   }
-  sql=QString("select CUTS.CUT_NAME,CART.GROUP_NAME,CART.TITLE,CART.ARTIST,")+
+  sql=QString("select CART.NUMBER,CART.TYPE,CUTS.CUT_NAME,CART.GROUP_NAME,CART.TITLE,CART.ARTIST,")+
     "CART.ALBUM,CART.YEAR,CUTS.ISRC,CUTS.ISCI,CART.LABEL,CART.CLIENT,"+
     "CART.AGENCY,CART.PUBLISHER,CART.COMPOSER,CART.CONDUCTOR,CART.SONG_ID,"+
-    "CART.USER_DEFINED,CUTS.LENGTH,SCHED_CODES from CART "+
-    "join CUTS on CART.NUMBER=CUTS.CART_NUMBER";
+    "CART.USER_DEFINED,CUTS.DESCRIPTION,CUTS.OUTCUE,"+
+    "CUTS.LENGTH,"+
+    "CUTS.START_POINT,CUTS.END_POINT,"+
+    "CUTS.SEGUE_START_POINT,CUTS.SEGUE_END_POINT,"+
+    "CUTS.HOOK_START_POINT,CUTS.HOOK_END_POINT,"+
+    "CUTS.TALK_START_POINT,CUTS.TALK_END_POINT,"+
+    "CUTS.FADEUP_POINT,CUTS.FADEDOWN_POINT,"+
+    "SCHED_CODES from CART "+
+    "left join CUTS on CART.NUMBER=CUTS.CART_NUMBER";
   if(list_group==QString("ALL")) {
     sql+=QString(" where ")+
       RDAllCartSearchText(list_filter,schedcode,lib_user->name(),true)+" && "+
-      list_type_filter+" order by CUTS.CUT_NAME";
+      list_type_filter+" order by CART.NUMBER,CUTS.CUT_NAME";
   }
   else {
     sql+=QString(" where ")+
       RDCartSearchText(list_filter,list_group,schedcode,true)+" && "+
-      list_type_filter+" order by CUTS.CUT_NAME";
+      list_type_filter+" order by CART.NUMBER,CUTS.CUT_NAME";
   }
   q=new RDSqlQuery(sql);
 
@@ -724,7 +731,7 @@ void ListReports::GenerateCartDumpCsv(QString *report,bool prepend_names)
   //
   while(q->next()) {
     f0=f0.split(" ",q->value(17).toString());
-    if(f0.size()>code_quan) {
+    if((int)f0.size()>code_quan) {
       code_quan=f0.size();
     }
   }
@@ -734,10 +741,16 @@ void ListReports::GenerateCartDumpCsv(QString *report,bool prepend_names)
   // Prepend Field Names
   //
   if(prepend_names) {
-    *report="CART,CUT,GROUP_NAME,TITLE,ARTIST,ALBUM,YEAR,ISRC,ISCI,LABEL,";
+    *report="CART,CUT,TYPE,GROUP_NAME,TITLE,ARTIST,ALBUM,YEAR,ISRC,ISCI,LABEL,";
     *report+="CLIENT,AGENCY,PUBLISHER,COMPOSER,CONDUCTOR,SONG_ID,USER_DEFINED,";
-    *report+="LENGTH,";
-    for(unsigned i=0;i<code_quan;i++) {
+    *report+="DESCRIPTION,OUTCUE,";
+    *report+="FILENAME,LENGTH,";
+    *report+="START_POINT,END_POINT,";
+    *report+="SEGUE_START_POINT,SEGUE_END_POINT,";
+    *report+="HOOK_START_POINT,HOOK_END_POINT,";
+    *report+="TALK_START_POINT,TALK_END_POINT,";
+    *report+="FADEUP_POINT,FADEDOWN_POINT,";
+    for(int i=0;i<code_quan;i++) {
       *report+=QString().sprintf("SCHED_CODE%u,",i+1);
     } 
     *report=report->left(report->length()-1);
@@ -749,15 +762,20 @@ void ListReports::GenerateCartDumpCsv(QString *report,bool prepend_names)
   //
   q->seek(-1);
   while(q->next()) {
-    *report+=QString().sprintf("%u,",RDCut::cartNumber(q->value(0).toString()));
-    *report+=QString().sprintf("%u,",RDCut::cutNumber(q->value(0).toString()));
-    *report+="\""+q->value(1).toString()+"\",";
-    *report+="\""+q->value(2).toString()+"\",";
+    RDCart::Type type=(RDCart::Type)q->value(1).toInt();
+    *report+=QString().sprintf("%u,",q->value(0).toUInt());
+    if(type==RDCart::Macro) {
+      *report+="0,\"macro\",";
+    }
+    else {
+      *report+=QString().sprintf("%u,",RDCut::cutNumber(q->value(2).toString()));
+      *report+="\"audio\",";
+    }
     *report+="\""+q->value(3).toString()+"\",";
     *report+="\""+q->value(4).toString()+"\",";
-    *report+="\""+q->value(5).toDate().toString("yyyy")+"\",";
+    *report+="\""+q->value(5).toString()+"\",";
     *report+="\""+q->value(6).toString()+"\",";
-    *report+="\""+q->value(7).toString()+"\",";
+    *report+="\""+q->value(7).toDate().toString("yyyy")+"\",";
     *report+="\""+q->value(8).toString()+"\",";
     *report+="\""+q->value(9).toString()+"\",";
     *report+="\""+q->value(10).toString()+"\",";
@@ -766,11 +784,46 @@ void ListReports::GenerateCartDumpCsv(QString *report,bool prepend_names)
     *report+="\""+q->value(13).toString()+"\",";
     *report+="\""+q->value(14).toString()+"\",";
     *report+="\""+q->value(15).toString()+"\",";
+    *report+="\""+q->value(16).toString()+"\",";
+    *report+="\""+q->value(17).toString()+"\",";
+    *report+="\""+q->value(18).toString()+"\",";
+    *report+="\""+q->value(19).toString()+"\",";
+    if(type==RDCart::Macro) {
+      *report+="\"\",";
+    }
+    else {
+      *report+="\""+q->value(2).toString()+".wav\",";
+    }
     *report+="\""+
-      RDGetTimeLength(q->value(16).toInt(),false,false).stripWhiteSpace()+"\",";
-    f0=f0.split(" ",q->value(17).toString());
-    for(unsigned i=0;i<code_quan;i++) {
-      if((f0.size()>i)&&(f0[i]!=".")) {
+      RDGetTimeLength(q->value(20).toInt(),false,false).stripWhiteSpace()+"\",";
+    if(type==RDCart::Macro) {
+      *report+="-1,";
+      *report+="-1,";
+      *report+="-1,";
+      *report+="-1,";
+      *report+="-1,";
+      *report+="-1,";
+      *report+="-1,";
+      *report+="-1,";
+      *report+="-1,";
+      *report+="-1,";
+    }
+    else {
+      *report+=QString().sprintf("%d,",q->value(21).toInt());
+      *report+=QString().sprintf("%d,",q->value(22).toInt());
+      *report+=QString().sprintf("%d,",q->value(23).toInt());
+      *report+=QString().sprintf("%d,",q->value(24).toInt());
+      *report+=QString().sprintf("%d,",q->value(25).toInt());
+      *report+=QString().sprintf("%d,",q->value(26).toInt());
+      *report+=QString().sprintf("%d,",q->value(27).toInt());
+      *report+=QString().sprintf("%d,",q->value(28).toInt());
+      *report+=QString().sprintf("%d,",q->value(29).toInt());
+      *report+=QString().sprintf("%d,",q->value(30).toInt());
+    }
+
+    f0=f0.split(" ",q->value(31).toString());
+    for(int i=0;i<code_quan;i++) {
+      if(((int)f0.size()>i)&&(f0[i]!=".")) {
 	*report+="\""+f0[i].stripWhiteSpace()+"\",";
       }
       else {
