@@ -14837,3 +14837,5 @@
 2015-03-16 Fred Gleason <fredg@paravelsystems.com>
 	* Added 'DESCRIPTION', 'OUTCUE', 'FILENAME' and '*_POINT' fields
 	to the 'Cart CSV Report' in 'rdlibrary/list_reports.cpp'.
+2015-03-17 Fred Gleason <fredg@paravelsystems.com>
+	* Updated 'get_distro.sh' to detect RHEL 7 correctly.
