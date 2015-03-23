@@ -14837,3 +14837,6 @@
 2015-03-16 Fred Gleason <fredg@paravelsystems.com>
 	* Added 'DESCRIPTION', 'OUTCUE', 'FILENAME' and '*_POINT' fields
 	to the 'Cart CSV Report' in 'rdlibrary/list_reports.cpp'.
+2015-03-23 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a fencepost bug in 'ripcd/sasusi.cpp' that caused the
+	last relay in the list to fail to respond to a 'GO' RML.
