@@ -288,10 +288,11 @@ void SasUsi::processCommand(RDMacro *cmd)
 	  }
 	  cmd_byte=0x01;
 	}
-	if(cmd->arg(2).toUInt()<sas_relay_numbers.size()) {
+	if(cmd->arg(2).toUInt()<=sas_relay_numbers.size()) {
 	  if(sas_relay_numbers[cmd->arg(2).toUInt()-1]>=0) {
 	    snprintf(str,256,"\x05R%d%04d\x0D\x0A",cmd_byte,
 		    sas_relay_numbers[cmd->arg(2).toUInt()-1]);
+	    syslog(LOG_NOTICE,"USI: %s",(const char *)PrettifyCommand(str));
 	    SendCommand(str);
 	    cmd->acknowledge(true);
 	    emit rmlEcho(cmd);
