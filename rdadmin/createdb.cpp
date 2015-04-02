@@ -2237,7 +2237,7 @@ bool CreateDb(QString name,QString pwd)
                ID int unsigned auto_increment not null primary key,	\
                STATION_NAME char(64) not null,\
                DESCRIPTION char(64),\
-               COMMAND_LINE char(255) not null,\
+               COMMAND_LINE text not null,\
                index IDX_STATION_NAME (STATION_NAME))");
   if(!RunQuery(sql)) {
      return false;
@@ -8094,6 +8094,12 @@ int UpdateDb(int ver)
     delete q;
   }
 
+  if(ver<244) {
+    sql=QString("alter table JACK_CLIENTS modify column ")+
+      "COMMAND_LINE text not null";
+    q=new QSqlQuery(sql);
+    delete q;
+  }
 
 
   // **** End of version updates ****

@@ -14842,3 +14842,7 @@
 2015-03-23 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a fencepost bug in 'ripcd/sasusi.cpp' that caused the
 	last relay in the list to fail to respond to a 'GO' RML.
+2015-04-02 Fred Gleason <fredg@paravelsystems.com>
+	* Modified the definition of the 'JACK_CLIENTS.COMMAND_LINE'
+	field from 'char(255)' to 'text' in the database.
+	* Incremented the database version to 244.
