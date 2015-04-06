@@ -14849,3 +14849,7 @@
 	* Modified the definition of the 'JACK_CLIENTS.COMMAND_LINE'
 	field from 'char(255)' to 'text' in the database.
 	* Incremented the database version to 244.
+2015-04-06 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'rdlibrary/disk_ripper.cpp' that caused the tracks
+	from discs with no CDDB data to received scrambled/incorrect cart
+	titles.

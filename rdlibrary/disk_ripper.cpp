@@ -792,7 +792,7 @@ void DiskRipper::mediaChangedData()
     rip_cutnames.push_back(QString());
     rip_end_track.push_back(-1);
     rip_wave_datas.push_back(new RDWaveData());
-    rip_wave_datas.back()->setTitle(tr("Track")+QString().sprintf(" %d",i+1));
+    rip_wave_datas.back()->setTitle(tr("Track")+QString().sprintf(" %d",rip_cdrom->tracks()-i+1));
     l=new RDListViewItem(rip_track_list);
     l->setText(0,QString().sprintf("%d",i));
     if(rip_cdrom->isAudio(i)) {
@@ -1131,11 +1131,19 @@ QString DiskRipper::BuildTrackName(int start_track,int end_track) const
   while(item!=NULL) {
     if(item->text(0).toInt()==start_track) {
       ret=item->text(2);
+      if(ret.isEmpty()) {
+	ret=tr("Track")+" "+item->text(0);
+      }
     }
     else {
       if((item->text(0).toInt()>start_track)&&
 	 (item->text(0).toInt()<=end_track)) {
-	ret+=" / "+item->text(2);
+	if(item->text(2).isEmpty()) {
+	  ret+=" / "+tr("Track")+" "+item->text(0);
+	}
+	else {
+	  ret+=" / "+item->text(2);
+	}
       }
     }
     item=(RDListViewItem *)item->nextSibling();
