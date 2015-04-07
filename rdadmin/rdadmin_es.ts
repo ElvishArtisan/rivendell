@@ -2794,6 +2794,10 @@ equipo configurado para ejecutar CAE para obtener la información de audio.</tra
         <source>Limit Searches at Startup</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>&amp;Read ISRCs from CD:</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditRDLogedit</name>

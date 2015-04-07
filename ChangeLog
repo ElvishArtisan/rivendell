@@ -14853,3 +14853,14 @@
 	* Fixed a bug in 'rdlibrary/disk_ripper.cpp' that caused the tracks
 	from discs with no CDDB data to received scrambled/incorrect cart
 	titles.
+2015-04-07 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'RDLIBRARY.READ_ISRC' field to the database.
+	* Incremented the database version to 245.
+	* Added 'RDLibraryConf::readIsrc()' and 'RDLibraryConf::setReadIsrc()'
+	methods in 'lib/rdlibrary_conf.cpp' and 'lib/rdlibrary_conf.h'.
+	* Added a 'Read ISRCs from CD' control to the 'Edit RDLibrary' dialog
+	in 'rdadmin/edit_rdlibrary.cpp' and 'rdadmin/edi_rdlibrary.h'.
+	* Implemented the 'Read ISRCs from CD' option in the full disc
+	ripper in 'rdlibrary/disk_ripper.cpp'.
+	* Implemented the 'Read ISRCs from CD' option in the per-track disc
+	ripper in 'rdlibrary/cdripper.cpp'.

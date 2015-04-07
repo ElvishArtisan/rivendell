@@ -1008,6 +1008,7 @@ bool CreateDb(QString name,QString pwd)
       PARANOIA_LEVEL INT DEFAULT 0,\
       RIPPER_LEVEL INT DEFAULT -1300,\
       CDDB_SERVER CHAR(64) DEFAULT \"freedb.freedb.org\",\
+      READ_ISRC enum('N','Y') default 'Y',\
       ENABLE_EDITOR enum('N','Y') default 'N',\
       SRC_CONVERTER int default 1,\
       LIMIT_SEARCH int default 1,\
@@ -8097,6 +8098,13 @@ int UpdateDb(int ver)
   if(ver<244) {
     sql=QString("alter table JACK_CLIENTS modify column ")+
       "COMMAND_LINE text not null";
+    q=new QSqlQuery(sql);
+    delete q;
+  }
+
+  if(ver<245) {
+    sql=QString("alter table RDLIBRARY add column ")+
+      "READ_ISRC enum('N','Y') default 'Y' after CDDB_SERVER";
     q=new QSqlQuery(sql);
     delete q;
   }

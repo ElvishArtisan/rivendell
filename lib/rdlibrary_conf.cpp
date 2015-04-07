@@ -288,6 +288,19 @@ void RDLibraryConf::setCddbServer(QString server) const
 }
 
 
+bool RDLibraryConf::readIsrc() const
+{
+  return RDBool(RDGetSqlValue("RDLIBRARY","ID",lib_id,"READ_ISRC").
+		toString());
+}
+
+
+void RDLibraryConf::setReadIsrc(bool state) const
+{
+  SetRow("READ_ISRC",RDYesNo(state));
+}
+
+
 bool RDLibraryConf::enableEditor() const
 {
   return RDBool(RDGetSqlValue("RDLIBRARY","ID",lib_id,"ENABLE_EDITOR").

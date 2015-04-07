@@ -71,6 +71,8 @@ class RDLibraryConf
   void setRipperLevel(int level) const;
   QString cddbServer() const;
   void setCddbServer(QString server) const;
+  bool readIsrc() const;
+  void setReadIsrc(bool state) const;
   bool enableEditor() const;
   void setEnableEditor(bool state) const;
   void getSettings(RDSettings *s) const;
