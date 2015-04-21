@@ -14864,3 +14864,5 @@
 	ripper in 'rdlibrary/disk_ripper.cpp'.
 	* Implemented the 'Read ISRCs from CD' option in the per-track disc
 	ripper in 'rdlibrary/cdripper.cpp'.
+2015-04-21 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.10.3int02.
