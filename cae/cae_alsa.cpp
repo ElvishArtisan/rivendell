@@ -44,7 +44,7 @@ RDMeterAverage *alsa_output_meter[RD_MAX_CARDS][RD_MAX_PORTS][2];
 RDMeterAverage *alsa_stream_output_meter[RD_MAX_CARDS][RD_MAX_STREAMS][2];
 volatile double alsa_input_volume[RD_MAX_CARDS][RD_MAX_PORTS];
 volatile double alsa_output_volume[RD_MAX_CARDS][RD_MAX_PORTS][RD_MAX_STREAMS];
-volatile double 
+volatile double
   alsa_passthrough_volume[RD_MAX_CARDS][RD_MAX_PORTS][RD_MAX_PORTS];
 volatile double alsa_input_vox[RD_MAX_CARDS][RD_MAX_PORTS];
 RDRingBuffer *alsa_play_ring[RD_MAX_CARDS][RD_MAX_STREAMS];
@@ -105,7 +105,7 @@ void AlsaCapture2Callback(struct alsa_format *alsa_format)
 			alsa_record_ring[alsa_format->card][i]->
 			  write(alsa_buffer,s*sizeof(int16_t));
 			break;
-			
+
 		      case 2:
 			for(int k=0;k<s;k++) {
 			  ((int16_t *)alsa_buffer)[2*k]=
@@ -126,7 +126,7 @@ void AlsaCapture2Callback(struct alsa_format *alsa_format)
 		}
 	      }
 	    }
-	    
+
 	    //
 	    // Process Passthroughs
 	    //
@@ -162,7 +162,7 @@ void AlsaCapture2Callback(struct alsa_format *alsa_format)
 	      }
 	    }
 	    break;
-	    
+
 	  case SND_PCM_FORMAT_S32_LE:
 	    modulo=alsa_format->channels*2;
 	    for(unsigned i=0;i<(alsa_format->channels/2);i++) {
@@ -184,7 +184,7 @@ void AlsaCapture2Callback(struct alsa_format *alsa_format)
 			alsa_record_ring[alsa_format->card][i]->
 			  write(alsa_buffer,s*sizeof(int16_t));
 			break;
-			
+
 		      case 2:
 			for(int k=0;k<s;k++) {
 			  ((int16_t *)alsa_buffer)[2*k]=
@@ -203,7 +203,7 @@ void AlsaCapture2Callback(struct alsa_format *alsa_format)
 		}
 	      }
 	    }
-	    
+
 	    //
 	    // Process Passthroughs
 	    //
@@ -362,22 +362,21 @@ void AlsaPlay2Callback(struct alsa_format *alsa_format)
       // Process Passthroughs
       //
       for(unsigned i=0;i<alsa_format->capture_channels;i+=2) {
+        p=alsa_passthrough_ring[alsa_format->card][i/2]->
+          read(alsa_format->passthrough_buffer,4*n)/4;
         bool zero_volume = true;
         for (unsigned j=0;j<alsa_format->channels && zero_volume;j+=1) {
           zero_volume = (alsa_passthrough_volume[alsa_format->card][i/2][j] == 0.0);
         }
         if (!zero_volume) {
-          p=alsa_passthrough_ring[alsa_format->card][i/2]->
-            read(alsa_format->passthrough_buffer,4*n)/4;
           for(unsigned j=0;j<alsa_format->channels;j+=2) {
-            if (alsa_passthrough_volume[alsa_format->card][i/2][j/2] != 0.0) {
+            double passthrough_volume = alsa_passthrough_volume[alsa_format->card][i/2][j/2];
+            if (passthrough_volume != 0.0) {
               for(unsigned k=0;k<2;k++) {
                 for(int l=0;l<p;l++) {
                   ((int16_t *)alsa_format->
                    card_buffer)[alsa_format->channels*l+j+k]+=
-                    (int16_t)((double)((int16_t *)
-                                       alsa_format->passthrough_buffer)[2*l+k]*
-                              alsa_passthrough_volume[alsa_format->card][i/2][j/2]);
+                    (int16_t)((double)((int16_t *)alsa_format->passthrough_buffer)[2*l+k]*passthrough_volume);
                 }
               }
             }
@@ -485,22 +484,21 @@ void AlsaPlay2Callback(struct alsa_format *alsa_format)
       // Process Passthroughs
       //
       for(unsigned i=0;i<alsa_format->capture_channels;i+=2) {
+        p=alsa_passthrough_ring[alsa_format->card][i/2]->
+          read(alsa_format->passthrough_buffer,8*n)/8;
         bool zero_volume = true;
         for (unsigned j=0;j<alsa_format->channels && zero_volume;j+=1) {
           zero_volume = (alsa_passthrough_volume[alsa_format->card][i/2][j] == 0.0);
         }
         if (!zero_volume) {
-          p=alsa_passthrough_ring[alsa_format->card][i/2]->
-            read(alsa_format->passthrough_buffer,8*n)/8;
           for(unsigned j=0;j<alsa_format->channels;j+=2) {
-            if (alsa_passthrough_volume[alsa_format->card][i/2][j/2] != 0.0) {
+            double passthrough_volume = alsa_passthrough_volume[alsa_format->card][i/2][j/2];
+            if (passthrough_volume != 0.0) {
               for(unsigned k=0;k<2;k++) {
                 for(int l=0;l<p;l++) {
                   ((int32_t *)alsa_format->
                    card_buffer)[alsa_format->channels*l+j+k]+=
-                    (int32_t)((double)((int32_t *)
-                                       alsa_format->passthrough_buffer)[2*l+k]*
-                              alsa_passthrough_volume[alsa_format->card][i/2][j/2]);
+                    (int32_t)((double)((int32_t *)alsa_format->passthrough_buffer)[2*l+k]*passthrough_volume);
                 }
               }
             }
@@ -847,11 +845,11 @@ bool MainObject::alsaLoadPlayback(int card,QString wavename,int *stream)
   case WAVE_FORMAT_PCM:
   case WAVE_FORMAT_VORBIS:
     break;
-    
+
   case WAVE_FORMAT_MPEG:
     InitMadDecoder(card,*stream,alsa_play_wave[card][*stream]);
     break;
-    
+
   default:
     LogLine(RDConfig::LogErr,QString().sprintf(
 	   "Error: alsaLoadPlayback(%s)   getFormatTag()%d || getBistsPerSample()%d failed",
@@ -1358,7 +1356,7 @@ void MainObject::alsaGetOutputPosition(int card,unsigned *pos)
       pos[i]=1000*(unsigned long long)(alsa_offset[card][i]+
 				       alsa_output_pos[card][i])/
 	alsa_play_wave[card][i]->getSamplesPerSec();
-    } 
+    }
     else {
       pos[i]=0;
     }
