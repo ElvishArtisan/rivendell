@@ -14868,4 +14868,5 @@
 	* Incremented the package version to 2.10.3int02.
 2015-05-20 Fred Gleason <fredg@paravelsystems.com>
 	* Added default parameters to the 'PadPoint' RLM in 'rlm_padpoint.c'.
-
+2015-05-28 Fred Gleason <fredg@paravelsystems.com>
+	* Added rdcleandirs(8) utility in 'utils/rdcleandirs/'.

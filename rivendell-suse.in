@@ -37,6 +37,7 @@
 
 
 function StartDaemons {
+  rdcleandirs
   if test $GPIO_START = yes ; then
     if test -x /etc/init.d/gpio ; then
       /etc/init.d/gpio status > /dev/null
@@ -101,6 +102,7 @@ function StopDaemons {
     fi
   fi
   sleep 2
+  rdcleandirs
 }
 
 # Set path for script functions
