@@ -14870,3 +14870,9 @@
 	* Added default parameters to the 'PadPoint' RLM in 'rlm_padpoint.c'.
 2015-05-28 Fred Gleason <fredg@paravelsystems.com>
 	* Added rdcleandirs(8) utility in 'utils/rdcleandirs/'.
+2015-05-28 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'RDMatrix::RossNkScp' value to the 'RDMatrix::Type'
+	enumeration in 'lib/rdmatrix.cpp' and 'lib/rdmatrix.h'.
+	* Implemented a switcher driver for the Ross NK line of video
+	switchers via the SCP/A serial interface in 'ripcd/rossnkscp.cpp'
+	and 'riptcd/rossnkscp.h'.

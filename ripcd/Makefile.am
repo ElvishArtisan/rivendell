@@ -60,6 +60,7 @@ dist_ripcd_SOURCES = acu1p.cpp acu1p.h\
                      ripcd.cpp ripcd.h globals.h\
                      ripcd_connection.cpp ripcd_connection.h\
                      ripcd_socket.cpp ripcd_socket.h\
+                     rossnkscp.cpp rossnkscp.h\
                      sas32000.cpp sas32000.h\
                      sas64000.cpp sas64000.h\
                      sas64000gpi.cpp sas64000gpi.h\
@@ -99,6 +100,7 @@ nodist_ripcd_SOURCES = moc_am16.cpp\
                        moc_quartz1.cpp\
                        moc_ripcd.cpp\
                        moc_ripcd_socket.cpp\
+                       moc_rossnkscp.cpp\
                        moc_sas32000.cpp\
                        moc_sas64000.cpp\
                        moc_sas64000gpi.cpp\

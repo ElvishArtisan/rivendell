@@ -49,6 +49,7 @@
 #include <local_gpio.h>
 #include <modemlines.h>
 #include <quartz1.h>
+#include <rossnkscp.h>
 #include <sas16000.h>
 #include <sas32000.h>
 #include <sas64000.h>
@@ -162,6 +163,10 @@ bool MainObject::LoadSwitchDriver(int matrix_num)
 
   case RDMatrix::Quartz1:
     ripcd_switcher[matrix_num]=new Quartz1(matrix,this);
+    break;
+
+  case RDMatrix::RossNkScp:
+    ripcd_switcher[matrix_num]=new RossNkScp(matrix,this);
     break;
 
   case RDMatrix::Sas16000:
