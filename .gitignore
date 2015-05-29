@@ -78,6 +78,7 @@ utils/rdmarkerset/rdmarkerset
 utils/rmlsend/rmlsend
 utils/rdpurgecasts/rdpurgecasts
 utils/rdchunk/rdchunk
+utils/rdcleandirs/rdcleandirs
 utils/rdsoftkeys/rdsoftkeys
 utils/rddbcheck/rddbcheck
 utils/rdalsaconfig/rdalsaconfig
