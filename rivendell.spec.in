@@ -240,6 +240,7 @@ rm -rf $RPM_BUILD_ROOT
 @LOCAL_PREFIX@/bin/sage_endec_rwt.sh
 @LOCAL_PREFIX@/bin/rd_backup
 @LOCAL_PREFIX@/bin/rdchunk
+@LOCAL_PREFIX@/bin/rdlaunch.pl
 @LOCAL_PREFIX@/bin/rdmemcheck.sh
 %attr(4755,root,root)@LOCAL_PREFIX@/bin/ripcd
 @LOCAL_PREFIX@/sbin/sas_shim

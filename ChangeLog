@@ -14876,3 +14876,5 @@
 	* Implemented a switcher driver for the Ross NK line of video
 	switchers via the SCP/A serial interface in 'ripcd/rossnkscp.cpp'
 	and 'riptcd/rossnkscp.h'.
+2015-06-02 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'scripts/rdlaunch.pl'.

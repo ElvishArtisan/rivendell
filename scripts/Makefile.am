@@ -2,9 +2,7 @@
 ##
 ## Scripts Directory Makefile.am for Rivendell
 ##
-## (C) Copyright 2002-2012 Fred Gleason <fredg@paravelsystems.com>
-##
-##      $Id: Makefile.am,v 1.20.6.5 2012/11/29 01:37:37 cvs Exp $
+## (C) Copyright 2002-2015 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -33,6 +31,7 @@ bin_SCRIPTS = crc-unity4k.sh\
               rd_audio_sync\
               rd_config\
               rd_backup\
+              rdlaunch.pl\
               rdmemcheck.sh\
               sage_endec_rwt.sh
 
@@ -46,6 +45,7 @@ EXTRA_DIST = crc-unity4k.sh\
              rd_memmon.sh\
              rd_mysql_enable_host.sh\
              rd_restore_system.sh\
+             rdlaunch.pl\
              rdmemcheck.sh\
              sage_endec_rwt.sh\
              start_rd\
