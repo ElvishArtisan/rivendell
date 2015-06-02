@@ -43,9 +43,9 @@ install-exec-am:
 	cp rivendell-rdalsaconfig-root.desktop $(DESTDIR)@prefix@/share/applications/
 
 	mkdir -p $(DESTDIR)@prefix@/share/desktop-directories
-	cp *.directory $(DESTDIR)@prefix@/share/desktop-directories/
+	cp rivendell-*.directory $(DESTDIR)@prefix@/share/desktop-directories/
 	mkdir -p $(DESTDIR)/etc/xdg/menus/applications-merged
-	cp *.menu $(DESTDIR)/etc/xdg/menus/applications-merged/
+	cp rivendell-*.menu $(DESTDIR)/etc/xdg/menus/applications-merged/
 	mkdir -p $(DESTDIR)/etc/pam.d
 	cp rdalsaconfig-root-pam $(DESTDIR)/etc/pam.d/rdalsaconfig-root
 	if test -f ../rdhpi/.libs/librdhpi-@VERSION@.so ; then cp rdhpiinfo-root-pam $(DESTDIR)/etc/pam.d/rdhpiinfo-root ; fi
@@ -57,10 +57,34 @@ install-exec-am:
 	rm -f $(DESTDIR)$(prefix)/bin/rdhpiinfo-root
 	ln -s /usr/bin/consolehelper $(DESTDIR)$(prefix)/bin/rdhpiinfo-root
 
+install-virtmenus:
+	mkdir -p $(DESTDIR)@prefix@/share/applications
+	cp rivendellvirt-rdadmin.desktop $(DESTDIR)@prefix@/share/applications/
+	cp rivendellvirt-rdairplay.desktop $(DESTDIR)@prefix@/share/applications/
+	cp rivendellvirt-rdcartslots.desktop $(DESTDIR)@prefix@/share/applications/
+	cp rivendellvirt-rdcastmanager.desktop $(DESTDIR)@prefix@/share/applications/
+	cp rivendellvirt-rdcatch.desktop $(DESTDIR)@prefix@/share/applications/
+	cp rivendellvirt-rddgimport.desktop $(DESTDIR)@prefix@/share/applications/
+	cp rivendellvirt-rddiscimport.desktop $(DESTDIR)@prefix@/share/applications/
+	cp rivendellvirt-rdgpimon.desktop $(DESTDIR)@prefix@/share/applications/
+	cp rivendellvirt-rdlibrary.desktop $(DESTDIR)@prefix@/share/applications/
+	cp rivendellvirt-rdlogedit.desktop $(DESTDIR)@prefix@/share/applications/
+	cp rivendellvirt-rdlogin.desktop $(DESTDIR)@prefix@/share/applications/
+	cp rivendellvirt-rdlogmanager.desktop $(DESTDIR)@prefix@/share/applications/
+	cp rivendellvirt-rdpanel.desktop $(DESTDIR)@prefix@/share/applications/
+	cp rivendellvirt-rdsoftkeys.desktop $(DESTDIR)@prefix@/share/applications/
+	cp rivendellvirt-rmlsend.desktop $(DESTDIR)@prefix@/share/applications/
+	mkdir -p $(DESTDIR)@prefix@/share/desktop-directories
+	cp rivendell-*.directory $(DESTDIR)@prefix@/share/desktop-directories/
+	mkdir -p $(DESTDIR)/etc/xdg/menus/applications-merged
+	cp rivendellvirt-*.menu $(DESTDIR)/etc/xdg/menus/applications-merged/
+
 uninstall:	
 	rm -f $(DESTDIR)@prefix@/share/applications/rivendell-*.desktop
+	rm -f $(DESTDIR)@prefix@/share/applications/rivendellvirt-*.desktop
 	rm -f $(DESTDIR)@prefix@/share/desktop-directories/rivendell-*.directory
 	rm -f $(DESTDIR)/etc/xdg/menus/applications-merged/rivendell-*.menu
+	rm -f $(DESTDIR)/etc/xdg/menus/applications-merged/rivendellvirt-*.menu
 	rm -f $(DESTDIR)/etc/pam.d/rdalsaconfig-root
 	rm -f $(DESTDIR)/etc/pam.d/rdhpiinfo-root
 	rm -f $(DESTDIR)/etc/security/console.apps/rdalsaconfig-root
@@ -96,7 +120,25 @@ EXTRA_DIST = rdalsaconfig-root-consolehelper\
              rivendell-rdsoftkeys.desktop\
              rivendell-rivendell.directory\
              rivendell-rivendell.menu\
-             rivendell-utilities.directory
+             rivendell-utilities.directory\
+             rivendellvirt-rdadmin.desktop\
+             rivendellvirt-rdairplay.desktop\
+             rivendellvirt-rdcartslots.desktop\
+             rivendellvirt-rdcastmanager.desktop\
+             rivendellvirt-rdcatch.desktop\
+             rivendellvirt-rddgimport.desktop\
+             rivendellvirt-rddiscimport.desktop\
+             rivendellvirt-rdgpimon.desktop\
+             rivendellvirt-rdlibrary.desktop\
+             rivendellvirt-rdlibrary.desktop\
+             rivendellvirt-rdlogedit.desktop\
+             rivendellvirt-rdlogin.desktop\
+             rivendellvirt-rdlogmanager.desktop\
+             rivendellvirt-rdpanel.desktop\
+             rivendellvirt-rdsoftkeys.desktop\
+             rivendellvirt-rivendell.menu\
+             rivendellvirt-rmlsend.desktop
+
 
 CLEANFILES = *~
 

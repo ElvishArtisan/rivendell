@@ -425,6 +425,7 @@ fi
 AC_SUBST(RPM_DATESTAMP,`date +%a\ %b\ %d\ %Y`)
 
 AC_CONFIG_FILES([rivendell.spec \
+    rivendell-virt.spec \
     Makefile \
     make_slack \
     slack-desc \

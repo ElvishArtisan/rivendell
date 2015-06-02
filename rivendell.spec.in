@@ -33,6 +33,7 @@ BuildRoot: /var/tmp/rivendell-@VERSION@
 Summary: The base components for the Rivendell Radio Automation System
 Group: Productivity/Multimedia/Other
 Requires: @QT3_MYSQL_PKG@
+Conflicts: rivendell-virt
 
 %package importers
 Summary: Library importers for the Rivendell Broadcast Automation System
@@ -243,6 +244,7 @@ rm -rf $RPM_BUILD_ROOT
 @LOCAL_PREFIX@/bin/rdlaunch.pl
 @LOCAL_PREFIX@/bin/rdmemcheck.sh
 %attr(4755,root,root)@LOCAL_PREFIX@/bin/ripcd
+@LOCAL_PREFIX@/sbin/rdcleandirs
 @LOCAL_PREFIX@/sbin/sas_shim
 @LOCAL_PREFIX@/sbin/rddbcheck
 @LOCAL_PREFIX@/sbin/rdmarkerset

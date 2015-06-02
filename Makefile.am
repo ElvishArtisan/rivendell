@@ -84,7 +84,9 @@ rpm:	dist
 	mkdir -p $(HOME)/rpmbuild/SOURCES
 	cp rivendell-$(VERSION).tar.gz $(HOME)/rpmbuild/SOURCES/
 	$(RPMBUILD) -ba --target $(ARCH)-$(VENDOR)-linux rivendell.spec
+	$(RPMBUILD) -ba --target noarch-$(VENDOR)-linux rivendell-virt.spec
 	mv $(HOME)/rpmbuild/RPMS/$(ARCH)/rivendell-*.rpm $(top_srcdir)/
+	mv $(HOME)/rpmbuild/RPMS/noarch/rivendell-*.rpm $(top_srcdir)/
 	mv $(HOME)/rpmbuild/SRPMS/rivendell-*.src.rpm $(top_srcdir)/
 	rm $(HOME)/rpmbuild/SOURCES/rivendell-$(VERSION).tar.gz
 
@@ -128,6 +130,7 @@ EXTRA_DIST = autogen.sh\
              rivendell.pro\
              rivendell.spec.in\
              rivendell-suse.in\
+             rivendell-virt.spec.in\
              rivendell.sys\
              slack-desc.in\
              slack_doinst.sh\

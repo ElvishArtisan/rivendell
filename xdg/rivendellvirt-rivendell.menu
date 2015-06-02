@@ -1,0 +1,42 @@
+ <!DOCTYPE Menu PUBLIC "-//freedesktop//DTD Menu 1.0//EN"
+  "http://www.freedesktop.org/standards/menu-spec/1.0/menu.dtd">
+
+<Menu>
+<Name>Applications</Name>
+<Menu>
+  <Name>Rivendell Virtual</Name>
+  <Directory>rivendell-rivendell.directory</Directory>
+  <Include>
+    <Filename>rivendellvirt-rdairplay.desktop</Filename>
+    <Filename>rivendellvirt-rdcartslots.desktop</Filename>
+    <Filename>rivendellvirt-rdcastmanager.desktop</Filename>
+    <Filename>rivendellvirt-rdcatch.desktop</Filename>
+    <Filename>rivendellvirt-rdlibrary.desktop</Filename>
+    <Filename>rivendellvirt-rdlogin.desktop</Filename>
+    <Filename>rivendellvirt-rdpanel.desktop</Filename>
+  </Include>
+  <Menu>
+    <Name>Configuration</Name>
+    <Directory>rivendell-configuration.directory</Directory>
+    <Include>
+      <Filename>rivendellvirt-rdadmin.desktop</Filename>
+    </Include>
+  </Menu>
+  <Menu>
+    <Name>Log Tools</Name>
+    <Directory>rivendell-logtools.directory</Directory>
+    <Include>
+      <Filename>rivendellvirt-rdlogedit.desktop</Filename>
+      <Filename>rivendellvirt-rdlogmanager.desktop</Filename>
+    </Include>
+  </Menu>
+  <Menu>
+    <Name>Utilities</Name>
+    <Directory>rivendell-utilities.directory</Directory>
+    <Include>
+      <Filename>rivendellvirt-rdgpimon.desktop</Filename>
+      <Filename>rivendellvirt-rmlsend.desktop</Filename>
+    </Include>
+  </Menu>
+</Menu>
+</Menu>

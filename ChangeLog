@@ -14878,3 +14878,5 @@
 	and 'riptcd/rossnkscp.h'.
 2015-06-02 Fred Gleason <fredg@paravelsystems.com>
 	* Added 'scripts/rdlaunch.pl'.
+2015-06-02 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'rivendell-virt' package in 'rivendell-virt.spec.in'.

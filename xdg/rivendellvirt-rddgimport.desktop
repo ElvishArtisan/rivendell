@@ -1,0 +1,11 @@
+[Desktop Entry]
+Encoding=UTF-8
+Terminal=false
+Categories=Qt:KDE;Rivendell;
+Name=RDDgImport
+GenericName=Rivendell DG Spot Importer
+Exec=rdlaunch.pl rddgimport
+Icon=rivendell
+Type=Application
+Terminal=false
+
