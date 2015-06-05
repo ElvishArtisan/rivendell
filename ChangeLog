@@ -14880,3 +14880,6 @@
 	* Added 'scripts/rdlaunch.pl'.
 2015-06-02 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'rivendell-virt' package in 'rivendell-virt.spec.in'.
+2015-06-04 Fred Gleason <fredg@paravelsystems.com>
+	* Added code in 'scripts/rdlaunch.pl' to determine the virtual instance
+	to connect to on the basis of the system's SRV record.

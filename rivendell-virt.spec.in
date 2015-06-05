@@ -26,7 +26,7 @@ License: GPL
 Packager: Fred Gleason <fredg@paravelsystems.com>
 Group: Productivity/Multimedia/Other
 Source: rivendell-@VERSION@.tar.gz
-Requires: perl
+Requires: perl perl-Net-DNS
 BuildArch: noarch
 BuildRoot: /var/tmp/rivendell-@VERSION@
 Conflicts: rivendell-base

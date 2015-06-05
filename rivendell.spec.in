@@ -26,7 +26,7 @@ License: GPL
 Packager: Fred Gleason <fredg@paravelsystems.com>
 Group: Productivity/Multimedia/Other
 Source: rivendell-@VERSION@.tar.gz
-Requires: @QT3_MYSQL_PKG@ @APACHE_PKG@ @QT3_DEVEL_PKG@ curl @USERMODE_PKG@ rivendell-base
+Requires: @QT3_MYSQL_PKG@ @APACHE_PKG@ @QT3_DEVEL_PKG@ curl @USERMODE_PKG@ rivendell-base perl-Net-DNS
 BuildRoot: /var/tmp/rivendell-@VERSION@
 
 %package base

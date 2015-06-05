@@ -20,6 +20,8 @@
 #   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 #
 
+use Net::DNS;
+
 my $usage="rdlaunch.sh <module>";
 
 #
@@ -39,18 +41,27 @@ my $ssh_identity=$ENV{"HOME"}."/.ssh/id_dsa_rdvirt";
 my $virt_user="rd";
 
 #
-# Get the virtual hostname
+# Fetch the SRV Record
 #
-$_=$ENV{"HOSTNAME"};
-my @parts=split "-";
-if(scalar @parts lt 2) {
-  print "rdlaunch.pl: unable to determine virtual hostname\n";
-  exit 256;
+#  FIXME: We should examine all returned records and sort by priority.
+#
+my $res   = Net::DNS::Resolver->new;
+my $reply = $res->query("_rdvirt._tcp.".$ENV{"HOSTNAME"}, "SRV");
+
+if (!$reply) {
+    print "rdlaunch.pl: no SRV record found [", $res->errorstring, "]\n";
+    exit 256;
 }
-my $hostname=$parts[0];
+my @fields=split /\s+/,($reply->answer)[0]->string;
+if(scalar @fields lt 8) {
+    print "rdlaunch.pl: SRV record is malformatted\n";
+    exit 256;
+}
+my $hostname=$fields[7];
+my $port=$fields[6];
 
 #
 # Launch the module
 #
-my $cmd="ssh -X -c ".$ssh_cipher." -i ".$ssh_identity." ".$virt_user.'@'.$hostname.' '.$module;
+my $cmd="ssh -X -c ".$ssh_cipher." -i ".$ssh_identity." -p".$port." ".$virt_user.'@'.$hostname.' '.$module;
 system($cmd);
