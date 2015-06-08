@@ -37,6 +37,7 @@
 RDLogLine::RDLogLine()
 {
   clear();
+  log_timescale_mode=RDLogLine::TimescaleIndividual;
 }
 
 
@@ -66,6 +67,7 @@ RDLogLine::RDLogLine(unsigned cartnum)
     log_cart_notes=q->value(11).toString();
   }
   delete q;
+  log_timescale_mode=RDLogLine::TimescaleIndividual;
 }
 
 
@@ -267,6 +269,18 @@ RDCart::Validity RDLogLine::validity(const QDateTime &datetime) const
 void RDLogLine::setValidity(RDCart::Validity valid)
 {
   log_validity=valid;
+}
+
+
+RDLogLine::TimescaleMode RDLogLine::timescaleMode() const
+{
+  return log_timescale_mode;
+}
+
+
+void RDLogLine::setTimescaleMode(RDLogLine::TimescaleMode mode)
+{
+  log_timescale_mode=mode;
 }
 
 

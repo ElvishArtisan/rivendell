@@ -49,6 +49,7 @@ class RDLogLine
   enum PlaySource {UnknownSource=0,MainLog=1,AuxLog1=2,AuxLog2=3,SoundPanel=4,
 		   CartSlot=5};
   enum PointerSource {CartPointer=0,LogPointer=1,AutoPointer=2};
+  enum TimescaleMode {TimescaleIndividual=0,TimescaleBlock=1};
   RDLogLine();
   RDLogLine(unsigned cartnum);
   void clear();
@@ -63,6 +64,8 @@ class RDLogLine
   RDCart::Validity validity() const;
   RDCart::Validity validity(const QDateTime &datetime) const;
   void setValidity(RDCart::Validity valid);
+  TimescaleMode timescaleMode() const;
+  void setTimescaleMode(TimescaleMode mode);
   unsigned pass() const;
   void incrementPass();
   void clearPass();
@@ -274,6 +277,7 @@ class RDLogLine
   RDLogLine::State log_state;
   RDLogLine::Source log_source;
   RDCart::Validity log_validity;
+  RDLogLine::TimescaleMode log_timescale_mode;
   unsigned log_pass;
   unsigned log_cart_number;
   QTime log_start_time[5];

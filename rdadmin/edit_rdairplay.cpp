@@ -570,7 +570,7 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
   air_auxlog_box[0]=new QCheckBox(this);
   air_auxlog_box[0]->setGeometry(810,378,15,15);
   label=new QLabel(air_auxlog_box[0],tr("Show Auxlog 1 Button"),this);
-  label->setGeometry(830,378,150,15);
+  label->setGeometry(830,379,150,15);
   label->setAlignment(AlignLeft|AlignVCenter);
 
   air_auxlog_box[1]=new QCheckBox(this);
@@ -773,17 +773,17 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
   //
   label=new QLabel(tr("Log Mode Control"),this);
   label->setFont(big_font);
-  label->setGeometry(435,530,200,16);
+  label->setGeometry(135,530,200,16);
 
   //
   // Mode Control Style
   //
   air_modecontrol_box=new QComboBox(this);
-  air_modecontrol_box->setGeometry(560,550,110,20);
+  air_modecontrol_box->setGeometry(260,550,110,20);
   connect(air_modecontrol_box,SIGNAL(activated(int)),
 	  this,SLOT(modeControlActivatedData(int)));
   label=new QLabel(air_modecontrol_box,tr("Mode Control Style:"),this);
-  label->setGeometry(435,550,120,20);
+  label->setGeometry(135,550,120,20);
   label->setAlignment(AlignRight|AlignVCenter);
   air_modecontrol_box->insertItem(tr("Unified"));
   air_modecontrol_box->insertItem(tr("Independent"));
@@ -793,11 +793,11 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
   //
   for(int i=0;i<3;i++) {
     air_logstartmode_box[i]=new QComboBox(this);
-    air_logstartmode_box[i]->setGeometry(615,572+i*22,110,20);
+    air_logstartmode_box[i]->setGeometry(315,572+i*22,110,20);
     connect(air_logstartmode_box[i],SIGNAL(activated(int)),
 	    this,SLOT(logStartupModeActivatedData(int)));
     air_logstartmode_label[i]=new QLabel(air_logstartmode_box[i],"",this);
-    air_logstartmode_label[i]->setGeometry(470,572+i*22,140,20);
+    air_logstartmode_label[i]->setGeometry(170,572+i*22,140,20);
     air_logstartmode_label[i]->setAlignment(AlignRight|AlignVCenter);
     air_logstartmode_box[i]->insertItem(tr("Previous"));
     air_logstartmode_box[i]->insertItem(tr("LiveAssist"));
@@ -807,6 +807,24 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
   air_logstartmode_label[0]->setText(tr("Main Log Startup Mode:"));
   air_logstartmode_label[1]->setText(tr("Aux 1 Log Startup Mode:"));
   air_logstartmode_label[2]->setText(tr("Aux 2 Log Startup Mode:"));
+
+  //
+  // Timescale Mode
+  //
+  for(int i=0;i<3;i++) {
+    air_timescalemode_box[i]=new QComboBox(this);
+    air_timescalemode_box[i]->setGeometry(645,572+i*22,110,20);
+    connect(air_timescalemode_box[i],SIGNAL(activated(int)),
+	    this,SLOT(logTimescaleModeActivatedData(int)));
+    air_timescalemode_label[i]=new QLabel(air_timescalemode_box[i],"",this);
+    air_timescalemode_label[i]->setGeometry(470,572+i*22,170,20);
+    air_timescalemode_label[i]->setAlignment(AlignRight|AlignVCenter);
+    air_timescalemode_box[i]->insertItem(tr("Per Cart"));
+    air_timescalemode_box[i]->insertItem(tr("Time Block"));
+  }
+  air_timescalemode_label[0]->setText(tr("Main Log Timescaling Mode:"));
+  air_timescalemode_label[1]->setText(tr("Aux 1 Log Timescaling Mode:"));
+  air_timescalemode_label[2]->setText(tr("Aux 2 Log Timescaling Mode:"));
 
   //
   //  Ok Button
@@ -898,6 +916,7 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
     air_startlog[i]=air_conf->logName(i);
     air_autorestart[i]=air_conf->autoRestart(i);
     air_logstartmode_box[i]->setCurrentItem(air_conf->logStartMode(i));
+    air_timescalemode_box[i]->setCurrentItem(air_conf->timescaleMode(i));
   }
   air_startmode_box->setCurrentItem((int)air_startmode[air_logmachine]);
   air_startlog_edit->setText(air_startlog[air_logmachine]);
@@ -1051,6 +1070,8 @@ void EditRDAirPlay::modeControlActivatedData(int n)
     for(int i=1;i<RDAIRPLAY_LOG_QUANTITY;i++) {
       air_logstartmode_box[i]->
 	setCurrentItem(air_logstartmode_box[0]->currentItem());
+      air_timescalemode_box[i]->
+	setCurrentItem(air_timescalemode_box[0]->currentItem());
     }
   }
 }
@@ -1061,6 +1082,16 @@ void EditRDAirPlay::logStartupModeActivatedData(int n)
   if(air_modecontrol_box->currentItem()==0) {
     for(int i=0;i<RDAIRPLAY_LOG_QUANTITY;i++) {
       air_logstartmode_box[i]->setCurrentItem(n);
+    }
+  }
+}
+
+
+void EditRDAirPlay::logTimescaleModeActivatedData(int n)
+{
+  if(air_modecontrol_box->currentItem()==0) {
+    for(int i=0;i<RDAIRPLAY_LOG_QUANTITY;i++) {
+      air_timescalemode_box[i]->setCurrentItem(n);
     }
   }
 }
@@ -1141,6 +1172,9 @@ void EditRDAirPlay::okData()
     air_conf->setAutoRestart(i,air_autorestart[i]);
     air_conf->
       setLogStartMode(i,(RDAirPlayConf::OpMode)air_logstartmode_box[i]->
+		      currentItem());
+    air_conf->
+     setTimescaleMode(i,(RDLogLine::TimescaleMode)air_timescalemode_box[i]->
 		      currentItem());
   }
   air_conf->setSkinPath(air_skin_edit->text());

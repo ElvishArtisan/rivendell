@@ -467,11 +467,11 @@ int RDLogEvent::length(int from_line,int to_line,QTime *sched_time)
   }
   if(to_line<0) {
     to_line=size();
-    for(int i=from_line;i<size();i++) {
+    for(int i=from_line+1;i<size();i++) {
       if(logLine(i)->timeType()==RDLogLine::Hard) {
 	to_line=i;
-	i=size();
-	if(sched_time!=NULL) {
+	i=size()-1;
+	if((logLine(1)!=NULL)&&(sched_time!=NULL)) {
 	  *sched_time=logLine(i)->startTime(RDLogLine::Logged);
 	}
       }

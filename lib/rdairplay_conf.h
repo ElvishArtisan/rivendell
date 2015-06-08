@@ -32,23 +32,23 @@
 class RDAirPlayConf
 {
  public:
-  enum TimeMode {TwelveHour=0,TwentyFourHour=1};
-  enum OpModeStyle {Unified=0,Independent=1};
-  enum OpMode {Previous=0,LiveAssist=1,Auto=2,Manual=3};
   enum ActionMode {Normal=0,AddFrom=1,AddTo=2,DeleteFrom=3,MoveFrom=4,MoveTo=5,
 		   CopyFrom=6,CopyTo=7,Audition=8};
-  enum PieEndPoint {CartEnd=0,CartTransition=1};
   enum BarAction {NoAction=0,StartNext=1};
-  enum TrafficAction {TrafficStart=1,TrafficStop=2,TrafficFinish=3,
-		      TrafficPause=4,TrafficMacro=5};
-  enum PanelType {StationPanel=0,UserPanel=1};
-  enum ExitCode {ExitClean=0,ExitDirty=1};
-  enum StartMode {StartEmpty=0,StartPrevious=1,StartSpecified=2};
   enum Channel {MainLog1Channel=0,MainLog2Channel=1,SoundPanel1Channel=2,
 		CueChannel=3,AuxLog1Channel=4,AuxLog2Channel=5,
 		SoundPanel2Channel=6,SoundPanel3Channel=7,
 		SoundPanel4Channel=8,SoundPanel5Channel=9,LastChannel=10};
+  enum ExitCode {ExitClean=0,ExitDirty=1};
   enum GpioType {EdgeGpio=0,LevelGpio=1};
+  enum OpMode {Previous=0,LiveAssist=1,Auto=2,Manual=3};
+  enum OpModeStyle {Unified=0,Independent=1};
+  enum PanelType {StationPanel=0,UserPanel=1};
+  enum PieEndPoint {CartEnd=0,CartTransition=1};
+  enum StartMode {StartEmpty=0,StartPrevious=1,StartSpecified=2};
+  enum TimeMode {TwelveHour=0,TwentyFourHour=1};
+  enum TrafficAction {TrafficStart=1,TrafficStop=2,TrafficFinish=3,
+		      TrafficPause=4,TrafficMacro=5};
   RDAirPlayConf(const QString &station,const QString &tablename);
   QString station() const;
   int card(Channel chan) const;
@@ -88,6 +88,8 @@ class RDAirPlayConf
   void setOpMode(int mach,RDAirPlayConf::OpMode mode) const;
   RDAirPlayConf::OpMode logStartMode(int mach) const;
   void setLogStartMode(int mach,RDAirPlayConf::OpMode mode) const;
+  RDLogLine::TimescaleMode timescaleMode(int mach) const;
+  void setTimescaleMode(int mach,RDLogLine::TimescaleMode mode) const;
   int pieCountLength() const;
   void setPieCountLength(int len) const;
   RDAirPlayConf::PieEndPoint pieEndPoint() const;

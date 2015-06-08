@@ -1325,6 +1325,7 @@ bool CreateDb(QString name,QString pwd)
       SHOW_COUNTERS enum('N','Y') default 'N',\
       AUDITION_PREROLL int default 10000,\
       LOG0_START_MODE int default 0,\
+      LOG0_TIMESCALE_MODE int default 0,\
       LOG0_AUTO_RESTART enum('N','Y') default 'N',\
       LOG0_LOG_NAME char(64),\
       LOG0_CURRENT_LOG char(64),\
@@ -1334,6 +1335,7 @@ bool CreateDb(QString name,QString pwd)
       LOG0_NOW_CART int unsigned default 0,\
       LOG0_NEXT_CART int unsigned default 0,\
       LOG1_START_MODE int default 0,\
+      LOG1_TIMESCALE_MODE int default 0,\
       LOG1_AUTO_RESTART enum('N','Y') default 'N',\
       LOG1_LOG_NAME char(64),\
       LOG1_CURRENT_LOG char(64),\
@@ -1343,6 +1345,7 @@ bool CreateDb(QString name,QString pwd)
       LOG1_NOW_CART int unsigned default 0,\
       LOG1_NEXT_CART int unsigned default 0,\
       LOG2_START_MODE int default 0,\
+      LOG2_TIMESCALE_MODE int default 0,\
       LOG2_AUTO_RESTART enum('N','Y') default 'N',\
       LOG2_LOG_NAME char(64),\
       LOG2_CURRENT_LOG char(64),\
@@ -8107,6 +8110,17 @@ int UpdateDb(int ver)
       "READ_ISRC enum('N','Y') default 'Y' after CDDB_SERVER";
     q=new QSqlQuery(sql);
     delete q;
+  }
+
+  if(ver<246) {
+    for(int i=0;i<3;i++) {
+      sql=QString("alter table RDAIRPLAY add column ")+
+	QString().sprintf("LOG%d_TIMESCALE_MODE int default 0 ",i)+
+	"after "+
+	QString().sprintf("LOG%d_START_MODE",i);
+      q=new QSqlQuery(sql);
+      delete q;
+    }
   }
 
 

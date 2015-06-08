@@ -50,7 +50,8 @@ ARTIST_TEMPLATE        char(64)
 OUTCUE_TEMPLATE        char(64)
 DESCRIPTION_TEMPLATE   char(64)
 LOG0_START_MODE        int(11)           0=start empty, 1=load last, 
-                                       2=load specified
+                                         2=load specified
+LOG0_TIMESCALE_MODE    int(11)           0=Individual, 1=Block
 LOG0_AUTO_RESTART      enum('N','Y')
 LOG0_LOG_NAME          char(64)          From LOGS.NAME
 LOG0_CURRENT_LOG       char(64)          From LOGS.NAME
@@ -60,7 +61,8 @@ LOG0_LOG_LINE          int(11)
 LOG0_NOW_CART          int(10) unsigned
 LOG0_NEXT_CART         int(10) unsigned
 LOG1_START_MODE        int(11)           0=start empty, 1=load last, 
-                                       2=load specified
+                                         2=load specified
+LOG1_TIMESCALE_MODE    int(11)           0=Individual, 1=Block
 LOG1_AUTO_RESTART      enum('N','Y')
 LOG1_LOG_NAME          char(64)          From LOGS.NAME
 LOG1_CURRENT_LOG       char(64)          From LOGS.NAME
@@ -70,7 +72,8 @@ LOG1_LOG_LINE          int(11)
 LOG1_NOW_CART          int(10) unsigned
 LOG1_NEXT_CART         int(10) unsigned
 LOG2_START_MODE        int(11)           0=start empty, 1=load last, 
-                                       2=load specified
+                                         2=load specified
+LOG2_TIMESCALE_MODE    int(11)           0=Individual, 1=Block
 LOG2_AUTO_RESTART      enum('N','Y')
 LOG2_LOG_NAME          char(64)          From LOGS.NAME
 LOG2_CURRENT_LOG       char(64)          From LOGS.NAME

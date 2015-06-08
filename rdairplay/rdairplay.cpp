@@ -376,6 +376,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
     air_log[i]->setDefaultServiceName(default_svcname);
     air_log[i]->setNowCart(rdairplay_conf->logNowCart(i));
     air_log[i]->setNextCart(rdairplay_conf->logNextCart(i));
+    air_log[i]->setTimescaleMode(rdairplay_conf->timescaleMode(i));
     reload_mapper->setMapping(air_log[i],i);
     connect(air_log[i],SIGNAL(reloaded()),reload_mapper,SLOT(map()));
     rename_mapper->setMapping(air_log[i],i);

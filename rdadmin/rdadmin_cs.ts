@@ -2589,6 +2589,26 @@ GPIOs</source>
         <source>Aux 2 Log Startup Mode:</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Per Cart</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Time Block</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Main Log Timescaling Mode:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Aux 1 Log Timescaling Mode:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Aux 2 Log Timescaling Mode:</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditRDLibrary</name>

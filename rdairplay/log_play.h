@@ -72,6 +72,8 @@ class LogPlay : public QObject,public RDLogEvent
   int port(int channum) const;
   RDAirPlayConf::OpMode mode() const;
   void setOpMode(RDAirPlayConf::OpMode mode);
+  RDLogLine::TimescaleMode timescaleMode() const;
+  void setTimescaleMode(RDLogLine::TimescaleMode mode);
   void setLogName(QString name);
   void setChannels(int cards[2],int ports[2],
 		   const QString start_rml[2],const QString stop_rml[2]);
@@ -196,6 +198,7 @@ class LogPlay : public QObject,public RDLogEvent
   void SendNowNext();
   RDCae *play_cae;
   RDAirPlayConf::OpMode play_op_mode;
+  RDLogLine::TimescaleMode play_timescale_mode;
   int play_slot_id[LOGPLAY_MAX_PLAYS];
   int play_segue_length;
   int play_trans_length;
@@ -250,6 +253,7 @@ class LogPlay : public QObject,public RDLogEvent
   int play_audition_line;
   bool play_audition_head_played;
   int play_audition_preroll;
+  double play_speed_ratio;
 };
 
 

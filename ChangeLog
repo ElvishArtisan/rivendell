@@ -14883,3 +14883,15 @@
 2015-06-04 Fred Gleason <fredg@paravelsystems.com>
 	* Added code in 'scripts/rdlaunch.pl' to determine the virtual instance
 	to connect to on the basis of the system's SRV record.
+2015-06-08 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'RDAIRPLAY.LOG0_TIMESCALE_MODE',
+	'RDAIRPLAY.LOG1_TIMESCALE_MODE', and 'RDAIRPLAY.LOG2_TIMESCALE_MODE'
+	fields to the database.
+	* Updated the database version to 246.
+	* Added 'RDAirPlayConf::timescaleMode()' and
+	'RDAirPlayConf::setTimescaleMode()' methods in 'lib/rdairplay_conf.cpp'
+	and 'lib/rdairplay_conf.h'.
+	* Added 'Timescaling Mode' control to the RDAirPlay config dialog
+	in 'rdadmin/edit_rdairplay.cpp' and 'rdadmin/edit_rdairplay.h'.
+	* Implemented block-based timescaling in 'rdairplay/log_play.cpp'
+	and 'lib/rdplay_deck.cpp'.

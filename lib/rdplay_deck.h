@@ -51,7 +51,7 @@ class RDPlayDeck : public QObject
   int owner() const;
   void setOwner(int owner);
   RDCart *cart() const;
-  bool setCart(RDLogLine *logline,bool rotate);
+  bool setCart(RDLogLine *logline,bool rotate,double log_speed_ratio=1.0);
   RDCut *cut() const;
   bool playable() const;
   int card() const;

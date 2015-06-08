@@ -2,9 +2,7 @@
 //
 // Rivendell Log Playout Machine
 //
-//   (C) Copyright 2002-2009 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: log_play.cpp,v 1.197.8.7.2.2 2014/05/22 19:37:45 cvs Exp $
+//   (C) Copyright 2002-2015 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -84,6 +82,8 @@ LogPlay::LogPlay(RDCae *cae,int id,QSocketDevice *nn_sock,QString logname,
   play_prevnow_cartnum=0;
   play_prevnext_cartnum=0;
   play_op_mode=RDAirPlayConf::Auto;
+  play_timescale_mode=RDLogLine::TimescaleIndividual;
+  play_speed_ratio=1.0;
 
   //
   // Macro Cart Decks
@@ -195,6 +195,21 @@ void LogPlay::setOpMode(RDAirPlayConf::OpMode mode)
   }
   play_op_mode=mode;
   UpdateStartTimes(play_line_counter);
+}
+
+
+RDLogLine::TimescaleMode LogPlay::timescaleMode() const
+{
+  return play_timescale_mode;
+}
+
+
+void LogPlay::setTimescaleMode(RDLogLine::TimescaleMode mode)
+{
+  for(int i=0;i<size();i++) {
+    logLine(i)->setTimescaleMode(mode);
+  }
+  play_timescale_mode=mode;
 }
 
 
@@ -524,6 +539,7 @@ void LogPlay::load()
   play_rescan_pos=0;
   if(play_timescaling_available) {
     for(int i=0;i<size();i++) {
+      logLine(i)->setTimescaleMode(play_timescale_mode);
       logLine(i)->setTimescalingActive(logLine(i)->enforceLength());
     }
   }
@@ -820,10 +836,13 @@ void LogPlay::insert(int line,int cartnum,RDLogLine::TransType next_type,
   if(nextLine()<0) {
     play_next_line=line;
   }
-  logline->loadCart(cartnum,next_type,play_id,play_timescaling_available,
+  logline->loadCart(cartnum,next_type,play_id,
+		    play_timescaling_available&&
+		    (play_timescale_mode==RDLogLine::TimescaleIndividual),
 		    rdairplay_conf->defaultTransType());
   logline->
     setTimescalingActive(play_timescaling_available&&logline->enforceLength());
+  logline->setTimescaleMode(play_timescale_mode);
   UpdateStartTimes(line);
   emit inserted(line);
   UpdatePostPoint();
@@ -877,6 +896,7 @@ void LogPlay::insert(int line,RDLogLine *l,bool update,bool preserv_custom_trans
   }
   logline->
     setTimescalingActive(play_timescaling_available&&logline->enforceLength());
+  logline->setTimescaleMode(play_timescale_mode);
   if(update) {
     UpdateStartTimes(line);
     emit inserted(line);
@@ -1273,11 +1293,13 @@ void LogPlay::lineModified(int line)
   if((logline=logLine(line))!=NULL) {
     if((next_logline=logLine(line+1))==NULL) {
       logline->loadCart(logline->cartNumber(),RDLogLine::Play,
-			play_id,logline->timescalingActive());
+			play_id,logline->timescalingActive()&&
+			(play_timescale_mode==RDLogLine::TimescaleIndividual));
     }
     else {
       logline->loadCart(logline->cartNumber(),next_logline->transType(),
-			play_id,logline->timescalingActive());
+			play_id,logline->timescalingActive()&&
+			(play_timescale_mode==RDLogLine::TimescaleIndividual));
     }
   }
   emit modified(line);
@@ -1801,7 +1823,7 @@ bool LogPlay::StartEvent(int line,RDLogLine::TransType trans_type,
 	  playdeck->duckVolume(play_duck_volume_port1,0);
 	  }
 		
-	if(!playdeck->setCart(logline,logline->status()!=RDLogLine::Paused)) {
+	if(!playdeck->setCart(logline,logline->status()!=RDLogLine::Paused,play_speed_ratio)) {
 	  // No audio to play, so fake it
 	  logline->setZombified(true);
 	  playStateChangedData(playdeck->id(),RDPlayDeck::Playing);
@@ -2010,6 +2032,35 @@ bool LogPlay::StartAudioEvent(int line)
 
   if((logline=logLine(line))==NULL) {
     return false;
+  }
+
+  //
+  // Get Time Block
+  //
+  if(play_timescale_mode==RDLogLine::TimescaleBlock) {
+    QTime block_end;
+    int desired_len=length(line,-1,&block_end);
+    int actual_len=desired_len;
+    if(block_end.isNull()) {
+      play_speed_ratio=1.0;
+    }
+    else {
+      actual_len=QTime::currentTime().msecsTo(block_end);
+      play_speed_ratio=(double)desired_len/(double)actual_len;
+    }
+    if((play_speed_ratio<RD_TIMESCALE_MIN)||
+       (play_speed_ratio>RD_TIMESCALE_MAX)) {
+      play_speed_ratio=1.0;
+    }
+    /*
+    printf("Desired: %d  Actual: %d  Ratio: %6.4lf\n",
+	   desired_len,
+	   actual_len,
+	   play_speed_ratio);
+    */
+  }
+  else {
+    play_speed_ratio=1.0;
   }
 
   //
@@ -2598,11 +2649,13 @@ void LogPlay::RefreshEvents(int line,int line_quan,bool force_update)
 		if((next_logline=logLine(i+1))!=NULL) {
 		  logline->
 		    loadCart(logline->cartNumber(),next_logline->transType(),
-			     play_id,logline->timescalingActive());
+			     play_id,logline->timescalingActive()&&
+			     (play_timescale_mode==RDLogLine::TimescaleIndividual));
 		}
 		else {
 		  logline->loadCart(logline->cartNumber(),RDLogLine::Play,
-				    play_id,logline->timescalingActive());
+				    play_id,logline->timescalingActive()&&
+				    (play_timescale_mode==RDLogLine::TimescaleIndividual));
 		}
 		if(force_update||(state!=logline->state())) {
 		  emit modified(i);

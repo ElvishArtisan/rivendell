@@ -66,6 +66,7 @@ class EditRDAirPlay : public QDialog
   void selectSkinData();
   void modeControlActivatedData(int n);
   void logStartupModeActivatedData(int n);
+  void logTimescaleModeActivatedData(int n);
   void okData();
   void cancelData();
 
@@ -138,6 +139,8 @@ class EditRDAirPlay : public QDialog
   QComboBox *air_modecontrol_box;
   QLabel *air_logstartmode_label[RDAIRPLAY_LOG_QUANTITY];
   QComboBox *air_logstartmode_box[RDAIRPLAY_LOG_QUANTITY];
+  QLabel *air_timescalemode_label[RDAIRPLAY_LOG_QUANTITY];
+  QComboBox *air_timescalemode_box[RDAIRPLAY_LOG_QUANTITY];
 };
 
 

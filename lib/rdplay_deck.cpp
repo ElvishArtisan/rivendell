@@ -120,7 +120,7 @@ RDCart *RDPlayDeck::cart() const
 }
 
 
-bool RDPlayDeck::setCart(RDLogLine *logline,bool rotate)
+bool RDPlayDeck::setCart(RDLogLine *logline,bool rotate,double log_speed_ratio)
 {
   play_timescale_active=logline->timescalingActive();
   if((play_cart!=NULL)&&(rotate||play_cart->number()!=logline->cartNumber())) {
@@ -178,7 +178,7 @@ bool RDPlayDeck::setCart(RDLogLine *logline,bool rotate)
     play_timescale_speed=
       (int)(RD_TIMESCALE_DIVISOR*(double)(play_audio_point[1]-
 					  play_audio_point[0])/
-      (double)play_forced_length);
+	    (double)play_forced_length);
     if((((double)play_timescale_speed)<
 	(RD_TIMESCALE_DIVISOR*RD_TIMESCALE_MIN))||
        (((double)play_timescale_speed)>
@@ -188,9 +188,16 @@ bool RDPlayDeck::setCart(RDLogLine *logline,bool rotate)
     }
   }
   else {
-    play_timescale_speed=(int)RD_TIMESCALE_DIVISOR;
+    if(log_speed_ratio!=1.0) {  // Individual event timescaling
+      play_timescale_speed=log_speed_ratio*RD_TIMESCALE_DIVISOR;
+    }
+    else {      // Time block timescaling
+      play_timescale_speed=(int)RD_TIMESCALE_DIVISOR;
+    }
   }
-  play_audio_length=play_audio_point[1]-play_audio_point[0];
+  //  play_audio_length=play_audio_point[1]-play_audio_point[0];
+  play_audio_length=(play_audio_point[1]-play_audio_point[0])*
+    (RD_TIMESCALE_DIVISOR/(double)play_timescale_speed);
   if(logline->segueStartPoint(RDLogLine::AutoPointer)<0) {
     play_point_value[RDPlayDeck::Segue][0]=
       (int)((double)play_cut->segueStartPoint());

@@ -285,6 +285,20 @@ void RDAirPlayConf::setLogStartMode(int mach,RDAirPlayConf::OpMode mode) const
 }
 
 
+RDLogLine::TimescaleMode RDAirPlayConf::timescaleMode(int mach) const
+{
+  return (RDLogLine::TimescaleMode)RDGetSqlValue(air_tablename,"ID",air_id,
+		       QString().sprintf("LOG%d_TIMESCALE_MODE",mach)).toInt(); 
+}
+
+
+void RDAirPlayConf::setTimescaleMode(int mach,
+				     RDLogLine::TimescaleMode mode) const
+{
+  SetRow(QString().sprintf("LOG%d_TIMESCALE_MODE",mach),(int)mode);
+}
+
+
 int RDAirPlayConf::pieCountLength() const
 {
   return RDGetSqlValue(air_tablename,"ID",air_id,"PIE_COUNT_LENGTH").toInt();
