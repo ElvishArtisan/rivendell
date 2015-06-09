@@ -66,6 +66,8 @@ class RDLogLine
   void setValidity(RDCart::Validity valid);
   TimescaleMode timescaleMode() const;
   void setTimescaleMode(TimescaleMode mode);
+  double timescaleRatio() const;
+  void setTimescaleRatio(double ratio);
   unsigned pass() const;
   void incrementPass();
   void clearPass();
@@ -278,6 +280,7 @@ class RDLogLine
   RDLogLine::Source log_source;
   RDCart::Validity log_validity;
   RDLogLine::TimescaleMode log_timescale_mode;
+  double log_timescale_ratio;
   unsigned log_pass;
   unsigned log_cart_number;
   QTime log_start_time[5];

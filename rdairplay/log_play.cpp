@@ -2062,6 +2062,7 @@ bool LogPlay::StartAudioEvent(int line)
   else {
     play_speed_ratio=1.0;
   }
+  logline->setTimescaleRatio(play_speed_ratio);
 
   //
   // Get a Play Deck

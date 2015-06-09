@@ -14895,3 +14895,7 @@
 	in 'rdadmin/edit_rdairplay.cpp' and 'rdadmin/edit_rdairplay.h'.
 	* Implemented block-based timescaling in 'rdairplay/log_play.cpp'
 	and 'lib/rdplay_deck.cpp'.
+2015-06-09 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed bugs in 'lib/rdplay_deck.cpp' and 'lib/rdlog_line.cpp'
+	that caused audio to be truncated when played in block
+	timescaling mode.

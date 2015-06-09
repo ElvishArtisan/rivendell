@@ -174,7 +174,7 @@ bool RDPlayDeck::setCart(RDLogLine *logline,bool rotate,double log_speed_ratio)
     play_audio_point[0]=logline->startPoint();
     play_audio_point[1]=logline->endPoint(RDLogLine::LogPointer);
   }
-  if(play_timescale_active) {
+  if(play_timescale_active) {  // Per event timescaling
     play_timescale_speed=
       (int)(RD_TIMESCALE_DIVISOR*(double)(play_audio_point[1]-
 					  play_audio_point[0])/
@@ -188,10 +188,10 @@ bool RDPlayDeck::setCart(RDLogLine *logline,bool rotate,double log_speed_ratio)
     }
   }
   else {
-    if(log_speed_ratio!=1.0) {  // Individual event timescaling
+    if(log_speed_ratio!=1.0) {  // Time block timescaling
       play_timescale_speed=log_speed_ratio*RD_TIMESCALE_DIVISOR;
     }
-    else {      // Time block timescaling
+    else {      // No timescaling
       play_timescale_speed=(int)RD_TIMESCALE_DIVISOR;
     }
   }

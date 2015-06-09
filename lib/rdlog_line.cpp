@@ -80,6 +80,7 @@ void RDLogLine::clear()
   log_pass=0;
   log_source=RDLogLine::Manual;
   log_cart_number=0;
+  log_timescale_ratio=1.0;
   for(int i=0;i<5;i++) {
     log_start_time[i]=QTime();
   }
@@ -284,6 +285,17 @@ void RDLogLine::setTimescaleMode(RDLogLine::TimescaleMode mode)
 }
 
 
+double RDLogLine::timescaleRatio() const
+{
+  return log_timescale_ratio;
+}
+
+
+void RDLogLine::setTimescaleRatio(double ratio)
+{
+  log_timescale_ratio=ratio;
+}
+
 unsigned RDLogLine::pass() const
 {
   return log_pass;
@@ -429,11 +441,11 @@ int RDLogLine::startPoint(PointerSource ptr) const
 {
   if(ptr==RDLogLine::AutoPointer) {
     if(log_start_point[RDLogLine::LogPointer]>=0) {
-      return log_start_point[RDLogLine::LogPointer];
+      return log_start_point[RDLogLine::LogPointer]/log_timescale_ratio;
     }
-    return log_start_point[RDLogLine::CartPointer];
+    return log_start_point[RDLogLine::CartPointer]/log_timescale_ratio;
   }
-  return log_start_point[ptr];
+  return log_start_point[ptr]/log_timescale_ratio;
 }
 
 
@@ -447,11 +459,11 @@ int RDLogLine::endPoint(PointerSource ptr) const
 {
   if(ptr==RDLogLine::AutoPointer) {
     if(log_end_point[RDLogLine::LogPointer]>=0) {
-      return log_end_point[RDLogLine::LogPointer];
+      return log_end_point[RDLogLine::LogPointer]/log_timescale_ratio;
     }
-    return log_end_point[RDLogLine::CartPointer];
+    return log_end_point[RDLogLine::CartPointer]/log_timescale_ratio;
   }
-  return log_end_point[ptr];
+  return log_end_point[ptr]/log_timescale_ratio;
 }
 
 
@@ -465,17 +477,17 @@ int RDLogLine::segueStartPoint(PointerSource ptr) const
 {
   if(ptr==RDLogLine::AutoPointer) {
     if(log_segue_start_point[RDLogLine::LogPointer]>=0) {
-      return log_segue_start_point[RDLogLine::LogPointer];
+      return log_segue_start_point[RDLogLine::LogPointer]/log_timescale_ratio;
     }
     if(log_segue_start_point[RDLogLine::CartPointer]>=0) {
-      return log_segue_start_point[RDLogLine::CartPointer];
+      return log_segue_start_point[RDLogLine::CartPointer]/log_timescale_ratio;
     }
     if(log_end_point[RDLogLine::LogPointer]>=0) {
-      return log_end_point[RDLogLine::LogPointer];
+      return log_end_point[RDLogLine::LogPointer]/log_timescale_ratio;
     }
-    return log_end_point[RDLogLine::CartPointer];
+    return log_end_point[RDLogLine::CartPointer]/log_timescale_ratio;
   }
-  return log_segue_start_point[ptr];
+  return log_segue_start_point[ptr]/log_timescale_ratio;
 }
 
 
@@ -489,17 +501,17 @@ int RDLogLine::segueEndPoint(PointerSource ptr) const
 {
   if(ptr==RDLogLine::AutoPointer) {
     if(log_segue_end_point[RDLogLine::LogPointer]>=0) {
-      return log_segue_end_point[RDLogLine::LogPointer];
+      return log_segue_end_point[RDLogLine::LogPointer]/log_timescale_ratio;
     }
     if(log_segue_end_point[RDLogLine::CartPointer]>=0) {
-      return log_segue_end_point[RDLogLine::CartPointer];
+      return log_segue_end_point[RDLogLine::CartPointer]/log_timescale_ratio;
     }
     if(log_end_point[RDLogLine::LogPointer]>=0) {
-      return log_end_point[RDLogLine::LogPointer];
+      return log_end_point[RDLogLine::LogPointer]/log_timescale_ratio;
     }
-    return log_end_point[RDLogLine::CartPointer];
+    return log_end_point[RDLogLine::CartPointer]/log_timescale_ratio;
   }
-  return log_segue_end_point[ptr];
+  return log_segue_end_point[ptr]/log_timescale_ratio;
 }
 
 
@@ -530,17 +542,17 @@ int RDLogLine::fadeupPoint(RDLogLine::PointerSource ptr) const
 {
   if(ptr==RDLogLine::AutoPointer) {
     if(log_fadeup_point[RDLogLine::LogPointer]>=0) {
-      return log_fadeup_point[RDLogLine::LogPointer];
+      return log_fadeup_point[RDLogLine::LogPointer]/log_timescale_ratio;
     }
     if(log_fadeup_point[RDLogLine::CartPointer]>=0) {
-      return log_fadeup_point[RDLogLine::CartPointer];
+      return log_fadeup_point[RDLogLine::CartPointer]/log_timescale_ratio;
     }
     if(log_start_point[RDLogLine::LogPointer]>=0) {
-      return log_start_point[RDLogLine::LogPointer];
+      return log_start_point[RDLogLine::LogPointer]/log_timescale_ratio;
     }
-    return log_start_point[RDLogLine::CartPointer];
+    return log_start_point[RDLogLine::CartPointer]/log_timescale_ratio;
   }
-  return log_fadeup_point[ptr];
+  return log_fadeup_point[ptr]/log_timescale_ratio;
 }
 
 
@@ -566,17 +578,17 @@ int RDLogLine::fadedownPoint(RDLogLine::PointerSource ptr) const
 {
   if(ptr==RDLogLine::AutoPointer) {
     if(log_fadedown_point[RDLogLine::LogPointer]>=0) {
-      return log_fadedown_point[RDLogLine::LogPointer];
+      return log_fadedown_point[RDLogLine::LogPointer]/log_timescale_ratio;
     }
     if(log_fadedown_point[RDLogLine::CartPointer]>=0) {
-      return log_fadedown_point[RDLogLine::CartPointer];
+      return log_fadedown_point[RDLogLine::CartPointer]/log_timescale_ratio;
     }
     if(log_start_point[RDLogLine::LogPointer]>=0) {
-      return log_end_point[RDLogLine::LogPointer];
+      return log_end_point[RDLogLine::LogPointer]/log_timescale_ratio;
     }
-    return log_end_point[RDLogLine::CartPointer];
+    return log_end_point[RDLogLine::CartPointer]/log_timescale_ratio;
   }
-  return log_fadedown_point[ptr];
+  return log_fadedown_point[ptr]/log_timescale_ratio;
 }
 
 
@@ -1286,13 +1298,13 @@ int RDLogLine::effectiveLength() const
   if(log_cut_number<0) {
     return log_forced_length;
   }
-  return log_effective_length;
+  return log_effective_length/log_timescale_ratio;
 }
 
 
 int RDLogLine::talkLength() const
 {
-  return log_talk_length;
+  return log_talk_length/log_timescale_ratio;
 }
 
 
@@ -1303,14 +1315,14 @@ int RDLogLine::segueLength(RDLogLine::TransType next_trans)
 	switch(next_trans) {
 	    case RDLogLine::Stop:
 	    case RDLogLine::Play:
-	      return log_effective_length;
+	      return log_effective_length/log_timescale_ratio;
 	      
 	    case RDLogLine::Segue:
 	      if(segueStartPoint(RDLogLine::AutoPointer)<0) {
-		return log_effective_length;
+		return log_effective_length/log_timescale_ratio;
 	      }
-	      return segueStartPoint(RDLogLine::AutoPointer)-
-		startPoint(RDLogLine::AutoPointer);
+	      return (segueStartPoint(RDLogLine::AutoPointer)-
+		      startPoint(RDLogLine::AutoPointer))/log_timescale_ratio;
 
 	    default:
 	      break;
@@ -1340,8 +1352,9 @@ int RDLogLine::segueTail(RDLogLine::TransType next_trans)
 	      return 0;
 	      
 	    case RDLogLine::Segue:
-	      return segueEndPoint(RDLogLine::AutoPointer)-
-		segueStartPoint(RDLogLine::AutoPointer);
+	      return (segueEndPoint(RDLogLine::AutoPointer)-
+		      segueStartPoint(RDLogLine::AutoPointer))/
+		log_timescale_ratio;
 
 	    default:
 	      break;
