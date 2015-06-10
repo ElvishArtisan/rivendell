@@ -31,14 +31,13 @@
 #include <log_traffic.h>
 #include <globals.h>
 
-LogPlay::LogPlay(RDCae *cae,int id,QSocketDevice *nn_sock,QString logname,
+LogPlay::LogPlay(int id,QSocketDevice *nn_sock,QString logname,
 		 std::vector<RLMHost *> *rlm_hosts,QObject *parent)
   : QObject(parent),RDLogEvent(logname)
 {
   //
   // Initialize Data Structures
   //
-  play_cae=cae;
   play_log=NULL;
   play_id=id;
   play_rlm_hosts=rlm_hosts;
@@ -65,10 +64,21 @@ LogPlay::LogPlay(RDCae *cae,int id,QSocketDevice *nn_sock,QString logname,
   for(int i=0;i<LOGPLAY_MAX_PLAYS;i++) {
     play_slot_id[i]=i;
   }
+
+  //
+  // CAE Connection
+  //
+  play_cae=new RDCae(rdstation_conf,air_config,parent);
+  play_cae->connectHost();
+
   for(int i=0;i<2;i++) {
     play_card[i]=0;
     play_port[i]=0;
   }
+
+  //
+  // Play Decks
+  //
   for(int i=0;i<RD_MAX_STREAMS;i++) {
     play_deck[i]=new RDPlayDeck(play_cae,0,this);
     play_deck_active[i]=false;
@@ -96,7 +106,7 @@ LogPlay::LogPlay(RDCae *cae,int id,QSocketDevice *nn_sock,QString logname,
   //
   // CAE Signals
   //
-  connect(rdcae,SIGNAL(timescalingSupported(int,bool)),
+  connect(play_cae,SIGNAL(timescalingSupported(int,bool)),
 	  this,SLOT(timescalingSupportedData(int,bool)));
 
   //
@@ -111,8 +121,9 @@ LogPlay::LogPlay(RDCae *cae,int id,QSocketDevice *nn_sock,QString logname,
   play_audition_line=-1;
   if((rdstation_conf->cueCard()>=0)&&
      (rdstation_conf->cuePort()>=0)) {
-    play_audition_player=new RDSimplePlayer(rdcae,rdripc,
-			  rdstation_conf->cueCard(),rdstation_conf->cuePort(),0,0);
+    play_audition_player=
+      new RDSimplePlayer(play_cae,rdripc,rdstation_conf->cueCard(),
+			 rdstation_conf->cuePort(),0,0);
     play_audition_player->playButton()->hide();
     play_audition_player->stopButton()->hide();
     connect(play_audition_player,SIGNAL(played()),
@@ -216,7 +227,7 @@ void LogPlay::setChannels(int cards[2],int ports[2],
     play_port[i]=ports[i];
     play_start_rml[i]=start_rml[i];
     play_stop_rml[i]=stop_rml[i];
-    rdcae->requestTimescale(play_card[i]);
+    play_cae->requestTimescale(play_card[i]);
   }
 }
 
@@ -2749,9 +2760,9 @@ void LogPlay::ClearChannel(int deckid)
   if(play_deck[deckid]->channel()<0) {
     return;
   }
-  if(rdcae->playPortActive(play_deck[deckid]->card(),
-			   play_deck[deckid]->port(),
-			   play_deck[deckid]->stream())) {
+  if(play_cae->playPortActive(play_deck[deckid]->card(),
+			      play_deck[deckid]->port(),
+			      play_deck[deckid]->stream())) {
     return;
   }
 

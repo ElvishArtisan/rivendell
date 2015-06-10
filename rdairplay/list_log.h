@@ -45,7 +45,7 @@ class ListLog : public QWidget
 {
  Q_OBJECT
  public:
-  ListLog(LogPlay *log,int id,bool allow_pause=false,
+  ListLog(LogPlay *log,RDCae *cae,int id,bool allow_pause=false,
 	  QWidget *parent=0,const char *name=0);
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
@@ -153,6 +153,7 @@ class ListLog : public QWidget
   bool list_pause_allowed;
   bool list_audition_head_playing;
   bool list_audition_tail_playing;
+  RDCae *list_cae;
 };
 
 

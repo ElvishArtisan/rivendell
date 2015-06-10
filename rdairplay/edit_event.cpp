@@ -31,10 +31,11 @@
 #include <globals.h>
 
 
-EditEvent::EditEvent(LogPlay *log,QWidget *parent,const char *name)
+EditEvent::EditEvent(LogPlay *log,RDCae *cae,QWidget *parent,const char *name)
   : QDialog(parent,name,true)
 {
   edit_log=log;
+  edit_cae=cae;
   edit_height=385;
   setCaption(tr("Edit Event"));
 
@@ -135,7 +136,7 @@ EditEvent::EditEvent(LogPlay *log,QWidget *parent,const char *name)
   // Cue Editor
   //
   edit_cue_edit=
-    new RDCueEdit(rdcae,rdstation_conf->cueCard(),
+    new RDCueEdit(edit_cae,rdstation_conf->cueCard(),
                   rdstation_conf->cuePort(),this);
 
   //

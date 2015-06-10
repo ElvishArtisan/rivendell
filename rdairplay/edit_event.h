@@ -49,7 +49,7 @@ class EditEvent : public QDialog
 {
   Q_OBJECT
  public:
-  EditEvent(LogPlay *log,QWidget *parent=0,const char *name=0);
+  EditEvent(LogPlay *log,RDCae *cae,QWidget *parent=0,const char *name=0);
   ~EditEvent();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
@@ -91,6 +91,7 @@ class EditEvent : public QDialog
   QPushButton *edit_cancel_button;
   QLabel *edit_horizrule_label;
   int edit_height;
+  RDCae *edit_cae;
 };
 
 
