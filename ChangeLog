@@ -14899,3 +14899,5 @@
 	* Fixed bugs in 'lib/rdplay_deck.cpp' and 'lib/rdlog_line.cpp'
 	that caused audio to be truncated when played in block
 	timescaling mode.
+2015-06-16 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a buffer overflow bug in 'ripcd/bt_src16.cpp'.
