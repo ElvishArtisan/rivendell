@@ -2046,16 +2046,18 @@ bool LogPlay::StartAudioEvent(int line)
     }
     else {
       actual_len=QTime::currentTime().msecsTo(block_end);
-      play_speed_ratio=(double)desired_len/(double)actual_len;
+      play_speed_ratio=(double)actual_len/(double)desired_len;
     }
-    if((play_speed_ratio<RD_TIMESCALE_MIN)||
-       (play_speed_ratio>RD_TIMESCALE_MAX)) {
-      play_speed_ratio=1.0;
+    //    double orig_ratio=play_speed_ratio;
+    if(play_speed_ratio<(1.0-logline->timescaleLimit())) {
+      play_speed_ratio=1.0-logline->timescaleLimit();
+    }
+    if(play_speed_ratio>(1.0+logline->timescaleLimit())) {
+      play_speed_ratio=1.0+logline->timescaleLimit()-0.0001;
     }
     /*
-    printf("Desired: %d  Actual: %d  Ratio: %6.4lf\n",
-	   desired_len,
-	   actual_len,
+    printf("Ratio - Desired %6.4lf  Got: %6.4lf\n",
+	   orig_ratio,
 	   play_speed_ratio);
     */
   }

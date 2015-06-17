@@ -389,8 +389,8 @@ bool RDHPIPlayStream::play()
   }
   if((!playing)&&(!is_paused)) {
     LogHpi(HPI_OutStreamSetTimeScale(NULL,hpi_stream,
-			(uint16_t)((RD_TIMESCALE_DIVISOR/(double)play_speed)*
-				   HPI_OSTREAM_TIMESCALE_UNITS)));
+		(uint16_t)((RD_TIMESCALE_DIVISOR/(double)play_speed)*
+			   HPI_OSTREAM_TIMESCALE_UNITS)));
     if(HPI_OutStreamGetInfoEx(NULL,hpi_stream,
 			      &state,&buffer_size,&data_to_play,
 			      &samples_played,&reserved)!=0) {

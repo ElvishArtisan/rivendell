@@ -2,9 +2,7 @@
 //
 // Edit a Rivendell Group
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: edit_group.h,v 1.16.8.1 2013/01/07 13:50:22 cvs Exp $
+//   (C) Copyright 2002-2015 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -72,6 +70,7 @@ class EditGroup : public QDialog
   QCheckBox *group_traffic_check;
   QCheckBox *group_nownext_check;
   QComboBox *group_carttype_box;
+  QSpinBox *group_timescale_spin;
   QPushButton *group_color_button;
   QLineEdit *group_title_edit;
   QSpinBox *group_shelflife_spin;

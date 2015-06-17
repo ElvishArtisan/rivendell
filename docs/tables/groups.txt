@@ -19,3 +19,4 @@ REPORT_TFC           enum('N','Y')
 REPORT_MUS           enum('N','Y')
 ENABLE_NOW_NEXT      enum('N','Y')
 COLOR                char(7)
+TIMESCALE_LIMIT      int(11)          +/- percentage value

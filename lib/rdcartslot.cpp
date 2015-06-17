@@ -2,9 +2,7 @@
 //
 // The cart slot widget.
 //
-//   (C) Copyright 2012-2014 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdcartslot.cpp,v 1.13.2.19.2.2 2014/06/24 18:27:03 cvs Exp $
+//   (C) Copyright 2012-2015 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -616,16 +614,16 @@ unsigned RDCartSlot::SelectCart(const QString &svcname,unsigned msecs)
   unsigned cartnum=0;
   int diff=1000000;
 
-  sql=QString("select AUTOFILLS.CART_NUMBER,CART.FORCED_LENGTH from ")+
-    "AUTOFILLS left join CART on AUTOFILLS.CART_NUMBER=CART.NUMBER"+
-    QString().
-    sprintf(" where (CART.FORCED_LENGTH>%u)&&(CART.FORCED_LENGTH<%u)&&",
-	    (unsigned)((double)msecs*RD_TIMESCALE_MIN),
-	    (unsigned)((double)msecs*RD_TIMESCALE_MAX))+
-    "(SERVICE=\""+RDEscapeString(svcname)+"\")";
+  sql=QString("select AUTOFILLS.CART_NUMBER,CART.AVERAGE_LENGTH,")+
+    "GROUPS.TIMESCALE_LIMIT "+
+    "from AUTOFILLS left join CART on AUTOFILLS.CART_NUMBER=CART.NUMBER "
+    "left join GROUPS on CART.GROUP_NAME=GROUPS.NAME "+
+    "where AUTOFILLS.SERVICE=\""+RDEscapeString(svcname)+"\"";
   q=new RDSqlQuery(sql);
   while(q->next()) {
-    if(::abs(msecs-q->value(1).toInt())<diff) {
+    if((::abs(msecs-q->value(1).toInt())<diff)&&
+       (msecs<=q->value(1).toInt()*(1.0+(double)q->value(2).toInt()/100.0))&&
+       (msecs>=q->value(1).toInt()*(1.0-(double)q->value(2).toInt()/100.0))) {
       cartnum=q->value(0).toUInt();
       diff=::abs(msecs-q->value(1).toInt());
     }

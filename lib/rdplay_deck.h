@@ -143,7 +143,8 @@ class RDPlayDeck : public QObject
   int play_last_start_position;
   int play_current_position;
   bool play_timescale_active;
-  int play_timescale_speed;
+  //  int play_timescale_speed;
+  double play_timescale_ratio;
 };
 
 

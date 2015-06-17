@@ -827,67 +827,34 @@ int RDLogEvent::LoadLines(const QString &log_table,int id_offset,
   // 59 - LOG.DUCK_UP_GAIN         60 - LOG.DUCK_DOWN_GAIN
   // 61 - CART.START_DATETIME      62 - CART.END_DATETIME
   // 63 - LOG.EVENT_LENGTH         64 - CART.USE_EVENT_LENGTH
-  // 65 - CART.NOTES
+  // 65 - CART.NOTES               66 - GROUPS.TIMESCALE_LIMIT
   //
-  sql=QString().sprintf("select `%s`.ID,`%s`.CART_NUMBER,\
-`%s`.START_TIME,`%s`.TIME_TYPE,`%s`.TRANS_TYPE,`%s`.START_POINT,\
-`%s`.END_POINT,`%s`.SEGUE_START_POINT,`%s`.SEGUE_END_POINT,\
-CART.TYPE,CART.GROUP_NAME,CART.TITLE,CART.ARTIST,CART.ALBUM,CART.YEAR,\
-CART.LABEL,CART.CLIENT,CART.AGENCY,CART.USER_DEFINED,\
-CART.CONDUCTOR,CART.SONG_ID,\
-CART.FORCED_LENGTH,CART.CUT_QUANTITY,CART.LAST_CUT_PLAYED,CART.PLAY_ORDER,\
-CART.ENFORCE_LENGTH,CART.PRESERVE_PITCH ,`%s`.TYPE,`%s`.COMMENT,\
-`%s`.LABEL,`%s`.GRACE_TIME,`%s`.POST_POINT,`%s`.SOURCE,\
-`%s`.EXT_START_TIME,`%s`.EXT_LENGTH,`%s`.EXT_DATA,`%s`.EXT_EVENT_ID,\
-`%s`.EXT_ANNC_TYPE,`%s`.EXT_CART_NAME,CART.ASYNCRONOUS,`%s`.FADEUP_POINT,\
-`%s`.FADEUP_GAIN,`%s`.FADEDOWN_POINT,`%s`.FADEDOWN_GAIN,`%s`.SEGUE_GAIN,\
-CART.PUBLISHER,CART.COMPOSER,CART.USAGE_CODE,CART.AVERAGE_SEGUE_LENGTH,\
-`%s`.LINK_EVENT_NAME,`%s`.LINK_START_TIME,`%s`.LINK_LENGTH,`%s`.LINK_ID, \
-`%s`.LINK_EMBEDDED,`%s`.ORIGIN_USER,`%s`.ORIGIN_DATETIME,CART.VALIDITY, \
-`%s`.LINK_START_SLOP,`%s`.LINK_END_SLOP, \
-`%s`.DUCK_UP_GAIN,`%s`.DUCK_DOWN_GAIN,CART.START_DATETIME,CART.END_DATETIME,\
-`%s`.EVENT_LENGTH,CART.USE_EVENT_LENGTH,CART.NOTES \
-from `%s` left join CART on `%s`.CART_NUMBER=CART.NUMBER order by COUNT",
-				(const char *)log_table,
-				(const char *)log_table,
-				(const char *)log_table,
-				(const char *)log_table,
-				(const char *)log_table,
-				(const char *)log_table,
-				(const char *)log_table,
-				(const char *)log_table,
-				(const char *)log_table,
-				(const char *)log_table,
-				(const char *)log_table,
-				(const char *)log_table,
-				(const char *)log_table,
-				(const char *)log_table,
-				(const char *)log_table,
-				(const char *)log_table,
-				(const char *)log_table,
-				(const char *)log_table,
-				(const char *)log_table,
-				(const char *)log_table,
-				(const char *)log_table,
-				(const char *)log_table,
-				(const char *)log_table,
-				(const char *)log_table,
-				(const char *)log_table,
-				(const char *)log_table,
-				(const char *)log_table,
-				(const char *)log_table,
-				(const char *)log_table,
-				(const char *)log_table,
-				(const char *)log_table,
-				(const char *)log_table,
-				(const char *)log_table,
-				(const char *)log_table,
-				(const char *)log_table,
-				(const char *)log_table,
-				(const char *)log_table,
-				(const char *)log_table,
-				(const char *)log_table,
-				(const char *)log_table);
+  sql=QString("select `")+log_table+"`.ID,`"+log_table+"`.CART_NUMBER,"+
+    "`"+log_table+"`.START_TIME,`"+log_table+"`.TIME_TYPE,`"+log_table+
+    "`.TRANS_TYPE,`"+log_table+"`.START_POINT,`"+log_table+"`.END_POINT,`"+
+    log_table+"`.SEGUE_START_POINT,`"+log_table+"`.SEGUE_END_POINT,"+
+    "CART.TYPE,CART.GROUP_NAME,CART.TITLE,CART.ARTIST,CART.ALBUM,CART.YEAR,"+
+    "CART.LABEL,CART.CLIENT,CART.AGENCY,CART.USER_DEFINED,"+
+    "CART.CONDUCTOR,CART.SONG_ID,"+
+    "CART.FORCED_LENGTH,CART.CUT_QUANTITY,CART.LAST_CUT_PLAYED,"+
+    "CART.PLAY_ORDER,CART.ENFORCE_LENGTH,CART.PRESERVE_PITCH ,"+
+    "`"+log_table+"`.TYPE,`"+log_table+"`.COMMENT,`"+log_table+"`.LABEL,`"+
+    log_table+"`.GRACE_TIME,`"+log_table+"`.POST_POINT,`"+log_table+"`.SOURCE,"+
+    "`"+log_table+"`.EXT_START_TIME,`"+log_table+"`.EXT_LENGTH,`"+log_table+
+    "`.EXT_DATA,`"+log_table+"`.EXT_EVENT_ID,`"+log_table+"`.EXT_ANNC_TYPE,`"+
+    log_table+"`.EXT_CART_NAME,CART.ASYNCRONOUS,`"+log_table+"`.FADEUP_POINT,"+
+    "`"+log_table+"`.FADEUP_GAIN,`"+log_table+"`.FADEDOWN_POINT,`"+log_table+
+    "`.FADEDOWN_GAIN,`"+log_table+"`.SEGUE_GAIN,CART.PUBLISHER,CART.COMPOSER,"+
+    "CART.USAGE_CODE,CART.AVERAGE_SEGUE_LENGTH,`"+log_table+
+    "`.LINK_EVENT_NAME,`"+log_table+"`.LINK_START_TIME,`"+log_table+
+    "`.LINK_LENGTH,`"+log_table+"`.LINK_ID,`"+log_table+"`.LINK_EMBEDDED,`"+
+    log_table+"`.ORIGIN_USER,`"+log_table+"`.ORIGIN_DATETIME,CART.VALIDITY,"+
+    "`"+log_table+"`.LINK_START_SLOP,`"+log_table+"`.LINK_END_SLOP,"+
+    "`"+log_table+"`.DUCK_UP_GAIN,`"+log_table+"`.DUCK_DOWN_GAIN,"+
+    "CART.START_DATETIME,CART.END_DATETIME,`"+log_table+"`.EVENT_LENGTH,"+
+    "CART.USE_EVENT_LENGTH,CART.NOTES,GROUPS.TIMESCALE_LIMIT from `"+
+    log_table+"` "+"left join CART on `"+log_table+"`.CART_NUMBER=CART.NUMBER "+
+    "left join GROUPS on CART.GROUP_NAME=GROUPS.NAME order by COUNT";
    q=new RDSqlQuery(sql);
   if(q->size()<=0) {
     delete q;
@@ -925,9 +892,10 @@ from `%s` left join CART on `%s`.CART_NUMBER=CART.NUMBER order by COUNT",
     line.setLinkStartSlop(q->value(57).toInt());            // Link Start Slop
     line.setLinkEndSlop(q->value(58).toInt());              // Link End Slop
     line.setLinkId(q->value(52).toInt());                   // Link ID
-    line.setLinkEmbedded(RDBool(q->value(53).toString()));   // Link Embedded
+    line.setLinkEmbedded(RDBool(q->value(53).toString()));  // Link Embedded
     line.setOriginUser(q->value(54).toString());            // Origin User
     line.setOriginDateTime(q->value(55).toDateTime());      // Origin DateTime
+    line.setTimescaleLimit((double)q->value(66).toInt()/100.0);  // Timescale Limit
     switch(line.type()) {
     case RDLogLine::Cart:
       line.setCartNumber(q->value(1).toUInt());          // Cart Number

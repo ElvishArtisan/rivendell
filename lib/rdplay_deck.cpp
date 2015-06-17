@@ -47,6 +47,7 @@ RDPlayDeck::RDPlayDeck(RDCae *cae,int id,QObject *parent,const char *name)
   play_duck_up_point=0;
   play_duck_down_state=false;
   play_fade_down_state=false;
+  play_timescale_ratio=1.0;
 
   //
   // CAE Connection
@@ -175,29 +176,42 @@ bool RDPlayDeck::setCart(RDLogLine *logline,bool rotate,double log_speed_ratio)
     play_audio_point[1]=logline->endPoint(RDLogLine::LogPointer);
   }
   if(play_timescale_active) {  // Per event timescaling
+    play_timescale_ratio=(double)play_forced_length/
+      (double)(play_audio_point[1]-play_audio_point[0]);
+    /*
     play_timescale_speed=
       (int)(RD_TIMESCALE_DIVISOR*(double)(play_audio_point[1]-
 					  play_audio_point[0])/
 	    (double)play_forced_length);
+    */
+
+    /*
     if((((double)play_timescale_speed)<
-	(RD_TIMESCALE_DIVISOR*RD_TIMESCALE_MIN))||
+	(RD_TIMESCALE_DIVISOR*(1.0-RD_TIMESCALE_LIMIT)))||
        (((double)play_timescale_speed)>
-	(RD_TIMESCALE_DIVISOR*RD_TIMESCALE_MAX))) {
+	(RD_TIMESCALE_DIVISOR*(1.0+RD_TIMESCALE_LIMIT)))) {
       play_timescale_speed=(int)RD_TIMESCALE_DIVISOR;
       play_timescale_active=false;
     }
+    */
   }
   else {
     if(log_speed_ratio!=1.0) {  // Time block timescaling
-      play_timescale_speed=log_speed_ratio*RD_TIMESCALE_DIVISOR;
+      //play_timescale_speed=log_speed_ratio*RD_TIMESCALE_DIVISOR;
+      play_timescale_ratio=log_speed_ratio;
     }
     else {      // No timescaling
-      play_timescale_speed=(int)RD_TIMESCALE_DIVISOR;
+      //play_timescale_speed=(int)RD_TIMESCALE_DIVISOR;
+      play_timescale_ratio=1.0;
     }
   }
   //  play_audio_length=play_audio_point[1]-play_audio_point[0];
+  /*
   play_audio_length=(play_audio_point[1]-play_audio_point[0])*
     (RD_TIMESCALE_DIVISOR/(double)play_timescale_speed);
+  */
+  play_audio_length=
+    (play_audio_point[1]-play_audio_point[0])*play_timescale_ratio;
   if(logline->segueStartPoint(RDLogLine::AutoPointer)<0) {
     play_point_value[RDPlayDeck::Segue][0]=
       (int)((double)play_cut->segueStartPoint());
@@ -217,12 +231,20 @@ bool RDPlayDeck::setCart(RDLogLine *logline,bool rotate,double log_speed_ratio)
     (int)((double)play_cut->hookEndPoint());
   logline->setHookStartPoint(play_point_value[RDPlayDeck::Hook][0]);
   logline->setHookEndPoint(play_point_value[RDPlayDeck::Hook][1]);
+  /*
   play_point_value[RDPlayDeck::Talk][0]=
     (int)((double)play_cut->talkStartPoint()*
 	  (RD_TIMESCALE_DIVISOR/(double)play_timescale_speed));
+  */
+  play_point_value[RDPlayDeck::Talk][0]=
+    (int)((double)play_cut->talkStartPoint()*play_timescale_ratio);
+  /*
   play_point_value[RDPlayDeck::Talk][1]=
     (int)((double)play_cut->talkEndPoint()*
 	  (RD_TIMESCALE_DIVISOR/(double)play_timescale_speed));
+  */
+  play_point_value[RDPlayDeck::Talk][1]=
+    (int)((double)play_cut->talkEndPoint()*play_timescale_ratio);
   logline->setTalkStartPoint(play_point_value[RDPlayDeck::Talk][0]);
   logline->setTalkEndPoint(play_point_value[RDPlayDeck::Talk][1]);
   if(logline->fadeupPoint(RDLogLine::LogPointer)<0) {
@@ -262,6 +284,7 @@ bool RDPlayDeck::setCart(RDLogLine *logline,bool rotate,double log_speed_ratio)
     }
   }
   play_state=RDPlayDeck::Stopped;
+
   return true;
 }
 
@@ -479,11 +502,18 @@ void RDPlayDeck::play(unsigned pos,int segue_start,int segue_end,
 			       fadeup);
     }
   }
+  /*
   play_cae->
     play(play_handle,
 	 (int)(100000.0*(double)(play_audio_point[1]-play_audio_point[0]-pos)/
 	 (double)play_timescale_speed),
 	 play_timescale_speed,false);
+  */
+  play_cae->
+    play(play_handle,
+	 (int)((double)(play_audio_point[1]-play_audio_point[0]-pos)*
+	       play_timescale_ratio),
+	 RD_TIMESCALE_DIVISOR/play_timescale_ratio,false);
   play_start_time=QTime::currentTime();
   StartTimers(pos);
   play_state=RDPlayDeck::Playing;
@@ -738,18 +768,21 @@ void RDPlayDeck::StartTimers(int offset)
   for(int i=0;i<RDPlayDeck::SizeOf;i++) {
     play_point_state[i]=false;
     if(play_point_value[i][0]!=-1) {
+      /*
       audio_point=(int)
 	(RD_TIMESCALE_DIVISOR*(double)play_audio_point[0]/
 	 (double)play_timescale_speed);
+      */
+      audio_point=play_audio_point[0];
       if((play_point_value[i][0]-audio_point-offset)>=0) {
 	play_point_timer[i]->
-	  start(play_point_value[i][0]-audio_point-offset,true);
+	  start((play_point_value[i][0]-audio_point-offset)*play_timescale_ratio,true);
       }
       else {
 	if((play_point_value[i][1]-audio_point-offset)>=0) {
 	  play_point_state[i]=true;
 	  play_point_timer[i]->
-	    start(play_point_value[i][1]-audio_point-offset,true);
+	    start((play_point_value[i][1]-audio_point-offset)*play_timescale_ratio,true);
 	}
       }
     }

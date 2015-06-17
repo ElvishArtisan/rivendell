@@ -943,22 +943,24 @@ bool CreateDb(QString name,QString pwd)
 //
 // Create GROUPS table
 //
-  sql=QString("CREATE TABLE IF NOT EXISTS GROUPS (\
-      NAME CHAR(10) NOT NULL PRIMARY KEY,\
-      DESCRIPTION CHAR(255),\
-      DEFAULT_CART_TYPE int unsigned default 1,\
-      DEFAULT_LOW_CART int unsigned default 0,\
-      DEFAULT_HIGH_CART int unsigned default 0,\
-      CUT_SHELFLIFE int default -1,\
-      DELETE_EMPTY_CARTS enum('N','Y') default 'N',\
-      DEFAULT_TITLE char(255) default \"Imported from %f.%e\",\
-      ENFORCE_CART_RANGE enum('N','Y') default 'N',\
-      REPORT_TFC enum('N','Y') default 'Y',\
-      REPORT_MUS enum('N','Y') default 'Y',\
-      ENABLE_NOW_NEXT enum('N','Y') default 'N',\
-      COLOR char(7),\
-      index IDX_REPORT_TFC (REPORT_TFC),\
-      index IDX_REPORT_MUS (REPORT_MUS))");
+  sql=QString("CREATE TABLE IF NOT EXISTS GROUPS (")+
+    "NAME CHAR(10) NOT NULL PRIMARY KEY,"+
+    "DESCRIPTION CHAR(255),"+
+    "DEFAULT_CART_TYPE int unsigned default 1,"+
+    "DEFAULT_LOW_CART int unsigned default 0,"+
+    "DEFAULT_HIGH_CART int unsigned default 0,"+
+    "CUT_SHELFLIFE int default -1,"+
+    "DELETE_EMPTY_CARTS enum('N','Y') default 'N',"+
+    "DEFAULT_TITLE char(255) default \"Imported from %f.%e\","+
+    "ENFORCE_CART_RANGE enum('N','Y') default 'N',"+
+    "REPORT_TFC enum('N','Y') default 'Y',"+
+    "REPORT_MUS enum('N','Y') default 'Y',"+
+    "ENABLE_NOW_NEXT enum('N','Y') default 'N',"+
+    "COLOR char(7),"+
+    QString().sprintf("TIMESCALE_LIMIT int default %d,",
+		      (int)(100.0*RD_TIMESCALE_LIMIT))+
+    "index IDX_REPORT_TFC (REPORT_TFC),"+
+    "index IDX_REPORT_MUS (REPORT_MUS))";
   if(!RunQuery(sql)) {
     return false;
   }
@@ -8121,6 +8123,13 @@ int UpdateDb(int ver)
       q=new QSqlQuery(sql);
       delete q;
     }
+  }
+
+  if(ver<247) {
+    sql=QString("alter table GROUPS add column ")+
+      "TIMESCALE_LIMIT int default 20 after COLOR";
+    q=new QSqlQuery(sql);
+    delete q;
   }
 
 

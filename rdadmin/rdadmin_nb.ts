@@ -1642,6 +1642,14 @@ Vil du framleis lagra?</translation>
         <source>Delete cart if empty</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Timescale Limit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditHostvar</name>

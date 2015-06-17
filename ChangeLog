@@ -14901,3 +14901,14 @@
 	timescaling mode.
 2015-06-16 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a buffer overflow bug in 'ripcd/bt_src16.cpp'.
+2015-06-17 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored absolute timescaling to use a single 'RD_TIMESCALE_LIMIT'
+	define instead of separate 'RD_TIMESCALE_MIN' and 'RD_TIMESCALE_MAX'
+	values in 'lib/rd.h'.
+	* Added a 'GROUPS.TIMESCALE_LIMIT' field to the database.
+	* Incremented the database version to 247.
+	* Added a 'Timescale Limit' control to the 'Edit Group' dialog in
+	'rdadmin/edit_group.cpp' and 'rdadmin/edit_group.h'.
+	* Added 'RDLogLine::timescaleLimit()' and
+	'RDLogLine::setTimescaleLimit()' methods in 'lib/rdlog_line.cpp'
+	and 'lib/rdlog_line.h'.

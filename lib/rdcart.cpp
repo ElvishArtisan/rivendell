@@ -909,13 +909,12 @@ void RDCart::setMetadata(const RDWaveData *data)
 
 bool RDCart::validateLengths(int len) const
 {
-  int maxlen=(int)(RD_TIMESCALE_MAX*(double)len);
-  int minlen=(int)(RD_TIMESCALE_MIN*(double)len);
-  QString sql=QString().sprintf("select LENGTH from CUTS where CART_NUMBER=%u",
+  QString sql=
+    QString().sprintf("select CUT_NAME from CUTS where CART_NUMBER=%u",
 				cart_number);
   RDSqlQuery *q=new RDSqlQuery(sql);
   while(q->next()) {
-    if((q->value(0).toInt()>maxlen)||(q->value(0).toInt()<minlen)) {
+    if(!RDCut::validateLength(q->value(0).toString(),len)) {
       delete q;
       return false;
     }
@@ -1593,10 +1592,7 @@ RDCut::Validity RDCart::ValidateCut(RDSqlQuery *q,bool enforce_length,
   // Timescaling
   //
   if(enforce_length) {
-    double len=(double)length;
-    if(((q->value(3).toDouble()*RD_TIMESCALE_MAX)<len)||
-       ((q->value(3).toDouble()*RD_TIMESCALE_MIN)>len)) {
-      *time_ok=false;
+    if(!RDCut::validateLength(q->value(0).toString(),length)) {
       return RDCut::NeverValid;
     }
   }

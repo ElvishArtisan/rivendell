@@ -219,6 +219,19 @@ void RDGroup::setColor(const QColor &color)
 }
 
 
+int RDGroup::timescaleLimit() const
+{
+  return RDGetSqlValue("GROUPS","NAME",group_name,"TIMESCALE_LIMIT",
+		       group_db).toInt();
+}
+
+
+void RDGroup::setTimescaleLimit(int limit) const
+{
+  SetRow("TIMESCALE_LIMIT",limit);
+}
+
+
 unsigned RDGroup::RDGroup::nextFreeCart(unsigned startcart) const
 {
   return GetNextFreeCart(startcart);

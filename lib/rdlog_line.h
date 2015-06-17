@@ -223,6 +223,8 @@ class RDLogLine
   void setPausePort(int port);
   bool timescalingActive() const;
   void setTimescalingActive(bool state);
+  double timescaleLimit() const;
+  void setTimescaleLimit(double limit);
   int effectiveLength() const;
   int talkLength() const;
   int segueLength(RDLogLine::TransType next_trans);
@@ -378,6 +380,7 @@ class RDLogLine
   int log_link_id;
   bool log_link_embedded;
   bool is_holdover;
+  double log_timescale_limit;
 };
 
 

@@ -1477,6 +1477,31 @@ QString RDCut::pathName(const QString &cutname)
 }
 
 
+bool RDCut::validateLength(unsigned cartnum,unsigned cutnum,int len,
+			   double limit)
+{
+  return RDCut::validateLength(RDCut::cutName(cartnum,cutnum),len,limit);
+}
+
+
+bool RDCut::validateLength(const QString &cutname,int len,double limit)
+{
+  QString sql=QString("select LENGTH from CUTS where ")+
+    "CUT_NAME=\""+RDEscapeString(cutname)+"\"";
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  if(q->first()) {
+    if((((double)q->value(0).toInt()*(1.0+limit))<=(double)len)||
+       (((double)q->value(0).toInt()*(1.0-limit))>=(double)len)) {
+      delete q;
+      return false;
+    }
+  }
+  delete q;
+
+  return true;
+}
+
+
 bool RDCut::FileCopy(const QString &srcfile,const QString &destfile) const
 {
 #ifndef WIN32

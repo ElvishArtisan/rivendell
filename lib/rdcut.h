@@ -24,6 +24,7 @@
 #include <qsignal.h>
 #include <qobject.h>
 
+#include <rd.h>
 #include <rdconfig.h>
 #include <rdwavedata.h>
 #include <rdsettings.h>
@@ -143,6 +144,10 @@ class RDCut
   static bool exists(const QString &cutname);
   static QString pathName(unsigned cartnum,unsigned cutnum);
   static QString pathName(const QString &cutname);
+  static bool validateLength(unsigned cartnum,unsigned cutnum,int len,
+			     double limit=RD_TIMESCALE_LIMIT);
+  static bool validateLength(const QString &cutname,int len,
+			     double limit=RD_TIMESCALE_LIMIT);
 
  private:
   bool FileCopy(const QString &srcfile,const QString &destfile) const;

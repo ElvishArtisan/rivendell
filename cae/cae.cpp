@@ -964,9 +964,11 @@ void MainObject::DispatchCommand(int ch)
 	      return;
       }
       LogLine(RDConfig::LogInfo,QString().
-       sprintf("Play - Card: %d  Stream: %d  Handle: %d  Length: %d  Speed: %d  Pitch: %d",
+       sprintf("Play - Card: %d  Stream: %d  Handle: %d  Length: %d  Speed: %d [%5.2lf%%]  Pitch: %d",
 	       card,stream,handle,play_length[card][stream],
-	       play_speed[card][stream],flag));
+	       play_speed[card][stream],
+	       100.0*RD_TIMESCALE_DIVISOR/(double)play_speed[card][stream],
+	       flag));
       // No command echo for success -- statePlayUpdate() sends it!
       return;
     }

@@ -340,9 +340,11 @@
 
 /*
  * The limits on timescaling
+ *
+ * This is the +/- hardware limit for HPI devices.  See
+ * http://www.audioscience.com/internet/tech/tsx.htm
  */
-#define RD_TIMESCALE_MIN 0.833
-#define RD_TIMESCALE_MAX 1.250
+#define RD_TIMESCALE_LIMIT 0.20
 #define RD_TIMESCALE_DIVISOR 100000.0
 
 /*

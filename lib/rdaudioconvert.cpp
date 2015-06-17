@@ -152,7 +152,8 @@ RDAudioConvert::ErrorCode RDAudioConvert::convert()
   if(conv_dst_filename.isEmpty()) {
     return RDAudioConvert::ErrorNoDestination;
   }
-  if((conv_speed_ratio<RD_TIMESCALE_MIN)||(conv_speed_ratio>RD_TIMESCALE_MAX)) {
+  if((conv_speed_ratio<(1.0-RD_TIMESCALE_LIMIT))||
+     (conv_speed_ratio>(1.0+RD_TIMESCALE_LIMIT))) {
     return RDAudioConvert::ErrorInvalidSpeed;
   }
 
