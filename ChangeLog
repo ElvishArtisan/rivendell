@@ -14797,3 +14797,5 @@
 2015-06-10 Fred Gleason <fredg@paravelsystems.com>
 	* Refactored 'LogPlay' class to provide per-instance RDCae instances.
 	in 'rdairplay/log_play.cpp' and 'rdairplay/log_play.h'.
+2015-06-22 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.10.3caefix01.
