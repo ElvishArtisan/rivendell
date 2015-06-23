@@ -14912,3 +14912,6 @@
 	* Added 'RDLogLine::timescaleLimit()' and
 	'RDLogLine::setTimescaleLimit()' methods in 'lib/rdlog_line.cpp'
 	and 'lib/rdlog_line.h'.
+2015-06-23 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'lib/rdplay_deck.cpp' that caused transitions to
+	occur prematurely when in block timescaling mode.

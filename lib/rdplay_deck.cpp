@@ -768,21 +768,16 @@ void RDPlayDeck::StartTimers(int offset)
   for(int i=0;i<RDPlayDeck::SizeOf;i++) {
     play_point_state[i]=false;
     if(play_point_value[i][0]!=-1) {
-      /*
-      audio_point=(int)
-	(RD_TIMESCALE_DIVISOR*(double)play_audio_point[0]/
-	 (double)play_timescale_speed);
-      */
       audio_point=play_audio_point[0];
       if((play_point_value[i][0]-audio_point-offset)>=0) {
 	play_point_timer[i]->
-	  start((play_point_value[i][0]-audio_point-offset)*play_timescale_ratio,true);
+	  start((play_point_value[i][0]-audio_point-offset),true);
       }
       else {
 	if((play_point_value[i][1]-audio_point-offset)>=0) {
 	  play_point_state[i]=true;
 	  play_point_timer[i]->
-	    start((play_point_value[i][1]-audio_point-offset)*play_timescale_ratio,true);
+	    start((play_point_value[i][1]-audio_point-offset),true);
 	}
       }
     }
