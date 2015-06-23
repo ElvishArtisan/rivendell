@@ -1891,7 +1891,8 @@ void MainWidget::transportChangedData()
       if((air_pie_counter->line()!=logline->id())) {
 	switch(pie_end) {
 	    case RDAirPlayConf::CartEnd:
-	      air_pie_counter->setTime(logline->effectiveLength());
+	      air_pie_counter->setTime(logline->effectiveLength()/
+				       logline->timescaleRatio());
 	      break;
 	      
 	    case RDAirPlayConf::CartTransition:
@@ -1902,14 +1903,17 @@ void MainWidget::transportChangedData()
 		   logline->segueLength(next_logline->transType())-
 		   logline->playPosition()) {
 		  air_pie_counter->
-		    setTime(logline->segueLength(next_logline->transType()));
+		    setTime(logline->segueLength(next_logline->transType())/
+			    logline->timescaleRatio());
 		}
 		else {
-		  air_pie_counter->setTime(logline->effectiveLength());
+		  air_pie_counter->setTime(logline->effectiveLength()/
+					   logline->timescaleRatio());
 		}
 	      }
 	      else {
-		air_pie_counter->setTime(logline->effectiveLength());
+		air_pie_counter->setTime(logline->effectiveLength()/
+					 logline->timescaleRatio());
 	      }
 	      break;
 	}
