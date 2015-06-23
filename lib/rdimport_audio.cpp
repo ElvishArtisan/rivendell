@@ -66,6 +66,7 @@ RDImportAudio::RDImportAudio(QString cutname,QString *path,
   import_file_filter=RD_AUDIO_FILE_FILTER;
   import_import_conv=NULL;
   import_export_conv=NULL;
+  import_operation=NULL;
 
   setCaption(tr("Import/Export Audio File"));
 
@@ -349,8 +350,11 @@ void RDImportAudio::setChannels(int chans)
 }
 
 
-int RDImportAudio::exec(bool enable_import,bool enable_export)
+int RDImportAudio::exec(RDImportAudio::Operation *op,bool enable_import,
+			bool enable_export)
 {
+  import_operation=op;
+  *import_operation=RDImportAudio::CancelOp;
   import_importmode_button->setEnabled(enable_import);
   import_in_filename_label->setEnabled(enable_import);
   import_in_filename_edit->setEnabled(enable_import);
@@ -497,9 +501,11 @@ void RDImportAudio::importData()
   }
   if(import_mode_group->selectedId()==0) {
     Import();
+    *import_operation=RDImportAudio::ImportOp;
   }
   else {
     Export();
+    *import_operation=RDImportAudio::ExportOp;
   }
 }
 

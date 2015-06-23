@@ -2324,6 +2324,7 @@ void VoiceTracker::SaveTrack(int line)
 bool VoiceTracker::ImportTrack(RDListViewItem *item)
 {
   bool metadata=false;
+  RDImportAudio::Operation op;
 
   if(!InitTrack()) {
     return false;
@@ -2333,7 +2334,7 @@ bool VoiceTracker::ImportTrack(RDListViewItem *item)
     new RDImportAudio(edit_track_cuts[1]->cutName(),edit_import_path,
 		      edit_settings,&metadata,wdata,NULL,rdstation_conf,rduser,
 		      &import_running,log_config,this);
-  if(import->exec(true,false)<0) {
+  if(import->exec(&op,true,false)<0) {
     delete import;
     delete wdata;
     resetData();

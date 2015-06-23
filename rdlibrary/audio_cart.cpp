@@ -585,6 +585,7 @@ void AudioCart::ripCutData()
 
 void AudioCart::importCutData()
 {
+  RDImportAudio::Operation op;
   QString cutname;
   RDWaveData wavedata;
   RDListViewItem *item=NULL;
@@ -604,7 +605,7 @@ void AudioCart::importCutData()
   import->setAutotrimLevel(rdlibrary_conf->trimThreshold());
   import->enableNormalization(rdlibrary_conf->ripperLevel()!=0);
   import->setNormalizationLevel(rdlibrary_conf->ripperLevel());
-  if(import->exec(true,true)==0) {
+  if(import->exec(&op,true,true)==0) {
     if(rdcart_controls->title_edit->text().isEmpty()||
        (rdcart_controls->title_edit->text()==tr("[new cart]"))) {
       rdcart_controls->title_edit->setText(wavedata.title());
@@ -639,9 +640,11 @@ void AudioCart::importCutData()
     if(rdcart_controls->user_defined_edit->text().isEmpty()) {
       rdcart_controls->user_defined_edit->setText(wavedata.userDefined());
     }
-    RDCut *cut=new RDCut(cutname);
-    cut->setMetadata(&wavedata);
-    delete cut;
+    if(op==RDImportAudio::ImportOp) {
+      RDCut *cut=new RDCut(cutname);
+      cut->setMetadata(&wavedata);
+      delete cut;
+    }
   }
   if(cut_clipboard==NULL) {
     paste_cut_button->setDisabled(true);

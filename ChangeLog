@@ -14921,3 +14921,6 @@
 2015-06-23 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in 'rdlibrary/edit_cart.cpp' where performing a
 	mass edit would clear the 'Year' field.
+2015-06-23 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'rdlibrary/audio_cart.cpp' that caused Talk and
+	Segue markers to be overwrrten when export audio.

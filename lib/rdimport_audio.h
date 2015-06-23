@@ -60,10 +60,11 @@ class RDImportAudio : public QDialog
 {
  Q_OBJECT
  public:
- RDImportAudio(QString cutname,QString *path,RDSettings *settings,
-	       bool *import_metadata,RDWaveData *wavedata,
-	       RDCut *clipboard,RDStation *station,RDUser *user,bool *running,
-	       RDConfig *config,QWidget *parent=0,const char *name=0);
+  enum Operation {CancelOp=0,ImportOp=1,ExportOp=2};
+  RDImportAudio(QString cutname,QString *path,RDSettings *settings,
+		bool *import_metadata,RDWaveData *wavedata,
+		RDCut *clipboard,RDStation *station,RDUser *user,bool *running,
+		RDConfig *config,QWidget *parent=0,const char *name=0);
   ~RDImportAudio();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
@@ -74,7 +75,7 @@ class RDImportAudio : public QDialog
   void setChannels(int chans);
 
  public slots:
-  int exec(bool enable_import,bool enable_export);
+  int exec(Operation *op,bool enable_import,bool enable_export);
 
  private slots:
   void modeClickedData(int id);
@@ -139,6 +140,7 @@ class RDImportAudio : public QDialog
   RDWaveData *import_wavedata;
   RDAudioImport *import_import_conv;
   RDAudioExport *import_export_conv;
+  Operation *import_operation;
 };
 
 
