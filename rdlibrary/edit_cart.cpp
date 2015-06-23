@@ -901,7 +901,10 @@ void EditCart::okData()
           if(!rdcart_controls.title_edit->text().stripWhiteSpace().isEmpty()) {
             rdcart_cart_medit->setTitle(rdcart_controls.title_edit->text());
 	  }
-	  rdcart_cart_medit->setYear(rdcart_controls.year_edit->text().toInt());
+	  if(!rdcart_controls.year_edit->text().isEmpty()) {
+	    rdcart_cart_medit->
+	      setYear(rdcart_controls.year_edit->text().toInt());
+	  }
           if(!rdcart_controls.artist_edit->text().stripWhiteSpace().isEmpty()) {
             rdcart_cart_medit->setArtist(rdcart_controls.artist_edit->text());
 	  }

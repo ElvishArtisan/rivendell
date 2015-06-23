@@ -14918,3 +14918,6 @@
 2015-06-23 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in 'lib/rdairplay.cpp' that caused transitions to
 	occur prematurely on the Pie Widget when in block timescaling mode.
+2015-06-23 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'rdlibrary/edit_cart.cpp' where performing a
+	mass edit would clear the 'Year' field.
