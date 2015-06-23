@@ -58,6 +58,7 @@ ripcd/ripcd
 rivendell
 rivendell-suse
 rivendell.spec
+rivendell-virt.spec
 slack-desc
 tests/audio_convert_test
 tests/audio_export_test
