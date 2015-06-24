@@ -14928,3 +14928,6 @@
 	* Cleaned up method calls in 'lib/edit_audio.cpp',
 	'lib/rdedit_audio.h', 'lib/rdmarker_edit.cpp' and
 	'lib/rdmarker_edit.h'.
+2015-06-24 Fred Gleason <fredg@paravelsystems.com>
+	* Removed 'lXmu' from the linker list of libraries in the BNV_HAVE_QT()
+	macro in 'acinclude.m4'.
