@@ -23,14 +23,14 @@
 
 #include <rdmarker_edit.h>
 
-RDMarkerEdit::RDMarkerEdit(QWidget *parent,const char *name)
-  : QLineEdit(parent,name)
+RDMarkerEdit::RDMarkerEdit(QWidget *parent)
+  : QLineEdit(parent)
 {
 }
 
 
-RDMarkerEdit::RDMarkerEdit(const QString &contents,QWidget *parent,const char *name)
-  : QLineEdit(contents,parent,name)
+RDMarkerEdit::RDMarkerEdit(const QString &contents,QWidget *parent)
+  : QLineEdit(contents,parent)
 {
 }
 

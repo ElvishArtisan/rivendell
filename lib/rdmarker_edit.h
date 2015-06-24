@@ -35,8 +35,8 @@ class RDMarkerEdit : public QLineEdit
   Q_OBJECT
 
  public:
-  RDMarkerEdit(QWidget *parent,const char *name);
-  RDMarkerEdit(const QString &contents,QWidget *parent,const char *name);
+  RDMarkerEdit(QWidget *parent);
+  RDMarkerEdit(const QString &contents,QWidget *parent);
 
  signals:
   void escapePressed();

@@ -14924,3 +14924,7 @@
 2015-06-23 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in 'rdlibrary/audio_cart.cpp' that caused Talk and
 	Segue markers to be overwrrten when export audio.
+2015-06-24 Fred Gleason <fredg@paravelsystems.com>
+	* Cleaned up method calls in 'lib/edit_audio.cpp',
+	'lib/rdedit_audio.h', 'lib/rdmarker_edit.cpp' and
+	'lib/rdmarker_edit.h'.
