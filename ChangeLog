@@ -14931,3 +14931,7 @@
 2015-06-24 Fred Gleason <fredg@paravelsystems.com>
 	* Removed 'lXmu' from the linker list of libraries in the BNV_HAVE_QT()
 	macro in 'acinclude.m4'.
+2015-06-30 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in the 'RDTimeSynced()' in 'lib/rdconf.cpp' and
+	'lib/rdconf.h' that caused the false sync failure detection when
+	the underlying NTP layer was advertising an upcoming leap second.
