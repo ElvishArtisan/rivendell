@@ -14801,3 +14801,8 @@
 	* Incremented the package version to 2.10.3caefix00.
 2015-06-22 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 2.10.3caefix01.
+2015-07-02 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'LogPlay::refresh()' that caused a segfault
+	in 'rdairplay/log_play.cpp'.
+	* Instrumented the 'LogPlay::refresh()' method in
+	'rdairplay/log_play.cpp'.

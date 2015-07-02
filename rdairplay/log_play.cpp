@@ -607,13 +607,18 @@ bool LogPlay::refresh()
   int running;
   int first_non_holdover = 0;
 
+  syslog(LOG_NOTICE,"LogPlay::refresh() starting...");
   if(play_macro_running) {
     play_refresh_pending=true;
+    syslog(LOG_NOTICE,"LogPlay::refresh() aborting, macro running.");
     return true;
   }
+  syslog(LOG_NOTICE,"LogPlay::refresh() emiting refreshStatusChanged(true)...");
   emit refreshStatusChanged(true);
   if((size()==0)||(play_log==NULL)) {
+    syslog(LOG_NOTICE,"LogPlay::refresh() emiting refreshStatusChanged(false)...");
     emit refreshStatusChanged(false);
+    syslog(LOG_NOTICE,"LogPlay::refresh() aborting, no log data.");
     return true;
   }
 
@@ -624,30 +629,36 @@ bool LogPlay::refresh()
   e->setLogName(logName());
   e->load();
   play_modified_datetime=play_log->modifiedDatetime();
+  syslog(LOG_NOTICE,"LogPlay::refresh() loaded updated log...");
 
   //
   // Get the Next Event
   //
   if(nextEvent()!=NULL) {   //End of the log?
     next_id=nextEvent()->id();
+    syslog(LOG_NOTICE,"LogPlay::refresh() next event ID is %d...",next_id);
   }
 
   //
   // Get Running Events
   //
   running=runningEvents(lines);
+  syslog(LOG_NOTICE,"LogPlay::refresh() running events are %d...",running);
   for(int i=0;i<running;i++) {
     if(lines[i]==play_next_line-1) {
       current_id=logLine(lines[i])->id();
+      syslog(LOG_NOTICE,"LogPlay::refresh() current_id is %d...",current_id);
     }
   }
   if(running>0 && next_id==-1) {                  //Last Event of Log Running?
     current_id=logLine(lines[running-1])->id();
+    syslog(LOG_NOTICE,"LogPlay::refresh() current_id is %d (LAST EVENT)...",current_id);
   }
 
   //
   // Pass 1: Finished or Active Events
   //
+  syslog(LOG_NOTICE,"LogPlay::refresh() Pass 1 starts...");
   for(int i=0;i<size();i++) {
     d=logLine(i);
     if(d->status()!=RDLogLine::Scheduled) {
@@ -666,6 +677,7 @@ bool LogPlay::refresh()
   //
   // Pass 2: Purge Deleted Events
   //
+  syslog(LOG_NOTICE,"LogPlay::refresh() Pass 2 starts...");
   for(int i=size()-1;i>=0;i--) {
     if(logLine(i)->pass()==0) {
       remove(i,1,false,true);
@@ -675,15 +687,20 @@ bool LogPlay::refresh()
   // Find first non-holdover event, where start-of-log
   // new events should be added:
   for(int i=0;i<e->size();i++) {
-    if(logLine(i)->isHoldover())
-      ++first_non_holdover;
-    else
-      break;
+    if(logLine(i)!=NULL) {
+      if(logLine(i)->isHoldover()) {
+	++first_non_holdover;
+      }
+      else {
+	break;
+      }
+    }
   }
 
   //
   // Pass 3: Add New Events
   //
+  syslog(LOG_NOTICE,"LogPlay::refresh() Pass 3 starts...");
   for(int i=0;i<e->size();i++) {
     s=e->logLine(i);
     if(s->pass()==0) {
@@ -703,6 +720,7 @@ bool LogPlay::refresh()
   //
   // Pass 4: Delete Orphaned Past Playouts
   //
+  syslog(LOG_NOTICE,"LogPlay::refresh() Pass 4 starts...");
   for(int i=size()-1;i>=0;i--) {
     d=logLine(i);
     if((d->status()==RDLogLine::Finished)&&(d->pass()!=2)) {
@@ -713,7 +731,8 @@ bool LogPlay::refresh()
   //
   // Restore Next Event
   //
-  if(current_id!=-1 && e->loglineById(current_id)!=NULL) {    
+  syslog(LOG_NOTICE,"LogPlay::refresh() Restore Next starts...");
+  if(current_id!=-1 && e->loglineById(current_id)!=NULL) {
     // Make Next after currently playing cart
     // The next event cannot have been a holdover,
     // as holdovers are always either active or finished.
@@ -730,6 +749,7 @@ bool LogPlay::refresh()
   //
   // Clean Up
   //
+  syslog(LOG_NOTICE,"LogPlay::refresh() Clean up...");
   delete e;
   for(int i=0;i<size();i++) {
     logLine(i)->clearPass();
@@ -747,6 +767,7 @@ bool LogPlay::refresh()
 
   emit refreshStatusChanged(false);
 
+  syslog(LOG_NOTICE,"LogPlay::refresh() completes.");
   return true;
 }
 
