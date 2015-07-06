@@ -1797,23 +1797,19 @@ RDLogLine::State RDLogLine::setEvent(int mach,RDLogLine::TransType next_type,
 void RDLogLine::loadCart(int cartnum,RDLogLine::TransType next_type,int mach,
 			 bool timescale,RDLogLine::TransType type,int len)
 {
-  QString sql=QString().sprintf("select CART.TYPE,CART.GROUP_NAME,CART.TITLE,\
-                                 CART.ARTIST,CART.ALBUM,CART.YEAR,CART.ISRC,\
-                                 CART.LABEL,CART.CLIENT,CART.AGENCY,\
-                                 CART.USER_DEFINED,CART.CONDUCTOR,CART.SONG_ID,\
-                                 CART.FORCED_LENGTH,\
-                                 CART.CUT_QUANTITY,CART.LAST_CUT_PLAYED,\
-                                 CART.PLAY_ORDER,CART.START_DATETIME,\
-                                 CART.END_DATETIME,CART.ENFORCE_LENGTH,\
-                                 CART.PRESERVE_PITCH,GROUPS.ENABLE_NOW_NEXT,\
-                                 CART.ASYNCRONOUS,CART.PUBLISHER,\
-                                 CART.COMPOSER,CART.USAGE_CODE,\
-                                 CART.AVERAGE_SEGUE_LENGTH,CART.NOTES,\
-                                 GROUPS.COLOR \
-                                 from CART left join GROUPS on\
-                                 CART.GROUP_NAME=GROUPS.NAME\
-                                 where (CART.NUMBER=%d)",
-				cartnum);
+  QString sql=QString("select CART.TYPE,CART.GROUP_NAME,CART.TITLE,")+
+    "CART.ARTIST,CART.ALBUM,CART.YEAR,CART.ISRC,"+
+    "CART.LABEL,CART.CLIENT,CART.AGENCY,"+
+    "CART.USER_DEFINED,CART.CONDUCTOR,CART.SONG_ID,"+
+    "CART.FORCED_LENGTH,CART.CUT_QUANTITY,CART.LAST_CUT_PLAYED,"+
+    "CART.PLAY_ORDER,CART.START_DATETIME,"+
+    "CART.END_DATETIME,CART.ENFORCE_LENGTH,"+
+    "CART.PRESERVE_PITCH,GROUPS.ENABLE_NOW_NEXT,"+
+    "CART.ASYNCRONOUS,CART.PUBLISHER,"+
+    "CART.COMPOSER,CART.USAGE_CODE,CART.AVERAGE_SEGUE_LENGTH,CART.NOTES,"+
+    "GROUPS.COLOR,GROUPS.TIMESCALE_LIMIT "+
+    "from CART left join GROUPS on CART.GROUP_NAME=GROUPS.NAME "+
+    QString().sprintf("where (CART.NUMBER=%d)",cartnum);
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(!q->first()) {
     delete q;
@@ -1868,6 +1864,7 @@ void RDLogLine::loadCart(int cartnum,RDLogLine::TransType next_type,int mach,
   log_average_segue_length=q->value(26).toInt();
   log_cart_notes=q->value(27).toString();
   log_group_color=QColor(q->value(28).toString());
+  log_timescale_limit=(double)q->value(29).toInt()/100.0;
   log_play_source=RDLogLine::UnknownSource;
   if(type!=RDLogLine::NoTrans) {
     log_trans_type=type;

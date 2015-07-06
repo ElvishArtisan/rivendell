@@ -2,9 +2,7 @@
 //
 // Abstract a Rivendell Playback Deck
 //
-//   (C) Copyright 2003-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdplay_deck.cpp,v 1.85.8.5 2013/05/21 19:04:44 cvs Exp $
+//   (C) Copyright 2003-2004,2015 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -158,10 +156,6 @@ bool RDPlayDeck::setCart(RDLogLine *logline,bool rotate,double log_speed_ratio)
   }
   if(logline->startPoint(RDLogLine::LogPointer)<0) {
     play_forced_length=logline->forcedLength();
-    /*
-    play_audio_point[0]=logline->startPoint();
-    play_audio_point[1]=logline->endPoint();
-    */
     play_audio_point[0]=play_cut->startPoint(RDLogLine::CartPointer);
     play_audio_point[1]=play_cut->endPoint();
   }
@@ -178,38 +172,15 @@ bool RDPlayDeck::setCart(RDLogLine *logline,bool rotate,double log_speed_ratio)
   if(play_timescale_active) {  // Per event timescaling
     play_timescale_ratio=(double)play_forced_length/
       (double)(play_audio_point[1]-play_audio_point[0]);
-    /*
-    play_timescale_speed=
-      (int)(RD_TIMESCALE_DIVISOR*(double)(play_audio_point[1]-
-					  play_audio_point[0])/
-	    (double)play_forced_length);
-    */
-
-    /*
-    if((((double)play_timescale_speed)<
-	(RD_TIMESCALE_DIVISOR*(1.0-RD_TIMESCALE_LIMIT)))||
-       (((double)play_timescale_speed)>
-	(RD_TIMESCALE_DIVISOR*(1.0+RD_TIMESCALE_LIMIT)))) {
-      play_timescale_speed=(int)RD_TIMESCALE_DIVISOR;
-      play_timescale_active=false;
-    }
-    */
   }
   else {
     if(log_speed_ratio!=1.0) {  // Time block timescaling
-      //play_timescale_speed=log_speed_ratio*RD_TIMESCALE_DIVISOR;
       play_timescale_ratio=log_speed_ratio;
     }
     else {      // No timescaling
-      //play_timescale_speed=(int)RD_TIMESCALE_DIVISOR;
       play_timescale_ratio=1.0;
     }
   }
-  //  play_audio_length=play_audio_point[1]-play_audio_point[0];
-  /*
-  play_audio_length=(play_audio_point[1]-play_audio_point[0])*
-    (RD_TIMESCALE_DIVISOR/(double)play_timescale_speed);
-  */
   play_audio_length=
     (play_audio_point[1]-play_audio_point[0])*play_timescale_ratio;
   if(logline->segueStartPoint(RDLogLine::AutoPointer)<0) {
@@ -231,18 +202,8 @@ bool RDPlayDeck::setCart(RDLogLine *logline,bool rotate,double log_speed_ratio)
     (int)((double)play_cut->hookEndPoint());
   logline->setHookStartPoint(play_point_value[RDPlayDeck::Hook][0]);
   logline->setHookEndPoint(play_point_value[RDPlayDeck::Hook][1]);
-  /*
-  play_point_value[RDPlayDeck::Talk][0]=
-    (int)((double)play_cut->talkStartPoint()*
-	  (RD_TIMESCALE_DIVISOR/(double)play_timescale_speed));
-  */
   play_point_value[RDPlayDeck::Talk][0]=
     (int)((double)play_cut->talkStartPoint()*play_timescale_ratio);
-  /*
-  play_point_value[RDPlayDeck::Talk][1]=
-    (int)((double)play_cut->talkEndPoint()*
-	  (RD_TIMESCALE_DIVISOR/(double)play_timescale_speed));
-  */
   play_point_value[RDPlayDeck::Talk][1]=
     (int)((double)play_cut->talkEndPoint()*play_timescale_ratio);
   logline->setTalkStartPoint(play_point_value[RDPlayDeck::Talk][0]);
@@ -265,17 +226,6 @@ bool RDPlayDeck::setCart(RDLogLine *logline,bool rotate,double log_speed_ratio)
   }
   play_duck_gain[0]=logline->duckUpGain();
   play_duck_gain[1]=logline->duckDownGain();
-
-/*
-  if(play_timescale_active) {
-    play_timescale_speed=
-      (int)(1000*(double)(play_audio_point[1]-play_audio_point[0])/
-      (double)play_forced_length);
-  }
-  else {
-    play_timescale_speed=1000;
-  }
-*/
 
   if(play_state!=RDPlayDeck::Paused) {
     if(!play_cae->loadPlay(play_card,play_cut->cutName(),
@@ -502,13 +452,6 @@ void RDPlayDeck::play(unsigned pos,int segue_start,int segue_end,
 			       fadeup);
     }
   }
-  /*
-  play_cae->
-    play(play_handle,
-	 (int)(100000.0*(double)(play_audio_point[1]-play_audio_point[0]-pos)/
-	 (double)play_timescale_speed),
-	 play_timescale_speed,false);
-  */
   play_cae->
     play(play_handle,
 	 (int)((double)(play_audio_point[1]-play_audio_point[0]-pos)*

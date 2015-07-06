@@ -1822,7 +1822,6 @@ bool LogPlay::StartEvent(int line,RDLogLine::TransType trans_type,
 	else  {
 	  playdeck->duckVolume(play_duck_volume_port1,0);
 	  }
-		
 	if(!playdeck->setCart(logline,logline->status()!=RDLogLine::Paused,play_speed_ratio)) {
 	  // No audio to play, so fake it
 	  logline->setZombified(true);
@@ -2048,7 +2047,6 @@ bool LogPlay::StartAudioEvent(int line)
       actual_len=QTime::currentTime().msecsTo(block_end);
       play_speed_ratio=(double)actual_len/(double)desired_len;
     }
-    //    double orig_ratio=play_speed_ratio;
     if(play_speed_ratio<(1.0-logline->timescaleLimit())) {
       play_speed_ratio=1.0-logline->timescaleLimit();
     }

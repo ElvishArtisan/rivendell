@@ -14937,3 +14937,7 @@
 	the underlying NTP layer was advertising an upcoming leap second.
 2015-07-06 Fred Gleason <fredg@paravelsystems.com>
 	* Cleaned up warnings in 'lib/rdwavefile.cpp'.
+2015-07-06 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed bug in 'lib/rdlog_event.cpp' and 'lib/rdlog_line.cpp'
+	that caused inserted log events to fail to have timescale limits
+	enforced.

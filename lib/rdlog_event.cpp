@@ -295,19 +295,17 @@ void RDLogEvent::refresh(int line)
   if(log_name.isEmpty()||log_line[line]->cartNumber()==0) {
     return;
   }
-  QString sql=QString().sprintf("select CART.TYPE,CART.GROUP_NAME,CART.TITLE,\
-                                 CART.ARTIST,CART.ALBUM,CART.YEAR,CART.LABEL,\
-                                 CART.CLIENT,CART.AGENCY,CART.USER_DEFINED,\
-                                 CART.FORCED_LENGTH,CART.CUT_QUANTITY,\
-                                 CART.LAST_CUT_PLAYED,CART.PLAY_ORDER,\
-                                 CART.ENFORCE_LENGTH,CART.PRESERVE_PITCH,\
-                                 CART.PUBLISHER,CART.COMPOSER,CART.USAGE_CODE,\
-                                 CART.AVERAGE_SEGUE_LENGTH,CART.VALIDITY,\
-                                 CART.NOTES,GROUPS.COLOR from CART \
-                                 left join GROUPS \
-                                 on CART.GROUP_NAME=GROUPS.NAME \
-                                 where CART.NUMBER=%u",
-				log_line[line]->cartNumber());
+  QString sql=QString("select CART.TYPE,CART.GROUP_NAME,CART.TITLE,")+
+    "CART.ARTIST,CART.ALBUM,CART.YEAR,CART.LABEL,"+
+    "CART.CLIENT,CART.AGENCY,CART.USER_DEFINED,"+
+    "CART.FORCED_LENGTH,CART.CUT_QUANTITY,"+
+    "CART.LAST_CUT_PLAYED,CART.PLAY_ORDER,"+
+    "CART.ENFORCE_LENGTH,CART.PRESERVE_PITCH,"+
+    "CART.PUBLISHER,CART.COMPOSER,CART.USAGE_CODE,"+
+    "CART.AVERAGE_SEGUE_LENGTH,CART.VALIDITY,"+
+    "CART.NOTES,GROUPS.COLOR,GROUPS.TIMESCALE_LIMIT from CART "+
+    "left join GROUPS on CART.GROUP_NAME=GROUPS.NAME "+
+    QString().sprintf("where CART.NUMBER=%u",log_line[line]->cartNumber());
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     switch((RDCart::Type)q->value(0).toInt()) {
@@ -349,6 +347,7 @@ void RDLogEvent::refresh(int line)
     log_line[line]->setValidity((RDCart::Validity)q->value(20).toInt());
     log_line[line]->setCartNotes(q->value(21).toString());   // Cart Notes
     log_line[line]->setGroupColor(q->value(22).toString());  // Group Color
+    log_line[line]->setTimescaleLimit((double)q->value(23).toInt()/100.0);
   }
   else {
     log_line[line]->setValidity(RDCart::NeverValid);
