@@ -14935,3 +14935,5 @@
 	* Fixed a bug in the 'RDTimeSynced()' in 'lib/rdconf.cpp' and
 	'lib/rdconf.h' that caused the false sync failure detection when
 	the underlying NTP layer was advertising an upcoming leap second.
+2015-07-06 Fred Gleason <fredg@paravelsystems.com>
+	* Cleaned up warnings in 'lib/rdwavefile.cpp'.
