@@ -2,9 +2,7 @@
 //
 // A container class for a Rivendell Macro Language Command
 //
-//   (C) Copyright 2002-2007 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdmacro.h,v 1.37.4.2.2.1 2014/05/22 19:37:44 cvs Exp $
+//   (C) Copyright 2002-2015 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -45,8 +43,8 @@ class RDMacro
 		PM=0x504D,PN=0x504E,PP=0x5050,PS=0x5053,PT=0x5054,PU=0x5055,
 		PW=0x5057,PX=0x5058,RL=0x524C,RN=0x524E,RS=0x5253,RR=0x5252,
 		SA=0x5341,SC=0x5343,SD=0x5344,SG=0x5347,SI=0x5349,SL=0x534C,
-		SN=0x534e,SO=0x534F,SP=0x5350,SR=0x5352,ST=0x5354,SX=0x5358,
-		SY=0x5359,SZ=0x535A,TA=0x5441,UO=0x554F};
+		SM=0x534d,SN=0x534e,SO=0x534F,SP=0x5350,SR=0x5352,ST=0x5354,
+		SX=0x5358,SY=0x5359,SZ=0x535A,TA=0x5441,UO=0x554F};
   enum Role {Invalid=0,Cmd=1,Reply=2};
   RDMacro();
   RDMacro::Role role() const;

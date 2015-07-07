@@ -845,6 +845,48 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
     }   
     break;
 
+  case RDMacro::SM:    // Set timescaling mode
+    if((rml->argQuantity()!=1)&&(rml->argQuantity()!=2)) {
+      if(rml->echoRequested()) {
+	rml->acknowledge(false);
+	rdripc->sendRml(rml);
+      }
+      return;
+    }
+    if((rml->arg(0)!=1)&&(rml->arg(0)!=2)) {
+      if(rml->echoRequested()) {
+	rml->acknowledge(false);
+	rdripc->sendRml(rml);
+      }
+      return;
+    }
+    if(rml->argQuantity()==2) {
+      mach=rml->arg(1).toInt();
+      if((mach<0)||(mach>RDAIRPLAY_LOG_QUANTITY)) {
+	if(rml->echoRequested()) {
+	  rml->acknowledge(false);
+	  rdripc->sendRml(rml);
+	}
+	return;
+      }
+    }
+    if((mach==0)||(air_op_mode_style==RDAirPlayConf::Unified)) {
+      for(int i=0;i<RDAIRPLAY_LOG_QUANTITY;i++) {
+	air_log[i]->
+	  setTimescaleMode((RDLogLine::TimescaleMode)(rml->arg(0).toInt()-1));
+      }
+    }
+    else {
+      air_log[mach-1]->
+	setTimescaleMode((RDLogLine::TimescaleMode)(rml->arg(0).toInt()-1));
+    }
+
+    if(rml->echoRequested()) {
+      rml->acknowledge(true);
+      rdripc->sendRml(rml);
+    }   
+    break;
+
   case RDMacro::SN:    // Set default Now & Next Cart
     if(rml->argQuantity()!=3) {
       if(rml->echoRequested()) {

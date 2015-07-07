@@ -14944,3 +14944,5 @@
 2015-07-07 Fred Gleason <fredg@paravelsystems.com>
 	* Moved 'docs/cae.sxw' to 'docs/cae.odt'.
 	* Moved 'docs/rml.sxw' to 'docs/rml.odt'.
+2015-07-07 Fred Gleason <fredg@paravelsystems.com>
+	* Implemented the 'SM' ['Set Timescaling Mode'] RML.
