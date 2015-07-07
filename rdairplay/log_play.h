@@ -162,6 +162,7 @@ class LogPlay : public QObject,public RDLogEvent
   void refreshStatusChanged(bool active);
   void channelStarted(int id,int mport,int card,int port);
   void channelStopped(int id,int mport,int card,int port);
+  void timescaleModeChanged(RDLogLine::TimescaleMode mode);
 
  private:
   bool StartEvent(int line,RDLogLine::TransType trans_type,int trans_length,

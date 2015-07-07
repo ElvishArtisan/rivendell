@@ -870,17 +870,7 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
 	return;
       }
     }
-    if((mach==0)||(air_op_mode_style==RDAirPlayConf::Unified)) {
-      for(int i=0;i<RDAIRPLAY_LOG_QUANTITY;i++) {
-	air_log[i]->
-	  setTimescaleMode((RDLogLine::TimescaleMode)(rml->arg(0).toInt()-1));
-      }
-    }
-    else {
-      air_log[mach-1]->
-	setTimescaleMode((RDLogLine::TimescaleMode)(rml->arg(0).toInt()-1));
-    }
-
+    setTimescaleMode(mach,(RDLogLine::TimescaleMode)(rml->arg(0).toInt()-1));
     if(rml->echoRequested()) {
       rml->acknowledge(true);
       rdripc->sendRml(rml);

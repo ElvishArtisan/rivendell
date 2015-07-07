@@ -92,8 +92,9 @@
 //
 // Post Point Widget
 //
-#define POSTPOINT_EARLY_COLOR yellow
-#define POSTPOINT_ONTIME_COLOR green
-#define POSTPOINT_LATE_COLOR red
+#define POSTPOINT_EARLY_COLOR Qt::yellow
+#define POSTPOINT_ONTIME_COLOR Qt::green
+#define POSTPOINT_LATE_COLOR Qt::red
+#define POSTPOINT_TIMESCALE_COLOR Qt::blue
 
 #endif  // COLORS_H

@@ -14946,3 +14946,9 @@
 	* Moved 'docs/rml.sxw' to 'docs/rml.odt'.
 2015-07-07 Fred Gleason <fredg@paravelsystems.com>
 	* Implemented the 'SM' ['Set Timescaling Mode'] RML.
+2015-07-07 Fred Gleason <fredg@paravelsystems.com>
+	* Implemented a timescaling indicator frame in the Post Counter
+	widget in 'rdairplay/post_counter.cpp' and 'rdairplay/post_counter.h'.
+	* Implemented single-clock timescaling mode control in the Post
+	Counter widget in 'rdairplay/post_counter.cpp' and
+	'rdairplay/post_counter.h'.

@@ -127,6 +127,7 @@ class MainWidget : public QWidget
   void timeModeData(RDAirPlayConf::TimeMode mode);
   void refreshStatusChangedData(bool active);
   void clearSplashData();
+  void setTimescaleMode(int mach,RDLogLine::TimescaleMode mode);
   void keyPressEvent(QKeyEvent *e);
   void keyReleaseEvent(QKeyEvent *e);
   void closeEvent(QCloseEvent *);

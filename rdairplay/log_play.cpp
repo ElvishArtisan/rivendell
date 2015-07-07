@@ -206,10 +206,13 @@ RDLogLine::TimescaleMode LogPlay::timescaleMode() const
 
 void LogPlay::setTimescaleMode(RDLogLine::TimescaleMode mode)
 {
-  for(int i=0;i<size();i++) {
-    logLine(i)->setTimescaleMode(mode);
+  if(mode!=play_timescale_mode) {
+    for(int i=0;i<size();i++) {
+      logLine(i)->setTimescaleMode(mode);
+    }
+    play_timescale_mode=mode;
+    emit timescaleModeChanged(mode);
   }
-  play_timescale_mode=mode;
 }
 
 

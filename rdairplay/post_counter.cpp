@@ -35,6 +35,7 @@ PostCounter::PostCounter(QWidget *parent,const char *name)
   post_time=QTime();
   post_offset=0;
   post_offset_valid=false;
+  post_timescale_mode=RDLogLine::TimescaleIndividual;
 
   //
   // Generate Fonts
@@ -54,6 +55,8 @@ PostCounter::PostCounter(QWidget *parent,const char *name)
     QPalette(QColor(POSTPOINT_ONTIME_COLOR),backgroundColor());
   post_late_palette=
     QPalette(QColor(POSTPOINT_LATE_COLOR),backgroundColor());
+  post_timescale_palette=
+    QPalette(QColor(POSTPOINT_TIMESCALE_COLOR),backgroundColor());
 
   post_offset = 0;
   UpdateDisplay();
@@ -97,6 +100,15 @@ void PostCounter::setPostPoint(QTime point,int offset,bool offset_valid,
 }
 
 
+void PostCounter::setTimescaleMode(RDLogLine::TimescaleMode mode)
+{
+  if(mode!=post_timescale_mode) {
+    post_timescale_mode=mode;
+    UpdateDisplay();
+  }
+}
+
+
 void PostCounter::tickCounter()
 {
   if(!post_running) {
@@ -124,9 +136,28 @@ void PostCounter::keyPressEvent(QKeyEvent *e)
 }
 
 
+void PostCounter::mouseReleaseEvent(QMouseEvent *e)
+{
+  if((e->x()>=0)&&(e->x()<size().width())&&
+     (e->y()>=0)&&(e->y()<size().height())) {
+    switch(post_timescale_mode) {
+    case RDLogLine::TimescaleIndividual:
+      emit timeScalingModeRequested(1,RDLogLine::TimescaleBlock);
+      break;
+
+    case RDLogLine::TimescaleBlock:
+      emit timeScalingModeRequested(1,RDLogLine::TimescaleIndividual);
+      break;
+    }
+  }
+}
+
+
 void PostCounter::UpdateDisplay()
 {
-  QColor color=backgroundColor();
+  //  QColor color=backgroundColor();
+  QColor color=topLevelWidget()->backgroundColor();
+  QColor frame_color;
   QColor system_button_text_color=palette().active().buttonText();
   QString str;
   QString point;
@@ -161,7 +192,7 @@ void PostCounter::UpdateDisplay()
 	  color=POSTPOINT_ONTIME_COLOR;
 	}
       }
-      system_button_text_color = color1;
+      system_button_text_color = Qt::color1;
     }
     else {
       state="--------";
@@ -173,6 +204,34 @@ void PostCounter::UpdateDisplay()
     state="--------";
     setPalette(post_idle_palette);
   }
+
+
+  if(post_timescale_mode==RDLogLine::TimescaleBlock) {
+    setPalette(post_timescale_palette);
+    frame_color=
+      post_timescale_palette.color(QPalette::Active,QColorGroup::Button);
+  }
+  else {
+    frame_color=color;
+  }
+
+
+  QPixmap pix(sizeHint().width(),sizeHint().height());
+  QPainter *p=new QPainter(&pix);
+  p->fillRect(0,0,sizeHint().width(),sizeHint().height(),frame_color);
+  p->fillRect(5,5,sizeHint().width()-11,sizeHint().height()-11,color);
+  p->setPen(QColor(system_button_text_color));
+  p->setFont(post_small_font);
+  p->drawText((sizeHint().width()-p->
+	       fontMetrics().width(point))/2,22,point);
+  p->setFont(post_large_font);
+  p->drawText((sizeHint().width()-p->
+	       fontMetrics().width(state))/2,48,state);
+  p->end();
+  delete p;
+  setPixmap(pix);    
+
+  /*
   QPixmap pix(sizeHint().width(),sizeHint().height());
   QPainter *p=new QPainter(&pix);
   p->fillRect(0,0,sizeHint().width(),sizeHint().height(),color);
@@ -186,4 +245,5 @@ void PostCounter::UpdateDisplay()
   p->end();
   delete p;
   setPixmap(pix);    
+  */
 }

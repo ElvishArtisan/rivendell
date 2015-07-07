@@ -26,7 +26,10 @@
 #include <qpushbutton.h>
 #include <qdatetime.h>
 #include <qlabel.h>
+
 #include <rdairplay_conf.h>
+#include <rdlog_line.h>
+
 //
 // Settings
 //
@@ -43,12 +46,17 @@ class PostCounter : public QPushButton
   
  public slots:
   void setPostPoint(QTime point,int offset,bool offset_valid,bool running);
+  void setTimescaleMode(RDLogLine::TimescaleMode mode);
   void tickCounter();
   void setEnabled(bool state);
   void setDisabled(bool state);
 
+ signals:
+  void timeScalingModeRequested(int mach,RDLogLine::TimescaleMode mode);
+
  protected:
   void keyPressEvent(QKeyEvent *e);
+  void mouseReleaseEvent(QMouseEvent *e);
 
  private:
   void UpdateDisplay();
@@ -62,8 +70,10 @@ class PostCounter : public QPushButton
   QPalette post_ontime_palette;
   QPalette post_late_palette;
   QPalette post_idle_palette;
+  QPalette post_timescale_palette;
   QString post_time_format;
   QTime post_set_time;
+  RDLogLine::TimescaleMode post_timescale_mode;
 };
 
 #endif
