@@ -26,7 +26,7 @@ SUBDIRS = examples\
 EXTRA_DIST = ALSA.txt\
              ando_interface.odt\
              asound.conf-sample\
-             cae.sxw\
+             cae.odt\
              catchd.txt\
              colors\
              copy_split_format.odt\
@@ -45,7 +45,7 @@ EXTRA_DIST = ALSA.txt\
              reports.txt\
              ripc.txt\
              RIVENDELL_FILTER.txt\
-             rml.sxw\
+             rml.odt\
              SAGE_ENDEC.txt\
              scheduler_formats.ods\
              SWITCHERS.txt\

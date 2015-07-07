@@ -299,7 +299,7 @@ rm -rf $RPM_BUILD_ROOT
 %doc conf/rd.conf-sample
 %doc conf/my.cnf-master
 %doc conf/my.cnf-standby
-%doc docs/cae.sxw 
+%doc docs/cae.odt 
 %doc docs/catchd.txt 
 %doc docs/colors 
 %doc docs/GPIO.txt 
@@ -308,7 +308,7 @@ rm -rf $RPM_BUILD_ROOT
 %doc docs/JACK.txt
 %doc docs/ENCODERS.txt
 %doc docs/pam_rd.txt
-%doc docs/rml.sxw
+%doc docs/rml.odt
 %doc docs/MESSAGE_BOX.txt
 %doc docs/tables/audio_perms.txt 
 %doc docs/tables/audio_ports.txt 
