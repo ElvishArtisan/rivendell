@@ -14952,3 +14952,6 @@
 	* Implemented single-clock timescaling mode control in the Post
 	Counter widget in 'rdairplay/post_counter.cpp' and
 	'rdairplay/post_counter.h'.
+2015-07-08 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'rdairplay/rdairplay.cpp' that caused the Pie
+	Widget to be inaccurate when block timescaling was being applied.
