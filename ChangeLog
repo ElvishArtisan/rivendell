@@ -14949,7 +14949,7 @@
 2015-07-07 Fred Gleason <fredg@paravelsystems.com>
 	* Implemented a timescaling indicator frame in the Post Counter
 	widget in 'rdairplay/post_counter.cpp' and 'rdairplay/post_counter.h'.
-	* Implemented single-clock timescaling mode control in the Post
+	* Implemented single-click timescaling mode control in the Post
 	Counter widget in 'rdairplay/post_counter.cpp' and
 	'rdairplay/post_counter.h'.
 2015-07-08 Fred Gleason <fredg@paravelsystems.com>
