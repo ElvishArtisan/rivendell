@@ -21,6 +21,7 @@
 #include <unistd.h>
 #include <syslog.h>
 
+#include <rdconf.h>
 #include <rdmixer.h>
 #include <rddebug.h>
 #include <rdlog.h>
@@ -2031,6 +2032,7 @@ bool LogPlay::StartAudioEvent(int line)
 {
   RDLogLine *logline;
   RDPlayDeck *playdeck=NULL;
+  int err_msecs=0;
 
   if((logline=logLine(line))==NULL) {
     return false;
@@ -2040,27 +2042,13 @@ bool LogPlay::StartAudioEvent(int line)
   // Get Time Block
   //
   if(play_timescale_mode==RDLogLine::TimescaleBlock) {
-    QTime block_end;
-    int desired_len=length(line,-1,&block_end);
-    int actual_len=desired_len;
-    if(block_end.isNull()) {
-      play_speed_ratio=1.0;
+    play_speed_ratio=blockTimescaleRatio(&err_msecs,line);
+    printf("Err: ");
+    if(err_msecs<0) {
+      printf("-");
+      err_msecs=-err_msecs;
     }
-    else {
-      actual_len=QTime::currentTime().msecsTo(block_end);
-      play_speed_ratio=(double)actual_len/(double)desired_len;
-    }
-    if(play_speed_ratio<(1.0-logline->timescaleLimit())) {
-      play_speed_ratio=1.0-logline->timescaleLimit();
-    }
-    if(play_speed_ratio>(1.0+logline->timescaleLimit())) {
-      play_speed_ratio=1.0+logline->timescaleLimit()-0.0001;
-    }
-    /*
-    printf("Ratio - Desired %6.4lf  Got: %6.4lf\n",
-	   orig_ratio,
-	   play_speed_ratio);
-    */
+    printf("%s\n",(const char *)RDGetTimeLength(err_msecs,true));
   }
   else {
     play_speed_ratio=1.0;

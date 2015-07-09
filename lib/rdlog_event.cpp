@@ -459,8 +459,10 @@ void RDLogEvent::copy(int from_line,int to_line)
 }
 
 
-int RDLogEvent::length(int from_line,int to_line,QTime *sched_time)
+int RDLogEvent::length(int from_line,int to_line,QTime *sched_time) const
 {
+  return GetLength(from_line,&to_line,sched_time);
+  /*
   if(sched_time!=NULL) {
     *sched_time=QTime();
   }
@@ -488,6 +490,13 @@ int RDLogEvent::length(int from_line,int to_line,QTime *sched_time)
   }
 
   return len;
+  */
+}
+
+
+int RDLogEvent::length(int from_line,int *to_line,QTime *sched_time) const
+{
+  return GetLength(from_line,to_line,sched_time);
 }
 
 
@@ -504,6 +513,53 @@ int RDLogEvent::lengthToStop(int from_line,QTime *sched_time)
     return -1;
   }
   return length(from_line,to_line,sched_time);
+}
+
+
+double RDLogEvent::blockTimescaleRatio(int *err_msecs,int from_line,
+				       QTime at_time) const
+{
+  double ret=1.0;
+  double ratio=1.0;
+  QTime block_end;
+  int to_line=-1;
+  int desired_len=length(from_line,&to_line,&block_end);
+  int actual_len=desired_len;
+  RDLogLine *logline=NULL;
+  
+  //
+  // Calculate required ratio
+  //
+  if(at_time.isNull()) {
+    at_time=QTime::currentTime();
+  }
+  if(!block_end.isNull()) {
+    actual_len=at_time.msecsTo(block_end);
+    ratio=(double)actual_len/(double)desired_len;
+    ret=ratio;
+  }
+
+  //
+  // Check against limits
+  //
+  for(int i=from_line;i<=to_line;i++) {
+    if((logline=logLine(i))!=NULL) {
+      if(ret<(1.0-logLine(i)->timescaleLimit())) {
+	ret=1.0-logLine(i)->timescaleLimit();
+      }
+      if(ret>(1.0+logLine(i)->timescaleLimit())) {
+	ret=1.0+logLine(i)->timescaleLimit()-0.0001;
+      }
+    }
+  }
+  if(ret==ratio) {
+    *err_msecs=0;
+  }
+  else {
+    *err_msecs=desired_len-(double)actual_len/ret;
+  }
+
+  return ret;
 }
 
 
@@ -766,6 +822,38 @@ QString RDLogEvent::xml() const
   ret+="</logList>\n";
 
   return ret;
+}
+
+
+int RDLogEvent::GetLength(int from_line,int *to_line,QTime *sched_time) const
+{
+  if(sched_time!=NULL) {
+    *sched_time=QTime();
+  }
+  if(*to_line<0) {
+    *to_line=size();
+    for(int i=from_line+1;i<size();i++) {
+      if(logLine(i)->timeType()==RDLogLine::Hard) {
+	*to_line=i;
+	i=size()-1;
+	if((logLine(1)!=NULL)&&(sched_time!=NULL)) {
+	  *sched_time=logLine(i)->startTime(RDLogLine::Logged);
+	}
+      }
+    }
+  }
+  int len=0;
+  for(int i=from_line;i<*to_line;i++) {
+    if(((i+1)>=size())||(logLine(i+1)->transType()!=RDLogLine::Segue)||
+       (logLine(i)->segueStartPoint()<0)) {
+      len+=logLine(i)->forcedLength();
+    }
+    else {
+      len+=logLine(i)->segueStartPoint()-logLine(i)->startPoint();
+    }
+  }
+
+  return len;
 }
 
 

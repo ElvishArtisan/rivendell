@@ -55,8 +55,11 @@ class RDLogEvent
    void remove(int line,int num_lines,bool preserve_trans=false);
    void move(int from_line,int to_line);
    void copy(int from_line,int to_line);
-   int length(int from_line,int to_line,QTime *sched_time=NULL);
+   int length(int from_line,int to_line,QTime *sched_time=NULL) const;
+   int length(int from_line,int *to_line,QTime *sched_time=NULL) const;
    int lengthToStop(int from_line,QTime *sched_time=NULL);
+   double blockTimescaleRatio(int *err_msecs,int from_line,
+			      QTime at_time=QTime()) const;
    bool blockLength(int *nominal_length,int *actual_length,int line);
    QTime blockStartTime(int line);
    RDLogLine *logLine(int line) const;
@@ -73,6 +76,7 @@ class RDLogEvent
    QString xml() const;
 
   private:
+   int GetLength(int from_line,int *to_line,QTime *sched_time) const;
    int LoadLines(const QString &log_table,int id_offset,bool track_ptrs);
    void SaveLine(int line);
    void LoadNowNext(unsigned from_line);
