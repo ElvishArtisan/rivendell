@@ -196,7 +196,13 @@ void PostCounter::UpdateDisplay()
 	  color=POSTPOINT_LATE_COLOR;
 	}
 	else {
-	  state=tr("On Time");
+	  if(post_timescale_mode==RDLogLine::TimescaleBlock) {
+	    state=QString().sprintf("%s",(const char *)
+				    QTime().addMSecs(-end_offset).toString());
+	  }
+	  else {
+	    state=tr("On Time");
+	  }
 	  setPalette(post_ontime_palette);
 	  color=POSTPOINT_ONTIME_COLOR;
 	}

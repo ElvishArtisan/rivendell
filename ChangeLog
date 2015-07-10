@@ -14967,3 +14967,7 @@
 	'rdairplay/rdairplay.cpp'.
 2015-07-10 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'redhat-rpm-config' build dependency in 'rivendell.spec.in'.
+2015-07-10 Fred Gleason <fredg@paravelsystems.com>
+	* Changed the behavior of the Post Point Widget so as to provide
+	a count-down timer when 'on time' when block timescaling is
+	enabled.
