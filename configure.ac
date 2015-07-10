@@ -116,10 +116,12 @@ if test $ar_gcc_distro = suse ; then
   AC_SUBST(QT3_MYSQL_PKG,"qt3-mysql")
   AC_SUBST(QT3_DEVEL_PKG,"qt3-devel")
   AC_SUBST(MYSQL_PKG,"mysql")
+  AC_SUBST(RPM_CONFIG_PKG,"")
 else
   AC_SUBST(APACHE_PKG,"httpd")
   AC_SUBST(APACHE_CONFIG_DIR,"/etc/httpd/conf.d")
   AC_SUBST(CONSOLEHELPER_RDALSACONFIG,"/usr/bin/rdalsaconfig-root")
+  AC_SUBST(RPM_CONFIG_PKG,"redhat-rpm-config")
   if test $ar_distro_major -ge 7 ; then
     AC_SUBST(USERMODE_PKG,"usermode usermode-gtk")
     AC_SUBST(QT3_MYSQL_PKG,"qt3-MySQL")

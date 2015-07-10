@@ -27,6 +27,7 @@ Packager: Fred Gleason <fredg@paravelsystems.com>
 Group: Productivity/Multimedia/Other
 Source: rivendell-@VERSION@.tar.gz
 Requires: @QT3_MYSQL_PKG@ @APACHE_PKG@ @QT3_DEVEL_PKG@ curl @USERMODE_PKG@ rivendell-base perl-Net-DNS
+BuildRequires: @RPM_CONFIG_PKG@
 BuildRoot: /var/tmp/rivendell-@VERSION@
 
 %package base
