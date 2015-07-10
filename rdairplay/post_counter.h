@@ -46,6 +46,8 @@ class PostCounter : public QPushButton
   
  public slots:
   void setPostPoint(QTime point,int offset,bool offset_valid,bool running);
+  void setPostPoint(QTime point,int start_offset,int end_offset,
+		    bool offset_valid,bool running);
   void setTimescaleMode(RDLogLine::TimescaleMode mode);
   void tickCounter();
   void setEnabled(bool state);
@@ -61,7 +63,8 @@ class PostCounter : public QPushButton
  private:
   void UpdateDisplay();
   QTime post_time;
-  int post_offset;
+  int post_start_offset;
+  int post_end_offset;
   bool post_offset_valid;
   bool post_running;
   QFont post_large_font;

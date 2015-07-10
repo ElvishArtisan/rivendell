@@ -33,7 +33,8 @@ PostCounter::PostCounter(QWidget *parent,const char *name)
   post_running=false;
   post_time_format="hh:mm:ss";
   post_time=QTime();
-  post_offset=0;
+  post_start_offset=0;
+  post_end_offset=0;
   post_offset_valid=false;
   post_timescale_mode=RDLogLine::TimescaleIndividual;
 
@@ -58,7 +59,6 @@ PostCounter::PostCounter(QWidget *parent,const char *name)
   post_timescale_palette=
     QPalette(QColor(POSTPOINT_TIMESCALE_COLOR),backgroundColor());
 
-  post_offset = 0;
   UpdateDisplay();
 }
 
@@ -91,8 +91,16 @@ QSizePolicy PostCounter::sizePolicy() const
 void PostCounter::setPostPoint(QTime point,int offset,bool offset_valid,
 			       bool running)
 {
+  setPostPoint(point,offset,offset,offset_valid,running);
+}
+
+
+void PostCounter::setPostPoint(QTime point,int start_offset,int end_offset,
+			       bool offset_valid,bool running)
+{
   post_time=point;
-  post_offset=offset;
+  post_start_offset=start_offset;
+  post_end_offset=end_offset;
   post_offset_valid=offset_valid;
   post_running=running;
   post_set_time=QTime::currentTime();
@@ -155,7 +163,6 @@ void PostCounter::mouseReleaseEvent(QMouseEvent *e)
 
 void PostCounter::UpdateDisplay()
 {
-  //  QColor color=backgroundColor();
   QColor color=topLevelWidget()->backgroundColor();
   QColor frame_color;
   QColor system_button_text_color=palette().active().buttonText();
@@ -164,25 +171,27 @@ void PostCounter::UpdateDisplay()
   QString state;
   QTime current_time=
     QTime::currentTime().addMSecs(rdstation_conf->timeOffset());
-  int offset=post_offset;
+  int start_offset=post_start_offset;
+  int end_offset=post_end_offset;
   if(!post_running) {
-    offset-=current_time.msecsTo(post_set_time);
+    start_offset-=current_time.msecsTo(post_set_time);
+    end_offset-=current_time.msecsTo(post_set_time);
   }
 
   if(isEnabled()&&(!post_time.isNull())) {
     point= trUtf8("Next Timed Start") + " [" + post_time.toString(post_time_format) + "]";
 
     if(post_offset_valid) {
-      if(offset<-POST_COUNTER_MARGIN) {
+      if(start_offset<-POST_COUNTER_MARGIN) {
 	state=QString().sprintf("-%s",(const char *)
-				QTime().addMSecs(-offset).toString());
+				QTime().addMSecs(-start_offset).toString());
 	setPalette(post_early_palette);
 	color=POSTPOINT_EARLY_COLOR;
       }
       else {
-	if(offset>POST_COUNTER_MARGIN) {
+	if(end_offset>POST_COUNTER_MARGIN) {
 	  state=QString().sprintf("+%s",(const char *)
-				  QTime().addMSecs(offset).toString());
+				  QTime().addMSecs(end_offset).toString());
 	  setPalette(post_late_palette);
 	  color=POSTPOINT_LATE_COLOR;
 	}

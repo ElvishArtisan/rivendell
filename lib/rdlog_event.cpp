@@ -462,35 +462,6 @@ void RDLogEvent::copy(int from_line,int to_line)
 int RDLogEvent::length(int from_line,int to_line,QTime *sched_time) const
 {
   return GetLength(from_line,&to_line,sched_time);
-  /*
-  if(sched_time!=NULL) {
-    *sched_time=QTime();
-  }
-  if(to_line<0) {
-    to_line=size();
-    for(int i=from_line+1;i<size();i++) {
-      if(logLine(i)->timeType()==RDLogLine::Hard) {
-	to_line=i;
-	i=size()-1;
-	if((logLine(1)!=NULL)&&(sched_time!=NULL)) {
-	  *sched_time=logLine(i)->startTime(RDLogLine::Logged);
-	}
-      }
-    }
-  }
-  int len=0;
-  for(int i=from_line;i<to_line;i++) {
-    if(((i+1)>=size())||(logLine(i+1)->transType()!=RDLogLine::Segue)||
-       (logLine(i)->segueStartPoint()<0)) {
-      len+=logLine(i)->forcedLength();
-    }
-    else {
-      len+=logLine(i)->segueStartPoint()-logLine(i)->startPoint();
-    }
-  }
-
-  return len;
-  */
 }
 
 
@@ -523,7 +494,7 @@ double RDLogEvent::blockTimescaleRatio(int *err_msecs,int from_line,
   double ratio=1.0;
   QTime block_end;
   int to_line=-1;
-  int desired_len=length(from_line,&to_line,&block_end);
+  int desired_len=GetLength(from_line,&to_line,&block_end);
   int actual_len=desired_len;
   RDLogLine *logline=NULL;
   
@@ -556,10 +527,48 @@ double RDLogEvent::blockTimescaleRatio(int *err_msecs,int from_line,
     *err_msecs=0;
   }
   else {
-    *err_msecs=desired_len-(double)actual_len/ret;
+    *err_msecs=(double)(desired_len-actual_len)/ret;
   }
 
   return ret;
+}
+
+
+bool RDLogEvent::blockTimescaleLimits(QTime *nominal,QTime *start,QTime *end,
+				      int from_line) const
+{
+  double limit=RD_TIMESCALE_LIMIT;
+  RDLogLine *logline;
+  QTime sched_time;
+  int to_line=-1;
+  int len;
+
+  //
+  // Get block end
+  //
+  len=length(from_line,&to_line,&sched_time);
+  if(sched_time.isNull()) {
+    return false;
+  }
+  *nominal=sched_time.addMSecs(-len);
+
+  //
+  // Calculate Ratio Limit
+  //
+  for(int i=from_line;i<=to_line;i++) {
+    if((logline=logLine(i))!=NULL) {
+      if(logline->timescaleLimit()<limit) {
+	limit=logline->timescaleLimit();
+      }
+    }
+  }
+
+  //
+  // Calculate Time Limits
+  //
+  *start=sched_time.addMSecs(-len*(1.0+limit));
+  *end=sched_time.addMSecs(-len*(1.0-limit));
+  return true;
 }
 
 

@@ -157,6 +157,8 @@ class LogPlay : public QObject,public RDLogEvent
   void activeEventChanged(int line,RDLogLine::TransType trans);
   void nextStopChanged(QTime time);
   void postPointChanged(QTime point,int offset,bool offset_valid,bool running);
+  void postPointChanged(QTime point,int start_offset,int end_offset,
+			bool offset_valid,bool running);
   void runStatusChanged(bool running);
   void refreshabilityChanged(bool state);
   void refreshStatusChanged(bool active);

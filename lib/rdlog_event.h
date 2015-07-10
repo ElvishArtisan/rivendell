@@ -60,6 +60,8 @@ class RDLogEvent
    int lengthToStop(int from_line,QTime *sched_time=NULL);
    double blockTimescaleRatio(int *err_msecs,int from_line,
 			      QTime at_time=QTime()) const;
+   bool blockTimescaleLimits(QTime *nominal,QTime *start,QTime *end,
+			     int from_line) const;
    bool blockLength(int *nominal_length,int *actual_length,int line);
    QTime blockStartTime(int line);
    RDLogLine *logLine(int line) const;

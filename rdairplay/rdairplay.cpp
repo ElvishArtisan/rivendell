@@ -460,6 +460,8 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
 	  air_post_counter,SLOT(tickCounter()));
   connect(air_log[0],SIGNAL(postPointChanged(QTime,int,bool,bool)),
 	  air_post_counter,SLOT(setPostPoint(QTime,int,bool,bool)));
+  connect(air_log[0],SIGNAL(postPointChanged(QTime,int,int,bool,bool)),
+	  air_post_counter,SLOT(setPostPoint(QTime,int,int,bool,bool)));
   connect(air_log[0],SIGNAL(timescaleModeChanged(RDLogLine::TimescaleMode)),
 	  air_post_counter,SLOT(setTimescaleMode(RDLogLine::TimescaleMode)));
   connect(air_post_counter,

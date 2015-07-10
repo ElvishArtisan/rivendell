@@ -212,6 +212,7 @@ void LogPlay::setTimescaleMode(RDLogLine::TimescaleMode mode)
       logLine(i)->setTimescaleMode(mode);
     }
     play_timescale_mode=mode;
+    UpdatePostPoint();
     emit timescaleModeChanged(mode);
   }
 }
@@ -2043,12 +2044,6 @@ bool LogPlay::StartAudioEvent(int line)
   //
   if(play_timescale_mode==RDLogLine::TimescaleBlock) {
     play_speed_ratio=blockTimescaleRatio(&err_msecs,line);
-    printf("Err: ");
-    if(err_msecs<0) {
-      printf("-");
-      err_msecs=-err_msecs;
-    }
-    printf("%s\n",(const char *)RDGetTimeLength(err_msecs,true));
   }
   else {
     play_speed_ratio=1.0;
@@ -2379,25 +2374,55 @@ void LogPlay::UpdatePostPoint(int line)
 {
   int post_line=-1;
   QTime post_time;
-  int offset=0;
+  QTime window_nominal;
+  QTime window_start;
+  QTime window_end;
+  int start_offset=0;
+  int end_offset=0;
+  QTime now=QTime::currentTime();
 
   if((line<0)||(play_trans_line<0)) {
     post_line=-1;
     post_time=QTime();
-    offset=0;
+    start_offset=0;
+    end_offset=0;
   }
   else {
     if((line<size())&&(play_trans_line>=0)&&(play_trans_line<size())) {
       post_line=play_trans_line;
       post_time=logLine(post_line)->startTime(RDLogLine::Logged);
-      offset=length(line,post_line)-QTime::currentTime().msecsTo(post_time);
+      if(play_timescale_mode==RDLogLine::TimescaleIndividual) {
+	start_offset=
+	  length(line,post_line)-now.msecsTo(post_time);
+	end_offset=
+	  length(line,post_line)-now.msecsTo(post_time);
+      }
+      else {
+	if(blockTimescaleLimits(&window_nominal,
+				&window_start,&window_end,line)) {
+	  start_offset=-now.msecsTo(window_start);
+	  end_offset=-now.msecsTo(window_end);
+	  /*
+	  printf("Began: %s\n",(const char *)now.toString("hh:mm:ss"));
+	  printf("Start: %s / %d\n",
+		 (const char *)window_start.toString("hh:mm:ss"),start_offset);
+	  printf("Nominal: %s\n",
+		 (const char *)window_nominal.toString("hh:mm:ss"));
+	  printf("End: %s / %d\n",
+		 (const char *)window_end.toString("hh:mm:ss"),end_offset);
+	  printf("\n\n");
+	  */
+	}
+      }
     }
   }
-  if((post_time!=play_post_time)||(offset!=play_post_offset)) {
+  //  if((post_time!=play_post_time)||(offset!=play_post_offset)) {
+  //  if(post_time!=play_post_time) {
     play_post_time=post_time;
-    play_post_offset=offset;
-    emit postPointChanged(play_post_time,offset,post_line>=line,running(false));
-  }
+    //    play_post_offset=offset;
+    emit postPointChanged(play_post_time,start_offset,end_offset,
+			  post_line>=line,running(false));
+    //  }
 }
 
 

@@ -14958,3 +14958,10 @@
 2015-07-09 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'RDLogEvent::blockTimescaleRatio()' method in
 	'lib/rdlog_event.cpp' and 'lib/rdlogevent.h'.
+2015-07-10 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'RDLogEvent::blockTimescaleRatio()' and
+	'RDLogEvent::blockTimescaleLimits()' methods in
+	'lib/rdlog_event.cpp' and 'lib/rdlog_event.h'.
+	* Modified the Post Point Widget to be block timescaling aware in
+	'rdairplay/post_counter.cpp', 'rdairplay/post_counter.h' and
+	'rdairplay/rdairplay.cpp'.
