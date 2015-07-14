@@ -14814,3 +14814,5 @@
 	* Instrumented 'LogPlay::graceTimerData()' in
 	'rdairplay/log_play.cpp'.
 	* Instrumented 'RLMHost::timerData()' in 'rdairplay/rlmhost.cpp'.
+2015-07-14 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.10.3caefix02.
