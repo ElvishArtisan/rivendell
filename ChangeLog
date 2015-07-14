@@ -14971,3 +14971,6 @@
 	* Changed the behavior of the Post Point Widget so as to provide
 	a count-down timer when 'on time' when block timescaling is
 	enabled.
+2015-07-14 Fred Gleason <fredg@paravelsystems.com>
+	* Made the 'Test Import' dialog resizable in 'rdadmin/test_import.cpp'
+	and 'rdadmin/test_import.h'

@@ -37,7 +37,7 @@ class EditSvc : public QDialog
 {
  Q_OBJECT
  public:
-  EditSvc(QString svc,QWidget *parent=0,const char *name=0);
+  EditSvc(QString svc,QWidget *parent=0);
   ~EditSvc();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;

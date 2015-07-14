@@ -2,9 +2,7 @@
 //
 // Edit a Rivendell Service
 //
-//   (C) Copyright 2002-2004,2008 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: edit_svc.cpp,v 1.43.8.2.2.1 2014/05/21 20:29:02 cvs Exp $
+//   (C) Copyright 2002-2004,2008,2015 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -44,8 +42,8 @@
 #include <autofill_carts.h>
 #include <edit_svc_perms.h>
 
-EditSvc::EditSvc(QString svc,QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+EditSvc::EditSvc(QString svc,QWidget *parent)
+  : QDialog(parent,"",true)
 {
   QString sql;
   RDSqlQuery *q;
@@ -704,7 +702,7 @@ void EditSvc::TestDataImport(RDSvc::ImportSource src)
     }
     Save();
   }
-  TestImport *testimport=new TestImport(svc_svc,src,this,"testimport");
+  TestImport *testimport=new TestImport(svc_svc,src,this);
   testimport->exec();
   delete testimport;
 }

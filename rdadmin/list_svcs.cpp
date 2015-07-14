@@ -2,9 +2,7 @@
 //
 // List Rivendell Services
 //
-//   (C) Copyright 2002-2003 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: list_svcs.cpp,v 1.26 2010/07/29 19:32:35 cvs Exp $
+//   (C) Copyright 2002-2015 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -37,8 +35,8 @@
 #include <add_svc.h>
 
 
-ListSvcs::ListSvcs(QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+ListSvcs::ListSvcs(QWidget *parent)
+  : QDialog(parent,"",true)
 {
   //
   // Fix the Window Size
@@ -133,7 +131,7 @@ void ListSvcs::addData()
 {
   QString svcname;
 
-  AddSvc *add_svc=new AddSvc(&svcname,this,"add_svc");
+  AddSvc *add_svc=new AddSvc(&svcname,this);
   if(add_svc->exec()<0) {
     delete add_svc;
     return;
@@ -148,7 +146,7 @@ void ListSvcs::editData()
   if(list_box->currentItem()<0) {
     return;
   }
-  EditSvc *edit_svc=new EditSvc(list_box->currentText(),this,"edit_svc");
+  EditSvc *edit_svc=new EditSvc(list_box->currentText(),this);
   edit_svc->exec();
   delete edit_svc;
 }

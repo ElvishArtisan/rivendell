@@ -367,7 +367,7 @@ QSizePolicy MainWidget::sizePolicy() const
 
 void MainWidget::manageUsersData()
 {
-  ListUsers *list_users=new ListUsers(admin_user->name(),this,"list_users");
+  ListUsers *list_users=new ListUsers(admin_user->name(),this);
   list_users->exec();
   delete list_users;
 }
@@ -375,21 +375,21 @@ void MainWidget::manageUsersData()
 
 void MainWidget::manageGroupsData()
 {
-  ListGroups *list_groups=new ListGroups(this,"list_groups");
+  ListGroups *list_groups=new ListGroups(this);
   list_groups->exec();
   delete list_groups;
 }
 
 void MainWidget::manageSchedCodes()
 {
-  ListSchedCodes *list_schedCodes=new ListSchedCodes(this,"list_schedCodes");
+  ListSchedCodes *list_schedCodes=new ListSchedCodes(this);
   list_schedCodes->exec();
   delete list_schedCodes;
 }
 
 void MainWidget::manageServicesData()
 {
-  ListSvcs *list_svcs=new ListSvcs(this,"list_svcs");
+  ListSvcs *list_svcs=new ListSvcs(this);
   list_svcs->exec();
   delete list_svcs;
 }
@@ -397,7 +397,7 @@ void MainWidget::manageServicesData()
 
 void MainWidget::manageStationsData()
 {
-  ListStations *list_stations=new ListStations(this,"list_stations");
+  ListStations *list_stations=new ListStations(this);
   list_stations->exec();
   delete list_stations;
 }
@@ -405,7 +405,7 @@ void MainWidget::manageStationsData()
 
 void MainWidget::systemSettingsData()
 {
-  EditSettings *edit_settings=new EditSettings(this,"edit_settings");
+  EditSettings *edit_settings=new EditSettings(this);
   edit_settings->exec();
   delete edit_settings;
 }
