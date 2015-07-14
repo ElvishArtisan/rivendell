@@ -8,6 +8,7 @@
 *.so
 rivendell-*.tar.gz
 rivendell-*.zip
+.AppleDouble
 .deps
 .libs
 aclocal.m4
