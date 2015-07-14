@@ -1382,6 +1382,8 @@ void LogPlay::resync()
 
 void LogPlay::transTimerData()
 {
+  syslog(LOG_NOTICE,"LogPlay::transTimerData() starts...");
+
   int lines[TRANSPORT_QUANTITY];
   RDLogLine *logline=NULL;
   int grace=0;
@@ -1394,6 +1396,7 @@ void LogPlay::transTimerData()
   if(play_op_mode==RDAirPlayConf::Auto) {
     if(!GetNextPlayable(&play_trans_line,false)) {
       SetTransTimer();
+      syslog(LOG_NOTICE,"LogPlay::transTimerData() ends [1].");
       return;
     }
     if((logline=logLine(play_trans_line))!=NULL) {
@@ -1409,6 +1412,7 @@ void LogPlay::transTimerData()
       if(logline==NULL) {
 	LogLine(RDConfig::LogNotice,"  invalid logline");
 	SetTransTimer();
+	syslog(LOG_NOTICE,"LogPlay::transTimerData() ends [2].");
 	return;
       }
       switch(logline->graceTime()) {
@@ -1441,20 +1445,24 @@ void LogPlay::transTimerData()
     }
   }
   SetTransTimer();
+  syslog(LOG_NOTICE,"LogPlay::transTimerData() ends [3].");
 }
 
 
 void LogPlay::graceTimerData()
 {
+  syslog(LOG_NOTICE,"LogPlay::graceTimerData() starts...");
   int lines[TRANSPORT_QUANTITY];
   int line=play_grace_line;
 
   if(play_op_mode==RDAirPlayConf::Auto) {
     if(!GetNextPlayable(&line,false)) {
       SetTransTimer();
+      syslog(LOG_NOTICE,"LogPlay::graceTimerData() ends [1].");
       return;
     }
     if(line!=play_grace_line) {
+      syslog(LOG_NOTICE,"LogPlay::graceTimerData() ends [2].");
       return;
     }
     if((runningEvents(lines)==0)) {
@@ -1472,6 +1480,7 @@ void LogPlay::graceTimerData()
       }
     }
   }
+  syslog(LOG_NOTICE,"LogPlay::graceTimerData() ends [3].");
 }
 
 

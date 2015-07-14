@@ -134,10 +134,13 @@ void HourSelector::hourClicked(int hour)
 
 void HourSelector::updateTimeData()
 {
+  syslog(LOG_NOTICE,"HourSelector::pdateTimeData() starts...");
+
   QTime now=QTime::currentTime();
   for(unsigned i=0;i<24;i++) {
     hour_button[i]->setPalette(palette());
   }
   hour_button[now.hour()]->setPalette(hour_active_palette);
   hour_update_timer->start(now.msecsTo(QTime(now.hour()+1,0,1)),true);
+  syslog(LOG_NOTICE,"HourSelector::pdateTimeData() ends.");
 }

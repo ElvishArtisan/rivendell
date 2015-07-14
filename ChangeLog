@@ -14806,3 +14806,11 @@
 	in 'rdairplay/log_play.cpp'.
 	* Instrumented the 'LogPlay::refresh()' method in
 	'rdairplay/log_play.cpp'.
+2015-07-14 Fred Gleason <fredg@paravelsystems.com>
+	* Instrumented 'HourSelect::updateTimeData()' in
+	'rdairplay/hourselector.cpp'.
+	* Instrumented 'LogPlay::transTimerData()' in
+	'rdairplay/log_play.cpp'.
+	* Instrumented 'LogPlay::graceTimerData()' in
+	'rdairplay/log_play.cpp'.
+	* Instrumented 'RLMHost::timerData()' in 'rdairplay/rlmhost.cpp'.
