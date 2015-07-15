@@ -335,3 +335,21 @@ QString RDClock::tableName(const QString &name)
 
   return ret+"_CLK";
 }
+
+
+int RDClock::svcClockNumber(int dow,int hour)
+{
+  return 24*(dow-1)+hour;
+}
+
+
+int RDClock::svcClockDayOfWeek(int num)
+{
+  return num/24+1;
+}
+
+
+int RDClock::svcClockHour(int num)
+{
+  return num-24*(RDClock::svcClockDayOfWeek(num)-1);
+}

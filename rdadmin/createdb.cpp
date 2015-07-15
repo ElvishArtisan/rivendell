@@ -940,6 +940,21 @@ bool CreateDb(QString name,QString pwd)
     return false;
   }
 
+  //
+  // Create SVC_CLOCKS Table
+  //
+  sql=QString("create table if not exists SVC_CLOCKS (")+
+    "ID int auto_increment not null primary key,"+
+    "SERVICE_NAME char(10) not null,"+
+    "HOUR int not null,"+
+    "CLOCK_NAME char(64),"+
+    "index SERVICE_IDX(SERVICE_NAME),"+
+    "unique index HOUR_IDX(SERVICE_NAME,HOUR),"
+    "index CLOCK_NAME_IDX(CLOCK_NAME))";
+  if(!RunQuery(sql)) {
+    return false;
+  }
+
 //
 // Create GROUPS table
 //
@@ -2526,6 +2541,14 @@ bool InitDb(QString name,QString pwd,QString station_name)
   svc->create("");
   svc->setDescription(RD_SERVICE_DESCRIPTION);
   delete svc;
+  for(int i=0;i<168;i++) {
+    sql=QString("insert into SVC_CLOCKS set ")+
+      "SERVICE_NAME=\""+RDEscapeString(RD_SERVICE_NAME)+"\","+
+      QString().sprintf("HOUR=%d",i);
+    if(!RunQuery(sql)) {
+      return false;
+    }
+  }
 
   //
   // Create Default Groups
@@ -8130,6 +8153,46 @@ int UpdateDb(int ver)
       "TIMESCALE_LIMIT int default 20 after COLOR";
     q=new QSqlQuery(sql);
     delete q;
+  }
+
+  if(ver<248) {
+    sql=QString("create table if not exists SVC_CLOCKS (")+
+      "ID int auto_increment not null primary key,"+
+      "SERVICE_NAME char(10) not null,"+
+      "HOUR int not null,"+
+      "CLOCK_NAME char(64),"+
+      "index SERVICE_IDX(SERVICE_NAME),"+
+      "unique index HOUR_IDX(SERVICE_NAME,HOUR),"
+      "index CLOCK_NAME_IDX(CLOCK_NAME))";
+    q=new QSqlQuery(sql);
+    delete q;
+
+    sql=QString("select NAME");
+    for(int i=0;i<168;i++) {
+      sql+=QString().sprintf(",CLOCK%d",i);
+    }
+    sql+=" from SERVICES";
+    q=new QSqlQuery(sql);
+    while(q->next()) {
+      for(int i=0;i<168;i++) {
+	sql=QString("insert into SVC_CLOCKS set ")+
+	  "SERVICE_NAME=\""+RDEscapeString(q->value(0).toString())+"\","+
+	  QString().sprintf("HOUR=%d",i);
+	if(!q->value(i+1).toString().isEmpty()) {
+	  sql+=",CLOCK_NAME=\""+RDEscapeString(q->value(i+1).toString())+"\"";
+	}
+	q1=new QSqlQuery(sql);
+	delete q1;
+      }
+    }
+    delete q;
+
+    for(int i=0;i<168;i++) {
+      sql=QString("alter table SERVICES drop column ")+
+	QString().sprintf("CLOCK%d",i);
+      q=new QSqlQuery(sql);
+      delete q;
+    }
   }
 
 

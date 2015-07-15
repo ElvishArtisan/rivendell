@@ -2,10 +2,7 @@
 ##
 ## docs/tables/automake.am for Rivendell
 ##
-## (C) Copyright 2002-2006 Fred Gleason <fredg@salemradiolabs.com>
-##
-##      $Id: Makefile.am,v 1.16.8.5.2.1 2014/06/03 18:23:34 cvs Exp $
-##      $Date: 2014/06/03 18:23:34 $
+## (C) Copyright 2002-2015 Fred Gleason <fredg@salemradiolabs.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -28,6 +25,7 @@ EXTRA_DIST = audio_perms.txt\
              cart.txt\
              cartslots.txt\
              clipboard.txt\
+             clocks.txt\
              clock_perms.txt\
              copy_splits.txt\
              cuts.txt\
@@ -69,6 +67,7 @@ EXTRA_DIST = audio_perms.txt\
              services.txt\
              sources.txt\
              stations.txt\
+             svc_clocks.txt\
              svc_rec_format.txt\
              triggers.txt\
              ttys.txt\

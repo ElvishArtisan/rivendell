@@ -1,0 +1,12 @@
+                  SVC_CLOCKS Table Layout for Rivendell
+
+The SVC_CLOCKS tables contains data indicate which clocks are assigned
+to which hours in an RDLogManager grid.
+
+
+FIELD NAME           TYPE              REMARKS
+---------------------------------------------------------------
+ID                   int(11) unsigned  Primary key, auto increment
+SERVICE_NAME         char(10)
+HOUR                 int(11)
+CLOCK_NAME           char(64)          From CLOCKS.NAME

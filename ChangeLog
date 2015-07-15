@@ -14974,3 +14974,11 @@
 2015-07-14 Fred Gleason <fredg@paravelsystems.com>
 	* Made the 'Test Import' dialog resizable in 'rdadmin/test_import.cpp'
 	and 'rdadmin/test_import.h'
+2015-07-15 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'SVC_CLOCKS' table to the database.
+	* Incremented the database version to 248.
+	* Added 'RDClock::svcClockNumber()' method in 'lib/rdclock.h'.
+	* Added 'RDClock::svcClockDayOfWeek()' method in 'lib/rdclock.h'.
+	* Added 'RDClock::svcClockHour()' method in 'lib/rdclock.h'.
+	* Normalized service clock data from the 'SERVICES' to the 'SVC_CLOCKS'
+	table.
