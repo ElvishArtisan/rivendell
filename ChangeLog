@@ -14982,3 +14982,6 @@
 	* Added 'RDClock::svcClockHour()' method in 'lib/rdclock.h'.
 	* Normalized service clock data from the 'SERVICES' to the 'SVC_CLOCKS'
 	table.
+2015-07-20 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'LOG_PARSERS' table to the database.
+	* Incremented the database version to 249.

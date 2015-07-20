@@ -507,6 +507,7 @@ void ImportFields::setFields(RDSvc *svc,RDSvc::ImportSource type)
   event_id_length_spin->setValue(svc->importLength(type,RDSvc::ExtEventId));
   annctype_offset_spin->setValue(svc->importOffset(type,RDSvc::ExtAnncType));
   annctype_length_spin->setValue(svc->importLength(type,RDSvc::ExtAnncType));
+
   import_changed=false;
 }
 

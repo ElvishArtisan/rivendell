@@ -1,0 +1,12 @@
+               PARSER_TEMPLATES Table Layout for Rivendell
+
+The PARSER_TEMPLATES table holds templates for the log parser.
+
+
+FIELD NAME           TYPE             REMARKS
+-------------------------------------------------------------------
+ID                   int(11)          Primary key, auto increment
+NAME                 char(64)
+PARAMETER            char(16)
+OFFSET               int(11)
+LENGTH               int(11)

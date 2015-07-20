@@ -1,0 +1,14 @@
+               LOG_PARSERS Table Layout for Rivendell
+
+The LOG_PARSERS table holds parser configuration for importing logs
+for each service.
+
+
+FIELD NAME           TYPE             REMARKS
+-------------------------------------------------------------------
+ID                   int(10) unsigned Primary key, auto increment
+SERVICE_NAME         char(10)         From SERVICES.NAME
+CLASS                char(3)          'TFC' = Traffic, 'MUS' = Music
+PARAMETER            char(16)
+OFFSET               int(11)
+LENGTH               int(11)

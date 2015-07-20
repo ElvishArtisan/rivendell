@@ -185,7 +185,7 @@ void RDSvc::setChainto(bool state) const
 
 QString RDSvc::importTemplate(ImportSource src) const
 {
-  QString fieldname=SourceString(src)+"IMPORT_TEMPLATE";
+  QString fieldname=SourceString(src)+"_IMPORT_TEMPLATE";
   return RDGetSqlValue("SERVICES","NAME",svc_name,fieldname).
     toString();
 }
@@ -193,7 +193,7 @@ QString RDSvc::importTemplate(ImportSource src) const
 
 void RDSvc::setImportTemplate(ImportSource src,const QString &str) const
 {
-  QString fieldname=SourceString(src)+"IMPORT_TEMPLATE";
+  QString fieldname=SourceString(src)+"_IMPORT_TEMPLATE";
   SetRow(fieldname,str);
 }
 
@@ -213,7 +213,7 @@ void RDSvc::setBreakString(const QString &str)
 
 QString RDSvc::trackString(ImportSource src) const
 {
-  QString fieldname=SourceString(src)+"TRACK_STRING";
+  QString fieldname=SourceString(src)+"_TRACK_STRING";
   return RDGetSqlValue("SERVICES","NAME",svc_name,fieldname).
     toString();
 }
@@ -221,42 +221,42 @@ QString RDSvc::trackString(ImportSource src) const
 
 void RDSvc::setTrackString(ImportSource src,const QString &str)
 {
-  QString fieldname=SourceString(src)+"TRACK_STRING";
+  QString fieldname=SourceString(src)+"_TRACK_STRING";
   SetRow(fieldname,str);
 }
 
 
 QString RDSvc::labelCart(ImportSource src) const
 {
-  QString fieldname=SourceString(src)+"LABEL_CART";
+  QString fieldname=SourceString(src)+"_LABEL_CART";
   return RDGetSqlValue("SERVICES","NAME",svc_name,fieldname).toString();
 }
 
 
 void RDSvc::setLabelCart(ImportSource src,const QString &str)
 {
-  QString fieldname=SourceString(src)+"LABEL_CART";
+  QString fieldname=SourceString(src)+"_LABEL_CART";
   SetRow(fieldname,str);
 }
 
 
 QString RDSvc::trackCart(ImportSource src) const
 {
-  QString fieldname=SourceString(src)+"TRACK_CART";
+  QString fieldname=SourceString(src)+"_TRACK_CART";
   return RDGetSqlValue("SERVICES","NAME",svc_name,fieldname).toString();
 }
 
 
 void RDSvc::setTrackCart(ImportSource src,const QString &str)
 {
-  QString fieldname=SourceString(src)+"TRACK_CART";
+  QString fieldname=SourceString(src)+"_TRACK_CART";
   SetRow(fieldname,str);
 }
 
 
 QString RDSvc::importPath(ImportSource src,ImportOs os) const
 {
-  QString fieldname=SourceString(src)+OsString(os)+"PATH";
+  QString fieldname=SourceString(src)+"_"+OsString(os)+"PATH";
   return RDGetSqlValue("SERVICES","NAME",svc_name,fieldname).
     toString();
 }
@@ -265,14 +265,14 @@ QString RDSvc::importPath(ImportSource src,ImportOs os) const
 void RDSvc::setImportPath(ImportSource src,ImportOs os,const QString &path) 
   const
 {
-  QString fieldname=SourceString(src)+OsString(os)+"PATH";
+  QString fieldname=SourceString(src)+"_"+OsString(os)+"PATH";
   SetRow(fieldname,path);
 }
 
 
 QString RDSvc::preimportCommand(ImportSource src,ImportOs os) const
 {
-  QString fieldname=SourceString(src)+OsString(os)+"PREIMPORT_CMD";
+  QString fieldname=SourceString(src)+"_"+OsString(os)+"PREIMPORT_CMD";
   return RDGetSqlValue("SERVICES","NAME",svc_name,fieldname).
     toString();
 }
@@ -281,37 +281,87 @@ QString RDSvc::preimportCommand(ImportSource src,ImportOs os) const
 void RDSvc::setPreimportCommand(ImportSource src,ImportOs os,
 				const QString &path) const
 {
-  QString fieldname=SourceString(src)+OsString(os)+"PREIMPORT_CMD";
+  QString fieldname=SourceString(src)+"_"+OsString(os)+"PREIMPORT_CMD";
   SetRow(fieldname,path);
 }
 
 
-int RDSvc::importOffset(ImportSource src,ImportField field) const
+int RDSvc::importOffset(ImportSource src,ImportField field,
+			const QString &templ) const
 {
-  QString fieldname=SourceString(src)+FieldString(field)+"OFFSET";
-  return RDGetSqlValue("SERVICES","NAME",svc_name,fieldname).toInt();
+  int ret=0;
+  QString sql="";
+
+  if(templ.isEmpty()) {
+    sql=QString("select OFFSET from LOG_PARSERS where ")+
+      "(SERVICE_NAME=\""+RDEscapeString(svc_name)+"\")&&"+
+      "(CLASS=\""+RDEscapeString(SourceString(src))+"\")&&"+
+      "(PARAMETER=\""+RDEscapeString(FieldString(field))+"\")";
+  }
+  else {
+    sql=QString("select OFFSET from PARSER_TEMPLATES where ")+
+      "(NAME=\""+RDEscapeString(templ)+"\")&&"+
+      "(PARAMETER=\""+RDEscapeString(FieldString(field))+"\")";
+  }
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  if(q->first()) {
+    ret=q->value(0).toInt();
+  }
+  delete q;
+
+  return ret;
 }
 
 
 void RDSvc::setImportOffset(ImportSource src,ImportField field,int offset) 
   const
 {
-  QString fieldname=SourceString(src)+FieldString(field)+"OFFSET";
-  SetRow(fieldname,offset);
+  QString sql=QString("update LOG_PARSERS set ")+
+    QString().sprintf("OFFSET=%d where ",offset)+
+    "(SERVICE_NAME=\""+RDEscapeString(svc_name)+"\")&&"+
+    "(CLASS=\""+RDEscapeString(SourceString(src))+"\")&&"+
+    "(PARAMETER=\""+RDEscapeString(FieldString(field))+"\")";
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  delete q;
 }
 
 
-int RDSvc::importLength(ImportSource src,ImportField field) const
+int RDSvc::importLength(ImportSource src,ImportField field,
+			const QString &templ) const
 {
-  QString fieldname=SourceString(src)+FieldString(field)+"LENGTH";
-  return RDGetSqlValue("SERVICES","NAME",svc_name,fieldname).toInt();
+  int ret=0;
+  QString sql="";
+
+  if(templ.isEmpty()) {
+    sql=QString("select LENGTH from LOG_PARSERS where ")+
+      "(SERVICE_NAME=\""+RDEscapeString(svc_name)+"\")&&"+
+      "(CLASS=\""+RDEscapeString(SourceString(src))+"\")&&"+
+      "(PARAMETER=\""+RDEscapeString(FieldString(field))+"\")";
+  }
+  else {
+    sql=QString("select LENGTH from PARSER_TEMPLATES where ")+
+      "(NAME=\""+RDEscapeString(templ)+"\")&&"+
+      "(PARAMETER=\""+RDEscapeString(FieldString(field))+"\")";
+  }
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  if(q->first()) {
+    ret=q->value(0).toInt();
+  }
+  delete q;
+
+  return ret;
 }
 
 
 void RDSvc::setImportLength(ImportSource src,ImportField field,int len) const
 {
-  QString fieldname=SourceString(src)+FieldString(field)+"LENGTH";
-  SetRow(fieldname,len);
+  QString sql=QString("update LOG_PARSERS set ")+
+    QString().sprintf("LENGTH=%d where ",len)+
+    "(SERVICE_NAME=\""+RDEscapeString(svc_name)+"\")&&"+
+    "(CLASS=\""+RDEscapeString(SourceString(src))+"\")&&"+
+    "(PARAMETER=\""+RDEscapeString(FieldString(field))+"\")";
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  delete q;
 }
 
 
@@ -431,6 +481,7 @@ bool RDSvc::import(ImportSource src,const QDate &date,const QString &break_str,
     system(RDDateDecode(preimport_cmd,date));
   }
 
+  /*
   QString parser_table;
   QString parser_name;
   if(importTemplate(src).isEmpty()) {
@@ -443,82 +494,41 @@ bool RDSvc::import(ImportSource src,const QDate &date,const QString &break_str,
     parser_table="IMPORT_TEMPLATES";
     parser_name=importTemplate(src);
   }
-  sql=QString().sprintf("select %sCART_OFFSET,%sCART_LENGTH,\
-                         %sDATA_OFFSET,%sDATA_LENGTH,		\
-                         %sEVENT_ID_OFFSET,%sEVENT_ID_LENGTH,	\
-                         %sANNC_TYPE_OFFSET,%sANNC_TYPE_LENGTH,	\
-                         %sTITLE_OFFSET,%sTITLE_LENGTH,\
-                         %sHOURS_OFFSET,%sHOURS_LENGTH,\
-                         %sMINUTES_OFFSET,%sMINUTES_LENGTH,\
-                         %sSECONDS_OFFSET,%sSECONDS_LENGTH,\
-                         %sLEN_HOURS_OFFSET,%sLEN_HOURS_LENGTH,\
-                         %sLEN_MINUTES_OFFSET,%sLEN_MINUTES_LENGTH,\
-                         %sLEN_SECONDS_OFFSET,%sLEN_SECONDS_LENGTH \
-                         from %s where NAME=\"%s\"",
-			(const char *)src_str,
-			(const char *)src_str,
-			(const char *)src_str,
-			(const char *)src_str,
-			(const char *)src_str,
-			(const char *)src_str,
-			(const char *)src_str,
-			(const char *)src_str,
-			(const char *)src_str,
-			(const char *)src_str,
-			(const char *)src_str,
-			(const char *)src_str,
-			(const char *)src_str,
-			(const char *)src_str,
-			(const char *)src_str,
-			(const char *)src_str,
-			(const char *)src_str,
-			(const char *)src_str,
-			(const char *)src_str,
-			(const char *)src_str,
-			(const char *)src_str,
-			(const char *)src_str,
-			(const char *)parser_table,
-			(const char *)RDEscapeString(parser_name));
-  q=new RDSqlQuery(sql);
-  if(!q->first()) {
-    delete q;
-    return false;
-  }
-  int cart_offset=q->value(0).toInt();
-  int cart_length=q->value(1).toInt();
-  unsigned cart_size=cart_offset+cart_length;
-  int data_offset=q->value(2).toInt();
-  int data_length=q->value(3).toInt();
-  unsigned data_size=data_offset+data_length;
-  int eventid_offset=q->value(4).toInt();
-  int eventid_length=q->value(5).toInt();
-  unsigned eventid_size=eventid_offset+eventid_length;
-  int annctype_offset=q->value(6).toInt();
-  int annctype_length=q->value(7).toInt();
-  unsigned annctype_size=annctype_offset+annctype_length;
-  int title_offset=q->value(8).toInt();
-  int title_length=q->value(9).toInt();
-  unsigned title_size=title_offset+title_length;
-  int hours_offset=q->value(10).toInt();
-  int hours_length=q->value(11).toInt();
-  unsigned hours_size=hours_offset+hours_length;
-  int minutes_offset=q->value(12).toInt();
-  int minutes_length=q->value(13).toInt();
-  unsigned minutes_size=minutes_offset+minutes_length;
-  int seconds_offset=q->value(14).toInt();
-  int seconds_length=q->value(15).toInt();
-  unsigned seconds_size=seconds_offset+seconds_length;
-  int hours_len_offset=q->value(16).toInt();
-  int hours_len_length=q->value(17).toInt();
-  unsigned hours_len_size=hours_len_offset+hours_len_length;
-  int minutes_len_offset=q->value(18).toInt();
-  int minutes_len_length=q->value(19).toInt();
-  unsigned minutes_len_size=minutes_len_offset+minutes_len_length;
-  int seconds_len_offset=q->value(20).toInt();
-  int seconds_len_length=q->value(21).toInt();
-  unsigned seconds_len_size=seconds_len_offset+seconds_len_length;
+  */
 
-  delete q;
+  int cart_offset=importOffset(src,RDSvc::CartNumber,importTemplate(src));
+  int cart_length=importLength(src,RDSvc::CartNumber,importTemplate(src));
+  unsigned cart_size=cart_offset+cart_length;
+  int data_offset=importOffset(src,RDSvc::ExtData,importTemplate(src));
+  int data_length=importLength(src,RDSvc::ExtData,importTemplate(src));
+  unsigned data_size=data_offset+data_length;
+  int eventid_offset=importOffset(src,RDSvc::ExtEventId,importTemplate(src));
+  int eventid_length=importLength(src,RDSvc::ExtEventId,importTemplate(src));
+  unsigned eventid_size=eventid_offset+eventid_length;
+  int annctype_offset=importOffset(src,RDSvc::ExtAnncType,importTemplate(src));
+  int annctype_length=importLength(src,RDSvc::ExtAnncType,importTemplate(src));
+  unsigned annctype_size=annctype_offset+annctype_length;
+  int title_offset=importOffset(src,RDSvc::Title,importTemplate(src));
+  int title_length=importLength(src,RDSvc::Title,importTemplate(src));
+  unsigned title_size=title_offset+title_length;
+  int hours_offset=importOffset(src,RDSvc::StartHours,importTemplate(src));
+  int hours_length=importLength(src,RDSvc::StartHours,importTemplate(src));
+  unsigned hours_size=hours_offset+hours_length;
+  int minutes_offset=importOffset(src,RDSvc::StartMinutes,importTemplate(src));
+  int minutes_length=importLength(src,RDSvc::StartMinutes,importTemplate(src));
+  unsigned minutes_size=minutes_offset+minutes_length;
+  int seconds_offset=importOffset(src,RDSvc::StartSeconds,importTemplate(src));
+  int seconds_length=importLength(src,RDSvc::StartSeconds,importTemplate(src));
+  unsigned seconds_size=seconds_offset+seconds_length;
+  int hours_len_offset=importOffset(src,RDSvc::LengthHours,importTemplate(src));
+  int hours_len_length=importLength(src,RDSvc::LengthHours,importTemplate(src));
+  unsigned hours_len_size=hours_len_offset+hours_len_length;
+  int minutes_len_offset=importOffset(src,RDSvc::LengthMinutes,importTemplate(src));
+  int minutes_len_length=importLength(src,RDSvc::LengthMinutes,importTemplate(src));
+  unsigned minutes_len_size=minutes_len_offset+minutes_len_length;
+  int seconds_len_offset=importOffset(src,RDSvc::LengthSeconds,importTemplate(src));
+  int seconds_len_length=importLength(src,RDSvc::LengthSeconds,importTemplate(src));
+  unsigned seconds_len_size=seconds_len_offset+seconds_len_length;
 
   //
   // Setup Data Source and Destination
@@ -1079,6 +1089,8 @@ void RDSvc::create(const QString exemplar) const
   QString sql;
   RDSqlQuery *q;
   RDSqlQuery *q1;
+  QStringList classes=RDSvc::importerClassList();
+  QStringList parameters=RDSvc::importerParameterList();
 
   if(exemplar.isEmpty()) {  // Create Empty Service
     sql=QString("insert into SERVICES set NAME=\"")+
@@ -1130,30 +1142,25 @@ void RDSvc::create(const QString exemplar) const
       q=new RDSqlQuery(sql);
       delete q;
     }
+
+    //
+    // Create Log Parser Entries
+    //
+    for(unsigned i=0;i<classes.size();i++) {
+      for(unsigned j=0;j<parameters.size();j++) {
+	sql=QString("insert into LOG_PARSERS set ")+
+	  "SERVICE_NAME=\""+RDEscapeString(svc_name)+"\","+
+	  "CLASS=\""+RDEscapeString(classes[i])+"\","+
+	  "PARAMETER=\""+RDEscapeString(parameters[j])+"\"";
+	q=new RDSqlQuery(sql);
+	delete q;
+      }
+    }
   }
   else {    // Base on Existing Service
     sql=QString("select NAME_TEMPLATE,DESCRIPTION_TEMPLATE,")+
-      "CHAIN_LOG,AUTO_REFRESH,"+
-      "ELR_SHELFLIFE,TFC_PATH,TFC_WIN_PATH,"+
-      "TFC_CART_OFFSET,TFC_CART_LENGTH,"+
-      "TFC_START_OFFSET,TFC_START_LENGTH,"+
-      "TFC_LENGTH_OFFSET,TFC_LENGTH_LENGTH,"+
-      "TFC_HOURS_OFFSET,TFC_HOURS_LENGTH,"+
-      "TFC_MINUTES_OFFSET,TFC_MINUTES_LENGTH,"+
-      "TFC_SECONDS_OFFSET,TFC_SECONDS_LENGTH,"+
-      "TFC_DATA_OFFSET,TFC_DATA_LENGTH,"+
-      "TFC_EVENT_ID_OFFSET,TFC_EVENT_ID_LENGTH,"+
-      "TFC_ANNC_TYPE_OFFSET,TFC_ANNC_TYPE_LENGTH,"+
+      "CHAIN_LOG,AUTO_REFRESH,ELR_SHELFLIFE,TFC_PATH,TFC_WIN_PATH,"+
       "MUS_PATH,MUS_WIN_PATH,"+
-      "MUS_CART_OFFSET,MUS_CART_LENGTH,"+
-      "MUS_START_OFFSET,MUS_START_LENGTH,"+
-      "MUS_LENGTH_OFFSET,MUS_LENGTH_LENGTH,"+
-      "MUS_HOURS_OFFSET,MUS_HOURS_LENGTH,"+
-      "MUS_MINUTES_OFFSET,MUS_MINUTES_LENGTH,"+
-      "MUS_SECONDS_OFFSET,MUS_SECONDS_LENGTH,"+
-      "MUS_DATA_OFFSET,MUS_DATA_LENGTH,"+
-      "MUS_EVENT_ID_OFFSET,MUS_EVENT_ID_LENGTH,"+
-      "MUS_ANNC_TYPE_OFFSET,MUS_ANNC_TYPE_LENGTH "+
       "from SERVICES where NAME=\""+RDEscapeString(exemplar)+"\"";
     q=new RDSqlQuery(sql);
     if(q->first()) {
@@ -1165,44 +1172,8 @@ void RDSvc::create(const QString exemplar) const
 	QString().sprintf("ELR_SHELFLIFE=%d,",q->value(4).toInt())+
 	"TFC_PATH=\""+q->value(5).toString()+"\","+
 	"TFC_WIN_PATH=\""+q->value(6).toString()+"\","+
-	QString().sprintf("TFC_CART_OFFSET=%d,",q->value(7).toInt())+
-	QString().sprintf("TFC_CART_LENGTH=%d,",q->value(8).toInt())+
-	QString().sprintf("TFC_START_OFFSET=%d,",q->value(9).toInt())+
-	QString().sprintf("TFC_START_LENGTH=%d,",q->value(10).toInt())+
-	QString().sprintf("TFC_LENGTH_OFFSET=%d,",q->value(11).toInt())+
-	QString().sprintf("TFC_LENGTH_LENGTH=%d,",q->value(12).toInt())+
-	QString().sprintf("TFC_HOURS_OFFSET=%d,",q->value(13).toInt())+
-	QString().sprintf("TFC_HOURS_LENGTH=%d,",q->value(14).toInt())+
-	QString().sprintf("TFC_MINUTES_OFFSET=%d,",q->value(15).toInt())+
-	QString().sprintf("TFC_MINUTES_LENGTH=%d,",q->value(16).toInt())+
-	QString().sprintf("TFC_SECONDS_OFFSET=%d,",q->value(17).toInt())+
-	QString().sprintf("TFC_SECONDS_LENGTH=%d,",q->value(18).toInt())+
-	QString().sprintf("TFC_DATA_OFFSET=%d,",q->value(19).toInt())+
-	QString().sprintf("TFC_DATA_LENGTH=%d,",q->value(20).toInt())+
-	QString().sprintf("TFC_EVENT_ID_OFFSET=%d,",q->value(21).toInt())+
-	QString().sprintf("TFC_EVENT_ID_LENGTH=%d,",q->value(22).toInt())+
-	QString().sprintf("TFC_ANNC_TYPE_OFFSET=%d,",q->value(23).toInt())+
-	QString().sprintf("TFC_ANNC_TYPE_LENGTH=%d,",q->value(24).toInt())+
-	"MUS_PATH=\""+q->value(25).toString()+"\","+
-	"MUS_WIN_PATH=\""+q->value(26).toString()+"\","+
-	QString().sprintf("MUS_CART_OFFSET=%d,",q->value(27).toInt())+
-	QString().sprintf("MUS_CART_LENGTH=%d,",q->value(28).toInt())+
-	QString().sprintf("MUS_START_OFFSET=%d,",q->value(29).toInt())+
-	QString().sprintf("MUS_START_LENGTH=%d,",q->value(30).toInt())+
-	QString().sprintf("MUS_LENGTH_OFFSET=%d,",q->value(31).toInt())+
-	QString().sprintf("MUS_LENGTH_LENGTH=%d,",q->value(32).toInt())+
-	QString().sprintf("MUS_HOURS_OFFSET=%d,",q->value(33).toInt())+
-	QString().sprintf("MUS_HOURS_LENGTH=%d,",q->value(34).toInt())+
-	QString().sprintf("MUS_MINUTES_OFFSET=%d,",q->value(35).toInt())+
-	QString().sprintf("MUS_MINUTES_LENGTH=%d,",q->value(36).toInt())+
-	QString().sprintf("MUS_SECONDS_OFFSET=%d,",q->value(37).toInt())+
-	QString().sprintf("MUS_SECONDS_LENGTH=%d,",q->value(38).toInt())+
-	QString().sprintf("MUS_DATA_OFFSET=%d,",q->value(39).toInt())+
-	QString().sprintf("MUS_DATA_LENGTH=%d,",q->value(40).toInt())+
-	QString().sprintf("MUS_EVENT_ID_OFFSET=%d,",q->value(41).toInt())+
-	QString().sprintf("MUS_EVENT_ID_LENGTH=%d,",q->value(42).toInt())+
-	QString().sprintf("MUS_ANNC_TYPE_OFFSET=%d,",q->value(43).toInt())+
-	QString().sprintf("MUS_ANNC_TYPE_LENGTH=%d,",q->value(44).toInt())+
+	"MUS_PATH=\""+q->value(7).toString()+"\","+
+	"MUS_WIN_PATH=\""+q->value(8).toString()+"\","+
 	"NAME=\""+RDEscapeString(svc_name)+"\"";
       q=new RDSqlQuery(sql);
       delete q;
@@ -1221,6 +1192,24 @@ void RDSvc::create(const QString exemplar) const
       if(!q->value(1).toString().isEmpty()) {
 	sql+=",CLOCK_NAME=\""+RDEscapeString(q->value(1).toString())+"\"";
       }
+      q1=new RDSqlQuery(sql);
+      delete q1;
+    }
+    delete q;
+
+    //
+    // Copy Log Parser Parameters
+    //
+    sql=QString("select CLASS,PARAMETER,OFFSET,LENGTH from LOG_PARSERS where ")+
+      "SERVICE_NAME=\""+RDEscapeString(exemplar)+"\"";
+    q=new RDSqlQuery(sql);
+    while(q->next()) {
+      sql=QString("insert into LOG_PARSERS set ")+
+	"SERVICE_NAME=\""+RDEscapeString(svc_name)+"\","+
+	"CLASS=\""+RDEscapeString(q->value(0).toString())+"\","+
+	"PARAMETER=\""+RDEscapeString(q->value(1).toString())+"\","+
+	QString().sprintf("OFFSET=%d,",q->value(2).toInt())+
+	QString().sprintf("LENGTH=%d",q->value(3).toInt());
       q1=new RDSqlQuery(sql);
       delete q1;
     }
@@ -1438,6 +1427,39 @@ QString RDSvc::svcTableName(const QString &svc_name)
 }
 
 
+QStringList RDSvc::importerClassList()
+{
+  QStringList ret;
+
+  ret.push_back("MUS");
+  ret.push_back("TFC");
+
+  return ret;
+}
+
+
+QStringList RDSvc::importerParameterList()
+{
+  QStringList ret;
+
+  ret.push_back("CART");
+  ret.push_back("TITLE");
+  ret.push_back("START");
+  ret.push_back("HOURS");
+  ret.push_back("MINUTES");
+  ret.push_back("SECONDS");
+  ret.push_back("LEN_HOURS");
+  ret.push_back("LEN_MINUTES");
+  ret.push_back("LEN_SECONDS");
+  ret.push_back("LENGTH");
+  ret.push_back("DATA");
+  ret.push_back("EVENT_ID");
+  ret.push_back("ANNC_TYPE");
+
+  return ret;
+}
+
+
 QString RDSvc::timeString(int hour,int secs)
 {
   return QString().sprintf("%02d:%02d:%02d",hour,secs/60,secs%60);
@@ -1449,11 +1471,11 @@ QString RDSvc::SourceString(ImportSource src) const
   QString fieldname;
   switch(src) {
       case RDSvc::Traffic:
-	fieldname="TFC_";
+	fieldname="TFC";
 	break;
 
       case RDSvc::Music:
-	fieldname="MUS_";
+	fieldname="MUS";
 	break;
   }
   return fieldname;
@@ -1481,47 +1503,47 @@ QString RDSvc::FieldString(ImportField field) const
   QString fieldname;
   switch(field) {
       case RDSvc::CartNumber:
-	fieldname="CART_";
+	fieldname="CART";
 	break;
 
       case RDSvc::Title:
-	fieldname="TITLE_";
+	fieldname="TITLE";
 	break;
 
       case RDSvc::StartHours:
-	fieldname="HOURS_";
+	fieldname="HOURS";
 	break;
 
       case RDSvc::StartMinutes:
-	fieldname="MINUTES_";
+	fieldname="MINUTES";
 	break;
 
       case RDSvc::StartSeconds:
-	fieldname="SECONDS_";
+	fieldname="SECONDS";
 	break;
 
       case RDSvc::LengthHours:
-	fieldname="LEN_HOURS_";
+	fieldname="LEN_HOURS";
 	break;
 
       case RDSvc::LengthMinutes:
-	fieldname="LEN_MINUTES_";
+	fieldname="LEN_MINUTES";
 	break;
 
       case RDSvc::LengthSeconds:
-	fieldname="LEN_SECONDS_";
+	fieldname="LEN_SECONDS";
 	break;
 
       case RDSvc::ExtData:
-	fieldname="DATA_";
+	fieldname="DATA";
 	break;
 
       case RDSvc::ExtEventId:
-	fieldname="EVENT_ID_";
+	fieldname="EVENT_ID";
 	break;
 
       case RDSvc::ExtAnncType:
-	fieldname="ANNC_TYPE_";
+	fieldname="ANNC_TYPE";
 	break;
   }
   return fieldname;

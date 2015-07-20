@@ -48,10 +48,12 @@ EXTRA_DIST = audio_perms.txt\
              livewire_gpio_slots.txt\
              log_format.txt\
              log_modes.txt\
+             log_parsers.txt\
              logs.txt\
              nownext_plugins.txt\
              panels.txt\
              panel_names.txt\
+             parser_templates.txt\
              rdairplay_channels.txt\
              rd_airplay.txt\
              rd_catch.txt\
