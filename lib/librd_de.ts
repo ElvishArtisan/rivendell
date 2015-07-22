@@ -2184,5 +2184,9 @@ bitte erneut versuchen!</translation>
 </source>
         <translation>Event-Füllfehler</translation>
     </message>
+    <message>
+        <source>[spot break]</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 </TS>

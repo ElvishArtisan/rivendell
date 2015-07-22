@@ -2052,7 +2052,7 @@ QString RDLogLine::transText(RDLogLine::TransType trans)
 	return QObject::tr("STOP");
 
       case RDLogLine::NoTrans:
-	return QObject::tr("UNKNOWN");
+	return QString("");
   }
   return QObject::tr("UNKNOWN");
 }

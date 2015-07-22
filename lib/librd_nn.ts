@@ -2125,5 +2125,9 @@ prøv ein gong til!</translation>
 </source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>[spot break]</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 </TS>

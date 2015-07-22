@@ -588,7 +588,7 @@ EditSvc::~EditSvc()
 
 QSize EditSvc::sizeHint() const
 {
-  return QSize(870,712);
+  return QSize(870,796);
 } 
 
 

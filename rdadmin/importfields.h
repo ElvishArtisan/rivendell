@@ -2,7 +2,7 @@
 //
 // Parser Parameters for RDAdmin.
 //
-// (C) Copyright 2010 Fred Gleason <fredg@paravelsystems.com>
+// (C) Copyright 2010-2015 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -32,7 +32,7 @@ class ImportFields : public QWidget
 {
  Q_OBJECT
  public:
-  ImportFields(QWidget *parent=0,const char *name=0);
+  ImportFields(QWidget *parent=0);
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
   bool changed() const;
@@ -60,6 +60,19 @@ class ImportFields : public QWidget
   QSpinBox *len_minutes_length_spin;
   QSpinBox *len_seconds_offset_spin;
   QSpinBox *len_seconds_length_spin;
+
+  QSpinBox *time_type_offset_spin;
+  QSpinBox *time_type_length_spin;
+
+  QSpinBox *wait_seconds_offset_spin;
+  QSpinBox *wait_seconds_length_spin;
+
+  QSpinBox *wait_minutes_offset_spin;
+  QSpinBox *wait_minutes_length_spin;
+
+  QSpinBox *trans_type_offset_spin;
+  QSpinBox *trans_type_length_spin;
+
   QSpinBox *annctype_offset_spin;
   QSpinBox *annctype_length_spin;
   QSpinBox *data_offset_spin;

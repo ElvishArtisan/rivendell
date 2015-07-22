@@ -587,6 +587,10 @@ void UpdateParserTemplates()
   parameters.push_back("DATA");
   parameters.push_back("EVENT_ID");
   parameters.push_back("ANNC_TYPE");
+  parameters.push_back("TIME_TYPE");
+  parameters.push_back("WAIT_SECONDS");
+  parameters.push_back("WAIT_MINUTES");
+  parameters.push_back("TRANS_TYPE");
 
   for(unsigned i=0;i<parameters.size();i++) {
     sql=QString("select NAME,")+
@@ -8282,6 +8286,35 @@ int UpdateDb(int ver)
     delete q;
     UpdateParserTemplates();
   }
+
+  if(ver<250) {
+    QStringList classes;
+    QStringList parameters;
+
+    classes.push_back("MUS");
+    classes.push_back("TFC");
+    parameters.push_back("TIME_TYPE");
+    parameters.push_back("WAIT_SECONDS");
+    parameters.push_back("WAIT_MINUTES");
+    parameters.push_back("TRANS_TYPE");
+ 
+    sql=QString("select NAME from SERVICES");
+    q=new QSqlQuery(sql);
+    while(q->next()) {
+      for(unsigned i=0;i<classes.size();i++) {
+	for(unsigned j=0;j<parameters.size();j++) {
+	  sql=QString("insert into LOG_PARSERS set ")+
+	    "SERVICE_NAME=\""+RDEscapeString(q->value(0).toString())+"\","+
+	    "CLASS=\""+RDEscapeString(classes[i])+"\","+
+	    "PARAMETER=\""+RDEscapeString(parameters[j])+"\"";
+	  q1=new QSqlQuery(sql);
+	  delete q1;
+	}
+      }
+    }
+    delete q;
+  }
+
 
   // **** End of version updates ****
   

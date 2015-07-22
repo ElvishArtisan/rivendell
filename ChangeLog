@@ -14985,3 +14985,14 @@
 2015-07-20 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'LOG_PARSERS' table to the database.
 	* Incremented the database version to 249.
+2015-07-22 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'TIME_TYPE', 'WAIT_SECONDS', 'WAIT_MINUTES' and 'TRANS_TYPE'
+	to the list of importer parameters in 'lib/rdsvc.cpp'.
+	* Incremented the database version to 250.
+	* Added 'Time Type', 'Time - Wait Minutes', 'Time - Wait Seconds'
+	and 'Transition Type' fields to the 'ImportFields' widget in
+	'rdadmin/importfields.cpp' and 'rdamin/importfields.h'.
+	* Refactored log importer code so as to make embedded spot breaks
+	and voice tracks first-class events.
+	* Added a 'RDLogLine::NoTime' value to the 'RDLogLine::TimeType'
+	enumeration in 'lib/rdlog_line.h'.

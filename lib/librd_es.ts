@@ -2180,5 +2180,9 @@ please try again!</source>
         <translation>Errores al llenar eventos
 </translation>
     </message>
+    <message>
+        <source>[spot break]</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 </TS>
