@@ -2105,6 +2105,10 @@ QString RDLogLine::timeTypeText(RDLogLine::TimeType type)
   case RDLogLine::Hard:
     ret=QObject::tr("Hard");
     break;
+
+  case RDLogLine::NoTime:
+    ret=QObject::tr("Undefined");
+    break;
   }
 
   return ret;

@@ -2,9 +2,7 @@
 //
 // Edit a Rivendell Log Event
 //
-//   (C) Copyright 2002-2004,2008 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: edit_event.cpp,v 1.53.2.4.2.1 2014/06/24 18:27:06 cvs Exp $
+//   (C) Copyright 2002-2004,2008,2015 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -768,32 +766,36 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   
   int grace=0;
   switch(event_event->timeType()) {
-      case RDLogLine::Relative:
-	event_timetype_box->setChecked(false);
-	event_grace_group->setButton(0);
-	timeToggledData(false);
-	break;
+  case RDLogLine::Relative:
+    event_timetype_box->setChecked(false);
+    event_grace_group->setButton(0);
+    timeToggledData(false);
+    break;
 	
-      case RDLogLine::Hard:
-	event_timetype_box->setChecked(true);
-	event_post_box->setChecked(event_event->postPoint());
-	event_transtype_box->setCurrentItem(event_event->firstTransType());
-	switch((grace=event_event->graceTime())) {
-	    case 0:
-	      event_grace_group->setButton(0);
-	      event_grace_edit->setTime(QTime());
-	      break;
+  case RDLogLine::Hard:
+    event_timetype_box->setChecked(true);
+    event_post_box->setChecked(event_event->postPoint());
+    event_transtype_box->setCurrentItem(event_event->firstTransType());
+    switch((grace=event_event->graceTime())) {
+    case 0:
+      event_grace_group->setButton(0);
+      event_grace_edit->setTime(QTime());
+      break;
 	      
-	    case -1:
-	      event_grace_group->setButton(1);
-	      event_grace_edit->setTime(QTime());
-	      break;
+    case -1:
+      event_grace_group->setButton(1);
+      event_grace_edit->setTime(QTime());
+      break;
 	      
-	    default:
-	      event_grace_group->setButton(2);
-	      event_grace_edit->setTime(QTime().addMSecs(grace));
-	      break;
-	}
+    default:
+      event_grace_group->setButton(2);
+      event_grace_edit->setTime(QTime().addMSecs(grace));
+      break;
+    }
+    break;
+
+  case RDLogLine::NoTime:
+    break;
   }
   
   event_autofill_box->setChecked(event_event->useAutofill());
