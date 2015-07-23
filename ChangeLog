@@ -15000,3 +15000,5 @@
 	* Cleaned up warning in 'lib/rdlog_line.cpp'.
 	* Cleaned up warning in 'rdairplay/log_play.cpp'.
 	* Cleaned up warning in 'rdlogmanager/edit_event.cpp'.
+2015-07-23 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed 'make uninstall' target.

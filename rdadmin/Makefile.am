@@ -2,9 +2,7 @@
 ##
 ## Automake.am for rivendell/rdadmin
 ##
-## (C) Copyright 2002-2006 Fred Gleason <fredg@paravelsystems.com>
-##
-##      $Id: Makefile.am,v 1.72.4.6 2013/03/09 00:21:11 cvs Exp $
+## (C) Copyright 2002-2015 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -36,7 +34,7 @@ install-exec-local:
 	mkdir -p $(DESTDIR)$(prefix)/share/rivendell
 	cp rdadmin_*.qm $(DESTDIR)$(prefix)/share/rivendell
 
-uninstall:
+uninstall-local:
 	rm -f $(DESTDIR)$(prefix)/share/rivendell/rdadmin_*.qm
 
 all:	

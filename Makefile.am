@@ -4,9 +4,7 @@
 ##
 ## Use automake to process this into a Makefile.in
 ##
-##   (C) Copyright 2002-2010 Fred Gleason <fredg@paravelsystems.com>
-##
-##      $Id: Makefile.am,v 1.65.6.6 2013/01/14 16:35:58 cvs Exp $
+##   (C) Copyright 2002-2015 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -75,7 +73,7 @@ install-debian:
 	make install
 	rm -f ./building-debian
 
-uninstall-exec:
+uninstall-local:
 	rm -f $(DESTDIR)/etc/init.d/rdrepld
 	rm -f $(DESTDIR)/etc/init.d/rivendell
 	rm -f $(DESTDIR)/etc/sysconfig/rivendell

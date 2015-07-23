@@ -2,9 +2,7 @@
 ##
 ## xdg/automake.am for Rivendell
 ##
-##   (C) Copyright 2002-2005 Fred Gleason <fredg@paravelsystems.com>
-##
-##      $Id: Makefile.am,v 1.11.2.8 2013/12/27 00:04:04 cvs Exp $
+##   (C) Copyright 2002-2015 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -79,7 +77,7 @@ install-virtmenus:
 	mkdir -p $(DESTDIR)/etc/xdg/menus/applications-merged
 	cp rivendellvirt-*.menu $(DESTDIR)/etc/xdg/menus/applications-merged/
 
-uninstall:	
+uninstall-local:	
 	rm -f $(DESTDIR)@prefix@/share/applications/rivendell-*.desktop
 	rm -f $(DESTDIR)@prefix@/share/applications/rivendellvirt-*.desktop
 	rm -f $(DESTDIR)@prefix@/share/desktop-directories/rivendell-*.directory

@@ -4,11 +4,7 @@
 ##
 ## by Fred Gleason <fredg@paravelsystems.com>
 ##
-## Use automake to process this into a Makefile.in
-##
-##   (C) Copyright 2002-2007 Fred Gleason <fredg@paravelsystems.com>
-##
-##      $Id: Makefile.am,v 1.7.8.3 2013/01/01 21:36:30 cvs Exp $
+##   (C) Copyright 2002-2015 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -23,6 +19,7 @@
 ##   License along with this program; if not, write to the Free Software
 ##   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
+## Use automake to process this into a Makefile.in
 
 AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" -DQTDIR=\"@QT_DIR@\" @QT_CXXFLAGS@ -I$(top_srcdir)/lib
 LIBS = @QT_LIBS@ -L$(top_srcdir)/lib
@@ -44,7 +41,7 @@ install-exec-local:
 	mkdir -p $(DESTDIR)$(prefix)/share/rivendell
 	cp rdhpi_*.qm $(DESTDIR)$(prefix)/share/rivendell
 
-uninstall:
+uninstall-local:
 	rm -f $(DESTDIR)$(prefix)/share/rivendell/rdhpi_*.qm
 
 all:	

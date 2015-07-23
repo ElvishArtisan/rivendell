@@ -2,9 +2,7 @@
 ##
 ## Automake.am for rivendell/tests
 ##
-## (C) Copyright 2002-2006 Fred Gleason <fredg@paravelsystems.com>
-##
-##      $Id: Makefile.am,v 1.14.8.4.2.1 2014/05/30 00:26:30 cvs Exp $
+## (C) Copyright 2002-2015 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as

@@ -2,9 +2,7 @@
 ##
 ## Automake.am for rivendell/rdairplay
 ##
-## (C) 2002-2008 Fred Gleason <fredg@paravelsystems.com>
-##
-##      $Id: Makefile.am,v 1.48.8.5 2013/12/28 00:00:33 cvs Exp $
+## (C) 2002-2015 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -35,8 +33,8 @@ install-exec-local:
 	mkdir -p $(DESTDIR)$(prefix)/share/rivendell
 	cp rdairplay_*.qm $(DESTDIR)$(prefix)/share/rivendell
 
-uninstall:	
-	rm -f $(DESTDIR)$(prefix)/share/srlabs/rdairplay_*.qm
+uninstall-local:	
+	rm -f $(DESTDIR)$(prefix)/share/rivendell/rdairplay_*.qm
 
 all:	
 	@QT_BIN@/lupdate rdairplay.pro

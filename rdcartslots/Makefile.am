@@ -2,9 +2,7 @@
 ##
 ## Automake.am for rivendell/rdcartslots
 ##
-## (C) Copyright 2012 Fred Gleason <fredg@paravelsystems.com>
-##
-##      $Id: Makefile.am,v 1.4.2.2 2012/11/16 18:10:40 cvs Exp $
+## (C) Copyright 2012-2015 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -35,7 +33,7 @@ install-exec-local:
 	mkdir -p $(DESTDIR)$(prefix)/share/rivendell
 	cp rdcartslots_*.qm $(DESTDIR)$(prefix)/share/rivendell
 
-uninstall:	
+uninstall-local:	
 	rm -f $(DESTDIR)$(prefix)/share/rivendell/rdcartslots_*.qm
 
 all:	

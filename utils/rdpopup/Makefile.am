@@ -2,9 +2,7 @@
 ##
 ## Automake.am for rivendell/utils/rdpopup
 ##
-##   (C) Copyright 2009 Fred Gleason <fredg@paravelsystems.com>
-##
-##      $Id: Makefile.am,v 1.5.8.1 2012/11/29 01:37:38 cvs Exp $
+##   (C) Copyright 2015 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as

@@ -2,9 +2,7 @@
 ##
 ## Automake.am for rivendell/utils
 ##
-##   (C) Copyright 2002-2005 Fred Gleason <fredg@paravelsystems.com>
-##
-##      $Id: Makefile.am,v 1.54.8.6 2014/01/16 02:44:59 cvs Exp $
+##   (C) Copyright 2002-2015 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License as

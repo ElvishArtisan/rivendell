@@ -2,9 +2,7 @@
 ##
 ## Automake.am for rivendell/web/tests
 ##
-##   (C) Copyright 2010,2013 Fred Gleason <fredg@paravelsystems.com>
-##
-##      $Id: Makefile.am,v 1.6.6.4 2013/10/14 04:23:55 cvs Exp $
+##   (C) Copyright 2010,2013-2015 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -47,7 +45,7 @@ install-exec-am:
 	cp removecut.html $(DESTDIR)@libexecdir@
 	cp trimaudio.html $(DESTDIR)@libexecdir@
 
-uninstall:	
+uninstall-local:	
 	rm -f $(DESTDIR)@libexecdir@/addcart.html
 	rm -f $(DESTDIR)@libexecdir@/addcut.html
 	rm -f $(DESTDIR)@libexecdir@/audioinfo.html

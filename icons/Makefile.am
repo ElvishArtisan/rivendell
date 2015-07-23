@@ -48,7 +48,7 @@ install-exec-am:
 	cp rivendell-32x32.xpm $(DESTDIR)@prefix@/share/X11/fvwm2/pixmaps/rivendell.xpm
 
 
-uninstall:	
+uninstall-local:	
 	rm -f $(DESTDIR)@libexecdir@/greencheckmark.png
 	rm -f $(DESTDIR)@libexecdir@/redx.png
 	rm -f $(DESTDIR)@libexecdir@/greenball.png
