@@ -15002,3 +15002,5 @@
 	* Cleaned up warning in 'rdlogmanager/edit_event.cpp'.
 2015-07-23 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed 'make uninstall' target.
+2015-07-23 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented package version to 2.10.3int03.
