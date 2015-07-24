@@ -15012,3 +15012,7 @@
 	* Fixed a bug in 'utils/rdimport/rdimport.cpp' that failed to take
 	the value of the --normalization-level switch into account when
 	placing segue markers.
+2015-07-24 Fred Gleason <fredg@paravelsystems.com>
+	* Implemented extended mode arguments for the
+	'--create-startdate-offset' and '--create-enddate-offset' switches
+	in 'utils/rdimport/rdimport.cpp' and 'utils/rdimport/rdimport.h'.

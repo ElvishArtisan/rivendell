@@ -83,8 +83,10 @@ MainObject::MainObject(QObject *parent,const char *name)
   import_fix_broken_formats=false;
   import_persistent_dropbox_id=-1;
   import_create_dates=false;
-  import_create_startdate_offset=0;
-  import_create_enddate_offset=0;
+  import_create_startdate_date_offset=0;
+  import_create_startdate_secs_offset=0;
+  import_create_enddate_date_offset=0;
+  import_create_enddate_secs_offset=0;
   import_string_bpm=0;
   import_string_year=0;
   import_clear_datetimes=false;
@@ -289,8 +291,9 @@ MainObject::MainObject(QObject *parent,const char *name)
       }
     }
     if(import_cmd->key(i)=="--create-startdate-offset") {
-      import_create_startdate_offset=import_cmd->value(i).toInt(&ok);
-      if(!ok) {
+      if(!ReadDateOffset(&import_create_startdate_date_offset,
+			  &import_create_startdate_secs_offset,
+			 import_cmd->value(i))) { 
 	fprintf(stderr,"rdimport: invalid create-startddate-offset\n");
 	delete import_cmd;
 	exit(256);
@@ -298,10 +301,9 @@ MainObject::MainObject(QObject *parent,const char *name)
       import_create_dates=true;
     }
     if(import_cmd->key(i)=="--create-enddate-offset") {
-      import_create_enddate_offset=import_cmd->value(i).toInt(&ok);
-      if((!ok) || 
-         (import_create_startdate_offset > import_create_enddate_offset )) {
-	fprintf(stderr,"rdimport: invalid create-enddate-offset\n");
+      if(!ReadDateOffset(&import_create_enddate_date_offset,
+			  &import_create_enddate_secs_offset,
+			 import_cmd->value(i))) {
 	delete import_cmd;
 	exit(256);
       }
@@ -379,6 +381,13 @@ MainObject::MainObject(QObject *parent,const char *name)
       }
       import_cmd->setProcessed(i,true);
     }
+  }
+  if((86400*import_create_startdate_date_offset+
+      import_create_startdate_secs_offset)>
+     (86400*import_create_enddate_date_offset+
+      import_create_enddate_secs_offset)) {
+    fprintf(stderr,"rdimport: --create-startdate-offset cannot be later than --create-enddate-offset\n");
+    exit(255);
   }
   if(import_datetimes[0].isValid()&&import_clear_datetimes) {
     fprintf(stderr,"rdimport: --set-datetimes and --clear-datetimes are mutually exclusive\n");
@@ -666,8 +675,26 @@ MainObject::MainObject(QObject *parent,const char *name)
     }
     if(import_create_dates) {
       printf(" Import Create Dates mode is ON\n");
-      printf(" Import Create Start Date Offset = %d days\n",import_create_startdate_offset);
-      printf(" Import Create End Date Offset = %d days\n",import_create_enddate_offset);
+      if(import_create_startdate_secs_offset==0) {
+	printf(" Import Create Start Date Offset = %d days\n",import_create_startdate_date_offset);
+      }
+      else {
+	printf(" Import Create Start Date Offset = %d:%02d:%02d:%02d\n",
+	       import_create_startdate_date_offset,
+	       import_create_startdate_secs_offset/3600,
+	       (import_create_startdate_secs_offset%3600)/60,
+	       import_create_startdate_secs_offset%60);
+      }
+      if(import_create_enddate_secs_offset==0) {
+	printf(" Import Create End Date Offset = %d days\n",import_create_enddate_date_offset);
+      }
+      else {
+	printf(" Import Create End Date Offset = %d:%02d:%02d:%02d\n",
+	       import_create_enddate_date_offset,
+	       import_create_enddate_secs_offset/3600,
+	       (import_create_enddate_secs_offset%3600)/60,
+	       import_create_enddate_secs_offset%60);
+      }
     }
     else {
       printf(" Import Create Dates mode is OFF\n");
@@ -1170,12 +1197,14 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
     }
     cut->setMetadata(wavedata);
   }
-  if((import_segue_level+import_normalization_level)<REFERENCE_LEVEL) {
-   cut->autoSegue(import_segue_level+import_normalization_level-REFERENCE_LEVEL,
-		  import_segue_length,import_station,import_user,import_config);
-  }
-  else {
-    fprintf(stderr,"rdimport: WARNING: --segue-level and --normalization level out of bounds, segue marker NOT placed\n");
+  if(import_segue_level<0) {
+    if((import_segue_level+import_normalization_level)<REFERENCE_LEVEL) {
+      cut->autoSegue(import_segue_level+import_normalization_level-REFERENCE_LEVEL,
+		     import_segue_length,import_station,import_user,import_config);
+    }
+    else {
+      fprintf(stderr,"rdimport: WARNING: --segue-level and --normalization level out of bounds, segue marker NOT placed\n");
+    }
   }
   if((wavedata->title().length()==0)||
      ((wavedata->title().length()>0)&&(wavedata->title()[0] == '\0'))) {
@@ -1217,14 +1246,26 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
   }
   if(import_create_dates)  {
     dt=cut->startDatetime(&ok);
-    if (!ok){
-      dt=QDateTime(QDate::currentDate(), QTime(0,0,0));
-      cut->setStartDatetime(dt.addDays(import_create_startdate_offset),true);
+    if(!ok){
+      if(import_create_startdate_secs_offset==0) {
+	dt=QDateTime(QDate::currentDate(),QTime(0,0,0));
+	cut->setStartDatetime(dt.addDays(import_create_startdate_date_offset),true);
+      }
+      else {
+	dt=QDateTime(QDate::currentDate(),QTime::currentTime());
+	cut->setStartDatetime(dt.addSecs(86400*import_create_startdate_date_offset+import_create_startdate_secs_offset),true);
+      }
     }
     dt=cut->endDatetime(&ok);
-    if(!ok) {
-      dt=QDateTime(QDate::currentDate(), QTime(23,59,59));
-      cut->setEndDatetime(dt.addDays(import_create_enddate_offset),true);
+    if(!ok){
+      if(import_create_enddate_secs_offset==0) {
+	dt=QDateTime(QDate::currentDate(), QTime(23,59,59));
+	cut->setEndDatetime(dt.addDays(import_create_enddate_date_offset),true);
+      }
+      else {
+	dt=QDateTime(QDate::currentDate(),QTime::currentTime());
+	cut->setEndDatetime(dt.addSecs(86400*import_create_enddate_date_offset+import_create_enddate_secs_offset),true);
+      }
     }
   }
   cut->setOriginName(import_station->name());
@@ -1897,6 +1938,36 @@ bool MainObject::SchedulerCodeExists(const QString &code) const
   q=new RDSqlQuery(sql);
   ret=q->first();
   delete q;
+
+  return ret;
+}
+
+
+bool MainObject::ReadDateOffset(int *date_offset,int *secs_offset,
+				const QString &arg) const
+{
+  QStringList f0;
+  bool ret=false;
+
+  f0=f0.split(":",arg);
+  switch(f0.size()) {
+  case 1:
+    *date_offset=f0[0].toInt(&ret);
+    break;
+
+  case 4:
+    *date_offset=f0[0].toInt(&ret);
+    if(ret) {
+      *secs_offset=3600*f0[1].toInt(&ret);
+      if(ret) {
+	*secs_offset+=60*f0[2].toInt(&ret);
+	if(ret) {
+	  *secs_offset+=f0[3].toInt(&ret);
+	}
+      }
+    }
+    break;
+  }
 
   return ret;
 }

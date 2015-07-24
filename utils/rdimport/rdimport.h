@@ -2,9 +2,7 @@
 //
 // A Batch Importer for Rivendell.
 //
-//   (C) Copyright 2002-2009 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdimport.h,v 1.17.6.3.2.3 2014/07/15 00:45:17 cvs Exp $
+//   (C) Copyright 2002-2015 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -81,6 +79,8 @@ class MainObject : public QObject
   QDateTime GetCachedTimestamp(const QString &filename);
   void WriteTimestampCache(const QString &filename,const QDateTime &dt);
   bool SchedulerCodeExists(const QString &code) const;
+  bool ReadDateOffset(int *date_offset,int *secs_offset,
+		      const QString &arg) const;
   RDConfig *import_config;
   RDCmdSwitch *import_cmd;
   unsigned import_file_key;
@@ -102,8 +102,10 @@ class MainObject : public QObject
   int import_startdate_offset;
   int import_enddate_offset;
   bool import_create_dates;
-  int import_create_startdate_offset;
-  int import_create_enddate_offset;
+  int import_create_startdate_date_offset;
+  int import_create_startdate_secs_offset;
+  int import_create_enddate_date_offset;
+  int import_create_enddate_secs_offset;
   QDateTime import_datetimes[2];
   bool import_clear_datetimes;
   QTime import_dayparts[2];

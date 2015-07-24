@@ -1,4 +1,4 @@
-.TH rdimport 1 "February 2015" Linux "Rivendell Radio Automation System"
+.TH rdimport 1 "July 2015" Linux "Rivendell Radio Automation System"
 .SH NAME
 rdimport \- Audio importation tool for the Rivendell Radio Automation System
 
@@ -44,18 +44,24 @@ the file's import metadata.  Mutually exclusive with the
 \fB--set-daypart-times\fP option.
 
 .TP
-.B --create-enddate-offset=<\fIdays\fP>
+.B --create-enddate-offset=<\fIdays\fP>[:<\fIhours\fP>:<\fIminutes\fP>:<\fIseconds\fP>]
 If the imported file does not reference an end date, create with
 end date offset by <\fIdays\fP> days relative to the current date.
 Cannot be less than the value the value for \fB--create-startdate-offset\fP
-(default = 0).
+(default = 0). If no <\fIhours\fP>, <\fIminutes\fP> or <\fIseconds\fP> values
+are given, the resulting end date will have a time value assigned of 23:59:59
+--i.e. the end of the day, otherwise the time value specified will be added to
+the current time.
 
 .TP
-.B --create-startdate-offset=<\fIdays\fP>
+.B --create-startdate-offset=<\fIdays\fP>[:<\fIhours\fP>:<\fIminutes\fP>:<\fIseconds\fP>]
 If the imported file does not reference a start date, create with 
 startdate offset by <\fIdays\fP> days relative to the current date.
 Cannot be greater than the value for \fB--create-enddate-offset\fP
-(default = 0).
+(default = 0). If no <\fIhours\fP>, <\fIminutes\fP> or <\fIseconds\fP> values
+are given, the resulting start date will have a time value assigned of 00:00:00
+--i.e. the start of the day, otherwise the time value specified will be added to
+the current time.
 
 .TP
 .B --delete-cuts
