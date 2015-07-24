@@ -1266,12 +1266,12 @@ void RDCut::autoTrim(RDCut::AudioEnd end,int level)
     return;
   }
   if((end==RDCut::AudioHead)||(end==RDCut::AudioBoth)) {
-    if((point=wave->startTrim(REFERENCE_LEVEL-level))>-1) {
+    if((point=wave->startTrim(-REFERENCE_LEVEL-level))>-1) {
       start_point=(int)(1000.0*(double)point/(double)wave->getSamplesPerSec());
     }
   }
   if((end==RDCut::AudioTail)||(end==RDCut::AudioBoth)) {
-    if((point=wave->endTrim(+REFERENCE_LEVEL-level))>-1) {
+    if((point=wave->endTrim(-REFERENCE_LEVEL-level))>-1) {
       end_point=(int)(1000.0*(double)point/(double)wave->getSamplesPerSec());
     }
     else {

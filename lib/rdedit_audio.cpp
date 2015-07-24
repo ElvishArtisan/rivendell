@@ -625,7 +625,7 @@ RDEditAudio::RDEditAudio(RDCart *cart,QString cut_name,RDCae *cae,RDUser *user,
   edit_trim_box->setSuffix(tr(" dB"));
   edit_trim_box->setRange(-99,0);
   edit_trim_box->
-    setValue((trim_level+REFERENCE_LEVEL)/100);
+    setValue((trim_level-REFERENCE_LEVEL)/100);
   QLabel *label=new QLabel(tr("Threshold"),this);
   label->setGeometry(238,513,70,15);
   label->setAlignment(AlignHCenter);
@@ -2779,7 +2779,7 @@ void RDEditAudio::DrawWave(int xsize,int ysize,int chan,QString label,
 
   int vert=ysize/2;
   double size_y=pow(10,(-((double)edit_gain)/20.0));
-  ref_line=int(size_y*ysize*pow(10.0,-(double)REFERENCE_LEVEL/2000.0-
+  ref_line=int(size_y*ysize*pow(10.0,(double)REFERENCE_LEVEL/2000.0-
 			      (double)edit_gain_control->value()/2000.0)/2.0);
 
   //

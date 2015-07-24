@@ -290,7 +290,7 @@ class RDWaveFile
   /**
    * Find the first instance of energy at or above the specified level.
    * @param level The level, in dbFS * 100.
-   * Returns: The location in samples from file start, or -1 to indicate
+   * Returns: The location in frames from file start, or -1 to indicate
    * failure.
    **/
    int startTrim(int level);
@@ -298,7 +298,7 @@ class RDWaveFile
   /**
    * Find the last instance of energy at or above the specified level.
    * @param level The level, in dbFS * 100.
-   * Returns: The location in samples from file start, or -1 to indicate
+   * Returns: The location in frames from file start, or -1 to indicate
    * failure.
    **/
    int endTrim(int level);

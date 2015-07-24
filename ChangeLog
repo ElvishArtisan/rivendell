@@ -15004,3 +15004,11 @@
 	* Fixed 'make uninstall' target.
 2015-07-23 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented package version to 2.10.3int03.
+2015-07-24 Fred Gleason <fredg@paravelsystems.com>
+	* Added an audio trim test harness in 'tests/audio_trim_test/'.
+	* Added language in 'docs/web_api.odt' to clarify the TRIM_LEVEL
+	variable in the 'TrimAudio' method.
+	* Changed the sign of the REFERENCE_LEVEL define in 'rd.h' to negative.
+	* Fixed a bug in 'utils/rdimport/rdimport.cpp' that failed to take
+	the value of the --normalization-level switch into account when
+	placing segue markers.

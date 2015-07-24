@@ -2,7 +2,7 @@
 //
 // A Batch Importer for Rivendell.
 //
-//   (C) Copyright 2002-2014 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2015 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -530,7 +530,7 @@ MainObject::MainObject(QObject *parent,const char *name)
     if(import_cmd->key(i)=="--segue-level") {
       n=import_cmd->value(i).toInt(&ok);
       if(ok&&(n<=0)) {
-	import_segue_level=n;
+	import_segue_level=100*n;
       }
       else {
 	fprintf(stderr,"rdimport: invalid segue level\n");
@@ -1170,8 +1170,13 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
     }
     cut->setMetadata(wavedata);
   }
-  cut->autoSegue(import_segue_level,import_segue_length,import_station,
-		 import_user,import_config);
+  if((import_segue_level+import_normalization_level)<REFERENCE_LEVEL) {
+   cut->autoSegue(import_segue_level+import_normalization_level-REFERENCE_LEVEL,
+		  import_segue_length,import_station,import_user,import_config);
+  }
+  else {
+    fprintf(stderr,"rdimport: WARNING: --segue-level and --normalization level out of bounds, segue marker NOT placed\n");
+  }
   if((wavedata->title().length()==0)||
      ((wavedata->title().length()>0)&&(wavedata->title()[0] == '\0'))) {
     QString title=effective_group->generateTitle(filename);

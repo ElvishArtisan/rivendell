@@ -2,9 +2,7 @@
 //
 //   A class for handling Microsoft WAV files.
 //
-//   (C) Copyright 2002-2008 Fred Gleason <fredg@paravelsystems.com>
-//
-//    $Id: rdwavefile.cpp,v 1.24.6.5.2.3 2014/07/15 20:02:23 cvs Exp $
+//   (C) Copyright 2002-2015 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -1181,7 +1179,7 @@ int RDWaveFile::readEnergy(unsigned short buf[],int count)
 
 int RDWaveFile::startTrim(int level)
 {
-  double ratio=pow(10,-(double)level/2000.0)*32768.0;
+  double ratio=pow(10,(double)level/2000.0)*32768.0;
   GetEnergy();
   for(unsigned i=0;i<energy_data.size();i++) {
     if((double)energy_data[i]>=ratio) {
@@ -1194,7 +1192,7 @@ int RDWaveFile::startTrim(int level)
 
 int RDWaveFile::endTrim(int level)
 {
-  double ratio=pow(10,-(double)level/2000.0)*32768.0;
+  double ratio=pow(10,(double)level/2000.0)*32768.0;
   GetEnergy();
   for(int i=energy_data.size()-1;i>=0;i--) {
     if((double)energy_data[i]>=ratio) {

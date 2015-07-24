@@ -4,8 +4,6 @@
 //
 //   (C) Copyright 2010 Fred Gleason <fredg@paravelsystems.com>
 //
-//      $Id: trimaudio.cpp,v 1.4 2012/02/13 23:01:50 cvs Exp $
-//
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
 //   published by the Free Software Foundation.
@@ -83,12 +81,12 @@ void Xport::TrimAudio()
   printf("  <cartNumber>%u</cartNumber>\n",cartnum);
   printf("  <cutNumber>%d</cutNumber>\n",cutnum);
   printf("  <trimLevel>%d</trimLevel>\n",trim_level);
-  point=wave->startTrim(REFERENCE_LEVEL-trim_level);
+  point=wave->startTrim(trim_level+REFERENCE_LEVEL);
   if(point>=0) {
     point=(double)point*1000.0/(double)wave->getSamplesPerSec();
   }
   printf("  <startTrimPoint>%d</startTrimPoint>\n",point);
-  point=wave->endTrim(REFERENCE_LEVEL-trim_level);
+  point=wave->endTrim(trim_level+REFERENCE_LEVEL);
   if(point>=0) {
     point=(double)point*1000.0/(double)wave->getSamplesPerSec();
   }
