@@ -558,7 +558,9 @@ bool RDLogEvent::blockTimescaleLimits(QTime *nominal,QTime *start,QTime *end,
   // Calculate Ratio Limit
   //
   for(int i=from_line;i<=to_line;i++) {
-    if((logline=logLine(i))!=NULL) {
+    if(((logline=logLine(i))!=NULL)&&
+       (logline->type()==RDLogLine::Cart)&&
+       (logline->cartType()==RDCart::Audio)) {
       if(logline->timescaleLimit()<limit) {
 	limit=logline->timescaleLimit();
       }
