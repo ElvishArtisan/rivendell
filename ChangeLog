@@ -15028,3 +15028,7 @@
 	* Fixed a bug in 'lib/rdlog_event.cpp' that caused the Post Point
 	widget to show incorrect limits with log blocks containing
 	Marker events.
+2015-07-27 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'rdairplay/rdairplay.cpp' where the Pie Widget
+	would intermittently count to event end even when configured to
+	count to event transition.
