@@ -15020,3 +15020,7 @@
 	* Fixed a bug in 'lib/rdlog_event.cpp' that caused calculation of
 	block timescaling limits to be incorrect for blocks containing
 	meta-events.
+2015-07-27 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'lib/rdlog_event.cpp' to caused calculation of
+	block timescaling ratios to be incorrect for logs containing
+	multiple timescaling blocks.
