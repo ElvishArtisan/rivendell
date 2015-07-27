@@ -15016,3 +15016,7 @@
 	* Implemented extended mode arguments for the
 	'--create-startdate-offset' and '--create-enddate-offset' switches
 	in 'utils/rdimport/rdimport.cpp' and 'utils/rdimport/rdimport.h'.
+2015-07-27 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'lib/rdlog_event.cpp' that caused calculation of
+	block timescaling limits to be incorrect for blocks containing
+	meta-events.

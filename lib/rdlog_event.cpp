@@ -514,7 +514,9 @@ double RDLogEvent::blockTimescaleRatio(int *err_msecs,int from_line,
   // Check against limits
   //
   for(int i=from_line;i<=to_line;i++) {
-    if((logline=logLine(i))!=NULL) {
+    if(((logline=logLine(i))!=NULL)&&
+       (logline->type()==RDLogLine::Cart)&&
+       (logline->cartType()==RDCart::Audio)) {
       if(ret<(1.0-logLine(i)->timescaleLimit())) {
 	ret=1.0-logLine(i)->timescaleLimit();
       }
