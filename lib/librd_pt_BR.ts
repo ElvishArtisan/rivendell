@@ -1169,32 +1169,32 @@ Marcador</translation>
     </message>
     <message>
         <source>&lt;none&gt;</source>
-        <translation>&lt;nenhum&gt;</translation>
+        <translation type="unfinished">&lt;nenhum&gt;</translation>
     </message>
     <message>
         <source>Cut</source>
-        <translation>Conteúdo</translation>
+        <translation type="unfinished">Conteúdo</translation>
     </message>
     <message>
         <source>Talk</source>
-        <translation>Fim Locutor</translation>
+        <translation type="unfinished">Fim Locutor</translation>
     </message>
     <message>
         <source>Segue</source>
-        <translation>Sobre</translation>
+        <translation type="unfinished">Sobre</translation>
     </message>
     <message>
         <source>Hook</source>
-        <translation>Trecho
+        <translation type="unfinished">Trecho
 </translation>
     </message>
     <message>
         <source>Fade Up</source>
-        <translation>Fade Up</translation>
+        <translation type="unfinished">Fade Up</translation>
     </message>
     <message>
         <source>Fade Down</source>
-        <translation>Fade Down</translation>
+        <translation type="unfinished">Fade Down</translation>
     </message>
     <message>
         <source>L</source>
@@ -1229,6 +1229,16 @@ Are you sure you want to save?</source>
     <message>
         <source>More than half of the audio will be faded with these marker settings.
 Are you sure you want to save?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Talk
+End</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Fade
+Down</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

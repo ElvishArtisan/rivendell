@@ -1169,31 +1169,31 @@ markør</translation>
     </message>
     <message>
         <source>&lt;none&gt;</source>
-        <translation>&lt;ingen&gt;</translation>
+        <translation type="unfinished">&lt;ingen&gt;</translation>
     </message>
     <message>
         <source>Cut</source>
-        <translation>Klypp</translation>
+        <translation type="unfinished">Klypp</translation>
     </message>
     <message>
         <source>Talk</source>
-        <translation>Tale</translation>
+        <translation type="unfinished">Tale</translation>
     </message>
     <message>
         <source>Segue</source>
-        <translation>Overgang</translation>
+        <translation type="unfinished">Overgang</translation>
     </message>
     <message>
         <source>Hook</source>
-        <translation>Knagg</translation>
+        <translation type="unfinished">Knagg</translation>
     </message>
     <message>
         <source>Fade Up</source>
-        <translation>Ton inn</translation>
+        <translation type="unfinished">Ton inn</translation>
     </message>
     <message>
         <source>Fade Down</source>
-        <translation>Ton ut</translation>
+        <translation type="unfinished">Ton ut</translation>
     </message>
     <message>
         <source>L</source>
@@ -1228,6 +1228,16 @@ Are you sure you want to save?</source>
     <message>
         <source>More than half of the audio will be faded with these marker settings.
 Are you sure you want to save?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Talk
+End</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Fade
+Down</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

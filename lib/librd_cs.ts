@@ -1173,31 +1173,31 @@ značku</translation>
     </message>
     <message>
         <source>&lt;none&gt;</source>
-        <translation>&lt;none&gt;</translation>
+        <translation type="unfinished">&lt;none&gt;</translation>
     </message>
     <message>
         <source>Cut</source>
-        <translation>Záběr</translation>
+        <translation type="unfinished">Záběr</translation>
     </message>
     <message>
         <source>Talk</source>
-        <translation>Hovor</translation>
+        <translation type="unfinished">Hovor</translation>
     </message>
     <message>
         <source>Segue</source>
-        <translation>Přechod</translation>
+        <translation type="unfinished">Přechod</translation>
     </message>
     <message>
         <source>Hook</source>
-        <translation>Chytlavá melodie</translation>
+        <translation type="unfinished">Chytlavá melodie</translation>
     </message>
     <message>
         <source>Fade Up</source>
-        <translation>Zesílit</translation>
+        <translation type="unfinished">Zesílit</translation>
     </message>
     <message>
         <source>Fade Down</source>
-        <translation>Zeslabit</translation>
+        <translation type="unfinished">Zeslabit</translation>
     </message>
     <message>
         <source>L</source>
@@ -1236,6 +1236,16 @@ Opravdu chcete uložit?</translation>
 Are you sure you want to save?</source>
         <translation>Více než polovina zvukového záznamu bude s těmito nastaveními pro značky vystřižena.
 Opravdu chcete uložit?</translation>
+    </message>
+    <message>
+        <source>Talk
+End</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Fade
+Down</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

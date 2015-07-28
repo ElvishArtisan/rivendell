@@ -1167,31 +1167,31 @@ entfernen</translation>
     </message>
     <message>
         <source>&lt;none&gt;</source>
-        <translation>&lt;nichts&gt;</translation>
+        <translation type="unfinished">&lt;nichts&gt;</translation>
     </message>
     <message>
         <source>Cut</source>
-        <translation>Cut</translation>
+        <translation type="unfinished">Cut</translation>
     </message>
     <message>
         <source>Talk</source>
-        <translation>Mod</translation>
+        <translation type="unfinished">Mod</translation>
     </message>
     <message>
         <source>Segue</source>
-        <translation>Segue</translation>
+        <translation type="unfinished">Segue</translation>
     </message>
     <message>
         <source>Hook</source>
-        <translation>Hook</translation>
+        <translation type="unfinished">Hook</translation>
     </message>
     <message>
         <source>Fade Up</source>
-        <translation>Einfaden</translation>
+        <translation type="unfinished">Einfaden</translation>
     </message>
     <message>
         <source>Fade Down</source>
-        <translation>Ausfaden</translation>
+        <translation type="unfinished">Ausfaden</translation>
     </message>
     <message>
         <source>L</source>
@@ -1226,6 +1226,16 @@ Are you sure you want to save?</source>
     <message>
         <source>More than half of the audio will be faded with these marker settings.
 Are you sure you want to save?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Talk
+End</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Fade
+Down</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
