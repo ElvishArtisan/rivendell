@@ -484,7 +484,8 @@ bool RDSvc::import(ImportSource src,const QDate &date,const QString &break_str,
   // Now we're ready to Do The Business
   //
   while(fgets(buf,RD_MAX_IMPORT_LINE_LENGTH,infile)!=NULL) {
-    GetImportLine(buf,src,date,break_str,track_str,dest_table,&hour,&min,&sec);
+    GetImportLine(buf,src,date,break_str,track_str,label_cart,
+		  dest_table,&hour,&min,&sec);
   }
 
   //
@@ -791,11 +792,12 @@ bool RDSvc::linkLog(RDSvc::ImportSource src,const QDate &date,
   emit generationProgress(24);
   delete src_event;
   delete dest_event;
-  //  printf("Import Table: %s\n",(const char *)import_name);
+  printf("Import Table: %s\n",(const char *)import_name);
+  /*
   sql=QString().sprintf("drop table `%s`",(const char *)import_name);
   q=new RDSqlQuery(sql);
   delete q;
-
+  */
   return true;
 }
 
@@ -1265,7 +1267,8 @@ QString RDSvc::timeString(int hour,int secs)
 
 void RDSvc::GetImportLine(const QString &line,ImportSource src,
 			  const QDate &date,const QString &break_str,
-			  const QString &track_str,const QString &dest_table,
+			  const QString &track_str,const QString &label_cart,
+			  const QString &dest_table,
 			  int *prev_hour,int *prev_min,int *prev_sec) const
 {
   QString sql;
@@ -1276,7 +1279,8 @@ void RDSvc::GetImportLine(const QString &line,ImportSource src,
   //
   // Required Fields
   //
-  unsigned cartnum=GetImportField(line,src,RDSvc::CartNumber).toUInt(&ok);
+  QString cartname=GetImportField(line,src,RDSvc::CartNumber);
+  unsigned cartnum=cartname.toUInt(&ok);
   int hours=GetImportField(line,src,RDSvc::StartHours).toInt(&ok);
   if(!ok) {
     start_time_ok=false;
@@ -1360,6 +1364,28 @@ void RDSvc::GetImportLine(const QString &line,ImportSource src,
 
   }
   else {
+    if((!label_cart.isEmpty())&&(cartname==label_cart)) {
+      // Note Cart Entry
+      sql=QString("insert into `")+dest_table+"` set "+
+	QString().sprintf("TYPE=%d,",RDSvc::Label)+
+	QString().sprintf("START_HOUR=%d,",*prev_hour)+
+	QString().sprintf("START_SECS=%d,",60*(*prev_min)+(*prev_sec))+
+	"TITLE=\""+RDEscapeString(GetImportField(line,src,RDSvc::Title))+"\","+
+	QString().sprintf("LENGTH=%d,",1000*len)+
+	QString().sprintf("TRANS_TYPE=%d,",trans_type)+
+	QString().sprintf("TIME_TYPE=%d,",time_type)+
+	QString().sprintf("GRACE_TIME=%d,",grace_time)+
+	"EXT_DATA=\""+
+	RDEscapeString(GetImportField(line,src,RDSvc::ExtData))+"\","+
+	"EXT_EVENT_ID=\""+
+	RDEscapeString(GetImportField(line,src,RDSvc::ExtEventId))+"\","+
+	"EXT_ANNC_TYPE=\""+
+	RDEscapeString(GetImportField(line,src,RDSvc::ExtAnncType))+"\","+
+	"EXT_CART_NAME=\""+
+	RDEscapeString(GetImportField(line,src,RDSvc::CartNumber))+"\"";
+      q=new RDSqlQuery(sql);
+      delete q;
+    }
     if((!break_str.isEmpty())&&line.stripWhiteSpace().contains(break_str)) {
       // Break Event
       sql=QString("insert into `")+dest_table+"` set "+

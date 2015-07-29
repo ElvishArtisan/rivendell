@@ -37,7 +37,7 @@ class RDSvc : public QObject
 		    LengthHours=10,LengthMinutes=11,LengthSeconds=12,
 		    TimeType=13,TimeWaitMinutes=14,TimeWaitSeconds=15,
 		    TransitionType=16};
-  enum ImportType {Cart=0,Break=1,Track=2};
+  enum ImportType {Cart=0,Break=1,Track=2,Label=3};
   RDSvc(QString svcname,QObject *parent=0,const char *name=0);
   QString name() const;
   bool exists() const;
@@ -106,7 +106,7 @@ class RDSvc : public QObject
  private:
   void GetImportLine(const QString &line,ImportSource src,const QDate &date,
 		     const QString &break_str,const QString &track_str,
-		     const QString &dest_table,
+		     const QString &label_cart,const QString &dest_table,
 		     int *prev_hour,int *prev_min,int *prev_sec) const;
   QString GetImportField(const QString &line,ImportSource src,
 			 ImportField fld) const;

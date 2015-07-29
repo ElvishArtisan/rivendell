@@ -958,6 +958,7 @@ bool RDEventLine::linkLog(RDLogEvent *e,int next_id,const QString &svcname,
     QString().sprintf("(START_SECS>=%d)&&",start_start_secs/1000)+
     QString().sprintf("(START_SECS<=%d)&&",end_start_secs/1000)+
     "(EVENT_USED=\"N\") order by ID";
+  printf("SQL: %s\n",(const char *)sql);
   q=new RDSqlQuery(sql);
   while(q->next()) {
     if((id=e->nextId())>next_id) {
@@ -969,6 +970,8 @@ bool RDEventLine::linkLog(RDLogEvent *e,int next_id,const QString &svcname,
       e->insert(e->size(),1);
       logline=e->logLine(e->size()-1);
       logline->setId(next_id++);
+      logline->setType(RDLogLine::Cart);
+      logline->setCartNumber(q->value(1).toUInt());
       logline->setSource(event_src);
       logline->setStartTime(RDLogLine::Logged,time);
       if(q->value(10).toInt()==RDLogLine::NoTime) {
@@ -1000,8 +1003,8 @@ bool RDEventLine::linkLog(RDLogEvent *e,int next_id,const QString &svcname,
       logline->setLinkEndSlop(link_logline->linkEndSlop());
       logline->setLinkId(link_logline->linkId());
       logline->setLinkEmbedded(link_logline->linkEmbedded());
+      /*
       if((q->value(6).toString()==label_cart)&&(!label_cart.isEmpty())) {
-	logline->setType(RDLogLine::Marker);
 	logline->setMarkerComment(q->value(8).toString());
 	logline->setCartNumber(0);
       }
@@ -1012,10 +1015,49 @@ bool RDEventLine::linkLog(RDLogEvent *e,int next_id,const QString &svcname,
 	  logline->setCartNumber(0);
 	}
 	else {
-	  logline->setType(RDLogLine::Cart);
-	  logline->setCartNumber(q->value(1).toUInt());
 	}
       }
+      */
+      break;
+
+    case RDSvc::Label:
+      e->insert(e->size(),1);
+      logline=e->logLine(e->size()-1);
+      logline->setId(next_id++);
+      logline->setType(RDLogLine::Marker);
+      logline->setSource(event_src);
+      logline->setStartTime(RDLogLine::Logged,time);
+      logline->setMarkerLabel(q->value(7).toString());
+      logline->setMarkerComment(q->value(8).toString());
+      if(q->value(10).toInt()==RDLogLine::NoTime) {
+	logline->setGraceTime(grace_time);
+	logline->setTimeType(time_type);
+      }
+      else {
+	logline->setGraceTime(q->value(11).toInt());
+	logline->setTimeType((RDLogLine::TimeType)q->value(10).toInt());
+      }
+      if(q->value(9).toInt()==RDLogLine::NoTrans) {
+	logline->setTransType(trans_type);
+      }
+      else {
+	logline->setTransType((RDLogLine::TransType)q->value(9).toInt());
+      }
+      logline->setExtStartTime(QTime().addSecs(3600*start_start_hour+
+					       q->value(2).toInt()));
+      logline->setExtLength(q->value(3).toInt());
+      logline->setExtData(q->value(4).toString());
+      logline->setExtEventId(q->value(5).toString());
+      logline->setExtAnncType(q->value(6).toString());
+      logline->setExtCartName(q->value(7).toString());
+      logline->setEventLength(event_length);
+      logline->setLinkEventName(event_name);
+      logline->setLinkStartTime(link_logline->linkStartTime());
+      logline->setLinkLength(link_logline->linkLength());
+      logline->setLinkStartSlop(link_logline->linkStartSlop());
+      logline->setLinkEndSlop(link_logline->linkEndSlop());
+      logline->setLinkId(link_logline->linkId());
+      logline->setLinkEmbedded(link_logline->linkEmbedded());
       break;
 
     case RDSvc::Break:
@@ -1023,8 +1065,8 @@ bool RDEventLine::linkLog(RDLogEvent *e,int next_id,const QString &svcname,
 	e->insert(e->size(),1);
 	logline=e->logLine(e->size()-1);
 	logline->setId(next_id++);
-	logline->setStartTime(RDLogLine::Logged,time);
 	logline->setType(RDLogLine::TrafficLink);
+	logline->setStartTime(RDLogLine::Logged,time);
 	logline->setSource(event_src);
 	logline->setTransType(trans_type);
 	logline->setEventLength(event_length);
@@ -1042,8 +1084,8 @@ bool RDEventLine::linkLog(RDLogEvent *e,int next_id,const QString &svcname,
       e->insert(e->size(),1);
       logline=e->logLine(e->size()-1);
       logline->setId(next_id++);
-      logline->setStartTime(RDLogLine::Logged,time);
       logline->setType(RDLogLine::Track);
+      logline->setStartTime(RDLogLine::Logged,time);
       logline->setSource(event_src);
       logline->setTransType(RDLogLine::Segue);
       logline->setMarkerComment(q->value(8).toString());
