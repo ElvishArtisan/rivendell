@@ -15042,3 +15042,6 @@
 2015-07-29 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in 'lib/rdevent_line.cpp' that broke Note Cart
 	imports.
+2015-07-29 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'lib/rdsvc.cpp' that caused log import events with
+	a cart number of 999999 to be ignored.
