@@ -959,7 +959,6 @@ bool RDEventLine::linkLog(RDLogEvent *e,int next_id,const QString &svcname,
     QString().sprintf("(START_SECS>=%d)&&",start_start_secs/1000)+
     QString().sprintf("(START_SECS<=%d)&&",end_start_secs/1000)+
     "(EVENT_USED=\"N\") order by ID";
-  printf("SQL: %s\n",(const char *)sql);
   q=new RDSqlQuery(sql);
   while(q->next()) {
     QTime event_time(q->value(2).toInt(),q->value(3).toInt()/60,
@@ -976,7 +975,6 @@ bool RDEventLine::linkLog(RDLogEvent *e,int next_id,const QString &svcname,
       logline->setType(RDLogLine::Cart);
       logline->setCartNumber(q->value(1).toUInt());
       logline->setSource(event_src);
-      logline->setStartTime(RDLogLine::Logged,time);
       if(q->value(11).toInt()==RDLogLine::NoTime) {
 	logline->setGraceTime(grace_time);
 	logline->setTimeType(time_type);
@@ -984,7 +982,9 @@ bool RDEventLine::linkLog(RDLogEvent *e,int next_id,const QString &svcname,
       else {
 	logline->setGraceTime(q->value(12).toInt());
 	logline->setTimeType((RDLogLine::TimeType)q->value(11).toInt());
+	time=event_time;
       }
+      logline->setStartTime(RDLogLine::Logged,time);
       if(q->value(10).toInt()==RDLogLine::NoTrans) {
 	logline->setTransType(trans_type);
       }
@@ -1014,6 +1014,15 @@ bool RDEventLine::linkLog(RDLogEvent *e,int next_id,const QString &svcname,
       logline->setId(next_id++);
       logline->setType(RDLogLine::Marker);
       logline->setSource(event_src);
+      if(q->value(11).toInt()==RDLogLine::NoTime) {
+	logline->setGraceTime(grace_time);
+	logline->setTimeType(time_type);
+      }
+      else {
+	logline->setGraceTime(q->value(12).toInt());
+	logline->setTimeType((RDLogLine::TimeType)q->value(11).toInt());
+	time=event_time;
+      }
       logline->setStartTime(RDLogLine::Logged,time);
       logline->setMarkerLabel(q->value(8).toString());
       logline->setMarkerComment(q->value(9).toString());
@@ -1059,6 +1068,9 @@ bool RDEventLine::linkLog(RDLogEvent *e,int next_id,const QString &svcname,
 	logline->setTransType(trans_type);
 	logline->setEventLength(event_length);
 	logline->setLinkEventName(event_nested_event);
+	//  The "old way", where embedded breaks inherit the parent's start
+	//  time and length.  Do we need to support this with a config
+	//  option?
 	//logline->setLinkStartTime(link_logline->linkStartTime());
 	//logline->setLinkLength(link_logline->linkLength());
 	logline->setLinkStartTime(event_time);
@@ -1077,6 +1089,15 @@ bool RDEventLine::linkLog(RDLogEvent *e,int next_id,const QString &svcname,
       logline=e->logLine(e->size()-1);
       logline->setId(next_id++);
       logline->setType(RDLogLine::Track);
+      if(q->value(11).toInt()==RDLogLine::NoTime) {
+	logline->setGraceTime(grace_time);
+	logline->setTimeType(time_type);
+      }
+      else {
+	logline->setGraceTime(q->value(12).toInt());
+	logline->setTimeType((RDLogLine::TimeType)q->value(11).toInt());
+	time=event_time;
+      }
       logline->setStartTime(RDLogLine::Logged,time);
       logline->setSource(event_src);
       logline->setTransType(RDLogLine::Segue);

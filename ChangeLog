@@ -15050,3 +15050,7 @@
 	spot breaks get start/end times from their source line in the music
 	import, rather than inheriting them from the parent music importer
 	event.
+2015-07-29 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'lib/rdevent_line.cpp that caused events with hard
+	start times in the import file to be assigned the incorrect start
+	time value.
