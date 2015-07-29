@@ -15054,3 +15054,5 @@
 	* Fixed a bug in 'lib/rdevent_line.cpp that caused events with hard
 	start times in the import file to be assigned the incorrect start
 	time value.
+2015-07-29 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.10.3int04.
