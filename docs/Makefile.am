@@ -31,6 +31,7 @@ EXTRA_DIST = ALSA.txt\
              colors\
              copy_split_format.odt\
              datetime_wildcards.txt\
+             DEBUGGING.txt\
              implemented_macros.txt\
              ENCODERS.txt\
              GPIO.txt\

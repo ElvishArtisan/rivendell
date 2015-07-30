@@ -18,11 +18,14 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
+#include <stdlib.h>
+
 #include <qpushbutton.h>
 #include <qlabel.h>
 #include <qpainter.h>
 #include <qmessagebox.h>
 
+#include <debugvars.h>
 #include <rddatedialog.h>
 #include <rdconf.h>
 #include <rddb.h>
@@ -246,13 +249,16 @@ void TestImport::importData()
     }
   }
   delete q;
-  printf("IMPORT TABLE: %s_TEST_IMP\n",(const char *)test_svc->name());
-  /*
-  sql=QString().sprintf("drop table `%s_TEST_IMP`",
-			(const char *)test_svc->name());
-  q=new RDSqlQuery(sql);
-  delete q;
-  */
+  if(getenv(RD_DEBUG_KEEP_IMPORT_TABLE)==NULL) {
+    sql=QString().sprintf("drop table `%s_TEST_IMP`",
+			  (const char *)test_svc->name());
+    q=new RDSqlQuery(sql);
+    delete q;
+  }
+  else {
+    printf("RDAdmin - IMPORT TABLE: %s_TEST_IMP\n",
+	   (const char *)test_svc->name());
+  }
 }
 
 

@@ -15060,3 +15060,15 @@
 	* Fixed a bug in 'rdairplay/log_play.cpp' that threw a segfault
 	when attempting to refresh a log event that didn't exist in the
 	loaded log.
+2015-07-30 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'docs/DEBUGGING.txt'.
+	* Added a 'Rivendell_KeepImportTable' debugging variable in
+	'lib/debugvars.h'.
+	* Implemented the 'Rivendell_KeepImportTable' debugging variable in
+	'rdadmin/test_import.cpp'.
+	* Implemented the 'Rivendell_KeepImportTable' debugging variable in
+	'lib/rdsvc.cpp'.
+	* Added a 'Rivendell_KeepMixdownTable' debugging variable in
+	'lib/debugvars.h'.
+	* Implemented the 'Rivendell_KeepMixdownTable' debugging variable in
+	'lib/rdreport.cpp'.

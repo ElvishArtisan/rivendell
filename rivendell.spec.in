@@ -300,6 +300,7 @@ rm -rf $RPM_BUILD_ROOT
 %doc conf/rd.conf-sample
 %doc conf/my.cnf-master
 %doc conf/my.cnf-standby
+%doc docs/DEBUGGING.txt
 %doc docs/cae.odt 
 %doc docs/catchd.txt 
 %doc docs/colors 
