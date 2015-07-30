@@ -15056,3 +15056,7 @@
 	time value.
 2015-07-29 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 2.10.3int04.
+2015-07-30 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'rdairplay/log_play.cpp' that threw a segfault
+	when attempting to refresh a log event that didn't exist in the
+	loaded log.
