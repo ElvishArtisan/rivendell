@@ -61,6 +61,9 @@ TestImport::TestImport(RDSvc *svc,RDSvc::ImportSource src,
       case RDSvc::Music:
 	setCaption(tr("Test Music Import"));
 	break;
+
+      case RDSvc::NoSource:
+	break;
   }
 
   //

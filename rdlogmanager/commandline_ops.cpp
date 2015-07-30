@@ -2,9 +2,7 @@
 //
 // Command Line Operations for RDLogManager
 //
-//   (C) Copyright 2012 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: commandline_ops.cpp,v 1.1.2.6.2.1 2014/05/20 14:01:50 cvs Exp $
+//   (C) Copyright 2012-2015 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -145,8 +143,8 @@ int RunLogOperation(int argc,char *argv[],const QString &svcname,
     }
     report="";
     log->removeTracks(rdstation_conf,rduser,config);
-    svc->clearLogLinks(RDSvc::Traffic,start_date,logname);
-    svc->clearLogLinks(RDSvc::Music,start_date,logname);
+    svc->clearLogLinks(RDSvc::Traffic,logname);
+    svc->clearLogLinks(RDSvc::Music,logname);
     if(svc->linkLog(RDSvc::Music,start_date,logname,&report)) {
       printf("%s\n",(const char*)report);
     }
@@ -174,7 +172,7 @@ int RunLogOperation(int argc,char *argv[],const QString &svcname,
       return 256;
     }
     report="";
-    svc->clearLogLinks(RDSvc::Traffic,start_date,logname);
+    svc->clearLogLinks(RDSvc::Traffic,logname);
     if(svc->linkLog(RDSvc::Traffic,start_date,logname,&report)) {
       printf("%s\n",(const char*)report);
     }

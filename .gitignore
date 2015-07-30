@@ -72,6 +72,7 @@ tests/sas_torture
 tests/stringcode_test
 tests/test_pam
 tests/timer_test
+tests/unlink_log_test
 tests/upload_test
 utils/rdhpiinfo/rdhpiinfo
 utils/rddgimport/rddgimport

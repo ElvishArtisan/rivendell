@@ -31,7 +31,7 @@ class RDSvc : public QObject
   Q_OBJECT
  public:
   enum ImportOs {Linux=0,Windows=1};
-  enum ImportSource {Traffic=0,Music=1};
+  enum ImportSource {Traffic=0,Music=1,NoSource=255};
   enum ImportField {CartNumber=0,ExtData=3,ExtEventId=4,ExtAnncType=5,
 		    Title=6,StartHours=7,StartMinutes=8,StartSeconds=9,
 		    LengthHours=10,LengthMinutes=11,LengthSeconds=12,
@@ -89,8 +89,7 @@ class RDSvc : public QObject
 		   const QString &nextname,QString *report);
   bool linkLog(RDSvc::ImportSource src,const QDate &date,
 	       const QString &logname,QString *report);
-  void clearLogLinks(RDSvc::ImportSource src,const QDate &date,
-		     const QString &logname);
+  void clearLogLinks(RDSvc::ImportSource src,const QString &logname);
   void create(const QString exemplar) const;
   void remove() const;
   QString xml() const;

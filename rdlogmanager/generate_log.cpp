@@ -2,9 +2,7 @@
 //
 // Generate a Rivendell Log
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: generate_log.cpp,v 1.37.6.2 2014/01/10 21:59:32 cvs Exp $
+//   (C) Copyright 2002-2015 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -444,8 +442,8 @@ void GenerateLog::musicData()
       }
     }
     log->removeTracks(rdstation_conf,rduser,log_config);
-    svc->clearLogLinks(RDSvc::Traffic,gen_date_edit->date(),logname);
-    svc->clearLogLinks(RDSvc::Music,gen_date_edit->date(),logname);
+    svc->clearLogLinks(RDSvc::Traffic,logname);
+    svc->clearLogLinks(RDSvc::Music,logname);
   }
   connect(svc,SIGNAL(generationProgress(int)),
 	  gen_progress_dialog,SLOT(setProgress(int)));
@@ -478,7 +476,7 @@ void GenerateLog::trafficData()
       delete svc;
       return;
     }
-    svc->clearLogLinks(RDSvc::Traffic,gen_date_edit->date(),logname);
+    svc->clearLogLinks(RDSvc::Traffic,logname);
   }
   connect(svc,SIGNAL(generationProgress(int)),
 	  gen_progress_dialog,SLOT(setProgress(int)));
