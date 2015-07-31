@@ -498,10 +498,6 @@ void EditClock::saveAsData()
   }
   delete q;
   edit_clock->setName(clockname);
-  sql=RDCreateClockTableSql(RDClock::tableName(clockname));
-  q=new RDSqlQuery(sql);
-  delete q;
-
 
   Save();
   edit_new_clocks->push_back(clockname);
@@ -609,11 +605,10 @@ void EditClock::Save()
   edit_clock->setShortName(edit_shortname_edit->text());
   edit_clock->setRemarks(edit_remarks_edit->text());
   edit_clock->save();
-  if(edit_clock->getRulesModified())
-     {
-     sched_rules_list->Save(edit_clock->name());
-     edit_clock->setRulesModified(false);
-     }
+  if(edit_clock->getRulesModified()) {
+    sched_rules_list->Save(edit_clock->name());
+    edit_clock->setRulesModified(false);
+  }
   edit_modified=false;
 }
 
@@ -763,15 +758,18 @@ void EditClock::CopyClockPerms(QString old_name,QString new_name)
 
 void EditClock::AbandonClock(QString name)
 {
+  QString sql;
+
   if(name==edit_name) {
     return;
   }
-  QString sql=QString().sprintf("delete from CLOCKS where NAME=\"%s\"",
-				(const char *)name);
+  sql=QString("delete from CLOCKS where ")+
+    "NAME=\""+RDEscapeString(name)+"\"";
   RDSqlQuery *q=new RDSqlQuery(sql);
   delete q;
 
-  sql=QString("drop table `")+RDClock::tableName(name)+"`";
+  sql=QString("delete from CLOCK_METADATA where ")+
+    "NAME=\""+RDEscapeString(name)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
 }

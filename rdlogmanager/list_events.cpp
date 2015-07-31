@@ -2,9 +2,7 @@
 //
 // List a Rivendell Log Event
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: list_events.cpp,v 1.31.8.2 2014/01/10 19:32:54 cvs Exp $
+//   (C) Copyright 2002-2004,2015 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -32,6 +30,7 @@
 #include <rd.h>
 #include <rdevent.h>
 #include <rdcreate_log.h>
+#include <rdescape_string.h>
 
 #include <list_events.h>
 #include <add_event.h>
@@ -331,7 +330,6 @@ void ListEvents::renameData()
   QString sql;
   RDSqlQuery *q;
   RDSqlQuery *q1;
-  QString clock_name_esc;
   QListViewItem *item=edit_events_list->selectedItem();
   if(item==NULL) {
     return;
@@ -351,13 +349,9 @@ void ListEvents::renameData()
   sql="select NAME from CLOCKS";
   q=new RDSqlQuery(sql);
   while(q->next()) {
-    clock_name_esc=q->value(0).toString();
-    clock_name_esc.replace(" ","_");
-    sql=QString().sprintf("update %s_CLK set EVENT_NAME=\"%s\"\
-                           where EVENT_NAME=\"%s\"",
-			  (const char *)clock_name_esc,
-			  (const char *)new_name,
-			  (const char *)item->text(0));
+    sql=QString("update CLOCK_METADATA set ")+
+      "EVENT_NAME=\""+RDEscapeString(new_name)+"\" "+
+      "where EVENT_NAME=\""+RDEscapeString(item->text(0))+"\"";
     q1=new RDSqlQuery(sql);
     delete q1;
   }
@@ -545,16 +539,13 @@ int ListEvents::ActiveEvents(QString event_name,QString *clock_list)
   int n=0;
   QString sql;
   RDSqlQuery *q,*q1;
-  QString clockname;
+  //  QString clockname;
 
   sql="select NAME from CLOCKS";
   q=new RDSqlQuery(sql);
   while(q->next()) {
-    clockname=q->value(0).toString();
-    clockname.replace(" ","_");
-    sql=QString().sprintf("select EVENT_NAME from %s_CLK\
-                           where EVENT_NAME=\"%s\"",(const char *)clockname,
-			  (const char *)event_name);
+    sql=QString("select EVENT_NAME from CLOCK_METADATA ")+
+      "where EVENT_NAME=\""+RDEscapeString(event_name)+"\"";
     q1=new RDSqlQuery(sql);
     if(q1->first()) {
       *clock_list+=
@@ -572,7 +563,6 @@ void ListEvents::DeleteEvent(QString event_name)
 {
   QString sql;
   RDSqlQuery *q,*q1;
-  QString clockname;
   QString base_name=event_name;
   base_name.replace(" ","_");
 
@@ -582,11 +572,8 @@ void ListEvents::DeleteEvent(QString event_name)
   sql="select NAME from CLOCKS";
   q=new RDSqlQuery(sql);
   while(q->next()) {
-    clockname=q->value(0).toString();
-    clockname.replace(" ","_");
-    sql=QString().sprintf("delete from %s_CLK\
-                           where EVENT_NAME=\"%s\"",(const char *)clockname,
-			  (const char *)event_name);
+    sql=QString("delete from CLOCK_METADATA ")+
+      "where EVENT_NAME=\""+RDEscapeString(event_name)+"\"";
     q1=new RDSqlQuery(sql);
     delete q1;
   }

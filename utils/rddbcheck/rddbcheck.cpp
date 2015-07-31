@@ -162,7 +162,6 @@ MainObject::MainObject(QObject *parent,const char *name)
   if(!orphan_group_name.isEmpty()) {
     QString sql=QString().sprintf("select NAME from GROUPS where NAME=\"%s\"",
 				  (const char *)orphan_group_name);
-    printf("SQL: %s\n",(const char *)sql);
     QSqlQuery *q=new QSqlQuery(sql);
     if(!q->first()) {
       fprintf(stderr,"rddbcheck: invalid group \"%s\"\n",
@@ -282,57 +281,21 @@ void MainObject::CheckClocks()
   QString sql;
   QSqlQuery *q;
   QSqlQuery *q1;
-  QSqlQuery *q2;
-  QSqlQuery *q3;
-  QString eventname;
 
-  sql="select NAME from CLOCKS";
+  sql=QString("select CLOCK_METADATA.ID,CLOCK_METADATA.CLOCK_NAME ")+
+    "from CLOCK_METADATA left join CLOCKS "+
+    "on CLOCK_METADATA.CLOCK_NAME=CLOCKS.NAME "+
+    "where CLOCKS.NAME is null";
   q=new QSqlQuery(sql);
   while(q->next()) {
-    //
-    // Check the CLK Table
-    //
-    sql=QString("select EVENT_NAME,ID from ")+
-      RDClock::tableName(q->value(0).toString());
-    q1=new QSqlQuery(sql);
-    if(q1->isActive()) {
-      //
-      // Check the clock -> event linkage
-      //
-      while(q1->next()) {
-	sql=QString().sprintf("select NAME from EVENTS where NAME=\"%s\"",
-			      (const char *)q1->value(0).toString());
-	q2=new QSqlQuery(sql);
-	if(q2->first()) {
-	  if(q1->value(0)!=q2->value(0)) {  // Make sure the cases match!
-	    printf("  Clock %s's linkage to event %s is broken -- fix (y/N)? ",
-		   (const char *)q->value(0).toString(),
-		   (const char *)q2->value(0).toString());
-	    fflush(NULL);
-	    if(UserResponse()) {
-	      sql=QString("update ")+
-		RDClock::tableName(q->value(0).toString())+
-		" set EVENT_NAME=\""+RDEscapeString(q2->value(0).toString())+
-		"\""+QString().sprintf(" where ID=%d",q1->value(1).toInt());
-	      q3=new QSqlQuery(sql);
-	      delete q3;
-	    }
-	  }
-	}
-	delete q2;
-      }
+    printf("  Stale metadata for clock \"%s\" found -- purge (y/N)? ",
+	   (const char *)q->value(1).toString());
+    if(UserResponse()) {
+      sql=QString("delete from CLOCK_METADATA ")+
+	QString().sprintf("where ID=%u",q->value(0).toUInt());
+      q1=new QSqlQuery(sql);
+      delete q1;
     }
-    else {
-      printf("  Clock %s is missing the CLK table -- fix (y/N)? ",
-	     (const char *)q->value(0).toString());
-      fflush(NULL);
-      if(UserResponse()) {
-	sql=RDCreateClockTableSql(RDClock::tableName(q->value(0).toString()));
-	q2=new QSqlQuery(sql);
-	delete q2;
-      }
-    }
-    delete q1;
   }
   delete q;
 }

@@ -802,12 +802,12 @@ bool RDSvc::linkLog(RDSvc::ImportSource src,const QDate &date,
   delete src_event;
   delete dest_event;
   if(getenv(RD_DEBUG_KEEP_IMPORT_TABLE)==NULL) {
-    sql=QString().sprintf("drop table `%s_TEST_IMP`",(const char *)import_name);
+    sql=QString("drop table `")+import_name+"`";
     q=new RDSqlQuery(sql);
     delete q;
   }
   else {
-    printf("RDSvc - IMPORT TABLE: %s_TEST_IMP\n",(const char *)import_name);
+    printf("RDSvc - IMPORT TABLE: %s\n",(const char *)import_name);
   }
 
   return true;

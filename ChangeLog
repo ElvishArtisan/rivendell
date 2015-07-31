@@ -15077,3 +15077,10 @@
 	enumeration in 'lib/rdsvc.h'.
 	* Added unlink_log_test(1) in 'tests/unlink_log_test.cpp' and
 	'tests/unlink_log_test.h'.
+2015-07-31 Fred Gleason <fredg@paravelsystems.com>
+	* Merged 'tryphon-schedcartlist-without-arrays' branch [GitHub
+	pull request #000044].
+2015-07-31 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'CLOCK_METADATA' table to the database.
+	* Incremented the database version to 251.
+	* Removed *_CLK tables from the database schema.

@@ -25,8 +25,9 @@ EXTRA_DIST = audio_perms.txt\
              cart.txt\
              cartslots.txt\
              clipboard.txt\
-             clocks.txt\
+             clock_metadata.txt\
              clock_perms.txt\
+             clocks.txt\
              copy_splits.txt\
              cuts.txt\
              decks.txt\

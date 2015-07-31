@@ -2,9 +2,7 @@
 //
 // Abstract a Rivendell Log Manager Clock
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdclock.h,v 1.17.10.1 2014/06/24 18:27:03 cvs Exp $
+//   (C) Copyright 2002-2004,2015 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -29,9 +27,6 @@
 #include <qsqldatabase.h>
 
 #include <rdevent_line.h>
-
-using namespace std;
-
 
 class RDClock
 {
@@ -61,7 +56,7 @@ class RDClock
    bool validate(const QTime &start_time,int length,int except_line=-1);
    bool generateLog(int hour,const QString &logname,const QString &svc_name,
 		    QString *errors);
-   static QString tableName(const QString &name);
+   //   static QString tableName(const QString &name);
    static int svcClockNumber(int dow,int hour);
    static int svcClockDayOfWeek(int num);
    static int svcClockHour(int num);
