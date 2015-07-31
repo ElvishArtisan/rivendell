@@ -596,9 +596,6 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
 // Scheduler 
 
   if(event_import_source == RDEventLine::Scheduler ) {
-    int titlesep;
-    int stackid;
-    int counter;   		
     RDLogLine::Source source=RDLogLine::Music;
     
     QString svcname_rp = svcname;
@@ -606,242 +603,194 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
     
     time.addMSecs(postimport_length);
     
-    sql=QString().sprintf("select NUMBER,ARTIST,SCHED_CODES from CART where GROUP_NAME='%s'",(const char *)SchedGroup()); 
+    sql=QString().sprintf("select NUMBER,ARTIST,SCHED_CODES from CART where GROUP_NAME='%s' order by NUMBER desc",(const char *)SchedGroup());
     
     q=new RDSqlQuery(sql);
-    if(q->size()>0)
-    {
-      if(event_title_sep>=0 && event_title_sep<=50000)
-      {
-	titlesep = (int)event_title_sep;
-      }
-      else
-      {
-	titlesep = 100;
+    if (q->size()>0) {
+      int titlesep;
+      if (event_title_sep>=0 && event_title_sep<=50000) {
+        titlesep = (int)event_title_sep;
+      } else {
+        titlesep = 100;
       }
       
-      int querysize=(int)q->size();
-      SchedCartList *schedCL;
-      schedCL=new SchedCartList(querysize);
+      SchedCartList *schedulerList = new SchedCartList();
       
-      for(counter=0;counter<querysize;counter++)
-      {
-	q->seek(counter);
-	schedCL->insertItem(q->value(0).toUInt(),0,0,q->value(1).toString(),q->value(2).toString());
+      while (q->next())	{
+        schedulerList->insert(q->value(0).toUInt(),q->value(1).toString(),q->value(2).toString());
       }
       delete q;
-      
-      sql=QString().sprintf("SELECT SCHED_STACK_ID from %s_STACK order by SCHED_STACK_ID",(const char*)svcname_rp);
+
+      int stackid = 0;
+      sql=QString().sprintf("SELECT SCHED_STACK_ID from %s_STACK order by SCHED_STACK_ID desc limit 1",(const char*)svcname_rp);
       q=new RDSqlQuery(sql);
-      if (q->last())
-      { 
-	stackid=q->value(0).toUInt();
-      }
-      else
-      { 
-	stackid=0;
+      if (q->next()) { 
+        stackid=q->value(0).toUInt();
       }
       stackid++;    
       delete q;
-      
+
+      SchedCart *current = NULL;
       
       // Add deconflicting rules here		  
       // Title separation 
-      schedCL->save();		  
-      sql=QString().sprintf("select CART from %s_STACK \
-			  where SCHED_STACK_ID >= %d",(const char*)svcname_rp,(stackid-titlesep));
+      sql=QString().sprintf("select DISTINCT(CART) from %s_STACK where SCHED_STACK_ID >= %d order by CART",(const char*)svcname_rp,(stackid-titlesep));
       q=new RDSqlQuery(sql);
-      
-      while (q->next())	
-      {
-	for(counter=0;counter<schedCL->getNumberOfItems();counter++)
-	{ 
-	  if(q->value(0).toUInt()==schedCL->getItemCartnumber(counter))
-	  {
-	    schedCL->removeItem(counter);
-	    counter--;
-	  }
-	}
-      }          
+      q->next();
+
+      current = schedulerList->first();
+
+      while (current != NULL && q->isValid()) {
+        while (q->value(0).toUInt() < current->getCartNumber() && q->next()) {
+          // skip no candidate CART
+        }
+
+        if (q->isValid()) {
+          unsigned cartStack = q->value(0).toUInt();
+
+          if (current->getCartNumber() == cartStack) {
+            // exckude candidate CART present in stack
+            current->exclude();
+            current = current->next();
+          }
+
+          while (current != NULL && current->getCartNumber() < cartStack) {
+            // skip candidate CART not present in stack
+            current = current->next();
+          }
+        }
+      }      
       delete q;
-      if(schedCL->getNumberOfItems()==0)
-	*errors+=QString().sprintf("%s Rule broken: Title Separation\n",(const char *)time.toString("hh:mm:ss"));
-      schedCL->restore();
+      
+      schedulerList->saveOrBreakRule(QString("Title Separation"), time, errors);
       
       // Artist separation
-      schedCL->save();		  
-      sql=QString().sprintf("select ARTIST from %s_STACK \
-			  where SCHED_STACK_ID >= %d",(const char*)svcname_rp,(stackid-artistsep));
+      sql=QString().sprintf("select DISTINCT(ARTIST) from %s_STACK where SCHED_STACK_ID >= %d",(const char*)svcname_rp,(stackid-artistsep));
       q=new RDSqlQuery(sql);
-      
-      while (q->next())	
-      {
-	for(counter=0;counter<schedCL->getNumberOfItems();counter++)
-	{ 
-	  if(q->value(0).toString()==schedCL->getItemArtist(counter))
-	  {
-	    schedCL->removeItem(counter);
-	    counter--;
-	  }
-	}
+      while (q->next())	{
+        QString stack_artist = q->value(0).toString();
+        for (current = schedulerList->first(); current != NULL; current = current->next()) {
+          if (current->getArtist() == stack_artist) {
+            current->exclude();
+          }
+        }
       }          
-      
       delete q;
-      if(schedCL->getNumberOfItems()==0)
-	*errors+=QString().sprintf("%s Rule broken: Artist Separation\n",(const char *)time.toString("hh:mm:ss"));
-      schedCL->restore();
+
+      schedulerList->saveOrBreakRule(QString("Artist Separation"), time, errors);
       
       // Must have scheduler code
-      if(event_have_code!="")
-      {
-	schedCL->save();		  
-	for(counter=0;counter<schedCL->getNumberOfItems();counter++)
-	{ 
-	  if(!schedCL->itemHasCode(counter,event_have_code))
-	  {
-	    schedCL->removeItem(counter);
-	    counter--;
-	  }
-	}
-	if(schedCL->getNumberOfItems()==0)
-	  *errors+=QString().sprintf("%s Rule broken: Must have code %s\n",(const char *)time.toString("hh:mm:ss"),(const char*)event_have_code);
-	schedCL->restore();
+      if(!event_have_code.isEmpty()) {
+        for (current = schedulerList->first(); current != NULL; current = current->next()) {
+          if (!current->hasSchedulerCode(event_have_code)) {
+            current->exclude();
+          }
+        }
+
+        schedulerList->saveOrBreakRule(QString("Must have code ") + event_have_code, time, errors);
       }
 
       // Must have second scheduler code
-      if(event_have_code2!="")
-      {
-	schedCL->save();
-	for(counter=0;counter<schedCL->getNumberOfItems();counter++)
-	{
-	  if(!schedCL->itemHasCode(counter,event_have_code2))
-	  {
-	    schedCL->removeItem(counter);
-	    counter--;
-	  }
-	}
-	if(schedCL->getNumberOfItems()==0)
-	  *errors+=QString().sprintf("%s Rule broken: Must have second code %s\n",(const char *)time.toString("hh:mm:ss"),(const char*)event_have_code2);
-	schedCL->restore();
+      if(!event_have_code2.isEmpty()) {
+        for (current = schedulerList->first(); current != NULL; current = current->next()) {
+          if (!current->hasSchedulerCode(event_have_code2)) {
+            current->exclude();
+          }
+        }
+
+        schedulerList->saveOrBreakRule(QString("Must have second code ") + event_have_code2, time, errors);
       }
 
       // Scheduler Codes
       sql=QString().sprintf("select CODE,MAX_ROW,MIN_WAIT,NOT_AFTER, OR_AFTER,OR_AFTER_II from %s_RULES",(const char *)clockname);
       q=new RDSqlQuery(sql);
-      while (q->next())
-      {
-	// max in a row, min wait
-	schedCL->save();	
-	int range=q->value(1).toInt()+q->value(2).toInt(); 
-	int allowed=q->value(1).toInt();
-	QString wstr=q->value(0).toString();
-	wstr+="          ";
-	wstr=wstr.left(11);
-	sql=QString().sprintf("select CART from %s_STACK \
-			  where SCHED_STACK_ID > %d and SCHED_CODES like \"%%%s%%\"",(const char*)svcname_rp,(stackid-range),(const char *)wstr);
-	q1=new RDSqlQuery(sql);
-	if (q1->size()>=allowed || allowed==0)	
-	  for(counter=0;counter<schedCL->getNumberOfItems();counter++)
-	    if (                           schedCL->removeIfCode(counter,q->value(0).toString()))
-	      counter--;
-	delete q1;
-	if(schedCL->getNumberOfItems()==0)
-	  *errors+=QString().sprintf("%s Rule broken: Max. in a Row/Min. Wait for %s\n",(const char *)time.toString("hh:mm:ss"),(const char *)q->value(0).toString());
-	schedCL->restore();
-	// do not play after
-	if (q->value(3).toString()!="")
-	{ 
-	  schedCL->save();	
-	  QString wstr=q->value(3).toString();
-	  wstr+="          ";
-	  wstr=wstr.left(11);
-	  sql=QString().sprintf("select CART from %s_STACK \
-			  where SCHED_STACK_ID = %d and SCHED_CODES like \"%%%s%%\"",(const char*)svcname_rp,(stackid-1),(const char *)wstr);
-	  q1=new RDSqlQuery(sql);
-	  if (q1->size()>0)	
-	    for(counter=0;counter<schedCL->getNumberOfItems();counter++)
-	      if (                           schedCL->removeIfCode(counter,q->value(0).toString()))
-		counter--;
-	  delete q1;
-	  if(schedCL->getNumberOfItems()==0)
-	    *errors+=QString().sprintf("%s Rule broken: Do not schedule %s after %s\n",(const char *)time.toString("hh:mm:ss"),(const char *)q->value(0).toString(),(const char *)q->value(3).toString());
-	  schedCL->restore();
-	}
-	// or after
-	if (q->value(4).toString()!="")
-	{ 
-	  schedCL->save();
-	  QString wstr=q->value(4).toString();
-	  wstr+="          ";
-	  wstr=wstr.left(11);
-	  sql=QString().sprintf("select CART from %s_STACK \
-			  where SCHED_STACK_ID = %d and SCHED_CODES like \"%%%s%%\"",(const char*)svcname_rp,(stackid-1),(const char *)wstr);
-	  q1=new RDSqlQuery(sql);
-	  if (q1->size()>0)	
-	    for(counter=0;counter<schedCL->getNumberOfItems();counter++)
-	      if (                           schedCL->removeIfCode(counter,q->value(0).toString()))
-		counter--;
-	  delete q1;
-	  if(schedCL->getNumberOfItems()==0)
-	    *errors+=QString().sprintf("%s Rule broken: Do not schedule %s after %s\n",(const char *)time.toString("hh:mm:ss"),(const char *)q->value(0).toString(),(const char *)q->value(4).toString());
-	  schedCL->restore();
-	}
-	// or after II
-	if (q->value(5).toString()!="")
-	{ 
-	  schedCL->save();
-	  QString wstr=q->value(5).toString();
-	  wstr+="          ";
-	  wstr=wstr.left(11);
-	  sql=QString().sprintf("select CART from %s_STACK \
-			  where SCHED_STACK_ID = %d and SCHED_CODES like \"%%%s%%\"",(const char*)svcname_rp,(stackid-1),(const char *)wstr);
-	  q1=new RDSqlQuery(sql);
-	  if (q1->size()>0)	
-	    for(counter=0;counter<schedCL->getNumberOfItems();counter++)
-	      if (                           schedCL->removeIfCode(counter,q->value(0).toString()))
-		counter--;
-	  delete q1;
-	  if(schedCL->getNumberOfItems()==0)
-	    *errors+=QString().sprintf("%s Rule broken: Do not schedule %s after %s\n",(const char *)time.toString("hh:mm:ss"),(const char *)q->value(0).toString(),(const char *)q->value(5).toString());
-	  schedCL->restore();
-	}
+      while (q->next()) {
+        // max in a row, min wait
+        QString code = q->value(0).toString();
+        int range=q->value(1).toInt()+q->value(2).toInt(); 
+        int allowed=q->value(1).toInt();
+        
+        QString notAfterCode1 = q->value(3).toString();
+        QString notAfterCode2 = q->value(4).toString();
+        QString notAfterCode3 = q->value(5).toString();
+
+        QString wstr= (code + QString("          ")).left(11);
+        sql=QString().sprintf("select CART from %s_STACK where SCHED_STACK_ID > %d and SCHED_CODES like \"%%%s%%\"",(const char*)svcname_rp,(stackid-range),(const char *)wstr);
+
+        q1=new RDSqlQuery(sql);
+        if (q1->size()>=allowed || allowed==0) {
+            schedulerList->excludeIfCode(code);
+        }
+        delete q1;
+
+        schedulerList->saveOrBreakRule(QString("Max. in a Row/Min. Wait for ") + code, time, errors);
+
+        // do not play after
+        if (!notAfterCode1.isEmpty() || !notAfterCode2.isEmpty() || !notAfterCode3.isEmpty()) {
+          sql=QString().sprintf("select SCHED_CODES from %s_STACK where SCHED_STACK_ID = %d",(const char*)svcname_rp,stackid-1);
+          q1=new RDSqlQuery(sql);
+          if (q1->next())	{
+            QString lastSchedulerCodes = q1->value(0).toString();
+
+            if (!notAfterCode1.isEmpty()) {
+              QString test= (notAfterCode1 + QString("          ")).left(11);
+              if (lastSchedulerCodes.find(test) >= 0) {
+                schedulerList->excludeIfCode(code);
+                schedulerList->saveOrBreakRule(QString("Do not schedule ") + code + QString(" after ") + notAfterCode1, time, errors);
+              }
+            }
+
+            if (!notAfterCode2.isEmpty()) {
+              QString test= (notAfterCode2 + QString("          ")).left(11);
+              if (lastSchedulerCodes.find(test) >= 0) {
+                schedulerList->excludeIfCode(code);
+                schedulerList->saveOrBreakRule(QString("Do not schedule ") + code + QString(" after ") + notAfterCode2, time, errors);
+              }
+            }
+
+            if (!notAfterCode3.isEmpty()) {
+              QString test= (notAfterCode3 + QString("          ")).left(11);
+              if (lastSchedulerCodes.find(test) >= 0) {
+                schedulerList->excludeIfCode(code);
+                schedulerList->saveOrBreakRule(QString("Do not schedule ") + code + QString(" after ") + notAfterCode3, time, errors);
+              }
+            }
+          }
+        }
       }
       delete q;
       
+      // end of deconflicting rules
       
-// end of deconflicting rules
-      
-      int schedpos = rand()%schedCL->getNumberOfItems();
+      SchedCart *selected = schedulerList->sample();
       sql=QString().sprintf("insert into `%s_LOG` set ID=%d,COUNT=%d,TYPE=%d,\
 			     SOURCE=%d,START_TIME=%d,GRACE_TIME=%d, \
 			     CART_NUMBER=%u,TIME_TYPE=%d,POST_POINT=\"%s\", \
 			     TRANS_TYPE=%d,EXT_START_TIME=\"%s\",\
                              EVENT_LENGTH=%d",
-			    (const char *)logname,count,count,
-			    RDLogLine::Cart,source,
-			    QTime().msecsTo(time),
-			    grace_time,
-			    schedCL->getItemCartnumber(schedpos),
-			    time_type,
-			    (const char *)RDYesNo(post_point),
-			    trans_type,
-			    (const char *)time.toString("hh:mm:ss"),
-			    event_length);
+                            (const char *)logname,count,count,
+                            RDLogLine::Cart,source,
+                            QTime().msecsTo(time),
+                            grace_time,
+                            selected->getCartNumber(),
+                            time_type,
+                            (const char *)RDYesNo(post_point),
+                            trans_type,
+                            (const char *)time.toString("hh:mm:ss"),
+                            event_length);
       q=new RDSqlQuery(sql);
       delete q;
-
-
 
       count++;
 
-
-
       sql=QString().sprintf("insert into `%s_STACK` set SCHED_STACK_ID=%u,CART=%u,ARTIST=\"%s\",SCHED_CODES=\"%s\"",(const char*)svcname_rp,
-			    stackid,schedCL->getItemCartnumber(schedpos),
-			    (const char *)RDEscapeString(schedCL->getItemArtist(schedpos)),(const char *)schedCL->getItemSchedCodes(schedpos));
+                            stackid,
+                            selected->getCartNumber(),
+                            (const char *)RDEscapeString(selected->getArtist()),
+                            (const char *)selected->getSchedCodes());
       q=new RDSqlQuery(sql);
       delete q;
-      delete schedCL;
+      delete schedulerList;
     }
     else
     {
