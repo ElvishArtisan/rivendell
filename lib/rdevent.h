@@ -76,8 +76,6 @@ class RDEvent
   void setHaveCode2(QString str);
   unsigned titleSep();
   void setTitleSep(unsigned titlesep);
-  static QString preimportTableName(const QString event_name);
-  static QString postimportTableName(const QString event_name);
   
  private:
   int GetIntValue(const QString &field) const;

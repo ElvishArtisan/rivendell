@@ -287,22 +287,6 @@ void RDEvent::setRemarks(const QString &str) const
 }
 
 
-QString RDEvent::preimportTableName(const QString event_name)
-{
-  QString ret=event_name;
-  ret.replace(" ","_");
-  return ret+"_PRE";
-}
-
-
-QString RDEvent::postimportTableName(const QString event_name)
-{
-  QString ret=event_name;
-  ret.replace(" ","_");
-  return ret+"_POST";
-}
-
-
 int RDEvent::GetIntValue(const QString &field) const
 {
   QString sql;

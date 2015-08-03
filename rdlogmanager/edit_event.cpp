@@ -1657,10 +1657,8 @@ void EditEvent::AbandonEvent(QString name)
 			(const char *)RDEscapeString(name));
   q=new RDSqlQuery(sql);
   delete q;
-  sql=QString("drop table `")+RDEvent::preimportTableName(name)+"`";
-  q=new RDSqlQuery(sql);
-  delete q;
-  sql=QString("drop table `")+RDEvent::postimportTableName(name)+"`";
+  sql=QString("delete from EVENT_METADATA where ")+
+    "EVENT_NAME=\""+RDEscapeString(name);
   q=new RDSqlQuery(sql);
   delete q;
 }
