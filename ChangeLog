@@ -15084,3 +15084,9 @@
 	* Added a 'CLOCK_METADATA' table to the database.
 	* Incremented the database version to 251.
 	* Removed *_CLK tables from the database schema.
+2015-08-03 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'EVENT_METADATA' table to the database.
+	* Incremented the database version to 252.
+	* Added an 'RDEvent::EventPlace' enumeration in 'lib/rdevent.h'.
+	* Added an 'RDEventList' class in 'lib/rdevent_list.cpp' and
+	'lib/rdevent_list.h'.

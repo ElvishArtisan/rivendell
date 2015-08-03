@@ -39,8 +39,8 @@
 #include <rename_item.h>
 
 
-ListEvents::ListEvents(QString *eventname,QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+ListEvents::ListEvents(QString *eventname,QWidget *parent)
+  : QDialog(parent,"",true)
 {
   QStringList services_list;
   QString str1=tr("Log Events - User: ");
@@ -226,8 +226,7 @@ void ListEvents::addData()
   delete q;
   event=new RDEvent(logname,true);
   delete event;
-  EditEvent *event_dialog=new EditEvent(logname,true,&new_events,
-					this,"event_dialog");
+  EditEvent *event_dialog=new EditEvent(logname,true,&new_events,this);
   if(event_dialog->exec()<-1) {
     sql=QString().sprintf("delete from EVENTS where NAME=\"%s\"",
 			  (const char *)logname);
@@ -275,8 +274,7 @@ void ListEvents::editData()
   if(item==NULL) {
     return;
   }
-  EditEvent *event_dialog=
-    new EditEvent(item->text(0),false,&new_events,this,"event_dialog");
+  EditEvent *event_dialog=new EditEvent(item->text(0),false,&new_events,this);
   if(event_dialog->exec()<-1) {
     delete event_dialog;
     return;

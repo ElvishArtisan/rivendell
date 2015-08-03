@@ -1,0 +1,17 @@
+                     EVENT_METADATA Table Layout for Rivendell
+
+The EVENT_METADATA table holds pre- and post-import data for RDLogManager
+events.
+
+
+FIELD NAME           TYPE              REMARKS
+---------------------------------------------------------------
+ID                   int(11)           Primary key
+EVENT_NAME           char(64)          From EVENTS.NAME
+PLACE                int(11)           0=Pre-import, 1=Post-import
+COUNT                int(11)
+TYPE                 int(11)
+LENGTH               int(11)
+TRANS_TYPE           int(11)
+CART_NUMBER          unsigned int(10)
+TEXT                 char(255)

@@ -59,7 +59,7 @@ class EditEvent : public QDialog
  Q_OBJECT
  public:
   EditEvent(QString eventname,bool new_event,std::vector<QString> *new_events,
-	    QWidget *parent=0,const char *name=0);
+	    QWidget *parent=0);
   ~EditEvent();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
