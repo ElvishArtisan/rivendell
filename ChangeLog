@@ -15117,3 +15117,5 @@
 	log link events in 'rdairplay/list_log.cpp'.
 	* Added code to display Event Name, Start Time and Length for
 	log link events in 'rdairplay/loglinebox.cpp'.
+2015-08-05 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.10.3int05.
