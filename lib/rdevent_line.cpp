@@ -31,10 +31,6 @@
 
 RDEventLine::RDEventLine()
 {
-  /*
-  event_preimport_log=new RDLogEvent();
-  event_postimport_log=new RDLogEvent();
-  */
   event_preimport_list=new RDEventList();
   event_preimport_list->setEventPlace(RDEvent::PreImport);
   event_postimport_list=new RDEventList();
@@ -830,7 +826,7 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
 }
 
 
-bool RDEventLine::linkLog(RDLogEvent *e,int next_id,const QString &svcname,
+bool RDEventLine::linkLog(RDLogEvent *e,const QString &svcname,
 			  RDLogLine *link_logline,const QString &track_str,
 			  const QString &label_cart,const QString &track_cart,
 			  const QString &import_table,QString *errors)
@@ -839,6 +835,7 @@ bool RDEventLine::linkLog(RDLogEvent *e,int next_id,const QString &svcname,
   RDSqlQuery *q;
   RDLogLine *logline=NULL;
   int link_id_offset=0;
+  int next_id=e->nextId();
 
   //
   // Initial Import Parameters
@@ -881,6 +878,13 @@ bool RDEventLine::linkLog(RDLogEvent *e,int next_id,const QString &svcname,
     start_start_secs=0;  // So we don't slop over into the previous hour
   }
   end_start_secs+=link_logline->linkEndSlop();
+
+  //
+  // Copy Parent Link into Log
+  //
+  e->insert(e->size(),1);
+  *(e->logLine(e->size()-1))=*link_logline;
+  e->logLine(e->size()-1)->setId(next_id++);
 
   //
   // Load Matching Events and Insert into Log

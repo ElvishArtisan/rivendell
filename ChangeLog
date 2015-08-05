@@ -15094,3 +15094,6 @@
 	* Removed 'RDEvent::preimportTableName()' and
 	'RDEvent::postimportTableName()' methods in 'lib/rdevent.cpp' and
 	'lib/rdevent.h'.
+2015-08-05 Fred Gleason <fredg@paravelsystems.com>
+	* Modified log linker algorithm to retain linker events in linked
+	logs.

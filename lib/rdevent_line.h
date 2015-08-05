@@ -82,7 +82,7 @@ class RDEventLine
   bool save();
   bool generateLog(QString logname,const QString &svcname,
 		   QString *errors, unsigned artistsep,QString clockname);
-  bool linkLog(RDLogEvent *e,int next_id,const QString &svcname,
+  bool linkLog(RDLogEvent *e,const QString &svcname,
 	       RDLogLine *link_logline,const QString &track_str,
 	       const QString &label_cart,const QString &track_cart,
 	       const QString &import_table,QString *errors);
@@ -103,10 +103,6 @@ class RDEventLine
   RDLogLine::TransType event_first_transtype;
   RDLogLine::TransType event_default_transtype;
   QColor event_color;
-  /*
-  RDLogEvent *event_preimport_log;
-  RDLogEvent *event_postimport_log;
-  */
   RDEventList *event_preimport_list;
   RDEventList *event_postimport_list;
   QTime event_start_time;
