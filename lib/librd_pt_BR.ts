@@ -427,6 +427,34 @@
         <source>Undefined</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>has no inline traffic event configured.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Dropping inline traffic import!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>WARNING: Event</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Inline spot break</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Marker cart</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Voice track</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cart</source>
+        <translation type="unfinished">Cartão</translation>
+    </message>
 </context>
 <context>
     <name>RDAddCart</name>
@@ -2146,11 +2174,17 @@ por favor, tente novamente!</translation>
     <message>
         <source>Event Fill Errors
 </source>
-        <translation>Erros de Auto Preenchimento
+        <translation type="obsolete">Erros de Auto Preenchimento
 </translation>
     </message>
     <message>
         <source>[spot break]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Event Fill Errors
+
+</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

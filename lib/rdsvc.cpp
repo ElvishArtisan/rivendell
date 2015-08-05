@@ -756,27 +756,50 @@ bool RDSvc::linkLog(RDSvc::ImportSource src,const QDate &date,
   QString link_report=tr("The following events were not placed:\n");
 
   sql=QString("select ")+
+    "`"+import_name+"`.TYPE,"+
     "`"+import_name+"`.START_HOUR,"+
     "`"+import_name+"`.START_SECS,"+
     "`"+import_name+"`.CART_NUMBER,"+
-    "CART.TITLE from `"+import_name+"` LEFT JOIN CART "+
+    "CART.TITLE,"+
+    "`"+import_name+"`.TITLE "+
+    "from `"+import_name+"` LEFT JOIN CART "+
     "ON `"+import_name+"`.CART_NUMBER=CART.NUMBER "+
     "where `"+import_name+"`.EVENT_USED=\"N\"";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     event=true;
-    if(q->value(3).toString().isEmpty()) {
+    if(q->value(4).toString().isEmpty()) {
       cartname=tr("[unknown cart]");
     }
     else {
-      cartname=q->value(3).toString();
+      cartname=q->value(4).toString();
     }
-    link_report+=
-      QString().sprintf("  %s - %06u - %s\n",
-			(const char *)RDSvc::timeString(q->value(0).toInt(),
-							q->value(1).toInt()),
-			q->value(2).toUInt(),
-			(const char *)cartname);
+    switch((RDSvc::ImportType)q->value(0).toInt()) {
+    case RDSvc::Cart:
+      link_report+=QString("  ")+
+	RDSvc::timeString(q->value(1).toInt(),q->value(2).toInt())+" - "+
+	QObject::tr("Cart")+QString().sprintf(" %06u",q->value(3).toUInt())+
+	" - "+cartname+"\n";
+      break;
+
+    case RDSvc::Break:
+      link_report+=QString("  ")+
+	RDSvc::timeString(q->value(1).toInt(),q->value(2).toInt())+" - "+
+	QObject::tr("Inline spot break")+"\n";
+      break;
+
+    case RDSvc::Label:
+      link_report+=QString("  ")+
+	RDSvc::timeString(q->value(1).toInt(),q->value(2).toInt())+" - "+
+	QObject::tr("Marker cart")+"\n";
+      break;
+
+    case RDSvc::Track:
+      link_report+=QString("  ")+
+	RDSvc::timeString(q->value(1).toInt(),q->value(2).toInt())+" - "+
+	QObject::tr("Voice track")+" \""+q->value(5).toString()+"\""+"\n";
+      break;
+    }
   }
   delete q;
   link_report+="\n";
@@ -786,7 +809,7 @@ bool RDSvc::linkLog(RDSvc::ImportSource src,const QDate &date,
   //
   *report="";
   if(!autofill_errors.isEmpty()) {
-    *report+=tr("Event Fill Errors\n");
+    *report+=tr("Event Fill Errors\n\n");
     *report+=autofill_errors;
     *report+="\n";
   }

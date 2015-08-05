@@ -15097,3 +15097,10 @@
 2015-08-05 Fred Gleason <fredg@paravelsystems.com>
 	* Modified log linker algorithm to retain linker events in linked
 	logs.
+2015-08-05 Fred Gleason <fredg@paravelsystems.com>
+	* Added a warning to the Exception Report when a music import
+	attempts to process an inline spot break when no in traffic event
+	is set in 'lib/rdevent_line.cpp'.
+	* Added 'Event not placed' warnings to the Exception Report for
+	inline traffic, note cart and voice track events in 'lib/rdsvc.cpp'
+	and 'lib/rdevent_line.cpp'.

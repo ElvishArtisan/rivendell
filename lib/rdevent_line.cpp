@@ -891,19 +891,20 @@ bool RDEventLine::linkLog(RDLogEvent *e,const QString &svcname,
   //
   int id=-1;
   sql=QString("select ")+
-    "TYPE,"+          // 00
-    "CART_NUMBER,"+   // 01
-    "START_HOUR,"+    // 02
-    "START_SECS,"+    // 03
-    "LENGTH,"+        // 04
-    "EXT_DATA,"+      // 05
-    "EXT_EVENT_ID,"+  // 06
-    "EXT_ANNC_TYPE,"+ // 07
-    "EXT_CART_NAME,"+ // 08
-    "TITLE,"+         // 09
-    "TRANS_TYPE,"+    // 10
-    "TIME_TYPE,"+     // 11
-    "GRACE_TIME "+    // 12
+    "ID,"+            // 00
+    "TYPE,"+          // 01
+    "CART_NUMBER,"+   // 02
+    "START_HOUR,"+    // 03
+    "START_SECS,"+    // 04
+    "LENGTH,"+        // 05
+    "EXT_DATA,"+      // 06
+    "EXT_EVENT_ID,"+  // 07
+    "EXT_ANNC_TYPE,"+ // 08
+    "EXT_CART_NAME,"+ // 09
+    "TITLE,"+         // 10
+    "TRANS_TYPE,"+    // 11
+    "TIME_TYPE,"+     // 12
+    "GRACE_TIME "+    // 13
     "from `"+import_table+"` where "+
     QString().sprintf("(START_HOUR=%d)&&",start_start_hour)+
     QString().sprintf("(START_SECS>=%d)&&",start_start_secs/1000)+
@@ -911,43 +912,43 @@ bool RDEventLine::linkLog(RDLogEvent *e,const QString &svcname,
     "(EVENT_USED=\"N\") order by ID";
   q=new RDSqlQuery(sql);
   while(q->next()) {
-    QTime event_time(q->value(2).toInt(),q->value(3).toInt()/60,
-		     q->value(3).toInt()%60);
+    QTime event_time(q->value(3).toInt(),q->value(4).toInt()/60,
+		     q->value(5).toInt()%60);
     if((id=e->nextId())>next_id) {
       next_id=id;
     }
-    int length=GetLength(q->value(1).toUInt(),q->value(4).toInt());
-    switch((RDSvc::ImportType)q->value(0).toInt()) {
+    int length=GetLength(q->value(2).toUInt(),q->value(5).toInt());
+    switch((RDSvc::ImportType)q->value(1).toInt()) {
     case RDSvc::Cart:
       e->insert(e->size(),1);
       logline=e->logLine(e->size()-1);
       logline->setId(next_id++);
       logline->setType(RDLogLine::Cart);
-      logline->setCartNumber(q->value(1).toUInt());
+      logline->setCartNumber(q->value(2).toUInt());
       logline->setSource(event_src);
-      if(q->value(11).toInt()==RDLogLine::NoTime) {
+      if(q->value(12).toInt()==RDLogLine::NoTime) {
 	logline->setGraceTime(grace_time);
 	logline->setTimeType(time_type);
       }
       else {
-	logline->setGraceTime(q->value(12).toInt());
-	logline->setTimeType((RDLogLine::TimeType)q->value(11).toInt());
+	logline->setGraceTime(q->value(13).toInt());
+	logline->setTimeType((RDLogLine::TimeType)q->value(12).toInt());
 	time=event_time;
       }
       logline->setStartTime(RDLogLine::Logged,time);
-      if(q->value(10).toInt()==RDLogLine::NoTrans) {
+      if(q->value(11).toInt()==RDLogLine::NoTrans) {
 	logline->setTransType(trans_type);
       }
       else {
-	logline->setTransType((RDLogLine::TransType)q->value(10).toInt());
+	logline->setTransType((RDLogLine::TransType)q->value(11).toInt());
       }
       logline->setExtStartTime(QTime().addSecs(3600*start_start_hour+
-					       q->value(3).toInt()));
-      logline->setExtLength(q->value(4).toInt());
-      logline->setExtData(q->value(5).toString());
-      logline->setExtEventId(q->value(6).toString());
-      logline->setExtAnncType(q->value(7).toString());
-      logline->setExtCartName(q->value(8).toString());
+					       q->value(4).toInt()));
+      logline->setExtLength(q->value(5).toInt());
+      logline->setExtData(q->value(6).toString());
+      logline->setExtEventId(q->value(7).toString());
+      logline->setExtAnncType(q->value(8).toString());
+      logline->setExtCartName(q->value(9).toString());
       logline->setEventLength(event_length);
       logline->setLinkEventName(event_name);
       logline->setLinkStartTime(link_logline->linkStartTime());
@@ -956,6 +957,7 @@ bool RDEventLine::linkLog(RDLogEvent *e,const QString &svcname,
       logline->setLinkEndSlop(link_logline->linkEndSlop());
       logline->setLinkId(link_logline->linkId());
       logline->setLinkEmbedded(link_logline->linkEmbedded());
+      ClearImportEvent(import_table,q->value(0).toInt());
       break;
 
     case RDSvc::Label:
@@ -964,39 +966,39 @@ bool RDEventLine::linkLog(RDLogEvent *e,const QString &svcname,
       logline->setId(next_id++);
       logline->setType(RDLogLine::Marker);
       logline->setSource(event_src);
-      if(q->value(11).toInt()==RDLogLine::NoTime) {
+      if(q->value(12).toInt()==RDLogLine::NoTime) {
 	logline->setGraceTime(grace_time);
 	logline->setTimeType(time_type);
       }
       else {
-	logline->setGraceTime(q->value(12).toInt());
-	logline->setTimeType((RDLogLine::TimeType)q->value(11).toInt());
+	logline->setGraceTime(q->value(13).toInt());
+	logline->setTimeType((RDLogLine::TimeType)q->value(12).toInt());
 	time=event_time;
       }
       logline->setStartTime(RDLogLine::Logged,time);
-      logline->setMarkerLabel(q->value(8).toString());
-      logline->setMarkerComment(q->value(9).toString());
-      if(q->value(11).toInt()==RDLogLine::NoTime) {
+      logline->setMarkerLabel(q->value(9).toString());
+      logline->setMarkerComment(q->value(10).toString());
+      if(q->value(12).toInt()==RDLogLine::NoTime) {
 	logline->setGraceTime(grace_time);
 	logline->setTimeType(time_type);
       }
       else {
-	logline->setGraceTime(q->value(12).toInt());
-	logline->setTimeType((RDLogLine::TimeType)q->value(11).toInt());
+	logline->setGraceTime(q->value(13).toInt());
+	logline->setTimeType((RDLogLine::TimeType)q->value(12).toInt());
       }
-      if(q->value(10).toInt()==RDLogLine::NoTrans) {
+      if(q->value(11).toInt()==RDLogLine::NoTrans) {
 	logline->setTransType(trans_type);
       }
       else {
-	logline->setTransType((RDLogLine::TransType)q->value(10).toInt());
+	logline->setTransType((RDLogLine::TransType)q->value(11).toInt());
       }
       logline->setExtStartTime(QTime().addSecs(3600*start_start_hour+
-					       q->value(3).toInt()));
-      logline->setExtLength(q->value(4).toInt());
-      logline->setExtData(q->value(5).toString());
-      logline->setExtEventId(q->value(6).toString());
-      logline->setExtAnncType(q->value(7).toString());
-      logline->setExtCartName(q->value(8).toString());
+					       q->value(4).toInt()));
+      logline->setExtLength(q->value(5).toInt());
+      logline->setExtData(q->value(6).toString());
+      logline->setExtEventId(q->value(7).toString());
+      logline->setExtAnncType(q->value(8).toString());
+      logline->setExtCartName(q->value(9).toString());
       logline->setEventLength(event_length);
       logline->setLinkEventName(event_name);
       logline->setLinkStartTime(link_logline->linkStartTime());
@@ -1005,32 +1007,42 @@ bool RDEventLine::linkLog(RDLogEvent *e,const QString &svcname,
       logline->setLinkEndSlop(link_logline->linkEndSlop());
       logline->setLinkId(link_logline->linkId());
       logline->setLinkEmbedded(link_logline->linkEmbedded());
+      ClearImportEvent(import_table,q->value(0).toInt());
       break;
 
     case RDSvc::Break:
-      if((!event_nested_event.isEmpty()&&(event_nested_event!=event_name))) {
-	e->insert(e->size(),1);
-	logline=e->logLine(e->size()-1);
-	logline->setId(next_id++);
-	logline->setType(RDLogLine::TrafficLink);
-	logline->setStartTime(RDLogLine::Logged,time);
-	logline->setSource(event_src);
-	logline->setTransType(trans_type);
-	logline->setEventLength(event_length);
-	logline->setLinkEventName(event_nested_event);
-	//  The "old way", where embedded breaks inherit the parent's start
-	//  time and length.  Do we need to support this with a config
-	//  option?
-	//logline->setLinkStartTime(link_logline->linkStartTime());
-	//logline->setLinkLength(link_logline->linkLength());
-	logline->setLinkStartTime(event_time);
-	if(q->value(4).toInt()>0) {
-	  logline->setLinkLength(q->value(4).toInt());
+      //if((!event_nested_event.isEmpty()&&(event_nested_event!=event_name))) {
+      if(event_nested_event!=event_name) {
+	if(!event_nested_event.isEmpty()) {
+	  e->insert(e->size(),1);
+	  logline=e->logLine(e->size()-1);
+	  logline->setId(next_id++);
+	  logline->setType(RDLogLine::TrafficLink);
+	  logline->setStartTime(RDLogLine::Logged,time);
+	  logline->setSource(event_src);
+	  logline->setTransType(trans_type);
+	  logline->setEventLength(event_length);
+	  logline->setLinkEventName(event_nested_event);
+	  //  The "old way", where embedded breaks inherit the parent's start
+	  //  time and length.  Do we need to support this with a config
+	  //  option?
+	  //logline->setLinkStartTime(link_logline->linkStartTime());
+	  //logline->setLinkLength(link_logline->linkLength());
+	  logline->setLinkStartTime(event_time);
+	  if(q->value(5).toInt()>0) {
+	    logline->setLinkLength(q->value(5).toInt());
+	  }
+	  logline->setLinkStartSlop(link_logline->linkStartSlop());
+	  logline->setLinkEndSlop(link_logline->linkEndSlop());
+	  logline->setLinkId(link_logline->linkId()+link_id_offset++);
+	  logline->setLinkEmbedded(true);
+	  ClearImportEvent(import_table,q->value(0).toInt());
 	}
-	logline->setLinkStartSlop(link_logline->linkStartSlop());
-	logline->setLinkEndSlop(link_logline->linkEndSlop());
-	logline->setLinkId(link_logline->linkId()+link_id_offset++);
-	logline->setLinkEmbedded(true);
+	else {
+	  *errors+=QObject::tr("WARNING: Event")+" \""+event_name+"\" "+
+	    QObject::tr("has no inline traffic event configured.")+" "+
+	    QObject::tr("Dropping inline traffic import!")+"\n";
+	}
       }
       break;
 
@@ -1039,19 +1051,19 @@ bool RDEventLine::linkLog(RDLogEvent *e,const QString &svcname,
       logline=e->logLine(e->size()-1);
       logline->setId(next_id++);
       logline->setType(RDLogLine::Track);
-      if(q->value(11).toInt()==RDLogLine::NoTime) {
+      if(q->value(12).toInt()==RDLogLine::NoTime) {
 	logline->setGraceTime(grace_time);
 	logline->setTimeType(time_type);
       }
       else {
-	logline->setGraceTime(q->value(12).toInt());
-	logline->setTimeType((RDLogLine::TimeType)q->value(11).toInt());
+	logline->setGraceTime(q->value(13).toInt());
+	logline->setTimeType((RDLogLine::TimeType)q->value(12).toInt());
 	time=event_time;
       }
       logline->setStartTime(RDLogLine::Logged,time);
       logline->setSource(event_src);
       logline->setTransType(RDLogLine::Segue);
-      logline->setMarkerComment(q->value(9).toString());
+      logline->setMarkerComment(q->value(10).toString());
       logline->setEventLength(event_length);
       logline->setLinkEventName(event_name);
       logline->setLinkStartTime(link_logline->linkStartTime());
@@ -1060,6 +1072,7 @@ bool RDEventLine::linkLog(RDLogEvent *e,const QString &svcname,
       logline->setLinkEndSlop(link_logline->linkEndSlop());
       logline->setLinkId(link_logline->linkId());
       logline->setLinkEmbedded(true);
+      ClearImportEvent(import_table,q->value(0).toInt());
       break;
     }
 
@@ -1071,18 +1084,6 @@ bool RDEventLine::linkLog(RDLogEvent *e,const QString &svcname,
     time=time.addMSecs(length);
     grace_time=-1;
   }
-  delete q;
-
-  //
-  // Mark Events as Used
-  //
-  sql=QString("update `")+import_table+"` set "+
-    "EVENT_USED=\"Y\" where "+
-    QString().sprintf("(START_HOUR=%d)&&",start_start_hour)+
-    QString().sprintf("(START_SECS>=%d)&&",start_start_secs/1000)+
-    QString().sprintf("(START_SECS<=%d)&&",end_start_secs/1000)+
-    "(EVENT_USED=\"N\")";
-  q=new RDSqlQuery(sql);
   delete q;
 
   //
@@ -1162,6 +1163,19 @@ bool RDEventLine::linkLog(RDLogEvent *e,const QString &svcname,
   }
   
   return false;
+}
+
+
+void RDEventLine::ClearImportEvent(const QString &tablename,int id)
+{
+  QString sql;
+  RDSqlQuery *q;
+
+  sql=QString("update `")+tablename+"` set "+
+    "EVENT_USED=\"Y\" where "+
+    QString().sprintf("ID=%d",id);
+  q=new RDSqlQuery(sql);
+  delete q;
 }
 
 

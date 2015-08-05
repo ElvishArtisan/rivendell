@@ -88,6 +88,7 @@ class RDEventLine
 	       const QString &import_table,QString *errors);
   
  private:
+  void ClearImportEvent(const QString &tablename,int id);
   int GetLength(unsigned cartnum,int def_length=0);
   QString event_name;
   QString event_properties;
