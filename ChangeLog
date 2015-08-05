@@ -15110,3 +15110,10 @@
 2015-08-05 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in 'lib/rdlog_line.cpp' that assigned incorect states
 	to log link events.
+2015-08-05 Fred Gleason <fredg@paravelsystems.com>
+	* Added code to display Event Name, Start Time and Length for
+	log link events in 'rdlogedit/edit_log.cpp'.
+	* Added code to display Event Name, Start Time and Length for
+	log link events in 'rdairplay/list_log.cpp'.
+	* Added code to display Event Name, Start Time and Length for
+	log link events in 'rdairplay/loglinebox.cpp'.

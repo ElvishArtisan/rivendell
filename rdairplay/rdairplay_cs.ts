@@ -335,11 +335,11 @@ zápis</translation>
     </message>
     <message>
         <source>[music import]</source>
-        <translation>[zavedení hudby]</translation>
+        <translation type="obsolete">[zavedení hudby]</translation>
     </message>
     <message>
         <source>[traffic import]</source>
-        <translation>[zavedení přenosu]</translation>
+        <translation type="obsolete">[zavedení přenosu]</translation>
     </message>
     <message>
         <source>CHAIN TO</source>
@@ -489,11 +489,11 @@ poslechu</translation>
     </message>
     <message>
         <source>[music import]</source>
-        <translation>[zavedení hudby]</translation>
+        <translation type="obsolete">[zavedení hudby]</translation>
     </message>
     <message>
         <source>[traffic import]</source>
-        <translation>[zavedení přenosu]</translation>
+        <translation type="obsolete">[zavedení přenosu]</translation>
     </message>
     <message>
         <source>CHAIN</source>

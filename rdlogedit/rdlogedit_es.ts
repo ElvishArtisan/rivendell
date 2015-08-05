@@ -333,11 +333,11 @@ Do you want to save your changes?</source>
     </message>
     <message>
         <source>[traffic import]</source>
-        <translation>[importar tráfico]</translation>
+        <translation type="obsolete">[importar tráfico]</translation>
     </message>
     <message>
         <source>[music import]</source>
-        <translation>[importar música]</translation>
+        <translation type="obsolete">[importar música]</translation>
     </message>
     <message>
         <source>The log contains carts that are disabled

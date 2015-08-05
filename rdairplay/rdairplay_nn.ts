@@ -343,11 +343,11 @@ logg</translation>
     </message>
     <message>
         <source>[music import]</source>
-        <translation>[musikkimport]</translation>
+        <translation type="obsolete">[musikkimport]</translation>
     </message>
     <message>
         <source>[traffic import]</source>
-        <translation>[trafikkimport]</translation>
+        <translation type="obsolete">[trafikkimport]</translation>
     </message>
     <message>
         <source>CHAIN TO</source>
@@ -499,11 +499,11 @@ Tail</source>
     </message>
     <message>
         <source>[music import]</source>
-        <translation>[musikkimport]</translation>
+        <translation type="obsolete">[musikkimport]</translation>
     </message>
     <message>
         <source>[traffic import]</source>
-        <translation>[trafikkimport]</translation>
+        <translation type="obsolete">[trafikkimport]</translation>
     </message>
     <message>
         <source>CHAIN</source>

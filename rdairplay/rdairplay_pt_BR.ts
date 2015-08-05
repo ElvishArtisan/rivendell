@@ -368,11 +368,11 @@ Log</source>
     </message>
     <message>
         <source>[music import]</source>
-        <translation>[importar música]</translation>
+        <translation type="obsolete">[importar música]</translation>
     </message>
     <message>
         <source>[traffic import]</source>
-        <translation>[importar tráfego]</translation>
+        <translation type="obsolete">[importar tráfego]</translation>
     </message>
     <message>
         <source>CHAIN TO</source>
@@ -490,11 +490,11 @@ Log</source>
     </message>
     <message>
         <source>[music import]</source>
-        <translation>[importar música]</translation>
+        <translation type="obsolete">[importar música]</translation>
     </message>
     <message>
         <source>[traffic import]</source>
-        <translation>[importar tráfego]</translation>
+        <translation type="obsolete">[importar tráfego]</translation>
     </message>
     <message>
         <source>CHAIN</source>
