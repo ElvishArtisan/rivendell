@@ -15107,3 +15107,6 @@
 2015-08-05 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in 'rdairplay/edit_event.cpp' that used incorrect
 	layout when editing log link events.
+2015-08-05 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'lib/rdlog_line.cpp' that assigned incorect states
+	to log link events.
