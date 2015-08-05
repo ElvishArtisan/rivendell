@@ -101,6 +101,14 @@
         <source>Cart Notes</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Edit Log Import Link</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>UNKNOWN LOG EVENT</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>HourSelector</name>

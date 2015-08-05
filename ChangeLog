@@ -15099,8 +15099,11 @@
 	logs.
 2015-08-05 Fred Gleason <fredg@paravelsystems.com>
 	* Added a warning to the Exception Report when a music import
-	attempts to process an inline spot break when no in traffic event
+	attempts to process an inline spot break when no inline traffic event
 	is set in 'lib/rdevent_line.cpp'.
 	* Added 'Event not placed' warnings to the Exception Report for
 	inline traffic, note cart and voice track events in 'lib/rdsvc.cpp'
 	and 'lib/rdevent_line.cpp'.
+2015-08-05 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'rdairplay/edit_event.cpp' that used incorrect
+	layout when editing log link events.
