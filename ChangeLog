@@ -14821,3 +14821,5 @@
 2015-08-12 Fred Gleason <fredg@paravelsystems.com>
 	* Instrumented the cleanup phase of the 'LogPlay::refresh()' method in
 	'rdairplay/log_play.cpp'.
+2015-08-12 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.10.3caefix04.
