@@ -751,19 +751,29 @@ bool LogPlay::refresh()
   //
   syslog(LOG_NOTICE,"LogPlay::refresh() Clean up...");
   delete e;
+  syslog(LOG_NOTICE,"LogPlay::refresh() Clean up 1");
   for(int i=0;i<size();i++) {
     logLine(i)->clearPass();
   }
+  syslog(LOG_NOTICE,"LogPlay::refresh() Clean up 2");
   RefreshEvents(0,size());
+  syslog(LOG_NOTICE,"LogPlay::refresh() Clean up 3");
   UpdateStartTimes(next_line);
+  syslog(LOG_NOTICE,"LogPlay::refresh() Clean up 4");
   UpdatePostPoint();
+  syslog(LOG_NOTICE,"LogPlay::refresh() Clean up 5");
   SetTransTimer();
+  syslog(LOG_NOTICE,"LogPlay::refresh() Clean up 6");
   emit transportChanged();
+  syslog(LOG_NOTICE,"LogPlay::refresh() Clean up 7");
   emit reloaded();
+  syslog(LOG_NOTICE,"LogPlay::refresh() Clean up 8");
   if(!play_refreshable) {
+    syslog(LOG_NOTICE,"LogPlay::refresh() Clean up 9");
     play_refreshable=false;
     emit refreshabilityChanged(play_refreshable);
   }
+  syslog(LOG_NOTICE,"LogPlay::refresh() Clean up 10");
 
   emit refreshStatusChanged(false);
 
