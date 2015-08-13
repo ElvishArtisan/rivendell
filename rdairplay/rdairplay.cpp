@@ -1973,7 +1973,7 @@ void MainWidget::refreshStatusChangedData(bool active)
     }
     air_refresh_label->setText("");
   }
-  qApp->processEvents();
+  //  qApp->processEvents();
 }
 
 

@@ -14823,3 +14823,6 @@
 	'rdairplay/log_play.cpp'.
 2015-08-12 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 2.10.3caefix04.
+2015-08-13 Fred Gleason <fredg@paravelsystems.com>
+	* Commented out the 'qApp->processEvents()' call in the
+	'refreshStatusChangedData()' method in 'rdairplay/rdairplay.cpp'.
