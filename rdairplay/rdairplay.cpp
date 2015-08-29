@@ -1973,6 +1973,10 @@ void MainWidget::refreshStatusChangedData(bool active)
     }
     air_refresh_label->setText("");
   }
+  //
+  // FIXME: Disabled in 2.10.3caefix05 due to segfault problems.
+  //        Do we really need this?
+  //
   //  qApp->processEvents();
 }
 

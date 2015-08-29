@@ -327,11 +327,9 @@ void RLMHost::saveMetadata(const struct rlm_pad *pad,RDLogLine *logline)
 
 void RLMHost::timerData(int timernum)
 {
-  syslog(LOG_NOTICE,"RLMHost::timerData(%d) starts...",timernum);
   if(plugin_timer_expired_sym!=NULL) {
     plugin_timer_expired_sym(this,timernum);
   }
-  syslog(LOG_NOTICE,"RLMHost::timerData() ends.");
 }
 
 

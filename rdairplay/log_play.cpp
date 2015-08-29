@@ -607,18 +607,13 @@ bool LogPlay::refresh()
   int running;
   int first_non_holdover = 0;
 
-  syslog(LOG_NOTICE,"LogPlay::refresh() starting...");
   if(play_macro_running) {
     play_refresh_pending=true;
-    syslog(LOG_NOTICE,"LogPlay::refresh() aborting, macro running.");
     return true;
   }
-  syslog(LOG_NOTICE,"LogPlay::refresh() emiting refreshStatusChanged(true)...");
   emit refreshStatusChanged(true);
   if((size()==0)||(play_log==NULL)) {
-    syslog(LOG_NOTICE,"LogPlay::refresh() emiting refreshStatusChanged(false)...");
     emit refreshStatusChanged(false);
-    syslog(LOG_NOTICE,"LogPlay::refresh() aborting, no log data.");
     return true;
   }
 
@@ -629,36 +624,30 @@ bool LogPlay::refresh()
   e->setLogName(logName());
   e->load();
   play_modified_datetime=play_log->modifiedDatetime();
-  syslog(LOG_NOTICE,"LogPlay::refresh() loaded updated log...");
 
   //
   // Get the Next Event
   //
   if(nextEvent()!=NULL) {   //End of the log?
     next_id=nextEvent()->id();
-    syslog(LOG_NOTICE,"LogPlay::refresh() next event ID is %d...",next_id);
   }
 
   //
   // Get Running Events
   //
   running=runningEvents(lines);
-  syslog(LOG_NOTICE,"LogPlay::refresh() running events are %d...",running);
   for(int i=0;i<running;i++) {
     if(lines[i]==play_next_line-1) {
       current_id=logLine(lines[i])->id();
-      syslog(LOG_NOTICE,"LogPlay::refresh() current_id is %d...",current_id);
     }
   }
   if(running>0 && next_id==-1) {                  //Last Event of Log Running?
     current_id=logLine(lines[running-1])->id();
-    syslog(LOG_NOTICE,"LogPlay::refresh() current_id is %d (LAST EVENT)...",current_id);
   }
 
   //
   // Pass 1: Finished or Active Events
   //
-  syslog(LOG_NOTICE,"LogPlay::refresh() Pass 1 starts...");
   for(int i=0;i<size();i++) {
     d=logLine(i);
     if(d->status()!=RDLogLine::Scheduled) {
@@ -677,7 +666,6 @@ bool LogPlay::refresh()
   //
   // Pass 2: Purge Deleted Events
   //
-  syslog(LOG_NOTICE,"LogPlay::refresh() Pass 2 starts...");
   for(int i=size()-1;i>=0;i--) {
     if(logLine(i)->pass()==0) {
       remove(i,1,false,true);
@@ -700,7 +688,6 @@ bool LogPlay::refresh()
   //
   // Pass 3: Add New Events
   //
-  syslog(LOG_NOTICE,"LogPlay::refresh() Pass 3 starts...");
   for(int i=0;i<e->size();i++) {
     s=e->logLine(i);
     if(s->pass()==0) {
@@ -720,7 +707,6 @@ bool LogPlay::refresh()
   //
   // Pass 4: Delete Orphaned Past Playouts
   //
-  syslog(LOG_NOTICE,"LogPlay::refresh() Pass 4 starts...");
   for(int i=size()-1;i>=0;i--) {
     d=logLine(i);
     if((d->status()==RDLogLine::Finished)&&(d->pass()!=2)) {
@@ -731,7 +717,6 @@ bool LogPlay::refresh()
   //
   // Restore Next Event
   //
-  syslog(LOG_NOTICE,"LogPlay::refresh() Restore Next starts...");
   if(current_id!=-1 && e->loglineById(current_id)!=NULL) {
     // Make Next after currently playing cart
     // The next event cannot have been a holdover,
@@ -749,35 +734,23 @@ bool LogPlay::refresh()
   //
   // Clean Up
   //
-  syslog(LOG_NOTICE,"LogPlay::refresh() Clean up...");
   delete e;
-  syslog(LOG_NOTICE,"LogPlay::refresh() Clean up 1");
   for(int i=0;i<size();i++) {
     logLine(i)->clearPass();
   }
-  syslog(LOG_NOTICE,"LogPlay::refresh() Clean up 2");
   RefreshEvents(0,size());
-  syslog(LOG_NOTICE,"LogPlay::refresh() Clean up 3");
   UpdateStartTimes(next_line);
-  syslog(LOG_NOTICE,"LogPlay::refresh() Clean up 4");
   UpdatePostPoint();
-  syslog(LOG_NOTICE,"LogPlay::refresh() Clean up 5");
   SetTransTimer();
-  syslog(LOG_NOTICE,"LogPlay::refresh() Clean up 6");
   emit transportChanged();
-  syslog(LOG_NOTICE,"LogPlay::refresh() Clean up 7");
   emit reloaded();
-  syslog(LOG_NOTICE,"LogPlay::refresh() Clean up 8");
   if(!play_refreshable) {
-    syslog(LOG_NOTICE,"LogPlay::refresh() Clean up 9");
     play_refreshable=false;
     emit refreshabilityChanged(play_refreshable);
   }
-  syslog(LOG_NOTICE,"LogPlay::refresh() Clean up 10");
 
   emit refreshStatusChanged(false);
 
-  syslog(LOG_NOTICE,"LogPlay::refresh() completes.");
   return true;
 }
 
@@ -1392,8 +1365,6 @@ void LogPlay::resync()
 
 void LogPlay::transTimerData()
 {
-  syslog(LOG_NOTICE,"LogPlay::transTimerData() starts...");
-
   int lines[TRANSPORT_QUANTITY];
   RDLogLine *logline=NULL;
   int grace=0;
@@ -1406,7 +1377,6 @@ void LogPlay::transTimerData()
   if(play_op_mode==RDAirPlayConf::Auto) {
     if(!GetNextPlayable(&play_trans_line,false)) {
       SetTransTimer();
-      syslog(LOG_NOTICE,"LogPlay::transTimerData() ends [1].");
       return;
     }
     if((logline=logLine(play_trans_line))!=NULL) {
@@ -1422,7 +1392,6 @@ void LogPlay::transTimerData()
       if(logline==NULL) {
 	LogLine(RDConfig::LogNotice,"  invalid logline");
 	SetTransTimer();
-	syslog(LOG_NOTICE,"LogPlay::transTimerData() ends [2].");
 	return;
       }
       switch(logline->graceTime()) {
@@ -1455,24 +1424,20 @@ void LogPlay::transTimerData()
     }
   }
   SetTransTimer();
-  syslog(LOG_NOTICE,"LogPlay::transTimerData() ends [3].");
 }
 
 
 void LogPlay::graceTimerData()
 {
-  syslog(LOG_NOTICE,"LogPlay::graceTimerData() starts...");
   int lines[TRANSPORT_QUANTITY];
   int line=play_grace_line;
 
   if(play_op_mode==RDAirPlayConf::Auto) {
     if(!GetNextPlayable(&line,false)) {
       SetTransTimer();
-      syslog(LOG_NOTICE,"LogPlay::graceTimerData() ends [1].");
       return;
     }
     if(line!=play_grace_line) {
-      syslog(LOG_NOTICE,"LogPlay::graceTimerData() ends [2].");
       return;
     }
     if((runningEvents(lines)==0)) {
@@ -1490,7 +1455,6 @@ void LogPlay::graceTimerData()
       }
     }
   }
-  syslog(LOG_NOTICE,"LogPlay::graceTimerData() ends [3].");
 }
 
 

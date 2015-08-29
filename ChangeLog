@@ -14828,3 +14828,7 @@
 	'refreshStatusChangedData()' method in 'rdairplay/rdairplay.cpp'.
 2015-08-13 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 2.10.3caefix05.
+2015-08-29 Fred Gleason <fredg@paravelsystems.com>
+	* Removed instrumentation code in 'rdairplay/hourselector.cpp'.
+	* Removed instrumentation code in 'rdairplay/log_play.cpp'.
+	* Removed instrumentation code in 'rdairplay/rlmhost.cpp'.
