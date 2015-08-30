@@ -1,10 +1,8 @@
 //   rdwavefile.cpp
 //
-//   A class for handling Microsoft WAV files.
+//   A class for handling audio files.
 //
-//   (C) Copyright 2002-2008 Fred Gleason <fredg@paravelsystems.com>
-//
-//    $Id: rdwavefile.cpp,v 1.24.6.5.2.3 2014/07/15 20:02:23 cvs Exp $
+//   (C) Copyright 2002-2015 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -162,7 +160,6 @@ RDWaveFile::RDWaveFile(QString file_name)
   levl_block_size=DEFAULT_LEVL_BLOCK_SIZE;
   cook_buffer=NULL;
   cook_buffer_size=0;
-  cook_encoding=RDWaveFile::Raw;
   wave_type=RDWaveFile::Unknown;
   encode_quality=5.0f;
   serial_number=-1;
@@ -800,7 +797,6 @@ void RDWaveFile::closeWave(int samples)
   free(cook_buffer);
   cook_buffer=NULL;
   cook_buffer_size=0;
-  cook_encoding=RDWaveFile::Raw;
   encode_quality=5.0f;
   serial_number=-1;
   atx_offset=0;
@@ -869,18 +865,6 @@ unsigned RDWaveFile::getDataLength() const
 }
 
 
-RDWaveFile::Encoding RDWaveFile::encoding() const
-{
-  return cook_encoding;
-}
-
-
-void RDWaveFile::setEncoding(RDWaveFile::Encoding code)
-{
-  cook_encoding=code;
-}
-
-
 int RDWaveFile::readWave(void *buf,int count)
 {
   int stream;
@@ -944,115 +928,182 @@ int RDWaveFile::writeWave(void *buf,int count)
     return -1;
   }
   switch(format_tag) {
-      case WAVE_FORMAT_PCM:
-	if(levl_chunk) {
-	  for(int i=0;i<count;i++) {
-	    switch(levl_istate) {
-		case 0:   // Left Channel, LSB
-		  levl_accum=((char *)buf)[i]&0xff;
-		  levl_istate=1;
-		  break;
+  case WAVE_FORMAT_PCM:
+    switch(bits_per_sample) {
+    case 16:
+      if(levl_chunk) {
+	for(int i=0;i<count;i++) {
+	  switch(levl_istate) {
+	  case 0:   // Left Channel, LSB
+	    levl_accum=((char *)buf)[i]&0xff;
+	    levl_istate=1;
+	    break;
 
-		case 1:   // Left Channel, MSB
-		  levl_accum|=((((char *)buf)[i]&0xff)<<8);
-		  switch(channels) {
-		      case 1:
-			if(levl_accum>energy_data[energy_data.size()-1]) {
-			  energy_data[energy_data.size()-1]=levl_accum;
-			}
-			if(++levl_block_ptr==1152) {
-			  energy_data.push_back(0);
-			  levl_block_ptr=0;
-			}
-			levl_istate=0;
-			break;
-
-		      case 2:
-			if(levl_accum>energy_data[energy_data.size()-2]) {
-			  energy_data[energy_data.size()-2]=levl_accum;
-			}
-			levl_istate=2;
-			break;
-		  }
-		  break;
-
-		case 2:   // Right Channel, LSB
-		  levl_accum=((char *)buf)[i]&0xff;
-		  levl_istate=3;
-		  break;
-
-		case 3:   // Right Channel, MSB
-		  levl_accum|=((((char *)buf)[i]&0xff)<<8);
-		  if(levl_accum>energy_data[energy_data.size()-1]) {
-		    energy_data[energy_data.size()-1]=levl_accum;
-		  }
-		  if(++levl_block_ptr==1152) {
-		    energy_data.push_back(0);
-		    energy_data.push_back(0);
-		    levl_block_ptr=0;
-		  }
-		  levl_istate=0;
-		  break;
-	    }
-	  }
-	}
-	lseek(wave_file.handle(),0,SEEK_END);
-	data_length+=count;
-	// Fixup the buffer for big endian hosts (Wav is defined as LE).
-	if (htonl (1l) == 1l){ // Big endian host
-	  for(int i = 0; i < count/2; i++) {
-	    unsigned short s = ((unsigned short*)buf)[i];
-	    WriteSword((unsigned char *)buf,2*i,s);
-	  }
-	}
-	return write(wave_file.handle(),buf,count);
-
-      case WAVE_FORMAT_MPEG:
-	if(levl_chunk&&(head_layer==2)) {
-	  for(int i=0;i<count;i++) {
-	    if(levl_block_ptr==(block_align-5)) {  // Right Channel, MSB
-	      if(channels==2) {
-		levl_accum=((((char *)buf)[i]&0xff)<<8);
+	  case 1:   // Left Channel, MSB
+	    levl_accum|=((((char *)buf)[i]&0xff)<<8);
+	    switch(channels) {
+	    case 1:
+	      if(levl_accum>energy_data[energy_data.size()-1]) {
+		energy_data[energy_data.size()-1]=levl_accum;
 	      }
+	      if(++levl_block_ptr==1152) {
+		energy_data.push_back(0);
+		levl_block_ptr=0;
+	      }
+	      levl_istate=0;
+	      break;
+
+	    case 2:
+	      if(levl_accum>energy_data[energy_data.size()-2]) {
+		energy_data[energy_data.size()-2]=levl_accum;
+	      }
+	      levl_istate=2;
+	      break;
+	    }
+	    break;
+
+	  case 2:   // Right Channel, LSB
+	    levl_accum=((char *)buf)[i]&0xff;
+	    levl_istate=3;
+	    break;
+
+	  case 3:   // Right Channel, MSB
+	    levl_accum|=((((char *)buf)[i]&0xff)<<8);
+	    if(levl_accum>energy_data[energy_data.size()-1]) {
+	      energy_data[energy_data.size()-1]=levl_accum;
+	    }
+	    if(++levl_block_ptr==1152) {
+	      energy_data.push_back(0);
+	      energy_data.push_back(0);
+	      levl_block_ptr=0;
+	    }
+	    levl_istate=0;
+	    break;
+	  }
+	}
+      }
+      lseek(wave_file.handle(),0,SEEK_END);
+      data_length+=count;
+      // Fixup the buffer for big endian hosts (Wav is defined as LE).
+      if (htonl (1l) == 1l){ // Big endian host
+	for(int i = 0; i < count/2; i++) {
+	  unsigned short s = ((unsigned short*)buf)[i];
+	  WriteSword((unsigned char *)buf,2*i,s);
+	}
+      }
+      return write(wave_file.handle(),buf,count);
+
+    case 24:
+      if(levl_chunk) {
+	for(int i=0;i<count;i++) {
+	  switch(levl_istate) {
+	  case 0:   // Left Channel LSB
+	    levl_istate=1;
+	    break;
+
+	  case 1:   // Left Channel, Middle Byte
+	    levl_accum=((char *)buf)[i]&0xff;
+	    levl_istate=2;
+	    break;
+
+	  case 2:   // Left Channel, MSB
+	    levl_accum|=((((char *)buf)[i]&0xff)<<8);
+	    switch(channels) {
+	    case 1:
+	      if(levl_accum>energy_data[energy_data.size()-1]) {
+		energy_data[energy_data.size()-1]=levl_accum;
+	      }
+	      if(++levl_block_ptr==1152) {
+		energy_data.push_back(0);
+		levl_block_ptr=0;
+	      }
+	      levl_istate=0;
+	      break;
+
+	    case 2:
+	      if(levl_accum>energy_data[energy_data.size()-2]) {
+		energy_data[energy_data.size()-2]=levl_accum;
+	      }
+	      levl_istate=3;
+	      break;
+	    }
+	    break;
+
+	  case 3:  // Right Channel, LSB
+	    levl_istate=4;
+	    break;
+
+	  case 4:   // Right Channel, Middle
+	    levl_accum=((char *)buf)[i]&0xff;
+	    levl_istate=5;
+	    break;
+
+	  case 5:   // Right Channel, MSB
+	    levl_accum|=((((char *)buf)[i]&0xff)<<8);
+	    if(levl_accum>energy_data[energy_data.size()-1]) {
+	      energy_data[energy_data.size()-1]=levl_accum;
+	    }
+	    if(++levl_block_ptr==1152) {
+	      energy_data.push_back(0);
+	      energy_data.push_back(0);
+	      levl_block_ptr=0;
+	    }
+	    levl_istate=0;
+	    break;
+	  }
+	}
+      }
+      lseek(wave_file.handle(),0,SEEK_END);
+      data_length+=count;
+      return write(wave_file.handle(),buf,count);
+    }
+
+  case WAVE_FORMAT_MPEG:
+    if(levl_chunk&&(head_layer==2)) {
+      for(int i=0;i<count;i++) {
+	if(levl_block_ptr==(block_align-5)) {  // Right Channel, MSB
+	  if(channels==2) {
+	    levl_accum=((((char *)buf)[i]&0xff)<<8);
+	  }
+	  levl_block_ptr++;
+	}
+	else {
+	  if(levl_block_ptr==(block_align-4)) {  // Right Channel, LSB
+	    if(channels==2) {
+	      levl_accum|=((char *)buf)[i]&0xff;
+	      energy_data[energy_data.size()-1]=levl_accum;
+	    }
+	    levl_block_ptr++;
+	  }
+	  else {
+	    if(levl_block_ptr==(block_align-2)) { // Left Channel, MSB
+	      levl_accum=((((char *)buf)[i]&0xff)<<8);
 	      levl_block_ptr++;
 	    }
 	    else {
-	      if(levl_block_ptr==(block_align-4)) {  // Right Channel, LSB
-		if(channels==2) {
-		  levl_accum|=((char *)buf)[i]&0xff;
-		  energy_data[energy_data.size()-1]=levl_accum;
+	      if(levl_block_ptr==(block_align-1)) {  // Left Channel, LSB
+		levl_accum|=((char *)buf)[i]&0xff;
+		energy_data[energy_data.size()-channels]=levl_accum;
+		for(unsigned j=0;j<channels;j++) {
+		  energy_data.push_back(0);
 		}
-		levl_block_ptr++;
+		levl_block_ptr=0;
 	      }
 	      else {
-		if(levl_block_ptr==(block_align-2)) { // Left Channel, MSB
-		  levl_accum=((((char *)buf)[i]&0xff)<<8);
-		  levl_block_ptr++;
-		}
-		else {
-		  if(levl_block_ptr==(block_align-1)) {  // Left Channel, LSB
-		    levl_accum|=((char *)buf)[i]&0xff;
-		    energy_data[energy_data.size()-channels]=levl_accum;
-		    for(unsigned j=0;j<channels;j++) {
-		      energy_data.push_back(0);
-		    }
-		    levl_block_ptr=0;
-		  }
-		  else {
-		    levl_block_ptr++;
-		  }
-		}
+		levl_block_ptr++;
 	      }
 	    }
 	  }
 	}
-	lseek(wave_file.handle(),0,SEEK_END);
-	data_length+=count;
-	return write(wave_file.handle(),buf,count);
+      }
+    }
+    lseek(wave_file.handle(),0,SEEK_END);
+    data_length+=count;
+    return write(wave_file.handle(),buf,count);
 
-      case WAVE_FORMAT_VORBIS:
-	WriteOggBuffer((char *)buf,count);
-	break;
+  case WAVE_FORMAT_VORBIS:
+    WriteOggBuffer((char *)buf,count);
+    break;
   }
   return 0;
 }
@@ -4231,81 +4282,106 @@ unsigned RDWaveFile::LoadEnergy()
   energy_size=getSampleLength()*getChannels()/1152;
   seekWave(0,SEEK_SET);
   switch(format_tag) {
-      case WAVE_FORMAT_MPEG:
-	if((head_layer==2)&&(mext_left_energy||mext_right_energy)) {
-	  while(i<energy_size) {
-	    lseek(wave_file.handle(),block_align-5,SEEK_CUR);
-	    if(read(wave_file.handle(),block,5)<5) {
-	      has_energy=true;
-	      return i;
-	    }
-	    if(mext_left_energy) {
-	      energy_data.push_back(block[4]+256*block[3]);
-	      i++;
-	    }
-	    if(mext_right_energy) {
-	      energy_data.push_back(block[1]+256*block[0]);
-	      i++;
-	    }
-	  }
+  case WAVE_FORMAT_MPEG:
+    if((head_layer==2)&&(mext_left_energy||mext_right_energy)) {
+      while(i<energy_size) {
+	lseek(wave_file.handle(),block_align-5,SEEK_CUR);
+	if(read(wave_file.handle(),block,5)<5) {
 	  has_energy=true;
 	  return i;
 	}
-	else {
-	  has_energy=false;
-	  return 0;
+	if(mext_left_energy) {
+	  energy_data.push_back(block[4]+256*block[3]);
+	  i++;
 	}
-	break;
+	if(mext_right_energy) {
+	  energy_data.push_back(block[1]+256*block[0]);
+	  i++;
+	}
+      }
+      has_energy=true;
+      return i;
+    }
+    else {
+      has_energy=false;
+      return 0;
+    }
+    break;
 
-      case WAVE_FORMAT_PCM:
-	block_size=2304*channels;
-	while(i<energy_size) {
-	  if(read(wave_file.handle(),pcm,block_size)!=block_size) {
-	    has_energy=true;
-	    return i;
-	  }
-	  for(int j=0;j<channels;j++) {
-	    energy_data.push_back(0);
-	    for(int k=0;k<1152;k++) {
-	      offset=2*k*channels+2*j;
-	      if((pcm[offset]+256*pcm[offset+1])>energy_data[i]) {
-		energy_data[i]=pcm[offset]+256*pcm[offset+1];
-	      }
-	    }
-	    i++;
-	  }
+  case WAVE_FORMAT_PCM:
+    switch(bits_per_sample) {
+    case 16:
+      block_size=2304*channels;
+      while(i<energy_size) {
+	if(read(wave_file.handle(),pcm,block_size)!=block_size) {
+	  has_energy=true;
+	  return i;
 	}
+	for(int j=0;j<channels;j++) {
+	  energy_data.push_back(0);
+	  for(int k=0;k<1152;k++) {
+	    offset=2*k*channels+2*j;
+	    if((pcm[offset]+256*pcm[offset+1])>energy_data[i]) {
+	      energy_data[i]=pcm[offset]+256*pcm[offset+1];
+	    }
+	  }
+	  i++;
+	}
+      }
+      has_energy=true;
+      return i;
+
+    case 24:
+      block_size=3456*channels;
+      while(i<energy_size) {
+	if(read(wave_file.handle(),pcm,block_size)!=block_size) {
+	  has_energy=true;
+	  return i;
+	}
+	for(int j=0;j<channels;j++) {
+	  energy_data.push_back(0);
+	  for(int k=0;k<1152;k++) {
+	    offset=3*k*channels+3*j;
+	    if((pcm[offset]+256*pcm[offset+1])>energy_data[i]) {
+	      energy_data[i]=pcm[offset]+256*pcm[offset+1];
+	    }
+	  }
+	  i++;
+	}
+      }
+      has_energy=true;
+      return i;
+    }
+    break;
+
+  case WAVE_FORMAT_VORBIS:
+    block_size=2304*channels;
+    while(i<energy_size) {
+      if(readWave(pcm,block_size)!=block_size) {
 	has_energy=true;
 	return i;
-	break;
-
-      case WAVE_FORMAT_VORBIS:
-	block_size=2304*channels;
-	while(i<energy_size) {
-	  if(readWave(pcm,block_size)!=block_size) {
-	    has_energy=true;
-	    return i;
-	  }
-	  for(int j=0;j<channels;j++) {
-	    energy_data.push_back(0);
-	    for(int k=0;k<1152;k++) {
-	      offset=2*k*channels+2*j;
-	      if((pcm[offset]+256*pcm[offset+1])>energy_data[i]) {
-		energy_data[i]=pcm[offset]+256*pcm[offset+1];
-	      }
-	    }
-	    i++;
+      }
+      for(int j=0;j<channels;j++) {
+	energy_data.push_back(0);
+	for(int k=0;k<1152;k++) {
+	  offset=2*k*channels+2*j;
+	  if((pcm[offset]+256*pcm[offset+1])>energy_data[i]) {
+	    energy_data[i]=pcm[offset]+256*pcm[offset+1];
 	  }
 	}
-	has_energy=true;
-	return i;
-	break;
+	i++;
+      }
+    }
+    has_energy=true;
+    return i;
+    break;
 
-      default:
-	has_energy=false;
-	return 0;
-	break;
+  default:
+    has_energy=false;
+    return 0;
+    break;
   }
+  return 0;
 }
 
 

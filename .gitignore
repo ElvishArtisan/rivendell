@@ -33,3 +33,4 @@ rivendell
 rivendell-suse
 rivendell.spec
 slack-desc
+tests/audio_peaks_test

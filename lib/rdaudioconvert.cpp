@@ -2,9 +2,7 @@
 //
 // Convert Audio File Formats
 //
-//   (C) Copyright 2010 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdaudioconvert.cpp,v 1.14.2.3.2.1 2014/05/15 16:30:00 cvs Exp $
+//   (C) Copyright 2010-2015 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,6 +18,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
+#include <stdint.h>
 #include <stdlib.h>
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -964,6 +963,10 @@ RDAudioConvert::ErrorCode RDAudioConvert::Stage3Convert(const QString &srcfile,
     ret=Stage3Pcm16(src_sf,&src_sf_info,dstfile);
     break;
 
+  case RDSettings::Pcm24:
+    ret=Stage3Pcm24(src_sf,&src_sf_info,dstfile);
+    break;
+
   case RDSettings::MpegL2:
     ret=Stage3Layer2(src_sf,&src_sf_info,dstfile);
     break;
@@ -1612,7 +1615,6 @@ RDAudioConvert::ErrorCode RDAudioConvert::Stage3Pcm16(SNDFILE *src_sf,
 
   RDWaveFile *wave=new RDWaveFile(dstfile);
   wave->setFormatTag(WAVE_FORMAT_PCM);
-  wave->setEncoding(RDWaveFile::Signed16Int);
   wave->setChannels(src_sf_info->channels);
   wave->setSamplesPerSec(src_sf_info->samplerate);
   wave->setBitsPerSample(16);
@@ -1639,6 +1641,55 @@ RDAudioConvert::ErrorCode RDAudioConvert::Stage3Pcm16(SNDFILE *src_sf,
     }
   }
   delete sf_buffer;
+  wave->closeWave();
+  delete wave;
+  return RDAudioConvert::ErrorOk;
+}
+
+
+RDAudioConvert::ErrorCode RDAudioConvert::Stage3Pcm24(SNDFILE *src_sf,
+						      SF_INFO *src_sf_info,
+						      const QString &dstfile)
+{
+  int *sf_buffer=NULL;
+  uint8_t *pcm24=NULL;
+  ssize_t n;
+
+  RDWaveFile *wave=new RDWaveFile(dstfile);
+  wave->setFormatTag(WAVE_FORMAT_PCM);
+  wave->setChannels(src_sf_info->channels);
+  wave->setSamplesPerSec(src_sf_info->samplerate);
+  wave->setBitsPerSample(24);
+  wave->setBextChunk(true);
+  wave->setCartChunk(conv_dst_wavedata!=NULL);
+  if((conv_dst_wavedata!=NULL)&&(conv_settings->normalizationLevel()!=0)) {
+    wave->setCartLevelRef(32768*
+	      exp10((double)conv_settings->normalizationLevel()/20.0));
+  }
+  wave->setLevlChunk(true);
+  sf_buffer=new int[2048*src_sf_info->channels];
+  pcm24=new uint8_t[2048*src_sf_info->channels*sizeof(int)];
+  unlink(dstfile);
+  if(!wave->createWave(conv_dst_wavedata)) {
+    return RDAudioConvert::ErrorNoDestination;
+  }
+  while((n=sf_readf_int(src_sf,sf_buffer,2048))>0) {
+    for(ssize_t i=0;i<(n*src_sf_info->channels);i++) {
+      pcm24[3*i]=0xFF&(sf_buffer[i]>>8);
+      pcm24[3*i+1]=0xFF&(sf_buffer[i]>>16);
+      pcm24[3*i+2]=0xFF&(sf_buffer[i]>>24);
+    }
+    if((unsigned)wave->writeWave(pcm24,n*3*src_sf_info->channels)!=
+       (n*3*src_sf_info->channels)) {
+      delete sf_buffer;
+      delete pcm24;
+      wave->closeWave();
+      delete wave;
+      return RDAudioConvert::ErrorNoSpace;
+    }
+  }
+  delete sf_buffer;
+  delete pcm24;
   wave->closeWave();
   delete wave;
   return RDAudioConvert::ErrorOk;

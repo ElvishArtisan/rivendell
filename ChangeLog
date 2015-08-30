@@ -14834,3 +14834,24 @@
 	* Removed instrumentation code in 'rdairplay/rlmhost.cpp'.
 2015-08-29 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 2.10.3caefix06.
+2015-08-29 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'RDAudioConvert::Stage3Pcm24()' method in
+	'lib/rdaudioconvert.cpp' and 'lib/rdaudioconvert.h'.
+	* Added a 'Format::Pcm24' value to the 'RDSettings::Format'
+	enumeration in 'lib/rdsettings.h'.
+	* Modified the 'RDAudioConvert' class to support generating PCM24
+	output in 'lib/rdaudioconvert.cpp' and 'lib/rdaudioconvert.h'.
+	* Modified the 'RDPlayStream' class to support playing PCM24
+	data in 'rdhpi/rdplaystream.cpp'.
+	* Modified the 'RDRecordStream' class to support capturing PCM24
+	data in 'rdhpi/rdrecordstream.cpp'.
+	* Added an 'audio_peaks_test' harness in 'tests/audio_peaks_test.cpp'
+	and 'tests/audio_peaks_test.h'.
+	* Added 'PCM24' to the list of available formats in
+	'rdadmin/edit_rdlibrary.cpp' and 'rdadmin/edit_rdlibrary.h'.
+	* Added 'PCM24' to the list of available formats in
+	'rdadmin/edit_decks.cpp'.
+	* Added PCM24 support for file importation in
+	'web/rdxport/import.cpp'.
+	* Added an 'RDCae::Pcm24' value to the 'RDCae::AudioCoding
+	enumeration in 'lib/rdcae.h'.

@@ -2,9 +2,7 @@
 //
 //   A class for recording Microsoft WAV files.
 //
-//   (C) Copyright 2002-2007 Fred Gleason <fredg@paravelsystems.com>
-//
-//    $Id: rdhpirecordstream.h,v 1.6.6.1 2012/05/04 14:56:22 cvs Exp $
+//   (C) Copyright 2002-2015 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as

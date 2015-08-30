@@ -107,6 +107,10 @@ void Xport::Import()
   case 1:
     settings->setFormat(RDSettings::MpegL2Wav);
     break;
+
+  case 2:
+    settings->setFormat(RDSettings::Pcm24);
+    break;
   }
   settings->setChannels(channels);
   settings->setSampleRate(xport_system->sampleRate());

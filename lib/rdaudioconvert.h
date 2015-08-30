@@ -2,9 +2,7 @@
 //
 // Convert Audio File Formats
 //
-//   (C) Copyright 2010 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdaudioconvert.h,v 1.4.4.1 2012/09/06 19:47:15 cvs Exp $
+//   (C) Copyright 2010-2015 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -89,6 +87,8 @@ class RDAudioConvert : public QObject
   RDAudioConvert::ErrorCode Stage3Layer2(SNDFILE *src_sf,SF_INFO *src_sf_info,
 					 const QString &dstfile);
   RDAudioConvert::ErrorCode Stage3Pcm16(SNDFILE *src_sf,SF_INFO *src_sf_info,
+					const QString &dstfile);
+  RDAudioConvert::ErrorCode Stage3Pcm24(SNDFILE *src_sf,SF_INFO *src_sf_info,
 					const QString &dstfile);
   void ApplyId3Tag(const QString &filename,RDWaveData *wavedata);
   void UpdatePeak(const float data[],ssize_t len);

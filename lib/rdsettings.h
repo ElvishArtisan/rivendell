@@ -1,10 +1,8 @@
 // rdsettings.h
 //
-// Rivendell Audio Settings
+// Audio Format Settings
 //
-//   (C) Copyright 2002-2003 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdsettings.h,v 1.11 2010/07/29 19:32:34 cvs Exp $
+//   (C) Copyright 2002-2015 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -29,7 +27,7 @@ class RDSettings
 {
  public:
   enum Format {Pcm16=0,MpegL1=1,MpegL2=2,MpegL3=3,Flac=4,OggVorbis=5,
-	       MpegL2Wav=6};
+	       MpegL2Wav=6,Pcm24=7};
   RDSettings();
   RDSettings::Format format() const;
   void setFormat(Format format);

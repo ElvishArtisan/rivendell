@@ -1071,6 +1071,10 @@ configured to run the CAE service in order to populate the audio resources datab
         <source>Check that the unit is online and try again.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>PCM24</source>
+        <translation type="unfinished">PCM24</translation>
+    </message>
 </context>
 <context>
     <name>EditDropbox</name>
@@ -2741,19 +2745,19 @@ Isto para popular os recursos de áudio na Base de Dados.</translation>
     </message>
     <message>
         <source>40 kbps/chan</source>
-        <translation>40 kbps/chan</translation>
+        <translation type="obsolete">40 kbps/chan</translation>
     </message>
     <message>
         <source>224 kbps/chan</source>
-        <translation>224 kbps/chan</translation>
+        <translation type="obsolete">224 kbps/chan</translation>
     </message>
     <message>
         <source>256 kbps/chan</source>
-        <translation>256 kbps/chan</translation>
+        <translation type="obsolete">256 kbps/chan</translation>
     </message>
     <message>
         <source>320 kbps/chan</source>
-        <translation>320 kbps/chan</translation>
+        <translation type="obsolete">320 kbps/chan</translation>
     </message>
     <message>
         <source>Sample Rate Converter:</source>
@@ -2772,6 +2776,10 @@ configured to run the CAE service in order to populate the audio resources datab
     <message>
         <source>Previous</source>
         <translation type="unfinished">Anterior</translation>
+    </message>
+    <message>
+        <source>PCM24</source>
+        <translation type="unfinished">PCM24</translation>
     </message>
 </context>
 <context>
