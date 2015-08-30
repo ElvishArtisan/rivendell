@@ -2,9 +2,7 @@
 //
 // The JACK Driver for the Core Audio Engine component of Rivendell
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: cae_jack.cpp,v 1.59.4.6 2012/11/30 16:14:58 cvs Exp $
+//   (C) Copyright 2002-2015 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -649,6 +647,8 @@ void MainObject::jackInit(RDStation *station)
   //
   JackInitCallback();
   jack_wave_buffer=new short[RINGBUFFER_SIZE];
+  jack_wave32_buffer=new int[RINGBUFFER_SIZE];
+  jack_wave24_buffer=new uint8_t[RINGBUFFER_SIZE];
   jack_sample_buffer=new jack_default_audio_sample_t[RINGBUFFER_SIZE];
 
   //
@@ -882,6 +882,13 @@ bool MainObject::jackLoadRecord(int card,int stream,int coding,int chans,
     jack_record_wave[stream]->setChannels(chans);
     jack_record_wave[stream]->setSamplesPerSec(samprate);
     jack_record_wave[stream]->setBitsPerSample(16);
+    break;
+
+  case 4:  // PCM24
+    jack_record_wave[stream]->setFormatTag(WAVE_FORMAT_PCM);
+    jack_record_wave[stream]->setChannels(chans);
+    jack_record_wave[stream]->setSamplesPerSec(samprate);
+    jack_record_wave[stream]->setBitsPerSample(24);
     break;
 
   case 2:  // MPEG Layer 2
@@ -1395,9 +1402,24 @@ void MainObject::WriteJackBuffer(int stream,jack_default_audio_sample_t *buffer,
   jack_samples_recorded[stream]+=frames;
   switch(jack_record_wave[stream]->getFormatTag()) {
   case WAVE_FORMAT_PCM:
-    n=len/sizeof(jack_default_audio_sample_t);
-    src_float_to_short_array(buffer,jack_wave_buffer,n);
-    jack_record_wave[stream]->writeWave(jack_wave_buffer,n*sizeof(short));
+    switch(jack_record_wave[stream]->getBitsPerSample()) {
+    case 16:  // PCM16
+      n=len/sizeof(jack_default_audio_sample_t);
+      src_float_to_short_array(buffer,jack_wave_buffer,n);
+      jack_record_wave[stream]->writeWave(jack_wave_buffer,n*sizeof(short));
+      break;
+
+    case 24:  // PCM24
+      n=len/sizeof(jack_default_audio_sample_t);
+      src_float_to_int_array(buffer,jack_wave32_buffer,n);
+      for(unsigned i=0;i<n;i++) {
+	for(unsigned j=0;j<3;j++) {
+	  jack_wave24_buffer[3*i+j]=((uint8_t *)jack_wave32_buffer)[4*i+j+1];
+	}
+      }
+      jack_record_wave[stream]->writeWave(jack_wave24_buffer,n*3);
+      break;
+    }
     break;
 
   case WAVE_FORMAT_MPEG:
@@ -1451,6 +1473,35 @@ void MainObject::FillJackOutputStream(int stream)
   }
   switch(jack_play_wave[stream]->getFormatTag()) {
   case WAVE_FORMAT_PCM:
+    switch(jack_play_wave[stream]->getBitsPerSample()) {
+    case 16:  // PMC16
+      free=(int)free/jack_output_channels[stream]*jack_output_channels[stream];
+      n=jack_play_wave[stream]->readWave(jack_wave_buffer,sizeof(short)*free)/
+	sizeof(short);
+      if((n!=free)&&(jack_st_conv[stream]==NULL)) {
+	jack_eof[stream]=true;
+	jack_stop_timer[stream]->stop();
+      }
+      src_short_to_float_array(jack_wave_buffer,jack_sample_buffer,n);
+      break;
+
+    case 24:  // PMC24
+      free=(int)free/jack_output_channels[stream]*jack_output_channels[stream];
+      n=jack_play_wave[stream]->readWave(jack_wave24_buffer,3*free)/3;
+      if((n!=free)&&(jack_st_conv[stream]==NULL)) {
+	jack_eof[stream]=true;
+	jack_stop_timer[stream]->stop();
+      }
+      for(int i=0;i<n;i++) {
+	for(unsigned j=0;j<3;j++) {
+	  ((uint8_t *)jack_wave32_buffer)[4*i+j+1]=jack_wave24_buffer[3*i+j];
+	}
+      }
+      src_int_to_float_array(jack_wave32_buffer,jack_sample_buffer,n);
+      break;
+    }
+    break;
+
   case WAVE_FORMAT_VORBIS:
     free=(int)free/jack_output_channels[stream]*jack_output_channels[stream];
     n=jack_play_wave[stream]->readWave(jack_wave_buffer,sizeof(short)*free)/

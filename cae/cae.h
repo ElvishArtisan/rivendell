@@ -267,6 +267,8 @@ class MainObject : public QObject
   RDWaveFile *jack_record_wave[RD_MAX_STREAMS];
   RDWaveFile *jack_play_wave[RD_MAX_STREAMS];
   short *jack_wave_buffer;
+  int *jack_wave32_buffer;
+  uint8_t *jack_wave24_buffer;
   jack_default_audio_sample_t *jack_sample_buffer;
   soundtouch::SoundTouch *jack_st_conv[RD_MAX_STREAMS];
   short jack_input_volume_db[RD_MAX_STREAMS];

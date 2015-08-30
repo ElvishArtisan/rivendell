@@ -14857,3 +14857,6 @@
 	enumeration in 'lib/rdcae.h'.
 2015-08-30 Fred Gleason <fredg@paravelsystems.com>
 	* Added PCM24 to 'lib/export_settings_dialog.cpp'.
+2015-08-30 Fred Gleason <fredg@paravelsystems.com>
+	* Added PCM24 play-out and capture support for JACK in
+	'cae/cae_jack.cpp' and 'cae/cae.h'.
