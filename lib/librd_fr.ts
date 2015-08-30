@@ -1369,6 +1369,10 @@ Overwrite?</source>
         <source>144 kbps</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>PCM24</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RDGetAth</name>

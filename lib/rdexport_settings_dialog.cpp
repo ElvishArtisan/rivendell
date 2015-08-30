@@ -2,9 +2,7 @@
 //
 // Edit RDLibrary Settings
 //
-//   (C) Copyright 2002 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdexport_settings_dialog.cpp,v 1.12.8.1 2012/12/13 22:33:44 cvs Exp $
+//   (C) Copyright 2002-2015 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -36,9 +34,8 @@
 
 RDExportSettingsDialog::RDExportSettingsDialog(RDSettings *settings,
 					       RDStation *station,
-					       QWidget *parent,
-					       const char *name)
-  : QDialog(parent,name,true)
+					       QWidget *parent)
+  : QDialog(parent,"",true)
 {
   lib_settings=settings;
   lib_station=station;
@@ -62,66 +59,61 @@ RDExportSettingsDialog::RDExportSettingsDialog(RDSettings *settings,
   //
   // Default Format
   //
-  lib_format_box=new QComboBox(this,"lib_format_box");
+  lib_format_box=new QComboBox(this);
   lib_format_box->setGeometry(100,10,150,19);
   connect(lib_format_box,SIGNAL(activated(const QString &)),
 	  this,SLOT(formatData(const QString &)));
-  QLabel *lib_format_label=new QLabel(lib_format_box,"Format:",this,
-				       "lib_format_label");
+  QLabel *lib_format_label=new QLabel(lib_format_box,"Format:",this);
   lib_format_label->setGeometry(25,10,70,19);
   lib_format_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
 
   //
   // Default Channels
   //
-  lib_channels_box=new QComboBox(this,"lib_channels_box");
+  lib_channels_box=new QComboBox(this);
   lib_channels_box->setGeometry(100,32,60,19);
   QLabel *lib_channels_label=
-    new QLabel(lib_channels_box,tr("&Channels:"),this,
-	       "lib_channels_label");
+    new QLabel(lib_channels_box,tr("&Channels:"),this);
   lib_channels_label->setGeometry(25,32,70,19);
   lib_channels_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
 
   //
   // Default Sample Rate
   //
-  lib_samprate_box=new QComboBox(this,"lib_samprate_box");
+  lib_samprate_box=new QComboBox(this);
   lib_samprate_box->setGeometry(100,54,100,19);
   connect(lib_samprate_box,SIGNAL(activated(const QString &)),
 	  this,SLOT(samprateData(const QString &)));
   QLabel *lib_samprate_label=
-    new QLabel(lib_samprate_box,tr("&Sample Rate:"),this,
-	       "lib_samprate_label");
+    new QLabel(lib_samprate_box,tr("&Sample Rate:"),this);
   lib_samprate_label->setGeometry(25,54,75,19);
   lib_samprate_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
 
   //
   // Default Bitrate
   //
-  lib_bitrate_box=new QComboBox(this,"lib_bitrate_box");
+  lib_bitrate_box=new QComboBox(this);
   lib_bitrate_box->setGeometry(100,76,100,19);
   connect(lib_bitrate_box,SIGNAL(activated(const QString &)),
 	  this,SLOT(bitrateData(const QString &)));
-  lib_bitrate_label=new QLabel(lib_bitrate_box,tr("&Bitrate:"),this,
-			       "lib_bitrate_label");
+  lib_bitrate_label=new QLabel(lib_bitrate_box,tr("&Bitrate:"),this);
   lib_bitrate_label->setGeometry(25,76,70,19);
   lib_bitrate_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
 
   //
   // Quality
   //
-  lib_quality_spin=new QSpinBox(this,"lib_quality_box");
+  lib_quality_spin=new QSpinBox(this);
   lib_quality_spin->setGeometry(100,98,50,19);
   lib_quality_spin->setRange(0,10);
-  lib_quality_label=new QLabel(lib_quality_spin,tr("&Quality:"),this,
-			       "lib_quality_label");
+  lib_quality_label=new QLabel(lib_quality_spin,tr("&Quality:"),this);
   lib_quality_label->setGeometry(25,98,70,19);
   lib_quality_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
 
   //
   //  Ok Button
   //
-  QPushButton *ok_button=new QPushButton(this,"ok_button");
+  QPushButton *ok_button=new QPushButton(this);
   ok_button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
   ok_button->setDefault(true);
   ok_button->setFont(button_font);
@@ -131,7 +123,7 @@ RDExportSettingsDialog::RDExportSettingsDialog(RDSettings *settings,
   //
   //  Cancel Button
   //
-  QPushButton *cancel_button=new QPushButton(this,"cancel_button");
+  QPushButton *cancel_button=new QPushButton(this);
   cancel_button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,
 			     80,50);
   cancel_button->setFont(button_font);
@@ -143,6 +135,10 @@ RDExportSettingsDialog::RDExportSettingsDialog(RDSettings *settings,
   //
   lib_format_box->insertItem(tr("PCM16"));
   if(settings->format()==RDSettings::Pcm16) {
+    lib_format_box->setCurrentItem(lib_format_box->count()-1);
+  }
+  lib_format_box->insertItem(tr("PCM24"));
+  if(settings->format()==RDSettings::Pcm24) {
     lib_format_box->setCurrentItem(lib_format_box->count()-1);
   }
   if(station->haveCapability(RDStation::HaveFlac)) {
@@ -339,6 +335,7 @@ void RDExportSettingsDialog::ShowBitRates(RDSettings::Format fmt,
   lib_bitrate_box->clear();
   switch(fmt) {
       case RDSettings::Pcm16:  // PCM16
+      case RDSettings::Pcm24:  // PCM16
 	lib_channels_box->insertItem("1");
 	lib_channels_box->insertItem("2");
 	lib_samprate_box->insertItem("32000");
@@ -913,6 +910,9 @@ RDSettings::Format RDExportSettingsDialog::GetFormat(QString str)
 {
   if(str==tr("PCM16")) {
     return RDSettings::Pcm16;
+  }
+  if(str==tr("PCM24")) {
+    return RDSettings::Pcm24;
   }
   if(str==tr("FLAC")) {
     return RDSettings::Flac;

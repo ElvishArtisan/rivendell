@@ -14834,7 +14834,7 @@
 	* Removed instrumentation code in 'rdairplay/rlmhost.cpp'.
 2015-08-29 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 2.10.3caefix06.
-2015-08-29 Fred Gleason <fredg@paravelsystems.com>
+2015-08-30 Fred Gleason <fredg@paravelsystems.com>
 	* Added an 'RDAudioConvert::Stage3Pcm24()' method in
 	'lib/rdaudioconvert.cpp' and 'lib/rdaudioconvert.h'.
 	* Added a 'Format::Pcm24' value to the 'RDSettings::Format'
@@ -14855,3 +14855,5 @@
 	'web/rdxport/import.cpp'.
 	* Added an 'RDCae::Pcm24' value to the 'RDCae::AudioCoding
 	enumeration in 'lib/rdcae.h'.
+2015-08-30 Fred Gleason <fredg@paravelsystems.com>
+	* Added PCM24 to 'lib/export_settings_dialog.cpp'.

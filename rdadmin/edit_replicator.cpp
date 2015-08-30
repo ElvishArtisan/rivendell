@@ -2,9 +2,7 @@
 //
 // Edit a Rivendell Replicator
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: edit_replicator.cpp,v 1.2 2010/07/29 19:32:34 cvs Exp $
+//   (C) Copyright 2002-2015 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -311,7 +309,7 @@ void EditReplicator::setFormatData()
 {
   RDStation *station=new RDStation(admin_config->stationName());
   RDExportSettingsDialog *dialog=
-    new RDExportSettingsDialog(repl_settings,station,this,"dialog");
+    new RDExportSettingsDialog(repl_settings,station,this);
   dialog->exec();
   delete dialog;
   delete station;

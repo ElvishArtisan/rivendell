@@ -2,9 +2,7 @@
 //
 // Edit a Rivendell Feed
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: edit_feed.cpp,v 1.9 2012/01/16 11:16:36 cvs Exp $
+//   (C) Copyright 2002-2015 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -579,7 +577,7 @@ void EditFeed::setFormatData()
 {
   RDStation *station=new RDStation(admin_config->stationName());
   RDExportSettingsDialog *dialog=
-    new RDExportSettingsDialog(&feed_settings,station,this,"dialog");
+    new RDExportSettingsDialog(&feed_settings,station,this);
   dialog->exec();
   delete dialog;
   delete station;
