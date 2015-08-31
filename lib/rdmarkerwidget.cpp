@@ -123,7 +123,7 @@ void RDMarkerWidget::setValue(int msecs)
     mark_edit->setText("");
   }
   else {
-    mark_value=100*(msecs/100);
+    mark_value=10*(msecs/10);
     mark_edit->setText(RDGetTimeLength(mark_value,true,true));
   }
 }

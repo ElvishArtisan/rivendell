@@ -15119,3 +15119,6 @@
 	log link events in 'rdairplay/loglinebox.cpp'.
 2015-08-05 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 2.10.3int05.
+2015-08-31 Fred Gleason <fredg@paravelsystems.com>
+	* Adjusted control round-off in 'lib/rdmarkerwidget.cpp' to provide
+	finer resolution for marker positioning.
