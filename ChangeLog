@@ -14862,3 +14862,5 @@
 	'cae/cae_jack.cpp' and 'cae/cae.h'.
 2015-08-30 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 2.10.3-pcm24.0.
+2015-08-30 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.10.3pcm24.0.
