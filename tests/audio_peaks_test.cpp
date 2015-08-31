@@ -33,6 +33,9 @@ MainObject::MainObject(QObject *parent)
   :QObject(parent)
 {
   QString filename;
+  unsigned frame=0;
+  bool frame_used=false;
+  bool ok=false;
 
   //
   // Read Command Options
@@ -43,6 +46,15 @@ MainObject::MainObject(QObject *parent)
   for(unsigned i=0;i<cmd->keys();i++) {
     if(cmd->key(i)=="--filename") {
       filename=cmd->value(i);
+      cmd->setProcessed(i,true);
+    }
+    if(cmd->key(i)=="--frame") {
+      frame=cmd->value(i).toUInt(&ok);
+      if(!ok) {
+	fprintf(stderr,"audio_peaks_test: invalid --frame arguument\n");
+	exit(256);
+      }
+      frame_used=true;
       cmd->setProcessed(i,true);
     }
     if(!cmd->processed(i)) {
@@ -66,6 +78,16 @@ MainObject::MainObject(QObject *parent)
   if(wave->hasEnergy()) {
     printf("\"%s\" has energy, size: %u\n",(const char *)filename,
 	   wave->energySize());
+    if(frame_used) {
+      if(wave->getChannels()==1) {
+	printf("frame: %u: %d\n",frame,0xFFFF&wave->energy(frame));
+      }
+      else {
+	printf("frame %u: left: %d  right: %d\n",frame,
+	       0xFFFF&wave->energy(2*frame),
+	       0xFFFF&wave->energy(2*frame+1));
+      }
+    }
   }
   else {
     printf("\"%s\" does NOT have energy\n",(const char *)filename);

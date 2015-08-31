@@ -14864,3 +14864,7 @@
 	* Incremented the package version to 2.10.3-pcm24.0.
 2015-08-30 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 2.10.3pcm24.0.
+2015-08-30 Fred Gleason <fredg@paravelsystems.com>
+	* Added a --frames=' parameter in 'tests/audio_peaks_test.cpp'.
+	* Fixed a benchpost bug in generating peak energy data in
+	'lib/rdwavefile.cpp'.

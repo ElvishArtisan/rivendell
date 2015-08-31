@@ -23,7 +23,7 @@
 
 #include <qobject.h>
 
-#define AUDIO_PEAKS_TEST_USAGE "[options]\n\nTest the Rivendell audio peak routines\n\nOptions are:\n--filename=<wav-file>\n\n"
+#define AUDIO_PEAKS_TEST_USAGE "[options]\n\nTest the Rivendell audio peak routines\n\nOptions are:\n--filename=<wav-file>\n     File to process.\n\n--frame=<num>\n     Print value for block number <num>.\n\n"
 
 class MainObject : public QObject
 {
