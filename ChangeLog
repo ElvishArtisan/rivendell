@@ -14860,3 +14860,5 @@
 2015-08-30 Fred Gleason <fredg@paravelsystems.com>
 	* Added PCM24 play-out and capture support for JACK in
 	'cae/cae_jack.cpp' and 'cae/cae.h'.
+2015-08-30 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.10.3-pcm24.0.
