@@ -295,7 +295,7 @@ RDEditAudio::RDEditAudio(RDCart *cart,QString cut_name,RDCae *cae,RDUser *user,
   edit_cue_widget[RDEditAudio::Start]=
     new RDMarkerWidget(tr("Cut\nStart"),RD_START_END_MARKER_COLOR,
 		       edit_sample_rate,this);
-  edit_cue_widget[RDEditAudio::Start]->setGeometry(20,485,158,45);
+  edit_cue_widget[RDEditAudio::Start]->setGeometry(20,485,165,45);
   enabled_mapper->
     setMapping(edit_cue_widget[RDEditAudio::Start],(int)RDEditAudio::Start);
   connect(edit_cue_widget[RDEditAudio::Start],SIGNAL(selectionChanged()),
@@ -312,7 +312,7 @@ RDEditAudio::RDEditAudio(RDCart *cart,QString cut_name,RDCae *cae,RDUser *user,
   edit_cue_widget[RDEditAudio::End]=
     new RDMarkerWidget(tr("Cut\nEnd"),RD_START_END_MARKER_COLOR,
 		       edit_sample_rate,this);
-  edit_cue_widget[RDEditAudio::End]->setGeometry(20,530,158,45);
+  edit_cue_widget[RDEditAudio::End]->setGeometry(20,530,165,45);
   enabled_mapper->
     setMapping(edit_cue_widget[RDEditAudio::End],(int)RDEditAudio::End);
   connect(edit_cue_widget[RDEditAudio::End],SIGNAL(selectionChanged()),
@@ -329,7 +329,7 @@ RDEditAudio::RDEditAudio(RDCart *cart,QString cut_name,RDCae *cae,RDUser *user,
   edit_cue_widget[RDEditAudio::TalkStart]=
     new RDMarkerWidget(tr("Talk\nStart"),RD_TALK_MARKER_COLOR,
 		       edit_sample_rate,this);
-  edit_cue_widget[RDEditAudio::TalkStart]->setGeometry(175,585,158,45);
+  edit_cue_widget[RDEditAudio::TalkStart]->setGeometry(195,585,165,45);
   enabled_mapper->setMapping(edit_cue_widget[RDEditAudio::TalkStart],
 			     (int)RDEditAudio::TalkStart);
   connect(edit_cue_widget[RDEditAudio::TalkStart],SIGNAL(selectionChanged()),
@@ -347,7 +347,7 @@ RDEditAudio::RDEditAudio(RDCart *cart,QString cut_name,RDCae *cae,RDUser *user,
   edit_cue_widget[RDEditAudio::TalkEnd]=
     new RDMarkerWidget(tr("Talk\nEnd"),RD_TALK_MARKER_COLOR,
 		       edit_sample_rate,this);
-  edit_cue_widget[RDEditAudio::TalkEnd]->setGeometry(175,630,158,45);
+  edit_cue_widget[RDEditAudio::TalkEnd]->setGeometry(195,630,165,45);
   enabled_mapper->setMapping(edit_cue_widget[RDEditAudio::TalkEnd],
 			     (int)RDEditAudio::TalkEnd);
   connect(edit_cue_widget[RDEditAudio::TalkEnd],SIGNAL(selectionChanged()),
@@ -364,7 +364,7 @@ RDEditAudio::RDEditAudio(RDCart *cart,QString cut_name,RDCae *cae,RDUser *user,
   edit_cue_widget[RDEditAudio::SegueStart]=
     new RDMarkerWidget(tr("Segue\nStart"),RD_SEGUE_MARKER_COLOR,
 		       edit_sample_rate,this);
-  edit_cue_widget[RDEditAudio::SegueStart]->setGeometry(330,585,158,45);
+  edit_cue_widget[RDEditAudio::SegueStart]->setGeometry(370,585,165,45);
   enabled_mapper->setMapping(edit_cue_widget[RDEditAudio::SegueStart],
 			     (int)RDEditAudio::SegueStart);
   connect(edit_cue_widget[RDEditAudio::SegueStart],SIGNAL(selectionChanged()),
@@ -382,7 +382,7 @@ RDEditAudio::RDEditAudio(RDCart *cart,QString cut_name,RDCae *cae,RDUser *user,
   edit_cue_widget[RDEditAudio::SegueEnd]=
     new RDMarkerWidget(tr("Segue\nEnd"),RD_SEGUE_MARKER_COLOR,
 		       edit_sample_rate,this);
-  edit_cue_widget[RDEditAudio::SegueEnd]->setGeometry(330,630,158,45);
+  edit_cue_widget[RDEditAudio::SegueEnd]->setGeometry(370,630,165,45);
   enabled_mapper->setMapping(edit_cue_widget[RDEditAudio::SegueEnd],
 			     (int)RDEditAudio::SegueEnd);
   connect(edit_cue_widget[RDEditAudio::SegueEnd],SIGNAL(selectionChanged()),
@@ -400,7 +400,7 @@ RDEditAudio::RDEditAudio(RDCart *cart,QString cut_name,RDCae *cae,RDUser *user,
   edit_cue_widget[RDEditAudio::FadeUp]=
     new RDMarkerWidget(tr("Fade\nUp"),RD_FADE_MARKER_COLOR,
 		       edit_sample_rate,this);
-  edit_cue_widget[RDEditAudio::FadeUp]->setGeometry(20,585,150,45);
+  edit_cue_widget[RDEditAudio::FadeUp]->setGeometry(20,585,165,45);
   enabled_mapper->setMapping(edit_cue_widget[RDEditAudio::FadeUp],
 			     (int)RDEditAudio::FadeUp);
   connect(edit_cue_widget[RDEditAudio::FadeUp],SIGNAL(selectionChanged()),
@@ -417,7 +417,7 @@ RDEditAudio::RDEditAudio(RDCart *cart,QString cut_name,RDCae *cae,RDUser *user,
   edit_cue_widget[RDEditAudio::FadeDown]=
     new RDMarkerWidget(tr("Fade\nDown"),RD_FADE_MARKER_COLOR,
 		       edit_sample_rate,this);
-  edit_cue_widget[RDEditAudio::FadeDown]->setGeometry(20,630,150,45);
+  edit_cue_widget[RDEditAudio::FadeDown]->setGeometry(20,630,165,45);
   enabled_mapper->setMapping(edit_cue_widget[RDEditAudio::FadeDown],
 			     (int)RDEditAudio::FadeDown);
   connect(edit_cue_widget[RDEditAudio::FadeDown],SIGNAL(selectionChanged()),
@@ -435,7 +435,7 @@ RDEditAudio::RDEditAudio(RDCart *cart,QString cut_name,RDCae *cae,RDUser *user,
   edit_cue_widget[RDEditAudio::HookStart]=
     new RDMarkerWidget(tr("Hook\nStart"),RD_HOOK_MARKER_COLOR,
 		       edit_sample_rate,this);
-  edit_cue_widget[RDEditAudio::HookStart]->setGeometry(485,585,150,45);
+  edit_cue_widget[RDEditAudio::HookStart]->setGeometry(545,585,165,45);
   enabled_mapper->setMapping(edit_cue_widget[RDEditAudio::HookStart],
 			     (int)RDEditAudio::HookStart);
   connect(edit_cue_widget[RDEditAudio::HookStart],SIGNAL(selectionChanged()),
@@ -453,7 +453,7 @@ RDEditAudio::RDEditAudio(RDCart *cart,QString cut_name,RDCae *cae,RDUser *user,
   edit_cue_widget[RDEditAudio::HookEnd]=
     new RDMarkerWidget(tr("Hook\nEnd"),RD_HOOK_MARKER_COLOR,
 		       edit_sample_rate,this);
-  edit_cue_widget[RDEditAudio::HookEnd]->setGeometry(485,630,150,45);
+  edit_cue_widget[RDEditAudio::HookEnd]->setGeometry(545,630,165,45);
   enabled_mapper->setMapping(edit_cue_widget[RDEditAudio::HookEnd],
 			     (int)RDEditAudio::HookEnd);
   connect(edit_cue_widget[RDEditAudio::HookEnd],SIGNAL(selectionChanged()),
@@ -471,7 +471,7 @@ RDEditAudio::RDEditAudio(RDCart *cart,QString cut_name,RDCae *cae,RDUser *user,
   // AutoTrim Buttons
   //
   edit_trim_box=new QSpinBox(this);
-  edit_trim_box->setGeometry(243,529,70,21);
+  edit_trim_box->setGeometry(263,529,65,21);
   edit_trim_box->setAcceptDrops(false);
   edit_trim_box->setValidator(0);
   edit_trim_box->setSuffix(tr(" dB"));
@@ -479,11 +479,11 @@ RDEditAudio::RDEditAudio(RDCart *cart,QString cut_name,RDCae *cae,RDUser *user,
   edit_trim_box->
     setValue((trim_level-REFERENCE_LEVEL)/100);
   QLabel *label=new QLabel(tr("Threshold"),this);
-  label->setGeometry(238,513,70,15);
+  label->setGeometry(258,513,65,15);
   label->setAlignment(AlignHCenter);
   label->setFont(QFont(small_font));
   QPushButton *trim_start_button=new QPushButton(this);
-  trim_start_button->setGeometry(175,485,66,45);
+  trim_start_button->setGeometry(195,485,66,45);
   trim_start_button->
     setPalette(QPalette(QColor(RD_START_END_MARKER_COLOR),backgroundColor()));
   trim_start_button->setFont(button_font);
@@ -491,7 +491,7 @@ RDEditAudio::RDEditAudio(RDCart *cart,QString cut_name,RDCae *cae,RDUser *user,
   connect(trim_start_button,SIGNAL(clicked()),this,SLOT(trimHeadData()));
 
   QPushButton *trim_end_button=new QPushButton(this);
-  trim_end_button->setGeometry(175,530,66,45);
+  trim_end_button->setGeometry(195,530,66,45);
   trim_end_button->
     setPalette(QPalette(QColor(RD_START_END_MARKER_COLOR),backgroundColor()));
   trim_end_button->setFont(button_font);
@@ -505,23 +505,23 @@ RDEditAudio::RDEditAudio(RDCart *cart,QString cut_name,RDCae *cae,RDUser *user,
   edit_gain_control->setRange(-1000,1000);
   edit_gain_control->setSteps(10,10);
   edit_gain_edit=new RDMarkerEdit(this);
-  edit_gain_edit->setGeometry(398,529,70,21);
+  edit_gain_edit->setGeometry(410,529,65,21);
   edit_gain_edit->setAcceptDrops(false);
   connect(edit_gain_edit,SIGNAL(returnPressed()),this,SLOT(gainChangedData()));
   label=new QLabel(tr("Cut Gain"),this);
-  label->setGeometry(388,513,70,15);
+  label->setGeometry(400,513,65,15);
   label->setAlignment(AlignHCenter);
   label->setFont(QFont(small_font));
   RDTransportButton *gain_up_button=new 
     RDTransportButton(RDTransportButton::Up,this);
-  gain_up_button->setGeometry(330,485,66,45);
+  gain_up_button->setGeometry(342,485,66,45);
   gain_up_button->off();
   connect(gain_up_button,SIGNAL(pressed()),this,SLOT(gainUpPressedData()));
   connect(gain_up_button,SIGNAL(released()),this,SLOT(gainReleasedData()));
   
   RDTransportButton *gain_down_button=
     new RDTransportButton(RDTransportButton::Down,this);
-  gain_down_button->setGeometry(330,530,66,45);
+  gain_down_button->setGeometry(342,530,66,45);
   gain_down_button->off();
   connect(gain_down_button,SIGNAL(pressed()),this,SLOT(gainDownPressedData()));
   connect(gain_down_button,SIGNAL(released()),this,SLOT(gainReleasedData()));
@@ -533,7 +533,7 @@ RDEditAudio::RDEditAudio(RDCart *cart,QString cut_name,RDCae *cae,RDUser *user,
   //
   edit_remove_button=new RDPushButton(this);
   edit_remove_button->setFlashPeriod(EDITAUDIO_BUTTON_FLASH_PERIOD);
-  edit_remove_button->setGeometry(485,510,66,45);
+  edit_remove_button->setGeometry(490,510,66,45);
   edit_remove_button->setFont(button_font);
   edit_remove_button->setText(tr("Remove\nMarker"));
   edit_remove_button->setToggleButton(true);
@@ -1189,20 +1189,16 @@ void RDEditAudio::markerButtonDeleteData(int id)
 void RDEditAudio::markerValueChangedData(int id)
 {
   int cursor;
-  int old_cursor;
 
-  old_cursor=1152*edit_cue_widget[id]->frames();
-  cursor=edit_cue_widget[id]->frames()*1152;
+  cursor=1152*edit_cue_widget[id]->frames();
   if(cursor<0) {
     return;
   }
   ignore_pause=true;
   if(!PositionCursor(cursor)) {
-    PositionCursor(old_cursor);
+    PositionCursor(cursor);
   }
   ignore_pause=false;
-  //  edit_cursor_edit[id]->setFocus();
-  //  edit_cursor_edit[id]->selectAll();
 }
 
 
@@ -2546,7 +2542,6 @@ void RDEditAudio::DrawWave(int xsize,int ysize,int chan,QString label,
 
   p->translate(1,ysize/2);
   if(edit_peaks->energySize()>0) {
-    //  if(edit_wave->energySize()>0) {
 
     //
     // Time Tick Marks
@@ -2562,7 +2557,7 @@ void RDEditAudio::DrawWave(int xsize,int ysize,int chan,QString label,
 	p->setPen(QColor(red));
 	p->drawText(offset+3,ysize/2-4,
 		    RDGetTimeLength((int)((1152000.0*(double)i)/
-	       		  (double)edit_sample_rate+1000.0),
+	       		  (double)edit_sample_rate),
 				   false,edit_factor_x<0.5));
       }
     }

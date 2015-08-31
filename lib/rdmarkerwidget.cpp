@@ -19,6 +19,8 @@
 //
 //
 
+#include <qstringlist.h>
+
 #include "rd.h"
 #include "rdconf.h"
 #include "rdmarkerwidget.h"
@@ -41,7 +43,7 @@ RDMarkerWidget::RDMarkerWidget(const QString &caption,const QColor &color,
   label_font.setPixelSize(12);
 
   mark_edit=new RDMarkerEdit(this);
-  mark_edit->setGeometry(68,11,70,21);
+  mark_edit->setGeometry(68,11,95,21);
   mark_edit->setReadOnly(true);
   mark_edit->setDragEnabled(false);
   mark_edit->setFont(label_font);
@@ -82,7 +84,9 @@ bool RDMarkerWidget::isSelected() const
 void RDMarkerWidget::setSelected(bool state)
 {
   if(!state) {
-    mark_edit->setText(RDGetTimeLength(mark_value,true,true));
+    if(mark_value>=0) {
+      mark_edit->setText(GetTimeLength(mark_value));
+    }
   }
   mark_button->setOn(state);
   mark_button->setFlashingEnabled(state);
@@ -124,7 +128,7 @@ void RDMarkerWidget::setValue(int msecs)
   }
   else {
     mark_value=10*(msecs/10);
-    mark_edit->setText(RDGetTimeLength(mark_value,true,true));
+    mark_edit->setText(GetTimeLength(mark_value));
   }
 }
 
@@ -145,7 +149,7 @@ void RDMarkerWidget::setRange(RDMarkerWidget *lo_limit,RDMarkerWidget *hi_limit)
 
 void RDMarkerWidget::returnPressedData()
 {
-  int value=RDSetTimeLength(mark_edit->text());
+  int value=SetTimeLength(mark_edit->text());
   if(!CheckLimits(value)) {
     return;
   }
@@ -158,7 +162,7 @@ void RDMarkerWidget::returnPressedData()
 
 void RDMarkerWidget::escapePressedData()
 {
-  mark_edit->setText(RDGetTimeLength(mark_value,true,true));
+  mark_edit->setText(GetTimeLength(mark_value));
   mark_edit->selectAll();
 }
 
@@ -184,27 +188,47 @@ bool RDMarkerWidget::CheckLimits(int value)
 {
   if(mark_lo_limit>=0) {
     if(value<mark_lo_limit) {
-      mark_edit->setText(RDGetTimeLength(mark_value,true,true));
+      mark_edit->setText(GetTimeLength(mark_value));
       return false;
     }
   }
   if(mark_hi_limit>=0) {
     if(value>mark_hi_limit) {
-      mark_edit->setText(RDGetTimeLength(mark_value,true,true));
+      mark_edit->setText(GetTimeLength(mark_value));
       return false;
     }
   }
   if(mark_lo_marker!=NULL) {
     if(value<mark_lo_marker->value()) {
-      mark_edit->setText(RDGetTimeLength(mark_value,true,true));
+      mark_edit->setText(GetTimeLength(mark_value));
       return false;
     }
   }
   if(mark_hi_marker!=NULL) {
     if(value>mark_hi_marker->value()) {
-      mark_edit->setText(RDGetTimeLength(mark_value,true,true));
+      mark_edit->setText(GetTimeLength(mark_value));
       return false;
     }
   }
   return true;
+}
+
+
+int RDMarkerWidget::SetTimeLength(const QString &str) const
+{
+  QStringList f0=f0.split(":",str);
+
+  return 3600000*f0[0].toInt()+60000*f0[1].toInt()+
+    (int)(1000.0*f0[2].toDouble());
+}
+
+
+QString RDMarkerWidget::GetTimeLength(int msecs) const
+{
+  int hours=msecs/3600000;
+  int minutes=(msecs-3600000*hours)/60000;
+  int seconds=msecs-(3600000*hours+60000*minutes);
+
+  return QString().sprintf("%02d:%02d:%05.2lf",
+			   hours,minutes,(double)seconds/1000.0);
 }
