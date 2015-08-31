@@ -4186,7 +4186,7 @@ bool RDWaveFile::MakeLevl()
   WriteDword(levl_chunk_data,16,levl_channels);    // Channels
   WriteDword(levl_chunk_data,20,levl_frames);      // Total Peak Values
   WriteDword(levl_chunk_data,24,levl_peak_offset); // Offset to Peak-of-Peaks
-  WriteDword(levl_chunk_data,28,128);              // Offset to Peak Data
+  WriteDword(levl_chunk_data,28,132);              // Offset to Peak Data
   sprintf((char *)levl_chunk_data+32,"%s",
 	  (const char *)levl_timestamp.toString("yyyy:MM:dd:hh:mm:ss:000"));
 

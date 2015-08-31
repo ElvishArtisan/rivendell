@@ -15127,3 +15127,6 @@
 	allow for 1/100 sec marker positioning resolution.
 	* Fixed a bug in 'lib/rdedit_audio.cpp' that caused time grid to
 	be mispositioned by 1 second.
+2015-08-31 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a fencepost error in 'lib/rdwavefile.cpp' that caused
+	peak energy data to be misaligned by 1152 PCM frames.
