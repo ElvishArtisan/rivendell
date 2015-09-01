@@ -2,9 +2,7 @@
 #
 # The lib/ QMake project file for Rivendell.
 #
-# (C) Copyright 2003-2007 Fred Gleason <fredg@paravelsystems.com>
-#
-#      $Id: lib.pro,v 1.36.8.13.2.1 2014/06/02 22:52:24 cvs Exp $
+# (C) Copyright 2003-2015 Fred Gleason <fredg@paravelsystems.com>
 #
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License version 2 as
@@ -152,6 +150,7 @@ x11 {
   SOURCES += rdlist_logs.cpp
   SOURCES += rdmarker_button.cpp
   SOURCES += rdmarker_edit.cpp
+  SOURCES += rdmarkerwaveform.cpp
   SOURCES += rdmarkerwidget.cpp
   SOURCES += rdmatrix.cpp
   SOURCES += rdmonitor_config.cpp
@@ -285,6 +284,7 @@ x11 {
   HEADERS += rdlist_logs.h
   HEADERS += rdmarker_button.h
   HEADERS += rdmarker_edit.h
+  HEADERS += rdmarkerwaveform.h
   HEADERS += rdmarkerwidget.h
   HEADERS += rdmatrix.h
   HEADERS += rdmonitor_config.h

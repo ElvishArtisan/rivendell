@@ -1034,245 +1034,245 @@ vozík</translation>
     <name>RDEditAudio</name>
     <message>
         <source>&amp;Save</source>
-        <translation>&amp;Uložit</translation>
+        <translation type="unfinished">&amp;Uložit</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Zrušit</translation>
+        <translation type="unfinished">&amp;Zrušit</translation>
     </message>
     <message>
         <source>Amplitude</source>
-        <translation>Rozkmit</translation>
+        <translation type="unfinished">Rozkmit</translation>
     </message>
     <message>
         <source>Zoom
 In</source>
-        <translation>Přiblížit</translation>
+        <translation type="unfinished">Přiblížit</translation>
     </message>
     <message>
         <source>Zoom
 Out</source>
-        <translation>Oddálit</translation>
+        <translation type="unfinished">Oddálit</translation>
     </message>
     <message>
         <source>Time</source>
-        <translation>Čas</translation>
+        <translation type="unfinished">Čas</translation>
     </message>
     <message>
         <source>Full
 In</source>
-        <translation>Plný
+        <translation type="unfinished">Plný
 In</translation>
     </message>
     <message>
         <source>Full
 Out</source>
-        <translation>Plný
+        <translation type="unfinished">Plný
 Out</translation>
     </message>
     <message>
         <source>Goto</source>
-        <translation>Přejít na</translation>
+        <translation type="unfinished">Přejít na</translation>
     </message>
     <message>
         <source>Cursor</source>
-        <translation>Ukazovátko</translation>
+        <translation type="unfinished">Ukazovátko</translation>
     </message>
     <message>
         <source>Home</source>
-        <translation>Domov</translation>
+        <translation type="unfinished">Domov</translation>
     </message>
     <message>
         <source>End</source>
-        <translation>Konec</translation>
+        <translation type="unfinished">Konec</translation>
     </message>
     <message>
         <source>Cut
 Start</source>
-        <translation>Začátek
+        <translation type="unfinished">Začátek
 záběru</translation>
     </message>
     <message>
         <source>Cut
 End</source>
-        <translation>Konec
+        <translation type="unfinished">Konec
 záběru</translation>
     </message>
     <message>
         <source>Talk
 Start</source>
-        <translation>Začátek
+        <translation type="unfinished">Začátek
 hovoru</translation>
     </message>
     <message>
         <source>Segue
 Start</source>
-        <translation>Začátek
+        <translation type="unfinished">Začátek
 přechodu</translation>
     </message>
     <message>
         <source>Segue
 End</source>
-        <translation>Konec
+        <translation type="unfinished">Konec
 přechodu</translation>
     </message>
     <message>
         <source>Fade
 Up</source>
-        <translation>Utichat</translation>
+        <translation type="unfinished">Utichat</translation>
     </message>
     <message>
         <source>Hook
 Start</source>
-        <translation>Začátek
+        <translation type="unfinished">Začátek
 chytlavé melodie</translation>
     </message>
     <message>
         <source>Hook
 End</source>
-        <translation>Konec
+        <translation type="unfinished">Konec
 chytlavé melodie</translation>
     </message>
     <message>
         <source> dB</source>
-        <translation> dB</translation>
+        <translation type="unfinished"> dB</translation>
     </message>
     <message>
         <source>Threshold</source>
-        <translation>Prahová hodnota</translation>
+        <translation type="unfinished">Prahová hodnota</translation>
     </message>
     <message>
         <source>Trim
 Start</source>
-        <translation>Začátek
+        <translation type="unfinished">Začátek
 ustřižení</translation>
     </message>
     <message>
         <source>Trim
 End</source>
-        <translation>Konec
+        <translation type="unfinished">Konec
 ustřižení</translation>
     </message>
     <message>
         <source>Cut Gain</source>
-        <translation>Zesílení záběru</translation>
+        <translation type="unfinished">Zesílení záběru</translation>
     </message>
     <message>
         <source>Remove
 Marker</source>
-        <translation>Odstranit
+        <translation type="unfinished">Odstranit
 značku</translation>
     </message>
     <message>
         <source>No Fade on Segue Out</source>
-        <translation>Žádné prolínání při přechodu ven</translation>
+        <translation type="unfinished">Žádné prolínání při přechodu ven</translation>
     </message>
     <message>
         <source>Position</source>
-        <translation>Poloha</translation>
+        <translation type="unfinished">Poloha</translation>
     </message>
     <message>
         <source>Length</source>
-        <translation>Délka</translation>
+        <translation type="unfinished">Délka</translation>
     </message>
     <message>
         <source>Delete Talk Markers</source>
-        <translation>Smazat značky hovoru</translation>
+        <translation type="obsolete">Smazat značky hovoru</translation>
     </message>
     <message>
         <source>Delete Segue Markers</source>
-        <translation>Smazat značky přechodu</translation>
+        <translation type="obsolete">Smazat značky přechodu</translation>
     </message>
     <message>
         <source>Delete Hook Markers</source>
-        <translation>Smazat značky háčku (hook)</translation>
+        <translation type="obsolete">Smazat značky háčku (hook)</translation>
     </message>
     <message>
         <source>Delete Fade Up Marker</source>
-        <translation>Smazat značku zesílení</translation>
+        <translation type="obsolete">Smazat značku zesílení</translation>
     </message>
     <message>
         <source>Delete Fade Down Marker</source>
-        <translation>Smazat značku zeslabení</translation>
+        <translation type="obsolete">Smazat značku zeslabení</translation>
     </message>
     <message>
         <source>dB</source>
-        <translation>dB</translation>
+        <translation type="obsolete">dB</translation>
     </message>
     <message>
         <source>&lt;none&gt;</source>
-        <translation type="unfinished">&lt;none&gt;</translation>
+        <translation type="obsolete">&lt;none&gt;</translation>
     </message>
     <message>
         <source>Cut</source>
-        <translation type="unfinished">Záběr</translation>
+        <translation type="obsolete">Záběr</translation>
     </message>
     <message>
         <source>Talk</source>
-        <translation type="unfinished">Hovor</translation>
+        <translation type="obsolete">Hovor</translation>
     </message>
     <message>
         <source>Segue</source>
-        <translation type="unfinished">Přechod</translation>
+        <translation type="obsolete">Přechod</translation>
     </message>
     <message>
         <source>Hook</source>
-        <translation type="unfinished">Chytlavá melodie</translation>
+        <translation type="obsolete">Chytlavá melodie</translation>
     </message>
     <message>
         <source>Fade Up</source>
-        <translation type="unfinished">Zesílit</translation>
+        <translation type="obsolete">Zesílit</translation>
     </message>
     <message>
         <source>Fade Down</source>
-        <translation type="unfinished">Zeslabit</translation>
+        <translation type="obsolete">Zeslabit</translation>
     </message>
     <message>
         <source>L</source>
-        <translation>L</translation>
+        <translation type="obsolete">L</translation>
     </message>
     <message>
         <source>R</source>
-        <translation>P</translation>
+        <translation type="obsolete">P</translation>
     </message>
     <message>
         <source>Rivendell Web Service</source>
-        <translation>Internetová služba Rivendellu</translation>
+        <translation type="obsolete">Internetová služba Rivendellu</translation>
     </message>
     <message>
         <source>Unable to download peak data, error was:
 &quot;</source>
-        <translation>Nepodařilo se stáhnout data vrcholu. Chyba byla:
+        <translation type="obsolete">Nepodařilo se stáhnout data vrcholu. Chyba byla:
 &quot;</translation>
     </message>
     <message>
         <source>Edit Audio</source>
-        <translation>Upravit zvuk</translation>
+        <translation type="obsolete">Upravit zvuk</translation>
     </message>
     <message>
         <source>Marker Warning</source>
-        <translation>Varování týkající se značek</translation>
+        <translation type="obsolete">Varování týkající se značek</translation>
     </message>
     <message>
         <source>Less than half of the audio is playable with these marker settings.
 Are you sure you want to save?</source>
-        <translation>Méně než polovina zvukového záznamu je přehratelná s těmito nastaveními pro značky.
+        <translation type="obsolete">Méně než polovina zvukového záznamu je přehratelná s těmito nastaveními pro značky.
 Opravdu chcete uložit?</translation>
     </message>
     <message>
         <source>More than half of the audio will be faded with these marker settings.
 Are you sure you want to save?</source>
-        <translation>Více než polovina zvukového záznamu bude s těmito nastaveními pro značky vystřižena.
+        <translation type="obsolete">Více než polovina zvukového záznamu bude s těmito nastaveními pro značky vystřižena.
 Opravdu chcete uložit?</translation>
-    </message>
-    <message>
-        <source>Talk
-End</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Fade
 Down</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Talk
+End</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
