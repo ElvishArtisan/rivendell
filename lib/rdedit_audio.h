@@ -87,7 +87,6 @@ class RDEditAudio : public QDialog
   void loopData();
   void meterData();
   void markerButtonEnabledData(int id);
-  void markerButtonDeleteData(int id);
   void markerValueChangedData(int id);
   void trimHeadData();
   void trimTailData();
@@ -104,9 +103,9 @@ class RDEditAudio : public QDialog
   void cancelData();
 
  private:
+  void SetDeleteMode(bool state);
   RDMarkerWaveform *edit_waveform[2];
   QScrollBar *edit_waveform_scroll;
-
   RDTransportButton *edit_play_cursor_button;
   RDTransportButton *edit_play_start_button;
   RDTransportButton *edit_pause_button;

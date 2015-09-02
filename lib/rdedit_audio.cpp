@@ -162,51 +162,38 @@ RDEditAudio::RDEditAudio(RDCart *cart,QString cut_name,RDCae *cae,RDUser *user,
   // Marker Widgets
   //
   edit_marker_widget[RDMarkerWaveform::Start]=
-    new RDMarkerWidget(tr("Cut\nStart"),RD_START_END_MARKER_COLOR,
-		       48000,this);
+    new RDMarkerWidget(tr("Cut\nStart"),RD_START_END_MARKER_COLOR,this);
 
   edit_marker_widget[RDMarkerWaveform::End]=
-    new RDMarkerWidget(tr("Cut\nEnd"),RD_START_END_MARKER_COLOR,
-		       48000,this);
+    new RDMarkerWidget(tr("Cut\nEnd"),RD_START_END_MARKER_COLOR,this);
 
   edit_marker_widget[RDMarkerWaveform::FadeUp]=
-    new RDMarkerWidget(tr("Fade\nUp"),RD_FADE_MARKER_COLOR,
-		       48000,this);
+    new RDMarkerWidget(tr("Fade\nUp"),RD_FADE_MARKER_COLOR,this);
 
   edit_marker_widget[RDMarkerWaveform::FadeDown]=
-    new RDMarkerWidget(tr("Fade\nDown"),RD_FADE_MARKER_COLOR,
-		       48000,this);
+    new RDMarkerWidget(tr("Fade\nDown"),RD_FADE_MARKER_COLOR,this);
 
   edit_marker_widget[RDMarkerWaveform::TalkStart]=
-    new RDMarkerWidget(tr("Talk\nStart"),RD_TALK_MARKER_COLOR,
-		       48000,this);
+    new RDMarkerWidget(tr("Talk\nStart"),RD_TALK_MARKER_COLOR,this);
 
   edit_marker_widget[RDMarkerWaveform::TalkEnd]=
-    new RDMarkerWidget(tr("Talk\nEnd"),RD_TALK_MARKER_COLOR,
-		       48000,this);
+    new RDMarkerWidget(tr("Talk\nEnd"),RD_TALK_MARKER_COLOR,this);
 
   edit_marker_widget[RDMarkerWaveform::SegueStart]=
-    new RDMarkerWidget(tr("Segue\nStart"),RD_SEGUE_MARKER_COLOR,
-		       48000,this);
+    new RDMarkerWidget(tr("Segue\nStart"),RD_SEGUE_MARKER_COLOR,this);
 
   edit_marker_widget[RDMarkerWaveform::SegueEnd]=
-    new RDMarkerWidget(tr("Segue\nEnd"),RD_SEGUE_MARKER_COLOR,
-		       48000,this);
+    new RDMarkerWidget(tr("Segue\nEnd"),RD_SEGUE_MARKER_COLOR,this);
 
   edit_marker_widget[RDMarkerWaveform::HookStart]=
-    new RDMarkerWidget(tr("Hook\nStart"),RD_HOOK_MARKER_COLOR,
-		       48000,this);
+    new RDMarkerWidget(tr("Hook\nStart"),RD_HOOK_MARKER_COLOR,this);
 
   edit_marker_widget[RDMarkerWaveform::HookEnd]=
-    new RDMarkerWidget(tr("Hook\nEnd"),RD_HOOK_MARKER_COLOR,
-		       48000,this);
+    new RDMarkerWidget(tr("Hook\nEnd"),RD_HOOK_MARKER_COLOR,this);
 
   QSignalMapper *enabled_mapper=new QSignalMapper(this);
   connect(enabled_mapper,SIGNAL(mapped(int)),
 	  this,SLOT(markerButtonEnabledData(int)));
-  QSignalMapper *delete_mapper=new QSignalMapper(this);
-  connect(delete_mapper,SIGNAL(mapped(int)),
-	  this,SLOT(markerButtonDeleteData(int)));
   QSignalMapper *value_mapper=new QSignalMapper(this);
   connect(value_mapper,SIGNAL(mapped(int)),
 	  this,SLOT(markerValueChangedData(int)));
@@ -216,10 +203,6 @@ RDEditAudio::RDEditAudio(RDCart *cart,QString cut_name,RDCae *cae,RDUser *user,
       setMapping(edit_marker_widget[i],(int)i);
     connect(edit_marker_widget[i],SIGNAL(selectionChanged()),
 	    enabled_mapper,SLOT(map()));
-    delete_mapper->
-      setMapping(edit_marker_widget[i],(int)i);
-    connect(edit_marker_widget[i],SIGNAL(deleteClicked()),
-	    delete_mapper,SLOT(map()));
     value_mapper->
       setMapping(edit_marker_widget[i],(int)i);
     connect(edit_marker_widget[i],SIGNAL(valueChanged()),
@@ -400,70 +383,79 @@ RDEditAudio::RDEditAudio(RDCart *cart,QString cut_name,RDCae *cae,RDUser *user,
   // Load Values
   //
   edit_marker_widget[RDMarkerWaveform::Start]->setValue(edit_cut->startPoint());
-  edit_waveform[0]->
-    setCursor(RDMarkerWaveform::Start,edit_cut->startPoint());
-  edit_waveform[1]->
-    setCursor(RDMarkerWaveform::Start,edit_cut->startPoint());
+  edit_marker_widget[RDMarkerWaveform::Start]->setRange(0,edit_cut->length());
+  edit_marker_widget[RDMarkerWaveform::Start]->
+    setRange(NULL,edit_marker_widget[RDMarkerWaveform::End]);
 
   edit_marker_widget[RDMarkerWaveform::End]->setValue(edit_cut->endPoint());
-  edit_waveform[0]->
-    setCursor(RDMarkerWaveform::End,edit_cut->endPoint());
-  edit_waveform[1]->
-    setCursor(RDMarkerWaveform::End,edit_cut->endPoint());
+  edit_marker_widget[RDMarkerWaveform::End]->setRange(0,edit_cut->length());
+  edit_marker_widget[RDMarkerWaveform::End]->
+    setRange(edit_marker_widget[RDMarkerWaveform::Start],NULL);
 
   edit_marker_widget[RDMarkerWaveform::TalkStart]->
     setValue(edit_cut->talkStartPoint());
-  edit_waveform[0]->
-    setCursor(RDMarkerWaveform::TalkStart,edit_cut->talkStartPoint());
-  edit_waveform[1]->
-    setCursor(RDMarkerWaveform::TalkStart,edit_cut->talkStartPoint());
+  edit_marker_widget[RDMarkerWaveform::TalkStart]->
+    setRange(0,edit_cut->length());
+  edit_marker_widget[RDMarkerWaveform::TalkStart]->
+    setRange(edit_marker_widget[RDMarkerWaveform::Start],
+	     edit_marker_widget[RDMarkerWaveform::TalkEnd]);
 
   edit_marker_widget[RDMarkerWaveform::TalkEnd]->
     setValue(edit_cut->talkEndPoint());
-  edit_waveform[0]->
-    setCursor(RDMarkerWaveform::TalkEnd,edit_cut->talkEndPoint());
-  edit_waveform[1]->
-    setCursor(RDMarkerWaveform::TalkEnd,edit_cut->talkEndPoint());
+  edit_marker_widget[RDMarkerWaveform::TalkEnd]->
+    setRange(0,edit_cut->length());
+  edit_marker_widget[RDMarkerWaveform::TalkEnd]->
+    setRange(edit_marker_widget[RDMarkerWaveform::TalkStart],
+	     edit_marker_widget[RDMarkerWaveform::End]);
 
   edit_marker_widget[RDMarkerWaveform::SegueStart]->
     setValue(edit_cut->segueStartPoint());
-  edit_waveform[0]->
-    setCursor(RDMarkerWaveform::SegueStart,edit_cut->segueStartPoint());
-  edit_waveform[1]->
-    setCursor(RDMarkerWaveform::SegueStart,edit_cut->segueStartPoint());
+  edit_marker_widget[RDMarkerWaveform::SegueStart]->
+    setRange(0,edit_cut->length());
+  edit_marker_widget[RDMarkerWaveform::SegueStart]->
+    setRange(edit_marker_widget[RDMarkerWaveform::Start],
+	     edit_marker_widget[RDMarkerWaveform::SegueEnd]);
 
   edit_marker_widget[RDMarkerWaveform::SegueEnd]->
     setValue(edit_cut->segueEndPoint());
-  edit_waveform[0]->
-    setCursor(RDMarkerWaveform::SegueEnd,edit_cut->segueEndPoint());
-  edit_waveform[1]->
-    setCursor(RDMarkerWaveform::SegueEnd,edit_cut->segueEndPoint());
+  edit_marker_widget[RDMarkerWaveform::SegueEnd]->
+    setRange(0,edit_cut->length());
+  edit_marker_widget[RDMarkerWaveform::SegueEnd]->
+    setRange(edit_marker_widget[RDMarkerWaveform::SegueStart],
+	     edit_marker_widget[RDMarkerWaveform::End]);
+
 
   edit_marker_widget[RDMarkerWaveform::HookStart]->
     setValue(edit_cut->hookStartPoint());
-  edit_waveform[0]->
-    setCursor(RDMarkerWaveform::HookStart,edit_cut->hookStartPoint());
-  edit_waveform[1]->
-    setCursor(RDMarkerWaveform::HookStart,edit_cut->hookStartPoint());
+  edit_marker_widget[RDMarkerWaveform::HookStart]->
+    setRange(0,edit_cut->length());
+  edit_marker_widget[RDMarkerWaveform::HookStart]->
+    setRange(edit_marker_widget[RDMarkerWaveform::Start],
+	     edit_marker_widget[RDMarkerWaveform::HookEnd]);
 
   edit_marker_widget[RDMarkerWaveform::HookEnd]->
     setValue(edit_cut->hookEndPoint());
-  edit_waveform[0]->
-    setCursor(RDMarkerWaveform::HookEnd,edit_cut->hookEndPoint());
-  edit_waveform[1]->
-    setCursor(RDMarkerWaveform::HookEnd,edit_cut->hookEndPoint());
+  edit_marker_widget[RDMarkerWaveform::HookEnd]->
+    setRange(0,edit_cut->length());
+  edit_marker_widget[RDMarkerWaveform::HookEnd]->
+    setRange(edit_marker_widget[RDMarkerWaveform::HookStart],
+	     edit_marker_widget[RDMarkerWaveform::End]);
 
   edit_marker_widget[RDMarkerWaveform::FadeUp]->
     setValue(edit_cut->fadeupPoint());
-  edit_waveform[0]->setCursor(RDMarkerWaveform::FadeUp,edit_cut->fadeupPoint());
-  edit_waveform[1]->setCursor(RDMarkerWaveform::FadeUp,edit_cut->fadeupPoint());
+  edit_marker_widget[RDMarkerWaveform::FadeUp]->
+    setRange(0,edit_cut->length());
+  edit_marker_widget[RDMarkerWaveform::FadeUp]->
+    setRange(edit_marker_widget[RDMarkerWaveform::Start],
+	     edit_marker_widget[RDMarkerWaveform::FadeDown]);
 
   edit_marker_widget[RDMarkerWaveform::FadeDown]->
     setValue(edit_cut->fadedownPoint());
-  edit_waveform[0]->
-    setCursor(RDMarkerWaveform::FadeDown,edit_cut->fadedownPoint());
-  edit_waveform[1]->
-    setCursor(RDMarkerWaveform::FadeDown,edit_cut->fadedownPoint());
+  edit_marker_widget[RDMarkerWaveform::FadeDown]->
+    setRange(0,edit_cut->length());
+  edit_marker_widget[RDMarkerWaveform::FadeDown]->
+    setRange(edit_marker_widget[RDMarkerWaveform::FadeUp],
+	     edit_marker_widget[RDMarkerWaveform::End]);
 }
 
 
@@ -662,7 +654,11 @@ void RDEditAudio::viewportWidthChangedData(int msecs)
 
 void RDEditAudio::waveformClickedData(int msecs)
 {
-  printf("clicked at: %d msecs\n",msecs);
+  for(int i=1;i<RDMarkerWaveform::LastMarker;i++) {
+    if(edit_marker_widget[i]->isSelected()) {
+      edit_marker_widget[i]->setValue(msecs);
+    }
+  }
 }
 
 
@@ -698,20 +694,80 @@ void RDEditAudio::meterData()
 
 void RDEditAudio::markerButtonEnabledData(int id)
 {
-}
-
-
-void RDEditAudio::markerButtonDeleteData(int id)
-{
+  for(int i=1;i<RDMarkerWaveform::LastMarker;i++) {
+    if(i!=id) {
+      edit_marker_widget[i]->setSelected(false);
+    }
+  }
 }
 
 
 void RDEditAudio::markerValueChangedData(int id)
 {
-  edit_waveform[0]->
-    setCursor((RDMarkerWaveform::CuePoints)id,edit_marker_widget[id]->value());
-  edit_waveform[1]->
-    setCursor((RDMarkerWaveform::CuePoints)id,edit_marker_widget[id]->value());
+  int value=edit_marker_widget[id]->value();
+
+  edit_waveform[0]->setCursor((RDMarkerWaveform::CuePoints)id,value);
+  edit_waveform[1]->setCursor((RDMarkerWaveform::CuePoints)id,value);
+
+  switch((RDMarkerWaveform::CuePoints)id) {
+  case RDMarkerWaveform::TalkStart:
+  case RDMarkerWaveform::SegueStart:
+  case RDMarkerWaveform::HookStart:
+    if(value<0) {
+      if(edit_marker_widget[id+1]->value()>=0) {
+	edit_marker_widget[id+1]->setValue(-1);
+      }
+      SetDeleteMode(false);
+    }
+    else {
+      if(edit_marker_widget[id+1]->value()<0) {
+	edit_marker_widget[id+1]->
+	  setValue(edit_marker_widget[id+1]->highLimit());
+      }
+    }
+    break;
+
+  case RDMarkerWaveform::TalkEnd:
+  case RDMarkerWaveform::SegueEnd:
+  case RDMarkerWaveform::HookEnd:
+    if(value<0) {
+      if(edit_marker_widget[id-1]->value()>=0) {
+	edit_marker_widget[id-1]->setValue(-1);
+      }
+      SetDeleteMode(false);
+    }
+    else {
+      if(edit_marker_widget[id-1]->value()<0) {
+	edit_marker_widget[id-1]->
+	  setValue(edit_marker_widget[id-1]->lowLimit());
+      }
+    }
+    break;
+
+  case RDMarkerWaveform::Start:
+    for(int i=3;i<RDMarkerWaveform::LastMarker;i++) {
+      if((edit_marker_widget[i]->value()>=0)&&
+	 (edit_marker_widget[i]->value()<value)) {
+	edit_marker_widget[i]->setValue(value);
+      }
+    }
+    break;
+
+  case RDMarkerWaveform::End:
+    for(int i=3;i<RDMarkerWaveform::LastMarker;i++) {
+      if((edit_marker_widget[i]->value()>=0)&&
+	 (edit_marker_widget[i]->value()>value)) {
+	edit_marker_widget[i]->setValue(value);
+      }
+    }
+    break;
+
+  case RDMarkerWaveform::FadeUp:
+  case RDMarkerWaveform::FadeDown:
+  case RDMarkerWaveform::Play:
+  case RDMarkerWaveform::LastMarker:
+    break;
+  }
 }
 
 
@@ -752,6 +808,7 @@ void RDEditAudio::gainTimerData()
 
 void RDEditAudio::removeButtonData()
 {
+  SetDeleteMode(!edit_marker_widget[3]->deleteModeActive());
 }
 
 
@@ -779,4 +836,17 @@ void RDEditAudio::saveData()
 void RDEditAudio::cancelData()
 {
   done(1);
+}
+
+
+void RDEditAudio::SetDeleteMode(bool state)
+{
+  for(int i=1;i<RDMarkerWaveform::LastMarker;i++) {
+    edit_marker_widget[i]->setSelected(false);
+  }
+  for(int i=3;i<RDMarkerWaveform::LastMarker;i++) {
+    edit_marker_widget[i]->setDeleteMode(state);
+  }
+  edit_remove_button->setFlashingEnabled(state);
+  edit_remove_button->setDown(false);
 }

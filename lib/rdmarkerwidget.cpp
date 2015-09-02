@@ -25,12 +25,11 @@
 #include "rdmarkerwidget.h"
 
 RDMarkerWidget::RDMarkerWidget(const QString &caption,const QColor &color,
-			       unsigned samprate,QWidget *parent)
+			       QWidget *parent)
   : QWidget(parent)
 {
   mark_delete_mode=false;
   mark_value=0;
-  mark_sample_rate=samprate;
   mark_lo_limit=-1;
   mark_hi_limit=-1;
   mark_lo_marker=NULL;
@@ -68,6 +67,12 @@ RDMarkerWidget::~RDMarkerWidget()
 }
 
 
+bool RDMarkerWidget::deleteModeActive() const
+{
+  return mark_delete_mode;
+}
+
+
 void RDMarkerWidget::setDeleteMode(bool state)
 {
   mark_delete_mode=state;
@@ -93,26 +98,6 @@ void RDMarkerWidget::setSelected(bool state)
 }
 
 
-int RDMarkerWidget::frames() const
-{
-  if(mark_value<0) {
-    return -1;
-  }
-  return (int)(((double)mark_value*(double)mark_sample_rate)/1152000.0);
-}
-
-
-void RDMarkerWidget::setFrames(int frames)
-{
-  if(frames<0) {
-    setValue(-1);
-  }
-  else {
-    setValue((double)frames*1152000.0/(double)mark_sample_rate);
-  }
-}
-
-
 int RDMarkerWidget::value() const
 {
   return mark_value;
@@ -126,9 +111,31 @@ void RDMarkerWidget::setValue(int msecs)
     mark_edit->setText("");
   }
   else {
+    if(!CheckLimits(msecs)) {
+      return;
+    }
     mark_value=msecs;
     mark_edit->setText(GetTimeLength(mark_value));
   }
+  emit valueChanged();
+}
+
+
+int RDMarkerWidget::lowLimit() const
+{
+  if(mark_lo_marker!=NULL) {
+    return mark_lo_marker->value();
+  }
+  return mark_lo_limit;
+}
+
+
+int RDMarkerWidget::highLimit() const
+{
+  if(mark_hi_marker!=NULL) {
+    return mark_hi_marker->value();
+  }
+  return mark_hi_limit;
 }
 
 
@@ -170,7 +177,7 @@ void RDMarkerWidget::buttonClickedData()
 {
   if(mark_delete_mode) {
     mark_button->setOn(false);
-    emit deleteClicked();
+    setValue(-1);
   }
   else {
     if(!mark_button->isOn()) {
@@ -185,6 +192,19 @@ void RDMarkerWidget::buttonClickedData()
 
 bool RDMarkerWidget::CheckLimits(int value)
 {
+  if(mark_lo_marker!=NULL) {
+    if((mark_lo_marker->value()!=-1)&&(value<mark_lo_marker->value())) {
+      mark_edit->setText(GetTimeLength(mark_value));
+      return false;
+    }
+  }
+  if(mark_hi_marker!=NULL) {
+    if((mark_hi_marker->value()!=-1)&&(value>mark_hi_marker->value())) {
+      mark_edit->setText(GetTimeLength(mark_value));
+      return false;
+    }
+  }
+
   if(mark_lo_limit>=0) {
     if(value<mark_lo_limit) {
       mark_edit->setText(GetTimeLength(mark_value));
@@ -193,18 +213,6 @@ bool RDMarkerWidget::CheckLimits(int value)
   }
   if(mark_hi_limit>=0) {
     if(value>mark_hi_limit) {
-      mark_edit->setText(GetTimeLength(mark_value));
-      return false;
-    }
-  }
-  if(mark_lo_marker!=NULL) {
-    if(value<mark_lo_marker->value()) {
-      mark_edit->setText(GetTimeLength(mark_value));
-      return false;
-    }
-  }
-  if(mark_hi_marker!=NULL) {
-    if(value>mark_hi_marker->value()) {
       mark_edit->setText(GetTimeLength(mark_value));
       return false;
     }

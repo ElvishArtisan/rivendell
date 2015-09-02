@@ -15136,3 +15136,6 @@
 2015-09-01 Fred Gleason <fredg@paravelsystems.com>
 	* Stubbed out replacement RDEditAudio dialog in 'lib/rdedit_audio.cpp'
 	and 'lib/rdedit_audio.h'.
+2015-09-02 Fred Gleason <fredg@paravelsystems.com>
+	* Implemented marker deletion in 'lib/rdedit_audio.cpp' and
+	'lib/rdedit_audio.h'.
