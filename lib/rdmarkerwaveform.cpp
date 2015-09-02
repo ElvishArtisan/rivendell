@@ -99,7 +99,7 @@ RDMarkerWaveform::~RDMarkerWaveform()
 
 QSize RDMarkerWaveform::sizeHint() const
 {
-  return QSize(RDMARKERWAVEFORM_WIDTH,RDMARKERWAVEFORM_HEIGHT);
+  return QSize(RDMARKERWAVEFORM_WIDTH+20,RDMARKERWAVEFORM_HEIGHT);
 }
 
 
@@ -198,28 +198,22 @@ void RDMarkerWaveform::paintEvent(QPaintEvent *e)
   p->fillRect(0,0,size().width(),size().height(),Qt::white);
 
   //
-  // Border
-  //
-  p->setPen(Qt::black);
-  p->drawRect(0,0,size().width(),size().height());
-
-  //
   // Dead Zone
   //
   p->setPen(colorGroup().mid());
   p->setBrush(colorGroup().mid());
-  p->drawRect(XCoordinate(wave_cut->length()),0,w,h);
+  p->drawRect(XCoordinate(wave_cut->length())+10,0,w,h);
 
   //
   // Time Ticks
   //
   p->setFont(QFont("helvetica",8,QFont::Normal));
-  for(unsigned i=0;i<(2*wave_cut->length());i+=GridIncrement()) {
+  for(unsigned i=GridIncrement();i<(2*wave_cut->length());i+=GridIncrement()) {
     p->setPen(Qt::green);
-    p->moveTo(XCoordinate(i),0);
-    p->lineTo(XCoordinate(i),h);
+    p->moveTo(XCoordinate(i)+10,0);
+    p->lineTo(XCoordinate(i)+10,h);
     p->setPen(Qt::red);
-    p->drawText(XCoordinate(i)+5,h-5,RDGetTimeLength(i,false,false));
+    p->drawText(XCoordinate(i)+5+10,h-5,RDGetTimeLength(i,false,false));
   }
 
   //
@@ -227,16 +221,31 @@ void RDMarkerWaveform::paintEvent(QPaintEvent *e)
   //
   p->setPen(Qt::red);
   p->setBrush(QBrush());
-  p->moveTo(0,h/2+wave_gain*5/88);
-  p->lineTo(w,h/2+wave_gain*5/88);
-  p->moveTo(0,h/2-wave_gain*5/88);
-  p->lineTo(w,h/2-wave_gain*5/88);
+  p->moveTo(10,h/2+wave_gain*5/88);
+  p->lineTo(w-10,h/2+wave_gain*5/88);
+  p->moveTo(10,h/2-wave_gain*5/88);
+  p->lineTo(w-10,h/2-wave_gain*5/88);
 
   //
   // Waveform
   //
-  p->drawWaveByMsecs(0,size().width(),wave_start,wave_start+wave_width,
+  p->drawWaveByMsecs(10,size().width()-20,wave_start,wave_start+wave_width,
 		     wave_gain,wave_channel,Qt::black);
+
+  //
+  // Faux End Pieces
+  //
+  p->setPen(palette().active().background());
+  p->setBrush(palette().active().background());
+  p->drawRect(0,0,10,h);
+  p->drawRect(w-10,0,10,h);
+
+  //
+  // Border
+  //
+  p->setPen(Qt::black);
+  p->setBrush(QBrush());
+  p->drawRect(10,0,size().width()-20,size().height());
 
   //
   // Markers
@@ -267,8 +276,8 @@ void RDMarkerWaveform::mouseMoveEvent(QMouseEvent *e)
 
 void RDMarkerWaveform::mouseReleaseEvent(QMouseEvent *e)
 {
-  if((e->x()>=0)&&(e->y()>=0)) {
-    emit clicked(e->x()*(double)wave_width/(double)RDMARKERWAVEFORM_WIDTH+
+  if((e->x()>=10)&&(e->y()>=0)) {
+    emit clicked((e->x()-10)*(double)wave_width/(double)RDMARKERWAVEFORM_WIDTH+
 		 wave_start);
   }
 }
@@ -282,44 +291,42 @@ void RDMarkerWaveform::DrawCursor(QPainter *p,RDMarkerWaveform::CuePoints pt)
   //
   // Line
   //
-  int x=XCoordinate(wave_cursors[pt]);
-  p->setPen(wave_cursor_colors[pt]);
-  p->setBrush(wave_cursor_colors[pt]);
-  p->moveTo(x,0);
-  p->lineTo(x,size().height());
+  int x=XCoordinate(wave_cursors[pt])+10;
+  if((x>=10)&&(x<(size().width()-10))) {
+    p->setPen(wave_cursor_colors[pt]);
+    p->setBrush(wave_cursor_colors[pt]);
+    p->moveTo(x,0);
+    p->lineTo(x,size().height());
 
-  switch(wave_cursor_arrow_dirs[pt]) {
-  case RDMarkerWaveform::None:
-    break;
+    switch(wave_cursor_arrow_dirs[pt]) {
+    case RDMarkerWaveform::None:
+      break;
 
-  case RDMarkerWaveform::Left:
-    array.setPoint(0,x,wave_cursor_arrow_offsets[pt]);
-    array.setPoint(1,x-10,wave_cursor_arrow_offsets[pt]+5);
-    array.setPoint(2,x-10,wave_cursor_arrow_offsets[pt]-5);
-    p->drawPolygon(array);
+    case RDMarkerWaveform::Left:
+      array.setPoint(0,x,wave_cursor_arrow_offsets[pt]);
+      array.setPoint(1,x-10,wave_cursor_arrow_offsets[pt]+5);
+      array.setPoint(2,x-10,wave_cursor_arrow_offsets[pt]-5);
+      p->drawPolygon(array);
 
-    array.setPoint(0,x,h-wave_cursor_arrow_offsets[pt]);
-    array.setPoint(1,x-10,h-(wave_cursor_arrow_offsets[pt]+5));
-    array.setPoint(2,x-10,h-(wave_cursor_arrow_offsets[pt]-5));
-    p->drawPolygon(array);
-    break;
+      array.setPoint(0,x,h-wave_cursor_arrow_offsets[pt]);
+      array.setPoint(1,x-10,h-(wave_cursor_arrow_offsets[pt]+5));
+      array.setPoint(2,x-10,h-(wave_cursor_arrow_offsets[pt]-5));
+      p->drawPolygon(array);
+      break;
 
-  case RDMarkerWaveform::Right:
-    array.setPoint(0,x,wave_cursor_arrow_offsets[pt]);
-    array.setPoint(1,x+10,wave_cursor_arrow_offsets[pt]+5);
-    array.setPoint(2,x+10,wave_cursor_arrow_offsets[pt]-5);
-    p->drawPolygon(array);
+    case RDMarkerWaveform::Right:
+      array.setPoint(0,x,wave_cursor_arrow_offsets[pt]);
+      array.setPoint(1,x+10,wave_cursor_arrow_offsets[pt]+5);
+      array.setPoint(2,x+10,wave_cursor_arrow_offsets[pt]-5);
+      p->drawPolygon(array);
 
-    array.setPoint(0,x,h-wave_cursor_arrow_offsets[pt]);
-    array.setPoint(1,x+10,h-(wave_cursor_arrow_offsets[pt]+5));
-    array.setPoint(2,x+10,h-(wave_cursor_arrow_offsets[pt]-5));
-    p->drawPolygon(array);
-    break;
+      array.setPoint(0,x,h-wave_cursor_arrow_offsets[pt]);
+      array.setPoint(1,x+10,h-(wave_cursor_arrow_offsets[pt]+5));
+      array.setPoint(2,x+10,h-(wave_cursor_arrow_offsets[pt]-5));
+      p->drawPolygon(array);
+      break;
+    }
   }
-  //
-  // Top Arrow
-  //
-
 }
 
 

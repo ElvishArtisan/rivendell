@@ -93,7 +93,6 @@ void RDWavePainter::drawWaveBySamples(int x,int w,int startsamp,int endsamp,
   int startclipblock=-1;
   int endclipblock=-1;
 
-
   if((startblock>(int)wave_peaks->energySize())||(wave_peaks->energySize()==0)) {
     return;
   }
@@ -124,6 +123,7 @@ void RDWavePainter::drawWaveBySamples(int x,int w,int startsamp,int endsamp,
   }
   save();
   resetXForm();
+  translate(x,0);
   setPen(color);
   setBrush(color);
   QPointArray array(w+2);

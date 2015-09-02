@@ -489,14 +489,14 @@ void RDEditAudio::resizeEvent(QResizeEvent *e)
   //
   switch(edit_cut->channels()) {
   case 1:
-    edit_waveform[0]->setGeometry(10,10,edit_waveform[0]->sizeHint().width(),
+    edit_waveform[0]->setGeometry(0,10,edit_waveform[0]->sizeHint().width(),
 			       edit_waveform[0]->sizeHint().height());
     break;
 
   case 2:
-    edit_waveform[0]->setGeometry(10,10,edit_waveform[0]->sizeHint().width(),
+    edit_waveform[0]->setGeometry(0,10,edit_waveform[0]->sizeHint().width(),
 			       edit_waveform[0]->sizeHint().height()/2);
-    edit_waveform[1]->setGeometry(10,10+edit_waveform[0]->sizeHint().height()/2,
+    edit_waveform[1]->setGeometry(0,10+edit_waveform[0]->sizeHint().height()/2,
 				  edit_waveform[0]->sizeHint().width(),
 				  edit_waveform[0]->sizeHint().height()/2);
     break;
@@ -504,7 +504,7 @@ void RDEditAudio::resizeEvent(QResizeEvent *e)
   connect(edit_waveform[0],SIGNAL(viewportWidthChanged(int)),
 	  this,SLOT(viewportWidthChangedData(int)));
   edit_waveform_scroll->setGeometry(10,edit_waveform[0]->sizeHint().height()+10,
-				    edit_waveform[0]->sizeHint().width(),20);
+				    edit_waveform[0]->sizeHint().width()-20,20);
   edit_waveform_scroll->setMinValue(0);
   edit_waveform_scroll->setMaxValue(edit_cut->length());
   connect(edit_waveform_scroll,SIGNAL(valueChanged(int)),
