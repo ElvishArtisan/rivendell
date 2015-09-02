@@ -2,9 +2,7 @@
 //
 // A Painter Class for Drawing Audio Waveforms
 //
-//   (C) Copyright 2002-2005 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdwavepainter.cpp,v 1.13.4.2 2013/11/13 23:36:34 cvs Exp $
+//   (C) Copyright 2002-2015 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -140,7 +138,8 @@ void RDWavePainter::drawWaveBySamples(int x,int w,int startsamp,int endsamp,
 	     ((startclipblock<0)||(dx>(startclipblock*2)))&&
 	     ((endclipblock<0)||(dx<(endclipblock*2)))) {
 	    array.setPoint(i+1,i+1,
-			   center+(int)(gain_scale*(double)wave_peaks->energy(dx)));
+			   center+(int)(gain_scale*(double)wave_peaks->
+					energy(dx,wave_channels)));
 	  }
 	  else {
 	    array.setPoint(i+1,i+1,center);
@@ -158,7 +157,8 @@ void RDWavePainter::drawWaveBySamples(int x,int w,int startsamp,int endsamp,
 	     ((startclipblock<0)||(dx>(startclipblock*2)))&&
 	     ((endclipblock<0)||(dx<(endclipblock*2)))) {
 	    array.setPoint(i+1,i+1,
-			   center+(int)(gain_scale*(double)wave_peaks->energy(dx)));
+			   center+(int)(gain_scale*(double)wave_peaks->
+					energy(dx,wave_channels)));
 	  }
 	  else {
 	    array.setPoint(i+1,i+1,center);
@@ -178,7 +178,8 @@ void RDWavePainter::drawWaveBySamples(int x,int w,int startsamp,int endsamp,
 		   ((startclipblock<0)||(dx>startclipblock))&&
 		   ((endclipblock<0)||(dx<endclipblock))) {
 		  array.setPoint(i+1,i+1,
-				 center+(int)(gain_scale*(double)wave_peaks->energy(dx)));
+				 center+(int)(gain_scale*(double)wave_peaks->
+					      energy(dx,wave_channels)));
 		}
 		else {
 		  array.setPoint(i+1,i+1,center);
@@ -196,9 +197,10 @@ void RDWavePainter::drawWaveBySamples(int x,int w,int startsamp,int endsamp,
 		   ((startclipblock<0)||(dx>(startclipblock*2)))&&
 		   ((endclipblock<0)||(dx<(endclipblock*2)))) {
 		  array.setPoint(i+1,i+1,
-				 center+(int)(gain_scale*
-					      ((double)wave_peaks->energy(dx)+
-					       (double)wave_peaks->energy(dx+1))/2.0));
+				 center+(int)(gain_scale*((double)wave_peaks->
+					      energy(dx,wave_channels)+
+							  (double)wave_peaks->
+					      energy(dx+1,wave_channels))/2.0));
 		}
 		else {
 		  array.setPoint(i+1,i+1,center);

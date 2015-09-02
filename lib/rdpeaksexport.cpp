@@ -2,9 +2,7 @@
 //
 // Export peak data using the RdXport Web Service
 //
-//   (C) Copyright 2010 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdpeaksexport.cpp,v 1.6.4.5 2013/11/13 23:36:33 cvs Exp $
+//   (C) Copyright 2010-2015 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -62,6 +60,9 @@ RDPeaksExport::~RDPeaksExport()
   if(conv_energy_data!=NULL) {
     free(conv_energy_data);
   }
+  if(conv_energy_integrated!=NULL) {
+    delete conv_energy_integrated;
+  }
 }
 
 
@@ -73,6 +74,7 @@ RDPeaksExport::RDPeaksExport(RDStation *station,RDConfig *config,
   conv_cart_number=0;
   conv_cut_number=0;
   conv_energy_data=NULL;
+  conv_energy_integrated=NULL;
   conv_write_ptr=0;
 }
 
@@ -168,6 +170,9 @@ RDPeaksExport::ErrorCode RDPeaksExport::runExport(const QString &username,
   default:
     return RDPeaksExport::ErrorService;
   }
+  conv_energy_integrated=new bool[energySize()];
+  memset(conv_energy_integrated,0,energySize());
+
   return RDPeaksExport::ErrorOk;
 }
 
@@ -215,9 +220,24 @@ unsigned RDPeaksExport::energySize()
 }
 
 
-unsigned short RDPeaksExport::energy(unsigned frame)
+unsigned short RDPeaksExport::energy(unsigned frame,unsigned integrate_chans)
 {
-  return conv_energy_data[frame];
+  unsigned short ret=conv_energy_data[frame];
+
+  if(integrate_chans>0) {
+    while(!conv_energy_integrated[frame]) {
+      conv_energy_integrated[frame]=true;
+      if(conv_energy_data[frame]>ret) {
+	ret=conv_energy_data[frame];
+      }
+      if(frame<integrate_chans) {
+	return ret;
+      }
+      frame-=integrate_chans;
+    }
+  }
+
+  return ret;
 }
 
 

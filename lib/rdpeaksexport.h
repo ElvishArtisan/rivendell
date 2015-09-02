@@ -2,9 +2,7 @@
 //
 // Export peak data using the RdXport Web Service
 //
-//   (C) Copyright 2010 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdpeaksexport.h,v 1.1.6.1 2013/11/13 23:36:33 cvs Exp $
+//   (C) Copyright 2010-2015 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -43,7 +41,7 @@ class RDPeaksExport
   RDPeaksExport::ErrorCode runExport(const QString &username,
 				     const QString &password);
   unsigned energySize();
-  unsigned short energy(unsigned frame);
+  unsigned short energy(unsigned frame,unsigned integrate_chans=0);
   int readEnergy(unsigned short buf[],int count);
   static QString errorText(RDPeaksExport::ErrorCode err);
 
@@ -53,6 +51,7 @@ class RDPeaksExport
   unsigned conv_cart_number;
   unsigned conv_cut_number;
   unsigned short *conv_energy_data;
+  bool *conv_energy_integrated;
   unsigned conv_write_ptr;
   friend size_t RDPeaksExportWrite(void *ptr, size_t size, size_t nmemb, 
 				   void *userdata);
