@@ -173,6 +173,7 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdmarker_bar.cpp rdmarker_bar.h\
                         rdmarker_button.cpp rdmarker_button.h\
                         rdmarker_edit.cpp rdmarker_edit.h\
+                        rdmarkertransport.cpp rdmarkertransport.h\
                         rdmarkerwaveform.cpp rdmarkerwaveform.h\
                         rdmarkerwidget.cpp rdmarkerwidget.h\
                         rdmatrix.cpp rdmatrix.h\
@@ -300,6 +301,7 @@ nodist_librd_la_SOURCES = moc_rdadd_cart.cpp\
                           moc_rdmacro_event.cpp\
                           moc_rdmarker_bar.cpp\
                           moc_rdmarker_edit.cpp\
+                          moc_rdmarkertransport.cpp\
                           moc_rdmarkerwaveform.cpp\
                           moc_rdmarkerwidget.cpp\
                           moc_rdoneshot.cpp\

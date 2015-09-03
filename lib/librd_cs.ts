@@ -1169,11 +1169,11 @@ značku</translation>
     </message>
     <message>
         <source>Position</source>
-        <translation type="unfinished">Poloha</translation>
+        <translation type="obsolete">Poloha</translation>
     </message>
     <message>
         <source>Length</source>
-        <translation type="unfinished">Délka</translation>
+        <translation type="obsolete">Délka</translation>
     </message>
     <message>
         <source>Delete Talk Markers</source>
@@ -1273,6 +1273,10 @@ Down</source>
     <message>
         <source>Talk
 End</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Play</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1966,6 +1970,17 @@ Bitte Kofiguration prüfen und erneut versuchen.</translation>
     <message>
         <source>Tracker</source>
         <translation type="obsolete">Tracker</translation>
+    </message>
+</context>
+<context>
+    <name>RDMarkerTransport</name>
+    <message>
+        <source>Position</source>
+        <translation type="unfinished">Poloha</translation>
+    </message>
+    <message>
+        <source>Length</source>
+        <translation type="unfinished">Délka</translation>
     </message>
 </context>
 <context>

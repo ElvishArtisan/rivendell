@@ -981,14 +981,6 @@ Cart</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Position</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Length</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Cut
 Start</source>
         <translation type="unfinished"></translation>
@@ -1107,6 +1099,10 @@ Out</source>
     </message>
     <message>
         <source>Home</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Play</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1623,6 +1619,17 @@ Do you want to overwrite it?</source>
     <message>
         <source>Panel</source>
         <translation type="obsolete">Panneau</translation>
+    </message>
+</context>
+<context>
+    <name>RDMarkerTransport</name>
+    <message>
+        <source>Position</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Length</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

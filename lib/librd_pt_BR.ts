@@ -1165,11 +1165,11 @@ Marcador</translation>
     </message>
     <message>
         <source>Position</source>
-        <translation type="unfinished">Posição</translation>
+        <translation type="obsolete">Posição</translation>
     </message>
     <message>
         <source>Length</source>
-        <translation type="unfinished">Duração</translation>
+        <translation type="obsolete">Duração</translation>
     </message>
     <message>
         <source>Delete Talk Markers</source>
@@ -1241,6 +1241,10 @@ Down</source>
         <source>Talk
 End</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Play</source>
+        <translation type="unfinished">Simples</translation>
     </message>
 </context>
 <context>
@@ -1935,6 +1939,17 @@ Por Favor, cheque suas configurações e tenbte outra vez.</translation>
     <message>
         <source>Tracker</source>
         <translation type="obsolete">Busca</translation>
+    </message>
+</context>
+<context>
+    <name>RDMarkerTransport</name>
+    <message>
+        <source>Position</source>
+        <translation type="unfinished">Posição</translation>
+    </message>
+    <message>
+        <source>Length</source>
+        <translation type="unfinished">Duração</translation>
     </message>
 </context>
 <context>

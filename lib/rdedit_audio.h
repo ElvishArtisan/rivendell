@@ -29,6 +29,7 @@
 
 #include <rdconfig.h>
 #include <rdmarker_edit.h>
+#include <rdmarkertransport.h>
 #include <rdtransportbutton.h>
 #include <rdstereometer.h>
 #include <rdwavefile.h>
@@ -80,12 +81,6 @@ class RDEditAudio : public QDialog
  private slots:
   void viewportWidthChangedData(int msecs);
   void waveformClickedData(int msecs);
-  void playStartData();
-  void playCursorData();
-  void pauseData();
-  void stopData();
-  void loopData();
-  void meterData();
   void markerButtonEnabledData(int id);
   void markerValueChangedData(int id);
   void trimHeadData();
@@ -104,21 +99,10 @@ class RDEditAudio : public QDialog
 
  private:
   void SetDeleteMode(bool state);
+  RDMarkerWaveform::CuePoints CurrentMarker() const;
   RDMarkerWaveform *edit_waveform[2];
   QScrollBar *edit_waveform_scroll;
-  RDTransportButton *edit_play_cursor_button;
-  RDTransportButton *edit_play_start_button;
-  RDTransportButton *edit_pause_button;
-  RDTransportButton *edit_stop_button;
-  RDTransportButton *edit_loop_button;
-  QLabel *edit_position_label;
-  QLineEdit *edit_overall_edit;
-  QLabel *edit_region_edit_label;
-  QLineEdit *edit_region_edit;
-  QLabel *edit_size_label;
-  QLineEdit *edit_size_edit;
-  RDStereoMeter *edit_meter;
-  QTimer *edit_meter_timer;
+  RDMarkerTransport *edit_marker_transport;
   RDMarkerWidget *edit_marker_widget[RDMarkerWaveform::LastMarker];
   QLabel *edit_trim_label;
   QSpinBox *edit_trim_box;
@@ -137,7 +121,6 @@ class RDEditAudio : public QDialog
   QPushButton *edit_goto_cursor_button;
   QPushButton *edit_goto_home_button;
   QPushButton *edit_goto_end_button;
-
   QLabel *edit_amp_label;
   RDTransportButton *edit_ampup_button;
   RDTransportButton *edit_ampdown_button;
@@ -147,8 +130,6 @@ class RDEditAudio : public QDialog
   RDTransportButton *edit_zoomout_button;
   QPushButton *edit_fullout_button;
   RDCut *edit_cut;
-  int edit_card;
-  int edit_port;
   QPushButton *edit_save_button;
   QPushButton *edit_cancel_button;
 };

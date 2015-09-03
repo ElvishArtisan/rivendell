@@ -1164,11 +1164,11 @@ marcador</translation>
     </message>
     <message>
         <source>Position</source>
-        <translation type="unfinished">Posición</translation>
+        <translation type="obsolete">Posición</translation>
     </message>
     <message>
         <source>Length</source>
-        <translation type="unfinished">Longitud</translation>
+        <translation type="obsolete">Longitud</translation>
     </message>
     <message>
         <source>Delete Talk Markers</source>
@@ -1257,6 +1257,10 @@ Down</source>
         <source>Talk
 End</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Play</source>
+        <translation type="unfinished">Reproducir</translation>
     </message>
 </context>
 <context>
@@ -1945,6 +1949,17 @@ Do you still want to proceed?</source>
     <message>
         <source>RDLogManager</source>
         <translation type="obsolete">RDLogManager</translation>
+    </message>
+</context>
+<context>
+    <name>RDMarkerTransport</name>
+    <message>
+        <source>Position</source>
+        <translation type="unfinished">Posición</translation>
+    </message>
+    <message>
+        <source>Length</source>
+        <translation type="unfinished">Longitud</translation>
     </message>
 </context>
 <context>
