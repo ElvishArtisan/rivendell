@@ -32,7 +32,8 @@ class RDPeaksExport
  public:
   enum ErrorCode {ErrorOk=0,ErrorNoSource=2,
 		  ErrorInternal=5,ErrorUrlInvalid=7,
-		  ErrorService=8,ErrorInvalidUser=9,ErrorAborted=10};
+		  ErrorService=8,ErrorInvalidUser=9,ErrorAborted=10,
+		  NoPeakData=11};
   RDPeaksExport(RDStation *station,RDConfig *config,QObject *parent=0,
 		const char *name=0);
   ~RDPeaksExport();

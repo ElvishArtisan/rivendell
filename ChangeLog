@@ -15155,3 +15155,8 @@
 	* Added a 'Type' control to 'web/tests/listcart.html'.
 	* Fixed a bug in 'web/rdxport/carts.cpp' that broke the 'ListCarts'
 	API call when no group was specified.
+2015-09-03 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'lib/rdpeaksexport.cpp' that threw a segfault when
+	attempting to process a cut with no energy data.
+	* Added code in 'lib/rdwavepainter.cpp' to display error strings
+	from 'RDPeaksExport'.

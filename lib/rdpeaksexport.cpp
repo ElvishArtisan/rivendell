@@ -165,9 +165,15 @@ RDPeaksExport::ErrorCode RDPeaksExport::runExport(const QString &username,
     break;
 
   case 403:
+    conv_write_ptr=0;
     return RDPeaksExport::ErrorInvalidUser;
 
+  case 404:
+    conv_write_ptr=0;
+    return RDPeaksExport::NoPeakData;
+
   default:
+    conv_write_ptr=0;
     return RDPeaksExport::ErrorService;
   }
   conv_energy_integrated=new bool[energySize()];
@@ -209,6 +215,10 @@ QString RDPeaksExport::errorText(RDPeaksExport::ErrorCode err)
   case RDPeaksExport::ErrorAborted:
     ret=QObject::tr("Aborted");
     break;
+
+  case RDPeaksExport::NoPeakData:
+    ret=QObject::tr("No Energy Data");
+    break;
   }
   return ret;
 }
@@ -224,6 +234,9 @@ unsigned short RDPeaksExport::energy(unsigned frame,unsigned integrate_chans)
 {
   unsigned short ret=conv_energy_data[frame];
 
+  if(frame>=energySize()) {
+    return 0;
+  }
   if(integrate_chans>0) {
     while(!conv_energy_integrated[frame]) {
       conv_energy_integrated[frame]=true;

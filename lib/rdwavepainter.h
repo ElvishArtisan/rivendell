@@ -58,6 +58,7 @@ class RDWavePainter : public QPainter
   RDPeaksExport *wave_peaks;
   unsigned wave_sample_rate;
   unsigned wave_channels;
+  QString wave_error_string;
 };
 
 
