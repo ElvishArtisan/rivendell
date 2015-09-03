@@ -29,6 +29,7 @@
 
 #include <rdcae.h>
 #include <rdcut.h>
+#include <rdmarkerwaveform.h>
 #include <rdstereometer.h>
 #include <rdtransportbutton.h>
 
@@ -46,9 +47,14 @@ class RDMarkerTransport : public QWidget
   void setStartPosition(int msecs);
   void setEndPosition(int msecs);
   void setGain(int gain);
+  void setActiveMarker(RDMarkerWaveform::CuePoints pt,
+		       int start_msecs,int end_msecs);
 
  signals:
   void positionChanged(int msecs);
+
+ public slots:
+  void setPosition(int msecs);
 
  protected:
   void resizeEvent(QResizeEvent *e);
@@ -66,6 +72,7 @@ class RDMarkerTransport : public QWidget
   void positionData(int handle,unsigned msecs);
 
  private:
+  void LoopRegion(int start_msec,int end_msec);
   RDTransportButton *trans_play_cursor_button;
   RDTransportButton *trans_play_start_button;
   RDTransportButton *trans_pause_button;
@@ -86,14 +93,20 @@ class RDMarkerTransport : public QWidget
   bool trans_is_playing;
   bool trans_pause_mode;
   bool trans_is_paused;
+  bool trans_ignore_pause;
   bool trans_is_stopped;
+  bool trans_use_looping;
   bool trans_is_looping;
   RDMarkerTransport::PlayMode trans_play_mode;
   RDCut *trans_cut;
   RDCae *trans_cae;
   int trans_start_position;
   int trans_end_position;
+  RDMarkerWaveform::CuePoints trans_active_marker;
+  int trans_marker_start_position;
+  int trans_marker_end_position;
   int trans_gain;
+  int trans_played_from_position;
 };
 
 

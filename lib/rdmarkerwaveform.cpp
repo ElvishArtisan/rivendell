@@ -36,21 +36,6 @@ RDMarkerWaveform::RDMarkerWaveform(RDCut *cut,RDUser *user,RDStation *station,
   wave_channel=chan;
 
   //
-  // Color Table
-  //
-  wave_cursor_colors[RDMarkerWaveform::Play]=Qt::black;
-  wave_cursor_colors[RDMarkerWaveform::Start]=RD_START_END_MARKER_COLOR;
-  wave_cursor_colors[RDMarkerWaveform::End]=RD_START_END_MARKER_COLOR;
-  wave_cursor_colors[RDMarkerWaveform::FadeUp]=RD_FADE_MARKER_COLOR;
-  wave_cursor_colors[RDMarkerWaveform::FadeDown]=RD_FADE_MARKER_COLOR;
-  wave_cursor_colors[RDMarkerWaveform::TalkStart]=RD_TALK_MARKER_COLOR;
-  wave_cursor_colors[RDMarkerWaveform::TalkEnd]=RD_TALK_MARKER_COLOR;
-  wave_cursor_colors[RDMarkerWaveform::SegueStart]=RD_SEGUE_MARKER_COLOR;
-  wave_cursor_colors[RDMarkerWaveform::SegueEnd]=RD_SEGUE_MARKER_COLOR;
-  wave_cursor_colors[RDMarkerWaveform::HookStart]=RD_HOOK_MARKER_COLOR;
-  wave_cursor_colors[RDMarkerWaveform::HookEnd]=RD_HOOK_MARKER_COLOR;
-
-  //
   // Arrow Offset Table
   //
   wave_cursor_arrow_offsets[RDMarkerWaveform::Play]=0;
@@ -127,6 +112,93 @@ void RDMarkerWaveform::setCursor(CuePoints pt,int msecs)
       update();
     }
   }
+}
+
+
+QColor RDMarkerWaveform::markerColor(CuePoints pt)
+{
+  QColor ret;
+
+  switch(pt) {
+  case RDMarkerWaveform::Play:
+    ret=Qt::black;
+    break;
+
+  case RDMarkerWaveform::Start:
+  case RDMarkerWaveform::End:
+    ret=RD_START_END_MARKER_COLOR;
+    break;
+
+  case RDMarkerWaveform::FadeUp:
+  case RDMarkerWaveform::FadeDown:
+    ret=RD_FADE_MARKER_COLOR;
+    break;
+
+  case RDMarkerWaveform::TalkStart:
+  case RDMarkerWaveform::TalkEnd:
+    ret=RD_TALK_MARKER_COLOR;
+    break;
+
+  case RDMarkerWaveform::SegueStart:
+  case RDMarkerWaveform::SegueEnd:
+    ret=RD_SEGUE_MARKER_COLOR;
+    break;
+
+  case RDMarkerWaveform::HookStart:
+  case RDMarkerWaveform::HookEnd:
+    ret=RD_HOOK_MARKER_COLOR;
+    break;
+
+  case RDMarkerWaveform::LastMarker:
+    break;
+  }
+
+  return ret;
+}
+
+
+QString RDMarkerWaveform::markerName(CuePoints pt)
+{
+  QString ret;
+
+  switch(pt) {
+  case RDMarkerWaveform::Play:
+    ret="<"+tr("none")+">";
+    break;
+
+  case RDMarkerWaveform::Start:
+  case RDMarkerWaveform::End:
+    ret=tr("Cut");
+    break;
+
+  case RDMarkerWaveform::FadeUp:
+    ret=tr("Fade Up");
+    break;
+
+  case RDMarkerWaveform::FadeDown:
+    ret=tr("Fade Down");
+    break;
+
+  case RDMarkerWaveform::TalkStart:
+  case RDMarkerWaveform::TalkEnd:
+    ret=tr("Talk");
+    break;
+
+  case RDMarkerWaveform::SegueStart:
+  case RDMarkerWaveform::SegueEnd:
+    ret=tr("Segue");
+    break;
+
+  case RDMarkerWaveform::HookStart:
+  case RDMarkerWaveform::HookEnd:
+    ret=tr("Hook");
+    break;
+
+  case RDMarkerWaveform::LastMarker:
+    break;
+  }
+
+  return ret;
 }
 
 
@@ -307,8 +379,8 @@ void RDMarkerWaveform::DrawCursor(QPainter *p,RDMarkerWaveform::CuePoints pt)
   //
   int x=XCoordinate(wave_cursors[pt])+10;
   if((x>=10)&&(x<(size().width()-10))) {
-    p->setPen(wave_cursor_colors[pt]);
-    p->setBrush(wave_cursor_colors[pt]);
+    p->setPen(RDMarkerWaveform::markerColor(pt));
+    p->setBrush(RDMarkerWaveform::markerColor(pt));
     p->moveTo(x,0);
     p->lineTo(x,size().height());
 
@@ -351,11 +423,9 @@ void RDMarkerWaveform::SetPlayCursor(int msecs)
   if((x>=10)&&(x<(size().width()-10))) {
     QPainter *p=new QPainter(this);
     p->drawImage(old_x,0,wave_image,old_x,0,1,size().height());
-    if(x>=0) {
-      p->setPen(Qt::black);
-      p->moveTo(x,0);
-      p->lineTo(x,size().height());
-    }
+    p->setPen(Qt::black);
+    p->moveTo(x,0);
+    p->lineTo(x,size().height());
     p->end();
     delete p;
   }

@@ -1948,6 +1948,41 @@ Bitte Kofiguration prüfen und erneut versuchen.</translation>
     </message>
 </context>
 <context>
+    <name>RDMarkerWaveform</name>
+    <message>
+        <source>Play</source>
+        <translation type="obsolete">Play</translation>
+    </message>
+    <message>
+        <source>Cut</source>
+        <translation type="unfinished">Cut</translation>
+    </message>
+    <message>
+        <source>Fade Up</source>
+        <translation type="unfinished">Einfaden</translation>
+    </message>
+    <message>
+        <source>Fade Down</source>
+        <translation type="unfinished">Ausfaden</translation>
+    </message>
+    <message>
+        <source>Talk</source>
+        <translation type="unfinished">Mod</translation>
+    </message>
+    <message>
+        <source>Segue</source>
+        <translation type="unfinished">Segue</translation>
+    </message>
+    <message>
+        <source>Hook</source>
+        <translation type="unfinished">Hook</translation>
+    </message>
+    <message>
+        <source>none</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>RDPanelButton</name>
     <message>
         <source>No Audio</source>

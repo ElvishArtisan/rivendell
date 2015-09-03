@@ -1953,6 +1953,42 @@ Por Favor, cheque suas configurações e tenbte outra vez.</translation>
     </message>
 </context>
 <context>
+    <name>RDMarkerWaveform</name>
+    <message>
+        <source>Play</source>
+        <translation type="obsolete">Simples</translation>
+    </message>
+    <message>
+        <source>Cut</source>
+        <translation type="unfinished">Conteúdo</translation>
+    </message>
+    <message>
+        <source>Fade Up</source>
+        <translation type="unfinished">Fade Up</translation>
+    </message>
+    <message>
+        <source>Fade Down</source>
+        <translation type="unfinished">Fade Down</translation>
+    </message>
+    <message>
+        <source>Talk</source>
+        <translation type="unfinished">Fim Locutor</translation>
+    </message>
+    <message>
+        <source>Segue</source>
+        <translation type="unfinished">Sobre</translation>
+    </message>
+    <message>
+        <source>Hook</source>
+        <translation type="unfinished">Trecho
+</translation>
+    </message>
+    <message>
+        <source>none</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>RDPanelButton</name>
     <message>
         <source>No Audio</source>

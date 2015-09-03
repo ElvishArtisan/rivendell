@@ -1984,6 +1984,37 @@ Bitte Kofiguration prüfen und erneut versuchen.</translation>
     </message>
 </context>
 <context>
+    <name>RDMarkerWaveform</name>
+    <message>
+        <source>Cut</source>
+        <translation type="unfinished">Záběr</translation>
+    </message>
+    <message>
+        <source>Fade Up</source>
+        <translation type="unfinished">Zesílit</translation>
+    </message>
+    <message>
+        <source>Fade Down</source>
+        <translation type="unfinished">Zeslabit</translation>
+    </message>
+    <message>
+        <source>Talk</source>
+        <translation type="unfinished">Hovor</translation>
+    </message>
+    <message>
+        <source>Segue</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hook</source>
+        <translation type="unfinished">Chytlavá melodie</translation>
+    </message>
+    <message>
+        <source>none</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>RDPanelButton</name>
     <message>
         <source>No Audio</source>

@@ -15160,3 +15160,6 @@
 	attempting to process a cut with no energy data.
 	* Added code in 'lib/rdwavepainter.cpp' to display error strings
 	from 'RDPeaksExport'.
+2015-09-03 Fred Gleason <fredg@paravelsystems.com>
+	* Reimplemented looping mode in 'lib/rdmarkertransport.cpp' and
+	'lib/rdmarkertransport.h'.

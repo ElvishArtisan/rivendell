@@ -90,10 +90,12 @@ RDEditAudio::RDEditAudio(RDCart *cart,QString cut_name,RDCae *cae,RDUser *user,
   // Audio Transport Controls
   //
   edit_marker_transport=new RDMarkerTransport(edit_cut,cae,card,port,this);
-  connect(edit_marker_transport,SIGNAL(positionChanged(int)),
-	  edit_waveform[0],SLOT(setPlayCursor(int)));
-  connect(edit_marker_transport,SIGNAL(positionChanged(int)),
-	  edit_waveform[1],SLOT(setPlayCursor(int)));
+  for(int i=0;i<2;i++) {
+    connect(edit_marker_transport,SIGNAL(positionChanged(int)),
+	    edit_waveform[i],SLOT(setPlayCursor(int)));
+    connect(edit_waveform[i],SIGNAL(clicked(int)),
+	    edit_marker_transport,SLOT(setPosition(int)));
+  }
 
   //
   // Marker Widgets
@@ -408,6 +410,10 @@ RDEditAudio::~RDEditAudio()
     delete edit_waveform[i];
   }
   delete edit_cut;
+  delete edit_marker_transport;
+  for(int i=0;i<RDMarkerWaveform::LastMarker;i++) {
+    delete edit_marker_widget[i];
+  }
 }
 
 
@@ -582,6 +588,51 @@ void RDEditAudio::markerButtonEnabledData(int id)
       edit_marker_widget[i]->setSelected(false);
     }
   }
+  if(edit_marker_widget[id]->isSelected()) {
+    switch(id) {
+    case RDMarkerWaveform::Start:
+    case RDMarkerWaveform::TalkStart:
+    case RDMarkerWaveform::SegueStart:
+    case RDMarkerWaveform::HookStart:
+      edit_marker_transport->setActiveMarker((RDMarkerWaveform::CuePoints)id,
+					     edit_marker_widget[id]->value(),
+					     edit_marker_widget[id+1]->value());
+      break;
+
+    case RDMarkerWaveform::End:
+    case RDMarkerWaveform::TalkEnd:
+    case RDMarkerWaveform::SegueEnd:
+    case RDMarkerWaveform::HookEnd:
+      edit_marker_transport->setActiveMarker((RDMarkerWaveform::CuePoints)id,
+					     edit_marker_widget[id-1]->value(),
+					     edit_marker_widget[id]->value());
+      break;
+
+    case RDMarkerWaveform::FadeUp:
+      edit_marker_transport->
+	setActiveMarker((RDMarkerWaveform::CuePoints)id,
+			edit_marker_widget[RDMarkerWaveform::Start]->value(),
+			edit_marker_widget[id]->value());
+      break;
+
+    case RDMarkerWaveform::FadeDown:
+      edit_marker_transport->
+	setActiveMarker((RDMarkerWaveform::CuePoints)id,
+			edit_marker_widget[id]->value(),
+			edit_marker_widget[RDMarkerWaveform::End]->value());
+      break;
+
+    case RDMarkerWaveform::Play:
+    case RDMarkerWaveform::LastMarker:
+      break;
+    }
+  }
+  else {
+      edit_marker_transport->
+	setActiveMarker(RDMarkerWaveform::Play,
+			edit_marker_widget[RDMarkerWaveform::Start]->value(),
+			edit_marker_widget[RDMarkerWaveform::End]->value());
+  }
 }
 
 
@@ -733,7 +784,7 @@ void RDEditAudio::SetDeleteMode(bool state)
     edit_marker_widget[i]->setDeleteMode(state);
   }
   edit_remove_button->setFlashingEnabled(state);
-  edit_remove_button->setDown(false);
+  edit_remove_button->setDown(state);
 }
 
 
