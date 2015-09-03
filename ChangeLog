@@ -15151,3 +15151,7 @@
 2015-09-03 Fred Gleason <fredg@paravelsystems.com>
 	* Added an 'RDMarkerTransport' class in 'lib/rdmarkertransport.cpp'
 	and 'lib/rdmarkertransport.h'.
+2015-09-03 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'Type' control to 'web/tests/listcart.html'.
+	* Fixed a bug in 'web/rdxport/carts.cpp' that broke the 'ListCarts'
+	API call when no group was specified.

@@ -145,7 +145,7 @@ void Xport::ListCarts()
   // Generate Cart List
   //
   if(group_name.isEmpty()||(group_name==tr("ALL"))) {
-    where=RDAllCartSearchText(filter,"ALL",xport_user->name(),false);
+    where=RDAllCartSearchText(filter,"",xport_user->name(),false);
   }
   else {
     sql=QString().
