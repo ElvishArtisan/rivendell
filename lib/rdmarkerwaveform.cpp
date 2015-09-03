@@ -423,6 +423,7 @@ void RDMarkerWaveform::SetPlayCursor(int msecs)
   if((x>=10)&&(x<(size().width()-10))) {
     QPainter *p=new QPainter(this);
     p->drawImage(old_x,0,wave_image,old_x,0,1,size().height());
+    p->setRasterOp(Qt::NotXorROP);
     p->setPen(Qt::black);
     p->moveTo(x,0);
     p->lineTo(x,size().height());
