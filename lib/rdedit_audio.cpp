@@ -664,11 +664,20 @@ void RDEditAudio::markerValueChangedData(int id)
 	edit_marker_widget[id+1]->setValue(-1);
       }
       SetDeleteMode(false);
+      if(edit_marker_widget[id]->isSelected()) {
+	edit_marker_transport->
+	  setActiveMarker(RDMarkerWaveform::Play,0,edit_cut->length());
+      }
     }
     else {
       if(edit_marker_widget[id+1]->value()<0) {
 	edit_marker_widget[id+1]->
 	  setValue(edit_marker_widget[id+1]->highLimit());
+      }
+      if(edit_marker_widget[id]->isSelected()) {
+	edit_marker_transport->
+	  setActiveMarker((RDMarkerWaveform::CuePoints)id,
+			  value,edit_marker_widget[id+1]->value());
       }
     }
     break;
@@ -681,11 +690,20 @@ void RDEditAudio::markerValueChangedData(int id)
 	edit_marker_widget[id-1]->setValue(-1);
       }
       SetDeleteMode(false);
+      if(edit_marker_widget[id]->isSelected()) {
+	edit_marker_transport->
+	  setActiveMarker(RDMarkerWaveform::Play,0,edit_cut->length());
+      }
     }
     else {
       if(edit_marker_widget[id-1]->value()<0) {
 	edit_marker_widget[id-1]->
 	  setValue(edit_marker_widget[id-1]->lowLimit());
+      }
+      if(edit_marker_widget[id]->isSelected()) {
+	edit_marker_transport->
+	  setActiveMarker((RDMarkerWaveform::CuePoints)id,
+			  edit_marker_widget[id-1]->value(),value);
       }
     }
     break;
