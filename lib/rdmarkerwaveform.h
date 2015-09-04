@@ -53,6 +53,7 @@ class RDMarkerWaveform : public QWidget
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
   int viewportWidth() const;
+  void setReferenceLevel(int level);
   void setCursor(CuePoints pt,int msecs);
   static QColor markerColor(CuePoints pt);
   static QString markerName(CuePoints pt);
@@ -80,16 +81,18 @@ class RDMarkerWaveform : public QWidget
   void DrawCursor(QPainter *p,RDMarkerWaveform::CuePoints pt);
   void SetPlayCursor(int msecs);
   int XCoordinate(int msecs) const;
+  int YCoordinate(float ratio) const;
   int GridIncrement() const;
   RDCut *wave_cut;
   RDUser *wave_user;
   RDStation *wave_station;
   RDConfig *wave_config;
   RDWavePainter::Channel wave_channel;
+  int wave_gain;
+  int wave_reference_level;
   int wave_start;
   int wave_width;
   int wave_width_max;
-  int wave_gain;
   int wave_cursors[RDMarkerWaveform::LastMarker];
   QImage wave_image;
   int wave_cursor_arrow_offsets[RDMarkerWaveform::LastMarker];

@@ -38,6 +38,10 @@ RDEditAudio::RDEditAudio(RDCart *cart,QString cut_name,RDCae *cae,RDUser *user,
 			 int trim_level,QWidget *parent)
   : QDialog(parent,"",true)
 {
+  trans_preroll=preroll;
+  edit_gain_mode=RDEditAudio::GainNone;
+  edit_gain_count=0;
+
   //
   // Fix the Window Size
   //
@@ -399,6 +403,9 @@ RDEditAudio::RDEditAudio(RDCart *cart,QString cut_name,RDCae *cae,RDUser *user,
   edit_marker_widget[RDMarkerWaveform::FadeDown]->
     setRange(edit_marker_widget[RDMarkerWaveform::FadeUp],
 	     edit_marker_widget[RDMarkerWaveform::End]);
+
+  edit_gain_control->setValue(edit_cut->playGain());
+  gainChangedData();
 }
 
 
@@ -603,9 +610,10 @@ void RDEditAudio::markerButtonEnabledData(int id)
     case RDMarkerWaveform::TalkEnd:
     case RDMarkerWaveform::SegueEnd:
     case RDMarkerWaveform::HookEnd:
-      edit_marker_transport->setActiveMarker((RDMarkerWaveform::CuePoints)id,
-					     edit_marker_widget[id-1]->value(),
-					     edit_marker_widget[id]->value());
+      edit_marker_transport->
+	setActiveMarker((RDMarkerWaveform::CuePoints)id,
+			edit_marker_widget[id]->value()-trans_preroll,
+			edit_marker_widget[id]->value());
       break;
 
     case RDMarkerWaveform::FadeUp:
@@ -725,26 +733,74 @@ void RDEditAudio::trimTailData()
 
 void RDEditAudio::gainUpPressedData()
 {
+  edit_gain_mode=RDEditAudio::GainUp;
+  gainTimerData();
+  edit_gain_timer->start(TYPO_RATE_1);
 }
 
 
 void RDEditAudio::gainDownPressedData()
 {
+  edit_gain_mode=RDEditAudio::GainDown;
+  gainTimerData();
+  edit_gain_timer->start(TYPO_RATE_1);  
 }
 
 
 void RDEditAudio::gainChangedData()
 {
+  int gain;
+  QString str;
+
+  if(sscanf((const char *)edit_gain_edit->text(),"%d",&gain)==1) {
+    edit_gain_control->setValue(gain*100);
+  }
+  str=QString(tr("dB"));
+  edit_gain_edit->setText(QString().sprintf("%4.1f %s",
+			  (double)edit_gain_control->value()/100.0,
+			  (const char *)str));
+  edit_marker_transport->setGain(edit_gain_control->value());
+  edit_waveform[0]->setReferenceLevel(edit_gain_control->value());
+  edit_waveform[1]->setReferenceLevel(edit_gain_control->value());
 }
 
 
 void RDEditAudio::gainReleasedData()
 {
+  edit_gain_timer->stop();
+  edit_gain_mode=RDEditAudio::GainNone;
+  edit_gain_count=0;
 }
 
 
 void RDEditAudio::gainTimerData()
 {
+  QString str;
+
+  switch(edit_gain_mode) {
+  case RDEditAudio::GainUp:
+    edit_gain_control->addLine();
+    if(edit_gain_count++==1) {
+      edit_gain_timer->changeInterval(TYPO_RATE_2);
+    }
+    break;
+
+  case RDEditAudio::GainDown:
+    edit_gain_control->subtractLine();
+    if(edit_gain_count++==1) {
+      edit_gain_timer->changeInterval(TYPO_RATE_2);
+    }
+    break;
+
+  case RDEditAudio::GainNone:
+    break;
+  }
+  str=QString(tr("dB"));
+  edit_gain_edit->setText(QString().sprintf("%4.1f %s",
+			     (double)edit_gain_control->value()/100.0,
+			     (const char *)str));
+  edit_waveform[0]->setReferenceLevel(edit_gain_control->value());
+  edit_waveform[1]->setReferenceLevel(edit_gain_control->value());
 }
 
 
