@@ -15197,3 +15197,5 @@
 	and 'lib/rdedit_audio.h'.
 2015-09-04 Fred Gleason <fredg@paravelsystems.com>
 	* Optimized waveform updates in 'lib/rdmarkerwaveform.cpp'.
+2015-09-04 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.10.3int06.
