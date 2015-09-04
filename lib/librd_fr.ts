@@ -1113,6 +1113,20 @@ Out</source>
         <source>Edit Audio</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Marker Warning</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Less than half of the audio is playable with these marker settings.
+Are you sure you want to save?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>More than half of the audio will be faded with these marker settings.
+Are you sure you want to save?</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RDEditPanelName</name>

@@ -1251,18 +1251,18 @@ značku</translation>
     </message>
     <message>
         <source>Marker Warning</source>
-        <translation type="obsolete">Varování týkající se značek</translation>
+        <translation type="unfinished">Varování týkající se značek</translation>
     </message>
     <message>
         <source>Less than half of the audio is playable with these marker settings.
 Are you sure you want to save?</source>
-        <translation type="obsolete">Méně než polovina zvukového záznamu je přehratelná s těmito nastaveními pro značky.
+        <translation type="unfinished">Méně než polovina zvukového záznamu je přehratelná s těmito nastaveními pro značky.
 Opravdu chcete uložit?</translation>
     </message>
     <message>
         <source>More than half of the audio will be faded with these marker settings.
 Are you sure you want to save?</source>
-        <translation type="obsolete">Více než polovina zvukového záznamu bude s těmito nastaveními pro značky vystřižena.
+        <translation type="unfinished">Více než polovina zvukového záznamu bude s těmito nastaveními pro značky vystřižena.
 Opravdu chcete uložit?</translation>
     </message>
     <message>
