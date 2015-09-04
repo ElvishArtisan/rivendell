@@ -1245,6 +1245,10 @@ End</source>
         <source>Play</source>
         <translation type="unfinished">Spel</translation>
     </message>
+    <message>
+        <source>Edit Audio</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RDEditPanelName</name>

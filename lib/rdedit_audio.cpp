@@ -39,6 +39,9 @@ RDEditAudio::RDEditAudio(RDCart *cart,QString cut_name,RDCae *cae,RDUser *user,
   : QDialog(parent,"",true)
 {
   trans_preroll=preroll;
+  edit_station=station;
+  edit_config=config;
+  edit_user=user;
   edit_gain_mode=RDEditAudio::GainNone;
   edit_gain_count=0;
 
@@ -723,11 +726,47 @@ void RDEditAudio::markerValueChangedData(int id)
 
 void RDEditAudio::trimHeadData()
 {
+  RDTrimAudio::ErrorCode conv_err;
+  RDTrimAudio *conv=new RDTrimAudio(edit_station,edit_config,this);
+  conv->setCartNumber(edit_cut->cartNumber());
+  conv->setCutNumber(edit_cut->cutNumber());
+  conv->setTrimLevel(100*edit_trim_box->value());
+  switch(conv_err=conv->runTrim(edit_user->name(),edit_user->password())) {
+  case RDTrimAudio::ErrorOk:
+    if(conv->startPoint()>=0) {
+      edit_marker_widget[RDMarkerWaveform::Start]->setValue(conv->startPoint());
+    }
+    break;
+
+  default:
+    QMessageBox::warning(this,tr("Edit Audio"),
+			 RDTrimAudio::errorText(conv_err));
+    break;
+  }
+  delete conv;
 }
 
 
 void RDEditAudio::trimTailData()
 {
+  RDTrimAudio::ErrorCode conv_err;
+  RDTrimAudio *conv=new RDTrimAudio(edit_station,edit_config,this);
+  conv->setCartNumber(edit_cut->cartNumber());
+  conv->setCutNumber(edit_cut->cutNumber());
+  conv->setTrimLevel(100*edit_trim_box->value());
+  switch(conv_err=conv->runTrim(edit_user->name(),edit_user->password())) {
+  case RDTrimAudio::ErrorOk:
+    if(conv->endPoint()>=0) {
+      edit_marker_widget[RDMarkerWaveform::End]->setValue(conv->endPoint());
+    }
+    break;
+
+  default:
+    QMessageBox::warning(this,tr("Edit Audio"),
+			 RDTrimAudio::errorText(conv_err));
+    break;
+  }
+  delete conv;
 }
 
 

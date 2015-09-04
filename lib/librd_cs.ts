@@ -1247,7 +1247,7 @@ značku</translation>
     </message>
     <message>
         <source>Edit Audio</source>
-        <translation type="obsolete">Upravit zvuk</translation>
+        <translation type="unfinished">Upravit zvuk</translation>
     </message>
     <message>
         <source>Marker Warning</source>
