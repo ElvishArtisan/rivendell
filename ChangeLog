@@ -15195,3 +15195,5 @@
 2015-09-04 Fred Gleason <fredg@paravelsystems.com>
 	* Reimplemented marker saving in 'lib/rdedit_audio.cpp'
 	and 'lib/rdedit_audio.h'.
+2015-09-04 Fred Gleason <fredg@paravelsystems.com>
+	* Optimized waveform updates in 'lib/rdmarkerwaveform.cpp'.

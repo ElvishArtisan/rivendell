@@ -105,8 +105,10 @@ int RDMarkerWaveform::viewportWidth() const
 
 void RDMarkerWaveform::setReferenceLevel(int level)
 {
-  wave_reference_level=level;
-  repaint();
+  if(level!=wave_reference_level) {
+    wave_reference_level=level;
+    update();
+  }
 }
 
 
@@ -228,7 +230,7 @@ void RDMarkerWaveform::setViewportStart(int msecs)
 {
   if(((unsigned)msecs<wave_cut->length())&&(msecs!=wave_start)) {
     wave_start=msecs;
-    repaint();
+    update();
   }
 }
 
@@ -237,7 +239,7 @@ void RDMarkerWaveform::zoomIn()
 {
   if(wave_width>RDMARKERWAVEFORM_MIN_WAVE_WIDTH) {
     wave_width/=2;
-    repaint();
+    update();
     emit viewportWidthChanged(wave_width);
   }
 }
@@ -247,7 +249,7 @@ void RDMarkerWaveform::zoomOut()
 {
   if(wave_width<wave_width_max) {
     wave_width*=2;
-    repaint();
+    update();
     emit viewportWidthChanged(wave_width);
   }
 }
@@ -259,14 +261,14 @@ void RDMarkerWaveform::fullIn()
   while(wave_width>RDMARKERWAVEFORM_MIN_WAVE_WIDTH) {
     wave_width/=2;
   }
-  repaint();
+  update();
 }
 
 
 void RDMarkerWaveform::fullOut()
 {
   wave_width=(double)wave_cut->length()*1.05;
-  repaint();
+  update();
 }
 
 
@@ -274,7 +276,7 @@ void RDMarkerWaveform::ampUp()
 {
   if(wave_gain<RDMARKERWAVEFORM_MAX_WAVE_GAIN) {
     wave_gain*=2;
-    repaint();
+    update();
   }
 }
 
@@ -283,7 +285,7 @@ void RDMarkerWaveform::ampDown()
 {
   if(wave_gain>RDMARKERWAVEFORM_MIN_WAVE_GAIN) {
     wave_gain/=2;
-    repaint();
+    update();
   }
 }
 
