@@ -110,6 +110,12 @@ void RDMarkerWaveform::setReferenceLevel(int level)
 }
 
 
+int RDMarkerWaveform::playCursor() const
+{
+  return wave_cursors[RDMarkerWaveform::Play];
+}
+
+
 void RDMarkerWaveform::setCursor(CuePoints pt,int msecs)
 {
   if(msecs!=wave_cursors[pt]) {
@@ -345,6 +351,13 @@ void RDMarkerWaveform::paintEvent(QPaintEvent *e)
   //
   // Markers
   //
+  if(wave_cursors[RDMarkerWaveform::Play]>0) {
+    p->setPen(Qt::black);
+    p->setBrush(QBrush());
+    p->moveTo(XCoordinate(wave_cursors[RDMarkerWaveform::Play]),0);
+    p->lineTo(XCoordinate(wave_cursors[RDMarkerWaveform::Play]),
+	      height());
+  }
   for(int i=1;i<RDMarkerWaveform::LastMarker;i++) {
     if(wave_cursors[i]>=0) {
       DrawCursor(p,(RDMarkerWaveform::CuePoints)i);
