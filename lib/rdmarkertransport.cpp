@@ -258,11 +258,7 @@ void RDMarkerTransport::playStartData()
   }
   trans_cae->positionPlay(trans_handle,trans_start_position);
   trans_cae->setPlayPortActive(trans_card,trans_port,trans_stream);
-  /*
-  trans_cae->
-    setOutputVolume(trans_card,trans_stream,trans_port,
-		    0+trans_gain_control->value());
-  */
+  trans_cae->setOutputVolume(trans_card,trans_stream,trans_port,trans_gain);
   trans_cae->play(trans_handle,trans_end_position-trans_start_position,
 		  RD_TIMESCALE_DIVISOR,0);
   if(trans_use_looping) {
@@ -287,7 +283,7 @@ void RDMarkerTransport::playCursorData()
 
   trans_pause_mode=false;
   trans_cae->setPlayPortActive(trans_card,trans_port,trans_stream);
-  //trans_cae->setOutputVolume(trans_card,trans_stream,trans_port,0-edit_gain_control->value());
+  trans_cae->setOutputVolume(trans_card,trans_stream,trans_port,trans_gain);
   trans_cae->play(trans_handle,length,RD_TIMESCALE_DIVISOR,0);
   if(trans_use_looping) {
     trans_is_looping=true;
@@ -399,18 +395,12 @@ void RDMarkerTransport::LoopRegion(int start_msec,int end_msec)
   }
   if(start_msec==-1) {
     trans_cae->positionPlay(trans_handle,0);
-    /*
-    trans_cae->
-      setOutputVolume(edit_card,edit_stream,edit_port,0+edit_gain_control->value());
-    */
+    trans_cae->setOutputVolume(trans_card,trans_stream,trans_port,trans_gain);
     trans_cae->play(trans_handle,length,RD_TIMESCALE_DIVISOR,0);
   }
   else {
     trans_cae->positionPlay(trans_handle,start_msec);
-    /*
-    trans_cae->
-      setOutputVolume(trans_card,trans_stream,trans_port,0+trans_gain_control->value());
-    */
+    trans_cae->setOutputVolume(trans_card,trans_stream,trans_port,trans_gain);
     trans_cae->play(trans_handle,length,RD_TIMESCALE_DIVISOR,0);
   }
 }
