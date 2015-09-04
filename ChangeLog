@@ -15188,3 +15188,7 @@
 	* Fixed a bug in 'lib/rdedit_audio.cpp' that would cause playback
 	to begin at the wrong position if the current marker position was
 	changed after selecting the marker.
+2015-09-04 Fred Gleason <fredg@paravelsystems.com>
+	* Reimplemented looping mode in 'lib/rdmarkertransport.cpp',
+	'lib/rdmarkertransport.h', 'lib/rdedit_audio.cpp' and
+	'lib/rdedit_audio.h'.

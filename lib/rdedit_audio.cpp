@@ -735,7 +735,38 @@ void RDEditAudio::markerValueChangedData(int id)
     break;
 
   case RDMarkerWaveform::FadeUp:
+    if(value<0) {
+      SetDeleteMode(false);
+      if(edit_marker_widget[id]->isSelected()) {
+	edit_marker_transport->
+	  setActiveMarker(RDMarkerWaveform::Play,0,edit_cut->length());
+      }
+    }
+    else {
+      if(edit_marker_widget[id]->isSelected()) {
+	edit_marker_transport->
+	  setActiveMarker((RDMarkerWaveform::CuePoints)id,0,value);
+      }
+    }
+    break;
+
   case RDMarkerWaveform::FadeDown:
+    if(value<0) {
+      SetDeleteMode(false);
+      if(edit_marker_widget[id]->isSelected()) {
+	edit_marker_transport->
+	  setActiveMarker(RDMarkerWaveform::Play,0,edit_cut->length());
+      }
+    }
+    else {
+      if(edit_marker_widget[id]->isSelected()) {
+	edit_marker_transport->
+	  setActiveMarker((RDMarkerWaveform::CuePoints)id,value,
+			  edit_cut->length());
+      }
+    }
+    break;
+
   case RDMarkerWaveform::Play:
   case RDMarkerWaveform::LastMarker:
     break;
