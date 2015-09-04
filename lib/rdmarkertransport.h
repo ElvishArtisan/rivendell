@@ -39,8 +39,9 @@ class RDMarkerTransport : public QWidget
 {
   Q_OBJECT
  public:
-  enum PlayMode {FromStart=1,FromCursor=2,Region=3};
-  RDMarkerTransport(RDCut *cut,RDCae *cae,int card,int port,QWidget *parent=0);
+  enum PlayMode {FromStart=1,FromCursor=2};
+  RDMarkerTransport(RDCut *cut,RDCae *cae,int card,int port,int preroll,
+		    QWidget *parent=0);
   ~RDMarkerTransport();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
@@ -91,6 +92,7 @@ class RDMarkerTransport : public QWidget
   int trans_card;
   int trans_stream;
   int trans_port;
+  int trans_preroll;
   bool trans_is_playing;
   bool trans_pause_mode;
   bool trans_is_paused;
@@ -108,6 +110,7 @@ class RDMarkerTransport : public QWidget
   int trans_marker_end_position;
   int trans_gain;
   int trans_played_from_position;
+  unsigned trans_position;
 };
 
 

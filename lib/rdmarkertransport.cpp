@@ -25,7 +25,7 @@
 #include "rdmixer.h"
 
 RDMarkerTransport::RDMarkerTransport(RDCut *cut,RDCae *cae,int card,int port,
-				     QWidget *parent)
+				     int preroll,QWidget *parent)
   : QWidget(parent)
 {
   trans_start_position=cut->startPoint();
@@ -35,6 +35,7 @@ RDMarkerTransport::RDMarkerTransport(RDCut *cut,RDCae *cae,int card,int port,
   trans_cae=cae;
   trans_card=card;
   trans_port=port;
+  trans_preroll=preroll;
   trans_handle=-1;
   trans_is_playing=false;
   trans_pause_mode=false;
@@ -207,6 +208,9 @@ void RDMarkerTransport::setLength(int msecs)
 void RDMarkerTransport::setPosition(int msecs)
 {
   trans_cae->positionPlay(trans_handle,msecs);
+  if(!trans_is_playing) {
+    positionData(trans_handle,msecs);
+  }
 }
 
 
@@ -278,8 +282,35 @@ void RDMarkerTransport::playCursorData()
   if(trans_is_playing) {
     return;
   }
-  length=trans_end_position-trans_start_position;
-  trans_played_from_position=trans_start_position;
+  switch(trans_active_marker) {
+  case RDMarkerWaveform::Play:
+    length=trans_end_position-trans_position;
+    trans_played_from_position=trans_position;
+    break;
+
+  case RDMarkerWaveform::Start:
+  case RDMarkerWaveform::TalkStart:
+  case RDMarkerWaveform::SegueStart:
+  case RDMarkerWaveform::HookStart:
+  case RDMarkerWaveform::FadeDown:
+    length=trans_marker_end_position-trans_marker_start_position;
+    trans_played_from_position=trans_marker_start_position;
+    setPosition(trans_marker_start_position);
+    break;
+
+  case RDMarkerWaveform::End:
+  case RDMarkerWaveform::TalkEnd:
+  case RDMarkerWaveform::SegueEnd:
+  case RDMarkerWaveform::HookEnd:
+  case RDMarkerWaveform::FadeUp:
+    length=trans_preroll;
+    trans_played_from_position=trans_marker_end_position-trans_preroll;
+    setPosition(trans_played_from_position);
+    break;
+
+  case RDMarkerWaveform::LastMarker:
+    return;
+  }
 
   trans_pause_mode=false;
   trans_cae->setPlayPortActive(trans_card,trans_port,trans_stream);
@@ -364,25 +395,37 @@ void RDMarkerTransport::stoppedData(int handle)
   if(trans_is_looping) {
     LoopRegion(trans_start_position,trans_end_position);
   }
-
-  trans_play_start_button->off();
-  trans_play_cursor_button->off();
-  trans_pause_button->off();
-  if(trans_is_paused) {
-    trans_pause_button->on();
-  }
   else {
-    trans_stop_button->on();
-    setPosition(trans_start_position);
+    trans_play_start_button->off();
+    trans_play_cursor_button->off();
+    trans_pause_button->off();
+    if(trans_is_paused) {
+      trans_pause_button->on();
+    }
+    else {
+      trans_stop_button->on();
+      switch(trans_play_mode) {
+      case RDMarkerTransport::FromStart:
+	setPosition(trans_start_position);
+	break;
+
+      case RDMarkerTransport::FromCursor:
+	setPosition(trans_played_from_position);
+	break;
+      }
+    }
+    trans_is_playing=false;
   }
-  trans_is_playing=false;
 }
 
 
 void RDMarkerTransport::positionData(int handle,unsigned msecs)
 {
-  trans_overall_edit->setText(RDGetTimeLength(msecs,true,true));
-  emit positionChanged(msecs);
+  if(msecs!=trans_position) {
+    trans_position=msecs;
+    trans_overall_edit->setText(RDGetTimeLength(msecs,true,true));
+    emit positionChanged(msecs);
+  }
 }
 
 
