@@ -17,7 +17,7 @@
 //   License along with this program; if not, write to the Free Software
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
-
+/*
 #include <math.h>
 
 #include <samplerate.h>
@@ -961,29 +961,6 @@ bool MainObject::jackLoadRecord(int card,int stream,int coding,int chans,
   jack_ready[stream]=true;
   return true;
 
-  /*
-  if ((stream <0) || (stream >=RD_MAX_PORTS)){
-    return false;
-  }
-    jack_record_wave[stream]=new RDWaveFile(wavename);
-  jack_record_wave[stream]->setFormatTag(WAVE_FORMAT_PCM);
-  jack_record_wave[stream]->setChannels(chans);
-  jack_record_wave[stream]->setSamplesPerSec(samprate);
-  jack_record_wave[stream]->setBitsPerSample(16);
-  jack_record_wave[stream]->setBextChunk(true);
-  jack_record_wave[stream]->setLevlChunk(true);
-  if(!jack_record_wave[stream]->createWave()) {
-    delete jack_record_wave[stream];
-    jack_record_wave[stream]=NULL;
-    return false;
-  }
-  chown((const char *)wavename,rd_config->uid(),rd_config->gid());
-  jack_input_channels[stream]=chans; 
-  jack_record_ring[stream]=new RDRingBuffer(RINGBUFFER_SIZE);
-  jack_record_ring[stream]->reset();
-  jack_ready[stream]=true;
-  return true;
-  */
 #else
   return false;
 #endif  // JACK
@@ -1656,3 +1633,5 @@ void MainObject::JackSessionSetup()
   delete profile;
 #endif  // JACK
 }
+
+*/

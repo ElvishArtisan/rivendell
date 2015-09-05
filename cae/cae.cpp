@@ -46,15 +46,17 @@
 #include <rdcmd_switch.h>
 #include <rdsystem.h>
 
-#include <cae_socket.h>
-#include <cae.h>
+#include "cae_socket.h"
+#include "cae.h"
+#include "driverfactory.h"
 
 volatile bool exiting=false;
 RDConfig *rd_config;
+/*
 #ifdef JACK
 extern jack_client_t *jack_client;
 #endif  // JACK
-
+*/
 #define PRINT_COMMANDS
 
 void LogLine(RDConfig::LogPriority prio,const QString &line)
@@ -152,7 +154,7 @@ MainObject::MainObject(QObject *parent,const char *name)
     auth[i]=false;
   }
   for(int i=0;i<RD_MAX_CARDS;i++) {
-    cae_driver[i]=RDStation::None;
+    //cae_driver[i]=RDStation::None;
     for(int j=0;j<RD_MAX_STREAMS;j++) {
       record_length[i][j]=0;
       record_threshold[i][j]=-10000;
@@ -172,10 +174,11 @@ MainObject::MainObject(QObject *parent,const char *name)
 #endif  // HAVE_MAD
     }
   }
+  /*
 #ifdef JACK
   jack_client=NULL;
 #endif  // JACK
-
+  */
   server=new CaeSocket(CAED_TCP_PORT,0,this,"socket");
   if(!server->ok()) {
     LogLine(RDConfig::LogErr,"ERROR caed aborting - CaeSocket() server not ok");
@@ -229,10 +232,36 @@ MainObject::MainObject(QObject *parent,const char *name)
   RDSystem *sys=new RDSystem();
   system_sample_rate=sys->sampleRate();
   delete sys;
+  
+  /*
   hpiInit(station);
   alsaInit(station);
   jackInit(station);
+  */
   ClearDriverEntries(station);
+
+  //
+  // Start HPI
+  //
+  Driver *dvr=DriverFactory(Driver::Hpi,station,rd_config,this);
+  if(dvr!=NULL) {
+    connect(dvr,SIGNAL(playStateChanged(int,int,int)),
+	    this,SLOT(statePlayUpdate(int,int,int)));
+    connect(dvr,SIGNAL(recordStateChanged(int,int,int)),
+	    this,SLOT(stateRecordUpdate(int,int,int)));
+    int n=dvr->start(cae_drivers.size());
+    for(int i=0;i<n;i++) {
+      cae_drivers.push_back(dvr);
+      station->setCardDriver(i,RDStation::Hpi);
+      station->setCardName(i,dvr->cardName(i));
+      station->setCardInputs(i,dvr->inputs(i));
+      station->setCardOutputs(i,dvr->outputs(i));
+    }
+  }
+
+  //
+  // FIXME: JACK and ALSA startups go here...
+  //
 
   //
   // Probe Capabilities
@@ -266,6 +295,7 @@ MainObject::MainObject(QObject *parent,const char *name)
   struct sched_param sched_params;
   int result = 0;
   memset(&sched_params,0,sizeof(struct sched_param));
+  /*
 #ifdef JACK
   if(jack_client!=NULL) {
     pthread_getschedparam(jack_client_thread_id(jack_client),&sched_policy,
@@ -293,11 +323,13 @@ MainObject::MainObject(QObject *parent,const char *name)
     jack_running=true;
   }
 #endif  // JACK
+  */
   if(rd_config->useRealtime()) {
     if(!jack_running) {
       sched_params.sched_priority=rd_config->realtimePriority();
     }
     sched_policy=SCHED_FIFO;
+    /*
 #ifdef ALSA
     for(int i=0;i<RD_MAX_CARDS;i++) {
       if(cae_driver[i]==RDStation::Alsa) {
@@ -318,6 +350,7 @@ MainObject::MainObject(QObject *parent,const char *name)
       }
     }
 #endif  // ALSA
+    */
     if(sched_params.sched_priority>sched_get_priority_min(sched_policy)) {
       sched_params.sched_priority--;
     }
@@ -455,131 +488,59 @@ void MainObject::updateMeters()
   unsigned positions[RD_MAX_STREAMS];
 
   if(exiting) {
+    for(unsigned i=0;i<cae_drivers.size();i++) {
+      delete cae_drivers[i];
+    }
+    /*
     jackFree();
     alsaFree();
     hpiFree();
+    */
     RDDeletePid(RD_PID_DIR,"caed.pid");
     LogLine(RDConfig::LogInfo,"cae exiting");
     exit(0);
   }
-
+  /*
   AlsaClock();
   JackClock();
-
-  for(int i=0;i<RD_MAX_CARDS;i++) {
-    switch(cae_driver[i]) {
-	case RDStation::Hpi:
-	  for(int j=0;j<RD_MAX_PORTS;j++) {
-	    if(hpiGetInputStatus(i,j)!=port_status[i][j]) {
-	      port_status[i][j]=hpiGetInputStatus(i,j);
-	      if(port_status[i][j]) {
-		BroadcastCommand(QString().sprintf("IS %d %d 0!",i,j));
-	      }
-	      else {
-		BroadcastCommand(QString().sprintf("IS %d %d 1!",i,j));
-	      }
-	    }
-	    if(hpiGetInputMeters(i,j,levels)) {
-	      SendMeterLevelUpdate("I",i,j,levels);
-	    }
-	    if(hpiGetOutputMeters(i,j,levels)) {
-	      SendMeterLevelUpdate("O",i,j,levels);
-	    }      
-	  }
-	  hpiGetOutputPosition(i,positions);
-	  SendMeterPositionUpdate(i,positions);
-	  for(int j=0;j<RD_MAX_STREAMS;j++) {
-	    if(hpiGetStreamOutputMeters(i,j,levels)) {
-	      SendStreamMeterLevelUpdate(i,j,levels);
-	    }      
-	  }
-	  break;
-
-	case RDStation::Jack:
-	  for(int j=0;j<RD_MAX_PORTS;j++) {
-	    if(jackGetInputStatus(i,j)!=port_status[i][j]) {
-	      port_status[i][j]=!port_status[i][j];
-	      BroadcastCommand(QString().sprintf("IS %d %d %d",i,j,
-						 port_status[i][j]));
-	    }
-	    if(jackGetInputMeters(i,j,levels)) {
-	      SendMeterLevelUpdate("I",i,j,levels);
-	    }
-	    if(jackGetOutputMeters(i,j,levels)) {
-	      SendMeterLevelUpdate("O",i,j,levels);
-	    }
-	  }
-	  jackGetOutputPosition(i,positions);
-	  SendMeterPositionUpdate(i,positions);
-	  for(int j=0;j<RD_MAX_STREAMS;j++) {
-	    if(jackGetStreamOutputMeters(i,j,levels)) {
-	      SendStreamMeterLevelUpdate(i,j,levels);
-	    }      
-	  }
-	  break;
-
-	case RDStation::Alsa:
-	  for(int j=0;j<RD_MAX_PORTS;j++) {
-	    if(alsaGetInputStatus(i,j)!=port_status[i][j]) {
-	      port_status[i][j]=!port_status[i][j];
-	      BroadcastCommand(QString().sprintf("IS %d %d %d",i,j,
-						 port_status[i][j]));
-	    }
-	    if(alsaGetInputMeters(i,j,levels)) {
-	      SendMeterLevelUpdate("I",i,j,levels);
-	    }
-	    if(alsaGetOutputMeters(i,j,levels)) {
-	      SendMeterLevelUpdate("O",i,j,levels);
-	    }
-	  }
-	  alsaGetOutputPosition(i,positions);
-	  SendMeterPositionUpdate(i,positions);
-	  for(int j=0;j<RD_MAX_STREAMS;j++) {
-	    if(alsaGetStreamOutputMeters(i,j,levels)) {
-	      SendStreamMeterLevelUpdate(i,j,levels);
-	    }      
-	  }
-	  break;
-
-	case RDStation::None:
-	  break;
+  */
+  for(unsigned i=0;i<cae_drivers.size();i++) {
+    Driver *dvr=cae_drivers[i];
+    for(int j=0;j<RD_MAX_PORTS;j++) {
+      if(dvr->getInputStatus(i,j)!=port_status[i][j]) {
+	port_status[i][j]=dvr->getInputStatus(i,j);
+	if(port_status[i][j]) {
+	  BroadcastCommand(QString().sprintf("IS %d %d 0!",i,j));
+	}
+	else {
+	  BroadcastCommand(QString().sprintf("IS %d %d 1!",i,j));
+	}
+      }
+      if(dvr->getInputMeters(i,j,levels)) {
+	SendMeterLevelUpdate("I",i,j,levels);
+      }
+      if(dvr->getOutputMeters(i,j,levels)) {
+	SendMeterLevelUpdate("O",i,j,levels);
+      }      
     }
-    //
+    dvr->getOutputPosition(i,positions);
+    SendMeterPositionUpdate(i,positions);
+    for(int j=0;j<RD_MAX_STREAMS;j++) {
+      if(dvr->getStreamOutputMeters(i,j,levels)) {
+	SendStreamMeterLevelUpdate(i,j,levels);
+      }
+    }
   }
-  //  SendMeterOutputStatusUpdate();
 }
 
 
 void MainObject::InitMixers()
 {
-  for(int i=0;i<RD_MAX_CARDS;i++) {
-    switch(cae_driver[i]) {
-	case RDStation::Hpi:
-	  for(int j=0;j<RD_MAX_PORTS;j++) {
-	    for(int k=0;k<RD_MAX_PORTS;k++) {
-	      hpiSetPassthroughLevel(i,j,k,RD_MUTE_DEPTH);
-	    }
-	  }
-	  break;
-
-	case RDStation::Jack:
-	  for(int j=0;j<RD_MAX_PORTS;j++) {
-	    for(int k=0;k<RD_MAX_PORTS;k++) {
-	      jackSetPassthroughLevel(i,j,k,RD_MUTE_DEPTH);
-	    }
-	  }
-	  break;
-
-	case RDStation::Alsa:
-	  for(int j=0;j<RD_MAX_PORTS;j++) {
-	    for(int k=0;k<RD_MAX_PORTS;k++) {
-	      alsaSetPassthroughLevel(i,j,k,RD_MUTE_DEPTH);
-	    }
-	  }
-	  break;
-
-	case RDStation::None:
-	  break;
+  for(unsigned i=0;i<cae_drivers.size();i++) {
+    for(int j=0;j<RD_MAX_PORTS;j++) {
+      for(int k=0;k<RD_MAX_PORTS;k++) {
+	cae_drivers[i]->setPassthroughLevel(i,j,k,RD_MUTE_DEPTH);
+      }
     }
   }
 }
@@ -709,50 +670,19 @@ void MainObject::DispatchCommand(int ch)
   }
 
   if(!strcmp(args[ch][0],"LP")) {  // Load Playback
-    if(card<0) {
+    if((card<0)||(card>=(int)cae_drivers.size())) {
       sprintf(temp,"LP %d %s -1 -1 -!",card,args[ch][2]);
       EchoCommand(ch,temp);
       return;
     }
     wavename = rd_config->audioFileName (QString(args[ch][2]));
-    switch(cae_driver[card]) {
-	case RDStation::Hpi:
-	  if(!hpiLoadPlayback(card,wavename,&new_stream)) {
-	    sprintf(temp,"LP %d %s -1 -1 -!",card,args[ch][2]);
-	    EchoCommand(ch,temp);
-	    LogLine(RDConfig::LogErr,
-		    QString().sprintf("unable to allocate stream for card %d",
-				      card));
-	    return;
-	  }
-	  break;
-
-	case RDStation::Alsa:
-	  if(!alsaLoadPlayback(card,wavename,&new_stream)) {
-	    sprintf(temp,"LP %d %s -1 -1 -!",card,args[ch][2]);
-	    EchoCommand(ch,temp);
-	    LogLine(RDConfig::LogErr,QString().
-		    sprintf("unable to allocate stream for card %d",
-			    card));
-	    return;
-	  }
-	  break;
-
-	case RDStation::Jack:
-	  if(!jackLoadPlayback(card,wavename,&new_stream)) {
-	    sprintf(temp,"LP %d %s -1 -1 -!",card,args[ch][2]);
-	    EchoCommand(ch,temp);
-	    LogLine(RDConfig::LogErr,QString().
-		    sprintf("unable to allocate stream for card %d",
-			    card));
-	    return;
-	  }
-	  break;
-
-	default:
-	  sprintf(temp,"LP %d %s -1 -1 -!",card,args[ch][2]);
-	  EchoCommand(ch,temp);
-	  return;
+    if(!cae_drivers[card]->loadPlayback(card,wavename,&new_stream)) {
+      sprintf(temp,"LP %d %s -1 -1 -!",card,args[ch][2]);
+      EchoCommand(ch,temp);
+      LogLine(RDConfig::LogErr,
+	      QString().sprintf("unable to allocate stream for card %d",
+				card));
+      return;
     }
     if((handle=GetHandle(card,new_stream))>=0) {
       LogLine(RDConfig::LogErr,QString().
@@ -782,49 +712,15 @@ void MainObject::DispatchCommand(int ch)
     card=play_handle[handle].card;
     stream=play_handle[handle].stream;
     if((play_owner[card][stream]==-1)||(play_owner[card][stream]==ch)) {
-      switch(cae_driver[card]) {
-	  case RDStation::Hpi:
-	    if(hpiUnloadPlayback(card,stream)) {
-	      play_owner[card][stream]=-1;
-	      LogLine(RDConfig::LogInfo,QString().
-		      sprintf("UnloadPlayback - Card: %d  Stream: %d  Handle: %d",
-			      card,stream,handle));
-	      EchoArgs(ch,'+');
-	    }
-	    else {
-	      EchoArgs(ch,'-');
-	    }
-	    break;
-	    
-	  case RDStation::Alsa:
-	    if(alsaUnloadPlayback(card,stream)) {
-	      play_owner[card][stream]=-1;
-	      LogLine(RDConfig::LogInfo,QString().
-		      sprintf("UnloadPlayback - Card: %d  Stream: %d  Handle: %d",
-			      card,stream,handle));
-	      EchoArgs(ch,'+');
-	    }
-	    else {
-	      EchoArgs(ch,'-');
-	    }
-	    break;
-	    
-	  case RDStation::Jack:
-	    if(jackUnloadPlayback(card,stream)) {
-	      play_owner[card][stream]=-1;
-	      LogLine(RDConfig::LogInfo,QString().
-		      sprintf("UnloadPlayback - Card: %d  Stream: %d  Handle: %d",
-			      card,stream,handle));
-	      EchoArgs(ch,'+');
-	    }
-	    else {
-	      EchoArgs(ch,'-');
-	    }
-	    break;
-	    
-	  default:
-	    EchoArgs(ch,'-');
-	    return;
+      if(cae_drivers[card]->unloadPlayback(card,stream)) {
+	play_owner[card][stream]=-1;
+	LogLine(RDConfig::LogInfo,QString().
+		sprintf("UnloadPlayback - Card: %d  Stream: %d  Handle: %d",
+			card,stream,handle));
+	EchoArgs(ch,'+');
+      }
+      else {
+	EchoArgs(ch,'-');
       }
       play_handle[handle].card=-1;
       play_handle[handle].stream=-1;
@@ -848,49 +744,17 @@ void MainObject::DispatchCommand(int ch)
 	EchoArgs(ch,'-');
 	return;
       }
-      switch(cae_driver[card]) {
-	  case RDStation::Hpi:
-	    if(hpiPlaybackPosition(card,stream,pos)) {
-	      LogLine(RDConfig::LogInfo,QString().
-		   sprintf("PlaybackPosition - Card: %d  Stream: %d  Pos: %d  Handle: %d",
-			   card,stream,pos,handle));
-	      EchoArgs(ch,'+');
-	    }
-	    else {
-	      LogLine(RDConfig::LogNotice,QString().
-		   sprintf("*** PlaybackPosition out of bounds - Card: %d  Stream: %d  Pos: %d   Handle: %d***",
-			   card,stream,pos,handle));
-	      EchoArgs(ch,'-');
-	    }
-	    break;
-
-	  case RDStation::Alsa:
-	    if(alsaPlaybackPosition(card,stream,pos)) {
-	      LogLine(RDConfig::LogInfo,QString().
-		   sprintf("PlaybackPosition - Card: %d  Stream: %d  Pos: %d  Handle: %d",
-			   card,stream,pos,handle));
-	      EchoArgs(ch,'+');
-	    }
-	    else {
-	      EchoArgs(ch,'-');
-	    }
-	    break;
-
-	  case RDStation::Jack:
-	    if(jackPlaybackPosition(card,stream,pos)) {
-	      LogLine(RDConfig::LogInfo,QString().
-		   sprintf("PlaybackPosition - Card: %d  Stream: %d  Pos: %d  Handle: %d",
-			   card,stream,pos,handle));
-	      EchoArgs(ch,'+');
-	    }
-	    else {
-	      EchoArgs(ch,'-');
-	    }
-	    break;
-
-	  default:
-	    EchoArgs(ch,'-');
-	    return;
+      if(cae_drivers[card]->playbackPosition(card,stream,pos)) {
+	LogLine(RDConfig::LogInfo,QString().
+		sprintf("PlaybackPosition - Card: %d  Stream: %d  Pos: %d  Handle: %d",
+			card,stream,pos,handle));
+	EchoArgs(ch,'+');
+      }
+      else {
+	LogLine(RDConfig::LogNotice,QString().
+		sprintf("*** PlaybackPosition out of bounds - Card: %d  Stream: %d  Pos: %d   Handle: %d***",
+			card,stream,pos,handle));
+	EchoArgs(ch,'-');
       }
       return;
     }
@@ -929,37 +793,12 @@ void MainObject::DispatchCommand(int ch)
 	  return;
     }
     if(play_owner[card][stream]==ch) {
-      switch(cae_driver[card]) {
-	  case RDStation::Hpi:
-	    if(!hpiPlay(card,stream,play_length[card][stream],
-			play_speed[card][stream],play_pitch[card][stream],
-			RD_ALLOW_NONSTANDARD_RATES)) {
-	      EchoArgs(ch,'-');
-	      return;
-	    }
-	    break;
-
-	  case RDStation::Alsa:
-	    if(!alsaPlay(card,stream,play_length[card][stream],
-			play_speed[card][stream],play_pitch[card][stream],
-			RD_ALLOW_NONSTANDARD_RATES)) {
-	      EchoArgs(ch,'-');
-	      return;
-	    }
-	    break;
-
-	  case RDStation::Jack:
-	    if(!jackPlay(card,stream,play_length[card][stream],
-			play_speed[card][stream],play_pitch[card][stream],
-			RD_ALLOW_NONSTANDARD_RATES)) {
-	      EchoArgs(ch,'-');
-	      return;
-	    }
-	    break;
-
-	  default:
-	      EchoArgs(ch,'-');
-	      return;
+      if(!cae_drivers[card]->play(card,stream,play_length[card][stream],
+				  play_speed[card][stream],
+				  play_pitch[card][stream],
+				  RD_ALLOW_NONSTANDARD_RATES)) {
+	EchoArgs(ch,'-');
+	return;
       }
       LogLine(RDConfig::LogInfo,QString().
        sprintf("Play - Card: %d  Stream: %d  Handle: %d  Length: %d  Speed: %d  Pitch: %d",
@@ -980,31 +819,9 @@ void MainObject::DispatchCommand(int ch)
     card=play_handle[handle].card;
     stream=play_handle[handle].stream;
     if(play_owner[card][stream]==ch) {
-      switch(cae_driver[card]) {
-	  case RDStation::Hpi:
-	    if(!hpiStopPlayback(card,stream)) {
-	      EchoArgs(ch,'-');
-	      return;
-	    }
-	    break;
-
-	  case RDStation::Alsa:
-	    if(!alsaStopPlayback(card,stream)) {
-	      EchoArgs(ch,'-');
-	      return;
-	    }
-	    break;
-
-	  case RDStation::Jack:
-	    if(!jackStopPlayback(card,stream)) {
-	      EchoArgs(ch,'-');
-	      return;
-	    }
-	    break;
-
-	  default:
-	    EchoArgs(ch,'-');
-	    return;
+      if(!cae_drivers[card]->stopPlayback(card,stream)) {
+	EchoArgs(ch,'-');
+	return;
       }
       LogLine(RDConfig::LogInfo,QString().
 	      sprintf("StopPlayback - Card: %d  Stream: %d  Handle: %d",
@@ -1016,39 +833,17 @@ void MainObject::DispatchCommand(int ch)
     return;
   }
 
-  if(!strcmp(args[ch][0],"TS")) {  // Timescale Support
-    switch(cae_driver[card]) {
-	case RDStation::Hpi:
-	  if(!hpiTimescaleSupported(card)) {
-	    EchoArgs(ch,'-');
-	    return;
-	  }
-	  break;
-
-	case RDStation::Jack:
-	  if(!jackTimescaleSupported(card)) {
-	    EchoArgs(ch,'-');
-	    return;
-	  }
-	  break;
-
-	case RDStation::Alsa:
-	  if(!alsaTimescaleSupported(card)) {
-	    EchoArgs(ch,'-');
-	    return;
-	  }
-	  break;
-
-	default:
-	  EchoArgs(ch,'-');
-	  return;
+  if((!strcmp(args[ch][0],"TS"))&&(card<(int)cae_drivers.size())) {  // Timescale Support
+    if(!cae_drivers[card]->timescaleSupported(card)) {
+      EchoArgs(ch,'-');
+      return;
     }
     EchoArgs(ch,'+');
     return;
   }
 
   if(!strcmp(args[ch][0],"LR")) {  // Load Record
-    if((card<0)||(stream<0)) {
+    if((card<0)||(card>=(int)cae_drivers.size())||(stream<0)) {
       EchoArgs(ch,'-');
       return;
     }
@@ -1072,34 +867,10 @@ void MainObject::DispatchCommand(int ch)
       wavename = rd_config->audioFileName(QString(args[ch][7]));
       unlink(wavename);  // So we don't trainwreck any current playouts!
       unlink(wavename+".energy");
-      switch(cae_driver[card]) {
-	  case RDStation::Hpi:
-	    if(!hpiLoadRecord(card,stream,coding,channels,sample_rate,bit_rate,
-			      wavename)) {
-	      EchoArgs(ch,'-');
-	      return;
-	    }
-	    break;
-
-	  case RDStation::Alsa:
-	    if(!alsaLoadRecord(card,stream,coding,channels,sample_rate,
-			       bit_rate,wavename)) {
-	      EchoArgs(ch,'-');
-	      return;
-	    }
-	    break;
-
-	  case RDStation::Jack:
-	    if(!jackLoadRecord(card,stream,coding,channels,sample_rate,
-			       bit_rate,wavename)) {
-	      EchoArgs(ch,'-');
-	      return;
-	    }
-	    break;
-
-	  default:
-	    EchoArgs(ch,'-');
-	    return;
+      if(!cae_drivers[card]->loadRecord(card,stream,coding,channels,
+					sample_rate,bit_rate,wavename)) {
+	EchoArgs(ch,'-');
+	return;
       }
       LogLine(RDConfig::LogInfo,QString().
 	      sprintf("LoadRecord - Card: %d  Stream: %d  Coding: %d  Chans: %d  SampRate: %d  BitRate: %d  Name: %s",
@@ -1115,37 +886,15 @@ void MainObject::DispatchCommand(int ch)
   }
 
   if(!strcmp(args[ch][0],"UR")) {  // Unload Record
-    if((card<0)||(stream<0)) {
+    if((card<0)||(card>=(int)cae_drivers.size())||(stream<0)) {
       EchoArgs(ch,'-');
       return;
     }
     if((record_owner[card][stream]==-1)||(record_owner[card][stream]==ch)) {
       unsigned len=0;
-      switch(cae_driver[card]) {
-	  case RDStation::Hpi:
-	    if(!hpiUnloadRecord(card,stream,&len)) {
-	      EchoArgs(ch,'-');
-	      return;
-	    }
-	    break;
-
-	  case RDStation::Alsa:
-	    if(!alsaUnloadRecord(card,stream,&len)) {
-	      EchoArgs(ch,'-');
-	      return;
-	    }
-	    break;
-
-	  case RDStation::Jack:
-	    if(!jackUnloadRecord(card,stream,&len)) {
-	      EchoArgs(ch,'-');
-	      return;
-	    }
-	    break;
-
-	  default:
-	    EchoArgs(ch,'-');
-	    return;
+      if(!cae_drivers[card]->unloadRecord(card,stream,&len)) {
+	EchoArgs(ch,'-');
+	return;
       }
       record_owner[card][stream]=-1;
       LogLine(RDConfig::LogInfo,QString().
@@ -1163,7 +912,7 @@ void MainObject::DispatchCommand(int ch)
   }
 
   if(!strcmp(args[ch][0],"RD")) {  // Record
-    if((card<0)||(stream<0)) {
+    if((card<0)||(card>=(int)cae_drivers.size())||(stream<0)) {
       EchoArgs(ch,'-');
       return;
     }
@@ -1176,40 +925,15 @@ void MainObject::DispatchCommand(int ch)
       return;
     }
     if(record_owner[card][stream]==ch) {
-      switch(cae_driver[card]) {
-	  case RDStation::Hpi:
-	    if(!hpiRecord(card,stream,record_length[card][stream],
-			  record_threshold[card][stream])) {
-	      EchoArgs(ch,'-');
-	      return;
-	    }
-	    break;
-
-	  case RDStation::Alsa:
-	    if(!alsaRecord(card,stream,record_length[card][stream],
-			  record_threshold[card][stream])) {
-	      EchoArgs(ch,'-');
-	      return;
-	    }
-	    break;
-
-	  case RDStation::Jack:
-	    if(!jackRecord(card,stream,record_length[card][stream],
-			  record_threshold[card][stream])) {
-	      EchoArgs(ch,'-');
-	      return;
-	    }
-	    break;
-
-	  default:
-	    EchoArgs(ch,'-');
-	    return;
+      if(!cae_drivers[card]->record(card,stream,record_length[card][stream],
+		    record_threshold[card][stream])) {
+	EchoArgs(ch,'-');
+	return;
       }
       LogLine(RDConfig::LogInfo,QString().
 	      sprintf("Record - Card: %d  Stream: %d  Length: %d  Thres: %d",
 		      card,stream,record_length[card][stream],
 		      record_threshold[card][stream]));
-//      EchoArgs(ch,'+');
       return;
     }
     EchoArgs(ch,'-');
@@ -1217,37 +941,13 @@ void MainObject::DispatchCommand(int ch)
   }
 
   if(!strcmp(args[ch][0],"SR")) {  // Stop Record
-    if((card<0)||(stream<0)) {
+    if((card<0)||(card>=(int)cae_drivers.size())||(stream<0)) {
       EchoArgs(ch,'-');
       return;
     }
-    switch(cae_driver[card]) {
-	case RDStation::Hpi:
-	  if(!hpiStopRecord(card,stream)) {
-	    EchoArgs(ch,'-');
-	    return;
-	  }
-	  break;
-
-	case RDStation::Alsa:
-	  if(!alsaStopRecord(card,stream)) {
-	    EchoArgs(ch,'-');
-	    return;
-	  }
-	  EchoArgs(ch,'+');
-	  break;
-
-	case RDStation::Jack:
-	  if(!jackStopRecord(card,stream)) {
-	    EchoArgs(ch,'-');
-	    return;
-	  }
-	  EchoArgs(ch,'+');
-	  break;
-
-	default:
-	  EchoArgs(ch,'-');
-	  return;
+    if(!cae_drivers[card]->stopRecord(card,stream)) {
+      EchoArgs(ch,'-');
+      return;
     }
     LogLine(RDConfig::LogInfo,QString().
 	    sprintf("StopRecord - Card: %d  Stream: %d",
@@ -1256,20 +956,13 @@ void MainObject::DispatchCommand(int ch)
   }
 
   if(!strcmp(args[ch][0],"CS")) {  // Set Clock Source
-    if((card<0)||(stream<0)) {
+    if((card<0)||(card>=(int)cae_drivers.size())||(stream<0)) {
       EchoArgs(ch,'-');
       return;
     }
-    switch(cae_driver[card]) {
-	case RDStation::Hpi:
-	  if(!hpiSetClockSource(card,stream)) {
-	    EchoArgs(ch,'-');
-	    return;
-	  }
-
-	default:
-	  EchoArgs(ch,'+');
-	  return;
+    if(!cae_drivers[card]->setClockSource(card,stream)) {
+      EchoArgs(ch,'-');
+      return;
     }
     if(rd_config->enableMixerLogging()) {
       LogLine(RDConfig::LogInfo,QString().
@@ -1280,33 +973,14 @@ void MainObject::DispatchCommand(int ch)
   }
 
   if(!strcmp(args[ch][0],"IV")) {  // Set Input Volume
-    if((card<0)||(stream<0)) {
+    if((card<0)||(card>=(int)cae_drivers.size())||(stream<0)) {
       EchoArgs(ch,'-');
       return;
     }
     sscanf(args[ch][3],"%d",&level);
-    switch(cae_driver[card]) {
-	case RDStation::Hpi:
-	  if(!hpiSetInputVolume(card,stream,level)) {
-	    EchoArgs(ch,'-');
-	    return;
-	  }
-
-	case RDStation::Alsa:
-	  if(!alsaSetInputVolume(card,stream,level)) {
-	    EchoArgs(ch,'-');
-	    return;
-	  }
-
-	case RDStation::Jack:
-	  if(!jackSetInputVolume(card,stream,level)) {
-	    EchoArgs(ch,'-');
-	    return;
-	  }
-
-	default:
-	  EchoArgs(ch,'-');
-	  return;
+    if(!cae_drivers[card]->setInputVolume(card,stream,level)) {
+      EchoArgs(ch,'-');
+      return;
     }
     if(rd_config->enableMixerLogging()) {
       LogLine(RDConfig::LogInfo,QString().
@@ -1318,37 +992,15 @@ void MainObject::DispatchCommand(int ch)
   }
 
   if(!strcmp(args[ch][0],"OV")) {  // Set Output Volume
-    if((card<0)||(stream<0)) {
+    if((card<0)||(card>=(int)cae_drivers.size())||(stream<0)) {
       EchoArgs(ch,'-');
       return;
     }
     sscanf(args[ch][3],"%d",&port);
     sscanf(args[ch][4],"%d",&level);
-    switch(cae_driver[card]) {
-	case RDStation::Hpi:
-	  if(!hpiSetOutputVolume(card,stream,port,level)) {
-	    EchoArgs(ch,'-');
-	    return;
-	  }
-	  break;
-	  
-	case RDStation::Alsa:
-	  if(!alsaSetOutputVolume(card,stream,port,level)) {
-	    EchoArgs(ch,'-');
-	    return;
-	  }
-	  break;
-	  
-	case RDStation::Jack:
-	  if(!jackSetOutputVolume(card,stream,port,level)) {
-	    EchoArgs(ch,'-');
-	    return;
-	  }
-	  break;
-	  
-	default:
-	  EchoArgs(ch,'-');
-	  return;
+    if(!cae_drivers[card]->setOutputVolume(card,stream,port,level)) {
+      EchoArgs(ch,'-');
+      return;
     }
     if(rd_config->enableMixerLogging()) {
       LogLine(RDConfig::LogInfo,QString().
@@ -1360,38 +1012,16 @@ void MainObject::DispatchCommand(int ch)
   }
 
   if(!strcmp(args[ch][0],"FV")) {  // Fade Output Volume
-    if((card<0)||(stream<0)) {
+    if((card<0)||(card>=(int)cae_drivers.size())||(stream<0)) {
       EchoArgs(ch,'-');
       return;
     }
     sscanf(args[ch][3],"%d",&port);
     sscanf(args[ch][4],"%d",&level);
     sscanf(args[ch][5],"%d",&length);
-    switch(cae_driver[card]) {
-	case RDStation::Hpi:
-	  if(!hpiFadeOutputVolume(card,stream,port,level,length)) {
-	    EchoArgs(ch,'-');
-	    return;
-	  }
-	  break;
-
-	case RDStation::Alsa:
-	  if(!alsaFadeOutputVolume(card,stream,port,level,length)) {
-	    EchoArgs(ch,'-');
-	    return;
-	  }
-	  break;
-
-	case RDStation::Jack:
-	  if(!jackFadeOutputVolume(card,stream,port,level,length)) {
-	    EchoArgs(ch,'-');
-	    return;
-	  }
-	  break;
-
-	default:
-	  EchoArgs(ch,'-');
-	  return;
+    if(!cae_drivers[card]->fadeOutputVolume(card,stream,port,level,length)) {
+      EchoArgs(ch,'-');
+      return;
     }
     if(rd_config->enableMixerLogging()) {
       LogLine(RDConfig::LogInfo,QString().
@@ -1405,35 +1035,13 @@ void MainObject::DispatchCommand(int ch)
   if(!strcmp(args[ch][0],"IL")) {  // Set Input Level
     sscanf(args[ch][2],"%d",&port);
     sscanf(args[ch][3],"%d",&level);
-    if((card<0)||(port<0)) {
+    if((card<0)||(card>=(int)cae_drivers.size())||(port<0)) {
       EchoArgs(ch,'-');
       return;
     }
-    switch(cae_driver[card]) {
-	case RDStation::Hpi:
-	  if(!hpiSetInputLevel(card,port,level)) {
-	    EchoArgs(ch,'-');
-	    return;
-	  }
-	  break;
-	  
-	case RDStation::Alsa:
-	  if(!alsaSetInputLevel(card,port,level)) {
-	    EchoArgs(ch,'-');
-	    return;
-	  }
-	  break;
-	  
-	case RDStation::Jack:
-	  if(!jackSetInputLevel(card,port,level)) {
-	    EchoArgs(ch,'-');
-	    return;
-	  }
-	  break;
-	  
-	default:
-	  EchoArgs(ch,'-');
-	  return;
+    if(!cae_drivers[card]->setInputLevel(card,port,level)) {
+      EchoArgs(ch,'-');
+      return;
     }
     if(rd_config->enableMixerLogging()) {
       LogLine(RDConfig::LogInfo,QString().
@@ -1447,35 +1055,13 @@ void MainObject::DispatchCommand(int ch)
   if(!strcmp(args[ch][0],"OL")) {  // Set Output Level
     sscanf(args[ch][2],"%d",&port);
     sscanf(args[ch][3],"%d",&level);
-    if((card<0)||(port<0)) {
+    if((card<0)||(card>=(int)cae_drivers.size())||(port<0)) {
       EchoArgs(ch,'-');
       return;
     }
-    switch(cae_driver[card]) {
-	case RDStation::Hpi:
-	  if(!hpiSetOutputLevel(card,port,level)) {
-	    EchoArgs(ch,'-');
-	    return;
-	  }
-	  break;
-
-	case RDStation::Alsa:
-	  if(!alsaSetOutputLevel(card,port,level)) {
-	    EchoArgs(ch,'-');
-	    return;
-	  }
-	  break;
-
-	case RDStation::Jack:
-	  if(!jackSetOutputLevel(card,port,level)) {
-	    EchoArgs(ch,'-');
-	    return;
-	  }
-	  break;
-
-	default:
-	  EchoArgs(ch,'-');
-	  return;
+    if(!cae_drivers[card]->setOutputLevel(card,port,level)) {
+      EchoArgs(ch,'-');
+      return;
     }
     if(rd_config->enableMixerLogging()) {
       LogLine(RDConfig::LogInfo,QString().
@@ -1489,35 +1075,13 @@ void MainObject::DispatchCommand(int ch)
   if(!strcmp(args[ch][0],"IM")) {  // Set Input Mode
     sscanf(args[ch][2],"%d",&port);
     sscanf(args[ch][3],"%d",&mode);
-    if((card<0)||(port<0)) {
+    if((card<0)||(card>=(int)cae_drivers.size())||(port<0)) {
       EchoArgs(ch,'-');
       return;
     }
-    switch(cae_driver[card]) {
-	case RDStation::Hpi:
-	  if(!hpiSetInputMode(card,port,mode)) {
-	    EchoArgs(ch,'-');
-	    return;
-	  }
-	  break;
-
-	case RDStation::Alsa:
-	  if(!alsaSetInputMode(card,port,mode)) {
-	    EchoArgs(ch,'-');
-	    return;
-	  }
-	  break;
-
-	case RDStation::Jack:
-	  if(!jackSetInputMode(card,port,mode)) {
-	    EchoArgs(ch,'-');
-	    return;
-	  }
-	  break;
-
-	default:
-	  EchoArgs(ch,'-');
-	  return;
+    if(!cae_drivers[card]->setInputMode(card,port,mode)) {
+      EchoArgs(ch,'-');
+      return;
     }
     if(rd_config->enableMixerLogging()) {
       LogLine(RDConfig::LogInfo,QString().
@@ -1531,35 +1095,13 @@ void MainObject::DispatchCommand(int ch)
   if(!strcmp(args[ch][0],"OM")) {  // Set Output Mode
     sscanf(args[ch][2],"%d",&port);
     sscanf(args[ch][3],"%d",&mode);
-    if((card<0)||(port<0)) {
+    if((card<0)||(card>=(int)cae_drivers.size())||(port<0)) {
       EchoArgs(ch,'-');
       return;
     }
-    switch(cae_driver[card]) {
-	case RDStation::Hpi:
-	  if(!hpiSetOutputMode(card,port,mode)) {
-	    EchoArgs(ch,'-');
-	    return;
-	  }
-	  break;
-
-	case RDStation::Alsa:
-	  if(!alsaSetOutputMode(card,port,mode)) {
-	    EchoArgs(ch,'-');
-	    return;
-	  }
-	  break;
-
-	case RDStation::Jack:
-	  if(!jackSetOutputMode(card,port,mode)) {
-	    EchoArgs(ch,'-');
-	    return;
-	  }
-	  break;
-
-	default:
-	  EchoArgs(ch,'-');
-	  return;
+    if(!cae_drivers[card]->setOutputMode(card,port,mode)) {
+      EchoArgs(ch,'-');
+      return;
     }
     if(rd_config->enableMixerLogging()) {
       LogLine(RDConfig::LogInfo,QString().
@@ -1571,36 +1113,14 @@ void MainObject::DispatchCommand(int ch)
   }
 
   if(!strcmp(args[ch][0],"IX")) {  // Set Input VOX Level
-    if((card<0)||(stream<0)) {
+    if((card<0)||(card>=(int)cae_drivers.size())||(stream<0)) {
       EchoArgs(ch,'-');
       return;
     }
     sscanf(args[ch][3],"%d",&level);
-    switch(cae_driver[card]) {
-	case RDStation::Hpi:
-	  if(!hpiSetInputVoxLevel(card,stream,level)) {
-	    EchoArgs(ch,'-');
-	    return;
-	  }
-	  break;
-
-	case RDStation::Alsa:
-	  if(!alsaSetInputVoxLevel(card,stream,level)) {
-	    EchoArgs(ch,'-');
-	    return;
-	  }
-	  break;
-
-	case RDStation::Jack:
-	  if(!jackSetInputVoxLevel(card,stream,level)) {
-	    EchoArgs(ch,'-');
-	    return;
-	  }
-	  break;
-
-	default:
-	  EchoArgs(ch,'-');
-	  return;
+    if(!cae_drivers[card]->setInputVoxLevel(card,stream,level)) {
+      EchoArgs(ch,'-');
+      return;
     }
     if(rd_config->enableMixerLogging()) {
       LogLine(RDConfig::LogInfo,QString().
@@ -1614,35 +1134,13 @@ void MainObject::DispatchCommand(int ch)
   if(!strcmp(args[ch][0],"IT")) {  // Set Input Type
     sscanf(args[ch][2],"%d",&port);
     sscanf(args[ch][3],"%d",&type);
-    if((card<0)||(port<0)) {
+    if((card<0)||(card>=(int)cae_drivers.size())||(port<0)) {
       EchoArgs(ch,'-');
       return;
     }
-    switch(cae_driver[card]) {
-	case RDStation::Hpi:
-	  if(!hpiSetInputType(card,port,type)) {
-	    EchoArgs(ch,'-');
-	    return;
-	  }
-	  break;
-
-	case RDStation::Alsa:
-	  if(!alsaSetInputType(card,port,type)) {
-	    EchoArgs(ch,'-');
-	    return;
-	  }
-	  break;
-
-	case RDStation::Jack:
-	  if(!jackSetInputType(card,port,type)) {
-	    EchoArgs(ch,'-');
-	    return;
-	  }
-	  break;
-
-	default:
-	  EchoArgs(ch,'-');
-	  return;
+    if(!cae_drivers[card]->setInputType(card,port,type)) {
+      EchoArgs(ch,'-');
+      return;
     }
     if(rd_config->enableMixerLogging()) {
       LogLine(RDConfig::LogInfo,QString().
@@ -1657,35 +1155,13 @@ void MainObject::DispatchCommand(int ch)
     sscanf(args[ch][2],"%d",&in_port);
     sscanf(args[ch][3],"%d",&out_port);
     sscanf(args[ch][4],"%d",&level);
-    if((card<0)||(in_port<0)||(out_port<0)) {
+    if((card<0)||(card>=(int)cae_drivers.size())||(in_port<0)||(out_port<0)) {
       EchoArgs(ch,'-');
       return;
     }
-    switch(cae_driver[card]) {
-	case RDStation::Hpi:
-	  if(!hpiSetPassthroughLevel(card,in_port,out_port,level)) {
-	    EchoArgs(ch,'-');
-	    return;
-	  }
-	  break;
-	  
-	case RDStation::Alsa:
-	  if(!alsaSetPassthroughLevel(card,in_port,out_port,level)) {
-	    EchoArgs(ch,'-');
-	    return;
-	  }
-	  break;
-	  
-	case RDStation::Jack:
-	  if(!jackSetPassthroughLevel(card,in_port,out_port,level)) {
-	    EchoArgs(ch,'-');
-	    return;
-	  }
-	  break;
-	  
-	default:
-	  EchoArgs(ch,'-');
-	  return;
+    if(!cae_drivers[card]->setPassthroughLevel(card,in_port,out_port,level)) {
+      EchoArgs(ch,'-');
+      return;
     }
     if(rd_config->enableMixerLogging()) {
       LogLine(RDConfig::LogInfo,QString().
@@ -1698,11 +1174,11 @@ void MainObject::DispatchCommand(int ch)
 
   if(!strcmp(args[ch][0],"IS")) {  // Input Status
     sscanf(args[ch][2],"%d",&port);
-    if((card<0)||(port<0)) {
+    if((card<0)||(card>=(int)cae_drivers.size())||(port<0)) {
       EchoArgs(ch,'-');
       return;
     }
-    if(hpiGetInputStatus(card,port)) {
+    if(cae_drivers[card]->getInputStatus(card,port)) {
       EchoCommand(ch,QString().sprintf("IS %d %d 0 +!",card,port));
     }
     else {
@@ -1713,6 +1189,7 @@ void MainObject::DispatchCommand(int ch)
 
   if(!strcmp(args[ch][0],"ME")) {  // Meter Enable
     sscanf(args[ch][1],"%d",&port);
+    printf("port: %u\n",0xFFFF&port);
     if((port<0)||(port>0xFFFF)) {
       EchoArgs(ch,'-');
       return;
@@ -1727,7 +1204,7 @@ void MainObject::DispatchCommand(int ch)
     sscanf(args[ch][1],"%d",&card);
     sscanf(args[ch][2],"%d",&port);
     sscanf(args[ch][3],"%d",&stream);
-    if((card<0)||(card>=RD_MAX_CARDS)||
+    if((card<0)||(card>=(int)cae_drivers.size())||
        (port<0)||(port>=RD_MAX_PORTS)||
        (stream<0)||(stream>=RD_MAX_STREAMS)) {
       EchoArgs(ch,'-');
@@ -1759,7 +1236,7 @@ void MainObject::DispatchCommand(int ch)
       in_jport+=" ";
     }
     in_jport=in_jport.left(in_jport.length()-1);
-    jackConnectPorts(out_jport,in_jport);
+    cae_drivers[card]->connectPorts(out_jport,in_jport);
   }
 
   if(!strcmp(args[ch][0],"JD")) {  // Disconnect JACK Ports
@@ -1782,7 +1259,7 @@ void MainObject::DispatchCommand(int ch)
       in_jport+=" ";
     }
     in_jport=in_jport.left(in_jport.length()-1);
-    jackDisconnectPorts(out_jport,in_jport);
+    cae_drivers[card]->disconnectPorts(out_jport,in_jport);
   }
 }
 
@@ -1794,48 +1271,17 @@ void MainObject::KillSocket(int ch)
   argptr[ch]=0;
   auth[ch]=false;
   meter_port[ch]=0;
-  for(int i=0;i<RD_MAX_CARDS;i++) {
+  for(unsigned i=0;i<cae_drivers.size();i++) {
     for(int j=0;j<RD_MAX_STREAMS;j++) {
       if(record_owner[i][j]==ch) {
 	unsigned len=0;
-	switch(cae_driver[i]) {
-	    case RDStation::Hpi:
-	      hpiUnloadRecord(i,j,&len);
-	      break;
-
-	    case RDStation::Jack:
-	      jackUnloadRecord(i,j,&len);
-	      break;
-
-	    case RDStation::Alsa:
-	      alsaUnloadRecord(i,j,&len);
-	      break;
-
-	    default:
-	      LogLine(RDConfig::LogNotice,"tried to kill unowned socket!");
-	      break;
-	}
+	cae_drivers[i]->unloadRecord(i,j,&len);
 	record_length[i][j]=0;
 	record_threshold[i][j]=-10000;
 	record_owner[i][j]=-1;
       }
       if(play_owner[i][j]==ch) {
-	switch(cae_driver[i]) {
-	    case RDStation::Hpi:
-	      hpiUnloadPlayback(i,j);
-	      break;
-
-	    case RDStation::Jack:
-	      jackUnloadPlayback(i,j);
-	      break;
-
-	    case RDStation::Alsa:
-	      alsaUnloadPlayback(i,j);
-	      break;
-
-	    case RDStation::None:
-	      break;
-	}
+	cae_drivers[i]->unloadPlayback(i,j);
 	play_owner[i][j]=-1;
 	play_length[i][j]=0;
 	play_speed[i][j]=100;
@@ -1989,11 +1435,13 @@ void MainObject::ProbeCaps(RDStation *station)
   station->setHaveCapability(RDStation::HaveTwoLame,LoadTwoLame());
   station->setHaveCapability(RDStation::HaveMpg321,LoadMad());
 
+  /*
 #ifdef HPI
   station->setDriverVersion(RDStation::Hpi,hpiVersion());
 #else
   station->setDriverVersion(RDStation::Hpi,"[not enabled]");
 #endif  // HPI
+
 #ifdef JACK
   //
   // FIXME: How can we detect the current JACK version?
@@ -2011,18 +1459,17 @@ void MainObject::ProbeCaps(RDStation *station)
 #else
   station->setDriverVersion(RDStation::Alsa,"");
 #endif  // ALSA
+  */
 }
 
 
 void MainObject::ClearDriverEntries(RDStation *station)
 {
   for(int i=0;i<RD_MAX_CARDS;i++) {
-    if(cae_driver[i]==RDStation::None) {
-      station->setCardDriver(i,RDStation::None);
-      station->setCardName(i,"");
-      station->setCardInputs(i,-1);
-      station->setCardOutputs(i,-1);
-    }
+    station->setCardDriver(i,RDStation::None);
+    station->setCardName(i,"");
+    station->setCardInputs(i,-1);
+    station->setCardOutputs(i,-1);
   }
 }
 
@@ -2231,12 +1678,10 @@ void MainObject::SendMeterPositionUpdate(int cardnum,unsigned pos[])
 
 void MainObject::SendMeterOutputStatusUpdate()
 {
-  for(unsigned i=0;i<RD_MAX_CARDS;i++) {
-    if(cae_driver[i]!=RDStation::None) {
-      for(unsigned j=0;j<RD_MAX_PORTS;j++) {
-	for(unsigned k=0;k<RD_MAX_STREAMS;k++) {
-	  SendMeterOutputStatusUpdate(i,j,k);
-	}
+  for(unsigned i=0;i<cae_drivers.size();i++) {
+    for(unsigned j=0;j<RD_MAX_PORTS;j++) {
+      for(unsigned k=0;k<RD_MAX_STREAMS;k++) {
+	SendMeterOutputStatusUpdate(i,j,k);
       }
     }
   }

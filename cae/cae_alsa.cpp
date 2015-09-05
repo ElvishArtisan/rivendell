@@ -2,9 +2,7 @@
 //
 // The ALSA Driver for the Core Audio Engine component of Rivendell
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: cae_alsa.cpp,v 1.48.6.5 2013/06/26 23:18:40 cvs Exp $
+//   (C) Copyright 2002-2015 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -19,7 +17,7 @@
 //   License along with this program; if not, write to the Free Software
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
-
+/*
 #include <math.h>
 #include <signal.h>
 
@@ -717,6 +715,7 @@ void MainObject::alsaInit(RDStation *station)
   //
   AlsaInitCallback();
   alsa_wave_buffer=new int16_t[RINGBUFFER_SIZE];
+  alsa_wave24_buffer=new uint8_t[RINGBUFFER_SIZE];
   //alsa_resample_buffer=new int16_t[2*RINGBUFFER_SIZE];
 
   //
@@ -1527,11 +1526,11 @@ bool MainObject::AlsaStartCaptureDevice(QString &dev,int card,snd_pcm_t *pcm)
   // Start the Callback
   //
   pthread_attr_init(&pthread_attr);
-/*
-  if(use_realtime) {
-    pthread_attr_setschedpolicy(&pthread_attr,SCHED_FIFO);
-  }
-*/
+
+//  if(use_realtime) {
+//    pthread_attr_setschedpolicy(&pthread_attr,SCHED_FIFO);
+//  }
+
   alsa_capture_format[card].exiting = false;
   pthread_create(&alsa_capture_format[card].thread,&pthread_attr,
 		 AlsaCaptureCallback,&alsa_capture_format[card]);
@@ -1682,11 +1681,11 @@ bool MainObject::AlsaStartPlayDevice(QString &dev,int card,snd_pcm_t *pcm)
   // Start the Callback
   //
   pthread_attr_init(&pthread_attr);
-  /*
-  if(use_realtime) {
-    pthread_attr_setschedpolicy(&pthread_attr,SCHED_FIFO);
-  }
-  */
+
+//  if(use_realtime) {
+//    pthread_attr_setschedpolicy(&pthread_attr,SCHED_FIFO);
+//  }
+
   alsa_play_format[card].exiting = false;
   pthread_create(&alsa_play_format[card].thread,&pthread_attr,
 		 AlsaPlayCallback,&alsa_play_format[card]);
@@ -1776,6 +1775,34 @@ void MainObject::FillAlsaOutputStream(int card,int stream)
     (double)alsa_play_wave[card][stream]->getSamplesPerSec();
   switch(alsa_play_wave[card][stream]->getFormatTag()) {
   case WAVE_FORMAT_PCM:
+    switch(alsa_play_wave[card][stream]->getBitsPerSample()) {
+    case 16:  // PCM16
+      free=(int)((double)free/ratio)/(2*alsa_output_channels[card][stream])*
+	(2*alsa_output_channels[card][stream]);
+      n=alsa_play_wave[card][stream]->readWave(alsa_wave_buffer,free);
+      if(n!=free) {
+	alsa_eof[card][stream]=true;
+	alsa_stop_timer[card][stream]->stop();
+      }
+      break;
+      
+    case 24:  // PCM24
+      free=(int)((double)free/ratio)/(6*alsa_output_channels[card][stream])*
+	(6*alsa_output_channels[card][stream]);
+      n=alsa_play_wave[card][stream]->readWave(alsa_wave24_buffer,free);
+      for(int i=0;i<(n/3);i++) {
+	for(int j=0;j<2;j++) {
+	  ((uint8_t *)alsa_wave_buffer)[2*i+j]=alsa_wave24_buffer[3*i+j+1];
+	}
+      }
+      if(n!=free) {
+	alsa_eof[card][stream]=true;
+	alsa_stop_timer[card][stream]->stop();
+      }
+      break;
+    }
+    break;
+
   case WAVE_FORMAT_VORBIS:
     free=(int)((double)free/ratio)/(2*alsa_output_channels[card][stream])*
       (2*alsa_output_channels[card][stream]);
@@ -1880,3 +1907,4 @@ void MainObject::AlsaClock()
   }
 #endif  // ALSA
 }
+*/

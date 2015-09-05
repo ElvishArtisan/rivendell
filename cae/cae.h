@@ -2,9 +2,7 @@
 //
 // The Core Audio Engine component of Rivendell
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: cae.h,v 1.79.4.4 2012/11/30 16:14:58 cvs Exp $
+//   (C) Copyright 2002-2015 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -28,6 +26,8 @@
 #include <pthread.h>
 #include <stdint.h>
 
+#include <vector>
+
 #include <soundtouch/SoundTouch.h>
 
 #include <qobject.h>
@@ -40,7 +40,7 @@
 
 #include <rdwavefile.h>
 #include <rdsocket.h>
-
+/*
 #ifdef HPI
 #include <rdhpisoundcard.h>
 #include <rdhpiplaystream.h>
@@ -69,7 +69,7 @@ struct alsa_format {
 #ifdef JACK
 #include <jack/jack.h>
 #endif  // JACK
-
+*/
 #ifdef HAVE_TWOLAME
 #include <twolame.h>
 #endif  // HAVE_TWOLAME
@@ -80,6 +80,8 @@ struct alsa_format {
 #include <rd.h>
 #include <rdconfig.h>
 #include <rdstation.h>
+
+#include "driver.h"
 
 //
 // Debug Options
@@ -151,7 +153,7 @@ class MainObject : public QObject
   int argnum[CAE_MAX_CONNECTIONS];
   int argptr[CAE_MAX_CONNECTIONS];
   bool auth[CAE_MAX_CONNECTIONS];
-  RDStation::AudioDriver cae_driver[RD_MAX_CARDS];
+  //  RDStation::AudioDriver cae_driver[RD_MAX_CARDS];
   int record_owner[RD_MAX_CARDS][RD_MAX_STREAMS];
   int record_length[RD_MAX_CARDS][RD_MAX_STREAMS];
   int record_threshold[RD_MAX_CARDS][RD_MAX_STREAMS];
@@ -167,51 +169,12 @@ class MainObject : public QObject
     int owner;
   } play_handle[256];
   int next_play_handle;
-
-  //
-  // HPI Driver
-  //
- private:
-  void hpiInit(RDStation *station);
-  void hpiFree();
-  QString hpiVersion();
-  bool hpiLoadPlayback(int card,QString wavename,int *stream);
-  bool hpiUnloadPlayback(int card,int stream);
-  bool hpiPlaybackPosition(int card,int stream,unsigned pos);
-  bool hpiPlay(int card,int stream,int length,int speed,bool pitch,
-	       bool rates);
-  bool hpiStopPlayback(int card,int stream);
-  bool hpiTimescaleSupported(int card);
-  bool hpiLoadRecord(int card,int port,int coding,int chans,int samprate,
-		     int bitrate,QString wavename);
-  bool hpiUnloadRecord(int card,int stream,unsigned *len);
-  bool hpiRecord(int card,int stream,int length,int thres);
-  bool hpiStopRecord(int card,int stream);
-  bool hpiSetClockSource(int card,int src);
-  bool hpiSetInputVolume(int card,int stream,int level);
-  bool hpiSetOutputVolume(int card,int stream,int port,int level);
-  bool hpiFadeOutputVolume(int card,int stream,int port,int level,int length);
-  bool hpiSetInputLevel(int card,int port,int level);
-  bool hpiSetOutputLevel(int card,int port,int level);
-  bool hpiSetInputMode(int card,int stream,int mode);
-  bool hpiSetOutputMode(int card,int stream,int mode);
-  bool hpiSetInputVoxLevel(int card,int stream,int level);
-  bool hpiSetInputType(int card,int port,int type);
-  bool hpiGetInputStatus(int card,int port);
-  bool hpiGetInputMeters(int card,int port,short levels[2]);
-  bool hpiGetOutputMeters(int card,int port,short levels[2]);
-  bool hpiGetStreamOutputMeters(int card,int stream,short levels[2]);
-  bool hpiSetPassthroughLevel(int card,int in_port,int out_port,int level);
-  void hpiGetOutputPosition(int card,unsigned *pos);
-#ifdef HPI
-  RDHPISoundCard *sound_card;
-  RDHPIRecordStream *record[RD_MAX_CARDS][RD_MAX_STREAMS];
-  RDHPIPlayStream *play[RD_MAX_CARDS][RD_MAX_STREAMS];
-#endif  // HPI
+  std::vector<Driver *> cae_drivers;
 
   //
   // JACK Driver
   //
+  /*
  private slots:
   void jackStopTimerData(int stream);
   void jackFadeTimerData(int stream);
@@ -285,10 +248,11 @@ class MainObject : public QObject
   int jack_clock_phase;
   unsigned jack_samples_recorded[RD_MAX_STREAMS];
 #endif  // JACK
-
+  */
   //
   // ALSA Driver
   //
+  /*
  private slots:
   void alsaStopTimerData(int cardstream);
   void alsaFadeTimerData(int cardstream);
@@ -340,6 +304,7 @@ class MainObject : public QObject
   short alsa_output_volume_db[RD_MAX_CARDS][RD_MAX_PORTS][RD_MAX_STREAMS];
   short alsa_passthrough_volume_db[RD_MAX_CARDS][RD_MAX_PORTS][RD_MAX_PORTS];
   short *alsa_wave_buffer;
+  uint8_t *alsa_wave24_buffer;
   RDWaveFile *alsa_record_wave[RD_MAX_CARDS][RD_MAX_STREAMS];
   RDWaveFile *alsa_play_wave[RD_MAX_CARDS][RD_MAX_STREAMS];
   int alsa_offset[RD_MAX_CARDS][RD_MAX_STREAMS];
@@ -352,7 +317,7 @@ class MainObject : public QObject
   int alsa_fade_port[RD_MAX_CARDS][RD_MAX_STREAMS];
   unsigned alsa_samples_recorded[RD_MAX_CARDS][RD_MAX_STREAMS];
 #endif  // ALSA
-
+  */
   bool CheckLame();
 
   //
