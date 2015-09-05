@@ -77,16 +77,16 @@ void Xport::AddCart()
   if(cart_number==0) {
     if((cart_number=group->nextFreeCart())==0) {
       delete group;
-      XmlExit("No free carts in group",500);
+      XmlExit("No free carts in group",403);
     }
   }
   if(!group->cartNumberValid(cart_number)) {
     delete group;
-    XmlExit("Cart number out of range for group",401);
+    XmlExit("Cart number out of range for group",403);
   }
   delete group;
   if(!xport_user->createCarts()) {
-    XmlExit("Unauthorized",401);
+    XmlExit("Forbidden",403);
   }
 
   //
@@ -254,7 +254,7 @@ void Xport::EditCart()
     XmlExit("No such cart",404);
   }
   if(!xport_user->modifyCarts()) {
-    XmlExit("Unauthorized",401);
+    XmlExit("Forbidden",403);
   }
   if(xport_post->getValue("GROUP_NAME",&group_name)) {
     if(!xport_user->groupAuthorized(group_name)) {
@@ -405,7 +405,7 @@ void Xport::RemoveCart()
     XmlExit("No such cart",404);
   }
   if(!xport_user->deleteCarts()) {
-    XmlExit("Unauthorized",401);
+    XmlExit("Forbidden",403);
   }
 
   //
@@ -446,7 +446,7 @@ void Xport::AddCut()
     XmlExit("No such cart",404);
   }
   if(!xport_user->editAudio()) {
-    XmlExit("Unauthorized",401);
+    XmlExit("Forbidden",403);
   }
 
   //
@@ -459,7 +459,7 @@ void Xport::AddCut()
   }
   if((cut_number=cart->addCut(0,0,2))<0) {
     delete cart;
-    XmlExit("No new cuts available",500);
+    XmlExit("No new cuts available",403);
   }
   printf("Content-type: application/xml\n");
   printf("Status: 200\n\n");
@@ -595,7 +595,7 @@ void Xport::EditCut()
     XmlExit("No such cart",404);
   }
   if(!xport_user->editAudio()) {
-    XmlExit("Unauthorized",401);
+    XmlExit("Forbidden",403);
   }
 
   //
@@ -750,7 +750,7 @@ void Xport::RemoveCut()
     XmlExit("No such cart",404);
   }
   if(!xport_user->editAudio()) {
-    XmlExit("Unauthorized",401);
+    XmlExit("Forbidden",403);
   }
 
   //
