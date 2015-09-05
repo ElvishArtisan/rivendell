@@ -135,7 +135,7 @@ Xport::Xport(QObject *parent,const char *name)
   // Authenticate Connection
   //
   if(!Authenticate()) {
-    XmlExit("Invalid User",403);
+    XmlExit("Invalid User",401);
   }
 
   //

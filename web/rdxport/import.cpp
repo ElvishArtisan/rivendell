@@ -89,7 +89,7 @@ void Xport::Import()
     XmlExit("No such cart",404);
   }
   if(!xport_user->editAudio()) {
-    XmlExit("Unauthorized",401);
+    XmlExit("Forbidden",403);
   }
 
   //

@@ -64,7 +64,7 @@ void Xport::ExportPeaks()
     XmlExit("No such audio",404);
   }
   if(!wave->hasEnergy()) {
-    XmlExit("No peak data available",400);
+    XmlExit("No peak data available",404);
   }
 
   //

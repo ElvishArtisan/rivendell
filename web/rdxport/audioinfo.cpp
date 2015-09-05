@@ -96,7 +96,7 @@ void Xport::AudioInfo()
     break;
 
   default:
-    XmlExit("Unknown audio format",400);
+    XmlExit("Unknown audio format",500);
     break;
   }
   printf("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
