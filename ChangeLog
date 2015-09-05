@@ -14866,5 +14866,10 @@
 	* Incremented the package version to 2.10.3pcm24.0.
 2015-08-30 Fred Gleason <fredg@paravelsystems.com>
 	* Added a --frames=' parameter in 'tests/audio_peaks_test.cpp'.
-	* Fixed a benchpost bug in generating peak energy data in
+	* Fixed a fencepost bug in generating peak energy data in
 	'lib/rdwavefile.cpp'.
+2015-09-05 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'PCM24' to the list of available formats in
+	'rdadmin/edit_rdlogedit.cpp' and 'rdadmin/edit_rdlogedit.h'.
+	* Added PCM24 support for voice tracking in
+	'rdlogedit/voice_tracker.cpp'.

@@ -2659,22 +2659,6 @@ configured to run the CAE service in order to populate the audio resources datab
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>40 kbps/chan</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>224 kbps/chan</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>256 kbps/chan</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>320 kbps/chan</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>No</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2684,6 +2668,10 @@ configured to run the CAE service in order to populate the audio resources datab
     </message>
     <message>
         <source>Enable &amp;2nd Start Button:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>PCM24</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

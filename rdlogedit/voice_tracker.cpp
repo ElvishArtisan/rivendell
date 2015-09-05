@@ -2,7 +2,7 @@
 //
 // A Rivendell Voice Tracker
 //
-//   (C) Copyright 2002-2006 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2015 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -3942,6 +3942,10 @@ bool VoiceTracker::InitTrack()
 	
       case 1:
 	edit_coding=RDCae::MpegL2;
+	break;
+	
+      case 2:
+	edit_coding=RDCae::Pcm24;
 	break;
 	
       default:
