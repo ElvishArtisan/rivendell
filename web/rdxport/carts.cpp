@@ -36,240 +36,15 @@
 
 #include <rdxport.h>
 
-void Xport::AddCart()
+void Xport::SetCartInfo(RDCart* cart, const QString& group_name)
 {
-  RDCart *cart;
-  RDGroup *group;
-  QString group_name;
-  QString type;
-  RDCart::Type cart_type=RDCart::All;
-  int cart_number=0;
-
-  //
-  // Verify Post
-  //
-  if(!xport_post->getValue("GROUP_NAME",&group_name)) {
-    XmlExit("Missing GROUP_NAME",400);
-  }
-  if(!xport_post->getValue("TYPE",&type)) {
-    XmlExit("Missing TYPE",400);
-  }
-  if(type.lower()=="audio") {
-    cart_type=RDCart::Audio;
-  }
-  else {
-    if(type.lower()=="macro") {
-      cart_type=RDCart::Macro;
-    }
-    else {
-      XmlExit("Invalid TYPE",400);
-    }
-  }
-  xport_post->getValue("CART_NUMBER",&cart_number);
-
-  //
-  // Verify User Perms
-  //
-  if(!xport_user->groupAuthorized(group_name)) {
-    XmlExit("No such group",404);
-  }
-  group=new RDGroup(group_name);
-  if(cart_number==0) {
-    if((cart_number=group->nextFreeCart())==0) {
-      delete group;
-      XmlExit("No free carts in group",403);
-    }
-  }
-  if(!group->cartNumberValid(cart_number)) {
-    delete group;
-    XmlExit("Cart number out of range for group",403);
-  }
-  delete group;
-  if(!xport_user->createCarts()) {
-    XmlExit("Forbidden",403);
-  }
-
-  //
-  // Process Request
-  //
-  cart=new RDCart(cart_number);
-  if(cart->exists()) {
-    delete cart;
-    XmlExit("Cart already exists",403);
-  }
-  if(!cart->create(group_name,cart_type)) {
-    delete cart;
-    XmlExit("Unable to create cart",500);
-  }
-  printf("Content-type: application/xml\n");
-  printf("Status: 200\n\n");
-  printf("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
-  printf("<cartAdd>\n");
-  if(cart->exists()) {
-    printf("%s",(const char *)cart->xml(false));
-  }
-  delete cart;
-  printf("</cartAdd>\n");
-
-  Exit(0);
-}
-
-
-void Xport::ListCarts()
-{
-  QString sql;
-  RDSqlQuery *q;
-  QString where="";
-  RDCart *cart;
-  QString group_name;
-  QString filter;
-  int include_cuts;
-  RDCart::Type cart_type=RDCart::All;
-  QString type;
-
-  //
-  // Verify Post
-  //
-  xport_post->getValue("GROUP_NAME",&group_name);
-  xport_post->getValue("FILTER",&filter);
-  xport_post->getValue("INCLUDE_CUTS",&include_cuts);
-  xport_post->getValue("TYPE",&type);
-  if(type.lower()=="audio") {
-    cart_type=RDCart::Audio;
-  }
-  if(type.lower()=="macro") {
-    cart_type=RDCart::Macro;
-  }
-
-  //
-  // Generate Cart List
-  //
-  if(group_name.isEmpty()||(group_name==tr("ALL"))) {
-    where=RDAllCartSearchText(filter,"ALL",xport_user->name(),false);
-  }
-  else {
-    sql=QString().
-      sprintf("select GROUP_NAME from USER_PERMS \
-               where (GROUP_NAME=\"%s\")&&(USER_NAME=\"%s\")",
-	      (const char *)RDEscapeString(group_name),
-	      (const char *)RDEscapeString(xport_user->name()));
-    q=new RDSqlQuery(sql);
-    if(!q->first()) {
-      delete q;
-      XmlExit("No such group",404);
-    }
-    where=RDCartSearchText(filter,group_name,"",false);
-  }
-  if(cart_type!=RDCart::All) {
-    where+=QString().sprintf("&&(TYPE=%u)",cart_type);
-  }
-  sql="select NUMBER from CART where "+where+"order by NUMBER";
-  q=new RDSqlQuery(sql);
-
-  //
-  // Process Request
-  //
-  printf("Content-type: application/xml\n");
-  printf("Status: 200\n\n");
-  printf("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
-  printf("<cartList>\n");
-  while(q->next()) {
-    cart=new RDCart(q->value(0).toUInt());
-    printf("%s",(const char *)cart->xml(include_cuts));
-    delete cart;
-  }
-  printf("</cartList>\n");
-  
-  delete q;
-  Exit(0);
-}
-
-
-void Xport::ListCart()
-
-{
-  QString where="";
-  RDCart *cart;
-  int cart_number;
-  int include_cuts;
-  QString value;
-
-  //
-  // Verify Post
-  //
-  if(!xport_post->getValue("CART_NUMBER",&cart_number)) {
-    XmlExit("Missing CART_NUMBER",400);
-  }
-  xport_post->getValue("INCLUDE_CUTS",&include_cuts);
-
-  //
-  // Verify User Perms
-  //
-  if(!xport_user->cartAuthorized(cart_number)) {
-    XmlExit("No such cart",404);
-  }
-
-  //
-  // Process Request
-  //
-  printf("Content-type: application/xml\n");
-  printf("Status: 200\n\n");
-  printf("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
-  printf("<cartList>\n");
-  cart=new RDCart(cart_number);
-  printf("%s",(const char *)cart->xml(include_cuts));
-  delete cart;
-  printf("</cartList>\n");
-
-  Exit(0);
-}
-
-
-void Xport::EditCart()
-{
-  QString where="";
-  RDCart *cart;
-  int cart_number;
-  int include_cuts=0;
-  QString group_name;
+  bool ok;
   QString value;
   int number;
-  bool ok;
   int line;
   QString macro;
   bool length_changed=false;
 
-  //
-  // Verify Post
-  //
-  if(!xport_post->getValue("CART_NUMBER",&cart_number)) {
-    XmlExit("Missing CART_NUMBER",400);
-  }
-  xport_post->getValue("INCLUDE_CUTS",&include_cuts);
-
-  //
-  // Verify User Perms
-  //
-  if(!xport_user->cartAuthorized(cart_number)) {
-    XmlExit("No such cart",404);
-  }
-  if(!xport_user->modifyCarts()) {
-    XmlExit("Forbidden",403);
-  }
-  if(xport_post->getValue("GROUP_NAME",&group_name)) {
-    if(!xport_user->groupAuthorized(group_name)) {
-      XmlExit("No such group",404);
-    }
-  }
-
-  //
-  // Process Request
-  //
-  cart=new RDCart(cart_number);
-  if(!cart->exists()) {
-    delete cart;
-    XmlExit("No such cart",404);
-  }
   if(xport_post->getValue("FORCED_LENGTH",&value)) {
     number=RDSetTimeLength(value);
     if(cart->type()==RDCart::Macro) {
@@ -354,7 +129,7 @@ void Xport::EditCart()
     cart->setForcedLength(RDSetTimeLength(value));
     length_changed=true;
   }
-  if(xport_post->getValue("ASYNCRONOUS",&value)) { 
+  if(xport_post->getValue("ASYNCRONOUS",&value)) {
     number=value.toInt(&ok);
     if((ok)&&(number>=0)&&(number<2)) {
       cart->setAsyncronous(number);
@@ -373,6 +148,240 @@ void Xport::EditCart()
   if(length_changed) {
     cart->updateLength();
   }
+}
+
+
+void Xport::AddCart()
+{
+  RDCart *cart;
+  RDGroup *group;
+  QString group_name;
+  QString type;
+  RDCart::Type cart_type=RDCart::All;
+  int cart_number=0;
+
+  //
+  // Verify Post
+  //
+  if(!xport_post->getValue("GROUP_NAME",&group_name)) {
+    XmlExit("Missing GROUP_NAME",400);
+  }
+  if(!xport_post->getValue("TYPE",&type)) {
+    XmlExit("Missing TYPE",400);
+  }
+  if(type.lower()=="audio") {
+    cart_type=RDCart::Audio;
+  }
+  else {
+    if(type.lower()=="macro") {
+      cart_type=RDCart::Macro;
+    }
+    else {
+      XmlExit("Invalid TYPE",400);
+    }
+  }
+  xport_post->getValue("CART_NUMBER",&cart_number);
+
+  //
+  // Verify User Perms
+  //
+  if(!xport_user->groupAuthorized(group_name)) {
+    XmlExit("No such group",404);
+  }
+  group=new RDGroup(group_name);
+  if(cart_number==0) {
+    if((cart_number=group->nextFreeCart())==0) {
+      delete group;
+      XmlExit("No free carts in group",403);
+    }
+  }
+  if(!group->cartNumberValid(cart_number)) {
+    delete group;
+    XmlExit("Cart number out of range for group",403);
+  }
+  delete group;
+  if(!xport_user->createCarts()) {
+    XmlExit("Forbidden",403);
+  }
+
+  //
+  // Process Request
+  //
+  cart=new RDCart(cart_number);
+  if(cart->exists()) {
+    delete cart;
+    XmlExit("Cart already exists",403);
+  }
+  if(!cart->create(group_name,cart_type)) {
+    delete cart;
+    XmlExit("Unable to create cart",500);
+  }
+  SetCartInfo(cart, group_name);
+
+  printf("Content-type: application/xml\n");
+  printf("Status: 200\n\n");
+  printf("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
+  printf("<cartAdd>\n");
+  if(cart->exists()) {
+    printf("%s",(const char *)cart->xml(false));
+  }
+  delete cart;
+  printf("</cartAdd>\n");
+
+  Exit(0);
+}
+
+
+void Xport::ListCarts()
+{
+  QString sql;
+  RDSqlQuery *q;
+  QString where="";
+  RDCart *cart;
+  QString group_name;
+  QString filter;
+  int include_cuts;
+  RDCart::Type cart_type=RDCart::All;
+  QString type;
+
+  //
+  // Verify Post
+  //
+  xport_post->getValue("GROUP_NAME",&group_name);
+  xport_post->getValue("FILTER",&filter);
+  xport_post->getValue("INCLUDE_CUTS",&include_cuts);
+  xport_post->getValue("TYPE",&type);
+  if(type.lower()=="audio") {
+    cart_type=RDCart::Audio;
+  }
+  if(type.lower()=="macro") {
+    cart_type=RDCart::Macro;
+  }
+
+  //
+  // Generate Cart List
+  //
+  if(group_name.isEmpty()||(group_name==tr("ALL"))) {
+    where=RDAllCartSearchText(filter,"ALL",xport_user->name(),false);
+  }
+  else {
+    sql=QString().
+      sprintf("select GROUP_NAME from USER_PERMS \
+               where (GROUP_NAME=\"%s\")&&(USER_NAME=\"%s\")",
+	      (const char *)RDEscapeString(group_name),
+	      (const char *)RDEscapeString(xport_user->name()));
+    q=new RDSqlQuery(sql);
+    if(!q->first()) {
+      delete q;
+      XmlExit("No such group",404);
+    }
+    where=RDCartSearchText(filter,group_name,"",false);
+  }
+  if(cart_type!=RDCart::All) {
+    where+=QString().sprintf("&&(TYPE=%u)",cart_type);
+  }
+  sql="select NUMBER from CART where "+where+"order by NUMBER";
+  q=new RDSqlQuery(sql);
+
+  //
+  // Process Request
+  //
+  printf("Content-type: application/xml\n");
+  printf("Status: 200\n\n");
+  printf("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
+  printf("<cartList>\n");
+  while(q->next()) {
+    cart=new RDCart(q->value(0).toUInt());
+    printf("%s",(const char *)cart->xml(include_cuts));
+    delete cart;
+  }
+  printf("</cartList>\n");
+
+  delete q;
+  Exit(0);
+}
+
+
+void Xport::ListCart()
+
+{
+  QString where="";
+  RDCart *cart;
+  int cart_number;
+  int include_cuts;
+  QString value;
+
+  //
+  // Verify Post
+  //
+  if(!xport_post->getValue("CART_NUMBER",&cart_number)) {
+    XmlExit("Missing CART_NUMBER",400);
+  }
+  xport_post->getValue("INCLUDE_CUTS",&include_cuts);
+
+  //
+  // Verify User Perms
+  //
+  if(!xport_user->cartAuthorized(cart_number)) {
+    XmlExit("No such cart",404);
+  }
+
+  //
+  // Process Request
+  //
+  printf("Content-type: application/xml\n");
+  printf("Status: 200\n\n");
+  printf("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
+  printf("<cartList>\n");
+  cart=new RDCart(cart_number);
+  printf("%s",(const char *)cart->xml(include_cuts));
+  delete cart;
+  printf("</cartList>\n");
+
+  Exit(0);
+}
+
+
+void Xport::EditCart()
+{
+  QString where="";
+  RDCart *cart;
+  int cart_number;
+  int include_cuts=0;
+  QString group_name;
+
+  //
+  // Verify Post
+  //
+  if(!xport_post->getValue("CART_NUMBER",&cart_number)) {
+    XmlExit("Missing CART_NUMBER",400);
+  }
+  xport_post->getValue("INCLUDE_CUTS",&include_cuts);
+
+  //
+  // Verify User Perms
+  //
+  if(!xport_user->cartAuthorized(cart_number)) {
+    XmlExit("No such cart",404);
+  }
+  if(!xport_user->modifyCarts()) {
+    XmlExit("Forbidden",403);
+  }
+  if(xport_post->getValue("GROUP_NAME",&group_name)) {
+    if(!xport_user->groupAuthorized(group_name)) {
+      XmlExit("No such group",404);
+    }
+  }
+
+  //
+  // Process Request
+  //
+  cart=new RDCart(cart_number);
+  if(!cart->exists()) {
+    delete cart;
+    XmlExit("No such cart",404);
+  }
+  SetCartInfo(cart, group_name);
 
   printf("Content-type: application/xml\n");
   printf("Status: 200\n\n");
@@ -425,152 +434,8 @@ void Xport::RemoveCart()
 }
 
 
-void Xport::AddCut()
+void Xport::SetCutInfo(RDCut* cut)
 {
-  RDCart *cart;
-  RDCut *cut;
-  int cart_number;
-  int cut_number;
-
-  //
-  // Verify Post
-  //
-  if(!xport_post->getValue("CART_NUMBER",&cart_number)) {
-    XmlExit("Missing CART_NUMBER",400);
-  }
-
-  //
-  // Verify User Perms
-  //
-  if(!xport_user->cartAuthorized(cart_number)) {
-    XmlExit("No such cart",404);
-  }
-  if(!xport_user->editAudio()) {
-    XmlExit("Forbidden",403);
-  }
-
-  //
-  // Process Request
-  //
-  cart=new RDCart(cart_number);
-  if(!cart->exists()) {
-    delete cart;
-    XmlExit("No such cart",404);
-  }
-  if((cut_number=cart->addCut(0,0,2))<0) {
-    delete cart;
-    XmlExit("No new cuts available",403);
-  }
-  printf("Content-type: application/xml\n");
-  printf("Status: 200\n\n");
-  printf("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
-  printf("<cutAdd>\n");
-  cut=new RDCut(cart_number,cut_number);
-  if(cut->exists()) {
-    printf("%s",(const char *)cut->xml());
-  }
-  delete cut;
-  delete cart;
-  printf("</cutAdd>\n");
-
-  Exit(0);
-}
-
-
-void Xport::ListCuts()
-{
-  RDCut *cut;
-  int cart_number;
-  QString sql;
-  RDSqlQuery *q;
-
-  //
-  // Verify Post
-  //
-  if(!xport_post->getValue("CART_NUMBER",&cart_number)) {
-    XmlExit("Missing CART_NUMBER",400);
-  }
-
-  //
-  // Verify User Perms
-  //
-  if(!xport_user->cartAuthorized(cart_number)) {
-    XmlExit("No such cart",404);
-  }
-
-  //
-  // Process Request
-  //
-  sql=QString().sprintf("select CUT_NAME from CUTS where CART_NUMBER=%u \
-                         order by CUT_NAME",
-			cart_number);
-  q=new RDSqlQuery(sql);
-  printf("Content-type: application/xml\n");
-  printf("Status: 200\n\n");
-  printf("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
-  printf("<cutList>\n");
-  while(q->next()) {
-    cut=new RDCut(q->value(0).toString());
-    if(cut->exists()) {
-      printf("%s",(const char *)cut->xml());
-    }
-    delete cut;
-  }
-  delete q;
-  printf("</cutList>\n");
-
-  Exit(0);
-}
-
-
-void Xport::ListCut()
-{
-  RDCut *cut;
-  int cart_number;
-  int cut_number;
-
-  //
-  // Verify Post
-  //
-  if(!xport_post->getValue("CART_NUMBER",&cart_number)) {
-    XmlExit("Missing CART_NUMBER",400);
-  }
-  if(!xport_post->getValue("CUT_NUMBER",&cut_number)) {
-    XmlExit("Missing CUT_NUMBER",400);
-  }
-
-  //
-  // Verify User Perms
-  //
-  if(!xport_user->cartAuthorized(cart_number)) {
-    XmlExit("No such cart",404);
-  }
-
-  //
-  // Process Request
-  //
-  cut=new RDCut(cart_number,cut_number);
-  if(!cut->exists()) {
-    delete cut;
-    XmlExit("No such cut",404);
-  }
-  printf("Content-type: application/xml\n");
-  printf("Status: 200\n\n");
-  printf("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
-  printf("<cutList>\n");
-  printf("%s",(const char *)cut->xml());
-  printf("</cutList>\n");
-  delete cut;
-
-  Exit(0);
-}
-
-
-void Xport::EditCut()
-{
-  RDCut *cut;
-  int cart_number;
-  int cut_number;
   QString str;
   int num;
   QDateTime datetime;
@@ -578,34 +443,6 @@ void Xport::EditCut()
   bool rotation_changed=false;
   bool length_changed=false;
 
-  //
-  // Verify Post
-  //
-  if(!xport_post->getValue("CART_NUMBER",&cart_number)) {
-    XmlExit("Missing CART_NUMBER",400);
-  }
-  if(!xport_post->getValue("CUT_NUMBER",&cut_number)) {
-    XmlExit("Missing CUT_NUMBER",400);
-  }
-
-  //
-  // Verify User Perms
-  //
-  if(!xport_user->cartAuthorized(cart_number)) {
-    XmlExit("No such cart",404);
-  }
-  if(!xport_user->editAudio()) {
-    XmlExit("Forbidden",403);
-  }
-
-  //
-  // Process Request
-  //
-  cut=new RDCut(cart_number,cut_number);
-  if(!cut->exists()) {
-    delete cut;
-    XmlExit("No such cut",404);
-  }
   if(xport_post->getValue("EVERGREEN",&num)) {
     cut->setEvergreen(num);
     rotation_changed=true;
@@ -722,6 +559,191 @@ void Xport::EditCut()
     }
     delete cart;
   }
+}
+
+
+void Xport::AddCut()
+{
+  RDCart *cart;
+  RDCut *cut;
+  int cart_number;
+  int cut_number;
+
+  //
+  // Verify Post
+  //
+  if(!xport_post->getValue("CART_NUMBER",&cart_number)) {
+    XmlExit("Missing CART_NUMBER",400);
+  }
+
+  //
+  // Verify User Perms
+  //
+  if(!xport_user->cartAuthorized(cart_number)) {
+    XmlExit("No such cart",404);
+  }
+  if(!xport_user->editAudio()) {
+    XmlExit("Forbidden",403);
+  }
+
+  //
+  // Process Request
+  //
+  cart=new RDCart(cart_number);
+  if(!cart->exists()) {
+    delete cart;
+    XmlExit("No such cart",404);
+  }
+  if((cut_number=cart->addCut(0,0,2))<0) {
+    delete cart;
+    XmlExit("No new cuts available",403);
+  }
+  cut=new RDCut(cart_number,cut_number);
+  if(cut->exists()) {
+    SetCutInfo(cut);
+  }
+
+  printf("Content-type: application/xml\n");
+  printf("Status: 200\n\n");
+  printf("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
+  printf("<cutAdd>\n");
+  if(cut->exists()) {
+    printf("%s",(const char *)cut->xml());
+  }
+  delete cut;
+  delete cart;
+  printf("</cutAdd>\n");
+
+  Exit(0);
+}
+
+
+void Xport::ListCuts()
+{
+  RDCut *cut;
+  int cart_number;
+  QString sql;
+  RDSqlQuery *q;
+
+  //
+  // Verify Post
+  //
+  if(!xport_post->getValue("CART_NUMBER",&cart_number)) {
+    XmlExit("Missing CART_NUMBER",400);
+  }
+
+  //
+  // Verify User Perms
+  //
+  if(!xport_user->cartAuthorized(cart_number)) {
+    XmlExit("No such cart",404);
+  }
+
+  //
+  // Process Request
+  //
+  sql=QString().sprintf("select CUT_NAME from CUTS where CART_NUMBER=%u \
+                         order by CUT_NAME",
+			cart_number);
+  q=new RDSqlQuery(sql);
+  printf("Content-type: application/xml\n");
+  printf("Status: 200\n\n");
+  printf("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
+  printf("<cutList>\n");
+  while(q->next()) {
+    cut=new RDCut(q->value(0).toString());
+    if(cut->exists()) {
+      printf("%s",(const char *)cut->xml());
+    }
+    delete cut;
+  }
+  delete q;
+  printf("</cutList>\n");
+
+  Exit(0);
+}
+
+
+void Xport::ListCut()
+{
+  RDCut *cut;
+  int cart_number;
+  int cut_number;
+
+  //
+  // Verify Post
+  //
+  if(!xport_post->getValue("CART_NUMBER",&cart_number)) {
+    XmlExit("Missing CART_NUMBER",400);
+  }
+  if(!xport_post->getValue("CUT_NUMBER",&cut_number)) {
+    XmlExit("Missing CUT_NUMBER",400);
+  }
+
+  //
+  // Verify User Perms
+  //
+  if(!xport_user->cartAuthorized(cart_number)) {
+    XmlExit("No such cart",404);
+  }
+
+  //
+  // Process Request
+  //
+  cut=new RDCut(cart_number,cut_number);
+  if(!cut->exists()) {
+    delete cut;
+    XmlExit("No such cut",404);
+  }
+  printf("Content-type: application/xml\n");
+  printf("Status: 200\n\n");
+  printf("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
+  printf("<cutList>\n");
+  printf("%s",(const char *)cut->xml());
+  printf("</cutList>\n");
+  delete cut;
+
+  Exit(0);
+}
+
+
+void Xport::EditCut()
+{
+  RDCut *cut;
+  int cart_number;
+  int cut_number;
+
+  //
+  // Verify Post
+  //
+  if(!xport_post->getValue("CART_NUMBER",&cart_number)) {
+    XmlExit("Missing CART_NUMBER",400);
+  }
+  if(!xport_post->getValue("CUT_NUMBER",&cut_number)) {
+    XmlExit("Missing CUT_NUMBER",400);
+  }
+
+  //
+  // Verify User Perms
+  //
+  if(!xport_user->cartAuthorized(cart_number)) {
+    XmlExit("No such cart",404);
+  }
+  if(!xport_user->editAudio()) {
+    XmlExit("Forbidden",403);
+  }
+
+  //
+  // Process Request
+  //
+  cut=new RDCut(cart_number,cut_number);
+  if(!cut->exists()) {
+    delete cut;
+    XmlExit("No such cut",404);
+  }
+
+  SetCutInfo(cut);
+
   delete cut;
   XmlExit("OK",200);
 }
