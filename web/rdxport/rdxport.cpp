@@ -241,7 +241,8 @@ Xport::Xport(QObject *parent,const char *name)
     break;
 
   default:
-    printf("Content-type: text/html\n\n");
+    printf("Content-type: text/plain\n");
+    printf("Status: 400\n\n");
     printf("rdxport: missing/invalid command\n");
     db->removeDatabase(xport_config->mysqlDbname());
     Exit(0);
