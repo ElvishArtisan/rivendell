@@ -14873,8 +14873,3 @@
 	'rdadmin/edit_rdlogedit.cpp' and 'rdadmin/edit_rdlogedit.h'.
 	* Added PCM24 support for voice tracking in
 	'rdlogedit/voice_tracker.cpp'.
-2015-09-05 Fred Gleason <fredg@paravelsystems.com>
-	* Refactored caed(8) to use virtual inheritance for audio
-	subsystem drivers.
-	* Reimplemented the HPI driver in 'cae/driver_hpi.cpp' and
-	'cae/driver_hpi.h'.
