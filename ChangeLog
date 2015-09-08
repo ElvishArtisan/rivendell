@@ -14873,3 +14873,6 @@
 	'rdadmin/edit_rdlogedit.cpp' and 'rdadmin/edit_rdlogedit.h'.
 	* Added PCM24 support for voice tracking in
 	'rdlogedit/voice_tracker.cpp'.
+2015-09-07 Fred Gleason <fredg@paravelsystems.com>
+	* Added PCM24 play-out and capture support for ALSA in
+	'cae/cae_alsa.cpp' and 'cae/cae.h'.

@@ -2,9 +2,7 @@
 //
 // The Core Audio Engine component of Rivendell
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: cae.h,v 1.79.4.4 2012/11/30 16:14:58 cvs Exp $
+//   (C) Copyright 2002-2015 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -340,6 +338,7 @@ class MainObject : public QObject
   short alsa_output_volume_db[RD_MAX_CARDS][RD_MAX_PORTS][RD_MAX_STREAMS];
   short alsa_passthrough_volume_db[RD_MAX_CARDS][RD_MAX_PORTS][RD_MAX_PORTS];
   short *alsa_wave_buffer;
+  uint8_t *alsa_wave24_buffer;
   RDWaveFile *alsa_record_wave[RD_MAX_CARDS][RD_MAX_STREAMS];
   RDWaveFile *alsa_play_wave[RD_MAX_CARDS][RD_MAX_STREAMS];
   int alsa_offset[RD_MAX_CARDS][RD_MAX_STREAMS];
