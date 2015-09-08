@@ -15199,3 +15199,6 @@
 	* Optimized waveform updates in 'lib/rdmarkerwaveform.cpp'.
 2015-09-04 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 2.10.3int06.
+2015-09-08 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in 'lib/rdedit_audio.cpp' that caused only part
+	of the waveform to be visible.

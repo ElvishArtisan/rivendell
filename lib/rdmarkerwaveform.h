@@ -47,8 +47,9 @@ class RDMarkerWaveform : public QWidget
 		  TalkStart=5,TalkEnd=6,HookStart=7,HookEnd=8,
 		  FadeUp=9,FadeDown=10,LastMarker=11};
   enum Arrow {None=0,Left=1,Right=2};
-  RDMarkerWaveform(RDCut *cut,RDUser *user,RDStation *station,RDConfig *config,
-		   RDWavePainter::Channel chan,QWidget *parent);
+  RDMarkerWaveform(RDCut *cut,int raw_len,RDUser *user,RDStation *station,
+		   RDConfig *config,RDWavePainter::Channel chan,
+		   QWidget *parent);
   ~RDMarkerWaveform();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
@@ -85,6 +86,7 @@ class RDMarkerWaveform : public QWidget
   int YCoordinate(float ratio) const;
   int GridIncrement() const;
   RDCut *wave_cut;
+  int wave_raw_length;
   RDUser *wave_user;
   RDStation *wave_station;
   RDConfig *wave_config;

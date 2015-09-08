@@ -26,12 +26,14 @@
 #include "rdconf.h"
 #include "rdmarkerwaveform.h"
 
-RDMarkerWaveform::RDMarkerWaveform(RDCut *cut,RDUser *user,RDStation *station,
-				   RDConfig *config,RDWavePainter::Channel chan,
+RDMarkerWaveform::RDMarkerWaveform(RDCut *cut,int raw_len,RDUser *user,
+				   RDStation *station,RDConfig *config,
+				   RDWavePainter::Channel chan,
 				   QWidget *parent)
   : QWidget(parent)
 {
   wave_cut=cut;
+  wave_raw_length=raw_len;
   wave_user=user;
   wave_station=station;
   wave_config=config;
@@ -68,8 +70,8 @@ RDMarkerWaveform::RDMarkerWaveform(RDCut *cut,RDUser *user,RDStation *station,
   wave_cursor_arrow_dirs[RDMarkerWaveform::HookEnd]=RDMarkerWaveform::Right;
 
   wave_start=0;
-  wave_width=(double)cut->length()*1.05;
-  wave_width_max=cut->length();
+  wave_width=(double)wave_raw_length*1.05;
+  wave_width_max=wave_raw_length;
 
   wave_reference_level=0;
   wave_gain=1024;
@@ -228,7 +230,7 @@ void RDMarkerWaveform::setPlayCursor(int msecs)
 
 void RDMarkerWaveform::setViewportStart(int msecs)
 {
-  if(((unsigned)msecs<wave_cut->length())&&(msecs!=wave_start)) {
+  if((msecs<wave_raw_length)&&(msecs!=wave_start)) {
     wave_start=msecs;
     update();
   }
@@ -257,7 +259,7 @@ void RDMarkerWaveform::zoomOut()
 
 void RDMarkerWaveform::fullIn()
 {
-  wave_width=(double)wave_cut->length()*1.05;
+  wave_width=(double)wave_raw_length*1.05;
   while(wave_width>RDMARKERWAVEFORM_MIN_WAVE_WIDTH) {
     wave_width/=2;
   }
@@ -267,7 +269,7 @@ void RDMarkerWaveform::fullIn()
 
 void RDMarkerWaveform::fullOut()
 {
-  wave_width=(double)wave_cut->length()*1.05;
+  wave_width=(double)wave_raw_length*1.05;
   update();
 }
 
@@ -305,13 +307,13 @@ void RDMarkerWaveform::paintEvent(QPaintEvent *e)
   //
   p->setPen(colorGroup().mid());
   p->setBrush(colorGroup().mid());
-  p->drawRect(XCoordinate(wave_cut->length())+10,0,w,h);
+  p->drawRect(XCoordinate(wave_raw_length)+10,0,w,h);
 
   //
   // Time Ticks
   //
   p->setFont(QFont("helvetica",8,QFont::Normal));
-  for(unsigned i=GridIncrement();i<(2*wave_cut->length());i+=GridIncrement()) {
+  for(int i=GridIncrement();i<(2*wave_raw_length);i+=GridIncrement()) {
     p->setPen(Qt::green);
     p->moveTo(XCoordinate(i)+10,0);
     p->lineTo(XCoordinate(i)+10,h);

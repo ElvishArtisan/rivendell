@@ -2,9 +2,7 @@
 //
 // Get information about a cut in the audio store.
 //
-//   (C) Copyright 2011 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdaudioinfo.cpp,v 1.3.4.3 2013/11/13 23:36:30 cvs Exp $
+//   (C) Copyright 2015 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -47,9 +45,8 @@ size_t RDAudioInfoCallback(void *ptr,size_t size,size_t nmemb,void *userdata)
 }
 
 
-RDAudioInfo::RDAudioInfo(RDStation *station,RDConfig *config,
-			     QObject *parent,const char *name)
-  : QObject(parent,name)
+RDAudioInfo::RDAudioInfo(RDStation *station,RDConfig *config,QObject *parent)
+  : QObject(parent)
 {
   conv_station=station;
   conv_config=config;

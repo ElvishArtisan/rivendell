@@ -2,9 +2,7 @@
 //
 // Get information about a cut in the audio store.
 //
-//   (C) Copyright 2011 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdaudioinfo.h,v 1.1.6.2 2013/11/13 23:36:31 cvs Exp $
+//   (C) Copyright 2011-2015 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -35,8 +33,7 @@ class RDAudioInfo : public QObject
  public:
   enum ErrorCode {ErrorOk=0,ErrorInternal=5,ErrorUrlInvalid=7,
 		  ErrorService=8,ErrorInvalidUser=9,ErrorNoAudio=10};
-  RDAudioInfo(RDStation *station,RDConfig *config,QObject *parent=0,
-	      const char *name=0);
+  RDAudioInfo(RDStation *station,RDConfig *config,QObject *parent=0);
   RDWaveFile::Format format() const;
   unsigned channels() const;
   unsigned sampleRate() const;

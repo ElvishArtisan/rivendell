@@ -135,6 +135,7 @@ class RDEditAudio : public QDialog
   RDTransportButton *edit_zoomout_button;
   QPushButton *edit_fullout_button;
   RDCut *edit_cut;
+  unsigned edit_raw_length;
   QPushButton *edit_save_button;
   QPushButton *edit_cancel_button;
   RDStation *edit_station;

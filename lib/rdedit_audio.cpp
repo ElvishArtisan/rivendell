@@ -44,6 +44,8 @@ RDEditAudio::RDEditAudio(RDCart *cart,QString cut_name,RDCae *cae,RDUser *user,
   edit_user=user;
   edit_gain_mode=RDEditAudio::GainNone;
   edit_gain_count=0;
+  edit_raw_length=0;
+  RDAudioInfo::ErrorCode info_err;
 
   //
   // Fix the Window Size
@@ -64,26 +66,40 @@ RDEditAudio::RDEditAudio(RDCart *cart,QString cut_name,RDCae *cae,RDUser *user,
   small_font.setPixelSize(10);
 
   //
-  // Audio Cut
+  // Audio Parameters
   //
   edit_cut=new RDCut(cut_name);
+  RDAudioInfo *info=new RDAudioInfo(station,config,this);
+  info->setCartNumber(edit_cut->cartNumber());
+  info->setCutNumber(edit_cut->cutNumber());
+  if((info_err=info->runInfo(user->name(),user->password()))!=RDAudioInfo::ErrorOk) {
+    QMessageBox::critical(this,"RDLibrary - "+tr("Error"),
+			  tr("Unable to fetch audio cut info")+" ["+
+			  RDAudioInfo::errorText(info_err)+"].");
+  }
+  edit_raw_length=info->length();
+  delete info;
 
   //
   // Waveform
   //
   switch(edit_cut->channels()) {
   case 1:
-    edit_waveform[0]=new RDMarkerWaveform(edit_cut,user,station,config,
+    edit_waveform[0]=new RDMarkerWaveform(edit_cut,edit_raw_length,user,
+					  station,config,
 					  RDWavePainter::Mono,this);
-    edit_waveform[1]=new RDMarkerWaveform(edit_cut,user,station,config,
+    edit_waveform[1]=new RDMarkerWaveform(edit_cut,edit_raw_length,user,
+					  station,config,
 					  RDWavePainter::Mono,this);
     edit_waveform[1]->hide();
     break;
 
   case 2:
-    edit_waveform[0]=new RDMarkerWaveform(edit_cut,user,station,config,
+    edit_waveform[0]=new RDMarkerWaveform(edit_cut,edit_raw_length,user,
+					  station,config,
 					  RDWavePainter::Left,this);
-    edit_waveform[1]=new RDMarkerWaveform(edit_cut,user,station,config,
+    edit_waveform[1]=new RDMarkerWaveform(edit_cut,edit_raw_length,user,
+					  station,config,
 					  RDWavePainter::Right,this);
     break;
   }
@@ -334,19 +350,19 @@ RDEditAudio::RDEditAudio(RDCart *cart,QString cut_name,RDCae *cae,RDUser *user,
   // Load Values
   //
   edit_marker_widget[RDMarkerWaveform::Start]->setValue(edit_cut->startPoint());
-  edit_marker_widget[RDMarkerWaveform::Start]->setRange(0,edit_cut->length());
+  edit_marker_widget[RDMarkerWaveform::Start]->setRange(0,edit_raw_length);
   edit_marker_widget[RDMarkerWaveform::Start]->
     setRange(NULL,edit_marker_widget[RDMarkerWaveform::End]);
 
   edit_marker_widget[RDMarkerWaveform::End]->setValue(edit_cut->endPoint());
-  edit_marker_widget[RDMarkerWaveform::End]->setRange(0,edit_cut->length());
+  edit_marker_widget[RDMarkerWaveform::End]->setRange(0,edit_raw_length);
   edit_marker_widget[RDMarkerWaveform::End]->
     setRange(edit_marker_widget[RDMarkerWaveform::Start],NULL);
 
   edit_marker_widget[RDMarkerWaveform::TalkStart]->
     setValue(edit_cut->talkStartPoint());
   edit_marker_widget[RDMarkerWaveform::TalkStart]->
-    setRange(0,edit_cut->length());
+    setRange(0,edit_raw_length);
   edit_marker_widget[RDMarkerWaveform::TalkStart]->
     setRange(edit_marker_widget[RDMarkerWaveform::Start],
 	     edit_marker_widget[RDMarkerWaveform::TalkEnd]);
@@ -354,7 +370,7 @@ RDEditAudio::RDEditAudio(RDCart *cart,QString cut_name,RDCae *cae,RDUser *user,
   edit_marker_widget[RDMarkerWaveform::TalkEnd]->
     setValue(edit_cut->talkEndPoint());
   edit_marker_widget[RDMarkerWaveform::TalkEnd]->
-    setRange(0,edit_cut->length());
+    setRange(0,edit_raw_length);
   edit_marker_widget[RDMarkerWaveform::TalkEnd]->
     setRange(edit_marker_widget[RDMarkerWaveform::TalkStart],
 	     edit_marker_widget[RDMarkerWaveform::End]);
@@ -362,7 +378,7 @@ RDEditAudio::RDEditAudio(RDCart *cart,QString cut_name,RDCae *cae,RDUser *user,
   edit_marker_widget[RDMarkerWaveform::SegueStart]->
     setValue(edit_cut->segueStartPoint());
   edit_marker_widget[RDMarkerWaveform::SegueStart]->
-    setRange(0,edit_cut->length());
+    setRange(0,edit_raw_length);
   edit_marker_widget[RDMarkerWaveform::SegueStart]->
     setRange(edit_marker_widget[RDMarkerWaveform::Start],
 	     edit_marker_widget[RDMarkerWaveform::SegueEnd]);
@@ -370,7 +386,7 @@ RDEditAudio::RDEditAudio(RDCart *cart,QString cut_name,RDCae *cae,RDUser *user,
   edit_marker_widget[RDMarkerWaveform::SegueEnd]->
     setValue(edit_cut->segueEndPoint());
   edit_marker_widget[RDMarkerWaveform::SegueEnd]->
-    setRange(0,edit_cut->length());
+    setRange(0,edit_raw_length);
   edit_marker_widget[RDMarkerWaveform::SegueEnd]->
     setRange(edit_marker_widget[RDMarkerWaveform::SegueStart],
 	     edit_marker_widget[RDMarkerWaveform::End]);
@@ -379,7 +395,7 @@ RDEditAudio::RDEditAudio(RDCart *cart,QString cut_name,RDCae *cae,RDUser *user,
   edit_marker_widget[RDMarkerWaveform::HookStart]->
     setValue(edit_cut->hookStartPoint());
   edit_marker_widget[RDMarkerWaveform::HookStart]->
-    setRange(0,edit_cut->length());
+    setRange(0,edit_raw_length);
   edit_marker_widget[RDMarkerWaveform::HookStart]->
     setRange(edit_marker_widget[RDMarkerWaveform::Start],
 	     edit_marker_widget[RDMarkerWaveform::HookEnd]);
@@ -387,7 +403,7 @@ RDEditAudio::RDEditAudio(RDCart *cart,QString cut_name,RDCae *cae,RDUser *user,
   edit_marker_widget[RDMarkerWaveform::HookEnd]->
     setValue(edit_cut->hookEndPoint());
   edit_marker_widget[RDMarkerWaveform::HookEnd]->
-    setRange(0,edit_cut->length());
+    setRange(0,edit_raw_length);
   edit_marker_widget[RDMarkerWaveform::HookEnd]->
     setRange(edit_marker_widget[RDMarkerWaveform::HookStart],
 	     edit_marker_widget[RDMarkerWaveform::End]);
@@ -395,7 +411,7 @@ RDEditAudio::RDEditAudio(RDCart *cart,QString cut_name,RDCae *cae,RDUser *user,
   edit_marker_widget[RDMarkerWaveform::FadeUp]->
     setValue(edit_cut->fadeupPoint());
   edit_marker_widget[RDMarkerWaveform::FadeUp]->
-    setRange(0,edit_cut->length());
+    setRange(0,edit_raw_length);
   edit_marker_widget[RDMarkerWaveform::FadeUp]->
     setRange(edit_marker_widget[RDMarkerWaveform::Start],
 	     edit_marker_widget[RDMarkerWaveform::FadeDown]);
@@ -403,7 +419,7 @@ RDEditAudio::RDEditAudio(RDCart *cart,QString cut_name,RDCae *cae,RDUser *user,
   edit_marker_widget[RDMarkerWaveform::FadeDown]->
     setValue(edit_cut->fadedownPoint());
   edit_marker_widget[RDMarkerWaveform::FadeDown]->
-    setRange(0,edit_cut->length());
+    setRange(0,edit_raw_length);
   edit_marker_widget[RDMarkerWaveform::FadeDown]->
     setRange(edit_marker_widget[RDMarkerWaveform::FadeUp],
 	     edit_marker_widget[RDMarkerWaveform::End]);
@@ -466,7 +482,7 @@ void RDEditAudio::resizeEvent(QResizeEvent *e)
   edit_waveform_scroll->setGeometry(10,edit_waveform[0]->sizeHint().height()+10,
 				    edit_waveform[0]->sizeHint().width()-20,20);
   edit_waveform_scroll->setMinValue(0);
-  edit_waveform_scroll->setMaxValue(edit_cut->length());
+  edit_waveform_scroll->setMaxValue(edit_raw_length);
   connect(edit_waveform_scroll,SIGNAL(valueChanged(int)),
 	  edit_waveform[0],SLOT(setViewportStart(int)));
   connect(edit_waveform_scroll,SIGNAL(valueChanged(int)),
@@ -668,7 +684,7 @@ void RDEditAudio::markerValueChangedData(int id)
       SetDeleteMode(false);
       if(edit_marker_widget[id]->isSelected()) {
 	edit_marker_transport->
-	  setActiveMarker(RDMarkerWaveform::Play,0,edit_cut->length());
+	  setActiveMarker(RDMarkerWaveform::Play,0,edit_raw_length);
       }
     }
     else {
@@ -694,7 +710,7 @@ void RDEditAudio::markerValueChangedData(int id)
       SetDeleteMode(false);
       if(edit_marker_widget[id]->isSelected()) {
 	edit_marker_transport->
-	  setActiveMarker(RDMarkerWaveform::Play,0,edit_cut->length());
+	  setActiveMarker(RDMarkerWaveform::Play,0,edit_raw_length);
       }
     }
     else {
@@ -741,7 +757,7 @@ void RDEditAudio::markerValueChangedData(int id)
       SetDeleteMode(false);
       if(edit_marker_widget[id]->isSelected()) {
 	edit_marker_transport->
-	  setActiveMarker(RDMarkerWaveform::Play,0,edit_cut->length());
+	  setActiveMarker(RDMarkerWaveform::Play,0,edit_raw_length);
       }
     }
     else {
@@ -757,14 +773,14 @@ void RDEditAudio::markerValueChangedData(int id)
       SetDeleteMode(false);
       if(edit_marker_widget[id]->isSelected()) {
 	edit_marker_transport->
-	  setActiveMarker(RDMarkerWaveform::Play,0,edit_cut->length());
+	  setActiveMarker(RDMarkerWaveform::Play,0,edit_raw_length);
       }
     }
     else {
       if(edit_marker_widget[id]->isSelected()) {
 	edit_marker_transport->
 	  setActiveMarker((RDMarkerWaveform::CuePoints)id,value,
-			  edit_cut->length());
+			  edit_raw_length);
       }
     }
     break;
@@ -970,9 +986,9 @@ bool RDEditAudio::SaveMarkers()
   //
   // Sanity Checks
   //
-  int start_point=edit_marker_widget[RDMarkerWaveform::Start]->value();
-  int end_point=edit_marker_widget[RDMarkerWaveform::End]->value()+26;
-  if((unsigned)(2*(end_point-start_point))<edit_cut->length()) {
+  if((unsigned)(2*(edit_marker_widget[RDMarkerWaveform::End]->value()-
+		   edit_marker_widget[RDMarkerWaveform::Start]->value()))<
+     edit_raw_length) {
     if(QMessageBox::question(this,tr("Marker Warning"),
 			     tr("Less than half of the audio is playable with these marker settings.\nAre you sure you want to save?"),QMessageBox::Yes,QMessageBox::No)!=QMessageBox::Yes) {
       return false;
@@ -980,11 +996,12 @@ bool RDEditAudio::SaveMarkers()
   }
 
   if(edit_marker_widget[RDMarkerWaveform::SegueStart]->value()!=-1) {
-    start_point=edit_marker_widget[RDMarkerWaveform::SegueStart]->value();
-      end_point=edit_marker_widget[RDMarkerWaveform::SegueEnd]->value();
-      if((2*(end_point-start_point))>(end_point-start_point)) {
-      if(QMessageBox::question(this,tr("Marker Warning"),
-			       tr("More than half of the audio will be faded with these marker settings.\nAre you sure you want to save?"),QMessageBox::Yes,QMessageBox::No)!=QMessageBox::Yes) {
+  if((2*(edit_marker_widget[RDMarkerWaveform::End]->value()-
+	 edit_marker_widget[RDMarkerWaveform::Start]->value()))<
+     (edit_marker_widget[RDMarkerWaveform::SegueEnd]->value()-
+      edit_marker_widget[RDMarkerWaveform::SegueStart]->value())) {
+    if(QMessageBox::question(this,tr("Marker Warning"),
+			     tr("More than half of the audio will be faded with these marker settings.\nAre you sure you want to save?"),QMessageBox::Yes,QMessageBox::No)!=QMessageBox::Yes) {
 	return false;
       }
     }
