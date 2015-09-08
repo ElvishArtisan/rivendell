@@ -196,6 +196,7 @@ RDEditAudio::RDEditAudio(RDCart *cart,QString cut_name,RDCae *cae,RDUser *user,
     setPalette(QPalette(QColor(RD_START_END_MARKER_COLOR),backgroundColor()));
   edit_trim_start_button->setFont(button_font);
   edit_trim_start_button->setText(tr("Trim\nStart"));
+  edit_trim_start_button->setAutoDefault(false);
   connect(edit_trim_start_button,SIGNAL(clicked()),this,SLOT(trimHeadData()));
 
   edit_trim_end_button=new QPushButton(this);
@@ -203,6 +204,7 @@ RDEditAudio::RDEditAudio(RDCart *cart,QString cut_name,RDCae *cae,RDUser *user,
     setPalette(QPalette(QColor(RD_START_END_MARKER_COLOR),backgroundColor()));
   edit_trim_end_button->setFont(button_font);
   edit_trim_end_button->setText(tr("Trim\nEnd"));
+  edit_trim_end_button->setAutoDefault(false);
   connect(edit_trim_end_button,SIGNAL(clicked()),this,SLOT(trimTailData()));
 
   //
@@ -219,11 +221,13 @@ RDEditAudio::RDEditAudio(RDCart *cart,QString cut_name,RDCae *cae,RDUser *user,
   edit_gain_label->setFont(QFont(small_font));
   gain_up_button=new RDTransportButton(RDTransportButton::Up,this);
   gain_up_button->off();
+  gain_up_button->setAutoDefault(false);
   connect(gain_up_button,SIGNAL(pressed()),this,SLOT(gainUpPressedData()));
   connect(gain_up_button,SIGNAL(released()),this,SLOT(gainReleasedData()));
   
   gain_down_button=new RDTransportButton(RDTransportButton::Down,this);
   gain_down_button->off();
+  gain_down_button->setAutoDefault(false);
   connect(gain_down_button,SIGNAL(pressed()),this,SLOT(gainDownPressedData()));
   connect(gain_down_button,SIGNAL(released()),this,SLOT(gainReleasedData()));
   edit_gain_timer=new QTimer(this);
@@ -238,6 +242,7 @@ RDEditAudio::RDEditAudio(RDCart *cart,QString cut_name,RDCae *cae,RDUser *user,
   edit_remove_button->setText(tr("Remove\nMarker"));
   edit_remove_button->setToggleButton(true);
   edit_remove_button->setFlashColor(QColor(EDITAUDIO_REMOVE_FLASH_COLOR));
+  edit_remove_button->setAutoDefault(false);
   connect(edit_remove_button,SIGNAL(clicked()),this,SLOT(removeButtonData()));
 
   //
@@ -260,12 +265,14 @@ RDEditAudio::RDEditAudio(RDCart *cart,QString cut_name,RDCae *cae,RDUser *user,
   edit_ampup_button=new RDTransportButton(RDTransportButton::Up,this);
   edit_ampup_button->setFont(QFont("Helvetica",12,QFont::Bold));
   edit_ampup_button->setText(tr("Zoom\nIn"));
+  edit_ampup_button->setAutoDefault(false);
   connect(edit_ampup_button,SIGNAL(clicked()),edit_waveform[0],SLOT(ampUp()));
   connect(edit_ampup_button,SIGNAL(clicked()),edit_waveform[1],SLOT(ampUp()));
 
   edit_ampdown_button=new RDTransportButton(RDTransportButton::Down,this);
   edit_ampdown_button->setFont(QFont("Helvetica",12,QFont::Bold));
   edit_ampdown_button->setText(tr("Zoom\nOut"));
+  edit_ampdown_button->setAutoDefault(false);
   connect(edit_ampdown_button,SIGNAL(clicked()),
 	  edit_waveform[0],SLOT(ampDown()));
   connect(edit_ampdown_button,SIGNAL(clicked()),
@@ -282,18 +289,21 @@ RDEditAudio::RDEditAudio(RDCart *cart,QString cut_name,RDCae *cae,RDUser *user,
   edit_fullin_button=new QPushButton(this);
   edit_fullin_button->setFont(button_font);
   edit_fullin_button->setText(tr("Full\nIn"));
+  edit_fullin_button->setAutoDefault(false);
   connect(edit_fullin_button,SIGNAL(clicked()),edit_waveform[0],SLOT(fullIn()));
   connect(edit_fullin_button,SIGNAL(clicked()),edit_waveform[1],SLOT(fullIn()));
 
   edit_zoomin_button=new RDTransportButton(RDTransportButton::Up,this);
   edit_zoomin_button->setFont(button_font);
   edit_zoomin_button->setText(tr("Zoom\nIn"));
+  edit_zoomin_button->setAutoDefault(false);
   connect(edit_zoomin_button,SIGNAL(clicked()),edit_waveform[0],SLOT(zoomIn()));
   connect(edit_zoomin_button,SIGNAL(clicked()),edit_waveform[1],SLOT(zoomIn()));
 
   edit_zoomout_button=new RDTransportButton(RDTransportButton::Down,this);
   edit_zoomout_button->setFont(button_font);
   edit_zoomout_button->setText(tr("Zoom\nOut"));
+  edit_zoomout_button->setAutoDefault(false);
   connect(edit_zoomout_button,SIGNAL(clicked()),
 	  edit_waveform[0],SLOT(zoomOut()));
   connect(edit_zoomout_button,SIGNAL(clicked()),
@@ -302,6 +312,7 @@ RDEditAudio::RDEditAudio(RDCart *cart,QString cut_name,RDCae *cae,RDUser *user,
   edit_fullout_button=new QPushButton(this);
   edit_fullout_button->setFont(button_font);
   edit_fullout_button->setText(tr("Full\nOut"));
+  edit_fullout_button->setAutoDefault(false);
   connect(edit_fullout_button,SIGNAL(clicked()),
 	  edit_waveform[0],SLOT(fullOut()));
   connect(edit_fullout_button,SIGNAL(clicked()),
@@ -316,36 +327,39 @@ RDEditAudio::RDEditAudio(RDCart *cart,QString cut_name,RDCae *cae,RDUser *user,
 
   edit_goto_cursor_button=new QPushButton(this);
   edit_goto_cursor_button->setFont(button_font);
-  edit_goto_cursor_button->setText(tr("Cursor"));
+  edit_goto_cursor_button->setText(tr("Cursor")); 
+  edit_goto_cursor_button->setAutoDefault(false);
   connect(edit_goto_cursor_button,SIGNAL(clicked()),
 	  this,SLOT(gotoCursorData()));
 
   edit_goto_home_button=new QPushButton(this);
   edit_goto_home_button->setFont(button_font);
   edit_goto_home_button->setText(tr("Home"));
+  edit_goto_home_button->setAutoDefault(false);
   connect(edit_goto_home_button,SIGNAL(clicked()),this,SLOT(gotoHomeData()));
 
   edit_goto_end_button=new QPushButton(this);
   edit_goto_end_button->setFont(button_font);
   edit_goto_end_button->setText(tr("End"));
+  edit_goto_end_button->setAutoDefault(false);
   connect(edit_goto_end_button,SIGNAL(clicked()),this,SLOT(gotoEndData()));
 
   //
   //  Save Button
   //
   edit_save_button=new QPushButton(this);
-  edit_save_button->setDefault(true);
   edit_save_button->setFont(button_font);
   edit_save_button->setText(tr("&Save"));
+  edit_save_button->setAutoDefault(false);
   connect(edit_save_button,SIGNAL(clicked()),this,SLOT(saveData()));
 
   //
   //  Cancel Button
   //
   edit_cancel_button=new QPushButton(this);
-  edit_cancel_button->setDefault(true);
   edit_cancel_button->setFont(button_font);
   edit_cancel_button->setText(tr("&Cancel"));
+  edit_cancel_button->setAutoDefault(false);
   connect(edit_cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
 
   //

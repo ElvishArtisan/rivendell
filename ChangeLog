@@ -15205,3 +15205,7 @@
 2015-09-08 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in 'lib/rdedit_audio.cpp' that caused the
 	incorrect caption to appear on the title bar.
+2015-09-08 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in 'lib/rdedit_audio.cpp' that caused the
+	dialog to close when pressing the RETURN key after entering a
+	marker value.

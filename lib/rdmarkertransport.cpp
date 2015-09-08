@@ -106,28 +106,33 @@ RDMarkerTransport::RDMarkerTransport(RDCut *cut,RDCae *cae,int card,int port,
   trans_play_cursor_button=
     new RDTransportButton(RDTransportButton::PlayBetween,this);
   trans_play_cursor_button->setEnabled((trans_card>=0)&&(trans_port>=0));
+  trans_play_cursor_button->setAutoDefault(false);
   connect(trans_play_cursor_button,SIGNAL(clicked()),
 	  this,SLOT(playCursorData()));
 
   trans_play_start_button=new RDTransportButton(RDTransportButton::Play,this);
   trans_play_start_button->setEnabled((trans_card>=0)&&(trans_port>=0));
+  trans_play_start_button->setAutoDefault(false);
   connect(trans_play_start_button,SIGNAL(clicked()),
 	  this,SLOT(playStartData()));
 
   trans_pause_button=new RDTransportButton(RDTransportButton::Pause,this);
   trans_pause_button->setOnColor(QColor(red));
-  trans_pause_button->setEnabled((trans_card>=0)&&(trans_port>=0));
+  trans_pause_button->setEnabled((trans_card>=0)&&(trans_port>=0)); 
+  trans_pause_button->setAutoDefault(false);
   connect(trans_pause_button,SIGNAL(clicked()),this,SLOT(pauseData()));
 
   trans_stop_button=new RDTransportButton(RDTransportButton::Stop,this);
   trans_stop_button->on();
   trans_stop_button->setOnColor(QColor(red));
   trans_stop_button->setEnabled((trans_card>=0)&&(trans_port>=0));
+  trans_stop_button->setAutoDefault(false);
   connect(trans_stop_button,SIGNAL(clicked()),this,SLOT(stopData()));
 
   trans_loop_button=new RDTransportButton(RDTransportButton::Loop,this);
   trans_loop_button->off();
   trans_loop_button->setEnabled((trans_card>=0)&&(trans_port>=0));
+  trans_loop_button->setAutoDefault(false);
   connect(trans_loop_button,SIGNAL(clicked()),this,SLOT(loopData()));
 
   //
