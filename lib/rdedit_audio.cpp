@@ -47,6 +47,8 @@ RDEditAudio::RDEditAudio(RDCart *cart,QString cut_name,RDCae *cae,RDUser *user,
   edit_raw_length=0;
   RDAudioInfo::ErrorCode info_err;
 
+  setCaption("RDLibrary - "+tr("Edit Audio"));
+
   //
   // Fix the Window Size
   //

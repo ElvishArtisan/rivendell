@@ -15202,3 +15202,6 @@
 2015-09-08 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in 'lib/rdedit_audio.cpp' that caused only part
 	of the waveform to be visible.
+2015-09-08 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in 'lib/rdedit_audio.cpp' that caused the
+	incorrect caption to appear on the title bar.
