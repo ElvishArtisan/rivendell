@@ -57,6 +57,23 @@ extern jack_client_t *jack_client;
 
 #define PRINT_COMMANDS
 
+#ifndef HAVE_SRC_CONV
+void src_int_to_float_array (const int *in, float *out, int len)
+{
+  for(int i=0;i<len;i++) {
+    out[i]=(double)in[i]/2147483648.0;
+  }
+}
+
+
+void src_float_to_int_array (const float *in, int *out, int len)
+{
+  for(int i=0;i<len;i++) {
+    out[i]=(int)(in[i]*2147483648.0);
+  }
+}
+#endif  // HAVE_SRC_CONV
+
 void LogLine(RDConfig::LogPriority prio,const QString &line)
 {
   FILE *file;
