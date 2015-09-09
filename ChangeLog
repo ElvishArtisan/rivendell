@@ -15209,3 +15209,6 @@
 	* Fixed a regression in 'lib/rdedit_audio.cpp' that caused the
 	dialog to close when pressing the RETURN key after entering a
 	marker value.
+2015-09-09 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug where the play cursor would not be updated properly
+	in 'lib/rdmarkerwaveform.cpp'.

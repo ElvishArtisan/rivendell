@@ -355,13 +355,6 @@ void RDMarkerWaveform::paintEvent(QPaintEvent *e)
   //
   // Markers
   //
-  if(wave_cursors[RDMarkerWaveform::Play]>0) {
-    p->setPen(Qt::black);
-    p->setBrush(QBrush());
-    p->moveTo(XCoordinate(wave_cursors[RDMarkerWaveform::Play]),0);
-    p->lineTo(XCoordinate(wave_cursors[RDMarkerWaveform::Play]),
-	      height());
-  }
   for(int i=1;i<RDMarkerWaveform::LastMarker;i++) {
     if(wave_cursors[i]>=0) {
       DrawCursor(p,(RDMarkerWaveform::CuePoints)i);
@@ -392,7 +385,7 @@ void RDMarkerWaveform::mouseReleaseEvent(QMouseEvent *e)
 {
   if((e->x()>=10)&&(e->y()>=0)) {
     emit clicked((e->x()-10)*(double)wave_width/(double)RDMARKERWAVEFORM_WIDTH+
-		 wave_start);
+    		 wave_start);
   }
 }
 
