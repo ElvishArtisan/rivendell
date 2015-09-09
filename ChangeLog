@@ -15212,3 +15212,5 @@
 2015-09-09 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug where the play cursor would not be updated properly
 	in 'lib/rdmarkerwaveform.cpp'.
+2015-09-09 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.10.3int07.
