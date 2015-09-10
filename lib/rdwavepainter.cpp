@@ -93,8 +93,13 @@ void RDWavePainter::drawWaveBySamples(int x,int w,int startsamp,int endsamp,
   QPixmap *pix=(QPixmap *)device();
 
   if((startblock>(int)wave_peaks->energySize())||(wave_peaks->energySize()==0)) {
-    setFont(QFont("helvetica",32,QFont::Bold));
-    drawText(x+40,pix->height()/2+16,wave_error_string);
+    QFont f=font();
+    QPen p=pen();
+    setFont(QFont("helvetica",pix->height()/4,QFont::Bold));
+    setPen(Qt::red);
+    drawText(x+40,5*pix->height()/8,wave_error_string);
+    setPen(p);
+    setFont(f);
     return;
   }
   if(startclip>=0) {

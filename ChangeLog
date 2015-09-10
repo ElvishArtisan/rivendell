@@ -15217,3 +15217,6 @@
 2015-09-10 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in 'lib/rdedit_audio.cpp' that threw a segfault when
 	attempting to start the marker editor for a cut with missing audio.
+2015-09-10 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'lib/rdwavepainter.cpp' that caused peak error
+	messages to be misprinted.
