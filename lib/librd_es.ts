@@ -1276,14 +1276,6 @@ Are you sure you want to save?</source>
 Are you sure you want to save?</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>Error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unable to fetch audio cut info</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>RDEditPanelName</name>

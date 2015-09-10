@@ -75,11 +75,13 @@ RDEditAudio::RDEditAudio(RDCart *cart,QString cut_name,RDCae *cae,RDUser *user,
   info->setCartNumber(edit_cut->cartNumber());
   info->setCutNumber(edit_cut->cutNumber());
   if((info_err=info->runInfo(user->name(),user->password()))!=RDAudioInfo::ErrorOk) {
-    QMessageBox::critical(this,"RDLibrary - "+tr("Error"),
-			  tr("Unable to fetch audio cut info")+" ["+
-			  RDAudioInfo::errorText(info_err)+"].");
+    fprintf(stderr,"unable to fetch audio cut info [%s]\n",
+	    (const char *)RDAudioInfo::errorText(info_err));
+    edit_raw_length=10000;
   }
-  edit_raw_length=info->length();
+  else {
+    edit_raw_length=info->length();
+  }
   delete info;
 
   //
@@ -487,7 +489,7 @@ void RDEditAudio::resizeEvent(QResizeEvent *e)
 
   case 2:
     edit_waveform[0]->setGeometry(0,10,edit_waveform[0]->sizeHint().width(),
-			       edit_waveform[0]->sizeHint().height()/2);
+				  edit_waveform[0]->sizeHint().height()/2);
     edit_waveform[1]->setGeometry(0,10+edit_waveform[0]->sizeHint().height()/2,
 				  edit_waveform[0]->sizeHint().width(),
 				  edit_waveform[0]->sizeHint().height()/2);
