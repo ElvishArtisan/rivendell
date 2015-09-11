@@ -15230,3 +15230,7 @@
 	* Changed behavior of audio length validation code in
 	'utils/rddbcheck/rddbcheck.cpp' so as to offer to delete cuts for
 	which no audio is found.
+2015-09-11 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a race where the play cursor would not always return to its
+	original position when stopping after playing from cursor in
+	'lib/rdmarkertransport.cpp'.

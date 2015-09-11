@@ -213,9 +213,6 @@ void RDMarkerTransport::setLength(int msecs)
 void RDMarkerTransport::setPosition(int msecs)
 {
   trans_cae->positionPlay(trans_handle,msecs);
-  if(!trans_is_playing) {
-    positionData(trans_handle,msecs);
-  }
 }
 
 
