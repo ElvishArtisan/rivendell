@@ -15220,3 +15220,6 @@
 2015-09-10 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in 'lib/rdwavepainter.cpp' that caused peak error
 	messages to be misprinted.
+2015-09-11 Fred Gleason <fredg@paravelsystems.com>
+	* Updated 'utils/rddbcheck/rddbcheck.cpp' to use DB schema 252
+	when checking RDLogManager events.

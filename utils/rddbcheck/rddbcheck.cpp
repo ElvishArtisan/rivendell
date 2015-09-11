@@ -2,9 +2,7 @@
 //
 // A Database Check/Repair Tool for Rivendell.
 //
-//   (C) Copyright 2002-2006 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rddbcheck.cpp,v 1.18.4.1.2.1 2014/06/02 18:52:22 cvs Exp $
+//   (C) Copyright 2002-2015 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -306,48 +304,21 @@ void MainObject::CheckEvents()
   QString sql;
   QSqlQuery *q;
   QSqlQuery *q1;
-  QSqlQuery *q2;
-  QString eventname;
 
-  sql="select NAME from EVENTS";
+  sql=QString("select EVENT_METADATA.ID,EVENT_METADATA.EVENT_NAME ")+
+    "from EVENT_METADATA "+
+    "left join EVENTS on EVENT_METADATA.EVENT_NAME=EVENTS.NAME "+
+    "where EVENTS.NAME is null";
   q=new QSqlQuery(sql);
   while(q->next()) {
-    eventname=q->value(0).toString();
-    eventname.replace(" ","_");
-
-    //
-    // Check the PRE Table
-    //
-    sql=QString().sprintf ("select ID from %s_PRE",(const char *)eventname);
-    q1=new QSqlQuery(sql);
-    if(q1->size()<0) {
-      printf("  Event %s is missing the PRE table -- fix (y/N)? ",
-	     (const char *)q->value(0).toString());
-      fflush(NULL);
-      if(UserResponse()) {
-	sql=RDCreateLogTableSql(eventname+"_PRE");
-	q2=new QSqlQuery(sql);
-	delete q2;
-      }
+    printf("  Stale metadata for event \"%s\" found -- purge (y/N)? ",
+	   (const char *)q->value(1).toString());
+    if(UserResponse()) {
+      sql=QString("delete from EVENT_METADATA ")+
+	QString().sprintf("where ID=%u",q->value(0).toUInt());
+      q1=new QSqlQuery(sql);
+      delete q1;
     }
-    delete q1;
-
-    //
-    // Check the POST Table
-    //
-    sql=QString().sprintf ("select ID from %s_POST",(const char *)eventname);
-    q1=new QSqlQuery(sql);
-    if(!q1->isActive()) {
-      printf("  Event %s is missing the POST table -- fix (y/N)? ",
-	     (const char *)q->value(0).toString());
-      fflush(NULL);
-      if(UserResponse()) {
-	sql=RDCreateLogTableSql(eventname+"_POST");
-	q2=new QSqlQuery(sql);
-	delete q2;
-      }
-    }
-    delete q1;
   }
   delete q;
 }
