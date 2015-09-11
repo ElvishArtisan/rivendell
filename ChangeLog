@@ -15226,3 +15226,7 @@
 2015-09-11 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in 'utils/rddbcheck/rddbcheck.cpp' that attempted
 	to validate '_STACK' tables against service names.
+2015-09-11 Fred Gleason <fredg@paravelsystems.com>
+	* Changed behavior of audio length validation code in
+	'utils/rddbcheck/rddbcheck.cpp' so as to offer to delete cuts for
+	which no audio is found.

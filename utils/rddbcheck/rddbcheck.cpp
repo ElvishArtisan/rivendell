@@ -599,8 +599,12 @@ void MainObject::ValidateAudioLengths()
   QString sql;
   QSqlQuery *q;
   RDWaveFile *wave=NULL;
+  RDCart *cart;
 
-  sql="select CUT_NAME,CART_NUMBER,LENGTH from CUTS order by CART_NUMBER";
+  sql=QString("select CUTS.CUT_NAME,CUTS.CART_NUMBER,CUTS.LENGTH,")+
+    "CART.TITLE "+
+    "from CUTS left join CART on CUTS.CART_NUMBER=CART.NUMBER "+
+    "order by CUTS.CART_NUMBER";
   q=new QSqlQuery(sql);
   while(q->next()) {
     if(q->value(2).toInt()>0) {
@@ -611,7 +615,24 @@ void MainObject::ValidateAudioLengths()
 	}
       }
       else {
-	SetCutLength(q->value(0).toString(),0);
+	printf("Cut %d in cart %06u [%s] has no audio.  Delete cut? (y/N)",
+	       RDCut::cutNumber(q->value(0).toString()),q->value(1).toUInt(),
+	       (const char *)q->value(3).toString());
+	fflush(stdout);
+	if(UserResponse()) {
+	  cart=new RDCart(q->value(1).toUInt());
+	  cart->
+	    removeCut(check_station,check_user,q->value(0).toString(),rdconfig);
+	  if(cart->cutQuantity()==0) {
+	    printf("Parent cart %06u [%s] now has no cuts.  Delete cart? (y/N)",
+		   q->value(1).toUInt(),(const char *)q->value(3).toString());
+	    fflush(stdout);
+	    if(UserResponse()) {
+	      cart->remove(check_station,check_user,rdconfig);
+	    }
+	  }
+	  delete cart;
+	}
       }
       delete wave;
     }
