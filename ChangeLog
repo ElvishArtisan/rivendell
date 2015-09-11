@@ -15223,3 +15223,6 @@
 2015-09-11 Fred Gleason <fredg@paravelsystems.com>
 	* Updated 'utils/rddbcheck/rddbcheck.cpp' to use DB schema 252
 	when checking RDLogManager events.
+2015-09-11 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'utils/rddbcheck/rddbcheck.cpp' that attempted
+	to validate '_STACK' tables against service names.

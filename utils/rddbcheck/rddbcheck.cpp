@@ -360,7 +360,6 @@ void MainObject::CheckOrphanedTables()
   sql="select NAME from LOGS";
   q=new QSqlQuery(sql);
   CleanTables("LOG",table_q,q);
-  CleanTables("STACK",table_q,q);
   delete q;
 
   //
@@ -369,6 +368,7 @@ void MainObject::CheckOrphanedTables()
   sql="select NAME from SERVICES";
   q=new QSqlQuery(sql);
   CleanTables("SRT",table_q,q);
+  CleanTables("STACK",table_q,q);
   delete q;
 
   //
@@ -430,7 +430,6 @@ void MainObject::CheckPendingCarts()
     "(PENDING_STATION is not null)&&"+
     "(PENDING_DATETIME<\""+now.addDays(-1).
     toString("yyyy-MM-dd hh:mm:ss")+"\")";
-  printf("SQL: %s\n",(const char *)sql);
   q=new QSqlQuery(sql);
   while(q->next()) {
     printf("  Cart %06u has stale reservation, delete cart(y/N)?",
