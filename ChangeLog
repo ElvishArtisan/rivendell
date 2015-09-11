@@ -15234,3 +15234,7 @@
 	* Fixed a race where the play cursor would not always return to its
 	original position when stopping after playing from cursor in
 	'lib/rdmarkertransport.cpp'.
+2015-09-11 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'lib/rdmarkerwaveform.cpp' where the 'Goto End'
+	button would fail to properly position the waveform if the 'Full In'
+	buttono had been used previously.

@@ -263,6 +263,7 @@ void RDMarkerWaveform::fullIn()
   while(wave_width>RDMARKERWAVEFORM_MIN_WAVE_WIDTH) {
     wave_width/=2;
   }
+  emit viewportWidthChanged(wave_width);
   update();
 }
 
