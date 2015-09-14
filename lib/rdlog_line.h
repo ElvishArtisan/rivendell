@@ -257,11 +257,9 @@ class RDLogLine
   RDLogLine::StartSource startSource() const;
   void setStartSource(RDLogLine::StartSource src);
   QString resolveWildcards(QString pattern);
-  RDLogLine::State setEvent(int mach,RDLogLine::TransType next_type,
-			    bool timescale,int len=-1);
-  void loadCart(int cartnum,RDLogLine::TransType next_type,int mach,
-		bool timescale,RDLogLine::TransType type=RDLogLine::NoTrans,
-		int len=-1);
+  RDLogLine::State setEvent(int mach,bool timescale,int len=-1);
+  void loadCart(int cartnum,int mach,bool timescale,
+		RDLogLine::TransType type=RDLogLine::NoTrans,int len=-1);
   void refreshPointers();
   QString xml(int line) const;
   static QString resolveWildcards(unsigned cartnum,const QString &pattern);

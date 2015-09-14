@@ -15242,3 +15242,8 @@
 	* Fixed a bug in 'lib/rdmarkerwaveform.cpp' where the selected
 	marker would fail to track the mouse cursor when the left mouse
 	button was held down.
+2015-09-14 Fred Gleason <fredg@paravelsystems.com>
+	* Removed dead code from 'RDLogLine::loadCart()' and
+	'RDLogLine::setEvent()' methods.
+	* Fixed a bug in ''rdairplay/log_play.cpp' that broke individual
+	event timescaling after the timescaling mode was changed dynamically.

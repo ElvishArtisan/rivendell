@@ -282,6 +282,18 @@ RDLogLine::TimescaleMode RDLogLine::timescaleMode() const
 void RDLogLine::setTimescaleMode(RDLogLine::TimescaleMode mode)
 {
   log_timescale_mode=mode;
+  if(log_cart_type==RDCart::Audio) {
+    switch(mode) {
+    case RDLogLine::TimescaleIndividual:
+      loadCart(log_cart_number,-1,log_enforce_length&&log_timescaling_active,
+	       log_trans_type,log_forced_length);
+      break;
+
+    case RDLogLine::TimescaleBlock:
+      loadCart(log_cart_number,-1,false,log_trans_type);
+      break;
+    }
+  }
 }
 
 
@@ -1576,8 +1588,7 @@ QString RDLogLine::resolveWildcards(QString pattern)
 }
 
 
-RDLogLine::State RDLogLine::setEvent(int mach,RDLogLine::TransType next_type,
-				     bool timescale,int len)
+RDLogLine::State RDLogLine::setEvent(int mach,bool timescale,int len)
 {
   RDCart *cart;
   RDMacroEvent *rml_event;
@@ -1805,8 +1816,8 @@ RDLogLine::State RDLogLine::setEvent(int mach,RDLogLine::TransType next_type,
 }
 
 
-void RDLogLine::loadCart(int cartnum,RDLogLine::TransType next_type,int mach,
-			 bool timescale,RDLogLine::TransType type,int len)
+void RDLogLine::loadCart(int cartnum,int mach,bool timescale,
+			 RDLogLine::TransType type,int len)
 {
   QString sql=QString("select CART.TYPE,CART.GROUP_NAME,CART.TITLE,")+
     "CART.ARTIST,CART.ALBUM,CART.YEAR,CART.ISRC,"+
@@ -1881,7 +1892,7 @@ void RDLogLine::loadCart(int cartnum,RDLogLine::TransType next_type,int mach,
     log_trans_type=type;
   }
   delete q;
-  log_state=setEvent(mach,next_type,timescale);
+  log_state=setEvent(mach,timescale);
   log_timescaling_active=log_enforce_length&&timescale;
 }
 
@@ -2014,7 +2025,7 @@ QString RDLogLine::xml(int line) const
 QString RDLogLine::resolveWildcards(unsigned cartnum,const QString &pattern)
 {
   RDLogLine logline;
-  logline.loadCart(cartnum,RDLogLine::Play,0,false);
+  logline.loadCart(cartnum,0,false);
   return logline.resolveWildcards(pattern);
 }
 

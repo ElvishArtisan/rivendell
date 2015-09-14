@@ -1001,7 +1001,7 @@ bool RDSoundPanel::PlayAudio(RDPanelButton *button,RDCart *cart,bool hookmode,in
      cart->enforceLength()) {
     timescale=true;
   }
-  logline.loadCart(cart->number(),RDLogLine::Play,0,timescale);
+  logline.loadCart(cart->number(),0,timescale);
   if(!button->playDeck()->setCart(&logline,true)) {
     delete button->playDeck();
     button->setPlayDeck(NULL);

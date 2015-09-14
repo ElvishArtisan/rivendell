@@ -227,10 +227,8 @@ void RDCartSlot::setCart(RDCart *cart,int break_len)
     slot_box->clear();
   }
   else {
-    slot_logline->loadCart(cart->number(),RDLogLine::Play,0,true,
-			   RDLogLine::NoTrans,break_len);
-    slot_logline->
-      setEvent(0,RDLogLine::Play,slot_logline->timescalingActive(),break_len);
+    slot_logline->loadCart(cart->number(),0,true,RDLogLine::NoTrans,break_len);
+    slot_logline->setEvent(0,slot_logline->timescalingActive(),break_len);
     slot_box->setCart(slot_logline);
     slot_box->setBarMode(false);
   }

@@ -30,6 +30,8 @@
 #include <log_traffic.h>
 #include <globals.h>
 
+//#define SHOW_SLOTS
+
 LogPlay::LogPlay(RDCae *cae,int id,QSocketDevice *nn_sock,QString logname,
 		 std::vector<RLMHost *> *rlm_hosts,QObject *parent)
   : QObject(parent),RDLogEvent(logname)
@@ -210,10 +212,13 @@ void LogPlay::setTimescaleMode(RDLogLine::TimescaleMode mode)
   if(mode!=play_timescale_mode) {
     for(int i=0;i<size();i++) {
       logLine(i)->setTimescaleMode(mode);
+      logLine(i)->setTimescalingActive(logLine(i)->enforceLength());
     }
     play_timescale_mode=mode;
     UpdatePostPoint();
+    RefreshEvents(0,size());
     emit timescaleModeChanged(mode);
+    emit transportChanged();
   }
 }
 
@@ -348,11 +353,11 @@ bool LogPlay::play(int line,RDLogLine::StartSource src,
   if(!GetNextPlayable(&line,skip_meta,true)) {
     return false;
   }
-
   bool ret = false;
   if(play_segue_length==0) {
     ret = StartEvent(line,RDLogLine::Play,0,src,mport);
-  } else {
+  } 
+  else {
     ret = StartEvent(line,RDLogLine::Segue,play_segue_length,src,mport);
   }
   SetTransTimer(current_time);
@@ -843,8 +848,7 @@ void LogPlay::insert(int line,int cartnum,RDLogLine::TransType next_type,
   if(nextLine()<0) {
     play_next_line=line;
   }
-  logline->loadCart(cartnum,next_type,play_id,
-		    play_timescaling_available&&
+  logline->loadCart(cartnum,play_id,play_timescaling_available&&
 		    (play_timescale_mode==RDLogLine::TimescaleIndividual),
 		    rdairplay_conf->defaultTransType());
   logline->
@@ -1299,13 +1303,13 @@ void LogPlay::lineModified(int line)
 
   if((logline=logLine(line))!=NULL) {
     if((next_logline=logLine(line+1))==NULL) {
-      logline->loadCart(logline->cartNumber(),RDLogLine::Play,
-			play_id,logline->timescalingActive()&&
+      logline->loadCart(logline->cartNumber(),play_id,
+			logline->timescalingActive()&&
 			(play_timescale_mode==RDLogLine::TimescaleIndividual));
     }
     else {
-      logline->loadCart(logline->cartNumber(),next_logline->transType(),
-			play_id,logline->timescalingActive()&&
+      logline->loadCart(logline->cartNumber(),play_id,
+			logline->timescalingActive()&&
 			(play_timescale_mode==RDLogLine::TimescaleIndividual));
     }
   }
@@ -1714,7 +1718,8 @@ void LogPlay::auditionStoppedData()
 
 
 bool LogPlay::StartEvent(int line,RDLogLine::TransType trans_type,
-			 int trans_length,RDLogLine::StartSource src,int mport,int duck_length)
+			 int trans_length,RDLogLine::StartSource src,int mport,
+			 int duck_length)
 {
   int running;
   int lines[TRANSPORT_QUANTITY];
@@ -1739,59 +1744,58 @@ bool LogPlay::StartEvent(int line,RDLogLine::TransType trans_type,
   running=runningEvents(lines);
   if(play_op_mode!=RDAirPlayConf::Manual) {
     switch(trans_type) {
-	case RDLogLine::Play:
-	  for(int i=0;i<running;i++) {
-	    if(logLine(lines[i])!=NULL) {
-	      if(((logLine(lines[i])->type()==RDLogLine::Cart)||
-		  (logLine(lines[i])->type()==RDLogLine::Macro))&&
-		 (logLine(lines[i])->status()!=RDLogLine::Paused)) {
-		switch(logLine(lines[i])->cartType()) {
-		case RDCart::Audio:
-		  ((RDPlayDeck *)logLine(lines[i])->playDeck())->stop();
-		  break;
-		  
-		case RDCart::Macro:
-		  play_macro_deck->stop();
-		  break;
+    case RDLogLine::Play:
+      for(int i=0;i<running;i++) {
+	if(logLine(lines[i])!=NULL) {
+	  if(((logLine(lines[i])->type()==RDLogLine::Cart)||
+	      (logLine(lines[i])->type()==RDLogLine::Macro))&&
+	     (logLine(lines[i])->status()!=RDLogLine::Paused)) {
+	    switch(logLine(lines[i])->cartType()) {
+	    case RDCart::Audio:
+	      ((RDPlayDeck *)logLine(lines[i])->playDeck())->stop();
+	      break;
 
-		case RDCart::All:
-		  break;
-		}
-	      }
+	    case RDCart::Macro:
+	      play_macro_deck->stop();
+	      break;
+
+	    case RDCart::All:
+	      break;
 	    }
 	  }
-	  break;
+	}
+      }
+      break;
 	  
-	case RDLogLine::Segue:
-	  for(int i=0;i<running;i++) {
-	    RDLogLine *prev_logline=logLine(lines[i]);
-	    if(prev_logline!=NULL) {
-	      if(prev_logline->status()==RDLogLine::Playing) {
-		if(((prev_logline->type()==RDLogLine::Cart)||
-		    (prev_logline->type()==RDLogLine::Macro))&&
-		   (prev_logline->status()!=RDLogLine::Paused)) {
-		  switch(logLine(lines[i])->cartType()) {
-		  case RDCart::Audio:
-		    prev_logline->setStatus(RDLogLine::Finishing);
-		    ((RDPlayDeck *)prev_logline->playDeck())->
-		      stop(trans_length);
-		    break;
+    case RDLogLine::Segue:
+      for(int i=0;i<running;i++) {
+	RDLogLine *prev_logline=logLine(lines[i]);
+	if(prev_logline!=NULL) {
+	  if(prev_logline->status()==RDLogLine::Playing) {
+	    if(((prev_logline->type()==RDLogLine::Cart)||
+		(prev_logline->type()==RDLogLine::Macro))&&
+	       (prev_logline->status()!=RDLogLine::Paused)) {
+	      switch(logLine(lines[i])->cartType()) {
+	      case RDCart::Audio:
+		prev_logline->setStatus(RDLogLine::Finishing);
+		((RDPlayDeck *)prev_logline->playDeck())->stop(trans_length);
+		break;
 
-		  case RDCart::Macro:
-		    play_macro_deck->stop();
-		    break;
+	      case RDCart::Macro:
+		play_macro_deck->stop();
+		break;
 
-		  case RDCart::All:
-		    break;
-		  }
-		}
+	      case RDCart::All:
+		break;
 	      }
 	    }
 	  }
-	  break;
+	}
+      }
+      break;
 
-	default:
-	  break;
+    default:
+      break;
     }
   }
 
@@ -1809,212 +1813,209 @@ bool LogPlay::StartEvent(int line,RDLogLine::TransType trans_type,
   //
   logline->setStartSource(src);
   switch(logline->type()) {
-      case RDLogLine::Cart:
-	if(!StartAudioEvent(line)) {
-	  rdairplay_conf->setLogCurrentLine(play_id,nextLine());
-	  return false;
-	}
-	aport=GetNextChannel(mport,&card,&port);
-	playdeck=(RDPlayDeck *)logline->playDeck();
-	playdeck->setCard(card);
-	playdeck->setPort(port);
-	playdeck->setChannel(aport);
-	logline->setPauseCard(card);
-	logline->setPausePort(port);
-	logline->setPortName(GetPortName(playdeck->card(),
-					 playdeck->port()));
-	if(logline->portName().toInt()==2){
-	  playdeck->duckVolume(play_duck_volume_port2,0);
-	  }
-	else  {
-	  playdeck->duckVolume(play_duck_volume_port1,0);
-	  }
-	if(!playdeck->setCart(logline,logline->status()!=RDLogLine::Paused,play_speed_ratio)) {
-	  // No audio to play, so fake it
-	  logline->setZombified(true);
-	  playStateChangedData(playdeck->id(),RDPlayDeck::Playing);
-	  logline->setStatus(RDLogLine::Playing);
-	  playStateChangedData(playdeck->id(),RDPlayDeck::Finished);
-	  logline->setStatus(RDLogLine::Finished);
-	  LogLine(RDConfig::LogErr,QString().
-		  sprintf("LogPlay::StartEvent(): no audio,CUT=%s",
-			  (const char *)logline->cutName()));
-	  rdairplay_conf->setLogCurrentLine(play_id,nextLine());
-	  return false;
-	}
-	emit modified(line);
-	logline->setCutNumber(playdeck->cut()->cutNumber());
-	logline->setEvergreen(playdeck->cut()->evergreen());
-	if(play_timescaling_available&&logline->enforceLength()) {
-	  logline->setTimescalingActive(true);
-	}
-	RDSetMixerOutputPort(play_cae,playdeck->card(),
-			     playdeck->stream(),
-			     playdeck->port());
-	if((int)logline->playPosition()>logline->effectiveLength()) {
-	  LogLine(RDConfig::LogWarning,QString().sprintf("*** position out of bounds: Line: %d  Cart: %d  Pos: %d ***",line,logline->cartNumber(),logline->playPosition()));
-	  logline->setPlayPosition(0);
-	}
-	playdeck->play(logline->playPosition(),-1,-1,duck_length);
-	if(logline->status()==RDLogLine::RDLogLine::Paused) {
-	  logline->
-	    setStartTime(RDLogLine::Actual,playdeck->startTime());
-	  was_paused=true;
-	}
-	else {
-	  logline->
-	    setStartTime(RDLogLine::Initial,playdeck->startTime());
-	}
-	logline->setStatus(RDLogLine::Playing);
-	if(!play_start_rml[aport].isEmpty()) {
-	  rdevent_player->
-	    exec(logline->resolveWildcards(play_start_rml[aport]));
-	}
-	/*
-	printf("channelStarted(%d,%d,%d,%d)\n",
-	       play_id,playdeck->channel(),
-	       playdeck->card(),playdeck->port());
-	*/
-	emit channelStarted(play_id,playdeck->channel(),
-			    playdeck->card(),playdeck->port());
-	LogLine(RDConfig::LogInfo,QString().sprintf(
-		  "started audio cart: Line: %d  Cart: %u  Cut: %u Pos: %d  Card: %d  Stream: %d  Port: %d",
-		  line,logline->cartNumber(),
-		  playdeck->cut()->cutNumber(),
-		  logline->playPosition(),
-		  playdeck->card(),
-		  playdeck->stream(),
-		  playdeck->port()));
+  case RDLogLine::Cart:
+    if(!StartAudioEvent(line)) {
+      rdairplay_conf->setLogCurrentLine(play_id,nextLine());
+      return false;
+    }
+    aport=GetNextChannel(mport,&card,&port);
+    playdeck=(RDPlayDeck *)logline->playDeck();
+    playdeck->setCard(card);
+    playdeck->setPort(port);
+    playdeck->setChannel(aport);
+    logline->setPauseCard(card);
+    logline->setPausePort(port);
+    logline->setPortName(GetPortName(playdeck->card(),playdeck->port()));
+    if(logline->portName().toInt()==2){
+      playdeck->duckVolume(play_duck_volume_port2,0);
+    }
+    else  {
+      playdeck->duckVolume(play_duck_volume_port1,0);
+    }
+    if(!playdeck->setCart(logline,logline->status()!=RDLogLine::Paused,play_speed_ratio)) {
+      // No audio to play, so fake it
+      logline->setZombified(true);
+      playStateChangedData(playdeck->id(),RDPlayDeck::Playing);
+      logline->setStatus(RDLogLine::Playing);
+      playStateChangedData(playdeck->id(),RDPlayDeck::Finished);
+      logline->setStatus(RDLogLine::Finished);
+      LogLine(RDConfig::LogErr,QString().
+	      sprintf("LogPlay::StartEvent(): no audio,CUT=%s",
+		      (const char *)logline->cutName()));
+      rdairplay_conf->setLogCurrentLine(play_id,nextLine());
+      return false;
+    }
+    emit modified(line);
+    logline->setCutNumber(playdeck->cut()->cutNumber());
+    logline->setEvergreen(playdeck->cut()->evergreen());
+    if(play_timescaling_available&&logline->enforceLength()) {
+      logline->setTimescalingActive(true);
+    }
+    RDSetMixerOutputPort(play_cae,playdeck->card(),
+			 playdeck->stream(),
+			 playdeck->port());
+    if((int)logline->playPosition()>logline->effectiveLength()) {
+      //LogLine(RDConfig::LogWarning,QString().sprintf("*** position out of bounds: Line: %d  Cart: %d  Pos: %d ***",line,logline->cartNumber(),logline->playPosition()));
+      logline->setPlayPosition(0);
+    }
+    playdeck->play(logline->playPosition(),-1,-1,duck_length);
+    if(logline->status()==RDLogLine::RDLogLine::Paused) {
+      logline->setStartTime(RDLogLine::Actual,playdeck->startTime());
+      was_paused=true;
+    }
+    else {
+      logline->setStartTime(RDLogLine::Initial,playdeck->startTime());
+    }
+    logline->setStatus(RDLogLine::Playing);
+    if(!play_start_rml[aport].isEmpty()) {
+      rdevent_player->
+	exec(logline->resolveWildcards(play_start_rml[aport]));
+    }
+    /*
+      printf("channelStarted(%d,%d,%d,%d)\n",
+      play_id,playdeck->channel(),
+      playdeck->card(),playdeck->port());
+    */
+    emit channelStarted(play_id,playdeck->channel(),
+    			playdeck->card(),playdeck->port());
+    LogLine(RDConfig::LogInfo,
+	    QString().sprintf("started audio cart: Line: %d  Cart: %u  Cut: %u Pos: %d  Card: %d  Stream: %d  Port: %d",
+			      line,logline->cartNumber(),
+			      playdeck->cut()->cutNumber(),
+			      logline->playPosition(),
+			      playdeck->card(),
+			      playdeck->stream(),
+			      playdeck->port()));
 
-	//
-	// Assign Next Event
-	//
-	if((play_next_line>=0)&&(!was_paused)) {
-	  play_next_line=line+1;
-	  if((next_logline=logLine(play_next_line))!=NULL) {
-	    if(next_logline->id()==-2) {
-	      play_start_next=false;
-	    }
-	  }
-	  emit nextEventChanged(play_next_line);
+    //
+    // Assign Next Event
+    //
+    if((play_next_line>=0)&&(!was_paused)) {
+      play_next_line=line+1;
+      if((next_logline=logLine(play_next_line))!=NULL) {
+	if(next_logline->id()==-2) {
+	  play_start_next=false;
 	}
-	break;
+      }
+      emit nextEventChanged(play_next_line);
+    }
+    break;
 
-      case RDLogLine::Macro:
-	//
-	// Assign Next Event
-	//
-	if(play_next_line>=0) {
-	  play_next_line=line+1;
-	  if((next_logline=logLine(play_next_line))!=NULL) {
-	    if(logline->id()==-2) {
-	      play_start_next=false;
-	    }
-	    if(logline->forcedStop()) {
-	      next_logline->setTransType(RDLogLine::Stop);
-	    }
-	  }
+  case RDLogLine::Macro:
+    //
+    // Assign Next Event
+    //
+    if(play_next_line>=0) {
+      play_next_line=line+1;
+      if((next_logline=logLine(play_next_line))!=NULL) {
+	if(logline->id()==-2) {
+	  play_start_next=false;
 	}
-	if(logline->asyncronous()) {
-	  RDMacro *rml=new RDMacro();
-	  rml->setCommand(RDMacro::EX);
-	  QHostAddress addr;
-	  addr.setAddress("127.0.0.1");
-	  rml->setAddress(addr);
-	  rml->setRole(RDMacro::Cmd);
-	  rml->setEchoRequested(false);
-	  rml->setArgQuantity(1);
-	  rml->setArg(0,logline->cartNumber());
-	  rdripc->sendRml(rml);
-	  delete rml;
-	  emit played(line);
-	  logline->setStartTime(RDLogLine::Actual,QTime::currentTime());
-	  logline->setStatus(RDLogLine::Finished);
-	  LogTraffic(serviceName(),logName().left(logName().length()-4),
-		     logline,(RDLogLine::PlaySource)(play_id+1),
-		     RDAirPlayConf::TrafficMacro,play_onair_flag);
-	  FinishEvent(line);
-	  emit transportChanged();
-	  LogLine(RDConfig::LogInfo,QString().
-	     sprintf("asynchronously executed macro cart: Line: %d  Cart: %u",
-		     line,logline->cartNumber()));
+	if(logline->forcedStop()) {
+	  next_logline->setTransType(RDLogLine::Stop);
 	}
-	else {
-	  play_macro_deck->load(logline->cartNumber());
-	  play_macro_deck->setLine(line);
-	  LogLine(RDConfig::LogInfo,QString().
-		  sprintf("started macro cart: Line: %d  Cart: %u",
-			  line,logline->cartNumber()));
-	  play_macro_deck->exec();
-	}
-	break;
+      }
+    }
+    if(logline->asyncronous()) {
+      RDMacro *rml=new RDMacro();
+      rml->setCommand(RDMacro::EX);
+      QHostAddress addr;
+      addr.setAddress("127.0.0.1");
+      rml->setAddress(addr);
+      rml->setRole(RDMacro::Cmd);
+      rml->setEchoRequested(false);
+      rml->setArgQuantity(1);
+      rml->setArg(0,logline->cartNumber());
+      rdripc->sendRml(rml);
+      delete rml;
+      emit played(line);
+      logline->setStartTime(RDLogLine::Actual,QTime::currentTime());
+      logline->setStatus(RDLogLine::Finished);
+      LogTraffic(serviceName(),logName().left(logName().length()-4),
+		 logline,(RDLogLine::PlaySource)(play_id+1),
+		 RDAirPlayConf::TrafficMacro,play_onair_flag);
+      FinishEvent(line);
+      emit transportChanged();
+      LogLine(RDConfig::LogInfo,QString().
+	      sprintf("asynchronously executed macro cart: Line: %d  Cart: %u",
+		      line,logline->cartNumber()));
+    }
+    else {
+      play_macro_deck->load(logline->cartNumber());
+      play_macro_deck->setLine(line);
+      LogLine(RDConfig::LogInfo,QString().
+	      sprintf("started macro cart: Line: %d  Cart: %u",
+		      line,logline->cartNumber()));
+      play_macro_deck->exec();
+    }
+    break;
 
-      case RDLogLine::Marker:
-      case RDLogLine::Track:
-      case RDLogLine::MusicLink:
-      case RDLogLine::TrafficLink:
-	//
-	// Assign Next Event
-	//
-	if(play_next_line>=0) {
-	  play_next_line=line+1;
-	  if((next_logline=logLine(play_next_line))!=NULL) {
-	    if(logLine(play_next_line)->id()==-2) {
-	      play_start_next=false;
-	    }
-	  }
-	  else {
-	    play_start_next=false;
-	  }
+  case RDLogLine::Marker:
+  case RDLogLine::Track:
+  case RDLogLine::MusicLink:
+  case RDLogLine::TrafficLink:
+    //
+    // Assign Next Event
+    //
+    if(play_next_line>=0) {
+      play_next_line=line+1;
+      if((next_logline=logLine(play_next_line))!=NULL) {
+	if(logLine(play_next_line)->id()==-2) {
+	  play_start_next=false;
 	}
+      }
+      else {
+	play_start_next=false;
+      }
+    }
 
-	//
-	// Skip Past
-	//
-	logline->setStatus(RDLogLine::Finished);
-	UpdateStartTimes(line);
-	emit played(line);
-	FinishEvent(line);
-	emit nextEventChanged(play_next_line);
-	break;
+    //
+    // Skip Past
+    //
+    logline->setStatus(RDLogLine::Finished);
+    UpdateStartTimes(line);
+    emit played(line);
+    FinishEvent(line);
+    emit nextEventChanged(play_next_line);
+    break;
 
-      case RDLogLine::Chain:
-	//
-	// Assign Next Event
-	//
-	if(play_next_line>0) {
-	  play_next_line=line+1;
-	  if((next_logline=logLine(play_next_line))!=NULL) {
-	    if(logLine(play_next_line)->id()==-2) {
-	      play_start_next=false;
-	    }
-	  }
-	  else {
-	    play_start_next=false;
-	  }
+  case RDLogLine::Chain:
+    //
+    // Assign Next Event
+    //
+    if(play_next_line>0) {
+      play_next_line=line+1;
+      if((next_logline=logLine(play_next_line))!=NULL) {
+	if(logLine(play_next_line)->id()==-2) {
+	  play_start_next=false;
 	}
-	if(GetTransType(logline->markerLabel(),0)!=RDLogLine::Stop) {
-	  play_macro_deck->
-	    load(QString().sprintf("LL %d %s -2!",
-				   play_id+1,
-				   (const char *)logline->markerLabel()));
-	}
-	else {
-	  play_macro_deck->
-	    load(QString().sprintf("LL %d %s -2!",
-				   play_id+1,
-				   (const char *)logline->markerLabel()));
-	}
-	play_macro_deck->setLine(line);
-	play_macro_deck->exec();
-	LogLine(RDConfig::LogInfo,QString().
-		sprintf("chained to log: Line: %d  Log: %s",
-			line,
-			(const char *)logline->markerLabel()));
-	break;
+      }
+      else {
+	play_start_next=false;
+      }
+    }
+    if(GetTransType(logline->markerLabel(),0)!=RDLogLine::Stop) {
+      play_macro_deck->
+	load(QString().sprintf("LL %d %s -2!",
+			       play_id+1,
+			       (const char *)logline->markerLabel()));
+    }
+    else {
+      play_macro_deck->
+	load(QString().sprintf("LL %d %s -2!",
+			       play_id+1,
+			       (const char *)logline->markerLabel()));
+    }
+    play_macro_deck->setLine(line);
+    play_macro_deck->exec();
+    LogLine(RDConfig::LogInfo,QString().
+	    sprintf("chained to log: Line: %d  Log: %s",
+		    line,
+		    (const char *)logline->markerLabel()));
+    break;
 
-      default:
-	break;
+  default:
+    break;
   }
   while((play_next_line<size())&&((logline=logLine(play_next_line))!=NULL)) {
     if((logline->state()==RDLogLine::Ok)||
@@ -2073,7 +2074,7 @@ bool LogPlay::StartAudioEvent(int line)
   connect(playdeck,SIGNAL(stateChanged(int,RDPlayDeck::State)),
 	  this,SLOT(playStateChangedData(int,RDPlayDeck::State)));
   connect(playdeck,SIGNAL(position(int,int)),
-	  this,SLOT(positionData(int,int)));
+  	  this,SLOT(positionData(int,int)));
   connect(playdeck,SIGNAL(segueStart(int)),
 	  this,SLOT(segueStartData(int)));
   connect(playdeck,SIGNAL(segueEnd(int)),
@@ -2576,8 +2577,6 @@ void LogPlay::FreePlayDeck(RDPlayDeck *deck)
 bool LogPlay::GetNextPlayable(int *line,bool skip_meta,bool forced_start)
 {
   RDLogLine *logline;
-  RDLogLine *next_logline;
-  RDLogLine::TransType next_type=RDLogLine::Play;
   int skipped=0;
 
   for(int i=*line;i<size();i++) {
@@ -2602,10 +2601,7 @@ bool LogPlay::GetNextPlayable(int *line,bool skip_meta,bool forced_start)
 	  makeNext(i);
 	  return false;
         }
-        if((next_logline=logLine(i+1))!=NULL) {
-	  next_type=next_logline->transType();
-        }
-        if((logline->setEvent(play_id,next_type,logline->timescalingActive())==
+        if((logline->setEvent(play_id,logline->timescalingActive())==
 	    RDLogLine::Ok)&&((logline->status()==RDLogLine::Scheduled)||
 	  		     (logline->status()==RDLogLine::Paused))&&
 	   (!logline->zombified())) {
@@ -2663,30 +2659,31 @@ void LogPlay::RefreshEvents(int line,int line_quan,bool force_update)
     if((logline=logLine(i))!=NULL) {
       if(logline->type()==RDLogLine::Cart) {
 	switch(logline->state()) {
-	    case RDLogLine::Ok:
-	    case RDLogLine::NoCart:
-	    case RDLogLine::NoCut:
-	      if(logline->status()==RDLogLine::Scheduled) {
-		state=logline->state();
-		if((next_logline=logLine(i+1))!=NULL) {
-		  logline->
-		    loadCart(logline->cartNumber(),next_logline->transType(),
-			     play_id,logline->timescalingActive()&&
-			     (play_timescale_mode==RDLogLine::TimescaleIndividual));
-		}
-		else {
-		  logline->loadCart(logline->cartNumber(),RDLogLine::Play,
-				    play_id,logline->timescalingActive()&&
-				    (play_timescale_mode==RDLogLine::TimescaleIndividual));
-		}
-		if(force_update||(state!=logline->state())) {
-		  emit modified(i);
-		}
-	      }
-	      break;
-
-	    default:
-	      break;
+	case RDLogLine::Ok:
+	case RDLogLine::NoCart:
+	case RDLogLine::NoCut:
+	  if(logline->status()==RDLogLine::Scheduled) {
+	    state=logline->state();
+	    if((next_logline=logLine(i+1))!=NULL) {
+	      logline->
+		loadCart(logline->cartNumber(),play_id,
+			 logline->timescalingActive()&&
+			 (play_timescale_mode==RDLogLine::TimescaleIndividual));
+	    }
+	    else {
+	      logline->
+		loadCart(logline->cartNumber(),play_id,
+			 logline->timescalingActive()&&
+			 (play_timescale_mode==RDLogLine::TimescaleIndividual));
+	    }
+	    if(force_update||(state!=logline->state())) {
+	      emit modified(i);
+	    }
+	  }
+	  break;
+	  
+	default:
+	  break;
 	}
       }
     }
@@ -2737,9 +2734,9 @@ void LogPlay::Playing(int id)
   emit played(line);
   AdvanceActiveEvent();
   UpdatePostPoint();
-  // TEST
+
   RefreshEvents(line,LOGPLAY_LOOKAHEAD_EVENTS);
-  //
+
   LogPlayEvent(logline);
   emit transportChanged();
 }

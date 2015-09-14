@@ -119,7 +119,7 @@ bool RDCartDrag::decode(QMimeSource *e,RDLogLine *ll,
   unsigned cartnum;
 
   RDCartDrag::decode(e,&cartnum);
-  ll->loadCart(cartnum,next_trans,log_mach,timescale,trans);
+  ll->loadCart(cartnum,log_mach,timescale,trans);
 
   return true;
 }

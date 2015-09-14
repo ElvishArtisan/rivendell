@@ -1878,8 +1878,7 @@ void VoiceTracker::recordUnloadedData(int card,int stream,unsigned msecs)
     edit_track_cuts[1]->setSampleRate(rdsystem->sampleRate());
     edit_track_cart->updateLength();
     edit_track_cart->resetRotation();
-    edit_logline[1]->
-      loadCart(edit_track_cart->number(),RDLogLine::Segue,0,false);
+    edit_logline[1]->loadCart(edit_track_cart->number(),0,false);
     edit_logline[1]->setEvent(0,RDLogLine::Segue,false);
     edit_logline[1]->setType(RDLogLine::Cart);
     edit_logline[1]->setSource(RDLogLine::Tracker);
@@ -2360,8 +2359,7 @@ bool VoiceTracker::ImportTrack(RDListViewItem *item)
 
   edit_track_cart->updateLength();
   edit_track_cart->resetRotation();
-  edit_logline[1]->
-    loadCart(edit_track_cart->number(),RDLogLine::Segue,0,false);
+  edit_logline[1]->loadCart(edit_track_cart->number(),0,false);
   edit_logline[1]->setEvent(0,RDLogLine::Segue,false);
   edit_logline[1]->setType(RDLogLine::Cart);
   edit_logline[1]->setSource(RDLogLine::Tracker);

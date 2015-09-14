@@ -28,6 +28,8 @@
 #include <colors.h>
 #include <globals.h>
 
+//#define SHOW_SLOTS
+
 ButtonLog::ButtonLog(LogPlay *log,int id,RDAirPlayConf *conf,bool allow_pause,
 		     QWidget *parent,const char *name)
   : QWidget(parent,name)
