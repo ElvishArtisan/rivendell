@@ -15237,4 +15237,8 @@
 2015-09-11 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in 'lib/rdmarkerwaveform.cpp' where the 'Goto End'
 	button would fail to properly position the waveform if the 'Full In'
-	buttono had been used previously.
+	button had been used previously.
+2015-09-14 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'lib/rdmarkerwaveform.cpp' where the selected
+	marker would fail to track the mouse cursor when the left mouse
+	button was held down.

@@ -375,8 +375,8 @@ void RDMarkerWaveform::paintEvent(QPaintEvent *e)
 
 void RDMarkerWaveform::mouseMoveEvent(QMouseEvent *e)
 {
-  if((e->x()>=0)&&(e->y()>=0)) {
-    emit clicked(e->x()*(double)wave_width/(double)RDMARKERWAVEFORM_WIDTH+
+  if((e->x()>=10)&&(e->y()>=0)) {
+    emit clicked((e->x()-10)*(double)wave_width/(double)RDMARKERWAVEFORM_WIDTH+
 		 wave_start);
   }
 }
