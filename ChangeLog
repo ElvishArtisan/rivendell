@@ -15317,8 +15317,10 @@
 	* Fixed a bug in ''rdairplay/log_play.cpp' that broke individual
 	event timescaling after the timescaling mode was changed dynamically.
 2015-09-15 Todd Baker <bakert@rfa.org>
-	* Fixed a mispelling in 'lib/rdcart.cpp' of the xml 
+	* Fixed a mispelling in 'lib/rdcart.cpp' of the xml
 	  field averageSegueLength.
 2015-09-15 Todd Baker <bakert@rfa.org>
-	* Fixed a bug in 'lib/rdcut.cpp' that caused the MYSQL query 
+	* Fixed a bug in 'lib/rdcut.cpp' that caused the MYSQL query
 	  string in the xml() function to have the wrong number of columns.
+2015-09-15 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.11.0int00.
