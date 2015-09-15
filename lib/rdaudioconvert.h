@@ -31,6 +31,9 @@
 #ifdef HAVE_MAD
 #include <mad.h>
 #endif  // HAVE_MAD
+
+#include <rdmp4.h>
+
 #include <qobject.h>
 
 #include <rdwavedata.h>
@@ -68,6 +71,8 @@ class RDAudioConvert : public QObject
 					 RDWaveFile *wave);
   RDAudioConvert::ErrorCode Stage1Mpeg(const QString &dstfile,
 				       RDWaveFile *wave);
+  RDAudioConvert::ErrorCode Stage1M4A(const QString &dstfile,
+				      RDWaveFile *wave);
   RDAudioConvert::ErrorCode Stage1SndFile(const QString &dstfile,
 					  SNDFILE *sf_src,
 					  SF_INFO *sf_src_info);
@@ -150,6 +155,9 @@ class RDAudioConvert : public QObject
   int (*lame_encode_flush)(lame_global_flags *,unsigned char *,int);
   int (*lame_set_bWriteVbrTag)(lame_global_flags *, int);
 #endif  // HAVE_LAME
+#ifdef HAVE_MP4_LIBS
+  DLMP4 dlmp4;
+#endif
 };
 
 

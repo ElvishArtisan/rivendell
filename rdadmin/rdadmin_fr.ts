@@ -2501,6 +2501,10 @@ configured to run the CAE service in order to populate the audio resources datab
         <source>PCM24</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>&amp;Read ISRCs from CD:</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditRDLogedit</name>
@@ -5358,6 +5362,11 @@ please check your settings and try again.</source>
     </message>
     <message>
         <source>&amp;Close</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>    MP-4/AAC
+</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

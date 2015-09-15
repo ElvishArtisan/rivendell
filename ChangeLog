@@ -14794,13 +14794,91 @@
 2015-02-24 Fred Gleason <fredg@paravelsystems.com>
 	* Updated 'NEWS'.
 	* Incremented the package version to 2.10.3.
+2015-02-25 Fred Gleason <fredg@paravelsystems.com>
+	* Updated 'conf/rlm_padpoint.conf' to reflect new 'standard' port
+	value.
+2015-02-27 Fred Gleason <fredg@paravelsystems.com>
+	* Renamed the 'SAS User Serial Interface' driver to
+	'SAS USI (3 digit)'.
+	* Added an 'SAS USI (2 digit)' swticher driver in
+	'ripcd/sasusi2digit.cpp' and 'ripcd/sasusi2digit.h'.
+2015-03-04 Fred Gleason <fredg@paravelsystems.com>
+	* Added support for 'scp' and 'sftp' protocols in
+	'rdcatch/edit_upload.cpp'.
+	* Added support for 'scp' and 'sftp' protocols in
+	'rdcatch/edit_download.cpp'.
+2015-03-04 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.10.3int00.
+2015-03-05 Fred Gleason <fredg@paravelsystems.com>
+	* Renamed the 'SAS USI (3 digit)' driver to
+	'SAS User Serial Interface'.
+	* Renamed the 'SAS USI (2 digit)' driver to
+	'SAS 16000(D)'.
+2015-03-05 Fred Gleason <fredg@paravelsystems.com>
+	* Modified the 'SAS USI' driver in 'ripcd/sasusi.cpp' to support
+	four digit endpoint numbers.
+2015-03-05 Fred Gleason <fredg@paravelsystems.com>
+	* Increased 'MAX_ENDPOINTS' in 'lib/rd.h' from 1024 to 2048.
+2015-03-05 Fred Gleason <fredg@paravelsystems.com>
+	* Increased digit count on endpoints from 3 to 4 in
+	'rdadmin/list_endpoints.cpp'.
+2015-03-06 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.10.3int01.
+2015-03-09 Fred Gleason <fredg@paravelsystems.com>
+	* Merged patch from Chris Smowton to enable importation of
+	MP4 files [GitHub pull request #000029].
+	* Added prerequisites for MP4 importation in 'INSTALL'.
+2015-03-09 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'STATIONS.HAVE_MP4_DECODE' field to the database.
+	* Incremented the database version to 243.
+	* Added a 'Capability::HaveMp4Decode' value to the
+	'RDStation::Capability' enumeration in 'lib/rdstation.cpp' and
+	'lib/rdstation.h'.
+2015-03-10 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'lib/rdcdplayer.cpp' that threw a segfault
+	when opening the ripper with no CD inserted under RHEL 7.
+2015-03-16 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'DESCRIPTION', 'OUTCUE', 'FILENAME' and '*_POINT' fields
+	to the 'Cart CSV Report' in 'rdlibrary/list_reports.cpp'.
+2015-03-17 Fred Gleason <fredg@paravelsystems.com>
+	* Updated 'get_distro.sh' to detect RHEL 7 correctly.
+2015-03-23 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a fencepost bug in 'ripcd/sasusi.cpp' that caused the
+	last relay in the list to fail to respond to a 'GO' RML.
+2015-04-02 Fred Gleason <fredg@paravelsystems.com>
+	* Modified the definition of the 'JACK_CLIENTS.COMMAND_LINE'
+	field from 'char(255)' to 'text' in the database.
+	* Incremented the database version to 244.
+2015-04-06 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'rdlibrary/disk_ripper.cpp' that caused the tracks
+	from discs with no CDDB data to received scrambled/incorrect cart
+	titles.
+2015-04-07 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'RDLIBRARY.READ_ISRC' field to the database.
+	* Incremented the database version to 245.
+	* Added 'RDLibraryConf::readIsrc()' and 'RDLibraryConf::setReadIsrc()'
+	methods in 'lib/rdlibrary_conf.cpp' and 'lib/rdlibrary_conf.h'.
+	* Added a 'Read ISRCs from CD' control to the 'Edit RDLibrary' dialog
+	in 'rdadmin/edit_rdlibrary.cpp' and 'rdadmin/edi_rdlibrary.h'.
+	* Implemented the 'Read ISRCs from CD' option in the full disc
+	ripper in 'rdlibrary/disk_ripper.cpp'.
+	* Implemented the 'Read ISRCs from CD' option in the per-track disc
+	ripper in 'rdlibrary/cdripper.cpp'.
+2015-04-21 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.10.3int02.
+2015-05-20 Fred Gleason <fredg@paravelsystems.com>
+	* Added default parameters to the 'PadPoint' RLM in 'rlm_padpoint.c'.
+2015-05-28 Fred Gleason <fredg@paravelsystems.com>
+	* Added rdcleandirs(8) utility in 'utils/rdcleandirs/'.
+2015-05-28 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'RDMatrix::RossNkScp' value to the 'RDMatrix::Type'
+	enumeration in 'lib/rdmatrix.cpp' and 'lib/rdmatrix.h'.
+	* Implemented a switcher driver for the Ross NK line of video
+	switchers via the SCP/A serial interface in 'ripcd/rossnkscp.cpp'
+	and 'riptcd/rossnkscp.h'.
 2015-06-10 Fred Gleason <fredg@paravelsystems.com>
 	* Refactored 'LogPlay' class to provide per-instance RDCae instances.
 	in 'rdairplay/log_play.cpp' and 'rdairplay/log_play.h'.
-2015-06-10 Fred Gleason <fredg@paravelsystems.com>
-	* Incremented the package version to 2.10.3caefix00.
-2015-06-22 Fred Gleason <fredg@paravelsystems.com>
-	* Incremented the package version to 2.10.3caefix01.
 2015-07-02 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in 'LogPlay::refresh()' that caused a segfault
 	in 'rdairplay/log_play.cpp'.
@@ -14814,26 +14892,16 @@
 	* Instrumented 'LogPlay::graceTimerData()' in
 	'rdairplay/log_play.cpp'.
 	* Instrumented 'RLMHost::timerData()' in 'rdairplay/rlmhost.cpp'.
-2015-07-14 Fred Gleason <fredg@paravelsystems.com>
-	* Incremented the package version to 2.10.3caefix02.
-2015-07-14 Fred Gleason <fredg@paravelsystems.com>
-	* Incremented the package version to 2.10.3caefix03.
 2015-08-12 Fred Gleason <fredg@paravelsystems.com>
 	* Instrumented the cleanup phase of the 'LogPlay::refresh()' method in
 	'rdairplay/log_play.cpp'.
-2015-08-12 Fred Gleason <fredg@paravelsystems.com>
-	* Incremented the package version to 2.10.3caefix04.
 2015-08-13 Fred Gleason <fredg@paravelsystems.com>
 	* Commented out the 'qApp->processEvents()' call in the
 	'refreshStatusChangedData()' method in 'rdairplay/rdairplay.cpp'.
-2015-08-13 Fred Gleason <fredg@paravelsystems.com>
-	* Incremented the package version to 2.10.3caefix05.
 2015-08-29 Fred Gleason <fredg@paravelsystems.com>
 	* Removed instrumentation code in 'rdairplay/hourselector.cpp'.
 	* Removed instrumentation code in 'rdairplay/log_play.cpp'.
 	* Removed instrumentation code in 'rdairplay/rlmhost.cpp'.
-2015-08-29 Fred Gleason <fredg@paravelsystems.com>
-	* Incremented the package version to 2.10.3caefix06.
 2015-08-30 Fred Gleason <fredg@paravelsystems.com>
 	* Added an 'RDAudioConvert::Stage3Pcm24()' method in
 	'lib/rdaudioconvert.cpp' and 'lib/rdaudioconvert.h'.
@@ -14861,10 +14929,6 @@
 	* Added PCM24 play-out and capture support for JACK in
 	'cae/cae_jack.cpp' and 'cae/cae.h'.
 2015-08-30 Fred Gleason <fredg@paravelsystems.com>
-	* Incremented the package version to 2.10.3-pcm24.0.
-2015-08-30 Fred Gleason <fredg@paravelsystems.com>
-	* Incremented the package version to 2.10.3pcm24.0.
-2015-08-30 Fred Gleason <fredg@paravelsystems.com>
 	* Added a --frames=' parameter in 'tests/audio_peaks_test.cpp'.
 	* Fixed a fencepost bug in generating peak energy data in
 	'lib/rdwavefile.cpp'.
@@ -14876,10 +14940,6 @@
 2015-09-07 Fred Gleason <fredg@paravelsystems.com>
 	* Added PCM24 play-out and capture support for ALSA in
 	'cae/cae_alsa.cpp' and 'cae/cae.h'.
-2015-09-08 Fred Gleason <fredg@paravelsystems.com>
-	* Incremented the package version to 2.10.3pcm24.1.
 2015-09-09 Fred Gleason <fredg@paravelsystems.com>
 	* Added 'src_float_to_int()' and 'src_int_to_float()' functions in
 	'cae/cae.cpp' and 'cae/cae.h'.
-2015-09-09 Fred Gleason <fredg@paravelsystems.com>
-	* Incremented the package version to 2.10.3pcm24.2.

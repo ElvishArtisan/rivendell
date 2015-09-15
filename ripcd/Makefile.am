@@ -60,9 +60,11 @@ dist_ripcd_SOURCES = acu1p.cpp acu1p.h\
                      ripcd.cpp ripcd.h globals.h\
                      ripcd_connection.cpp ripcd_connection.h\
                      ripcd_socket.cpp ripcd_socket.h\
+                     rossnkscp.cpp rossnkscp.h\
                      sas32000.cpp sas32000.h\
                      sas64000.cpp sas64000.h\
                      sas64000gpi.cpp sas64000gpi.h\
+                     sas16000.cpp sas16000.h\
                      sasusi.cpp sasusi.h\
                      starguide3.cpp starguide3.h\
                      starguide_feed.cpp starguide_feed.h\
@@ -98,9 +100,11 @@ nodist_ripcd_SOURCES = moc_am16.cpp\
                        moc_quartz1.cpp\
                        moc_ripcd.cpp\
                        moc_ripcd_socket.cpp\
+                       moc_rossnkscp.cpp\
                        moc_sas32000.cpp\
                        moc_sas64000.cpp\
                        moc_sas64000gpi.cpp\
+                       moc_sas16000.cpp\
                        moc_sasusi.cpp\
                        moc_starguide3.cpp\
                        moc_swauthority.cpp\

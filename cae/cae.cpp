@@ -2006,6 +2006,11 @@ void MainObject::ProbeCaps(RDStation *station)
   station->setHaveCapability(RDStation::HaveTwoLame,LoadTwoLame());
   station->setHaveCapability(RDStation::HaveMpg321,LoadMad());
 
+  //
+  // MP4 Decoder
+  //
+  station->setHaveCapability(RDStation::HaveMp4Decode,CheckMp4Decode());
+
 #ifdef HPI
   station->setDriverVersion(RDStation::Hpi,hpiVersion());
 #else
@@ -2059,6 +2064,17 @@ bool MainObject::CheckLame()
 #else
   return false;
 #endif  // HAVE_LAME
+}
+
+
+bool MainObject::CheckMp4Decode()
+{
+#ifdef HAVE_MP4_LIBS
+  return (dlopen("libfaad.so",RTLD_LAZY)!=NULL)&&
+    (dlopen("libmp4v2.so",RTLD_LAZY)!=NULL);
+#else
+  return false;
+#endif  // HAVE_MP4_LIBS
 }
 
 

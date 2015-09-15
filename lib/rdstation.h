@@ -42,7 +42,7 @@ class RDStation
         UserSec=1  /**< UserSec - user based security. */
       };
   enum Capability {HaveOggenc=0,HaveOgg123=1,HaveFlac=2,
-		   HaveLame=3,HaveMpg321=4,HaveTwoLame=5};
+		   HaveLame=3,HaveMpg321=4,HaveTwoLame=5,HaveMp4Decode=6};
   enum FilterMode {FilterSynchronous=0,FilterAsynchronous=1};
   RDStation(const QString &name,bool create=false);
   ~RDStation();

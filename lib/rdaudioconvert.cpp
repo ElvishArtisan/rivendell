@@ -22,11 +22,13 @@
 #include <stdlib.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <sys/wait.h>
 #include <fcntl.h>
 #include <unistd.h>
 #include <math.h>
 #include <dlfcn.h>
 #include <errno.h>
+#include <unistd.h>
 
 #include <sndfile.h>
 #include <samplerate.h>
@@ -39,6 +41,10 @@
 #include <FLAC++/encoder.h>
 #include <rdflacdecode.h>
 #endif  // HAVE_FLAC
+#ifdef HAVE_MP4_LIBS
+#include <mp4v2/mp4v2.h>
+#include <neaacdec.h>
+#endif // HAVE_MP4_LIBS
 #include <id3/tag.h>
 #include <qfile.h>
 
@@ -303,6 +309,11 @@ RDAudioConvert::ErrorCode RDAudioConvert::Stage1Convert(const QString &srcfile,
 
     case RDWaveFile::Flac:
       err=Stage1Flac(dstfile,wave);
+      delete wave;
+      return err;
+
+    case RDWaveFile::M4A:
+      err=Stage1M4A(dstfile,wave);
       delete wave;
       return err;
 
@@ -672,6 +683,165 @@ RDAudioConvert::ErrorCode RDAudioConvert::Stage1Mpeg(const QString &dstfile,
 #endif  // HAVE_MAD
 }
 
+// Based on libfaad's frontend/main.c, but using libmp4v2 for MP4 access.
+RDAudioConvert::ErrorCode RDAudioConvert::Stage1M4A(const QString &dstfile,
+						    RDWaveFile *wave) 
+{
+#ifdef HAVE_MP4_LIBS
+  SNDFILE *sf_dst=NULL;
+  SF_INFO sf_dst_info;
+  MP4FileHandle f;
+  MP4TrackId audioTrack;
+  MP4SampleId firstSample, lastSample;
+  uint32_t aacBufSize, aacConfigSize;
+  uint8_t *aacBuf, *aacConfigBuffer;
+  NeAACDecHandle hDecoder;
+  NeAACDecConfigurationPtr config;
+  unsigned long foundSampleRate;
+  unsigned char foundChannels;
+  RDAudioConvert::ErrorCode ret = RDAudioConvert::ErrorOk;
+
+  if(!dlmp4.load()) {
+    return RDAudioConvert::ErrorFormatNotSupported;
+  }
+
+  //
+  // Open source
+  //
+  f = dlmp4.MP4Read(wave->getName());
+  if(f == MP4_INVALID_FILE_HANDLE)
+    return RDAudioConvert::ErrorNoSource;
+
+  audioTrack = dlmp4.getMP4AACTrack(f);
+  firstSample = 1;
+  lastSample = dlmp4.MP4GetTrackNumberOfSamples(f, audioTrack);
+  if(conv_start_point > 0) {
+    
+    double startsecs = ((double)conv_start_point) / 1000;
+    MP4Timestamp startts = (MP4Timestamp)(startsecs * wave->getSamplesPerSec());
+    firstSample = dlmp4.MP4GetSampleIdFromTime(f, audioTrack, startts, /*need_sync=*/false);
+    if(firstSample == MP4_INVALID_SAMPLE_ID) {
+      ret = RDAudioConvert::ErrorInvalidSource;
+      goto out_mp4;
+    }
+
+  }
+
+  if(conv_end_point > 0) {
+
+    double stopsecs = ((double)conv_end_point) / 1000;
+    MP4Timestamp stopts = (MP4Timestamp)(stopsecs * wave->getSamplesPerSec());
+    lastSample = dlmp4.MP4GetSampleIdFromTime(f, audioTrack, stopts, /*need_sync=*/false);
+    if(lastSample == MP4_INVALID_SAMPLE_ID) {
+      ret = RDAudioConvert::ErrorInvalidSource;
+      goto out_mp4;
+    }
+
+  }
+
+  aacBufSize = dlmp4.MP4GetTrackMaxSampleSize(f, audioTrack);
+  aacBuf = (uint8_t*)malloc(aacBufSize);
+  if(!aacBufSize || !aacBuf) {
+    // Probably the source's fault for specifying a massive buffer.
+    ret = RDAudioConvert::ErrorInvalidSource;
+    goto out_mp4;
+  }
+
+  dlmp4.MP4GetTrackESConfiguration(f, audioTrack, &aacConfigBuffer, &aacConfigSize);
+  if(!aacConfigBuffer) {
+    ret = RDAudioConvert::ErrorInvalidSource;
+    goto out_mp4_buf;
+  }
+
+  //
+  // Open Destination
+  //
+  
+  memset(&sf_dst_info,0,sizeof(sf_dst_info));
+  sf_dst_info.format=SF_FORMAT_WAV|SF_FORMAT_FLOAT;
+  sf_dst_info.channels=wave->getChannels();
+  sf_dst_info.samplerate=wave->getSamplesPerSec();
+  if((sf_dst=sf_open(dstfile,SFM_WRITE,&sf_dst_info))==NULL) {
+    ret = RDAudioConvert::ErrorNoDestination;
+    goto out_mp4_configbuf;
+  }
+  sf_command(sf_dst,SFC_SET_NORM_DOUBLE,NULL,SF_FALSE);
+  
+  //
+  // Initialize Decoder
+  //
+  hDecoder = dlmp4.NeAACDecOpen();
+
+  config = dlmp4.NeAACDecGetCurrentConfiguration(hDecoder);
+  config->outputFormat = FAAD_FMT_FLOAT;
+  config->downMatrix = 1; // Downmix >2 channels to stereo.
+  if(!dlmp4.NeAACDecSetConfiguration(hDecoder, config)) {
+    ret = RDAudioConvert::ErrorInvalidSource;
+    goto out_decoder;
+  }
+
+  if(dlmp4.NeAACDecInit2(hDecoder, aacConfigBuffer, aacConfigSize, &foundSampleRate, &foundChannels) < 0) {
+    ret = RDAudioConvert::ErrorInvalidSource;
+    goto out_decoder;
+  }
+
+  if(foundSampleRate != wave->getSamplesPerSec() || foundChannels != wave->getChannels()) {
+    fprintf(stderr, "M4A header information inconsistent with actual file? Header: %u/%u; file: %lu/%u\n",
+	    wave->getSamplesPerSec(), (unsigned)wave->getChannels(), foundSampleRate, (unsigned)foundChannels);
+    ret = RDAudioConvert::ErrorInvalidSource;
+    goto out_decoder;
+  }
+
+  //
+  // Decode
+  //
+  for(MP4SampleId i = firstSample; i <= lastSample; ++i) {
+
+    uint32_t aacBytes = aacBufSize;
+    if(!dlmp4.MP4ReadSample(f, audioTrack, i, &aacBuf, &aacBytes, 0, 0, 0, 0)) {
+      ret = RDAudioConvert::ErrorInvalidSource;
+      break;
+    }
+
+    NeAACDecFrameInfo frameInfo;
+    // The library docs are not clear about the lifetime or cleanup of sample_buffer.
+    // I hope it lives until the next NeAACDecDecode call, and is cleaned up by NeAACDecClose
+    void* sample_buffer = dlmp4.NeAACDecDecode(hDecoder, &frameInfo, aacBuf, aacBytes);
+    if(!sample_buffer) {
+      ret = RDAudioConvert::ErrorInvalidSource;
+      break;
+    }
+
+    UpdatePeak((const float*)sample_buffer, frameInfo.samples);
+    
+    if(sf_write_float(sf_dst, (const float*)sample_buffer, frameInfo.samples) != (sf_count_t)frameInfo.samples) {
+      ret = RDAudioConvert::ErrorInternal;
+      break;
+    }
+
+  }
+
+  //
+  // Cleanup
+  //
+
+ out_decoder:
+  dlmp4.NeAACDecClose(hDecoder);
+  // out_sf: 
+  sf_close(sf_dst);
+ out_mp4_configbuf:
+  free(aacConfigBuffer);
+ out_mp4_buf:
+  free(aacBuf);
+ out_mp4:
+  dlmp4.MP4Close(f, 0);
+
+  return ret;
+  
+#else
+  return RDAudioConvert::ErrorFormatNotSupported;
+#endif
+}
 
 RDAudioConvert::ErrorCode RDAudioConvert::Stage1SndFile(const QString &dstfile,
 							SNDFILE *sf_src,

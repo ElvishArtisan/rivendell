@@ -29,6 +29,15 @@
 #include <string.h>
 #include <strings.h>
 #include <rlm/rlm.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
+
+#define PADPOINT_DEFAULT_ADDRESS "127.0.0.1"
+#define PADPOINT_DEFAULT_PORT 3355
+#define PADPOINT_DEFAULT_MAINLOG 1
+#define PADPOINT_DEFAULT_AUX1LOG 1
+#define PADPOINT_DEFAULT_AUX2LOG 1
 
 int rlm_padpoint_devs;
 char *rlm_padpoint_addresses;
@@ -71,6 +80,7 @@ void rlm_padpoint_RLMStart(void *ptr,const char *arg)
   char address[17];
   char section[256];
   char errtext[256];
+  struct stat info;
   int i=1;
 
   rlm_padpoint_devs=0;
@@ -80,37 +90,59 @@ void rlm_padpoint_RLMStart(void *ptr,const char *arg)
   rlm_padpoint_aux1s=NULL;
   rlm_padpoint_aux2s=NULL;
 
-  sprintf(section,"PadPoint%d",i++);
-  strncpy(address,RLMGetStringValue(ptr,arg,section,"IpAddress",""),15);
-  if(strlen(address)==0) {
-    RLMLog(ptr,LOG_WARNING,"rlm_padpoint: no padpoint destinations specified");
-    return;
+  if(stat(arg,&info)<0) {
+    /*
+     * Use default settings
+     */
+    rlm_padpoint_addresses=realloc(rlm_padpoint_addresses,16);
+    strcpy(rlm_padpoint_addresses,PADPOINT_DEFAULT_ADDRESS);
+    rlm_padpoint_ports=realloc(rlm_padpoint_ports,sizeof(uint16_t));
+    rlm_padpoint_ports[0]=PADPOINT_DEFAULT_PORT;
+    rlm_padpoint_masters=realloc(rlm_padpoint_masters,sizeof(int));
+    rlm_padpoint_masters[0]=PADPOINT_DEFAULT_MAINLOG;
+    rlm_padpoint_aux1s=realloc(rlm_padpoint_aux1s,sizeof(int));
+    rlm_padpoint_aux1s[0]=PADPOINT_DEFAULT_AUX1LOG;
+    rlm_padpoint_aux2s=realloc(rlm_padpoint_aux2s,sizeof(int));
+    rlm_padpoint_aux2s[0]=PADPOINT_DEFAULT_AUX2LOG;
+    rlm_padpoint_devs=1;
+    RLMLog(ptr,LOG_INFO,"loaded default settings");
   }
-  while(strlen(address)>0) {
-    rlm_padpoint_addresses=
-      realloc(rlm_padpoint_addresses,(rlm_padpoint_devs+1)*(rlm_padpoint_devs+1)*16);
-    strcpy(rlm_padpoint_addresses+16*rlm_padpoint_devs,address);
-    rlm_padpoint_ports=realloc(rlm_padpoint_ports,(rlm_padpoint_devs+1)*sizeof(uint16_t));
-    rlm_padpoint_ports[rlm_padpoint_devs]=
-      RLMGetIntegerValue(ptr,arg,section,"UdpPort",0);
-    rlm_padpoint_masters=realloc(rlm_padpoint_masters,
-			    (rlm_padpoint_devs+1)*sizeof(int));
-    rlm_padpoint_masters[rlm_padpoint_devs]=
-      rlm_padpoint_GetLogStatus(ptr,arg,section,"MasterLog");
-    rlm_padpoint_aux1s=realloc(rlm_padpoint_aux1s,
-			  (rlm_padpoint_devs+1)*sizeof(int));
-    rlm_padpoint_aux1s[rlm_padpoint_devs]=
-      rlm_padpoint_GetLogStatus(ptr,arg,section,"Aux1Log");
-    rlm_padpoint_aux2s=realloc(rlm_padpoint_aux2s,
-			  (rlm_padpoint_devs+1)*sizeof(int));
-    rlm_padpoint_aux2s[rlm_padpoint_devs]=
-      rlm_padpoint_GetLogStatus(ptr,arg,section,"Aux2Log");
-    sprintf(errtext,"rlm_padpoint: configured destination \"%s:%d\"",address,
-	    rlm_padpoint_ports[rlm_padpoint_devs]);
-    rlm_padpoint_devs++;
-    RLMLog(ptr,LOG_INFO,errtext);
+  else {
+    /*
+     * Load settings from a configuration file
+     */
     sprintf(section,"PadPoint%d",i++);
     strncpy(address,RLMGetStringValue(ptr,arg,section,"IpAddress",""),15);
+    if(strlen(address)==0) {
+      RLMLog(ptr,LOG_WARNING,"rlm_padpoint: no padpoint destinations specified");
+      return;
+    }
+    while(strlen(address)>0) {
+      rlm_padpoint_addresses=
+	realloc(rlm_padpoint_addresses,(rlm_padpoint_devs+1)*(rlm_padpoint_devs+1)*16);
+      strcpy(rlm_padpoint_addresses+16*rlm_padpoint_devs,address);
+      rlm_padpoint_ports=realloc(rlm_padpoint_ports,(rlm_padpoint_devs+1)*sizeof(uint16_t));
+      rlm_padpoint_ports[rlm_padpoint_devs]=
+	RLMGetIntegerValue(ptr,arg,section,"UdpPort",0);
+      rlm_padpoint_masters=realloc(rlm_padpoint_masters,
+				   (rlm_padpoint_devs+1)*sizeof(int));
+      rlm_padpoint_masters[rlm_padpoint_devs]=
+	rlm_padpoint_GetLogStatus(ptr,arg,section,"MasterLog");
+      rlm_padpoint_aux1s=realloc(rlm_padpoint_aux1s,
+				 (rlm_padpoint_devs+1)*sizeof(int));
+      rlm_padpoint_aux1s[rlm_padpoint_devs]=
+	rlm_padpoint_GetLogStatus(ptr,arg,section,"Aux1Log");
+      rlm_padpoint_aux2s=realloc(rlm_padpoint_aux2s,
+				 (rlm_padpoint_devs+1)*sizeof(int));
+      rlm_padpoint_aux2s[rlm_padpoint_devs]=
+	rlm_padpoint_GetLogStatus(ptr,arg,section,"Aux2Log");
+      sprintf(errtext,"rlm_padpoint: configured destination \"%s:%d\"",address,
+	      rlm_padpoint_ports[rlm_padpoint_devs]);
+      rlm_padpoint_devs++;
+      RLMLog(ptr,LOG_INFO,errtext);
+      sprintf(section,"PadPoint%d",i++);
+      strncpy(address,RLMGetStringValue(ptr,arg,section,"IpAddress",""),15);
+    }
   }
 }
 

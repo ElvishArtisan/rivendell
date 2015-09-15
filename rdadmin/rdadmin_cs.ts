@@ -2822,6 +2822,10 @@ nastaveném pro běh služby CAE pro naplnění databáze se zdroji zvuku.</tran
         <source>PCM24</source>
         <translation type="unfinished">PCM24</translation>
     </message>
+    <message>
+        <source>&amp;Read ISRCs from CD:</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditRDLogedit</name>
@@ -5913,6 +5917,11 @@ pro naplnění databáze zdroji zvuku.</translation>
     <message>
         <source>&amp;Close</source>
         <translation>&amp;Zavřít</translation>
+    </message>
+    <message>
+        <source>    MP-4/AAC
+</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

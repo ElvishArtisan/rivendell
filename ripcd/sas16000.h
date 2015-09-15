@@ -1,6 +1,6 @@
-// sasusi.h
+// sas16000.h
 //
-// A Rivendell switcher driver for the SAS USI Protocol
+// A Rivendell switcher driver for the SAS 16000(D) Audio Switcher
 //
 //   (C) Copyright 2002-2015 Fred Gleason <fredg@paravelsystems.com>
 //
@@ -18,14 +18,13 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#ifndef SASUSI_H
-#define SASUSI_H
+#ifndef SAS16000_H
+#define SAS16000_H
 
 #include <vector>
 
 #include <qsocket.h>
 #include <qhostaddress.h>
-#include <qtimer.h>
 
 #include <rd.h>
 #include <rdmatrix.h>
@@ -34,14 +33,13 @@
 
 #include <switcher.h>
 
-#define SASUSI_RECONNECT_INTERVAL 10000
-#define SASUSI_MAX_LENGTH 256
+#define SAS16000_MAX_LENGTH 256
 
-class SasUsi : public Switcher
+class Sas16000 : public Switcher
 {
  Q_OBJECT
  public:
-  SasUsi(RDMatrix *matrix,QObject *parent=0,const char *name=0);
+  Sas16000(RDMatrix *matrix,QObject *parent=0,const char *name=0);
   RDMatrix::Type type();
   unsigned gpiQuantity();
   unsigned gpoQuantity();
@@ -49,37 +47,19 @@ class SasUsi : public Switcher
   bool secondaryTtyActive();
   void processCommand(RDMacro *cmd);
 
- private slots:
-  void ipConnect();
-  void connectedData();
-  void connectionClosedData();
-  void readyReadData();
-  void errorData(int err);
-
  private:
   void SendCommand(char *str);
-  void DispatchCommand();
-  void ExecuteMacroCart(unsigned cartnum);
   QString PrettifyCommand(const char *cmd) const;
   RDTTYDevice *sas_device;
-  QSocket *sas_socket;
-  char sas_buffer[SASUSI_MAX_LENGTH];
+  char sas_buffer[SAS16000_MAX_LENGTH];
   unsigned sas_ptr;
-  QHostAddress sas_ipaddress;
   int sas_matrix;
   int sas_ipport;
   int sas_inputs;
   int sas_outputs;
   int sas_gpis;
   int sas_gpos;
-  QTimer *sas_reconnect_timer;
-  unsigned sas_start_cart;
-  unsigned sas_stop_cart;
-  RDMatrix::PortType sas_porttype;
-  std::vector<int> sas_console_numbers;
-  std::vector<int> sas_source_numbers;
-  std::vector<int> sas_relay_numbers;
 };
 
 
-#endif  // SASUSI_H
+#endif  // SAS16000_H

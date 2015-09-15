@@ -84,6 +84,10 @@ GPIO Driver
 A kernel driver for the line of data-acquisition boards from 
 MeasurementComputing.  See http://www.rivendellaudio.org/.
 
+FAAD2 / mp4v2 - AAC/MP4 Decoding Libraries.  Needed for MP4 file importation.
+Available at http://www.audiocoding.com/faad2.html and
+https://code.google.com/p/mp4v2/ respectively.
+
 LAME - MPEG Layer 3 Encoder Library.  Needed for MPEG Layer 3 exporting.
 Available at http://lame.sourceforge.net/.
 

@@ -98,6 +98,9 @@ ViewAdapters::ViewAdapters(RDStation *rdstation,
       text+=tr("    MPEG Layer 2\n");
       text+=tr("    MPEG Layer 3\n");
     }
+    if(rdstation->haveCapability(RDStation::HaveMp4Decode)) {
+      text+=tr("    MP-4/AAC\n");
+    }
     if(rdstation->haveCapability(RDStation::HaveOgg123)) {
       text+=tr("    OggVorbis\n");
     }

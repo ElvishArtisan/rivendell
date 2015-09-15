@@ -644,6 +644,7 @@ bool CreateDb(QString name,QString pwd)
       HAVE_TWOLAME enum('N','Y') default 'N',\
       HAVE_LAME enum('N','Y') default 'N',\
       HAVE_MPG321 enum('N','Y') default 'N',\
+      HAVE_MP4_DECODE enum('N','Y') default 'N',\
       HPI_VERSION char(16),\
       JACK_VERSION char(16),\
       ALSA_VERSION char(16),\
@@ -1007,6 +1008,7 @@ bool CreateDb(QString name,QString pwd)
       PARANOIA_LEVEL INT DEFAULT 0,\
       RIPPER_LEVEL INT DEFAULT -1300,\
       CDDB_SERVER CHAR(64) DEFAULT \"freedb.freedb.org\",\
+      READ_ISRC enum('N','Y') default 'Y',\
       ENABLE_EDITOR enum('N','Y') default 'N',\
       SRC_CONVERTER int default 1,\
       LIMIT_SEARCH int default 1,\
@@ -2236,7 +2238,7 @@ bool CreateDb(QString name,QString pwd)
                ID int unsigned auto_increment not null primary key,	\
                STATION_NAME char(64) not null,\
                DESCRIPTION char(64),\
-               COMMAND_LINE char(255) not null,\
+               COMMAND_LINE text not null,\
                index IDX_STATION_NAME (STATION_NAME))");
   if(!RunQuery(sql)) {
      return false;
@@ -8086,6 +8088,26 @@ int UpdateDb(int ver)
     delete q;
   }
 
+  if(ver<243) {
+    sql=QString("alter table STATIONS add column ")+
+      "HAVE_MP4_DECODE enum('N','Y') default 'N' after HAVE_MPG321";
+    q=new QSqlQuery(sql);
+    delete q;
+  }
+
+  if(ver<244) {
+    sql=QString("alter table JACK_CLIENTS modify column ")+
+      "COMMAND_LINE text not null";
+    q=new QSqlQuery(sql);
+    delete q;
+  }
+
+  if(ver<245) {
+    sql=QString("alter table RDLIBRARY add column ")+
+      "READ_ISRC enum('N','Y') default 'Y' after CDDB_SERVER";
+    q=new QSqlQuery(sql);
+    delete q;
+  }
 
 
   // **** End of version updates ****

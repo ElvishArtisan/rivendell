@@ -1,10 +1,8 @@
-// dbversion.h
+// rdcleandirs.h
 //
-// The Current Database Schema Version for Rivendell
+//  Remove stale lockfiles from user directories.
 //
-//   (C) Copyright 2002-2008 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: dbversion.h,v 1.34.4.29.2.4 2014/06/03 18:23:34 cvs Exp $
+//   (C) Copyright 2015 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,13 +18,21 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#ifndef DBVERSION_H
-#define DBVERSION_H
 
-/*
- * Current Database Version
- */
-#define RD_VERSION_DATABASE 245
+#ifndef RDCLEANDIRS_H
+#define RDCLEANDIRS_H
+
+#include <qobject.h>
+
+#define RDCLEANDIRS_USAGE "\n"
+
+class MainObject : public QObject
+{
+ public:
+  MainObject(QObject *parent=0,const char *name=0);
+
+ private:
+};
 
 
-#endif  // DBVERSION_H
+#endif  // RDCLEANDIRS_H

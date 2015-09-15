@@ -461,7 +461,9 @@ void CdRipper::ripTrackButtonData()
   // Read ISRCs
   //
   if(!rip_isrc_read) {
-    rip_cddb_lookup->readIsrc(rip_cdda_dir.path(),rip_conf->ripperDevice());
+    if(rdlibrary_conf->readIsrc()) {
+      rip_cddb_lookup->readIsrc(rip_cdda_dir.path(),rip_conf->ripperDevice());
+    }
     rip_isrc_read=true;
   }
 

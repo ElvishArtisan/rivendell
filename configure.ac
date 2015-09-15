@@ -78,6 +78,8 @@ AC_ARG_ENABLE(lame,[  --disable-lame          disable MPEG Layer 3 encode suppor
 		      [LAME_DISABLED=yes],[])
 AC_ARG_ENABLE(flac,[  --disable-flac          disable FLAC encode/decode support],
 		      [FLAC_DISABLED=yes],[])
+AC_ARG_ENABLE(mp4v2,[ --disable-mp4           disable M4A decode support],
+		      [MP4V2_DISABLED=yes],[])
 
 #
 # Check for Qt
@@ -206,6 +208,19 @@ if test -z $FLAC_DISABLED ; then
     AC_DEFINE(HAVE_FLAC)
   fi
   AC_CHECK_LIB(FLAC,FLAC__metadata_get_tags,[FLAC_METADATA_FOUND=yes],[])
+fi
+
+#
+# Check for MP4V2
+#
+if test -z $MP4V2_DISABLED ; then
+  AC_CHECK_HEADER(mp4v2/mp4v2.h,[MP4V2_HEADER_FOUND=yes],[])
+  if test $MP4V2_HEADER_FOUND ; then
+    AC_CHECK_HEADER(neaacdec.h,[MP4V2_FOUND=yes],[])
+    if test $MP4V2_FOUND ; then
+       AC_DEFINE(HAVE_MP4_LIBS)
+    fi
+  fi  
 fi
 
 #
@@ -427,6 +442,7 @@ AC_CONFIG_FILES([rivendell.spec \
     utils/rdalsaconfig/Makefile \
     utils/rdcheckcuts/Makefile \
     utils/rdchunk/Makefile \
+    utils/rdcleandirs/Makefile \
     utils/rdcollect/Makefile \
     utils/rddbcheck/Makefile \
     utils/rddelete/Makefile \
@@ -533,6 +549,11 @@ if test -z $VORBIS_FOUND ; then
 AC_MSG_NOTICE("|       OggVorbis Encoding/Decoding Support ... No    |")
 else
 AC_MSG_NOTICE("|       OggVorbis Encoding/Decoding Support ... Yes   |")
+fi
+if test -z $MP4V2_FOUND ; then
+AC_MSG_NOTICE("|                      M4A Decoding Support ... No    |")
+else
+AC_MSG_NOTICE("|                      M4A Decoding Support ... Yes   |")
 fi
 AC_MSG_NOTICE("|                                                     |")
 AC_MSG_NOTICE("| Optional Components:                                |")

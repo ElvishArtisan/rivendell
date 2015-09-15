@@ -31,6 +31,7 @@
 #include <arpa/inet.h>
 #include <unistd.h>
 #include <errno.h>
+#include <assert.h>
 
 #include <id3/tag.h>
 #include <id3/misc_support.h>
@@ -45,6 +46,11 @@
 #include <rd.h>
 #include <rdwavefile.h>
 #include <rdconf.h>
+#include <rdmp4.h>
+
+#ifdef HAVE_MP4_LIBS
+#include <mp4v2/mp4v2.h>
+#endif
 
 RDWaveFile::RDWaveFile(QString file_name)
 {
@@ -318,6 +324,75 @@ bool RDWaveFile::openWave(RDWaveData *data)
     wave_type=RDWaveFile::Mpeg;
     ReadId3Metadata();
     break;
+
+  case RDWaveFile::M4A:
+    {
+#ifdef HAVE_MP4_LIBS   
+
+      // MP4 libs must already be loaded by now for file to have that type.
+      assert(dlmp4.load());
+      format_tag=WAVE_FORMAT_M4A;
+
+      MP4FileHandle f = dlmp4.MP4Read(getName());
+      if(f == MP4_INVALID_FILE_HANDLE)
+	return false;
+
+      // Find an audio track, and populate sample rate, bits/sample etc.
+      MP4TrackId audioTrack = dlmp4.getMP4AACTrack(f);
+
+      if(audioTrack == MP4_INVALID_TRACK_ID) {
+	dlmp4.MP4Close(f, 0);
+	return false;
+      }
+
+      // Found audio track. Get audio data:
+      avg_bytes_per_sec = dlmp4.MP4GetTrackBitRate(f, audioTrack);
+      channels = dlmp4.MP4GetTrackAudioChannels(f, audioTrack);
+
+      MP4Duration trackDuration = dlmp4.MP4GetTrackDuration(f, audioTrack);
+      ext_time_length = (unsigned)dlmp4.MP4ConvertFromTrackDuration(f, audioTrack, trackDuration, 
+								    MP4_MSECS_TIME_SCALE);
+      time_length = ext_time_length / 1000;
+      samples_per_sec = dlmp4.MP4GetTrackTimeScale(f, audioTrack);
+      bits_per_sample = 16;
+      data_start = 0;
+      sample_length = dlmp4.MP4GetTrackNumberOfSamples(f, audioTrack);
+      data_length = sample_length * 2 * channels;
+      data_chunk = true;
+      format_chunk = true;
+      wave_type = RDWaveFile::M4A;
+
+      // Now extract metadata (title, artist, etc)
+
+      if(wave_data) {
+
+	const MP4Tags* tags = dlmp4.MP4TagsAlloc();
+	dlmp4.MP4TagsFetch(tags, f);
+	
+	wave_data->setMetadataFound(true);
+	
+	if(tags->name)
+	  wave_data->setTitle(tags->name);
+	if(tags->artist)
+	  wave_data->setArtist(tags->artist);
+	if(tags->composer)
+	  wave_data->setComposer(tags->composer);
+	if(tags->album)
+	  wave_data->setAlbum(tags->album);
+
+	dlmp4.MP4TagsFree(tags);
+
+      }
+
+      dlmp4.MP4Close(f, 0);
+
+      return true;
+
+#else
+      return false;
+#endif
+      break;
+    }
 
   case RDWaveFile::Ogg:
 #ifdef HAVE_VORBIS
@@ -2071,6 +2146,9 @@ RDWaveFile::Type RDWaveFile::GetType(int fd)
   if(IsOgg(fd)) {
     return RDWaveFile::Ogg;
   }
+  if(IsM4A(fd)) {
+    return RDWaveFile::M4A;
+  }
   if(IsMpeg(fd)) {
     return RDWaveFile::Mpeg;
   }
@@ -2262,6 +2340,20 @@ bool RDWaveFile::IsAiff(int fd)
   return true;
 }
 
+bool RDWaveFile::IsM4A(int fd)
+{
+#ifdef HAVE_MP4_LIBS
+  if(!dlmp4.load())
+    return false;
+  MP4FileHandle f = dlmp4.MP4Read(getName());
+  bool ret = f != MP4_INVALID_FILE_HANDLE;
+  if(ret)
+    dlmp4.MP4Close(f, 0);
+  return ret;
+#else
+  return false;
+#endif
+}
 
 off_t RDWaveFile::FindChunk(int fd,const char *chunk_name,unsigned *chunk_size,
 			    bool big_end)

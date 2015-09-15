@@ -1,10 +1,8 @@
 // sasusi.cpp
 //
-// A Rivendell switcher driver for the SAS User Serial Interface Protocol
+// A Rivendell switcher driver for the SAS USI Protocol
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: sasusi.cpp,v 1.24 2011/12/28 18:59:19 cvs Exp $
+//   (C) Copyright 2002-2015 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -260,7 +258,7 @@ void SasUsi::processCommand(RDMacro *cmd)
 	  emit rmlEcho(cmd);
 	  return;
 	}
-	snprintf(str,256,"%c%03d%03d\x0D\x0A",20,
+	snprintf(str,256,"%cT%04d%04d\x0D\x0A",5,
 		cmd->arg(1).toInt(),cmd->arg(2).toInt());
 	SendCommand(str);
 	cmd->acknowledge(true);
@@ -290,10 +288,11 @@ void SasUsi::processCommand(RDMacro *cmd)
 	  }
 	  cmd_byte=0x01;
 	}
-	if(cmd->arg(2).toUInt()<sas_relay_numbers.size()) {
+	if(cmd->arg(2).toUInt()<=sas_relay_numbers.size()) {
 	  if(sas_relay_numbers[cmd->arg(2).toUInt()-1]>=0) {
 	    snprintf(str,256,"\x05R%d%04d\x0D\x0A",cmd_byte,
 		    sas_relay_numbers[cmd->arg(2).toUInt()-1]);
+	    syslog(LOG_NOTICE,"USI: %s",(const char *)PrettifyCommand(str));
 	    SendCommand(str);
 	    cmd->acknowledge(true);
 	    emit rmlEcho(cmd);

@@ -22,10 +22,12 @@ LiveWire Multicast GPIO
 Local Audio Adapter
 Logitek vGuest
 Quartz Electronics Type 1 Routing Protocol
+Ross NK Video Switchers (via SCP/A Serial Interface)
 Serial Port Modem Control Lines
+Sierra Automated Systems 16000(D) Audio Router
 Sierra Automated Systems 32000 Audio Router
 Sierra Automated Systems 64000 Audio Router
-Sierra Automated Systems Universal Serial Interface (USI)
+Sierra Automated Systems User Serial Interface (USI)
 Sine Systems ACU-1 (Prophet version)
 Software Authority Protocol
 StarGuide III Satellite Receiver
@@ -511,6 +513,22 @@ TCP/IP to TCP port 23.
 
 
 ----------------------------------------------------------------------------
+Ross NK Video Switchers (via SCP/A Serial Interface)
+
+Driver Name: Ross NK-SCP/A Interface
+
+Supported RML Commands:
+  Switch Take ('ST')
+
+GENERAL NOTES:
+Control is done by means of an RS-232C connection to a NK-SCP/A serial
+interface.  Serial port parameters should be set to 9600 baud rate, no parity,
+8 data bits, 1 stop bit, CR termination.  The Breakaway to use is defined
+by setting the 'Card' parameter in the driver configuration, with
+Card 0 = Breakaway 1, Card 1 = Breakaway 2, etc.
+
+
+----------------------------------------------------------------------------
 SERIAL PORT MODEM CONTROL LINES
 
 Driver Name: Serial Port Modem Control Lines
@@ -533,6 +551,26 @@ device.  The lines map as follows:
  -------------------------------
   1   Data Terminal Ready (DTR)
   2   Ready To Send       (RTS)
+
+
+----------------------------------------------------------------------------
+SIERRA AUTOMATED SYSTEMS 16000(D) AUDIO ROUTER
+
+Driver Name: SAS 16000(D)
+
+Supported RML Commands:
+  Switch Take ('ST')
+
+GENERAL NOTES:
+Both analog and AES3 digital (D) variants are supported.  Control can done
+by means of an RS-232C connection to the 'User Serial Interface' port on
+the unit.  Serial port parameters should be:
+
+Baud Rate: 9600
+Parity: None
+Data Bits: 8
+Stop Bits: 1
+Terminator: None
 
 
 ----------------------------------------------------------------------------
@@ -591,9 +629,9 @@ outputs as well as audio crosspoints.
 
 
 ----------------------------------------------------------------------------
-SIERRA AUTOMATED SYSTEMS Universal Serial Interface (USI)
+SIERRA AUTOMATED SYSTEMS User Serial Interface (USI)
 
-Driver Name: SAS User Serial Interface
+Driver Name: SAS USI
 
 Supported RML Commands:
   Switch Take ('ST')

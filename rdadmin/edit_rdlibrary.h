@@ -63,6 +63,7 @@ class EditRDLibrary : public QDialog
   QTimeEdit *lib_maxlength_time;
   QLineEdit *lib_ripdev_edit;
   QComboBox *lib_paranoia_box;
+  QComboBox *lib_isrc_box;
   QSpinBox *lib_riplevel_spin;
   QLineEdit *lib_cddb_edit;
   QComboBox *lib_editor_box;

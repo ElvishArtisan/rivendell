@@ -33,12 +33,12 @@ class RDMatrix
   enum PortType {TtyPort=0,TcpPort=1,NoPort=2};
   enum Type {LocalGpio=0,GenericGpo=1,GenericSerial=2,Sas32000=3,Sas64000=4,
 	     Unity4000=5,BtSs82=6,Bt10x1=7,Sas64000Gpi=8,Bt16x1=9,Bt8x2=10,
-	     BtAcs82=11,SasUsi=12,Bt16x2=13,BtSs124=14,LocalAudioAdapter=15,
-	     LogitekVguest=16,BtSs164=17,StarGuideIII=18,BtSs42=19,
-	     LiveWireLwrpAudio=20,Quartz1=21,BtSs44=22,BtSrc8III=23,BtSrc16=24,
-	     Harlond=25,Acu1p=26,LiveWireMcastGpio=27,Am16=28,
+	     BtAcs82=11,SasUsi=12,Bt16x2=13,BtSs124=14,
+	     LocalAudioAdapter=15,LogitekVguest=16,BtSs164=17,StarGuideIII=18,
+	     BtSs42=19,LiveWireLwrpAudio=20,Quartz1=21,BtSs44=22,BtSrc8III=23,
+	     BtSrc16=24,Harlond=25,Acu1p=26,LiveWireMcastGpio=27,Am16=28,
 	     LiveWireLwrpGpio=29,BtSentinel4Web=30,BtGpi16=31,ModemLines=32,
-	     SoftwareAuthority=33,LastType=34};
+	     SoftwareAuthority=33,Sas16000=34,RossNkScp=35,LastType=36};
   enum Endpoint {Input=0,Output=1};
   enum Mode {Stereo=0,Left=1,Right=2};
   enum VguestAttribute {VguestEngine=0,VguestDevice=1,VguestSurface=2,

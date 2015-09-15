@@ -1,7 +1,6 @@
                   RDLIBRARY Table Layout for Rivendell
 
 The RDLIBRARY table holds configuration data for the RDLibrary widget.
-Following is the layout of a record in the RDLIBRARY table:
 
 FIELD NAME           TYPE              REMARKS
 ------------------------------------------------------------------------------
@@ -32,6 +31,7 @@ RIPPER_DEVICE        char(64)
 PARANOIA_LEVEL       int(11)
 RIPPER_LEVEL         int(11)
 CDDB_SERVER          char(64)
+READ_ISRC            enum('N','Y')
 ENABLE_EDITOR        enum('N','Y')
 SRC_CONVERTER        int(11)
 LIMIT_SEARCH         int(11)           0 = No, 1 = Yes, 2 = Previous

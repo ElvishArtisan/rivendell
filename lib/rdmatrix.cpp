@@ -64,7 +64,9 @@ bool __mx_primary_controls[RDMatrix::LastType][RDMatrix::LastControl]=
     {0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0},  // BT Sentinel 4 Web
     {0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0},  // BT GPI-16
     {0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0},  // Modem Lines
-    {0,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,1,1,1,1,0,0,0,0,0,0,0,0,0}   // Software Authority
+    {0,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,1,1,1,1,0,0,0,0,0,0,0,0,0},  // Software Authority
+    {0,1,1,1,0,0,1,1,0,0,0,1,1,0,0,0,1,1,1,1,0,0,0,0,1,0,0,0,0},  // SAS 16000
+    {0,1,0,0,0,0,0,0,1,0,0,1,1,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0}   // Ross NK/SCP
   };
 bool __mx_backup_controls[RDMatrix::LastType][RDMatrix::LastControl]=
   {
@@ -103,7 +105,9 @@ bool __mx_backup_controls[RDMatrix::LastType][RDMatrix::LastControl]=
     {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},  // BT Sentinel 4 Web
     {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},  // BT GPI-16
     {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},  // Modem Lines
-    {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}   // Software Authority
+    {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},  // Software Authority
+    {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},  // SAS 16000
+    {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}   // ROSS NK/SCP
   };
 
 int __mx_default_values[RDMatrix::LastType][RDMatrix::LastControl]=
@@ -143,7 +147,9 @@ int __mx_default_values[RDMatrix::LastType][RDMatrix::LastControl]=
     {1,0,0,0,0,0,0,0,0,0,0,4,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0},   // BT Sentinel 4 Web
     {0,0,0,0,0,0,0,0,0,0,0,0,0,16,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0},  // BT GPI-16
     {0,0,0,0,0,0,0,0,0,0,0,0,0,4,2,0,0,0,0,0,0,0,0,0,0,0,0,1,0},   // Modem Lines
-    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0}    // Software Authority
+    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0},   // Software Authority
+    {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0},   // SAS 16000
+    {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0}   // Ross NK/SCP
   };
 
 RDMatrix::RDMatrix(const QString &station,int matrix)
@@ -603,8 +609,12 @@ QString RDMatrix::typeString(RDMatrix::Type type)
 	return QString("BroadcastTools ACS 8.2");
 	break;
 
+      case RDMatrix::Sas16000:
+	return QString("SAS 16000(D)");
+	break;
+
       case RDMatrix::SasUsi:
-	return QString("SAS User Serial Interface");
+	return QString("SAS USI");
 	break;
 
       case RDMatrix::Bt16x2:
@@ -689,6 +699,10 @@ QString RDMatrix::typeString(RDMatrix::Type type)
 
       case RDMatrix::SoftwareAuthority:
 	return QString("Software Authority Protocol");
+	break;
+
+      case RDMatrix::RossNkScp:
+	return QString("Ross NK-SCP/A Interface");
 	break;
 
       default:

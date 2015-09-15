@@ -40,6 +40,8 @@
 #include <vorbis/vorbisenc.h>
 #endif  // HAVE_VORBIS
 
+#include <rdmp4.h>
+
 #include <rdwavedata.h>
 #include <rdringbuffer.h>
 #include <rdsettings.h>
@@ -115,7 +117,7 @@ class RDWaveFile
   enum Format {Pcm8=0,Pcm16=1,Float32=2,MpegL1=3,MpegL2=4,MpegL3=5,
   	       DolbyAc2=6,DolbyAc3=7,Vorbis=8,Pcm24=9};
   enum Type {Unknown=0,Wave=1,Mpeg=2,Ogg=3,Atx=4,Tmc=5,Flac=6,Ambos=7,
-	     Aiff=8};
+	     Aiff=8,M4A=9};
   enum MpegID {NonMpeg=0,Mpeg1=1,Mpeg2=2};
 
   /**
@@ -1034,6 +1036,7 @@ class RDWaveFile
    bool IsTmc(int fd);
    bool IsFlac(int fd);
    bool IsAiff(int fd);
+   bool IsM4A(int fd);
    off_t FindChunk(int fd,const char *chunk_name,unsigned *chunk_size,
 		   bool big_end=false);
    bool GetChunk(int fd,const char *chunk_name,unsigned *chunk_size,
@@ -1228,6 +1231,10 @@ class RDWaveFile
    ogg_page ogg_pg;
    ogg_packet ogg_pack;
 #endif  // HAVE_VORBIS
+#ifdef HAVE_MP4_LIBS
+   DLMP4 dlmp4;
+#endif
+
 };
 
 
@@ -1366,6 +1373,7 @@ class RDWaveFile
  */
 #define WAVE_FORMAT_VORBIS 0xFFFF
 #define WAVE_FORMAT_FLAC 0xFFFE
+#define WAVE_FORMAT_M4A 0xFFFD
 
 /*
  * Proprietary Format Categories

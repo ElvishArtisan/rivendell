@@ -493,7 +493,8 @@ void EditUpload::urlChangedData(const QString &str)
 {
   QUrl url(str);
   QString protocol=url.protocol().lower();
-  if((protocol=="ftp")||(protocol=="file")) {
+  if((protocol=="ftp")||(protocol=="file")||
+     (protocol=="scp")||(protocol=="sftp")) {
     edit_username_label->setEnabled(true);
     edit_username_edit->setEnabled(true);
     edit_password_label->setEnabled(true);
@@ -575,7 +576,8 @@ void EditUpload::okData()
   }
   RDUrl url(edit_url_edit->text());
   QString protocol=url.protocol();
-  if((protocol!="ftp")&&(protocol!="file")) {
+  if((protocol!="ftp")&&(protocol!="file")&&
+     (protocol!="scp")&&(protocol!="sftp")) {
     QMessageBox::warning(this,
 			 tr("Invalid URL"),tr("Unsupported URL protocol!"));
     return;

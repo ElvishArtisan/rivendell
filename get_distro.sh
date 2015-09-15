@@ -58,6 +58,9 @@ case "$1" in
 	  if test $VER = "release" ; then
 	    VER=`awk '/release/ {print $4}' /etc/redhat-release`
 	  fi
+	  if test $VER = "Enterprise" ; then
+	    VER=`awk '/release/ {print $7}' /etc/redhat-release`
+	  fi
 	  echo $VER
           exit 0
 	fi
@@ -80,6 +83,9 @@ case "$1" in
 	  if test $VER = "release" ; then
 	    VER=`awk '/release/ {print $4}' /etc/redhat-release`
 	  fi
+	  if test $VER = "Enterprise" ; then
+	    VER=`awk '/release/ {print $7}' /etc/redhat-release`
+	  fi
 	  echo $VER | awk -F '.' '{print $1}'
           exit 0
 	fi
@@ -97,6 +103,9 @@ case "$1" in
 	  VER=`awk '/release/ {print $3}' /etc/redhat-release`
 	  if test $VER = "release" ; then
 	    VER=`awk '/release/ {print $4}' /etc/redhat-release`
+	  fi
+	  if test $VER = "Enterprise" ; then
+	    VER=`awk '/release/ {print $7}' /etc/redhat-release`
 	  fi
 	  echo $VER | awk -F '.' '{print $2}'
           exit 0

@@ -2802,6 +2802,10 @@ equipo configurado para ejecutar CAE para obtener la información de audio.</tra
         <source>PCM24</source>
         <translation type="unfinished">PCM24</translation>
     </message>
+    <message>
+        <source>&amp;Read ISRCs from CD:</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditRDLogedit</name>
@@ -5865,6 +5869,11 @@ Revise los parámetros e intente de nuevo.</translation>
     <message>
         <source>&amp;Close</source>
         <translation>&amp;Cerrar</translation>
+    </message>
+    <message>
+        <source>    MP-4/AAC
+</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>
