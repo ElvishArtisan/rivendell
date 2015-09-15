@@ -14943,3 +14943,5 @@
 2015-09-09 Fred Gleason <fredg@paravelsystems.com>
 	* Added 'src_float_to_int()' and 'src_int_to_float()' functions in
 	'cae/cae.cpp' and 'cae/cae.h'.
+2015-09-15 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.10.3pcm24.3.
