@@ -15319,3 +15319,6 @@
 2015-09-15 Todd Baker <bakert@rfa.org>
 	* Fixed a mispelling in 'lib/rdcart.cpp' of the xml 
 	  field averageSegueLength.
+2015-09-15 Todd Baker <bakert@rfa.org>
+	* Fixed a bug in 'lib/rdcut.cpp' that caused the MYSQL query 
+	  string in the xml() function to have the wrong number of columns.
