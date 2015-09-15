@@ -30,12 +30,13 @@
 
 //#define SHOW_SLOTS
 
-ButtonLog::ButtonLog(LogPlay *log,int id,RDAirPlayConf *conf,bool allow_pause,
-		     QWidget *parent,const char *name)
+ButtonLog::ButtonLog(LogPlay *log,RDCae *cae,int id,RDAirPlayConf *conf,
+		     bool allow_pause,QWidget *parent,const char *name)
   : QWidget(parent,name)
 {
   log_id=id;
   log_log=log;
+  log_cae=cae;
   log_action_mode=RDAirPlayConf::Normal;
   log_op_mode=RDAirPlayConf::LiveAssist;
   log_time_mode=RDAirPlayConf::TwentyFourHour;
@@ -58,7 +59,7 @@ ButtonLog::ButtonLog(LogPlay *log,int id,RDAirPlayConf *conf,bool allow_pause,
   //
   // Edit Event Dialog
   //
-  log_event_edit=new EditEvent(log_log,this,"list_event_edit");
+  log_event_edit=new EditEvent(log_log,log_cae,this,"list_event_edit");
 
   //
   // Line Boxes / Start Buttons

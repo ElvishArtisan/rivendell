@@ -9,6 +9,7 @@
 *.so
 rivendell-*.tar.gz
 rivendell-*.zip
+.AppleDouble
 .deps
 .libs
 aclocal.m4
@@ -64,6 +65,7 @@ slack-desc
 tests/audio_convert_test
 tests/audio_export_test
 tests/audio_import_test
+tests/audio_peaks_test
 tests/audio_trim_test
 tests/datedecode_test
 tests/reserve_carts_test

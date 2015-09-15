@@ -2,9 +2,7 @@
 //
 // Batch Routines for the Rivendell netcatcher daemon
 //
-//   (C) Copyright 2002-2007, 2010 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: batch.cpp,v 1.6.2.1 2012/05/10 16:00:53 cvs Exp $
+//   (C) Copyright 2002-2015, 2010 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -478,6 +476,10 @@ bool MainObject::Import(CatchEvent *evt)
   switch(evt->format()) {
   case RDCae::Pcm16:
     settings->setFormat(RDSettings::Pcm16);
+    break;
+
+  case RDCae::Pcm24:
+    settings->setFormat(RDSettings::Pcm24);
     break;
 
   case RDCae::MpegL1:

@@ -44,7 +44,6 @@ extern RDAirPlayConf *rdairplay_conf;
 extern RDAudioPort *rdaudioport_conf;
 extern RDUser *rduser;
 extern RDRipc *rdripc;
-extern RDCae *rdcae;
 extern RDEventPlayer *rdevent_player;
 extern RDCartDialog *rdcart_dialog;
 extern void LogLine(RDConfig::LogPriority prio,const QString &line);

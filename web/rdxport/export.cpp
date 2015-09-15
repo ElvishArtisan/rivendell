@@ -2,7 +2,7 @@
 //
 // Rivendell web service portal -- Export service
 //
-//   (C) Copyright 2010,2014 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2010-2015 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -145,6 +145,7 @@ void Xport::Export()
   case RDAudioConvert::ErrorOk:
     switch(settings->format()) {
     case RDSettings::Pcm16:
+    case RDSettings::Pcm24:
       printf("Content-type: audio/x-wav\n\n");
       break;
 

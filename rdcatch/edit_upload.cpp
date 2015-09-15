@@ -2,9 +2,7 @@
 //
 // Edit a Rivendell Upload Event
 //
-//   (C) Copyright 2002-2005 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: edit_upload.cpp,v 1.22 2011/06/21 18:31:33 cvs Exp $
+//   (C) Copyright 2002-2015 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -534,7 +532,7 @@ void EditUpload::setFormatData()
 {
   RDStation *station=new RDStation(edit_station_box->currentText());
   RDExportSettingsDialog *dialog=
-    new RDExportSettingsDialog(&edit_settings,station,this,"dialog");
+    new RDExportSettingsDialog(&edit_settings,station,this);
   dialog->exec();
   delete dialog;
   delete station;
@@ -642,6 +640,7 @@ bool EditUpload::CheckFormat()
   RDStation *station=new RDStation(edit_station_box->currentText());
   switch(edit_settings.format()) {
       case RDSettings::Pcm16:
+      case RDSettings::Pcm24:
       case RDSettings::MpegL2:
       case RDSettings::MpegL2Wav:
 	res=true;

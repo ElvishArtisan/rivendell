@@ -1263,5 +1263,9 @@ como Nuevo</translation>
         <source>User</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>PCM24</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 </TS>

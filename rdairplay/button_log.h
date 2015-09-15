@@ -50,8 +50,8 @@ class ButtonLog : public QWidget
 {
  Q_OBJECT
  public:
-  ButtonLog(LogPlay *log,int id,RDAirPlayConf *conf,bool allow_pause=false,
-	    QWidget *parent=0,const char *name=0);
+  ButtonLog(LogPlay *log,RDCae *cae,int id,RDAirPlayConf *conf,
+	    bool allow_pause=false,QWidget *parent=0,const char *name=0);
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
   RDAirPlayConf::OpMode opMode() const;
@@ -92,6 +92,7 @@ class ButtonLog : public QWidget
   int log_line_counter;
   RDAirPlayConf::TimeMode log_time_mode;
   EditEvent *log_event_edit;
+  RDCae *log_cae;
   bool log_pause_enabled;
 };
 

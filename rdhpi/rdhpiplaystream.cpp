@@ -196,6 +196,13 @@ bool RDHPIPlayStream::formatSupported(RDWaveFile::Format format)
 	state=HPI_OutStreamQueryFormat(NULL,hostream,&hpi_format);
 	break;
 
+      case RDWaveFile::Pcm24:
+	LogHpi(HPI_FormatCreate(&hpi_format,getChannels(),
+				HPI_FORMAT_PCM24_SIGNED,
+				getSamplesPerSec(),getHeadBitRate(),0));
+	state=HPI_OutStreamQueryFormat(NULL,hostream,&hpi_format);
+	break;
+
       case RDWaveFile::MpegL1:
 	LogHpi(HPI_FormatCreate(&hpi_format,getChannels(),
 				HPI_FORMAT_MPEG_L1,
@@ -242,6 +249,10 @@ bool RDHPIPlayStream::formatSupported()
 
 	    case 16:
 	      return formatSupported(RDWaveFile::Pcm16);
+	      break;
+
+	    case 24:
+	      return formatSupported(RDWaveFile::Pcm24);
 	      break;
 
 	    default:
@@ -419,6 +430,11 @@ bool RDHPIPlayStream::play()
 	      case 16:
 		LogHpi(HPI_FormatCreate(&format,getChannels(),
 					HPI_FORMAT_PCM16_SIGNED,
+					getSamplesPerSec(),0,0));
+		break;
+	      case 24:
+		LogHpi(HPI_FormatCreate(&format,getChannels(),
+					HPI_FORMAT_PCM24_SIGNED,
 					getSamplesPerSec(),0,0));
 		break;
 	      case 32:

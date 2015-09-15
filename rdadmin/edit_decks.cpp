@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell RDCatch Deck Configuration
 //
-//   (C) Copyright 2002-2004,2014 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2015 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -295,6 +295,7 @@ EditDecks::EditDecks(RDStation *station,RDStation *cae_station,QWidget *parent)
   edit_record_channel=edit_record_deck_box->currentItem()+1;
   edit_play_channel=edit_play_deck_box->currentItem()+129;
   edit_format_box->insertItem(tr("PCM16"));
+  edit_format_box->insertItem(tr("PCM24"));
   edit_format_box->insertItem(tr("MPEG Layer 2"));
   edit_channels_box->insertItem("1");
   edit_channels_box->insertItem("2");
@@ -395,13 +396,13 @@ void EditDecks::monitorPortChangedData(int port)
 
 void EditDecks::formatActivatedData(int index)
 {
-  if(index==0) {
-    edit_bitrate_label->setDisabled(true);
-    edit_bitrate_box->setDisabled(true);
-  }
-  else {
+  if(index==2) {
     edit_bitrate_label->setEnabled(true);
     edit_bitrate_box->setEnabled(true);
+  }
+  else {
+    edit_bitrate_label->setDisabled(true);
+    edit_bitrate_box->setDisabled(true);
   }
 }
 
@@ -529,9 +530,14 @@ void EditDecks::ReadRecord(int chan)
 	  edit_bitrate_box->setDisabled(true);
 	  break;
 
+	case RDSettings::Pcm24:
+	  edit_format_box->setCurrentItem(1);
+	  edit_bitrate_box->setDisabled(true);
+	  break;
+
 	case RDSettings::MpegL2:
 	case RDSettings::MpegL2Wav:
-	  edit_format_box->setCurrentItem(1);
+	  edit_format_box->setCurrentItem(2);
 	  edit_bitrate_box->setEnabled(true);
 	  break;
 
@@ -638,12 +644,17 @@ void EditDecks::WriteRecord(int chan)
       }
     }
     switch(edit_format_box->currentItem()) {
-	case 0:
-	  edit_record_deck->setDefaultFormat(RDSettings::Pcm16);
-	  break;
-	case 1:
-	  edit_record_deck->setDefaultFormat(RDSettings::MpegL2);
-	  break;
+    case 0:
+      edit_record_deck->setDefaultFormat(RDSettings::Pcm16);
+      break;
+
+    case 1:
+      edit_record_deck->setDefaultFormat(RDSettings::Pcm24);
+      break;
+
+    case 2:
+      edit_record_deck->setDefaultFormat(RDSettings::MpegL2);
+      break;
     }
     edit_record_deck->setDefaultChannels(edit_channels_box->currentItem()+1);
     sscanf((const char *)edit_bitrate_box->currentText(),"%d",&temp);

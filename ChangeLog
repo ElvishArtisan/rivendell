@@ -14899,6 +14899,9 @@
 	* Fixed bugs in 'lib/rdplay_deck.cpp' and 'lib/rdlog_line.cpp'
 	that caused audio to be truncated when played in block
 	timescaling mode.
+2015-06-10 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored 'LogPlay' class to provide per-instance RDCae instances.
+	in 'rdairplay/log_play.cpp' and 'rdairplay/log_play.h'.
 2015-06-16 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a buffer overflow bug in 'ripcd/bt_src16.cpp'.
 2015-06-17 Fred Gleason <fredg@paravelsystems.com>
@@ -14935,6 +14938,11 @@
 	* Fixed a bug in the 'RDTimeSynced()' in 'lib/rdconf.cpp' and
 	'lib/rdconf.h' that caused the false sync failure detection when
 	the underlying NTP layer was advertising an upcoming leap second.
+2015-07-02 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'LogPlay::refresh()' that caused a segfault
+	in 'rdairplay/log_play.cpp'.
+	* Instrumented the 'LogPlay::refresh()' method in
+	'rdairplay/log_play.cpp'.
 2015-07-06 Fred Gleason <fredg@paravelsystems.com>
 	* Cleaned up warnings in 'lib/rdwavefile.cpp'.
 2015-07-06 Fred Gleason <fredg@paravelsystems.com>
@@ -14974,6 +14982,14 @@
 2015-07-14 Fred Gleason <fredg@paravelsystems.com>
 	* Made the 'Test Import' dialog resizable in 'rdadmin/test_import.cpp'
 	and 'rdadmin/test_import.h'
+2015-07-14 Fred Gleason <fredg@paravelsystems.com>
+	* Instrumented 'HourSelect::updateTimeData()' in
+	'rdairplay/hourselector.cpp'.
+	* Instrumented 'LogPlay::transTimerData()' in
+	'rdairplay/log_play.cpp'.
+	* Instrumented 'LogPlay::graceTimerData()' in
+	'rdairplay/log_play.cpp'.
+	* Instrumented 'RLMHost::timerData()' in 'rdairplay/rlmhost.cpp'.
 2015-07-15 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'SVC_CLOCKS' table to the database.
 	* Incremented the database version to 248.
@@ -15119,6 +15135,48 @@
 	log link events in 'rdairplay/loglinebox.cpp'.
 2015-08-05 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 2.10.3int05.
+2015-08-12 Fred Gleason <fredg@paravelsystems.com>
+	* Instrumented the cleanup phase of the 'LogPlay::refresh()' method in
+	'rdairplay/log_play.cpp'.
+2015-08-13 Fred Gleason <fredg@paravelsystems.com>
+	* Commented out the 'qApp->processEvents()' call in the
+	'refreshStatusChangedData()' method in 'rdairplay/rdairplay.cpp'.
+2015-08-29 Fred Gleason <fredg@paravelsystems.com>
+	* Removed instrumentation code in 'rdairplay/hourselector.cpp'.
+	* Removed instrumentation code in 'rdairplay/log_play.cpp'.
+	* Removed instrumentation code in 'rdairplay/rlmhost.cpp'.
+2015-08-29 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.10.3caefix06.
+2015-08-30 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'RDAudioConvert::Stage3Pcm24()' method in
+	'lib/rdaudioconvert.cpp' and 'lib/rdaudioconvert.h'.
+	* Added a 'Format::Pcm24' value to the 'RDSettings::Format'
+	enumeration in 'lib/rdsettings.h'.
+	* Modified the 'RDAudioConvert' class to support generating PCM24
+	output in 'lib/rdaudioconvert.cpp' and 'lib/rdaudioconvert.h'.
+	* Modified the 'RDPlayStream' class to support playing PCM24
+	data in 'rdhpi/rdplaystream.cpp'.
+	* Modified the 'RDRecordStream' class to support capturing PCM24
+	data in 'rdhpi/rdrecordstream.cpp'.
+	* Added an 'audio_peaks_test' harness in 'tests/audio_peaks_test.cpp'
+	and 'tests/audio_peaks_test.h'.
+	* Added 'PCM24' to the list of available formats in
+	'rdadmin/edit_rdlibrary.cpp' and 'rdadmin/edit_rdlibrary.h'.
+	* Added 'PCM24' to the list of available formats in
+	'rdadmin/edit_decks.cpp'.
+	* Added PCM24 support for file importation in
+	'web/rdxport/import.cpp'.
+	* Added an 'RDCae::Pcm24' value to the 'RDCae::AudioCoding
+	enumeration in 'lib/rdcae.h'.
+2015-08-30 Fred Gleason <fredg@paravelsystems.com>
+	* Added PCM24 to 'lib/export_settings_dialog.cpp'.
+2015-08-30 Fred Gleason <fredg@paravelsystems.com>
+	* Added PCM24 play-out and capture support for JACK in
+	'cae/cae_jack.cpp' and 'cae/cae.h'.
+2015-08-30 Fred Gleason <fredg@paravelsystems.com>
+	* Added a --frames=' parameter in 'tests/audio_peaks_test.cpp'.
+	* Fixed a fencepost bug in generating peak energy data in
+	'lib/rdwavefile.cpp'.
 2015-08-31 Fred Gleason <fredg@paravelsystems.com>
 	* Adjusted control round-off in 'lib/rdmarkerwidget.cpp' to provide
 	finer resolution for marker positioning.
@@ -15199,6 +15257,14 @@
 	* Optimized waveform updates in 'lib/rdmarkerwaveform.cpp'.
 2015-09-04 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 2.10.3int06.
+2015-09-05 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'PCM24' to the list of available formats in
+	'rdadmin/edit_rdlogedit.cpp' and 'rdadmin/edit_rdlogedit.h'.
+	* Added PCM24 support for voice tracking in
+	'rdlogedit/voice_tracker.cpp'.
+2015-09-07 Fred Gleason <fredg@paravelsystems.com>
+	* Added PCM24 play-out and capture support for ALSA in
+	'cae/cae_alsa.cpp' and 'cae/cae.h'.
 2015-09-08 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in 'lib/rdedit_audio.cpp' that caused only part
 	of the waveform to be visible.
@@ -15214,6 +15280,9 @@
 	in 'lib/rdmarkerwaveform.cpp'.
 2015-09-09 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 2.10.3int07.
+2015-09-09 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'src_float_to_int()' and 'src_int_to_float()' functions in
+	'cae/cae.cpp' and 'cae/cae.h'.
 2015-09-10 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in 'lib/rdedit_audio.cpp' that threw a segfault when
 	attempting to start the marker editor for a cut with missing audio.

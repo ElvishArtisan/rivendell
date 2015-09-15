@@ -2,9 +2,7 @@
 //
 // Test the Rivendell file format converter.
 //
-//   (C) Copyright 2010 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: audio_convert_test.cpp,v 1.3 2011/06/21 22:20:44 cvs Exp $
+//   (C) Copyright 2010-2015 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -79,6 +77,7 @@ MainObject::MainObject(QObject *parent,const char *name)
       }
       switch(format) {
       case RDSettings::Pcm16:
+      case RDSettings::Pcm24:
       case RDSettings::MpegL2:
       case RDSettings::MpegL2Wav:
       case RDSettings::MpegL3:

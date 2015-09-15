@@ -44,12 +44,13 @@
 #include "../icons/music.xpm"
 
 
-ListLog::ListLog(LogPlay *log,int id,bool allow_pause,
+ListLog::ListLog(LogPlay *log,RDCae *cae,int id,bool allow_pause,
 		 QWidget *parent,const char *name)
   : QWidget(parent,name)
 {
   list_id=id;
   list_log=log;
+  list_cae=cae;
   list_op_mode=RDAirPlayConf::LiveAssist;
   list_action_mode=RDAirPlayConf::Normal;
   list_time_mode=RDAirPlayConf::TwentyFourHour;
@@ -382,7 +383,7 @@ ListLog::ListLog(LogPlay *log,int id,bool allow_pause,
   //
   // Edit Event Dialog
   //
-  list_event_edit=new EditEvent(list_log,this,"list_event_edit");
+  list_event_edit=new EditEvent(list_log,list_cae,this,"list_event_edit");
 
   //
   // Map Slots

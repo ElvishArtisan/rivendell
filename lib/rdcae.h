@@ -2,9 +2,7 @@
 //
 // Connection to the Rivendell Core Audio Engine
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdcae.h,v 1.32.4.2 2012/11/30 16:14:59 cvs Exp $
+//   (C) Copyright 2002-2015 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -43,7 +41,7 @@ class RDCae : public QObject
   enum ClockSource {InternalClock=0,AesEbuClock=1,SpDiffClock=2,WordClock=4};
   enum ChannelMode {Normal=0,Swap=1,LeftOnly=2,RightOnly=3};
   enum SourceType {Analog=0,AesEbu=1};
-  enum AudioCoding {Pcm16=0,MpegL1=1,MpegL2=2,MpegL3=3};
+  enum AudioCoding {Pcm16=0,MpegL1=1,MpegL2=2,MpegL3=3,Pcm24=4};
   RDCae(RDStation *station,RDConfig *config,
 	QObject *parent=0,const char *name=0);
   ~RDCae();

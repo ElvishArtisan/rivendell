@@ -31,6 +31,7 @@ moc_%.cpp:	%.h
 noinst_PROGRAMS = audio_convert_test\
                   audio_export_test\
                   audio_import_test\
+                  audio_peaks_test\
                   audio_trim_test\
                   datedecode_test\
                   reserve_carts_test\
@@ -50,6 +51,9 @@ audio_export_test_LDADD = @LIB_RDLIBS@ @LIBVORBIS@
 
 dist_audio_import_test_SOURCES = audio_import_test.cpp audio_import_test.h
 audio_import_test_LDADD = @LIB_RDLIBS@ @LIBVORBIS@
+
+dist_audio_peaks_test_SOURCES = audio_peaks_test.cpp audio_peaks_test.h
+audio_peaks_test_LDADD = @LIB_RDLIBS@ @LIBVORBIS@
 
 dist_audio_trim_test_SOURCES = audio_trim_test.cpp audio_trim_test.h
 audio_trim_test_LDADD = @LIB_RDLIBS@ @LIBVORBIS@

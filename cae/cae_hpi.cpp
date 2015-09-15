@@ -176,6 +176,7 @@ bool MainObject::hpiLoadRecord(int card,int stream,int coding,int chans,
 			       int samprate,int bitrate,QString wavename)
 {
 #ifdef HPI
+  syslog(LOG_NOTICE,"card: %d  coding: %d\n",card,coding);
   record[card][stream]=new RDHPIRecordStream(sound_card);
   connect(record[card][stream],SIGNAL(stateChanged(int,int,int)),
 	  this,SLOT(stateRecordUpdate(int,int,int)));
@@ -188,7 +189,7 @@ bool MainObject::hpiLoadRecord(int card,int stream,int coding,int chans,
     record[card][stream]->setFormatTag(WAVE_FORMAT_PCM);
     record[card][stream]->setBitsPerSample(16);
   }
-  if((coding>=1)&&(coding<=2)) {  // MPEG-1
+  if((coding==1)||(coding==2)) {  // MPEG-1
     record[card][stream]->setFormatTag(WAVE_FORMAT_MPEG);
     record[card][stream]->setHeadLayer(coding);
     record[card][stream]->setHeadBitRate(bitrate);
@@ -207,7 +208,11 @@ bool MainObject::hpiLoadRecord(int card,int stream,int coding,int chans,
     }
     record[card][stream]->setHeadFlags(ACM_MPEG_ID_MPEG1);
   }
-  if(coding>2) {
+  if(coding==4) {                 // PCM24
+    record[card][stream]->setFormatTag(WAVE_FORMAT_PCM);
+    record[card][stream]->setBitsPerSample(24);
+  }
+  if(coding>4) {
     delete record[card][stream];
     record[card][stream]=NULL;
     return false;

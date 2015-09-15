@@ -60,7 +60,7 @@ class LogPlay : public QObject,public RDLogEvent
 {
  Q_OBJECT
  public:
-  LogPlay(RDCae *cae,int id,QSocketDevice *nn_sock,QString logname,
+  LogPlay(int id,QSocketDevice *nn_sock,QString logname,
 	  std::vector<RLMHost *> *rlm_hosts,QObject *parent=0);
   QString serviceName() const;
   void setServiceName(const QString &svcname);

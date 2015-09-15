@@ -2,9 +2,7 @@
 //
 // The Core Audio Engine component of Rivendell
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: cae.cpp,v 1.115.4.3 2012/11/30 16:14:57 cvs Exp $
+//   (C) Copyright 2002-2015 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -58,6 +56,23 @@ extern jack_client_t *jack_client;
 #endif  // JACK
 
 #define PRINT_COMMANDS
+
+#ifndef HAVE_SRC_CONV
+void src_int_to_float_array (const int *in, float *out, int len)
+{
+  for(int i=0;i<len;i++) {
+    out[i]=(double)in[i]/2147483648.0;
+  }
+}
+
+
+void src_float_to_int_array (const float *in, int *out, int len)
+{
+  for(int i=0;i<len;i++) {
+    out[i]=(int)(in[i]*2147483648.0);
+  }
+}
+#endif  // HAVE_SRC_CONV
 
 void LogLine(RDConfig::LogPriority prio,const QString &line)
 {

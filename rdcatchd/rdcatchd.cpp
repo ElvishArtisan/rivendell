@@ -2,9 +2,7 @@
 //
 // The Rivendell Netcatcher Daemon
 //
-//   (C) Copyright 2002-2007 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdcatchd.cpp,v 1.142.4.2.2.1 2014/06/03 18:23:38 cvs Exp $
+//   (C) Copyright 2002-2015 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -1263,7 +1261,7 @@ bool MainObject::StartRecording(int event)
     catch_events[event].
       setTempName(GetTempRecordingName(catch_events[event].id()));
     catch_events[event].setDeleteTempFile(true);
-    format=RDCae::Pcm16;
+    format=RDCae::Pcm24;
   }    
 
   //
@@ -1888,17 +1886,56 @@ void MainObject::LoadEngine(bool adv_day)
 
 QString MainObject::LoadEventSql()
 {
-  return QString("select ID,IS_ACTIVE,TYPE,CHANNEL,CUT_NAME,\
-                  SUN,MON,TUE,WED,THU,FRI,SAT,START_TIME,LENGTH,\
-                  START_GPI,END_GPI,TRIM_THRESHOLD,STARTDATE_OFFSET,\
-                  ENDDATE_OFFSET,FORMAT,CHANNELS,SAMPRATE,BITRATE,\
-                  MACRO_CART,SWITCH_INPUT,SWITCH_OUTPUT,ONE_SHOT,\
-                  START_TYPE,START_LENGTH,START_MATRIX,START_LINE,\
-                  START_OFFSET,END_TYPE,END_TIME,END_LENGTH,\
-                  END_MATRIX,END_LINE,URL,URL_USERNAME,URL_PASSWORD,\
-                  QUALITY,NORMALIZE_LEVEL,ALLOW_MULT_RECS,\
-                  MAX_GPI_REC_LENGTH,DESCRIPTION,FEED_ID,\
-                  EVENTDATE_OFFSET,ENABLE_METADATA from RECORDINGS");
+  return QString("select ")+
+    "ID,"+                    // 00
+    "IS_ACTIVE,"+             // 01
+    "TYPE,"+                  // 02
+    "CHANNEL,"+               // 03
+    "CUT_NAME,"+              // 04
+    "SUN,"+                   // 05
+    "MON,"+                   // 06
+    "TUE,"+                   // 07
+    "WED,"+                   // 08
+    "THU,"+                   // 09
+    "FRI,"+                   // 10
+    "SAT,"+                   // 11
+    "START_TIME,"+            // 12
+    "LENGTH,"+                // 13
+    "START_GPI,"+             // 14
+    "END_GPI,"+               // 15
+    "TRIM_THRESHOLD,"+        // 16
+    "STARTDATE_OFFSET,"+      // 17
+    "ENDDATE_OFFSET,"+        // 18
+    "FORMAT,"                 // 19
+    "CHANNELS,"+              // 20
+    "SAMPRATE,"+              // 21
+    "BITRATE,"+               // 22
+    "MACRO_CART,"+            // 23
+    "SWITCH_INPUT,"+          // 24
+    "SWITCH_OUTPUT,"+         // 25
+    "ONE_SHOT,"+              // 26
+    "START_TYPE,"+            // 27
+    "START_LENGTH,"+          // 28
+    "START_MATRIX,"+          // 29
+    "START_LINE,"+            // 30
+    "START_OFFSET,"+          // 31
+    "END_TYPE,"+              // 32
+    "END_TIME,"+              // 33
+    "END_LENGTH,"+            // 34
+    "END_MATRIX,"+            // 35
+    "END_LINE,"+              // 36
+    "URL,"+                   // 37
+    "URL_USERNAME,"+          // 38
+    "URL_PASSWORD,"+          // 39
+    "QUALITY,"+               // 40
+    "NORMALIZE_LEVEL,"+       // 41
+    "ALLOW_MULT_RECS,"+       // 42
+    "MAX_GPI_REC_LENGTH,"+    // 43
+    "DESCRIPTION,"+           // 44
+    "FEED_ID,"+               // 45
+    "EVENTDATE_OFFSET,"+      // 46
+    "ENABLE_METADATA "+       // 47
+    "from RECORDINGS";
 }
 
 
@@ -1923,7 +1960,26 @@ void MainObject::LoadEvent(RDSqlQuery *q,CatchEvent *e,bool add)
   e->setTrimThreshold(q->value(16).toUInt());
   e->setStartdateOffset(q->value(17).toUInt());
   e->setEnddateOffset(q->value(18).toUInt());
-  e->setFormat((RDCae::AudioCoding)q->value(19).toInt());
+  switch((RDSettings::Format)q->value(19).toInt()) {
+  case RDSettings::Pcm16:
+    e->setFormat(RDCae::Pcm16);
+    break;
+
+  case RDSettings::Pcm24:
+    e->setFormat(RDCae::Pcm24);
+    break;
+
+  case RDSettings::MpegL2:
+  case RDSettings::MpegL2Wav:
+    e->setFormat(RDCae::MpegL2);
+    break;
+
+  case RDSettings::MpegL1:
+  case RDSettings::MpegL3:
+  case RDSettings::Flac:
+  case RDSettings::OggVorbis:
+    break;
+  }
   e->setChannels(q->value(20).toInt());
   e->setSampleRate(catch_system->sampleRate());
   //e->setSampleRate(q->value(21).toInt());

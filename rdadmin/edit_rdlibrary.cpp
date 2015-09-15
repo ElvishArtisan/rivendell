@@ -2,9 +2,7 @@
 //
 // Edit an RDLibrary Configuration
 //
-//   (C) Copyright 2002-2003 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: edit_rdlibrary.cpp,v 1.33.6.1 2014/01/09 01:03:55 cvs Exp $
+//   (C) Copyright 2002-2015 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -133,8 +131,7 @@ EditRDLibrary::EditRDLibrary(RDStation *station,RDStation *cae_station,
   lib_trim_spin->setMinValue(-99);
   lib_trim_spin->setMaxValue(0);
   QLabel *lib_trim_spin_label=
-    new QLabel(lib_trim_spin,tr("&AutoTrim Threshold:"),
-	       this,"lib_trim_spin_label");
+    new QLabel(lib_trim_spin,tr("&AutoTrim Threshold:"),this);
   lib_trim_spin_label->setGeometry(25,144,130,19);
   lib_trim_spin_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
   QLabel *lib_trim_spin_unit=new QLabel(tr("dbFS"),this);
@@ -362,13 +359,28 @@ EditRDLibrary::EditRDLibrary(RDStation *station,RDStation *cae_station,
   lib_isrc_box->insertItem(tr("Yes"));
   lib_isrc_box->setCurrentItem(lib_lib->readIsrc());
   lib_riplevel_spin->setValue(lib_lib->ripperLevel()/100);
-  lib_format_box->insertItem(tr("PCM16"));
-  lib_format_box->insertItem(tr("MPEG Layer 2"));
-  lib_format_box->setCurrentItem(lib_lib->defaultFormat());
   lib_channels_box->insertItem("1");
   lib_channels_box->insertItem("2");
   lib_channels_box->setCurrentItem(lib_lib->defaultChannels()-1);
-  ShowBitRates(lib_lib->defaultFormat(),lib_lib->defaultBitrate());
+  lib_format_box->insertItem(tr("PCM16"));
+  lib_format_box->insertItem(tr("PCM24"));
+  lib_format_box->insertItem(tr("MPEG Layer 2"));
+  switch(lib_lib->defaultFormat()) {
+  case 0:  // PCM16
+    lib_format_box->setCurrentItem(0);
+    ShowBitRates(0,lib_lib->defaultBitrate());
+    break;
+
+  case 1:  // MPEG L2
+    lib_format_box->setCurrentItem(2);
+    ShowBitRates(2,lib_lib->defaultBitrate());
+    break;
+
+  case 2:  // PCM24
+    lib_format_box->setCurrentItem(1);
+    ShowBitRates(1,lib_lib->defaultBitrate());
+    break;
+  }
   lib_recmode_box->insertItem(tr("Manual"));
   lib_recmode_box->insertItem(tr("VOX"));
   switch(lib_lib->defaultRecordMode()) {
@@ -440,10 +452,22 @@ void EditRDLibrary::okData()
   lib_lib->setParanoiaLevel(lib_paranoia_box->currentItem());
   lib_lib->setReadIsrc(lib_isrc_box->currentItem());
   lib_lib->setRipperLevel(lib_riplevel_spin->value()*100);
-  lib_lib->setDefaultFormat(lib_format_box->currentItem());
+  switch(lib_format_box->currentItem()) {
+  case 0:  // PCM16
+    lib_lib->setDefaultFormat(0);
+    break;
+
+  case 1:  // PCM24
+    lib_lib->setDefaultFormat(2);
+    break;
+
+  case 2:  // MPEG L2
+    lib_lib->setDefaultFormat(1);
+    break;
+  }
   lib_lib->setDefaultChannels(lib_channels_box->currentItem()+1);
   rate=0;
-  if(lib_format_box->currentItem()!=0) {
+  if(lib_format_box->currentItem()==2) {
     sscanf(lib_bitrate_box->currentText(),"%d",&rate);
   }
   lib_lib->setDefaultBitrate(rate*1000);
@@ -484,143 +508,145 @@ void EditRDLibrary::ShowBitRates(int layer,int rate)
 {
   lib_bitrate_box->clear();
   switch(layer) {
-      case 0:  // PCM16
-	lib_bitrate_box->setDisabled(true);
-	break;
+  case 0:  // PCM16
+  case 1:  // PCM24
+    lib_bitrate_box->setDisabled(true);
+    break;
 
-      case 1:  // MPEG-1 Layer 2
-	lib_bitrate_box->setEnabled(true);
-	lib_bitrate_box->insertItem(tr("32 kbps/chan"));
-	lib_bitrate_box->insertItem(tr("48 kbps/chan"));
-	lib_bitrate_box->insertItem(tr("56 kbps/chan"));
-	lib_bitrate_box->insertItem(tr("64 kbps/chan"));
-	lib_bitrate_box->insertItem(tr("80 kbps/chan"));
-	lib_bitrate_box->insertItem(tr("96 kbps/chan"));
-	lib_bitrate_box->insertItem(tr("112 kbps/chan"));
-	lib_bitrate_box->insertItem(tr("128 kbps/chan"));
-	lib_bitrate_box->insertItem(tr("160 kbps/chan"));
-	lib_bitrate_box->insertItem(tr("192 kbps/chan"));
-	switch(lib_lib->defaultBitrate()) {
-	    case 32000:
-	      lib_bitrate_box->setCurrentItem(0);
-	      break;
+  case 2:  // MPEG-1 Layer 2
+    lib_bitrate_box->setEnabled(true);
+    lib_bitrate_box->insertItem(tr("32 kbps/chan"));
+    lib_bitrate_box->insertItem(tr("48 kbps/chan"));
+    lib_bitrate_box->insertItem(tr("56 kbps/chan"));
+    lib_bitrate_box->insertItem(tr("64 kbps/chan"));
+    lib_bitrate_box->insertItem(tr("80 kbps/chan"));
+    lib_bitrate_box->insertItem(tr("96 kbps/chan"));
+    lib_bitrate_box->insertItem(tr("112 kbps/chan"));
+    lib_bitrate_box->insertItem(tr("128 kbps/chan"));
+    lib_bitrate_box->insertItem(tr("160 kbps/chan"));
+    lib_bitrate_box->insertItem(tr("192 kbps/chan"));
+    switch(lib_lib->defaultBitrate()) {
+    case 32000:
+      lib_bitrate_box->setCurrentItem(0);
+      break;
+      
+    case 48000:
+      lib_bitrate_box->setCurrentItem(1);
+      break;
+      
+    case 56000:
+      lib_bitrate_box->setCurrentItem(2);
+      break;
+      
+    case 64000:
+      lib_bitrate_box->setCurrentItem(3);
+      break;
+      
+    case 80000:
+      lib_bitrate_box->setCurrentItem(4);
+      break;
+  
+    case 96000:
+      lib_bitrate_box->setCurrentItem(5);
+      break;
 
-	    case 48000:
-	      lib_bitrate_box->setCurrentItem(1);
-	      break;
+    case 112000:
+      lib_bitrate_box->setCurrentItem(6);
+      break;
 
-	    case 56000:
-	      lib_bitrate_box->setCurrentItem(2);
-	      break;
+    case 128000:
+      lib_bitrate_box->setCurrentItem(7);
+      break;
 
-	    case 64000:
-	      lib_bitrate_box->setCurrentItem(3);
-	      break;
+    case 160000:
+      lib_bitrate_box->setCurrentItem(8);
+      break;
 
-	    case 80000:
-	      lib_bitrate_box->setCurrentItem(4);
-	      break;
+    case 192000:
+      lib_bitrate_box->setCurrentItem(9);
+      break;
 
-	    case 96000:
-	      lib_bitrate_box->setCurrentItem(5);
-	      break;
+    default:
+      lib_bitrate_box->setCurrentItem(7);   // 128 kbps/chan
+      break;
+    }
+    break;
 
-	    case 112000:
-	      lib_bitrate_box->setCurrentItem(6);
-	      break;
+    /*
+  case 2:  // MPEG-1 Layer 3
+    lib_bitrate_box->setEnabled(true);
+    lib_bitrate_box->insertItem(tr("32 kbps/chan"));
+    lib_bitrate_box->insertItem(tr("40 kbps/chan"));
+    lib_bitrate_box->insertItem(tr("48 kbps/chan"));
+    lib_bitrate_box->insertItem(tr("56 kbps/chan"));
+    lib_bitrate_box->insertItem(tr("64 kbps/chan"));
+    lib_bitrate_box->insertItem(tr("80 kbps/chan"));
+    lib_bitrate_box->insertItem(tr("96 kbps/chan"));
+    lib_bitrate_box->insertItem(tr("112 kbps/chan"));
+    lib_bitrate_box->insertItem(tr("128 kbps/chan"));
+    lib_bitrate_box->insertItem(tr("160 kbps/chan"));
+    lib_bitrate_box->insertItem(tr("192 kbps/chan"));
+    lib_bitrate_box->insertItem(tr("224 kbps/chan"));
+    lib_bitrate_box->insertItem(tr("256 kbps/chan"));
+    lib_bitrate_box->insertItem(tr("320 kbps/chan"));
+    switch(lib_lib->defaultLayer()) {
+    case 32000:
+      lib_bitrate_box->setCurrentItem(0);
+      break;
 
-	    case 128000:
-	      lib_bitrate_box->setCurrentItem(7);
-	      break;
+    case 40000:
+      lib_bitrate_box->setCurrentItem(1);
+      break;
 
-	    case 160000:
-	      lib_bitrate_box->setCurrentItem(8);
-	      break;
+    case 48000:
+      lib_bitrate_box->setCurrentItem(2);
+      break;
 
-	    case 192000:
-	      lib_bitrate_box->setCurrentItem(9);
-	      break;
+    case 56000:
+      lib_bitrate_box->setCurrentItem(3);
+      break;
 
-	    default:
-	      lib_bitrate_box->setCurrentItem(7);   // 128 kbps/chan
-	      break;
-	}
-	break;
+    case 64000:
+      lib_bitrate_box->setCurrentItem(4);
+      break;
 
-      case 2:  // MPEG-1 Layer 3
-	lib_bitrate_box->setEnabled(true);
-	lib_bitrate_box->insertItem(tr("32 kbps/chan"));
-	lib_bitrate_box->insertItem(tr("40 kbps/chan"));
-	lib_bitrate_box->insertItem(tr("48 kbps/chan"));
-	lib_bitrate_box->insertItem(tr("56 kbps/chan"));
-	lib_bitrate_box->insertItem(tr("64 kbps/chan"));
-	lib_bitrate_box->insertItem(tr("80 kbps/chan"));
-	lib_bitrate_box->insertItem(tr("96 kbps/chan"));
-	lib_bitrate_box->insertItem(tr("112 kbps/chan"));
-	lib_bitrate_box->insertItem(tr("128 kbps/chan"));
-	lib_bitrate_box->insertItem(tr("160 kbps/chan"));
-	lib_bitrate_box->insertItem(tr("192 kbps/chan"));
-	lib_bitrate_box->insertItem(tr("224 kbps/chan"));
-	lib_bitrate_box->insertItem(tr("256 kbps/chan"));
-	lib_bitrate_box->insertItem(tr("320 kbps/chan"));
-	switch(lib_lib->defaultLayer()) {
-	    case 32000:
-	      lib_bitrate_box->setCurrentItem(0);
-	      break;
+    case 80000:
+      lib_bitrate_box->setCurrentItem(5);
+      break;
 
-	    case 40000:
-	      lib_bitrate_box->setCurrentItem(1);
-	      break;
+    case 96000:
+      lib_bitrate_box->setCurrentItem(6);
+      break;
 
-	    case 48000:
-	      lib_bitrate_box->setCurrentItem(2);
-	      break;
+    case 112000:
+      lib_bitrate_box->setCurrentItem(7);
+      break;
 
-	    case 56000:
-	      lib_bitrate_box->setCurrentItem(3);
-	      break;
+    case 128000:
+      lib_bitrate_box->setCurrentItem(8);
+      break;
 
-	    case 64000:
-	      lib_bitrate_box->setCurrentItem(4);
-	      break;
+    case 160000:
+      lib_bitrate_box->setCurrentItem(9);
+      break;
 
-	    case 80000:
-	      lib_bitrate_box->setCurrentItem(5);
-	      break;
+    case 192000:
+      lib_bitrate_box->setCurrentItem(10);
+      break;
 
-	    case 96000:
-	      lib_bitrate_box->setCurrentItem(6);
-	      break;
+    case 224000:
+      lib_bitrate_box->setCurrentItem(11);
+      break;
 
-	    case 112000:
-	      lib_bitrate_box->setCurrentItem(7);
-	      break;
+    case 256000:
+      lib_bitrate_box->setCurrentItem(12);
+      break;
 
-	    case 128000:
-	      lib_bitrate_box->setCurrentItem(8);
-	      break;
-
-	    case 160000:
-	      lib_bitrate_box->setCurrentItem(9);
-	      break;
-
-	    case 192000:
-	      lib_bitrate_box->setCurrentItem(10);
-	      break;
-
-	    case 224000:
-	      lib_bitrate_box->setCurrentItem(11);
-	      break;
-
-	    case 256000:
-	      lib_bitrate_box->setCurrentItem(12);
-	      break;
-
-	    case 320000:
-	      lib_bitrate_box->setCurrentItem(13);
-	      break;
-	}
-	break;
-
+    case 320000:
+      lib_bitrate_box->setCurrentItem(13);
+      break;
+    }
+    break;
+    */
   }
 }

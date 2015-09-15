@@ -114,9 +114,8 @@ using namespace std;
 class RDWaveFile
 {
  public:
-  enum Encoding {Raw=0,Signed16Int=1,Signed32Float=2};
   enum Format {Pcm8=0,Pcm16=1,Float32=2,MpegL1=3,MpegL2=4,MpegL3=5,
-	       DolbyAc2=6,DolbyAc3=7,Vorbis=8};
+  	       DolbyAc2=6,DolbyAc3=7,Vorbis=8,Pcm24=9};
   enum Type {Unknown=0,Wave=1,Mpeg=2,Ogg=3,Atx=4,Tmc=5,Flac=6,Ambos=7,
 	     Aiff=8,M4A=9};
   enum MpegID {NonMpeg=0,Mpeg1=1,Mpeg2=2};
@@ -218,17 +217,6 @@ class RDWaveFile
    * Returns the length of the contents of the DATA chunk, in bytes.
    **/
    unsigned getDataLength() const;
-
-  /**
-   * Returns the current encoding type.
-   **/
-   RDWaveFile::Encoding encoding() const;
-
-  /**
-   * Set the encoding type.
-   * @param code The encoding to use.
-   **/
-   void setEncoding(RDWaveFile::Encoding code);
 
   /**
    * Read a block of data from the DATA chunk, using the current 
@@ -1208,7 +1196,7 @@ class RDWaveFile
 
    unsigned char *cook_buffer;
    int cook_buffer_size;
-   RDWaveFile::Encoding cook_encoding;
+   //   RDWaveFile::Encoding cook_encoding;
    float encode_quality;
    int serial_number;
    int atx_offset;

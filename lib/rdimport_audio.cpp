@@ -478,7 +478,7 @@ void RDImportAudio::selectOutputFileData()
 void RDImportAudio::selectOutputFormatData()
 {
   RDExportSettingsDialog *dialog=
-    new RDExportSettingsDialog(import_settings,import_station,this,"dialog");
+    new RDExportSettingsDialog(import_settings,import_station,this);
   dialog->exec();
   delete dialog;
   import_format_edit->setText(import_settings->description());

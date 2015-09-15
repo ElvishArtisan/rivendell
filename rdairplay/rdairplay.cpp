@@ -77,7 +77,6 @@ RDAirPlayConf *rdairplay_conf;
 RDAudioPort *rdaudioport_conf;
 RDUser *rduser;
 RDRipc *rdripc;
-RDCae *rdcae;
 RDEventPlayer *rdevent_player;
 RDCartDialog *rdcart_dialog;
 RDConfig *air_config;
@@ -328,14 +327,14 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // CAE Connection
   //
-  rdcae=new RDCae(rdstation_conf,air_config,parent,name);
-  rdcae->connectHost();
+  air_cae=new RDCae(rdstation_conf,air_config,parent,name);
+  air_cae->connectHost();
 
   //
   // Set Audio Assignments
   //
   air_segue_length=rdairplay_conf->segueLength()+1;
-  RDSetMixerPorts(air_config->stationName(),rdcae);
+  RDSetMixerPorts(air_config->stationName(),air_cae);
 
   //
   // RIPC Connection
@@ -372,7 +371,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   connect(rename_mapper,SIGNAL(mapped(int)),this,SLOT(logRenamedData(int)));
   QString default_svcname=rdairplay_conf->defaultSvc();
   for(int i=0;i<RDAIRPLAY_LOG_QUANTITY;i++) {
-    air_log[i]=new LogPlay(rdcae,i,air_nownext_socket,"",&air_plugin_hosts);
+    air_log[i]=new LogPlay(i,air_nownext_socket,"",&air_plugin_hosts);
     air_log[i]->setDefaultServiceName(default_svcname);
     air_log[i]->setNowCart(rdairplay_conf->logNowCart(i));
     air_log[i]->setNextCart(rdairplay_conf->logNextCart(i));
@@ -433,7 +432,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   rdcart_dialog=
     new RDCartDialog(&air_add_filter,&air_add_group,&air_add_schedcode,
-		     rdcae,rdripc,rdstation_conf,rdsystem_conf,air_config,this);
+		     air_cae,rdripc,rdstation_conf,rdsystem_conf,air_config,this);
 
   //
   // Wall Clock
@@ -644,7 +643,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
 		       rdairplay_conf->panels(RDAirPlayConf::UserPanel),
 		       rdairplay_conf->flashPanel(),
 		       rdairplay_conf->buttonLabelTemplate(),false,
-		       rdevent_player,rdripc,rdcae,rdstation_conf,
+		       rdevent_player,rdripc,air_cae,rdstation_conf,
 		       rdcart_dialog,this);
     air_panel->setLogfile(air_config->airplayLogname());
     air_panel->setGeometry(510,140,air_panel->sizeHint().width(),
@@ -764,7 +763,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   air_pause_enabled=rdairplay_conf->pauseEnabled();
   for(int i=0;i<RDAIRPLAY_LOG_QUANTITY;i++) {
-    air_log_list[i]=new ListLog(air_log[i],i,air_pause_enabled,this);
+    air_log_list[i]=new ListLog(air_log[i],air_cae,i,air_pause_enabled,this);
     air_log_list[i]->setGeometry(510,140,air_log_list[i]->sizeHint().width(),
 			      air_log_list[i]->sizeHint().height());
     air_log_list[i]->hide();
@@ -829,8 +828,8 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // Button Log
   //
-  air_button_list=
-    new ButtonLog(air_log[0],0,rdairplay_conf,air_pause_enabled,this);
+  air_button_list=new ButtonLog(air_log[0],air_cae,0,rdairplay_conf,
+				air_pause_enabled,this);
   air_button_list->setGeometry(10,140,air_button_list->sizeHint().width(),
 			       air_button_list->sizeHint().height());
   if(mainmap!=NULL) {
@@ -1813,7 +1812,7 @@ void MainWidget::meterData()
 
   for(int i=0;i<AIR_TOTAL_PORTS;i++) {
     if(FirstPort(i)) {
-      rdcae->outputMeterUpdate(air_meter_card[i],air_meter_port[i],level);
+      air_cae->outputMeterUpdate(air_meter_card[i],air_meter_port[i],level);
       for(int j=0;j<2;j++) {
 	ratio[j]+=pow(10.0,((double)level[j])/1000.0);
       }
@@ -1979,7 +1978,11 @@ void MainWidget::refreshStatusChangedData(bool active)
     }
     air_refresh_label->setText("");
   }
-  qApp->processEvents();
+  //
+  // FIXME: Disabled in 2.10.3caefix05 due to segfault problems.
+  //        Do we really need this?
+  //
+  //  qApp->processEvents();
 }
 
 

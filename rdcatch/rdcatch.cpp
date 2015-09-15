@@ -2,9 +2,7 @@
 //
 // The Event Schedule Manager for Rivendell.
 //
-//   (C) Copyright 2002-2006 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdcatch.cpp,v 1.127.4.8 2014/02/11 23:46:30 cvs Exp $
+//   (C) Copyright 2002-2015 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -1762,219 +1760,237 @@ void MainWidget::RefreshList()
     l->setText(29,q->value(26).toString());   // Type
     l->setText(32,QString().sprintf("%u",RDDeck::Idle));
     switch((RDRecording::Type)q->value(26).toInt()) {
-	case RDRecording::Recording:
-	  l->setPixmap(0,*catch_record_map);
-	  l->setText(2,QString().sprintf("%s : %dR",
-					 (const char *)q->value(2).toString(),
-					 q->value(23).toInt()));
-	  switch((RDRecording::StartType)q->value(30).toUInt()) {
-	      case RDRecording::HardStart:
-		str=QString(tr("Hard"));
-		l->setText(3,q->value(3).toTime().
-			   toString(QString().sprintf("%s: hh:mm:ss",
-						      (const char *)str)));
-		break;
+    case RDRecording::Recording:
+      l->setPixmap(0,*catch_record_map);
+      l->setText(2,QString().sprintf("%s : %dR",
+				     (const char *)q->value(2).toString(),
+				     q->value(23).toInt()));
+      switch((RDRecording::StartType)q->value(30).toUInt()) {
+      case RDRecording::HardStart:
+	str=QString(tr("Hard"));
+	l->setText(3,q->value(3).toTime().
+		   toString(QString().sprintf("%s: hh:mm:ss",
+					      (const char *)str)));
+	break;
 
-	      case RDRecording::GpiStart:
-		str=QString(tr("Gpi"));
-		l->setText(3,QString().
-			   sprintf("%s: %s,%s,%d:%d,%s",
-				   (const char *)str,
-				   (const char *)q->value(3).
-				   toTime().toString("hh:mm:ss"),
-				   (const char *)q->value(3).toTime().
-				   addMSecs(q->value(31).toInt()).
-				   toString("hh:mm:ss"),
-				   q->value(32).toInt(),
-				   q->value(33).toInt(),
-				   (const char *)QTime().
-				   addMSecs(q->value(34).toUInt()).
-				   toString("mm:ss")));
-		break;
-	  }
-	  switch((RDRecording::EndType)q->value(35).toUInt()) {
-	      case RDRecording::LengthEnd:
-		str=QString(tr("Len"));
-		l->setText(4,QString().sprintf("%s: %s",
-					       (const char *)str,
-					       (const char *)
-					  RDGetTimeLength(q->value(4).toUInt(),
-							 false,false)));
-		break;
+      case RDRecording::GpiStart:
+	str=QString(tr("Gpi"));
+	l->setText(3,QString().
+		   sprintf("%s: %s,%s,%d:%d,%s",
+			   (const char *)str,
+			   (const char *)q->value(3).
+			   toTime().toString("hh:mm:ss"),
+			   (const char *)q->value(3).toTime().
+			   addMSecs(q->value(31).toInt()).
+			   toString("hh:mm:ss"),
+			   q->value(32).toInt(),
+			   q->value(33).toInt(),
+			   (const char *)QTime().
+			   addMSecs(q->value(34).toUInt()).
+			   toString("mm:ss")));
+	break;
+      }
+      switch((RDRecording::EndType)q->value(35).toUInt()) {
+      case RDRecording::LengthEnd:
+	str=QString(tr("Len"));
+	l->setText(4,QString().sprintf("%s: %s",
+				       (const char *)str,
+				       (const char *)
+				       RDGetTimeLength(q->value(4).toUInt(),
+						       false,false)));
+	break;
 
-	      case RDRecording::HardEnd:
-		str=QString(tr("Hard"));
-		l->setText(4,QString().sprintf("%s: %s",
-					       (const char *)str,
-					       (const char *)
-					       q->value(36).toTime().
-					       toString("hh:mm:ss")));
-		break;
+      case RDRecording::HardEnd:
+	str=QString(tr("Hard"));
+	l->setText(4,QString().sprintf("%s: %s",
+				       (const char *)str,
+				       (const char *)
+				       q->value(36).toTime().
+				       toString("hh:mm:ss")));
+	break;
 
-	      case RDRecording::GpiEnd:
-		str=QString(tr("Gpi"));
-		l->setText(4,QString().
-			   sprintf("%s: %s,%s,%d:%d",
-				   (const char *)str,
-				   (const char *)q->value(36).
-				   toTime().toString("hh:mm:ss"),
-				   (const char *)q->value(36).toTime().
-				   addMSecs(q->value(37).toInt()).
-				   toString("hh:mm:ss"),
-				   q->value(38).toInt(),
-				   q->value(39).toInt()));
-		break;
-	  }
-	  str=QString(tr("Cut"));
-	  l->setText(6,QString().
-		     sprintf("%s %s",(const char *)str,
-			     (const char *)q->value(5).toString()));
-	  sql=QString().sprintf("select SWITCH_STATION,SWITCH_MATRIX\
-                                 from DECKS where \
+      case RDRecording::GpiEnd:
+	str=QString(tr("Gpi"));
+	l->setText(4,QString().
+		   sprintf("%s: %s,%s,%d:%d",
+			   (const char *)str,
+			   (const char *)q->value(36).
+			   toTime().toString("hh:mm:ss"),
+			   (const char *)q->value(36).toTime().
+			   addMSecs(q->value(37).toInt()).
+			   toString("hh:mm:ss"),
+			   q->value(38).toInt(),
+			   q->value(39).toInt()));
+	break;
+      }
+      str=QString(tr("Cut"));
+      l->setText(6,QString().
+		 sprintf("%s %s",(const char *)str,
+			 (const char *)q->value(5).toString()));
+      sql=QString().sprintf("select SWITCH_STATION,SWITCH_MATRIX\
+                                 from DECKS where			\
                                  (STATION_NAME=\"%s\")&&(CHANNEL=%d)",
-				(const char *)q->value(2).toString(),
-				q->value(23).toInt());
-	  q1=new RDSqlQuery(sql);
-	  if(q1->first()) {  // Source
-	    l->setText(5,GetSourceName(q1->value(0).toString(),  
-					q1->value(1).toInt(),
-					q->value(13).toInt()));
-	  }
-	  delete q1;
-	  switch((RDSettings::Format)q->value(19).toInt()) {    // Format
-	      case RDSettings::Pcm16:
-		l->setText(20,tr("PCM16"));
-		break;
-	      case RDSettings::MpegL1:
-		l->setText(20,tr("MPEG Layer 1"));
-		break;
-	      case RDSettings::MpegL2:
-	      case RDSettings::MpegL2Wav:
-		l->setText(20,tr("MPEG Layer 2"));
-		break;
-	      case RDSettings::MpegL3:
-		l->setText(20,tr("MPEG Layer 3"));
-		break;
-	      case RDSettings::Flac:
-		l->setText(20,tr("FLAC"));
-		break;
-	      case RDSettings::OggVorbis:
-		l->setText(20,tr("OggVorbis"));
-		break;
-	  }
-	  l->setText(21,q->value(20).toString());   // Channels
-	  l->setText(22,q->value(21).toString());   // Sample Rate
-	  l->setText(23,q->value(22).toString());   // Bit Rate
-	  break;
+			    (const char *)q->value(2).toString(),
+			    q->value(23).toInt());
+      q1=new RDSqlQuery(sql);
+      if(q1->first()) {  // Source
+	l->setText(5,GetSourceName(q1->value(0).toString(),  
+				   q1->value(1).toInt(),
+				   q->value(13).toInt()));
+      }
+      delete q1;
+      switch((RDSettings::Format)q->value(19).toInt()) {    // Format
+      case RDSettings::Pcm16:
+	l->setText(20,tr("PCM16"));
+	break;
 
-	case RDRecording::Playout:
-	  l->setPixmap(0,*catch_playout_map);
-	  l->setText(2,QString().sprintf("%s : %dP",
-					 (const char *)q->value(2).toString(),
-					 q->value(23).toInt()-128));
-	  l->setText(3,q->value(3).toTime().toString("Hard: hh:mm:ss"));
-	  cut=new RDCut(q->value(5).toString());
-	  str=QString(tr("Len"));
-	  if(cut->exists()) {
-	    l->setText(4,QString().sprintf("%s: %s",(const char *)str,
-		   (const char *)RDGetTimeLength(cut->length(),false,false)));
-	  }
-	  delete cut;
-	  str=QString(tr("Cut"));
-	  l->setText(5,QString().
-		     sprintf("%s %s",(const char *)str,
-			     (const char *)q->value(5).toString()));
-	  break;
+      case RDSettings::Pcm24:
+	l->setText(20,tr("PCM24"));
+	break;
 
-	case RDRecording::MacroEvent:
-	  l->setPixmap(0,*catch_macro_map);
-	  l->setText(2,q->value(2).toString());
-	  str=QString(tr("Hard"));
-	  l->setText(3,q->value(3).toTime().
-		     toString(QString().
-			      sprintf("%s: hh:mm:ss",(const char *)str)));
-	  str=QString(tr("Cart"));
-	  l->setText(5,QString().sprintf("%s %06d",(const char *)str,
-					 q->value(24).toInt()));
-	  break;
+      case RDSettings::MpegL1:
+	l->setText(20,tr("MPEG Layer 1"));
+	break;
 
-	case RDRecording::SwitchEvent:
-	  l->setPixmap(0,*catch_switch_map);
-	  l->setText(2,q->value(2).toString());
-	  str=QString(tr("Hard"));
-	  l->setText(3,q->value(3).toTime().
-	       toString(QString().sprintf("%s: hh:mm:ss",(const char *)str)));
-	  l->setText(5,GetSourceName(q->value(2).toString(),  // Source
-				     q->value(23).toInt(),
-				     q->value(13).toInt()));
-	  l->setText(6,GetDestinationName(q->value(2).toString(),  // Dest
-					  q->value(23).toInt(),
-					  q->value(27).toInt()));
-	  break;
+      case RDSettings::MpegL2:
+      case RDSettings::MpegL2Wav:
+	l->setText(20,tr("MPEG Layer 2"));
+	break;
 
-	case RDRecording::Download:
-	  l->setPixmap(0,*catch_download_map);
-	  l->setText(2,q->value(2).toString());
-	  str=QString(tr("Hard"));
-	  l->setText(3,q->value(3).toTime().
-		     toString(QString().
-			      sprintf("%s: hh:mm:ss",(const char *)str)));
-	  str=QString(tr("Cut"));
-	  l->setText(5,q->value(42).toString());
-	  l->setText(6,QString().
-		     sprintf("%s %s",(const char *)str,
-			     (const char *)q->value(5).toString()));
-	  break;
+      case RDSettings::MpegL3:
+	l->setText(20,tr("MPEG Layer 3"));
+	break;
 
-	case RDRecording::Upload:
-	  l->setPixmap(0,*catch_upload_map);
-	  l->setText(2,q->value(2).toString());
-	  str=QString(tr("Hard"));
-	  l->setText(3,q->value(3).toTime().
-		     toString(QString().
-			      sprintf("%s: hh:mm:ss",(const char *)str)));
-	  str=QString(tr("Cut"));
-	  l->setText(5,QString().
-		     sprintf("%s %s",(const char *)str,
-			     (const char *)q->value(5).toString()));
-	  l->setText(6,q->value(42).toString());
-	  switch((RDSettings::Format)q->value(19).toInt()) {    // Format
-	      case RDSettings::Pcm16:
-		l->setText(20,tr("PCM16"));
-		break;
-	      case RDSettings::MpegL1:
-		l->setText(20,tr("MPEG Layer 1"));
-		break;
-	      case RDSettings::MpegL2:
-	      case RDSettings::MpegL2Wav:
-		l->setText(20,tr("MPEG Layer 2"));
-		break;
-	      case RDSettings::MpegL3:
-		l->setText(20,tr("MPEG Layer 3"));
-		break;
-	      case RDSettings::Flac:
-		l->setText(20,tr("FLAC"));
-		break;
-	      case RDSettings::OggVorbis:
-		l->setText(20,tr("OggVorbis"));
-		break;
-	  }
-	  if(q->value(44).toString().isEmpty()) {
-	    l->setText(14,tr("[none]"));
-	  }
-	  else {
-	    l->setText(14,q->value(44).toString());    // Feed Key Name
-	  }
-	  l->setText(21,q->value(20).toString());   // Channels
-	  l->setText(22,q->value(21).toString());   // Sample Rate
-	  if(q->value(22).toInt()==0) {     // Bit Rate/Quality
-	    l->setText(23,QString().sprintf("Qual %d",q->value(43).toInt()));
-	  }
-	  else {
-	    l->setText(23,QString().sprintf("%d kb/sec",
-					    q->value(22).toInt()/1000));
-	  }
-	  break;
+      case RDSettings::Flac:
+	l->setText(20,tr("FLAC"));
+	break;
+
+      case RDSettings::OggVorbis:
+	l->setText(20,tr("OggVorbis"));
+	break;
+      }
+      l->setText(21,q->value(20).toString());   // Channels
+      l->setText(22,q->value(21).toString());   // Sample Rate
+      l->setText(23,q->value(22).toString());   // Bit Rate
+      break;
+
+    case RDRecording::Playout:
+      l->setPixmap(0,*catch_playout_map);
+      l->setText(2,QString().sprintf("%s : %dP",
+				     (const char *)q->value(2).toString(),
+				     q->value(23).toInt()-128));
+      l->setText(3,q->value(3).toTime().toString("Hard: hh:mm:ss"));
+      cut=new RDCut(q->value(5).toString());
+      str=QString(tr("Len"));
+      if(cut->exists()) {
+	l->setText(4,QString().sprintf("%s: %s",(const char *)str,
+				       (const char *)RDGetTimeLength(cut->length(),false,false)));
+      }
+      delete cut;
+      str=QString(tr("Cut"));
+      l->setText(5,QString().
+		 sprintf("%s %s",(const char *)str,
+			 (const char *)q->value(5).toString()));
+      break;
+
+    case RDRecording::MacroEvent:
+      l->setPixmap(0,*catch_macro_map);
+      l->setText(2,q->value(2).toString());
+      str=QString(tr("Hard"));
+      l->setText(3,q->value(3).toTime().
+		 toString(QString().
+			  sprintf("%s: hh:mm:ss",(const char *)str)));
+      str=QString(tr("Cart"));
+      l->setText(5,QString().sprintf("%s %06d",(const char *)str,
+				     q->value(24).toInt()));
+      break;
+
+    case RDRecording::SwitchEvent:
+      l->setPixmap(0,*catch_switch_map);
+      l->setText(2,q->value(2).toString());
+      str=QString(tr("Hard"));
+      l->setText(3,q->value(3).toTime().
+		 toString(QString().sprintf("%s: hh:mm:ss",(const char *)str)));
+      l->setText(5,GetSourceName(q->value(2).toString(),  // Source
+				 q->value(23).toInt(),
+				 q->value(13).toInt()));
+      l->setText(6,GetDestinationName(q->value(2).toString(),  // Dest
+				      q->value(23).toInt(),
+				      q->value(27).toInt()));
+      break;
+
+    case RDRecording::Download:
+      l->setPixmap(0,*catch_download_map);
+      l->setText(2,q->value(2).toString());
+      str=QString(tr("Hard"));
+      l->setText(3,q->value(3).toTime().
+		 toString(QString().
+			  sprintf("%s: hh:mm:ss",(const char *)str)));
+      str=QString(tr("Cut"));
+      l->setText(5,q->value(42).toString());
+      l->setText(6,QString().
+		 sprintf("%s %s",(const char *)str,
+			 (const char *)q->value(5).toString()));
+      break;
+
+    case RDRecording::Upload:
+      l->setPixmap(0,*catch_upload_map);
+      l->setText(2,q->value(2).toString());
+      str=QString(tr("Hard"));
+      l->setText(3,q->value(3).toTime().
+		 toString(QString().
+			  sprintf("%s: hh:mm:ss",(const char *)str)));
+      str=QString(tr("Cut"));
+      l->setText(5,QString().
+		 sprintf("%s %s",(const char *)str,
+			 (const char *)q->value(5).toString()));
+      l->setText(6,q->value(42).toString());
+      switch((RDSettings::Format)q->value(19).toInt()) {    // Format
+      case RDSettings::Pcm16:
+	l->setText(20,tr("PCM16"));
+	break;
+
+      case RDSettings::Pcm24:
+	l->setText(20,tr("PCM24"));
+	break;
+
+      case RDSettings::MpegL1:
+	l->setText(20,tr("MPEG Layer 1"));
+	break;
+
+      case RDSettings::MpegL2:
+      case RDSettings::MpegL2Wav:
+	l->setText(20,tr("MPEG Layer 2"));
+	break;
+
+      case RDSettings::MpegL3:
+	l->setText(20,tr("MPEG Layer 3"));
+	break;
+
+      case RDSettings::Flac:
+	l->setText(20,tr("FLAC"));
+	break;
+
+      case RDSettings::OggVorbis:
+	l->setText(20,tr("OggVorbis"));
+	break;
+      }
+      if(q->value(44).toString().isEmpty()) {
+	l->setText(14,tr("[none]"));
+      }
+      else {
+	l->setText(14,q->value(44).toString());    // Feed Key Name
+      }
+      l->setText(21,q->value(20).toString());   // Channels
+      l->setText(22,q->value(21).toString());   // Sample Rate
+      if(q->value(22).toInt()==0) {     // Bit Rate/Quality
+	l->setText(23,QString().sprintf("Qual %d",q->value(43).toInt()));
+      }
+      else {
+	l->setText(23,QString().sprintf("%d kb/sec",
+					q->value(22).toInt()/1000));
+      }
+      break;
     }
     DisplayExitCode(l,(RDRecording::ExitCode)q->value(28).toInt(),
 		    q->value(45).toString());
@@ -2209,25 +2225,34 @@ void MainWidget::RefreshLine(RDListViewItem *item)
 		       sprintf("Cut %s",(const char *)q->value(5).toString()));
 	  item->setPixmap(0,*catch_record_map);
 	  switch((RDSettings::Format)q->value(19).toInt()) {   // Format
-	      case RDSettings::Pcm16:
-		item->setText(20,tr("PCM16"));
-		break;
-	      case RDSettings::MpegL1:
-		item->setText(20,tr("MPEG Layer 1"));
-		break;
-	      case RDSettings::MpegL2:
-	      case RDSettings::MpegL2Wav:
-		item->setText(20,tr("MPEG Layer 2"));
-		break;
-	      case RDSettings::MpegL3:
-		item->setText(20,tr("MPEG Layer 3"));
-		break;
-	      case RDSettings::Flac:
-		item->setText(20,tr("FLAC"));
-		break;
-	      case RDSettings::OggVorbis:
-		item->setText(20,tr("OggVorbis"));
-		break;
+	  case RDSettings::Pcm16:
+	    item->setText(20,tr("PCM16"));
+	    break;
+
+	  case RDSettings::Pcm24:
+	    item->setText(20,tr("PCM24"));
+	    break;
+
+	  case RDSettings::MpegL1:
+	    item->setText(20,tr("MPEG Layer 1"));
+	    break;
+
+	  case RDSettings::MpegL2:
+	  case RDSettings::MpegL2Wav:
+	    item->setText(20,tr("MPEG Layer 2"));
+	    break;
+
+	  case RDSettings::MpegL3:
+	    item->setText(20,tr("MPEG Layer 3"));
+	    break;
+
+	  case RDSettings::Flac:
+	    item->setText(20,tr("FLAC"));
+	    break;
+
+	  case RDSettings::OggVorbis:
+	    item->setText(20,tr("OggVorbis"));
+	    break;
 	  }
 	  item->setText(21,q->value(20).toString());   // Channels
 	  item->setText(22,q->value(21).toString());   // Sample Rate
@@ -2328,25 +2353,34 @@ void MainWidget::RefreshLine(RDListViewItem *item)
 	    item->setText(14,q->value(43).toString());
 	  }
 	  switch((RDSettings::Format)q->value(19).toInt()) {   // Format
-	      case RDSettings::Pcm16:
-		item->setText(20,tr("PCM16"));
-		break;
-	      case RDSettings::MpegL1:
-		item->setText(20,tr("MPEG Layer 1"));
-		break;
-	      case RDSettings::MpegL2:
-	      case RDSettings::MpegL2Wav:
-		item->setText(20,tr("MPEG Layer 2"));
-		break;
-	      case RDSettings::MpegL3:
-		item->setText(20,tr("MPEG Layer 3"));
-		break;
-	      case RDSettings::Flac:
-		item->setText(20,tr("FLAC"));
-		break;
-	      case RDSettings::OggVorbis:
-		item->setText(20,tr("OggVorbis"));
-		break;
+	  case RDSettings::Pcm16:
+	    item->setText(20,tr("PCM16"));
+	    break;
+
+	  case RDSettings::Pcm24:
+	    item->setText(20,tr("PCM24"));
+	    break;
+
+	  case RDSettings::MpegL1:
+	    item->setText(20,tr("MPEG Layer 1"));
+	    break;
+
+	  case RDSettings::MpegL2:
+	  case RDSettings::MpegL2Wav:
+	    item->setText(20,tr("MPEG Layer 2"));
+	    break;
+
+	  case RDSettings::MpegL3:
+	    item->setText(20,tr("MPEG Layer 3"));
+	    break;
+
+	  case RDSettings::Flac:
+	    item->setText(20,tr("FLAC"));
+	    break;
+
+	  case RDSettings::OggVorbis:
+	    item->setText(20,tr("OggVorbis"));
+	    break;
 	  }
 	  item->setText(21,q->value(20).toString());   // Channels
 	  item->setText(22,q->value(21).toString());   // Sample Rate

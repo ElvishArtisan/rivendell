@@ -2,9 +2,7 @@
 //
 // The ALSA Driver for the Core Audio Engine component of Rivendell
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: cae_alsa.cpp,v 1.48.6.5 2013/06/26 23:18:40 cvs Exp $
+//   (C) Copyright 2002-2015 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -717,6 +715,7 @@ void MainObject::alsaInit(RDStation *station)
   //
   AlsaInitCallback();
   alsa_wave_buffer=new int16_t[RINGBUFFER_SIZE];
+  alsa_wave24_buffer=new uint8_t[2*RINGBUFFER_SIZE];
   //alsa_resample_buffer=new int16_t[2*RINGBUFFER_SIZE];
 
   //
@@ -998,6 +997,13 @@ bool MainObject::alsaLoadRecord(int card,int stream,int coding,int chans,
     alsa_record_wave[card][stream]->setChannels(chans);
     alsa_record_wave[card][stream]->setSamplesPerSec(samprate);
     alsa_record_wave[card][stream]->setBitsPerSample(16);
+    break;
+
+  case 4:  // PCM24
+    alsa_record_wave[card][stream]->setFormatTag(WAVE_FORMAT_PCM);
+    alsa_record_wave[card][stream]->setChannels(chans);
+    alsa_record_wave[card][stream]->setSamplesPerSec(samprate);
+    alsa_record_wave[card][stream]->setBitsPerSample(24);
     break;
 
   case 2:  // MPEG Layer 2
@@ -1733,7 +1739,20 @@ void MainObject::WriteAlsaBuffer(int card,int stream,int16_t *buffer,unsigned le
   alsa_samples_recorded[card][stream]+=frames;
   switch(alsa_record_wave[card][stream]->getFormatTag()) {
   case WAVE_FORMAT_PCM:
-    alsa_record_wave[card][stream]->writeWave(buffer,len);
+    switch(alsa_record_wave[card][stream]->getBitsPerSample()) {
+    case 16:   // PCM16
+      alsa_record_wave[card][stream]->writeWave(buffer,len);
+      break;
+
+    case 24:   // PCM24
+      for(unsigned i=0;i<(len/2);i++) {
+	alsa_wave24_buffer[3*i]=0;      // FIXME: we lose eight bits here!
+	alsa_wave24_buffer[3*i+1]=((uint8_t *)buffer)[2*i];
+	alsa_wave24_buffer[3*i+2]=((uint8_t *)buffer)[2*i+1];
+      }
+      alsa_record_wave[card][stream]->writeWave(alsa_wave24_buffer,3*len/2);
+      break;
+    }
     break;
 
   case WAVE_FORMAT_MPEG:
@@ -1777,12 +1796,30 @@ void MainObject::FillAlsaOutputStream(int card,int stream)
   switch(alsa_play_wave[card][stream]->getFormatTag()) {
   case WAVE_FORMAT_PCM:
   case WAVE_FORMAT_VORBIS:
-    free=(int)((double)free/ratio)/(2*alsa_output_channels[card][stream])*
-      (2*alsa_output_channels[card][stream]);
-    n=alsa_play_wave[card][stream]->readWave(alsa_wave_buffer,free);
-    if(n!=free) {
-      alsa_eof[card][stream]=true;
-      alsa_stop_timer[card][stream]->stop();
+    switch(alsa_play_wave[card][stream]->getBitsPerSample()) {
+    case 16:   // PCM16
+      free=(int)((double)free/ratio)/(2*alsa_output_channels[card][stream])*
+	      (2*alsa_output_channels[card][stream]);
+      n=alsa_play_wave[card][stream]->readWave(alsa_wave_buffer,free);
+      if(n!=free) {
+	alsa_eof[card][stream]=true;
+	alsa_stop_timer[card][stream]->stop();
+      }
+      break;
+
+    case 24:   // PCM24
+      free=(int)((double)free/ratio)/(2*alsa_output_channels[card][stream])*
+	      (2*alsa_output_channels[card][stream]);
+      n=2*alsa_play_wave[card][stream]->readWave(alsa_wave24_buffer,3*free/2)/3;
+      if(n!=free) {
+	alsa_eof[card][stream]=true;
+	alsa_stop_timer[card][stream]->stop();
+	break;
+      }
+      for(int i=0;i<n/2;i++) {
+	((uint8_t *)alsa_wave_buffer)[2*i]=alsa_wave24_buffer[3*i+1];
+	((uint8_t *)alsa_wave_buffer)[2*i+1]=alsa_wave24_buffer[3*i+2];
+      }
     }
     break;
 

@@ -730,6 +730,11 @@ void RecordCut::recordData()
 	  rec_format=RDCae::MpegL2;
 	  break;
 
+	case 2:
+	  rec_cut->setCodingFormat(2);
+	  rec_format=RDCae::Pcm24;
+	  break;
+
 	default:
 	  rec_cut->setCodingFormat(0);
 	  rec_format=RDCae::Pcm16;

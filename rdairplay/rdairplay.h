@@ -222,6 +222,7 @@ class MainWidget : public QWidget
   RDAirPlayConf::GpioType air_channel_gpio_types[RDAirPlayConf::LastChannel];
   std::map<unsigned,QTimer *> air_channel_timers[2];
   RDEmptyCart *air_empty_cart;
+  RDCae *air_cae;
 };
 
 
