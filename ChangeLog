@@ -14947,3 +14947,5 @@
 	* Incremented the package version to 2.10.3pcm24.3.
 2015-09-15 Fred Gleason <fredg@paravelsystems.com>
 	* Added rdcleandirs(8) to the %Files list in rivendell.spec.in.
+2015-09-15 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.10.3pcm24.4.
