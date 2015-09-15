@@ -15316,3 +15316,6 @@
 	'RDLogLine::setEvent()' methods.
 	* Fixed a bug in ''rdairplay/log_play.cpp' that broke individual
 	event timescaling after the timescaling mode was changed dynamically.
+2015-09-15 Todd Baker <bakert@rfa.org>
+	* Fixed a mispelling in 'lib/rdcart.cpp' of the xml 
+	  field averageSegueLength.

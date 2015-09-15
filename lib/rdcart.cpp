@@ -979,7 +979,7 @@ QString RDCart::xml(bool include_cuts) const
 			 RDGetTimeLength(q->value(14).toUInt(),true));
     ret+="  "+RDXmlField("lengthDeviation",
 			 RDGetTimeLength(q->value(15).toUInt(),true));
-    ret+="  "+RDXmlField("averageSegueLenth",
+    ret+="  "+RDXmlField("averageSegueLength",
 			 RDGetTimeLength(q->value(16).toUInt(),true));
     ret+="  "+RDXmlField("averageHookLength",
 			 RDGetTimeLength(q->value(17).toUInt(),true));
