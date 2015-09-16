@@ -5369,5 +5369,10 @@ please check your settings and try again.</source>
 </source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>    PCM24 Linear
+</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 </TS>

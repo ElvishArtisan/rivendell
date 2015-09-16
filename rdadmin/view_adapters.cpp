@@ -105,6 +105,7 @@ ViewAdapters::ViewAdapters(RDStation *rdstation,
       text+=tr("    OggVorbis\n");
     }
     text+=tr("    PCM16 Linear\n");
+    text+=tr("    PCM24 Linear\n");
     text+="\n";
     text+=tr("SUPPORTED EXPORT FORMATS\n");
     if(rdstation->haveCapability(RDStation::HaveFlac)) {
@@ -120,6 +121,7 @@ ViewAdapters::ViewAdapters(RDStation *rdstation,
       text+=tr("    OggVorbis\n");
     }
     text+=tr("    PCM16 Linear\n");
+    text+=tr("    PCM24 Linear\n");
     RDEncoderList *encoders=new RDEncoderList(rdstation->name());
     for(unsigned i=0;i<encoders->encoderQuantity();i++) {
       text+="    "+encoders->encoder(i)->name()+" [Custom]\n";
