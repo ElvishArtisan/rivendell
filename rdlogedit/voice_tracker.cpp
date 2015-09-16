@@ -2485,6 +2485,8 @@ void VoiceTracker::RefreshLine(RDListViewItem *item)
 	}
 	else {
 	  item->setText(4,logline->groupName());
+	  item->setTextColor(4,logline->groupColor(),QFont::Bold);
+
 	  if(logline->originUser().isEmpty()||
 	     (!logline->originDateTime().isValid())) {
 	    item->setText(6,logline->title());

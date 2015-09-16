@@ -15334,3 +15334,6 @@
 2015-09-16 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in 'lib/rdmarkertransport.cpp' that caused the currently
 	selected marker to be drawn in inverse color when clicked on.
+2015-09-16 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'rdlogedit/voice_tracker.cpp' where the Group value
+	would not reflect the configured group color.
