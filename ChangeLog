@@ -15337,3 +15337,6 @@
 2015-09-16 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in 'rdlogedit/voice_tracker.cpp' where the Group value
 	would not reflect the configured group color.
+2015-09-16 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'rdairplay/loglinebox.cpp' where the widget would
+	refuse to accept cart drops after playing a cart.

@@ -837,7 +837,8 @@ void LogLineBox::paintEvent(QPaintEvent *e)
 
 void LogLineBox::dragEnterEvent(QDragEnterEvent *e)
 {
-  e->accept(RDCartDrag::canDecode(e)&&(line_status==RDLogLine::Scheduled));
+  e->accept(RDCartDrag::canDecode(e)&&((line_logline==NULL)||
+		 (line_logline->status()==RDLogLine::Scheduled)));
 }
 
 
