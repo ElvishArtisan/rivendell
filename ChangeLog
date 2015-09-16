@@ -14952,3 +14952,5 @@
 2015-09-16 Fred Gleason <fredg@paravelsystems.com>
 	* Added 'PCM24' to the list of supported import and export formats
 	in 'rdadmin/view_adapters.cpp'.
+2015-09-16 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.10.3pcm24.5.
