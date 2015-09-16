@@ -5921,5 +5921,11 @@ eingeben um die Audioressourcendatenbank zu füllen.</translation>
 </source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>    PCM24 Linear
+</source>
+        <translation type="unfinished">   PCM 24 Linear
+</translation>
+    </message>
 </context>
 </TS>

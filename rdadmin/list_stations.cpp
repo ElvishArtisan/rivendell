@@ -2,9 +2,7 @@
 //
 // List Rivendell Workstations
 //
-//   (C) Copyright 2002-2003 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: list_stations.cpp,v 1.28.6.1 2013/03/09 00:21:12 cvs Exp $
+//   (C) Copyright 2002-2015 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -39,8 +37,8 @@
 #include <add_station.h>
 
 
-ListStations::ListStations(QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+ListStations::ListStations(QWidget *parent)
+  : QDialog(parent,"",true)
 {
   //
   // Fix the Window Size
@@ -63,7 +61,7 @@ ListStations::ListStations(QWidget *parent,const char *name)
   //
   //  Add Button
   //
-  QPushButton *add_button=new QPushButton(this,"add_button");
+  QPushButton *add_button=new QPushButton(this);
   add_button->setGeometry(410,30,80,50);
   add_button->setFont(font);
   add_button->setText(tr("&Add"));
@@ -72,7 +70,7 @@ ListStations::ListStations(QWidget *parent,const char *name)
   //
   //  Edit Button
   //
-  QPushButton *edit_button=new QPushButton(this,"edit_button");
+  QPushButton *edit_button=new QPushButton(this);
   edit_button->setGeometry(410,90,80,50);
   edit_button->setFont(font);
   edit_button->setText(tr("&Edit"));
@@ -81,7 +79,7 @@ ListStations::ListStations(QWidget *parent,const char *name)
   //
   //  Delete Button
   //
-  QPushButton *delete_button=new QPushButton(this,"delete_button");
+  QPushButton *delete_button=new QPushButton(this);
   delete_button->setGeometry(410,150,80,50);
   delete_button->setFont(font);
   delete_button->setText(tr("&Delete"));
@@ -90,7 +88,7 @@ ListStations::ListStations(QWidget *parent,const char *name)
   //
   //  Close Button
   //
-  QPushButton *close_button=new QPushButton(this,"close_button");
+  QPushButton *close_button=new QPushButton(this);
   close_button->setGeometry(410,240,80,50);
   close_button->setDefault(true);
   close_button->setFont(font);
@@ -100,10 +98,9 @@ ListStations::ListStations(QWidget *parent,const char *name)
   //
   // Station List Box
   //
-  list_box=new QListBox(this,"list_box");
+  list_box=new QListBox(this);
   list_box->setGeometry(10,30,390,260);
-  QLabel *list_box_label=new QLabel(list_box,tr("Ho&sts:"),
-				    this,"list_box_label");
+  QLabel *list_box_label=new QLabel(list_box,tr("Ho&sts:"),this);
   list_box_label->setFont(font);
   list_box_label->setGeometry(14,10,85,19);
   connect(list_box,SIGNAL(doubleClicked(QListBoxItem *)),
@@ -135,7 +132,7 @@ void ListStations::addData()
 {
   QString stationname;
 
-  AddStation *add_station=new AddStation(&stationname,this,"add_station");
+  AddStation *add_station=new AddStation(&stationname,this);
   if(add_station->exec()<0) {
     DeleteStation(stationname);
     delete add_station;
@@ -151,8 +148,7 @@ void ListStations::editData()
   if(list_box->currentItem()<0) {
     return;
   }
-  EditStation *edit_station=new EditStation(list_box->currentText(),
-					    this,"edit_station");
+  EditStation *edit_station=new EditStation(list_box->currentText(),this);
   edit_station->exec();
   delete edit_station;
 }

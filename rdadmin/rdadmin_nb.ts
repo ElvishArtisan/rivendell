@@ -5908,5 +5908,10 @@ Sjekk oppsettet ditt og prøv att.</translation>
 </source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>    PCM24 Linear
+</source>
+        <translation type="unfinished">Lineær PCM24</translation>
+    </message>
 </context>
 </TS>

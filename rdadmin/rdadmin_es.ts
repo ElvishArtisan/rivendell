@@ -5923,5 +5923,10 @@ Revise los parámetros e intente de nuevo.</translation>
 </source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>    PCM24 Linear
+</source>
+        <translation type="unfinished">PCM24 lineal</translation>
+    </message>
 </context>
 </TS>

@@ -5901,5 +5901,12 @@ por favor, cheque suas configurações e tente novamente</translation>
 </source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>    PCM24 Linear
+</source>
+        <translation type="unfinished">    PCM24 Linear
+
+</translation>
+    </message>
 </context>
 </TS>

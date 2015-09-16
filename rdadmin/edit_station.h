@@ -2,9 +2,7 @@
 //
 // Edit a Rivendell Workstation
 //
-//   (C) Copyright 2002-2010 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: edit_station.h,v 1.36.4.4 2014/02/11 23:46:27 cvs Exp $
+//   (C) Copyright 2002-2015 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -44,7 +42,7 @@ class EditStation : public QDialog
 {
   Q_OBJECT
   public:
-   EditStation(QString station,QWidget *parent=0,const char *name=0);
+   EditStation(QString station,QWidget *parent=0);
    ~EditStation();
    QSize sizeHint() const;
    QSizePolicy sizePolicy() const;

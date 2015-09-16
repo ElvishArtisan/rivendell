@@ -15328,3 +15328,6 @@
 	* Fixed a bug in 'rivendell.spec.in' that broke the 'make rpm' target.
 2015-09-15 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 2.11.0int01.
+2015-09-16 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'PCM24' to the list of support import and export formats
+	in 'rdadmin/view_adapters.cpp'.
