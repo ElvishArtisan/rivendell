@@ -15329,5 +15329,8 @@
 2015-09-15 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 2.11.0int01.
 2015-09-16 Fred Gleason <fredg@paravelsystems.com>
-	* Added 'PCM24' to the list of support import and export formats
+	* Added 'PCM24' to the list of supported import and export formats
 	in 'rdadmin/view_adapters.cpp'.
+2015-09-16 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'lib/rdmarkertransport.cpp' that caused the currently
+	selected marker to be drawn in inverse color when clicked on.
