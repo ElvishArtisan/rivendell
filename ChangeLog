@@ -14957,3 +14957,6 @@
 2015-09-16 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in 'rdcatchd/rdcatchd.cpp' that broke
 	MPEG-1 Layer 3 exports.
+2015-09-17 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'm4a', 'M4A', 'aac' and 'AAC' file extensions to
+	RD_AUDIO_FILE_FILTER in 'lib/rd.h'.
