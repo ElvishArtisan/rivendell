@@ -14960,3 +14960,5 @@
 2015-09-17 Fred Gleason <fredg@paravelsystems.com>
 	* Added 'm4a', 'M4A', 'aac' and 'AAC' file extensions to
 	RD_AUDIO_FILE_FILTER in 'lib/rd.h'.
+2015-09-17 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.10.3pcm24.6.
