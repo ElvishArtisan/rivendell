@@ -14954,3 +14954,6 @@
 	in 'rdadmin/view_adapters.cpp'.
 2015-09-16 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 2.10.3pcm24.5.
+2015-09-16 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in 'rdcatchd/rdcatchd.cpp' that broke
+	MPEG-1 Layer 3 exports.

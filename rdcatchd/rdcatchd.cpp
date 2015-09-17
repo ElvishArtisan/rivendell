@@ -1974,8 +1974,11 @@ void MainObject::LoadEvent(RDSqlQuery *q,CatchEvent *e,bool add)
     e->setFormat(RDCae::MpegL2);
     break;
 
-  case RDSettings::MpegL1:
   case RDSettings::MpegL3:
+    e->setFormat(RDCae::MpegL3);
+    break;
+
+  case RDSettings::MpegL1:
   case RDSettings::Flac:
   case RDSettings::OggVorbis:
     break;
