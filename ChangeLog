@@ -15347,3 +15347,6 @@
 	* Fixed a bug in 'lib/rdmarkertransport.cpp' that caused to Play
 	cursor intermittently not to appear when click on the waveform
 	display.
+2015-09-18 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'lib/rdmarkerwidget.cpp' that allowed a new
+	marker to be placed without its corresponding partner.
