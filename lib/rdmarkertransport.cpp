@@ -44,6 +44,7 @@ RDMarkerTransport::RDMarkerTransport(RDCut *cut,RDCae *cae,int card,int port,
   trans_is_stopped=false;
   trans_use_looping=false;
   trans_is_looping=false;
+  trans_active_marker=RDMarkerWaveform::Play;
 
   //
   // CAE Control

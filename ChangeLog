@@ -15343,3 +15343,7 @@
 2015-09-17 Fred Gleason <fredg@paravelsystems.com>
 	* Added 'm4a', 'M4A', 'aac' and 'AAC' file extensions to
 	RD_AUDIO_FILE_FILTER in 'lib/rd.h'.
+2015-09-18 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'lib/rdmarkertransport.cpp' that caused to Play
+	cursor intermittently not to appear when click on the waveform
+	display.
