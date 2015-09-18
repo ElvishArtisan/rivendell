@@ -14962,3 +14962,6 @@
 	RD_AUDIO_FILE_FILTER in 'lib/rd.h'.
 2015-09-17 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 2.10.3pcm24.6.
+2015-09-18 Fred Gleason <fredg@paravelsystems.com>
+	* Updated 'NEWS'.
+	* Updated the package version to 2.11.0.
