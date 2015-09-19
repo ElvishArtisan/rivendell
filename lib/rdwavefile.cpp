@@ -1260,6 +1260,7 @@ void RDWaveFile::getSettings(RDSettings *settings)
 {
   switch(type()) {
   case RDWaveFile::Pcm8:
+  case RDWaveFile::M4A:
   case RDWaveFile::Aiff:
     // FIXME
     break;
