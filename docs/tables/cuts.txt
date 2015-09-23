@@ -35,7 +35,7 @@ PLAY_COUNTER         int(10) unsigned
 LOCAL_COUNTER        int(10)           Resets when cart structure changes
 VALIDITY             int(10)           0 = Invalid, 1 = Conditionally Valid,
                                        2 = Valid
-CODING_FORMAT        int(10) unsigned  0 = PCM16, 2 = Layer-2, 3 = Layer-3 
+CODING_FORMAT        int(10) unsigned  0 = PCM16, 1 = Layer-2, 2 = PCM24 
 SAMPLE_RATE          int(10) unsigned  In samples/sec
 BIT_RATE             int(10) unsigned  In bits/sec,  PCM16 = 0
 CHANNELS             int(10) unsigned  1 = mono, 2 = stereo

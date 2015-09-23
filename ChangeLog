@@ -14965,3 +14965,6 @@
 2015-09-18 Fred Gleason <fredg@paravelsystems.com>
 	* Updated 'NEWS'.
 	* Updated the package version to 2.11.0.
+2015-09-23 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdcatchd(8) that caused unstable operation
+	of record events when using MPEG L2 format.

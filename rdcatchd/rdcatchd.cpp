@@ -1251,7 +1251,28 @@ bool MainObject::StartRecording(int event)
   //
   // Set Temp Name
   //
-  RDCae::AudioCoding format=catch_events[event].format();
+  // FIXME: This is really nasty.  We should only have a single data type
+  //        to describe format!
+  //
+  RDCae::AudioCoding format=RDCae::Pcm16;
+  switch(catch_events[event].format()) {
+  case RDSettings::Pcm16:
+  case RDSettings::MpegL1:
+  case RDSettings::MpegL3:
+  case RDSettings::Flac:
+  case RDSettings::OggVorbis:
+    format=RDCae::Pcm16;
+    break;
+
+  case RDSettings::Pcm24:
+    format=RDCae::Pcm24;
+    break;
+
+  case RDSettings::MpegL2:
+  case RDSettings::MpegL2Wav:
+    format=RDCae::MpegL2;
+    break;
+  }
   QString cut_name;
   if(catch_events[event].normalizeLevel()==0) {
     cut_name=catch_events[event].cutName();
@@ -1300,17 +1321,22 @@ bool MainObject::StartRecording(int event)
   cut->setOriginDatetime(QDateTime::currentDateTime());
   cut->setOriginName(catch_config->stationName());
   switch(catch_events[event].format()) {
-      case RDCae::Pcm16:
-	cut->setCodingFormat(0);
-	break;
+  case RDSettings::Pcm16:
+  case RDSettings::MpegL1:
+  case RDSettings::MpegL3:
+  case RDSettings::Flac:
+  case RDSettings::OggVorbis:
+    cut->setCodingFormat(0);
+    break;
 
-      case RDCae::MpegL2:
-	cut->setCodingFormat(1);
-	break;
+  case RDSettings::Pcm24:
+    cut->setCodingFormat(2);
+    break;
 
-      default:
-	cut->setCodingFormat(0);
-	break;
+  case RDSettings::MpegL2:
+  case RDSettings::MpegL2Wav:
+    cut->setCodingFormat(1);
+    break;
   }
   cut->setChannels(catch_events[event].channels());
   cut->setSampleRate(catch_events[event].sampleRate());
@@ -1960,32 +1986,9 @@ void MainObject::LoadEvent(RDSqlQuery *q,CatchEvent *e,bool add)
   e->setTrimThreshold(q->value(16).toUInt());
   e->setStartdateOffset(q->value(17).toUInt());
   e->setEnddateOffset(q->value(18).toUInt());
-  switch((RDSettings::Format)q->value(19).toInt()) {
-  case RDSettings::Pcm16:
-    e->setFormat(RDCae::Pcm16);
-    break;
-
-  case RDSettings::Pcm24:
-    e->setFormat(RDCae::Pcm24);
-    break;
-
-  case RDSettings::MpegL2:
-  case RDSettings::MpegL2Wav:
-    e->setFormat(RDCae::MpegL2);
-    break;
-
-  case RDSettings::MpegL3:
-    e->setFormat(RDCae::MpegL3);
-    break;
-
-  case RDSettings::MpegL1:
-  case RDSettings::Flac:
-  case RDSettings::OggVorbis:
-    break;
-  }
+  e->setFormat((RDSettings::Format)q->value(19).toInt());
   e->setChannels(q->value(20).toInt());
   e->setSampleRate(catch_system->sampleRate());
-  //e->setSampleRate(q->value(21).toInt());
   e->setBitrate(q->value(22).toInt());
   e->setMacroCart(q->value(23).toInt());
   e->setSwitchInput(q->value(24).toInt());
@@ -2355,7 +2358,8 @@ void MainObject::CheckInRecording(QString cutname,CatchEvent *evt,
 {
   RDCut *cut=new RDCut(cutname);
   RDSettings *s=new RDSettings();
-  s->setFormat((RDSettings::Format)evt->format());
+  //  s->setFormat((RDSettings::Format)evt->format());
+  s->setFormat(evt->format());
   s->setSampleRate(evt->sampleRate());
   s->setBitRate(evt->bitrate());
   s->setChannels(evt->channels());
@@ -2752,8 +2756,7 @@ void MainObject::StartRmlRecording(int chan,int cartnum,int cutnum,int maxlen)
   catch_events.back().setStartTime(dt.time());
   catch_events.back().setEndType(RDRecording::LengthEnd);
   catch_events.back().setLength(maxlen);
-  catch_events.back().
-    setFormat((RDCae::AudioCoding)deck->defaultFormat());
+  catch_events.back().setFormat(deck->defaultFormat());
   catch_events.back().setChannels(deck->defaultChannels());
   catch_events.back().setSampleRate(catch_system->sampleRate());
   catch_events.back().setBitrate(deck->defaultBitrate());
