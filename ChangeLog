@@ -15322,3 +15322,6 @@
 2015-09-15 Todd Baker <bakert@rfa.org>
 	* Fixed a bug in 'lib/rdcut.cpp' that caused the MYSQL query 
 	  string in the xml() function to have the wrong number of columns.
+2015-09-24 Todd Baker <bakert@rfa.org>
+	* Fixed a typo in 'doc/webapi.odt'. The EditCuts command should have had HookStart Point
+	  instead of SegueEnd Point.
