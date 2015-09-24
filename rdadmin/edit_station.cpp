@@ -2,9 +2,7 @@
 //
 // Edit a Rivendell Workstation Configuration
 //
-//   (C) Copyright 2002-2010 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: edit_station.cpp,v 1.57.4.12 2014/03/05 17:59:39 cvs Exp $
+//   (C) Copyright 2002-2015 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -56,8 +54,8 @@
 #include <edit_jack.h>
 #include <globals.h>
 
-EditStation::EditStation(QString sname,QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+EditStation::EditStation(QString sname,QWidget *parent)
+  : QDialog(parent,"",true)
 {
   RDSqlQuery *q;
   QString sql;
@@ -886,7 +884,7 @@ void EditStation::editCartSlotsData()
 
 void EditStation::viewAdaptersData()
 {
-  ViewAdapters *view=new ViewAdapters(station_station,this,"view");
+  ViewAdapters *view=new ViewAdapters(station_station,this);
   view->exec();
   delete view;
 }

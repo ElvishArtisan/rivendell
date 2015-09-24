@@ -14876,6 +14876,7 @@
 	* Implemented a switcher driver for the Ross NK line of video
 	switchers via the SCP/A serial interface in 'ripcd/rossnkscp.cpp'
 	and 'riptcd/rossnkscp.h'.
+<<<<<<< HEAD
 2015-06-02 Fred Gleason <fredg@paravelsystems.com>
 	* Added 'scripts/rdlaunch.pl'.
 2015-06-02 Fred Gleason <fredg@paravelsystems.com>
@@ -14938,6 +14939,11 @@
 	* Fixed a bug in the 'RDTimeSynced()' in 'lib/rdconf.cpp' and
 	'lib/rdconf.h' that caused the false sync failure detection when
 	the underlying NTP layer was advertising an upcoming leap second.
+=======
+2015-06-10 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored 'LogPlay' class to provide per-instance RDCae instances.
+	in 'rdairplay/log_play.cpp' and 'rdairplay/log_play.h'.
+>>>>>>> 8ea404e2cf675361244808731c7bd53b0124dbd5
 2015-07-02 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in 'LogPlay::refresh()' that caused a segfault
 	in 'rdairplay/log_play.cpp'.
@@ -14990,6 +14996,7 @@
 	* Instrumented 'LogPlay::graceTimerData()' in
 	'rdairplay/log_play.cpp'.
 	* Instrumented 'RLMHost::timerData()' in 'rdairplay/rlmhost.cpp'.
+<<<<<<< HEAD
 2015-07-15 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'SVC_CLOCKS' table to the database.
 	* Incremented the database version to 248.
@@ -15135,6 +15142,8 @@
 	log link events in 'rdairplay/loglinebox.cpp'.
 2015-08-05 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 2.10.3int05.
+=======
+>>>>>>> 8ea404e2cf675361244808731c7bd53b0124dbd5
 2015-08-12 Fred Gleason <fredg@paravelsystems.com>
 	* Instrumented the cleanup phase of the 'LogPlay::refresh()' method in
 	'rdairplay/log_play.cpp'.
@@ -15145,8 +15154,6 @@
 	* Removed instrumentation code in 'rdairplay/hourselector.cpp'.
 	* Removed instrumentation code in 'rdairplay/log_play.cpp'.
 	* Removed instrumentation code in 'rdairplay/rlmhost.cpp'.
-2015-08-29 Fred Gleason <fredg@paravelsystems.com>
-	* Incremented the package version to 2.10.3caefix06.
 2015-08-30 Fred Gleason <fredg@paravelsystems.com>
 	* Added an 'RDAudioConvert::Stage3Pcm24()' method in
 	'lib/rdaudioconvert.cpp' and 'lib/rdaudioconvert.h'.
@@ -15317,11 +15324,53 @@
 	* Fixed a bug in ''rdairplay/log_play.cpp' that broke individual
 	event timescaling after the timescaling mode was changed dynamically.
 2015-09-15 Todd Baker <bakert@rfa.org>
-	* Fixed a mispelling in 'lib/rdcart.cpp' of the xml 
+	* Fixed a mispelling in 'lib/rdcart.cpp' of the xml
 	  field averageSegueLength.
 2015-09-15 Todd Baker <bakert@rfa.org>
-	* Fixed a bug in 'lib/rdcut.cpp' that caused the MYSQL query 
+	* Fixed a bug in 'lib/rdcut.cpp' that caused the MYSQL query
 	  string in the xml() function to have the wrong number of columns.
+2015-09-15 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.11.0int00.
+2015-09-15 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'rivendell.spec.in' that broke the 'make rpm' target.
+2015-09-15 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.11.0int01.
+2015-09-09 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'src_float_to_int()' and 'src_int_to_float()' functions in
+	'cae/cae.cpp' and 'cae/cae.h'.
+2015-09-15 Fred Gleason <fredg@paravelsystems.com>
+	* Added rdcleandirs(8) to the %Files list in rivendell.spec.in.
+2015-09-16 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'PCM24' to the list of supported import and export formats
+	in 'rdadmin/view_adapters.cpp'.
+2015-09-16 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'lib/rdmarkertransport.cpp' that caused the currently
+	selected marker to be drawn in inverse color when clicked on.
+2015-09-16 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'rdlogedit/voice_tracker.cpp' where the Group value
+	would not reflect the configured group color.
+2015-09-16 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'rdairplay/loglinebox.cpp' where the widget would
+	refuse to accept cart drops after playing a cart.
+2015-09-16 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in 'rdcatchd/rdcatchd.cpp' that broke
+	MPEG-1 Layer 3 exports.
+2015-09-17 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'm4a', 'M4A', 'aac' and 'AAC' file extensions to
+	RD_AUDIO_FILE_FILTER in 'lib/rd.h'.
+2015-09-17 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'm4a', 'M4A', 'aac' and 'AAC' file extensions to
+	RD_AUDIO_FILE_FILTER in 'lib/rd.h'.
+2015-09-18 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'lib/rdmarkertransport.cpp' that caused to Play
+	cursor intermittently not to appear when click on the waveform
+	display.
+2015-09-18 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'lib/rdmarkerwidget.cpp' that allowed a new
+	marker to be placed without its corresponding partner.
+2015-09-23 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdcatchd(8) that caused unstable operation
+	of record events when using MPEG L2 format.
 2015-09-24 Todd Baker <bakert@rfa.org>
 	* Fixed a typo in 'doc/webapi.odt'. The EditCuts command should have had HookStart Point
 	  instead of SegueEnd Point.

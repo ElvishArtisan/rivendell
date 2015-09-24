@@ -1,6 +1,36 @@
 The NEWS file for the Rivendell package.
 
 -------------------------------------------------------------------------------
+v2.11.0 --  9/18/2015
+
+Changes:
+   New RDCatch Up/Download Protocols.  Added support for 'sftp' and 'scp'
+   protocols .
+
+   MP4/AAC File Importation.  Added support for importing MP4/AAC audio
+   files.  (See the 'INSTALL' file for details regarding additional
+   libraries required to activate).
+
+   New Switcher Support.  Added support for the Ross NK series of video
+   switcher via the Ross SCP/A module.  See the 'SWITCHERS'txt' file for
+   details.
+
+   PCM24 Support.  Added support for using PCM24 in the core audio library.
+
+   CD Ripper.  Refactored CD ripper code to provide faster and more
+   reliable operation.
+
+   Various other bug fixes.  See the ChangeLog for details.
+
+Database Update:
+   This version of Rivendell uses database schema version 245, and will
+   automatically upgrade any earlier versions.  To see the current schema
+   version prior to upgrade, see RDAdmin->SystemInfo.
+
+   As always, be sure to run RDAdmin immediately after upgrading to allow 
+   any necessary changes to the database schema to be applied.
+
+-------------------------------------------------------------------------------
 v2.10.3 --  2/24/2015
 
 Changes:

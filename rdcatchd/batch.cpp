@@ -402,7 +402,7 @@ bool MainObject::Export(CatchEvent *evt)
   conv->setRange(cut->startPoint(),cut->endPoint());
   conv->setDestinationFile(RDEscapeString(evt->tempName()));
   RDSettings *settings=new RDSettings();
-  settings->setFormat((RDSettings::Format)evt->format());
+  settings->setFormat(evt->format());
   settings->setChannels(evt->channels());
   settings->setSampleRate(evt->sampleRate());
   settings->setBitRate(evt->bitrate());
@@ -473,20 +473,9 @@ bool MainObject::Import(CatchEvent *evt)
   conv->setSourceFile(RDEscapeString(evt->tempName()));
   conv->setDestinationFile(RDCut::pathName(evt->cutName()));
   RDSettings *settings=new RDSettings();
-  switch(evt->format()) {
-  case RDCae::Pcm16:
-    settings->setFormat(RDSettings::Pcm16);
-    break;
-
-  case RDCae::Pcm24:
-    settings->setFormat(RDSettings::Pcm24);
-    break;
-
-  case RDCae::MpegL1:
-  case RDCae::MpegL2:
-  case RDCae::MpegL3:
+  settings->setFormat(evt->format());
+  if(settings->format()==RDSettings::MpegL2) {
     settings->setFormat(RDSettings::MpegL2Wav);
-    break;
   }
   settings->setChannels(evt->channels());
   settings->setSampleRate(catch_system->sampleRate());

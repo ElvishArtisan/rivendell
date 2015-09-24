@@ -44,6 +44,7 @@ RDMarkerTransport::RDMarkerTransport(RDCut *cut,RDCae *cae,int card,int port,
   trans_is_stopped=false;
   trans_use_looping=false;
   trans_is_looping=false;
+  trans_active_marker=RDMarkerWaveform::Play;
 
   //
   // CAE Control
@@ -424,7 +425,9 @@ void RDMarkerTransport::positionData(int handle,unsigned msecs)
   if(msecs!=trans_position) {
     trans_position=msecs;
     trans_overall_edit->setText(RDGetTimeLength(msecs,true,true));
-    emit positionChanged(msecs);
+    if(trans_active_marker==RDMarkerWaveform::Play) {
+      emit positionChanged(msecs);
+    }
   }
 }
 

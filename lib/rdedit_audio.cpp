@@ -709,6 +709,10 @@ void RDEditAudio::markerValueChangedData(int id)
       if(edit_marker_widget[id+1]->value()<0) {
 	edit_marker_widget[id+1]->
 	  setValue(edit_marker_widget[id+1]->highLimit());
+	edit_waveform[0]->setCursor((RDMarkerWaveform::CuePoints)(id+1),
+				    edit_marker_widget[id+1]->highLimit());
+	edit_waveform[1]->setCursor((RDMarkerWaveform::CuePoints)(id+1),
+				    edit_marker_widget[id+1]->highLimit());
       }
       if(edit_marker_widget[id]->isSelected()) {
 	edit_marker_transport->

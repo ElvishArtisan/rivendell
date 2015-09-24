@@ -197,26 +197,26 @@ bool RDMarkerWidget::CheckLimits(int value)
   }
   if(mark_lo_marker!=NULL) {
     if((mark_lo_marker->value()!=-1)&&(value<mark_lo_marker->value())) {
-      mark_edit->setText(GetTimeLength(mark_value));
+      setValue(mark_lo_marker->value());
       return false;
     }
   }
   if(mark_hi_marker!=NULL) {
     if((mark_hi_marker->value()!=-1)&&(value>mark_hi_marker->value())) {
-      mark_edit->setText(GetTimeLength(mark_value));
+      setValue(mark_hi_marker->value());
       return false;
     }
   }
 
   if(mark_lo_limit>=0) {
     if(value<mark_lo_limit) {
-      mark_edit->setText(GetTimeLength(mark_value));
+      setValue(mark_lo_limit);
       return false;
     }
   }
   if(mark_hi_limit>=0) {
     if(value>mark_hi_limit) {
-      mark_edit->setText(GetTimeLength(mark_value));
+      setValue(mark_hi_limit);
       return false;
     }
   }

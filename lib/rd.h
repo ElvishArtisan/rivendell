@@ -450,7 +450,7 @@
 /*
  * Audio File Filter for QFileDialog
  */
-#define RD_AUDIO_FILE_FILTER "Sound Files (*.mp* *.MP* *.wav *.WAV *.ogg *.OGG *.flac *.FLAC *.atx *.ATX *.tmc *.TMC *.aif* *.AIF*)\nAIFF Files (*.aif* *.AIF*)\nATX Files (*.atx *.ATX)\nMPEG Files (*.mp* *.MP*)\nOggVorbis Files (*.ogg *.OGG)\nFLAC Files (*.flac *.FLAC)\nTM Century GoldDrive Files (*.tmc *.TMC)\nWAV Files (*.wav *.WAV)\nAll Files (*.*)"
+#define RD_AUDIO_FILE_FILTER "Sound Files (*.mp* *.MP* *.wav *.WAV *.ogg *.OGG *.flac *.FLAC *.atx *.ATX *.tmc *.TMC *.aif* *.AIF* *.m4a *.M4A *.aac *.AAC)\nAIFF Files (*.aif* *.AIF*)\nATX Files (*.atx *.ATX)\nMPEG Files (*.mp* *.MP*)\nOggVorbis Files (*.ogg *.OGG)\nFLAC Files (*.flac *.FLAC)\nTM Century GoldDrive Files (*.tmc *.TMC)\nWAV Files (*.wav *.WAV)\nAll Files (*.*)"
 
 /*
  * Image File Filter for QFileDialog
