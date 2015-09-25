@@ -937,14 +937,34 @@ QString RDCart::xml(bool include_cuts) const
   RDCut *cut;
   QStringList mlist;
 
-  sql=QString().sprintf("select TYPE,GROUP_NAME,TITLE,ARTIST,ALBUM,YEAR,\
-                         LABEL,CLIENT,AGENCY,PUBLISHER,COMPOSER,USER_DEFINED,\
-                         USAGE_CODE,FORCED_LENGTH,AVERAGE_LENGTH,\
-                         LENGTH_DEVIATION,AVERAGE_SEGUE_LENGTH,\
-                         AVERAGE_HOOK_LENGTH,CUT_QUANTITY,LAST_CUT_PLAYED,\
-                         VALIDITY,\
-                         ENFORCE_LENGTH,ASYNCRONOUS,OWNER,METADATA_DATETIME \
-                         from CART where NUMBER=%u",cart_number);
+  sql=QString("select ")+
+    "TYPE,"+                    // 00
+    "GROUP_NAME,"+              // 01
+    "TITLE,"+                   // 02
+    "ARTIST,"+                  // 03
+    "ALBUM,"+                   // 04
+    "YEAR,"+                    // 05
+    "LABEL,"+                   // 06
+    "CLIENT,"+                  // 07
+    "AGENCY,"+                  // 08
+    "PUBLISHER,"+               // 09
+    "COMPOSER,"+                // 10
+    "USER_DEFINED,"+            // 11
+    "USAGE_CODE,"+              // 12
+    "FORCED_LENGTH,"+           // 13
+    "AVERAGE_LENGTH,"+          // 14
+    "LENGTH_DEVIATION,"+        // 15
+    "AVERAGE_SEGUE_LENGTH,"+    // 16
+    "AVERAGE_HOOK_LENGTH,"+     // 17
+    "CUT_QUANTITY,"+            // 18
+    "LAST_CUT_PLAYED,"+         // 19
+    "VALIDITY,"+                // 20
+    "ENFORCE_LENGTH,"+          // 21
+    "ASYNCRONOUS,"+             // 22
+    "OWNER,"+                   // 23
+    "METADATA_DATETIME,"+       // 24
+    "NOTES "+                   // 25
+    QString().sprintf("from CART where NUMBER=%u",cart_number);
   q=new RDSqlQuery(sql);
   if(q->first()) {
     ret+="<cart>\n";
@@ -990,6 +1010,7 @@ QString RDCart::xml(bool include_cuts) const
     ret+="  "+RDXmlField("asyncronous",RDBool(q->value(22).toString()));
     ret+="  "+RDXmlField("owner",q->value(23).toString());
     ret+="  "+RDXmlField("metadataDatetime",q->value(24).toDateTime());
+    ret+="  "+RDXmlField("notes",q->value(25).toString());
       switch(type()) {
       case RDCart::Audio:
 	if(include_cuts) {

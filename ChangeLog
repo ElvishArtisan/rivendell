@@ -15372,5 +15372,8 @@
 	* Fixed a regression in rdcatchd(8) that caused unstable operation
 	of record events when using MPEG L2 format.
 2015-09-24 Todd Baker <bakert@rfa.org>
-	* Fixed a typo in 'doc/webapi.odt'. The EditCuts command should have had HookStart Point
-	  instead of SegueEnd Point.
+	* Fixed a typo in 'doc/webapi.odt'. The EditCuts command should have
+	had HookStart Point instead of SegueEnd Point.
+2015-09-25 Fred Gleason <fredg@paravelsystems.com>
+	* Added '<notes>' to the XML output of 'RDCart::xml()' in
+	'lib/rdcart.cpp'.
