@@ -401,6 +401,14 @@ die für den gewählten Service ungültig sind!</translation>
         <source>EXT DATA</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>TS Block:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditLogLine</name>

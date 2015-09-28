@@ -52,7 +52,7 @@ class EditLog : public QDialog
  Q_OBJECT
  public:
   EditLog(QString logname,vector<RDLogLine> *clipboard,
-	  vector<QString> *new_logs,QWidget *parent=0,const char *name=0);
+	  vector<QString> *new_logs,QWidget *parent=0);
   ~EditLog();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
@@ -94,6 +94,7 @@ class EditLog : public QDialog
   void RefreshLine(RDListViewItem *item);
   void RefreshList();
   void UpdateSelection();
+  void UpdateTimescaleBlock(int start_line,int end_line);
   void RenumberList(int line);
   bool UpdateColor(RDListViewItem *item,RDLogLine *logline);
   void SelectRecord(int id);
@@ -171,6 +172,8 @@ class EditLog : public QDialog
   QLineEdit *edit_stoptime_edit;
   QLabel *edit_endtime_label;
   QLineEdit *edit_endtime_edit;
+  QLabel *edit_block_label;
+  QLineEdit *edit_block_edit;
   QCheckBox *edit_purgedate_box;
   QLabel *edit_purgedate_label;
   QDateEdit *edit_purgedate_edit;

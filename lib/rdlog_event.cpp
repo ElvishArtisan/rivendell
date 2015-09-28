@@ -529,7 +529,7 @@ double RDLogEvent::blockTimescaleRatio(int *err_msecs,int from_line,
     *err_msecs=0;
   }
   else {
-    *err_msecs=(double)(desired_len-actual_len)/ret;
+    *err_msecs=desired_len-actual_len/ret;
   }
 
   return ret;

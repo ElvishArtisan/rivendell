@@ -15381,3 +15381,8 @@
 	* Fixed a bug in 'lib/rdlog_line.cpp' that caused cuts with lengths
 	outside of timescaling limits to fail to play when in individual
 	timescale mode [Gihub issue #000014].
+2015-09-28 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'lib/rdlog_event.cpp' that generated incorrect
+	over/under time estimates for block timescaling.
+	* Added a 'TS Block' counter to RDLogEdit's 'Edit Log' dialog in
+	'rdlogedit/edit_log.cpp' and 'rdlogedit/edit_log.h'.
