@@ -1591,6 +1591,7 @@ void EditLog::UpdateTimescaleBlock(int start_line,int end_line)
   int msecs=0;
   int line=start_line;
   QTime start_time;
+  bool end_time_found=false;
 
   if((start_line<0)||(start_line>=edit_log_event->size())) {
     edit_block_edit->setText("");
@@ -1601,6 +1602,16 @@ void EditLog::UpdateTimescaleBlock(int start_line,int end_line)
       edit_block_edit->setText("");
       return;
     }
+  }
+  for(int i=start_line+1;i<edit_log_event->size();i++) {
+    if(edit_log_event->logLine(i)->timeType()==RDLogLine::Hard) {
+      end_time_found=true;
+      break;
+    }
+  }
+  if(!end_time_found) {
+    edit_block_edit->setText("");
+    return;
   }
   edit_block_label->setEnabled(true);
   edit_block_edit->setEnabled(true);

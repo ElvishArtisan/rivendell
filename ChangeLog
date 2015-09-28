@@ -15386,3 +15386,7 @@
 	over/under time estimates for block timescaling.
 	* Added a 'TS Block' counter to RDLogEdit's 'Edit Log' dialog in
 	'rdlogedit/edit_log.cpp' and 'rdlogedit/edit_log.h'.
+2015-09-28 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'rdlogedit/edit_log.cpp' that caused the TS Block
+	counter to be incorrect for sections of the log with no concluding
+	hard time event.
