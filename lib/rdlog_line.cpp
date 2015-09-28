@@ -1654,8 +1654,16 @@ RDLogLine::State RDLogLine::setEvent(int mach,bool timescale,int len)
     }
     if(timescale) {
       if(len>0) {
-	log_effective_length=len;
-	log_forced_length=len;
+	if(RDCut::validateLength(log_cart_number,log_cut_number,len,
+				 log_timescale_limit)) {
+	  log_effective_length=len;
+	  log_forced_length=len;
+	}
+	else {
+	  log_effective_length=q->value(2).toInt()-q->value(1).toInt();
+	  log_forced_length=log_effective_length;
+	  timescale=false;
+	}
       }
       else {
 	if(log_hook_mode&&
@@ -1666,11 +1674,15 @@ RDLogLine::State RDLogLine::setEvent(int mach,bool timescale,int len)
 	  timescale=false;
 	}
 	else {
-	  log_effective_length=cart->forcedLength();
-	  time_ratio=(double)log_forced_length/
-	    (q->value(2).toDouble()-q->value(1).toDouble());
-	  if(((1.0/time_ratio)<(1.0-log_timescale_limit))||
-	     ((1.0/time_ratio)>(1.0+log_timescale_limit))) {
+	  if(RDCut::validateLength(log_cart_number,log_cut_number,
+				   cart->forcedLength(),log_timescale_limit)) {
+	    log_effective_length=cart->forcedLength();
+	    time_ratio=(double)log_forced_length/
+	      (q->value(2).toDouble()-q->value(1).toDouble());
+	  }
+	  else {
+	    log_effective_length=q->value(2).toInt()-q->value(1).toInt();
+	    log_forced_length=log_effective_length;
 	    timescale=false;
 	  }
 	}
