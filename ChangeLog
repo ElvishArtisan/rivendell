@@ -14996,7 +14996,6 @@
 	* Instrumented 'LogPlay::graceTimerData()' in
 	'rdairplay/log_play.cpp'.
 	* Instrumented 'RLMHost::timerData()' in 'rdairplay/rlmhost.cpp'.
-<<<<<<< HEAD
 2015-07-15 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'SVC_CLOCKS' table to the database.
 	* Incremented the database version to 248.
@@ -15142,8 +15141,6 @@
 	log link events in 'rdairplay/loglinebox.cpp'.
 2015-08-05 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 2.10.3int05.
-=======
->>>>>>> 8ea404e2cf675361244808731c7bd53b0124dbd5
 2015-08-12 Fred Gleason <fredg@paravelsystems.com>
 	* Instrumented the cleanup phase of the 'LogPlay::refresh()' method in
 	'rdairplay/log_play.cpp'.
@@ -15390,3 +15387,6 @@
 	* Fixed a bug in 'rdlogedit/edit_log.cpp' that caused the TS Block
 	counter to be incorrect for sections of the log with no concluding
 	hard time event.
+2015-09-29 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in 'lib/rdlog_event.cpp' that caused the
+	'Next Stop' and 'Log End' counters in RDLogEdit to be incorrect.

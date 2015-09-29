@@ -847,7 +847,7 @@ int RDLogEvent::GetLength(int from_line,int *to_line,QTime *sched_time) const
     *to_line=size();
   }
   for(int i=from_line+1;i<size();i++) {
-    if(logLine(i)->timeType()==RDLogLine::Hard) {
+    if((logLine(i)->timeType()==RDLogLine::Hard)&&(sched_time!=NULL)) {
       *to_line=i;
       if((logLine(i)!=NULL)&&(sched_time!=NULL)) {
 	*sched_time=logLine(i)->startTime(RDLogLine::Logged);
