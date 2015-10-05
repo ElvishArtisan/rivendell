@@ -14876,7 +14876,6 @@
 	* Implemented a switcher driver for the Ross NK line of video
 	switchers via the SCP/A serial interface in 'ripcd/rossnkscp.cpp'
 	and 'riptcd/rossnkscp.h'.
-<<<<<<< HEAD
 2015-06-02 Fred Gleason <fredg@paravelsystems.com>
 	* Added 'scripts/rdlaunch.pl'.
 2015-06-02 Fred Gleason <fredg@paravelsystems.com>
@@ -14939,11 +14938,6 @@
 	* Fixed a bug in the 'RDTimeSynced()' in 'lib/rdconf.cpp' and
 	'lib/rdconf.h' that caused the false sync failure detection when
 	the underlying NTP layer was advertising an upcoming leap second.
-=======
-2015-06-10 Fred Gleason <fredg@paravelsystems.com>
-	* Refactored 'LogPlay' class to provide per-instance RDCae instances.
-	in 'rdairplay/log_play.cpp' and 'rdairplay/log_play.h'.
->>>>>>> 8ea404e2cf675361244808731c7bd53b0124dbd5
 2015-07-02 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in 'LogPlay::refresh()' that caused a segfault
 	in 'rdairplay/log_play.cpp'.
