@@ -15384,3 +15384,6 @@
 2015-09-29 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in 'lib/rdlog_event.cpp' that caused the
 	'Next Stop' and 'Log End' counters in RDLogEdit to be incorrect.
+2015-10-06 Fred Gleason <fredg@paravelsystems.com>
+	* Added Timescale 'Mode', 'Ratio' and 'Block' counters to the
+	Full Log widget in 'rdairplay/list_log.cpp' and 'rdairplay/list_log.h'.

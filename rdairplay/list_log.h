@@ -44,7 +44,7 @@ class ListLog : public QWidget
  Q_OBJECT
  public:
   ListLog(LogPlay *log,RDCae *cae,int id,bool allow_pause=false,
-	  QWidget *parent=0,const char *name=0);
+	  QWidget *parent=0);
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
   void refresh();
@@ -54,6 +54,7 @@ class ListLog : public QWidget
   void setActionMode(RDAirPlayConf::ActionMode mode,int *cartnum=0);
   void setOpMode(RDAirPlayConf::OpMode mode);
   void setTimeMode(RDAirPlayConf::TimeMode mode);
+  void setTimescaleMode(RDLogLine::TimescaleMode mode);
   void userChanged(bool add_allowed,bool delete_allowed,
 		   bool arrange_allowed,bool playout_allowed);
 
@@ -87,6 +88,7 @@ class ListLog : public QWidget
   void modifiedData(int line);
   void refreshabilityChangedData(bool state);
   void cartDroppedData(int line,RDLogLine *ll);
+  void timescaleRatioChangedData(double ratio);
 
  protected:
   void paintEvent(QPaintEvent *e);
@@ -120,6 +122,16 @@ class ListLog : public QWidget
   QLineEdit *list_endtime_edit;
   QLabel *list_stoptime_label;
   QLineEdit *list_stoptime_edit;
+
+  QLabel *list_tsmode_label;
+  QLineEdit *list_tsmode_edit;
+  QLabel *list_tsratio_label;
+  QLineEdit *list_tsratio_edit;
+  QLabel *list_tsblock_label;
+  QLineEdit *list_tsblock_edit;
+
+
+
   QPushButton *list_take_button;
   QPushButton *list_play_button;
   QPushButton *list_modify_button;

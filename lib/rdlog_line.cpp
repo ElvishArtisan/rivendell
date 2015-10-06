@@ -124,6 +124,7 @@ void RDLogLine::clear()
   log_description="";
   log_user_defined="";
   log_usage_code=RDCart::UsageFeature;
+  log_native_length=0;
   log_forced_length=0;
   log_cut_quantity=0;
   log_last_cut_played=0;
@@ -969,6 +970,18 @@ void RDLogLine::setUsageCode(RDCart::UsageCode code)
 }
 
 
+unsigned RDLogLine::nativeLength() const
+{
+  return log_native_length;
+}
+
+
+void RDLogLine::setNativeLength(unsigned len)
+{
+  log_native_length=len;
+}
+
+
 unsigned RDLogLine::forcedLength() const
 {
   return log_forced_length;
@@ -1652,6 +1665,7 @@ RDLogLine::State RDLogLine::setEvent(int mach,bool timescale,int len)
       log_state=RDLogLine::NoCut;
       return RDLogLine::NoCut;
     }
+    log_native_length=q->value(2).toInt()-q->value(1).toInt();
     if(timescale) {
       if(len>0) {
 	if(RDCut::validateLength(log_cart_number,log_cut_number,len,

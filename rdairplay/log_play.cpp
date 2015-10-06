@@ -2060,9 +2060,12 @@ bool LogPlay::StartAudioEvent(int line)
   //
   if(play_timescale_mode==RDLogLine::TimescaleBlock) {
     play_speed_ratio=blockTimescaleRatio(&err_msecs,line);
+    emit timescaleRatioChanged(play_speed_ratio);
   }
   else {
     play_speed_ratio=1.0;
+    emit timescaleRatioChanged((double)logline->forcedLength()/
+			       (double)logline->nativeLength());
   }
   logline->setTimescaleRatio(play_speed_ratio);
 
@@ -2259,6 +2262,9 @@ void LogPlay::FinishEvent(int line)
   }
   UpdateStartTimes(line);
   emit stopped(line);
+  if(!running(false)) {
+    emit timescaleRatioChanged(0.0);
+  }
 }
 
 
@@ -2373,6 +2379,9 @@ QTime LogPlay::GetNextStop(int line)
   if(running!=play_running) {
     play_running=running;
     emit runStatusChanged(running);
+    if(!running) {
+      emit timescaleRatioChanged(0.0);
+    }
   }
   return time;
 }

@@ -165,6 +165,8 @@ class RDLogLine
   void setCartNotes(const QString &str);
   RDCart::UsageCode usageCode() const;
   void setUsageCode(RDCart::UsageCode code);
+  unsigned nativeLength() const;
+  void setNativeLength(unsigned len);
   unsigned forcedLength() const;
   void setForcedLength(unsigned len);
   unsigned averageSegueLength() const;
@@ -322,6 +324,7 @@ class RDLogLine
   QString log_user_defined;
   QString log_cart_notes;
   RDCart::UsageCode log_usage_code;
+  unsigned log_native_length;
   unsigned log_forced_length;
   unsigned log_cut_quantity;
   unsigned log_last_cut_played;

@@ -163,6 +163,7 @@ class LogPlay : public QObject,public RDLogEvent
   void channelStarted(int id,int mport,int card,int port);
   void channelStopped(int id,int mport,int card,int port);
   void timescaleModeChanged(RDLogLine::TimescaleMode mode);
+  void timescaleRatioChanged(double ratio);
 
  private:
   bool StartEvent(int line,RDLogLine::TransType trans_type,int trans_length,

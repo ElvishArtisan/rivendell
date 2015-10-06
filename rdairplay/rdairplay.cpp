@@ -2,9 +2,7 @@
 //
 // The On Air Playout Utility for Rivendell.
 //
-//   (C) Copyright 2002-2010 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdairplay.cpp,v 1.189.2.24 2014/03/02 03:21:52 cvs Exp $
+//   (C) Copyright 2002-2015 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -766,6 +764,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
     air_log_list[i]=new ListLog(air_log[i],air_cae,i,air_pause_enabled,this);
     air_log_list[i]->setGeometry(510,140,air_log_list[i]->sizeHint().width(),
 			      air_log_list[i]->sizeHint().height());
+    air_log_list[i]->setTimescaleMode(rdairplay_conf->timescaleMode(i));
     air_log_list[i]->hide();
     connect(air_log_list[i],SIGNAL(selectClicked(int,int,RDLogLine::Status)),
 	    this,SLOT(selectClickedData(int,int,RDLogLine::Status)));
@@ -1999,10 +1998,12 @@ void MainWidget::setTimescaleMode(int mach,RDLogLine::TimescaleMode mode)
   if((mach==0)||(air_op_mode_style==RDAirPlayConf::Unified)) {
     for(int i=0;i<RDAIRPLAY_LOG_QUANTITY;i++) {
       air_log[i]->setTimescaleMode(mode);
+      air_log_list[i]->setTimescaleMode(mode);
     }
   }
   else {
     air_log[mach-1]->setTimescaleMode(mode);
+    air_log_list[mach-1]->setTimescaleMode(mode);
   }
 }
 

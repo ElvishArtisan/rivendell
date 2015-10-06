@@ -45,8 +45,8 @@
 
 
 ListLog::ListLog(LogPlay *log,RDCae *cae,int id,bool allow_pause,
-		 QWidget *parent,const char *name)
-  : QWidget(parent,name)
+		 QWidget *parent)
+  : QWidget(parent)
 {
   list_id=id;
   list_log=log;
@@ -158,10 +158,10 @@ ListLog::ListLog(LogPlay *log,RDCae *cae,int id,bool allow_pause,
   //
   // Log List
   //
-  list_log_list=new LibListView(this,"list_log_list");
+  list_log_list=new LibListView(this);
   list_log_list->setFont(list_font);
   int y=0;
-  int h=sizeHint().height()-60;
+  int h=sizeHint().height()-80;
   if(rdairplay_conf->showCounters()) {
     h-=60;
   }
@@ -223,13 +223,72 @@ ListLog::ListLog(LogPlay *log,RDCae *cae,int id,bool allow_pause,
   //
   // List Logs Dialog
   //
-  list_logs_dialog=new ListLogs(list_log,this,"list_logs");
+  list_logs_dialog=new ListLogs(list_log,this);
 
   //
-  // Time Counter Section
+  // Timescale Section
   //
-  QLabel *label=new QLabel(tr("Run Length"),this);
-  label->setGeometry(372,sizeHint().height()-120,75,20);
+  QLabel *label=new QLabel(tr("Timescale"),this);
+  label->setGeometry(230,sizeHint().height()-140,75,20);
+  label->setFont(label_font);
+  label->setAlignment(AlignCenter);  
+  label->setBackgroundColor(QColor(system_mid_color));
+  if(!rdairplay_conf->showCounters()) {
+    label->hide();
+  }
+
+  //
+  // Timescale Mode Counter
+  //
+  list_tsmode_edit=new QLineEdit(this);
+  list_tsmode_edit->setGeometry(257,sizeHint().height()-120,70,18);
+  list_tsmode_label=new QLabel(list_tsmode_edit,tr("Mode:"),this);
+  list_tsmode_label->setGeometry(202,sizeHint().height()-120,50,18);
+  list_tsmode_label->setFont(label_font);
+  list_tsmode_label->setAlignment(AlignRight|AlignVCenter);  
+  list_tsmode_label->setBackgroundColor(QColor(system_mid_color));
+  if(!rdairplay_conf->showCounters()) {
+    list_tsmode_edit->hide();
+    list_tsmode_label->hide();
+  }
+
+  //
+  // Timescale Ratio Counter
+  //
+  list_tsratio_edit=new QLineEdit(this);
+  list_tsratio_edit->setGeometry(257,sizeHint().height()-100,70,18);
+  list_tsratio_label=new QLabel(list_tsratio_edit,tr("Ratio:"),this);
+  list_tsratio_label->setGeometry(202,sizeHint().height()-100,50,18);
+  list_tsratio_label->setFont(label_font);
+  list_tsratio_label->setAlignment(AlignRight|AlignVCenter);  
+  list_tsratio_label->setBackgroundColor(QColor(system_mid_color));
+  if(!rdairplay_conf->showCounters()) {
+    list_tsratio_edit->hide();
+    list_tsratio_label->hide();
+  }
+  connect(list_log,SIGNAL(timescaleRatioChanged(double)),
+	  this,SLOT(timescaleRatioChangedData(double)));
+
+  //
+  // Timescale Block Counter
+  //
+  list_tsblock_edit=new QLineEdit(this);
+  list_tsblock_edit->setGeometry(257,sizeHint().height()-80,70,18);
+  list_tsblock_label=new QLabel(list_tsblock_edit,tr("Block:"),this);
+  list_tsblock_label->setGeometry(202,sizeHint().height()-80,50,18);
+  list_tsblock_label->setFont(label_font);
+  list_tsblock_label->setAlignment(AlignRight|AlignVCenter);  
+  list_tsblock_label->setBackgroundColor(QColor(system_mid_color));
+  if(!rdairplay_conf->showCounters()) {
+    list_tsblock_edit->hide();
+    list_tsblock_label->hide();
+  }
+
+  //
+  // Run Length Section
+  //
+  label=new QLabel(tr("Run Length"),this);
+  label->setGeometry(372,sizeHint().height()-140,75,20);
   label->setFont(label_font);
   label->setAlignment(AlignCenter);  
   label->setBackgroundColor(QColor(system_mid_color));
@@ -240,10 +299,10 @@ ListLog::ListLog(LogPlay *log,RDCae *cae,int id,bool allow_pause,
   //
   // Stop Time Counter
   //
-  list_stoptime_edit=new QLineEdit(this,"list_stoptime_edit");
-  list_stoptime_edit->setGeometry(407,sizeHint().height()-100,70,18);
+  list_stoptime_edit=new QLineEdit(this);
+  list_stoptime_edit->setGeometry(407,sizeHint().height()-120,70,18);
   list_stoptime_label=new QLabel(list_stoptime_edit,tr("Next Stop:"),this);
-  list_stoptime_label->setGeometry(337,sizeHint().height()-100,65,18);
+  list_stoptime_label->setGeometry(337,sizeHint().height()-120,65,18);
   list_stoptime_label->setFont(label_font);
   list_stoptime_label->setAlignment(AlignRight|AlignVCenter);  
   list_stoptime_label->setBackgroundColor(QColor(system_mid_color));
@@ -255,10 +314,10 @@ ListLog::ListLog(LogPlay *log,RDCae *cae,int id,bool allow_pause,
   //
   // End Time Counter
   //
-  list_endtime_edit=new QLineEdit(this,"list_endtime_edit");
-  list_endtime_edit->setGeometry(407,sizeHint().height()-80,70,18);
+  list_endtime_edit=new QLineEdit(this);
+  list_endtime_edit->setGeometry(407,sizeHint().height()-100,70,18);
   list_endtime_label=new QLabel(list_endtime_edit,tr("Log End:"),this);
-  list_endtime_label->setGeometry(337,sizeHint().height()-80,65,18);
+  list_endtime_label->setGeometry(337,sizeHint().height()-100,65,18);
   list_endtime_label->setFont(label_font);
   list_endtime_label->setAlignment(AlignRight|AlignVCenter);  
   list_endtime_label->setBackgroundColor(QColor(system_mid_color));
@@ -270,7 +329,7 @@ ListLog::ListLog(LogPlay *log,RDCae *cae,int id,bool allow_pause,
   //
   // Select Button
   //
-  list_take_button=new QPushButton(this,"list_take_button");
+  list_take_button=new QPushButton(this);
   list_take_button->setGeometry(10,sizeHint().height()-55,80,50);
   list_take_button->setFont(font);
   list_take_button->setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
@@ -282,7 +341,7 @@ ListLog::ListLog(LogPlay *log,RDCae *cae,int id,bool allow_pause,
   //
   // Audition Head Button
   //
-  list_head_button=new QPushButton(this,"list_head_button");
+  list_head_button=new QPushButton(this);
   list_head_button->setGeometry(10,sizeHint().height()-113,80,50);
   list_head_button->setFont(font);
   list_head_button->setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
@@ -296,7 +355,7 @@ ListLog::ListLog(LogPlay *log,RDCae *cae,int id,bool allow_pause,
   //
   // Audition Tail Button
   //
-  list_tail_button=new QPushButton(this,"list_tail_button");
+  list_tail_button=new QPushButton(this);
   list_tail_button->setGeometry(90,sizeHint().height()-113,80,50);
   list_tail_button->setFont(font);
   list_tail_button->setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
@@ -310,7 +369,7 @@ ListLog::ListLog(LogPlay *log,RDCae *cae,int id,bool allow_pause,
   //
   // Play Button
   //
-  list_play_button=new QPushButton(this,"list_play_button");
+  list_play_button=new QPushButton(this);
   list_play_button->setGeometry(10,sizeHint().height()-55,80,50);
   list_play_button->setFont(font);
   list_play_button->setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
@@ -322,7 +381,7 @@ ListLog::ListLog(LogPlay *log,RDCae *cae,int id,bool allow_pause,
   //
   // Next Button
   //
-  list_next_button=new QPushButton(this,"list_next_button");
+  list_next_button=new QPushButton(this);
   list_next_button->setGeometry(90,sizeHint().height()-55,80,50);
   list_next_button->setFont(font);
   list_next_button->setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
@@ -334,7 +393,7 @@ ListLog::ListLog(LogPlay *log,RDCae *cae,int id,bool allow_pause,
   //
   // Modify Button
   //
-  list_modify_button=new QPushButton(this,"list_modify_button");
+  list_modify_button=new QPushButton(this);
   list_modify_button->setGeometry(170,sizeHint().height()-55,80,50);
   list_modify_button->setFont(font);
   list_modify_button->setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
@@ -346,7 +405,7 @@ ListLog::ListLog(LogPlay *log,RDCae *cae,int id,bool allow_pause,
   //
   // Scroll Button
   //
-  list_scroll_button=new QPushButton(this,"list_scroll_button");
+  list_scroll_button=new QPushButton(this);
   list_scroll_button->setGeometry(250,sizeHint().height()-55,80,50);
   list_scroll_button->setFont(font);
   list_scroll_button->setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
@@ -358,7 +417,7 @@ ListLog::ListLog(LogPlay *log,RDCae *cae,int id,bool allow_pause,
   //
   // Refresh Button
   //
-  list_refresh_button=new QPushButton(this,"list_refresh_button");
+  list_refresh_button=new QPushButton(this);
   list_refresh_button->setGeometry(330,sizeHint().height()-55,80,50);
   list_refresh_button->setFont(font);
   list_refresh_button->setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
@@ -371,7 +430,7 @@ ListLog::ListLog(LogPlay *log,RDCae *cae,int id,bool allow_pause,
   //
   // Log Load   
   //
-  list_load_button=new QPushButton(this,"list_load_button");
+  list_load_button=new QPushButton(this);
   list_load_button->setGeometry(sizeHint().width()-90,sizeHint().height()-55,
 				80,50);
   list_load_button->setFont(font);
@@ -383,7 +442,7 @@ ListLog::ListLog(LogPlay *log,RDCae *cae,int id,bool allow_pause,
   //
   // Edit Event Dialog
   //
-  list_event_edit=new EditEvent(list_log,list_cae,this,"list_event_edit");
+  list_event_edit=new EditEvent(list_log,list_cae,this);
 
   //
   // Map Slots
@@ -595,6 +654,20 @@ void ListLog::setTimeMode(RDAirPlayConf::TimeMode mode)
   list_time_mode=mode;
   UpdateTimes();
   RefreshList();
+}
+
+
+void ListLog::setTimescaleMode(RDLogLine::TimescaleMode mode)
+{
+  switch(mode) {
+  case RDLogLine::TimescaleIndividual:
+    list_tsmode_edit->setText(tr("Per Cart"));
+    break;
+
+  case RDLogLine::TimescaleBlock:
+    list_tsmode_edit->setText(tr("Time Block"));
+    break;
+  }
 }
 
 
@@ -1099,22 +1172,36 @@ void ListLog::cartDroppedData(int line,RDLogLine *ll)
 }
 
 
+void ListLog::timescaleRatioChangedData(double ratio)
+{
+  if(ratio==0.0) {
+    list_tsratio_edit->setText("");
+  }
+  else {
+    list_tsratio_edit->setText(QString().sprintf("%5.1lf%%",100.0*ratio));
+  }
+}
+
+
 void ListLog::paintEvent(QPaintEvent *e)
 {
   if(!rdairplay_conf->showCounters()) {
     return;
   }
-  int x=336;
-  int y=sizeHint().height()-111;
+  int x=181+20;
+  int y=sizeHint().height()-131;
 
   QPainter *p=new QPainter(this);
   p->setPen(black);
   p->setBrush(black);
   p->moveTo(x,y);
-  p->lineTo(x+146,y);
-  p->lineTo(x+146,y+53);
-  p->lineTo(x,y+53);
+  p->lineTo(x+301-20,y);
+  p->lineTo(x+301-20,y+73);
+  p->lineTo(x,y+73);
   p->lineTo(x,y);
+
+  p->moveTo(x+155-20,y);
+  p->lineTo(x+155-20,y+73);
 
   p->end();
   delete p;

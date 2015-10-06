@@ -405,6 +405,30 @@ vorhören</translation>
         <source>ALBUM</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Timescale</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Mode:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ratio:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Block:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Per Cart</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Time Block</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ListLogs</name>
