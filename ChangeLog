@@ -15387,3 +15387,5 @@
 2015-10-06 Fred Gleason <fredg@paravelsystems.com>
 	* Added Timescale 'Mode', 'Ratio' and 'Block' counters to the
 	Full Log widget in 'rdairplay/list_log.cpp' and 'rdairplay/list_log.h'.
+2015-10-07 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed typos in the rdimport(1) and rdmarkerset(8) man pages.

@@ -1,4 +1,4 @@
-.TH rdimport 1 "July 2015" Linux "Rivendell Radio Automation System"
+.TH rdimport 1 "October 2015" Linux "Rivendell Radio Automation System"
 .SH NAME
 rdimport \- Audio importation tool for the Rivendell Radio Automation System
 
@@ -28,8 +28,8 @@ Specifying '0' will turn off autotrimming.
 
 .TP
 .B --cart-number-offset=<\fIoffset\fP>
-Add <\fIoffset\fP> to the cart number as determined from metadata pattern
-or --use-cartchunk-cutid.
+Add <\fIoffset\fP> to the cart number as determined from
+\fB--metadata-pattern\fP or \fB--use-cartchunk-cutid\fP.
 
 .TP
 .B --clear-datetimes
@@ -47,7 +47,7 @@ the file's import metadata.  Mutually exclusive with the
 .B --create-enddate-offset=<\fIdays\fP>[:<\fIhours\fP>:<\fIminutes\fP>:<\fIseconds\fP>]
 If the imported file does not reference an end date, create with
 end date offset by <\fIdays\fP> days relative to the current date.
-Cannot be less than the value the value for \fB--create-startdate-offset\fP
+Cannot be less than the value for \fB--create-startdate-offset\fP
 (default = 0). If no <\fIhours\fP>, <\fIminutes\fP> or <\fIseconds\fP> values
 are given, the resulting end date will have a time value assigned of 23:59:59
 --i.e. the end of the day, otherwise the time value specified will be added to
@@ -361,7 +361,7 @@ appropriate for use with the \fB--normalization-level\fP option.
 .SH AUTHOR
 Fred Gleason <fredg@paravelsystems.com>
 .SH "SEE ALSO"
-.BR rdmarkerset(8),
+.BR rdmarkerset (8),
 .BR http://www.cartchunk.org/
 
 
