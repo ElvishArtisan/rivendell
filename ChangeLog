@@ -15396,3 +15396,5 @@
 	* Fixed logic in 'lib/rdlog_event.cpp' and 'lib/rdlog_event.h' so as
 	to account for previously played events when calculating timescale
 	block ratios.
+2015-10-07 Fred Gleason <fredg@paravelsystems.com>
+	* Updated debug code in 'lib/rdformpost.cpp'.

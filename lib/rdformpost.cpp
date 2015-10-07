@@ -20,6 +20,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
+#include <errno.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <sys/types.h>
@@ -391,6 +392,12 @@ void RDFormPost::LoadUrlEncoding(char first)
    */
   /*
   int out=open("/tmp/output.dat",O_WRONLY|O_CREAT);
+  if(out<0) {
+    int err=errno;
+    printf("Content-type: text/html\n\n");
+    printf("Couldn't open file [%s]\n",strerror(err));
+    exit(0);
+  }
   write(out,data,post_content_length);
   ::close(out);
   printf("Content-type: text/html\n\n");
@@ -441,6 +448,12 @@ void RDFormPost::LoadMultipartEncoding(char first)
    */
   /*
   int out=open("/tmp/output.dat",O_WRONLY|O_CREAT);
+  if(out<0) {
+    int err=errno;
+    printf("Content-type: text/html\n\n");
+    printf("Couldn't open file [%s]\n",strerror(err));
+    exit(0);
+  }
   while((n=getline(&data,(size_t *)&n,f))>0) {
     write(out,data,n);
   }
@@ -449,7 +462,6 @@ void RDFormPost::LoadMultipartEncoding(char first)
   printf("POST DUMPED TO \"/tmp/output.dat\"!\n");
   exit(0);
   */
-
   if((n=getline(&data,(size_t *)&n,f))<=0) {
     post_error=RDFormPost::ErrorMalformedData;
     return;
