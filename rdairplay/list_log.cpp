@@ -1091,6 +1091,7 @@ void ListLog::selectionChangedData()
       list_stoptime_edit->setText(RDGetTimeLength(list_log->
 		      length(start_line,end_line+1),true,false));
     }
+    UpdateTimescaleBlock(start_line,end_line);
     return;
   }  
   switch(CurrentStatus()) {
@@ -1132,6 +1133,7 @@ void ListLog::selectionChangedData()
     list_endtime_edit->setText("");
     list_stoptime_edit->setText("");
   }
+  UpdateTimescaleBlock(item->text(15).toInt(),item->text(15).toInt());
 }
 
 
@@ -1206,6 +1208,55 @@ void ListLog::paintEvent(QPaintEvent *e)
   p->end();
   delete p;
   
+}
+
+
+void ListLog::UpdateTimescaleBlock(int start_line,int end_line)
+{
+  int msecs=0;
+  int line=start_line;
+  QTime start_time;
+  bool end_time_found=false;
+
+  if((start_line<0)||(start_line>=list_log->size())) {
+    list_tsblock_edit->setText("");
+    return;
+  }
+  for(int i=start_line+1;i<end_line;i++) {  // Do we span a block boundary?
+    if(list_log->logLine(i)->timeType()==RDLogLine::Hard) {
+      list_tsblock_edit->setText("");
+      return;
+    }
+  }
+  for(int i=start_line+1;i<list_log->size();i++) {
+    if(list_log->logLine(i)->timeType()==RDLogLine::Hard) {
+      end_time_found=true;
+      break;
+    }
+  }
+  if(!end_time_found) {
+    list_tsblock_edit->setText("");
+    return;
+  }
+  list_tsblock_label->setEnabled(true);
+  list_tsblock_edit->setEnabled(true);
+  for(int i=start_line;i>=0;i--) {
+    if(list_log->logLine(i)->timeType()==RDLogLine::Hard) {
+      line=i;
+      break;
+    }
+  }
+  start_time=list_log->logLine(line)->startTime(RDLogLine::Logged);
+  if(start_time.isNull()) {  // Start of log
+    start_time.setHMS(0,0,0,1);
+  }
+  list_log->blockTimescaleRatio(&msecs,line,start_time);
+  if(msecs==0) {
+    list_tsblock_edit->setText(tr("OK"));
+  }
+  else {
+    list_tsblock_edit->setText(RDGetTimeLength(msecs,true,false));
+  }
 }
 
 

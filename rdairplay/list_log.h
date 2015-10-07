@@ -95,6 +95,7 @@ class ListLog : public QWidget
 
  private:
   enum PlayButtonMode {ButtonDisabled=0,ButtonPlay=1,ButtonStop=2};
+  void UpdateTimescaleBlock(int start_line,int end_line);
   void RefreshList();
   void RefreshList(int line);
   void RefreshItem(RDListViewItem *l,int line);
