@@ -2,9 +2,7 @@
 //
 // Abstract Rivendell Log Events
 //
-//   (C) Copyright 2002-2003 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdlog_event.h,v 1.36.6.4.2.1 2014/05/22 19:37:44 cvs Exp $
+//   (C) Copyright 2002-2015 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -37,7 +35,7 @@ class RDLogEvent
 {
   public:
    RDLogEvent(QString logname="");
-   ~RDLogEvent();
+   virtual ~RDLogEvent();
    bool exists();
    bool exists(int line);
    bool exists(const QTime &hard_time,int except_line=-1);
@@ -77,15 +75,17 @@ class RDLogEvent
    int nextLinkId() const;
    QString xml() const;
 
-  private:
-   int GetLength(int from_line,int *to_line,QTime *sched_time) const;
-   int LoadLines(const QString &log_table,int id_offset,bool track_ptrs);
-   void SaveLine(int line);
-   void LoadNowNext(unsigned from_line);
-   QString log_name;
-   QString log_service_name;
-   int log_max_id;
-   std::vector<RDLogLine *> log_line;
+ protected:
+  virtual int getLength(int from_line,int *to_line,QTime *sched_time) const;
+
+ private:
+  int LoadLines(const QString &log_table,int id_offset,bool track_ptrs);
+  void SaveLine(int line);
+  void LoadNowNext(unsigned from_line);
+  QString log_name;
+  QString log_service_name;
+  int log_max_id;
+  std::vector<RDLogLine *> log_line;
 };
 
 

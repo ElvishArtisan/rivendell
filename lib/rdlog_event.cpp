@@ -2,9 +2,7 @@
 //
 // Abstract Rivendell Log Events.
 //
-//   (C) Copyright 2002-2014 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdlog_event.cpp,v 1.101.4.13.2.2 2014/05/22 19:37:44 cvs Exp $
+//   (C) Copyright 2002-2015 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -461,13 +459,13 @@ void RDLogEvent::copy(int from_line,int to_line)
 
 int RDLogEvent::length(int from_line,int to_line,QTime *sched_time) const
 {
-  return GetLength(from_line,&to_line,sched_time);
+  return getLength(from_line,&to_line,sched_time);
 }
 
 
 int RDLogEvent::length(int from_line,int *to_line,QTime *sched_time) const
 {
-  return GetLength(from_line,to_line,sched_time);
+  return getLength(from_line,to_line,sched_time);
 }
 
 
@@ -494,7 +492,7 @@ double RDLogEvent::blockTimescaleRatio(int *err_msecs,int from_line,
   double ratio=1.0;
   QTime block_end;
   int to_line=-1;
-  int desired_len=GetLength(from_line,&to_line,&block_end);
+  int desired_len=getLength(from_line,&to_line,&block_end);
   int actual_len=desired_len;
   RDLogLine *logline=NULL;
   
@@ -838,7 +836,7 @@ QString RDLogEvent::xml() const
 }
 
 
-int RDLogEvent::GetLength(int from_line,int *to_line,QTime *sched_time) const
+int RDLogEvent::getLength(int from_line,int *to_line,QTime *sched_time) const
 {
   if(sched_time!=NULL) {
     *sched_time=QTime();
@@ -857,12 +855,15 @@ int RDLogEvent::GetLength(int from_line,int *to_line,QTime *sched_time) const
   }
   int len=0;
   for(int i=from_line;i<*to_line;i++) {
-    if(((i+1)>=size())||(logLine(i+1)->transType()!=RDLogLine::Segue)||
-       (logLine(i)->segueStartPoint()<0)) {
-      len+=logLine(i)->forcedLength();
-    }
-    else {
-      len+=logLine(i)->segueStartPoint()-logLine(i)->startPoint();
+    if((logLine(i)->status()==RDLogLine::Scheduled)||
+       (logLine(i)->status()==RDLogLine::Auditioning)) {
+      if(((i+1)>=size())||(logLine(i+1)->transType()!=RDLogLine::Segue)||
+	 (logLine(i)->segueStartPoint()<0)) {
+	len+=logLine(i)->forcedLength();
+      }
+      else {
+	len+=logLine(i)->segueStartPoint()-logLine(i)->startPoint();
+      }
     }
   }
   return len;

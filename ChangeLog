@@ -15392,3 +15392,7 @@
 2015-10-07 Fred Gleason <fredg@paravelsystems.com>
 	* Enabled the Timescale Block counter in 'rdairplay/list_log.cpp' and
 	'rdairplay/list_log.h'.
+2015-10-07 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed logic in 'lib/rdlog_event.cpp' and 'lib/rdlog_event.h' so as
+	to account for previously played events when calculating timescale
+	block ratios.
