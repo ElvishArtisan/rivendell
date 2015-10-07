@@ -15398,3 +15398,5 @@
 	block ratios.
 2015-10-07 Fred Gleason <fredg@paravelsystems.com>
 	* Updated debug code in 'lib/rdformpost.cpp'.
+2015-10-07 Fred Gleason <fredg@paravelsystems.com>
+	* Updated the package version to 2.11.1int00.
