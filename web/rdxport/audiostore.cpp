@@ -39,7 +39,7 @@ void Xport::AudioStore()
 
   memset(&stat,0,sizeof(stat));
   if(statvfs(xport_config->audioRoot(),&stat)<0) {
-    XmlExit("Internal Error",400);
+    XmlExit("Internal Error",500);
   }
   printf("Content-type: application/xml\n");
   printf("Status: 200\n\n");

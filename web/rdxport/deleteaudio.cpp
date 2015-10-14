@@ -51,7 +51,7 @@ void Xport::DeleteAudio()
   // Process Request
   //
   if((!xport_user->deleteCarts())&&(!xport_user->adminConfig())) {
-    XmlExit("User not authorized",401);
+    XmlExit("Forbidden",403);
   }
   RDCut *cut=new RDCut(cartnum,cutnum);
   if(!cut->exists()) {
