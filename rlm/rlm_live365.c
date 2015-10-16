@@ -281,7 +281,7 @@ void rlm_live365_RLMPadDataSent(void *ptr,const struct rlm_svc *svc,
       strncpy(album,RLMResolveNowNext(ptr,now,next,
 				      rlm_live365_albums+256*i),256);
       rlm_live365_EncodeString(album,1023);
-      snprintf(url,8192,"http://www.live365.com/cgi-bin/add_song.cgi?member_name=%s&password=%s&version=2&filename=Rivendell&seconds=%u&title=%s&artist=%s&album=%s",
+      snprintf(url,8192,"http://www.live365.com/cgi-bin/add_song.cgi?member_name=%s&password=%s&version=2&seconds=%u&title=%s&artist=%s&album=%s",
 	       station,
 	       password,
 	       now->rlm_len/1000,

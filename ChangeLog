@@ -14970,3 +14970,6 @@
 	of record events when using MPEG L2 format.
 2015-09-23 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 2.11.0fmt00.
+2015-10-16 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the 'filename' parameter from the AddSong CGI call
+	in 'rlm/rlm_live365.c'.
