@@ -15400,3 +15400,7 @@
 	* Updated debug code in 'lib/rdformpost.cpp'.
 2015-10-07 Fred Gleason <fredg@paravelsystems.com>
 	* Updated the package version to 2.11.1int00.
+2015-10-16 Fred Gleason <fredg@paravelsystems.com>
+	* Ported 'docs/web_api.odt' to 'docs/docbook/web_api.xml'
+	(XML-DocBook 5).
+	* Added XML-DocBook 5 toolchain information in 'INSTALL'.

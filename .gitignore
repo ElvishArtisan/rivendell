@@ -23,6 +23,8 @@ config.status
 config.sub
 configure
 depcomp
+docs/docbook/*.html
+docs/docbook/*.pdf
 helpers/cwrap
 helpers/jsmin
 importers/nexgen_filter

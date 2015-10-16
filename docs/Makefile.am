@@ -19,7 +19,11 @@
 ##
 ## Use automake to process this into a Makefile.in
 
-SUBDIRS = examples\
+if DOCBOOK_AM
+  DOCBOOK_AM_OPT = docbook
+endif
+
+SUBDIRS = $(DOCBOOK_AM_OPT) examples\
           man\
           tables
 
@@ -50,7 +54,6 @@ EXTRA_DIST = ALSA.txt\
              SAGE_ENDEC.txt\
              scheduler_formats.ods\
              SWITCHERS.txt\
-             web_api.odt\
              WIN32.txt\
 	     WINGS_FILTER.txt
 

@@ -226,6 +226,23 @@ if test -z $MP4V2_DISABLED ; then
 fi
 
 #
+# Check for DocBook Toolchain
+#
+AC_CHECK_PROG(XSLTPROC_FOUND,xsltproc,[yes])
+AC_CHECK_PROG(FOP_FOUND,fop,[yes])
+if test $XSLTPROC_FOUND ; then
+   echo "HERE1"
+   if test $FOP_FOUND ; then
+      echo "HERE2"
+      if test $DOCBOOK_STYLESHEETS ; then
+        echo "HERE3"
+        USING_DOCBOOK=yes
+      fi
+   fi
+fi	
+AM_CONDITIONAL([DOCBOOK_AM], [test "$USING_DOCBOOK" = yes])
+
+#
 # Set Hard Library Dependencies
 #
 AC_SUBST(LIB_RDLIBS,"-lm -lpthread -lqui -lrd -lcurl -lid3 $FLAC_LIBS -lsndfile -lsamplerate -lcdda_interface -lcdda_paranoia -lcrypt -ldl -lpam -lSoundTouch")
@@ -469,6 +486,7 @@ AC_CONFIG_FILES([rivendell.spec \
     web/tests/Makefile \
     conf/Makefile \
     docs/Makefile \
+    docs/docbook/Makefile \
     docs/examples/Makefile \
     docs/man/Makefile \
     docs/tables/Makefile \
@@ -564,6 +582,11 @@ if test -z $USING_PAM ; then
 AC_MSG_NOTICE("|           Rivendell PAM pam_rd.so Support ... No    |")
 else
 AC_MSG_NOTICE("|           Rivendell PAM pam_rd.so Support ... Yes   |")
+fi
+if test -z $USING_DOCBOOK ; then
+AC_MSG_NOTICE("|               DocBook Toolchain Available ... No    |")
+else
+AC_MSG_NOTICE("|               DocBook Toolchain Available ... Yes   |")
 fi
 AC_MSG_NOTICE("|-----------------------------------------------------|")
 AC_MSG_NOTICE()
