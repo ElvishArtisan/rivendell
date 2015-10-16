@@ -14973,3 +14973,6 @@
 2015-10-16 Fred Gleason <fredg@paravelsystems.com>
 	* Removed the 'filename' parameter from the AddSong CGI call
 	in 'rlm/rlm_live365.c'.
+2015-10-16 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'CoverUrlString=' parameter to the configuration for the
+	'rlm_live365' RLM in 'rlm/rlm_live365.c'.
