@@ -19,6 +19,11 @@
 ##
 ## Use automake to process this into a Makefile.in
 
+cae.html:	cae.xml
+	xsltproc -o cae.html $(DOCBOOK_STYLESHEETS)/xhtml/docbook.xsl cae.xml
+cae.pdf:	cae.xml
+	xsltproc $(DOCBOOK_STYLESHEETS)/fo/docbook.xsl cae.xml | fop - -pdf cae.pdf
+
 web_api.html:	web_api.xml
 	xsltproc -o web_api.html $(DOCBOOK_STYLESHEETS)/xhtml/docbook.xsl web_api.xml
 web_api.pdf:	web_api.xml
@@ -31,9 +36,12 @@ web_api.pdf:	web_api.xml
 	xsltproc $(DOCBOOK_STYLESHEETS)/manpages/docbook.xsl $<
 
 
-all-local:	web_api.html web_api.pdf
+all-local:	cae.html cae.pdf web_api.html web_api.pdf
 
-EXTRA_DIST = web_api.html\
+EXTRA_DIST = cae.html\
+             cae.pdf\
+             cae.xml\
+             web_api.html\
              web_api.pdf\
              web_api.xml
 

@@ -30,7 +30,6 @@ SUBDIRS = $(DOCBOOK_AM_OPT) examples\
 EXTRA_DIST = ALSA.txt\
              ando_interface.odt\
              asound.conf-sample\
-             cae.odt\
              catchd.txt\
              colors\
              copy_split_format.odt\
