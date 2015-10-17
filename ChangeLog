@@ -14976,3 +14976,6 @@
 2015-10-16 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'CoverUrlString=' parameter to the configuration for the
 	'rlm_live365' RLM in 'rlm/rlm_live365.c'.
+2015-10-17 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in 'rdairplay/log_play.cpp' that caused Chain-To
+	events to fail with service names containing a '-'.

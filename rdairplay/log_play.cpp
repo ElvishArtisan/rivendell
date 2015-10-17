@@ -2789,8 +2789,8 @@ void LogPlay::ClearChannel(int deckid)
 RDLogLine::TransType LogPlay::GetTransType(const QString &logname,int line)
 {
   RDLogLine::TransType trans=RDLogLine::Stop;
-  QString sql=QString("select TRANS_TYPE from ")+
-    RDLog::tableName(logname)+" where "+QString().sprintf("COUNT=%d",line);
+  QString sql=QString("select TRANS_TYPE from `")+
+    RDLog::tableName(logname)+"` where "+QString().sprintf("COUNT=%d",line);
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     trans=(RDLogLine::TransType)q->value(0).toUInt();

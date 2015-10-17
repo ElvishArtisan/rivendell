@@ -800,7 +800,6 @@ bool RDSvc::generateLog(const QDate &date,const QString &logname,
     delete q;
   }
   RDCreateLogTable(RDLog::tableName(logname));
-  //  RDCreateLogTable(QString().sprintf("%s_LOG",(const char *)logname_esc));
   emit generationProgress(1);
 
   //
