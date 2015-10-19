@@ -403,6 +403,11 @@ Tail</source>
         <source>ALBUM</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Voice
+Track</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ListLogs</name>

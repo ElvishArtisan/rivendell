@@ -310,6 +310,22 @@ ListLog::ListLog(LogPlay *log,RDCae *cae,int id,bool allow_pause,
   }
 
   //
+  // Open Tracker Button
+  //
+  list_track_button=new QPushButton(this);
+  list_track_button->setGeometry(170,sizeHint().height()-113,80,50);
+  list_track_button->setFont(font);
+  list_track_button->
+    setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
+  list_track_button->setText(tr("Voice\nTrack"));
+  list_track_button->setFocusPolicy(QWidget::NoFocus);
+  list_track_button->setDisabled(true);
+  connect(list_track_button,SIGNAL(clicked()),this,SLOT(trackButtonData()));
+  if(!rdairplay_conf->showCounters()) {
+    list_track_button->hide();
+  }
+
+  //
   // Play Button
   //
   list_play_button=new QPushButton(this,"list_play_button");
@@ -728,6 +744,26 @@ void ListLog::tailButtonData()
 }
 
 
+void ListLog::trackButtonData()
+{
+  int line=CurrentLine();
+  QString logname=list_log->logName().left(list_log->logName().length()-4);
+
+  if((line>=0)&&(!logname.isEmpty())) {
+    RDMacro *rml=new RDMacro();
+    rml->setRole(RDMacro::Cmd);
+    rml->setEchoRequested(false);
+    rml->setCommand(RDMacro::VT);
+    rml->setAddress(QHostAddress("127.0.0.1"));
+    rml->setArgQuantity(2);
+    rml->setArg(0,logname);
+    rml->setArg(1,line);
+    rdripc->sendRml(rml);
+    delete rml;
+  }
+}
+
+
 void ListLog::auditionHeadData(int line)
 {
   list_head_button->setPalette(list_scroll_color[0]);
@@ -1016,6 +1052,7 @@ void ListLog::selectionChangedData()
     SetPlaybuttonMode(ListLog::ButtonDisabled);
     list_modify_button->setDisabled(true);
     list_next_button->setDisabled(true);
+    list_track_button->setDisabled(true);
     if(start_line>=0) {
       list_stoptime_edit->setText(RDGetTimeLength(list_log->
 		      length(start_line,end_line+1),true,false));
@@ -1060,6 +1097,11 @@ void ListLog::selectionChangedData()
   else {
     list_endtime_edit->setText("");
     list_stoptime_edit->setText("");
+  }
+  if(list_log->logLine(start_line)!=NULL) {
+    list_track_button->
+      setEnabled((list_log->logLine(start_line)->type()==RDLogLine::Cart)||
+		 (list_log->logLine(start_line)->type()==RDLogLine::Track));
   }
 }
 

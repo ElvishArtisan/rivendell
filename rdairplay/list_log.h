@@ -67,6 +67,7 @@ class ListLog : public QWidget
   void selectHour(int hour);
   void headButtonData();
   void tailButtonData();
+  void trackButtonData();
   void auditionHeadData(int line);
   void auditionTailData(int line);
   void auditionStoppedData(int line);
@@ -131,6 +132,7 @@ class ListLog : public QWidget
   QPushButton *list_load_button;
   QPushButton *list_head_button;
   QPushButton *list_tail_button;
+  QPushButton *list_track_button;
   int *list_cart;
   int list_id;
   RDAirPlayConf::OpMode list_op_mode;
