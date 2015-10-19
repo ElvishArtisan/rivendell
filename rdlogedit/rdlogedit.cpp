@@ -117,6 +117,8 @@ MainWidget::MainWidget(QWidget *parent,const char *name,WFlags f)
   QString sql;
   RDSqlQuery *q;
 
+  log_dialog_open=false;
+
   //
   // Read Command Options
   //
@@ -194,6 +196,8 @@ MainWidget::MainWidget(QWidget *parent,const char *name,WFlags f)
   rdripc=new RDRipc(log_config->stationName());
   connect(rdripc,SIGNAL(connected(bool)),this,SLOT(connectedData(bool)));
   connect(rdripc,SIGNAL(userChanged()),this,SLOT(userData()));
+  connect(rdripc,SIGNAL(rmlReceived(RDMacro *)),
+	  this,SLOT(rmlReceivedData(RDMacro *)));
   rdripc->connectHost("localhost",RIPCD_TCP_PORT,log_config->password());
 #else
   rdripc=NULL;
@@ -442,6 +446,7 @@ void MainWidget::addData()
   std::vector<QString> newlogs;
   RDAddLog *log;
 
+  log_dialog_open=true;
   if(rduser->createLog()) {
     if (rdstation_conf->broadcastSecurity() == RDStation::UserSec) {
       log=new RDAddLog(&logname,&svcname,NULL,tr("Add Log"),this,"add_log",
@@ -451,6 +456,7 @@ void MainWidget::addData()
     }
     if(log->exec()!=0) {
       delete log;
+      log_dialog_open=false;
       return;
     }
     delete log;
@@ -470,6 +476,7 @@ void MainWidget::addData()
     if(!q->isActive()) {
       QMessageBox::warning(this,tr("Log Exists"),tr("Log Already Exists!"));
       delete q;
+      log_dialog_open=false;
       return;
     }
     delete q;
@@ -488,6 +495,7 @@ void MainWidget::addData()
       RefreshItem(item);
     }
   }
+  log_dialog_open=false;
 }
 
 
@@ -499,9 +507,11 @@ void MainWidget::editData()
   if(item==NULL) {
     return;
   }
+  log_dialog_open=true;
   EditLog *log=new EditLog(item->text(1),&log_clipboard,&newlogs,this);
   log->exec();
   delete log;
+  log_dialog_open=false;
   RefreshItem(item);
   for(unsigned i=0;i<newlogs.size();i++) {
     item=new ListListViewItem(log_log_list);
@@ -523,13 +533,16 @@ void MainWidget::deleteData()
     return;
   }
   if(rduser->deleteLog()) {
+    log_dialog_open=true;
     if(QMessageBox::question(this,tr("Delete Log"),
      tr(QString().sprintf("Are you sure you want to delete the \"%s\" log?",
 			  (const char *)item->text(1))),
 			     QMessageBox::Yes,
 			     QMessageBox::No)!=QMessageBox::Yes) {
+      log_dialog_open=false;
       return;
     }
+    log_dialog_open=false;
     RDLog *log=new RDLog(item->text(1));
     if((tracks=log->completedTracks())>0) {
       str1=QString(tr("This will also delete the"));
@@ -542,6 +555,7 @@ void MainWidget::deleteData()
 			       QMessageBox::Yes,QMessageBox::No)!=
 	 QMessageBox::Yes) {
 	delete log;
+	log_dialog_open=false;
 	return;
       }
     }
@@ -549,11 +563,13 @@ void MainWidget::deleteData()
       QMessageBox::warning(this,tr("RDLogEdit"),
 			   tr("Unable to delete log, audio deletion error!"));
       delete log;
+      log_dialog_open=false;
       return;
     }
     delete log;
     delete item;
   }
+  log_dialog_open=false;
 }
 
 
@@ -564,10 +580,12 @@ void MainWidget::trackData()
   if(item==NULL) {
     return;
   }
+  log_dialog_open=true;
   VoiceTracker *dialog=new VoiceTracker(item->text(1),&log_import_path);
   dialog->exec();
   delete dialog;
   RefreshItem(item);
+  log_dialog_open=false;
 #endif  // WIN32
 }
 
@@ -710,6 +728,12 @@ void MainWidget::filterClearedData()
 void MainWidget::logDoubleclickedData(QListViewItem *,const QPoint &,int)
 {
   editData();
+}
+
+
+void MainWidget::rmlReceivedData(RDMacro *rml)
+{
+  RunLocalMacros(rml);
 }
 
 

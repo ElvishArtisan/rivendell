@@ -538,6 +538,23 @@ QSizePolicy VoiceTracker::sizePolicy() const
 }
 
 
+int VoiceTracker::exec(int line)
+{
+  if(line>=0) {
+    RDListViewItem *item=(RDListViewItem *)track_log_list->firstChild();
+    while(item!=NULL) {
+      if(item->line()==line) {
+	logClickedData(item,QPoint(),0);
+	track_log_list->setCurrentItem(item);
+	item->setSelected(true);
+      }
+      item=(RDListViewItem *)item->nextSibling();
+    }
+  }
+  return QDialog::exec();
+}
+
+
 void VoiceTracker::keyPressEvent(QKeyEvent *e)
 {
   switch(e->key()) {

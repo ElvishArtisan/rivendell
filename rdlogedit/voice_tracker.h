@@ -83,6 +83,9 @@ class VoiceTracker : public QDialog
   ~VoiceTracker();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
+
+ public slots:
+  int exec(int line=-1);
   
  private slots:
   void updateMenuData();

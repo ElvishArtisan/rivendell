@@ -14979,3 +14979,9 @@
 2015-10-17 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in 'rdairplay/log_play.cpp' that caused Chain-To
 	events to fail with service names containing a '-'.
+2015-10-18 Fred Gleason <fredg@paravelsystems.com>
+	* Added a ['VT'] 'Open Voicetracker' RML in 'lib/rdmacro.cpp' and
+	'lib/rdmacro.h'.
+	* Implemented the ['VT'] 'Open Voicetracker' RML in
+	'rdlogedit/rdlogedit.cpp', 'rdlogedit/rdlogedit.h',
+	'rdlogedit/voice_tracker.cpp' and 'rdlogedit/voice_tracker.h'.

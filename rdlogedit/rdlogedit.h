@@ -37,6 +37,7 @@
 #include <qcombobox.h>
 #include <qlabel.h>
 
+#include <rdmacro.h>
 #include <rduser.h>
 #include <rdripc.h>
 #include <rdlibrary_conf.h>
@@ -64,6 +65,7 @@ class MainWidget : public QMainWindow
   void filterChangedData(const QString &str);
   void filterClearedData();
   void logDoubleclickedData(QListViewItem *item,const QPoint &pt,int col);
+  void rmlReceivedData(RDMacro *rml);
   void quitMainWidget();
 
  protected:
@@ -72,6 +74,7 @@ class MainWidget : public QMainWindow
  private:
   void RefreshItem(ListListViewItem *item);
   void RefreshList();
+  void RunLocalMacros(RDMacro *rml);
   QSqlDatabase *log_db;
   QString log_filename;
   QString log_import_path;
@@ -100,6 +103,7 @@ class MainWidget : public QMainWindow
   QString log_filter;
   QString log_group;
   QString log_schedcode;
+  bool log_dialog_open;
 };
 
 

@@ -42,6 +42,7 @@ SOURCES += edit_track.cpp
 SOURCES += list_listviewitem.cpp
 SOURCES += list_logs.cpp
 SOURCES += list_reports.cpp
+SOURCES += local_macros.cpp
 SOURCES += rdlogedit.cpp
 x11 {
   SOURCES += voice_tracker.cpp

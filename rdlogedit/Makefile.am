@@ -55,6 +55,7 @@ dist_rdlogedit_SOURCES = add_meta.cpp add_meta.h\
                          list_listviewitem.cpp list_listviewitem.h\
                          list_reports.cpp list_reports.h\
                          list_logs.cpp list_logs.h\
+                         local_macros.cpp\
                          log_listview.cpp log_listview.h\
                          rdlogedit.cpp rdlogedit.h globals.h\
                          voice_tracker.cpp voice_tracker.h
