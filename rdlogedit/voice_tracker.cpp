@@ -547,6 +547,7 @@ int VoiceTracker::exec(int line)
 	logClickedData(item,QPoint(),0);
 	track_log_list->setCurrentItem(item);
 	item->setSelected(true);
+	track_log_list->ensureItemVisible(item);
       }
       item=(RDListViewItem *)item->nextSibling();
     }

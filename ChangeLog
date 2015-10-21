@@ -14990,3 +14990,7 @@
 	'rdairplay/list_log.cpp' and 'rdairplay/list_log.h'.
 2015-10-19 Fred Gleason <fredg@paravelsystems.com>
 	* Updated the package version to 2.11.0fmt01.
+2015-10-21 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'rdlogedit/voice_tracker.cpp' where the currently
+	selected log event would not be visible when executing a
+	Open Voicetracker' ['VT'] RML.
