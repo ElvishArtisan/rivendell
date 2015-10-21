@@ -14998,3 +14998,5 @@
 	* Updated the package version to 2.11.0fmt02.
 2015-10-21 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a buffer overflow bug in 'ripcd/bt_src16.cpp'.
+2015-10-21 Fred Gleason <fredg@paravelsystems.com>
+	* Updated the package version to 2.11.0fmt03.
