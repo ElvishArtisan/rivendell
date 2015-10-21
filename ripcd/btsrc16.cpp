@@ -118,7 +118,7 @@ bool BtSrc16::secondaryTtyActive()
 
 void BtSrc16::processCommand(RDMacro *cmd)
 {
-  char str[9];
+  char str[20];
 
   switch(cmd->command()) {
       case RDMacro::GO:
