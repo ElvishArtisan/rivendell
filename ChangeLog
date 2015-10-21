@@ -14988,3 +14988,5 @@
 2015-10-19 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'Voice Track' button to the Full Log widget in
 	'rdairplay/list_log.cpp' and 'rdairplay/list_log.h'.
+2015-10-19 Fred Gleason <fredg@paravelsystems.com>
+	* Updated the package version to 2.11.0fmt01.
