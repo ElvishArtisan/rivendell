@@ -15000,3 +15000,7 @@
 	* Fixed a buffer overflow bug in 'ripcd/bt_src16.cpp'.
 2015-10-21 Fred Gleason <fredg@paravelsystems.com>
 	* Updated the package version to 2.11.0fmt03.
+2015-10-22 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'lib/rdwavefile.cpp' and 'lib/rdwavefile.h' that
+	would cause MPEG I v2.5 Layer 3 imports to be imported with
+	the incorrect sample rate.

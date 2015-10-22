@@ -118,7 +118,7 @@ class RDWaveFile
   	       DolbyAc2=6,DolbyAc3=7,Vorbis=8,Pcm24=9};
   enum Type {Unknown=0,Wave=1,Mpeg=2,Ogg=3,Atx=4,Tmc=5,Flac=6,Ambos=7,
 	     Aiff=8,M4A=9};
-  enum MpegID {NonMpeg=0,Mpeg1=1,Mpeg2=2};
+  enum MpegID {NonMpeg=0,Mpeg1=1,Mpeg2=2,Mpeg25=3};
 
   /**
    * Create an RDWaveFile object.

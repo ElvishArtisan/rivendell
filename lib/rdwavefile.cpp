@@ -1261,6 +1261,7 @@ void RDWaveFile::getSettings(RDSettings *settings)
   switch(type()) {
   case RDWaveFile::Pcm8:
   case RDWaveFile::Aiff:
+  case RDWaveFile::M4A:
     // FIXME
     break;
 
@@ -3344,11 +3345,22 @@ bool RDWaveFile::GetMpegHeader(int fd,int offset)
   //
   // MPEG Id
   //
-  if((buffer[1]&0x08)==0) {
+  switch(buffer[1]&0x18) {
+  case 0x00:
+    mpeg_id=RDWaveFile::Mpeg25;
+    break;
+
+  case 0x10:
     mpeg_id=RDWaveFile::Mpeg2;
-  }
-  else {
+    break;
+
+  case 0x18:
     mpeg_id=RDWaveFile::Mpeg1;
+    break;
+
+  default:
+    mpeg_id=RDWaveFile::NonMpeg;
+    break;
   }
 
   //
@@ -3571,6 +3583,7 @@ bool RDWaveFile::GetMpegHeader(int fd,int offset)
 	break;
 
       case RDWaveFile::Mpeg2:
+      case RDWaveFile::Mpeg25:
 	switch(head_layer) {
 	    case 1:
 	      switch(buffer[2]>>4) {
@@ -3783,6 +3796,10 @@ bool RDWaveFile::GetMpegHeader(int fd,int offset)
 	      samples_per_sec=22050;
 	      break;
 
+	    case RDWaveFile::Mpeg25:
+	      samples_per_sec=11025;
+	      break;
+
 	    default:
 	      break;
 	}
@@ -3798,6 +3815,10 @@ bool RDWaveFile::GetMpegHeader(int fd,int offset)
 	      samples_per_sec=24000;
 	      break;
 
+	    case RDWaveFile::Mpeg25:
+	      samples_per_sec=12000;
+	      break;
+
 	    default:
 	      break;
 	}
@@ -3811,6 +3832,10 @@ bool RDWaveFile::GetMpegHeader(int fd,int offset)
 
 	    case RDWaveFile::Mpeg2:
 	      samples_per_sec=16000;
+	      break;
+
+	    case RDWaveFile::Mpeg25:
+	      samples_per_sec=8000;
 	      break;
 
 	    default:
