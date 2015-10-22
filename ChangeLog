@@ -15404,3 +15404,11 @@
 	* Ported 'docs/web_api.odt' to 'docs/docbook/web_api.xml'
 	(XML-DocBook 5).
 	* Added XML-DocBook 5 toolchain information in 'INSTALL'.
+2015-10-16 Fred Gleason <fredg@paravelsystems.com>
+	* Ported 'docs/cae.odt' to 'docs/docbook/cae.xml'
+	(XML-DocBook 5).
+2015-10-22 Fred Gleason <fredg@paravelsystems.com>
+	* Changed the format of the 'forcedLength', 'averageLength'
+	'lengthDeviation', 'averageSegueLength' and 'averageHookLength' to
+	use integer milliseconds instead of broken-down time in
+	'lib/rdcart.cpp'.

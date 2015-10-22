@@ -993,16 +993,11 @@ QString RDCart::xml(bool include_cuts) const
     ret+="  "+RDXmlField("composer",q->value(10).toString());
     ret+="  "+RDXmlField("userDefined",q->value(11).toString());
     ret+="  "+RDXmlField("usageCode",q->value(12).toInt());
-    ret+="  "+RDXmlField("forcedLength",
-			 RDGetTimeLength(q->value(13).toUInt(),true));
-    ret+="  "+RDXmlField("averageLength",
-			 RDGetTimeLength(q->value(14).toUInt(),true));
-    ret+="  "+RDXmlField("lengthDeviation",
-			 RDGetTimeLength(q->value(15).toUInt(),true));
-    ret+="  "+RDXmlField("averageSegueLength",
-			 RDGetTimeLength(q->value(16).toUInt(),true));
-    ret+="  "+RDXmlField("averageHookLength",
-			 RDGetTimeLength(q->value(17).toUInt(),true));
+    ret+="  "+RDXmlField("forcedLength",q->value(13).toUInt());
+    ret+="  "+RDXmlField("averageLength",q->value(14).toUInt());
+    ret+="  "+RDXmlField("lengthDeviation",q->value(15).toUInt());
+    ret+="  "+RDXmlField("averageSegueLength",q->value(16).toUInt());
+    ret+="  "+RDXmlField("averageHookLength",q->value(17).toUInt());
     ret+="  "+RDXmlField("cutQuantity",q->value(18).toUInt());
     ret+="  "+RDXmlField("lastCutPlayed",q->value(19).toUInt());
     ret+="  "+RDXmlField("validity",q->value(20).toUInt());
