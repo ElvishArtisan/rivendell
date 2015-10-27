@@ -39,6 +39,9 @@ function EditCart_MakePost()
     else {
 	form+="&INCLUDE_CUTS="+document.getElementById("INCLUDE_CUTS").value;
     }
+    form+=EditCart_Field("ASYNCHRONOUS");
+    form+=EditCart_Field("ENFORCE_LENGTH");
+    form+=EditCart_Field("FORCED_LENGTH");
     form+=EditCart_Field("GROUP_NAME");
     form+=EditCart_Field("TITLE");
     form+=EditCart_Field("ARTIST");
@@ -52,6 +55,7 @@ function EditCart_MakePost()
     form+=EditCart_Field("COMPOSER");
     form+=EditCart_Field("CONDUCTOR");
     form+=EditCart_Field("USER_DEFINED");
+    form+=EditCart_Field("OWNER");
     form+=EditCart_Field("NOTES");
 
     return form;

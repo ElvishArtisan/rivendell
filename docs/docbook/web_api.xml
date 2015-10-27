@@ -798,7 +798,7 @@
 	    Set Forced Length
 	  </entry>
 	  <entry>
-	    Optional
+	    Optional, in milliseconds
 	  </entry>
 	</row>
 	<row>
@@ -810,17 +810,6 @@
 	  </entry>
 	  <entry>
 	    Optional, Numeric, 0 = No, 1 = Yes
-	  </entry>
-	</row>
-	<row>
-	  <entry>
-	    FORCED_LENGTH
-	  </entry>
-	  <entry>
-	    Set Forced Length
-	  </entry>
-	  <entry>
-	    Optional
 	  </entry>
 	</row>
 	<row>
@@ -843,29 +832,6 @@
 	  </entry>
 	  <entry>
 	    Optional
-	  </entry>
-	</row>
-	<row>
-	  <entry>
-	    SCHED_CODE
-	  </entry>
-	  <entry>
-	    Set Scheduler Codes
-	  </entry>
-	  <entry>
-	    Optional [FIXME: How to delimit multiple values?]
-	  </entry>
-	</row>
-	<row>
-	  <entry>
-	    MACRO0 [...]
-	  </entry>
-	  <entry>
-	    RML Lines
-	  </entry>
-	  <entry>
-	    Optional, valid only for macro carts [FIXME: How to delimit
-	    multiple values?]
 	  </entry>
 	</row>
       </tbody>

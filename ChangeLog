@@ -15421,3 +15421,8 @@
 2015-10-27 Fred Gleason <fredg@paravelsystems.com>
 	* Restored the 'INCLUDE_CUTS' field to the EditCart web test harness
 	in 'web/test/editcart.html'.
+2015-10-27 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the 'MACROS' and 'SCHEDULER_CODES' fields from the
+	EditCart web method.
+	* Implemented the 'OWNER', 'ENFORCE_LENGT' and 'ENFORCED_LENGTH'
+	web API fields in 'web/tests/editcart.html' and 'web/tests/editcart.js'.
