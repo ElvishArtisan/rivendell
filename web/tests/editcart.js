@@ -33,6 +33,12 @@ function EditCart_MakePost()
     form+='&LOGIN_NAME='+document.getElementById("LOGIN_NAME").value;
     form+='&PASSWORD='+document.getElementById("PASSWORD").value;
     form+='&CART_NUMBER='+document.getElementById("CART_NUMBER").value;
+    if(document.getElementById("INCLUDE_CUTS").value.length==0) {
+	form+="&INCLUDE_CUTS=0";
+    }
+    else {
+	form+="&INCLUDE_CUTS="+document.getElementById("INCLUDE_CUTS").value;
+    }
     form+=EditCart_Field("GROUP_NAME");
     form+=EditCart_Field("TITLE");
     form+=EditCart_Field("ARTIST");

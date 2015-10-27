@@ -15418,3 +15418,6 @@
 2015-10-27 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in 'web/rdxport/carts.cpp' that allowed the EditCart web
 	method to set carts to non-existent groups.
+2015-10-27 Fred Gleason <fredg@paravelsystems.com>
+	* Restored the 'INCLUDE_CUTS' field to the EditCart web test harness
+	in 'web/test/editcart.html'.

@@ -562,10 +562,15 @@
     requested cart belongs to a group that is not authorized for the
     specified Rivendell user in RDAdmin->ManageUsers->AssignGroupPerms, or
     if it is attempted to assign the cart to such a group.
-    <para>
-      If the tags for an 'optional' field are omitted, then the respective
-      parameter on the target cart will be left uunchanged.
-    </para>
+  </para>
+  <para>
+    A <computeroutput>409</computeroutput> error will be returned if the
+    requested cart's number falls outside the valid range for the requested
+    GROUP_NAME.
+  </para>
+  <para>
+    If the tags for an 'optional' field are omitted, then the respective
+    parameter on the target cart will be left uunchanged.
   </para>
   <table xml:id="ex.editcart" frame="all">
     <title>EditCart Call Fields</title>
@@ -640,6 +645,17 @@
 	  </entry>
 	  <entry>
 	    Optional, default is 0
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    GROUP_NAME
+	  </entry>
+	  <entry>
+	    Set Rivendell group
+	  </entry>
+	  <entry>
+	    Optional
 	  </entry>
 	</row>
 	<row>
