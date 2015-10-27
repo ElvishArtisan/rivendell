@@ -35,12 +35,10 @@ function PostForm(form,url)
     //
     // Process the response
     //
-    if(http.status==200) {
-	var html=http.responseText;
-	document.open();
-	document.write(html);
-	document.close();
-    }
+    var html=http.responseText;
+    document.open();
+    document.write(html);
+    document.close();
 }
 
 

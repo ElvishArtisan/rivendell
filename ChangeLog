@@ -15415,3 +15415,6 @@
 2015-10-27 Fred Gleason <fredg@paravelsystems.com>
 	* Extended the EditCart web test harness in 'web/tests/editcart.html'.
 	* Added 'web/tests/editcart.js' and 'web/tests/utils.js'.
+2015-10-27 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'web/rdxport/carts.cpp' that allowed the EditCart web
+	method to set carts to non-existent groups.

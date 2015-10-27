@@ -229,6 +229,7 @@ void Xport::EditCart()
 {
   QString where="";
   RDCart *cart;
+  RDGroup *group;
   int cart_number;
   int include_cuts=0;
   QString group_name;
@@ -260,6 +261,19 @@ void Xport::EditCart()
     if(!xport_user->groupAuthorized(group_name)) {
       XmlExit("No such group",404);
     }
+    group=new RDGroup(group_name);
+    if(!group->exists()) {
+      delete group;
+      XmlExit("No such group",404);
+    }
+    if(group->enforceCartRange()) {
+      if(((unsigned)cart_number<group->defaultLowCart())||
+	 ((unsigned)cart_number>group->defaultHighCart())) {
+	delete group;
+	XmlExit("Invalid cart number for group",409);
+      }
+    }
+    delete group;
   }
 
   //
