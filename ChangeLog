@@ -15412,3 +15412,6 @@
 	'lengthDeviation', 'averageSegueLength' and 'averageHookLength' to
 	use integer milliseconds instead of broken-down time in
 	'lib/rdcart.cpp'.
+2015-10-27 Fred Gleason <fredg@paravelsystems.com>
+	* Extended the EditCart web test harness in 'web/tests/editcart.html'.
+	* Added 'web/tests/editcart.js' and 'web/tests/utils.js'.

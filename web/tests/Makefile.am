@@ -28,6 +28,7 @@ install-exec-am:
 	cp copyaudio.html $(DESTDIR)@libexecdir@
 	cp delete_audio.html $(DESTDIR)@libexecdir@
 	cp editcart.html $(DESTDIR)@libexecdir@
+	cp editcart.js $(DESTDIR)@libexecdir@
 	cp export.html $(DESTDIR)@libexecdir@
 	cp exportpeaks.html $(DESTDIR)@libexecdir@
 	cp import.html $(DESTDIR)@libexecdir@
@@ -44,6 +45,7 @@ install-exec-am:
 	cp removecart.html $(DESTDIR)@libexecdir@
 	cp removecut.html $(DESTDIR)@libexecdir@
 	cp trimaudio.html $(DESTDIR)@libexecdir@
+	cp utils.js $(DESTDIR)@libexecdir@
 
 uninstall-local:	
 	rm -f $(DESTDIR)@libexecdir@/addcart.html
@@ -53,6 +55,7 @@ uninstall-local:
 	rm -f $(DESTDIR)@libexecdir@/copyaudio.html
 	rm -f $(DESTDIR)@libexecdir@/delete_audio.html
 	rm -f $(DESTDIR)@libexecdir@/editcart.html
+	rm -f $(DESTDIR)@libexecdir@/editcart.js
 	rm -f $(DESTDIR)@libexecdir@/export.html
 	rm -f $(DESTDIR)@libexecdir@/exportpeaks.html
 	rm -f $(DESTDIR)@libexecdir@/import.html
@@ -68,6 +71,7 @@ uninstall-local:
 	rm -f $(DESTDIR)@libexecdir@/removecart.html
 	rm -f $(DESTDIR)@libexecdir@/removecut.html
 	rm -f $(DESTDIR)@libexecdir@/trimaudio.html
+	rm -f $(DESTDIR)@libexecdir@/utils.js
 
 EXTRA_DIST = addcart.html\
              addcut.html\
@@ -76,6 +80,7 @@ EXTRA_DIST = addcart.html\
              copyaudio.html\
              delete_audio.html\
              editcart.html\
+             editcart.js\
              export.html\
              exportpeaks.html\
              import.html\
@@ -90,7 +95,8 @@ EXTRA_DIST = addcart.html\
              listservices.html\
              removecart.html\
              removecut.html\
-             trimaudio.html
+             trimaudio.html\
+             utils.js
 
 CLEANFILES = *~
 MAINTAINERCLEANFILES = *~\
