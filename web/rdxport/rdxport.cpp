@@ -236,6 +236,10 @@ Xport::Xport(QObject *parent,const char *name)
     ListLog();
     break;
 
+  case RDXPORT_COMMAND_LISTSCHEDCODES:
+    ListSchedCodes();
+    break;
+
   case RDXPORT_COMMAND_LISTSERVICES:
     ListServices();
     break;

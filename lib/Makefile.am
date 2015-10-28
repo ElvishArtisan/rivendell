@@ -200,6 +200,7 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdreport.cpp rdreport.h\
                         rdringbuffer.cpp rdringbuffer.h\
                         rdripc.cpp rdripc.h\
+                        rdschedcode.cpp rdschedcode.h\
                         rdschedcodes_dialog.cpp rdschedcodes_dialog.h\
                         rdsegmeter.cpp rdsegmeter.h\
                         rdsettings.cpp rdsettings.h\

@@ -570,7 +570,7 @@
   </para>
   <para>
     If the tags for an 'optional' field are omitted, then the respective
-    parameter on the target cart will be left uunchanged.
+    parameter on the target cart will be left unchanged.
   </para>
   <table xml:id="ex.editcart" frame="all">
     <title>EditCart Call Fields</title>
@@ -856,7 +856,7 @@
     specified Rivendell user in RDAdmin->ManageUsers->AssignGroupPerms.
     <para>
       If the tags for an 'optional' field are omitted, then the respective
-      parameter on the target cart will be left uunchanged.
+      parameter on the target cart will be left unchanged.
     </para>
   </para>
   <table xml:id="ex.editcut" frame="all">
@@ -2374,6 +2374,73 @@
 	  </entry>
 	  <entry>
 	    Optional, valid values 0=no, 1=yes.  Default is to return all logs
+	  </entry>
+	</row>
+      </tbody>
+    </tgroup>
+  </table>
+</section>
+
+<section>
+  <title>ListSchedulerCodes</title>
+  <subtitle>Return information about all available scheduler codes</subtitle>
+  <para>
+    Command Code: <code>RDXPORT_COMMAND_LISTSCHEDCODES</code>
+  </para>
+  <para>
+    Required User Permissions: none
+  </para>
+  <table xml:id="ex.listschedcodes" frame="all">
+    <title>ListSchedCodes Call Fields</title>
+    <tgroup cols="3" align="left" colsep="1" rowsep="1">
+      <colspec colname="FIELD NAME" />
+      <colspec colname="MEANING" />
+      <colspec colname="REMARKS" />
+      <thead>
+	<row>
+	  <entry>
+	    FIELD NAME
+	  </entry>
+	  <entry>
+	    MEANING
+	  </entry>
+	  <entry>
+	    REMARKS
+	  </entry>
+	</row>
+      </thead>
+      <tbody>
+	<row>
+	  <entry>
+	    COMMAND
+	  </entry>
+	  <entry>
+	    24
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    LOGIN_NAME
+	  </entry>
+	  <entry>
+	    Rivendell User Name
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    PASSWORD
+	  </entry>
+	  <entry>
+	    Login Password
+	  </entry>
+	  <entry>
+	    Mandatory
 	  </entry>
 	</row>
       </tbody>

@@ -18,13 +18,14 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-
 #ifndef RDXPORT_H
 #define RDXPORT_H
 
 #include <qobject.h>
 
+#include <rdaudioconvert.h>
 #include <rdconfig.h>
+#include <rdformpost.h>
 #include <rduser.h>
 #include <rdsystem.h>
 
@@ -57,6 +58,7 @@ class Xport : public QObject
   void AudioStore();
   void ListLogs();
   void ListLog();
+  void ListSchedCodes();
   void ListServices();
   void Exit(int code);
   void XmlExit(const QString &str,int code,

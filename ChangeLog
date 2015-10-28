@@ -15426,3 +15426,9 @@
 	EditCart web method.
 	* Implemented the 'OWNER', 'ENFORCE_LENGT' and 'ENFORCED_LENGTH'
 	web API fields in 'web/tests/editcart.html' and 'web/tests/editcart.js'.
+2015-10-28 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'RDSchedCode' class in 'lib/rdschedcode.cpp' and
+	'lib/rdschedcode.h'.
+	* Defined a ListSchedCodes call in 'docs/docbook/web_api.xml'.
+	* Implemented the 'ListSchedCodes' web method in
+	'web/rdxport/schedcodes.cpp'.
