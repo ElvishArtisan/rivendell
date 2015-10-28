@@ -18,6 +18,9 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
+#include <qstringlist.h>
+
+#include "rdcart.h"
 #include "rddb.h"
 #include "rdschedcode.h"
 #include "rdxport.h"
@@ -49,5 +52,142 @@ void Xport::ListSchedCodes()
   printf("</schedCodeList>\n");
 
   delete q;
+  Exit(0);
+}
+
+
+void Xport::AssignSchedCode()
+{
+  int cart_number;
+  QString sched_code;
+  QStringList codes;
+  RDCart *cart=NULL;
+  RDSchedCode *code;
+
+  //
+  // Verify Post
+  //
+  if(!xport_post->getValue("CART_NUMBER",&cart_number)) {
+    XmlExit("Missing CART_NUMBER",400);
+  }
+  if(!xport_post->getValue("CODE",&sched_code)) {
+    XmlExit("Missing CODE",400);
+  }
+
+  //
+  // Verify User Perms
+  //
+  if(!xport_user->cartAuthorized(cart_number)) {
+    XmlExit("No such cart",404);
+  }
+
+  //
+  // Process Request
+  //
+  cart=new RDCart(cart_number);
+  code=new RDSchedCode(sched_code);
+  if(!code->exists()) {
+    XmlExit("No such scheduler code",404);
+  }
+  codes=cart->schedCodesList();
+  for(unsigned i=0;i<codes.size();i++) {
+    if(codes[i]==sched_code) {
+      delete cart;
+      XmlExit("OK",200);
+    }
+  }
+  cart->addSchedCode(sched_code);
+  XmlExit("OK",200);
+}
+
+
+void Xport::UnassignSchedCode()
+{
+  int cart_number;
+  QString sched_code;
+  QStringList codes;
+  RDCart *cart=NULL;
+  RDSchedCode *code;
+
+  //
+  // Verify Post
+  //
+  if(!xport_post->getValue("CART_NUMBER",&cart_number)) {
+    XmlExit("Missing CART_NUMBER",400);
+  }
+  if(!xport_post->getValue("CODE",&sched_code)) {
+    XmlExit("Missing CODE",400);
+  }
+
+  //
+  // Verify User Perms
+  //
+  if(!xport_user->cartAuthorized(cart_number)) {
+    XmlExit("No such cart",404);
+  }
+
+  //
+  // Process Request
+  //
+  cart=new RDCart(cart_number);
+  code=new RDSchedCode(sched_code);
+  if(!code->exists()) {
+    XmlExit("No such scheduler code",404);
+  }
+  codes=cart->schedCodesList();
+  for(unsigned i=0;i<codes.size();i++) {
+    if(codes[i]==sched_code) {
+      cart->removeSchedCode(sched_code);
+      delete cart;
+      delete code;
+      XmlExit("OK",200);
+    }
+  }
+  delete cart;
+  delete code;
+  XmlExit("OK",200);
+}
+
+
+void Xport::ListCartSchedCodes()
+{
+  int cart_number;
+  RDCart *cart;
+  QStringList codes;
+  RDSchedCode *schedcode;
+
+  //
+  // Verify Post
+  //
+  if(!xport_post->getValue("CART_NUMBER",&cart_number)) {
+    XmlExit("Missing CART_NUMBER",400);
+  }
+
+  //
+  // Verify User Perms
+  //
+  if(!xport_user->cartAuthorized(cart_number)) {
+    XmlExit("No such cart",404);
+  }
+  //
+  // Generate Scheduler Code List
+  //
+  cart=new RDCart(cart_number);
+  codes=cart->schedCodesList();
+
+  //
+  // Process Request
+  //
+  printf("Content-type: application/xml\n");
+  printf("Status: 200\n\n");
+  printf("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
+  printf("<schedCodeList>\n");
+  for(unsigned i=0;i<codes.size();i++) {
+    schedcode=new RDSchedCode(codes[i]);
+    printf("%s",(const char *)schedcode->xml().utf8());
+    delete schedcode;
+  }
+  printf("</schedCodeList>\n");
+
   Exit(0);
 }

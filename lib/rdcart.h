@@ -66,8 +66,9 @@ class RDCart
   QString schedCodes() const;
   void setSchedCodes(const QString &sched_codes) const;
   QStringList schedCodesList() const;
-  void setSchedCodesList(const QStringList &codes);
-  void addSchedCode(const QString &code);
+  void setSchedCodesList(const QStringList &codes) const;
+  void addSchedCode(const QString &code) const;
+  void removeSchedCode(const QString &code) const;
   void updateSchedCodes(const QString &add_codes,
 			const QString &remove_codes) const;
   QString conductor() const;

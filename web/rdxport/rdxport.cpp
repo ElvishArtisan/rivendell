@@ -240,6 +240,18 @@ Xport::Xport(QObject *parent,const char *name)
     ListSchedCodes();
     break;
 
+  case RDXPORT_COMMAND_ASSIGNSCHEDCODE:
+    AssignSchedCode();
+    break;
+
+  case RDXPORT_COMMAND_UNASSIGNSCHEDCODE:
+    UnassignSchedCode();
+    break;
+
+  case RDXPORT_COMMAND_LISTCARTSCHEDCODES:
+    ListCartSchedCodes();
+    break;
+
   case RDXPORT_COMMAND_LISTSERVICES:
     ListServices();
     break;

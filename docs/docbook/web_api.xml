@@ -11,7 +11,7 @@
   </author>
 </info>
 
-<section>
+<sect2>
   <title>Data Types</title>
   <table xml:id="ex.datatypes" frame="all">
     <title>Data Types</title>
@@ -57,9 +57,9 @@
       </tbody>
     </tgroup>
   </table>
-</section>
+</sect2>
 
-<section>
+<sect2>
   <title>Result Reporting</title>
   <para>
     Commands that return an error or do not return specialized data types
@@ -109,9 +109,9 @@
       </listitem>
     </varlistentry>
   </variablelist>
-</section>
+</sect2>
 
-<section>
+<sect2>
   <title>AddCart</title>
   <subtitle>Add a new cart</subtitle>
   <para>
@@ -215,9 +215,9 @@
       </tbody>
     </tgroup>
   </table>
-</section>
+</sect2>
 
-<section>
+<sect2>
   <title>AddCut</title>
   <subtitle>Add a new cut to an existing cart</subtitle>
   <para>
@@ -298,9 +298,103 @@
       </tbody>
     </tgroup>
   </table>
-</section>
+</sect2>
 
-<section>
+<sect2>
+  <title>AssignSchedCode</title>
+  <subtitle>Assign a scheduler code to an existing cart</subtitle>
+  <para>
+    Command Code: <code>RDXPORT_COMMAND_ASSIGNSCHEDCODE</code>
+  </para>
+  <para>
+    Required User Permissions: <code>Modify Carts</code>
+  </para>
+  <para>
+    A <computeroutput>404</computeroutput> error will be returned if the
+    specified cart number is not authorized for the specified Rivendell user in
+    RDAdmin->ManageUsers->AssignGroupPerms.
+  </para>
+  <table xml:id="ex.assignschedcode" frame="all">
+    <title>AssignSchedCode Call Fields</title>
+    <tgroup cols="3" align="left" colsep="1" rowsep="1">
+      <colspec colname="FIELD NAME" />
+      <colspec colname="MEANING" />
+      <colspec colname="REMARKS" />
+      <thead>
+	<row>
+	  <entry>
+	    FIELD NAME
+	  </entry>
+	  <entry>
+	    MEANING
+	  </entry>
+	  <entry>
+	    REMARKS
+	  </entry>
+	</row>
+      </thead>
+      <tbody>
+	<row>
+	  <entry>
+	    COMMAND
+	  </entry>
+	  <entry>
+	    25
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    LOGIN_NAME
+	  </entry>
+	  <entry>
+	    Rivendell User Name
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    PASSWORD
+	  </entry>
+	  <entry>
+	    Login Password
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    CART_NUMBER
+	  </entry>
+	  <entry>
+	    Number of Cart
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    CODE
+	  </entry>
+	  <entry>
+	    Scheduler Code to assign
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+      </tbody>
+    </tgroup>
+  </table>
+</sect2>
+
+<sect2>
   <title>AudioInfo</title>
   <subtitle>Get information about an entry in the audio store</subtitle>
   <para>
@@ -387,9 +481,9 @@
       </tbody>
     </tgroup>
   </table>
-</section>
+</sect2>
 
-<section>
+<sect2>
   <title>AudioStore</title>
   <subtitle>Get information about the audio store</subtitle>
   <para>
@@ -454,9 +548,9 @@
       </tbody>
     </tgroup>
   </table>
-</section>
+</sect2>
 
-<section>
+<sect2>
   <title>DeleteAudio</title>
   <subtitle>Delete PCM/MPEG data from the audio store</subtitle>
   <para>
@@ -543,9 +637,9 @@
       </tbody>
     </tgroup>
   </table>
-</section>
+</sect2>
 
-<section>
+<sect2>
   <title>EditCart</title>
   <subtitle>
     Write metadata changes for an existing cart into the
@@ -837,9 +931,9 @@
       </tbody>
     </tgroup>
   </table>
-</section>
+</sect2>
 
-<section>
+<sect2>
   <title>EditCut</title>
   <subtitle>
     Write metadata changes for an existing cut into the database
@@ -1234,9 +1328,9 @@
       </tbody>
     </tgroup>
   </table>
-</section>
+</sect2>
 
-<section>
+<sect2>
   <title>Export</title>
   <subtitle>Export audio data from the audio store</subtitle>
   <para>
@@ -1423,9 +1517,9 @@
       </tbody>
     </tgroup>
   </table>
-</section>
+</sect2>
 
-<section>
+<sect2>
   <title>ExportPeaks</title>
   <subtitle>Export audio peak data from the audio store</subtitle>
   <para>
@@ -1517,9 +1611,9 @@
       </tbody>
     </tgroup>
   </table>
-</section>
+</sect2>
 
-<section>
+<sect2>
   <title>Import</title>
   <subtitle>Import audio data into the audio store</subtitle>
   <para>
@@ -1670,9 +1764,9 @@
       </tbody>
     </tgroup>
   </table>
-</section>
+</sect2>
 
-<section>
+<sect2>
   <title>ListCart</title>
   <subtitle>Return information about a specified cart</subtitle>
   <para>
@@ -1764,9 +1858,9 @@
       </tbody>
     </tgroup>
   </table>
-</section>
+</sect2>
 
-<section>
+<sect2>
   <title>ListCarts</title>
   <subtitle>Return information about a set of carts</subtitle>
   <para>
@@ -1880,9 +1974,92 @@
       </tbody>
     </tgroup>
   </table>
-</section>
+</sect2>
 
-<section>
+<sect2>
+  <title>ListCartSchedCodes</title>
+  <subtitle>Return information about all scheduler codes assigned to a cart</subtitle>
+  <para>
+    Command Code: <code>RDXPORT_COMMAND_LISTCARTSCHEDCODES</code>
+  </para>
+  <para>
+    Required User Permissions: none
+  </para>
+  <para>
+    A <computeroutput>404</computeroutput> error will be returned if the
+    requested cart belongs to a group that is not authorized for the
+    specified Rivendell user in RDAdmin->ManageUsers->AssignGroupPerms.
+  </para>
+  <table xml:id="ex.listcartschedcodes" frame="all">
+    <title>ListCartSchedCodes Call Fields</title>
+    <tgroup cols="3" align="left" colsep="1" rowsep="1">
+      <colspec colname="FIELD NAME" />
+      <colspec colname="MEANING" />
+      <colspec colname="REMARKS" />
+      <thead>
+	<row>
+	  <entry>
+	    FIELD NAME
+	  </entry>
+	  <entry>
+	    MEANING
+	  </entry>
+	  <entry>
+	    REMARKS
+	  </entry>
+	</row>
+      </thead>
+      <tbody>
+	<row>
+	  <entry>
+	    COMMAND
+	  </entry>
+	  <entry>
+	    27
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    LOGIN_NAME
+	  </entry>
+	  <entry>
+	    Rivendell User Name
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    PASSWORD
+	  </entry>
+	  <entry>
+	    Login Password
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    CART_NUMBER
+	  </entry>
+	  <entry>
+	    Number of Cart
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+      </tbody>
+    </tgroup>
+  </table>
+</sect2>
+
+<sect2>
   <title>ListCut</title>
   <subtitle>Return information about a specified cut</subtitle>
   <para>
@@ -1974,9 +2151,9 @@
       </tbody>
     </tgroup>
   </table>
-</section>
+</sect2>
 
-<section>
+<sect2>
   <title>ListCuts</title>
   <subtitle>Return information about all cuts belonging to a cart</subtitle>
   <para>
@@ -2057,9 +2234,9 @@
       </tbody>
     </tgroup>
   </table>
-</section>
+</sect2>
 
-<section>
+<sect2>
   <title>ListGroup</title>
   <subtitle>Return information about a specified group</subtitle>
   <para>
@@ -2140,9 +2317,9 @@
       </tbody>
     </tgroup>
   </table>
-</section>
+</sect2>
 
-<section>
+<sect2>
   <title>ListGroups</title>
   <subtitle>Return information about all available groups</subtitle>
   <para>
@@ -2212,9 +2389,9 @@
       </tbody>
     </tgroup>
   </table>
-</section>
+</sect2>
 
-<section>
+<sect2>
   <title>ListLog</title>
   <subtitle>Return a listing of the specified log</subtitle>
   <para>
@@ -2290,9 +2467,9 @@
       </tbody>
     </tgroup>
   </table>
-</section>
+</sect2>
 
-<section>
+<sect2>
   <title>ListLogs</title>
   <subtitle>Return information about all available logs</subtitle>
   <para>
@@ -2379,9 +2556,9 @@
       </tbody>
     </tgroup>
   </table>
-</section>
+</sect2>
 
-<section>
+<sect2>
   <title>ListSchedulerCodes</title>
   <subtitle>Return information about all available scheduler codes</subtitle>
   <para>
@@ -2446,9 +2623,9 @@
       </tbody>
     </tgroup>
   </table>
-</section>
+</sect2>
 
-<section>
+<sect2>
   <title>ListServices</title>
   <subtitle>Return information about all available services</subtitle>
   <para>
@@ -2526,9 +2703,9 @@
       </tbody>
     </tgroup>
   </table>
-</section>
+</sect2>
 
-<section>
+<sect2>
   <title>RemoveCart</title>
   <subtitle>Remove a cart from the Library</subtitle>
   <para>
@@ -2604,9 +2781,9 @@
       </tbody>
     </tgroup>
   </table>
-</section>
+</sect2>
 
-<section>
+<sect2>
   <title>RemoveCut</title>
   <subtitle>Remove an existing cut from a cart</subtitle>
   <para>
@@ -2693,9 +2870,9 @@
       </tbody>
     </tgroup>
   </table>
-</section>
+</sect2>
 
-<section>
+<sect2>
   <title>TrimAudio</title>
   <subtitle>
     Return a time pointer to the first or last instance of a particular
@@ -2801,6 +2978,100 @@
       </tbody>
     </tgroup>
   </table>
-</section>
+</sect2>
+
+<sect2>
+  <title>UnassignSchedCode</title>
+  <subtitle>Unassign a scheduler code from an existing cart</subtitle>
+  <para>
+    Command Code: <code>RDXPORT_COMMAND_UNASSIGNSCHEDCODE</code>
+  </para>
+  <para>
+    Required User Permissions: <code>Modify Carts</code>
+  </para>
+  <para>
+    A <computeroutput>404</computeroutput> error will be returned if the
+    specified cart number is not authorized for the specified Rivendell user in
+    RDAdmin->ManageUsers->AssignGroupPerms.
+  </para>
+  <table xml:id="ex.unassignschedcode" frame="all">
+    <title>UnassignSchedCode Call Fields</title>
+    <tgroup cols="3" align="left" colsep="1" rowsep="1">
+      <colspec colname="FIELD NAME" />
+      <colspec colname="MEANING" />
+      <colspec colname="REMARKS" />
+      <thead>
+	<row>
+	  <entry>
+	    FIELD NAME
+	  </entry>
+	  <entry>
+	    MEANING
+	  </entry>
+	  <entry>
+	    REMARKS
+	  </entry>
+	</row>
+      </thead>
+      <tbody>
+	<row>
+	  <entry>
+	    COMMAND
+	  </entry>
+	  <entry>
+	    26
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    LOGIN_NAME
+	  </entry>
+	  <entry>
+	    Rivendell User Name
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    PASSWORD
+	  </entry>
+	  <entry>
+	    Login Password
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    CART_NUMBER
+	  </entry>
+	  <entry>
+	    Number of Cart
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    CODE
+	  </entry>
+	  <entry>
+	    Scheduler Code to assign
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+      </tbody>
+    </tgroup>
+  </table>
+</sect2>
 
 </article>

@@ -59,6 +59,9 @@ class Xport : public QObject
   void ListLogs();
   void ListLog();
   void ListSchedCodes();
+  void AssignSchedCode();
+  void UnassignSchedCode();
+  void ListCartSchedCodes();
   void ListServices();
   void Exit(int code);
   void XmlExit(const QString &str,int code,

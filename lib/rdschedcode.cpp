@@ -38,7 +38,7 @@ QString RDSchedCode::code() const
 
 bool RDSchedCode::exists() const
 {
-  return RDDoesRowExist("GROUPS","NAME",sched_code);
+  return RDDoesRowExist("SCHED_CODES","CODE",sched_code);
 }
 
 

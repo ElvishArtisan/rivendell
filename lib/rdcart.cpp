@@ -279,7 +279,7 @@ QStringList RDCart::schedCodesList() const
 }
 
 
-void RDCart::setSchedCodesList(const QStringList &codes)
+void RDCart::setSchedCodesList(const QStringList &codes) const
 {
   QString sched_codes="";
 
@@ -291,11 +291,25 @@ void RDCart::setSchedCodesList(const QStringList &codes)
 }
 
 
-void RDCart::addSchedCode(const QString &code)
+void RDCart::addSchedCode(const QString &code) const
 {
   QStringList codes=schedCodesList();
   codes.push_back(code);
   setSchedCodesList(codes);
+}
+
+
+void RDCart::removeSchedCode(const QString &code) const
+{
+  QStringList codes=schedCodesList();
+  QStringList new_codes;
+
+  for(unsigned i=0;i<codes.size();i++) {
+    if(codes[i]!=code) {
+      new_codes.push_back(codes[i]);
+    }
+  }
+  setSchedCodesList(new_codes);
 }
 
 
@@ -323,7 +337,7 @@ void RDCart::updateSchedCodes(const QString &add_codes,const QString &remove_cod
 
   save_codes+=".";
   SetRow("SCHED_CODES",save_codes);
-}	
+}
 
 
 QString RDCart::label() const
