@@ -56,12 +56,12 @@ function EditCut_MakePost()
     form+=EditCut_Field("END_POINT");
     form+=EditCut_Field("FADEUP_POINT");
     form+=EditCut_Field("FADEDOWN_POINT");
-//    form+=EditCut_Field("SEGUE_START_POINT");
-//    form+=EditCut_Field("SEGUE_END_POINT");
-//    form+=EditCut_Field("HOOK_START_POINT");
-//    form+=EditCut_Field("HOOK_END_POINT");
-//    form+=EditCut_Field("TALK_START_POINT");
-//    form+=EditCut_Field("TALK_END_POINT");
+    form+=EditCut_Field("SEGUE_START_POINT");
+    form+=EditCut_Field("SEGUE_END_POINT");
+    form+=EditCut_Field("HOOK_START_POINT");
+    form+=EditCut_Field("HOOK_END_POINT");
+    form+=EditCut_Field("TALK_START_POINT");
+    form+=EditCut_Field("TALK_END_POINT");
 
     return form;
 }

@@ -597,6 +597,20 @@ void Xport::EditCut()
   bool use_start_daypart=false;
   QTime end_daypart;
   bool use_end_daypart=false;
+  int talk_points[2];
+  bool use_end_points[2]={false,false};
+  int end_points[2];
+  bool use_talk_points[2]={false,false};
+  int segue_points[2];
+  bool use_segue_points[2]={false,false};
+  int hook_points[2];
+  bool use_hook_points[2]={false,false};
+  int fadeup_point;
+  bool use_fadeup_point=false;
+  int fadedown_point;
+  bool use_fadedown_point=false;
+  bool use_weight=false;
+  int weight;
   bool ok=false;
 
   //
@@ -657,14 +671,58 @@ void Xport::EditCut()
     XmlExit("both DAYPART values must be set together",400);
   }
 
-  //
-  // Process Request
-  //
   cut=new RDCut(cart_number,cut_number);
   if(!cut->exists()) {
     delete cut;
     XmlExit("No such cut",404);
   }
+
+  //
+  // Check pointers for validity
+  //
+  end_points[0]=cut->startPoint();
+  end_points[1]=cut->endPoint();
+  fadeup_point=cut->fadeupPoint();
+  fadedown_point=cut->fadedownPoint();
+  CheckPointerValidity(end_points,use_end_points,"",0);
+  CheckPointerValidity(talk_points,use_talk_points,"TALK_",end_points[1]);
+  CheckPointerValidity(segue_points,use_segue_points,"SEGUE_",end_points[1]);
+  CheckPointerValidity(hook_points,use_hook_points,"HOOK_",end_points[1]);
+  if((use_fadeup_point=xport_post->
+      getValue("FADEUP_POINT",&fadeup_point,&ok))) {
+    if(!ok) {
+      XmlExit("invalid FADEUP_POINT",400);
+    }
+    if(fadeup_point>end_points[1]) {
+      XmlExit("FADEUP_POINT exceeds length of cart",400);
+    }
+  }
+  if((use_fadedown_point=xport_post->
+      getValue("FADEDOWN_POINT",&fadedown_point,&ok))) {
+    if(!ok) {
+      XmlExit("invalid FADEDOWN_POINT",400);
+    }
+    if(fadeup_point>end_points[1]) {
+      XmlExit("FADEDOWN_POINT exceeds length of cart",400);
+    }
+  }
+  if(use_fadeup_point&&use_fadedown_point&&
+     (fadeup_point>=0)&&(fadedown_point>=0)&&(fadeup_point>fadedown_point)) {
+    XmlExit("FADEUP_POINT is greater than FADEDOWN_POINT",400);
+  }
+
+  //
+  // Check Weight
+  //
+  if((use_weight=xport_post->getValue("WEIGHT",&weight,&ok))) {
+    if((!ok)||(weight<0)) {
+      XmlExit("invalid WEIGHT",400);
+    }
+  }
+
+  //
+  // Process Request
+  //
   if(xport_post->getValue("EVERGREEN",&num)) {
     cut->setEvergreen(num);
     rotation_changed=true;
@@ -727,58 +785,48 @@ void Xport::EditCut()
     cut->setEndDaypart(end_daypart,!end_daypart.isNull());
     rotation_changed=true;
   }
-  /*
-  if(xport_post->getValue("START_DAYPART",&time)) {
-    cut->setStartDaypart(time,!time.isNull());
+  if(use_weight) {
+    cut->setWeight(weight);
     rotation_changed=true;
   }
-  if(xport_post->getValue("END_DAYPART",&time)) {
-    cut->setEndDaypart(time,!time.isNull());
-    rotation_changed=true;
-  }
-  */
-  if(xport_post->getValue("WEIGHT",&num)) {
-    cut->setWeight(num);
-    rotation_changed=true;
-  }
-  if(xport_post->getValue("START_POINT",&num)) {
-    cut->setStartPoint(num);
+  if(use_end_points[0]) {
+    cut->setStartPoint(end_points[0]);
     length_changed=true;
   }
-  if(xport_post->getValue("END_POINT",&num)) {
-    cut->setEndPoint(num);
+  if(use_end_points[1]) {
+    cut->setEndPoint(end_points[1]);
     length_changed=true;
   }
-  if(xport_post->getValue("FADEUP_POINT",&num)) {
-    cut->setFadeupPoint(num);
+  if(use_fadeup_point) {
+    cut->setFadeupPoint(fadeup_point);
     length_changed=true;
   }
-  if(xport_post->getValue("FADEDOWN_POINT",&num)) {
-    cut->setFadedownPoint(num);
+  if(use_fadedown_point) {
+    cut->setFadedownPoint(fadedown_point);
     length_changed=true;
   }
-  if(xport_post->getValue("SEGUE_START_POINT",&num)) {
-    cut->setSegueStartPoint(num);
+  if(use_segue_points[0]) {
+    cut->setSegueStartPoint(segue_points[0]);
     length_changed=true;
   }
-  if(xport_post->getValue("SEGUE_END_POINT",&num)) {
-    cut->setSegueEndPoint(num);
+  if(use_segue_points[1]) {
+    cut->setSegueEndPoint(segue_points[1]);
     length_changed=true;
   }
-  if(xport_post->getValue("HOOK_START_POINT",&num)) {
-    cut->setHookStartPoint(num);
+  if(use_hook_points[0]) {
+    cut->setHookStartPoint(hook_points[0]);
     length_changed=true;
   }
-  if(xport_post->getValue("HOOK_END_POINT",&num)) {
-    cut->setHookEndPoint(num);
+  if(use_hook_points[1]) {
+    cut->setHookEndPoint(hook_points[1]);
     length_changed=true;
   }
-  if(xport_post->getValue("TALK_START_POINT",&num)) {
-    cut->setTalkStartPoint(num);
+  if(use_talk_points[0]) {
+    cut->setTalkStartPoint(talk_points[0]);
     length_changed=true;
   }
-  if(xport_post->getValue("TALK_END_POINT",&num)) {
-    cut->setTalkEndPoint(num);
+  if(use_talk_points[1]) {
+    cut->setTalkEndPoint(talk_points[1]);
     length_changed=true;
   }
   if(length_changed||rotation_changed) {
@@ -793,6 +841,52 @@ void Xport::EditCut()
   }
   delete cut;
   XmlExit("OK",200);
+}
+
+
+void Xport::CheckPointerValidity(int ptr_values[2],bool use_ptrs[2],
+				 const QString &type,unsigned max_value)
+{
+  bool start_ok=false;
+  bool end_ok=false;
+
+  use_ptrs[0]=xport_post->getValue(type+"START_POINT",&ptr_values[0],&start_ok);
+  use_ptrs[1]=xport_post->getValue(type+"END_POINT",&ptr_values[1],&end_ok);
+  if((!use_ptrs[0])&&(!use_ptrs[1])) {
+    return;
+  }
+  if(!start_ok) {
+    XmlExit("invalid "+type+"START_POINT",400);
+  }
+  if(!end_ok) {
+    XmlExit("invalid "+type+"END_POINT",400);
+  }
+  if(use_ptrs[0]!=use_ptrs[1]) {
+    XmlExit("both "+type+"*_POINT values must be set together",400);
+  }
+  if(use_ptrs[0]) {
+    if(((ptr_values[0]<0)&&(ptr_values[1]>=0))||
+       ((ptr_values[0]>=0)&&(ptr_values[1]<0))) {
+      XmlExit("inconsistent "+type+"*_POINT values",400);
+    }
+  }
+  if(ptr_values[0]>=0) {
+    if(ptr_values[0]>ptr_values[1]) {
+      XmlExit(type+"START_POINT greater than "+type+"END_POINT",400);
+    }
+    if((max_value>0)&&((unsigned)ptr_values[1]>max_value)) {
+      XmlExit(type+"END_POINT exceeds length of cut",400);
+    }
+  }
+  else {
+    if(max_value==0) {
+      XmlExit("End markers cannot be removed",400);
+    }
+    else {
+      ptr_values[0]=-1;
+      ptr_values[1]=-1;
+    }
+  }
 }
 
 

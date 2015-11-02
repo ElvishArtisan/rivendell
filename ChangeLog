@@ -15452,3 +15452,6 @@
 	format for date/time values.
 	* Modified 'web/tests/editcart.js' and 'web/tests/editcut.js' to
 	escape reserved characters for HTML forms.
+2015-11-02 Fred Gleason <fredg@paravelsystems.com>
+	* Implemented '*_POINT' fields in the 'EditCut' web method in
+	'web/rdxport/carts.cpp'.

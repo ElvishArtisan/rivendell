@@ -48,6 +48,8 @@ class Xport : public QObject
   void ListCuts();
   void ListCut();
   void EditCut();
+  void CheckPointerValidity(int ptr_values[2],bool use_ptrs[2],
+			    const QString &type,unsigned max_value);
   void RemoveCut();
   void ListGroups();
   void ListGroup();
