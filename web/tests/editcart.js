@@ -21,7 +21,7 @@
 function EditCart_Field(field)
 {
     if(document.getElementById("USE_"+field).checked) {
-	return '&'+field+'='+document.getElementById(field).value;
+	return '&'+field+'='+UrlEncode(document.getElementById(field).value);
     }
     return '';
 }

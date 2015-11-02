@@ -42,6 +42,64 @@ function PostForm(form,url)
 }
 
 
+function UrlEncode(str) {
+    var ret=new String;
+
+    for(i=0;i<str.length;i++) {
+	switch(str.charAt(i)) {
+	case '$':
+	case '&':
+	case '+':
+	case ',':
+	case '/':
+	case ':':
+	case ';':
+	case '=':
+	case '?':
+	case '@':
+	case ' ':
+	case '"':
+	case '<':
+	case '>':
+	case '#':
+	case '%':
+	case '{':
+	case '}':
+	case '|':
+	case '\\':
+	case '^':
+	case '~':
+	case '[':
+	case ']':
+	case '`':
+	    ret+=EncodeChar(str.charCodeAt(i));
+	    break;
+
+	default:
+	    if((str.charCodeAt(i)<0x20)||(str.charCodeAt(i)>=0x7F)) {
+		ret+=EncodeChar(str.charCodeAt(i));
+	    }
+	    else {
+		ret+=str.charAt(i);
+	    }
+	    break;
+	}
+    }
+    return ret;
+}
+
+
+function EncodeChar(c) {
+    var ret=new String;
+    ret="%";
+    if(c<16) {
+	ret+="0";
+    }
+    ret+=c.toString(16);
+    return ret;
+}
+
+
 var http_factory=null;
 var http_factories=[
     function() {

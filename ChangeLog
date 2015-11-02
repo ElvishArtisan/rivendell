@@ -15442,3 +15442,13 @@
 	* Defined a ListCartSchedCodes call in 'docs/docbook/web_api.xml'.
 	* Implemented the 'ListCartSchedCodes' web method in
 	'web/rdxport/schedcodes.cpp'.
+2015-11-02 Fred Gleason <fredg@paravelsystems.com>
+	* Added a EditCut web test harness in 'web/tests/editcut.html' and
+	'web/tests/editcut.js'.
+	* Documented 'xs' date/time formats in 'docs/docbook/web_api.xml'.
+	* Extended 'RDGetWebTime()' and 'RDGetWebDateTime()' functions to
+	support XML 'xs' namespace formats.
+	* Modified docs/docbook/web_api.xml' to specify XXML 'xs' namespace
+	format for date/time values.
+	* Modified 'web/tests/editcart.js' and 'web/tests/editcut.js' to
+	escape reserved characters for HTML forms.

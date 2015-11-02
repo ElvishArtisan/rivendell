@@ -84,13 +84,17 @@ extern QString RDXmlField(const QString &tag,const QDateTime &value,
 extern QString RDXmlField(const QString &tag,const QTime &value,
 			  const QString &attrs="");
 extern QString RDXmlField(const QString &tag);
+extern QString RDXmlDate(const QDate &date);
+extern QString RDXmlTime(const QTime &time);
+extern QString RDXmlDateTime(const QDateTime &datetime);
+extern QString RDXmlTimeZoneSuffix();
 extern QString RDXmlEscape(const QString &str);
 extern QString RDXmlUnescape(const QString &str);
 extern QString RDUrlEscape(const QString &str);
 extern QString RDUrlUnescape(const QString &str);
 extern QString RDWebDateTime(const QDateTime &datetime);
-extern QDateTime RDGetWebDateTime(const QString &str);
-extern QTime RDGetWebTime(const QString &str);
-extern int RDGetWebMonth(const QString &str);
+extern QDateTime RDGetWebDateTime(const QString &str,bool *ok=NULL);
+extern QTime RDGetWebTime(const QString &str,bool *ok=NULL);
+extern int RDGetWebMonth(const QString &str,bool *ok=NULL);
 
 #endif  // RDWEB_H

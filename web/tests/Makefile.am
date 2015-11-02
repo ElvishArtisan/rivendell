@@ -29,6 +29,8 @@ install-exec-am:
 	cp copyaudio.html $(DESTDIR)@libexecdir@
 	cp delete_audio.html $(DESTDIR)@libexecdir@
 	cp editcart.html $(DESTDIR)@libexecdir@
+	cp editcut.js $(DESTDIR)@libexecdir@
+	cp editcut.html $(DESTDIR)@libexecdir@
 	cp editcart.js $(DESTDIR)@libexecdir@
 	cp export.html $(DESTDIR)@libexecdir@
 	cp exportpeaks.html $(DESTDIR)@libexecdir@
@@ -61,6 +63,8 @@ uninstall-local:
 	rm -f $(DESTDIR)@libexecdir@/delete_audio.html
 	rm -f $(DESTDIR)@libexecdir@/editcart.html
 	rm -f $(DESTDIR)@libexecdir@/editcart.js
+	rm -f $(DESTDIR)@libexecdir@/editcut.html
+	rm -f $(DESTDIR)@libexecdir@/editcut.js
 	rm -f $(DESTDIR)@libexecdir@/export.html
 	rm -f $(DESTDIR)@libexecdir@/exportpeaks.html
 	rm -f $(DESTDIR)@libexecdir@/import.html
@@ -90,6 +94,8 @@ EXTRA_DIST = addcart.html\
              delete_audio.html\
              editcart.html\
              editcart.js\
+             editcut.html\
+             editcut.js\
              export.html\
              exportpeaks.html\
              import.html\

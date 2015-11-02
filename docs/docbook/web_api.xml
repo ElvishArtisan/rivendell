@@ -34,8 +34,44 @@
 	    DateTime
 	  </entry>
 	  <entry>
-	    Absolute datetime string, as defined in section 3.3.1 of RFC 2616
-	    e.g. 'Mon, 23 Jul 2010 13:00:00 GMT'
+	    <para>
+	      xs:dateTime format string:
+	      <replaceable class="parameter">YYYY</replaceable>-<replaceable class="parameter">MM</replaceable>-<replaceable class="parameter">DD</replaceable>T<replaceable class="parameter">HH</replaceable>:<replaceable class="parameter">MM</replaceable>:<replaceable class="parameter">SS</replaceable><optional>Z</optional>|<optional>+<replaceable>HH</replaceable>:<replaceable>MM</replaceable></optional>|<optional>-<replaceable>HH</replaceable>:<replaceable>MM</replaceable></optional>
+	    </para>
+	    <para>
+	      If no timezone information is specified, all values will be
+	      assumed to be in the local timezone of the processing system.
+	    </para>
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    Date
+	  </entry>
+	  <entry>
+	    <para>
+	      xs:date format string:
+	      <replaceable class="parameter">YYYY</replaceable>-<replaceable class="parameter">MM</replaceable>-<replaceable class="parameter">DD</replaceable><optional>Z</optional>|<optional>+<replaceable>HH</replaceable>:<replaceable>MM</replaceable></optional>|<optional>-<replaceable>HH</replaceable>:<replaceable>MM</replaceable></optional>
+	    </para>
+	    <para>
+	      If no timezone information is specified, all values will be
+	      assumed to be in the local timezone of the processing system.
+	    </para>
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    Time
+	  </entry>
+	  <entry>
+	    <para>
+	      xs:time format string:
+	      <replaceable class="parameter">HH</replaceable>:<replaceable class="parameter">MM</replaceable>:<replaceable class="parameter">SS</replaceable><optional>Z</optional>|<optional>+<replaceable>HH</replaceable>:<replaceable>MM</replaceable></optional>|<optional>-<replaceable>HH</replaceable>:<replaceable>MM</replaceable></optional>
+	    </para>
+	    <para>
+	      If no timezone information is specified, all values will be
+	      assumed to be in the local timezone of the processing system.
+	    </para>
 	  </entry>
 	</row>
 	<row>
@@ -44,14 +80,6 @@
 	  </entry>
 	  <entry>
 	    Text data, encoded
-	  </entry>
-	</row>
-	<row>
-	  <entry>
-	    Time
-	  </entry>
-	  <entry>
-	    Relative time, in format 'HH:MM:SS'
 	  </entry>
 	</row>
       </tbody>

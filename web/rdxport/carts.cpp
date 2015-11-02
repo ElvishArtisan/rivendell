@@ -2,9 +2,7 @@
 //
 // Rivendell web service portal -- Cart services
 //
-//   (C) Copyright 2010 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: carts.cpp,v 1.8.2.2.2.1 2014/03/19 22:13:01 cvs Exp $
+//   (C) Copyright 2010-2015 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -591,6 +589,15 @@ void Xport::EditCut()
   QTime time;
   bool rotation_changed=false;
   bool length_changed=false;
+  QDateTime start_datetime;
+  bool use_start_datetime=false;
+  QDateTime end_datetime;
+  bool use_end_datetime=false;
+  QTime start_daypart;
+  bool use_start_daypart=false;
+  QTime end_daypart;
+  bool use_end_daypart=false;
+  bool ok=false;
 
   //
   // Verify Post
@@ -610,6 +617,44 @@ void Xport::EditCut()
   }
   if(!xport_user->editAudio()) {
     XmlExit("Forbidden",403);
+  }
+
+  //
+  // Check Date/Time Values for Validity
+  //
+  if((use_start_datetime=xport_post->
+      getValue("START_DATETIME",&start_datetime,&ok))) {
+    if(!ok) {
+      XmlExit("invalid START_DATETIME",400);
+    }
+  }
+  if((use_end_datetime=xport_post->
+      getValue("END_DATETIME",&end_datetime,&ok))) {
+    if(!ok) {
+      XmlExit("invalid END_DATETIME",400);
+    }
+  }
+  if(use_start_datetime!=use_end_datetime) {
+    XmlExit("both DATETIME values must be set together",400);
+  }
+  if(use_start_datetime&&(start_datetime>end_datetime)) {
+    XmlExit("START_DATETIME is later than END_DATETIME",400);
+  }
+
+  if((use_start_daypart=xport_post->
+      getValue("START_DAYPART",&start_daypart,&ok))) {
+    if(!ok) {
+      XmlExit("invalid START_DAYPART",400);
+    }
+  }
+  if((use_end_daypart=xport_post->
+      getValue("END_DAYPART",&end_daypart,&ok))) {
+    if(!ok) {
+      XmlExit("invalid END_DAYPART",400);
+    }
+  }
+  if(use_start_daypart!=use_end_daypart) {
+    XmlExit("both DAYPART values must be set together",400);
   }
 
   //
@@ -636,13 +681,13 @@ void Xport::EditCut()
   if(xport_post->getValue("ISCI",&str)) {
     cut->setIsci(str);
   }
-  if(xport_post->getValue("START_DATETIME",&datetime)) {
-    cut->setStartDatetime(datetime,!datetime.isNull());
+  if(use_start_datetime) {
+    cut->setStartDatetime(start_datetime,!start_datetime.isNull());
     length_changed=true;
     rotation_changed=true;
   }
-  if(xport_post->getValue("END_DATETIME",&datetime)) {
-    cut->setEndDatetime(datetime,!datetime.isNull());
+  if(use_end_datetime) {
+    cut->setEndDatetime(end_datetime,!end_datetime.isNull());
     length_changed=true;
     rotation_changed=true;
   }
@@ -674,6 +719,15 @@ void Xport::EditCut()
     cut->setWeekPart(7,num);
     rotation_changed=true;
   }
+  if(use_start_daypart) {
+    cut->setStartDaypart(start_daypart,!start_daypart.isNull());
+    rotation_changed=true;
+  }
+  if(use_end_daypart) {
+    cut->setEndDaypart(end_daypart,!end_daypart.isNull());
+    rotation_changed=true;
+  }
+  /*
   if(xport_post->getValue("START_DAYPART",&time)) {
     cut->setStartDaypart(time,!time.isNull());
     rotation_changed=true;
@@ -682,6 +736,7 @@ void Xport::EditCut()
     cut->setEndDaypart(time,!time.isNull());
     rotation_changed=true;
   }
+  */
   if(xport_post->getValue("WEIGHT",&num)) {
     cut->setWeight(num);
     rotation_changed=true;

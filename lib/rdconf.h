@@ -4,8 +4,6 @@
 //
 //   (C) Copyright 1996-2004 Fred Gleason <fredg@paravelsystems.com>
 //
-//    $Id: rdconf.h,v 1.10.6.3 2013/12/03 23:34:34 cvs Exp $
-//
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
 //   version 2 as published by the Free Software Foundation.

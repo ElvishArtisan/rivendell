@@ -1,11 +1,8 @@
-// rconf.c
-// A small library for handling common configuration file tasks
+// rdconf.cpp
+//
+//  Small library for handling common configuration file tasks
 // 
-// Adopted from conflib
-//
 //   (C) Copyright 1996-2003 Fred Gleason <fredg@paravelsystems.com>
-//
-//    $Id: rdconf.cpp,v 1.15.4.7.2.1 2014/06/24 18:27:04 cvs Exp $
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
