@@ -15455,3 +15455,5 @@
 2015-11-02 Fred Gleason <fredg@paravelsystems.com>
 	* Implemented '*_POINT' fields in the 'EditCut' web method in
 	'web/rdxport/carts.cpp'.
+2015-11-03 Fred Gleason <fredg@paravelsystems.com>
+	* Documented the 'CS' command in 'docs/docbook/cae.xml'.

@@ -1260,6 +1260,42 @@
       </varlistentry>
     </variablelist>
   </sect2>
+
+  <sect2>
+    <title><command>Set Clock Source</command></title>
+    <para>
+      Set source of an audio adapter's sample clock.  Relevant only for
+      cards that feature AES3 inputs.
+    </para>
+    <para>
+      <userinput>CS <replaceable>card-num</replaceable>
+      <replaceable>input-num</replaceable>!
+      </userinput>
+    </para>
+    <variablelist>
+      <varlistentry>
+	<term>
+	  <replaceable>card-num</replaceable>
+	</term>
+	<listitem>
+	  <para>
+	    The number of the audio adapter to use.
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term>
+	  <replaceable>input-num</replaceable>
+	</term>
+	<listitem>
+	  <para>
+	    The input number to use. This is relative to the audio adapter
+	    selected.
+	  </para>
+	</listitem>
+      </varlistentry>
+    </variablelist>
+  </sect2>
 </sect1>
 
 <sect1>
