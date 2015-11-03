@@ -855,8 +855,9 @@ int RDLogEvent::getLength(int from_line,int *to_line,QTime *sched_time) const
   }
   int len=0;
   for(int i=from_line;i<*to_line;i++) {
-    if((logLine(i)->status()==RDLogLine::Scheduled)||
-       (logLine(i)->status()==RDLogLine::Auditioning)) {
+    if(((logLine(i)->status()==RDLogLine::Scheduled)||
+	(logLine(i)->status()==RDLogLine::Auditioning))&&
+       (logLine(i)->state()==RDLogLine::Ok)) {
       if(((i+1)>=size())||(logLine(i+1)->transType()!=RDLogLine::Segue)||
 	 (logLine(i)->segueStartPoint()<0)) {
 	len+=logLine(i)->forcedLength();

@@ -15457,3 +15457,6 @@
 	'web/rdxport/carts.cpp'.
 2015-11-03 Fred Gleason <fredg@paravelsystems.com>
 	* Documented the 'CS' command in 'docs/docbook/cae.xml'.
+2015-11-03 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'lib/rdlog_event.cpp' that caused disabled events
+	to fail to be excluded from calculating log lengths.
