@@ -15460,3 +15460,7 @@
 2015-11-03 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in 'lib/rdlog_event.cpp' that caused disabled events
 	to fail to be excluded from calculating log lengths.
+2015-11-03 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'rdairplay/log_play.cpp where a change in event
+	availability would fail to updates the post point counter when in
+	block scaling mode.

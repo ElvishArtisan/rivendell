@@ -2680,32 +2680,36 @@ void LogPlay::RefreshEvents(int line,int line_quan,bool force_update)
   for(int i=line;i<(line+line_quan);i++) {
     if((logline=logLine(i))!=NULL) {
       if(logline->type()==RDLogLine::Cart) {
-	switch(logline->state()) {
-	case RDLogLine::Ok:
-	case RDLogLine::NoCart:
-	case RDLogLine::NoCut:
-	  if(logline->status()==RDLogLine::Scheduled) {
-	    state=logline->state();
-	    if((next_logline=logLine(i+1))!=NULL) {
-	      logline->
-		loadCart(logline->cartNumber(),play_id,
-			 logline->timescalingActive()&&
-			 (play_timescale_mode==RDLogLine::TimescaleIndividual));
-	    }
-	    else {
-	      logline->
-		loadCart(logline->cartNumber(),play_id,
-			 logline->timescalingActive()&&
-			 (play_timescale_mode==RDLogLine::TimescaleIndividual));
-	    }
-	    if(force_update||(state!=logline->state())) {
-	      emit modified(i);
-	    }
+	if(logline->status()==RDLogLine::Scheduled) {
+	  state=logline->state();
+	  if((next_logline=logLine(i+1))!=NULL) {
+	    logline->
+	      loadCart(logline->cartNumber(),play_id,
+		       logline->timescalingActive()&&
+		       (play_timescale_mode==RDLogLine::TimescaleIndividual));
 	  }
-	  break;
-	  
-	default:
-	  break;
+	  else {
+	    logline->
+	      loadCart(logline->cartNumber(),play_id,
+		       logline->timescalingActive()&&
+		       (play_timescale_mode==RDLogLine::TimescaleIndividual));
+	  }
+	  if(force_update||(state!=logline->state())) {
+	    if(play_timescale_mode==RDLogLine::TimescaleBlock) {
+	      int running_line=0;
+	      int err_msecs=0;
+	      int lines[TRANSPORT_QUANTITY];
+	      if(runningEvents(&running_line)==0) {
+		transportEvents(lines);
+		running_line=lines[0];
+	      }
+	      if(running_line>=0) {
+		play_speed_ratio=blockTimescaleRatio(&err_msecs,running_line);
+		UpdatePostPoint();
+	      }
+	    }
+	    emit modified(i);
+	  }
 	}
       }
     }
