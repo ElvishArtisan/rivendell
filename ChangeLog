@@ -15466,4 +15466,8 @@
 	block scaling mode.
 2015-11-03 Fred Gleason <fredg@paravelsystems.com>
 	* Renamed the 'Pie Counts To' control on the RDAirPlay config dialog
-	''Calculate Transitions To' in 'rdadmin/edit_rdairplay.cpp'.
+	'Calculate Transitions To' in 'rdadmin/edit_rdairplay.cpp'.
+2015-11-03 Fred Gleason <fredg@paravelsystems.com>
+	* Modified 'rdairplay/log_play.cpp' to calculate length in accordance
+	with the 'Calculate Transitions' setting in the RDAirPlay config
+	dialog.

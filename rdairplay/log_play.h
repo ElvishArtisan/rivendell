@@ -118,6 +118,9 @@ class LogPlay : public QObject,public RDLogEvent
   bool running(bool include_paused=true);
   void resync();
 
+ protected:
+  int getLength(int from_line,int *to_line,QTime *sched_time) const;
+
  private slots:
   void transTimerData();
   void graceTimerData();
@@ -200,6 +203,7 @@ class LogPlay : public QObject,public RDLogEvent
   void SendNowNext();
   RDCae *play_cae;
   RDAirPlayConf::OpMode play_op_mode;
+  RDAirPlayConf::PieEndPoint play_transition_point;
   RDLogLine::TimescaleMode play_timescale_mode;
   int play_slot_id[LOGPLAY_MAX_PLAYS];
   int play_segue_length;

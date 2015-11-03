@@ -45,6 +45,7 @@ LogPlay::LogPlay(int id,QSocketDevice *nn_sock,QString logname,
   play_onair_flag=false;
   play_segue_length=rdairplay_conf->segueLength()+1;
   play_trans_length=rdairplay_conf->transLength()+1;
+  play_transition_point=rdairplay_conf->pieEndPoint();
   play_duck_volume_port1=0;
   play_duck_volume_port2=0;
   play_start_next=false;
@@ -1391,6 +1392,20 @@ bool LogPlay::running(bool include_paused)
 void LogPlay::resync()
 {
   SetTransTimer();
+}
+
+
+int LogPlay::getLength(int from_line,int *to_line,QTime *sched_time) const
+{
+  int ret=RDLogEvent::getLength(from_line,to_line,sched_time);
+
+  if(play_transition_point==RDAirPlayConf::CartTransition) {
+    if(logLine(*to_line-1)!=NULL) {
+      ret-=logLine(*to_line-1)->segueTail(RDLogLine::Segue);
+     }
+  }
+
+  return ret;
 }
 
 
