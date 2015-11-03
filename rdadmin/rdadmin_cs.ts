@@ -2318,15 +2318,15 @@ GPIOs</source>
     </message>
     <message>
         <source>Pie Counts To:</source>
-        <translation>Pie počítá k:</translation>
+        <translation type="obsolete">Pie počítá k:</translation>
     </message>
     <message>
         <source>Cart End</source>
-        <translation>Konec vozíku</translation>
+        <translation type="obsolete">Konec vozíku</translation>
     </message>
     <message>
         <source>Transition</source>
-        <translation>Přechod</translation>
+        <translation type="obsolete">Přechod</translation>
     </message>
     <message>
         <source>Default Trans. Type:</source>
@@ -2619,6 +2619,18 @@ GPIOs</source>
     </message>
     <message>
         <source>Aux 2 Log Timescaling Mode:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Calculate Transitions To:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Always End</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Segue/End</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

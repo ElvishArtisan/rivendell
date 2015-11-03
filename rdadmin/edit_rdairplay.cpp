@@ -465,11 +465,12 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
   //
   air_countto_box=new QComboBox(this);
   air_countto_box->setGeometry(895,98,100,20);
-  air_countto_label=new QLabel(air_countto_box,tr("Pie Counts To:"),this);
-  air_countto_label->setGeometry(785,98,105,20);
+  air_countto_label=
+    new QLabel(air_countto_box,tr("Calculate Transitions To:"),this);
+  air_countto_label->setGeometry(755,98,135,20);
   air_countto_label->setAlignment(AlignRight|AlignVCenter);
-  air_countto_box->insertItem(tr("Cart End"));
-  air_countto_box->insertItem(tr("Transition"));
+  air_countto_box->insertItem(tr("Always End"));
+  air_countto_box->insertItem(tr("Segue/End"));
 
   //
   // Default Transition Type

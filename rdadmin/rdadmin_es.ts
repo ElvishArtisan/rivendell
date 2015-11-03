@@ -2328,15 +2328,15 @@ Parameters</source>
     </message>
     <message>
         <source>Pie Counts To:</source>
-        <translation>Rueda cuenta a:</translation>
+        <translation type="obsolete">Rueda cuenta a:</translation>
     </message>
     <message>
         <source>Cart End</source>
-        <translation>Fin Cartucho</translation>
+        <translation type="obsolete">Fin Cartucho</translation>
     </message>
     <message>
         <source>Transition</source>
-        <translation>Transición</translation>
+        <translation type="obsolete">Transición</translation>
     </message>
     <message>
         <source>Default Trans. Type:</source>
@@ -2613,6 +2613,18 @@ GPIOs</source>
     </message>
     <message>
         <source>Aux 2 Log Timescaling Mode:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Calculate Transitions To:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Always End</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Segue/End</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

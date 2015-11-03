@@ -2045,18 +2045,6 @@ GPIOs</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Pie Counts To:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Cart End</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Transition</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Default Trans. Type:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2330,6 +2318,18 @@ GPIOs</source>
     </message>
     <message>
         <source>Aux 2 Log Timescaling Mode:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Calculate Transitions To:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Always End</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Segue/End</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
