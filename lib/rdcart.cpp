@@ -2,9 +2,7 @@
 //
 // Abstract a Rivendell Cart.
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdcart.cpp,v 1.72.4.7.2.9 2014/06/02 22:52:25 cvs Exp $
+//   (C) Copyright 2002-2015 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -112,7 +110,6 @@ bool RDCart::selectCut(QString *cut,const QTime &time) const
     toString("yyyy-MM-dd hh:mm:ss");
   QString time_str=QDateTime(current_date,time).toString("hh:mm:ss");
 
-  //  if(type()==RDCart::Audio) {
   switch(type()) {
   case RDCart::Audio:
     sql=QString().sprintf("select CUT_NAME,WEIGHT,LOCAL_COUNTER\
@@ -305,7 +302,7 @@ void RDCart::removeSchedCode(const QString &code) const
   QStringList new_codes;
 
   for(unsigned i=0;i<codes.size();i++) {
-    if(codes[i]!=code) {
+    if(codes[i].lower()!=code.lower()) {
       new_codes.push_back(codes[i]);
     }
   }

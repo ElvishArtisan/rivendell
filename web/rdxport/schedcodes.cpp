@@ -134,15 +134,7 @@ void Xport::UnassignSchedCode()
   if(!code->exists()) {
     XmlExit("No such scheduler code",404);
   }
-  codes=cart->schedCodesList();
-  for(unsigned i=0;i<codes.size();i++) {
-    if(codes[i]==sched_code) {
-      cart->removeSchedCode(sched_code);
-      delete cart;
-      delete code;
-      XmlExit("OK",200);
-    }
-  }
+  cart->removeSchedCode(sched_code);
   delete cart;
   delete code;
   XmlExit("OK",200);

@@ -15475,3 +15475,6 @@
 	* Modified 'rdairplay/loglinebox.cpp' and 'rdairplay/loglinebox.h'
 	to  calculate length in accordance with the 'Calculate Transitions'
 	setting in the RDAirPlay config.
+2015-11-03 Fred Gleason <fredg@paravelsystems.com>
+	* Modified the 'RDCart::removeSchedCode()' method so as to treat
+	scheduler codes in a case-insensitve manner.
