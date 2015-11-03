@@ -144,6 +144,7 @@ class LogLineBox : public QWidget
   QString line_outcue_template;
   QString line_description_template;
   bool line_allow_drags;
+  RDAirPlayConf::PieEndPoint line_transition_point;
 };
 
 

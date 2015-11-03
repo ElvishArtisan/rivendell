@@ -15471,3 +15471,7 @@
 	* Modified 'rdairplay/log_play.cpp' to calculate length in accordance
 	with the 'Calculate Transitions' setting in the RDAirPlay config
 	dialog.
+2015-11-03 Fred Gleason <fredg@paravelsystems.com>
+	* Modified 'rdairplay/loglinebox.cpp' and 'rdairplay/loglinebox.h'
+	to  calculate length in accordance with the 'Calculate Transitions'
+	setting in the RDAirPlay config.
