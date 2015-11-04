@@ -15481,3 +15481,6 @@
 2015-11-04 Fred Gleason <fredg@paravelsystems.com>
 	* Modified the return of the 'EditCut' web method to provide a full
 	<cutList> record in 'web/rdxport/carts.cpp'.
+2015-11-04 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'web/tests/utils.js' that caused all form response
+	processing to be handled as mimetype 'text/html'.

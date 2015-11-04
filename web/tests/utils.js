@@ -36,7 +36,7 @@ function PostForm(form,url)
     // Process the response
     //
     var html=http.responseText;
-    document.open();
+    document.open(http.getResponseHeader("Content-Type"));
     document.write(html);
     document.close();
 }
