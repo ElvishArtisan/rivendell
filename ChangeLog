@@ -15484,3 +15484,6 @@
 2015-11-04 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in 'web/tests/utils.js' that caused all form response
 	processing to be handled as mimetype 'text/html'.
+2015-11-04 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'CartSegue' value to the 'RDAirPlayConf::PieEndPoint'
+	enumeration in 'lib/rdairplay_conf.h'.

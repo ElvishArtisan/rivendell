@@ -544,18 +544,29 @@ void LogLineBox::setEvent(int line,RDLogLine::TransType next_type,
 	  setText(RDResolveNowNext(line_artist_template,line_logline));
 	line_up_label->
 	  setText(RDGetTimeLength(line_logline->playPosition(),true,true));
-	if(line_transition_point==RDAirPlayConf::CartTransition) {
+	switch(line_transition_point) {
+	case RDAirPlayConf::CartSegue:
 	  line_down_label->
 	    setText(RDGetTimeLength(line_logline->segueLength(RDLogLine::Segue)-
 				    line_logline->playPosition(),true,true));
 	  line_position_bar->
 	    setTotalSteps(line_logline->segueLength(RDLogLine::Segue));
-	}
-	else {
+	  break;
+
+	case RDAirPlayConf::CartEnd:
 	  line_down_label->
 	    setText(RDGetTimeLength(line_logline->effectiveLength()-
 				    line_logline->playPosition(),true,true));
 	  line_position_bar->setTotalSteps(line_logline->effectiveLength());
+	  break;
+
+	case RDAirPlayConf::CartTransition:
+	  line_down_label->
+	    setText(RDGetTimeLength(line_logline->segueLength(RDLogLine::Segue)-
+				    line_logline->playPosition(),true,true));
+	  line_position_bar->
+	    setTotalSteps(line_logline->segueLength(line_next_type));
+	  break;
 	}
 	line_position_bar->setProgress(line_logline->playPosition());
 	if(logline->cutNumber()>=0) {
@@ -707,14 +718,23 @@ void LogLineBox::setEvent(int line,RDLogLine::TransType next_type,
 void LogLineBox::setTimer(int msecs)
 {
   line_up_label->setText(RDGetTimeLength(msecs,true,true));
-  if(line_transition_point==RDAirPlayConf::CartTransition) {
+  switch(line_transition_point) {
+  case RDAirPlayConf::CartSegue:
     line_down_label->
       setText(RDGetTimeLength(line_logline->segueLength(RDLogLine::Segue)-msecs,
 			      true,true));
-  }
-  else {
+    break;
+
+  case RDAirPlayConf::CartEnd:
     line_down_label->
       setText(RDGetTimeLength(line_logline->effectiveLength()-msecs,true,true));
+    break;
+
+  case RDAirPlayConf::CartTransition:
+    line_down_label->
+      setText(RDGetTimeLength(line_logline->segueLength(line_next_type)-msecs,
+			      true,true));
+    break;
   }
   line_position_bar->setProgress(msecs);
 }

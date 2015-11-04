@@ -1894,26 +1894,30 @@ void MainWidget::transportChangedData()
     if(logline->effectiveLength()>0) {
       if((air_pie_counter->line()!=logline->id())) {
 	switch(pie_end) {
-	    case RDAirPlayConf::CartEnd:
-	      air_pie_counter->setTime(logline->effectiveLength());
-	      break;
+	case RDAirPlayConf::CartEnd:
+	  air_pie_counter->setTime(logline->effectiveLength());
+	  break;
 	      
-	    case RDAirPlayConf::CartTransition:
-	      if((next_logline=air_log[0]->
-		  logLine(air_log[0]->nextLine(line)))!=NULL) {
-		if(logline->playPosition()<
-		   (unsigned)logline->segueLength(next_logline->transType())) {
-		  air_pie_counter->
-		    setTime(logline->segueLength(next_logline->transType()));
-		}
-		else {
-		  air_pie_counter->setTime(logline->effectiveLength());
-		}
-	      }
-	      else {
-		air_pie_counter->setTime(logline->effectiveLength());
-	      }
-	      break;
+	case RDAirPlayConf::CartSegue:
+	  air_pie_counter->setTime(logline->segueLength(RDLogLine::Segue));
+	  break;
+
+	case RDAirPlayConf::CartTransition:
+	  if((next_logline=air_log[0]->
+	      logLine(air_log[0]->nextLine(line)))!=NULL) {
+	    if(logline->playPosition()<
+	       (unsigned)logline->segueLength(next_logline->transType())) {
+	      air_pie_counter->
+		setTime(logline->segueLength(next_logline->transType()));
+	    }
+	    else {
+	      air_pie_counter->setTime(logline->effectiveLength());
+	    }
+	  }
+	  else {
+	    air_pie_counter->setTime(logline->effectiveLength());
+	  }
+	  break;
 	}
 	if(logline->talkStartPoint()==0) {
           air_pie_counter->setTalkStart(0);

@@ -2587,11 +2587,11 @@ GPIOs</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Always End</source>
+        <source>Segue/End</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Segue/End</source>
+        <source>End</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

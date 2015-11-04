@@ -44,7 +44,7 @@ class RDAirPlayConf
   enum OpMode {Previous=0,LiveAssist=1,Auto=2,Manual=3};
   enum OpModeStyle {Unified=0,Independent=1};
   enum PanelType {StationPanel=0,UserPanel=1};
-  enum PieEndPoint {CartEnd=0,CartTransition=1};
+  enum PieEndPoint {CartEnd=0,CartTransition=1,CartSegue=2};
   enum StartMode {StartEmpty=0,StartPrevious=1,StartSpecified=2};
   enum TimeMode {TwelveHour=0,TwentyFourHour=1};
   enum TrafficAction {TrafficStart=1,TrafficStop=2,TrafficFinish=3,

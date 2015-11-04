@@ -469,7 +469,8 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
     new QLabel(air_countto_box,tr("Calculate Transitions To:"),this);
   air_countto_label->setGeometry(755,98,135,20);
   air_countto_label->setAlignment(AlignRight|AlignVCenter);
-  air_countto_box->insertItem(tr("Always End"));
+  air_countto_box->insertItem(tr("End"));
+  air_countto_box->insertItem(tr("Automatic"));
   air_countto_box->insertItem(tr("Segue/End"));
 
   //

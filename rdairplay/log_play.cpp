@@ -1399,10 +1399,23 @@ int LogPlay::getLength(int from_line,int *to_line,QTime *sched_time) const
 {
   int ret=RDLogEvent::getLength(from_line,to_line,sched_time);
 
-  if(play_transition_point==RDAirPlayConf::CartTransition) {
+  switch(play_transition_point) {
+  case RDAirPlayConf::CartEnd:
+    break;
+
+  case RDAirPlayConf::CartSegue:
     if(logLine(*to_line-1)!=NULL) {
       ret-=logLine(*to_line-1)->segueTail(RDLogLine::Segue);
-     }
+    }
+    break;
+
+  case RDAirPlayConf::CartTransition:
+    if(logLine(*to_line)!=NULL) {
+      if(logLine(*to_line-1)!=NULL) {
+	ret-=logLine(*to_line-1)->segueTail(logLine(*to_line)->transType());
+      }
+    }
+    break;
   }
 
   return ret;
