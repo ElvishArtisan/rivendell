@@ -15478,3 +15478,6 @@
 2015-11-03 Fred Gleason <fredg@paravelsystems.com>
 	* Modified the 'RDCart::removeSchedCode()' method so as to treat
 	scheduler codes in a case-insensitve manner.
+2015-11-04 Fred Gleason <fredg@paravelsystems.com>
+	* Modified the return of the 'EditCut' web method to provide a full
+	<cutList> record in 'web/rdxport/carts.cpp'.

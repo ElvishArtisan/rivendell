@@ -839,8 +839,15 @@ void Xport::EditCut()
     }
     delete cart;
   }
+  printf("Content-type: application/xml\n");
+  printf("Status: 200\n\n");
+  printf("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
+  printf("<cutList>\n");
+  printf("%s",(const char *)cut->xml());
+  printf("</cutList>\n");
   delete cut;
-  XmlExit("OK",200);
+
+  Exit(0);
 }
 
 
