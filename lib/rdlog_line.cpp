@@ -2110,7 +2110,7 @@ QString RDLogLine::typeText(RDLogLine::Type type)
 {
   switch(type) {
       case RDLogLine::Cart:
-	return QObject::tr("Audio");
+	return QObject::tr("Cart");
 
       case RDLogLine::Marker:
 	return QObject::tr("Marker");

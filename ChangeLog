@@ -15487,3 +15487,6 @@
 2015-11-04 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'CartSegue' value to the 'RDAirPlayConf::PieEndPoint'
 	enumeration in 'lib/rdairplay_conf.h'.
+2015-11-12 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'lib/rdlog_line.cpp' that caused an incorrect value
+	to be populated for RDLogLine::type() in the 'ListLog' web method.
