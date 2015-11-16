@@ -15007,3 +15007,6 @@
 2015-11-15 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in the SoftwareAuthority switcher driver that caused
 	the number of GPIO lines to be calculated incorrectly.
+2015-11-16 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'ripcd/swauthority.cpp' that caused the GPIO
+	DB tables to be incorrectly initialized.
