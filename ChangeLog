@@ -15004,3 +15004,6 @@
 	* Fixed a bug in 'lib/rdwavefile.cpp' and 'lib/rdwavefile.h' that
 	would cause MPEG I v2.5 Layer 3 imports to be imported with
 	the incorrect sample rate.
+2015-11-15 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in the SoftwareAuthority switcher driver that caused
+	the number of GPIO lines to be calculated incorrectly.

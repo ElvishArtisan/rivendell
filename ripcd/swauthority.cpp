@@ -296,7 +296,8 @@ void SoftwareAuthority::DispatchCommand()
       //
       swa_istate=0;
       sql=QString("update MATRICES set ")+
-	QString().sprintf("INPUTS=%d ",swa_inputs)+
+	QString().sprintf("INPUTS=%d,",swa_inputs)+
+	QString().sprintf("GPIS=%d ",swa_inputs*RD_LIVEWIRE_GPIO_BUNDLE_SIZE)+
 	"where (STATION_NAME=\""+RDEscapeString(rdstation->name())+"\")&&"+
 	QString().sprintf("(MATRIX=%d)",swa_matrix);
       q=new RDSqlQuery(sql);
@@ -342,7 +343,8 @@ void SoftwareAuthority::DispatchCommand()
       //
       swa_istate=0;
       sql=QString("update MATRICES set ")+
-	QString().sprintf("OUTPUTS=%d ",swa_outputs)+
+	QString().sprintf("OUTPUTS=%d,",swa_outputs)+
+	QString().sprintf("GPOS=%d ",swa_outputs*RD_LIVEWIRE_GPIO_BUNDLE_SIZE)+
 	"where (STATION_NAME=\""+RDEscapeString(rdstation->name())+"\")&&"+
 	QString().sprintf("(MATRIX=%d)",swa_matrix);
       q=new RDSqlQuery(sql);
@@ -391,12 +393,14 @@ void SoftwareAuthority::DispatchCommand()
     //
     // Write GPIO Data
     //
+    /*
     sql=QString("update MATRICES set ")+
       QString().sprintf("GPIS=%d,GPOS=%d where ",swa_gpis,swa_gpos)+
       "(STATION_NAME=\""+RDEscapeString(rdstation->name())+"\")&&"+
       QString().sprintf("(MATRIX=%d)",swa_matrix);
     q=new RDSqlQuery(sql);
     delete q;
+    */
     break;
   }
 
