@@ -11,7 +11,7 @@
   </author>
 </info>
 
-<sect2>
+<sect1>
   <title>Data Types</title>
   <table xml:id="ex.datatypes" frame="all">
     <title>Data Types</title>
@@ -85,9 +85,9 @@
       </tbody>
     </tgroup>
   </table>
-</sect2>
+</sect1>
 
-<sect2>
+<sect1>
   <title>Result Reporting</title>
   <para>
     Commands that return an error or do not return specialized data types
@@ -137,9 +137,9 @@
       </listitem>
     </varlistentry>
   </variablelist>
-</sect2>
+</sect1>
 
-<sect2>
+<sect1>
   <title>AddCart</title>
   <subtitle>Add a new cart</subtitle>
   <para>
@@ -243,9 +243,9 @@
       </tbody>
     </tgroup>
   </table>
-</sect2>
+</sect1>
 
-<sect2>
+<sect1>
   <title>AddCut</title>
   <subtitle>Add a new cut to an existing cart</subtitle>
   <para>
@@ -326,9 +326,9 @@
       </tbody>
     </tgroup>
   </table>
-</sect2>
+</sect1>
 
-<sect2>
+<sect1>
   <title>AssignSchedCode</title>
   <subtitle>Assign a scheduler code to an existing cart</subtitle>
   <para>
@@ -420,9 +420,9 @@
       </tbody>
     </tgroup>
   </table>
-</sect2>
+</sect1>
 
-<sect2>
+<sect1>
   <title>AudioInfo</title>
   <subtitle>Get information about an entry in the audio store</subtitle>
   <para>
@@ -509,9 +509,9 @@
       </tbody>
     </tgroup>
   </table>
-</sect2>
+</sect1>
 
-<sect2>
+<sect1>
   <title>AudioStore</title>
   <subtitle>Get information about the audio store</subtitle>
   <para>
@@ -576,9 +576,9 @@
       </tbody>
     </tgroup>
   </table>
-</sect2>
+</sect1>
 
-<sect2>
+<sect1>
   <title>DeleteAudio</title>
   <subtitle>Delete PCM/MPEG data from the audio store</subtitle>
   <para>
@@ -665,9 +665,9 @@
       </tbody>
     </tgroup>
   </table>
-</sect2>
+</sect1>
 
-<sect2>
+<sect1>
   <title>EditCart</title>
   <subtitle>
     Write metadata changes for an existing cart into the
@@ -959,9 +959,9 @@
       </tbody>
     </tgroup>
   </table>
-</sect2>
+</sect1>
 
-<sect2>
+<sect1>
   <title>EditCut</title>
   <subtitle>
     Write metadata changes for an existing cut into the database
@@ -1356,9 +1356,9 @@
       </tbody>
     </tgroup>
   </table>
-</sect2>
+</sect1>
 
-<sect2>
+<sect1>
   <title>Export</title>
   <subtitle>Export audio data from the audio store</subtitle>
   <para>
@@ -1545,9 +1545,9 @@
       </tbody>
     </tgroup>
   </table>
-</sect2>
+</sect1>
 
-<sect2>
+<sect1>
   <title>ExportPeaks</title>
   <subtitle>Export audio peak data from the audio store</subtitle>
   <para>
@@ -1639,9 +1639,9 @@
       </tbody>
     </tgroup>
   </table>
-</sect2>
+</sect1>
 
-<sect2>
+<sect1>
   <title>Import</title>
   <subtitle>Import audio data into the audio store</subtitle>
   <para>
@@ -1792,9 +1792,9 @@
       </tbody>
     </tgroup>
   </table>
-</sect2>
+</sect1>
 
-<sect2>
+<sect1>
   <title>ListCart</title>
   <subtitle>Return information about a specified cart</subtitle>
   <para>
@@ -1886,9 +1886,9 @@
       </tbody>
     </tgroup>
   </table>
-</sect2>
+</sect1>
 
-<sect2>
+<sect1>
   <title>ListCarts</title>
   <subtitle>Return information about a set of carts</subtitle>
   <para>
@@ -2002,9 +2002,9 @@
       </tbody>
     </tgroup>
   </table>
-</sect2>
+</sect1>
 
-<sect2>
+<sect1>
   <title>ListCartSchedCodes</title>
   <subtitle>Return information about all scheduler codes assigned to a cart</subtitle>
   <para>
@@ -2085,9 +2085,9 @@
       </tbody>
     </tgroup>
   </table>
-</sect2>
+</sect1>
 
-<sect2>
+<sect1>
   <title>ListCut</title>
   <subtitle>Return information about a specified cut</subtitle>
   <para>
@@ -2179,9 +2179,9 @@
       </tbody>
     </tgroup>
   </table>
-</sect2>
+</sect1>
 
-<sect2>
+<sect1>
   <title>ListCuts</title>
   <subtitle>Return information about all cuts belonging to a cart</subtitle>
   <para>
@@ -2262,9 +2262,9 @@
       </tbody>
     </tgroup>
   </table>
-</sect2>
+</sect1>
 
-<sect2>
+<sect1>
   <title>ListGroup</title>
   <subtitle>Return information about a specified group</subtitle>
   <para>
@@ -2345,9 +2345,9 @@
       </tbody>
     </tgroup>
   </table>
-</sect2>
+</sect1>
 
-<sect2>
+<sect1>
   <title>ListGroups</title>
   <subtitle>Return information about all available groups</subtitle>
   <para>
@@ -2417,9 +2417,9 @@
       </tbody>
     </tgroup>
   </table>
-</sect2>
+</sect1>
 
-<sect2>
+<sect1>
   <title>ListLog</title>
   <subtitle>Return a listing of the specified log</subtitle>
   <para>
@@ -2495,9 +2495,9 @@
       </tbody>
     </tgroup>
   </table>
-</sect2>
+</sect1>
 
-<sect2>
+<sect1>
   <title>ListLogs</title>
   <subtitle>Return information about all available logs</subtitle>
   <para>
@@ -2584,9 +2584,9 @@
       </tbody>
     </tgroup>
   </table>
-</sect2>
+</sect1>
 
-<sect2>
+<sect1>
   <title>ListSchedulerCodes</title>
   <subtitle>Return information about all available scheduler codes</subtitle>
   <para>
@@ -2651,9 +2651,9 @@
       </tbody>
     </tgroup>
   </table>
-</sect2>
+</sect1>
 
-<sect2>
+<sect1>
   <title>ListServices</title>
   <subtitle>Return information about all available services</subtitle>
   <para>
@@ -2731,9 +2731,9 @@
       </tbody>
     </tgroup>
   </table>
-</sect2>
+</sect1>
 
-<sect2>
+<sect1>
   <title>RemoveCart</title>
   <subtitle>Remove a cart from the Library</subtitle>
   <para>
@@ -2809,9 +2809,9 @@
       </tbody>
     </tgroup>
   </table>
-</sect2>
+</sect1>
 
-<sect2>
+<sect1>
   <title>RemoveCut</title>
   <subtitle>Remove an existing cut from a cart</subtitle>
   <para>
@@ -2898,9 +2898,9 @@
       </tbody>
     </tgroup>
   </table>
-</sect2>
+</sect1>
 
-<sect2>
+<sect1>
   <title>TrimAudio</title>
   <subtitle>
     Return a time pointer to the first or last instance of a particular
@@ -3006,9 +3006,9 @@
       </tbody>
     </tgroup>
   </table>
-</sect2>
+</sect1>
 
-<sect2>
+<sect1>
   <title>UnassignSchedCode</title>
   <subtitle>Unassign a scheduler code from an existing cart</subtitle>
   <para>
@@ -3100,6 +3100,6 @@
       </tbody>
     </tgroup>
   </table>
-</sect2>
+</sect1>
 
 </article>

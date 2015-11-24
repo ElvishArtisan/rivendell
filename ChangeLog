@@ -15490,3 +15490,6 @@
 2015-11-12 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in 'lib/rdlog_line.cpp' that caused an incorrect value
 	to be populated for RDLogLine::type() in the 'ListLog' web method.
+2015-11-24 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed formatting in 'docs/docbook/web_api.xml' so as to render
+	a table on contents in PDF.
