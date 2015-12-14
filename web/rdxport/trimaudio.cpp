@@ -54,11 +54,15 @@ void Xport::TrimAudio()
     XmlExit("Missing TRIM_LEVEL",400);
   }
 
+  if(!RDCart::exists(cartnum)) {
+    XmlExit("No such cart",404);
+  }
+
   //
   // Verify User Perms
   //
   if(!xport_user->cartAuthorized(cartnum)) {
-    XmlExit("No such cart",404);
+    XmlExit("Forbidden",403);
   }
 
   //

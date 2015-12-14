@@ -96,7 +96,7 @@ void Xport::Export()
   // Verify User Perms
   //
   if(!xport_user->cartAuthorized(cartnum)) {
-    XmlExit("No such cart",404);
+    XmlExit("Forbidden",403);
   }
 
   //

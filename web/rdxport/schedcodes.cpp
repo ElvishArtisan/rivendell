@@ -74,11 +74,15 @@ void Xport::AssignSchedCode()
     XmlExit("Missing CODE",400);
   }
 
+  if(!RDCart::exists(cart_number)) {
+    XmlExit("No such cart",404);
+  }
+
   //
   // Verify User Perms
   //
   if(!xport_user->cartAuthorized(cart_number)) {
-    XmlExit("No such cart",404);
+    XmlExit("Forbidden",403);
   }
 
   //
@@ -119,11 +123,15 @@ void Xport::UnassignSchedCode()
     XmlExit("Missing CODE",400);
   }
 
+  if(!RDCart::exists(cart_number)) {
+    XmlExit("No such cart",404);
+  }
+
   //
   // Verify User Perms
   //
   if(!xport_user->cartAuthorized(cart_number)) {
-    XmlExit("No such cart",404);
+    XmlExit("Forbidden",403);
   }
 
   //
@@ -155,11 +163,15 @@ void Xport::ListCartSchedCodes()
     XmlExit("Missing CART_NUMBER",400);
   }
 
+  if(!RDCart::exists(cart_number)) {
+    XmlExit("No such cart",404);
+  }
+
   //
   // Verify User Perms
   //
   if(!xport_user->cartAuthorized(cart_number)) {
-    XmlExit("No such cart",404);
+    XmlExit("Forbidden",403);
   }
   //
   // Generate Scheduler Code List

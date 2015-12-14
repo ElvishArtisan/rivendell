@@ -72,21 +72,22 @@ void Xport::Import()
   if(!xport_post->getValue("FILENAME",&filename)) {
     XmlExit("Missing FILENAME",400);
   }
+  if(!xport_post->isFile("FILENAME")) {
+    XmlExit("Missing file data",400);
+  }
+
   if(!RDCart::exists(cartnum)) {
     XmlExit("No such cart",404);
   }
   if(!RDCut::exists(cartnum,cutnum)) {
     XmlExit("No such cut",404);
   }
-  if(!xport_post->isFile("FILENAME")) {
-    XmlExit("Missing file data",400);
-  }
 
   //
   // Verify User Perms
   //
   if(!xport_user->cartAuthorized(cartnum)) {
-    XmlExit("No such cart",404);
+    XmlExit("Forbidden",403);
   }
   if(!xport_user->editAudio()) {
     XmlExit("Forbidden",403);
