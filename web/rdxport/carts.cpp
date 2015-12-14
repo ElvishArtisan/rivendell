@@ -186,7 +186,7 @@ void Xport::AddCart()
   // Verify User Perms
   //
   if(!xport_user->groupAuthorized(group_name)) {
-    XmlExit("No such group",404);
+    XmlExit("Forbidden",403);
   }
   group=new RDGroup(group_name);
   if(cart_number==0) {
@@ -319,11 +319,18 @@ void Xport::ListCart()
   }
   xport_post->getValue("INCLUDE_CUTS",&include_cuts);
 
+  cart=new RDCart(cart_number);
+  if(!cart->exists()) {
+    delete cart;
+    XmlExit("No such cart",404);
+  }
+
   //
   // Verify User Perms
   //
   if(!xport_user->cartAuthorized(cart_number)) {
-    XmlExit("No such cart",404);
+    delete cart;
+    XmlExit("Forbidden",403);
   }
 
   //
@@ -333,7 +340,6 @@ void Xport::ListCart()
   printf("Status: 200\n\n");
   printf("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
   printf("<cartList>\n");
-  cart=new RDCart(cart_number);
   printf("%s",(const char *)cart->xml(include_cuts));
   delete cart;
   printf("</cartList>\n");
@@ -358,29 +364,33 @@ void Xport::EditCart()
   }
   xport_post->getValue("INCLUDE_CUTS",&include_cuts);
 
+  cart=new RDCart(cart_number);
+  if(!cart->exists()) {
+    delete cart;
+    XmlExit("No such cart",404);
+  }
+
   //
   // Verify User Perms
   //
   if(!xport_user->cartAuthorized(cart_number)) {
-    XmlExit("No such cart",404);
+    delete cart;
+    XmlExit("Forbidden",403);
   }
   if(!xport_user->modifyCarts()) {
+    delete cart;
     XmlExit("Forbidden",403);
   }
   if(xport_post->getValue("GROUP_NAME",&group_name)) {
     if(!xport_user->groupAuthorized(group_name)) {
-      XmlExit("No such group",404);
+      delete cart;
+      XmlExit("Forbidden",403);
     }
   }
 
   //
   // Process Request
   //
-  cart=new RDCart(cart_number);
-  if(!cart->exists()) {
-    delete cart;
-    XmlExit("No such cart",404);
-  }
   SetCartInfo(cart, group_name);
 
   printf("Content-type: application/xml\n");
@@ -407,24 +417,27 @@ void Xport::RemoveCart()
     XmlExit("Missing CART_NUMBER",400);
   }
 
+  cart=new RDCart(cart_number);
+  if(!cart->exists()) {
+    delete cart;
+    XmlExit("No such cart",404);
+  }
+
   //
   // Verify User Perms
   //
   if(!xport_user->cartAuthorized(cart_number)) {
-    XmlExit("No such cart",404);
+    delete cart;
+    XmlExit("Forbidden",403);
   }
   if(!xport_user->deleteCarts()) {
+    delete cart;
     XmlExit("Forbidden",403);
   }
 
   //
   // Process Request
   //
-  cart=new RDCart(cart_number);
-  if(!cart->exists()) {
-    delete cart;
-    XmlExit("No such cart",404);
-  }
   if(!cart->remove(NULL,NULL,xport_config)) {
     delete cart;
     XmlExit("Unable to delete cart",500);
@@ -576,24 +589,27 @@ void Xport::AddCut()
     XmlExit("Missing CART_NUMBER",400);
   }
 
+  cart=new RDCart(cart_number);
+  if(!cart->exists()) {
+    delete cart;
+    XmlExit("No such cart",404);
+  }
+
   //
   // Verify User Perms
   //
   if(!xport_user->cartAuthorized(cart_number)) {
-    XmlExit("No such cart",404);
+    delete cart;
+    XmlExit("Forbidden",403);
   }
   if(!xport_user->editAudio()) {
+    delete cart;
     XmlExit("Forbidden",403);
   }
 
   //
   // Process Request
   //
-  cart=new RDCart(cart_number);
-  if(!cart->exists()) {
-    delete cart;
-    XmlExit("No such cart",404);
-  }
   if((cut_number=cart->addCut(0,0,2))<0) {
     delete cart;
     XmlExit("No new cuts available",403);
@@ -632,11 +648,15 @@ void Xport::ListCuts()
     XmlExit("Missing CART_NUMBER",400);
   }
 
+  if(!RDCart::exists(cart_number)) {
+    XmlExit("No such cart",404);
+  }
+
   //
   // Verify User Perms
   //
   if(!xport_user->cartAuthorized(cart_number)) {
-    XmlExit("No such cart",404);
+    XmlExit("Forbidden",403);
   }
 
   //
@@ -680,11 +700,15 @@ void Xport::ListCut()
     XmlExit("Missing CUT_NUMBER",400);
   }
 
+  if(!RDCart::exists(cart_number)) {
+    XmlExit("No such cart",404);
+  }
+
   //
   // Verify User Perms
   //
   if(!xport_user->cartAuthorized(cart_number)) {
-    XmlExit("No such cart",404);
+    XmlExit("Forbidden",403);
   }
 
   //
@@ -723,11 +747,15 @@ void Xport::EditCut()
     XmlExit("Missing CUT_NUMBER",400);
   }
 
+  if(!RDCart::exists(cart_number)) {
+    XmlExit("No such cart",404);
+  }
+
   //
   // Verify User Perms
   //
   if(!xport_user->cartAuthorized(cart_number)) {
-    XmlExit("No such cart",404);
+    XmlExit("Forbidden",403);
   }
   if(!xport_user->editAudio()) {
     XmlExit("Forbidden",403);
@@ -765,24 +793,27 @@ void Xport::RemoveCut()
     XmlExit("Missing CUT_NUMBER",400);
   }
 
+  cart=new RDCart(cart_number);
+  if(!cart->exists()) {
+    delete cart;
+    XmlExit("No such cart",404);
+  }
+
   //
   // Verify User Perms
   //
   if(!xport_user->cartAuthorized(cart_number)) {
-    XmlExit("No such cart",404);
+    delete cart;
+    XmlExit("Forbidden",403);
   }
   if(!xport_user->editAudio()) {
+    delete cart;
     XmlExit("Forbidden",403);
   }
 
   //
   // Process Request
   //
-  cart=new RDCart(cart_number);
-  if(!cart->exists()) {
-    delete cart;
-    XmlExit("No such cart",404);
-  }
   if(!cart->removeCut(NULL,NULL,RDCut::cutName(cart_number,cut_number),
 		      xport_config)) {
     delete cart;
