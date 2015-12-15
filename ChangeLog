@@ -15500,3 +15500,5 @@
 2015-12-15 Fred Gleason <fredg@paravelsystems.com>
 	* Updated the location of the Web API and CAE documentation in
 	'rivendell.spec.in'.
+2015-12-15 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.11.1int01.
