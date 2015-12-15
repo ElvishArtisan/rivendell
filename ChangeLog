@@ -15502,3 +15502,8 @@
 	'rivendell.spec.in'.
 2015-12-15 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 2.11.1int01.
+2015-12-15 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the 'filename' parameter from the AddSong CGI call
+	in 'rlm/rlm_live365.c'.
+	* Added a 'CoverUrlString=' parameter to the configuration for the
+	'rlm_live365' RLM in 'rlm/rlm_live365.c'.
