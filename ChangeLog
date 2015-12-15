@@ -15495,3 +15495,5 @@
 	a table on contents in PDF.
 2015-12-15 Fred Gleason <fredg@paravelsystems.com>
 	* Added a '--disable-docbook' switch in 'configure.ac'.
+2015-12-15 Fred Gleason <fredg@paravelsystems.com>
+	* Simplified the dependency rules in 'docs/docbook/Makefile.am'.
