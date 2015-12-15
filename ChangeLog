@@ -15493,3 +15493,5 @@
 2015-11-24 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed formatting in 'docs/docbook/web_api.xml' so as to render
 	a table on contents in PDF.
+2015-12-15 Fred Gleason <fredg@paravelsystems.com>
+	* Added a '--disable-docbook' switch in 'configure.ac'.

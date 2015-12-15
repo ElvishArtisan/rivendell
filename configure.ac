@@ -78,8 +78,9 @@ AC_ARG_ENABLE(lame,[  --disable-lame          disable MPEG Layer 3 encode suppor
 		      [LAME_DISABLED=yes],[])
 AC_ARG_ENABLE(flac,[  --disable-flac          disable FLAC encode/decode support],
 		      [FLAC_DISABLED=yes],[])
-AC_ARG_ENABLE(mp4v2,[ --disable-mp4           disable M4A decode support],
+AC_ARG_ENABLE(mp4v2,[  --disable-mp4           disable M4A decode support],
 		      [MP4V2_DISABLED=yes],[])
+AC_ARG_ENABLE(docbook,[  --disable-docbook       disable building of DocBook documentation],[DOCBOOK_DISABLED=yes],[])
 
 #
 # Check for Qt
@@ -228,18 +229,9 @@ fi
 #
 # Check for DocBook Toolchain
 #
-AC_CHECK_PROG(XSLTPROC_FOUND,xsltproc,[yes])
-AC_CHECK_PROG(FOP_FOUND,fop,[yes])
-if test $XSLTPROC_FOUND ; then
-   echo "HERE1"
-   if test $FOP_FOUND ; then
-      echo "HERE2"
-      if test $DOCBOOK_STYLESHEETS ; then
-        echo "HERE3"
-        USING_DOCBOOK=yes
-      fi
-   fi
-fi	
+if test -z $DOCBOOK_DISABLED ; then
+  USING_DOCBOOK=yes
+fi
 AM_CONDITIONAL([DOCBOOK_AM], [test "$USING_DOCBOOK" = yes])
 
 #
@@ -584,9 +576,9 @@ else
 AC_MSG_NOTICE("|           Rivendell PAM pam_rd.so Support ... Yes   |")
 fi
 if test -z $USING_DOCBOOK ; then
-AC_MSG_NOTICE("|               DocBook Toolchain Available ... No    |")
+AC_MSG_NOTICE("|                     DocBook Documentation ... No    |")
 else
-AC_MSG_NOTICE("|               DocBook Toolchain Available ... Yes   |")
+AC_MSG_NOTICE("|                     DocBook Documentation ... Yes   |")
 fi
 AC_MSG_NOTICE("|-----------------------------------------------------|")
 AC_MSG_NOTICE()
