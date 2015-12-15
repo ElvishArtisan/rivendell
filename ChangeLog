@@ -15507,3 +15507,8 @@
 	in 'rlm/rlm_live365.c'.
 	* Added a 'CoverUrlString=' parameter to the configuration for the
 	'rlm_live365' RLM in 'rlm/rlm_live365.c'.
+2015-12-15 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in the SoftwareAuthority switcher driver that caused
+	the number of GPIO lines to be calculated incorrectly.
+	* Fixed a bug in 'ripcd/swauthority.cpp' that caused the GPIO
+	DB tables to be incorrectly initialized.
