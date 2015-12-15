@@ -1,10 +1,8 @@
 //   rdwavefile.h
 //
-//   A class for handling Microsoft WAV files.
+//   A class for handling BWF WAV files.
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//    $Id: rdwavefile.h,v 1.10.6.2 2014/01/15 19:56:32 cvs Exp $
+//   (C) Copyright 2002-2015 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -118,7 +116,7 @@ class RDWaveFile
   	       DolbyAc2=6,DolbyAc3=7,Vorbis=8,Pcm24=9};
   enum Type {Unknown=0,Wave=1,Mpeg=2,Ogg=3,Atx=4,Tmc=5,Flac=6,Ambos=7,
 	     Aiff=8,M4A=9};
-  enum MpegID {NonMpeg=0,Mpeg1=1,Mpeg2=2};
+  enum MpegID {NonMpeg=0,Mpeg1=1,Mpeg2=2,Mpeg25=3};
 
   /**
    * Create an RDWaveFile object.
