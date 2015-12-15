@@ -15516,3 +15516,6 @@
 	* Fixed a bug in 'lib/rdwavefile.cpp' and 'lib/rdwavefile.h' that
 	would cause MPEG I v2.5 Layer 3 imports to be imported with
 	the incorrect sample rate.
+2015-12-15 Fred Gleason <fredg@paravelsystems.com>
+	* Marked merged from 7d3620f1a482bd7cd7c728cce79e08d99ada008e in
+	v12.10.3caefix.
