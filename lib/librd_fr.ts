@@ -10,14 +10,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Sequentially</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Randomly</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Unknown</source>
         <translation type="unfinished"></translation>
     </message>

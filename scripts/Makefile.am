@@ -41,7 +41,6 @@ EXTRA_DIST = crc-unity4k.sh\
              rd_backup\
              rd_backup_system.sh\
              rd_config\
-             rd_create_db\
              rd_memmon.sh\
              rd_mysql_enable_host.sh\
              rd_restore_system.sh\

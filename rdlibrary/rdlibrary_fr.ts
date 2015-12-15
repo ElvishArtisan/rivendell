@@ -574,10 +574,6 @@ Selection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Preserve Pitch</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;Title:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -726,6 +722,10 @@ Notes</source>
     </message>
     <message>
         <source>Use Event Length for Now &amp;&amp; Next Updates</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use Per-Cut Dayparting</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

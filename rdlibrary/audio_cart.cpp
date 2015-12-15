@@ -2,9 +2,7 @@
 //
 // The audio cart editor for RDLibrary.
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: audio_cart.cpp,v 1.57.6.9.2.2 2014/05/22 14:30:45 cvs Exp $
+//   (C) Copyright 2002-2015 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -526,7 +524,7 @@ void AudioCart::recordCutData()
     return;
   }
   QString cutname=item->text(11);
-  RecordCut *cut=new RecordCut(rdcart_cart,cutname,this,"cut");
+  RecordCut *cut=new RecordCut(rdcart_cart,cutname,rdcart_controls,this);
   cut->exec();
   delete cut;
   if(cut_clipboard==NULL) {

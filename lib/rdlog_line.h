@@ -175,8 +175,8 @@ class RDLogLine
   void setCutQuantity(unsigned quan);
   unsigned lastCutPlayed() const;
   void setLastCutPlayed(unsigned cut);
-  RDCart::PlayOrder playOrder() const;
-  void setPlayOrder(RDCart::PlayOrder order);
+  bool useDayparting() const;
+  void setUseDayparting(bool state);
   bool enforceLength() const;
   void setEnforceLength(bool state);
   bool preservePitch() const;
@@ -328,7 +328,7 @@ class RDLogLine
   unsigned log_forced_length;
   unsigned log_cut_quantity;
   unsigned log_last_cut_played;
-  RDCart::PlayOrder log_play_order;
+  bool log_use_dayparting;
   bool log_enforce_length;
   bool log_preserve_pitch;
   QDateTime log_start_datetime;

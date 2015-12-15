@@ -217,7 +217,7 @@ MainObject::MainObject(QObject *parent,const char *name)
                          USER_DEFINED,USAGE_CODE,FORCED_LENGTH,AVERAGE_LENGTH,\
                          LENGTH_DEVIATION,AVERAGE_SEGUE_LENGTH,\
                          AVERAGE_HOOK_LENGTH,CUT_QUANTITY,LAST_CUT_PLAYED,\
-                         PLAY_ORDER,VALIDITY,\
+                         USE_DAYPARTING,VALIDITY,\
                          ENFORCE_LENGTH,PRESERVE_PITCH,ASYNCRONOUS,\
                          OWNER,MACROS,SCHED_CODES from CART \
                          where (NUMBER>=%u)&&(NUMBER<=%u)",
@@ -293,7 +293,7 @@ MainObject::MainObject(QObject *parent,const char *name)
                            AVERAGE_HOOK_LENGTH=%u,\
                            CUT_QUANTITY=%u,\
                            LAST_CUT_PLAYED=%u,\
-                           PLAY_ORDER=%u,\
+                           USE_DAYPARTING=\"%s\",\
                            VALIDITY=%u,\
                            ENFORCE_LENGTH=\"%s\",\
                            PRESERVE_PITCH=\"%s\",\
@@ -324,8 +324,8 @@ MainObject::MainObject(QObject *parent,const char *name)
 			  q->value(19).toUInt(),
 			  q->value(20).toUInt(),
 			  q->value(21).toUInt(),
+			  (const char *)q->value(22).toString(),
 			  q->value(22).toUInt(),
-			  q->value(23).toUInt(),
 			  (const char *)RDEscapeString(q->value(24).toString()),
 			  (const char *)RDEscapeString(q->value(25).toString()),
 			  (const char *)RDEscapeString(q->value(26).toString()),

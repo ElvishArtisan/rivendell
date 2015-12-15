@@ -684,7 +684,7 @@ Selection</source>
     </message>
     <message>
         <source>Preserve Pitch</source>
-        <translation>Preservar Pitch</translation>
+        <translation type="obsolete">Preservar Pitch</translation>
     </message>
     <message>
         <source>&amp;Title:</source>
@@ -850,6 +850,10 @@ limite do sistema!   Você ainda quer salvar?</translation>
     </message>
     <message>
         <source>Use Event Length for Now &amp;&amp; Next Updates</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use Per-Cut Dayparting</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

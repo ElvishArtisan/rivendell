@@ -466,7 +466,7 @@ RDCart::UsageCode RDCart::usageCode() const
 
 void RDCart::setUsageCode(RDCart::UsageCode code)
 {
-  SetRow("USAGE_CODE",(int)code);
+  SetRow("USAGE_CODE",(unsigned)code);
   metadata_changed=true;
 }
 
@@ -637,16 +637,16 @@ void RDCart::setLastCutPlayed(unsigned cut) const
 }
 
 
-RDCart::PlayOrder RDCart::playOrder() const
+bool RDCart::useDayparting() const
 {
-  return (RDCart::PlayOrder)RDGetSqlValue("CART","NUMBER",cart_number,
-					 "PLAY_ORDER").toUInt();
+  return RDBool(RDGetSqlValue("CART","NUMBER",cart_number,"USE_DAYPARTING").
+		toString());
 }
 
 
-void RDCart::setPlayOrder(RDCart::PlayOrder order) const
+void RDCart::setUseDayparting(bool state) const
 {
-  SetRow("PLAY_ORDER",(unsigned)order);
+  SetRow("USE_DAYPARTING",state);
 }
 
 
@@ -1351,19 +1351,6 @@ bool RDCart::exists(unsigned cartnum)
 }
 
 
-QString RDCart::playOrderText(RDCart::PlayOrder order)
-{
-  switch(order) {
-      case RDCart::Sequence:
-	return QObject::tr("Sequentially");
-
-      case RDCart::Random:
-	return QObject::tr("Randomly");
-  }
-  return QObject::tr("Unknown");
-}
-
-
 QString RDCart::usageText(RDCart::UsageCode usage)
 {
   switch(usage) {
@@ -1660,7 +1647,7 @@ void RDCart::SetRow(const QString &param,const QString &value) const
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString().sprintf("UPDATE CART SET %s=\"%s\" WHERE NUMBER=%u",
+  sql=QString().sprintf("update CART set %s=\"%s\" where NUMBER=%u",
 			(const char *)param,
 			(const char *)RDEscapeString(value.utf8()),
 			cart_number);
@@ -1674,7 +1661,7 @@ void RDCart::SetRow(const QString &param,unsigned value) const
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString().sprintf("UPDATE CART SET %s=%d WHERE NUMBER=%u",
+  sql=QString().sprintf("update CART set %s=%d where NUMBER=%u",
 			(const char *)param,
 			value,
 			cart_number);
@@ -1688,7 +1675,7 @@ void RDCart::SetRow(const QString &param,const QDateTime &value) const
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString().sprintf("UPDATE CART SET %s=\"%s\" WHERE NUMBER=%u",
+  sql=QString().sprintf("update CART set %s=\"%s\" where NUMBER=%u",
 			(const char *)param,
 			(const char *)value.toString("yyyy-MM-dd hh:mm:ss"),
 			cart_number);
@@ -1702,9 +1689,23 @@ void RDCart::SetRow(const QString &param,const QDate &value) const
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString().sprintf("UPDATE CART SET %s=\"%s\" WHERE NUMBER=%u",
+  sql=QString().sprintf("update CART set %s=\"%s\" where NUMBER=%u",
 			(const char *)param,
 			(const char *)value.toString("yyyy-MM-dd"),
+			cart_number);
+  q=new RDSqlQuery(sql);
+  delete q;
+}
+
+
+void RDCart::SetRow(const QString &param,const bool value) const
+{
+  RDSqlQuery *q;
+  QString sql;
+
+  sql=QString().sprintf("update CART set %s=\"%s\" where NUMBER=%u",
+			(const char *)param,
+			(const char *)RDYesNo(value),
 			cart_number);
   q=new RDSqlQuery(sql);
   delete q;

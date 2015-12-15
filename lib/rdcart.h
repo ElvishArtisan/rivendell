@@ -40,7 +40,6 @@ class RDCart
 {
  public:
   enum Type {All=0,Audio=1,Macro=2};
-  enum PlayOrder {Sequence=0,Random=1};
   enum UsageCode {UsageFeature=0,UsageOpen=1,UsageClose=2,UsageTheme=3,
 		  UsageBackground=4,UsagePromo=5,UsageLast=6};
   enum Validity {NeverValid=0,ConditionallyValid=1,AlwaysValid=2,
@@ -108,8 +107,8 @@ class RDCart
   void setCutQuantity(unsigned quan) const;
   unsigned lastCutPlayed() const;
   void setLastCutPlayed(unsigned cut) const;
-  RDCart::PlayOrder playOrder() const;
-  void setPlayOrder(RDCart::PlayOrder order) const;
+  bool useDayparting() const;
+  void setUseDayparting(bool state) const;
   RDCart::Validity validity() const;
   void setValidity(RDCart::Validity state);
   QDateTime startDateTime() const;
@@ -150,7 +149,6 @@ class RDCart
   bool create(const QString &groupname,RDCart::Type type);
   bool remove(RDStation *station,RDUser *user,RDConfig *config) const;
   static bool exists(unsigned cartnum);
-  static QString playOrderText(RDCart::PlayOrder order);
   static QString usageText(RDCart::UsageCode usage);
   static QString typeText(RDCart::Type type);
   static bool removeCart(unsigned cart_num,RDStation *station,RDUser *user,
@@ -170,6 +168,7 @@ class RDCart
   void SetRow(const QString &param,unsigned value) const;
   void SetRow(const QString &param,const QDateTime &value) const;
   void SetRow(const QString &param,const QDate &value) const;
+  void SetRow(const QString &param,const bool value) const;
   void SetRow(const QString &param) const;
   unsigned cart_number;
   bool metadata_changed;

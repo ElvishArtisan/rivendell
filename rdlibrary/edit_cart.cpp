@@ -2,9 +2,7 @@
 //
 // Edit a Rivendell Cart
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: edit_cart.cpp,v 1.74.2.7.2.2 2014/05/28 21:21:41 cvs Exp $
+//   (C) Copyright 2002-2015 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -52,8 +50,8 @@
 #include <edit_notes.h>
 
 EditCart::EditCart(unsigned number,QString *path,bool new_cart,bool profile_rip,
-		   QWidget *parent,const char *name,QListView *lib_cart_list)
-  : QDialog(parent,name,true)
+		   QListView *lib_cart_list,QWidget *parent)
+  : QDialog(parent,"",true)
 {
   bool modification_allowed;
   rdcart_cart=NULL;
@@ -116,13 +114,12 @@ EditCart::EditCart(unsigned number,QString *path,bool new_cart,bool profile_rip,
   //
   // Cart Number
   //
-  rdcart_number_edit=new QLineEdit(this,"rdcart_number_edit");
+  rdcart_number_edit=new QLineEdit(this);
   rdcart_number_edit->setGeometry(135,11,70,21);
   rdcart_number_edit->setFont(line_edit_font);
   rdcart_number_edit->setMaxLength(6);
   rdcart_number_edit->setReadOnly(true);
-  QLabel *rdcart_number_label=new QLabel(rdcart_number_edit,tr("Number:"),this,
-				       "rdcart_number_label");
+  QLabel *rdcart_number_label=new QLabel(rdcart_number_edit,tr("Number:"),this);
   rdcart_number_label->setGeometry(10,13,120,19);
   rdcart_number_label->setFont(button_font);
   rdcart_number_label->setAlignment(AlignRight|ShowPrefix);
@@ -131,7 +128,7 @@ EditCart::EditCart(unsigned number,QString *path,bool new_cart,bool profile_rip,
   //
   // Cart Group
   //
-  rdcart_group_box=new QComboBox(this,"rdcart_group_box");
+  rdcart_group_box=new QComboBox(this);
   if(lib_cart_list_edit==NULL) {
     rdcart_group_box->setGeometry(280,11,140,21);
   }
@@ -139,12 +136,11 @@ EditCart::EditCart(unsigned number,QString *path,bool new_cart,bool profile_rip,
     rdcart_group_box->setGeometry(135,38,110,19);
   }
   rdcart_group_box->setFont(line_edit_font);
-  rdcart_group_edit=new QLineEdit(this,"rdcart_group_edit");
+  rdcart_group_edit=new QLineEdit(this);
   rdcart_group_edit->setGeometry(280,11,140,21);
   rdcart_group_edit->setFont(line_edit_font);
   rdcart_group_edit->setReadOnly(true);
-  QLabel *rdcart_group_label=new QLabel(rdcart_group_box,tr("Group:"),this,
-				       "rdcart_group_label");
+  QLabel *rdcart_group_label=new QLabel(rdcart_group_box,tr("Group:"),this);
   if(lib_cart_list_edit==NULL) {
     rdcart_group_label->setGeometry(215,13,60,19);
   }
@@ -157,13 +153,12 @@ EditCart::EditCart(unsigned number,QString *path,bool new_cart,bool profile_rip,
   //
   // Cart Type
   //
-  rdcart_type_edit=new QLineEdit(this,"rdcart_type_edit");
+  rdcart_type_edit=new QLineEdit(this);
   rdcart_type_edit->setGeometry(500,11,80,21);
   rdcart_type_edit->setFont(line_edit_font);
   rdcart_type_edit->setMaxLength(6);
   rdcart_type_edit->setReadOnly(true);
-  QLabel *rdcart_type_label=new QLabel(rdcart_type_edit,tr("Type:"),this,
-				       "rdcart_type_label");
+  QLabel *rdcart_type_label=new QLabel(rdcart_type_edit,tr("Type:"),this);
   rdcart_type_label->setGeometry(440,13,55,19);
   rdcart_type_label->setFont(button_font);
   rdcart_type_label->setAlignment(AlignRight|ShowPrefix);
@@ -175,15 +170,14 @@ EditCart::EditCart(unsigned number,QString *path,bool new_cart,bool profile_rip,
   //
   // Cart Average Length
   //
-  rdcart_average_length_edit=new QLineEdit(this,"rdcart_average_length_edit");
+  rdcart_average_length_edit=new QLineEdit(this);
   rdcart_average_length_edit->setGeometry(135,36,70,21);
   rdcart_average_length_edit->setFont(line_edit_font);
   rdcart_average_length_edit->setMaxLength(10);
   rdcart_average_length_edit->setAlignment(AlignRight);
   rdcart_average_length_edit->setReadOnly(true);
-  QLabel *rdcart_average_length_label=new QLabel(rdcart_average_length_edit,
-						tr("Average Length:"),this,
-						"rdcart_average_length_label");
+  QLabel *rdcart_average_length_label=
+    new QLabel(rdcart_average_length_edit,tr("Average Length:"),this);
   rdcart_average_length_label->setGeometry(10,38,120,19);
   rdcart_average_length_label->setFont(button_font);
   rdcart_average_length_label->setAlignment(AlignRight|ShowPrefix);
@@ -195,12 +189,10 @@ EditCart::EditCart(unsigned number,QString *path,bool new_cart,bool profile_rip,
   //
   // Cart Enforce Length
   //
-  rdcart_controls.enforce_length_box=new QCheckBox(this,
-					       "rdcart_enforce_length_button");
+  rdcart_controls.enforce_length_box=new QCheckBox(this);
   rdcart_controls.enforce_length_box->setGeometry(285,38,20,15);
-  QLabel *rdcart_enforce_length_label=new QLabel(rdcart_controls.enforce_length_box,
-					        tr("Enforce Length"),this,
-						"rdcart_enforce_length_label");
+  QLabel *rdcart_enforce_length_label=
+    new QLabel(rdcart_controls.enforce_length_box,tr("Enforce Length"),this);
   rdcart_enforce_length_label->setGeometry(305,38,110,19);
   rdcart_enforce_length_label->setFont(button_font);
   rdcart_enforce_length_label->setAlignment(AlignLeft|ShowPrefix);
@@ -214,21 +206,19 @@ EditCart::EditCart(unsigned number,QString *path,bool new_cart,bool profile_rip,
   //
   // Cart Forced Length
   //
-  rdcart_controls.forced_length_edit=
-    new RDTimeEdit(this,"rdcart_forced_length_edit");
+  rdcart_controls.forced_length_edit=new RDTimeEdit(this);
   rdcart_controls.forced_length_edit->setGeometry(530,36,85,21);
   rdcart_controls.forced_length_edit->
     setDisplay(RDTimeEdit::Hours|RDTimeEdit::Minutes|RDTimeEdit::Seconds|
 	       RDTimeEdit::Tenths);
   rdcart_controls.forced_length_edit->setFont(line_edit_font);
-  rdcart_forced_length_ledit=new QLineEdit(this,"rdcart_forced_length_edit");
+  rdcart_forced_length_ledit=new QLineEdit(this);
   rdcart_forced_length_ledit->setGeometry(535,36,80,21);
   rdcart_forced_length_ledit->setFont(line_edit_font);
   rdcart_forced_length_ledit->hide();
   rdcart_forced_length_ledit->setReadOnly(true);
-  rdcart_forced_length_label=new QLabel(rdcart_controls.forced_length_edit,
-					tr("Forced Length:"),this,
-					"rdcart_forced_length_label");
+  rdcart_forced_length_label=
+    new QLabel(rdcart_controls.forced_length_edit,tr("Forced Length:"),this);
   rdcart_forced_length_label->setGeometry(415,38,110,19);
   rdcart_forced_length_label->setFont(button_font);
   rdcart_forced_length_label->setAlignment(AlignRight|ShowPrefix);
@@ -238,30 +228,14 @@ EditCart::EditCart(unsigned number,QString *path,bool new_cart,bool profile_rip,
   }
 
   //
-  // Cart Preserve Pitch
-  //
-  rdcart_preserve_pitch_button=new QCheckBox(this,
-					       "rdcart_preserve_pitch_button");
-  rdcart_preserve_pitch_button->setGeometry(430,38,20,15);
-  rdcart_preserve_pitch_label=new QLabel(rdcart_preserve_pitch_button,
-					 tr("Preserve Pitch"),this,
-					 "rdcart_preserve_pitch_label");
-  rdcart_preserve_pitch_label->setGeometry(450,38,140,19);
-  rdcart_preserve_pitch_label->setFont(button_font);
-  rdcart_preserve_pitch_label->setAlignment(AlignLeft|ShowPrefix);
-  // ???????????????????????????????
-  rdcart_preserve_pitch_button->hide();
-  rdcart_preserve_pitch_label->hide();
-
-  //
   // Cart Title
   //
-  rdcart_controls.title_edit=new QLineEdit(this,"rdcart_title_edit");
+  rdcart_controls.title_edit=new QLineEdit(this);
   rdcart_controls.title_edit->setGeometry(135,60,480,21);
   rdcart_controls.title_edit->setFont(line_edit_font);
   rdcart_controls.title_edit->setMaxLength(255);
-  QLabel *rdcart_title_label=new QLabel(rdcart_controls.title_edit,tr("&Title:"),this,
-				       "rdcart_title_label");
+  QLabel *rdcart_title_label=
+    new QLabel(rdcart_controls.title_edit,tr("&Title:"),this);
   rdcart_title_label->setGeometry(10,62,120,19);
   rdcart_title_label->setFont(button_font);
   rdcart_title_label->setAlignment(AlignRight|ShowPrefix);
@@ -269,13 +243,12 @@ EditCart::EditCart(unsigned number,QString *path,bool new_cart,bool profile_rip,
   //
   // Cart Start Date
   //
-  rdcart_start_date_edit=new QLineEdit(this,"rdcart_start_date_edit");
+  rdcart_start_date_edit=new QLineEdit(this);
   rdcart_start_date_edit->setGeometry(135,84,100,21);
   rdcart_start_date_edit->setFont(line_edit_font);
   rdcart_start_date_edit->setMaxLength(255);
-  QLabel *rdcart_start_date_label=new QLabel(rdcart_start_date_edit,
-					     tr("&Start Date:"),this,
-					     "rdcart_start_date_label");
+  QLabel *rdcart_start_date_label=
+    new QLabel(rdcart_start_date_edit,tr("&Start Date:"),this);
   rdcart_start_date_label->setGeometry(10,86,120,19);
   rdcart_start_date_label->setFont(button_font);
   rdcart_start_date_label->setAlignment(AlignRight|ShowPrefix);
@@ -285,13 +258,12 @@ EditCart::EditCart(unsigned number,QString *path,bool new_cart,bool profile_rip,
   //
   // Cart End Date
   //
-  rdcart_end_date_edit=new QLineEdit(this,"rdcart_end_date_edit");
+  rdcart_end_date_edit=new QLineEdit(this);
   rdcart_end_date_edit->setGeometry(350,84,100,21);
   rdcart_end_date_edit->setFont(line_edit_font);
   rdcart_end_date_edit->setMaxLength(255);
-  QLabel *rdcart_end_date_label=new QLabel(rdcart_end_date_edit,
-					     tr("&End Date:"),this,
-					     "rdcart_end_date_label");
+  QLabel *rdcart_end_date_label=
+    new QLabel(rdcart_end_date_edit,tr("&End Date:"),this);
   rdcart_end_date_label->setGeometry(260,86,85,19);
   rdcart_end_date_label->setFont(button_font);
   rdcart_end_date_label->setAlignment(AlignRight|ShowPrefix);
@@ -301,12 +273,12 @@ EditCart::EditCart(unsigned number,QString *path,bool new_cart,bool profile_rip,
   //
   // Cart Artist
   //
-  rdcart_controls.artist_edit=new QLineEdit(this,"rdcart_artist_edit");
+  rdcart_controls.artist_edit=new QLineEdit(this);
   rdcart_controls.artist_edit->setGeometry(135,84,480,21);
   rdcart_controls.artist_edit->setFont(line_edit_font);
   rdcart_controls.artist_edit->setMaxLength(255);
-  QLabel *rdcart_artist_label=new QLabel(rdcart_controls.artist_edit,tr("&Artist:"),
-					 this,"rdcart_artist_label");
+  QLabel *rdcart_artist_label=
+    new QLabel(rdcart_controls.artist_edit,tr("&Artist:"),this);
   rdcart_artist_label->setGeometry(10,86,120,19);
   rdcart_artist_label->setFont(button_font);
   rdcart_artist_label->setAlignment(AlignRight|ShowPrefix);
@@ -316,14 +288,13 @@ EditCart::EditCart(unsigned number,QString *path,bool new_cart,bool profile_rip,
   //
   QIntValidator *val=new QIntValidator(this);
   val->setBottom(1);
-  rdcart_controls.year_edit=new QLineEdit(this,"rdcart_year_edit");
+  rdcart_controls.year_edit=new QLineEdit(this);
   rdcart_controls.year_edit->setGeometry(135,110,50,21);
   rdcart_controls.year_edit->setFont(line_edit_font);
   rdcart_controls.year_edit->setValidator(val);
   rdcart_controls.year_edit->setMaxLength(255);
-  QLabel *rdcart_year_label=new QLabel(rdcart_controls.year_edit,
-					     tr("&Year Released:"),this,
-					     "rdcart_year_label");
+  QLabel *rdcart_year_label=
+    new QLabel(rdcart_controls.year_edit,tr("&Year Released:"),this);
   rdcart_year_label->setGeometry(10,112,120,19);
   rdcart_year_label->setFont(button_font);
   rdcart_year_label->setAlignment(AlignRight|ShowPrefix);
@@ -331,7 +302,7 @@ EditCart::EditCart(unsigned number,QString *path,bool new_cart,bool profile_rip,
   //
   // Cart Usage Code
   //
-  rdcart_usage_box=new QComboBox(this,"rdcart_usage_box");
+  rdcart_usage_box=new QComboBox(this);
   rdcart_usage_box->setGeometry(270,110,150,21);
   if(lib_cart_list_edit!=0) {
     rdcart_usage_box->insertItem("");
@@ -340,7 +311,7 @@ EditCart::EditCart(unsigned number,QString *path,bool new_cart,bool profile_rip,
     rdcart_usage_box->insertItem(RDCart::usageText((RDCart::UsageCode)i));
   }
   QLabel *label=
-    new QLabel(rdcart_usage_box,tr("U&sage:"),this,"rdcart_usage_label");
+    new QLabel(rdcart_usage_box,tr("U&sage:"),this);
   label->setGeometry(195,112,70,19);
   label->setFont(button_font);
   label->setAlignment(AlignRight|ShowPrefix);
@@ -351,7 +322,7 @@ EditCart::EditCart(unsigned number,QString *path,bool new_cart,bool profile_rip,
   //
   // Scheduler Codes
   //
-  QPushButton *sched_codes_button=new QPushButton(this,"sched_codes_button");
+  QPushButton *sched_codes_button=new QPushButton(this);
   sched_codes_button->setGeometry(470,106,150,28);
   sched_codes_button->setDefault(true);
   sched_codes_button->setFont(button_font);
@@ -388,12 +359,12 @@ EditCart::EditCart(unsigned number,QString *path,bool new_cart,bool profile_rip,
   //
   // Cart Album
   //
-  rdcart_controls.album_edit=new QLineEdit(this,"rdcart_album_edit");
+  rdcart_controls.album_edit=new QLineEdit(this);
   rdcart_controls.album_edit->setGeometry(135,158,480,21);
   rdcart_controls.album_edit->setFont(line_edit_font);
   rdcart_controls.album_edit->setMaxLength(64);
-  QLabel *rdcart_album_label=new QLabel(rdcart_controls.album_edit,tr("Al&bum:"),this,
-				       "rdcart_album_label");
+  QLabel *rdcart_album_label=
+    new QLabel(rdcart_controls.album_edit,tr("Al&bum:"),this);
   rdcart_album_label->setGeometry(10,158,120,21);
   rdcart_album_label->setFont(button_font);
   rdcart_album_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
@@ -401,12 +372,12 @@ EditCart::EditCart(unsigned number,QString *path,bool new_cart,bool profile_rip,
   //
   // Cart Label
   // 
-  rdcart_controls.label_edit=new QLineEdit(this,"rdcart_label_edit");
+  rdcart_controls.label_edit=new QLineEdit(this);
   rdcart_controls.label_edit->setGeometry(135,182,480,21);
   rdcart_controls.label_edit->setFont(line_edit_font);
   rdcart_controls.label_edit->setMaxLength(64);
-  QLabel *rdcart_label_label=new QLabel(rdcart_controls.label_edit,tr("Re&cord Label:"),
-					this,"rdcart_label_label");
+  QLabel *rdcart_label_label=
+    new QLabel(rdcart_controls.label_edit,tr("Re&cord Label:"),this);
   rdcart_label_label->setGeometry(10,182,120,21);
   rdcart_label_label->setFont(button_font);
   rdcart_label_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
@@ -414,12 +385,12 @@ EditCart::EditCart(unsigned number,QString *path,bool new_cart,bool profile_rip,
   //
   // Cart Client
   //
-  rdcart_controls.client_edit=new QLineEdit(this,"rdcart_client_edit");
+  rdcart_controls.client_edit=new QLineEdit(this);
   rdcart_controls.client_edit->setGeometry(135,206,480,21);
   rdcart_controls.client_edit->setFont(line_edit_font);
   rdcart_controls.client_edit->setMaxLength(64);
-  QLabel *rdcart_client_label=new QLabel(rdcart_controls.label_edit,tr("C&lient:"),this,
-				       "rdcart_client_label");
+  QLabel *rdcart_client_label=
+    new QLabel(rdcart_controls.label_edit,tr("C&lient:"),this);
   rdcart_client_label->setGeometry(10,206,120,21);
   rdcart_client_label->setFont(button_font);
   rdcart_client_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
@@ -427,12 +398,12 @@ EditCart::EditCart(unsigned number,QString *path,bool new_cart,bool profile_rip,
   //
   // Cart Agency
   //
-  rdcart_controls.agency_edit=new QLineEdit(this,"rdcart_agency_edit");
+  rdcart_controls.agency_edit=new QLineEdit(this);
   rdcart_controls.agency_edit->setGeometry(135,230,480,21);
   rdcart_controls.agency_edit->setFont(line_edit_font);
   rdcart_controls.agency_edit->setMaxLength(64);
-  QLabel *rdcart_agency_label=new QLabel(rdcart_controls.label_edit,tr("A&gency:"),this,
-				       "rdcart_agency_label");
+  QLabel *rdcart_agency_label=
+    new QLabel(rdcart_controls.label_edit,tr("A&gency:"),this);
   rdcart_agency_label->setGeometry(10,230,120,21);
   rdcart_agency_label->setFont(button_font);
   rdcart_agency_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
@@ -440,13 +411,12 @@ EditCart::EditCart(unsigned number,QString *path,bool new_cart,bool profile_rip,
   //
   // Cart Publisher
   //
-  rdcart_controls.publisher_edit=new QLineEdit(this,"rdcart_publisher_edit");
+  rdcart_controls.publisher_edit=new QLineEdit(this);
   rdcart_controls.publisher_edit->setGeometry(135,254,480,21);
   rdcart_controls.publisher_edit->setFont(line_edit_font);
   rdcart_controls.publisher_edit->setMaxLength(64);
-  QLabel *rdcart_publisher_label=new QLabel(rdcart_controls.label_edit,
-					    tr("&Publisher:"),this,
-					    "rdcart_publisher_label");
+  QLabel *rdcart_publisher_label=
+    new QLabel(rdcart_controls.label_edit,tr("&Publisher:"),this);
   rdcart_publisher_label->setGeometry(10,254,120,21);
   rdcart_publisher_label->setFont(button_font);
   rdcart_publisher_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
@@ -454,13 +424,12 @@ EditCart::EditCart(unsigned number,QString *path,bool new_cart,bool profile_rip,
   //
   // Cart Composer
   //
-  rdcart_controls.composer_edit=new QLineEdit(this,"rdcart_composer_edit");
+  rdcart_controls.composer_edit=new QLineEdit(this);
   rdcart_controls.composer_edit->setGeometry(135,278,480,21);
   rdcart_controls.composer_edit->setFont(line_edit_font);
   rdcart_controls.composer_edit->setMaxLength(64);
-  QLabel *rdcart_composer_label=new QLabel(rdcart_controls.label_edit,
-					   tr("Compos&er:"),this,
-					   "rdcart_composer_label");
+  QLabel *rdcart_composer_label=
+    new QLabel(rdcart_controls.label_edit,tr("Compos&er:"),this);
   rdcart_composer_label->setGeometry(10,278,120,21);
   rdcart_composer_label->setFont(button_font);
   rdcart_composer_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
@@ -468,13 +437,12 @@ EditCart::EditCart(unsigned number,QString *path,bool new_cart,bool profile_rip,
   //
   // Cart Conductor
   //
-  rdcart_controls.conductor_edit=new QLineEdit(this,"rdcart_conductor_edit");
+  rdcart_controls.conductor_edit=new QLineEdit(this);
   rdcart_controls.conductor_edit->setGeometry(135,302,480,21);
   rdcart_controls.conductor_edit->setFont(line_edit_font);
   rdcart_controls.conductor_edit->setMaxLength(255);
   QLabel *rdcart_conductor_label=
-    new QLabel(rdcart_controls.label_edit,tr("Cond&uctor:"),this,
-	       "rdcart_conductor_label");
+    new QLabel(rdcart_controls.label_edit,tr("Cond&uctor:"),this);
   rdcart_conductor_label->setGeometry(10,302,120,21);
   rdcart_conductor_label->setFont(button_font);
   rdcart_conductor_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
@@ -487,8 +455,7 @@ EditCart::EditCart(unsigned number,QString *path,bool new_cart,bool profile_rip,
   rdcart_controls.user_defined_edit->setFont(line_edit_font);
   rdcart_controls.user_defined_edit->setMaxLength(255);
   QLabel *rdcart_user_defined_label=
-    new QLabel(rdcart_controls.label_edit,tr("&User Defined:"),this,
-	       "rdcart_user_defined_label");
+    new QLabel(rdcart_controls.label_edit,tr("&User Defined:"),this);
   rdcart_user_defined_label->setGeometry(10,325,120,21);
   rdcart_user_defined_label->setFont(button_font);
   rdcart_user_defined_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
@@ -496,18 +463,30 @@ EditCart::EditCart(unsigned number,QString *path,bool new_cart,bool profile_rip,
   //
   // Synchronous Scheduling Policy
   //
-  rdcart_syncronous_box=new QCheckBox(this,"rdcart_syncronous_box");
+  rdcart_syncronous_box=new QCheckBox(this);
   rdcart_syncronous_box->setGeometry(135,351,15,15);
   connect(rdcart_syncronous_box,SIGNAL(toggled(bool)),
 	  this,SLOT(asyncronousToggledData(bool)));
   rdcart_syncronous_box->hide();
-  QLabel *rdcart_syncronous_label=new QLabel(rdcart_syncronous_box,
-					    tr("Execute Asynchronously"),this,
-					    "rdcart_syncronous_label");
+  QLabel *rdcart_syncronous_label=
+    new QLabel(rdcart_syncronous_box,tr("Execute Asynchronously"),this);
   rdcart_syncronous_label->setGeometry(155,351,200,19);
   rdcart_syncronous_label->setFont(button_font);
   rdcart_syncronous_label->setAlignment(AlignLeft|ShowPrefix);
   rdcart_syncronous_label->hide();
+
+  //
+  // Per-Cut Dayparting
+  //
+  rdcart_controls.use_dayparting_box=new QCheckBox(this);
+  rdcart_controls.use_dayparting_box->setGeometry(135,351,15,15);
+  rdcart_controls.use_dayparting_box->hide();
+  QLabel *rdcart_use_dayparting_label=
+    new QLabel(rdcart_controls.use_dayparting_box,tr("Use Per-Cut Dayparting"),this);
+  rdcart_use_dayparting_label->setGeometry(155,351,200,19);
+  rdcart_use_dayparting_label->setFont(button_font);
+  rdcart_use_dayparting_label->setAlignment(AlignLeft|ShowPrefix);
+  rdcart_use_dayparting_label->hide();
 
   //
   // Use Event Length Policy
@@ -528,8 +507,7 @@ EditCart::EditCart(unsigned number,QString *path,bool new_cart,bool profile_rip,
   //
   // Notes Button
   //
-  rdcart_notes_button=new QPushButton(this,"rdcart_notes_button");
-  //  rdcart_notes_button->setGeometry(360,304,80,50);
+  rdcart_notes_button=new QPushButton(this);
   rdcart_notes_button->setGeometry(10,sizeHint().height()-60,80,50);
   rdcart_notes_button->setFont(button_font);
   rdcart_notes_button->setText(tr("&Edit\nNotes"));
@@ -538,7 +516,7 @@ EditCart::EditCart(unsigned number,QString *path,bool new_cart,bool profile_rip,
   //
   //  Script Button
   //
-  QPushButton *script_button=new QPushButton(this,"script_button");
+  QPushButton *script_button=new QPushButton(this);
   script_button->setGeometry(450,304,80,50);
   script_button->setFont(button_font);
   script_button->setText(tr("&Edit\nScript"));
@@ -560,10 +538,12 @@ EditCart::EditCart(unsigned number,QString *path,bool new_cart,bool profile_rip,
 	connect(rdcart_audio_cart,SIGNAL(cartDataChanged()),
 		this,SLOT(cartDataChangedData()));
 	rdcart_macro_cart=NULL;
+	rdcart_controls.use_dayparting_box->show();
+	rdcart_use_dayparting_label->show();
 	break;
 	
       case RDCart::Macro:
-	rdcart_macro_cart=new MacroCart(rdcart_cart,this,"rdcart_macro_cart");
+	rdcart_macro_cart=new MacroCart(rdcart_cart,this);
 	rdcart_macro_cart->
 	  setGeometry(0,378,rdcart_macro_cart->sizeHint().width(),
 		      rdcart_macro_cart->sizeHint().height());
@@ -586,7 +566,7 @@ EditCart::EditCart(unsigned number,QString *path,bool new_cart,bool profile_rip,
   //
   //  Ok Button
   //
-  QPushButton *ok_button=new QPushButton(this,"ok_button");
+  QPushButton *ok_button=new QPushButton(this);
   if(lib_cart_list_edit==NULL) 
   ok_button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
   else
@@ -599,7 +579,7 @@ EditCart::EditCart(unsigned number,QString *path,bool new_cart,bool profile_rip,
   //
   //  Cancel Button
   //
-  QPushButton *cancel_button=new QPushButton(this,"cancel_button");
+  QPushButton *cancel_button=new QPushButton(this);
   if(lib_cart_list_edit==NULL) 
   cancel_button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,
 			     80,50);
@@ -629,6 +609,7 @@ EditCart::EditCart(unsigned number,QString *path,bool new_cart,bool profile_rip,
     switch(rdcart_cart->type()) {
 	case RDCart::Audio:
 	  rdcart_type_edit->setText(tr("AUDIO"));
+	  rdcart_controls.use_dayparting_box->setChecked(rdcart_cart->useDayparting());
 	  break;
 	  
 	case RDCart::Macro:
@@ -651,13 +632,6 @@ EditCart::EditCart(unsigned number,QString *path,bool new_cart,bool profile_rip,
       setTime(QTime().addMSecs(rdcart_cart->forcedLength()));
     rdcart_forced_length_ledit->
       setText(rdcart_controls.forced_length_edit->time().toString("hh:mm:ss"));
-    if(rdcart_cart->preservePitch()) {
-      rdcart_preserve_pitch_button->setChecked(true);
-    }
-    rdcart_preserve_pitch_button->
-      setEnabled(rdcart_controls.enforce_length_box->isChecked());
-    rdcart_preserve_pitch_label->
-      setEnabled(rdcart_controls.enforce_length_box->isChecked());
     rdcart_controls.title_edit->setText(rdcart_cart->title());
     if(!rdcart_cart->startDateTime().isNull()) {
       rdcart_start_date_edit->
@@ -732,6 +706,7 @@ EditCart::EditCart(unsigned number,QString *path,bool new_cart,bool profile_rip,
   rdcart_start_date_edit->setReadOnly(!modification_allowed);
   rdcart_end_date_edit->setReadOnly(!modification_allowed);
   rdcart_notes_button->setEnabled(modification_allowed);
+  rdcart_controls.use_dayparting_box->setEnabled(modification_allowed);
   if(lib_cart_list_edit==NULL) {
     rdcart_average_length_edit->
       setReadOnly((!modification_allowed)||
@@ -858,7 +833,6 @@ void EditCart::okData()
 	setForcedLength(RDSetTimeLength(rdcart_average_length_edit->text()));
       rdcart_cart->setEnforceLength(false);
     }
-    rdcart_cart->setPreservePitch(rdcart_preserve_pitch_button->isChecked());
     rdcart_cart->setTitle(rdcart_controls.title_edit->text());
     if(rdcart_controls.year_edit->text().toInt()==0) {
       rdcart_cart->setYear();
@@ -880,6 +854,10 @@ void EditCart::okData()
     rdcart_cart->setUserDefined(rdcart_controls.user_defined_edit->text());
     rdcart_cart->
       setUsageCode((RDCart::UsageCode)rdcart_usage_box->currentItem());
+    if(rdcart_cart->type()==RDCart::Audio) {
+      rdcart_cart->
+	setUseDayparting(rdcart_controls.use_dayparting_box->isChecked());
+    }
     if(rdcart_cart->type()==RDCart::Macro) {
       rdcart_macro_cart->save();
       rdcart_cart->setAsyncronous(rdcart_syncronous_box->isChecked());
@@ -950,6 +928,8 @@ void EditCart::okData()
 				    (rdcart_usage_box->currentItem()-1));
 	  }
           rdcart_cart_medit->updateSchedCodes(add_codes,remove_codes);
+	  rdcart_cart_medit->
+	    setUseDayparting(rdcart_controls.use_dayparting_box->isChecked());
 	  delete rdcart_cart_medit; 
         }
       }

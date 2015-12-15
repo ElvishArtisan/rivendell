@@ -15519,3 +15519,20 @@
 2015-12-15 Fred Gleason <fredg@paravelsystems.com>
 	* Marked merged from 7d3620f1a482bd7cd7c728cce79e08d99ada008e in
 	v12.10.3caefix.
+2015-12-15 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'CART.USE_DAYPARTING' field to the database.
+	* Removed the 'CART.PLAY_ORDER' field from the database.
+	* Incremented the database version to 253.
+	* Added 'RDLogLine::useDayparting()' and 'RDLogLine::setUseDayparting()'
+	methods in 'lib/rdlog_line.cpp' and 'lib/rdlog_line.h'.
+	* Removed 'RDLogLine::playOrder()' and 'RDLogLine::setPlayOrder()'
+	methods in 'lib/rdlogline.cpp' and 'lib/rdlogline.cpp'.
+	* Added 'RDCart::useDayparting()' and 'RDCart::setUseDayparting()'
+	methods in 'lib/rdcart.cpp' and 'lib/rdcart.h'.
+	* Removed 'RDCart::playOrder(), 'RDCart::setPlayOrder()' and
+	'RDCart::playOrderText()' methods in 'lib/rdcart.cpp' and
+	'lib/rdcart.h'.
+	* Removed the 'RDCart::PlayOrder' enumeration in 'lib/rdcart.h'.
+	* Removed 'scripts/rd_create_db'.
+	* Added a 'Use Per-Cut Dayparting' control to the Edit Cart dialog
+	in 'rdlibrary/edit_cart.cpp' and 'rdlibrary/edit_cart.h'.

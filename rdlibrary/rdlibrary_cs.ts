@@ -687,7 +687,7 @@ Selection</source>
     </message>
     <message>
         <source>Preserve Pitch</source>
-        <translation>Zachovat výšku tónu</translation>
+        <translation type="obsolete">Zachovat výšku tónu</translation>
     </message>
     <message>
         <source>&amp;Title:</source>
@@ -864,6 +864,10 @@ poznámky</translation>
     </message>
     <message>
         <source>Use Event Length for Now &amp;&amp; Next Updates</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use Per-Cut Dayparting</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

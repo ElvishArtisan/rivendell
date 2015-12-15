@@ -764,7 +764,7 @@ bool CreateDb(QString name,QString pwd)
       AVERAGE_HOOK_LENGTH int unsigned default 0,\
       CUT_QUANTITY INT UNSIGNED,\
       LAST_CUT_PLAYED INT UNSIGNED,\
-      PLAY_ORDER INT UNSIGNED,\
+      USE_DAYPARTING enum('N','Y') default 'Y',\
       VALIDITY int unsigned default 2,\
       START_DATETIME DATETIME,\
       END_DATETIME DATETIME,\
@@ -8442,6 +8442,17 @@ int UpdateDb(int ver)
       q1=new QSqlQuery(sql);
       delete q1;
     }
+    delete q;
+  }
+
+  if(ver<253) {
+    sql=QString("alter table CART add column USE_DAYPARTING enum('N','Y')")+
+      "default 'Y' after LAST_CUT_PLAYED";
+    q=new QSqlQuery(sql);
+    delete q;
+
+    sql=QString("alter table CART drop column PLAY_ORDER");
+    q=new QSqlQuery(sql);
     delete q;
   }
 
