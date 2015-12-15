@@ -96,53 +96,51 @@ void Xport::Import()
   //
   // Load Configuration
   //
-  RDCart *cart=new RDCart(cartnum);
-  RDCut *cut=new RDCut(cartnum,cutnum);
-  RDLibraryConf *conf=new RDLibraryConf(xport_config->stationName(),0);
-  RDSettings *settings=new RDSettings();
-  switch(conf->defaultFormat()) {
+  RDCart cart(cartnum);
+  RDCut cut(cartnum,cutnum);
+  RDLibraryConf conf(xport_config.stationName(),0);
+  RDSettings settings;
+  switch(conf.defaultFormat()) {
   case 0:
-    settings->setFormat(RDSettings::Pcm16);
+    settings.setFormat(RDSettings::Pcm16);
     break;
 
   case 1:
-    settings->setFormat(RDSettings::MpegL2Wav);
+    settings.setFormat(RDSettings::MpegL2Wav);
     break;
 
   case 2:
-    settings->setFormat(RDSettings::Pcm24);
+    settings.setFormat(RDSettings::Pcm24);
     break;
   }
-  settings->setChannels(channels);
-  settings->setSampleRate(xport_system->sampleRate());
-  settings->setBitRate(channels*conf->defaultBitrate());
-  settings->setNormalizationLevel(normalization_level);
-  RDWaveFile *wave=new RDWaveFile(filename);
-  if(!wave->openWave()) {
-    delete wave;
+  settings.setChannels(channels);
+  settings.setSampleRate(xport_system.sampleRate());
+  settings.setBitRate(channels*conf.defaultBitrate());
+  settings.setNormalizationLevel(normalization_level);
+  RDWaveFile wave(filename);
+  if(!wave.openWave()) {
     XmlExit("Format Not Supported",415);
   }
-  msecs=wave->getExtTimeLength();
-  delete wave;
-  RDAudioConvert *conv=new RDAudioConvert(xport_config->stationName());
-  conv->setSourceFile(filename);
-  conv->setDestinationFile(RDCut::pathName(cartnum,cutnum));
-  conv->setDestinationSettings(settings);
-  RDAudioConvert::ErrorCode conv_err=conv->convert();
+  msecs=wave.getExtTimeLength();
+  RDAudioConvert conv(xport_config.stationName());
+  conv.setSourceFile(filename);
+  conv.setDestinationFile(RDCut::pathName(cartnum,cutnum));
+  conv.setDestinationSettings(&settings);
+  RDAudioConvert::ErrorCode conv_err=conv.convert();
   switch(conv_err) {
   case RDAudioConvert::ErrorOk:
-    cut->checkInRecording(xport_config->stationName(),settings,msecs);
+    cut.checkInRecording(xport_config.stationName(),&settings,msecs);
     if(use_metadata>0) {
-      cart->setMetadata(conv->sourceWaveData());
-      cut->setMetadata(conv->sourceWaveData());
+      cart.setMetadata(conv.sourceWaveData());
+      cut.setMetadata(conv.sourceWaveData());
     }
     if(autotrim_level!=0) {
-      cut->autoTrim(RDCut::AudioBoth,100*autotrim_level);
+      cut.autoTrim(RDCut::AudioBoth,100*autotrim_level);
     }
-    cart->updateLength();
-    cart->resetRotation();
-    cart->calculateAverageLength(&length_deviation);
-    cart->setLengthDeviation(length_deviation);
+    cart.updateLength();
+    cart.resetRotation();
+    cart.calculateAverageLength(&length_deviation);
+    cart.setLengthDeviation(length_deviation);
     resp_code=200;
     break;
 
@@ -166,10 +164,5 @@ void Xport::Import()
     resp_code=400;
     break;
   }
-  delete conv;
-  delete settings;
-  delete conf;
-  delete cut;
-  delete cart;
   XmlExit(RDAudioConvert::errorText(conv_err),resp_code,conv_err);
 }

@@ -38,8 +38,6 @@
 void Xport::ListGroups()
 {
   QString sql;
-  RDSqlQuery *q;
-  RDGroup *group;
 
   //
   // Generate Group List
@@ -47,7 +45,7 @@ void Xport::ListGroups()
   sql=QString().sprintf("select GROUP_NAME from USER_PERMS \
                          where USER_NAME=\"%s\" order by GROUP_NAME",
 			(const char *)RDEscapeString(xport_user->name()));
-  q=new RDSqlQuery(sql);
+  RDSqlQuery q(sql);
 
   //
   // Process Request
@@ -56,14 +54,12 @@ void Xport::ListGroups()
   printf("Status: 200\n\n");
   printf("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
   printf("<groupList>\n");
-  while(q->next()) {
-    group=new RDGroup(q->value(0).toString());
-    printf("%s",(const char *)group->xml());
-    delete group;
+  while(q.next()) {
+    RDGroup group(q.value(0).toString());
+    printf("%s",(const char *)group.xml());
   }
   printf("</groupList>\n");
 
-  delete q;
   Exit(0);
 }
 
@@ -71,8 +67,6 @@ void Xport::ListGroups()
 void Xport::ListGroup()
 {
   QString sql;
-  RDSqlQuery *q;
-  RDGroup *group;
 
   //
   // Verify Post
@@ -89,9 +83,8 @@ void Xport::ListGroup()
                          where (USER_NAME=\"%s\")&&(GROUP_NAME=\"%s\")",
 			(const char *)RDEscapeString(xport_user->name()),
 			(const char *)RDEscapeString(group_name));
-  q=new RDSqlQuery(sql);
-  if(!q->first()) {
-    delete q;
+  RDSqlQuery q(sql);
+  if(!q.first()) {
     XmlExit("No such group",404);
   }
 
@@ -101,10 +94,8 @@ void Xport::ListGroup()
   printf("Content-type: application/xml\n");
   printf("Status: 200\n\n");
   printf("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
-  group=new RDGroup(q->value(0).toString());
-  printf("%s",(const char *)group->xml());
-  delete group;
+  RDGroup group(q.value(0).toString());
+  printf("%s",(const char *)group.xml());
 
-  delete q;
   Exit(0);
 }

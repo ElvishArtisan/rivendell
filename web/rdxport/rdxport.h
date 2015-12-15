@@ -40,13 +40,13 @@ class Xport : public QObject
   void Export();
   void Import();
   void DeleteAudio();
-  void SetCartInfo(RDCart* cart, const QString& group_name);
+  void SetCartInfo(RDCart& cart, const QString& group_name);
   void AddCart();
   void ListCarts();
   void ListCart();
   void EditCart();
   void RemoveCart();
-  void SetCutInfo(RDCut* cut);
+  void SetCutInfo(RDCut& cut);
   void AddCut();
   void ListCuts();
   void ListCut();
@@ -67,8 +67,8 @@ class Xport : public QObject
 	       RDAudioConvert::ErrorCode err=RDAudioConvert::ErrorOk);
   RDFormPost *xport_post;
   RDUser *xport_user;
-  RDConfig *xport_config;
-  RDSystem *xport_system;
+  RDConfig xport_config;
+  RDSystem xport_system;
 };
 
 

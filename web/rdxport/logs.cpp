@@ -39,8 +39,6 @@
 void Xport::ListLogs()
 {
   QString sql;
-  RDSqlQuery *q;
-  RDLog *log;
   QString service_name="";
   QString trackable;
 
@@ -65,7 +63,7 @@ void Xport::ListLogs()
     sql=sql.left(sql.length()-2);
   }
   sql+=" order by NAME";
-  q=new RDSqlQuery(sql);
+  RDSqlQuery q(sql);
 
   //
   // Process Request
@@ -74,21 +72,18 @@ void Xport::ListLogs()
   printf("Status: 200\n\n");
   printf("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
   printf("<logList>\n");
-  while(q->next()) {
-    log=new RDLog(q->value(0).toString());
-    printf("%s",(const char *)log->xml());
-    delete log;
+  while(q.next()) {
+    RDLog log(q.value(0).toString());
+    printf("%s",(const char *)log.xml());
   }
   printf("</logList>\n");
 
-  delete q;
   Exit(0);
 }
 
 
 void Xport::ListLog()
 {
-  RDLog *log;
   QString name="";
 
   //
@@ -99,16 +94,15 @@ void Xport::ListLog()
   //
   // Verify that log exists
   //
-  log=new RDLog(name);
-  if(!log->exists()) {
-    delete log;
+  RDLog log(name);
+  if(!log.exists()) {
     XmlExit("No such log",404);
   }
 
   //
   // Generate Log Listing
   //
-  RDLogEvent *log_event=log->createLogEvent();
+  RDLogEvent *log_event=log.createLogEvent();
   log_event->load(true);
 
   //

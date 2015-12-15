@@ -2,7 +2,9 @@
 //
 // Rivendell web service portal -- TrimAudio service
 //
-//   (C) Copyright 2010-2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2010 Fred Gleason <fredg@paravelsystems.com>
+//
+//      $Id: trimaudio.cpp,v 1.4 2012/02/13 23:01:50 cvs Exp $
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -68,11 +70,11 @@ void Xport::TrimAudio()
   //
   // Open Audio File
   //
-  RDWaveFile *wave=new RDWaveFile(RDCut::pathName(cartnum,cutnum));
-  if(!wave->openWave()) {
+  RDWaveFile wave(RDCut::pathName(cartnum,cutnum));
+  if(!wave.openWave()) {
     XmlExit("No such audio",404);
   }
-  if(!wave->hasEnergy()) {
+  if(!wave.hasEnergy()) {
     XmlExit("No peak data available",404);
   }
 
@@ -85,14 +87,14 @@ void Xport::TrimAudio()
   printf("  <cartNumber>%u</cartNumber>\n",cartnum);
   printf("  <cutNumber>%d</cutNumber>\n",cutnum);
   printf("  <trimLevel>%d</trimLevel>\n",trim_level);
-  point=wave->startTrim(trim_level+REFERENCE_LEVEL);
+  point=wave.startTrim(trim_level+REFERENCE_LEVEL);
   if(point>=0) {
-    point=(double)point*1000.0/(double)wave->getSamplesPerSec();
+    point=(double)point*1000.0/(double)wave.getSamplesPerSec();
   }
   printf("  <startTrimPoint>%d</startTrimPoint>\n",point);
-  point=wave->endTrim(trim_level+REFERENCE_LEVEL);
+  point=wave.endTrim(trim_level+REFERENCE_LEVEL);
   if(point>=0) {
-    point=(double)point*1000.0/(double)wave->getSamplesPerSec();
+    point=(double)point*1000.0/(double)wave.getSamplesPerSec();
   }
   printf("  <endTrimPoint>%d</endTrimPoint>\n",point);
   printf("</trimPoint>\n");
