@@ -53,14 +53,12 @@ void Xport::DeleteAudio()
   if((!xport_user->deleteCarts())&&(!xport_user->adminConfig())) {
     XmlExit("Forbidden",403);
   }
-  RDCut *cut=new RDCut(cartnum,cutnum);
-  if(!cut->exists()) {
-    delete cut;
+  RDCut cut(cartnum,cutnum);
+  if(!cut.exists()) {
     XmlExit("No such cut",404);
   }
   unlink(RDCut::pathName(cartnum,cutnum));
   unlink(RDCut::pathName(cartnum,cutnum)+".energy");
   syslog(LOG_NOTICE,"unlink(%s): %s",(const char *)RDCut::pathName(cartnum,cutnum),strerror(errno));
-  delete cut;
   XmlExit("OK",200);
 }

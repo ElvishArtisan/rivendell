@@ -108,15 +108,13 @@ void Xport::Export()
     wavedata=new RDWaveData();
   }
   if(wavedata!=NULL) {
-    RDCart *cart=new RDCart(cartnum);
-    RDCut *cut=new RDCut(cartnum,cutnum);
-    cart->getMetadata(wavedata);
-    cut->getMetadata(wavedata);
-    if(cart->enforceLength()) {
-      speed_ratio=(float)cut->length()/(float)cart->forcedLength();
+    RDCart cart(cartnum);
+    RDCut cut(cartnum,cutnum);
+    cart.getMetadata(wavedata);
+    cut.getMetadata(wavedata);
+    if(cart.enforceLength()) {
+      speed_ratio=(float)cut.length()/(float)cart.forcedLength();
     }
-    delete cut;
-    delete cart;
   }
 
   //
@@ -127,23 +125,23 @@ void Xport::Export()
   uint8_t data[2048];
   QString tmpdir=RDTempDir();
   QString tmpfile=tmpdir+"/exported_audio";
-  RDSettings *settings=new RDSettings();
-  settings->setFormat((RDSettings::Format)format);
-  settings->setChannels(channels);
-  settings->setSampleRate(sample_rate);
-  settings->setBitRate(bit_rate);
-  settings->setQuality(quality);
-  settings->setNormalizationLevel(normalization_level);
-  RDAudioConvert *conv=new RDAudioConvert(xport_config->stationName());
-  conv->setSourceFile(RDCut::pathName(cartnum,cutnum));
-  conv->setDestinationFile(tmpfile);
-  conv->setDestinationSettings(settings);
-  conv->setDestinationWaveData(wavedata);
-  conv->setRange(start_point,end_point);
-  conv->setSpeedRatio(speed_ratio);
-  switch(conv_err=conv->convert()) {
+  RDSettings settings;
+  settings.setFormat((RDSettings::Format)format);
+  settings.setChannels(channels);
+  settings.setSampleRate(sample_rate);
+  settings.setBitRate(bit_rate);
+  settings.setQuality(quality);
+  settings.setNormalizationLevel(normalization_level);
+  RDAudioConvert conv(xport_config.stationName());
+  conv.setSourceFile(RDCut::pathName(cartnum,cutnum));
+  conv.setDestinationFile(tmpfile);
+  conv.setDestinationSettings(&settings);
+  conv.setDestinationWaveData(wavedata);
+  conv.setRange(start_point,end_point);
+  conv.setSpeedRatio(speed_ratio);
+  switch(conv_err=conv.convert()) {
   case RDAudioConvert::ErrorOk:
-    switch(settings->format()) {
+    switch(settings.format()) {
     case RDSettings::Pcm16:
     case RDSettings::Pcm24:
       printf("Content-type: audio/x-wav\n\n");
@@ -171,6 +169,9 @@ void Xport::Export()
       }
     }
     close(fd);
+    if(wavedata!=NULL) {
+      delete wavedata;
+    }
     unlink(tmpfile);
     rmdir(tmpdir);
     Exit(0);
@@ -193,8 +194,6 @@ void Xport::Export()
     resp_code=500;
     break;
   }
-  delete conv;
-  delete settings;
   if(wavedata!=NULL) {
     delete wavedata;
   }

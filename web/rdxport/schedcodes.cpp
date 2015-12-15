@@ -28,14 +28,12 @@
 void Xport::ListSchedCodes()
 {
   QString sql;
-  RDSqlQuery *q;
-  RDSchedCode *schedcode;
 
   //
   // Generate Scheduler Code List
   //
   sql=QString("select CODE from SCHED_CODES order by CODE");
-  q=new RDSqlQuery(sql);
+  RDSqlQuery q(sql);
 
   //
   // Process Request
@@ -44,14 +42,12 @@ void Xport::ListSchedCodes()
   printf("Status: 200\n\n");
   printf("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
   printf("<schedCodeList>\n");
-  while(q->next()) {
-    schedcode=new RDSchedCode(q->value(0).toString());
-    printf("%s",(const char *)schedcode->xml().utf8());
-    delete schedcode;
+  while(q.next()) {
+    RDSchedCode schedcode(q.value(0).toString());
+    printf("%s",(const char *)schedcode.xml().utf8());
   }
   printf("</schedCodeList>\n");
 
-  delete q;
   Exit(0);
 }
 
@@ -61,8 +57,6 @@ void Xport::AssignSchedCode()
   int cart_number;
   QString sched_code;
   QStringList codes;
-  RDCart *cart=NULL;
-  RDSchedCode *code;
 
   //
   // Verify Post
@@ -88,19 +82,18 @@ void Xport::AssignSchedCode()
   //
   // Process Request
   //
-  cart=new RDCart(cart_number);
-  code=new RDSchedCode(sched_code);
-  if(!code->exists()) {
+  RDCart cart(cart_number);
+  RDSchedCode code(sched_code);
+  if(!code.exists()) {
     XmlExit("No such scheduler code",404);
   }
-  codes=cart->schedCodesList();
+  codes=cart.schedCodesList();
   for(unsigned i=0;i<codes.size();i++) {
     if(codes[i]==sched_code) {
-      delete cart;
       XmlExit("OK",200);
     }
   }
-  cart->addSchedCode(sched_code);
+  cart.addSchedCode(sched_code);
   XmlExit("OK",200);
 }
 
@@ -110,8 +103,6 @@ void Xport::UnassignSchedCode()
   int cart_number;
   QString sched_code;
   QStringList codes;
-  RDCart *cart=NULL;
-  RDSchedCode *code;
 
   //
   // Verify Post
@@ -137,14 +128,12 @@ void Xport::UnassignSchedCode()
   //
   // Process Request
   //
-  cart=new RDCart(cart_number);
-  code=new RDSchedCode(sched_code);
-  if(!code->exists()) {
+  RDCart cart(cart_number);
+  RDSchedCode code(sched_code);
+  if(!code.exists()) {
     XmlExit("No such scheduler code",404);
   }
-  cart->removeSchedCode(sched_code);
-  delete cart;
-  delete code;
+  cart.removeSchedCode(sched_code);
   XmlExit("OK",200);
 }
 
@@ -152,9 +141,7 @@ void Xport::UnassignSchedCode()
 void Xport::ListCartSchedCodes()
 {
   int cart_number;
-  RDCart *cart;
   QStringList codes;
-  RDSchedCode *schedcode;
 
   //
   // Verify Post
@@ -176,8 +163,8 @@ void Xport::ListCartSchedCodes()
   //
   // Generate Scheduler Code List
   //
-  cart=new RDCart(cart_number);
-  codes=cart->schedCodesList();
+  RDCart cart(cart_number);
+  codes=cart.schedCodesList();
 
   //
   // Process Request
@@ -187,9 +174,8 @@ void Xport::ListCartSchedCodes()
   printf("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
   printf("<schedCodeList>\n");
   for(unsigned i=0;i<codes.size();i++) {
-    schedcode=new RDSchedCode(codes[i]);
-    printf("%s",(const char *)schedcode->xml().utf8());
-    delete schedcode;
+    RDSchedCode schedcode(codes[i]);
+    printf("%s",(const char *)schedcode.xml().utf8());
   }
   printf("</schedCodeList>\n");
 
