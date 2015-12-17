@@ -182,17 +182,18 @@ RecordCut::RecordCut(RDCart *cart,QString cut,AudioControls *cntls,
   cut_isrc_label->setAlignment(AlignLeft|ShowPrefix);
 
   //
-  // Cut Weight
+  // Cut Weight / Order
   //
   cut_weight_box=new QSpinBox(this);
   cut_weight_box->setGeometry(10,210,61,19);
   cut_weight_box->setRange(0,100);
-  cut_weight_box->setEnabled(rec_controls->use_dayparting_box->isChecked());
   QLabel *cut_weight_label=new QLabel(cut_weight_box,tr("Weight"),this);
   cut_weight_label->setGeometry(10,191,61,19);
   cut_weight_label->setFont(font);
   cut_weight_label->setAlignment(AlignHCenter|ShowPrefix);
-  cut_weight_label->setEnabled(rec_controls->use_dayparting_box->isChecked());
+  if(!rec_controls->use_dayparting_box->isChecked()) {
+    cut_weight_label->setText(tr("Order"));
+  }
 
   //
   // Cut Play Date Time

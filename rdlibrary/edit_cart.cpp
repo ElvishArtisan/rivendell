@@ -780,6 +780,9 @@ void EditCart::okData()
   QString sql;
   RDSqlQuery *q;
 
+  //
+  // Sanity Checks
+  //
   if(lib_cart_list_edit==NULL) { // Single Edit
     if(rdcart_controls.title_edit->text().isEmpty()) {
       QMessageBox::warning(this,tr("Missing Title"),
@@ -815,6 +818,27 @@ void EditCart::okData()
 	}
       }
     }
+    if(!rdcart_controls.use_dayparting_box->isChecked()) {
+      std::vector<int> orders;
+      sql=QString("select WEIGHT from CUTS where ")+
+	QString().sprintf("CART_NUMBER=%u",rdcart_cart->number());
+      q=new RDSqlQuery(sql);
+      while(q->next()) {
+	orders.push_back(q->value(0).toInt());
+	for(unsigned i=0;i<(orders.size()-1);i++) {
+	  if(q->value(0).toInt()==orders[i]) {
+	    QMessageBox::warning(this,"RDLibrary - "+tr("Ordering Error"),
+			     tr("Each cut's \"Order\" value must be unique!"));
+	    return;
+	  }
+	}
+      }
+      delete q;
+    }
+
+    //
+    // Save Data
+    //
     rdcart_cart->setGroupName(rdcart_group_box->currentText());
     rdcart_cart->calculateAverageLength(&rdcart_length_deviation);
     rdcart_cart->setLengthDeviation(rdcart_length_deviation);
@@ -857,6 +881,9 @@ void EditCart::okData()
     if(rdcart_cart->type()==RDCart::Audio) {
       rdcart_cart->
 	setUseDayparting(rdcart_controls.use_dayparting_box->isChecked());
+      if(!rdcart_controls.use_dayparting_box->isChecked()) {
+	rdcart_cart->clearDayparting();
+      }
     }
     if(rdcart_cart->type()==RDCart::Macro) {
       rdcart_macro_cart->save();

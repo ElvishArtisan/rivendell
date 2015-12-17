@@ -15536,3 +15536,14 @@
 	* Removed 'scripts/rd_create_db'.
 	* Added a 'Use Per-Cut Dayparting' control to the Edit Cart dialog
 	in 'rdlibrary/edit_cart.cpp' and 'rdlibrary/edit_cart.h'.
+2015-12-16 Fred Gleason <fredg@paravelsystems.com>
+	* Modified 'lib/rdcart.cpp', 'lib/rdcart.h' and 'lib/rdcut.cpp' to
+	support non-dayparting cut rotation.
+	* Added an 'RDCart::clearDayparting()' method in 'lib/rdcart.cpp'
+	and 'lib/rdcart.h'.
+	* Added an 'RDCut::clearDayparting()' method in 'lib/rdcut.cpp'
+	and 'lib/rdcut.h'.
+	* Modified the 'Record' dialog to support specifying cut play-out
+	order when dayparting is disabled in 'rdlibrary/record_cut.cpp',
+	'rdlibrary/edit_cart.cpp', 'rdlibrary/edit_cart.h',
+	'rdlibrary/audio_cart.cpp' and 'rdlibrary/audio_cart.h'.

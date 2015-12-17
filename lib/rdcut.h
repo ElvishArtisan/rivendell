@@ -124,6 +124,7 @@ class RDCut
   int effectiveStart() const;
   int effectiveEnd() const;
   void logPlayout() const;
+  void clearDayparting() const;
   bool copyTo(RDStation *station,RDUser *user,const QString &cutname,
 	      RDConfig *config) const;
   void getMetadata(RDWaveData *data) const;

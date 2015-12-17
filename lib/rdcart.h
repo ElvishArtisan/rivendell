@@ -146,6 +146,7 @@ class RDCart
 		 RDConfig *config);
   bool removeCutAudio(RDStation *station,RDUser *user,
 		      const QString &cutname,RDConfig *config);
+  void clearDayparting();
   bool create(const QString &groupname,RDCart::Type type);
   bool remove(RDStation *station,RDUser *user,RDConfig *config) const;
   static bool exists(unsigned cartnum);
@@ -158,6 +159,8 @@ class RDCart
   static void removePending(RDStation *station,RDUser *user,RDConfig *config);
   
  private:
+  bool SelectDaypartedCut(QString *cut,const QTime &time) const;
+  bool SelectNonDaypartedCut(QString *cut) const;
   QString GetNextCut(RDSqlQuery *q) const;
   int GetNextFreeCut() const;
   RDCut::Validity ValidateCut(RDSqlQuery *q,bool enforce_length,
