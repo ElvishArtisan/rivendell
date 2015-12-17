@@ -15549,3 +15549,6 @@
 	'rdlibrary/audio_cart.cpp' and 'rdlibrary/audio_cart.h'.
 2015-12-16 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 2.11.1int02.
+2015-12-17 Fred Gleason <fredg@paravelsystems.com>
+	* Modified card index formatting tom get proper sorting behavior
+	in 'utils/rdalsaconfig/rdalsa.cpp'.
