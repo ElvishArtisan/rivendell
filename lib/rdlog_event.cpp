@@ -293,15 +293,32 @@ void RDLogEvent::refresh(int line)
   if(log_name.isEmpty()||log_line[line]->cartNumber()==0) {
     return;
   }
-  QString sql=QString("select CART.TYPE,CART.GROUP_NAME,CART.TITLE,")+
-    "CART.ARTIST,CART.ALBUM,CART.YEAR,CART.LABEL,"+
-    "CART.CLIENT,CART.AGENCY,CART.USER_DEFINED,"+
-    "CART.FORCED_LENGTH,CART.CUT_QUANTITY,"+
-    "CART.LAST_CUT_PLAYED,CART.PLAY_ORDER,"+
-    "CART.ENFORCE_LENGTH,CART.PRESERVE_PITCH,"+
-    "CART.PUBLISHER,CART.COMPOSER,CART.USAGE_CODE,"+
-    "CART.AVERAGE_SEGUE_LENGTH,CART.VALIDITY,"+
-    "CART.NOTES,GROUPS.COLOR,GROUPS.TIMESCALE_LIMIT from CART "+
+  QString sql=QString("select ")+
+    "CART.TYPE,"+                  // 00
+    "CART.GROUP_NAME,"+            // 01
+    "CART.TITLE,"+                 // 02
+    "CART.ARTIST,"+                // 03
+    "CART.ALBUM,"+                 // 04
+    "CART.YEAR,"+                  // 05
+    "CART.LABEL,"+                 // 06
+    "CART.CLIENT,"+                // 07
+    "CART.AGENCY,"+                // 08
+    "CART.USER_DEFINED,"+          // 09
+    "CART.FORCED_LENGTH,"+         // 10
+    "CART.CUT_QUANTITY,"+          // 11
+    "CART.LAST_CUT_PLAYED,"+       // 12
+    "CART.USE_DAYPARTING,"+        // 13
+    "CART.ENFORCE_LENGTH,"+        // 14
+    "CART.PRESERVE_PITCH,"+        // 15
+    "CART.PUBLISHER,"+             // 16
+    "CART.COMPOSER,"+              // 17
+    "CART.USAGE_CODE,"+            // 18
+    "CART.AVERAGE_SEGUE_LENGTH,"+  // 19
+    "CART.VALIDITY,"+              // 20
+    "CART.NOTES,"+                 // 21
+    "GROUPS.COLOR,"+               // 22
+    "GROUPS.TIMESCALE_LIMIT "+     // 23
+    "from CART "+
     "left join GROUPS on CART.GROUP_NAME=GROUPS.NAME "+
     QString().sprintf("where CART.NUMBER=%u",log_line[line]->cartNumber());
   RDSqlQuery *q=new RDSqlQuery(sql);
@@ -336,8 +353,7 @@ void RDLogEvent::refresh(int line)
     log_line[line]->setAverageSegueLength(q->value(19).toUInt());
     log_line[line]->setCutQuantity(q->value(11).toUInt());       // Cut Quantity
     log_line[line]->setLastCutPlayed(q->value(12).toUInt());  // Last Cut Played
-    log_line[line]->
-      setPlayOrder((RDCart::PlayOrder)q->value(13).toUInt()); // Play Order
+    log_line[line]->setUseDayparting(q->value(13).toBool());  // Set Dayparting
     log_line[line]->
       setEnforceLength(RDBool(q->value(14).toString()));     // Enforce Length
     log_line[line]->
@@ -907,7 +923,7 @@ int RDLogEvent::LoadLines(const QString &log_table,int id_offset,
   // 17 - CART.AGENCY              18 - CART.USER_DEFINED
   // 19 - CART.CONDUCTOR           20 - CART.SONG_ID
   // 21 - CART.FORCED_LENGTH       22 - CART.CUT_QUANTITY
-  // 23 - CART.LAST_CUT_PLAYED     24 - CART.PLAY_ORDER
+  // 23 - CART.LAST_CUT_PLAYED     24 - CART.USE_DAYPARTING
   // 25 - CART.ENFORCE_LENGTH      26 - CART.PRESERVE_PITCH
   // 27 - LOG.TYPE                 28 - LOG.COMMENT
   // 29 - LOG.LABEL                30 - LOG.GRACE_TIME
@@ -938,7 +954,7 @@ int RDLogEvent::LoadLines(const QString &log_table,int id_offset,
     "CART.LABEL,CART.CLIENT,CART.AGENCY,CART.USER_DEFINED,"+
     "CART.CONDUCTOR,CART.SONG_ID,"+
     "CART.FORCED_LENGTH,CART.CUT_QUANTITY,CART.LAST_CUT_PLAYED,"+
-    "CART.PLAY_ORDER,CART.ENFORCE_LENGTH,CART.PRESERVE_PITCH ,"+
+    "CART.USE_DAYPARTING,CART.ENFORCE_LENGTH,CART.PRESERVE_PITCH ,"+
     "`"+log_table+"`.TYPE,`"+log_table+"`.COMMENT,`"+log_table+"`.LABEL,`"+
     log_table+"`.GRACE_TIME,`"+log_table+"`.POST_POINT,`"+log_table+"`.SOURCE,"+
     "`"+log_table+"`.EXT_START_TIME,`"+log_table+"`.EXT_LENGTH,`"+log_table+
@@ -1031,8 +1047,7 @@ int RDLogEvent::LoadLines(const QString &log_table,int id_offset,
       }
       line.setCutQuantity(q->value(22).toUInt());       // Cut Quantity
       line.setLastCutPlayed(q->value(23).toUInt());     // Last Cut Played
-      line.
-	setPlayOrder((RDCart::PlayOrder)q->value(24).toUInt()); // Play Ord
+      line.setUseDayparting(q->value(24).toBool());     // Use Dayparting
       line.
 	setEnforceLength(RDBool(q->value(25).toString())); // Enforce Length
       line.

@@ -15493,3 +15493,62 @@
 2015-11-24 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed formatting in 'docs/docbook/web_api.xml' so as to render
 	a table on contents in PDF.
+2015-12-15 Fred Gleason <fredg@paravelsystems.com>
+	* Added a '--disable-docbook' switch in 'configure.ac'.
+2015-12-15 Fred Gleason <fredg@paravelsystems.com>
+	* Simplified the dependency rules in 'docs/docbook/Makefile.am'.
+2015-12-15 Fred Gleason <fredg@paravelsystems.com>
+	* Updated the location of the Web API and CAE documentation in
+	'rivendell.spec.in'.
+2015-12-15 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.11.1int01.
+2015-12-15 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the 'filename' parameter from the AddSong CGI call
+	in 'rlm/rlm_live365.c'.
+	* Added a 'CoverUrlString=' parameter to the configuration for the
+	'rlm_live365' RLM in 'rlm/rlm_live365.c'.
+2015-12-15 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in the SoftwareAuthority switcher driver that caused
+	the number of GPIO lines to be calculated incorrectly.
+	* Fixed a bug in 'ripcd/swauthority.cpp' that caused the GPIO
+	DB tables to be incorrectly initialized.
+2015-12-15 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'lib/rdwavefile.cpp' and 'lib/rdwavefile.h' that
+	would cause MPEG I v2.5 Layer 3 imports to be imported with
+	the incorrect sample rate.
+2015-12-15 Fred Gleason <fredg@paravelsystems.com>
+	* Marked merged from 7d3620f1a482bd7cd7c728cce79e08d99ada008e in
+	v12.10.3caefix.
+2015-12-15 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'CART.USE_DAYPARTING' field to the database.
+	* Removed the 'CART.PLAY_ORDER' field from the database.
+	* Incremented the database version to 253.
+	* Added 'RDLogLine::useDayparting()' and 'RDLogLine::setUseDayparting()'
+	methods in 'lib/rdlog_line.cpp' and 'lib/rdlog_line.h'.
+	* Removed 'RDLogLine::playOrder()' and 'RDLogLine::setPlayOrder()'
+	methods in 'lib/rdlogline.cpp' and 'lib/rdlogline.cpp'.
+	* Added 'RDCart::useDayparting()' and 'RDCart::setUseDayparting()'
+	methods in 'lib/rdcart.cpp' and 'lib/rdcart.h'.
+	* Removed 'RDCart::playOrder(), 'RDCart::setPlayOrder()' and
+	'RDCart::playOrderText()' methods in 'lib/rdcart.cpp' and
+	'lib/rdcart.h'.
+	* Removed the 'RDCart::PlayOrder' enumeration in 'lib/rdcart.h'.
+	* Removed 'scripts/rd_create_db'.
+	* Added a 'Use Per-Cut Dayparting' control to the Edit Cart dialog
+	in 'rdlibrary/edit_cart.cpp' and 'rdlibrary/edit_cart.h'.
+2015-12-16 Fred Gleason <fredg@paravelsystems.com>
+	* Modified 'lib/rdcart.cpp', 'lib/rdcart.h' and 'lib/rdcut.cpp' to
+	support non-dayparting cut rotation.
+	* Added an 'RDCart::clearDayparting()' method in 'lib/rdcart.cpp'
+	and 'lib/rdcart.h'.
+	* Added an 'RDCut::clearDayparting()' method in 'lib/rdcut.cpp'
+	and 'lib/rdcut.h'.
+	* Modified the 'Record' dialog to support specifying cut play-out
+	order when dayparting is disabled in 'rdlibrary/record_cut.cpp',
+	'rdlibrary/edit_cart.cpp', 'rdlibrary/edit_cart.h',
+	'rdlibrary/audio_cart.cpp' and 'rdlibrary/audio_cart.h'.
+2015-12-16 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.11.1int02.
+2015-12-17 Fred Gleason <fredg@paravelsystems.com>
+	* Modified card index formatting tom get proper sorting behavior
+	in 'utils/rdalsaconfig/rdalsa.cpp'.

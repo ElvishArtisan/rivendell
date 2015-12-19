@@ -50,7 +50,7 @@ class EditCart : public QDialog
   Q_OBJECT
  public:
   EditCart(unsigned number,QString *path,bool new_cart,bool profile_rip,
-	   QWidget *parent=0,const char *name=0,QListView *lib_cart_list=NULL);
+	   QListView *lib_cart_list=NULL,QWidget *parent=0);
   ~EditCart();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
@@ -87,8 +87,6 @@ class EditCart : public QDialog
   QLineEdit *rdcart_average_length_edit;
   QLabel *rdcart_forced_length_label;
   QLineEdit *rdcart_forced_length_ledit;
-  QCheckBox *rdcart_preserve_pitch_button;
-  QLabel *rdcart_preserve_pitch_label;
   unsigned rdcart_average_length;
   unsigned rdcart_length_deviation;
   AudioCart *rdcart_audio_cart;

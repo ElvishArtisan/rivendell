@@ -19,24 +19,22 @@
 ##
 ## Use automake to process this into a Makefile.in
 
-cae.html:	cae.xml
-	xsltproc -o cae.html $(DOCBOOK_STYLESHEETS)/xhtml/docbook.xsl cae.xml
-cae.pdf:	cae.xml
-	xsltproc $(DOCBOOK_STYLESHEETS)/fo/docbook.xsl cae.xml | fop - -pdf cae.pdf
-
-web_api.html:	web_api.xml
-	xsltproc -o web_api.html $(DOCBOOK_STYLESHEETS)/xhtml/docbook.xsl web_api.xml
-web_api.pdf:	web_api.xml
-	xsltproc $(DOCBOOK_STYLESHEETS)/fo/docbook.xsl web_api.xml | fop - -pdf web_api.pdf
-
+##
+## Build Dependencies
+##
+%.html:	%.xml
+	xsltproc -o $@ $(DOCBOOK_STYLESHEETS)/xhtml/docbook.xsl $<
+%.pdf:	%.xml
+	xsltproc $(DOCBOOK_STYLESHEETS)/fo/docbook.xsl $< | fop - -pdf $@
 %.1:	%.xml
 	xsltproc $(DOCBOOK_STYLESHEETS)/manpages/docbook.xsl $<
-
 %.8:	%.xml
 	xsltproc $(DOCBOOK_STYLESHEETS)/manpages/docbook.xsl $<
 
-
-all-local:	cae.html cae.pdf web_api.html web_api.pdf
+all-local:	cae.html\
+                cae.pdf\
+                web_api.html\
+                web_api.pdf
 
 EXTRA_DIST = cae.html\
              cae.pdf\

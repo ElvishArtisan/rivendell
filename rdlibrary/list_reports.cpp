@@ -1,10 +1,8 @@
 // list_reports.cpp
 //
-// Add a Rivendell Service
+// Generate RDLibrary Reports
 //
-//   (C) Copyright 2002-2006 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: list_reports.cpp,v 1.11.4.4.2.1 2014/03/19 22:12:59 cvs Exp $
+//   (C) Copyright 2002-2015 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -195,7 +193,7 @@ void ListReports::GenerateCartReport(QString *report)
 	    toString("MM/dd/yyyy - hh:mm:ss"),
 	    (const char *)list_group.utf8(),(const char *)filter.utf8());
   *report+="\n";
-  *report+="Type -Cart- -Group---- -Len- -Title------------------------- -Artist----------------------- Cuts Rot Enf -LenDev -Owner--------------\n";
+  *report+="Type -Cart- -Group---- -Len- -Title------------------------- -Artist----------------------- Cuts CDM Enf -LenDev -Owner--------------\n";
 
   //
   // Generate Rows
@@ -203,9 +201,18 @@ void ListReports::GenerateCartReport(QString *report)
   if(list_type_filter.isEmpty()) {
     return;
   }
-  sql=QString("select CART.TYPE,CART.NUMBER,CART.GROUP_NAME,")+
-    "CART.FORCED_LENGTH,CART.TITLE,CART.ARTIST,CART.CUT_QUANTITY,"+
-    "CART.PLAY_ORDER,CART.ENFORCE_LENGTH,CART.LENGTH_DEVIATION,CART.OWNER "+
+  sql=QString("select ")+
+    "CART.TYPE,"+               // 00
+    "CART.NUMBER,"+             // 01
+    "CART.GROUP_NAME,"+         // 02
+    "CART.FORCED_LENGTH,"+      // 03
+    "CART.TITLE,"+              // 04
+    "CART.ARTIST,"+             // 05
+    "CART.CUT_QUANTITY,"+       // 06
+    "CART.USE_DAYPARTING,"+     // 07
+    "CART.ENFORCE_LENGTH,"+     // 08
+    "CART.LENGTH_DEVIATION,"+   // 09
+    "CART.OWNER "+              // 10
     "from CART left join CUTS on CART.NUMBER=CUTS.CART_NUMBER";
   if(list_group==QString("ALL")) {
     sql+=QString(" where ")+
@@ -272,20 +279,13 @@ void ListReports::GenerateCartReport(QString *report)
     *report+=QString().sprintf("%4d ",q->value(6).toInt());
 
     //
-    // Play Order
+    // Use Dayparting (Cart Deck Mode)
     //
-    switch((RDCart::PlayOrder)q->value(7).toInt()) {
-	case RDCart::Sequence:
-	  *report+="SEQ ";
-	  break;
-
-	case RDCart::Random:
-	  *report+="RND ";
-	  break;
-
-	default:
-	  *report+="???";
-	  break;
+    if(RDBool(q->value(7).toString())) {
+      *report+="No ";
+    }
+    else {
+      *report+="Yes  ";
     }
 
     //

@@ -652,7 +652,7 @@ void MainWidget::addData()
   delete q;
   
   EditCart *cart=
-    new EditCart(cart_num,&lib_import_path,true,profile_ripping,this);
+    new EditCart(cart_num,&lib_import_path,true,profile_ripping,NULL,this);
   if(cart->exec() <0) {
     RDCart *rdcart=new RDCart(cart_num);
     rdcart->remove(rdstation_conf,lib_user,lib_config);
@@ -705,7 +705,7 @@ void MainWidget::editData()
     RDListViewItem *item=(RDListViewItem *)it->current();
 
     EditCart *edit_cart=new EditCart(item->text(1).toUInt(),&lib_import_path,
-				     false,profile_ripping,this);
+				     false,profile_ripping,NULL,this);
     edit_cart->exec();
     RefreshLine(item);
     cartOnItemData(item);
@@ -714,9 +714,8 @@ void MainWidget::editData()
   }
   else { //multi edit
     if(lib_user->modifyCarts()) {
-      EditCart *edit_cart=
-	new EditCart(0,&lib_import_path,false,profile_ripping,this,"",
-				       lib_cart_list);
+      EditCart *edit_cart=new EditCart(0,&lib_import_path,false,
+				       profile_ripping,lib_cart_list,this);
     
       edit_cart->exec();
       delete edit_cart;

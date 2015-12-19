@@ -220,6 +220,10 @@ Do you still want to delete?</source>
         <source>You must select a single cut!</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>ORD</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>CdRipper</name>
@@ -687,7 +691,7 @@ Selection</source>
     </message>
     <message>
         <source>Preserve Pitch</source>
-        <translation>Zachovat výšku tónu</translation>
+        <translation type="obsolete">Zachovat výšku tónu</translation>
     </message>
     <message>
         <source>&amp;Title:</source>
@@ -864,6 +868,18 @@ poznámky</translation>
     </message>
     <message>
         <source>Use Event Length for Now &amp;&amp; Next Updates</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use Per-Cut Dayparting</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ordering Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Each cut&apos;s &quot;Order&quot; value must be unique!</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1543,6 +1559,10 @@ Přesto uložit?</translation>
     </message>
     <message>
         <source>AES ALARM</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Order</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

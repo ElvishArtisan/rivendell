@@ -42,6 +42,7 @@ char *rlm_live365_passwords;
 char *rlm_live365_titles;
 char *rlm_live365_artists;
 char *rlm_live365_albums;
+char *rlm_live365_coverurl;
 int *rlm_live365_masters;
 int *rlm_live365_aux1s;
 int *rlm_live365_aux2s;
@@ -166,6 +167,7 @@ void rlm_live365_RLMStart(void *ptr,const char *arg)
   rlm_live365_titles=NULL;
   rlm_live365_artists=NULL;
   rlm_live365_albums=NULL;
+  rlm_live365_coverurl=NULL;
   rlm_live365_masters=NULL;
   rlm_live365_aux1s=NULL;
   rlm_live365_aux2s=NULL;
@@ -196,6 +198,10 @@ void rlm_live365_RLMStart(void *ptr,const char *arg)
     rlm_live365_albums=realloc(rlm_live365_albums,(rlm_live365_devs+1)*256);
     strncpy(rlm_live365_albums+256*rlm_live365_devs,
 	    RLMGetStringValue(ptr,arg,section,"AlbumString",""),256);
+
+    rlm_live365_coverurl=realloc(rlm_live365_coverurl,(rlm_live365_devs+1)*256);
+    strncpy(rlm_live365_coverurl+256*rlm_live365_devs,
+	    RLMGetStringValue(ptr,arg,section,"CoverUrlString",""),256);
 
 
     rlm_live365_masters=realloc(rlm_live365_masters,
@@ -228,6 +234,7 @@ void rlm_live365_RLMFree(void *ptr)
   free(rlm_live365_titles);
   free(rlm_live365_artists);
   free(rlm_live365_albums);
+  free(rlm_live365_coverurl);
   free(rlm_live365_masters);
   free(rlm_live365_aux1s);
   free(rlm_live365_aux2s);
@@ -246,6 +253,7 @@ void rlm_live365_RLMPadDataSent(void *ptr,const struct rlm_svc *svc,
   char title[1024];
   char artist[1024];
   char album[1024];
+  char coverurl[1024];
   char url[8192];
   char msg[1500];
 
@@ -281,13 +289,17 @@ void rlm_live365_RLMPadDataSent(void *ptr,const struct rlm_svc *svc,
       strncpy(album,RLMResolveNowNext(ptr,now,next,
 				      rlm_live365_albums+256*i),256);
       rlm_live365_EncodeString(album,1023);
-      snprintf(url,8192,"http://www.live365.com/cgi-bin/add_song.cgi?member_name=%s&password=%s&version=2&filename=Rivendell&seconds=%u&title=%s&artist=%s&album=%s",
+      strncpy(coverurl,RLMResolveNowNext(ptr,now,next,
+				      rlm_live365_coverurl+256*i),256);
+      rlm_live365_EncodeString(coverurl,1023);
+      snprintf(url,8192,"http://www.live365.com/cgi-bin/add_song.cgi?member_name=%s&password=%s&version=2&seconds=%u&title=%s&artist=%s&album=%s&coverURL=%s",
 	       station,
 	       password,
 	       now->rlm_len/1000,
 	       title,
 	       artist,
-	       album);
+	       album,
+	       coverurl);
       if(strlen(now->rlm_title)!=0) {
 	if(fork()==0) {
 	  execlp("curl","curl","-o","/dev/null","-s",url,(char *)NULL);

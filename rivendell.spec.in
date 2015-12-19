@@ -302,7 +302,7 @@ rm -rf $RPM_BUILD_ROOT
 %doc conf/my.cnf-master
 %doc conf/my.cnf-standby
 %doc docs/DEBUGGING.txt
-%doc docs/cae.odt 
+%doc docs/docbook/cae.pdf
 %doc docs/catchd.txt 
 %doc docs/colors 
 %doc docs/GPIO.txt 
@@ -338,7 +338,7 @@ rm -rf $RPM_BUILD_ROOT
 %doc docs/tables/users.txt 
 %doc docs/tables/version.txt 
 %doc docs/asound.conf-sample
-%doc docs/web_api.odt
+%doc docs/docbook/web_api.pdf
 %doc conf/rlm_serial.conf
 %doc conf/rlm_udp.conf
 %doc conf/rlm_twitter.conf

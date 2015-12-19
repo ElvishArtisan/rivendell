@@ -185,7 +185,7 @@ void RDAlsa::LoadSystemConfig()
     if(snd_ctl_pcm_info(snd_ctl,pcm_info)==0) {
       pcm=0;
       while(pcm>=0) {
-	pcms.push_back(QString().sprintf("%s [%u]",
+	pcms.push_back(QString().sprintf("%s [%02u]",
 		      (const char *)snd_pcm_info_get_name(pcm_info),pcm+1));
 	snd_ctl_pcm_next_device(snd_ctl,&pcm);
       }

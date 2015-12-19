@@ -25,11 +25,11 @@
     </message>
     <message>
         <source>Sequentially</source>
-        <translation type="unfinished">I rekkjefylgje</translation>
+        <translation type="obsolete">I rekkjefylgje</translation>
     </message>
     <message>
         <source>Randomly</source>
-        <translation type="unfinished">Tilfeldig</translation>
+        <translation type="obsolete">Tilfeldig</translation>
     </message>
     <message>
         <source>Unknown</source>

@@ -128,7 +128,7 @@ void RDLogLine::clear()
   log_forced_length=0;
   log_cut_quantity=0;
   log_last_cut_played=0;
-  log_play_order=RDCart::Sequence;
+  log_use_dayparting=true;
   log_enforce_length=false;
   log_preserve_pitch=false;
   log_start_datetime=QDateTime();
@@ -1030,15 +1030,15 @@ void RDLogLine::setLastCutPlayed(unsigned cut)
 }
 
 
-RDCart::PlayOrder RDLogLine::playOrder() const
+bool RDLogLine::useDayparting() const
 {
-  return log_play_order;
+  return log_use_dayparting;
 }
 
 
-void RDLogLine::setPlayOrder(RDCart::PlayOrder order)
+void RDLogLine::setUseDayparting(bool state)
 {
-  log_play_order=order;
+  log_use_dayparting=state;
 }
 
 
@@ -1850,7 +1850,7 @@ void RDLogLine::loadCart(int cartnum,int mach,bool timescale,
     "CART.LABEL,CART.CLIENT,CART.AGENCY,"+
     "CART.USER_DEFINED,CART.CONDUCTOR,CART.SONG_ID,"+
     "CART.FORCED_LENGTH,CART.CUT_QUANTITY,CART.LAST_CUT_PLAYED,"+
-    "CART.PLAY_ORDER,CART.START_DATETIME,"+
+    "CART.USE_DAYPARTING,CART.START_DATETIME,"+
     "CART.END_DATETIME,CART.ENFORCE_LENGTH,"+
     "CART.PRESERVE_PITCH,GROUPS.ENABLE_NOW_NEXT,"+
     "CART.ASYNCRONOUS,CART.PUBLISHER,"+
@@ -1892,7 +1892,7 @@ void RDLogLine::loadCart(int cartnum,int mach,bool timescale,
   log_song_id=q->value(12).toString();
   log_cut_quantity=q->value(14).toUInt();
   log_last_cut_played=q->value(15).toUInt();
-  log_play_order=(RDCart::PlayOrder)q->value(16).toInt();
+  log_use_dayparting=RDBool(q->value(16).toString());
   log_start_datetime=q->value(17).toDateTime();
   log_end_datetime=q->value(18).toDateTime();
   log_preserve_pitch=RDBool(q->value(20).toString());
@@ -2000,6 +2000,7 @@ QString RDLogLine::xml(int line) const
   }
   ret+="    "+RDXmlField("transitionType",RDLogLine::transText(transType()));
   ret+="    "+RDXmlField("cutQuantity",cutQuantity());
+  ret+="    "+RDXmlField("useDayparting",useDayparting());
   ret+="    "+RDXmlField("lastCutPlayed",lastCutPlayed());
   ret+="    "+RDXmlField("markerComment",markerComment());
   ret+="    "+RDXmlField("markerLabel",markerLabel());

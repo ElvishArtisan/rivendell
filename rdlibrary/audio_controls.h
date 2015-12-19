@@ -48,6 +48,7 @@ class AudioControls
   QLineEdit *conductor_edit;
   QLineEdit *composer_edit;
   QLineEdit *user_defined_edit;
+  QCheckBox *use_dayparting_box;
 };
 
 

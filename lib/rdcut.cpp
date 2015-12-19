@@ -805,6 +805,32 @@ void RDCut::logPlayout() const
 		      playCounter()+1,localCounter()+1,(const char *)cut_name);
   RDSqlQuery *q=new RDSqlQuery(sql);
   delete q;
+  sql=QString("update CART set ")+
+    QString().sprintf("LAST_CUT_PLAYED=%d ",weight())+
+    QString().sprintf("where NUMBER=%u",cartNumber());
+  q=new RDSqlQuery(sql);
+  delete q;
+}
+
+
+void RDCut::clearDayparting() const
+{
+  RDSqlQuery *q;
+  QString sql=QString("update CUTS set ")+
+    "START_DATETIME=null,"+
+    "END_DATETIME=null,"+
+    "START_DAYPART=null,"+
+    "END_DAYPART=null,"+
+    "SUN=\"Y\","+
+    "MON=\"Y\","+
+    "TUE=\"Y\","+
+    "WED=\"Y\","+
+    "THU=\"Y\","+
+    "FRI=\"Y\","+
+    "SAT=\"Y\" "+
+    "where CUT_NAME=\""+cutName()+"\"";
+  q=new RDSqlQuery(sql);
+  delete q;
 }
 
 
@@ -1085,6 +1111,16 @@ void RDCut::setMetadata(RDWaveData *data) const
   sql+=QString().
     sprintf(" where CUT_NAME=\"%s\"",(const char *)cut_name.utf8());
   RDSqlQuery *q=new RDSqlQuery(sql);
+  delete q;
+
+  sql=QString("select USE_DAYPARTING from CART where ")+
+    QString().sprintf("NUMBER=%u",cartNumber());
+  q=new RDSqlQuery(sql);
+  if(q->first()) {
+    if(q->value(0).toString()=="N") {
+      clearDayparting();
+    }
+  }
   delete q;
 }
 

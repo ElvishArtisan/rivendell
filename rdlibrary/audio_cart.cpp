@@ -2,9 +2,7 @@
 //
 // The audio cart editor for RDLibrary.
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: audio_cart.cpp,v 1.57.6.9.2.2 2014/05/22 14:30:45 cvs Exp $
+//   (C) Copyright 2002-2015 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -68,6 +66,9 @@ AudioCart::AudioCart(AudioControls *controls,RDCart *cart,QString *path,
   rdcart_select_cut=select_cut;
   rdcart_profile_rip=profile_rip;
   rdcart_modification_allowed=lib_user->editAudio()&&cart->owner().isEmpty();
+
+  connect(controls->use_dayparting_box,SIGNAL(toggled(bool)),
+	  this,SLOT(useDaypartingData(bool)));
 
   setCaption(QString().sprintf("%u",rdcart_cart->number())+" - "+
     rdcart_cart->title());
@@ -262,6 +263,8 @@ AudioCart::AudioCart(AudioControls *controls,RDCart *cart,QString *path,
   rip_cut_button->setEnabled(rdcart_modification_allowed);
   import_cut_button->setEnabled(rdcart_modification_allowed);
   ext_editor_cut_button->setEnabled(rdcart_modification_allowed);
+
+  useDaypartingData(controls->use_dayparting_box->isChecked());
 }
 
 
@@ -526,7 +529,7 @@ void AudioCart::recordCutData()
     return;
   }
   QString cutname=item->text(11);
-  RecordCut *cut=new RecordCut(rdcart_cart,cutname,this,"cut");
+  RecordCut *cut=new RecordCut(rdcart_cart,cutname,rdcart_controls,this);
   cut->exec();
   delete cut;
   if(cut_clipboard==NULL) {
@@ -659,6 +662,17 @@ void AudioCart::importCutData()
 }
 
 
+void AudioCart::useDaypartingData(bool state)
+{
+  if(state) {
+    rdcart_cut_list->setColumnText(0,tr("WT"));
+  }
+  else {
+    rdcart_cut_list->setColumnText(0,tr("ORD"));
+  }
+}
+
+
 void AudioCart::doubleClickedData(QListViewItem *,const QPoint &,int)
 {
   recordCutData();
@@ -710,12 +724,13 @@ void AudioCart::RefreshList()
     l->setText(0,q->value(0).toString());
     l->setText(1,q->value(1).toString());
     l->setText(2,RDGetTimeLength(q->value(2).toUInt()));
-    if (q->value(0) == 0){// zero weight
+    if(q->value(0) == 0){// zero weight
       l->setBackgroundColor(RD_CART_ERROR_COLOR);
       if(pass==0) {
 	err=true;
       }
-    } else {
+    } 
+    else {
       switch(ValidateCut(q,9,RDCart::NeverValid,current_datetime)) {
       case RDCart::NeverValid:
 	l->setBackgroundColor(RD_CART_ERROR_COLOR);
@@ -817,18 +832,20 @@ void AudioCart::RefreshLine(RDListViewItem *item)
     QString().sprintf(" where (CART_NUMBER=%u)&&",rdcart_cart->number())+
     "(CUT_NAME=\""+RDEscapeString(cut_name)+"\")";
   RDSqlQuery *q=new RDSqlQuery(sql);
+
   if(q->first()) {
     item->setText(0,q->value(0).toString());
     item->setText(1,q->value(1).toString());
     item->setText(2,RDGetTimeLength(q->value(2).toUInt()));
-    if (q->value(0) == 0){ //zero weight
-      	  item->setBackgroundColor(RD_CART_ERROR_COLOR);
-    } else {
+    if(q->value(0) == 0){ //zero weight
+      item->setBackgroundColor(RD_CART_ERROR_COLOR);
+    }
+    else {
       switch(ValidateCut(q,9,RDCart::NeverValid,current_datetime)) {
       case RDCart::NeverValid:
 	item->setBackgroundColor(RD_CART_ERROR_COLOR);
 	break;
-	
+
       case RDCart::ConditionallyValid:
 	if((!q->value(11).isNull())&&
 	   (q->value(11).toDateTime()<current_datetime)) {
@@ -838,15 +855,15 @@ void AudioCart::RefreshLine(RDListViewItem *item)
 	  item->setBackgroundColor(RD_CART_CONDITIONAL_COLOR);
 	}
 	break;
-	
+
       case RDCart::FutureValid:
 	item->setBackgroundColor(RD_CART_FUTURE_COLOR);
 	break;
-	
+
       case RDCart::EvergreenValid:
 	item->setBackgroundColor(RD_CART_EVERGREEN_COLOR);
 	break;
-	
+
       case RDCart::AlwaysValid:
 	item->setBackgroundColor(backgroundColor());
 	break;

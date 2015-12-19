@@ -84,77 +84,10 @@ bool RDCart::selectCut(QString *cut) const
 
 bool RDCart::selectCut(QString *cut,const QTime &time) const
 {
-  bool ret;
-
-  if(!exists()) {
-    ret=(*cut=="");
-    *cut="";
-#ifndef WIN32
-    syslog(LOG_USER|LOG_WARNING,
-	   "RDCart::selectCut(): cart doesn't exist, CUT=%s",
-	   (const char *)cut);
-#endif  // WIN32
-    return ret;
+  if(useDayparting()) {
+    return SelectDaypartedCut(cut,time);
   }
-
-  if(!cut->isEmpty()) {
-    RDCut *rdcut=new RDCut(*cut);
-    delete rdcut;
-  }
-
-  QString sql;
-  RDSqlQuery *q;
-  QString cutname;
-  QDate current_date=QDate::currentDate();
-  QString datetime_str=QDateTime(current_date,time).
-    toString("yyyy-MM-dd hh:mm:ss");
-  QString time_str=QDateTime(current_date,time).toString("hh:mm:ss");
-
-  switch(type()) {
-  case RDCart::Audio:
-    sql=QString().sprintf("select CUT_NAME,WEIGHT,LOCAL_COUNTER\
-                           from CUTS  where (((START_DATETIME<=\"%s\")&&\
-                           (END_DATETIME>=\"%s\"))||\
-                           (START_DATETIME is null))&&\
-                           (((START_DAYPART<=\"%s\")&&(END_DAYPART>=\"%s\")||\
-                           START_DAYPART is null))&&\
-                           (%s=\"Y\")&&(CART_NUMBER=%u)&&(EVERGREEN=\"N\")&&\
-                           (LENGTH>0) order by LOCAL_COUNTER",
-			  (const char *)datetime_str,
-			  (const char *)datetime_str,
-			  (const char *)time_str,
-			  (const char *)time_str,
-	(const char *)RDGetShortDayNameEN(current_date.dayOfWeek()).upper(),
-			  cart_number);
-    q=new RDSqlQuery(sql);
-    cutname=GetNextCut(q);
-    delete q;
-    break;
-
-  case RDCart::Macro:
-  case RDCart::All:
-    break;
-  }
-  if(cutname.isEmpty()) {   // No valid cuts, try the evergreen
-#ifndef WIN32
-    // syslog(LOG_USER|LOG_WARNING,"RDCart::selectCut(): no valid cuts, trying evergreen, SQL=%s",(const char *)sql);
-#endif  // WIN32
-    sql=QString().sprintf("select CUT_NAME,WEIGHT,LOCAL_COUNTER\
-                           from CUTS where (CART_NUMBER=%u)&&\
-                           (EVERGREEN=\"Y\")&&(LENGTH>0) \
-                           order by LOCAL_COUNTER",
-			  cart_number);
-    q=new RDSqlQuery(sql);
-    cutname=GetNextCut(q);
-    delete q;
-  }
-  if(cutname.isEmpty()) {
-#ifndef WIN32
-    // syslog(LOG_USER|LOG_WARNING,"RDCart::selectCut(): no valid evergreen cuts, SQL=%s",(const char *)sql);
-#endif  // WIN32
-  }
-  *cut=cutname;
-  return true;
+  return SelectNonDaypartedCut(cut);
 }
 
 
@@ -466,7 +399,7 @@ RDCart::UsageCode RDCart::usageCode() const
 
 void RDCart::setUsageCode(RDCart::UsageCode code)
 {
-  SetRow("USAGE_CODE",(int)code);
+  SetRow("USAGE_CODE",(unsigned)code);
   metadata_changed=true;
 }
 
@@ -637,16 +570,16 @@ void RDCart::setLastCutPlayed(unsigned cut) const
 }
 
 
-RDCart::PlayOrder RDCart::playOrder() const
+bool RDCart::useDayparting() const
 {
-  return (RDCart::PlayOrder)RDGetSqlValue("CART","NUMBER",cart_number,
-					 "PLAY_ORDER").toUInt();
+  return RDBool(RDGetSqlValue("CART","NUMBER",cart_number,"USE_DAYPARTING").
+		toString());
 }
 
 
-void RDCart::setPlayOrder(RDCart::PlayOrder order) const
+void RDCart::setUseDayparting(bool state) const
 {
-  SetRow("PLAY_ORDER",(unsigned)order);
+  SetRow("USE_DAYPARTING",state);
 }
 
 
@@ -1318,6 +1251,28 @@ bool RDCart::removeCutAudio(RDStation *station,RDUser *user,
 }
 
 
+void RDCart::clearDayparting()
+{
+  RDSqlQuery *q;
+  QString sql=QString("update CUTS set ")+
+    "START_DATETIME=null,"+
+    "END_DATETIME=null,"+
+    "START_DAYPART=null,"+
+    "END_DAYPART=null,"+
+    "SUN=\"Y\","+
+    "MON=\"Y\","+
+    "TUE=\"Y\","+
+    "WED=\"Y\","+
+    "THU=\"Y\","+
+    "FRI=\"Y\","+
+    "SAT=\"Y\" "+
+    QString().sprintf("where CART_NUMBER=%u",cart_number); 
+  q=new RDSqlQuery(sql);
+  delete q;
+  updateLength();
+}
+
+
 bool RDCart::create(const QString &groupname,RDCart::Type type)
 {
   QString sql=QString().sprintf("insert into CART set NUMBER=%d,TYPE=%d,\
@@ -1348,19 +1303,6 @@ bool RDCart::exists(unsigned cartnum)
   bool ret=q->first();
   delete q;
   return ret;
-}
-
-
-QString RDCart::playOrderText(RDCart::PlayOrder order)
-{
-  switch(order) {
-      case RDCart::Sequence:
-	return QObject::tr("Sequentially");
-
-      case RDCart::Random:
-	return QObject::tr("Randomly");
-  }
-  return QObject::tr("Unknown");
 }
 
 
@@ -1516,6 +1458,109 @@ void RDCart::removePending(RDStation *station,RDUser *user,RDConfig *config)
 }
 
 
+bool RDCart::SelectDaypartedCut(QString *cut,const QTime &time) const
+{
+  bool ret;
+
+  if(!exists()) {
+    ret=(*cut=="");
+    *cut="";
+#ifndef WIN32
+    syslog(LOG_USER|LOG_WARNING,
+	   "RDCart::selectCut(): cart doesn't exist, CUT=%s",
+	   (const char *)cut);
+#endif  // WIN32
+    return ret;
+  }
+
+  if(!cut->isEmpty()) {
+    RDCut *rdcut=new RDCut(*cut);
+    delete rdcut;
+  }
+
+  QString sql;
+  RDSqlQuery *q;
+  QString cutname;
+  QDate current_date=QDate::currentDate();
+  QString datetime_str=QDateTime(current_date,time).
+    toString("yyyy-MM-dd hh:mm:ss");
+  QString time_str=QDateTime(current_date,time).toString("hh:mm:ss");
+
+  switch(type()) {
+  case RDCart::Audio:
+    sql=QString().sprintf("select CUT_NAME,WEIGHT,LOCAL_COUNTER\
+                           from CUTS  where (((START_DATETIME<=\"%s\")&&\
+                           (END_DATETIME>=\"%s\"))||\
+                           (START_DATETIME is null))&&\
+                           (((START_DAYPART<=\"%s\")&&(END_DAYPART>=\"%s\")||\
+                           START_DAYPART is null))&&\
+                           (%s=\"Y\")&&(CART_NUMBER=%u)&&(EVERGREEN=\"N\")&&\
+                           (LENGTH>0) order by LOCAL_COUNTER",
+			  (const char *)datetime_str,
+			  (const char *)datetime_str,
+			  (const char *)time_str,
+			  (const char *)time_str,
+	(const char *)RDGetShortDayNameEN(current_date.dayOfWeek()).upper(),
+			  cart_number);
+    q=new RDSqlQuery(sql);
+    cutname=GetNextCut(q);
+    delete q;
+    break;
+
+  case RDCart::Macro:
+  case RDCart::All:
+    break;
+  }
+  if(cutname.isEmpty()) {   // No valid cuts, try the evergreen
+#ifndef WIN32
+    // syslog(LOG_USER|LOG_WARNING,"RDCart::selectCut(): no valid cuts, trying evergreen, SQL=%s",(const char *)sql);
+#endif  // WIN32
+    sql=QString().sprintf("select CUT_NAME,WEIGHT,LOCAL_COUNTER\
+                           from CUTS where (CART_NUMBER=%u)&&\
+                           (EVERGREEN=\"Y\")&&(LENGTH>0) \
+                           order by LOCAL_COUNTER",
+			  cart_number);
+    q=new RDSqlQuery(sql);
+    cutname=GetNextCut(q);
+    delete q;
+  }
+  if(cutname.isEmpty()) {
+#ifndef WIN32
+    // syslog(LOG_USER|LOG_WARNING,"RDCart::selectCut(): no valid evergreen cuts, SQL=%s",(const char *)sql);
+#endif  // WIN32
+  }
+  *cut=cutname;
+  return true;
+}
+
+
+bool RDCart::SelectNonDaypartedCut(QString *cut) const
+{
+  QString sql;
+  RDSqlQuery *q;
+  int last_weight=lastCutPlayed();
+
+  sql=QString("select CUT_NAME,WEIGHT from CUTS where ")+
+    QString().sprintf("CART_NUMBER=%u ",cart_number)+
+    "order by WEIGHT";
+  q=new RDSqlQuery(sql);
+  while(q->next()) {
+    if(q->value(1).toInt()>last_weight) {
+      *cut=q->value(0).toString();
+      delete q;
+      return true;
+    }
+  }
+  if(q->first()) {
+    *cut=q->value(0).toString();
+    delete q;
+    return true;
+  }
+  delete q;
+  return false;
+}
+
+
 QString RDCart::GetNextCut(RDSqlQuery *q) const
 {
   QString cutname;
@@ -1660,7 +1705,7 @@ void RDCart::SetRow(const QString &param,const QString &value) const
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString().sprintf("UPDATE CART SET %s=\"%s\" WHERE NUMBER=%u",
+  sql=QString().sprintf("update CART set %s=\"%s\" where NUMBER=%u",
 			(const char *)param,
 			(const char *)RDEscapeString(value.utf8()),
 			cart_number);
@@ -1674,7 +1719,7 @@ void RDCart::SetRow(const QString &param,unsigned value) const
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString().sprintf("UPDATE CART SET %s=%d WHERE NUMBER=%u",
+  sql=QString().sprintf("update CART set %s=%d where NUMBER=%u",
 			(const char *)param,
 			value,
 			cart_number);
@@ -1688,7 +1733,7 @@ void RDCart::SetRow(const QString &param,const QDateTime &value) const
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString().sprintf("UPDATE CART SET %s=\"%s\" WHERE NUMBER=%u",
+  sql=QString().sprintf("update CART set %s=\"%s\" where NUMBER=%u",
 			(const char *)param,
 			(const char *)value.toString("yyyy-MM-dd hh:mm:ss"),
 			cart_number);
@@ -1702,9 +1747,23 @@ void RDCart::SetRow(const QString &param,const QDate &value) const
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString().sprintf("UPDATE CART SET %s=\"%s\" WHERE NUMBER=%u",
+  sql=QString().sprintf("update CART set %s=\"%s\" where NUMBER=%u",
 			(const char *)param,
 			(const char *)value.toString("yyyy-MM-dd"),
+			cart_number);
+  q=new RDSqlQuery(sql);
+  delete q;
+}
+
+
+void RDCart::SetRow(const QString &param,const bool value) const
+{
+  RDSqlQuery *q;
+  QString sql;
+
+  sql=QString().sprintf("update CART set %s=\"%s\" where NUMBER=%u",
+			(const char *)param,
+			(const char *)RDYesNo(value),
 			cart_number);
   q=new RDSqlQuery(sql);
   delete q;

@@ -409,6 +409,24 @@ void SoftwareAuthority::DispatchCommand()
       swa_gpi_states[f0[2].toInt()]=f0[3];
       if((RD_LIVEWIRE_GPIO_BUNDLE_SIZE*f0[2].toInt())>swa_gpis) {
 	swa_gpis=RD_LIVEWIRE_GPIO_BUNDLE_SIZE*f0[2].toInt();
+	for(int i=0;i<RD_LIVEWIRE_GPIO_BUNDLE_SIZE;i++) {
+	  sql=QString("select ID from GPIS where ")+
+	    "(STATION_NAME=\""+RDEscapeString(rdstation->name())+"\")&&"+
+	    QString().sprintf("(MATRIX=%d)&&",swa_matrix)+
+	    QString().sprintf("(NUMBER=%d)",(f0[2].toInt()-1)*
+			      RD_LIVEWIRE_GPIO_BUNDLE_SIZE+i+1);
+	  q=new RDSqlQuery(sql);
+	  if(!q->first()) {
+	    delete q;
+	    sql=QString("insert into GPIS set ")+
+	      "STATION_NAME=\""+RDEscapeString(rdstation->name())+"\","+
+	      QString().sprintf("MATRIX=%d,",swa_matrix)+
+	      QString().sprintf("NUMBER=%d",(f0[2].toInt()-1)*
+				RD_LIVEWIRE_GPIO_BUNDLE_SIZE+i+1);
+	    q=new RDSqlQuery(sql);
+	  }
+	  delete q;
+	}
       }
     }
     else {
@@ -426,6 +444,24 @@ void SoftwareAuthority::DispatchCommand()
       swa_gpo_states[f0[2].toInt()]=f0[3];
       if((RD_LIVEWIRE_GPIO_BUNDLE_SIZE*f0[2].toInt())>swa_gpos) {
 	swa_gpos=RD_LIVEWIRE_GPIO_BUNDLE_SIZE*f0[2].toInt();
+	for(int i=0;i<RD_LIVEWIRE_GPIO_BUNDLE_SIZE;i++) {
+	  sql=QString("select ID from GPOS where ")+
+	    "(STATION_NAME=\""+RDEscapeString(rdstation->name())+"\")&&"+
+	    QString().sprintf("(MATRIX=%d)&&",swa_matrix)+
+	    QString().sprintf("(NUMBER=%d)",(f0[2].toInt()-1)*
+			      RD_LIVEWIRE_GPIO_BUNDLE_SIZE+i+1);
+	  q=new RDSqlQuery(sql);
+	  if(!q->first()) {
+	    delete q;
+	    sql=QString("insert into GPOS set ")+
+	      "STATION_NAME=\""+RDEscapeString(rdstation->name())+"\","+
+	      QString().sprintf("MATRIX=%d,",swa_matrix)+
+	      QString().sprintf("NUMBER=%d",(f0[2].toInt()-1)*
+				RD_LIVEWIRE_GPIO_BUNDLE_SIZE+i+1);
+	    q=new RDSqlQuery(sql);
+	  }
+	  delete q;
+	}
       }
     }
     else {
