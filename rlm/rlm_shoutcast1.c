@@ -106,7 +106,7 @@ int rlm_shoutcast1_EncodeString(char *sString,int dMaxSize)
       if(rlm_shoutcast1_BufferDiff(sString,i,2,dMaxSize)<0) {
 	return -1;
       }
-      sprintf(sAccum,"%%%2x",sString[i]);
+      sprintf(sAccum,"%%%02x",sString[i]);
       sString[i++]=sAccum[0];
       sString[i++]=sAccum[1];
       sString[i]=sAccum[2];
