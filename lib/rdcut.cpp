@@ -1103,7 +1103,7 @@ QString RDCut::xml() const
                          PLAY_COUNTER,LOCAL_COUNTER,VALIDITY,CODING_FORMAT,\
                          SAMPLE_RATE,BIT_RATE,CHANNELS,PLAY_GAIN,START_POINT,\
                          END_POINT,FADEUP_POINT,FADEDOWN_POINT,\
-                         SEGUE_START_POINT,SEGUE_END_POINT,SEGUE_GAIN\
+                         SEGUE_START_POINT,SEGUE_END_POINT,SEGUE_GAIN,\
                          HOOK_START_POINT,HOOK_END_POINT,\
                          TALK_START_POINT,TALK_END_POINT \
                          from CUTS where CUT_NAME=\"%s\"",
