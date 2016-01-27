@@ -251,11 +251,7 @@ void rlm_xmpad_RLMFree(void *ptr)
   free(rlm_xmpad_aux2s);
 }
 
-/*
-void rlm_xmpad_RLMPadDataSent(void *ptr,const char *svcname,int onair,
-			      int lognum,const struct rlm_pad *now,
-			      const struct rlm_pad *next)
-*/
+
 void rlm_xmpad_RLMPadDataSent(void *ptr,const struct rlm_svc *svc,
 			      const struct rlm_log *log,
 			      const struct rlm_pad *now,
