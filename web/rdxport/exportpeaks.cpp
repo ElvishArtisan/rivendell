@@ -49,21 +49,25 @@ void Xport::ExportPeaks()
     XmlExit("Missing CUT_NUMBER",400);
   }
 
+  if(!RDCart::exists(cartnum)) {
+    XmlExit("No such cart",404);
+  }
+
   //
   // Verify User Perms
   //
   if(!xport_user->cartAuthorized(cartnum)) {
-    XmlExit("No such cart",404);
+    XmlExit("Forbidden",403);
   }
 
   //
   // Open Audio File
   //
-  RDWaveFile *wave=new RDWaveFile(RDCut::pathName(cartnum,cutnum));
-  if(!wave->openWave()) {
+  RDWaveFile wave(RDCut::pathName(cartnum,cutnum));
+  if(!wave.openWave()) {
     XmlExit("No such audio",404);
   }
-  if(!wave->hasEnergy()) {
+  if(!wave.hasEnergy()) {
     XmlExit("No peak data available",404);
   }
 
@@ -72,8 +76,9 @@ void Xport::ExportPeaks()
   //
   printf("Content-type: application/octet-stream\n\n");
   fflush(NULL);
-  unsigned short *peaks=new unsigned short[wave->energySize()];
-  wave->readEnergy(peaks,wave->energySize());
-  write(1,peaks,sizeof(unsigned short)*wave->energySize());
+  unsigned short *peaks=new unsigned short[wave.energySize()];
+  wave.readEnergy(peaks,wave.energySize());
+  write(1,peaks,sizeof(unsigned short)*wave.energySize());
+  delete[] peaks;
   Exit(0);
 }

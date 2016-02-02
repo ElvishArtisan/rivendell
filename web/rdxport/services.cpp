@@ -39,8 +39,6 @@
 void Xport::ListServices()
 {
   QString sql;
-  RDSqlQuery *q;
-  RDSvc *svc;
   QString trackable;
 
   //
@@ -56,7 +54,7 @@ void Xport::ListServices()
     sql+=" where (TRACK_GROUP!=\"\")&&(TRACK_GROUP is not null)";
   }
   sql+=" order by NAME";
-  q=new RDSqlQuery(sql);
+  RDSqlQuery q(sql);
 
   //
   // Process Request
@@ -65,13 +63,11 @@ void Xport::ListServices()
   printf("Status: 200\n\n");
   printf("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
   printf("<serviceList>\n");
-  while(q->next()) {
-    svc=new RDSvc(q->value(0).toString());
-    printf("%s",(const char *)svc->xml());
-    delete svc;
+  while(q.next()) {
+    RDSvc svc(q.value(0).toString());
+    printf("%s",(const char *)svc.xml());
   }
   printf("</serviceList>\n");
 
-  delete q;
   Exit(0);
 }
