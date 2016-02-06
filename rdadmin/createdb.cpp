@@ -2,9 +2,7 @@
 //
 // Create, Initialize and/or Update a Rivendell Database
 //
-//   (C) Copyright 2002-2010 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: createdb.cpp,v 1.195.2.32.2.5 2014/06/05 19:04:25 cvs Exp $
+//   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -565,6 +563,53 @@ void UpdateImportFormats()
 }
 
 
+void UpdateParserTemplates()
+{
+  QString sql;
+  QSqlQuery *q;
+  QSqlQuery *q1;
+  QStringList classes;
+  QStringList parameters;
+
+  classes.push_back("MUS");
+  classes.push_back("TFC");
+  parameters.push_back("CART");
+  parameters.push_back("TITLE");
+  parameters.push_back("START");
+  parameters.push_back("HOURS");
+  parameters.push_back("MINUTES");
+  parameters.push_back("SECONDS");
+  parameters.push_back("LEN_HOURS");
+  parameters.push_back("LEN_MINUTES");
+  parameters.push_back("LEN_SECONDS");
+  parameters.push_back("LENGTH");
+  parameters.push_back("DATA");
+  parameters.push_back("EVENT_ID");
+  parameters.push_back("ANNC_TYPE");
+
+  for(unsigned i=0;i<parameters.size();i++) {
+    sql=QString("select NAME,")+
+      parameters[i]+"_"+"OFFSET,"+
+      parameters[i]+"_"+"LENGTH "+
+      "from IMPORT_TEMPLATES";
+    q=new QSqlQuery(sql);
+    while(q->next()) {
+      sql=QString("insert into PARSER_TEMPLATES set ")+
+       "NAME=\""+RDEscapeString(q->value(0).toString())+"\","+
+       "PARAMETER=\""+RDEscapeString(parameters[i])+"\","+
+       QString().sprintf("OFFSET=%d,",q->value(1).toInt())+
+       QString().sprintf("LENGTH=%d",q->value(2).toInt());
+      q1=new QSqlQuery(sql);
+      delete q1;
+    }
+    delete q;
+  }
+  sql=QString("drop table IMPORT_TEMPLATES");
+  q=new QSqlQuery(sql);
+  delete q;
+}
+
+
 bool CreateDb(QString name,QString pwd)
 {
   QString sql;
@@ -849,93 +894,36 @@ bool CreateDb(QString name,QString pwd)
 //
 // Create SERVICES table
 //
-  sql=QString("CREATE TABLE IF NOT EXISTS SERVICES (\
-      NAME CHAR(10) NOT NULL PRIMARY KEY,\
-      DESCRIPTION CHAR(255),\
-      NAME_TEMPLATE char(255),\
-      DESCRIPTION_TEMPLATE char(255),\
-      PROGRAM_CODE char(255),\
-      CHAIN_LOG enum('N','Y') default 'N',\
-      TRACK_GROUP char(10),\
-      AUTOSPOT_GROUP char(10),\
-      AUTO_REFRESH enum('N','Y') default 'N',\
-      DEFAULT_LOG_SHELFLIFE int default -1,\
-      ELR_SHELFLIFE int default -1,\
-      TFC_PATH char(255),\
-      TFC_PREIMPORT_CMD text,\
-      TFC_WIN_PATH char(255),\
-      TFC_WIN_PREIMPORT_CMD text,\
-      TFC_IMPORT_TEMPLATE char(64) default \"Rivendell Standard Import\",\
-      TFC_LABEL_CART char(32),\
-      TFC_TRACK_CART char(32),\
-      TFC_BREAK_STRING char(64),\
-      TFC_TRACK_STRING char(64),\
-      TFC_CART_OFFSET int,\
-      TFC_CART_LENGTH int,\
-      TFC_TITLE_OFFSET int,\
-      TFC_TITLE_LENGTH int,\
-      TFC_START_OFFSET int,\
-      TFC_START_LENGTH int,\
-      TFC_HOURS_OFFSET int,\
-      TFC_HOURS_LENGTH int,\
-      TFC_MINUTES_OFFSET int,\
-      TFC_MINUTES_LENGTH int,\
-      TFC_SECONDS_OFFSET int,\
-      TFC_SECONDS_LENGTH int,\
-      TFC_LEN_HOURS_OFFSET int,\
-      TFC_LEN_HOURS_LENGTH int,\
-      TFC_LEN_MINUTES_OFFSET int,\
-      TFC_LEN_MINUTES_LENGTH int,\
-      TFC_LEN_SECONDS_OFFSET int,\
-      TFC_LEN_SECONDS_LENGTH int,\
-      TFC_LENGTH_OFFSET int,\
-      TFC_LENGTH_LENGTH int,\
-      TFC_DATA_OFFSET int,\
-      TFC_DATA_LENGTH int,\
-      TFC_EVENT_ID_OFFSET int,\
-      TFC_EVENT_ID_LENGTH int,\
-      TFC_ANNC_TYPE_OFFSET int,\
-      TFC_ANNC_TYPE_LENGTH int,\
-      MUS_PATH char(255),\
-      MUS_PREIMPORT_CMD text,\
-      MUS_WIN_PATH char(255),\
-      MUS_WIN_PREIMPORT_CMD text,\
-      MUS_IMPORT_TEMPLATE char(64) default \"Rivendell Standard Import\",\
-      MUS_LABEL_CART char(32),\
-      MUS_TRACK_CART char(32),\
-      MUS_BREAK_STRING char(64),\
-      MUS_TRACK_STRING char(64),\
-      MUS_CART_OFFSET int,\
-      MUS_CART_LENGTH int,\
-      MUS_TITLE_OFFSET int,\
-      MUS_TITLE_LENGTH int,\
-      MUS_START_OFFSET int,\
-      MUS_START_LENGTH int,\
-      MUS_HOURS_OFFSET int,\
-      MUS_HOURS_LENGTH int,\
-      MUS_MINUTES_OFFSET int,\
-      MUS_MINUTES_LENGTH int,\
-      MUS_SECONDS_OFFSET int,\
-      MUS_SECONDS_LENGTH int,\
-      MUS_LEN_HOURS_OFFSET int,\
-      MUS_LEN_HOURS_LENGTH int,\
-      MUS_LEN_MINUTES_OFFSET int,\
-      MUS_LEN_MINUTES_LENGTH int,\
-      MUS_LEN_SECONDS_OFFSET int,\
-      MUS_LEN_SECONDS_LENGTH int,\
-      MUS_LENGTH_OFFSET int,\
-      MUS_LENGTH_LENGTH int,\
-      MUS_DATA_OFFSET int,\
-      MUS_DATA_LENGTH int,\
-      MUS_EVENT_ID_OFFSET int,\
-      MUS_EVENT_ID_LENGTH int,\
-      MUS_ANNC_TYPE_OFFSET int,\
-      MUS_ANNC_TYPE_LENGTH int, ");
-
-  for(int i=0;i<167;i++) {
-    sql+=QString().sprintf("CLOCK%d char(64),",i);
-  }
-  sql+=QString("CLOCK167 char(64))");
+  sql=QString("CREATE TABLE IF NOT EXISTS SERVICES (")+
+    "NAME CHAR(10) NOT NULL PRIMARY KEY,"+
+    "DESCRIPTION CHAR(255),"+
+    "NAME_TEMPLATE char(255),"+
+    "DESCRIPTION_TEMPLATE char(255),"+
+    "PROGRAM_CODE char(255),"+
+    "CHAIN_LOG enum('N','Y') default 'N',"+
+    "TRACK_GROUP char(10),"+
+    "AUTOSPOT_GROUP char(10),"+
+    "AUTO_REFRESH enum('N','Y') default 'N',"+
+    "DEFAULT_LOG_SHELFLIFE int default -1,"+
+    "ELR_SHELFLIFE int default -1,"+
+    "TFC_PATH char(255),"+
+    "TFC_PREIMPORT_CMD text,"+
+    "TFC_WIN_PATH char(255),"+
+    "TFC_WIN_PREIMPORT_CMD text,"+
+    "TFC_IMPORT_TEMPLATE char(64) default \"Rivendell Standard Import\","+
+    "TFC_LABEL_CART char(32),"+
+    "TFC_TRACK_CART char(32),"+
+    "TFC_BREAK_STRING char(64),"+
+    "TFC_TRACK_STRING char(64),"+
+    "MUS_PATH char(255),"+
+    "MUS_PREIMPORT_CMD text,"+
+    "MUS_WIN_PATH char(255),"+
+    "MUS_WIN_PREIMPORT_CMD text,"+
+    "MUS_IMPORT_TEMPLATE char(64) default \"Rivendell Standard Import\","+
+    "MUS_LABEL_CART char(32),"+
+    "MUS_TRACK_CART char(32),"+
+    "MUS_BREAK_STRING char(64),"+
+    "MUS_TRACK_STRING char(64))";
   if(!RunQuery(sql)) {
     return false;
   }
@@ -954,6 +942,38 @@ bool CreateDb(QString name,QString pwd)
   if(!RunQuery(sql)) {
     return false;
   }
+
+
+  //
+  // Create LOG_PARSERS Table
+  //
+  sql=QString("create table if not exists LOG_PARSERS (")+
+    "ID int auto_increment not null primary key,"+
+    "SERVICE_NAME char(10) not null,"+
+    "CLASS char(3) not null,"+
+    "PARAMETER char(16) not null,"+
+    "OFFSET int not null default 0,"+
+    "LENGTH int not null default 0,"+
+    "unique index SERVICE_NAME_IDX(SERVICE_NAME,CLASS,PARAMETER))";
+  if(!RunQuery(sql)) {
+    return false;
+  }
+
+
+  //
+  // Create PARSER_TEMPLATES Table
+  //
+  sql=QString("create table if not exists PARSER_TEMPLATES (") +
+    "ID int auto_increment not null primary key,"+
+    "NAME char(64) not null,"+
+    "PARAMETER char(16) not null,"+
+    "OFFSET int not null default 0,"+
+    "LENGTH int not null default 0,"+
+    "unique index NAME_IDX(NAME,PARAMETER))";
+  if(!RunQuery(sql)) {
+    return false;
+  }
+
 
 //
 // Create GROUPS table
@@ -2145,6 +2165,7 @@ bool CreateDb(QString name,QString pwd)
     return false;
   }
   UpdateImportFormats();
+  UpdateParserTemplates();
 
   //
   // Create REPLICATORS Table
@@ -2533,22 +2554,13 @@ bool InitDb(QString name,QString pwd,QString station_name)
   // Create Default Service
   //
   RDSvc *svc=new RDSvc(RD_SERVICE_NAME);
-  svc->create("");
+  svc->create("");  // SVC_CLOCKS and LOG_PARSERS entries are created here!
   svc->setDescription(RD_SERVICE_DESCRIPTION);
   delete svc;
-  for(int i=0;i<168;i++) {
-    sql=QString("insert into SVC_CLOCKS set ")+
-      "SERVICE_NAME=\""+RDEscapeString(RD_SERVICE_NAME)+"\","+
-      QString().sprintf("HOUR=%d",i);
-    if(!RunQuery(sql)) {
-      return false;
-    }
-  }
 
   //
   // Create Default Groups
   //
-
   struct Group
   {
     const char *group;
@@ -3940,7 +3952,6 @@ int UpdateDb(int ver)
       SERVICE_NAME char(10),\
       index CLOCK_IDX (CLOCK_NAME),\
       index SERVICE_IDX (SERVICE_NAME))");
-    printf("SQL: %s\n",(const char *)sql);
     if(!RunQuery(sql)) {
       return UPDATEDB_QUERY_FAILED;
     }
@@ -8174,6 +8185,84 @@ int UpdateDb(int ver)
       q=new QSqlQuery(sql);
       delete q;
     }
+  }
+
+  if(ver<249) {
+    sql=QString("create table if not exists LOG_PARSERS (")+
+      "ID int auto_increment not null primary key,"+
+      "SERVICE_NAME char(10) not null,"+
+      "CLASS char(3) not null,"+
+      "PARAMETER char(16) not null,"+
+      "OFFSET int not null default 0,"+
+      "LENGTH int not null default 0,"+
+      "unique index SERVICE_NAME_IDX(SERVICE_NAME,CLASS,PARAMETER))";
+    q=new QSqlQuery(sql);
+    delete q;
+
+    QStringList classes;
+    QStringList parameters;
+ 
+    classes.push_back("MUS");
+    classes.push_back("TFC");
+    parameters.push_back("CART");
+    parameters.push_back("TITLE");
+    parameters.push_back("START");
+    parameters.push_back("HOURS");
+    parameters.push_back("MINUTES");
+    parameters.push_back("SECONDS");
+    parameters.push_back("LEN_HOURS");
+    parameters.push_back("LEN_MINUTES");
+    parameters.push_back("LEN_SECONDS");
+    parameters.push_back("LENGTH");
+    parameters.push_back("DATA");
+    parameters.push_back("EVENT_ID");
+    parameters.push_back("ANNC_TYPE");
+
+    for(unsigned i=0;i<classes.size();i++) {
+      for(unsigned j=0;j<parameters.size();j++) {
+       sql=QString("select NAME,")+
+         classes[i]+"_"+parameters[j]+"_OFFSET,"+
+         classes[i]+"_"+parameters[j]+"_LENGTH "+
+         "from SERVICES";
+       q=new QSqlQuery(sql);
+       while(q->next()) {
+         sql=QString("insert into LOG_PARSERS set ")+
+           "SERVICE_NAME=\""+RDEscapeString(q->value(0).toString())+"\","+
+           "CLASS=\""+classes[i]+"\","+
+           "PARAMETER=\""+parameters[j]+"\","+
+           QString().sprintf("OFFSET=%d,",q->value(1).toInt())+
+           QString().sprintf("LENGTH=%d",q->value(2).toInt());
+         q1=new QSqlQuery(sql);
+         delete q1;
+       }
+       delete q;
+      }
+    }
+
+    for(unsigned i=0;i<classes.size();i++) {
+      for(unsigned j=0;j<parameters.size();j++) {
+       sql=QString("alter table SERVICES drop column ")+
+         classes[i]+"_"+parameters[j]+"_OFFSET";
+       q=new QSqlQuery(sql);
+       delete q;
+       
+       sql=QString("alter table SERVICES drop column ")+
+         classes[i]+"_"+parameters[j]+"_LENGTH";
+       q=new QSqlQuery(sql);
+       delete q;
+      }
+    }
+
+    sql=QString("create table if not exists PARSER_TEMPLATES (") +
+      "ID int auto_increment not null primary key,"+
+      "NAME char(64) not null,"+
+      "PARAMETER char(16) not null,"+
+      "OFFSET int not null default 0,"+
+      "LENGTH int not null default 0,"+
+      "unique index NAME_IDX(NAME,PARAMETER))";
+    q=new QSqlQuery(sql);
+    delete q;
+    UpdateParserTemplates();
   }
 
 

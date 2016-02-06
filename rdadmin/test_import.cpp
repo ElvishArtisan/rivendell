@@ -109,7 +109,7 @@ TestImport::TestImport(RDSvc *svc,RDSvc::ImportSource src,QWidget *parent,
   //
   // Events List
   //
-  test_events_list=new RDListView(this,"test_events_list");
+  test_events_list=new RDListView(this);
   test_events_list->setItemMargin(2);
   test_events_list->addColumn(tr("Start Time"));
   test_events_list->setColumnAlignment(0,AlignCenter);

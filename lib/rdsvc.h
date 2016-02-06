@@ -2,9 +2,7 @@
 //
 // Abstract a Rivendell Service
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdsvc.h,v 1.26.8.3.2.1 2014/05/20 22:39:36 cvs Exp $
+//   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -75,9 +73,11 @@ class RDSvc : public QObject
   QString preimportCommand(ImportSource src,ImportOs os) const;
   void setPreimportCommand(ImportSource src,ImportOs os,
 			   const QString &path) const;
-  int importOffset(ImportSource src,ImportField field) const;
+  int importOffset(ImportSource src,ImportField field,
+		   const QString &templ="") const;
   void setImportOffset(ImportSource src,ImportField field,int offset) const;
-  int importLength(ImportSource src,ImportField field) const;
+  int importLength(ImportSource src,ImportField field,
+		   const QString &templ="") const;
   void setImportLength(ImportSource src,ImportField field,int len) const;
   QString importFilename(ImportSource src,const QDate &date) const;
   bool import(ImportSource src,const QDate &date,const QString &break_str,
@@ -94,6 +94,8 @@ class RDSvc : public QObject
   QString xml() const;
   static QString timeString(int hour,int secs);
   static QString svcTableName(const QString &svc_name);
+  static QStringList importerClassList();
+  static QStringList importerParameterList();
 
  signals:
   void generationProgress(int step);
