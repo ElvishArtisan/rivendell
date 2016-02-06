@@ -15027,3 +15027,6 @@
 	the underlying NTP layer was advertising an upcoming leap second.
 2016-02-06 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'redhat-rpm-config' build dependency in 'rivendell.spec.in'.
+2016-02-06 Fred Gleason <fredg@paravelsystems.com>
+	* Made the 'Test Import' dialog resizable in 'rdadmin/test_import.cpp'
+	and 'rdadmin/test_import.h'

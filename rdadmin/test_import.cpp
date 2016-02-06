@@ -36,8 +36,8 @@
 #include <rdevent_line.h>
 
 
-TestImport::TestImport(RDSvc *svc,RDSvc::ImportSource src,
-		       QWidget *parent,const char *name)
+TestImport::TestImport(RDSvc *svc,RDSvc::ImportSource src,QWidget *parent,
+		       const char *name)
   : QDialog(parent,name,true)
 {
   QString sql;
@@ -50,9 +50,7 @@ TestImport::TestImport(RDSvc *svc,RDSvc::ImportSource src,
   // Fix the Window Size
   //
   setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
   setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
 
   switch(test_src) {
       case RDSvc::Traffic:
@@ -76,11 +74,9 @@ TestImport::TestImport(RDSvc *svc,RDSvc::ImportSource src,
   // Date Selector
   //
   test_date_edit=new QDateEdit(this,"test_date_edit");
-  test_date_edit->setGeometry(95,10,95,20);
-  QLabel *label=new QLabel(test_date_edit,tr("Test Date:"),this,"test_date_label");
-  label->setGeometry(5,10,85,20);
-  label->setFont(font);
-  label->setAlignment(AlignVCenter|AlignRight);
+  test_date_label=new QLabel(test_date_edit,tr("Test Date:"),this);
+  test_date_label->setFont(font);
+  test_date_label->setAlignment(AlignVCenter|AlignRight);
   test_date_edit->setDate(current_date);
   connect(test_date_edit,SIGNAL(valueChanged(const QDate &)),
 	  this,SLOT(dateChangedData(const QDate &)));
@@ -88,38 +84,32 @@ TestImport::TestImport(RDSvc *svc,RDSvc::ImportSource src,
   //
   // Select Date Button
   //
-  QPushButton *button=new QPushButton(this,"select_date_button");
-  button->setGeometry(200,5,60,30);
-  button->setFont(font);
-  button->setText(tr("&Select"));
-  connect(button,SIGNAL(clicked()),this,SLOT(selectData()));
+  test_select_button=new QPushButton(this);
+  test_select_button->setFont(font);
+  test_select_button->setText(tr("&Select"));
+  connect(test_select_button,SIGNAL(clicked()),this,SLOT(selectData()));
 
   //
   // Import Button
   //
-  button=new QPushButton(this,"import_button");
-  button->setGeometry(30,45,sizeHint().width()-60,50);
-  button->setFont(font);
-  button->setText(tr("&Import"));
-  connect(button,SIGNAL(clicked()),this,SLOT(importData()));
+  test_import_button=new QPushButton(this);
+  test_import_button->setFont(font);
+  test_import_button->setText(tr("&Import"));
+  connect(test_import_button,SIGNAL(clicked()),this,SLOT(importData()));
 
   //
   // Import Filename
   //
-  test_filename_edit=new QLineEdit(this,"test_filename_edit");
+  test_filename_edit=new QLineEdit(this);
   test_filename_edit->setReadOnly(true);
-  test_filename_edit->setGeometry(10,133,sizeHint().width()-20,18);
-  label=new QLabel(test_filename_edit,tr("Using source file:"),
-		   this,"test_filename_label");
-  label->setGeometry(15,115,sizeHint().width()-30,18);
-  label->setFont(font);
+  test_filename_label=
+    new QLabel(test_filename_edit,tr("Using source file:"),this);
+  test_filename_label->setFont(font);
 
   //
   // Events List
   //
   test_events_list=new RDListView(this,"test_events_list");
-  test_events_list->
-    setGeometry(10,178,sizeHint().width()-20,sizeHint().height()-248);
   test_events_list->setItemMargin(2);
   test_events_list->addColumn(tr("Start Time"));
   test_events_list->setColumnAlignment(0,AlignCenter);
@@ -136,20 +126,16 @@ TestImport::TestImport(RDSvc *svc,RDSvc::ImportSource src,
   test_events_list->addColumn(tr("Announcement Type"));
   test_events_list->setColumnAlignment(6,AlignCenter);
   test_events_list->setColumnSortType(0,RDListView::LineSort);
-  label=new QLabel(test_events_list,tr("Imported Events"),
-		   this,"test_events_label");
-  label->setGeometry(15,160,sizeHint().width()-30,18);
-  label->setFont(font);
+  test_events_label=new QLabel(test_events_list,tr("Imported Events"),this);
+  test_events_label->setFont(font);
 
   //
   //  Close Button
   //
-  button=new QPushButton(this,"close_button");
-  button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,
-			     80,50);
-  button->setFont(font);
-  button->setText(tr("&Close"));
-  connect(button,SIGNAL(clicked()),this,SLOT(closeData()));
+  test_close_button=new QPushButton(this);
+  test_close_button->setFont(font);
+  test_close_button->setText(tr("&Close"));
+  connect(test_close_button,SIGNAL(clicked()),this,SLOT(closeData()));
 
   dateChangedData(current_date);
 }
@@ -284,7 +270,28 @@ void TestImport::paintEvent(QPaintEvent *e)
   QPainter *p=new QPainter(this);
   p->setPen(QColor(black));
   p->moveTo(10,105);
-  p->lineTo(sizeHint().width()-20,105);
+  p->lineTo(size().width()-20,105);
   p->end();
   delete p;
+}
+
+
+void TestImport::resizeEvent(QResizeEvent *e)
+{
+  test_date_label->setGeometry(5,10,85,20);
+  test_date_edit->setGeometry(95,10,95,20);
+
+  test_select_button->setGeometry(200,5,60,30);
+
+  test_import_button->setGeometry(30,45,size().width()-60,50);
+
+  test_filename_label->setGeometry(15,115,size().width()-30,18);
+  test_filename_edit->setGeometry(10,133,size().width()-20,18);
+
+  test_events_label->setGeometry(15,160,size().width()-30,18);
+  test_events_list->
+    setGeometry(10,178,size().width()-20,size().height()-248);
+
+  test_close_button->setGeometry(size().width()-90,size().height()-60,
+			     80,50);
 }

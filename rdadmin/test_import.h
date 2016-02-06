@@ -26,7 +26,9 @@
 #include <qdialog.h>
 #include <qsqldatabase.h>
 #include <qdatetimeedit.h>
+#include <qlabel.h>
 #include <qlineedit.h>
+#include <qpushbutton.h>
 
 #include <rdsvc.h>
 #include <rdlistview.h>
@@ -36,8 +38,8 @@ class TestImport : public QDialog
 {
  Q_OBJECT
  public:
-  TestImport(RDSvc *svc,RDSvc::ImportSource src,
-	     QWidget *parent=0,const char *name=0);
+ TestImport(RDSvc *svc,RDSvc::ImportSource src,QWidget *parent=0,
+	    const char *name=0);
   ~TestImport();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
@@ -50,13 +52,20 @@ class TestImport : public QDialog
 
  protected:
   void paintEvent(QPaintEvent *e);
+  void resizeEvent(QResizeEvent *e);
 
  private:
   RDSvc *test_svc;
   RDSvc::ImportSource test_src;
+  QLabel *test_date_label;
   QDateEdit *test_date_edit;
+  QLabel *test_events_label;
   RDListView *test_events_list;
+  QLabel *test_filename_label;
   QLineEdit *test_filename_edit;
+  QPushButton *test_import_button;
+  QPushButton *test_select_button;
+  QPushButton *test_close_button;
 };
 
 
