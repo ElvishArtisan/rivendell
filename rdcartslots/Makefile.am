@@ -39,8 +39,8 @@ uninstall:
 	rm -f $(DESTDIR)$(prefix)/share/rivendell/rdcartslots_*.qm
 
 all:	
-	lupdate rdcartslots.pro
-	lrelease rdcartslots.pro
+	@QT_BIN@/lupdate rdcartslots.pro
+	@QT_BIN@/lrelease rdcartslots.pro
 
 bin_PROGRAMS = rdcartslots
 

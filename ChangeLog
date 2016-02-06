@@ -15010,3 +15010,8 @@
 2015-11-16 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in 'ripcd/swauthority.cpp' that caused the GPIO
 	DB tables to be incorrectly initialized.
+2016-02-06 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed bugs in 'acinclude.m4' that caused false failures when
+	detecting Qt3.
+	* Fixed a bug in 'rdcartslots/Makefile.am' that broke the build
+	on RHEL 7.
