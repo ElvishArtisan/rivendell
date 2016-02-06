@@ -15015,3 +15015,6 @@
 	detecting Qt3.
 	* Fixed a bug in 'rdcartslots/Makefile.am' that broke the build
 	on RHEL 7.
+2016-02-06 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'rdlibrary/edit_cart.cpp' where performing a
+	mass edit would clear the 'Year' field.

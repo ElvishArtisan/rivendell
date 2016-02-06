@@ -676,6 +676,7 @@ EditCart::EditCart(unsigned number,QString *path,bool new_cart,bool profile_rip,
     }
     sched_codes=rdcart_cart->schedCodes();
     rdcart_controls.artist_edit->setText(rdcart_cart->artist());
+    rdcart_controls.year_edit->setText(QString().sprintf("%u",rdcart_cart->year()));
     rdcart_controls.song_id_edit->setText(rdcart_cart->songId());
     rdcart_controls.bpm_spin->setValue(rdcart_cart->beatsPerMinute());
     rdcart_controls.album_edit->setText(rdcart_cart->album());
@@ -719,6 +720,7 @@ EditCart::EditCart(unsigned number,QString *path,bool new_cart,bool profile_rip,
   rdcart_use_event_length_box->setEnabled(modification_allowed);
   rdcart_controls.title_edit->setReadOnly(!modification_allowed);
   rdcart_controls.artist_edit->setReadOnly(!modification_allowed);
+  rdcart_controls.year_edit->setReadOnly(!modification_allowed);
   rdcart_controls.song_id_edit->setReadOnly(!modification_allowed);
   rdcart_controls.album_edit->setReadOnly(!modification_allowed);
   rdcart_controls.year_edit->setReadOnly(!modification_allowed);
@@ -868,6 +870,7 @@ void EditCart::okData()
     }
     rdcart_cart->setSchedCodes(sched_codes);
     rdcart_cart->setArtist(rdcart_controls.artist_edit->text());
+    rdcart_cart->setYear(rdcart_controls.year_edit->text().toInt());
     rdcart_cart->setSongId(rdcart_controls.song_id_edit->text());
     rdcart_cart->setBeatsPerMinute(rdcart_controls.bpm_spin->value());
     rdcart_cart->setAlbum(rdcart_controls.album_edit->text());
@@ -901,7 +904,10 @@ void EditCart::okData()
           if(!rdcart_controls.title_edit->text().stripWhiteSpace().isEmpty()) {
             rdcart_cart_medit->setTitle(rdcart_controls.title_edit->text());
 	  }
-	  rdcart_cart_medit->setYear(rdcart_controls.year_edit->text().toInt());
+	  if(!rdcart_controls.year_edit->text().stripWhiteSpace().isEmpty()) {
+	    rdcart_cart_medit->
+	      setYear(rdcart_controls.year_edit->text().toInt());
+	  }
           if(!rdcart_controls.artist_edit->text().stripWhiteSpace().isEmpty()) {
             rdcart_cart_medit->setArtist(rdcart_controls.artist_edit->text());
 	  }
