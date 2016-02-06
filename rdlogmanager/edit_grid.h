@@ -57,6 +57,7 @@ class EditGrid : public QDialog
   void LoadButtons();
   void LabelButton(int dayofweek,int hour,QString code);
   QString GetClock(int dayofweek,int hour);
+  QString GetClock(int id);
   QString edit_servicename;
   QString current_clockname;
   RDPushButton *edit_hour_button[7][24];

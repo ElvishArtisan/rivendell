@@ -28,6 +28,7 @@ EXTRA_DIST = audio_perms.txt\
              cart.txt\
              cartslots.txt\
              clipboard.txt\
+             clocks.txt\
              clock_perms.txt\
              copy_splits.txt\
              cuts.txt\
@@ -69,6 +70,7 @@ EXTRA_DIST = audio_perms.txt\
              services.txt\
              sources.txt\
              stations.txt\
+             svc_clocks.txt\
              svc_rec_format.txt\
              triggers.txt\
              ttys.txt\

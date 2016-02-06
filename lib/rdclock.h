@@ -62,6 +62,9 @@ class RDClock
    bool generateLog(int hour,const QString &logname,const QString &svc_name,
 		    QString *errors);
    static QString tableName(const QString &name);
+   static int svcClockNumber(int dow,int hour);
+   static int svcClockDayOfWeek(int num);
+   static int svcClockHour(int num);
 
   private:
    QString clock_name;

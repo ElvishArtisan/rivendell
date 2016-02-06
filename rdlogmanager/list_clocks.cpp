@@ -30,6 +30,7 @@
 #include <rd.h>
 #include <rdevent.h>
 #include <rdcreate_log.h>
+#include <rdescape_string.h>
 
 #include <list_clocks.h>
 #include <add_clock.h>
@@ -353,7 +354,6 @@ void ListClocks::renameData()
 {
   QString sql;
   RDSqlQuery *q;
-  RDSqlQuery *q1;
   QListViewItem *item=edit_clocks_list->selectedItem();
   if(item==NULL) {
     return;
@@ -370,20 +370,13 @@ void ListClocks::renameData()
   //
   // Rename Grid References
   //
-  sql="select NAME from SERVICES";
   // FIXME: not sure if the usersec service filter should be applied here, or
   // if all services should be brought over
+  //
+  sql=QString("update SVC_CLOCKS set ")+
+    "CLOCK_NAME=\""+RDEscapeString(new_name)+"\" "+
+    "where CLOCK_NAME=\""+RDEscapeString(item->text(0))+"\"";
   q=new RDSqlQuery(sql);
-  while(q->next()) {
-    for(int i=0;i<168;i++) {
-      sql=QString().sprintf("update SERVICES set CLOCK%d=\"%s\"\
-                             where CLOCK%d=\"%s\"",
-			    i,(const char *)new_name,
-			    i,(const char *)item->text(0));
-      q1=new RDSqlQuery(sql);
-      delete q1;
-    }
-  }
   delete q;
 
   //
@@ -585,18 +578,18 @@ int ListClocks::ActiveClocks(QString clockname,QString *svc_list)
   int n=0;
   QString sql;
   RDSqlQuery *q;
-  QString svcname;
+  QString svcname="";
 
-  sql="select NAME from SERVICES where ";
-  for(int i=0;i<167;i++) {
-    sql+=QString().sprintf("(CLOCK%d=\"%s\")||",i,(const char *)clockname);
-  }
-  sql+=QString().sprintf("(CLOCK167=\"%s\")",(const char *)clockname);
+  sql=QString("select SERVICE_NAME from SVC_CLOCKS where ")+
+    "CLOCK_NAME=\""+RDEscapeString(clockname)+"\" "+
+    "order by SERVICE_NAME";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     n++;
-    *svc_list+=
-      QString().sprintf("    %s\n",(const char *)q->value(0).toString());
+    if(q->value(0).toString()!=svcname) {
+      *svc_list+=QString("    ")+q->value(0).toString()+"\n";
+      svcname=q->value(0).toString();
+    }
   }
   delete q;
 
@@ -614,13 +607,10 @@ void ListClocks::DeleteClock(QString clockname)
   //
   // Delete Active Clocks
   //
-  for(int i=0;i<168;i++) {
-    sql=QString().sprintf("update SERVICES set CLOCK%d=NULL\
-                             where CLOCK%d=\"%s\"",
-			  i,i,(const char *)clockname);
-    q=new RDSqlQuery(sql);
-    delete q;
-  }
+  sql=QString("update SVC_CLOCKS set CLOCK_NAME=null where ")+
+    "CLOCK_NAME=\""+RDEscapeString(clockname)+"\"";
+  q=new RDSqlQuery(sql);
+  delete q;
 
   //
   // Delete Service Associations
