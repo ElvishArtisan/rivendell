@@ -15021,3 +15021,7 @@
 2016-02-06 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in 'rdlibrary/audio_cart.cpp' that caused Talk and
 	Segue markers to be overwrrten when export audio.
+2016-02-06 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in the 'RDTimeSynced()' in 'lib/rdconf.cpp' and
+	'lib/rdconf.h' that caused the false sync failure detection when
+	the underlying NTP layer was advertising an upcoming leap second.

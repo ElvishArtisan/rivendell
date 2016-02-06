@@ -910,7 +910,7 @@ bool RDTimeSynced()
   struct timex timex;
 
   memset(&timex,0,sizeof(struct timex));
-  if(adjtimex(&timex)==TIME_OK) {
+  if(adjtimex(&timex)!=TIME_BAD) {
     return true;
   }
   return false;
