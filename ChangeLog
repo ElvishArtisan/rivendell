@@ -15055,3 +15055,6 @@
 	and voice tracks first-class events.
 	* Added a 'RDLogLine::NoTime' value to the 'RDLogLine::TimeType'
 	enumeration in 'lib/rdlog_line.h'.
+2016-02-07 Fred Gleason <fredg@paravelsystems.com>
+	* Cleaned up formatting in 'rdairplay/log_play.cpp' and
+	'rdlogmanager/edit_event.cpp'.

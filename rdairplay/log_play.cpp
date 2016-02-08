@@ -2237,47 +2237,47 @@ QTime LogPlay::GetStartTime(QTime sched_time,
     return QTime();
   }
   switch(trans_type) {
-      case RDLogLine::Play:
-	if(!prev_time.isNull()) {
-	  time=prev_time.addMSecs(prev_total_length);
-	}
-	break;
-	
-      case RDLogLine::Segue:
-	if(!prev_time.isNull()) {
-	  time=prev_time.addMSecs(prev_segue_length);
-	}
-	break;
+  case RDLogLine::Play:
+    if(!prev_time.isNull()) {
+      time=prev_time.addMSecs(prev_total_length);
+    }
+    break;
 
-      case RDLogLine::Stop:
-	time=QTime();
-	break;
+  case RDLogLine::Segue:
+    if(!prev_time.isNull()) {
+      time=prev_time.addMSecs(prev_segue_length);
+    }
+    break;
 
-      default:
-	break;
+  case RDLogLine::Stop:
+    time=QTime();
+    break;
+
+  default:
+    break;
   }
   switch(time_type) {
-      case RDLogLine::Relative:
-	if(!prev_time.isNull()) {
-	  *stop=false;
-	  return time;
-	}
-	*stop=true;
-	return QTime();
-	break;
+  case RDLogLine::Relative:
+    if(!prev_time.isNull()) {
+      *stop=false;
+      return time;
+    }
+    *stop=true;
+    return QTime();
+    break;
 
-      case RDLogLine::Hard:
-	if((time<sched_time)||(time.isNull())) {
-	  *stop=true;
-	}
-	else {
-	  *stop=false;
-	}
-	if(running_events&&(time<sched_time)&&(trans_type!=RDLogLine::Stop)) {
-	  return time;
-	}
-	return sched_time;
-	break;
+  case RDLogLine::Hard:
+    if((time<sched_time)||(time.isNull())) {
+      *stop=true;
+    }
+    else {
+      *stop=false;
+    }
+    if(running_events&&(time<sched_time)&&(trans_type!=RDLogLine::Stop)) {
+      return time;
+    }
+    return sched_time;
+    break;
   }
   return QTime();
 }
