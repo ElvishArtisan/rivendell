@@ -397,64 +397,35 @@ QString RDSvc::importFilename(ImportSource src,const QDate &date) const
 bool RDSvc::import(ImportSource src,const QDate &date,const QString &break_str,
 		   const QString &track_str,const QString &dest_table) const
 {
-  FILE *infile;
-  QString src_str;
-  char buf[RD_MAX_IMPORT_LINE_LENGTH];
-  QString str_buf;
-  char var_buf[RD_MAX_IMPORT_LINE_LENGTH];
-  int start_hour;
-  int start_minutes;
-  int start_seconds;
-  QString hours_len_buf;
-  QString minutes_len_buf;
-  QString seconds_len_buf;
-  unsigned cartnum;
-  QString cartname;
-  QString title;
-  char data_buf[RD_MAX_IMPORT_LINE_LENGTH];
-  char eventid_buf[RD_MAX_IMPORT_LINE_LENGTH];
-  char annctype_buf[RD_MAX_IMPORT_LINE_LENGTH];
-  QString os_flag;
-  int cartlen;
   QString sql;
-  bool ok=false;
+  RDSqlQuery *q;
+  RDSqlQuery *q1;
+  RDSqlQuery *q2;
+  char buf[RD_MAX_IMPORT_LINE_LENGTH];
+  FILE *infile;
+  int hour=0;
+  int min=0;
+  int sec=0;
+  int len=0;
 
   //
-  // Set Import Source
-  //
-  switch(src) {
-      case RDSvc::Traffic:
-	src_str="TFC";
-	break;
-
-      case RDSvc::Music:
-	src_str="MUS";
-	break;
-  }
-
-  //
-  // Set OS Type
+  // Get OS Type
   //
 #ifdef WIN32
-  os_flag="_WIN";
-#endif
+  QString os_flag="_WIN";
+#else
+  QString os_flag="";
+#endif  // WIN32
 
   //
   // Load Parser Parameters
   //
-  sql=QString().sprintf("select %s%s_PATH,\
-                         %s_LABEL_CART,\
-                         %s_TRACK_CART,\
-                         %s%s_PREIMPORT_CMD \
-                         from SERVICES where NAME=\"%s\"",
-			(const char *)src_str,
-			(const char *)os_flag,
-			(const char *)src_str,
-			(const char *)src_str,
-			(const char *)src_str,
-			(const char *)os_flag,
-			(const char *)RDEscapeString(svc_name));
-  RDSqlQuery *q=new RDSqlQuery(sql);
+  sql=QString("select ")+RDSvc::className(src)+os_flag+"_PATH,"+
+    RDSvc::className(src)+"_LABEL_CART,"+
+    RDSvc::className(src)+"_TRACK_CART,"+
+    RDSvc::className(src)+os_flag+"_PREIMPORT_CMD "+
+    "from SERVICES where NAME=\""+RDEscapeString(svc_name)+"\"";
+  q=new RDSqlQuery(sql);
   if(!q->first()) {
     delete q;
     return false;
@@ -479,270 +450,68 @@ bool RDSvc::import(ImportSource src,const QDate &date,const QString &break_str,
     system(RDDateDecode(preimport_cmd,date));
   }
 
-  /*
-  QString parser_table;
-  QString parser_name;
-  if(importTemplate(src).isEmpty()) {
-    src_str+="_";
-    parser_table="SERVICES";
-    parser_name=svc_name;
-  }
-  else {
-    src_str="";
-    parser_table="IMPORT_TEMPLATES";
-    parser_name=importTemplate(src);
-  }
-  */
-
-  int cart_offset=importOffset(src,RDSvc::CartNumber,importTemplate(src));
-  int cart_length=importLength(src,RDSvc::CartNumber,importTemplate(src));
-  unsigned cart_size=cart_offset+cart_length;
-  int data_offset=importOffset(src,RDSvc::ExtData,importTemplate(src));
-  int data_length=importLength(src,RDSvc::ExtData,importTemplate(src));
-  unsigned data_size=data_offset+data_length;
-  int eventid_offset=importOffset(src,RDSvc::ExtEventId,importTemplate(src));
-  int eventid_length=importLength(src,RDSvc::ExtEventId,importTemplate(src));
-  unsigned eventid_size=eventid_offset+eventid_length;
-  int annctype_offset=importOffset(src,RDSvc::ExtAnncType,importTemplate(src));
-  int annctype_length=importLength(src,RDSvc::ExtAnncType,importTemplate(src));
-  unsigned annctype_size=annctype_offset+annctype_length;
-  int title_offset=importOffset(src,RDSvc::Title,importTemplate(src));
-  int title_length=importLength(src,RDSvc::Title,importTemplate(src));
-  unsigned title_size=title_offset+title_length;
-  int hours_offset=importOffset(src,RDSvc::StartHours,importTemplate(src));
-  int hours_length=importLength(src,RDSvc::StartHours,importTemplate(src));
-  unsigned hours_size=hours_offset+hours_length;
-  int minutes_offset=importOffset(src,RDSvc::StartMinutes,importTemplate(src));
-  int minutes_length=importLength(src,RDSvc::StartMinutes,importTemplate(src));
-  unsigned minutes_size=minutes_offset+minutes_length;
-  int seconds_offset=importOffset(src,RDSvc::StartSeconds,importTemplate(src));
-  int seconds_length=importLength(src,RDSvc::StartSeconds,importTemplate(src));
-  unsigned seconds_size=seconds_offset+seconds_length;
-  int hours_len_offset=importOffset(src,RDSvc::LengthHours,importTemplate(src));
-  int hours_len_length=importLength(src,RDSvc::LengthHours,importTemplate(src));
-  unsigned hours_len_size=hours_len_offset+hours_len_length;
-  int minutes_len_offset=
-    importOffset(src,RDSvc::LengthMinutes,importTemplate(src));
-  int minutes_len_length=
-    importLength(src,RDSvc::LengthMinutes,importTemplate(src));
-  unsigned minutes_len_size=minutes_len_offset+minutes_len_length;
-  int seconds_len_offset=
-    importOffset(src,RDSvc::LengthSeconds,importTemplate(src));
-  int seconds_len_length=
-    importLength(src,RDSvc::LengthSeconds,importTemplate(src));
-  unsigned seconds_len_size=seconds_len_offset+seconds_len_length;
-
   //
-  // Setup Data Source and Destination
+  // Create Import Table
   //
-  /*
-  if((infile=fopen(RDDateDecode(infilename,date),"r"))==NULL) {
-    return false;
-  }
-  */
-  sql=QString().sprintf("drop table `%s`",(const char *)dest_table);
+  sql=QString("drop table `")+dest_table+"`";
   QSqlQuery *qq;          // Use QSqlQuery so we don't generate a 
   qq=new QSqlQuery(sql);  // spurious error message.
   delete qq;
-  sql=QString().sprintf("create table `%s` (\
-                         ID int primary key,\
-                         START_HOUR int not null,\
-                         START_SECS int not null,\
-                         CART_NUMBER int unsigned,\
-                         TITLE char(255),\
-                         LENGTH int,\
-                         INSERT_BREAK enum('N','Y') default 'N',\
-                         INSERT_TRACK enum('N','Y') default 'N',\
-                         INSERT_FIRST int unsigned default 0,\
-                         TRACK_STRING char(255),\
-                         EXT_DATA char(32),\
-                         EXT_EVENT_ID char(32),\
-                         EXT_ANNC_TYPE char(8),\
-                         EXT_CART_NAME char(32),\
-                         EVENT_USED enum('N','Y') default 'N',\
-                         INDEX START_TIME_IDX (START_HOUR,START_SECS))",
-			(const char *)dest_table);
+
+  sql=QString("create table `")+dest_table+"` ("+
+    "ID int primary key auto_increment,"+
+    "TYPE int not null,"+
+    "START_HOUR int not null,"+
+    "START_SECS int not null,"+
+    "CART_NUMBER int unsigned,"+
+    "TITLE char(255),"+
+    "LENGTH int,"+
+    QString().sprintf("TRANS_TYPE int default %d,",RDLogLine::NoTrans)+
+    "TIME_TYPE int,"+
+    "GRACE_TIME int,"+
+    "EXT_DATA char(32),"+
+    "EXT_EVENT_ID char(32),"+
+    "EXT_ANNC_TYPE char(8),"+
+    "EXT_CART_NAME char(32),"+
+    "EVENT_USED enum('N','Y') default 'N',"+
+    "index START_TIME_IDX (START_HOUR,START_SECS),"+
+    "index TYPE_IDX(TYPE,LENGTH))";
   q=new RDSqlQuery(sql);
   delete q;
 
   //
-  // Parse and Save
+  // Now we're ready to Do The Business
   //
-  int line_id=0;
-  bool insert_found=false;
-  bool cart_ok=false;
-  bool line_used=false;
-  bool insert_break=false;
-  bool insert_track=false;
-  bool break_first=false;
-  bool track_first=false;
-  QString track_label;
-  while(fgets(buf,RD_MAX_IMPORT_LINE_LENGTH,infile)!=NULL) {
-    line_used=false;
-    str_buf=buf;
-    cartnum=0;     // Get Cart Number
-    if(strlen(buf)>=cart_size) {
-      for(int i=cart_offset;i<(cart_offset+cart_length);i++) {
-	var_buf[i-cart_offset]=buf[i];
-      }
-      var_buf[cart_length]=0;
-      cartname=QString(var_buf).stripWhiteSpace();
-      if(strlen(buf)>=hours_size) {           // Get Start Hours
-	start_hour=QString(buf).mid(hours_offset,hours_length).toInt(&ok);
-	if(ok&&(strlen(buf)>=minutes_size)) {           // Get Start Minutes
-	  start_minutes=
-	    QString(buf).mid(minutes_offset,minutes_length).toInt(&ok);
-	  if(ok&&(strlen(buf)>=seconds_size)) {           // Get Start Seconds
-	    start_seconds=
-	      QString(buf).mid(seconds_offset,seconds_length).toInt(&ok);
-	    if(ok&&(strlen(buf)>=hours_len_size)) {     // Get Length Hours
-	      hours_len_buf=
-		QString(buf).mid(hours_len_offset,hours_len_length);
-	      if(strlen(buf)>=minutes_len_size) {       // Get Length Minutes
-		minutes_len_buf=
-		  QString(buf).mid(minutes_len_offset,minutes_len_length);
-		if(strlen(buf)>=seconds_len_size) {     // Get Length Seconds
-		  seconds_len_buf=
-		    QString(buf).mid(seconds_len_offset,seconds_len_length);
-		  cartlen=3600000*hours_len_buf.toInt()+
-		    60000*minutes_len_buf.toInt()+
-		    1000*seconds_len_buf.toInt();
-		  if(strlen(buf)>=data_size) {        // Get Ext Data
-		    for(int i=data_offset;i<(data_offset+data_length);i++) {
-		      data_buf[i-data_offset]=buf[i];
-		    }
-		    data_buf[data_length]=0;
-		    if(strlen(buf)>=eventid_size) {   // Get Ext Event ID
-		      for(int i=eventid_offset;
-			  i<(eventid_offset+eventid_length);i++) {
-			eventid_buf[i-eventid_offset]=buf[i];
-		      }
-		      eventid_buf[eventid_length]=0;
-		      if(strlen(buf)>=annctype_size) {   // Get Ext Annc Type
-			for(int i=annctype_offset;
-			    i<(annctype_offset+annctype_length);
-			    i++) {
-			  annctype_buf[i-annctype_offset]=buf[i];
-			}
-			annctype_buf[annctype_length]=0;
-			if(strlen(buf)>=title_size) {   // Get Title
-			  title=QString(buf).mid(title_offset,title_length);
-			  cartnum=cartname.toUInt(&cart_ok);
-			  if(cart_ok||
-			     ((!label_cart.isEmpty())&&
-			      (cartname==label_cart))||
-			     ((!track_cart.isEmpty())&&
-			      (cartname==track_cart))) {
-			    sql=QString().sprintf("insert into `%s` \
-                                  set ID=%d,START_HOUR=%d,START_SECS=%d,\
-                                  CART_NUMBER=%u,TITLE=\"%s\",LENGTH=%d,\
-                                  EXT_DATA=\"%s\",EXT_EVENT_ID=\"%s\",\
-                                  EXT_ANNC_TYPE=\"%s\",EXT_CART_NAME=\"%s\"",
-						  (const char *)dest_table,
-						  line_id++,
-						  start_hour,
-						  60*start_minutes+
-						  start_seconds,
-						  cartnum,
-						  (const char *)
-						  RDEscapeString(title),
-						  cartlen,
-						  (const char *)data_buf,
-						  (const char *)eventid_buf,
-						  (const char *)annctype_buf,
-						  (const char *)cartname);
-			    q=new RDSqlQuery(sql);
-			    delete q;
-			    //
-			    // Insert Break
-			    //
-			    if(insert_break) {
-			      if(break_first) {
-				sql=QString().
-				  sprintf("update `%s` set INSERT_BREAK=\"Y\",\
-                                       INSERT_FIRST=%d where ID=%d",
-					  (const char *)dest_table,
-					  RDEventLine::InsertBreak,line_id-1);
-			      }
-			      else {
-				sql=QString().
-				  sprintf("update `%s` set INSERT_BREAK=\"Y\" \
-                                       where ID=%d",
-					  (const char *)dest_table,line_id-1);
-				
-			      }
-			      q=new RDSqlQuery(sql);
-			      delete q;
-			    }
-			    //
-			    // Insert Track
-			    //
-			    if(insert_track) {
-			      if(track_first) {
-				sql=QString().
-				  sprintf("update `%s` set INSERT_TRACK=\"Y\",\
-                                       TRACK_STRING=\"%s\",\
-                                       INSERT_FIRST=%d where ID=%d",
-					  (const char *)dest_table,
-					  (const char *)track_label,
-					  RDEventLine::InsertTrack,line_id-1);
-			      }
-			      else {
-				sql=QString().
-				  sprintf("update `%s` set INSERT_TRACK=\"Y\",\
-                                       TRACK_STRING=\"%s\" where ID=%d",
-					  (const char *)dest_table,
-					  (const char *)track_label,
-					  line_id-1);
-			      }
-			      q=new RDSqlQuery(sql);
-			      delete q;
-			    }
-			    insert_break=false;
-			    break_first=false;
-			    insert_track=false;
-			    track_first=false;
-			    insert_found=false;
-			    line_used=true;
-			  }
-			}
-		      }
-		    }
-		  }
-		}
-	      }
-	    }
-	  }
-	}
-      }
+  GetImportLine(buf,src,date,break_str,track_str,dest_table,&hour,&min,&sec);
+
+  //
+  // Attempt to autodetect any missing Break Event lengths
+  //
+  sql=QString("select ID,START_HOUR,START_SECS from `")+dest_table+"` where "+
+    QString().sprintf("(LENGTH is null)&&(TYPE=%d)",RDSvc::Break);
+  q=new RDSqlQuery(sql);
+  while(q->next()) {
+    sql=QString("select START_HOUR,START_SECS from `")+dest_table+"` where "+
+      QString().sprintf("ID=%d",q->value(0).toInt()+1);
+    q1=new RDSqlQuery(sql);
+    if(q1->first()) {
+      len=1000*((3600*q1->value(0).toInt()+q1->value(1).toInt())-
+               (3600*q->value(1).toInt()+q->value(2).toInt()));
     }
-    if(!line_used) {
-      //
-      // Look for Break and Track Strings
-      //
-      str_buf=str_buf.stripWhiteSpace();
-      if(!break_str.isEmpty()) {
-	if(str_buf.contains(break_str)) {
-	  insert_break=true;
-	  if(!insert_found) {
-	    break_first=true;
-	    insert_found=true;
-	  }
-	  //	  q=new RDSqlQuery(sql);
-	}
-      }
-      if(!track_str.isEmpty()) {
-	if(str_buf.contains(track_str)) {
-	  insert_track=true;
-	  track_label=str_buf;
-	  if(!insert_found) {
-	    track_first=true;
-	    insert_found=true;
-	  }
-	}
-      }
+    else {  // Last event, use 23:59:59
+      len=1000*(86399-(3600*q->value(1).toInt()+q->value(2).toInt()));
+     }
+    if(len<0) {  // Events not in chronological order, so
+      len=0;     // we cannot autodetect length!
     }
+    sql=QString("update `")+dest_table+"` set "+
+      QString().sprintf("LENGTH=%d ",len)+
+      QString().sprintf(" where ID=%d",q->value(0).toInt());
+    q2=new RDSqlQuery(sql);
+    delete q2;
+    delete q1;
   }
+  delete q;
 
   //
   // Cleanup
@@ -971,13 +740,14 @@ bool RDSvc::linkLog(RDSvc::ImportSource src,const QDate &date,
   dest_event->validate(&missing_report,date);
   bool event=false;
   QString link_report=tr("The following events were not placed:\n");
-  sql=QString().sprintf("select `%s`.START_HOUR,`%s`.START_SECS,\
-                         `%s`.CART_NUMBER,CART.TITLE from `%s` LEFT JOIN CART\
-                         ON `%s`.CART_NUMBER=CART.NUMBER \
-                         where `%s`.EVENT_USED=\"N\"",
-			(const char *)import_name,(const char *)import_name,
-			(const char *)import_name,(const char *)import_name,
-			(const char *)import_name,(const char *)import_name);
+
+  sql=QString("select ")+
+    "`"+import_name+"`.START_HOUR,"+
+    "`"+import_name+"`.START_SECS,"+
+    "`"+import_name+"`.CART_NUMBER,"+
+    "CART.TITLE from `"+import_name+"` LEFT JOIN CART "+
+    "ON `"+import_name+"`.CART_NUMBER=CART.NUMBER "+
+    "where `"+import_name+"`.EVENT_USED=\"N\"";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     event=true;
@@ -1428,6 +1198,24 @@ QString RDSvc::svcTableName(const QString &svc_name)
 }
 
 
+QString RDSvc::className(ImportSource src)
+{
+  QString ret;
+
+  switch(src) {
+  case RDSvc::Traffic:
+    ret="TFC";
+    break;
+
+  case RDSvc::Music:
+    ret="MUS";
+    break;
+  }
+
+  return ret;
+}
+
+
 QStringList RDSvc::importerClassList()
 {
   QStringList ret;
@@ -1456,6 +1244,10 @@ QStringList RDSvc::importerParameterList()
   ret.push_back("DATA");
   ret.push_back("EVENT_ID");
   ret.push_back("ANNC_TYPE");
+  ret.push_back("TIME_TYPE");
+  ret.push_back("WAIT_SECONDS");
+  ret.push_back("WAIT_MINUTES");
+  ret.push_back("TRANS_TYPE");
 
   return ret;
 }
@@ -1464,6 +1256,138 @@ QStringList RDSvc::importerParameterList()
 QString RDSvc::timeString(int hour,int secs)
 {
   return QString().sprintf("%02d:%02d:%02d",hour,secs/60,secs%60);
+}
+
+
+void RDSvc::GetImportLine(const QString &line,ImportSource src,
+                         const QDate &date,const QString &break_str,
+                         const QString &track_str,const QString &dest_table,
+                         int *prev_hour,int *prev_min,int *prev_sec) const
+{
+  QString sql;
+  RDSqlQuery *q;
+  bool start_time_ok=true;
+  bool ok=false;
+  
+  //
+  // Required Fields
+  //
+  unsigned cartnum=GetImportField(line,src,RDSvc::CartNumber).toUInt(&ok);
+  int hours=GetImportField(line,src,RDSvc::StartHours).toInt(&ok);
+  if(!ok) {
+    start_time_ok=false;
+  }
+  int minutes=GetImportField(line,src,RDSvc::StartMinutes).toInt(&ok);
+  if(!ok) {
+    start_time_ok=false;
+  }
+  int seconds=GetImportField(line,src,RDSvc::StartSeconds).toInt(&ok);
+  if(!ok) {
+    start_time_ok=false;
+  }
+  if(start_time_ok) {
+    *prev_hour=hours;
+    *prev_min=minutes;
+    *prev_sec=seconds;
+  }
+
+  //
+  // Length
+  //
+  int len=3600*GetImportField(line,src,RDSvc::LengthHours).toInt()+
+    60*GetImportField(line,src,RDSvc::LengthMinutes).toInt()+
+    GetImportField(line,src,RDSvc::LengthSeconds).toInt();
+
+  //
+  // Transition Type
+  //
+  RDLogLine::TransType trans_type=RDLogLine::NoTrans;
+  if(GetImportField(line,src,RDSvc::TransitionType).lower()=="play") {
+    trans_type=RDLogLine::Play;
+  }
+  if(GetImportField(line,src,RDSvc::TransitionType).lower()=="segue") {
+    trans_type=RDLogLine::Segue;
+  }
+  if(GetImportField(line,src,RDSvc::TransitionType).lower()=="stop") {
+    trans_type=RDLogLine::Stop;
+  }
+
+  //
+  // Time Type
+  //
+  RDLogLine::TimeType time_type=RDLogLine::NoTime;
+  int grace_time=0;
+  if(GetImportField(line,src,RDSvc::TimeType).lower()=="h") {
+    time_type=RDLogLine::Hard;
+    grace_time=60000*GetImportField(line,src,RDSvc::TimeWaitMinutes).toInt()+
+      1000*GetImportField(line,src,RDSvc::TimeWaitSeconds).toInt();
+  }
+  if(GetImportField(line,src,RDSvc::TimeType).lower()=="s") {
+    time_type=RDLogLine::Hard;
+    grace_time=-1;
+  }
+
+  //
+  // Write to import table
+  //
+  if(start_time_ok&&(cartnum>0)&&(cartnum<RD_MAX_CART_NUMBER)) {
+    // Cart Event
+    sql=QString("insert into `")+dest_table+"` set "+
+      QString().sprintf("TYPE=%d,",RDSvc::Cart)+
+      QString().sprintf("START_HOUR=%d,",hours)+
+      QString().sprintf("START_SECS=%d,",60*minutes+seconds)+
+      QString().sprintf("CART_NUMBER=%u,",cartnum)+
+      "TITLE=\""+RDEscapeString(GetImportField(line,src,RDSvc::Title).
+                               stripWhiteSpace())+"\","+
+      QString().sprintf("LENGTH=%d,",1000*len)+
+      QString().sprintf("TRANS_TYPE=%d,",trans_type)+
+      QString().sprintf("TIME_TYPE=%d,",time_type)+
+      QString().sprintf("GRACE_TIME=%d,",grace_time)+
+      "EXT_DATA=\""+
+      RDEscapeString(GetImportField(line,src,RDSvc::ExtData))+"\","+
+      "EXT_EVENT_ID=\""+
+      RDEscapeString(GetImportField(line,src,RDSvc::ExtEventId))+"\","+
+      "EXT_ANNC_TYPE=\""+
+      RDEscapeString(GetImportField(line,src,RDSvc::ExtAnncType))+"\","+
+      "EXT_CART_NAME=\""+
+      RDEscapeString(GetImportField(line,src,RDSvc::CartNumber))+"\"";
+    q=new RDSqlQuery(sql);
+    delete q;
+
+  }
+  else {
+    if((!break_str.isEmpty())&&line.stripWhiteSpace().contains(break_str)) {
+      // Break Event
+      sql=QString("insert into `")+dest_table+"` set "+
+       QString().sprintf("TYPE=%d,",RDSvc::Break)+
+       QString().sprintf("START_HOUR=%d,",*prev_hour)+
+       QString().sprintf("START_SECS=%d,",60*(*prev_min)+(*prev_sec))+
+       "TITLE=\""+tr("[spot break]")+"\"";
+      if(len>0) {
+       sql+=QString().sprintf(",LENGTH=%d",1000*len);
+      }
+      q=new RDSqlQuery(sql);
+      delete q;
+    }
+    if((!track_str.isEmpty())&&line.stripWhiteSpace().contains(track_str)) {
+      // VoiceTrack Event
+      sql=QString("insert into `")+dest_table+"` set "+
+       QString().sprintf("TYPE=%d,",RDSvc::Track)+
+       QString().sprintf("START_HOUR=%d,",*prev_hour)+
+       QString().sprintf("START_SECS=%d,",60*(*prev_min)+(*prev_sec))+
+       "TITLE=\""+RDEscapeString(track_str)+"\"";
+      q=new RDSqlQuery(sql);
+      delete q;
+    }
+  }
+}
+
+
+QString RDSvc::GetImportField(const QString &line,ImportSource src,
+                              ImportField fld) const
+{
+  return line.mid(importOffset(src,fld,importTemplate(src)),
+                 importLength(src,fld,importTemplate(src))).stripWhiteSpace();
 }
 
 
@@ -1535,6 +1459,22 @@ QString RDSvc::FieldString(ImportField field) const
 	fieldname="LEN_SECONDS";
 	break;
 
+      case RDSvc::TimeType:
+       fieldname="TIME_TYPE";
+       break;
+
+      case RDSvc::TimeWaitMinutes:
+       fieldname="WAIT_MINUTES";
+       break;
+
+      case RDSvc::TimeWaitSeconds:
+       fieldname="WAIT_SECONDS";
+       break;
+
+      case RDSvc::TransitionType:
+       fieldname="TRANS_TYPE";
+       break;
+
       case RDSvc::ExtData:
 	fieldname="DATA";
 	break;
@@ -1585,14 +1525,12 @@ void RDSvc::GetParserStrings(ImportSource src,QString *break_str,
 			     QString *track_cart)
 {
   QString src_str=SourceString(src);
-  QString sql=QString().sprintf("select %sBREAK_STRING,%sTRACK_STRING,\
-                                 %sLABEL_CART,%sTRACK_CART \
-                                 from SERVICES where NAME=\"%s\"",
-				(const char *)src_str,
-				(const char *)src_str,
-				(const char *)src_str,
-				(const char *)src_str,
-				(const char *)RDEscapeString(svc_name));
+  QString sql=QString("select ")+
+    src_str+"_BREAK_STRING,"+
+    src_str+"_TRACK_STRING,"+
+    src_str+"_LABEL_CART,"+
+    src_str+"_TRACK_CART "+
+    "from SERVICES where NAME=\""+RDEscapeString(svc_name)+"\"";
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     *break_str=q->value(0).toString();
@@ -1619,4 +1557,10 @@ bool RDSvc::CheckId(std::vector<int> *v,int value)
   }
   v->push_back(value);
   return true;
+}
+
+
+int RDSvc::GetTimeDiff(int hours1,int secs1,int hours2,int secs2) const
+{
+  return (3600*hours1+secs1)-(3600*hours2+secs2);
 }

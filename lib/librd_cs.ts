@@ -2197,5 +2197,9 @@ Zkuste to, prosím, znovu!</translation>
 </source>
         <translation>Chyba plnění události</translation>
     </message>
+    <message>
+        <source>[spot break]</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 </TS>

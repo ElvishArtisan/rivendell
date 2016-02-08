@@ -5748,7 +5748,27 @@ Revise los parámetros e intente de nuevo.</translation>
     </message>
     <message>
         <source>[spot break]</source>
-        <translation>[parada del spot]</translation>
+        <translation type="obsolete">[parada del spot]</translation>
+    </message>
+    <message>
+        <source>Trans</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Time Type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Wait Time</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Make Next</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start Immediately</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

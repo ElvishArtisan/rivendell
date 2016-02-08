@@ -32,6 +32,7 @@
 #include <rduser.h>
 #include <rdpasswd.h>
 #include <rddatedecode.h>
+#include <rdescape_string.h>
 #include <rdlistviewitem.h>
 #include <rdevent_line.h>
 
@@ -119,12 +120,18 @@ TestImport::TestImport(RDSvc *svc,RDSvc::ImportSource src,QWidget *parent,
   test_events_list->setColumnAlignment(2,AlignRight);
   test_events_list->addColumn(tr("Title"));
   test_events_list->setColumnAlignment(3,AlignLeft);
-  test_events_list->addColumn(tr("Contract #"));
+  test_events_list->addColumn(tr("Trans"));
   test_events_list->setColumnAlignment(4,AlignCenter);
-  test_events_list->addColumn(tr("Event ID"));
+  test_events_list->addColumn(tr("Time Type"));
   test_events_list->setColumnAlignment(5,AlignCenter);
-  test_events_list->addColumn(tr("Announcement Type"));
+  test_events_list->addColumn(tr("Wait Time"));
   test_events_list->setColumnAlignment(6,AlignCenter);
+  test_events_list->addColumn(tr("Contract #"));
+  test_events_list->setColumnAlignment(7,AlignCenter);
+  test_events_list->addColumn(tr("Event ID"));
+  test_events_list->setColumnAlignment(8,AlignCenter);
+  test_events_list->addColumn(tr("Announcement Type"));
+  test_events_list->setColumnAlignment(9,AlignCenter);
   test_events_list->setColumnSortType(0,RDListView::LineSort);
   test_events_label=new QLabel(test_events_list,tr("Imported Events"),this);
   test_events_label->setFont(font);
@@ -187,68 +194,67 @@ void TestImport::importData()
 			     tr("There was an error during import\nplease check your settings and try again."));
     return;
   }
-  QString sql=QString().sprintf("select START_HOUR,START_SECS,EXT_CART_NAME,\
-                                 LENGTH,EXT_DATA,EXT_EVENT_ID,EXT_ANNC_TYPE,\
-                                 INSERT_BREAK,INSERT_TRACK,INSERT_FIRST,TITLE,\
-                                 TRACK_STRING from `%s_TEST_IMP`",
-				(const char *)test_svc->name());
+  QString sql=QString("select ")+
+    "TYPE,"+           // 00
+    "START_HOUR,"+     // 01
+    "START_SECS,"+     // 02
+    "EXT_CART_NAME,"+  // 03
+    "LENGTH,"+         // 04
+    "EXT_DATA,"+       // 05
+    "EXT_EVENT_ID,"+   // 06
+    "EXT_ANNC_TYPE,"+  // 07
+    "TITLE,"+          // 08
+    "TRANS_TYPE,"+     // 09
+    "TIME_TYPE,"+      // 10
+    "GRACE_TIME "+     // 11
+    "from `"+RDEscapeString(test_svc->name())+"_TEST_IMP`";
   RDSqlQuery *q=new RDSqlQuery(sql);
   while(q->next()) {
-    if(q->value(9).toUInt()==RDEventLine::InsertBreak) {
-      if(q->value(7).toString()=="Y") {
-	item=new RDListViewItem(test_events_list);
-	item->setLine(next_line++);
-	item->
-	  setText(0,RDSvc::timeString(q->value(0).toInt(),
-				      q->value(1).toInt()));
-	item->setText(1,tr("[spot break]"));
-      }
-      if(q->value(8).toString()=="Y") {
-	item=new RDListViewItem(test_events_list);
-	item->setLine(next_line++);
-	item->setText(0,RDSvc::timeString(q->value(0).toInt(),
-					  q->value(1).toInt()));
-	item->setText(1,QString().
-		      sprintf("[%s]",(const char *)q->value(11).toString()));
-      }
-    }
-    else {
-      if(q->value(8).toString()=="Y") {
-	item=new RDListViewItem(test_events_list);
-	item->setLine(next_line++);
-	item->setText(0,RDSvc::timeString(q->value(0).toInt(),
-					  q->value(1).toInt()));
-	item->setText(1,QString().
-		      sprintf("[%s]",(const char *)q->value(11).toString()));
-      }
-      if(q->value(7).toString()=="Y") {
-	item=new RDListViewItem(test_events_list);
-	item->setLine(next_line++);
-	item->
-	  setText(0,RDSvc::timeString(q->value(0).toInt(),
-				      q->value(1).toInt()));
-	item->setText(1,tr("[spot break]"));
-      }
-    }
     item=new RDListViewItem(test_events_list);
     item->setLine(next_line++);
-    item->setText(0,RDSvc::timeString(q->value(0).toInt(),
-				      q->value(1).toInt()));
-    item->setText(1,q->value(2).toString());
-    if(q->value(3).toInt()>=0) {
-      item->setText(2,RDGetTimeLength(q->value(3).toInt(),false,false));
+    item->setText(0,RDSvc::timeString(q->value(1).toInt(),
+                                     q->value(2).toInt()));
+    item->setText(3,q->value(8).toString());
+    switch((RDSvc::ImportType)q->value(0).toInt()) {
+    case RDSvc::Cart:
+      item->setText(1,q->value(3).toString());
+      if(q->value(4).toInt()>=0) {
+       item->setText(2,RDGetTimeLength(q->value(4).toInt(),false,false));
+      }
+      item->
+       setText(4,RDLogLine::transText((RDLogLine::TransType)q->value(9).toInt()));
+      if(q->value(10).toInt()==RDLogLine::Hard) {
+       if(q->value(11).toInt()<0) {
+         item->setText(5,tr("Make Next"));
+       }
+       else {
+         item->setText(5,tr("Start Immediately"));
+         if(q->value(11).toInt()>0) {
+           item->setText(6,RDGetTimeLength(q->value(11).toInt(),true,false));
+         }
+       }
+      }
+      item->setText(7,q->value(5).toString());
+      item->setText(8,q->value(6).toString());
+      item->setText(9,q->value(7).toString());
+      break;
+
+    case RDSvc::Break:
+      item->setText(2,RDGetTimeLength(q->value(4).toInt(),false,false));
+      break;
+
+    case RDSvc::Track:
+      break;
     }
-    item->setText(3,q->value(10).toString());
-    item->setText(4,q->value(4).toString());
-    item->setText(5,q->value(5).toString());
-    item->setText(6,q->value(6).toString());
   }
   delete q;
   // printf("IMPORT TABLE: %s_TEST_IMP\n",(const char *)test_svc->name());
+  /*
   sql=QString().sprintf("drop table `%s_TEST_IMP`",
 			(const char *)test_svc->name());
   q=new RDSqlQuery(sql);
   delete q;
+  */
 }
 
 

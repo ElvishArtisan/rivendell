@@ -2,9 +2,7 @@
 //
 // Abstract a Rivendell Log Manager Event
 //
-//   (C) Copyright 2002-2006 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdevent_line.cpp,v 1.60.2.4.2.2 2014/06/24 18:27:04 cvs Exp $
+//   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -29,7 +27,7 @@
 #include <schedcartlist.h>
 #include <rddb.h>
 #include <rdescape_string.h>
-
+#include <rdsvc.h>
 
 RDEventLine::RDEventLine()
 {
@@ -942,138 +940,123 @@ bool RDEventLine::linkLog(RDLogEvent *e,int next_id,const QString &svcname,
   // Load Matching Events and Insert into Log
   //
   int id=-1;
-  sql=QString().sprintf("select CART_NUMBER,START_SECS,LENGTH,EXT_DATA,\
-                         EXT_EVENT_ID,EXT_ANNC_TYPE,EXT_CART_NAME,\
-                         INSERT_BREAK,INSERT_TRACK,INSERT_FIRST,TITLE,\
-                         TRACK_STRING from `%s` where (START_HOUR=%d)&&\
-                         (START_SECS>=%d)&&(START_SECS<=%d)&&\
-                         (EVENT_USED=\"N\") order by ID",
-			(const char *)import_table,
-			start_start_hour,start_start_secs/1000,
-			end_start_secs/1000);
+  sql=QString("select ")+
+    "TYPE,"+          // 00
+    "CART_NUMBER,"+   // 01
+    "START_SECS,"+    // 02
+    "LENGTH,"+        // 03
+    "EXT_DATA,"+      // 04
+    "EXT_EVENT_ID,"+  // 05
+    "EXT_ANNC_TYPE,"+ // 06
+    "EXT_CART_NAME,"+ // 07
+    "TITLE,"+         // 08
+    "TRANS_TYPE,"+    // 09
+    "TIME_TYPE,"+     // 10
+    "GRACE_TIME "+    // 11
+    "from `"+import_table+"` where "+
+    QString().sprintf("(START_HOUR=%d)&&",start_start_hour)+
+    QString().sprintf("(START_SECS>=%d)&&",start_start_secs/1000)+
+    QString().sprintf("(START_SECS<=%d)&&",end_start_secs/1000)+
+    "(EVENT_USED=\"N\") order by ID";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     if((id=e->nextId())>next_id) {
       next_id=id;
     }
-    int length=GetLength(q->value(0).toUInt(),q->value(2).toInt());
-    if(q->value(9).toUInt()==RDEventLine::InsertBreak) {
-      if(q->value(7).toString()=="Y") {  // Insert Break
-	if((!event_nested_event.isEmpty()&&(event_nested_event!=event_name))) {
-	  e->insert(e->size(),1);
-	  logline=e->logLine(e->size()-1);
-	  logline->setId(next_id++);
-	  logline->setStartTime(RDLogLine::Logged,time);
-	  logline->setType(RDLogLine::TrafficLink);
-	  logline->setSource(event_src);
-	  logline->setTransType(trans_type);
-	  logline->setEventLength(event_length);
-	  logline->setLinkEventName(event_nested_event);
-	  logline->setLinkStartTime(link_logline->linkStartTime());
-	  logline->setLinkLength(link_logline->linkLength());
-	  logline->setLinkStartSlop(link_logline->linkStartSlop());
-	  logline->setLinkEndSlop(link_logline->linkEndSlop());
-	  logline->setLinkId(link_logline->linkId());
-	  logline->setLinkEmbedded(true);
-	}
-      }
-      if(q->value(8).toString()=="Y") {  // Insert Track
-	e->insert(e->size(),1);
-	logline=e->logLine(e->size()-1);
-	logline->setId(next_id++);
-	logline->setStartTime(RDLogLine::Logged,time);
-	logline->setType(RDLogLine::Track);
-	logline->setSource(event_src);
-	logline->setTransType(RDLogLine::Segue);
-	logline->setMarkerComment(q->value(11).toString());
-	logline->setEventLength(event_length);
-	logline->setLinkEventName(event_name);
-	logline->setLinkStartTime(link_logline->linkStartTime());
-	logline->setLinkLength(link_logline->linkLength());
-	logline->setLinkStartSlop(link_logline->linkStartSlop());
-	logline->setLinkEndSlop(link_logline->linkEndSlop());
-	logline->setLinkId(link_logline->linkId());
-	logline->setLinkEmbedded(true);
-      }
-    }
-    else {
-      if(q->value(8).toString()=="Y") {  // Insert Track
-	e->insert(e->size(),1);
-	logline=e->logLine(e->size()-1);
-	logline->setId(next_id++);
-	logline->setStartTime(RDLogLine::Logged,time);
-	logline->setType(RDLogLine::Track);
-	logline->setSource(event_src);
-	logline->setTransType(RDLogLine::Segue);
-	logline->setMarkerComment(q->value(11).toString());
-        logline->setEventLength(event_length);
-	logline->setLinkEventName(event_name);
-	logline->setLinkStartTime(link_logline->linkStartTime());
-	logline->setLinkLength(link_logline->linkLength());
-	logline->setLinkStartSlop(link_logline->linkStartSlop());
-	logline->setLinkEndSlop(link_logline->linkEndSlop());
-	logline->setLinkId(link_logline->linkId());
-	logline->setLinkEmbedded(true);
-      }
-      if(q->value(7).toString()=="Y") {  // Insert Break
-	if((!event_nested_event.isEmpty()&&(event_nested_event!=event_name))) {
-	  e->insert(e->size(),1);
-	  logline=e->logLine(e->size()-1);
-	  logline->setId(next_id++);
-	  logline->setStartTime(RDLogLine::Logged,time);
-	  logline->setType(RDLogLine::TrafficLink);
-	  logline->setSource(event_src);
-	  logline->setTransType(trans_type);
-	  logline->setEventLength(event_length);
-	  logline->setLinkEventName(event_nested_event);
-	  logline->setLinkStartTime(link_logline->linkStartTime());
-	  logline->setLinkLength(link_logline->linkLength());
-	  logline->setLinkStartSlop(link_logline->linkStartSlop());
-	  logline->setLinkEndSlop(link_logline->linkEndSlop());
-	  logline->setLinkId(link_logline->linkId());
-	  logline->setLinkEmbedded(true);
-	}
-      }
-    }
-
-    e->insert(e->size(),1);
-    logline=e->logLine(e->size()-1);
-    logline->setId(next_id++);
-    logline->setSource(event_src);
-    logline->setStartTime(RDLogLine::Logged,time);
-    logline->setGraceTime(grace_time);
-    logline->setTimeType(time_type);
-    logline->setTransType(trans_type);
-    logline->setExtStartTime(QTime().addSecs(3600*start_start_hour+
-					     q->value(1).toInt()));
-    logline->setExtLength(q->value(2).toInt());
-    logline->setExtData(q->value(3).toString());
-    logline->setExtEventId(q->value(4).toString());
-    logline->setExtAnncType(q->value(5).toString());
-    logline->setExtCartName(q->value(6).toString());
-    logline->setEventLength(event_length);
-    logline->setLinkEventName(event_name);
-    logline->setLinkStartTime(link_logline->linkStartTime());
-    logline->setLinkLength(link_logline->linkLength());
-    logline->setLinkStartSlop(link_logline->linkStartSlop());
-    logline->setLinkEndSlop(link_logline->linkEndSlop());
-    logline->setLinkId(link_logline->linkId());
-    logline->setLinkEmbedded(link_logline->linkEmbedded());
-    if((q->value(6).toString()==label_cart)&&(!label_cart.isEmpty())) {
-      logline->setType(RDLogLine::Marker);
-      logline->setMarkerComment(q->value(10).toString());
-      logline->setCartNumber(0);
-    }
-    else {
-      if((q->value(6).toString()==track_cart)&&(!track_cart.isEmpty())) {
-	logline->setType(RDLogLine::Track);
-	logline->setMarkerComment(q->value(10).toString());
-	logline->setCartNumber(0);
+    int length=GetLength(q->value(1).toUInt(),q->value(3).toInt());
+    switch((RDSvc::ImportType)q->value(0).toInt()) {
+    case RDSvc::Cart:
+      e->insert(e->size(),1);
+      logline=e->logLine(e->size()-1);
+      logline->setId(next_id++);
+      logline->setSource(event_src);
+      logline->setStartTime(RDLogLine::Logged,time);
+      if(q->value(10).toInt()==RDLogLine::NoTime) {
+       logline->setGraceTime(grace_time);
+       logline->setTimeType(time_type);
       }
       else {
-	logline->setType(RDLogLine::Cart);
-	logline->setCartNumber(q->value(0).toUInt());
+       logline->setGraceTime(q->value(11).toInt());
+       logline->setTimeType((RDLogLine::TimeType)q->value(10).toInt());
       }
+      if(q->value(9).toInt()==RDLogLine::NoTrans) {
+       logline->setTransType(trans_type);
+      }
+      else {
+       logline->setTransType((RDLogLine::TransType)q->value(9).toInt());
+      }
+      logline->setExtStartTime(QTime().addSecs(3600*start_start_hour+
+                                              q->value(2).toInt()));
+      logline->setExtLength(q->value(3).toInt());
+      logline->setExtData(q->value(4).toString());
+      logline->setExtEventId(q->value(5).toString());
+      logline->setExtAnncType(q->value(6).toString());
+      logline->setExtCartName(q->value(7).toString());
+      logline->setEventLength(event_length);
+      logline->setLinkEventName(event_name);
+      logline->setLinkStartTime(link_logline->linkStartTime());
+      logline->setLinkLength(link_logline->linkLength());
+      logline->setLinkStartSlop(link_logline->linkStartSlop());
+      logline->setLinkEndSlop(link_logline->linkEndSlop());
+      logline->setLinkId(link_logline->linkId());
+      logline->setLinkEmbedded(link_logline->linkEmbedded());
+      if((q->value(6).toString()==label_cart)&&(!label_cart.isEmpty())) {
+       logline->setType(RDLogLine::Marker);
+       logline->setMarkerComment(q->value(8).toString());
+       logline->setCartNumber(0);
+      }
+      else {
+       if((q->value(7).toString()==track_cart)&&(!track_cart.isEmpty())) {
+         logline->setType(RDLogLine::Track);
+         logline->setMarkerComment(q->value(8).toString());
+         logline->setCartNumber(0);
+       }
+       else {
+         logline->setType(RDLogLine::Cart);
+         logline->setCartNumber(q->value(1).toUInt());
+       }
+      }
+      break;
+
+    case RDSvc::Break:
+      if((!event_nested_event.isEmpty()&&(event_nested_event!=event_name))) {
+	e->insert(e->size(),1);
+	logline=e->logLine(e->size()-1);
+	logline->setId(next_id++);
+	logline->setStartTime(RDLogLine::Logged,time);
+	logline->setType(RDLogLine::TrafficLink);
+	logline->setSource(event_src);
+        logline->setTransType(trans_type);
+	logline->setEventLength(event_length);
+	logline->setLinkEventName(event_nested_event);
+
+	logline->setLinkStartTime(link_logline->linkStartTime());
+	logline->setLinkLength(link_logline->linkLength());
+	logline->setLinkStartSlop(link_logline->linkStartSlop());
+	logline->setLinkEndSlop(link_logline->linkEndSlop());
+	logline->setLinkId(link_logline->linkId());
+	logline->setLinkEmbedded(true);
+      }
+      break;
+
+    case RDSvc::Track:
+      e->insert(e->size(),1);
+      logline=e->logLine(e->size()-1);
+      logline->setId(next_id++);
+      logline->setStartTime(RDLogLine::Logged,time);
+      logline->setType(RDLogLine::Track);
+      logline->setSource(event_src);
+      logline->setTransType(RDLogLine::Segue);
+      logline->setMarkerComment(q->value(8).toString());
+      logline->setEventLength(event_length);
+      logline->setLinkEventName(event_name);
+      logline->setLinkStartTime(link_logline->linkStartTime());
+      logline->setLinkLength(link_logline->linkLength());
+      logline->setLinkStartSlop(link_logline->linkStartSlop());
+      logline->setLinkEndSlop(link_logline->linkEndSlop());
+      logline->setLinkId(link_logline->linkId());
+      logline->setLinkEmbedded(true);
+      break;
     }
 
     //
@@ -1090,12 +1073,12 @@ bool RDEventLine::linkLog(RDLogEvent *e,int next_id,const QString &svcname,
   //
   // Mark Events as Used
   //
-  sql=QString().sprintf("update `%s` set EVENT_USED=\"Y\"\
-                         where (START_HOUR=%d)&&(START_SECS>=%d)&&\
-                         (START_SECS<=%d)&&(EVENT_USED=\"N\")",
-			(const char *)import_table,
-			start_start_hour,start_start_secs/1000,
-			end_start_secs/1000);
+  sql=QString("update `")+import_table+"` set "+
+    "EVENT_USED=\"Y\" where "+
+    QString().sprintf("(START_HOUR=%d)&&",start_start_hour)+
+    QString().sprintf("(START_SECS>=%d)&&",start_start_secs/1000)+
+    QString().sprintf("(START_SECS<=%d)&&",end_start_secs/1000)+
+    "(EVENT_USED=\"N\")";
   q=new RDSqlQuery(sql);
   delete q;
 
@@ -1106,12 +1089,13 @@ bool RDEventLine::linkLog(RDLogEvent *e,int next_id,const QString &svcname,
     addMSecs(link_logline->linkLength());
   if(event_use_autofill&&(event_start_time<=time)) {
     QTime fill_start_time=time;
-    sql=QString().
-      sprintf("select AUTOFILLS.CART_NUMBER,CART.FORCED_LENGTH from\
-               AUTOFILLS left join CART on AUTOFILLS.CART_NUMBER=CART.NUMBER\
-               where (AUTOFILLS.SERVICE=\"%s\")&&(CART.FORCED_LENGTH<=%d)&&\
-               (CART.FORCED_LENGTH>0) order by CART.FORCED_LENGTH desc",
-	      (const char *)svcname,time.msecsTo(end_time));
+    sql=QString("select ")+
+      "AUTOFILLS.CART_NUMBER,"+
+      "CART.FORCED_LENGTH "+
+      "from AUTOFILLS left join CART on AUTOFILLS.CART_NUMBER=CART.NUMBER "+
+      "where (AUTOFILLS.SERVICE=\""+RDEscapeString(svcname)+"\")&&"+
+      QString().sprintf("(CART.FORCED_LENGTH<=%d)&&",time.msecsTo(end_time))+
+      "(CART.FORCED_LENGTH>0) order by CART.FORCED_LENGTH desc";
     q=new RDSqlQuery(sql);
     bool fit=true;
     while(fit) {

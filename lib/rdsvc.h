@@ -34,7 +34,10 @@ class RDSvc : public QObject
   enum ImportSource {Traffic=0,Music=1};
   enum ImportField {CartNumber=0,ExtData=3,ExtEventId=4,ExtAnncType=5,
 		    Title=6,StartHours=7,StartMinutes=8,StartSeconds=9,
-		    LengthHours=10,LengthMinutes=11,LengthSeconds=12};
+		    LengthHours=10,LengthMinutes=11,LengthSeconds=12,
+		    TimeType=13,TimeWaitMinutes=14,TimeWaitSeconds=15,
+		    TransitionType=16};
+  enum ImportType {Cart=0,Break=1,Track=2};
   RDSvc(QString svcname,QObject *parent=0,const char *name=0);
   QString name() const;
   bool exists() const;
@@ -81,8 +84,7 @@ class RDSvc : public QObject
   void setImportLength(ImportSource src,ImportField field,int len) const;
   QString importFilename(ImportSource src,const QDate &date) const;
   bool import(ImportSource src,const QDate &date,const QString &break_str,
-	      const QString &track_str,const QString &dest_table) 
-    const;
+	      const QString &track_str,const QString &dest_table) const;
   bool generateLog(const QDate &date,const QString &logname,
 		   const QString &nextname,QString *report);
   bool linkLog(RDSvc::ImportSource src,const QDate &date,
@@ -94,6 +96,7 @@ class RDSvc : public QObject
   QString xml() const;
   static QString timeString(int hour,int secs);
   static QString svcTableName(const QString &svc_name);
+  static QString className(ImportSource src);
   static QStringList importerClassList();
   static QStringList importerParameterList();
 
@@ -101,6 +104,12 @@ class RDSvc : public QObject
   void generationProgress(int step);
 
  private:
+  void GetImportLine(const QString &line,ImportSource src,const QDate &date,
+		     const QString &break_str,const QString &track_str,
+		     const QString &dest_table,
+		     int *prev_hour,int *prev_min,int *prev_sec) const;
+  QString GetImportField(const QString &line,ImportSource src,
+			 ImportField fld) const;
   QString SourceString(ImportSource src) const;
   QString OsString(ImportOs os) const;
   QString FieldString(ImportField field) const;
@@ -109,6 +118,7 @@ class RDSvc : public QObject
   void GetParserStrings(ImportSource src,QString *break_str,QString *track_str,
 			QString *label_cart,QString *track_cart);
   bool CheckId(std::vector<int> *v,int value);
+  int GetTimeDiff(int hours1,int secs1,int hours2,int secs2) const;
   QString svc_name;
 };
 

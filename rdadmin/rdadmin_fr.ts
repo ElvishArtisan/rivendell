@@ -5250,7 +5250,23 @@ please check your settings and try again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>[spot break]</source>
+        <source>Trans</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Time Type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Wait Time</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Make Next</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start Immediately</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

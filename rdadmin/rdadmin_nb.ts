@@ -5727,7 +5727,27 @@ Sjekk oppsettet ditt og prøv att.</translation>
     </message>
     <message>
         <source>[spot break]</source>
-        <translation>[spott-avbrot]</translation>
+        <translation type="obsolete">[spott-avbrot]</translation>
+    </message>
+    <message>
+        <source>Trans</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Time Type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Wait Time</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Make Next</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start Immediately</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

@@ -5789,7 +5789,27 @@ Prověřte, prosím, svá nastavení a zkuste to znovu.</translation>
     </message>
     <message>
         <source>[spot break]</source>
-        <translation>[přerušení místa]</translation>
+        <translation type="obsolete">[přerušení místa]</translation>
+    </message>
+    <message>
+        <source>Trans</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Time Type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Wait Time</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Make Next</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start Immediately</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

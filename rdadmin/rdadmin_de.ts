@@ -5740,7 +5740,27 @@ Bitte überprüfen Sie ihre Einstellungen und versuchen sie es erneut.</translat
     </message>
     <message>
         <source>[spot break]</source>
-        <translation>[spot break]</translation>
+        <translation type="obsolete">[spot break]</translation>
+    </message>
+    <message>
+        <source>Trans</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Time Type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Wait Time</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Make Next</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start Immediately</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

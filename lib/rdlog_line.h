@@ -2,9 +2,7 @@
 //
 // A container class for a Rivendell Log Line.
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdlog_line.h,v 1.85.8.10.2.1 2014/05/20 01:45:16 cvs Exp $
+//   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -35,7 +33,7 @@ class RDLogLine
 {
  public:
   enum StartTimeType {Imported=0,Logged=1,Predicted=2,Actual=3,Initial=4};
-  enum TimeType {Relative=0,Hard=1};
+  enum TimeType {Relative=0,Hard=1,NoTime=255};
   enum TransType {Play=0,Segue=1,Stop=2,NoTrans=255};
   enum TransEdge {AllTrans=0,LeadingTrans=1,TrailingTrans=2};
   enum Source {Manual=0,Traffic=1,Music=2,Template=3,Tracker=4};

@@ -2,9 +2,7 @@
 //
 // A container class for a Rivendell Log Line.
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdlog_line.cpp,v 1.113.4.13.2.2 2014/05/22 16:12:54 cvs Exp $
+//   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -2015,7 +2013,7 @@ QString RDLogLine::transText(RDLogLine::TransType trans)
 	return QObject::tr("STOP");
 
       case RDLogLine::NoTrans:
-	return QObject::tr("UNKNOWN");
+	return QString("");
   }
   return QObject::tr("UNKNOWN");
 }

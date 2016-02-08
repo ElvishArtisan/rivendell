@@ -2139,5 +2139,9 @@ por favor, tente novamente!</translation>
         <translation>Erros de Auto Preenchimento
 </translation>
     </message>
+    <message>
+        <source>[spot break]</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 </TS>
