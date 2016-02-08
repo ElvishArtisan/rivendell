@@ -2,9 +2,7 @@
 ##
 ## xdg/automake.am for Rivendell
 ##
-##   (C) Copyright 2002-2005 Fred Gleason <fredg@paravelsystems.com>
-##
-##      $Id: Makefile.am,v 1.11.2.8 2013/12/27 00:04:04 cvs Exp $
+##   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -57,7 +55,7 @@ install-exec-am:
 	rm -f $(DESTDIR)$(prefix)/bin/rdhpiinfo-root
 	ln -s /usr/bin/consolehelper $(DESTDIR)$(prefix)/bin/rdhpiinfo-root
 
-uninstall:	
+uninstall-local:	
 	rm -f $(DESTDIR)@prefix@/share/applications/rivendell-*.desktop
 	rm -f $(DESTDIR)@prefix@/share/desktop-directories/rivendell-*.directory
 	rm -f $(DESTDIR)/etc/xdg/menus/applications-merged/rivendell-*.menu

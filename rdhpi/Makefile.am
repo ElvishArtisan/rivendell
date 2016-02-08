@@ -4,11 +4,7 @@
 ##
 ## by Fred Gleason <fredg@paravelsystems.com>
 ##
-## Use automake to process this into a Makefile.in
-##
 ##   (C) Copyright 2002-2007 Fred Gleason <fredg@paravelsystems.com>
-##
-##      $Id: Makefile.am,v 1.7.8.3 2013/01/01 21:36:30 cvs Exp $
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -44,7 +40,7 @@ install-exec-local:
 	mkdir -p $(DESTDIR)$(prefix)/share/rivendell
 	cp rdhpi_*.qm $(DESTDIR)$(prefix)/share/rivendell
 
-uninstall:
+uninstall-local:
 	rm -f $(DESTDIR)$(prefix)/share/rivendell/rdhpi_*.qm
 
 all:	

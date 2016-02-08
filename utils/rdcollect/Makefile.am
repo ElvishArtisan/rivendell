@@ -2,9 +2,7 @@
 ##
 ## Automake.am for rivendell/utils/rdcollect
 ##
-##   (C) Copyright 2002-2010 Fred Gleason <fredg@paravelsystems.com>
-##
-##      $Id: Makefile.am,v 1.2.8.2 2012/12/03 16:53:46 cvs Exp $
+##   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as

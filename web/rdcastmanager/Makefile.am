@@ -2,9 +2,7 @@
 ##
 ## Automake.am for rivendell/web/rdcastmanager
 ##
-##   (C) Copyright 2002-2007 Fred Gleason <fredg@paravelsystems.com>
-##
-##      $Id: Makefile.am,v 1.4.8.1 2012/11/29 01:37:38 cvs Exp $
+##   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -34,7 +32,7 @@ install-exec-am:
 	cp .libs/rdcastmanager.cgi $(DESTDIR)$(libexecdir)/
 	cat rdcastmanager.js | $(top_srcdir)/helpers/jsmin > $(DESTDIR)$(libexecdir)/rdcastmanager.js
 
-uninstall:	
+uninstall-local:	
 	rm -f $(DESTDIR)/$(libexecdir)/rdcastmanager.cgi
 	rm -f $(DESTDIR)/$(libexecdir)/rdcastmanager.js
 
