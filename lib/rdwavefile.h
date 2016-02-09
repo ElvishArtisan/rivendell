@@ -2,9 +2,7 @@
 //
 //   A class for handling Microsoft WAV files.
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//    $Id: rdwavefile.h,v 1.10.6.2 2014/01/15 19:56:32 cvs Exp $
+//   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -278,7 +276,7 @@ class RDWaveFile
   /**
    * Find the first instance of energy at or above the specified level.
    * @param level The level, in dbFS * 100.
-   * Returns: The location in samples from file start, or -1 to indicate
+   * Returns: The location in frames from file start, or -1 to indicate
    * failure.
    **/
    int startTrim(int level);
@@ -286,7 +284,7 @@ class RDWaveFile
   /**
    * Find the last instance of energy at or above the specified level.
    * @param level The level, in dbFS * 100.
-   * Returns: The location in samples from file start, or -1 to indicate
+   * Returns: The location in frames from file start, or -1 to indicate
    * failure.
    **/
    int endTrim(int level);

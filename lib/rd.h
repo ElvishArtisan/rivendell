@@ -2,9 +2,7 @@
 //
 // System-Wide Values for Rivendell
 //
-//   (C) Copyright 2002-2006 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rd.h,v 1.194.6.14.2.1 2014/05/22 14:30:44 cvs Exp $
+//   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -191,9 +189,9 @@
 #define RD_MAX_CUT_NUMBER 999
 
 /*
- * In negative 1/100ths of a dB
+ * In 1/100ths of a dB
  */
-#define REFERENCE_LEVEL 1600
+#define REFERENCE_LEVEL -1600
 
 /*
  * Typomatic Rate Interval, in mS

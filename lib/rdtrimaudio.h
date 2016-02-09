@@ -2,9 +2,7 @@
 //
 // Get the trim points for an audio cut.
 //
-//   (C) Copyright 2010 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdtrimaudio.h,v 1.1.6.2 2014/01/16 02:44:59 cvs Exp $
+//   (C) Copyright 2010-2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as

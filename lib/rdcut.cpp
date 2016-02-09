@@ -2,9 +2,7 @@
 //
 // Abstract a Rivendell Cut.
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdcut.cpp,v 1.76.6.10.2.2 2014/07/15 20:02:22 cvs Exp $
+//   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -1266,12 +1264,12 @@ void RDCut::autoTrim(RDCut::AudioEnd end,int level)
     return;
   }
   if((end==RDCut::AudioHead)||(end==RDCut::AudioBoth)) {
-    if((point=wave->startTrim(REFERENCE_LEVEL-level))>-1) {
+    if((point=wave->startTrim(-REFERENCE_LEVEL-level))>-1) {
       start_point=(int)(1000.0*(double)point/(double)wave->getSamplesPerSec());
     }
   }
   if((end==RDCut::AudioTail)||(end==RDCut::AudioBoth)) {
-    if((point=wave->endTrim(+REFERENCE_LEVEL-level))>-1) {
+    if((point=wave->endTrim(-REFERENCE_LEVEL-level))>-1) {
       end_point=(int)(1000.0*(double)point/(double)wave->getSamplesPerSec());
     }
     else {
