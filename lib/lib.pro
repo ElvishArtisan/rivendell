@@ -150,6 +150,7 @@ x11 {
   SOURCES += rdlist_logs.cpp
   SOURCES += rdmarker_button.cpp
   SOURCES += rdmarker_edit.cpp
+  SOURCES += rdmarkerwidget.cpp
   SOURCES += rdmatrix.cpp
   SOURCES += rdmonitor_config.cpp
   SOURCES += rdpanel_button.cpp
@@ -281,6 +282,7 @@ x11 {
   HEADERS += rdlist_logs.h
   HEADERS += rdmarker_button.h
   HEADERS += rdmarker_edit.h
+  HEADERS += rdmarkerwidget.h
   HEADERS += rdmatrix.h
   HEADERS += rdmonitor_config.h
   HEADERS += rdpanel_button.h

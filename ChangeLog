@@ -15072,3 +15072,10 @@
 	* Cleaned up method calls in 'lib/edit_audio.cpp',
 	'lib/rdedit_audio.h', 'lib/rdmarker_edit.cpp' and
 	'lib/rdmarker_edit.h'.
+2016-02-09 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'RDMarkerWidget' widget in 'lib/rdmarkerwidget.cpp' and
+	'lib/rdmarkerwidget.h'.
+	* Refactored 'Edit Audio' dialog in 'lib/rdedit_audio.cpp' and
+	'lib/rdedit_audio.h' to improve efficiency and maintainability.
+	* Fixed bug in 'lib/rdedit_audio.cpp' that caused marker positions
+	to be spontaneously altered each time marker positions were saved.

@@ -1009,11 +1009,6 @@ Start</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Segue
-End</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Fade
 Up</source>
         <translation type="unfinished"></translation>
@@ -1152,6 +1147,16 @@ Are you sure you want to save?</source>
     <message>
         <source>More than half of the audio will be faded with these marker settings.
 Are you sure you want to save?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Talk
+End</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Fade
+Down</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

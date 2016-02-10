@@ -66,9 +66,6 @@ RDEditAudio::RDEditAudio(RDCart *cart,QString cut_name,RDCae *cae,RDUser *user,
   QFont small_font("Helvetica",10,QFont::Bold);
   small_font.setPixelSize(10);
 
-  for(int i=0;i<RDEditAudio::LastMarker;i++) {
-    edit_cursors[i]=-1;
-  }
   is_playing=false;
   is_paused=false;
   is_stopped=false;
@@ -286,173 +283,103 @@ RDEditAudio::RDEditAudio(RDCart *cart,QString cut_name,RDCae *cae,RDUser *user,
   //
   // Cursor Readouts
   //
-  QSignalMapper *button_mapper=new QSignalMapper(this);
-  connect(button_mapper,SIGNAL(mapped(int)),this,SLOT(cuePointData(int)));
-  QSignalMapper *edit_mapper=new QSignalMapper(this);
-  connect(edit_mapper,SIGNAL(mapped(int)),this,SLOT(cueEditData(int)));
-  QSignalMapper *esc_mapper=new QSignalMapper(this);
-  connect(esc_mapper,SIGNAL(mapped(int)),this,SLOT(cueEscData(int)));
+  QSignalMapper *enabled_mapper=new QSignalMapper(this);
+  connect(enabled_mapper,SIGNAL(mapped(int)),
+         this,SLOT(markerButtonEnabledData(int)));
+  QSignalMapper *delete_mapper=new QSignalMapper(this);
+  connect(delete_mapper,SIGNAL(mapped(int)),
+         this,SLOT(markerButtonDeleteData(int)));
+  QSignalMapper *value_mapper=new QSignalMapper(this);
+  connect(value_mapper,SIGNAL(mapped(int)),
+         this,SLOT(markerValueChangedData(int)));
+ 
+  edit_cue_widget[RDEditAudio::Start]=
+    new RDMarkerWidget(tr("Cut\nStart"),RD_START_END_MARKER_COLOR,
+                      edit_sample_rate,this);
+  edit_cue_widget[RDEditAudio::Start]->setGeometry(20,485,158,45);
+  enabled_mapper->
+    setMapping(edit_cue_widget[RDEditAudio::Start],(int)RDEditAudio::Start);
+  connect(edit_cue_widget[RDEditAudio::Start],SIGNAL(selectionChanged()),
+         enabled_mapper,SLOT(map()));
+  delete_mapper->
+    setMapping(edit_cue_widget[RDEditAudio::Start],(int)RDEditAudio::Start);
+  connect(edit_cue_widget[RDEditAudio::Start],SIGNAL(deleteClicked()),
+         delete_mapper,SLOT(map()));
+  value_mapper->
+    setMapping(edit_cue_widget[RDEditAudio::Start],(int)RDEditAudio::Start);
+  connect(edit_cue_widget[RDEditAudio::Start],SIGNAL(valueChanged()),
+         value_mapper,SLOT(map()));
 
-  edit_cursor_edit[RDEditAudio::Start]=new RDMarkerEdit(this);
-  edit_cursor_edit[RDEditAudio::Start]->setGeometry(88,496,70,21);
-  edit_cursor_edit[RDEditAudio::Start]->setReadOnly(true);
-  edit_cursor_edit[RDEditAudio::Start]->setDragEnabled(false);
-  edit_cursor_edit[RDEditAudio::Start]->
-    setFont(label_font);
-  edit_mapper->
-    setMapping(edit_cursor_edit[RDEditAudio::Start],(int)RDEditAudio::Start);
-  esc_mapper->
-    setMapping(edit_cursor_edit[RDEditAudio::Start],(int)RDEditAudio::Start);
-  connect(edit_cursor_edit[RDEditAudio::Start],SIGNAL(returnPressed()),
-	  edit_mapper,SLOT(map()));
-  connect(edit_cursor_edit[RDEditAudio::Start],SIGNAL(escapePressed()),
-	  esc_mapper,SLOT(map()));
+  edit_cue_widget[RDEditAudio::End]=
+    new RDMarkerWidget(tr("Cut\nEnd"),RD_START_END_MARKER_COLOR,
+                      edit_sample_rate,this);
+  edit_cue_widget[RDEditAudio::End]->setGeometry(20,530,158,45);
+  enabled_mapper->
+    setMapping(edit_cue_widget[RDEditAudio::End],(int)RDEditAudio::End);
+  connect(edit_cue_widget[RDEditAudio::End],SIGNAL(selectionChanged()),
+         enabled_mapper,SLOT(map()));
+  delete_mapper->
+    setMapping(edit_cue_widget[RDEditAudio::End],(int)RDEditAudio::End);
+  connect(edit_cue_widget[RDEditAudio::End],SIGNAL(deleteClicked()),
+         delete_mapper,SLOT(map()));
+  value_mapper->
+    setMapping(edit_cue_widget[RDEditAudio::End],(int)RDEditAudio::End);
+  connect(edit_cue_widget[RDEditAudio::End],SIGNAL(valueChanged()),
+         value_mapper,SLOT(map()));
 
-  edit_cue_button[RDEditAudio::Start]=new RDMarkerButton(this,"StartButton");
-  edit_cue_button[RDEditAudio::Start]->setToggleButton(true);
-  edit_cue_button[RDEditAudio::Start]->setGeometry(20,485,66,45);
-  edit_cue_button[RDEditAudio::Start]->setFlashColor(backgroundColor());
-  edit_cue_button[RDEditAudio::Start]->
-    setFlashPeriod(EDITAUDIO_BUTTON_FLASH_PERIOD);
-  edit_cue_button[RDEditAudio::Start]->
-    setPalette(QPalette(QColor(RD_START_END_MARKER_COLOR),backgroundColor()));
-  edit_cue_button[RDEditAudio::Start]->
-    setFont(button_font);
-  edit_cue_button[RDEditAudio::Start]->setText(tr("Cut\nStart"));
-  button_mapper->
-    setMapping(edit_cue_button[RDEditAudio::Start],(int)RDEditAudio::Start);
-  connect(edit_cue_button[RDEditAudio::Start],SIGNAL(clicked()),
-	  button_mapper,SLOT(map()));
+  edit_cue_widget[RDEditAudio::TalkStart]=
+    new RDMarkerWidget(tr("Talk\nStart"),RD_TALK_MARKER_COLOR,
+                      edit_sample_rate,this);
+  edit_cue_widget[RDEditAudio::TalkStart]->setGeometry(175,585,158,45);
+  enabled_mapper->setMapping(edit_cue_widget[RDEditAudio::TalkStart],
+                            (int)RDEditAudio::TalkStart);
+  connect(edit_cue_widget[RDEditAudio::TalkStart],SIGNAL(selectionChanged()),
+         enabled_mapper,SLOT(map()));
+  delete_mapper->
+    setMapping(edit_cue_widget[RDEditAudio::TalkStart],(int)RDEditAudio::TalkStart);
+  connect(edit_cue_widget[RDEditAudio::TalkStart],SIGNAL(deleteClicked()),
+         delete_mapper,SLOT(map()));
+  value_mapper->
+    setMapping(edit_cue_widget[RDEditAudio::TalkStart],
+              (int)RDEditAudio::TalkStart);
+  connect(edit_cue_widget[RDEditAudio::TalkStart],SIGNAL(valueChanged()),
+         value_mapper,SLOT(map()));
 
-  edit_cursor_edit[RDEditAudio::End]=new RDMarkerEdit(this);
-  edit_cursor_edit[RDEditAudio::End]->setGeometry(88,541,70,21);
-  edit_cursor_edit[RDEditAudio::End]->setReadOnly(true);
-  edit_cursor_edit[RDEditAudio::End]->setDragEnabled(false);
-  edit_mapper->
-    setMapping(edit_cursor_edit[RDEditAudio::End],(int)RDEditAudio::End);
-  esc_mapper->
-    setMapping(edit_cursor_edit[RDEditAudio::End],(int)RDEditAudio::End);
-  connect(edit_cursor_edit[RDEditAudio::End],SIGNAL(returnPressed()),
-	  edit_mapper,SLOT(map()));
-  connect(edit_cursor_edit[RDEditAudio::End],SIGNAL(escapePressed()),
-	  esc_mapper,SLOT(map()));
-  edit_cursor_edit[RDEditAudio::End]->
-    setFont(label_font);
-  edit_cue_button[RDEditAudio::End]=new RDMarkerButton(this);
-  edit_cue_button[RDEditAudio::End]->setToggleButton(true);
-  edit_cue_button[RDEditAudio::End]->setGeometry(20,530,66,45);
-  edit_cue_button[RDEditAudio::End]->setFlashColor(backgroundColor());
-  edit_cue_button[RDEditAudio::End]->
-    setFlashPeriod(EDITAUDIO_BUTTON_FLASH_PERIOD);
-  edit_cue_button[RDEditAudio::End]->
-    setPalette(QPalette(QColor(RD_START_END_MARKER_COLOR),
-			      backgroundColor()));
-  edit_cue_button[RDEditAudio::End]->
-    setFont(button_font);
-  edit_cue_button[RDEditAudio::End]->setText(tr("Cut\nEnd"));
-  button_mapper->
-    setMapping(edit_cue_button[RDEditAudio::End],(int)RDEditAudio::End);
-  connect(edit_cue_button[RDEditAudio::End],SIGNAL(clicked()),
-	  button_mapper,SLOT(map()));
+  edit_cue_widget[RDEditAudio::TalkEnd]=
+    new RDMarkerWidget(tr("Talk\nEnd"),RD_TALK_MARKER_COLOR,
+                      edit_sample_rate,this);
+  edit_cue_widget[RDEditAudio::TalkEnd]->setGeometry(175,630,158,45);
+  enabled_mapper->setMapping(edit_cue_widget[RDEditAudio::TalkEnd],
+                            (int)RDEditAudio::TalkEnd);
+  connect(edit_cue_widget[RDEditAudio::TalkEnd],SIGNAL(selectionChanged()),
+         enabled_mapper,SLOT(map()));
+  delete_mapper->
+    setMapping(edit_cue_widget[RDEditAudio::TalkEnd],(int)RDEditAudio::TalkEnd);
+  connect(edit_cue_widget[RDEditAudio::TalkEnd],SIGNAL(deleteClicked()),
+         delete_mapper,SLOT(map()));
+  value_mapper->
+    setMapping(edit_cue_widget[RDEditAudio::TalkEnd],(int)RDEditAudio::TalkEnd);
+  connect(edit_cue_widget[RDEditAudio::TalkEnd],SIGNAL(valueChanged()),
+         value_mapper,SLOT(map()));
 
-  edit_cursor_edit[RDEditAudio::TalkStart]=new RDMarkerEdit(this);
-  edit_cursor_edit[RDEditAudio::TalkStart]->setGeometry(243,596,70,21);
-  edit_cursor_edit[RDEditAudio::TalkStart]->setReadOnly(true);
-  edit_cursor_edit[RDEditAudio::TalkStart]->setDragEnabled(false);
-  edit_cursor_edit[RDEditAudio::TalkStart]->
-    setFont(label_font);
-  edit_mapper->setMapping(edit_cursor_edit[RDEditAudio::TalkStart],
-			  (int)RDEditAudio::TalkStart);
-  esc_mapper->setMapping(edit_cursor_edit[RDEditAudio::TalkStart],
-			  (int)RDEditAudio::TalkStart);
-  connect(edit_cursor_edit[RDEditAudio::TalkStart],SIGNAL(returnPressed()),
-	  edit_mapper,SLOT(map()));
-  connect(edit_cursor_edit[RDEditAudio::TalkStart],SIGNAL(escapePressed()),
-	  esc_mapper,SLOT(map()));
-  edit_cue_button[RDEditAudio::TalkStart]=new RDMarkerButton(this);
-  edit_cue_button[RDEditAudio::TalkStart]->setToggleButton(true);
-  edit_cue_button[RDEditAudio::TalkStart]->setGeometry(175,585,66,45);
-  edit_cue_button[RDEditAudio::TalkStart]->setFlashColor(backgroundColor());
-  edit_cue_button[RDEditAudio::TalkStart]->
-    setFlashPeriod(EDITAUDIO_BUTTON_FLASH_PERIOD);
-  edit_cue_button[RDEditAudio::TalkStart]->
-    setPalette(QPalette(QColor(RD_TALK_MARKER_COLOR),
-			      backgroundColor()));
-  edit_cue_button[RDEditAudio::TalkStart]->
-    setFont(button_font);
-  edit_cue_button[RDEditAudio::TalkStart]->setText(tr("Talk\nStart"));
-  button_mapper->
-   setMapping(edit_cue_button[RDEditAudio::TalkStart],
-	      (int)RDEditAudio::TalkStart);
-  connect(edit_cue_button[RDEditAudio::TalkStart],SIGNAL(clicked()),
-	  button_mapper,SLOT(map()));
-
-  edit_cursor_edit[RDEditAudio::TalkEnd]=new RDMarkerEdit(this);
-  edit_cursor_edit[RDEditAudio::TalkEnd]->setGeometry(243,641,70,21);
-  edit_cursor_edit[RDEditAudio::TalkEnd]->setReadOnly(true);
-  edit_cursor_edit[RDEditAudio::TalkEnd]->setDragEnabled(false);
-  edit_mapper->
-    setMapping(edit_cursor_edit[RDEditAudio::TalkEnd],
-	       (int)RDEditAudio::TalkEnd);
-  esc_mapper->
-    setMapping(edit_cursor_edit[RDEditAudio::TalkEnd],
-	       (int)RDEditAudio::TalkEnd);
-  connect(edit_cursor_edit[RDEditAudio::TalkEnd],SIGNAL(returnPressed()),
-	  edit_mapper,SLOT(map()));
-  connect(edit_cursor_edit[RDEditAudio::TalkEnd],SIGNAL(escapePressed()),
-	  esc_mapper,SLOT(map()));
-  edit_cursor_edit[RDEditAudio::TalkEnd]->
-    setFont(label_font);
-  edit_cue_button[RDEditAudio::TalkEnd]=new RDMarkerButton(this);
-  edit_cue_button[RDEditAudio::TalkEnd]->setToggleButton(true);
-  edit_cue_button[RDEditAudio::TalkEnd]->setGeometry(175,630,66,45);
-  edit_cue_button[RDEditAudio::TalkEnd]->setFlashColor(backgroundColor());
-  edit_cue_button[RDEditAudio::TalkEnd]->
-    setFlashPeriod(EDITAUDIO_BUTTON_FLASH_PERIOD);
-  edit_cue_button[RDEditAudio::TalkEnd]->
-    setPalette(QPalette(QColor(RD_TALK_MARKER_COLOR),
-			      backgroundColor()));
-  edit_cue_button[RDEditAudio::TalkEnd]->
-    setFont(button_font);
-  edit_cue_button[RDEditAudio::TalkEnd]->setText("Talk\nEnd");
-  button_mapper->
-    setMapping(edit_cue_button[RDEditAudio::TalkEnd],(int)RDEditAudio::TalkEnd);
-  connect(edit_cue_button[RDEditAudio::TalkEnd],SIGNAL(clicked()),
-	  button_mapper,SLOT(map()));
-
-  edit_cursor_edit[RDEditAudio::SegueStart]=new RDMarkerEdit(this);
-  edit_cursor_edit[RDEditAudio::SegueStart]->setGeometry(398,596,70,21);
-  edit_cursor_edit[RDEditAudio::SegueStart]->setReadOnly(true);
-  edit_cursor_edit[RDEditAudio::SegueStart]->setDragEnabled(false);
-  edit_mapper->
-    setMapping(edit_cursor_edit[RDEditAudio::SegueStart],
+  edit_cue_widget[RDEditAudio::SegueStart]=
+    new RDMarkerWidget(tr("Segue\nStart"),RD_SEGUE_MARKER_COLOR,
+                      edit_sample_rate,this);
+  edit_cue_widget[RDEditAudio::SegueStart]->setGeometry(330,585,158,45);
+  enabled_mapper->setMapping(edit_cue_widget[RDEditAudio::SegueStart],
+                            (int)RDEditAudio::SegueStart);
+  connect(edit_cue_widget[RDEditAudio::SegueStart],SIGNAL(selectionChanged()),
+         enabled_mapper,SLOT(map()));
+  delete_mapper->
+    setMapping(edit_cue_widget[RDEditAudio::SegueStart],(int)RDEditAudio::SegueStart);
+  connect(edit_cue_widget[RDEditAudio::SegueStart],SIGNAL(deleteClicked()),
+         delete_mapper,SLOT(map()));
+  value_mapper->
+    setMapping(edit_cue_widget[RDEditAudio::SegueStart],
 	       (int)RDEditAudio::SegueStart);
-  esc_mapper->
-    setMapping(edit_cursor_edit[RDEditAudio::SegueStart],
-	       (int)RDEditAudio::SegueStart);
-  connect(edit_cursor_edit[RDEditAudio::SegueStart],SIGNAL(returnPressed()),
-	  edit_mapper,SLOT(map()));
-  connect(edit_cursor_edit[RDEditAudio::SegueStart],SIGNAL(escapePressed()),
-	  esc_mapper,SLOT(map()));
-  edit_cursor_edit[RDEditAudio::SegueStart]->
-    setFont(label_font);
-  edit_cue_button[RDEditAudio::SegueStart]=new RDMarkerButton(this);
-  edit_cue_button[RDEditAudio::SegueStart]->setToggleButton(true);
-  edit_cue_button[RDEditAudio::SegueStart]->setGeometry(330,585,66,45);
-  edit_cue_button[RDEditAudio::SegueStart]->setFlashColor(backgroundColor());
-  edit_cue_button[RDEditAudio::SegueStart]->
-    setFlashPeriod(EDITAUDIO_BUTTON_FLASH_PERIOD);
-  edit_cue_button[RDEditAudio::SegueStart]->
-    setPalette(QPalette(QColor(RD_SEGUE_MARKER_COLOR),
-			      backgroundColor()));
-  edit_cue_button[RDEditAudio::SegueStart]->
-    setFont(button_font);
-  edit_cue_button[RDEditAudio::SegueStart]->setText(tr("Segue\nStart"));
-  button_mapper->
-    setMapping(edit_cue_button[RDEditAudio::SegueStart],
-	       (int)RDEditAudio::SegueStart);
+  /*
   connect(edit_cue_button[RDEditAudio::SegueStart],SIGNAL(clicked()),
-	  button_mapper,SLOT(map()));
+  	  button_mapper,SLOT(map()));
 
   edit_cursor_edit[RDEditAudio::SegueEnd]=new RDMarkerEdit(this);
   edit_cursor_edit[RDEditAudio::SegueEnd]->setGeometry(398,641,70,21);
@@ -461,159 +388,79 @@ RDEditAudio::RDEditAudio(RDCart *cart,QString cut_name,RDCae *cae,RDUser *user,
   edit_mapper->
     setMapping(edit_cursor_edit[RDEditAudio::SegueEnd],
 	       (int)RDEditAudio::SegueEnd);
-  esc_mapper->
-    setMapping(edit_cursor_edit[RDEditAudio::SegueEnd],
-	       (int)RDEditAudio::SegueEnd);
-  connect(edit_cursor_edit[RDEditAudio::SegueEnd],SIGNAL(returnPressed()),
-	  edit_mapper,SLOT(map()));
-  connect(edit_cursor_edit[RDEditAudio::SegueEnd],SIGNAL(escapePressed()),
-	  esc_mapper,SLOT(map()));
-  edit_cursor_edit[RDEditAudio::SegueEnd]->
-    setFont(label_font);
-  edit_cue_button[RDEditAudio::SegueEnd]=new RDMarkerButton(this);
-  edit_cue_button[RDEditAudio::SegueEnd]->setToggleButton(true);
-  edit_cue_button[RDEditAudio::SegueEnd]->setGeometry(330,630,66,45);
-  edit_cue_button[RDEditAudio::SegueEnd]->setFlashColor(backgroundColor());
-  edit_cue_button[RDEditAudio::SegueEnd]->
-    setFlashPeriod(EDITAUDIO_BUTTON_FLASH_PERIOD);
-  edit_cue_button[RDEditAudio::SegueEnd]->
-    setPalette(QPalette(QColor(RD_SEGUE_MARKER_COLOR),backgroundColor()));
-  edit_cue_button[RDEditAudio::SegueEnd]->
-    setFont(button_font);
-  edit_cue_button[RDEditAudio::SegueEnd]->setText(tr("Segue\nEnd"));
-  button_mapper->
-    setMapping(edit_cue_button[RDEditAudio::SegueEnd],
-	       (int)RDEditAudio::SegueEnd);
-  connect(edit_cue_button[RDEditAudio::SegueEnd],SIGNAL(clicked()),
-	  button_mapper,SLOT(map()));
+  */
+  connect(edit_cue_widget[RDEditAudio::SegueEnd],SIGNAL(valueChanged()),
+         value_mapper,SLOT(map()));
 
-  edit_cursor_edit[RDEditAudio::FadeUp]=new RDMarkerEdit(this);
-  edit_cursor_edit[RDEditAudio::FadeUp]->setGeometry(88,596,70,21);
-  edit_cursor_edit[RDEditAudio::FadeUp]->setReadOnly(true);
-  edit_cursor_edit[RDEditAudio::FadeUp]->setDragEnabled(false);
-  edit_mapper->
-    setMapping(edit_cursor_edit[RDEditAudio::FadeUp],(int)RDEditAudio::FadeUp);
-  esc_mapper->
-    setMapping(edit_cursor_edit[RDEditAudio::FadeUp],(int)RDEditAudio::FadeUp);
-  connect(edit_cursor_edit[RDEditAudio::FadeUp],SIGNAL(returnPressed()),
-	  edit_mapper,SLOT(map()));
-  connect(edit_cursor_edit[RDEditAudio::FadeUp],SIGNAL(escapePressed()),
-	  esc_mapper,SLOT(map()));
-  edit_cursor_edit[RDEditAudio::FadeUp]->
-    setFont(label_font);
-  edit_cue_button[RDEditAudio::FadeUp]=new RDMarkerButton(this);
-  edit_cue_button[RDEditAudio::FadeUp]->setToggleButton(true);
-  edit_cue_button[RDEditAudio::FadeUp]->setGeometry(20,585,66,45);
-  edit_cue_button[RDEditAudio::FadeUp]->setFlashColor(backgroundColor());
-  edit_cue_button[RDEditAudio::FadeUp]->
-    setFlashPeriod(EDITAUDIO_BUTTON_FLASH_PERIOD);
-  edit_cue_button[RDEditAudio::FadeUp]->
-    setPalette(QPalette(QColor(RD_FADE_MARKER_COLOR),backgroundColor()));
-  edit_cue_button[RDEditAudio::FadeUp]->
-    setFont(button_font);
-  edit_cue_button[RDEditAudio::FadeUp]->setText(tr("Fade\nUp"));
-  button_mapper->
-    setMapping(edit_cue_button[RDEditAudio::FadeUp],(int)RDEditAudio::FadeUp);
-  connect(edit_cue_button[RDEditAudio::FadeUp],SIGNAL(clicked()),
-	  button_mapper,SLOT(map()));
+  edit_cue_widget[RDEditAudio::FadeUp]=
+    new RDMarkerWidget(tr("Fade\nUp"),RD_FADE_MARKER_COLOR,
+                      edit_sample_rate,this);
+  edit_cue_widget[RDEditAudio::FadeUp]->setGeometry(20,585,150,45);
+  enabled_mapper->setMapping(edit_cue_widget[RDEditAudio::FadeUp],
+                            (int)RDEditAudio::FadeUp);
+  connect(edit_cue_widget[RDEditAudio::FadeUp],SIGNAL(selectionChanged()),
+         enabled_mapper,SLOT(map()));
+  delete_mapper->
+    setMapping(edit_cue_widget[RDEditAudio::FadeUp],(int)RDEditAudio::FadeUp);
+  connect(edit_cue_widget[RDEditAudio::FadeUp],SIGNAL(deleteClicked()),
+         delete_mapper,SLOT(map()));
+  value_mapper->
+    setMapping(edit_cue_widget[RDEditAudio::FadeUp],(int)RDEditAudio::FadeUp);
+  connect(edit_cue_widget[RDEditAudio::FadeUp],SIGNAL(valueChanged()),
+         value_mapper,SLOT(map()));
 
-  edit_cursor_edit[RDEditAudio::FadeDown]=new RDMarkerEdit(this);
-  edit_cursor_edit[RDEditAudio::FadeDown]->setGeometry(88,641,70,21);
-  edit_cursor_edit[RDEditAudio::FadeDown]->setReadOnly(true);
-  edit_cursor_edit[RDEditAudio::FadeDown]->setDragEnabled(false);
-  edit_mapper->setMapping(edit_cursor_edit[RDEditAudio::FadeDown],
-			  (int)RDEditAudio::FadeDown);
-  esc_mapper->setMapping(edit_cursor_edit[RDEditAudio::FadeDown],
-			  (int)RDEditAudio::FadeDown);
-  connect(edit_cursor_edit[RDEditAudio::FadeDown],SIGNAL(returnPressed()),
-	  edit_mapper,SLOT(map()));
-  connect(edit_cursor_edit[RDEditAudio::FadeDown],SIGNAL(escapePressed()),
-	  esc_mapper,SLOT(map()));
-  edit_cursor_edit[RDEditAudio::FadeDown]->
-    setFont(label_font);
-  edit_cue_button[RDEditAudio::FadeDown]=new RDMarkerButton(this);
-  edit_cue_button[RDEditAudio::FadeDown]->setToggleButton(true);
-  edit_cue_button[RDEditAudio::FadeDown]->setGeometry(20,630,66,45);
-  edit_cue_button[RDEditAudio::FadeDown]->setFlashColor(backgroundColor());
-  edit_cue_button[RDEditAudio::FadeDown]->
-    setFlashPeriod(EDITAUDIO_BUTTON_FLASH_PERIOD);
-  edit_cue_button[RDEditAudio::FadeDown]->
-    setPalette(QPalette(QColor(RD_FADE_MARKER_COLOR),backgroundColor()));
-  edit_cue_button[RDEditAudio::FadeDown]->
-    setFont(button_font);
-  edit_cue_button[RDEditAudio::FadeDown]->setText("Fade\nDown");
-  button_mapper->
-    setMapping(edit_cue_button[RDEditAudio::FadeDown],(int)RDEditAudio::FadeDown);
-  connect(edit_cue_button[RDEditAudio::FadeDown],SIGNAL(clicked()),
-	  button_mapper,SLOT(map()));
+  edit_cue_widget[RDEditAudio::FadeDown]=
+    new RDMarkerWidget(tr("Fade\nDown"),RD_FADE_MARKER_COLOR,
+                      edit_sample_rate,this);
+  edit_cue_widget[RDEditAudio::FadeDown]->setGeometry(20,630,150,45);
+  enabled_mapper->setMapping(edit_cue_widget[RDEditAudio::FadeDown],
+                            (int)RDEditAudio::FadeDown);
+  connect(edit_cue_widget[RDEditAudio::FadeDown],SIGNAL(selectionChanged()),
+         enabled_mapper,SLOT(map()));
+  delete_mapper->
+    setMapping(edit_cue_widget[RDEditAudio::FadeDown],(int)RDEditAudio::FadeDown);
+  connect(edit_cue_widget[RDEditAudio::FadeDown],SIGNAL(deleteClicked()),
+         delete_mapper,SLOT(map()));
+  value_mapper->
+    setMapping(edit_cue_widget[RDEditAudio::FadeDown],
+              (int)RDEditAudio::FadeDown);
+  connect(edit_cue_widget[RDEditAudio::FadeDown],SIGNAL(valueChanged()),
+         value_mapper,SLOT(map()));
 
-  edit_cursor_edit[RDEditAudio::HookStart]=new RDMarkerEdit(this);
-  edit_cursor_edit[RDEditAudio::HookStart]->setGeometry(553,596,70,21);
-  edit_cursor_edit[RDEditAudio::HookStart]->setReadOnly(true);
-  edit_cursor_edit[RDEditAudio::HookStart]->setDragEnabled(false);
-  edit_mapper->
-    setMapping(edit_cursor_edit[RDEditAudio::HookStart],
+  edit_cue_widget[RDEditAudio::HookStart]=
+    new RDMarkerWidget(tr("Hook\nStart"),RD_HOOK_MARKER_COLOR,
+                      edit_sample_rate,this);
+  edit_cue_widget[RDEditAudio::HookStart]->setGeometry(485,585,150,45);
+  enabled_mapper->setMapping(edit_cue_widget[RDEditAudio::HookStart],
+                            (int)RDEditAudio::HookStart);
+  connect(edit_cue_widget[RDEditAudio::HookStart],SIGNAL(selectionChanged()),
+         enabled_mapper,SLOT(map()));
+  delete_mapper->
+    setMapping(edit_cue_widget[RDEditAudio::HookStart],(int)RDEditAudio::HookStart);
+  connect(edit_cue_widget[RDEditAudio::HookStart],SIGNAL(deleteClicked()),
+         delete_mapper,SLOT(map()));
+  value_mapper->
+    setMapping(edit_cue_widget[RDEditAudio::HookStart],
 	       (int)RDEditAudio::HookStart);
-  esc_mapper->
-    setMapping(edit_cursor_edit[RDEditAudio::HookStart],
-	       (int)RDEditAudio::HookStart);
-  connect(edit_cursor_edit[RDEditAudio::HookStart],SIGNAL(returnPressed()),
-	  edit_mapper,SLOT(map()));
-  connect(edit_cursor_edit[RDEditAudio::HookStart],SIGNAL(escapePressed()),
-	  esc_mapper,SLOT(map()));
-  edit_cursor_edit[RDEditAudio::HookStart]->
-    setFont(label_font);
-  edit_cursor_edit[RDEditAudio::HookStart]->setReadOnly(true);
-  edit_cue_button[RDEditAudio::HookStart]=new RDMarkerButton(this);
-  edit_cue_button[RDEditAudio::HookStart]->setToggleButton(true);
-  edit_cue_button[RDEditAudio::HookStart]->setGeometry(485,585,66,45);
-  edit_cue_button[RDEditAudio::HookStart]->setFlashColor(backgroundColor());
-  edit_cue_button[RDEditAudio::HookStart]->
-    setFlashPeriod(EDITAUDIO_BUTTON_FLASH_PERIOD);
-  edit_cue_button[RDEditAudio::HookStart]->
-    setPalette(QPalette(QColor(RD_HOOK_MARKER_COLOR),
-			      backgroundColor()));
-  edit_cue_button[RDEditAudio::HookStart]->
-    setFont(button_font);
-  edit_cue_button[RDEditAudio::HookStart]->setText(tr("Hook\nStart"));
-  button_mapper->
-    setMapping(edit_cue_button[RDEditAudio::HookStart],
-	       (int)RDEditAudio::HookStart);
-  connect(edit_cue_button[RDEditAudio::HookStart],SIGNAL(clicked()),
-	  button_mapper,SLOT(map()));
+  connect(edit_cue_widget[RDEditAudio::HookStart],SIGNAL(valueChanged()),
+         value_mapper,SLOT(map()));
 
-  edit_cursor_edit[RDEditAudio::HookEnd]=new RDMarkerEdit(this);
-  edit_cursor_edit[RDEditAudio::HookEnd]->setGeometry(553,641,70,21);
-  edit_cursor_edit[RDEditAudio::HookEnd]->setReadOnly(true);
-  edit_cursor_edit[RDEditAudio::HookEnd]->setDragEnabled(false);
-  edit_cursor_edit[RDEditAudio::HookEnd]->
-    setFont(label_font);
-  edit_mapper->
-    setMapping(edit_cursor_edit[RDEditAudio::HookEnd],
-	       (int)RDEditAudio::HookEnd);
-  esc_mapper->
-    setMapping(edit_cursor_edit[RDEditAudio::HookEnd],
-	       (int)RDEditAudio::HookEnd);
-  connect(edit_cursor_edit[RDEditAudio::HookEnd],SIGNAL(returnPressed()),
-	  edit_mapper,SLOT(map()));
-  connect(edit_cursor_edit[RDEditAudio::HookEnd],SIGNAL(escapePressed()),
-	  esc_mapper,SLOT(map()));
-  edit_cue_button[RDEditAudio::HookEnd]=new RDMarkerButton(this,"button");
-  edit_cue_button[RDEditAudio::HookEnd]->setToggleButton(true);
-  edit_cue_button[RDEditAudio::HookEnd]->setGeometry(485,630,66,45);
-  edit_cue_button[RDEditAudio::HookEnd]->setFlashColor(backgroundColor());
-  edit_cue_button[RDEditAudio::HookEnd]->
-    setFlashPeriod(EDITAUDIO_BUTTON_FLASH_PERIOD);
-  edit_cue_button[RDEditAudio::HookEnd]->
-    setPalette(QPalette(QColor(RD_HOOK_MARKER_COLOR),
-			      backgroundColor()));
-  edit_cue_button[RDEditAudio::HookEnd]->
-    setFont(button_font);
-  edit_cue_button[RDEditAudio::HookEnd]->setText(tr("Hook\nEnd"));
-  button_mapper->
-    setMapping(edit_cue_button[RDEditAudio::HookEnd],(int)RDEditAudio::HookEnd);
-  connect(edit_cue_button[RDEditAudio::HookEnd],SIGNAL(clicked()),
-	  button_mapper,SLOT(map()));
+  edit_cue_widget[RDEditAudio::HookEnd]=
+    new RDMarkerWidget(tr("Hook\nEnd"),RD_HOOK_MARKER_COLOR,
+                      edit_sample_rate,this);
+  edit_cue_widget[RDEditAudio::HookEnd]->setGeometry(485,630,150,45);
+  enabled_mapper->setMapping(edit_cue_widget[RDEditAudio::HookEnd],
+                            (int)RDEditAudio::HookEnd);
+  connect(edit_cue_widget[RDEditAudio::HookEnd],SIGNAL(selectionChanged()),
+         enabled_mapper,SLOT(map()));
+  delete_mapper->
+    setMapping(edit_cue_widget[RDEditAudio::HookEnd],(int)RDEditAudio::HookEnd);
+  connect(edit_cue_widget[RDEditAudio::HookEnd],SIGNAL(deleteClicked()),
+         delete_mapper,SLOT(map()));
+  value_mapper->
+    setMapping(edit_cue_widget[RDEditAudio::HookEnd],(int)RDEditAudio::HookEnd);
+  connect(edit_cue_widget[RDEditAudio::HookEnd],SIGNAL(valueChanged()),
+	  value_mapper,SLOT(map()));
 
   //
   // AutoTrim Buttons
@@ -783,91 +630,55 @@ RDEditAudio::RDEditAudio(RDCart *cart,QString cut_name,RDCae *cae,RDUser *user,
   //
   // Populate Counter Fields
   //
-  edit_cursor_edit[RDEditAudio::Start]->
-	  setText(RDGetTimeLength(edit_cut->startPoint(true),true));
-  edit_cursors[RDEditAudio::Start]=(int)(((double)edit_cut->startPoint(true)*
-					(double)edit_sample_rate)
-				       /1152000.0);
-  edit_cursors[RDEditAudio::Play]=edit_cursors[RDEditAudio::Start];
-  baseline=edit_cursors[RDEditAudio::Start];
-  edit_cursor_edit[RDEditAudio::End]->
-	  setText(RDGetTimeLength(edit_cut->endPoint(true),true));
-  edit_cursors[RDEditAudio::End]=(int)(((double)edit_cut->endPoint(true)*
-				      (double)edit_sample_rate)
-				     /1152000.0);
-  if(edit_cut->talkStartPoint()!=-1) {
-    edit_cursor_edit[RDEditAudio::TalkStart]->
-      setText(RDGetTimeLength(edit_cut->talkStartPoint(),true));
-    edit_cursors[RDEditAudio::TalkStart]=
-      (int)(((double)edit_cut->talkStartPoint()*
-	     (double)edit_sample_rate)/1152000.0);
-  }
-  else {
-    edit_cursors[RDEditAudio::TalkStart]=-1;
-  }
-  if(edit_cut->talkEndPoint()!=-1) {
-    edit_cursor_edit[RDEditAudio::TalkEnd]->
-      setText(RDGetTimeLength(edit_cut->talkEndPoint(),true));
-    edit_cursors[RDEditAudio::TalkEnd]=(int)(((double)edit_cut->talkEndPoint()*
-			   (double)edit_sample_rate)/1152000.0);
-  }
-  else {
-    edit_cursors[RDEditAudio::TalkEnd]=-1;
-  }
-  if(edit_cut->segueStartPoint()!=-1) {
-    edit_cursor_edit[RDEditAudio::SegueStart]->
-      setText(RDGetTimeLength(edit_cut->segueStartPoint(),true));
-    edit_cursors[RDEditAudio::SegueStart]=
-      (int)(((double)edit_cut->segueStartPoint()*
-	     (double)edit_sample_rate)/1152000.0);
-  }
-  else {
-    edit_cursors[RDEditAudio::SegueStart]=-1;
-  }
-  if(edit_cut->segueEndPoint()!=-1) {
-    edit_cursor_edit[RDEditAudio::SegueEnd]->
-      setText(RDGetTimeLength(edit_cut->segueEndPoint(),true));
-    edit_cursors[RDEditAudio::SegueEnd]=(int)(((double)edit_cut->segueEndPoint()*
-			     (double)edit_sample_rate)/1152000.0);
-  }
-  else {
-    edit_cursors[RDEditAudio::SegueEnd]=-1;
-  }
-  if(edit_cut->fadeupPoint()!=-1) {
-    edit_cursor_edit[RDEditAudio::FadeUp]->setText(RDGetTimeLength(edit_cut->fadeupPoint(),true));
-    edit_cursors[RDEditAudio::FadeUp]=(int)(((double)edit_cut->fadeupPoint()*
-			 (double)edit_sample_rate)/1152000.0);
-  }
-  else {
-    edit_cursors[RDEditAudio::FadeUp]=-1;
-  }
-  if(edit_cut->fadedownPoint()!=-1) {
-    edit_cursor_edit[RDEditAudio::FadeDown]->
-      setText(RDGetTimeLength(edit_cut->fadedownPoint(),true));
-    edit_cursors[RDEditAudio::FadeDown]=(int)(((double)edit_cut->fadedownPoint()*
-			   (double)edit_sample_rate)/1152000.0);
-  }
-  else {
-    edit_cursors[RDEditAudio::FadeDown]=-1;
-  }
-  if(edit_cut->hookStartPoint()!=-1) {
-    edit_cursor_edit[RDEditAudio::HookStart]->
-      setText(RDGetTimeLength(edit_cut->hookStartPoint(),true));
-    edit_cursors[RDEditAudio::HookStart]=(int)(((double)edit_cut->hookStartPoint()*
-			     (double)edit_sample_rate)/1152000.0);
-  }
-  else {
-    edit_cursors[RDEditAudio::HookStart]=-1;
-  }
-  if(edit_cut->hookEndPoint()!=-1) {
-    edit_cursor_edit[RDEditAudio::HookEnd]->
-      setText(RDGetTimeLength(edit_cut->hookEndPoint(),true));
-    edit_cursors[RDEditAudio::HookEnd]=(int)(((double)edit_cut->hookEndPoint()*
-			   (double)edit_sample_rate)/1152000.0);
-  }
-  else {
-    edit_cursors[RDEditAudio::HookEnd]=-1;
-  }
+  edit_cue_widget[RDEditAudio::Start]->setValue(edit_cut->startPoint(true));
+  edit_cue_widget[RDEditAudio::Start]->setRange(0,-1);
+  edit_cue_widget[RDEditAudio::Start]->
+    setRange(NULL,edit_cue_widget[RDEditAudio::End]);
+  edit_cursor=edit_cue_widget[RDEditAudio::Start]->frames();
+  baseline=edit_cursor;
+  edit_cue_widget[RDEditAudio::End]->setValue(edit_cut->endPoint(true));
+  edit_cue_widget[RDEditAudio::End]->setRange(-1,edit_cut->length());
+  edit_cue_widget[RDEditAudio::End]->
+    setRange(edit_cue_widget[RDEditAudio::Start],NULL);
+
+  edit_cue_widget[RDEditAudio::TalkStart]->setValue(edit_cut->talkStartPoint());
+  edit_cue_widget[RDEditAudio::TalkStart]->
+    setRange(edit_cue_widget[RDEditAudio::Start],
+            edit_cue_widget[RDEditAudio::TalkEnd]);
+  edit_cue_widget[RDEditAudio::TalkEnd]->setValue(edit_cut->talkEndPoint());
+  edit_cue_widget[RDEditAudio::TalkStart]->
+    setRange(edit_cue_widget[RDEditAudio::TalkStart],
+            edit_cue_widget[RDEditAudio::End]);
+
+  edit_cue_widget[RDEditAudio::SegueStart]->
+    setValue(edit_cut->segueStartPoint());
+  edit_cue_widget[RDEditAudio::SegueStart]->
+    setRange(edit_cue_widget[RDEditAudio::Start],
+            edit_cue_widget[RDEditAudio::SegueEnd]);
+  edit_cue_widget[RDEditAudio::SegueEnd]->setValue(edit_cut->segueEndPoint());
+  edit_cue_widget[RDEditAudio::SegueStart]->
+    setRange(edit_cue_widget[RDEditAudio::SegueStart],
+            edit_cue_widget[RDEditAudio::End]);
+
+  edit_cue_widget[RDEditAudio::FadeUp]->setValue(edit_cut->fadeupPoint());
+  edit_cue_widget[RDEditAudio::FadeUp]->
+    setRange(edit_cue_widget[RDEditAudio::Start],
+            edit_cue_widget[RDEditAudio::FadeDown]);
+
+  edit_cue_widget[RDEditAudio::FadeDown]->setValue(edit_cut->fadedownPoint());
+  edit_cue_widget[RDEditAudio::FadeDown]->
+    setRange(edit_cue_widget[RDEditAudio::FadeUp],
+            edit_cue_widget[RDEditAudio::End]);
+
+  edit_cue_widget[RDEditAudio::HookStart]->setValue(edit_cut->hookStartPoint());
+  edit_cue_widget[RDEditAudio::HookStart]->
+    setRange(edit_cue_widget[RDEditAudio::Start],
+            edit_cue_widget[RDEditAudio::HookEnd]);
+  edit_cue_widget[RDEditAudio::HookEnd]->setValue(edit_cut->hookEndPoint());
+  edit_cue_widget[RDEditAudio::HookEnd]->
+    setRange(edit_cue_widget[RDEditAudio::HookStart],
+            edit_cue_widget[RDEditAudio::End]);
+
   edit_gain_control->setValue(edit_cut->playGain());
   edit_trim_box->setValue(trim_level/100);
   if(edit_cut->segueGain()==0) {
@@ -892,8 +703,7 @@ RDEditAudio::RDEditAudio(RDCart *cart,QString cut_name,RDCae *cae,RDUser *user,
   // Set Control Perms
   //
   for(int i=1;i<RDEditAudio::LastMarker;i++) {
-    edit_cursor_edit[i]->setReadOnly(!editing_allowed);
-    edit_cue_button[i]->setEnabled(editing_allowed);
+    edit_cue_widget[i]->setEnabled(editing_allowed);
   }
   edit_remove_button->setEnabled(editing_allowed);
   gain_up_button->setEnabled(editing_allowed);
@@ -1029,7 +839,7 @@ void RDEditAudio::yDown()
 
 void RDEditAudio::gotoCursorData()
 {
-  edit_hscroll->setValue(edit_cursors[RDEditAudio::Play]-
+  edit_hscroll->setValue(edit_cursor-
     (int)(edit_factor_x*(double)EDITAUDIO_WAVEFORM_WIDTH/2.0));
 }
 
@@ -1059,27 +869,31 @@ void RDEditAudio::playStartData()
     return;
   }
   edit_cae->
-    positionPlay(edit_handle,GetTime(edit_cursors[RDEditAudio::Start]*1152));
+    positionPlay(edit_handle,
+		 GetTime(edit_cue_widget[RDEditAudio::Start]->frames()*1152));
   switch(edit_cue_point) {
-      case RDEditAudio::End:
-      case RDEditAudio::SegueEnd:
-      case RDEditAudio::TalkEnd:
-      case RDEditAudio::HookEnd:
-	played_cursor=edit_cursors[edit_cue_point]-edit_preroll/1152;
-	break;
+  case RDEditAudio::End:
+  case RDEditAudio::SegueEnd:
+  case RDEditAudio::TalkEnd:
+  case RDEditAudio::HookEnd:
+    played_cursor=
+      edit_cue_widget[edit_cue_point]->frames()-edit_preroll/1152;
+    break;
 
-      default:
-	played_cursor=edit_cursors[edit_cue_point];
-	break;
+  case RDEditAudio::Play:
+    played_cursor=edit_cursor;
+    break;
+
+  default:
+    played_cursor=edit_cue_widget[edit_cue_point]->frames();
+    break;
   }
   if(!is_playing) {
     edit_cae->setPlayPortActive(edit_card,edit_port,edit_stream);
     edit_cae->
       setOutputVolume(edit_card,edit_stream,edit_port,0+edit_gain_control->value());
-    edit_cae->play(edit_handle,(int)(1000.0*(double)
-				     ((edit_cursors[RDEditAudio::End]-
-			    edit_cursors[RDEditAudio::Start])*1152)/
-				     (double)edit_sample_rate),
+    edit_cae->play(edit_handle,edit_cue_widget[RDEditAudio::End]->value()-
+		   edit_cue_widget[RDEditAudio::Start]->value(),
 		   RD_TIMESCALE_DIVISOR,0);
   }
   if(use_looping) {
@@ -1100,46 +914,36 @@ void RDEditAudio::playCursorData()
     return;
   }
   switch(edit_cue_point) {
-      case RDEditAudio::Play:
-      case RDEditAudio::Start:
-      case RDEditAudio::End:
-      case RDEditAudio::FadeDown:
-	length=(int)(1000.0*(double)((edit_cursors[RDEditAudio::End]-
-			   edit_cursors[RDEditAudio::Play])*1152)/
-			   (double)edit_sample_rate);
-	break;
+  case RDEditAudio::Play:
+  case RDEditAudio::Start:
+  case RDEditAudio::End:
+  case RDEditAudio::FadeDown:
+    length=edit_cue_widget[RDEditAudio::End]->value();
+    break;
 
-      case RDEditAudio::SegueStart:
-      case RDEditAudio::SegueEnd:
-	length=(int)(1000.0*(double)((edit_cursors[RDEditAudio::SegueEnd]-
-		     edit_cursors[RDEditAudio::Play])*1152)/
-		     (double)edit_sample_rate);
-	break;
+  case RDEditAudio::SegueStart:
+  case RDEditAudio::SegueEnd:
+    length=edit_cue_widget[RDEditAudio::SegueEnd]->value();
+    break;
 
-      case RDEditAudio::TalkStart:
-      case RDEditAudio::TalkEnd:
-	length=(int)(1000.0*(double)((edit_cursors[RDEditAudio::TalkEnd]-
-		     edit_cursors[RDEditAudio::Play])*1152)/
-		     (double)edit_sample_rate);
-	break;
+  case RDEditAudio::TalkStart:
+  case RDEditAudio::TalkEnd:
+    length=edit_cue_widget[RDEditAudio::TalkEnd]->value();
+    break;
 
-      case RDEditAudio::HookStart:
-      case RDEditAudio::HookEnd:
-	length=(int)(1000.0*(double)((edit_cursors[RDEditAudio::HookEnd]-
-		     edit_cursors[RDEditAudio::Play])*1152)/
-		     (double)edit_sample_rate);
-	break;
+  case RDEditAudio::HookStart:
+  case RDEditAudio::HookEnd:
+    length=edit_cue_widget[RDEditAudio::HookEnd]->value();
+    break;
 
-      case RDEditAudio::FadeUp:
-	length=(int)(1000.0*(double)((edit_cursors[RDEditAudio::FadeUp]-
-		     edit_cursors[RDEditAudio::Play])*1152)/
-		     (double)edit_sample_rate);
-	break;
+  case RDEditAudio::FadeUp:
+    length=edit_cue_widget[RDEditAudio::FadeUp]->value();
+    break;
 
-      default:
-	break;
+  case LastMarker:
+    break;
   }
-  played_cursor=edit_cursors[RDEditAudio::Play];
+  played_cursor=edit_cursor;
 
   pause_mode=false;
   if(!is_playing) {
@@ -1214,8 +1018,8 @@ void RDEditAudio::pausedData(int handle)
   if(is_looping) {
     switch(edit_play_mode) {
 	case RDEditAudio::FromStart:
-	  LoopRegion(edit_cursors[RDEditAudio::Start],
-		     edit_cursors[RDEditAudio::End]);
+         LoopRegion(edit_cue_widget[RDEditAudio::Start]->frames(),
+                    edit_cue_widget[RDEditAudio::End]->frames());
 	  break;
 	  
 	case RDEditAudio::FromCursor:
@@ -1223,36 +1027,36 @@ void RDEditAudio::pausedData(int handle)
 	  switch(edit_cue_point) {
 	      case RDEditAudio::Start:
 	      case RDEditAudio::End:
-		LoopRegion(edit_cursors[RDEditAudio::Start],
-			   edit_cursors[RDEditAudio::End]);
+		LoopRegion(edit_cue_widget[RDEditAudio::Start]->frames(),
+			   edit_cue_widget[RDEditAudio::End]->frames());
 		break;
 		
 	      case RDEditAudio::SegueStart:
 	      case RDEditAudio::SegueEnd:
-		LoopRegion(edit_cursors[RDEditAudio::SegueStart],
-			   edit_cursors[RDEditAudio::SegueEnd]);
+		LoopRegion(edit_cue_widget[RDEditAudio::SegueStart]->frames(),
+			   edit_cue_widget[RDEditAudio::SegueEnd]->frames());
 		break;
 		
 	      case RDEditAudio::TalkStart:
 	      case RDEditAudio::TalkEnd:
-		LoopRegion(edit_cursors[RDEditAudio::TalkStart],
-			   edit_cursors[RDEditAudio::TalkEnd]);
+		LoopRegion(edit_cue_widget[RDEditAudio::TalkStart]->frames(),
+			   edit_cue_widget[RDEditAudio::TalkEnd]->frames());
 		break;
 		
 	      case RDEditAudio::HookStart:
 	      case RDEditAudio::HookEnd:
-		LoopRegion(edit_cursors[RDEditAudio::HookStart],
-			   edit_cursors[RDEditAudio::HookEnd]);
+		LoopRegion(edit_cue_widget[RDEditAudio::HookStart]->frames(),
+			   edit_cue_widget[RDEditAudio::HookEnd]->frames());
 		break;
 		
 	      case RDEditAudio::FadeUp:
-		LoopRegion(edit_cursors[RDEditAudio::Start],
-			   edit_cursors[RDEditAudio::FadeUp]);
+		LoopRegion(edit_cue_widget[RDEditAudio::Start]->frames(),
+			   edit_cue_widget[RDEditAudio::FadeUp]->frames());
 		break;
 		
 	      case RDEditAudio::FadeDown:
-		LoopRegion(edit_cursors[RDEditAudio::FadeDown],
-			   edit_cursors[RDEditAudio::End]);
+		LoopRegion(edit_cue_widget[RDEditAudio::FadeDown]->frames(),
+			   edit_cue_widget[RDEditAudio::End]->frames());
 		break;
 
 	      default:
@@ -1286,104 +1090,103 @@ void RDEditAudio::pausedData(int handle)
   
 void RDEditAudio::positionData(int handle,unsigned int pos)
 { //pos is in miliseconds
-  edit_cursors[RDEditAudio::Play]=
+  edit_cursor=
     (unsigned int)((double)pos*edit_sample_rate/1152000.0);
   if((edit_sample_rate%8000)!=0) { //Account for the MPEG padding!
-    edit_cursors[RDEditAudio::Play]++;
+    edit_cursor++;
   }
   UpdateCursors();
   UpdateCounters();
 }
 
 
-void RDEditAudio::cuePointData(int id)
+void RDEditAudio::markerButtonEnabledData(int id)
 {
   if(is_playing) {
-    edit_cue_button[id]->toggle();
     return;
   }
-  if(delete_marker) {
+  if(edit_cue_widget[id]->isSelected()) {
+    for(int i=1;i<RDEditAudio::LastMarker;i++) {
+      if(i!=id) {
+       edit_cue_widget[i]->setSelected(false);
+      }
+    }
+    if(edit_cue_point!=RDEditAudio::Play) {
+      markerValueChangedData(edit_cue_point);
+    }
+    edit_cue_point=(RDEditAudio::CuePoints)id;
     switch(id) {
-	case RDEditAudio::SegueStart:
-	case RDEditAudio::SegueEnd:
-	  deleteSegueData();
-	  break;
+    case RDEditAudio::Start:
+    case RDEditAudio::SegueStart:
+    case RDEditAudio::TalkStart:
+    case RDEditAudio::HookStart:
+    case RDEditAudio::FadeDown:
+      edit_cae->positionPlay(edit_handle,edit_cue_widget[id]->value());
+      break;
 
-	case RDEditAudio::TalkStart:
-	case RDEditAudio::TalkEnd:
-	  deleteTalkData();
-	  break;
-
-	case RDEditAudio::HookStart:
-	case RDEditAudio::HookEnd:
-	  deleteHookData();
-	  break;
-
-	case RDEditAudio::FadeUp:
-	  deleteFadeupData();
-	  break;
-
-	case RDEditAudio::FadeDown:
-	  deleteFadedownData();
-	  break;
+    case RDEditAudio::End:
+    case RDEditAudio::SegueEnd:
+    case RDEditAudio::TalkEnd:
+    case RDEditAudio::HookEnd:
+    case RDEditAudio::FadeUp:
+      PreRoll(edit_cue_widget[id]->frames()*1152,(RDEditAudio::CuePoints)id);
+      break;
     }
-    for(int i=1;i<11;i++) {
-      edit_cue_button[i]->setToggleButton(true);
-    }
-    edit_remove_button->setFlashingEnabled(false);
-    edit_remove_button->setOn(false);
-    delete_marker=false;
   }
   else {
-    if(edit_cue_button[id]->isOn()) {
-      edit_cue_button[id]->setFlashingEnabled(true);
-      if(edit_cue_point!=RDEditAudio::Play) {
-	cueEditData(edit_cue_point);
-	edit_cue_button[edit_cue_point]->setOn(false);
-	edit_cue_button[edit_cue_point]->setFlashingEnabled(false);
-	edit_cursor_edit[edit_cue_point]->setReadOnly(true);
-      }
-      edit_cue_point=(RDEditAudio::CuePoints)id;
-      edit_cue_string=edit_cursor_edit[edit_cue_point]->text();
-      edit_cursor_edit[edit_cue_point]->setReadOnly(false);
-      switch(id) {
-	  case RDEditAudio::Start:
-	  case RDEditAudio::SegueStart:
-	  case RDEditAudio::TalkStart:
-	  case RDEditAudio::HookStart:
-	  case RDEditAudio::FadeDown:
-	    edit_cae->positionPlay(edit_handle,GetTime(edit_cursors[id]*1152));
-	    break;
-
-	  case RDEditAudio::End:
-	  case RDEditAudio::SegueEnd:
-	  case RDEditAudio::TalkEnd:
-	  case RDEditAudio::HookEnd:
-	  case RDEditAudio::FadeUp:
-	    PreRoll(edit_cursors[id]*1152,(RDEditAudio::CuePoints)id);
-	    break;
-      }
-    }
-    else {
-      edit_cue_button[id]->setFlashingEnabled(false);
-      edit_cue_point=RDEditAudio::Play;
-      edit_cae->positionPlay(edit_handle,0);
-    }
+    edit_cue_point=RDEditAudio::Play;
+    edit_cae->positionPlay(edit_handle,0);
   }
   UpdateCounters();
 }
 
+void RDEditAudio::markerButtonDeleteData(int id)
+{
+  if(is_playing) {
+    return;
+  }
+  switch(id) {
+  case RDEditAudio::SegueStart:
+  case RDEditAudio::SegueEnd:
+    deleteSegueData();
+    break;
 
-void RDEditAudio::cueEditData(int id)
+  case RDEditAudio::TalkStart:
+  case RDEditAudio::TalkEnd:
+    deleteTalkData();
+    break;
+
+  case RDEditAudio::HookStart:
+  case RDEditAudio::HookEnd:
+    deleteHookData();
+    break;
+
+  case RDEditAudio::FadeUp:
+    deleteFadeupData();
+    break;
+
+  case RDEditAudio::FadeDown:
+    deleteFadedownData();
+    break;
+  }
+  for(int i=3;i<11;i++) {
+    edit_cue_widget[i]->setDeleteMode(false);
+  }
+  edit_remove_button->setFlashingEnabled(false);
+  edit_remove_button->setOn(false);
+  delete_marker=false;
+  UpdateCounters();
+}
+
+
+void RDEditAudio::markerValueChangedData(int id)
 {
   int cursor;
   int old_cursor;
 
-  old_cursor=1152*edit_cursors[id];
-  if((cursor=(int)((double)(RDSetTimeLength(edit_cursor_edit[id]->text())*
-      (double)edit_sample_rate/1000.0)))<0) {
-    cursor=1152*edit_cursors[id];
-    edit_cursor_edit[id]->setText(edit_cue_string);
+  old_cursor=1152*edit_cue_widget[id]->frames();
+  cursor=edit_cue_widget[id]->frames()*1152;
+  if(cursor<0) {
     return;
   }
   ignore_pause=true;
@@ -1391,76 +1194,68 @@ void RDEditAudio::cueEditData(int id)
     PositionCursor(old_cursor);
   }
   ignore_pause=false;
-  edit_cursor_edit[id]->setFocus();
-  edit_cursor_edit[id]->selectAll();
-  return;
-}
-
-
-void RDEditAudio::cueEscData(int id)
-{
-  edit_cursor_edit[id]->setText(edit_cue_string);
-  edit_cursor_edit[id]->selectAll();
+  //  edit_cursor_edit[id]->setFocus();
+  //  edit_cursor_edit[id]->selectAll();
 }
 
 
 void RDEditAudio::updateMenuData()
 {
-  if(edit_cursors[RDEditAudio::Start]!=-1) {
+  if(edit_cue_widget[RDEditAudio::Start]->value()!=-1) {
     edit_menu->setItemEnabled(RDEditAudio::Start,true);
   }
   else {
     edit_menu->setItemEnabled(RDEditAudio::Start,false);
   } 
-  if(edit_cursors[RDEditAudio::End]!=-1) {
+  if(edit_cue_widget[RDEditAudio::End]->value()!=-1) {
     edit_menu->setItemEnabled(RDEditAudio::End,true);
   }
   else {
     edit_menu->setItemEnabled(RDEditAudio::End,false);
   }
-  if(edit_cursors[RDEditAudio::SegueStart]!=-1) {
+  if(edit_cue_widget[RDEditAudio::SegueStart]->value()!=-1) {
     edit_menu->setItemEnabled(RDEditAudio::SegueStart,true);
   }
   else {
     edit_menu->setItemEnabled(RDEditAudio::SegueStart,false);
   }
-  if(edit_cursors[RDEditAudio::SegueEnd]!=-1) {
+  if(edit_cue_widget[RDEditAudio::SegueEnd]->value()!=-1) {
     edit_menu->setItemEnabled(RDEditAudio::SegueEnd,true);
   }
   else {
     edit_menu->setItemEnabled(RDEditAudio::SegueEnd,false);
   }
-  if(edit_cursors[RDEditAudio::TalkStart]!=-1) {
+  if(edit_cue_widget[RDEditAudio::TalkStart]->value()!=-1) {
     edit_menu->setItemEnabled(RDEditAudio::TalkStart,true);
   }
   else {
     edit_menu->setItemEnabled(RDEditAudio::TalkStart,false);
   }
-  if(edit_cursors[RDEditAudio::TalkEnd]!=-1) {
+  if(edit_cue_widget[RDEditAudio::TalkEnd]->value()!=-1) {
     edit_menu->setItemEnabled(RDEditAudio::TalkEnd,true);
   }
   else {
     edit_menu->setItemEnabled(RDEditAudio::TalkEnd,false);
   }
-  if(edit_cursors[RDEditAudio::FadeUp]!=-1) {
+  if(edit_cue_widget[RDEditAudio::FadeUp]->value()!=-1) {
     edit_menu->setItemEnabled(RDEditAudio::FadeUp,true);
   }
   else {
     edit_menu->setItemEnabled(RDEditAudio::FadeUp,false);
   }
-  if(edit_cursors[RDEditAudio::FadeDown]!=-1) {
+  if(edit_cue_widget[RDEditAudio::FadeDown]->value()!=-1) {
     edit_menu->setItemEnabled(RDEditAudio::FadeDown,true);
   }
   else {
     edit_menu->setItemEnabled(RDEditAudio::FadeDown,false);
   }
-  if(edit_cursors[RDEditAudio::HookStart]!=-1) {
+  if(edit_cue_widget[RDEditAudio::HookStart]->value()!=-1) {
     edit_menu->setItemEnabled(RDEditAudio::HookStart,true);
   }
   else {
     edit_menu->setItemEnabled(RDEditAudio::HookStart,false);
   }
-  if(edit_cursors[RDEditAudio::HookEnd]!=-1) {
+  if(edit_cue_widget[RDEditAudio::HookEnd]->value()!=-1) {
     edit_menu->setItemEnabled(RDEditAudio::HookEnd,true);
   }
   else {
@@ -1632,19 +1427,18 @@ void RDEditAudio::removeButtonData()
 {
   if(edit_remove_button->isOn()) {
     if(edit_cue_point!=RDEditAudio::Play) {
-      edit_cue_button[edit_cue_point]->setOn(false);
-      edit_cue_button[edit_cue_point]->setFlashingEnabled(false);
+      edit_cue_widget[edit_cue_point]->setSelected(false);
       edit_cue_point=RDEditAudio::Play;
     }
-    for(int i=1;i<11;i++) {
-      edit_cue_button[i]->setToggleButton(false);
+    for(int i=3;i<RDEditAudio::LastMarker;i++) {
+      edit_cue_widget[i]->setDeleteMode(true);
     }
     edit_remove_button->setFlashingEnabled(true);
     delete_marker=true;
   }
   else {
-    for(int i=1;i<11;i++) {
-      edit_cue_button[i]->setToggleButton(true);
+    for(int i=3;i<11;i++) {
+      edit_cue_widget[i]->setDeleteMode(false);
     }
     edit_remove_button->setFlashingEnabled(false);
     delete_marker=false;
@@ -1867,31 +1661,26 @@ void RDEditAudio::DeleteMarkerData(int id)
     return;
   }
   switch(id) {
-      case RDEditAudio::Start:
-      case RDEditAudio::TalkStart:
-      case RDEditAudio::SegueStart:
-      case RDEditAudio::HookStart:
-	edit_cursors[id]=-1;
-	edit_cursors[id+1]=-1;
-	edit_cursor_edit[id]->clear();
-	edit_cursor_edit[id+1]->clear();
-	break;
+  case RDEditAudio::Start:
+  case RDEditAudio::TalkStart:
+  case RDEditAudio::SegueStart:
+  case RDEditAudio::HookStart:
+    edit_cue_widget[id]->setValue(-1);
+    edit_cue_widget[id+1]->setValue(-1);
+    break;
 
-      case RDEditAudio::End:
-      case RDEditAudio::TalkEnd:
-      case RDEditAudio::SegueEnd:
-      case RDEditAudio::HookEnd:
-	edit_cursors[id]=-1;
-	edit_cursors[id-1]=-1;
-	edit_cursor_edit[id]->clear();
-	edit_cursor_edit[id-1]->clear();
-	break;
+  case RDEditAudio::End:
+  case RDEditAudio::TalkEnd:
+  case RDEditAudio::SegueEnd:
+  case RDEditAudio::HookEnd:
+    edit_cue_widget[id]->setValue(-1);
+    edit_cue_widget[id-1]->setValue(-1);
+    break;
 
-      case RDEditAudio::FadeUp:
-      case RDEditAudio::FadeDown:
-	edit_cursors[id]=-1;
-	edit_cursor_edit[id]->clear();
-	break;
+  case RDEditAudio::FadeUp:
+  case RDEditAudio::FadeDown:
+    edit_cue_widget[id]->setValue(-1);
+    break;
   }
   UpdateCursors();
   UpdateCounters();
@@ -1903,39 +1692,40 @@ void RDEditAudio::PreRoll(int cursor,RDEditAudio::CuePoints point)
   int prepoint=cursor-edit_preroll;
   switch(point) {
       case RDEditAudio::SegueEnd:
-	if(prepoint>1152*edit_cursors[RDEditAudio::SegueStart]) {
+       if(prepoint>1152*edit_cue_widget[RDEditAudio::SegueStart]->frames()) {
 	  edit_cae->positionPlay(edit_handle,GetTime(prepoint));
 	}
 	else {
 	  edit_cae->positionPlay(edit_handle,
-			   GetTime(1152*edit_cursors[RDEditAudio::SegueStart]));
+				 GetTime(1152*edit_cue_widget[RDEditAudio::SegueStart]->frames()));
 	}
 	break;
       case RDEditAudio::End:
-	if(prepoint>1152*edit_cursors[RDEditAudio::Start]) {
+       if(prepoint>1152*edit_cue_widget[RDEditAudio::Start]->frames()) {
 	  edit_cae->positionPlay(edit_handle,GetTime(prepoint));
 	}
 	else {
 	  edit_cae->positionPlay(edit_handle,
-			      GetTime(1152*edit_cursors[RDEditAudio::Start]));
+                                GetTime(1152*edit_cue_widget[RDEditAudio::Start]->frames()));
 	}
 	break;
       case RDEditAudio::TalkEnd:
-	if(prepoint>1152*edit_cursors[RDEditAudio::TalkStart]) {
+       if(prepoint>1152*edit_cue_widget[RDEditAudio::TalkStart]->frames()) {
 	  edit_cae->positionPlay(edit_handle,GetTime(prepoint));
 	}
 	else {
 	  edit_cae->positionPlay(edit_handle,
-			     GetTime(1152*edit_cursors[RDEditAudio::TalkStart]));
+                                GetTime(1152*edit_cue_widget[RDEditAudio::TalkStart]->frames()));
 	}
 	break;
       case RDEditAudio::HookEnd:
-	if(prepoint>1152*edit_cursors[RDEditAudio::HookStart]) {
+       if(prepoint>1152*edit_cue_widget[RDEditAudio::HookStart]->frames()) {
 	  edit_cae->positionPlay(edit_handle,GetTime(prepoint));
 	}
 	else {
-	  edit_cae->positionPlay(edit_handle,
-			     GetTime(1152*edit_cursors[RDEditAudio::HookStart]));
+	  edit_cae->
+	    positionPlay(edit_handle,
+	      GetTime(1152*edit_cue_widget[RDEditAudio::HookStart]->frames()));
 	}
 	break;
 
@@ -1952,39 +1742,36 @@ bool RDEditAudio::PositionCursor(int cursor,bool relative)
       case RDEditAudio::TalkStart:
       case RDEditAudio::HookStart:
       case RDEditAudio::SegueStart:
-	if((edit_cursors[edit_cue_point+1]==-1)&&(cursor!=-1)) {
-	  edit_cursors[edit_cue_point+1]=edit_cursors[RDEditAudio::End];
-	  edit_cursor_edit[edit_cue_point+1]->
-	    setText(RDGetTimeLength(
-		     (int)(1152000.0*(double)edit_cursors[edit_cue_point+1]/
-		 (double)edit_sample_rate),true));
+       if((edit_cue_widget[edit_cue_point+1]->value()==-1)&&(cursor!=-1)) {
+         edit_cue_widget[edit_cue_point+1]->
+           setFrames(edit_cue_widget[RDEditAudio::End]->frames());
 	}
 	if(relative) {
-	  if((edit_cursors[edit_cue_point]+cursor/1152)>
-	     edit_cursors[edit_cue_point+1]) {
+	  if((edit_cue_widget[edit_cue_point]->frames()+cursor/1152)>
+	     edit_cue_widget[edit_cue_point+1]->frames()) {
 	    return false;
 	  }
-	  if(((edit_cursors[edit_cue_point]+cursor/1152)<
-	      edit_cursors[RDEditAudio::Start])&&
-	     (edit_cue_point!=RDEditAudio::Start)) {
-	    return false;
-	  }
-	  edit_cursors[edit_cue_point]+=cursor/1152;
-	  cursor=edit_cursors[edit_cue_point]*1152;
-	}
-	else {
-	  if((cursor/1152)>edit_cursors[edit_cue_point+1]) {
-	    return false;
-	  }
-	  if(((cursor/1152)<edit_cursors[RDEditAudio::Start])&&
+         if(((edit_cue_widget[edit_cue_point]->frames()+cursor/1152)<
+             edit_cue_widget[RDEditAudio::Start]->frames())&&
 	    (edit_cue_point!=RDEditAudio::Start)) {
 	    return false;
 	  }
-	  edit_cursors[edit_cue_point]=cursor/1152;
+         edit_cue_widget[edit_cue_point]->
+           setValue(edit_cue_widget[edit_cue_point]->frames()+cursor/1152);
+         cursor=edit_cue_widget[edit_cue_point]->frames()*1152;
 	}
-	edit_cursor_edit[edit_cue_point]->
-	  setText(RDGetTimeLength((int)(1000.0*(double)cursor/
-			       (double)edit_sample_rate),true));
+	else {
+         if((cursor/1152)>edit_cue_widget[edit_cue_point+1]->frames()) {
+	    return false;
+	  }
+         if(((cursor/1152)<edit_cue_widget[RDEditAudio::Start]->frames())&&
+	    (edit_cue_point!=RDEditAudio::Start)) {
+	   return false;
+	 }
+         edit_cue_widget[edit_cue_point]->setFrames(cursor/1152);
+	}
+       edit_cue_widget[edit_cue_point]->
+         setValue((int)(1000.0*(double)cursor/(double)edit_sample_rate));
 	edit_cae->positionPlay(edit_handle,GetTime(cursor));
 	break;
 	
@@ -1992,37 +1779,34 @@ bool RDEditAudio::PositionCursor(int cursor,bool relative)
       case RDEditAudio::TalkEnd:
       case RDEditAudio::HookEnd:
       case RDEditAudio::SegueEnd:
-	if((edit_cursors[edit_cue_point-1]==-1)&&(cursor!=-1)) {
-	  edit_cursors[edit_cue_point-1]=edit_cursors[RDEditAudio::Start];
-	  edit_cursor_edit[edit_cue_point-1]->
-	    setText(RDGetTimeLength(
-		  (int)(1152000.0*(double)edit_cursors[edit_cue_point-1]/
-		 (double)edit_sample_rate),true));
+       if((edit_cue_widget[edit_cue_point-1]->value()==-1)&&(cursor!=-1)) {
+         edit_cue_widget[edit_cue_point-1]->setFrames(edit_cue_widget[RDEditAudio::Start]->frames());
 	}
 	if(relative) {
-	  if((edit_cursors[edit_cue_point]+cursor/1152)<
-	     edit_cursors[edit_cue_point-1]) {
+         if((edit_cue_widget[edit_cue_point]->frames()+cursor/1152)<
+            edit_cue_widget[edit_cue_point-1]->frames()) {
 	    return false;
 	  }
-	  if(((edit_cursors[edit_cue_point]+cursor/1152)>
-	      edit_cursors[RDEditAudio::End])&&
+         if(((edit_cue_widget[edit_cue_point]->frames()+cursor/1152)>
+             edit_cue_widget[RDEditAudio::End]->frames())&&
 	     (edit_cue_point!=RDEditAudio::End)) {
 	    return false;
 	  }
 	  if((edit_cue_point==RDEditAudio::End)&&
-	     ((1152*edit_cursors[edit_cue_point]+cursor)
+            ((1152*edit_cue_widget[edit_cue_point]->frames()+cursor)
 	      >(int)edit_sample_length)) {
 	    cursor=edit_sample_length-
-	      1152*edit_cursors[edit_cue_point];;
+             1152*edit_cue_widget[edit_cue_point]->frames();
 	  }
-	  edit_cursors[edit_cue_point]+=cursor/1152;
-	  cursor=edit_cursors[edit_cue_point]*1152;
+         edit_cue_widget[edit_cue_point]->
+           setValue(edit_cue_widget[edit_cue_point]->frames()+cursor/1152);
+         cursor=edit_cue_widget[edit_cue_point]->frames()*1152;
 	}
 	else {
-	  if((cursor/1152)<edit_cursors[edit_cue_point-1]) {
+         if((cursor/1152)<edit_cue_widget[edit_cue_point-1]->frames()) {
 	    return false;
 	  }
-	  if(((cursor/1152)>edit_cursors[RDEditAudio::End])&&
+         if(((cursor/1152)>edit_cue_widget[RDEditAudio::End]->frames())&&
 	    (edit_cue_point!=RDEditAudio::End)) {
 	    return false;
 	  }
@@ -2030,81 +1814,82 @@ bool RDEditAudio::PositionCursor(int cursor,bool relative)
 	     (cursor>(int)edit_sample_length)) {
 	    cursor=edit_sample_length;
 	  }
-	  edit_cursors[edit_cue_point]=cursor/1152;
+         edit_cue_widget[edit_cue_point]->setFrames(cursor/1152);
 	}
 	if(((edit_play_mode==RDEditAudio::Region)&&
 	    ((edit_cue_point==edit_cue_point-1)||
 	     (edit_cue_point==edit_cue_point)))) {
 	}
-	edit_cursor_edit[edit_cue_point]->
-	  setText(RDGetTimeLength((int)(1000.0*(double)cursor/
-			       (double)edit_sample_rate),true));
+       edit_cue_widget[edit_cue_point]->
+         setValue((int)(1000.0*(double)cursor/(double)edit_sample_rate));
 	PreRoll(cursor,edit_cue_point);
 	break;
 	
       case RDEditAudio::FadeUp:
 	if(relative) {
-	  if(((edit_cursors[RDEditAudio::FadeUp]+cursor/1152)>
-	      edit_cursors[RDEditAudio::FadeDown])&&
-	     edit_cursors[RDEditAudio::FadeDown]==-1) {
+         if(((edit_cue_widget[RDEditAudio::FadeUp]->frames()+cursor/1152)>
+             edit_cue_widget[RDEditAudio::FadeDown]->frames())&&
+            edit_cue_widget[RDEditAudio::FadeDown]->value()==-1) {
 	    return false;
 	  }
-	  if((edit_cursors[edit_cue_point]+cursor/1152)<
-	     edit_cursors[RDEditAudio::Start]) {
+         if((edit_cue_widget[edit_cue_point]->frames()+cursor/1152)<
+            edit_cue_widget[RDEditAudio::Start]->frames()) {
 	    return false;
 	  }
-	  edit_cursors[RDEditAudio::FadeUp]+=cursor/1152;
-	  cursor=edit_cursors[RDEditAudio::FadeUp]*1152;
+         edit_cue_widget[RDEditAudio::FadeUp]->
+           setFrames(edit_cue_widget[RDEditAudio::FadeUp]->frames()+
+                     cursor/1152);
+         cursor=edit_cue_widget[RDEditAudio::FadeUp]->frames()*1152;
 	}
 	else {
-	  if(((cursor/1152)>edit_cursors[RDEditAudio::FadeDown])&&
-	     (edit_cursors[RDEditAudio::FadeDown]!=-1)) {
+         if(((cursor/1152)>edit_cue_widget[RDEditAudio::FadeDown]->frames())&&
+            (edit_cue_widget[RDEditAudio::FadeDown]->value()!=-1)) {
 	    return false;
 	  }
-	  if(((cursor/1152)<edit_cursors[RDEditAudio::Start])||
-	    ((cursor/1152)>edit_cursors[RDEditAudio::End])) {
+         if(((cursor/1152)<edit_cue_widget[RDEditAudio::Start]->frames())||
+            ((cursor/1152)>edit_cue_widget[RDEditAudio::End]->frames())) {
 	    return false;
 	  }
-	  edit_cursors[RDEditAudio::FadeUp]=cursor/1152;
+         edit_cue_widget[RDEditAudio::FadeUp]->setFrames(cursor/1152);
 	}
 	if(((edit_play_mode==RDEditAudio::Region)&&
 	    ((edit_cue_point==RDEditAudio::FadeUp)))) {
 	}
-	edit_cursor_edit[RDEditAudio::FadeUp]->
-	  setText(RDGetTimeLength((int)(1000.0*(double)cursor/
-			       (double)edit_sample_rate),true));
+       edit_cue_widget[RDEditAudio::FadeUp]->
+         setValue((int)(1000.0*(double)cursor/(double)edit_sample_rate));
 	edit_cae->positionPlay(edit_handle,
-			    GetTime(edit_cursors[RDEditAudio::Start]*1152));
+                              edit_cue_widget[RDEditAudio::Start]->value());
 	break;
 	
       case RDEditAudio::FadeDown:
 	if(relative) {
-	  if((edit_cursors[RDEditAudio::FadeDown]+cursor/1152)<
-	     edit_cursors[RDEditAudio::FadeUp]) {
+         if((edit_cue_widget[RDEditAudio::FadeDown]->frames()+cursor/1152)<
+            edit_cue_widget[RDEditAudio::FadeUp]->frames()) {
 	    return false;
 	  }
-	  if(((edit_cursors[RDEditAudio::FadeDown]+cursor/1152)<
-	      edit_cursors[RDEditAudio::Start])||
-	    ((edit_cursors[RDEditAudio::FadeDown]+cursor/1152)>
-	     edit_cursors[RDEditAudio::End])) {
+         if(((edit_cue_widget[RDEditAudio::FadeDown]->frames()+cursor/1152)<
+             edit_cue_widget[RDEditAudio::Start]->frames())||
+            ((edit_cue_widget[RDEditAudio::FadeDown]->frames()+cursor/1152)>
+             edit_cue_widget[RDEditAudio::End]->frames())) {
 	    return false;
 	  }
-	  edit_cursors[RDEditAudio::FadeDown]+=cursor/1152;
-	  cursor=edit_cursors[RDEditAudio::FadeDown]*1152;
+         edit_cue_widget[RDEditAudio::FadeDown]->
+           setFrames(edit_cue_widget[RDEditAudio::FadeDown]->frames()+
+                     cursor/1152);
+         cursor=edit_cue_widget[RDEditAudio::FadeDown]->frames()*1152;
 	}
 	else {
-	  if(((cursor/1152)<edit_cursors[RDEditAudio::FadeUp])) {
+         if(((cursor/1152)<edit_cue_widget[RDEditAudio::FadeUp]->frames())) {
 	    return false;
 	  }
-	  if(((cursor/1152)<edit_cursors[RDEditAudio::Start])||
-	    ((cursor/1152)>edit_cursors[RDEditAudio::End])) {
+         if(((cursor/1152)<edit_cue_widget[RDEditAudio::Start]->frames())||
+            ((cursor/1152)>edit_cue_widget[RDEditAudio::End]->frames())) {
 	    return false;
 	  }
-	  edit_cursors[RDEditAudio::FadeDown]=cursor/1152;
+         edit_cue_widget[RDEditAudio::FadeDown]->setValue(cursor/1152);
 	}
-	edit_cursor_edit[RDEditAudio::FadeDown]->
-	  setText(RDGetTimeLength((int)(1000.0*(double)cursor/
-			       (double)edit_sample_rate),true));
+	edit_cue_widget[RDEditAudio::FadeDown]->
+	  setValue((int)(1000.0*(double)cursor/(double)edit_sample_rate));
 	edit_cae->positionPlay(edit_handle,GetTime(cursor));
 	break;	
 
@@ -2123,50 +1908,48 @@ bool RDEditAudio::PositionCursor(int cursor,bool relative)
 void RDEditAudio::ValidateMarkers()
 {
   for(int i=RDEditAudio::SegueStart;i<RDEditAudio::FadeUp;i+=2) {
-    if(edit_cursors[i]!=-1) {
-      if(edit_cursors[i]<edit_cursors[RDEditAudio::Start]) {
-	if((edit_cursors[i+1]>=edit_cursors[RDEditAudio::Start])&&
-	   (edit_cursors[i+1]<=edit_cursors[RDEditAudio::End])) {
-	  edit_cursors[i]=edit_cursors[RDEditAudio::Start];
-	  edit_cursor_edit[i]->setText(
-	    RDGetTimeLength((int)((double)edit_cursors[i]*
-		 1152000.0/(double)edit_sample_rate),true));
+    if(edit_cue_widget[i]->value()!=-1) {
+      if(edit_cue_widget[i]->frames()<
+        edit_cue_widget[RDEditAudio::Start]->frames()) {
+       if((edit_cue_widget[i+1]->frames()>=
+           edit_cue_widget[RDEditAudio::Start]->frames())&&
+          (edit_cue_widget[i+1]->frames()<=
+           edit_cue_widget[RDEditAudio::End]->frames())) {
+         edit_cue_widget[i]->
+           setFrames(edit_cue_widget[RDEditAudio::Start]->frames());
 	}
 	else {
-	  edit_cursors[i]=-1;
-	  edit_cursors[i+1]=-1;
-	  edit_cursor_edit[i]->clear();
-	  edit_cursor_edit[i+1]->clear();
+	  edit_cue_widget[i]->setValue(-1);
+	  edit_cue_widget[i+1]->setValue(-1);
 	}
       }
     }
-    if(edit_cursors[i+1]!=-1) {
-      if(edit_cursors[i+1]>edit_cursors[RDEditAudio::End]) {
-	if((edit_cursors[i]>=edit_cursors[RDEditAudio::Start])&&
-	   (edit_cursors[i]<=edit_cursors[RDEditAudio::End])) {
-	  edit_cursors[i+1]=edit_cursors[RDEditAudio::End];
-	  edit_cursor_edit[i+1]->setText(
-	    RDGetTimeLength((int)((double)edit_cursors[i+1]*
-		 1152000.0/(double)edit_sample_rate),true));
+    if(edit_cue_widget[i+1]->value()!=-1) {
+      if(edit_cue_widget[i+1]->frames()>
+        edit_cue_widget[RDEditAudio::End]->frames()) {
+       if((edit_cue_widget[i]->frames()>=
+           edit_cue_widget[RDEditAudio::Start]->frames())&&
+          (edit_cue_widget[i]->frames()<=
+           edit_cue_widget[RDEditAudio::End]->frames())) {
+         edit_cue_widget[i+1]->
+           setFrames(edit_cue_widget[RDEditAudio::End]->frames());
 	}
 	else {
-	  edit_cursors[i]=-1;
-	  edit_cursors[i+1]=-1;
-	  edit_cursor_edit[i]->clear();
-	  edit_cursor_edit[i+1]->clear();
+	  edit_cue_widget[i]->setValue(-1);
+	  edit_cue_widget[i+1]->setValue(-1);
 	}
       }
     }
   }
   for(int i=RDEditAudio::FadeUp;i<RDEditAudio::LastMarker;i++) {
-    if(edit_cursors[i]!=-1) {
-      if(edit_cursors[i]<edit_cursors[RDEditAudio::Start]) {
-	edit_cursors[i]=-1;
-	edit_cursor_edit[i]->clear();
+    if(edit_cue_widget[i]->value()!=-1) {
+      if(edit_cue_widget[i]->frames()<
+        edit_cue_widget[RDEditAudio::Start]->frames()) {
+       edit_cue_widget[i]->setValue(-1);
       }
-      if(edit_cursors[i]>edit_cursors[RDEditAudio::End]) {
-	edit_cursors[i]=-1;
-	edit_cursor_edit[i]->clear();
+      if(edit_cue_widget[i]->frames()>
+        edit_cue_widget[RDEditAudio::End]->frames()) {
+       edit_cue_widget[i]->setValue(-1);
       }
     }
   }
@@ -2178,10 +1961,8 @@ bool RDEditAudio::SaveMarkers()
   //
   // Sanity Checks
   //
-  int start_point=(int)((double)(edit_cursors[RDEditAudio::Start])*
-			1152000.0/(double)edit_sample_rate);
-  int end_point=(int)((double)(edit_cursors[RDEditAudio::End])*
-		      1152000.0/(double)edit_sample_rate)+26;
+  int start_point=edit_cue_widget[RDEditAudio::Start]->value();
+  int end_point=edit_cue_widget[RDEditAudio::End]->value()+26;
   int len=(int)(1000.0*(double)edit_sample_length/(double)edit_sample_rate);
   if((2*(end_point-start_point))<len) {
     if(QMessageBox::question(this,tr("Marker Warning"),
@@ -2190,12 +1971,10 @@ bool RDEditAudio::SaveMarkers()
     }
   }
 
-  if(edit_cursors[RDEditAudio::SegueStart]!=-1) {
+  if(edit_cue_widget[RDEditAudio::SegueStart]->value()!=-1) {
     len=end_point-start_point;
-    start_point=(int)((double)(edit_cursors[RDEditAudio::SegueStart])*
-		      1152000.0/(double)edit_sample_rate);
-    end_point=(int)((double)(edit_cursors[RDEditAudio::SegueEnd])*
-		    1152000.0/(double)edit_sample_rate);
+    start_point=edit_cue_widget[RDEditAudio::SegueStart]->value();
+      end_point=edit_cue_widget[RDEditAudio::SegueEnd]->value();
     if((2*(end_point-start_point))>len) {
       if(QMessageBox::question(this,tr("Marker Warning"),
 			       tr("More than half of the audio will be faded with these marker settings.\nAre you sure you want to save?"),QMessageBox::Yes,QMessageBox::No)!=QMessageBox::Yes) {
@@ -2207,74 +1986,16 @@ bool RDEditAudio::SaveMarkers()
   //
   // Save Settings
   //
-  edit_cut->setStartPoint((int)((double)(edit_cursors[RDEditAudio::Start])*
-				1152000.0/
-				(double)edit_sample_rate));
-  edit_cut->setEndPoint((int)((double)(edit_cursors[RDEditAudio::End])*
-			      1152000.0/
-			      (double)edit_sample_rate)+26);
-  if(edit_cursors[RDEditAudio::TalkStart]!=-1) {
-    edit_cut->
-      setTalkStartPoint((int)((double)(edit_cursors[RDEditAudio::TalkStart])*
-			      1152000.0/
-			      (double)edit_sample_rate));
-  }
-  else {
-    edit_cut->setTalkStartPoint(-1);
-  }
-  if(edit_cursors[RDEditAudio::TalkEnd]!=-1) {
-    edit_cut->setTalkEndPoint((int)((double)(edit_cursors[RDEditAudio::TalkEnd])*
-				    1152000.0/
-				(double)edit_sample_rate));
-  }
-  else {
-    edit_cut->setTalkEndPoint(-1);
-  }
-  if(edit_cursors[RDEditAudio::SegueStart]!=-1) {
-    edit_cut->setSegueStartPoint((int)((double)(edit_cursors[RDEditAudio::SegueStart])*1152000.0/
-				  (double)edit_sample_rate));
-  }
-  else {
-    edit_cut->setSegueStartPoint(-1);
-  }
-  if(edit_cursors[RDEditAudio::SegueEnd]!=-1) {
-    edit_cut->
-      setSegueEndPoint((int)((double)(edit_cursors[RDEditAudio::SegueEnd])*
-			     1152000.0/(double)edit_sample_rate));
-  }
-  else {
-    edit_cut->setSegueEndPoint(-1);
-  }
-  if(edit_cursors[RDEditAudio::FadeUp]!=-1) {
-    edit_cut->setFadeupPoint((int)((double)(edit_cursors[RDEditAudio::FadeUp])*1152000.0/
-				  (double)edit_sample_rate));
-  }
-  else {
-    edit_cut->setFadeupPoint(-1);
-  }
-  if(edit_cursors[RDEditAudio::FadeDown]!=-1) {
-    edit_cut->
-      setFadedownPoint((int)((double)(edit_cursors[RDEditAudio::FadeDown])*
-			     1152000.0/(double)edit_sample_rate));
-  }
-  else {
-    edit_cut->setFadedownPoint(-1);
-  }
-  if(edit_cursors[RDEditAudio::HookStart]!=-1) {
-    edit_cut->setHookStartPoint((int)((double)(edit_cursors[RDEditAudio::HookStart])*1152000.0/
-				  (double)edit_sample_rate));
-  }
-  else {
-    edit_cut->setHookStartPoint(-1);
-  }
-  if(edit_cursors[RDEditAudio::HookEnd]!=-1) {
-    edit_cut->setHookEndPoint((int)((double)(edit_cursors[RDEditAudio::HookEnd])*
-				    1152000.0/
-				    (double)edit_sample_rate));
-  }
-  else {
-    edit_cut->setHookEndPoint(-1);
-  }
+  edit_cut->setStartPoint(edit_cue_widget[RDEditAudio::Start]->value());
+  edit_cut->setEndPoint(edit_cue_widget[RDEditAudio::End]->value()+26);
+  edit_cut->setTalkStartPoint(edit_cue_widget[RDEditAudio::TalkStart]->value());
+  edit_cut->setTalkEndPoint(edit_cue_widget[RDEditAudio::TalkEnd]->value());
+  edit_cut->
+    setSegueStartPoint(edit_cue_widget[RDEditAudio::SegueStart]->value());
+  edit_cut->setSegueEndPoint(edit_cue_widget[RDEditAudio::SegueEnd]->value());
+  edit_cut->setFadedownPoint(edit_cue_widget[RDEditAudio::FadeDown]->value());
+  edit_cut->setHookStartPoint(edit_cue_widget[RDEditAudio::HookStart]->value());
+  edit_cut->setHookEndPoint(edit_cue_widget[RDEditAudio::HookEnd]->value());
   edit_cut->setLength(edit_cut->endPoint(true)-edit_cut->startPoint(true));
   edit_cut->setPlayGain(edit_gain_control->value());
   if(edit_overlap_box->isChecked()) {
@@ -2318,11 +2039,11 @@ void RDEditAudio::UpdateCounters()
   static RDEditAudio::CuePoints prev_cue_point=RDEditAudio::Play;
 
   edit_overall_edit->setText(RDGetTimeLength(
-	  (int)(1000.0*(double)((edit_cursors[RDEditAudio::Play]-baseline)*1152)/
+	  (int)(1000.0*(double)((edit_cursor-baseline)*1152)/
 	  (double)edit_sample_rate),true,true));
   if(prev_cue_point!=RDEditAudio::Play) {
-    edit_cursor_edit[prev_cue_point]->clearFocus();
-    edit_cursor_edit[prev_cue_point]->deselect();
+    //    edit_cursor_edit[prev_cue_point]->clearFocus();
+    //    edit_cursor_edit[prev_cue_point]->deselect();
   }
 
   switch(edit_cue_point) {
@@ -2336,105 +2057,106 @@ void RDEditAudio::UpdateCounters()
 	break;
 
       case RDEditAudio::Start:
-	cursor0=edit_cursors[RDEditAudio::Start];
-	cursor1=edit_cursors[RDEditAudio::End];
+	cursor0=edit_cue_widget[RDEditAudio::Start]->frames();
+	cursor1=edit_cue_widget[RDEditAudio::End]->frames();
 	edit_play_cursor_button->
 	    setAccentColor(QColor(RD_START_END_MARKER_COLOR));
 	edit_region_edit_label->setText(tr("Cut"));
 	edit_region_edit_label->setPalette(RD_START_END_MARKER_COLOR);
-	edit_cursor_edit[RDEditAudio::Start]->setFocus();
-	edit_cursor_edit[RDEditAudio::Start]->selectAll();
+       //      edit_cursor_edit[RDEditAudio::Start]->setFocus();
+       //      edit_cursor_edit[RDEditAudio::Start]->selectAll();
 	break;
 
       case RDEditAudio::End:
-	cursor0=edit_cursors[RDEditAudio::Start];
-	cursor1=edit_cursors[RDEditAudio::End];
+       cursor0=edit_cue_widget[RDEditAudio::Start]->frames();
+       cursor1=edit_cue_widget[RDEditAudio::End]->frames();
 	edit_play_cursor_button->
 	    setAccentColor(QColor(RD_START_END_MARKER_COLOR));
 	edit_region_edit_label->setText(tr("Cut"));
 	edit_region_edit_label->setPalette(RD_START_END_MARKER_COLOR);
-	edit_cursor_edit[RDEditAudio::End]->setFocus();
-	edit_cursor_edit[RDEditAudio::End]->selectAll();
+	//	edit_cursor_edit[RDEditAudio::End]->setFocus();
+	//	edit_cursor_edit[RDEditAudio::End]->selectAll();
 	break;
 
       case RDEditAudio::TalkStart:
-	cursor0=edit_cursors[RDEditAudio::TalkStart];
-	cursor1=edit_cursors[RDEditAudio::TalkEnd];
+	cursor0=edit_cue_widget[RDEditAudio::TalkStart]->frames();
+	cursor1=edit_cue_widget[RDEditAudio::TalkEnd]->frames();
 	edit_play_cursor_button->setAccentColor(QColor(RD_TALK_MARKER_COLOR));
 	edit_region_edit_label->setText(tr("Talk"));
 	edit_region_edit_label->setPalette(RD_TALK_MARKER_COLOR);
-	edit_cursor_edit[RDEditAudio::TalkStart]->setFocus();
-	edit_cursor_edit[RDEditAudio::TalkStart]->selectAll();
+	//	edit_cursor_edit[RDEditAudio::TalkStart]->setFocus();
+	//	edit_cursor_edit[RDEditAudio::TalkStart]->selectAll();
 	break;
 
       case RDEditAudio::TalkEnd:
-	cursor0=edit_cursors[RDEditAudio::TalkStart];
-	cursor1=edit_cursors[RDEditAudio::TalkEnd];
+	cursor0=edit_cue_widget[RDEditAudio::TalkStart]->frames();
+	cursor1=edit_cue_widget[RDEditAudio::TalkEnd]->frames();
+        edit_play_cursor_button->setAccentColor(QColor(RD_TALK_MARKER_COLOR));
 	edit_play_cursor_button->setAccentColor(QColor(RD_TALK_MARKER_COLOR));
 	edit_region_edit_label->setText(tr("Talk"));
 	edit_region_edit_label->setPalette(RD_TALK_MARKER_COLOR);
-	edit_cursor_edit[RDEditAudio::TalkEnd]->setFocus();
-	edit_cursor_edit[RDEditAudio::TalkEnd]->selectAll();
+	//	edit_cursor_edit[RDEditAudio::TalkEnd]->setFocus();
+	//	edit_cursor_edit[RDEditAudio::TalkEnd]->selectAll();
 	break;
 
       case RDEditAudio::SegueStart:
-	cursor0=edit_cursors[RDEditAudio::SegueStart];
-	cursor1=edit_cursors[RDEditAudio::SegueEnd];
+	cursor0=edit_cue_widget[RDEditAudio::SegueStart]->frames();
+	cursor1=edit_cue_widget[RDEditAudio::SegueEnd]->frames();
 	edit_play_cursor_button->setAccentColor(QColor(RD_SEGUE_MARKER_COLOR));
 	edit_region_edit_label->setText(tr("Segue"));
 	edit_region_edit_label->setPalette(RD_SEGUE_MARKER_COLOR);
-	edit_cursor_edit[RDEditAudio::SegueStart]->setFocus();
-	edit_cursor_edit[RDEditAudio::SegueStart]->selectAll();
+	//	edit_cursor_edit[RDEditAudio::SegueStart]->setFocus();
+	//	edit_cursor_edit[RDEditAudio::SegueStart]->selectAll();
 	break;
 
       case RDEditAudio::SegueEnd:
-	cursor0=edit_cursors[RDEditAudio::SegueStart];
-	cursor1=edit_cursors[RDEditAudio::SegueEnd];
+	cursor0=edit_cue_widget[RDEditAudio::SegueStart]->frames();
+	cursor1=edit_cue_widget[RDEditAudio::SegueEnd]->frames();
 	edit_play_cursor_button->setAccentColor(QColor(RD_SEGUE_MARKER_COLOR));
 	edit_region_edit_label->setText(tr("Segue"));
 	edit_region_edit_label->setPalette(RD_SEGUE_MARKER_COLOR);
-	edit_cursor_edit[RDEditAudio::SegueEnd]->setFocus();
-	edit_cursor_edit[RDEditAudio::SegueEnd]->selectAll();
+	//	edit_cursor_edit[RDEditAudio::SegueEnd]->setFocus();
+	//	edit_cursor_edit[RDEditAudio::SegueEnd]->selectAll();
 	break;
 
       case RDEditAudio::HookStart:
-	cursor0=edit_cursors[RDEditAudio::HookStart];
-	cursor1=edit_cursors[RDEditAudio::HookEnd];
+       cursor0=edit_cue_widget[RDEditAudio::HookStart]->frames();
+       cursor1=edit_cue_widget[RDEditAudio::HookEnd]->frames();
 	edit_play_cursor_button->setAccentColor(QColor(RD_HOOK_MARKER_COLOR));
 	edit_region_edit_label->setText(tr("Hook"));
 	edit_region_edit_label->setPalette(RD_HOOK_MARKER_COLOR);
-	edit_cursor_edit[RDEditAudio::HookStart]->setFocus();
-	edit_cursor_edit[RDEditAudio::HookStart]->selectAll();
+	//	edit_cursor_edit[RDEditAudio::HookStart]->setFocus();
+	//	edit_cursor_edit[RDEditAudio::HookStart]->selectAll();
 	break;
 
       case RDEditAudio::HookEnd:
-	cursor0=edit_cursors[RDEditAudio::HookStart];
-	cursor1=edit_cursors[RDEditAudio::HookEnd];
+	cursor0=edit_cue_widget[RDEditAudio::HookStart]->frames();
+	cursor1=edit_cue_widget[RDEditAudio::HookEnd]->frames();
 	edit_play_cursor_button->setAccentColor(QColor(RD_HOOK_MARKER_COLOR));
 	edit_region_edit_label->setText(tr("Hook"));
 	edit_region_edit_label->setPalette(RD_HOOK_MARKER_COLOR);
-	edit_cursor_edit[RDEditAudio::HookEnd]->setFocus();
-	edit_cursor_edit[RDEditAudio::HookEnd]->selectAll();
+	//	edit_cursor_edit[RDEditAudio::HookEnd]->setFocus();
+	//	edit_cursor_edit[RDEditAudio::HookEnd]->selectAll();
 	break;
 
       case RDEditAudio::FadeUp:
-	cursor0=edit_cursors[RDEditAudio::Start];
-	cursor1=edit_cursors[RDEditAudio::FadeUp];
+       cursor0=edit_cue_widget[RDEditAudio::Start]->frames();
+       cursor1=edit_cue_widget[RDEditAudio::FadeUp]->frames();
 	edit_play_cursor_button->setAccentColor(QColor(RD_FADE_MARKER_COLOR));
 	edit_region_edit_label->setText(tr("Fade Up"));
 	edit_region_edit_label->setPalette(RD_FADE_MARKER_COLOR);
-	edit_cursor_edit[RDEditAudio::FadeUp]->setFocus();
-	edit_cursor_edit[RDEditAudio::FadeUp]->selectAll();
+	//	edit_cursor_edit[RDEditAudio::FadeUp]->setFocus();
+	//	edit_cursor_edit[RDEditAudio::FadeUp]->selectAll();
 	break;
 
       case RDEditAudio::FadeDown:
-	cursor0=edit_cursors[RDEditAudio::FadeDown];
-	cursor1=edit_cursors[RDEditAudio::End];
+	cursor0=edit_cue_widget[RDEditAudio::FadeDown]->frames();
+	cursor1=edit_cue_widget[RDEditAudio::End]->frames();
 	edit_play_cursor_button->setAccentColor(QColor(RD_FADE_MARKER_COLOR));
 	edit_region_edit_label->setText(tr("Fade Down"));
 	edit_region_edit_label->setPalette(RD_FADE_MARKER_COLOR);
-	edit_cursor_edit[RDEditAudio::FadeDown]->setFocus();
-	edit_cursor_edit[RDEditAudio::FadeDown]->selectAll();
+	//	edit_cursor_edit[RDEditAudio::FadeDown]->setFocus();
+	//	edit_cursor_edit[RDEditAudio::FadeDown]->selectAll();
 	break;
 
       case RDEditAudio::LastMarker:
@@ -2458,10 +2180,10 @@ void RDEditAudio::UpdateCounters()
 			    (double)edit_sample_rate),true,true));
     edit_region_edit->setEnabled(true);
   }
-  edit_size_edit->setText(RDGetTimeLength(
-			 (int)(1000.0*(double)((edit_cursors[RDEditAudio::End]-
-					edit_cursors[RDEditAudio::Start])*1152)/
-		         (double)edit_sample_rate),true,true));
+  edit_size_edit->
+    setText(RDGetTimeLength(edit_cue_widget[RDEditAudio::End]->value()-
+                           edit_cue_widget[RDEditAudio::Start]->value(),
+                           true,true));
   prev_cue_point=edit_cue_point;
 }
 
@@ -2509,146 +2231,156 @@ void RDEditAudio::DrawCursors(int xpos,int ypos,int xsize,int ysize,int chan)
 			    {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1}};
 
   EraseCursor(xpos,ypos,xsize,ysize,chan,
-	      edit_cursors[RDEditAudio::Play],prev_x[chan][RDEditAudio::Play],
+	      edit_cursor,prev_x[chan][RDEditAudio::Play],
 	      QColor(EDITAUDIO_PLAY_COLOR),RDEditAudio::None,20);
 
   EraseCursor(xpos,ypos,xsize,ysize,chan,
-	      edit_cursors[RDEditAudio::SegueStart],
+              edit_cue_widget[RDEditAudio::SegueStart]->frames(),
 	      prev_x[chan][RDEditAudio::SegueStart],
 	      QColor(RD_SEGUE_MARKER_COLOR),
 	      RDEditAudio::Right,30);
 
   EraseCursor(xpos,ypos,xsize,ysize,chan,
-	      edit_cursors[RDEditAudio::SegueEnd],
+              edit_cue_widget[RDEditAudio::SegueEnd]->frames(),
 	      prev_x[chan][RDEditAudio::SegueEnd],
 	      QColor(RD_SEGUE_MARKER_COLOR),
 	      RDEditAudio::Left,30);
 
   EraseCursor(xpos,ypos,xsize,ysize,chan,
-	      edit_cursors[RDEditAudio::Start],
+              edit_cue_widget[RDEditAudio::Start]->frames(),
 	      prev_x[chan][RDEditAudio::Start],
 	      QColor(RD_START_END_MARKER_COLOR),
 	      RDEditAudio::Right,10);
 
   EraseCursor(xpos,ypos,xsize,ysize,chan,
-	      edit_cursors[RDEditAudio::End],
+              edit_cue_widget[RDEditAudio::End]->frames(),
 	      prev_x[chan][RDEditAudio::End],
 	      QColor(RD_START_END_MARKER_COLOR),
 	      RDEditAudio::Left,10);
 
   EraseCursor(xpos,ypos,xsize,ysize,chan,
-	      edit_cursors[RDEditAudio::TalkStart],
+              edit_cue_widget[RDEditAudio::TalkStart]->frames(),
 	      prev_x[chan][RDEditAudio::TalkStart],
 	      QColor(RD_TALK_MARKER_COLOR),
 	      RDEditAudio::Right,20);
 
   EraseCursor(xpos,ypos,xsize,ysize,chan,
-	      edit_cursors[RDEditAudio::TalkEnd],
+              edit_cue_widget[RDEditAudio::TalkEnd]->frames(),
 	      prev_x[chan][RDEditAudio::TalkEnd],
 	      QColor(RD_TALK_MARKER_COLOR),
 	      RDEditAudio::Left,20);
 
   EraseCursor(xpos,ypos,xsize,ysize,chan,
-	      edit_cursors[RDEditAudio::FadeUp],
+              edit_cue_widget[RDEditAudio::FadeUp]->frames(),
 	      prev_x[chan][RDEditAudio::FadeUp],
 	      QColor(RD_FADE_MARKER_COLOR),
 	      RDEditAudio::Left,40);
 
   EraseCursor(xpos,ypos,xsize,ysize,chan,
-	      edit_cursors[RDEditAudio::FadeDown],
+              edit_cue_widget[RDEditAudio::FadeDown]->frames(),
 	      prev_x[chan][RDEditAudio::FadeDown],
 	      QColor(RD_FADE_MARKER_COLOR),
 	      RDEditAudio::Right,40);
 
   EraseCursor(xpos,ypos,xsize,ysize,chan,
-	      edit_cursors[RDEditAudio::HookStart],
+              edit_cue_widget[RDEditAudio::HookStart]->frames(),
 	      prev_x[chan][RDEditAudio::HookStart],
 	      QColor(RD_HOOK_MARKER_COLOR),
 	      RDEditAudio::Right,50);
 
   EraseCursor(xpos,ypos,xsize,ysize,chan,
-	      edit_cursors[RDEditAudio::HookEnd],
+              edit_cue_widget[RDEditAudio::HookEnd]->frames(),
 	      prev_x[chan][RDEditAudio::HookEnd],
 	      QColor(RD_HOOK_MARKER_COLOR),
 	      RDEditAudio::Left,50);
 
 
   prev_x[chan][RDEditAudio::Play]=DrawCursor(xpos,ypos,xsize,ysize,chan,
-					   edit_cursors[RDEditAudio::Play],
+                                           edit_cursor,
 					   prev_x[chan][RDEditAudio::Play],
 					   QColor(EDITAUDIO_PLAY_COLOR),
 					   RDEditAudio::None,20,RDEditAudio::Play,
 					   Qt::XorROP);
   
-  prev_x[chan][RDEditAudio::SegueStart]=DrawCursor(xpos,ypos,xsize,ysize,chan,
-					   edit_cursors[RDEditAudio::SegueStart],
-					   prev_x[chan][RDEditAudio::SegueStart],
-					   QColor(RD_SEGUE_MARKER_COLOR),
-					   RDEditAudio::Right,30,
-					   RDEditAudio::SegueStart);
+  prev_x[chan][RDEditAudio::SegueStart]=
+    DrawCursor(xpos,ypos,xsize,ysize,chan,
+              edit_cue_widget[RDEditAudio::SegueStart]->frames(),
+              prev_x[chan][RDEditAudio::SegueStart],
+              QColor(RD_SEGUE_MARKER_COLOR),
+              RDEditAudio::Right,30,
+              RDEditAudio::SegueStart);
 
-  prev_x[chan][RDEditAudio::SegueEnd]=DrawCursor(xpos,ypos,xsize,ysize,chan,
-					   edit_cursors[RDEditAudio::SegueEnd],
-					   prev_x[chan][RDEditAudio::SegueEnd],
-					   QColor(RD_SEGUE_MARKER_COLOR),
-					   RDEditAudio::Left,30,
-					   RDEditAudio::SegueEnd);
+  prev_x[chan][RDEditAudio::SegueEnd]=
+    DrawCursor(xpos,ypos,xsize,ysize,chan,
+              edit_cue_widget[RDEditAudio::SegueEnd]->frames(),
+              prev_x[chan][RDEditAudio::SegueEnd],
+              QColor(RD_SEGUE_MARKER_COLOR),
+              RDEditAudio::Left,30,
+              RDEditAudio::SegueEnd);
 
-  prev_x[chan][RDEditAudio::Start]=DrawCursor(xpos,ypos,xsize,ysize,chan,
-					    edit_cursors[RDEditAudio::Start],
-					    prev_x[chan][RDEditAudio::Start],
-					    QColor(RD_START_END_MARKER_COLOR),
-					    RDEditAudio::Right,10,
-					    RDEditAudio::Start);
+  prev_x[chan][RDEditAudio::Start]=
+    DrawCursor(xpos,ypos,xsize,ysize,chan,
+              edit_cue_widget[RDEditAudio::Start]->frames(),
+              prev_x[chan][RDEditAudio::Start],
+              QColor(RD_START_END_MARKER_COLOR),
+              RDEditAudio::Right,10,
+              RDEditAudio::Start);
 
-  prev_x[chan][RDEditAudio::End]=DrawCursor(xpos,ypos,xsize,ysize,chan,
-					  edit_cursors[RDEditAudio::End],
-					  prev_x[chan][RDEditAudio::End],
-					  QColor(RD_START_END_MARKER_COLOR),
-					  RDEditAudio::Left,10,
-					  RDEditAudio::End);
+  prev_x[chan][RDEditAudio::End]=
+    DrawCursor(xpos,ypos,xsize,ysize,chan,
+              edit_cue_widget[RDEditAudio::End]->frames(),
+              prev_x[chan][RDEditAudio::End],
+              QColor(RD_START_END_MARKER_COLOR),
+              RDEditAudio::Left,10,
+              RDEditAudio::End);
 
-  prev_x[chan][RDEditAudio::TalkStart]=DrawCursor(xpos,ypos,xsize,ysize,chan,
-					  edit_cursors[RDEditAudio::TalkStart],
-					  prev_x[chan][RDEditAudio::TalkStart],
-					  QColor(RD_TALK_MARKER_COLOR),
-					  RDEditAudio::Right,20,
-					  RDEditAudio::TalkStart);
+  prev_x[chan][RDEditAudio::TalkStart]=
+    DrawCursor(xpos,ypos,xsize,ysize,chan,
+              edit_cue_widget[RDEditAudio::TalkStart]->frames(),
+              prev_x[chan][RDEditAudio::TalkStart],
+              QColor(RD_TALK_MARKER_COLOR),
+              RDEditAudio::Right,20,
+              RDEditAudio::TalkStart);
 
-  prev_x[chan][RDEditAudio::TalkEnd]=DrawCursor(xpos,ypos,xsize,ysize,chan,
-					      edit_cursors[RDEditAudio::TalkEnd],
-					      prev_x[chan][RDEditAudio::TalkEnd],
-					      QColor(RD_TALK_MARKER_COLOR),
-					      RDEditAudio::Left,20,
-					      RDEditAudio::TalkEnd);
+  prev_x[chan][RDEditAudio::TalkEnd]=
+    DrawCursor(xpos,ypos,xsize,ysize,chan,
+              edit_cue_widget[RDEditAudio::TalkEnd]->frames(),
+              prev_x[chan][RDEditAudio::TalkEnd],
+              QColor(RD_TALK_MARKER_COLOR),
+              RDEditAudio::Left,20,
+              RDEditAudio::TalkEnd);
 
-  prev_x[chan][RDEditAudio::FadeUp]=DrawCursor(xpos,ypos,xsize,ysize,chan,
-					     edit_cursors[RDEditAudio::FadeUp],
-					     prev_x[chan][RDEditAudio::FadeUp],
-					     QColor(RD_FADE_MARKER_COLOR),
-					     RDEditAudio::Left,40,
-					     RDEditAudio::FadeUp);
+  prev_x[chan][RDEditAudio::FadeUp]=
+    DrawCursor(xpos,ypos,xsize,ysize,chan,
+              edit_cue_widget[RDEditAudio::FadeUp]->frames(),
+              prev_x[chan][RDEditAudio::FadeUp],
+              QColor(RD_FADE_MARKER_COLOR),
+              RDEditAudio::Left,40,
+              RDEditAudio::FadeUp);
+  
+  prev_x[chan][RDEditAudio::FadeDown]=
+    DrawCursor(xpos,ypos,xsize,ysize,chan,
+              edit_cue_widget[RDEditAudio::FadeDown]->frames(),
+              prev_x[chan][RDEditAudio::FadeDown],
+              QColor(RD_FADE_MARKER_COLOR),
+              RDEditAudio::Right,40,
+              RDEditAudio::FadeDown);
 
-  prev_x[chan][RDEditAudio::FadeDown]=DrawCursor(xpos,ypos,xsize,ysize,chan,
-					     edit_cursors[RDEditAudio::FadeDown],
-					     prev_x[chan][RDEditAudio::FadeDown],
-					     QColor(RD_FADE_MARKER_COLOR),
-					     RDEditAudio::Right,40,
-					     RDEditAudio::FadeDown);
+  prev_x[chan][RDEditAudio::HookStart]=
+    DrawCursor(xpos,ypos,xsize,ysize,chan,
+              edit_cue_widget[RDEditAudio::HookStart]->frames(),
+              prev_x[chan][RDEditAudio::HookStart],
+              QColor(RD_HOOK_MARKER_COLOR),
+              RDEditAudio::Right,50,
+              RDEditAudio::HookStart);
 
-  prev_x[chan][RDEditAudio::HookStart]=DrawCursor(xpos,ypos,xsize,ysize,chan,
-					    edit_cursors[RDEditAudio::HookStart],
-					    prev_x[chan][RDEditAudio::HookStart],
-					    QColor(RD_HOOK_MARKER_COLOR),
-					    RDEditAudio::Right,50,
-					    RDEditAudio::HookStart);
-
-  prev_x[chan][RDEditAudio::HookEnd]=DrawCursor(xpos,ypos,xsize,ysize,chan,
-					      edit_cursors[RDEditAudio::HookEnd],
-					      prev_x[chan][RDEditAudio::HookEnd],
-					      QColor(RD_HOOK_MARKER_COLOR),
-					      RDEditAudio::Left,50,
-					      RDEditAudio::HookEnd);
+  prev_x[chan][RDEditAudio::HookEnd]=
+    DrawCursor(xpos,ypos,xsize,ysize,chan,
+              edit_cue_widget[RDEditAudio::HookEnd]->frames(),
+              prev_x[chan][RDEditAudio::HookEnd],
+              QColor(RD_HOOK_MARKER_COLOR),
+              RDEditAudio::Left,50,
+              RDEditAudio::HookEnd);
 }
 
 
@@ -2900,7 +2632,7 @@ void RDEditAudio::DrawPointers()
 void RDEditAudio::CenterDisplay()
 {
   edit_hscroll->
-    setValue((int)(edit_cursors[RDEditAudio::Play]-EDITAUDIO_WAVEFORM_WIDTH/2*edit_factor_x));
+    setValue((int)(edit_cursor-EDITAUDIO_WAVEFORM_WIDTH/2*edit_factor_x));
 }
 
 

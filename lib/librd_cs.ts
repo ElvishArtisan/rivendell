@@ -1081,7 +1081,7 @@ přechodu</translation>
     <message>
         <source>Segue
 End</source>
-        <translation>Konec
+        <translation type="obsolete">Konec
 přechodu</translation>
     </message>
     <message>
@@ -1232,6 +1232,16 @@ Opravdu chcete uložit?</translation>
 Are you sure you want to save?</source>
         <translation>Více než polovina zvukového záznamu bude s těmito nastaveními pro značky vystřižena.
 Opravdu chcete uložit?</translation>
+    </message>
+    <message>
+        <source>Talk
+End</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Fade
+Down</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

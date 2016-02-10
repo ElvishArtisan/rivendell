@@ -48,6 +48,7 @@
 #include <rduser.h>
 #include <rdstation.h>
 #include <rdpeaksexport.h>
+#include <rdmarkerwidget.h>
 
 //
 // Widget Settings
@@ -102,9 +103,9 @@ class RDEditAudio : public QDialog
   void playedData(int handle);
   void pausedData(int handle);
   void positionData(int handle,unsigned pos);
-  void cuePointData(int);
-  void cueEditData(int);
-  void cueEscData(int);
+  void markerButtonEnabledData(int id);
+  void markerButtonDeleteData(int id);
+  void markerValueChangedData(int id);
   void updateMenuData();
   void deleteSegueData();
   void deleteFadeupData();
@@ -170,12 +171,12 @@ class RDEditAudio : public QDialog
   QLineEdit *edit_region_edit;
   QLabel *edit_region_edit_label;
   QLineEdit *edit_size_edit;
-  RDMarkerEdit *edit_cursor_edit[RDEditAudio::LastMarker];
   QCursor *edit_arrow_cursor;
   QCursor *edit_cross_cursor;
   QPointArray *edit_wave_array;
   QSpinBox *edit_trim_box;
-  RDMarkerButton *edit_cue_button[RDEditAudio::LastMarker];
+  int edit_cursor;  // Play cursor
+  RDMarkerWidget *edit_cue_widget[RDEditAudio::LastMarker];
   QString edit_cue_string;
   RDPushButton *edit_remove_button;
   QCheckBox *edit_overlap_box;
@@ -209,7 +210,6 @@ class RDEditAudio : public QDialog
   bool pause_mode;
   int baseline;
   int played_cursor;
-  int edit_cursors[RDEditAudio::LastMarker];
   short *energy_data;
   int energy_size;
   bool ignore_pause;
