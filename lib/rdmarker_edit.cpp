@@ -2,9 +2,7 @@
 //
 //   An flashing button widget.
 //
-//   (C) Copyright 2002 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdmarker_edit.cpp,v 1.3 2007/02/14 21:48:41 fredg Exp $
+//   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -23,14 +21,14 @@
 
 #include <rdmarker_edit.h>
 
-RDMarkerEdit::RDMarkerEdit(QWidget *parent,const char *name)
-  : QLineEdit(parent,name)
+RDMarkerEdit::RDMarkerEdit(QWidget *parent)
+  : QLineEdit(parent)
 {
 }
 
 
-RDMarkerEdit::RDMarkerEdit(const QString &contents,QWidget *parent,const char *name)
-  : QLineEdit(contents,parent,name)
+RDMarkerEdit::RDMarkerEdit(const QString &contents,QWidget *parent)
+  : QLineEdit(contents,parent)
 {
 }
 

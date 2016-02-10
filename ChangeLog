@@ -15068,3 +15068,7 @@
 	* Fixed a bug in 'utils/rdimport/rdimport.cpp' that failed to take
 	the value of the --normalization-level switch into account when
 	placing segue markers.
+2016-02-09 Fred Gleason <fredg@paravelsystems.com>
+	* Cleaned up method calls in 'lib/edit_audio.cpp',
+	'lib/rdedit_audio.h', 'lib/rdmarker_edit.cpp' and
+	'lib/rdmarker_edit.h'.

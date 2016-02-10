@@ -2,9 +2,7 @@
 #
 # The lib/ QMake project file for Rivendell.
 #
-# (C) Copyright 2003-2007 Fred Gleason <fredg@paravelsystems.com>
-#
-#      $Id: lib.pro,v 1.36.8.13.2.1 2014/06/02 22:52:24 cvs Exp $
+# (C) Copyright 2003-2016 Fred Gleason <fredg@paravelsystems.com>
 #
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License version 2 as
