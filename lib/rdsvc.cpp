@@ -1336,7 +1336,7 @@ void RDSvc::GetImportLine(const QString &line,ImportSource src,
   //
   // Write to import table
   //
-  if(start_time_ok&&(cartnum>0)&&(cartnum<RD_MAX_CART_NUMBER)) {
+  if(start_time_ok&&(cartnum>0)&&(cartnum<=RD_MAX_CART_NUMBER)) {
     // Cart Event
     sql=QString("insert into `")+dest_table+"` set "+
       QString().sprintf("TYPE=%d,",RDSvc::Cart)+
