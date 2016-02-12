@@ -15085,3 +15085,8 @@
 2016-02-11 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in 'lib/rdsvc.cpp' that caused log import events with
 	a cart number of 999999 to be ignored.
+2016-02-11 Fred Gleason <fredg@paravelsystems.com>
+	* Changed log linker logic in 'lib/rdevent_line.cpp' so that embedded
+	spot breaks get start/end times from their source line in the music
+	import, rather than inheriting them from the parent music importer
+	event.
