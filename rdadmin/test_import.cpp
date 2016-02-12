@@ -217,6 +217,7 @@ void TestImport::importData()
     item->setText(3,q->value(8).toString());
     switch((RDSvc::ImportType)q->value(0).toInt()) {
     case RDSvc::Cart:
+    case RDSvc::Label:
       item->setText(1,q->value(3).toString());
       if(q->value(4).toInt()>=0) {
        item->setText(2,RDGetTimeLength(q->value(4).toInt(),false,false));
