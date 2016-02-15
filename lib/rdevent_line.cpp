@@ -845,6 +845,7 @@ bool RDEventLine::linkLog(RDLogEvent *e,int next_id,const QString &svcname,
   QString sql;
   RDSqlQuery *q;
   RDLogLine *logline=NULL;
+  int link_id_offset=0;
 
   //
   // Initial Import Parameters
@@ -1031,7 +1032,7 @@ bool RDEventLine::linkLog(RDLogEvent *e,int next_id,const QString &svcname,
 	}
 	logline->setLinkStartSlop(link_logline->linkStartSlop());
 	logline->setLinkEndSlop(link_logline->linkEndSlop());
-	logline->setLinkId(link_logline->linkId());
+       logline->setLinkId(link_logline->linkId()+link_id_offset++);
 	logline->setLinkEmbedded(true);
       }
       break;

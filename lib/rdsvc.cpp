@@ -377,6 +377,9 @@ QString RDSvc::importFilename(ImportSource src,const QDate &date) const
       case RDSvc::Music:
 	src_str="MUS";
 	break;
+
+      case RDSvc::NoSource:
+	break;
   }
   QString os_flag;
 #ifdef WIN32
@@ -694,6 +697,9 @@ bool RDSvc::linkLog(RDSvc::ImportSource src,const QDate &date,
 	src_type=RDLogLine::TrafficLink;
 	link_src=RDLog::SourceTraffic;
 	break;
+
+      case RDSvc::NoSource:
+        break;
   }
   RDLog *log=new RDLog(logname);
   int current_link=0;
@@ -806,8 +812,7 @@ bool RDSvc::linkLog(RDSvc::ImportSource src,const QDate &date,
 }
 
 
-void RDSvc::clearLogLinks(RDSvc::ImportSource src,const QDate &date,
-			  const QString &logname)
+void RDSvc::clearLogLinks(RDSvc::ImportSource src,const QString &logname)
 {
   std::vector<int> cleared_ids;
   RDLogLine::Type event_type=RDLogLine::UnknownType;
@@ -822,6 +827,9 @@ void RDSvc::clearLogLinks(RDSvc::ImportSource src,const QDate &date,
 	event_type=RDLogLine::TrafficLink;
 	event_source=RDLogLine::Traffic;
 	break;
+
+      case RDSvc::NoSource:
+        break;
   }
 
   RDLogEvent *src_event=new RDLogEvent(RDLog::tableName(logname));
@@ -836,6 +844,7 @@ void RDSvc::clearLogLinks(RDSvc::ImportSource src,const QDate &date,
 	RDLogLine *lline=dest_event->logLine(dest_event->size()-1);
 	lline->setId(dest_event->nextId());
 	lline->setStartTime(RDLogLine::Logged,logline->linkStartTime());
+        lline->setEventLength(logline->linkLength());
 	lline->setType(event_type);
 	if(logline->linkEmbedded()) {
 	  lline->setSource(RDLogLine::Music);
@@ -1220,6 +1229,9 @@ QString RDSvc::className(ImportSource src)
   case RDSvc::Music:
     ret="MUS";
     break;
+
+  case RDSvc::NoSource:
+    break;
   }
 
   return ret;
@@ -1436,6 +1448,9 @@ QString RDSvc::SourceString(ImportSource src) const
       case RDSvc::Music:
 	fieldname="MUS";
 	break;
+
+      case RDSvc::NoSource:
+        break;
   }
   return fieldname;
 }

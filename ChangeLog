@@ -15109,3 +15109,8 @@
 	'lib/debugvars.h'.
 	* Implemented the 'Rivendell_KeepMixdownTable' debugging variable in
 	'lib/rdreport.cpp'.
+2016-02-15 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'RDSvc::NoSource' value to the 'RDSvc::ImportSource'
+	enumeration in 'lib/rdsvc.h'.
+	* Added unlink_log_test(1) in 'tests/unlink_log_test.cpp' and
+	'tests/unlink_log_test.h'.
