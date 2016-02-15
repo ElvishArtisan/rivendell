@@ -15094,3 +15094,6 @@
 	* Fixed a bug in 'lib/rdevent_line.cpp that caused events with hard
 	start times in the import file to be assigned the incorrect start
 	time value.
+2016-02-15 Fred Gleason <fredg@paravelsystems.com>
+	* Merged 'tryphon-schedcartlist-without-arrays' branch [GitHub
+	pull request #000044].

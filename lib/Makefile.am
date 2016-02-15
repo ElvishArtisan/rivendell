@@ -235,7 +235,8 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdwebresult.cpp rdwebresult.h\
                         rdxport_interface.h\
                         schedruleslist.cpp schedruleslist.h\
-                        schedcartlist.cpp schedcartlist.h
+                        schedcartlist.cpp schedcartlist.h\
+                        schedcart.cpp schedcart.h
 
 
 nodist_librd_la_SOURCES = moc_rdadd_cart.cpp\

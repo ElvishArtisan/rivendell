@@ -22,157 +22,133 @@
 
 #include <schedcartlist.h>
 
-
-SchedCartList::SchedCartList(int listsize)
+#include <stdlib.h>
+ 
+SchedCartList::SchedCartList()
 {
-	cartnum=new unsigned[listsize];
-	cartlen=new int[listsize];
-	stackid=new int[listsize];
-	artist=new QString[listsize];
-	sched_codes=new QString[listsize];
-	itemcounter=0;
+  first_sched_cart = NULL;
 }
 
 SchedCartList::~SchedCartList()
 {
-	delete []cartnum;
-	delete []cartlen;
-	delete []stackid;
-	delete []artist;
-	delete []sched_codes;
+  if (first_sched_cart == NULL) {
+    return;
+  }
+  SchedCart *current = first_sched_cart;
+  SchedCart *next = NULL;
+  
+  while (current != NULL) {
+    next = current->next();
+    delete current;
+    current = next;
+  }
 }
 
-void SchedCartList::insertItem(unsigned cartnumber,int cartlength,int stack_id,QString stack_artist,QString stack_schedcodes)
+SchedCart* SchedCartList::first()
 {
-	cartnum[itemcounter]=cartnumber;
-	cartlen[itemcounter]=cartlength;
-	stackid[itemcounter]=stack_id;
-	artist[itemcounter]=stack_artist.lower().replace(" ","");
-        sched_codes[itemcounter]=stack_schedcodes;	
-	itemcounter++;
+  return first_sched_cart;
 }
 
 
-void SchedCartList::removeItem(int itemnumber)
+void SchedCartList::insert(unsigned cartnumber,QString stack_artist,QString stack_schedcodes)
 {
-	for(int i=itemnumber;i<(itemcounter-1);i++)
-	{
-		cartnum[i]=cartnum[i+1];
-		cartlen[i]=cartlen[i+1];
-		stackid[i]=stackid[i+1];
-		artist[i]=artist[i+1];
-		sched_codes[i]=sched_codes[i+1];
-	}
-	itemcounter--;
+  SchedCart *created = new SchedCart(cartnumber, stack_artist, stack_schedcodes);
+
+  if (first_sched_cart != NULL) {
+    first_sched_cart->setPrevious(created);
+    created->setNext(first_sched_cart);
+  } 
+  first_sched_cart = created;
 }
 
-bool SchedCartList::removeIfCode(int itemnumber,QString test_code)
-{
-    QString test = test_code;
-    test+="          ";
-    test=test.left(11);
 
-    if (sched_codes[itemnumber].find(test)!=-1)
-      {
-	for(int i=itemnumber;i<(itemcounter-1);i++)
-	{
-		cartnum[i]=cartnum[i+1];
-		cartlen[i]=cartlen[i+1];
-		stackid[i]=stackid[i+1];
-		artist[i]=artist[i+1];
-		sched_codes[i]=sched_codes[i+1];
-	}
-	itemcounter--;
-        return true;
-      }
-    return false; 
+void SchedCartList::excludeIfCode(QString code) {
+  SchedCart *current = NULL;
+  for (current = first(); current != NULL; current = current->next()) {
+    if (current->hasSchedulerCode(code)) {
+      current->exclude();
+    }
+  }
 }
 
-bool SchedCartList::itemHasCode(int itemnumber,QString test_code)
-{
-    QString test=test_code;
-    test+="          ";
-    test=test.left(11);
 
-    if (sched_codes[itemnumber].find(test)!=-1)
-      return true;
-    else
+bool SchedCartList::allExcluded() {
+  SchedCart *current = NULL;
+  for (current = first_sched_cart; current != NULL; current = current->next()) {
+    if (!current->hasBeenExcluded()) {
       return false;
+    }
+  }
+  return true;
 }
 
 
-void SchedCartList::save(void)
-{
-	savecartnum=new unsigned[itemcounter];
-	savecartlen=new int[itemcounter];
-	savestackid=new int[itemcounter];
-	saveartist=new QString[itemcounter];
-	save_sched_codes=new QString[itemcounter];
+void SchedCartList::clearExclusions() {
+  SchedCart *current = NULL;
+  for (current = first_sched_cart; current != NULL; current = current->next()) {
+    current->clearExclusion();
+  }
+}
 
-	saveitemcounter=itemcounter;	
-	for(int i=0;i<saveitemcounter;i++)
-	{
-		savecartnum[i]=cartnum[i];
-		savecartlen[i]=cartlen[i];
-		savestackid[i]=stackid[i];
-		saveartist[i]=artist[i];
-		save_sched_codes[i]=sched_codes[i];
-	}
+void SchedCartList::save() {
+  SchedCart *current = first_sched_cart;
+  SchedCart *excluded = NULL;
+ 
+  while (current != NULL) {
+    if (current->hasBeenExcluded()) {
+      excluded = current;
+      current = excluded->next();
+
+      // Remove excluded from the list
+      if (excluded->previous() != NULL) {
+        excluded->previous()->setNext(excluded->next());
+      } else {
+        first_sched_cart = excluded->next();
+      }
+
+      if (excluded->next() != NULL) {
+        excluded->next()->setPrevious(excluded->previous());
+      }
+
+      // Delete excluded
+      delete excluded;
+    } else {
+      current = current->next();
+    }
+  }
 }
 
 
-void SchedCartList::restore(void)
-{
-	if(itemcounter==0)
-	{
-		for(int i=0;i<saveitemcounter;i++)
-		{
-			cartnum[i]=savecartnum[i];
-			cartlen[i]=savecartlen[i];
-			stackid[i]=savestackid[i];
-			artist[i]=saveartist[i];
-			sched_codes[i]=save_sched_codes[i];
-		}
-		itemcounter=saveitemcounter;	
-	}
-	delete []savecartnum;
-	delete []savecartlen;
-	delete []savestackid;
-	delete []saveartist;
-	delete []save_sched_codes;
+void SchedCartList::saveOrBreakRule(QString ruleName, QTime time, QString *errors) {
+  if (!allExcluded()) {
+    save();
+  } else {
+    *errors += time.toString("hh:mm:ss") + QString(" Rule broken: ") + ruleName + QString("\n");
+    clearExclusions();
+  }
+}
+
+int SchedCartList::size() {
+  int size = 0;
+  SchedCart *current = NULL;
+  for (current = first_sched_cart; current != NULL; current = current->next()) {
+    size++;
+  }
+  return size;
 }
 
 
-
-unsigned SchedCartList::getItemCartnumber(int itemnumber)
-{
-	return cartnum[itemnumber];
-}
-
-int SchedCartList::getItemStackid(int itemnumber)
-{
-	return stackid[itemnumber];
-}
-
-QString SchedCartList::getItemArtist(int itemnumber)
-{
-	return artist[itemnumber];
-}
-
-QString SchedCartList::getItemSchedCodes(int itemnumber)
-{
-	return sched_codes[itemnumber];
-}
-
-int SchedCartList::getItemCartlength(int itemnumber)
-{
-	return cartlen[itemnumber];
-}
-
-
-int SchedCartList::getNumberOfItems(void)
-{
-	return itemcounter;
+SchedCart* SchedCartList::sample() {
+  int randomPosition = rand() % size();
+  int position = 0;
+  SchedCart *current = NULL;
+  for (current = first_sched_cart; current != NULL; current = current->next()) {
+    if (position == randomPosition) {
+      return current;
+    }
+    position ++;
+  }
+  return NULL;
 }
  
 
