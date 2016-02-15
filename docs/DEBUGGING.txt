@@ -1,0 +1,22 @@
+The following environmental variables can be used to debug various aspects
+of Rivendell:
+
+-----------------------------------------------------------------------------
+
+Rivendell_KeepImportTable
+
+Defining this will cause RDAdmin and RDLogManager to retain ephemeral
+log import tables in the database (rather than purging them after the import
+completes as is the normal behavior) while also printing the name of such
+tables to standard output.
+
+-----------------------------------------------------------------------------
+
+Rivendell_KeepMixdownTable
+
+Defining this will cause RDLogManager to retain ephemeral report mixdown
+tables in the database (rather than purging them after the report is
+generated as is the normal behavior) while also printing the name of such
+tables to standard output.
+
+-----------------------------------------------------------------------------

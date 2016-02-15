@@ -18,8 +18,11 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
+#include <stdlib.h>
+
 #include <qmessagebox.h>
 
+#include "debugvars.h"
 #include <rdconf.h>
 #include <rd.h>
 #include <rdsvc.h>
@@ -790,12 +793,15 @@ bool RDSvc::linkLog(RDSvc::ImportSource src,const QDate &date,
   emit generationProgress(24);
   delete src_event;
   delete dest_event;
-  /*
-  printf("Import Table: %s\n",(const char *)import_name);
-  sql=QString().sprintf("drop table `%s`",(const char *)import_name);
-  q=new RDSqlQuery(sql);
-  delete q;
-  */
+  if(getenv(RD_DEBUG_KEEP_IMPORT_TABLE)==NULL) {
+    sql=QString().sprintf("drop table `%s_TEST_IMP`",(const char *)import_name);
+    q=new RDSqlQuery(sql);
+    delete q;
+  }
+  else {
+    printf("RDSvc - IMPORT TABLE: %s_TEST_IMP\n",(const char *)import_name);
+  }
+
   return true;
 }
 

@@ -25,6 +25,7 @@
 #include <qfile.h>
 #include <qobject.h>
 
+#include "debugvars.h"
 #include <rdconf.h>
 #include <rdreport.h>
 #include <rdcreate_log.h>
@@ -666,10 +667,15 @@ bool RDReport::generateReport(const QDate &startdate,const QDate &enddate,
   QString post_cmd=RDDateDecode(postExportCommand(RDReport::Linux),startdate);
 #endif
   system(post_cmd);
-  //  printf("MIXDOWN TABLE: %s_SRT\n",(const char *)mixname);
-  sql=QString().sprintf("drop table `%s_SRT`",(const char *)mixname);
-  q=new RDSqlQuery(sql);
-  delete q;
+
+  if(getenv(RD_DEBUG_KEEP_MIXDOWN_TABLE)==NULL) {
+    sql=QString("drop table `")+mixname+"_SRT`";
+    q=new RDSqlQuery(sql);
+    delete q;
+  }
+  else {
+    printf("RDReport - MIXDOWN TABLE: %s_SRT\n",(const char *)mixname);
+  }
   return ret;
 }
 

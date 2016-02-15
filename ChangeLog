@@ -15097,3 +15097,15 @@
 2016-02-15 Fred Gleason <fredg@paravelsystems.com>
 	* Merged 'tryphon-schedcartlist-without-arrays' branch [GitHub
 	pull request #000044].
+2016-02-15 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'docs/DEBUGGING.txt'.
+	* Added a 'Rivendell_KeepImportTable' debugging variable in
+	'lib/debugvars.h'.
+	* Implemented the 'Rivendell_KeepImportTable' debugging variable in
+	'rdadmin/test_import.cpp'.
+	* Implemented the 'Rivendell_KeepImportTable' debugging variable in
+	'lib/rdsvc.cpp'.
+	* Added a 'Rivendell_KeepMixdownTable' debugging variable in
+	'lib/debugvars.h'.
+	* Implemented the 'Rivendell_KeepMixdownTable' debugging variable in
+	'lib/rdreport.cpp'.

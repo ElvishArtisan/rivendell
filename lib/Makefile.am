@@ -48,6 +48,7 @@ all:
 
 lib_LTLIBRARIES = librd.la
 dist_librd_la_SOURCES = dbversion.h\
+                        debugvars.h\
                         gpio.h\
                         export_bmiemr.cpp\
                         export_deltaflex.cpp\

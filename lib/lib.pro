@@ -169,6 +169,7 @@ x11 {
   SOURCES += rdwavefile.cpp
 }
 
+HEADERS += debugvars.h
 HEADERS += schedcartlist.h
 HEADERS += schedruleslist.h
 HEADERS += rdadd_log.h
