@@ -7951,13 +7951,15 @@ int UpdateDb(int ver)
     sql="select NAME from EVENTS";
     q=new QSqlQuery(sql);
     while(q->next()) {
-      sql="alter table `"+RDEvent::preimportTableName(q->value(0).toString())+
-	"` add column EVENT_LENGTH int default -1 after ORIGIN_DATETIME";
+      tablename=q->value(0).toString();
+      tablename.replace(" ","_");
+      sql="alter table `"+tablename+
+       "_PRE` add column EVENT_LENGTH int default -1 after ORIGIN_DATETIME";
       q1=new QSqlQuery(sql);
       delete q1;
 
-      sql="alter table `"+RDEvent::postimportTableName(q->value(0).toString())+
-	"` add column EVENT_LENGTH int default -1 after ORIGIN_DATETIME";
+      sql="alter table `"+tablename+
+       "_POST` add column EVENT_LENGTH int default -1 after ORIGIN_DATETIME";
       q1=new QSqlQuery(sql);
       delete q1;
     }

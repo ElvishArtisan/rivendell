@@ -15124,3 +15124,7 @@
 	* Added an 'RDEvent::EventPlace' enumeration in 'lib/rdevent.h'.
 	* Added an 'RDEventList' class in 'lib/rdevent_list.cpp' and
 	'lib/rdevent_list.h'.
+2016-02-15 Fred Gleason <fredg@paravelsystems.com>
+	* Removed 'RDEvent::preimportTableName()' and
+	'RDEvent::postimportTableName()' methods in 'lib/rdevent.cpp' and
+	'lib/rdevent.h'.
