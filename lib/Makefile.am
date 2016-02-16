@@ -127,6 +127,7 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdescape_string.cpp rdescape_string.h\
                         rdevent.cpp rdevent.h\
                         rdevent_line.cpp rdevent_line.h\
+                        rdevent_list.cpp rdevent_list.h\
                         rdevent_player.cpp rdevent_player.h\
                         rdexception_dialog.cpp rdexception_dialog.h\
                         rdexport_settings_dialog.cpp rdexport_settings_dialog.h\

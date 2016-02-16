@@ -2,9 +2,7 @@
 //
 // Abstract a Rivendell Log Manager Event
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdevent_line.h,v 1.18 2010/07/29 19:32:33 cvs Exp $
+//   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,20 +18,19 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
+#ifndef RDEVENT_LINE_H
+#define RDEVENT_LINE_H
+
 #include <qsqldatabase.h>
 #include <qdatetime.h>
 
-#include <rdlog_event.h>
-#include <rdlog_line.h>
-
-
-#ifndef RDEVENT_LINE_H
-#define RDEVENT_LINE_H
+#include "rdevent_list.h"
+#include "rdlog_event.h"
+#include "rdlog_line.h"
 
 class RDEventLine
 {
  public:
-  enum ImportSource {None=0,Traffic=1,Music=2,Scheduler=3};
   enum InsertFirst {InsertNone=0,InsertBreak=1,InsertTrack=2};
   RDEventLine();
   QString name() const;
@@ -54,8 +51,8 @@ class RDEventLine
   void setAutofillSlop(int slop);
   bool useTimescale() const;
   void setUseTimescale(bool state);
-  RDEventLine::ImportSource importSource() const;
-  void setImportSource(RDEventLine::ImportSource src);
+  RDEvent::ImportSource importSource() const;
+  void setImportSource(RDEvent::ImportSource src);
   int startSlop() const;
   void setStartSlop(int slop);
   int endSlop() const;
@@ -74,8 +71,8 @@ class RDEventLine
   void setHaveCode2(QString str);
   unsigned titleSep() const;
   void setTitleSep(unsigned titlesep);
-  RDLogEvent *preimportCarts();
-  RDLogEvent *postimportCarts();
+  RDEventList *preimportList();
+  RDEventList *postimportList();
   QTime startTime() const;
   void setStartTime(const QTime &time);
   int length() const;
@@ -100,14 +97,12 @@ class RDEventLine
   bool event_post_point;
   bool event_use_autofill;
   bool event_use_timescale;
-  RDEventLine::ImportSource event_import_source;
+  RDEvent::ImportSource event_import_source;
   int event_start_slop;
   int event_end_slop;
   RDLogLine::TransType event_first_transtype;
   RDLogLine::TransType event_default_transtype;
   QColor event_color;
-  RDLogEvent *event_preimport_log;
-  RDLogEvent *event_postimport_log;
   QTime event_start_time;
   int event_length;
   int event_autofill_slop;
@@ -116,6 +111,8 @@ class RDEventLine
   QString event_have_code;
   QString event_have_code2;
   unsigned event_title_sep;
+  RDEventList *event_preimport_list;
+  RDEventList *event_postimport_list;
 };
 
 #endif 

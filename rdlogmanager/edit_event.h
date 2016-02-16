@@ -2,9 +2,7 @@
 //
 // Edit a Rivendell Log Event
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: edit_event.h,v 1.24.8.1 2013/12/30 20:37:01 cvs Exp $
+//   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -59,7 +57,7 @@ class EditEvent : public QDialog
  Q_OBJECT
  public:
   EditEvent(QString eventname,bool new_event,std::vector<QString> *new_events,
-	    QWidget *parent=0,const char *name=0);
+	    QWidget *parent=0);
   ~EditEvent();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;

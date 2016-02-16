@@ -2,9 +2,7 @@
 //
 // Abstract a Rivendell Log Manager Event.
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdevent.cpp,v 1.14.8.1 2014/01/13 18:36:57 cvs Exp $
+//   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -183,13 +181,13 @@ void RDEvent::setUseTimescale(bool state) const
 }
 
 
-RDEventLine::ImportSource RDEvent::importSource() const
+RDEvent::ImportSource RDEvent::importSource() const
 {
-  return (RDEventLine::ImportSource)GetIntValue("IMPORT_SOURCE");
+  return (RDEvent::ImportSource)GetIntValue("IMPORT_SOURCE");
 }
 
 
-void RDEvent::setImportSource(RDEventLine::ImportSource src) const
+void RDEvent::setImportSource(RDEvent::ImportSource src) const
 {
   SetRow("IMPORT_SOURCE",(int)src);
 }

@@ -537,8 +537,7 @@ void EditClock::editEventData(int line)
   if(event==NULL) {
     return;
   }
-  EditEvent *dialog=new EditEvent(event->name(),false,&new_events,
-				  this,"dialog");
+  EditEvent *dialog=new EditEvent(event->name(),false,&new_events,this);
   if(dialog->exec()<-1) {
     delete dialog;
     return;

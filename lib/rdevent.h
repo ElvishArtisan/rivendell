@@ -2,9 +2,7 @@
 //
 // Abstract a Rivendell Log Manager Event
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdevent.h,v 1.11.8.1 2014/01/13 18:36:57 cvs Exp $
+//   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,17 +18,18 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qsqldatabase.h>
-
-#include <rdlog_line.h>
-#include <rdevent_line.h>
-
 #ifndef RDEVENT_H
 #define RDEVENT_H
+
+#include <qsqldatabase.h>
+
+#include "rdlog_line.h"
 
 class RDEvent
 {
  public:
+  enum EventPlace {PreImport=0,PostImport=1};
+  enum ImportSource {None=0,Traffic=1,Music=2,Scheduler=3};
   RDEvent(const QString &name,bool create=false);
   QString name() const;
   QString properties() const;
@@ -53,8 +52,8 @@ class RDEvent
   void setAutofillSlop(int slop) const;
   bool useTimescale() const;
   void setUseTimescale(bool state) const;
-  RDEventLine::ImportSource importSource() const;
-  void setImportSource(RDEventLine::ImportSource src) const;
+  RDEvent::ImportSource importSource() const;
+  void setImportSource(RDEvent::ImportSource src) const;
   int startSlop() const;
   void setStartSlop(int slop) const;
   int endSlop() const;
@@ -89,4 +88,4 @@ class RDEvent
 };
 
 
-#endif 
+#endif  // RDEVENT_H

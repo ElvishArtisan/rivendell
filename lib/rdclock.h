@@ -26,7 +26,7 @@
 
 #include <qsqldatabase.h>
 
-#include <rdevent_line.h>
+#include "rdevent_line.h"
 
 class RDClock
 {
