@@ -2,9 +2,7 @@
 //
 // Create a new, empty Rivendell log table.
 //
-//   (C) Copyright 2002-2014 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdcreate_log.cpp,v 1.38.8.1.2.2 2014/06/24 18:27:04 cvs Exp $
+//   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -81,17 +79,6 @@ QString RDCreateLogTableSql(QString name)
     "index COUNT_IDX (COUNT),"+
     "index CART_NUMBER_IDX (CART_NUMBER),"+
     "index LABEL_IDX (LABEL))";
-}
-
-
-QString RDCreateClockTableSql(QString name)
-{
-  return QString("create table `")+name+"` ("+
-    "ID int unsigned auto_increment not null primary key,"+
-    "EVENT_NAME char(64) not null,"+
-    "START_TIME int not null,"+
-    "LENGTH int not null,"+
-    "INDEX EVENT_NAME_IDX (EVENT_NAME))";
 }
 
 

@@ -2416,6 +2416,21 @@ bool CreateDb(QString name,QString pwd)
      return false;
   }
 
+  //
+  // Create CLOCK_METADATA table
+  //
+  sql=QString("create table if not exists CLOCK_METADATA(")+
+    "ID int auto_increment primary key,"+
+    "CLOCK_NAME char(64) not null,"+
+    "EVENT_NAME char(64) not null,"+
+    "START_TIME int not null,"+
+    "LENGTH int not null,"+
+    "unique index CLOCK_NAME_IDX(CLOCK_NAME,START_TIME),"+
+    "index EVENT_NAME_IDX(EVENT_NAME))";
+  if(!RunQuery(sql)) {
+     return false;
+  }
+
   return true;
 }
 
@@ -8293,6 +8308,43 @@ int UpdateDb(int ver)
          delete q1;
        }
       }
+    }
+    delete q;
+  }
+
+  if(ver<251) {
+    sql=QString("create table if not exists CLOCK_METADATA(")+
+      "ID int auto_increment primary key,"+
+      "CLOCK_NAME char(64) not null,"+
+      "EVENT_NAME char(64) not null,"+
+      "START_TIME int not null,"+
+      "LENGTH int not null,"+
+      "unique index CLOCK_NAME_IDX(CLOCK_NAME,START_TIME),"+
+      "index EVENT_NAME_IDX(EVENT_NAME))";
+    q=new QSqlQuery(sql);
+    delete q;
+
+    sql=QString("select NAME from CLOCKS");
+    q=new QSqlQuery(sql);
+    while(q->next()) {
+      QString table=q->value(0).toString();
+      table.replace(" ","_");
+      sql=QString("select EVENT_NAME,START_TIME,LENGTH ")+
+	"from `"+table+"_CLK` order by START_TIME";
+      q1=new QSqlQuery(sql);
+      while(q1->next()) {
+	sql=QString("insert into CLOCK_METADATA set ")+
+	  "CLOCK_NAME=\""+RDEscapeString(q->value(0).toString())+"\","+
+	  "EVENT_NAME=\""+RDEscapeString(q1->value(0).toString())+"\","+
+	  QString().sprintf("START_TIME=%d,",q1->value(1).toInt())+
+	  QString().sprintf("LENGTH=%d",q1->value(2).toInt());
+	q2=new QSqlQuery(sql);
+	delete q2;
+      }
+      delete q1;
+      sql=QString("drop table `")+table+"_CLK`";
+      q1=new QSqlQuery(sql);
+      delete q1;
     }
     delete q;
   }

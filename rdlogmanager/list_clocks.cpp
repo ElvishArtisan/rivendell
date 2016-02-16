@@ -219,7 +219,6 @@ QSizePolicy ListClocks::sizePolicy() const
 void ListClocks::addData()
 {
   QString clockname;
-  QString clockname_esc;
   QString sql;
   RDSqlQuery *q;
   RDSqlQuery *q1;
@@ -246,15 +245,10 @@ void ListClocks::addData()
 			(const char *)clockname);
   q=new RDSqlQuery(sql);
   delete q;
-  sql=RDCreateClockTableSql(RDClock::tableName(clockname));
-  q=new RDSqlQuery(sql);
-  delete q;
   EditClock *clock_dialog=new EditClock(clockname,true,&new_clocks,this);
   if(clock_dialog->exec()<0) {
-    clockname_esc=clockname;
-    clockname_esc.replace(" ","_");
-    clockname_esc+="_CLK";
-    sql=QString().sprintf("drop table %s",(const char *)clockname_esc);
+    sql=QString("delete CLOCK_METADATA where ")+
+      "CLOCK_NAME=\""+RDEscapeString(clockname)+"\n";
     q=new RDSqlQuery(sql);
     delete q;
     sql=QString().sprintf("delete from CLOCKS where NAME=\"%s\"",
@@ -380,15 +374,15 @@ void ListClocks::renameData()
   delete q;
 
   //
-  // Rename Meta Table
+  // Rename Metadata
   //
   QString old_name_esc=item->text(0);
   old_name_esc.replace(" ","_");
   QString new_name_esc=new_name;
   new_name_esc.replace(" ","_");
-  sql=QString().sprintf("alter table %s_CLK rename to %s_CLK",
-			(const char *)old_name_esc,
-			(const char *)new_name_esc);
+  sql=QString("update CLOCK_METADATA set ")+
+    "CLOCK_NAME=\""+RDEscapeString(new_name)+"\" "+
+    "where CLOCK_NAME=\""+RDEscapeString(item->text(0))+"\"";
   q=new RDSqlQuery(sql);
   delete q;
   sql=QString().sprintf("alter table %s_RULES rename to %s_RULES",
@@ -623,11 +617,13 @@ void ListClocks::DeleteClock(QString clockname)
   //
   // Delete Clock Definition
   //
-  sql=QString().sprintf("delete from CLOCKS where NAME=\"%s\"",
-				(const char *)clockname);
+  sql=QString("delete from CLOCKS where ")+
+    "NAME=\""+RDEscapeString(clockname)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
-  sql=QString().sprintf("drop table %s_CLK",(const char *)base_name);
+  
+  sql=QString("delete from CLOCK_METADATA where ")+
+    "CLOCK_NAME=\""+RDEscapeString(clockname)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
   sql=QString().sprintf("drop table %s_RULES",(const char *)base_name);

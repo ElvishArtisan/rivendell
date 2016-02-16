@@ -2,9 +2,7 @@
 //
 // Abstract a Rivendell Log Manager Clock.
 //
-//   (C) Copyright 2002-2004,2008 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdclock.cpp,v 1.23.10.1 2014/06/24 18:27:03 cvs Exp $
+//   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -153,9 +151,11 @@ bool RDClock::load()
   clock_remarks=q->value(3).toString();
   delete q;
 
-  sql=QString().sprintf("select EVENT_NAME,START_TIME,LENGTH from %s_CLK\
-                         order by ID",
-			(const char *)clock_name_esc);
+  sql=QString("select ")+
+    "EVENT_NAME,"+
+    "START_TIME,"+
+    "LENGTH "+
+    "from CLOCK_METADATA where CLOCK_NAME=\""+RDEscapeString(clock_name)+"\"";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     clock_events.push_back(RDEventLine());
@@ -188,7 +188,8 @@ bool RDClock::save()
 			  (const char *)clock_name);
     q=new RDSqlQuery(sql);
     delete q;
-    sql=QString().sprintf("delete from %s_CLK",(const char *)clock_name_esc);
+    sql=QString("delete from CLOCK_METADATA where ")+
+      "CLOCK_NAME=\""+RDEscapeString(clock_name)+"\"";
     q=new RDSqlQuery(sql);
     delete q;
   }
@@ -206,17 +207,17 @@ bool RDClock::save()
     q=new RDSqlQuery(sql);
     delete q;
   }
-  sql=QString().sprintf("delete from %s_CLK",
-			(const char *)clock_name_esc);
+  sql=QString("delete from CLOCK_METADATA ")+
+    "where CLOCK_NAME=\""+RDEscapeString(clock_name)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
   for(unsigned i=0;i<clock_events.size();i++) {
-    sql=QString().sprintf("insert into %s_CLK set EVENT_NAME=\"%s\",\
-                           START_TIME=%d,LENGTH=%d",
-			  (const char *)clock_name_esc,
-			  (const char *)clock_events[i].name(),
-			  QTime().msecsTo(clock_events[i].startTime()),
-			  clock_events[i].length());
+    sql=QString("insert into CLOCK_METADATA set ")+
+      "CLOCK_NAME=\""+RDEscapeString(clock_name)+"\","+
+      "EVENT_NAME=\""+RDEscapeString(clock_events[i].name())+"\","+
+      QString().sprintf("START_TIME=%d,",
+                       QTime().msecsTo(clock_events[i].startTime()))+
+      QString().sprintf("LENGTH=%d",clock_events[i].length());
     q=new RDSqlQuery(sql);
     delete q;
   }
@@ -309,9 +310,12 @@ bool RDClock::generateLog(int hour,const QString &logname,
   RDSqlQuery *q;
   RDEventLine eventline;
 
-  sql=QString().sprintf("select EVENT_NAME,START_TIME,LENGTH from %s_CLK\
-                         order by START_TIME",
-			(const char *)clock_name_esc);
+  sql=QString("select ")+
+    "EVENT_NAME,"+
+    "START_TIME,"+
+    "LENGTH "+
+    "from CLOCK_METADATA where CLOCK_NAME=\""+RDEscapeString(clock_name)+"\" "+
+    "order by START_TIME";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     eventline.setName(q->value(0).toString());
@@ -325,15 +329,6 @@ bool RDClock::generateLog(int hour,const QString &logname,
   }
   delete q;
   return true;
-}
-
-
-QString RDClock::tableName(const QString &name)
-{
-  QString ret=name;
-  ret.replace(" ","_");
-
-  return ret+"_CLK";
 }
 
 
