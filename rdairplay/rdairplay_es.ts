@@ -349,11 +349,11 @@ Lista</translation>
     </message>
     <message>
         <source>[music import]</source>
-        <translation>[importar música]</translation>
+        <translation type="obsolete">[importar música]</translation>
     </message>
     <message>
         <source>[traffic import]</source>
-        <translation>[importar tráfico]</translation>
+        <translation type="obsolete">[importar tráfico]</translation>
     </message>
     <message>
         <source>EST TIME</source>
@@ -502,11 +502,11 @@ Track</source>
     </message>
     <message>
         <source>[music import]</source>
-        <translation>[importar música]</translation>
+        <translation type="obsolete">[importar música]</translation>
     </message>
     <message>
         <source>[traffic import]</source>
-        <translation>[importar tráfico]</translation>
+        <translation type="obsolete">[importar tráfico]</translation>
     </message>
 </context>
 <context>

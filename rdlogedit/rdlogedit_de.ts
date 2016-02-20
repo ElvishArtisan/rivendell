@@ -335,11 +335,11 @@ die für den gewählten Service ungültig sind!</translation>
     </message>
     <message>
         <source>[music import]</source>
-        <translation>[musikimport]</translation>
+        <translation type="obsolete">[musikimport]</translation>
     </message>
     <message>
         <source>[traffic import]</source>
-        <translation>[trafficimport]</translation>
+        <translation type="obsolete">[trafficimport]</translation>
     </message>
     <message>
         <source>Manual</source>

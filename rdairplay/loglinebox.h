@@ -2,9 +2,7 @@
 //
 // On Air Playout Utility for Rivendell.
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: loglinebox.h,v 1.47.8.6 2014/02/06 20:43:51 cvs Exp $
+//   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as

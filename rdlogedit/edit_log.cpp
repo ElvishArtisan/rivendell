@@ -2,9 +2,7 @@
 //
 // Edit a Rivendell Log
 //
-//   (C) Copyright 2002-2008 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: edit_log.cpp,v 1.91.6.10.2.2 2014/05/22 16:12:54 cvs Exp $
+//   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -1477,7 +1475,9 @@ void EditLog::RefreshLine(RDListViewItem *item)
 	item->setText(3,tr("LINK"));
 	item->setText(4,"");
 	item->setText(5,RDGetTimeLength(logline->linkLength(),false,false));
-	item->setText(6,tr("[music import]"));
+	item->setText(6,logline->linkEventName()+" - "+
+		      logline->linkStartTime().toString("hh:mm:ss")+" / "+
+		      RDGetTimeLength(logline->linkLength()));
 	break;
 
       case RDLogLine::TrafficLink:
@@ -1485,7 +1485,9 @@ void EditLog::RefreshLine(RDListViewItem *item)
 	item->setText(3,tr("LINK"));
 	item->setText(4,"");
 	item->setText(5,RDGetTimeLength(logline->linkLength(),false,false));
-	item->setText(6,tr("[traffic import]"));
+	item->setText(6,logline->linkEventName()+" - "+
+		      logline->linkStartTime().toString("hh:mm:ss")+" / "+
+		      RDGetTimeLength(logline->linkLength()));
 	break;
 
       default:

@@ -342,11 +342,11 @@ skrudd av for denne tenesta!</translation>
     </message>
     <message>
         <source>[music import]</source>
-        <translation>[musikkimport]</translation>
+        <translation type="obsolete">[musikkimport]</translation>
     </message>
     <message>
         <source>[traffic import]</source>
-        <translation>[trafikkimport]</translation>
+        <translation type="obsolete">[trafikkimport]</translation>
     </message>
     <message>
         <source>Manual</source>

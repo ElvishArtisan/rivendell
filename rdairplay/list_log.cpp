@@ -1326,14 +1326,18 @@ void ListLog::RefreshItem(RDListViewItem *l,int line)
 	l->setPixmap(0,*list_music_map);
 	l->setText(2,"00:00");
 	l->setText(4,tr("LINK"));
-	l->setText(5,tr("[music import]"));
+	l->setText(5,log_line->linkEventName()+" - "+
+                     log_line->linkStartTime().toString("hh:mm:ss")+" / "+
+                     RDGetTimeLength(log_line->linkLength()));
 	break;
 
       case RDLogLine::TrafficLink:
 	l->setPixmap(0,*list_traffic_map);
 	l->setText(2,"00:00");
 	l->setText(4,tr("LINK"));
-	l->setText(5,tr("[traffic import]"));
+	l->setText(5,log_line->linkEventName()+" - "+
+                     log_line->linkStartTime().toString("hh:mm:ss")+" / "+
+                     RDGetTimeLength(log_line->linkLength()));
 	break;
 
       case RDLogLine::Chain:

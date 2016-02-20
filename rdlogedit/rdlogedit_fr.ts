@@ -325,14 +325,6 @@ for the selected service!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>[music import]</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>[traffic import]</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Manual</source>
         <translation type="unfinished"></translation>
     </message>

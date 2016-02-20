@@ -357,11 +357,11 @@ para o serviço selecionado!</translation>
     </message>
     <message>
         <source>[music import]</source>
-        <translation>[importar músicas]</translation>
+        <translation type="obsolete">[importar músicas]</translation>
     </message>
     <message>
         <source>[traffic import]</source>
-        <translation>[importar tráfego]</translation>
+        <translation type="obsolete">[importar tráfego]</translation>
     </message>
     <message>
         <source>Manual</source>

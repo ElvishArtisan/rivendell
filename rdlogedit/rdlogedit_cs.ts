@@ -335,11 +335,11 @@ jež jsou pro vybranou službu zakázány!</translation>
     </message>
     <message>
         <source>[music import]</source>
-        <translation>[zavedení hudby]</translation>
+        <translation type="obsolete">[zavedení hudby]</translation>
     </message>
     <message>
         <source>[traffic import]</source>
-        <translation>[zavedení přenosu]</translation>
+        <translation type="obsolete">[zavedení přenosu]</translation>
     </message>
     <message>
         <source>Manual</source>

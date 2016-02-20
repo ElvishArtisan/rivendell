@@ -335,11 +335,11 @@ auswählen</translation>
     </message>
     <message>
         <source>[music import]</source>
-        <translation>[musikimport]</translation>
+        <translation type="obsolete">[musikimport]</translation>
     </message>
     <message>
         <source>[traffic import]</source>
-        <translation>[traffic import]</translation>
+        <translation type="obsolete">[traffic import]</translation>
     </message>
     <message>
         <source>CHAIN TO</source>
@@ -494,11 +494,11 @@ Track</source>
     </message>
     <message>
         <source>[music import]</source>
-        <translation>[musikimport]</translation>
+        <translation type="obsolete">[musikimport]</translation>
     </message>
     <message>
         <source>[traffic import]</source>
-        <translation>[traffic import]</translation>
+        <translation type="obsolete">[traffic import]</translation>
     </message>
     <message>
         <source>CHAIN</source>

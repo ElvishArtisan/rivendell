@@ -335,11 +335,11 @@ un Log</translation>
     </message>
     <message>
         <source>[music import]</source>
-        <translation>[import musique]</translation>
+        <translation type="obsolete">[import musique]</translation>
     </message>
     <message>
         <source>[traffic import]</source>
-        <translation>[import pub]</translation>
+        <translation type="obsolete">[import pub]</translation>
     </message>
     <message>
         <source>CHAIN TO</source>
@@ -494,11 +494,11 @@ Track</source>
     </message>
     <message>
         <source>[music import]</source>
-        <translation>[import musique]</translation>
+        <translation type="obsolete">[import musique]</translation>
     </message>
     <message>
         <source>[traffic import]</source>
-        <translation>[import pub]</translation>
+        <translation type="obsolete">[import pub]</translation>
     </message>
     <message>
         <source>CHAIN</source>
