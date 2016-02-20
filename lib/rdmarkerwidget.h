@@ -61,6 +61,8 @@ class RDMarkerWidget : public QWidget
 
  private:
   bool CheckLimits(int value);
+  int SetTimeLength(const QString &str) const;
+  QString GetTimeLength(int msecs) const;
   RDMarkerEdit *mark_edit;
   RDMarkerButton *mark_button;
   bool mark_delete_mode;

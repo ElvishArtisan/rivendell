@@ -15151,3 +15151,8 @@
        log link events in 'rdairplay/list_log.cpp'.
        * Added code to display Event Name, Start Time and Length for
        log link events in 'rdairplay/loglinebox.cpp'.
+2016-02-20 Fred Gleason <fredg@paravelsystems.com>
+       * Modified 'lib/rdedit_audio.cpp' and 'lib/rdmarkerwidget.cpp' to
+       allow for 1/100 sec marker positioning resolution.
+       * Fixed a bug in 'lib/rdedit_audio.cpp' that caused time grid to
+       be mispositioned by 1 second.
