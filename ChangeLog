@@ -15156,3 +15156,6 @@
        allow for 1/100 sec marker positioning resolution.
        * Fixed a bug in 'lib/rdedit_audio.cpp' that caused time grid to
        be mispositioned by 1 second.
+2016-02-20 Fred Gleason <fredg@paravelsystems.com>
+       * Fixed a bug in 'lib/rdedit_audio.cpp' that caused the End Marker
+       position to be moved 26 mS later each time the values were saved.

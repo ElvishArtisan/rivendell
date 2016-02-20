@@ -637,7 +637,7 @@ RDEditAudio::RDEditAudio(RDCart *cart,QString cut_name,RDCae *cae,RDUser *user,
   edit_cursor=edit_cue_widget[RDEditAudio::Start]->frames();
   baseline=edit_cursor;
   edit_cue_widget[RDEditAudio::End]->setValue(edit_cut->endPoint(true));
-  edit_cue_widget[RDEditAudio::End]->setRange(-1,edit_cut->length());
+  //edit_cue_widget[RDEditAudio::End]->setRange(-1,edit_cut->length());
   edit_cue_widget[RDEditAudio::End]->
     setRange(edit_cue_widget[RDEditAudio::Start],NULL);
 
@@ -1769,7 +1769,7 @@ bool RDEditAudio::PositionCursor(int cursor,bool relative)
          setValue((int)(1000.0*(double)cursor/(double)edit_sample_rate));
 	edit_cae->positionPlay(edit_handle,GetTime(cursor));
 	break;
-	
+
       case RDEditAudio::End:
       case RDEditAudio::TalkEnd:
       case RDEditAudio::HookEnd:
@@ -1982,7 +1982,7 @@ bool RDEditAudio::SaveMarkers()
   // Save Settings
   //
   edit_cut->setStartPoint(edit_cue_widget[RDEditAudio::Start]->value());
-  edit_cut->setEndPoint(edit_cue_widget[RDEditAudio::End]->value()+26);
+  edit_cut->setEndPoint(edit_cue_widget[RDEditAudio::End]->value());
   edit_cut->setTalkStartPoint(edit_cue_widget[RDEditAudio::TalkStart]->value());
   edit_cut->setTalkEndPoint(edit_cue_widget[RDEditAudio::TalkEnd]->value());
   edit_cut->

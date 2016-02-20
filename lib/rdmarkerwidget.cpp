@@ -22,7 +22,6 @@
 #include <qstringlist.h>
 
 #include "rd.h"
-#include "rdconf.h"
 #include "rdmarkerwidget.h"
 
 RDMarkerWidget::RDMarkerWidget(const QString &caption,const QColor &color,
@@ -127,7 +126,7 @@ void RDMarkerWidget::setValue(int msecs)
     mark_edit->setText("");
   }
   else {
-    mark_value=10*(msecs/10);
+    mark_value=msecs;
     mark_edit->setText(GetTimeLength(mark_value));
   }
 }
