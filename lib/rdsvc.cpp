@@ -718,8 +718,8 @@ bool RDSvc::linkLog(RDSvc::ImportSource src,const QDate &date,
       RDEventLine *e=new RDEventLine();
       e->setName(logline->linkEventName());
       e->load();
-      e->linkLog(dest_event,dest_event->nextId(),svc_name,logline,track_str,
-		 label_cart,track_cart,import_name,&autofill_errors);
+      e->linkLog(dest_event,svc_name,logline,track_str,label_cart,track_cart,
+                import_name,&autofill_errors);
       delete e;
       emit generationProgress(1+(24*current_link++)/total_links);
     }
@@ -814,17 +814,13 @@ bool RDSvc::linkLog(RDSvc::ImportSource src,const QDate &date,
 
 void RDSvc::clearLogLinks(RDSvc::ImportSource src,const QString &logname)
 {
-  std::vector<int> cleared_ids;
-  RDLogLine::Type event_type=RDLogLine::UnknownType;
   RDLogLine::Source event_source=RDLogLine::Manual;
   switch(src) {
       case RDSvc::Music:
-	event_type=RDLogLine::MusicLink;
 	event_source=RDLogLine::Music;
 	break;
 
       case RDSvc::Traffic:
-	event_type=RDLogLine::TrafficLink;
 	event_source=RDLogLine::Traffic;
 	break;
 
@@ -838,36 +834,25 @@ void RDSvc::clearLogLinks(RDSvc::ImportSource src,const QString &logname)
   RDLogLine *logline=NULL;
   for(int i=0;i<src_event->size();i++) {
     logline=src_event->logLine(i);
-    if((logline->linkId()>=0)&&(logline->source()==event_source)) {
-      if(CheckId(&cleared_ids,logline->linkId())) {
-	dest_event->insert(dest_event->size(),1);
-	RDLogLine *lline=dest_event->logLine(dest_event->size()-1);
-	lline->setId(dest_event->nextId());
-	lline->setStartTime(RDLogLine::Logged,logline->linkStartTime());
-        lline->setEventLength(logline->linkLength());
-	lline->setType(event_type);
-	if(logline->linkEmbedded()) {
-	  lline->setSource(RDLogLine::Music);
-	}
-	else {
-	  lline->setSource(RDLogLine::Template);
-	}
-	lline->setTransType(logline->transType());
-	lline->setLinkEventName(logline->linkEventName());
-	lline->setLinkStartTime(logline->linkStartTime());
-	lline->setLinkLength(logline->linkLength());
-	lline->setLinkStartSlop(logline->linkStartSlop());
-	lline->setLinkEndSlop(logline->linkEndSlop());
-	lline->setLinkId(logline->linkId());
-	lline->setLinkEmbedded(logline->linkEmbedded());
-      }
-    }
-    else {
+    if(logline->source()!=event_source) {
       dest_event->insert(dest_event->size(),1);
       *(dest_event->logLine(dest_event->size()-1))=*logline;
       dest_event->logLine(dest_event->size()-1)->setId(dest_event->nextId());
     }
   }
+
+  //
+  // Calculate new traffic link count
+  //
+  int tfc_links=0;
+  if(src==RDSvc::Music) {
+    for(int i=0;i<dest_event->size();i++) {
+      if(dest_event->logLine(i)->type()==RDLogLine::TrafficLink) {
+       tfc_links++;
+      }
+    }
+  }
+
   dest_event->save();
   delete src_event;
   delete dest_event;
