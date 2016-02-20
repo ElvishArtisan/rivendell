@@ -101,6 +101,14 @@
         <source>An event is already scheduled with this start time!</source>
         <translation>Un événement est déjà planifié à cette heure!</translation>
     </message>
+    <message>
+        <source>Edit Log Import Link</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>UNKNOWN LOG EVENT</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>HourSelector</name>

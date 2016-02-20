@@ -15138,3 +15138,6 @@
        * Added 'Event not placed' warnings to the Exception Report for
        inline traffic, note cart and voice track events in 'lib/rdsvc.cpp'
        and 'lib/rdevent_line.cpp'.
+2016-02-20 Fred Gleason <fredg@paravelsystems.com>
+       * Fixed a bug in 'rdairplay/edit_event.cpp' that used incorrect
+       layout when editing log link events.
