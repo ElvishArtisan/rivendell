@@ -1,0 +1,25 @@
+TIME TYPE
+A single character, can be one of:
+
+Whitespace or undefined — ‘Relative’ time (the current default)
+‘H’ — Hard Start (case insensitive)
+’S’ — Make Next (case insensitive)
+
+
+TIME WAIT SECONDS
+Numeric field, defines seconds for the ‘wait until’ value for a hard time.
+Whitespace or undefined = 0.
+
+
+TIME WAIT MINUTES
+Numeric field, defines minutes for the ‘wait until’ value for a hard time.
+Whitespace or undefined = 0.
+
+
+TRANSITION TYPE
+String field, can be one of:
+"PLAY “ — PLAY transition (case insensitive)
+“STOP “ — STOP transition (case insensitive)
+“SEGUE” — SEGUE transition (case insensitive)
+Whitespace or undefined defaults to whatever is specified in the parent
+import event (the current behavior).
