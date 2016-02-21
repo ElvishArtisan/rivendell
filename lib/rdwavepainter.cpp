@@ -90,8 +90,11 @@ void RDWavePainter::drawWaveBySamples(int x,int w,int startsamp,int endsamp,
   int endblock=endsamp/1152;
   int startclipblock=-1;
   int endclipblock=-1;
+  QPixmap *pix=(QPixmap *)device();
 
   if((startblock>(int)wave_peaks->energySize())||(wave_peaks->energySize()==0)) {
+    setFont(QFont("helvetica",32,QFont::Bold));
+    drawText(x+40,pix->height()/2+16,wave_error_string);
     return;
   }
   if(startclip>=0) {
@@ -104,7 +107,6 @@ void RDWavePainter::drawWaveBySamples(int x,int w,int startsamp,int endsamp,
   double time_scale=1.0;
   double gain_scale=1.0;
   int dx=0;
-  QPixmap *pix=(QPixmap *)device();
   int center=pix->height()/2;
   RDWavePainter::Channel effective_channel=channel;
   switch(channel) {
@@ -235,6 +237,8 @@ void RDWavePainter::drawWaveByMsecs(int x,int w,int startmsecs,int endmsecs,
 
 void RDWavePainter::LoadWave()
 {
+  RDPeaksExport::ErrorCode err;
+
   wave_sample_rate=wave_cut->sampleRate();
   wave_channels=wave_cut->channels();
   if(wave_peaks!=NULL) {
@@ -243,5 +247,6 @@ void RDWavePainter::LoadWave()
   wave_peaks=new RDPeaksExport(wave_station,wave_config);
   wave_peaks->setCartNumber(wave_cut->cartNumber());
   wave_peaks->setCutNumber(wave_cut->cutNumber());
-  wave_peaks->runExport(wave_user->name(),wave_user->password());
+  err=wave_peaks->runExport(wave_user->name(),wave_user->password());
+  wave_error_string=RDPeaksExport::errorText(err);
 }
