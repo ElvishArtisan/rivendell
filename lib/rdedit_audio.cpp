@@ -95,7 +95,8 @@ RDEditAudio::RDEditAudio(RDCart *cart,QString cut_name,RDCae *cae,RDUser *user,
   //
   // Audio Transport Controls
   //
-  edit_marker_transport=new RDMarkerTransport(edit_cut,cae,card,port,this);
+  edit_marker_transport=
+    new RDMarkerTransport(edit_cut,cae,card,port,preroll,this);
   for(int i=0;i<2;i++) {
     connect(edit_marker_transport,SIGNAL(positionChanged(int)),
            edit_waveform[i],SLOT(setPlayCursor(int)));

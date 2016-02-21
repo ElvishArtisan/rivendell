@@ -15204,5 +15204,9 @@
 	* Reimplemented the 'Cursor', 'Home' and 'End' functions in
 	'lib/rdedit_audio.cpp' and 'lib/rdedit_audio.h'.
 2016-02-21 Fred Gleason <fredg@paravelsystems.com>
-	* Reimplemented the 'Cut Gain function in ;lib/rdedit_audio.cpp'
+	* Reimplemented the 'Cut Gain function in 'lib/rdedit_audio.cpp'
 	and 'lib/rdedit_audio.h'.
+2016-02-21 Fred Gleason <fredg@paravelsystems.com>
+	* Reimplemented Cursor Play modes in 'lib/rdmarkertransport.cpp',
+	'lib/rdmarkertransport.h', 'lib/rdedit_audio.cpp' and
+	'lib/rdedit_audio.h'.
