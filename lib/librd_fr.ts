@@ -1105,6 +1105,10 @@ End</source>
         <source>dB</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Edit Audio</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RDEditPanelName</name>

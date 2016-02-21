@@ -136,6 +136,9 @@ class RDEditAudio : public QDialog
   RDCut *edit_cut;
   QPushButton *edit_save_button;
   QPushButton *edit_cancel_button;
+  RDStation *edit_station;
+  RDConfig *edit_config;
+  RDUser *edit_user;
 };
 
 

@@ -15197,3 +15197,6 @@
 2016-02-21 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in 'lib/rdmarkerwaveform.cpp' that caused the reference
 	level lines to be incorrectly placed.
+2016-02-21 Fred Gleason <fredg@paravelsystems.com>
+	* Reimplemented the 'Trim Start' and 'Trim End' functions in
+	'lib/rdedit_audio.cpp' and 'lib/rdedit_audio.h'.

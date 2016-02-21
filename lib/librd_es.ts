@@ -1242,7 +1242,7 @@ marcador</translation>
     </message>
     <message>
         <source>Edit Audio</source>
-        <translation type="obsolete">Editar Audio</translation>
+        <translation type="unfinished">Editar Audio</translation>
     </message>
     <message>
         <source>Talk
