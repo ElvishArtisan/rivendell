@@ -15165,3 +15165,8 @@
 2016-02-21 Fred Gleason <fredg@paravelsystems.com>
        * Implemented marker deletion in 'lib/rdedit_audio.cpp' and
        'lib/rdedit_audio.h'.
+2016-02-21 Fred Gleason <fredg@paravelsystems.com>
+       * Fixed a bug in 'lib/rdwavepainter.cpp' that caused the 'x' parameter
+       in the RDWavePainter::drawWaveBySamples()' method to be ignored.
+       * Fixed a bug in 'lib/rdmarkerwaveform.cpp' that caused marker pointers
+       to become invisible near the edit of the waveform window.
