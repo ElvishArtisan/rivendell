@@ -15192,3 +15192,5 @@
 2016-02-21 Fred Gleason <fredg@paravelsystems.com>
 	* Enhanced play cursor updating to be more visible in
 	'lib/rdmarkerwaveform.cpp'.
+2016-02-21 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed selection bugs in the Region counter in 'lib/rdedit_audio.cpp'.

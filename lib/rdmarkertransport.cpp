@@ -76,7 +76,8 @@ RDMarkerTransport::RDMarkerTransport(RDCut *cut,RDCae *cae,int card,int port,
   trans_overall_edit->setFont(label_font);
   trans_overall_edit->setReadOnly(true);
 
-  trans_region_trans_label=new QLabel("Region",this);
+  trans_region_trans_label=
+    new QLabel(RDMarkerWaveform::markerName(RDMarkerWaveform::Play),this);
   trans_region_trans_label->setFont(QFont(small_font));
   trans_region_trans_label->setAlignment(Qt::AlignHCenter);
   trans_region_trans_label->
@@ -85,6 +86,8 @@ RDMarkerTransport::RDMarkerTransport(RDCut *cut,RDCae *cae,int card,int port,
   trans_region_edit->setAcceptDrops(false);
   trans_region_edit->setFont(label_font);
   trans_region_edit->setReadOnly(true);
+  trans_region_edit->setText("0:00:00.0");
+  trans_region_edit->setDisabled(true);
 
   trans_size_label=new QLabel(tr("Length"),this);
   trans_size_label->setFont(QFont(small_font));
@@ -192,6 +195,12 @@ void RDMarkerTransport::setActiveMarker(RDMarkerWaveform::CuePoints pt,
     trans_region_trans_label->
       setBackgroundColor(RDMarkerWaveform::markerColor(pt));
   }
+}
+
+
+void RDMarkerTransport::setLength(int msecs)
+{
+  trans_size_edit->setText(RDGetTimeLength(msecs,true,true));
 }
 
 

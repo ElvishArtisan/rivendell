@@ -678,6 +678,9 @@ void RDEditAudio::markerValueChangedData(int id)
  
   case RDMarkerWaveform::Start:
     edit_marker_transport->setStartPosition(value);
+    edit_marker_transport->
+      setLength(edit_marker_widget[RDMarkerWaveform::End]->value()-
+               edit_marker_widget[RDMarkerWaveform::Start]->value());
     for(int i=3;i<RDMarkerWaveform::LastMarker;i++) {
       if((edit_marker_widget[i]->value()>=0)&&
         (edit_marker_widget[i]->value()<value)) {
@@ -688,6 +691,9 @@ void RDEditAudio::markerValueChangedData(int id)
 
   case RDMarkerWaveform::End:
     edit_marker_transport->setEndPosition(value);
+    edit_marker_transport->
+      setLength(edit_marker_widget[RDMarkerWaveform::End]->value()-
+               edit_marker_widget[RDMarkerWaveform::Start]->value());
     for(int i=3;i<RDMarkerWaveform::LastMarker;i++) {
       if((edit_marker_widget[i]->value()>=0)&&
         (edit_marker_widget[i]->value()>value)) {

@@ -49,6 +49,7 @@ class RDMarkerTransport : public QWidget
   void setGain(int gain);
   void setActiveMarker(RDMarkerWaveform::CuePoints pt,
                       int start_msecs,int end_msecs);
+  void setLength(int msecs);
 
  signals:
   void positionChanged(int msecs);
