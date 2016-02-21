@@ -15171,6 +15171,9 @@
        * Fixed a bug in 'lib/rdmarkerwaveform.cpp' that caused marker pointers
        to become invisible near the edit of the waveform window.
 2016-02-21 Fred Gleason <fredg@paravelsystems.com>
-       * Added code to integrate energy samples in in the
+       * Added code to integrate energy samples in the
        'RDPeaksExport::energy()' method in'lib/rdpeaksexport.cpp'
        and 'lib/rdpeaksexport.h'.
+2016-02-21 Fred Gleason <fredg@paravelsystems.com>
+       * Added an 'RDMarkerTransport' class in 'lib/rdmarkertransport.cpp'
+       and 'lib/rdmarkertransport.h'.

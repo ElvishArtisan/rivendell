@@ -26,7 +26,6 @@
 
 #include <rdconf.h>
 #include <rd.h>
-#include <rdmixer.h>
 #include <rdcut.h>
 #include <rdedit_audio.h>
 #include <rdaudioinfo.h>
@@ -38,9 +37,6 @@ RDEditAudio::RDEditAudio(RDCart *cart,QString cut_name,RDCae *cae,RDUser *user,
 			 int trim_level,QWidget *parent)
   : QDialog(parent,"",true)
 {
-  edit_card=card;
-  edit_port=port;
-
   //
   // Fix the Window Size
   //
@@ -60,9 +56,13 @@ RDEditAudio::RDEditAudio(RDCart *cart,QString cut_name,RDCae *cae,RDUser *user,
   small_font.setPixelSize(10);
 
   //
-  // Waveform
+  // Audio Cut
   //
   edit_cut=new RDCut(cut_name);
+
+  //
+  // Waveform
+  //
   switch(edit_cut->channels()) {
   case 1:
     edit_waveform[0]=new RDMarkerWaveform(edit_cut,user,station,config,
@@ -86,80 +86,21 @@ RDEditAudio::RDEditAudio(RDCart *cart,QString cut_name,RDCae *cae,RDUser *user,
   edit_waveform_scroll=new QScrollBar(QScrollBar::Horizontal,this);
 
   //
-  // Time Counters
+  // Audio Transport Controls
   //
-  edit_position_label=new QLabel(tr("Position"),this);
-  edit_position_label->setFont(QFont(small_font));
-  edit_position_label->setAlignment(Qt::AlignHCenter);
-  edit_position_label->
-    setPalette(QPalette(backgroundColor(),QColor(EDITAUDIO_HIGHLIGHT_COLOR)));
-  edit_overall_edit=new QLineEdit(this);
-  edit_overall_edit->setAcceptDrops(false);
-  edit_overall_edit->setFont(label_font);
-  edit_overall_edit->setReadOnly(true);
-
-  edit_region_edit_label=new QLabel("Region",this);
-  edit_region_edit_label->setFont(QFont(small_font));
-  edit_region_edit_label->setAlignment(Qt::AlignHCenter);
-  edit_region_edit_label->
-    setPalette(QPalette(backgroundColor(),QColor(EDITAUDIO_HIGHLIGHT_COLOR)));
-  edit_region_edit=new QLineEdit(this);
-  edit_region_edit->setAcceptDrops(false);
-  edit_region_edit->setFont(label_font);
-  edit_region_edit->setReadOnly(true);
-
-  edit_size_label=new QLabel(tr("Length"),this);
-  edit_size_label->setFont(QFont(small_font));
-  edit_size_label->setAlignment(Qt::AlignHCenter);
-  edit_size_label->
-    setPalette(QPalette(backgroundColor(),QColor(EDITAUDIO_HIGHLIGHT_COLOR)));
-  edit_size_edit=new QLineEdit(this);
-  edit_size_edit->setAcceptDrops(false);
-  edit_size_edit->setFont(label_font);
-  edit_size_edit->setReadOnly(true);
-
-  //
-  // Transport Buttons
-  //
-  edit_play_cursor_button=
-    new RDTransportButton(RDTransportButton::PlayBetween,this);
-  edit_play_cursor_button->setEnabled((edit_card>=0)&&(edit_port>=0));
-  connect(edit_play_cursor_button,SIGNAL(clicked()),
-	  this,SLOT(playCursorData()));
-
-  edit_play_start_button=new RDTransportButton(RDTransportButton::Play,this);
-  edit_play_start_button->setEnabled((edit_card>=0)&&(edit_port>=0));
-  connect(edit_play_start_button,SIGNAL(clicked()),
-	  this,SLOT(playStartData()));
-
-  edit_pause_button=new RDTransportButton(RDTransportButton::Pause,this);
-  edit_pause_button->setOnColor(QColor(red));
-  edit_pause_button->setEnabled((edit_card>=0)&&(edit_port>=0));
-  connect(edit_pause_button,SIGNAL(clicked()),this,SLOT(pauseData()));
-
-  edit_stop_button=new RDTransportButton(RDTransportButton::Stop,this);
-  edit_stop_button->on();
-  edit_stop_button->setOnColor(QColor(red));
-  edit_stop_button->setEnabled((edit_card>=0)&&(edit_port>=0));
-  connect(edit_stop_button,SIGNAL(clicked()),this,SLOT(stopData()));
-
-  edit_loop_button=new RDTransportButton(RDTransportButton::Loop,this);
-  edit_loop_button->off();
-  edit_loop_button->setEnabled((edit_card>=0)&&(edit_port>=0));
-  connect(edit_loop_button,SIGNAL(clicked()),this,SLOT(loopData()));
-
-  //
-  // The Audio Meter
-  //
-  edit_meter=new RDStereoMeter(this);
-  edit_meter->setSegmentSize(5);
-  edit_meter->setMode(RDSegMeter::Peak);
-  edit_meter_timer=new QTimer(this);
-  connect(edit_meter_timer,SIGNAL(timeout()),this,SLOT(meterData()));
+  edit_marker_transport=new RDMarkerTransport(edit_cut,cae,card,port,this);
+  connect(edit_marker_transport,SIGNAL(positionChanged(int)),
+         edit_waveform[0],SLOT(setPlayCursor(int)));
+  connect(edit_marker_transport,SIGNAL(positionChanged(int)),
+         edit_waveform[1],SLOT(setPlayCursor(int)));
 
   //
   // Marker Widgets
   //
+  edit_marker_widget[RDMarkerWaveform::Play]=
+    new RDMarkerWidget(tr("Play"),Qt::black,this);
+  edit_marker_widget[RDMarkerWaveform::Play]->hide();  // "Virtual" for playback operations
+
   edit_marker_widget[RDMarkerWaveform::Start]=
     new RDMarkerWidget(tr("Cut\nStart"),RD_START_END_MARKER_COLOR,this);
 
@@ -197,7 +138,7 @@ RDEditAudio::RDEditAudio(RDCart *cart,QString cut_name,RDCae *cae,RDUser *user,
   connect(value_mapper,SIGNAL(mapped(int)),
          this,SLOT(markerValueChangedData(int)));
  
-  for(int i=1;i<RDMarkerWaveform::LastMarker;i++) {
+  for(int i=0;i<RDMarkerWaveform::LastMarker;i++) {
     enabled_mapper->
       setMapping(edit_marker_widget[i],(int)i);
     connect(edit_marker_widget[i],SIGNAL(selectionChanged()),
@@ -512,29 +453,11 @@ void RDEditAudio::resizeEvent(QResizeEvent *e)
   viewportWidthChangedData(edit_waveform[0]->viewportWidth());
 
   //
-  // Time Counters
+  // Audio Transport Controls
   //
-  edit_position_label->setGeometry(60,385,70,20);
-  edit_overall_edit->setGeometry(60,400,70,21);
-  edit_region_edit_label->setGeometry(158,385,70,20);
-  edit_region_edit->setGeometry(158,400,70,21);
-  edit_size_label->setGeometry(256,385,70,20);
-  edit_size_edit->setGeometry(256,400,70,21);
-
-  //
-  // Transport Buttons
-  //
-  edit_play_cursor_button->setGeometry(20,425,65,45);
-  edit_play_start_button->setGeometry(90,425,65,45);
-  edit_pause_button->setGeometry(160,425,65,45);
-  edit_stop_button->setGeometry(230,425,65,45);
-  edit_loop_button->setGeometry(300,425,65,45);
-
-  //
-  // Audio Meter
-  //
-  edit_meter->setGeometry(380,398,edit_meter->geometry().width(),
-                         edit_meter->geometry().height());
+  edit_marker_transport->
+    setGeometry(11,30+edit_waveform[0]->sizeHint().height(),
+               edit_waveform[0]->sizeHint().width()-20,92);
 
   //
   // Marker Widgets
@@ -624,16 +547,6 @@ void RDEditAudio::paintEvent(QPaintEvent *e)
   p->drawRect(739,385,85,165);   // Goto Buttons
 
   //
-  // Transport Control Area
-  //
-  p->setPen(QColor(colorGroup().shadow()));
-  p->fillRect(11,30+edit_waveform[0]->sizeHint().height(),
-             edit_waveform[0]->sizeHint().width(),92,
-             QColor(EDITAUDIO_HIGHLIGHT_COLOR));
-  p->drawRect(11,30+edit_waveform[0]->sizeHint().height(),
-             edit_waveform[0]->sizeHint().width(),92);
-
-  //
   // Marker Control Area
   //
   p->drawRect(11,130+edit_waveform[0]->sizeHint().height(),717,197);
@@ -657,36 +570,6 @@ void RDEditAudio::waveformClickedData(int msecs)
       edit_marker_widget[i]->setValue(msecs);
     }
   }
-}
-
-
-void RDEditAudio::playStartData()
-{
-}
-
-
-void RDEditAudio::playCursorData()
-{
-}
-
-
-void RDEditAudio::pauseData()
-{
-}
-
-
-void RDEditAudio::stopData()
-{
-}
-
-
-void RDEditAudio::loopData()
-{
-}
-
-
-void RDEditAudio::meterData()
-{
 }
 
 
@@ -743,6 +626,7 @@ void RDEditAudio::markerValueChangedData(int id)
     break;
  
   case RDMarkerWaveform::Start:
+    edit_marker_transport->setStartPosition(value);
     for(int i=3;i<RDMarkerWaveform::LastMarker;i++) {
       if((edit_marker_widget[i]->value()>=0)&&
         (edit_marker_widget[i]->value()<value)) {
@@ -752,6 +636,7 @@ void RDEditAudio::markerValueChangedData(int id)
     break;
 
   case RDMarkerWaveform::End:
+    edit_marker_transport->setEndPosition(value);
     for(int i=3;i<RDMarkerWaveform::LastMarker;i++) {
       if((edit_marker_widget[i]->value()>=0)&&
         (edit_marker_widget[i]->value()>value)) {
@@ -847,4 +732,18 @@ void RDEditAudio::SetDeleteMode(bool state)
   }
   edit_remove_button->setFlashingEnabled(state);
   edit_remove_button->setDown(false);
+}
+
+
+RDMarkerWaveform::CuePoints RDEditAudio::CurrentMarker() const
+{
+  RDMarkerWaveform::CuePoints ret=RDMarkerWaveform::Play;
+
+  for(int i=0;i<RDMarkerWaveform::LastMarker;i++) {
+    if(edit_marker_widget[i]->isSelected()) {
+      ret=(RDMarkerWaveform::CuePoints)i;
+    }
+  }
+
+  return ret;
 }

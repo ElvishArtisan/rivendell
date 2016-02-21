@@ -1159,11 +1159,11 @@ entfernen</translation>
     </message>
     <message>
         <source>Position</source>
-        <translation>Position</translation>
+        <translation type="obsolete">Position</translation>
     </message>
     <message>
         <source>Length</source>
-        <translation>Länge</translation>
+        <translation type="obsolete">Länge</translation>
     </message>
     <message>
         <source>Delete Talk Markers</source>
@@ -1234,6 +1234,10 @@ End</source>
         <source>Fade
 Down</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Play</source>
+        <translation type="unfinished">Play</translation>
     </message>
 </context>
 <context>
@@ -1930,6 +1934,17 @@ Bitte Kofiguration prüfen und erneut versuchen.</translation>
     <message>
         <source>Tracker</source>
         <translation type="obsolete">Tracker</translation>
+    </message>
+</context>
+<context>
+    <name>RDMarkerTransport</name>
+    <message>
+        <source>Position</source>
+        <translation type="unfinished">Position</translation>
+    </message>
+    <message>
+        <source>Length</source>
+        <translation type="unfinished">Länge</translation>
     </message>
 </context>
 <context>

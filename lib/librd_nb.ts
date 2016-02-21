@@ -1161,11 +1161,11 @@ markør</translation>
     </message>
     <message>
         <source>Position</source>
-        <translation>Posisjon</translation>
+        <translation type="obsolete">Posisjon</translation>
     </message>
     <message>
         <source>Length</source>
-        <translation>Lengd</translation>
+        <translation type="obsolete">Lengd</translation>
     </message>
     <message>
         <source>Delete Talk Markers</source>
@@ -1236,6 +1236,10 @@ End</source>
         <source>Fade
 Down</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Play</source>
+        <translation type="unfinished">Spel</translation>
     </message>
 </context>
 <context>
@@ -1936,6 +1940,17 @@ Sjekk eksportoppsettet ditt og prøv att.</translation>
     <message>
         <source>Tracker</source>
         <translation type="obsolete">Sporleggjar</translation>
+    </message>
+</context>
+<context>
+    <name>RDMarkerTransport</name>
+    <message>
+        <source>Position</source>
+        <translation type="unfinished">Posisjon</translation>
+    </message>
+    <message>
+        <source>Length</source>
+        <translation type="unfinished">Lengd</translation>
     </message>
 </context>
 <context>

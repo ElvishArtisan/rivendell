@@ -150,6 +150,7 @@ x11 {
   SOURCES += rdlist_logs.cpp
   SOURCES += rdmarker_button.cpp
   SOURCES += rdmarker_edit.cpp
+  SOURCES += rdmarkertransport.cpp
   SOURCES += rdmarkerwaveform.cpp
   SOURCES += rdmarkerwidget.cpp
   SOURCES += rdmatrix.cpp
@@ -284,6 +285,7 @@ x11 {
   HEADERS += rdlist_logs.h
   HEADERS += rdmarker_button.h
   HEADERS += rdmarker_edit.h
+  HEADERS += rdmarkertransport.h
   HEADERS += rdmarkerwaveform.h
   HEADERS += rdmarkerwidget.h
   HEADERS += rdmatrix.h

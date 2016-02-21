@@ -22,9 +22,10 @@
 #ifndef RDMARKERWAVEFORM_H
 #define RDMARKERWAVEFORM_H
 
-#include <qwidget.h>
-#include <qpixmap.h>
 #include <qcolor.h>
+#include <qimage.h>
+#include <qpixmap.h>
+#include <qwidget.h>
 
 #include <rdconfig.h>
 #include <rdcut.h>
@@ -59,6 +60,7 @@ class RDMarkerWaveform : public QWidget
   void clicked(int msecs);
 
  public slots:
+  void setPlayCursor(int msecs);
   void setViewportStart(int msecs);
   void zoomIn();
   void zoomOut();
@@ -74,6 +76,7 @@ class RDMarkerWaveform : public QWidget
 
  private:
   void DrawCursor(QPainter *p,RDMarkerWaveform::CuePoints pt);
+  void SetPlayCursor(int msecs);
   int XCoordinate(int msecs) const;
   int GridIncrement() const;
   RDCut *wave_cut;
@@ -86,6 +89,7 @@ class RDMarkerWaveform : public QWidget
   int wave_width_max;
   int wave_gain;
   int wave_cursors[RDMarkerWaveform::LastMarker];
+  QImage wave_image;
   QColor wave_cursor_colors[RDMarkerWaveform::LastMarker];
   int wave_cursor_arrow_offsets[RDMarkerWaveform::LastMarker];
   RDMarkerWaveform::Arrow wave_cursor_arrow_dirs[RDMarkerWaveform::LastMarker];

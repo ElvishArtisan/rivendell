@@ -118,9 +118,21 @@ int RDMarkerWaveform::viewportWidth() const
 void RDMarkerWaveform::setCursor(CuePoints pt,int msecs)
 {
   if(msecs!=wave_cursors[pt]) {
-    wave_cursors[pt]=msecs;
-    update();
+    if(pt==RDMarkerWaveform::Play) {
+      SetPlayCursor(msecs);
+      wave_cursors[pt]=msecs;
+    }
+    else {
+      wave_cursors[pt]=msecs;
+      update();
+    }
   }
+}
+
+
+void RDMarkerWaveform::setPlayCursor(int msecs)
+{
+  setCursor(RDMarkerWaveform::Play,msecs);
 }
 
 
@@ -260,8 +272,10 @@ void RDMarkerWaveform::paintEvent(QPaintEvent *e)
 
   QPainter *pa=new QPainter(this);
   pa->drawPixmap(0,0,*pix);
-  delete pa;
+  wave_image=pix->convertToImage();
+
   delete pix;
+  delete pa;
 }
 
 
@@ -326,6 +340,24 @@ void RDMarkerWaveform::DrawCursor(QPainter *p,RDMarkerWaveform::CuePoints pt)
       p->drawPolygon(array);
       break;
     }
+  }
+}
+
+
+void RDMarkerWaveform::SetPlayCursor(int msecs)
+{
+  int old_x=XCoordinate(wave_cursors[RDMarkerWaveform::Play])+10;
+  int x=XCoordinate(msecs)+10;
+  if((x>=10)&&(x<(size().width()-10))) {
+    QPainter *p=new QPainter(this);
+    p->drawImage(old_x,0,wave_image,old_x,0,1,size().height());
+    if(x>=0) {
+      p->setPen(Qt::black);
+      p->moveTo(x,0);
+      p->lineTo(x,size().height());
+    }
+    p->end();
+    delete p;
   }
 }
 
