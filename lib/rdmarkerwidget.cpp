@@ -192,6 +192,9 @@ void RDMarkerWidget::buttonClickedData()
 
 bool RDMarkerWidget::CheckLimits(int value)
 {
+  if(value==-1) {
+    return true;
+  }
   if(mark_lo_marker!=NULL) {
     if((mark_lo_marker->value()!=-1)&&(value<mark_lo_marker->value())) {
       mark_edit->setText(GetTimeLength(mark_value));
@@ -223,6 +226,9 @@ bool RDMarkerWidget::CheckLimits(int value)
 
 int RDMarkerWidget::SetTimeLength(const QString &str) const
 {
+  if(str.isEmpty()) {
+    return -1;
+  }
   QStringList f0=f0.split(":",str);
 
   return 3600000*f0[0].toInt()+60000*f0[1].toInt()+

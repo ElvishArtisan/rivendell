@@ -1963,6 +1963,37 @@ Do you still want to proceed?</source>
     </message>
 </context>
 <context>
+    <name>RDMarkerWaveform</name>
+    <message>
+        <source>none</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cut</source>
+        <translation type="unfinished">Cortar</translation>
+    </message>
+    <message>
+        <source>Fade Up</source>
+        <translation type="unfinished">Fade de entrada</translation>
+    </message>
+    <message>
+        <source>Fade Down</source>
+        <translation type="unfinished">Fade de salida</translation>
+    </message>
+    <message>
+        <source>Talk</source>
+        <translation type="unfinished">Hablar</translation>
+    </message>
+    <message>
+        <source>Segue</source>
+        <translation type="unfinished">Segue</translation>
+    </message>
+    <message>
+        <source>Hook</source>
+        <translation type="unfinished">Hook</translation>
+    </message>
+</context>
+<context>
     <name>RDPanelButton</name>
     <message>
         <source>No Audio</source>

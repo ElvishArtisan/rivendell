@@ -19,6 +19,8 @@
 //
 //
 
+#include "rdconf.h"
+
 #include "rdmarkertransport.h"
 #include "rdmixer.h"
 
@@ -33,10 +35,13 @@ RDMarkerTransport::RDMarkerTransport(RDCut *cut,RDCae *cae,int card,int port,
   trans_cae=cae;
   trans_card=card;
   trans_port=port;
+  trans_handle=-1;
   trans_is_playing=false;
   trans_pause_mode=false;
+  trans_ignore_pause=false;
   trans_is_paused=false;
   trans_is_stopped=false;
+  trans_use_looping=false;
   trans_is_looping=false;
 
   //
@@ -134,6 +139,8 @@ RDMarkerTransport::RDMarkerTransport(RDCut *cut,RDCae *cae,int card,int port,
 
 RDMarkerTransport::~RDMarkerTransport()
 {
+  trans_cae->stopPlay(trans_handle);
+  trans_cae->unloadPlay(trans_handle);
 }
 
 
@@ -164,6 +171,33 @@ void RDMarkerTransport::setEndPosition(int msecs)
 void RDMarkerTransport::setGain(int gain)
 {
   trans_gain=gain;
+}
+
+
+void RDMarkerTransport::setActiveMarker(RDMarkerWaveform::CuePoints pt,
+                                       int start_msecs,int end_msecs)
+{
+  trans_active_marker=pt;
+  trans_marker_start_position=start_msecs;
+  trans_marker_end_position=end_msecs;
+  trans_region_edit->setText(RDGetTimeLength(end_msecs-start_msecs,true,true));
+  trans_region_edit->setDisabled(pt==RDMarkerWaveform::Play);
+  trans_region_trans_label->setText(RDMarkerWaveform::markerName(pt));
+  trans_play_cursor_button->setAccentColor(RDMarkerWaveform::markerColor(pt));
+  if(pt==RDMarkerWaveform::Play) {
+    trans_region_trans_label->
+      setBackgroundColor(RDMARKERTRANSPORT_HIGHLIGHT_COLOR);
+  }
+  else {
+    trans_region_trans_label->
+      setBackgroundColor(RDMarkerWaveform::markerColor(pt));
+  }
+}
+
+
+void RDMarkerTransport::setPosition(int msecs)
+{
+  trans_cae->positionPlay(trans_handle,msecs);
 }
 
 
@@ -220,22 +254,48 @@ void RDMarkerTransport::playStartData()
     setOutputVolume(trans_card,trans_stream,trans_port,
                    0+trans_gain_control->value());
   */
-  trans_cae->setPlayPortActive(trans_card,trans_port,trans_stream);
   trans_cae->play(trans_handle,trans_end_position-trans_start_position,
-                RD_TIMESCALE_DIVISOR,0);
+		  RD_TIMESCALE_DIVISOR,0);
+  if(trans_use_looping) {
+    trans_is_looping=true;
+  }
   trans_play_mode=RDMarkerTransport::FromStart;
+  trans_play_start_button->on();
+  trans_play_cursor_button->off();
+  trans_pause_button->off();
 }
 
 
 void RDMarkerTransport::playCursorData()
 {
+  int length=0;
+
+  if(trans_is_playing) {
+    return;
+  }
+  length=trans_end_position-trans_start_position;
+  trans_played_from_position=trans_start_position;
+
+  trans_pause_mode=false;
+  trans_cae->setPlayPortActive(trans_card,trans_port,trans_stream);
+  //trans_cae->setOutputVolume(trans_card,trans_stream,trans_port,0-edit_gain_control->value());
+  trans_cae->play(trans_handle,length,RD_TIMESCALE_DIVISOR,0);
+  if(trans_use_looping) {
+    trans_is_looping=true;
+  }
+  trans_play_mode=RDMarkerTransport::FromCursor;
+  trans_play_start_button->off();
+  trans_play_cursor_button->on();
+  trans_pause_button->off();
 }
 
 
 void RDMarkerTransport::pauseData()
 {
   if(!trans_is_paused) {
+    trans_is_playing=false;
     trans_is_looping=false;
+    trans_is_paused=true;
     trans_pause_mode=true;
     trans_cae->stopPlay(trans_handle);
   }
@@ -245,6 +305,7 @@ void RDMarkerTransport::pauseData()
 void RDMarkerTransport::stopData()
 {
   if(!trans_is_paused) {
+    trans_is_playing=false;
     trans_is_looping=false;
     trans_pause_mode=false;
     trans_cae->stopPlay(trans_handle);
@@ -254,6 +315,18 @@ void RDMarkerTransport::stopData()
 
 void RDMarkerTransport::loopData()
 {
+  if(trans_use_looping) {
+    trans_use_looping=false;
+    trans_is_looping=false;
+    trans_loop_button->off();
+  }
+  else {
+    trans_use_looping=true;
+    if(trans_is_playing) {
+      trans_is_looping=true;
+    }
+    trans_loop_button->flash();
+  }
 }
 
 
@@ -272,9 +345,6 @@ void RDMarkerTransport::playedData(int handle)
   trans_is_playing=true;
   trans_is_paused=false;
   trans_is_stopped=false;
-  trans_play_start_button->on();
-  trans_play_cursor_button->off();
-  trans_pause_button->off();
   trans_stop_button->off();
   trans_meter_timer->start(RD_METER_UPDATE_INTERVAL);
 }
@@ -282,15 +352,56 @@ void RDMarkerTransport::playedData(int handle)
 
 void RDMarkerTransport::stoppedData(int handle)
 {
+  if(trans_ignore_pause) {
+    return;
+  }
+
+  if(trans_is_looping) {
+    LoopRegion(trans_start_position,trans_end_position);
+  }
+
   trans_play_start_button->off();
   trans_play_cursor_button->off();
   trans_pause_button->off();
-  trans_stop_button->on();
-  emit positionChanged(0);
+  if(trans_is_paused) {
+    trans_pause_button->on();
+  }
+  else {
+    trans_stop_button->on();
+    setPosition(trans_start_position);
+  }
+  trans_is_playing=false;
 }
 
 
 void RDMarkerTransport::positionData(int handle,unsigned msecs)
 {
+  trans_overall_edit->setText(RDGetTimeLength(msecs,true,true));
   emit positionChanged(msecs);
+}
+
+
+void RDMarkerTransport::LoopRegion(int start_msec,int end_msec)
+{
+  int length=0;
+
+  if(end_msec!=-1) {
+    length=end_msec-start_msec;
+  }
+  if(start_msec==-1) {
+    trans_cae->positionPlay(trans_handle,0);
+    /*
+    trans_cae->
+      setOutputVolume(edit_card,edit_stream,edit_port,0+edit_gain_control->value());
+    */
+    trans_cae->play(trans_handle,length,RD_TIMESCALE_DIVISOR,0);
+  }
+  else {
+    trans_cae->positionPlay(trans_handle,start_msec);
+    /*
+    trans_cae->
+      setOutputVolume(trans_card,trans_stream,trans_port,0+trans_gain_control->value());
+    */
+    trans_cae->play(trans_handle,length,RD_TIMESCALE_DIVISOR,0);
+  }
 }

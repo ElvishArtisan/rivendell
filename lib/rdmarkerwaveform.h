@@ -54,6 +54,8 @@ class RDMarkerWaveform : public QWidget
   QSizePolicy sizePolicy() const;
   int viewportWidth() const;
   void setCursor(CuePoints pt,int msecs);
+  static QColor markerColor(CuePoints pt);
+  static QString markerName(CuePoints pt);
 
  signals:
   void viewportWidthChanged(int msecs);
@@ -90,7 +92,6 @@ class RDMarkerWaveform : public QWidget
   int wave_gain;
   int wave_cursors[RDMarkerWaveform::LastMarker];
   QImage wave_image;
-  QColor wave_cursor_colors[RDMarkerWaveform::LastMarker];
   int wave_cursor_arrow_offsets[RDMarkerWaveform::LastMarker];
   RDMarkerWaveform::Arrow wave_cursor_arrow_dirs[RDMarkerWaveform::LastMarker];
 };

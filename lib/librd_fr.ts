@@ -1633,6 +1633,37 @@ Do you want to overwrite it?</source>
     </message>
 </context>
 <context>
+    <name>RDMarkerWaveform</name>
+    <message>
+        <source>none</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cut</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Fade Up</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Fade Down</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Talk</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Segue</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hook</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>RDPanelButton</name>
     <message>
         <source>No Audio</source>

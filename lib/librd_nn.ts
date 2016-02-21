@@ -1954,6 +1954,37 @@ Sjekk eksportoppsettet ditt og prøv att.</translation>
     </message>
 </context>
 <context>
+    <name>RDMarkerWaveform</name>
+    <message>
+        <source>none</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cut</source>
+        <translation type="unfinished">Klypp</translation>
+    </message>
+    <message>
+        <source>Fade Up</source>
+        <translation type="unfinished">Ton inn</translation>
+    </message>
+    <message>
+        <source>Fade Down</source>
+        <translation type="unfinished">Ton ut</translation>
+    </message>
+    <message>
+        <source>Talk</source>
+        <translation type="unfinished">Tale</translation>
+    </message>
+    <message>
+        <source>Segue</source>
+        <translation type="unfinished">Overgang</translation>
+    </message>
+    <message>
+        <source>Hook</source>
+        <translation type="unfinished">Knagg</translation>
+    </message>
+</context>
+<context>
     <name>RDPanelButton</name>
     <message>
         <source>No Audio</source>
