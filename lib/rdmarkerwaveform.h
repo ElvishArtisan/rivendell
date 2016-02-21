@@ -54,6 +54,7 @@ class RDMarkerWaveform : public QWidget
   QSizePolicy sizePolicy() const;
   int viewportWidth() const;
   void setReferenceLevel(int level);
+  int playCursor() const;
   void setCursor(CuePoints pt,int msecs);
   static QColor markerColor(CuePoints pt);
   static QString markerName(CuePoints pt);

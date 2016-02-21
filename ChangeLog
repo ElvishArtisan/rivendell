@@ -15200,3 +15200,6 @@
 2016-02-21 Fred Gleason <fredg@paravelsystems.com>
 	* Reimplemented the 'Trim Start' and 'Trim End' functions in
 	'lib/rdedit_audio.cpp' and 'lib/rdedit_audio.h'.
+2016-02-21 Fred Gleason <fredg@paravelsystems.com>
+	* Reimplemented the 'Cursor', 'Home' and 'End' functions in
+	'lib/rdedit_audio.cpp' and 'lib/rdedit_audio.h'.

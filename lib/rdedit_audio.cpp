@@ -849,16 +849,22 @@ void RDEditAudio::removeButtonData()
 
 void RDEditAudio::gotoCursorData()
 {
+  edit_waveform_scroll->setValue(edit_waveform[0]->playCursor()-
+                                edit_waveform_scroll->pageStep()/2);
 }
 
 
 void RDEditAudio::gotoHomeData()
 {
+  edit_waveform_scroll->setValue(0);
 }
 
 
 void RDEditAudio::gotoEndData()
 {
+  edit_waveform_scroll->setValue(edit_waveform_scroll->maxValue()-
+				 edit_waveform_scroll->pageStep()+
+				 edit_waveform_scroll->lineStep());
 }
 
 
