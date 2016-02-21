@@ -69,10 +69,13 @@ class RDMarkerWaveform : public QWidget
 
  protected:
   void paintEvent(QPaintEvent *e);
+  void mouseMoveEvent(QMouseEvent *e);
   void mouseReleaseEvent(QMouseEvent *e);
 
  private:
   void DrawCursor(QPainter *p,RDMarkerWaveform::CuePoints pt);
+  int XCoordinate(int msecs) const;
+  int GridIncrement() const;
   RDCut *wave_cut;
   RDUser *wave_user;
   RDStation *wave_station;

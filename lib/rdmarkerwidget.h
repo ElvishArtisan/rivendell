@@ -36,21 +36,20 @@ class RDMarkerWidget : public QWidget
 {
   Q_OBJECT
  public:
-  RDMarkerWidget(const QString &caption,const QColor &color,unsigned samprate,
-                QWidget *parent);
+  RDMarkerWidget(const QString &caption,const QColor &color,QWidget *parent);
   ~RDMarkerWidget();
+  bool deleteModeActive() const;
   void setDeleteMode(bool state);
   bool isSelected() const;
   void setSelected(bool state);
-  int frames() const;
-  void setFrames(int frames);
   int value() const;
   void setValue(int msecs);
+  int lowLimit() const;
+  int highLimit() const;
   void setRange(int lo_limit,int hi_limit);
   void setRange(RDMarkerWidget *lo_limit,RDMarkerWidget *hi_limit);
 
  signals:
-  void deleteClicked();
   void selectionChanged();
   void valueChanged();
 
@@ -67,7 +66,6 @@ class RDMarkerWidget : public QWidget
   RDMarkerButton *mark_button;
   bool mark_delete_mode;
   int mark_value;
-  unsigned mark_sample_rate;
   int mark_lo_limit;
   int mark_hi_limit;
   RDMarkerWidget *mark_lo_marker;

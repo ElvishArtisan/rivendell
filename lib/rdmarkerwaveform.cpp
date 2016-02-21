@@ -21,6 +21,7 @@
 
 #include <qpointarray.h>
 
+#include "rdconf.h"
 #include "rdmarkerwaveform.h"
 
 RDMarkerWaveform::RDMarkerWaveform(RDCut *cut,RDUser *user,RDStation *station,
@@ -197,25 +198,45 @@ void RDMarkerWaveform::paintEvent(QPaintEvent *e)
   p->fillRect(0,0,size().width(),size().height(),Qt::white);
 
   //
-  // Waveform
+  // Border
   //
-  p->drawWaveByMsecs(0,size().width(),wave_start,wave_start+wave_width,
-                    wave_gain,wave_channel,Qt::black);
+  p->setPen(Qt::black);
+  p->drawRect(0,0,size().width(),size().height());
+
+  //
+  // Dead Zone
+  //
+  p->setPen(colorGroup().mid());
+  p->setBrush(colorGroup().mid());
+  p->drawRect(XCoordinate(wave_cut->length()),0,w,h);
+
+  //
+  // Time Ticks
+  //
+  p->setFont(QFont("helvetica",8,QFont::Normal));
+  for(unsigned i=0;i<(2*wave_cut->length());i+=GridIncrement()) {
+    p->setPen(Qt::green);
+    p->moveTo(XCoordinate(i),0);
+    p->lineTo(XCoordinate(i),h);
+    p->setPen(Qt::red);
+    p->drawText(XCoordinate(i)+5,h-5,RDGetTimeLength(i,false,false));
+  }
 
   //
   // Reference Level
   //
   p->setPen(Qt::red);
+  p->setBrush(QBrush());
   p->moveTo(0,h/2+wave_gain*5/88);
   p->lineTo(w,h/2+wave_gain*5/88);
   p->moveTo(0,h/2-wave_gain*5/88);
   p->lineTo(w,h/2-wave_gain*5/88);
 
   //
-  // Border
+  // Waveform
   //
-  p->setPen(Qt::black);
-  p->drawRect(0,0,size().width(),size().height());
+  p->drawWaveByMsecs(0,size().width(),wave_start,wave_start+wave_width,
+                    wave_gain,wave_channel,Qt::black);
 
   //
   // Markers
@@ -232,6 +253,15 @@ void RDMarkerWaveform::paintEvent(QPaintEvent *e)
   pa->drawPixmap(0,0,*pix);
   delete pa;
   delete pix;
+}
+
+
+void RDMarkerWaveform::mouseMoveEvent(QMouseEvent *e)
+{
+  if((e->x()>=0)&&(e->y()>=0)) {
+    emit clicked(e->x()*(double)wave_width/(double)RDMARKERWAVEFORM_WIDTH+
+                wave_start);
+  }
 }
 
 
@@ -252,8 +282,7 @@ void RDMarkerWaveform::DrawCursor(QPainter *p,RDMarkerWaveform::CuePoints pt)
   //
   // Line
   //
-  int x=(wave_cursors[pt]-wave_start)*
-    (double)RDMARKERWAVEFORM_WIDTH/(double)wave_width;
+  int x=XCoordinate(wave_cursors[pt]);
   p->setPen(wave_cursor_colors[pt]);
   p->setBrush(wave_cursor_colors[pt]);
   p->moveTo(x,0);
@@ -291,4 +320,29 @@ void RDMarkerWaveform::DrawCursor(QPainter *p,RDMarkerWaveform::CuePoints pt)
   // Top Arrow
   //
 
+}
+
+
+int RDMarkerWaveform::XCoordinate(int msecs) const
+{
+  return (msecs-wave_start)*(double)RDMARKERWAVEFORM_WIDTH/(double)wave_width;
+}
+
+
+int RDMarkerWaveform::GridIncrement() const
+{
+  int ret=10;
+  bool odd=false;
+
+  while((wave_width/ret)>10) {
+    if(odd) {
+      ret*=5;
+      odd=false;
+    }
+    else {
+      ret*=2;
+      odd=true;
+    }
+  }
+  return ret;
 }
