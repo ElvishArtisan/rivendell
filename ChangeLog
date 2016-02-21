@@ -15194,3 +15194,6 @@
 	'lib/rdmarkerwaveform.cpp'.
 2016-02-21 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed selection bugs in the Region counter in 'lib/rdedit_audio.cpp'.
+2016-02-21 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'lib/rdmarkerwaveform.cpp' that caused the reference
+	level lines to be incorrectly placed.

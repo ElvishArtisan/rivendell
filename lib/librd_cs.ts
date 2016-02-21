@@ -1193,7 +1193,7 @@ značku</translation>
     </message>
     <message>
         <source>dB</source>
-        <translation type="obsolete">dB</translation>
+        <translation type="unfinished">dB</translation>
     </message>
     <message>
         <source>&lt;none&gt;</source>

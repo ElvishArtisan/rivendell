@@ -19,6 +19,8 @@
 //
 //
 
+#include <math.h>
+
 #include <qpointarray.h>
 
 #include "rdconf.h"
@@ -69,6 +71,7 @@ RDMarkerWaveform::RDMarkerWaveform(RDCut *cut,RDUser *user,RDStation *station,
   wave_width=(double)cut->length()*1.05;
   wave_width_max=cut->length();
 
+  wave_reference_level=0;
   wave_gain=1024;
 
   for(int i=0;i<RDMarkerWaveform::LastMarker;i++) {
@@ -97,6 +100,13 @@ QSizePolicy RDMarkerWaveform::sizePolicy() const
 int RDMarkerWaveform::viewportWidth() const
 {
   return wave_width;
+}
+
+
+void RDMarkerWaveform::setReferenceLevel(int level)
+{
+  wave_reference_level=level;
+  repaint();
 }
 
 
@@ -276,6 +286,7 @@ void RDMarkerWaveform::paintEvent(QPaintEvent *e)
 {
   int h=size().height();
   int w=size().width();
+  int ref=YCoordinate(0.158489);
   QPixmap *pix=new QPixmap(size());
   RDWavePainter *p=
     new RDWavePainter(pix,wave_cut,wave_station,wave_user,wave_config);
@@ -305,10 +316,10 @@ void RDMarkerWaveform::paintEvent(QPaintEvent *e)
   //
   p->setPen(Qt::red);
   p->setBrush(QBrush());
-  p->moveTo(10,h/2+wave_gain*5/88);
-  p->lineTo(w-10,h/2+wave_gain*5/88);
-  p->moveTo(10,h/2-wave_gain*5/88);
-  p->lineTo(w-10,h/2-wave_gain*5/88);
+  p->moveTo(10,h/2+ref);
+  p->lineTo(w-10,h/2+ref);
+  p->moveTo(10,h/2-ref);
+  p->lineTo(w-10,h/2-ref);
 
   //
   // Waveform
@@ -436,6 +447,13 @@ void RDMarkerWaveform::SetPlayCursor(int msecs)
 int RDMarkerWaveform::XCoordinate(int msecs) const
 {
   return (msecs-wave_start)*(double)RDMARKERWAVEFORM_WIDTH/(double)wave_width;
+}
+
+
+int RDMarkerWaveform::YCoordinate(float ratio) const
+{
+  return (float)size().height()*
+    powf(10.0,(float)(wave_gain-wave_reference_level)/2000.0)*ratio*.5;
 }
 
 

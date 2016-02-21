@@ -98,11 +98,13 @@ class RDEditAudio : public QDialog
   void cancelData();
 
  private:
+  enum GainChange {GainNone=0,GainUp=1,GainDown=2};
   void SetDeleteMode(bool state);
   RDMarkerWaveform::CuePoints CurrentMarker() const;
   RDMarkerWaveform *edit_waveform[2];
   QScrollBar *edit_waveform_scroll;
   RDMarkerTransport *edit_marker_transport;
+  int trans_preroll;
   RDMarkerWidget *edit_marker_widget[RDMarkerWaveform::LastMarker];
   QLabel *edit_trim_label;
   QSpinBox *edit_trim_box;
@@ -111,9 +113,11 @@ class RDEditAudio : public QDialog
   RDTransportButton *gain_up_button;
   RDTransportButton *gain_down_button;
   QRangeControl *edit_gain_control;
-  RDMarkerEdit*edit_gain_edit;
+  RDMarkerEdit *edit_gain_edit;
   QLabel *edit_gain_label;
   QTimer *edit_gain_timer;
+  GainChange edit_gain_mode;
+  int edit_gain_count;
   RDPushButton *edit_remove_button;
   QCheckBox *edit_overlap_box;
   QLabel *edit_overlap_label;
