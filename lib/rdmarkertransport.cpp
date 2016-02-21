@@ -393,7 +393,8 @@ void RDMarkerTransport::stoppedData(int handle)
   }
 
   if(trans_is_looping) {
-    LoopRegion(trans_start_position,trans_end_position);
+    //    LoopRegion(trans_start_position,trans_end_position);
+    LoopRegion(trans_played_from_position,trans_end_position);
   }
   else {
     trans_play_start_button->off();
