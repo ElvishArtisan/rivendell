@@ -835,6 +835,7 @@ void RDEditAudio::gainTimerData()
   edit_gain_edit->setText(QString().sprintf("%4.1f %s",
                             (double)edit_gain_control->value()/100.0,
                             (const char *)str));
+  edit_marker_transport->setGain(edit_gain_control->value());
   edit_waveform[0]->setReferenceLevel(edit_gain_control->value());
   edit_waveform[1]->setReferenceLevel(edit_gain_control->value());
 }
