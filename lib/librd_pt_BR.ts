@@ -1104,7 +1104,7 @@ Começa</translation>
     <message>
         <source>Segue
 End</source>
-        <translation type="obsolete">Sobre
+        <translation type="unfinished">Sobre
 Termina</translation>
     </message>
     <message>
@@ -1169,91 +1169,64 @@ Marcador</translation>
     </message>
     <message>
         <source>Delete Talk Markers</source>
-        <translation>Deletar Marcadores de Locução</translation>
+        <translation type="obsolete">Deletar Marcadores de Locução</translation>
     </message>
     <message>
         <source>Delete Segue Markers</source>
-        <translation>Deletar Marcadores de Sobre</translation>
+        <translation type="obsolete">Deletar Marcadores de Sobre</translation>
     </message>
     <message>
         <source>Delete Hook Markers</source>
-        <translation>Deletar Marcadores de Trechos</translation>
+        <translation type="obsolete">Deletar Marcadores de Trechos</translation>
     </message>
     <message>
         <source>Delete Fade Up Marker</source>
-        <translation>Deletar Marcadores de Fade Up</translation>
+        <translation type="obsolete">Deletar Marcadores de Fade Up</translation>
     </message>
     <message>
         <source>Delete Fade Down Marker</source>
-        <translation>Deletar Marcadores de Fade Down</translation>
+        <translation type="obsolete">Deletar Marcadores de Fade Down</translation>
     </message>
     <message>
         <source>dB</source>
-        <translation>dB</translation>
+        <translation type="obsolete">dB</translation>
     </message>
     <message>
         <source>&lt;none&gt;</source>
-        <translation>&lt;nenhum&gt;</translation>
+        <translation type="obsolete">&lt;nenhum&gt;</translation>
     </message>
     <message>
         <source>Cut</source>
-        <translation>Conteúdo</translation>
+        <translation type="obsolete">Conteúdo</translation>
     </message>
     <message>
         <source>Talk</source>
-        <translation>Fim Locutor</translation>
+        <translation type="obsolete">Fim Locutor</translation>
     </message>
     <message>
         <source>Segue</source>
-        <translation>Sobre</translation>
+        <translation type="obsolete">Sobre</translation>
     </message>
     <message>
         <source>Hook</source>
-        <translation>Trecho
+        <translation type="obsolete">Trecho
 </translation>
     </message>
     <message>
         <source>Fade Up</source>
-        <translation>Fade Up</translation>
+        <translation type="obsolete">Fade Up</translation>
     </message>
     <message>
         <source>Fade Down</source>
-        <translation>Fade Down</translation>
+        <translation type="obsolete">Fade Down</translation>
     </message>
     <message>
         <source>L</source>
-        <translation>L</translation>
+        <translation type="obsolete">L</translation>
     </message>
     <message>
         <source>R</source>
-        <translation>R</translation>
-    </message>
-    <message>
-        <source>Rivendell Web Service</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unable to download peak data, error was:
-&quot;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Edit Audio</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Marker Warning</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Less than half of the audio is playable with these marker settings.
-Are you sure you want to save?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>More than half of the audio will be faded with these marker settings.
-Are you sure you want to save?</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">R</translation>
     </message>
     <message>
         <source>Talk

@@ -1104,7 +1104,7 @@ start</translation>
     <message>
         <source>Segue
 End</source>
-        <translation type="obsolete">Overgang-
+        <translation type="unfinished">Overgang-
 slutt</translation>
     </message>
     <message>
@@ -1169,90 +1169,63 @@ markør</translation>
     </message>
     <message>
         <source>Delete Talk Markers</source>
-        <translation>Slett talemarkørar</translation>
+        <translation type="obsolete">Slett talemarkørar</translation>
     </message>
     <message>
         <source>Delete Segue Markers</source>
-        <translation>Slett overgangsmarkørar</translation>
+        <translation type="obsolete">Slett overgangsmarkørar</translation>
     </message>
     <message>
         <source>Delete Hook Markers</source>
-        <translation>Slett knaggmarkørar</translation>
+        <translation type="obsolete">Slett knaggmarkørar</translation>
     </message>
     <message>
         <source>Delete Fade Up Marker</source>
-        <translation>Slett Ton inn-markør</translation>
+        <translation type="obsolete">Slett Ton inn-markør</translation>
     </message>
     <message>
         <source>Delete Fade Down Marker</source>
-        <translation>Slett Ton ut-markør</translation>
+        <translation type="obsolete">Slett Ton ut-markør</translation>
     </message>
     <message>
         <source>dB</source>
-        <translation>dB</translation>
+        <translation type="obsolete">dB</translation>
     </message>
     <message>
         <source>&lt;none&gt;</source>
-        <translation>&lt;ingen&gt;</translation>
+        <translation type="obsolete">&lt;ingen&gt;</translation>
     </message>
     <message>
         <source>Cut</source>
-        <translation>Klypp</translation>
+        <translation type="obsolete">Klypp</translation>
     </message>
     <message>
         <source>Talk</source>
-        <translation>Tale</translation>
+        <translation type="obsolete">Tale</translation>
     </message>
     <message>
         <source>Segue</source>
-        <translation>Overgang</translation>
+        <translation type="obsolete">Overgang</translation>
     </message>
     <message>
         <source>Hook</source>
-        <translation>Knagg</translation>
+        <translation type="obsolete">Knagg</translation>
     </message>
     <message>
         <source>Fade Up</source>
-        <translation>Ton inn</translation>
+        <translation type="obsolete">Ton inn</translation>
     </message>
     <message>
         <source>Fade Down</source>
-        <translation>Ton ut</translation>
+        <translation type="obsolete">Ton ut</translation>
     </message>
     <message>
         <source>L</source>
-        <translation>V</translation>
+        <translation type="obsolete">V</translation>
     </message>
     <message>
         <source>R</source>
-        <translation>H</translation>
-    </message>
-    <message>
-        <source>Rivendell Web Service</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unable to download peak data, error was:
-&quot;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Edit Audio</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Marker Warning</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Less than half of the audio is playable with these marker settings.
-Are you sure you want to save?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>More than half of the audio will be faded with these marker settings.
-Are you sure you want to save?</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">H</translation>
     </message>
     <message>
         <source>Talk

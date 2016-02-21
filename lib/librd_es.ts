@@ -1106,7 +1106,7 @@ Segue</translation>
     <message>
         <source>Segue
 End</source>
-        <translation type="obsolete">Fin
+        <translation type="unfinished">Fin
 Segue</translation>
     </message>
     <message>
@@ -1168,63 +1168,63 @@ marcador</translation>
     </message>
     <message>
         <source>Delete Talk Markers</source>
-        <translation>Eliminar marcadores de hablar</translation>
+        <translation type="obsolete">Eliminar marcadores de hablar</translation>
     </message>
     <message>
         <source>Delete Segue Markers</source>
-        <translation>Eliminar marcadores Segue</translation>
+        <translation type="obsolete">Eliminar marcadores Segue</translation>
     </message>
     <message>
         <source>Delete Hook Markers</source>
-        <translation>Eliminar marcadores Hook</translation>
+        <translation type="obsolete">Eliminar marcadores Hook</translation>
     </message>
     <message>
         <source>Delete Fade Up Marker</source>
-        <translation>Eliminar marcador Fade entrada</translation>
+        <translation type="obsolete">Eliminar marcador Fade entrada</translation>
     </message>
     <message>
         <source>Delete Fade Down Marker</source>
-        <translation>Eliminar marcador Fade salida</translation>
+        <translation type="obsolete">Eliminar marcador Fade salida</translation>
     </message>
     <message>
         <source>dB</source>
-        <translation>dB</translation>
+        <translation type="obsolete">dB</translation>
     </message>
     <message>
         <source>&lt;none&gt;</source>
-        <translation>&lt;ninguno&gt;</translation>
+        <translation type="obsolete">&lt;ninguno&gt;</translation>
     </message>
     <message>
         <source>Cut</source>
-        <translation>Cortar</translation>
+        <translation type="obsolete">Cortar</translation>
     </message>
     <message>
         <source>Talk</source>
-        <translation>Hablar</translation>
+        <translation type="obsolete">Hablar</translation>
     </message>
     <message>
         <source>Segue</source>
-        <translation>Segue</translation>
+        <translation type="obsolete">Segue</translation>
     </message>
     <message>
         <source>Hook</source>
-        <translation>Hook</translation>
+        <translation type="obsolete">Hook</translation>
     </message>
     <message>
         <source>Fade Up</source>
-        <translation>Fade de entrada</translation>
+        <translation type="obsolete">Fade de entrada</translation>
     </message>
     <message>
         <source>Fade Down</source>
-        <translation>Fade de salida</translation>
+        <translation type="obsolete">Fade de salida</translation>
     </message>
     <message>
         <source>L</source>
-        <translation>Iz</translation>
+        <translation type="obsolete">Iz</translation>
     </message>
     <message>
         <source>R</source>
-        <translation>De</translation>
+        <translation type="obsolete">De</translation>
     </message>
     <message>
         <source>No Fade on Segue Out</source>
@@ -1232,31 +1232,17 @@ marcador</translation>
     </message>
     <message>
         <source>Rivendell Web Service</source>
-        <translation>Servicio web Rivendell</translation>
+        <translation type="obsolete">Servicio web Rivendell</translation>
     </message>
     <message>
         <source>Unable to download peak data, error was:
 &quot;</source>
-        <translation>No fue posible descargar datos de picos, el error fue:
+        <translation type="obsolete">No fue posible descargar datos de picos, el error fue:
 &quot;</translation>
     </message>
     <message>
         <source>Edit Audio</source>
-        <translation>Editar Audio</translation>
-    </message>
-    <message>
-        <source>Marker Warning</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Less than half of the audio is playable with these marker settings.
-Are you sure you want to save?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>More than half of the audio will be faded with these marker settings.
-Are you sure you want to save?</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Editar Audio</translation>
     </message>
     <message>
         <source>Talk

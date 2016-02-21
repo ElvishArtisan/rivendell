@@ -1103,7 +1103,7 @@ Start</translation>
     <message>
         <source>Segue
 End</source>
-        <translation type="obsolete">Segue
+        <translation type="unfinished">Segue
 Ende</translation>
     </message>
     <message>
@@ -1167,90 +1167,63 @@ entfernen</translation>
     </message>
     <message>
         <source>Delete Talk Markers</source>
-        <translation>Mod.-Marker entfernen</translation>
+        <translation type="obsolete">Mod.-Marker entfernen</translation>
     </message>
     <message>
         <source>Delete Segue Markers</source>
-        <translation>Segue-Marker entfernen</translation>
+        <translation type="obsolete">Segue-Marker entfernen</translation>
     </message>
     <message>
         <source>Delete Hook Markers</source>
-        <translation>Hook-Marker entfernen</translation>
+        <translation type="obsolete">Hook-Marker entfernen</translation>
     </message>
     <message>
         <source>Delete Fade Up Marker</source>
-        <translation>Ein-Fade Marker entfernen</translation>
+        <translation type="obsolete">Ein-Fade Marker entfernen</translation>
     </message>
     <message>
         <source>Delete Fade Down Marker</source>
-        <translation>Aus-Fade Marker entfernen</translation>
+        <translation type="obsolete">Aus-Fade Marker entfernen</translation>
     </message>
     <message>
         <source>dB</source>
-        <translation>dB</translation>
+        <translation type="obsolete">dB</translation>
     </message>
     <message>
         <source>&lt;none&gt;</source>
-        <translation>&lt;nichts&gt;</translation>
+        <translation type="obsolete">&lt;nichts&gt;</translation>
     </message>
     <message>
         <source>Cut</source>
-        <translation>Cut</translation>
+        <translation type="obsolete">Cut</translation>
     </message>
     <message>
         <source>Talk</source>
-        <translation>Mod</translation>
+        <translation type="obsolete">Mod</translation>
     </message>
     <message>
         <source>Segue</source>
-        <translation>Segue</translation>
+        <translation type="obsolete">Segue</translation>
     </message>
     <message>
         <source>Hook</source>
-        <translation>Hook</translation>
+        <translation type="obsolete">Hook</translation>
     </message>
     <message>
         <source>Fade Up</source>
-        <translation>Einfaden</translation>
+        <translation type="obsolete">Einfaden</translation>
     </message>
     <message>
         <source>Fade Down</source>
-        <translation>Ausfaden</translation>
+        <translation type="obsolete">Ausfaden</translation>
     </message>
     <message>
         <source>L</source>
-        <translation>L</translation>
+        <translation type="obsolete">L</translation>
     </message>
     <message>
         <source>R</source>
-        <translation>R</translation>
-    </message>
-    <message>
-        <source>Rivendell Web Service</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unable to download peak data, error was:
-&quot;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Edit Audio</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Marker Warning</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Less than half of the audio is playable with these marker settings.
-Are you sure you want to save?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>More than half of the audio will be faded with these marker settings.
-Are you sure you want to save?</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">R</translation>
     </message>
     <message>
         <source>Talk

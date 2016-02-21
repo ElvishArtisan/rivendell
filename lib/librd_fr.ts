@@ -1091,93 +1091,6 @@ Marker</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Delete Talk Markers</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Delete Segue Markers</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Delete Hook Markers</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Delete Fade Up Marker</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Delete Fade Down Marker</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>dB</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&lt;none&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Cut</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Talk</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Segue</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Hook</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Fade Up</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Fade Down</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>L</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>R</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Edit Audio</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Rivendell Web Service</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unable to download peak data, error was:
-&quot;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Marker Warning</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Less than half of the audio is playable with these marker settings.
-Are you sure you want to save?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>More than half of the audio will be faded with these marker settings.
-Are you sure you want to save?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Talk
 End</source>
         <translation type="unfinished"></translation>
@@ -1185,6 +1098,11 @@ End</source>
     <message>
         <source>Fade
 Down</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Segue
+End</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

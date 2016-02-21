@@ -1109,7 +1109,7 @@ přechodu</translation>
     <message>
         <source>Segue
 End</source>
-        <translation type="obsolete">Konec
+        <translation type="unfinished">Konec
 přechodu</translation>
     </message>
     <message>
@@ -1173,92 +1173,92 @@ značku</translation>
     </message>
     <message>
         <source>Delete Talk Markers</source>
-        <translation>Smazat značky hovoru</translation>
+        <translation type="obsolete">Smazat značky hovoru</translation>
     </message>
     <message>
         <source>Delete Segue Markers</source>
-        <translation>Smazat značky přechodu</translation>
+        <translation type="obsolete">Smazat značky přechodu</translation>
     </message>
     <message>
         <source>Delete Hook Markers</source>
-        <translation>Smazat značky háčku (hook)</translation>
+        <translation type="obsolete">Smazat značky háčku (hook)</translation>
     </message>
     <message>
         <source>Delete Fade Up Marker</source>
-        <translation>Smazat značku zesílení</translation>
+        <translation type="obsolete">Smazat značku zesílení</translation>
     </message>
     <message>
         <source>Delete Fade Down Marker</source>
-        <translation>Smazat značku zeslabení</translation>
+        <translation type="obsolete">Smazat značku zeslabení</translation>
     </message>
     <message>
         <source>dB</source>
-        <translation>dB</translation>
+        <translation type="obsolete">dB</translation>
     </message>
     <message>
         <source>&lt;none&gt;</source>
-        <translation>&lt;none&gt;</translation>
+        <translation type="obsolete">&lt;none&gt;</translation>
     </message>
     <message>
         <source>Cut</source>
-        <translation>Záběr</translation>
+        <translation type="obsolete">Záběr</translation>
     </message>
     <message>
         <source>Talk</source>
-        <translation>Hovor</translation>
+        <translation type="obsolete">Hovor</translation>
     </message>
     <message>
         <source>Segue</source>
-        <translation>Přechod</translation>
+        <translation type="obsolete">Přechod</translation>
     </message>
     <message>
         <source>Hook</source>
-        <translation>Chytlavá melodie</translation>
+        <translation type="obsolete">Chytlavá melodie</translation>
     </message>
     <message>
         <source>Fade Up</source>
-        <translation>Zesílit</translation>
+        <translation type="obsolete">Zesílit</translation>
     </message>
     <message>
         <source>Fade Down</source>
-        <translation>Zeslabit</translation>
+        <translation type="obsolete">Zeslabit</translation>
     </message>
     <message>
         <source>L</source>
-        <translation>L</translation>
+        <translation type="obsolete">L</translation>
     </message>
     <message>
         <source>R</source>
-        <translation>P</translation>
+        <translation type="obsolete">P</translation>
     </message>
     <message>
         <source>Rivendell Web Service</source>
-        <translation>Internetová služba Rivendellu</translation>
+        <translation type="obsolete">Internetová služba Rivendellu</translation>
     </message>
     <message>
         <source>Unable to download peak data, error was:
 &quot;</source>
-        <translation>Nepodařilo se stáhnout data vrcholu. Chyba byla:
+        <translation type="obsolete">Nepodařilo se stáhnout data vrcholu. Chyba byla:
 &quot;</translation>
     </message>
     <message>
         <source>Edit Audio</source>
-        <translation>Upravit zvuk</translation>
+        <translation type="obsolete">Upravit zvuk</translation>
     </message>
     <message>
         <source>Marker Warning</source>
-        <translation>Varování týkající se značek</translation>
+        <translation type="obsolete">Varování týkající se značek</translation>
     </message>
     <message>
         <source>Less than half of the audio is playable with these marker settings.
 Are you sure you want to save?</source>
-        <translation>Méně než polovina zvukového záznamu je přehratelná s těmito nastaveními pro značky.
+        <translation type="obsolete">Méně než polovina zvukového záznamu je přehratelná s těmito nastaveními pro značky.
 Opravdu chcete uložit?</translation>
     </message>
     <message>
         <source>More than half of the audio will be faded with these marker settings.
 Are you sure you want to save?</source>
-        <translation>Více než polovina zvukového záznamu bude s těmito nastaveními pro značky vystřižena.
+        <translation type="obsolete">Více než polovina zvukového záznamu bude s těmito nastaveními pro značky vystřižena.
 Opravdu chcete uložit?</translation>
     </message>
     <message>
