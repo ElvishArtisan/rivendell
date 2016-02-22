@@ -111,6 +111,7 @@ class RDMarkerTransport : public QWidget
   int trans_gain;
   int trans_played_from_position;
   unsigned trans_position;
+  unsigned trans_looping_length;
 };
 
 
