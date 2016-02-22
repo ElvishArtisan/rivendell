@@ -765,3 +765,56 @@ void Xport::RemoveCut()
   }
   XmlExit("OK",200);
 }
+
+
+void Xport::CopyCut()
+{
+  //
+  // Verify Post
+  //
+  int source_cartnum=0;
+  if(!xport_post->getValue("SOURCE_CART_NUMBER",&source_cartnum)) {
+    XmlExit("Missing SOURCE_CART_NUMBER",400);
+  }
+  int source_cutnum=0;
+  if(!xport_post->getValue("SOURCE_CUT_NUMBER",&source_cutnum)) {
+    XmlExit("Missing SOURCE_CUT_NUMBER",400);
+  }
+
+  int destination_cartnum=0;
+  if(!xport_post->getValue("DESTINATION_CART_NUMBER",&destination_cartnum)) {
+    XmlExit("Missing DESTINATION_CART_NUMBER",400);
+  }
+  int destination_cutnum=0;
+  if(!xport_post->getValue("DESTINATION_CUT_NUMBER",&destination_cutnum)) {
+    XmlExit("Missing DESTINATION_CUT_NUMBER",400);
+  }
+
+  //
+  // Verify User Perms
+  //
+  if(!xport_user->cartAuthorized(source_cartnum)) {
+    XmlExit("No such cart",404);
+  }
+  if(!xport_user->cartAuthorized(destination_cartnum)) {
+    XmlExit("No such cart",404);
+  }
+
+  //
+  // Copy the database record
+  //
+  RDCut cut(source_cartnum,source_cutnum);
+  if(!cut.copyDBRecordTo(xport_config.stationName(),RDCut::cutName(destination_cartnum,destination_cutnum))) {
+    XmlExit("unable to copy database record",500);
+  }
+
+  //
+  // Copy the audio
+  //
+  unlink(RDCut::pathName(destination_cartnum,destination_cutnum));
+  if(link(RDCut::pathName(source_cartnum,source_cutnum),
+	  RDCut::pathName(destination_cartnum,destination_cutnum))!=0) {
+    XmlExit(strerror(errno),400);
+  }
+  XmlExit("OK",200);
+}

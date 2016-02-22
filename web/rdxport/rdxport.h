@@ -52,6 +52,7 @@ class Xport : public QObject
   void ListCut();
   void EditCut();
   void RemoveCut();
+  void CopyCut();
   void ListGroups();
   void ListGroup();
   void ExportPeaks();

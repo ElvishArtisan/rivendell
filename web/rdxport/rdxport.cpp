@@ -202,6 +202,10 @@ Xport::Xport(QObject *parent,const char *name)
     RemoveCut();
     break;
 
+  case RDXPORT_COMMAND_COPYCUT:
+    CopyCut();
+    break;
+
   case RDXPORT_COMMAND_EXPORT_PEAKS:
     ExportPeaks();
     break;

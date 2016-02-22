@@ -812,69 +812,14 @@ bool RDCut::copyTo(RDStation *station,RDUser *user,
 #ifdef WIN32
   return false;
 #else
-  QString sql;
-  RDSqlQuery *q;
   bool ret=true;
 
   //
   // Copy the Database Record
   //
-  sql=
-    QString().sprintf("select DESCRIPTION,OUTCUE,LENGTH,\
-                       CODING_FORMAT,SAMPLE_RATE,\
-                       BIT_RATE,CHANNELS,PLAY_GAIN,START_POINT,END_POINT,\
-                       FADEUP_POINT,FADEDOWN_POINT,SEGUE_START_POINT,\
-                       SEGUE_END_POINT,HOOK_START_POINT,HOOK_END_POINT,\
-                       TALK_START_POINT,TALK_END_POINT from CUTS\
-                       where CUT_NAME=\"%s\"",(const char *)cut_name);
-  q=new RDSqlQuery(sql);
-  if(q->first()) {
-    sql=QString().sprintf("update CUTS set\
-                           PLAY_COUNTER=0,\
-                           DESCRIPTION=\"%s\",\
-                           OUTCUE=\"%s\",\
-                           LENGTH=%u,\
-                           ORIGIN_DATETIME=now(),\
-                           ORIGIN_NAME=\"%s\",\
-                           CODING_FORMAT=%u,\
-                           SAMPLE_RATE=%u,\
-                           BIT_RATE=%u,\
-                           CHANNELS=%u,\
-                           PLAY_GAIN=%d,\
-                           START_POINT=%d,\
-                           END_POINT=%d,\
-                           FADEUP_POINT=%d,\
-                           FADEDOWN_POINT=%d,\
-                           SEGUE_START_POINT=%d,\
-                           SEGUE_END_POINT=%d,\
-                           HOOK_START_POINT=%d,\
-                           HOOK_END_POINT=%d,\
-                           TALK_START_POINT=%d,\
-                           TALK_END_POINT=%d where CUT_NAME=\"%s\"",
-			  (const char *)q->value(0).toString().utf8(),
-			  (const char *)q->value(1).toString().utf8(),
-			  q->value(2).toUInt(),
-			  (const char *)RDEscapeString(station->name()),
-			  q->value(3).toUInt(),
-			  q->value(4).toUInt(),
-			  q->value(5).toUInt(),
-			  q->value(6).toUInt(),
-			  q->value(7).toInt(),
-			  q->value(8).toInt(),
-			  q->value(9).toInt(),
-			  q->value(10).toInt(),
-			  q->value(11).toInt(),
-			  q->value(12).toInt(),
-			  q->value(13).toInt(),
-			  q->value(14).toInt(),
-			  q->value(15).toInt(),
-			  q->value(16).toInt(),
-			  q->value(17).toInt(),			  
-			  (const char *)cutname);
-  }
-  delete q;
-  q=new RDSqlQuery(sql);
-  delete q;
+  ret = this->copyDBRecordTo(station->name(),cutname);
+  if(!ret)
+    return ret;
 
   //
   // Copy the Audio
@@ -889,6 +834,75 @@ bool RDCut::copyTo(RDStation *station,RDUser *user,
 
   return ret;
 #endif
+}
+
+
+bool RDCut::copyDBRecordTo(const QString &stationname,const QString &cutname) const
+{
+  QString sql;
+  RDSqlQuery *q;
+
+  sql=
+    QString().sprintf("select DESCRIPTION,OUTCUE,LENGTH,\
+                       CODING_FORMAT,SAMPLE_RATE,\
+                       BIT_RATE,CHANNELS,PLAY_GAIN,START_POINT,END_POINT,\
+                       FADEUP_POINT,FADEDOWN_POINT,SEGUE_START_POINT,\
+                       SEGUE_END_POINT,HOOK_START_POINT,HOOK_END_POINT,\
+                       TALK_START_POINT,TALK_END_POINT from CUTS\
+                       where CUT_NAME=\"%s\"",(const char *)cut_name);
+  q=new RDSqlQuery(sql);
+  if(!(q->first())) {
+    delete q;
+    return false;
+  }
+  sql=QString().sprintf("update CUTS set\
+                         PLAY_COUNTER=0,\
+                         DESCRIPTION=\"%s\",\
+                         OUTCUE=\"%s\",\
+                         LENGTH=%u,\
+                         ORIGIN_DATETIME=now(),\
+                         ORIGIN_NAME=\"%s\",\
+                         CODING_FORMAT=%u,\
+                         SAMPLE_RATE=%u,\
+                         BIT_RATE=%u,\
+                         CHANNELS=%u,\
+                         PLAY_GAIN=%d,\
+                         START_POINT=%d,\
+                         END_POINT=%d,\
+                         FADEUP_POINT=%d,\
+                         FADEDOWN_POINT=%d,\
+                         SEGUE_START_POINT=%d,\
+                         SEGUE_END_POINT=%d,\
+                         HOOK_START_POINT=%d,\
+                         HOOK_END_POINT=%d,\
+                         TALK_START_POINT=%d,\
+                         TALK_END_POINT=%d where CUT_NAME=\"%s\"",
+		  (const char *)q->value(0).toString().utf8(),
+		  (const char *)q->value(1).toString().utf8(),
+		  q->value(2).toUInt(),
+		  (const char *)RDEscapeString(stationname),
+		  q->value(3).toUInt(),
+		  q->value(4).toUInt(),
+		  q->value(5).toUInt(),
+		  q->value(6).toUInt(),
+		  q->value(7).toInt(),
+		  q->value(8).toInt(),
+		  q->value(9).toInt(),
+		  q->value(10).toInt(),
+		  q->value(11).toInt(),
+		  q->value(12).toInt(),
+		  q->value(13).toInt(),
+		  q->value(14).toInt(),
+		  q->value(15).toInt(),
+		  q->value(16).toInt(),
+		  q->value(17).toInt(),
+		  (const char *)cutname);
+
+  delete q;
+  q=new RDSqlQuery(sql);
+  delete q;
+
+  return true;
 }
 
 
