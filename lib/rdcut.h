@@ -125,6 +125,7 @@ class RDCut
   void logPlayout() const;
   bool copyTo(RDStation *station,RDUser *user,const QString &cutname,
 	      RDConfig *config) const;
+  bool copyDBRecordTo(const QString &stationname,const QString &cutname) const;
   void getMetadata(RDWaveData *data) const;
   void setMetadata(RDWaveData *data) const;
   QString xml() const;

@@ -49,16 +49,15 @@ Xport::Xport(QObject *parent,const char *name)
   //
   // Read Configuration
   //
-  xport_config=new RDConfig();
-  xport_config->load();
+  xport_config.load();
 
   //
   // Drop Root Perms
   //
-  if(setgid(xport_config->gid())<0) {
+  if(setgid(xport_config.gid())<0) {
     XmlExit("Unable to set Rivendell group",500);
   }
-  if(setuid(xport_config->uid())<0) {
+  if(setuid(xport_config.uid())<0) {
     XmlExit("Unable to set Rivendell user",500);
   }
   if(getuid()==0) {
@@ -68,35 +67,37 @@ Xport::Xport(QObject *parent,const char *name)
   //
   // Open Database
   //
-  QSqlDatabase *db=QSqlDatabase::addDatabase(xport_config->mysqlDriver());
+  QSqlDatabase *db=QSqlDatabase::addDatabase(xport_config.mysqlDriver());
   if(!db) {
-    printf("Content-type: text/html\n\n");
+    printf("Content-type: text/plain\n");
+    printf("Status: 500\n\n");
     printf("rdfeed: unable to initialize connection to database\n");
     Exit(0);
   }
-  db->setDatabaseName(xport_config->mysqlDbname());
-  db->setUserName(xport_config->mysqlUsername());
-  db->setPassword(xport_config->mysqlPassword());
-  db->setHostName(xport_config->mysqlHostname());
+  db->setDatabaseName(xport_config.mysqlDbname());
+  db->setUserName(xport_config.mysqlUsername());
+  db->setPassword(xport_config.mysqlPassword());
+  db->setHostName(xport_config.mysqlHostname());
   if(!db->open()) {
-    printf("Content-type: text/html\n\n");
+    printf("Content-type: text/plain\n");
+    printf("Status: 500\n\n");
     printf("rdxport: unable to connect to database\n");
-    db->removeDatabase(xport_config->mysqlDbname());
+    db->removeDatabase(xport_config.mysqlDbname());
     Exit(0);
   }
   RDSqlQuery *q=new RDSqlQuery("select DB from VERSION");
   if(!q->first()) {
-    printf("Content-type: text/html\n");
+    printf("Content-type: text/plain\n");
     printf("Status: 500\n\n");
     printf("rdxport: missing/invalid database version!\n");
-    db->removeDatabase(xport_config->mysqlDbname());
+    db->removeDatabase(xport_config.mysqlDbname());
     Exit(0);
   }
   if(q->value(0).toUInt()!=RD_VERSION_DATABASE) {
-    printf("Content-type: text/html\n");
+    printf("Content-type: text/plain\n");
     printf("Status: 500\n\n");
     printf("rdxport: skewed database version!\n");
-    db->removeDatabase(xport_config->mysqlDbname());
+    db->removeDatabase(xport_config.mysqlDbname());
     Exit(0);
   }
   delete q;
@@ -105,22 +106,20 @@ Xport::Xport(QObject *parent,const char *name)
   // Determine Connection Type
   //
   if(getenv("REQUEST_METHOD")==NULL) {
-    printf("Content-type: text/html\n\n");
+    printf("Content-type: text/plain\n");
+    printf("Status: 400\n\n");
     printf("rdxport: missing REQUEST_METHOD\n");
-    db->removeDatabase(xport_config->mysqlDbname());
+    db->removeDatabase(xport_config.mysqlDbname());
     Exit(0);
   }
   if(QString(getenv("REQUEST_METHOD")).lower()!="post") {
-    printf("Content-type: text/html\n\n");
+    printf("Content-type: text/plain\n");
+    printf("Status: 405\n");
+    printf("Allow: POST\n\n");
     printf("rdxport: invalid web method\n");
-    db->removeDatabase(xport_config->mysqlDbname());
+    db->removeDatabase(xport_config.mysqlDbname());
     Exit(0);
   }
-
-  //
-  // Load System Settings
-  //
-  xport_system=new RDSystem();
 
   //
   // Generate Post
@@ -135,11 +134,11 @@ Xport::Xport(QObject *parent,const char *name)
   // Authenticate Connection
   //
   if(!Authenticate()) {
-    XmlExit("Invalid User",403);
+    XmlExit("Invalid User",401);
   }
 
   //
-  // Read Command Variable and Dispatch 
+  // Read Command Variable and Dispatch
   //
   int command=xport_post->value("COMMAND").toInt();
   switch(command) {
@@ -203,6 +202,10 @@ Xport::Xport(QObject *parent,const char *name)
     RemoveCut();
     break;
 
+  case RDXPORT_COMMAND_COPYCUT:
+    CopyCut();
+    break;
+
   case RDXPORT_COMMAND_EXPORT_PEAKS:
     ExportPeaks();
     break;
@@ -236,9 +239,10 @@ Xport::Xport(QObject *parent,const char *name)
     break;
 
   default:
-    printf("Content-type: text/html\n\n");
+    printf("Content-type: text/plain\n");
+    printf("Status: 400\n\n");
     printf("rdxport: missing/invalid command\n");
-    db->removeDatabase(xport_config->mysqlDbname());
+    db->removeDatabase(xport_config.mysqlDbname());
     Exit(0);
     break;
   }
@@ -266,6 +270,9 @@ bool Xport::Authenticate()
 
 void Xport::Exit(int code)
 {
+  if(xport_user!=NULL) {
+    delete xport_user;
+  }
   if(xport_post!=NULL) {
     delete xport_post;
   }
@@ -275,6 +282,9 @@ void Xport::Exit(int code)
 
 void Xport::XmlExit(const QString &str,int code,RDAudioConvert::ErrorCode err)
 {
+  if(xport_user!=NULL) {
+    delete xport_user;
+  }
   if(xport_post!=NULL) {
     delete xport_post;
   }
@@ -286,6 +296,6 @@ void Xport::XmlExit(const QString &str,int code,RDAudioConvert::ErrorCode err)
 int main(int argc,char *argv[])
 {
   QApplication a(argc,argv,false);
-  new Xport(NULL,"main");
+  Xport(NULL,"main");
   return a.exec();
 }

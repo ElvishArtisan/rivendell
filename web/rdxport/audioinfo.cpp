@@ -50,18 +50,22 @@ void Xport::AudioInfo()
     XmlExit("Missing CUT_NUMBER",400);
   }
 
+  if(!RDCart::exists(cartnum)) {
+    XmlExit("No such cart",404);
+  }
+
   //
   // Verify User Perms
   //
   if(!xport_user->cartAuthorized(cartnum)) {
-    XmlExit("No such cart",404);
+    XmlExit("Forbidden",403);
   }
 
   //
   // Open Audio File
   //
-  RDWaveFile *wave=new RDWaveFile(RDCut::pathName(cartnum,cutnum));
-  if(!wave->openWave()) {
+  RDWaveFile wave(RDCut::pathName(cartnum,cutnum));
+  if(!wave.openWave()) {
     XmlExit("No such audio",404);
   }
 
@@ -70,7 +74,7 @@ void Xport::AudioInfo()
   //
   printf("Content-type: application/xml\n\n");
 
-  switch(wave->getFormatTag()) {
+  switch(wave.getFormatTag()) {
   case WAVE_FORMAT_PCM:
     format=RDWaveFile::Pcm16;
     break;
@@ -80,7 +84,7 @@ void Xport::AudioInfo()
     break;
 
   case WAVE_FORMAT_MPEG:
-    switch(wave->getHeadLayer()) {
+    switch(wave.getHeadLayer()) {
     case 1:
       format=RDWaveFile::MpegL1;
       break;
@@ -96,7 +100,7 @@ void Xport::AudioInfo()
     break;
 
   default:
-    XmlExit("Unknown audio format",400);
+    XmlExit("Unknown audio format",500);
     break;
   }
   printf("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
@@ -104,11 +108,10 @@ void Xport::AudioInfo()
   printf("  <cartNumber>%u</cartNumber>\n",cartnum);
   printf("  <cutNumber>%u</cutNumber>\n",cutnum);
   printf("  <format>%d</format>\n",format);
-  printf("  <channels>%d</channels>\n",wave->getChannels());
-  printf("  <sampleRate>%d</sampleRate>\n",wave->getSamplesPerSec());
-  printf("  <frames>%u</frames>\n",wave->getSampleLength());
-  printf("  <length>%u</length>\n",wave->getExtTimeLength());
+  printf("  <channels>%d</channels>\n",wave.getChannels());
+  printf("  <sampleRate>%d</sampleRate>\n",wave.getSamplesPerSec());
+  printf("  <frames>%u</frames>\n",wave.getSampleLength());
+  printf("  <length>%u</length>\n",wave.getExtTimeLength());
   printf("</audioInfo>\n");
-  delete wave;
   Exit(0);
 }

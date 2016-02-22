@@ -27,6 +27,8 @@
 #include <rdconfig.h>
 #include <rduser.h>
 #include <rdsystem.h>
+#include <rdcart.h>
+#include <rdcut.h>
 
 class Xport : public QObject
 {
@@ -38,16 +40,19 @@ class Xport : public QObject
   void Export();
   void Import();
   void DeleteAudio();
+  void SetCartInfo(RDCart& cart, const QString& group_name);
   void AddCart();
   void ListCarts();
   void ListCart();
   void EditCart();
   void RemoveCart();
+  void SetCutInfo(RDCut& cut);
   void AddCut();
   void ListCuts();
   void ListCut();
   void EditCut();
   void RemoveCut();
+  void CopyCut();
   void ListGroups();
   void ListGroup();
   void ExportPeaks();
@@ -63,8 +68,8 @@ class Xport : public QObject
 	       RDAudioConvert::ErrorCode err=RDAudioConvert::ErrorOk);
   RDFormPost *xport_post;
   RDUser *xport_user;
-  RDConfig *xport_config;
-  RDSystem *xport_system;
+  RDConfig xport_config;
+  RDSystem xport_system;
 };
 
 

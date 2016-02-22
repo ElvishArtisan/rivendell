@@ -60,14 +60,21 @@ void Xport::CopyAudio()
     XmlExit("Missing DESTINATION_CUT_NUMBER",400);
   }
 
+  if(!RDCart::exists(source_cartnum)) {
+    XmlExit("No such cart",404);
+  }
+  if(!RDCart::exists(destination_cartnum)) {
+    XmlExit("No such cart",404);
+  }
+
   //
   // Verify User Perms
   //
   if(!xport_user->cartAuthorized(source_cartnum)) {
-    XmlExit("No such cart",404);
+    XmlExit("Forbidden",403);
   }
   if(!xport_user->cartAuthorized(destination_cartnum)) {
-    XmlExit("No such cart",404);
+    XmlExit("Forbidden",403);
   }
 
   //
@@ -76,7 +83,7 @@ void Xport::CopyAudio()
   unlink(RDCut::pathName(destination_cartnum,destination_cutnum));
   if(link(RDCut::pathName(source_cartnum,source_cutnum),
 	  RDCut::pathName(destination_cartnum,destination_cutnum))!=0) {
-    XmlExit(strerror(errno),400);
+    XmlExit(strerror(errno),500);
   }
   XmlExit("OK",200);
 }
