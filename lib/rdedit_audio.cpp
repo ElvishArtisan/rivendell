@@ -407,6 +407,8 @@ RDEditAudio::RDEditAudio(RDCart *cart,QString cut_name,RDCae *cae,RDUser *user,
             edit_marker_widget[RDMarkerWaveform::End]);
 
   edit_gain_control->setValue(edit_cut->playGain());
+
+  edit_overlap_box->setChecked(edit_cut->segueGain()==0);
   gainChangedData();
 }
 
@@ -921,6 +923,9 @@ void RDEditAudio::gotoEndData()
 
 void RDEditAudio::saveData()
 {
+  if(!SaveMarkers()) {
+    return;
+  }
   done(0);
 }
 
@@ -955,4 +960,61 @@ RDMarkerWaveform::CuePoints RDEditAudio::CurrentMarker() const
   }
 
   return ret;
+}
+
+
+bool RDEditAudio::SaveMarkers()
+{
+  //
+  // Sanity Checks
+  //
+  int start_point=edit_marker_widget[RDMarkerWaveform::Start]->value();
+  int end_point=edit_marker_widget[RDMarkerWaveform::End]->value()+26;
+  if((unsigned)(2*(end_point-start_point))<edit_cut->length()) {
+    if(QMessageBox::question(this,tr("Marker Warning"),
+			     tr("Less than half of the audio is playable with these marker settings.\nAre you sure you want to save?"),QMessageBox::Yes,QMessageBox::No)!=QMessageBox::Yes) {
+      return false;
+    }
+  }
+
+  if(edit_marker_widget[RDMarkerWaveform::SegueStart]->value()!=-1) {
+    start_point=edit_marker_widget[RDMarkerWaveform::SegueStart]->value();
+      end_point=edit_marker_widget[RDMarkerWaveform::SegueEnd]->value();
+      if((2*(end_point-start_point))>(end_point-start_point)) {
+      if(QMessageBox::question(this,tr("Marker Warning"),
+			       tr("More than half of the audio will be faded with these marker settings.\nAre you sure you want to save?"),QMessageBox::Yes,QMessageBox::No)!=QMessageBox::Yes) {
+       return false;
+      }
+    }
+  }
+
+  //
+  // Save Settings
+  //
+  edit_cut->setStartPoint(edit_marker_widget[RDMarkerWaveform::Start]->value());
+  edit_cut->setEndPoint(edit_marker_widget[RDMarkerWaveform::End]->value());
+  edit_cut->
+    setTalkStartPoint(edit_marker_widget[RDMarkerWaveform::TalkStart]->value());
+  edit_cut->
+    setTalkEndPoint(edit_marker_widget[RDMarkerWaveform::TalkEnd]->value());
+  edit_cut->
+    setSegueStartPoint(edit_marker_widget[RDMarkerWaveform::SegueStart]->
+                      value());
+  edit_cut->
+    setSegueEndPoint(edit_marker_widget[RDMarkerWaveform::SegueEnd]->value());
+  edit_cut->
+    setFadedownPoint(edit_marker_widget[RDMarkerWaveform::FadeDown]->value());
+  edit_cut->
+    setHookStartPoint(edit_marker_widget[RDMarkerWaveform::HookStart]->value());
+  edit_cut->
+    setHookEndPoint(edit_marker_widget[RDMarkerWaveform::HookEnd]->value());
+  edit_cut->setLength(edit_cut->endPoint(true)-edit_cut->startPoint(true));
+  edit_cut->setPlayGain(edit_gain_control->value());
+  if(edit_overlap_box->isChecked()) {
+    edit_cut->setSegueGain(0);
+  }
+  else {
+    edit_cut->setSegueGain(RD_FADE_DEPTH);
+  }
+  return true;
 }

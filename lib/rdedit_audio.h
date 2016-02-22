@@ -101,6 +101,7 @@ class RDEditAudio : public QDialog
   enum GainChange {GainNone=0,GainUp=1,GainDown=2};
   void SetDeleteMode(bool state);
   RDMarkerWaveform::CuePoints CurrentMarker() const;
+  bool SaveMarkers();
   RDMarkerWaveform *edit_waveform[2];
   QScrollBar *edit_waveform_scroll;
   RDMarkerTransport *edit_marker_transport;
