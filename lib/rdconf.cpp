@@ -442,7 +442,7 @@ bool RDDetach(const QString &coredir)
   if(!coredir.isEmpty()) {
     chdir(coredir);
   }
-  if(daemon(coredir.isEmpty(),0)) {
+  if(daemon(!coredir.isEmpty(),0)) {
     return false;
   }
   return true;
