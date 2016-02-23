@@ -149,8 +149,16 @@ void RDLogEvent::save(bool update_tracks,int line)
       delete q;
     }
     RDCreateLogTable(log_name);
-    for(unsigned i=0;i<log_line.size();i++) {
-      SaveLine(i);
+
+    if (log_line.size() > 0) {
+      QString values = "";
+      for(unsigned i=0;i<log_line.size();i++) {
+        InsertLineValues(&values, i);
+        if (i<log_line.size()-1) {
+          values += ",";
+        }
+      }
+      InsertLines(values);
     }
   }
   else {
@@ -1144,28 +1152,28 @@ from `%s` left join CART on `%s`.CART_NUMBER=CART.NUMBER order by COUNT",
   return lines;
 }
 
-
-void RDLogEvent::SaveLine(int line)
-{
+void RDLogEvent::InsertLines(QString values) {
   QString sql;
   RDSqlQuery *q;
-  sql=QString().sprintf("insert into `%s` set ID=%d,COUNT=%d,\
-                         CART_NUMBER=%u,START_TIME=%d,TIME_TYPE=%d,\
-                         TRANS_TYPE=%d,START_POINT=%d,END_POINT=%d,\
-                         SEGUE_START_POINT=%d,SEGUE_END_POINT=%d,TYPE=%d,\
-                         COMMENT=\"%s\",LABEL=\"%s\",GRACE_TIME=%d,\
-                         SOURCE=%d,EXT_START_TIME=\"%s\",\
-                         EXT_LENGTH=%d,EXT_DATA=\"%s\",EXT_EVENT_ID=\"%s\",\
-                         EXT_ANNC_TYPE=\"%s\",EXT_CART_NAME=\"%s\",\
-                         FADEUP_POINT=%d,FADEUP_GAIN=%d,FADEDOWN_POINT=%d,\
-                         FADEDOWN_GAIN=%d,SEGUE_GAIN=%d,\
-                         LINK_EVENT_NAME=\"%s\",LINK_START_TIME=%d,\
-                         LINK_LENGTH=%d,LINK_ID=%d,LINK_EMBEDDED=\"%s\",\
-                         ORIGIN_USER=\"%s\",ORIGIN_DATETIME=\"%s\",\
-                         LINK_START_SLOP=%d,LINK_END_SLOP=%d,\
-                         DUCK_UP_GAIN=%d,DUCK_DOWN_GAIN=%d,\
-                         EVENT_LENGTH=%d",
-			(const char *)log_name,
+
+  sql = QString().sprintf("insert into `%s` (ID,COUNT,CART_NUMBER,START_TIME,TIME_TYPE,\
+  TRANS_TYPE,START_POINT,END_POINT,SEGUE_START_POINT,SEGUE_END_POINT,TYPE, \
+  COMMENT,LABEL,GRACE_TIME,SOURCE,EXT_START_TIME,                       \
+  EXT_LENGTH,EXT_DATA,EXT_EVENT_ID,EXT_ANNC_TYPE,EXT_CART_NAME,         \
+  FADEUP_POINT,FADEUP_GAIN,FADEDOWN_POINT,FADEDOWN_GAIN,SEGUE_GAIN,     \
+  LINK_EVENT_NAME,LINK_START_TIME,LINK_LENGTH,LINK_ID,LINK_EMBEDDED,    \
+  ORIGIN_USER,ORIGIN_DATETIME,LINK_START_SLOP,LINK_END_SLOP,            \
+  DUCK_UP_GAIN,DUCK_DOWN_GAIN,EVENT_LENGTH) values %s",
+                          (const char *)log_name,
+                          (const char *)values);
+  q=new RDSqlQuery(sql);
+  delete q;
+}
+
+void RDLogEvent::InsertLineValues(QString *query, int line)
+{
+  // one line to save query space
+  QString sql=QString().sprintf("(%d,%d,%u,%d,%d,%d,%d,%d,%d,%d,%d,\"%s\",\"%s\",%d,%d,\"%s\",%d,\"%s\",\"%s\",\"%s\",\"%s\",%d,%d,%d,%d,%d,\"%s\",%d,%d,%d,\"%s\",\"%s\",\"%s\",%d,%d,%d,%d,%d)",
 			log_line[line]->id(),
 			line,
 			log_line[line]->cartNumber(),
@@ -1213,11 +1221,15 @@ void RDLogEvent::SaveLine(int line)
 			log_line[line]->linkEndSlop(),
                         log_line[line]->duckUpGain(),
                         log_line[line]->duckDownGain(),
-			log_line[line]->eventLength());
+                        log_line[line]->eventLength());
+  *query += sql;
+}
 
-  // printf("SQL: %s\n",(const char *)sql);
-  q=new RDSqlQuery(sql);
-  delete q;
+void RDLogEvent::SaveLine(int line)
+{
+  QString values = "";
+  InsertLineValues(&values, line);
+  InsertLines(values);
 }
 
 
