@@ -133,6 +133,14 @@ int RDLogEvent::load(bool track_ptrs)
   return log_line.size();
 }
 
+void RDLogEvent::saveModified(bool update_tracks)
+{
+  for(unsigned i=0;i<log_line.size();i++) {
+    if(log_line[i]->hasBeenModified()) {
+      save(update_tracks, i);
+    }
+  }
+}
 
 void RDLogEvent::save(bool update_tracks,int line)
 {
@@ -159,6 +167,8 @@ void RDLogEvent::save(bool update_tracks,int line)
     q=new RDSqlQuery(sql);
     delete q;
     SaveLine(line);
+    // BPM - Clear the modified flag
+    log_line[line]->clearModified();
   }
   RDLog *log=new RDLog(log_name.left(log_name.length()-4));
   if(log->nextId()<nextId()) {
@@ -1098,6 +1108,7 @@ from `%s` left join CART on `%s`.CART_NUMBER=CART.NUMBER order by COUNT",
 	   q->value(40).toInt());
 */
 
+    line.clearModified();
     log_line.push_back(new RDLogLine(line));
   }
   delete q;

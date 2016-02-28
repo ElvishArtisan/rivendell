@@ -45,6 +45,7 @@ class RDLogEvent
    void setLogName(QString logname);
    QString serviceName() const;
    int load(bool track_ptrs=false);
+   void saveModified(bool update_tracks=true);
    void save(bool update_tracks=true,int line=-1);
    int append(const QString &logname,bool track_ptrs=false);
    int validate(QString *report,const QDate &date);
