@@ -279,8 +279,16 @@ void ListReports::GenerateCartReport(QString *report)
 	  *report+="SEQ ";
 	  break;
 
+	case RDCart::LeastPlayed:
+	  *report+="LSP ";
+	  break;
+
 	case RDCart::Random:
 	  *report+="RND ";
+	  break;
+
+	case RDCart::ExpFirst:
+	  *report+="EXF ";
 	  break;
 
 	default:

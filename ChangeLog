@@ -15223,3 +15223,13 @@
 	and 'lib/rdedit_audio.h'.
 2016-02-21 Fred Gleason <fredg@paravelsystems.com>
 	* Optimized waveform updates in 'lib/rdmarkerwaveform.cpp'.
+2016-02-28 Brian McGlynn <brian.mcglynn@geneseemedia.net>
+        * Added modification market to Voicetracker to eliminate need to 
+        rewrite playlist upon minor changes
+        * Added modified flag in 'lib/rdlog_line.cpp' and 'lib/rdlog_line.h'
+        * Implemented saveModifid in 'lib/rdlog_event.cpp' and 'lib/rdlog_event.h'
+        * Added saveModified() function in 'rdlogedit/voice_tracker.cpp'
+2016-03-18 Brian McGlynn <brian.mcglynn@geneseemedia.net>
+        * Updated lib/rdcart.cpp, lib/rdcart.h, rdlibrary/rdlibrary.cpp, 
+        rdlibrary/list_report.cpp, rdlibrary/edit_cart.cpp, rdlibrary/edit_cart.h
+        * Added Random, Sequential, Least Played, and Expiring First cut scheduling

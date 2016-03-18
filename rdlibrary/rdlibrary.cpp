@@ -1061,6 +1061,8 @@ void MainWidget::RefreshList()
   // 35 - CUTS.SAT
   // 36 - CUTS.SUN
   //
+  // ?? - CART.PLAY_ORDER
+  //
 
   sql="select CART.NUMBER,CART.FORCED_LENGTH,CART.TITLE,CART.ARTIST,\
        CART.ALBUM,CART.LABEL,\
