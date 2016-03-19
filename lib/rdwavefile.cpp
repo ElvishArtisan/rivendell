@@ -210,6 +210,11 @@ bool RDWaveFile::openWave(RDWaveData *data)
   unsigned char tmc_buffer[4];
 
   wave_data=data;
+
+  // can try .exists() on the object
+  //if(!wave_file.exists()) {
+  //  return false;
+  //}
   if(!wave_file.open(IO_ReadOnly)) {
     return false;
   }
