@@ -15233,3 +15233,6 @@
         * Updated lib/rdcart.cpp, lib/rdcart.h, rdlibrary/rdlibrary.cpp, 
         rdlibrary/list_report.cpp, rdlibrary/edit_cart.cpp, rdlibrary/edit_cart.h
         * Added Random, Sequential, Least Played, and Expiring First cut scheduling
+2016-03-19 Brian McGlynn <brian.mcglynn@geneseemedia.net>
+        * Fixed playback issue in lib/rdcae.cpp.  If file was missing on
+	filesystem, rdairplay would get stopped on that track. 
