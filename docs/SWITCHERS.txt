@@ -7,6 +7,7 @@ Broadcast Tools 10x1 Audio Switcher
 Broadcast Tools 16x1 Audio Switcher
 Broadcast Tools 16x2 Audio Switcher
 Broadcast Tools 8x2 Audio Switcher
+Broadcast Tools ADMS 44.22 Analog/AES Digital Matrix Switcher
 Broadcast Tools GPI-16 General Purpose Input Module
 Broadcast Tools Sentinel 4 Web AES Switcher
 Broadcast Tools SS 12.4 Audio Switcher
@@ -131,6 +132,40 @@ Operation in 'multidrop' mode is not supported.
 
 
 ----------------------------------------------------------------------------
+BROADCAST TOOLS ADMS 44.22 Analog/AES Digital Matrix Switcher
+
+Driver Name: BoradcastTools ADMS 44.22
+
+Supported RML Commands:
+  GPI Enable ('GE')
+  GPI Set ('GI')
+  GPO Set ('GO')
+  Switch Take ('ST')
+  Switch Add ('SA')
+  Switch Level ('SL')
+  Switch Remove ('SR')
+
+GENERAL NOTES:
+Control is done by means of a serial connection to the unit's integrated
+serial port.  The 'OPTIONS' switches on the back of the unit should be set
+as follows:
+
+  1: OFF (UP)
+  2: OFF (UP)
+  3: OFF (UP)
+  4: OFF (UP)
+  5: OFF (UP)
+  6: OFF (UP)
+  7: ON  (DOWN)
+  8: ON  (DOWN)
+  9: OFF (UP)
+ 10: OFF (UP)
+
+The Rivendell serial interface should be set to use 9600 bits/sec, 8 bits,
+1 stop bit and no flow control.
+
+
+---------------------------------------------------------------------------
 BROADCAST TOOLS GPI-16 General Purpose Input Module
 
 Driver Name: BroadcastTools GPI-16

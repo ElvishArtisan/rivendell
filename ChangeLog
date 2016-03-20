@@ -14965,3 +14965,5 @@
 2015-09-18 Fred Gleason <fredg@paravelsystems.com>
 	* Updated 'NEWS'.
 	* Updated the package version to 2.11.0.
+2016-03-20 Fred Gleason <fredg@paravelsystems.com>
+	* Added a switcher driver for the Broadcast Tools ADMS 44.22.

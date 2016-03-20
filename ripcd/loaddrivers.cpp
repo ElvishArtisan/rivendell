@@ -32,6 +32,7 @@
 #include <bt16x2.h>
 #include <bt8x2.h>
 #include <btacs82.h>
+#include <btadms4422.h>
 #include <btgpi16.h>
 #include <btsentinel4web.h>
 #include <btsrc16.h>
@@ -91,6 +92,10 @@ bool MainObject::LoadSwitchDriver(int matrix_num)
 
   case RDMatrix::BtAcs82:
     ripcd_switcher[matrix_num]=new BtAcs82(matrix,this);
+    break;
+
+  case RDMatrix::BtAdms4422:
+    ripcd_switcher[matrix_num]=new BtAdms4422(matrix,this);
     break;
 
   case RDMatrix::BtGpi16:
