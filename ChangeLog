@@ -14981,3 +14981,5 @@
 	* Fixed a buffer size bug in 'lib/rdlivewire.cpp'.
 	* Fixed a bug in 'ripcd/livewire_lwrpaudio.cpp' that caused
 	spurious errors to be dumped to stderr.
+2016-03-24 Fred Gleason <fredg@paravelsystems.com>
+	* Removed spurious linefeed in 'PACKAGE_VERSION'.
