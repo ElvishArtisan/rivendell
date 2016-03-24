@@ -14799,3 +14799,5 @@
 2016-03-24 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in 'ripcd/livewire_lwrpaudio.cpp' that caused
 	spurious errors to be dumped to stderr.
+2016-03-24 Fred Gleason <fredg@paravelsystems.com>
+	* Implemented the package version to 2.10.3lwfixes00.
