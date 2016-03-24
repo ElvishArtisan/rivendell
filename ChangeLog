@@ -14987,3 +14987,7 @@
        * Added a 'Type' control to 'web/tests/listcart.html'.
        * Fixed a bug in 'web/rdxport/carts.cpp' that broke the 'ListCarts'
        API call when no group was specified.
+2016-03-24 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'web/tests/utils.js'.
+	* Fixed a bug in 'web/rdxport/carts.cpp' that allowed the EditCart web
+	method to set carts to non-existent groups.
