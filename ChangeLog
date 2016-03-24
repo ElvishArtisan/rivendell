@@ -14794,3 +14794,5 @@
 2015-02-24 Fred Gleason <fredg@paravelsystems.com>
 	* Updated 'NEWS'.
 	* Incremented the package version to 2.10.3.
+2016-03-24 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a buffer size bug in 'lib/rdlivewire.cpp'.
