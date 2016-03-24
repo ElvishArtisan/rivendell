@@ -720,6 +720,7 @@ bool CreateDb(QString name,QString pwd)
       END_DATETIME DATETIME,\
       ENFORCE_LENGTH ENUM('N','Y') DEFAULT 'N',\
       PRESERVE_PITCH ENUM('N','Y') DEFAULT 'N',\
+      USE_WEIGHTING enum('N','Y') default 'Y',\
       ASYNCRONOUS enum('N','Y') default 'N',\
       OWNER char(64),\
       MACROS text,\
@@ -777,6 +778,7 @@ bool CreateDb(QString name,QString pwd)
       END_DAYPART TIME,\
       ORIGIN_NAME CHAR(64),\
       WEIGHT INT UNSIGNED DEFAULT 1,\
+      PLAY_ORDER int,\
       LAST_PLAY_DATETIME DATETIME,\
       UPLOAD_DATETIME datetime,\
       PLAY_COUNTER INT UNSIGNED DEFAULT 0,\
@@ -8106,6 +8108,32 @@ int UpdateDb(int ver)
     sql=QString("alter table RDLIBRARY add column ")+
       "READ_ISRC enum('N','Y') default 'Y' after CDDB_SERVER";
     q=new QSqlQuery(sql);
+    delete q;
+  }
+
+  /*
+   * Versions 246 - 253 are reserved
+   */
+
+  if(ver<254) {
+    sql=QString("alter table CART add column ")+
+      "USE_WEIGHTING enum('N','Y') default 'Y' after ENFORCE_LENGTH";
+    q=new QSqlQuery(sql);
+    delete q;
+
+    sql=QString("alter table CUTS add column PLAY_ORDER int after WEIGHT");
+    q=new QSqlQuery(sql);
+    delete q;
+
+    sql=QString("select CUT_NAME from CUTS order by CUT_NAME");
+    q=new QSqlQuery(sql);
+    while(q->next()) {
+      sql=QString("update CUTS set ")+
+	"PLAY_ORDER="+q->value(0).toString().right(3)+" "+
+	"where CUT_NAME=\""+q->value(0).toString()+"\"";
+      q1=new QSqlQuery(sql);
+      delete q1;
+    }
     delete q;
   }
 

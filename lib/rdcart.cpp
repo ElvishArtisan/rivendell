@@ -112,23 +112,30 @@ bool RDCart::selectCut(QString *cut,const QTime &time) const
     toString("yyyy-MM-dd hh:mm:ss");
   QString time_str=QDateTime(current_date,time).toString("hh:mm:ss");
 
-  //  if(type()==RDCart::Audio) {
   switch(type()) {
   case RDCart::Audio:
-    sql=QString().sprintf("select CUT_NAME,WEIGHT,LOCAL_COUNTER\
-                           from CUTS  where (((START_DATETIME<=\"%s\")&&\
-                           (END_DATETIME>=\"%s\"))||\
-                           (START_DATETIME is null))&&\
-                           (((START_DAYPART<=\"%s\")&&(END_DAYPART>=\"%s\")||\
-                           START_DAYPART is null))&&\
-                           (%s=\"Y\")&&(CART_NUMBER=%u)&&(EVERGREEN=\"N\")&&\
-                           (LENGTH>0) order by LOCAL_COUNTER",
-			  (const char *)datetime_str,
-			  (const char *)datetime_str,
-			  (const char *)time_str,
-			  (const char *)time_str,
-	(const char *)RDGetShortDayNameEN(current_date.dayOfWeek()).upper(),
-			  cart_number);
+    sql=QString("select ")+
+      "CUT_NAME,"+
+      "PLAY_ORDER,"+
+      "WEIGHT,"+
+      "LOCAL_COUNTER,"+
+      "LAST_PLAY_DATETIME "+
+      "from CUTS  where ("+
+      "((START_DATETIME<=\""+datetime_str+"\")&&"+
+      "(END_DATETIME>=\""+datetime_str+"\"))||"+
+      "(START_DATETIME is null))&&"+
+      "(((START_DAYPART<=\""+time_str+"\")&&"+
+      "(END_DAYPART>=\""+time_str+"\")||"+
+      "START_DAYPART is null))&&"+
+      "("+RDGetShortDayNameEN(current_date.dayOfWeek()).upper()+"=\"Y\")&&"+
+      QString().sprintf("(CART_NUMBER=%u)&&(EVERGREEN=\"N\")&&",cart_number)+
+      "(LENGTH>0)";
+    if(useWeighting()) {
+      sql+=" order by LOCAL_COUNTER";
+    }
+    else {
+      sql+=" order by LAST_PLAY_DATETIME desc";
+    }
     q=new RDSqlQuery(sql);
     cutname=GetNextCut(q);
     delete q;
@@ -142,11 +149,22 @@ bool RDCart::selectCut(QString *cut,const QTime &time) const
 #ifndef WIN32
     // syslog(LOG_USER|LOG_WARNING,"RDCart::selectCut(): no valid cuts, trying evergreen, SQL=%s",(const char *)sql);
 #endif  // WIN32
-    sql=QString().sprintf("select CUT_NAME,WEIGHT,LOCAL_COUNTER\
-                           from CUTS where (CART_NUMBER=%u)&&\
-                           (EVERGREEN=\"Y\")&&(LENGTH>0) \
-                           order by LOCAL_COUNTER",
-			  cart_number);
+    sql=QString("select ")+
+      "CUT_NAME,"+
+      "PLAY_ORDER,"+
+      "WEIGHT,"+
+      "LOCAL_COUNTER "+
+      "LAST_PLAY_DATETIME "+
+      "from CUTS where "+
+      QString().sprintf("(CART_NUMBER=%u)&&",cart_number)+
+      "(EVERGREEN=\"Y\")&&"+
+      "(LENGTH>0)";
+    if(useWeighting()) {
+      sql+=" order by LOCAL_COUNTER";
+    }
+    else {
+      sql+=" order by LAST_PLAY_DATETIME desc";
+    }
     q=new RDSqlQuery(sql);
     cutname=GetNextCut(q);
     delete q;
@@ -718,6 +736,20 @@ void RDCart::setEnforceLength(bool state)
 }
 
 
+bool RDCart::useWeighting() const
+{
+  return RDBool(RDGetSqlValue("CART","NUMBER",cart_number,
+			    "USE_WEIGHTING").toString());
+}
+
+
+void RDCart::setUseWeighting(bool state)
+{
+  SetRow("USE_WEIGHTING",RDYesNo(state));
+  metadata_changed=true;
+}
+
+
 bool RDCart::preservePitch() const
 {
   return RDBool(RDGetSqlValue("CART","NUMBER",cart_number,
@@ -1214,16 +1246,15 @@ int RDCart::addCut(unsigned format,unsigned bitrate,unsigned chans,
   if(desc.isEmpty()) {
     desc=QString().sprintf("Cut %03d",next);
   }
-  sql=QString().sprintf("insert into CUTS set CUT_NAME=\"%s\",\
-                         CART_NUMBER=%d,ISCI=\"%s\",DESCRIPTION=\"%s\",\
-                         LENGTH=0,CODING_FORMAT=%d,BIT_RATE=%d,CHANNELS=%d",
-			(const char *)next_name,
-			cart_number,
-			(const char *)RDEscapeString(isci),
-			(const char *)RDEscapeString(desc),
-			format,
-			bitrate,
-			chans);
+  sql=QString("insert into CUTS set CUT_NAME=\"")+next_name+"\","+
+    QString().sprintf("CART_NUMBER=%d,",cart_number)+
+    "ISCI=\""+RDEscapeString(isci)+"\","+
+    "DESCRIPTION=\""+RDEscapeString(desc)+"\","+
+    "LENGTH=0,"+
+    QString().sprintf("CODING_FORMAT=%d,",format)+
+    QString().sprintf("BIT_RATE=%d,",bitrate)+
+    QString().sprintf("CHANNELS=%d,",chans)+
+    QString().sprintf("PLAY_ORDER=%d",next);
   q=new RDSqlQuery(sql);
   delete q;
 
@@ -1495,13 +1526,36 @@ QString RDCart::GetNextCut(RDSqlQuery *q) const
   QString cutname;
   double ratio;
   double play_ratio=100000000.0;
-  std::vector<int> eligibles;
+  int play=RD_MAX_CUT_NUMBER+1;
+  int last_play;
 
-
-  while(q->next()) {
-    if((ratio=q->value(2).toDouble()/q->value(1).toDouble())<play_ratio) {
-      play_ratio=ratio;
-      cutname=q->value(0).toString();
+  if(useWeighting()) {
+    while(q->next()) {
+      if((ratio=q->value(3).toDouble()/q->value(2).toDouble())<play_ratio) {
+	play_ratio=ratio;
+	cutname=q->value(0).toString();
+      }
+    }
+  }
+  else {
+    if(q->first()) {
+      last_play=q->value(1).toInt();
+      while(q->next()) {
+	if((q->value(1).toInt()>last_play)&&(q->value(1).toInt()<play)) {
+	  play=q->value(1).toInt();
+	  cutname=q->value(0).toString();
+	}
+      }
+      if(!cutname.isEmpty()) {
+	return cutname;
+      }
+    }
+    q->seek(-1);
+    while(q->next()) {
+      if(q->value(1).toInt()<play) {
+	play=q->value(1).toInt();
+	cutname=q->value(0).toString();
+      }
     }
   }
   return cutname;

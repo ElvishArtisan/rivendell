@@ -220,6 +220,10 @@ Do you still want to delete?</source>
         <source>You must select a single cut!</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>ORD</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>CdRipper</name>
@@ -864,6 +868,26 @@ poznámky</translation>
     </message>
     <message>
         <source>Use Event Length for Now &amp;&amp; Next Updates</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>By Specified Order</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>By Weight</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Schedule Cuts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The following cut order values are assigned more than once</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Duplicate Cut Order</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1543,6 +1567,10 @@ Přesto uložit?</translation>
     </message>
     <message>
         <source>AES ALARM</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Order</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

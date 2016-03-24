@@ -20,6 +20,8 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
+#include <vector>
+
 #include <qbitmap.h>
 #include <unistd.h>
 #include <qdialog.h>
@@ -526,6 +528,22 @@ EditCart::EditCart(unsigned number,QString *path,bool new_cart,bool profile_rip,
   rdcart_use_event_length_label->hide();
 
   //
+  // Cut Scheduling Policy
+  //
+  rdcart_cut_sched_box=new QComboBox(this);
+  rdcart_cut_sched_box->setGeometry(135,348,150,21);
+  rdcart_cut_sched_box->insertItem(tr("By Specified Order"));
+  rdcart_cut_sched_box->insertItem(tr("By Weight"));
+  rdcart_cut_sched_edit=new QLineEdit(this);
+  rdcart_cut_sched_edit->setGeometry(135,348,150,21);
+  rdcart_cut_sched_edit->hide();
+  QLabel *rdcart_cut_sched_label=
+    new QLabel(rdcart_cut_sched_box,tr("Schedule Cuts")+":",this);
+  rdcart_cut_sched_label->setGeometry(10,348,120,19);
+  rdcart_cut_sched_label->setFont(button_font);
+  rdcart_cut_sched_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+
+  //
   // Notes Button
   //
   rdcart_notes_button=new QPushButton(this,"rdcart_notes_button");
@@ -559,6 +577,8 @@ EditCart::EditCart(unsigned number,QString *path,bool new_cart,bool profile_rip,
 		      rdcart_audio_cart->sizeHint().height());
 	connect(rdcart_audio_cart,SIGNAL(cartDataChanged()),
 		this,SLOT(cartDataChangedData()));
+	connect(rdcart_cut_sched_box,SIGNAL(activated(int)),
+		rdcart_audio_cart,SLOT(changeCutScheduling(int)));
 	rdcart_macro_cart=NULL;
 	break;
 	
@@ -629,6 +649,7 @@ EditCart::EditCart(unsigned number,QString *path,bool new_cart,bool profile_rip,
     switch(rdcart_cart->type()) {
 	case RDCart::Audio:
 	  rdcart_type_edit->setText(tr("AUDIO"));
+	  rdcart_audio_cart->changeCutScheduling(rdcart_cart->useWeighting());
 	  break;
 	  
 	case RDCart::Macro:
@@ -693,6 +714,8 @@ EditCart::EditCart(unsigned number,QString *path,bool new_cart,bool profile_rip,
     rdcart_syncronous_box->setChecked(rdcart_cart->asyncronous());
     rdcart_use_event_length_box->
       setChecked(rdcart_cart->useEventLength());
+    rdcart_cut_sched_box->setCurrentItem(rdcart_cart->useWeighting());
+    rdcart_cut_sched_edit->setText(rdcart_cut_sched_box->currentText());
   }
   else {//multi edit
     if(rdcart_group_box->count() == 0) {
@@ -751,6 +774,14 @@ EditCart::EditCart(unsigned number,QString *path,bool new_cart,bool profile_rip,
       setRange(rdcart_cart->beatsPerMinute(),rdcart_cart->beatsPerMinute());
     rdcart_controls.forced_length_edit->hide();
     rdcart_forced_length_ledit->show();
+    if(rdcart_cart->type()==RDCart::Audio) {
+      rdcart_cut_sched_box->hide();
+      rdcart_cut_sched_edit->show();
+    }
+  }
+  if(rdcart_cart->type()==RDCart::Macro) {
+    rdcart_cut_sched_box->hide();
+    rdcart_cut_sched_label->hide();
   }
 }
 
@@ -840,6 +871,35 @@ void EditCart::okData()
 	}
       }
     }
+    if(rdcart_cut_sched_box->currentItem()==0) {
+      std::vector<int> play_orders;
+      std::vector<int> order_duplicates;
+      sql=QString("select PLAY_ORDER from CUTS where ")+
+	QString().sprintf("CART_NUMBER=%u",rdcart_cart->number());
+      q=new RDSqlQuery(sql);
+      while(q->next()) {
+	play_orders.push_back(q->value(0).toInt());
+      }
+      delete q;
+      for(unsigned i=0;i<play_orders.size();i++) {
+	for(unsigned j=i;j<play_orders.size();j++) {
+	  if((i!=j)&&(play_orders[i]==play_orders[j])) {
+	    order_duplicates.push_back(play_orders[j]);
+	  }
+	}
+      }
+      if(order_duplicates.size()>0) {
+	QString msg=
+	  tr("The following cut order values are assigned more than once")+
+	  ":\n";
+	for(unsigned i=0;i<order_duplicates.size();i++) {
+	  msg+=QString().sprintf("%d, ",order_duplicates[i]);
+	}
+	msg=msg.left(msg.length()-2)+".";
+	QMessageBox::warning(this,"RDLibrary - "+tr("Duplicate Cut Order"),msg);
+	return;
+      }
+    }
     rdcart_cart->setGroupName(rdcart_group_box->currentText());
     rdcart_cart->calculateAverageLength(&rdcart_length_deviation);
     rdcart_cart->setLengthDeviation(rdcart_length_deviation);
@@ -884,6 +944,9 @@ void EditCart::okData()
       rdcart_macro_cart->save();
       rdcart_cart->setAsyncronous(rdcart_syncronous_box->isChecked());
       rdcart_cart->setUseEventLength(rdcart_use_event_length_box->isChecked());
+    }
+    else {
+      rdcart_cart->setUseWeighting(rdcart_cut_sched_box->currentItem());
     }
   }
   else {  // Multi Edit

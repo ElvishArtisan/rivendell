@@ -50,7 +50,8 @@ class RecordCut : public QDialog
 {
   Q_OBJECT
   public:
-   RecordCut(RDCart *cart,QString cut,QWidget *parent=0,const char *name=0);
+   RecordCut(RDCart *cart,QString cut,bool use_weight,QWidget *parent=0,
+	     const char *name=0);
    ~RecordCut();
    QSize sizeHint() const;
    QSizePolicy sizePolicy() const;
@@ -141,6 +142,7 @@ class RecordCut : public QDialog
    bool is_closing;
    QCheckBox *rec_evergreen_box;
    QLabel *rec_evergreen_label;
+   bool rec_use_weighting;
 };
 
 

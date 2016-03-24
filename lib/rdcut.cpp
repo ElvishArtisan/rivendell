@@ -397,6 +397,19 @@ void RDCut::setWeight(int value) const
 }
 
 
+int RDCut::playOrder() const
+{
+  return RDGetSqlValue("CUTS","CUT_NAME",cut_name,"PLAY_ORDER",cut_db).
+    toInt();
+}
+
+
+void RDCut::setPlayOrder(int order) const
+{
+  SetRow("PLAY_ORDER",order);
+}
+
+
 QDateTime RDCut::lastPlayDatetime(bool *valid) const
 {
   return 

@@ -54,7 +54,7 @@ class EditCart : public QDialog
   ~EditCart();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
-  
+
  private slots:
   void notesData();
   void scriptData();
@@ -79,6 +79,8 @@ class EditCart : public QDialog
   QComboBox *rdcart_group_box;
   QLineEdit *rdcart_group_edit;
   AudioControls rdcart_controls;
+  QComboBox *rdcart_cut_sched_box;
+  QLineEdit *rdcart_cut_sched_edit;
   QCheckBox *rdcart_syncronous_box;
   QCheckBox *rdcart_use_event_length_box;
   QLabel *rdcart_syncronous_label;

@@ -78,6 +78,8 @@ class RDCut
   void setOriginName(const QString &name) const;
   unsigned weight() const;
   void setWeight(int value) const;
+  int playOrder() const;
+  void setPlayOrder(int order) const;
   QDateTime lastPlayDatetime(bool *valid) const;
   void setLastPlayDatetime(const QDateTime &datetime,bool valid) const;
   QDateTime uploadDatetime(bool *valid) const;

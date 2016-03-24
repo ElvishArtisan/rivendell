@@ -37,13 +37,15 @@
 #include <globals.h>
 #include <rdconfig.h>
 
-RecordCut::RecordCut(RDCart *cart,QString cut,QWidget *parent,const char *name)
+RecordCut::RecordCut(RDCart *cart,QString cut,bool use_weight,
+		     QWidget *parent,const char *name)
   : QDialog(parent,name,true)
 {
   bool valid;
   bool is_track=cart->owner().isEmpty();
   bool allow_modification=lib_user->modifyCarts()&&is_track;
   bool allow_editing=lib_user->editAudio()&&is_track;
+  rec_use_weighting=use_weight;
 
   //
   // Fix the Window Size
@@ -507,7 +509,14 @@ RecordCut::RecordCut(RDCart *cart,QString cut,QWidget *parent,const char *name)
   }
   cut_isci_edit->setText(rec_cut->isci());
   cut_isrc_edit->setText(rec_cut->isrc(RDCut::FormattedIsrc));
-  cut_weight_box->setValue(rec_cut->weight());
+  if(use_weight) {
+    cut_weight_label->setText(tr("Weight"));
+    cut_weight_box->setValue(rec_cut->weight());
+  }
+  else {
+    cut_weight_label->setText(tr("Order"));
+    cut_weight_box->setValue(rec_cut->playOrder());
+  }
   if(rec_cut->playCounter()>0) {
     cut_playdate_edit->
       setText(rec_cut->lastPlayDatetime(&valid).toString("M/d/yyyy hh:mm:ss"));
@@ -1001,7 +1010,12 @@ void RecordCut::closeData()
   rec_cut->setOutcue(cut_outcue_edit->text());
   rec_cut->setIsrc(isrc);
   rec_cut->setIsci(cut_isci_edit->text());
-  rec_cut->setWeight(cut_weight_box->value());
+  if(rec_use_weighting) {
+    rec_cut->setWeight(cut_weight_box->value());
+  }
+  else {
+    rec_cut->setPlayOrder(cut_weight_box->value());
+  }
   rec_cut->setLength(rec_length);
   RDCart *cart=new RDCart(rec_cut->cartNumber());
   cart->resetRotation();

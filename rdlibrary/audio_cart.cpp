@@ -277,6 +277,31 @@ QSizePolicy AudioCart::sizePolicy() const
 }
 
 
+void AudioCart::changeCutScheduling(int sched)
+{
+  QString sql;
+  RDSqlQuery *q;
+
+  RDListViewItem *item=(RDListViewItem *)rdcart_cut_list->firstChild();
+  while(item!=NULL) {
+    sql=QString("select PLAY_ORDER,WEIGHT from CUTS where ")+
+      "CUT_NAME=\""+item->text(11)+"\"";
+    q=new RDSqlQuery(sql);
+    if(q->first()) {
+      item->setText(0,QString().sprintf("%d",q->value(sched).toInt()));
+    }
+    item=(RDListViewItem *)item->nextSibling();
+  }
+  if(sched) {
+    rdcart_cut_list->setColumnText(0,tr("WT"));
+  }
+  else {
+    rdcart_cut_list->setColumnText(0,tr("ORD"));
+  }
+  rdcart_use_weighting=sched!=0;
+}
+
+
 void AudioCart::addCutData()
 {
   QString next_name=RDCut::cutName(rdcart_cart->number(),
@@ -526,7 +551,7 @@ void AudioCart::recordCutData()
     return;
   }
   QString cutname=item->text(11);
-  RecordCut *cut=new RecordCut(rdcart_cart,cutname,this,"cut");
+  RecordCut *cut=new RecordCut(rdcart_cart,cutname,rdcart_use_weighting,this);
   cut->exec();
   delete cut;
   if(cut_clipboard==NULL) {
@@ -704,16 +729,16 @@ void AudioCart::RefreshList()
   q=new RDSqlQuery(sql);
   while(q->next()) {
     l=new RDListViewItem(rdcart_cut_list);
-    l->setText(0,q->value(0).toString());
-    l->setText(1,q->value(1).toString());
-    l->setText(2,RDGetTimeLength(q->value(2).toUInt()));
+    //    l->setText(0,q->value(0).toString());
+    l->setText(1,q->value(2).toString());
+    l->setText(2,RDGetTimeLength(q->value(3).toUInt()));
     if (q->value(0) == 0){// zero weight
       l->setBackgroundColor(RD_CART_ERROR_COLOR);
       if(pass==0) {
 	err=true;
       }
     } else {
-      switch(ValidateCut(q,9,RDCart::NeverValid,current_datetime)) {
+      switch(ValidateCut(q,10,RDCart::NeverValid,current_datetime)) {
       case RDCart::NeverValid:
 	l->setBackgroundColor(RD_CART_ERROR_COLOR);
 	if(pass==0) {
@@ -722,8 +747,8 @@ void AudioCart::RefreshList()
 	break;
 	
       case RDCart::ConditionallyValid:
-	if((!q->value(10).isNull())&&
-	   (q->value(10).toDateTime()<current_datetime)) {
+	if((!q->value(11).isNull())&&
+	   (q->value(11).toDateTime()<current_datetime)) {
 	  l->setBackgroundColor(RD_CART_ERROR_COLOR);
 	}
 	else {
@@ -752,40 +777,40 @@ void AudioCart::RefreshList()
 	break;
       }
     }
-    if(q->value(4).toUInt()>0) {
-      l->setText(3,q->value(3).toDateTime().toString("M/d/yy"));
+    if(q->value(5).toUInt()>0) {
+      l->setText(3,q->value(4).toDateTime().toString("M/d/yy"));
     }
     else {
       l->setText(3,tr("Never"));
     }
-    l->setText(4,q->value(4).toString());
-    if(!q->value(5).toDateTime().isNull()) {
-      l->setText(5,q->value(6).toString()+" - "+
-		 q->value(5).toDateTime().toString("M/d/yy hh:mm:ss"));
+    l->setText(4,q->value(5).toString());
+    if(!q->value(6).toDateTime().isNull()) {
+      l->setText(5,q->value(7).toString()+" - "+
+		 q->value(6).toDateTime().toString("M/d/yy hh:mm:ss"));
     }
-    l->setText(6,q->value(7).toString());
-    if(!q->value(11).toDateTime().isNull()) {
-      l->setText(7,q->value(11).toDateTime().toString("M/d/yyyy hh:mm:ss"));
+    l->setText(6,q->value(8).toString());
+    if(!q->value(12).toDateTime().isNull()) {
+      l->setText(7,q->value(12).toDateTime().toString("M/d/yyyy hh:mm:ss"));
     }
     else {
       l->setText(7,tr("None"));
     }
-    if(!q->value(12).toDateTime().isNull()) {
-      l->setText(8,q->value(12).toDateTime().toString("M/d/yyyy hh:mm:ss"));
+    if(!q->value(13).toDateTime().isNull()) {
+      l->setText(8,q->value(13).toDateTime().toString("M/d/yyyy hh:mm:ss"));
     }
     else {
       l->setText(8,tr("None"));
     }
-    if(!q->value(14).isNull()) {
-      l->setText(9,q->value(13).toTime().toString("hh:mm:ss"));
-      l->setText(10,q->value(14).toTime().toString("hh:mm:ss"));
+    if(!q->value(15).isNull()) {
+      l->setText(9,q->value(15).toTime().toString("hh:mm:ss"));
+      l->setText(10,q->value(15).toTime().toString("hh:mm:ss"));
     }
     else {
       l->setText(9,tr("None"));
       l->setText(10,tr("None"));
     }
-    l->setText(11,q->value(8).toString());
-    total_length+=q->value(2).toUInt();
+    l->setText(11,q->value(9).toString());
+    total_length+=q->value(3).toUInt();
     pass++;
   }
   if(q->size()>0) {
@@ -815,20 +840,20 @@ void AudioCart::RefreshLine(RDListViewItem *item)
     "(CUT_NAME=\""+RDEscapeString(cut_name)+"\")";
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
-    item->setText(0,q->value(0).toString());
+    item->setText(0,q->value(rdcart_use_weighting).toString());
     item->setText(1,q->value(1).toString());
     item->setText(2,RDGetTimeLength(q->value(2).toUInt()));
     if (q->value(0) == 0){ //zero weight
       	  item->setBackgroundColor(RD_CART_ERROR_COLOR);
     } else {
-      switch(ValidateCut(q,9,RDCart::NeverValid,current_datetime)) {
+      switch(ValidateCut(q,10,RDCart::NeverValid,current_datetime)) {
       case RDCart::NeverValid:
 	item->setBackgroundColor(RD_CART_ERROR_COLOR);
 	break;
 	
       case RDCart::ConditionallyValid:
-	if((!q->value(11).isNull())&&
-	   (q->value(11).toDateTime()<current_datetime)) {
+	if((!q->value(12).isNull())&&
+	   (q->value(12).toDateTime()<current_datetime)) {
 	  item->setBackgroundColor(RD_CART_ERROR_COLOR);
 	}
 	else {
@@ -849,40 +874,40 @@ void AudioCart::RefreshLine(RDListViewItem *item)
 	break;
       }
     }
-    if(q->value(4).toUInt()>0) {
-      item->setText(3,q->value(3).toDateTime().toString("M/d/yy"));
+    if(q->value(5).toUInt()>0) {
+      item->setText(3,q->value(4).toDateTime().toString("M/d/yy"));
     }
     else {
       item->setText(3,tr("Never"));
     }
-    item->setText(4,q->value(4).toString());
-    if(!q->value(5).toDateTime().isNull()) {
-      item->setText(5,q->value(6).toString()+" - "+
-		 q->value(5).toDateTime().toString("M/d/yy hh:mm:ss"));
+    item->setText(4,q->value(5).toString());
+    if(!q->value(6).toDateTime().isNull()) {
+      item->setText(5,q->value(7).toString()+" - "+
+		 q->value(6).toDateTime().toString("M/d/yy hh:mm:ss"));
     }
-    item->setText(6,q->value(7).toString());
-    if(!q->value(11).toDateTime().isNull()) {
-      item->setText(7,q->value(11).toDateTime().toString("M/d/yyyy hh:mm:ss"));
+    item->setText(6,q->value(8).toString());
+    if(!q->value(12).toDateTime().isNull()) {
+      item->setText(7,q->value(12).toDateTime().toString("M/d/yyyy hh:mm:ss"));
     }
     else {
       item->setText(7,tr("None"));
     }
-    if(!q->value(12).toDateTime().isNull()) {
-      item->setText(8,q->value(12).toDateTime().toString("M/d/yyyy hh:mm:ss"));
+    if(!q->value(13).toDateTime().isNull()) {
+      item->setText(8,q->value(13).toDateTime().toString("M/d/yyyy hh:mm:ss"));
     }
     else {
       item->setText(8,tr("None"));
     }
-    if(!q->value(14).isNull()) {
-      item->setText(9,q->value(13).toTime().toString("hh:mm:ss"));
-      item->setText(10,q->value(14).toTime().toString("hh:mm:ss"));
+    if(!q->value(15).isNull()) {
+      item->setText(9,q->value(14).toTime().toString("hh:mm:ss"));
+      item->setText(10,q->value(15).toTime().toString("hh:mm:ss"));
     }
     else {
       item->setText(9,tr("None"));
       item->setText(10,tr("None"));
     }
-    item->setText(11,q->value(8).toString());
-    total_length+=q->value(2).toUInt();
+    item->setText(11,q->value(9).toString());
+    total_length+=q->value(3).toUInt();
   }
   if(q->size()>0) {
     rdcart_average_length=total_length/q->size();

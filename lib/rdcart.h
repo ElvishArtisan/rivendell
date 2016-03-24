@@ -119,6 +119,8 @@ class RDCart
   void setEndDateTime();
   bool enforceLength() const;
   void setEnforceLength(bool state);
+  bool useWeighting() const;
+  void setUseWeighting(bool state);
   bool preservePitch() const;
   void setPreservePitch(bool state) const;
   bool asyncronous() const;

@@ -27,10 +27,31 @@ QString ValidateCutFields()
 {
   QString sql;
 
-  sql=QString("select WEIGHT,DESCRIPTION,LENGTH,LAST_PLAY_DATETIME,")+
-    "PLAY_COUNTER,ORIGIN_DATETIME,ORIGIN_NAME,OUTCUE,CUT_NAME,LENGTH,"+
-    "EVERGREEN,START_DATETIME,END_DATETIME,START_DAYPART,END_DAYPART,"+
-    "MON,TUE,WED,THU,FRI,SAT,SUN from CUTS";
+  sql=QString("select ")+
+    "PLAY_ORDER,"+          // 00
+    "WEIGHT,"+              // 01   
+    "DESCRIPTION,"+         // 02
+    "LENGTH,"+              // 03
+    "LAST_PLAY_DATETIME,"+  // 04
+    "PLAY_COUNTER,"+        // 03
+    "ORIGIN_DATETIME,"+     // 04
+    "ORIGIN_NAME,"+         // 05
+    "OUTCUE,"+              // 06
+    "CUT_NAME,"+            // 07
+    "LENGTH,"+              // 08
+    "EVERGREEN,"+           // 09
+    "START_DATETIME,"+      // 10
+    "END_DATETIME,"+        // 11
+    "START_DAYPART,"+       // 12
+    "END_DAYPART,"+         // 13
+    "MON,"+                 // 14
+    "TUE,"+                 // 15
+    "WED,"+                 // 16
+    "THU,"+                 // 17
+    "FRI,"+                 // 18
+    "SAT,"+                 // 19
+    "SUN "+                 // 20
+    "from CUTS";
 
   return sql;
 }

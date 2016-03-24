@@ -57,6 +57,9 @@ class AudioCart : public QWidget
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
 
+ public slots:
+  void changeCutScheduling(int sched);
+
  private slots:
   void addCutData();
   void deleteCutData();
@@ -95,6 +98,7 @@ class AudioCart : public QWidget
   bool rdcart_modification_allowed;
   bool rdcart_import_metadata;
   bool rdcart_profile_rip;
+  bool rdcart_use_weighting;
 };
 
 

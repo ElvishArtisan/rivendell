@@ -29,6 +29,7 @@ FRI                  enum('N','Y')
 SAT                  enum('N','Y')
 ORIGIN_NAME          char(64)          Workstation ID where recorded
 WEIGHT               int(10) unsigned  Relative airplay frequency, 1 = normal
+PLAY_ORDER           int(11)           Play order when weighting disabled
 LAST_PLAY_DATETIME   datetime
 UPLOAD_DATETIME      datetime          Copy-split upload timestamp
 PLAY_COUNTER         int(10) unsigned

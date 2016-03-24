@@ -40,6 +40,7 @@ START_DATETIME       datetime
 END_DATETIME         datetime         
 ENFORCE_LENGTH       enum('N','Y')     Timeshift?
 PRESERVE_PITCH       enum('N','Y')     Preserve Pitch?
+USE_WEIGHTING        enum('N','Y')
 ASYNCRONOUS          enum('N','Y')
 OWNER                char(64)          From LOGS.NAME or STATIONS.NAME
 MACROS               text              RML Macros

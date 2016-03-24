@@ -14967,3 +14967,13 @@
 	* Updated the package version to 2.11.0.
 2016-03-20 Fred Gleason <fredg@paravelsystems.com>
 	* Added a switcher driver for the Broadcast Tools ADMS 44.22.
+2016-03-23 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'CART.USE_WEIGHTING' field to the database.
+	* Added a 'CUTS.PLAY_ORDER' field to the database.
+	* Incremented the database version to 254.
+	* Added a 'Schedule Cuts By' control to the Edit Cart dialog in
+	'rdlibrary/edit_cart.cpp' and 'rdlibrary/edit_cart.h'.
+	* Added 'RDCart::useWeighting()' and 'RDCart::setUseWeighting()'
+	methods in 'lib/rdcart.cpp' and 'lib/rdcart.h'.
+	* Added 'RDCut::playOrder()' and 'RDCut::setPlayOrder()' methods
+	in 'lib/rdcut.cpp' and 'lib/rdcut.h'.
