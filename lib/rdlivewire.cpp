@@ -257,8 +257,8 @@ void RDLiveWire::gpiSet(int slot,int line,unsigned interval)
       }
     }
   }
-  cmd+="\"\r\n";
-  live_socket->writeBlock(cmd,cmd.length());
+  cmd+="\"";
+  SendCommand(cmd);
   live_gpi_states[slot][line]=true;
   if(interval>0) {
     live_gpi_timers[slot*RD_LIVEWIRE_GPIO_BUNDLE_SIZE+line]->
@@ -284,8 +284,8 @@ void RDLiveWire::gpiReset(int slot,int line,unsigned interval)
       }
     }
   }
-  cmd+="\"\r\n";
-  live_socket->writeBlock(cmd,cmd.length());
+  cmd+="\"";
+  SendCommand(cmd);
   live_gpi_states[slot][line]=false;
   if(interval>0) {
     live_gpi_timers[slot*RD_LIVEWIRE_GPIO_BUNDLE_SIZE+line]->
@@ -311,8 +311,7 @@ void RDLiveWire::gpoSet(int slot,int line,unsigned interval)
       }
     }
   }
-  cmd+="\r\n";
-  live_socket->writeBlock(cmd,cmd.length());
+  SendCommand(cmd);
   live_gpo_states[slot][line]=true;
   if(interval>0) {
     live_gpo_timers[slot*RD_LIVEWIRE_GPIO_BUNDLE_SIZE+line]->
@@ -338,8 +337,7 @@ void RDLiveWire::gpoReset(int slot,int line,unsigned interval)
       }
     }
   }
-  cmd+="\r\n";
-  live_socket->writeBlock(cmd,cmd.length());
+  SendCommand(cmd);
   live_gpo_states[slot][line]=false;
   if(interval>0) {
     live_gpo_timers[slot*RD_LIVEWIRE_GPIO_BUNDLE_SIZE+line]->
@@ -354,7 +352,7 @@ void RDLiveWire::setRoute(int src_num,int dest_slot) const
   QString str;
   str=QString().sprintf("DST %d ADDR:\"239.192.%d.%d\"\r\n",
 			dest_slot+1,src_num/256,src_num%256);
-  live_socket->writeBlock(str,str.length());
+  SendCommand(str);
 }
 
 
@@ -364,9 +362,8 @@ void RDLiveWire::connectedData()
   if(!live_password.isEmpty()) {
     str+=(" "+live_password);
   }
-  str+="\r\n";
-  live_socket->writeBlock(str,str.length());
-  live_socket->writeBlock("VER\r\n",5);
+  SendCommand(str);
+  SendCommand("VER");
 }
 
 
@@ -467,8 +464,8 @@ void RDLiveWire::gpiTimeoutData(int id)
       }
     }
   }
-  cmd+="\"\r\n";
-  live_socket->writeBlock(cmd,cmd.length());
+  cmd+="\"";
+  SendCommand(cmd);
   live_gpi_states[chan][line]=!live_gpi_states[chan][line];
   emit gpiChanged(live_id,chan,line,live_gpi_states[chan][line]);
 }
@@ -498,8 +495,7 @@ void RDLiveWire::gpoTimeoutData(int id)
       }
     }
   }
-  cmd+="\r\n";
-  live_socket->writeBlock(cmd,cmd.length());
+  SendCommand(cmd);
   live_gpo_states[chan][line]=!live_gpo_states[chan][line];
   emit gpoChanged(live_id,chan,line,live_gpo_states[chan][line]);
 }
@@ -507,7 +503,7 @@ void RDLiveWire::gpoTimeoutData(int id)
 
 void RDLiveWire::watchdogData()
 {
-  live_socket->writeBlock("VER\r\n",4);
+  SendCommand("VER");
 }
 
 
@@ -576,6 +572,12 @@ void RDLiveWire::DespatchCommand(const QString &cmd)
 }
 
 
+void RDLiveWire::SendCommand(const QString &cmd) const
+{
+  live_socket->writeBlock((cmd+"\r\n").ascii(),cmd.length()+2);
+}
+
+
 void RDLiveWire::ReadVersion(const QString &cmd)
 {
   QStringList f0;
@@ -605,7 +607,7 @@ void RDLiveWire::ReadVersion(const QString &cmd)
 	    live_channels=f1[1].right(f1[1].length()-delimiter-1).toInt();
 	  }
 	  if(live_sources>0) {
-	    live_socket->writeBlock("SRC\r\n",5);
+	    SendCommand("SRC");
 	  }
 	}
 	if(f1[0]=="NDST") {
@@ -618,7 +620,7 @@ void RDLiveWire::ReadVersion(const QString &cmd)
 	    live_channels=f1[1].right(f1[1].length()-delimiter-1).toInt();
 	  }
 	  if(live_destinations>0) {
-	    live_socket->writeBlock("DST\r\n",5);
+	    SendCommand("DST");
 	  }
 	}
 	if(f1[0]=="NGPI") {
@@ -639,7 +641,9 @@ void RDLiveWire::ReadVersion(const QString &cmd)
 	    }	
 	  }
 	  if(!live_gpi_initialized) {
-	    live_socket->writeBlock("ADD GPI\r\n",9);
+	    if(live_gpis>0) {
+	      SendCommand("ADD GPI");
+	    }
 	    live_gpi_initialized=true;
 	  }
 	}
@@ -660,11 +664,13 @@ void RDLiveWire::ReadVersion(const QString &cmd)
 	      connect(live_gpo_timers.back(),SIGNAL(timeout()),mapper,SLOT(map()));
 	    }
 	  }
-	}
-	if(!live_gpo_initialized) {
-	  live_socket->writeBlock("CFG GPO\r\n",9);
-	  live_socket->writeBlock("ADD GPO\r\n",9);
-	  live_gpo_initialized=true;
+	  if(!live_gpo_initialized) {
+	    if(live_gpos>0) {
+	      SendCommand("CFG GPO");
+	      SendCommand("ADD GPO");
+	    }
+	    live_gpo_initialized=true;
+	  }
 	}
       }
     }

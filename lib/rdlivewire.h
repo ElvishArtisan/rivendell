@@ -104,6 +104,7 @@ class RDLiveWire : public QObject
 
  private:
   void DespatchCommand(const QString &cmd);
+  void SendCommand(const QString &cmd) const;
   void ReadVersion(const QString &cmd);
   void ReadSources(const QString &cmd);
   void ReadDestinations(const QString &cmd);

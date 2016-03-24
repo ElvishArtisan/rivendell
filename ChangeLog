@@ -14977,3 +14977,7 @@
 	methods in 'lib/rdcart.cpp' and 'lib/rdcart.h'.
 	* Added 'RDCut::playOrder()' and 'RDCut::setPlayOrder()' methods
 	in 'lib/rdcut.cpp' and 'lib/rdcut.h'.
+2016-03-24 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a buffer size bug in 'lib/rdlivewire.cpp'.
+	* Fixed a bug in 'ripcd/livewire_lwrpaudio.cpp' that caused
+	spurious errors to be dumped to stderr.
