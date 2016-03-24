@@ -58,6 +58,7 @@ LiveWireLwrpAudio::LiveWireLwrpAudio(RDMatrix *matrix,QObject *parent,const char
 	    SIGNAL(destinationChanged(unsigned,RDLiveWireDestination *)),
 	    this,
 	    SLOT(destinationChangedData(unsigned,RDLiveWireDestination *)));
+    /*
     connect(livewire_nodes.back(),
 	    SIGNAL(gpoConfigChanged(unsigned,unsigned,unsigned)),
 	    this,
@@ -70,6 +71,7 @@ LiveWireLwrpAudio::LiveWireLwrpAudio(RDMatrix *matrix,QObject *parent,const char
 	    SIGNAL(gpoChanged(unsigned,unsigned,unsigned,bool)),
 	    this,
 	    SLOT(gpoChangedData(unsigned,unsigned,unsigned,bool)));
+    */
     connect(livewire_nodes.back(),
 	    SIGNAL(watchdogStateChanged(unsigned,const QString &)),
 	    this,SLOT(watchdogStateChangedData(unsigned,const QString &)));

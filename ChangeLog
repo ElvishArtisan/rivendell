@@ -14796,3 +14796,6 @@
 	* Incremented the package version to 2.10.3.
 2016-03-24 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a buffer size bug in 'lib/rdlivewire.cpp'.
+2016-03-24 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'ripcd/livewire_lwrpaudio.cpp' that caused
+	spurious errors to be dumped to stderr.
