@@ -14983,3 +14983,7 @@
 	spurious errors to be dumped to stderr.
 2016-03-24 Fred Gleason <fredg@paravelsystems.com>
 	* Removed spurious linefeed in 'PACKAGE_VERSION'.
+2016-03-24 Fred Gleason <fredg@paravelsystems.com>
+       * Added a 'Type' control to 'web/tests/listcart.html'.
+       * Fixed a bug in 'web/rdxport/carts.cpp' that broke the 'ListCarts'
+       API call when no group was specified.
