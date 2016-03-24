@@ -66,6 +66,8 @@ AC_ARG_ENABLE(jack,[  --disable-jack          disable JACK sound support],
 		      [JACK_DISABLED=yes],[])
 AC_ARG_ENABLE(alsa,[  --disable-alsa          disable direct ALSA sound support],
 		      [ALSA_DISABLED=yes],[])
+AC_ARG_ENABLE(docbook,[  --disable-docbook       disable building of documentation],[DOCBOOK_DISABLED=yes],[])
+
 AC_ARG_ENABLE(gpio,[  --disable-gpio          disable General Purpose Input/Output GPIO support],
 		      [GPIO_DISABLED=yes],[])
 AC_ARG_ENABLE(pam,[  --disable-pam           disable Rivendell PAM pam_rd.so support],
@@ -222,6 +224,14 @@ if test -z $MP4V2_DISABLED ; then
     fi
   fi  
 fi
+
+#
+# Build DocBook Items?
+#
+if test -z $DOCBOOK_DISABLED ; then
+  USING_DOCBOOK=yes
+fi
+AM_CONDITIONAL([DOCBOOK_AM], [test "$USING_DOCBOOK" = yes])
 
 #
 # Set Hard Library Dependencies
@@ -466,6 +476,7 @@ AC_CONFIG_FILES([rivendell.spec \
     web/tests/Makefile \
     conf/Makefile \
     docs/Makefile \
+    docs/docbook/Makefile \
     docs/examples/Makefile \
     docs/man/Makefile \
     docs/tables/Makefile \

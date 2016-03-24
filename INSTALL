@@ -98,6 +98,27 @@ TwoLAME - MPEG Layer 2 Encoder Library.  Needed for MPEG Layer 2 exporting and
 capture.  Available at http://www.twolame.org/.
 
 
+DOCUMENTATION
+-------------
+The larger pieces of the Rivendell documentation are written in XML-DocBook5.
+Pre-generated docs are included in the source tarball, so special tools will
+not normally be required to view or install them.  However, if you need to
+rebuild them (either because you've modified the DocBook sources or are
+installing from the primary GitHub repository), then you will need the
+following:
+
+XML-DocBook5 Stylesheets.  Available at 
+http://sourceforge.net/projects/docbook/.  You will also need to create a
+$DOCBOOK_STYLESHEETS variable in your environment that points to the top
+of the stylesheet tree.  More information can be found at
+http://www.docbook.org/tdg5/en/html/appa.html#s.stylesheetinstall.  On
+RHEL-ish systems, they are also available in the 'docbook5-style-xsl'
+package.
+
+xsltproc.  Command line XSLT processor.  Available at
+http://xmlsoft.org/XSLT/xsltproc2.html
+
+
 INSTALLATION
 There are three major steps to getting a Rivendell system up and
 running.  They are:

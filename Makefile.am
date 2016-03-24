@@ -31,6 +31,7 @@ endif
 if ALSA_RD_AM
   ALSACONFIG_RD_OPT = rdalsaconfig
 endif
+
 SUBDIRS = icons\
           helpers\
           lib\

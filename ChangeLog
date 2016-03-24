@@ -15011,3 +15011,7 @@
 	scheduler codes in a case-insensitve manner.
 	* Modified the return of the 'EditCut' web method to provide a full
 	<cutList> record in 'web/rdxport/carts.cpp'.
+2016-03-24 Fred Gleason <fredg@paravelsystems.com>
+	* Ported 'docs/cae.sxw' to DocBook-XML5 in 'docs/docbook/cae.xml'.
+	* Ported 'docs/web_api.odt' to DocBook-XML5 in
+	'docs/dockbook/web_api.xml'.

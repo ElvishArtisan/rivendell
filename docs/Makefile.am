@@ -2,7 +2,7 @@
 ##
 ## docs/automake.am for Rivendell
 ##
-## (C) Copyright 2002-2006 Fred Gleason <fredg@paravelsystems.com>
+## (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -19,14 +19,17 @@
 ##
 ## Use automake to process this into a Makefile.in
 
-SUBDIRS = examples\
+if DOCBOOK_AM
+  DOCBOOK_AM_OPT = docbook
+endif
+
+SUBDIRS = $(DOCBOOK_AM_OPT) examples\
           man\
           tables
 
 EXTRA_DIST = ALSA.txt\
              ando_interface.odt\
              asound.conf-sample\
-             cae.sxw\
              catchd.txt\
              colors\
              copy_split_format.odt\
@@ -49,7 +52,6 @@ EXTRA_DIST = ALSA.txt\
              SAGE_ENDEC.txt\
              scheduler_formats.ods\
              SWITCHERS.txt\
-             web_api.odt\
              WIN32.txt\
 	     WINGS_FILTER.txt
 
