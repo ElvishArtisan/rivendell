@@ -14991,3 +14991,23 @@
 	* Added 'web/tests/utils.js'.
 	* Fixed a bug in 'web/rdxport/carts.cpp' that allowed the EditCart web
 	method to set carts to non-existent groups.
+2016-03-24 Fred Gleason <fredg@paravelsystems.com>
+	* Update web test methods in 'web/tests/'.
+	* Added an 'RDSchedCode' class in 'lib/rdschedcode.cpp' and
+	'lib/rdschedcode.h'.
+	* Implemented the 'ListSchedCodes' web method in
+	'web/rdxport/schedcodes.cpp'.
+	* Implemented the 'AssignSchedCode' web method in
+	'web/rdxport/schedcodes.cpp'.
+	* Implemented the 'UnassignSchedCode' web method in
+	'web/rdxport/schedcodes.cpp'.
+	* Implemented the 'ListCartSchedCodes' web method in
+	'web/rdxport/schedcodes.cpp'.
+	* Extended 'RDGetWebTime()' and 'RDGetWebDateTime()' functions to
+	support XML 'xs' namespace formats.
+	* Implemented '*_POINT' fields in the 'EditCut' web method in
+	'web/rdxport/carts.cpp'.
+	* Modified the 'RDCart::removeSchedCode()' method so as to treat
+	scheduler codes in a case-insensitve manner.
+	* Modified the return of the 'EditCut' web method to provide a full
+	<cutList> record in 'web/rdxport/carts.cpp'.

@@ -1,0 +1,217 @@
+<html>
+<head>
+<title>Rivendell EDITCUT Service Test Harness</title>
+<script type="text/javascript" src="editcut.js"></script>
+<script type="text/javascript" src="utils.js"></script>
+</head>
+<body>
+<form action="/rd-bin/rdxport.cgi" method="post" enctype="multipart/form-data">
+<input type="hidden" name="COMMAND" value="15">
+<table cellpadding="0" cellspacing="2" border="0">
+<tr>
+<td align="right">LOGIN NAME:</td>
+<td><input type="text" name="LOGIN_NAME" id="LOGIN_NAME" size="64" maxlength="255"></td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td align="right">PASSWORD:</td>
+<td><input type="password" name="PASSWORD" id="PASSWORD" size="64" maxlength="32"></td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td align="right">CART NUMBER:</td>
+<td><input type="text" name="CART_NUMBER" id="CART_NUMBER" size="8" maxlength="6"></td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td align="right">CUT NUMBER:</td>
+<td><input type="text" name="CUT_NUMBER" id="CUT_NUMBER" size="8" maxlength="3"></td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td align="right">&nbsp;</td>
+<td align="right">&nbsp;</td>
+<td align="right">&nbsp;</td>
+<td align="right">&nbsp;</td>
+</tr>
+<tr>
+<td align="right">EVERGREEN:</td>
+<td><input type="text" name="EVERGREEN" id="EVERGREEN" size="2" maxlength="1"></td>
+<td><input type="checkbox" id="USE_EVERGREEN"></td>
+<td>Modify</td>
+</tr>
+<tr>
+<td align="right">DESCRIPTION:</td>
+<td><input type="text" name="DESCRIPTION" id="DESCRIPTION" size="64" maxlength="64"></td>
+<td><input type="checkbox" id="USE_DESCRIPTION"></td>
+<td>Modify</td>
+</tr>
+<tr>
+<td align="right">OUTCUE:</td>
+<td><input type="text" name="OUTCUE" id="OUTCUE" size="64" maxlength="64"></td>
+<td><input type="checkbox" id="USE_OUTCUE"></td>
+<td>Modify</td>
+</tr>
+<tr>
+<td align="right">ISRC:</td>
+<td><input type="text" name="ISRC" id="ISRC" size="16" maxlength="12"></td>
+<td><input type="checkbox" id="USE_ISRC"></td>
+<td>Modify</td>
+</tr>
+<tr>
+<td align="right">ISCI:</td>
+<td><input type="text" name="ISCI" id="ISCI" size="40" maxlength="32"></td>
+<td><input type="checkbox" id="USE_ISCI"></td>
+<td>Modify</td>
+</tr>
+<tr>
+<td align="right">START_DATETIME:</td>
+<td><input type="text" name="START_DATETIME" id="START_DATETIME" size="32" maxlength="30"></td>
+<td><input type="checkbox" id="USE_START_DATETIME"></td>
+<td>Modify</td>
+</tr>
+<tr>
+<tr>
+<td align="right">END_DATETIME:</td>
+<td><input type="text" name="END_DATETIME" id="END_DATETIME" size="32" maxlength="30"></td>
+<td><input type="checkbox" id="USE_END_DATETIME"></td>
+<td>Modify</td>
+</tr>
+<tr>
+<td align="right">MON:</td>
+<td><input type="text" name="MON" id="MON" size="2" maxlength="1"></td>
+<td><input type="checkbox" id="USE_MON"></td>
+<td>Modify</td>
+</tr>
+<tr>
+<td align="right">TUE:</td>
+<td><input type="text" name="TUE" id="TUE" size="2" maxlength="1"></td>
+<td><input type="checkbox" id="USE_TUE"></td>
+<td>Modify</td>
+</tr>
+<tr>
+<td align="right">WED:</td>
+<td><input type="text" name="WED" id="WED" size="2" maxlength="1"></td>
+<td><input type="checkbox" id="USE_WED"></td>
+<td>Modify</td>
+</tr>
+<tr>
+<td align="right">THU:</td>
+<td><input type="text" name="THU" id="THU" size="2" maxlength="1"></td>
+<td><input type="checkbox" id="USE_THU"></td>
+<td>Modify</td>
+</tr>
+<tr>
+<td align="right">FRI:</td>
+<td><input type="text" name="FRI" id="FRI" size="2" maxlength="1"></td>
+<td><input type="checkbox" id="USE_FRI"></td>
+<td>Modify</td>
+</tr>
+<tr>
+<td align="right">SAT:</td>
+<td><input type="text" name="SAT" id="SAT" size="2" maxlength="1"></td>
+<td><input type="checkbox" id="USE_SAT"></td>
+<td>Modify</td>
+</tr>
+<tr>
+<td align="right">SUN:</td>
+<td><input type="text" name="SUN" id="SUN" size="2" maxlength="1"></td>
+<td><input type="checkbox" id="USE_SUN"></td>
+<td>Modify</td>
+</tr>
+<tr>
+<td align="right">START DAYPART:</td>
+<td><input type="text" name="START_DAYPART" id="START_DAYPART" size="32" maxlength="30"></td>
+<td><input type="checkbox" id="USE_START_DAYPART"></td>
+<td>Modify</td>
+</tr>
+<tr>
+<tr>
+<td align="right">END DAYPART:</td>
+<td><input type="text" name="END_DAYPART" id="END_DAYPART" size="32" maxlength="30"></td>
+<td><input type="checkbox" id="USE_END_DAYPART"></td>
+<td>Modify</td>
+</tr>
+<tr>
+<td align="right">WEIGHT:</td>
+<td><input type="text" name="WEIGHT" id="WEIGHT" size="8" maxlength="6"></td>
+<td><input type="checkbox" id="USE_WEIGHT"></td>
+<td>Modify</td>
+</tr>
+<tr>
+<td align="right">START POINT:</td>
+<td><input type="text" name="START_POINT" id="START_POINT" size="16" maxlength="14"></td>
+<td><input type="checkbox" id="USE_START_POINT"></td>
+<td>Modify</td>
+</tr>
+<tr>
+<td align="right">END POINT:</td>
+<td><input type="text" name="END_POINT" id="END_POINT" size="16" maxlength="14"></td>
+<td><input type="checkbox" id="USE_END_POINT"></td>
+<td>Modify</td>
+</tr>
+<tr>
+<td align="right">FADEUP POINT:</td>
+<td><input type="text" name="FADEUP_POINT" id="FADEUP_POINT" size="16" maxlength="14"></td>
+<td><input type="checkbox" id="USE_FADEUP_POINT"></td>
+<td>Modify</td>
+</tr>
+<tr>
+<td align="right">FADEDOWN POINT:</td>
+<td><input type="text" name="FADEDOWN_POINT" id="FADEDOWN_POINT" size="16" maxlength="14"></td>
+<td><input type="checkbox" id="USE_FADEDOWN_POINT"></td>
+<td>Modify</td>
+</tr>
+<tr>
+<td align="right">SEGUE START POINT:</td>
+<td><input type="text" name="SEGUE_START_POINT" id="SEGUE_START_POINT" size="16" maxlength="14"></td>
+<td><input type="checkbox" id="USE_SEGUE_START_POINT"></td>
+<td>Modify</td>
+</tr>
+<tr>
+<td align="right">SEGUE END POINT:</td>
+<td><input type="text" name="SEGUE_END_POINT" id="SEGUE_END_POINT" size="16" maxlength="14"></td>
+<td><input type="checkbox" id="USE_SEGUE_END_POINT"></td>
+<td>Modify</td>
+</tr>
+<tr>
+<td align="right">HOOK START POINT:</td>
+<td><input type="text" name="HOOK_START_POINT" id="HOOK_START_POINT" size="16" maxlength="14"></td>
+<td><input type="checkbox" id="USE_HOOK_START_POINT"></td>
+<td>Modify</td>
+</tr>
+<tr>
+<td align="right">HOOK END POINT:</td>
+<td><input type="text" name="HOOK_END_POINT" id="HOOK_END_POINT" size="16" maxlength="14"></td>
+<td><input type="checkbox" id="USE_HOOK_END_POINT"></td>
+<td>Modify</td>
+</tr>
+<tr>
+<td align="right">TALK START POINT:</td>
+<td><input type="text" name="TALK_START_POINT" id="TALK_START_POINT" size="16" maxlength="14"></td>
+<td><input type="checkbox" id="USE_TALK_START_POINT"></td>
+<td>Modify</td>
+</tr>
+<tr>
+<td align="right">TALK END POINT:</td>
+<td><input type="text" name="TALK_END_POINT" id="TALK_END_POINT" size="16" maxlength="14"></td>
+<td><input type="checkbox" id="USE_TALK_END_POINT"></td>
+<td>Modify</td>
+</tr>
+<tr>
+<td colspan="4" align="right">&nbsp;</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td align="left"><input type="button" onclick="EditCut_Submit();" value="OK"></td>
+<td align="right"><input type="button" onclick="EditCut_ShowPost();" value="Show POST"></td>
+</tr>
+</table>
+</form>
+</body>
+</html>

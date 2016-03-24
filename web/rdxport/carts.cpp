@@ -2,9 +2,7 @@
 //
 // Rivendell web service portal -- Cart services
 //
-//   (C) Copyright 2010 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: carts.cpp,v 1.8.2.2.2.1 2014/03/19 22:13:01 cvs Exp $
+//   (C) Copyright 2010-2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -591,6 +589,29 @@ void Xport::EditCut()
   QTime time;
   bool rotation_changed=false;
   bool length_changed=false;
+  QDateTime start_datetime;
+  bool use_start_datetime=false;
+  QDateTime end_datetime;
+  bool use_end_datetime=false;
+  QTime start_daypart;
+  bool use_start_daypart=false;
+  QTime end_daypart;
+  bool use_end_daypart=false;
+  int talk_points[2];
+  bool use_end_points[2]={false,false};
+  int end_points[2];
+  bool use_talk_points[2]={false,false};
+  int segue_points[2];
+  bool use_segue_points[2]={false,false};
+  int hook_points[2];
+  bool use_hook_points[2]={false,false};
+  int fadeup_point;
+  bool use_fadeup_point=false;
+  int fadedown_point;
+  bool use_fadedown_point=false;
+  bool use_weight=false;
+  int weight;
+  bool ok=false;
 
   //
   // Verify Post
@@ -613,13 +634,95 @@ void Xport::EditCut()
   }
 
   //
-  // Process Request
+  // Check Date/Time Values for Validity
   //
+  if((use_start_datetime=xport_post->
+      getValue("START_DATETIME",&start_datetime,&ok))) {
+    if(!ok) {
+      XmlExit("invalid START_DATETIME",400);
+    }
+  }
+  if((use_end_datetime=xport_post->
+      getValue("END_DATETIME",&end_datetime,&ok))) {
+    if(!ok) {
+      XmlExit("invalid END_DATETIME",400);
+    }
+  }
+  if(use_start_datetime!=use_end_datetime) {
+    XmlExit("both DATETIME values must be set together",400);
+  }
+  if(use_start_datetime&&(start_datetime>end_datetime)) {
+    XmlExit("START_DATETIME is later than END_DATETIME",400);
+  }
+
+  if((use_start_daypart=xport_post->
+      getValue("START_DAYPART",&start_daypart,&ok))) {
+    if(!ok) {
+      XmlExit("invalid START_DAYPART",400);
+    }
+  }
+  if((use_end_daypart=xport_post->
+      getValue("END_DAYPART",&end_daypart,&ok))) {
+    if(!ok) {
+      XmlExit("invalid END_DAYPART",400);
+    }
+  }
+  if(use_start_daypart!=use_end_daypart) {
+    XmlExit("both DAYPART values must be set together",400);
+  }
+
   cut=new RDCut(cart_number,cut_number);
   if(!cut->exists()) {
     delete cut;
     XmlExit("No such cut",404);
   }
+
+  //
+  // Check pointers for validity
+  //
+  end_points[0]=cut->startPoint();
+  end_points[1]=cut->endPoint();
+  fadeup_point=cut->fadeupPoint();
+  fadedown_point=cut->fadedownPoint();
+  CheckPointerValidity(end_points,use_end_points,"",0);
+  CheckPointerValidity(talk_points,use_talk_points,"TALK_",end_points[1]);
+  CheckPointerValidity(segue_points,use_segue_points,"SEGUE_",end_points[1]);
+  CheckPointerValidity(hook_points,use_hook_points,"HOOK_",end_points[1]);
+  if((use_fadeup_point=xport_post->
+      getValue("FADEUP_POINT",&fadeup_point,&ok))) {
+    if(!ok) {
+      XmlExit("invalid FADEUP_POINT",400);
+    }
+    if(fadeup_point>end_points[1]) {
+      XmlExit("FADEUP_POINT exceeds length of cart",400);
+    }
+  }
+  if((use_fadedown_point=xport_post->
+      getValue("FADEDOWN_POINT",&fadedown_point,&ok))) {
+    if(!ok) {
+      XmlExit("invalid FADEDOWN_POINT",400);
+    }
+    if(fadeup_point>end_points[1]) {
+      XmlExit("FADEDOWN_POINT exceeds length of cart",400);
+    }
+  }
+  if(use_fadeup_point&&use_fadedown_point&&
+     (fadeup_point>=0)&&(fadedown_point>=0)&&(fadeup_point>fadedown_point)) {
+    XmlExit("FADEUP_POINT is greater than FADEDOWN_POINT",400);
+  }
+
+  //
+  // Check Weight
+  //
+  if((use_weight=xport_post->getValue("WEIGHT",&weight,&ok))) {
+    if((!ok)||(weight<0)) {
+      XmlExit("invalid WEIGHT",400);
+    }
+  }
+
+  //
+  // Process Request
+  //
   if(xport_post->getValue("EVERGREEN",&num)) {
     cut->setEvergreen(num);
     rotation_changed=true;
@@ -636,13 +739,13 @@ void Xport::EditCut()
   if(xport_post->getValue("ISCI",&str)) {
     cut->setIsci(str);
   }
-  if(xport_post->getValue("START_DATETIME",&datetime)) {
-    cut->setStartDatetime(datetime,!datetime.isNull());
+  if(use_start_datetime) {
+    cut->setStartDatetime(start_datetime,!start_datetime.isNull());
     length_changed=true;
     rotation_changed=true;
   }
-  if(xport_post->getValue("END_DATETIME",&datetime)) {
-    cut->setEndDatetime(datetime,!datetime.isNull());
+  if(use_end_datetime) {
+    cut->setEndDatetime(end_datetime,!end_datetime.isNull());
     length_changed=true;
     rotation_changed=true;
   }
@@ -674,56 +777,56 @@ void Xport::EditCut()
     cut->setWeekPart(7,num);
     rotation_changed=true;
   }
-  if(xport_post->getValue("START_DAYPART",&time)) {
-    cut->setStartDaypart(time,!time.isNull());
+  if(use_start_daypart) {
+    cut->setStartDaypart(start_daypart,!start_daypart.isNull());
     rotation_changed=true;
   }
-  if(xport_post->getValue("END_DAYPART",&time)) {
-    cut->setEndDaypart(time,!time.isNull());
+  if(use_end_daypart) {
+    cut->setEndDaypart(end_daypart,!end_daypart.isNull());
     rotation_changed=true;
   }
-  if(xport_post->getValue("WEIGHT",&num)) {
-    cut->setWeight(num);
+  if(use_weight) {
+    cut->setWeight(weight);
     rotation_changed=true;
   }
-  if(xport_post->getValue("START_POINT",&num)) {
-    cut->setStartPoint(num);
+  if(use_end_points[0]) {
+    cut->setStartPoint(end_points[0]);
     length_changed=true;
   }
-  if(xport_post->getValue("END_POINT",&num)) {
-    cut->setEndPoint(num);
+  if(use_end_points[1]) {
+    cut->setEndPoint(end_points[1]);
     length_changed=true;
   }
-  if(xport_post->getValue("FADEUP_POINT",&num)) {
-    cut->setFadeupPoint(num);
+  if(use_fadeup_point) {
+    cut->setFadeupPoint(fadeup_point);
     length_changed=true;
   }
-  if(xport_post->getValue("FADEDOWN_POINT",&num)) {
-    cut->setFadedownPoint(num);
+  if(use_fadedown_point) {
+    cut->setFadedownPoint(fadedown_point);
     length_changed=true;
   }
-  if(xport_post->getValue("SEGUE_START_POINT",&num)) {
-    cut->setSegueStartPoint(num);
+  if(use_segue_points[0]) {
+    cut->setSegueStartPoint(segue_points[0]);
     length_changed=true;
   }
-  if(xport_post->getValue("SEGUE_END_POINT",&num)) {
-    cut->setSegueEndPoint(num);
+  if(use_segue_points[1]) {
+    cut->setSegueEndPoint(segue_points[1]);
     length_changed=true;
   }
-  if(xport_post->getValue("HOOK_START_POINT",&num)) {
-    cut->setHookStartPoint(num);
+  if(use_hook_points[0]) {
+    cut->setHookStartPoint(hook_points[0]);
     length_changed=true;
   }
-  if(xport_post->getValue("HOOK_END_POINT",&num)) {
-    cut->setHookEndPoint(num);
+  if(use_hook_points[1]) {
+    cut->setHookEndPoint(hook_points[1]);
     length_changed=true;
   }
-  if(xport_post->getValue("TALK_START_POINT",&num)) {
-    cut->setTalkStartPoint(num);
+  if(use_talk_points[0]) {
+    cut->setTalkStartPoint(talk_points[0]);
     length_changed=true;
   }
-  if(xport_post->getValue("TALK_END_POINT",&num)) {
-    cut->setTalkEndPoint(num);
+  if(use_talk_points[1]) {
+    cut->setTalkEndPoint(talk_points[1]);
     length_changed=true;
   }
   if(length_changed||rotation_changed) {
@@ -736,8 +839,61 @@ void Xport::EditCut()
     }
     delete cart;
   }
+  printf("Content-type: application/xml\n");
+  printf("Status: 200\n\n");
+  printf("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
+  printf("<cutList>\n");
+  printf("%s",(const char *)cut->xml());
+  printf("</cutList>\n");
   delete cut;
-  XmlExit("OK",200);
+
+  Exit(0);
+}
+
+
+void Xport::CheckPointerValidity(int ptr_values[2],bool use_ptrs[2],
+                                const QString &type,unsigned max_value)
+{
+  bool start_ok=false;
+  bool end_ok=false;
+
+  use_ptrs[0]=xport_post->getValue(type+"START_POINT",&ptr_values[0],&start_ok);
+  use_ptrs[1]=xport_post->getValue(type+"END_POINT",&ptr_values[1],&end_ok);
+  if((!use_ptrs[0])&&(!use_ptrs[1])) {
+    return;
+  }
+  if(!start_ok) {
+    XmlExit("invalid "+type+"START_POINT",400);
+  }
+  if(!end_ok) {
+    XmlExit("invalid "+type+"END_POINT",400);
+  }
+  if(use_ptrs[0]!=use_ptrs[1]) {
+    XmlExit("both "+type+"*_POINT values must be set together",400);
+  }
+  if(use_ptrs[0]) {
+    if(((ptr_values[0]<0)&&(ptr_values[1]>=0))||
+       ((ptr_values[0]>=0)&&(ptr_values[1]<0))) {
+      XmlExit("inconsistent "+type+"*_POINT values",400);
+    }
+  }
+  if(ptr_values[0]>=0) {
+    if(ptr_values[0]>ptr_values[1]) {
+      XmlExit(type+"START_POINT greater than "+type+"END_POINT",400);
+    }
+    if((max_value>0)&&((unsigned)ptr_values[1]>max_value)) {
+      XmlExit(type+"END_POINT exceeds length of cut",400);
+    }
+  }
+  else {
+    if(max_value==0) {
+      XmlExit("End markers cannot be removed",400);
+    }
+    else {
+      ptr_values[0]=-1;
+      ptr_values[1]=-1;
+    }
+  }
 }
 
 

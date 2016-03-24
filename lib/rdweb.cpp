@@ -934,7 +934,7 @@ QString RDXmlField(const QString &tag,const QDateTime &value,
     str=" "+attrs;
   }
   if(value.isValid()) {
-    return QString("<")+tag+str+">"+RDWebDateTime(value)+"</"+tag+">\n";
+    return QString("<")+tag+str+">"+RDXmlDateTime(value)+"</"+tag+">\n";
   }
   return RDXmlField(tag);
 }
@@ -948,7 +948,7 @@ QString RDXmlField(const QString &tag,const QTime &value,const QString &attrs)
     str=" "+attrs;
   }
   if(value.isValid()&&(!value.isNull())) {
-    return QString("<")+tag+str+">"+value.toString("hh:mm:ss")+"</"+tag+">\n";
+    return QString("<")+tag+str+">"+RDXmlTime(value)+"</"+tag+">\n";
   }
   return RDXmlField(tag);
 }
@@ -957,6 +957,47 @@ QString RDXmlField(const QString &tag,const QTime &value,const QString &attrs)
 QString RDXmlField(const QString &tag)
 {
   return QString("<")+tag+"/>\n";
+}
+
+
+QString RDXmlDate(const QDate &date)
+{
+  return date.toString("yyyy-MM-dd")+RDXmlTimeZoneSuffix();
+}
+
+
+QString RDXmlTime(const QTime &time)
+{
+  return time.toString("hh:mm:ss")+RDXmlTimeZoneSuffix();
+}
+
+
+QString RDXmlDateTime(const QDateTime &datetime)
+{
+  return datetime.toString("yyyy-MM-dd")+"T"+datetime.toString("hh:mm:ss")+
+    RDXmlTimeZoneSuffix();
+}
+
+
+QString RDXmlTimeZoneSuffix()
+{
+  QString ret;
+  int tz=RDTimeZoneOffset();
+
+  if(tz==0) {
+    ret+="Z";
+  }
+  else {
+    if(tz<0) {
+      ret+="+";
+    }
+    if(tz>0) {
+      ret+="-";
+    }
+    ret+=QTime(0,0,0).addSecs(tz).toString("hh:mm");
+  }
+
+  return ret;
 }
 
 
@@ -1049,58 +1090,205 @@ QString RDWebDateTime(const QDateTime &datetime)
 }
 
 
-QDateTime RDGetWebDateTime(const QString &str)
+QDateTime RDGetWebDateTime(const QString &str,bool *ok)
 {
   QDateTime ret;
   QStringList list;
-  QStringList dlist;
+  QStringList f0;
+  QStringList f1;
+  QStringList f2;
+  int day;
+  int month;
+  int year;
+  QTime time;
+  bool lok=false;
 
-  list=list.split(" ",str);
-  switch(list.size()) {
+  if(ok!=NULL) {
+    *ok=false;
+  }
+
+  f0=f0.split(" ",str.stripWhiteSpace());
+  switch(f0.size()) {
+  case 1:   // XML xs:dateTime Style
+    f1=f1.split("T",f0[0]);
+    if(f1.size()<=2) {
+      f2=QStringList::split("-",f1[0]);
+      if(f2.size()==3) {
+       year=f2[0].toInt(&lok);
+       if(lok&&(year>0)) {
+         month=f2[1].toInt(&lok);
+         if(lok&&(month>=1)&&(month<=12)) {
+           day=f2[2].toInt(&lok);
+           if(lok&&(day>=1)&&(day<=31)) {
+             if(f1.size()==2) {
+               time=RDGetWebTime(f1[1],&lok);
+               if(lok) {
+                 ret=QDateTime(QDate(year,month,day),time);
+                 if(ok!=NULL) {
+                   *ok=true;
+                 }
+               }
+             }
+           }
+         }
+       }
+      }
+    }
+    break;
+
   case 4:   // RFC 850 Style
-    dlist=dlist.split("-",list[1]);
-    if(dlist.size()==3) {
-      ret=QDateTime(QDate(dlist[2].toInt()+2000,RDGetWebMonth(dlist[1]),
-			  dlist[0].toInt()),
-		    RDGetWebTime(list[2]+" "+list[3]));
+    f1=f1.split("-",f0[1]);
+    if(f1.size()==3) {
+      month=RDGetWebMonth(f1[1],&lok);
+      if(ok) {
+	time=RDGetWebTime(f0[2]+" "+f0[3],&lok);
+	if(lok) {
+	  year=f1[2].toInt(&lok);
+	  if(lok&&(year>0)) {
+	    day=f1[0].toInt(&lok);
+	    if(lok&&(day>0)&&(day<=31)) {
+	      ret=QDateTime(QDate(year+2000,month,day),time);
+	      if(ok!=NULL) {
+		*ok=true;
+	      }
+	    }
+	  }
+	}
+      }
     }
     break;
 
   case 5:   // ANSI C asctime() Style
-    ret=QDateTime(QDate(list[4].toInt(),RDGetWebMonth(list[1]),list[2].toInt()),
-		  RDGetWebTime(list[3]+" GMT"));
+    month=RDGetWebMonth(f0[1],&lok);
+    if(lok) {
+      time=RDGetWebTime(f0[3]+" GMT",&lok);
+      if(lok) {
+	year=f0[4].toInt(&lok);
+	if(lok&&(year>0)) {
+	  day=f0[2].toInt(&lok);
+	  if(lok&&(day>0)&&(day<=31)) {
+	    ret=QDateTime(QDate(year,month,day),time);
+	    if(ok!=NULL) {
+	      *ok=true;
+	    }
+	  }
+	}
+      }
+    }
     break;
 
   case 6:   // RFC 822/1123 Style
-    ret=QDateTime(QDate(list[3].toInt(),RDGetWebMonth(list[2]),list[1].toInt()),
-		  RDGetWebTime(list[4]+" "+list[5]));
+    month=RDGetWebMonth(f0[2],&lok);
+    if(lok) {
+      time=RDGetWebTime(f0[4]+" "+f0[5],&lok);
+      if(lok) {
+	year=f0[3].toInt(&lok);
+	if(lok&&(year>0)) {
+	  day=f0[1].toInt(&lok);
+	  if(lok&&(day>0)&&(day<=31)) {
+	    ret=QDateTime(QDate(year,month,day),time);
+	    if(ok!=NULL) {
+	      *ok=true;
+	    }
+	  }
+	}
+      }
+    }
     break;
   }
   return ret;
 }
 
 
-QTime RDGetWebTime(const QString &str)
+QTime RDGetWebTime(const QString &str,bool *ok)
 {
   QTime ret;
-  QStringList list;
+  QStringList f0;
+  QStringList f1;
+  QStringList f2;
+  bool lok=false;
+  int tz=0;
+  QTime time;
+  QTime tztime;
 
-  list=list.split(" ",str);
-  if(list.size()==2) {
-    if(list[1].lower()=="gmt") {
-      list=list.split(":",list[0]);
-      if(list.size()==3) {
-	ret=
-	  RDUtcToLocal(QTime(list[0].toInt(),list[1].toInt(),list[2].toInt()));
+  if(ok!=NULL) {
+    *ok=false;
+  }
+  f0=f0.split(" ",str.stripWhiteSpace());
+  switch(f0.size()) {
+  case 1:   // XML xs:time Style
+    if(f0[0].right(1).lower()=="z") {  // GMT
+      tz=RDTimeZoneOffset();
+      f0[0]=f0[0].left(f0[0].length()-1);
+      f2=f2.split(":",f0[0]);
+    }
+    else {
+      f1=QStringList::split("+",f0[0]);
+      if(f1.size()==2) {   // GMT+
+       f2=QStringList::split(":",f1[1]);
+       if(f2.size()==2) {
+         tztime=QTime(f2[0].toInt(),f2[1].toInt(),0);
+         if(tztime.isValid()) {
+           tz=RDTimeZoneOffset()+QTime(0,0,0).secsTo(tztime);
+         }
+       }
+      }
+      else {
+       f1=QStringList::split("-",f0[0]);
+       if(f1.size()==2) {   // GMT-
+         f2=QStringList::split(":",f1[1]);
+         if(f2.size()==2) {
+           tztime=QTime(f2[0].toInt(),f2[1].toInt(),0);
+           if(tztime.isValid()) {
+             tz=RDTimeZoneOffset()-QTime(0,0,0).secsTo(tztime);
+           }
+         }
+       }
+      }
+      f2=f2.split(":",f1[0]);
+    }
+    if(f2.size()==3) {
+      time=QTime(f2[0].toInt(),f2[1].toInt(),f2[2].toInt());
+      if(time.isValid()) {
+       ret=time.addSecs(tz);
+       if(ok!=NULL) {
+         *ok=true;
+       }
       }
     }
+    break;
+
+  case 2:   // RFC Style
+    if(f0[1].lower()=="gmt") {
+      f0=f0.split(":",f0[0]);
+      if(f0.size()==3) {
+	int hour=f0[0].toInt(&lok);
+	if(lok) {
+	  int min=f0[1].toInt(&lok);
+	  if(lok) {
+	    int sec=f0[2].toInt(&lok);
+	    if(lok) {
+	      if((hour>=0)&&(hour<=23)&&(min>=0)&&(min<=59)&&(sec>=0)&&
+		 (sec<=60)) {
+		ret=RDUtcToLocal(QTime(f0[0].toInt(),f0[1].toInt(),
+				       f0[2].toInt()));
+		if(ok!=NULL) {
+		  *ok=true;
+		}
+	      }
+	    }
+	  }
+	}
+      }
+    }
+    break;
   }
 
   return ret;
 }
 
 
-int RDGetWebMonth(const QString &str)
+int RDGetWebMonth(const QString &str,bool *ok)
 {
   int ret=0;
 
@@ -1139,6 +1327,9 @@ int RDGetWebMonth(const QString &str)
   }
   if(str.lower()=="dec") {
     ret=12;
+  }
+  if(ok!=NULL) {
+    *ok=ret!=0;
   }
 
   return ret;

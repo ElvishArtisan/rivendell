@@ -42,12 +42,12 @@ class RDFormPost
   RDFormPost::Error error() const;
   QStringList names() const;
   QVariant value(const QString &name,bool *ok=NULL);
-  bool getValue(const QString &name,QHostAddress *addr);
-  bool getValue(const QString &name,QString *str);
-  bool getValue(const QString &name,int *n);
-  bool getValue(const QString &name,long *n);
-  bool getValue(const QString &name,QDateTime *datetime);
-  bool getValue(const QString &name,QTime *time);
+  bool getValue(const QString &name,QHostAddress *addr,bool *ok=NULL);
+  bool getValue(const QString &name,QString *str,bool *ok=NULL);
+  bool getValue(const QString &name,int *n,bool *ok=NULL);
+  bool getValue(const QString &name,long *n,bool *ok=NULL);
+  bool getValue(const QString &name,QDateTime *datetime,bool *ok=NULL);
+  bool getValue(const QString &name,QTime *time,bool *ok=NULL);
   bool isFile(const QString &name);
   QString tempDir() const;
   void dump();

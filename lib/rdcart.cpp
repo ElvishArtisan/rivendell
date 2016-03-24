@@ -4,8 +4,6 @@
 //
 //   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
 //
-//      $Id: rdcart.cpp,v 1.72.4.7.2.9 2014/06/02 22:52:25 cvs Exp $
-//
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
 //   published by the Free Software Foundation.
@@ -297,7 +295,7 @@ QStringList RDCart::schedCodesList() const
 }
 
 
-void RDCart::setSchedCodesList(const QStringList &codes)
+void RDCart::setSchedCodesList(const QStringList &codes) const
 {
   QString sched_codes="";
 
@@ -309,11 +307,25 @@ void RDCart::setSchedCodesList(const QStringList &codes)
 }
 
 
-void RDCart::addSchedCode(const QString &code)
+void RDCart::addSchedCode(const QString &code) const
 {
   QStringList codes=schedCodesList();
   codes.push_back(code);
   setSchedCodesList(codes);
+}
+
+
+void RDCart::removeSchedCode(const QString &code) const
+{
+  QStringList codes=schedCodesList();
+  QStringList new_codes;
+
+  for(unsigned i=0;i<codes.size();i++) {
+    if(codes[i].lower()!=code.lower()) {
+      new_codes.push_back(codes[i]);
+    }
+  }
+  setSchedCodesList(new_codes);
 }
 
 

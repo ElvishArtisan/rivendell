@@ -24,7 +24,9 @@
 
 #include <qobject.h>
 
+#include <rdaudioconvert.h>
 #include <rdconfig.h>
+#include <rdformpost.h>
 #include <rduser.h>
 #include <rdsystem.h>
 
@@ -47,6 +49,8 @@ class Xport : public QObject
   void ListCuts();
   void ListCut();
   void EditCut();
+  void CheckPointerValidity(int ptr_values[2],bool use_ptrs[2],
+			    const QString &type,unsigned max_value);
   void RemoveCut();
   void ListGroups();
   void ListGroup();
@@ -57,6 +61,10 @@ class Xport : public QObject
   void AudioStore();
   void ListLogs();
   void ListLog();
+  void ListSchedCodes();
+  void AssignSchedCode();
+  void UnassignSchedCode();
+  void ListCartSchedCodes();
   void ListServices();
   void Exit(int code);
   void XmlExit(const QString &str,int code,

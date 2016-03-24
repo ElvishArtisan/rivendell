@@ -4,8 +4,6 @@
 //
 //   (C) Copyright 2009 Fred Gleason <fredg@paravelsystems.com>
 //
-//      $Id: rdformpost.cpp,v 1.3.2.1 2012/12/13 22:33:44 cvs Exp $
-//
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
 //   published by the Free Software Foundation.
@@ -154,19 +152,22 @@ QVariant RDFormPost::value(const QString &name,bool *ok)
 }
 
 
-bool RDFormPost::getValue(const QString &name,QHostAddress *addr)
+bool RDFormPost::getValue(const QString &name,QHostAddress *addr,bool *ok)
 {
   QString str;
-  bool ok=getValue(name,&str);
-  if(!ok) {
+  bool lok=getValue(name,&str);
+  if(!lok) {
     return false;
   }
   addr->setAddress(str);
+  if(ok!=NULL) {
+    *ok=addr->isNull();
+  }
   return true;
 }
 
 
-bool RDFormPost::getValue(const QString &name,QString *str)
+bool RDFormPost::getValue(const QString &name,QString *str,bool *ok)
 {
   if(post_values.count(name)>0) {
     *str=post_values[name].toString();
@@ -176,20 +177,20 @@ bool RDFormPost::getValue(const QString &name,QString *str)
 }
 
 
-bool RDFormPost::getValue(const QString &name,int *n)
+bool RDFormPost::getValue(const QString &name,int *n,bool *ok)
 {
   if(post_values.count(name)>0) {
-    *n=post_values[name].toInt();
+    *n=post_values[name].toInt(ok);
     return true;
   }
   return false;
 }
 
 
-bool RDFormPost::getValue(const QString &name,long *n)
+bool RDFormPost::getValue(const QString &name,long *n,bool *ok)
 {
   if(post_values.count(name)>0) {
-    *n=post_values[name].toLongLong();
+    *n=post_values[name].toLongLong(ok);
     return true;
   }
   *n=0;
@@ -197,20 +198,36 @@ bool RDFormPost::getValue(const QString &name,long *n)
 }
 
 
-bool RDFormPost::getValue(const QString &name,QDateTime *datetime)
+bool RDFormPost::getValue(const QString &name,QDateTime *datetime,bool *ok)
 {
   QString str;
+
+  if(ok!=NULL) {
+    *ok=false;
+  }
   if(!getValue(name,&str)) {
     return false;
   }
-  *datetime=RDGetWebDateTime(str);
+  if(str.length()==0) {
+    *datetime=QDateTime();
+    if(ok!=NULL) {
+      *ok=true;
+    }
+  }
+  else {
+    *datetime=RDGetWebDateTime(str,ok);
+  }
   return true;
 }
 
 
-bool RDFormPost::getValue(const QString &name,QTime *time)
+bool RDFormPost::getValue(const QString &name,QTime *time,bool *ok)
 {
   QString str;
+
+  if(ok!=NULL) {
+    *ok=false;
+  }
   if(!getValue(name,&str)) {
     return false;
   }
@@ -218,7 +235,7 @@ bool RDFormPost::getValue(const QString &name,QTime *time)
     *time=QTime();
   }
   else {
-    *time=QTime().addMSecs(RDSetTimeLength(str));
+    *time=RDGetWebTime(str,ok);
   }
   return true;
 }

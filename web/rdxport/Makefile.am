@@ -41,6 +41,7 @@ dist_rdxport_cgi_SOURCES = audioinfo.cpp\
                            import.cpp\
                            logs.cpp\
                            rdxport.cpp rdxport.h\
+                           schedcodes.cpp\
                            services.cpp\
                            trimaudio.cpp
 
