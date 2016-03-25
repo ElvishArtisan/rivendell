@@ -15015,3 +15015,7 @@
 	* Ported 'docs/cae.sxw' to DocBook-XML5 in 'docs/docbook/cae.xml'.
 	* Ported 'docs/web_api.odt' to DocBook-XML5 in
 	'docs/dockbook/web_api.xml'.
+2016-03-25 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'web/rdxport/export.cpp' that caused the web 'Export'
+	service to return an internal server error if the requested audio
+	didn't exist.

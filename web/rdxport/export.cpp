@@ -182,6 +182,9 @@ void Xport::Export()
     break;
 
   case RDAudioConvert::ErrorNoSource:
+    resp_code=403;
+    break;
+
   case RDAudioConvert::ErrorNoDestination:
   case RDAudioConvert::ErrorInvalidSource:
   case RDAudioConvert::ErrorNoSpace:
@@ -200,5 +203,10 @@ void Xport::Export()
   }
   unlink(tmpfile);
   rmdir(tmpdir);
-  Exit(resp_code);
+  if(resp_code==200) {
+    Exit(200);
+  }
+  else {
+    XmlExit(RDAudioConvert::errorText(conv_err),resp_code,conv_err);
+  }
 }
