@@ -40,7 +40,7 @@ class RDCart
 {
  public:
   enum Type {All=0,Audio=1,Macro=2};
-  enum PlayOrder {Sequence=0,Random=1};
+  enum PlayOrder {LeastPlayed=0,Random=1,ExpFirst=2,Sequence=3};
   enum UsageCode {UsageFeature=0,UsageOpen=1,UsageClose=2,UsageTheme=3,
 		  UsageBackground=4,UsagePromo=5,UsageLast=6};
   enum Validity {NeverValid=0,ConditionallyValid=1,AlwaysValid=2,

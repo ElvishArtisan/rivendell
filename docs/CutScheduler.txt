@@ -1,0 +1,21 @@
+Cuts are scheduled for playout at play-time based on the following logic:
+
+1. Least Played
+Cuts will be selected based on which one was played the least. This will provide
+balanced playout. Weighting is ignored.
+
+
+2. Randomly
+Cuts will be selected based on randomizing their playback. Playout is influenced
+by weighting and by how frequently (infrequently) a cut has been played.
+
+
+3. Expiring First
+Cuts that expire first and are played the least will be put first. This ensures that 
+those cuts will be prioritized to play before they expire. Weighting is ignored.
+
+
+4. Sequentially
+Cuts in a cart will be played in their order (1, 2, 3, etc..) sequentially. 
+This is useful with sports game sponsors.  There is no attention paid to 
+play count or weighting. 

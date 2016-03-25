@@ -136,18 +136,30 @@ bool RDCae::loadPlay(int card,QString name,int *stream,int *handle)
   //
   *stream=-2;
   *handle=-1;
+
+  // Wait for CAE Daemon to return status for loading this stream
   while(*stream==-2) {
     readyData(stream,handle,name);
     usleep(1000);
     count++;
   }
+  // Timeout for receiving confirmation
   if(count>1000) {
     syslog(LOG_ERR,"*** LoadPlay: CAE took %d mS to return stream for %s ***",
 	   count,(const char *)name);
+    return false;
   }
   cae_handle[card][*stream]=*handle;
   cae_pos[card][*stream]=0xFFFFFFFF;
+
+  // CAE Daemon sends back a stream of -1 if there is an issue with allocating it
+  // such as file missing, etc.
+  if(*stream < 0) {
+     return false;
+  }
+ 
   return true;
+
 }
 
 

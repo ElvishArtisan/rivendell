@@ -67,9 +67,19 @@ RDLogLine::RDLogLine(unsigned cartnum)
   delete q;
 }
 
+void RDLogLine::clearModified(void)
+{
+  modified = false;
+}
+
+bool RDLogLine::hasBeenModified(void)
+{
+  return modified;
+}
 
 void RDLogLine::clear()
 {
+  clearModified();
   log_id=-1;
   log_status=RDLogLine::Scheduled;
   log_state=RDLogLine::Ok;
@@ -215,6 +225,7 @@ int RDLogLine::id() const
 void RDLogLine::setId(int id)
 {
   log_id=id;
+  modified=true;
 }
 
 
@@ -320,6 +331,7 @@ RDLogLine::Source RDLogLine::source() const
 void RDLogLine::setSource(RDLogLine::Source src)
 {
   log_source=src;
+  modified=true;
 }
 
 
@@ -332,6 +344,7 @@ unsigned RDLogLine::cartNumber() const
 void RDLogLine::setCartNumber(unsigned cart)
 {
   log_cart_number=cart;
+  modified=true;
 }
 
 
@@ -359,6 +372,7 @@ int RDLogLine::graceTime() const
 void RDLogLine::setGraceTime(int time)
 {
   log_grace_time=time;
+  modified=true;
 }
 
 
@@ -383,6 +397,7 @@ QString RDLogLine::originUser() const
 void RDLogLine::setOriginUser(const QString &username)
 {
   log_origin_user=username;
+  modified=true;
 }
 
 
@@ -395,6 +410,7 @@ QDateTime RDLogLine::originDateTime() const
 void RDLogLine::setOriginDateTime(const QDateTime &datetime)
 {
   log_origin_datetime=datetime;
+  modified=true;
 }
 
 
@@ -425,6 +441,7 @@ int RDLogLine::startPoint(PointerSource ptr) const
 void RDLogLine::setStartPoint(int point,PointerSource ptr)
 {
   log_start_point[ptr]=point;
+  modified=true;
 }
 
 
@@ -443,6 +460,7 @@ int RDLogLine::endPoint(PointerSource ptr) const
 void RDLogLine::setEndPoint(int point,PointerSource ptr)
 {
   log_end_point[ptr]=point;
+  modified=true;
 }
 
 
@@ -467,6 +485,7 @@ int RDLogLine::segueStartPoint(PointerSource ptr) const
 void RDLogLine::setSegueStartPoint(int point,PointerSource ptr)
 {
   log_segue_start_point[ptr]=point;
+  modified=true;
 }
 
 
@@ -491,6 +510,7 @@ int RDLogLine::segueEndPoint(PointerSource ptr) const
 void RDLogLine::setSegueEndPoint(int point,PointerSource ptr)
 {
   log_segue_end_point[ptr]=point;
+  modified=true;
 }
 
 
@@ -508,6 +528,7 @@ int RDLogLine::segueGain() const
 void RDLogLine::setSegueGain(int gain)
 {
   log_segue_gain=gain;
+  modified=true;
 }
 
 
@@ -532,6 +553,7 @@ int RDLogLine::fadeupPoint(RDLogLine::PointerSource ptr) const
 void RDLogLine::setFadeupPoint(int point,RDLogLine::PointerSource ptr)
 {
   log_fadeup_point[ptr]=point;
+  modified=true;
 }
 
 
@@ -544,6 +566,7 @@ int RDLogLine::fadeupGain() const
 void RDLogLine::setFadeupGain(int gain)
 {
   log_fadeup_gain=gain;
+  modified=true;
 }
 
 
@@ -568,6 +591,7 @@ int RDLogLine::fadedownPoint(RDLogLine::PointerSource ptr) const
 void RDLogLine::setFadedownPoint(int point,RDLogLine::PointerSource ptr)
 {
   log_fadedown_point[ptr]=point;
+  modified=true;
 }
 
 
@@ -580,6 +604,7 @@ int RDLogLine::fadedownGain() const
 void RDLogLine::setFadedownGain(int gain)
 {
   log_fadedown_gain=gain;
+  modified=true;
 }
 
 
@@ -592,6 +617,7 @@ int RDLogLine::duckUpGain() const
 void RDLogLine::setDuckUpGain(int gain)
 {
   log_duck_up_gain=gain;
+  modified=true;
 }
 
 int RDLogLine::duckDownGain() const
@@ -603,6 +629,7 @@ int RDLogLine::duckDownGain() const
 void RDLogLine::setDuckDownGain(int gain)
 {
   log_duck_down_gain=gain;
+  modified=true;
 }
 
 
@@ -675,6 +702,7 @@ RDCart::Type RDLogLine::cartType() const
 void RDLogLine::setCartType(RDCart::Type type)
 {
   log_cart_type=type;
+  modified=true;
 }
 
 
@@ -1071,6 +1099,7 @@ QString RDLogLine::markerComment() const
 void RDLogLine::setMarkerComment(const QString &str)
 {
   log_marker_comment=str;
+  modified=true;
 }
 
 
@@ -1083,6 +1112,7 @@ QString RDLogLine::markerLabel() const
 void RDLogLine::setMarkerLabel(const QString &str)
 {
   log_marker_label=str;
+  modified=true;
 }
 
 
@@ -1143,6 +1173,7 @@ QTime RDLogLine::extStartTime() const
 void RDLogLine::setExtStartTime(QTime time)
 {
   log_ext_start_time=time;
+  modified=true;
 }
 
 
@@ -1155,6 +1186,7 @@ int RDLogLine::extLength() const
 void RDLogLine::setExtLength(int length)
 {
   log_ext_length=length;
+  modified=true;
 }
 
 
@@ -1167,6 +1199,7 @@ QString RDLogLine::extCartName() const
 void RDLogLine::setExtCartName(const QString &name)
 {
   log_ext_cart_name=name;
+  modified=true;
 }
 
 
@@ -1179,6 +1212,7 @@ QString RDLogLine::extData() const
 void RDLogLine::setExtData(const QString &data)
 {
   log_ext_data=data;
+  modified=true;
 }
 
 
@@ -1191,6 +1225,7 @@ QString RDLogLine::extEventId() const
 void RDLogLine::setExtEventId(const QString &id)
 {
   log_ext_event_id=id;
+  modified=true;
 }
 
 
@@ -1203,6 +1238,7 @@ QString RDLogLine::extAnncType() const
 void RDLogLine::setExtAnncType(const QString &type)
 {
   log_ext_annc_type=type;
+  modified=true;
 }
 
 
@@ -1427,6 +1463,7 @@ QString RDLogLine::linkEventName() const
 void RDLogLine::setLinkEventName(const QString &name)
 {
   log_link_event_name=name;
+  modified=true;
 }
 
 
@@ -1439,6 +1476,7 @@ QTime RDLogLine::linkStartTime() const
 void RDLogLine::setLinkStartTime(const QTime &time)
 {
   log_link_start_time=time;
+  modified=true;
 }
 
 
@@ -1451,6 +1489,7 @@ int RDLogLine::linkLength() const
 void RDLogLine::setLinkLength(int msecs)
 {
   log_link_length=msecs;
+  modified=true;
 }
 
 
@@ -1463,6 +1502,7 @@ int RDLogLine::linkStartSlop() const
 void RDLogLine::setLinkStartSlop(int msecs)
 {
   log_link_start_slop=msecs;
+  modified=true;
 }
 
 
@@ -1487,6 +1527,7 @@ int RDLogLine::linkId() const
 void RDLogLine::setLinkId(int id)
 {
   log_link_id=id;
+  modified=true;
 }
 
 
@@ -1499,6 +1540,7 @@ bool RDLogLine::linkEmbedded() const
 void RDLogLine::setLinkEmbedded(bool state)
 {
   log_link_embedded=state;
+  modified=true;
 }
 
 

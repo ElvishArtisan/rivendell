@@ -2331,7 +2331,12 @@ void VoiceTracker::SaveTrack(int line)
   if((line>0)&&(track_log_event->logLine(line-1)->type()==RDLogLine::Track)) {
     line--;
   }
-  track_log_event->save();
+  if(track_size_altered) {
+       track_log_event->save();
+  }
+  else {
+        track_log_event->saveModified();
+  }
   track_log->
     setModifiedDatetime(QDateTime(QDate::currentDate(),QTime::currentTime()));
   track_changed=false;

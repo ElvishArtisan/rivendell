@@ -1061,6 +1061,8 @@ void MainWidget::RefreshList()
   // 35 - CUTS.SAT
   // 36 - CUTS.SUN
   //
+  // ?? - CART.PLAY_ORDER
+  //
 
   sql="select CART.NUMBER,CART.FORCED_LENGTH,CART.TITLE,CART.ARTIST,\
        CART.ALBUM,CART.LABEL,\
@@ -1090,7 +1092,7 @@ void MainWidget::RefreshList()
       RDCartSearchText(lib_filter_edit->text(),lib_group_box->currentText(),
 		       schedcode,true)+" && "+type_filter;      
   }
-  sql+=" order by CART.NUMBER";
+  sql+=" group by CART.NUMBER order by CART.NUMBER";
   if(lib_showmatches_box->isChecked()) {
     sql+=QString().sprintf(" limit %d",RD_LIMITED_CART_SEARCH_QUANTITY);
   }

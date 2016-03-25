@@ -28,9 +28,11 @@
 #endif  // WIN32
 
 #include <vector>
+#include <algorithm>
 
 #include <qstringlist.h>
 #include <qobject.h>
+#include <qdatetime.h>
 
 #include <rd.h>
 #include <rdconf.h>
@@ -83,7 +85,6 @@ bool RDCart::selectCut(QString *cut) const
   return selectCut(cut,QTime::currentTime());
 }
 
-
 bool RDCart::selectCut(QString *cut,const QTime &time) const
 {
   bool ret;
@@ -92,9 +93,9 @@ bool RDCart::selectCut(QString *cut,const QTime &time) const
     ret=(*cut=="");
     *cut="";
 #ifndef WIN32
-    syslog(LOG_USER|LOG_WARNING,
-	   "RDCart::selectCut(): cart doesn't exist, CUT=%s",
-	   (const char *)cut);
+    //syslog(LOG_USER|LOG_WARNING,
+    //	   "RDCart::selectCut(): cart doesn't exist, CUT=%s",
+    //	   (const char *)cut);
 #endif  // WIN32
     return ret;
   }
@@ -111,50 +112,83 @@ bool RDCart::selectCut(QString *cut,const QTime &time) const
   QString datetime_str=QDateTime(current_date,time).
     toString("yyyy-MM-dd hh:mm:ss");
   QString time_str=QDateTime(current_date,time).toString("hh:mm:ss");
+  QString orderBy = "";
 
-  //  if(type()==RDCart::Audio) {
+  // enum PlayOrder {LeastPlayed=0,Random=1,ExpFirst=2,Sequence=3};
+  // case RDCart::Random: {
   switch(type()) {
-  case RDCart::Audio:
-    sql=QString().sprintf("select CUT_NAME,WEIGHT,LOCAL_COUNTER\
+  case RDCart::Audio: {
+
+    // Order the result set based on schedule type
+    switch(playOrder()) {
+    case RDCart::Random:
+       //Next function expects last one played to be first record
+       orderBy = "order by LAST_PLAY_DATETIME DESC";
+       break;
+    case RDCart::ExpFirst:
+       orderBy = "order by PLAY_COUNTER ASC, ISNULL(END_DATETIME), END_DATETIME ASC, \
+                  LAST_PLAY_DATETIME ASC";
+       break;
+    case RDCart::LeastPlayed:
+       orderBy = "order by PLAY_COUNTER ASC, LAST_PLAY_DATETIME ASC, \
+                  ISNULL(END_DATETIME), END_DATETIME ASC";
+       break;
+    case RDCart::Sequence:
+       orderBy = "order by CUT_NAME ASC";
+       break;
+    }
+    sql=QString().sprintf("select CUT_NAME,WEIGHT,LOCAL_COUNTER,PLAY_COUNTER,\
+                           LAST_PLAY_DATETIME \
                            from CUTS  where (((START_DATETIME<=\"%s\")&&\
                            (END_DATETIME>=\"%s\"))||\
                            (START_DATETIME is null))&&\
                            (((START_DAYPART<=\"%s\")&&(END_DAYPART>=\"%s\")||\
                            START_DAYPART is null))&&\
-                           (%s=\"Y\")&&(CART_NUMBER=%u)&&(EVERGREEN=\"N\")&&\
-                           (LENGTH>0) order by LOCAL_COUNTER",
+                           (%s=\"Y\")&&(CART_NUMBER=%u)&&(EVERGREEN=\"N\")&& (LENGTH>0) %s",
 			  (const char *)datetime_str,
 			  (const char *)datetime_str,
 			  (const char *)time_str,
 			  (const char *)time_str,
-	(const char *)RDGetShortDayNameEN(current_date.dayOfWeek()).upper(),
-			  cart_number);
+                          (const char *)RDGetShortDayNameEN(current_date.dayOfWeek()).upper(),
+			  cart_number, 
+                          (const char *)orderBy);
     q=new RDSqlQuery(sql);
-    cutname=GetNextCut(q);
-    delete q;
-    break;
+#ifndef WIN32
+    //syslog(LOG_USER|LOG_WARNING,"RDCart::selectCut(): SQL=%s",(const char *)sql);
+#endif
+    
+    // Is there a result in range, use it
+    if(q->size() > 0 ) {
+       cutname=GetNextCut(q);
+       delete q;
+       break;
+    }
+    // if not, try to get the evergreen cut
+    else {
+       sql=QString().sprintf("select CUT_NAME,WEIGHT,LOCAL_COUNTER,PLAY_COUNTER\
+                           from CUTS where (CART_NUMBER=%u)&&\
+                           (EVERGREEN=\"Y\")&&(LENGTH>0) \
+                           order by PLAY_COUNTER ASC, LAST_PLAY_DATETIME ASC",
+		 	   cart_number);
+       delete q;
+       q=new RDSqlQuery(sql);
+#ifndef WIN32
+       //syslog(LOG_USER|LOG_WARNING,"RDCart::selectCut(): no valid cuts, trying evergreen, SQL=%s",(const char *)sql);
+#endif 
+       cutname=GetNextCut(q);
+       delete q;
 
+       if(cutname.isEmpty()) {
+#ifndef WIN32
+          //syslog(LOG_USER|LOG_WARNING,"RDCart::selectCut(): no valid regular or evergreen cuts, SQL=%s",(const char *)sql);
+#endif  
+       }
+       break;
+     }
+  }
   case RDCart::Macro:
   case RDCart::All:
     break;
-  }
-  if(cutname.isEmpty()) {   // No valid cuts, try the evergreen
-#ifndef WIN32
-    // syslog(LOG_USER|LOG_WARNING,"RDCart::selectCut(): no valid cuts, trying evergreen, SQL=%s",(const char *)sql);
-#endif  // WIN32
-    sql=QString().sprintf("select CUT_NAME,WEIGHT,LOCAL_COUNTER\
-                           from CUTS where (CART_NUMBER=%u)&&\
-                           (EVERGREEN=\"Y\")&&(LENGTH>0) \
-                           order by LOCAL_COUNTER",
-			  cart_number);
-    q=new RDSqlQuery(sql);
-    cutname=GetNextCut(q);
-    delete q;
-  }
-  if(cutname.isEmpty()) {
-#ifndef WIN32
-    // syslog(LOG_USER|LOG_WARNING,"RDCart::selectCut(): no valid evergreen cuts, SQL=%s",(const char *)sql);
-#endif  // WIN32
   }
   *cut=cutname;
   return true;
@@ -1324,7 +1358,6 @@ bool RDCart::exists(unsigned cartnum)
   return ret;
 }
 
-
 QString RDCart::playOrderText(RDCart::PlayOrder order)
 {
   switch(order) {
@@ -1333,6 +1366,12 @@ QString RDCart::playOrderText(RDCart::PlayOrder order)
 
       case RDCart::Random:
 	return QObject::tr("Randomly");
+
+      case RDCart::LeastPlayed:
+	return QObject::tr("Least Played");
+
+      case RDCart::ExpFirst:
+	return QObject::tr("Expiring First");
   }
   return QObject::tr("Unknown");
 }
@@ -1490,20 +1529,134 @@ void RDCart::removePending(RDStation *station,RDUser *user,RDConfig *config)
 }
 
 
+// This function selects the cuts from a SQL Query Structure
+// All eligible cuts are returned from the query sorted by what
+// Can be played, the number of times played, and weighted
 QString RDCart::GetNextCut(RDSqlQuery *q) const
 {
+
   QString cutname;
-  double ratio;
-  double play_ratio=100000000.0;
-  std::vector<int> eligibles;
+  std::vector<QString> eligibles;
+  int maxPlays = 0;
+  int minPlays = -1;
 
+  // Fields:
+  // 0 = Cut Number
+  // 1 = Weight
+  // 2 = Local Count
+  // 3 = Play Count
+  // 4 = Last Play (DateTime)
+ 
+#ifdef WIN32
+  q->next();
+  cutname=q->value(0).toString();
+#else
 
-  while(q->next()) {
-    if((ratio=q->value(2).toDouble()/q->value(1).toDouble())<play_ratio) {
-      play_ratio=ratio;
-      cutname=q->value(0).toString();
-    }
+  // Zero Result Set Test -- This happens in the course of "normal" operation.
+  // This is common with future tracks in the playlist
+  if(q->size() <= 0) {
+    //syslog(LOG_USER|LOG_WARNING,"Zero query results sent to GetNextCut. Returning zero.");
+    cutname = "";
+    return cutname;
   }
+
+  switch(playOrder()) {
+      case RDCart::Random: {
+
+        
+        // Step 1 -- Spin through results to get highest and lowest counts
+        while(q->next()) {
+          if(q->value(3).toInt() > maxPlays ) {
+             maxPlays = q->value(3).toInt();
+          }
+          if(q->value(3).toInt() < minPlays) {
+             minPlays = q->value(3).toInt();
+          }
+          else if (minPlays == -1) {
+             // Sets the marker for the first time
+             minPlays = maxPlays;
+          }
+          else { }
+        }
+        int playRange = maxPlays - minPlays;
+  
+        // To avoid playing the same item back to back, exclude the first record 
+        // (which is sorted by most recent play) if there is more than one result
+        if(q->size() < 2) {
+           q->seek(-1); // Back-Up candidate list query to beginning
+        }
+        else {
+           q->seek(0); // Skip first record
+        }
+
+        // Step 2 -- Load up a new vector weighted on plays and weight
+        while(q->next()) {
+
+          //TODO - Only push if this is not the last played and 2 or more records
+          int plays = q->value(3).toInt() - minPlays; //Set plays relative range
+          int weight = q->value(1).toInt();
+          int adds = weight * (playRange + 1 - plays);
+
+          for(int i=0 ; i < adds ; i++ ) {  
+               eligibles.push_back((QString)q->value(0).toString());
+          }
+
+        }
+        //Pick a random location in the vector
+        int totc = (int)eligibles.size();
+        int loct = rand() % totc;
+        cutname=(QString)eligibles[loct];
+  
+        break;
+        } 
+      case RDCart::Sequence: {
+
+        // Cuts come in sorted by name
+        // Step 2 -- Get Index of last played, add one.  
+        //          If none -- go to beginning
+        //          If at last, to to beginning
+
+        QString lastDate="";
+        int idxCtr = 0;
+        int lastCTR = 0;
+       
+        //Wind through results and find earliest non-null) date 
+        while(q->next()) {
+
+           QString playDate=(QString)q->value(4).toString();
+          
+           //If Current playDate is less than lowDate_Saved, set lowDate
+           if((playDate > lastDate) && (playDate != NULL)) {
+              lastDate = playDate;
+              lastCTR = idxCtr;
+           }
+
+           idxCtr++;
+        }
+        //Pick the next cut based on the index, or wrap to zero
+        lastCTR++;
+        if(lastCTR >= ((int)q->size())) {
+           //If idxCTR is size of Query set, then reset to zero
+           q->seek(0,false);
+           cutname=q->value(0).toString();
+        }
+        else {
+           //Add one to index
+           q->seek(lastCTR,false);
+           cutname=q->value(0).toString();
+        }
+
+        break;
+      }
+      default:
+        // Default is  RDCart::LeastPlayed and RDCart::ExpFirst
+        // Take the first (least played) in the list. 
+        q->next();
+        cutname=q->value(0).toString();
+        break;
+  }
+
+#endif  // WIN32
   return cutname;
 }
 
@@ -1699,3 +1852,4 @@ void RDCart::SetRow(const QString &param) const
   q=new RDSqlQuery(sql);
   delete q;
 }
+

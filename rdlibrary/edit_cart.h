@@ -77,6 +77,7 @@ class EditCart : public QDialog
   QLineEdit *rdcart_type_edit;
   QLineEdit *rdcart_number_edit;
   QComboBox *rdcart_group_box;
+  QComboBox *rdcart_cut_sched_box;
   QLineEdit *rdcart_group_edit;
   AudioControls rdcart_controls;
   QCheckBox *rdcart_syncronous_box;
@@ -87,6 +88,7 @@ class EditCart : public QDialog
   QLineEdit *rdcart_average_length_edit;
   QLabel *rdcart_forced_length_label;
   QLineEdit *rdcart_forced_length_ledit;
+  QLineEdit *rdcart_cut_sched_edit;
   QCheckBox *rdcart_preserve_pitch_button;
   QLabel *rdcart_preserve_pitch_label;
   unsigned rdcart_average_length;

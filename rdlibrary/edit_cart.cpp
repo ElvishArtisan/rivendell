@@ -113,6 +113,7 @@ EditCart::EditCart(unsigned number,QString *path,bool new_cart,bool profile_rip,
   line_edit_font.setPixelSize(12);
 
   if(lib_cart_list_edit==NULL) {
+
   //
   // Cart Number
   //
@@ -329,7 +330,7 @@ EditCart::EditCart(unsigned number,QString *path,bool new_cart,bool profile_rip,
   rdcart_year_label->setAlignment(AlignRight|ShowPrefix);
 
   //
-  // Cart Usage Code
+  // Cart Usage Code 
   //
   rdcart_usage_box=new QComboBox(this,"rdcart_usage_box");
   rdcart_usage_box->setGeometry(270,110,150,21);
@@ -347,6 +348,7 @@ EditCart::EditCart(unsigned number,QString *path,bool new_cart,bool profile_rip,
   rdcart_usage_edit=new QLineEdit(this,"rdcart_usage_edit");
   rdcart_usage_edit->setGeometry(270,110,150,21);
   rdcart_usage_edit->setReadOnly(true);
+
 
   //
   // Scheduler Codes
@@ -492,6 +494,27 @@ EditCart::EditCart(unsigned number,QString *path,bool new_cart,bool profile_rip,
   rdcart_user_defined_label->setGeometry(10,325,120,21);
   rdcart_user_defined_label->setFont(button_font);
   rdcart_user_defined_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+
+
+
+  //
+  // Cut Scheduling Policy
+  //  
+  //
+  rdcart_cut_sched_box=new QComboBox(this,"rdcart_cut_sched_box");
+  rdcart_cut_sched_box->setGeometry(135,349,140,21);
+  rdcart_cut_sched_box->setFont(line_edit_font);
+  rdcart_cut_sched_edit=new QLineEdit(this,"rdcart_cut_sched_edit");
+  rdcart_cut_sched_edit->setGeometry(135,348,140,21);
+  rdcart_cut_sched_edit->setFont(line_edit_font);
+  rdcart_cut_sched_edit->setReadOnly(true);
+  QLabel *rdcart_cut_sched_label=new QLabel(rdcart_cut_sched_box,
+                                            tr("Schedule Cuts:"),this,
+                                            "rdcart_cut_sched_label");
+  rdcart_cut_sched_label->setGeometry(10,350,120,19);
+  rdcart_cut_sched_label->setFont(button_font);
+  rdcart_cut_sched_label->setAlignment(AlignRight|ShowPrefix);
+
  
   //
   // Synchronous Scheduling Policy
@@ -572,6 +595,9 @@ EditCart::EditCart(unsigned number,QString *path,bool new_cart,bool profile_rip,
 	rdcart_audio_cart=NULL;
 	rdcart_controls.enforce_length_box->setDisabled(true);
 	rdcart_enforce_length_label->setDisabled(true);
+        rdcart_cut_sched_box->hide();
+        rdcart_cut_sched_edit->hide();
+        rdcart_cut_sched_label->hide();
 	rdcart_syncronous_box->show();
 	rdcart_use_event_length_box->show();
 	rdcart_syncronous_label->show();
@@ -689,8 +715,29 @@ EditCart::EditCart(unsigned number,QString *path,bool new_cart,bool profile_rip,
     rdcart_controls.user_defined_edit->setText(rdcart_cart->userDefined());
     rdcart_usage_box->setCurrentItem((int)rdcart_cart->usageCode());
     rdcart_usage_edit->
-      setText(RDCart::usageText((RDCart::UsageCode)rdcart_usage_box->
-				currentItem()));
+    setText(RDCart::usageText((RDCart::UsageCode)rdcart_usage_box->
+                                currentItem()));
+    //enum PlayOrder {LeastPlayed=0,Random=1,ExpFirst=2,Sequence=3};
+    if(rdcart_cut_sched_box->count() == 0)
+    {
+      rdcart_cut_sched_box->insertItem(tr("Least Played"));
+      rdcart_cut_sched_box->insertItem(tr("Randomly"));
+      rdcart_cut_sched_box->insertItem(tr("Expiring First"));
+      rdcart_cut_sched_box->insertItem(tr("Sequential"));
+      rdcart_cut_sched_box->setCurrentItem(rdcart_cart->playOrder());
+    }
+    if(rdcart_cart->playOrder()==1) {
+      rdcart_cut_sched_edit->setText(tr("Randomly"));
+    }
+    else if(rdcart_cart->playOrder()==2) {
+      rdcart_cut_sched_edit->setText(tr("Expiring First"));
+    }
+    else if(rdcart_cart->playOrder()==3) {
+      rdcart_cut_sched_edit->setText(tr("Sequential"));
+    }
+    else {
+      rdcart_cut_sched_edit->setText(tr("Least Played"));
+    }
     rdcart_syncronous_box->setChecked(rdcart_cart->asyncronous());
     rdcart_use_event_length_box->
       setChecked(rdcart_cart->useEventLength());
@@ -701,7 +748,16 @@ EditCart::EditCart(unsigned number,QString *path,bool new_cart,bool profile_rip,
       PopulateGroupList();
       rdcart_group_box->setCurrentItem(0);
     }
+
+
     rdcart_usage_box->setCurrentItem(0);
+    rdcart_cut_sched_box->insertItem(tr(""));
+    rdcart_cut_sched_box->insertItem(tr("Least Played"));
+    rdcart_cut_sched_box->insertItem(tr("Randomly"));
+    rdcart_cut_sched_box->insertItem(tr("Expiring First"));
+    rdcart_cut_sched_box->insertItem(tr("Sequential"));
+    rdcart_cut_sched_box->setCurrentItem(0);
+
     rdcart_notes_button->hide();
   }
 
@@ -710,10 +766,12 @@ EditCart::EditCart(unsigned number,QString *path,bool new_cart,bool profile_rip,
   //
   if(modification_allowed) {
     rdcart_group_edit->hide();
+    rdcart_cut_sched_edit->hide();
     rdcart_usage_edit->hide();
   }
   else {
     rdcart_group_box->hide(); 
+    rdcart_cut_sched_box->hide();
     rdcart_usage_box->hide();
   }
   rdcart_syncronous_box->setEnabled(modification_allowed);
@@ -883,6 +941,8 @@ void EditCart::okData()
     rdcart_cart->setUserDefined(rdcart_controls.user_defined_edit->text());
     rdcart_cart->
       setUsageCode((RDCart::UsageCode)rdcart_usage_box->currentItem());
+    rdcart_cart->
+      setPlayOrder((RDCart::PlayOrder)rdcart_cut_sched_box->currentItem());
     if(rdcart_cart->type()==RDCart::Macro) {
       rdcart_macro_cart->save();
       rdcart_cart->setAsyncronous(rdcart_syncronous_box->isChecked());
@@ -905,9 +965,9 @@ void EditCart::okData()
             rdcart_cart_medit->setTitle(rdcart_controls.title_edit->text());
 	  }
 	  if(!rdcart_controls.year_edit->text().stripWhiteSpace().isEmpty()) {
-	    rdcart_cart_medit->
-	      setYear(rdcart_controls.year_edit->text().toInt());
-	  }
+ 	    rdcart_cart_medit->
+ 	      setYear(rdcart_controls.year_edit->text().toInt());
+ 	  }     
           if(!rdcart_controls.artist_edit->text().stripWhiteSpace().isEmpty()) {
             rdcart_cart_medit->setArtist(rdcart_controls.artist_edit->text());
 	  }
