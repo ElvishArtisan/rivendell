@@ -34,7 +34,7 @@ install-exec-am:
 	cp .libs/rdcastmanager.cgi $(DESTDIR)$(libexecdir)/
 	cat rdcastmanager.js | $(top_srcdir)/helpers/jsmin > $(DESTDIR)$(libexecdir)/rdcastmanager.js
 
-uninstall:	
+uninstall-local:	
 	rm -f $(DESTDIR)/$(libexecdir)/rdcastmanager.cgi
 	rm -f $(DESTDIR)/$(libexecdir)/rdcastmanager.js
 

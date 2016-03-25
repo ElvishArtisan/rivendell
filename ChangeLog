@@ -15019,3 +15019,6 @@
 	* Fixed a bug in 'web/rdxport/export.cpp' that caused the web 'Export'
 	service to return an internal server error if the requested audio
 	didn't exist.
+2016-03-25 Fred Gleason <fredg@paravelsystems.com>
+	* Changed 'uninstall' to 'uninstall-local' targets in all
+	'Makefile.am' files.

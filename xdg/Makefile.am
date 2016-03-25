@@ -57,7 +57,7 @@ install-exec-am:
 	rm -f $(DESTDIR)$(prefix)/bin/rdhpiinfo-root
 	ln -s /usr/bin/consolehelper $(DESTDIR)$(prefix)/bin/rdhpiinfo-root
 
-uninstall:	
+uninstall-local:	
 	rm -f $(DESTDIR)@prefix@/share/applications/rivendell-*.desktop
 	rm -f $(DESTDIR)@prefix@/share/desktop-directories/rivendell-*.directory
 	rm -f $(DESTDIR)/etc/xdg/menus/applications-merged/rivendell-*.menu

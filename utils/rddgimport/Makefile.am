@@ -34,7 +34,7 @@ install-exec-local:
 	mkdir -p $(DESTDIR)$(prefix)/share/rivendell
 	cp rddgimport_*.qm $(DESTDIR)$(prefix)/share/rivendell
 
-uninstall:
+uninstall-local:	
 	rm -f $(DESTDIR)$(prefix)/share/rivendell/rddgimport_*.qm
 
 all:	

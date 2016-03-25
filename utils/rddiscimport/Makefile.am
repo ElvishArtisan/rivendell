@@ -34,7 +34,7 @@ install-exec-local:
 	mkdir -p $(DESTDIR)$(prefix)/share/rivendell
 	cp rddiscimport_*.qm $(DESTDIR)$(prefix)/share/rivendell
 
-uninstall:
+uninstall-local:	
 	rm -f $(DESTDIR)$(prefix)/share/rivendell/rddiscimport_*.qm
 
 all:	

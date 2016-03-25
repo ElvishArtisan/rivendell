@@ -36,7 +36,7 @@ install-exec-local:
 	cp rdselect_*.qm $(DESTDIR)$(prefix)/share/rivendell
 	chmod 4755 $(DESTDIR)$(prefix)/bin/rdselect
 
-uninstall:
+uninstall-local:	
 	rm -f $(DESTDIR)$(prefix)/share/rivendell/rdselect_*.qm
 
 all:	

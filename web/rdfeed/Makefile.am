@@ -28,7 +28,7 @@ MOC = @QT_MOC@
 install-exec-local:	
 	if test ! -f $(DESTDIR)@libexecdir@/rdfeed.mp3 ; then ln -s @libexecdir@/rdfeed.xml $(DESTDIR)@libexecdir@/rdfeed.mp3 ; fi
 
-uninstall:	
+uninstall-local:	
 	rm -f $(DESTDIR)@libexecdir@/rdfeed.mp3
 
 libexec_PROGRAMS = rdfeed.xml

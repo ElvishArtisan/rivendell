@@ -35,7 +35,7 @@ install-exec-local:
 	mkdir -p $(DESTDIR)$(prefix)/share/rivendell
 	cp rdlogmanager_*.qm $(DESTDIR)$(prefix)/share/rivendell
 
-uninstall:
+uninstall-local:	
 	rm -f $(DESTDIR)$(prefix)/share/rivendell/rdlogmanager_*.qm
 
 all:	
