@@ -2,9 +2,7 @@
 //
 // The Log Editor Utility for Rivendell.
 //
-//   (C) Copyright 2002-2003 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdlogedit.h,v 1.28.4.1 2014/01/08 23:32:50 cvs Exp $
+//   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -30,6 +28,7 @@
 #include <qsize.h>
 #include <qsizepolicy.h>
 #include <qsqldatabase.h>
+#include <qcheckbox.h>
 #include <qlineedit.h>
 #include <qlistview.h>
 #include <qpushbutton.h>
@@ -56,6 +55,7 @@ class MainWidget : public QMainWindow
  private slots:
   void connectedData(bool state);
   void userData();
+  void recentData(bool state);
   void addData();
   void editData();
   void deleteData();
@@ -83,6 +83,8 @@ class MainWidget : public QMainWindow
   QLabel *log_filter_label;
   QLineEdit *log_filter_edit;
   QPushButton *log_filter_button;
+  QCheckBox *log_recent_check;
+  QLabel *log_recent_label;
   QListView *log_log_list;
   std::vector<RDLogLine> log_clipboard;
   QPushButton *log_add_button;

@@ -289,6 +289,15 @@ MainWidget::MainWidget(QWidget *parent,const char *name,WFlags f)
   connect(log_filter_button,SIGNAL(clicked()),this,SLOT(filterClearedData()));
 
   //
+  // Show Recent Checkbox
+  //
+  log_recent_check=new QCheckBox(this);
+  connect(log_recent_check,SIGNAL(toggled(bool)),this,SLOT(recentData(bool)));
+  log_recent_label=
+    new QLabel(log_recent_check,tr("Show Only Recent Logs"),this);
+  log_recent_label->setFont(button_font);
+
+  //
   // Log List
   //
   log_log_list=new QListView(this,"log_log_list");
@@ -430,6 +439,12 @@ void MainWidget::userData()
   if (rdstation_conf->broadcastSecurity() == RDStation::UserSec) {
     RefreshList();
   }
+}
+
+
+void MainWidget::recentData(bool state)
+{
+  RefreshList();
 }
 
 
@@ -730,7 +745,9 @@ void MainWidget::resizeEvent(QResizeEvent *e)
   log_filter_label->setGeometry(230,10,50,20);
   log_filter_edit->setGeometry(285,10,size().width()-360,20);
   log_filter_button->setGeometry(size().width()-60,8,50,25);
-  log_log_list->setGeometry(10,37,size().width()-20,size().height()-107);
+  log_recent_check->setGeometry(285,35,15,15);
+  log_recent_label->setGeometry(305,33,200,20);
+  log_log_list->setGeometry(10,57,size().width()-20,size().height()-127);
   log_add_button->setGeometry(10,size().height()-55,80,50);
   log_edit_button->setGeometry(100,size().height()-55,80,50);
   log_delete_button->setGeometry(190,size().height()-55,80,50);
@@ -831,6 +848,10 @@ void MainWidget::RefreshList()
     sql+="&&((NAME like \"%%"+RDEscapeString(filter)+"%%\")||";
     sql+="(DESCRIPTION like \"%%"+RDEscapeString(filter)+"%%\")||";
     sql+="(SERVICE like \"%%"+RDEscapeString(filter)+"%%\"))";
+  }
+  if(log_recent_check->isChecked()) {
+    sql+=QString().sprintf("order by ORIGIN_DATETIME desc limit %d",
+			   RDLOGEDIT_LIMIT_QUAN);
   }
 
   if (rdstation_conf->broadcastSecurity() == RDStation::UserSec

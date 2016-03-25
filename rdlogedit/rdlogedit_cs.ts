@@ -875,6 +875,10 @@ Vyhledejte svého správce systému kvůli aktualizaci!</translation>
         <source>Clear</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Show Only Recent Logs</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>VoiceTracker</name>
