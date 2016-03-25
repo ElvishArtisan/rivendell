@@ -15236,3 +15236,6 @@
 2016-03-19 Brian McGlynn <brian.mcglynn@geneseemedia.net>
         * Fixed playback issue in lib/rdcae.cpp.  If file was missing on
 	filesystem, rdairplay would get stopped on that track. 
+2016-03-25 Brian McGlynn <brian.mcglynn@geneseemedia.net>
+        * Fixed search issue in rdlibrary/rdlibrary.cpp. With "Limit to top 100 results"
+        was selected, not all 100 results were shown.
