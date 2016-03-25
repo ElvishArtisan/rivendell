@@ -124,14 +124,18 @@ bool RDCart::selectCut(QString *cut,const QTime &time) const
     case RDCart::Random:
        //Next function expects last one played to be first record
        orderBy = "order by LAST_PLAY_DATETIME DESC";
+       break;
     case RDCart::ExpFirst:
-       orderBy = "order by PLAY_COUNTER ASC, ISNULL(END_DATETIME), END_DATETIME ASC \
+       orderBy = "order by PLAY_COUNTER ASC, ISNULL(END_DATETIME), END_DATETIME ASC, \
                   LAST_PLAY_DATETIME ASC";
+       break;
     case RDCart::LeastPlayed:
        orderBy = "order by PLAY_COUNTER ASC, LAST_PLAY_DATETIME ASC, \
                   ISNULL(END_DATETIME), END_DATETIME ASC";
+       break;
     case RDCart::Sequence:
        orderBy = "order by CUT_NAME ASC";
+       break;
     }
     sql=QString().sprintf("select CUT_NAME,WEIGHT,LOCAL_COUNTER,PLAY_COUNTER,\
                            LAST_PLAY_DATETIME \

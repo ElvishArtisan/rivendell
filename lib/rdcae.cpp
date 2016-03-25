@@ -147,6 +147,7 @@ bool RDCae::loadPlay(int card,QString name,int *stream,int *handle)
   if(count>1000) {
     syslog(LOG_ERR,"*** LoadPlay: CAE took %d mS to return stream for %s ***",
 	   count,(const char *)name);
+    return false;
   }
   cae_handle[card][*stream]=*handle;
   cae_pos[card][*stream]=0xFFFFFFFF;
@@ -158,7 +159,6 @@ bool RDCae::loadPlay(int card,QString name,int *stream,int *handle)
   }
  
   return true;
-
 
 }
 

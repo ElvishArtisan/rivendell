@@ -335,6 +335,7 @@ bool LogPlay::play(int line,RDLogLine::StartSource src,
   }
   //
   // Play it
+  // TODO -- BPM: This is where the hook will likely go in for Serial playback
   //
   if(!GetNextPlayable(&line,skip_meta,true)) {
     return false;
