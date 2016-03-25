@@ -15024,3 +15024,7 @@
 	'Makefile.am' files.
 2016-03-25 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 2.11.0test00.
+2016-03-25 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in 'rdlibrary/audio_cart.cpp' that caused
+	information to be corrupted in the cut list after editing a cut's
+	dayparting information.

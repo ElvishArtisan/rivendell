@@ -841,8 +841,8 @@ void AudioCart::RefreshLine(RDListViewItem *item)
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     item->setText(0,q->value(rdcart_use_weighting).toString());
-    item->setText(1,q->value(1).toString());
-    item->setText(2,RDGetTimeLength(q->value(2).toUInt()));
+    item->setText(1,q->value(2).toString());
+    item->setText(2,RDGetTimeLength(q->value(3).toUInt()));
     if (q->value(0) == 0){ //zero weight
       	  item->setBackgroundColor(RD_CART_ERROR_COLOR);
     } else {
