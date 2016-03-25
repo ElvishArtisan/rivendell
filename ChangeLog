@@ -15022,3 +15022,5 @@
 2016-03-25 Fred Gleason <fredg@paravelsystems.com>
 	* Changed 'uninstall' to 'uninstall-local' targets in all
 	'Makefile.am' files.
+2016-03-25 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.11.0test00.
