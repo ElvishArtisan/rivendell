@@ -26,7 +26,11 @@
 #include <qapplication.h>
 #include <qstringlist.h>
 
+#include <rdclock.h>
 #include <rdcmd_switch.h>
+#include <rdcreate_log.h>
+#include <rdescape_string.h>
+#include <rdevent.h>
 
 #include "rdrevert.h"
 
@@ -35,6 +39,7 @@ MainObject::MainObject(QObject *parent,const char *name)
 {
   bool ok=false;
   int set_schema=0;
+  rev_use_deadzone=false;
 
   //
   // Read Command Options
@@ -95,6 +100,9 @@ MainObject::MainObject(QObject *parent,const char *name)
   if((set_schema<RDREVERT_BASE_SCHEMA)||(set_schema>start_schema)) {
     fprintf(stderr,"rdrevert: unsupported schema\n");
     exit(256);
+  }
+  if((start_schema>=246)&&(start_schema<=253)) {
+    rev_use_deadzone=true;
   }
 
   while(start_schema>set_schema) {
@@ -200,48 +208,153 @@ void MainObject::Revert245() const
 
 void MainObject::Revert246() const
 {
+  if(rev_use_deadzone) {
+  }
   SetVersion(245);
 }
 
 
 void MainObject::Revert247() const
 {
+  if(rev_use_deadzone) {
+  }
   SetVersion(246);
 }
 
 
 void MainObject::Revert248() const
 {
+  if(rev_use_deadzone) {
+  }
   SetVersion(247);
 }
 
 
 void MainObject::Revert249() const
 {
+  if(rev_use_deadzone) {
+  }
   SetVersion(248);
 }
 
 
 void MainObject::Revert250() const
 {
+  if(rev_use_deadzone) {
+  }
   SetVersion(249);
 }
 
 
 void MainObject::Revert251() const
 {
+  QString sql;
+  QSqlQuery *q;
+  QSqlQuery *q1;
+  QSqlQuery *q2;
+
+  if(rev_use_deadzone) {
+    sql=QString("select NAME from CLOCKS");
+    q=new QSqlQuery(sql);
+    while(q->next()) {
+      sql=RDCreateClockTableSql(RDClock::tableName(q->value(0).toString()));
+      q1=new QSqlQuery(sql);
+      delete q1;
+      sql=QString("select EVENT_NAME,START_TIME,LENGTH from CLOCK_METADATA ")+
+	"where CLOCK_NAME=\""+RDEscapeString(q->value(0).toString())+"\" "+
+	"order by START_TIME";
+      q1=new QSqlQuery(sql);
+      while(q1->next()) {
+	sql=QString("insert into `")+
+	  RDClock::tableName(q->value(0).toString())+"` set "+
+	  "EVENT_NAME=\""+RDEscapeString(q1->value(0).toString())+"\","+
+	  QString().sprintf("START_TIME=%d,",q1->value(1).toInt())+
+	  QString().sprintf("LENGTH=%d",q1->value(2).toInt());
+	q2=new QSqlQuery(sql);
+	delete q2;
+      }
+      delete q1;
+    }
+    delete q;
+  }
   SetVersion(250);
 }
 
 
 void MainObject::Revert252() const
 {
+  QString sql;
+  QSqlQuery *q;
+  QSqlQuery *q1;
+  QSqlQuery *q2;
+
+  if(rev_use_deadzone) {
+    sql=QString("select NAME from EVENTS");
+    q=new QSqlQuery(sql);
+    while(q->next()) {
+      RDCreateLogTable(RDEvent::preimportTableName(q->value(0).toString()));
+      sql=QString("select COUNT,TYPE,TRANS_TYPE,CART_NUMBER,TEXT ")+
+	"from EVENT_METADATA where "+
+	"(EVENT_NAME=\""+RDEscapeString(q->value(0).toString())+"\")&&"+
+	"(PLACE=0)";
+      q1=new QSqlQuery(sql);
+      while(q1->next()) {
+	sql=QString("insert into `")+
+	  RDEvent::preimportTableName(q->value(0).toString())+"` set "+
+	  QString().sprintf("COUNT=%d,",q1->value(0).toInt())+
+	  QString().sprintf("TYPE=%d,",q1->value(1).toInt())+
+	  QString().sprintf("TRANS_TYPE=%d,",q1->value(2).toInt())+
+	  QString().sprintf("CART_NUMBER=%u,",q1->value(3).toUInt())+
+	  "COMMENT=\""+RDEscapeString(q1->value(4).toString())+"\"";
+	q2=new QSqlQuery(sql);
+	delete q2;
+      }
+      delete q1;
+
+      RDCreateLogTable(RDEvent::postimportTableName(q->value(0).toString()));
+      sql=QString("select COUNT,TYPE,TRANS_TYPE,CART_NUMBER,TEXT ")+
+	"from EVENT_METADATA where "+
+	"(EVENT_NAME=\""+RDEscapeString(q->value(0).toString())+"\")&&"+
+	"(PLACE=1)";
+      q1=new QSqlQuery(sql);
+      while(q1->next()) {
+	sql=QString("insert into `")+
+	  RDEvent::postimportTableName(q->value(0).toString())+"` set "+
+	  QString().sprintf("COUNT=%d,",q1->value(0).toInt())+
+	  QString().sprintf("TYPE=%d,",q1->value(1).toInt())+
+	  QString().sprintf("TRANS_TYPE=%d,",q1->value(2).toInt())+
+	  QString().sprintf("CART_NUMBER=%u,",q1->value(3).toUInt())+
+	  "COMMENT=\""+RDEscapeString(q1->value(4).toString())+"\"";
+	q2=new QSqlQuery(sql);
+	delete q2;
+      }
+      delete q1;
+    }
+    delete q;
+  }
+  sql=QString("drop table EVENT_METADATA");
+  q=new QSqlQuery(sql);
+  delete q;
   SetVersion(251);
 }
 
 
 void MainObject::Revert253() const
 {
+  QString sql;
+  QSqlQuery *q;
+
+  if(rev_use_deadzone) {
+    sql=QString("alter table CART add column PLAY_ORDER int unsigned ")+
+      "after LAST_CUT_PLAYED";
+    q=new QSqlQuery(sql);
+    delete q;
+
+    sql=QString("alter table CART drop column USE_DAYPARTING");
+    q=new QSqlQuery(sql);
+    delete q;
+  }
+
   SetVersion(252);
 }
 

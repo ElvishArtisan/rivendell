@@ -15039,3 +15039,6 @@
 2016-03-28 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in 'rivendell.spec.in' that broke the 'make rpm'
 	target.
+2016-03-28 Fred Gleason <fredg@paravelsystems.com>
+	* Added revert methods for schemas 251-253 in
+	'utils/rdrevert/rdrevert.cpp'.

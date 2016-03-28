@@ -53,6 +53,7 @@ class MainObject : public QObject
   int GetVersion() const;
   void SetVersion(int schema) const;
   int MapSchema(const QString &ver);
+  bool rev_use_deadzone;
   RDConfig *rev_config;
   QSqlDatabase *rev_db;
 };
