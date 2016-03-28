@@ -2747,6 +2747,7 @@ int UpdateDb(int ver)
   RDCart *cart;
   unsigned dev;
   QString tablename;
+  bool length_update_required=false;
 
   //
   // Create backup
@@ -6992,6 +6993,8 @@ int UpdateDb(int ver)
   }
 
   if(ver<181) {
+    length_update_required=true;
+    /*
     sql=QString().sprintf("select NUMBER from CART where TYPE=%u",
 			  RDCart::Audio);
     q=new QSqlQuery(sql);
@@ -7001,6 +7004,7 @@ int UpdateDb(int ver)
       delete cart;
     }
     delete q;
+    */
   }
 
   if(ver<182) {
@@ -7255,9 +7259,8 @@ int UpdateDb(int ver)
          CART_NUMBER int unsigned not null,\
          ITEM_DATETIME datetime not null,\
          unique REPLICATOR_NAME_IDX(REPLICATOR_NAME,CART_NUMBER))";
-    if(!RunQuery(sql)) {
-      return UPDATEDB_QUERY_FAILED;
-    }
+    q=new QSqlQuery(sql);
+    delete q;
 
     //
     // Create REPL_CUT_STATE Table
@@ -7269,9 +7272,8 @@ int UpdateDb(int ver)
          ITEM_DATETIME datetime not null,\
          index REPLICATOR_NAME_IDX(REPLICATOR_NAME),\
          index CUT_NAME_IDX(CUT_NAME))";
-    if(!RunQuery(sql)) {
-      return UPDATEDB_QUERY_FAILED;
-    }
+    q=new QSqlQuery(sql);
+    delete q;
   }
 
   if(ver<198) {
@@ -7287,33 +7289,28 @@ int UpdateDb(int ver)
          CREATIVE_TITLE char(30),\
          REGION_NAME char(80),\
          index CART_NUMBER_IDX(CART_NUMBER))";
-    if(!RunQuery(sql)) {
-      return UPDATEDB_QUERY_FAILED;
-    }
+    q=new QSqlQuery(sql);
+    delete q;
 
     sql="alter table VERSION add column LAST_ISCI_XREFERENCE datetime \
          default \"1970-01-01 00:00:00\" after LAST_MAINT_DATETIME";
-    if(!RunQuery(sql)) {
-      return UPDATEDB_QUERY_FAILED;
-    }
+    q=new QSqlQuery(sql);
+    delete q;
 
     sql="alter table SYSTEM add column ISCI_XREFERENCE_PATH char(255) \
          after MAX_POST_LENGTH";
-    if(!RunQuery(sql)) {
-      return UPDATEDB_QUERY_FAILED;
-    }
+    q=new QSqlQuery(sql);
+    delete q;
   }
 
   if(ver<199) {
     sql="create index TYPE_IDX on ISCI_XREFERENCE (TYPE,LATEST_DATE)";
-    if(!RunQuery(sql)) {
-      return UPDATEDB_QUERY_FAILED;
-    }
+    q=new QSqlQuery(sql);
+    delete q;
 
     sql="create index LATEST_DATE_IDX on ISCI_XREFERENCE (LATEST_DATE)";
-    if(!RunQuery(sql)) {
-      return UPDATEDB_QUERY_FAILED;
-    }
+    q=new QSqlQuery(sql);
+    delete q;
   }
 
   if(ver<200) {
@@ -7322,15 +7319,13 @@ int UpdateDb(int ver)
   if(ver<201) {
     sql="alter table STATIONS add column HTTP_STATION char(64) \
          default \"localhost\" after IPV4_ADDRESS";
-    if(!RunQuery(sql)) {
-      return UPDATEDB_QUERY_FAILED;
-    }
+    q=new QSqlQuery(sql);
+    delete q;
 
     sql="alter table STATIONS add column CAE_STATION char(64) \
          default \"localhost\" after HTTP_STATION";
-    if(!RunQuery(sql)) {
-      return UPDATEDB_QUERY_FAILED;
-    }
+    q=new QSqlQuery(sql);
+    delete q;
   }
 
   if(ver<202) {
@@ -8139,6 +8134,18 @@ int UpdateDb(int ver)
 
 
   // **** End of version updates ****
+
+  if(length_update_required) {
+    sql=QString().sprintf("select NUMBER from CART where TYPE=%u",
+			  RDCart::Audio);
+    q=new QSqlQuery(sql);
+    while(q->next()) {
+      cart=new RDCart(q->value(0).toUInt());
+      cart->updateLength();
+      delete cart;
+    }
+    delete q;
+  }
   
   //
   // Update Version Field

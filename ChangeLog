@@ -15033,3 +15033,6 @@
 	and 'rdlogedit/rdlogedit.h'.
 2016-03-28 Fred Gleason <fredg@paravelsystems.com>
 	* Added an rdrevert(8) commmand in 'utils/rdrevert/'.
+2016-03-28 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'rdadmin/createdb.cpp' that caused schema conversion
+	199 to fail.
