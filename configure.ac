@@ -466,6 +466,7 @@ AC_CONFIG_FILES([rivendell.spec \
     utils/rdmarkerset/Makefile \
     utils/rdpopup/Makefile \
     utils/rdpurgecasts/Makefile \
+    utils/rdrevert/Makefile \
     utils/rdsoftkeys/Makefile \
     utils/rmlsend/Makefile \
     utils/sas_shim/Makefile \

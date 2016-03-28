@@ -96,5 +96,6 @@ utils/rdimport/rdimport
 utils/rdcollect/rdcollect
 utils/rdmaint/rdmaint
 utils/rdgen/rdgen
+utils/rdrevert/rdrevert
 utils/sas_shim/sas_shim
 web/rdfeed/rdfeed.xml

@@ -15031,3 +15031,5 @@
 2016-03-25 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'Show Only Recent Logs' checkbox in 'rdlogedit/rdlogedit.cpp'
 	and 'rdlogedit/rdlogedit.h'.
+2016-03-28 Fred Gleason <fredg@paravelsystems.com>
+	* Added an rdrevert(8) commmand in 'utils/rdrevert/'.
