@@ -5,6 +5,7 @@
 *.o
 *.qm
 *.rlm
+*.rpm
 *.so
 rivendell-*.tar.gz
 rivendell-*.zip
