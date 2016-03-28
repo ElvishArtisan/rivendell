@@ -15036,3 +15036,6 @@
 2016-03-28 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in 'rdadmin/createdb.cpp' that caused schema conversion
 	199 to fail.
+2016-03-28 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'rivendell.spec.in' that broke the 'make rpm'
+	target.

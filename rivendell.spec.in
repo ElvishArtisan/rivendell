@@ -246,6 +246,7 @@ rm -rf $RPM_BUILD_ROOT
 @LOCAL_PREFIX@/sbin/rddbcheck
 @LOCAL_PREFIX@/sbin/rdmarkerset
 @LOCAL_PREFIX@/sbin/rdcleandirs
+@LOCAL_PREFIX@/sbin/rdrevert
 @LOCAL_PREFIX@/share/rivendell/*
 /etc/init.d/rdrepld
 @LOCAL_PREFIX@/share/icons/hicolor/16x16/apps/rivendell.png
