@@ -15044,3 +15044,5 @@
 	'utils/rdrevert/rdrevert.cpp'.
 2016-03-29 Fred Gleason <fredg@paravelsystems.com>
 	* Translated 'docs/rml.sxw' to XML5-DocBook in 'docs/docbook/rml.xml'.
+2016-03-29 Fred Gleason <fredg@paravelsystems.com>
+	* Alphabeticized the set of RML commands in 'docs/docbook/rml.xml'.
