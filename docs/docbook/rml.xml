@@ -374,6 +374,40 @@
   </sect2>
 
   <sect2>
+    <title><command>Copy Cut [CP]</command></title>
+    <para>
+      <variablelist>
+	<varlistentry>
+	  <term>Module</term>
+	  <listitem><command>rdcatchd</command><manvolnum>8</manvolnum></listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>Mnemonic</term>
+	  <listitem><userinput>CP</userinput></listitem>
+	</varlistentry>
+      </variablelist>
+    </para>
+    <para>
+      Copy cut audio and metadata.
+    </para>
+    <para>
+      <userinput>CP
+      <replaceable>srccart</replaceable>
+      <replaceable>srccut</replaceable>
+      <replaceable>dstcart</replaceable>
+      <replaceable>dstcut</replaceable>!</userinput>
+    </para>
+    <para>
+      Copy the audio and metadata from cut number
+      <replaceable>srccut</replaceable> in cart
+      <replaceable>srccart</replaceable> to cut number
+      <replaceable>dstcut</replaceable> in cart
+      <replaceable>dstcart</replaceable>.  The destination cart/cut must
+      already exist.
+    </para>
+  </sect2>
+
+  <sect2>
     <title><command>Database Backup [DB]</command></title>
     <para>
       <variablelist>

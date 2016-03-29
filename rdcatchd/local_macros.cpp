@@ -21,6 +21,7 @@
 //
 
 #include <rdcart.h>
+#include <rduser.h>
 
 #include <rdcatchd.h>
 
@@ -32,10 +33,42 @@ void MainObject::RunLocalMacros(RDMacro *rml)
   int chan;
   unsigned cartnum;
   unsigned cutnum;
+  unsigned dst_cartnum;
+  unsigned dst_cutnum;
   unsigned len;
   QDateTime dt;
+  RDUser *user;
+  bool ok=false;
 
   switch(rml->command()) {
+  case RDMacro::CP:
+    cartnum=rml->arg(0).toUInt();
+    cutnum=rml->arg(1).toUInt();
+    dst_cartnum=rml->arg(2).toUInt();
+    dst_cutnum=rml->arg(3).toUInt();
+    if((cartnum<1)||(cartnum>RD_MAX_CART_NUMBER)||
+       (dst_cartnum<1)||(dst_cartnum>RD_MAX_CART_NUMBER)||
+       (cutnum<1)||(cutnum>RD_MAX_CUT_NUMBER)||
+       (dst_cutnum<1)||(dst_cutnum>RD_MAX_CUT_NUMBER)||
+       (catch_ripc->user().isEmpty())) {
+      if(rml->echoRequested()) {
+	rml->acknowledge(false);
+	catch_ripc->sendRml(rml);
+      }
+      return;
+    }
+    user=new RDUser(catch_ripc->user());
+    cut=new RDCut(cartnum,cutnum);
+    ok=cut->copyTo(catch_rdstation,user,RDCut::cutName(dst_cartnum,dst_cutnum),
+		   catch_config);
+    delete cut;
+    delete user;
+    if(rml->echoRequested()) {
+      rml->acknowledge(ok);
+      catch_ripc->sendRml(rml);
+    }
+    break;
+
   case RDMacro::EX:
     cart=new RDCart(rml->arg(0).toUInt());
     if(cart->exists()) {
