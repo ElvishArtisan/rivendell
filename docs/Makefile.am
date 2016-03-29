@@ -48,7 +48,6 @@ EXTRA_DIST = ALSA.txt\
              reports.txt\
              ripc.txt\
              RIVENDELL_FILTER.txt\
-             rml.sxw\
              SAGE_ENDEC.txt\
              scheduler_formats.ods\
              SWITCHERS.txt\

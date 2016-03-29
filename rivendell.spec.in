@@ -307,9 +307,9 @@ rm -rf $RPM_BUILD_ROOT
 %doc docs/JACK.txt
 %doc docs/ENCODERS.txt
 %doc docs/pam_rd.txt
-%doc docs/rml.sxw
 %doc docs/MESSAGE_BOX.txt
 %doc docs/docbook/cae.pdf
+%doc docs/docbook/rml.pdf
 %doc docs/docbook/web_api.pdf
 %doc docs/tables/audio_perms.txt 
 %doc docs/tables/audio_ports.txt 
