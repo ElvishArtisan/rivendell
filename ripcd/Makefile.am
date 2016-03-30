@@ -43,6 +43,7 @@ dist_ripcd_SOURCES = acu1p.cpp acu1p.h\
                      btsentinel4web.cpp btsentinel4web.h\
                      btss124.cpp btss124.h\
                      btss164.cpp btss164.h\
+                     btss41mlr.cpp btss41mlr.h\
                      btss42.cpp btss42.h\
                      btss44.cpp btss44.h\
                      btss82.cpp btss82.h\
@@ -89,6 +90,7 @@ nodist_ripcd_SOURCES = moc_am16.cpp\
                        moc_btsrc8iii.cpp\
                        moc_btss124.cpp\
                        moc_btss164.cpp\
+                       moc_btss41mlr.cpp\
                        moc_btss42.cpp\
                        moc_btss44.cpp\
                        moc_btss82.cpp\

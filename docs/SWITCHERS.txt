@@ -12,6 +12,7 @@ Broadcast Tools GPI-16 General Purpose Input Module
 Broadcast Tools Sentinel 4 Web AES Switcher
 Broadcast Tools SS 12.4 Audio Switcher
 Broadcast Tools SS 16.4 Audio Switcher
+Broadcast Tools SS 4.1 MLR Switcher/Router
 Broadcast Tools SS 4.2 Audio Switcher
 Broadcast Tools SS 4.4 Audio Switcher
 Broadcast Tools ACS 8.2 Audio Control Switcher
@@ -281,6 +282,33 @@ Operation in 'multidrop' mode is not supported.  If you wish to use
 GPI (referred to as 'PIP', for 'Parallel Input Port' in the Broadcast 
 Tools documentation), then you will also need to be sure that DIP
 switch SW13-7 is ON.
+
+
+----------------------------------------------------------------------------
+BROADCAST TOOLS SS 4.1 MLR SWITCHER/ROUTER
+
+Driver Name: BroadcastTools SS4.1 MLR
+
+Supported RML Commands:
+  Switch Take ('ST')
+  GPI Enable ('GE')
+  GPI Set ('GI')
+
+GENERAL NOTES:
+Control is done by means of an RS-232C connection to a four pin RJ11
+modular jack on the back of the unit (an adapter to a standard DB9
+connector is supplied by Broadcast Tools with the unit).  Serial port
+speed on the SS 4.1 should be set to 9600 (DIP switches SW6-4 and
+SW6-5 set to 'off').  Serial port parameters in RDAdmin should be set
+to 9600 baud rate, no parity, 8 data bits, 1 stop bit, CR/LF termination.
+
+The SS 4.1 should be configured to use unit ID '0', with DIP switches
+SW6-1, SW6-2 and SW6-3 all set to 'off'.
+
+Operation in 'multidrop' mode is not supported.  If you wish to use
+GPI (referred to as 'PIP', for 'Parallel Input Port' in the Broadcast 
+Tools documentation), then you will also need to be sure that DIP
+switch SW6-7 is ON.
 
 
 ----------------------------------------------------------------------------

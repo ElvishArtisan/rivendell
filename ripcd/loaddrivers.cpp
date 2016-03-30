@@ -2,9 +2,7 @@
 //
 // Load Switcher drivers for ripcd(8)
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: loaddrivers.cpp,v 1.1.8.9 2014/02/17 02:19:03 cvs Exp $
+//   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -39,6 +37,7 @@
 #include <btsrc8iii.h>
 #include <btss124.h>
 #include <btss164.h>
+#include <btss41mlr.h>
 #include <btss42.h>
 #include <btss44.h>
 #include <btss82.h>
@@ -120,6 +119,10 @@ bool MainObject::LoadSwitchDriver(int matrix_num)
 
   case RDMatrix::BtSs164:
     ripcd_switcher[matrix_num]=new BtSs164(matrix,this);
+    break;
+
+  case RDMatrix::BtSs41Mlr:
+    ripcd_switcher[matrix_num]=new BtSs41Mlr(matrix,this);
     break;
 
   case RDMatrix::BtSs42:
