@@ -2,9 +2,7 @@
 //
 // A Utility for running periodic system maintenance.
 //
-//   (C) Copyright 2008 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdmaint.cpp,v 1.9.4.4 2013/11/13 23:36:39 cvs Exp $
+//   (C) Copyright 2008-2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -234,10 +232,9 @@ void MainObject::PurgeElr()
   while(q->next()) {
     QString tablename=q->value(0).toString()+"_SRT";
     tablename.replace(" ","_");
-    sql=QString().sprintf("delete from %s where EVENT_DATETIME<\"%s 00:00:00\"",
-			  (const char *)tablename,
-			  (const char *)dt.addDays(-q->value(1).toInt()).
-			  toString("yyyy-MM-dd"));
+    sql=QString("delete from `")+tablename+"` where "+
+      "EVENT_DATETIME<\""+
+      dt.addDays(-q->value(1).toInt()).toString("yyyy-MM-dd")+" 00:00:00\"";
     q1=new RDSqlQuery(sql);
     delete q1;
   }

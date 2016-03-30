@@ -15057,3 +15057,6 @@
 	* Fixed a regression in 'rdlibrary/audio_cart.cpp' that caused
 	cuts to be shown as invalid when 'Schedule Cuts by weight' was
 	selected.
+2016-03-30 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'utils/rdmaint/rdmaint.cpp' that caused purging
+	of ELR data from services containing a '-' in its name to fail.
