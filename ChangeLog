@@ -15053,3 +15053,7 @@
 2016-03-30 Fred Gleason <fredg@paravelsystems.com>
 	* Added a switcher driver for the Broadcast Tools SS 4.1 MLR
 	Switcher/Router in 'ripcd/btss41mlr.cpp' and 'ripcd/btss41mlr.h'.
+2016-03-30 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in 'rdlibrary/audio_cart.cpp' that caused
+	cuts to be shown as invalid when 'Schedule Cuts by weight' was
+	selected.
