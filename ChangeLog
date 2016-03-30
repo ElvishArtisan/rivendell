@@ -15050,6 +15050,6 @@
 	* Added the 'Copy Cut' ['CP'] RML in 'lib/rdmacro.cpp' and
 	'lib/rdmacro.h'.
 	* Implemented the 'Copy Cut' ['CP'] RML in 'rdcatchd/local_macros.cpp'.
-2016-03-29 Fred Gleason <fredg@paravelsystems.com>
+2016-03-30 Fred Gleason <fredg@paravelsystems.com>
 	* Added a switcher driver for the Broadcast Tools SS 4.1 MLR
 	Switcher/Router in 'ripcd/btss41mlr.cpp' and 'ripcd/btss41mlr.h'.
