@@ -1,8 +1,11 @@
 *~
 *.cgi
+*.exe
 *.la
+*.lib
 *.lo
 *.o
+*.obj
 *.qm
 *.rlm
 *.rpm
