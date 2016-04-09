@@ -34,6 +34,8 @@
 class RDLogLine
 {
  public:
+  bool hasBeenModified(void); 
+
   enum StartTimeType {Imported=0,Logged=1,Predicted=2,Actual=3,Initial=4};
   enum TimeType {Relative=0,Hard=1};
   enum TransType {Play=0,Segue=1,Stop=2,NoTrans=255};
@@ -54,6 +56,7 @@ class RDLogLine
   void clear();
   void clearExternalData();
   void clearTrackData(RDLogLine::TransEdge edge);
+  void clearModified(void);
   int id() const;
   void setId(int id);
   RDLogLine::Status status() const;
@@ -269,6 +272,7 @@ class RDLogLine
   void setHoldover(bool);
 
  private:
+  bool modified;
   int log_id;
   RDLogLine::Status log_status;
   RDLogLine::State log_state;
