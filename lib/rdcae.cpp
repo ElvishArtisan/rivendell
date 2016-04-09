@@ -149,6 +149,16 @@ bool RDCae::loadPlay(int card,QString name,int *stream,int *handle)
   }
   cae_handle[card][*stream]=*handle;
   cae_pos[card][*stream]=0xFFFFFFFF;
+
+  // CAE Daemon sends back a stream of -1 if there is an issue with allocating it
+  // such as file missing, etc.
+  if(*stream < 0) {
+     return false;
+  }
+
+
+
+
   return true;
 }
 
