@@ -15067,3 +15067,6 @@
 2016-04-14 Fred Gleason <fredg@paravelsystems.com>
 	* Updated 'NEWS'.
 	* Incremented the package version to 2.12.0.
+2016-04-14 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the libXmu from the list of tested libraries for Qt3 in
+	'acinclude.m4'.
