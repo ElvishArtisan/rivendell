@@ -1,6 +1,44 @@
 The NEWS file for the Rivendell package.
 
 -------------------------------------------------------------------------------
+v2.12.0 --  4/14/2016
+
+Changes:
+   Sequential Cut Play-Out.  Cuts can now be configured on a per-cart basis
+   to play in a set sequential order rather than by relative weight value.
+
+   New Switcher Support.  Support has been added for the Broadcast Tools
+   ADMS 44.22 and SS 4.1 MLR switchers.
+
+   New RML.  A 'Copy Cut' ['CP'] RML has been added that allows cuts to
+   be copied between carts.
+
+   RDLogEdit Changes.  Added a 'Show Only Recent Logs' checkbox.
+
+   New Web API Methods.  The following new methods have been added to the
+   web API:
+       AssignSchedCode
+       ListCartSchedCodes
+       ListSchedCodes
+       UnassignSchedCode
+
+   Database Schema Reversion.  Added an rdrevert(8) command to allow
+   database schema changes to be reverted to an earlier version (experimental).
+
+   Documentation Changes.  The documentation has been converted to
+   XML-DocBook5.
+
+   Various other bug fixes.  See the ChangeLog for details.
+
+Database Update:
+   This version of Rivendell uses database schema version 254, and will
+   automatically upgrade any earlier versions.  To see the current schema
+   version prior to upgrade, see RDAdmin->SystemInfo.
+
+   As always, be sure to run RDAdmin immediately after upgrading to allow 
+   any necessary changes to the database schema to be applied.
+
+-------------------------------------------------------------------------------
 v2.11.0 --  9/18/2015
 
 Changes:
