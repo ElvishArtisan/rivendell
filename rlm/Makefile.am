@@ -38,6 +38,7 @@ RLM_MODULES=rlm_ando.rlm\
             rlm_test.rlm\
             rlm_twitter.rlm\
             rlm_udp.rlm\
+            rlm_walltime.rlm\
             rlm_xds.rlm\
             rlm_xmpad.rlm
 
@@ -75,6 +76,7 @@ EXTRA_DIST = Makefile-example\
              rlm_test.c\
              rlm_twitter.c\
              rlm_udp.c\
+             rlm_walltime.c\
              rlm_xds.c\
              rlm_xmpad.c
 

@@ -336,6 +336,7 @@ rm -rf $RPM_BUILD_ROOT
 %doc docs/tables/users.txt 
 %doc docs/tables/version.txt 
 %doc docs/asound.conf-sample
+%doc conf/rlm_walltime.conf
 %doc conf/rlm_serial.conf
 %doc conf/rlm_udp.conf
 %doc conf/rlm_twitter.conf

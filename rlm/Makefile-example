@@ -32,6 +32,7 @@ OBJS = rlm_ando.rlm\
        rlm_test.rlm\
        rlm_twitter.rlm\
        rlm_udp.rlm \
+       rlm_walltime.rlm\
        rlm_xmpad.rlm
 
 %.rlm:	%.c
