@@ -2,9 +2,7 @@
 //
 // A container class for a Rivendell Log Line.
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdlog_line.cpp,v 1.113.4.13.2.2 2014/05/22 16:12:54 cvs Exp $
+//   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -26,13 +24,14 @@
 
 #include <qobject.h>
 
-#include <rddb.h>
-#include <rdconf.h>
-#include <rd.h>
-#include <rdlog_line.h>
-#include <rdcut.h>
-#include <rdmacro_event.h>
-#include <rdweb.h>
+#include "rddb.h"
+#include "rdconf.h"
+#include "rd.h"
+#include "rdlog_line.h"
+#include "rdcut.h"
+#include "rdmacro_event.h"
+#include "rdweb.h"
+#include "rdescape_string.h"
 
 RDLogLine::RDLogLine()
 {
@@ -68,9 +67,19 @@ RDLogLine::RDLogLine(unsigned cartnum)
   delete q;
 }
 
+void RDLogLine::clearModified(void)
+{
+  modified = false;
+}
+
+bool RDLogLine::hasBeenModified(void)
+{
+  return modified;
+}
 
 void RDLogLine::clear()
 {
+  clearModified();
   log_id=-1;
   log_status=RDLogLine::Scheduled;
   log_state=RDLogLine::Ok;
@@ -216,6 +225,7 @@ int RDLogLine::id() const
 void RDLogLine::setId(int id)
 {
   log_id=id;
+  modified=true;
 }
 
 
@@ -321,6 +331,7 @@ RDLogLine::Source RDLogLine::source() const
 void RDLogLine::setSource(RDLogLine::Source src)
 {
   log_source=src;
+  modified=true;
 }
 
 
@@ -333,6 +344,7 @@ unsigned RDLogLine::cartNumber() const
 void RDLogLine::setCartNumber(unsigned cart)
 {
   log_cart_number=cart;
+  modified=true;
 }
 
 
@@ -360,6 +372,7 @@ int RDLogLine::graceTime() const
 void RDLogLine::setGraceTime(int time)
 {
   log_grace_time=time;
+  modified=true;
 }
 
 
@@ -384,6 +397,7 @@ QString RDLogLine::originUser() const
 void RDLogLine::setOriginUser(const QString &username)
 {
   log_origin_user=username;
+  modified=true;
 }
 
 
@@ -396,6 +410,7 @@ QDateTime RDLogLine::originDateTime() const
 void RDLogLine::setOriginDateTime(const QDateTime &datetime)
 {
   log_origin_datetime=datetime;
+  modified=true;
 }
 
 
@@ -426,6 +441,7 @@ int RDLogLine::startPoint(PointerSource ptr) const
 void RDLogLine::setStartPoint(int point,PointerSource ptr)
 {
   log_start_point[ptr]=point;
+  modified=true;
 }
 
 
@@ -444,6 +460,7 @@ int RDLogLine::endPoint(PointerSource ptr) const
 void RDLogLine::setEndPoint(int point,PointerSource ptr)
 {
   log_end_point[ptr]=point;
+  modified=true;
 }
 
 
@@ -468,6 +485,7 @@ int RDLogLine::segueStartPoint(PointerSource ptr) const
 void RDLogLine::setSegueStartPoint(int point,PointerSource ptr)
 {
   log_segue_start_point[ptr]=point;
+  modified=true;
 }
 
 
@@ -492,6 +510,7 @@ int RDLogLine::segueEndPoint(PointerSource ptr) const
 void RDLogLine::setSegueEndPoint(int point,PointerSource ptr)
 {
   log_segue_end_point[ptr]=point;
+  modified=true;
 }
 
 
@@ -509,6 +528,7 @@ int RDLogLine::segueGain() const
 void RDLogLine::setSegueGain(int gain)
 {
   log_segue_gain=gain;
+  modified=true;
 }
 
 
@@ -533,6 +553,7 @@ int RDLogLine::fadeupPoint(RDLogLine::PointerSource ptr) const
 void RDLogLine::setFadeupPoint(int point,RDLogLine::PointerSource ptr)
 {
   log_fadeup_point[ptr]=point;
+  modified=true;
 }
 
 
@@ -545,6 +566,7 @@ int RDLogLine::fadeupGain() const
 void RDLogLine::setFadeupGain(int gain)
 {
   log_fadeup_gain=gain;
+  modified=true;
 }
 
 
@@ -569,6 +591,7 @@ int RDLogLine::fadedownPoint(RDLogLine::PointerSource ptr) const
 void RDLogLine::setFadedownPoint(int point,RDLogLine::PointerSource ptr)
 {
   log_fadedown_point[ptr]=point;
+  modified=true;
 }
 
 
@@ -581,6 +604,7 @@ int RDLogLine::fadedownGain() const
 void RDLogLine::setFadedownGain(int gain)
 {
   log_fadedown_gain=gain;
+  modified=true;
 }
 
 
@@ -593,6 +617,7 @@ int RDLogLine::duckUpGain() const
 void RDLogLine::setDuckUpGain(int gain)
 {
   log_duck_up_gain=gain;
+  modified=true;
 }
 
 int RDLogLine::duckDownGain() const
@@ -604,6 +629,7 @@ int RDLogLine::duckDownGain() const
 void RDLogLine::setDuckDownGain(int gain)
 {
   log_duck_down_gain=gain;
+  modified=true;
 }
 
 
@@ -676,6 +702,7 @@ RDCart::Type RDLogLine::cartType() const
 void RDLogLine::setCartType(RDCart::Type type)
 {
   log_cart_type=type;
+  modified=true;
 }
 
 
@@ -1072,6 +1099,7 @@ QString RDLogLine::markerComment() const
 void RDLogLine::setMarkerComment(const QString &str)
 {
   log_marker_comment=str;
+  modified=true;
 }
 
 
@@ -1084,6 +1112,7 @@ QString RDLogLine::markerLabel() const
 void RDLogLine::setMarkerLabel(const QString &str)
 {
   log_marker_label=str;
+  modified=true;
 }
 
 
@@ -1144,6 +1173,7 @@ QTime RDLogLine::extStartTime() const
 void RDLogLine::setExtStartTime(QTime time)
 {
   log_ext_start_time=time;
+  modified=true;
 }
 
 
@@ -1156,6 +1186,7 @@ int RDLogLine::extLength() const
 void RDLogLine::setExtLength(int length)
 {
   log_ext_length=length;
+  modified=true;
 }
 
 
@@ -1168,6 +1199,7 @@ QString RDLogLine::extCartName() const
 void RDLogLine::setExtCartName(const QString &name)
 {
   log_ext_cart_name=name;
+  modified=true;
 }
 
 
@@ -1180,6 +1212,7 @@ QString RDLogLine::extData() const
 void RDLogLine::setExtData(const QString &data)
 {
   log_ext_data=data;
+  modified=true;
 }
 
 
@@ -1192,6 +1225,7 @@ QString RDLogLine::extEventId() const
 void RDLogLine::setExtEventId(const QString &id)
 {
   log_ext_event_id=id;
+  modified=true;
 }
 
 
@@ -1204,6 +1238,7 @@ QString RDLogLine::extAnncType() const
 void RDLogLine::setExtAnncType(const QString &type)
 {
   log_ext_annc_type=type;
+  modified=true;
 }
 
 
@@ -1428,6 +1463,7 @@ QString RDLogLine::linkEventName() const
 void RDLogLine::setLinkEventName(const QString &name)
 {
   log_link_event_name=name;
+  modified=true;
 }
 
 
@@ -1440,6 +1476,7 @@ QTime RDLogLine::linkStartTime() const
 void RDLogLine::setLinkStartTime(const QTime &time)
 {
   log_link_start_time=time;
+  modified=true;
 }
 
 
@@ -1452,6 +1489,7 @@ int RDLogLine::linkLength() const
 void RDLogLine::setLinkLength(int msecs)
 {
   log_link_length=msecs;
+  modified=true;
 }
 
 
@@ -1464,6 +1502,7 @@ int RDLogLine::linkStartSlop() const
 void RDLogLine::setLinkStartSlop(int msecs)
 {
   log_link_start_slop=msecs;
+  modified=true;
 }
 
 
@@ -1488,6 +1527,7 @@ int RDLogLine::linkId() const
 void RDLogLine::setLinkId(int id)
 {
   log_link_id=id;
+  modified=true;
 }
 
 
@@ -1500,6 +1540,7 @@ bool RDLogLine::linkEmbedded() const
 void RDLogLine::setLinkEmbedded(bool state)
 {
   log_link_embedded=state;
+  modified=true;
 }
 
 
@@ -1547,208 +1588,224 @@ RDLogLine::State RDLogLine::setEvent(int mach,RDLogLine::TransType next_type,
   double time_ratio=1.0;
 
   switch(log_type) {
-      case RDLogLine::Cart:
-	cart=new RDCart(log_cart_number);
-	if(!cart->exists()) {
-	  delete cart;
+  case RDLogLine::Cart:
+    cart=new RDCart(log_cart_number);
+    if(!cart->exists()) {
+      delete cart;
 #ifndef WIN32
-	  syslog(LOG_USER|LOG_WARNING,"RDLogLine::setEvent(): no such cart, CART=%06u",log_cart_number);
+      syslog(LOG_USER|LOG_WARNING,"RDLogLine::setEvent(): no such cart, CART=%06u",log_cart_number);
 #endif  // WIN32
-	  log_state=RDLogLine::NoCart;
-	  return RDLogLine::NoCart;
-	}
-	cart->selectCut(&log_cut_name);
-	if(log_cut_name.isEmpty()) {
-	  delete cart;
+      log_state=RDLogLine::NoCart;
+      return RDLogLine::NoCart;
+    }
+    cart->selectCut(&log_cut_name);
+    if(log_cut_name.isEmpty()) {
+      delete cart;
 #ifndef WIN32
 	  // syslog(LOG_USER|LOG_WARNING,"RDLogLine::setEvent(): RDCut::selectCut() failed, CART=%06u",log_cart_number);
 #endif  // WIN32
-	  log_state=RDLogLine::NoCut;
-	  return RDLogLine::NoCut;
-	}
-	log_cut_number=log_cut_name.right(3).toInt();
-	sql=QString().sprintf("select LENGTH,START_POINT,END_POINT,\
-                               SEGUE_START_POINT,SEGUE_END_POINT,\
-			       SEGUE_GAIN,\
-                               TALK_START_POINT,TALK_END_POINT,\
-                               HOOK_START_POINT,HOOK_END_POINT,\
-                               OUTCUE,ISRC,ISCI,DESCRIPTION from CUTS\
-                               where CUT_NAME=\"%s\"",
-			      (const char *)log_cut_name);
-	q=new RDSqlQuery(sql);
-	if(!q->first()) {
-	  delete q;
-	  delete cart;
+      log_state=RDLogLine::NoCut;
+      return RDLogLine::NoCut;
+    }
+    log_cut_number=log_cut_name.right(3).toInt();
+    sql=QString("select ")+
+      "LENGTH,"+                // 00
+      "START_POINT,"+           // 01
+      "END_POINT,"+             // 02
+      "SEGUE_START_POINT,"+     // 03
+      "SEGUE_END_POINT,"+       // 04
+      "SEGUE_GAIN,"+            // 05
+      "TALK_START_POINT,"+      // 06
+      "TALK_END_POINT,"+        // 07
+      "HOOK_START_POINT,"+      // 08
+      "HOOK_END_POINT,"+        // 09
+      "OUTCUE,"+                // 10
+      "ISRC,"+                  // 11
+      "ISCI,"+                  // 12
+      "DESCRIPTION "+           // 13
+      "from CUTS where CUT_NAME=\""+RDEscapeString(log_cut_name)+"\"";
+    q=new RDSqlQuery(sql);
+    if(!q->first()) {
+      delete q;
+      delete cart;
 #ifndef WIN32
-	  syslog(LOG_USER|LOG_WARNING,"RDLogLine::setEvent(): no cut record found, SQL=%s",(const char *)sql);
+      syslog(LOG_USER|LOG_WARNING,"RDLogLine::setEvent(): no cut record found, SQL=%s",(const char *)sql);
 #endif  // WIN32
-	  log_state=RDLogLine::NoCut;
-	  return RDLogLine::NoCut;
-	}
-	if(q->value(0).toInt()==0) {
-	  delete q;
-	  delete cart;
+      log_state=RDLogLine::NoCut;
+      return RDLogLine::NoCut;
+    }
+    if(q->value(0).toInt()==0) {
+      delete q;
+      delete cart;
 #ifndef WIN32
-	  syslog(LOG_USER|LOG_WARNING,"RDLogLine::setEvent(): zero length cut audio, SQL=%s",(const char *)sql);
+      syslog(LOG_USER|LOG_WARNING,"RDLogLine::setEvent(): zero length cut audio, SQL=%s",(const char *)sql);
 #endif  // WIN32
-	  log_state=RDLogLine::NoCut;
-	  return RDLogLine::NoCut;
-	}
-	if(timescale) {
-	  if(len>0) {
-	    log_effective_length=len;
-	    log_forced_length=len;
-	  }
-	  else {
-	    if(log_hook_mode&&
-	       (q->value(8).toInt()>=0)&&(q->value(9).toInt()>=0)) {
-	      log_effective_length=q->value(9).toInt()-q->value(8).toInt();
-	      log_forced_length=log_effective_length;
-	      time_ratio=1.0;
-	      timescale=false;
-	    }
-	    else {
-	      log_effective_length=cart->forcedLength();
-	      time_ratio=(double)log_forced_length/
-		(q->value(2).toDouble()-q->value(1).toDouble());
-	      if(((1.0/time_ratio)<RD_TIMESCALE_MIN)||
-		 ((1.0/time_ratio)>RD_TIMESCALE_MAX)) {
-		timescale=false;
-	      }
-	    }
-	  }
-	}
-	if(timescale) {
-	  log_start_point[0]=(int)(q->value(1).toDouble()*time_ratio);
-	  log_end_point[0]=(int)(q->value(2).toDouble()*time_ratio);
-	  if(q->value(3).toInt()>=0) {
-	    log_segue_start_point[0]=(int)(q->value(3).toDouble()*time_ratio);
-	    log_segue_end_point[0]=(int)(q->value(4).toDouble()*time_ratio);
-	  }
-	  else {
-	    log_segue_start_point[0]=-1;
-	    log_segue_end_point[0]=-1;
-	  }
-	  if(log_talk_start>=0) {
-	    log_talk_start=(int)((double)log_talk_start*time_ratio);
-	    log_talk_end=(int)(q->value(7).toDouble()*time_ratio);
-	  }
-	  else {
-	    log_talk_start=-1;
-	    log_talk_end=-1;
-	  }
-	  log_talk_length=log_talk_end-log_talk_start;
-	}
-	else {
-	  if(log_hook_mode&&
-	     (q->value(8).toInt()>=0)&&(q->value(9).toInt()>=0)) {
-	    log_start_point[0]=q->value(8).toInt();
-	    log_end_point[0]=q->value(9).toInt();
-	    log_segue_start_point[0]=-1;
-	    log_segue_end_point[0]=-1;
-	    log_talk_start=-1;
-	    log_talk_end=-1;
-	  }
-	  else {
-	    log_start_point[0]=q->value(1).toInt();
-	    log_end_point[0]=q->value(2).toInt();
-	    if(log_start_point[RDLogLine::LogPointer]>=0 ||
-	       log_end_point[RDLogLine::LogPointer]>=0) {
-	      log_effective_length=log_end_point[RDLogLine::LogPointer]-
-		log_start_point[RDLogLine::LogPointer];
-	    }
-	    else {
-	      log_effective_length=q->value(0).toUInt();
-	    }
-	    log_segue_start_point[0]=q->value(3).toInt();
-	    log_segue_end_point[0]=q->value(4).toInt();
-	    log_talk_start=q->value(6).toInt();
-	    log_talk_end=q->value(7).toInt();
-	  }
-	  log_hook_start=q->value(8).toInt();
-	  log_hook_end=q->value(9).toInt();
-          if(log_talk_end>log_end_point[RDLogLine::LogPointer] && 
-             log_end_point[RDLogLine::LogPointer]>=0) {
-            log_talk_end=log_end_point[RDLogLine::LogPointer];
-          }
-          if(log_talk_end<log_start_point[RDLogLine::LogPointer]) {
-            log_talk_end=0;
-            log_talk_start=0;
-          }
-          else {
-            if(log_talk_start<log_start_point[RDLogLine::LogPointer]) {
-              log_talk_start=0;
-              log_talk_end-=log_start_point[RDLogLine::LogPointer];
-            }
-            if(log_talk_start>log_end_point[RDLogLine::LogPointer] &&
-               log_end_point[RDLogLine::LogPointer]>=0) {
-              log_talk_start=0;
-              log_talk_end=0;
-            }
-          }
-	  log_talk_length=log_talk_end-log_talk_start;
-	}
-	if(segueStartPoint(RDLogLine::AutoPointer)<0) {
-	  log_average_segue_length=cart->averageSegueLength();
-	}
-	else {
-	  log_average_segue_length=segueStartPoint(RDLogLine::AutoPointer)-
-	    startPoint(RDLogLine::AutoPointer);
-	}
-	log_outcue=q->value(10).toString();
-	log_isrc=q->value(11).toString();
-	log_isci=q->value(12).toString();
-	log_description=q->value(13).toString();
-	log_segue_gain_cut=q->value(5).toInt();
-	delete q;
-	delete cart;
-	break;
-
-      case RDLogLine::Macro:
-	cart=new RDCart(log_cart_number);
-	log_effective_length=cart->forcedLength();
-	log_average_segue_length=log_effective_length;
-	log_forced_stop=false;
-	rml_event=new RDMacroEvent();
-	rml_event->load(cart->number());
-	for(int i=0;i<rml_event->size();i++) {
-	  if(rml_event->command(i)->command()==RDMacro::LL) {
-	    if(rml_event->command(i)->arg(0).toInt()==mach) {
-	      log_forced_stop=true;
-	    }
-	  }
-	}
-	log_start_point[0]=-1;
-	log_end_point[0]=-1;
+      log_state=RDLogLine::NoCut;
+      return RDLogLine::NoCut;
+    }
+    if(timescale) {
+      if(len>0) {
+       log_effective_length=len;
+       log_forced_length=len;
+      }
+      else {
+       if(log_hook_mode&&
+          (q->value(8).toInt()>=0)&&(q->value(9).toInt()>=0)) {
+         log_effective_length=q->value(9).toInt()-q->value(8).toInt();
+         log_forced_length=log_effective_length;
+         time_ratio=1.0;
+         timescale=false;
+       }
+       else {
+         log_effective_length=cart->forcedLength();
+         time_ratio=(double)log_forced_length/
+           (q->value(2).toDouble()-q->value(1).toDouble());
+	 /*
+	  * FIXME: timescale limits need to be applied here
+	  *
+         if(((1.0/time_ratio)<(1.0-log_timescale_limit))||
+            ((1.0/time_ratio)>(1.0+log_timescale_limit))) {
+           timescale=false;
+	 }
+	 */
+       }
+      }
+    }
+    if(timescale) {
+      log_start_point[0]=(int)(q->value(1).toDouble()*time_ratio);
+      log_end_point[0]=(int)(q->value(2).toDouble()*time_ratio);
+      if(q->value(3).toInt()>=0) {
+	log_segue_start_point[0]=(int)(q->value(3).toDouble()*time_ratio);
+	log_segue_end_point[0]=(int)(q->value(4).toDouble()*time_ratio);
+      }
+      else {
 	log_segue_start_point[0]=-1;
 	log_segue_end_point[0]=-1;
-	log_talk_length=0;
+      }
+      if(log_talk_start>=0) {
+	log_talk_start=(int)((double)log_talk_start*time_ratio);
+	log_talk_end=(int)(q->value(7).toDouble()*time_ratio);
+      }
+      else {
 	log_talk_start=-1;
 	log_talk_end=-1;
-	log_segue_gain_cut=0;
-	delete rml_event;
-	delete cart;
-	break;
-
-      case RDLogLine::Marker:
-      case RDLogLine::Track:
-	log_cut_number=0;
-	log_cut_name="";
-	log_effective_length=0;
-	log_average_segue_length=0;
-	log_forced_stop=false;
-	log_start_point[0]=-1;
-	log_end_point[0]=-1;
+      }
+      log_talk_length=log_talk_end-log_talk_start;
+    }
+    else {
+      if(log_hook_mode&&
+	 (q->value(8).toInt()>=0)&&(q->value(9).toInt()>=0)) {
+	log_start_point[0]=q->value(8).toInt();
+	log_end_point[0]=q->value(9).toInt();
 	log_segue_start_point[0]=-1;
 	log_segue_end_point[0]=-1;
-	log_talk_length=0;
 	log_talk_start=-1;
 	log_talk_end=-1;
-	log_segue_gain_cut=0;
-	break;
+      }
+      else {
+       log_start_point[0]=q->value(1).toInt();
+       log_end_point[0]=q->value(2).toInt();
+       if(log_start_point[RDLogLine::LogPointer]>=0 ||
+          log_end_point[RDLogLine::LogPointer]>=0) {
+         log_effective_length=log_end_point[RDLogLine::LogPointer]-
+           log_start_point[RDLogLine::LogPointer];
+       }
+       else {
+         log_effective_length=q->value(0).toUInt();
+       }
+       log_segue_start_point[0]=q->value(3).toInt();
+       log_segue_end_point[0]=q->value(4).toInt();
+       log_talk_start=q->value(6).toInt();
+       log_talk_end=q->value(7).toInt();
+      }
+      log_hook_start=q->value(8).toInt();
+      log_hook_end=q->value(9).toInt();
+      if(log_talk_end>log_end_point[RDLogLine::LogPointer] && 
+        log_end_point[RDLogLine::LogPointer]>=0) {
+       log_talk_end=log_end_point[RDLogLine::LogPointer];
+      }
+      if(log_talk_end<log_start_point[RDLogLine::LogPointer]) {
+       log_talk_end=0;
+       log_talk_start=0;
+      }
+      else {
+       if(log_talk_start<log_start_point[RDLogLine::LogPointer]) {
+         log_talk_start=0;
+         log_talk_end-=log_start_point[RDLogLine::LogPointer];
+       }
+       if(log_talk_start>log_end_point[RDLogLine::LogPointer] &&
+          log_end_point[RDLogLine::LogPointer]>=0) {
+         log_talk_start=0;
+         log_talk_end=0;
+       }
+      }
+      log_talk_length=log_talk_end-log_talk_start;
+    }
+    if(segueStartPoint(RDLogLine::AutoPointer)<0) {
+      log_average_segue_length=cart->averageSegueLength();
+    }
+    else {
+      log_average_segue_length=segueStartPoint(RDLogLine::AutoPointer)-
+       startPoint(RDLogLine::AutoPointer);
+    }
+    log_outcue=q->value(10).toString();
+    log_isrc=q->value(11).toString();
+    log_isci=q->value(12).toString();
+    log_description=q->value(13).toString();
+    log_segue_gain_cut=q->value(5).toInt();
+    delete q;
+    delete cart;
+    break;
 
-      default:
-	break;
+  case RDLogLine::Macro:
+    cart=new RDCart(log_cart_number);
+    log_effective_length=cart->forcedLength();
+    log_average_segue_length=log_effective_length;
+    log_forced_stop=false;
+    rml_event=new RDMacroEvent();
+    rml_event->load(cart->number());
+    for(int i=0;i<rml_event->size();i++) {
+      if(rml_event->command(i)->command()==RDMacro::LL) {
+       if(rml_event->command(i)->arg(0).toInt()==mach) {
+         log_forced_stop=true;
+       }
+      }
+    }
+    log_start_point[0]=-1;
+    log_end_point[0]=-1;
+    log_segue_start_point[0]=-1;
+    log_segue_end_point[0]=-1;
+    log_talk_length=0;
+    log_talk_start=-1;
+    log_talk_end=-1;
+    log_segue_gain_cut=0;
+    delete rml_event;
+    delete cart;
+    break;
+
+  case RDLogLine::Chain:
+  case RDLogLine::CloseBracket:
+  case RDLogLine::Marker:
+  case RDLogLine::MusicLink:
+  case RDLogLine::OpenBracket:
+  case RDLogLine::Track:
+  case RDLogLine::TrafficLink:
+  case RDLogLine::UnknownType:
+    log_cut_number=0;
+    log_cut_name="";
+    log_effective_length=0;
+    log_average_segue_length=0;
+    log_forced_stop=false;
+    log_start_point[0]=-1;
+    log_end_point[0]=-1;
+    log_segue_start_point[0]=-1;
+    log_segue_end_point[0]=-1;
+    log_talk_length=0;
+    log_talk_start=-1;
+    log_talk_end=-1;
+    log_segue_gain_cut=0;
+    log_state=RDLogLine::Ok;
+    break;
   }
   return RDLogLine::Ok;
 }
@@ -2015,7 +2072,7 @@ QString RDLogLine::transText(RDLogLine::TransType trans)
 	return QObject::tr("STOP");
 
       case RDLogLine::NoTrans:
-	return QObject::tr("UNKNOWN");
+	return QString("");
   }
   return QObject::tr("UNKNOWN");
 }

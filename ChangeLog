@@ -15069,4 +15069,9 @@
 	* Incremented the package version to 2.12.0.
 2016-04-14 Fred Gleason <fredg@paravelsystems.com>
 	* Removed the libXmu from the list of tested libraries for Qt3 in
-	'acinclude.m4'.
+	 acinclude.m4'.
+2015-04-21 Brian McGlynn <brian.mcglynn@geneseemedia.net>
+  	* Refactored RDLogEditor code to improve performance when
+  	saving and updating logs.  (from albanpeigner pull request #42)
+	* Created modification pointer in voicetracker for better performance
+	over WAN networks
