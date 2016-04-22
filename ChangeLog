@@ -15070,3 +15070,6 @@
 2016-04-14 Fred Gleason <fredg@paravelsystems.com>
 	* Removed the libXmu from the list of tested libraries for Qt3 in
 	'acinclude.m4'.
+2015-04-21 Brian McGlynn <brian.mcglynn@geneseemedia.net>
+        * Added "Group By" statement in rdlibrary/rdlibrary.cpp to allow a
+ 	full 100 results to be shown
