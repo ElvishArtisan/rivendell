@@ -34,7 +34,7 @@ int rlm_walltime_devs;
 char *rlm_walltime_addresses;
 uint16_t *rlm_walltime_ports;
 char *rlm_walltime_formats;
-char *rlm_walltime_clock_addresses;
+char *rlm_walltime_host_addresses;
 int *rlm_walltime_masters;
 int *rlm_walltime_aux1s;
 int *rlm_walltime_aux2s;
@@ -79,7 +79,7 @@ void rlm_walltime_RLMStart(void *ptr,const char *arg)
   rlm_walltime_addresses=NULL;
   rlm_walltime_ports=NULL;
   rlm_walltime_formats=NULL;
-  rlm_walltime_clock_addresses=NULL;
+  rlm_walltime_host_addresses=NULL;
   rlm_walltime_masters=NULL;
   rlm_walltime_aux1s=NULL;
   rlm_walltime_aux2s=NULL;
@@ -100,15 +100,10 @@ void rlm_walltime_RLMStart(void *ptr,const char *arg)
     rlm_walltime_formats=realloc(rlm_walltime_formats,(rlm_walltime_devs+1)*8192);
     strncpy(rlm_walltime_formats+8192*rlm_walltime_devs,
 	    RLMGetStringValue(ptr,arg,section,"FormatString",""),8192);
-
-
-    rlm_walltime_clock_addresses=
-      realloc(rlm_walltime_clock_addresses,(rlm_walltime_devs+1)*(rlm_walltime_devs+1)*16);
-    strncpy(rlm_walltime_clock_addresses+16*rlm_walltime_devs,
-	    RLMGetStringValue(ptr,arg,section,"ClockAddress",""),15);
-
-
-
+    rlm_walltime_host_addresses=
+      realloc(rlm_walltime_host_addresses,(rlm_walltime_devs+1)*(rlm_walltime_devs+1)*16);
+    strncpy(rlm_walltime_host_addresses+16*rlm_walltime_devs,
+	    RLMGetStringValue(ptr,arg,section,"HostAddress",""),15);
     rlm_walltime_masters=realloc(rlm_walltime_masters,
 			    (rlm_walltime_devs+1)*sizeof(int));
     rlm_walltime_masters[rlm_walltime_devs]=
@@ -137,7 +132,7 @@ void rlm_walltime_RLMFree(void *ptr)
   free(rlm_walltime_addresses);
   free(rlm_walltime_ports);
   free(rlm_walltime_formats);
-  free(rlm_walltime_clock_addresses);
+  free(rlm_walltime_host_addresses);
   free(rlm_walltime_masters);
   free(rlm_walltime_aux1s);
   free(rlm_walltime_aux2s);
@@ -173,14 +168,14 @@ void rlm_walltime_RLMPadDataSent(void *ptr,const struct rlm_svc *svc,
       if(now->rlm_len==0) {
 	snprintf(timer,1500,
 		 "SP!RS!WU http://%s/walltime/walltime.html!",
-		 rlm_walltime_clock_addresses+16*i);
+		 rlm_walltime_host_addresses+16*i);
 	fprintf(f,"<body bgcolor=\"#000000\">&nbsp;</body>");
       }
       else {
 	snprintf(timer,1500,
 		 "SM D!PS %d!ST!WU http://%s/walltime/walltime.html!",
 		 now->rlm_len/1000,
-		 rlm_walltime_clock_addresses+16*i);
+		 rlm_walltime_host_addresses+16*i);
 	fprintf(f,"%s\n",
 	     RLMResolveNowNextEncoded(ptr,now,next,rlm_walltime_formats+8192*i,
 				      RLM_ENCODE_XML));

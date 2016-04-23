@@ -15072,3 +15072,6 @@
 	'acinclude.m4'.
 2016-04-17 Fred Gleason <fredg@paravelsystems.com>
 	* Added an 'rlm_walltime' RLM in 'rlm/rlm_walltime.c'.
+2016-04-23 Fred Gleason <fredg@paravelsystems.com>
+	* Renamed the 'ClockAddress' parameter to 'HostAddress' in
+	'rlm/rlm_walltime.c'.
