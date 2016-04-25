@@ -2,9 +2,7 @@
 //
 // The sound panel widget for RDAirPlay
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdsound_panel.cpp,v 1.62.6.13.2.3 2014/05/20 22:39:35 cvs Exp $
+//   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -1468,10 +1466,22 @@ void RDSoundPanel::LogTraffic(RDPanelButton *button)
   RDSqlQuery *q;
   QDateTime datetime(QDate::currentDate(),QTime::currentTime());
 
-  sql=QString("select CART.TITLE,CART.ARTIST,CART.PUBLISHER,")+
-    "CART.COMPOSER,CART.USAGE_CODE,CUTS.ISRC,"+
-    "CART.ALBUM,CART.LABEL,CUTS.ISCI,CART.CONDUCTOR,CART.USER_DEFINED,"
-    "CART.SONG_ID from CART left join CUTS "+
+  sql=QString("select ")+
+    "CART.TITLE,"+         // 00
+    "CART.ARTIST,"+        // 01
+    "CART.PUBLISHER,"+     // 02
+    "CART.COMPOSER,"+      // 03
+    "CART.USAGE_CODE,"+    // 04
+    "CUTS.ISRC,"+          // 05
+    "CART.ALBUM,"+         // 06
+    "CART.LABEL,"+         // 07
+    "CUTS.ISCI,"+          // 08
+    "CART.CONDUCTOR,"+     // 09
+    "CART.USER_DEFINED,"+  // 10
+    "CART.SONG_ID,"+       // 11
+    "CUTS.DESCRIPTION,"+   // 12
+    "CUTS.OUTCUE "+        // 13
+    "from CART left join CUTS "+
     "on CART.NUMBER=CUTS.CART_NUMBER where "+
     "CUTS.CUT_NAME=\""+RDEscapeString(button->cutName())+"\"";
   q=new RDSqlQuery(sql);
@@ -1497,6 +1507,8 @@ void RDSoundPanel::LogTraffic(RDPanelButton *button)
       "ALBUM=\""+RDEscapeString(q->value(6).toString().utf8())+"\","+
       "LABEL=\""+RDEscapeString(q->value(7).toString().utf8())+"\","+
       "ISCI=\""+RDEscapeString(q->value(8).toString().utf8())+"\","+
+      "DESCRIPTION=\""+RDEscapeString(q->value(12).toString().utf8())+"\","+
+      "OUTCUE=\""+RDEscapeString(q->value(13).toString().utf8())+"\","+
       "CONDUCTOR=\""+RDEscapeString(q->value(9).toString().utf8())+"\","+
       "USER_DEFINED=\""+RDEscapeString(q->value(10).toString().utf8())+"\","+
       "SONG_ID=\""+RDEscapeString(q->value(11).toString().utf8())+"\","+

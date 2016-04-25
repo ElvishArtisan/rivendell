@@ -670,46 +670,50 @@ void RDCartSlot::LogPlayout(RDPlayDeck::State state)
     length+=86400000;
     datetime.setDate(datetime.date().addDays(-1));
   }
-  QString svctablename=slot_svcname;
-  svctablename.replace(" ","_");
-  sql=QString("insert into `")+svctablename+"_SRT` set "+
-    QString().sprintf("LENGTH=%d,LOG_ID=%d,CART_NUMBER=%u,EVENT_TYPE=%d,\
-                       EVENT_SOURCE=%d,EXT_LENGTH=%d,PLAY_SOURCE=%d,\
+  if(!slot_svcname.isEmpty()) {
+    QString svctablename=slot_svcname;
+    svctablename.replace(" ","_");
+    sql=QString("insert into `")+svctablename+"_SRT` set "+
+      QString().sprintf("LENGTH=%d,LOG_ID=%d,CART_NUMBER=%u,EVENT_TYPE=%d,\
+                       EVENT_SOURCE=%d,EXT_LENGTH=%d,PLAY_SOURCE=%d,	\
                        CUT_NUMBER=%d,USAGE_CODE=%d,START_SOURCE=%d,",
-		      length,
-		      slot_number+1,
-		      slot_logline->cartNumber(),
-		      action,
-		      slot_logline->source(),
-		      slot_logline->extLength(),
-		      RDLogLine::CartSlot,
-		      slot_logline->cutNumber(),
-		      slot_logline->usageCode(),
-		      slot_logline->startSource())+
-    "STATION_NAME=\""+RDEscapeString(slot_station->name())+"\","+
-    "EVENT_DATETIME=\""+datetime.toString("yyyy-MM-dd")+
-    " "+slot_logline->startTime(RDLogLine::Actual).toString("hh:mm:ss")+"\","+
-    "EXT_START_TIME=\""+slot_logline->extStartTime().toString("hh:mm:ss")+"\","+
-    "EXT_DATA=\""+RDEscapeString(slot_logline->extData())+"\","+
-    "EXT_EVENT_ID=\""+RDEscapeString(slot_logline->extEventId())+"\","+
-    "EXT_ANNC_TYPE=\""+RDEscapeString(slot_logline->extAnncType())+"\","+
-    "EXT_CART_NAME=\""+RDEscapeString(slot_logline->extCartName())+"\","+
-    "TITLE=\""+RDEscapeString(slot_logline->title())+"\","+
-    "ARTIST=\""+RDEscapeString(slot_logline->artist())+"\","+
-    "SCHEDULED_TIME=\""+slot_logline->startTime(RDLogLine::Logged).
-    toString("hh:mm:ss")+"\","+
-    "ISRC=\""+RDEscapeString(slot_logline->isrc())+"\","+
-    "PUBLISHER=\""+RDEscapeString(slot_logline->publisher())+"\","+
-    "COMPOSER=\""+RDEscapeString(slot_logline->composer())+"\","+
-    "ONAIR_FLAG=\""+RDYesNo(slot_ripc->onairFlag())+"\","+
-    "ALBUM=\""+RDEscapeString(slot_logline->album())+"\","+
-    "LABEL=\""+RDEscapeString(slot_logline->label())+"\","+
-    "CONDUCTOR=\""+RDEscapeString(slot_logline->conductor())+"\","+
-    "USER_DEFINED=\""+RDEscapeString(slot_logline->userDefined())+"\","+
-    "SONG_ID=\""+RDEscapeString(slot_logline->songId())+"\","+
-    "ISCI=\""+RDEscapeString(slot_logline->isci())+"\"";
-  q=new RDSqlQuery(sql);
-  delete q;
+			length,
+			slot_number+1,
+			slot_logline->cartNumber(),
+			action,
+			slot_logline->source(),
+			slot_logline->extLength(),
+			RDLogLine::CartSlot,
+			slot_logline->cutNumber(),
+			slot_logline->usageCode(),
+			slot_logline->startSource())+
+      "STATION_NAME=\""+RDEscapeString(slot_station->name())+"\","+
+      "EVENT_DATETIME=\""+datetime.toString("yyyy-MM-dd")+
+      " "+slot_logline->startTime(RDLogLine::Actual).toString("hh:mm:ss")+"\","+
+      "EXT_START_TIME=\""+slot_logline->extStartTime().toString("hh:mm:ss")+"\","+
+      "EXT_DATA=\""+RDEscapeString(slot_logline->extData())+"\","+
+      "EXT_EVENT_ID=\""+RDEscapeString(slot_logline->extEventId())+"\","+
+      "EXT_ANNC_TYPE=\""+RDEscapeString(slot_logline->extAnncType())+"\","+
+      "EXT_CART_NAME=\""+RDEscapeString(slot_logline->extCartName())+"\","+
+      "TITLE=\""+RDEscapeString(slot_logline->title())+"\","+
+      "ARTIST=\""+RDEscapeString(slot_logline->artist())+"\","+
+      "SCHEDULED_TIME=\""+slot_logline->startTime(RDLogLine::Logged).
+      toString("hh:mm:ss")+"\","+
+      "ISRC=\""+RDEscapeString(slot_logline->isrc())+"\","+
+      "PUBLISHER=\""+RDEscapeString(slot_logline->publisher())+"\","+
+      "COMPOSER=\""+RDEscapeString(slot_logline->composer())+"\","+
+      "ONAIR_FLAG=\""+RDYesNo(slot_ripc->onairFlag())+"\","+
+      "ALBUM=\""+RDEscapeString(slot_logline->album())+"\","+
+      "LABEL=\""+RDEscapeString(slot_logline->label())+"\","+
+      "CONDUCTOR=\""+RDEscapeString(slot_logline->conductor())+"\","+
+      "USER_DEFINED=\""+RDEscapeString(slot_logline->userDefined())+"\","+
+      "SONG_ID=\""+RDEscapeString(slot_logline->songId())+"\","+
+      "DESCRIPTION=\""+RDEscapeString(slot_logline->description())+"\","+
+      "OUTCUE=\""+RDEscapeString(slot_logline->outcue())+"\","+
+      "ISCI=\""+RDEscapeString(slot_logline->isci())+"\"";
+    q=new RDSqlQuery(sql);
+    delete q;
+  }
 }
 
 void RDCartSlot::ClearTempCart()

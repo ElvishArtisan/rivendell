@@ -477,35 +477,42 @@ bool RDReport::generateReport(const QDate &startdate,const QDate &enddate,
       //
       // Selected Fields
       //
-      sql=QString().sprintf("select LENGTH,LOG_ID,CART_NUMBER,STATION_NAME,\
-                           EVENT_DATETIME,EVENT_TYPE,EXT_START_TIME,\
-                           EXT_LENGTH,EXT_DATA,EXT_EVENT_ID,EXT_ANNC_TYPE,\
-                           PLAY_SOURCE,CUT_NUMBER,EVENT_SOURCE,EXT_CART_NAME,\
-                           LOG_NAME,`%s_SRT`.TITLE,`%s_SRT`.ARTIST,\
-                           SCHEDULED_TIME,\
-                           START_SOURCE,`%s_SRT`.PUBLISHER,`%s_SRT`.COMPOSER,\
-                           `%s_SRT`.ALBUM,`%s_SRT`.LABEL,\
-                           `%s_SRT`.ISRC,`%s_SRT`.USAGE_CODE,\
-                           `%s_SRT`.ONAIR_FLAG,`%s_SRT`.ISCI,\
-                           `%s_SRT`.CONDUCTOR,`%s_SRT`.USER_DEFINED,\
-                           `%s_SRT`.SONG_ID from `%s_SRT`\
-                           left join CART on `%s_SRT`.CART_NUMBER=CART.NUMBER \
-                           where ",
-			    (const char *)rec_name,
-			    (const char *)rec_name,
-			    (const char *)rec_name,
-			    (const char *)rec_name,
-			    (const char *)rec_name,
-			    (const char *)rec_name,
-			    (const char *)rec_name,
-			    (const char *)rec_name,
-			    (const char *)rec_name,
-			    (const char *)rec_name,
-			    (const char *)rec_name,
-			    (const char *)rec_name,
-			    (const char *)rec_name,
-			    (const char *)rec_name,
-			    (const char *)rec_name);
+      sql=QString("select ")+
+	"LENGTH,"+                           // 00
+	"LOG_ID,"+                           // 01
+	"CART_NUMBER,"+                      // 02
+	"STATION_NAME,"+                     // 03
+	"EVENT_DATETIME,"+                   // 04
+	"EVENT_TYPE,"+                       // 05
+	"EXT_START_TIME,"+                   // 06
+	"EXT_LENGTH,"+                       // 07
+	"EXT_DATA,"+                         // 08
+	"EXT_EVENT_ID,"+                     // 09
+	"EXT_ANNC_TYPE,"+                    // 10
+	"PLAY_SOURCE,"+                      // 11
+	"CUT_NUMBER,"+                       // 12
+	"EVENT_SOURCE,"+                     // 13
+	"EXT_CART_NAME,"+                    // 14
+	"LOG_NAME,"+                         // 15
+	"`"+rec_name+"_SRT`.TITLE,"+         // 16
+	"`"+rec_name+"_SRT`.ARTIST,"+        // 17
+	"SCHEDULED_TIME,"+                   // 18
+	"START_SOURCE,"+                     // 19
+	"`"+rec_name+"_SRT`.PUBLISHER,"+     // 20
+	"`"+rec_name+"_SRT`.COMPOSER,"+      // 21
+	"`"+rec_name+"_SRT`.ALBUM,"+         // 22
+	"`"+rec_name+"_SRT`.LABEL,"+         // 23
+	"`"+rec_name+"_SRT`.ISRC,"+          // 24
+	"`"+rec_name+"_SRT`.USAGE_CODE,"+    // 25
+	"`"+rec_name+"_SRT`.ONAIR_FLAG,"+    // 26
+	"`"+rec_name+"_SRT`.ISCI,"+          // 27
+	"`"+rec_name+"_SRT`.CONDUCTOR,"+     // 28
+	"`"+rec_name+"_SRT`.USER_DEFINED,"+  // 29
+	"`"+rec_name+"_SRT`.SONG_ID,"+       // 30
+	"`"+rec_name+"_SRT`.DESCRIPTION,"+   // 31
+	"`"+rec_name+"_SRT`.OUTCUE "+        // 32
+	"from `"+rec_name+"_SRT` left join CART "+
+	"on `"+rec_name+"_SRT`.CART_NUMBER=CART.NUMBER where ";
 
       //
       // OnAir Flag Filter
@@ -542,7 +549,6 @@ bool RDReport::generateReport(const QDate &startdate,const QDate &enddate,
       }
       sql=sql.left(sql.length()-2);
       sql+=")";
-      //printf("SQL: %s\n",(const char *)sql);
       q1=new RDSqlQuery(sql);
       while(q1->next()) {
 	sql=QString("insert into `")+mixname+"_SRT` "+
@@ -580,7 +586,9 @@ bool RDReport::generateReport(const QDate &startdate,const QDate &enddate,
 	  "ISCI=\""+RDEscapeString(q1->value(27).toString())+"\","+
 	  "CONDUCTOR=\""+RDEscapeString(q1->value(28).toString())+"\","+
 	  "USER_DEFINED=\""+RDEscapeString(q1->value(29).toString())+"\","+
-	  "SONG_ID=\""+RDEscapeString(q1->value(30).toString())+"\"";
+	  "SONG_ID=\""+RDEscapeString(q1->value(30).toString())+"\","+
+	  "DESCRIPTION=\""+RDEscapeString(q1->value(31).toString())+"\","+
+	  "OUTCUE=\""+RDEscapeString(q1->value(32).toString())+"\"";
 	q2=new RDSqlQuery(sql);
 	delete q2;
       }
@@ -654,6 +662,10 @@ bool RDReport::generateReport(const QDate &startdate,const QDate &enddate,
     ret=ExportTechnical(startdate,enddate,false,true,mixname);
     break;
 
+  case RDReport::CutLog:
+    ret=ExportCutLog(startdate,enddate,mixname);
+    break;
+
   default:
     return false;
     break;
@@ -670,6 +682,7 @@ bool RDReport::generateReport(const QDate &startdate,const QDate &enddate,
   sql=QString().sprintf("drop table `%s_SRT`",(const char *)mixname);
   q=new RDSqlQuery(sql);
   delete q;
+
   return ret;
 }
 
@@ -728,6 +741,9 @@ QString RDReport::filterText(RDReport::ExportFilter filter)
   case RDReport::WideOrbit:
     return QObject::tr("WideOrbit Traffic Reconciliation");
 
+  case RDReport::CutLog:
+    return QObject::tr("Cut Log");
+
   default:
     return QObject::tr("Unknown");
   }
@@ -770,6 +786,7 @@ bool RDReport::multipleDaysAllowed(RDReport::ExportFilter filter)
   case RDReport::NaturalLog:
   case RDReport::SpinCount:
   case RDReport::WideOrbit:
+  case RDReport::CutLog:
     return false;
 
   case RDReport::BmiEmr:
@@ -799,6 +816,7 @@ bool RDReport::multipleMonthsAllowed(RDReport::ExportFilter filter)
   case RDReport::MusicPlayout:
   case RDReport::NaturalLog:
   case RDReport::WideOrbit:
+  case RDReport::CutLog:
     return false;
     
   case RDReport::MusicSummary:

@@ -31,6 +31,7 @@
 #include <rdcreate_log.h>
 #include <rdescape_string.h>
 #include <rdevent.h>
+#include <rdsvc.h>
 
 #include "rdrevert.h"
 
@@ -161,6 +162,10 @@ void MainObject::Revert(int schema) const
 
   case 254:
     Revert254();
+    break;
+
+  case 255:
+    Revert255();
     break;
   }
 }
@@ -373,6 +378,31 @@ void MainObject::Revert254() const
   delete q;
 
   SetVersion(253);
+}
+
+
+void MainObject::Revert255() const
+{
+  QString sql;
+  QSqlQuery *q;
+  QSqlQuery *q1;
+
+  sql=QString("select NAME from SERVICES");
+  q=new QSqlQuery(sql);
+  while(q->next()) {
+    sql=QString("alter table `")+RDSvc::svcTableName(q->value(0).toString())+
+      "` drop column DESCRIPTION";
+    q1=new QSqlQuery(sql);
+    delete q1;
+
+    sql=QString("alter table `")+RDSvc::svcTableName(q->value(0).toString())+
+      "` drop column OUTCUE";
+    q1=new QSqlQuery(sql);
+    delete q1;
+  }
+  delete q;
+
+  SetVersion(254);
 }
 
 

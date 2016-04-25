@@ -15077,3 +15077,8 @@
 	'rlm/rlm_walltime.c'.
 2016-04-25 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in 'ripcd/btsrc16.cpp' that broke RML processing.
+2016-04-25 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'Cut Log' report in 'lib/export_cutlog.cpp'.
+	* Added 'DESCRIPTION' and 'OUTCUE' fields to the '_SRT' table
+	schema.
+	* Incremented the database version to 255.

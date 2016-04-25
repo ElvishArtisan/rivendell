@@ -423,6 +423,10 @@
         <source>Spin Count</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Cut Log</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RDAddCart</name>

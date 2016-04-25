@@ -2,9 +2,7 @@
 ##
 ## Automake.am for rivendell/lib
 ##
-## (C) Copyright 2002-2006 Fred Gleason <fredg@paravelsystems.com>
-##
-##      $Id: Makefile.am,v 1.132.4.15.2.3 2014/05/28 21:21:39 cvs Exp $
+## (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -52,6 +50,7 @@ lib_LTLIBRARIES = librd.la
 dist_librd_la_SOURCES = dbversion.h\
                         gpio.h\
                         export_bmiemr.cpp\
+                        export_cutlog.cpp\
                         export_deltaflex.cpp\
                         export_musicclassical.cpp\
                         export_musicplayout.cpp\

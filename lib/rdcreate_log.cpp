@@ -114,6 +114,8 @@ QString RDCreateReconciliationTableSql(QString name)
     "LABEL char(64),"+
     "CONDUCTOR char(64),"+
     "USAGE_CODE int,"+
+    "DESCRIPTION char(64),"+
+    "OUTCUE char(64),"+
     "ISRC char(12),"+
     "ISCI char(32),"+
     "STATION_NAME char(64),"+

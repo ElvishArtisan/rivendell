@@ -2,9 +2,7 @@
 //
 // Add an entry to the reconciliation table.
 //
-//   (C) Copyright 2002-2005 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: log_traffic.cpp,v 1.20.8.2.2.3 2014/06/24 18:27:05 cvs Exp $
+//   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -80,6 +78,8 @@ void LogTraffic(const QString &svcname,const QString &logname,
     "USER_DEFINED=\""+RDEscapeString(logline->userDefined().utf8())+"\","+
     "CONDUCTOR=\""+RDEscapeString(logline->conductor().utf8())+"\","+
     "SONG_ID=\""+RDEscapeString(logline->songId().utf8())+"\","+
+    "DESCRIPTION=\""+RDEscapeString(logline->description().utf8())+"\","+
+    "OUTCUE=\""+RDEscapeString(logline->outcue().utf8())+"\","+
     "ISCI=\""+RDEscapeString(logline->isci().utf8())+"\"";
 
   q=new RDSqlQuery(sql);

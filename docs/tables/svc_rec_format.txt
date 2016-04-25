@@ -22,6 +22,8 @@ CONDUCTOR            char(64)           From CART.CONDUCTOR
 USER_DEFINED         char(255)          From CART.USER_DEFINED
 SONG_ID              char(32)           From CART.SONG_ID
 USAGE_CODE           int                From CART.USAGE_CODE
+DESCRIPTION          char(64)           From CUTS.DESCRIPTION
+OUTCUE               char(64)           From CUTS.OUTCUE
 ISRC                 char(12)           From CUTS.ISRC
 ISCI                 char(32)           From CUTS.ISCI
 STATION_NAME         char(64)           From STATIONS.NAME

@@ -8132,6 +8132,24 @@ int UpdateDb(int ver)
     delete q;
   }
 
+  if(ver<255) {
+    sql=QString("select NAME from SERVICES");
+    q=new QSqlQuery(sql);
+    while(q->next()) {
+      sql=QString("alter table `")+RDSvc::svcTableName(q->value(0).toString())+
+	"` add column DESCRIPTION char(64) after USAGE_CODE";
+      q1=new QSqlQuery(sql);
+      delete q1;
+
+      sql=QString("alter table `")+RDSvc::svcTableName(q->value(0).toString())+
+	"` add column OUTCUE char(64) after DESCRIPTION";
+      q1=new QSqlQuery(sql);
+      delete q1;
+    }
+    delete q;
+  }
+
+
 
   // **** End of version updates ****
 
