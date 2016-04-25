@@ -15082,3 +15082,5 @@
 	* Added 'DESCRIPTION' and 'OUTCUE' fields to the '_SRT' table
 	schema.
 	* Incremented the database version to 255.
+2016-04-25 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.12.0int00.
