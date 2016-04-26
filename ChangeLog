@@ -15098,3 +15098,6 @@
   	saving and updating logs.  (from albanpeigner pull request #42)
 	* Created modification pointer in voicetracker for better performance
 	over WAN networks
+2016-04-26 Brian McGlynn <brian.mcglynn@geneseemedia.net>
+	* Updated Cart Scheduler to favor weighted playback for cuts expiring
+	first following the number of plays

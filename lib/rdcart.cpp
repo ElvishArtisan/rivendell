@@ -129,7 +129,8 @@ bool RDCart::selectCut(QString *cut,const QTime &time) const
       QString().sprintf("(CART_NUMBER=%u)&&(EVERGREEN=\"N\")&&",cart_number)+
       "(LENGTH>0)";
     if(useWeighting()) {
-      sql+=" order by LOCAL_COUNTER";
+      sql+=" order by LOCAL_COUNTER ASC, ISNULL(END_DATETIME), END_DATETIME ASC, \
+             LAST_PLAY_DATETIME ASC";
     }
     else {
       sql+=" order by LAST_PLAY_DATETIME desc";
