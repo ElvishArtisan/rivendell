@@ -15093,3 +15093,8 @@
 2015-04-26 Brian McGlynn <brian.mcglynn@geneseemedia.net>
         * Added "Group By" statement in 'rdlibrary/rdlibrary.cpp' to allow a
  	full 100 results to be shown
+2015-04-26 Brian McGlynn <brian.mcglynn@geneseemedia.net>
+  	* Refactored RDLogEditor code to improve performance when
+  	saving and updating logs.  (from albanpeigner pull request #42)
+	* Created modification pointer in voicetracker for better performance
+	over WAN networks
