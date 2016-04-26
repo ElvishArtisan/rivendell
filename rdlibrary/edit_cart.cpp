@@ -779,7 +779,7 @@ EditCart::EditCart(unsigned number,QString *path,bool new_cart,bool profile_rip,
       rdcart_cut_sched_edit->show();
     }
   }
-  if(rdcart_cart->type()==RDCart::Macro) {
+  if((rdcart_cart==NULL)||(rdcart_cart->type()==RDCart::Macro)) {
     rdcart_cut_sched_box->hide();
     rdcart_cut_sched_label->hide();
   }

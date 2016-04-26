@@ -15084,3 +15084,6 @@
 	* Incremented the database version to 255.
 2016-04-25 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 2.12.0int00.
+2016-04-26 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'rdlibrary/edit_cart.cpp' that threw a segfault
+	when attempting to open multiple carts simultaneously.
