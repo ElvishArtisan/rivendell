@@ -15090,3 +15090,6 @@
 2016-04-26 Brian McGlynn <brian.mcglynn@geneseemedia.net>
         * Updated lib/rdcae.cpp to return error code when file does not exist
 	in /var/snd
+2015-04-26 Brian McGlynn <brian.mcglynn@geneseemedia.net>
+        * Added "Group By" statement in 'rdlibrary/rdlibrary.cpp' to allow a
+ 	full 100 results to be shown
