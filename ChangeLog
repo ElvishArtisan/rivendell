@@ -15087,3 +15087,6 @@
 2016-04-26 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in 'rdlibrary/edit_cart.cpp' that threw a segfault
 	when attempting to open multiple carts simultaneously.
+2016-04-26 Brian McGlynn <brian.mcglynn@geneseemedia.net>
+        * Updated lib/rdcae.cpp to return error code when file does not exist
+	in /var/snd
