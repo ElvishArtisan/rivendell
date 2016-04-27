@@ -58,6 +58,7 @@ RDAudioInfo::RDAudioInfo(RDStation *station,RDConfig *config,
   conv_format=RDWaveFile::Pcm16;
   conv_channels=0;
   conv_sample_rate=0;
+  conv_bit_rate=0;
   conv_frames=0;
   conv_length=0;
 }
@@ -78,6 +79,12 @@ unsigned RDAudioInfo::channels() const
 unsigned RDAudioInfo::sampleRate() const
 {
   return conv_sample_rate;
+}
+
+
+unsigned RDAudioInfo::bitRate() const
+{
+  return conv_bit_rate;
 }
 
 
@@ -183,6 +190,7 @@ RDAudioInfo::ErrorCode RDAudioInfo::runInfo(const QString &username,
   conv_format=(RDWaveFile::Format)ParseInt("format",conv_xml);
   conv_channels=ParseInt("channels",conv_xml);
   conv_sample_rate=ParseInt("sampleRate",conv_xml);
+  conv_bit_rate=ParseInt("bitRate",conv_xml);
   conv_frames=ParseInt("frames",conv_xml);
   conv_length=ParseInt("length",conv_xml);
 

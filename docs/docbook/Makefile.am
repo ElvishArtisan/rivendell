@@ -34,6 +34,7 @@
 all-local:	cae.html\
                 cae.pdf\
                 rdrevert.8\
+                rdexport.1\
                 rml.html\
                 rml.pdf\
                 web_api.html\
@@ -46,6 +47,8 @@ EXTRA_DIST = cae.html\
              cae.xml\
              rdrevert.8\
              rdrevert.xml\
+             rdexport.8\
+             rdexport.xml\
              rml.html\
              rml.pdf\
              rml.xml\

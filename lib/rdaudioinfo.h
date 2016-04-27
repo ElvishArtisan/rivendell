@@ -40,6 +40,7 @@ class RDAudioInfo : public QObject
   RDWaveFile::Format format() const;
   unsigned channels() const;
   unsigned sampleRate() const;
+  unsigned bitRate() const;
   unsigned frames() const;
   unsigned length() const;
   void setCartNumber(unsigned cartnum);
@@ -57,6 +58,7 @@ class RDAudioInfo : public QObject
   RDWaveFile::Format conv_format;
   unsigned conv_channels;
   unsigned conv_sample_rate;
+  unsigned conv_bit_rate;
   unsigned conv_frames;
   unsigned conv_length;
   QString conv_xml;

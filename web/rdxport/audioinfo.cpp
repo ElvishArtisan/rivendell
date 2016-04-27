@@ -106,6 +106,7 @@ void Xport::AudioInfo()
   printf("  <format>%d</format>\n",format);
   printf("  <channels>%d</channels>\n",wave->getChannels());
   printf("  <sampleRate>%d</sampleRate>\n",wave->getSamplesPerSec());
+  printf("  <bitRate>%d</bitRate>\n",wave->getHeadBitRate());
   printf("  <frames>%u</frames>\n",wave->getSampleLength());
   printf("  <length>%u</length>\n",wave->getExtTimeLength());
   printf("</audioInfo>\n");

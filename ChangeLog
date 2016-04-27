@@ -15101,3 +15101,6 @@
 2016-04-26 Brian McGlynn <brian.mcglynn@geneseemedia.net>
 	* Updated Cart Scheduler to favor weighted playback for cuts expiring
 	first following the number of plays
+2016-04-27 Brian McGlynn <brian.mcglynn@geneseemedia.net>
+	* Added a 'bitRate' field in the return for the AudioInfo web method.
+	* Added an rdexport(1) utility in 'utils/rdexport/'.

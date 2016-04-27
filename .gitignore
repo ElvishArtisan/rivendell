@@ -98,6 +98,7 @@ utils/rddelete/rddelete
 utils/rdgpimon/rdgpimon
 utils/rdimport/rdimport
 utils/rdcollect/rdcollect
+utils/rdexport/rdexport
 utils/rdmaint/rdmaint
 utils/rdgen/rdgen
 utils/rdrevert/rdrevert

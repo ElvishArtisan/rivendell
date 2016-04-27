@@ -16,7 +16,7 @@ Now       Next       Field
  %g        %G        The Rivendell group name
  %h        %H        Event length (in milliseconds)
  %i        %I        Cut Description
- %j        %J        [Unassigned]
+ %j        %J        Cut Number
  %k        %K        [Unassigned]
  %l        %L        Album
  %m        %M        Composer

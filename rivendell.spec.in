@@ -285,6 +285,7 @@ rm -rf $RPM_BUILD_ROOT
 @WIN32_PATH@
 /etc/pam.d/rdalsaconfig-root
 /etc/security/console.apps/rdalsaconfig-root
+%{_mandir}/man1/rdexport.1.gz
 %{_mandir}/man1/rdimport.1.gz
 %{_mandir}/man8/rdmarkerset.8.gz
 %{_mandir}/man8/rdrevert.8.gz

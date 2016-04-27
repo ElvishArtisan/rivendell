@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<refentry id="stdin" xmlns="http://docbook.org/ns/docbook" version="5.0">
+  <!--
+      Header
+  -->
+  <refmeta>
+    <refentrytitle>rdexport</refentrytitle>
+    <manvolnum>1</manvolnum>
+    <refmiscinfo class='source'>April 2016</refmiscinfo>
+    <refmiscinfo class='manual'>Linux Audio Manual</refmiscinfo>
+  </refmeta>
+  <refnamediv>
+    <refname>rdexport</refname>
+    <refpurpose>Export audio from a Rivendell audio store</refpurpose>
+  </refnamediv>
+  <info>
+    <author>
+      <personname>
+	<firstname>Fred</firstname>
+	<surname>Gleason</surname>
+	<email>fredg@paravelsystems.com</email>
+      </personname>
+      <contrib>Application Author</contrib>
+    </author>
+  </info>
+
+  <!--
+      Body
+  -->
+  <refsynopsisdiv id='synopsis'>
+    <cmdsynopsis>
+      <command>rdexport</command>
+      <arg choice='opt'><replaceable>OPTIONS</replaceable></arg>
+      <arg choice='req'><replaceable>output-dir</replaceable></arg>
+      <sbr/>
+    </cmdsynopsis>
+  </refsynopsisdiv>
+
+  <refsect1 id='description'><title>Description</title>
+  <para>
+    <command>rdexport</command><manvolnum>1</manvolnum> can be used to export
+    audio from a Rivendell audio store.
+  </para>
+  </refsect1>
+
+  <refsect1 id='options'><title>Options</title>
+  <variablelist remap='TP'>
+    <varlistentry>
+      <term>
+	<option>--carts=</option><replaceable>start-cart</replaceable>:<replaceable>end-cart</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  Specify a range of cart numbers to be exported, from
+	  <replaceable>start-cart</replaceable> to
+	  <replaceable>end-cart</replaceable> (both inclusive).  This option
+	  may be given multiple times.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
+	<option>--group=</option><replaceable>group-name</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  Specify a group to be exported. This option may be given multiple
+	  times.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
+	<option>--metadata-pattern=</option><replaceable>pattern</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  Specify a pattern to define how output files should be named.
+	  Patterns consist of characters interspersed with zero or more
+	  wildcard characters as follows:
+	</para>
+	<variablelist>
+	  <varlistentry>
+	    <term>%a</term>
+	    <listitem>
+	      <para>Artist</para>
+	    </listitem>
+	  </varlistentry>
+	  <varlistentry>
+	    <term>%b</term>
+	    <listitem>
+	      <para>Record Label</para>
+	    </listitem>
+	  </varlistentry>
+
+	  <varlistentry>
+	    <term>%c</term>
+	    <listitem>
+	      <para>Client</para>
+	    </listitem>
+	  </varlistentry>
+
+	  <varlistentry>
+	    <term>%e</term>
+	    <listitem>
+	      <para>Agency</para>
+	    </listitem>
+	  </varlistentry>
+
+	  <varlistentry>
+	    <term>%g</term>
+	    <listitem>
+	      <para>Rivendell group name</para>
+	    </listitem>
+	  </varlistentry>
+
+	  <varlistentry>
+	    <term>%h</term>
+	    <listitem>
+	      <para>Event length in milliseconds</para>
+	    </listitem>
+	  </varlistentry>
+
+	  <varlistentry>
+	    <term>%i</term>
+	    <listitem>
+	      <para>Cut Description</para>
+	    </listitem>
+	  </varlistentry>
+
+	  <varlistentry>
+	    <term>%j</term>
+	    <listitem>
+	      <para>Cut Number</para>
+	    </listitem>
+	  </varlistentry>
+
+	  <varlistentry>
+	    <term>%l</term>
+	    <listitem>
+	      <para>Album</para>
+	    </listitem>
+	  </varlistentry>
+
+	  <varlistentry>
+	    <term>%m</term>
+	    <listitem>
+	      <para>Composer</para>
+	    </listitem>
+	  </varlistentry>
+
+	  <varlistentry>
+	    <term>%n</term>
+	    <listitem>
+	      <para>Cart Number</para>
+	    </listitem>
+	  </varlistentry>
+
+	  <varlistentry>
+	    <term>%o</term>
+	    <listitem>
+	      <para>Outcue</para>
+	    </listitem>
+	  </varlistentry>
+
+	  <varlistentry>
+	    <term>%p</term>
+	    <listitem>
+	      <para>Publisher</para>
+	    </listitem>
+	  </varlistentry>
+
+	  <varlistentry>
+	    <term>%r</term>
+	    <listitem>
+	      <para>Conductor</para>
+	    </listitem>
+	  </varlistentry>
+
+	  <varlistentry>
+	    <term>%s</term>
+	    <listitem>
+	      <para>Song ID</para>
+	    </listitem>
+	  </varlistentry>
+
+	  <varlistentry>
+	    <term>%t</term>
+	    <listitem>
+	      <para>Title</para>
+	    </listitem>
+	  </varlistentry>
+
+	  <varlistentry>
+	    <term>%u</term>
+	    <listitem>
+	      <para>User Defined</para>
+	    </listitem>
+	  </varlistentry>
+
+	  <varlistentry>
+	    <term>%y</term>
+	    <listitem>
+	      <para>Release Year</para>
+	    </listitem>
+	  </varlistentry>
+
+	</variablelist>
+      </listitem>
+    </varlistentry>
+    <para>
+      Default value is <userinput>%n_%j</userinput>.
+    </para>
+  </variablelist>
+</refsect1>
+
+</refentry>
+
