@@ -922,7 +922,7 @@ void RDCut::getMetadata(RDWaveData *data) const
 			(const char *)cut_name);
   q=new RDSqlQuery(sql);
   if(q->first()) {
-    data->setTitle(q->value(0).toString());
+    data->setDescription(q->value(0).toString());
     data->setOutCue(q->value(1).toString());
     data->setIsrc(q->value(2).toString());
     data->setIsci(q->value(3).toString());

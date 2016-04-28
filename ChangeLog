@@ -15104,3 +15104,6 @@
 2016-04-27 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'bitRate' field in the return for the AudioInfo web method.
 	* Added an rdexport(1) utility in 'utils/rdexport/'.
+2016-04-27 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'lib/rdcut.cpp' that caused the cut 'Description'
+	field to be applied as a cut Title.
