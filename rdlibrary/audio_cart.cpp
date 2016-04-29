@@ -664,9 +664,6 @@ void AudioCart::importCutData()
     if(rdcart_controls->user_defined_edit->text().isEmpty()) {
       rdcart_controls->user_defined_edit->setText(wavedata.userDefined());
     }
-    RDCut *cut=new RDCut(cutname);
-    cut->setMetadata(&wavedata);
-    delete cut;
   }
   if(cut_clipboard==NULL) {
     paste_cut_button->setDisabled(true);

@@ -15110,3 +15110,6 @@
 2016-04-29 Fred Gleason <fredg@paravelsystems.com>
 	* Implemented export for marker data in WAV files in
 	'lib/rdwavefile.cpp' and 'lib/rdwavefile.h'.
+2016-04-29 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in 'rdlibrary/audio_cart.cpp' that caused
+	marker data to be deleted when exporting a cut.
