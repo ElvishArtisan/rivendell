@@ -15119,3 +15119,5 @@
 2016-04-29 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed bugs in 'docs/docbook/Makefile.am' and 'rivendell.spec.in'
 	that broke the 'make rpm' target.
+2016-04-29 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'lib/lib.pro' that broke the build on Windows.
