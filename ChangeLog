@@ -15121,3 +15121,5 @@
 	that broke the 'make rpm' target.
 2016-04-29 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in 'lib/lib.pro' that broke the build on Windows.
+2016-04-29 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.12.0int01.
