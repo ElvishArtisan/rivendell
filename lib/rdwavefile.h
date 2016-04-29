@@ -157,7 +157,7 @@ class RDWaveFile
    *
    * Returns true if WAV file was created successfully, otherwise false.
    **/
-   bool createWave(RDWaveData *data=NULL);
+  bool createWave(RDWaveData *data=NULL,unsigned ptr_offset=0);
 
   /**
    * Open the WAV file for playback.  A WAV file name must first have 
@@ -1050,7 +1050,7 @@ class RDWaveFile
    bool GetFlacStreamInfo();
    void ReadFlacMetadata();
    bool MakeFmt();
-   bool MakeCart();
+   bool MakeCart(unsigned ptr_offset);
    bool MakeBext();
    bool MakeMext();
    bool MakeLevl();
@@ -1091,6 +1091,7 @@ class RDWaveFile
    unsigned head_emphasis;         // De-emphasis
    unsigned short head_flags;      // MPEG header flags
    unsigned long pts;              // The MPEG PTS
+   unsigned ptr_offset_msecs;
    RDWaveFile::MpegID mpeg_id;              
    int mpeg_frame_size;
    bool id3v1_tag;

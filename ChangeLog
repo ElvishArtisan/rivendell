@@ -15113,3 +15113,6 @@
 2016-04-29 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in 'rdlibrary/audio_cart.cpp' that caused
 	marker data to be deleted when exporting a cut.
+2016-04-29 Fred Gleason <fredg@paravelsystems.com>
+	* Added a pointer offset argument to the 'RDWaveFile::createWave()'
+	method in 'lib/rdwavefile.cpp' and 'lib/rdwavefile.h'.

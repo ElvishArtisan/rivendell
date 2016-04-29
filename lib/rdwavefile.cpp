@@ -172,6 +172,7 @@ RDWaveFile::RDWaveFile(QString file_name)
   atx_offset=0;
   scot_chunk=false;
   av10_chunk=false;
+  ptr_offset_msecs=0;
 }
 
 
@@ -492,11 +493,12 @@ bool RDWaveFile::openWave(RDWaveData *data)
 }
 
 
-bool RDWaveFile::createWave(RDWaveData *data)
+bool RDWaveFile::createWave(RDWaveData *data,unsigned ptr_offset)
 {
   mode_t prev_mask;
   bool rc;
   wave_data=data;
+  ptr_offset_msecs=ptr_offset;
   if(wave_data!=NULL) {
     cart_title=wave_data->title();
     cart_artist=wave_data->artist();
@@ -545,7 +547,7 @@ bool RDWaveFile::createWave(RDWaveData *data)
 	  write(wave_file.handle(),"fact\4\0\0\0\0\0\0\0",12);
 	}
 	if(cart_chunk) {
-	  MakeCart();
+	  MakeCart(ptr_offset);
 	  WriteChunk(wave_file.handle(),"cart",cart_chunk_data,
 		     CART_CHUNK_SIZE);
 	}
@@ -709,7 +711,7 @@ void RDWaveFile::closeWave(int samples)
 	  // Update Cart Chunk
 	  //
 	  if(cart_chunk) {
-	    MakeCart();
+	    MakeCart(ptr_offset_msecs);
 	    WriteChunk(wave_file.handle(),"cart",cart_chunk_data,CART_CHUNK_SIZE);
 	  }
 	  
@@ -4075,7 +4077,7 @@ bool RDWaveFile::MakeFmt()
 }
 
 
-bool RDWaveFile::MakeCart()
+bool RDWaveFile::MakeCart(unsigned ptr_offset)
 {
   for(int i=0;i<CART_CHUNK_SIZE;i++) {
     cart_chunk_data[i]=0;
@@ -4141,33 +4143,33 @@ bool RDWaveFile::MakeCart()
        (wave_data->segueEndPos()>wave_data->segueStartPos())) {
       sprintf((char *)cart_chunk_data+684+timer*MAX_TIMERS,"SEGs");
       WriteDword(cart_chunk_data,688+timer*MAX_TIMERS,
-		 FrameOffset(wave_data->segueStartPos()));
+		 FrameOffset(wave_data->segueStartPos()-ptr_offset_msecs));
       timer++;
       sprintf((char *)cart_chunk_data+684+timer*MAX_TIMERS,"SEGe");
       WriteDword(cart_chunk_data,688+timer*MAX_TIMERS,
-		 FrameOffset(wave_data->segueEndPos()));
+		 FrameOffset(wave_data->segueEndPos()-ptr_offset_msecs));
       timer++;
     }
     if((wave_data->introStartPos()>=0)&&
        (wave_data->introEndPos()>wave_data->introStartPos())) {
       sprintf((char *)cart_chunk_data+684+timer*MAX_TIMERS,"INTs");
       WriteDword(cart_chunk_data,688+timer*MAX_TIMERS,
-		 FrameOffset(wave_data->introStartPos()));
+		 FrameOffset(wave_data->introStartPos()-ptr_offset_msecs));
       timer++;
       sprintf((char *)cart_chunk_data+684+timer*MAX_TIMERS,"INTe");
       WriteDword(cart_chunk_data,688+timer*MAX_TIMERS,
-		 FrameOffset(wave_data->introEndPos()));
+		 FrameOffset(wave_data->introEndPos()-ptr_offset_msecs));
       timer++;
     }
     if((wave_data->startPos()>=0)&&
        (wave_data->endPos()>wave_data->startPos())) {
       sprintf((char *)cart_chunk_data+684+timer*MAX_TIMERS,"AUDs");
       WriteDword(cart_chunk_data,688+timer*MAX_TIMERS,
-		 FrameOffset(wave_data->startPos()));
+		 FrameOffset(wave_data->startPos()-ptr_offset_msecs));
       timer++;
       sprintf((char *)cart_chunk_data+684+timer*MAX_TIMERS,"AUDe");
       WriteDword(cart_chunk_data,688+timer*MAX_TIMERS,
-		 FrameOffset(wave_data->endPos()));
+		 FrameOffset(wave_data->endPos()-ptr_offset_msecs));
       timer++;
     }
   }

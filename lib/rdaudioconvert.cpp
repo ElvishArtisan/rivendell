@@ -1604,7 +1604,7 @@ RDAudioConvert::ErrorCode RDAudioConvert::Stage3Layer2Wav(SNDFILE *src_sf,
   wave->setCartChunk(conv_dst_wavedata!=NULL);
   wave->setLevlChunk(true);
   unlink(dstfile);
-  if(!wave->createWave(conv_dst_wavedata)) {
+  if(!wave->createWave(conv_dst_wavedata,conv_start_point)) {
     return RDAudioConvert::ErrorNoDestination;
   }
 
@@ -1797,7 +1797,7 @@ RDAudioConvert::ErrorCode RDAudioConvert::Stage3Pcm16(SNDFILE *src_sf,
   wave->setLevlChunk(true);
   sf_buffer=new int16_t[2048*src_sf_info->channels];
   unlink(dstfile);
-  if(!wave->createWave(conv_dst_wavedata)) {
+  if(!wave->createWave(conv_dst_wavedata,conv_start_point)) {
     return RDAudioConvert::ErrorNoDestination;
   }
   while((n=sf_readf_short(src_sf,sf_buffer,2048))>0) {
@@ -1840,7 +1840,7 @@ RDAudioConvert::ErrorCode RDAudioConvert::Stage3Pcm24(SNDFILE *src_sf,
   sf_buffer=new int[2048*src_sf_info->channels];
   pcm24=new uint8_t[2048*src_sf_info->channels*sizeof(int)];
   unlink(dstfile);
-  if(!wave->createWave(conv_dst_wavedata)) {
+  if(!wave->createWave(conv_dst_wavedata,conv_start_point)) {
     return RDAudioConvert::ErrorNoDestination;
   }
   while((n=sf_readf_int(src_sf,sf_buffer,2048))>0) {

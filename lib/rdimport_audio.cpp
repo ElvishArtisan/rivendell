@@ -556,7 +556,7 @@ void RDImportAudio::Import()
     settings.setAutotrimLevel(import_autotrim_spin->value());
   }
   import_import_conv->setDestinationSettings(&settings);
-  import_import_conv->setUseMetadata(false);
+  import_import_conv->setUseMetadata(import_in_metadata_box->isChecked());
   *import_running=true;
   import_import_aborted=false;
   conv_err=import_import_conv->runImport(import_user->name(),import_user->password(),&audio_conv_err);
