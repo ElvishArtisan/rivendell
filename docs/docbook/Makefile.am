@@ -40,14 +40,15 @@ all-local:	cae.html\
                 web_api.html\
                 web_api.pdf
 
-man_MANS = rdrevert.8
+man_MANS = rdexport.1\
+           rdrevert.8
 
 EXTRA_DIST = cae.html\
              cae.pdf\
              cae.xml\
              rdrevert.8\
              rdrevert.xml\
-             rdexport.8\
+             rdexport.1\
              rdexport.xml\
              rml.html\
              rml.pdf\
