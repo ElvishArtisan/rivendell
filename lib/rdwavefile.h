@@ -644,25 +644,11 @@ class RDWaveFile
    QString getCartTimerLabel(int index) const;
 
   /**
-   * Set the label for one of the eight CartChunk timers.
-   * @param index The index number of the timer to access (0 - 7).
-   * @param label the label of the corresponding timer.
-   **/
-   void setCartTimerLabel(int index,QString label);
-
-  /**
    * Retrieve the sample value for one of the eight CartChunk timers.
    * @param index The index number of the timer to access (0 - 7).
    * Returns the sample value of the corresponding timer.
    **/
    unsigned getCartTimerSample(int index) const;
-
-  /**
-   * Set the sample value for one of the eight CartChunk timers.
-   * @param index The index number of the timer to access (0 - 7).
-   * @param sample the sample value of the corresponding timer.
-   **/
-   void setCartTimerSample(int index,unsigned sample);
 
   /**
    * Returns the contents of the URL field in the WAV file's CART chunk.
@@ -1082,6 +1068,7 @@ class RDWaveFile
    int WriteOggPage(ogg_page *page);
 #endif  // HAVE_VORBIS
    int WriteOggBuffer(char *buf,int size);
+   unsigned FrameOffset(int msecs) const;
    QFile wave_file;
    RDWaveData *wave_data;
    bool recordable;                // Allow DATA chunk writes?
@@ -1196,7 +1183,6 @@ class RDWaveFile
 
    unsigned char *cook_buffer;
    int cook_buffer_size;
-   //   RDWaveFile::Encoding cook_encoding;
    float encode_quality;
    int serial_number;
    int atx_offset;
