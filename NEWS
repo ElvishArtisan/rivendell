@@ -1,6 +1,29 @@
 The NEWS file for the Rivendell package.
 
 -------------------------------------------------------------------------------
+v2.13.0 --  5/10/2016
+
+Changes:
+   New RLM.  Added a 'rlm_walltime' RLM for the Paravel Systems WallTime
+   clock.
+
+   New Utility.  Added an rdexport(8) command utility.  See the rdexport(1)
+   man page for details.
+
+   New Report.  Added a 'Cut Log' report that includes the Description
+   field for played events.
+
+   Various other bug fixes.  See the ChangeLog for details.
+
+Database Update:
+   This version of Rivendell uses database schema version 255, and will
+   automatically upgrade any earlier versions.  To see the current schema
+   version prior to upgrade, see RDAdmin->SystemInfo.
+
+   As always, be sure to run RDAdmin immediately after upgrading to allow 
+   any necessary changes to the database schema to be applied.
+
+-------------------------------------------------------------------------------
 v2.12.0 --  4/14/2016
 
 Changes:

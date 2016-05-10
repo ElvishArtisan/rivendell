@@ -15123,3 +15123,6 @@
 	* Fixed a bug in 'lib/lib.pro' that broke the build on Windows.
 2016-04-29 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 2.12.0int01.
+2016-05-10 Fred Gleason <fredg@paravelsystems.com>
+	* Updated 'NEWS'
+	* Incremented the package version to 2.13.0.
