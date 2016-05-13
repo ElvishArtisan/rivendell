@@ -15126,3 +15126,5 @@
 2016-05-10 Fred Gleason <fredg@paravelsystems.com>
 	* Updated 'NEWS'
 	* Incremented the package version to 2.13.0.
+2016-05-13 Fred Gleason <fredg@paravelsystems.com>
+	* Removed a superfluous dependency on libXi in 'acinclude.m4'.
