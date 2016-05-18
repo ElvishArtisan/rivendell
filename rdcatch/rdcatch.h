@@ -83,6 +83,7 @@ class MainWidget : public QWidget
   void statusChangedData(int,unsigned,RDDeck::Status,int,
 			 const QString &cutname);
   void monitorChangedData(int serial,unsigned chan,bool state);
+  void deckEventSentData(int serial,int chan,int number);
   void scrollButtonData();
   void reportsButtonData();
   void headButtonData();

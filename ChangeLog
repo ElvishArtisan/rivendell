@@ -15140,3 +15140,10 @@
 	* Implemented a 'Cut Event' ['CE'] RML.
 	* Added a 'Event Carts' section to the Edit Deck dialog in
 	'rdadmin/edit_deck.cpp' and 'rdadmin/edit_deck.h'.
+2016-05-18 Fred Gleason <fredg@paravelsystems.com>
+	* Added support for the RDCatchd 'DE' command in
+	'rdcatchd/rdcatchd.cpp', 'rdcatchd/rdcatchd.h',
+	'rdcatchd/event_player.cpp', 'rdcatchd/event_player.h' and
+	'rdcatchd/local_macros.cpp'.
+	* Added a deck event indicator to RDCatch's deck monitor in
+	'rdcatch/deckmon.cpp' and 'rdcatch/deckmon.h'.

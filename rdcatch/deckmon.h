@@ -2,9 +2,7 @@
 //
 // Monitor a Rivendell Netcatcher Deck
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: deckmon.h,v 1.15 2010/07/29 19:32:36 cvs Exp $
+//   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -37,8 +35,7 @@ class DeckMon : public QFrame
 {
   Q_OBJECT
  public:
-  DeckMon(QString station,unsigned channel,
-	  QWidget *parent=0,const char *name=0);
+  DeckMon(QString station,unsigned channel,QWidget *parent=0);
   ~DeckMon();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
@@ -51,6 +48,7 @@ class DeckMon : public QFrame
  public slots:
   void setMonitor(bool state);
   void setStatus(RDDeck::Status status,int id,const QString &cutname);
+  void setEvent(int number);
   void setLeftMeter(int level);
   void setRightMeter(int level);
   
@@ -64,11 +62,13 @@ class DeckMon : public QFrame
  private slots:
   void monitorButtonData();
   void abortButtonData();
+  void eventResetData();
 
  private:
   void SetCutInfo(int id,const QString &cutname);
   QLabel *mon_station_label;
   QLabel *mon_cut_label;
+  QLabel *mon_event_label;
   QLabel *mon_status_label;
   QPushButton *mon_abort_button;
   QPushButton *mon_monitor_button;
@@ -77,6 +77,9 @@ class DeckMon : public QFrame
   RDPlayMeter *mon_right_meter;
   QString mon_station;
   unsigned mon_channel;
+  QTimer *mon_event_timer;
+  QPalette mon_red_palette;
+  QPalette mon_dark_palette;
 };
 
 

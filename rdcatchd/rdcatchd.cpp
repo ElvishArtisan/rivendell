@@ -338,8 +338,8 @@ MainObject::MainObject(QObject *parent,const char *name)
   //
   for(unsigned i=0;i<MAX_DECKS;i++) {
     catch_playout_event_player[i]=new EventPlayer(catch_rdstation,i+129,this);
-    connect(catch_playout_event_player[i],SIGNAL(runCart(unsigned)),
-	    this,SLOT(runCartData(unsigned)));
+    connect(catch_playout_event_player[i],SIGNAL(runCart(int,int,unsigned)),
+	    this,SLOT(runCartData(int,int,unsigned)));
   }
 
   //
@@ -1057,13 +1057,14 @@ void MainObject::playUnloadedData(int handle)
 }
 
 
-void MainObject::runCartData(unsigned cartnum)
+void MainObject::runCartData(int chan,int number,unsigned cartnum)
 {
   RDCart *cart=new RDCart(cartnum);
   if(cart->exists()&&(cart->type()==RDCart::Macro)) {
     ExecuteMacroCart(cart);
   }
   delete cart;
+  SendDeckEvent(chan,number);
 }
 
 
@@ -1564,6 +1565,12 @@ void MainObject::SendMeterLevel(int deck,short levels[2])
       EchoCommand(i,QString().sprintf("RM %d 1 %d!",deck,(int)levels[1]));
     }
   }
+}
+
+
+void MainObject::SendDeckEvent(int deck,int number)
+{
+  BroadcastCommand(QString().sprintf("DE %d %d!",deck,number));
 }
 
 

@@ -39,7 +39,7 @@ class EventPlayer : public QObject
   void stop();
 
  signals:
-  void runCart(unsigned cartnum);
+  void runCart(int chan,int number,unsigned cartnum);
 
  private slots:
   void timeoutData();

@@ -64,6 +64,7 @@ void MainObject::RunLocalMacros(RDMacro *rml)
 				  msecsTo(QTime::currentTime()));
 	      q=new RDSqlQuery(sql);
 	      delete q;
+	      SendDeckEvent(decknum+1,eventnum);
 	    }
 	  }
 	  if(rml->echoRequested()) {

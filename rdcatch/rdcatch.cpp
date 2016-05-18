@@ -297,6 +297,9 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
 	    SIGNAL(eventPurged(int)),
 	    this,SLOT(eventPurgedData(int)));
     connect(catch_connect[catch_station_count].connect,
+	    SIGNAL(deckEventSent(int,int,int)),
+	    this,SLOT(deckEventSentData(int,int,int)));
+    connect(catch_connect[catch_station_count].connect,
 	    SIGNAL(heartbeatFailed(int)),
 	    this,SLOT(heartbeatFailedData(int)));
     catch_connect[catch_station_count].connect->
@@ -1036,6 +1039,15 @@ void MainWidget::monitorChangedData(int serial,unsigned chan,bool state)
   int mon=GetMonitor(serial,chan);
   if(mon>=0) {
     catch_monitor[mon]->deckMon()->setMonitor(state);
+  }
+}
+
+
+void MainWidget::deckEventSentData(int serial,int chan,int number)
+{
+  int mon=GetMonitor(serial,chan);
+  if(mon>=0) {
+    catch_monitor[mon]->deckMon()->setEvent(number);
   }
 }
 

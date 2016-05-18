@@ -263,6 +263,7 @@ void RDCatchConnect::DispatchCommand()
   unsigned chan;
   int status;
   int id;
+  int number;
 
   if(!strcmp(args[0],"PW")) {   // Password Response
     if(args[1][0]=='+') {
@@ -273,6 +274,16 @@ void RDCatchConnect::DispatchCommand()
       emit connected(cc_serial,false);
     }
   }
+
+  if(!strcmp(args[0],"DE")) {   // Deck Event
+    if(sscanf(args[1],"%d",&deck)!=1) {
+      return;
+    }
+    if(sscanf(args[2],"%d",&number)!=1) {
+      return;
+    }
+    emit deckEventSent(cc_serial,deck,number);
+  }    
 
   if(!strcmp(args[0],"RE")) {   // Channel Status
     if(sscanf(args[1],"%u",&chan)!=1){

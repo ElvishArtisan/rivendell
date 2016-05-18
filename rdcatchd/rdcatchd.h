@@ -108,7 +108,7 @@ class MainObject : public QObject
   void playingData(int handle);
   void playStoppedData(int handle);
   void playUnloadedData(int handle);
-  void runCartData(unsigned cartnum);
+  void runCartData(int chan,int number,unsigned cartnum);
   void meterData();
   void eventFinishedData(int id);
   void freeEventsData();
@@ -149,6 +149,7 @@ class MainObject : public QObject
   bool ExecuteMacroCart(RDCart *cart,int id=-1,int event=-1);
   void SendFullStatus(int ch);
   void SendMeterLevel(int deck,short levels[2]);
+  void SendDeckEvent(int deck,int number);
   void ParseCommand(int);
   void DispatchCommand(int);
   void KillSocket(int);

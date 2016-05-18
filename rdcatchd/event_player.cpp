@@ -99,14 +99,12 @@ void EventPlayer::timeoutData()
   //
   // Dispatch current event
   //
-  if(event_numbers[event_current_event]>=(int)event_deck_events.size()) {
+  if(event_numbers[event_current_event]>(int)event_deck_events.size()) {
     syslog(LOG_ERR,"playout cut event referenced non-existent deck event");
     return;
   }
-  unsigned cartnum=event_deck_events[event_numbers[event_current_event]-1];
-  if(cartnum>0) {
-    emit runCart(cartnum);
-  }
+  emit runCart(event_channel,event_numbers[event_current_event],
+	       event_deck_events[event_numbers[event_current_event]-1]);
 
   //
   // Set up next event
