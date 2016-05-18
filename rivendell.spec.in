@@ -179,7 +179,7 @@ if test "@DISTRO@" = "redhat" ; then
   fi
 fi
 if [ -x %{_bindir}/gtk-update-icon-cache ] ; then
-  %{_bindir}/gtk-update-icon-cache --quiet %{_datadir}/icons/hicolor || :
+  %{_bindir}/gtk-update-icon-cache -f --quiet %{_datadir}/icons/hicolor || :
 fi
 exit 0
 

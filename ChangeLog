@@ -15126,6 +15126,11 @@
 2016-05-10 Fred Gleason <fredg@paravelsystems.com>
 	* Updated 'NEWS'
 	* Incremented the package version to 2.13.0.
+2016-05-13 Fred Gleason <fredg@paravelsystems.com>
+	* Removed a superfluous dependency on libXi in 'acinclude.m4'.
+2016-05-13 Fred Gleason <fredg@paravelsystems.com>
+	* Added the '-f' switch to the invocation of gtk-update-icon-cache(8)
+	in 'rivendell.spec.in'.
 2016-05-18 Fred Gleason <fredg@paravelsystems.com>
 	* Added an entry for the Broadcast Tools SRC-16 in
 	'docs/SWITCHERS.txt'.

@@ -155,7 +155,7 @@ AC_DEFUN([BNV_HAVE_QT],
         bnv_qt_lib="`ls $bnv_qt_lib_dir/libqt* | sed -n 1p |
                      sed s@$bnv_qt_lib_dir/lib@@ | [sed s@[.].*@@]`"
       fi
-      bnv_qt_LIBS="-L$bnv_qt_lib_dir -l$bnv_qt_lib $X_PRE_LIBS $X_LIBS -lX11 -lXext -lXt -lXi $X_EXTRA_LIBS"
+      bnv_qt_LIBS="-L$bnv_qt_lib_dir -l$bnv_qt_lib $X_PRE_LIBS $X_LIBS -lX11 -lXext -lXt $X_EXTRA_LIBS"
     else
       # Use cached value or do search, starting with suggestions from
       # the command line
@@ -387,7 +387,7 @@ AC_DEFUN([BNV_PATH_QT_DIRECT],
       bnv_qt_lib="`ls $bnv_qt_lib_dir/libqt* | sed -n 1p |
                    sed s@$bnv_qt_lib_dir/lib@@ | [sed s@[.].*@@]`"
     fi
-    bnv_qt_LIBS="-L$bnv_qt_lib_dir -l$bnv_qt_lib $X_PRE_LIBS $X_LIBS -lX11 -lXext -lXt -lXi $X_EXTRA_LIBS"
+    bnv_qt_LIBS="-L$bnv_qt_lib_dir -l$bnv_qt_lib $X_PRE_LIBS $X_LIBS -lX11 -lXext -lXt $X_EXTRA_LIBS"
   else
     # There is no valid definition for $QTDIR as Trolltech likes to see it
     bnv_qt_dir=
@@ -399,7 +399,7 @@ AC_DEFUN([BNV_PATH_QT_DIRECT],
         bnv_qt_lib="`ls $bnv_qt_lib_dir/libqt* | sed -n 1p |
                      sed s@$bnv_qt_lib_dir/lib@@ | [sed s@[.].*@@]`"
       fi
-      bnv_qt_LIBS="-L$bnv_qt_lib_dir -l$bnv_qt_lib $X_PRE_LIBS $X_LIBS -lX11 -lXext -lXt -lXi $X_EXTRA_LIBS"
+      bnv_qt_LIBS="-L$bnv_qt_lib_dir -l$bnv_qt_lib $X_PRE_LIBS $X_LIBS -lX11 -lXext -lXt $X_EXTRA_LIBS"
     else
       # Normally, when there is no traditional Trolltech installation,
       # the library is installed in a place where the linker finds it
@@ -417,7 +417,7 @@ AC_DEFUN([BNV_PATH_QT_DIRECT],
       # See if we find the library without any special options.
       # Don't add top $LIBS permanently yet
       bnv_save_LIBS="$LIBS"
-      LIBS="-l$bnv_qt_lib $X_PRE_LIBS $X_LIBS -lX11 -lXext -lXt -lXi $X_EXTRA_LIBS"
+      LIBS="-l$bnv_qt_lib $X_PRE_LIBS $X_LIBS -lX11 -lXext -lXt $X_EXTRA_LIBS"
       bnv_qt_LIBS="$LIBS"
       bnv_save_CXXFLAGS="$CXXFLAGS"
       CXXFLAGS="-I$bnv_qt_include_dir"
@@ -431,7 +431,7 @@ AC_DEFUN([BNV_PATH_QT_DIRECT],
         # That did not work. Try the multi-threaded version
         echo "Non-critical error, please neglect the above." >&AC_FD_CC
         bnv_qt_lib=qt-mt
-        LIBS="-l$bnv_qt_lib $X_PRE_LIBS $X_LIBS -lX11 -lXext -lXt -lXi $X_EXTRA_LIBS"
+        LIBS="-l$bnv_qt_lib $X_PRE_LIBS $X_LIBS -lX11 -lXext -lXt $X_EXTRA_LIBS"
         AC_TRY_LINK([#include <$qt_direct_test_header>],
           $qt_direct_test_main,
         [
@@ -442,7 +442,7 @@ AC_DEFUN([BNV_PATH_QT_DIRECT],
           # That did not work. Try the OpenGL version
           echo "Non-critical error, please neglect the above." >&AC_FD_CC
           bnv_qt_lib=qt-gl
-          LIBS="-l$bnv_qt_lib $X_PRE_LIBS $X_LIBS -lX11 -lXext -lXt -lXi $X_EXTRA_LIBS"
+          LIBS="-l$bnv_qt_lib $X_PRE_LIBS $X_LIBS -lX11 -lXext -lXt $X_EXTRA_LIBS"
           AC_TRY_LINK([#include <$qt_direct_test_header>],
             $qt_direct_test_main,
           [
@@ -478,7 +478,7 @@ AC_DEFUN([BNV_PATH_QT_DIRECT],
               fi
             done
             # Try with that one
-            LIBS="-l$bnv_qt_lib $X_PRE_LIBS $X_LIBS -lX11 -lXext -lXt -lXi $X_EXTRA_LIBS"
+            LIBS="-l$bnv_qt_lib $X_PRE_LIBS $X_LIBS -lX11 -lXext -lXt $X_EXTRA_LIBS"
             AC_TRY_LINK([#include <$qt_direct_test_header>],
               $qt_direct_test_main,
             [
