@@ -167,6 +167,10 @@ void MainObject::Revert(int schema) const
   case 255:
     Revert255();
     break;
+
+  case 256:
+    Revert256();
+    break;
   }
 }
 
@@ -406,6 +410,23 @@ void MainObject::Revert255() const
 }
 
 
+void MainObject::Revert256() const
+{
+  QString sql;
+  QSqlQuery *q;
+
+  sql=QString("drop table CUT_EVENTS");
+  q=new QSqlQuery(sql);
+  delete q;
+
+  sql=QString("drop table DECK_EVENTS");
+  q=new QSqlQuery(sql);
+  delete q;
+
+  SetVersion(255);
+}
+
+
 int MainObject::GetVersion() const
 {
   QString sql;
@@ -445,6 +466,7 @@ int MainObject::MapSchema(const QString &ver)
   version_map["2.10"]=242;
   version_map["2.11"]=245;
   version_map["2.12"]=254;
+  version_map["2.13"]=255;
 
   //
   // Normalize String

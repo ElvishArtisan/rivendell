@@ -408,6 +408,36 @@
   </sect2>
 
   <sect2>
+    <title><command>Cut Event [CE]</command></title>
+    <para>
+      <variablelist>
+	<varlistentry>
+	  <term>Module</term>
+	  <listitem><command>rdcatchd</command><manvolnum>8</manvolnum></listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>Mnemonic</term>
+	  <listitem><userinput>CE</userinput></listitem>
+	</varlistentry>
+      </variablelist>
+    </para>
+    <para>
+      Place a cut event at the current location of an active RDCatch recording.
+    </para>
+    <para>
+      <userinput>CE
+      <replaceable>decknum</replaceable>
+      <replaceable>eventnum</replaceable>!</userinput>
+    </para>
+    <para>
+      Place a cut event with event number 
+      <replaceable>eventnum</replaceable> at the current position of the
+      active recording in RDCatch Deck 
+      <replaceable>decknum</replaceable>.
+    </para>
+  </sect2>
+
+  <sect2>
     <title><command>Database Backup [DB]</command></title>
     <para>
       <variablelist>

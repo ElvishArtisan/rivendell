@@ -15126,3 +15126,12 @@
 2016-05-10 Fred Gleason <fredg@paravelsystems.com>
 	* Updated 'NEWS'
 	* Incremented the package version to 2.13.0.
+2016-05-18 Fred Gleason <fredg@paravelsystems.com>
+	* Added an entry for the Broadcast Tools SRC-16 in
+	'docs/SWITCHERS.txt'.
+	* Added a 'CUT_EVENTS' table to the database.
+	* Added a 'DECK_EVENTS' table to the database.
+	* Incremented the database version to 256.
+	* Implemented a 'Cut Event' ['CE'] RML.
+	* Added a 'Event Carts' section to the Edit Deck dialog in
+	'rdadmin/edit_deck.cpp' and 'rdadmin/edit_deck.h'.

@@ -2,9 +2,7 @@
 //
 // Add a Rivendell Workstation
 //
-//   (C) Copyright 2002-2005 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: add_station.cpp,v 1.32.6.1 2013/03/09 00:21:11 cvs Exp $
+//   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -199,6 +197,16 @@ void AddStation::okData()
 	QString().sprintf("INSTANCE=%u",i);
       q=new RDSqlQuery(sql);
       delete q;
+    }
+    for(unsigned i=0;i<RD_CUT_EVENT_ID_QUAN;i++) {
+      for(unsigned j=0;j<MAX_DECKS;j++) {
+	sql=QString("insert into DECK_EVENTS set ")+
+	  "STATION_NAME=\""+RDEscapeString(add_name_edit->text())+"\","+
+	  QString().sprintf("CHANNEL=%u,",j+129)+
+	  QString().sprintf("NUMBER=%u",i+1);
+	q=new RDSqlQuery(sql);
+	delete q;
+      }
     }
   }
   else {    // Use Specified Config
@@ -407,6 +415,24 @@ void AddStation::okData()
 			    q->value(9).toInt(),
 			    (const char *)add_name_edit->text(),
                             (const char *)q->value(10).toString());
+      q1=new RDSqlQuery(sql);
+      delete q1;
+    }
+    delete q;
+ 
+    //
+    // Clone Deck Events
+    //
+    sql=QString("select CHANNEL,NUMBER,CART_NUMBER from DECK_EVENTS ")+
+      "where STATION_NAME=\""+RDEscapeString(add_exemplar_box->currentText())+
+      "\"";
+    q=new RDSqlQuery(sql);
+    while(q->next()) {
+      sql=QString("insert into DECK_EVENTS set ")+
+	"STATION_NAME=\""+RDEscapeString(add_name_edit->text())+"\","+
+	QString().sprintf("CHANNEL=%u,",q->value(0).toUInt())+
+	QString().sprintf("NUMBER=%d,",q->value(1).toInt())+
+	QString().sprintf("CART_NUMBER=%u",q->value(2).toUInt());
       q1=new RDSqlQuery(sql);
       delete q1;
     }

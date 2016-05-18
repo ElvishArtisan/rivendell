@@ -571,5 +571,10 @@
  */
 #define RDMIMETYPE_CART "application/rivendell-cart"
 
+/*
+ * Number of Cut Event IDs
+ */
+#define RD_CUT_EVENT_ID_QUAN 16
+
 
 #endif  // RD_H

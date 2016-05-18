@@ -36,11 +36,50 @@ void MainObject::RunLocalMacros(RDMacro *rml)
   unsigned dst_cartnum;
   unsigned dst_cutnum;
   unsigned len;
+  unsigned decknum;
+  unsigned eventnum;
   QDateTime dt;
   RDUser *user;
   bool ok=false;
+  CatchEvent e;
+  unsigned event_ptr=0;
+  QString sql;
+  RDSqlQuery *q;
 
   switch(rml->command()) {
+  case RDMacro::CE:
+    if(rml->argQuantity()==2) {
+      decknum=rml->arg(0).toUInt()-1;
+      if(decknum<MAX_DECKS) {
+	eventnum=rml->arg(1).toUInt();
+	if((eventnum>0)&&(eventnum<=RD_CUT_EVENT_ID_QUAN)) {
+	  if(catch_record_deck_status[decknum]==RDDeck::Recording) {
+	    if((event_ptr=GetEvent(catch_record_id[decknum]))<
+	       catch_events.size()) {
+	      e=catch_events[event_ptr];
+	      sql=QString("insert into CUT_EVENTS set ")+
+		"CUT_NAME=\""+e.cutName()+"\","+
+		QString().sprintf("NUMBER=%u,",eventnum)+
+		QString().sprintf("POINT=%u",e.startTime().
+				  msecsTo(QTime::currentTime()));
+	      q=new RDSqlQuery(sql);
+	      delete q;
+	    }
+	  }
+	  if(rml->echoRequested()) {
+	    rml->acknowledge(true);
+	    catch_ripc->sendRml(rml);
+	  }
+	  return;
+	}
+      }
+    }
+    if(rml->echoRequested()) {
+      rml->acknowledge(false);
+      catch_ripc->sendRml(rml);
+    }
+    break;
+
   case RDMacro::CP:
     cartnum=rml->arg(0).toUInt();
     cutnum=rml->arg(1).toUInt();

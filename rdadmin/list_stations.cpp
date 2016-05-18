@@ -2,9 +2,7 @@
 //
 // List Rivendell Workstations
 //
-//   (C) Copyright 2002-2003 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: list_stations.cpp,v 1.28.6.1 2013/03/09 00:21:12 cvs Exp $
+//   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -215,6 +213,10 @@ void ListStations::DeleteStation(QString name)
 
   sql=QString().sprintf("delete from DECKS where STATION_NAME=\"%s\"",
 			(const char *)RDEscapeString(name));
+  q=new RDSqlQuery(sql);
+  delete q;
+  sql=QString("delete from DECK_EVENTS where ")+
+    "STATION_NAME=\""+RDEscapeString(name)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
   sql=QString().sprintf("delete from TTYS where STATION_NAME=\"%s\"",

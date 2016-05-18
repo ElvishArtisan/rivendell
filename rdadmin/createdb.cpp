@@ -2,9 +2,7 @@
 //
 // Create, Initialize and/or Update a Rivendell Database
 //
-//   (C) Copyright 2002-2010 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: createdb.cpp,v 1.195.2.32.2.5 2014/06/05 19:04:25 cvs Exp $
+//   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -2378,6 +2376,33 @@ bool CreateDb(QString name,QString pwd)
      return false;
   }
 
+  //
+  // Create CUT_EVENTS table
+  //
+  sql=QString("create table if not exists CUT_EVENTS(")+
+    "ID int auto_increment not null primary key,"+
+    "CUT_NAME char(12) not null,"+
+    "NUMBER int not null,"+
+    "POINT int not null,"+
+    "CUT_NAME_IDX(CUT_NAME))";
+  if(!RunQuery(sql)) {
+     return false;
+  }
+
+  //
+  // Create DECK_EVENTS table
+  //
+  sql=QString("create table if not exists DECK_EVENTS(")+
+    "ID int auto_increment not null primary key,"+
+    "STATION_NAME char(64) not null,"+
+    "CHANNEL int unsigned not null,"+
+    "NUMBER int not null,"+
+    "CART_NUMBER int unsigned not null default 0,"+
+    "index STATION_NAME_IDX(STATION_NAME,CHANNEL))";
+  if(!RunQuery(sql)) {
+     return false;
+  }
+
   return true;
 }
 
@@ -2479,6 +2504,17 @@ bool InitDb(QString name,QString pwd,QString station_name)
       QString().sprintf("MACHINE=%u",i);
     if(!RunQuery(sql)) {
       return false;
+    }
+  }
+  for(unsigned i=0;i<RD_CUT_EVENT_ID_QUAN;i++) {
+    for(unsigned j=0;j<MAX_DECKS;j++) {
+      sql=QString("insert into DECK_EVENTS set ")+
+	"STATION_NAME=\""+RDEscapeString(station_name)+"\","+
+	QString().sprintf("CHANNEL=%u,",j+129)+
+	QString().sprintf("NUMBER=%u",i+1);
+      if(!RunQuery(sql)) {
+	return false;
+      }
     }
   }
 
@@ -8149,6 +8185,42 @@ int UpdateDb(int ver)
     delete q;
   }
 
+  if(ver<256) {
+    sql=QString("create table if not exists CUT_EVENTS(")+
+      "ID int auto_increment not null primary key,"+
+      "CUT_NAME char(12) not null,"+
+      "NUMBER int not null,"+
+      "POINT int not null,"+
+      "index CUT_NAME_IDX(CUT_NAME))";
+    q=new QSqlQuery(sql);
+    delete q;
+
+    sql=QString("create table if not exists DECK_EVENTS(")+
+      "ID int auto_increment not null primary key,"+
+      "STATION_NAME char(64) not null,"+
+      "CHANNEL int unsigned not null,"+
+      "NUMBER int not null,"+
+      "CART_NUMBER int unsigned not null default 0,"+
+      "index STATION_NAME_IDX(STATION_NAME,CHANNEL))";
+    q=new QSqlQuery(sql);
+    delete q;
+
+    sql=QString("select NAME from STATIONS");
+    q=new QSqlQuery(sql);
+    while(q->next()) {
+      for(unsigned i=0;i<RD_CUT_EVENT_ID_QUAN;i++) {
+	for(unsigned j=0;j<MAX_DECKS;j++) {
+	  sql=QString("insert into DECK_EVENTS set ")+
+	    "STATION_NAME=\""+RDEscapeString(q->value(0).toString())+"\","+
+	    QString().sprintf("CHANNEL=%u,",j+129)+
+	    QString().sprintf("NUMBER=%u",i+1);
+	  q1=new QSqlQuery(sql);
+	  delete q1;
+	}
+      }
+    }
+    delete q;
+  }
 
 
   // **** End of version updates ****

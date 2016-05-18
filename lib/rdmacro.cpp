@@ -166,6 +166,7 @@ bool RDMacro::parseString(const char *str,int n)
       case RDMacro::AL:
       case RDMacro::BO:
       case RDMacro::CC:
+      case RDMacro::CE:
       case RDMacro::CL:
       case RDMacro::CP:
       case RDMacro::DB:

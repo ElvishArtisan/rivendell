@@ -2,9 +2,7 @@
 //
 // Edit Rivendell Netcatcher Configuration
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: edit_decks.h,v 1.15.6.1 2012/11/28 18:49:36 cvs Exp $
+//   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -55,6 +53,8 @@ class EditDecks : public QDialog
    void formatActivatedData(int);
    void stationActivatedData(const QString &);
    void matrixActivatedData(const QString &);
+   void playSettingsChangedData(int id,int card,int port);
+   void eventCartSelectedData(int n);
    void closeData();
 
   protected:
@@ -97,6 +97,10 @@ class EditDecks : public QDialog
    QSpinBox *edit_swdelay_box;
    QSpinBox *edit_threshold_box;
    QLineEdit *edit_errorrml_edit;
+   QLabel *edit_event_section_label;
+   QLabel *edit_event_labels[RD_CUT_EVENT_ID_QUAN];
+   QLineEdit *edit_event_edits[RD_CUT_EVENT_ID_QUAN];
+   QPushButton *edit_event_buttons[RD_CUT_EVENT_ID_QUAN];
 };
 
 

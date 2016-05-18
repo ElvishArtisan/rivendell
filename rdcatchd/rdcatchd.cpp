@@ -2,7 +2,7 @@
 //
 // The Rivendell Netcatcher Daemon
 //
-//   (C) Copyright 2002-2015 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -332,6 +332,15 @@ MainObject::MainObject(QObject *parent,const char *name)
   delete q;
 
   StartDropboxes();
+
+  //
+  // Playout Event Players
+  //
+  for(unsigned i=0;i<MAX_DECKS;i++) {
+    catch_playout_event_player[i]=new EventPlayer(catch_rdstation,i+129,this);
+    connect(catch_playout_event_player[i],SIGNAL(runCart(unsigned)),
+	    this,SLOT(runCartData(unsigned)));
+  }
 
   //
   // Time Engine
@@ -676,6 +685,11 @@ void MainObject::engineData(int id)
 	}
 	delete q;
 
+	sql=QString("delete from CUT_EVENTS where ")+
+	  "CUT_NAME=\""+catch_events[event].cutName()+"\"";
+	q=new RDSqlQuery(sql);
+	delete q;
+
 	switch(catch_events[event].startType()) {
 	    case RDRecording::HardStart:
 	      StartRecording(event);
@@ -1004,6 +1018,7 @@ void MainObject::playStoppedData(int handle)
   short levels[2]={-10000,-10000};
 
   catch_playout_status[deck-129]=false;
+  catch_playout_event_player[deck-129]->stop();
   LogLine(RDConfig::LogNotice,QString().
 	  sprintf("playout stopped: cut %s",
 		  (const char *)catch_playout_name[deck-129]));
@@ -1039,6 +1054,16 @@ void MainObject::playUnloadedData(int handle)
   catch_events[catch_playout_event_id[deck-129]].setStatus(RDDeck::Idle);
   catch_playout_event_id[deck-129]=-1;
   catch_playout_id[deck-129]=0;
+}
+
+
+void MainObject::runCartData(unsigned cartnum)
+{
+  RDCart *cart=new RDCart(cartnum);
+  if(cart->exists()&&(cart->type()==RDCart::Macro)) {
+    ExecuteMacroCart(cart);
+  }
+  delete cart;
 }
 
 
@@ -1368,6 +1393,7 @@ void MainObject::StartPlayout(int event)
   //
   // Start the playout
   //
+  catch_playout_event_player[deck-129]->load(catch_events[event].cutName());
   catch_cae->loadPlay(catch_playout_card[deck-129],
 		      catch_events[event].cutName(),
 		      &catch_playout_stream[deck-129],
@@ -1376,6 +1402,7 @@ void MainObject::StartPlayout(int event)
 		       catch_playout_stream[deck-129],
 		       catch_playout_port[deck-129]);
   catch_cae->positionPlay(catch_playout_handle[deck-129],start);
+  catch_playout_event_player[deck-129]->start(start);
   catch_cae->
     play(catch_playout_handle[deck-129],end-start,RD_TIMESCALE_DIVISOR,0);
   catch_cae->setPlayPortActive(catch_playout_card[deck-129],

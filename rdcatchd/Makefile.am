@@ -2,9 +2,7 @@
 ##
 ## rdcatchd/ Makefile.am for Rivendell
 ##
-## (C) Copyright 2002-2006 Fred Gleason <fredg@paravelsystems.com>
-##
-##      $Id: Makefile.am,v 1.20.8.1 2012/11/29 01:37:36 cvs Exp $
+## (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -34,11 +32,13 @@ bin_PROGRAMS = rdcatchd
 
 dist_rdcatchd_SOURCES = batch.cpp\
                         catch_event.cpp catch_event.h\
+                        event_player.cpp event_player.h\
                         local_macros.cpp\
                         rdcatchd.cpp rdcatchd.h\
                         rdcatchd_socket.cpp rdcatchd_socket.h
 
-nodist_rdcatchd_SOURCES = moc_rdcatchd.cpp\
+nodist_rdcatchd_SOURCES = moc_event_player.cpp\
+                          moc_rdcatchd.cpp\
                           moc_rdcatchd_socket.cpp
 
 rdcatchd_LDADD = @LIB_RDLIBS@ @LIBVORBIS@

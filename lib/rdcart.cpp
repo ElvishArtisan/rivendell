@@ -1475,10 +1475,16 @@ bool RDCart::removeCutAudio(RDStation *station,RDUser *user,unsigned cart_num,
   long response_code=0;
   char url[1024];
   QString xml="";
+  QString sql;
+  RDSqlQuery *q;
 
   if(user==NULL) { 
     unlink(RDCut::pathName(cutname));
     unlink(RDCut::pathName(cutname)+".energy");
+    sql=QString("delete from CUT_EVENTS where ")+
+      "CUT_NAME=\""+cutname+"\"";
+    q=new RDSqlQuery(sql);
+    delete q;
   }
   else {
     //

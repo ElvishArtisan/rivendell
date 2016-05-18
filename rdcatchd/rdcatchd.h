@@ -57,7 +57,8 @@
 #include <rdcatch_connect.h>
 #include <rdsettings.h>
 
-#include <catch_event.h>
+#include "catch_event.h"
+#include "event_player.h"
 
 //
 // Global RDCATCHD Definitions
@@ -107,6 +108,7 @@ class MainObject : public QObject
   void playingData(int handle);
   void playStoppedData(int handle);
   void playUnloadedData(int handle);
+  void runCartData(unsigned cartnum);
   void meterData();
   void eventFinishedData(int id);
   void freeEventsData();
@@ -228,6 +230,7 @@ class MainObject : public QObject
   int catch_playout_event_id[MAX_DECKS];
   int catch_playout_id[MAX_DECKS];
   QString catch_playout_name[MAX_DECKS];
+  EventPlayer *catch_playout_event_player[MAX_DECKS];
 
   int catch_monitor_port[MAX_DECKS];
   bool catch_monitor_state[MAX_DECKS];

@@ -1120,6 +1120,14 @@ nastaveném pro běh služby CAE pro naplnění databáze se zdroji zvuku.</tran
         <source>PCM24</source>
         <translation type="unfinished">PCM24</translation>
     </message>
+    <message>
+        <source>Select</source>
+        <translation type="unfinished">Vybrat</translation>
+    </message>
+    <message>
+        <source>Event Carts</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditDropbox</name>

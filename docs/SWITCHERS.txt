@@ -10,6 +10,7 @@ Broadcast Tools 8x2 Audio Switcher
 Broadcast Tools ADMS 44.22 Analog/AES Digital Matrix Switcher
 Broadcast Tools GPI-16 General Purpose Input Module
 Broadcast Tools Sentinel 4 Web AES Switcher
+Broadcast Tools SRC-16
 Broadcast Tools SS 12.4 Audio Switcher
 Broadcast Tools SS 16.4 Audio Switcher
 Broadcast Tools SS 4.1 MLR Switcher/Router
@@ -201,6 +202,24 @@ On the 'Email/Network Setup' page of the unit, be sure that the 'TCP Enabled'
 box is checked and that 'TCP Listen Port' is set to the same number as is
 used in the 'IP Port' setting in Rivendell's driver configuration
 ('56' by default).
+
+
+----------------------------------------------------------------------------
+BROADCAST TOOLS SRC-16
+
+Driver Name: BroadcastTools SRC-16
+
+Supported RML Commands:
+  GPI Enable ('GE')
+  GPI Set ('GI')
+
+GENERAL NOTES:
+Control is done by means of a serial connection to the unit's integrated
+serial port.
+
+The unit should work correctly with factory default settings.  The Rivendell
+serial interface should be set to use 9600 bits/sec, 8 bits, 1 stop bit and
+no flow control.
 
 
 ----------------------------------------------------------------------------

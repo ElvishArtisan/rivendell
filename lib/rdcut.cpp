@@ -2,9 +2,7 @@
 //
 // Abstract a Rivendell Cut.
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdcut.cpp,v 1.76.6.10.2.2 2014/07/15 20:02:22 cvs Exp $
+//   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -829,6 +827,7 @@ bool RDCut::copyTo(RDStation *station,RDUser *user,
 #else
   QString sql;
   RDSqlQuery *q;
+  RDSqlQuery *q1;
   bool ret=true;
 
   //
@@ -889,6 +888,22 @@ bool RDCut::copyTo(RDStation *station,RDUser *user,
   }
   delete q;
   q=new RDSqlQuery(sql);
+  delete q;
+
+  //
+  // Copy the Cut Events
+  //
+  sql=QString("select NUMBER,POINT from CUT_EVENTS ")+
+    "where CUT_NAME=\""+cutName()+"\"";
+  q=new RDSqlQuery(sql);
+  while(q->next()) {
+    sql=QString("insert into CUT_EVENTS set ")+
+      "CUT_NAME=\""+cutname+"\","+
+      QString().sprintf("NUMBER=%d,",q->value(0).toInt())+
+      QString().sprintf("POINT=%d",q->value(1).toInt());
+    q1=new RDSqlQuery(sql);
+    delete q1;
+  }
   delete q;
 
   //

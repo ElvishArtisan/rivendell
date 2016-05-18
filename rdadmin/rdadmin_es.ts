@@ -1114,6 +1114,14 @@ computador para obtener los recursos de audio de dicho equipo.</translation>
         <source>PCM24</source>
         <translation type="unfinished">PCM24</translation>
     </message>
+    <message>
+        <source>Select</source>
+        <translation type="unfinished">Elegir</translation>
+    </message>
+    <message>
+        <source>Event Carts</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditDropbox</name>

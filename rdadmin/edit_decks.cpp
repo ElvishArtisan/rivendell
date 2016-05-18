@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell RDCatch Deck Configuration
 //
-//   (C) Copyright 2002-2015 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -23,7 +23,9 @@
 #include <qtextedit.h>
 #include <qpainter.h>
 #include <qevent.h>
+#include <qvalidator.h>
 #include <qmessagebox.h>
+#include <qsignalmapper.h>
 #include <qcheckbox.h>
 #include <qbuttongroup.h>
 #include <qstringlist.h>
@@ -35,7 +37,7 @@
 #include <rdmatrix.h>
 
 #include <edit_decks.h>
-
+#include "globals.h"
 
 EditDecks::EditDecks(RDStation *station,RDStation *cae_station,QWidget *parent)
   : QDialog(parent,"",true)
@@ -44,7 +46,7 @@ EditDecks::EditDecks(RDStation *station,RDStation *cae_station,QWidget *parent)
   // Fix the Window Size
   //
   setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
+  //  setMaximumWidth(sizeHint().width());
   setMinimumHeight(sizeHint().height());
   setMaximumHeight(sizeHint().height());
 
@@ -252,7 +254,37 @@ EditDecks::EditDecks(RDStation *station,RDStation *cae_station,QWidget *parent)
   // Play Deck Card Selector
   //
   edit_play_selector=new RDCardSelector(this);
-  edit_play_selector->setGeometry(387,42,120,10);
+  edit_play_selector->setGeometry(392,37,120,10);
+  connect(edit_play_selector,SIGNAL(settingsChanged(int,int,int)),
+	  this,SLOT(playSettingsChangedData(int,int,int)));
+
+  //
+  // Deck Event Carts
+  //
+  edit_event_section_label=new QLabel(tr("Event Carts"),this);
+  edit_event_section_label->setGeometry(395,99,100,24);
+  edit_event_section_label->setFont(big_font);
+
+  QSignalMapper *mapper=new QSignalMapper(this);
+  connect(mapper,SIGNAL(mapped(int)),this,SLOT(eventCartSelectedData(int)));
+  for(unsigned i=0;i<RD_CUT_EVENT_ID_QUAN;i+=2) {
+    for(unsigned j=0;j<2;j++) {
+      edit_event_labels[i+j]=new QLabel(QString().sprintf("%u:",i+j+1),this);
+      edit_event_labels[i+j]->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
+      edit_event_labels[i+j]->setGeometry(387+165*j,126+14*i,20,20);
+
+      edit_event_edits[i+j]=new QLineEdit(this);
+      edit_event_edits[i+j]->setGeometry(412+165*j,126+14*i,60,20);
+      edit_event_edits[i+j]->
+	setValidator(new QIntValidator(1,RD_MAX_CART_NUMBER,this));
+
+      edit_event_buttons[i+j]=new QPushButton(tr("Select"),this);
+      edit_event_buttons[i+j]->setGeometry(477+165*j,124+14*i,60,24);
+      mapper->setMapping(edit_event_buttons[i+j],i+j);
+      connect(edit_event_buttons[i+j],SIGNAL(clicked()),
+	      mapper,SLOT(map()));
+    }
+  }
 
   //
   //  Close Button
@@ -340,7 +372,7 @@ EditDecks::~EditDecks()
 
 QSize EditDecks::sizeHint() const
 {
-  return QSize(560,454);
+  return QSize(710,454);
 } 
 
 
@@ -475,6 +507,31 @@ void EditDecks::matrixActivatedData(const QString &str)
 }
 
 
+void EditDecks::playSettingsChangedData(int id,int card,int port)
+{
+  edit_event_section_label->setEnabled((card>=0)&&(port>=0));
+  for(unsigned i=0;i<RD_CUT_EVENT_ID_QUAN;i++) {
+    edit_event_labels[i]->setEnabled((card>=0)&&(port>=0));
+    edit_event_edits[i]->setEnabled((card>=0)&&(port>=0));
+    edit_event_buttons[i]->setEnabled((card>=0)&&(port>=0));
+  }
+}
+
+
+void EditDecks::eventCartSelectedData(int n)
+{
+  int cartnum=edit_event_edits[n]->text().toInt();
+  if(admin_cart_dialog->exec(&cartnum,RDCart::Macro,NULL,0,"","")==0) {
+    if(cartnum==0) {
+      edit_event_edits[n]->setText("");
+    }
+    else {
+      edit_event_edits[n]->setText(QString().sprintf("%06d",cartnum));
+    }
+  }
+}
+
+
 void EditDecks::closeData()
 {
   edit_catch_conf->setErrorRml(edit_errorrml_edit->text());
@@ -497,6 +554,9 @@ void EditDecks::paintEvent(QPaintEvent *e)
 
 void EditDecks::ReadRecord(int chan)
 {
+  QString sql;
+  RDSqlQuery *q;
+
   if(chan==0) {  // Audition Deck
     if(edit_audition_deck==NULL) {
       edit_audition_deck=new RDDeck(edit_station->name(),0,true);
@@ -617,12 +677,35 @@ void EditDecks::ReadRecord(int chan)
     edit_swdelay_box->setValue(edit_record_deck->switchDelay()/100);
     edit_threshold_box->setValue(-edit_record_deck->defaultThreshold()/100);
   }
+
+  if(chan>128) {
+    sql=QString("select NUMBER,CART_NUMBER from DECK_EVENTS where ")+
+      "(STATION_NAME=\""+RDEscapeString(edit_station->name())+"\")&&"+
+      QString().sprintf("(CHANNEL=%d)",chan);
+    q=new RDSqlQuery(sql);
+    while(q->next()) {
+      if((q->value(0).toInt()-1)<RD_CUT_EVENT_ID_QUAN) {
+	if(q->value(1).toUInt()==0) {
+	  edit_event_edits[q->value(0).toInt()-1]->setText("");
+	}
+	else {
+	  edit_event_edits[q->value(0).toInt()-1]->
+	    setText(QString().sprintf("%06u",q->value(1).toUInt()));
+	}
+      }
+    }
+    playSettingsChangedData(0,edit_play_selector->card(),
+			    edit_play_selector->port());
+  }
 }
 
 
 void EditDecks::WriteRecord(int chan)
 {
   int temp;
+  QString sql;
+  RDSqlQuery *q;
+  unsigned cartnum=0;
 
   if((chan>128)&&(chan<(MAX_DECKS+129))) { // Play Deck
     edit_play_deck->setCardNumber(edit_play_selector->card());
@@ -664,6 +747,24 @@ void EditDecks::WriteRecord(int chan)
     edit_record_deck->setSwitchOutput(GetOutput());
     edit_record_deck->setSwitchDelay(100*edit_swdelay_box->value());
     edit_record_deck->setDefaultThreshold(-edit_threshold_box->value()*100);
+  }
+
+  if(chan>128) {
+    for(unsigned i=0;i<RD_CUT_EVENT_ID_QUAN;i++) {
+      if(edit_event_edits[i]->text().isEmpty()) {
+	cartnum=0;
+      }
+      else {
+	cartnum=edit_event_edits[i]->text().toUInt();
+      }
+      sql=QString("update DECK_EVENTS set ")+
+	QString().sprintf("CART_NUMBER=%u ",cartnum)+
+	"where (STATION_NAME=\""+RDEscapeString(edit_station->name())+"\")&&"+
+	QString().sprintf("(CHANNEL=%d)&&",chan)+
+	QString().sprintf("(NUMBER=%u)",i+1);
+      q=new RDSqlQuery(sql);
+      delete q;
+    }
   }
 }
 

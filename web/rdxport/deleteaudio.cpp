@@ -60,6 +60,10 @@ void Xport::DeleteAudio()
   }
   unlink(RDCut::pathName(cartnum,cutnum));
   unlink(RDCut::pathName(cartnum,cutnum)+".energy");
+  QString sql=QString("delete from CUT_EVENTS where ")+
+    "CUT_NAME=\""+RDCut::cutName(cartnum,cutnum)+"\"";
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  delete q;
   syslog(LOG_NOTICE,"unlink(%s): %s",(const char *)RDCut::pathName(cartnum,cutnum),strerror(errno));
   delete cut;
   XmlExit("OK",200);
