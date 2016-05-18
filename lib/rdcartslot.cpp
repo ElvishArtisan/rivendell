@@ -625,9 +625,10 @@ unsigned RDCartSlot::SelectCart(const QString &svcname,unsigned msecs)
     "(SERVICE=\""+RDEscapeString(svcname)+"\")";
   q=new RDSqlQuery(sql);
   while(q->next()) {
-    if(::abs(msecs-q->value(1).toInt())<diff) {
+    int cur_diff = msecs-q->value(1).toInt();
+    if(::abs(cur_diff)<diff) {
       cartnum=q->value(0).toUInt();
-      diff=::abs(msecs-q->value(1).toInt());
+      diff=::abs(cur_diff);
     }
   }
   delete q;
