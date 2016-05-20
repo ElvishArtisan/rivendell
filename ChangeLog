@@ -15150,3 +15150,8 @@
 2016-05-20 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in 'rdadmin/createdb.cpp' that caused creation
 	of a new DB to fail.
+2016-05-20 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the 'not null' attribute from the 'LOGS.LINK_DATETIME',
+	'LOGS.START_DATE' and 'LOGS.END_DATE' fields in the database
+	[GitHub issue #000121].
+	* Incremented the database version to 257.

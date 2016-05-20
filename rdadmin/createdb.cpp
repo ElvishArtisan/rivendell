@@ -1197,11 +1197,11 @@ bool CreateDb(QString name,QString pwd)
       DESCRIPTION CHAR(64),\
       ORIGIN_USER CHAR(255) NOT NULL,\
       ORIGIN_DATETIME DATETIME NOT NULL,\
-      LINK_DATETIME DATETIME NOT NULL,\
+      LINK_DATETIME DATETIME,\
       MODIFIED_DATETIME DATETIME NOT NULL,\
       AUTO_REFRESH enum('N','Y') default 'N',\
-      START_DATE DATE NOT NULL,\
-      END_DATE DATE NOT NULL,\
+      START_DATE DATE,\
+      END_DATE DATE,\
       PURGE_DATE date,\
       IMPORT_DATE date,\
       SCHEDULED_TRACKS int unsigned default 0,\
@@ -2627,8 +2627,9 @@ bool InitDb(QString name,QString pwd,QString station_name)
   if(!RunQuery(sql)) {
     return false;
   }
-  sql="insert into LOGS (NAME,SERVICE,DESCRIPTION,ORIGIN_USER,ORIGIN_DATETIME)\
-      values (\"SAMPLE\",\"Production\",\"Sample Log\",\"user\",NOW())";
+  sql=QString("insert into LOGS ")+
+    "(NAME,SERVICE,DESCRIPTION,ORIGIN_USER,ORIGIN_DATETIME,MODIFIED_DATETIME) "+
+    "values (\"SAMPLE\",\"Production\",\"Sample Log\",\"user\",now(),now())";
   if(!RunQuery(sql)) {
     return false;
   }
@@ -8219,6 +8220,20 @@ int UpdateDb(int ver)
 	}
       }
     }
+    delete q;
+  }
+
+  if(ver<257) {
+    sql=QString("alter table LOGS modify column LINK_DATETIME datetime");
+    q=new QSqlQuery(sql);
+    delete q;
+
+    sql=QString("alter table LOGS modify column START_DATE date");
+    q=new QSqlQuery(sql);
+    delete q;
+
+    sql=QString("alter table LOGS modify column END_DATE date");
+    q=new QSqlQuery(sql);
     delete q;
   }
 

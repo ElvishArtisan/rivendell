@@ -171,6 +171,10 @@ void MainObject::Revert(int schema) const
   case 256:
     Revert256();
     break;
+
+  case 257:
+    Revert257();
+    break;
   }
 }
 
@@ -424,6 +428,27 @@ void MainObject::Revert256() const
   delete q;
 
   SetVersion(255);
+}
+
+
+void MainObject::Revert257() const
+{
+  QString sql;
+  QSqlQuery *q;
+
+  sql=QString("alter table LOGS modify column LINK_DATETIME datetime not null");
+  q=new QSqlQuery(sql);
+  delete q;
+
+  sql=QString("alter table LOGS modify column START_DATE date not null");
+  q=new QSqlQuery(sql);
+  delete q;
+
+  sql=QString("alter table LOGS modify column END_DATE date not null");
+  q=new QSqlQuery(sql);
+  delete q;
+
+  SetVersion(256);
 }
 
 
