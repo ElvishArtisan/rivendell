@@ -2384,7 +2384,7 @@ bool CreateDb(QString name,QString pwd)
     "CUT_NAME char(12) not null,"+
     "NUMBER int not null,"+
     "POINT int not null,"+
-    "CUT_NAME_IDX(CUT_NAME))";
+    "index CUT_NAME_IDX(CUT_NAME))";
   if(!RunQuery(sql)) {
      return false;
   }

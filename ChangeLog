@@ -15147,3 +15147,6 @@
 	'rdcatchd/local_macros.cpp'.
 	* Added a deck event indicator to RDCatch's deck monitor in
 	'rdcatch/deckmon.cpp' and 'rdcatch/deckmon.h'.
+2016-05-20 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'rdadmin/createdb.cpp' that caused creation
+	of a new DB to fail.
