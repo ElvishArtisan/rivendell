@@ -240,17 +240,22 @@ and we will try to get this straightened out.");
         if (check_remote_server(host)) {
           host=format_remote_host(host);
         }
-	sql=QString().sprintf("insert into user set Host=\"%s\",\
-            User=\"%s\",Password=PASSWORD(\"%s\")",
-			      (const char *)host, (const char *)login,(const char *)pwd);
+	/* BUG FIX: Move to create user statement rather than interacting with the
+	 * MySQL user table directly because in v5.7+ the password field has been
+	 * renamed to authentication_string.
+	 * 
+	 * Also converted to GRANT statements rather than touching the mysql db
+	 * table.  This should be safer and prevent differences among MySQL/MariaDB
+	 * versions going forward.
+	 */
+	sql=QString().sprintf("create user %s@'%s' identified by '%s'", 
+	          (const char *)login, (const char *)host, (const char *)pwd);
 	q=new QSqlQuery(sql);
 	delete q;
-	sql=QString().
-	  sprintf("insert into db set Host=\"%s\",Db=\"%s\",\
-            User=\"%s\",Select_priv=\"Y\",Insert_priv=\"Y\",Update_priv=\"Y\",\
-            Delete_priv=\"Y\",Create_priv=\"Y\",Drop_priv=\"Y\",\
-            Index_priv=\"Y\",Alter_priv=\"Y\",Lock_tables_priv=\"Y\"",
-		 (const char *)host, (const char *)dbname,(const char *)login);
+	sql=QString().sprintf("grant SELECT, INSERT, UPDATE, DELETE, CREATE, DROP,\
+	          INDEX, ALTER, LOCK TABLES on %s.* to %s@'%s'", 
+	          (const char *)dbname, (const char *)login, (const char *)host);
+	/* END OF create user and grant statement fix */
 	q=new QSqlQuery(sql);
 	delete q;
 	q=new QSqlQuery("flush privileges");
