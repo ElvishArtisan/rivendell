@@ -1278,7 +1278,6 @@ bool CreateDb(QString name,QString pwd)
   sql="create table if not exists RDAIRPLAY (\
       ID int not null primary key auto_increment,\
       STATION char(40) not null,\
-      INSTANCE int unsigned not null,\
       CARD0 int default 0,\
       PORT0 int default 0,\
       START_RML0 char(255),\
@@ -1390,7 +1389,7 @@ bool CreateDb(QString name,QString pwd)
       LOG2_LOG_LINE int default -1,\
       LOG2_NOW_CART int unsigned default 0,\
       LOG2_NEXT_CART int unsigned default 0,\
-      index STATION_IDX (STATION,INSTANCE))"; 
+      index STATION_IDX (STATION))"; 
   if(!RunQuery(sql)) {
     return false;
   }
@@ -6061,7 +6060,6 @@ int UpdateDb(int ver)
     sql="create table if not exists RDPANEL (\
          ID int not null primary key auto_increment,\
          STATION char(40) not null,\
-         INSTANCE int unsigned not null,\
          CARD2 int default -1,\
          PORT2 int default -1,\
          START_RML2 char(255),\
@@ -6088,7 +6086,7 @@ int UpdateDb(int ver)
          FLASH_PANEL enum('N','Y') default 'N',\
          PANEL_PAUSE_ENABLED enum('N','Y') default 'N',\
          DEFAULT_SERVICE char(10),\
-         index STATION_IDX (STATION,INSTANCE))"; 
+         index STATION_IDX (STATION))"; 
     q=new QSqlQuery(sql);
     delete q;
 
