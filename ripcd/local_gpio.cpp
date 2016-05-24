@@ -2,9 +2,7 @@
 //
 // A Rivendell switcher driver for MeasurementComputing GPIO cards.
 //
-//   (C) Copyright 2002-2003 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: local_gpio.cpp,v 1.16.8.1 2013/03/03 23:30:16 cvs Exp $
+//   (C) Copyright 2002-2003,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -25,8 +23,8 @@
 #include <globals.h>
 #include <local_gpio.h>
 
-LocalGpio::LocalGpio(RDMatrix *matrix,QObject *parent,const char *name)
-  : Switcher(matrix,parent,name)
+LocalGpio::LocalGpio(RDMatrix *matrix,QObject *parent)
+  : Switcher(matrix,parent)
 {
   //
   // Get Matrix Parameters
@@ -45,7 +43,7 @@ LocalGpio::LocalGpio(RDMatrix *matrix,QObject *parent,const char *name)
   //
   // Initialize the card
   //
-  gpio_gpio=new RDGpio(this,"gpio_gpio");
+  gpio_gpio=new RDGpio(this);
   gpio_gpio->setDevice(matrix->gpioDevice());
   if((gpio_open=gpio_gpio->open())) {
     if(gpio_gpis==0) {

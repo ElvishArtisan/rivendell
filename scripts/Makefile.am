@@ -2,9 +2,7 @@
 ##
 ## Scripts Directory Makefile.am for Rivendell
 ##
-## (C) Copyright 2002-2012 Fred Gleason <fredg@paravelsystems.com>
-##
-##      $Id: Makefile.am,v 1.20.6.5 2012/11/29 01:37:37 cvs Exp $
+## (C) Copyright 2002-2012,2016 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as

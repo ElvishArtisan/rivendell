@@ -2,9 +2,7 @@
 //
 //   The Clock Carts ListView widget for RDLogManager.
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: clock_listview.cpp,v 1.7.10.1 2014/06/02 22:26:19 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -29,16 +27,15 @@
 #include <edit_note.h>
 #include <clock_listview.h>
 
-
-ClockListView::ClockListView(QWidget *parent,const char *name)
-  : RDListView(parent,name)
+ClockListView::ClockListView(QWidget *parent)
+  : RDListView(parent)
 {
   clock_parent=parent;
 
   //
   // Right Button Menu
   //
-  clock_menu=new QPopupMenu(this,"clock_menu");
+  clock_menu=new QPopupMenu(this);
   connect(clock_menu,SIGNAL(aboutToShow()),this,SLOT(aboutToShowData()));
   clock_menu->
     insertItem(tr("Edit Event"),this,SLOT(editEventData()),0,0);

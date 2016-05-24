@@ -2,9 +2,7 @@
 //
 //   A class for handling Microsoft WAV files.
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//    $Id: rdwavefile.h,v 1.10.6.2 2014/01/15 19:56:32 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -45,9 +43,6 @@
 #include <rdwavedata.h>
 #include <rdringbuffer.h>
 #include <rdsettings.h>
-
-using namespace std;
-
 
 //
 // Number of timers allowed in the CartChunk structure.
@@ -1176,7 +1171,7 @@ class RDWaveFile
    QString cutString(char *,unsigned,unsigned);
    QDate cutDate(char *,unsigned);
    QTime cutTime(char *,unsigned);
-   vector<unsigned short> energy_data;
+   std::vector<unsigned short> energy_data;
    bool energy_loaded;
    unsigned energy_ptr;
    int wave_id;

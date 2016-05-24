@@ -2,9 +2,7 @@
 //
 // Rivendell Log Playout Machine
 //
-//   (C) Copyright 2002-2009 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: log_play.cpp,v 1.197.8.7.2.2 2014/05/22 19:37:45 cvs Exp $
+//   (C) Copyright 2002-2009,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as

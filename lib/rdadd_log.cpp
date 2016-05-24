@@ -2,9 +2,7 @@
 //
 // Create a Rivendell Log
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdadd_log.cpp,v 1.15.10.2 2014/05/21 20:29:01 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -39,9 +37,8 @@
 
 
 RDAddLog::RDAddLog(QString *logname,QString *svcname,RDStation *station,
-		   QString caption,QWidget *parent,const char *name, 
-                   RDUser *rduser)
-  : QDialog(parent,name,true)
+		   QString caption,QWidget *parent,RDUser *rduser)
+  : QDialog(parent,"",true)
 {
   QStringList services_list;
   log_name=logname;

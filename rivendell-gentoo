@@ -3,9 +3,7 @@
 ##
 ##    A Rivendell init script for Gentoo Linux.
 ##
-##    (C) Copyright 2005 Fred Gleason <fredg@paravelsystems.com>
-##
-##      $Id: rivendell-gentoo,v 1.6 2011/05/02 18:49:36 cvs Exp $
+##    (C) Copyright 2005,2016 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##    Adapted from the Gentoo init script for Rivendell 
 ##    by Andres Toomsalu <andres@active.ee>

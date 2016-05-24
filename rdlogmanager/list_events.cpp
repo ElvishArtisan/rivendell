@@ -2,9 +2,7 @@
 //
 // List a Rivendell Log Event
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: list_events.cpp,v 1.31.8.2 2014/01/10 19:32:54 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -39,9 +37,8 @@
 #include <globals.h>
 #include <rename_item.h>
 
-
-ListEvents::ListEvents(QString *eventname,QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+ListEvents::ListEvents(QString *eventname,QWidget *parent)
+  : QDialog(parent,"",true)
 {
   QStringList services_list;
   QString str1=tr("Log Events - User: ");
@@ -77,7 +74,7 @@ ListEvents::ListEvents(QString *eventname,QWidget *parent,const char *name)
   //
   // Events List
   //
-  edit_events_list=new QListView(this,"edit_events_list");
+  edit_events_list=new QListView(this);
   edit_events_list->setAllColumnsShowFocus(true);
   edit_events_list->setItemMargin(5);
   edit_events_list->addColumn(tr("Name"));
@@ -208,7 +205,7 @@ void ListEvents::addData()
   RDSqlQuery *q1;
   std::vector<QString> new_events;
 
-  AddEvent *add_dialog=new AddEvent(&logname,this,"add_dialog");
+  AddEvent *add_dialog=new AddEvent(&logname,this);
   if(add_dialog->exec()<0) {
     delete add_dialog;
     return;
@@ -227,8 +224,7 @@ void ListEvents::addData()
   delete q;
   event=new RDEvent(logname,true);
   delete event;
-  EditEvent *event_dialog=new EditEvent(logname,true,&new_events,
-					this,"event_dialog");
+  EditEvent *event_dialog=new EditEvent(logname,true,&new_events,this);
   if(event_dialog->exec()<-1) {
     sql=QString().sprintf("delete from EVENTS where NAME=\"%s\"",
 			  (const char *)logname);
@@ -276,8 +272,7 @@ void ListEvents::editData()
   if(item==NULL) {
     return;
   }
-  EditEvent *event_dialog=
-    new EditEvent(item->text(0),false,&new_events,this,"event_dialog");
+  EditEvent *event_dialog=new EditEvent(item->text(0),false,&new_events,this);
   if(event_dialog->exec()<-1) {
     delete event_dialog;
     return;
@@ -337,8 +332,7 @@ void ListEvents::renameData()
     return;
   }
   QString new_name=item->text(0);
-  RenameItem *rename_dialog=
-    new RenameItem(&new_name,"EVENTS",this,"event_dialog");
+  RenameItem *rename_dialog=new RenameItem(&new_name,"EVENTS",this);
   if(rename_dialog->exec()<-1) {
     delete rename_dialog;
     return;

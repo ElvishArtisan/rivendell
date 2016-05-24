@@ -2,9 +2,7 @@
 //
 // Add a Rivendell User
 //
-//   (C) Copyright 2002-2008 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: add_user.cpp,v 1.20 2010/07/29 19:32:34 cvs Exp $
+//   (C) Copyright 2002-2008,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -40,9 +38,8 @@
 #include <rdpasswd.h>
 #include <rdescape_string.h>
 
-
-AddUser::AddUser(QString *username,QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+AddUser::AddUser(QString *username,QWidget *parent)
+  : QDialog(parent,"",true)
 {
   user_name=username;
 
@@ -65,11 +62,10 @@ AddUser::AddUser(QString *username,QWidget *parent,const char *name)
   //
   // User Name
   //
-  user_name_edit=new QLineEdit(this,"user_name_edit");
+  user_name_edit=new QLineEdit(this);
   user_name_edit->setGeometry(125,11,sizeHint().width()-135,19);
   user_name_edit->setMaxLength(255);
-  QLabel *user_name_label=new QLabel(user_name_edit,tr("&New User Name:"),this,
-				       "user_name_label");
+  QLabel *user_name_label=new QLabel(user_name_edit,tr("&New User Name:"),this);
   user_name_label->setGeometry(10,13,110,19);
   user_name_label->setFont(font);
   user_name_label->setAlignment(AlignRight|ShowPrefix);
@@ -77,7 +73,7 @@ AddUser::AddUser(QString *username,QWidget *parent,const char *name)
   //
   //  Ok Button
   //
-  QPushButton *ok_button=new QPushButton(this,"ok_button");
+  QPushButton *ok_button=new QPushButton(this);
   ok_button->setGeometry(size().width()-180,size().height()-60,80,50);
   ok_button->setDefault(true);
   ok_button->setFont(font);
@@ -87,7 +83,7 @@ AddUser::AddUser(QString *username,QWidget *parent,const char *name)
   //
   //  Cancel Button
   //
-  QPushButton *cancel_button=new QPushButton(this,"cancel_button");
+  QPushButton *cancel_button=new QPushButton(this);
   cancel_button->setGeometry(size().width()-90,size().height()-60,80,50);
   cancel_button->setFont(font);
   cancel_button->setText(tr("&Cancel"));
@@ -147,7 +143,7 @@ void AddUser::okData()
     delete q1;
   }
   delete q;
-  EditUser *user=new EditUser(user_name_edit->text(),this,"user");
+  EditUser *user=new EditUser(user_name_edit->text(),this);
   if(user->exec()<0) {
     sql=QString().sprintf("delete from USER_PERMS where USER_NAME=\"%s\"",
 			  (const char *)username);

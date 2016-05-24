@@ -2,7 +2,7 @@
 //
 // A Qt-based application for testing General Purpose Input (GPI) devices.
 //
-//   (C) Copyright 2002-2014 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2014,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -46,9 +46,8 @@
 //
 #include "../icons/rivendell-22x22.xpm"
 
-
-MainWidget::MainWidget(QWidget *parent,const char *name)
-  :QWidget(parent,name)
+MainWidget::MainWidget(QWidget *parent)
+  :QWidget(parent)
 {
   gpi_scroll_mode=false;
   
@@ -781,7 +780,7 @@ int main(int argc,char *argv[])
   //
   // Start Event Loop
   //
-  MainWidget *w=new MainWidget(NULL,"main");
+  MainWidget *w=new MainWidget();
   a.setMainWidget(w);
   w->setGeometry(QRect(QPoint(0,0),w->sizeHint()));
   w->show();

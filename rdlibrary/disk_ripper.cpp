@@ -2,9 +2,7 @@
 //
 // CD Ripper Dialog for Rivendell.
 //
-//   (C) Copyright 2002-2003,2010 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: disk_ripper.cpp,v 1.30.4.3.2.7 2014/06/02 18:59:24 cvs Exp $
+//   (C) Copyright 2002-2003,2010,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -51,8 +49,8 @@
 
 
 DiskRipper::DiskRipper(QString *filter,QString *group,QString *schedcode,
-		       bool profile_rip,QWidget *parent,const char *name) 
-  : QDialog(parent,name)
+		       bool profile_rip,QWidget *parent) 
+  : QDialog(parent)
 {
   rip_isrc_read=false;
   rip_filter_text=filter;
@@ -155,7 +153,7 @@ DiskRipper::DiskRipper(QString *filter,QString *group,QString *schedcode,
   //
   // Apply FreeDB Check Box
   //
-  rip_apply_box=new QCheckBox(this,"rip_apply_box");
+  rip_apply_box=new QCheckBox(this);
   rip_apply_box->setChecked(true);
   rip_apply_box->setDisabled(true);
   rip_apply_label=
@@ -539,8 +537,7 @@ void DiskRipper::setCutButtonData()
   RDCutDialog *dialog=new RDCutDialog(&cutname,rdstation_conf,lib_system,
 				      rip_filter_text,
 				      rip_group_text,rip_schedcode_text,
-				      lib_user->name(),true,
-				      true,true,this,"cut_dialog");
+				      lib_user->name(),true,true,true,this);
   if(dialog->exec()==0) {
     if(cutname.isEmpty()) {
       rip_cutnames[item->text(0).toUInt()-1]="";

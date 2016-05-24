@@ -2,9 +2,7 @@
 ##
 ## Automake.am for rivendell/rdcastmanager
 ##
-## (C) Copyright 2002-2006 Fred Gleason <fredg@paravelsystems.com>
-##
-##      $Id: Makefile.am,v 1.8.8.2 2013/01/01 21:36:30 cvs Exp $
+## (C) Copyright 2002-2006,2016 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as

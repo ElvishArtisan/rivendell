@@ -2,9 +2,7 @@
 //
 // Test a Rivendell Log Import
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: test_import.cpp,v 1.22 2010/07/29 19:32:35 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -35,10 +33,8 @@
 #include <rdlistviewitem.h>
 #include <rdevent_line.h>
 
-
-TestImport::TestImport(RDSvc *svc,RDSvc::ImportSource src,
-		       QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+TestImport::TestImport(RDSvc *svc,RDSvc::ImportSource src,QWidget *parent)
+  : QDialog(parent,"",true)
 {
   QString sql;
   QDate current_date=QDate::currentDate();
@@ -106,18 +102,17 @@ TestImport::TestImport(RDSvc *svc,RDSvc::ImportSource src,
   //
   // Import Filename
   //
-  test_filename_edit=new QLineEdit(this,"test_filename_edit");
+  test_filename_edit=new QLineEdit(this);
   test_filename_edit->setReadOnly(true);
   test_filename_edit->setGeometry(10,133,sizeHint().width()-20,18);
-  label=new QLabel(test_filename_edit,tr("Using source file:"),
-		   this,"test_filename_label");
+  label=new QLabel(test_filename_edit,tr("Using source file:"),this);
   label->setGeometry(15,115,sizeHint().width()-30,18);
   label->setFont(font);
 
   //
   // Events List
   //
-  test_events_list=new RDListView(this,"test_events_list");
+  test_events_list=new RDListView(this);
   test_events_list->
     setGeometry(10,178,sizeHint().width()-20,sizeHint().height()-248);
   test_events_list->setItemMargin(2);
@@ -144,7 +139,7 @@ TestImport::TestImport(RDSvc *svc,RDSvc::ImportSource src,
   //
   //  Close Button
   //
-  button=new QPushButton(this,"close_button");
+  button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,
 			     80,50);
   button->setFont(font);
@@ -174,9 +169,9 @@ QSizePolicy TestImport::sizePolicy() const
 
 void TestImport::selectData()
 {
-  RDDateDialog *datedialog=new RDDateDialog(QDate::currentDate().year(),
-					    QDate::currentDate().year()+1,
-					    this,"timedialog");
+  RDDateDialog *datedialog=
+    new RDDateDialog(QDate::currentDate().year(),QDate::currentDate().year()+1,
+		     this);
   QDate date=test_date_edit->date();
   if(datedialog->exec(&date)<0) {
     delete datedialog;

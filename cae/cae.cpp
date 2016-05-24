@@ -392,7 +392,7 @@ void MainObject::newConnection(int fd)
     close(fd);
     return;
   }
-  socket[i]=new RDSocket(i,this,"socket_0");
+  socket[i]=new RDSocket(i,this);
   socket[i]->setSocket(fd);
   connect(socket[i],SIGNAL(readyReadID(int)),this,SLOT(socketData(int)));
   connect(socket[i],SIGNAL(connectionClosedID(int)),

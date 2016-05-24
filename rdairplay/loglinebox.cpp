@@ -2,9 +2,7 @@
 //
 // On Air Playout Utility for Rivendell.
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: loglinebox.cpp,v 1.89.6.8 2014/02/06 20:43:50 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -40,9 +38,8 @@
 #include "../icons/traffic.xpm"
 #include "../icons/music.xpm"
 
-
-LogLineBox::LogLineBox(RDAirPlayConf *conf,QWidget *parent,const char *name)
-  : QWidget(parent,name)
+LogLineBox::LogLineBox(RDAirPlayConf *conf,QWidget *parent)
+  : QWidget(parent)
 {
   line_status=RDLogLine::Scheduled;
   line_type=RDLogLine::UnknownType;

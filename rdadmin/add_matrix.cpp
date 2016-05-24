@@ -1,9 +1,7 @@
 //
 // Add a Rivendell Matrix
 //
-//   (C) Copyright 2002-2012 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: add_matrix.cpp,v 1.28.2.3 2014/02/17 02:19:02 cvs Exp $
+//   (C) Copyright 2002-2012,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -34,8 +32,8 @@
 #include "add_matrix.h"
 #include "rdpasswd.h"
 
-AddMatrix::AddMatrix(QString station,QWidget *parent,const char *name)
-  : QDialog(parent,name)
+AddMatrix::AddMatrix(QString station,QWidget *parent)
+  : QDialog(parent,"")
 {
   add_station=station;
 
@@ -58,11 +56,10 @@ AddMatrix::AddMatrix(QString station,QWidget *parent,const char *name)
   //
   // Matrix Number
   //
-  add_matrix_box=new QSpinBox(this,"add_matrix_box");
+  add_matrix_box=new QSpinBox(this);
   add_matrix_box->setGeometry(165,11,30,19);
   add_matrix_box->setRange(0,MAX_MATRICES-1);
-  QLabel *label=new QLabel(add_matrix_box,tr("&New Matrix Number:"),this,
-			   "matrix_label");
+  QLabel *label=new QLabel(add_matrix_box,tr("&New Matrix Number:"),this);
   label->setGeometry(10,11,150,19);
   label->setFont(font);
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -70,13 +67,12 @@ AddMatrix::AddMatrix(QString station,QWidget *parent,const char *name)
   //
   // Matrix Type
   //
-  add_type_box=new QComboBox(this,"add_type_box");
+  add_type_box=new QComboBox(this);
   add_type_box->setGeometry(165,36,200,19);
   for(int i=0;i<RDMatrix::LastType;i++) {
     add_type_box->insertItem(RDMatrix::typeString((RDMatrix::Type)i));
   }
-  label=new QLabel(add_type_box,tr("&Switcher Type:"),this,
-		   "matrix_label");
+  label=new QLabel(add_type_box,tr("&Switcher Type:"),this);
   label->setGeometry(10,36,150,19);
   label->setFont(font);
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -84,7 +80,7 @@ AddMatrix::AddMatrix(QString station,QWidget *parent,const char *name)
   //
   //  Ok Button
   //
-  QPushButton *ok_button=new QPushButton(this,"ok_button");
+  QPushButton *ok_button=new QPushButton(this);
   ok_button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
   ok_button->setDefault(true);
   ok_button->setFont(font);
@@ -94,9 +90,9 @@ AddMatrix::AddMatrix(QString station,QWidget *parent,const char *name)
   //
   //  Cancel Button
   //
-  QPushButton *cancel_button=new QPushButton(this,"cancel_button");
-  cancel_button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,
-			     80,50);
+  QPushButton *cancel_button=new QPushButton(this);
+  cancel_button->
+    setGeometry(sizeHint().width()-90,sizeHint().height()-60,80,50);
   cancel_button->setFont(font);
   cancel_button->setText(tr("&Cancel"));
   connect(cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));

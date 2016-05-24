@@ -2,9 +2,7 @@
 //
 //   A class for trapping arbitrary character sequences.
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//    $Id: rdcodetrap.h,v 1.4 2010/07/29 19:32:33 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -19,11 +17,9 @@
 //   License along with this program; if not, write to the Free Software
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
-//
 
 #ifndef RDCODETRAP_H
 #define RDCODETRAP_H
-
 
 #include <vector>
 
@@ -44,7 +40,7 @@ class RDCodeTrap : public QObject
 {
  Q_OBJECT
  public:
-  RDCodeTrap(QObject *parent=0,const char *name=0);
+  RDCodeTrap(QObject *parent=0);
   ~RDCodeTrap();
   void addTrap(int id,const char *code,int length);
   void removeTrap(int id);

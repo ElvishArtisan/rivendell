@@ -2,9 +2,7 @@
 //
 // List and Generate RDCatch Reports
 //
-//   (C) Copyright 2002-2006 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: list_reports.cpp,v 1.8 2010/07/29 19:32:36 cvs Exp $
+//   (C) Copyright 2002-2006,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -34,10 +32,9 @@
 #include <globals.h>
 #include <list_reports.h>
 
-
 ListReports::ListReports(bool today_only,bool active_only,int dow,
-			 QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+			 QWidget *parent)
+  : QDialog(parent,"",true)
 {
   list_today_only=today_only;
   list_active_only=active_only;
@@ -62,13 +59,12 @@ ListReports::ListReports(bool today_only,bool active_only,int dow,
   //
   // Reports List
   //
-  list_reports_box=new QComboBox(this,"list_reports_box");
+  list_reports_box=new QComboBox(this);
   list_reports_box->setGeometry(50,10,sizeHint().width()-60,19);
   list_reports_box->insertItem(tr("Event Report"));
   list_reports_box->insertItem(tr("Upload/Download Report"));
   QLabel *list_reports_label=
-    new QLabel(list_reports_box,tr("Type:"),
-	       this,"list_reports_label");
+    new QLabel(list_reports_box,tr("Type:"),this);
   list_reports_label->setGeometry(10,10,35,19);
   list_reports_label->setFont(font);
   list_reports_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
@@ -76,7 +72,7 @@ ListReports::ListReports(bool today_only,bool active_only,int dow,
   //
   //  Generate Button
   //
-  QPushButton *generate_button=new QPushButton(this,"generate_button");
+  QPushButton *generate_button=new QPushButton(this);
   generate_button->
     setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
   generate_button->setDefault(true);
@@ -87,7 +83,7 @@ ListReports::ListReports(bool today_only,bool active_only,int dow,
   //
   //  Close Button
   //
-  QPushButton *close_button=new QPushButton(this,"close_button");
+  QPushButton *close_button=new QPushButton(this);
   close_button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,
 			     80,50);
   close_button->setFont(font);

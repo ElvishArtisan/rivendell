@@ -25,9 +25,8 @@
 #include <globals.h>
 #include <btadms4422.h>
 
-
-BtAdms4422::BtAdms4422(RDMatrix *matrix,QObject *parent,const char *name)
-  : Switcher(matrix,parent,name)
+BtAdms4422::BtAdms4422(RDMatrix *matrix,QObject *parent)
+  : Switcher(matrix,parent)
 {
   //
   // Initialize Data Structures

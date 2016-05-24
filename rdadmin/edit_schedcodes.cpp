@@ -4,8 +4,6 @@
 //
 //   Stefan Gabriel <stg@st-gabriel.de>
 //
-//   
-//
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
 //   published by the Free Software Foundation.
@@ -36,7 +34,9 @@
 #include <edit_group.h>
 #include <edit_schedcodes.h>
 
-EditSchedCode::EditSchedCode(QString schedCode,QString description,QWidget *parent,const char *name) : QDialog(parent,name,true)
+EditSchedCode::EditSchedCode(QString schedCode,QString description,
+			     QWidget *parent)
+  : QDialog(parent,"",true)
 {
   //
   // Fix the Window Size
@@ -60,15 +60,17 @@ EditSchedCode::EditSchedCode(QString schedCode,QString description,QWidget *pare
   //
   // Text Validators
   //
-  RDTextValidator *validator=new RDTextValidator(this,"validator");
+  RDTextValidator *validator=new RDTextValidator(this);
+
   //
   // Code Name
   //
-  schedCode_name_edit=new QLineEdit(this,"schedCode_name_edit");
+  schedCode_name_edit=new QLineEdit(this);
   schedCode_name_edit->setGeometry(125,11,100,19);
   schedCode_name_edit->setMaxLength(10);
   schedCode_name_edit->setReadOnly(true);
-  QLabel *schedCode_name_label=new QLabel(schedCode_name_edit,tr("Scheduler Code:"),this,"schedCode_name_label");
+  QLabel *schedCode_name_label=
+    new QLabel(schedCode_name_edit,tr("Scheduler Code:"),this);
   schedCode_name_label->setGeometry(10,11,110,19);
   schedCode_name_label->setFont(font);
   schedCode_name_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
@@ -76,13 +78,12 @@ EditSchedCode::EditSchedCode(QString schedCode,QString description,QWidget *pare
   //
   // Code Description
   //
-  schedCode_description_edit=new QLineEdit(this,"schedCode_description_edit");
+  schedCode_description_edit=new QLineEdit(this);
   schedCode_description_edit->setGeometry(125,32,sizeHint().width()-135,19);
   schedCode_description_edit->setMaxLength(255);
   schedCode_description_edit->setValidator(validator);
-  QLabel *schedCode_description_label=new QLabel(schedCode_description_edit,
-					     tr("Code Description:"),this,
-					     "schedCode_description_label");
+  QLabel *schedCode_description_label=
+    new QLabel(schedCode_description_edit,tr("Code Description:"),this);
   schedCode_description_label->setGeometry(10,32,110,19);
   schedCode_description_label->setFont(font);
   schedCode_description_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
@@ -90,7 +91,7 @@ EditSchedCode::EditSchedCode(QString schedCode,QString description,QWidget *pare
   //
   //  Ok Button
   //
-  QPushButton *ok_button=new QPushButton(this,"ok_button");
+  QPushButton *ok_button=new QPushButton(this);
   ok_button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
   ok_button->setDefault(true);
   ok_button->setFont(font);
@@ -100,7 +101,7 @@ EditSchedCode::EditSchedCode(QString schedCode,QString description,QWidget *pare
   //
   //  Cancel Button
   //
-  QPushButton *cancel_button=new QPushButton(this,"cancel_button");
+  QPushButton *cancel_button=new QPushButton(this);
   cancel_button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,
 			     80,50);
   cancel_button->setFont(font);

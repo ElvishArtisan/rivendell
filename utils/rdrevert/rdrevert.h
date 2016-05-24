@@ -34,7 +34,7 @@
 class MainObject : public QObject
 {
  public:
-  MainObject(QObject *parent=0,const char *name=0);
+  MainObject(QObject *parent=0);
 
  private:
   void Revert(int schema) const;

@@ -4,9 +4,7 @@
 ##
 ## Use automake to process this into a Makefile.in
 ##
-##   (C) Copyright 2002-2010 Fred Gleason <fredg@paravelsystems.com>
-##
-##      $Id: Makefile.am,v 1.65.6.6 2013/01/14 16:35:58 cvs Exp $
+##   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as

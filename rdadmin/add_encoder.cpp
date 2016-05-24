@@ -2,9 +2,7 @@
 //
 // Add a Rivendell Service
 //
-//   (C) Copyright 2002 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: add_encoder.cpp,v 1.3 2010/07/29 19:32:34 cvs Exp $
+//   (C) Copyright 2002,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -34,10 +32,9 @@
 #include <edit_encoder.h>
 #include <add_encoder.h>
 
-
 AddEncoder::AddEncoder(QString *encname,const QString &stationname,
-		       QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+		       QWidget *parent)
+  : QDialog(parent,"",true)
 {
   encoder_name=encname;
   encoder_stationname=stationname;
@@ -63,11 +60,10 @@ AddEncoder::AddEncoder(QString *encname,const QString &stationname,
   //
   // Encoder Name
   //
-  encoder_name_edit=new QLineEdit(this,"encoder_name_edit");
+  encoder_name_edit=new QLineEdit(this);
   encoder_name_edit->setGeometry(145,11,sizeHint().width()-150,19);
   encoder_name_edit->setMaxLength(32);
-  QLabel *label=new QLabel(encoder_name_edit,tr("&New Encoder Name:"),
-			   this,"encoder_name_label");
+  QLabel *label=new QLabel(encoder_name_edit,tr("&New Encoder Name:"),this);
   label->setGeometry(10,11,130,19);
   label->setFont(font);
   label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
@@ -75,7 +71,7 @@ AddEncoder::AddEncoder(QString *encname,const QString &stationname,
   //
   //  Ok Button
   //
-  QPushButton *ok_button=new QPushButton(this,"ok_button");
+  QPushButton *ok_button=new QPushButton(this);
   ok_button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
   ok_button->setDefault(true);
   ok_button->setFont(font);
@@ -85,7 +81,7 @@ AddEncoder::AddEncoder(QString *encname,const QString &stationname,
   //
   //  Cancel Button
   //
-  QPushButton *cancel_button=new QPushButton(this,"cancel_button");
+  QPushButton *cancel_button=new QPushButton(this);
   cancel_button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,
 			     80,50);
   cancel_button->setFont(font);

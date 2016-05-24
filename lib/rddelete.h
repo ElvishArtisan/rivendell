@@ -2,9 +2,7 @@
 //
 // Delete a Remote File
 //
-//   (C) Copyright 2011 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rddelete.h,v 1.1 2011/10/17 18:48:40 cvs Exp $
+//   (C) Copyright 2011,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -36,7 +34,7 @@ class RDDelete : public QObject
 		  ErrorUnspecified=8,ErrorInvalidUser=9,
 		  ErrorInvalidLogin=11,ErrorRemoteAccess=12,
 		  ErrorRemoteConnection=13,ErrorUnknown=14};
-  RDDelete(QObject *parent=0,const char *name=0);
+  RDDelete(QObject *parent=0);
   void setTargetUrl(const QString &url);
   RDDelete::ErrorCode runDelete(const QString &username,
 				const QString &password,

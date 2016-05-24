@@ -2,9 +2,7 @@
 //
 // List Rivendell Casts
 //
-//   (C) Copyright 2002-2007 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: list_casts.cpp,v 1.18.4.1 2013/11/13 23:36:35 cvs Exp $
+//   (C) Copyright 2002-2007,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -64,9 +62,8 @@
 #include "../icons/greenball.xpm"
 #include "../icons/whiteball.xpm"
 
-
-ListCasts::ListCasts(unsigned feed_id,QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+ListCasts::ListCasts(unsigned feed_id,QWidget *parent)
+  : QDialog(parent,"",true)
 {
   list_feed_id=feed_id;
 
@@ -114,9 +111,9 @@ ListCasts::ListCasts(unsigned feed_id,QWidget *parent,const char *name)
   //
   // Filter
   //
-  list_filter_edit=new QLineEdit(this,"list_filter_edit");
+  list_filter_edit=new QLineEdit(this);
   list_filter_label=
-    new QLabel(list_filter_edit,tr("Filter:"),this,"list_filter_label");
+    new QLabel(list_filter_edit,tr("Filter:"),this);
   list_filter_label->setFont(font);
   list_filter_label->setAlignment(AlignRight|AlignVCenter);
   connect(list_filter_edit,SIGNAL(textChanged(const QString &)),
@@ -125,10 +122,9 @@ ListCasts::ListCasts(unsigned feed_id,QWidget *parent,const char *name)
   //
   // Unexpired Check Box
   //
-  list_unexpired_check=new QCheckBox(this,"list_unexpired_check");
+  list_unexpired_check=new QCheckBox(this);
   list_unexpired_label=
-    new QLabel(list_unexpired_check,tr("Only Show Unexpired Casts"),this,
-	       "list_unexpired_label");
+    new QLabel(list_unexpired_check,tr("Only Show Unexpired Casts"),this);
   list_unexpired_label->setFont(font);
   list_unexpired_label->setAlignment(AlignLeft|AlignVCenter);
   connect(list_unexpired_check,SIGNAL(toggled(bool)),
@@ -137,10 +133,9 @@ ListCasts::ListCasts(unsigned feed_id,QWidget *parent,const char *name)
   //
   // Active Check Box
   //
-  list_active_check=new QCheckBox(this,"list_active_check");
+  list_active_check=new QCheckBox(this);
   list_active_label=
-    new QLabel(list_active_check,tr("Only Show Active Casts"),this,
-	       "list_active_label");
+    new QLabel(list_active_check,tr("Only Show Active Casts"),this);
   list_active_label->setFont(font);
   list_active_label->setAlignment(AlignLeft|AlignVCenter);
   connect(list_active_check,SIGNAL(toggled(bool)),
@@ -149,7 +144,7 @@ ListCasts::ListCasts(unsigned feed_id,QWidget *parent,const char *name)
   //
   // Group List
   //
-  list_casts_view=new RDListView(this,"list_casts_view");
+  list_casts_view=new RDListView(this);
   list_casts_view->setAllColumnsShowFocus(true);
   list_casts_view->setItemMargin(5);
   list_casts_view->addColumn(tr(" "));
@@ -176,7 +171,7 @@ ListCasts::ListCasts(unsigned feed_id,QWidget *parent,const char *name)
   //
   //  Post Cart Button
   //
-  list_cart_button=new QPushButton(this,"list_cart_button");
+  list_cart_button=new QPushButton(this);
   list_cart_button->setFont(font);
   list_cart_button->setText(tr("Post From\nCar&t/Cut"));
   connect(list_cart_button,SIGNAL(clicked()),this,SLOT(addCartData()));
@@ -184,7 +179,7 @@ ListCasts::ListCasts(unsigned feed_id,QWidget *parent,const char *name)
   //
   //  Post File Button
   //
-  list_file_button=new QPushButton(this,"list_file_button");
+  list_file_button=new QPushButton(this);
   list_file_button->setFont(font);
   list_file_button->setText(tr("Post From\n&File"));
   connect(list_file_button,SIGNAL(clicked()),this,SLOT(addFileData()));
@@ -192,7 +187,7 @@ ListCasts::ListCasts(unsigned feed_id,QWidget *parent,const char *name)
   //
   //  Edit Button
   //
-  list_edit_button=new QPushButton(this,"list_edit_button");
+  list_edit_button=new QPushButton(this);
   list_edit_button->setFont(font);
   list_edit_button->setText(tr("&Edit"));
   connect(list_edit_button,SIGNAL(clicked()),this,SLOT(editData()));
@@ -200,7 +195,7 @@ ListCasts::ListCasts(unsigned feed_id,QWidget *parent,const char *name)
   //
   //  Delete Button
   //
-  list_delete_button=new QPushButton(this,"list_delete_button");
+  list_delete_button=new QPushButton(this);
   list_delete_button->setFont(font);
   list_delete_button->setText(tr("&Delete"));
   connect(list_delete_button,SIGNAL(clicked()),this,SLOT(deleteData()));
@@ -208,7 +203,7 @@ ListCasts::ListCasts(unsigned feed_id,QWidget *parent,const char *name)
   //
   //  Report Button
   //
-  list_report_button=new QPushButton(this,"list_report_button");
+  list_report_button=new QPushButton(this);
   list_report_button->setFont(font);
   list_report_button->setText(tr("Subscription\n&Report"));
   connect(list_report_button,SIGNAL(clicked()),this,SLOT(reportData()));
@@ -216,7 +211,7 @@ ListCasts::ListCasts(unsigned feed_id,QWidget *parent,const char *name)
   //
   //  Close Button
   //
-  list_close_button=new QPushButton(this,"list_close_button");
+  list_close_button=new QPushButton(this);
   list_close_button->setDefault(true);
   list_close_button->setFont(font);
   list_close_button->setText(tr("&Close"));

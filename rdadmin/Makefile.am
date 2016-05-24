@@ -2,9 +2,7 @@
 ##
 ## Automake.am for rivendell/rdadmin
 ##
-## (C) Copyright 2002-2006 Fred Gleason <fredg@paravelsystems.com>
-##
-##      $Id: Makefile.am,v 1.72.4.6 2013/03/09 00:21:11 cvs Exp $
+## (C) Copyright 2002-2006,2016 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as

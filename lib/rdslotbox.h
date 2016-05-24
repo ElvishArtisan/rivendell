@@ -2,9 +2,7 @@
 //
 // Cart slot label widget for RDCartSlot
 //
-//   (C) Copyright 2012 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdslotbox.h,v 1.3.2.7 2014/02/06 20:43:47 cvs Exp $
+//   (C) Copyright 2012,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -52,7 +50,7 @@ class RDSlotBox : public QWidget
   Q_OBJECT
  public:
   enum BarMode {Transitioning=0,Stopping=1};
-  RDSlotBox(RDPlayDeck *deck,RDAirPlayConf *conf,QWidget *parent=0);
+  RDSlotBox(RDPlayDeck *deck,RDAirPlayConf *conf,QWidget *parent);
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
   RDLogLine *logLine();

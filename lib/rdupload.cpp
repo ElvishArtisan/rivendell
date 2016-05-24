@@ -2,9 +2,7 @@
 //
 // Upload a File
 //
-//   (C) Copyright 2010 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdupload.cpp,v 1.5.4.2 2012/05/10 23:12:42 cvs Exp $
+//   (C) Copyright 2010,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -72,9 +70,8 @@ int UploadErrorCallback(CURL *curl,curl_infotype type,char *msg,size_t size,
 }
 
 
-RDUpload::RDUpload(const QString &station_name,
-		   QObject *parent,const char *name)
-  : QObject(parent,name)
+RDUpload::RDUpload(const QString &station_name,QObject *parent)
+  : QObject(parent)
 {
   conv_aborting=false;
 }

@@ -2,9 +2,7 @@
 //
 // Rivendell Maintenance Routines
 //
-//   (C) Copyright 2008 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: maint_routines.cpp,v 1.4 2010/07/29 19:32:38 cvs Exp $
+//   (C) Copyright 2008,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as

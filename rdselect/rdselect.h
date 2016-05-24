@@ -2,9 +2,7 @@
 //
 // System Selector for Rivendell
 //
-//   (C) Copyright 2012 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdselect.h,v 1.1.2.3 2012/10/22 18:22:38 cvs Exp $
+//   (C) Copyright 2012,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -41,7 +39,7 @@ class MainWidget : public QWidget
 {
   Q_OBJECT
  public:
-  MainWidget(QWidget *parent=0,const char *name=0);
+  MainWidget(QWidget *parent=0);
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
 

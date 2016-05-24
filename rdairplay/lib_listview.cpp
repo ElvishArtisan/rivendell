@@ -2,9 +2,7 @@
 //
 //   The Log ListView widget for RDAirPlay's Full Log widget.
 //
-//   (C) Copyright 2002-2013 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: lib_listview.cpp,v 1.1.2.2 2014/02/20 00:43:22 cvs Exp $
+//   (C) Copyright 2002-2013,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -26,8 +24,8 @@
 
 #include <lib_listview.h>
 
-LibListView::LibListView(QWidget *parent,const char *name)
-  : RDListView(parent,name)
+LibListView::LibListView(QWidget *parent)
+  : RDListView(parent)
 {
   setAcceptDrops(true);
 }

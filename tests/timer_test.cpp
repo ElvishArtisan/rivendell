@@ -2,9 +2,7 @@
 //
 // Test QTimer Accuracy
 //
-//   (C) Copyright 2013 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: timer_test.cpp,v 1.1.2.1 2013/02/07 18:22:06 cvs Exp $
+//   (C) Copyright 2013,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -26,8 +24,8 @@
 
 #include <timer_test.h>
 
-MainObject::MainObject(QObject *parent,const char *name)
-  : QObject(parent,name)
+MainObject::MainObject(QObject *parent)
+  : QObject(parent)
 {
   //
   // Timer
@@ -80,6 +78,6 @@ double MainObject::Time(struct timeval *tv)
 int main(int argc,char *argv[])
 {
   QApplication a(argc,argv,false);
-  new MainObject(NULL,"main");
+  new MainObject();
   return a.exec();
 }

@@ -2,9 +2,7 @@
 //
 // Audio Card Selector Widget for Rivendell
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdcardselector.h,v 1.9.8.1 2013/03/22 15:11:50 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -29,12 +27,11 @@
 
 #include <rd.h>
 
-
 class RDCardSelector : public QWidget
 {
   Q_OBJECT
   public:
-   RDCardSelector(QWidget *parent=0,const char *name=0);
+   RDCardSelector(QWidget *parent=0);
    ~RDCardSelector();
    QSize sizeHint() const;
    QSizePolicy sizePolicy() const;

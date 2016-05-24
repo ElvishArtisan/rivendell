@@ -2,9 +2,7 @@
 //
 // A Qt-based application for testing general purpose input (GPI) devices.
 //
-//   (C) Copyright 2002-2007 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: gpi_label.cpp,v 1.5 2011/05/27 21:28:25 cvs Exp $
+//   (C) Copyright 2002-2007,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -24,8 +22,8 @@
 #include <gpi_label.h>
 
 
-GpiLabel::GpiLabel(QWidget *parent,const char *name)
-  : QWidget(parent,name)
+GpiLabel::GpiLabel(QWidget *parent)
+  : QWidget(parent)
 {
   gpi_line=-1;
 

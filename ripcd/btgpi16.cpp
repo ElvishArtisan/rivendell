@@ -2,7 +2,7 @@
 //
 // A Rivendell switcher driver for the BroadcastTools GPI-16
 //
-//   (C) Copyright 2002-2005,2010 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2005,2010,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -25,9 +25,8 @@
 #include <globals.h>
 #include <btgpi16.h>
 
-
-BtGpi16::BtGpi16(RDMatrix *matrix,QObject *parent,const char *name)
-  : Switcher(matrix,parent,name)
+BtGpi16::BtGpi16(RDMatrix *matrix,QObject *parent)
+  : Switcher(matrix,parent)
 {
   //
   // Initialize Data Structures

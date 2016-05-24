@@ -2,9 +2,7 @@
 //
 // Abstract a Rivendell RSS Feed
 //
-//   (C) Copyright 2002-2007 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdfeed.h,v 1.9.4.1 2013/11/13 23:36:33 cvs Exp $
+//   (C) Copyright 2002-2007,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,6 +18,9 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
+#ifndef RDFEED_H
+#define RDFEED_H
+
 #include <qsqldatabase.h>
 #include <qobject.h>
 
@@ -27,9 +28,6 @@
 #include <rduser.h>
 #include <rdstation.h>
 #include <rdsettings.h>
-
-#ifndef RDFEED_H
-#define RDFEED_H
 
 #define RDFEED_TOTAL_POST_STEPS 4
 
@@ -40,8 +38,8 @@ class RDFeed : public QObject
   enum Error {ErrorOk=0,ErrorNoFile=1,ErrorCannotOpenFile=2,
 	      ErrorUnsupportedType=3,ErrorUploadFailed=4,ErrorGeneral=5};
   enum MediaLinkMode {LinkNone=0,LinkDirect=1,LinkCounted=2};
-  RDFeed(const QString &keyname,QObject *parent=0,const char *name=0);
-  RDFeed(unsigned id,QObject *parent=0,const char *name=0);
+  RDFeed(const QString &keyname,QObject *parent=0);
+  RDFeed(unsigned id,QObject *parent=0);
   QString keyName() const;
   unsigned id() const;
   bool exists() const;

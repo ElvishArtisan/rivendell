@@ -3,10 +3,7 @@
 // A utility for wrapping arbitrary file data in C-compaibile source
 // statements.
 //
-// (C) Copyright 2003 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: cwrap.cpp,v 1.3 2007/02/14 21:48:41 fredg Exp $
-//      $Date: 2007/02/14 21:48:41 $
+// (C) Copyright 2003,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as

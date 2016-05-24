@@ -2,9 +2,7 @@
 //
 // Edit a Rivendell Log Chain Entry
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: edit_chain.cpp,v 1.14 2010/07/29 19:32:37 cvs Exp $
+//   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -26,8 +24,8 @@
 #include <edit_chain.h>
 #include <list_logs.h>
 
-EditChain::EditChain(RDLogLine *line,QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+EditChain::EditChain(RDLogLine *line,QWidget *parent)
+  : QDialog(parent,"",true)
 {
   //
   // Fix the Window Size
@@ -54,10 +52,9 @@ EditChain::EditChain(RDLogLine *line,QWidget *parent,const char *name)
   //
   // Time Type
   //
-  edit_timetype_box=new QCheckBox(this,"edit_timetype_box");
+  edit_timetype_box=new QCheckBox(this);
   edit_timetype_box->setGeometry(10,22,15,15);
-  edit_timetype_label=new QLabel(edit_timetype_box,tr("Start at:"),
-			   this,"edit_timetype_label");
+  edit_timetype_label=new QLabel(edit_timetype_box,tr("Start at:"),this);
   edit_timetype_label->setGeometry(30,21,85,17);
   edit_timetype_label->setFont(label_font);
   edit_timetype_label->setAlignment(AlignLeft|AlignVCenter);
@@ -65,7 +62,7 @@ EditChain::EditChain(RDLogLine *line,QWidget *parent,const char *name)
   //
   // Start Time
   //
-  edit_time_edit=new RDTimeEdit(this,"edit_time_edit");
+  edit_time_edit=new RDTimeEdit(this);
   edit_time_edit->setGeometry(85,19,85,20);
   edit_time_edit->setDisplay(RDTimeEdit::Hours|RDTimeEdit::Minutes|
 			     RDTimeEdit::Seconds|RDTimeEdit::Tenths);
@@ -77,8 +74,7 @@ EditChain::EditChain(RDLogLine *line,QWidget *parent,const char *name)
   //
   edit_grace_group
     =new QButtonGroup(1,Qt::Vertical,
-		      tr("Action If Previous Event Still Playing"),
-		      this,"edit_grace_group");
+		      tr("Action If Previous Event Still Playing"),this);
   edit_grace_group->setGeometry(175,11,435,50);
   edit_grace_group->setFont(label_font);
   edit_grace_group->setRadioButtonExclusive(true);
@@ -92,7 +88,7 @@ EditChain::EditChain(RDLogLine *line,QWidget *parent,const char *name)
   radio_button=new QRadioButton(tr("Wait up to"),edit_grace_group);
   edit_grace_group->insert(radio_button);
   radio_button->setFont(radio_font);
-  edit_grace_box=new QTimeEdit(this,"edit_grace_box");
+  edit_grace_box=new QTimeEdit(this);
   edit_grace_box->setGeometry(543,31,60,20);
   edit_grace_box->setDisplay(QTimeEdit::Minutes|QTimeEdit::Seconds);
   connect(edit_timetype_box,SIGNAL(toggled(bool)),
@@ -103,13 +99,12 @@ EditChain::EditChain(RDLogLine *line,QWidget *parent,const char *name)
   //
   // Transition Type
   //
-  edit_transtype_box=new QComboBox(this,"edit_transtype_box");
+  edit_transtype_box=new QComboBox(this);
   edit_transtype_box->setGeometry(385,68,110,26);
   edit_transtype_box->insertItem(tr("Play"));
   edit_transtype_box->insertItem(tr("Segue"));
   edit_transtype_box->insertItem(tr("Stop"));  
-  edit_time_label=new QLabel(edit_transtype_box,tr("Transition Type:"),
-			     this,"edit_transtype_label");
+  edit_time_label=new QLabel(edit_transtype_box,tr("Transition Type:"),this);
   edit_time_label->setGeometry(10,68,370,26);
   edit_time_label->setFont(label_font);
   edit_time_label->setAlignment(AlignRight|AlignVCenter);
@@ -117,10 +112,10 @@ EditChain::EditChain(RDLogLine *line,QWidget *parent,const char *name)
   //
   // Label
   //
-  edit_label_edit=new QLineEdit(this,"edit_label_edit");
+  edit_label_edit=new QLineEdit(this);
   edit_label_edit->setGeometry(10,116,sizeHint().width()-90,18);
   edit_label_edit->setMaxLength(64);
-  QLabel *label=new QLabel(tr("Log Name"),this,"label_label");
+  QLabel *label=new QLabel(tr("Log Name"),this);
   label->setFont(label_font);
   label->setGeometry(12,100,160,14);
   connect(edit_label_edit,SIGNAL(textChanged(const QString &)),
@@ -129,7 +124,7 @@ EditChain::EditChain(RDLogLine *line,QWidget *parent,const char *name)
   //
   // Select Log Button
   //
-  QPushButton *button=new QPushButton(this,"select_button");
+  QPushButton *button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-70,111,60,28);
   button->setDefault(true);
   button->setFont(radio_font);
@@ -139,17 +134,17 @@ EditChain::EditChain(RDLogLine *line,QWidget *parent,const char *name)
   //
   // Comment
   //
-  edit_comment_edit=new QLineEdit(this,"edit_comment_edit");
+  edit_comment_edit=new QLineEdit(this);
   edit_comment_edit->setGeometry(10,156,sizeHint().width()-20,18);
   edit_comment_edit->setReadOnly(true);
-  label=new QLabel(tr("Log Description"),this,"comment_label");
+  label=new QLabel(tr("Log Description"),this);
   label->setFont(label_font);
   label->setGeometry(12,140,160,14);
 
   //
   //  Ok Button
   //
-  button=new QPushButton(this,"ok_button");
+  button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
   button->setDefault(true);
   button->setFont(button_font);
@@ -159,7 +154,7 @@ EditChain::EditChain(RDLogLine *line,QWidget *parent,const char *name)
   //
   //  Cancel Button
   //
-  button=new QPushButton(this,"cancel_button");
+  button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,
 			     80,50);
   button->setFont(button_font);
@@ -290,7 +285,7 @@ void EditChain::selectLogData()
 {
   QString logname;
 
-  ListLogs *list=new ListLogs(&logname,this,"list_log_dialog");
+  ListLogs *list=new ListLogs(&logname,this);
   if(list->exec()<0) {
     delete list;
     return;

@@ -2,9 +2,7 @@
 //
 // List and Generate Log Reports
 //
-//   (C) Copyright 2002-2006 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: list_reports.cpp,v 1.7 2010/07/29 19:32:37 cvs Exp $
+//   (C) Copyright 2002-2006,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -33,13 +31,11 @@
 #include <globals.h>
 #include <list_reports.h>
 
-
 ListReports::ListReports(const QString &logname,const QString &description,
 			 const QString service_name,const QDate &start_date,
 			 const QDate &end_date,bool auto_refresh,
-			 RDLogEvent *events,
-			 QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+			 RDLogEvent *events,QWidget *parent)
+  : QDialog(parent,"",true)
 {
   list_log_name=logname;
   list_description=description;
@@ -70,13 +66,12 @@ ListReports::ListReports(const QString &logname,const QString &description,
   //
   // Reports List
   //
-  list_reports_box=new QComboBox(this,"list_reports_box");
+  list_reports_box=new QComboBox(this);
   list_reports_box->setGeometry(50,10,sizeHint().width()-60,19);
   list_reports_box->insertItem(tr("Log Listing"));
   list_reports_box->insertItem(tr("Log Exception Report"));
   QLabel *list_reports_label=
-    new QLabel(list_reports_box,tr("Type:"),
-	       this,"list_reports_label");
+    new QLabel(list_reports_box,tr("Type:"),this);
   list_reports_label->setGeometry(10,10,35,19);
   list_reports_label->setFont(font);
   list_reports_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
@@ -84,15 +79,13 @@ ListReports::ListReports(const QString &logname,const QString &description,
   //
   // Effective Date
   //
-  list_date_edit=new QDateEdit(this,"list_date_edit");
+  list_date_edit=new QDateEdit(this);
   list_date_edit->setGeometry(110,34,100,19);
-  QLabel *list_date_label=
-    new QLabel(list_date_edit,tr("Effective Date:"),
-	       this,"list_date_label");
+  QLabel *list_date_label=new QLabel(list_date_edit,tr("Effective Date:"),this);
   list_date_label->setGeometry(10,34,95,19);
   list_date_label->setFont(font);
   list_date_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
-  QPushButton *button=new QPushButton(this,"select_button");
+  QPushButton *button=new QPushButton(this);
   button->setGeometry(215,32,60,24);
   button->setFont(select_font);
   button->setText(tr("&Select"));
@@ -102,7 +95,7 @@ ListReports::ListReports(const QString &logname,const QString &description,
   //
   //  Generate Button
   //
-  button=new QPushButton(this,"generate_button");
+  button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
   button->setDefault(true);
   button->setFont(font);
@@ -112,7 +105,7 @@ ListReports::ListReports(const QString &logname,const QString &description,
   //
   //  Close Button
   //
-  button=new QPushButton(this,"close_button");
+  button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,80,50);
   button->setFont(font);
   button->setText(tr("&Close"));

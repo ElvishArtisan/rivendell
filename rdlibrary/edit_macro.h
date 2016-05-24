@@ -2,9 +2,7 @@
 //
 // Edit a Rivendell Macro
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: edit_macro.h,v 1.8.8.2 2013/12/23 22:04:03 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -30,12 +28,11 @@
 #include <rdcart.h>
 #include <rdmacro.h>
 
-
 class EditMacro : public QDialog
 {
   Q_OBJECT
  public:
-  EditMacro(RDMacro *cmd,bool highlight,QWidget *parent=0,const char *name=0);
+  EditMacro(RDMacro *cmd,bool highlight,QWidget *parent=0);
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
 

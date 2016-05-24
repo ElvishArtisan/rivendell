@@ -56,9 +56,8 @@
 #define STAGE2_XFER_SIZE 2048
 #define STAGE2_BUFFER_SIZE 49152
 
-RDAudioConvert::RDAudioConvert(const QString &station_name,
-			       QObject *parent,const char *name)
-  : QObject(parent,name)
+RDAudioConvert::RDAudioConvert(const QString &station_name,QObject *parent)
+  : QObject(parent)
 {
   conv_start_point=-1;
   conv_end_point=-1;

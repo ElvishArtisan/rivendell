@@ -2,9 +2,7 @@
 //
 // SQL search clause for RDCastManager
 //
-//   (C) Copyright 2009 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdcastsearch.h,v 1.4 2010/07/29 19:32:33 cvs Exp $
+//   (C) Copyright 2009,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as

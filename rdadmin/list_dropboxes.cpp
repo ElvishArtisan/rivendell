@@ -2,9 +2,7 @@
 //
 // List Rivendell Dropboxes
 //
-//   (C) Copyright 2002 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: list_dropboxes.cpp,v 1.7.8.1 2013/12/11 20:17:14 cvs Exp $
+//   (C) Copyright 2002,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -36,9 +34,8 @@
 #include <edit_dropbox.h>
 
 
-ListDropboxes::ListDropboxes(const QString &stationname,
-			     QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+ListDropboxes::ListDropboxes(const QString &stationname,QWidget *parent)
+  : QDialog(parent,"",true)
 {
   list_stationname=stationname;
 
@@ -64,7 +61,7 @@ ListDropboxes::ListDropboxes(const QString &stationname,
   //
   //  Add Button
   //
-  list_add_button=new QPushButton(this,"list_add_button");
+  list_add_button=new QPushButton(this);
   list_add_button->setFont(font);
   list_add_button->setText(tr("&Add"));
   connect(list_add_button,SIGNAL(clicked()),this,SLOT(addData()));
@@ -72,7 +69,7 @@ ListDropboxes::ListDropboxes(const QString &stationname,
   //
   //  Edit Button
   //
-  list_edit_button=new QPushButton(this,"list_edit_button");
+  list_edit_button=new QPushButton(this);
   list_edit_button->setFont(font);
   list_edit_button->setText(tr("&Edit"));
   connect(list_edit_button,SIGNAL(clicked()),this,SLOT(editData()));
@@ -80,7 +77,7 @@ ListDropboxes::ListDropboxes(const QString &stationname,
   //
   //  Delete Button
   //
-  list_delete_button=new QPushButton(this,"list_delete_button");
+  list_delete_button=new QPushButton(this);
   list_delete_button->setFont(font);
   list_delete_button->setText(tr("&Delete"));
   connect(list_delete_button,SIGNAL(clicked()),this,SLOT(deleteData()));
@@ -88,7 +85,7 @@ ListDropboxes::ListDropboxes(const QString &stationname,
   //
   //  Close Button
   //
-  list_close_button=new QPushButton(this,"list_close_button");
+  list_close_button=new QPushButton(this);
   list_close_button->setDefault(true);
   list_close_button->setFont(font);
   list_close_button->setText(tr("&Close"));
@@ -97,7 +94,7 @@ ListDropboxes::ListDropboxes(const QString &stationname,
   //
   // Group List
   //
-  list_dropboxes_view=new RDListView(this,"list_dropboxes_view");
+  list_dropboxes_view=new RDListView(this);
   list_dropboxes_view->setFont(list_font);
   list_dropboxes_view->setAllColumnsShowFocus(true);
   list_dropboxes_view->addColumn(tr("Group"));
@@ -151,7 +148,7 @@ void ListDropboxes::addData()
   RDDropbox *box=new RDDropbox(-1,list_stationname);
   int id=box->id();
   delete box;
-  EditDropbox *edit_dropbox=new EditDropbox(id,this,"edit_dropbox");
+  EditDropbox *edit_dropbox=new EditDropbox(id,this);
   if(edit_dropbox->exec()<0) {
     QString sql=QString().sprintf("delete from DROPBOXES where ID=%d",id);
     RDSqlQuery *q=new RDSqlQuery(sql);
@@ -174,7 +171,7 @@ void ListDropboxes::editData()
   if(item==NULL) {
     return;
   }
-  EditDropbox *edit_dropbox=new EditDropbox(item->id(),this,"edit_dropbox");
+  EditDropbox *edit_dropbox=new EditDropbox(item->id(),this);
   edit_dropbox->exec();
   delete edit_dropbox;
   RefreshItem(item);

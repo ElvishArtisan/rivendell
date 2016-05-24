@@ -28,7 +28,6 @@
 #include <log_traffic.h>
 #include <globals.h>
 
-
 void LogTraffic(const QString &svcname,const QString &logname,
 		RDLogLine *logline,RDLogLine::PlaySource src,
 		RDAirPlayConf::TrafficAction action,bool onair_flag)

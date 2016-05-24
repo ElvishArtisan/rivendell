@@ -2,9 +2,7 @@
 //
 //   A Qt class for accessing the FreeDB CD Database.
 //
-//   (C) Copyright 2003 Fred Gleason <fredg@paravelsystems.com>
-//
-//    $Id: rdcddblookup.cpp,v 1.5.8.3 2014/01/14 17:35:31 cvs Exp $
+//   (C) Copyright 2003,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -30,8 +28,8 @@
 #include <rdcddblookup.h>
 #include <rdprofile.h>
 
-RDCddbLookup::RDCddbLookup(FILE *profile_msgs,QObject *parent,const char *name) 
-  : QObject(parent,name)
+RDCddbLookup::RDCddbLookup(FILE *profile_msgs,QObject *parent)
+  : QObject(parent)
 {
   lookup_state=0;
   lookup_profile_msgs=profile_msgs;

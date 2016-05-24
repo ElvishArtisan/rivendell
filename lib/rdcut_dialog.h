@@ -2,9 +2,7 @@
 //
 // A widget to select a Rivendell Cut.
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdcut_dialog.h,v 1.14 2011/08/30 23:35:43 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -44,8 +42,7 @@ class RDCutDialog : public QDialog
   RDCutDialog(QString *cutname,RDStation *station,RDSystem *system,
 	      QString *filter=0,QString *group=0,QString *schedcode=NULL,
 	      QString username="",bool show_clear=false,bool allow_add=false,
-	      bool exclude_tracks=false,
-	      QWidget *parent=0,const char *name=0);
+	      bool exclude_tracks=false,QWidget *parent=0);
   ~RDCutDialog();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;

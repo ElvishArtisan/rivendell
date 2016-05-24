@@ -2,9 +2,7 @@
 //
 // Container class for metadata
 //
-//   (C) Copyright 2013 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: metarecord.cpp,v 1.1.2.3 2013/12/04 22:22:49 cvs Exp $
+//   (C) Copyright 2013,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as

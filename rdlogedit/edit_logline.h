@@ -2,9 +2,7 @@
 //
 // Edit a Rivendell Log Entry
 //
-//   (C) Copyright 2002-2003 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: edit_logline.h,v 1.17 2010/07/29 19:32:37 cvs Exp $
+//   (C) Copyright 2002-2003,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -43,7 +41,7 @@ class EditLogLine : public QDialog
  public:
   EditLogLine(RDLogLine *,QString *filter,QString *group,QString svcname,
 	      RDGroupList *grplist,RDLogEvent *log,int lineno,
-	      QWidget *parent=0,const char *name=0);
+	      QWidget *parent=0);
   ~EditLogLine();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;

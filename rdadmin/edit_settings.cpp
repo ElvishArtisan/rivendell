@@ -2,9 +2,7 @@
 //
 // Edit Rivendell Systemwide Configuration
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: edit_settings.cpp,v 1.4.8.1 2012/11/26 20:19:38 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -39,8 +37,8 @@
 #include <edit_settings.h>
 #include <globals.h>
 
-EditSettings::EditSettings(QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+EditSettings::EditSettings(QWidget *parent)
+  : QDialog(parent,"",true)
 {
   QString sql;
   RDSqlQuery *q;
@@ -73,18 +71,16 @@ EditSettings::EditSettings(QWidget *parent,const char *name)
   //
   // System Sample Rate
   //
-  edit_sample_rate_box=new QComboBox(this,"edit_sample_rate_box");
+  edit_sample_rate_box=new QComboBox(this);
   edit_sample_rate_box->setGeometry(200,10,70,20);
   edit_sample_rate_box->insertItem("32000");
   edit_sample_rate_box->insertItem("44100");
   edit_sample_rate_box->insertItem("48000");
-  QLabel *label=new QLabel(edit_sample_rate_box,
-			   tr("System Sample Rate:"),this,
-			   "edit_sample_rate_label");
+  QLabel *label=new QLabel(edit_sample_rate_box,tr("System Sample Rate:"),this);
   label->setGeometry(10,10,185,20);
   label->setFont(font);
   label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
-  label=new QLabel(tr("samples/second"),this,"edit_sample_rate_unit");
+  label=new QLabel(tr("samples/second"),this);
   label->setGeometry(275,10,sizeHint().width()-285,20);
   label->setFont(font);
   label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
@@ -92,11 +88,10 @@ EditSettings::EditSettings(QWidget *parent,const char *name)
   //
   // Allow Duplicate Cart Titles Box
   //
-  edit_duplicate_carts_box=new QCheckBox(this,"edit_duplicate_carts_box");
+  edit_duplicate_carts_box=new QCheckBox(this);
   edit_duplicate_carts_box->setGeometry(20,32,15,15);
-  label=new QLabel(edit_duplicate_carts_box,
-		   tr("Allow Duplicate Cart Titles"),this,
-		   "edit_duplicate_carts_box");
+  label=
+    new QLabel(edit_duplicate_carts_box,tr("Allow Duplicate Cart Titles"),this);
   label->setGeometry(40,30,sizeHint().width()-50,20);
   label->setFont(font);
   label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
@@ -104,10 +99,9 @@ EditSettings::EditSettings(QWidget *parent,const char *name)
   //
   // ISCI Cross Reference Path
   //
-  edit_isci_path_edit=new QLineEdit(this,"edit_isci_path_box");
+  edit_isci_path_edit=new QLineEdit(this);
   edit_isci_path_edit->setGeometry(200,54,sizeHint().width()-210,20);
-  label=new QLabel(edit_isci_path_edit,tr("ISCI Cross Reference Path:"),this,
-		   "edit_isci_path_label");
+  label=new QLabel(edit_isci_path_edit,tr("ISCI Cross Reference Path:"),this);
   label->setGeometry(10,54,185,20);
   label->setFont(font);
   label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
@@ -115,16 +109,14 @@ EditSettings::EditSettings(QWidget *parent,const char *name)
   //
   // Maximum POST Size
   //
-  edit_maxpost_spin=new QSpinBox(this,"edit_maxpost_spin");
+  edit_maxpost_spin=new QSpinBox(this);
   edit_maxpost_spin->setGeometry(200,76,60,20);
   edit_maxpost_spin->setRange(1,1000);
-  label=new QLabel(edit_maxpost_spin,
-		   tr("Maximum Remote Post Length:"),this,
-		   "edit_maxpost_label");
+  label=new QLabel(edit_maxpost_spin,tr("Maximum Remote Post Length:"),this);
   label->setGeometry(10,76,185,20);
   label->setFont(font);
   label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
-  label=new QLabel(tr("Mbytes"),this,"edit_maxpost_unit");
+  label=new QLabel(tr("Mbytes"),this);
   label->setGeometry(265,76,60,20);
   label->setFont(font);
   label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
@@ -148,7 +140,7 @@ EditSettings::EditSettings(QWidget *parent,const char *name)
   //
   // Duplicate List (initially hidden)
   //
-  edit_duplicate_label=new RDLabel(this,"edit_duplicate_label");
+  edit_duplicate_label=new RDLabel(this);
   edit_duplicate_label->setText(tr("The following duplicate titles must be corrected before \"Allow Duplicate Values\" can be turned off."));
   edit_duplicate_label->setWordWrapEnabled(true);
   edit_duplicate_label->setGeometry(15,120,sizeHint().width()-30,50);
@@ -163,7 +155,7 @@ EditSettings::EditSettings(QWidget *parent,const char *name)
   edit_duplicate_list->addColumn(tr("TITLE"));
   edit_duplicate_list->setColumnAlignment(1,AlignLeft);
   edit_duplicate_list->hide();
-  edit_save_button=new QPushButton(this,"save_button");
+  edit_save_button=new QPushButton(this);
   edit_save_button->
     setGeometry(sizeHint().width()-85,370,70,25);
   edit_save_button->setFont(normal_font);
@@ -174,7 +166,7 @@ EditSettings::EditSettings(QWidget *parent,const char *name)
   //
   //  Ok Button
   //
-  edit_ok_button=new QPushButton(this,"ok_button");
+  edit_ok_button=new QPushButton(this);
   edit_ok_button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,
 				  80,50);
   edit_ok_button->setFont(font);
@@ -184,7 +176,7 @@ EditSettings::EditSettings(QWidget *parent,const char *name)
   //
   //  Cancel Button
   //
-  edit_cancel_button=new QPushButton(this,"cancel_button");
+  edit_cancel_button=new QPushButton(this);
   edit_cancel_button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,
 				  80,50);
   edit_cancel_button->setFont(font);

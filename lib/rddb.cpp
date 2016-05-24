@@ -3,8 +3,7 @@
 //   Database driver with automatic reconnect
 //
 //   (C) Copyright 2007 Dan Mills <dmills@exponent.myzen.co.uk>
-//
-//      $Id: rddb.cpp,v 1.13.4.2.2.2 2014/03/21 15:41:45 cvs Exp $
+//   (C) Copyright 2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as

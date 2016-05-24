@@ -34,7 +34,6 @@
 #include <rdmatrix.h>
 #include <rddb.h>
 
-
 class ListClocks : public QDialog
 {
  Q_OBJECT

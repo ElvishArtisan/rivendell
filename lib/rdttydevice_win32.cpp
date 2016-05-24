@@ -2,9 +2,7 @@
 //
 //   The Win32 version of a Qt driver for serial ports.
 //
-//   (C) Copyright 2002 Fred Gleason <fredg@paravelsystems.com>
-//
-//    $Id: rdttydevice_win32.cpp,v 1.3 2010/07/29 19:32:34 cvs Exp $
+//   (C) Copyright 2002,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 

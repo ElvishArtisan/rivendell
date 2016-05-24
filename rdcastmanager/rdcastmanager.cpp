@@ -2,9 +2,7 @@
 //
 // A PodCast Management Utility for Rivendell.
 //
-//   (C) Copyright 2002-2005 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdcastmanager.cpp,v 1.15.4.3 2014/01/21 21:59:31 cvs Exp $
+//   (C) Copyright 2002-2005,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -69,8 +67,8 @@ RDStation *rdstation_conf;
 RDConfig *config;
 RDSystem *cast_system=NULL;
 
-MainWidget::MainWidget(QWidget *parent,const char *name,WFlags f)
-  :QMainWindow(parent,name,f)
+MainWidget::MainWidget(QWidget *parent)
+  :QMainWindow(parent)
 {
   QString str1;
   QString str2;
@@ -168,7 +166,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name,WFlags f)
   //
   // Feed List
   //
-  cast_feed_list=new RDListView(this,"cast_feed_list");
+  cast_feed_list=new RDListView(this);
   cast_feed_list->setFont(default_font);
   cast_feed_list->setAllColumnsShowFocus(true);
   cast_feed_list->setItemMargin(5);
@@ -190,7 +188,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name,WFlags f)
   //
   // Open Button
   //
-  cast_open_button=new QPushButton(this,"cast_open_button");
+  cast_open_button=new QPushButton(this);
   cast_open_button->setFont(button_font);
   cast_open_button->setText(tr("&View\nFeed"));
   connect(cast_open_button,SIGNAL(clicked()),this,SLOT(openData()));
@@ -198,7 +196,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name,WFlags f)
   //
   // Close Button
   //
-  cast_close_button=new QPushButton(this,"cast_close_button");
+  cast_close_button=new QPushButton(this);
   cast_close_button->setFont(button_font);
   cast_close_button->setText(tr("&Close"));
   connect(cast_close_button,SIGNAL(clicked()),this,SLOT(quitMainWidget()));
@@ -395,7 +393,7 @@ int main(int argc,char *argv[])
   //
   // Start Event Loop
   //
-  MainWidget *w=new MainWidget(NULL,"main",0);
+  MainWidget *w=new MainWidget();
   a.setMainWidget(w);
   w->setGeometry(w->geometry().x(),w->geometry().y(),w->sizeHint().width(),w->sizeHint().height());
   w->show();

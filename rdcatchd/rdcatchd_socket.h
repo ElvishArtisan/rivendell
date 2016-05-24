@@ -2,9 +2,7 @@
 //
 // A telephone services server for Mithlond
 //
-//   (C) Copyright 2002 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdcatchd_socket.h,v 1.6 2010/07/29 19:32:36 cvs Exp $
+//   (C) Copyright 2002,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -28,13 +26,11 @@
 #include <qserversocket.h>
 #include <qhostaddress.h>
 
-
 class RDCatchdSocket : public QServerSocket
 {
   Q_OBJECT
   public:
-   RDCatchdSocket(Q_UINT16 port,int backlog=0,QObject *parent=0,
-	     const char *name=0);
+   RDCatchdSocket(Q_UINT16 port,int backlog=0,QObject *parent=0);
    RDCatchdSocket(const QHostAddress &address,Q_UINT16 port,int backlog=0,
 	     QObject *parent=0,const char *name=0);
    void newConnection(int socket);

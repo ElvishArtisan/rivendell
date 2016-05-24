@@ -2,9 +2,7 @@
 //
 // A feed data container class for the StarGuide III Satellite Receiver
 //
-//   (C) Copyright 2002-2005 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: starguide_feed.h,v 1.6 2010/07/29 19:32:38 cvs Exp $
+//   (C) Copyright 2002-2005,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as

@@ -2,9 +2,7 @@
 //
 // A Rivendell switcher driver for the StarGuide III Satellite Receiver
 //
-//   (C) Copyright 2002-2005 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: starguide3.cpp,v 1.14 2010/08/03 23:39:26 cvs Exp $
+//   (C) Copyright 2002-2005,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -27,9 +25,8 @@
 #include <globals.h>
 #include <starguide3.h>
 
-
-StarGuide3::StarGuide3(RDMatrix *matrix,QObject *parent,const char *name)
-  : Switcher(matrix,parent,name)
+StarGuide3::StarGuide3(RDMatrix *matrix,QObject *parent)
+  : Switcher(matrix,parent)
 {
   QString sql;
   RDSqlQuery *q;

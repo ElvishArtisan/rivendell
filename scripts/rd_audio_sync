@@ -4,9 +4,7 @@
 #
 # Syncronize a Rivendell audio archive with the master server.
 #
-#   (C) Copyright 2004 Fred Gleason <fredg@paravelsystems.com>
-#
-#      $Id: rd_audio_sync,v 1.4 2007/05/16 21:07:08 grauf Exp $
+#   (C) Copyright 2004,2016 Fred Gleason <fredg@paravelsystems.com>
 #
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License version 2 as

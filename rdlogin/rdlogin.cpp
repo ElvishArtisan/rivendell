@@ -2,9 +2,7 @@
 //
 // The User Login/Logout Utility for Rivendell.
 //
-//   (C) Copyright 2002-2008 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdlogin.cpp,v 1.35.4.2 2014/01/21 21:59:32 cvs Exp $
+//   (C) Copyright 2002-2008,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -44,15 +42,13 @@
 
 #include <rdlogin.h>
 
-
 //
 // Icons
 //
 #include "../icons/rivendell-22x22.xpm"
 
-
-MainWidget::MainWidget(QWidget *parent,const char *name)
-  :QWidget(parent,name)
+MainWidget::MainWidget(QWidget *parent)
+  :QWidget(parent)
 {
   login_user_width=160;
 
@@ -104,7 +100,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // Text Validator
   //
-  RDTextValidator *validator=new RDTextValidator(this,"validator");
+  RDTextValidator *validator=new RDTextValidator(this);
 
   //
   // Ensure that the system daemons are running
@@ -153,7 +149,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // User Label
   //
-  login_label=new QLabel(this,"login_label");
+  login_label=new QLabel(this);
   login_label->setFont(label_font);
   login_label->setAlignment(AlignCenter);
   login_label->setText(tr("Current User: unknown"));
@@ -161,7 +157,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // User Name
   //
-  login_username_box=new QComboBox(this,"login_username_box");
+  login_username_box=new QComboBox(this);
   login_username_box->setFont(line_edit_font);
   login_username_box->setFocus();
   QFontMetrics fm(line_edit_font);
@@ -178,21 +174,19 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   if(login_user_width>900) {
     login_user_width=900;
   }
-  login_username_label=new QLabel(login_username_box,tr("&Username:"),
-				  this,"login_username_label");
+  login_username_label=new QLabel(login_username_box,tr("&Username:"),this);
   login_username_label->setFont(small_label_font);
   login_username_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
 
   //
   // Password
   //
-  login_password_edit=new QLineEdit(this,"login_password_edit");
+  login_password_edit=new QLineEdit(this);
   login_password_edit->setFont(line_edit_font);
   login_password_edit->setMaxLength(16);
   login_password_edit->setValidator(validator);
   login_password_edit->setEchoMode(QLineEdit::Password);
-  login_password_label=new QLabel(login_password_edit,tr("&Password:"),
-				  this,"login_password_label");
+  login_password_label=new QLabel(login_password_edit,tr("&Password:"),this);
   login_password_label->setFont(small_label_font);
   login_password_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
   connect(login_password_edit,SIGNAL(returnPressed()),this,SLOT(loginData()));
@@ -200,7 +194,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // Login Button
   //
-  login_button=new QPushButton(this,"login_button");
+  login_button=new QPushButton(this);
   login_button->setFont(button_font);
   login_button->setText(tr("&Set User"));
   connect(login_button,SIGNAL(clicked()),this,SLOT(loginData()));
@@ -208,7 +202,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // Logout Button
   //
-  logout_button=new QPushButton(this,"logout_button");
+  logout_button=new QPushButton(this);
   logout_button->setFont(button_font);
   logout_button->setText(tr("&Default\nUser"));
   connect(logout_button,SIGNAL(clicked()),this,SLOT(logoutData()));
@@ -216,7 +210,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // Cancel Button
   //
-  cancel_button=new QPushButton(this,"cancel_button");
+  cancel_button=new QPushButton(this);
   cancel_button->setFont(button_font);
   cancel_button->setText(tr("&Cancel"));
   connect(cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
@@ -353,7 +347,7 @@ int main(int argc,char *argv[])
   //
   // Start Event Loop
   //
-  MainWidget *w=new MainWidget(NULL,"main");
+  MainWidget *w=new MainWidget();
   a.setMainWidget(w);
   w->setGeometry(QRect(QPoint(0,0),w->sizeHint()));
   w->show();

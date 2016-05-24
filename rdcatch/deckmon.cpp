@@ -26,7 +26,6 @@
 #include <colors.h>
 #include <globals.h>
 
-
 DeckMon::DeckMon(QString station,unsigned channel,QWidget *parent)
   : QFrame(parent)
 {

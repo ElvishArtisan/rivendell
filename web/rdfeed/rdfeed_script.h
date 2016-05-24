@@ -2,9 +2,7 @@
 //
 // An RSS Feed Generator for Rivendell.
 //
-//   (C) Copyright 2002-2007 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdfeed_script.h,v 1.2 2010/07/29 19:32:40 cvs Exp $
+//   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,7 +18,6 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-
 #ifndef RDFEED_SCRIPT_H
 #define RDFEED_SCRIPT_H
 
@@ -29,11 +26,10 @@
 
 #include <rddb.h>
 
-
 class MainObject : public QObject
 {
  public:
-  MainObject(QObject *parent=0,const char *name=0);
+  MainObject(QObject *parent=0);
 
  private:
   void ServeRss(const char *keyname,bool count);

@@ -2,9 +2,7 @@
 //
 // A dialog to edit the contents of an RDWaveData.
 //
-//   (C) Copyright 2014 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdwavedata_dialog.h,v 1.1.2.1 2014/05/28 21:21:41 cvs Exp $
+//   (C) Copyright 2014,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as

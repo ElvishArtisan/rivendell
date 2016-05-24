@@ -4,8 +4,6 @@
 //
 //   (C) Copyright 2012 Fred Gleason <fredg@paravelsystems.com>
 //
-//      $Id: nexgen_filter.h,v 1.1.2.5 2013/06/20 20:24:45 cvs Exp $
-//
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
 //   published by the Free Software Foundation.
@@ -42,7 +40,7 @@ class MainObject : public QObject
 {
   Q_OBJECT
  public:
-  MainObject(QObject *parent=0,const char *name=0);
+  MainObject(QObject *parent=0);
 
  private:
   void ProcessArchive(const QString &filename);

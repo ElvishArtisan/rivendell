@@ -2,9 +2,7 @@
 //
 // Test the Rivendell string encoder routines.
 //
-//   (C) Copyright 2013 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: stringcode_test.h,v 1.1.2.1 2013/10/16 21:14:38 cvs Exp $
+//   (C) Copyright 2013,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -30,7 +28,7 @@
 class MainObject : public QObject
 {
  public:
-  MainObject(QObject *parent=0,const char *name=0);
+  MainObject(QObject *parent=0);
 };
 
 

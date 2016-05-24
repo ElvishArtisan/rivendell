@@ -4,9 +4,7 @@
 #
 # Run a Required Weekly Test on a Sage Digital ENDEC
 #
-#   (C) Copyright 2012 Fred Gleason <fredg@paravelsystems.com>
-#
-#      $Id: sage_endec_rwt.sh,v 1.1.2.1 2012/10/11 19:16:27 cvs Exp $
+#   (C) Copyright 2012,2016 Fred Gleason <fredg@paravelsystems.com>
 #
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License version 2 as

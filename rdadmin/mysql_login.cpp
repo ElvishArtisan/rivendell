@@ -2,9 +2,7 @@
 //
 // mySQL Administrative Login widget for RDAdmin.
 //
-//   (C) Copyright 2002-2003 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: mysql_login.cpp,v 1.9 2010/07/29 19:32:35 cvs Exp $
+//   (C) Copyright 2002-2003,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -36,10 +34,9 @@
 
 #include <mysql_login.h>
 
-
 MySqlLogin::MySqlLogin(QString msg,QString *username,QString *password,
-		       QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+		       QWidget *parent)
+  : QDialog(parent,"",true)
 {
   setCaption(tr("mySQL Admin"));
   login_name=username;
@@ -54,7 +51,7 @@ MySqlLogin::MySqlLogin(QString msg,QString *username,QString *password,
   //
   // Message Label
   //
-  RDLabel *label=new RDLabel(msg,this,"message_label");
+  RDLabel *label=new RDLabel(msg,this);
   label->setFont(font);
   label->setGeometry(10,10,sizeHint().width()-20,sizeHint().height()-130);
   label->setAlignment(AlignCenter);
@@ -63,13 +60,12 @@ MySqlLogin::MySqlLogin(QString msg,QString *username,QString *password,
   //
   // MySql Login Name
   //
-  login_name_edit=new QLineEdit(this,"login_name_edit");
+  login_name_edit=new QLineEdit(this);
   login_name_edit->setFont(font);
   login_name_edit->setGeometry(100,sizeHint().height()-110,100,19);
   login_name_edit->setMaxLength(16);
   login_name_edit->setFocus();
-  QLabel *login_name_label=new QLabel(login_name_edit,tr("User &Name:"),this,
-				       "login_name_label");
+  QLabel *login_name_label=new QLabel(login_name_edit,tr("User &Name:"),this);
   login_name_label->setFont(font);
   login_name_label->setGeometry(10,sizeHint().height()-109,85,19);
   login_name_label->setAlignment(AlignRight|ShowPrefix);
@@ -77,13 +73,12 @@ MySqlLogin::MySqlLogin(QString msg,QString *username,QString *password,
   //
   // MySql Login Password
   //
-  login_password_edit=new QLineEdit(this,"login_password_edit");
+  login_password_edit=new QLineEdit(this);
   login_password_edit->setFont(font);
   login_password_edit->setGeometry(100,sizeHint().height()-90,100,19);
   login_password_edit->setMaxLength(16);
   login_password_edit->setEchoMode(QLineEdit::Password);
-  QLabel *login_password_label=new QLabel(login_password_edit,tr("&Password:"),
-					  this,"login_password_label");
+  QLabel *login_password_label=new QLabel(login_password_edit,tr("&Password:"));
   login_password_label->setFont(font);
   login_password_label->setGeometry(10,sizeHint().height()-88,85,19);
   login_password_label->setAlignment(AlignRight|ShowPrefix);
@@ -91,7 +86,7 @@ MySqlLogin::MySqlLogin(QString msg,QString *username,QString *password,
   //
   // OK Button
   //
-  QPushButton *ok_button=new QPushButton(this,"ok_button");
+  QPushButton *ok_button=new QPushButton(this);
   ok_button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
   ok_button->setFont(font);
   ok_button->setText(tr("&OK"));
@@ -99,9 +94,9 @@ MySqlLogin::MySqlLogin(QString msg,QString *username,QString *password,
   connect(ok_button,SIGNAL(clicked()),this,SLOT(okData()));
 
   //
-  // CANCEL Button
+  // Cancel Button
   //
-  QPushButton *cancel_button=new QPushButton(this,"cancel_button");
+  QPushButton *cancel_button=new QPushButton(this);
   cancel_button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,
 			     80,50);
   cancel_button->setFont(font);

@@ -2,9 +2,7 @@
 //
 // Check Rivendell Cuts for Valid Audio
 //
-//   (C) Copyright 2012 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdcheckcuts.h,v 1.1.2.1 2012/10/13 04:53:19 cvs Exp $
+//   (C) Copyright 2012,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,7 +18,6 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-
 #ifndef RDCHECKCUTS_H
 #define RDCHECKCUTS_H
 
@@ -35,7 +32,7 @@
 class MainObject : public QObject
 {
  public:
-  MainObject(QObject *parent=0,const char *name=0);
+  MainObject(QObject *parent=0);
 
  private:
   void RenderCut(const QString &cutname);

@@ -2,9 +2,7 @@
 //
 // Edit a Rivendell Livewire GPIO Slot Association
 //
-//   (C) Copyright 2013 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: edit_livewiregpio.h,v 1.1.2.2 2013/03/05 23:59:07 cvs Exp $
+//   (C) Copyright 2013,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -30,13 +28,11 @@
 
 #include <rdmatrix.h>
 
-
 class EditLiveWireGpio : public QDialog
 {
  Q_OBJECT
  public:
-  EditLiveWireGpio(int slot,int *source,QHostAddress *addr,
-		   QWidget *parent=0,const char *name=0);
+  EditLiveWireGpio(int slot,int *source,QHostAddress *addr,QWidget *parent=0);
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
 

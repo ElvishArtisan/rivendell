@@ -2,9 +2,7 @@
 //
 // Stored value drag object for Rivendell carts.
 //
-//   (C) Copyright 2013 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdcartdrag.cpp,v 1.1.2.7 2014/01/20 19:13:29 cvs Exp $
+//   (C) Copyright 2013,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as

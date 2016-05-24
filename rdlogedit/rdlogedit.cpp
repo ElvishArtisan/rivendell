@@ -2,9 +2,7 @@
 //
 // The Log Editor Utility for Rivendell.
 //
-//   (C) Copyright 2002-2005 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdlogedit.cpp,v 1.77.4.9.2.1 2014/05/21 18:19:43 cvs Exp $
+//   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -106,8 +104,8 @@ void SigHandler(int signo)
 #endif  // WIN32
 
 
-MainWidget::MainWidget(QWidget *parent,const char *name,WFlags f)
-  :QMainWindow(parent,name,f)
+MainWidget::MainWidget(QWidget *parent)
+  :QMainWindow(parent)
 {
   QString str1;
   QString str2;
@@ -183,7 +181,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name,WFlags f)
   // CAE Connection
   //
 #ifndef WIN32
-  rdcae=new RDCae(rdstation_conf,log_config,parent,name);
+  rdcae=new RDCae(rdstation_conf,log_config,parent);
   rdcae->connectHost();
 #endif  // WIN32
 
@@ -300,7 +298,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name,WFlags f)
   //
   // Log List
   //
-  log_log_list=new QListView(this,"log_log_list");
+  log_log_list=new QListView(this);
   log_log_list->setFont(default_font);
   log_log_list->setAllColumnsShowFocus(true);
   log_log_list->setItemMargin(5);
@@ -340,7 +338,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name,WFlags f)
   //
   // Add Button
   //
-  log_add_button=new QPushButton(this,"log_add_button");
+  log_add_button=new QPushButton(this);
   log_add_button->setFont(button_font);
   log_add_button->setText(tr("&Add"));
   connect(log_add_button,SIGNAL(clicked()),this,SLOT(addData()));
@@ -348,7 +346,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name,WFlags f)
   //
   // Edit Button
   //
-  log_edit_button=new QPushButton(this,"log_edit_button");
+  log_edit_button=new QPushButton(this);
   log_edit_button->setFont(button_font);
   log_edit_button->setText(tr("&Edit"));
   connect(log_edit_button,SIGNAL(clicked()),this,SLOT(editData()));
@@ -356,7 +354,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name,WFlags f)
   //
   // Delete Button
   //
-  log_delete_button=new QPushButton(this,"log_delete_button");
+  log_delete_button=new QPushButton(this);
   log_delete_button->setFont(button_font);
   log_delete_button->setText(tr("&Delete"));
   connect(log_delete_button,SIGNAL(clicked()),this,SLOT(deleteData()));
@@ -364,7 +362,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name,WFlags f)
   //
   // Tracker Button
   //
-  log_track_button=new QPushButton(this,"log_track_button");
+  log_track_button=new QPushButton(this);
   log_track_button->setFont(button_font);
   log_track_button->setText(tr("Voice\n&Tracker"));
   connect(log_track_button,SIGNAL(clicked()),this,SLOT(trackData()));
@@ -375,7 +373,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name,WFlags f)
   //
   // Log Report Button
   //
-  log_report_button=new QPushButton(this,"log_report_button");
+  log_report_button=new QPushButton(this);
   log_report_button->setFont(button_font);
   log_report_button->setText(tr("Log\nReport"));
   connect(log_report_button,SIGNAL(clicked()),this,SLOT(reportData()));
@@ -383,7 +381,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name,WFlags f)
   //
   // Close Button
   //
-  log_close_button=new QPushButton(this,"log_close_button");
+  log_close_button=new QPushButton(this);
   log_close_button->setFont(button_font);
   log_close_button->setText(tr("&Close"));
   connect(log_close_button,SIGNAL(clicked()),this,SLOT(quitMainWidget()));
@@ -459,10 +457,9 @@ void MainWidget::addData()
 
   if(rduser->createLog()) {
     if (rdstation_conf->broadcastSecurity() == RDStation::UserSec) {
-      log=new RDAddLog(&logname,&svcname,NULL,tr("Add Log"),this,"add_log",
-                       rduser);
+      log=new RDAddLog(&logname,&svcname,NULL,tr("Add Log"),this,rduser);
     } else { // RDStation::HostSec
-      log=new RDAddLog(&logname,&svcname,NULL,tr("Add Log"),this,"add_log");
+      log=new RDAddLog(&logname,&svcname,NULL,tr("Add Log"),this);
     }
     if(log->exec()!=0) {
       delete log;
@@ -925,7 +922,7 @@ int main(int argc,char *argv[])
   //
   // Start Event Loop
   //
-  MainWidget *w=new MainWidget(NULL,"main");
+  MainWidget *w=new MainWidget();
   a.setMainWidget(w);
   w->setGeometry(QRect(QPoint(w->geometry().x(),w->geometry().y()),
 		 w->sizeHint()));

@@ -2,9 +2,7 @@
 //
 // A Rivendell switcher driver for the UNITY4000
 //
-//   (C) Copyright 2002-2003 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: unity4000.cpp,v 1.13 2010/08/03 23:39:26 cvs Exp $
+//   (C) Copyright 2002-2003,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -27,9 +25,8 @@
 #include <globals.h>
 #include <unity4000.h>
 
-
-Unity4000::Unity4000(RDMatrix *matrix,QObject *parent,const char *name)
-  : Switcher(matrix,parent,name)
+Unity4000::Unity4000(RDMatrix *matrix,QObject *parent)
+  : Switcher(matrix,parent)
 {
   QString sql;
   RDSqlQuery *q;

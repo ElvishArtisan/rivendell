@@ -2,9 +2,7 @@
 //
 // The stop counter widget for Rivendell
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: stop_counter.cpp,v 1.21 2011/01/10 19:27:40 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -26,8 +24,8 @@
 #include <stop_counter.h>
 #include <globals.h>
 
-StopCounter::StopCounter(QWidget *parent,const char *name)
-  : QPushButton(parent,name)
+StopCounter::StopCounter(QWidget *parent)
+  : QPushButton(parent)
 {
   stop_running=false;
 

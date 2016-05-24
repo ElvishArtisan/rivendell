@@ -2,9 +2,7 @@
 //
 // Display help for audio ports (edit_audios.*)
 //
-// (C) Copyright 2006 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: help_audios.cpp,v 1.7 2012/02/13 19:26:14 cvs Exp $
+// (C) Copyright 2006,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -19,15 +17,13 @@
 //   License along with this program; if not, write to the Free Software
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
-//
 
 #include <qpushbutton.h>
 
 #include <help_audios.h>
 
-
-HelpAudioPorts::HelpAudioPorts(QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+HelpAudioPorts::HelpAudioPorts(QWidget *parent)
+  : QDialog(parent,"",true)
 {
   //
   // Fix the Window Size
@@ -69,7 +65,7 @@ HelpAudioPorts::HelpAudioPorts(QWidget *parent,const char *name)
   //
   // Close Button
   //
-  QPushButton *button=new QPushButton(this,"close_button");
+  QPushButton *button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,80,50);
   button->setFont(button_font);
   button->setText(tr("&Close"));

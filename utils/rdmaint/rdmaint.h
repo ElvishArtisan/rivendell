@@ -2,9 +2,7 @@
 //
 // A Utility for running periodic system maintenance.
 //
-//   (C) Copyright 2008 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdmaint.h,v 1.6 2010/09/08 20:38:01 cvs Exp $
+//   (C) Copyright 2008,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,7 +18,6 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-
 #ifndef RDMAINT_H
 #define RDMAINT_H
 
@@ -34,11 +31,10 @@
 
 #define RDMAINT_USAGE "[--help] [--verbose] [--system]\n\nRun Rivendell maintenance routines.\n"
 
-
 class MainObject : public QObject
 {
  public:
-  MainObject(QObject *parent=0,const char *name=0);
+  MainObject(QObject *parent=0);
 
  private:
   void RunSystemMaintenance();

@@ -2,9 +2,7 @@
 //
 // A Rivendell switcher driver for the 360 Systems AM16
 //
-//   (C) Copyright 2002-2013 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: am16.h,v 1.1.2.1 2013/06/28 00:33:34 cvs Exp $
+//   (C) Copyright 2002-2013,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -68,7 +66,7 @@ class Am16 : public Switcher
 {
  Q_OBJECT
  public:
-  Am16(RDMatrix *matrix,QObject *parent=0,const char *name=0);
+  Am16(RDMatrix *matrix,QObject *parent=0);
   ~Am16();
   RDMatrix::Type type();
   unsigned gpiQuantity();

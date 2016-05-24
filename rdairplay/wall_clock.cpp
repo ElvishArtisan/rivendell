@@ -2,9 +2,7 @@
 //
 // A wall-clock widget with date.
 //
-//   (C) Copyright 2002-2003 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: wall_clock.cpp,v 1.21 2011/01/11 12:20:31 cvs Exp $
+//   (C) Copyright 2002-2003,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -36,8 +34,8 @@
 #include <wall_clock.h>
 #include <globals.h>
 
-WallClock::WallClock(QWidget *parent,const char *name)
-  :QPushButton(parent,name)
+WallClock::WallClock(QWidget *parent)
+  :QPushButton(parent)
 {
   time_offset=rdstation_conf->timeOffset();
   previous_time=QTime::currentTime().addMSecs(time_offset);

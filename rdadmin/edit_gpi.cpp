@@ -2,9 +2,7 @@
 //
 // Edit a Rivendell Gpi
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: edit_gpi.cpp,v 1.17.8.1 2012/11/26 20:19:38 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -29,11 +27,9 @@
 #include <globals.h>
 #include <edit_gpi.h>
 
-
 EditGpi::EditGpi(int gpi,int *oncart,QString *ondesc,
-		 int *offcart,QString *offdesc,
-		 QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+		 int *offcart,QString *offdesc,QWidget *parent)
+  : QDialog(parent,"",true)
 {
   QString str;
 
@@ -66,7 +62,7 @@ EditGpi::EditGpi(int gpi,int *oncart,QString *ondesc,
   //
   // Text Validator
   //
-  RDTextValidator *validator=new RDTextValidator(this,"validator");
+  RDTextValidator *validator=new RDTextValidator(this);
 
   //
   // On Section Label
@@ -79,11 +75,11 @@ EditGpi::EditGpi(int gpi,int *oncart,QString *ondesc,
   //
   // On Cart Macro Cart
   //
-  edit_onmacro_edit=new QLineEdit(this,"edit_onmacro_edit");
+  edit_onmacro_edit=new QLineEdit(this);
   edit_onmacro_edit->setGeometry(120,30,60,20);
   edit_onmacro_edit->setFont(font);
   edit_onmacro_edit->setValidator(validator);
-  label=new QLabel(tr("Cart Number: "),this,"edit_macro_label");
+  label=new QLabel(tr("Cart Number: "),this);
   label->setGeometry(15,30,100,20);
   label->setFont(bold_font);
   label->setAlignment(AlignRight|AlignVCenter);
@@ -91,7 +87,7 @@ EditGpi::EditGpi(int gpi,int *oncart,QString *ondesc,
   //
   // On Select Button
   //
-  QPushButton *button=new QPushButton(this,"select_button");
+  QPushButton *button=new QPushButton(this);
   button->setGeometry(190,30,60,20);
   button->setFont(font);
   button->setText(tr("&Select"));
@@ -100,7 +96,7 @@ EditGpi::EditGpi(int gpi,int *oncart,QString *ondesc,
   //
   // On Clear Button
   //
-  button=new QPushButton(this,"select_button");
+  button=new QPushButton(this);
   button->setGeometry(270,30,60,20);
   button->setFont(font);
   button->setText(tr("C&lear"));
@@ -109,11 +105,11 @@ EditGpi::EditGpi(int gpi,int *oncart,QString *ondesc,
   //
   // On Cart Description
   //
-  edit_ondescription_edit=new QLineEdit(this,"edit_ondescription_edit");
+  edit_ondescription_edit=new QLineEdit(this);
   edit_ondescription_edit->setGeometry(120,52,sizeHint().width()-140,20);
   edit_ondescription_edit->setFont(font);
   edit_ondescription_edit->setReadOnly(true);
-  label=new QLabel(tr("Description: "),this,"edit_ondescription_label");
+  label=new QLabel(tr("Description: "),this);
   label->setGeometry(15,52,100,20);
   label->setFont(bold_font);
   label->setAlignment(AlignRight|AlignVCenter);
@@ -129,11 +125,11 @@ EditGpi::EditGpi(int gpi,int *oncart,QString *ondesc,
   //
   // Off Cart Macro Cart
   //
-  edit_offmacro_edit=new QLineEdit(this,"edit_offmacro_edit");
+  edit_offmacro_edit=new QLineEdit(this);
   edit_offmacro_edit->setGeometry(120,110,60,20);
   edit_offmacro_edit->setFont(font);
   edit_offmacro_edit->setValidator(validator);
-  label=new QLabel(tr("Cart Number: "),this,"edit_macro_label");
+  label=new QLabel(tr("Cart Number: "),this);
   label->setGeometry(15,110,100,20);
   label->setFont(bold_font);
   label->setAlignment(AlignRight|AlignVCenter);
@@ -141,7 +137,7 @@ EditGpi::EditGpi(int gpi,int *oncart,QString *ondesc,
   //
   // Off Select Button
   //
-  button=new QPushButton(this,"select_button");
+  button=new QPushButton(this);
   button->setGeometry(190,110,60,20);
   button->setFont(font);
   button->setText(tr("&Select"));
@@ -150,7 +146,7 @@ EditGpi::EditGpi(int gpi,int *oncart,QString *ondesc,
   //
   // Off Clear Button
   //
-  button=new QPushButton(this,"select_button");
+  button=new QPushButton(this);
   button->setGeometry(270,110,60,20);
   button->setFont(font);
   button->setText(tr("C&lear"));
@@ -159,11 +155,11 @@ EditGpi::EditGpi(int gpi,int *oncart,QString *ondesc,
   //
   // Off Cart Description
   //
-  edit_offdescription_edit=new QLineEdit(this,"edit_offdescription_edit");
+  edit_offdescription_edit=new QLineEdit(this);
   edit_offdescription_edit->setGeometry(120,132,sizeHint().width()-140,20);
   edit_offdescription_edit->setFont(font);
   edit_offdescription_edit->setReadOnly(true);
-  label=new QLabel(tr("Description: "),this,"edit_offdescription_label");
+  label=new QLabel(tr("Description: "),this);
   label->setGeometry(15,132,100,20);
   label->setFont(bold_font);
   label->setAlignment(AlignRight|AlignVCenter);
@@ -171,7 +167,7 @@ EditGpi::EditGpi(int gpi,int *oncart,QString *ondesc,
   //
   //  Ok Button
   //
-  button=new QPushButton(this,"ok_button");
+  button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
   button->setDefault(true);
   button->setFont(bold_font);
@@ -181,7 +177,7 @@ EditGpi::EditGpi(int gpi,int *oncart,QString *ondesc,
   //
   //  Cancel Button
   //
-  button=new QPushButton(this,"cancel_button");
+  button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,
 			     80,50);
   button->setFont(bold_font);

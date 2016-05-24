@@ -2,9 +2,7 @@
 //
 // A Rivendell multicast GPIO driver for LiveWire networks.
 //
-//   (C) Copyright 2013 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: livewire_mcastgpio.cpp,v 1.1.2.1 2013/11/17 03:40:27 cvs Exp $
+//   (C) Copyright 2013,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -34,8 +32,8 @@
 #include <globals.h>
 #include <livewire_mcastgpio.h>
 
-LiveWireMcastGpio::LiveWireMcastGpio(RDMatrix *matrix,QObject *parent,const char *name)
-  : Switcher(matrix,parent,name)
+LiveWireMcastGpio::LiveWireMcastGpio(RDMatrix *matrix,QObject *parent)
+  : Switcher(matrix,parent)
 {
   livewire_gpio_notify=NULL;
 

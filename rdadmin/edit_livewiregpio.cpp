@@ -2,9 +2,7 @@
 //
 // Edit a Rivendell Livewire GPIO Slot Association
 //
-//   (C) Copyright 2013 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: edit_livewiregpio.cpp,v 1.1.2.3 2013/03/06 13:28:59 cvs Exp $
+//   (C) Copyright 2013,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -29,8 +27,8 @@
 #include <edit_livewiregpio.h>
 
 EditLiveWireGpio::EditLiveWireGpio(int slot,int *source,QHostAddress *addr,
-				   QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+				   QWidget *parent)
+  : QDialog(parent,"",true)
 {
   edit_slot=slot;
   edit_source=source;
@@ -87,7 +85,7 @@ EditLiveWireGpio::EditLiveWireGpio(int slot,int *source,QHostAddress *addr,
   //
   //  Ok Button
   //
-  QPushButton *button=new QPushButton(this,"ok_button");
+  QPushButton *button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
   button->setDefault(true);
   button->setFont(bold_font);
@@ -97,7 +95,7 @@ EditLiveWireGpio::EditLiveWireGpio(int slot,int *source,QHostAddress *addr,
   //
   //  Cancel Button
   //
-  button=new QPushButton(this,"cancel_button");
+  button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,
 			     80,50);
   button->setFont(bold_font);

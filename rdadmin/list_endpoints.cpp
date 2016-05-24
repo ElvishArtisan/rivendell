@@ -2,9 +2,7 @@
 //
 // List a Rivendell Endpoints
 //
-//   (C) Copyright 2002-2003 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: list_endpoints.cpp,v 1.18.8.1 2013/11/17 04:27:05 cvs Exp $
+//   (C) Copyright 2002-2003,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -33,10 +31,9 @@
 #include <list_endpoints.h>
 #include <edit_endpoint.h>
 
-
 ListEndpoints::ListEndpoints(RDMatrix *matrix,RDMatrix::Endpoint endpoint,
-			     QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+			     QWidget *parent)
+  : QDialog(parent,"",true)
 {
   QString sql;
   RDSqlQuery *q;
@@ -78,11 +75,11 @@ ListEndpoints::ListEndpoints(RDMatrix *matrix,RDMatrix::Endpoint endpoint,
   //
   // Endpoints List Box
   //
-  list_list_view=new QListView(this,"list_box");
+  list_list_view=new QListView(this);
   list_list_view->
     setGeometry(10,24,sizeHint().width()-20,sizeHint().height()-94);
   QLabel *label=
-    new QLabel(list_list_view,list_table,this,"list_list_view_label");
+    new QLabel(list_list_view,list_table,this);
   label->setFont(bold_font);
   label->setGeometry(14,5,85,19);
   list_list_view->setAllColumnsShowFocus(true);
@@ -156,7 +153,7 @@ ListEndpoints::ListEndpoints(RDMatrix *matrix,RDMatrix::Endpoint endpoint,
   //
   //  Edit Button
   //
-  QPushButton *button=new QPushButton(this,"edit_button");
+  QPushButton *button=new QPushButton(this);
   button->setGeometry(10,sizeHint().height()-60,80,50);
   button->setFont(bold_font);
   button->setText(tr("&Edit"));
@@ -166,7 +163,7 @@ ListEndpoints::ListEndpoints(RDMatrix *matrix,RDMatrix::Endpoint endpoint,
   //
   //  Ok Button
   //
-  button=new QPushButton(this,"ok_button");
+  button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
   button->setDefault(true);
   button->setFont(bold_font);
@@ -176,7 +173,7 @@ ListEndpoints::ListEndpoints(RDMatrix *matrix,RDMatrix::Endpoint endpoint,
   //
   //  Cancel Button
   //
-  button=new QPushButton(this,"cancel_button");
+  button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,
 			     80,50);
   button->setFont(bold_font);

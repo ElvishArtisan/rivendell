@@ -2,9 +2,7 @@
 //
 // List and Generate RDLibrary Reports
 //
-//   (C) Copyright 2002-2006 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: list_reports.h,v 1.6.4.1 2013/09/12 23:26:10 cvs Exp $
+//   (C) Copyright 2002-2006,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -37,8 +35,7 @@ class ListReports : public QDialog
  Q_OBJECT
  public:
  ListReports(const QString &filter,const QString &type_filter,
-	     const QString &group,const QString &schedcode,
-	     QWidget *parent=0,const char *name=0);
+	     const QString &group,const QString &schedcode,QWidget *parent=0);
  ~ListReports();
  QSize sizeHint() const;
  QSizePolicy sizePolicy() const;

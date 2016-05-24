@@ -34,8 +34,8 @@ RDSoundPanel::RDSoundPanel(int cols,int rows,int station_panels,
 			   const QString &label_template,bool extended,
 			   RDEventPlayer *player,RDRipc *ripc,RDCae *cae,
 			   RDStation *station,RDCartDialog *cart_dialog,
-			   QWidget *parent,const char *name)
-  : QWidget(parent,name)
+			   QWidget *parent)
+  : QWidget(parent)
 {
   panel_playmode_box=NULL;
   panel_button_columns=cols;
@@ -91,7 +91,7 @@ RDSoundPanel::RDSoundPanel(int cols,int rows,int station_panels,
   //
   // Load Buttons
   //
-  panel_mapper=new QSignalMapper(this,"panel_mapper");
+  panel_mapper=new QSignalMapper(this);
   connect(panel_mapper,SIGNAL(mapped(int)),this,SLOT(buttonMapperData(int)));
 
   LoadPanels();
@@ -99,7 +99,7 @@ RDSoundPanel::RDSoundPanel(int cols,int rows,int station_panels,
   //
   // Panel Selector
   //
-  panel_selector_box=new RDComboBox(this,"panel_selector_box");
+  panel_selector_box=new RDComboBox(this);
   panel_selector_box->setFont(button_font);
   panel_selector_box->addIgnoredKey(Qt::Key_Space);
   panel_selector_box->
@@ -130,7 +130,7 @@ RDSoundPanel::RDSoundPanel(int cols,int rows,int station_panels,
   //
   // Play Mode Box
   //
-  panel_playmode_box=new QComboBox(this,"panel_playmode_box");
+  panel_playmode_box=new QComboBox(this);
   panel_playmode_box->setFont(button_font);
   panel_playmode_box->
     setGeometry((15+PANEL_BUTTON_SIZE_X)*(panel_button_columns-3)-5,
@@ -144,7 +144,7 @@ RDSoundPanel::RDSoundPanel(int cols,int rows,int station_panels,
   //
   // Reset Button
   //
-  panel_reset_button=new RDPushButton(this,"reset_button");
+  panel_reset_button=new RDPushButton(this);
   panel_reset_button->
     setGeometry((15+PANEL_BUTTON_SIZE_X)*(panel_button_columns-2),
 		(15+PANEL_BUTTON_SIZE_Y)*panel_button_rows,
@@ -158,7 +158,7 @@ RDSoundPanel::RDSoundPanel(int cols,int rows,int station_panels,
   //
   // All Button
   //
-  panel_all_button=new RDPushButton(this,"all_button");
+  panel_all_button=new RDPushButton(this);
   panel_all_button->
     setGeometry((15+PANEL_BUTTON_SIZE_X)*(panel_button_columns-1),
 		(15+PANEL_BUTTON_SIZE_Y)*panel_button_rows,
@@ -173,7 +173,7 @@ RDSoundPanel::RDSoundPanel(int cols,int rows,int station_panels,
   //
   // Setup Button
   //
-  panel_setup_button=new RDPushButton(this,"setup_button");
+  panel_setup_button=new RDPushButton(this);
   panel_setup_button->
     setGeometry((15+PANEL_BUTTON_SIZE_X)*(panel_button_columns-1),
 		(15+PANEL_BUTTON_SIZE_Y)*panel_button_rows,
@@ -189,8 +189,7 @@ RDSoundPanel::RDSoundPanel(int cols,int rows,int station_panels,
   //
   panel_button_dialog=
     new RDButtonDialog(panel_station->name(),panel_label_template,
-		       panel_cart_dialog,panel_svcname,this,
-		       "panel_button_dialog");
+		       panel_cart_dialog,panel_svcname,this);
 
   //
   // CAE Setup

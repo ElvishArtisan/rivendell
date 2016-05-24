@@ -2,9 +2,7 @@
 //
 // The sound panel widget for RDAirPlay
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdsound_panel.h,v 1.32.6.8 2014/02/20 17:29:32 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -58,8 +56,7 @@ class RDSoundPanel : public QWidget
   RDSoundPanel(int cols,int rows,int station_panels,int user_panels,bool flash,
 	       const QString &label_template,bool extended,
 	       RDEventPlayer *player,RDRipc *ripc,RDCae *cae,
-	       RDStation *station,RDCartDialog *cart_dialog,
-	       QWidget *parent=0,const char *name=0);
+	       RDStation *station,RDCartDialog *cart_dialog,QWidget *parent=0);
   ~RDSoundPanel();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;

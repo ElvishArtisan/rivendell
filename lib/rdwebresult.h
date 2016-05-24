@@ -2,9 +2,7 @@
 //
 // Container class for Rivendel Web Service result messages.
 //
-//   (C) Copyright 2011 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdwebresult.h,v 1.1 2011/12/23 23:07:00 cvs Exp $
+//   (C) Copyright 2011,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as

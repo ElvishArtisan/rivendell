@@ -2,9 +2,7 @@
 //
 // Edit a Rivendell Matrix
 //
-//   (C) Copyright 2002-2012 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: edit_matrix.cpp,v 1.36.6.5.2.1 2014/06/24 18:27:05 cvs Exp $
+//   (C) Copyright 2002-2012,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -44,8 +42,8 @@
 #include "list_vguest_resources.h"
 #include "list_sas_resources.h"
 
-EditMatrix::EditMatrix(RDMatrix *matrix,QWidget *parent,const char *name)
-  : QDialog(parent,name)
+EditMatrix::EditMatrix(RDMatrix *matrix,QWidget *parent)
+  : QDialog(parent)
 {
   QString str;
 

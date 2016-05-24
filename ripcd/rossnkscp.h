@@ -2,7 +2,7 @@
 //
 // A Rivendell switcher driver for the Ross NK switchers via the SCP/A
 //
-//   (C) Copyright 2015 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2015-2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -35,7 +35,7 @@ class RossNkScp : public Switcher
 {
  Q_OBJECT
  public:
- RossNkScp(RDMatrix *matrix,QObject *parent=0,const char *name=0);
+ RossNkScp(RDMatrix *matrix,QObject *parent=0);
   ~RossNkScp();
   RDMatrix::Type type();
   unsigned gpiQuantity();

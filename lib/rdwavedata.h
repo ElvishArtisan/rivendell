@@ -2,9 +2,7 @@
 //
 //   A Container Class for Audio Meta Data.
 //
-//   (C) Copyright 2002-2006 Fred Gleason <fredg@paravelsystems.com>
-//
-//    $Id: rdwavedata.h,v 1.5.8.3.2.2 2014/07/15 20:02:23 cvs Exp $
+//   (C) Copyright 2002-2006,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -18,7 +16,6 @@
 //   You should have received a copy of the GNU General Public
 //   License along with this program; if not, write to the Free Software
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-//
 //
 
 #ifndef RDWAVEDATA_H

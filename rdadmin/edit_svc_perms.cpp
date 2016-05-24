@@ -2,9 +2,7 @@
 //
 // Edit Rivendell Service Permissions
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: edit_svc_perms.cpp,v 1.9 2010/07/29 19:32:34 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -37,9 +35,8 @@
 #include <rduser.h>
 #include <rdpasswd.h>
 
-
-EditSvcPerms::EditSvcPerms(RDSvc *svc,QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+EditSvcPerms::EditSvcPerms(RDSvc *svc,QWidget *parent)
+  : QDialog(parent,"",true)
 {
   QString sql;
   RDSqlQuery *q;
@@ -65,7 +62,7 @@ EditSvcPerms::EditSvcPerms(RDSvc *svc,QWidget *parent,const char *name)
   //
   // Services Selector
   //
-  svc_host_sel=new RDListSelector(this,"svc_host_sel");
+  svc_host_sel=new RDListSelector(this);
   svc_host_sel->sourceSetLabel(tr("Available Hosts"));
   svc_host_sel->destSetLabel(tr("Enabled Hosts"));
   svc_host_sel->setGeometry(10,10,380,130);
@@ -73,7 +70,7 @@ EditSvcPerms::EditSvcPerms(RDSvc *svc,QWidget *parent,const char *name)
   //
   //  Ok Button
   //
-  QPushButton *ok_button=new QPushButton(this,"ok_button");
+  QPushButton *ok_button=new QPushButton(this);
   ok_button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
   ok_button->setDefault(true);
   ok_button->setFont(font);
@@ -83,7 +80,7 @@ EditSvcPerms::EditSvcPerms(RDSvc *svc,QWidget *parent,const char *name)
   //
   //  Cancel Button
   //
-  QPushButton *cancel_button=new QPushButton(this,"cancel_button");
+  QPushButton *cancel_button=new QPushButton(this);
   cancel_button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,
 			     80,50);
   cancel_button->setFont(font);

@@ -2,9 +2,7 @@
 //
 //   Sound card subsystem for the HPI Library.
 //
-//   (C) Copyright 2002-2007 Fred Gleason <fredg@paravelsystems.com>
-//
-//    $Id: rdhpisoundcard.h,v 1.5.6.3 2012/08/07 15:48:04 cvs Exp $
+//   (C) Copyright 2002-2007,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,7 +16,6 @@
 //   You should have received a copy of the GNU General Public
 //   License along with this program; if not, write to the Free Software
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-//
 //
 
 #ifndef RDHPISOUNDCARD_H
@@ -88,7 +85,7 @@ class RDHPISoundCard : public QObject
   enum TunerBand {Fm=0,FmStereo=1,Am=2,Tv=3};
   
   enum Subcarrier {Mpx=0,Rds=1};
-  RDHPISoundCard(QObject *parent=0,const char *name=0);
+  RDHPISoundCard(QObject *parent=0);
   ~RDHPISoundCard();
   Driver driver() const;
   RDHPIInformation *hpiInformation(int card);

@@ -2,7 +2,7 @@
 //
 // Test the Rivendell file format converter.
 //
-//   (C) Copyright 2010-2015 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2010-2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -41,7 +41,7 @@ RDConfig *rdconfig;
 class MainObject : public QObject
 {
  public:
-  MainObject(QObject *parent=0,const char *name=0);
+  MainObject(QObject *parent=0);
 
  private:
   QString source_filename;

@@ -2,9 +2,7 @@
 //
 //   A QSocket object with connection-ID.
 //
-//   (C) Copyright 2002 Fred Gleason <fredg@paravelsystems.com>
-//
-//    $Id: rdsocket.h,v 1.5 2010/07/29 19:32:34 cvs Exp $
+//   (C) Copyright 2002,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -19,7 +17,6 @@
 //   License along with this program; if not, write to the Free Software
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
-//
 
 #ifndef RDSOCKET_H
 #define RDSOCKET_H
@@ -27,13 +24,11 @@
 #include <qobject.h>
 #include <qsocket.h>
 
-
 class RDSocket : public QSocket
 {
   Q_OBJECT
-
  public:
-  RDSocket(int id,QObject *parent=0,const char *name=0);
+  RDSocket(int id,QObject *parent=0);
 
  signals:
   void hostFoundID(int id);

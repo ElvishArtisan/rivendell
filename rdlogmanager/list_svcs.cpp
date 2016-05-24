@@ -2,9 +2,7 @@
 //
 // List Rivendell Services and Report Ages
 //
-//   (C) Copyright 2002-2005 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: list_svcs.cpp,v 1.10 2010/07/29 19:32:37 cvs Exp $
+//   (C) Copyright 2002-2005,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -30,9 +28,8 @@
 #include <pick_report_dates.h>
 #include <globals.h>
 
-
-ListSvcs::ListSvcs(QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+ListSvcs::ListSvcs(QWidget *parent)
+  : QDialog(parent,"",true)
 {
   setCaption(tr("Rivendell Services"));
 
@@ -53,7 +50,7 @@ ListSvcs::ListSvcs(QWidget *parent,const char *name)
   //
   // Log List
   //
-  list_log_list=new QListView(this,"list_log_list");
+  list_log_list=new QListView(this);
   list_log_list->setAllColumnsShowFocus(true);
   list_log_list->setItemMargin(5);
   list_log_list->addColumn(tr("SERVICE"));
@@ -68,7 +65,7 @@ ListSvcs::ListSvcs(QWidget *parent,const char *name)
   //
   //  Generate Report Button
   //
-  list_generate_button=new QPushButton(this,"list_generate_button");
+  list_generate_button=new QPushButton(this);
   list_generate_button->setFont(bold_font);
   list_generate_button->setText(tr("&Generate\nReports"));
   connect(list_generate_button,SIGNAL(clicked()),this,SLOT(generateData()));
@@ -76,7 +73,7 @@ ListSvcs::ListSvcs(QWidget *parent,const char *name)
   //
   //  Purge Button
   //
-  list_purge_button=new QPushButton(this,"list_purge_button");
+  list_purge_button=new QPushButton(this);
   list_purge_button->setFont(bold_font);
   list_purge_button->setText(tr("&Purge\nData"));
   connect(list_purge_button,SIGNAL(clicked()),this,SLOT(purgeData()));
@@ -84,7 +81,7 @@ ListSvcs::ListSvcs(QWidget *parent,const char *name)
   //
   //  Close Button
   //
-  list_close_button=new QPushButton(this,"close_button");
+  list_close_button=new QPushButton(this);
   list_close_button->setDefault(true);
   list_close_button->setFont(bold_font);
   list_close_button->setText(tr("C&lose"));
@@ -124,7 +121,7 @@ void ListSvcs::purgeData()
   if(item==NULL) {
     return;
   }
-  SvcRecDialog *dialog=new SvcRecDialog(item->text(0),this,"dialog");
+  SvcRecDialog *dialog=new SvcRecDialog(item->text(0),this);
   dialog->exec();
   delete dialog;
   RefreshLine(item);

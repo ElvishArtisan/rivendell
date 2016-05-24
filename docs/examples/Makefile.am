@@ -2,10 +2,7 @@
 ##
 ## docs/examples/automake.am for Rivendell
 ##
-## (C) Copyright 2002-2006 Fred Gleason <fredg@paravelsystems.com>
-##
-##      $Id: Makefile.am,v 1.1.6.1 2013/12/10 21:25:49 cvs Exp $
-##      $Date: 2013/12/10 21:25:49 $
+## (C) Copyright 2002-2006,2016 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as

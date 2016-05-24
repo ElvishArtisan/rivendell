@@ -2,9 +2,7 @@
 //
 // A Qt-based application for importing TM Century GoldDisc CDs
 //
-//   (C) Copyright 2013 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rddiscimport.cpp,v 1.1.2.10 2014/01/21 21:59:33 cvs Exp $
+//   (C) Copyright 2013,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -50,8 +48,8 @@
 
 #include <rddiscimport.h>
 
-MainWidget::MainWidget(QWidget *parent,const char *name)
-  : QWidget(parent,name)
+MainWidget::MainWidget(QWidget *parent)
+  : QWidget(parent)
 {
   dg_user=NULL;
   dg_group=NULL;
@@ -292,7 +290,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // Eject Button
   //
-  dg_eject_button=new RDTransportButton(RDTransportButton::Eject,this,"");
+  dg_eject_button=new RDTransportButton(RDTransportButton::Eject,this);
   connect(dg_eject_button,SIGNAL(clicked()),dg_player,SLOT(eject()));
 
   //
@@ -753,7 +751,7 @@ int main(int argc,char *argv[])
   //
   // Start Event Loop
   //
-  MainWidget *w=new MainWidget(NULL,"main");
+  MainWidget *w=new MainWidget();
   a.setMainWidget(w);
   w->setGeometry(QRect(QPoint(0,0),w->sizeHint()));
   w->show();

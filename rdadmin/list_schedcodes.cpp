@@ -4,8 +4,6 @@
 //
 //   Stefan Gabriel <stg@st-gabriel.de>
 //
-//   
-//
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
 //   published by the Free Software Foundation.
@@ -19,7 +17,6 @@
 //   License along with this program; if not, write to the Free Software
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
-
 
 #include <qdialog.h>
 #include <qstring.h>
@@ -40,8 +37,8 @@
 #include <add_schedcodes.h>
 #include <list_schedcodes.h>
 
-ListSchedCodes::ListSchedCodes(QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+ListSchedCodes::ListSchedCodes(QWidget *parent)
+  : QDialog(parent,"",true)
 {
   //
   // Fix the Window Size

@@ -2,9 +2,7 @@
 //
 // A Rivendell switcher driver for the BroadcastTools 8x2
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: bt8x2.h,v 1.9 2010/08/03 23:39:25 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -37,7 +35,7 @@ class Bt8x2 : public Switcher
 {
  Q_OBJECT
  public:
- Bt8x2(RDMatrix *matrix,QObject *parent=0,const char *name=0);
+ Bt8x2(RDMatrix *matrix,QObject *parent=0);
   ~Bt8x2();
   RDMatrix::Type type();
   unsigned gpiQuantity();

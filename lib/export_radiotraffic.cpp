@@ -2,9 +2,7 @@
 //
 // Export a Rivendell Report to RadioTraffic.com
 //
-//   (C) Copyright 2002-2005,2009 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: export_radiotraffic.cpp,v 1.2.8.1 2013/02/08 21:41:44 cvs Exp $
+//   (C) Copyright 2002-2005,2009,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as

@@ -39,7 +39,7 @@ class MainObject : public QObject
 {
   Q_OBJECT;
  public:
-  MainObject(QObject *parent=0,const char *name=0);
+  MainObject(QObject *parent=0);
 
  private slots:
   void userData();

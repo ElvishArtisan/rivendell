@@ -2,9 +2,7 @@
 //
 // Add an Auxiliary Field for an RSS Feed
 //
-//   (C) Copyright 2002-2007 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: add_aux_field.cpp,v 1.4 2010/07/29 19:32:34 cvs Exp $
+//   (C) Copyright 2002-2007,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -25,10 +23,8 @@
 #include <rddb.h>
 #include <add_aux_field.h>
 
-
-AddAuxField::AddAuxField(unsigned feed_id,unsigned *field_id,
-			 QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+AddAuxField::AddAuxField(unsigned feed_id,unsigned *field_id,QWidget *parent)
+  : QDialog(parent,"",true)
 {
   add_feed_id=feed_id;
   add_field_id=field_id;
@@ -54,12 +50,11 @@ AddAuxField::AddAuxField(unsigned feed_id,unsigned *field_id,
   //
   // Variable Name
   //
-  add_varname_edit=new QLineEdit(this,"add_varname_edit");
+  add_varname_edit=new QLineEdit(this);
   add_varname_edit->setGeometry(165,10,130,20);
   add_varname_edit->setMaxLength(11);
   QLabel *label=
-    new QLabel(add_varname_edit,tr("Variable Name: "),
-	       this,"add_varname_label");
+    new QLabel(add_varname_edit,tr("Variable Name: "),this);
   label->setGeometry(10,13,105,20);
   label->setFont(bold_font);
   label->setAlignment(AlignRight);
@@ -76,11 +71,10 @@ AddAuxField::AddAuxField(unsigned feed_id,unsigned *field_id,
   //
   // Caption
   //
-  add_caption_edit=new QLineEdit(this,"add_caption_edit");
+  add_caption_edit=new QLineEdit(this);
   add_caption_edit->setGeometry(120,37,sizeHint().width()-130,20);
   add_caption_edit->setMaxLength(64);
-  label=new QLabel(add_caption_edit,tr("Caption: "),
-		   this,"add_caption_label");
+  label=new QLabel(add_caption_edit,tr("Caption: "),this);
   label->setGeometry(10,37,105,20);
   label->setFont(bold_font);
   label->setAlignment(AlignRight);
@@ -88,7 +82,7 @@ AddAuxField::AddAuxField(unsigned feed_id,unsigned *field_id,
   //
   //  Ok Button
   //
-  QPushButton *button=new QPushButton(this,"ok_button");
+  QPushButton *button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
   button->setDefault(true);
   button->setFont(bold_font);
@@ -98,7 +92,7 @@ AddAuxField::AddAuxField(unsigned feed_id,unsigned *field_id,
   //
   //  Cancel Button
   //
-  button=new QPushButton(this,"cancel_button");
+  button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,
 			     80,50);
   button->setFont(bold_font);

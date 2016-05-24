@@ -2,9 +2,7 @@
 //
 //   A Container Class for RTimeEngine events.
 //
-//   (C) Copyright 2003-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//    $Id: rdtimeevent.h,v 1.4 2010/07/29 19:32:34 cvs Exp $
+//   (C) Copyright 2003-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -18,7 +16,6 @@
 //   You should have received a copy of the GNU General Public
 //   License along with this program; if not, write to the Free Software
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-//
 //
 
 #ifndef RDTIMEEVENT_H
@@ -47,4 +44,4 @@ class RDTimeEvent
 };
 
 
-#endif  // RDTIMEEVENTy_H
+#endif  // RDTIMEEVENT_H

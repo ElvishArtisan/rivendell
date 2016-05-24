@@ -4,8 +4,6 @@
 //
 //   (C) Copyright 2012 Fred Gleason <fredg@paravelsystems.com>
 //
-//      $Id: nexgen_filter.cpp,v 1.1.2.8 2013/06/20 20:24:45 cvs Exp $
-//
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
 //   published by the Free Software Foundation.
@@ -55,8 +53,8 @@
 RDConfig *rdconfig;
 
 
-MainObject::MainObject(QObject *parent,const char *name)
-  : QObject(parent,name)
+MainObject::MainObject(QObject *parent)
+  : QObject(parent)
 {
   QString group_name;
   QString audio_dir;
@@ -708,6 +706,6 @@ void MainObject::Print(const QString &msg) const
 int main(int argc,char *argv[])
 {
   QApplication a(argc,argv,false);
-  new MainObject(NULL,"main");
+  new MainObject(NULL);
   return a.exec();
 }

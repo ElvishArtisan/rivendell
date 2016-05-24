@@ -2,9 +2,7 @@
 //
 // A Batch Deleter for Rivendell.
 //
-//   (C) Copyright 2013 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rddelete.h,v 1.1.2.1 2013/04/29 22:03:23 cvs Exp $
+//   (C) Copyright 2013,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -19,7 +17,6 @@
 //   License along with this program; if not, write to the Free Software
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
-
 
 #ifndef RDDELETE_H
 #define RDDELETE_H
@@ -50,7 +47,7 @@ class MainObject : public QObject
 {
   Q_OBJECT;
  public:
-  MainObject(QObject *parent=0,const char *name=0);
+  MainObject(QObject *parent=0);
 
  private slots:
   void userData();

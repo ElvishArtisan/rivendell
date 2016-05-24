@@ -2,9 +2,7 @@
 //
 //   An event timer engine.
 //
-//   (C) Copyright 2002 Fred Gleason <fredg@paravelsystems.com>
-//
-//    $Id: rdtimeengine.h,v 1.4 2010/07/29 19:32:34 cvs Exp $
+//   (C) Copyright 2002,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -19,11 +17,9 @@
 //   License along with this program; if not, write to the Free Software
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
-//
 
 #ifndef RDTIMEENGINE_H
 #define RDTIMEENGINE_H
-
 
 #include <vector>
 
@@ -33,12 +29,11 @@
 
 #include <rdtimeevent.h>
 
-
 class RDTimeEngine : public QObject
 {
   Q_OBJECT
  public:
-  RDTimeEngine(QObject *parent=0,const char *name=0);
+  RDTimeEngine(QObject *parent=0);
   ~RDTimeEngine();
   void clear();
   QTime event(int id) const;

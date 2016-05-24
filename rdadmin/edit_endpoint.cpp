@@ -2,9 +2,7 @@
 //
 // Edit a Rivendell Endpoint
 //
-//   (C) Copyright 2002-2003 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: edit_endpoint.cpp,v 1.10 2010/07/29 19:32:34 cvs Exp $
+//   (C) Copyright 2002-2003,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -26,12 +24,11 @@
 
 #include <edit_endpoint.h>
 
-
 EditEndpoint::EditEndpoint(RDMatrix::Type type,RDMatrix::Endpoint endpoint,
 			   int pointnum,QString *pointname,QString *feedname,
 			   RDMatrix::Mode *mode,int *enginenum,int *devicenum,
-			   QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+			   QWidget *parent)
+  : QDialog(parent,"",true)
 {
   edit_type=type;
   edit_endpoint=endpoint;
@@ -73,16 +70,15 @@ EditEndpoint::EditEndpoint(RDMatrix::Type type,RDMatrix::Endpoint endpoint,
   //
   // Text Validator
   //
-  RDTextValidator *validator=new RDTextValidator(this,"validator");
+  RDTextValidator *validator=new RDTextValidator(this);
 
   //
   // Endpoint Name
   //
-  edit_endpoint_edit=new QLineEdit(this,"edit_endpoint_edit");
+  edit_endpoint_edit=new QLineEdit(this);
   edit_endpoint_edit->setGeometry(75,10,sizeHint().width()-85,20);
   edit_endpoint_edit->setValidator(validator);
-  QLabel *label=
-    new QLabel(edit_endpoint_edit,tr("Name: "),this,"edit_endpoint_label");
+  QLabel *label=new QLabel(edit_endpoint_edit,tr("Name: "),this);
   label->setGeometry(10,13,60,20);
   label->setFont(bold_font);
   label->setAlignment(AlignRight);
@@ -90,10 +86,10 @@ EditEndpoint::EditEndpoint(RDMatrix::Type type,RDMatrix::Endpoint endpoint,
   //
   // Unity Feed
   //
-  edit_feed_edit=new QLineEdit(this,"edit_feed_edit");
+  edit_feed_edit=new QLineEdit(this);
   edit_feed_edit->setGeometry(75,40,40,20);
   edit_feed_edit->setValidator(validator);
-  label=new QLabel(edit_feed_edit,tr("Feed: "),this,"edit_feed_label");
+  label=new QLabel(edit_feed_edit,tr("Feed: "),this);
   label->setGeometry(10,43,60,20);
   label->setFont(bold_font);
   label->setAlignment(AlignRight);
@@ -105,8 +101,8 @@ EditEndpoint::EditEndpoint(RDMatrix::Type type,RDMatrix::Endpoint endpoint,
   //
   // Unity Mode
   //
-  edit_mode_box=new QComboBox(this,"edit_mode_box");
-  label=new QLabel(edit_mode_box,tr("Mode: "),this,"edit_feed_label");
+  edit_mode_box=new QComboBox(this);
+  label=new QLabel(edit_mode_box,tr("Mode: "),this);
   if(edit_type==RDMatrix::StarGuideIII) {
     edit_mode_box->setGeometry(135,88,85,24);
     label->setGeometry(10,93,120,20);
@@ -129,9 +125,9 @@ EditEndpoint::EditEndpoint(RDMatrix::Type type,RDMatrix::Endpoint endpoint,
   //
   // Logitek Engine Number / StarGuide Provider ID
   //
-  edit_enginenum_edit=new QLineEdit(this,"edit_enginenum_edit");
+  edit_enginenum_edit=new QLineEdit(this);
   edit_enginenum_edit->setGeometry(135,36,50,20);
-  label=new QLabel(edit_enginenum_edit,tr("Engine (Hex): "),this,"edit_enginenum_label");
+  label=new QLabel(edit_enginenum_edit,tr("Engine (Hex): "),this);
   if(edit_type==RDMatrix::StarGuideIII) {
     label->setText(tr("Provider ID:"));
   }
@@ -147,9 +143,9 @@ EditEndpoint::EditEndpoint(RDMatrix::Type type,RDMatrix::Endpoint endpoint,
   //
   // Logitek Device Number / StarGuide Service ID
   //
-  edit_devicenum_edit=new QLineEdit(this,"edit_devicenum_edit");
+  edit_devicenum_edit=new QLineEdit(this);
   edit_devicenum_edit->setGeometry(135,62,50,20);
-  label=new QLabel(edit_devicenum_edit,tr("Device (Hex): "),this,"edit_devicenum_label");
+  label=new QLabel(edit_devicenum_edit,tr("Device (Hex): "),this);
   if(edit_type==RDMatrix::StarGuideIII) {
     label->setText(tr("Service ID:"));
   }
@@ -165,7 +161,7 @@ EditEndpoint::EditEndpoint(RDMatrix::Type type,RDMatrix::Endpoint endpoint,
   //
   //  Ok Button
   //
-  QPushButton *button=new QPushButton(this,"ok_button");
+  QPushButton *button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
   button->setDefault(true);
   button->setFont(bold_font);
@@ -175,9 +171,8 @@ EditEndpoint::EditEndpoint(RDMatrix::Type type,RDMatrix::Endpoint endpoint,
   //
   //  Cancel Button
   //
-  button=new QPushButton(this,"cancel_button");
-  button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,
-			     80,50);
+  button=new QPushButton(this);
+  button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,80,50);
   button->setFont(bold_font);
   button->setText(tr("&Cancel"));
   connect(button,SIGNAL(clicked()),this,SLOT(cancelData()));

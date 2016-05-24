@@ -2,9 +2,7 @@
 //
 // Custom ToolTip for RDMonitor's Status Bubble
 //
-//   (C) Copyright 2012 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: status_tip.cpp,v 1.1.2.2 2012/10/22 23:09:39 cvs Exp $
+//   (C) Copyright 2012,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as

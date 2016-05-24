@@ -2,7 +2,7 @@
 //
 //   A class for recording Microsoft WAV files.
 //
-//   (C) Copyright 2002-2015 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -16,7 +16,6 @@
 //   You should have received a copy of the GNU General Public
 //   License along with this program; if not, write to the Free Software
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-//
 //
 
 #include <stdlib.h>
@@ -33,10 +32,8 @@
 
 #include <rdhpirecordstream.h>
 
-
-RDHPIRecordStream::RDHPIRecordStream(RDHPISoundCard *card,
-			     QWidget *parent,const char *name) 
-  :QObject(parent,name),RDWaveFile()
+RDHPIRecordStream::RDHPIRecordStream(RDHPISoundCard *card,QWidget *parent) 
+  :QObject(parent),RDWaveFile()
 { 
   int quan;
   uint16_t type[HPI_MAX_ADAPTERS];

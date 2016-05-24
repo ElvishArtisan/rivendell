@@ -2,9 +2,7 @@
 //
 // A container class for a Rivendell Loadable Module host.
 //
-//   (C) Copyright 2008 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rlmhost.h,v 1.6.6.3 2013/11/05 20:16:41 cvs Exp $
+//   (C) Copyright 2008,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -41,7 +39,7 @@ class RLMHost : public QObject
   Q_OBJECT
  public:
   RLMHost(const QString &path,const QString &arg,QSocketDevice *udp_socket,
-	  QObject *parent=0,const char *name=0);
+	  QObject *parent=0);
   ~RLMHost();
   QString pluginPath() const;
   QString pluginArg() const;

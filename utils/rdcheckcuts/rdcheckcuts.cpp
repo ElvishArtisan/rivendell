@@ -2,9 +2,7 @@
 //
 // Check Rivendell Cuts for Valid Audio
 //
-//   (C) Copyright 2012 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdcheckcuts.cpp,v 1.1.2.3 2013/11/13 23:36:38 cvs Exp $
+//   (C) Copyright 2012,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -33,8 +31,8 @@
 
 #include <rdcheckcuts.h>
 
-MainObject::MainObject(QObject *parent,const char *name)
-  : QObject(parent,name)
+MainObject::MainObject(QObject *parent)
+  : QObject(parent)
 {
   std::vector<QString> group_names;
   std::vector<QString> bad_cuts;
@@ -183,6 +181,6 @@ void MainObject::CloseDb()
 int main(int argc,char *argv[])
 {
   QApplication a(argc,argv,false);
-  new MainObject(NULL,"main");
+  new MainObject();
   return a.exec();
 }

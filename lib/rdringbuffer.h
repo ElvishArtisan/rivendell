@@ -4,9 +4,7 @@
 //
 //   (C) Copyright 2000 Paul Davis
 //   (C) Copyright 2003 Rohan Drape
-//   (C) Copyright 2002 Fred Gleason <fredg@paravelsystems.com>
-//
-//    $Id: rdringbuffer.h,v 1.5 2010/07/29 19:32:33 cvs Exp $
+//   (C) Copyright 2002,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 

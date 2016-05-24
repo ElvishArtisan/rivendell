@@ -2,9 +2,7 @@
 //
 // List SAS Resources
 //
-//   (C) Copyright 2002-2005,2011 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: list_sas_resources.h,v 1.1 2011/05/07 00:32:29 cvs Exp $
+//   (C) Copyright 2002-2005,2011,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -32,13 +30,11 @@
 #include <rduser.h>
 #include <rdmatrix.h>
 
-
 class ListSasResources : public QDialog
 {
  Q_OBJECT
  public:
- ListSasResources(RDMatrix *matrix,int size,
-		      QWidget *parent=0,const char *name=0);
+ ListSasResources(RDMatrix *matrix,int size,QWidget *parent=0);
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
 

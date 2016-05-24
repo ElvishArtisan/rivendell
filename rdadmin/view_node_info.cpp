@@ -2,9 +2,7 @@
 //
 // Edit a Rivendell LiveWire Node
 //
-//   (C) Copyright 2002-2007 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: view_node_info.cpp,v 1.3.8.1 2013/01/30 21:06:04 cvs Exp $
+//   (C) Copyright 2002-2007,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -31,9 +29,8 @@
 
 #include <view_node_info.h>
 
-
-ViewNodeInfo::ViewNodeInfo(QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+ViewNodeInfo::ViewNodeInfo(QWidget *parent)
+  : QDialog(parent,"",true)
 {
   setCaption(tr("Viewing LiveWire Node"));
 
@@ -56,7 +53,7 @@ ViewNodeInfo::ViewNodeInfo(QWidget *parent,const char *name)
   //
   // LiveWire Driver
   //
-  view_livewire=new RDLiveWire(0,this,"view_livewire");
+  view_livewire=new RDLiveWire(0,this);
   connect(view_livewire,SIGNAL(connected(unsigned)),
 	  this,SLOT(connectedData(unsigned)));
   connect(view_livewire,SIGNAL(sourceChanged(unsigned,RDLiveWireSource *)),
@@ -69,11 +66,10 @@ ViewNodeInfo::ViewNodeInfo(QWidget *parent,const char *name)
   //
   // Node Hostname
   //
-  view_hostname_edit=new QLineEdit(this,"view_hostname_edit");
+  view_hostname_edit=new QLineEdit(this);
   view_hostname_edit->setGeometry(90,10,190,20);
   view_hostname_edit->setReadOnly(true);
-  QLabel *label=
-    new QLabel(view_hostname_edit,tr("Hostname:"),this,"view_hostname_label");
+  QLabel *label=new QLabel(view_hostname_edit,tr("Hostname:"),this);
   label->setGeometry(10,10,80,20);
   label->setFont(bold_font);
   label->setAlignment(AlignRight|AlignVCenter);
@@ -81,10 +77,10 @@ ViewNodeInfo::ViewNodeInfo(QWidget *parent,const char *name)
   //
   // Node TCP Port
   //
-  view_tcpport_edit=new QLineEdit(this,"view_tcpport_edit");
+  view_tcpport_edit=new QLineEdit(this);
   view_tcpport_edit->setGeometry(335,10,sizeHint().width()-345,20);
   view_tcpport_edit->setReadOnly(true);
-  label=new QLabel(view_tcpport_edit,tr("Port:"),this,"view_tcpport_label");
+  label=new QLabel(view_tcpport_edit,tr("Port:"),this);
   label->setGeometry(305,10,30,20);
   label->setFont(bold_font);
   label->setAlignment(AlignRight|AlignVCenter);
@@ -92,11 +88,10 @@ ViewNodeInfo::ViewNodeInfo(QWidget *parent,const char *name)
   //
   // System Version
   //
-  view_system_edit=new QLineEdit(this,"view_system_edit");
+  view_system_edit=new QLineEdit(this);
   view_system_edit->setGeometry(135,32,70,20);
   view_system_edit->setReadOnly(true);
-  label=new QLabel(view_system_edit,tr("System Version:"),
-		   this,"view_system_label");
+  label=new QLabel(view_system_edit,tr("System Version:"),this);
   label->setGeometry(10,32,120,20);
   label->setFont(bold_font);
   label->setAlignment(AlignRight|AlignVCenter);
@@ -104,11 +99,10 @@ ViewNodeInfo::ViewNodeInfo(QWidget *parent,const char *name)
   //
   // Protocol Version
   //
-  view_protocol_edit=new QLineEdit(this,"view_protocol_edit");
+  view_protocol_edit=new QLineEdit(this);
   view_protocol_edit->setGeometry(335,32,40,20);
   view_protocol_edit->setReadOnly(true);
-  label=new QLabel(view_protocol_edit,tr("Protocol Version:"),
-		   this,"view_protocol_label");
+  label=new QLabel(view_protocol_edit,tr("Protocol Version:"),this);
   label->setGeometry(210,32,120,20);
   label->setFont(bold_font);
   label->setAlignment(AlignRight|AlignVCenter);
@@ -116,11 +110,10 @@ ViewNodeInfo::ViewNodeInfo(QWidget *parent,const char *name)
   //
   // Sources
   //
-  view_sources_edit=new QLineEdit(this,"view_sources_edit");
+  view_sources_edit=new QLineEdit(this);
   view_sources_edit->setGeometry(75,54,30,20);
   view_sources_edit->setReadOnly(true);
-  label=new QLabel(view_sources_edit,tr("Sources:"),
-		   this,"view_sources_label");
+  label=new QLabel(view_sources_edit,tr("Sources:"),this);
   label->setGeometry(10,54,60,20);
   label->setFont(bold_font);
   label->setAlignment(AlignRight|AlignVCenter);
@@ -128,11 +121,10 @@ ViewNodeInfo::ViewNodeInfo(QWidget *parent,const char *name)
   //
   // Destinations
   //
-  view_destinations_edit=new QLineEdit(this,"view_destinations_edit");
+  view_destinations_edit=new QLineEdit(this);
   view_destinations_edit->setGeometry(225,54,30,20);
   view_destinations_edit->setReadOnly(true);
-  label=new QLabel(view_destinations_edit,tr("Destinations:"),
-		   this,"view_destinations_label");
+  label=new QLabel(view_destinations_edit,tr("Destinations:"),this);
   label->setGeometry(120,54,100,20);
   label->setFont(bold_font);
   label->setAlignment(AlignRight|AlignVCenter);
@@ -140,11 +132,10 @@ ViewNodeInfo::ViewNodeInfo(QWidget *parent,const char *name)
   //
   // Channels
   //
-  view_channels_edit=new QLineEdit(this,"view_channels_edit");
+  view_channels_edit=new QLineEdit(this);
   view_channels_edit->setGeometry(360,54,30,20);
   view_channels_edit->setReadOnly(true);
-  label=new QLabel(view_channels_edit,tr("Channels:"),
-		   this,"view_channels_label");
+  label=new QLabel(view_channels_edit,tr("Channels:"),this);
   label->setGeometry(260,54,95,20);
   label->setFont(bold_font);
   label->setAlignment(AlignRight|AlignVCenter);
@@ -152,11 +143,10 @@ ViewNodeInfo::ViewNodeInfo(QWidget *parent,const char *name)
   //
   // GPIs
   //
-  view_gpis_edit=new QLineEdit(this,"view_gpis_edit");
+  view_gpis_edit=new QLineEdit(this);
   view_gpis_edit->setGeometry(135,76,70,20);
   view_gpis_edit->setReadOnly(true);
-  label=new QLabel(view_gpis_edit,tr("GPIs:"),
-		   this,"view_gpis_label");
+  label=new QLabel(view_gpis_edit,tr("GPIs:"),this);
   label->setGeometry(10,76,120,20);
   label->setFont(bold_font);
   label->setAlignment(AlignRight|AlignVCenter);
@@ -164,11 +154,10 @@ ViewNodeInfo::ViewNodeInfo(QWidget *parent,const char *name)
   //
   // GPOs
   //
-  view_gpos_edit=new QLineEdit(this,"view_gpos_edit");
+  view_gpos_edit=new QLineEdit(this);
   view_gpos_edit->setGeometry(305,76,70,20);
   view_gpos_edit->setReadOnly(true);
-  label=new QLabel(view_gpos_edit,tr("GPOs:"),
-		   this,"view_gpos_label");
+  label=new QLabel(view_gpos_edit,tr("GPOs:"),this);
   label->setGeometry(210,76,90,20);
   label->setFont(bold_font);
   label->setAlignment(AlignRight|AlignVCenter);
@@ -176,14 +165,12 @@ ViewNodeInfo::ViewNodeInfo(QWidget *parent,const char *name)
   //
   // Sources List
   //
-  label=new QLabel(view_gpos_edit,tr("Sources"),
-		   this,"view_sources_label");
+  label=new QLabel(view_gpos_edit,tr("Sources"),this);
   label->setGeometry(15,98,90,20);
   label->setFont(bold_font);
   label->setAlignment(AlignLeft|AlignVCenter);
-  view_sources_view=new RDListView(this,"view_sources_view");
-  view_sources_view->
-    setGeometry(10,118,sizeHint().width()-20,200);
+  view_sources_view=new RDListView(this);
+  view_sources_view->setGeometry(10,118,sizeHint().width()-20,200);
   view_sources_view->setAllColumnsShowFocus(true);
   view_sources_view->setItemMargin(5);
   view_sources_view->addColumn(tr("#"));
@@ -205,12 +192,11 @@ ViewNodeInfo::ViewNodeInfo(QWidget *parent,const char *name)
   //
   // Destinations List
   //
-  label=new QLabel(view_gpos_edit,tr("Destinations"),
-		   this,"view_destinations_label");
+  label=new QLabel(view_gpos_edit,tr("Destinations"),this);
   label->setGeometry(15,325,90,20);
   label->setFont(bold_font);
   label->setAlignment(AlignLeft|AlignVCenter);
-  view_destinations_view=new RDListView(this,"view_destinations_view");
+  view_destinations_view=new RDListView(this);
   view_destinations_view->
     setGeometry(10,345,sizeHint().width()-20,200);
   view_destinations_view->setAllColumnsShowFocus(true);
@@ -232,7 +218,7 @@ ViewNodeInfo::ViewNodeInfo(QWidget *parent,const char *name)
   //
   //  Close Button
   //
-  QPushButton *button=new QPushButton(this,"close_button");
+  QPushButton *button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,80,50);
   button->setDefault(true);
   button->setFont(bold_font);

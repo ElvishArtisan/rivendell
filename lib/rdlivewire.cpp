@@ -2,9 +2,7 @@
 //
 // A LiveWire Node Driver for Rivendell
 //
-//   (C) Copyright 2007 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdlivewire.cpp,v 1.7.8.2 2013/11/17 02:03:19 cvs Exp $
+//   (C) Copyright 2007,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -74,8 +72,8 @@ QStringList AString::split(const QString &sep,const QString &esc) const
 }
 
 
-RDLiveWire::RDLiveWire(unsigned id,QObject *parent,const char *name)
-  : QObject(parent,name)
+RDLiveWire::RDLiveWire(unsigned id,QObject *parent)
+  : QObject(parent)
 {
   live_id=id;
   live_sources=0;

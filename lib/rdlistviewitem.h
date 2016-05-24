@@ -2,9 +2,7 @@
 //
 //   A color-selectable QListViewItem class for Rivendell
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdlistviewitem.h,v 1.10 2010/07/29 19:32:33 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -19,7 +17,6 @@
 //   License along with this program; if not, write to the Free Software
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
-//
 
 #ifndef RDLISTVIEWITEM_H
 #define RDLISTVIEWITEM_H
@@ -30,8 +27,6 @@
 #include <qpixmap.h>
 
 #include <rdlistview.h>
-
-using namespace std;
 
 class RDListViewItem : public QListViewItem
 {
@@ -53,8 +48,8 @@ class RDListViewItem : public QListViewItem
  private:
   int item_line;
   int item_id;
-  vector<QColor> item_text_color;
-  vector<int> item_text_weight;
+  std::vector<QColor> item_text_color;
+  std::vector<int> item_text_weight;
   QColor item_background_color;
   RDListView *list_parent;
 };

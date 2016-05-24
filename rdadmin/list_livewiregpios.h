@@ -2,9 +2,7 @@
 //
 // List Rivendell Livewire GPIO Slot Associations
 //
-//   (C) Copyright 2013 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: list_livewiregpios.h,v 1.1.2.2 2013/03/05 23:59:07 cvs Exp $
+//   (C) Copyright 2013,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -37,8 +35,7 @@ class ListLiveWireGpios : public QDialog
 {
  Q_OBJECT
  public:
-  ListLiveWireGpios(RDMatrix *matrix,int slot_quan,
-		    QWidget *parent=0,const char *name=0);
+  ListLiveWireGpios(RDMatrix *matrix,int slot_quan,QWidget *parent=0);
   ~ListLiveWireGpios();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;

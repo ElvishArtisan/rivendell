@@ -2,9 +2,7 @@
 //
 // A naively simple player for Rivendell Carts.
 //
-//   (C) Copyright 2002-2006 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdsimpleplayer.h,v 1.7 2010/07/29 19:32:34 cvs Exp $
+//   (C) Copyright 2002-2006,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -32,14 +30,12 @@
 #ifndef RDSIMPLEPLAYER_H
 #define RDSIMPLEPLAYER_H
 
-
 class RDSimplePlayer : public QWidget
 {
   Q_OBJECT
  public:
   RDSimplePlayer(RDCae *cae,RDRipc *ripc,int card,int port,
-		 unsigned start_cart,unsigned end_cart,
-		 QWidget *parent=0,const char *name=0);
+		 unsigned start_cart,unsigned end_cart,QWidget *parent=0);
   ~RDSimplePlayer();
   void setCart(unsigned cart);
   RDTransportButton *playButton() const;

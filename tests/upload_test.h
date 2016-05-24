@@ -2,9 +2,7 @@
 //
 // Test Rivendell file uploading
 //
-//   (C) Copyright 2010 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: upload_test.h,v 1.2 2010/07/29 19:32:39 cvs Exp $
+//   (C) Copyright 2010,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -42,7 +40,7 @@ RDConfig *rdconfig;
 class MainObject : public QObject
 {
  public:
-  MainObject(QObject *parent=0,const char *name=0);
+  MainObject(QObject *parent=0);
 
  private:
   QString username;

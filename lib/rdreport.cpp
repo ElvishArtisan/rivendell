@@ -2,9 +2,7 @@
 //
 // Abstract a Rivendell Report Descriptor
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdreport.cpp,v 1.27.4.8.2.4 2014/06/24 18:27:05 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -34,7 +32,7 @@
 #include <rdescape_string.h>
 #include <rddatedecode.h>
 
-RDReport::RDReport(const QString &rptname,QObject *parent,const char *name)
+RDReport::RDReport(const QString &rptname,QObject *parent)
 {
   report_name=rptname;
   report_error_code=RDReport::ErrorOk;

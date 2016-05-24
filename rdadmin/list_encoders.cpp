@@ -2,9 +2,7 @@
 //
 // List a Rivendell Encoders
 //
-//   (C) Copyright 2008 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: list_encoders.cpp,v 1.5 2012/02/13 19:26:14 cvs Exp $
+//   (C) Copyright 2008,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -33,9 +31,8 @@
 #include <edit_encoder.h>
 #include <add_encoder.h>
 
-ListEncoders::ListEncoders(const QString &stationname,
-			   QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+ListEncoders::ListEncoders(const QString &stationname,QWidget *parent)
+  : QDialog(parent,"",true)
 {
   list_stationname=stationname;
   setCaption(tr("RDAdmin - List Encoders"));
@@ -57,9 +54,9 @@ ListEncoders::ListEncoders(const QString &stationname,
   //
   // Encoders List Box
   //
-  list_list_view=new RDListView(this,"list_box");
-  list_list_label=new QLabel(list_list_view,tr("Encoders on")+" "+stationname,
-			     this,"list_list_label");
+  list_list_view=new RDListView(this);
+  list_list_label=
+    new QLabel(list_list_view,tr("Encoders on")+" "+stationname,this);
   list_list_label->setFont(bold_font);
   list_list_view->setAllColumnsShowFocus(true);
   list_list_view->setItemMargin(5);
@@ -80,7 +77,7 @@ ListEncoders::ListEncoders(const QString &stationname,
   //
   //  Add Button
   //
-  list_add_button=new QPushButton(this,"list_add_button");
+  list_add_button=new QPushButton(this);
   list_add_button->setFont(bold_font);
   list_add_button->setText(tr("&Add"));
   connect(list_add_button,SIGNAL(clicked()),this,SLOT(addData()));
@@ -88,7 +85,7 @@ ListEncoders::ListEncoders(const QString &stationname,
   //
   //  Edit Button
   //
-  list_edit_button=new QPushButton(this,"edit_button");
+  list_edit_button=new QPushButton(this);
   list_edit_button->setFont(bold_font);
   list_edit_button->setText(tr("&Edit"));
   connect(list_edit_button,SIGNAL(clicked()),this,SLOT(editData()));
@@ -96,7 +93,7 @@ ListEncoders::ListEncoders(const QString &stationname,
   //
   //  Delete Button
   //
-  list_delete_button=new QPushButton(this,"delete_button");
+  list_delete_button=new QPushButton(this);
   list_delete_button->setFont(bold_font);
   list_delete_button->setText(tr("&Delete"));
   connect(list_delete_button,SIGNAL(clicked()),this,SLOT(deleteData()));
@@ -104,7 +101,7 @@ ListEncoders::ListEncoders(const QString &stationname,
   //
   //  Close Button
   //
-  list_close_button=new QPushButton(this,"close_button");
+  list_close_button=new QPushButton(this);
   list_close_button->setDefault(true);
   list_close_button->setFont(bold_font);
   list_close_button->setText(tr("&Close"));

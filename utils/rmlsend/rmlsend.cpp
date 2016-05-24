@@ -2,9 +2,7 @@
 //
 // A utility for sending RML Commands
 //
-//   (C) Copyright 2002-2005 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rmlsend.cpp,v 1.7.8.4 2014/01/21 21:59:34 cvs Exp $
+//   (C) Copyright 2002-2005,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -72,9 +70,8 @@
 //
 RDCmdSwitch *rdcmdswitch=NULL;
 
-
-MainWidget::MainWidget(QWidget *parent,const char *name)
-  :QMainWindow(parent,name)
+MainWidget::MainWidget(QWidget *parent)
+  :QMainWindow(parent)
 {
   //
   // Set Window Size
@@ -512,7 +509,7 @@ int main(int argc,char *argv[])
   if(cli_mode) {
 #ifndef WIN32
     QApplication a(argc,argv,false);
-    new MainObject(NULL,"main");
+    new MainObject();
     return a.exec();
 #endif  // WIN32
   }
@@ -554,7 +551,7 @@ int main(int argc,char *argv[])
     //
     // Start Event Loop
     //
-    MainWidget *w=new MainWidget(NULL,"main");
+    MainWidget *w=new MainWidget();
     a.setMainWidget(w);
     w->show();
     return a.exec();

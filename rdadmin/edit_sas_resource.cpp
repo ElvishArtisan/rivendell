@@ -2,9 +2,7 @@
 //
 // Edit an SAS Resource Record.
 //
-//   (C) Copyright 2002-2005,2011 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: edit_sas_resource.cpp,v 1.1 2011/05/07 00:32:29 cvs Exp $
+//   (C) Copyright 2002-2005,2011,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -27,8 +25,8 @@
 #include <edit_sas_resource.h>
 
 EditSasResource::EditSasResource(int *enginenum,int *devicenum,int *relaynum,
-				 QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+				 QWidget *parent)
+  : QDialog(parent,"",true)
 {
   edit_enginenum=enginenum;
   edit_devicenum=devicenum;
@@ -54,10 +52,9 @@ EditSasResource::EditSasResource(int *enginenum,int *devicenum,int *relaynum,
   //
   // Console Number
   //
-  edit_enginenum_edit=new QLineEdit(this,"edit_enginenum_edit");
+  edit_enginenum_edit=new QLineEdit(this);
   edit_enginenum_edit->setGeometry(135,10,50,20);
-  QLabel *label=new QLabel(edit_enginenum_edit,tr("Console Number: "),
-			   this,"edit_enginenum_label");
+  QLabel *label=new QLabel(edit_enginenum_edit,tr("Console Number: "),this);
   label->setGeometry(10,10,120,20);
   label->setFont(bold_font);
   label->setAlignment(AlignRight|AlignVCenter);
@@ -65,10 +62,9 @@ EditSasResource::EditSasResource(int *enginenum,int *devicenum,int *relaynum,
   //
   // Source Number
   //
-  edit_devicenum_edit=new QLineEdit(this,"edit_devicenum_edit");
+  edit_devicenum_edit=new QLineEdit(this);
   edit_devicenum_edit->setGeometry(135,36,50,20);
-  label=new QLabel(edit_devicenum_edit,tr("Source Number: "),
-		   this,"edit_devicenum_label");
+  label=new QLabel(edit_devicenum_edit,tr("Source Number: "),this);
   label->setGeometry(10,36,120,20);
   label->setFont(bold_font);
   label->setAlignment(AlignRight|AlignVCenter);
@@ -76,10 +72,10 @@ EditSasResource::EditSasResource(int *enginenum,int *devicenum,int *relaynum,
   //
   // Opto/Relay Number
   //
-  edit_relaynum_edit=new QLineEdit(this,"edit_relaynum_edit");
+  edit_relaynum_edit=new QLineEdit(this);
   edit_relaynum_edit->setGeometry(135,62,50,20);
-  edit_relaynum_label=new QLabel(edit_relaynum_edit,tr("Opto/Relay Number: "),
-		   this,"edit_relaynum_label");
+  edit_relaynum_label=
+    new QLabel(edit_relaynum_edit,tr("Opto/Relay Number: "),this);
   edit_relaynum_label->setGeometry(10,62,120,20);
   edit_relaynum_label->setFont(bold_font);
   edit_relaynum_label->setAlignment(AlignRight|AlignVCenter);
@@ -87,7 +83,7 @@ EditSasResource::EditSasResource(int *enginenum,int *devicenum,int *relaynum,
   //
   //  Ok Button
   //
-  QPushButton *button=new QPushButton(this,"ok_button");
+  QPushButton *button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
   button->setDefault(true);
   button->setFont(bold_font);
@@ -97,7 +93,7 @@ EditSasResource::EditSasResource(int *enginenum,int *devicenum,int *relaynum,
   //
   //  Cancel Button
   //
-  button=new QPushButton(this,"cancel_button");
+  button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,
 			     80,50);
   button->setFont(bold_font);

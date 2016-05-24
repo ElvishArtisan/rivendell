@@ -2,9 +2,7 @@
 //
 //   A class for playing Microsoft WAV files.
 //
-//   (C) Copyright 2002-2007 Fred Gleason <fredg@paravelsystems.com>
-//
-//    $Id: rdhpiplaystream.h,v 1.7.6.1 2012/05/04 14:56:22 cvs Exp $
+//   (C) Copyright 2002-2007,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -47,15 +45,13 @@
 #define TIMESCALE_HIGH_LIMIT 125000
 //#define RPLAYSTREAM_SHOW_SLOTS yes
 
-
 class RDHPIPlayStream : public QObject,public RDWaveFile
 {
   Q_OBJECT
-
  public:
   enum State {Stopped=0,Playing=1,Paused=2};
   enum Error {Ok=0,NoFile=1,NoStream=2,AlreadyOpen=3};
-  RDHPIPlayStream(RDHPISoundCard *card,QWidget *parent=0,const char *name=0);
+  RDHPIPlayStream(RDHPISoundCard *card,QWidget *parent=0);
   ~RDHPIPlayStream();
   QString errorString(RDHPIPlayStream::Error err);
   bool formatSupported(RDWaveFile::Format format);

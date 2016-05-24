@@ -2,9 +2,7 @@
 //
 // Edit an SAS Resource Record.
 //
-//   (C) Copyright 2002-2005,2011 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: edit_sas_resource.h,v 1.1 2011/05/07 00:32:29 cvs Exp $
+//   (C) Copyright 2002-2005,2011,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -33,13 +31,11 @@
 #include <rduser.h>
 #include <rdmatrix.h>
 
-
 class EditSasResource : public QDialog
 {
  Q_OBJECT
  public:
- EditSasResource(int *enginenum,int *devicenum,int *relaynum,
-		 QWidget *parent=0,const char *name=0);
+ EditSasResource(int *enginenum,int *devicenum,int *relaynum,QWidget *parent=0);
  QSize sizeHint() const;
  QSizePolicy sizePolicy() const;
 

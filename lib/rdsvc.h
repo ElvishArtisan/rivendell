@@ -2,9 +2,7 @@
 //
 // Abstract a Rivendell Service
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdsvc.h,v 1.26.8.3.2.1 2014/05/20 22:39:36 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,13 +18,13 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
+#ifndef RDSVC_H
+#define RDSVC_H
+
 #include <vector>
 
 #include <qobject.h>
 #include <qsqldatabase.h>
-
-#ifndef RDSVC_H
-#define RDSVC_H
 
 class RDSvc : public QObject
 {
@@ -37,7 +35,7 @@ class RDSvc : public QObject
   enum ImportField {CartNumber=0,ExtData=3,ExtEventId=4,ExtAnncType=5,
 		    Title=6,StartHours=7,StartMinutes=8,StartSeconds=9,
 		    LengthHours=10,LengthMinutes=11,LengthSeconds=12};
-  RDSvc(QString svcname,QObject *parent=0,const char *name=0);
+  RDSvc(QString svcname,QObject *parent=0);
   QString name() const;
   bool exists() const;
   QString description() const;

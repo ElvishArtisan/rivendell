@@ -2,9 +2,7 @@
 //
 // Decode Rivendell Date Macros
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rddatedecode.cpp,v 1.10.8.4 2012/05/10 23:40:16 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as

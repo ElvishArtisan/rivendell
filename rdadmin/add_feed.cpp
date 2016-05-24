@@ -2,9 +2,7 @@
 //
 // Add a Rivendell Service
 //
-//   (C) Copyright 2002 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: add_feed.cpp,v 1.7 2010/07/29 19:32:34 cvs Exp $
+//   (C) Copyright 2002,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -36,10 +34,8 @@
 #include <edit_feed.h>
 #include <add_feed.h>
 
-
-AddFeed::AddFeed(unsigned *id,QString *keyname,QWidget *parent,
-		 const char *name)
-  : QDialog(parent,name,true)
+AddFeed::AddFeed(unsigned *id,QString *keyname,QWidget *parent)
+  : QDialog(parent,"",true)
 {
   feed_keyname=keyname;
   feed_id=id;
@@ -65,11 +61,10 @@ AddFeed::AddFeed(unsigned *id,QString *keyname,QWidget *parent,
   //
   // Enable Users Checkbox
   //
-  feed_users_box=new QCheckBox(this,"feed_users_box");
+  feed_users_box=new QCheckBox(this);
   feed_users_box->setGeometry(40,40,15,15);
   feed_users_box->setChecked(true);
-  QLabel *label=new QLabel(feed_users_box,tr("Enable Feed for All Users"),
-			   this,"feed_users_label");
+  QLabel *label=new QLabel(feed_users_box,tr("Enable Feed for All Users"),this);
   label->setGeometry(60,38,sizeHint().width()-60,19);
   label->setFont(user_font);
   label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
@@ -82,12 +77,11 @@ AddFeed::AddFeed(unsigned *id,QString *keyname,QWidget *parent,
   //
   // Feed Name
   //
-  feed_keyname_edit=new QLineEdit(this,"feed_keyname_edit");
+  feed_keyname_edit=new QLineEdit(this);
   feed_keyname_edit->setGeometry(145,11,sizeHint().width()-150,19);
   feed_keyname_edit->setMaxLength(8);
   feed_keyname_edit->setValidator(validator);
-  label=new QLabel(feed_keyname_edit,tr("&New Feed Name:"),
-				      this,"feed_name_label");
+  label=new QLabel(feed_keyname_edit,tr("&New Feed Name:"),this);
   label->setGeometry(10,11,130,19);
   label->setFont(font);
   label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
@@ -95,7 +89,7 @@ AddFeed::AddFeed(unsigned *id,QString *keyname,QWidget *parent,
   //
   //  Ok Button
   //
-  QPushButton *ok_button=new QPushButton(this,"ok_button");
+  QPushButton *ok_button=new QPushButton(this);
   ok_button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
   ok_button->setDefault(true);
   ok_button->setFont(font);
@@ -105,7 +99,7 @@ AddFeed::AddFeed(unsigned *id,QString *keyname,QWidget *parent,
   //
   //  Cancel Button
   //
-  QPushButton *cancel_button=new QPushButton(this,"cancel_button");
+  QPushButton *cancel_button=new QPushButton(this);
   cancel_button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,
 			     80,50);
   cancel_button->setFont(font);

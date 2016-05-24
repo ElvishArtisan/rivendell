@@ -2,9 +2,7 @@
 //
 // Validate a string as being valid for a SQL text datatype.
 //
-//   (C) Copyright 2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdtextvalidator.h,v 1.9 2010/07/29 19:32:34 cvs Exp $
+//   (C) Copyright 2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -27,8 +25,6 @@
 
 #include <qvalidator.h>
 
-using namespace std;
-
 class RDTextValidator : public QValidator
 {
  public:
@@ -38,7 +34,7 @@ class RDTextValidator : public QValidator
   static QString stripString(QString str);
 
  private:
-  vector<char> banned_chars;
+  std::vector<char> banned_chars;
 };
 
 

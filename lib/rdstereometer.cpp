@@ -3,9 +3,7 @@
 // This implements a widget that represents a stereo audio level meter,
 // complete with labels and scale.
 //
-// (C) Copyright 2002-2003 Fred Gleason <fredg@paravelsystems.com>
-//
-//    $Id: rdstereometer.cpp,v 1.4 2010/07/29 19:32:34 cvs Exp $
+// (C) Copyright 2002-2003,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -38,8 +36,8 @@
 #include <rdsegmeter.h>
 #include <rdstereometer.h>
 
-RDStereoMeter::RDStereoMeter(QWidget *parent,const char *name)
-  : QWidget(parent,name)
+RDStereoMeter::RDStereoMeter(QWidget *parent)
+  : QWidget(parent)
 {
   ref_level=0;
   clip_light_level=1600;
@@ -47,7 +45,7 @@ RDStereoMeter::RDStereoMeter(QWidget *parent,const char *name)
   label_x=0;
   meter_label=QString("");
   setBackgroundColor(black);
-  left_meter=new RDSegMeter(RDSegMeter::Right,this,"left_meter");
+  left_meter=new RDSegMeter(RDSegMeter::Right,this);
   left_meter->setGeometry(25,10,300,10);
   left_meter->setRange(-4600,-800);
   left_meter->setHighThreshold(-1600);
@@ -56,7 +54,7 @@ RDStereoMeter::RDStereoMeter(QWidget *parent,const char *name)
   left_meter->setSegmentGap(1);
   left_meter->setSolidBar(-10000);
   left_meter->setFloatingBar(-10000);
-  right_meter=new RDSegMeter(RDSegMeter::Right,this,"right_meter");
+  right_meter=new RDSegMeter(RDSegMeter::Right,this);
   right_meter->setGeometry(25,40,300,10);
   right_meter->setRange(-4600,-800);
   right_meter->setHighThreshold(-1600);

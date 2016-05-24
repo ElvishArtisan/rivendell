@@ -2,9 +2,7 @@
 //
 // System Monitor for Rivendell
 //
-//   (C) Copyright 2012 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdmonitor.cpp,v 1.1.2.13 2014/02/10 20:54:14 cvs Exp $
+//   (C) Copyright 2012,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -67,9 +65,8 @@ void SigHandler(int signo)
   }
 }
 
-
-MainWidget::MainWidget(QWidget *parent,const char *name)
-  :QWidget(parent,name,Qt::WStyle_Customize|Qt::WStyle_NoBorder|Qt::WStyle_StaysOnTop|WX11BypassWM)
+MainWidget::MainWidget(QWidget *parent)
+  :QWidget(parent,"",Qt::WStyle_Customize|Qt::WStyle_NoBorder|Qt::WStyle_StaysOnTop|WX11BypassWM)
 {
   QString str;
   mon_dialog_x=0;
@@ -403,7 +400,7 @@ int main(int argc,char *argv[])
   //
   // Start Event Loop
   //
-  MainWidget *w=new MainWidget(NULL,"main");
+  MainWidget *w=new MainWidget();
   a.setMainWidget(w);
   w->show();
   return a.exec();

@@ -2,9 +2,7 @@
 //
 // List vGuest Resources.
 //
-//   (C) Copyright 2002-2005 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: list_vguest_resources.cpp,v 1.7 2010/07/29 19:32:35 cvs Exp $
+//   (C) Copyright 2002-2005,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -32,11 +30,10 @@
 #include <list_vguest_resources.h>
 #include <edit_vguest_resource.h>
 
-
 ListVguestResources::ListVguestResources(RDMatrix *matrix,
 					 RDMatrix::VguestType type,int size,
-					 QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+					 QWidget *parent)
+  : QDialog(parent,"",true)
 {
   QString sql;
   QString str;
@@ -64,11 +61,10 @@ ListVguestResources::ListVguestResources(RDMatrix *matrix,
   //
   // Resources List Box
   //
-  list_list_view=new QListView(this,"list_box");
+  list_list_view=new QListView(this);
   list_list_view->
     setGeometry(10,24,sizeHint().width()-20,sizeHint().height()-94);
-  QLabel *label=
-    new QLabel(list_list_view,list_table,this,"list_list_view_label");
+  QLabel *label=new QLabel(list_list_view,list_table,this);
   label->setFont(bold_font);
   label->setGeometry(14,5,85,19);
   list_list_view->setAllColumnsShowFocus(true);
@@ -111,7 +107,7 @@ ListVguestResources::ListVguestResources(RDMatrix *matrix,
   //
   //  Edit Button
   //
-  QPushButton *button=new QPushButton(this,"edit_button");
+  QPushButton *button=new QPushButton(this);
   button->setGeometry(10,sizeHint().height()-60,80,50);
   button->setFont(bold_font);
   button->setText(tr("&Edit"));
@@ -120,7 +116,7 @@ ListVguestResources::ListVguestResources(RDMatrix *matrix,
   //
   //  Ok Button
   //
-  button=new QPushButton(this,"ok_button");
+  button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
   button->setDefault(true);
   button->setFont(bold_font);
@@ -130,7 +126,7 @@ ListVguestResources::ListVguestResources(RDMatrix *matrix,
   //
   //  Cancel Button
   //
-  button=new QPushButton(this,"cancel_button");
+  button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,
 			     80,50);
   button->setFont(bold_font);
@@ -186,10 +182,9 @@ void ListVguestResources::editData()
       case RDMatrix::VguestTypeDisplay:
 	break;
   }
-  EditVguestResource *dialog=new EditVguestResource(list_type,&engine_num,
-						    &device_num,&surface_num,
-						    &relay_num,
-						    this,"dialog");
+  EditVguestResource *dialog=
+    new EditVguestResource(list_type,&engine_num,&device_num,&surface_num,
+			   &relay_num,this);
   if(dialog->exec()==0) {
     if(engine_num>=0) {
       item->setText(1,QString().sprintf("%04X",engine_num));

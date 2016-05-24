@@ -2,9 +2,7 @@
 //
 // List Rivendell LiveWire Nodes
 //
-//   (C) Copyright 2002-2003 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: list_nodes.cpp,v 1.3 2010/07/29 19:32:35 cvs Exp $
+//   (C) Copyright 2002-2003,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -34,9 +32,8 @@
 #include <list_nodes.h>
 #include <edit_endpoint.h>
 
-
-ListNodes::ListNodes(RDMatrix *matrix,QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+ListNodes::ListNodes(RDMatrix *matrix,QWidget *parent)
+  : QDialog(parent,"",true)
 {
   list_matrix=matrix;
   setCaption(tr("LiveWire Node List"));
@@ -60,7 +57,7 @@ ListNodes::ListNodes(RDMatrix *matrix,QWidget *parent,const char *name)
   //
   // Nodes List Box
   //
-  list_list_view=new RDListView(this,"list_box");
+  list_list_view=new RDListView(this);
   list_list_view->
     setGeometry(10,10,sizeHint().width()-20,sizeHint().height()-80);
   list_list_view->setAllColumnsShowFocus(true);
@@ -81,7 +78,7 @@ ListNodes::ListNodes(RDMatrix *matrix,QWidget *parent,const char *name)
   //
   //  Add Button
   //
-  QPushButton *button=new QPushButton(this,"add_button");
+  QPushButton *button=new QPushButton(this);
   button->setGeometry(10,sizeHint().height()-60,80,50);
   button->setFont(bold_font);
   button->setText(tr("&Add"));
@@ -90,7 +87,7 @@ ListNodes::ListNodes(RDMatrix *matrix,QWidget *parent,const char *name)
   //
   //  Edit Button
   //
-  button=new QPushButton(this,"edit_button");
+  button=new QPushButton(this);
   button->setGeometry(100,sizeHint().height()-60,80,50);
   button->setFont(bold_font);
   button->setText(tr("&Edit"));
@@ -99,7 +96,7 @@ ListNodes::ListNodes(RDMatrix *matrix,QWidget *parent,const char *name)
   //
   //  Delete Button
   //
-  button=new QPushButton(this,"delete_button");
+  button=new QPushButton(this);
   button->setGeometry(190,sizeHint().height()-60,80,50);
   button->setFont(bold_font);
   button->setText(tr("&Delete"));
@@ -108,7 +105,7 @@ ListNodes::ListNodes(RDMatrix *matrix,QWidget *parent,const char *name)
   //
   //  Close Button
   //
-  button=new QPushButton(this,"close_button");
+  button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,80,50);
   button->setDefault(true);
   button->setFont(bold_font);

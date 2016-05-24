@@ -2,9 +2,7 @@
 //
 // Utility for examining chunk data in WAV files.
 //
-//   (C) Copyright 2002-2004,2008 Fred Gleason <fredg@paravelsystems.com>
-//
-//    $Id: rdchunk.h,v 1.3.8.1 2013/12/05 17:37:48 cvs Exp $
+//   (C) Copyright 2002-2004,2008,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,7 +18,6 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-
 #ifndef RDCHUNK_H
 #define RDCHUNK_H
 
@@ -34,12 +31,11 @@
 #define MIXER_Y 200
 #define METER_UPDATE_INTERVAL 50
 
-
 class MainWidget : public QWidget
 {
   Q_OBJECT
   public:
-   MainWidget(QWidget *parent=0,const char *name=0);
+   MainWidget(QWidget *parent=0);
    QSize sizeHint() const;
    QSizePolicy sizePolicy() const;
 
@@ -81,4 +77,4 @@ class MainWidget : public QWidget
 };
 
 
-#endif 
+#endif  // RDCHUNK_H

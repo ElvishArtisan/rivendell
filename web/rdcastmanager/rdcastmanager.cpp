@@ -2,9 +2,7 @@
 //
 // An RSS Feed Generator for Rivendell.
 //
-//   (C) Copyright 2002-2009 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdcastmanager.cpp,v 1.14.4.1 2013/11/13 23:36:40 cvs Exp $
+//   (C) Copyright 2002-2009,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -46,8 +44,8 @@
 
 char server_name[PATH_MAX];
 
-MainObject::MainObject(QObject *parent,const char *name)
-  :QObject(parent,name)
+MainObject::MainObject(QObject *parent)
+  :QObject(parent)
 {
   //
   // Initialize Variables
@@ -1923,6 +1921,6 @@ void MainObject::Exit(int code)
 int main(int argc,char *argv[])
 {
   QApplication a(argc,argv,false);
-  new MainObject(NULL,"main");
+  new MainObject();
   return a.exec();
 }

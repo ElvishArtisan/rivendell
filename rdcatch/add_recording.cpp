@@ -2,9 +2,7 @@
 //
 // Add a Rivendell RDCatch Event
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: add_recording.cpp,v 1.26.8.1 2014/01/07 23:40:36 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -46,9 +44,7 @@
 #include <edit_download.h>
 #include <edit_upload.h>
 
-
 extern RDStation *rdstation_conf;
-
 
 AddRecording::AddRecording(int id,QString *filter,QWidget *parent)
   : QDialog(parent,"",true,Qt::WStyle_Customize|Qt::WStyle_DialogBorder)

@@ -30,7 +30,6 @@
 #include <rdrecording.h>
 #include <rddeck.h>
 
-
 class DeckMon : public QFrame
 {
   Q_OBJECT

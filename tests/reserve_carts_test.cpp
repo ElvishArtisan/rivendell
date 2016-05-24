@@ -2,9 +2,7 @@
 //
 // Test the Rivendell db connection routines.
 //
-//   (C) Copyright 2012 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: reserve_carts_test.cpp,v 1.1.2.1 2014/05/30 00:26:31 cvs Exp $
+//   (C) Copyright 2012,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -35,8 +33,8 @@
 
 #include "reserve_carts_test.h"
 
-MainObject::MainObject(QObject *parent,const char *name)
-  :QObject(parent,name)
+MainObject::MainObject(QObject *parent)
+  :QObject(parent)
 {
   RDConfig *config;
   QString group_name;
@@ -128,6 +126,6 @@ MainObject::MainObject(QObject *parent,const char *name)
 int main(int argc,char *argv[])
 {
   QApplication a(argc,argv,false);
-  new MainObject(NULL,"main");
+  new MainObject();
   return a.exec();
 }

@@ -2,9 +2,7 @@
 #
 # The top level QMake project file for Rivendell
 #
-# (C) Copyright 2003-2004 Fred Gleason <fredg@paravelsystems.com>
-#
-#      $Id: rivendell.pro,v 1.4 2007/02/14 21:48:41 fredg Exp $
+# (C) Copyright 2003-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 #
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License version 2 as

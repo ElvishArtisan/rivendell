@@ -2,9 +2,7 @@
 //
 // The Administration Utility for Rivendell.
 //
-//   (C) Copyright 2002-2005 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdadmin.h,v 1.28.4.1 2013/11/13 00:12:55 cvs Exp $
+//   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -39,7 +37,7 @@ class MainWidget : public QWidget
 {
   Q_OBJECT
  public:
-  MainWidget(QWidget *parent=0,const char *name=0);
+  MainWidget(QWidget *parent=0);
   ~MainWidget();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;

@@ -2,9 +2,7 @@
 //
 // Edit a Rivendell Jack Client Configuration
 //
-//   (C) Copyright 2012 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: edit_jack_client.cpp,v 1.1.2.1 2012/11/14 02:24:23 cvs Exp $
+//   (C) Copyright 2012,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -26,9 +24,8 @@
 #include <rddb.h>
 #include <edit_jack_client.h>
 
-EditJackClient::EditJackClient(RDStation *station,
-			       QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+EditJackClient::EditJackClient(RDStation *station,QWidget *parent)
+  : QDialog(parent,"",true)
 {
   QString sql;
 
@@ -73,7 +70,7 @@ EditJackClient::EditJackClient(RDStation *station,
   //
   //  Ok Button
   //
-  edit_ok_button=new QPushButton(this,"edit_ok_button");
+  edit_ok_button=new QPushButton(this);
   edit_ok_button->setDefault(true);
   edit_ok_button->setFont(font);
   edit_ok_button->setText(tr("&OK"));
@@ -82,7 +79,7 @@ EditJackClient::EditJackClient(RDStation *station,
   //
   //  Cancel Button
   //
-  edit_cancel_button=new QPushButton(this,"edit_cancel_button");
+  edit_cancel_button=new QPushButton(this);
   edit_cancel_button->setFont(font);
   edit_cancel_button->setText(tr("&Cancel"));
   connect(edit_cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));

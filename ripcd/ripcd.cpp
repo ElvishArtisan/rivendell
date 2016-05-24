@@ -2,9 +2,7 @@
 //
 // Rivendell Interprocess Communication Daemon
 //
-//   (C) Copyright 2002-2007,2010 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: ripcd.cpp,v 1.77.4.3 2013/11/17 04:27:06 cvs Exp $
+//   (C) Copyright 2002-2007,2010,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -19,7 +17,6 @@
 //   License along with this program; if not, write to the Free Software
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
-
 
 #include <qapplication.h>
 #include <qobject.h>
@@ -90,8 +87,8 @@ void SigHandler(int signo)
 }
 
 
-MainObject::MainObject(QObject *parent,const char *name)
-  :QObject(parent,name)
+MainObject::MainObject(QObject *parent)
+  :QObject(parent)
 {
   bool skip_db_check=false;
 
@@ -135,7 +132,7 @@ MainObject::MainObject(QObject *parent,const char *name)
   }
   ripc_onair_flag=false;
 
-  server=new RipcdSocket(RIPCD_TCP_PORT,0,this,"socket");
+  server=new RipcdSocket(RIPCD_TCP_PORT,0,this);
   if(!server->ok()) {
     exit(1);
   }
@@ -144,7 +141,7 @@ MainObject::MainObject(QObject *parent,const char *name)
   //
   // Macro Timers
   //
-  QSignalMapper *mapper=new QSignalMapper(this,"macro_timer_mapper");
+  QSignalMapper *mapper=new QSignalMapper(this);
   connect(mapper,SIGNAL(mapped(int)),this,SLOT(macroTimerData(int)));
   for(int i=0;i<RD_MAX_MACRO_TIMERS;i++) {
     ripc_macro_cart[i]=0;
@@ -181,7 +178,7 @@ MainObject::MainObject(QObject *parent,const char *name)
   //
   // CAE Connection
   //
-  rdcae=new RDCae(rdstation,ripcd_config,parent,name);
+  rdcae=new RDCae(rdstation,ripcd_config,parent);
   rdcae->connectHost();
 
   if(qApp->argc()==1) {
@@ -225,7 +222,7 @@ MainObject::MainObject(QObject *parent,const char *name)
   //
   // Start RML Polling
   //
-  QTimer *timer=new QTimer(this,"timer");
+  QTimer *timer=new QTimer(this);
   timer->changeInterval(RIPCD_RML_READ_INTERVAL);
   connect(timer,SIGNAL(timeout()),this,SLOT(readRml()));
   timer->start(true);
@@ -234,7 +231,7 @@ MainObject::MainObject(QObject *parent,const char *name)
   // Database Backup Timer
   //
   databaseBackup();
-  ripcd_backup_timer=new QTimer(this,"ripcd_backup_timer");
+  ripcd_backup_timer=new QTimer(this);
   connect(ripcd_backup_timer,SIGNAL(timeout()),this,SLOT(databaseBackup()));
   ripcd_backup_timer->start(86400000);
 
@@ -242,7 +239,7 @@ MainObject::MainObject(QObject *parent,const char *name)
   // Maintenance Routine Timer
   //
   srandom(QTime::currentTime().msec());
-  ripcd_maint_timer=new QTimer(this,"ripcd_maint_timer");
+  ripcd_maint_timer=new QTimer(this);
   connect(ripcd_maint_timer,SIGNAL(timeout()),this,SLOT(checkMaintData()));
   int interval=GetMaintInterval();
   if(!ripcd_config->disableMaintChecks()) {
@@ -883,6 +880,6 @@ void QApplication::saveState(QSessionManager &sm) {
 int main(int argc,char *argv[])
 {
   QApplication a(argc,argv,false);
-  new MainObject(NULL,"main");
+  new MainObject();
   return a.exec();
 }

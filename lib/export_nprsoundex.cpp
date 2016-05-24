@@ -2,9 +2,7 @@
 //
 // Export a Rivendell NPR SoundExchange Report to an ASCII Text File.
 //
-//   (C) Copyright 2002-2006,2013 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: export_nprsoundex.cpp,v 1.1.2.2.2.1 2014/06/24 18:27:03 cvs Exp $
+//   (C) Copyright 2002-2006,2013,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as

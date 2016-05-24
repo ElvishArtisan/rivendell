@@ -2,7 +2,7 @@
 //
 // Connection to the Rivendell Core Audio Engine
 //
-//   (C) Copyright 2002-2015 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -35,9 +35,8 @@
 #include <rddebug.h>
 #include <rdescape_string.h>
 
-RDCae::RDCae(RDStation *station,RDConfig *config,
-	     QObject *parent,const char *name)
-  : QObject(parent,name)
+RDCae::RDCae(RDStation *station,RDConfig *config,QObject *parent)
+  : QObject(parent)
 {
   cae_station=station;
   cae_config=config;

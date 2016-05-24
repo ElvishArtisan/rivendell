@@ -2,10 +2,7 @@
 ##
 ## helper/ Automake.am for Rivendell
 ##
-## (C) Copyright 2003-2005 Fred Gleason <fredg@paravelsystems.com>
-##
-##      $Id: Makefile.am,v 1.9.6.1 2012/11/29 01:37:35 cvs Exp $
-##      $Date: 2012/11/29 01:37:35 $
+## (C) Copyright 2003-2005,2016 Fred Gleason <fredg@paravelsystems.com>
 ##
 ## Use automake to process this into a Makefile.in
 ##

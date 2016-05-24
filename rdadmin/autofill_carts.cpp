@@ -2,9 +2,7 @@
 //
 // Edit a List of Autofill Carts
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: autofill_carts.cpp,v 1.16.8.1 2012/11/26 20:19:37 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -41,9 +39,8 @@
 #include <globals.h>
 #include <autofill_carts.h>
 
-
-AutofillCarts::AutofillCarts(RDSvc *svc,QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+AutofillCarts::AutofillCarts(RDSvc *svc,QWidget *parent)
+  : QDialog(parent,"",true)
 {
   QString str;
 
@@ -72,7 +69,7 @@ AutofillCarts::AutofillCarts(RDSvc *svc,QWidget *parent,const char *name)
   //
   // Cart List
   //
-  svc_cart_list=new QListView(this,"svc_cart_list");
+  svc_cart_list=new QListView(this);
   svc_cart_list->
     setGeometry(10,10,sizeHint().width()-20,sizeHint().height()-110);
   svc_cart_list->setAllColumnsShowFocus(true);
@@ -90,7 +87,7 @@ AutofillCarts::AutofillCarts(RDSvc *svc,QWidget *parent,const char *name)
   //
   // Add Button
   //
-  QPushButton *button=new QPushButton(this,"add_button");
+  QPushButton *button=new QPushButton(this);
   button->setGeometry(20,sizeHint().height()-90,60,40);
   button->setFont(font);
   button->setText(tr("&Add"));
@@ -99,7 +96,7 @@ AutofillCarts::AutofillCarts(RDSvc *svc,QWidget *parent,const char *name)
   //
   // Delete Button
   //
-  button=new QPushButton(this,"delete_button");
+  button=new QPushButton(this);
   button->setGeometry(90,sizeHint().height()-90,60,40);
   button->setFont(font);
   button->setText(tr("&Delete"));
@@ -108,7 +105,7 @@ AutofillCarts::AutofillCarts(RDSvc *svc,QWidget *parent,const char *name)
   //
   //  Ok Button
   //
-  button=new QPushButton(this,"ok_button");
+  button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
   button->setDefault(true);
   button->setFont(font);
@@ -118,7 +115,7 @@ AutofillCarts::AutofillCarts(RDSvc *svc,QWidget *parent,const char *name)
   //
   //  Cancel Button
   //
-  button=new QPushButton(this,"cancel_button");
+  button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,
 			     80,50);
   button->setFont(font);

@@ -2,9 +2,7 @@
 //
 // Abstract a Rivendell Custom Encoder
 //
-//   (C) Copyright 2008 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdencoder.cpp,v 1.1 2008/09/18 19:02:07 fredg Exp $
+//   (C) Copyright 2008,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as

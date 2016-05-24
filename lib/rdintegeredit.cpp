@@ -2,9 +2,7 @@
 //
 //   A widget for editing a list of integer values.
 //
-//   (C) Copyright 2008 Fred Gleason <fredg@paravelsystems.com>
-//
-//    $Id: rdintegeredit.cpp,v 1.3 2010/07/29 19:32:33 cvs Exp $
+//   (C) Copyright 2008,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -19,14 +17,13 @@
 //   License along with this program; if not, write to the Free Software
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
-//
 
 #include <rdintegerdialog.h>
 #include <rdintegeredit.h>
 
 RDIntegerEdit::RDIntegerEdit(const QString &lbl,int low,int high,
-			     QWidget *parent,const char *name)
-  : QWidget(parent,name)
+			     QWidget *parent)
+  : QWidget(parent)
 {
   edit_low=low;
   edit_high=high;

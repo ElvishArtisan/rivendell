@@ -2,7 +2,7 @@
 //
 // A Rivendell switcher driver for the Ross NK switchers via the SCP/A
 //
-//   (C) Copyright 2002-2015 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -24,8 +24,8 @@
 #include <rossnkscp.h>
 
 
-RossNkScp::RossNkScp(RDMatrix *matrix,QObject *parent,const char *name)
-  : Switcher(matrix,parent,name)
+RossNkScp::RossNkScp(RDMatrix *matrix,QObject *parent)
+  : Switcher(matrix,parent)
 {
   //
   // Get Matrix Parameters

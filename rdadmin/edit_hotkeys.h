@@ -2,6 +2,8 @@
 //
 // Edit the Hot Keys Configuration for a  Workstation
 //
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
+//
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
 //   published by the Free Software Foundation.
@@ -32,53 +34,54 @@
 #include <rdhotkeylist.h>
 #include <rdairplay_conf.h>
 
-
 class EditHotkeys : public QDialog
 {
-        Q_OBJECT
-public:
-        EditHotkeys(const QString &station,const QString &module,QWidget *parent,const char *name);
-        ~EditHotkeys();
-        QSize sizeHint() const;
-        QSizePolicy sizePolicy() const;
-public slots:
-        void SetHotKey( );
-        void showCurrentKey( );
-        void RefreshList( );
-        void Clone_RefreshList(const QString &);
-        void SetButtonClicked( );
-        void clearCurrentItem( );
-        void clearAll_Hotkeys( );
-private slots:
-        void save();
-        void cancel();
-protected:
-        void keyReleaseEvent(QKeyEvent *e);
-        void keyPressEvent(QKeyEvent *e);
-        QLineEdit *keystroke;
-private:
-        void SetRow(const QString &param,QString value) const;
-        RDHotkeys *station_hotkeys;
-        QListView *list_view;
-        QString hotkeystrokes;
-        QString hotkey_conf;
-        QString hotkey_module;
+  Q_OBJECT
+ public:
+  EditHotkeys(const QString &station,const QString &module,QWidget *parent);
+  ~EditHotkeys();
+  QSize sizeHint() const;
+  QSizePolicy sizePolicy() const;
 
-        QLabel *clone_from_host_label;
-        QComboBox *clone_from_host_box;
-        QPushButton *set_button;
-        QPushButton *clear_button;
-        QPushButton *show_original_button;
-        QPushButton *clear_all_button;
-        QPushButton *save_button;
-        QPushButton *cancel_button;
-        int  keystrokecount;
-        bool keyupdated;
-        bool AltKeyHit ;
-        bool CtrlKeyHit;
-        RDHotKeyList *myhotkeylist ;
-        int current_station_clone_item;
+ public slots:
+  void SetHotKey( );
+  void showCurrentKey( );
+  void RefreshList( );
+  void Clone_RefreshList(const QString &);
+  void SetButtonClicked( );
+  void clearCurrentItem( );
+  void clearAll_Hotkeys( );
+
+ private slots:
+  void save();
+  void cancel();
+
+ protected:
+  void keyReleaseEvent(QKeyEvent *e);
+  void keyPressEvent(QKeyEvent *e);
+  QLineEdit *keystroke;
+
+ private:
+  void SetRow(const QString &param,QString value) const;
+  RDHotkeys *station_hotkeys;
+  QListView *list_view;
+  QString hotkeystrokes;
+  QString hotkey_conf;
+  QString hotkey_module;
+  QLabel *clone_from_host_label;
+  QComboBox *clone_from_host_box;
+  QPushButton *set_button;
+  QPushButton *clear_button;
+  QPushButton *show_original_button;
+  QPushButton *clear_all_button;
+  QPushButton *save_button;
+  QPushButton *cancel_button;
+  int  keystrokecount;
+  bool keyupdated;
+  bool AltKeyHit ;
+  bool CtrlKeyHit;
+  RDHotKeyList *myhotkeylist ;
+  int current_station_clone_item;
 };
 
-#endif
-
+#endif  // EDIT_HOTKEYS_H

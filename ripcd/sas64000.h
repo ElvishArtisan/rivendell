@@ -2,9 +2,7 @@
 //
 // A Rivendell switcher driver for the SAS64000
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: sas64000.h,v 1.10.8.1 2013/03/03 23:30:16 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -34,7 +32,7 @@ class Sas64000 : public Switcher
 {
  Q_OBJECT
  public:
-  Sas64000(RDMatrix *matrix,QObject *parent=0,const char *name=0);
+  Sas64000(RDMatrix *matrix,QObject *parent=0);
   ~Sas64000();
   RDMatrix::Type type();
   unsigned gpiQuantity();

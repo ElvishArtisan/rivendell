@@ -2,9 +2,7 @@
 //
 // A Qt-based application for display info about ASI cards.
 //
-//   (C) Copyright 2002-2005 Fred Gleason <fredg@paravelsystems.com>
-//
-//    $Id: rdhpiinfo.h,v 1.5.6.1 2012/05/04 14:56:23 cvs Exp $
+//   (C) Copyright 2002-2005,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -19,7 +17,6 @@
 //   License along with this program; if not, write to the Free Software
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
-
 
 #ifndef RDHPIINFO_H
 #define RDHPIINFO_H
@@ -43,7 +40,7 @@ class MainWidget : public QWidget
 {
   Q_OBJECT
  public:
-  MainWidget(QWidget *parent=0,const char *name=0);
+  MainWidget(QWidget *parent=0);
   ~MainWidget();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;

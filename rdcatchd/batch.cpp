@@ -2,7 +2,7 @@
 //
 // Batch Routines for the Rivendell netcatcher daemon
 //
-//   (C) Copyright 2002-2015, 2010 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as

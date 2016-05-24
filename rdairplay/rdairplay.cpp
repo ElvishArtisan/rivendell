@@ -2,9 +2,7 @@
 //
 // The On Air Playout Utility for Rivendell.
 //
-//   (C) Copyright 2002-2010 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdairplay.cpp,v 1.189.2.24 2014/03/02 03:21:52 cvs Exp $
+//   (C) Copyright 2002-2010,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -100,8 +98,8 @@ void MainWidget::logLine(RDConfig::LogPriority prio,const QString &s)
   LogLine(prio,s);
 }
 
-MainWidget::MainWidget(QWidget *parent,const char *name)
-  :QWidget(parent,name)
+MainWidget::MainWidget(QWidget *parent)
+  :QWidget(parent)
 {
   prog_ptr=this;
   QString str;
@@ -133,7 +131,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   air_splash_screen=new QSplashScreen(QPixmap(rivendell_128x128_xpm));
   air_splash_screen->hide();
-  QTimer *timer=new QTimer(this,"splash_timer");
+  QTimer *timer=new QTimer(this);
   connect(timer,SIGNAL(timeout()),this,SLOT(clearSplashData()));
   timer->start(AIR_PLAY_SPLASH_TIME,true);
 
@@ -254,7 +252,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // Master Clock Timer
   //
-  air_master_timer=new QTimer(this,"air_master_timer");
+  air_master_timer=new QTimer(this);
   connect(air_master_timer,SIGNAL(timeout()),this,SLOT(masterTimerData()));
   air_master_timer->start(MASTER_TIMER_INTERVAL);
 
@@ -327,7 +325,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // CAE Connection
   //
-  air_cae=new RDCae(rdstation_conf,air_config,parent,name);
+  air_cae=new RDCae(rdstation_conf,air_config,parent);
   air_cae->connectHost();
 
   //
@@ -365,9 +363,9 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // Log Machines
   //
-  QSignalMapper *reload_mapper=new QSignalMapper(this,"reload_mapper");
+  QSignalMapper *reload_mapper=new QSignalMapper(this);
   connect(reload_mapper,SIGNAL(mapped(int)),this,SLOT(logReloadedData(int)));
-  QSignalMapper *rename_mapper=new QSignalMapper(this,"rename_mapper");
+  QSignalMapper *rename_mapper=new QSignalMapper(this);
   connect(rename_mapper,SIGNAL(mapped(int)),this,SLOT(logRenamedData(int)));
   QString default_svcname=rdairplay_conf->defaultSvc();
   for(int i=0;i<RDAIRPLAY_LOG_QUANTITY;i++) {
@@ -436,7 +434,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // Wall Clock
   //
-  WallClock *clock=new WallClock(this,"wall_clock");
+  WallClock *clock=new WallClock(this);
   clock->
     setGeometry(10,5,clock->sizeHint().width(),clock->sizeHint().height());
   clock->setCheckSyncEnabled(rdairplay_conf->checkTimesync());
@@ -448,7 +446,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // Post Counter
   //
-  air_post_counter=new PostCounter(this,"air_post_counter");
+  air_post_counter=new PostCounter(this);
   air_post_counter->setGeometry(220,5,air_post_counter->sizeHint().width(),
 				air_post_counter->sizeHint().height());
   air_post_counter->setPostPoint(QTime(),0,false,false);
@@ -461,8 +459,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // Pie Counter
   //
-  air_pie_counter=new PieCounter(rdairplay_conf->pieCountLength(),
-				 this,"air_pie_counter");
+  air_pie_counter=new PieCounter(rdairplay_conf->pieCountLength(),this);
   air_pie_counter->setGeometry(426,5,air_pie_counter->sizeHint().width(),
 				air_pie_counter->sizeHint().height());
   air_pie_counter->setCountLength(rdairplay_conf->pieCountLength());
@@ -486,7 +483,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // Audio Meter
   //
-  air_stereo_meter=new RDStereoMeter(this,"air_stereo_meter");
+  air_stereo_meter=new RDStereoMeter(this);
   air_stereo_meter->setGeometry(50,70,air_stereo_meter->sizeHint().width(),
 				air_stereo_meter->sizeHint().height());
   air_stereo_meter->setMode(RDSegMeter::Peak);
@@ -498,7 +495,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // Message Label
   //
-  air_message_label=new RDLabel(this,"air_message_label");
+  air_message_label=new RDLabel(this);
   air_message_label->setGeometry(sizeHint().width()-425,70,
 		MESSAGE_WIDGET_WIDTH,air_stereo_meter->sizeHint().height());
   air_message_label->setWordWrapEnabled(true);
@@ -511,7 +508,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // Stop Counter
   //
-  air_stop_counter=new StopCounter(this,"air_stop_counter");
+  air_stop_counter=new StopCounter(this);
   air_stop_counter->setGeometry(600,5,air_stop_counter->sizeHint().width(),
 				air_stop_counter->sizeHint().height());
   air_stop_counter->setTime(QTime(0,0,0));
@@ -557,7 +554,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // Add Button
   //
-  air_add_button=new RDPushButton(this,"air_add_button");
+  air_add_button=new RDPushButton(this);
   air_add_button->setGeometry(10,sizeHint().height()-65,80,60);
   air_add_button->setFont(button_font);
   air_add_button->setText(tr("ADD"));
@@ -567,7 +564,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // Delete Button
   //
-  air_delete_button=new RDPushButton(this,"air_delete_button");
+  air_delete_button=new RDPushButton(this);
   air_delete_button->setGeometry(100,sizeHint().height()-65,80,60);
   air_delete_button->setFont(button_font);
   air_delete_button->setText(tr("DEL"));
@@ -578,7 +575,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // Move Button
   //
-  air_move_button=new RDPushButton(this,"air_move_button");
+  air_move_button=new RDPushButton(this);
   air_move_button->setGeometry(190,sizeHint().height()-65,80,60);
   air_move_button->setFont(button_font);
   air_move_button->setText(tr("MOVE"));
@@ -589,7 +586,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // Copy Button
   //
-  air_copy_button=new RDPushButton(this,"air_copy_button");
+  air_copy_button=new RDPushButton(this);
   air_copy_button->setGeometry(280,sizeHint().height()-65,80,60);
   air_copy_button->setFont(button_font);
   air_copy_button->setText(tr("COPY"));
@@ -600,7 +597,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // Refresh Indicator
   //
-  air_refresh_label=new RDLabel(this,"air_refresh_label");
+  air_refresh_label=new RDLabel(this);
   air_refresh_label->setGeometry(390,sizeHint().height()-65,120,60);
   air_refresh_label->setFont(button_font);
   QPalette p=palette();
@@ -619,7 +616,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // Meter Timer
   //
-  timer=new QTimer(this,"meter_timer");
+  timer=new QTimer(this);
   connect(timer,SIGNAL(timeout()),this,SLOT(meterData()));
   timer->start(RD_METER_UPDATE_INTERVAL);
 
@@ -636,7 +633,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
 		       rdairplay_conf->flashPanel(),
 		       rdairplay_conf->buttonLabelTemplate(),false,
 		       rdevent_player,rdripc,air_cae,rdstation_conf,
-		       rdcart_dialog,this,"air_panel");
+		       rdcart_dialog,this);
     air_panel->setLogfile(air_config->airplayLogname());
     air_panel->setGeometry(510,140,air_panel->sizeHint().width(),
 			 air_panel->sizeHint().height());
@@ -755,8 +752,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   air_pause_enabled=rdairplay_conf->pauseEnabled();
   for(int i=0;i<RDAIRPLAY_LOG_QUANTITY;i++) {
-    air_log_list[i]=new ListLog(air_log[i],air_cae,i,air_pause_enabled,
-				this,"air_log_list");
+    air_log_list[i]=new ListLog(air_log[i],air_cae,i,air_pause_enabled,this);
     air_log_list[i]->setGeometry(510,140,air_log_list[i]->sizeHint().width(),
 			      air_log_list[i]->sizeHint().height());
     air_log_list[i]->hide();
@@ -769,7 +765,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // Full Log Buttons
   //
-  QSignalMapper *mapper=new QSignalMapper(this,"log_mapper");
+  QSignalMapper *mapper=new QSignalMapper(this);
   connect(mapper,SIGNAL(mapped(int)),this,SLOT(fullLogButtonData(int)));
   for(int i=0;i<RDAIRPLAY_LOG_QUANTITY;i++) {
     air_log_button[i]=new QPushButton(this);
@@ -801,7 +797,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // SoundPanel Button
   //
-  air_panel_button=new QPushButton(this,"air_panel_button");
+  air_panel_button=new QPushButton(this);
   air_panel_button->setGeometry(562,sizeHint().height()-65,80,60);
   air_panel_button->setFont(button_font);
   air_panel_button->setText(tr("Sound\nPanel"));
@@ -898,11 +894,10 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
 
   // Create the HotKeyList object
   //
-  rdkeylist = new RDHotKeyList();
-  rdhotkeys = new RDHotkeys(RDEscapeString(air_config->stationName()),
-		  "airplay");
-  AltKeyHit = false;
-  CtrlKeyHit = false;
+  rdkeylist=new RDHotKeyList();
+  rdhotkeys=new RDHotkeys(air_config->stationName(),"rdairplay");
+  AltKeyHit=false;
+  CtrlKeyHit=false;
 
   //
   // Set Signal Handlers
@@ -2555,7 +2550,7 @@ int main(int argc,char *argv[])
   //
   // Start Event Loop
   //
-  MainWidget *w=new MainWidget(NULL,"main");
+  MainWidget *w=new MainWidget();
   a.setMainWidget(w);
   w->setGeometry(QRect(QPoint(0,0),w->sizeHint()));
   w->show();

@@ -2,9 +2,7 @@
 //
 //   A drag & drop QListView widget for Rivendell's RDLibrary
 //
-//   (C) Copyright 2002-2013 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: lib_listview.cpp,v 1.1.2.3.2.1 2014/05/20 14:23:12 cvs Exp $
+//   (C) Copyright 2002-2013,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -27,8 +25,8 @@
 #include <rdlistviewitem.h>
 #include <lib_listview.h>
 
-LibListView::LibListView(QWidget *parent,const char *name)
-  : RDListView(parent,name)
+LibListView::LibListView(QWidget *parent)
+  : RDListView(parent)
 {
   list_move_count=-1;
 }

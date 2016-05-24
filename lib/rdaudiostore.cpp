@@ -2,7 +2,7 @@
 //
 // Get information about the audio store.
 //
-//   (C) Copyright 2014 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2014-2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -45,9 +45,8 @@ size_t RDAudioStoreCallback(void *ptr,size_t size,size_t nmemb,void *userdata)
 }
 
 
-RDAudioStore::RDAudioStore(RDStation *station,RDConfig *config,
-			  QObject *parent,const char *name)
-  : QObject(parent,name)
+RDAudioStore::RDAudioStore(RDStation *station,RDConfig *config,QObject *parent)
+  : QObject(parent)
 {
   conv_station=station;
   conv_config=config;

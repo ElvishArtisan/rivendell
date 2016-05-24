@@ -2,9 +2,7 @@
 //
 // Abstract a Rivendell RSS Feed
 //
-//   (C) Copyright 2002-2007,2010 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdfeed.cpp,v 1.17.2.2 2013/11/13 23:36:33 cvs Exp $
+//   (C) Copyright 2002-2007,2010,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -39,8 +37,8 @@
 #include <rdaudioconvert.h>
 #include <rdupload.h>
 
-RDFeed::RDFeed(const QString &keyname,QObject *parent,const char *name)
-  : QObject(parent,name)
+RDFeed::RDFeed(const QString &keyname,QObject *parent)
+  : QObject(parent)
 {
   RDSqlQuery *q;
   QString sql;
@@ -57,8 +55,8 @@ RDFeed::RDFeed(const QString &keyname,QObject *parent,const char *name)
 }
 
 
-RDFeed::RDFeed(unsigned id,QObject *parent,const char *name)
-  : QObject(parent,name)
+RDFeed::RDFeed(unsigned id,QObject *parent)
+  : QObject(parent)
 {
   RDSqlQuery *q;
   QString sql;

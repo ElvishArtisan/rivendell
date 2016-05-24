@@ -2,9 +2,7 @@
 //
 // CD Ripper Dialog for Rivendell.
 //
-//   (C) Copyright 2002-2003, 2009 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: cdripper.cpp,v 1.41.4.6.2.2 2014/05/20 15:45:08 cvs Exp $
+//   (C) Copyright 2002-2003,2009,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -50,10 +48,9 @@
 //
 bool ripper_running;
 
-
 CdRipper::CdRipper(QString cutname,RDCddbRecord *rec,RDLibraryConf *conf,
-		   bool profile_rip,QWidget *parent,const char *name) 
-  : QDialog(parent,name)
+		   bool profile_rip,QWidget *parent) 
+  : QDialog(parent)
 {
   rip_profile_rip=profile_rip;
   rip_isrc_read=false;
@@ -119,10 +116,10 @@ CdRipper::CdRipper(QString cutname,RDCddbRecord *rec,RDLibraryConf *conf,
   // CDDB Stuff
   //
   if(rip_profile_rip) {
-    rip_cddb_lookup=new RDCddbLookup(stdout,this,"rip_cddb_lookup");
+    rip_cddb_lookup=new RDCddbLookup(stdout,this);
   }
   else {
-    rip_cddb_lookup=new RDCddbLookup(NULL,this,"rip_cddb_lookup");
+    rip_cddb_lookup=new RDCddbLookup(NULL,this);
   }
   connect(rip_cddb_lookup,SIGNAL(done(RDCddbLookup::Result)),
 	  this,SLOT(cddbDoneData(RDCddbLookup::Result)));
@@ -142,7 +139,7 @@ CdRipper::CdRipper(QString cutname,RDCddbRecord *rec,RDLibraryConf *conf,
   rip_artist_label=new QLabel(tr("Artist:"),this);
   rip_artist_label->setFont(label_font);
   rip_artist_label->setAlignment(AlignRight|AlignVCenter);
-  rip_artist_edit=new QLineEdit(this,"rip_artist_edit");
+  rip_artist_edit=new QLineEdit(this);
 
   //
   // Album Edit
@@ -150,7 +147,7 @@ CdRipper::CdRipper(QString cutname,RDCddbRecord *rec,RDLibraryConf *conf,
   rip_album_label=new QLabel(tr("Album:"),this);
   rip_album_label->setFont(label_font);
   rip_album_label->setAlignment(AlignRight|AlignVCenter);
-  rip_album_edit=new QLineEdit(this,"rip_album_edit");
+  rip_album_edit=new QLineEdit(this);
 
   //
   // Other Edit
@@ -158,17 +155,17 @@ CdRipper::CdRipper(QString cutname,RDCddbRecord *rec,RDLibraryConf *conf,
   rip_other_label=new QLabel(tr("Other:"),this);
   rip_other_label->setFont(label_font);
   rip_other_label->setAlignment(AlignRight);
-  rip_other_edit=new QTextEdit(this,"rip_other_edit");
+  rip_other_edit=new QTextEdit(this);
   rip_other_edit->setReadOnly(true);
 
   //
   // Apply FreeDB Check Box
   //
-  rip_apply_box=new QCheckBox(this,"rip_apply_box");
+  rip_apply_box=new QCheckBox(this);
   rip_apply_box->setChecked(true);
   rip_apply_box->setDisabled(true);
-  rip_apply_label=new QLabel(rip_apply_box,tr("Apply FreeDB Values to Cart"),
-		   this,"rip_apply_label");
+  rip_apply_label=
+    new QLabel(rip_apply_box,tr("Apply FreeDB Values to Cart"),this);
   rip_apply_label->setFont(label_font);
   rip_apply_label->setAlignment(AlignLeft);
   rip_apply_box->setChecked(false);
@@ -200,27 +197,24 @@ CdRipper::CdRipper(QString cutname,RDCddbRecord *rec,RDLibraryConf *conf,
   //
   // Progress Bar
   //
-  rip_bar=new QProgressBar(this,"rip_bar");
+  rip_bar=new QProgressBar(this);
 
   //
   // Eject Button
   //
-  rip_eject_button=new RDTransportButton(RDTransportButton::Eject,
-					this,"close_button");
+  rip_eject_button=new RDTransportButton(RDTransportButton::Eject,this);
   connect(rip_eject_button,SIGNAL(clicked()),this,SLOT(ejectButtonData()));
   
   //
   // Play Button
   //
-  rip_play_button=new RDTransportButton(RDTransportButton::Play,
-					this,"close_button");
+  rip_play_button=new RDTransportButton(RDTransportButton::Play,this);
   connect(rip_play_button,SIGNAL(clicked()),this,SLOT(playButtonData()));
   
   //
   // Stop Button
   //
-  rip_stop_button=new RDTransportButton(RDTransportButton::Stop,
-					this,"close_button");
+  rip_stop_button=new RDTransportButton(RDTransportButton::Stop,this);
   rip_stop_button->setOnColor(red);
   rip_stop_button->on();
   connect(rip_stop_button,SIGNAL(clicked()),this,SLOT(stopButtonData()));
@@ -228,7 +222,7 @@ CdRipper::CdRipper(QString cutname,RDCddbRecord *rec,RDLibraryConf *conf,
   //
   // Rip Track Button
   //
-  rip_rip_button=new QPushButton(tr("&Rip\nTrack"),this,"rip_track_button");
+  rip_rip_button=new QPushButton(tr("&Rip\nTrack"),this);
   rip_rip_button->setFont(button_font);
   rip_rip_button->setDisabled(true);
   connect(rip_rip_button,SIGNAL(clicked()),this,SLOT(ripTrackButtonData()));
@@ -247,13 +241,12 @@ CdRipper::CdRipper(QString cutname,RDCddbRecord *rec,RDLibraryConf *conf,
   //
   // Normalize Level
   //
-  rip_normalize_spin=new QSpinBox(this,"rip_normalize_spin");
+  rip_normalize_spin=new QSpinBox(this);
   rip_normalize_spin->setRange(-30,0);
-  rip_normalize_label=new QLabel(rip_normalize_spin,tr("Level:"),
-				 this,"normalize_spin_label");
+  rip_normalize_label=new QLabel(rip_normalize_spin,tr("Level:"),this);
   rip_normalize_label->setFont(label_font);
   rip_normalize_label->setAlignment(AlignRight|AlignVCenter);
-  rip_normalize_unit=new QLabel(tr("dBFS"),this,"normalize_unit_label");
+  rip_normalize_unit=new QLabel(tr("dBFS"),this);
   rip_normalize_unit->setFont(label_font);
   rip_normalize_unit->setAlignment(AlignLeft|AlignVCenter);
 
@@ -271,13 +264,12 @@ CdRipper::CdRipper(QString cutname,RDCddbRecord *rec,RDLibraryConf *conf,
   //
   // Autotrim Level
   //
-  rip_autotrim_spin=new QSpinBox(this,"rip_autotrim_spin");
+  rip_autotrim_spin=new QSpinBox(this);
   rip_autotrim_spin->setRange(-99,0);
-  rip_autotrim_label=new QLabel(rip_autotrim_spin,tr("Level:"),
-				 this,"autotrim_spin_label");
+  rip_autotrim_label=new QLabel(rip_autotrim_spin,tr("Level:"),this);
   rip_autotrim_label->setFont(label_font);
   rip_autotrim_label->setAlignment(AlignRight|AlignVCenter);
-  rip_autotrim_unit=new QLabel(tr("dBFS"),this,"autotrim_unit_label");
+  rip_autotrim_unit=new QLabel(tr("dBFS"),this);
   rip_autotrim_unit->setFont(label_font);
   rip_autotrim_unit->setAlignment(AlignLeft|AlignVCenter);
 
@@ -292,7 +284,7 @@ CdRipper::CdRipper(QString cutname,RDCddbRecord *rec,RDLibraryConf *conf,
   //
   // Close Button
   //
-  rip_close_button=new QPushButton("&Close",this,"close_button");
+  rip_close_button=new QPushButton("&Close",this);
   rip_close_button->setFont(button_font);
   connect(rip_close_button,SIGNAL(clicked()),this,SLOT(closeData()));
 

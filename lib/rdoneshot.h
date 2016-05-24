@@ -2,9 +2,7 @@
 //
 // A class for providing one-shot single use timers.
 //
-//   (C) Copyright 2008 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdoneshot.h,v 1.4 2010/07/29 19:32:33 cvs Exp $
+//   (C) Copyright 2008,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -33,7 +31,7 @@ class RDOneShot : public QObject
 {
   Q_OBJECT
  public:
-  RDOneShot(QObject *parent=0,const char *name=0);
+  RDOneShot(QObject *parent=0);
   void start(int value,int msecs);
 
  signals:

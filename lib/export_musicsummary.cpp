@@ -2,9 +2,7 @@
 //
 // Export a Rivendell Report to an ASCII Text File.
 //
-//   (C) Copyright 2012 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: export_musicsummary.cpp,v 1.1.2.1 2012/08/13 20:08:27 cvs Exp $
+//   (C) Copyright 2012,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as

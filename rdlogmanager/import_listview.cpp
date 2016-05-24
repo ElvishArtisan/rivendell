@@ -2,14 +2,11 @@
 //
 //   The Import Carts ListView widget for RDLogManager.
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: import_listview.cpp,v 1.21.8.2 2013/12/30 19:56:13 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
 //   published by the Free Software Foundation.
-//
 //
 //   This program is distributed in the hope that it will be useful,
 //   but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -19,7 +16,6 @@
 //   You should have received a copy of the GNU General Public
 //   License along with this program; if not, write to the Free Software
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-//
 //
 
 #include <qdragobject.h>
@@ -42,9 +38,8 @@
 #include "../icons/mic16.xpm"
 #include "../icons/notemarker.xpm"
 
-
-ImportListView::ImportListView(QWidget *parent,const char *name)
-  : QListView(parent,name)
+ImportListView::ImportListView(QWidget *parent)
+  : QListView(parent)
 {
   import_parent=parent;
 
@@ -59,7 +54,7 @@ ImportListView::ImportListView(QWidget *parent,const char *name)
   //
   // Right Button Menu
   //
-  import_menu=new QPopupMenu(this,"import_menu");
+  import_menu=new QPopupMenu(this);
   connect(import_menu,SIGNAL(aboutToShow()),this,SLOT(aboutToShowData()));
   import_menu->
     insertItem(tr("Insert Log Note"),this,SLOT(insertNoteMenuData()),0,0);
@@ -296,7 +291,7 @@ void ImportListView::aboutToShowData()
 void ImportListView::insertNoteMenuData()
 {
   QString note;
-  EditNote *note_dialog=new EditNote(&note,this,"note_dialog");
+  EditNote *note_dialog=new EditNote(&note,this);
   if(note_dialog->exec()<0) {
     delete note_dialog;
     return;
@@ -319,7 +314,7 @@ void ImportListView::insertNoteMenuData()
 void ImportListView::editNoteMenuData()
 {
   QString text=import_log->logLine(import_menu_line)->markerComment();
-  EditNote *edit_dialog=new EditNote(&text,this,"edit_dialog");
+  EditNote *edit_dialog=new EditNote(&text,this);
   if(edit_dialog->exec()<0) {
     delete edit_dialog;
     return;
@@ -331,7 +326,7 @@ void ImportListView::editNoteMenuData()
 void ImportListView::insertTrackMenuData()
 {
   QString note;
-  EditTrack *track_dialog=new EditTrack(&note,this,"track_dialog");
+  EditTrack *track_dialog=new EditTrack(&note,this);
   if(track_dialog->exec()<0) {
     delete track_dialog;
     return;
@@ -354,7 +349,7 @@ void ImportListView::insertTrackMenuData()
 void ImportListView::editTrackMenuData()
 {
   QString text=import_log->logLine(import_menu_line)->markerComment();
-  EditTrack *edit_dialog=new EditTrack(&text,this,"edit_dialog");
+  EditTrack *edit_dialog=new EditTrack(&text,this);
   if(edit_dialog->exec()<0) {
     delete edit_dialog;
     return;

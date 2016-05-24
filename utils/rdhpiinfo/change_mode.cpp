@@ -2,7 +2,7 @@
 //
 // Change the mode of an AudioScience Adapter.
 //
-//   (C) Copyright 2002-2014 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2014,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -25,8 +25,8 @@
 #include <change_mode.h>
 
 ChangeMode::ChangeMode(unsigned short card,unsigned short type,int mode,
-		       QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+		       QWidget *parent)
+  : QDialog(parent,"",true)
 {
   QString str;
 
@@ -147,7 +147,7 @@ ChangeMode::ChangeMode(unsigned short card,unsigned short type,int mode,
   //
   //  Cancel Button
   //
-  QPushButton *cancel_button=new QPushButton(this,"cancel_button");
+  QPushButton *cancel_button=new QPushButton(this);
   cancel_button->setGeometry(sizeHint().width()-70,sizeHint().height()-40,
 			     60,30);
   cancel_button->setFont(font);

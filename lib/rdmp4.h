@@ -21,6 +21,7 @@
 
 #ifndef RDMP4_H
 #define RDMP4_H
+
 #ifdef HAVE_MP4_LIBS
 
 #include <mp4v2/mp4v2.h>

@@ -2,9 +2,7 @@
 //
 // A Rivendell switcher driver for the Logitek vGuest Protocol
 //
-//   (C) Copyright 2002-2005 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: vguest.cpp,v 1.36.8.3 2013/11/07 23:00:00 cvs Exp $
+//   (C) Copyright 2002-2005,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -29,8 +27,8 @@
 #include <vguest.h>
 
 
-VGuest::VGuest(RDMatrix *matrix,QObject *parent,const char *name)
-  : Switcher(matrix,parent,name)
+VGuest::VGuest(RDMatrix *matrix,QObject *parent)
+  : Switcher(matrix,parent)
 {
   RDTty *tty;
   QString sql;

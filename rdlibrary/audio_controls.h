@@ -2,9 +2,7 @@
 //
 // A Container Class for RDLibrary Cart Label Controls
 //
-//   (C) Copyright 2002-2006 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: audio_controls.h,v 1.6.8.1 2013/12/11 18:51:48 cvs Exp $
+//   (C) Copyright 2002-2006,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as

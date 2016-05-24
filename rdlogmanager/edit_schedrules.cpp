@@ -61,12 +61,12 @@ EditSchedRules::EditSchedRules(QString clock,unsigned *artistsep,SchedRulesList 
   QFont font=QFont("Helvetica",12,QFont::Bold);
   font.setPixelSize(12);
 
-  artistSepLabel = new QLabel( this, "artistSepLabel" );
+  artistSepLabel = new QLabel(this);
   artistSepLabel->setGeometry( QRect( 10, 10, 130, 20 ) );
   artistSepLabel->setFont(font);
   artistSepLabel->setText(tr("Artist Separation:"));
 
-  artistSepSpinBox = new QSpinBox( this, "artistSepSpinBox" );
+  artistSepSpinBox = new QSpinBox(this);
   artistSepSpinBox->setGeometry( QRect( 160, 10, 70, 20 ) );
   artistSepSpinBox->setMaxValue( 10000 );
   artistSepSpinBox->setValue( *edit_artistsep );
@@ -75,7 +75,7 @@ EditSchedRules::EditSchedRules(QString clock,unsigned *artistsep,SchedRulesList 
   //
   //  Edit Button
   //
-  QPushButton *list_edit_button=new QPushButton(this,"list_edit_button");
+  QPushButton *list_edit_button=new QPushButton(this);
   list_edit_button->setGeometry(10,sizeHint().height()-60,80,50);
   list_edit_button->setFont(font);
   list_edit_button->setText(tr("&Edit"));
@@ -84,7 +84,7 @@ EditSchedRules::EditSchedRules(QString clock,unsigned *artistsep,SchedRulesList 
   //
   //  Import Button
   //
-  QPushButton *list_import_button=new QPushButton(this,"list_import_button");
+  QPushButton *list_import_button=new QPushButton(this);
   list_import_button->setGeometry(100,sizeHint().height()-60,80,50);
   list_import_button->setFont(font);
   list_import_button->setText(tr("&Import"));
@@ -92,7 +92,7 @@ EditSchedRules::EditSchedRules(QString clock,unsigned *artistsep,SchedRulesList 
 
   //  Ok Button
   //
-  QPushButton *ok_button=new QPushButton(this,"ok_button");
+  QPushButton *ok_button=new QPushButton(this);
   ok_button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
   ok_button->setDefault(true);
   ok_button->setFont(font);
@@ -102,7 +102,7 @@ EditSchedRules::EditSchedRules(QString clock,unsigned *artistsep,SchedRulesList 
   //
   //  Cancel Button
   //
-  QPushButton *cancel_button=new QPushButton(this,"cancel_button");
+  QPushButton *cancel_button=new QPushButton(this);
   cancel_button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,
 			     80,50);
   cancel_button->setFont(font);
@@ -111,7 +111,7 @@ EditSchedRules::EditSchedRules(QString clock,unsigned *artistsep,SchedRulesList 
 
 
   // List
-  list_schedCodes_view=new RDListView(this,"list_schedCodes_view");
+  list_schedCodes_view=new RDListView(this);
   list_schedCodes_view->setGeometry(10,60,size().width()-20,size().height()-140);
   list_schedCodes_view->setAllColumnsShowFocus(true);
   list_schedCodes_view->addColumn(tr("CODE"));
@@ -122,7 +122,8 @@ EditSchedRules::EditSchedRules(QString clock,unsigned *artistsep,SchedRulesList 
   list_schedCodes_view->addColumn(tr("OR AFTER"));
   list_schedCodes_view->addColumn(tr("DESCRIPTION"));
   
-  QLabel *list_box_label=new QLabel(list_schedCodes_view,tr("Scheduler Codes:"),this,"list_box_label");
+  QLabel *list_box_label=
+    new QLabel(list_schedCodes_view,tr("Scheduler Codes:"),this);
   list_box_label->setFont(font);
   list_box_label->setGeometry(10,40,200,20);
   connect(list_schedCodes_view,
@@ -194,7 +195,8 @@ void EditSchedRules::editData()
   if(item==NULL) {
     return;
   }
-  editSchedCodeRules *edit_CodeRules=new editSchedCodeRules(item,sched_rules_list,this,"edit_CodeRules");
+  editSchedCodeRules *edit_CodeRules=
+    new editSchedCodeRules(item,sched_rules_list,this);
   if(edit_CodeRules->exec()>=0)
     {
     edit_modified=true; 

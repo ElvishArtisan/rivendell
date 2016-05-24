@@ -2,14 +2,11 @@
 //
 //   Events List Widget for RDCatch
 //
-//   (C) Copyright 2002-2006 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: catch_listview.cpp,v 1.5.6.1 2013/11/13 23:36:35 cvs Exp $
+//   (C) Copyright 2002-2006,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
 //   published by the Free Software Foundation.
-//
 //
 //   This program is distributed in the hope that it will be useful,
 //   but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -19,7 +16,6 @@
 //   You should have received a copy of the GNU General Public
 //   License along with this program; if not, write to the Free Software
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-//
 //
 
 #include <qheader.h>
@@ -31,16 +27,15 @@
 #include <globals.h>
 #include <catch_listview.h>
 
-
-CatchListView::CatchListView(QWidget *parent,const char *name)
-  : RDListView(parent,name)
+CatchListView::CatchListView(QWidget *parent)
+  : RDListView(parent)
 {
   catch_parent=parent;
 
   //
   // Right-Click Menu
   //
-  catch_menu=new QPopupMenu(NULL,"catch_menu");
+  catch_menu=new QPopupMenu(NULL);
   connect(catch_menu,SIGNAL(aboutToShow()),this,SLOT(aboutToShowData()));
   catch_menu->
     insertItem(tr("Edit Cue Markers"),this,SLOT(editAudioMenuData()),0,0);

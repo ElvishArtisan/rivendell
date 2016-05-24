@@ -2,9 +2,7 @@
 //
 //   An audio- and touchscreen-friendly slider widget.
 //
-//   (C) Copyright 2009 Fred Gleason <fredg@paravelsystems.com>
-//
-//    $Id: rdslider.h,v 1.4 2010/07/29 19:32:34 cvs Exp $
+//   (C) Copyright 2009,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -18,7 +16,6 @@
 //   You should have received a copy of the GNU General Public
 //   License along with this program; if not, write to the Free Software
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-//
 //
 
 #ifndef RDSLIDER_H
@@ -37,10 +34,10 @@ class RDSlider : public QWidget,public QRangeControl
   Q_OBJECT
  public:
   enum Orientation {Left=0,Right=1,Up=2,Down=3};
-  RDSlider(QWidget *parent,const char *name);
-  RDSlider(RDSlider::Orientation orient,QWidget *parent,const char *name);
+  RDSlider(QWidget *parent);
+  RDSlider(RDSlider::Orientation orient,QWidget *parent);
   RDSlider(int minValue,int maxValue,int pageStep,int value,
-	   RDSlider::Orientation orient,QWidget *parent,const char *name);
+	   RDSlider::Orientation orient,QWidget *parent);
   RDSlider::Orientation orientation() const;
   void setOrientation(RDSlider::Orientation orient);
   void setTracking(bool enable);

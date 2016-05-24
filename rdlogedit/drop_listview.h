@@ -2,9 +2,7 @@
 //
 //   The Log ListView widget for RDLogEdit.
 //
-//   (C) Copyright 2002-2013 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: drop_listview.h,v 1.1.2.1 2013/12/27 22:12:28 cvs Exp $
+//   (C) Copyright 2002-2013,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -31,7 +29,7 @@ class DropListView : public RDListView
 {
   Q_OBJECT
  public:
-  DropListView(QWidget *parent,const char *name=0);
+  DropListView(QWidget *parent);
 
  signals:
   void cartDropped(int line,RDLogLine *ll);

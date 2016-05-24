@@ -2,9 +2,7 @@
 //
 // The Log Editor Utility for Rivendell.
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdlogmanager.cpp,v 1.43.4.4.2.1 2014/05/20 14:01:50 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -80,7 +78,6 @@ RDConfig *log_config;
 QString *event_filter;
 QString *clock_filter;
 bool skip_db_check=false;
-
 
 #ifndef WIN32
 void SigHandler(int signo)

@@ -2,9 +2,7 @@
 //
 // Abstract a Rivendell Dropbox Configuration
 //
-//   (C) Copyright 2002-2007 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rddropbox.h,v 1.6.8.1 2013/12/11 20:17:13 cvs Exp $
+//   (C) Copyright 2002-2007,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as

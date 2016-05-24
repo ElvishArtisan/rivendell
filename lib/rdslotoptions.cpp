@@ -2,9 +2,7 @@
 //
 // Container class for RDCartSlot options
 //
-//   (C) Copyright 2012 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdslotoptions.cpp,v 1.2.2.5 2012/11/28 18:49:36 cvs Exp $
+//   (C) Copyright 2012,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as

@@ -2,9 +2,7 @@
 //
 // A QTimeEdit with tenth-second precision.
 //
-//   (C) Copyright 2003 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdtimeedit.h,v 1.5 2010/07/29 19:32:34 cvs Exp $
+//   (C) Copyright 2003,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -34,7 +32,7 @@ class RDTimeEdit : public QFrame
   Q_OBJECT
  public:
   enum Display {Hours=0x01,Minutes=0x02,Seconds=0x04,Tenths=0x08};
-  RDTimeEdit(QWidget *parent=0,const char *name=0);
+  RDTimeEdit(QWidget *parent=0);
   ~RDTimeEdit();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;

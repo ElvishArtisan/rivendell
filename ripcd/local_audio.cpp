@@ -2,9 +2,7 @@
 //
 // A Rivendell switcher driver for the BroadcastTools 10x1
 //
-//   (C) Copyright 2002-2003 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: local_audio.cpp,v 1.9 2010/08/03 23:39:26 cvs Exp $
+//   (C) Copyright 2002-2003,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -27,9 +25,8 @@
 #include <globals.h>
 #include <local_audio.h>
 
-
-LocalAudio::LocalAudio(RDMatrix *matrix,QObject *parent,const char *name)
-  : Switcher(matrix,parent,name)
+LocalAudio::LocalAudio(RDMatrix *matrix,QObject *parent)
+  : Switcher(matrix,parent)
 {
   //
   // Get Matrix Parameters

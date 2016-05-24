@@ -4,9 +4,7 @@
 #
 #  Enable a remote host in MySQL
 #
-# (C) Copyright 2011 Fred Gleason <fredg@paravelsystems.com>
-#
-#      $Id: rd_mysql_enable_host.sh,v 1.1 2011/05/11 21:52:57 cvs Exp $
+# (C) Copyright 2011,2016 Fred Gleason <fredg@paravelsystems.com>
 #
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License version 2 as

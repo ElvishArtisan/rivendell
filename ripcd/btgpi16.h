@@ -2,7 +2,7 @@
 //
 // A Rivendell switcher driver for the BroadcastTools GPI-16
 //
-//   (C) Copyright 2002-2005,2010,2014 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2005,2010,2014,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -33,12 +33,11 @@
 #define BTGPI16_POLL_INTERVAL 100
 #define BTGPI16_GPIO_PINS 16
 
-
 class BtGpi16 : public Switcher
 {
  Q_OBJECT
  public:
-  BtGpi16(RDMatrix *matrix,QObject *parent=0,const char *name=0);
+  BtGpi16(RDMatrix *matrix,QObject *parent=0);
   ~BtGpi16();
   RDMatrix::Type type();
   unsigned gpiQuantity();

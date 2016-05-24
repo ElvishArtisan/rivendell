@@ -2,9 +2,7 @@
 //
 // Edit Rivendell System-wide Settings.
 //
-//   (C) Copyright 2009 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: edit_settings.h,v 1.4.8.1 2012/11/26 20:19:38 cvs Exp $
+//   (C) Copyright 2009,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -41,7 +39,7 @@ class EditSettings : public QDialog
 {
   Q_OBJECT
   public:
-   EditSettings(QWidget *parent=0,const char *name=0);
+   EditSettings(QWidget *parent=0);
    ~EditSettings();
    QSize sizeHint() const;
    QSizePolicy sizePolicy() const;

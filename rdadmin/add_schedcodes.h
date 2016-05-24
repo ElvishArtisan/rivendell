@@ -4,8 +4,6 @@
 //
 //   Stefan Gabriel <stg@st-gabriel.de>
 //
-//   
-//
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
 //   published by the Free Software Foundation.
@@ -31,7 +29,7 @@ class AddSchedCode : public QDialog
 {
   Q_OBJECT
   public:
-   AddSchedCode(QString *schedCode,QWidget *parent=0,const char *name=0);
+   AddSchedCode(QString *schedCode,QWidget *parent=0);
    ~AddSchedCode();
    QSize sizeHint() const;
    QSizePolicy sizePolicy() const;

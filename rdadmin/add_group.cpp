@@ -1,10 +1,8 @@
 // add_group.cpp
 //
-// Add a Rivendell Service
+// Add a Rivendell Group
 //
-//   (C) Copyright 2002 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: add_group.cpp,v 1.20 2010/07/29 19:32:34 cvs Exp $
+//   (C) Copyright 2002,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -39,8 +37,8 @@
 #include <rdtextvalidator.h>
 #include <rdescape_string.h>
 
-AddGroup::AddGroup(QString *group,QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+AddGroup::AddGroup(QString *group,QWidget *parent)
+  : QDialog(parent,"",true)
 {
   group_group=group;
 
@@ -65,17 +63,16 @@ AddGroup::AddGroup(QString *group,QWidget *parent,const char *name)
   //
   // Text Validator
   //
-  RDTextValidator *validator=new RDTextValidator(this,"validator");
+  RDTextValidator *validator=new RDTextValidator(this);
 
   //
   // Group Name
   //
-  group_name_edit=new QLineEdit(this,"group_name_edit");
+  group_name_edit=new QLineEdit(this);
   group_name_edit->setGeometry(145,11,sizeHint().width()-150,19);
   group_name_edit->setMaxLength(10);
   group_name_edit->setValidator(validator);
-  QLabel *label=new QLabel(group_name_edit,tr("&New Group Name:"),
-				      this,"group_name_label");
+  QLabel *label=new QLabel(group_name_edit,tr("&New Group Name:"),this);
   label->setGeometry(10,11,130,19);
   label->setFont(font);
   label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
@@ -83,11 +80,10 @@ AddGroup::AddGroup(QString *group,QWidget *parent,const char *name)
   //
   // Enable Users Checkbox
   //
-  group_users_box=new QCheckBox(this,"group_users_box");
+  group_users_box=new QCheckBox(this);
   group_users_box->setGeometry(40,40,15,15);
   group_users_box->setChecked(true);
-  label=new QLabel(group_users_box,tr("Enable Group for All Users"),
-				      this,"group_users_label");
+  label=new QLabel(group_users_box,tr("Enable Group for All Users"),this);
   label->setGeometry(60,38,sizeHint().width()-60,19);
   label->setFont(user_font);
   label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
@@ -95,11 +91,10 @@ AddGroup::AddGroup(QString *group,QWidget *parent,const char *name)
   //
   // Enable Services Checkbox
   //
-  group_svcs_box=new QCheckBox(this,"group_svcs_box");
+  group_svcs_box=new QCheckBox(this);
   group_svcs_box->setGeometry(40,61,15,15);
   group_svcs_box->setChecked(true);
-  label=new QLabel(group_svcs_box,tr("Enable Group for All Services"),
-				      this,"group_svcs_label");
+  label=new QLabel(group_svcs_box,tr("Enable Group for All Services"),this);
   label->setGeometry(60,58,sizeHint().width()-60,19);
   label->setFont(user_font);
   label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
@@ -107,7 +102,7 @@ AddGroup::AddGroup(QString *group,QWidget *parent,const char *name)
   //
   //  Ok Button
   //
-  QPushButton *ok_button=new QPushButton(this,"ok_button");
+  QPushButton *ok_button=new QPushButton(this);
   ok_button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
   ok_button->setDefault(true);
   ok_button->setFont(font);
@@ -117,7 +112,7 @@ AddGroup::AddGroup(QString *group,QWidget *parent,const char *name)
   //
   //  Cancel Button
   //
-  QPushButton *cancel_button=new QPushButton(this,"cancel_button");
+  QPushButton *cancel_button=new QPushButton(this);
   cancel_button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,
 			     80,50);
   cancel_button->setFont(font);
@@ -201,7 +196,7 @@ void AddGroup::okData()
     delete q;
   }
 
-  EditGroup *group=new EditGroup(group_name_edit->text(),this,"group");
+  EditGroup *group=new EditGroup(group_name_edit->text(),this);
   if(group->exec()<0) {
     sql=QString().sprintf("delete from USER_PERMS where GROUP_NAME=\"%s\"",
 			  (const char *)RDEscapeString(group_name_edit->text()));

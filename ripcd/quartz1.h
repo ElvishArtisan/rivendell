@@ -2,9 +2,7 @@
 //
 // A Rivendell switcher driver for the Quartz Type 1 Switcher Protocol
 //
-//   (C) Copyright 2002-2004,2008 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: quartz1.h,v 1.8 2010/08/03 23:39:26 cvs Exp $
+//   (C) Copyright 2002-2004,2008,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -41,7 +39,7 @@ class Quartz1 : public Switcher
 {
  Q_OBJECT
  public:
-  Quartz1(RDMatrix *matrix,QObject *parent=0,const char *name=0);
+  Quartz1(RDMatrix *matrix,QObject *parent=0);
   RDMatrix::Type type();
   unsigned gpiQuantity();
   unsigned gpoQuantity();

@@ -52,7 +52,7 @@ class EditLog : public QDialog
  Q_OBJECT
  public:
   EditLog(QString logname,vector<RDLogLine> *clipboard,
-	  vector<QString> *new_logs,QWidget *parent=0,const char *name=0);
+	  vector<QString> *new_logs,QWidget *parent=0);
   ~EditLog();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;

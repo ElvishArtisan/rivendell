@@ -2,9 +2,7 @@
 //
 // Add a Rivendell User
 //
-//   (C) Copyright 2002 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: add_user.h,v 1.8 2010/07/29 19:32:34 cvs Exp $
+//   (C) Copyright 2002,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -33,12 +31,11 @@
 
 #include <rduser.h>
 
-
 class AddUser : public QDialog
 {
   Q_OBJECT
   public:
-   AddUser(QString *username,QWidget *parent=0,const char *name=0);
+   AddUser(QString *username,QWidget *parent=0);
    ~AddUser();
    QSize sizeHint() const;
    QSizePolicy sizePolicy() const;

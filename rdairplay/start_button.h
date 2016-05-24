@@ -2,9 +2,7 @@
 //
 // The Start Button for RDAirPlay Rivendell
 //
-//   (C) Copyright 2002-2003 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: start_button.h,v 1.16 2010/07/29 19:32:36 cvs Exp $
+//   (C) Copyright 2002-2003,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -37,7 +35,7 @@ class StartButton : public QPushButton
  public:
   enum Mode {Stop=0,Play=1,Pause=2,AddFrom=3,AddTo=4,DeleteFrom=5,
 	     MoveFrom=6,MoveTo=7,CopyFrom=8,CopyTo=9,Disabled=10,Error=11};
-  StartButton(bool allow_pause=false,QWidget *parent=0,const char *name=0);
+  StartButton(bool allow_pause=false,QWidget *parent=0);
   void setTime(QString);
   void setTime(QTime);
   void setPort(QString port);

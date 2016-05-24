@@ -2,9 +2,7 @@
 //
 // The Rivendell Replicator Daemon Global Definitions
 //
-//   (C) Copyright 2010 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: globals.h,v 1.2 2010/07/29 19:32:37 cvs Exp $
+//   (C) Copyright 2010,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -28,5 +26,6 @@
 
 extern RDConfig *rdconfig;
 extern RDSystem *rdsystem;
+
 
 #endif  // GLOBALS_H

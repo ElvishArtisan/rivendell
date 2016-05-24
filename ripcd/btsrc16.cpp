@@ -2,9 +2,7 @@
 //
 // A Rivendell switcher driver for the BroadcastTools SRC-16
 //
-//   (C) Copyright 2002-2005,2010 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id:
+//   (C) Copyright 2002-2005,2010,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -27,9 +25,8 @@
 #include <globals.h>
 #include <btsrc16.h>
 
-
-BtSrc16::BtSrc16(RDMatrix *matrix,QObject *parent,const char *name)
-  : Switcher(matrix,parent,name)
+BtSrc16::BtSrc16(RDMatrix *matrix,QObject *parent)
+  : Switcher(matrix,parent)
 {
   //
   // Initialize Data Structures

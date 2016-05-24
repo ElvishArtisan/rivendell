@@ -19,7 +19,6 @@
 //
 
 #include <unistd.h>
-#include <vector>
 
 #include <qapplication.h>
 #include <qwindowsstyle.h>
@@ -95,8 +94,8 @@ RDSystem *catch_system=NULL;
 #include "../icons/rivendell-22x22.xpm"
 
 
-MainWidget::MainWidget(QWidget *parent,const char *name)
-  :QWidget(parent,name)
+MainWidget::MainWidget(QWidget *parent)
+  :QWidget(parent)
 {
   QString str;
   catch_host_warnings=false;
@@ -241,7 +240,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // CAE Connection
   //
-  catch_cae=new RDCae(rdstation_conf,catch_config,this,"catch_cae");
+  catch_cae=new RDCae(rdstation_conf,catch_config,this);
   connect(catch_cae,SIGNAL(isConnected(bool)),this,SLOT(initData(bool)));
   connect(catch_cae,SIGNAL(playing(int)),this,SLOT(playedData(int)));
   connect(catch_cae,SIGNAL(playStopped(int)),
@@ -256,15 +255,14 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // Deck Monitors
   //
-  catch_monitor_view=new QScrollView(this,"catch_monitor_view",
-				     Qt::WNoAutoErase);
+  catch_monitor_view=new QScrollView(this,"",Qt::WNoAutoErase);
   catch_monitor_vbox=new VBox(catch_monitor_view);
   catch_monitor_vbox->setSpacing(2);
   catch_monitor_view->addChild(catch_monitor_vbox);
 
-  QSignalMapper *mapper=new QSignalMapper(this,"deck_mapper");
+  QSignalMapper *mapper=new QSignalMapper(this);
   connect(mapper,SIGNAL(mapped(int)),this,SLOT(abortData(int)));
-  QSignalMapper *mon_mapper=new QSignalMapper(this,"monitor_mapper");
+  QSignalMapper *mon_mapper=new QSignalMapper(this);
   connect(mon_mapper,SIGNAL(mapped(int)),this,SLOT(monitorData(int)));
   QString sql;
   RDSqlQuery *q1;
@@ -274,7 +272,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   catch_station_count=0;
   while(q->next()) {
     catch_connect[catch_station_count].connect=
-      new RDCatchConnect(catch_station_count,this,"catch_connect");
+      new RDCatchConnect(catch_station_count,this);
     catch_connect[catch_station_count].station=
       q->value(0).toString().lower();
     connect(catch_connect[catch_station_count].connect,
@@ -363,18 +361,16 @@ order by CHANNEL",(const char *)q->value(0).toString().lower());
   catch_show_active_label->setAlignment(AlignLeft|AlignVCenter);
   connect(catch_show_active_box,SIGNAL(toggled(bool)),
 	  this,SLOT(filterChangedData(bool)));
-  catch_show_today_box=new QCheckBox(this,"catch_show_today_box");
-  catch_show_today_label=new QLabel(catch_show_active_box,
-				     tr("Show Only Today's Events"),
-				     this,"catch_show_today_label");
+  catch_show_today_box=new QCheckBox(this);
+  catch_show_today_label=
+    new QLabel(catch_show_active_box,tr("Show Only Today's Events"),this);
   catch_show_today_label->setFont(label_font);
   catch_show_today_label->setAlignment(AlignLeft|AlignVCenter);
   connect(catch_show_today_box,SIGNAL(toggled(bool)),
 	  this,SLOT(filterChangedData(bool)));
 
-  catch_dow_box=new QComboBox(this,"catch_down_box");
-  catch_dow_label=new QLabel(catch_dow_box,tr("Show DayOfWeek:"),
-				     this,"catch_dow_label");
+  catch_dow_box=new QComboBox(this);
+  catch_dow_label=new QLabel(catch_dow_box,tr("Show DayOfWeek:"),this);
   catch_dow_label->setFont(label_font);
   catch_dow_label->setAlignment(AlignRight|AlignVCenter);
   catch_dow_box->insertItem(tr("All"));
@@ -399,7 +395,7 @@ order by CHANNEL",(const char *)q->value(0).toString().lower());
   //
   // Cart List
   //
-  catch_recordings_list=new CatchListView(this,"catch_recordings_list");
+  catch_recordings_list=new CatchListView(this);
   catch_recordings_list->setAllColumnsShowFocus(true);
   catch_recordings_list->setItemMargin(5);
   catch_recordings_list->setFont(list_font);
@@ -481,7 +477,7 @@ order by CHANNEL",(const char *)q->value(0).toString().lower());
   //
   // Add Button
   //
-  catch_add_button=new QPushButton(this,"add_button");
+  catch_add_button=new QPushButton(this);
   catch_add_button->setFont(button_font);
   catch_add_button->setText(tr("&Add"));
   connect(catch_add_button,SIGNAL(clicked()),this,SLOT(addData()));
@@ -489,7 +485,7 @@ order by CHANNEL",(const char *)q->value(0).toString().lower());
   //
   // Edit Button
   //
-  catch_edit_button=new QPushButton(this,"edit_button");
+  catch_edit_button=new QPushButton(this);
   catch_edit_button->setFont(button_font);
   catch_edit_button->setText(tr("&Edit"));
   connect(catch_edit_button,SIGNAL(clicked()),this,SLOT(editData()));
@@ -497,7 +493,7 @@ order by CHANNEL",(const char *)q->value(0).toString().lower());
   //
   // Delete Button
   //
-  catch_delete_button=new QPushButton(this,"delete_button");
+  catch_delete_button=new QPushButton(this);
   catch_delete_button->setFont(button_font);
   catch_delete_button->setText(tr("&Delete"));
   connect(catch_delete_button,SIGNAL(clicked()),this,SLOT(deleteData()));
@@ -505,7 +501,7 @@ order by CHANNEL",(const char *)q->value(0).toString().lower());
   //
   // Scroll Button
   //
-  catch_scroll_button=new QPushButton(this,"catch_scroll_button");
+  catch_scroll_button=new QPushButton(this);
   catch_scroll_button->setFont(button_font);
   catch_scroll_button->setText(tr("Scroll"));
   connect(catch_scroll_button,SIGNAL(clicked()),this,SLOT(scrollButtonData()));
@@ -513,7 +509,7 @@ order by CHANNEL",(const char *)q->value(0).toString().lower());
   //
   // Reports Button
   //
-  catch_reports_button=new QPushButton(this,"catch_reports_button");
+  catch_reports_button=new QPushButton(this);
   catch_reports_button->setFont(button_font);
   catch_reports_button->setText(tr("Reports"));
   connect(catch_reports_button,SIGNAL(clicked()),this,SLOT(reportsButtonData()));
@@ -521,34 +517,31 @@ order by CHANNEL",(const char *)q->value(0).toString().lower());
   //
   // Wall Clock
   //
-  catch_clock_label=new QLabel("00:00:00",this,"catch_clock_label");
+  catch_clock_label=new QLabel("00:00:00",this);
   catch_clock_label->setFont(clock_font);
   catch_clock_label->setAlignment(AlignCenter);
-  catch_clock_timer=new QTimer(this,"catch_clock_timer");
+  catch_clock_timer=new QTimer(this);
   connect(catch_clock_timer,SIGNAL(timeout()),this,SLOT(clockData()));
   clockData();
 
   //
   // Play Head Button
   //
-  catch_head_button=
-    new RDTransportButton(RDTransportButton::PlayFrom,this,"catch_head_button");
+  catch_head_button=new RDTransportButton(RDTransportButton::PlayFrom,this);
   catch_head_button->setDisabled(true);
   connect(catch_head_button,SIGNAL(clicked()),this,SLOT(headButtonData()));
 
   //
   // Play Tail Button
   //
-  catch_tail_button=
-    new RDTransportButton(RDTransportButton::PlayTo,this,"catch_tail_button");
+  catch_tail_button=new RDTransportButton(RDTransportButton::PlayTo,this);
   catch_tail_button->setDisabled(true);
   connect(catch_tail_button,SIGNAL(clicked()),this,SLOT(tailButtonData()));
 
   //
   // Play Stop Button
   //
-  catch_stop_button=
-    new RDTransportButton(RDTransportButton::Stop,this,"catch_stop_button");
+  catch_stop_button=new RDTransportButton(RDTransportButton::Stop,this);
   catch_stop_button->setDisabled(true);
   catch_stop_button->setOnColor(red);
   connect(catch_stop_button,SIGNAL(clicked()),this,SLOT(stopButtonData()));
@@ -557,7 +550,7 @@ order by CHANNEL",(const char *)q->value(0).toString().lower());
   //
   // Close Button
   //
-  catch_close_button=new QPushButton(this,"close_button");
+  catch_close_button=new QPushButton(this);
   catch_close_button->setFont(button_font);
   catch_close_button->setText(tr("&Close"));
   catch_close_button->setFocus();
@@ -567,13 +560,13 @@ order by CHANNEL",(const char *)q->value(0).toString().lower());
   //
   // Next Event Timer
   //
-  catch_next_timer=new QTimer(this,"catch_next_timer");
+  catch_next_timer=new QTimer(this);
   connect(catch_next_timer,SIGNAL(timeout()),this,SLOT(nextEventData()));
 
   //
   // Midnight Timer
   //
-  catch_midnight_timer=new QTimer(this,"catch_midnight_timer");
+  catch_midnight_timer=new QTimer(this);
   connect(catch_midnight_timer,SIGNAL(timeout()),this,SLOT(midnightData()));
   midnightData();
   LoadGeometry();
@@ -592,7 +585,7 @@ order by CHANNEL",(const char *)q->value(0).toString().lower());
   // Silly Resize Workaround
   // (so that the deck monitors get laid out properly)
   //
-  QTimer *timer=new QTimer(this,"resize_timer");
+  QTimer *timer=new QTimer(this);
   connect(timer,SIGNAL(timeout()),this,SLOT(resizeData()));
   timer->start(1,true);
 }
@@ -785,7 +778,7 @@ void MainWidget::editData()
 	break;
 
       case RDRecording::Playout:
-	playout=new EditPlayout(id,&new_events,&catch_filter,this,"playout");
+	playout=new EditPlayout(id,&new_events,&catch_filter,this);
 	if(playout->exec()>=0) {
 	  RefreshLine(item);
 	  new_conn=GetConnection(item->text(24));
@@ -801,7 +794,7 @@ void MainWidget::editData()
 	break;
 
       case RDRecording::MacroEvent:
-	event=new EditCartEvent(id,&new_events,this,"recording");
+	event=new EditCartEvent(id,&new_events,this);
 	if(event->exec()>=0) {
 	  RefreshLine(item);
 	  new_conn=GetConnection(item->text(24));
@@ -817,7 +810,7 @@ void MainWidget::editData()
 	break;
 
       case RDRecording::SwitchEvent:
-	switch_event=new EditSwitchEvent(id,&new_events,this,"recording");
+	switch_event=new EditSwitchEvent(id,&new_events,this);
 	if(switch_event->exec()>=0) {
 	  RefreshLine(item);
 	  new_conn=GetConnection(item->text(24));
@@ -833,7 +826,7 @@ void MainWidget::editData()
 	break;
 
       case RDRecording::Download:
-	download=new EditDownload(id,&new_events,&catch_filter,this,"playout");
+	download=new EditDownload(id,&new_events,&catch_filter,this);
 	if(download->exec()>=0) {
 	  RefreshLine(item);
 	  new_conn=GetConnection(item->text(24));
@@ -849,7 +842,7 @@ void MainWidget::editData()
 	break;
 
       case RDRecording::Upload:
-	upload=new EditUpload(id,&new_events,&catch_filter,this,"playout");
+	upload=new EditUpload(id,&new_events,&catch_filter,this);
 	if(upload->exec()>=0) {
 	  RefreshLine(item);
 	  new_conn=GetConnection(item->text(24));
@@ -2631,7 +2624,7 @@ int main(int argc,char *argv[])
   //
   // Start Event Loop
   //
-  MainWidget *w=new MainWidget(NULL,"main");
+  MainWidget *w=new MainWidget();
   a.setMainWidget(w);
   w->show();
   return a.exec();

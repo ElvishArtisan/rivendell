@@ -2,9 +2,7 @@
 //
 // Add a Rivendell Service
 //
-//   (C) Copyright 2002 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: add_svc.cpp,v 1.20.8.1 2014/01/10 15:58:28 cvs Exp $
+//   (C) Copyright 2002,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -38,9 +36,8 @@
 #include <rdpasswd.h>
 #include <rdtextvalidator.h>
 
-
-AddSvc::AddSvc(QString *svcname,QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+AddSvc::AddSvc(QString *svcname,QWidget *parent)
+  : QDialog(parent,"",true)
 {
   svc_name=svcname;
 
@@ -148,7 +145,7 @@ void AddSvc::okData()
     return;
   }
 
-  RDSvc *svc=new RDSvc(svc_name_edit->text(),this,"svc");
+  RDSvc *svc=new RDSvc(svc_name_edit->text(),this);
   if(svc->exists()) {
     QMessageBox::warning(this,tr("Service Exists"),
 			 tr("Service Already Exists!"));
@@ -164,7 +161,7 @@ void AddSvc::okData()
   delete svc;
   *svc_name=svc_name_edit->text();
 
-  EditSvc *edit_svc=new EditSvc(svc_name_edit->text(),this,"svc");
+  EditSvc *edit_svc=new EditSvc(svc_name_edit->text(),this);
   if(edit_svc->exec()<0) {
     delete edit_svc;
     done(-1);

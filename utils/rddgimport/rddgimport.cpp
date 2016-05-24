@@ -2,9 +2,7 @@
 //
 // A Qt-based application for importing Dial Global CDN downloads
 //
-//   (C) Copyright 2012 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rddgimport.cpp,v 1.1.2.12 2014/01/21 21:59:33 cvs Exp $
+//   (C) Copyright 2012,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -44,8 +42,8 @@
 
 #include <rddgimport.h>
 
-MainWidget::MainWidget(QWidget *parent,const char *name)
-  : QWidget(parent,name)
+MainWidget::MainWidget(QWidget *parent)
+  : QWidget(parent)
 {
   dg_user=NULL;
   dg_group=NULL;
@@ -662,7 +660,7 @@ int main(int argc,char *argv[])
   //
   // Start Event Loop
   //
-  MainWidget *w=new MainWidget(NULL,"main");
+  MainWidget *w=new MainWidget();
   a.setMainWidget(w);
   w->setGeometry(QRect(QPoint(0,0),w->sizeHint()));
   w->show();

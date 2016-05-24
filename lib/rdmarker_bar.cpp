@@ -2,9 +2,7 @@
 //
 // A marker widget for the RDCueEdit widget.
 //
-//   (C) Copyright 2002-2013 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdmarker_bar.cpp,v 1.1.2.1 2013/07/05 21:07:28 cvs Exp $
+//   (C) Copyright 2002-2013,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -25,8 +23,8 @@
 
 #include <rdmarker_bar.h>
 
-RDMarkerBar::RDMarkerBar(QWidget *parent,const char *name)
-  : QLabel(parent,name)
+RDMarkerBar::RDMarkerBar(QWidget *parent)
+  : QLabel(parent)
 {
   for(int i=0;i<RDMarkerBar::MaxSize;i++) {
     marker_pos[i]=0;

@@ -2,9 +2,7 @@
 ##
 ##    Rivendell init script for LSB and chkconfig(8) compliant Linux systems.
 ##
-##    (C) Copyright 2002-2006 Fred Gleason <fredg@paravelsystems.com>
-##
-##      $Id: rivendell-suse.in,v 1.16.4.1 2013/11/13 18:30:57 cvs Exp $
+##    (C) Copyright 2002-2006,2016 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##    This program is free software; you can redistribute it and/or modify
 ##    it under the terms of version 2 of the GNU General Public License as

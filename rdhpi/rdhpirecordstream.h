@@ -53,7 +53,7 @@ class RDHPIRecordStream : public QObject,public RDWaveFile
   enum RecordState {Recording=0,RecordReady=1,Paused=2,Stopped=3,
 		    RecordStarted=4};
   enum Error {Ok=0,NoFile=1,NoStream=2,AlreadyOpen=3};
-  RDHPIRecordStream(RDHPISoundCard *card,QWidget *parent=0,const char *name=0);
+  RDHPIRecordStream(RDHPISoundCard *card,QWidget *parent=0);
   ~RDHPIRecordStream();
   QString errorString(RDHPIRecordStream::Error err);
   RDHPIRecordStream::Error createWave();

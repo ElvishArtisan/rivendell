@@ -420,8 +420,7 @@ void EditClock::schedRules()
 
 void EditClock::svcData()
 {
-  EditPerms *dialog=new EditPerms(edit_name,EditPerms::ObjectClock,
-				  this,"dialog");
+  EditPerms *dialog=new EditPerms(edit_name,EditPerms::ObjectClock,this);
   dialog->exec();
   delete dialog;
 }
@@ -479,7 +478,7 @@ void EditClock::saveAsData()
   }
   delete q;
 
-  AddClock *addclock=new AddClock(&clockname,this,"addclock");
+  AddClock *addclock=new AddClock(&clockname,this);
   if(addclock->exec()<0) {
     delete addclock;
     return;
@@ -541,8 +540,7 @@ void EditClock::editEventData(int line)
   if(event==NULL) {
     return;
   }
-  EditEvent *dialog=new EditEvent(event->name(),false,&new_events,
-				  this,"dialog");
+  EditEvent *dialog=new EditEvent(event->name(),false,&new_events,this);
   if(dialog->exec()<-1) {
     delete dialog;
     return;

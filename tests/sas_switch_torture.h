@@ -3,9 +3,7 @@
 // Generate Rivendell macro carts and scheduling for torture-testing
 //  an SAS router
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: sas_switch_torture.h,v 1.6 2010/07/29 19:32:39 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,7 +18,6 @@
 //   License along with this program; if not, write to the Free Software
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
-
 
 #ifndef SAS_SWITCH_TORTURE_H
 #define SAS_SWITCH_TORTURE_H
@@ -43,7 +40,7 @@ class MainWidget : public QWidget
 {
   Q_OBJECT
  public:
-  MainWidget(QWidget *parent=0,const char *name=0);
+  MainWidget(QWidget *parent=0);
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
 

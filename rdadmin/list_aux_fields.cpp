@@ -2,9 +2,7 @@
 //
 // List Auxiliary Fields for an RSS Feed
 //
-//   (C) Copyright 2002-2007 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: list_aux_fields.cpp,v 1.5 2010/07/29 19:32:34 cvs Exp $
+//   (C) Copyright 2002-2007,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -31,9 +29,8 @@
 #include <edit_aux_field.h>
 #include <add_aux_field.h>
 
-
-ListAuxFields::ListAuxFields(unsigned feed_id,QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+ListAuxFields::ListAuxFields(unsigned feed_id,QWidget *parent)
+  : QDialog(parent,"",true)
 {
   list_feed_id=feed_id;
   setCaption(tr("Auxiliary Metadata Fields"));
@@ -57,12 +54,10 @@ ListAuxFields::ListAuxFields(unsigned feed_id,QWidget *parent,const char *name)
   //
   // Fields List Box
   //
-  list_list_view=new QListView(this,"list_box");
+  list_list_view=new QListView(this);
   list_list_view->
     setGeometry(10,24,sizeHint().width()-20,sizeHint().height()-94);
-  QLabel *label=
-    new QLabel(list_list_view,tr("Auxiliary Metadata Fields"),
-	       this,"list_list_view_label");
+  QLabel *label=new QLabel(list_list_view,tr("Auxiliary Metadata Fields"),this);
   label->setFont(bold_font);
   label->setGeometry(14,5,sizeHint().width()-28,19);
   list_list_view->setAllColumnsShowFocus(true);
@@ -79,7 +74,7 @@ ListAuxFields::ListAuxFields(unsigned feed_id,QWidget *parent,const char *name)
   //
   //  Add Button
   //
-  QPushButton *button=new QPushButton(this,"add_button");
+  QPushButton *button=new QPushButton(this);
   button->setGeometry(10,sizeHint().height()-60,80,50);
   button->setFont(bold_font);
   button->setText(tr("&Add"));
@@ -88,7 +83,7 @@ ListAuxFields::ListAuxFields(unsigned feed_id,QWidget *parent,const char *name)
   //
   //  Edit Button
   //
-  button=new QPushButton(this,"edit_button");
+  button=new QPushButton(this);
   button->setGeometry(100,sizeHint().height()-60,80,50);
   button->setFont(bold_font);
   button->setText(tr("&Edit"));
@@ -97,7 +92,7 @@ ListAuxFields::ListAuxFields(unsigned feed_id,QWidget *parent,const char *name)
   //
   //  Delete Button
   //
-  button=new QPushButton(this,"delete_button");
+  button=new QPushButton(this);
   button->setGeometry(190,sizeHint().height()-60,80,50);
   button->setFont(bold_font);
   button->setText(tr("&Delete"));
@@ -106,7 +101,7 @@ ListAuxFields::ListAuxFields(unsigned feed_id,QWidget *parent,const char *name)
   //
   //  Close Button
   //
-  button=new QPushButton(this,"close_button");
+  button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,
 			     80,50);
   button->setFont(bold_font);

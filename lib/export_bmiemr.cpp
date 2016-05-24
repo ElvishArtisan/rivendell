@@ -2,9 +2,7 @@
 //
 // Export a Rivendell Report to BMI EMR Format
 //
-//   (C) Copyright 2002-2006 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: export_bmiemr.cpp,v 1.10.8.1.2.1 2014/03/19 23:50:20 cvs Exp $
+//   (C) Copyright 2002-2006,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as

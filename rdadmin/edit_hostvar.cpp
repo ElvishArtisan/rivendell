@@ -1,10 +1,8 @@
 // edit_hostvar.cpp
 //
-// Edit a Rivendell Workstation Configuration
+// Edit a Rivendell Host Variable
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: edit_hostvar.cpp,v 1.8 2010/07/29 19:32:34 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -44,10 +42,9 @@
 #include <list_matrices.h>
 #include <list_hostvars.h>
 
-
 EditHostvar::EditHostvar(QString station,QString var,QString *varvalue,
-			 QString *remark,QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+			 QString *remark,QWidget *parent)
+  : QDialog(parent,"",true)
 {
   edit_varvalue=varvalue;
   edit_remark=remark;
@@ -71,11 +68,10 @@ EditHostvar::EditHostvar(QString station,QString var,QString *varvalue,
   //
   // Variable Name
   //
-  edit_name_edit=new QLineEdit(this,"edit_name_edit");
+  edit_name_edit=new QLineEdit(this);
   edit_name_edit->setGeometry(125,11,120,19);
   edit_name_edit->setReadOnly(true);
-  QLabel *label=new QLabel(edit_name_edit,tr("Variable Name:"),
-			   this,"edit_name_label");
+  QLabel *label=new QLabel(edit_name_edit,tr("Variable Name:"),this);
   label->setGeometry(10,11,110,19);
   label->setFont(font);
   label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
@@ -83,11 +79,10 @@ EditHostvar::EditHostvar(QString station,QString var,QString *varvalue,
   //
   // Variable Value
   //
-  edit_varvalue_edit=new QLineEdit(this,"edit_varvalue_edit");
+  edit_varvalue_edit=new QLineEdit(this);
   edit_varvalue_edit->setGeometry(125,33,sizeHint().width()-135,19);
   edit_varvalue_edit->setMaxLength(255);
-  label=new QLabel(edit_varvalue_edit,tr("Variable Value:"),
-		   this,"edit_varvalue_label");
+  label=new QLabel(edit_varvalue_edit,tr("Variable Value:"),this);
   label->setGeometry(10,33,110,19);
   label->setFont(font);
   label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
@@ -95,10 +90,10 @@ EditHostvar::EditHostvar(QString station,QString var,QString *varvalue,
   //
   // Remark
   //
-  edit_remark_edit=new QLineEdit(this,"edit_remark_edit");
+  edit_remark_edit=new QLineEdit(this);
   edit_remark_edit->setGeometry(125,55,sizeHint().width()-135,19);
   edit_remark_edit->setMaxLength(255);
-  label=new QLabel(edit_remark_edit,tr("Remark:"),this,"edit_remark_label");
+  label=new QLabel(edit_remark_edit,tr("Remark:"),this);
   label->setGeometry(10,55,110,19);
   label->setFont(font);
   label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
@@ -106,7 +101,7 @@ EditHostvar::EditHostvar(QString station,QString var,QString *varvalue,
   //
   //  Ok Button
   //
-  QPushButton *ok_button=new QPushButton(this,"ok_button");
+  QPushButton *ok_button=new QPushButton(this);
   ok_button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
   ok_button->setDefault(true);
   ok_button->setFont(font);
@@ -116,7 +111,7 @@ EditHostvar::EditHostvar(QString station,QString var,QString *varvalue,
   //
   //  Cancel Button
   //
-  QPushButton *cancel_button=new QPushButton(this,"cancel_button");
+  QPushButton *cancel_button=new QPushButton(this);
   cancel_button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,
 			     80,50);
   cancel_button->setFont(font);

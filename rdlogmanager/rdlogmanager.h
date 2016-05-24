@@ -18,7 +18,6 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-
 #ifndef RDLOGMANAGER_H
 #define RDLOGMANAGER_H
 
@@ -47,7 +46,6 @@ extern int RunLogOperation(int argc,char *argv[],const QString &svcname,
 extern int RunReportOperation(int argc,char *argv[],const QString &rptname,
 			      bool protect_existing,int start_offset,
 			      int end_offset);
-
 
 class MainWidget : public QWidget
 {

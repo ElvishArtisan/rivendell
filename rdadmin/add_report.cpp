@@ -1,10 +1,8 @@
 // add_report.cpp
 //
-// Edit a Rivendell Report
+// Add a Rivendell Report
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: add_report.cpp,v 1.9 2010/07/29 19:32:34 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -41,11 +39,9 @@
 #include <autofill_carts.h>
 #include <edit_svc_perms.h>
 
-
-AddReport::AddReport(QString *rptname,QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+AddReport::AddReport(QString *rptname,QWidget *parent)
+  : QDialog(parent,"",true)
 {
-
   //
   // Fix the Window Size
   //
@@ -68,17 +64,16 @@ AddReport::AddReport(QString *rptname,QWidget *parent,const char *name)
   //
   // Text Validator
   //
-  RDTextValidator *validator=new RDTextValidator(this,"validator");
+  RDTextValidator *validator=new RDTextValidator(this);
 
   //
   // Report Description
   //
-  add_name_edit=new QLineEdit(this,"add_name_edit");
+  add_name_edit=new QLineEdit(this);
   add_name_edit->setGeometry(170,10,sizeHint().width()-180,19);
   add_name_edit->setMaxLength(64);
   add_name_edit->setValidator(validator);
-  QLabel *label=new QLabel(add_name_edit,tr("&Report Name:"),this,
-			   "add_name_label");
+  QLabel *label=new QLabel(add_name_edit,tr("&Report Name:"),this);
   label->setGeometry(10,10,155,19);
   label->setFont(font);
   label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
@@ -86,7 +81,7 @@ AddReport::AddReport(QString *rptname,QWidget *parent,const char *name)
   //
   //  Ok Button
   //
-  QPushButton *button=new QPushButton(this,"ok_button");
+  QPushButton *button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
   button->setDefault(true);
   button->setFont(font);
@@ -96,7 +91,7 @@ AddReport::AddReport(QString *rptname,QWidget *parent,const char *name)
   //
   //  Cancel Button
   //
-  button=new QPushButton(this,"cancel_button");
+  button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,
 			     80,50);
   button->setFont(font);

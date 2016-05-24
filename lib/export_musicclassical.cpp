@@ -2,9 +2,7 @@
 //
 // Export a Rivendell Classical Music Playout report
 //
-//   (C) Copyright 2014 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: export_musicclassical.cpp,v 1.1.2.1 2014/05/20 22:39:33 cvs Exp $
+//   (C) Copyright 2014,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as

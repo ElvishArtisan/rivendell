@@ -2,9 +2,7 @@
 //
 // System Monitor Applet for Rivendell
 //
-//   (C) Copyright 2012 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdmonitor.h,v 1.1.2.6 2013/11/08 03:57:15 cvs Exp $
+//   (C) Copyright 2012,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -47,7 +45,7 @@ class MainWidget : public QWidget
 {
   Q_OBJECT
  public:
-  MainWidget(QWidget *parent=0,const char *name=0);
+  MainWidget(QWidget *parent=0);
   QSizePolicy sizePolicy() const;
 
  private slots:

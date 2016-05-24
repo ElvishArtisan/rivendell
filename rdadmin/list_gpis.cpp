@@ -1,10 +1,8 @@
 // list_gpis.cpp
 //
-// List a Rivendell GPIOs
+// List Rivendell GPIOs
 //
-//   (C) Copyright 2002-2008 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: list_gpis.cpp,v 1.13.8.1 2013/11/17 04:27:05 cvs Exp $
+//   (C) Copyright 2002-2008,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -36,10 +34,8 @@
 #include <edit_gpi.h>
 #include <globals.h>
 
-
-ListGpis::ListGpis(RDMatrix *matrix,RDMatrix::GpioType type,
-		   QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+ListGpis::ListGpis(RDMatrix *matrix,RDMatrix::GpioType type,QWidget *parent)
+  : QDialog(parent,"",true)
 {
   QString sql;
   RDSqlQuery *q;
@@ -81,9 +77,9 @@ ListGpis::ListGpis(RDMatrix *matrix,RDMatrix::GpioType type,
   //
   // Gpis List Box
   //
-  list_list_view=new QListView(this,"list_box");
+  list_list_view=new QListView(this);
   list_list_label=
-    new QLabel(list_list_view,list_label,this,"list_view_label");
+    new QLabel(list_list_view,list_label,this);
   list_list_label->setFont(bold_font);
   list_list_view->setAllColumnsShowFocus(true);
   list_list_view->setItemMargin(5);
@@ -118,7 +114,7 @@ ListGpis::ListGpis(RDMatrix *matrix,RDMatrix::GpioType type,
   //
   //  Edit Button
   //
-  list_edit_button=new QPushButton(this,"list_edit_button");
+  list_edit_button=new QPushButton(this);
   list_edit_button->setFont(bold_font);
   list_edit_button->setText(tr("&Edit"));
   connect(list_edit_button,SIGNAL(clicked()),this,SLOT(editData()));
@@ -126,7 +122,7 @@ ListGpis::ListGpis(RDMatrix *matrix,RDMatrix::GpioType type,
   //
   //  Ok Button
   //
-  list_ok_button=new QPushButton(this,"list_ok_button");
+  list_ok_button=new QPushButton(this);
   list_ok_button->setDefault(true);
   list_ok_button->setFont(bold_font);
   list_ok_button->setText(tr("&OK"));
@@ -135,7 +131,7 @@ ListGpis::ListGpis(RDMatrix *matrix,RDMatrix::GpioType type,
   //
   //  Cancel Button
   //
-  list_cancel_button=new QPushButton(this,"list_cancel_button");
+  list_cancel_button=new QPushButton(this);
   list_cancel_button->setFont(bold_font);
   list_cancel_button->setText(tr("&Cancel"));
   connect(list_cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
@@ -256,8 +252,7 @@ void ListGpis::editData()
   if(!item->text(3).isEmpty()) {
     offcart=item->text(3).toInt();
   }
-  EditGpi *gpi_box=
-    new EditGpi(gpi,&oncart,&ondesc,&offcart,&offdesc,this,"gpi_box");
+  EditGpi *gpi_box=new EditGpi(gpi,&oncart,&ondesc,&offcart,&offdesc,this);
   if(gpi_box->exec()==0) {
     if(oncart>0) {
       item->setText(1,QString().sprintf("%06d",oncart));

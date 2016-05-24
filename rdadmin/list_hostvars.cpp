@@ -2,9 +2,7 @@
 //
 // List Rivendell Host Variables
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: list_hostvars.cpp,v 1.12 2010/07/29 19:32:35 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -38,9 +36,8 @@
 #include <add_hostvar.h>
 #include <edit_hostvar.h>
 
-
-ListHostvars::ListHostvars(QString station,QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+ListHostvars::ListHostvars(QString station,QWidget *parent)
+  : QDialog(parent,"",true)
 {
   QString str;
 
@@ -68,10 +65,9 @@ ListHostvars::ListHostvars(QString station,QWidget *parent,const char *name)
   //
   // Matrix List Box
   //
-  list_view=new QListView(this,"list_box");
+  list_view=new QListView(this);
   list_view->setGeometry(10,24,sizeHint().width()-20,sizeHint().height()-114);
-  QLabel *label=new QLabel(list_view,tr("Host Variables"),
-			   this,"list_view_label");
+  QLabel *label=new QLabel(list_view,tr("Host Variables"),this);
   label->setFont(font);
   label->setGeometry(14,5,sizeHint().width()-28,19);
   list_view->setAllColumnsShowFocus(true);
@@ -90,7 +86,7 @@ ListHostvars::ListHostvars(QString station,QWidget *parent,const char *name)
   //
   //  Add Button
   //
-  QPushButton *add_button=new QPushButton(this,"add_button");
+  QPushButton *add_button=new QPushButton(this);
   add_button->setGeometry(10,sizeHint().height()-80,80,50);
   add_button->setFont(font);
   add_button->setText(tr("&Add"));
@@ -99,7 +95,7 @@ ListHostvars::ListHostvars(QString station,QWidget *parent,const char *name)
   //
   //  Edit Button
   //
-  QPushButton *edit_button=new QPushButton(this,"edit_button");
+  QPushButton *edit_button=new QPushButton(this);
   edit_button->setGeometry(100,sizeHint().height()-80,80,50);
   edit_button->setFont(font);
   edit_button->setText(tr("&Edit"));
@@ -108,7 +104,7 @@ ListHostvars::ListHostvars(QString station,QWidget *parent,const char *name)
   //
   //  Delete Button
   //
-  QPushButton *delete_button=new QPushButton(this,"delete_button");
+  QPushButton *delete_button=new QPushButton(this);
   delete_button->setGeometry(190,sizeHint().height()-80,80,50);
   delete_button->setFont(font);
   delete_button->setText(tr("&Delete"));
@@ -117,7 +113,7 @@ ListHostvars::ListHostvars(QString station,QWidget *parent,const char *name)
   //
   //  OK Button
   //
-  QPushButton *button=new QPushButton(this,"ok_button");
+  QPushButton *button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,
 			    80,50);
   button->setDefault(true);
@@ -128,7 +124,7 @@ ListHostvars::ListHostvars(QString station,QWidget *parent,const char *name)
   //
   //  Cancel Button
   //
-  button=new QPushButton(this,"cancel_button");
+  button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,
 			    80,50);
   button->setDefault(true);
@@ -162,8 +158,7 @@ void ListHostvars::addData()
   QString varvalue;
   QString varremark;
   AddHostvar *var_dialog=
-    new AddHostvar(list_station,&varname,&varvalue,&varremark,
-		   this,"var_dialog");
+    new AddHostvar(list_station,&varname,&varvalue,&varremark,this);
   if(var_dialog->exec()==0) {
     QListViewItem *item=new QListViewItem(list_view);
     item->setText(0,varname);
@@ -183,8 +178,7 @@ void ListHostvars::editData()
   QString varvalue=item->text(1);
   QString varremark=item->text(2);
   EditHostvar *var_dialog=
-    new EditHostvar(list_station,item->text(0),&varvalue,&varremark,
-		   this,"var_dialog");
+    new EditHostvar(list_station,item->text(0),&varvalue,&varremark,this);
   if(var_dialog->exec()==0) {
     item->setText(1,varvalue);
     item->setText(2,varremark);

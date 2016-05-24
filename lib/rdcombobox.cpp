@@ -2,9 +2,7 @@
 //
 // A Combo Box widget for Rivendell.
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdcombobox.cpp,v 1.8 2011/05/18 18:57:54 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -23,8 +21,8 @@
 #include <rdcombobox.h>
 
 
-RDComboBox::RDComboBox(QWidget *parent,const char *name)
-  : QComboBox(parent,name)
+RDComboBox::RDComboBox(QWidget *parent)
+  : QComboBox(parent)
 {
   combo_setup_mode=false;
 }

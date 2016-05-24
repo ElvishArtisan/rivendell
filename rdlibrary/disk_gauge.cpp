@@ -2,9 +2,7 @@
 //
 // Disk Gauge Widget for RDLibrary.
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: disk_gauge.cpp,v 1.7.8.1 2014/01/08 02:08:38 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -30,8 +28,8 @@
 #include <rdconfig.h>
 #include <rdaudiostore.h>
 
-DiskGauge::DiskGauge(int samp_rate,int chans,QWidget *parent,const char *name)
-  : QWidget(parent,name)
+DiskGauge::DiskGauge(int samp_rate,int chans,QWidget *parent)
+  : QWidget(parent)
 {
   disk_sample_rate=samp_rate;
   disk_channels=chans;

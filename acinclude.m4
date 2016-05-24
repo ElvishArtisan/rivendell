@@ -2,12 +2,10 @@ dnl acinclude.m4
 dnl
 dnl Local Autoconf macro definitions for LibRHpi
 dnl
-dnl   (C) Copyright 2006 Fred Gleason <fredg@paravelsystems.com>
+dnl   (C) Copyright 2006,2016 Fred Gleason <fredg@paravelsystems.com>
 dnl
 dnl   BNV_HAVE_QT Macro Copyright (C) 2001, 2002, 2003, 2005, 2006 
 dnl   Bastiaan Veelo
-dnl
-dnl      $Id: acinclude.m4,v 1.7.8.2 2012/08/08 19:48:29 cvs Exp $
 dnl
 dnl   This program is free software; you can redistribute it and/or modify
 dnl   it under the terms of the GNU General Public License version 2 as

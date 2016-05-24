@@ -42,8 +42,8 @@
 #include <rdcart.h>
 #include <rdlog.h>
 
-MainObject::MainObject(QObject *parent,const char *name)
-  :QObject(parent,name)
+MainObject::MainObject(QObject *parent)
+  :QObject(parent)
 {
   QString sql;
   RDSqlQuery *q;
@@ -283,6 +283,6 @@ void MainObject::PurgeGpioEvents()
 int main(int argc,char *argv[])
 {
   QApplication a(argc,argv,false);
-  new MainObject(NULL,"main");
+  new MainObject();
   return a.exec();
 }

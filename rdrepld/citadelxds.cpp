@@ -2,9 +2,7 @@
 //
 // Replicator implementation for the Citadel XDS Portal
 //
-//   (C) Copyright 2010 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: citadelxds.cpp,v 1.6 2012/03/02 22:33:51 cvs Exp $
+//   (C) Copyright 2010,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as

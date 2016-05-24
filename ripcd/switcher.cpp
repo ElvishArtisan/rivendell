@@ -2,9 +2,7 @@
 //
 // Abstract base class for Rivendell Switcher/GPIO drivers.
 //
-//   (C) Copyright 2002-2007,2010 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: switcher.cpp,v 1.1.8.3 2013/11/16 01:06:01 cvs Exp $
+//   (C) Copyright 2002-2007,2010,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -29,8 +27,8 @@
 
 #include <globals.h>
 
-Switcher::Switcher(RDMatrix *matrix,QObject *parent,const char *name)
-  : QObject(parent,name)
+Switcher::Switcher(RDMatrix *matrix,QObject *parent)
+  : QObject(parent)
 {
   switcher_station_name=matrix->station();
   switcher_matrix_number=matrix->matrix();

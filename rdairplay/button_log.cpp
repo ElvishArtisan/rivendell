@@ -2,9 +2,7 @@
 //
 // The button log widget for RDAirPlay
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: button_log.cpp,v 1.46.6.3 2014/02/06 20:43:50 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -31,8 +29,8 @@
 #include <globals.h>
 
 ButtonLog::ButtonLog(LogPlay *log,RDCae *cae,int id,RDAirPlayConf *conf,
-		     bool allow_pause,QWidget *parent,const char *name)
-  : QWidget(parent,name)
+		     bool allow_pause,QWidget *parent)
+  : QWidget(parent)
 {
   log_id=id;
   log_log=log;
@@ -59,12 +57,12 @@ ButtonLog::ButtonLog(LogPlay *log,RDCae *cae,int id,RDAirPlayConf *conf,
   //
   // Edit Event Dialog
   //
-  log_event_edit=new EditEvent(log_log,log_cae,this,"list_event_edit");
+  log_event_edit=new EditEvent(log_log,log_cae,this);
 
   //
   // Line Boxes / Start Buttons
   //
-  QSignalMapper *mapper=new QSignalMapper(this,"start_button_mapper");
+  QSignalMapper *mapper=new QSignalMapper(this);
   connect(mapper,SIGNAL(mapped(int)),
 	  this,SLOT(startButton(int)));
   for(int i=0;i<BUTTON_PLAY_BUTTONS;i++) {

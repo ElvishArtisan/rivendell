@@ -2,9 +2,7 @@
 //
 // A Rivendell switcher driver for the BroadcastTools SS 4.2
 //
-//   (C) Copyright 2002-2005 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: btss42.cpp,v 1.12 2010/08/03 23:39:26 cvs Exp $
+//   (C) Copyright 2002-2005,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -27,9 +25,8 @@
 #include <globals.h>
 #include <btss42.h>
 
-
-BtSs42::BtSs42(RDMatrix *matrix,QObject *parent,const char *name)
-  : Switcher(matrix,parent,name)
+BtSs42::BtSs42(RDMatrix *matrix,QObject *parent)
+  : Switcher(matrix,parent)
 {
   //
   // Initialize Data Structures

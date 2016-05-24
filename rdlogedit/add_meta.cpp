@@ -2,9 +2,7 @@
 //
 // Add a Rivendell RDCatch Event
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: add_meta.cpp,v 1.9 2010/07/29 19:32:37 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -36,9 +34,8 @@
 
 #include <add_meta.h>
 
-
-AddMeta::AddMeta(QWidget *parent,const char *name)
-  : QDialog(parent,name,true,Qt::WStyle_Customize|Qt::WStyle_DialogBorder)
+AddMeta::AddMeta(QWidget *parent)
+  : QDialog(parent,"",true,Qt::WStyle_Customize|Qt::WStyle_DialogBorder)
 {
   setCaption("");
 
@@ -63,7 +60,7 @@ AddMeta::AddMeta(QWidget *parent,const char *name)
   //
   // Title Label
   //
-  QLabel *label=new QLabel(tr("Insert a:"),this,"title_label");
+  QLabel *label=new QLabel(tr("Insert a:"),this);
   label->setGeometry(0,0,sizeHint().width(),30);
   label->setFont(label_font);
   label->setAlignment(AlignCenter);
@@ -71,7 +68,7 @@ AddMeta::AddMeta(QWidget *parent,const char *name)
   //
   // Marker Button
   //
-  QPushButton *button=new QPushButton(this,"marker_button");
+  QPushButton *button=new QPushButton(this);
   button->setGeometry(10,30,sizeHint().width()-20,50);
   button->setFont(button_font);
   button->setText(tr("&Marker"));
@@ -80,7 +77,7 @@ AddMeta::AddMeta(QWidget *parent,const char *name)
   //
   // Voice Track Button
   //
-  button=new QPushButton(this,"track_button");
+  button=new QPushButton(this);
   button->setGeometry(10,80,sizeHint().width()-20,50);
   button->setFont(button_font);
   button->setText(tr("Voice &Track"));
@@ -89,7 +86,7 @@ AddMeta::AddMeta(QWidget *parent,const char *name)
   //
   // Chain Button
   //
-  button=new QPushButton(this,"chain_button");
+  button=new QPushButton(this);
   button->setGeometry(10,130,sizeHint().width()-20,50);
   button->setFont(button_font);
   button->setText(tr("Log C&hain"));
@@ -98,7 +95,7 @@ AddMeta::AddMeta(QWidget *parent,const char *name)
   //
   //  Cancel Button
   //
-  button=new QPushButton(this,"cancel_button");
+  button=new QPushButton(this);
   button->setGeometry(10,sizeHint().height()-60,sizeHint().width()-20,50);
   button->setFont(button_font);
   button->setText(tr("&Cancel"));

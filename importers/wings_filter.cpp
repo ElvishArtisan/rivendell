@@ -4,9 +4,6 @@
 //
 //   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
 //
-//      $Id: wings_filter.cpp,v 1.13 2010/07/29 19:32:33 cvs Exp $
-//      $Date: 2010/07/29 19:32:33 $
-//
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
 //   published by the Free Software Foundation.
@@ -43,8 +40,8 @@
 RDConfig *rdconfig;
 
 
-MainObject::MainObject(QObject *parent,const char *name)
-  : QObject(parent,name)
+MainObject::MainObject(QObject *parent)
+  : QObject(parent)
 {
   //
   // Read Command Options
@@ -324,6 +321,6 @@ void MainObject::TrimSpaces(char *str)
 int main(int argc,char *argv[])
 {
   QApplication a(argc,argv,false);
-  new MainObject(NULL,"main");
+  new MainObject(NULL);
   return a.exec();
 }

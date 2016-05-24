@@ -2,9 +2,7 @@
 //
 // Add an entry to the reconciliation table.
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: log_traffic.h,v 1.9 2010/07/29 19:32:36 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -25,7 +23,6 @@
 
 #include <rdlog_line.h>
 #include <rdairplay_conf.h>
-
 
 void LogTraffic(const QString &svcname,const QString &logname,
 		RDLogLine *logline,RDLogLine::PlaySource src,

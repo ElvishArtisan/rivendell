@@ -2,9 +2,7 @@
 //
 //   An flashing button widget.
 //
-//   (C) Copyright 2002-2003 Fred Gleason <fredg@paravelsystems.com>
-//
-//    $Id: rdpushbutton.h,v 1.3 2010/07/29 19:32:33 cvs Exp $
+//   (C) Copyright 2002-2003,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -18,7 +16,6 @@
 //   You should have received a copy of the GNU General Public
 //   License along with this program; if not, write to the Free Software
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-//
 //
 
 #ifndef RDPUSHBUTTON_H
@@ -35,16 +32,14 @@
 #define RDPUSHBUTTON_DEFAULT_FLASH_PERIOD 300
 #define RDPUSHBUTTON_DEFAULT_FLASH_COLOR blue
 
-
 class RDPushButton : public QPushButton
 {
   Q_OBJECT
  public:
   enum ClockSource {InternalClock=0,ExternalClock=1};
-  RDPushButton(QWidget *parent,const char *name=0);
-  RDPushButton(const QString &text,QWidget *parent,const char *name=0);
-  RDPushButton(const QIconSet &icon,const QString &text,
-	      QWidget *parent,const char *name=0);
+  RDPushButton(QWidget *parent);
+  RDPushButton(const QString &text,QWidget *parent);
+  RDPushButton(const QIconSet &icon,const QString &text,QWidget *parent);
   QColor flashColor() const;
   void setFlashColor(QColor color);
   int flashPeriod() const;

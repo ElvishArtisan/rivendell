@@ -2,9 +2,7 @@
 //
 // A Batch Importer for Rivendell.
 //
-//   (C) Copyright 2002-2009 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdimport.h,v 1.17.6.3.2.3 2014/07/15 00:45:17 cvs Exp $
+//   (C) Copyright 2002-2009,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -19,7 +17,6 @@
 //   License along with this program; if not, write to the Free Software
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
-
 
 #ifndef RDIMPORT_H
 #define RDIMPORT_H
@@ -57,7 +54,7 @@ class MainObject : public QObject
 {
   Q_OBJECT;
  public:
-  MainObject(QObject *parent=0,const char *name=0);
+  MainObject(QObject *parent=0);
 
  private slots:
   void userData();

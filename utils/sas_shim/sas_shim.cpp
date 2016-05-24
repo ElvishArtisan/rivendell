@@ -2,9 +2,7 @@
 //
 // An RDCatch event import shim for the SAS64000
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: sas_shim.cpp,v 1.8 2010/07/29 19:32:40 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -47,8 +45,8 @@ void SigHandler(int signo)
 }
 
 
-MainObject::MainObject(QObject *parent,const char *name)
-  : QObject(parent,name)
+MainObject::MainObject(QObject *parent)
+  : QObject(parent)
 {
   //
   // Read Command Options
@@ -227,6 +225,6 @@ void MainObject::DispatchRml(int input,int output)
 int main(int argc,char *argv[])
 {
   QApplication a(argc,argv,false);
-  new MainObject(NULL,"main");
+  new MainObject();
   return a.exec();
 }

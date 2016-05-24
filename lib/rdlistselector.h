@@ -2,9 +2,7 @@
 //
 //   An listselector widget with word wrap.
 //
-//   (C) Copyright 2002 Fred Gleason <fredg@paravelsystems.com>
-//
-//    $Id: rdlistselector.h,v 1.5 2010/07/29 19:32:33 cvs Exp $
+//   (C) Copyright 2002,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -19,7 +17,6 @@
 //   License along with this program; if not, write to the Free Software
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
-//
 
 #ifndef RDLISTSELECTOR_H
 #define RDLISTSELECTOR_H
@@ -31,13 +28,12 @@
 #include <qlistbox.h>
 #include <qpushbutton.h>
 
-
 class RDListSelector : public QHBox
 {
   Q_OBJECT
 
  public:
-  RDListSelector(QWidget *parent=0,const char *name=0);
+  RDListSelector(QWidget *parent=0);
   uint sourceCount() const;
   uint destCount() const;
   void sourceSetLabel(QString label);

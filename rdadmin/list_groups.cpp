@@ -2,9 +2,7 @@
 //
 // List Rivendell Groups
 //
-//   (C) Copyright 2002 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: list_groups.cpp,v 1.27.6.1 2013/11/13 23:36:34 cvs Exp $
+//   (C) Copyright 2002,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -44,9 +42,8 @@
 #include <add_group.h>
 #include <rename_group.h>
 
-
-ListGroups::ListGroups(QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+ListGroups::ListGroups(QWidget *parent)
+  : QDialog(parent,"",true)
 {
   //
   // Fix the Window Size
@@ -69,7 +66,7 @@ ListGroups::ListGroups(QWidget *parent,const char *name)
   //
   //  Add Button
   //
-  list_add_button=new QPushButton(this,"list_add_button");
+  list_add_button=new QPushButton(this);
   list_add_button->setFont(font);
   list_add_button->setText(tr("&Add"));
   connect(list_add_button,SIGNAL(clicked()),this,SLOT(addData()));
@@ -77,7 +74,7 @@ ListGroups::ListGroups(QWidget *parent,const char *name)
   //
   //  Edit Button
   //
-  list_edit_button=new QPushButton(this,"list_edit_button");
+  list_edit_button=new QPushButton(this);
   list_edit_button->setFont(font);
   list_edit_button->setText(tr("&Edit"));
   connect(list_edit_button,SIGNAL(clicked()),this,SLOT(editData()));
@@ -85,7 +82,7 @@ ListGroups::ListGroups(QWidget *parent,const char *name)
   //
   //  Rename Button
   //
-  list_rename_button=new QPushButton(this,"list_rename_button");
+  list_rename_button=new QPushButton(this);
   list_rename_button->setFont(font);
   list_rename_button->setText(tr("&Rename"));
   connect(list_rename_button,SIGNAL(clicked()),this,SLOT(renameData()));
@@ -93,7 +90,7 @@ ListGroups::ListGroups(QWidget *parent,const char *name)
   //
   //  Delete Button
   //
-  list_delete_button=new QPushButton(this,"list_delete_button");
+  list_delete_button=new QPushButton(this);
   list_delete_button->setFont(font);
   list_delete_button->setText(tr("&Delete"));
   connect(list_delete_button,SIGNAL(clicked()),this,SLOT(deleteData()));
@@ -101,7 +98,7 @@ ListGroups::ListGroups(QWidget *parent,const char *name)
   //
   //  Report Button
   //
-  list_report_button=new QPushButton(this,"list_report_button");
+  list_report_button=new QPushButton(this);
   list_report_button->setFont(font);
   list_report_button->setText(tr("Generate\n&Report"));
   connect(list_report_button,SIGNAL(clicked()),this,SLOT(reportData()));
@@ -109,7 +106,7 @@ ListGroups::ListGroups(QWidget *parent,const char *name)
   //
   //  Close Button
   //
-  list_close_button=new QPushButton(this,"list_close_button");
+  list_close_button=new QPushButton(this);
   list_close_button->setDefault(true);
   list_close_button->setFont(font);
   list_close_button->setText(tr("&Close"));
@@ -118,7 +115,7 @@ ListGroups::ListGroups(QWidget *parent,const char *name)
   //
   // Group List
   //
-  list_groups_view=new RDListView(this,"list_groups_view");
+  list_groups_view=new RDListView(this);
   list_groups_view->setFont(list_font);
   list_groups_view->setAllColumnsShowFocus(true);
   list_groups_view->addColumn(tr("NAME"));
@@ -137,8 +134,7 @@ ListGroups::ListGroups(QWidget *parent,const char *name)
   list_groups_view->setColumnAlignment(7,Qt::AlignHCenter);
   list_groups_view->addColumn(tr("NOW & NEXT"));
   list_groups_view->setColumnAlignment(8,Qt::AlignHCenter);
-  QLabel *list_box_label=new QLabel(list_groups_view,tr("&Groups:"),
-				    this,"list_box_label");
+  QLabel *list_box_label=new QLabel(list_groups_view,tr("&Groups:"),this);
   list_box_label->setFont(font);
   list_box_label->setGeometry(14,11,85,19);
   connect(list_groups_view,
@@ -171,7 +167,7 @@ void ListGroups::addData()
 {
   QString group;
 
-  AddGroup *add_group=new AddGroup(&group,this,"add_group");
+  AddGroup *add_group=new AddGroup(&group,this);
   if(add_group->exec()<0) {
     delete add_group;
     return;
@@ -193,7 +189,7 @@ void ListGroups::editData()
   if(item==NULL) {
     return;
   }
-  EditGroup *edit_group=new EditGroup(item->text(0),this,"edit_group");
+  EditGroup *edit_group=new EditGroup(item->text(0),this);
   edit_group->exec();
   delete edit_group;
   edit_group=NULL;
@@ -209,7 +205,7 @@ void ListGroups::renameData()
   }
 
   QString groupname=item->text(0);
-  RenameGroup *rename_group=new RenameGroup(groupname,this,"rename_group");
+  RenameGroup *rename_group=new RenameGroup(groupname,this);
   rename_group->exec();
   delete rename_group;
   rename_group=NULL;

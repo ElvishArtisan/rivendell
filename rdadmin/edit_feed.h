@@ -1,11 +1,8 @@
-
 // edit_feed.h
 //
 // Edit a Rivendell Feed
 //
-//   (C) Copyright 2002-2007 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: edit_feed.h,v 1.9 2010/07/29 19:32:34 cvs Exp $
+//   (C) Copyright 2002-2007,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -38,12 +35,11 @@
 #include <rdsettings.h>
 #include <rdstation.h>
 
-
 class EditFeed : public QDialog
 {
  Q_OBJECT
  public:
-  EditFeed(const QString &feed,QWidget *parent=0,const char *name=0);
+  EditFeed(const QString &feed,QWidget *parent=0);
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
 

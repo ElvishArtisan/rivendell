@@ -4,8 +4,6 @@
 //
 //   Stefan Gabriel <stg@st-gabriel.de>
 //
-//    $Id: schedcartlist.cpp,v 1.4.8.1 2012/12/13 22:33:45 cvs Exp $   
-//
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
 //   published by the Free Software Foundation.
@@ -21,7 +19,6 @@
 //
 
 #include <schedcartlist.h>
-
 
 SchedCartList::SchedCartList(int listsize)
 {

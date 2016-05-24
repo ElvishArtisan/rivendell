@@ -2,10 +2,8 @@
 //  RMLSendAppDelegate.h
 //  RMLSend
 //
-//   (C) Copyright 2010 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2010,2016 Fred Gleason <fredg@paravelsystems.com>
 //
-//      $Id: RMLSendAppDelegate.h,v 1.2 2011/05/27 17:20:14 cvs Exp $
-//                                                                             
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
 //   published by the Free Software Foundation.

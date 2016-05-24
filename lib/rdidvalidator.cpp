@@ -3,9 +3,7 @@
 // Validate a string as being valid for a MySQL identifier.
 //   See http://dev.mysql.com/doc/refman/5.0/en/identifiers.html
 //
-//   (C) Copyright 2014 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdidvalidator.cpp,v 1.1.2.1 2014/05/21 18:19:42 cvs Exp $
+//   (C) Copyright 2014,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as

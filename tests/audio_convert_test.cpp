@@ -2,7 +2,7 @@
 //
 // Test the Rivendell file format converter.
 //
-//   (C) Copyright 2010-2015 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2010-2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -26,8 +26,8 @@
 
 #include <audio_convert_test.h>
 
-MainObject::MainObject(QObject *parent,const char *name)
-  :QObject(parent,name)
+MainObject::MainObject(QObject *parent)
+  :QObject(parent)
 {
   unsigned schema=0;
 
@@ -196,6 +196,6 @@ MainObject::MainObject(QObject *parent,const char *name)
 int main(int argc,char *argv[])
 {
   QApplication a(argc,argv,false);
-  new MainObject(NULL,"main");
+  new MainObject();
   return a.exec();
 }

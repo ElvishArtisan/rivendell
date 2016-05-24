@@ -1,11 +1,8 @@
-
 // rdbutton_dialog.h
 //
 // Button Editor for the SoundPanel in RDAirPlay.
 //
-//   (C) Copyright 2002-2003 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdbutton_dialog.h,v 1.14.8.1 2012/11/26 20:19:36 cvs Exp $
+//   (C) Copyright 2002-2003,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -37,14 +34,7 @@ class RDButtonDialog : public QDialog
  public:
   RDButtonDialog(QString station_name,const QString &label_template,
 		 RDCartDialog *cart_dialog,const QString &svcname,
-		 QWidget *parent=0,const char *name=0);
-/*
-  RDButtonDialog(QString station_name,const QString &label_template,
-		 RDCae *cae,RDRipc *ripc,RDStation *station,
-		 int audition_card,int audition_port,
-		 const QString &editor_cmd,
-		 QWidget *parent=0,const char *name=0);
-*/
+		 QWidget *parent=0);
   ~RDButtonDialog();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;

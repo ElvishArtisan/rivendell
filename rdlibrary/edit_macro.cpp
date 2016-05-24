@@ -2,9 +2,7 @@
 //
 // Edit a Rivendell Macro
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: edit_macro.cpp,v 1.11.8.2 2013/12/23 22:04:02 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -29,10 +27,8 @@
 
 #include <edit_macro.h>
 
-
-EditMacro::EditMacro(RDMacro *cmd,bool highlight,
-		     QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+EditMacro::EditMacro(RDMacro *cmd,bool highlight,QWidget *parent)
+  : QDialog(parent,"",true)
 {
   //
   // Fix the Window Size
@@ -53,21 +49,21 @@ EditMacro::EditMacro(RDMacro *cmd,bool highlight,
   //
   // Text Validator
   //
-  RDTextValidator *validator=new RDTextValidator(this,"validator");
+  RDTextValidator *validator=new RDTextValidator(this);
 
   //
   // Macro
   //
   edit_macro=cmd;
 
-  edit_macro_edit=new QLineEdit(this,"edit_macro_edit");
+  edit_macro_edit=new QLineEdit(this);
   edit_macro_edit->setMaxLength(RD_RML_MAX_LENGTH-1);
   edit_macro_edit->setValidator(validator);
 
   //
   //  Ok Button
   //
-  edit_ok_button=new QPushButton(this,"ok_button");
+  edit_ok_button=new QPushButton(this);
   edit_ok_button->setDefault(true);
   edit_ok_button->setFont(button_font);
   edit_ok_button->setText(tr("&OK"));
@@ -76,7 +72,7 @@ EditMacro::EditMacro(RDMacro *cmd,bool highlight,
   //
   //  Cancel Button
   //
-  edit_cancel_button=new QPushButton(this,"cancel_button");
+  edit_cancel_button=new QPushButton(this);
   edit_cancel_button->setFont(button_font);
   edit_cancel_button->setText(tr("&Cancel"));
   connect(edit_cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));

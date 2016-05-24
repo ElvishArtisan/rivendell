@@ -2,9 +2,7 @@
 //
 // A Qt-based application to display info about ALSA cards.
 //
-//   (C) Copyright 2009 Fred Gleason <fredg@paravelsystems.com>
-//
-//    $Id: rdalsaconfig.cpp,v 1.2.8.3 2014/01/21 21:59:33 cvs Exp $
+//   (C) Copyright 2009,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -60,8 +58,8 @@ void StartDaemons()
 }
 
 
-MainWidget::MainWidget(QWidget *parent,const char *name)
-  :QWidget(parent,name)
+MainWidget::MainWidget(QWidget *parent)
+  :QWidget(parent)
 {
   setCaption(tr("RDAlsaConfig")+" v"+VERSION);
 
@@ -92,15 +90,14 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // Up Button
   //
-  alsa_up_button=
-    new RDTransportButton(RDTransportButton::Up,this,"alsa_up_button");
+  alsa_up_button=new RDTransportButton(RDTransportButton::Up,this);
   connect(alsa_up_button,SIGNAL(clicked()),this,SLOT(upData()));
 
   //
   // Down Button
   //
   alsa_down_button=
-    new RDTransportButton(RDTransportButton::Down,this,"alsa_down_button");
+    new RDTransportButton(RDTransportButton::Down,this);
   connect(alsa_down_button,SIGNAL(clicked()),this,SLOT(downData()));
 
   //
@@ -312,7 +309,7 @@ void MainWidget::MoveItem(QListBox *src,QListBox *dest)
 }
 
 
-Autogen::Autogen(QObject *parent,const char *name)
+Autogen::Autogen(QObject *parent)
 {
   StopDaemons();
 
@@ -372,7 +369,7 @@ int main(int argc,char *argv[])
   //
   if(alsa_autogen) {
     QApplication a(argc,argv,false);
-    new Autogen(NULL,"main");
+    new Autogen();
     return a.exec();
   }
 
@@ -380,7 +377,7 @@ int main(int argc,char *argv[])
   // Start GUI
   //
   QApplication a(argc,argv);
-  MainWidget *w=new MainWidget(NULL,"main");
+  MainWidget *w=new MainWidget();
   a.setMainWidget(w);
   w->setGeometry(QRect(QPoint(0,0),w->sizeHint()));
   w->show();

@@ -2,7 +2,7 @@
 //
 // A Rivendell Voice Tracker
 //
-//   (C) Copyright 2002-2015 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -59,8 +59,8 @@
 
 
 VoiceTracker::VoiceTracker(const QString &logname,QString *import_path,
-			   QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+			   QWidget *parent)
+  : QDialog(parent,"",true)
 {
   edit_log_name=logname;
   edit_import_path=import_path;
@@ -162,7 +162,7 @@ VoiceTracker::VoiceTracker(const QString &logname,QString *import_path,
   //
   // Macro Event Player
   //
-  track_event_player=new RDEventPlayer(rdripc,this,"track_event_player");
+  track_event_player=new RDEventPlayer(rdripc,this);
 
   //
   // Waveform Pixmaps
@@ -271,7 +271,7 @@ VoiceTracker::VoiceTracker(const QString &logname,QString *import_path,
   //
   // Track 1 Button
   //
-  track_track1_button=new QPushButton(this,"track_track1_button");
+  track_track1_button=new QPushButton(this);
   track_track1_button->setGeometry(sizeHint().width()-90,15,70,70);
   track_track1_button->setPalette(track_start_palette);
   track_track1_button->setFont(font);
@@ -281,7 +281,7 @@ VoiceTracker::VoiceTracker(const QString &logname,QString *import_path,
   //
   // Record Button
   //
-  track_record_button=new QPushButton(this,"track_record_button");
+  track_record_button=new QPushButton(this);
   track_record_button->setGeometry(sizeHint().width()-90,95,70,70);
   track_record_button->setPalette(track_record_palette);
   track_record_button->setFont(font);
@@ -291,7 +291,7 @@ VoiceTracker::VoiceTracker(const QString &logname,QString *import_path,
   //
   // Track 2 Button
   //
-  track_track2_button=new QPushButton(this,"track_track2_button");
+  track_track2_button=new QPushButton(this);
   track_track2_button->setGeometry(sizeHint().width()-90,175,70,70);
   track_track2_button->setPalette(track_start_palette);
   track_track2_button->setFont(font);
@@ -304,7 +304,7 @@ VoiceTracker::VoiceTracker(const QString &logname,QString *import_path,
   //
   // Finished Button
   //
-  track_finished_button=new QPushButton(this,"track_finished_button");
+  track_finished_button=new QPushButton(this);
   if(rdlogedit_conf->enableSecondStart()) {
     track_finished_button->setGeometry(sizeHint().width()-90,255,70,70);
   }
@@ -319,7 +319,7 @@ VoiceTracker::VoiceTracker(const QString &logname,QString *import_path,
   //
   // Previous Button
   //
-  track_previous_button=new QPushButton(this,"track_previous_button");
+  track_previous_button=new QPushButton(this);
   track_previous_button->
     setGeometry(sizeHint().width()-290,sizeHint().height()-60,80,50);
   track_previous_button->setFont(font);
@@ -329,7 +329,7 @@ VoiceTracker::VoiceTracker(const QString &logname,QString *import_path,
   //
   // Next Button
   //
-  track_next_button=new QPushButton(this,"track_next_button");
+  track_next_button=new QPushButton(this);
   track_next_button->
     setGeometry(sizeHint().width()-200,sizeHint().height()-60,80,50);
   track_next_button->setFont(font);
@@ -339,8 +339,7 @@ VoiceTracker::VoiceTracker(const QString &logname,QString *import_path,
   //
   // Play Button
   //
-  track_play_button=new RDTransportButton(RDTransportButton::Play,this,
-					 "track_play_button");
+  track_play_button=new RDTransportButton(RDTransportButton::Play,this);
   track_play_button->setGeometry(20,265,80,50);
   track_play_button->setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
   connect(track_play_button,SIGNAL(clicked()),
@@ -349,8 +348,7 @@ VoiceTracker::VoiceTracker(const QString &logname,QString *import_path,
   //
   // Stop Button
   //
-  track_stop_button=new RDTransportButton(RDTransportButton::Stop,this,
-					 "track_stop_button");
+  track_stop_button=new RDTransportButton(RDTransportButton::Stop,this);
   track_stop_button->setGeometry(110,265,80,50);
   track_stop_button->setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
   track_stop_button->setOnColor(red);
@@ -360,17 +358,17 @@ VoiceTracker::VoiceTracker(const QString &logname,QString *import_path,
   //
   // Audio Meter
   //
-  track_meter=new RDStereoMeter(this,"track_meter");
+  track_meter=new RDStereoMeter(this);
   track_meter->setGeometry(205,260,track_meter->sizeHint().width(),
 			   track_meter->sizeHint().height());
   track_meter->setMode(RDSegMeter::Peak);
-  track_meter_timer=new QTimer(this,"track_meter_timer");
+  track_meter_timer=new QTimer(this);
   connect(track_meter_timer,SIGNAL(timeout()),this,SLOT(meterData()));
 
   //
   // Track Length Readout
   //
-  edit_length_label=new QLabel(this,"edit_length_label");
+  edit_length_label=new QLabel(this);
   edit_length_label->setText("-:--:--.-");
   edit_length_label->setGeometry(565,255,110,25);
   edit_length_label->setAlignment(AlignCenter);
@@ -379,23 +377,23 @@ VoiceTracker::VoiceTracker(const QString &logname,QString *import_path,
   //
   // Tracks Remaining Readout
   //
-  QLabel *label=new QLabel(tr("Remaining"),this,"label");
+  QLabel *label=new QLabel(tr("Remaining"),this);
   label->setGeometry(555,288,116,14);
   label->setFont(small_font);
   label->setAlignment(Qt::AlignHCenter);
   label->setPalette(QPalette(backgroundColor(),colorGroup().mid()));  
-  edit_tracks_remaining_label=new QLabel(this,"edit_tracks_remaining_label");
+  edit_tracks_remaining_label=new QLabel(this);
   edit_tracks_remaining_label->setText("0");
   edit_tracks_remaining_label->setGeometry(565,313,40,18);
   edit_tracks_remaining_label->setAlignment(AlignCenter);
   edit_tracks_remaining_label->setFont(label_font);
-  label=new QLabel(tr("Tracks"),this,"label");
+  label=new QLabel(tr("Tracks"),this);
   label->setGeometry(565,300,40,14);
   label->setFont(small_font);
   label->setAlignment(Qt::AlignHCenter);
   label->setPalette(QPalette(backgroundColor(),colorGroup().mid()));  
 
-  edit_time_remaining_label=new QLabel(this,"edit_time_remaining_label");
+  edit_time_remaining_label=new QLabel(this);
   edit_time_remaining_label->setText("0:00:00.0");
   edit_time_remaining_label->setGeometry(615,313,60,18);
   edit_time_remaining_label->setAlignment(AlignCenter);
@@ -406,7 +404,7 @@ VoiceTracker::VoiceTracker(const QString &logname,QString *import_path,
     setColor(QPalette::Active,QColorGroup::Foreground,red);
   edit_time_remaining_palette[1].
     setColor(QPalette::Inactive,QColorGroup::Foreground,red);
-  label=new QLabel(tr("Time"),this,"label");
+  label=new QLabel(tr("Time"),this);
   label->setGeometry(615,300,60,14);
   label->setFont(small_font);
   label->setAlignment(Qt::AlignHCenter);
@@ -415,7 +413,7 @@ VoiceTracker::VoiceTracker(const QString &logname,QString *import_path,
   //
   // Log List
   //
-  track_log_list=new LogListView(this,"track_log_list");
+  track_log_list=new LogListView(this);
   track_log_list->
     setGeometry(10,335,sizeHint().width()-120,sizeHint().height()-405);
   track_log_list->setAllColumnsShowFocus(true);
@@ -451,7 +449,7 @@ VoiceTracker::VoiceTracker(const QString &logname,QString *import_path,
   //
   // Reset Button
   //
-  track_reset_button=new QPushButton(this,"track_reset_button");
+  track_reset_button=new QPushButton(this);
   track_reset_button->
     setGeometry(sizeHint().width()-90,sizeHint().height()-160,70,70);
   track_reset_button->setFont(font);
@@ -461,7 +459,7 @@ VoiceTracker::VoiceTracker(const QString &logname,QString *import_path,
   //
   // Hit Post Button
   //
-  track_post_button=new QPushButton(this,"track_post_button");
+  track_post_button=new QPushButton(this);
   track_post_button->setGeometry(sizeHint().width()-90,360,70,70);
   track_post_button->setFont(font);
   track_post_button->setText(tr("Hit Post"));
@@ -470,7 +468,7 @@ VoiceTracker::VoiceTracker(const QString &logname,QString *import_path,
   //
   // Insert Track Button
   //
-  track_insert_button=new QPushButton(this,"track_insert_button");
+  track_insert_button=new QPushButton(this);
   track_insert_button->setGeometry(20,sizeHint().height()-60,80,50);
   track_insert_button->setFont(font);
   track_insert_button->setText(tr("Insert\nTrack"));
@@ -479,7 +477,7 @@ VoiceTracker::VoiceTracker(const QString &logname,QString *import_path,
   //
   // Delete Track Button
   //
-  track_delete_button=new QPushButton(this,"track_delete_button");
+  track_delete_button=new QPushButton(this);
   track_delete_button->setGeometry(110,sizeHint().height()-60,80,50);
   track_delete_button->setFont(font);
   track_delete_button->setText(tr("Delete\nTrack"));
@@ -488,7 +486,7 @@ VoiceTracker::VoiceTracker(const QString &logname,QString *import_path,
   //
   //  Close Button
   //
-  track_close_button=new QPushButton(this,"track_close_button");
+  track_close_button=new QPushButton(this);
   track_close_button->
     setGeometry(sizeHint().width()-90,sizeHint().height()-60,80,50);
   track_close_button->setFont(font);

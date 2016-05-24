@@ -2,9 +2,7 @@
 //
 //   A driver for General-Purpose I/O devices.
 //
-//   (C) Copyright 2002-2003 Fred Gleason <fredg@paravelsystems.com>
-//
-//    $Id: rdgpio.h,v 1.5 2010/07/29 19:32:33 cvs Exp $
+//   (C) Copyright 2002-2003,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -18,7 +16,6 @@
 //   You should have received a copy of the GNU General Public
 //   License along with this program; if not, write to the Free Software
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-//
 //
 
 #ifndef RDGPIO_H
@@ -40,7 +37,7 @@ class RDGpio : public QObject
  Q_OBJECT
  public:
  enum Mode {Auto=GPIO_MODE_AUTO,Input=GPIO_MODE_INPUT,Output=GPIO_MODE_OUTPUT};
-  RDGpio(QObject *parent=0,const char *name=0);
+  RDGpio(QObject *parent=0);
   QString device() const;
   void setDevice(QString dev);
   QString description() const;

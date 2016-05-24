@@ -2,9 +2,7 @@
 //
 // Export a Rivendell Report to an ASCII Text File.
 //
-//   (C) Copyright 2002-2005 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: export_textlog.cpp,v 1.11.8.1 2012/11/16 18:10:39 cvs Exp $
+//   (C) Copyright 2002-2005,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as

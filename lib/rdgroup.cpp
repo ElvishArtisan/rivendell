@@ -2,9 +2,7 @@
 //
 // Abstract a Rivendell Group.
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdgroup.cpp,v 1.23.8.1.2.3 2014/06/02 18:52:21 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as

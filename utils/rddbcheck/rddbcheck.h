@@ -2,9 +2,7 @@
 //
 // A Database Check/Repair Tool for Rivendell.
 //
-//   (C) Copyright 2002-2006 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rddbcheck.h,v 1.10.6.1 2014/06/02 18:52:22 cvs Exp $
+//   (C) Copyright 2002-2006,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -19,7 +17,6 @@
 //   License along with this program; if not, write to the Free Software
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
-
 
 #ifndef RDDBCHECK_H
 #define RDDBCHECK_H
@@ -41,11 +38,10 @@
 //
 RDConfig *rdconfig;
 
-
 class MainObject : public QObject
 {
  public:
-  MainObject(QObject *parent=0,const char *name=0);
+  MainObject(QObject *parent=0);
 
  private:
   void CheckOrphanedTracks();

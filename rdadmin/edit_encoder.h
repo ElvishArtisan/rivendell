@@ -2,9 +2,7 @@
 //
 // Edit a Rivendell Encoder
 //
-//   (C) Copyright 2008 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: edit_encoder.h,v 1.3 2010/07/29 19:32:34 cvs Exp $
+//   (C) Copyright 2008,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -35,7 +33,7 @@ class EditEncoder : public QDialog
 {
  Q_OBJECT
  public:
-  EditEncoder(int encoder_id,QWidget *parent=0,const char *name=0);
+  EditEncoder(int encoder_id,QWidget *parent=0);
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
 

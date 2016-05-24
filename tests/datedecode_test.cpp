@@ -2,9 +2,7 @@
 //
 // Test the Rivendell db connection routines.
 //
-//   (C) Copyright 2012 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: datedecode_test.cpp,v 1.1.2.3 2013/10/16 21:14:37 cvs Exp $
+//   (C) Copyright 2012,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -31,8 +29,8 @@
 
 #include "datedecode_test.h"
 
-MainObject::MainObject(QObject *parent,const char *name)
-  :QObject(parent,name)
+MainObject::MainObject(QObject *parent)
+  :QObject(parent)
 {
   QString date="";
   QString datetime="";
@@ -86,6 +84,6 @@ MainObject::MainObject(QObject *parent,const char *name)
 int main(int argc,char *argv[])
 {
   QApplication a(argc,argv,false);
-  new MainObject(NULL,"main");
+  new MainObject();
   return a.exec();
 }

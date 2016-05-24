@@ -2,7 +2,7 @@
 //
 // A Rivendell switcher driver for the SAS USI Protocol
 //
-//   (C) Copyright 2002-2015 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -41,7 +41,7 @@ class SasUsi : public Switcher
 {
  Q_OBJECT
  public:
-  SasUsi(RDMatrix *matrix,QObject *parent=0,const char *name=0);
+  SasUsi(RDMatrix *matrix,QObject *parent=0);
   RDMatrix::Type type();
   unsigned gpiQuantity();
   unsigned gpoQuantity();

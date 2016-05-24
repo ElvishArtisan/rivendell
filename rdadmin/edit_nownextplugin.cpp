@@ -2,9 +2,7 @@
 //
 // Edit a Rivendell Now & Next Plugin Configuration
 //
-//   (C) Copyright 2008 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: edit_nownextplugin.cpp,v 1.4 2010/07/29 19:32:34 cvs Exp $
+//   (C) Copyright 2008,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -32,8 +30,8 @@
 
 
 EditNowNextPlugin::EditNowNextPlugin(QString *path,QString *arg,
-				     QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+				     QWidget *parent)
+  : QDialog(parent,"",true)
 {
   plugin_path=path;
   plugin_arg=arg;
@@ -85,7 +83,7 @@ EditNowNextPlugin::EditNowNextPlugin(QString *path,QString *arg,
   //
   //  Ok Button
   //
-  QPushButton *ok_button=new QPushButton(this,"ok_button");
+  QPushButton *ok_button=new QPushButton(this);
   ok_button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
   ok_button->setDefault(true);
   ok_button->setFont(font);
@@ -95,7 +93,7 @@ EditNowNextPlugin::EditNowNextPlugin(QString *path,QString *arg,
   //
   //  Cancel Button
   //
-  QPushButton *cancel_button=new QPushButton(this,"cancel_button");
+  QPushButton *cancel_button=new QPushButton(this);
   cancel_button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,
 			     80,50);
   cancel_button->setFont(font);

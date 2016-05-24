@@ -2,9 +2,7 @@
 //
 // Rivendell web service portal -- Service services
 //
-//   (C) Copyright 2010 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: services.cpp,v 1.1.2.1 2013/10/11 22:00:53 cvs Exp $
+//   (C) Copyright 2010,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as

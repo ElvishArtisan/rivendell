@@ -2,7 +2,7 @@
 //
 // A Rivendell switcher driver for using TTY modem lines for GPIO
 //
-//   (C) Copyright 2015 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2015-2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -28,8 +28,8 @@
 #include <globals.h>
 #include <modemlines.h>
 
-ModemLines::ModemLines(RDMatrix *matrix,QObject *parent,const char *name)
-  : Switcher(matrix,parent,name)
+ModemLines::ModemLines(RDMatrix *matrix,QObject *parent)
+  : Switcher(matrix,parent)
 {
   gpio_poll_state=0;
   gpio_poll_timer=NULL;

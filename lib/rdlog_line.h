@@ -28,7 +28,6 @@
 #include <rdcart.h>
 #include <rdlistviewitem.h>
 
-
 class RDLogLine
 {
  public:

@@ -3,8 +3,7 @@
 // Database driver with automatic reconnect
 //
 //   (C) Copyright 2007 Dan Mills <dmills@exponent.myzen.co.uk>
-//
-//      $Id: rddb.h,v 1.9 2011/06/21 22:20:43 cvs Exp $
+//   (C) Copyright 2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -28,7 +27,6 @@
 #include <qstring.h>
 
 #include <rdconfig.h>
-
 
 class RDSqlDatabaseStatus : public QObject
 {

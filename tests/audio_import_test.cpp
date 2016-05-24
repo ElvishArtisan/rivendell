@@ -2,9 +2,7 @@
 //
 // Test Rivendell file importing.
 //
-//   (C) Copyright 2010 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: audio_import_test.cpp,v 1.5.4.1 2013/11/13 23:36:38 cvs Exp $
+//   (C) Copyright 2010,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -28,8 +26,8 @@
 
 #include <audio_import_test.h>
 
-MainObject::MainObject(QObject *parent,const char *name)
-  :QObject(parent,name)
+MainObject::MainObject(QObject *parent)
+  :QObject(parent)
 {
   username="user";
   password="";
@@ -159,6 +157,6 @@ MainObject::MainObject(QObject *parent,const char *name)
 int main(int argc,char *argv[])
 {
   QApplication a(argc,argv,false);
-  new MainObject(NULL,"main");
+  new MainObject();
   return a.exec();
 }

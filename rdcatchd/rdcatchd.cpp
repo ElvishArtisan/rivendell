@@ -119,8 +119,8 @@ void SigHandler(int signum)
 }
 
 
-MainObject::MainObject(QObject *parent,const char *name)
-  :QObject(parent,name)
+MainObject::MainObject(QObject *parent)
+  :QObject(parent)
 {
   QString sql;
   RDSqlQuery *q;
@@ -198,14 +198,14 @@ MainObject::MainObject(QObject *parent,const char *name)
     catch_event_free[i]=true;
     catch_macro_event_id[i]=-1;
   }
-  catch_event_mapper=new QSignalMapper(this,"catch_event_mapper");
+  catch_event_mapper=new QSignalMapper(this);
   connect(catch_event_mapper,SIGNAL(mapped(int)),
 	  this,SLOT(eventFinishedData(int)));
   QTimer *timer=new QTimer(this,"free_events_timer");
   connect(timer,SIGNAL(timeout()),this,SLOT(freeEventsData()));
   timer->start(RDCATCHD_FREE_EVENTS_INTERVAL);
 
-  server=new RDCatchdSocket(RDCATCHD_TCP_PORT,0,this,"socket");
+  server=new RDCatchdSocket(RDCATCHD_TCP_PORT,0,this);
   if(!server->ok()) {
     printf("rdcatchd: aborting - couldn't bind socket");
     exit(1);
@@ -239,17 +239,17 @@ MainObject::MainObject(QObject *parent,const char *name)
   //
   // GPI Mappers
   //
-  catch_gpi_start_mapper=new QSignalMapper(this,"catch_gpi_start_mapper");
+  catch_gpi_start_mapper=new QSignalMapper(this);
   connect(catch_gpi_start_mapper,SIGNAL(mapped(int)),
 	  this,SLOT(startTimerData(int)));
-  catch_gpi_offset_mapper=new QSignalMapper(this,"catch_gpi_offset_mapper");
+  catch_gpi_offset_mapper=new QSignalMapper(this);
   connect(catch_gpi_offset_mapper,SIGNAL(mapped(int)),
 	  this,SLOT(offsetTimerData(int)));
 
   //
   // Xload Timer
   //
-  catch_xload_timer=new QTimer(this,"catch_xload_timer");
+  catch_xload_timer=new QTimer(this);
   connect(catch_xload_timer,SIGNAL(timeout()),this,SLOT(updateXloadsData()));
 
   //
@@ -275,7 +275,7 @@ MainObject::MainObject(QObject *parent,const char *name)
   //
   // CAE Connection
   //
-  catch_cae=new RDCae(catch_rdstation,catch_config,this,"catch_cae");
+  catch_cae=new RDCae(catch_rdstation,catch_config,this);
   connect(catch_cae,SIGNAL(isConnected(bool)),
 	  this,SLOT(isConnectedData(bool)));
   connect(catch_cae,SIGNAL(recordLoaded(int,int)),
@@ -345,7 +345,7 @@ MainObject::MainObject(QObject *parent,const char *name)
   //
   // Time Engine
   //
-  catch_engine=new RDTimeEngine(this,"catch_engine");
+  catch_engine=new RDTimeEngine(this);
   catch_engine->setTimeOffset(catch_rdstation->timeOffset());
   connect(catch_engine,SIGNAL(timeout(int)),this,SLOT(engineData(int)));
   LoadEngine();
@@ -368,21 +368,21 @@ MainObject::MainObject(QObject *parent,const char *name)
   //
   // Start Heartbeat Timer
   //
-  timer=new QTimer(this,"heartbeat_timer");
+  timer=new QTimer(this);
   connect(timer,SIGNAL(timeout()),this,SLOT(heartbeatData()));
   timer->start(RDCATCHD_HEARTBEAT_INTERVAL);
 
   //
   // Meter Timer
   //
-  timer=new QTimer(this,"meter_timer");
+  timer=new QTimer(this);
   connect(timer,SIGNAL(timeout()),this,SLOT(meterData()));
   timer->start(RD_METER_UPDATE_INTERVAL);
 
   //
   // Heartbeat Timer
   //
-  catch_heartbeat_timer=new QTimer(this,"catch_heartbeat_timer");
+  catch_heartbeat_timer=new QTimer(this);
   connect(catch_heartbeat_timer,SIGNAL(timeout()),
 	  this,SLOT(sysHeartbeatData()));
   LoadHeartbeat();
@@ -457,7 +457,7 @@ void MainObject::newConnection(int fd)
     close(fd);
     return;
   }
-  socket[i]=new RDSocket(i,this,"socket_0");
+  socket[i]=new RDSocket(i,this);
   socket[i]->setSocket(fd);
   connect(socket[i],SIGNAL(readyReadID(int)),this,SLOT(socketData(int)));
   connect(socket[i],SIGNAL(connectionClosedID(int)),
@@ -1144,7 +1144,7 @@ void MainObject::sysHeartbeatData()
 
 void MainObject::updateXloadsData()
 {
-  vector<int>::iterator it;
+  std::vector<int>::iterator it;
   for(unsigned i=0;i<catch_active_xloads.size();i++) {
     switch(ReadExitCode(catch_active_xloads[i])) {
 	case RDRecording::Ok:
@@ -2282,7 +2282,7 @@ void MainObject::RemoveEvent(int id)
 	break;
 	
   }
-  vector<CatchEvent>::iterator it=catch_events.begin()+event;
+  std::vector<CatchEvent>::iterator it=catch_events.begin()+event;
   catch_events.erase(it,it+1);
   catch_engine->removeEvent(id);
 }
@@ -2359,7 +2359,7 @@ void MainObject::PurgeEvent(int event)
 	  break;
   }
   catch_engine->removeEvent(catch_events[event].id());
-  vector<CatchEvent>::iterator it=catch_events.begin()+event;
+  std::vector<CatchEvent>::iterator it=catch_events.begin()+event;
   catch_events.erase(it,it+1);
 }
 
@@ -2824,6 +2824,6 @@ QString MainObject::GetTempRecordingName(int id) const
 int main(int argc,char *argv[])
 {
   QApplication a(argc,argv,false);
-  new MainObject(NULL,"main");
+  new MainObject();
   return a.exec();
 }

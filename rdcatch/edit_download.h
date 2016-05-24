@@ -2,9 +2,7 @@
 //
 // Edit a Rivendell Download Event
 //
-//   (C) Copyright 2002-2005 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: edit_download.h,v 1.10 2010/07/29 19:32:36 cvs Exp $
+//   (C) Copyright 2002-2005,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -42,8 +40,7 @@ class EditDownload : public QDialog
 {
  Q_OBJECT
  public:
-  EditDownload(int id,std::vector<int> *adds,QString *filter,
-	       QWidget *parent=0,const char *name=0);
+  EditDownload(int id,std::vector<int> *adds,QString *filter,QWidget *parent=0);
   ~EditDownload();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;

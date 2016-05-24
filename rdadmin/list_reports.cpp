@@ -2,9 +2,7 @@
 //
 // List Rivendell Reports
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: list_reports.cpp,v 1.12 2010/07/29 19:32:35 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -36,9 +34,8 @@
 #include <edit_report.h>
 #include <add_report.h>
 
-
-ListReports::ListReports(QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+ListReports::ListReports(QWidget *parent)
+  : QDialog(parent,"",true)
 {
   //
   // Fix the Window Size
@@ -61,7 +58,7 @@ ListReports::ListReports(QWidget *parent,const char *name)
   //
   //  Add Button
   //
-  QPushButton *add_button=new QPushButton(this,"add_button");
+  QPushButton *add_button=new QPushButton(this);
   add_button->setGeometry(410,30,80,50);
   add_button->setFont(font);
   add_button->setText(tr("&Add"));
@@ -70,7 +67,7 @@ ListReports::ListReports(QWidget *parent,const char *name)
   //
   //  Edit Button
   //
-  QPushButton *edit_button=new QPushButton(this,"edit_button");
+  QPushButton *edit_button=new QPushButton(this);
   edit_button->setGeometry(410,90,80,50);
   edit_button->setFont(font);
   edit_button->setText(tr("&Edit"));
@@ -79,7 +76,7 @@ ListReports::ListReports(QWidget *parent,const char *name)
   //
   //  Delete Button
   //
-  QPushButton *delete_button=new QPushButton(this,"delete_button");
+  QPushButton *delete_button=new QPushButton(this);
   delete_button->setGeometry(410,150,80,50);
   delete_button->setFont(font);
   delete_button->setText(tr("&Delete"));
@@ -88,7 +85,7 @@ ListReports::ListReports(QWidget *parent,const char *name)
   //
   //  Close Button
   //
-  QPushButton *close_button=new QPushButton(this,"close_button");
+  QPushButton *close_button=new QPushButton(this);
   close_button->setGeometry(410,240,80,50);
   close_button->setDefault(true);
   close_button->setFont(font);
@@ -98,10 +95,9 @@ ListReports::ListReports(QWidget *parent,const char *name)
   //
   // Report List Box
   //
-  list_box=new QListBox(this,"list_box");
+  list_box=new QListBox(this);
   list_box->setGeometry(10,30,390,260);
-  QLabel *list_box_label=new QLabel(list_box,tr("R&eports:"),
-				    this,"list_box_label");
+  QLabel *list_box_label=new QLabel(list_box,tr("R&eports:"),this);
   list_box_label->setFont(font);
   list_box_label->setGeometry(14,10,85,19);
   connect(list_box,SIGNAL(doubleClicked(QListBoxItem *)),
@@ -132,13 +128,13 @@ void ListReports::addData()
 {
   QString rptname;
 
-  AddReport *add_report=new AddReport(&rptname,this,"add_report");
+  AddReport *add_report=new AddReport(&rptname,this);
   if(add_report->exec()<0) {
     delete add_report;
     return;
   }
   delete add_report;
-  EditReport *edit_report=new EditReport(rptname,this,"edit_report");
+  EditReport *edit_report=new EditReport(rptname,this);
   if(edit_report->exec()<0) {
     DeleteReport(rptname);
     delete edit_report;
@@ -154,8 +150,7 @@ void ListReports::editData()
   if(list_box->currentItem()<0) {
     return;
   }
-  EditReport *edit_report=
-    new EditReport(list_box->currentText(),this,"edit_report");
+  EditReport *edit_report=new EditReport(list_box->currentText(),this);
   edit_report->exec();
   delete edit_report;
 }

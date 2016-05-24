@@ -2,9 +2,7 @@
 //
 // Edit RDLogManager Service Associations
 //
-//   (C) Copyright 2002-2005 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: edit_perms.cpp,v 1.10.8.1 2012/04/23 17:22:47 cvs Exp $
+//   (C) Copyright 2002-2005,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -38,9 +36,8 @@
 #include <edit_perms.h>
 
 
-EditPerms::EditPerms(QString object_name,ObjectType type,
-		     QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+EditPerms::EditPerms(QString object_name,ObjectType type,QWidget *parent)
+  : QDialog(parent,"",true)
 {
   QString sql;
   RDSqlQuery *q;
@@ -70,7 +67,7 @@ EditPerms::EditPerms(QString object_name,ObjectType type,
   //
   // Services Selector
   //
-  svc_object_sel=new RDListSelector(this,"svc_object_sel");
+  svc_object_sel=new RDListSelector(this);
   svc_object_sel->setGeometry(10,10,380,130);
   svc_object_sel->sourceSetLabel(tr("Available Services"));
   svc_object_sel->destSetLabel(tr("Enabled Services"));
@@ -78,7 +75,7 @@ EditPerms::EditPerms(QString object_name,ObjectType type,
   //
   //  Ok Button
   //
-  QPushButton *ok_button=new QPushButton(this,"ok_button");
+  QPushButton *ok_button=new QPushButton(this);
   ok_button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
   ok_button->setDefault(true);
   ok_button->setFont(font);
@@ -88,7 +85,7 @@ EditPerms::EditPerms(QString object_name,ObjectType type,
   //
   //  Cancel Button
   //
-  QPushButton *cancel_button=new QPushButton(this,"cancel_button");
+  QPushButton *cancel_button=new QPushButton(this);
   cancel_button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,
 			     80,50);
   cancel_button->setFont(font);

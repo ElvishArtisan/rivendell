@@ -2,9 +2,7 @@
 //
 //   A URL Handling Class with Support for SMB URLs.
 //
-//   (C) Copyright 2002-2006 Fred Gleason <fredg@paravelsystems.com>
-//
-//    $Id: rdurl.h,v 1.4 2010/07/29 19:32:34 cvs Exp $
+//   (C) Copyright 2002-2006,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -25,7 +23,6 @@
 #define RDURL_H
 
 #include <qurl.h>
-
 
 class RDUrl : public QUrl
 {

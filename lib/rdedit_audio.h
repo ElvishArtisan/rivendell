@@ -2,9 +2,7 @@
 //
 // Edit Rivendell Audio
 //
-//   (C) Copyright 2002-2006 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdedit_audio.h,v 1.9.6.2 2013/11/13 23:36:33 cvs Exp $
+//   (C) Copyright 2002-2006,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -78,8 +76,7 @@ class RDEditAudio : public QDialog
  public:
   RDEditAudio(RDCart *cart,QString cut_name,RDCae *cae,RDUser *user,
 	      RDStation *station,RDConfig *config,int card,int port,
-	      int preroll,int trim_level,
-	      QWidget *parent=0,const char *name=0);
+	      int preroll,int trim_level,QWidget *parent=0);
   ~RDEditAudio();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;

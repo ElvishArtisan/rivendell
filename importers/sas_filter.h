@@ -4,9 +4,6 @@
 //
 //   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
 //
-//      $Id: sas_filter.h,v 1.7 2010/07/29 19:32:32 cvs Exp $
-//      $Date: 2010/07/29 19:32:32 $
-//
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
 //   published by the Free Software Foundation.
@@ -40,7 +37,7 @@ class MainObject : public QObject
 {
   Q_OBJECT
  public:
-  MainObject(QObject *parent=0,const char *name=0);
+  MainObject(QObject *parent=0);
 
  private:
   void InsertList();

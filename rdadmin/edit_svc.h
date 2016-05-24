@@ -2,9 +2,7 @@
 //
 // Edit a Rivendell Service
 //
-//   (C) Copyright 2002-2010 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: edit_svc.h,v 1.24.8.2 2014/01/10 15:40:15 cvs Exp $
+//   (C) Copyright 2002-2010,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -37,7 +35,7 @@ class EditSvc : public QDialog
 {
  Q_OBJECT
  public:
-  EditSvc(QString svc,QWidget *parent=0,const char *name=0);
+  EditSvc(QString svc,QWidget *parent=0);
   ~EditSvc();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;

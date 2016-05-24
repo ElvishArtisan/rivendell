@@ -31,7 +31,6 @@
 #include <rdlistview.h>
 #include <rdclock.h>
 
-
 class EditGrid : public QDialog
 {
  Q_OBJECT

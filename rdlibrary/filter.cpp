@@ -2,9 +2,7 @@
 //
 // Set Filter widget for RDLibrary.
 //
-//   (C) Copyright 2002 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: filter.cpp,v 1.11 2010/07/29 19:32:36 cvs Exp $
+//   (C) Copyright 2002,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -34,9 +32,8 @@
 
 #include <filter.h>
 
-
-Filter::Filter(QString *filter,QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+Filter::Filter(QString *filter,QWidget *parent)
+  : QDialog(parent,"",true)
 {
   //
   // Fix the Window Size
@@ -60,7 +57,7 @@ Filter::Filter(QString *filter,QWidget *parent,const char *name)
   //
   // OK Button
   //
-  QPushButton *ok_button=new QPushButton(this,"ok_button");
+  QPushButton *ok_button=new QPushButton(this);
   ok_button->setGeometry(15,40,100,55);
   ok_button->setFont(button_font);
   ok_button->setText(tr("&OK"));
@@ -70,7 +67,7 @@ Filter::Filter(QString *filter,QWidget *parent,const char *name)
   //
   // Clear Button
   //
-  QPushButton *clear_button=new QPushButton(this,"clear_button");
+  QPushButton *clear_button=new QPushButton(this);
   clear_button->setGeometry(125,40,100,55);
   clear_button->setFont(button_font);
   clear_button->setText(tr("C&lear"));
@@ -79,7 +76,7 @@ Filter::Filter(QString *filter,QWidget *parent,const char *name)
   //
   // Cancel Button
   //
-  QPushButton *cancel_button=new QPushButton(this,"cancel_button");
+  QPushButton *cancel_button=new QPushButton(this);
   cancel_button->setGeometry(235,40,100,55);
   cancel_button->setFont(button_font);
   cancel_button->setText(tr("&Cancel"));
@@ -88,14 +85,13 @@ Filter::Filter(QString *filter,QWidget *parent,const char *name)
   //
   // Filter Text
   //
-  filter_text_edit=new QLineEdit(this,"filter_text_edit");
+  filter_text_edit=new QLineEdit(this);
   filter_text_edit->setGeometry(65,10,275,19);
   filter_text_edit->setMaxLength(16);
   filter_text_edit->setFocus();
   filter_text_edit->setFont(QFont("Helvetica",14,QFont::Normal));
   filter_text_edit->setText(*filter);
-  QLabel *filter_text_label=new QLabel(filter_text_edit,tr("&Filter:"),this,
-				       "filter_text_label");
+  QLabel *filter_text_label=new QLabel(filter_text_edit,tr("&Filter:"),this);
   filter_text_label->setGeometry(10,12,50,19);
   filter_text_label->setFont(label_font);
   filter_text_label->setAlignment(AlignRight|ShowPrefix);

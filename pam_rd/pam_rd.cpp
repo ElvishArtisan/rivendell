@@ -2,8 +2,6 @@
 //
 // (C) Copyright 2006 Federico Grau <donfede@casagrau.org> <grauf@rfa.org>
 //
-//      $Id: pam_rd.cpp,v 1.10 2010/09/10 18:16:27 cvs Exp $
-//
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
 //   published by the Free Software Foundation.

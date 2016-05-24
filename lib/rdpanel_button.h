@@ -2,9 +2,7 @@
 //
 // The SoundPanel Button for RDAirPlay.
 //
-//   (C) Copyright 2002-2003 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdpanel_button.h,v 1.18.6.5 2014/02/06 20:43:47 cvs Exp $
+//   (C) Copyright 2002-2003,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -41,8 +39,8 @@ class RDPanelButton : public QPushButton
 {
  Q_OBJECT
  public:
-  RDPanelButton(int row,int col,RDStation *station,bool flash,QWidget *parent=0,
-		const char *name=0);
+  RDPanelButton(int row,int col,RDStation *station,bool flash,
+		QWidget *parent=0);
   void clear();
   QString text() const;
   void setText(const QString &text);

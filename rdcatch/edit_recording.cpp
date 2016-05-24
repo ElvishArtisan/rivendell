@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell RDCatch Recording
 //
-//   (C) Copyright 2002-2005,2014 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2005,2014,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -91,7 +91,7 @@ EditRecording::EditRecording(int id,std::vector<int> *adds,QString *filter,
   //
   // Station
   //
-  edit_station_box=new QComboBox(this,"edit_station_box");
+  edit_station_box=new QComboBox(this);
   edit_station_box->setGeometry(200,10,140,23);
   QLabel * label=new QLabel(edit_station_box,tr("Location:"),this);
   label->setGeometry(125,10,70,23);
@@ -103,7 +103,7 @@ EditRecording::EditRecording(int id,std::vector<int> *adds,QString *filter,
   //
   // Start Parameters
   //
-  edit_starttype_group=new QButtonGroup(this,"edit_starttype_group");
+  edit_starttype_group=new QButtonGroup(this);
   edit_starttype_group->setGeometry(10,47,sizeHint().width()-20,104);
   connect(edit_starttype_group,SIGNAL(clicked(int)),
 	  this,SLOT(startTypeClickedData(int)));

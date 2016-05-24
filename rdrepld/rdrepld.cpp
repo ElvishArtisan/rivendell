@@ -2,9 +2,7 @@
 //
 // The Rivendell Replicator Daemon
 //
-//   (C) Copyright 2010 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdrepld.cpp,v 1.4 2011/06/21 22:20:44 cvs Exp $
+//   (C) Copyright 2010,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -37,7 +35,6 @@
 #include <citadelxds.h>
 #include <rdrepld.h>
 
-
 RDConfig *rdconfig;
 RDSystem *rdsystem;
 
@@ -63,8 +60,8 @@ void SigHandler(int signum)
 }
 
 
-MainObject::MainObject(QObject *parent,const char *name)
-  :QObject(parent,name)
+MainObject::MainObject(QObject *parent)
+  :QObject(parent)
 {
   bool skip_db_check=false;
   unsigned schema=0;
@@ -153,7 +150,7 @@ MainObject::MainObject(QObject *parent,const char *name)
   //
   // Start the Main Loop
   //
-  repl_loop_timer=new QTimer(this,"repl_loop_timer");
+  repl_loop_timer=new QTimer(this);
   connect(repl_loop_timer,SIGNAL(timeout()),this,SLOT(mainLoop()));
   repl_loop_timer->start(RD_RDREPL_SCAN_INTERVAL,true);
 
@@ -296,6 +293,6 @@ void MainObject::FreeReplicators()
 int main(int argc,char *argv[])
 {
   QApplication a(argc,argv,false);
-  new MainObject(NULL,"main");
+  new MainObject();
   return a.exec();
 }

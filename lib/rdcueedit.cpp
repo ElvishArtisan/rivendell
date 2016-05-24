@@ -2,9 +2,7 @@
 //
 // Cueing Editor for RDLogLine-based Events
 //
-//   (C) Copyright 2013 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdcueedit.cpp,v 1.1.2.3.2.1 2014/05/20 01:45:16 cvs Exp $
+//   (C) Copyright 2013,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -26,9 +24,8 @@
 #include <rdconf.h>
 #include <rdcueedit.h>
 
-RDCueEdit::RDCueEdit(RDCae *cae,int card,int port,
-		     QWidget *parent,const char *name)
-  : QWidget(parent,name)
+RDCueEdit::RDCueEdit(RDCae *cae,int card,int port,QWidget *parent)
+  : QWidget(parent)
 {
   edit_cae=cae;
   edit_play_card=card;
@@ -61,23 +58,23 @@ RDCueEdit::RDCueEdit(RDCae *cae,int card,int port,
   edit_start_color=palette();
   edit_start_color.setColor(QColorGroup::Foreground,RD_CUEEDITOR_START_MARKER);
 
-  edit_position_label=new QLabel(this,"edit_position_label");
+  edit_position_label=new QLabel(this);
   edit_position_label->setGeometry(0,0,sizeHint().width()-30,30);
   edit_position_label->setBackgroundColor(QColor(white));
   edit_position_label->setLineWidth(1);
   edit_position_label->setMidLineWidth(0);
   edit_position_label->setFrameStyle(QFrame::Box|QFrame::Plain);
 
-  edit_position_bar=new RDMarkerBar(this,"edit_position_bar");
+  edit_position_bar=new RDMarkerBar(this);
   edit_position_bar->setGeometry(85,8,sizeHint().width()-200,14);
 
-  edit_up_label=new QLabel("00:00:00",this,"edit_up_label");
+  edit_up_label=new QLabel("00:00:00",this);
   edit_up_label->setGeometry(5,8,70,14);
   edit_up_label->setBackgroundColor(white);
   edit_up_label->setFont(label_font);
   edit_up_label->setAlignment(AlignRight|AlignVCenter);
 
-  edit_down_label=new QLabel("00:00:00",this,"edit_down_label");
+  edit_down_label=new QLabel("00:00:00",this);
   edit_down_label->setGeometry(sizeHint().width()-110,8,70,14);
   edit_down_label->setBackgroundColor(white);
   edit_down_label->setFont(label_font);
@@ -86,7 +83,7 @@ RDCueEdit::RDCueEdit(RDCae *cae,int card,int port,
   //
   // Position Slider
   //
-  edit_slider=new RDSlider(RDSlider::Right,this,"edit_slider");
+  edit_slider=new RDSlider(RDSlider::Right,this);
   edit_slider->setGeometry(60,30,sizeHint().width()-150,50);
   edit_slider->setKnobSize(50,50);
   edit_slider->setKnobColor(QColor(RD_CUEEDITOR_KNOB_COLOR));
@@ -99,7 +96,7 @@ RDCueEdit::RDCueEdit(RDCae *cae,int card,int port,
   //
   // Button Area
   //
-  QLabel *label=new QLabel(this,"button_area");
+  QLabel *label=new QLabel(this);
   label->setGeometry(0,85,sizeHint().width()-30,60);
   label->setBackgroundColor(QColor(gray));
   label->setLineWidth(1);
@@ -109,8 +106,8 @@ RDCueEdit::RDCueEdit(RDCae *cae,int card,int port,
   //
   //  Audition Button
   //
-  edit_audition_button=new RDTransportButton(RDTransportButton::PlayBetween,
-					    this,"edit_audition_button");
+  edit_audition_button=
+    new RDTransportButton(RDTransportButton::PlayBetween,this);
   edit_audition_button->setGeometry(sizeHint().width()/2-130,90,80,50);
   edit_audition_button->
     setPalette(QPalette(backgroundColor(),QColor(gray)));
@@ -122,8 +119,7 @@ RDCueEdit::RDCueEdit(RDCae *cae,int card,int port,
   //
   //  Pause Button
   //
-  edit_pause_button=new RDTransportButton(RDTransportButton::Pause,
-					 this,"edit_pause_button");
+  edit_pause_button=new RDTransportButton(RDTransportButton::Pause,this);
   edit_pause_button->setGeometry(sizeHint().width()/2-40,90,80,50);
   edit_pause_button->
     setPalette(QPalette(backgroundColor(),QColor(gray)));
@@ -134,8 +130,7 @@ RDCueEdit::RDCueEdit(RDCae *cae,int card,int port,
   //
   //  Stop Button
   //
-  edit_stop_button=new RDTransportButton(RDTransportButton::Stop,
-					this,"edit_stop_button");
+  edit_stop_button=new RDTransportButton(RDTransportButton::Stop,this);
   edit_stop_button->setGeometry(sizeHint().width()/2+50,90,80,50);
   edit_stop_button->setOnColor(QColor(red));
   edit_stop_button->
@@ -147,7 +142,7 @@ RDCueEdit::RDCueEdit(RDCae *cae,int card,int port,
   //
   // Start Marker Control
   //
-  edit_start_button=new RDPushButton(this,"button");
+  edit_start_button=new RDPushButton(this);
   edit_start_button->setToggleButton(true);
   edit_start_button->setGeometry(0,155,66,45);
   edit_start_button->setFlashColor(backgroundColor());
@@ -189,14 +184,13 @@ RDCueEdit::RDCueEdit(RDCae *cae,int card,int port,
   //
   // Audition Stop Timer
   //
-  edit_audition_timer=new QTimer(this,"edit_audition_timer");
+  edit_audition_timer=new QTimer(this);
   connect(edit_audition_timer,SIGNAL(timeout()),this,SLOT(auditionTimerData()));
 
   //
   // Play Deck
   //
-  edit_play_deck=new RDPlayDeck(edit_cae,RDPLAYDECK_AUDITION_ID,
-				this,"edit_play_deck");
+  edit_play_deck=new RDPlayDeck(edit_cae,RDPLAYDECK_AUDITION_ID,this);
   connect(edit_play_deck,SIGNAL(stateChanged(int,RDPlayDeck::State)),this,
 	  SLOT(stateChangedData(int,RDPlayDeck::State)));
   connect(edit_play_deck,SIGNAL(position(int,int)),

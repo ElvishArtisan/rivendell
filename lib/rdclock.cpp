@@ -2,9 +2,7 @@
 //
 // Abstract a Rivendell Log Manager Clock.
 //
-//   (C) Copyright 2002-2004,2008 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdclock.cpp,v 1.23.10.1 2014/06/24 18:27:03 cvs Exp $
+//   (C) Copyright 2002-2004,2008,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -238,7 +236,7 @@ bool RDClock::insert(const QString &event_name,int line)
     clock_events.push_back(RDEventLine());
   }
   else {
-    vector<RDEventLine>::iterator it=clock_events.begin()+line;
+    std::vector<RDEventLine>::iterator it=clock_events.begin()+line;
     clock_events.insert(it,1,RDEventLine());
   }
   clock_events[line].setName(event_name);
@@ -249,7 +247,7 @@ bool RDClock::insert(const QString &event_name,int line)
 
 void RDClock::remove(int line)
 {
-  vector<RDEventLine>::iterator it=clock_events.begin()+line;
+  std::vector<RDEventLine>::iterator it=clock_events.begin()+line;
   clock_events.erase(it,it+1);
 }
 

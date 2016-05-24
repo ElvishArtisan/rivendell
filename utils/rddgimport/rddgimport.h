@@ -2,9 +2,7 @@
 //
 // A Qt-based application for importing Dial Global CDN downloads
 //
-//   (C) Copyright 2012 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rddgimport.h,v 1.1.2.4 2013/02/05 01:35:35 cvs Exp $
+//   (C) Copyright 2012,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -57,7 +55,7 @@ class MainWidget : public QWidget
 {
   Q_OBJECT
  public:
-   MainWidget(QWidget *parent=0,const char *name=0);
+   MainWidget(QWidget *parent=0);
    QSize sizeHint() const;
 
  private slots:

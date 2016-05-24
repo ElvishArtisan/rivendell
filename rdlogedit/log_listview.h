@@ -2,9 +2,7 @@
 //
 //   The Log ListView widget for RDLogEdit.
 //
-//   (C) Copyright 2002-2006 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: log_listview.h,v 1.7 2010/07/29 19:32:37 cvs Exp $
+//   (C) Copyright 2002-2006,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,7 +16,6 @@
 //   You should have received a copy of the GNU General Public
 //   License along with this program; if not, write to the Free Software
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-//
 //
 
 #ifndef LOG_LISTVIEW_H
@@ -39,7 +36,7 @@ class LogListView : public RDListView
   Q_OBJECT
 
  public:
-  LogListView(QWidget *parent,const char *name=0);
+  LogListView(QWidget *parent);
 
  private slots:
   void aboutToShowData();

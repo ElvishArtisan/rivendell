@@ -2,9 +2,7 @@
 //
 // A QTimeEdit with tenth-second precision.
 //
-//   (C) Copyright 2003 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdtimeedit.cpp,v 1.6 2010/10/06 19:24:02 cvs Exp $
+//   (C) Copyright 2003,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -24,9 +22,8 @@
 
 #include <rdtimeedit.h>
 
-
-RDTimeEdit::RDTimeEdit(QWidget *parent,const char *name)
-  : QFrame(parent,name)
+RDTimeEdit::RDTimeEdit(QWidget *parent)
+  : QFrame(parent)
 {
   edit_display=0;
   edit_section=0;
@@ -55,12 +52,10 @@ RDTimeEdit::RDTimeEdit(QWidget *parent,const char *name)
   edit_sep_labels[1]->setAlignment(Qt::AlignCenter);
   edit_sep_labels[2]=new QLabel(".",this);
   edit_sep_labels[2]->setAlignment(Qt::AlignCenter);
-  edit_up_button=
-    new RDTransportButton(RDTransportButton::Up,this,"edit_up_button");
+  edit_up_button=new RDTransportButton(RDTransportButton::Up,this);
   edit_up_button->setFocusPolicy(QWidget::NoFocus);
   connect(edit_up_button,SIGNAL(clicked()),this,SLOT(upClickedData()));
-  edit_down_button=
-    new RDTransportButton(RDTransportButton::Down,this,"edit_down_button");
+  edit_down_button=new RDTransportButton(RDTransportButton::Down,this);
   edit_down_button->setFocusPolicy(QWidget::NoFocus);
   connect(edit_down_button,SIGNAL(clicked()),this,SLOT(downClickedData()));
   setDisplay(RDTimeEdit::Hours|RDTimeEdit::Minutes|RDTimeEdit::Seconds);

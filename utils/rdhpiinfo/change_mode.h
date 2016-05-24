@@ -2,9 +2,7 @@
 //
 // Change the mode of an AudioScience Adapter
 //
-//   (C) Copyright 2002-2005 Fred Gleason <fredg@paravelsystems.com>
-//
-//    $Id: change_mode.h,v 1.5 2011/05/18 14:38:14 cvs Exp $
+//   (C) Copyright 2002-2005,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -33,13 +31,12 @@
 #define HPI_ADAPTER_MODE_MULTICHANNEL (9)
 #endif
 
-
 class ChangeMode : public QDialog
 {
  Q_OBJECT
  public:
   ChangeMode(unsigned short card,unsigned short type,int mode,
-	     QWidget *parent=0,const char *name=0);
+	     QWidget *parent=0);
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
 

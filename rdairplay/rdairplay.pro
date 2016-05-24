@@ -2,9 +2,7 @@
 #
 # The QMake project file for RDAirPlay.
 #
-# (C) Copyright 2003-2005 Fred Gleason <fredg@paravelsystems.com>
-#
-#      $Id: rdairplay.pro,v 1.8.4.4 2013/12/28 00:00:34 cvs Exp $
+# (C) Copyright 2003-2005,2016 Fred Gleason <fredg@paravelsystems.com>
 #
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License version 2 as

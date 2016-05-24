@@ -2,9 +2,7 @@
  *
  * A C Library for abstracting WAV files
  *
- * (C) Copyright 1997,1999-2003 Fred Gleason <fredg@paravelsystems.com>
- *
- *      $Id: wavlib.c,v 1.4 2007/02/14 21:59:12 fredg Exp $
+ * (C) Copyright 1997,1999-2003,2016 Fred Gleason <fredg@paravelsystems.com>
  *
  *   This program is free software; you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License version 2 as

@@ -4,9 +4,7 @@
 #
 # Manage Rivendell configurations.
 #
-#   (C) Copyright 2004 Fred Gleason <fredg@paravelsystems.com>
-#
-#      $Id: rd_config,v 1.4 2011/01/20 15:33:02 cvs Exp $
+#   (C) Copyright 2004,2016 Fred Gleason <fredg@paravelsystems.com>
 #
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License version 2 as

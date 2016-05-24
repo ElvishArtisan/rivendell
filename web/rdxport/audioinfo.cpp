@@ -2,9 +2,7 @@
 //
 // Rivendell web service portal -- AudioInfo service
 //
-//   (C) Copyright 2011 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: audioinfo.cpp,v 1.4 2012/02/13 23:01:50 cvs Exp $
+//   (C) Copyright 2011,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as

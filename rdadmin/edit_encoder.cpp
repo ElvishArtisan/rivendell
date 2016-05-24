@@ -2,9 +2,7 @@
 //
 // Edit a Rivendell Encoder
 //
-//   (C) Copyright 2008 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: edit_encoder.cpp,v 1.4 2012/02/13 19:26:14 cvs Exp $
+//   (C) Copyright 2008,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -27,8 +25,8 @@
 
 #include <edit_encoder.h>
 
-EditEncoder::EditEncoder(int encoder_id,QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+EditEncoder::EditEncoder(int encoder_id,QWidget *parent)
+  : QDialog(parent,"",true)
 {
   QString sql;
   QSqlQuery *q;

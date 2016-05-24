@@ -1,10 +1,8 @@
 // list_reports.cpp
 //
-// Add a Rivendell Service
+// List RDLibrary Reports
 //
-//   (C) Copyright 2002-2006 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: list_reports.cpp,v 1.11.4.4.2.1 2014/03/19 22:12:59 cvs Exp $
+//   (C) Copyright 2002-2006,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -33,11 +31,10 @@
 #include <globals.h>
 #include <list_reports.h>
 
-
 ListReports::ListReports(const QString &filter,const QString &type_filter,
 			 const QString &group,const QString &schedcode,
-			 QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+			 QWidget *parent)
+  : QDialog(parent,"",true)
 {
   list_filter=filter;
   list_type_filter=type_filter;
@@ -63,7 +60,7 @@ ListReports::ListReports(const QString &filter,const QString &type_filter,
   //
   // Reports List
   //
-  list_reports_box=new QComboBox(this,"list_reports_box");
+  list_reports_box=new QComboBox(this);
   list_reports_box->setGeometry(50,10,sizeHint().width()-60,19);
   list_reports_box->insertItem(tr("Cart Report"));
   list_reports_box->insertItem(tr("Cut Report"));
@@ -93,7 +90,7 @@ ListReports::ListReports(const QString &filter,const QString &type_filter,
   //
   //  Generate Button
   //
-  QPushButton *generate_button=new QPushButton(this,"generate_button");
+  QPushButton *generate_button=new QPushButton(this);
   generate_button->
     setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
   generate_button->setDefault(true);
@@ -104,7 +101,7 @@ ListReports::ListReports(const QString &filter,const QString &type_filter,
   //
   //  Close Button
   //
-  QPushButton *close_button=new QPushButton(this,"close_button");
+  QPushButton *close_button=new QPushButton(this);
   close_button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,
 			     80,50);
   close_button->setFont(font);

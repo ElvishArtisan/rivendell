@@ -2,9 +2,7 @@
 //
 // A Database Check/Repair Tool for Rivendell.
 //
-//   (C) Copyright 2002-2006 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rddbcheck.cpp,v 1.18.4.1.2.1 2014/06/02 18:52:22 cvs Exp $
+//   (C) Copyright 2002-2006,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -49,8 +47,8 @@
 // DB connection will be reset when we detect an error!
 //
 
-MainObject::MainObject(QObject *parent,const char *name)
-  :QObject(parent,name)
+MainObject::MainObject(QObject *parent)
+  :QObject(parent)
 {
   bool skip_db_check=false;
   unsigned schema=0;
@@ -815,6 +813,6 @@ bool MainObject::UserResponse()
 int main(int argc,char *argv[])
 {
   QApplication a(argc,argv,false);
-  new MainObject(NULL,"main");
+  new MainObject();
   return a.exec();
 }

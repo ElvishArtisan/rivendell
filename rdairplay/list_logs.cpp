@@ -2,9 +2,7 @@
 //
 // Select a Rivendell Log
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: list_logs.cpp,v 1.22.6.1 2012/08/10 19:07:21 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -27,8 +25,8 @@
 #include <list_logs.h>
 #include <globals.h>
 
-ListLogs::ListLogs(LogPlay *log,QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+ListLogs::ListLogs(LogPlay *log,QWidget *parent)
+  : QDialog(parent,"",true)
 {
   //
   // Fix the Window Size
@@ -179,10 +177,9 @@ void ListLogs::saveAsButtonData()
   RDAddLog *log;
   if (rdstation_conf->broadcastSecurity() == RDStation::UserSec) {
     log=new RDAddLog(&logname,&svcname,rdstation_conf,
-                     tr("Rename Log"),this,"log", rduser);
+                     tr("Rename Log"),this,rduser);
   } else { // RDStation::HostSec
-    log=new RDAddLog(&logname,&svcname,rdstation_conf,
-                     tr("Rename Log"),this,"log");
+    log=new RDAddLog(&logname,&svcname,rdstation_conf,tr("Rename Log"),this);
   }
 
   if(log->exec()<0) {

@@ -5,9 +5,7 @@
 // This class creates a basic dialog requesting from the user a name and
 // corresponding service that is later used to create a new log.
 //
-//   (C) Copyright 2002-2003 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdadd_log.h,v 1.8.10.1 2014/05/21 18:19:42 cvs Exp $
+//   (C) Copyright 2002-2003,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -47,8 +45,7 @@ class RDAddLog : public QDialog
    * user security should be used instead of host based security.
    */
   RDAddLog(QString *logname,QString *svcname,RDStation *station,
-	   QString caption,QWidget *parent=0,const char *name=0, 
-           RDUser *rduser=0);
+	   QString caption,QWidget *parent=0,RDUser *rduser=0);
   ~RDAddLog();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;

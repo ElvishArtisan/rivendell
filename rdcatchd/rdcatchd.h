@@ -2,9 +2,7 @@
 //
 // The Rivendell Netcatcher.
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdcatchd.h,v 1.56 2010/09/16 19:52:08 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -23,8 +21,6 @@
 #ifndef RDCATCHD_H
 #define RDCATCHD_H
 
-
-//#define RDCATCHD_TEMP_DIR "/tmp"
 #define XLOAD_UPDATE_INTERVAL 1000
 #define RDCATCHD_USAGE "[-d][--event-id=<id>]\n\nOptions:\n\n-d\n     Set 'debug' mode, causing rdcatchd(8) to stay in the foreground\n     and print debugging info on standard output.\n\n--event-id=<id>\n     Execute event <id> and then exit.\n\n" 
 
@@ -83,7 +79,7 @@ class MainObject : public QObject
 {
   Q_OBJECT
  public:
-  MainObject(QObject *parent=0,const char *name=0);
+  MainObject(QObject *parent=0);
 
  public slots:
   void newConnection(int fd);

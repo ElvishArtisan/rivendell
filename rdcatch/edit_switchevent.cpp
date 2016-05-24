@@ -2,9 +2,7 @@
 //
 // Edit a Rivendell Netcatch Cart Event
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: edit_switchevent.cpp,v 1.24 2010/07/29 19:32:36 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -39,9 +37,8 @@
 #include <edit_switchevent.h>
 
 
-EditSwitchEvent::EditSwitchEvent(int id,std::vector<int> *adds,
-				 QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+EditSwitchEvent::EditSwitchEvent(int id,std::vector<int> *adds,QWidget *parent)
+  : QDialog(parent,"",true)
 {
   QString sql;
   RDSqlQuery *q;
@@ -74,7 +71,7 @@ EditSwitchEvent::EditSwitchEvent(int id,std::vector<int> *adds,
   //
   // Text Validator
   //
-  RDTextValidator *validator=new RDTextValidator(this,"validator");
+  RDTextValidator *validator=new RDTextValidator(this);
 
   //
   // The Recording Record
@@ -84,10 +81,9 @@ EditSwitchEvent::EditSwitchEvent(int id,std::vector<int> *adds,
   //
   // Active Button
   //
-  edit_active_button=new QCheckBox(this,"edit_active_button");
+  edit_active_button=new QCheckBox(this);
   edit_active_button->setGeometry(10,11,20,20);
-  QLabel *label=new QLabel(edit_active_button,
-		   tr("Event Active"),this,"edit_active_label");
+  QLabel *label=new QLabel(edit_active_button,tr("Event Active"),this);
   label->setGeometry(30,11,125,20);
   label->setFont(label_font);
   label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
@@ -95,10 +91,9 @@ EditSwitchEvent::EditSwitchEvent(int id,std::vector<int> *adds,
   //
   // Station
   //
-  edit_station_box=new QComboBox(this,"edit_station_box");
+  edit_station_box=new QComboBox(this);
   edit_station_box->setGeometry(200,10,140,23);
-  label=new QLabel(edit_station_box,tr("Location:"),this,
-				       "edit_station_label");
+  label=new QLabel(edit_station_box,tr("Location:"),this);
   label->setGeometry(125,10,70,23);
   label->setFont(label_font);
   label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
@@ -106,10 +101,9 @@ EditSwitchEvent::EditSwitchEvent(int id,std::vector<int> *adds,
   //
   // Start Time
   //
-  edit_starttime_edit=new QTimeEdit(this,"edit_starttime_edit");
+  edit_starttime_edit=new QTimeEdit(this);
   edit_starttime_edit->setGeometry(sizeHint().width()-90,12,80,20);
-  label=new QLabel(edit_starttime_edit,
-		   tr("Start Time:"),this,"edit_starttime_label");
+  label=new QLabel(edit_starttime_edit,tr("Start Time:"),this);
   label->setGeometry(sizeHint().width()-175,12,80,20);
   label->setFont(label_font);
   label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
@@ -117,11 +111,10 @@ EditSwitchEvent::EditSwitchEvent(int id,std::vector<int> *adds,
   //
   // Description
   //
-  edit_description_edit=new QLineEdit(this,"edit_description_edit");
+  edit_description_edit=new QLineEdit(this);
   edit_description_edit->setGeometry(120,43,sizeHint().width()-130,20);
   edit_description_edit->setValidator(validator);
-  label=new QLabel(edit_description_edit,
-		   tr("Description:"),this,"edit_description_label");
+  label=new QLabel(edit_description_edit,tr("Description:"),this);
   label->setGeometry(10,43,105,20);
   label->setFont(label_font);
   label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
@@ -129,10 +122,9 @@ EditSwitchEvent::EditSwitchEvent(int id,std::vector<int> *adds,
   //
   // Switch Matrix
   //
-  edit_matrix_box=new QComboBox(this,"edit_matrix_box");
+  edit_matrix_box=new QComboBox(this);
   edit_matrix_box->setGeometry(120,70,sizeHint().width()-130,20);
-  label=new QLabel(edit_matrix_box,tr("Switch Matrix:"),
-		   this,"edit_matrix_label");
+  label=new QLabel(edit_matrix_box,tr("Switch Matrix:"),this);
   label->setGeometry(10,70,105,20);
   label->setFont(label_font);
   label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
@@ -142,14 +134,13 @@ EditSwitchEvent::EditSwitchEvent(int id,std::vector<int> *adds,
   //
   // Switch Input
   //
-  edit_input_box=new QComboBox(this,"edit_input_box");
+  edit_input_box=new QComboBox(this);
   edit_input_box->setGeometry(120,100,sizeHint().width()-130,20);
-  label=new QLabel(edit_input_box,tr("Switch Input:"),
-		   this,"edit_input_label");
+  label=new QLabel(edit_input_box,tr("Switch Input:"),this);
   label->setGeometry(10,100,105,20);
   label->setFont(label_font);
   label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
-  edit_input_spin=new QSpinBox(this,"edit_input_spin");
+  edit_input_spin=new QSpinBox(this);
   edit_input_spin->setGeometry(140,125,50,20);
   connect(edit_input_box,SIGNAL(activated(const QString &)),
 	  this,SLOT(activateInputData(const QString &)));
@@ -157,14 +148,13 @@ EditSwitchEvent::EditSwitchEvent(int id,std::vector<int> *adds,
   //
   // Switch Output
   //
-  edit_output_box=new QComboBox(this,"edit_output_box");
+  edit_output_box=new QComboBox(this);
   edit_output_box->setGeometry(120,155,sizeHint().width()-130,20);
-  label=new QLabel(edit_output_box,tr("Switch Output:"),
-		   this,"edit_output_label");
+  label=new QLabel(edit_output_box,tr("Switch Output:"),this);
   label->setGeometry(10,155,105,20);
   label->setFont(label_font);
   label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
-  edit_output_spin=new QSpinBox(this,"edit_input_spin");
+  edit_output_spin=new QSpinBox(this);
   edit_output_spin->setGeometry(140,180,50,20);
   connect(edit_output_box,SIGNAL(activated(const QString &)),
 	  this,SLOT(activateOutputData(const QString &)));
@@ -172,7 +162,7 @@ EditSwitchEvent::EditSwitchEvent(int id,std::vector<int> *adds,
   //
   // Button Label
   //
-  label=new QLabel(tr("Active Days"),this,"active_days_label");
+  label=new QLabel(tr("Active Days"),this);
   label->setGeometry(47,210,80,19);
   label->setFont(label_font);
   label->setAlignment(AlignHCenter|ShowPrefix);
@@ -180,10 +170,9 @@ EditSwitchEvent::EditSwitchEvent(int id,std::vector<int> *adds,
   //
   // Monday Button
   //
-  edit_mon_button=new QCheckBox(this,"edit_mon_button");
+  edit_mon_button=new QCheckBox(this);
   edit_mon_button->setGeometry(20,228,20,20);
-  label=new QLabel(edit_mon_button,
-		   tr("Monday"),this,"edit_mon_label");
+  label=new QLabel(edit_mon_button,tr("Monday"),this);
   label->setGeometry(40,228,115,20);
   label->setFont(day_font);
   label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
@@ -191,10 +180,9 @@ EditSwitchEvent::EditSwitchEvent(int id,std::vector<int> *adds,
   //
   // Tuesday Button
   //
-  edit_tue_button=new QCheckBox(this,"edit_tue_button");
+  edit_tue_button=new QCheckBox(this);
   edit_tue_button->setGeometry(115,228,20,20);
-  label=new QLabel(edit_tue_button,
-		   tr("Tuesday"),this,"edit_tue_label");
+  label=new QLabel(edit_tue_button,tr("Tuesday"),this);
   label->setGeometry(135,228,115,20);
   label->setFont(day_font);
   label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
@@ -202,10 +190,9 @@ EditSwitchEvent::EditSwitchEvent(int id,std::vector<int> *adds,
   //
   // Wednesday Button
   //
-  edit_wed_button=new QCheckBox(this,"edit_wed_button");
+  edit_wed_button=new QCheckBox(this);
   edit_wed_button->setGeometry(215,228,20,20);
-  label=new QLabel(edit_wed_button,
-		   tr("Wednesday"),this,"edit_wed_label");
+  label=new QLabel(edit_wed_button,tr("Wednesday"),this);
   label->setGeometry(235,228,115,20);
   label->setFont(day_font);
   label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
@@ -213,10 +200,9 @@ EditSwitchEvent::EditSwitchEvent(int id,std::vector<int> *adds,
   //
   // Thursday Button
   //
-  edit_thu_button=new QCheckBox(this,"edit_thu_button");
+  edit_thu_button=new QCheckBox(this);
   edit_thu_button->setGeometry(335,228,20,20);
-  label=new QLabel(edit_thu_button,
-		   tr("Thursday"),this,"edit_thu_label");
+  label=new QLabel(edit_thu_button,tr("Thursday"),this);
   label->setGeometry(355,228,115,20);
   label->setFont(day_font);
   label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
@@ -224,10 +210,9 @@ EditSwitchEvent::EditSwitchEvent(int id,std::vector<int> *adds,
   //
   // Friday Button
   //
-  edit_fri_button=new QCheckBox(this,"edit_fri_button");
+  edit_fri_button=new QCheckBox(this);
   edit_fri_button->setGeometry(440,228,20,20);
-  label=new QLabel(edit_fri_button,
-		   tr("Friday"),this,"edit_fri_label");
+  label=new QLabel(edit_fri_button,tr("Friday"),this);
   label->setGeometry(460,228,40,20);
   label->setFont(day_font);
   label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
@@ -235,10 +220,9 @@ EditSwitchEvent::EditSwitchEvent(int id,std::vector<int> *adds,
   //
   // Saturday Button
   //
-  edit_sat_button=new QCheckBox(this,"edit_sat_button");
+  edit_sat_button=new QCheckBox(this);
   edit_sat_button->setGeometry(130,253,20,20);
-  label=new QLabel(edit_sat_button,
-		   tr("Saturday"),this,"edit_sat_label");
+  label=new QLabel(edit_sat_button,tr("Saturday"),this);
   label->setGeometry(150,253,60,20);
   label->setFont(day_font);
   label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
@@ -246,10 +230,9 @@ EditSwitchEvent::EditSwitchEvent(int id,std::vector<int> *adds,
   //
   // Sunday Button
   //
-  edit_sun_button=new QCheckBox(this,"edit_sun_button");
+  edit_sun_button=new QCheckBox(this);
   edit_sun_button->setGeometry(300,253,20,20);
-  label=new QLabel(edit_sun_button,
-		   tr("Sunday"),this,"edit_sun_label");
+  label=new QLabel(edit_sun_button,tr("Sunday"),this);
   label->setGeometry(320,253,60,20);
   label->setFont(day_font);
   label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
@@ -257,10 +240,9 @@ EditSwitchEvent::EditSwitchEvent(int id,std::vector<int> *adds,
   //
   // OneShot Button
   //
-  edit_oneshot_box=new QCheckBox(this,"edit_oneshot_box");
+  edit_oneshot_box=new QCheckBox(this);
   edit_oneshot_box->setGeometry(20,290,15,15);
-  label=new QLabel(edit_oneshot_box,
-		   tr("Make OneShot"),this,"edit_oneshot_label");
+  label=new QLabel(edit_oneshot_box,tr("Make OneShot"),this);
   label->setGeometry(40,288,115,20);
   label->setFont(label_font);
   label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
@@ -268,7 +250,7 @@ EditSwitchEvent::EditSwitchEvent(int id,std::vector<int> *adds,
   //
   //  Save As Button
   //
-  QPushButton *button=new QPushButton(this,"saveas_button");
+  QPushButton *button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-300,sizeHint().height()-60,80,50);
   button->setFont(button_font);
   button->setText(tr("&Save As\nNew"));
@@ -280,7 +262,7 @@ EditSwitchEvent::EditSwitchEvent(int id,std::vector<int> *adds,
   //
   //  Ok Button
   //
-  button=new QPushButton(this,"ok_button");
+  button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
   button->setDefault(true);
   button->setFont(button_font);
@@ -290,7 +272,7 @@ EditSwitchEvent::EditSwitchEvent(int id,std::vector<int> *adds,
   //
   //  Cancel Button
   //
-  button=new QPushButton(this,"cancel_button");
+  button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,80,50);
   button->setFont(button_font);
   button->setText(tr("&Cancel"));

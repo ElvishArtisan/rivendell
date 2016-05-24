@@ -2,9 +2,7 @@
 //
 // A container class for a Rivendell Base Configuration
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdconfig.cpp,v 1.24.6.7 2013/11/13 23:36:32 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -25,7 +23,7 @@
 #include <sys/stat.h>
 #include <pwd.h>
 #include <grp.h>
-#endif
+#endif  // WIN32
 
 #include <qmessagebox.h>
 #include <qsettings.h>
@@ -33,7 +31,6 @@
 
 #include <rdprofile.h>
 #include <rdconfig.h>
-
 
 RDConfig *RDConfiguration(void) 
 {

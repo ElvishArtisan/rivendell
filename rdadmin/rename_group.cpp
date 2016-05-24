@@ -2,9 +2,7 @@
 //
 // Rename a Rivendell Group
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rename_group.cpp,v 1.14 2010/08/03 16:26:03 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -42,8 +40,8 @@
 #include <rdescape_string.h>
 
 
-RenameGroup::RenameGroup(QString group,QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+RenameGroup::RenameGroup(QString group,QWidget *parent)
+  : QDialog(parent,"",true)
 {
   group_name=group;
 
@@ -66,18 +64,17 @@ RenameGroup::RenameGroup(QString group,QWidget *parent,const char *name)
   //
   // Text Validator
   //
-  RDTextValidator *validator=new RDTextValidator(this,"validator");
+  RDTextValidator *validator=new RDTextValidator(this);
 
   //
   // Current Group Name
   //
-  group_name_edit=new QLineEdit(this,"group_name_edit");
+  group_name_edit=new QLineEdit(this);
   group_name_edit->setGeometry(165,11,sizeHint().width()-175,19);
   group_name_edit->setMaxLength(10);
   group_name_edit->setReadOnly(true);
   QLabel *group_name_label=
-    new QLabel(group_name_edit,tr("Current Group Name:"),
-	       this,"group_name_label");
+    new QLabel(group_name_edit,tr("Current Group Name:"),this);
   group_name_label->setGeometry(10,11,150,19);
   group_name_label->setFont(font);
   group_name_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
@@ -85,13 +82,12 @@ RenameGroup::RenameGroup(QString group,QWidget *parent,const char *name)
   //
   // New Group Name
   //
-  group_newname_edit=new QLineEdit(this,"group_newname_edit");
+  group_newname_edit=new QLineEdit(this);
   group_newname_edit->setGeometry(165,33,sizeHint().width()-175,19);
   group_newname_edit->setMaxLength(10);
   group_newname_edit->setValidator(validator);
   QLabel *group_newname_label=
-    new QLabel(group_newname_edit,tr("New &Group Name:"),
-	       this,"group_newname_label");
+    new QLabel(group_newname_edit,tr("New &Group Name:"),this);
   group_newname_label->setGeometry(10,33,150,19);
   group_newname_label->setFont(font);
   group_newname_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
@@ -99,7 +95,7 @@ RenameGroup::RenameGroup(QString group,QWidget *parent,const char *name)
   //
   //  Ok Button
   //
-  QPushButton *ok_button=new QPushButton(this,"ok_button");
+  QPushButton *ok_button=new QPushButton(this);
   ok_button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
   ok_button->setDefault(true);
   ok_button->setFont(font);
@@ -109,7 +105,7 @@ RenameGroup::RenameGroup(QString group,QWidget *parent,const char *name)
   //
   //  Cancel Button
   //
-  QPushButton *cancel_button=new QPushButton(this,"cancel_button");
+  QPushButton *cancel_button=new QPushButton(this);
   cancel_button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,
 			     80,50);
   cancel_button->setFont(font);

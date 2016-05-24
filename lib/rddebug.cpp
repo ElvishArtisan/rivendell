@@ -2,9 +2,7 @@
 //
 // Debugging Utility Functions for Rivendell
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rddebug.cpp,v 1.8 2010/07/29 19:32:33 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -23,7 +21,6 @@
 #include <stdio.h>
 
 #include <rddebug.h>
-
 
 void RDTimePoint(QString label)
 {

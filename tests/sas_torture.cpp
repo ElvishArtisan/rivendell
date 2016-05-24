@@ -2,9 +2,7 @@
 //
 // A Qt-based application for playing Microsoft WAV files. 
 //
-//   (C) Copyright 2002 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: sas_torture.cpp,v 1.10 2011/06/21 22:20:44 cvs Exp $
+//   (C) Copyright 2002,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -32,9 +30,8 @@
 #include <rddb.h>
 #include <sas_torture.h>
 
-
-MainWidget::MainWidget(QWidget *parent,const char *name)
-  :QWidget(parent,name)
+MainWidget::MainWidget(QWidget *parent)
+  :QWidget(parent)
 {
   unsigned schema=0;
 
@@ -190,7 +187,7 @@ int main(int argc,char *argv[])
 {
   QApplication a(argc,argv);
   
-  MainWidget *w=new MainWidget(NULL,"main");
+  MainWidget *w=new MainWidget();
   a.setMainWidget(w);
   w->setGeometry(QRect(QPoint(0,0),w->sizeHint()));
   w->show();

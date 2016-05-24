@@ -2,9 +2,7 @@
 //
 // List Rivendell Host Variables
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: list_hostvars.h,v 1.5 2010/07/29 19:32:35 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -33,12 +31,11 @@
 #include <rd.h>
 #include <rdmatrix.h>
 
-
 class ListHostvars : public QDialog
 {
  Q_OBJECT
  public:
-  ListHostvars(QString station,QWidget *parent=0,const char *name=0);
+  ListHostvars(QString station,QWidget *parent=0);
   ~ListHostvars();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;

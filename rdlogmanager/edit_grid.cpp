@@ -39,7 +39,6 @@
 #include <list_clocks.h>
 #include <edit_clock.h>
 
-
 EditGrid::EditGrid(QString servicename,QWidget *parent)
   : QDialog(parent,"",true)
 {

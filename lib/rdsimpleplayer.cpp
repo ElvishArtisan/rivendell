@@ -2,9 +2,7 @@
 //
 // A naively simple player for Rivendell Carts.
 //
-//   (C) Copyright 2002-2006 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdsimpleplayer.cpp,v 1.14 2010/07/29 19:32:34 cvs Exp $
+//   (C) Copyright 2002-2006,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -26,8 +24,8 @@
 
 RDSimplePlayer::RDSimplePlayer(RDCae *cae,RDRipc *ripc,int card,int port,
 			       unsigned start_cart,unsigned end_cart,
-			       QWidget *parent,const char *name)
-  : QWidget(parent,name)
+			       QWidget *parent)
+  : QWidget(parent)
 {
   play_cae=cae;
   play_ripc=ripc;
@@ -48,21 +46,19 @@ RDSimplePlayer::RDSimplePlayer(RDCae *cae,RDRipc *ripc,int card,int port,
   //
   // Event Player
   //
-  play_event_player=new RDEventPlayer(play_ripc,this,"play_event_player");
+  play_event_player=new RDEventPlayer(play_ripc,this);
 
   //
   //  Start Button
   //
-  play_start_button=
-    new RDTransportButton(RDTransportButton::Play,parent,"play_start_button");
+  play_start_button=new RDTransportButton(RDTransportButton::Play,parent);
   play_start_button->setEnabled((play_card>=0)&&(play_port>=0));
   connect(play_start_button,SIGNAL(clicked()),this,SLOT(play()));
 
   //
   //  Stop Button
   //
-  play_stop_button=
-    new RDTransportButton(RDTransportButton::Stop,parent,"play_stop_button");
+  play_stop_button=new RDTransportButton(RDTransportButton::Stop,parent);
   play_stop_button->on();
   play_stop_button->setEnabled((play_card>=0)&&(play_port>=0));
   connect(play_stop_button,SIGNAL(clicked()),this,SLOT(stop()));

@@ -2,9 +2,7 @@
 //
 // Connection to the Rivendell Interprocess Communication Daemon
 //
-//   (C) Copyright 2002-2003 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdripc.cpp,v 1.36.6.2 2013/03/09 00:21:11 cvs Exp $
+//   (C) Copyright 2002-2003,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -28,9 +26,8 @@
 #include <rddb.h>
 #include <rdripc.h>
 
-
-RDRipc::RDRipc(QString stationname,QObject *parent,const char *name)
-  : QObject(parent,name)
+RDRipc::RDRipc(QString stationname,QObject *parent)
+  : QObject(parent)
 {
   ripc_stationname=stationname;
   ripc_onair_flag=false;
@@ -44,7 +41,7 @@ RDRipc::RDRipc(QString stationname,QObject *parent,const char *name)
   //
   // TCP Connection
   //
-  ripc_socket=new QSocket(this,"ripc_socket");
+  ripc_socket=new QSocket(this);
   connect(ripc_socket,SIGNAL(connected()),this,SLOT(connectedData()));
   connect(ripc_socket,SIGNAL(error(int)),this,SLOT(errorData(int)));
   connect(ripc_socket,SIGNAL(readyRead()),this,SLOT(readyData()));

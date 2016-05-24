@@ -63,8 +63,8 @@
 #include "../icons/traffic.xpm"
 
 EditLog::EditLog(QString logname,vector<RDLogLine> *clipboard,
-		 vector<QString> *new_logs,QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+		 vector<QString> *new_logs,QWidget *parent)
+  : QDialog(parent,"",true)
 {
   QString sql;
   RDSqlQuery *q;
@@ -127,7 +127,7 @@ EditLog::EditLog(QString logname,vector<RDLogLine> *clipboard,
   //
   // Text Validator
   //
-  RDTextValidator *validator=new RDTextValidator(this,"validator");
+  RDTextValidator *validator=new RDTextValidator(this);
 
   //
   // Log Header
@@ -143,12 +143,11 @@ EditLog::EditLog(QString logname,vector<RDLogLine> *clipboard,
   //
   // Log Name
   //
-  edit_logname_label=new QLabel(logname,this,"edit_logname_label");
+  edit_logname_label=new QLabel(logname,this);
   edit_logname_label->setBackgroundColor(QColor(system_mid_color));
   edit_logname_label->setAlignment(AlignLeft|AlignVCenter);
   edit_logname_label->setFont(title_font);
-  edit_logname_label_label=new QLabel(tr("Log Name:"),
-				      this,"edit_logname_label_label");
+  edit_logname_label_label=new QLabel(tr("Log Name:"),this);
   edit_logname_label_label->setBackgroundColor(QColor(system_mid_color));
   edit_logname_label_label->setFont(label_font);
   edit_logname_label_label->setAlignment(AlignRight|AlignVCenter);
@@ -156,12 +155,11 @@ EditLog::EditLog(QString logname,vector<RDLogLine> *clipboard,
   //
   // Track Counts
   //
-  edit_track_label=new QLabel(this,"edit_track_label");
+  edit_track_label=new QLabel(this);
   edit_track_label->setBackgroundColor(QColor(system_mid_color));
   edit_track_label->setAlignment(AlignLeft|AlignVCenter);
   edit_track_label->setFont(title_font);
-  edit_track_label_label=new QLabel(tr("Tracks:"),
-				      this,"edit_track_label_label");
+  edit_track_label_label=new QLabel(tr("Tracks:"),this);
   edit_track_label_label->setBackgroundColor(QColor(system_mid_color));
   edit_track_label_label->setFont(label_font);
   edit_track_label_label->setAlignment(AlignRight|AlignVCenter);
@@ -169,14 +167,14 @@ EditLog::EditLog(QString logname,vector<RDLogLine> *clipboard,
   //
   // Log Origin
   //
-  edit_origin_label=new QLabel(edit_log->originUser()+QString(" - ")+
-		  edit_log->originDatetime().toString("MM/dd/yyyy - hh:mm:ss"),
-	          this,"edit_origin_label");
+  edit_origin_label=
+    new QLabel(edit_log->originUser()+QString(" - ")+
+	       edit_log->originDatetime().toString("MM/dd/yyyy - hh:mm:ss"),
+	       this);
   edit_origin_label->setBackgroundColor(QColor(system_mid_color));
   edit_origin_label->setAlignment(AlignLeft|AlignVCenter);
   edit_origin_label->setFont(title_font);
-  edit_origin_label_label=new QLabel(tr("Origin:"),
-				     this,"edit_origin_label_label");
+  edit_origin_label_label=new QLabel(tr("Origin:"),this);
   edit_origin_label_label->setBackgroundColor(QColor(system_mid_color));
   edit_origin_label_label->setFont(label_font);
   edit_origin_label_label->setAlignment(AlignRight|AlignVCenter);
@@ -184,26 +182,24 @@ EditLog::EditLog(QString logname,vector<RDLogLine> *clipboard,
   //
   // Description
   //
-  edit_description_edit=new QLineEdit(this,"edit_description_edit");
+  edit_description_edit=new QLineEdit(this);
   edit_description_edit->setValidator(validator);
   connect(edit_description_edit,SIGNAL(textChanged(const QString &)),
 	  this,SLOT(descriptionChangedData(const QString &)));
-  edit_description_label=new QLabel(edit_description_edit,tr("Description:"),
-		   this,"edit_description_label");
+  edit_description_label=
+    new QLabel(edit_description_edit,tr("Description:"),this);
   edit_description_label->setFont(label_font);
   edit_description_label->setAlignment(AlignRight|AlignVCenter);
 
   //
   // Purge Date
   //
-  edit_purgedate_box=new QCheckBox(this,"edit_purgedate_box");
-  edit_purgedate_label=new QLabel(edit_purgedate_box,tr("Delete on"),
-				  this,"edit_purgedate_label");
+  edit_purgedate_box=new QCheckBox(this);
+  edit_purgedate_label=new QLabel(edit_purgedate_box,tr("Delete on"),this);
   edit_purgedate_label->setFont(label_font);
   edit_purgedate_label->setAlignment(AlignRight|AlignVCenter);
-  edit_purgedate_edit=new QDateEdit(this,"edit_purgedate_edit");
-  edit_purgedate_button=
-    new QPushButton(tr("Select"),this,"edit_purgedate_button");
+  edit_purgedate_edit=new QDateEdit(this);
+  edit_purgedate_button=new QPushButton(tr("Select"),this);
   edit_purgedate_button->setFont(label_font);
   connect(edit_purgedate_box,SIGNAL(toggled(bool)),
 	  edit_purgedate_edit,SLOT(setEnabled(bool)));
@@ -215,11 +211,10 @@ EditLog::EditLog(QString logname,vector<RDLogLine> *clipboard,
   //
   // Service
   //
-  edit_service_box=new QComboBox(this,"edit_service_box");
-  edit_service_edit=new QLineEdit(this,"edit_service_edit");
+  edit_service_box=new QComboBox(this);
+  edit_service_edit=new QLineEdit(this);
   edit_service_edit->setReadOnly(true);
-  edit_service_label=new QLabel(edit_service_box,tr("Service:"),
-				this,"edit_service_label");
+  edit_service_label=new QLabel(edit_service_box,tr("Service:"),this);
   edit_service_label->setFont(label_font);
   edit_service_label->setAlignment(AlignRight|AlignVCenter);  
   connect(edit_service_box,SIGNAL(activated(const QString &)),
@@ -228,23 +223,21 @@ EditLog::EditLog(QString logname,vector<RDLogLine> *clipboard,
   //
   // Auto Refresh
   //
-  edit_autorefresh_box=new QComboBox(this,"edit_autorefresh_box");
+  edit_autorefresh_box=new QComboBox(this);
   edit_autorefresh_box->insertItem(tr("Yes"));
   edit_autorefresh_box->insertItem(tr("No"));
-  edit_autorefresh_edit=new QLineEdit(this,"edit_autorefresh_edit");
+  edit_autorefresh_edit=new QLineEdit(this);
   edit_autorefresh_edit->setReadOnly(true);
   edit_autorefresh_label=
-    new QLabel(edit_autorefresh_box,tr("Enable AutoRefresh:"),
-	       this,"edit_autorefresh_label");
+    new QLabel(edit_autorefresh_box,tr("Enable AutoRefresh:"),this);
   edit_autorefresh_label->setFont(label_font);
   edit_autorefresh_label->setAlignment(AlignRight|AlignVCenter);  
 
   //
   // Start Date
   //
-  edit_startdate_edit=new QDateEdit(this,"edit_startdate_edit");
-  edit_startdate_label=new QLabel(edit_startdate_edit,tr("Start Date:"),this,
-				  "edit_startdate_label");
+  edit_startdate_edit=new QDateEdit(this);
+  edit_startdate_label=new QLabel(edit_startdate_edit,tr("Start Date:"),this);
   edit_startdate_label->setFont(label_font);
   edit_startdate_label->setAlignment(AlignRight|AlignVCenter);  
   connect(edit_startdate_edit,SIGNAL(valueChanged(const QDate &)),
@@ -254,9 +247,8 @@ EditLog::EditLog(QString logname,vector<RDLogLine> *clipboard,
   //
   // End Date
   //
-  edit_enddate_edit=new QDateEdit(this,"edit_enddate_edit");
-  edit_enddate_label=new QLabel(edit_startdate_edit,tr("End Date:"),
-				this,"edit_enddate_label");
+  edit_enddate_edit=new QDateEdit(this);
+  edit_enddate_label=new QLabel(edit_startdate_edit,tr("End Date:"),this);
   edit_enddate_label->setFont(label_font);
   edit_enddate_label->setAlignment(AlignRight|AlignVCenter);  
   connect(edit_enddate_edit,SIGNAL(valueChanged(const QDate &)),
@@ -265,22 +257,22 @@ EditLog::EditLog(QString logname,vector<RDLogLine> *clipboard,
   //
   // Start Date Checkbox
   //
-  edit_startdate_box=new QCheckBox(this,"edit_startdate_box");
+  edit_startdate_box=new QCheckBox(this);
   connect(edit_startdate_box,SIGNAL(toggled(bool)),
 	  this,SLOT(startDateEnabledData(bool)));
-  edit_startdate_box_label=new QLabel(edit_startdate_box,
-				      tr("Start Date Enabled"),this);
+  edit_startdate_box_label=
+    new QLabel(edit_startdate_box,tr("Start Date Enabled"),this);
   edit_startdate_box_label->setFont(label_font);
   edit_startdate_box_label->setAlignment(AlignLeft|AlignVCenter);
 
   //
   // End Date Checkbox
   //
-  edit_enddate_box=new QCheckBox(this,"edit_enddate_box");
+  edit_enddate_box=new QCheckBox(this);
   connect(edit_enddate_box,SIGNAL(toggled(bool)),
 	  this,SLOT(endDateEnabledData(bool)));
-  edit_enddate_box_label=new QLabel(edit_enddate_box,tr("End Date Enabled"),
-				    this);
+  edit_enddate_box_label=
+    new QLabel(edit_enddate_box,tr("End Date Enabled"),this);
   edit_enddate_box_label->setFont(label_font);
   edit_enddate_box_label->setAlignment(AlignLeft|AlignVCenter);  
 
@@ -294,7 +286,7 @@ EditLog::EditLog(QString logname,vector<RDLogLine> *clipboard,
   //
   // Stop Time Counter
   //
-  edit_stoptime_edit=new QLineEdit(this,"edit_stoptime_edit");
+  edit_stoptime_edit=new QLineEdit(this);
   edit_stoptime_label=new QLabel(edit_stoptime_edit,tr("Next Stop:"),this);
   edit_stoptime_label->setFont(label_font);
   edit_stoptime_label->setAlignment(AlignRight|AlignVCenter);  
@@ -302,7 +294,7 @@ EditLog::EditLog(QString logname,vector<RDLogLine> *clipboard,
   //
   // End Time Counter
   //
-  edit_endtime_edit=new QLineEdit(this,"edit_endtime_edit");
+  edit_endtime_edit=new QLineEdit(this);
   edit_endtime_label=new QLabel(edit_endtime_edit,tr("Log End:"),this);
   edit_endtime_label->setFont(label_font);
   edit_endtime_label->setAlignment(AlignRight|AlignVCenter);  
@@ -310,7 +302,7 @@ EditLog::EditLog(QString logname,vector<RDLogLine> *clipboard,
   //
   // Log Event List
   //
-  edit_log_list=new DropListView(this,"edit_log_list");
+  edit_log_list=new DropListView(this);
   edit_log_list->setAllColumnsShowFocus(true);
   edit_log_list->setSelectionMode(QListView::Extended);
   edit_log_list->setItemMargin(5);
@@ -360,7 +352,7 @@ EditLog::EditLog(QString logname,vector<RDLogLine> *clipboard,
   //
   //  Insert Cart Button
   //
-  edit_cart_button=new QPushButton(this,"edit_cart_button");
+  edit_cart_button=new QPushButton(this);
   edit_cart_button->setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
   edit_cart_button->setFont(button_font);
   edit_cart_button->setText(tr("Insert\nCart"));
@@ -370,7 +362,7 @@ EditLog::EditLog(QString logname,vector<RDLogLine> *clipboard,
   //
   //  Insert Marker Button
   //
-  edit_marker_button=new QPushButton(this,"edit_marker_button");
+  edit_marker_button=new QPushButton(this);
   edit_marker_button->setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
   edit_marker_button->setFont(button_font);
   edit_marker_button->setText(tr("Insert\nMeta"));
@@ -380,7 +372,7 @@ EditLog::EditLog(QString logname,vector<RDLogLine> *clipboard,
   //
   //  Edit Button
   //
-  edit_edit_button=new QPushButton(this,"edit_edit_button");
+  edit_edit_button=new QPushButton(this);
   edit_edit_button->setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
   edit_edit_button->setFont(button_font);
   edit_edit_button->setText(tr("Edit"));
@@ -389,7 +381,7 @@ EditLog::EditLog(QString logname,vector<RDLogLine> *clipboard,
   //
   //  Delete Button
   //
-  edit_delete_button=new QPushButton(this,"edit_delete_button");
+  edit_delete_button=new QPushButton(this);
   edit_delete_button->setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
   edit_delete_button->setFont(button_font);
   edit_delete_button->setText(tr("Delete"));
@@ -398,23 +390,21 @@ EditLog::EditLog(QString logname,vector<RDLogLine> *clipboard,
   //
   //  Up Button
   //
-  edit_up_button=new RDTransportButton(RDTransportButton::Up,
-				      this,"delete_button");
+  edit_up_button=new RDTransportButton(RDTransportButton::Up,this);
   edit_up_button->setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
   connect(edit_up_button,SIGNAL(clicked()),this,SLOT(upButtonData()));
 
   //
   //  Down Button
   //
-  edit_down_button=new RDTransportButton(RDTransportButton::Down,
-					this,"delete_button");
+  edit_down_button=new RDTransportButton(RDTransportButton::Down,this);
   edit_down_button->setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
   connect(edit_down_button,SIGNAL(clicked()),this,SLOT(downButtonData()));
 
   //
   //  Cut Button
   //
-  edit_cut_button=new QPushButton(this,"edit_cut_button");
+  edit_cut_button=new QPushButton(this);
   edit_cut_button->setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
   edit_cut_button->setFont(button_font);
   edit_cut_button->setText(tr("Cut"));
@@ -423,7 +413,7 @@ EditLog::EditLog(QString logname,vector<RDLogLine> *clipboard,
   //
   //  Copy Button
   //
-  edit_copy_button=new QPushButton(this,"edit_copy_button");
+  edit_copy_button=new QPushButton(this);
   edit_copy_button->setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
   edit_copy_button->setFont(button_font);
   edit_copy_button->setText(tr("Copy"));
@@ -432,7 +422,7 @@ EditLog::EditLog(QString logname,vector<RDLogLine> *clipboard,
   //
   //  Paste Button
   //
-  edit_paste_button=new QPushButton(this,"edit_paste_button");
+  edit_paste_button=new QPushButton(this);
   edit_paste_button->setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
   edit_paste_button->setFont(button_font);
   edit_paste_button->setText(tr("Paste"));
@@ -441,7 +431,7 @@ EditLog::EditLog(QString logname,vector<RDLogLine> *clipboard,
   //
   //  Save Button
   //
-  edit_save_button=new QPushButton(this,"edit_save_button");
+  edit_save_button=new QPushButton(this);
   edit_save_button->setFont(button_font);
   edit_save_button->setText(tr("&Save"));
   connect(edit_save_button,SIGNAL(clicked()),this,SLOT(saveData()));
@@ -449,7 +439,7 @@ EditLog::EditLog(QString logname,vector<RDLogLine> *clipboard,
   //
   //  SaveAs Button
   //
-  edit_saveas_button=new QPushButton(this,"edit_saveas_button");
+  edit_saveas_button=new QPushButton(this);
   edit_saveas_button->setFont(button_font);
   edit_saveas_button->setText(tr("Save\n&As"));
   connect(edit_saveas_button,SIGNAL(clicked()),this,SLOT(saveasData()));
@@ -457,7 +447,7 @@ EditLog::EditLog(QString logname,vector<RDLogLine> *clipboard,
   //
   //  Reports Button
   //
-  edit_reports_button=new QPushButton(this,"edit_reports_button");
+  edit_reports_button=new QPushButton(this);
   edit_reports_button->setFont(button_font);
   edit_reports_button->setText(tr("&Reports"));
   connect(edit_reports_button,SIGNAL(clicked()),this,SLOT(reportsData()));
@@ -470,14 +460,14 @@ EditLog::EditLog(QString logname,vector<RDLogLine> *clipboard,
 #else
   edit_player=
     new RDSimplePlayer(rdcae,rdripc,edit_output_card,edit_output_port,
-		       edit_start_macro,edit_end_macro,this,"edit_player");
+		       edit_start_macro,edit_end_macro,this);
   edit_player->stopButton()->setOnColor(red);
 #endif  // WIN32
 
   //
   //  Ok Button
   //
-  edit_ok_button=new QPushButton(this,"edit_ok_button");
+  edit_ok_button=new QPushButton(this);
   edit_ok_button->setDefault(true);
   edit_ok_button->setFont(button_font);
   edit_ok_button->setText(tr("&OK"));
@@ -486,7 +476,7 @@ EditLog::EditLog(QString logname,vector<RDLogLine> *clipboard,
   //
   //  Cancel Button
   //
-  edit_cancel_button=new QPushButton(this,"edit_cancel_button");
+  edit_cancel_button=new QPushButton(this);
   edit_cancel_button->setFont(button_font);
   edit_cancel_button->setText(tr("&Cancel"));
   connect(edit_cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
@@ -691,11 +681,10 @@ void EditLog::insertCartButtonData()
   edit_log_event->logLine(line)->setTransType(edit_default_trans);
   edit_log_event->logLine(line)->setFadeupGain(-3000);
   edit_log_event->logLine(line)->setFadedownGain(-3000);
-  EditLogLine *edit=new EditLogLine(edit_log_event->logLine(line),
-				    &edit_filter,&edit_group,
+  EditLogLine *edit=
+new EditLogLine(edit_log_event->logLine(line),&edit_filter,&edit_group,
 				    edit_service_box->currentText(),
-				    &edit_group_list,edit_log_event,line,
-				    this,"edit_logline");
+				    &edit_group_list,edit_log_event,line,this);
   int ret=edit->exec();
   if(ret>=0) {
     edit_log_event->refresh(line);
@@ -728,13 +717,12 @@ void EditLog::insertMarkerButtonData()
   }
   line=item->text(14).toInt();
   id=item->text(13).toInt();
-  AddMeta *meta=new AddMeta(this,"add_meta_dialog");
+  AddMeta *meta=new AddMeta(this);
   switch((RDLogLine::Type)meta->exec()) {
       case RDLogLine::Marker:
 	edit_log_event->insert(line,1);
 	edit_log_event->logLine(line)->setType(RDLogLine::Marker);
-	edit_marker=new EditMarker(edit_log_event->logLine(line),
-				   this,"edit_marker");
+	edit_marker=new EditMarker(edit_log_event->logLine(line),this);
 	ret=edit_marker->exec();
 	if(ret>=0) {
 	  edit_log_event->refresh(line);
@@ -751,8 +739,7 @@ void EditLog::insertMarkerButtonData()
 	edit_log_event->logLine(line)->setType(RDLogLine::Track);
 	edit_log_event->logLine(line)->setTransType(RDLogLine::Segue);
 	edit_log_event->logLine(line)->setMarkerComment(tr("Voice Track"));
-	edit_track=new EditTrack(edit_log_event->logLine(line),
-				  this,"edit_marker");
+	edit_track=new EditTrack(edit_log_event->logLine(line),this);
 	ret=edit_track->exec();
 	if(ret>=0) {
 	  edit_log_event->refresh(line);
@@ -767,8 +754,7 @@ void EditLog::insertMarkerButtonData()
       case RDLogLine::Chain:
 	edit_log_event->insert(line,1);
 	edit_log_event->logLine(line)->setType(RDLogLine::Chain);
-	edit_chain=new EditChain(edit_log_event->logLine(line),
-				  this,"edit_marker");
+	edit_chain=new EditChain(edit_log_event->logLine(line),this);
 	ret=edit_chain->exec();
 	if(ret>=0) {
 	  edit_log_event->refresh(line);
@@ -841,11 +827,9 @@ void EditLog::editButtonData()
   switch(edit_log_event->logLine(line)->type()) {
       case RDLogLine::Cart:
       case RDLogLine::Macro:
-	edit_cart=new EditLogLine(edit_log_event->logLine(line),&
-				  edit_filter,&edit_group,
-				  edit_service_box->currentText(),
-				  &edit_group_list,edit_log_event,line,
-				  this,"edit_logline");
+	edit_cart=new EditLogLine(edit_log_event->logLine(line),&edit_filter,
+				  &edit_group,edit_service_box->currentText(),
+				  &edit_group_list,edit_log_event,line,this);
 	if(edit_cart->exec()>=0) {
 	  edit_log_event->refresh(item->text(14).toInt());
 	  edit_changed=true;
@@ -854,8 +838,7 @@ void EditLog::editButtonData()
 	break;
 
       case RDLogLine::Marker:
-	edit_marker=new EditMarker(edit_log_event->logLine(line),
-				   this,"edit_logline");
+	edit_marker=new EditMarker(edit_log_event->logLine(line),this);
 	if(edit_marker->exec()>=0) {
 	  edit_changed=true;
 	}
@@ -863,8 +846,7 @@ void EditLog::editButtonData()
 	break;
 
       case RDLogLine::Track:
-	edit_track=new EditTrack(edit_log_event->logLine(line),
-				   this,"edit_logline");
+	edit_track=new EditTrack(edit_log_event->logLine(line),this);
 	if(edit_track->exec()>=0) {
 	  edit_changed=true;
 	}
@@ -872,8 +854,7 @@ void EditLog::editButtonData()
 	break;
 
       case RDLogLine::Chain:
-	edit_chain=new EditChain(edit_log_event->logLine(line),
-				 this,"edit_logline");
+	edit_chain=new EditChain(edit_log_event->logLine(line),this);
 	if(edit_chain->exec()>=0) {
 	  edit_changed=true;
 	}
@@ -1065,10 +1046,9 @@ void EditLog::saveasData()
 
   if(rduser->createLog()) {
     if (rdstation_conf->broadcastSecurity() == RDStation::UserSec) {
-      log=new RDAddLog(&logname,&svcname,NULL,tr("Add Log"),this,"add_log",
-                       rduser);
+      log=new RDAddLog(&logname,&svcname,NULL,tr("Add Log"),this,rduser);
     } else { // RDStation::HostSec
-      log=new RDAddLog(&logname,&svcname,NULL,tr("Add Log"),this,"add_log");
+      log=new RDAddLog(&logname,&svcname,NULL,tr("Add Log"),this);
     }
     if(log->exec()<0) {
       return;
@@ -1126,7 +1106,7 @@ void EditLog::reportsData()
     new ListReports(edit_log->name(),edit_description_edit->text(),
 		    edit_service_box->currentText(),start_date,end_date,
 		    edit_autorefresh_box->currentItem()==0,
-		    edit_log_event,this,"lr");
+		    edit_log_event,this);
   lr->exec();
   delete lr;
 }

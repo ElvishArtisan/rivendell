@@ -15155,3 +15155,6 @@
 	'LOGS.START_DATE' and 'LOGS.END_DATE' fields in the database
 	[GitHub issue #000121].
 	* Incremented the database version to 257.
+2016-05-24 Fred Gleason <fredg@paravelsystems.com>
+	* Removed all CVS tags.
+	* Removed 'const char *name' parameter from all QObject contructors.

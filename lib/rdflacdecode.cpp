@@ -2,9 +2,7 @@
 //
 // Decode FLAC Files using libFLAC++
 //
-//   (C) Copyright 2010 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdflacdecode.cpp,v 1.5.6.1 2012/12/13 22:33:44 cvs Exp $
+//   (C) Copyright 2010,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -24,7 +22,6 @@
 #include <math.h>
 
 #include <rdflacdecode.h>
-
 
 #ifdef HAVE_FLAC
 RDFlacDecode::RDFlacDecode(SNDFILE *dst_sf)

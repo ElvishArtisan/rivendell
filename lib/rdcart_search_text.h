@@ -2,9 +2,7 @@
 //
 // Generates a standardized SQL 'WHERE' clause for filtering Rivendell carts.
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdcart_search_text.h,v 1.10.4.1 2012/10/09 00:12:29 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -34,4 +32,4 @@ QString RDAllCartSearchText(const QString &filter,const QString &schedcode,
 			    const QString &user,bool incl_cuts);
 
 
-#endif 
+#endif  // RDCART_SEARCH_TEXT_H

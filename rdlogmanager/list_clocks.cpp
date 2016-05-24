@@ -2,7 +2,7 @@
 //
 // List Rivendell Log Clocks
 //
-//   (C) Copyright 2002-2015 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -36,7 +36,6 @@
 #include <edit_clock.h>
 #include <globals.h>
 #include <rename_item.h>
-
 
 ListClocks::ListClocks(QString *clockname,QWidget *parent)
   : QDialog(parent,"",true)
@@ -224,7 +223,7 @@ void ListClocks::addData()
   RDSqlQuery *q1;
   std::vector<QString> new_clocks;
 
-  AddClock *add_dialog=new AddClock(&clockname,this,"add_dialog");
+  AddClock *add_dialog=new AddClock(&clockname,this);
   if(add_dialog->exec()<0) {
     delete add_dialog;
     return;
@@ -359,8 +358,7 @@ void ListClocks::renameData()
     return;
   }
   QString new_name=item->text(0);
-  RenameItem *rename_dialog=
-    new RenameItem(&new_name,"CLOCKS",this,"event_dialog");
+  RenameItem *rename_dialog=new RenameItem(&new_name,"CLOCKS",this);
   if(rename_dialog->exec()<-1) {
     delete rename_dialog;
     return;

@@ -2,9 +2,7 @@
 //
 // Edit a Rivendell Dropbox Configuration
 //
-//   (C) Copyright 2002-2007 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: edit_dropbox.cpp,v 1.11.8.3.2.1 2014/06/03 18:23:35 cvs Exp $
+//   (C) Copyright 2002-2007,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -42,9 +40,8 @@
 #include <rdescape_string.h>
 #include <edit_dropbox.h>
 
-
-EditDropbox::EditDropbox(int id,QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+EditDropbox::EditDropbox(int id,QWidget *parent)
+  : QDialog(parent,"",true)
 {
   QString sql;
   RDSqlQuery *q;

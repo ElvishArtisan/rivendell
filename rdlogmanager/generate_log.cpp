@@ -2,9 +2,7 @@
 //
 // Generate a Rivendell Log
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: generate_log.cpp,v 1.37.6.2 2014/01/10 21:59:32 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -51,8 +49,9 @@
 #include "../icons/redball.xpm"
 
 
-GenerateLog::GenerateLog(QWidget *parent,const char *name,int cmd_switch,QString *cmd_service,QDate *cmd_date)
-  : QDialog(parent,name,true)
+GenerateLog::GenerateLog(QWidget *parent,int cmd_switch,QString *cmd_service,
+			 QDate *cmd_date)
+  : QDialog(parent,"",true)
 {
   QStringList services_list;
   bool  cmdservicefit=false;
@@ -103,12 +102,11 @@ GenerateLog::GenerateLog(QWidget *parent,const char *name,int cmd_switch,QString
   //
   // Service Name
   //
-  gen_service_box=new QComboBox(this,"gen_service_box");
+  gen_service_box=new QComboBox(this);
   gen_service_box->setGeometry(70,10,sizeHint().width()-80,20);
   connect(gen_service_box,SIGNAL(activated(int)),
 	  this,SLOT(serviceActivatedData(int)));
-  QLabel *label=new QLabel(gen_service_box,tr("Service:"),
-			   this,"gen_service_label");
+  QLabel *label=new QLabel(gen_service_box,tr("Service:"),this);
   label->setGeometry(10,10,55,20);
   label->setFont(bold_font);
   label->setAlignment(AlignRight|AlignVCenter);
@@ -134,10 +132,9 @@ GenerateLog::GenerateLog(QWidget *parent,const char *name,int cmd_switch,QString
   //
   // Date
   //
-  gen_date_edit=new QDateEdit(this,"gen_date_edit");
+  gen_date_edit=new QDateEdit(this);
   gen_date_edit->setGeometry(70,38,100,20);
-  label=new QLabel(gen_date_edit,tr("Date:"),
-			   this,"gen_date_label");
+  label=new QLabel(gen_date_edit,tr("Date:"),this);
   label->setGeometry(10,38,55,20);
   label->setFont(bold_font);
   label->setAlignment(AlignRight|AlignVCenter);
@@ -152,7 +149,7 @@ GenerateLog::GenerateLog(QWidget *parent,const char *name,int cmd_switch,QString
   //
   // Date Select Button
   //
-  QPushButton *button=new QPushButton(this,"select_button");
+  QPushButton *button=new QPushButton(this);
   button->setGeometry(180,33,50,30);
   button->setFont(bold_font);
   button->setText(tr("&Select"));
@@ -161,7 +158,7 @@ GenerateLog::GenerateLog(QWidget *parent,const char *name,int cmd_switch,QString
   //
   //  Create Log Button
   //
-  gen_create_button=new QPushButton(this,"gen_create_button");
+  gen_create_button=new QPushButton(this);
   gen_create_button->setGeometry(10,70,sizeHint().width()-20,30);
   gen_create_button->setFont(bold_font);
   gen_create_button->setText(tr("&Create New Log"));
@@ -170,7 +167,7 @@ GenerateLog::GenerateLog(QWidget *parent,const char *name,int cmd_switch,QString
   //
   //  Merge Music Log Button
   //
-  gen_music_button=new QPushButton(this,"gen_music_button");
+  gen_music_button=new QPushButton(this);
   gen_music_button->setGeometry(10,130,100,30);
   gen_music_button->setFont(bold_font);
   gen_music_button->setText(tr("Merge &Music"));
@@ -179,7 +176,7 @@ GenerateLog::GenerateLog(QWidget *parent,const char *name,int cmd_switch,QString
   //
   //  Merge Traffic Log Button
   //
-  gen_traffic_button=new QPushButton(this,"gen_traffic_button");
+  gen_traffic_button=new QPushButton(this);
   gen_traffic_button->setGeometry(10,170,100,30);
   gen_traffic_button->setFont(bold_font);
   gen_traffic_button->setText(tr("Merge &Traffic"));
@@ -208,13 +205,13 @@ GenerateLog::GenerateLog(QWidget *parent,const char *name,int cmd_switch,QString
   //
   // Music Indicators
   //
-  gen_mus_avail_label=new QLabel(this,"gen_mus_avail_label");
+  gen_mus_avail_label=new QLabel(this);
   gen_mus_avail_label->setPixmap(*gen_whiteball_map);
   gen_mus_avail_label->setGeometry(120,139,60,14);
   gen_mus_avail_label->setFont(small_font);
   gen_mus_avail_label->setAlignment(AlignCenter);
 
-  gen_mus_merged_label=new QLabel(this,"gen_mus_merged_label");
+  gen_mus_merged_label=new QLabel(this);
   gen_mus_merged_label->setPixmap(*gen_whiteball_map);
   gen_mus_merged_label->setGeometry(180,139,60,14);
   gen_mus_merged_label->setFont(small_font);
@@ -223,13 +220,13 @@ GenerateLog::GenerateLog(QWidget *parent,const char *name,int cmd_switch,QString
   //
   // Traffic Indicators
   //
-  gen_tfc_avail_label=new QLabel(this,"gen_tfc_avail_label");
+  gen_tfc_avail_label=new QLabel(this);
   gen_tfc_avail_label->setPixmap(*gen_whiteball_map);
   gen_tfc_avail_label->setGeometry(120,179,60,14);
   gen_tfc_avail_label->setFont(small_font);
   gen_tfc_avail_label->setAlignment(AlignCenter);
 
-  gen_tfc_merged_label=new QLabel(this,"gen_tfc_merged_label");
+  gen_tfc_merged_label=new QLabel(this);
   gen_tfc_merged_label->setPixmap(*gen_whiteball_map);
   gen_tfc_merged_label->setGeometry(180,179,60,14);
   gen_tfc_merged_label->setFont(small_font);
@@ -239,7 +236,7 @@ GenerateLog::GenerateLog(QWidget *parent,const char *name,int cmd_switch,QString
   //
   //  Close Button
   //
-  button=new QPushButton(this,"close_button");
+  button=new QPushButton(this);
   button->setGeometry(10,sizeHint().height()-60,sizeHint().width()-20,50);
   button->setDefault(true);
   button->setFont(bold_font);
@@ -251,7 +248,7 @@ GenerateLog::GenerateLog(QWidget *parent,const char *name,int cmd_switch,QString
   //
   // File Scan Timer
   //
-  QTimer *timer=new QTimer(this,"file_scan_timer");
+  QTimer *timer=new QTimer(this);
   connect(timer,SIGNAL(timeout()),this,SLOT(fileScanData()));
   timer->start(GENERATE_LOG_FILESCAN_INTERVAL);
  
@@ -303,8 +300,7 @@ void GenerateLog::selectDateData()
   QDate current_date=QDate::currentDate();
 
   RDDateDialog *datedialog=
-    new RDDateDialog(current_date.year(),current_date.year()+1,
-		    this,"datedialog");
+    new RDDateDialog(current_date.year(),current_date.year()+1,this);
   if(datedialog->exec(&date)<0) {
     delete datedialog;
     return;
@@ -326,7 +322,7 @@ void GenerateLog::createData()
   //
   // Generate Log
   //
-  RDSvc *svc=new RDSvc(gen_service_box->currentText(),this,"svc");
+  RDSvc *svc=new RDSvc(gen_service_box->currentText(),this);
   QString logname=RDDateDecode(svc->nameTemplate(),gen_date_edit->date());
   RDLog *log=new RDLog(logname);
   if(log->exists()) {
@@ -411,7 +407,7 @@ void GenerateLog::musicData()
 {
   unsigned tracks=0;
 
-  RDSvc *svc=new RDSvc(gen_service_box->currentText(),this,"svc");
+  RDSvc *svc=new RDSvc(gen_service_box->currentText(),this);
   QString logname=RDDateDecode(svc->nameTemplate(),gen_date_edit->date());
   RDLog *log=new RDLog(logname);
   if(((log->linkState(RDLog::SourceMusic)==RDLog::LinkDone)||
@@ -462,7 +458,7 @@ void GenerateLog::musicData()
 
 void GenerateLog::trafficData()
 {
-  RDSvc *svc=new RDSvc(gen_service_box->currentText(),this,"svc");
+  RDSvc *svc=new RDSvc(gen_service_box->currentText(),this);
   QString logname=RDDateDecode(svc->nameTemplate(),gen_date_edit->date());
   RDLog *log=new RDLog(logname);
   if((log->linkState(RDLog::SourceTraffic)==RDLog::LinkDone)) {
@@ -496,7 +492,7 @@ void GenerateLog::trafficData()
 
 void GenerateLog::fileScanData()
 {
-  RDSvc *svc=new RDSvc(gen_service_box->currentText(),this,"svc");
+  RDSvc *svc=new RDSvc(gen_service_box->currentText(),this);
   QString logname=RDDateDecode(svc->nameTemplate(),gen_date_edit->date());
   RDLog *log=new RDLog(logname);
   if(gen_music_enabled) {
@@ -542,7 +538,7 @@ void GenerateLog::closeData()
 
 void GenerateLog::UpdateControls()
 {
-  RDSvc *svc=new RDSvc(gen_service_box->currentText(),this,"svc");
+  RDSvc *svc=new RDSvc(gen_service_box->currentText(),this);
   QString logname=RDDateDecode(svc->nameTemplate(),gen_date_edit->date());
   RDLog *log=new RDLog(logname);
   if(log->exists()) {

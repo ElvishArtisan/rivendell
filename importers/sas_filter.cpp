@@ -4,9 +4,6 @@
 //
 //   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
 //
-//      $Id: sas_filter.cpp,v 1.11 2011/06/21 22:20:43 cvs Exp $
-//      $Date: 2011/06/21 22:20:43 $
-//
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
 //   published by the Free Software Foundation.
@@ -42,8 +39,8 @@
 //
 
 
-MainObject::MainObject(QObject *parent,const char *name)
-  : QObject(parent,name)
+MainObject::MainObject(QObject *parent)
+  : QObject(parent)
 {
   bool skip_db_check=false;
   unsigned schema=0;
@@ -95,7 +92,7 @@ MainObject::MainObject(QObject *parent,const char *name)
   //
   // RDCatchd Connection
   //
-  filter_connect=new RDCatchConnect(0,this,"filter_connect");
+  filter_connect=new RDCatchConnect(0,this);
   filter_connect->connectHost("localhost",RDCATCHD_TCP_PORT,
 			     rd_config->password());
 
@@ -278,6 +275,6 @@ void MainObject::InjectCartEvent(QString sql,int gpo)
 int main(int argc,char *argv[])
 {
   QApplication a(argc,argv,false);
-  new MainObject(NULL,"main");
+  new MainObject(NULL);
   return a.exec();
 }

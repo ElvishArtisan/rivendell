@@ -2,9 +2,7 @@
 //
 // Abstract Rivendell Log Events.
 //
-//   (C) Copyright 2002-2014 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdlog_event.cpp,v 1.101.4.13.2.2 2014/05/22 19:37:44 cvs Exp $
+//   (C) Copyright 2002-2014,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as

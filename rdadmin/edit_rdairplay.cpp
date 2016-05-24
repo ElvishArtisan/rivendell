@@ -2,9 +2,7 @@
 //
 // Edit an RDAirPlay Configuration
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: edit_rdairplay.cpp,v 1.53.6.9 2014/02/11 23:46:26 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -46,8 +44,8 @@
 #include <edit_channelgpios.h>
 
 EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
-			     QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+			     QWidget *parent)
+  : QDialog(parent,"",true)
 {
   QString sql;
   RDSqlQuery *q;
@@ -811,7 +809,7 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
   //
   //  Ok Button
   //
-  button=new QPushButton(this,"ok_button");
+  button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
   button->setDefault(true);
   button->setFont(small_font);
@@ -821,7 +819,7 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
   //
   //  Cancel Button
   //
-  button=new QPushButton(this,"cancel_button");
+  button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,80,50);
   button->setFont(small_font);
   button->setText(tr("&Cancel"));
@@ -1007,8 +1005,7 @@ void EditRDAirPlay::selectData()
 {
   QString logname=air_startlog_edit->text();
 
-  RDListLogs *ll=new RDListLogs(&logname,air_conf->station(),this,
-                                "log",admin_user);
+  RDListLogs *ll=new RDListLogs(&logname,air_conf->station(),this,admin_user);
   if(ll->exec()==0) {
     air_startlog_edit->setText(logname);
   }
@@ -1018,7 +1015,7 @@ void EditRDAirPlay::selectData()
 
 void EditRDAirPlay::nownextData()
 {
-  EditNowNext *edit=new EditNowNext(air_conf,this,"edit");
+  EditNowNext *edit=new EditNowNext(air_conf,this);
   edit->exec();
   delete edit;
 }
@@ -1026,9 +1023,8 @@ void EditRDAirPlay::nownextData()
 void EditRDAirPlay::editHotKeys()
 {
   QString module_name = QString("airplay");
-  EditHotkeys *edit_hotkeys=new EditHotkeys(air_conf->station(),
-		                (const char *)module_name,
-				this,"hotkeys");
+  EditHotkeys *edit_hotkeys=
+    new EditHotkeys(air_conf->station(),(const char *)module_name,this);
   edit_hotkeys->exec();
   delete edit_hotkeys;
 }

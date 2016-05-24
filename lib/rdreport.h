@@ -2,9 +2,7 @@
 //
 // Abstract a Rivendell Report Descriptor
 //
-//   (C) Copyright 2002-2006 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdreport.h,v 1.17.8.7.2.4 2014/05/22 01:21:35 cvs Exp $
+//   (C) Copyright 2002-2006,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -43,7 +41,7 @@ class RDReport
   enum ExportType {Generic=0,Traffic=1,Music=2};
   enum StationType {TypeOther=0,TypeAm=1,TypeFm=2,TypeLast=3};
   enum ErrorCode {ErrorOk=0,ErrorCanceled=1,ErrorCantOpen=2};
-  RDReport(const QString &rptname,QObject *parent=0,const char *name=0);
+  RDReport(const QString &rptname,QObject *parent=0);
   QString name() const;
   bool exists() const;
   QString description() const;

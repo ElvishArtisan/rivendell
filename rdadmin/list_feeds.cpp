@@ -2,9 +2,7 @@
 //
 // List Rivendell Feeds
 //
-//   (C) Copyright 2002-2007 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: list_feeds.cpp,v 1.9 2010/07/29 19:32:34 cvs Exp $
+//   (C) Copyright 2002-2007,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -48,8 +46,8 @@
 #include <add_feed.h>
 #include <globals.h>
 
-ListFeeds::ListFeeds(QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+ListFeeds::ListFeeds(QWidget *parent)
+  : QDialog(parent,"",true)
 {
   //
   // Fix the Window Size
@@ -72,7 +70,7 @@ ListFeeds::ListFeeds(QWidget *parent,const char *name)
   //
   //  Add Button
   //
-  list_add_button=new QPushButton(this,"list_add_button");
+  list_add_button=new QPushButton(this);
   list_add_button->setFont(font);
   list_add_button->setText(tr("&Add"));
   connect(list_add_button,SIGNAL(clicked()),this,SLOT(addData()));
@@ -80,7 +78,7 @@ ListFeeds::ListFeeds(QWidget *parent,const char *name)
   //
   //  Edit Button
   //
-  list_edit_button=new QPushButton(this,"list_edit_button");
+  list_edit_button=new QPushButton(this);
   list_edit_button->setFont(font);
   list_edit_button->setText(tr("&Edit"));
   connect(list_edit_button,SIGNAL(clicked()),this,SLOT(editData()));
@@ -88,7 +86,7 @@ ListFeeds::ListFeeds(QWidget *parent,const char *name)
   //
   //  Delete Button
   //
-  list_delete_button=new QPushButton(this,"list_delete_button");
+  list_delete_button=new QPushButton(this);
   list_delete_button->setFont(font);
   list_delete_button->setText(tr("&Delete"));
   connect(list_delete_button,SIGNAL(clicked()),this,SLOT(deleteData()));
@@ -96,7 +94,7 @@ ListFeeds::ListFeeds(QWidget *parent,const char *name)
   //
   //  Close Button
   //
-  list_close_button=new QPushButton(this,"list_close_button");
+  list_close_button=new QPushButton(this);
   list_close_button->setDefault(true);
   list_close_button->setFont(font);
   list_close_button->setText(tr("&Close"));
@@ -105,7 +103,7 @@ ListFeeds::ListFeeds(QWidget *parent,const char *name)
   //
   // Group List
   //
-  list_feeds_view=new RDListView(this,"list_feeds_view");
+  list_feeds_view=new RDListView(this);
   list_feeds_view->setFont(list_font);
   list_feeds_view->setAllColumnsShowFocus(true);
   list_feeds_view->addColumn(tr("Key"));
@@ -118,8 +116,7 @@ ListFeeds::ListFeeds(QWidget *parent,const char *name)
   list_feeds_view->setColumnAlignment(3,AlignVCenter|AlignLeft);
   list_feeds_view->addColumn(tr("Creation Date"));
   list_feeds_view->setColumnAlignment(4,AlignCenter);
-  QLabel *list_box_label=new QLabel(list_feeds_view,tr("&Feeds:"),
-				    this,"list_box_label");
+  QLabel *list_box_label=new QLabel(list_feeds_view,tr("&Feeds:"),this);
   list_box_label->setFont(font);
   list_box_label->setGeometry(14,11,85,19);
   connect(list_feeds_view,
@@ -155,7 +152,7 @@ void ListFeeds::addData()
   QString sql;
   RDSqlQuery *q;
 
-  AddFeed *add_feed=new AddFeed(&id,&feed,this,"add_feed");
+  AddFeed *add_feed=new AddFeed(&id,&feed,this);
   if(add_feed->exec()<0) {
     delete add_feed;
     return;
@@ -198,7 +195,7 @@ void ListFeeds::editData()
   if(item==NULL) {
     return;
   }
-  EditFeed *edit_feed=new EditFeed(item->text(0),this,"edit_feed");
+  EditFeed *edit_feed=new EditFeed(item->text(0),this);
   edit_feed->exec();
   delete edit_feed;
   RefreshItem(item);

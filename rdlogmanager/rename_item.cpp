@@ -2,9 +2,7 @@
 //
 // Edit a Rivendell LogManager Note
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rename_item.cpp,v 1.8 2010/07/29 19:32:37 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -34,9 +32,8 @@
 
 #include <rename_item.h>
 
-RenameItem::RenameItem(QString *text,QString table,
-		       QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+RenameItem::RenameItem(QString *text,QString table,QWidget *parent)
+  : QDialog(parent,"",true)
 {
   edit_text=text;
   edit_tablename=table;
@@ -92,7 +89,7 @@ RenameItem::RenameItem(QString *text,QString table,
   //
   // The Name Editor
   //
-  edit_name_edit=new QLineEdit(this,"edit_name_edit");
+  edit_name_edit=new QLineEdit(this);
   edit_name_edit->setGeometry(10,10,sizeHint().width()-20,20);
   edit_name_edit->setValidator(validator);
   edit_name_edit->setText(*text);
@@ -100,7 +97,7 @@ RenameItem::RenameItem(QString *text,QString table,
   //
   //  OK Button
   //
-  QPushButton *button=new QPushButton(this,"ok_button");
+  QPushButton *button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
   button->setDefault(true);
   button->setFont(bold_font);
@@ -110,7 +107,7 @@ RenameItem::RenameItem(QString *text,QString table,
   //
   //  Cancel Button
   //
-  button=new QPushButton(this,"cancel_button");
+  button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,80,50);
   button->setFont(bold_font);
   button->setText(tr("&Cancel"));

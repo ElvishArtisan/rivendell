@@ -2,9 +2,7 @@
 //
 // Select a Rivendell Log
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdlist_logs.cpp,v 1.12 2010/07/29 19:32:33 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -26,8 +24,8 @@
 #include <rdlist_logs.h>
 
 RDListLogs::RDListLogs(QString *logname,const QString &stationname,
-		       QWidget *parent,const char *name,RDUser *rduser)
-  : QDialog(parent,name,true)
+		       QWidget *parent,RDUser *rduser)
+  : QDialog(parent,"",true)
 {
   list_stationname=stationname;
   list_logname=logname;

@@ -2,9 +2,7 @@
 //
 // A Rivendell switcher driver for the Harlond Virtual Mixer
 //
-//   (C) Copyright 2002-2012 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: harlond.h,v 1.2.2.2 2012/08/06 00:12:07 cvs Exp $
+//   (C) Copyright 2002-2012,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as

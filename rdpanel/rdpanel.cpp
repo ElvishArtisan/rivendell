@@ -2,9 +2,7 @@
 //
 // A Dedicated Cart Wall Utility for Rivendell.
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdpanel.cpp,v 1.27.4.9 2014/02/11 23:46:30 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -58,7 +56,6 @@ RDCartDialog *panel_cart_dialog;
 //
 #include "../icons/rivendell-22x22.xpm"
 
-
 void SigHandler(int signo)
 {
   pid_t pLocalPid;
@@ -74,9 +71,8 @@ void SigHandler(int signo)
   }
 }
 
-
-MainWidget::MainWidget(QWidget *parent,const char *name)
-  :QWidget(parent,name)
+MainWidget::MainWidget(QWidget *parent)
+  :QWidget(parent)
 {
   QPixmap *pm;
   QPainter *pd;
@@ -146,7 +142,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // Master Clock Timer
   //
-  panel_master_timer=new QTimer(this,"panel_master_timer");
+  panel_master_timer=new QTimer(this);
   connect(panel_master_timer,SIGNAL(timeout()),this,SLOT(masterTimerData()));
   panel_master_timer->start(MASTER_TIMER_INTERVAL);
 
@@ -169,7 +165,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // CAE Connection
   //
-  panel_cae=new RDCae(rdstation_conf,panel_config,parent,name);
+  panel_cae=new RDCae(rdstation_conf,panel_config,parent);
   panel_cae->connectHost();
 
   //
@@ -189,7 +185,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // Meter Timer
   //
-  QTimer *timer=new QTimer(this,"meter_timer");
+  QTimer *timer=new QTimer(this);
   connect(timer,SIGNAL(timeout()),this,SLOT(meterData()));
   timer->start(METER_INTERVAL);
 
@@ -217,8 +213,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
 		       rdairplay_conf->panels(RDAirPlayConf::UserPanel),
 		       rdairplay_conf->flashPanel(),
 		       rdairplay_conf->buttonLabelTemplate(),true,panel_player,
-		       rdripc,panel_cae,rdstation_conf,panel_cart_dialog,
-		       this,"panel_panel");
+		       rdripc,panel_cae,rdstation_conf,panel_cart_dialog,this);
     panel_panel->setLogfile(panel_config->airplayLogname());
     panel_panel->setGeometry(10,10,panel_panel->sizeHint().width(),
 			 panel_panel->sizeHint().height());
@@ -328,7 +323,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // Audio Meter
   //
-  panel_stereo_meter=new RDStereoMeter(this,"panel_stereo_meter");
+  panel_stereo_meter=new RDStereoMeter(this);
   panel_stereo_meter->
     setGeometry(20,
 		sizeHint().height()-panel_stereo_meter->sizeHint().height()-7,
@@ -460,7 +455,7 @@ int main(int argc,char *argv[])
 	     QTextCodec::locale(),".");
   a.installTranslator(&tr);
 
-  MainWidget *w=new MainWidget(NULL,"main");
+  MainWidget *w=new MainWidget();
   a.setMainWidget(w);
   w->setGeometry(QRect(QPoint(0,0),w->sizeHint()));
   w->show();

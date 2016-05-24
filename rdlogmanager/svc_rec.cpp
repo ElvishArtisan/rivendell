@@ -1,10 +1,8 @@
 // svc_rec.cpp
 //
-// A Qt-based application for testing General Purpose Outputs (GPO).
+// Calendar widget.
 //
-//   (C) Copyright 2002-2003 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: svc_rec.cpp,v 1.8 2010/07/29 19:32:37 cvs Exp $
+//   (C) Copyright 2002-2003,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,7 +18,6 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-
 #include <qwidget.h>
 #include <qstring.h>
 #include <qlabel.h>
@@ -31,9 +28,8 @@
 //
 // Global Classes
 //
-SvcRec::SvcRec(const QString &svcname,
-			   QWidget *parent,const char *name)
-  :QWidget(parent,name)
+SvcRec::SvcRec(const QString &svcname,QWidget *parent)
+  :QWidget(parent)
 {
   QString sql;
   RDSqlQuery *q;
@@ -67,7 +63,7 @@ SvcRec::SvcRec(const QString &svcname,
   //
   // Month
   //
-  pick_month_box=new QComboBox(this,"pick_month_box");
+  pick_month_box=new QComboBox(this);
   pick_month_box->setGeometry(0,0,120,26);
   for(int i=1;i<13;i++) {
     pick_month_box->insertItem(QDate::longMonthName(i));
@@ -78,7 +74,7 @@ SvcRec::SvcRec(const QString &svcname,
   //
   // Year
   //
-  pick_year_box=new QComboBox(this,"pick_year_box");
+  pick_year_box=new QComboBox(this);
   pick_year_box->setGeometry(130,0,90,26);
   for(int i=pick_low_year;i<(pick_high_year+1);i++) {
     pick_year_box->insertItem(QString().sprintf("%04d",i));
@@ -98,43 +94,43 @@ SvcRec::SvcRec(const QString &svcname,
 			   palette().color(QPalette::Active,
 					   QColorGroup::Mid));
 
-  QLabel *label=new QLabel(tr("Mo"),this,"monday_label");
+  QLabel *label=new QLabel(tr("Mo"),this);
   label->setGeometry(SVC_REC_X_ORIGIN,30,30,30);
   label->setFont(pick_day_font[1]);
   label->setAlignment(AlignCenter);
 
-  label=new QLabel(tr("Tu"),this,"tuesday_label");
+  label=new QLabel(tr("Tu"),this);
   label->setGeometry(SVC_REC_X_ORIGIN+SVC_REC_X_INTERVAL,
 		     SVC_REC_Y_ORIGIN,30,30);
   label->setFont(pick_day_font[1]);
   label->setAlignment(AlignCenter);
 
-  label=new QLabel(tr("We"),this,"wednesday_label");
+  label=new QLabel(tr("We"),this);
   label->setGeometry(SVC_REC_X_ORIGIN+SVC_REC_X_INTERVAL*2,
 		     SVC_REC_Y_ORIGIN,30,30);
   label->setFont(pick_day_font[1]);
   label->setAlignment(AlignCenter);
 
-  label=new QLabel(tr("Th"),this,"thursday_label");
+  label=new QLabel(tr("Th"),this);
   label->setGeometry(SVC_REC_X_ORIGIN+SVC_REC_X_INTERVAL*3,
 		     SVC_REC_Y_ORIGIN,30,30);
   label->setFont(pick_day_font[1]);
   label->setAlignment(AlignCenter);
 
-  label=new QLabel(tr("Fr"),this,"friday_label");
+  label=new QLabel(tr("Fr"),this);
   label->setGeometry(SVC_REC_X_ORIGIN+SVC_REC_X_INTERVAL*4,
 		     SVC_REC_Y_ORIGIN,30,30);
   label->setFont(pick_day_font[1]);
   label->setAlignment(AlignCenter);
 
-  label=new QLabel(tr("Sa"),this,"saturday_label");
+  label=new QLabel(tr("Sa"),this);
   label->setGeometry(SVC_REC_X_ORIGIN+SVC_REC_X_INTERVAL*5,
 		     SVC_REC_Y_ORIGIN,30,30);
   label->setFont(pick_day_font[1]);
   label->setAlignment(AlignCenter);
   label->setPalette(weekend_palette);
 
-  label=new QLabel(tr("Su"),this,"sunday_label");
+  label=new QLabel(tr("Su"),this);
   label->setGeometry(SVC_REC_X_ORIGIN+SVC_REC_X_INTERVAL*6,
 		     SVC_REC_Y_ORIGIN,30,30);
   label->setFont(pick_day_font[1]);
@@ -144,7 +140,7 @@ SvcRec::SvcRec(const QString &svcname,
 
   for(int i=0;i<6;i++) {
     for(int j=0;j<7;j++) {
-      pick_date_label[i][j]=new QLabel(this,"date_label");
+      pick_date_label[i][j]=new QLabel(this);
       pick_date_label[i][j]->
 	setGeometry(SVC_REC_X_ORIGIN+SVC_REC_X_INTERVAL*j,
 		    SVC_REC_Y_ORIGIN+20+SVC_REC_Y_INTERVAL*i,30,30);

@@ -2,9 +2,7 @@
 //
 // A Batch Deleter for Rivendell.
 //
-//   (C) Copyright 2013 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rddelete.cpp,v 1.1.2.2 2013/11/13 23:36:39 cvs Exp $
+//   (C) Copyright 2013,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -28,21 +26,8 @@
 #include <rdcart.h>
 #include <rdlog.h>
 
-/*
-void SigHandler(int signo)
-{
-  switch(signo) {
-  case SIGTERM:
-  case SIGINT:
-  case SIGHUP:
-    import_run=false;
-    break;
-  }
-}
-*/
-
-MainObject::MainObject(QObject *parent,const char *name)
-  :QObject(parent,name)
+MainObject::MainObject(QObject *parent)
+  :QObject(parent)
 {
   //
   // Initialize Data Structures
@@ -380,6 +365,6 @@ bool MainObject::GetNextStdinObject(QString *logname)
 int main(int argc,char *argv[])
 {
   QApplication a(argc,argv,false);
-  new MainObject(NULL,"main");
+  new MainObject();
   return a.exec();
 }

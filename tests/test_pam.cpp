@@ -2,9 +2,7 @@
 //
 // Test PAM Authentication Service
 //
-//   (C) Copyright 2010 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: test_pam.cpp,v 1.2 2010/07/29 19:32:39 cvs Exp $
+//   (C) Copyright 2010,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -70,8 +68,8 @@ int ConversationResponseCallback(int num_msg,const struct pam_message **msg,
 }
 
 
-MainObject::MainObject(QObject *parent,const char *name)
-  :QObject(parent,name)
+MainObject::MainObject(QObject *parent)
+  :QObject(parent)
 {
   int err;
   struct pam_conv conv;
@@ -115,6 +113,6 @@ MainObject::MainObject(QObject *parent,const char *name)
 int main(int argc,char *argv[])
 {
   QApplication a(argc,argv,false);
-  new MainObject(NULL,"main");
+  new MainObject();
   return a.exec();
 }

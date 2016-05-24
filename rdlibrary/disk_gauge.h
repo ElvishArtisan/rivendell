@@ -2,9 +2,7 @@
 //
 // Disk Gauge Widget for RDLibrary.
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: disk_gauge.h,v 1.6.8.1 2014/01/08 02:08:38 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -36,7 +34,7 @@ class DiskGauge : public QWidget
 {
   Q_OBJECT
  public:
-  DiskGauge(int samp_rate,int chans,QWidget *parent,const char *name=0);
+  DiskGauge(int samp_rate,int chans,QWidget *parent);
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
 

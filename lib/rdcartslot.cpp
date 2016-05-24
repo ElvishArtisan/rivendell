@@ -2,9 +2,7 @@
 //
 // The cart slot widget.
 //
-//   (C) Copyright 2012-2014 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdcartslot.cpp,v 1.13.2.19.2.2 2014/06/24 18:27:03 cvs Exp $
+//   (C) Copyright 2012-2014,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as

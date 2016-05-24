@@ -2,9 +2,7 @@
 //
 // System-Wide Values for Rivendell
 //
-//   (C) Copyright 2002-2006 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rd.h,v 1.194.6.14.2.1 2014/05/22 14:30:44 cvs Exp $
+//   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as

@@ -5,9 +5,7 @@
 # Try to determine the distribution name and version of the host machine.
 # Used as part of the AR_GET_DISTRO() macro.
 #
-#   (C) Copyright 2012 Fred Gleason <fredg@salemradiolabs.com>
-#
-#    $Id: get_distro.sh,v 1.1.1.1 2014/02/17 13:26:17 cvs Exp $
+#   (C) Copyright 2012,2016 Fred Gleason <fredg@salemradiolabs.com>
 #
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as

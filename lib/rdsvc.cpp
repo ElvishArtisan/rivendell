@@ -2,9 +2,7 @@
 //
 // Abstract a Rivendell Service.
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdsvc.cpp,v 1.71.8.10.2.5 2014/06/24 18:27:05 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -36,8 +34,8 @@
 //
 // Global Classes
 //
-RDSvc::RDSvc(QString svcname,QObject *parent,const char *name)
-  : QObject(parent,name)
+RDSvc::RDSvc(QString svcname,QObject *parent)
+  : QObject(parent)
 {
   svc_name=svcname;
 }

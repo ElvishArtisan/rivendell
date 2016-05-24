@@ -2,9 +2,7 @@
 //
 // The macro cart editor for RDLibrary.
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: macro_cart.h,v 1.10 2010/07/29 19:32:36 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -42,12 +40,11 @@
 #include <rdlibrary_conf.h>
 #include <rdmacro_event.h>
 
-
 class MacroCart : public QWidget
 {
   Q_OBJECT
  public:
-  MacroCart(RDCart *cart,QWidget *parent=0,const char *name=0);
+  MacroCart(RDCart *cart,QWidget *parent=0);
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
   unsigned length();

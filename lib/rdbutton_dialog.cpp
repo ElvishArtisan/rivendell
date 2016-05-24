@@ -2,9 +2,7 @@
 //
 // Event Editor for RDAirPlay
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdbutton_dialog.cpp,v 1.23.6.1.2.1 2014/03/21 15:41:44 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -33,8 +31,8 @@
 RDButtonDialog::RDButtonDialog(QString station_name,
 			       const QString &label_template,
 			       RDCartDialog *cart_dialog,const QString &svcname,
-			       QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+			       QWidget *parent)
+  : QDialog(parent,"",true)
 {
   //
   // Fix the Window Size

@@ -2,9 +2,7 @@
 //
 // The Administrator Utility for Rivendell.
 //
-//   (C) Copyright 2002-2006 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdadmin.cpp,v 1.72.4.7 2014/02/11 23:46:27 cvs Exp $
+//   (C) Copyright 2002-2006,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -115,8 +113,8 @@ void PrintError(const QString &str,bool interactive)
 }
 
 
-MainWidget::MainWidget(QWidget *parent,const char *name)
-  :QWidget(parent,name)
+MainWidget::MainWidget(QWidget *parent)
+  :QWidget(parent)
 {
   QString str;
 
@@ -179,7 +177,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   char temp[256];
   GetPrivateProfileString(RD_CONF_FILE,"Identity","Password",
 			  temp,"",255);
-  rdripc=new RDRipc(admin_config->stationName(),this,"rdripc");
+  rdripc=new RDRipc(admin_config->stationName(),this);
   rdripc->connectHost("localhost",RIPCD_TCP_PORT,temp);
   admin_station=new RDStation(admin_config->stationName(),this);
   admin_system=new RDSystem();
@@ -187,7 +185,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // Log In
   //
-  Login *login=new Login(&admin_username,&admin_password,this,"login");
+  Login *login=new Login(&admin_username,&admin_password,this);
   if(login->exec()!=0) {
     exit(0);
   }
@@ -214,13 +212,13 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // User Labels
   //
-  QLabel *name_label=new QLabel(this,"name_label");
+  QLabel *name_label=new QLabel(this);
   name_label->setGeometry(0,5,sizeHint().width(),20);
   name_label->setAlignment(Qt::AlignVCenter|Qt::AlignCenter);
   name_label->setFont(font);
   name_label->setText(QString().sprintf("USER: %s",(const char *)admin_user->name()));
 
-  QLabel *description_label=new QLabel(this,"description_label");
+  QLabel *description_label=new QLabel(this);
   description_label->setGeometry(0,24,sizeHint().width(),14);
   description_label->setAlignment(Qt::AlignVCenter|Qt::AlignCenter);
   name_label->setFont(font);
@@ -229,7 +227,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // Manage Users Button
   //
-  QPushButton *users_button=new QPushButton(this,"users_button");
+  QPushButton *users_button=new QPushButton(this);
   users_button->setGeometry(10,50,80,60);
   users_button->setFont(font);
   users_button->setText(tr("Manage\n&Users"));
@@ -238,7 +236,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // Manage Groups Button
   //
-  QPushButton *groups_button=new QPushButton(this,"groups_button");
+  QPushButton *groups_button=new QPushButton(this);
   groups_button->setGeometry(10,120,80,60);
   groups_button->setFont(font);
   groups_button->setText(tr("Manage\n&Groups"));
@@ -247,7 +245,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // Manage Services Button
   //
-  QPushButton *services_button=new QPushButton(this,"services_button");
+  QPushButton *services_button=new QPushButton(this);
   services_button->setGeometry(100,50,80,60);
   services_button->setFont(font);
   services_button->setText(tr("Manage\n&Services"));
@@ -256,7 +254,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // Manage Stations (Hosts) Button
   //
-  QPushButton *stations_button=new QPushButton(this,"stations_button");
+  QPushButton *stations_button=new QPushButton(this);
   stations_button->setGeometry(100,120,80,60);
   stations_button->setFont(font);
   stations_button->setText(tr("Manage\nHo&sts"));
@@ -265,7 +263,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // Manage Reports
   //
-  QPushButton *reports_button=new QPushButton(this,"reports_button");
+  QPushButton *reports_button=new QPushButton(this);
   reports_button->setGeometry(190,50,80,60);
   reports_button->setFont(font);
   reports_button->setText(tr("Manage\nR&eports"));
@@ -274,7 +272,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // Manage Podcasts
   //
-  QPushButton *podcasts_button=new QPushButton(this,"podcasts_button");
+  QPushButton *podcasts_button=new QPushButton(this);
   podcasts_button->setGeometry(280,50,80,60);
   podcasts_button->setFont(font);
   podcasts_button->setText(tr("Manage\n&Feeds"));
@@ -283,7 +281,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // System Wide Settings Button
   //
-  QPushButton *system_button=new QPushButton(this,"system_button");
+  QPushButton *system_button=new QPushButton(this);
   system_button->setGeometry(190,120,80,60);
   system_button->setFont(font);
   system_button->setText(tr("System\nSettings"));
@@ -292,7 +290,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // Manage Scheduler Codes Button
   //
-  QPushButton *schedcodes_button=new QPushButton(this,"schedcodes_button");
+  QPushButton *schedcodes_button=new QPushButton(this);
   schedcodes_button->setGeometry(280,120,80,60);
   schedcodes_button->setFont(font);
   schedcodes_button->setText(tr("Scheduler\nCodes"));
@@ -301,7 +299,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // Manage Replicators Button
   //
-  QPushButton *repl_button=new QPushButton(this,"repl_button");
+  QPushButton *repl_button=new QPushButton(this);
   repl_button->setGeometry(10,190,80,60);
   repl_button->setFont(font);
   repl_button->setText(tr("Manage\nReplicators"));
@@ -310,7 +308,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // System Info Button
   //
-  QPushButton *info_button=new QPushButton(this,"info_button");
+  QPushButton *info_button=new QPushButton(this);
   info_button->setGeometry(100,190,80,60);
   info_button->setFont(font);
   info_button->setText(tr("System\nInfo"));
@@ -319,7 +317,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // Backup Database Button
   //
-  QPushButton *backup_button=new QPushButton(this,"backup_button");
+  QPushButton *backup_button=new QPushButton(this);
   backup_button->setGeometry(190,190,80,60);
   backup_button->setFont(font);
   backup_button->setText(tr("&Backup\nDatabase"));
@@ -328,7 +326,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // Restore Database Button
   //
-  QPushButton *restore_button=new QPushButton(this,"restore_button");
+  QPushButton *restore_button=new QPushButton(this);
   restore_button->setGeometry(280,190,80,60);
   restore_button->setFont(font);
   restore_button->setText(tr("&Restore\nDatabase"));
@@ -337,7 +335,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // Quit Button
   //
-  QPushButton *quit_button=new QPushButton(this,"quit_button");
+  QPushButton *quit_button=new QPushButton(this);
   quit_button->setGeometry(10,sizeHint().height()-70,sizeHint().width()-20,60);
   quit_button->setFont(font);
   quit_button->setText(tr("&Quit"));
@@ -367,7 +365,7 @@ QSizePolicy MainWidget::sizePolicy() const
 
 void MainWidget::manageUsersData()
 {
-  ListUsers *list_users=new ListUsers(admin_user->name(),this,"list_users");
+  ListUsers *list_users=new ListUsers(admin_user->name(),this);
   list_users->exec();
   delete list_users;
 }
@@ -375,21 +373,21 @@ void MainWidget::manageUsersData()
 
 void MainWidget::manageGroupsData()
 {
-  ListGroups *list_groups=new ListGroups(this,"list_groups");
+  ListGroups *list_groups=new ListGroups(this);
   list_groups->exec();
   delete list_groups;
 }
 
 void MainWidget::manageSchedCodes()
 {
-  ListSchedCodes *list_schedCodes=new ListSchedCodes(this,"list_schedCodes");
+  ListSchedCodes *list_schedCodes=new ListSchedCodes(this);
   list_schedCodes->exec();
   delete list_schedCodes;
 }
 
 void MainWidget::manageServicesData()
 {
-  ListSvcs *list_svcs=new ListSvcs(this,"list_svcs");
+  ListSvcs *list_svcs=new ListSvcs(this);
   list_svcs->exec();
   delete list_svcs;
 }
@@ -397,7 +395,7 @@ void MainWidget::manageServicesData()
 
 void MainWidget::manageStationsData()
 {
-  ListStations *list_stations=new ListStations(this,"list_stations");
+  ListStations *list_stations=new ListStations(this);
   list_stations->exec();
   delete list_stations;
 }
@@ -405,7 +403,7 @@ void MainWidget::manageStationsData()
 
 void MainWidget::systemSettingsData()
 {
-  EditSettings *edit_settings=new EditSettings(this,"edit_settings");
+  EditSettings *edit_settings=new EditSettings(this);
   edit_settings->exec();
   delete edit_settings;
 }
@@ -501,7 +499,7 @@ void MainWidget::manageReplicatorsData()
 
 void MainWidget::systemInfoData()
 {
-  InfoDialog *info=new InfoDialog(this,"info_dialog");
+  InfoDialog *info=new InfoDialog(this);
   info->exec();
   delete info;
 }
@@ -509,7 +507,7 @@ void MainWidget::systemInfoData()
 
 void MainWidget::reportsData()
 {
-  ListReports *list_reports=new ListReports(this,"list_reports");
+  ListReports *list_reports=new ListReports(this);
   list_reports->exec();
   delete list_reports;
 }
@@ -517,7 +515,7 @@ void MainWidget::reportsData()
 
 void MainWidget::podcastsData()
 {
-  ListFeeds *list_feeds=new ListFeeds(this,"list_feeds");
+  ListFeeds *list_feeds=new ListFeeds(this);
   list_feeds->exec();
   delete list_feeds;
 }
@@ -575,7 +573,7 @@ int gui_main(int argc,char *argv[])
   //
   // Start Event Loop
   //
-  MainWidget *w=new MainWidget(NULL,"main");
+  MainWidget *w=new MainWidget();
   if(exiting) {
       exit(0);
   }

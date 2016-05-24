@@ -2,9 +2,7 @@
 //
 // System Selector for Rivendell
 //
-//   (C) Copyright 2012 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdselect.cpp,v 1.1.2.9 2014/01/21 21:59:33 cvs Exp $
+//   (C) Copyright 2012,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -51,9 +49,8 @@
 #include "../icons/greencheckmark.xpm"
 #include "../icons/redx.xpm"
 
-
-MainWidget::MainWidget(QWidget *parent,const char *name)
-  :QWidget(parent,name)
+MainWidget::MainWidget(QWidget *parent)
+  :QWidget(parent)
 {
   //
   // Read Command Options
@@ -377,7 +374,7 @@ int main(int argc,char *argv[])
   //
   // Start Event Loop
   //
-  MainWidget *w=new MainWidget(NULL,"main");
+  MainWidget *w=new MainWidget();
   a.setMainWidget(w);
   w->show();
   return a.exec();

@@ -2,9 +2,7 @@
 //
 // Connection to the Rivendell Interprocess Communication Daemon
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdripc.h,v 1.24.8.1 2012/11/16 18:10:40 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -40,7 +38,7 @@ class RDRipc : public QObject
 {
   Q_OBJECT
  public:
-  RDRipc(QString stationname,QObject *parent=0,const char *name=0);
+  RDRipc(QString stationname,QObject *parent=0);
   ~RDRipc();
   QString user() const;
   QString station() const;

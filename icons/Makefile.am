@@ -2,10 +2,7 @@
 ##
 ## icons/automake.am for Rivendell
 ##
-## (C) Copyright 2002-2006 Fred Gleason <fredg@salemradiolabs.com>
-##
-##      $Id: Makefile.am,v 1.19.2.3 2013/12/30 19:56:11 cvs Exp $
-##      $Date: 2013/12/30 19:56:11 $
+## (C) Copyright 2002-2006,2016 Fred Gleason <fredg@salemradiolabs.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as

@@ -2,9 +2,7 @@
 //
 // Edit a vGuest Resource Record.
 //
-//   (C) Copyright 2002-2005 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: edit_vguest_resource.cpp,v 1.5 2010/07/29 19:32:34 cvs Exp $
+//   (C) Copyright 2002-2005,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -30,8 +28,8 @@
 EditVguestResource::EditVguestResource(RDMatrix::VguestType type,
 				       int *enginenum,int *devicenum,
 				       int *surfacenum,int *relaynum,
-				       QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+				       QWidget *parent)
+  : QDialog(parent,"",true)
 {
   edit_type=type;
   edit_enginenum=enginenum;
@@ -58,10 +56,9 @@ EditVguestResource::EditVguestResource(RDMatrix::VguestType type,
   //
   // Logitek Engine Number
   //
-  edit_enginenum_edit=new QLineEdit(this,"edit_enginenum_edit");
+  edit_enginenum_edit=new QLineEdit(this);
   edit_enginenum_edit->setGeometry(135,10,50,20);
-  QLabel *label=new QLabel(edit_enginenum_edit,tr("Engine (Hex): "),
-			   this,"edit_enginenum_label");
+  QLabel *label=new QLabel(edit_enginenum_edit,tr("Engine (Hex): "),this);
   label->setGeometry(10,10,120,20);
   label->setFont(bold_font);
   label->setAlignment(AlignRight|AlignVCenter);
@@ -69,10 +66,9 @@ EditVguestResource::EditVguestResource(RDMatrix::VguestType type,
   //
   // Logitek Device Number
   //
-  edit_devicenum_edit=new QLineEdit(this,"edit_devicenum_edit");
+  edit_devicenum_edit=new QLineEdit(this);
   edit_devicenum_edit->setGeometry(135,36,50,20);
-  label=new QLabel(edit_devicenum_edit,tr("Device (Hex): "),
-		   this,"edit_devicenum_label");
+  label=new QLabel(edit_devicenum_edit,tr("Device (Hex): "),this);
   label->setGeometry(10,36,120,20);
   label->setFont(bold_font);
   label->setAlignment(AlignRight|AlignVCenter);
@@ -80,10 +76,9 @@ EditVguestResource::EditVguestResource(RDMatrix::VguestType type,
   //
   // Logitek Surface Number
   //
-  edit_surfacenum_edit=new QLineEdit(this,"edit_surfacenum_edit");
+  edit_surfacenum_edit=new QLineEdit(this);
   edit_surfacenum_edit->setGeometry(135,62,50,20);
-  label=new QLabel(edit_surfacenum_edit,tr("Surface (Hex): "),
-		   this,"edit_surfacenum_label");
+  label=new QLabel(edit_surfacenum_edit,tr("Surface (Hex): "),this);
   label->setGeometry(10,62,120,20);
   label->setFont(bold_font);
   label->setAlignment(AlignRight|AlignVCenter);
@@ -91,10 +86,10 @@ EditVguestResource::EditVguestResource(RDMatrix::VguestType type,
   //
   // Logitek Relay Number
   //
-  edit_relaynum_edit=new QLineEdit(this,"edit_relaynum_edit");
+  edit_relaynum_edit=new QLineEdit(this);
   edit_relaynum_edit->setGeometry(135,88,50,20);
-  edit_relaynum_label=new QLabel(edit_relaynum_edit,tr("Bus/Relay (Hex): "),
-		   this,"edit_relaynum_label");
+  edit_relaynum_label=
+    new QLabel(edit_relaynum_edit,tr("Bus/Relay (Hex): "),this);
   edit_relaynum_label->setGeometry(10,88,120,20);
   edit_relaynum_label->setFont(bold_font);
   edit_relaynum_label->setAlignment(AlignRight|AlignVCenter);
@@ -102,7 +97,7 @@ EditVguestResource::EditVguestResource(RDMatrix::VguestType type,
   //
   //  Ok Button
   //
-  QPushButton *button=new QPushButton(this,"ok_button");
+  QPushButton *button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
   button->setDefault(true);
   button->setFont(bold_font);
@@ -112,7 +107,7 @@ EditVguestResource::EditVguestResource(RDMatrix::VguestType type,
   //
   //  Cancel Button
   //
-  button=new QPushButton(this,"cancel_button");
+  button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,
 			     80,50);
   button->setFont(bold_font);

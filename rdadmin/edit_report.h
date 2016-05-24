@@ -2,9 +2,7 @@
 //
 // Edit a Rivendell Report
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: edit_report.h,v 1.14.8.1.2.1 2014/05/22 01:21:36 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -36,12 +34,11 @@
 
 #include <rdreport.h>
 
-
 class EditReport : public QDialog
 {
  Q_OBJECT
  public:
-  EditReport(QString rptname,QWidget *parent=0,const char *name=0);
+  EditReport(QString rptname,QWidget *parent=0);
   ~EditReport();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;

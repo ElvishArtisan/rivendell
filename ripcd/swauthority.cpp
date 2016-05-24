@@ -2,7 +2,7 @@
 //
 // A Rivendell switcher driver for systems using Software Authority Protocol
 //
-//   (C) Copyright 2002-2015 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -27,8 +27,8 @@
 #include <globals.h>
 #include <swauthority.h>
 
-SoftwareAuthority::SoftwareAuthority(RDMatrix *matrix,QObject *parent,const char *name)
-  : Switcher(matrix,parent,name)
+SoftwareAuthority::SoftwareAuthority(RDMatrix *matrix,QObject *parent)
+  : Switcher(matrix,parent)
 {
   swa_matrix=matrix->matrix();
   swa_ptr=0;
@@ -53,13 +53,13 @@ SoftwareAuthority::SoftwareAuthority(RDMatrix *matrix,QObject *parent,const char
   //
   // Reconnection Timer
   //
-  swa_reconnect_timer=new QTimer(this,"swa_reconnect_timer");
+  swa_reconnect_timer=new QTimer(this);
   connect(swa_reconnect_timer,SIGNAL(timeout()),this,SLOT(ipConnect()));
 
   //
   // Initialize the connection
   //
-  swa_socket=new QSocket(this,"swa_socket");
+  swa_socket=new QSocket(this);
   connect(swa_socket,SIGNAL(connected()),this,SLOT(connectedData()));
   connect(swa_socket,SIGNAL(connectionClosed()),
 	  this,SLOT(connectionClosedData()));

@@ -6,8 +6,6 @@
 ## based on work by Fred Gleason <fredg@paravelsystems.com> and from 
 ## libpam-ldap-178
 ##
-##      $Id: Makefile.am,v 1.9.8.1 2012/11/29 01:37:35 cvs Exp $
-##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
 ##   published by the Free Software Foundation.

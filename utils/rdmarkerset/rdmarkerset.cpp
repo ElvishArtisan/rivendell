@@ -2,9 +2,7 @@
 //
 // Command-line tool for setting Rivendell Cut Markers
 //
-//   (C) Copyright 2014 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdmarkerset.cpp,v 1.1.2.1 2014/01/16 02:45:00 cvs Exp $
+//   (C) Copyright 2014,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -46,8 +44,8 @@
 #include <rdtrimaudio.h>
 #include <dbversion.h>
 
-MainObject::MainObject(QObject *parent,const char *name)
-  :QObject(parent,name)
+MainObject::MainObject(QObject *parent)
+  :QObject(parent)
 {
   bool ok=false;
   bool skip_db_check=false;
@@ -421,6 +419,6 @@ void MainObject::Print(const QString &msg)
 int main(int argc,char *argv[])
 {
   QApplication a(argc,argv,false);
-  new MainObject(NULL,"main");
+  new MainObject();
   return a.exec();
 }

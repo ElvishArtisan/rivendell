@@ -2,7 +2,7 @@
 //
 // A Rivendell switcher driver for the SAS USI Protocol
 //
-//   (C) Copyright 2002-2015 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -23,8 +23,8 @@
 #include <globals.h>
 #include <sasusi.h>
 
-SasUsi::SasUsi(RDMatrix *matrix,QObject *parent,const char *name)
-  : Switcher(matrix,parent,name)
+SasUsi::SasUsi(RDMatrix *matrix,QObject *parent)
+  : Switcher(matrix,parent)
 {
   QString sql;
   RDSqlQuery *q;
@@ -66,7 +66,7 @@ SasUsi::SasUsi(RDMatrix *matrix,QObject *parent,const char *name)
   //
   // Reconnection Timer
   //
-  sas_reconnect_timer=new QTimer(this,"sas_reconnect_timer");
+  sas_reconnect_timer=new QTimer(this);
   connect(sas_reconnect_timer,SIGNAL(timeout()),this,SLOT(ipConnect()));
 
   //
@@ -86,7 +86,7 @@ SasUsi::SasUsi(RDMatrix *matrix,QObject *parent,const char *name)
     delete tty;
 
   case RDMatrix::TcpPort:
-    sas_socket=new QSocket(this,"sas_socket");
+    sas_socket=new QSocket(this);
     connect(sas_socket,SIGNAL(connected()),this,SLOT(connectedData()));
     connect(sas_socket,SIGNAL(connectionClosed()),
 	    this,SLOT(connectionClosedData()));

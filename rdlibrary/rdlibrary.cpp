@@ -2,9 +2,7 @@
 //
 // The Library Utility for Rivendell.
 //
-//   (C) Copyright 2002-2010 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdlibrary.cpp,v 1.117.4.18.2.2 2014/05/22 14:30:45 cvs Exp $
+//   (C) Copyright 2002-2010,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -96,8 +94,8 @@ void SigHandler(int signo);
 #include "../icons/rivendell-22x22.xpm"
 
 
-MainWidget::MainWidget(QWidget *parent,const char *name)
-  :QWidget(parent,name)
+MainWidget::MainWidget(QWidget *parent)
+  :QWidget(parent)
 {
   unsigned schema=0;
   bool skip_db_check=false;
@@ -225,7 +223,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // CAE Connection
   //
-  rdcae=new RDCae(rdstation_conf,lib_config,parent,name);
+  rdcae=new RDCae(rdstation_conf,lib_config,parent);
   rdcae->connectHost();
 
   //
@@ -255,7 +253,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // Filter Search Button
   //
-  lib_search_button=new QPushButton(tr("&Search"),this,"search_button");
+  lib_search_button=new QPushButton(tr("&Search"),this);
   lib_search_button->setFont(button_font);
   connect(lib_search_button,SIGNAL(clicked()),this,SLOT(searchClickedData()));
   switch(lib_filter_mode) {
@@ -270,7 +268,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // Filter Clear Button
   //
-  lib_clear_button=new QPushButton(tr("&Clear"),this,"clear_button");
+  lib_clear_button=new QPushButton(tr("&Clear"),this);
   lib_clear_button->setFont(button_font);
   lib_clear_button->setDisabled(true);
   connect(lib_clear_button,SIGNAL(clicked()),this,SLOT(clearClickedData()));
@@ -278,10 +276,9 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // Group Filter
   //
-  lib_group_box=new QComboBox(this,"lib_group_box");
+  lib_group_box=new QComboBox(this);
   lib_group_box->setFont(default_font);
-  lib_group_label=new QLabel(lib_group_box,tr("Group:"),
-			     this,"lib_group_label");
+  lib_group_label=new QLabel(lib_group_box,tr("Group:"),this);
   lib_group_label->setFont(button_font);
   lib_group_label->setAlignment(AlignVCenter|AlignRight);
   connect(lib_group_box,SIGNAL(activated(const QString &)),
@@ -290,10 +287,9 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // Scheduler Codes Filter
   //
-  lib_codes_box=new QComboBox(this,"lib_codes_box");
+  lib_codes_box=new QComboBox(this);
   lib_codes_box->setFont(default_font);
-  lib_codes_label=new QLabel(lib_codes_box,tr("Scheduler Code:"),
-			     this,"lib_codes_label");
+  lib_codes_label=new QLabel(lib_codes_box,tr("Scheduler Code:"),this);
   lib_codes_label->setFont(button_font);
   lib_codes_label->setAlignment(AlignVCenter|AlignRight);
   connect(lib_codes_box,SIGNAL(activated(const QString &)),
@@ -318,10 +314,9 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // Show Audio Carts Checkbox
   //
-  lib_showaudio_box=new QCheckBox(this,"lib_showaudio_box");
+  lib_showaudio_box=new QCheckBox(this);
   lib_showaudio_box->setChecked(true);
-  lib_showaudio_label=new QLabel(lib_showaudio_box,tr("Show Audio Carts"),
-			     this,"lib_showaudio_label");
+  lib_showaudio_label=new QLabel(lib_showaudio_box,tr("Show Audio Carts"),this);
   lib_showaudio_label->setFont(button_font);
   lib_showaudio_label->setAlignment(AlignVCenter|AlignLeft);
   connect(lib_showaudio_box,SIGNAL(stateChanged(int)),
@@ -330,10 +325,9 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // Show Macro Carts Checkbox
   //
-  lib_showmacro_box=new QCheckBox(this,"lib_showmacro_box");
+  lib_showmacro_box=new QCheckBox(this);
   lib_showmacro_box->setChecked(true);
-  lib_showmacro_label=new QLabel(lib_showmacro_box,tr("Show Macro Carts"),
-			     this,"lib_showmacro_label");
+  lib_showmacro_label=new QLabel(lib_showmacro_box,tr("Show Macro Carts"),this);
   lib_showmacro_label->setFont(button_font);
   lib_showmacro_label->setAlignment(AlignVCenter|AlignLeft);
   connect(lib_showmacro_box,SIGNAL(stateChanged(int)),
@@ -342,22 +336,21 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // Show Cart Notes Checkbox
   //
-  lib_shownotes_box=new QCheckBox(this,"lib_shownotes_box");
+  lib_shownotes_box=new QCheckBox(this);
   lib_shownotes_box->setChecked(true);
-  lib_shownotes_label=new QLabel(lib_shownotes_box,tr("Show Note Bubbles"),
-			     this,"lib_shownotes_label");
+  lib_shownotes_label=
+    new QLabel(lib_shownotes_box,tr("Show Note Bubbles"),this);
   lib_shownotes_label->setFont(button_font);
   lib_shownotes_label->setAlignment(AlignVCenter|AlignLeft);
 
   //
   // Show Matches Checkbox
   //
-  lib_showmatches_box=new QCheckBox(this,"lib_showmatches_box");
+  lib_showmatches_box=new QCheckBox(this);
   lib_showmatches_label=
     new QLabel(lib_showmatches_box,tr("Show Only First ")+
 	       QString().sprintf("%d",RD_LIMITED_CART_SEARCH_QUANTITY)+
-				 tr(" Matches"),
-	       this,"lib_showmatches_label");
+	       tr(" Matches"),this);
   lib_showmatches_label->setFont(button_font);
   lib_showmatches_label->setAlignment(AlignVCenter|AlignLeft);
   connect(lib_showmatches_box,SIGNAL(stateChanged(int)),
@@ -366,7 +359,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // Cart List
   //
-  lib_cart_list=new LibListView(this,"lib_cart_list");
+  lib_cart_list=new LibListView(this);
   lib_cart_list->setFont(default_font);
   lib_cart_list->setAllColumnsShowFocus(true);
   lib_cart_list->setItemMargin(5);
@@ -439,7 +432,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // Add Button
   //
-  lib_add_button=new QPushButton(this,"lib_add_button");
+  lib_add_button=new QPushButton(this);
   lib_add_button->setFont(button_font);
   lib_add_button->setText(tr("&Add"));
   connect(lib_add_button,SIGNAL(clicked()),this,SLOT(addData()));
@@ -447,7 +440,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // Edit Button
   //
-  lib_edit_button=new QPushButton(this,"lib_edit_button");
+  lib_edit_button=new QPushButton(this);
   lib_edit_button->setFont(button_font);
   lib_edit_button->setText(tr("&Edit"));
   connect(lib_edit_button,SIGNAL(clicked()),this,SLOT(editData()));
@@ -455,7 +448,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // Delete Button
   //
-  lib_delete_button=new QPushButton(this,"lib_delete_button");
+  lib_delete_button=new QPushButton(this);
   lib_delete_button->setFont(button_font);
   lib_delete_button->setText(tr("&Delete"));
   connect(lib_delete_button,SIGNAL(clicked()),this,SLOT(deleteData()));
@@ -464,13 +457,12 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   // Disk Gauge
   //
   disk_gauge=new DiskGauge(lib_system->sampleRate(),
-			   rdlibrary_conf->defaultChannels(),
-			   this,"disk_gauge");
+			   rdlibrary_conf->defaultChannels(),this);
 
   //
   // Rip Button
   //
-  lib_rip_button=new QPushButton(this,"lib_rip_button");
+  lib_rip_button=new QPushButton(this);
   lib_rip_button->setFont(button_font);
   lib_rip_button->setText(tr("&Rip\nCD"));
   connect(lib_rip_button,SIGNAL(clicked()),this,SLOT(ripData()));
@@ -478,7 +470,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // Reports Button
   //
-  lib_reports_button=new QPushButton(this,"lib_reports_button");
+  lib_reports_button=new QPushButton(this);
   lib_reports_button->setFont(button_font);
   lib_reports_button->setText(tr("Re&ports"));
   connect(lib_reports_button,SIGNAL(clicked()),this,SLOT(reportsData()));
@@ -486,7 +478,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // Close Button
   //
-  lib_close_button=new QPushButton(this,"lib_close_button");
+  lib_close_button=new QPushButton(this);
   lib_close_button->setFont(button_font);
   lib_close_button->setText(tr("&Close"));
   connect(lib_close_button,SIGNAL(clicked()),this,SLOT(quitMainWidget()));
@@ -636,8 +628,7 @@ void MainWidget::addData()
   LockUser();
 
   RDAddCart *add_cart=new RDAddCart(&lib_default_group,&cart_type,&cart_title,
-				    lib_user->name(),lib_system,
-				    this,"add_cart");
+				    lib_user->name(),lib_system,this);
   if((cart_num=add_cart->exec())<0) {
     delete add_cart;
     UnlockUser();
@@ -832,7 +823,7 @@ void MainWidget::ripData()
   QString group=lib_group_box->currentText();
   QString schedcode=lib_codes_box->currentText();
   DiskRipper *dialog=new DiskRipper(&lib_filter_text,&group,&schedcode,
-				    profile_ripping,this,"disk_ripper");
+				    profile_ripping,this);
   if(dialog->exec()==0) {
     for(int i=0;i<lib_group_box->count();i++) {
       if(lib_group_box->text(i)==*group) {
@@ -855,7 +846,7 @@ void MainWidget::reportsData()
   ListReports *lr=
     new ListReports(lib_filter_edit->text(),GetTypeFilter(),
 		    lib_group_box->currentText(),lib_codes_box->currentText(),
-		    this,"lr");
+		    this);
   lr->exec();
   delete lr;
   UnlockUser();
@@ -1512,7 +1503,7 @@ int main(int argc,char *argv[])
   //
   // Start Event Loop
   //
-  MainWidget *w=new MainWidget(NULL,"main");
+  MainWidget *w=new MainWidget();
   a.setMainWidget(w);
   w->show();
   return a.exec();

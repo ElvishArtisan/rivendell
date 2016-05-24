@@ -2,9 +2,7 @@
 //
 // Add a Rivendell Cart
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdadd_cart.cpp,v 1.8.10.1 2014/05/19 19:31:15 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -44,8 +42,8 @@
 
 RDAddCart::RDAddCart(QString *group,RDCart::Type *type,QString *title,
 		     const QString &username,RDSystem *system,
-		     QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+		     QWidget *parent)
+  : QDialog(parent,"",true)
 {
   QString sql;
   RDSqlQuery *q;

@@ -2,9 +2,7 @@
 //
 // Record a Rivendell cut.
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: record_cut.h,v 1.33.6.1 2012/08/02 20:37:58 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -45,13 +43,11 @@
 
 #include <globals.h>
 
-
 class RecordCut : public QDialog
 {
   Q_OBJECT
   public:
-   RecordCut(RDCart *cart,QString cut,bool use_weight,QWidget *parent=0,
-	     const char *name=0);
+   RecordCut(RDCart *cart,QString cut,bool use_weight,QWidget *parent=0);
    ~RecordCut();
    QSize sizeHint() const;
    QSizePolicy sizePolicy() const;

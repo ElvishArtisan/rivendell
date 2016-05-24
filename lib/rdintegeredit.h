@@ -2,9 +2,7 @@
 //
 //   A widget for editing a list of integer values.
 //
-//   (C) Copyright 2008 Fred Gleason <fredg@paravelsystems.com>
-//
-//    $Id: rdintegeredit.h,v 1.3 2010/07/29 19:32:33 cvs Exp $
+//   (C) Copyright 2008,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -18,7 +16,6 @@
 //   You should have received a copy of the GNU General Public
 //   License along with this program; if not, write to the Free Software
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-//
 //
 
 #ifndef RDINTEGEREDIT_H
@@ -35,8 +32,7 @@ class RDIntegerEdit : public QWidget
 {
   Q_OBJECT
  public:
-  RDIntegerEdit(const QString &lbl,int low,int high,
-		QWidget *parent,const char *name=0);
+  RDIntegerEdit(const QString &lbl,int low,int high,QWidget *parent);
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
   unsigned values(std::vector<int> *v) const;

@@ -2,9 +2,7 @@
 //
 // Connect to the Rivendell Netcatcher Daemon.
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdcatch_connect.h,v 1.19 2010/07/29 19:32:33 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -37,12 +35,11 @@
 #define CC_MAX_LENGTH 256
 #define CC_HEARTBEAT_INTERVAL 15000
 
-
 class RDCatchConnect : public QObject
 {
  Q_OBJECT;
  public:
-  RDCatchConnect(int serial,QObject *parent=0,const char *name=0);
+  RDCatchConnect(int serial,QObject *parent=0);
   ~RDCatchConnect();
   void connectHost(QString hostname,Q_UINT16 hostport,QString password);
   RDDeck::Status status(unsigned chan) const;

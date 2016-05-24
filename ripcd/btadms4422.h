@@ -33,12 +33,11 @@
 #define BTADMS4422_POLL_INTERVAL 100
 #define BTADMS4422_GPI_PINS 16
 
-
 class BtAdms4422 : public Switcher
 {
  Q_OBJECT
  public:
-  BtAdms4422(RDMatrix *matrix,QObject *parent=0,const char *name=0);
+  BtAdms4422(RDMatrix *matrix,QObject *parent=0);
   ~BtAdms4422();
   RDMatrix::Type type();
   unsigned gpiQuantity();

@@ -2,9 +2,7 @@
 //
 // A Utility to Purge Expired Podcasts.
 //
-//   (C) Copyright 2007 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdpurgecasts.cpp,v 1.7 2011/06/21 22:20:44 cvs Exp $
+//   (C) Copyright 2007,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -43,8 +41,8 @@
 #include <rdpodcast.h>
 
 
-MainObject::MainObject(QObject *parent,const char *name)
-  :QObject(parent,name)
+MainObject::MainObject(QObject *parent)
+  :QObject(parent)
 {
   QString sql;
   RDSqlQuery *q;
@@ -173,6 +171,6 @@ void MainObject::PurgeCast(unsigned id)
 int main(int argc,char *argv[])
 {
   QApplication a(argc,argv,false);
-  new MainObject(NULL,"main");
+  new MainObject();
   return a.exec();
 }

@@ -2,9 +2,7 @@
 //
 // Edit a Rivendell Report
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: edit_report.cpp,v 1.21.8.1.2.1 2014/05/22 01:21:36 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -41,9 +39,8 @@
 #include <autofill_carts.h>
 #include <edit_svc_perms.h>
 
-
-EditReport::EditReport(QString rptname,QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+EditReport::EditReport(QString rptname,QWidget *parent)
+  : QDialog(parent,"",true)
 {
   QString sql;
   RDSqlQuery *q;
@@ -128,9 +125,7 @@ EditReport::EditReport(QString rptname,QWidget *parent,const char *name)
   edit_cartzeros_box->setGeometry(170,75,15,15);
   connect(edit_cartzeros_box,SIGNAL(toggled(bool)),
 	  this,SLOT(leadingZerosToggled(bool)));
-  label=new QLabel(edit_cartzeros_box,
-		   tr("Use Leading Zeros"),this,
-		   "edit_cartzeros_label");
+  label=new QLabel(edit_cartzeros_box,tr("Use Leading Zeros"),this);
   label->setGeometry(187,73,120,19);
   label->setFont(check_font);
   label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);

@@ -2,7 +2,7 @@
 //
 // A Qt-based application for display information on ASI cards.
 //
-//   (C) Copyright 2002-2014 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2014,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -34,8 +34,8 @@
 #include "change_mode.h"
 #include "virtdetails.h"
 
-MainWidget::MainWidget(QWidget *parent,const char *name)
-  :QWidget(parent,name)
+MainWidget::MainWidget(QWidget *parent)
+  :QWidget(parent)
 {
   setCaption(tr("RDHPIInfo")+" v"+VERSION);
 
@@ -357,8 +357,7 @@ void MainWidget::changeModeData()
   QString str;
   hpi_err_t hpi_err;
   char hpi_text[100];
-  ChangeMode *dialog=new ChangeMode(card,hpi_type[card],hpi_mode[card],
-				    this,"change_mode_dialog");
+  ChangeMode *dialog=new ChangeMode(card,hpi_type[card],hpi_mode[card],this);
   if((mode=dialog->exec())<0) {
     delete dialog;
     return;
@@ -474,7 +473,7 @@ int main(int argc,char *argv[])
   //
   // Start Event Loop
   //
-  MainWidget *w=new MainWidget(NULL,"main");
+  MainWidget *w=new MainWidget();
   a.setMainWidget(w);
   w->setGeometry(QRect(QPoint(0,0),w->sizeHint()));
   w->show();

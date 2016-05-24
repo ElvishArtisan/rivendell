@@ -2,9 +2,7 @@
 //
 // Record a Rivendell Cut
 //
-//   (C) Copyright 2002-2004,2014 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: record_cut.cpp,v 1.90.6.5 2014/01/09 01:11:14 cvs Exp $
+//   (C) Copyright 2002-2004,2014,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -38,8 +36,8 @@
 #include <rdconfig.h>
 
 RecordCut::RecordCut(RDCart *cart,QString cut,bool use_weight,
-		     QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+		     QWidget *parent)
+  : QDialog(parent,"",true)
 {
   bool valid;
   bool is_track=cart->owner().isEmpty();
@@ -129,12 +127,11 @@ RecordCut::RecordCut(RDCart *cart,QString cut,bool use_weight,
   //
   // Cut Description
   //
-  cut_description_edit=new QLineEdit(this,"cut_description_edit");
+  cut_description_edit=new QLineEdit(this);
   cut_description_edit->setGeometry(10,30,355,19);
   cut_description_edit->setMaxLength(64);
-  QLabel *cut_description_label=new QLabel(cut_description_edit,
-					   tr("&Description"),this,
-					   "cut_description_label");
+  QLabel *cut_description_label=
+    new QLabel(cut_description_edit,tr("&Description"),this);
   cut_description_label->setGeometry(15,11,120,19);
   cut_description_label->setFont(font);
   cut_description_label->setAlignment(AlignLeft|ShowPrefix);
@@ -142,11 +139,10 @@ RecordCut::RecordCut(RDCart *cart,QString cut,bool use_weight,
   //
   // Cut Outcue
   //
-  cut_outcue_edit=new QLineEdit(this,"cut_outcue_edit");
+  cut_outcue_edit=new QLineEdit(this);
   cut_outcue_edit->setGeometry(10,75,355,19);
   cut_outcue_edit->setMaxLength(64);
-  QLabel *cut_outcue_label=new QLabel(cut_outcue_edit,tr("&Outcue"),this,
-				       "cut_outcue_label");
+  QLabel *cut_outcue_label=new QLabel(cut_outcue_edit,tr("&Outcue"),this);
   cut_outcue_label->setGeometry(15,56,120,19);
   cut_outcue_label->setFont(font);
   cut_outcue_label->setAlignment(AlignLeft|ShowPrefix);
@@ -154,11 +150,10 @@ RecordCut::RecordCut(RDCart *cart,QString cut,bool use_weight,
   //
   // Cut ISCI Code
   //
-  cut_isci_edit=new QLineEdit(this,"cut_isci_edit");
+  cut_isci_edit=new QLineEdit(this);
   cut_isci_edit->setGeometry(10,120,355,19);
   cut_isci_edit->setMaxLength(32);
-  QLabel *cut_isci_label=new QLabel(cut_isci_edit,tr("&ISCI Code"),this,
-				       "cut_isci_label");
+  QLabel *cut_isci_label=new QLabel(cut_isci_edit,tr("&ISCI Code"),this);
   cut_isci_label->setGeometry(15,101,120,19);
   cut_isci_label->setFont(font);
   cut_isci_label->setAlignment(AlignLeft|ShowPrefix);
@@ -166,12 +161,11 @@ RecordCut::RecordCut(RDCart *cart,QString cut,bool use_weight,
   //
   // Cut Origin
   //
-  cut_origin_edit=new QLineEdit(this,"cut_origin_edit");
+  cut_origin_edit=new QLineEdit(this);
   cut_origin_edit->setGeometry(10,165,190,19);
   cut_origin_edit->setReadOnly(true);
   cut_origin_edit->setMaxLength(64);
-  QLabel *cut_origin_label=new QLabel(cut_origin_edit,tr("Origin"),this,
-				       "cut_origin_label");
+  QLabel *cut_origin_label=new QLabel(cut_origin_edit,tr("Origin"),this);
   cut_origin_label->setGeometry(15,146,120,19);
   cut_origin_label->setFont(font);
   cut_origin_label->setAlignment(AlignLeft|ShowPrefix);
@@ -179,11 +173,10 @@ RecordCut::RecordCut(RDCart *cart,QString cut,bool use_weight,
   //
   // Cut ISRC
   //
-  cut_isrc_edit=new QLineEdit(this,"cut_isrc_edit");
+  cut_isrc_edit=new QLineEdit(this);
   cut_isrc_edit->setGeometry(220,165,145,19);
   cut_isrc_edit->setMaxLength(64);
-  QLabel *cut_isrc_label=new QLabel(cut_isrc_edit,tr("ISRC"),this,
-				       "cut_isrc_label");
+  QLabel *cut_isrc_label=new QLabel(cut_isrc_edit,tr("ISRC"),this);
   cut_isrc_label->setGeometry(225,146,120,19);
   cut_isrc_label->setFont(font);
   cut_isrc_label->setAlignment(AlignLeft|ShowPrefix);
@@ -191,11 +184,10 @@ RecordCut::RecordCut(RDCart *cart,QString cut,bool use_weight,
   //
   // Cut Weight
   //
-  cut_weight_box=new QSpinBox(this,"cut_weight_box");
+  cut_weight_box=new QSpinBox(this);
   cut_weight_box->setGeometry(10,210,61,19);
   cut_weight_box->setRange(0,100);
-  QLabel *cut_weight_label=new QLabel(cut_weight_box,tr("Weight"),this,
-				       "cut_weight_label");
+  QLabel *cut_weight_label=new QLabel(cut_weight_box,tr("Weight"),this);
   cut_weight_label->setGeometry(10,191,61,19);
   cut_weight_label->setFont(font);
   cut_weight_label->setAlignment(AlignHCenter|ShowPrefix);
@@ -203,12 +195,12 @@ RecordCut::RecordCut(RDCart *cart,QString cut,bool use_weight,
   //
   // Cut Play Date Time
   //
-  cut_playdate_edit=new QLineEdit(this,"cut_playdate_edit");
+  cut_playdate_edit=new QLineEdit(this);
   cut_playdate_edit->setGeometry(100,210,150,19);
   cut_playdate_edit->setReadOnly(true);
   cut_playdate_edit->setMaxLength(64);
-  QLabel *cut_playdate_label=new QLabel(cut_playdate_edit,tr("Last Played"),
-					this,"cut_playdate_label");
+  QLabel *cut_playdate_label=
+    new QLabel(cut_playdate_edit,tr("Last Played"),this);
   cut_playdate_label->setGeometry(105,191,120,19);
   cut_playdate_label->setFont(font);
   cut_playdate_label->setAlignment(AlignLeft|ShowPrefix);
@@ -216,14 +208,13 @@ RecordCut::RecordCut(RDCart *cart,QString cut,bool use_weight,
   //
   // Cut Play Counter
   //
-  cut_playcounter_edit=new QLineEdit(this,"cut_playcounter_edit");
+  cut_playcounter_edit=new QLineEdit(this);
   cut_playcounter_edit->setGeometry(285,210,80,19);
   cut_playcounter_edit->setAlignment(AlignRight);
   cut_playcounter_edit->setReadOnly(true);
   cut_playcounter_edit->setMaxLength(64);
   QLabel *cut_playcounter_label=
-    new QLabel(cut_playcounter_edit,tr("# of Plays"),
-	       this,"cut_playcounter_label");
+    new QLabel(cut_playcounter_edit,tr("# of Plays"),this);
   cut_playcounter_label->setGeometry(290,191,120,19);
   cut_playcounter_label->setFont(font);
   cut_playcounter_label->setAlignment(AlignLeft|ShowPrefix);
@@ -231,10 +222,9 @@ RecordCut::RecordCut(RDCart *cart,QString cut,bool use_weight,
   //
   // Evergreen Checkbox
   //
-  rec_evergreen_box=new QCheckBox(this,"rec_evergreen_box");
+  rec_evergreen_box=new QCheckBox(this);
   rec_evergreen_box->setGeometry(10,245,15,15);
-  rec_evergreen_label=new QLabel(rec_evergreen_box,tr("Cut is EVERGREEN"),
-				 this,"rec_evergreen_label");
+  rec_evergreen_label=new QLabel(rec_evergreen_box,tr("Cut is EVERGREEN"),this);
   rec_evergreen_label->setGeometry(30,245,sizeHint().width()-40,15);
   rec_evergreen_label->setFont(font);
   rec_evergreen_label->setAlignment(AlignVCenter|AlignLeft);
@@ -244,35 +234,31 @@ RecordCut::RecordCut(RDCart *cart,QString cut,bool use_weight,
   //
   // Cut Air Date Times
   //
-  cut_killdatetime_label=new QLabel(tr("Air Date/Time"),
-				    this,"cut_killdatetime_label");
+  cut_killdatetime_label=new QLabel(tr("Air Date/Time"),this);
   cut_killdatetime_label->setGeometry(50,268,100,19);
   cut_killdatetime_label->setAlignment(Qt::AlignHCenter);
   cut_killdatetime_label->setFont(font);
-  QButtonGroup *button_group=new QButtonGroup(this,"air_dates_group");
+  QButtonGroup *button_group=new QButtonGroup(this);
   button_group->hide();
   connect(button_group,SIGNAL(clicked(int)),this,SLOT(airDateButtonData(int)));
   cut_startdatetime_enable_button=new QRadioButton(tr("Enabled"),this,
 					       "air_date_enabled_button");
   cut_startdatetime_enable_button->setGeometry(40,290,100,20);
   button_group->insert(cut_startdatetime_enable_button,true);
-  cut_startdatetime_disable_button=new QRadioButton(tr("Disabled"),this,
-						"air_date_disabled_button");
+  cut_startdatetime_disable_button=new QRadioButton(tr("Disabled"),this);
   cut_startdatetime_disable_button->setGeometry(40,310,100,20);
   button_group->insert(cut_startdatetime_disable_button,false);
 
-  cut_startdatetime_edit=new QDateTimeEdit(this,"cut_startdatetime_edit");
+  cut_startdatetime_edit=new QDateTimeEdit(this);
   cut_startdatetime_edit->setGeometry(165,289,170,19);
-  cut_startdatetime_label=new QLabel(cut_startdatetime_edit,tr("&Start"),this,
-				       "cut_startdatetime_label");
+  cut_startdatetime_label=new QLabel(cut_startdatetime_edit,tr("&Start"),this);
   cut_startdatetime_label->setGeometry(120,293,40,12);
   cut_startdatetime_label->setFont(small_font);
   cut_startdatetime_label->setAlignment(AlignRight|ShowPrefix);
 
-  cut_enddatetime_edit=new QDateTimeEdit(this,"cut_enddatetime_edit");
+  cut_enddatetime_edit=new QDateTimeEdit(this);
   cut_enddatetime_edit->setGeometry(165,309,170,19);
-  cut_enddatetime_label=new QLabel(cut_enddatetime_edit,tr("End"),this,
-				       "cut_enddatetime_label");
+  cut_enddatetime_label=new QLabel(cut_enddatetime_edit,tr("End"),this);
   cut_enddatetime_label->setGeometry(120,313,40,12);
   cut_enddatetime_label->setFont(small_font);
   cut_enddatetime_label->setAlignment(AlignRight|ShowPrefix);
@@ -284,30 +270,26 @@ RecordCut::RecordCut(RDCart *cart,QString cut,bool use_weight,
   cut_daypart_label->setGeometry(50,348,65,19);
   cut_daypart_label->setAlignment(Qt::AlignHCenter);
   cut_daypart_label->setFont(font);
-  button_group=new QButtonGroup(this,"daypart_group");
+  button_group=new QButtonGroup(this);
   button_group->hide();
   connect(button_group,SIGNAL(clicked(int)),this,SLOT(daypartButtonData(int)));
-  cut_starttime_enable_button=new QRadioButton(tr("Enabled"),this,
-					       "daypart_enabled_button");
+  cut_starttime_enable_button=new QRadioButton(tr("Enabled"),this);
   cut_starttime_enable_button->setGeometry(57,370,100,20);
   button_group->insert(cut_starttime_enable_button,true);
-  cut_starttime_disable_button=new QRadioButton(tr("Disabled"),this,
-				"daypart_disabled_button");
+  cut_starttime_disable_button=new QRadioButton(tr("Disabled"),this);
   cut_starttime_disable_button->setGeometry(57,390,100,20);
   button_group->insert(cut_starttime_disable_button,false);
 
-  cut_starttime_edit=new RDTimeEdit(this,"cut_starttime_edit");
+  cut_starttime_edit=new RDTimeEdit(this);
   cut_starttime_edit->setGeometry(222,369,90,19);
-  cut_starttime_label=new QLabel(cut_starttime_edit,tr("&Start Time"),this,
-				       "cut_starttime_label");
+  cut_starttime_label=new QLabel(cut_starttime_edit,tr("&Start Time"),this);
   cut_starttime_label->setGeometry(137,373,80,12);
   cut_starttime_label->setFont(small_font);
   cut_starttime_label->setAlignment(AlignRight|ShowPrefix);
 
-  cut_endtime_edit=new RDTimeEdit(this,"cut_endtime_edit");
+  cut_endtime_edit=new RDTimeEdit(this);
   cut_endtime_edit->setGeometry(222,389,90,19);
-  cut_endtime_label=new QLabel(cut_endtime_edit,tr("End Time"),this,
-				       "cut_endtime_label");
+  cut_endtime_label=new QLabel(cut_endtime_edit,tr("End Time"),this);
   cut_endtime_label->setGeometry(137,393,80,12);
   cut_endtime_label->setFont(small_font);
   cut_endtime_label->setAlignment(AlignRight|ShowPrefix);
@@ -319,7 +301,7 @@ RecordCut::RecordCut(RDCart *cart,QString cut,bool use_weight,
   rec_dayofweek_label->setGeometry(50,428,125,19);
   rec_dayofweek_label->setAlignment(Qt::AlignHCenter);
   rec_dayofweek_label->setFont(font);
-  rec_weekpart_button[0]=new QCheckBox(this,"cut_weekpart_button[0]");
+  rec_weekpart_button[0]=new QCheckBox(this);
   rec_weekpart_button[0]->setGeometry(40,447,15,15);
   rec_weekpart_label[0]=new QLabel(rec_weekpart_button[0],tr("Monday"),
 		   this,"rec_weekpart_label[0]");
@@ -327,60 +309,54 @@ RecordCut::RecordCut(RDCart *cart,QString cut,bool use_weight,
   rec_weekpart_label[0]->setFont(day_font);
   rec_weekpart_label[0]->setAlignment(AlignVCenter|AlignLeft);
 
-  rec_weekpart_button[1]=new QCheckBox(this,"cut_weekpart_button[1]");
+  rec_weekpart_button[1]=new QCheckBox(this);
   rec_weekpart_button[1]->setGeometry(120,447,15,15);
-  rec_weekpart_label[1]=new QLabel(rec_weekpart_button[1],tr("Tuesday"),
-		   this,"rec_weekpart_label[0]");
+  rec_weekpart_label[1]=new QLabel(rec_weekpart_button[1],tr("Tuesday"),this);
   rec_weekpart_label[1]->setGeometry(142,445,80,20);
   rec_weekpart_label[1]->setFont(day_font);
   rec_weekpart_label[1]->setAlignment(AlignVCenter|AlignLeft);
 
-  rec_weekpart_button[2]=new QCheckBox(this,"cut_weekpart_button[2]");
+  rec_weekpart_button[2]=new QCheckBox(this);
   rec_weekpart_button[2]->setGeometry(200,447,15,15);
-  rec_weekpart_label[2]=new QLabel(rec_weekpart_button[2],tr("Wednesday"),
-		   this,"rec_weekpart_label[0]");
+  rec_weekpart_label[2]=new QLabel(rec_weekpart_button[2],tr("Wednesday"),this);
   rec_weekpart_label[2]->setGeometry(222,445,80,20);
   rec_weekpart_label[2]->setFont(day_font);
   rec_weekpart_label[2]->setAlignment(AlignVCenter|AlignLeft);
 
-  rec_weekpart_button[3]=new QCheckBox(this,"cut_weekpart_button[3]");
+  rec_weekpart_button[3]=new QCheckBox(this);
   rec_weekpart_button[3]->setGeometry(80,467,15,15);
-  rec_weekpart_label[3]=new QLabel(rec_weekpart_button[3],tr("Thursday"),
-		   this,"rec_weekpart_label[3]");
+  rec_weekpart_label[3]=new QLabel(rec_weekpart_button[3],tr("Thursday"),this);
   rec_weekpart_label[3]->setGeometry(102,465,80,20);
   rec_weekpart_label[3]->setFont(day_font);
   rec_weekpart_label[3]->setAlignment(AlignVCenter|AlignLeft);
 
-  rec_weekpart_button[4]=new QCheckBox(this,"cut_weekpart_button[4]");
+  rec_weekpart_button[4]=new QCheckBox(this);
   rec_weekpart_button[4]->setGeometry(180,467,15,15);
-  rec_weekpart_label[4]=new QLabel(rec_weekpart_button[4],tr("Friday"),
-		   this,"rec_weekpart_label[4]");
+  rec_weekpart_label[4]=new QLabel(rec_weekpart_button[4],tr("Friday"),this);
   rec_weekpart_label[4]->setGeometry(202,465,80,20);
   rec_weekpart_label[4]->setFont(day_font);
   rec_weekpart_label[4]->setAlignment(AlignVCenter|AlignLeft);
 
-  rec_weekpart_button[5]=new QCheckBox(this,"cut_weekpart_button[5]");
+  rec_weekpart_button[5]=new QCheckBox(this);
   rec_weekpart_button[5]->setGeometry(80,487,15,15);
-  rec_weekpart_label[5]=new QLabel(rec_weekpart_button[5],tr("Saturday"),
-		   this,"rec_weekpart_label[5]");
+  rec_weekpart_label[5]=new QLabel(rec_weekpart_button[5],tr("Saturday"),this);
   rec_weekpart_label[5]->setGeometry(102,485,80,20);
   rec_weekpart_label[5]->setFont(day_font);
   rec_weekpart_label[5]->setAlignment(AlignVCenter|AlignLeft);
 
-  rec_weekpart_button[6]=new QCheckBox(this,"cut_weekpart_button[6]");
+  rec_weekpart_button[6]=new QCheckBox(this);
   rec_weekpart_button[6]->setGeometry(180,485,15,15);
-  rec_weekpart_label[6]=new QLabel(rec_weekpart_button[6],tr("Sunday"),
-		   this,"rec_weekpart_label[6]");
+  rec_weekpart_label[6]=new QLabel(rec_weekpart_button[6],tr("Sunday"),this);
   rec_weekpart_label[6]->setGeometry(202,485,80,20);
   rec_weekpart_label[6]->setFont(day_font);
   rec_weekpart_label[6]->setAlignment(AlignVCenter|AlignLeft);
 
-  rec_set_button=new QPushButton(tr("Set All"),this,"rec_set_button");
+  rec_set_button=new QPushButton(tr("Set All"),this);
   rec_set_button->setGeometry(sizeHint().width()-80,441,55,30);
   rec_set_button->setFont(small_font);
   connect(rec_set_button,SIGNAL(clicked()),this,SLOT(setAllData()));
 
-  rec_clear_button=new QPushButton(tr("Clear All"),this,"rec_clear_button");
+  rec_clear_button=new QPushButton(tr("Clear All"),this);
   rec_clear_button->setGeometry(sizeHint().width()-80,476,55,30);
   rec_clear_button->setFont(small_font);
   connect(rec_clear_button,SIGNAL(clicked()),this,SLOT(clearAllData()));
@@ -388,19 +364,19 @@ RecordCut::RecordCut(RDCart *cart,QString cut,bool use_weight,
   //
   // Audio Meter
   //
-  rec_meter=new RDStereoMeter(this,"rec_meter");
+  rec_meter=new RDStereoMeter(this);
   rec_meter->setGeometry(20,520,rec_meter->geometry().width(),
 			 rec_meter->geometry().height());
   rec_meter->setReference(0);
   rec_meter->setMode(RDSegMeter::Independent);
-  QTimer *timer=new QTimer(this,"meter_timer");
+  QTimer *timer=new QTimer(this);
   connect(timer,SIGNAL(timeout()),this,SLOT(meterData()));
   timer->start(RD_METER_UPDATE_INTERVAL);
 
   //
   // AES Alarm
   //
-  rec_aes_alarm_label=new QLabel(this,"rec_aes_alarm_label");
+  rec_aes_alarm_label=new QLabel(this);
   rec_aes_alarm_label->setGeometry(15,592,110,22);
   rec_aes_alarm_label->setAlignment(AlignHCenter|AlignVCenter);
   rec_aes_alarm_label->setFont(large_font);
@@ -411,9 +387,9 @@ RecordCut::RecordCut(RDCart *cart,QString cut,bool use_weight,
   //
   // Record Timer
   //
-  rec_timer=new QTimer(this,"rec_timer");
+  rec_timer=new QTimer(this);
   connect(rec_timer,SIGNAL(timeout()),this,SLOT(recTimerData()));
-  rec_timer_label=new QLabel(this,"rec_timer_label");
+  rec_timer_label=new QLabel(this);
   rec_timer_label->setGeometry(130,580,120,50);
   rec_timer_label->setFont(timer_font);
   rec_timer_label->setAlignment(AlignLeft|AlignVCenter);
@@ -422,12 +398,12 @@ RecordCut::RecordCut(RDCart *cart,QString cut,bool use_weight,
   //
   // Channels
   //
-  rec_channels_box=new QComboBox(this,"rec_channels_box");
+  rec_channels_box=new QComboBox(this);
   rec_channels_box->setGeometry(20,635,60,35);
-  rec_channels_edit=new QLineEdit(this,"rec_channels_box");
+  rec_channels_edit=new QLineEdit(this);
   rec_channels_edit->setGeometry(20,635,60,35);
-  QLabel *rec_channels_box_label=new QLabel(rec_channels_box,tr("Channels"),
-					    this,"rec_channels_box_label");
+  QLabel *rec_channels_box_label=
+    new QLabel(rec_channels_box,tr("Channels"),this);
   rec_channels_box_label->setGeometry(10,616,80,16);
   rec_channels_box_label->setAlignment(AlignHCenter);
   rec_channels_box_label->setFont(font);
@@ -437,8 +413,7 @@ RecordCut::RecordCut(RDCart *cart,QString cut,bool use_weight,
   //
   //  Record Button
   //
-  rec_record_button=new RDTransportButton(RDTransportButton::Record,
-					this,"rec_record_button");
+  rec_record_button=new RDTransportButton(RDTransportButton::Record,this);
   rec_record_button->setGeometry(100,620,80,50);
   rec_record_button->setDefault(true);
   connect(rec_record_button,SIGNAL(clicked()),this,SLOT(recordData()));
@@ -446,8 +421,7 @@ RecordCut::RecordCut(RDCart *cart,QString cut,bool use_weight,
   //
   //  Play Button
   //
-  rec_play_button=new RDTransportButton(RDTransportButton::Play,
-					this,"rec_play_button");
+  rec_play_button=new RDTransportButton(RDTransportButton::Play,this);
   rec_play_button->setGeometry(190,620,80,50);
   rec_play_button->setDefault(true);
   connect(rec_play_button,SIGNAL(clicked()),this,SLOT(playData()));
@@ -455,8 +429,7 @@ RecordCut::RecordCut(RDCart *cart,QString cut,bool use_weight,
   //
   //  Stop Button
   //
-  rec_stop_button=new RDTransportButton(RDTransportButton::Stop,
-					this,"rec_stop_button");
+  rec_stop_button=new RDTransportButton(RDTransportButton::Stop,this);
   rec_stop_button->setGeometry(280,620,80,50);
   rec_stop_button->setDefault(true);
   rec_stop_button->setState(RDTransportButton::On);
@@ -466,10 +439,9 @@ RecordCut::RecordCut(RDCart *cart,QString cut,bool use_weight,
   //
   // Record Mode 
   //
-  rec_mode_box=new QComboBox(this,"rec_mode_box");
+  rec_mode_box=new QComboBox(this);
   rec_mode_box->setGeometry(10,695,100,35);
-  QLabel *rec_mode_box_label=new QLabel(rec_mode_box,tr("Record Mode"),this,
-					"rec_mode_box_label");
+  QLabel *rec_mode_box_label=new QLabel(rec_mode_box,tr("Record Mode"),this);
   rec_mode_box_label->setGeometry(10,676,100,16);
   rec_mode_box_label->setAlignment(AlignHCenter);
   rec_mode_box_label->setFont(font);
@@ -477,10 +449,9 @@ RecordCut::RecordCut(RDCart *cart,QString cut,bool use_weight,
   //
   // AutoTrim Mode 
   //
-  rec_trim_box=new QComboBox(this,"rec_trim_box");
+  rec_trim_box=new QComboBox(this);
   rec_trim_box->setGeometry(145,695,70,35);
-  QLabel *rec_trim_box_label=new QLabel(rec_trim_box,tr("AutoTrim"),this,
-					"rec_trim_box_label");
+  QLabel *rec_trim_box_label=new QLabel(rec_trim_box,tr("AutoTrim"),this);
   rec_trim_box_label->setGeometry(130,676,100,16);
   rec_trim_box_label->setAlignment(AlignHCenter);
   rec_trim_box_label->setFont(font);
@@ -488,9 +459,8 @@ RecordCut::RecordCut(RDCart *cart,QString cut,bool use_weight,
   //
   //  Close Button
   //
-  QPushButton *close_button=new QPushButton(this,"close_button");
-  close_button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,
-			    80,50);
+  QPushButton *close_button=new QPushButton(this);
+  close_button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,80,50);
   close_button->setDefault(true);
   close_button->setFont(font);
   close_button->setText(tr("&Close"));

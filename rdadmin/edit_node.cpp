@@ -2,9 +2,7 @@
 //
 // Edit a Rivendell LiveWire Node
 //
-//   (C) Copyright 2002-2007 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: edit_node.cpp,v 1.4 2010/07/29 19:32:34 cvs Exp $
+//   (C) Copyright 2002-2007,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -32,9 +30,8 @@
 #include <edit_node.h>
 #include <view_node_info.h>
 
-
-EditNode::EditNode(int *id,RDMatrix *matrix,QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+EditNode::EditNode(int *id,RDMatrix *matrix,QWidget *parent)
+  : QDialog(parent,"",true)
 {
   edit_id=id;
   edit_matrix=matrix;
@@ -60,10 +57,10 @@ EditNode::EditNode(int *id,RDMatrix *matrix,QWidget *parent,const char *name)
   //
   // Node Hostname
   //
-  edit_hostname_edit=new QLineEdit(this,"edit_hostname_edit");
+  edit_hostname_edit=new QLineEdit(this);
   edit_hostname_edit->setGeometry(90,10,190,20);
   QLabel *label=
-    new QLabel(edit_hostname_edit,tr("Hostname: "),this,"edit_hostname_label");
+    new QLabel(edit_hostname_edit,tr("Hostname: "),this);
   label->setGeometry(10,10,80,20);
   label->setFont(bold_font);
   label->setAlignment(AlignRight|AlignVCenter);
@@ -71,10 +68,10 @@ EditNode::EditNode(int *id,RDMatrix *matrix,QWidget *parent,const char *name)
   //
   // Node TCP Port
   //
-  edit_tcpport_spin=new QSpinBox(this,"edit_tcpport_spin");
+  edit_tcpport_spin=new QSpinBox(this);
   edit_tcpport_spin->setGeometry(335,10,sizeHint().width()-345,20);
   edit_tcpport_spin->setRange(0,0xFFFF);
-  label=new QLabel(edit_tcpport_spin,tr("Port: "),this,"edit_tcpport_label");
+  label=new QLabel(edit_tcpport_spin,tr("Port: "),this);
   label->setGeometry(290,10,45,20);
   label->setFont(bold_font);
   label->setAlignment(AlignRight|AlignVCenter);
@@ -82,10 +79,9 @@ EditNode::EditNode(int *id,RDMatrix *matrix,QWidget *parent,const char *name)
   //
   // Node Description
   //
-  edit_description_edit=new QLineEdit(this,"edit_description_edit");
+  edit_description_edit=new QLineEdit(this);
   edit_description_edit->setGeometry(90,32,sizeHint().width()-100,20);
-  label=new QLabel(edit_description_edit,tr("Description: "),
-		   this,"edit_description_label");
+  label=new QLabel(edit_description_edit,tr("Description: "),this);
   label->setGeometry(10,32,80,20);
   label->setFont(bold_font);
   label->setAlignment(AlignRight|AlignVCenter);
@@ -93,12 +89,12 @@ EditNode::EditNode(int *id,RDMatrix *matrix,QWidget *parent,const char *name)
   //
   // Base Output
   //
-  edit_output_spin=new QSpinBox(this,"edit_output_spin");
+  edit_output_spin=new QSpinBox(this);
   edit_output_spin->setGeometry(90,54,60,20);
   edit_output_spin->setRange(0,0x7FFF);
   edit_output_spin->setSpecialValueText(tr("None"));
   label=
-    new QLabel(edit_output_spin,tr("First Output: "),this,"edit_output_label");
+    new QLabel(edit_output_spin,tr("First Output: "),this);
   label->setGeometry(10,54,80,20);
   label->setFont(bold_font);
   label->setAlignment(AlignRight|AlignVCenter);
@@ -106,14 +102,14 @@ EditNode::EditNode(int *id,RDMatrix *matrix,QWidget *parent,const char *name)
   //
   // Node Password
   //
-  edit_password_edit=new QLineEdit(this,"edit_password_edit");
+  edit_password_edit=new QLineEdit(this);
   edit_password_edit->setGeometry(245,54,90,20);
   edit_password_edit->setEchoMode(QLineEdit::Password);
   edit_password_edit->setText("********");
   connect(edit_password_edit,SIGNAL(textChanged(const QString &)),
 	  this,SLOT(passwordChangedData(const QString &)));
   label=
-    new QLabel(edit_password_edit,tr("Password: "),this,"edit_password_label");
+    new QLabel(edit_password_edit,tr("Password: "),this);
   label->setGeometry(160,54,80,20);
   label->setFont(bold_font);
   label->setAlignment(AlignRight|AlignVCenter);
@@ -121,7 +117,7 @@ EditNode::EditNode(int *id,RDMatrix *matrix,QWidget *parent,const char *name)
   //
   //  View Node Info Button
   //
-  QPushButton *button=new QPushButton(this,"cancel_button");
+  QPushButton *button=new QPushButton(this);
   button->setGeometry(10,sizeHint().height()-60,80,50);
   button->setFont(bold_font);
   button->setText(tr("&View Node\nInfo"));
@@ -130,7 +126,7 @@ EditNode::EditNode(int *id,RDMatrix *matrix,QWidget *parent,const char *name)
   //
   //  Ok Button
   //
-  button=new QPushButton(this,"ok_button");
+  button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
   button->setDefault(true);
   button->setFont(bold_font);
@@ -140,7 +136,7 @@ EditNode::EditNode(int *id,RDMatrix *matrix,QWidget *parent,const char *name)
   //
   //  Cancel Button
   //
-  button=new QPushButton(this,"cancel_button");
+  button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,
 			     80,50);
   button->setFont(bold_font);

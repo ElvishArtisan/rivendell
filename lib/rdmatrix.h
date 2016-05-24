@@ -2,7 +2,7 @@
 //
 // Abstract a Rivendell Switcher Matrix
 //
-//   (C) Copyright 2002-2015 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,13 +18,12 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qsqldatabase.h>
-#include <qdatetime.h>
-#include <qhostaddress.h>
-
 #ifndef RDMATRIX_H
 #define RDMATRIX_H
 
+#include <qsqldatabase.h>
+#include <qdatetime.h>
+#include <qhostaddress.h>
 
 class RDMatrix
 {

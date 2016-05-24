@@ -2,9 +2,7 @@
 //
 // Marker Button for RDLibrary
 //
-//   (C) Copyright 2002-2003 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdmarker_button.cpp,v 1.6 2010/07/29 19:32:33 cvs Exp $
+//   (C) Copyright 2002-2003,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -22,22 +20,21 @@
 
 #include <rdmarker_button.h>
 
-RDMarkerButton::RDMarkerButton(QWidget *parent,const char *name)
-  : RDPushButton(parent,name)
+RDMarkerButton::RDMarkerButton(QWidget *parent)
+  : RDPushButton(parent)
 {
 }
 
 
-RDMarkerButton::RDMarkerButton(const QString &text,QWidget *parent,
-			   const char *name)
-  : RDPushButton(text,parent,name)
+RDMarkerButton::RDMarkerButton(const QString &text,QWidget *parent)
+  : RDPushButton(text,parent)
 {
 }
 
 
 RDMarkerButton::RDMarkerButton(const QIconSet &icon,const QString &text,
-			   QWidget *parent,const char *name)
-  : RDPushButton(icon,text,parent,name)
+			       QWidget *parent)
+  : RDPushButton(icon,text,parent)
 {
 }
 
