@@ -15159,5 +15159,7 @@
 	* Removed all CVS tags.
 	* Removed 'const char *name' parameter from all QObject contructors.
 2016-05-24 Fred Gleason <fredg@paravelsystems.com>
-	* Merged fix for gcc 6.1.1 from Daniel KAmil Kozar [GitHub pull
+	* Merged fix for gcc 6.1.1 from Daniel Kamil Kozar [GitHub pull
 	request #000126].
+2016-05-24 Fred Gleason <fredg@paravelsystems.com>
+	* Reverted GitHub pull request #000117.

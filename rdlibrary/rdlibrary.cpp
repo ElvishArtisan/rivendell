@@ -1081,7 +1081,7 @@ void MainWidget::RefreshList()
       RDCartSearchText(lib_filter_edit->text(),lib_group_box->currentText(),
 		       schedcode,true)+" && "+type_filter;      
   }
-  sql+=" group by CART.NUMBER order by CART.NUMBER";
+  sql+=" order by CART.NUMBER";
   if(lib_showmatches_box->isChecked()) {
     sql+=QString().sprintf(" limit %d",RD_LIMITED_CART_SEARCH_QUANTITY);
   }
