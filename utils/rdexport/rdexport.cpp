@@ -41,6 +41,7 @@ MainObject::MainObject(QObject *parent)
   :QObject(parent)
 {
   export_metadata_pattern="%n_%j";
+  export_escape_string="_";
 
   //
   // Read Command Options
@@ -71,6 +72,14 @@ MainObject::MainObject(QObject *parent)
 	fprintf(stderr,"rdexport: invalid --carts argument\n");
 	exit(256);
       }
+      cmd->setProcessed(i,true);
+    }
+    if(cmd->key(i)=="--escape-string") {
+      if(cmd->value(i)!=SanitizePath(cmd->value(i))) {
+	fprintf(stderr,"rdxport: illegal character(s) in escape string\n");
+	exit(256);
+      }
+      export_escape_string=cmd->value(i);
       cmd->setProcessed(i,true);
     }
     if(cmd->key(i)=="--group") {
@@ -326,13 +335,36 @@ QString MainObject::ResolveOutputName(RDCart *cart,RDCut *cut,
   name.replace("%u",cart->userDefined());
   name.replace("%y",QString().sprintf("%d",cart->year()));
 
-  QString ret=name;
+  QString ret=SanitizePath(name);
   int count=1;
   while(QFile::exists(export_output_to+"/"+ret+"."+exten)) {
     ret=name+QString().sprintf("[%d]",count++);
   }
 
   return export_output_to+"/"+ret+"."+exten;
+}
+
+
+QString MainObject::SanitizePath(const QString &pathname) const
+{
+  //
+  // Remove illegal characters from the filepath.
+  // (from https://msdn.microsoft.com/en-us/library/windows/desktop/aa365247%28v=vs.85%29.aspx#naming_conventions
+  //
+  QString ret=pathname;
+
+  ret.replace("/",export_escape_string);
+  ret.replace(":",export_escape_string);
+  ret.replace("<",export_escape_string);
+  ret.replace(">",export_escape_string);
+  ret.replace(":",export_escape_string);
+  ret.replace("\"",export_escape_string);
+  ret.replace("\\",export_escape_string);
+  ret.replace("|",export_escape_string);
+  ret.replace("?",export_escape_string);
+  ret.replace("*",export_escape_string);
+
+  return ret;
 }
 
 

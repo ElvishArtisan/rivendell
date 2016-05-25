@@ -49,6 +49,7 @@ class MainObject : public QObject
   void ExportCart(unsigned cartnum);
   void ExportCut(RDCart *cart,RDCut *cut);
   QString ResolveOutputName(RDCart *cart,RDCut *cut,const QString &exten);
+  QString SanitizePath(const QString &pathname) const;
   void Verbose(const QString &msg);
   std::vector<unsigned> export_start_carts;
   std::vector<unsigned> export_end_carts;
@@ -60,6 +61,7 @@ class MainObject : public QObject
   RDStation *export_station;
   RDUser *export_user;
   bool export_verbose;
+  QString export_escape_string;
 };
 
 
