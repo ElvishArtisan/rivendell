@@ -15166,3 +15166,5 @@
 2016-05-25 Fred Gleason <fredg@paravelsystems.com>
 	* Merged pull request from Wayne Merricks to fix DB creation on
 	Ubuntu 16.04 [GitHub pull request #000130].
+2016-05-25 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.13.0int00.
