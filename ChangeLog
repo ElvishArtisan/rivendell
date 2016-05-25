@@ -15163,3 +15163,6 @@
 	request #000126].
 2016-05-24 Fred Gleason <fredg@paravelsystems.com>
 	* Reverted GitHub pull request #000117.
+2016-05-25 Fred Gleason <fredg@paravelsystems.com>
+	* Merged pull request from Wayne Merricks to fix DB creation on
+	Ubuntu 16.04 [GitHub pull request #000130].
