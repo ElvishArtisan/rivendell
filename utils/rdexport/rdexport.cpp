@@ -42,6 +42,8 @@ MainObject::MainObject(QObject *parent)
 {
   export_metadata_pattern="%n_%j";
   export_escape_string="_";
+  export_continue_after_error=false;
+  export_allow_clobber=false;
 
   //
   // Read Command Options
@@ -53,6 +55,10 @@ MainObject::MainObject(QObject *parent)
     exit(256);
   }
   for(int i=0;i<(int)cmd->keys()-1;i++) {
+    if(cmd->key(i)=="--allow-clobber") {
+      export_allow_clobber=true;
+      cmd->setProcessed(i,true);
+    }
     if(cmd->key(i)=="--carts") {
       bool ok=false;
       bool valid=false;
@@ -72,6 +78,10 @@ MainObject::MainObject(QObject *parent)
 	fprintf(stderr,"rdexport: invalid --carts argument\n");
 	exit(256);
       }
+      cmd->setProcessed(i,true);
+    }
+    if(cmd->key(i)=="--continue-after-error") {
+      export_continue_after_error=true;
       cmd->setProcessed(i,true);
     }
     if(cmd->key(i)=="--escape-string") {
@@ -265,7 +275,12 @@ void MainObject::ExportCut(RDCart *cart,RDCut *cut)
      RDAudioInfo::ErrorOk) {
     fprintf(stderr,"rdexport: error getting cut info [%s]\n",
 	    (const char *)RDAudioInfo::errorText(info_err));
-    exit(256);
+    if(export_continue_after_error) {
+      return;
+    }
+    else {
+      exit(256);
+    }
   }
   RDSettings settings;
   switch(info->format()) {
@@ -283,7 +298,12 @@ void MainObject::ExportCut(RDCart *cart,RDCut *cut)
 
   default:
     fprintf(stderr,"rdexport: unsupported source audio format\n");
-    exit(256);
+    if(export_continue_after_error) {
+      return;
+    }
+    else {
+      exit(256);
+    }
   }
   settings.setChannels(info->channels());
   settings.setSampleRate(info->sampleRate());
@@ -303,7 +323,9 @@ void MainObject::ExportCut(RDCart *cart,RDCut *cut)
 				 &conv_err))!=RDAudioExport::ErrorOk) {
     fprintf(stderr,"rdexport: exporter error [%s]\n",
 	    (const char *)RDAudioExport::errorText(export_err,conv_err));
-    exit(256);
+    if(!export_continue_after_error) {
+      exit(256);
+    }
   }
 
   delete conv;
@@ -336,9 +358,11 @@ QString MainObject::ResolveOutputName(RDCart *cart,RDCut *cut,
   name.replace("%y",QString().sprintf("%d",cart->year()));
 
   QString ret=SanitizePath(name);
-  int count=1;
-  while(QFile::exists(export_output_to+"/"+ret+"."+exten)) {
-    ret=name+QString().sprintf("[%d]",count++);
+  if(!export_allow_clobber) {
+    int count=1;
+    while(QFile::exists(export_output_to+"/"+ret+"."+exten)) {
+      ret=name+QString().sprintf("[%d]",count++);
+    }
   }
 
   return export_output_to+"/"+ret+"."+exten;

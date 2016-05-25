@@ -62,6 +62,8 @@ class MainObject : public QObject
   RDUser *export_user;
   bool export_verbose;
   QString export_escape_string;
+  bool export_continue_after_error;
+  bool export_allow_clobber;
 };
 
 

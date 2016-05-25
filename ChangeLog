@@ -15169,4 +15169,7 @@
 2016-05-25 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 2.13.0int00.
 2016-05-25 Fred Gleason <fredg@paravelsystems.com>
-	Added a '--escape-string=' parameters to rdexport(1).
+	Added a '--escape-string=' parameter to rdexport(1).
+2016-05-25 Fred Gleason <fredg@paravelsystems.com>
+	Added a '--continue-after-error' parameter to rdexport(1).
+	Added a '--allow-clobber' parameter to rdexport(1).
