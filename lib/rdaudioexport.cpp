@@ -67,9 +67,21 @@ RDAudioExport::RDAudioExport(RDStation *station,RDConfig *config,
 }
 
 
+unsigned RDAudioExport::cartNumber() const
+{
+  return conv_cart_number;
+}
+
+
 void RDAudioExport::setCartNumber(unsigned cartnum)
 {
   conv_cart_number=cartnum;
+}
+
+
+unsigned RDAudioExport::cutNumber() const
+{
+  return conv_cut_number;
 }
 
 
@@ -79,9 +91,21 @@ void RDAudioExport::setCutNumber(unsigned cutnum)
 }
 
 
+QString RDAudioExport::destinationFile() const
+{
+  return conv_dst_filename;
+}
+
+
 void RDAudioExport::setDestinationFile(const QString &filename)
 {
   conv_dst_filename=filename;
+}
+
+
+RDSettings *RDAudioExport::destinationSettings() const
+{
+  return conv_settings;
 }
 
 

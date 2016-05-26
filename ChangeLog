@@ -15181,3 +15181,8 @@
 2016-05-26 Fred Gleason <fredg@paravelsystems.com>
 	* Documented the '--escape-string' switch in
 	'docs/docbook/rdexport.xml'.
+2016-05-26 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'RDAudioExport::cartNumber()', 'RDAudioExport::cutNumber()'
+	and 'RDAudioExport::settings()' meethods in 'lib/rdaudioexport.cpp'
+	and 'lib/rdaudioexport.h'.
+	* Added expanded error logging in 'utils/rdexport/rdexport.cpp'.

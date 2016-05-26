@@ -37,9 +37,13 @@ class RDAudioExport : public QObject
 		  ErrorService=8,ErrorInvalidUser=9,ErrorAborted=10,
 		  ErrorConverter=11};
   RDAudioExport(RDStation *station,RDConfig *config,QObject *parent=0);
+  unsigned cartNumber() const;
   void setCartNumber(unsigned cartnum);
+  unsigned cutNumber() const;
   void setCutNumber(unsigned cutnum);
+  QString destinationFile() const;
   void setDestinationFile(const QString &filename);
+  RDSettings *destinationSettings() const;
   void setDestinationSettings(RDSettings *settings);
   void setRange(int start_pt,int end_pt);
   void setEnableMetadata(bool state);

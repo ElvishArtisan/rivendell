@@ -321,7 +321,8 @@ void MainObject::ExportCut(RDCart *cart,RDCut *cut)
 
   if((export_err=conv->runExport(export_user->name(),export_user->password(),
 				 &conv_err))!=RDAudioExport::ErrorOk) {
-    fprintf(stderr,"rdexport: exporter error [%s]\n",
+    fprintf(stderr,"rdexport: exporter error for output file \"%s\" [%s]\n",
+	    (const char *)conv->destinationFile(),
 	    (const char *)RDAudioExport::errorText(export_err,conv_err));
     if(!export_continue_after_error) {
       exit(256);
