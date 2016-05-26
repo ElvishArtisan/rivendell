@@ -381,7 +381,6 @@ QString MainObject::SanitizePath(const QString &pathname) const
   ret.replace(":",export_escape_string);
   ret.replace("<",export_escape_string);
   ret.replace(">",export_escape_string);
-  ret.replace(":",export_escape_string);
   ret.replace("\"",export_escape_string);
   ret.replace("\\",export_escape_string);
   ret.replace("|",export_escape_string);

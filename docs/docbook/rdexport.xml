@@ -87,6 +87,27 @@
 
     <varlistentry>
       <term>
+	<option>--escape-string=</option><replaceable>string</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  Specify the string to use to replace illegal characters in output
+	  filenames.  Illegal characters that will be so replaced are:
+	  <userinput>*</userinput>,
+	  <userinput>/</userinput>,
+	  <userinput>&lt;</userinput>,
+	  <userinput>&gt;</userinput>,
+	  <userinput>"</userinput>,
+	  <userinput>\</userinput>,
+	  <userinput>|</userinput> and
+	  <userinput>?</userinput>.
+	  Default value is <userinput>_</userinput>.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
 	<option>--group=</option><replaceable>group-name</replaceable>
       </term>
       <listitem>
