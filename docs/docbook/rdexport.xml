@@ -47,6 +47,20 @@
   <variablelist remap='TP'>
     <varlistentry>
       <term>
+	<option>--allow-clobber</option>
+      </term>
+      <listitem>
+	<para>
+	  Overwrite a file if it already exists.  If this option is not given,
+	  <command>rdexport</command><manvolnum>1</manvolnum> will
+	  automatically append an integer string -- e.g. "[1]" -- to avoid
+	  such overwriting.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
 	<option>--carts=</option><replaceable>start-cart</replaceable>:<replaceable>end-cart</replaceable>
       </term>
       <listitem>
@@ -55,6 +69,18 @@
 	  <replaceable>start-cart</replaceable> to
 	  <replaceable>end-cart</replaceable> (both inclusive).  This option
 	  may be given multiple times.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
+	<option>--continue-after-error</option>
+      </term>
+      <listitem>
+	<para>
+	  Continue processing exports even in the face of exporter errors
+	  on particular carts.
 	</para>
       </listitem>
     </varlistentry>

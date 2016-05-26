@@ -15173,3 +15173,8 @@
 2016-05-25 Fred Gleason <fredg@paravelsystems.com>
 	* Added a '--continue-after-error' parameter to rdexport(1).
 	* Added a '--allow-clobber' parameter to rdexport(1).
+2016-05-26 Fred Gleason <fredg@paravelsystems.com>
+	* Documented the '--allow-clobber' switch in
+	'docs/docbook/rdexport.xml'.
+	* Documented the '--continue-after-error' switch in
+	'docs/docbook/rdexport.xml'.
