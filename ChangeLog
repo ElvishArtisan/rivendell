@@ -15192,3 +15192,7 @@
 	in the 'EXT DATA' column.
 	* Removed display of the link Length for Traffic and Music links
 	from the LENGTH column in 'rdlogedit/edit_log.cpp'.
+2016-06-01 Fred Gleason <fredg@paravelsystems.com>
+	* Changed the default value of the 'CART_NUMBER' field in '_LOG'
+	tables from NULL to 0.
+	* Incremented the database version to 258.

@@ -8235,6 +8235,20 @@ int UpdateDb(int ver)
     delete q;
   }
 
+  if(ver<258) {
+    sql=QString("select NAME from LOGS");
+    q=new QSqlQuery(sql);
+    while(q->next()) {
+      sql=QString("alter table ")+
+	"`"+RDLog::tableName(q->value(0).toString())+"` "+
+	"modify column CART_NUMBER int unsigned not null default 0";
+      q1=new QSqlQuery(sql);
+      delete q1;
+    }
+    delete q;
+  }
+
+
 
   // **** End of version updates ****
 

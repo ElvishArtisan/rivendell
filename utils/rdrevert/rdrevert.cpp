@@ -31,6 +31,7 @@
 #include <rdcreate_log.h>
 #include <rdescape_string.h>
 #include <rdevent.h>
+#include <rdlog.h>
 #include <rdsvc.h>
 
 #include "rdrevert.h"
@@ -174,6 +175,10 @@ void MainObject::Revert(int schema) const
 
   case 257:
     Revert257();
+    break;
+
+  case 258:
+    Revert258();
     break;
   }
 }
@@ -452,6 +457,27 @@ void MainObject::Revert257() const
 }
 
 
+void MainObject::Revert258() const
+{
+  QString sql;
+  QSqlQuery *q;
+  QSqlQuery *q1;
+
+  sql=QString("select NAME from LOGS");
+  q=new QSqlQuery(sql);
+  while(q->next()) {
+    sql=QString("alter table ")+
+      "`"+RDLog::tableName(q->value(0).toString())+"` "+
+      "modify column CART_NUMBER int unsigned not null";
+    q1=new QSqlQuery(sql);
+    delete q1;
+  }
+  delete q;
+
+  SetVersion(257);
+}
+
+
 int MainObject::GetVersion() const
 {
   QString sql;
@@ -492,6 +518,7 @@ int MainObject::MapSchema(const QString &ver)
   version_map["2.11"]=245;
   version_map["2.12"]=254;
   version_map["2.13"]=255;
+  version_map["2.14"]=258;
 
   //
   // Normalize String

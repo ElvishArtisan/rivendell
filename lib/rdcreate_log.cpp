@@ -43,7 +43,7 @@ QString RDCreateLogTableSql(QString name)
     "SOURCE INT NOT NULL,"+
     "START_TIME int,"+
     "GRACE_TIME int default 0,"+
-    "CART_NUMBER INT UNSIGNED NOT NULL,"+
+    "CART_NUMBER INT UNSIGNED NOT NULL default 0,"+
     "TIME_TYPE INT NOT NULL,"+
     "POST_POINT enum('N','Y') default 'N',"+
     "TRANS_TYPE INT NOT NULL,"+
