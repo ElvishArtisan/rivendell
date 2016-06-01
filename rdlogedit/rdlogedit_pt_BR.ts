@@ -403,6 +403,14 @@ para o serviço selecionado!</translation>
         <source>EXT DATA</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Link Start</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Len</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditLogLine</name>

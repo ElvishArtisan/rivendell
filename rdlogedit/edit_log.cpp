@@ -1402,6 +1402,7 @@ void EditLog::RefreshLine(RDListViewItem *item)
 	item->setText(7,logline->artist());
 	item->setText(8,logline->client());
 	item->setText(9,logline->agency());
+	item->setText(12,logline->extData());
 	break;
 	
       case RDLogLine::Macro:
@@ -1422,6 +1423,7 @@ void EditLog::RefreshLine(RDListViewItem *item)
 	item->setText(7,logline->artist());
 	item->setText(8,logline->client());
 	item->setText(9,logline->agency());
+	item->setText(12,logline->extData());
 	break;
 	
       case RDLogLine::Marker:
@@ -1431,6 +1433,7 @@ void EditLog::RefreshLine(RDListViewItem *item)
 	item->setText(6,RDTruncateAfterWord(edit_log_event->
 				  logLine(line)->markerComment(),5,true));
 	item->setText(10,logline->markerLabel());
+	item->setText(12,logline->extData());
 	break;
 
       case RDLogLine::Track:
@@ -1439,6 +1442,7 @@ void EditLog::RefreshLine(RDListViewItem *item)
 	item->setText(4,"");
 	item->setText(6,RDTruncateAfterWord(edit_log_event->
 				  logLine(line)->markerComment(),5,true));
+	item->setText(12,logline->extData());
 	break;
 
       case RDLogLine::Chain:
@@ -1448,22 +1452,29 @@ void EditLog::RefreshLine(RDListViewItem *item)
 	item->setText(6,logline->markerLabel());
 	item->setText(7,RDTruncateAfterWord(edit_log_event->
 				  logLine(line)->markerComment(),5,true));
+	item->setText(12,logline->extData());
 	break;
 
       case RDLogLine::MusicLink:
 	item->setPixmap(0,*edit_music_map);
 	item->setText(3,tr("LINK"));
 	item->setText(4,"");
-	item->setText(5,RDGetTimeLength(logline->linkLength(),false,false));
 	item->setText(6,tr("[music import]"));
+	item->setText(12,tr("Link Start")+": "+
+		      logline->linkStartTime().toString("hh:mm:ss")+", "+
+		      tr("Len")+": "+
+		      RDGetTimeLength(logline->linkLength(),false,false));
 	break;
 
       case RDLogLine::TrafficLink:
 	item->setPixmap(0,*edit_traffic_map);
 	item->setText(3,tr("LINK"));
 	item->setText(4,"");
-	item->setText(5,RDGetTimeLength(logline->linkLength(),false,false));
 	item->setText(6,tr("[traffic import]"));
+	item->setText(12,tr("Link Start")+": "+
+		      logline->linkStartTime().toString("hh:mm:ss")+", "+
+		      tr("Len")+": "+
+		      RDGetTimeLength(logline->linkLength(),false,false));
 	break;
 
       default:
@@ -1490,9 +1501,7 @@ void EditLog::RefreshLine(RDListViewItem *item)
 	item->setText(11,tr("Voice Tracker"));
 	break;
   }
-  item->setText(12,logline->extData());
-  item->
-    setText(13,QString().sprintf("%d",logline->id()));
+  item->setText(13,QString().sprintf("%d",logline->id()));
   UpdateColor(item,logline);
 }
 

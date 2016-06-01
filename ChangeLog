@@ -15186,3 +15186,9 @@
 	and 'RDAudioExport::settings()' meethods in 'lib/rdaudioexport.cpp'
 	and 'lib/rdaudioexport.h'.
 	* Added expanded error logging in 'utils/rdexport/rdexport.cpp'.
+2016-06-01 Fred Gleason <fredg@paravelsystems.com>
+	* Modified the Edit Log screen in 'rdlogedit/edit_log.cpp' to
+	display the link Start Time and Length for Traffic and Music links
+	in the 'EXT DATA' column.
+	* Removed display of the link Length for Traffic and Music links
+	from the LENGTH column in 'rdlogedit/edit_log.cpp'.
