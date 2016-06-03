@@ -320,7 +320,7 @@ QDateTime RDFeed::lastBuildDateTime() const
 
 void RDFeed::setLastBuildDateTime(const QDateTime &datetime) const
 {
-  SetRow("LAST_BUILD_DATETIME",datetime.toString("yyyy-MM-dd hh:mm:ss"));
+  SetRow("LAST_BUILD_DATETIME",RDCheckDateTime(datetime,"yyyy-MM-dd hh:mm:ss"));
 }
 
 
@@ -333,7 +333,7 @@ QDateTime RDFeed::originDateTime() const
 
 void RDFeed::setOriginDateTime(const QDateTime &datetime) const
 {
-  SetRow("ORIGIN_DATETIME",datetime.toString("yyyy-MM-dd hh:mm:ss"));
+  SetRow("ORIGIN_DATETIME",RDCheckDateTime(datetime,"yyyy-MM-dd hh:mm:ss"));
 }
 
 
