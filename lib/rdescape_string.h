@@ -19,11 +19,16 @@
 //
 
 #include <qstring.h>
+#include <qdatetime.h>
 
 #ifndef RDESCAPE_STRING_H
 #define RDESCAPE_STRING_H
 
+QString RDCheckDateTime(const QTime &time, const QString &format);
+QString RDCheckDateTime(const QDateTime &datetime, const QString &format);
+QString RDCheckDateTime(const QDate &date, const QString &format);
 QString RDEscapeString(const QString &str);
+
 
 
 #endif  // RDESCAPE_STRING_H
