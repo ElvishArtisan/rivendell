@@ -824,7 +824,7 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
 			    time_type,
 			    (const char *)RDYesNo(post_point),
 			    trans_type,
-			    (const char *)time.toString("hh:mm:ss"),
+			    (const char *)RDCheckDateTime(time,"hh:mm:ss"),
 			    event_length);
       q=new RDSqlQuery(sql);
       delete q;
