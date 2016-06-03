@@ -209,7 +209,7 @@ QDateTime RDPodcast::originDateTime() const
 
 void RDPodcast::setOriginDateTime(const QDateTime &datetime) const
 {
-  SetRow("ORIGIN_DATETIME",datetime.toString("yyyy-MM-dd hh:mm:ss"));
+  SetRow("ORIGIN_DATETIME",RDCheckDateTime(datetime,"yyyy-MM-dd hh:mm:ss"));
 }
 
 
@@ -222,7 +222,7 @@ QDateTime RDPodcast::effectiveDateTime() const
 
 void RDPodcast::setEffectiveDateTime(const QDateTime &datetime) const
 {
-  SetRow("EFFECTIVE_DATETIME",datetime.toString("yyyy-MM-dd hh:mm:ss"));
+  SetRow("EFFECTIVE_DATETIME",RDCheckDateTime(datetime,"yyyy-MM-dd hh:mm:ss"));
 }
 
 
