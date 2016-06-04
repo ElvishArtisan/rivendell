@@ -1207,14 +1207,14 @@ void RDCart::updateLength(bool enforce_length,unsigned length)
   }
   else {
     sql+=QString().sprintf("START_DATETIME=\"%s\",",
-		(const char *)start_datetime.toString("yyyy-MM-dd hh:mm:ss"));
+		(const char *)RDCheckDateTime(start_datetime,"yyyy-MM-dd hh:mm:ss"));
   }
   if(end_datetime.isNull()||(!dates_valid)) {
     sql+="END_DATETIME=NULL,";
   }
   else {
     sql+=QString().sprintf("END_DATETIME=\"%s\",",
-		(const char *)end_datetime.toString("yyyy-MM-dd hh:mm:ss"));
+		(const char *)RDCheckDateTime(end_datetime,"yyyy-MM-dd hh:mm:ss"));
   }
   sql+=QString().sprintf("VALIDITY=%u where NUMBER=%u",
 			 cart_validity,cart_number);
@@ -1740,7 +1740,7 @@ void RDCart::SetRow(const QString &param,const QDateTime &value) const
 
   sql=QString().sprintf("UPDATE CART SET %s=\"%s\" WHERE NUMBER=%u",
 			(const char *)param,
-			(const char *)value.toString("yyyy-MM-dd hh:mm:ss"),
+			(const char *)RDCheckDateTime(value,"yyyy-MM-dd hh:mm:ss"),
 			cart_number);
   q=new RDSqlQuery(sql);
   delete q;
@@ -1754,7 +1754,7 @@ void RDCart::SetRow(const QString &param,const QDate &value) const
 
   sql=QString().sprintf("UPDATE CART SET %s=\"%s\" WHERE NUMBER=%u",
 			(const char *)param,
-			(const char *)value.toString("yyyy-MM-dd"),
+			(const char *)RDCheckDateTime(value,"yyyy-MM-dd"),
 			cart_number);
   q=new RDSqlQuery(sql);
   delete q;
