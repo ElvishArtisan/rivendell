@@ -129,7 +129,7 @@ void MainWidget::generateData()
 			      j+1,
 			      k+1,
 			      (const char *)desc,
-			      (const char *)time.toString("hh:mm:ss"));
+			      (const char *)RDCheckDateTime(time,"hh:mm:ss"));
 	q=new RDSqlQuery(sql);
 	delete q;
       }
