@@ -244,6 +244,7 @@ int RDLogEvent::validate(QString *report,const QDate &date)
 	    //
 	    // Handle events with no logged start time (e.g. manual inserts)
 	    //
+		//TODO do we need to verify date here?
 	    sql=QString().
 	      sprintf("select CUT_NAME from CUTS where \
                       (CART_NUMBER=%u)&&			\
@@ -258,6 +259,7 @@ int RDLogEvent::validate(QString *report,const QDate &date)
 		      (const char *)RDDowCode(date.dayOfWeek()));
 	  }
 	  else {
+		//TODO Do we need to verify date and logLine(i)->startTime?
 	    sql=QString().
 	      sprintf("select CUT_NAME from CUTS where \
                      (CART_NUMBER=%u)&&					\
@@ -1203,8 +1205,8 @@ void RDLogEvent::InsertLineValues(QString *query, int line)
                         RDEscapeString(log_line[line]->markerLabel()),
                         log_line[line]->graceTime(),
                         log_line[line]->source(),
-                        (const char *)log_line[line]->extStartTime().
-                        toString("hh:mm:ss"),
+                        (const char *)RDCheckDateTime(
+                        		log_line[line]->extStartTime(),"hh:mm:ss"),
                         log_line[line]->extLength(),
                         (const char *)RDEscapeString(log_line[line]->extData()),
                         (const char *)
@@ -1226,8 +1228,8 @@ void RDLogEvent::InsertLineValues(QString *query, int line)
                         (const char *)RDYesNo(log_line[line]->linkEmbedded()),
                         (const char *)
                         RDEscapeString(log_line[line]->originUser()),
-                        (const char *)log_line[line]->originDateTime().
-                        toString("yyyy-MM-dd hh:mm:ss"),
+                        (const char *)RDCheckDateTime(
+                        log_line[line]->originDateTime(),"yyyy-MM-dd hh:mm:ss"),
                         log_line[line]->linkStartSlop(),
                         log_line[line]->linkEndSlop(),
                         log_line[line]->duckUpGain(),
