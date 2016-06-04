@@ -947,7 +947,7 @@ void RDRecording::SetRow(const QString &param,const QTime &value) const
 
   sql=QString().sprintf("update RECORDINGS set %s=\"%s\" where ID=%d",
 			(const char *)param,
-			(const char *)value.toString("hh:mm:ss"),rec_id);
+			(const char *)RDCheckDateTime(value,"hh:mm:ss"),rec_id);
   q=new RDSqlQuery(sql);
   delete q;
 }
