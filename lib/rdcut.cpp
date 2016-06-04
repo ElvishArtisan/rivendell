@@ -1060,8 +1060,8 @@ void RDCut::setMetadata(RDWaveData *data) const
   }
   if(data->daypartStartTime().isValid()&&data->daypartEndTime().isValid()&&
      (data->daypartStartTime()<data->daypartEndTime())) {
-    sql+="START_DAYPART=\""+data->daypartStartTime().toString("hh:mm:ss")+"\","+
-      "END_DAYPART=\""+data->daypartEndTime().toString("hh:mm:ss")+"\",";
+    sql+="START_DAYPART=\""+RDCheckDateTime(data->daypartStartTime(),"hh:mm:ss")+"\","+
+      "END_DAYPART=\""+RDCheckDateTime(data->daypartEndTime(),"hh:mm:ss")+"\",";
   }
   if((data->hookStartPos()>=data->startPos())&&
      (data->hookStartPos()<=data->endPos())&&
@@ -1082,28 +1082,22 @@ void RDCut::setMetadata(RDWaveData *data) const
   if((data->startDate()>QDate(1900,1,1))&&(data->endDate().year()<8000)) {
     if(data->startTime().isValid()) {
     sql+=QString().sprintf("START_DATETIME=\"%s %s\",",
-			   (const char *)data->startDate().
-			   toString("yyyy-MM-dd"),
-			   (const char *)data->startTime().
-			   toString("hh:mm:ss"));
+			   (const char *)RDCheckDateTime(data->startDate(),"yyyy-MM-dd"),
+			   (const char *)RDCheckDateTime(data->startTime(),"hh:mm:ss"));
     }
     else {
       sql+=QString().sprintf("START_DATETIME=\"%s 00:00:00\",",
-			     (const char *)data->startDate().
-			     toString("yyyy-MM-dd"));
+			     (const char *)RDCheckDateTime(data->startDate(),"yyyy-MM-dd"));
     }
     if(data->endDate().isValid()&&(data->endDate().year()<8000)) {
       if(data->endTime().isValid()) {
 	sql+=QString().sprintf("END_DATETIME=\"%s %s\",",
-			       (const char *)data->endDate().
-			       toString("yyyy-MM-dd"),
-			       (const char *)data->endTime().
-			       toString("hh:mm:ss"));
+			       (const char *)RDCheckDateTime(data->endDate(),"yyyy-MM-dd"),
+			       (const char *)RDCheckDateTime(data->endTime(),"hh:mm:ss"));
       }
       else {
 	sql+=QString().sprintf("END_DATETIME=\"%s 23:59:59\",",
-			       (const char *)data->endDate().
-			       toString("yyyy-MM-dd"));
+			       (const char *)RDCheckDateTime(data->endDate(),"yyyy-MM-dd"));
       }
     }
   }
@@ -1605,7 +1599,7 @@ void RDCut::SetRow(const QString &param,const QDateTime &value) const
 
   sql=QString().sprintf("UPDATE CUTS SET %s=\"%s\" WHERE CUT_NAME=\"%s\"",
 			(const char *)param,
-			(const char *)value.toString("yyyy-MM-dd hh:mm:ss"),
+			(const char *)RDCheckDateTime(value,"yyyy-MM-dd hh:mm:ss"),
 			(const char *)cut_name);
   q=new RDSqlQuery(sql,cut_db);
   delete q;
@@ -1619,7 +1613,7 @@ void RDCut::SetRow(const QString &param,const QDate &value) const
 
   sql=QString().sprintf("UPDATE CUTS SET %s=\"%s\" WHERE CUT_NAME=\"%s\"",
 			(const char *)param,
-			(const char *)value.toString("yyyy-MM-dd"),
+			(const char *)RDCheckDateTime(value,"yyyy-MM-dd"),
 			(const char *)cut_name);
   q=new RDSqlQuery(sql,cut_db);
   delete q;
@@ -1632,7 +1626,7 @@ void RDCut::SetRow(const QString &param,const QTime &value) const
   QString sql;
   sql=QString().sprintf("UPDATE CUTS SET %s=\"%s\" WHERE CUT_NAME=\"%s\"",
 			(const char *)param,
-			(const char *)value.toString("hh:mm:ss"),
+			(const char *)RDCheckDateTime(value,"hh:mm:ss"),
 			(const char *)cut_name);
   q=new RDSqlQuery(sql,cut_db);
   delete q;
