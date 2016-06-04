@@ -346,20 +346,22 @@ bool RDReport::generateReport(const QDate &startdate,const QDate &enddate,
     for(int i=0;i<(startdate.daysTo(enddate)+1);i++) {
       QDate date=startdate.addDays(i);
       if(startTime()<endTime()) {
+    	  //TODO Do we need to escape on Select Statement?
 	daypart_sql+=QString("((EVENT_DATETIME>=\"")+
-	  RDCheckDateTime(date,"yyyy-MM-dd")+
-	  " "+RDCheckDateTime(startTime(),"hh:mm:ss")+"\")&&"+
-	  "(EVENT_DATETIME<\""+RDCheckDateTime(date,"yyyy-MM-dd")+
-	  " "+RDCheckDateTime(endTime(),"hh:mm:ss")+"\"))||";
+	  date.toString("yyyy-MM-dd")+
+	  " "+startTime().toString("hh:mm:ss")+"\")&&"+
+	  "(EVENT_DATETIME<\""+date.toString("yyyy-MM-dd")+
+	  " "+endTime().toString("hh:mm:ss")+"\"))||";
       }
       else {
 	daypart_sql+=QString("((EVENT_DATETIME<=\"")+
-	  RDCheckDateTime(date,"yyyy-MM-dd")+
-	  " "+RDCheckDateTime(endTime(),"hh:mm:ss")+"\")&&"+
-	  "(EVENT_DATETIME>\""+RDCheckDateTime(date,"yyyy-MM-dd")+" 00:00:00))||"+
-	  "((EVENT_DATETIME>=\""+RDCheckDateTime(date,"yyyy-MM-dd")+
-	  " "+RDCheckDateTime(startTime(),"hh:mm:ss")+"\")&&"+
-	  "(EVENT_DATETIME<\""+RDCheckDateTime(date,"yyyy-MM-dd")+" 23:59:59))||";
+	  date.toString("yyyy-MM-dd")+
+	  " "+endTime().toString("hh:mm:ss")+"\")&&"+
+	  "(EVENT_DATETIME>\""+date.toString("yyyy-MM-dd")+" 00:00:00))||"+
+	  "((EVENT_DATETIME>=\""+
+	  date.toString("yyyy-MM-dd")+
+	  " "+startTime().toString("hh:mm:ss")+"\")&&"+
+	  "(EVENT_DATETIME<\""+date.toString("yyyy-MM-dd")+" 23:59:59))||";
 	
       }
     }
@@ -533,9 +535,10 @@ bool RDReport::generateReport(const QDate &startdate,const QDate &enddate,
       // Daypart Filter
       //
       if(daypart_sql.isEmpty()) {
-	sql+=QString("(EVENT_DATETIME>=\"")+RDCheckDateTime(startdate,"yyyy-MM-dd")+
+    	  //TODO Do we need to escape on Select statement?
+	sql+=QString("(EVENT_DATETIME>=\"")+startdate.toString("yyyy-MM-dd")+
 	  " 00:00:00\")&&"+
-	  "(EVENT_DATETIME<=\""+RDCheckDateTime(enddate,"yyyy-MM-dd")+
+	  "(EVENT_DATETIME<=\""+enddate.toString("yyyy-MM-dd")+
 	  " 23:59:59\")&&";
       }
       else {
