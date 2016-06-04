@@ -443,7 +443,7 @@ bool MainWidget::CheckSpot(const QString &isci)
       if(q->value(1).isNull()) {
 	sql+="START_DATETIME=\""+today.toString("yyyy-MM-dd")+" 00:00:00\",";
       }
-      sql+="END_DATETIME=\""+killdate.toString("yyyy-MM-dd")+" 23:59:59\" ";
+      sql+="END_DATETIME=\""+RDCheckDateTime(killdate,"yyyy-MM-dd")+" 23:59:59\" ";
       sql+="where CUT_NAME=\""+q->value(0).toString()+"\"";
       q1=new RDSqlQuery(sql);
       delete q1;
