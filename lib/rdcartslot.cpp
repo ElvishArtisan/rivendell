@@ -688,16 +688,18 @@ void RDCartSlot::LogPlayout(RDPlayDeck::State state)
 			slot_logline->startSource())+
       "STATION_NAME=\""+RDEscapeString(slot_station->name())+"\","+
       "EVENT_DATETIME=\""+datetime.toString("yyyy-MM-dd")+
-      " "+slot_logline->startTime(RDLogLine::Actual).toString("hh:mm:ss")+"\","+
-      "EXT_START_TIME=\""+slot_logline->extStartTime().toString("hh:mm:ss")+"\","+
+      " "+RDCheckDateTime(
+    		  slot_logline->startTime(RDLogLine::Actual),"hh:mm:ss")+"\","+
+      "EXT_START_TIME=\""+RDCheckDateTime(
+    		  slot_logline->extStartTime(),"hh:mm:ss")+"\","+
       "EXT_DATA=\""+RDEscapeString(slot_logline->extData())+"\","+
       "EXT_EVENT_ID=\""+RDEscapeString(slot_logline->extEventId())+"\","+
       "EXT_ANNC_TYPE=\""+RDEscapeString(slot_logline->extAnncType())+"\","+
       "EXT_CART_NAME=\""+RDEscapeString(slot_logline->extCartName())+"\","+
       "TITLE=\""+RDEscapeString(slot_logline->title())+"\","+
       "ARTIST=\""+RDEscapeString(slot_logline->artist())+"\","+
-      "SCHEDULED_TIME=\""+slot_logline->startTime(RDLogLine::Logged).
-      toString("hh:mm:ss")+"\","+
+      "SCHEDULED_TIME=\""+RDCheckDateTime(
+    		slot_logline->startTime(RDLogLine::Logged),"hh:mm:ss")+"\","+
       "ISRC=\""+RDEscapeString(slot_logline->isrc())+"\","+
       "PUBLISHER=\""+RDEscapeString(slot_logline->publisher())+"\","+
       "COMPOSER=\""+RDEscapeString(slot_logline->composer())+"\","+
