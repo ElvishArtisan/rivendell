@@ -1491,7 +1491,7 @@ void RDSoundPanel::LogTraffic(RDPanelButton *button)
       QString().sprintf("CART_NUMBER=%u,",button->cart())+
       "STATION_NAME=\""+RDEscapeString(panel_station->name().utf8())+"\","+
       "EVENT_DATETIME=\""+datetime.toString("yyyy-MM-dd")+" "+
-      button->startTime().toString("hh:mm:ss")+"\","+
+      RDCheckDateTime(button->startTime(),"hh:mm:ss")+"\","+
       QString().sprintf("EVENT_TYPE=%d,",RDAirPlayConf::TrafficStop)+
       QString().sprintf("EVENT_SOURCE=%d,",RDLogLine::SoundPanel)+
       QString().sprintf("PLAY_SOURCE=%d,",RDLogLine::SoundPanel)+
