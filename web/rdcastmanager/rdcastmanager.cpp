@@ -1322,8 +1322,8 @@ void MainObject::CommitCast()
 			(const char *)RDEscapeString(item_source_text),
 			(const char *)RDEscapeString(item_source_url),
 			shelf_life,
-			(const char *)RDLocalToUtc(effective_datetime).
-			toString("yyyy-MM-dd hh:mm:ss"),
+			(const char *)RDCheckDateTime(RDLocalToUtc(effective_datetime),
+			    "yyyy-MM-dd hh:mm:ss"),
 			cast_cast_id);
   q=new RDSqlQuery(sql);
   delete q;
