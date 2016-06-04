@@ -141,7 +141,7 @@ void MainWidget::generateData()
 			    SAS_STATION,
 			    (const char *)desc,
 			    CART_START+j,
-			    (const char *)time.toString("hh:mm:ss"));
+			    (const char *)RDCheckDateTime(time,"hh:mm:ss"));
       q=new RDSqlQuery(sql);
       delete q;
     }
