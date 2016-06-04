@@ -1867,12 +1867,12 @@ void MainObject::WriteTimestampCache(const QString &filename,
                            FILE_DATETIME=\"%s\"",
 			  import_persistent_dropbox_id,
 			  (const char *)RDEscapeString(filename),
-			  (const char *)dt.toString("yyyy-MM-dd hh:mm:ss"));
+			  (const char *)RDCheckDateTime(dt,"yyyy-MM-dd hh:mm:ss"));
   }
   else {
     sql=QString().sprintf("update DROPBOX_PATHS set FILE_DATETIME=\"%s\" \
                            where (DROPBOX_ID=%d)&&(FILE_PATH=\"%s\")",
-			  (const char *)dt.toString("yyyy-MM-dd hh:mm:ss"),
+			  (const char *)RDCheckDateTime(dt,"yyyy-MM-dd hh:mm:ss"),
 			  import_persistent_dropbox_id,
 			  (const char *)RDEscapeString(filename));
   }
