@@ -51,10 +51,10 @@ void LogTraffic(const QString &svcname,const QString &logname,
     QString().sprintf("CART_NUMBER=%u,",logline->cartNumber())+
     "STATION_NAME=\""+RDEscapeString(rdstation_conf->name().utf8())+"\","+
     "EVENT_DATETIME=\""+datetime.toString("yyyy-MM-dd")+" "+
-    logline->startTime(RDLogLine::Actual).toString("hh:mm:ss")+"\","+
+    RDCheckDateTime(logline->startTime(RDLogLine::Actual),"hh:mm:ss")+"\","+
     QString().sprintf("EVENT_TYPE=%d,",action)+
     QString().sprintf("EVENT_SOURCE=%d,",logline->source())+
-    "EXT_START_TIME=\""+logline->extStartTime().toString("hh:mm:ss")+"\","+
+    "EXT_START_TIME=\""+RDCheckDateTime(logline->extStartTime(),"hh:mm:ss")+"\","+
     QString().sprintf("EXT_LENGTH=%d,",logline->extLength())+
     "EXT_DATA=\""+RDEscapeString(logline->extData())+"\","+
     "EXT_EVENT_ID=\""+RDEscapeString(logline->extEventId())+"\","+
@@ -64,8 +64,8 @@ void LogTraffic(const QString &svcname,const QString &logname,
     "EXT_CART_NAME=\""+RDEscapeString(logline->extCartName().utf8())+"\","+
     "TITLE=\""+RDEscapeString(logline->title().utf8())+"\","+
     "ARTIST=\""+RDEscapeString(logline->artist().utf8())+"\","+
-    "SCHEDULED_TIME=\""+RDEscapeString(logline->startTime(RDLogLine::Logged).
-				       toString("hh:mm:ss"))+"\","+
+    "SCHEDULED_TIME=\""+RDCheckDateTime(logline->startTime(RDLogLine::Logged),
+				       "hh:mm:ss")+"\","+
     "ISRC=\""+RDEscapeString(logline->isrc().utf8())+"\","+
     "PUBLISHER=\""+RDEscapeString(logline->publisher().utf8())+"\","+
     "COMPOSER=\""+RDEscapeString(logline->composer().utf8())+"\","+
