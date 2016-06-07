@@ -15209,3 +15209,5 @@
 2016-06-07 Fred Gleason <fredg@paravelsystems.com>
 	* Made the 'Test Import' dialog resizeable in
 	'rdadmin/test_import.cpp' and 'rdadmin/test_import.h'.
+2016-06-07 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.13.0int01.
