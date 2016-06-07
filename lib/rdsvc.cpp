@@ -521,33 +521,30 @@ bool RDSvc::import(ImportSource src,const QDate &date,const QString &break_str,
   //
   // Setup Data Source and Destination
   //
-  /*
-  if((infile=fopen(RDDateDecode(infilename,date),"r"))==NULL) {
-    return false;
-  }
-  */
   sql=QString().sprintf("drop table `%s`",(const char *)dest_table);
   QSqlQuery *qq;          // Use QSqlQuery so we don't generate a 
   qq=new QSqlQuery(sql);  // spurious error message.
   delete qq;
-  sql=QString().sprintf("create table `%s` (\
-                         ID int primary key,\
-                         START_HOUR int not null,\
-                         START_SECS int not null,\
-                         CART_NUMBER int unsigned,\
-                         TITLE char(255),\
-                         LENGTH int,\
-                         INSERT_BREAK enum('N','Y') default 'N',\
-                         INSERT_TRACK enum('N','Y') default 'N',\
-                         INSERT_FIRST int unsigned default 0,\
-                         TRACK_STRING char(255),\
-                         EXT_DATA char(32),\
-                         EXT_EVENT_ID char(32),\
-                         EXT_ANNC_TYPE char(8),\
-                         EXT_CART_NAME char(32),\
-                         EVENT_USED enum('N','Y') default 'N',\
-                         INDEX START_TIME_IDX (START_HOUR,START_SECS))",
-			(const char *)dest_table);
+  sql=QString("create table ")+
+    "`"+dest_table+"` ("+
+    "ID int primary key,"+
+    "START_HOUR int not null,"+
+    "START_SECS int not null,"+
+    "CART_NUMBER int unsigned,"+
+    "TITLE char(255),"+
+    "LENGTH int,"+
+    "INSERT_BREAK enum('N','Y') default 'N',"+
+    "INSERT_TRACK enum('N','Y') default 'N',"+
+    "INSERT_FIRST int unsigned default 0,"+
+    "TRACK_STRING char(255),"+
+    "EXT_DATA char(32),"+
+    "EXT_EVENT_ID char(32),"+
+    "EXT_ANNC_TYPE char(8),"+
+    "EXT_CART_NAME char(32),"+
+    "LINK_START_TIME time default NULL,"+
+    "LINK_LENGTH int default NULL,"+
+    "EVENT_USED enum('N','Y') default 'N',"+
+    "INDEX START_TIME_IDX (START_HOUR,START_SECS))";
   q=new RDSqlQuery(sql);
   delete q;
 
@@ -563,6 +560,9 @@ bool RDSvc::import(ImportSource src,const QDate &date,const QString &break_str,
   bool break_first=false;
   bool track_first=false;
   QString track_label;
+  QTime link_time;
+  int link_length=-1;
+
   while(fgets(buf,RD_MAX_IMPORT_LINE_LENGTH,infile)!=NULL) {
     line_used=false;
     str_buf=buf;
@@ -619,30 +619,39 @@ bool RDSvc::import(ImportSource src,const QDate &date,const QString &break_str,
 			      (cartname==label_cart))||
 			     ((!track_cart.isEmpty())&&
 			      (cartname==track_cart))) {
-			    sql=QString().sprintf("insert into `%s` \
-                                  set ID=%d,START_HOUR=%d,START_SECS=%d,\
-                                  CART_NUMBER=%u,TITLE=\"%s\",LENGTH=%d,\
-                                  EXT_DATA=\"%s\",EXT_EVENT_ID=\"%s\",\
-                                  EXT_ANNC_TYPE=\"%s\",EXT_CART_NAME=\"%s\"",
-						  (const char *)dest_table,
-						  line_id++,
-						  start_hour,
-						  60*start_minutes+
-						  start_seconds,
-						  cartnum,
-						  (const char *)
-						  RDEscapeString(title),
-						  cartlen,
-						  (const char *)data_buf,
-						  (const char *)eventid_buf,
-						  (const char *)annctype_buf,
-						  (const char *)cartname);
+			    sql=QString("insert into ")+
+			      "`"+dest_table+"`	set "+
+			      QString().sprintf("ID=%d,",line_id++)+
+			      QString().sprintf("START_HOUR=%d,",start_hour)+
+			      QString().sprintf("START_SECS=%d,",
+						60*start_minutes+start_seconds)+
+			      QString().sprintf("CART_NUMBER=%u,",cartnum)+
+			      "TITLE=\""+RDEscapeString(title)+"\","+
+			      QString().sprintf("LENGTH=%d,",cartlen)+
+			      "EXT_DATA=\""+data_buf+"\","+
+			      "EXT_EVENT_ID=\""+eventid_buf+"\","+
+			      "EXT_ANNC_TYPE=\""+annctype_buf+"\","+
+			      "EXT_CART_NAME=\""+cartname+"\"";
 			    q=new RDSqlQuery(sql);
 			    delete q;
 			    //
 			    // Insert Break
 			    //
 			    if(insert_break) {
+			      sql=QString("update ")+"`"+dest_table+"` set "+
+				"INSERT_BREAK=\"Y\"";
+			      if(break_first) {
+				sql+=QString().sprintf(",INSERT_FIRST=%d",
+						    RDEventLine::InsertBreak);
+			      }
+			      if(link_time.isValid()&&(link_length>=0)) {
+				sql+=",LINK_START_TIME=\""+
+				  link_time.toString("hh:mm:ss")+"\""+
+				  QString().sprintf(",LINK_LENGTH=%d",
+						    link_length);
+			      }
+			      sql+=QString().sprintf(" where ID=%d",line_id-1);
+			      /*
 			      if(break_first) {
 				sql=QString().
 				  sprintf("update `%s` set INSERT_BREAK=\"Y\",\
@@ -657,6 +666,7 @@ bool RDSvc::import(ImportSource src,const QDate &date,const QString &break_str,
 					  (const char *)dest_table,line_id-1);
 				
 			      }
+			      */
 			      q=new RDSqlQuery(sql);
 			      delete q;
 			    }
@@ -691,6 +701,15 @@ bool RDSvc::import(ImportSource src,const QDate &date,const QString &break_str,
 			    insert_found=false;
 			    line_used=true;
 			  }
+			  if(cartname==break_str) {
+			    link_time=
+			      QTime(start_hour,start_minutes,start_seconds);
+			    link_length=cartlen;
+			  }
+			  else {
+			    link_time=QTime();
+			    link_length=-1;
+			  }
 			}
 		      }
 		    }
@@ -714,7 +733,6 @@ bool RDSvc::import(ImportSource src,const QDate &date,const QString &break_str,
 	    break_first=true;
 	    insert_found=true;
 	  }
-	  //	  q=new RDSqlQuery(sql);
 	}
       }
       if(!track_str.isEmpty()) {
@@ -1003,11 +1021,12 @@ bool RDSvc::linkLog(RDSvc::ImportSource src,const QDate &date,
   emit generationProgress(24);
   delete src_event;
   delete dest_event;
-  //  printf("Import Table: %s\n",(const char *)import_name);
+  printf("Import Table: %s\n",(const char *)import_name);
+  /*
   sql=QString().sprintf("drop table `%s`",(const char *)import_name);
   q=new RDSqlQuery(sql);
   delete q;
-
+  */
   return true;
 }
 

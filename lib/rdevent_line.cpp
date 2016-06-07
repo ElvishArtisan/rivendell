@@ -939,15 +939,26 @@ bool RDEventLine::linkLog(RDLogEvent *e,int next_id,const QString &svcname,
   // Load Matching Events and Insert into Log
   //
   int id=-1;
-  sql=QString().sprintf("select CART_NUMBER,START_SECS,LENGTH,EXT_DATA,\
-                         EXT_EVENT_ID,EXT_ANNC_TYPE,EXT_CART_NAME,\
-                         INSERT_BREAK,INSERT_TRACK,INSERT_FIRST,TITLE,\
-                         TRACK_STRING from `%s` where (START_HOUR=%d)&&\
-                         (START_SECS>=%d)&&(START_SECS<=%d)&&\
-                         (EVENT_USED=\"N\") order by ID",
-			(const char *)import_table,
-			start_start_hour,start_start_secs/1000,
-			end_start_secs/1000);
+  sql=QString("select ")+
+    "CART_NUMBER,"+     // 00
+    "START_SECS,"+      // 01
+    "LENGTH,"+          // 02
+    "EXT_DATA,"+        // 03
+    "EXT_EVENT_ID,"+    // 04
+    "EXT_ANNC_TYPE,"+   // 05
+    "EXT_CART_NAME,"+   // 06
+    "INSERT_BREAK,"+    // 07
+    "INSERT_TRACK,"+    // 08
+    "INSERT_FIRST,"+    // 09
+    "TITLE,"+           // 10
+    "TRACK_STRING,"+    // 11
+    "LINK_START_TIME,"+ // 12
+    "LINK_LENGTH "+     // 13
+    "from `"+import_table+"` where "+
+    QString().sprintf("(START_HOUR=%d)&&",start_start_hour)+
+    QString().sprintf("(START_SECS>=%d)&&",start_start_secs/1000)+
+    QString().sprintf("(START_SECS<=%d)&&",end_start_secs/1000)+
+    "(EVENT_USED=\"N\") order by ID";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     if((id=e->nextId())>next_id) {
@@ -966,8 +977,14 @@ bool RDEventLine::linkLog(RDLogEvent *e,int next_id,const QString &svcname,
 	  logline->setTransType(trans_type);
 	  logline->setEventLength(event_length);
 	  logline->setLinkEventName(event_nested_event);
-	  logline->setLinkStartTime(link_logline->linkStartTime());
-	  logline->setLinkLength(link_logline->linkLength());
+	  if((!q->value(12).isNull())&&(!q->value(13).isNull())) {
+	    logline->setLinkStartTime(q->value(12).toTime());
+	    logline->setLinkLength(q->value(13).toInt());
+	  }
+	  else {
+	    logline->setLinkStartTime(link_logline->linkStartTime());
+	    logline->setLinkLength(link_logline->linkLength());
+	  }
 	  logline->setLinkStartSlop(link_logline->linkStartSlop());
 	  logline->setLinkEndSlop(link_logline->linkEndSlop());
 	  logline->setLinkId(link_logline->linkId());

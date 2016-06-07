@@ -15196,3 +15196,7 @@
 	* Changed the default value of the 'CART_NUMBER' field in '_LOG'
 	tables from NULL to 0.
 	* Incremented the database version to 258.
+2016-06-07 Fred Gleason <fredg@paravelsystems.com>
+	* Added code in 'lib/rdevent_line.cpp' and 'lib/rdsvc.cpp' to allow
+	embedded traffic breaks to be specified with start time and length
+	in the music schedule.
