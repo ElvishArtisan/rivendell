@@ -50,14 +50,24 @@ class GenerateLog : public QDialog
   void fileScanData();
   void closeData();
 
+ protected:
+  void resizeEvent(QResizeEvent *e);
+
  private:
   void UpdateControls();
+  QLabel *gen_service_label;
   QComboBox *gen_service_box;
+  QLabel *gen_date_label;
   QDateEdit *gen_date_edit;
+  QPushButton *gen_select_button;
+  QLabel *gen_import_label;
+  QLabel *gen_available_label;
+  QLabel *gen_merged_label;
   QProgressDialog *gen_progress_dialog;
   QPushButton *gen_create_button;
   QPushButton *gen_music_button;
   QPushButton *gen_traffic_button;
+  QPushButton *gen_close_button;
   QLabel *gen_tfc_avail_label;
   QLabel *gen_tfc_merged_label;
   QLabel *gen_mus_avail_label;

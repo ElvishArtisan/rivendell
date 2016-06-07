@@ -103,13 +103,11 @@ GenerateLog::GenerateLog(QWidget *parent,int cmd_switch,QString *cmd_service,
   // Service Name
   //
   gen_service_box=new QComboBox(this);
-  gen_service_box->setGeometry(70,10,sizeHint().width()-80,20);
   connect(gen_service_box,SIGNAL(activated(int)),
 	  this,SLOT(serviceActivatedData(int)));
-  QLabel *label=new QLabel(gen_service_box,tr("Service:"),this);
-  label->setGeometry(10,10,55,20);
-  label->setFont(bold_font);
-  label->setAlignment(AlignRight|AlignVCenter);
+  gen_service_label=new QLabel(gen_service_box,tr("Service:"),this);
+  gen_service_label->setFont(bold_font);
+  gen_service_label->setAlignment(AlignRight|AlignVCenter);
 
   if (rdstation_conf->broadcastSecurity() == RDStation::UserSec) {
     services_list = rduser->services();
@@ -133,11 +131,9 @@ GenerateLog::GenerateLog(QWidget *parent,int cmd_switch,QString *cmd_service,
   // Date
   //
   gen_date_edit=new QDateEdit(this);
-  gen_date_edit->setGeometry(70,38,100,20);
-  label=new QLabel(gen_date_edit,tr("Date:"),this);
-  label->setGeometry(10,38,55,20);
-  label->setFont(bold_font);
-  label->setAlignment(AlignRight|AlignVCenter);
+  gen_date_label=new QLabel(gen_date_edit,tr("Date:"),this);
+  gen_date_label->setFont(bold_font);
+  gen_date_label->setAlignment(AlignRight|AlignVCenter);
   if (cmdswitch==0)
   gen_date_edit->setDate(QDate::currentDate().addDays(1));
   else
@@ -149,17 +145,15 @@ GenerateLog::GenerateLog(QWidget *parent,int cmd_switch,QString *cmd_service,
   //
   // Date Select Button
   //
-  QPushButton *button=new QPushButton(this);
-  button->setGeometry(180,33,50,30);
-  button->setFont(bold_font);
-  button->setText(tr("&Select"));
-  connect(button,SIGNAL(clicked()),this,SLOT(selectDateData()));
+  gen_select_button=new QPushButton(this);
+  gen_select_button->setFont(bold_font);
+  gen_select_button->setText(tr("&Select"));
+  connect(gen_select_button,SIGNAL(clicked()),this,SLOT(selectDateData()));
 
   //
   //  Create Log Button
   //
   gen_create_button=new QPushButton(this);
-  gen_create_button->setGeometry(10,70,sizeHint().width()-20,30);
   gen_create_button->setFont(bold_font);
   gen_create_button->setText(tr("&Create New Log"));
   connect(gen_create_button,SIGNAL(clicked()),this,SLOT(createData()));
@@ -168,7 +162,6 @@ GenerateLog::GenerateLog(QWidget *parent,int cmd_switch,QString *cmd_service,
   //  Merge Music Log Button
   //
   gen_music_button=new QPushButton(this);
-  gen_music_button->setGeometry(10,130,100,30);
   gen_music_button->setFont(bold_font);
   gen_music_button->setText(tr("Merge &Music"));
   connect(gen_music_button,SIGNAL(clicked()),this,SLOT(musicData()));
@@ -177,7 +170,6 @@ GenerateLog::GenerateLog(QWidget *parent,int cmd_switch,QString *cmd_service,
   //  Merge Traffic Log Button
   //
   gen_traffic_button=new QPushButton(this);
-  gen_traffic_button->setGeometry(10,170,100,30);
   gen_traffic_button->setFont(bold_font);
   gen_traffic_button->setText(tr("Merge &Traffic"));
   connect(gen_traffic_button,SIGNAL(clicked()),this,SLOT(trafficData()));
@@ -187,33 +179,28 @@ GenerateLog::GenerateLog(QWidget *parent,int cmd_switch,QString *cmd_service,
   //
   // Headers
   //
-  label=new QLabel(tr("Import Data"),this);
-  label->setGeometry(120,105,120,14);
-  label->setFont(bold_font);
-  label->setAlignment(AlignCenter);
+  gen_import_label=new QLabel(tr("Import Data"),this);
+  gen_import_label->setFont(bold_font);
+  gen_import_label->setAlignment(AlignCenter);
 
-  label=new QLabel(tr("Available"),this);
-  label->setGeometry(120,119,60,14);
-  label->setFont(small_font);
-  label->setAlignment(AlignCenter);
+  gen_available_label=new QLabel(tr("Available"),this);
+  gen_available_label->setFont(small_font);
+  gen_available_label->setAlignment(AlignCenter);
 
-  label=new QLabel(tr("Merged"),this);
-  label->setGeometry(180,119,60,14);
-  label->setFont(small_font);
-  label->setAlignment(AlignCenter);
+  gen_merged_label=new QLabel(tr("Merged"),this);
+  gen_merged_label->setFont(small_font);
+  gen_merged_label->setAlignment(AlignCenter);
 
   //
   // Music Indicators
   //
   gen_mus_avail_label=new QLabel(this);
   gen_mus_avail_label->setPixmap(*gen_whiteball_map);
-  gen_mus_avail_label->setGeometry(120,139,60,14);
   gen_mus_avail_label->setFont(small_font);
   gen_mus_avail_label->setAlignment(AlignCenter);
 
   gen_mus_merged_label=new QLabel(this);
   gen_mus_merged_label->setPixmap(*gen_whiteball_map);
-  gen_mus_merged_label->setGeometry(180,139,60,14);
   gen_mus_merged_label->setFont(small_font);
   gen_mus_merged_label->setAlignment(AlignCenter);
 
@@ -222,13 +209,11 @@ GenerateLog::GenerateLog(QWidget *parent,int cmd_switch,QString *cmd_service,
   //
   gen_tfc_avail_label=new QLabel(this);
   gen_tfc_avail_label->setPixmap(*gen_whiteball_map);
-  gen_tfc_avail_label->setGeometry(120,179,60,14);
   gen_tfc_avail_label->setFont(small_font);
   gen_tfc_avail_label->setAlignment(AlignCenter);
 
   gen_tfc_merged_label=new QLabel(this);
   gen_tfc_merged_label->setPixmap(*gen_whiteball_map);
-  gen_tfc_merged_label->setGeometry(180,179,60,14);
   gen_tfc_merged_label->setFont(small_font);
   gen_tfc_merged_label->setAlignment(AlignCenter);
 
@@ -236,12 +221,11 @@ GenerateLog::GenerateLog(QWidget *parent,int cmd_switch,QString *cmd_service,
   //
   //  Close Button
   //
-  button=new QPushButton(this);
-  button->setGeometry(10,sizeHint().height()-60,sizeHint().width()-20,50);
-  button->setDefault(true);
-  button->setFont(bold_font);
-  button->setText(tr("C&lose"));
-  connect(button,SIGNAL(clicked()),this,SLOT(closeData()));
+  gen_close_button=new QPushButton(this);
+  gen_close_button->setDefault(true);
+  gen_close_button->setFont(bold_font);
+  gen_close_button->setText(tr("C&lose"));
+  connect(gen_close_button,SIGNAL(clicked()),this,SLOT(closeData()));
 
   UpdateControls();
 
@@ -533,6 +517,28 @@ void GenerateLog::fileScanData()
 void GenerateLog::closeData()
 {
   done(0);
+}
+
+
+void GenerateLog::resizeEvent(QResizeEvent *e)
+{
+  gen_service_box->setGeometry(70,10,sizeHint().width()-80,20);
+  gen_service_label->setGeometry(10,10,55,20);
+  gen_date_edit->setGeometry(70,38,100,20);
+  gen_date_label->setGeometry(10,38,55,20);
+  gen_select_button->setGeometry(180,33,50,30);
+  gen_create_button->setGeometry(10,70,sizeHint().width()-20,30);
+  gen_music_button->setGeometry(10,130,100,30);
+  gen_traffic_button->setGeometry(10,170,100,30);
+  gen_import_label->setGeometry(120,105,120,14);
+  gen_available_label->setGeometry(120,119,60,14);
+  gen_merged_label->setGeometry(180,119,60,14);
+  gen_mus_avail_label->setGeometry(120,139,60,14);
+  gen_mus_merged_label->setGeometry(180,139,60,14);
+  gen_tfc_avail_label->setGeometry(120,179,60,14);
+  gen_tfc_merged_label->setGeometry(180,179,60,14);
+  gen_close_button->
+    setGeometry(10,sizeHint().height()-60,sizeHint().width()-20,50);
 }
 
 

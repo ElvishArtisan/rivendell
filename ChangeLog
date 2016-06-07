@@ -15203,3 +15203,6 @@
 2016-06-07 Fred Gleason <fredg@paravelsystems.com>
 	* Refactored the 'RDSvc::import()' method in 'lib/rdsvc.cpp' to
 	improve robustness and readability.
+2016-06-07 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored 'rdlogmanager/generate_log.cpp' and
+	'rdlogmanager/generate_log.h' to use 'QWidget::resizeEvent()'.
