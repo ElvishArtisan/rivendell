@@ -351,7 +351,6 @@ bool RDSvc::import(ImportSource src,const QDate &date,const QString &break_str,
   QString src_str;
   char buf[RD_MAX_IMPORT_LINE_LENGTH];
   QString str_buf;
-  char var_buf[RD_MAX_IMPORT_LINE_LENGTH];
   int start_hour;
   int start_minutes;
   int start_seconds;
@@ -361,9 +360,10 @@ bool RDSvc::import(ImportSource src,const QDate &date,const QString &break_str,
   unsigned cartnum;
   QString cartname;
   QString title;
-  char data_buf[RD_MAX_IMPORT_LINE_LENGTH];
-  char eventid_buf[RD_MAX_IMPORT_LINE_LENGTH];
-  char annctype_buf[RD_MAX_IMPORT_LINE_LENGTH];
+  QString data_buf;
+  QString eventid_buf;
+  //  char annctype_buf[RD_MAX_IMPORT_LINE_LENGTH];
+  QString annctype_buf;
   QString os_flag;
   int cartlen;
   QString sql;
@@ -484,37 +484,26 @@ bool RDSvc::import(ImportSource src,const QDate &date,const QString &break_str,
   }
   int cart_offset=q->value(0).toInt();
   int cart_length=q->value(1).toInt();
-  unsigned cart_size=cart_offset+cart_length;
   int data_offset=q->value(2).toInt();
   int data_length=q->value(3).toInt();
-  unsigned data_size=data_offset+data_length;
   int eventid_offset=q->value(4).toInt();
   int eventid_length=q->value(5).toInt();
-  unsigned eventid_size=eventid_offset+eventid_length;
   int annctype_offset=q->value(6).toInt();
   int annctype_length=q->value(7).toInt();
-  unsigned annctype_size=annctype_offset+annctype_length;
   int title_offset=q->value(8).toInt();
   int title_length=q->value(9).toInt();
-  unsigned title_size=title_offset+title_length;
   int hours_offset=q->value(10).toInt();
   int hours_length=q->value(11).toInt();
-  unsigned hours_size=hours_offset+hours_length;
   int minutes_offset=q->value(12).toInt();
   int minutes_length=q->value(13).toInt();
-  unsigned minutes_size=minutes_offset+minutes_length;
   int seconds_offset=q->value(14).toInt();
   int seconds_length=q->value(15).toInt();
-  unsigned seconds_size=seconds_offset+seconds_length;
   int hours_len_offset=q->value(16).toInt();
   int hours_len_length=q->value(17).toInt();
-  unsigned hours_len_size=hours_len_offset+hours_len_length;
   int minutes_len_offset=q->value(18).toInt();
   int minutes_len_length=q->value(19).toInt();
-  unsigned minutes_len_size=minutes_len_offset+minutes_len_length;
   int seconds_len_offset=q->value(20).toInt();
   int seconds_len_length=q->value(21).toInt();
-  unsigned seconds_len_size=seconds_len_offset+seconds_len_length;
 
   delete q;
 
@@ -554,6 +543,7 @@ bool RDSvc::import(ImportSource src,const QDate &date,const QString &break_str,
   int line_id=0;
   bool insert_found=false;
   bool cart_ok=false;
+  bool start_time_ok=false;
   bool line_used=false;
   bool insert_break=false;
   bool insert_track=false;
@@ -565,167 +555,136 @@ bool RDSvc::import(ImportSource src,const QDate &date,const QString &break_str,
 
   while(fgets(buf,RD_MAX_IMPORT_LINE_LENGTH,infile)!=NULL) {
     line_used=false;
-    str_buf=buf;
-    cartnum=0;     // Get Cart Number
-    if(strlen(buf)>=cart_size) {
-      for(int i=cart_offset;i<(cart_offset+cart_length);i++) {
-	var_buf[i-cart_offset]=buf[i];
-      }
-      var_buf[cart_length]=0;
-      cartname=QString(var_buf).stripWhiteSpace();
-      if(strlen(buf)>=hours_size) {           // Get Start Hours
-	start_hour=QString(buf).mid(hours_offset,hours_length).toInt(&ok);
-	if(ok&&(strlen(buf)>=minutes_size)) {           // Get Start Minutes
-	  start_minutes=
-	    QString(buf).mid(minutes_offset,minutes_length).toInt(&ok);
-	  if(ok&&(strlen(buf)>=seconds_size)) {           // Get Start Seconds
-	    start_seconds=
-	      QString(buf).mid(seconds_offset,seconds_length).toInt(&ok);
-	    if(ok&&(strlen(buf)>=hours_len_size)) {     // Get Length Hours
-	      hours_len_buf=
-		QString(buf).mid(hours_len_offset,hours_len_length);
-	      if(strlen(buf)>=minutes_len_size) {       // Get Length Minutes
-		minutes_len_buf=
-		  QString(buf).mid(minutes_len_offset,minutes_len_length);
-		if(strlen(buf)>=seconds_len_size) {     // Get Length Seconds
-		  seconds_len_buf=
-		    QString(buf).mid(seconds_len_offset,seconds_len_length);
-		  cartlen=3600000*hours_len_buf.toInt()+
-		    60000*minutes_len_buf.toInt()+
-		    1000*seconds_len_buf.toInt();
-		  if(strlen(buf)>=data_size) {        // Get Ext Data
-		    for(int i=data_offset;i<(data_offset+data_length);i++) {
-		      data_buf[i-data_offset]=buf[i];
-		    }
-		    data_buf[data_length]=0;
-		    if(strlen(buf)>=eventid_size) {   // Get Ext Event ID
-		      for(int i=eventid_offset;
-			  i<(eventid_offset+eventid_length);i++) {
-			eventid_buf[i-eventid_offset]=buf[i];
-		      }
-		      eventid_buf[eventid_length]=0;
-		      if(strlen(buf)>=annctype_size) {   // Get Ext Annc Type
-			for(int i=annctype_offset;
-			    i<(annctype_offset+annctype_length);
-			    i++) {
-			  annctype_buf[i-annctype_offset]=buf[i];
-			}
-			annctype_buf[annctype_length]=0;
-			if(strlen(buf)>=title_size) {   // Get Title
-			  title=QString(buf).mid(title_offset,title_length);
-			  cartnum=cartname.toUInt(&cart_ok);
-			  if(cart_ok||
-			     ((!label_cart.isEmpty())&&
-			      (cartname==label_cart))||
-			     ((!track_cart.isEmpty())&&
-			      (cartname==track_cart))) {
-			    sql=QString("insert into ")+
-			      "`"+dest_table+"`	set "+
-			      QString().sprintf("ID=%d,",line_id++)+
-			      QString().sprintf("START_HOUR=%d,",start_hour)+
-			      QString().sprintf("START_SECS=%d,",
-						60*start_minutes+start_seconds)+
-			      QString().sprintf("CART_NUMBER=%u,",cartnum)+
-			      "TITLE=\""+RDEscapeString(title)+"\","+
-			      QString().sprintf("LENGTH=%d,",cartlen)+
-			      "EXT_DATA=\""+data_buf+"\","+
-			      "EXT_EVENT_ID=\""+eventid_buf+"\","+
-			      "EXT_ANNC_TYPE=\""+annctype_buf+"\","+
-			      "EXT_CART_NAME=\""+cartname+"\"";
-			    q=new RDSqlQuery(sql);
-			    delete q;
-			    //
-			    // Insert Break
-			    //
-			    if(insert_break) {
-			      sql=QString("update ")+"`"+dest_table+"` set "+
-				"INSERT_BREAK=\"Y\"";
-			      if(break_first) {
-				sql+=QString().sprintf(",INSERT_FIRST=%d",
-						    RDEventLine::InsertBreak);
-			      }
-			      if(link_time.isValid()&&(link_length>=0)) {
-				sql+=",LINK_START_TIME=\""+
-				  link_time.toString("hh:mm:ss")+"\""+
-				  QString().sprintf(",LINK_LENGTH=%d",
-						    link_length);
-			      }
-			      sql+=QString().sprintf(" where ID=%d",line_id-1);
-			      /*
-			      if(break_first) {
-				sql=QString().
-				  sprintf("update `%s` set INSERT_BREAK=\"Y\",\
-                                       INSERT_FIRST=%d where ID=%d",
-					  (const char *)dest_table,
-					  RDEventLine::InsertBreak,line_id-1);
-			      }
-			      else {
-				sql=QString().
-				  sprintf("update `%s` set INSERT_BREAK=\"Y\" \
-                                       where ID=%d",
-					  (const char *)dest_table,line_id-1);
-				
-			      }
-			      */
-			      q=new RDSqlQuery(sql);
-			      delete q;
-			    }
-			    //
-			    // Insert Track
-			    //
-			    if(insert_track) {
-			      if(track_first) {
-				sql=QString().
-				  sprintf("update `%s` set INSERT_TRACK=\"Y\",\
-                                       TRACK_STRING=\"%s\",\
-                                       INSERT_FIRST=%d where ID=%d",
-					  (const char *)dest_table,
-					  (const char *)track_label,
-					  RDEventLine::InsertTrack,line_id-1);
-			      }
-			      else {
-				sql=QString().
-				  sprintf("update `%s` set INSERT_TRACK=\"Y\",\
-                                       TRACK_STRING=\"%s\" where ID=%d",
-					  (const char *)dest_table,
-					  (const char *)track_label,
-					  line_id-1);
-			      }
-			      q=new RDSqlQuery(sql);
-			      delete q;
-			    }
-			    insert_break=false;
-			    break_first=false;
-			    insert_track=false;
-			    track_first=false;
-			    insert_found=false;
-			    line_used=true;
-			  }
-			  if(cartname==break_str) {
-			    link_time=
-			      QTime(start_hour,start_minutes,start_seconds);
-			    link_length=cartlen;
-			  }
-			  else {
-			    link_time=QTime();
-			    link_length=-1;
-			  }
-			}
-		      }
-		    }
-		  }
-		}
-	      }
-	    }
-	  }
+    str_buf=QString(buf).stripWhiteSpace();
+
+    //
+    // Cart Number
+    //
+    cartnum=0;
+    cartname=str_buf.mid(cart_offset,cart_length).stripWhiteSpace();
+
+    //
+    // Start Time
+    //
+    start_time_ok=true;
+    start_hour=str_buf.mid(hours_offset,hours_length).toInt(&ok);
+    if((!ok)||(start_hour<0)||(start_hour>23)) {
+      start_time_ok=false;
+    }
+    start_minutes=str_buf.mid(minutes_offset,minutes_length).toInt(&ok);
+    if((!ok)||(start_minutes<0)||(start_minutes>59)) {
+      start_time_ok=false;
+    }
+    start_seconds=str_buf.mid(seconds_offset,seconds_length).toInt(&ok);
+    if((!ok)||(start_seconds<0)) {
+      start_time_ok=false;
+    }
+
+    //
+    // Length
+    //
+    hours_len_buf=str_buf.mid(hours_len_offset,hours_len_length);
+    minutes_len_buf=str_buf.mid(minutes_len_offset,minutes_len_length);
+    seconds_len_buf=str_buf.mid(seconds_len_offset,seconds_len_length);
+    cartlen=3600000*hours_len_buf.toInt()+60000*minutes_len_buf.toInt()+
+      1000*seconds_len_buf.toInt();
+
+    //
+    // External Data
+    //
+    data_buf=str_buf.mid(data_offset,data_length);
+    eventid_buf=str_buf.mid(eventid_offset,eventid_length);
+    annctype_buf=str_buf.mid(annctype_offset,annctype_length);
+
+    //
+    // Title
+    //
+    title=str_buf.mid(title_offset,title_length).stripWhiteSpace();
+
+    //
+    // Process Line
+    //
+    cartnum=cartname.toUInt(&cart_ok);
+    if(start_time_ok&&(cart_ok||
+		       ((!label_cart.isEmpty())&&(cartname==label_cart))||
+		       ((!track_cart.isEmpty())&&(cartname==track_cart)))) {
+      sql=QString("insert into ")+
+	"`"+dest_table+"`	set "+
+	QString().sprintf("ID=%d,",line_id++)+
+	QString().sprintf("START_HOUR=%d,",start_hour)+
+	QString().sprintf("START_SECS=%d,",
+			  60*start_minutes+start_seconds)+
+	QString().sprintf("CART_NUMBER=%u,",cartnum)+
+	"TITLE=\""+RDEscapeString(title)+"\","+
+	QString().sprintf("LENGTH=%d,",cartlen)+
+	"EXT_DATA=\""+data_buf+"\","+
+	"EXT_EVENT_ID=\""+eventid_buf+"\","+
+	"EXT_ANNC_TYPE=\""+annctype_buf+"\","+
+	"EXT_CART_NAME=\""+cartname+"\"";
+      q=new RDSqlQuery(sql);
+      delete q;
+      //
+      // Insert Break
+      //
+      if(insert_break) {
+	sql=QString("update ")+"`"+dest_table+"` set "+
+	  "INSERT_BREAK=\"Y\"";
+	if(break_first) {
+	  sql+=QString().sprintf(",INSERT_FIRST=%d",
+				 RDEventLine::InsertBreak);
 	}
+	if(link_time.isValid()&&(link_length>=0)) {
+	  sql+=",LINK_START_TIME=\""+
+	    link_time.toString("hh:mm:ss")+"\""+
+	    QString().sprintf(",LINK_LENGTH=%d",
+			      link_length);
+	}
+	sql+=QString().sprintf(" where ID=%d",line_id-1);
+	q=new RDSqlQuery(sql);
+	delete q;
       }
+      //
+      // Insert Track
+      //
+      if(insert_track) {
+	if(track_first) {
+	  sql=QString("update ")+
+	    "`"+dest_table+"` set "+
+	    "INSERT_TRACK=\"Y\","+
+	    "TRACK_STRING=\""+RDEscapeString(track_label)+"\","+
+	    QString().sprintf("INSERT_FIRST=%d ",RDEventLine::InsertTrack)+
+	    QString().sprintf("where ID=%d",line_id-1);
+	}
+	else {
+	  sql=QString("update ")+
+	    "`"+dest_table+"` set "+
+	    "INSERT_TRACK=\"Y\","+
+	    "TRACK_STRING=\""+RDEscapeString(track_label)+"\" "+
+	    QString().sprintf("where ID=%d",line_id-1);
+	}
+	q=new RDSqlQuery(sql);
+	delete q;
+      }
+      insert_break=false;
+      break_first=false;
+      insert_track=false;
+      track_first=false;
+      insert_found=false;
+      line_used=true;
+    }
+    if((cartname==break_str)&&start_time_ok) {
+      link_time=
+	QTime(start_hour,start_minutes,start_seconds);
+      link_length=cartlen;
+    }
+    else {
+      link_time=QTime();
+      link_length=-1;
     }
     if(!line_used) {
       //
       // Look for Break and Track Strings
       //
-      str_buf=str_buf.stripWhiteSpace();
       if(!break_str.isEmpty()) {
 	if(str_buf.contains(break_str)) {
 	  insert_break=true;

@@ -15200,3 +15200,6 @@
 	* Added code in 'lib/rdevent_line.cpp' and 'lib/rdsvc.cpp' to allow
 	embedded traffic breaks to be specified with start time and length
 	in the music schedule.
+2016-06-07 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored the 'RDSvc::import()' method in 'lib/rdsvc.cpp' to
+	improve robustness and readability.
