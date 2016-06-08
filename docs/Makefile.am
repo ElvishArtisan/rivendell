@@ -24,7 +24,6 @@ if DOCBOOK_AM
 endif
 
 SUBDIRS = $(DOCBOOK_AM_OPT) examples\
-          man\
           tables
 
 EXTRA_DIST = ALSA.txt\

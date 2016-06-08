@@ -1,0 +1,814 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<refentry id="stdin" xmlns="http://docbook.org/ns/docbook" version="5.0">
+  <!--
+      Header
+  -->
+  <refmeta>
+    <refentrytitle>rdimport</refentrytitle>
+    <manvolnum>1</manvolnum>
+    <refmiscinfo class='source'>June 2016</refmiscinfo>
+    <refmiscinfo class='manual'>Linux Audio Manual</refmiscinfo>
+  </refmeta>
+  <refnamediv>
+    <refname>rdimport</refname>
+    <refpurpose>
+    Audio importation tool for the Rivendell Radio Automation System
+    </refpurpose>
+  </refnamediv>
+  <info>
+    <author>
+      <personname>
+	<firstname>Fred</firstname>
+	<surname>Gleason</surname>
+	<email>fredg@paravelsystems.com</email>
+      </personname>
+      <contrib>Application Author</contrib>
+    </author>
+  </info>
+
+  <!--
+      Body
+  -->
+  <refsynopsisdiv id='synopsis'>
+    <cmdsynopsis>
+      <command>rdimport</command>
+      <arg choice='opt'><replaceable>OPTIONS</replaceable></arg>
+      <arg choice='req'><replaceable>group-name</replaceable></arg>
+      <arg choice='req'><replaceable>filespec</replaceable></arg>
+      <sbr/>
+    </cmdsynopsis>
+  </refsynopsisdiv>
+
+  <refsect1 id='description'><title>Description</title>
+  <para>
+    <command>rdimport</command><manvolnum>1</manvolnum> is a command-line tool
+    for importing one or more audio files into the Rivendell Radio
+    Automation System. By default, a new cart will be created for each file
+    imported, although this behavior can be modified by use of the
+    appropriate options (see the <option>--single-cart</option>
+    and <option>--to-cart</option> options, below).  A
+    <replaceable>filespec</replaceable> of <userinput>-</userinput> will
+    cause the list of filespecs to be read from standard input.
+  </para>
+  </refsect1>
+
+  <refsect1 id='options'><title>Options</title>
+  <variablelist remap='TP'>
+    <varlistentry>
+      <term>
+	<option>--add-scheduler-code=</option><replaceable>str</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  Add Scheduler Code <replaceable>str</replaceable> to the target
+	  cart. The specified code must exist in RDAdmin->SchedulerCodes.
+	  This option may be specified multiple times.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
+	<option>--autotrim-level=</option><replaceable>level</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  Specify the threshold level to use for autotrimming the audio,
+	  in dBFS. Specifying <userinput>0</userinput> will turn off
+	  autotrimming.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
+	<option>--cart-number-offset=</option><replaceable>offset</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  Add <replaceable>offset</replaceable> to the cart number as
+	  determined from the metadata pattern or
+	  <option>--use-cartchunk-cutid</option>.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
+	<option>--clear-datetimes</option>
+      </term>
+      <listitem>
+	<para>
+	  Do not set the cut start and end datetimes, even if such are
+	  found in the file's import metadata.  Mutually exclusive with the
+	  <option>--set-datetimes</option> option.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
+	<option>--clear-daypart-times</option>
+      </term>
+      <listitem>
+	<para>
+	  Do not set the cut start and end daypart times, even if such are
+	  found in the file's import metadata.  Mutually exclusive with the
+	  <option>--set-daypart-times</option> option.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
+	<option>--create-enddate-offset=</option><replaceable>days</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  If the imported file does not reference an end date, create with
+	  end date offset by <replaceable>days</replaceable> days relative
+	  to the current date. Cannot be less than the value the value for
+	  <option>--create-startdate-offset</option> (default = 
+	  <userinput>0</userinput>).
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
+	<option>--create-startdate-offset=</option><replaceable>days</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  If the imported file does not reference an start date, create with
+	  start date offset by <replaceable>days</replaceable> days relative
+	  to the current date. Cannot be greater than the value the value for
+	  <option>--create-enddate-offset</option> (default = 
+	  <userinput>0</userinput>).
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
+	<option>--delete-cuts</option>
+      </term>
+      <listitem>
+	<para>
+	  Delete all cuts within the destination cart before importing.
+	  Use with caution!
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
+	<option>--delete-source</option>
+      </term>
+      <listitem>
+	<para>
+	  Delete each source file after successful import.  Use with caution!
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
+	<option>--drop-box</option>
+      </term>
+      <listitem>
+	<para>
+	  Operate in DropBox mode, causing
+	  <command>rdimport</command><manvolnum>1</manvolnum> to run
+	  continuously, periodically scanning for files  matching the
+	  specified <replaceable>filespec</replaceable>, importing and then
+	  deleting them when found.  WARNING: use of this option also implies
+	  the <option>--delete-source</option> option!
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
+	<option>--enddate-offset=</option><replaceable>days</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  If the imported file references an end date, offset the value by
+	  <replaceable>days</replaceable> days.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
+	<option>--fix-broken-formats</option>
+      </term>
+      <listitem>
+	<para>
+	  Attempt to work around malformed audio input data.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
+	<option>--help</option>
+      </term>
+      <listitem>
+	<para>
+	  Print a short usage message and exit.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
+	<option>--log-mode</option>
+      </term>
+      <listitem>
+	<para>
+	  Prepend date/time information to each line of printed status
+	  (implies the <option>--verbose</option> option).
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
+	<option>--metadata-pattern=</option><replaceable>pattern</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  Attempt to read metadata parameters from the source filename,
+	  using the pattern <replaceable>pattern</replaceable>.  Patterns
+	  consist of a sequence of wildcards and regular characters to
+	  indicate boundaries between metadata fields.
+	</para>
+	<para>
+	  The available wildcards are:
+	</para>
+	<variablelist>
+	  <varlistentry>
+	    <term><userinput>%a</userinput></term>
+	    <listitem>
+	      <para>Artist</para>
+	    </listitem>
+	  </varlistentry>
+	  <varlistentry>
+	    <term><userinput>%b</userinput></term>
+	    <listitem>
+	      <para>Record Label</para>
+	    </listitem>
+	  </varlistentry>
+
+	  <varlistentry>
+	    <term><userinput>%c</userinput></term>
+	    <listitem>
+	      <para>Client</para>
+	    </listitem>
+	  </varlistentry>
+
+	  <varlistentry>
+	    <term><userinput>%e</userinput></term>
+	    <listitem>
+	      <para>Agency</para>
+	    </listitem>
+	  </varlistentry>
+
+	  <varlistentry>
+	    <term><userinput>%g</userinput></term>
+	    <listitem>
+	      <para>
+		Rivendell group name (overrides the 
+		<replaceable>group-name</replaceable> parameter)
+	      </para>
+	    </listitem>
+	  </varlistentry>
+
+	  <varlistentry>
+	    <term><userinput>%i</userinput></term>
+	    <listitem>
+	      <para>Cut Description</para>
+	    </listitem>
+	  </varlistentry>
+
+	  <varlistentry>
+	    <term><userinput>%l</userinput></term>
+	    <listitem>
+	      <para>Album</para>
+	    </listitem>
+	  </varlistentry>
+
+	  <varlistentry>
+	    <term><userinput>%m</userinput></term>
+	    <listitem>
+	      <para>Composer</para>
+	    </listitem>
+	  </varlistentry>
+
+	  <varlistentry>
+	    <term><userinput>%n</userinput></term>
+	    <listitem>
+	      <para>Cart Number</para>
+	    </listitem>
+	  </varlistentry>
+
+	  <varlistentry>
+	    <term><userinput>%o</userinput></term>
+	    <listitem>
+	      <para>Outcue</para>
+	    </listitem>
+	  </varlistentry>
+
+	  <varlistentry>
+	    <term><userinput>%p</userinput></term>
+	    <listitem>
+	      <para>Publisher</para>
+	    </listitem>
+	  </varlistentry>
+
+	  <varlistentry>
+	    <term><userinput>%r</userinput></term>
+	    <listitem>
+	      <para>Conductor</para>
+	    </listitem>
+	  </varlistentry>
+
+	  <varlistentry>
+	    <term><userinput>%s</userinput></term>
+	    <listitem>
+	      <para>Song ID</para>
+	    </listitem>
+	  </varlistentry>
+
+	  <varlistentry>
+	    <term><userinput>%t</userinput></term>
+	    <listitem>
+	      <para>Title</para>
+	    </listitem>
+	  </varlistentry>
+
+	  <varlistentry>
+	    <term><userinput>%u</userinput></term>
+	    <listitem>
+	      <para>User Defined</para>
+	    </listitem>
+	  </varlistentry>
+
+	  <varlistentry>
+	    <term><userinput>%y</userinput></term>
+	    <listitem>
+	      <para>Release Year</para>
+	    </listitem>
+	  </varlistentry>
+
+	  <varlistentry>
+	    <term><userinput>%%</userinput></term>
+	    <listitem>
+	      <para>A literal '%'</para>
+	    </listitem>
+	  </varlistentry>
+
+	</variablelist>
+	<para>
+	  Detection of either the Rivendell Group [<userinput>%g</userinput>] or
+	  Rivendell Cart [<userinput>%n</userinput>] will cause
+	  <command>rdimport</command><manvolnum>1</manvolnum> to  attempt  to
+	  import the file to the specified Group and/or Cart, overriding
+	  whatever values were specified on the command line.
+	  If the <option>--set-user-defined</option> option has been used,
+	  then the  value  specified  there will be used instead of
+	  <userinput>%u</userinput>.
+	</para>
+	<para>
+	  Boundaries between metadata fields are indicated by placing regular
+	  characters between macros.  For example, the pattern
+	  <userinput>%t_%a_%g_%n.</userinput>, when processing a filename of
+	  'My Song_My Artist_TEMP_123456.mp3',
+	  would extract 'My Song' as the title and 'My Artist' as the artist,
+	  while importing it into cart 123456 in the TEMP group.
+    </para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
+	<option>--normalization-level=</option><replaceable>level</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  Specify the <replaceable>level</replaceable> to use for peak
+	  normalizing the audio, in dBFS.  Specifying <userinput>0</userinput>
+	  will turn  off normalization.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
+	<option>--segue-length=</option><replaceable>length</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  Length of the added segue in <replaceable>length</replaceable>
+	  msecs. See <option>--segue-level</option>, below.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
+	<option>--segue-level=</option><replaceable>level</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  Specify the threshold <replaceable>level</replaceable> to use for
+	  setting the segue start marker, in dBFS, as measured after any
+          specified normalization has been applied.  Default action is not
+	  to create segue markers.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
+	<option>--set-datetimes=</option><replaceable>start-datetime</replaceable>,<replaceable>end-datetime</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  Set the cut start and end datetimes, in the format YYYYMMDD-HHMMSS.
+	  Mutually exclusive with <option>--clear-datetimes</option>.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
+	<option>--set-daypart-times=</option><replaceable>start-time</replaceable>,<replaceable>end-time</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  Set the cut start and end datetimes, in the format HHMMSS.
+	  Mutually exclusive with <option>--clear-daypart-times</option>.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
+	<option>--set-marker-end-<replaceable>marker</replaceable>=</option><replaceable>offset</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  Set the <replaceable>marker</replaceable> end marker to a given
+	  offset value, with <replaceable>offset</replaceable> specified in
+	  milliseconds.
+          If positive, it is taken to indicate a marker position relative
+	  to the absolute beginning of the audio cut, while if negative,
+	  it is taken to indicate a marker position relative to the absolute
+          end of the audio cut.
+	</para>
+	<para>
+	  The following <replaceable>marker</replaceable> values are recognized:
+	  <variablelist>
+	    <varlistentry>
+	      <term><userinput>cut</userinput></term>
+	      <listitem>
+		<para>The Cut markers</para>
+	      </listitem>
+	    </varlistentry>
+
+	    <varlistentry>
+	      <term><userinput>hook</userinput></term>
+	      <listitem>
+		<para>The Hook markers</para>
+	      </listitem>
+	    </varlistentry>
+
+	    <varlistentry>
+	      <term><userinput>segue</userinput></term>
+	      <listitem>
+		<para>The Segue markers</para>
+	      </listitem>
+	    </varlistentry>
+
+	    <varlistentry>
+	      <term><userinput>talk</userinput></term>
+	      <listitem>
+		<para>The Talk markers</para>
+	      </listitem>
+	    </varlistentry>
+
+	  </variablelist>
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
+	<option>--set-marker-fadedown=</option><replaceable>offset</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  Set the FadeDown marker to <replaceable>offset</replaceable>.
+	  See the discussion of the
+	  <option>--set-marker-end-<replaceable>marker</replaceable></option>
+	  option above for a description of the
+	  <replaceable>offset</replaceable> parameter.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
+	<option>--set-marker-fadeup=</option><replaceable>offset</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  Set the FadeUp marker to <replaceable>offset</replaceable>.
+	  See the discussion of the
+	  <option>--set-marker-end-<replaceable>marker</replaceable></option>
+	  option above for a description of the
+	  <replaceable>offset</replaceable> parameter.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
+	<option>--set-marker-start-<replaceable>marker</replaceable>=</option><replaceable>offset</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  Set the <replaceable>marker</replaceable> start marker to a given
+	  offset value, with <replaceable>offset</replaceable> specified in
+	  milliseconds. See the discussion of the
+	  <option>--set-marker-end-<replaceable>marker</replaceable></option>
+          option above for a description of the
+	  <replaceable>marker</replaceable> and
+	  <replaceable>offset</replaceable> parameters.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
+	<option>--set-string-<replaceable>field</replaceable>=<replaceable>string</replaceable></option>
+      </term>
+      <listitem>
+	<para>
+	  Set the cart label field <replaceable>field</replaceable> to
+	  <replaceable>string</replaceable>. This will override any other
+	  values --e.g.  from <option>--metadata-pattern</option>.
+	</para>
+	<para>
+	  Values recognized for <replaceable>field</replaceable> are:
+	  <variablelist>
+	    <varlistentry>
+	      <term><userinput>agency</userinput></term>
+	      <listitem>
+		<para>Agency Name</para>
+	      </listitem>
+	    </varlistentry>
+
+	    <varlistentry>
+	      <term><userinput>album</userinput></term>
+	      <listitem>
+		<para>Album Name</para>
+	      </listitem>
+	    </varlistentry>
+
+	    <varlistentry>
+	      <term><userinput>artist</userinput></term>
+	      <listitem>
+		<para>Artist Name</para>
+	      </listitem>
+	    </varlistentry>
+
+	    <varlistentry>
+	      <term><userinput>bpm</userinput></term>
+	      <listitem>
+		<para>Beats per Minute (integer numeric)</para>
+	      </listitem>
+	    </varlistentry>
+
+	    <varlistentry>
+	      <term><userinput>client</userinput></term>
+	      <listitem>
+		<para>Client Name</para>
+	      </listitem>
+	    </varlistentry>
+
+	    <varlistentry>
+	      <term><userinput>composer</userinput></term>
+	      <listitem>
+		<para>Composer Name</para>
+	      </listitem>
+	    </varlistentry>
+
+	    <varlistentry>
+	      <term><userinput>conductor</userinput></term>
+	      <listitem>
+		<para>Conductor Name</para>
+	      </listitem>
+	    </varlistentry>
+
+	    <varlistentry>
+	      <term><userinput>description</userinput></term>
+	      <listitem>
+		<para>Cut Description</para>
+	      </listitem>
+	    </varlistentry>
+
+	    <varlistentry>
+	      <term><userinput>label</userinput></term>
+	      <listitem>
+		<para>Record Label Name (rights holder)</para>
+	      </listitem>
+	    </varlistentry>
+
+	    <varlistentry>
+	      <term><userinput>outcue</userinput></term>
+	      <listitem>
+		<para>Cut Outcue</para>
+	      </listitem>
+	    </varlistentry>
+
+	    <varlistentry>
+	      <term><userinput>publisher</userinput></term>
+	      <listitem>
+		<para>Music Publisher (rights holder)</para>
+	      </listitem>
+	    </varlistentry>
+
+	    <varlistentry>
+	      <term><userinput>song-id</userinput></term>
+	      <listitem>
+		<para>Song ID</para>
+	      </listitem>
+	    </varlistentry>
+
+	    <varlistentry>
+	      <term><userinput>title</userinput></term>
+	      <listitem>
+		<para>Title</para>
+	      </listitem>
+	    </varlistentry>
+
+	    <varlistentry>
+	      <term><userinput>user-defined</userinput></term>
+	      <listitem>
+		<para>Miscelaneous Information</para>
+	      </listitem>
+	    </varlistentry>
+
+	    <varlistentry>
+	      <term><userinput>year</userinput></term>
+	      <listitem>
+		<para>Year Released (four digit numeric)</para>
+	      </listitem>
+	    </varlistentry>
+
+	  </variablelist>
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
+	<option>--set-user-defined=</option><replaceable>string</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  Deprecated. Use <option>--set-string-user-defined</option> instead.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
+	<option>--single-cart</option>
+      </term>
+      <listitem>
+	<para>
+	  If more than one file is imported, place them within multiple cuts
+	  within a single cart, rather than creating separate carts for each
+	  file.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
+	<option>--startdate-offset=</option><replaceable>days</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  If the imported file references a start date, add
+	  <replaceable>days</replaceable> days to it.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
+	<option>--title-from-cartchunk-cutid</option>
+      </term>
+      <listitem>
+	<para>
+	  Set the cart title from CartChunk CutID.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
+	<option>--to-cart=</option><replaceable>cartnum</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  Import into cart <replaceable>cartnum</replaceable>, rather than
+	  using the next available cart number for the group. If the cart
+	  does not exist, it will be created. Each file will be imported
+	  into a separate new cut within the cart. Use of this option
+	  implies <option>--single-cart</option> and is mutually exclusive
+	  with <option>--use-cartchunk-cutid</option>.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
+	<option>--use-cartchunk-cutid</option>
+      </term>
+      <listitem>
+	<para>
+	  Import the audio into the cart specified by the CartChunk CutID
+	  parameter associated with the file. If the cart does not exist,
+	  it will be created.  Use of this option is mutually exclusive
+          with <option>--to-cart</option>.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
+	<option>--verbose</option>
+      </term>
+      <listitem>
+	<para>
+	  Print progress messages during processing.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
+	<option>--version</option>
+      </term>
+      <listitem>
+	<para>
+	  Output version information and exit.
+	</para>
+      </listitem>
+    </varlistentry>
+
+  </variablelist>
+</refsect1>
+
+<refsect1>
+  <title>NOTES</title>
+  <para>
+    It may be necessary to enclose individual
+    <replaceable>filespec</replaceable> clauses in quotes in order to
+    protect wildcard characters from expansion by the shell.  A typical
+    indicator that this is necessary is the failure of
+    <command>rdimport</command><manvolnum>1</manvolnum> to process newly
+    added files when running in DropBox mode.
+  </para>
+</refsect1>
+
+<refsect1>
+  <title>BUGS</title>
+  <para>
+    It could be argued that RMS rather than peak normalization would be
+    more appropriate for use with the <option>--normalization-level</option>
+    option.
+  </para>
+</refsect1>
+
+<refsect1 id='see_also'><title>See Also</title>
+<para>
+  <citerefentry>
+    <refentrytitle>rdexport</refentrytitle><manvolnum>1</manvolnum>
+  </citerefentry>
+  <literal>,</literal>
+  <citerefentry>
+    <refentrytitle>rdmarkerset</refentrytitle><manvolnum>8</manvolnum>
+  </citerefentry>
+</para>
+</refsect1>
+
+</refentry>
+

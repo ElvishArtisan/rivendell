@@ -33,23 +33,31 @@
 
 all-local:	cae.html\
                 cae.pdf\
+                rdmarkerset.8\
                 rdrevert.8\
                 rdexport.1\
+                rdimport.1\
                 rml.html\
                 rml.pdf\
                 web_api.html\
                 web_api.pdf
 
 man_MANS = rdexport.1\
+           rdimport.1\
+           rdmarkerset.8\
            rdrevert.8
 
 EXTRA_DIST = cae.html\
              cae.pdf\
              cae.xml\
+             rdmarkerset.8\
+             rdmarkerset.xml\
              rdrevert.8\
              rdrevert.xml\
              rdexport.1\
              rdexport.xml\
+             rdimport.1\
+             rdimport.xml\
              rml.html\
              rml.pdf\
              rml.xml\

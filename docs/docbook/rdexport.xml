@@ -130,125 +130,125 @@
 	</para>
 	<variablelist>
 	  <varlistentry>
-	    <term>%a</term>
+	    <term><userinput>%a</userinput></term>
 	    <listitem>
 	      <para>Artist</para>
 	    </listitem>
 	  </varlistentry>
 	  <varlistentry>
-	    <term>%b</term>
+	    <term><userinput>%b</userinput></term>
 	    <listitem>
 	      <para>Record Label</para>
 	    </listitem>
 	  </varlistentry>
 
 	  <varlistentry>
-	    <term>%c</term>
+	    <term><userinput>%c</userinput></term>
 	    <listitem>
 	      <para>Client</para>
 	    </listitem>
 	  </varlistentry>
 
 	  <varlistentry>
-	    <term>%e</term>
+	    <term><userinput>%e</userinput></term>
 	    <listitem>
 	      <para>Agency</para>
 	    </listitem>
 	  </varlistentry>
 
 	  <varlistentry>
-	    <term>%g</term>
+	    <term><userinput>%g</userinput></term>
 	    <listitem>
 	      <para>Rivendell group name</para>
 	    </listitem>
 	  </varlistentry>
 
 	  <varlistentry>
-	    <term>%h</term>
+	    <term><userinput>%h</userinput></term>
 	    <listitem>
 	      <para>Event length in milliseconds</para>
 	    </listitem>
 	  </varlistentry>
 
 	  <varlistentry>
-	    <term>%i</term>
+	    <term><userinput>%i</userinput></term>
 	    <listitem>
 	      <para>Cut Description</para>
 	    </listitem>
 	  </varlistentry>
 
 	  <varlistentry>
-	    <term>%j</term>
+	    <term><userinput>%j</userinput></term>
 	    <listitem>
 	      <para>Cut Number</para>
 	    </listitem>
 	  </varlistentry>
 
 	  <varlistentry>
-	    <term>%l</term>
+	    <term><userinput>%l</userinput></term>
 	    <listitem>
 	      <para>Album</para>
 	    </listitem>
 	  </varlistentry>
 
 	  <varlistentry>
-	    <term>%m</term>
+	    <term><userinput>%m</userinput></term>
 	    <listitem>
 	      <para>Composer</para>
 	    </listitem>
 	  </varlistentry>
 
 	  <varlistentry>
-	    <term>%n</term>
+	    <term><userinput>%n</userinput></term>
 	    <listitem>
 	      <para>Cart Number</para>
 	    </listitem>
 	  </varlistentry>
 
 	  <varlistentry>
-	    <term>%o</term>
+	    <term><userinput>%o</userinput></term>
 	    <listitem>
 	      <para>Outcue</para>
 	    </listitem>
 	  </varlistentry>
 
 	  <varlistentry>
-	    <term>%p</term>
+	    <term><userinput>%p</userinput></term>
 	    <listitem>
 	      <para>Publisher</para>
 	    </listitem>
 	  </varlistentry>
 
 	  <varlistentry>
-	    <term>%r</term>
+	    <term><userinput>%r</userinput></term>
 	    <listitem>
 	      <para>Conductor</para>
 	    </listitem>
 	  </varlistentry>
 
 	  <varlistentry>
-	    <term>%s</term>
+	    <term><userinput>%s</userinput></term>
 	    <listitem>
 	      <para>Song ID</para>
 	    </listitem>
 	  </varlistentry>
 
 	  <varlistentry>
-	    <term>%t</term>
+	    <term><userinput>%t</userinput></term>
 	    <listitem>
 	      <para>Title</para>
 	    </listitem>
 	  </varlistentry>
 
 	  <varlistentry>
-	    <term>%u</term>
+	    <term><userinput>%u</userinput></term>
 	    <listitem>
 	      <para>User Defined</para>
 	    </listitem>
 	  </varlistentry>
 
 	  <varlistentry>
-	    <term>%y</term>
+	    <term><userinput>%y</userinput></term>
 	    <listitem>
 	      <para>Release Year</para>
 	    </listitem>
@@ -261,6 +261,18 @@
       Default value is <userinput>%n_%j</userinput>.
     </para>
   </variablelist>
+</refsect1>
+
+<refsect1 id='see_also'><title>See Also</title>
+<para>
+  <citerefentry>
+    <refentrytitle>rdimport</refentrytitle><manvolnum>1</manvolnum>
+  </citerefentry>
+  <literal>,</literal>
+  <citerefentry>
+    <refentrytitle>rdmarkerset</refentrytitle><manvolnum>8</manvolnum>
+  </citerefentry>
+</para>
 </refsect1>
 
 </refentry>
