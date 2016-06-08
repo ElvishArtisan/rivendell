@@ -34,7 +34,7 @@ QString RDCheckDateTime(QTime const &time, QString const &format)
   QString checkedValue = "NULL";
   
   if(time.isValid())
-    checkedValue = time.toString(format);
+    checkedValue = "\"" + time.toString(format) + "\"";
   
   return checkedValue;
   
@@ -51,7 +51,7 @@ QString RDCheckDateTime(QDateTime const &datetime, QString const &format)
   QString checkedValue = "NULL";
   
   if(datetime.isValid())
-    checkedValue = datetime.toString(format);
+    checkedValue = "\"" + datetime.toString(format) + "\"";
   
   return checkedValue;
   
@@ -68,7 +68,7 @@ QString RDCheckDateTime(QDate const &date, QString const &format)
   QString checkedValue = "NULL";
   
   if(date.isValid())
-    checkedValue = date.toString(format);
+    checkedValue = "\"" + date.toString(format) + "\"";
   
   return checkedValue;
   

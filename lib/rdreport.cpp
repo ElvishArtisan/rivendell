@@ -557,8 +557,8 @@ bool RDReport::generateReport(const QDate &startdate,const QDate &enddate,
 				   q1->value(1).toUInt(),
 				   q1->value(2).toInt())+
 	  "STATION_NAME=\""+RDEscapeString(q1->value(3).toString())+"\","+
-	  "EVENT_DATETIME=\""+RDCheckDateTime(q1->value(4).toDateTime(),
-				     "yyyy-MM-dd hh:mm:ss")+"\","+
+	  "EVENT_DATETIME="+RDCheckDateTime(q1->value(4).toDateTime(),
+				     "yyyy-MM-dd hh:mm:ss")+","+
 	  QString().sprintf("EVENT_TYPE=%d,",q1->value(5).toInt())+
 	  "EXT_START_TIME=\""+RDEscapeString(q1->value(6).toString())+"\","+
 	  QString().sprintf("EXT_LENGTH=%d,",q1->value(7).toInt())+
@@ -573,8 +573,8 @@ bool RDReport::generateReport(const QDate &startdate,const QDate &enddate,
 	  "LOG_NAME=\""+RDEscapeString(q1->value(15).toString())+"\","+
 	  "TITLE=\""+RDEscapeString(q1->value(16).toString())+"\","+
 	  "ARTIST=\""+RDEscapeString(q1->value(17).toString())+"\","+
-	  "SCHEDULED_TIME=\""+
-	  RDCheckDateTime(q1->value(18).toDate(),"yyyy-MM-dd hh:mm:ss")+"\","+
+	  "SCHEDULED_TIME="+
+	  RDCheckDateTime(q1->value(18).toDate(),"yyyy-MM-dd hh:mm:ss")+","+
 	  QString().sprintf("START_SOURCE=%d,",q1->value(19).toInt())+
 	  "PUBLISHER=\""+RDEscapeString(q1->value(20).toString())+"\","+
 	  "COMPOSER=\""+RDEscapeString(q1->value(21).toString())+"\","+
@@ -923,7 +923,7 @@ void RDReport::SetRow(const QString &param,const QTime &value) const
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString().sprintf("UPDATE REPORTS SET %s=\"%s\" WHERE NAME=\"%s\"",
+  sql=QString().sprintf("UPDATE REPORTS SET %s=%s WHERE NAME=\"%s\"",
 			(const char *)param,
 			(const char *)RDCheckDateTime(value, "hh:mm:ss"),
 			(const char *)report_name);

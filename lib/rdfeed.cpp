@@ -320,7 +320,7 @@ QDateTime RDFeed::lastBuildDateTime() const
 
 void RDFeed::setLastBuildDateTime(const QDateTime &datetime) const
 {
-  SetRow("LAST_BUILD_DATETIME",RDCheckDateTime(datetime,"yyyy-MM-dd hh:mm:ss"));
+  SetRow("LAST_BUILD_DATETIME",datetime,"yyyy-MM-dd hh:mm:ss");
 }
 
 
@@ -333,7 +333,7 @@ QDateTime RDFeed::originDateTime() const
 
 void RDFeed::setOriginDateTime(const QDateTime &datetime) const
 {
-  SetRow("ORIGIN_DATETIME",RDCheckDateTime(datetime,"yyyy-MM-dd hh:mm:ss"));
+  SetRow("ORIGIN_DATETIME",datetime,"yyyy-MM-dd hh:mm:ss");
 }
 
 
@@ -892,6 +892,20 @@ void RDFeed::SetRow(const QString &param,const QString &value) const
   sql=QString().sprintf("UPDATE FEEDS SET %s=\"%s\" WHERE KEY_NAME=\"%s\"",
 			(const char *)param,
 			(const char *)RDEscapeString(value),
+			(const char *)feed_keyname);
+  q=new RDSqlQuery(sql);
+  delete q;
+}
+
+void RDFeed::SetRow(const QString &param,const QDateTime &value,
+                    const QString format) const
+{
+  RDSqlQuery *q;
+  QString sql;
+
+  sql=QString().sprintf("UPDATE FEEDS SET %s=%s WHERE KEY_NAME=\"%s\"",
+			(const char *)param,
+			(const char *)RDCheckDateTime(value, format),
 			(const char *)feed_keyname);
   q=new RDSqlQuery(sql);
   delete q;

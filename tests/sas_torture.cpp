@@ -29,6 +29,7 @@
 #include <rd.h>
 #include <rddb.h>
 #include <sas_torture.h>
+#include <rdescape_string.h>
 
 MainWidget::MainWidget(QWidget *parent)
   :QWidget(parent)
@@ -137,7 +138,7 @@ void MainWidget::generateData()
                          SUN=\'Y\',MON=\'Y\',TUE=\'Y\',WED=\'Y\',THU=\'Y\',\
                          FRI=\'Y\',SAT=\'Y\',DESCRIPTION=\"%s\",\
                          CUT_NAME=\"SAS_TORTURE\",MACRO_CART=%d,\
-                         START_TIME=\"%s\",TYPE=1",
+                         START_TIME=%s,TYPE=1",
 			    SAS_STATION,
 			    (const char *)desc,
 			    CART_START+j,

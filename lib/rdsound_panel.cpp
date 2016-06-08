@@ -1485,13 +1485,19 @@ void RDSoundPanel::LogTraffic(RDPanelButton *button)
     "CUTS.CUT_NAME=\""+RDEscapeString(button->cutName())+"\"";
   q=new RDSqlQuery(sql);
   if(q->first()) {
+
+    QString eventDateTimeSQL = "NULL";
+
+    if(dateTime.isValid() && button->startTime().isValid())
+      eventDateTimeSQL = RDCheckDateTime(QDateTime(dateTime.date(),
+            button->startTime()), "yyyy-MM-dd hh:mm:ss");
+
     sql=QString("insert into `")+panel_svcname+"_SRT` set "+
       QString().sprintf("LENGTH=%d,",button->startTime().
 			msecsTo(datetime.time()))+
       QString().sprintf("CART_NUMBER=%u,",button->cart())+
       "STATION_NAME=\""+RDEscapeString(panel_station->name().utf8())+"\","+
-      "EVENT_DATETIME=\""+datetime.toString("yyyy-MM-dd")+" "+
-      RDCheckDateTime(button->startTime(),"hh:mm:ss")+"\","+
+      "EVENT_DATETIME="+eventDateTimeSQL+","+
       QString().sprintf("EVENT_TYPE=%d,",RDAirPlayConf::TrafficStop)+
       QString().sprintf("EVENT_SOURCE=%d,",RDLogLine::SoundPanel)+
       QString().sprintf("PLAY_SOURCE=%d,",RDLogLine::SoundPanel)+

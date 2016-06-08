@@ -1310,7 +1310,7 @@ void MainObject::CommitCast()
                          ITEM_SOURCE_TEXT=\"%s\",\
                          ITEM_SOURCE_URL=\"%s\",\
                          SHELF_LIFE=%d,\
-                         EFFECTIVE_DATETIME=\"%s\" \
+                         EFFECTIVE_DATETIME=%s \
                          where ID=%d",
 			status,
 			(const char *)RDEscapeString(item_title),

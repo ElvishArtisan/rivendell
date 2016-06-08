@@ -1186,7 +1186,7 @@ void RDLogEvent::InsertLines(QString values) {
 void RDLogEvent::InsertLineValues(QString *query, int line)
 {
   // one line to save query space
-  QString sql=QString().sprintf("(%d,%d,%u,%d,%d,%d,%d,%d,%d,%d,%d,\"%s\",\"%s\",%d,%d,\"%s\",%d,\"%s\",\"%s\",\"%s\",\"%s\",%d,%d,%d,%d,%d,\"%s\",%d,%d,%d,\"%s\",\"%s\",\"%s\",%d,%d,%d,%d,%d)",
+  QString sql=QString().sprintf("(%d,%d,%u,%d,%d,%d,%d,%d,%d,%d,%d,\"%s\",\"%s\",%d,%d,%s,%d,\"%s\",\"%s\",\"%s\",\"%s\",%d,%d,%d,%d,%d,\"%s\",%d,%d,%d,\"%s\",\"%s\",%s,%d,%d,%d,%d,%d)",
                         log_line[line]->id(),
                         line,
                         log_line[line]->cartNumber(),

@@ -814,7 +814,7 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
       sql=QString().sprintf("insert into `%s_LOG` set ID=%d,COUNT=%d,TYPE=%d,\
 			     SOURCE=%d,START_TIME=%d,GRACE_TIME=%d, \
 			     CART_NUMBER=%u,TIME_TYPE=%d,POST_POINT=\"%s\", \
-			     TRANS_TYPE=%d,EXT_START_TIME=\"%s\",\
+			     TRANS_TYPE=%d,EXT_START_TIME=%s,\
                              EVENT_LENGTH=%d",
 			    (const char *)logname,count,count,
 			    RDLogLine::Cart,source,

@@ -661,7 +661,7 @@ void RDLog::SetRow(const QString &param,const QDate &value) const
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString().sprintf("UPDATE LOGS SET %s=\"%s\" WHERE NAME=\"%s\"",
+  sql=QString().sprintf("UPDATE LOGS SET %s=%s WHERE NAME=\"%s\"",
 			(const char *)param,
 			(const char *)RDCheckDateTime(value,"yyyy/MM/dd"),
 			(const char *)RDEscapeString(log_name));
@@ -675,7 +675,7 @@ void RDLog::SetRow(const QString &param,const QDateTime &value) const
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString().sprintf("UPDATE LOGS SET %s=\"%s\" WHERE NAME=\"%s\"",
+  sql=QString().sprintf("UPDATE LOGS SET %s=%s WHERE NAME=\"%s\"",
 			(const char *)param,
 			(const char *)RDCheckDateTime(value,"yyyy-MM-dd hh:mm:ss"),
 			(const char *)RDEscapeString(log_name));

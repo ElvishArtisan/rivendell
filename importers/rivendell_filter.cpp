@@ -274,7 +274,7 @@ MainObject::MainObject(QObject *parent)
                            TITLE=\"%s\",\
                            ARTIST=\"%s\",\
                            ALBUM=\"%s\",\
-                           YEAR=\"%s\",\
+                           YEAR=%s,\
                            ISRC=\"%s\",\
                            LABEL=\"%s\",\
                            CLIENT=\"%s\",\
@@ -347,7 +347,7 @@ MainObject::MainObject(QObject *parent)
 	start_datetime="null";
       }
       else {
-	start_datetime=QString().sprintf("\"%s\"",
+	start_datetime=QString().sprintf("%s",
 			(const char *)RDCheckDateTime(q1->value(7).
 			toDateTime(),"yyyy-MM-dd hh:mm:ss"));//Could be invalid (0000-00-00)
       }
@@ -355,7 +355,7 @@ MainObject::MainObject(QObject *parent)
 	end_datetime="null";
       }
       else {
-	end_datetime=QString().sprintf("\"%s\"",
+	end_datetime=QString().sprintf("%s",
 			(const char *)RDCheckDateTime(q1->value(8).
 			toDateTime(),"yyyy-MM-dd hh:mm:ss"));//Could be invalid (0000-00-00)
       }
@@ -363,7 +363,7 @@ MainObject::MainObject(QObject *parent)
 	start_daypart="null";
       }
       else {
-	start_daypart=QString().sprintf("\"%s\"",
+	start_daypart=QString().sprintf("%s",
 					(const char *)RDCheckDateTime(q1->value(16).
 					toTime(),"hh:mm:ss"));//Invalid possible?
       }
@@ -371,7 +371,7 @@ MainObject::MainObject(QObject *parent)
 	end_daypart="null";
       }
       else {
-	end_daypart=QString().sprintf("\"%s\"",
+	end_daypart=QString().sprintf("%s",
 					(const char *)RDCheckDateTime(q1->value(17).
 					toTime(),"hh:mm:ss"));//Invalid possible?
       }

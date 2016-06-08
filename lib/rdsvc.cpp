@@ -788,7 +788,7 @@ bool RDSvc::generateLog(const QDate &date,const QString &logname,
                            SERVICE=\"%s\",DESCRIPTION=\"%s\",\
                            ORIGIN_USER=\"%s\",ORIGIN_DATETIME=now(),\
                            LINK_DATETIME=now(),MODIFIED_DATETIME=now(),\
-                           PURGE_DATE=\"%s\"",
+                           PURGE_DATE=%s",
 			  (const char *)RDEscapeString(logname),
 			  (const char *)RDEscapeString(svc_name),
 			  (const char *)RDEscapeString(RDDateDecode(descriptionTemplate(),date)),

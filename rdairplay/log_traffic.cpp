@@ -44,14 +44,20 @@ void LogTraffic(const QString &svcname,const QString &logname,
   if((logline==NULL)||(svcname.isEmpty())) {
     return;
   }
+
+  QString eventDateTimeSQL = "NULL";
+
+  if(datetime.isValid() && logline->startTime(RDLogLine::Actual).isValid())
+    eventDateTimeSQL = RDCheckDateTime(QDateTime(datetime.date(),
+          logline->startTime(RDLogLine::Actual)), "yyyy-MM-dd hh:mm:ss");
+
   sql=QString("insert into `")+RDSvc::svcTableName(svcname)+"` set "+
     QString().sprintf("LENGTH=%d,",length)+
     "LOG_NAME=\""+RDEscapeString(logname.utf8())+"\","+
     QString().sprintf("LOG_ID=%d,",logline->id())+
     QString().sprintf("CART_NUMBER=%u,",logline->cartNumber())+
     "STATION_NAME=\""+RDEscapeString(rdstation_conf->name().utf8())+"\","+
-    "EVENT_DATETIME=\""+datetime.toString("yyyy-MM-dd")+" "+
-    RDCheckDateTime(logline->startTime(RDLogLine::Actual),"hh:mm:ss")+"\","+
+    "EVENT_DATETIME="+eventDateTimeSQL+","+
     QString().sprintf("EVENT_TYPE=%d,",action)+
     QString().sprintf("EVENT_SOURCE=%d,",logline->source())+
     "EXT_START_TIME=\""+RDCheckDateTime(logline->extStartTime(),"hh:mm:ss")+"\","+
@@ -64,8 +70,8 @@ void LogTraffic(const QString &svcname,const QString &logname,
     "EXT_CART_NAME=\""+RDEscapeString(logline->extCartName().utf8())+"\","+
     "TITLE=\""+RDEscapeString(logline->title().utf8())+"\","+
     "ARTIST=\""+RDEscapeString(logline->artist().utf8())+"\","+
-    "SCHEDULED_TIME=\""+RDCheckDateTime(logline->startTime(RDLogLine::Logged),
-				       "hh:mm:ss")+"\","+
+    "SCHEDULED_TIME="+RDCheckDateTime(logline->startTime(RDLogLine::Logged),
+				       "hh:mm:ss")+","+
     "ISRC=\""+RDEscapeString(logline->isrc().utf8())+"\","+
     "PUBLISHER=\""+RDEscapeString(logline->publisher().utf8())+"\","+
     "COMPOSER=\""+RDEscapeString(logline->composer().utf8())+"\","+
