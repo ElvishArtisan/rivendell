@@ -123,6 +123,8 @@ class RDFeed : public QObject
   QString GetTempFilename() const;
   void SetRow(const QString &param,int value) const;
   void SetRow(const QString &param,const QString &value) const;
+  void SetRow(const QString &param,const QDateTime &value,
+              const QString &format) const;
   QString feed_keyname;
   unsigned feed_id;
 };

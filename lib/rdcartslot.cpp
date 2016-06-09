@@ -670,7 +670,7 @@ void RDCartSlot::LogPlayout(RDPlayDeck::State state)
     datetime.setDate(datetime.date().addDays(-1));
   }
   if(!slot_svcname.isEmpty()) {
-    QDateTime eventDateTime=QDateTime::QDateTime(datetime::date(), 
+    QDateTime eventDateTime(datetime.date(), 
           slot_logline->startTime(RDLogLine::Actual));
     QString svctablename=slot_svcname;
     svctablename.replace(" ","_");

@@ -898,7 +898,7 @@ void RDFeed::SetRow(const QString &param,const QString &value) const
 }
 
 void RDFeed::SetRow(const QString &param,const QDateTime &value,
-                    const QString format) const
+                    const QString &format) const
 {
   RDSqlQuery *q;
   QString sql;

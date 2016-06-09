@@ -1095,7 +1095,7 @@ void RDCut::setMetadata(RDWaveData *data) const
       startDateTime.setTime(QTime(0,0,0));
       
     sql+=QString().sprintf("START_DATETIME=%s,",
-        (const char *)RDCheckDateTime(startDateTime));
+        (const char *)RDCheckDateTime(startDateTime,"yyyy-MM-dd hh:mm:ss"));
       
     if(data->endDate().isValid()&&(data->endDate().year()<8000)) {
       

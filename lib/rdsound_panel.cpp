@@ -1488,8 +1488,8 @@ void RDSoundPanel::LogTraffic(RDPanelButton *button)
 
     QString eventDateTimeSQL = "NULL";
 
-    if(dateTime.isValid() && button->startTime().isValid())
-      eventDateTimeSQL = RDCheckDateTime(QDateTime(dateTime.date(),
+    if(datetime.isValid() && button->startTime().isValid())
+      eventDateTimeSQL = RDCheckDateTime(QDateTime(datetime.date(),
             button->startTime()), "yyyy-MM-dd hh:mm:ss");
 
     sql=QString("insert into `")+panel_svcname+"_SRT` set "+
