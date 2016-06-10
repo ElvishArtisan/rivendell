@@ -15222,3 +15222,6 @@
 2016-06-10 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in 'rdairplay/list_logs.cpp' that failed to process
 	SQL NULL date values correctly.
+2016-06-10 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'lib/rdlist_logs.cpp' that failed to process
+	SQL NULL date values correctly.
