@@ -15216,3 +15216,6 @@
 	* Translated the rdmarkerset(8) manpage to DocBook-XML 5.
 2016-06-08 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 2.13.0int02.
+2016-06-10 Fred Gleason <fredg@paravelsystems.com>
+	* Updated 'NEWS'.
+	* Incremented the package version to 2.14.0.

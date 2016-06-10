@@ -1,6 +1,32 @@
 The NEWS file for the Rivendell package.
 
 -------------------------------------------------------------------------------
+v2.14.0 --  6/10/2016
+
+Changes:
+   Event Recording.  Added the ability to capture real-time events in
+   RDCatch recordings and replay them in sync with the captured audio
+   via RDCatch playout decks (see RDAdmin->ManageHosts->RDCatch to
+   configure).
+
+   New RML. Added a 'Cut Event' ['CE'] RML for placing real-time event
+   markers into active RDCatch recordings.
+
+   Traffic Import Enhancements.  Added support for specifying precise
+   Start Time and Length parameters for Traffic events embedded within
+   Music events.
+
+   Various other bug fixes.  See the ChangeLog for details.
+
+Database Update:
+   This version of Rivendell uses database schema version 258, and will
+   automatically upgrade any earlier versions.  To see the current schema
+   version prior to upgrade, see RDAdmin->SystemInfo.
+
+   As always, be sure to run RDAdmin immediately after upgrading to allow 
+   any necessary changes to the database schema to be applied.
+
+-------------------------------------------------------------------------------
 v2.13.0 --  5/10/2016
 
 Changes:
