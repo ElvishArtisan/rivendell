@@ -204,9 +204,10 @@ void MainObject::PurgeLogs()
   RDSqlQuery *q;
   QDateTime dt=QDateTime(QDate::currentDate(),QTime::currentTime());
 
-  sql=QString().sprintf("select NAME from LOGS where \
-                         (PURGE_DATE!=\"0000-00-00\")&&(PURGE_DATE<\"%s\")",
-			(const char *)dt.date().toString("yyyy-MM-dd"));
+  sql=QString("select NAME from LOGS where ")+
+    "(PURGE_DATE!=\"0000-00-00\")&&"+
+    "(PURGE_DATE is not null)&&"+
+    "(PURGE_DATE<\""+dt.date().toString("yyyy-MM-dd")+"\")";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     maint_config->
