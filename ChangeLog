@@ -15228,3 +15228,5 @@
 2016-06-10 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in 'utils/rdmaint/rdmaint.cpp' that failed to process
 	SQL NULL date values correctly.
+2016-06-10 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.14.0int00.
