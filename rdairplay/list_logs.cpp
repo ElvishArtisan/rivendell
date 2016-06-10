@@ -234,12 +234,14 @@ void ListLogs::RefreshList()
   if(services_list.size()==0) {
     return;
   }
-  sql=QString().sprintf("select NAME,DESCRIPTION,SERVICE from LOGS \
-                         where (TYPE=0)&&(LOG_EXISTS=\"Y\")&&\
-                         ((START_DATE<=\"%s\")||(START_DATE=\"0000-00-00\"))&&\
-                         ((END_DATE>=\"%s\")||(END_DATE=\"0000-00-00\"))&&(",
-                        (const char *)current_date.toString("yyyy-MM-dd"),
-                        (const char *)current_date.toString("yyyy-MM-dd"));
+  sql=QString("select NAME,DESCRIPTION,SERVICE from LOGS ")+
+    "where (TYPE=0)&&(LOG_EXISTS=\"Y\")&&"+
+    "((START_DATE<=\""+current_date.toString("yyyy-MM-dd")+"\")||"+
+    "(START_DATE=\"0000-00-00\")||"+
+    "(START_DATE is null))&&"+
+    "((END_DATE>=\""+current_date.toString("yyyy-MM-dd")+"\")||"+
+    "(END_DATE=\"0000-00-00\")||"+
+    "(END_DATE is null))&&(";
   for ( QStringList::Iterator it = services_list.begin(); 
         it != services_list.end(); ++it ) {
     sql+=QString().sprintf("SERVICE=\"%s\"||",
