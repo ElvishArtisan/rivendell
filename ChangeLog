@@ -15230,3 +15230,6 @@
 	SQL NULL date values correctly.
 2016-06-10 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 2.14.0int00.
+2016-06-11 Fred Gleason <fredg@paravelsystems.com>
+	* Updated 'NEWS'.
+	* Incremented the package version to 2.14.1

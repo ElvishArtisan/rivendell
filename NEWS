@@ -1,6 +1,20 @@
 The NEWS file for the Rivendell package.
 
 -------------------------------------------------------------------------------
+v2.14.1 --  6/11/2016
+
+Changes:
+   Fixed regressions in processing NULL date values.
+
+Database Update:
+   This version of Rivendell uses database schema version 258, and will
+   automatically upgrade any earlier versions.  To see the current schema
+   version prior to upgrade, see RDAdmin->SystemInfo.
+
+   As always, be sure to run RDAdmin immediately after upgrading to allow 
+   any necessary changes to the database schema to be applied.
+
+-------------------------------------------------------------------------------
 v2.14.0 --  6/10/2016
 
 Changes:
