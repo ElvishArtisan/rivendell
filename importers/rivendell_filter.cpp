@@ -274,7 +274,7 @@ MainObject::MainObject(QObject *parent)
                            TITLE=\"%s\",\
                            ARTIST=\"%s\",\
                            ALBUM=\"%s\",\
-                           YEAR=\"%s\",\
+                           YEAR=%s,\
                            ISRC=\"%s\",\
                            LABEL=\"%s\",\
                            CLIENT=\"%s\",\
@@ -304,8 +304,7 @@ MainObject::MainObject(QObject *parent)
 			  (const char *)RDEscapeString(q->value(3).toString()),
 			  (const char *)RDEscapeString(q->value(4).toString()),
 			  (const char *)RDEscapeString(q->value(5).toString()),
-			  (const char *)q->value(6).toDate().
-			  toString("yyyy-MM-dd"),
+			  (const char *)RDCheckDateTime(q->value(6).toDate(),"yyyy-MM-dd"),
 			  (const char *)RDEscapeString(q->value(7).toString()),
 			  (const char *)RDEscapeString(q->value(8).toString()),
 			  (const char *)RDEscapeString(q->value(9).toString()),
@@ -348,33 +347,33 @@ MainObject::MainObject(QObject *parent)
 	start_datetime="null";
       }
       else {
-	start_datetime=QString().sprintf("\"%s\"",
-			(const char *)q1->value(7).
-			toDateTime().toString("yyyy-MM-dd hh:mm:ss"));
+	start_datetime=QString().sprintf("%s",
+			(const char *)RDCheckDateTime(q1->value(7).
+			toDateTime(),"yyyy-MM-dd hh:mm:ss"));//Could be invalid (0000-00-00)
       }
       if(q1->value(8).isNull()) {
 	end_datetime="null";
       }
       else {
-	end_datetime=QString().sprintf("\"%s\"",
-			(const char *)q1->value(8).
-			toDateTime().toString("yyyy-MM-dd hh:mm:ss"));
+	end_datetime=QString().sprintf("%s",
+			(const char *)RDCheckDateTime(q1->value(8).
+			toDateTime(),"yyyy-MM-dd hh:mm:ss"));//Could be invalid (0000-00-00)
       }
       if(q1->value(16).isNull()) {
 	start_daypart="null";
       }
       else {
-	start_daypart=QString().sprintf("\"%s\"",
-					(const char *)q1->value(16).
-					toTime().toString("hh:mm:ss"));
+	start_daypart=QString().sprintf("%s",
+					(const char *)RDCheckDateTime(q1->value(16).
+					toTime(),"hh:mm:ss"));//Invalid possible?
       }
       if(q1->value(17).isNull()) {
 	end_daypart="null";
       }
       else {
-	end_daypart=QString().sprintf("\"%s\"",
-					(const char *)q1->value(17).
-					toTime().toString("hh:mm:ss"));
+	end_daypart=QString().sprintf("%s",
+					(const char *)RDCheckDateTime(q1->value(17).
+					toTime(),"hh:mm:ss"));//Invalid possible?
       }
       sql=QString().sprintf("insert into CUTS set CART_NUMBER=%u,\
                              CUT_NAME=\"%s\",\

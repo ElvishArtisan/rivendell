@@ -814,7 +814,7 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
       sql=QString().sprintf("insert into `%s_LOG` set ID=%d,COUNT=%d,TYPE=%d,\
 			     SOURCE=%d,START_TIME=%d,GRACE_TIME=%d, \
 			     CART_NUMBER=%u,TIME_TYPE=%d,POST_POINT=\"%s\", \
-			     TRANS_TYPE=%d,EXT_START_TIME=\"%s\",\
+			     TRANS_TYPE=%d,EXT_START_TIME=%s,\
                              EVENT_LENGTH=%d",
 			    (const char *)logname,count,count,
 			    RDLogLine::Cart,source,
@@ -824,7 +824,7 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
 			    time_type,
 			    (const char *)RDYesNo(post_point),
 			    trans_type,
-			    (const char *)time.toString("hh:mm:ss"),
+			    (const char *)RDCheckDateTime(time,"hh:mm:ss"),
 			    event_length);
       q=new RDSqlQuery(sql);
       delete q;

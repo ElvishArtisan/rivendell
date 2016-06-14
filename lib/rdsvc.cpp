@@ -731,9 +731,9 @@ bool RDSvc::generateLog(const QDate &date,const QString &logname,
   //
   // Generate Log Structure
   //
-  QString purge_date;
+  QDate purge_date;
   if(defaultLogShelflife()>=0) {
-    purge_date=date.addDays(defaultLogShelflife()).toString("yyyy-MM-dd");
+    purge_date=date.addDays(defaultLogShelflife());
   }
   sql=QString().sprintf("select NAME from LOGS where NAME=\"%s\"",
 			(const char *)RDEscapeString(logname));
@@ -748,8 +748,8 @@ bool RDSvc::generateLog(const QDate &date,const QString &logname,
 			  (const char *)RDEscapeString(svc_name),
 			  (const char *)RDEscapeString(RDDateDecode(descriptionTemplate(),date)),
 			  "RDLogManager");
-    if(!purge_date.isEmpty()) {
-      sql+=(",PURGE_DATE=\""+purge_date+"\"");
+    if(!purge_date.isValid()) {
+      sql+=(",PURGE_DATE=\""+purge_date.toString("yyyy-MM-dd")+"\"");
     }
     sql+=(" where NAME=\""+RDEscapeString(logname)+"\"");
 
@@ -765,12 +765,12 @@ bool RDSvc::generateLog(const QDate &date,const QString &logname,
                            SERVICE=\"%s\",DESCRIPTION=\"%s\",\
                            ORIGIN_USER=\"%s\",ORIGIN_DATETIME=now(),\
                            LINK_DATETIME=now(),MODIFIED_DATETIME=now(),\
-                           PURGE_DATE=\"%s\"",
+                           PURGE_DATE=%s",
 			  (const char *)RDEscapeString(logname),
 			  (const char *)RDEscapeString(svc_name),
 			  (const char *)RDEscapeString(RDDateDecode(descriptionTemplate(),date)),
 			  "RDLogManager",
-			  (const char *)purge_date);
+			  (const char *)RDCheckDateTime(purge_date,"yyyy-MM-dd"));
     q=new RDSqlQuery(sql);
     delete q;
   }
