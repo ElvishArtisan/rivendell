@@ -346,6 +346,7 @@ bool RDReport::generateReport(const QDate &startdate,const QDate &enddate,
     for(int i=0;i<(startdate.daysTo(enddate)+1);i++) {
       QDate date=startdate.addDays(i);
       if(startTime()<endTime()) {
+    	  //TODO Do we need to escape on Select Statement?
 	daypart_sql+=QString("((EVENT_DATETIME>=\"")+
 	  date.toString("yyyy-MM-dd")+
 	  " "+startTime().toString("hh:mm:ss")+"\")&&"+
@@ -534,6 +535,7 @@ bool RDReport::generateReport(const QDate &startdate,const QDate &enddate,
       // Daypart Filter
       //
       if(daypart_sql.isEmpty()) {
+    	  //TODO Do we need to escape on Select statement?
 	sql+=QString("(EVENT_DATETIME>=\"")+startdate.toString("yyyy-MM-dd")+
 	  " 00:00:00\")&&"+
 	  "(EVENT_DATETIME<=\""+enddate.toString("yyyy-MM-dd")+
@@ -555,8 +557,8 @@ bool RDReport::generateReport(const QDate &startdate,const QDate &enddate,
 				   q1->value(1).toUInt(),
 				   q1->value(2).toInt())+
 	  "STATION_NAME=\""+RDEscapeString(q1->value(3).toString())+"\","+
-	  "EVENT_DATETIME=\""+RDEscapeString(q1->value(4).toDateTime().
-				     toString("yyyy-MM-dd hh:mm:ss"))+"\","+
+	  "EVENT_DATETIME="+RDCheckDateTime(q1->value(4).toDateTime(),
+				     "yyyy-MM-dd hh:mm:ss")+","+
 	  QString().sprintf("EVENT_TYPE=%d,",q1->value(5).toInt())+
 	  "EXT_START_TIME=\""+RDEscapeString(q1->value(6).toString())+"\","+
 	  QString().sprintf("EXT_LENGTH=%d,",q1->value(7).toInt())+
@@ -571,8 +573,8 @@ bool RDReport::generateReport(const QDate &startdate,const QDate &enddate,
 	  "LOG_NAME=\""+RDEscapeString(q1->value(15).toString())+"\","+
 	  "TITLE=\""+RDEscapeString(q1->value(16).toString())+"\","+
 	  "ARTIST=\""+RDEscapeString(q1->value(17).toString())+"\","+
-	  "SCHEDULED_TIME=\""+
-	  q1->value(18).toDate().toString("yyyy-MM-dd hh:mm:ss")+"\","+
+	  "SCHEDULED_TIME="+
+	  RDCheckDateTime(q1->value(18).toDate(),"yyyy-MM-dd hh:mm:ss")+","+
 	  QString().sprintf("START_SOURCE=%d,",q1->value(19).toInt())+
 	  "PUBLISHER=\""+RDEscapeString(q1->value(20).toString())+"\","+
 	  "COMPOSER=\""+RDEscapeString(q1->value(21).toString())+"\","+
@@ -921,9 +923,9 @@ void RDReport::SetRow(const QString &param,const QTime &value) const
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString().sprintf("UPDATE REPORTS SET %s=\"%s\" WHERE NAME=\"%s\"",
+  sql=QString().sprintf("UPDATE REPORTS SET %s=%s WHERE NAME=\"%s\"",
 			(const char *)param,
-			(const char *)value.toString("hh:mm:ss"),
+			(const char *)RDCheckDateTime(value, "hh:mm:ss"),
 			(const char *)report_name);
   q=new RDSqlQuery(sql);
   delete q;

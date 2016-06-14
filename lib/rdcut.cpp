@@ -1060,8 +1060,9 @@ void RDCut::setMetadata(RDWaveData *data) const
   }
   if(data->daypartStartTime().isValid()&&data->daypartEndTime().isValid()&&
      (data->daypartStartTime()<data->daypartEndTime())) {
-    sql+="START_DAYPART=\""+data->daypartStartTime().toString("hh:mm:ss")+"\","+
-      "END_DAYPART=\""+data->daypartEndTime().toString("hh:mm:ss")+"\",";
+    sql+="START_DAYPART="+
+      RDCheckDateTime(data->daypartStartTime(),"hh:mm:ss")+","+
+      "END_DAYPART="+RDCheckDateTime(data->daypartEndTime(),"hh:mm:ss")+",";
   }
   if((data->hookStartPos()>=data->startPos())&&
      (data->hookStartPos()<=data->endPos())&&
@@ -1079,32 +1080,36 @@ void RDCut::setMetadata(RDWaveData *data) const
      (data->fadeDownPos()<=data->endPos())) {
     sql+=QString().sprintf("FADEDOWN_POINT=%d,",data->fadeDownPos());
   }
-  if((data->startDate()>QDate(1900,1,1))&&(data->endDate().year()<8000)) {
-    if(data->startTime().isValid()) {
-    sql+=QString().sprintf("START_DATETIME=\"%s %s\",",
-			   (const char *)data->startDate().
-			   toString("yyyy-MM-dd"),
-			   (const char *)data->startTime().
-			   toString("hh:mm:ss"));
-    }
-    else {
-      sql+=QString().sprintf("START_DATETIME=\"%s 00:00:00\",",
-			     (const char *)data->startDate().
-			     toString("yyyy-MM-dd"));
-    }
+  if(data->startDate().isValid() && 
+     (data->startDate()>QDate(1900,1,1))&&(data->endDate().year()<8000)) {
+    
+    /* Reworked, 
+     *   if date not valid, do nothing
+     *   if time valid use date + time
+     *   else use date + 00:00:00
+     */
+    QDateTime startDateTime(data->startDate());
+      
+    if(data->startTime().isValid())
+      startDateTime.setTime(data->startTime());
+    else
+      startDateTime.setTime(QTime(0,0,0));
+      
+    sql+=QString().sprintf("START_DATETIME=%s,",
+        (const char *)RDCheckDateTime(startDateTime,"yyyy-MM-dd hh:mm:ss"));
+      
     if(data->endDate().isValid()&&(data->endDate().year()<8000)) {
-      if(data->endTime().isValid()) {
-	sql+=QString().sprintf("END_DATETIME=\"%s %s\",",
-			       (const char *)data->endDate().
-			       toString("yyyy-MM-dd"),
-			       (const char *)data->endTime().
-			       toString("hh:mm:ss"));
-      }
-      else {
-	sql+=QString().sprintf("END_DATETIME=\"%s 23:59:59\",",
-			       (const char *)data->endDate().
-			       toString("yyyy-MM-dd"));
-      }
+      
+      // Reworked as START_DATETIME
+      QDateTime endDateTime(data->endDate());
+      
+      if(data->endTime().isValid())
+        endDateTime.setTime(data->endTime());
+      else
+        endDateTime.setTime(QTime(23,59,59));
+      
+      sql+=QString().sprintf("END_DATETIME=%s,",
+            (const char *)RDCheckDateTime(endDateTime,"yyyy-MM-dd hh:mm:ss"));
     }
   }
   if(sql.right(1)==",") {
@@ -1603,9 +1608,9 @@ void RDCut::SetRow(const QString &param,const QDateTime &value) const
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString().sprintf("UPDATE CUTS SET %s=\"%s\" WHERE CUT_NAME=\"%s\"",
+  sql=QString().sprintf("UPDATE CUTS SET %s=%s WHERE CUT_NAME=\"%s\"",
 			(const char *)param,
-			(const char *)value.toString("yyyy-MM-dd hh:mm:ss"),
+			(const char *)RDCheckDateTime(value,"yyyy-MM-dd hh:mm:ss"),
 			(const char *)cut_name);
   q=new RDSqlQuery(sql,cut_db);
   delete q;
@@ -1617,9 +1622,9 @@ void RDCut::SetRow(const QString &param,const QDate &value) const
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString().sprintf("UPDATE CUTS SET %s=\"%s\" WHERE CUT_NAME=\"%s\"",
+  sql=QString().sprintf("UPDATE CUTS SET %s=%s WHERE CUT_NAME=\"%s\"",
 			(const char *)param,
-			(const char *)value.toString("yyyy-MM-dd"),
+			(const char *)RDCheckDateTime(value,"yyyy-MM-dd"),
 			(const char *)cut_name);
   q=new RDSqlQuery(sql,cut_db);
   delete q;
@@ -1630,9 +1635,9 @@ void RDCut::SetRow(const QString &param,const QTime &value) const
 {
   RDSqlQuery *q;
   QString sql;
-  sql=QString().sprintf("UPDATE CUTS SET %s=\"%s\" WHERE CUT_NAME=\"%s\"",
+  sql=QString().sprintf("UPDATE CUTS SET %s=%s WHERE CUT_NAME=\"%s\"",
 			(const char *)param,
-			(const char *)value.toString("hh:mm:ss"),
+			(const char *)RDCheckDateTime(value,"hh:mm:ss"),
 			(const char *)cut_name);
   q=new RDSqlQuery(sql,cut_db);
   delete q;

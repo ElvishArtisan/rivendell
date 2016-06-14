@@ -76,6 +76,7 @@ class RDPodcast
  private:
   void SetRow(const QString &param,int value) const;
   void SetRow(const QString &param,const QString &value) const;
+  void SetRow(const QString &param,const QDateTime &datetime,const QString &value) const;
   QString podcast_keyname;
   unsigned podcast_id;
 };

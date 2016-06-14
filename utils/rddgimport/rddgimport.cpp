@@ -431,6 +431,12 @@ bool MainWidget::CheckSpot(const QString &isci)
   QDate today=QDate::currentDate();
   QDate killdate=dg_date_edit->date().addDays(RDDGIMPORT_KILLDATE_OFFSET);
 
+  QString endDateTimeSQL = "NULL";
+
+  if(killdate.isValid())
+    endDateTimeSQL = RDCheckDateTime(QDateTime(killdate,QTime(23,59,59)),
+                                    "yyyy-MM-dd hh:mm:ss");
+
   sql=QString("select CUT_NAME,CUTS.START_DATETIME,CUTS.END_DATETIME ")+
     "from CART left join CUTS on CART.NUMBER=CUTS.CART_NUMBER "+
     "where (CART.GROUP_NAME=\""+RDEscapeString(dg_svc->autospotGroup())+"\")&&"
@@ -443,7 +449,7 @@ bool MainWidget::CheckSpot(const QString &isci)
       if(q->value(1).isNull()) {
 	sql+="START_DATETIME=\""+today.toString("yyyy-MM-dd")+" 00:00:00\",";
       }
-      sql+="END_DATETIME=\""+killdate.toString("yyyy-MM-dd")+" 23:59:59\" ";
+      sql+="END_DATETIME="+endDateTimeSQL+" ";
       sql+="where CUT_NAME=\""+q->value(0).toString()+"\"";
       q1=new RDSqlQuery(sql);
       delete q1;

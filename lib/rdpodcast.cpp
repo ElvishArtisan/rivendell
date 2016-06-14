@@ -209,7 +209,7 @@ QDateTime RDPodcast::originDateTime() const
 
 void RDPodcast::setOriginDateTime(const QDateTime &datetime) const
 {
-  SetRow("ORIGIN_DATETIME",datetime.toString("yyyy-MM-dd hh:mm:ss"));
+  SetRow("ORIGIN_DATETIME",datetime,"yyyy-MM-dd hh:mm:ss");
 }
 
 
@@ -222,7 +222,7 @@ QDateTime RDPodcast::effectiveDateTime() const
 
 void RDPodcast::setEffectiveDateTime(const QDateTime &datetime) const
 {
-  SetRow("EFFECTIVE_DATETIME",datetime.toString("yyyy-MM-dd hh:mm:ss"));
+  SetRow("EFFECTIVE_DATETIME",datetime,"yyyy-MM-dd hh:mm:ss");
 }
 
 
@@ -394,6 +394,21 @@ void RDPodcast::SetRow(const QString &param,const QString &value) const
   sql=QString().sprintf("UPDATE PODCASTS SET %s=\"%s\" WHERE ID=%u",
 			(const char *)param,
 			(const char *)RDEscapeString(value),
+			podcast_id);
+  q=new RDSqlQuery(sql);
+  delete q;
+}
+
+
+void RDPodcast::SetRow(const QString &param,const QDateTime &value,
+                       const QString &format) const
+{
+  RDSqlQuery *q;
+  QString sql;
+
+  sql=QString().sprintf("UPDATE PODCASTS SET %s=%s WHERE ID=%u",
+			(const char *)param,
+			(const char *)RDCheckDateTime(value, format),
 			podcast_id);
   q=new RDSqlQuery(sql);
   delete q;
