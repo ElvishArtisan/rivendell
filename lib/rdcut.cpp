@@ -1060,7 +1060,8 @@ void RDCut::setMetadata(RDWaveData *data) const
   }
   if(data->daypartStartTime().isValid()&&data->daypartEndTime().isValid()&&
      (data->daypartStartTime()<data->daypartEndTime())) {
-    sql+="START_DAYPART="+RDCheckDateTime(data->daypartStartTime(),"hh:mm:ss")+","+
+    sql+="START_DAYPART="+
+      RDCheckDateTime(data->daypartStartTime(),"hh:mm:ss")+","+
       "END_DAYPART="+RDCheckDateTime(data->daypartEndTime(),"hh:mm:ss")+",";
   }
   if((data->hookStartPos()>=data->startPos())&&

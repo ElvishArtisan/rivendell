@@ -692,15 +692,15 @@ void RDCartSlot::LogPlayout(RDPlayDeck::State state)
       "EVENT_DATETIME="+RDCheckDateTime(eventDateTime,"yyyy-MM-dd hh:mm:ss")+
       ","+
       "EXT_START_TIME="+RDCheckDateTime(
-    		  slot_logline->extStartTime(),"hh:mm:ss")+","+
+                 slot_logline->extStartTime(),"hh:mm:ss")+","+
       "EXT_DATA=\""+RDEscapeString(slot_logline->extData())+"\","+
       "EXT_EVENT_ID=\""+RDEscapeString(slot_logline->extEventId())+"\","+
       "EXT_ANNC_TYPE=\""+RDEscapeString(slot_logline->extAnncType())+"\","+
       "EXT_CART_NAME=\""+RDEscapeString(slot_logline->extCartName())+"\","+
       "TITLE=\""+RDEscapeString(slot_logline->title())+"\","+
       "ARTIST=\""+RDEscapeString(slot_logline->artist())+"\","+
-      "SCHEDULED_TIME="+RDCheckDateTime(
-    		slot_logline->startTime(RDLogLine::Logged),"hh:mm:ss")+","+
+      "SCHEDULED_TIME="+
+      RDCheckDateTime(slot_logline->startTime(RDLogLine::Logged),"hh:mm:ss")+","+
       "ISRC=\""+RDEscapeString(slot_logline->isrc())+"\","+
       "PUBLISHER=\""+RDEscapeString(slot_logline->publisher())+"\","+
       "COMPOSER=\""+RDEscapeString(slot_logline->composer())+"\","+
