@@ -44,6 +44,10 @@ MainObject::MainObject(QObject *parent)
   export_escape_string="_";
   export_continue_after_error=false;
   export_allow_clobber=false;
+  export_samplerate=0;
+  export_bitrate=0;
+  export_channels=0;
+  export_quality=3;
 
   //
   // Read Command Options
@@ -57,6 +61,15 @@ MainObject::MainObject(QObject *parent)
   for(int i=0;i<(int)cmd->keys()-1;i++) {
     if(cmd->key(i)=="--allow-clobber") {
       export_allow_clobber=true;
+      cmd->setProcessed(i,true);
+    }
+    if(cmd->key(i)=="--bitrate") {
+      bool ok=false;
+      export_bitrate=cmd->value(i).toUInt(&ok);
+      if(!ok) {
+	fprintf(stderr,"rdexport: invalid bitrate\n");
+	exit(256);
+      }
       cmd->setProcessed(i,true);
     }
     if(cmd->key(i)=="--carts") {
@@ -80,6 +93,15 @@ MainObject::MainObject(QObject *parent)
       }
       cmd->setProcessed(i,true);
     }
+    if(cmd->key(i)=="--channels") {
+      bool ok=false;
+      export_channels=cmd->value(i).toUInt(&ok);
+      if((export_channels<1)||(export_channels>2)||(!ok)) {
+	fprintf(stderr,"rdexport: invalid --channels argument\n");
+	exit(256);
+      }
+      cmd->setProcessed(i,true);
+    }
     if(cmd->key(i)=="--continue-after-error") {
       export_continue_after_error=true;
       cmd->setProcessed(i,true);
@@ -92,12 +114,64 @@ MainObject::MainObject(QObject *parent)
       export_escape_string=cmd->value(i);
       cmd->setProcessed(i,true);
     }
+    if(cmd->key(i)=="--format") {
+      export_format=cmd->value(i);
+      bool ok=false;
+      if(export_format.lower()=="flac") {
+	export_set_format=RDSettings::Flac;
+	ok=true;
+      }
+      if(export_format.lower()=="mp2") {
+	export_set_format=RDSettings::MpegL2;
+	ok=true;
+      }
+      if(export_format.lower()=="mp3") {
+	export_set_format=RDSettings::MpegL3;
+	ok=true;
+      }
+      if(export_format.lower()=="pcm16") {
+	export_set_format=RDSettings::Pcm16;
+	ok=true;
+      }
+      if(export_format.lower()=="pcm24") {
+	export_set_format=RDSettings::Pcm24;
+	ok=true;
+      }
+      if(export_format.lower()=="vorbis") {
+	export_set_format=RDSettings::OggVorbis;
+	ok=true;
+      }
+      if(!ok) {
+	fprintf(stderr,"rdexport: unknown format \"%s\"\n",
+		(const char *)export_format);
+	exit(256);
+      }
+      cmd->setProcessed(i,true);
+    }
     if(cmd->key(i)=="--group") {
       export_groups.push_back(cmd->value(i));
       cmd->setProcessed(i,true);
     }
     if(cmd->key(i)=="--metadata-pattern") {
       export_metadata_pattern=cmd->value(i);
+      cmd->setProcessed(i,true);
+    }
+    if(cmd->key(i)=="--quality") {
+      bool ok=false;
+      export_quality=cmd->value(i).toInt(&ok);
+      if((export_quality<-1)||(export_quality>10)||(!ok)) {
+	fprintf(stderr,"rdexport: invalid --quality value\n");
+	exit(256);
+      }
+      cmd->setProcessed(i,true);
+    }
+    if(cmd->key(i)=="--samplerate") {
+      bool ok=false;
+      export_samplerate=cmd->value(i).toUInt(&ok);
+      if(!ok) {
+	fprintf(stderr,"rdexport: invalid samplerate\n");
+	exit(256);
+      }
       cmd->setProcessed(i,true);
     }
     if(cmd->key(i)=="--verbose") {
@@ -283,32 +357,57 @@ void MainObject::ExportCut(RDCart *cart,RDCut *cut)
     }
   }
   RDSettings settings;
-  switch(info->format()) {
-  case RDWaveFile::Pcm16:
-    settings.setFormat(RDSettings::Pcm16);
-    break;
+  if(export_format.isEmpty()) {
+    switch(info->format()) {
+    case RDWaveFile::Pcm16:
+      settings.setFormat(RDSettings::Pcm16);
+      break;
 
-  case RDWaveFile::Pcm24:
-    settings.setFormat(RDSettings::Pcm24);
-    break;
+    case RDWaveFile::Pcm24:
+      settings.setFormat(RDSettings::Pcm24);
+      break;
 
-  case RDWaveFile::MpegL2:
-    settings.setFormat(RDSettings::MpegL2);
-    break;
+    case RDWaveFile::MpegL2:
+      settings.setFormat(RDSettings::MpegL2);
+      break;
 
-  default:
-    fprintf(stderr,"rdexport: unsupported source audio format\n");
-    if(export_continue_after_error) {
-      return;
-    }
-    else {
-      exit(256);
+    default:
+      fprintf(stderr,"rdexport: unsupported source audio format\n");
+      if(export_continue_after_error) {
+	return;
+      }
+      else {
+	exit(256);
+      }
     }
   }
-  settings.setChannels(info->channels());
-  settings.setSampleRate(info->sampleRate());
-  settings.setBitRate(info->bitRate());
-
+  else {
+    settings.setFormat(export_set_format);
+  }
+  if(export_channels==0) {
+    settings.setChannels(info->channels());
+  }
+  else {
+    settings.setChannels(export_channels);
+  }
+  if(export_samplerate==0) {
+    settings.setSampleRate(info->sampleRate());
+  }
+  else {
+    settings.setSampleRate(export_samplerate);
+  }
+  if(export_bitrate==0) {
+    if(info->bitRate()==0) {
+      settings.setBitRate(256000);
+    }
+    else {
+      settings.setBitRate(info->bitRate());
+    }
+  }
+  else {
+    settings.setBitRate(export_bitrate);
+  }
+  settings.setQuality(export_quality);
   Verbose(QString("exporting cart/cut ")+
 	  QString().sprintf("%06u/%03d",RDCut::cartNumber(cut->cutName()),
 		    RDCut::cutNumber(cut->cutName()))+" ["+cart->title()+"]");

@@ -56,6 +56,12 @@ class MainObject : public QObject
   std::vector<QString> export_groups;
   QString export_metadata_pattern;
   QString export_output_to;
+  QString export_format;
+  RDSettings::Format export_set_format;
+  unsigned export_samplerate;
+  unsigned export_bitrate;
+  unsigned export_channels;
+  int export_quality;
   RDConfig *export_config;
   RDRipc *export_ripc;
   RDStation *export_station;

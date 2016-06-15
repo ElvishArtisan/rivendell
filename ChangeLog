@@ -15236,3 +15236,7 @@
 2016-06-14 Fred Gleason <fredg@paravelsystems.com>
 	* Merged fixes for NULL SQL date-time values from Wayne Merricks
 	[GitHub pull request #000133].
+2016-06-15 Fred Gleason <fredg@paravelsystems.com>
+	* Added '--bitrate=', '--channels=', '--format=', '--quality='
+	and '--samplerate=' to rdexport(1) in 'utils/rdexport/rdexport.cpp'
+	and 'utils/rdexport/rdexport.h'.
