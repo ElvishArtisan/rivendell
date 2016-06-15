@@ -48,6 +48,7 @@ MainObject::MainObject(QObject *parent)
   export_bitrate=0;
   export_channels=0;
   export_quality=3;
+  export_xml=false;
 
   //
   // Read Command Options
@@ -176,6 +177,10 @@ MainObject::MainObject(QObject *parent)
     }
     if(cmd->key(i)=="--verbose") {
       export_verbose=true;
+      cmd->setProcessed(i,true);
+    }
+    if(cmd->key(i)=="--xml") {
+      export_xml=true;
       cmd->setProcessed(i,true);
     }
     if(!cmd->processed(i)) {
@@ -419,7 +424,22 @@ void MainObject::ExportCut(RDCart *cart,RDCut *cut)
   conv->setEnableMetadata(true);
 
   if((export_err=conv->runExport(export_user->name(),export_user->password(),
-				 &conv_err))!=RDAudioExport::ErrorOk) {
+				 &conv_err))==RDAudioExport::ErrorOk) {
+    if(export_xml) {
+      FILE *f=NULL;
+      QStringList f0=f0.split(".",conv->destinationFile(),true);
+      QString filename;
+      for(unsigned i=0;i<f0.size()-1;i++) {
+	filename+=f0[i]+".";
+      }
+      filename+="xml";
+      if((f=fopen(filename,"w"))!=NULL) {
+	fprintf(f,"%s\n",(const char *)cart->xml(true,cut->cutNumber()));
+	fclose(f);
+      }
+    }
+  }
+  else {
     fprintf(stderr,"rdexport: exporter error for output file \"%s\" [%s]\n",
 	    (const char *)conv->destinationFile(),
 	    (const char *)RDAudioExport::errorText(export_err,conv_err));

@@ -380,6 +380,18 @@
       </listitem>
     </varlistentry>
 
+    <varlistentry>
+      <term>
+	<option>--xml</option>
+      </term>
+      <listitem>
+	<para>
+	  Generate an XML file for each generated audio file containing
+	  its cart/cut metadata.
+	</para>
+      </listitem>
+    </varlistentry>
+
   </variablelist>
 </refsect1>
 

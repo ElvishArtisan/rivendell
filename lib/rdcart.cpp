@@ -971,7 +971,7 @@ bool RDCart::validateLengths(int len) const
 }
 
 
-QString RDCart::xml(bool include_cuts) const
+QString RDCart::xml(bool include_cuts,int cutnum) const
 {
 #ifdef WIN32
   return QString();
@@ -1040,15 +1040,24 @@ QString RDCart::xml(bool include_cuts) const
       case RDCart::Audio:
 	if(include_cuts) {
 	  ret+="<cutList>\n";
-	  sql=QString().sprintf("select CUT_NAME from CUTS where CART_NUMBER=%u",
-				cart_number);
-	  q1=new RDSqlQuery(sql);
-	  while(q1->next()) {
-	    cut=new RDCut(q1->value(0).toString());
-	    ret+=cut->xml();
+	  if(cutnum<0) {
+	    sql=QString("select CUT_NAME from CUTS where ")+
+	      QString().sprintf("(CART_NUMBER=%u)",cart_number);
+	    q1=new RDSqlQuery(sql);
+	    while(q1->next()) {
+	      cut=new RDCut(q1->value(0).toString());
+	      ret+=cut->xml();
+	      delete cut;
+	    }
+	    delete q1;
+	  }
+	  else {
+	    cut=new RDCut(RDCut::cutName(cart_number,cutnum));
+	    if(cut->exists()) {
+	      ret+=cut->xml();
+	    }
 	    delete cut;
 	  }
-	  delete q1;
 	  ret+="</cutList>\n";
 	}
 	break;

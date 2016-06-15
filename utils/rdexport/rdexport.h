@@ -62,6 +62,7 @@ class MainObject : public QObject
   unsigned export_bitrate;
   unsigned export_channels;
   int export_quality;
+  bool export_xml;
   RDConfig *export_config;
   RDRipc *export_ripc;
   RDStation *export_station;
