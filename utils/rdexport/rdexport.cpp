@@ -434,7 +434,8 @@ void MainObject::ExportCut(RDCart *cart,RDCut *cut)
       }
       filename+="xml";
       if((f=fopen(filename,"w"))!=NULL) {
-	fprintf(f,"%s\n",(const char *)cart->xml(true,cut->cutNumber()));
+	fprintf(f,"%s\n",
+		(const char *)cart->xml(true,&settings,cut->cutNumber()));
 	fclose(f);
       }
     }

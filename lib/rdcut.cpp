@@ -1122,7 +1122,7 @@ void RDCut::setMetadata(RDWaveData *data) const
 }
 
 
-QString RDCut::xml() const
+QString RDCut::xml(RDSettings *settings) const
 {
 #ifdef WIN32
   return QString();
@@ -1228,10 +1228,18 @@ QString RDCut::xml() const
     ret+="  "+RDXmlField("playCounter",q->value(21).toUInt());
     ret+="  "+RDXmlField("localCounter",q->value(22).toUInt());
     ret+="  "+RDXmlField("validity",q->value(23).toUInt());
-    ret+="  "+RDXmlField("codingFormat",q->value(24).toUInt());
-    ret+="  "+RDXmlField("sampleRate",q->value(25).toUInt());
-    ret+="  "+RDXmlField("bitRate",q->value(26).toUInt());
-    ret+="  "+RDXmlField("channels",q->value(27).toUInt());
+    if(settings==NULL) {
+      ret+="  "+RDXmlField("codingFormat",q->value(24).toUInt());
+      ret+="  "+RDXmlField("sampleRate",q->value(25).toUInt());
+      ret+="  "+RDXmlField("bitRate",q->value(26).toUInt());
+      ret+="  "+RDXmlField("channels",q->value(27).toUInt());
+    }
+    else {
+      ret+="  "+RDXmlField("codingFormat",(int)settings->format());
+      ret+="  "+RDXmlField("sampleRate",settings->sampleRate());
+      ret+="  "+RDXmlField("bitRate",settings->bitRate());
+      ret+="  "+RDXmlField("channels",settings->channels());
+    }
     ret+="  "+RDXmlField("playGain",q->value(28).toUInt());
     ret+="  "+RDXmlField("startPoint",q->value(29).toInt());
     ret+="  "+RDXmlField("endPoint",q->value(30).toInt());

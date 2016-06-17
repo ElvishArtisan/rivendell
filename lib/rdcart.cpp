@@ -971,7 +971,7 @@ bool RDCart::validateLengths(int len) const
 }
 
 
-QString RDCart::xml(bool include_cuts,int cutnum) const
+QString RDCart::xml(bool include_cuts,RDSettings *settings,int cutnum) const
 {
 #ifdef WIN32
   return QString();
@@ -1046,7 +1046,7 @@ QString RDCart::xml(bool include_cuts,int cutnum) const
 	    q1=new RDSqlQuery(sql);
 	    while(q1->next()) {
 	      cut=new RDCut(q1->value(0).toString());
-	      ret+=cut->xml();
+	      ret+=cut->xml(settings);
 	      delete cut;
 	    }
 	    delete q1;
@@ -1054,7 +1054,7 @@ QString RDCart::xml(bool include_cuts,int cutnum) const
 	  else {
 	    cut=new RDCut(RDCut::cutName(cart_number,cutnum));
 	    if(cut->exists()) {
-	      ret+=cut->xml();
+	      ret+=cut->xml(settings);
 	    }
 	    delete cut;
 	  }

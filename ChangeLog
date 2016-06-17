@@ -15246,3 +15246,6 @@
 2016-06-17 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in 'lib/rdcut.cpp' that caused a SQL error when
 	generating an XML 'cutList' object.
+2016-06-17 Fred Gleason <fredg@paravelsystems.com>
+	* Modified rdexport(1) to list correct audio format parameters
+	in the XML output.
