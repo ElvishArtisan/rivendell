@@ -362,7 +362,6 @@ bool RDSvc::import(ImportSource src,const QDate &date,const QString &break_str,
   QString title;
   QString data_buf;
   QString eventid_buf;
-  //  char annctype_buf[RD_MAX_IMPORT_LINE_LENGTH];
   QString annctype_buf;
   QString os_flag;
   int cartlen;
@@ -441,6 +440,31 @@ bool RDSvc::import(ImportSource src,const QDate &date,const QString &break_str,
     parser_table="IMPORT_TEMPLATES";
     parser_name=importTemplate(src);
   }
+  sql=QString("select ")+
+    src_str+"CART_OFFSET,"+         // 00
+    src_str+"CART_LENGTH,"+         // 01
+    src_str+"DATA_OFFSET,"+         // 02
+    src_str+"DATA_LENGTH,"+         // 03
+    src_str+"EVENT_ID_OFFSET,"+     // 04
+    src_str+"EVENT_ID_LENGTH,"+     // 05
+    src_str+"ANNC_TYPE_OFFSET,"+    // 06
+    src_str+"ANNC_TYPE_LENGTH,"+    // 07
+    src_str+"TITLE_OFFSET,"+        // 08
+    src_str+"TITLE_LENGTH,"+        // 09
+    src_str+"HOURS_OFFSET,"+        // 10
+    src_str+"HOURS_LENGTH,"+        // 11
+    src_str+"MINUTES_OFFSET,"+      // 12
+    src_str+"MINUTES_LENGTH,"+      // 13
+    src_str+"SECONDS_OFFSET,"+      // 14
+    src_str+"SECONDS_LENGTH,"+      // 15
+    src_str+"LEN_HOURS_OFFSET,"+    // 16
+    src_str+"LEN_HOURS_LENGTH,"+    // 17
+    src_str+"LEN_MINUTES_OFFSET,"+  // 18
+    src_str+"LEN_MINUTES_LENGTH,"+  // 19
+    src_str+"LEN_SECONDS_OFFSET,"+  // 20
+    src_str+"LEN_SECONDS_LENGTH "+  // 21
+    "from "+parser_table+" where NAME=\""+RDEscapeString(parser_name)+"\"";
+  /*
   sql=QString().sprintf("select %sCART_OFFSET,%sCART_LENGTH,\
                          %sDATA_OFFSET,%sDATA_LENGTH,		\
                          %sEVENT_ID_OFFSET,%sEVENT_ID_LENGTH,	\
@@ -477,6 +501,7 @@ bool RDSvc::import(ImportSource src,const QDate &date,const QString &break_str,
 			(const char *)src_str,
 			(const char *)parser_table,
 			(const char *)RDEscapeString(parser_name));
+  */
   q=new RDSqlQuery(sql);
   if(!q->first()) {
     delete q;
@@ -572,11 +597,11 @@ bool RDSvc::import(ImportSource src,const QDate &date,const QString &break_str,
       start_time_ok=false;
     }
     start_minutes=str_buf.mid(minutes_offset,minutes_length).toInt(&ok);
-    if((!ok)||(start_minutes<0)||(start_minutes>59)) {
+    if((!ok)||(start_minutes<0)) {
       start_time_ok=false;
     }
     start_seconds=str_buf.mid(seconds_offset,seconds_length).toInt(&ok);
-    if((!ok)||(start_seconds<0)) {
+    if((!ok)||(start_seconds<0)||(start_seconds>59)) {
       start_time_ok=false;
     }
 
@@ -980,12 +1005,12 @@ bool RDSvc::linkLog(RDSvc::ImportSource src,const QDate &date,
   emit generationProgress(24);
   delete src_event;
   delete dest_event;
-  printf("Import Table: %s\n",(const char *)import_name);
-  /*
+  //  printf("Import Table: %s\n",(const char *)import_name);
+
   sql=QString().sprintf("drop table `%s`",(const char *)import_name);
   q=new RDSqlQuery(sql);
   delete q;
-  */
+
   return true;
 }
 

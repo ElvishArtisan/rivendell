@@ -15252,3 +15252,7 @@
 2016-06-17 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in 'lib/rddownload.cpp' that caused download URLs
 	using 'https' protocol to fail to be properly escaped.
+2016-06-17 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'lib/rdsvc.cpp' that caused import events with
+	minute field values greater than '59' in the Start Time to fail
+	to be imported.
