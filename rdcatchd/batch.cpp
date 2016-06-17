@@ -59,6 +59,7 @@
 #include <rdlibrary_conf.h>
 #include <rdaudioconvert.h>
 #include <rdupload.h>
+#include <rdweb.h>
 #include <rddownload.h>
 
 void MainObject::catchConnectedData(int serial,bool state)
@@ -192,14 +193,15 @@ void MainObject::RunDownload(CatchEvent *evt)
   //
   // Execute Download
   //
+  evt->setTempName(BuildTempName(evt,"download"));
   LogLine(RDConfig::LogInfo,QString().
 	  sprintf("starting download of %s to %s, id=%d",
 		  (const char *)evt->resolvedUrl(),
 		  (const char *)evt->tempName(),
 		  evt->id()));
-  evt->setTempName(BuildTempName(evt,"download"));
   RDDownload *conv=new RDDownload(catch_config->stationName(),this);
-  conv->setSourceUrl(evt->resolvedUrl());
+  
+  conv->setSourceUrl(RDUrlEscape(evt->resolvedUrl()));
   conv->setDestinationFile(evt->tempName());
   QString url_username=evt->urlUsername();
   QString url_password=evt->urlPassword();

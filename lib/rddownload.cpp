@@ -131,8 +131,8 @@ RDDownload::ErrorCode RDDownload::runDownload(const QString &username,
   // otherwise some versions of LibCurl will throw a 'bad/illegal format' 
   // error.
   //
-  strncpy(url,conv_src_url.toString(conv_src_url.protocol().lower()=="http"),
-	  1024);
+  strncpy(url,conv_src_url.
+	  toString(conv_src_url.protocol().lower().left(4)=="http"),1024);
   curl_easy_setopt(curl,CURLOPT_URL,url);
   curl_easy_setopt(curl,CURLOPT_WRITEDATA,f);
   strncpy(userpwd,username+":"+password,256);
