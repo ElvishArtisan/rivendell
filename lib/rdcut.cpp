@@ -1131,18 +1131,48 @@ QString RDCut::xml() const
   RDSqlQuery *q;
   QString ret="";
 
-  sql=QString().sprintf("select EVERGREEN,DESCRIPTION,OUTCUE,ISRC,ISCI,\
-                         LENGTH,ORIGIN_DATETIME,START_DATETIME,END_DATETIME,\
-                         SUN,MON,TUE,WED,THU,FRI,SAT,START_DAYPART,END_DAYPART,\
-                         ORIGIN_NAME,WEIGHT,LAST_PLAY_DATETIME,\
-                         PLAY_COUNTER,LOCAL_COUNTER,VALIDITY,CODING_FORMAT,\
-                         SAMPLE_RATE,BIT_RATE,CHANNELS,PLAY_GAIN,START_POINT,\
-                         END_POINT,FADEUP_POINT,FADEDOWN_POINT,\
-                         SEGUE_START_POINT,SEGUE_END_POINT,SEGUE_GAIN\
-                         HOOK_START_POINT,HOOK_END_POINT,\
-                         TALK_START_POINT,TALK_END_POINT \
-                         from CUTS where CUT_NAME=\"%s\"",
-			(const char *)cut_name);
+  sql=QString("select ")+
+    "EVERGREEN,"+              // 00
+    "DESCRIPTION,"+            // 01
+    "OUTCUE,"+                 // 02
+    "ISRC,"+                   // 03
+    "ISCI,"+                   // 04
+    "LENGTH,"+                 // 05
+    "ORIGIN_DATETIME,"+        // 06
+    "START_DATETIME,"+         // 07
+    "END_DATETIME,"+           // 08
+    "SUN,"+                    // 09
+    "MON,"+                    // 10
+    "TUE,"+                    // 11
+    "WED,"+                    // 12
+    "THU,"+                    // 13
+    "FRI,"+                    // 14
+    "SAT,"+                    // 15
+    "START_DAYPART,"+          // 16
+    "END_DAYPART,"+            // 17
+    "ORIGIN_NAME,"+            // 18
+    "WEIGHT,"+                 // 19
+    "LAST_PLAY_DATETIME,"+     // 20
+    "PLAY_COUNTER,"+           // 21
+    "LOCAL_COUNTER,"+          // 22
+    "VALIDITY,"+               // 23
+    "CODING_FORMAT,"+          // 24
+    "SAMPLE_RATE,"+            // 25
+    "BIT_RATE,"+               // 26
+    "CHANNELS,"+               // 27
+    "PLAY_GAIN,"+              // 28
+    "START_POINT,"+            // 29
+    "END_POINT,"+              // 30
+    "FADEUP_POINT,"+           // 31
+    "FADEDOWN_POINT,"+         // 32
+    "SEGUE_START_POINT,"+      // 33
+    "SEGUE_END_POINT,"+        // 34
+    "SEGUE_GAIN,"+             // 35
+    "HOOK_START_POINT,"+       // 36
+    "HOOK_END_POINT,"+         // 37
+    "TALK_START_POINT,"+       // 38
+    "TALK_END_POINT "+         // 39
+    "from CUTS where CUT_NAME=\""+cut_name+"\"";
   q=new RDSqlQuery(sql);
   if(q->first()) {
     ret+="<cut>\n";
