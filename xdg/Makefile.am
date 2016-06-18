@@ -29,7 +29,7 @@ install-exec-am:
 	cp rivendell-rddgimport.desktop $(DESTDIR)@prefix@/share/applications/
 	cp rivendell-rddiscimport.desktop $(DESTDIR)@prefix@/share/applications/
 	cp rivendell-rdgpimon.desktop $(DESTDIR)@prefix@/share/applications/
-	cp rivendell-rdhpiinfo-root.desktop $(DESTDIR)@prefix@/share/applications/
+	if test -f ../rdhpi/.libs/librdhpi-@VERSION@.so ; then cp rivendell-rdhpiinfo-root.desktop $(DESTDIR)@prefix@/share/applications/ ; fi
 	cp rivendell-rdlibrary.desktop $(DESTDIR)@prefix@/share/applications/
 	cp rivendell-rdlogedit.desktop $(DESTDIR)@prefix@/share/applications/
 	cp rivendell-rdlogin.desktop $(DESTDIR)@prefix@/share/applications/
@@ -53,7 +53,7 @@ install-exec-am:
 	rm -f $(DESTDIR)$(prefix)/bin/rdalsaconfig-root
 	ln -s /usr/bin/consolehelper $(DESTDIR)$(prefix)/bin/rdalsaconfig-root
 	rm -f $(DESTDIR)$(prefix)/bin/rdhpiinfo-root
-	ln -s /usr/bin/consolehelper $(DESTDIR)$(prefix)/bin/rdhpiinfo-root
+	if test -f ../rdhpi/.libs/librdhpi-@VERSION@.so ; then ln -s /usr/bin/consolehelper $(DESTDIR)$(prefix)/bin/rdhpiinfo-root ; fi
 
 uninstall-local:	
 	rm -f $(DESTDIR)@prefix@/share/applications/rivendell-*.desktop

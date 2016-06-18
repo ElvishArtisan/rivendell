@@ -15256,3 +15256,6 @@
 	* Fixed a bug in 'lib/rdsvc.cpp' that caused import events with
 	minute field values greater than '59' in the Start Time to fail
 	to be imported.
+2016-06-18 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'xdg/Makefile.am' that caused the 'make rpm' target
+	to break when HPI support was not enabled.
