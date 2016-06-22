@@ -52,10 +52,10 @@ dnl
 AC_DEFUN([AR_GET_DISTRO],[]
   [
   AC_MSG_CHECKING(distribution)
-  ar_distro_name=$(./get_distro.sh NAME $AWK)
-  ar_distro_version=$(./get_distro.sh VERSION $AWK)
-  ar_distro_major=$(./get_distro.sh MAJOR $AWK)
-  ar_distro_minor=$(./get_distro.sh MINOR $AWK)
+  ar_distro_name=$(./get_distro.pl NAME)
+  ar_distro_version=$(./get_distro.pl VERSION)
+  ar_distro_major=$(./get_distro.pl MAJOR)
+  ar_distro_minor=$(./get_distro.pl MINOR)
   AC_MSG_RESULT([$ar_distro_name $ar_distro_version])
   ]
 )

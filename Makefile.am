@@ -116,7 +116,7 @@ doxygen:
 EXTRA_DIST = autogen.sh\
              build_win32.bat\
              CODINGSTYLE\
-             get_distro.sh\
+             get_distro.pl\
              get_target.sh\
              install-init.sh\
              make_slack.in\

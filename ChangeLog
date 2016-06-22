@@ -15259,3 +15259,5 @@
 2016-06-18 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in 'xdg/Makefile.am' that caused the 'make rpm' target
 	to break when HPI support was not enabled.
+2016-06-21 Fred Gleason <fredg@paravelsystems.com>
+	* Reimplemented 'get_distro.sh' as 'get_distro.pl'.
