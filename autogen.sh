@@ -20,6 +20,8 @@
 ##    Boston, MA  02111-1307  USA
 ##
 
+mkdir -p m4
+
 libtoolize=libtoolize
 if which glibtoolize > /dev/null 2>&1; then
       libtoolize=glibtoolize

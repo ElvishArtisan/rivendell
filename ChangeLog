@@ -15261,3 +15261,5 @@
 	to break when HPI support was not enabled.
 2016-06-21 Fred Gleason <fredg@paravelsystems.com>
 	* Reimplemented 'get_distro.sh' as 'get_distro.pl'.
+2016-06-22 Fred Gleason <fredg@paravelsystems.com>
+	* Added statment to create an 'm4' directory in 'autogen.sh'.
