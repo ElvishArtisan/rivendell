@@ -62,7 +62,8 @@
 #include "../icons/mic16.xpm"
 #include "../icons/traffic.xpm"
 
-EditLog::EditLog(QString logname,vector<RDLogLine> *clipboard,
+EditLog::EditLog(QString logname,QString *filter,QString *group,
+		 QString *schedcode,vector<RDLogLine> *clipboard,
 		 vector<QString> *new_logs,QWidget *parent)
   : QDialog(parent,"",true)
 {
@@ -73,6 +74,9 @@ EditLog::EditLog(QString logname,vector<RDLogLine> *clipboard,
   QColor system_button_color = palette().active().button();
 
   edit_logname=logname;
+  edit_filter=filter;
+  edit_group=group;
+  edit_schedcode=schedcode;
   edit_clipboard=clipboard;
   edit_newlogs=new_logs;
   edit_default_trans=RDLogLine::Play;
@@ -109,7 +113,6 @@ EditLog::EditLog(QString logname,vector<RDLogLine> *clipboard,
   title_font.setPixelSize(12);
   QFont length_font=QFont("Helvetica",10,QFont::Bold);
   length_font.setPixelSize(10);
-
   
   //
   // Create Icons
@@ -682,9 +685,9 @@ void EditLog::insertCartButtonData()
   edit_log_event->logLine(line)->setFadeupGain(-3000);
   edit_log_event->logLine(line)->setFadedownGain(-3000);
   EditLogLine *edit=
-new EditLogLine(edit_log_event->logLine(line),&edit_filter,&edit_group,
-				    edit_service_box->currentText(),
-				    &edit_group_list,edit_log_event,line,this);
+    new EditLogLine(edit_log_event->logLine(line),edit_filter,edit_group,
+		    edit_schedcode,edit_service_box->currentText(),
+		    &edit_group_list,edit_log_event,line,this);
   int ret=edit->exec();
   if(ret>=0) {
     edit_log_event->refresh(line);
@@ -827,9 +830,10 @@ void EditLog::editButtonData()
   switch(edit_log_event->logLine(line)->type()) {
       case RDLogLine::Cart:
       case RDLogLine::Macro:
-	edit_cart=new EditLogLine(edit_log_event->logLine(line),&edit_filter,
-				  &edit_group,edit_service_box->currentText(),
-				  &edit_group_list,edit_log_event,line,this);
+	edit_cart=
+	  new EditLogLine(edit_log_event->logLine(line),edit_filter,edit_group,
+			  edit_schedcode,edit_service_box->currentText(),
+			  &edit_group_list,edit_log_event,line,this);
 	if(edit_cart->exec()>=0) {
 	  edit_log_event->refresh(item->text(14).toInt());
 	  edit_changed=true;

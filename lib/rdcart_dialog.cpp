@@ -67,6 +67,9 @@ RDCartDialog::RDCartDialog(QString *filter,QString *group,QString *schedcode,
   cart_type=RDCart::All;
   cart_group=group;
   cart_schedcode=schedcode;
+  if(cart_schedcode->isNull()) {
+    *cart_schedcode=tr("ALL");
+  }
   cart_temp_allowed=NULL;
 #ifdef WIN32
   cart_filter_mode=RDStation::FilterSynchronous;
@@ -128,8 +131,7 @@ RDCartDialog::RDCartDialog(QString *filter,QString *group,QString *schedcode,
   //
   cart_filter_edit=new QLineEdit(this);
   cart_filter_edit->setValidator(validator);
-  cart_filter_label=new QLabel(cart_filter_edit,tr("Cart Filter:"),
-		   this,"cart_filter_label");
+  cart_filter_label=new QLabel(cart_filter_edit,tr("Cart Filter:"),this);
   cart_filter_label->setAlignment(AlignRight|AlignVCenter);
   cart_filter_label->setFont(button_font);
   connect(cart_filter_edit,SIGNAL(textChanged(const QString &)),

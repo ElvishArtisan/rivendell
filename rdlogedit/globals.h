@@ -27,7 +27,6 @@
 #include <rdconfig.h>
 #include <rdsystem.h>
 #include <rdlogedit_conf.h>
-#include <rdcart_dialog.h>
 #ifndef WIN32
 #include <rdcae.h>
 #endif  // WIN32
@@ -40,7 +39,6 @@ extern RDUser *rduser;
 extern RDRipc *rdripc;
 extern RDConfig *log_config;
 extern RDLogeditConf *rdlogedit_conf;
-extern RDCartDialog *log_cart_dialog;
 extern bool import_running;
 extern RDSystem *rdsystem;
 #ifndef WIN32

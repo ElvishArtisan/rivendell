@@ -30,8 +30,9 @@
 #include <edit_logline.h>
 
 EditLogLine::EditLogLine(RDLogLine *line,QString *filter,QString *group,
-			 QString svcname,RDGroupList *grplist,
-			 RDLogEvent *log,int lineno,QWidget *parent)
+			 QString *schedcode,QString svcname,
+			 RDGroupList *grplist,RDLogEvent *log,int lineno,
+			 QWidget *parent)
   : QDialog(parent,"",true)
 {
   //
@@ -47,6 +48,7 @@ EditLogLine::EditLogLine(RDLogLine *line,QString *filter,QString *group,
   edit_logline=line;
   edit_filter=filter;
   edit_group=group;
+  edit_schedcode=schedcode;
   edit_service=svcname;
   edit_group_list=grplist;
   edit_log_event=log;
@@ -63,6 +65,19 @@ EditLogLine::EditLogLine(RDLogLine *line,QString *filter,QString *group,
   normal_font.setPixelSize(12);
   QFont radio_font=QFont("Helvetica",10,QFont::Normal);
   radio_font.setPixelSize(10);
+
+  //
+  // Cart Picker
+  //
+#ifdef WIN32
+  edit_cart_dialog=new RDCartDialog(&edit_filter,&edit_group,&edit_schedcode,
+				    NULL,NULL,rdstation_conf,rdsystem,
+				    log_config,this);
+#else
+  edit_cart_dialog=new RDCartDialog(edit_filter,edit_group,edit_schedcode,
+				    rdcae,rdripc,rdstation_conf,rdsystem,
+				    log_config,this);
+#endif
 
   //
   // Time Type
@@ -246,6 +261,7 @@ EditLogLine::EditLogLine(RDLogLine *line,QString *filter,QString *group,
 
 EditLogLine::~EditLogLine()
 {
+  delete edit_cart_dialog;
 }
 
 
@@ -268,7 +284,7 @@ void EditLogLine::selectCartData()
   if(!ok) {
     cartnum=-1;
   }
-  if(log_cart_dialog->exec(&cartnum,RDCart::All,&edit_service,1,
+  if(edit_cart_dialog->exec(&cartnum,RDCart::All,&edit_service,1,
 			   rduser->name(),rduser->password())==0) {
     FillCart(cartnum);
   }

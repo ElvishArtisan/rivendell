@@ -15263,3 +15263,6 @@
 	* Reimplemented 'get_distro.sh' as 'get_distro.pl'.
 2016-06-22 Fred Gleason <fredg@paravelsystems.com>
 	* Added statment to create an 'm4' directory in 'autogen.sh'.
+2016-06-23 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored layout of dialogs in rdlogedit(1) so as to display
+	dialog heirarchy correctly.

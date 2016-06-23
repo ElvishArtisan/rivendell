@@ -32,6 +32,7 @@
 #include <qcheckbox.h>
 #include <qlabel.h>
 
+#include <rdcart_dialog.h>
 #include <rdtransportbutton.h>
 #include <rdlog.h>
 #include <rdlog_event.h>
@@ -51,8 +52,9 @@ class EditLog : public QDialog
 {
  Q_OBJECT
  public:
-  EditLog(QString logname,vector<RDLogLine> *clipboard,
-	  vector<QString> *new_logs,QWidget *parent=0);
+ EditLog(QString logname,QString *filter,QString *group,QString *schedcode,
+	 vector<RDLogLine> *clipboard,vector<QString> *new_logs,
+	 QWidget *parent=0);
   ~EditLog();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
@@ -108,6 +110,9 @@ class EditLog : public QDialog
   std::vector<unsigned> edit_deleted_tracks;
   std::vector<QString> *edit_newlogs;
   QString edit_logname;
+  QString *edit_filter;
+  QString *edit_group;
+  QString *edit_schedcode;
   QLabel *edit_description_label;
   QLineEdit *edit_description_edit;
   QLabel *edit_service_label;
@@ -125,8 +130,6 @@ class EditLog : public QDialog
   QLabel *edit_enddate_label;
   QCheckBox *edit_enddate_box;
   DropListView *edit_log_list;
-  QString edit_filter;
-  QString edit_group;
   QPixmap *edit_playout_map;
   QPixmap *edit_macro_map;
   QPixmap *edit_marker_map;
@@ -178,5 +181,4 @@ class EditLog : public QDialog
 };
 
 
-#endif
-
+#endif  // EDIT_LOG_H

@@ -30,6 +30,7 @@
 #include <qbuttongroup.h>
 #include <qspinbox.h>
 
+#include <rdcart_dialog.h>
 #include <rdlog_event.h>
 #include <rdlog_line.h>
 #include <rdgroup_list.h>
@@ -39,8 +40,8 @@ class EditLogLine : public QDialog
 {
   Q_OBJECT
  public:
-  EditLogLine(RDLogLine *,QString *filter,QString *group,QString svcname,
-	      RDGroupList *grplist,RDLogEvent *log,int lineno,
+  EditLogLine(RDLogLine *,QString *filter,QString *group,QString *schedcode,
+	      QString svcname,RDGroupList *grplist,RDLogEvent *log,int lineno,
 	      QWidget *parent=0);
   ~EditLogLine();
   QSize sizeHint() const;
@@ -71,8 +72,10 @@ class EditLogLine : public QDialog
   QLineEdit *edit_cart_edit;
   QLineEdit *edit_title_edit;
   QLineEdit *edit_artist_edit;
+  RDCartDialog *edit_cart_dialog;
   QString *edit_filter;
   QString *edit_group;
+  QString *edit_schedcode;
   QButtonGroup *edit_grace_group;
   RDTimeEdit *edit_grace_edit;
   QString edit_service;

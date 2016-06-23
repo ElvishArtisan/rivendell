@@ -228,19 +228,6 @@ MainWidget::MainWidget(QWidget *parent)
   log_redball_map=new QPixmap(redball_xpm);
 
   //
-  // Cart Picker
-  //
-#ifdef WIN32
-  log_cart_dialog=new RDCartDialog(&log_filter,&log_group,&log_schedcode,
-				   NULL,NULL,rdstation_conf,rdsystem,
-				   log_config,this);
-#else
-  log_cart_dialog=new RDCartDialog(&log_filter,&log_group,&log_schedcode,
-				   rdcae,rdripc,rdstation_conf,rdsystem,
-				   log_config,this);
-#endif
-
-  //
   // User
   //
 #ifndef WIN32
@@ -486,7 +473,8 @@ void MainWidget::addData()
     }
     delete q;
     RDCreateLogTable(RDLog::tableName(logname));
-    EditLog *editlog=new EditLog(logname,&log_clipboard,&newlogs,this);
+    EditLog *editlog=new EditLog(logname,&log_filter,&log_group,&log_schedcode,
+				 &log_clipboard,&newlogs,this);
     editlog->exec();
     delete editlog;
     ListListViewItem *item=new ListListViewItem(log_log_list);
@@ -511,7 +499,8 @@ void MainWidget::editData()
   if(item==NULL) {
     return;
   }
-  EditLog *log=new EditLog(item->text(1),&log_clipboard,&newlogs,this);
+  EditLog *log=new EditLog(item->text(1),&log_filter,&log_group,&log_schedcode,
+			   &log_clipboard,&newlogs,this);
   log->exec();
   delete log;
   RefreshItem(item);
