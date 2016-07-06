@@ -15266,3 +15266,5 @@
 2016-06-23 Fred Gleason <fredg@paravelsystems.com>
 	* Refactored layout of dialogs in rdlogedit(1) so as to display
 	dialog heirarchy correctly.
+2016-07-07 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.14.1int00.
