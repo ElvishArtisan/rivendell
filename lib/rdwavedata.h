@@ -25,13 +25,26 @@
 #include <qstringlist.h>
 #include <qdatetime.h>
 
+#include <rdsettings.h>
+
 class RDWaveData
 {
  public:
   enum EndType {UnknownEnd='N',ColdEnd='C',FadeEnd='F'};
+  enum CartType {AudioType=0,MacroType=1};
+  enum UsageCode {UsageFeature=0,UsageOpen=1,UsageClose=2,UsageTheme=3,
+		  UsageBackground=4,UsagePromo=5,UsageLast=6};
   RDWaveData();
   bool metadataFound() const;
   void setMetadataFound(bool state);
+  unsigned cartNumber() const;
+  void setCartNumber(unsigned cartnum);
+  int cutNumber() const;
+  void setCutNumber(int cutnum);
+  QString cutName() const;
+  void setCutName(const QString &str);
+  CartType cartType() const;
+  void setCartType(CartType type);
   QString title() const;
   void setTitle(const QString &str);
   QString artist() const;
@@ -52,8 +65,8 @@ class RDWaveData
   void setComposer(const QString &str);
   QString publisher() const;
   void setPublisher(const QString &str);
-  int usageCode() const;
-  void setUsageCode(int code);
+  UsageCode usageCode() const;
+  void setUsageCode(UsageCode code);
   QStringList schedCodes() const;
   void setSchedCodes(const QStringList &codes);
   QString licensingOrganization() const;
@@ -90,6 +103,40 @@ class RDWaveData
   void setOutCue(const QString &str);
   RDWaveData::EndType endType() const;
   void setEndType(RDWaveData::EndType type);
+
+  int forcedLength() const;
+  void setForcedLength(int msecs);
+  int averageLength() const;
+  void setAverageLength(int msecs);
+  int lengthDeviation() const;
+  void setLengthDeviation(int msecs);
+  int averageSegueLength() const;
+  void setAverageSegueLength(int msecs);
+  int averageHookLength() const;
+  void setAverageHookLength(int msecs);
+  int cutQuantity() const;
+  void setCutQuantity(int n);
+  int lastCutPlayed() const;
+  void setLastCutPlayed(int cutnum);
+  QDateTime lastPlayDatetime() const;
+  void setLastPlayDatetime(const QDateTime &dt);
+  int length() const;
+  void setLength(int msecs);
+  bool enforceLength() const;
+  void setEnforceLength(bool state);
+  bool asyncronous() const;
+  void setAsyncronous(bool state);
+  QString owner() const;
+  void setOwner(const QString &str);
+  QDateTime metadataDatetime() const;
+  void setMetadataDatetime(const QDateTime &dt);
+
+  bool dayOfWeek(int dow) const;
+  void setDayOfWeek(int dow,bool state);
+  int weight() const;
+  void setWeight(int weight);
+  bool evergreen() const;
+  void setEvergreen(bool state);
   int introStartPos() const;
   void setIntroStartPos(int msec);
   int introEndPos() const;
@@ -98,6 +145,8 @@ class RDWaveData
   void setSegueStartPos(int msec);
   int segueEndPos() const;
   void setSegueEndPos(int msec);
+  int segueGain() const;
+  void setSegueGain(int lvl);
   int startPos() const;
   void setStartPos(int msec);
   int endPos() const;
@@ -130,10 +179,24 @@ class RDWaveData
   void setDaypartStartTime(const QTime &time);
   QTime daypartEndTime() const;
   void setDaypartEndTime(const QTime &time);
+  unsigned playCounter() const;
+  void setPlayCounter(unsigned count);
+  RDSettings audioSettings() const;
+  void setAudioSettings(const RDSettings &settings);
+  int playGain() const;
+  void setPlayGain(int lvl);
+  QString dump() const;
   void clear();
+  static QString endTypeText(EndType type);
+  static QString cartTypeText(CartType type);
+  static QString usageText(UsageCode code);
 
  private:
   bool data_metadata_found;
+  unsigned data_cart_number;
+  CartType data_cart_type;
+  int data_cut_number;
+  QString data_cutname;
   QString data_title;
   QString data_artist;
   QString data_album;
@@ -144,7 +207,7 @@ class RDWaveData
   QString data_agency;
   QString data_composer;
   QString data_publisher;
-  int data_usage_code;
+  UsageCode data_usage_code;
   QStringList data_sched_codes;
   QString data_licensing_organization;
   QString data_copyright_notice;
@@ -162,11 +225,30 @@ class RDWaveData
   QString data_isci;
   QString data_mcn;
   QString data_out_cue;
-  RDWaveData::EndType data_end_type;
+  EndType data_end_type;
+
+  int data_length;
+  int data_forced_length;
+  int data_average_length;
+  int data_length_deviation;
+  int data_average_segue_length;
+  int data_average_hook_length;
+  int data_cut_quantity;
+  int data_last_cut_played;
+  QDateTime data_last_play_datetime;
+  bool data_enforce_length;
+  bool data_asyncronous;
+  QString data_owner;
+  QDateTime data_metadata_datetime;
+
+  bool data_evergreen;
+  bool data_day_of_week[7];
+  int data_weight;
   int data_intro_start_pos;
   int data_intro_end_pos;
   int data_segue_start_pos;
   int data_segue_end_pos;
+  int data_segue_gain;
   int data_start_pos;
   int data_end_pos;
   int data_hook_start_pos;
@@ -188,6 +270,9 @@ class RDWaveData
   QTime data_end_time;
   QTime data_daypart_start_time;
   QTime data_daypart_end_time;
+  unsigned data_play_counter;
+  RDSettings data_settings;
+  int data_play_gain;
 };
 
 

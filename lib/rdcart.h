@@ -20,6 +20,7 @@
 
 #include <qdatetime.h>
 #include <qstringlist.h>
+#include <qvariant.h>
 
 #include <rdconfig.h>
 #include <rdwavedata.h>
@@ -158,8 +159,10 @@ class RDCart
   static bool removeCutAudio(RDStation *station,RDUser *user,unsigned cart_num,
 			     const QString &cutname,RDConfig *config);
   static void removePending(RDStation *station,RDUser *user,RDConfig *config);
+  static unsigned readXml(std::vector<RDWaveData> *data,const QString &xml);
   
  private:
+  static QVariant GetXmlValue(const QString &tag,const QString &line);
   QString GetNextCut(RDSqlQuery *q) const;
   int GetNextFreeCut() const;
   RDCut::Validity ValidateCut(RDSqlQuery *q,bool enforce_length,

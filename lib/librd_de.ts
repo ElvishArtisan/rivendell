@@ -427,6 +427,42 @@
         <source>Cut Log</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>unknown</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>feature</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>open</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>close</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>theme</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>background</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>promo</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>cold</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>fade</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RDAddCart</name>

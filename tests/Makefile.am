@@ -33,6 +33,7 @@ noinst_PROGRAMS = audio_convert_test\
                   audio_import_test\
                   audio_peaks_test\
                   datedecode_test\
+                  rdxml_parse_test\
                   reserve_carts_test\
                   sas_switch_torture\
                   sas_torture\
@@ -55,6 +56,9 @@ audio_peaks_test_LDADD = @LIB_RDLIBS@ @LIBVORBIS@
 
 dist_datedecode_test_SOURCES = datedecode_test.cpp datedecode_test.h
 datedecode_test_LDADD = @LIB_RDLIBS@ @LIBVORBIS@
+
+dist_rdxml_parse_test_SOURCES = rdxml_parse_test.cpp rdxml_parse_test.h
+rdxml_parse_test_LDADD = @LIB_RDLIBS@ @LIBVORBIS@
 
 dist_reserve_carts_test_SOURCES = reserve_carts_test.cpp reserve_carts_test.h
 reserve_carts_test_LDADD = @LIB_RDLIBS@ @LIBVORBIS@

@@ -15268,3 +15268,13 @@
 	dialog heirarchy correctly.
 2016-07-07 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 2.14.1int00.
+2016-07-11 Fred Gleason <fredg@paravelsystems.com>
+	* Added rdxml_parse_test(1) in 'tests/'.
+	* Added a RDCart::readXml()' method in 'lib/rdcart.cpp' and
+	'lib/rdcart.h'.
+	* Fixed a typo in the 'averageSegueLength' field in the 'RDCart::xml()'
+	method in 'lib/rdcart.cpp'.
+	* Removed the 'validity' field from the output of the 'RDCart::xml()'
+	method in 'lib/rdcart.cpp'.
+	* Removed the 'validity' and 'localCounter' fields from the output
+	of the 'RDCut::xml()' method in 'lib/rdcut.cpp'.

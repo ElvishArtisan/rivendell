@@ -254,7 +254,7 @@ void RDWaveDataDialog::okData()
   else {
     wave_data->setReleaseYear(wave_year_edit->text().toInt());
   }
-  wave_data->setUsageCode(wave_usage_box->currentItem());
+  wave_data->setUsageCode((RDWaveData::UsageCode)wave_usage_box->currentItem());
   wave_data->setTmciSongId(wave_songid_edit->text());
   wave_data->setBeatsPerMinute(wave_bpm_spin->value());
   wave_data->setAlbum(wave_album_edit->text());

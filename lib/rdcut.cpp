@@ -1226,8 +1226,6 @@ QString RDCut::xml(RDSettings *settings) const
     ret+="  "+RDXmlField("weight",q->value(19).toUInt());
     ret+="  "+RDXmlField("lastPlayDatetime",q->value(20).toDateTime());
     ret+="  "+RDXmlField("playCounter",q->value(21).toUInt());
-    ret+="  "+RDXmlField("localCounter",q->value(22).toUInt());
-    ret+="  "+RDXmlField("validity",q->value(23).toUInt());
     if(settings==NULL) {
       ret+="  "+RDXmlField("codingFormat",q->value(24).toUInt());
       ret+="  "+RDXmlField("sampleRate",q->value(25).toUInt());
