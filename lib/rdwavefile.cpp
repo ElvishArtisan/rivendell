@@ -3377,6 +3377,10 @@ void RDWaveFile::ReadId3Metadata()
     wave_data->setArtist(ID3_GetString(frame,ID3FN_TEXT));
     wave_data->setMetadataFound(true);
   }
+  if((frame=id3_tag.Find(ID3FID_CONDUCTOR))!=NULL) {
+    wave_data->setConductor(ID3_GetString(frame,ID3FN_TEXT));
+    wave_data->setMetadataFound(true);
+  }
   if((frame=id3_tag.Find(ID3FID_PUBLISHER))!=NULL) {
     wave_data->setPublisher(ID3_GetString(frame,ID3FN_TEXT));
     wave_data->setMetadataFound(true);

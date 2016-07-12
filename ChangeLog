@@ -15284,3 +15284,6 @@
 2016-07-12 Fred Gleason <fredg@paravelsystems.com>
 	* Implemented storage of RDXML data structures within a 'rdxl' chunk
 	in WAV files.
+2016-07-12 Fred Gleason <fredg@paravelsystems.com>
+	* Added support for reading conductor field values (TPE3) from
+	ID3 tags in 'lib/rdwavefile.cpp'.
