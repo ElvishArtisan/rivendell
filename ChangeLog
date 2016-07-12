@@ -15281,3 +15281,6 @@
 2016-07-12 Fred Gleason <fredg@paravelsystems.com>
 	* Added an '--xml' switch to rdimport(1) in
 	'utils/rdimport/rdimport.cpp' and 'utils/rdimport/rdimport.h'.
+2016-07-12 Fred Gleason <fredg@paravelsystems.com>
+	* Implemented storage of RDXML data structures within a 'rdxl' chunk
+	in WAV files.

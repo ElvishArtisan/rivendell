@@ -77,6 +77,7 @@
 #define AV10_CHUNK_SIZE 512
 #define AIR1_CHUNK_SIZE 2048
 #define COMM_CHUNK_SIZE 18
+#define RDXL_CHUNK_SIZE 4
 
 //
 // Maximum Header Size for ATX Files
@@ -1005,6 +1006,13 @@ class RDWaveFile
 
    bool getAIR1Chunk() const;
 
+   /**
+    * Returns true if the WAV file contains an RDXL chunk, otherwise false.
+    **/
+   bool getRdxlChunk() const;
+   QString getRdxlContents() const;
+   void setRdxlContents(const QString &xml);
+
    double getNormalizeLevel() const;
    void setNormalizeLevel(double level);
 
@@ -1024,6 +1032,7 @@ class RDWaveFile
 		 unsigned char *chunk,size_t size,bool big_end=false);
    void WriteChunk(int fd,const char *cname,unsigned char *buf,unsigned size,
 		   bool big_end=false);
+   void WriteChunk(int fd,const char *cname,const QString &contents);
    bool GetFmt(int fd);
    bool GetFact(int fd);
    bool GetCart(int fd);
@@ -1034,6 +1043,7 @@ class RDWaveFile
    bool GetScot(int fd);
    bool GetAv10(int fd);
    bool GetAir1(int fd);
+   bool GetRdxl(int fd);
    bool GetComm(int fd);
    bool ReadListElement(unsigned char *buffer,unsigned *offset,unsigned size);
    bool ReadTmcMetadata(int fd);
@@ -1198,6 +1208,9 @@ class RDWaveFile
 
    bool AIR1_chunk;
    unsigned char AIR1_chunk_data[AIR1_CHUNK_SIZE];
+
+   bool rdxl_chunk;
+   QString rdxl_contents;
 
    double normalize_level; 
    

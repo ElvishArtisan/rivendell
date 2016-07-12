@@ -54,7 +54,9 @@ class RDAudioConvert : public QObject
   void setDestinationFile(const QString &filename);
   void setDestinationSettings(RDSettings *settings);
   RDWaveData *sourceWaveData() const;
+  QString sourceRdxl() const;
   void setDestinationWaveData(RDWaveData *wavedata);
+  void setDestinationRdxl(const QString &xml);
   void setRange(int start_pt,int end_pt);
   void setSpeedRatio(float ratio);
   RDAudioConvert::ErrorCode convert();
@@ -108,6 +110,8 @@ class RDAudioConvert : public QObject
   RDSettings *conv_settings;
   RDWaveData *conv_src_wavedata;
   RDWaveData *conv_dst_wavedata;
+  QString conv_src_rdxl;
+  QString conv_dst_rdxl;
   float conv_peak_sample;
   int conv_src_converter;
   void *conv_mad_handle;

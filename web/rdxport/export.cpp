@@ -100,9 +100,21 @@ void Xport::Export()
   }
 
   //
+  // Audio Settings
+  //
+  RDSettings *settings=new RDSettings();
+  settings->setFormat((RDSettings::Format)format);
+  settings->setChannels(channels);
+  settings->setSampleRate(sample_rate);
+  settings->setBitRate(bit_rate);
+  settings->setQuality(quality);
+  settings->setNormalizationLevel(normalization_level);
+
+  //
   // Generate Metadata
   //
   RDWaveData *wavedata=NULL;
+  QString rdxl;
   float speed_ratio=1.0;
   if(enable_metadata!=0) {
     wavedata=new RDWaveData();
@@ -115,6 +127,7 @@ void Xport::Export()
     if(cart->enforceLength()) {
       speed_ratio=(float)cut->length()/(float)cart->forcedLength();
     }
+    rdxl=cart->xml(true,settings,cutnum);
     delete cut;
     delete cart;
   }
@@ -127,18 +140,12 @@ void Xport::Export()
   uint8_t data[2048];
   QString tmpdir=RDTempDir();
   QString tmpfile=tmpdir+"/exported_audio";
-  RDSettings *settings=new RDSettings();
-  settings->setFormat((RDSettings::Format)format);
-  settings->setChannels(channels);
-  settings->setSampleRate(sample_rate);
-  settings->setBitRate(bit_rate);
-  settings->setQuality(quality);
-  settings->setNormalizationLevel(normalization_level);
   RDAudioConvert *conv=new RDAudioConvert(xport_config->stationName());
   conv->setSourceFile(RDCut::pathName(cartnum,cutnum));
   conv->setDestinationFile(tmpfile);
   conv->setDestinationSettings(settings);
   conv->setDestinationWaveData(wavedata);
+  conv->setDestinationRdxl(rdxl);
   conv->setRange(start_point,end_point);
   conv->setSpeedRatio(speed_ratio);
   switch(conv_err=conv->convert()) {

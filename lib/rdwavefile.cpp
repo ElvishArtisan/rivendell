@@ -32,6 +32,7 @@
 #include <unistd.h>
 #include <errno.h>
 #include <assert.h>
+#include <arpa/inet.h>
 
 #include <id3/tag.h>
 #include <id3/misc_support.h>
@@ -44,6 +45,7 @@
 #include <qdatetime.h>
 
 #include <rd.h>
+#include <rdcart.h>
 #include <rdwavefile.h>
 #include <rdconf.h>
 #include <rdmp4.h>
@@ -172,6 +174,7 @@ RDWaveFile::RDWaveFile(QString file_name)
   atx_offset=0;
   scot_chunk=false;
   av10_chunk=false;
+  rdxl_chunk=false;
   ptr_offset_msecs=0;
 }
 
@@ -284,6 +287,7 @@ bool RDWaveFile::openWave(RDWaveData *data)
     GetScot(wave_file.handle());
     GetAv10(wave_file.handle());
     GetAir1(wave_file.handle());
+    GetRdxl(wave_file.handle());
     break;
 
   case RDWaveFile::Aiff:
@@ -560,6 +564,9 @@ bool RDWaveFile::createWave(RDWaveData *data,unsigned ptr_offset)
 	  MakeMext();
 	  WriteChunk(wave_file.handle(),"mext",mext_chunk_data,
 		     MEXT_CHUNK_SIZE);
+	}
+	if(!rdxl_contents.isEmpty()) {
+	  WriteChunk(wave_file.handle(),"rdxl",rdxl_contents);
 	}
 	wave_type=RDWaveFile::Wave;
 	write(wave_file.handle(),"data\0\0\0\0",8);
@@ -878,6 +885,7 @@ void RDWaveFile::closeWave(int samples)
   serial_number=-1;
   atx_offset=0;
   av10_chunk=false;
+  rdxl_chunk=false;
 }
 
 
@@ -2127,6 +2135,23 @@ bool RDWaveFile::getAIR1Chunk() const
 }
 
 
+bool RDWaveFile::getRdxlChunk() const
+{
+  return rdxl_chunk;
+}
+
+
+QString RDWaveFile::getRdxlContents() const
+{
+  return rdxl_contents;
+}
+
+
+void RDWaveFile::setRdxlContents(const QString &xml)
+{
+  rdxl_contents=xml;
+}
+
 
 RDWaveFile::Type RDWaveFile::GetType(int fd)
 {
@@ -2439,6 +2464,21 @@ void RDWaveFile::WriteChunk(int fd,const char *cname,unsigned char *buf,
     return;
   }
   //printf("WARNING: Updated chunk size mismatch!  Update not written.\n");
+}
+
+
+void RDWaveFile::WriteChunk(int fd,const char *cname,const QString &contents)
+{
+  unsigned char size_buf[4];
+  size_buf[0]=contents.length()&0xff;
+  size_buf[1]=(contents.length()>>8)&0xff;
+  size_buf[2]=(contents.length()>>16)&0xff;
+  size_buf[3]=(contents.length()>>24)&0xff;
+
+  lseek(fd,0,SEEK_END);
+  write(fd,cname,4);
+  write(fd,size_buf,4);
+  write(fd,contents,contents.length());
 }
 
 
@@ -3024,6 +3064,33 @@ bool RDWaveFile::GetAir1(int fd)
     wave_data->setMetadataFound(true);
   }
   AIR1_chunk=true;
+  return true;
+}
+
+
+bool RDWaveFile::GetRdxl(int fd)
+{
+  off_t pos;
+  unsigned chunk_size=0;
+  char *chunk=NULL;
+
+  if((pos=FindChunk(fd,"rdxl",&chunk_size))<0) {
+    return false;
+  }
+  lseek(fd,SEEK_SET,pos);
+  chunk=new char[chunk_size+1];
+  memset(chunk,0,chunk_size+1);
+  read(fd,chunk,chunk_size);
+  rdxl_contents=QString(chunk);
+  delete chunk;
+
+  if(wave_data!=NULL) {
+    std::vector<RDWaveData> wavedatas;
+    if(RDCart::readXml(&wavedatas,rdxl_contents)>1) {
+      *wave_data=wavedatas[1];
+    }
+  }
+
   return true;
 }
 

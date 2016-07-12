@@ -109,9 +109,21 @@ RDWaveData *RDAudioConvert::sourceWaveData() const
 }
 
 
+QString RDAudioConvert::sourceRdxl() const
+{
+  return conv_src_rdxl;
+}
+
+
 void RDAudioConvert::setDestinationWaveData(RDWaveData *wavedata)
 {
   conv_dst_wavedata=wavedata;
+}
+
+
+void RDAudioConvert::setDestinationRdxl(const QString &xml)
+{
+  conv_dst_rdxl=xml;
 }
 
 
@@ -1602,6 +1614,7 @@ RDAudioConvert::ErrorCode RDAudioConvert::Stage3Layer2Wav(SNDFILE *src_sf,
   wave->setMextChunk(true);
   wave->setCartChunk(conv_dst_wavedata!=NULL);
   wave->setLevlChunk(true);
+  wave->setRdxlContents(conv_dst_rdxl);
   unlink(dstfile);
   if(!wave->createWave(conv_dst_wavedata,conv_start_point)) {
     return RDAudioConvert::ErrorNoDestination;
@@ -1789,6 +1802,7 @@ RDAudioConvert::ErrorCode RDAudioConvert::Stage3Pcm16(SNDFILE *src_sf,
   wave->setBitsPerSample(16);
   wave->setBextChunk(true);
   wave->setCartChunk(conv_dst_wavedata!=NULL);
+  wave->setRdxlContents(conv_dst_rdxl);
   if((conv_dst_wavedata!=NULL)&&(conv_settings->normalizationLevel()!=0)) {
     wave->setCartLevelRef(32768*
 	      exp10((double)conv_settings->normalizationLevel()/20.0));
@@ -1831,6 +1845,7 @@ RDAudioConvert::ErrorCode RDAudioConvert::Stage3Pcm24(SNDFILE *src_sf,
   wave->setBitsPerSample(24);
   wave->setBextChunk(true);
   wave->setCartChunk(conv_dst_wavedata!=NULL);
+  wave->setRdxlContents(conv_dst_rdxl);
   if((conv_dst_wavedata!=NULL)&&(conv_settings->normalizationLevel()!=0)) {
     wave->setCartLevelRef(32768*
 	      exp10((double)conv_settings->normalizationLevel()/20.0));
