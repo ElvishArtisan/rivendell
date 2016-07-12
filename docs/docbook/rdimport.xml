@@ -243,7 +243,8 @@
 	  Attempt to read metadata parameters from the source filename,
 	  using the pattern <replaceable>pattern</replaceable>.  Patterns
 	  consist of a sequence of wildcards and regular characters to
-	  indicate boundaries between metadata fields.
+	  indicate boundaries between metadata fields. This option is
+	  mutually exclusive with the <option>--xml</option> option.
 	</para>
 	<para>
 	  The available wildcards are:
@@ -770,6 +771,20 @@
       <listitem>
 	<para>
 	  Output version information and exit.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
+	<option>--xml</option>
+      </term>
+      <listitem>
+	<para>
+	  Attempt to read file metadata in RDXML format from the file
+	  <userinput><replaceable>basename</replaceable>.xml</userinput>.
+	  This option is mututally exclusive with the
+	  <option>--metadata-pattern</option> option.
 	</para>
       </listitem>
     </varlistentry>

@@ -89,6 +89,7 @@ MainObject::MainObject(QObject *parent)
   import_string_year=0;
   import_clear_datetimes=false;
   import_clear_dayparts=false;
+  import_xml=false;
 
   //
   // Read Command Options
@@ -379,13 +380,25 @@ MainObject::MainObject(QObject *parent)
       }
       import_cmd->setProcessed(i,true);
     }
+    if(import_cmd->key(i)=="--xml") {
+      import_xml=true;
+      import_cmd->setProcessed(i,true);
+    }
   }
+
+  //
+  // Sanity Checks
+  //
   if(import_datetimes[0].isValid()&&import_clear_datetimes) {
     fprintf(stderr,"rdimport: --set-datetimes and --clear-datetimes are mutually exclusive\n");
     exit(255);
   }
   if((!import_dayparts[1].isNull())&&import_clear_dayparts) {
     fprintf(stderr,"rdimport: --set-daypart-times and --clear-daypart-times are mutually exclusive\n");
+    exit(255);
+  }
+  if((!import_metadata_pattern.isEmpty())&&import_xml) {
+    fprintf(stderr,"rdimport: --metadata-pattern and --xml are mutually exclusive\n");
     exit(255);
   }
 
@@ -722,6 +735,9 @@ MainObject::MainObject(QObject *parent)
     if(import_string_year!=0) {
       printf(" Year set to: %d\n",import_string_year);
     }
+    if(import_xml) {
+      printf(" Importing RDXML metadata from external file\n");
+    }
     import_cut_markers->dump();
     import_talk_markers->dump();
     import_hook_markers->dump();
@@ -1024,6 +1040,10 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
     if(wavedata->metadataFound()&&wavedata->title().isEmpty()) {
       wavedata->setTitle(effective_group->generateTitle(filename));
     }
+  }
+
+  if(import_xml) {
+    ReadXmlFile(filename,wavedata);
   }
 
   if(import_use_cartchunk_cutid||found_cart) {
@@ -1894,6 +1914,53 @@ bool MainObject::SchedulerCodeExists(const QString &code) const
   delete q;
 
   return ret;
+}
+
+
+void MainObject::ReadXmlFile(const QString &basename,RDWaveData *wavedata) const
+{
+  QString xmlname="";
+  FILE *f=NULL;
+  char line[1024];
+  QString xml="";
+  std::vector<RDWaveData> wavedatas;
+
+  //
+  // Get XML Filename
+  //
+  QStringList f0=f0.split(".",basename);
+  for(unsigned i=0;i<f0.size()-1;i++) {
+    xmlname+=f0[i]+".";
+  }
+  xmlname+="xml";
+  if(import_verbose) {
+    printf(" Reading xml metadata from \"%s\": ",(const char *)xmlname);
+  }
+
+  //
+  // Read XML
+  //
+  wavedata->clear();
+  if((f=fopen(xmlname,"r"))==NULL) {
+    if(import_verbose) {
+      printf("failed [%s]\n",strerror(errno));
+      return;
+    }
+  }
+  if(import_verbose) {
+    printf("success\n");
+  }
+  while(fgets(line,1024,f)!=NULL) {
+    xml+=line;
+  }
+  fclose(f);
+
+  //
+  // Parse
+  //
+  if(RDCart::readXml(&wavedatas,xml)>0) {
+    *wavedata=wavedatas[1];
+  }
 }
 
 

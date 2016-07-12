@@ -1610,85 +1610,109 @@ unsigned RDCart::readXml(std::vector<RDWaveData> *data,const QString &xml)
     case 1:  // Cart-level objects
       if(f0[i].contains("<number>")) {
 	cartdata.setCartNumber(GetXmlValue("number",f0[i]).toUInt());
+	cartdata.setMetadataFound(true);
       }
       if(f0[i].contains("<groupName>")) {
 	cartdata.setCategory(GetXmlValue("groupName",f0[i]).toString());
+	cartdata.setMetadataFound(true);
       }
       if(f0[i].contains("<title>")) {
 	cartdata.setTitle(GetXmlValue("title",f0[i]).toString());
+	cartdata.setMetadataFound(true);
       }
       if(f0[i].contains("<artist>")) {
 	cartdata.setArtist(GetXmlValue("artist",f0[i]).toString());
+	cartdata.setMetadataFound(true);
       }
       if(f0[i].contains("<album>")) {
 	cartdata.setAlbum(GetXmlValue("album",f0[i]).toString());
+	cartdata.setMetadataFound(true);
       }
       if(f0[i].contains("<label>")) {
 	cartdata.setLabel(GetXmlValue("label",f0[i]).toString());
+	cartdata.setMetadataFound(true);
       }
       if(f0[i].contains("<client>")) {
 	cartdata.setClient(GetXmlValue("client",f0[i]).toString());
+	cartdata.setMetadataFound(true);
       }
       if(f0[i].contains("<agency>")) {
 	cartdata.setAgency(GetXmlValue("agency",f0[i]).toString());
+	cartdata.setMetadataFound(true);
       }
       if(f0[i].contains("<composer>")) {
 	cartdata.setComposer(GetXmlValue("composer",f0[i]).toString());
+	cartdata.setMetadataFound(true);
       }
       if(f0[i].contains("<publisher>")) {
 	cartdata.setPublisher(GetXmlValue("publisher",f0[i]).toString());
+	cartdata.setMetadataFound(true);
       }
       if(f0[i].contains("<conductor>")) {
 	cartdata.setConductor(GetXmlValue("conductor",f0[i]).toString());
+	cartdata.setMetadataFound(true);
       }
       if(f0[i].contains("<userDefined>")) {
 	cartdata.setUserDefined(GetXmlValue("userDefined",f0[i]).toString());
+	cartdata.setMetadataFound(true);
       }
       if(f0[i].contains("<year>")) {
 	cartdata.setReleaseYear(GetXmlValue("year",f0[i]).toInt());
+	cartdata.setMetadataFound(true);
       }
       if(f0[i].contains("<forcedLength>")) {
 	cartdata.
 	  setForcedLength(RDSetTimeLength(GetXmlValue("forcedLength",f0[i]).
 					  toString()));
+	cartdata.setMetadataFound(true);
       }
       if(f0[i].contains("<averageLength>")) {
 	cartdata.
 	  setAverageLength(RDSetTimeLength(GetXmlValue("averageLength",f0[i]).
 					   toString()));
+	cartdata.setMetadataFound(true);
       }
       if(f0[i].contains("<lengthDeviation>")) {
 	cartdata.setLengthDeviation(RDSetTimeLength(GetXmlValue("lengthDeviation",f0[i]).
 					   toString()));
+	cartdata.setMetadataFound(true);
       }
       if(f0[i].contains("<averageHookLength>")) {
 	cartdata.
 	  setAverageHookLength(RDSetTimeLength(GetXmlValue("averageHookLength",f0[i]).
 					   toString()));
+	cartdata.setMetadataFound(true);
       }
       if(f0[i].contains("<averageSegueLength>")) {
 	cartdata.
 	  setAverageSegueLength(RDSetTimeLength(GetXmlValue("averageSegueLength",f0[i]).
 					   toString()));
+	cartdata.setMetadataFound(true);
       }
       if(f0[i].contains("<cutQuantity>")) {
 	cartdata.setCutQuantity(GetXmlValue("cutQuantity",f0[i]).toInt());
+	cartdata.setMetadataFound(true);
       }
       if(f0[i].contains("<lastCutPlayed>")) {
 	cartdata.setLastCutPlayed(GetXmlValue("lastCutPlayed",f0[i]).toInt());
+	cartdata.setMetadataFound(true);
       }
       if(f0[i].contains("<enforceLength>")) {
 	cartdata.setEnforceLength(GetXmlValue("enforceLength",f0[i]).toBool());
+	cartdata.setMetadataFound(true);
       }
       if(f0[i].contains("<asyncronous>")) {
 	cartdata.setAsyncronous(GetXmlValue("asyncronous",f0[i]).toBool());
+	cartdata.setMetadataFound(true);
       }
       if(f0[i].contains("<owner>")) {
 	cartdata.setOwner(GetXmlValue("owner",f0[i]).toString());
+	cartdata.setMetadataFound(true);
       }
       if(f0[i].contains("<metadataDatetime>")) {
 	cartdata.setMetadataDatetime(GetXmlValue("metadataDatetime",f0[i]).
 				     toDateTime());
+	cartdata.setMetadataFound(true);
       }
 
       if(f0[i]=="</cart>") {
@@ -1716,108 +1740,139 @@ unsigned RDCart::readXml(std::vector<RDWaveData> *data,const QString &xml)
 
     case 3:  // Cut Object
       if(f0[i].contains("<description>")) {
-	data->back().setDescription(GetXmlValue("description",f0[i]).toString());
+	data->
+	  back().setDescription(GetXmlValue("description",f0[i]).toString());
+	cartdata.setMetadataFound(true);
       }
       if(f0[i].contains("<cutNumber>")) {
 	data->back().setCutNumber(GetXmlValue("cutNumber",f0[i]).toInt());
+	cartdata.setMetadataFound(true);
       }
       if(f0[i].contains("<cutName>")) {
 	data->back().setCutName(GetXmlValue("cutName",f0[i]).toString());
+	cartdata.setMetadataFound(true);
       }
       if(f0[i].contains("<evergreen>")) {
 	data->back().setEvergreen(GetXmlValue("evergreen",f0[i]).toBool());
+	cartdata.setMetadataFound(true);
       }
       if(f0[i].contains("<outcue>")) {
 	data->back().setOutCue(GetXmlValue("outcue",f0[i]).toString());
+	cartdata.setMetadataFound(true);
       }
       if(f0[i].contains("<isrc>")) {
 	data->back().setIsrc(GetXmlValue("isrc",f0[i]).toString());
+	cartdata.setMetadataFound(true);
       }
       if(f0[i].contains("<isci>")) {
 	data->back().setIsci(GetXmlValue("isci",f0[i]).toString());
+	cartdata.setMetadataFound(true);
       }
       if(f0[i].contains("<length>")) {
 	data->back().setLength(GetXmlValue("length",f0[i]).toInt());
+	cartdata.setMetadataFound(true);
       }
       if(f0[i].contains("<originName>")) {
 	data->back().setOriginator(GetXmlValue("originName",f0[i]).toString());
+	cartdata.setMetadataFound(true);
       }
       if(f0[i].contains("<originDatetime>")) {
 	data->back().setOriginationDate(GetXmlValue("originDatetime",f0[i]).
 				    toDateTime().date());
 	data->back().setOriginationTime(GetXmlValue("originDatetime",f0[i]).
 				    toDateTime().time());
+	cartdata.setMetadataFound(true);
       }
       if(f0[i].contains("<playCounter>")) {
 	data->back().setPlayCounter(GetXmlValue("playCounter",f0[i]).toInt());
+	cartdata.setMetadataFound(true);
       }
       if(f0[i].contains("<startDatetime>")) {
 	data->back().setStartDate(GetXmlValue("startDatetime",f0[i]).
 				    toDateTime().date());
 	data->back().setStartTime(GetXmlValue("startDatetime",f0[i]).
 				    toDateTime().time());
+	cartdata.setMetadataFound(true);
       }
       if(f0[i].contains("<endDatetime>")) {
 	data->back().setEndDate(GetXmlValue("endDatetime",f0[i]).
 			    toDateTime().date());
 	data->back().setEndTime(GetXmlValue("endDatetime",f0[i]).
 			    toDateTime().time());
+	cartdata.setMetadataFound(true);
       }
       if(f0[i].contains("<lastPlayDatetime>")) {
 	data->back().setLastPlayDatetime(GetXmlValue("lastPlayDatetime",f0[i]).
 			    toDateTime());
+	cartdata.setMetadataFound(true);
       }
       if(f0[i].contains("<codingFormat>")) {
 	settings->setFormat((RDSettings::Format)GetXmlValue("codingFormat",f0[i]).
 		     toUInt());
+	cartdata.setMetadataFound(true);
       }
       if(f0[i].contains("<sampleRate>")) {
 	settings->setSampleRate(GetXmlValue("sampleRate",f0[i]).toUInt());
+	cartdata.setMetadataFound(true);
       }
       if(f0[i].contains("<bitRate>")) {
 	settings->setBitRate(GetXmlValue("bitRate",f0[i]).toUInt());
+	cartdata.setMetadataFound(true);
       }
       if(f0[i].contains("<channels>")) {
 	settings->setChannels(GetXmlValue("channels",f0[i]).toUInt());
+	cartdata.setMetadataFound(true);
       }
       if(f0[i].contains("<playGain>")) {
 	data->back().setPlayGain(GetXmlValue("playGain",f0[i]).toInt());
+	cartdata.setMetadataFound(true);
       }
       if(f0[i].contains("<startPoint>")) {
 	data->back().setStartPos(GetXmlValue("startPoint",f0[i]).toInt());
+	cartdata.setMetadataFound(true);
       }
       if(f0[i].contains("<endPoint>")) {
 	data->back().setEndPos(GetXmlValue("endPoint",f0[i]).toInt());
+	cartdata.setMetadataFound(true);
       }
       if(f0[i].contains("<segueStartPoint>")) {
 	data->back().setSegueStartPos(GetXmlValue("segueStartPoint",f0[i]).
 				      toInt());
+	cartdata.setMetadataFound(true);
       }
       if(f0[i].contains("<segueEndPoint>")) {
 	data->back().setSegueEndPos(GetXmlValue("segueEndPoint",f0[i]).toInt());
+	cartdata.setMetadataFound(true);
       }
       if(f0[i].contains("<segueGain>")) {
 	data->back().setSegueGain(GetXmlValue("segueGain",f0[i]).toInt());
+	cartdata.setMetadataFound(true);
       }
       if(f0[i].contains("<talkStartPoint>")) {
 	data->back().setIntroStartPos(GetXmlValue("talkStartPoint",f0[i]).
 				      toInt());
+	cartdata.setMetadataFound(true);
       }
       if(f0[i].contains("<talkEndPoint>")) {
 	data->back().setIntroEndPos(GetXmlValue("talkEndPoint",f0[i]).toInt());
+	cartdata.setMetadataFound(true);
       }
       if(f0[i].contains("<hookStartPoint>")) {
 	data->back().setHookStartPos(GetXmlValue("hookStartPoint",f0[i]).
 				      toInt());
+	cartdata.setMetadataFound(true);
       }
       if(f0[i].contains("<hookEndPoint>")) {
 	data->back().setHookEndPos(GetXmlValue("hookEndPoint",f0[i]).toInt());
+	cartdata.setMetadataFound(true);
       }
       if(f0[i].contains("<fadeupPoint>")) {
 	data->back().setFadeUpPos(GetXmlValue("fadeupPoint",f0[i]).toInt());
+	cartdata.setMetadataFound(true);
       }
       if(f0[i].contains("<fadedownPoint>")) {
 	data->back().setFadeDownPos(GetXmlValue("fadedownPoint",f0[i]).toInt());
+	cartdata.setMetadataFound(true);
       }
       
       if(f0[i]=="</cut>") { // End of cut
@@ -1829,9 +1884,6 @@ unsigned RDCart::readXml(std::vector<RDWaveData> *data,const QString &xml)
       break;
     }
   }
-
-  //  printf("DUMP:\n%s\n",(const char *)cartdata.dump());
-
   return data->size();
 }
 

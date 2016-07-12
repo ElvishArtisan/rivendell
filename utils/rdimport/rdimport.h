@@ -78,6 +78,7 @@ class MainObject : public QObject
   QDateTime GetCachedTimestamp(const QString &filename);
   void WriteTimestampCache(const QString &filename,const QDateTime &dt);
   bool SchedulerCodeExists(const QString &code) const;
+  void ReadXmlFile(const QString &basename,RDWaveData *wavedata) const;
   RDConfig *import_config;
   RDCmdSwitch *import_cmd;
   unsigned import_file_key;
@@ -107,6 +108,7 @@ class MainObject : public QObject
   bool import_clear_dayparts;
   bool import_fix_broken_formats;
   int import_persistent_dropbox_id;
+  bool import_xml;
   unsigned import_format;
   unsigned import_samprate;
   unsigned import_bitrate;
