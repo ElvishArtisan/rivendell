@@ -15294,3 +15294,6 @@
 2016-07-13 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in the 'RDCart::GetXmlValue()' method that caused
 	XML field values not to be unescaped correctly.
+2016-07-13 Fred Gleason <fredg@paravelsystems.com>
+	* Made the 'Allow Cart Dragging' checkbox setting persistent across
+	RDLibrary sessions in 'rdlibrary/rdlibrary.cpp'.

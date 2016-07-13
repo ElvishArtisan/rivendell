@@ -239,10 +239,9 @@ MainWidget::MainWidget(QWidget *parent)
   //
   // Filter
   //
-  lib_filter_edit=new QLineEdit(this,"filter_edit");
+  lib_filter_edit=new QLineEdit(this);
   lib_filter_edit->setFont(default_font);
-  lib_filter_label=new QLabel(lib_filter_edit,tr("Filter:"),
-			      this,"filter_label");
+  lib_filter_label=new QLabel(lib_filter_edit,tr("Filter:"),this);
   lib_filter_label->setFont(button_font);
   lib_filter_label->setAlignment(AlignVCenter|AlignRight);
   connect(lib_filter_edit,SIGNAL(textChanged(const QString &)),
@@ -1418,6 +1417,8 @@ void MainWidget::LoadGeometry()
 	 profile->intValue("RDLibrary","Height",sizeHint().height()));
   lib_shownotes_box->
     setChecked(profile->boolValue("RDLibrary","ShowNoteBubbles",true));
+  lib_allowdrag_box->
+    setChecked(profile->boolValue("RDLibrary","AllowCartDragging",false));
 
   delete profile;
 }
@@ -1443,8 +1444,8 @@ void MainWidget::SaveGeometry()
   else {
     fprintf(file,"No\n");
   }
-  fprintf(file,"LimitMatches=");
-  if(lib_showmatches_box->isChecked()) {
+  fprintf(file,"AllowCartDragging=");
+  if(lib_allowdrag_box->isChecked()) {
     fprintf(file,"Yes\n");
   }
   else {
