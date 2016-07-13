@@ -132,6 +132,9 @@ void Xport::Import()
     if(use_metadata>0) {
       cart->setMetadata(conv->sourceWaveData());
       cut->setMetadata(conv->sourceWaveData());
+      syslog(LOG_NOTICE,"SOURCE: title: %s  startDateTime: %s %s",
+	     (const char *)conv->sourceWaveData()->title(),
+	     (const char *)conv->sourceWaveData()->startDate().toString("yyyy-MM-dd"),(const char *)conv->sourceWaveData()->startTime().toString("hh:mm:ss"));
     }
     if(autotrim_level!=0) {
       cut->autoTrim(RDCut::AudioBoth,100*autotrim_level);

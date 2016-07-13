@@ -927,38 +927,54 @@ void RDCut::getMetadata(RDWaveData *data) const
   QString sql;
   RDSqlQuery *q;
 
-  sql=QString().sprintf("select DESCRIPTION,OUTCUE,ISRC,ISCI,ORIGIN_DATETIME,\
-                         START_DATETIME,END_DATETIME,START_DAYPART,END_DAYPART,\
-                         SEGUE_START_POINT,\
-                         SEGUE_END_POINT,TALK_START_POINT,TALK_END_POINT,\
-                         START_POINT,END_POINT,HOOK_START_POINT,\
-                         HOOK_END_POINT,FADEUP_POINT,FADEDOWN_POINT \
-                         from CUTS where CUT_NAME=\"%s\"",
-			(const char *)cut_name);
+  sql=QString("select ")+  
+    "CUT_NAME,"+           // 00
+    "DESCRIPTION,"+        // 01
+    "OUTCUE,"+             // 02
+    "ISRC,"+               // 03
+    "ISCI,"+               // 04
+    "ORIGIN_DATETIME,"+    // 05
+    "START_DATETIME,"+     // 06
+    "END_DATETIME,"+       // 07
+    "START_DAYPART,"+      // 08
+    "END_DAYPART,"+        // 09
+    "SEGUE_START_POINT,"+  // 10
+    "SEGUE_END_POINT,"+    // 11
+    "TALK_START_POINT,"+   // 12
+    "TALK_END_POINT,"+     // 13
+    "START_POINT,"+        // 14
+    "END_POINT,"+          // 15
+    "HOOK_START_POINT,"+   // 16
+    "HOOK_END_POINT,"+     // 17
+    "FADEUP_POINT,"+       // 18
+    "FADEDOWN_POINT "+     // 19
+    "from CUTS where CUT_NAME=\""+cut_name+"\"";
   q=new RDSqlQuery(sql);
   if(q->first()) {
-    data->setDescription(q->value(0).toString());
-    data->setOutCue(q->value(1).toString());
-    data->setIsrc(q->value(2).toString());
-    data->setIsci(q->value(3).toString());
-    data->setOriginationDate(q->value(4).toDate());
-    data->setOriginationTime(q->value(4).toTime());
-    data->setStartDate(q->value(5).toDate());
-    data->setStartTime(q->value(5).toTime());
-    data->setEndDate(q->value(6).toDate());
-    data->setEndTime(q->value(6).toTime());
-    data->setDaypartStartTime(q->value(7).toTime());
-    data->setDaypartEndTime(q->value(8).toTime());
-    data->setSegueStartPos(q->value(9).toInt());
-    data->setSegueEndPos(q->value(10).toInt());
-    data->setIntroStartPos(q->value(11).toInt());
-    data->setIntroEndPos(q->value(12).toInt());
-    data->setStartPos(q->value(13).toInt());
-    data->setEndPos(q->value(14).toInt());
-    data->setHookStartPos(q->value(15).toInt());
-    data->setHookEndPos(q->value(16).toInt());
-    data->setFadeUpPos(q->value(17).toInt());
-    data->setFadeDownPos(q->value(18).toInt());
+    data->setCutName(q->value(0).toString());
+    data->setCutNumber(RDCut::cutNumber(q->value(0).toString()));
+    data->setDescription(q->value(1).toString());
+    data->setOutCue(q->value(2).toString());
+    data->setIsrc(q->value(3).toString());
+    data->setIsci(q->value(4).toString());
+    data->setOriginationDate(q->value(5).toDate());
+    data->setOriginationTime(q->value(5).toTime());
+    data->setStartDate(q->value(6).toDate());
+    data->setStartTime(q->value(6).toTime());
+    data->setEndDate(q->value(7).toDate());
+    data->setEndTime(q->value(7).toTime());
+    data->setDaypartStartTime(q->value(8).toTime());
+    data->setDaypartEndTime(q->value(9).toTime());
+    data->setSegueStartPos(q->value(10).toInt());
+    data->setSegueEndPos(q->value(11).toInt());
+    data->setIntroStartPos(q->value(12).toInt());
+    data->setIntroEndPos(q->value(13).toInt());
+    data->setStartPos(q->value(14).toInt());
+    data->setEndPos(q->value(15).toInt());
+    data->setHookStartPos(q->value(16).toInt());
+    data->setHookEndPos(q->value(17).toInt());
+    data->setFadeUpPos(q->value(18).toInt());
+    data->setFadeDownPos(q->value(19).toInt());
     data->setMetadataFound(true);
   }
   delete q;

@@ -3348,51 +3348,62 @@ void RDWaveFile::ReadId3Metadata()
   }
   ID3_Frame *frame=NULL;
   ID3_Tag id3_tag(QCString().sprintf("%s",(const char *)wave_file.name().utf8()));
-  if((frame=id3_tag.Find(ID3FID_TITLE))!=NULL) {
-    wave_data->setTitle(ID3_GetString(frame,ID3FN_TEXT));
-    wave_data->setMetadataFound(true);
+  if((frame=id3_tag.Find(ID3FID_USERTEXT,ID3FN_DESCRIPTION,"rdxl"))!=NULL) {
+    rdxl_contents=ID3_GetString(frame,ID3FN_TEXT);
+    if(wave_data!=NULL) {
+      std::vector<RDWaveData> wavedatas;
+      if(RDCart::readXml(&wavedatas,rdxl_contents)>1) {
+	*wave_data=wavedatas[1];
+      }
+    }
   }
-  if((frame=id3_tag.Find(ID3FID_BPM))!=NULL) {
-    wave_data->
-      setBeatsPerMinute(QString(ID3_GetString(frame,ID3FN_TEXT)).toInt());
-    wave_data->setMetadataFound(true);
-  }
-  if((frame=id3_tag.Find(ID3FID_ALBUM))!=NULL) {
-    wave_data->setAlbum(ID3_GetString(frame,ID3FN_TEXT));
-    wave_data->setMetadataFound(true);
-  }
-  if((frame=id3_tag.Find(ID3FID_COMPOSER))!=NULL) {
-    wave_data->setComposer(ID3_GetString(frame,ID3FN_TEXT));
-    wave_data->setMetadataFound(true);
-  }
-  if((frame=id3_tag.Find(ID3FID_COPYRIGHT))!=NULL) {
-    wave_data->setCopyrightNotice(ID3_GetString(frame,ID3FN_TEXT));
-    wave_data->setMetadataFound(true);
-  }
-  if((frame=id3_tag.Find(ID3FID_ORIGARTIST))!=NULL) {
-    wave_data->setArtist(ID3_GetString(frame,ID3FN_TEXT));
-    wave_data->setMetadataFound(true);
-  }
-  if((frame=id3_tag.Find(ID3FID_LEADARTIST))!=NULL) {
-    wave_data->setArtist(ID3_GetString(frame,ID3FN_TEXT));
-    wave_data->setMetadataFound(true);
-  }
-  if((frame=id3_tag.Find(ID3FID_CONDUCTOR))!=NULL) {
-    wave_data->setConductor(ID3_GetString(frame,ID3FN_TEXT));
-    wave_data->setMetadataFound(true);
-  }
-  if((frame=id3_tag.Find(ID3FID_PUBLISHER))!=NULL) {
-    wave_data->setPublisher(ID3_GetString(frame,ID3FN_TEXT));
-    wave_data->setMetadataFound(true);
-  }
-  if((frame=id3_tag.Find(ID3FID_ISRC))!=NULL) {
-    wave_data->setIsrc(ID3_GetString(frame,ID3FN_TEXT));
-    wave_data->setMetadataFound(true);
-  }
-  if((frame=id3_tag.Find(ID3FID_YEAR))!=NULL) {
-    wave_data->
-      setReleaseYear(QString(ID3_GetString(frame,ID3FN_TEXT)).toInt());
-    wave_data->setMetadataFound(true);
+  else {
+    if((frame=id3_tag.Find(ID3FID_TITLE))!=NULL) {
+      wave_data->setTitle(ID3_GetString(frame,ID3FN_TEXT));
+      wave_data->setMetadataFound(true);
+    }
+    if((frame=id3_tag.Find(ID3FID_BPM))!=NULL) {
+      wave_data->
+	setBeatsPerMinute(QString(ID3_GetString(frame,ID3FN_TEXT)).toInt());
+      wave_data->setMetadataFound(true);
+    }
+    if((frame=id3_tag.Find(ID3FID_ALBUM))!=NULL) {
+      wave_data->setAlbum(ID3_GetString(frame,ID3FN_TEXT));
+      wave_data->setMetadataFound(true);
+    }
+    if((frame=id3_tag.Find(ID3FID_COMPOSER))!=NULL) {
+      wave_data->setComposer(ID3_GetString(frame,ID3FN_TEXT));
+      wave_data->setMetadataFound(true);
+    }
+    if((frame=id3_tag.Find(ID3FID_COPYRIGHT))!=NULL) {
+      wave_data->setCopyrightNotice(ID3_GetString(frame,ID3FN_TEXT));
+      wave_data->setMetadataFound(true);
+    }
+    if((frame=id3_tag.Find(ID3FID_ORIGARTIST))!=NULL) {
+      wave_data->setArtist(ID3_GetString(frame,ID3FN_TEXT));
+      wave_data->setMetadataFound(true);
+    }
+    if((frame=id3_tag.Find(ID3FID_LEADARTIST))!=NULL) {
+      wave_data->setArtist(ID3_GetString(frame,ID3FN_TEXT));
+      wave_data->setMetadataFound(true);
+    }
+    if((frame=id3_tag.Find(ID3FID_CONDUCTOR))!=NULL) {
+      wave_data->setConductor(ID3_GetString(frame,ID3FN_TEXT));
+      wave_data->setMetadataFound(true);
+    }
+    if((frame=id3_tag.Find(ID3FID_PUBLISHER))!=NULL) {
+      wave_data->setPublisher(ID3_GetString(frame,ID3FN_TEXT));
+      wave_data->setMetadataFound(true);
+    }
+    if((frame=id3_tag.Find(ID3FID_ISRC))!=NULL) {
+      wave_data->setIsrc(ID3_GetString(frame,ID3FN_TEXT));
+      wave_data->setMetadataFound(true);
+    }
+    if((frame=id3_tag.Find(ID3FID_YEAR))!=NULL) {
+      wave_data->
+	setReleaseYear(QString(ID3_GetString(frame,ID3FN_TEXT)).toInt());
+      wave_data->setMetadataFound(true);
+    }
   }
 }
 

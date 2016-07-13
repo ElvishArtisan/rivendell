@@ -15287,3 +15287,8 @@
 2016-07-12 Fred Gleason <fredg@paravelsystems.com>
 	* Added support for reading conductor field values (TPE3) from
 	ID3 tags in 'lib/rdwavefile.cpp'.
+2016-07-13 Fred Gleason <fredg@paravelsystems.com>
+	* Implemented storage of RDXML data structures within a 'rdxl'
+	user defined information frame in ID3 tags 'lib/rdwavefile.cpp' and
+	'lib/rdaudio_convert.cpp'.
+

@@ -51,6 +51,7 @@
 #include <rd.h>
 #include <rdaudioconvert.h>
 #include <rdlibrary_conf.h>
+#include <rdcart.h>
 #include <rdconf.h>
 
 #define STAGE2_XFER_SIZE 2048
@@ -1918,6 +1919,11 @@ void RDAudioConvert::ApplyId3Tag(const QString &filename,RDWaveData *wavedata)
     frame->GetField(ID3FN_TEXT)->Set(wavedata->publisher());
     tag->AddNewFrame(frame);
   }
+  if(!wavedata->conductor().isEmpty()) {
+    frame=new ID3_Frame(ID3FID_CONDUCTOR);
+    frame->GetField(ID3FN_TEXT)->Set(wavedata->conductor());
+    tag->AddNewFrame(frame);
+  }
   if(!wavedata->isrc().isEmpty()) {
     frame=new ID3_Frame(ID3FID_ISRC);
     frame->GetField(ID3FN_TEXT)->Set(wavedata->isrc());
@@ -1928,6 +1934,16 @@ void RDAudioConvert::ApplyId3Tag(const QString &filename,RDWaveData *wavedata)
     frame->GetField(ID3FN_TEXT)->
       Set(QString().sprintf("%d",wavedata->releaseYear()));
     tag->AddNewFrame(frame);
+  }
+  RDCart *cart=new RDCart(wavedata->cartNumber());
+  if(cart->exists()) {
+    QString xml=cart->xml(true,conv_settings,wavedata->cutNumber());
+    frame=new ID3_Frame(ID3FID_USERTEXT);
+    frame->GetField(ID3FN_DESCRIPTION)->Set("rdxl");
+    frame->GetField(ID3FN_TEXTENC)->Set(ID3TE_NONE);
+    frame->GetField(ID3FN_TEXT)->Set(xml);
+    tag->AddNewFrame(frame);
+    delete cart;
   }
   tag->Update();
   delete tag;

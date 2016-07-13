@@ -861,11 +861,25 @@ void RDCart::getMetadata(RDWaveData *data) const
   QString sql;
   RDSqlQuery *q;
 
-  sql=QString("select TITLE,ARTIST,ALBUM,YEAR,LABEL,CLIENT,")+
-    "AGENCY,PUBLISHER,COMPOSER,USER_DEFINED,CONDUCTOR,SONG_ID,BPM,USAGE_CODE"+
+  sql=QString("select ")+
+    "TITLE,"+         // 00
+    "ARTIST,"+        // 01
+    "ALBUM,"+         // 02
+    "YEAR,"+          // 03
+    "LABEL,"+         // 04
+    "CLIENT,"+        // 05
+    "AGENCY,"+        // 06
+    "PUBLISHER,"+     // 07
+    "COMPOSER,"+      // 08
+    "USER_DEFINED,"+  // 09
+    "CONDUCTOR,"+     // 10
+    "SONG_ID,"+       // 11
+    "BPM,"+           // 12
+    "USAGE_CODE "+    // 13
     QString().sprintf(" from CART where NUMBER=%u",cart_number);
   q=new RDSqlQuery(sql);
   if(q->first()) {
+    data->setCartNumber(cart_number);
     data->setTitle(q->value(0).toString());
     data->setArtist(q->value(1).toString());
     data->setAlbum(q->value(2).toString());
