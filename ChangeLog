@@ -15291,4 +15291,6 @@
 	* Implemented storage of RDXML data structures within a 'rdxl'
 	user defined information frame in ID3 tags 'lib/rdwavefile.cpp' and
 	'lib/rdaudio_convert.cpp'.
-
+2016-07-13 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in the 'RDCart::GetXmlValue()' method that caused
+	XML field values not to be unescaped correctly.

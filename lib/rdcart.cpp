@@ -1917,7 +1917,7 @@ QVariant RDCart::GetXmlValue(const QString &tag,const QString &line)
     return QVariant(value.toInt());
   }
 
-  return QVariant(value);
+  return QVariant(RDXmlUnescape(value));
 }
 
 
