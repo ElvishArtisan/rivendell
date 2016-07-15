@@ -99,6 +99,7 @@ SOURCES += rdreport.cpp
 SOURCES += rdripc.cpp
 SOURCES += rdschedcode.cpp
 SOURCES += rdsegmeter.cpp
+SOURCES += rdsettings.cpp
 SOURCES += rdslider.cpp
 SOURCES += rdsocket.cpp
 SOURCES += rdstation.cpp
@@ -112,6 +113,7 @@ SOURCES += rdtimeengine.cpp
 SOURCES += rdtransportbutton.cpp
 SOURCES += rduser.cpp
 SOURCES += rdwavedata.cpp
+SOURCES += rdweb.cpp
 SOURCES += schedcartlist.cpp
 SOURCES += schedruleslist.cpp
 win32 {
@@ -158,7 +160,6 @@ x11 {
   SOURCES += rdpasswd.cpp
   SOURCES += rdplay_deck.cpp
   SOURCES += rdrecording.cpp
-  SOURCES += rdsettings.cpp
   SOURCES += rdsimpleplayer.cpp
   SOURCES += rdsound_panel.cpp
   SOURCES += rdstatus.cpp
@@ -233,6 +234,7 @@ HEADERS += rdreport.h
 HEADERS += rdripc.h
 HEADERS += rdschedcode.h
 HEADERS += rdsegmeter.h
+HEADERS += rdsettings.h
 HEADERS += rdslider.h
 HEADERS += rdsocket.h
 HEADERS += rdstation.h
@@ -247,6 +249,7 @@ HEADERS += rdtransportbutton.h
 HEADERS += rdttydevice.h
 HEADERS += rduser.h
 HEADERS += rdwavedata.h
+HEADERS += rdweb.h
 
 win32 {
   HEADERS += rdwin32.h
@@ -291,7 +294,6 @@ x11 {
   HEADERS += rdpasswd.h
   HEADERS += rdplay_deck.h
   HEADERS += rdrecording.h
-  HEADERS += rdsettings.h
   HEADERS += rdsimpleplayer.h
   HEADERS += rdsound_panel.h
   HEADERS += rdstatus.h

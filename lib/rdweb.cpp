@@ -22,7 +22,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#ifndef WIN32
 #include <sys/time.h>
+#endif  //WIN32
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
@@ -34,11 +36,13 @@
 #include <rduser.h>
 #include <rddb.h>
 #include <rdconf.h>
+#ifndef WIN32
 #include <rdwebresult.h>
+#endif  // WIN32
 
 #include <rdweb.h>
 
-
+#ifndef WIN32
 /* RDReadPost(char *cBuffer,int dSize) */
 
 /* This function reads POST data (such as that submitted by an HTML form) into
@@ -870,6 +874,8 @@ bool RDParsePost(std::map<QString,QString> *vars)
 
   return true;
 }
+
+#endif  // WIN32
 
 
 QString RDXmlField(const QString &tag,const QString &value,const QString &attrs)

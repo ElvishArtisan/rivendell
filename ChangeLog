@@ -15297,3 +15297,6 @@
 2016-07-13 Fred Gleason <fredg@paravelsystems.com>
 	* Made the 'Allow Cart Dragging' checkbox setting persistent across
 	RDLibrary sessions in 'rdlibrary/rdlibrary.cpp'.
+2016-07-15 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed bugs in 'lib/lib.pro', 'lib/rdweb.cpp, 'lib/rdweb.h' and
+	'rdlogedit/edit_logline.cpp' that broke the build under Windows.

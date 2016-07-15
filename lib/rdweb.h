@@ -42,6 +42,7 @@
 //
 // Function Prototypes
 //
+#ifndef WIN32
 extern int RDReadPost(char *,int);
 extern int RDPutPostString(char *,char *,char *,int);
 extern int RDFindPostString(const char *,const char *,char *,int);
@@ -69,6 +70,7 @@ extern QString RDAuthenticateSession(long int session_id,
 				     const QHostAddress &addr);
 extern void RDLogoutSession(long int session_id,const QHostAddress &addr);
 extern bool RDParsePost(std::map<QString,QString> *vars);
+#endif  // WIN32
 extern QString RDXmlField(const QString &tag,const QString &value,
 			  const QString &attrs="");
 extern QString RDXmlField(const QString &tag,const char *value,

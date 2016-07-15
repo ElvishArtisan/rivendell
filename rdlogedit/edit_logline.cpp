@@ -70,7 +70,12 @@ EditLogLine::EditLogLine(RDLogLine *line,QString *filter,QString *group,
   // Cart Picker
   //
 #ifdef WIN32
+  /*
   edit_cart_dialog=new RDCartDialog(&edit_filter,&edit_group,&edit_schedcode,
+				    NULL,NULL,rdstation_conf,rdsystem,
+				    log_config,this);
+  */
+  edit_cart_dialog=new RDCartDialog(edit_filter,edit_group,edit_schedcode,
 				    NULL,NULL,rdstation_conf,rdsystem,
 				    log_config,this);
 #else
