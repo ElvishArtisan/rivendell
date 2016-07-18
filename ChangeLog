@@ -15300,3 +15300,5 @@
 2016-07-15 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed bugs in 'lib/lib.pro', 'lib/rdweb.cpp, 'lib/rdweb.h' and
 	'rdlogedit/edit_logline.cpp' that broke the build under Windows.
+2016-07-18 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.14.1int01.
