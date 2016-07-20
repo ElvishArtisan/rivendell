@@ -45,6 +45,7 @@ class MainObject : public QObject
   void inputActivatedData(int sock);
 
  private:
+  void Help(const QStringList &cmds) const;
   void ListLogs() const;
   void Load(const QString &logname);
   void List();

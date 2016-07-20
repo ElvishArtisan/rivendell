@@ -134,6 +134,79 @@ void MainObject::inputActivatedData(int sock)
 }
 
 
+void MainObject::Help(const QStringList &cmds) const
+{
+  bool processed=false;
+
+  if(cmds.size()==1) {
+    printf("\n");
+    printf("The following commands are available:\n");
+    printf("?, bye, exit, help, list, listlogs, load, quit, unload\n");
+    printf("\n");
+    printf("Enter \"? <cmd-name>\" for specific help.\n");
+    printf("\n");
+    processed=true;
+  }
+  else {
+    QString verb=cmds[1].lower();
+    if((verb=="bye")||(verb=="exit")||(verb=="quit")) {
+      printf("\n");
+      printf("  %s\n",(const char *)cmds[1]);
+      printf("\n");
+      printf("Exit the program.\n");
+      printf("\n");
+      processed=true;
+    }
+    if((verb=="?")||(verb=="help")) {
+      printf("\n");
+      printf("  %s <cmd-name>\n",(const char *)cmds[1]);
+      printf("\n");
+      printf("Print help about command <cmd-name>\n");
+      printf("\n");
+      processed=true;
+    }
+    if(verb=="listlogs") {
+      printf("\n");
+      printf("  listlogs\n");
+      printf("\n");
+      printf("Print the list of Rivendell logs.\n");
+      printf("\n");
+      processed=true;
+    }
+    if(verb=="load") {
+      printf("\n");
+      printf("  load <log-name>\n");
+      printf("\n");
+      printf("Load the <log-name> log into the edit buffer.\n");
+      printf("\n");
+      processed=true;
+    }
+    if(verb=="unload") {
+      printf("\n");
+      printf("  unload\n");
+      printf("\n");
+      printf("Unload and clear the contents of the edit buffer.\n");
+      printf("\n");
+      processed=true;
+    }
+    if(verb=="list") {
+      printf("\n");
+      printf("  list\n");
+      printf("\n");
+      printf("Print the contents of the edit buffer.\n");
+      printf("\n");
+      processed=true;
+    }
+  }
+
+  if(!processed) {
+    printf("\n");
+    printf("help: no such command\n");
+    printf("\n");
+  }
+}
+
+
 void MainObject::ListLogs() const
 {
   QString sql;
@@ -205,6 +278,11 @@ void MainObject::DispatchCommand(const QString &cmd)
 
   if((verb=="exit")||(verb=="quit")||(verb=="bye")) {
     exit(0);
+  }
+
+  if((verb=="help")||(verb=="?")) {
+    Help(cmds);
+    processed=true;
   }
 
   if(verb=="listlogs") {
