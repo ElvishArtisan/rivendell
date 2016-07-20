@@ -108,6 +108,14 @@ void MainObject::Help(const QStringList &cmds) const
       printf("\n");
       processed=true;
     }
+    if(verb=="settrans") {
+      printf("\n");
+      printf("  settrans <line> play|segue|stop\n");
+      printf("\n");
+      printf("Set the transition type of the event at line <line>.\n");
+      printf("\n");
+      processed=true;
+    }
     if(verb=="unload") {
       printf("\n");
       printf("  unload\n");

@@ -305,6 +305,13 @@ void MainObject::Setcart(int line,unsigned cartnum)
 }
 
 
+void MainObject::Settrans(int line,RDLogLine::TransType type)
+{
+  edit_log_event->logLine(line)->setTransType(type);
+  edit_log_event->refresh(line);
+}
+
+
 void MainObject::Unload()
 {
   if(edit_log!=NULL) {
@@ -429,6 +436,37 @@ void MainObject::DispatchCommand(const QString &cmd)
     }
     else {
       fprintf(stderr,"setcart: invalid command arguments\n");
+    }
+    processed=true;
+  }
+
+  if(verb=="settrans") {
+    if(cmds.size()==3) {
+      line=cmds[1].toInt(&ok);
+      if(ok&&(line>=0)&&(line<edit_log_event->size())) {
+	RDLogLine::TransType trans=RDLogLine::NoTrans;
+	if(cmds[2].lower()=="play") {
+	  trans=RDLogLine::Play;
+	}
+	if(cmds[2].lower()=="segue") {
+	  trans=RDLogLine::Segue;
+	}
+	if(cmds[2].lower()=="stop") {
+	  trans=RDLogLine::Stop;
+	}
+	if(trans!=RDLogLine::NoTrans) {
+	  Settrans(line,trans);
+	}
+	else {
+	  fprintf(stderr,"settrans: invalid transition type\n");
+	}
+      }
+      else {
+	fprintf(stderr,"settrans: invalid line number\n");
+      }
+    }
+    else {
+      fprintf(stderr,"settrans: invalid command arguments\n");
     }
     processed=true;
   }
