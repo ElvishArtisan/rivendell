@@ -214,6 +214,12 @@ void MainObject::List()
 }
 
 
+void MainObject::Remove(int line)
+{
+  edit_log_event->remove(line,1);
+}
+
+
 void MainObject::Save()
 {
   if(edit_log_event==NULL) {
@@ -367,6 +373,22 @@ void MainObject::DispatchCommand(const QString &cmd)
     }
     else {
       fprintf(stderr,"load: invalid command arguments\n");
+    }
+    processed=true;
+  }
+
+  if(verb=="remove") {
+    if(cmds.size()==2) {
+      line=cmds[1].toInt(&ok);
+      if(ok&&(line>=0)&&(line<edit_log_event->size())) {
+	Remove(line);
+      }
+      else {
+	fprintf(stderr,"remove: invalid line number\n");
+      }
+    }
+    else {
+      fprintf(stderr,"remove: invalid command arguments\n");
     }
     processed=true;
   }
