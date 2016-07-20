@@ -74,6 +74,11 @@ MainObject::MainObject(QObject *parent)
   }
 
   //
+  // RDAirPlay Configuration
+  //
+  edit_airplay_conf=new RDAirPlayConf(edit_config->stationName(),"RDAIRPLAY");
+
+  //
   // RIPC Connection
   //
   edit_user=NULL;
@@ -137,6 +142,25 @@ void MainObject::inputActivatedData(int sock)
 
 void MainObject::Addcart(int line,unsigned cartnum)
 {
+  if(edit_log_event==NULL) {
+    fprintf(stderr,"addcart: no log loaded\n");
+    return;
+  }
+  if(edit_user->addtoLog()) {
+    if(line>edit_log_event->size()) {
+      line=edit_log_event->size();
+    }
+    edit_log_event->insert(line,1);
+    edit_log_event->logLine(line)->
+      setTransType(edit_airplay_conf->defaultTransType());
+    edit_log_event->logLine(line)->setFadeupGain(-3000);
+    edit_log_event->logLine(line)->setFadedownGain(-3000);
+    edit_log_event->logLine(line)->setCartNumber(cartnum);
+    edit_log_event->refresh(line);
+  }
+  else {
+    fprintf(stderr,"addcart: insufficient privileges [Add Log Items]\n");
+  }
 }
 
 
@@ -296,13 +320,13 @@ void MainObject::DispatchCommand(const QString &cmd)
   int line;
   bool ok=false;
 
-  if(verb=="setcart") {
+  if(verb=="addcart") {
     if(cmds.size()==3) {
       line=cmds[1].toInt(&ok);
       if(ok&&(line>=0)) {
 	unsigned cartnum=cmds[2].toUInt(&ok);
 	if(ok&&(cartnum<=RD_MAX_CART_NUMBER)) {
-	  Setcart(line,cartnum);
+	  Addcart(line,cartnum);
 	}
 	else {
 	  fprintf(stderr,"addcart: invalid cart number\n");
@@ -361,6 +385,28 @@ void MainObject::DispatchCommand(const QString &cmd)
     }
     else {
       fprintf(stderr,"saveas: invalid command arguments\n");
+    }
+    processed=true;
+  }
+
+  if(verb=="setcart") {
+    if(cmds.size()==3) {
+      line=cmds[1].toInt(&ok);
+      if(ok&&(line>=0)&&(line<edit_log_event->size())) {
+	unsigned cartnum=cmds[2].toUInt(&ok);
+	if(ok&&(cartnum<=RD_MAX_CART_NUMBER)) {
+	  Setcart(line,cartnum);
+	}
+	else {
+	  fprintf(stderr,"setcart: invalid cart number\n");
+	}
+      }
+      else {
+	fprintf(stderr,"setcart: invalid line number\n");
+      }
+    }
+    else {
+      fprintf(stderr,"setcart: invalid command arguments\n");
     }
     processed=true;
   }

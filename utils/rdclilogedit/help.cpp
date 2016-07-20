@@ -36,6 +36,14 @@ void MainObject::Help(const QStringList &cmds) const
   }
   else {
     QString verb=cmds[1].lower();
+    if(verb=="addcart") {
+      printf("\n");
+      printf("  addcart <line> <cart-num>\n");
+      printf("\n");
+      printf("Add a new cart event before line <line> using cart <cart-num>.\n");
+      printf("\n");
+      processed=true;
+    }
     if((verb=="bye")||(verb=="exit")||(verb=="quit")) {
       printf("\n");
       printf("  %s\n",(const char *)cmds[1]);

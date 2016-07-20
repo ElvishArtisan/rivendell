@@ -24,6 +24,7 @@
 #include <qobject.h>
 #include <qsocketnotifier.h>
 
+#include <rdairplay_conf.h>
 #include <rdconfig.h>
 #include <rdcut.h>
 #include <rddb.h>
@@ -63,6 +64,7 @@ class MainObject : public QObject
   RDLogEvent *edit_log_event;
   RDUser *edit_user;
   RDRipc *edit_ripc;
+  RDAirPlayConf *edit_airplay_conf;
   RDConfig *edit_config;
 };
 
