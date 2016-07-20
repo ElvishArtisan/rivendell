@@ -28,7 +28,7 @@ void MainObject::Help(const QStringList &cmds) const
     printf("\n");
     printf("The following commands are available:\n");
     printf("?, addcart, bye, exit, help, list, listlogs, load, quit, remove,\n");
-    printf("save, saveas, setcart, unload\n");
+    printf("save, saveas, setcart, settime, settrans, unload\n");
     printf("\n");
     printf("Enter \"? <cmd-name>\" for specific help.\n");
     printf("\n");
@@ -105,6 +105,16 @@ void MainObject::Help(const QStringList &cmds) const
       printf("  setcart <line> <cart-num>\n");
       printf("\n");
       printf("Set the cart event at line <line> to use cart <cart-num>.\n");
+      printf("\n");
+      processed=true;
+    }
+    if(verb=="settime") {
+      printf("\n");
+      printf("  settime <line> hard|none <time>\n");
+      printf("\n");
+      printf("Set the start time type and value of the event at line <line>.\n");
+      printf("The <time> parameter is in format \"HH:MM:SS\", and is optional when\n");
+      printf("when setting \"none\".\n");
       printf("\n");
       processed=true;
     }

@@ -55,6 +55,7 @@ class MainObject : public QObject
   void Save();
   void Saveas(const QString &logname);
   void Setcart(int line,unsigned cartnum);
+  void Settime(int line,RDLogLine::TimeType type,const QTime &time=QTime());
   void Settrans(int line,RDLogLine::TransType type);
   void Unload();
   void DispatchCommand(const QString &cmd);

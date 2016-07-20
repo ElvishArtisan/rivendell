@@ -32,6 +32,7 @@
 #include <rdconf.h>
 #include <rdcreate_log.h>
 #include <rdescape_string.h>
+#include <rdweb.h>
 
 #include "rdclilogedit.h"
 
@@ -305,6 +306,17 @@ void MainObject::Setcart(int line,unsigned cartnum)
 }
 
 
+void MainObject::Settime(int line,RDLogLine::TimeType type,const QTime &time)
+{
+  if(edit_log_event==NULL) {
+    fprintf(stderr,"settime: no log loaded\n");
+    return;
+  }
+  edit_log_event->logLine(line)->setTimeType(type);
+  edit_log_event->logLine(line)->setStartTime(RDLogLine::Logged,time);
+}
+
+
 void MainObject::Settrans(int line,RDLogLine::TransType type)
 {
   edit_log_event->logLine(line)->setTransType(type);
@@ -331,6 +343,7 @@ void MainObject::DispatchCommand(const QString &cmd)
   QString verb=cmds[0].lower();
   bool processed=false;
   int line;
+  QTime time;
   bool ok=false;
 
   if(verb=="addcart") {
@@ -436,6 +449,52 @@ void MainObject::DispatchCommand(const QString &cmd)
     }
     else {
       fprintf(stderr,"setcart: invalid command arguments\n");
+    }
+    processed=true;
+  }
+
+  if(verb=="settime") {
+    if(cmds.size()>=3) {
+      line=cmds[1].toInt(&ok);
+      if(ok&&(line>=0)&&(line<edit_log_event->size())) {
+	RDLogLine::TimeType ttype=RDLogLine::NoTime;
+	if(cmds[2].lower()=="hard") {
+	  ttype=RDLogLine::Hard;
+	}
+	if(cmds[2].lower()=="none") {
+	  ttype=RDLogLine::Relative;
+	}
+	switch(ttype) {
+	case RDLogLine::Hard:
+	  if(cmds.size()>=4) {
+	    time=RDGetWebTime(cmds[3],&ok);
+	    if(ok) {
+	      Settime(line,ttype,time);
+	    }
+	    else {
+	      fprintf(stderr,"settime: invalid time value\n");
+	    }
+	  }
+	  else {
+	    fprintf(stderr,"settime: missing time value\n");
+	  }
+	  break;
+
+	case RDLogLine::Relative:
+	  Settime(line,ttype);
+	  break;
+
+	case RDLogLine::NoTime:
+	  fprintf(stderr,"settime: invalid time type\n");
+	  break;
+	}
+      }
+      else {
+	fprintf(stderr,"settime: invalid line number\n");
+      }
+    }
+    else {
+      fprintf(stderr,"settime: invalid command arguments\n");
     }
     processed=true;
   }
