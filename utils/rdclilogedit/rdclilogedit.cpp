@@ -143,10 +143,6 @@ void MainObject::inputActivatedData(int sock)
 
 void MainObject::Addcart(int line,unsigned cartnum)
 {
-  if(edit_log_event==NULL) {
-    fprintf(stderr,"addcart: no log loaded\n");
-    return;
-  }
   if(edit_user->addtoLog()) {
     if(line>edit_log_event->size()) {
       line=edit_log_event->size();
@@ -204,10 +200,6 @@ void MainObject::Load(const QString &logname)
 
 void MainObject::List()
 {
-  if(edit_log_event==NULL) {
-    fprintf(stderr,"list: no log loaded\n");
-    return;
-  }
   for(int i=0;i<edit_log_event->size();i++) {
     printf("%4d %s\n",i,(const char *)ListLine(edit_log_event,i));
   }
@@ -223,10 +215,6 @@ void MainObject::Remove(int line)
 
 void MainObject::Save()
 {
-  if(edit_log_event==NULL) {
-    fprintf(stderr,"save: no log loaded\n");
-    return;
-  }
   if(edit_user->arrangeLog()) {
     edit_log_event->save();
     edit_log->
@@ -243,10 +231,6 @@ void MainObject::Saveas(const QString &logname)
   QString sql;
   RDSqlQuery *q;
 
-  if(edit_log_event==NULL) {
-    fprintf(stderr,"save: no log loaded\n");
-    return;
-  }
   if(edit_user->arrangeLog()) {
     RDLog *log=new RDLog(logname);
     if(!log->exists()) {
@@ -280,10 +264,6 @@ void MainObject::Saveas(const QString &logname)
 
 void MainObject::Setcart(int line,unsigned cartnum)
 {
-  if(edit_log_event==NULL) {
-    fprintf(stderr,"setcart: no log loaded\n");
-    return;
-  }
   if(edit_user->arrangeLog()) {
     RDLogLine *logline=edit_log_event->logLine(line);
     if(logline!=NULL) {
@@ -308,10 +288,6 @@ void MainObject::Setcart(int line,unsigned cartnum)
 
 void MainObject::Settime(int line,RDLogLine::TimeType type,const QTime &time)
 {
-  if(edit_log_event==NULL) {
-    fprintf(stderr,"settime: no log loaded\n");
-    return;
-  }
   edit_log_event->logLine(line)->setTimeType(type);
   edit_log_event->logLine(line)->setStartTime(RDLogLine::Logged,time);
 }
@@ -346,28 +322,9 @@ void MainObject::DispatchCommand(const QString &cmd)
   QTime time;
   bool ok=false;
 
-  if(verb=="addcart") {
-    if(cmds.size()==3) {
-      line=cmds[1].toInt(&ok);
-      if(ok&&(line>=0)) {
-	unsigned cartnum=cmds[2].toUInt(&ok);
-	if(ok&&(cartnum<=RD_MAX_CART_NUMBER)) {
-	  Addcart(line,cartnum);
-	}
-	else {
-	  fprintf(stderr,"addcart: invalid cart number\n");
-	}
-      }
-      else {
-	fprintf(stderr,"addcart: invalid line number\n");
-      }
-    }
-    else {
-      fprintf(stderr,"addcart: invalid command arguments\n");
-    }
-    processed=true;
-  }
-
+  //
+  // No loaded log needed for these
+  //
   if((verb=="exit")||(verb=="quit")||(verb=="bye")) {
     exit(0);
   }
@@ -382,11 +339,6 @@ void MainObject::DispatchCommand(const QString &cmd)
     processed=true;
   }
 
-  if(verb=="list") {
-    List();
-    processed=true;
-  }
-
   if(verb=="load") {
     if(cmds.size()==2) {
       Load(cmds[1]);
@@ -397,141 +349,177 @@ void MainObject::DispatchCommand(const QString &cmd)
     processed=true;
   }
 
-  if(verb=="remove") {
-    if(cmds.size()==2) {
-      line=cmds[1].toInt(&ok);
-      if(ok&&(line>=0)&&(line<edit_log_event->size())) {
-	Remove(line);
-      }
-      else {
-	fprintf(stderr,"remove: invalid line number\n");
-      }
-    }
-    else {
-      fprintf(stderr,"remove: invalid command arguments\n");
-    }
-    processed=true;
-  }
-
-  if(verb=="save") {
-    Save();
-    processed=true;
-  }
-
-  if(verb=="saveas") {
-    if(cmds.size()==2) {
-      if(cmds[1].length()>64) {
-	fprintf(stderr,"saveas: log name too long\n");
-      }
-      Saveas(cmds[1]);
-    }
-    else {
-      fprintf(stderr,"saveas: invalid command arguments\n");
-    }
-    processed=true;
-  }
-
-  if(verb=="setcart") {
-    if(cmds.size()==3) {
-      line=cmds[1].toInt(&ok);
-      if(ok&&(line>=0)&&(line<edit_log_event->size())) {
-	unsigned cartnum=cmds[2].toUInt(&ok);
-	if(ok&&(cartnum<=RD_MAX_CART_NUMBER)) {
-	  Setcart(line,cartnum);
-	}
-	else {
-	  fprintf(stderr,"setcart: invalid cart number\n");
-	}
-      }
-      else {
-	fprintf(stderr,"setcart: invalid line number\n");
-      }
-    }
-    else {
-      fprintf(stderr,"setcart: invalid command arguments\n");
-    }
-    processed=true;
-  }
-
-  if(verb=="settime") {
-    if(cmds.size()>=3) {
-      line=cmds[1].toInt(&ok);
-      if(ok&&(line>=0)&&(line<edit_log_event->size())) {
-	RDLogLine::TimeType ttype=RDLogLine::NoTime;
-	if(cmds[2].lower()=="hard") {
-	  ttype=RDLogLine::Hard;
-	}
-	if(cmds[2].lower()=="none") {
-	  ttype=RDLogLine::Relative;
-	}
-	switch(ttype) {
-	case RDLogLine::Hard:
-	  if(cmds.size()>=4) {
-	    time=RDGetWebTime(cmds[3],&ok);
-	    if(ok) {
-	      Settime(line,ttype,time);
-	    }
-	    else {
-	      fprintf(stderr,"settime: invalid time value\n");
-	    }
+  //
+  // These need a log loaded
+  //
+  if((processed)||(edit_log_event!=NULL)) {
+    if(verb=="addcart") {
+      if(cmds.size()==3) {
+	line=cmds[1].toInt(&ok);
+	if(ok&&(line>=0)) {
+	  unsigned cartnum=cmds[2].toUInt(&ok);
+	  if(ok&&(cartnum<=RD_MAX_CART_NUMBER)) {
+	    Addcart(line,cartnum);
 	  }
 	  else {
-	    fprintf(stderr,"settime: missing time value\n");
+	    fprintf(stderr,"addcart: invalid cart number\n");
 	  }
-	  break;
-
-	case RDLogLine::Relative:
-	  Settime(line,ttype);
-	  break;
-
-	case RDLogLine::NoTime:
-	  fprintf(stderr,"settime: invalid time type\n");
-	  break;
-	}
-      }
-      else {
-	fprintf(stderr,"settime: invalid line number\n");
-      }
-    }
-    else {
-      fprintf(stderr,"settime: invalid command arguments\n");
-    }
-    processed=true;
-  }
-
-  if(verb=="settrans") {
-    if(cmds.size()==3) {
-      line=cmds[1].toInt(&ok);
-      if(ok&&(line>=0)&&(line<edit_log_event->size())) {
-	RDLogLine::TransType trans=RDLogLine::NoTrans;
-	if(cmds[2].lower()=="play") {
-	  trans=RDLogLine::Play;
-	}
-	if(cmds[2].lower()=="segue") {
-	  trans=RDLogLine::Segue;
-	}
-	if(cmds[2].lower()=="stop") {
-	  trans=RDLogLine::Stop;
-	}
-	if(trans!=RDLogLine::NoTrans) {
-	  Settrans(line,trans);
 	}
 	else {
-	  fprintf(stderr,"settrans: invalid transition type\n");
+	  fprintf(stderr,"addcart: invalid line number\n");
 	}
       }
       else {
-	fprintf(stderr,"settrans: invalid line number\n");
+	fprintf(stderr,"addcart: invalid command arguments\n");
       }
+      processed=true;
     }
-    else {
-      fprintf(stderr,"settrans: invalid command arguments\n");
+    
+    if(verb=="list") {
+      List();
+      processed=true;
     }
-    processed=true;
-  }
 
-  if(verb=="unload") {
-    Unload();
+    if(verb=="remove") {
+      if(cmds.size()==2) {
+	line=cmds[1].toInt(&ok);
+	if(ok&&(line>=0)&&(line<edit_log_event->size())) {
+	  Remove(line);
+	}
+	else {
+	  fprintf(stderr,"remove: invalid line number\n");
+	}
+      }
+      else {
+	fprintf(stderr,"remove: invalid command arguments\n");
+      }
+      processed=true;
+    }
+
+    if(verb=="save") {
+      Save();
+      processed=true;
+    }
+
+    if(verb=="saveas") {
+      if(cmds.size()==2) {
+	if(cmds[1].length()>64) {
+	  fprintf(stderr,"saveas: log name too long\n");
+	}
+	Saveas(cmds[1]);
+      }
+      else {
+	fprintf(stderr,"saveas: invalid command arguments\n");
+      }
+      processed=true;
+    }
+
+    if(verb=="setcart") {
+      if(cmds.size()==3) {
+	line=cmds[1].toInt(&ok);
+	if(ok&&(line>=0)&&(line<edit_log_event->size())) {
+	  unsigned cartnum=cmds[2].toUInt(&ok);
+	  if(ok&&(cartnum<=RD_MAX_CART_NUMBER)) {
+	    Setcart(line,cartnum);
+	  }
+	  else {
+	    fprintf(stderr,"setcart: invalid cart number\n");
+	  }
+	}
+	else {
+	  fprintf(stderr,"setcart: invalid line number\n");
+	}
+      }
+      else {
+	fprintf(stderr,"setcart: invalid command arguments\n");
+      }
+      processed=true;
+    }
+
+    if(verb=="settime") {
+      if(cmds.size()>=3) {
+	line=cmds[1].toInt(&ok);
+	if(ok&&(line>=0)&&(line<edit_log_event->size())) {
+	  RDLogLine::TimeType ttype=RDLogLine::NoTime;
+	  if(cmds[2].lower()=="hard") {
+	    ttype=RDLogLine::Hard;
+	  }
+	  if(cmds[2].lower()=="none") {
+	    ttype=RDLogLine::Relative;
+	  }
+	  switch(ttype) {
+	  case RDLogLine::Hard:
+	    if(cmds.size()>=4) {
+	      time=RDGetWebTime(cmds[3],&ok);
+	      if(ok) {
+		Settime(line,ttype,time);
+	      }
+	      else {
+		fprintf(stderr,"settime: invalid time value\n");
+	      }
+	    }
+	    else {
+	      fprintf(stderr,"settime: missing time value\n");
+	    }
+	    break;
+
+	  case RDLogLine::Relative:
+	    Settime(line,ttype);
+	    break;
+
+	  case RDLogLine::NoTime:
+	    fprintf(stderr,"settime: invalid time type\n");
+	    break;
+	  }
+	}
+	else {
+	  fprintf(stderr,"settime: invalid line number\n");
+	}
+      }
+      else {
+	fprintf(stderr,"settime: invalid command arguments\n");
+      }
+      processed=true;
+    }
+
+    if(verb=="settrans") {
+      if(cmds.size()==3) {
+	line=cmds[1].toInt(&ok);
+	if(ok&&(line>=0)&&(line<edit_log_event->size())) {
+	  RDLogLine::TransType trans=RDLogLine::NoTrans;
+	  if(cmds[2].lower()=="play") {
+	    trans=RDLogLine::Play;
+	  }
+	  if(cmds[2].lower()=="segue") {
+	    trans=RDLogLine::Segue;
+	  }
+	  if(cmds[2].lower()=="stop") {
+	    trans=RDLogLine::Stop;
+	  }
+	  if(trans!=RDLogLine::NoTrans) {
+	    Settrans(line,trans);
+	  }
+	  else {
+	    fprintf(stderr,"settrans: invalid transition type\n");
+	  }
+	}
+	else {
+	  fprintf(stderr,"settrans: invalid line number\n");
+	}
+      }
+      else {
+	fprintf(stderr,"settrans: invalid command arguments\n");
+      }
+      processed=true;
+    }
+
+    if(verb=="unload") {
+      Unload();
+      processed=true;
+    }
+  }
+  else {
+    fprintf(stderr,"%s: no log loaded\n",(const char *)verb);
     processed=true;
   }
 
