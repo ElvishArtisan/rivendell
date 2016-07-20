@@ -90,6 +90,7 @@ utils/rdmarkerset/rdmarkerset
 utils/rmlsend/rmlsend
 utils/rdpurgecasts/rdpurgecasts
 utils/rdchunk/rdchunk
+utils/rdclilogedit/rdclilogedit
 utils/rdcleandirs/rdcleandirs
 utils/rdsoftkeys/rdsoftkeys
 utils/rddbcheck/rddbcheck

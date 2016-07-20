@@ -15302,3 +15302,5 @@
 	'rdlogedit/edit_logline.cpp' that broke the build under Windows.
 2016-07-18 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 2.14.1int01.
+2016-07-20 Fred Gleason <fredg@paravelsystems.com>
+	* Stubbed out a command-line log editor in 'utils/rdclilogedit/'.

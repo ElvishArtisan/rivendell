@@ -229,6 +229,7 @@ rm -rf $RPM_BUILD_ROOT
 @LOCAL_PREFIX@/bin/rdalsaconfig
 @CONSOLEHELPER_RDALSACONFIG@
 @LOCAL_PREFIX@/bin/rdgpimon
+@LOCAL_PREFIX@/bin/rdclilogedit
 @LOCAL_PREFIX@/bin/rddelete
 @LOCAL_PREFIX@/bin/rdexport
 @LOCAL_PREFIX@/bin/rdimport
