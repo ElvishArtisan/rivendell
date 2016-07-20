@@ -15307,3 +15307,7 @@
 2016-07-20 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'help' command to rdclilogedit(1) in
 	'utils/rdclilogedit/rdclilogedit.cpp'.
+2016-07-20 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'setcart' command to rdclilogedit(1) in
+	'utils/rdclilogedit/rdclilogedit.cpp' and
+	'utils/rdclilogedit/rdclilogedit.h'.

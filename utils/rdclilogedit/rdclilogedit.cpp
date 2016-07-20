@@ -134,76 +134,8 @@ void MainObject::inputActivatedData(int sock)
 }
 
 
-void MainObject::Help(const QStringList &cmds) const
+void MainObject::Addcart(int line,unsigned cartnum)
 {
-  bool processed=false;
-
-  if(cmds.size()==1) {
-    printf("\n");
-    printf("The following commands are available:\n");
-    printf("?, bye, exit, help, list, listlogs, load, quit, unload\n");
-    printf("\n");
-    printf("Enter \"? <cmd-name>\" for specific help.\n");
-    printf("\n");
-    processed=true;
-  }
-  else {
-    QString verb=cmds[1].lower();
-    if((verb=="bye")||(verb=="exit")||(verb=="quit")) {
-      printf("\n");
-      printf("  %s\n",(const char *)cmds[1]);
-      printf("\n");
-      printf("Exit the program.\n");
-      printf("\n");
-      processed=true;
-    }
-    if((verb=="?")||(verb=="help")) {
-      printf("\n");
-      printf("  %s <cmd-name>\n",(const char *)cmds[1]);
-      printf("\n");
-      printf("Print help about command <cmd-name>\n");
-      printf("\n");
-      processed=true;
-    }
-    if(verb=="listlogs") {
-      printf("\n");
-      printf("  listlogs\n");
-      printf("\n");
-      printf("Print the list of Rivendell logs.\n");
-      printf("\n");
-      processed=true;
-    }
-    if(verb=="load") {
-      printf("\n");
-      printf("  load <log-name>\n");
-      printf("\n");
-      printf("Load the <log-name> log into the edit buffer.\n");
-      printf("\n");
-      processed=true;
-    }
-    if(verb=="unload") {
-      printf("\n");
-      printf("  unload\n");
-      printf("\n");
-      printf("Unload and clear the contents of the edit buffer.\n");
-      printf("\n");
-      processed=true;
-    }
-    if(verb=="list") {
-      printf("\n");
-      printf("  list\n");
-      printf("\n");
-      printf("Print the contents of the edit buffer.\n");
-      printf("\n");
-      processed=true;
-    }
-  }
-
-  if(!processed) {
-    printf("\n");
-    printf("help: no such command\n");
-    printf("\n");
-  }
 }
 
 
@@ -247,13 +179,36 @@ void MainObject::Load(const QString &logname)
 void MainObject::List()
 {
   if(edit_log_event==NULL) {
-    fprintf(stderr,"no log loaded\n");
+    fprintf(stderr,"list: no log loaded\n");
     return;
   }
   for(int i=0;i<edit_log_event->size();i++) {
     printf("%4d %s\n",i,(const char *)ListLine(edit_log_event,i));
   }
   fflush(stdout);
+}
+
+
+void MainObject::Setcart(int line,unsigned cartnum)
+{
+  if(edit_log_event==NULL) {
+    fprintf(stderr,"setcart: no log loaded\n");
+    return;
+  }
+  RDLogLine *logline=edit_log_event->logLine(line);
+  if(logline!=NULL) {
+    if((logline->type()==RDLogLine::Cart)||
+       (logline->type()==RDLogLine::Macro)) {
+      logline->setCartNumber(cartnum);
+      edit_log_event->refresh(line);
+    }
+    else {
+      fprintf(stderr,"setcart: incompatible event type\n");
+    }
+  }
+  else {
+    fprintf(stderr,"setcart: no such line\n");
+  }
 }
 
 
@@ -275,6 +230,30 @@ void MainObject::DispatchCommand(const QString &cmd)
   QStringList cmds=cmds.split(" ",cmd);
   QString verb=cmds[0].lower();
   bool processed=false;
+  int line;
+  bool ok=false;
+
+  if(verb=="setcart") {
+    if(cmds.size()==3) {
+      line=cmds[1].toInt(&ok);
+      if(ok&&(line>=0)) {
+	unsigned cartnum=cmds[2].toUInt(&ok);
+	if(ok&&(cartnum<=RD_MAX_CART_NUMBER)) {
+	  Setcart(line,cartnum);
+	}
+	else {
+	  fprintf(stderr,"addcart: invalid cart number\n");
+	}
+      }
+      else {
+	fprintf(stderr,"addcart: invalid line number\n");
+      }
+    }
+    else {
+      fprintf(stderr,"addcart: invalid command arguments\n");
+    }
+    processed=true;
+  }
 
   if((verb=="exit")||(verb=="quit")||(verb=="bye")) {
     exit(0);
@@ -300,7 +279,7 @@ void MainObject::DispatchCommand(const QString &cmd)
       Load(cmds[1]);
     }
     else {
-      fprintf(stderr,"invalid command arguments\n");
+      fprintf(stderr,"load: invalid command arguments\n");
     }
     processed=true;
   }

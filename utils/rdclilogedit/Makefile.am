@@ -29,7 +29,8 @@ moc_%.cpp:	%.h
 
 bin_PROGRAMS = rdclilogedit
 
-dist_rdclilogedit_SOURCES = rdclilogedit.cpp rdclilogedit.h
+dist_rdclilogedit_SOURCES = help.cpp\
+                            rdclilogedit.cpp rdclilogedit.h
 
 nodist_rdclilogedit_SOURCES = moc_rdclilogedit.cpp
 

@@ -45,10 +45,12 @@ class MainObject : public QObject
   void inputActivatedData(int sock);
 
  private:
+  void Addcart(int line,unsigned cartnum);
   void Help(const QStringList &cmds) const;
   void ListLogs() const;
   void Load(const QString &logname);
   void List();
+  void Setcart(int line,unsigned cartnum);
   void Unload();
   void DispatchCommand(const QString &cmd);
   QString ListLine(RDLogEvent *evt,int line) const;
