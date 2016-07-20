@@ -30,6 +30,7 @@
 
 #include <rdcmd_switch.h>
 #include <rdconf.h>
+#include <rdcreate_log.h>
 #include <rdescape_string.h>
 
 #include "rdclilogedit.h"
@@ -189,25 +190,87 @@ void MainObject::List()
 }
 
 
+void MainObject::Save()
+{
+  if(edit_log_event==NULL) {
+    fprintf(stderr,"save: no log loaded\n");
+    return;
+  }
+  if(edit_user->arrangeLog()) {
+    edit_log_event->save();
+    edit_log->
+      setModifiedDatetime(QDateTime(QDate::currentDate(),QTime::currentTime()));
+  }
+  else {
+    fprintf(stderr,"save: insufficient privileges [Rearrange Log Items]\n");
+  }
+}
+
+
+void MainObject::Saveas(const QString &logname)
+{
+  QString sql;
+  RDSqlQuery *q;
+
+  if(edit_log_event==NULL) {
+    fprintf(stderr,"save: no log loaded\n");
+    return;
+  }
+  if(edit_user->arrangeLog()) {
+    RDLog *log=new RDLog(logname);
+    if(!log->exists()) {
+      sql=QString("insert into LOGS set ")+
+	"NAME=\""+RDEscapeString(logname)+"\","+
+	"TYPE=0,"+
+	"DESCRIPTION=\""+"Copy of "+RDEscapeString(edit_log->name())+"\","+
+	"ORIGIN_USER=\""+RDEscapeString(edit_user->name())+"\","+
+	"ORIGIN_DATETIME=now(),"+
+	"LINK_DATETIME=now(),"+
+	"MODIFIED_DATETIME=now(),"+
+	"SERVICE=\""+edit_log->service()+"\"";
+      q=new RDSqlQuery(sql);
+      delete q;
+      RDCreateLogTable(RDLog::tableName(logname));
+      edit_log_event->setLogName(RDLog::tableName(logname));
+      edit_log_event->save();
+      delete edit_log;
+      edit_log=log;
+    }
+    else {
+      fprintf(stderr,"saveas: log already exists\n");
+      delete log;
+    }
+  }
+  else {
+    fprintf(stderr,"saveas: insufficient privileges [Rearrange Log Items]\n");
+  }
+}
+
+
 void MainObject::Setcart(int line,unsigned cartnum)
 {
   if(edit_log_event==NULL) {
     fprintf(stderr,"setcart: no log loaded\n");
     return;
   }
-  RDLogLine *logline=edit_log_event->logLine(line);
-  if(logline!=NULL) {
-    if((logline->type()==RDLogLine::Cart)||
-       (logline->type()==RDLogLine::Macro)) {
-      logline->setCartNumber(cartnum);
-      edit_log_event->refresh(line);
+  if(edit_user->arrangeLog()) {
+    RDLogLine *logline=edit_log_event->logLine(line);
+    if(logline!=NULL) {
+      if((logline->type()==RDLogLine::Cart)||
+	 (logline->type()==RDLogLine::Macro)) {
+	logline->setCartNumber(cartnum);
+	edit_log_event->refresh(line);
+      }
+      else {
+	fprintf(stderr,"setcart: incompatible event type\n");
+      }
     }
     else {
-      fprintf(stderr,"setcart: incompatible event type\n");
+      fprintf(stderr,"setcart: no such line\n");
     }
   }
   else {
-    fprintf(stderr,"setcart: no such line\n");
+    fprintf(stderr,"setcart: insufficient privileges [Rearrange Log Items]\n");
   }
 }
 
@@ -280,6 +343,24 @@ void MainObject::DispatchCommand(const QString &cmd)
     }
     else {
       fprintf(stderr,"load: invalid command arguments\n");
+    }
+    processed=true;
+  }
+
+  if(verb=="save") {
+    Save();
+    processed=true;
+  }
+
+  if(verb=="saveas") {
+    if(cmds.size()==2) {
+      if(cmds[1].length()>64) {
+	fprintf(stderr,"saveas: log name too long\n");
+      }
+      Saveas(cmds[1]);
+    }
+    else {
+      fprintf(stderr,"saveas: invalid command arguments\n");
     }
     processed=true;
   }

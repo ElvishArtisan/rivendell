@@ -50,6 +50,8 @@ class MainObject : public QObject
   void ListLogs() const;
   void Load(const QString &logname);
   void List();
+  void Save();
+  void Saveas(const QString &logname);
   void Setcart(int line,unsigned cartnum);
   void Unload();
   void DispatchCommand(const QString &cmd);

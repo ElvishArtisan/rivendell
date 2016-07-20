@@ -27,7 +27,8 @@ void MainObject::Help(const QStringList &cmds) const
   if(cmds.size()==1) {
     printf("\n");
     printf("The following commands are available:\n");
-    printf("?, bye, exit, help, list, listlogs, load, quit, unload\n");
+    printf("?, bye, exit, help, list, listlogs, load, quit, save, saveas,\n");
+    printf("setcart, unload\n");
     printf("\n");
     printf("Enter \"? <cmd-name>\" for specific help.\n");
     printf("\n");
@@ -64,6 +65,22 @@ void MainObject::Help(const QStringList &cmds) const
       printf("  load <log-name>\n");
       printf("\n");
       printf("Load the <log-name> log into the edit buffer.\n");
+      printf("\n");
+      processed=true;
+    }
+    if(verb=="save") {
+      printf("\n");
+      printf("  save\n");
+      printf("\n");
+      printf("Save the contents of the edit buffer.\n");
+      printf("\n");
+      processed=true;
+    }
+    if(verb=="saveas") {
+      printf("\n");
+      printf("  saveas <log-name>\n");
+      printf("\n");
+      printf("Save the contents of the edit buffer to new log <log-name>.\n");
       printf("\n");
       processed=true;
     }
