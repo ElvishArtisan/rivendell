@@ -25,14 +25,11 @@
 #include <unistd.h>
 
 #include <qapplication.h>
-#include <qcstring.h>
 #include <qfile.h>
 #include <qstringlist.h>
 
 #include <rdcmd_switch.h>
 #include <rdconf.h>
-#include <rdcreate_log.h>
-#include <rdescape_string.h>
 #include <rdweb.h>
 
 #include "rdclilogedit.h"
@@ -143,188 +140,6 @@ void MainObject::inputActivatedData(int sock)
 }
 
 
-void MainObject::Addcart(int line,unsigned cartnum)
-{
-  if(edit_user->addtoLog()) {
-    if(line>edit_log_event->size()) {
-      line=edit_log_event->size();
-    }
-    edit_log_event->insert(line,1);
-    edit_log_event->logLine(line)->
-      setTransType(edit_airplay_conf->defaultTransType());
-    edit_log_event->logLine(line)->setFadeupGain(-3000);
-    edit_log_event->logLine(line)->setFadedownGain(-3000);
-    edit_log_event->logLine(line)->setCartNumber(cartnum);
-    edit_log_event->refresh(line);
-    edit_modified=true;
-  }
-  else {
-    fprintf(stderr,"addcart: insufficient privileges [Add Log Items]\n");
-  }
-}
-
-
-void MainObject::ListLogs() const
-{
-  QString sql;
-  RDSqlQuery *q;
-
-  sql=QString("select NAME from LOGS order by NAME");
-  q=new RDSqlQuery(sql);
-  while(q->next()) {
-    Print(QString().sprintf("%s\n",(const char *)q->value(0).toString()));
-  }
-  delete q;
-}
-
-
-void MainObject::Load(const QString &logname)
-{
-  if(edit_log!=NULL) {
-    delete edit_log;
-    edit_log=NULL;
-  }
-  if(edit_log_event!=NULL) {
-    delete edit_log_event;
-    edit_log_event=NULL;
-  }
-  edit_log=new RDLog(logname);
-  if(edit_log->exists()) {
-    edit_log_event=new RDLogEvent(RDLog::tableName(logname));
-    edit_log_event->load();
-    edit_modified=false;
-  }
-  else {
-    fprintf(stderr,"log \"%s\" does not exist\n",(const char *)logname);
-    delete edit_log;
-    edit_log=NULL;
-  }
-}
-
-
-void MainObject::List()
-{
-  for(int i=0;i<edit_log_event->size();i++) {
-    Print(QString().sprintf("%4d %s\n",i,
-			    (const char *)ListLine(edit_log_event,i)));
-  }
-  fflush(stdout);
-}
-
-
-void MainObject::Remove(int line)
-{
-  edit_log_event->remove(line,1);
-  edit_modified=true;
-}
-
-
-void MainObject::Save()
-{
-  if(edit_user->arrangeLog()) {
-    edit_log_event->save();
-    edit_log->
-      setModifiedDatetime(QDateTime(QDate::currentDate(),QTime::currentTime()));
-    edit_modified=false;
-  }
-  else {
-    fprintf(stderr,"save: insufficient privileges [Rearrange Log Items]\n");
-  }
-}
-
-
-void MainObject::Saveas(const QString &logname)
-{
-  QString sql;
-  RDSqlQuery *q;
-
-  if(edit_user->arrangeLog()) {
-    RDLog *log=new RDLog(logname);
-    if(!log->exists()) {
-      sql=QString("insert into LOGS set ")+
-	"NAME=\""+RDEscapeString(logname)+"\","+
-	"TYPE=0,"+
-	"DESCRIPTION=\""+"Copy of "+RDEscapeString(edit_log->name())+"\","+
-	"ORIGIN_USER=\""+RDEscapeString(edit_user->name())+"\","+
-	"ORIGIN_DATETIME=now(),"+
-	"LINK_DATETIME=now(),"+
-	"MODIFIED_DATETIME=now(),"+
-	"SERVICE=\""+edit_log->service()+"\"";
-      q=new RDSqlQuery(sql);
-      delete q;
-      RDCreateLogTable(RDLog::tableName(logname));
-      edit_log_event->setLogName(RDLog::tableName(logname));
-      edit_log_event->save();
-      delete edit_log;
-      edit_log=log;
-      edit_modified=false;
-    }
-    else {
-      fprintf(stderr,"saveas: log already exists\n");
-      delete log;
-    }
-  }
-  else {
-    fprintf(stderr,"saveas: insufficient privileges [Rearrange Log Items]\n");
-  }
-}
-
-
-void MainObject::Setcart(int line,unsigned cartnum)
-{
-  if(edit_user->arrangeLog()) {
-    RDLogLine *logline=edit_log_event->logLine(line);
-    if(logline!=NULL) {
-      if((logline->type()==RDLogLine::Cart)||
-	 (logline->type()==RDLogLine::Macro)) {
-	logline->setCartNumber(cartnum);
-	edit_log_event->refresh(line);
-	edit_modified=true;
-      }
-      else {
-	fprintf(stderr,"setcart: incompatible event type\n");
-      }
-    }
-    else {
-      fprintf(stderr,"setcart: no such line\n");
-    }
-  }
-  else {
-    fprintf(stderr,"setcart: insufficient privileges [Rearrange Log Items]\n");
-  }
-}
-
-
-void MainObject::Settime(int line,RDLogLine::TimeType type,const QTime &time)
-{
-  edit_log_event->logLine(line)->setTimeType(type);
-  edit_log_event->logLine(line)->setStartTime(RDLogLine::Logged,time);
-  edit_modified=true;
-}
-
-
-void MainObject::Settrans(int line,RDLogLine::TransType type)
-{
-  edit_log_event->logLine(line)->setTransType(type);
-  edit_log_event->refresh(line);
-  edit_modified=true;
-}
-
-
-void MainObject::Unload()
-{
-  if(edit_log!=NULL) {
-    delete edit_log;
-    edit_log=NULL;
-  }
-  if(edit_log_event!=NULL) {
-    delete edit_log_event;
-    edit_log_event=NULL;
-  }
-  edit_modified=false;
-}
-
-
 void MainObject::OverwriteError(const QString &cmd) const
 {
   fprintf(stderr,"%s: buffer not saved (append \"!\" to override)\n",
@@ -411,6 +226,54 @@ void MainObject::DispatchCommand(QString cmd)
       }
       else {
 	fprintf(stderr,"addcart: invalid command arguments\n");
+      }
+      processed=true;
+    }
+
+    if(verb=="addchain") {
+      if(cmds.size()==3) {
+	line=cmds[1].toInt(&ok);
+	if(ok&&(line>=0)) {
+	  Addchain(line,cmds[2]);
+	}
+	else {
+	  fprintf(stderr,"addchain: invalid line number\n");
+	}
+      }
+      else {
+	fprintf(stderr,"addchain: invalid command arguments\n");
+      }
+      processed=true;
+    }
+    
+    if(verb=="addmarker") {
+      if(cmds.size()==2) {
+	line=cmds[1].toInt(&ok);
+	if(ok&&(line>=0)) {
+	  Addmarker(line);
+	}
+	else {
+	  fprintf(stderr,"addmarker: invalid line number\n");
+	}
+      }
+      else {
+	fprintf(stderr,"addmarker: invalid command arguments\n");
+      }
+      processed=true;
+    }
+    
+    if(verb=="addtrack") {
+      if(cmds.size()==2) {
+	line=cmds[1].toInt(&ok);
+	if(ok&&(line>=0)) {
+	  Addtrack(line);
+	}
+	else {
+	  fprintf(stderr,"addtrack: invalid line number\n");
+	}
+      }
+      else {
+	fprintf(stderr,"addtrack: invalid command arguments\n");
       }
       processed=true;
     }

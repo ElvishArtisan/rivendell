@@ -27,8 +27,8 @@ void MainObject::Help(const QStringList &cmds) const
   if(cmds.size()==1) {
     printf("\n");
     printf("The following commands are available:\n");
-    printf("?, addcart, bye, exit, help, list, listlogs, load, quit, remove,\n");
-    printf("save, saveas, setcart, settime, settrans, unload\n");
+    printf("?, addcart, addchain, addmarker, addtrack, bye, exit, help, list, listlogs,\n");
+    printf("load, quit, remove, save, saveas, setcart, settime, settrans, unload\n");
     printf("\n");
     printf("Enter \"? <cmd-name>\" for specific help.\n");
     printf("\n");
@@ -41,6 +41,30 @@ void MainObject::Help(const QStringList &cmds) const
       printf("  addcart <line> <cart-num>\n");
       printf("\n");
       printf("Add a new cart event before line <line> using cart <cart-num>.\n");
+      printf("\n");
+      processed=true;
+    }
+    if(verb=="addmarker") {
+      printf("\n");
+      printf("  addmarker <line>\n");
+      printf("\n");
+      printf("Add a new marker event before line <line>.\n");
+      printf("\n");
+      processed=true;
+    }
+    if(verb=="addchain") {
+      printf("\n");
+      printf("  addchain <line> <log-name>\n");
+      printf("\n");
+      printf("Add a new chain-to event before line <line> pointing to <log-name>.\n");
+      printf("\n");
+      processed=true;
+    }
+    if(verb=="addtrack") {
+      printf("\n");
+      printf("  addtrack <line>\n");
+      printf("\n");
+      printf("Add a new track event before line <line>.\n");
       printf("\n");
       processed=true;
     }

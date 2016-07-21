@@ -30,6 +30,7 @@ moc_%.cpp:	%.h
 bin_PROGRAMS = rdclilogedit
 
 dist_rdclilogedit_SOURCES = help.cpp\
+                            operations.cpp\
                             rdclilogedit.cpp rdclilogedit.h
 
 nodist_rdclilogedit_SOURCES = moc_rdclilogedit.cpp
