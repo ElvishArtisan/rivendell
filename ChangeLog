@@ -15362,3 +15362,10 @@
 	* Added a 'new' command to rdclilogedit(1).
 2016-07-21 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'header' command to rdclilogedit(1).
+2016-07-21 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'setautorefresh' command to rdclilogedit(1).
+	* Added a 'setdesc' command to rdclilogedit(1).
+	* Added a 'setenddate' command to rdclilogedit(1).
+	* Added a 'setpurgedate' command to rdclilogedit(1).
+	* Added a 'setservice' command to rdclilogedit(1).
+	* Added a 'setstartdate' command to rdclilogedit(1).

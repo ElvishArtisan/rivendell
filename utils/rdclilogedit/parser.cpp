@@ -65,6 +65,11 @@ void MainObject::DispatchCommand(QString cmd)
     processed=true;
   }
 
+  if(verb=="listservices") {
+    Listservices();
+    processed=true;
+  }
+
   if(verb=="load") {
     if(overwrite) {
       if(cmds.size()==2) {
@@ -249,6 +254,33 @@ void MainObject::DispatchCommand(QString cmd)
       processed=true;
     }
 
+    if(verb=="setautorefresh") {
+      if(edit_user->arrangeLog()) {
+	if(cmds.size()==2) {
+	  QString arg=cmds[1].lower();
+	  if((arg=="yes")||(arg=="true")||(arg=="y")) {
+	    Setautorefresh(true);
+	    processed=true;
+	  }
+	  if((arg=="no")||(arg=="false")||(arg=="n")) {
+	    Setautorefresh(false);
+	    processed=true;
+	  }
+	  if(!processed) {
+	    fprintf(stderr,"setautorefresh: invalid command argument\n");
+	  }
+	}
+	else {
+	  fprintf(stderr,"setautorefresh: invalid command arguments\n");
+	}
+      }
+      else {
+	fprintf(stderr,
+	    "setautorefresh: insufficient privileges [Rearrange Log Items]\n");
+      }
+      processed=true;
+    }
+
     if(verb=="setcart") {
       if(edit_user->arrangeLog()) {
 	if(cmds.size()==3) {
@@ -301,6 +333,50 @@ void MainObject::DispatchCommand(QString cmd)
       processed=true;
     }
 
+    if(verb=="setdesc") {
+      if(edit_user->arrangeLog()) {
+	if(cmds.size()>=2) {
+	  cmds.erase(cmds.begin());
+	  Setdesc(cmds.join(" "));
+	}
+	else {
+	  fprintf(stderr,"setdesc: invalid command arguments\n");
+	}
+      }
+      else {
+	fprintf(stderr,
+		"setdesc: insufficient privileges [Rearrange Log Items]\n");
+      }
+      processed=true;
+    }
+
+    if(verb=="setenddate") {
+      if(edit_user->arrangeLog()) {
+	if(cmds.size()==1) {
+	  Setenddate(QDate());
+	}
+	else {
+	  if(cmds.size()==2) {
+	    QDate date=QDate::fromString(cmds[1],Qt::ISODate);
+	    if(date.isValid()) {
+	      Setenddate(date);
+	    }
+	    else {
+	      fprintf(stderr,"setenddate: invalid date format\n");
+	    }
+	  }
+	  else {
+	    fprintf(stderr,"setenddate: invalid command arguments\n");
+	  }
+	}
+      }
+      else {
+	fprintf(stderr,
+		"setenddate: insufficient privileges [Rearrange Log Items]\n");
+      }
+      processed=true;
+    }
+
     if(verb=="setlabel") {
       if(edit_user->arrangeLog()) {
 	if(cmds.size()==3) {
@@ -320,6 +396,76 @@ void MainObject::DispatchCommand(QString cmd)
 	fprintf(stderr,
 		"setlabel: insufficient privileges [Rearrange Log Items]\n");
       }  
+      processed=true;
+    }
+
+    if(verb=="setpurgedate") {
+      if(edit_user->arrangeLog()) {
+	if(cmds.size()==1) {
+	  Setpurgedate(QDate());
+	}
+	else {
+	  if(cmds.size()==2) {
+	    QDate date=QDate::fromString(cmds[1],Qt::ISODate);
+	    if(date.isValid()) {
+	      Setpurgedate(date);
+	    }
+	    else {
+	      fprintf(stderr,"setpurgedate: invalid date format\n");
+	    }
+	  }
+	  else {
+	    fprintf(stderr,"setpurgedate: invalid command arguments\n");
+	  }
+	}
+      }
+      else {
+	fprintf(stderr,
+	     "setpurgedate: insufficient privileges [Rearrange Log Items]\n");
+      }
+      processed=true;
+    }
+
+    if(verb=="setservice") {
+      if(edit_user->arrangeLog()) {
+	if(cmds.size()==2) {
+	  Setservice(cmds[1]);
+	}
+	else {
+	  fprintf(stderr,"setservice: invalid command arguments\n");
+	}
+      }
+      else {
+	fprintf(stderr,
+		"setservice: insufficient privileges [Rearrange Log Items]\n");
+      }
+      processed=true;
+    }
+
+    if(verb=="setstartdate") {
+      if(edit_user->arrangeLog()) {
+	if(cmds.size()==1) {
+	  Setstartdate(QDate());
+	}
+	else {
+	  if(cmds.size()==2) {
+	    QDate date=QDate::fromString(cmds[1],Qt::ISODate);
+	    if(date.isValid()) {
+	      Setstartdate(date);
+	    }
+	    else {
+	      fprintf(stderr,"setstartdate: invalid date format\n");
+	    }
+	  }
+	  else {
+	    fprintf(stderr,"setstartdate: invalid command arguments\n");
+	  }
+	}
+      }
+      else {
+	fprintf(stderr,
+	     "setstartdate: insufficient privileges [Rearrange Log Items]\n");
+      }
       processed=true;
     }
 

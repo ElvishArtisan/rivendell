@@ -88,35 +88,44 @@ void MainObject::Addtrack(int line)
 
 void MainObject::Header() const
 {
-  printf(" Description: %s\n",(const char *)edit_log->description());
-  printf("     Service: %s\n",(const char *)edit_log->service());
-  if(edit_log->autoRefresh()) {
+  printf(" Description: %s\n",(const char *)edit_description);
+  printf("     Service: %s\n",(const char *)edit_service);
+  if(edit_auto_refresh) {
     printf("Auto Refresh: Yes\n");
   }
   else {
     printf("Auto Refresh: No\n");
   }
-  if(edit_log->startDate().isNull()) {
+  if(edit_start_date.isNull()) {
     printf("  Start Date: None\n");
   }
   else {
     printf("  Start Date: %s\n",
-	   (const char *)edit_log->startDate().toString("yyyy-MM-dd"));
+	   (const char *)edit_start_date.toString("yyyy-MM-dd"));
   }
-  if(edit_log->endDate().isNull()) {
+  if(edit_end_date.isNull()) {
     printf("    End Date: None\n");
   }
   else {
     printf("    End Date: %s\n",
-	   (const char *)edit_log->endDate().toString("yyyy-MM-dd"));
+	   (const char *)edit_end_date.toString("yyyy-MM-dd"));
   }
-  if(edit_log->purgeDate().isNull()) {
+  if(edit_purge_date.isNull()) {
     printf("  Purge Date: None\n");
   }
   else {
     printf("  Purge Date: %s\n",
-	   (const char *)edit_log->purgeDate().toString("yyyy-MM-dd"));
+	   (const char *)edit_purge_date.toString("yyyy-MM-dd"));
   }
+}
+
+
+void MainObject::List()
+{
+  for(int i=0;i<edit_log_event->size();i++) {
+    printf("%4d %s\n",i,(const char *)ListLine(edit_log_event,i));
+  }
+  fflush(stdout);
 }
 
 
@@ -126,6 +135,20 @@ void MainObject::ListLogs() const
   RDSqlQuery *q;
 
   sql=QString("select NAME from LOGS order by NAME");
+  q=new RDSqlQuery(sql);
+  while(q->next()) {
+    printf("%s\n",(const char *)q->value(0).toString());
+  }
+  delete q;
+}
+
+
+void MainObject::Listservices() const
+{
+  QString sql;
+  RDSqlQuery *q;
+
+  sql=QString("select NAME from SERVICES order by NAME");
   q=new RDSqlQuery(sql);
   while(q->next()) {
     printf("%s\n",(const char *)q->value(0).toString());
@@ -148,6 +171,12 @@ void MainObject::Load(const QString &logname)
   if(edit_log->exists()) {
     edit_log_event=new RDLogEvent(RDLog::tableName(logname));
     edit_log_event->load();
+    edit_description=edit_log->description();
+    edit_service=edit_log->service();
+    edit_start_date=edit_log->startDate();
+    edit_end_date=edit_log->endDate();
+    edit_purge_date=edit_log->purgeDate();
+    edit_auto_refresh=edit_log->autoRefresh();
     edit_modified=false;
   }
   else {
@@ -155,15 +184,6 @@ void MainObject::Load(const QString &logname)
     delete edit_log;
     edit_log=NULL;
   }
-}
-
-
-void MainObject::List()
-{
-  for(int i=0;i<edit_log_event->size();i++) {
-    printf("%4d %s\n",i,(const char *)ListLine(edit_log_event,i));
-  }
-  fflush(stdout);
 }
 
 
@@ -247,6 +267,9 @@ QString MainObject::ListLine(RDLogEvent *evt,int line) const
 
 void MainObject::New(const QString &logname)
 {
+  QString sql;
+  RDSqlQuery *q;
+
   if(edit_log!=NULL) {
     delete edit_log;
   }
@@ -256,6 +279,17 @@ void MainObject::New(const QString &logname)
   edit_log=new RDLog(logname);
   if(!edit_log->exists()) {
     edit_log_event=new RDLogEvent(RDLog::tableName(logname));
+    edit_description=logname+" log";
+    sql=QString("select NAME from SERVICES");
+    q=new RDSqlQuery(sql);
+    if(q->first()) {
+      edit_service=q->value(0).toString();
+    }
+    delete q;
+    edit_start_date=QDate();
+    edit_end_date=QDate();
+    edit_purge_date=QDate();
+    edit_auto_refresh=false;
     edit_new_log=true;
     edit_modified=false;
   }
@@ -279,6 +313,12 @@ void MainObject::Save()
   }
   else {
     edit_log_event->save();
+    edit_log->setDescription(edit_description);
+    edit_log->setStartDate(edit_start_date);
+    edit_log->setEndDate(edit_end_date);
+    edit_log->setPurgeDate(edit_purge_date);
+    edit_log->setAutoRefresh(edit_auto_refresh);
+    edit_log->setService(edit_service);
     edit_log->
       setModifiedDatetime(QDateTime(QDate::currentDate(),QTime::currentTime()));
     edit_modified=false;
@@ -293,33 +333,19 @@ void MainObject::Saveas(const QString &logname)
 
   RDLog *log=new RDLog(logname);
   if(!log->exists()) {
-    if(edit_log->exists()) {
-      sql=QString("insert into LOGS set ")+
-	"NAME=\""+RDEscapeString(logname)+"\","+
-	"TYPE=0,"+
-	"DESCRIPTION=\""+"Copy of "+RDEscapeString(edit_log->name())+"\","+
-	"ORIGIN_USER=\""+RDEscapeString(edit_user->name())+"\","+
-	"ORIGIN_DATETIME=now(),"+
-	"LINK_DATETIME=now(),"+
-	"MODIFIED_DATETIME=now(),"+
-	"SERVICE=\""+edit_log->service()+"\"";
-    }
-    else {
-      sql=QString("select NAME from SERVICES");
-      q=new RDSqlQuery(sql);
-      if(q->first()) {
-	sql=QString("insert into LOGS set ")+
-	  "NAME=\""+RDEscapeString(logname)+"\","+
-	  "TYPE=0,"+
-	  "DESCRIPTION=\""+RDEscapeString(logname+" log")+"\","+
-	  "ORIGIN_USER=\""+RDEscapeString(edit_user->name())+"\","+
-	  "ORIGIN_DATETIME=now(),"+
-	  "LINK_DATETIME=now(),"+
-	  "MODIFIED_DATETIME=now(),"+
-	  "SERVICE=\""+RDEscapeString(q->value(0).toString())+"\"";
-      }
-      delete q;
-    }
+    sql=QString("insert into LOGS set ")+
+      "NAME=\""+RDEscapeString(logname)+"\","+
+      "TYPE=0,"+
+      "DESCRIPTION=\""+RDEscapeString(edit_description)+"\","+
+      "ORIGIN_USER=\""+RDEscapeString(edit_user->name())+"\","+
+      "ORIGIN_DATETIME=now(),"+
+      "LINK_DATETIME=now(),"+
+      "MODIFIED_DATETIME=now(),"+
+      "START_DATE="+RDCheckDateTime(edit_start_date,"yyyy-MM-dd")+","+
+      "END_DATE="+RDCheckDateTime(edit_end_date,"yyyy-MM-dd")+","+
+      "PURGE_DATE="+RDCheckDateTime(edit_purge_date,"yyyy-MM-dd")+","+
+      "AUTO_REFRESH=\""+RDYesNo(edit_auto_refresh)+"\","+
+      "SERVICE=\""+RDEscapeString(edit_service)+"\"";
     q=new RDSqlQuery(sql);
     delete q;
     RDCreateLogTable(RDLog::tableName(logname));
@@ -334,6 +360,13 @@ void MainObject::Saveas(const QString &logname)
     fprintf(stderr,"saveas: log already exists\n");
     delete log;
   }
+}
+
+
+void MainObject::Setautorefresh(bool state)
+{
+  edit_auto_refresh=state;
+  edit_modified=true;
 }
 
 
@@ -377,6 +410,20 @@ void MainObject::Setcomment(int line,const QString &str)
 }
 
 
+void MainObject::Setdesc(const QString &str)
+{
+  edit_description=str;
+  edit_modified=true;
+}
+
+
+void MainObject::Setenddate(const QDate &date)
+{
+  edit_end_date=date;
+  edit_modified=true;
+}
+
+
 void MainObject::Setlabel(int line,const QString &str)
 {
   RDLogLine *logline=edit_log_event->logLine(line);
@@ -397,6 +444,28 @@ void MainObject::Setlabel(int line,const QString &str)
 }
 
 
+void MainObject::Setpurgedate(const QDate &date)
+{
+  edit_purge_date=date;
+  edit_modified=true;
+}
+
+
+void MainObject::Setservice(const QString &str)
+{
+  RDLog *log=new RDLog(str);
+  if(log->exists()) {
+    edit_service=str;
+    edit_modified=true;
+  }
+  else {
+    fprintf(stderr,"setservice: no such service\n");
+    fprintf(stderr,"(Do \"listservices\" for a list\n");
+  }
+  delete log;
+}
+
+
 void MainObject::Settime(int line,RDLogLine::TimeType type,const QTime &time)
 {
   edit_log_event->logLine(line)->setTimeType(type);
@@ -409,6 +478,13 @@ void MainObject::Settrans(int line,RDLogLine::TransType type)
 {
   edit_log_event->logLine(line)->setTransType(type);
   edit_log_event->refresh(line);
+  edit_modified=true;
+}
+
+
+void MainObject::Setstartdate(const QDate &date)
+{
+  edit_start_date=date;
   edit_modified=true;
 }
 

@@ -27,9 +27,10 @@ void MainObject::Help(const QStringList &cmds) const
   if(cmds.size()==1) {
     printf("\n");
     printf("The following commands are available:\n");
-    printf("?, addcart, addchain, addmarker, addtrack, bye, exit, help, list, listlogs,\n");
-    printf("load, new, quit, remove, save, saveas, setcart, setcomment, setlabel, settime\n");
-    printf("settrans, unload\n");
+    printf("?, addcart, addchain, addmarker, addtrack, bye, exit, header, help, list,\n");
+    printf("listlogs, listservices, load, new, quit, remove, save, saveas, setautorefresh,\n");
+    printf("setcart, setcomment, setdesc, setenddate, setlabel, setpurgedate, setservice,\n");
+    printf("setstartdate, settime, settrans, unload\n");
     printf("\n");
     printf("Enter \"? <cmd-name>\" for specific help.\n");
     printf("\n");
@@ -85,11 +86,27 @@ void MainObject::Help(const QStringList &cmds) const
       printf("\n");
       processed=true;
     }
+    if(verb=="header") {
+      printf("\n");
+      printf("  header\n");
+      printf("\n");
+      printf("Print the log's header data.\n");
+      printf("\n");
+      processed=true;
+    }
     if(verb=="listlogs") {
       printf("\n");
       printf("  listlogs\n");
       printf("\n");
       printf("Print the list of Rivendell logs.\n");
+      printf("\n");
+      processed=true;
+    }
+    if(verb=="listservices") {
+      printf("\n");
+      printf("  listservices\n");
+      printf("\n");
+      printf("Print the list of Rivendell services.\n");
       printf("\n");
       processed=true;
     }
@@ -133,6 +150,14 @@ void MainObject::Help(const QStringList &cmds) const
       printf("\n");
       processed=true;
     }
+    if(verb=="setautorefresh") {
+      printf("\n");
+      printf("  setautorefresh yes|no\n");
+      printf("\n");
+      printf("Set the Auto Refresh flag on the log.\n");
+      printf("\n");
+      processed=true;
+    }
     if(verb=="setcart") {
       printf("\n");
       printf("  setcart <line> <cart-num>\n");
@@ -149,11 +174,55 @@ void MainObject::Help(const QStringList &cmds) const
       printf("\n");
       processed=true;
     }
+    if(verb=="setdesc") {
+      printf("\n");
+      printf("  setdesc <str>\n");
+      printf("\n");
+      printf("Set the log Description to <str>.\n");
+      printf("\n");
+      processed=true;
+    }
+    if(verb=="setenddate") {
+      printf("\n");
+      printf("  setenddate [<date>]\n");
+      printf("\n");
+      printf("Set the End Date of the log to <date> (YYYY-MM-DD format).\n");
+      printf("To clear the End Date, leave <date> blank.\n");
+      printf("\n");
+      processed=true;
+    }
     if(verb=="setlabel") {
       printf("\n");
       printf("  setlabel <line> <str>\n");
       printf("\n");
       printf("Set the chain-to or marker event's \"Label\" field at line <line> to <str>.\n");
+      printf("\n");
+      processed=true;
+    }
+    if(verb=="setpurgedate") {
+      printf("\n");
+      printf("  setpurgedate [<date>]\n");
+      printf("\n");
+      printf("Set the Purge Date of the log to <date> (YYYY-MM-DD format).\n");
+      printf("To clear the Purge Date, leave <date> blank.\n");
+      printf("\n");
+      processed=true;
+    }
+    if(verb=="setservice") {
+      printf("\n");
+      printf("  setservice <str>\n");
+      printf("\n");
+      printf("Set the log's owning Service to <str>.\n");
+      printf("(For a list of valid Service names, do \"listservices\").\n");
+      printf("\n");
+      processed=true;
+    }
+    if(verb=="setstartdate") {
+      printf("\n");
+      printf("  setstartdate [<date>]\n");
+      printf("\n");
+      printf("Set the Start Date of the log to <date> (YYYY-MM-DD format).\n");
+      printf("To clear the Start Date, leave <date> blank.\n");
       printf("\n");
       processed=true;
     }
