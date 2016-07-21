@@ -339,6 +339,40 @@ void MainObject::DispatchCommand(QString cmd)
       processed=true;
     }
 
+    if(verb=="setcomment") {
+      if(cmds.size()>=3) {
+	line=cmds[1].toInt(&ok);
+	if(ok&&(line>=0)&&(line<edit_log_event->size())) {
+	  cmds.remove(cmds.begin());
+	  cmds.remove(cmds.begin());
+	  Setcomment(line,cmds.join(" "));
+	}
+	else {
+	  fprintf(stderr,"setcomment: invalid line number\n");
+	}
+      }
+      else {
+	fprintf(stderr,"setcomment: invalid command arguments\n");
+      }
+      processed=true;
+    }
+
+    if(verb=="setlabel") {
+      if(cmds.size()==3) {
+	line=cmds[1].toInt(&ok);
+	if(ok&&(line>=0)&&(line<edit_log_event->size())) {
+	  Setlabel(line,cmds[2]);
+	}
+	else {
+	  fprintf(stderr,"setlabel: invalid line number\n");
+	}
+      }
+      else {
+	fprintf(stderr,"setlabel: invalid command arguments\n");
+      }
+      processed=true;
+    }
+
     if(verb=="settime") {
       if(cmds.size()>=3) {
 	line=cmds[1].toInt(&ok);

@@ -236,6 +236,56 @@ void MainObject::Setcart(int line,unsigned cartnum)
 }
 
 
+void MainObject::Setcomment(int line,const QString &str)
+{
+  if(edit_user->arrangeLog()) {
+    RDLogLine *logline=edit_log_event->logLine(line);
+    if(logline!=NULL) {
+      if((logline->type()==RDLogLine::Marker)||
+	 (logline->type()==RDLogLine::Track)) {
+	logline->setMarkerComment(str);
+	edit_log_event->refresh(line);
+	edit_modified=true;
+      }
+      else {
+	fprintf(stderr,"setcomment: incompatible event type\n");
+      }
+    }
+    else {
+      fprintf(stderr,"setcomment: no such line\n");
+    }
+  }
+  else {
+    fprintf(stderr,"setcomment: insufficient privileges [Rearrange Log Items]\n");
+  }  
+}
+
+
+void MainObject::Setlabel(int line,const QString &str)
+{
+  if(edit_user->arrangeLog()) {
+    RDLogLine *logline=edit_log_event->logLine(line);
+    if(logline!=NULL) {
+      if((logline->type()==RDLogLine::Chain)||
+	 (logline->type()==RDLogLine::Marker)) {
+	logline->setMarkerLabel(str);
+	edit_log_event->refresh(line);
+	edit_modified=true;
+      }
+      else {
+	fprintf(stderr,"setlabel: incompatible event type\n");
+      }
+    }
+    else {
+      fprintf(stderr,"setlabel: no such line\n");
+    }
+  }
+  else {
+    fprintf(stderr,"setlabel: insufficient privileges [Rearrange Log Items]\n");
+  }  
+}
+
+
 void MainObject::Settime(int line,RDLogLine::TimeType type,const QTime &time)
 {
   edit_log_event->logLine(line)->setTimeType(type);

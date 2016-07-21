@@ -28,7 +28,8 @@ void MainObject::Help(const QStringList &cmds) const
     printf("\n");
     printf("The following commands are available:\n");
     printf("?, addcart, addchain, addmarker, addtrack, bye, exit, help, list, listlogs,\n");
-    printf("load, quit, remove, save, saveas, setcart, settime, settrans, unload\n");
+    printf("load, quit, remove, save, saveas, setcart, setcomment, setlabel, settime\n");
+    printf("settrans, unload\n");
     printf("\n");
     printf("Enter \"? <cmd-name>\" for specific help.\n");
     printf("\n");
@@ -129,6 +130,22 @@ void MainObject::Help(const QStringList &cmds) const
       printf("  setcart <line> <cart-num>\n");
       printf("\n");
       printf("Set the cart event at line <line> to use cart <cart-num>.\n");
+      printf("\n");
+      processed=true;
+    }
+    if(verb=="setcomment") {
+      printf("\n");
+      printf("  setcomment <line> <str>\n");
+      printf("\n");
+      printf("Set the marker or track event's \"Comment\" field at line <line> to <str>.\n");
+      printf("\n");
+      processed=true;
+    }
+    if(verb=="setlabel") {
+      printf("\n");
+      printf("  setlabel <line> <str>\n");
+      printf("\n");
+      printf("Set the chain-to or marker event's \"Label\" field at line <line> to <str>.\n");
       printf("\n");
       processed=true;
     }

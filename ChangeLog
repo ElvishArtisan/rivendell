@@ -15346,3 +15346,6 @@
 	* Added a 'addchain' command to rdclilogedit(1).
 	* Added a 'addmarker' command to rdclilogedit(1).
 	* Added a 'addtrack' command to rdclilogedit(1).
+2016-07-21 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'setcomment' command to rdclilogedit(1).
+	* Added a 'setlabel' command to rdclilogedit(1).
