@@ -22,7 +22,6 @@
 #define RDCLILOGEDIT_H
 
 #include <qobject.h>
-#include <qsocketnotifier.h>
 
 #include <rdairplay_conf.h>
 #include <rdconfig.h>
@@ -43,7 +42,6 @@ class MainObject : public QObject
 
  private slots:
   void userData();
-  void inputActivatedData(int sock);
 
  private:
   void Addcart(int line,unsigned cartnum);
@@ -64,11 +62,9 @@ class MainObject : public QObject
   void Settrans(int line,RDLogLine::TransType type);
   void Unload();
   void OverwriteError(const QString &cmd) const;
-  void Print(const QString &str) const;
   void DispatchCommand(QString cmd);
   QString ListLine(RDLogEvent *evt,int line) const;
   void PrintPrompt() const;
-  QSocketNotifier *edit_input_notifier; 
   QString edit_accum;
   bool edit_modified;
   RDLog *edit_log;

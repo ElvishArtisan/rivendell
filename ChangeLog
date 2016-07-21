@@ -15356,3 +15356,5 @@
 	* Moved enforcement of user permissions to the
 	'MainObject::DispatchCommand()' method in
 	'utils/rdclilogedit/parser.cpp'.
+2016-07-21 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored rdclilogedit(1) to use synchronous input.

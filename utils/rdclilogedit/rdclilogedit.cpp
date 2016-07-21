@@ -82,16 +82,17 @@ MainObject::MainObject(QObject *parent)
   // RIPC Connection
   //
   edit_user=NULL;
-  edit_input_notifier=NULL;
   edit_ripc=new RDRipc(edit_config->stationName());
   connect(edit_ripc,SIGNAL(userChanged()),this,SLOT(userData()));
-  edit_ripc->
-    connectHost("localhost",RIPCD_TCP_PORT,edit_config->password());
+  edit_ripc->connectHost("localhost",RIPCD_TCP_PORT,edit_config->password());
 }
 
 
 void MainObject::userData()
 {
+  char data[1024];
+  int n;
+
   //
   // Get User Context
   //
@@ -104,24 +105,8 @@ void MainObject::userData()
   //
   // Start up command processor
   //
-  if(edit_input_notifier==NULL) {
-    int flags=fcntl(0,F_GETFL,NULL);
-    flags|=O_NONBLOCK;
-    fcntl(0,F_SETFL,flags);
-    edit_input_notifier=new QSocketNotifier(0,QSocketNotifier::Read,this);
-    connect(edit_input_notifier,SIGNAL(activated(int)),
-	    this,SLOT(inputActivatedData(int)));
-    PrintPrompt();
-  }
-}
-
-
-void MainObject::inputActivatedData(int sock)
-{
-  char data[1024];
-  int n;
-
-  while((n=read(sock,data,1024))>0) {
+  PrintPrompt();
+  while((n=read(0,data,1024))>0) {
     for(int i=0;i<n;i++) {
       switch(0xFF&data[i]) {
       case 10:
@@ -137,6 +122,8 @@ void MainObject::inputActivatedData(int sock)
       }
     }
   }
+  printf("\n");
+  exit(0);
 }
 
 
@@ -147,25 +134,17 @@ void MainObject::OverwriteError(const QString &cmd) const
 }
 
 
-void MainObject::Print(const QString &str) const
-{
-  printf("%s",(const char *)str);
-  usleep(100);
-}
-
-
 void MainObject::PrintPrompt() const
 {
   if(edit_log==NULL) {
-    Print("logedit> ");
+    printf("logedit> ");
   }
   else {
     if(edit_modified) {
-      Print(QString().sprintf("logedit[%s*]> ",
-			      (const char *)edit_log->name()));
+      printf("logedit[%s*]> ",(const char *)edit_log->name());
     }
     else {
-      Print(QString().sprintf("logedit[%s]> ",(const char *)edit_log->name()));
+      printf("logedit[%s]> ",(const char *)edit_log->name());
     }
   }
   fflush(stdout);

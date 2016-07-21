@@ -94,7 +94,7 @@ void MainObject::ListLogs() const
   sql=QString("select NAME from LOGS order by NAME");
   q=new RDSqlQuery(sql);
   while(q->next()) {
-    Print(QString().sprintf("%s\n",(const char *)q->value(0).toString()));
+    printf("%s\n",(const char *)q->value(0).toString());
   }
   delete q;
 }
@@ -127,8 +127,7 @@ void MainObject::Load(const QString &logname)
 void MainObject::List()
 {
   for(int i=0;i<edit_log_event->size();i++) {
-    Print(QString().sprintf("%4d %s\n",i,
-			    (const char *)ListLine(edit_log_event,i)));
+    printf("%4d %s\n",i,(const char *)ListLine(edit_log_event,i));
   }
   fflush(stdout);
 }
