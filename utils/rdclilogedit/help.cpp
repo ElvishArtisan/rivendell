@@ -28,7 +28,7 @@ void MainObject::Help(const QStringList &cmds) const
     printf("\n");
     printf("The following commands are available:\n");
     printf("?, addcart, addchain, addmarker, addtrack, bye, exit, help, list, listlogs,\n");
-    printf("load, quit, remove, save, saveas, setcart, setcomment, setlabel, settime\n");
+    printf("load, new, quit, remove, save, saveas, setcart, setcomment, setlabel, settime\n");
     printf("settrans, unload\n");
     printf("\n");
     printf("Enter \"? <cmd-name>\" for specific help.\n");
@@ -98,6 +98,14 @@ void MainObject::Help(const QStringList &cmds) const
       printf("  load <log-name>\n");
       printf("\n");
       printf("Load the <log-name> log into the edit buffer.\n");
+      printf("\n");
+      processed=true;
+    }
+    if(verb=="new") {
+      printf("\n");
+      printf("  new <log-name>\n");
+      printf("\n");
+      printf("Create a new, empty log called <log-name> in the edit buffer.\n");
       printf("\n");
       processed=true;
     }

@@ -80,6 +80,21 @@ void MainObject::DispatchCommand(QString cmd)
     processed=true;
   }
 
+  if(verb=="new") {
+    if(overwrite) {
+      if(cmds.size()==2) {
+	New(cmds[1]);
+      }
+      else {
+	fprintf(stderr,"new: invalid command arguments\n");
+      }
+    }
+    else {
+      OverwriteError("new");
+    }
+    processed=true;
+  }
+
   //
   // These need a log loaded
   //

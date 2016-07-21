@@ -52,6 +52,7 @@ class MainObject : public QObject
   void ListLogs() const;
   void Load(const QString &logname);
   void List();
+  void New(const QString &logname);
   void Remove(int line);
   void Save();
   void Saveas(const QString &logname);
@@ -67,6 +68,7 @@ class MainObject : public QObject
   void PrintPrompt() const;
   QString edit_accum;
   bool edit_modified;
+  bool edit_new_log;
   RDLog *edit_log;
   RDLogEvent *edit_log_event;
   RDUser *edit_user;

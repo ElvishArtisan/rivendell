@@ -102,6 +102,7 @@ void MainObject::ListLogs() const
 
 void MainObject::Load(const QString &logname)
 {
+  printf("LOAD\n");
   if(edit_log!=NULL) {
     delete edit_log;
     edit_log=NULL;
@@ -211,6 +212,26 @@ QString MainObject::ListLine(RDLogEvent *evt,int line) const
 }
 
 
+void MainObject::New(const QString &logname)
+{
+  if(edit_log!=NULL) {
+    delete edit_log;
+  }
+  if(edit_log_event!=NULL) {
+    delete edit_log_event;
+  }
+  edit_log=new RDLog(logname);
+  if(!edit_log->exists()) {
+    edit_log_event=new RDLogEvent(RDLog::tableName(logname));
+    edit_new_log=true;
+    edit_modified=false;
+  }
+  else {
+    fprintf(stderr,"new: log already exists\n");
+  }
+}
+
+
 void MainObject::Remove(int line)
 {
   edit_log_event->remove(line,1);
@@ -220,10 +241,15 @@ void MainObject::Remove(int line)
 
 void MainObject::Save()
 {
-  edit_log_event->save();
-  edit_log->
-    setModifiedDatetime(QDateTime(QDate::currentDate(),QTime::currentTime()));
-  edit_modified=false;
+  if(edit_new_log) {
+    Saveas(edit_log->name());
+  }
+  else {
+    edit_log_event->save();
+    edit_log->
+      setModifiedDatetime(QDateTime(QDate::currentDate(),QTime::currentTime()));
+    edit_modified=false;
+  }
 }
 
 
@@ -234,15 +260,33 @@ void MainObject::Saveas(const QString &logname)
 
   RDLog *log=new RDLog(logname);
   if(!log->exists()) {
-    sql=QString("insert into LOGS set ")+
-      "NAME=\""+RDEscapeString(logname)+"\","+
-      "TYPE=0,"+
-      "DESCRIPTION=\""+"Copy of "+RDEscapeString(edit_log->name())+"\","+
-      "ORIGIN_USER=\""+RDEscapeString(edit_user->name())+"\","+
-      "ORIGIN_DATETIME=now(),"+
-      "LINK_DATETIME=now(),"+
-      "MODIFIED_DATETIME=now(),"+
-      "SERVICE=\""+edit_log->service()+"\"";
+    if(edit_log->exists()) {
+      sql=QString("insert into LOGS set ")+
+	"NAME=\""+RDEscapeString(logname)+"\","+
+	"TYPE=0,"+
+	"DESCRIPTION=\""+"Copy of "+RDEscapeString(edit_log->name())+"\","+
+	"ORIGIN_USER=\""+RDEscapeString(edit_user->name())+"\","+
+	"ORIGIN_DATETIME=now(),"+
+	"LINK_DATETIME=now(),"+
+	"MODIFIED_DATETIME=now(),"+
+	"SERVICE=\""+edit_log->service()+"\"";
+    }
+    else {
+      sql=QString("select NAME from SERVICES");
+      q=new RDSqlQuery(sql);
+      if(q->first()) {
+	sql=QString("insert into LOGS set ")+
+	  "NAME=\""+RDEscapeString(logname)+"\","+
+	  "TYPE=0,"+
+	  "DESCRIPTION=\""+RDEscapeString(logname+" log")+"\","+
+	  "ORIGIN_USER=\""+RDEscapeString(edit_user->name())+"\","+
+	  "ORIGIN_DATETIME=now(),"+
+	  "LINK_DATETIME=now(),"+
+	  "MODIFIED_DATETIME=now(),"+
+	  "SERVICE=\""+RDEscapeString(q->value(0).toString())+"\"";
+      }
+      delete q;
+    }
     q=new RDSqlQuery(sql);
     delete q;
     RDCreateLogTable(RDLog::tableName(logname));
@@ -251,6 +295,7 @@ void MainObject::Saveas(const QString &logname)
     delete edit_log;
     edit_log=log;
     edit_modified=false;
+    edit_new_log=false;
   }
   else {
     fprintf(stderr,"saveas: log already exists\n");
@@ -337,6 +382,7 @@ void MainObject::Settrans(int line,RDLogLine::TransType type)
 
 void MainObject::Unload()
 {
+  printf("UNLOAD\n");
   if(edit_log!=NULL) {
     delete edit_log;
     edit_log=NULL;
