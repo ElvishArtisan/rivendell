@@ -15360,3 +15360,5 @@
 	* Refactored rdclilogedit(1) to use synchronous input.
 2016-07-21 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'new' command to rdclilogedit(1).
+2016-07-21 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'header' command to rdclilogedit(1).

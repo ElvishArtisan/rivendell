@@ -189,6 +189,11 @@ void MainObject::DispatchCommand(QString cmd)
       processed=true;
     }
     
+    if(verb=="header") {
+      Header();
+      processed=true;
+    }
+
     if(verb=="list") {
       List();
       processed=true;

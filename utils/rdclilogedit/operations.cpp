@@ -86,6 +86,40 @@ void MainObject::Addtrack(int line)
 }
 
 
+void MainObject::Header() const
+{
+  printf(" Description: %s\n",(const char *)edit_log->description());
+  printf("     Service: %s\n",(const char *)edit_log->service());
+  if(edit_log->autoRefresh()) {
+    printf("Auto Refresh: Yes\n");
+  }
+  else {
+    printf("Auto Refresh: No\n");
+  }
+  if(edit_log->startDate().isNull()) {
+    printf("  Start Date: None\n");
+  }
+  else {
+    printf("  Start Date: %s\n",
+	   (const char *)edit_log->startDate().toString("yyyy-MM-dd"));
+  }
+  if(edit_log->endDate().isNull()) {
+    printf("    End Date: None\n");
+  }
+  else {
+    printf("    End Date: %s\n",
+	   (const char *)edit_log->endDate().toString("yyyy-MM-dd"));
+  }
+  if(edit_log->purgeDate().isNull()) {
+    printf("  Purge Date: None\n");
+  }
+  else {
+    printf("  Purge Date: %s\n",
+	   (const char *)edit_log->purgeDate().toString("yyyy-MM-dd"));
+  }
+}
+
+
 void MainObject::ListLogs() const
 {
   QString sql;
@@ -102,7 +136,6 @@ void MainObject::ListLogs() const
 
 void MainObject::Load(const QString &logname)
 {
-  printf("LOAD\n");
   if(edit_log!=NULL) {
     delete edit_log;
     edit_log=NULL;
@@ -382,7 +415,6 @@ void MainObject::Settrans(int line,RDLogLine::TransType type)
 
 void MainObject::Unload()
 {
-  printf("UNLOAD\n");
   if(edit_log!=NULL) {
     delete edit_log;
     edit_log=NULL;

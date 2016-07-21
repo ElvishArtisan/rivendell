@@ -48,6 +48,7 @@ class MainObject : public QObject
   void Addchain(int line,const QString &logname);
   void Addmarker(int line);
   void Addtrack(int line);
+  void Header() const;
   void Help(const QStringList &cmds) const;
   void ListLogs() const;
   void Load(const QString &logname);
