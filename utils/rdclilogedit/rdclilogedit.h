@@ -74,6 +74,7 @@ class MainObject : public QObject
   void DispatchCommand(QString cmd);
   QString ListLine(RDLogEvent *evt,int line) const;
   void PrintPrompt() const;
+  bool edit_script_option;
   QString edit_accum;
   bool edit_modified;
   bool edit_new_log;

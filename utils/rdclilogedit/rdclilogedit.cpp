@@ -37,6 +37,8 @@
 MainObject::MainObject(QObject *parent)
   :QObject(parent)
 {
+  edit_script_option=false;
+
   edit_log=NULL;
   edit_log_event=NULL;
   edit_modified=false;
@@ -45,9 +47,12 @@ MainObject::MainObject(QObject *parent)
   //
   // Read Command Options
   //
-  RDCmdSwitch *cmd=
-    new RDCmdSwitch(qApp->argc(),qApp->argv(),"rdimport",RDCLILOGEDIT_USAGE);
-  for(int i=0;i<(int)cmd->keys()-1;i++) {
+  RDCmdSwitch *cmd=new RDCmdSwitch(qApp->argc(),qApp->argv(),"rdclilogedit",
+				   RDCLILOGEDIT_USAGE);
+  for(int i=0;i<(int)cmd->keys();i++) {
+    if(cmd->key(i)=="--script") {
+      edit_script_option=true;
+    }
   }
 
   //
@@ -123,7 +128,9 @@ void MainObject::userData()
       }
     }
   }
-  printf("\n");
+  if(!edit_script_option) {
+    printf("\n");
+  }
   exit(0);
 }
 
@@ -137,18 +144,20 @@ void MainObject::OverwriteError(const QString &cmd) const
 
 void MainObject::PrintPrompt() const
 {
-  if(edit_log==NULL) {
-    printf("logedit> ");
-  }
-  else {
-    if(edit_modified) {
-      printf("logedit[%s*]> ",(const char *)edit_log->name());
+  if(!edit_script_option) {
+    if(edit_log==NULL) {
+      printf("logedit> ");
     }
     else {
-      printf("logedit[%s]> ",(const char *)edit_log->name());
+      if(edit_modified) {
+	printf("logedit[%s*]> ",(const char *)edit_log->name());
+      }
+      else {
+	printf("logedit[%s]> ",(const char *)edit_log->name());
+      }
     }
+    fflush(stdout);
   }
-  fflush(stdout);
 }
 
 
