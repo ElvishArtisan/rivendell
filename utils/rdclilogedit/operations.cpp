@@ -18,6 +18,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
+#include <rdconf.h>
 #include <rdcreate_log.h>
 #include <rdescape_string.h>
 
@@ -25,83 +26,63 @@
 
 void MainObject::Addcart(int line,unsigned cartnum)
 {
-  if(edit_user->addtoLog()) {
-    if(line>edit_log_event->size()) {
-      line=edit_log_event->size();
-    }
-    edit_log_event->insert(line,1);
-    edit_log_event->logLine(line)->
-      setTransType(edit_airplay_conf->defaultTransType());
-    edit_log_event->logLine(line)->setFadeupGain(-3000);
-    edit_log_event->logLine(line)->setFadedownGain(-3000);
-    edit_log_event->logLine(line)->setCartNumber(cartnum);
-    edit_log_event->refresh(line);
-    edit_modified=true;
+  if(line>edit_log_event->size()) {
+    line=edit_log_event->size();
   }
-  else {
-    fprintf(stderr,"addcart: insufficient privileges [Add Log Items]\n");
-  }
+  edit_log_event->insert(line,1);
+  edit_log_event->logLine(line)->
+    setTransType(edit_airplay_conf->defaultTransType());
+  edit_log_event->logLine(line)->setFadeupGain(-3000);
+  edit_log_event->logLine(line)->setFadedownGain(-3000);
+  edit_log_event->logLine(line)->setCartNumber(cartnum);
+  edit_log_event->refresh(line);
+  edit_modified=true;
 }
 
 
 void MainObject::Addchain(int line,const QString &logname)
 {
-  if(edit_user->addtoLog()) {
-    if(line>edit_log_event->size()) {
-      line=edit_log_event->size();
-    }
-    edit_log_event->insert(line,1);
-    edit_log_event->logLine(line)->setType(RDLogLine::Chain);
-    edit_log_event->logLine(line)->
-      setTransType(edit_airplay_conf->defaultTransType());
-    edit_log_event->logLine(line)->setMarkerLabel(logname);
-    edit_log_event->refresh(line);
-    edit_modified=true;
+  if(line>edit_log_event->size()) {
+    line=edit_log_event->size();
   }
-  else {
-    fprintf(stderr,"addchain: insufficient privileges [Add Log Items]\n");
-  }
+  edit_log_event->insert(line,1);
+  edit_log_event->logLine(line)->setType(RDLogLine::Chain);
+  edit_log_event->logLine(line)->
+    setTransType(edit_airplay_conf->defaultTransType());
+  edit_log_event->logLine(line)->setMarkerLabel(logname);
+  edit_log_event->refresh(line);
+  edit_modified=true;
 }
 
 
 void MainObject::Addmarker(int line)
 {
-  if(edit_user->addtoLog()) {
-    if(line>edit_log_event->size()) {
-      line=edit_log_event->size();
-    }
-    edit_log_event->insert(line,1);
-    edit_log_event->logLine(line)->setType(RDLogLine::Marker);
-    edit_log_event->logLine(line)->
-      setTransType(edit_airplay_conf->defaultTransType());
-    edit_log_event->logLine(line)->setMarkerLabel(tr("Label"));
-    edit_log_event->logLine(line)->setMarkerComment(tr("Marker Comment"));
-    edit_log_event->refresh(line);
-    edit_modified=true;
+  if(line>edit_log_event->size()) {
+    line=edit_log_event->size();
   }
-  else {
-    fprintf(stderr,"addmarker: insufficient privileges [Add Log Items]\n");
-  }
+  edit_log_event->insert(line,1);
+  edit_log_event->logLine(line)->setType(RDLogLine::Marker);
+  edit_log_event->logLine(line)->
+    setTransType(edit_airplay_conf->defaultTransType());
+  edit_log_event->logLine(line)->setMarkerLabel(tr("Label"));
+  edit_log_event->logLine(line)->setMarkerComment(tr("Marker Comment"));
+  edit_log_event->refresh(line);
+  edit_modified=true;
 }
 
 
 void MainObject::Addtrack(int line)
 {
-  if(edit_user->addtoLog()) {
-    if(line>edit_log_event->size()) {
-      line=edit_log_event->size();
-    }
-    edit_log_event->insert(line,1);
-    edit_log_event->logLine(line)->setType(RDLogLine::Track);
-    edit_log_event->logLine(line)->
-      setTransType(edit_airplay_conf->defaultTransType());
-    edit_log_event->logLine(line)->setMarkerComment(tr("Voice Track"));
-    edit_log_event->refresh(line);
-    edit_modified=true;
+  if(line>edit_log_event->size()) {
+    line=edit_log_event->size();
   }
-  else {
-    fprintf(stderr,"addtrack: insufficient privileges [Add Log Items]\n");
-  }
+  edit_log_event->insert(line,1);
+  edit_log_event->logLine(line)->setType(RDLogLine::Track);
+  edit_log_event->logLine(line)->
+    setTransType(edit_airplay_conf->defaultTransType());
+  edit_log_event->logLine(line)->setMarkerComment(tr("Voice Track"));
+  edit_log_event->refresh(line);
+  edit_modified=true;
 }
 
 
@@ -153,6 +134,84 @@ void MainObject::List()
 }
 
 
+QString MainObject::ListLine(RDLogEvent *evt,int line) const
+{
+  QString ret="";
+  RDLogLine *logline=evt->logLine(line);
+
+  switch(logline->timeType()) {
+  case RDLogLine::Hard:
+    ret+=QString().
+      sprintf("T%s  ",(const char *)logline->startTime(RDLogLine::Logged).
+	      toString("hh:mm:ss"));
+    break;
+
+  case RDLogLine::Relative:
+    ret+=QString().
+      sprintf(" %s  ",(const char *)evt->blockStartTime(line).
+	      toString("hh:mm:ss"));
+    break;
+
+  case RDLogLine::NoTime:
+    ret+="          ";
+    break;
+  }
+  ret+=QString().sprintf("%-7s",
+		(const char *)RDLogLine::transText(logline->transType()));
+  switch(logline->type()) {
+  case RDLogLine::Cart:
+  case RDLogLine::Macro:
+    ret+=QString().sprintf("%06u   ",logline->cartNumber());
+    ret+=QString().sprintf("%-12s",(const char *)logline->groupName());
+    ret+=QString().sprintf("%5s",
+      (const char *)RDGetTimeLength(logline->forcedLength(),false,false))+"  ";
+    ret+=logline->title();
+    break;
+
+  case RDLogLine::Marker:
+    ret+="MARKER   ";
+    ret+="            ";
+    ret+="       ";
+    ret+=logline->markerComment();
+    break;
+
+  case RDLogLine::Track:
+    ret+="TRACK    ";
+    ret+="            ";
+    ret+="       ";
+    ret+=logline->markerComment();
+    break;
+
+  case RDLogLine::Chain:
+    ret+="LOG CHN  ";
+    ret+="            ";
+    ret+="       ";
+    ret+=logline->markerLabel();
+    break;
+
+  case RDLogLine::MusicLink:
+    ret+="LINK     ";
+    ret+="            ";
+    ret+="       ";
+    ret+="[music import]";
+    break;
+
+  case RDLogLine::TrafficLink:
+    ret+="LINK     ";
+    ret+="            ";
+    ret+="       ";
+    ret+="[traffic import]";
+    break;
+
+  case RDLogLine::OpenBracket:
+  case RDLogLine::CloseBracket:
+  case RDLogLine::UnknownType:
+    break;
+  }
+  return ret;
+}
+
+
 void MainObject::Remove(int line)
 {
   edit_log_event->remove(line,1);
@@ -162,15 +221,10 @@ void MainObject::Remove(int line)
 
 void MainObject::Save()
 {
-  if(edit_user->arrangeLog()) {
-    edit_log_event->save();
-    edit_log->
-      setModifiedDatetime(QDateTime(QDate::currentDate(),QTime::currentTime()));
-    edit_modified=false;
-  }
-  else {
-    fprintf(stderr,"save: insufficient privileges [Rearrange Log Items]\n");
-  }
+  edit_log_event->save();
+  edit_log->
+    setModifiedDatetime(QDateTime(QDate::currentDate(),QTime::currentTime()));
+  edit_modified=false;
 }
 
 
@@ -179,110 +233,90 @@ void MainObject::Saveas(const QString &logname)
   QString sql;
   RDSqlQuery *q;
 
-  if(edit_user->arrangeLog()) {
-    RDLog *log=new RDLog(logname);
-    if(!log->exists()) {
-      sql=QString("insert into LOGS set ")+
-	"NAME=\""+RDEscapeString(logname)+"\","+
-	"TYPE=0,"+
-	"DESCRIPTION=\""+"Copy of "+RDEscapeString(edit_log->name())+"\","+
-	"ORIGIN_USER=\""+RDEscapeString(edit_user->name())+"\","+
-	"ORIGIN_DATETIME=now(),"+
-	"LINK_DATETIME=now(),"+
-	"MODIFIED_DATETIME=now(),"+
-	"SERVICE=\""+edit_log->service()+"\"";
-      q=new RDSqlQuery(sql);
-      delete q;
-      RDCreateLogTable(RDLog::tableName(logname));
-      edit_log_event->setLogName(RDLog::tableName(logname));
-      edit_log_event->save();
-      delete edit_log;
-      edit_log=log;
-      edit_modified=false;
-    }
-    else {
-      fprintf(stderr,"saveas: log already exists\n");
-      delete log;
-    }
+  RDLog *log=new RDLog(logname);
+  if(!log->exists()) {
+    sql=QString("insert into LOGS set ")+
+      "NAME=\""+RDEscapeString(logname)+"\","+
+      "TYPE=0,"+
+      "DESCRIPTION=\""+"Copy of "+RDEscapeString(edit_log->name())+"\","+
+      "ORIGIN_USER=\""+RDEscapeString(edit_user->name())+"\","+
+      "ORIGIN_DATETIME=now(),"+
+      "LINK_DATETIME=now(),"+
+      "MODIFIED_DATETIME=now(),"+
+      "SERVICE=\""+edit_log->service()+"\"";
+    q=new RDSqlQuery(sql);
+    delete q;
+    RDCreateLogTable(RDLog::tableName(logname));
+    edit_log_event->setLogName(RDLog::tableName(logname));
+    edit_log_event->save();
+    delete edit_log;
+    edit_log=log;
+    edit_modified=false;
   }
   else {
-    fprintf(stderr,"saveas: insufficient privileges [Rearrange Log Items]\n");
+    fprintf(stderr,"saveas: log already exists\n");
+    delete log;
   }
 }
 
 
 void MainObject::Setcart(int line,unsigned cartnum)
 {
-  if(edit_user->arrangeLog()) {
-    RDLogLine *logline=edit_log_event->logLine(line);
-    if(logline!=NULL) {
-      if((logline->type()==RDLogLine::Cart)||
-	 (logline->type()==RDLogLine::Macro)) {
-	logline->setCartNumber(cartnum);
-	edit_log_event->refresh(line);
-	edit_modified=true;
-      }
-      else {
-	fprintf(stderr,"setcart: incompatible event type\n");
-      }
+  RDLogLine *logline=edit_log_event->logLine(line);
+  if(logline!=NULL) {
+    if((logline->type()==RDLogLine::Cart)||
+       (logline->type()==RDLogLine::Macro)) {
+      logline->setCartNumber(cartnum);
+      edit_log_event->refresh(line);
+      edit_modified=true;
     }
     else {
-      fprintf(stderr,"setcart: no such line\n");
+      fprintf(stderr,"setcart: incompatible event type\n");
     }
   }
   else {
-    fprintf(stderr,"setcart: insufficient privileges [Rearrange Log Items]\n");
+    fprintf(stderr,"setcart: no such line\n");
   }
 }
 
 
 void MainObject::Setcomment(int line,const QString &str)
 {
-  if(edit_user->arrangeLog()) {
-    RDLogLine *logline=edit_log_event->logLine(line);
-    if(logline!=NULL) {
-      if((logline->type()==RDLogLine::Marker)||
-	 (logline->type()==RDLogLine::Track)) {
-	logline->setMarkerComment(str);
-	edit_log_event->refresh(line);
-	edit_modified=true;
-      }
-      else {
-	fprintf(stderr,"setcomment: incompatible event type\n");
-      }
+  RDLogLine *logline=edit_log_event->logLine(line);
+  if(logline!=NULL) {
+    if((logline->type()==RDLogLine::Marker)||
+       (logline->type()==RDLogLine::Track)) {
+      logline->setMarkerComment(str);
+      edit_log_event->refresh(line);
+      edit_modified=true;
     }
     else {
-      fprintf(stderr,"setcomment: no such line\n");
+      fprintf(stderr,"setcomment: incompatible event type\n");
     }
   }
   else {
-    fprintf(stderr,"setcomment: insufficient privileges [Rearrange Log Items]\n");
-  }  
+    fprintf(stderr,"setcomment: no such line\n");
+  }
 }
 
 
 void MainObject::Setlabel(int line,const QString &str)
 {
-  if(edit_user->arrangeLog()) {
-    RDLogLine *logline=edit_log_event->logLine(line);
-    if(logline!=NULL) {
-      if((logline->type()==RDLogLine::Chain)||
-	 (logline->type()==RDLogLine::Marker)) {
-	logline->setMarkerLabel(str);
-	edit_log_event->refresh(line);
-	edit_modified=true;
-      }
-      else {
-	fprintf(stderr,"setlabel: incompatible event type\n");
-      }
+  RDLogLine *logline=edit_log_event->logLine(line);
+  if(logline!=NULL) {
+    if((logline->type()==RDLogLine::Chain)||
+       (logline->type()==RDLogLine::Marker)) {
+      logline->setMarkerLabel(str);
+      edit_log_event->refresh(line);
+      edit_modified=true;
     }
     else {
-      fprintf(stderr,"setlabel: no such line\n");
+      fprintf(stderr,"setlabel: incompatible event type\n");
     }
   }
   else {
-    fprintf(stderr,"setlabel: insufficient privileges [Rearrange Log Items]\n");
-  }  
+    fprintf(stderr,"setlabel: no such line\n");
+  }
 }
 
 

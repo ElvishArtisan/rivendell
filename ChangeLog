@@ -15352,3 +15352,7 @@
 2016-07-21 Fred Gleason <fredg@paravelsystems.com>
 	* Implemented '!' override character in rdclilogedit(1) for the
 	'exit' command.
+2016-07-21 Fred Gleason <fredg@paravelsystems.com>
+	* Moved enforcement of user permissions to the
+	'MainObject::DispatchCommand()' method in
+	'utils/rdclilogedit/parser.cpp'.
