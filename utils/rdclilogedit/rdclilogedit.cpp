@@ -42,6 +42,7 @@ MainObject::MainObject(QObject *parent)
 {
   edit_log=NULL;
   edit_log_event=NULL;
+  edit_modified=false;
 
   //
   // Read Command Options
@@ -155,6 +156,7 @@ void MainObject::Addcart(int line,unsigned cartnum)
     edit_log_event->logLine(line)->setFadedownGain(-3000);
     edit_log_event->logLine(line)->setCartNumber(cartnum);
     edit_log_event->refresh(line);
+    edit_modified=true;
   }
   else {
     fprintf(stderr,"addcart: insufficient privileges [Add Log Items]\n");
@@ -190,6 +192,7 @@ void MainObject::Load(const QString &logname)
   if(edit_log->exists()) {
     edit_log_event=new RDLogEvent(RDLog::tableName(logname));
     edit_log_event->load();
+    edit_modified=false;
   }
   else {
     fprintf(stderr,"log \"%s\" does not exist\n",(const char *)logname);
@@ -212,6 +215,7 @@ void MainObject::List()
 void MainObject::Remove(int line)
 {
   edit_log_event->remove(line,1);
+  edit_modified=true;
 }
 
 
@@ -221,6 +225,7 @@ void MainObject::Save()
     edit_log_event->save();
     edit_log->
       setModifiedDatetime(QDateTime(QDate::currentDate(),QTime::currentTime()));
+    edit_modified=false;
   }
   else {
     fprintf(stderr,"save: insufficient privileges [Rearrange Log Items]\n");
@@ -252,6 +257,7 @@ void MainObject::Saveas(const QString &logname)
       edit_log_event->save();
       delete edit_log;
       edit_log=log;
+      edit_modified=false;
     }
     else {
       fprintf(stderr,"saveas: log already exists\n");
@@ -273,6 +279,7 @@ void MainObject::Setcart(int line,unsigned cartnum)
 	 (logline->type()==RDLogLine::Macro)) {
 	logline->setCartNumber(cartnum);
 	edit_log_event->refresh(line);
+	edit_modified=true;
       }
       else {
 	fprintf(stderr,"setcart: incompatible event type\n");
@@ -292,6 +299,7 @@ void MainObject::Settime(int line,RDLogLine::TimeType type,const QTime &time)
 {
   edit_log_event->logLine(line)->setTimeType(type);
   edit_log_event->logLine(line)->setStartTime(RDLogLine::Logged,time);
+  edit_modified=true;
 }
 
 
@@ -299,6 +307,7 @@ void MainObject::Settrans(int line,RDLogLine::TransType type)
 {
   edit_log_event->logLine(line)->setTransType(type);
   edit_log_event->refresh(line);
+  edit_modified=true;
 }
 
 
@@ -312,24 +321,41 @@ void MainObject::Unload()
     delete edit_log_event;
     edit_log_event=NULL;
   }
+  edit_modified=false;
+}
+
+
+void MainObject::OverwriteError(const QString &cmd) const
+{
+  fprintf(stderr,"%s: buffer not saved (append \"!\" to override)\n",
+	  (const char *)cmd);
 }
 
 
 void MainObject::Print(const QString &str) const
 {
   printf("%s",(const char *)str);
-  usleep(10);
+  usleep(100);
 }
 
 
-void MainObject::DispatchCommand(const QString &cmd)
-{
-  QStringList cmds=cmds.split(" ",cmd);
-  QString verb=cmds[0].lower();
+void MainObject::DispatchCommand(QString cmd)
+{ 
   bool processed=false;
   int line;
   QTime time;
   bool ok=false;
+  bool overwrite=!edit_modified;
+  QStringList cmds;
+  QString verb;
+
+  cmd=cmd.stripWhiteSpace();
+  if(cmd.right(1)=="!") {
+    overwrite=true;
+    cmd=cmd.left(cmd.length()-1).stripWhiteSpace();
+  }
+  cmds=cmds.split(" ",cmd);
+  verb=cmds[0].lower();
 
   //
   // No loaded log needed for these
@@ -349,11 +375,16 @@ void MainObject::DispatchCommand(const QString &cmd)
   }
 
   if(verb=="load") {
-    if(cmds.size()==2) {
-      Load(cmds[1]);
+    if(overwrite) {
+      if(cmds.size()==2) {
+	Load(cmds[1]);
+      }
+      else {
+	fprintf(stderr,"load: invalid command arguments\n");
+      }
     }
     else {
-      fprintf(stderr,"load: invalid command arguments\n");
+      OverwriteError("load");
     }
     processed=true;
   }
@@ -523,7 +554,12 @@ void MainObject::DispatchCommand(const QString &cmd)
     }
 
     if(verb=="unload") {
-      Unload();
+      if(overwrite) {
+	Unload();
+      }
+      else {
+	OverwriteError("unload");
+      }
       processed=true;
     }
   }
@@ -623,7 +659,13 @@ void MainObject::PrintPrompt() const
     Print("logedit> ");
   }
   else {
-    Print(QString().sprintf("logedit [%s]> ",(const char *)edit_log->name()));
+    if(edit_modified) {
+      Print(QString().sprintf("logedit[%s*]> ",
+			      (const char *)edit_log->name()));
+    }
+    else {
+      Print(QString().sprintf("logedit[%s]> ",(const char *)edit_log->name()));
+    }
   }
   fflush(stdout);
 }

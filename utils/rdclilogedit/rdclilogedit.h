@@ -58,12 +58,14 @@ class MainObject : public QObject
   void Settime(int line,RDLogLine::TimeType type,const QTime &time=QTime());
   void Settrans(int line,RDLogLine::TransType type);
   void Unload();
+  void OverwriteError(const QString &cmd) const;
   void Print(const QString &str) const;
-  void DispatchCommand(const QString &cmd);
+  void DispatchCommand(QString cmd);
   QString ListLine(RDLogEvent *evt,int line) const;
   void PrintPrompt() const;
   QSocketNotifier *edit_input_notifier; 
   QString edit_accum;
+  bool edit_modified;
   RDLog *edit_log;
   RDLogEvent *edit_log_event;
   RDUser *edit_user;

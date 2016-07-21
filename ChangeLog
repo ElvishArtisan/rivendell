@@ -15340,3 +15340,5 @@
 2016-07-21 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in 'utils/rdclilogedit/rdclilogedit.cpp' that caused
 	large output listings to be truncated.
+2016-07-21 Fred Gleason <fredg@paravelsystems.com>
+	* Implemented '!' override character in rdclilogedit(1).
