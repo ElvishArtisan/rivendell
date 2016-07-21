@@ -58,6 +58,7 @@ class MainObject : public QObject
   void Settime(int line,RDLogLine::TimeType type,const QTime &time=QTime());
   void Settrans(int line,RDLogLine::TransType type);
   void Unload();
+  void Print(const QString &str) const;
   void DispatchCommand(const QString &cmd);
   QString ListLine(RDLogEvent *evt,int line) const;
   void PrintPrompt() const;

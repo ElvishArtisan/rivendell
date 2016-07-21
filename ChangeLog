@@ -15337,3 +15337,6 @@
 2016-07-20 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in 'utils/rdclilogedit/rdclilogedit.cpp' that caused
 	segfaults with certain commands when run without a log loaded.
+2016-07-21 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'utils/rdclilogedit/rdclilogedit.cpp' that caused
+	large output listings to be truncated.

@@ -25,6 +25,7 @@
 #include <unistd.h>
 
 #include <qapplication.h>
+#include <qcstring.h>
 #include <qfile.h>
 #include <qstringlist.h>
 
@@ -169,7 +170,7 @@ void MainObject::ListLogs() const
   sql=QString("select NAME from LOGS order by NAME");
   q=new RDSqlQuery(sql);
   while(q->next()) {
-    printf("%s\n",(const char *)q->value(0).toString());
+    Print(QString().sprintf("%s\n",(const char *)q->value(0).toString()));
   }
   delete q;
 }
@@ -201,7 +202,8 @@ void MainObject::Load(const QString &logname)
 void MainObject::List()
 {
   for(int i=0;i<edit_log_event->size();i++) {
-    printf("%4d %s\n",i,(const char *)ListLine(edit_log_event,i));
+    Print(QString().sprintf("%4d %s\n",i,
+			    (const char *)ListLine(edit_log_event,i)));
   }
   fflush(stdout);
 }
@@ -310,6 +312,13 @@ void MainObject::Unload()
     delete edit_log_event;
     edit_log_event=NULL;
   }
+}
+
+
+void MainObject::Print(const QString &str) const
+{
+  printf("%s",(const char *)str);
+  usleep(10);
 }
 
 
@@ -611,10 +620,10 @@ QString MainObject::ListLine(RDLogEvent *evt,int line) const
 void MainObject::PrintPrompt() const
 {
   if(edit_log==NULL) {
-    printf("logedit> ");
+    Print("logedit> ");
   }
   else {
-    printf("logedit [%s]> ",(const char *)edit_log->name());
+    Print(QString().sprintf("logedit [%s]> ",(const char *)edit_log->name()));
   }
   fflush(stdout);
 }
