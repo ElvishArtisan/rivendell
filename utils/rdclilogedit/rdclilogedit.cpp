@@ -176,7 +176,13 @@ void MainObject::DispatchCommand(QString cmd)
   // No loaded log needed for these
   //
   if((verb=="exit")||(verb=="quit")||(verb=="bye")) {
-    exit(0);
+    if(overwrite) {
+      exit(0);
+    }
+    else {
+      OverwriteError(verb);
+    }
+    processed=true;
   }
 
   if((verb=="help")||(verb=="?")) {

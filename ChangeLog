@@ -15349,3 +15349,6 @@
 2016-07-21 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'setcomment' command to rdclilogedit(1).
 	* Added a 'setlabel' command to rdclilogedit(1).
+2016-07-21 Fred Gleason <fredg@paravelsystems.com>
+	* Implemented '!' override character in rdclilogedit(1) for the
+	'exit' command.
