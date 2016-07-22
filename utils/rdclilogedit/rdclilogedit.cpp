@@ -118,6 +118,7 @@ void MainObject::userData()
     for(int i=0;i<n;i++) {
       switch(0xFF&data[i]) {
       case 10:
+      case ';':
 	DispatchCommand(edit_accum);
 	edit_accum="";
 	break;

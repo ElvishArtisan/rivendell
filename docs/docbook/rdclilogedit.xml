@@ -67,7 +67,8 @@
     notion of an 'edit buffer' into which Rivendell logs can be loaded,
     modified and then saved back to the Rivendell database.  The contents
     of the edit buffer can be manipulated by means of simple textual commands
-    sent to STDIN. The following commands are supported:
+    (seperated by newline or <userinput>;</userinput> sent to STDIN). The
+    following commands are supported:
   </para>
   <variablelist remap='TP'>
     <varlistentry>

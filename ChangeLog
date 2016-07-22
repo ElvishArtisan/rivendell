@@ -15382,3 +15382,6 @@
 2016-07-22 Fred Gleason <fredg@paravelsystems.com>
 	* Implemented an end-of-log delimiter in the output of the 'list'
 	command for rdclilogedit(1).
+2016-07-22 Fred Gleason <fredg@paravelsystems.com>
+	* Added support for using the ';' character as the command separator
+	for rdclilogedit(1).
