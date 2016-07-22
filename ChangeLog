@@ -15401,3 +15401,5 @@
 2016-07-22 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in 'rdairplay/log_traffic.cpp' that generated
 	a SQL error when logging ELR data.
+2016-07-22 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'rdairplay/log_play.cpp' that caused a SQL error.
