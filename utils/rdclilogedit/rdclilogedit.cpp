@@ -38,7 +38,7 @@
 MainObject::MainObject(QObject *parent)
   :QObject(parent)
 {
-  edit_script_option=false;
+  edit_quiet_option=false;
 
   edit_log=NULL;
   edit_log_event=NULL;
@@ -51,8 +51,9 @@ MainObject::MainObject(QObject *parent)
   RDCmdSwitch *cmd=new RDCmdSwitch(qApp->argc(),qApp->argv(),"rdclilogedit",
 				   RDCLILOGEDIT_USAGE);
   for(int i=0;i<(int)cmd->keys();i++) {
-    if(cmd->key(i)=="--script") {
-      edit_script_option=true;
+    if((cmd->key(i)=="-n")||(cmd->key(i)=="--quiet")||
+       (cmd->key(i)=="--silent")) {
+      edit_quiet_option=true;
     }
   }
 
@@ -131,7 +132,7 @@ void MainObject::userData()
       }
     }
   }
-  if(!edit_script_option) {
+  if(!edit_quiet_option) {
     printf("\n");
   }
   exit(0);
@@ -147,7 +148,7 @@ void MainObject::OverwriteError(const QString &cmd) const
 
 void MainObject::PrintPrompt() const
 {
-  if(!edit_script_option) {
+  if(!edit_quiet_option) {
     if(edit_log==NULL) {
       printf("logedit> ");
     }

@@ -47,7 +47,7 @@
   <variablelist remap='TP'>
     <varlistentry>
       <term>
-	<option>--script</option>
+	<option>-n</option>, <option>--quiet</option>, <option>--silent</option>
       </term>
       <listitem>
 	<para>

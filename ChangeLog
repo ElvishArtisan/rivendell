@@ -15389,3 +15389,6 @@
 	* Fixed a bug in 'utils/rdclilogedit/operations.cpp' that caused
 	spurious 'no such service' errors when using the 'setservice'
 	command on new logs.
+2016-07-22 Fred Gleason <fredg@paravelsystems.com>
+	* Renamed the '--script' option in rdclilogedit(1) to be '-n' or
+	'--quiet' or '--silent'.
