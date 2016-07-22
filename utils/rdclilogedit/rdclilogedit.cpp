@@ -30,6 +30,7 @@
 
 #include <rdcmd_switch.h>
 #include <rdconf.h>
+#include <rddbheartbeat.h>
 #include <rdweb.h>
 
 #include "rdclilogedit.h"
@@ -78,6 +79,7 @@ MainObject::MainObject(QObject *parent)
     db->removeDatabase(edit_config->mysqlDbname());
     exit(256);
   }
+  new RDDbHeartbeat(edit_config->mysqlHeartbeatInterval(),this);
 
   //
   // RDAirPlay Configuration

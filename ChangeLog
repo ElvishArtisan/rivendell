@@ -15376,3 +15376,6 @@
 2016-07-22 Fred Gleason <fredg@paravelsystems.com>
 	* Added the man page for rdclilogedit(1) to the manifest in
 	'rivendell.spec.in'.
+2016-07-22 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed bug in 'utils/rdclilogedit/rdclilogedit.cpp' that would
+	cause the DB connection to time out.
