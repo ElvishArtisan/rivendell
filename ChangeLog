@@ -15373,3 +15373,6 @@
 	* Added a '--script' option to rdclilogedit(1).
 2016-07-22 Fred Gleason <fredg@paravelsystems.com>
 	* Added a man page for rdclilogedit(1).
+2016-07-22 Fred Gleason <fredg@paravelsystems.com>
+	* Added the man page for rdclilogedit(1) to the manifest in
+	'rivendell.spec.in'.
