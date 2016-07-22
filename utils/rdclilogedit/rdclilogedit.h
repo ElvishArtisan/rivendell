@@ -53,7 +53,7 @@ class MainObject : public QObject
   void List();
   void ListLogs() const;
   void Listservices() const;
-  void Load(const QString &logname);
+  void Load(QString logname);
   void New(const QString &logname);
   void Remove(int line);
   void Save();

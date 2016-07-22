@@ -15392,3 +15392,7 @@
 2016-07-22 Fred Gleason <fredg@paravelsystems.com>
 	* Renamed the '--script' option in rdclilogedit(1) to be '-n' or
 	'--quiet' or '--silent'.
+2016-07-22 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'utils/rdclilogedit/operations.cpp' where attempting
+	to load a log with mismatched case in the name would generate a SQL
+	error.

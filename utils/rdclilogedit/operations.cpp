@@ -158,8 +158,11 @@ void MainObject::Listservices() const
 }
 
 
-void MainObject::Load(const QString &logname)
+void MainObject::Load(QString logname)
 {
+  QString sql;
+  RDSqlQuery *q;
+
   if(edit_log!=NULL) {
     delete edit_log;
     edit_log=NULL;
@@ -168,6 +171,21 @@ void MainObject::Load(const QString &logname)
     delete edit_log_event;
     edit_log_event=NULL;
   }
+
+  //
+  // Normalize log name case
+  //
+  // FIXME: This should really be handled by use of collations in the
+  //        where clause.
+  //
+  sql=QString("select NAME from LOGS where ")+
+    "NAME=\""+RDEscapeString(logname)+"\"";
+  q=new RDSqlQuery(sql);
+  if(q->first()) {
+    logname=q->value(0).toString();
+  }
+  delete q;
+
   edit_log=new RDLog(logname);
   if(edit_log->exists()) {
     edit_log_event=new RDLogEvent(RDLog::tableName(logname));
