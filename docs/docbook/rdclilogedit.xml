@@ -133,6 +133,18 @@
     </varlistentry>
     <varlistentry>
       <term>
+	<command>deletelog</command>
+	<arg choice="req"><replaceable>log-name</replaceable></arg>
+      </term>
+      <listitem>
+	<para>
+	  Delete the log <replaceable>log-name</replaceable> from the
+	  Rivendell database.
+	</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>
 	<command>exit</command>
       </term>
       <listitem>

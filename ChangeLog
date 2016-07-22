@@ -15396,3 +15396,5 @@
 	* Fixed a bug in 'utils/rdclilogedit/operations.cpp' where attempting
 	to load a log with mismatched case in the name would generate a SQL
 	error.
+2016-07-22 Fred Gleason <fredg@paravelsystems.com>
+	* Implemented a 'deletelog' command for rdclilogedit(1).

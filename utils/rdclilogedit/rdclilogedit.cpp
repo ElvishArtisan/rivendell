@@ -83,8 +83,9 @@ MainObject::MainObject(QObject *parent)
   new RDDbHeartbeat(edit_config->mysqlHeartbeatInterval(),this);
 
   //
-  // RDAirPlay Configuration
+  // Configuration Objects
   //
+  edit_station=new RDStation(edit_config->stationName());
   edit_airplay_conf=new RDAirPlayConf(edit_config->stationName(),"RDAIRPLAY");
 
   //

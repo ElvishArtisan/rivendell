@@ -45,6 +45,21 @@ void MainObject::DispatchCommand(QString cmd)
   //
   // No loaded log needed for these
   //
+  if(verb=="deletelog") {
+    if(edit_user->deleteLog()) {
+      if(cmds.size()==2) {
+	Deletelog(cmds[1]);
+      }
+      else {
+	fprintf(stderr,"deletelog: invalid command arguments\n");
+      }
+    }
+    else {
+      fprintf(stderr,"deletelog: insufficient privileges [Delete Log]\n");
+    }
+    processed=true;
+  }
+
   if((verb=="exit")||(verb=="quit")||(verb=="bye")) {
     if(overwrite) {
       exit(0);

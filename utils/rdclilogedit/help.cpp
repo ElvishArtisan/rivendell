@@ -27,10 +27,10 @@ void MainObject::Help(const QStringList &cmds) const
   if(cmds.size()==1) {
     printf("\n");
     printf("The following commands are available:\n");
-    printf("?, addcart, addchain, addmarker, addtrack, bye, exit, header, help, list,\n");
-    printf("listlogs, listservices, load, new, quit, remove, save, saveas, setautorefresh,\n");
-    printf("setcart, setcomment, setdesc, setenddate, setlabel, setpurgedate, setservice,\n");
-    printf("setstartdate, settime, settrans, unload\n");
+    printf("?, addcart, addchain, addmarker, addtrack, bye, deletelog, exit, header, help,\n");
+    printf("list, listlogs, listservices, load, new, quit, remove, save, saveas,\n");
+    printf("setautorefresh, setcart, setcomment, setdesc, setenddate, setlabel,\n");
+    printf("setpurgedate, setservice, setstartdate, settime, settrans, unload\n");
     printf("\n");
     printf("Enter \"? <cmd-name>\" for specific help.\n");
     printf("\n");
@@ -75,6 +75,14 @@ void MainObject::Help(const QStringList &cmds) const
       printf("  %s\n",(const char *)cmds[1]);
       printf("\n");
       printf("Exit the program.\n");
+      printf("\n");
+      processed=true;
+    }
+    if(verb=="deletelog") {
+      printf("\n");
+      printf("  deletelog <log-name>\n");
+      printf("\n");
+      printf("Delete log <log-name> from the Rivendell database.\n");
       printf("\n");
       processed=true;
     }

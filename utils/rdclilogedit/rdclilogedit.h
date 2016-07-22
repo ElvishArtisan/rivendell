@@ -48,6 +48,7 @@ class MainObject : public QObject
   void Addchain(int line,const QString &logname);
   void Addmarker(int line);
   void Addtrack(int line);
+  void Deletelog(QString logname);
   void Header() const;
   void Help(const QStringList &cmds) const;
   void List();
@@ -87,6 +88,7 @@ class MainObject : public QObject
   QDate edit_purge_date;
   bool edit_auto_refresh;
   RDUser *edit_user;
+  RDStation *edit_station;
   RDRipc *edit_ripc;
   RDAirPlayConf *edit_airplay_conf;
   RDConfig *edit_config;

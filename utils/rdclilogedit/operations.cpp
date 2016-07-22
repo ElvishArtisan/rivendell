@@ -87,6 +87,43 @@ void MainObject::Addtrack(int line)
 }
 
 
+void MainObject::Deletelog(QString logname)
+{
+  QString sql;
+  RDSqlQuery *q;
+
+  //
+  // Normalize log name case
+  //
+  // FIXME: This should really be handled by use of collations in the
+  //        where clause.
+  //
+  sql=QString("select NAME from LOGS where ")+
+    "NAME=\""+RDEscapeString(logname)+"\"";
+  q=new RDSqlQuery(sql);
+  if(q->first()) {
+    logname=q->value(0).toString();
+  }
+  delete q;
+
+  if((edit_log==NULL)||(edit_log->name()!=logname)) {
+    RDLog *log=new RDLog(logname);
+    if(log->exists()) {
+      if(!log->remove(edit_station,edit_user,edit_config)) {
+	fprintf(stderr,"deletelog: audio deletion error, log not deleted\n");
+      }
+    }
+    else {
+      fprintf(stderr,"deletelog: no such log\n");
+    }
+    delete log;
+  }
+  else {
+    fprintf(stderr,"deletelog: log currently loaded (try \"unload\" first)\n");
+  }
+}
+
+
 void MainObject::Header() const
 {
   printf(" Description: %s\n",(const char *)edit_description);
