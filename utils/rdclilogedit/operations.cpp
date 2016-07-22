@@ -21,6 +21,7 @@
 #include <rdconf.h>
 #include <rdcreate_log.h>
 #include <rdescape_string.h>
+#include <rdsvc.h>
 
 #include "rdclilogedit.h"
 
@@ -453,8 +454,8 @@ void MainObject::Setpurgedate(const QDate &date)
 
 void MainObject::Setservice(const QString &str)
 {
-  RDLog *log=new RDLog(str);
-  if(log->exists()) {
+  RDSvc *svc=new RDSvc(str);
+  if(svc->exists()) {
     edit_service=str;
     edit_modified=true;
   }
@@ -462,7 +463,7 @@ void MainObject::Setservice(const QString &str)
     fprintf(stderr,"setservice: no such service\n");
     fprintf(stderr,"(Do \"listservices\" for a list\n");
   }
-  delete log;
+  delete svc;
 }
 
 
