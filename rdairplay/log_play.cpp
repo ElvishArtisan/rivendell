@@ -2255,27 +2255,30 @@ QTime LogPlay::GetStartTime(QTime sched_time,
 	break;
   }
   switch(time_type) {
-      case RDLogLine::Relative:
-	if(!prev_time.isNull()) {
-	  *stop=false;
-	  return time;
-	}
-	*stop=true;
-	return QTime();
-	break;
+  case RDLogLine::Relative:
+    if(!prev_time.isNull()) {
+      *stop=false;
+      return time;
+    }
+    *stop=true;
+    return QTime();
+    break;
 
-      case RDLogLine::Hard:
-	if((time<sched_time)||(time.isNull())) {
-	  *stop=true;
-	}
-	else {
-	  *stop=false;
-	}
-	if(running_events&&(time<sched_time)&&(trans_type!=RDLogLine::Stop)) {
-	  return time;
-	}
-	return sched_time;
-	break;
+  case RDLogLine::Hard:
+    if((time<sched_time)||(time.isNull())) {
+      *stop=true;
+    }
+    else {
+      *stop=false;
+    }
+    if(running_events&&(time<sched_time)&&(trans_type!=RDLogLine::Stop)) {
+      return time;
+    }
+    return sched_time;
+    break;
+
+  case RDLogLine::NoTime:
+    break;
   }
   return QTime();
 }
