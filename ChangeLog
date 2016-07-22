@@ -15379,3 +15379,6 @@
 2016-07-22 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed bug in 'utils/rdclilogedit/rdclilogedit.cpp' that would
 	cause the DB connection to time out.
+2016-07-22 Fred Gleason <fredg@paravelsystems.com>
+	* Implemented an end-of-log delimiter in the output of the 'list'
+	command for rdclilogedit(1).

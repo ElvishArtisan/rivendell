@@ -125,7 +125,7 @@ void MainObject::List()
   for(int i=0;i<edit_log_event->size();i++) {
     printf("%4d %s\n",i,(const char *)ListLine(edit_log_event,i));
   }
-  fflush(stdout);
+  printf("%4d  --- end of log ---\n",edit_log_event->size());
 }
 
 
