@@ -60,7 +60,7 @@ void LogTraffic(const QString &svcname,const QString &logname,
     "EVENT_DATETIME="+eventDateTimeSQL+","+
     QString().sprintf("EVENT_TYPE=%d,",action)+
     QString().sprintf("EVENT_SOURCE=%d,",logline->source())+
-    "EXT_START_TIME=\""+RDCheckDateTime(logline->extStartTime(),"hh:mm:ss")+"\","+
+    "EXT_START_TIME="+RDCheckDateTime(logline->extStartTime(),"hh:mm:ss")+","+
     QString().sprintf("EXT_LENGTH=%d,",logline->extLength())+
     "EXT_DATA=\""+RDEscapeString(logline->extData())+"\","+
     "EXT_EVENT_ID=\""+RDEscapeString(logline->extEventId())+"\","+
