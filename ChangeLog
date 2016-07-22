@@ -15371,3 +15371,5 @@
 	* Added a 'setstartdate' command to rdclilogedit(1).
 2016-07-21 Fred Gleason <fredg@paravelsystems.com>
 	* Added a '--script' option to rdclilogedit(1).
+2016-07-22 Fred Gleason <fredg@paravelsystems.com>
+	* Added a man page for rdclilogedit(1).

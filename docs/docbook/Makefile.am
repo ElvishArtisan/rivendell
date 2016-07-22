@@ -33,6 +33,7 @@
 
 all-local:	cae.html\
                 cae.pdf\
+                rdclilogedit.1\
                 rdmarkerset.8\
                 rdrevert.8\
                 rdexport.1\
@@ -42,7 +43,8 @@ all-local:	cae.html\
                 web_api.html\
                 web_api.pdf
 
-man_MANS = rdexport.1\
+man_MANS = rdclilogedit.1\
+           rdexport.1\
            rdimport.1\
            rdmarkerset.8\
            rdrevert.8
@@ -50,6 +52,8 @@ man_MANS = rdexport.1\
 EXTRA_DIST = cae.html\
              cae.pdf\
              cae.xml\
+             rdclilogedit.1\
+             rdclilogedit.xml\
              rdmarkerset.8\
              rdmarkerset.xml\
              rdrevert.8\
