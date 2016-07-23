@@ -756,6 +756,9 @@ EditEvent::EditEvent(QString eventname,bool new_event,
       event_grace_edit->setTime(QTime().addMSecs(grace));
       break;
     }
+
+  case RDLogLine::NoTime:
+    break;
   }
   
   event_autofill_box->setChecked(event_event->useAutofill());

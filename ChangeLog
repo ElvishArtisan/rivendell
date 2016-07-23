@@ -15405,3 +15405,7 @@
 	* Fixed a bug in 'rdairplay/log_play.cpp' that caused a SQL error.
 2016-07-22 Fred Gleason <fredg@paravelsystems.com>
 	* Cleaned up warning in 'rdairplay/log_play.cpp'.
+2016-07-23 Fred Gleason <fredg@paravelsystems.com>
+	* Cleaned up warning in 'lib/rdlog_line.cpp'.
+	* Cleaned up warning in 'lib/rdwavefile.cpp'.
+	* Cleaned up warning in 'rdlogmanager/edit_event.cpp'.
