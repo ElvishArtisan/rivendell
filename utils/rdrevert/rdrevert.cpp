@@ -180,6 +180,10 @@ void MainObject::Revert(int schema) const
   case 258:
     Revert258();
     break;
+
+  case 259:
+    Revert259();
+    break;
   }
 }
 
@@ -478,6 +482,43 @@ void MainObject::Revert258() const
 }
 
 
+void MainObject::Revert259() const
+{
+  QString sql;
+  QSqlQuery *q;
+  QSqlQuery *q1;
+
+  for(int i=0;i<168;i++) {
+    sql=QString().sprintf("alter table SERVICES add column CLOCK%d char(64)",i);
+    q=new QSqlQuery(sql);
+    delete q;
+  }
+
+  sql=QString("select SERVICE_NAME,HOUR,CLOCK_NAME from SERVICE_CLOCKS");
+  q=new QSqlQuery(sql);
+  while(q->next()) {
+    sql=QString("update SERVICES set ")+
+      QString().sprintf("CLOCK%d=",q->value(1).toInt());
+    if(q->value(2).isNull()) {
+      sql+="null ";
+    }
+    else {
+      sql+="\""+RDEscapeString(q->value(2).toString())+"\" ";
+    }
+    sql+="where NAME=\""+RDEscapeString(q->value(0).toString())+"\"";
+    q1=new QSqlQuery(sql);
+    delete q1;
+  }
+  delete q;
+
+  sql=QString("drop table SERVICE_CLOCKS");
+  q=new QSqlQuery(sql);
+  delete q;
+
+  SetVersion(258);
+}
+
+
 int MainObject::GetVersion() const
 {
   QString sql;
@@ -519,6 +560,7 @@ int MainObject::MapSchema(const QString &ver)
   version_map["2.12"]=254;
   version_map["2.13"]=255;
   version_map["2.14"]=258;
+  version_map["2.15"]=259;
 
   //
   // Normalize String

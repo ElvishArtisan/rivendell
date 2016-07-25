@@ -2402,6 +2402,17 @@ bool CreateDb(QString name,QString pwd)
      return false;
   }
 
+  //
+  // Create SERVICE_CLOCKS table
+  //
+  sql=QString("create table if not exists SERVICE_CLOCKS(")+
+    "ID int auto_increment not null primary key,"+
+    "SERVICE_NAME char(10) not null,"+
+    "HOUR int not null,"+
+    "CLOCK_NAME char(64) default null,"+
+    "index SERVICE_NAME_IDX(SERVICE_NAME,HOUR),"+
+    "index CLOCK_NAME_IDX(CLOCK_NAME))";
+
   return true;
 }
 
@@ -8248,7 +8259,47 @@ int UpdateDb(int ver)
     delete q;
   }
 
+  if(ver<259) {
+    sql=QString("create table if not exists SERVICE_CLOCKS(")+
+      "ID int auto_increment not null primary key,"+
+      "SERVICE_NAME char(10) not null,"+
+      "HOUR int not null,"+
+      "CLOCK_NAME char(64) default null,"+
+      "index SERVICE_NAME_IDX(SERVICE_NAME,HOUR),"+
+      "index CLOCK_NAME_IDX(CLOCK_NAME))";
+    q=new QSqlQuery(sql);
+    delete q;
 
+    sql=QString("select NAME,");
+    for(int i=0;i<168;i++) {
+      sql+=QString().sprintf("CLOCK%i,",i);
+    }
+    sql=sql.left(sql.length()-1);
+    sql+=" from SERVICES";
+    q=new QSqlQuery(sql);
+    while(q->next()) {
+      for(int i=0;i<168;i++) {
+	sql=QString("insert into SERVICE_CLOCKS set ")+
+	  "SERVICE_NAME=\""+RDEscapeString(q->value(0).toString())+"\","+
+	  QString().sprintf("HOUR=%d,",i);
+	if(q->value(i+1).isNull()) {
+	  sql+="CLOCK_NAME=null";
+	}
+	else {
+	  sql+="CLOCK_NAME=\""+RDEscapeString(q->value(i+1).toString())+"\"";
+	}
+	q1=new QSqlQuery(sql);
+	delete q1;
+      }
+    }
+    delete q;
+
+    for(int i=0;i<168;i++) {
+      sql=QString().sprintf("alter table SERVICES drop column CLOCK%d",i);
+      q=new QSqlQuery(sql);
+      delete q;
+    }
+  }
 
   // **** End of version updates ****
 

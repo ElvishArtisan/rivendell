@@ -65,6 +65,7 @@ EXTRA_DIST = audio_perms.txt\
              replicator_map.txt\
              replicators.txt\
              reports.txt\
+             service_clocks.txt\
              services.txt\
              sources.txt\
              stations.txt\

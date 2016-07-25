@@ -28,6 +28,7 @@
 
 #include <rddb.h>
 #include <rd.h>
+#include <rdescape_string.h>
 #include <rdevent.h>
 #include <rdcreate_log.h>
 
@@ -374,10 +375,9 @@ void ListClocks::renameData()
   q=new RDSqlQuery(sql);
   while(q->next()) {
     for(int i=0;i<168;i++) {
-      sql=QString().sprintf("update SERVICES set CLOCK%d=\"%s\"\
-                             where CLOCK%d=\"%s\"",
-			    i,(const char *)new_name,
-			    i,(const char *)item->text(0));
+      sql=QString("update SERVICE_CLOCKS set ")+
+	"CLOCK_NAME=\""+RDEscapeString(new_name)+"\" where "+
+	"CLOCK_NAME=\""+RDEscapeString(item->text(0))+"\"";
       q1=new RDSqlQuery(sql);
       delete q1;
     }
@@ -584,19 +584,21 @@ int ListClocks::ActiveClocks(QString clockname,QString *svc_list)
   QString sql;
   RDSqlQuery *q;
   QString svcname;
+  QStringList svcs;
 
-  sql="select NAME from SERVICES where ";
-  for(int i=0;i<167;i++) {
-    sql+=QString().sprintf("(CLOCK%d=\"%s\")||",i,(const char *)clockname);
-  }
-  sql+=QString().sprintf("(CLOCK167=\"%s\")",(const char *)clockname);
+  sql=QString("select SERVICE_NAME from SERVICE_CLOCKS where ")+
+    "CLOCK=\""+RDEscapeString(clockname)+"\" order by CLOCK";
   q=new RDSqlQuery(sql);
   while(q->next()) {
-    n++;
-    *svc_list+=
-      QString().sprintf("    %s\n",(const char *)q->value(0).toString());
+    if((svcs.size()==0)||(svcs.back()!=q->value(0).toString())) {
+      svcs.push_back(q->value(0).toString());
+    }
   }
   delete q;
+  for(unsigned i=0;i<svcs.size();i++) {
+    n++;
+    *svc_list+="    "+svcs[i]+"\n";
+  }
 
   return n;
 }
@@ -612,13 +614,10 @@ void ListClocks::DeleteClock(QString clockname)
   //
   // Delete Active Clocks
   //
-  for(int i=0;i<168;i++) {
-    sql=QString().sprintf("update SERVICES set CLOCK%d=NULL\
-                             where CLOCK%d=\"%s\"",
-			  i,i,(const char *)clockname);
-    q=new RDSqlQuery(sql);
-    delete q;
-  }
+  sql=QString("delete from SERVICE_CLOCKS where ")+
+    "CLOCK=\""+RDEscapeString(clockname)+"\"";
+  q=new RDSqlQuery(sql);
+  delete q;
 
   //
   // Delete Service Associations

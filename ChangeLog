@@ -15409,3 +15409,10 @@
 	* Cleaned up warning in 'lib/rdlog_line.cpp'.
 	* Cleaned up warning in 'lib/rdwavefile.cpp'.
 	* Cleaned up warning in 'rdlogmanager/edit_event.cpp'.
+2016-07-25 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'SERVICE_CLOCKS' table to the database.
+	* Incremented the database version to 259.
+	* Modified 'rdlogmanager/edit_clock.cpp' to use the new
+	'SERVICE_CLOCKS' table.
+	* Modified 'rdlogmanager/list_clocks.cpp' to use the new
+	'SERVICE_CLOCKS' table.
