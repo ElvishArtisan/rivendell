@@ -51,7 +51,7 @@
       </term>
       <listitem>
 	<para>
-	  Suppress generation of the command-line prompt (often desiable
+	  Suppress generation of the command-line prompt (often desirable
 	  when driving <command>rdclilogedit</command><manvolnum>1</manvolnum>
 	  from a script).
 	</para>

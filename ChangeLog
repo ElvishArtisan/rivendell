@@ -15420,3 +15420,5 @@
 	* Added a sanity check in the 'RDCut::setMetadata()' method in
 	'lib/rdcut.cpp' to ensure that the cut 'Description' field is always
 	populated.
+2016-07-26 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a typo in 'docs/docbook/rdclilogedit.xml'.
