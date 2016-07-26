@@ -15416,3 +15416,7 @@
 	'SERVICE_CLOCKS' table.
 	* Modified 'rdlogmanager/list_clocks.cpp' to use the new
 	'SERVICE_CLOCKS' table.
+2016-07-26 Fred Gleason <fredg@paravelsystems.com>
+	* Added a sanity check in the 'RDCut::setMetadata()' method in
+	'lib/rdcut.cpp' to ensure that the cut 'Description' field is always
+	populated.

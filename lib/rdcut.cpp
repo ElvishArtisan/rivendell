@@ -1135,6 +1135,24 @@ void RDCut::setMetadata(RDWaveData *data) const
     sprintf(" where CUT_NAME=\"%s\"",(const char *)cut_name.utf8());
   RDSqlQuery *q=new RDSqlQuery(sql);
   delete q;
+
+  //
+  // Sanity Check: NEVER permit the 'description' field to be empty.
+  //
+  sql=QString("select DESCRIPTION from CUTS where ")+
+    "CUT_NAME=\""+RDEscapeString(cut_name)+"\"";
+  q=new RDSqlQuery(sql);
+  if(q->first()) {
+    if(q->value(0).toString().isEmpty()) {
+      sql=QString("update CUTS set ")+
+	QString().sprintf("DESCRIPTION=\"Cut %03d\"",
+			  RDCut::cutNumber(cut_name))+
+	" where CUT_NAME=\""+RDEscapeString(cut_name)+"\"";
+      delete q;
+      q=new RDSqlQuery(sql);
+    }
+  }
+  delete q;
 }
 
 
