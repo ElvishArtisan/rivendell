@@ -464,44 +464,6 @@ bool RDSvc::import(ImportSource src,const QDate &date,const QString &break_str,
     src_str+"LEN_SECONDS_OFFSET,"+  // 20
     src_str+"LEN_SECONDS_LENGTH "+  // 21
     "from "+parser_table+" where NAME=\""+RDEscapeString(parser_name)+"\"";
-  /*
-  sql=QString().sprintf("select %sCART_OFFSET,%sCART_LENGTH,\
-                         %sDATA_OFFSET,%sDATA_LENGTH,		\
-                         %sEVENT_ID_OFFSET,%sEVENT_ID_LENGTH,	\
-                         %sANNC_TYPE_OFFSET,%sANNC_TYPE_LENGTH,	\
-                         %sTITLE_OFFSET,%sTITLE_LENGTH,\
-                         %sHOURS_OFFSET,%sHOURS_LENGTH,\
-                         %sMINUTES_OFFSET,%sMINUTES_LENGTH,\
-                         %sSECONDS_OFFSET,%sSECONDS_LENGTH,\
-                         %sLEN_HOURS_OFFSET,%sLEN_HOURS_LENGTH,\
-                         %sLEN_MINUTES_OFFSET,%sLEN_MINUTES_LENGTH,\
-                         %sLEN_SECONDS_OFFSET,%sLEN_SECONDS_LENGTH \
-                         from %s where NAME=\"%s\"",
-			(const char *)src_str,
-			(const char *)src_str,
-			(const char *)src_str,
-			(const char *)src_str,
-			(const char *)src_str,
-			(const char *)src_str,
-			(const char *)src_str,
-			(const char *)src_str,
-			(const char *)src_str,
-			(const char *)src_str,
-			(const char *)src_str,
-			(const char *)src_str,
-			(const char *)src_str,
-			(const char *)src_str,
-			(const char *)src_str,
-			(const char *)src_str,
-			(const char *)src_str,
-			(const char *)src_str,
-			(const char *)src_str,
-			(const char *)src_str,
-			(const char *)src_str,
-			(const char *)src_str,
-			(const char *)parser_table,
-			(const char *)RDEscapeString(parser_name));
-  */
   q=new RDSqlQuery(sql);
   if(!q->first()) {
     delete q;

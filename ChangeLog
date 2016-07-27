@@ -15422,3 +15422,5 @@
 	populated.
 2016-07-26 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a typo in 'docs/docbook/rdclilogedit.xml'.
+2016-07-27 Fred Gleason <fredg@paravelsystems.com>
+	* Removed dead code from 'lib/rdsvc.cpp'.
