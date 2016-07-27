@@ -15424,3 +15424,6 @@
 	* Fixed a typo in 'docs/docbook/rdclilogedit.xml'.
 2016-07-27 Fred Gleason <fredg@paravelsystems.com>
 	* Removed dead code from 'lib/rdsvc.cpp'.
+2016-07-27 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in 'lib/rdsvc.cpp' that broke log data imports
+	for data lines with leading whitespace.

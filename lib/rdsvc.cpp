@@ -542,7 +542,7 @@ bool RDSvc::import(ImportSource src,const QDate &date,const QString &break_str,
 
   while(fgets(buf,RD_MAX_IMPORT_LINE_LENGTH,infile)!=NULL) {
     line_used=false;
-    str_buf=QString(buf).stripWhiteSpace();
+    str_buf=QString(buf);
 
     //
     // Cart Number
