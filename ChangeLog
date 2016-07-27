@@ -15429,3 +15429,6 @@
 	for data lines with leading whitespace.
 2016-07-27 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 2.14.1int02.
+2016-07-27 Fred Gleason <fredg@paravelsystems.com>
+	* Added a check for 'root' permissions at startup in
+	'utils/rdrevert/rdrevert.cpp'.

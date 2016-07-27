@@ -20,6 +20,8 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <sys/types.h>
+#include <unistd.h>
 
 #include <map>
 
@@ -42,6 +44,14 @@ MainObject::MainObject(QObject *parent)
   bool ok=false;
   int set_schema=0;
   rev_use_deadzone=false;
+
+  //
+  // Check for Root Permissions
+  //
+  if(geteuid()!=0) {
+    fprintf(stderr,"rdrevert: this program requires root permissions\n");
+    exit(256);
+  }
 
   //
   // Read Command Options
