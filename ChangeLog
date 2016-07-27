@@ -15427,3 +15427,5 @@
 2016-07-27 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in 'lib/rdsvc.cpp' that broke log data imports
 	for data lines with leading whitespace.
+2016-07-27 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.14.1int02.
