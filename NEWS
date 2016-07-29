@@ -1,6 +1,32 @@
 The NEWS file for the Rivendell package.
 
 -------------------------------------------------------------------------------
+v2.15.0 --  7/29/2016
+
+Changes:
+   RDExport Enhancements.  Added switches to control audio format of
+   exported files as well as full-fidelity Rivendell metadata export
+   via embedded RDXML chunks and the --xml switch. See the rdexport(1)
+   and rdimport(1) man pages for details.
+
+   Command-line Log Editor.  Added an rdclilogedit(1) command to permit
+   editing of logs from the command-line or scripts. See the
+   rdclilogedit(1) man page for details.
+
+   Internal DB Changes.  Normalized DB table structure to permit full
+   compatibility with the MySQL InnoDB data engine.
+
+   Various other bug fixes.  See the ChangeLog for details.   
+
+Database Update:
+   This version of Rivendell uses database schema version 259, and will
+   automatically upgrade any earlier versions.  To see the current schema
+   version prior to upgrade, see RDAdmin->SystemInfo.
+
+   As always, be sure to run RDAdmin immediately after upgrading to allow 
+   any necessary changes to the database schema to be applied.
+
+-------------------------------------------------------------------------------
 v2.14.1 --  6/11/2016
 
 Changes:

@@ -15432,3 +15432,6 @@
 2016-07-27 Fred Gleason <fredg@paravelsystems.com>
 	* Added a check for 'root' permissions at startup in
 	'utils/rdrevert/rdrevert.cpp'.
+2016-07-29 Fred Gleason <fredg@paravelsystems.com>
+	* Updated 'NEWS'.
+	* Incremented the package version to 2.15.0.
