@@ -28,7 +28,7 @@
 #include <qmessagebox.h>
 #include <qcheckbox.h>
 
-#include <rddb.h>
+#include <rdapplication.h>
 #include <rd.h>
 #include <rdcart_dialog.h>
 #include <rdcut_path.h>
@@ -317,7 +317,7 @@ void EditCartEvent::selectCartData()
     cartnum=edit_cart->number();
   }
   switch(catch_cart_dialog->exec(&cartnum,RDCart::Macro,NULL,0,
-				 catch_user->name(),catch_user->password())) {
+				 rda->user()->name(),rda->user()->password())) {
       case 0:
 	if(edit_cart!=NULL) {
 	  delete edit_cart;

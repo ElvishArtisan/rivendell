@@ -28,7 +28,7 @@
 #include <qmessagebox.h>
 #include <qcheckbox.h>
 
-#include <rddb.h>
+#include <rdapplication.h>
 #include <rdurl.h>
 #include <rd.h>
 #include <rdcut_dialog.h>
@@ -490,7 +490,7 @@ void EditUpload::selectCartData()
 {
   QString str;
 
-  RDCutDialog *cut=new RDCutDialog(&edit_cutname,rdstation_conf,catch_system,
+  RDCutDialog *cut=new RDCutDialog(&edit_cutname,rda->station(),rda->system(),
 				   edit_filter);
   switch(cut->exec()) {
       case 0:

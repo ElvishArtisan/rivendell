@@ -29,7 +29,7 @@
 #include <qmessagebox.h>
 #include <qcheckbox.h>
 
-#include <rddb.h>
+#include <rdapplication.h>
 #include <rd.h>
 #include <rdcut_dialog.h>
 #include <rdcut_path.h>
@@ -552,7 +552,7 @@ EditRecording::EditRecording(int id,std::vector<int> *adds,QString *filter,
   }
   else {
     edit_autotrim_box->setChecked(false);
-    edit_autotrim_spin->setValue(rdlibrary_conf->trimThreshold()/100);
+    edit_autotrim_spin->setValue(rda->libraryConf()->trimThreshold()/100);
   }
   autotrimToggledData(edit_autotrim_box->isChecked());
   if(edit_recording->normalizationLevel()<0) {
@@ -561,7 +561,7 @@ EditRecording::EditRecording(int id,std::vector<int> *adds,QString *filter,
   }
   else {
     edit_normalize_box->setChecked(false);
-    edit_normalize_spin->setValue(rdlibrary_conf->ripperLevel()/100);
+    edit_normalize_spin->setValue(rda->libraryConf()->ripperLevel()/100);
   }
   normalizeToggledData(edit_normalize_box->isChecked());
   // Populate number of channels; if creating a new recording entry and a valid
@@ -707,8 +707,8 @@ void EditRecording::selectCutData()
 {
   QString str;
 
-  RDCutDialog *cut=new RDCutDialog(&edit_cutname,rdstation_conf,catch_system,
-				   edit_filter,NULL,NULL,catch_user->name(),
+  RDCutDialog *cut=new RDCutDialog(&edit_cutname,rda->station(),rda->system(),
+				   edit_filter,NULL,NULL,rda->user()->name(),
 				   false,true);
   switch(cut->exec()) {
       case 0:

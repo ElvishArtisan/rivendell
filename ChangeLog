@@ -15459,3 +15459,5 @@
 	* Refactored rdcartslots(1) to use 'RDApplication'.
 2016-08-01 Fred Gleason <fredg@paravelsystems.com>
 	* Refactored rdcastmanager(1) to use 'RDApplication'.
+2016-08-01 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored rdcatch(1) to use 'RDApplication'.

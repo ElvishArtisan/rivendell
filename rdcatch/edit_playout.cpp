@@ -28,7 +28,7 @@
 #include <qmessagebox.h>
 #include <qcheckbox.h>
 
-#include <rddb.h>
+#include <rdapplication.h>
 #include <rd.h>
 #include <rdcut.h>
 #include <rdcut_dialog.h>
@@ -318,7 +318,7 @@ void EditPlayout::activateStationData(int id,bool use_temp)
 
 void EditPlayout::selectCutData()
 {
-  RDCutDialog *cut=new RDCutDialog(&edit_cutname,rdstation_conf,catch_system,
+  RDCutDialog *cut=new RDCutDialog(&edit_cutname,rda->station(),rda->system(),
 				   edit_filter,NULL,NULL,"",false,false,false,
 				   this);
   switch(cut->exec()) {

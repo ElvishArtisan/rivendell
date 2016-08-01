@@ -20,6 +20,7 @@
 
 #include <qheader.h>
 
+#include <rdapplication.h>
 #include <rdcart.h>
 #include <rdrecording.h>
 #include <rdedit_audio.h>
@@ -52,8 +53,8 @@ void CatchListView::editAudioMenuData()
 {
   RDCart *rdcart=new RDCart(catch_cutname.left(6).toUInt());
   RDEditAudio *edit=
-    new RDEditAudio(rdcart,catch_cutname,catch_cae,catch_user,rdstation_conf,
-		    catch_config,catch_audition_card,catch_audition_port,
+    new RDEditAudio(rdcart,catch_cutname,rda->cae(),rda->user(),rda->station(),
+		    rda->config(),catch_audition_card,catch_audition_port,
 		    1500,-400,this);
   if(edit->exec()!=-1) {
     rdcart->updateLength();

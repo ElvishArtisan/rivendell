@@ -28,7 +28,7 @@
 #include <qmessagebox.h>
 #include <qcheckbox.h>
 
-#include <rddb.h>
+#include <rdapplication.h>
 #include <rd.h>
 #include <rdcart_dialog.h>
 #include <rdcut_path.h>
