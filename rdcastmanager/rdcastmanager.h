@@ -37,6 +37,8 @@
 #include <rdlog_line.h>
 #include <rdconfig.h>
 
+#define RDCASTMANAGER_USAGE "\n"
+
 class MainWidget : public QMainWindow
 {
  Q_OBJECT

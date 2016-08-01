@@ -288,7 +288,7 @@ Podcast trotzdem löschen?</translation>
     </message>
     <message>
         <source>Can&apos;t Connect</source>
-        <translation>Kann mich nicht verbinden</translation>
+        <translation type="obsolete">Kann mich nicht verbinden</translation>
     </message>
     <message>
         <source>Key Name</source>

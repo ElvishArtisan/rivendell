@@ -22,11 +22,6 @@
 #define GLOBALS_H
 
 #include <qstring.h>
-#include <rduser.h>
-#include <rdripc.h>
-#include <rdstation.h>
-#include <rdconfig.h>
-#include <rdsystem.h>
 
 //
 // Global Resources
@@ -34,11 +29,6 @@
 extern QString cast_filter;
 extern QString cast_group;
 extern QString cast_schedcode;
-extern RDUser *cast_user;
-extern RDRipc *cast_ripc;
-extern RDConfig *config;
-extern RDStation *rdstation_conf;
-extern RDSystem *cast_system;
 
 
 #endif  // GLOBALS_H

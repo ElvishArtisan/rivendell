@@ -34,9 +34,9 @@
 #include <qbuttongroup.h>
 #include <qdatetime.h>
 #include <qfile.h>
-#include <qapplication.h>
 #include <qfiledialog.h>
 
+#include <rdapplication.h>
 #include <rddb.h>
 #include <rdpodcast.h>
 #include <rdtextfile.h>
@@ -219,7 +219,7 @@ ListCasts::ListCasts(unsigned feed_id,QWidget *parent)
 
   RefreshList();
   GetEncoderId();
-  connect(cast_ripc,SIGNAL(userChanged()),this,SLOT(userChangedData()));
+  connect(rda->ripc(),SIGNAL(userChanged()),this,SLOT(userChangedData()));
   userChangedData();
 }
 
@@ -246,17 +246,17 @@ QSizePolicy ListCasts::sizePolicy() const
 void ListCasts::addCartData()
 {
   QString cutname;
-  RDCutDialog *cd=new RDCutDialog(&cutname,rdstation_conf,cast_system,
+  RDCutDialog *cd=new RDCutDialog(&cutname,rda->station(),rda->system(),
 				  &cast_filter,&cast_group,&cast_schedcode,
-				  cast_ripc->user());
+				  rda->ripc()->user());
   if(cd->exec()!=0) {
     delete cd;
     return;
   }
   delete cd;
   RDFeed::Error err;
-  unsigned cast_id=list_feed->postCut(cast_user,rdstation_conf,cutname,&err,
-				      config->logXloadDebugData(),config);
+  unsigned cast_id=list_feed->postCut(rda->user(),rda->station(),cutname,&err,
+				      rda->config()->logXloadDebugData(),rda->config());
   if(err!=RDFeed::ErrorOk) {
     QMessageBox::warning(this,tr("Posting Error"),RDFeed::errorString(err));
     return;
@@ -279,8 +279,8 @@ void ListCasts::addFileData()
     return;
   }
   RDFeed::Error err;
-  unsigned cast_id=list_feed->postFile(rdstation_conf,srcfile,&err,
-				       config->logXloadDebugData(),config);
+  unsigned cast_id=list_feed->postFile(rda->station(),srcfile,&err,
+				       rda->config()->logXloadDebugData(),rda->config());
   if(err!=RDFeed::ErrorOk) {
     QMessageBox::warning(this,tr("Posting Error"),RDFeed::errorString(err));
     return;
@@ -336,7 +336,7 @@ void ListCasts::deleteData()
   sleep(1);
   qApp->processEvents();
   RDPodcast *cast=new RDPodcast(item->id());
-  if(!cast->removeAudio(list_feed,&err_text,config->logXloadDebugData())) {
+  if(!cast->removeAudio(list_feed,&err_text,rda->config()->logXloadDebugData())) {
     if(QMessageBox::warning(this,tr("Remote Error"),
 			    tr("Unable to delete remote audio!\n")+
 			    tr("The server said: \"")+err_text+"\".\n\n"+
@@ -384,10 +384,10 @@ void ListCasts::doubleClickedData(QListViewItem *item,const QPoint &pt,
 
 void ListCasts::userChangedData()
 {
-  list_cart_button->setEnabled(cast_user->addPodcast()&&(list_encoder_id>=0));
-  list_file_button->setEnabled(cast_user->addPodcast()&&(list_encoder_id>=0));
-  list_edit_button->setEnabled(cast_user->editPodcast());
-  list_delete_button->setEnabled(cast_user->deletePodcast());
+  list_cart_button->setEnabled(rda->user()->addPodcast()&&(list_encoder_id>=0));
+  list_file_button->setEnabled(rda->user()->addPodcast()&&(list_encoder_id>=0));
+  list_edit_button->setEnabled(rda->user()->editPodcast());
+  list_delete_button->setEnabled(rda->user()->deletePodcast());
 }
 
 
@@ -526,7 +526,7 @@ void ListCasts::GetEncoderId()
     sql=QString().sprintf("select ID from ENCODERS \
                            where (NAME=\"%s\")&&(STATION_NAME=\"%s\")",
 			  (const char *)RDEscapeString(q->value(0).toString()),
-			  (const char *)RDEscapeString(rdstation_conf->name()));
+			  (const char *)RDEscapeString(rda->station()->name()));
     delete q;
     q=new RDSqlQuery(sql);
     if(q->first()) {

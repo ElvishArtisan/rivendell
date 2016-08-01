@@ -253,7 +253,7 @@ Continuar deletando cast?</translation>
     </message>
     <message>
         <source>Can&apos;t Connect</source>
-        <translation>Não foi possível conectar</translation>
+        <translation type="obsolete">Não foi possível conectar</translation>
     </message>
     <message>
         <source>Key Name</source>

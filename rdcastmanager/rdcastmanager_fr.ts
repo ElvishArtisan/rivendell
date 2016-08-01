@@ -229,10 +229,6 @@ Car&amp;t/Cut</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Can&apos;t Connect</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Key Name</source>
         <translation type="unfinished"></translation>
     </message>

@@ -24,7 +24,6 @@
 #include <sys/wait.h>
 #include <unistd.h>
 #endif
-#include <qapplication.h>
 #include <qwindowsstyle.h>
 #include <qwidget.h>
 #include <qpushbutton.h>
@@ -36,14 +35,10 @@
 #include <qmessagebox.h>
 
 #include <rd.h>
+#include <rdapplication.h>
 #include <rdconf.h>
-#include <rduser.h>
-#include <rdripc.h>
 #include <rdcastmanager.h>
-#include <rdcmd_switch.h>
-#include <rddb.h>
 #include <rdpodcast.h>
-#include <dbversion.h>
 
 #include <list_casts.h>
 #include <globals.h>
@@ -61,31 +56,12 @@
 QString cast_filter;
 QString cast_group;
 QString cast_schedcode;
-RDUser *cast_user;
-RDRipc *cast_ripc;
-RDStation *rdstation_conf;
-RDConfig *config;
-RDSystem *cast_system=NULL;
 
 MainWidget::MainWidget(QWidget *parent)
   :QMainWindow(parent)
 {
   QString str1;
   QString str2;
-  bool skip_db_check=false;
-  unsigned schema=0;
-
-  //
-  // Read Command Options
-  //
-  RDCmdSwitch *cmd=
-    new RDCmdSwitch(qApp->argc(),qApp->argv(),"rdcastmanager","\n");
-  for(unsigned i=0;i<cmd->keys();i++) {
-    if(cmd->key(i)=="--skip-db-check") {
-      skip_db_check=true;
-    }
-  }
-  delete cmd;
 
   //
   // Fix the Window Size
@@ -96,55 +72,24 @@ MainWidget::MainWidget(QWidget *parent)
   //
   // Load Local Configs
   //
-  config=new RDConfig();
-  config->load();
   str1=QString("RDCastManager")+" v"+VERSION+" - "+tr("Host");
   str2=QString(tr("User: [Unknown]"));
   setCaption(QString().sprintf("%s: %s, %s",(const char *)str1,
-			       (const char *)config->stationName(),
+			       (const char *)rda->config()->stationName(),
 			       (const char *)str2));
-
-  //
-  // Open Database
-  //
-  QString err;
-  QSqlDatabase *db=RDInitDb(&schema,&err);
-  if(!db) {
-    QMessageBox::warning(this,tr("Can't Connect"),err);
-    exit(0);
-  }
-  if((schema!=RD_VERSION_DATABASE)&&(!skip_db_check)) {
-    fprintf(stderr,
-	    "rdcastmanager: database version mismatch, should be %u, is %u\n",
-	    RD_VERSION_DATABASE,schema);
-    exit(256);
-  }
 
   //
   // RIPC Connection
   //
 #ifndef WIN32
-  cast_ripc=new RDRipc(config->stationName());
-  connect(cast_ripc,SIGNAL(userChanged()),this,SLOT(userChangedData()));
-  cast_ripc->connectHost("localhost",RIPCD_TCP_PORT,config->password());
-#else
-  cast_ripc=NULL;
+  connect(rda->ripc(),SIGNAL(userChanged()),this,SLOT(userChangedData()));
+  rda->ripc()->connectHost("localhost",RIPCD_TCP_PORT,rda->config()->password());
 #endif  // WIN32
-
-  //
-  // Station Configuration
-  //
-  rdstation_conf=new RDStation(config->stationName(),this);
-  cast_system=new RDSystem();
 
   //
   // User
   //
-#ifndef WIN32
-  cast_user=NULL;
-#else 
-  cast_user=new RDUser(RD_USER_LOGIN_NAME);
-#endif  // WIN32
+  rda->setUser(RD_USER_LOGIN_NAME);
 
   // 
   // Create Fonts
@@ -220,16 +165,13 @@ void MainWidget::userChangedData()
   QString str1;
   QString str2;
 
-  if(cast_user!=NULL) {
-    delete cast_user;
-  }
   str1=QString("RDCastManager")+" v"+VERSION+" - "+tr("Host");
   str2=QString(tr("User"));
   setCaption(QString().sprintf("%s: %s, %s: %s",(const char *)str1,
-			       (const char *)config->stationName(),
+			       (const char *)rda->config()->stationName(),
 			       (const char *)str2,
-			       (const char *)cast_ripc->user()));
-  cast_user=new RDUser(cast_ripc->user());
+			       (const char *)rda->ripc()->user()));
+  rda->setUser(rda->ripc()->user());
   RefreshList();
 }
 
@@ -323,7 +265,7 @@ void MainWidget::RefreshList()
   cast_feed_list->clear();
   sql=QString().sprintf("select KEY_NAME from FEED_PERMS \
                          where USER_NAME=\"%s\"",
-			(const char *)cast_user->name());
+			(const char *)rda->user()->name());
   q=new RDSqlQuery(sql);
   if(q->size()<=0) {  // No valid feeds!
     delete q;
@@ -356,7 +298,7 @@ void MainWidget::RefreshList()
 
 int main(int argc,char *argv[])
 {
-  QApplication a(argc,argv);
+  RDApplication a(argc,argv,"rdcastmanager",RDCASTMANAGER_USAGE);
   
   //
   // Load Translations
