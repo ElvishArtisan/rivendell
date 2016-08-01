@@ -1063,11 +1063,11 @@ Cartão</translation>
     </message>
     <message>
         <source>rdlibrary : </source>
-        <translation>RDBiblio: </translation>
+        <translation type="obsolete">RDBiblio: </translation>
     </message>
     <message>
         <source>Can&apos;t Connect</source>
-        <translation>Sem conexão</translation>
+        <translation type="obsolete">Sem conexão</translation>
     </message>
     <message>
         <source>Filter:</source>

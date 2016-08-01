@@ -15449,3 +15449,7 @@
 	'rdadmin/createdb.cpp'.
 	* Refactored DB creation to require the presence of an empty DB
 	before creating a new Rivendell database.
+2016-08-01 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'RDApplication' class in 'lib/rdapplication.cpp' and
+	'lib/rdapplication.h'.
+	* Refactored rdlibrary(1) to use 'RDApplication'.

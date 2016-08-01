@@ -24,9 +24,10 @@
 
 #include <globals.h>
 #include <rd.h>
-#include <disk_gauge.h>
-#include <rdconfig.h>
+#include <rdapplication.h>
 #include <rdaudiostore.h>
+
+#include <disk_gauge.h>
 
 DiskGauge::DiskGauge(int samp_rate,int chans,QWidget *parent)
   : QWidget(parent)
@@ -80,12 +81,12 @@ QSizePolicy DiskGauge::sizePolicy() const
 
 void DiskGauge::update()
 {
-  if(lib_user==NULL) {
+  if(rda->user()==NULL) {
     return;
   }
   RDAudioStore::ErrorCode conv_err;
-  RDAudioStore *conv=new RDAudioStore(rdstation_conf,lib_config,this);
-  if((conv_err=conv->runStore(lib_user->name(),lib_user->password()))==
+  RDAudioStore *conv=new RDAudioStore(rda->station(),rda->config(),this);
+  if((conv_err=conv->runStore(rda->user()->name(),rda->user()->password()))==
      RDAudioStore::ErrorOk) {
     uint64_t free_min=GetMinutes(conv->freeBytes());
     uint64_t total_min=GetMinutes(conv->totalBytes());
@@ -119,14 +120,14 @@ unsigned DiskGauge::GetMinutes(uint64_t bytes)
 {
   unsigned ret=0;
 
-  switch(rdlibrary_conf->defaultFormat()) {
+  switch(rda->libraryConf()->defaultFormat()) {
   case 1:   // MPEG Layer 2
-    ret=bytes*2/(rdlibrary_conf->defaultChannels()*
-		 rdlibrary_conf->defaultBitrate()*15);
+    ret=bytes*2/(rda->libraryConf()->defaultChannels()*
+		 rda->libraryConf()->defaultBitrate()*15);
     break;
 
   default:  // PCM16
-    ret=bytes/(rdlibrary_conf->defaultChannels()*2*lib_system->sampleRate()*60);
+    ret=bytes/(rda->libraryConf()->defaultChannels()*2*rda->system()->sampleRate()*60);
     break;
   }
   return ret;

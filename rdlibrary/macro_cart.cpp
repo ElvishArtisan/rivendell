@@ -33,6 +33,7 @@
 #include <qsqldatabase.h>
 
 #include <rd.h>
+#include <rdapplication.h>
 #include <rdaudio_exists.h>
 
 #include <cdripper.h>
@@ -49,7 +50,7 @@ MacroCart::MacroCart(RDCart *cart,QWidget *parent)
   rdcart_cart=cart;
   setCaption(QString().sprintf("%u",rdcart_cart->number())+" - "+
     rdcart_cart->title());
-  rdcart_allow_modification=lib_user->modifyCarts();
+  rdcart_allow_modification=rda->user()->modifyCarts();
 
   //
   // Generate Fonts
@@ -99,7 +100,7 @@ MacroCart::MacroCart(RDCart *cart,QWidget *parent)
   //
   // Cart Macro List
   //
-  rdcart_events=new RDMacroEvent(rdstation_conf->address(),rdripc,this);
+  rdcart_events=new RDMacroEvent(rda->station()->address(),rda->ripc(),this);
   rdcart_events->load(rdcart_cart->macros());
 
   rdcart_macro_list=new QListView(this);

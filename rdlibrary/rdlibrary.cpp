@@ -23,7 +23,6 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
-#include <qapplication.h>
 #include <qwindowsstyle.h>
 #include <qeventloop.h>
 #include <qwidget.h>
@@ -40,10 +39,9 @@
 #include <curl/curl.h>
 
 #include <rd.h>
-#include <rddb.h>
+#include <rdapplication.h>
 #include <rdconf.h>
 #include <rduser.h>
-#include <rdripc.h>
 #include <rdmixer.h>
 #include <rdadd_cart.h>
 #include <rdprofile.h>
@@ -68,17 +66,10 @@
 //
 // Global Resources
 //
-RDLibraryConf *rdlibrary_conf;
-RDStation *rdstation_conf;
 RDAudioPort *rdaudioport_conf;
-RDRipc *rdripc;
-RDCae *rdcae;
 DiskGauge *disk_gauge;
 RDCut *cut_clipboard=NULL;
-RDConfig *lib_config;
-RDUser *lib_user;
 bool audio_changed;
-RDSystem *lib_system=NULL;
 
 //
 // Prototypes
@@ -97,8 +88,6 @@ void SigHandler(int signo);
 MainWidget::MainWidget(QWidget *parent)
   :QWidget(parent)
 {
-  unsigned schema=0;
-  bool skip_db_check=false;
   profile_ripping=false;
   lib_edit_pending=false;
   lib_user_changed=false;
@@ -106,25 +95,18 @@ MainWidget::MainWidget(QWidget *parent)
   //
   // Read Command Options
   //
-  RDCmdSwitch *cmd=
-    new RDCmdSwitch(qApp->argc(),qApp->argv(),"rdlibrary",RDLIBRARY_USAGE);
-  for(unsigned i=0;i<cmd->keys();i++) {
-    if(cmd->key(i)=="--skip-db-check") {
-      skip_db_check=true;
-      cmd->setProcessed(i,true);
-    }
-    if(cmd->key(i)=="--profile-ripping") {
+  for(unsigned i=0;i<rda->cmdSwitch()->keys();i++) {
+    if(rda->cmdSwitch()->key(i)=="--profile-ripping") {
       profile_ripping=true;
-      cmd->setProcessed(i,true);
+      rda->cmdSwitch()->setProcessed(i,true);
     }
-    if(!cmd->processed(i)) {
+    if(!rda->cmdSwitch()->processed(i)) {
       QMessageBox::warning(this,"RDLibrary - "+tr("Error"),
 			   tr("Unknown command-line option")+
-			   " \""+cmd->key(i)+"\".");
+			   " \""+rda->cmdSwitch()->key(i)+"\".");
       exit(256);
     }
   }
-  delete cmd;
 
   //
   // Fix the Window Size
@@ -142,7 +124,7 @@ MainWidget::MainWidget(QWidget *parent)
   //
   QFont default_font("Helvetica",12,QFont::Normal);
   default_font.setPixelSize(12);
-  qApp->setFont(default_font);
+  rda->setFont(default_font);
   QFont button_font=QFont("Helvetica",12,QFont::Bold);
   button_font.setPixelSize(12);
   QFont filter_font=QFont("Helvetica",16,QFont::Bold);
@@ -177,64 +159,31 @@ MainWidget::MainWidget(QWidget *parent)
   //
   RDInitializeDaemons();
 
-  //
-  // Load Local Configs
-  //
-  lib_config=new RDConfig();
-  lib_config->load();
-
   SetCaption("");
   lib_import_path=RDGetHomeDir();
 
   //
-  // Open Database
-  //
-  QString err(tr("rdlibrary : "));
-  QSqlDatabase *db=RDInitDb(&schema,&err);
-  if(!db) {
-    QMessageBox::warning(this,
-			 tr("Can't Connect"),err);
-    exit(0);
-  }
-  if((RD_VERSION_DATABASE!=schema)&&(!skip_db_check)) {
-    fprintf(stderr,
-	    "rdlibrary: database version mismatch, should be %u, is %u\n",
-	    RD_VERSION_DATABASE,schema);
-    exit(256);
-  }
-
-  //
   // Allocate Global Resources
   //
-  rdlibrary_conf=new RDLibraryConf(lib_config->stationName(),0);
-  rdstation_conf=new RDStation(lib_config->stationName());
-  lib_filter_mode=rdstation_conf->filterMode();
-  rdaudioport_conf=new RDAudioPort(lib_config->stationName(),
-				   rdlibrary_conf->inputCard());
-  rdripc=new RDRipc(lib_config->stationName());
-  connect(rdripc,SIGNAL(connected(bool)),this,SLOT(connectedData(bool)));
-  connect(rdripc,SIGNAL(userChanged()),this,SLOT(userData()));
-  rdripc->connectHost("localhost",RIPCD_TCP_PORT,lib_config->password());
+  lib_filter_mode=rda->station()->filterMode();
+  rdaudioport_conf=new RDAudioPort(rda->config()->stationName(),
+				   rda->libraryConf()->inputCard());
+  connect(rda->ripc(),SIGNAL(connected(bool)),this,SLOT(connectedData(bool)));
+  connect(rda->ripc(),SIGNAL(userChanged()),this,SLOT(userData()));
+  rda->ripc()->connectHost("localhost",RIPCD_TCP_PORT,rda->config()->password());
   cut_clipboard=NULL;
-  lib_system=new RDSystem();
   lib_user_timer=new QTimer(this);
   connect(lib_user_timer,SIGNAL(timeout()),this,SLOT(userData()));
 
   //
   // CAE Connection
   //
-  rdcae=new RDCae(rdstation_conf,lib_config,parent);
-  rdcae->connectHost();
+  rda->cae()->connectHost();
 
   //
   // Load Audio Assignments
   //
-  RDSetMixerPorts(lib_config->stationName(),rdcae);
-
-  //
-  // User
-  //
-  lib_user=NULL;
+  RDSetMixerPorts(rda->config()->stationName(),rda->cae());
 
   //
   // Filter
@@ -305,7 +254,7 @@ MainWidget::MainWidget(QWidget *parent)
   lib_allowdrag_label->setAlignment(AlignVCenter|AlignLeft);
   connect(lib_allowdrag_box,SIGNAL(stateChanged(int)),
 	  this,SLOT(dragsChangedData(int)));
-  if(!rdstation_conf->enableDragdrop()) {
+  if(!rda->station()->enableDragdrop()) {
     lib_allowdrag_box->hide();
     lib_allowdrag_label->hide();
   }
@@ -455,8 +404,8 @@ MainWidget::MainWidget(QWidget *parent)
   //
   // Disk Gauge
   //
-  disk_gauge=new DiskGauge(lib_system->sampleRate(),
-			   rdlibrary_conf->defaultChannels(),this);
+  disk_gauge=new DiskGauge(rda->system()->sampleRate(),
+			   rda->libraryConf()->defaultChannels(),this);
 
   //
   // Rip Button
@@ -490,7 +439,7 @@ MainWidget::MainWidget(QWidget *parent)
   //
   // Load Data
   //
-  switch(rdlibrary_conf->limitSearch()) {
+  switch(rda->libraryConf()->limitSearch()) {
   case RDLibraryConf::LimitNo:
     lib_showmatches_box->setChecked(false);
     break;
@@ -500,7 +449,7 @@ MainWidget::MainWidget(QWidget *parent)
     break;
 
   case RDLibraryConf::LimitPrevious:
-    lib_showmatches_box->setChecked(rdlibrary_conf->searchLimited());
+    lib_showmatches_box->setChecked(rda->libraryConf()->searchLimited());
     break;
   }
 
@@ -535,16 +484,19 @@ void MainWidget::userData()
     return;
   }
 
-  SetCaption(rdripc->user());
+  SetCaption(rda->ripc()->user());
+  /*
   if(lib_user!=NULL) {
     delete lib_user;
   }
-  lib_user=new RDUser(rdripc->user());
+  */
+  rda->setUser(rda->ripc()->user());
+  //lib_user=new RDUser(rda->ripc()->user());
 
   lib_group_box->clear();
   lib_group_box->insertItem(tr("ALL"));
   sql=QString("select GROUP_NAME from USER_PERMS where ")+
-    "USER_NAME=\""+RDEscapeString(lib_user->name())+"\" order by GROUP_NAME";
+    "USER_NAME=\""+RDEscapeString(rda->user()->name())+"\" order by GROUP_NAME";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     lib_group_box->insertItem(q->value(0).toString());
@@ -558,10 +510,10 @@ void MainWidget::userData()
     lib_rip_button->setDisabled(true);
   }
   else {
-    lib_add_button->setEnabled(lib_user->createCarts());
+    lib_add_button->setEnabled(rda->user()->createCarts());
     lib_edit_button->setEnabled(true);
-    lib_delete_button->setEnabled(lib_user->deleteCarts());
-    lib_rip_button->setEnabled(lib_user->editAudio());
+    lib_delete_button->setEnabled(rda->user()->deleteCarts());
+    lib_rip_button->setEnabled(rda->user()->editAudio());
   }
 
   lib_codes_box->clear();
@@ -627,7 +579,7 @@ void MainWidget::addData()
   LockUser();
 
   RDAddCart *add_cart=new RDAddCart(&lib_default_group,&cart_type,&cart_title,
-				    lib_user->name(),lib_system,this);
+				    rda->user()->name(),rda->system(),this);
   if((cart_num=add_cart->exec())<0) {
     delete add_cart;
     UnlockUser();
@@ -645,7 +597,7 @@ void MainWidget::addData()
     new EditCart(cart_num,&lib_import_path,true,profile_ripping,this);
   if(cart->exec() <0) {
     RDCart *rdcart=new RDCart(cart_num);
-    rdcart->remove(rdstation_conf,lib_user,lib_config);
+    rdcart->remove(rda->station(),rda->user(),rda->config());
     delete rdcart;
   } 
   else {
@@ -703,7 +655,7 @@ void MainWidget::editData()
     delete it;
   }
   else { //multi edit
-    if(lib_user->modifyCarts()) {
+    if(rda->user()->modifyCarts()) {
       EditCart *edit_cart=
 	new EditCart(0,&lib_import_path,false,profile_ripping,this,"",
 				       lib_cart_list);
@@ -795,7 +747,7 @@ Do you still want to delete it?"),item->text(1).toUInt());
   }
   if(del_flag && item->text(21).isEmpty()) {
     RDCart *rdcart=new RDCart(item->text(1).toUInt());
-    if(!rdcart->remove(rdstation_conf,lib_user,lib_config)) {
+    if(!rdcart->remove(rda->station(),rda->user(),rda->config())) {
       QMessageBox::warning(this,tr("RDLibrary"),tr("Unable to delete audio!"));
       return;
     }
@@ -881,7 +833,7 @@ void MainWidget::cartClickedData(QListViewItem *item)
   delete it;
   
   if(del_count>0) {
-    lib_delete_button->setEnabled(lib_user->deleteCarts());
+    lib_delete_button->setEnabled(rda->user()->deleteCarts());
   } 
   else {
     lib_delete_button->setEnabled(false);
@@ -891,7 +843,7 @@ void MainWidget::cartClickedData(QListViewItem *item)
       lib_edit_button->setEnabled(false);
     }
     else {
-      lib_edit_button->setEnabled(lib_user->modifyCarts());
+      lib_edit_button->setEnabled(rda->user()->modifyCarts());
     }
   } 
   else {
@@ -920,7 +872,7 @@ void MainWidget::macroChangedData(int state)
 
 void MainWidget::searchLimitChangedData(int state)
 {
-  rdlibrary_conf->setSearchLimited(state);
+  rda->libraryConf()->setSearchLimited(state);
   filterChangedData("");
 }
 
@@ -1072,7 +1024,7 @@ void MainWidget::RefreshList()
   if(lib_group_box->currentText()==QString(tr("ALL"))) {
     sql+=QString(" where ")+
       RDAllCartSearchText(lib_filter_edit->text(),schedcode,
-			  lib_user->name(),true)+" && "+type_filter;
+			  rda->user()->name(),true)+" && "+type_filter;
 
   }
   else {
@@ -1186,7 +1138,7 @@ void MainWidget::RefreshList()
     if(count++>RDLIBRARY_STEP_SIZE) {
       lib_progress_dialog->setProgress(++step);
       count=0;
-      qApp->eventLoop()->processEvents(QEventLoop::ExcludeUserInput);
+      rda->eventLoop()->processEvents(QEventLoop::ExcludeUserInput);
     }
   }
   UpdateItemColor(l,validity,end_datetime,current_datetime);
@@ -1371,7 +1323,7 @@ void MainWidget::SetCaption(QString user)
 
   str1=QString("RDLibrary")+" v"+VERSION+" - "+tr("Host")+":";
   str2=tr("User")+":";
-  setCaption(str1+" "+lib_config->stationName()+", "+str2+" "+user);
+  setCaption(str1+" "+rda->config()->stationName()+", "+str2+" "+user);
 }
 
 
@@ -1476,7 +1428,7 @@ bool MainWidget::UnlockUser()
 
 int main(int argc,char *argv[])
 {
-  QApplication a(argc,argv);
+  RDApplication a(argc,argv,"rdlibrary",RDLIBRARY_USAGE);
   
   //
   // Load Translations

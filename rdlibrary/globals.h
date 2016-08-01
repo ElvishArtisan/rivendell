@@ -21,28 +21,13 @@
 #ifndef GLOBALS_H
 #define GLOBALS_H
 
-#include <rdlibrary_conf.h>
-#include <rdstation.h>
 #include <rdaudio_port.h>
-#include <rdripc.h>
-#include <rdcae.h>
 #include <disk_gauge.h>
 #include <rdcut.h>
-#include <rdconfig.h>
-#include <rduser.h>
-#include <rdsystem.h>
 
-extern RDLibraryConf *rdlibrary_conf;
-extern RDStation *rdstation_conf;
 extern RDAudioPort *rdaudioport_conf;
-extern RDRipc *rdripc;
-extern RDCae *rdcae;
 extern DiskGauge *disk_gauge;
 extern RDCut *cut_clipboard;
-extern RDConfig *lib_config;
-extern RDUser *lib_user;
-extern RDSystem *lib_system;
-
 extern bool import_running;
 extern bool ripper_running;
 
