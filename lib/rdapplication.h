@@ -23,6 +23,7 @@
 
 #include <qapplication.h>
 
+#include <rdairplay_conf.h>
 #include <rdcae.h>
 #include <rdcmd_switch.h>
 #include <rdconfig.h>
@@ -37,6 +38,7 @@ class RDApplication : public QApplication
  public:
   RDApplication(int argc,char **argv,const char *modname,const char *usage,
 		bool gui=true);
+  RDAirPlayConf *airplayConf() const;
   RDLibraryConf *libraryConf() const;
   RDCae *cae() const;
   RDRipc *ripc() const;
@@ -48,6 +50,7 @@ class RDApplication : public QApplication
   RDCmdSwitch *cmdSwitch() const;
 
  private:
+  RDAirPlayConf *app_airplay_conf;
   RDLibraryConf *app_library_conf;
   RDCae *app_cae;
   RDRipc *app_ripc;

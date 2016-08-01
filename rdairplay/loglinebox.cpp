@@ -20,6 +20,7 @@
 
 #include <qpainter.h>
 
+#include <rdapplication.h>
 #include <rdconf.h>
 #include <rdplay_deck.h>
 #include <rdairplay_conf.h>
@@ -882,7 +883,7 @@ void LogLineBox::SetColor(QColor color)
 
 void LogLineBox::UpdateCountdown()
 {
-  QTime current=QTime::currentTime().addMSecs(rdstation_conf->timeOffset());
+  QTime current=QTime::currentTime().addMSecs(rda->station()->timeOffset());
 
   if(current<line_end_time) {
     line_length_label->setText(RDGetTimeLength(current.msecsTo(line_end_time),

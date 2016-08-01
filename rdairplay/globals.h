@@ -21,31 +21,18 @@
 #ifndef GLOBALS_H
 #define GLOBALS_H
 
-#include <rdstation.h>
-#include <rdsystem.h>
-#include <rdairplay_conf.h>
 #include <rdaudio_port.h>
-#include <rduser.h>
-#include <rdripc.h>
-#include <rdcae.h>
 #include <rdevent_player.h>
 #include <rdcart_dialog.h>
-#include <rdconfig.h>
 
 //
 // Global Resources
 //
-extern RDStation *rdstation_conf;
-extern RDSystem *rdsystem_conf;
-extern RDAirPlayConf *rdairplay_conf;
 extern RDAudioPort *rdaudioport_conf;
-extern RDUser *rduser;
-extern RDRipc *rdripc;
 extern RDEventPlayer *rdevent_player;
 extern RDCartDialog *rdcart_dialog;
 extern void LogLine(RDConfig::LogPriority prio,const QString &line);
 extern QString logfile;
-extern RDConfig *air_config;
 
 
 #endif  // GLOBALS_H

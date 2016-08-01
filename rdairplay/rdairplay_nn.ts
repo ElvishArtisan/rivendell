@@ -522,7 +522,7 @@ Tail</source>
     </message>
     <message>
         <source>Database Error</source>
-        <translation>Databasefeil</translation>
+        <translation type="obsolete">Databasefeil</translation>
     </message>
     <message>
         <source>ADD</source>

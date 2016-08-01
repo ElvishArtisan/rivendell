@@ -21,7 +21,9 @@
 #include <qpushbutton.h>
 
 #include <rdadd_log.h>
+#include <rdapplication.h>
 #include <rddb.h>
+
 #include <list_logs.h>
 #include <globals.h>
 
@@ -130,7 +132,7 @@ int ListLogs::exec(QString *logname,QString *svcname)
 {
   list_logname=logname;
   list_svcname=svcname;
-  list_saveas_button->setEnabled(rduser->createLog());
+  list_saveas_button->setEnabled(rda->user()->createLog());
   RefreshList();
   return QDialog::exec();
 }
@@ -176,7 +178,7 @@ void ListLogs::saveAsButtonData()
   QString svcname=*list_svcname;
   RDAddLog *log;
 
-  log=new RDAddLog(&logname,&svcname,rdstation_conf,tr("Rename Log"),this);
+  log=new RDAddLog(&logname,&svcname,rda->station(),tr("Rename Log"),this);
   if(log->exec()<0) {
     delete log;
     return;
@@ -212,7 +214,7 @@ void ListLogs::RefreshList()
 
   sql=QString().sprintf("select SERVICE_NAME from SERVICE_PERMS \
                          where STATION_NAME=\"%s\"",
-			(const char *)rdstation_conf->name());
+			(const char *)rda->station()->name());
   q=new RDSqlQuery(sql);
   while(q->next()) {
     services_list.append( q->value(0).toString() );

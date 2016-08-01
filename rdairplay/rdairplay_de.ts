@@ -512,7 +512,7 @@ vorhören</translation>
     </message>
     <message>
         <source>Database Error</source>
-        <translation>Datenbankfehler</translation>
+        <translation type="obsolete">Datenbankfehler</translation>
     </message>
     <message>
         <source>ADD</source>

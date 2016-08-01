@@ -18,8 +18,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qsqldatabase.h>
-
+#include <rdapplication.h>
 #include <rdconf.h>
 #include <rddb.h>
 #include <rdescape_string.h>
@@ -56,7 +55,7 @@ void LogTraffic(const QString &svcname,const QString &logname,
     "LOG_NAME=\""+RDEscapeString(logname.utf8())+"\","+
     QString().sprintf("LOG_ID=%d,",logline->id())+
     QString().sprintf("CART_NUMBER=%u,",logline->cartNumber())+
-    "STATION_NAME=\""+RDEscapeString(rdstation_conf->name().utf8())+"\","+
+    "STATION_NAME=\""+RDEscapeString(rda->station()->name().utf8())+"\","+
     "EVENT_DATETIME="+eventDateTimeSQL+","+
     QString().sprintf("EVENT_TYPE=%d,",action)+
     QString().sprintf("EVENT_SOURCE=%d,",logline->source())+

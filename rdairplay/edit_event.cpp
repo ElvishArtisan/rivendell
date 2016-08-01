@@ -23,6 +23,7 @@
 #include <qpainter.h>
 #include <qmessagebox.h>
 
+#include <rdapplication.h>
 #include <rdconf.h>
 
 #include <edit_event.h>
@@ -133,8 +134,8 @@ EditEvent::EditEvent(LogPlay *log,RDCae *cae,QWidget *parent)
   // Cue Editor
   //
   edit_cue_edit=
-    new RDCueEdit(edit_cae,rdstation_conf->cueCard(),
-                  rdstation_conf->cuePort(),this);
+    new RDCueEdit(edit_cae,rda->station()->cueCard(),
+                  rda->station()->cuePort(),this);
 
   //
   // Cart Notes

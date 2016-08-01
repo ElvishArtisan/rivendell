@@ -28,6 +28,7 @@
 #include <stdio.h>
 #include <string.h>
 
+#include <rdapplication.h>
 #include <rdconf.h>
 
 #include <colors.h>
@@ -37,7 +38,7 @@
 WallClock::WallClock(QWidget *parent)
   :QPushButton(parent)
 {
-  time_offset=rdstation_conf->timeOffset();
+  time_offset=rda->station()->timeOffset();
   previous_time=QTime::currentTime().addMSecs(time_offset);
   time_mode=RDAirPlayConf::TwentyFourHour;
   previous_time_mode = RDAirPlayConf::TwentyFourHour;

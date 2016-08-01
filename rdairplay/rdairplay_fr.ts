@@ -512,7 +512,7 @@ la Fin</translation>
     </message>
     <message>
         <source>Database Error</source>
-        <translation>Erreur de base de données</translation>
+        <translation type="obsolete">Erreur de base de données</translation>
     </message>
     <message>
         <source>ADD</source>

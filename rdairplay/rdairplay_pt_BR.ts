@@ -513,7 +513,7 @@ Log</source>
     </message>
     <message>
         <source>Database Error</source>
-        <translation>Erro na Base de Dados</translation>
+        <translation type="obsolete">Erro na Base de Dados</translation>
     </message>
     <message>
         <source>ADD</source>

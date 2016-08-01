@@ -21,6 +21,8 @@
 #include <qpixmap.h>
 #include <qpainter.h>
 
+#include <rdapplication.h>
+
 #include <post_counter.h>
 #include <colors.h>
 #include <globals.h>
@@ -130,7 +132,7 @@ void PostCounter::UpdateDisplay()
   QString point;
   QString state;
   QTime current_time=
-    QTime::currentTime().addMSecs(rdstation_conf->timeOffset());
+    QTime::currentTime().addMSecs(rda->station()->timeOffset());
   int offset=post_offset;
   if(!post_running) {
     offset-=current_time.msecsTo(post_set_time);

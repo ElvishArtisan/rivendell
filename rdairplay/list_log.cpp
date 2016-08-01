@@ -29,6 +29,8 @@
 #include <rdlog.h>
 #include <rdcreate_log.h>
 
+#include <rdapplication.h>
+
 #include <list_log.h>
 #include <button_log.h>
 #include <colors.h>
@@ -162,10 +164,10 @@ ListLog::ListLog(LogPlay *log,RDCae *cae,int id,bool allow_pause,
   list_log_list->setFont(list_font);
   int y=0;
   int h=sizeHint().height()-60;
-  if(rdairplay_conf->showCounters()) {
+  if(rda->airplayConf()->showCounters()) {
     h-=60;
   }
-  if(rdairplay_conf->hourSelectorEnabled()) {
+  if(rda->airplayConf()->hourSelectorEnabled()) {
     y+=80;
     h-=80;
     list_hour_selector->setGeometry(0,0,sizeHint().width(),80);
@@ -233,7 +235,7 @@ ListLog::ListLog(LogPlay *log,RDCae *cae,int id,bool allow_pause,
   label->setFont(label_font);
   label->setAlignment(AlignCenter);  
   label->setBackgroundColor(QColor(system_mid_color));
-  if(!rdairplay_conf->showCounters()) {
+  if(!rda->airplayConf()->showCounters()) {
     label->hide();
   }
 
@@ -247,7 +249,7 @@ ListLog::ListLog(LogPlay *log,RDCae *cae,int id,bool allow_pause,
   list_stoptime_label->setFont(label_font);
   list_stoptime_label->setAlignment(AlignRight|AlignVCenter);  
   list_stoptime_label->setBackgroundColor(QColor(system_mid_color));
-  if(!rdairplay_conf->showCounters()) {
+  if(!rda->airplayConf()->showCounters()) {
     list_stoptime_edit->hide();
     list_stoptime_label->hide();
   }
@@ -262,7 +264,7 @@ ListLog::ListLog(LogPlay *log,RDCae *cae,int id,bool allow_pause,
   list_endtime_label->setFont(label_font);
   list_endtime_label->setAlignment(AlignRight|AlignVCenter);  
   list_endtime_label->setBackgroundColor(QColor(system_mid_color));
-  if(!rdairplay_conf->showCounters()) {
+  if(!rda->airplayConf()->showCounters()) {
     list_endtime_edit->hide();
     list_endtime_label->hide();
   }
@@ -289,7 +291,7 @@ ListLog::ListLog(LogPlay *log,RDCae *cae,int id,bool allow_pause,
   list_head_button->setText(tr("Audition\nHead"));
   list_head_button->setFocusPolicy(QWidget::NoFocus);
   connect(list_head_button,SIGNAL(clicked()),this,SLOT(headButtonData()));
-  if(!rdairplay_conf->showCounters()) {
+  if(!rda->airplayConf()->showCounters()) {
     list_head_button->hide();
   }
 
@@ -303,7 +305,7 @@ ListLog::ListLog(LogPlay *log,RDCae *cae,int id,bool allow_pause,
   list_tail_button->setText(tr("Audition\nTail"));
   list_tail_button->setFocusPolicy(QWidget::NoFocus);
   connect(list_tail_button,SIGNAL(clicked()),this,SLOT(tailButtonData()));
-  if(!rdairplay_conf->showCounters()) {
+  if(!rda->airplayConf()->showCounters()) {
     list_tail_button->hide();
   }
 
@@ -883,7 +885,7 @@ void ListLog::loadButtonData()
                                        SERVICE=\"%s\"",
 			      (const char *)name,
 			      (const char *)name,
-			      (const char *)rdripc->user(),
+			      (const char *)rda->ripc()->user(),
 			      (const char *)svcname);
 	q=new RDSqlQuery(sql);
 	if(!q->isActive()) {
@@ -1101,7 +1103,7 @@ void ListLog::cartDroppedData(int line,RDLogLine *ll)
 
 void ListLog::paintEvent(QPaintEvent *e)
 {
-  if(!rdairplay_conf->showCounters()) {
+  if(!rda->airplayConf()->showCounters()) {
     return;
   }
   int x=336;

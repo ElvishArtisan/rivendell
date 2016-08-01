@@ -15453,3 +15453,5 @@
 	* Added an 'RDApplication' class in 'lib/rdapplication.cpp' and
 	'lib/rdapplication.h'.
 	* Refactored rdlibrary(1) to use 'RDApplication'.
+2016-08-01 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored rdairplay(1) to use 'RDApplication'.

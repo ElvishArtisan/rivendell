@@ -73,12 +73,19 @@ RDApplication::RDApplication(int argc,char **argv,const char *modname,
   //
   // Configuration Accessors
   //
+  app_airplay_conf=new RDAirPlayConf(config()->stationName(),"RDAIRPLAY");
   app_library_conf=new RDLibraryConf(config()->stationName(),0);
   app_station=new RDStation(config()->stationName());
   app_ripc=new RDRipc(config()->stationName());
   app_cae=new RDCae(station(),config());
   app_system=new RDSystem();
   app_user=NULL;
+}
+
+
+RDAirPlayConf *RDApplication::airplayConf() const
+{
+  return app_airplay_conf;
 }
 
 

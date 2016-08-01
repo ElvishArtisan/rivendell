@@ -520,7 +520,7 @@ Final</translation>
     </message>
     <message>
         <source>Database Error</source>
-        <translation>Error en la base de datos</translation>
+        <translation type="obsolete">Error en la base de datos</translation>
     </message>
     <message>
         <source>ADD</source>

@@ -41,11 +41,8 @@
 #include <rdstereometer.h>
 #include <rdlabel.h>
 #include <rdinstancelock.h>
-#include <rduser.h>
-#include <rdripc.h>
 #include <rdplay_deck.h>
 #include <rdmacro.h>
-#include <rdconfig.h>
 #include <rd.h>
 #include <rdttydevice.h>
 #include <rdemptycart.h>

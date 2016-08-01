@@ -21,6 +21,8 @@
 #include <qpixmap.h>
 #include <qpainter.h>
 
+#include <rdapplication.h>
+
 #include <stop_counter.h>
 #include <globals.h>
 
@@ -131,7 +133,7 @@ void StopCounter::UpdateTime()
   QString text;
   QColor system_button_text_color = palette().active().buttonText();
   int msecs=QTime::currentTime().
-    addMSecs(rdstation_conf->timeOffset()).msecsTo(stop_time);
+    addMSecs(rda->station()->timeOffset()).msecsTo(stop_time);
 
   if ((old_stop_running != stop_running) || (msecs/1000 != old_msecs/1000)){
 	  QPixmap pix(sizeHint().width(),sizeHint().height());

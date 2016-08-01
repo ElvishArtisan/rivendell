@@ -512,7 +512,7 @@ poslechu</translation>
     </message>
     <message>
         <source>Database Error</source>
-        <translation>Chyba databáze</translation>
+        <translation type="obsolete">Chyba databáze</translation>
     </message>
     <message>
         <source>ADD</source>

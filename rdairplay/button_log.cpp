@@ -22,6 +22,7 @@
 #include <qpixmap.h>
 #include <qpainter.h>
 
+#include <rdapplication.h>
 #include <rdlistviewitem.h>
 
 #include <button_log.h>
@@ -68,8 +69,8 @@ ButtonLog::ButtonLog(LogPlay *log,RDCae *cae,int id,RDAirPlayConf *conf,
   for(int i=0;i<BUTTON_PLAY_BUTTONS;i++) {
     log_line_box[i]=new LogLineBox(conf,this);
     log_line_box[i]->setMode(LogLineBox::Full);
-    log_line_box[i]->setAcceptDrops(rdstation_conf->enableDragdrop());
-    log_line_box[i]->setAllowDrags(rdstation_conf->enableDragdrop());
+    log_line_box[i]->setAcceptDrops(rda->station()->enableDragdrop());
+    log_line_box[i]->setAllowDrags(rda->station()->enableDragdrop());
     log_line_box[i]->setGeometry(10+log_line_box[i]->sizeHint().height(),
 			       (log_line_box[i]->sizeHint().height()+12)*i,
 			       log_line_box[i]->sizeHint().width(),
@@ -91,8 +92,8 @@ ButtonLog::ButtonLog(LogPlay *log,RDCae *cae,int id,RDAirPlayConf *conf,
   for(int i=BUTTON_PLAY_BUTTONS;i<BUTTON_TOTAL_BUTTONS;i++) {
     log_line_box[i]=new LogLineBox(conf,this);
     log_line_box[i]->setMode(LogLineBox::Half);
-    log_line_box[i]->setAcceptDrops(rdstation_conf->enableDragdrop());
-    log_line_box[i]->setAllowDrags(rdstation_conf->enableDragdrop());
+    log_line_box[i]->setAcceptDrops(rda->station()->enableDragdrop());
+    log_line_box[i]->setAllowDrags(rda->station()->enableDragdrop());
     log_line_box[i]->setGeometry(10+log_line_box[0]->sizeHint().height(),
 			       (log_line_box[0]->sizeHint().height()+12)*3+
 			       (log_line_box[i]->sizeHint().height()+12)*(i-3),
