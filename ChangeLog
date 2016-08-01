@@ -15435,3 +15435,7 @@
 2016-07-29 Fred Gleason <fredg@paravelsystems.com>
 	* Updated 'NEWS'.
 	* Incremented the package version to 2.15.0.
+2016-08-01 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'rdadmin/createdb.cpp' that caused the
+	'SERVICE_CLOCKS' table to fail to be created when generating
+	a new database.

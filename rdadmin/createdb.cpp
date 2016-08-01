@@ -2412,6 +2412,9 @@ bool CreateDb(QString name,QString pwd)
     "CLOCK_NAME char(64) default null,"+
     "index SERVICE_NAME_IDX(SERVICE_NAME,HOUR),"+
     "index CLOCK_NAME_IDX(CLOCK_NAME))";
+  if(!RunQuery(sql)) {
+     return false;
+  }
 
   return true;
 }
