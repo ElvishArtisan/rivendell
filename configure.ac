@@ -70,8 +70,6 @@ AC_ARG_ENABLE(docbook,[  --disable-docbook       disable building of documentati
 
 AC_ARG_ENABLE(gpio,[  --disable-gpio          disable General Purpose Input/Output GPIO support],
 		      [GPIO_DISABLED=yes],[])
-AC_ARG_ENABLE(pam,[  --disable-pam           disable Rivendell PAM pam_rd.so support],
-		      [PAM_DISABLED=yes],[])
 AC_ARG_ENABLE(mad,[  --disable-mad           disable MPEG decode support],
 		      [MAD_DISABLED=yes],[])
 AC_ARG_ENABLE(twolame,[  --disable-twolame       disable MPEG Layer 2 encode support],
@@ -391,7 +389,6 @@ if test -z $PAM_DISABLED ; then
     USING_PAM=yes
   fi
 fi
-AM_CONDITIONAL([PAM_RD_AM], [test "$USING_PAM" = yes])
 
 #
 # Distro-Specific Stuff
@@ -507,7 +504,7 @@ AC_CONFIG_FILES([rivendell.spec \
     ios/rmlsend/Makefile \
     ios/rmlsend/Classes/Makefile \
     ios/rmlsend/RMLSend.xcodeproj/Makefile \
-    pam_rd/Makefile ])
+    ])
 AC_OUTPUT()
 chmod 755 make_slack
 chmod 755 rivendell-suse
@@ -567,13 +564,6 @@ if test -z $MP4V2_FOUND ; then
 AC_MSG_NOTICE("|                      M4A Decoding Support ... No    |")
 else
 AC_MSG_NOTICE("|                      M4A Decoding Support ... Yes   |")
-fi
-AC_MSG_NOTICE("|                                                     |")
-AC_MSG_NOTICE("| Optional Components:                                |")
-if test -z $USING_PAM ; then
-AC_MSG_NOTICE("|           Rivendell PAM pam_rd.so Support ... No    |")
-else
-AC_MSG_NOTICE("|           Rivendell PAM pam_rd.so Support ... Yes   |")
 fi
 AC_MSG_NOTICE("|-----------------------------------------------------|")
 AC_MSG_NOTICE()

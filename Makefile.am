@@ -20,9 +20,6 @@
 ##   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 
-if PAM_RD_AM
-  PAM_RD_OPT = pam_rd
-endif
 if HPI_RD_AM
   HPI_RD_OPT = rdhpi
 endif

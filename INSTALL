@@ -30,14 +30,14 @@ most distros, or you can find it at http://www.mega-nerd.com/libsndfile/.
 mySQL Database Server
 Included in most Linux distributions.  See http://www.mysql.com/.
 
+OggVorbis - Open Source Audio Coding Library.  Needed for OggVorbis
+importing and exporting.  Included with most distros, or available at: 
+http://www.xiph.org/.
+
 PAM Pluggable Authentication Modules
 A suite of shared libraries that enable the local system administrator to 
 choose how applications authenticate users.  Included with virtually all modern
 distros, or see http://www.kernel.org/pub/linux/libs/pam/.
-
-OggVorbis - Open Source Audio Coding Library.  Needed for OggVorbis
-importing and exporting.  Included with most distros, or available at: 
-http://www.xiph.org/.
 
 Qt Toolkit, v3.3 or better
 Most modern Linux distros include this.  It's typically installed as part

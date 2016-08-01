@@ -101,8 +101,6 @@ rm -rf $RPM_BUILD_ROOT
 make install DESTDIR=$RPM_BUILD_ROOT
 mkdir $RPM_BUILD_ROOT/.qt
 touch $RPM_BUILD_ROOT/.qt/qt
-rm -f $RPM_BUILD_ROOT/lib/security/pam_rd.la
-rm -f $RPM_BUILD_ROOT/lib64/security/pam_rd.la
 if test "@WIN32_SOURCE@" ; then
   mkdir -p $RPM_BUILD_ROOT/var/win32
   cp @WIN32_SOURCE@ $RPM_BUILD_ROOT/var/win32/
@@ -279,7 +277,6 @@ rm -rf $RPM_BUILD_ROOT
 @LOCAL_PREFIX@/share/desktop-directories/rivendell-rivendell.directory
 @LOCAL_PREFIX@/share/desktop-directories/rivendell-utilities.directory
 /etc/xdg/menus/applications-merged/rivendell-rivendell.menu
-/@RD_LIB_PATH@/security/pam_rd.so
 /.qt/qt
 @libexecdir@/*
 %attr(6755,root,root) @libexecdir@/rdxport.cgi
@@ -310,7 +307,6 @@ rm -rf $RPM_BUILD_ROOT
 %doc docs/SWITCHERS.txt
 %doc docs/JACK.txt
 %doc docs/ENCODERS.txt
-%doc docs/pam_rd.txt
 %doc docs/MESSAGE_BOX.txt
 %doc docs/docbook/cae.pdf
 %doc docs/docbook/rml.pdf
