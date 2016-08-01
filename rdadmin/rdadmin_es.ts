@@ -5317,31 +5317,31 @@ base datos</translation>
     </message>
     <message>
         <source>Restore Database</source>
-        <translation>Restaurar base de datos</translation>
+        <translation type="obsolete">Restaurar base de datos</translation>
     </message>
     <message>
         <source>WARNING: This operation will COMPLETELY
 OVERWRITE the existing Rivendell Database!
 Do you want to continue?</source>
-        <translation>ADVERTENCIA: Esta operación SOBREESCRIBIRÁ
+        <translation type="obsolete">ADVERTENCIA: Esta operación SOBREESCRIBIRÁ
 COMPLETAMENTE la base de datos existente.
 ¿Desea continuar?</translation>
     </message>
     <message>
         <source>Restore Error</source>
-        <translation>Error en la restauración</translation>
+        <translation type="obsolete">Error en la restauración</translation>
     </message>
     <message>
         <source>Unable to restore backup!</source>
-        <translation>¡No pude restaurar la base de datos!</translation>
+        <translation type="obsolete">¡No pude restaurar la base de datos!</translation>
     </message>
     <message>
         <source>Restore Complete</source>
-        <translation>Restauración finalizada</translation>
+        <translation type="obsolete">Restauración finalizada</translation>
     </message>
     <message>
         <source>Restore completed successfully.</source>
-        <translation>La restauración fue completada exitosamente.</translation>
+        <translation type="obsolete">La restauración fue completada exitosamente.</translation>
     </message>
     <message>
         <source>Manage
@@ -5396,50 +5396,50 @@ Replicadores</translation>
 Please enter a login for an account with
 administrative rights on the mySQL server,
 and we will try to get this straightened out.</source>
-        <translation>¡No se pudo acceder a la base de datos Rivendell!
+        <translation type="obsolete">¡No se pudo acceder a la base de datos Rivendell!
 Si desea crear una NUEVA base de datos, ingrese 
 el login y la clave de una cuenta Mysql con 
 derechos administrativos.</translation>
     </message>
     <message>
         <source>Wrong access permissions for accessing mySQL!</source>
-        <translation>¡Permisología errónea al acceder a la base de datos MySQL!</translation>
+        <translation type="obsolete">¡Permisología errónea al acceder a la base de datos MySQL!</translation>
     </message>
     <message>
         <source>Unable to connect to mySQL!</source>
-        <translation>¡No es posible conectarse con la base de datos MySQL!</translation>
+        <translation type="obsolete">¡No es posible conectarse con la base de datos MySQL!</translation>
     </message>
     <message>
         <source>Unable to create a Rivendell Database!</source>
-        <translation>¡No pude crear la base de datos Rivendell!</translation>
+        <translation type="obsolete">¡No pude crear la base de datos Rivendell!</translation>
     </message>
     <message>
         <source>Unable to connect to new Rivendell Database!</source>
-        <translation>¡No pude conectarme a la nueva base de datos Rivendell!</translation>
+        <translation type="obsolete">¡No pude conectarme a la nueva base de datos Rivendell!</translation>
     </message>
     <message>
         <source>Unable to create Rivendell Database!</source>
-        <translation>¡No pude crear la base de datos Rivendell!</translation>
+        <translation type="obsolete">¡No pude crear la base de datos Rivendell!</translation>
     </message>
     <message>
         <source>Unable to connect to Rivendell Database!</source>
-        <translation>¡No pude conectarme a la base de datos Rivendell!</translation>
+        <translation type="obsolete">¡No pude conectarme a la base de datos Rivendell!</translation>
     </message>
     <message>
         <source>Unable to initialize Rivendell Database!</source>
-        <translation>¡No fue posible inicializar la base de datos Rivendell!</translation>
+        <translation type="obsolete">¡No fue posible inicializar la base de datos Rivendell!</translation>
     </message>
     <message>
         <source>RDAdmin</source>
-        <translation>RDAdmin</translation>
+        <translation type="obsolete">RDAdmin</translation>
     </message>
     <message>
         <source>New Rivendell Database Created!</source>
-        <translation>¡Se ha creado una nueva base de datos!</translation>
+        <translation type="obsolete">¡Se ha creado una nueva base de datos!</translation>
     </message>
     <message>
         <source>Unable to upgrade database</source>
-        <translation>No fue posible actualizar la base de datos</translation>
+        <translation type="obsolete">No fue posible actualizar la base de datos</translation>
     </message>
     <message>
         <source>The Rivendell Database is too old to be upgraded,
@@ -5447,7 +5447,7 @@ and so must be replaced.  This will DESTROY any
 existing audio and data!  If you want to do this,
 enter a username and password for a mySQL account
 with administrative privledges, otherwise hit cancel.</source>
-        <translation>La base de datos Rivendell es muy antigua y no
+        <translation type="obsolete">La base de datos Rivendell es muy antigua y no
 puede ser actualizada, por lo que será reemplazada.
 ¡Esto DESTRUIRÁ todo audio y datos existentes! 
 Si desea continuar, introduzca el usuario y la clave
@@ -5456,61 +5456,61 @@ o de lo contrario seleccione CANCELAR.</translation>
     </message>
     <message>
         <source>Unable to log into Administrator account!</source>
-        <translation>¡No pudo ingresar a una cuenta administrativa!</translation>
+        <translation type="obsolete">¡No pudo ingresar a una cuenta administrativa!</translation>
     </message>
     <message>
         <source>Unable to authorize a Rivendell Database!</source>
-        <translation>¡No puedo autorizar la base de datos Rivendell!</translation>
+        <translation type="obsolete">¡No puedo autorizar la base de datos Rivendell!</translation>
     </message>
     <message>
         <source>Update Needed</source>
-        <translation>Se necesita actualizar</translation>
+        <translation type="obsolete">Se necesita actualizar</translation>
     </message>
     <message>
         <source>The Rivendell Database needs to be updated.
 All audio and settings will be preserved, but
 this will STOP any audio playout or recording
 on this machine for a few seconds.  Continue?</source>
-        <translation>La base de datos requiere ser actualizada. Todo el audio 
+        <translation type="obsolete">La base de datos requiere ser actualizada. Todo el audio 
 y la configuración se van a preservar, pero hay  que 
 DETENER las reproducciones y grabaciones por unos
 segundos. ¿Desea continuar?</translation>
     </message>
     <message>
         <source>Unable to update Rivendell Database:</source>
-        <translation>No fue posible actualizar la base de datos:</translation>
+        <translation type="obsolete">No fue posible actualizar la base de datos:</translation>
     </message>
     <message>
         <source>
 Database backup failed!</source>
-        <translation>
+        <translation type="obsolete">
 ¡No se pudo respaldar la base de datos!</translation>
     </message>
     <message>
         <source>
 Schema modification failed!</source>
-        <translation>
+        <translation type="obsolete">
 ¡Falló la modificación del esquema!</translation>
     </message>
     <message>
         <source>
 Unknown/unspecified error!</source>
-        <translation>
+        <translation type="obsolete">
 ¡Error desconocido/no especificado!</translation>
     </message>
     <message>
         <source>The Rivendell Database has been updated to version</source>
-        <translation>La base de datos de Rivendell ha sido actualizada a la versión </translation>
+        <translation type="obsolete">La base de datos de Rivendell ha sido actualizada a la versión </translation>
     </message>
     <message>
         <source>
 and a backup of the original database saved in </source>
-        <translation>
+        <translation type="obsolete">
 y un respaldo de la base de datos se guardó en </translation>
     </message>
     <message>
         <source>Database Updated</source>
-        <translation>Base de datos actualizada</translation>
+        <translation type="obsolete">Base de datos actualizada</translation>
     </message>
     <message>
         <source>RDAdmin Error</source>
@@ -5635,6 +5635,22 @@ y un respaldo de la base de datos se guardó en </translation>
     <message>
         <source>Aux Log 2</source>
         <translation>Lista aux. 2</translation>
+    </message>
+    <message>
+        <source>DB Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to open MySQL database connection.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>DB Message</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Created new Rivendell database.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

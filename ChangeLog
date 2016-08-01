@@ -15444,3 +15444,8 @@
 	* Removed the 'RDStation::broadcastSecurity()' and
 	'RDStation::setBroadcastSecurity()' methods in 'lib/rdstation.cpp'
 	and 'lib/rdstation.h' [GitHub issue #00139].
+2016-08-01 Fred Gleason <fredg@paravelsystems.com>
+	* Removed schema update code for schemas earlier than 259 from
+	'rdadmin/createdb.cpp'.
+	* Refactored DB creation to require the presence of an empty DB
+	before creating a new Rivendell database.

@@ -30,10 +30,8 @@
 #define UPDATEDB_BACKUP_FAILED -1
 #define UPDATEDB_QUERY_FAILED -2
 
-bool CreateDb(QString name,QString pwd);
-bool InitDb(QString name,QString pwd,QString stationname);
-int UpdateDb(int ver);
+bool CreateDb();
+bool InitDb(QString stationname);
 
 
-#endif
-
+#endif  // CREATEDB_H

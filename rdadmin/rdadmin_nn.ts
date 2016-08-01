@@ -5298,30 +5298,30 @@ databasen</translation>
     </message>
     <message>
         <source>Restore Database</source>
-        <translation>Gjenopprett database</translation>
+        <translation type="obsolete">Gjenopprett database</translation>
     </message>
     <message>
         <source>WARNING: This operation will COMPLETELY
 OVERWRITE the existing Rivendell Database!
 Do you want to continue?</source>
-        <translation>ÅTVARING: Dette vil OVERSKRIVA Rivendell-
+        <translation type="obsolete">ÅTVARING: Dette vil OVERSKRIVA Rivendell-
 databasen heilt! Er du sikker på at du vil halda fram?</translation>
     </message>
     <message>
         <source>Restore Error</source>
-        <translation>Gjenopprettingsfeil</translation>
+        <translation type="obsolete">Gjenopprettingsfeil</translation>
     </message>
     <message>
         <source>Unable to restore backup!</source>
-        <translation>Greidde ikkje gjenoppretta sikringskopien!</translation>
+        <translation type="obsolete">Greidde ikkje gjenoppretta sikringskopien!</translation>
     </message>
     <message>
         <source>Restore Complete</source>
-        <translation>Gjennoppretting fullført</translation>
+        <translation type="obsolete">Gjennoppretting fullført</translation>
     </message>
     <message>
         <source>Restore completed successfully.</source>
-        <translation>Gjenopprettinga vart fullført utan vanskar.</translation>
+        <translation type="obsolete">Gjenopprettinga vart fullført utan vanskar.</translation>
     </message>
     <message>
         <source>System
@@ -5368,50 +5368,42 @@ Replicators</source>
 Please enter a login for an account with
 administrative rights on the mySQL server,
 and we will try to get this straightened out.</source>
-        <translation type="unfinished">Greier ikkje kopla til Rivendell-databasen!
+        <translation type="obsolete">Greier ikkje kopla til Rivendell-databasen!
 Skriv inn eit brukarnamn til ein konto som har
 rettar til å administrera mySQL-tenaren,
 så prøver me å ordna opp i dette.</translation>
     </message>
     <message>
         <source>Wrong access permissions for accessing mySQL!</source>
-        <translation type="unfinished">Feil tilgangsrettar for å kopla til mySQL!</translation>
+        <translation type="obsolete">Feil tilgangsrettar for å kopla til mySQL!</translation>
     </message>
     <message>
         <source>Unable to connect to mySQL!</source>
-        <translation type="unfinished">Greier ikkje kopla til mySQL!</translation>
+        <translation type="obsolete">Greier ikkje kopla til mySQL!</translation>
     </message>
     <message>
         <source>Unable to create a Rivendell Database!</source>
-        <translation type="unfinished">Greier ikkje laga ein Rivendell-database!</translation>
+        <translation type="obsolete">Greier ikkje laga ein Rivendell-database!</translation>
     </message>
     <message>
         <source>Unable to connect to new Rivendell Database!</source>
-        <translation type="unfinished">Greier ikkje kopla til den nye Rivendell-databasen!</translation>
+        <translation type="obsolete">Greier ikkje kopla til den nye Rivendell-databasen!</translation>
     </message>
     <message>
         <source>Unable to create Rivendell Database!</source>
-        <translation type="unfinished">Greier ikkje laga ein Rivendell-database!</translation>
+        <translation type="obsolete">Greier ikkje laga ein Rivendell-database!</translation>
     </message>
     <message>
         <source>Unable to connect to Rivendell Database!</source>
-        <translation type="unfinished">Greier ikkje kopla til Rivendell-databasen!</translation>
+        <translation type="obsolete">Greier ikkje kopla til Rivendell-databasen!</translation>
     </message>
     <message>
         <source>Unable to initialize Rivendell Database!</source>
-        <translation type="unfinished">Greier ikkje setja opp Rivendell-databasen!</translation>
-    </message>
-    <message>
-        <source>RDAdmin</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Greier ikkje setja opp Rivendell-databasen!</translation>
     </message>
     <message>
         <source>New Rivendell Database Created!</source>
-        <translation type="unfinished">Du har laga ein ny Rivendell-database.</translation>
-    </message>
-    <message>
-        <source>Unable to upgrade database</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Du har laga ein ny Rivendell-database.</translation>
     </message>
     <message>
         <source>The Rivendell Database is too old to be upgraded,
@@ -5419,7 +5411,7 @@ and so must be replaced.  This will DESTROY any
 existing audio and data!  If you want to do this,
 enter a username and password for a mySQL account
 with administrative privledges, otherwise hit cancel.</source>
-        <translation type="unfinished">Rivendell-databasen er for gamal til å oppgradera,
+        <translation type="obsolete">Rivendell-databasen er for gamal til å oppgradera,
 så han må bytast ut. Dette VIL ØYDELEGGJA alle
 lyd- og datafiler! Viss du vil gjera dette, skriv du inn
 eit brukarnamn og passord med administrasjons-
@@ -5427,57 +5419,29 @@ rettar for mySQL-kontoen. Viss ikkje, trykk avbryt.</translation>
     </message>
     <message>
         <source>Unable to log into Administrator account!</source>
-        <translation type="unfinished">Greier ikkje logga på Administrator-kontoen!</translation>
+        <translation type="obsolete">Greier ikkje logga på Administrator-kontoen!</translation>
     </message>
     <message>
         <source>Unable to authorize a Rivendell Database!</source>
-        <translation type="unfinished">Greier ikkje godkjenna Rivendell-databasen!</translation>
+        <translation type="obsolete">Greier ikkje godkjenna Rivendell-databasen!</translation>
     </message>
     <message>
         <source>Update Needed</source>
-        <translation type="unfinished">Treng oppdatering</translation>
+        <translation type="obsolete">Treng oppdatering</translation>
     </message>
     <message>
         <source>The Rivendell Database needs to be updated.
 All audio and settings will be preserved, but
 this will STOP any audio playout or recording
 on this machine for a few seconds.  Continue?</source>
-        <translation type="unfinished">Rivendell-databasen treng ei oppdatering.
+        <translation type="obsolete">Rivendell-databasen treng ei oppdatering.
 Alle lydfiler og innstillingar blir tekne vare på,
 men dette VIL STOPPA alt opptak eller avspeling
 på denne maskina i nokre sekund. Halda fram?</translation>
     </message>
     <message>
-        <source>Unable to update Rivendell Database:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>
-Database backup failed!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>
-Schema modification failed!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>
-Unknown/unspecified error!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>The Rivendell Database has been updated to version</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>
-and a backup of the original database saved in </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Database Updated</source>
-        <translation type="unfinished">Databasen oppdatert</translation>
+        <translation type="obsolete">Databasen oppdatert</translation>
     </message>
     <message>
         <source>RDAdmin Error</source>
@@ -5602,6 +5566,22 @@ and a backup of the original database saved in </source>
     <message>
         <source>Aux Log 2</source>
         <translation type="unfinished">Hjelpelogg 2</translation>
+    </message>
+    <message>
+        <source>DB Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to open MySQL database connection.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>DB Message</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Created new Rivendell database.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

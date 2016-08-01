@@ -147,6 +147,16 @@ QString format_remote_host(const char *hostname) {
 }
 
 
+void PrintDbError(const QString &err,bool interactive)
+{
+  if(interactive) {
+    QMessageBox::warning(NULL,"RDAdmin - "+QObject::tr("DB Error"),err);
+  }
+  else {
+  }
+  exit(256);
+}
+
 bool OpenDb(QString dbname,QString login,QString pwd,
 	    QString host,QString stationname,bool interactive)
 {
@@ -155,16 +165,12 @@ bool OpenDb(QString dbname,QString login,QString pwd,
   // They shoot horses, don't they??
   //
 
-  int db_ver;
   QString admin_name;
   QString admin_pwd;
+  QString msg;
+  QString str;
   QString sql;
   QSqlQuery *q;
-  QString msg;
-  MySqlLogin *mysql_login;
-  QString str;
-  int err=0;
-  QString err_str="";
 
   //
   // Open Database
@@ -178,258 +184,38 @@ bool OpenDb(QString dbname,QString login,QString pwd,
   db->setPassword(pwd);
   db->setHostName(host);
   if(!db->open()) {
-    /*
-    if(!interactive) {
-      return false;
-    }
-    */
     RDKillDaemons();
-    if(interactive) {
-      msg=QObject::tr("Unable to access the Rivendell Database!\n\
-Please enter a login for an account with\n\
-administrative rights on the mySQL server,\n\
-and we will try to get this straightened out.");
-      mysql_login=new MySqlLogin(msg,&admin_name,&admin_pwd);
-      if(mysql_login->exec()!=0) {
-	delete mysql_login;
-	db->removeDatabase(dbname);
-	return false;
-      }
-      delete mysql_login;
-    }
-    else {
-      admin_name=admin_admin_username;
-      admin_pwd=admin_admin_password;
-      if(!admin_admin_hostname.isEmpty()) {
-	db->setHostName(admin_admin_hostname);
-      }
-    }
-    db->setUserName(admin_name);
-    db->setPassword(admin_pwd);
-    if(db->open()) {      // Fixup DB Access Permsissions
-      PrintError(QObject::tr("Wrong access permissions for accessing mySQL!"),
+    PrintDbError(QObject::tr("Unable to open MySQL database connection."),
 		 interactive);
-      db->removeDatabase("mysql");
-      return false;
+  }
+
+  //
+  // Identify DB
+  //
+  sql=QString("show tables");
+  q=new QSqlQuery(sql);
+  if(q->first()) {
+    delete q;
+    sql=QString("select DB from VERSION");
+    q=new QSqlQuery(sql);
+    if(q->first()) {
+      if(q->value(0).toInt()!=RD_VERSION_DATABASE) {
+	PrintDbError("Unsupported database version",interactive);
+      }
     }
     else {
-      db->setDatabaseName("mysql");
-      if(!db->open()) {   // mySQL is hosed -- scream and die.
-	PrintError(QObject::tr("Unable to connect to mySQL!"),interactive);
-	db->removeDatabase("mysql");
-	return false;
-      }
-      else {              // Create a new Rivendell Database
-	sql=QString().sprintf("create database %s",(const char *)dbname);
-	q=new QSqlQuery(sql);
-	if(!q->isActive()) {   // Can't create DB.
-	  delete q;
-	  PrintError(QObject::tr("Unable to create a Rivendell Database!"),
-		     interactive);
-	  db->removeDatabase("mysql");
-	  return false;
-	}
-	delete q;
-
-        // Check if creating the database on the local machine or on a remote
-        // server in the same subnet.  If creating on a remote server, set the
-        // host portion of the MySQL user to the subnet that is common between
-        // the local workstation and the server.
-        if (check_remote_server(host)) {
-          host=format_remote_host(host);
-        }
-	sql=QString().sprintf("create user %s@'%s' identified by '%s'", 
-	          (const char *)login, (const char *)host, (const char *)pwd);
-	q=new QSqlQuery(sql);
-	delete q;
-	sql=QString().sprintf("grant SELECT, INSERT, UPDATE, DELETE, CREATE, DROP,\
-	          INDEX, ALTER, LOCK TABLES on %s.* to %s@'%s'", 
-	          (const char *)dbname, (const char *)login, (const char *)host);
-	q=new QSqlQuery(sql);
-	delete q;
-	q=new QSqlQuery("flush privileges");
-	delete q;
-	db->close();   // Relinquish admin perms
-	if(!admin_admin_dbname.isEmpty()) {
-	  dbname=admin_admin_dbname;
-	}
-	db->setDatabaseName(dbname);
-	db->setUserName(login);
-	db->setPassword(pwd);
-	db->setHostName(host);
-	if(!db->open()) {   // Can't open new database
-	  PrintError(QObject::tr("Unable to connect to new Rivendell Database!"),
-		     interactive);
-	  db->removeDatabase(dbname);
-	  return false;
-	}
-	if(!CreateDb(login,pwd)) {   // Can't create tables.
-	  PrintError(QObject::tr("Unable to create Rivendell Database!"),
-		     interactive);
-	  db->removeDatabase(dbname);
-	  return false;
-	}
-	db->close();
-	db->setDatabaseName(dbname);
-	db->setUserName(login);
-	db->setPassword(pwd);
-	if(!db->open()) {
-	  PrintError(QObject::tr("Unable to connect to Rivendell Database!"),
-		     interactive);
-	  db->removeDatabase(dbname);
-	  return false;
-	}	  
-	if(!InitDb(login,pwd,stationname)) {  // Can't initialize tables.
-	  PrintError(QObject::tr("Unable to initialize Rivendell Database!"),
-		     interactive);
-	  db->removeDatabase(dbname);
-	  return false;
-	}
-	if(interactive) {
-	  QMessageBox::information(NULL,QObject::tr("RDAdmin"),
-			      QObject::tr("New Rivendell Database Created!"));
-	}
-	return true;
-      }
-    }
-    return false;
-  }
-  if((db_ver=RDCheckVersion())<RD_VERSION_DATABASE) {
-    if(db_ver==0) {    // Pre-historic database version!
-      if(!interactive) {
-	PrintError(QObject::tr("Unable to upgrade database"),false);
-	return false;
-      }
-      msg=QObject::tr("The Rivendell Database is too old to be upgraded,\n\
-and so must be replaced.  This will DESTROY any\n\
-existing audio and data!  If you want to do this,\n\
-enter a username and password for a mySQL account\n\
-with administrative privledges, otherwise hit cancel.");
-      if(interactive) {
-	mysql_login=new MySqlLogin(msg,&admin_name,&admin_pwd);
-	if(mysql_login->exec()!=0) {
-	  delete mysql_login;
-	  db->removeDatabase(dbname);
-	  return false;
-	}
-	delete mysql_login;
-      }
-      else {
-	admin_name=admin_admin_username;
-	admin_pwd=admin_admin_password;
-      }
-      RDKillDaemons();
-      db->close();
-      db->setDatabaseName("mysql");
-      db->setUserName(admin_name);
-      db->setPassword(admin_pwd);
-      if(!db->open()) {
-	PrintError(QObject::tr("Unable to log into Administrator account!"),
-		   interactive);
-	db->removeDatabase(dbname);
-	return false;
-      }	  
-      q=new QSqlQuery(QString().sprintf ("drop database %s",(const char *)dbname));
-      delete q;
-      q=new QSqlQuery(QString().sprintf("create database %s",(const char *)dbname));
-      if(!q->isActive()) {   // Can't create DB.
-	delete q;
-	PrintError(QObject::tr("Unable to create a Rivendell Database!"),
-		   interactive);
-	db->removeDatabase("mysql");
-	return false;
-      }
-      delete q;
-      sql=QString().
-	sprintf("grant all on %s to %s identified by \"%s\"",
-		(const char *)dbname,(const char *)login,(const char *)pwd);
-      q=new QSqlQuery(sql);
-      if(!q->isActive()) {  // Can't authorize DB.
-	PrintError(QObject::tr("Unable to authorize a Rivendell Database!"),
-		   interactive);
-	db->removeDatabase("mysql");
-	return false;
-      }
-      db->close();   // Relinquish admin perms
-      db->setDatabaseName(dbname);
-      db->setUserName(login);
-      db->setPassword(pwd);
-      if(!db->open()) {   // Can't open new database
-	PrintError(QObject::tr("Unable to connect to new Rivendell Database!"),
-		   interactive);
-	db->removeDatabase(dbname);
-	return false;
-      }
-      if(!CreateDb(login,pwd)) {   // Can't create tables.
-	PrintError(QObject::tr("Unable to create Rivendell Database!"),
-		   interactive);
-	db->removeDatabase(dbname);
-	return false;
-      }
-      db->close();
-      db->setDatabaseName(dbname);
-      db->setUserName(login);
-      db->setPassword(pwd);
-      if(!db->open()) {
-	PrintError(QObject::tr("Unable to connect to Rivendell Database!"),
-		   interactive);
-	db->removeDatabase(dbname);
-	return false;
-      }	  
-      if(!InitDb(login,pwd,stationname)) {   // Can't initialize tables.
-	PrintError(QObject::tr("Unable to initialize Rivendell Database!"),
-		   interactive);
-	db->removeDatabase(dbname);
-	return false;
-      }
-    }
-    else {             // Out-of-date version
-      if(interactive) {
-	if(QMessageBox::warning(NULL,QObject::tr("Update Needed"),
-		  QObject::tr("The Rivendell Database needs to be updated.\n\
-All audio and settings will be preserved, but\n\
-this will STOP any audio playout or recording\n\
-on this machine for a few seconds.  Continue?"),
-				QMessageBox::Yes,QMessageBox::No)!=
-	   QMessageBox::Yes) {
-	  db->removeDatabase(dbname);
-	  return false;
-	}      
-      }
-      RDKillDaemons();
-      if((err=UpdateDb(db_ver))!=UPDATEDB_SUCCESS) {
-	err_str=QObject::tr("Unable to update Rivendell Database:");
-	switch(err) {
-	case UPDATEDB_BACKUP_FAILED:
-	  err_str+=QObject::tr("\nDatabase backup failed!");
-	  break;
-
-	case UPDATEDB_QUERY_FAILED:
-	  err_str+=QObject::tr("\nSchema modification failed!");
-	  break;
-
-	default:
-	  err_str+=QObject::tr("\nUnknown/unspecified error!");
-	  break;
-	}
-	PrintError(err_str,interactive);
-	db->removeDatabase(dbname);
-	return false;
-      }
-      str=QString(
-        QObject::tr("The Rivendell Database has been updated to version"));
-      msg=QString().
-	sprintf("%s %d",(const char *)str,RD_VERSION_DATABASE);
-      if(!admin_skip_backup) {
-	msg+=QObject::tr("\nand a backup of the original database saved in ");
-	msg+=admin_backup_filename;
-      }
-      msg+=".";
-      if(interactive) {
-	QMessageBox::information(NULL,QObject::tr("Database Updated"),msg);
-      }
+      PrintDbError("Database is corrupt",interactive);
     }
   }
+  else {
+    CreateDb();
+    InitDb(stationname);
+    if(interactive) {
+      QMessageBox::information(NULL,"RDAdmin - "+QObject::tr("DB Message"),
+			       QObject::tr("Created new Rivendell database."));
+    }
+  }
+  delete q;
 
   return true;
 }

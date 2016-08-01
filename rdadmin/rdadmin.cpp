@@ -331,6 +331,7 @@ MainWidget::MainWidget(QWidget *parent)
   restore_button->setFont(font);
   restore_button->setText(tr("&Restore\nDatabase"));
   connect(restore_button,SIGNAL(clicked()),this,SLOT(restoreData()));
+  restore_button->setDisabled(true);
   
   //
   // Quit Button
@@ -444,11 +445,11 @@ void MainWidget::backupData()
 
 void MainWidget::restoreData()
 {
+  /*
   QString filename;
   QString cmd;
   int status;
   RDSqlQuery *q;
-  int ver=RD_VERSION_DATABASE;
 
   if(QMessageBox::warning(NULL,tr("Restore Database"),
 			  tr("WARNING: This operation will COMPLETELY\nOVERWRITE the existing Rivendell Database!\nDo you want to continue?"),
@@ -482,10 +483,11 @@ void MainWidget::restoreData()
   }
   delete q;
   admin_skip_backup=true;
-  UpdateDb(ver);
+  //  UpdateDb(ver);
   QMessageBox::information(this,tr("Restore Complete"),
 			   tr("Restore completed successfully."));
   RDStartDaemons();
+  */
 }
 
 

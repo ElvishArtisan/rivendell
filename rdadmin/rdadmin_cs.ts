@@ -5365,31 +5365,31 @@ databázi</translation>
     </message>
     <message>
         <source>Restore Database</source>
-        <translation>Obnovit databázi</translation>
+        <translation type="obsolete">Obnovit databázi</translation>
     </message>
     <message>
         <source>WARNING: This operation will COMPLETELY
 OVERWRITE the existing Rivendell Database!
 Do you want to continue?</source>
-        <translation>VAROVÁNÍ: Tato operace zcela přepíše stávající
+        <translation type="obsolete">VAROVÁNÍ: Tato operace zcela přepíše stávající
 databázi Rivendell!
 Chcete pokračovat?</translation>
     </message>
     <message>
         <source>Restore Error</source>
-        <translation>Chyba při obnově</translation>
+        <translation type="obsolete">Chyba při obnově</translation>
     </message>
     <message>
         <source>Unable to restore backup!</source>
-        <translation>Nelze obnovit zálohu!</translation>
+        <translation type="obsolete">Nelze obnovit zálohu!</translation>
     </message>
     <message>
         <source>Restore Complete</source>
-        <translation>Obnova hotova</translation>
+        <translation type="obsolete">Obnova hotova</translation>
     </message>
     <message>
         <source>Restore completed successfully.</source>
-        <translation>Obnova úspěšně dokončena.</translation>
+        <translation type="obsolete">Obnova úspěšně dokončena.</translation>
     </message>
     <message>
         <source>System
@@ -5558,50 +5558,50 @@ zopakování</translation>
 Please enter a login for an account with
 administrative rights on the mySQL server,
 and we will try to get this straightened out.</source>
-        <translation>Nelze přistupovat k databázi Rivendell!
+        <translation type="obsolete">Nelze přistupovat k databázi Rivendell!
 Zadejte, prosím, přihlašovací údaje k účtu s
 administrátorskými právy k mySQL serveru
 a my se pokusíme toto opravit.</translation>
     </message>
     <message>
         <source>Wrong access permissions for accessing mySQL!</source>
-        <translation>Špatná přístupová práva pro přístup k mySQL!</translation>
+        <translation type="obsolete">Špatná přístupová práva pro přístup k mySQL!</translation>
     </message>
     <message>
         <source>Unable to connect to mySQL!</source>
-        <translation>Nelze se spojit s mySQL!</translation>
+        <translation type="obsolete">Nelze se spojit s mySQL!</translation>
     </message>
     <message>
         <source>Unable to create a Rivendell Database!</source>
-        <translation>Nelze vytvořit databázi Rivendell!</translation>
+        <translation type="obsolete">Nelze vytvořit databázi Rivendell!</translation>
     </message>
     <message>
         <source>Unable to connect to new Rivendell Database!</source>
-        <translation>Nelze se spojit s novou databází Rivendell!</translation>
+        <translation type="obsolete">Nelze se spojit s novou databází Rivendell!</translation>
     </message>
     <message>
         <source>Unable to create Rivendell Database!</source>
-        <translation>Nelze vytvořit databázi Rivendell!</translation>
+        <translation type="obsolete">Nelze vytvořit databázi Rivendell!</translation>
     </message>
     <message>
         <source>Unable to connect to Rivendell Database!</source>
-        <translation>Nelze se spojit s databází Rivendell!</translation>
+        <translation type="obsolete">Nelze se spojit s databází Rivendell!</translation>
     </message>
     <message>
         <source>Unable to initialize Rivendell Database!</source>
-        <translation>Nelze spustit databází Rivendell!</translation>
+        <translation type="obsolete">Nelze spustit databází Rivendell!</translation>
     </message>
     <message>
         <source>RDAdmin</source>
-        <translation>RDAdmin</translation>
+        <translation type="obsolete">RDAdmin</translation>
     </message>
     <message>
         <source>New Rivendell Database Created!</source>
-        <translation>Nová databáze Rivendell vytvořena!</translation>
+        <translation type="obsolete">Nová databáze Rivendell vytvořena!</translation>
     </message>
     <message>
         <source>Unable to upgrade database</source>
-        <translation>Aktualizace databáze není možná</translation>
+        <translation type="obsolete">Aktualizace databáze není možná</translation>
     </message>
     <message>
         <source>The Rivendell Database is too old to be upgraded,
@@ -5609,7 +5609,7 @@ and so must be replaced.  This will DESTROY any
 existing audio and data!  If you want to do this,
 enter a username and password for a mySQL account
 with administrative privledges, otherwise hit cancel.</source>
-        <translation>Databáze Rivendell je příliš stará na to, aby byla povýšena a
+        <translation type="obsolete">Databáze Rivendell je příliš stará na to, aby byla povýšena a
 musí se nahradit. Toto SMAŽE všechny stávající nahrávky
 a data! Pokud to chcete udělat, zadejte uživatelské jméno
 a heslo k účtu mySQL se správcovskými právy, jinak klepněte na
@@ -5617,65 +5617,81 @@ zrušit.</translation>
     </message>
     <message>
         <source>Unable to log into Administrator account!</source>
-        <translation>Nelze se přihlásit k správcovskému účtu!</translation>
+        <translation type="obsolete">Nelze se přihlásit k správcovskému účtu!</translation>
     </message>
     <message>
         <source>Unable to authorize a Rivendell Database!</source>
-        <translation>Nelze povolit databází Rivendell!</translation>
+        <translation type="obsolete">Nelze povolit databází Rivendell!</translation>
     </message>
     <message>
         <source>Update Needed</source>
-        <translation>Aktualizace potřeba</translation>
+        <translation type="obsolete">Aktualizace potřeba</translation>
     </message>
     <message>
         <source>The Rivendell Database needs to be updated.
 All audio and settings will be preserved, but
 this will STOP any audio playout or recording
 on this machine for a few seconds.  Continue?</source>
-        <translation>Databázi Rivendell je potřeba obnovit.
+        <translation type="obsolete">Databázi Rivendell je potřeba obnovit.
 Všechny nahrávky a nastavení budou uloženy, ale toto
 ZASTAVÍ všechna přehrávání zvuku nebo nahrávání
 na tomto počítači na několik sekund. Pokračovat?</translation>
     </message>
     <message>
         <source>Unable to update Rivendell Database:</source>
-        <translation>Nelze obnovit databázi Rivendell:</translation>
+        <translation type="obsolete">Nelze obnovit databázi Rivendell:</translation>
     </message>
     <message>
         <source>
 Database backup failed!</source>
-        <translation>
+        <translation type="obsolete">
 Záloha databáze se nezdařila!</translation>
     </message>
     <message>
         <source>
 Schema modification failed!</source>
-        <translation>
+        <translation type="obsolete">
 Změna schématu se nezdařila!</translation>
     </message>
     <message>
         <source>
 Unknown/unspecified error!</source>
-        <translation>
+        <translation type="obsolete">
 Neznámá/blíže neurčená chyba!</translation>
     </message>
     <message>
         <source>The Rivendell Database has been updated to version</source>
-        <translation>Databáze Rivendell byla zaktualizována na verzi</translation>
+        <translation type="obsolete">Databáze Rivendell byla zaktualizována na verzi</translation>
     </message>
     <message>
         <source>
 and a backup of the original database saved in </source>
-        <translation>
+        <translation type="obsolete">
 a záloha původní databáze uložena v </translation>
     </message>
     <message>
         <source>Database Updated</source>
-        <translation>Databáze obnovena</translation>
+        <translation type="obsolete">Databáze obnovena</translation>
     </message>
     <message>
         <source>RDAdmin Error</source>
         <translation>Chyba RDadmin</translation>
+    </message>
+    <message>
+        <source>DB Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to open MySQL database connection.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>DB Message</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Created new Rivendell database.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

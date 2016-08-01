@@ -4834,32 +4834,6 @@ Database</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Restore Database</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>WARNING: This operation will COMPLETELY
-OVERWRITE the existing Rivendell Database!
-Do you want to continue?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Restore Error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unable to restore backup!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Restore Complete</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Restore completed successfully.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>System
 Settings</source>
         <translation type="unfinished"></translation>
@@ -4899,112 +4873,6 @@ Replicators</source>
 </context>
 <context>
     <name>QObject</name>
-    <message>
-        <source>Unable to access the Rivendell Database!
-Please enter a login for an account with
-administrative rights on the mySQL server,
-and we will try to get this straightened out.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Wrong access permissions for accessing mySQL!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unable to connect to mySQL!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unable to create a Rivendell Database!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unable to connect to new Rivendell Database!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unable to create Rivendell Database!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unable to connect to Rivendell Database!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unable to initialize Rivendell Database!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>RDAdmin</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>New Rivendell Database Created!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unable to upgrade database</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>The Rivendell Database is too old to be upgraded,
-and so must be replaced.  This will DESTROY any
-existing audio and data!  If you want to do this,
-enter a username and password for a mySQL account
-with administrative privledges, otherwise hit cancel.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unable to log into Administrator account!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unable to authorize a Rivendell Database!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Update Needed</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>The Rivendell Database needs to be updated.
-All audio and settings will be preserved, but
-this will STOP any audio playout or recording
-on this machine for a few seconds.  Continue?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unable to update Rivendell Database:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>
-Database backup failed!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>
-Schema modification failed!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>
-Unknown/unspecified error!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>The Rivendell Database has been updated to version</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>
-and a backup of the original database saved in </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Database Updated</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>RDAdmin Error</source>
         <translation type="unfinished"></translation>
@@ -5127,6 +4995,22 @@ and a backup of the original database saved in </source>
     </message>
     <message>
         <source>Aux Log 2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>DB Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to open MySQL database connection.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>DB Message</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Created new Rivendell database.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
