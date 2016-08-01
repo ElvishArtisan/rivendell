@@ -23,6 +23,7 @@
 #include "dbversion.h"
 #include "rdapplication.h"
 #include "rddb.h"
+#include "rddbheartbeat.h"
 
 RDApplication *rda=NULL;
 
@@ -69,6 +70,7 @@ RDApplication::RDApplication(int argc,char **argv,const char *modname,
 			 QObject::tr("is")+QString().sprintf(" %u.",schema));
     exit(256);
   }
+  new RDDbHeartbeat(config()->mysqlHeartbeatInterval());
 
   //
   // Configuration Accessors

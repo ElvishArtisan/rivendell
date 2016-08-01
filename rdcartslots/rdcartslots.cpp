@@ -25,13 +25,13 @@
 #include <signal.h>
 
 #include <qmessagebox.h>
-#include <qapplication.h>
 #include <qwindowsstyle.h>
 #include <qtranslator.h>
 #include <qtextcodec.h>
 #include <qpainter.h>
 #include <qpixmap.h>
 
+#include <rdapplication.h>
 #include <rdcartslots.h>
 #include <rd.h>
 #include <rdcheck_daemons.h>
@@ -47,32 +47,12 @@
 MainWidget::MainWidget(QWidget *parent)
   :QWidget(parent)
 {
-  bool skip_db_check=false;
-  unsigned schema=0;
-
   //
   // Force a reasonable default font.
   //
   QFont mfont("helvetica",12,QFont::Normal);
   mfont.setPixelSize(12);
   qApp->setFont(mfont);
-
-  //
-  // Load Local Configs
-  //
-  panel_config=new RDConfig();
-  panel_config->load();
-
-  //
-  // Load the command-line arguments
-  //
-  RDCmdSwitch *cmd=new RDCmdSwitch(qApp->argc(),qApp->argv(),"rdcartslots",
-				   RDCARTSLOTS_USAGE);
-  for(unsigned i=0;i<cmd->keys();i++) {
-    if(cmd->key(i)=="--skip-db-check") {
-      skip_db_check=true;
-    }
-  }
 
   //
   // Create Icons
@@ -86,51 +66,16 @@ MainWidget::MainWidget(QWidget *parent)
   RDInitializeDaemons();
 
   //
-  // Open Database
-  //
-  QString err;
-  QSqlDatabase *db=RDInitDb(&schema,&err);
-  if(!db) {
-    QMessageBox::warning(this,tr("Can't Connect"),err);
-    exit(0);
-  }
-  if((schema!=RD_VERSION_DATABASE)&&(!skip_db_check)) {
-    fprintf(stderr,
-	    "rdcastmanager: database version mismatch, should be %u, is %u\n",
-	    RD_VERSION_DATABASE,schema);
-    exit(256);
-  }
-  new RDDbHeartbeat(panel_config->mysqlHeartbeatInterval(),this);
-
-  //
-  // Allocate Global Resources
-  //
-  panel_station=new RDStation(panel_config->stationName());
-  panel_system=new RDSystem();
-
-  //
-  // RDAirPlay Configuration
-  //
-  panel_airplay_conf=new RDAirPlayConf(panel_config->stationName(),"RDAIRPLAY");
-
-  //
   // CAE Connection
   //
-  panel_cae=new RDCae(panel_station,panel_config,parent);
-  panel_cae->connectHost();
+  rda->cae()->connectHost();
 
   //
   // RIPC Connection
   //
-  panel_ripc=new RDRipc(panel_config->stationName());
-  connect(panel_ripc,SIGNAL(userChanged()),this,SLOT(userData()));
-  connect(panel_ripc,SIGNAL(rmlReceived(RDMacro *)),
+  connect(rda->ripc(),SIGNAL(userChanged()),this,SLOT(userData()));
+  connect(rda->ripc(),SIGNAL(rmlReceived(RDMacro *)),
 	  this,SLOT(rmlReceivedData(RDMacro *)));
-
-  //
-  // User
-  //
-  panel_user=NULL;
 
   //
   // Service Picker
@@ -140,32 +85,32 @@ MainWidget::MainWidget(QWidget *parent)
   //
   // Macro Player
   //
-  panel_player=new RDEventPlayer(panel_ripc,this);
+  panel_player=new RDEventPlayer(rda->ripc(),this);
 
   //
   // Dialogs
   //
   panel_cart_dialog=new RDCartDialog(&panel_filter,&panel_group,
-				     &panel_schedcode,panel_cae,panel_ripc,
-				     panel_station,panel_system,panel_config,
+				     &panel_schedcode,rda->cae(),rda->ripc(),
+				     rda->station(),rda->system(),rda->config(),
 				     this);
   panel_slot_dialog=new RDSlotDialog(tr("RDCartSlots"),this);
-  panel_cue_dialog=new RDCueEditDialog(panel_cae,panel_station->cueCard(),
-				       panel_station->cuePort(),
+  panel_cue_dialog=new RDCueEditDialog(rda->cae(),rda->station()->cueCard(),
+				       rda->station()->cuePort(),
 				       tr("RDCartSlots"),this);
 
   //
   // Cart Slots
   //
   QTimer *timer=new QTimer(this);
-  for(int i=0;i<panel_station->cartSlotColumns();i++) {
-    for(int j=0;j<panel_station->cartSlotRows();j++) {
+  for(int i=0;i<rda->station()->cartSlotColumns();i++) {
+    for(int j=0;j<rda->station()->cartSlotRows();j++) {
       panel_slots.
-	push_back(new RDCartSlot(panel_slots.size(),panel_ripc,panel_cae,
-				 panel_station,panel_config,panel_svcs_dialog,
+	push_back(new RDCartSlot(panel_slots.size(),rda->ripc(),rda->cae(),
+				 rda->station(),rda->config(),panel_svcs_dialog,
 				 panel_slot_dialog,panel_cart_dialog,
 				 panel_cue_dialog,tr("RDCartSlots"),
-				 panel_airplay_conf,this));
+				 rda->airplayConf(),this));
       panel_slots.back()->
 	setGeometry(10+i*(panel_slots.back()->sizeHint().width()+10),
 		    10+j*(panel_slots.back()->sizeHint().height()+5),
@@ -176,7 +121,7 @@ MainWidget::MainWidget(QWidget *parent)
     }
   }
   timer->start(METER_INTERVAL);
-  panel_ripc->connectHost("localhost",RIPCD_TCP_PORT,panel_config->password());
+  rda->ripc()->connectHost("localhost",RIPCD_TCP_PORT,rda->config()->password());
 
   //
   // Fix the Window Size
@@ -192,9 +137,9 @@ MainWidget::MainWidget(QWidget *parent)
 
 QSize MainWidget::sizeHint() const
 {
-  return QSize(10+panel_station->cartSlotColumns()*
+  return QSize(10+rda->station()->cartSlotColumns()*
 	       (10+panel_slots[0]->size().width()),
-	       10+panel_station->cartSlotRows()*
+	       10+rda->station()->cartSlotRows()*
 	       (5+panel_slots[0]->size().height()));
 }
 
@@ -213,15 +158,12 @@ QSizePolicy MainWidget::sizePolicy() const
 
 void MainWidget::userData()
 {
-  if(panel_user!=NULL) {
-    delete panel_user;
-  }
-  panel_user=new RDUser(panel_ripc->user());
+  rda->setUser(rda->ripc()->user());
   for(unsigned i=0;i<panel_slots.size();i++) {
-    panel_slots[i]->setUser(panel_user);
+    panel_slots[i]->setUser(rda->user());
   }
   SetCaption();
-  panel_ripc->sendOnairFlag();
+  rda->ripc()->sendOnairFlag();
 }
 
 
@@ -230,7 +172,7 @@ void MainWidget::paintEvent(QPaintEvent *e)
   QPainter *p=new QPainter(this);
   p->setPen(Qt::black);
   p->setBrush(Qt::black);
-  for(int i=1;i<panel_station->cartSlotColumns();i++) {
+  for(int i=1;i<rda->station()->cartSlotColumns();i++) {
     p->fillRect(i*(panel_slots[0]->size().width()+10),10,
 		5,size().height()-15,Qt::black);
   }
@@ -251,14 +193,14 @@ void MainWidget::SetCaption()
 {
   QString service=tr("[None]");
   setCaption(tr("RDCartSlots")+" v"+VERSION+" - "+tr("Station")+": "+
-	     panel_config->stationName()+"  "+tr("User")+": "+
-	     panel_ripc->user());
+	     rda->config()->stationName()+"  "+tr("User")+": "+
+	     rda->ripc()->user());
 }
 
 
 int main(int argc,char *argv[])
 {
-  QApplication a(argc,argv);
+  RDApplication a(argc,argv,"rdcartslots",RDCARTSLOTS_USAGE);
   
   //
   // Load Translations

@@ -17,9 +17,5 @@
         <source>User</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>Can&apos;t Connect</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 </TS>

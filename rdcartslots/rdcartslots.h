@@ -28,17 +28,13 @@
 #include <qpixmap.h>
 
 #include <rdstereometer.h>
-#include <rdcae.h>
-#include <rdsystem.h>
 #include <rdmacro.h>
-#include <rdconfig.h>
 #include <rdevent_player.h>
 #include <rdcartslot.h>
 #include <rdcart_dialog.h>
 #include <rdslotdialog.h>
 #include <rdcueeditdialog.h>
 #include <rdlistsvcs.h>
-#include <rdairplay_conf.h>
 
 //
 // Settings
@@ -66,12 +62,6 @@ class MainWidget : public QWidget
  private:
   void RunLocalMacros(RDMacro *rml);
   void SetCaption();
-  RDConfig *panel_config;
-  RDCae *panel_cae;
-  RDRipc *panel_ripc;
-  RDUser *panel_user;
-  RDStation *panel_station;
-  RDSystem *panel_system;
   RDEventPlayer *panel_player;
   QPixmap *lib_rivendell_map;
   QString panel_filter;
@@ -82,7 +72,6 @@ class MainWidget : public QWidget
   RDSlotDialog *panel_slot_dialog;
   RDCueEditDialog *panel_cue_dialog;
   RDListSvcs *panel_svcs_dialog;
-  RDAirPlayConf *panel_airplay_conf;
 };
 
 
