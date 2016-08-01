@@ -158,28 +158,6 @@ void ListSvcs::RefreshList()
   list_log_list->clear();
   QString sql="select NAME from SERVICES order by NAME";
 
-  if (rdstation_conf->broadcastSecurity() == RDStation::UserSec
-      && rduser != NULL) {
-    QStringList services_list;
-    QString sql_where;
-
-    services_list = rduser->services();
-    if(services_list.size()==0) {
-      return;
-    }
-
-    sql_where=" and (";
-    for ( QStringList::Iterator it = services_list.begin(); 
-          it != services_list.end(); ++it ) {
-      sql_where+=QString().sprintf("SERVICE=\"%s\"||",
-                             (const char *)*it);
-    }
-    sql_where=sql_where.left(sql_where.length()-2);
-    sql_where+=")";
-
-    sql=sql+sql_where;
-  } // else no filter for RDStation::HostSec
-
   RDSqlQuery *q=new RDSqlQuery(sql);
   while(q->next()) {
     item=new QListViewItem(list_log_list);

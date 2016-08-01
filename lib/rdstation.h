@@ -30,15 +30,6 @@ class RDStation
 {
  public:
   enum AudioDriver {None=0,Hpi=1,Jack=2,Alsa=3};
-  /**
-   * Enum to track the state of the broadcast applications security model.
-   * @see setBroadcastSecurity()
-   * @see broadcastSecurity()
-   */
-  enum BroadcastSecurityMode {
-        HostSec=0, /**< HostSec - original host (or no) security. */
-        UserSec=1  /**< UserSec - user based security. */
-      };
   enum Capability {HaveOggenc=0,HaveOgg123=1,HaveFlac=2,
 		   HaveLame=3,HaveMpg321=4,HaveTwoLame=5,HaveMp4Decode=6};
   enum FilterMode {FilterSynchronous=0,FilterAsynchronous=1};
@@ -67,21 +58,6 @@ class RDStation
   void setBackupPath(QString path) const;
   int backupLife() const;
   void setBackupLife(int days) const;
-
-  /**
-   * Set the Broadcast applications (rdairplay, rdlogedit, rdlogmanager)
-   * security mode.
-   *
-   * @param mode An enum with the desired mode.
-   */
-  void setBroadcastSecurity(BroadcastSecurityMode mode);
-
-  /**
-   * Get the Broadcast applicaitons security mode.
-   *
-   * @return An enum with the current mode.
-   */
-  BroadcastSecurityMode broadcastSecurity() const;
   unsigned heartbeatCart() const;
   void setHeartbeatCart(unsigned cartnum) const;
   unsigned heartbeatInterval() const;

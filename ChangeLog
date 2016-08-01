@@ -15437,3 +15437,10 @@
 	* Incremented the package version to 2.15.0.
 2016-08-01 Fred Gleason <fredg@paravelsystems.com>
 	* Removed the 'pam_rd' plug-in [GitHub issue #0135].
+2016-08-01 Fred Gleason <fredg@paravelsystems.com>
+	* Retired the 'STATIONS.BROADCAST_SECURITY' field in the database.
+	* Removed the 'Security Model' option in 'rdadmin/edit_station.cpp'
+	and 'rdadmin/edit_station.h'.
+	* Removed the 'RDStation::broadcastSecurity()' and
+	'RDStation::setBroadcastSecurity()' methods in 'lib/rdstation.cpp'
+	and 'lib/rdstation.h' [GitHub issue #00139].

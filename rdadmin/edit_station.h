@@ -84,7 +84,6 @@ class EditStation : public QDialog
    QLineEdit *station_name_edit;
    QLineEdit *station_description_edit;
    QComboBox *station_default_name_edit;
-   QComboBox *station_broadcast_sec_edit;
    QLineEdit *station_address_edit;
    QLineEdit *station_editor_cmd_edit;
    QSpinBox *station_timeoffset_box;

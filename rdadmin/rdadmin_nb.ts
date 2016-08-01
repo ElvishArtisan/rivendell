@@ -3557,18 +3557,6 @@ Variables</source>
         <translation>Hjarteslag-korgnummeret er ugyldig!</translation>
     </message>
     <message>
-        <source>Host</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>User</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Security Model:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Include in System Maintenance Pool</source>
         <translation type="unfinished"></translation>
     </message>

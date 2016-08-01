@@ -3602,15 +3602,15 @@ serveru</translation>
     </message>
     <message>
         <source>Security Model:</source>
-        <translation>Bezpečnostní model:</translation>
+        <translation type="obsolete">Bezpečnostní model:</translation>
     </message>
     <message>
         <source>Host</source>
-        <translation>Server</translation>
+        <translation type="obsolete">Server</translation>
     </message>
     <message>
         <source>User</source>
-        <translation>Uživatel</translation>
+        <translation type="obsolete">Uživatel</translation>
     </message>
     <message>
         <source>Custom

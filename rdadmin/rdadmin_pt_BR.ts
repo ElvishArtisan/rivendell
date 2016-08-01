@@ -3428,15 +3428,15 @@ Overwrite?</source>
     </message>
     <message>
         <source>Host</source>
-        <translation>Cliente</translation>
+        <translation type="obsolete">Cliente</translation>
     </message>
     <message>
         <source>User</source>
-        <translation>Usuário</translation>
+        <translation type="obsolete">Usuário</translation>
     </message>
     <message>
         <source>Security Model:</source>
-        <translation>Modelo de Seg:</translation>
+        <translation type="obsolete">Modelo de Seg:</translation>
     </message>
     <message>
         <source>&amp;IP Address:</source>

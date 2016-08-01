@@ -136,28 +136,6 @@ void ListLogs::RefreshList()
   list_log_list->clear(); // Note: clear here, in case user has no perms.
 
   sql="select NAME,DESCRIPTION,SERVICE from LOGS where TYPE=0";
-
-  if (rdstation_conf->broadcastSecurity() == RDStation::UserSec) {
-    QStringList services_list;
-    QString sql_where;
-
-    services_list = rduser->services();
-    if(services_list.size()==0) {
-      return;
-    }
-
-    sql_where=" and (";
-    for ( QStringList::Iterator it = services_list.begin(); 
-          it != services_list.end(); ++it ) {
-      sql_where+=QString().sprintf("SERVICE=\"%s\"||",
-                             (const char *)*it);
-    }
-    sql_where=sql_where.left(sql_where.length()-2);
-    sql_where+=")";
-
-    sql=sql+sql_where;
-  } // else no filter for RDStation::HostSec
-
   q=new RDSqlQuery(sql);
   while(q->next()) {
     l=new QListViewItem(list_log_list);

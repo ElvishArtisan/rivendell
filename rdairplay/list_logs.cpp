@@ -175,13 +175,8 @@ void ListLogs::saveAsButtonData()
   QString logname;
   QString svcname=*list_svcname;
   RDAddLog *log;
-  if (rdstation_conf->broadcastSecurity() == RDStation::UserSec) {
-    log=new RDAddLog(&logname,&svcname,rdstation_conf,
-                     tr("Rename Log"),this,rduser);
-  } else { // RDStation::HostSec
-    log=new RDAddLog(&logname,&svcname,rdstation_conf,tr("Rename Log"),this);
-  }
 
+  log=new RDAddLog(&logname,&svcname,rdstation_conf,tr("Rename Log"),this);
   if(log->exec()<0) {
     delete log;
     return;
@@ -215,21 +210,14 @@ void ListLogs::RefreshList()
 
   list_log_list->clear();
 
-  if (rdstation_conf->broadcastSecurity() == RDStation::UserSec) {
-    if(rduser!=NULL) {
-      services_list = rduser->services();
-    }
-  } 
-  else { // RDStation::HostSec
-    sql=QString().sprintf("select SERVICE_NAME from SERVICE_PERMS \
-                           where STATION_NAME=\"%s\"",
-                           (const char *)rdstation_conf->name());
-    q=new RDSqlQuery(sql);
-    while(q->next()) {
-      services_list.append( q->value(0).toString() );
-    }
-    delete q;
+  sql=QString().sprintf("select SERVICE_NAME from SERVICE_PERMS \
+                         where STATION_NAME=\"%s\"",
+			(const char *)rdstation_conf->name());
+  q=new RDSqlQuery(sql);
+  while(q->next()) {
+    services_list.append( q->value(0).toString() );
   }
+  delete q;
 
   if(services_list.size()==0) {
     return;

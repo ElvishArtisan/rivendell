@@ -217,21 +217,6 @@ void RDStation::setBackupLife(int days) const
 }
 
 
-void RDStation::setBroadcastSecurity(BroadcastSecurityMode mode)
-{
-  SetRow("BROADCAST_SECURITY",mode);
-}
-
-
-RDStation::BroadcastSecurityMode RDStation::broadcastSecurity() const
-{
-  return (RDStation::BroadcastSecurityMode)RDGetSqlValue("STATIONS","NAME",
-                                                         station_name,
-                                                         "BROADCAST_SECURITY").
-                                                         toUInt();
-}
-
-
 unsigned RDStation::heartbeatCart() const
 {
   return RDGetSqlValue("STATIONS","NAME",station_name,"HEARTBEAT_CART").

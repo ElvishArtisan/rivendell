@@ -419,11 +419,6 @@ void MainWidget::userData()
   log_add_button->setEnabled(rduser->createLog());
   log_delete_button->setEnabled(rduser->deleteLog());
   log_track_button->setEnabled(rduser->voicetrackLog());
-
-  // Update the list of logs if applicable.
-  if (rdstation_conf->broadcastSecurity() == RDStation::UserSec) {
-    RefreshList();
-  }
 }
 
 
@@ -443,11 +438,7 @@ void MainWidget::addData()
   RDAddLog *log;
 
   if(rduser->createLog()) {
-    if (rdstation_conf->broadcastSecurity() == RDStation::UserSec) {
-      log=new RDAddLog(&logname,&svcname,NULL,tr("Add Log"),this,rduser);
-    } else { // RDStation::HostSec
-      log=new RDAddLog(&logname,&svcname,NULL,tr("Add Log"),this);
-    }
+    log=new RDAddLog(&logname,&svcname,NULL,tr("Add Log"),this);
     if(log->exec()!=0) {
       delete log;
       return;
@@ -839,29 +830,6 @@ void MainWidget::RefreshList()
     sql+=QString().sprintf("order by ORIGIN_DATETIME desc limit %d",
 			   RDLOGEDIT_LIMIT_QUAN);
   }
-
-  if (rdstation_conf->broadcastSecurity() == RDStation::UserSec
-      && rduser != NULL) {
-    QStringList services_list;
-    QString sql_where;
-
-    services_list = rduser->services();
-    if(services_list.size()==0) {
-      return;
-    }
-
-    sql_where=" and (";
-    for ( QStringList::Iterator it = services_list.begin(); 
-          it != services_list.end(); ++it ) {
-      sql_where+=QString().sprintf("SERVICE=\"%s\"||",
-                             (const char *)*it);
-    }
-    sql_where=sql_where.left(sql_where.length()-2);
-    sql_where+=")";
-
-    sql=sql+sql_where;
-  } // else no filter for RDStation::HostSec
-
   q=new RDSqlQuery(sql);
   while(q->next()) {
     item=new ListListViewItem(log_log_list);
