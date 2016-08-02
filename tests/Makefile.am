@@ -40,7 +40,8 @@ noinst_PROGRAMS = audio_convert_test\
                   stringcode_test\
                   test_pam\
                   timer_test\
-                  upload_test
+                  upload_test\
+                  wav_chunk_test
 
 dist_audio_convert_test_SOURCES = audio_convert_test.cpp audio_convert_test.h
 audio_convert_test_LDADD = @LIB_RDLIBS@ @LIBVORBIS@
@@ -81,9 +82,11 @@ dist_timer_test_SOURCES = timer_test.cpp timer_test.h
 nodist_timer_test_SOURCES = moc_timer_test.cpp
 timer_test_LDADD = -lqui
 
-
 dist_upload_test_SOURCES = upload_test.cpp upload_test.h
 upload_test_LDADD = @LIB_RDLIBS@ @LIBVORBIS@
+
+dist_wav_chunk_test_SOURCES = wav_chunk_test.cpp wav_chunk_test.h
+wav_chunk_test_LDADD = @LIB_RDLIBS@ @LIBVORBIS@
 
 EXTRA_DIST = rivendell_standard.txt\
              visualtraffic.txt

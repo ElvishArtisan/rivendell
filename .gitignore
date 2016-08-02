@@ -82,6 +82,7 @@ tests/stringcode_test
 tests/test_pam
 tests/timer_test
 tests/upload_test
+tests/wav_chunk_test
 utils/rdhpiinfo/rdhpiinfo
 utils/rddgimport/rddgimport
 utils/rddiscimport/rddiscimport

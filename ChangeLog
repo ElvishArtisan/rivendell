@@ -15439,3 +15439,5 @@
 	* Fixed a bug in 'rdadmin/createdb.cpp' that caused the
 	'SERVICE_CLOCKS' table to fail to be created when generating
 	a new database.
+2016-08-02 Fred Gleason <fredg@paravelsystems.com>
+	* Added wav_chunk_test(1) in 'tests/wav_chunk_test/'.
