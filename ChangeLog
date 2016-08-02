@@ -15441,3 +15441,8 @@
 	a new database.
 2016-08-02 Fred Gleason <fredg@paravelsystems.com>
 	* Added wav_chunk_test(1) in 'tests/wav_chunk_test/'.
+2016-08-02 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'lib/rdwavefile.cpp' that caused an incorrect
+	payload size to be written for WAV files.
+2016-08-02 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'Start' fields to wav_chunk_test(1).

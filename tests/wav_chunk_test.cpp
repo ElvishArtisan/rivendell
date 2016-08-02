@@ -125,7 +125,7 @@ MainObject::MainObject(QObject *parent)
   QString name;
   uint32_t start_pos;
   while((start_pos=NextChunk(name,&chunk_length))>0) {
-    printf("Chunk: %s  Start: %u  Length: %u\n",(const char *)name,start_pos,chunk_length);
+    printf("Chunk: %s  Start: %u [0x%X]  Length: %u [0x%X]\n",(const char *)name,start_pos,start_pos,chunk_length+8,chunk_length+8);
     lseek(file_fd,chunk_length,SEEK_CUR);
   }
 
