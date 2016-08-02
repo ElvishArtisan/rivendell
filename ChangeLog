@@ -15449,3 +15449,6 @@
 2016-08-02 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in 'lib/rdwavefile.cpp' that caused WAV files to
 	be written with incorrect LEVL chunk data.
+2016-08-02 Fred Gleason <fredg@paravelsystems.com>
+	* Added a work-around in 'lib/rdwavefile.cpp' to ensure that RDXL
+	chunks are always of even length.
