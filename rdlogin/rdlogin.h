@@ -26,13 +26,11 @@
 #include <qsizepolicy.h>
 #include <qsqldatabase.h>
 #include <qcombobox.h>
+#include <qlabel.h>
 #include <qlineedit.h>
 #include <qpushbutton.h>
 
-#include <rduser.h>
-#include <rdstation.h>
-#include <rdripc.h>
-#include <rdconfig.h>
+#define RDLOGIN_USAGE "\n\n"
 
 class MainWidget : public QWidget
 {
@@ -55,10 +53,7 @@ class MainWidget : public QWidget
   void resizeEvent(QResizeEvent *e);
 
  private:
-  RDConfig *login_config;
   QSqlDatabase *login_db;
-  RDStation *login_station;
-  RDRipc *login_ripc;
   Q_UINT16 login_ripc_hostport;
   QLabel *login_label;
   QLabel *login_username_label;

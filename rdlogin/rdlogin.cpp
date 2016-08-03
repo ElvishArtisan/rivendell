@@ -20,7 +20,6 @@
 
 #include <stdlib.h>
 
-#include <qapplication.h>
 #include <qwindowsstyle.h>
 #include <qpainter.h>
 #include <qsqldatabase.h>
@@ -31,13 +30,10 @@
 #include <qtranslator.h>
 
 #include <rd.h>
-#include <rduser.h>
-#include <rdripc.h>
+#include <rdapplication.h>
 #include <rdcheck_daemons.h>
-#include <rdcmd_switch.h>
 #include <rdtextvalidator.h>
 #include <rddbheartbeat.h>
-#include <rddb.h>
 #include <dbversion.h>
 
 #include <rdlogin.h>
@@ -55,19 +51,6 @@ MainWidget::MainWidget(QWidget *parent)
   QString str;
   QString sql;
   RDSqlQuery *q;
-  bool skip_db_check=false;
-  unsigned schema=0;
-
-  //
-  // Read Command Options
-  //
-  RDCmdSwitch *cmd=new RDCmdSwitch(qApp->argc(),qApp->argv(),"rdlogin","\n");
-  for(unsigned i=0;i<cmd->keys();i++) {
-    if(cmd->key(i)=="--skip-db-check") {
-      skip_db_check=true;
-    }
-  }
-  delete cmd;
 
   //
   // Fix the Window Size
@@ -107,44 +90,17 @@ MainWidget::MainWidget(QWidget *parent)
   //
   RDInitializeDaemons();
 
-  //
-  // Load Configs
-  //
-  login_config=new RDConfig();
-  login_config->load();
-
   str=QString(tr("RDLogin - Station:"));
   setCaption(QString().sprintf("%s %s",(const char *)str,
-			       (const char *)login_config->stationName()));
-
-  //
-  // Open Database
-  //
-  QString err(tr("rdlogin : "));
-  login_db = RDInitDb(&schema,&err);
-  if(!login_db) {
-    QMessageBox::warning(this,tr("Can't Connect"),err);
-    exit(0);
-  }
-  if((schema!=RD_VERSION_DATABASE)&&(!skip_db_check)) {
-    fprintf(stderr,"rdlogin: database version mismatch, should be %u, is %u\n",
-	    RD_VERSION_DATABASE,schema);
-    exit(256);
-  }
+			       (const char *)rda->config()->stationName()));
 
   //
   // RIPC Connection
   //
-  login_ripc=new RDRipc(login_config->stationName());
-  connect(login_ripc,SIGNAL(connected(bool)),this,SLOT(connectedData(bool)));
-  connect(login_ripc,SIGNAL(userChanged()),this,SLOT(userData()));
-  login_ripc->connectHost("localhost",RIPCD_TCP_PORT,
-			  login_config->password());
-
-  //
-  // Station
-  //
-  login_station=new RDStation(login_config->stationName());
+  connect(rda->ripc(),SIGNAL(connected(bool)),this,SLOT(connectedData(bool)));
+  connect(rda->ripc(),SIGNAL(userChanged()),this,SLOT(userData()));
+  rda->ripc()->connectHost("localhost",RIPCD_TCP_PORT,
+			  rda->config()->password());
 
   //
   // User Label
@@ -222,8 +178,8 @@ MainWidget::MainWidget(QWidget *parent)
 MainWidget::~MainWidget()
 {
   delete login_db;
-  delete login_ripc;
-  delete login_station;
+  //  delete login_ripc;
+  //  delete login_station;
   delete login_label;
   delete login_username_box;
   delete login_password_edit;
@@ -253,7 +209,7 @@ void MainWidget::userData()
 
   str=QString(tr("Current User:"));
   login_label->setText(QString().sprintf("%s %s",(const char *)str,
-					 (const char *)login_ripc->user()));
+					 (const char *)rda->ripc()->user()));
   resizeEvent(NULL);
 }
 
@@ -262,7 +218,7 @@ void MainWidget::loginData()
 {
   RDUser *user=new RDUser(login_username_box->currentText());
   if(user->checkPassword(login_password_edit->text(),false)) {
-    login_ripc->setUser(login_username_box->currentText());
+    rda->ripc()->setUser(login_username_box->currentText());
     login_password_edit->clear();
     delete user;
     qApp->processEvents();
@@ -277,8 +233,8 @@ void MainWidget::loginData()
 
 void MainWidget::logoutData()
 {
-  QString default_name=login_station->defaultName();
-  login_ripc->setUser(default_name);
+  QString default_name=rda->station()->defaultName();
+  rda->ripc()->setUser(default_name);
   login_password_edit->clear();
   for(int i=0;i<login_username_box->count();i++) {
     if(login_username_box->text(i)==default_name) {
@@ -299,7 +255,7 @@ void MainWidget::cancelData()
 
 void MainWidget::quitMainWidget()
 {
-  login_db->removeDatabase(login_config->mysqlDbname());
+  login_db->removeDatabase(rda->config()->mysqlDbname());
   qApp->quit();
 }
 
@@ -319,7 +275,7 @@ void MainWidget::resizeEvent(QResizeEvent *e)
 
 int main(int argc,char *argv[])
 {
-  QApplication a(argc,argv);
+  RDApplication a(argc,argv,"rdlogin",RDLOGIN_USAGE);
   
   //
   // Load Translations

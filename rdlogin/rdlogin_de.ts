@@ -7,11 +7,11 @@
     </message>
     <message>
         <source>rdlogin : </source>
-        <translation>rdlogin :</translation>
+        <translation type="obsolete">rdlogin :</translation>
     </message>
     <message>
         <source>Can&apos;t Connect</source>
-        <translation>Kann nicht verbinden</translation>
+        <translation type="obsolete">Kann nicht verbinden</translation>
     </message>
     <message>
         <source>Current User: unknown</source>

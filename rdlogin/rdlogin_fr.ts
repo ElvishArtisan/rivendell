@@ -6,14 +6,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>rdlogin : </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Can&apos;t Connect</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Current User: unknown</source>
         <translation type="unfinished"></translation>
     </message>

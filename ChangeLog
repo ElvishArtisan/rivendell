@@ -15483,3 +15483,5 @@
 	marker data in the RDXL file structure.
 2016-08-03 Fred Gleason <fredg@paravelsystems.com>
 	* Refactored rdlogedit(1) to use 'RDApplication'.
+2016-08-03 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored rdlogin(1) to use 'RDApplication'.
