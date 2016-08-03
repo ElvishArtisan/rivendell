@@ -721,7 +721,7 @@ Gruppe des ausgewählten Service!</translation>
     </message>
     <message>
         <source>Can&apos;t Connect</source>
-        <translation>Kann nicht verbinden</translation>
+        <translation type="obsolete">Kann nicht verbinden</translation>
     </message>
     <message>
         <source>LOG NAME</source>
@@ -848,15 +848,6 @@ Fortfahren?</translation>
     <message>
         <source>Unable to delete log, audio deletion error!</source>
         <translation>Kann Logdatei nicht löschen, Audiolöschfehler!</translation>
-    </message>
-    <message>
-        <source>RDLogEdit -- Database Skew</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>This version of RDLogEdit is incompatible with the version installed on the server.
-See your system administrator for an update!</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Host</source>

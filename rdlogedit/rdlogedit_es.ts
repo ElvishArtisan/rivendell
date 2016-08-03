@@ -721,7 +721,7 @@ desactivado para el servicio especificado!</translation>
     </message>
     <message>
         <source>Can&apos;t Connect</source>
-        <translation>No puedo conectarme</translation>
+        <translation type="obsolete">No puedo conectarme</translation>
     </message>
     <message>
         <source>LOG NAME</source>
@@ -851,12 +851,12 @@ de Listas</translation>
     </message>
     <message>
         <source>RDLogEdit -- Database Skew</source>
-        <translation>RDLogEdit -- Asimetría en la Base de Datos</translation>
+        <translation type="obsolete">RDLogEdit -- Asimetría en la Base de Datos</translation>
     </message>
     <message>
         <source>This version of RDLogEdit is incompatible with the version installed on the server.
 See your system administrator for an update!</source>
-        <translation>Esta versión de RDLogEdit es incompatible con la versión instalada en el servidor.
+        <translation type="obsolete">Esta versión de RDLogEdit es incompatible con la versión instalada en el servidor.
 ¡Solicite una actualización al administrador!</translation>
     </message>
     <message>

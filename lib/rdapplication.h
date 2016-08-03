@@ -28,6 +28,7 @@
 #include <rdcmd_switch.h>
 #include <rdconfig.h>
 #include <rdlibrary_conf.h>
+#include <rdlogedit_conf.h>
 #include <rdstation.h>
 #include <rdsystem.h>
 #include <rdripc.h>
@@ -40,6 +41,7 @@ class RDApplication : public QApplication
 		bool gui=true);
   RDAirPlayConf *airplayConf() const;
   RDLibraryConf *libraryConf() const;
+  RDLogeditConf *logeditConf() const;
   RDCae *cae() const;
   RDRipc *ripc() const;
   RDStation *station() const;
@@ -52,6 +54,7 @@ class RDApplication : public QApplication
  private:
   RDAirPlayConf *app_airplay_conf;
   RDLibraryConf *app_library_conf;
+  RDLogeditConf *app_logedit_conf;
   RDCae *app_cae;
   RDRipc *app_ripc;
   RDStation *app_station;

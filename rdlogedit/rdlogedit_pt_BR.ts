@@ -723,7 +723,7 @@ Ação se Evento anterior estiver sendo executado</translation>
     </message>
     <message>
         <source>Can&apos;t Connect</source>
-        <translation>Não foi possível Conectar</translation>
+        <translation type="obsolete">Não foi possível Conectar</translation>
     </message>
     <message>
         <source>LOG NAME</source>
@@ -848,15 +848,6 @@ Continuar?</translation>
     </message>
     <message>
         <source>Unable to delete log, audio deletion error!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>RDLogEdit -- Database Skew</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>This version of RDLogEdit is incompatible with the version installed on the server.
-See your system administrator for an update!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

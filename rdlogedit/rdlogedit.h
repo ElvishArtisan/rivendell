@@ -18,7 +18,6 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-
 #ifndef RDLOGEDIT_H
 #define RDLOGEDIT_H
 
@@ -36,12 +35,11 @@
 #include <qcombobox.h>
 #include <qlabel.h>
 
-#include <rduser.h>
-#include <rdripc.h>
-#include <rdlibrary_conf.h>
 #include <rdlog_line.h>
 
 #include <list_listviewitem.h>
+
+#define RDLOGEDIT_USAGE "\n\n"
 
 class MainWidget : public QMainWindow
 {

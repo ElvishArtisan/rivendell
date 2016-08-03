@@ -21,28 +21,10 @@
 #ifndef GLOBALS_H
 #define GLOBALS_H
 
-#include <rdstation.h>
-#include <rduser.h>
-#include <rdripc.h>
-#include <rdconfig.h>
-#include <rdsystem.h>
-#include <rdlogedit_conf.h>
-#ifndef WIN32
-#include <rdcae.h>
-#endif  // WIN32
-
 //
 // Global Resources
 //
-extern RDStation *rdstation_conf;
-extern RDUser *rduser;
-extern RDRipc *rdripc;
-extern RDConfig *log_config;
-extern RDLogeditConf *rdlogedit_conf;
 extern bool import_running;
-extern RDSystem *rdsystem;
-#ifndef WIN32
-extern RDCae *rdcae;
-#endif  // WIN32
+
 
 #endif  // GLOBALS_H

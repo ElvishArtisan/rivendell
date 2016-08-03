@@ -23,6 +23,7 @@
 #include <qradiobutton.h>
 
 #include <rd.h>
+#include <rdapplication.h>
 #include <rdcart.h>
 #include <rdcart_dialog.h>
 
@@ -70,18 +71,13 @@ EditLogLine::EditLogLine(RDLogLine *line,QString *filter,QString *group,
   // Cart Picker
   //
 #ifdef WIN32
-  /*
-  edit_cart_dialog=new RDCartDialog(&edit_filter,&edit_group,&edit_schedcode,
-				    NULL,NULL,rdstation_conf,rdsystem,
-				    log_config,this);
-  */
   edit_cart_dialog=new RDCartDialog(edit_filter,edit_group,edit_schedcode,
-				    NULL,NULL,rdstation_conf,rdsystem,
-				    log_config,this);
+				    NULL,NULL,rda->station(),rda->system(),
+				    rda->config(),this);
 #else
   edit_cart_dialog=new RDCartDialog(edit_filter,edit_group,edit_schedcode,
-				    rdcae,rdripc,rdstation_conf,rdsystem,
-				    log_config,this);
+				    rda->cae(),rda->ripc(),rda->station(),rda->system(),
+				    rda->config(),this);
 #endif
 
   //
@@ -290,7 +286,7 @@ void EditLogLine::selectCartData()
     cartnum=-1;
   }
   if(edit_cart_dialog->exec(&cartnum,RDCart::All,&edit_service,1,
-			   rduser->name(),rduser->password())==0) {
+			   rda->user()->name(),rda->user()->password())==0) {
     FillCart(cartnum);
   }
 }

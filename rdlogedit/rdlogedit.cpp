@@ -24,7 +24,6 @@
 #include <sys/wait.h>
 #include <unistd.h>
 #endif  // WIN32
-#include <qapplication.h>
 #include <qwindowsstyle.h>
 #include <qwidget.h>
 #include <qpainter.h>
@@ -41,17 +40,13 @@
 #include <qpainter.h>
 
 #include <rd.h>
+#include <rdapplication.h>
 #include <rdconf.h>
-#include <rdripc.h>
-#include <rdstation.h>
 #include <rdcheck_daemons.h>
 #include <rdcreate_log.h>
 #include <rdadd_log.h>
-#include <rdcmd_switch.h>
-#include <rddb.h>
 #include <rdtextfile.h>
 #include <rdmixer.h>
-#include <dbversion.h>
 #include <rdescape_string.h>
 
 #include <rdlogedit.h>
@@ -74,17 +69,9 @@
 //
 // Global Resources
 //
-RDStation *rdstation_conf;
-RDUser *rduser;
-RDRipc *rdripc;
-RDConfig *log_config;
-RDLogeditConf *rdlogedit_conf;
-RDSystem *rdsystem;
 RDCartDialog *log_cart_dialog;
 bool import_running=false;
 #ifndef WIN32
-RDCae *rdcae;
-
 
 void SigHandler(int signo)
 {
@@ -110,21 +97,8 @@ MainWidget::MainWidget(QWidget *parent)
   QString str1;
   QString str2;
   log_log_list=NULL;
-  bool skip_db_check=false;
-  unsigned schema=0;
   QString sql;
   RDSqlQuery *q;
-
-  //
-  // Read Command Options
-  //
-  RDCmdSwitch *cmd=new RDCmdSwitch(qApp->argc(),qApp->argv(),"rdlogedit","\n");
-  for(unsigned i=0;i<cmd->keys();i++) {
-    if(cmd->key(i)=="--skip-db-check") {
-      skip_db_check=true;
-    }
-  }
-  delete cmd;
 
   //
   // Fix the Window Size
@@ -142,70 +116,25 @@ MainWidget::MainWidget(QWidget *parent)
   //
   // Load Local Configs
   //
-  log_config=new RDConfig();
-  log_config->load();
   str1=QString("RDLogEdit")+"v"+VERSION+" - "+tr("Host");
   str2=tr("User")+": ["+tr("Unknown")+"]";
   setCaption(QString().sprintf("%s: %s, %s",(const char *)str1,
-			       (const char *)log_config->stationName(),
+			       (const char *)rda->config()->stationName(),
 			       (const char *)str2));
   log_import_path=RDGetHomeDir();
 
-  //
-  // Open Database
-  //
-  QString err;
-  log_db=RDInitDb(&schema,&err);
-  if(!log_db) {
-    QMessageBox::warning(this,tr("Can't Connect"),err);
-    exit(0);
-  }
-  if((schema!=RD_VERSION_DATABASE)&&(!skip_db_check)) {
-#ifdef WIN32
-	    QMessageBox::warning(this,tr("RDLogEdit -- Database Skew"),
-				 tr("This version of RDLogEdit is incompatible with the version installed on the server.\nSee your system administrator for an update!"));
-#else
-    fprintf(stderr,
-	    "rdlogedit: database version mismatch, should be %u, is %u\n",
-	    RD_VERSION_DATABASE,schema);
-#endif  // WIN32
-    exit(256);
-  }
-
-  //
-  // Allocate Global Resources
-  //
-  rdstation_conf=new RDStation(log_config->stationName());
-
-  //
-  // CAE Connection
-  //
 #ifndef WIN32
-  rdcae=new RDCae(rdstation_conf,log_config,parent);
-  rdcae->connectHost();
+  rda->cae()->connectHost();
 #endif  // WIN32
 
   //
   // RIPC Connection
   //
 #ifndef WIN32
-  rdripc=new RDRipc(log_config->stationName());
-  connect(rdripc,SIGNAL(connected(bool)),this,SLOT(connectedData(bool)));
-  connect(rdripc,SIGNAL(userChanged()),this,SLOT(userData()));
-  rdripc->connectHost("localhost",RIPCD_TCP_PORT,log_config->password());
-#else
-  rdripc=NULL;
+  connect(rda->ripc(),SIGNAL(connected(bool)),this,SLOT(connectedData(bool)));
+  connect(rda->ripc(),SIGNAL(userChanged()),this,SLOT(userData()));
+  rda->ripc()->connectHost("localhost",RIPCD_TCP_PORT,rda->config()->password());
 #endif  // WIN32
-
-  //
-  // System Configuration
-  //
-  rdsystem=new RDSystem();
-
-  //
-  // RDLogEdit Configuration
-  //
-  rdlogedit_conf=new RDLogeditConf(log_config->stationName());
 
   // 
   // Create Fonts
@@ -231,14 +160,12 @@ MainWidget::MainWidget(QWidget *parent)
   // User
   //
 #ifndef WIN32
-  rduser=NULL;
-
   //
   // Load Audio Assignments
   //
-  RDSetMixerPorts(log_config->stationName(),rdcae);
+  RDSetMixerPorts(rda->config()->stationName(),rda->cae());
 #else 
-  rduser=new RDUser(RD_USER_LOGIN_NAME);
+  rda->setUser(RD_USER_LOGIN_NAME);
 #endif  // WIN32
 
   //
@@ -406,19 +333,16 @@ void MainWidget::userData()
 
   str1=QString("RDLogEdit")+" v"+VERSION+" - "+tr("Host");
   str2=QString(tr("User"));
-  setCaption(str1+": "+log_config->stationName()+", "+str2+": "+
-	     rdripc->user());
-  if(rduser!=NULL) {
-    delete rduser;
-  }
-  rduser=new RDUser(rdripc->user());
+  setCaption(str1+": "+rda->config()->stationName()+", "+str2+": "+
+	     rda->ripc()->user());
+  rda->setUser(rda->ripc()->user());
 
   //
   // Set Control Perms
   //
-  log_add_button->setEnabled(rduser->createLog());
-  log_delete_button->setEnabled(rduser->deleteLog());
-  log_track_button->setEnabled(rduser->voicetrackLog());
+  log_add_button->setEnabled(rda->user()->createLog());
+  log_delete_button->setEnabled(rda->user()->deleteLog());
+  log_track_button->setEnabled(rda->user()->voicetrackLog());
 }
 
 
@@ -437,7 +361,7 @@ void MainWidget::addData()
   std::vector<QString> newlogs;
   RDAddLog *log;
 
-  if(rduser->createLog()) {
+  if(rda->user()->createLog()) {
     log=new RDAddLog(&logname,&svcname,NULL,tr("Add Log"),this);
     if(log->exec()!=0) {
       delete log;
@@ -453,7 +377,7 @@ void MainWidget::addData()
 #ifdef WIN32
 			  RD_USER_LOGIN_NAME,
 #else
-			  (const char *)rdripc->user(),
+			  (const char *)rda->ripc()->user(),
 #endif  // WIN32
 			  (const char *)svcname);
     q=new RDSqlQuery(sql);
@@ -514,7 +438,7 @@ void MainWidget::deleteData()
   if(item==NULL) {
     return;
   }
-  if(rduser->deleteLog()) {
+  if(rda->user()->deleteLog()) {
     if(QMessageBox::question(this,tr("Delete Log"),
      tr(QString().sprintf("Are you sure you want to delete the \"%s\" log?",
 			  (const char *)item->text(1))),
@@ -537,7 +461,7 @@ void MainWidget::deleteData()
 	return;
       }
     }
-    if(!log->remove(rdstation_conf,rduser,log_config)) {
+    if(!log->remove(rda->station(),rda->user(),rda->config())) {
       QMessageBox::warning(this,tr("RDLogEdit"),
 			   tr("Unable to delete log, audio deletion error!"));
       delete log;
@@ -707,7 +631,7 @@ void MainWidget::logDoubleclickedData(QListViewItem *,const QPoint &,int)
 
 void MainWidget::quitMainWidget()
 {
-  log_db->removeDatabase(log_config->mysqlDbname());
+  log_db->removeDatabase(rda->config()->mysqlDbname());
   exit(0);
 }
 
@@ -842,7 +766,7 @@ void MainWidget::RefreshList()
 
 int main(int argc,char *argv[])
 {
-  QApplication a(argc,argv);
+  RDApplication a(argc,argv,"rdlogedit",RDLOGEDIT_USAGE);
   
   //
   // Load Translations

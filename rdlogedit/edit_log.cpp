@@ -30,6 +30,7 @@
 #include <qmessagebox.h>
 #include <qbuttongroup.h>
 
+#include <rdapplication.h>
 #include <rddb.h>
 #include <rdcreate_log.h>
 #include <rddebug.h>
@@ -80,21 +81,21 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   edit_clipboard=clipboard;
   edit_newlogs=new_logs;
   edit_default_trans=RDLogLine::Play;
-  bool adding_allowed=rduser->addtoLog();
-  bool deleting_allowed=rduser->removefromLog();
-  bool editing_allowed=rduser->arrangeLog();
-  bool saveas_allowed=rduser->createLog();
+  bool adding_allowed=rda->user()->addtoLog();
+  bool deleting_allowed=rda->user()->removefromLog();
+  bool editing_allowed=rda->user()->arrangeLog();
+  bool saveas_allowed=rda->user()->createLog();
 
   setCaption(tr("Edit Log"));
 
   //
   // Config Data
   //
-  edit_default_trans=rdlogedit_conf->defaultTransType();
-  edit_output_card=rdlogedit_conf->outputCard();
-  edit_output_port=rdlogedit_conf->outputPort();
-  edit_start_macro=rdlogedit_conf->startCart();
-  edit_end_macro=rdlogedit_conf->endCart();
+  edit_default_trans=rda->logeditConf()->defaultTransType();
+  edit_output_card=rda->logeditConf()->outputCard();
+  edit_output_port=rda->logeditConf()->outputPort();
+  edit_start_macro=rda->logeditConf()->startCart();
+  edit_end_macro=rda->logeditConf()->endCart();
 
   //
   // Fix the Window Size
@@ -462,7 +463,7 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   edit_player=NULL;
 #else
   edit_player=
-    new RDSimplePlayer(rdcae,rdripc,edit_output_card,edit_output_port,
+    new RDSimplePlayer(rda->cae(),rda->ripc(),edit_output_card,edit_output_port,
 		       edit_start_macro,edit_end_macro,this);
   edit_player->stopButton()->setOnColor(red);
 #endif  // WIN32
@@ -1045,7 +1046,7 @@ void EditLog::saveasData()
   QString sql;
   RDAddLog *log=NULL;
 
-  if(rduser->createLog()) {
+  if(rda->user()->createLog()) {
     log=new RDAddLog(&logname,&svcname,NULL,tr("Add Log"),this);
     if(log->exec()<0) {
       return;
@@ -1055,7 +1056,7 @@ NAME=\"%s\",TYPE=0,DESCRIPTION=\"%s log\",ORIGIN_USER=\"%s\",\
 ORIGIN_DATETIME=NOW(),LINK_DATETIME=NOW(),SERVICE=\"%s\"",
 			  (const char *)logname,
 			  (const char *)logname,
-			  (const char *)rdripc->user(),
+			  (const char *)rda->ripc()->user(),
 			  (const char *)svcname);
     q=new RDSqlQuery(sql);
     if(!q->isActive()) {
@@ -1714,7 +1715,7 @@ bool EditLog::DeleteTracks()
   RDCart *cart;
   for(unsigned i=0;i<edit_deleted_tracks.size();i++) {
     cart=new RDCart(edit_deleted_tracks[i]);
-    if(!cart->remove(rdstation_conf,rduser,log_config)) {
+    if(!cart->remove(rda->station(),rda->user(),rda->config())) {
       delete cart;
       return false;
     }
