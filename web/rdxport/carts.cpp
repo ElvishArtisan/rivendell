@@ -104,7 +104,7 @@ void Xport::AddCart()
   printf("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
   printf("<cartAdd>\n");
   if(cart->exists()) {
-    printf("%s",(const char *)cart->xml(false));
+    printf("%s",(const char *)cart->xml(false,true));
   }
   delete cart;
   printf("</cartAdd>\n");
@@ -173,7 +173,7 @@ void Xport::ListCarts()
   printf("<cartList>\n");
   while(q->next()) {
     cart=new RDCart(q->value(0).toUInt());
-    printf("%s",(const char *)cart->xml(include_cuts));
+    printf("%s",(const char *)cart->xml(include_cuts,true));
     delete cart;
   }
   printf("</cartList>\n");
@@ -215,7 +215,7 @@ void Xport::ListCart()
   printf("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
   printf("<cartList>\n");
   cart=new RDCart(cart_number);
-  printf("%s",(const char *)cart->xml(include_cuts));
+  printf("%s",(const char *)cart->xml(include_cuts,true));
   delete cart;
   printf("</cartList>\n");
 
@@ -390,7 +390,7 @@ void Xport::EditCart()
   printf("Status: 200\n\n");
   printf("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
   printf("<cartList>\n");
-  printf("%s",(const char *)cart->xml(include_cuts));
+  printf("%s",(const char *)cart->xml(include_cuts,true));
   delete cart;
   printf("</cartList>\n");
 
@@ -479,7 +479,7 @@ void Xport::AddCut()
   printf("<cutAdd>\n");
   cut=new RDCut(cart_number,cut_number);
   if(cut->exists()) {
-    printf("%s",(const char *)cut->xml());
+    printf("%s",(const char *)cut->xml(true));
   }
   delete cut;
   delete cart;
@@ -524,7 +524,7 @@ void Xport::ListCuts()
   while(q->next()) {
     cut=new RDCut(q->value(0).toString());
     if(cut->exists()) {
-      printf("%s",(const char *)cut->xml());
+      printf("%s",(const char *)cut->xml(true));
     }
     delete cut;
   }
@@ -570,7 +570,7 @@ void Xport::ListCut()
   printf("Status: 200\n\n");
   printf("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
   printf("<cutList>\n");
-  printf("%s",(const char *)cut->xml());
+  printf("%s",(const char *)cut->xml(true));
   printf("</cutList>\n");
   delete cut;
 
@@ -843,7 +843,7 @@ void Xport::EditCut()
   printf("Status: 200\n\n");
   printf("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
   printf("<cutList>\n");
-  printf("%s",(const char *)cut->xml());
+  printf("%s",(const char *)cut->xml(true));
   printf("</cutList>\n");
   delete cut;
 

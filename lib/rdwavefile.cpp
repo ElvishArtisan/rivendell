@@ -654,13 +654,13 @@ void RDWaveFile::closeWave(int samples)
 	    MakeLevl();
 	    lseek(wave_file.handle(),0,SEEK_END);
 	    write(wave_file.handle(),"levl",4);
-	    lsize=LEVL_CHUNK_SIZE+energy_data.size()*2;
+	    lsize=LEVL_CHUNK_SIZE+energy_data.size()*2-8;
 	    size_buf[0]=lsize&0xff;
 	    size_buf[1]=(lsize>>8)&0xff;
 	    size_buf[2]=(lsize>>16)&0xff;
 	    size_buf[3]=(lsize>>24)&0xff;
 	    write(wave_file.handle(),size_buf,4);
-	    write(wave_file.handle(),levl_chunk_data,LEVL_CHUNK_SIZE-4);
+	    write(wave_file.handle(),levl_chunk_data,LEVL_CHUNK_SIZE-8);
 	    // Fixup the endianness
 	    unsigned char * sbuf = new unsigned char [2 * energy_data.size()];
 	    for (unsigned int i=0; i < energy_data.size(); i++){
@@ -674,7 +674,7 @@ void RDWaveFile::closeWave(int samples)
 	  //
 	  // Update file size
 	  //
-	  cptr=lseek(wave_file.handle(),0,SEEK_END)-12;
+	  cptr=lseek(wave_file.handle(),0,SEEK_END)-8;
 	  size_buf[0]=cptr&0xff;
 	  size_buf[1]=(cptr>>8)&0xff;
 	  size_buf[2]=(cptr>>16)&0xff;
@@ -2151,6 +2151,14 @@ QString RDWaveFile::getRdxlContents() const
 void RDWaveFile::setRdxlContents(const QString &xml)
 {
   rdxl_contents=xml;
+
+  //
+  // Make sure that the RDXL chunk is of even length.
+  // (To avoid goosing a bug in CoolEdit Pro 2003).
+  //
+  if((rdxl_contents.length()%2)!=2) {
+    rdxl_contents+=" ";
+  }
 }
 
 

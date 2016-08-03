@@ -1156,7 +1156,7 @@ void RDCut::setMetadata(RDWaveData *data) const
 }
 
 
-QString RDCut::xml(RDSettings *settings) const
+QString RDCut::xml(bool absolute,RDSettings *settings) const
 {
 #ifdef WIN32
   return QString();
@@ -1273,17 +1273,70 @@ QString RDCut::xml(RDSettings *settings) const
       ret+="  "+RDXmlField("channels",settings->channels());
     }
     ret+="  "+RDXmlField("playGain",q->value(28).toUInt());
-    ret+="  "+RDXmlField("startPoint",q->value(29).toInt());
-    ret+="  "+RDXmlField("endPoint",q->value(30).toInt());
-    ret+="  "+RDXmlField("fadeupPoint",q->value(31).toInt());
-    ret+="  "+RDXmlField("fadedownPoint",q->value(32).toInt());
-    ret+="  "+RDXmlField("segueStartPoint",q->value(33).toInt());
-    ret+="  "+RDXmlField("segueEndPoint",q->value(34).toInt());
-    ret+="  "+RDXmlField("segueGain",q->value(35).toInt());
-    ret+="  "+RDXmlField("hookStartPoint",q->value(36).toInt());
-    ret+="  "+RDXmlField("hookEndPoint",q->value(37).toInt());
-    ret+="  "+RDXmlField("talkStartPoint",q->value(38).toInt());
-    ret+="  "+RDXmlField("talkEndPoint",q->value(39).toInt());
+    if(absolute) {
+      ret+="  "+RDXmlField("startPoint",q->value(29).toInt());
+      ret+="  "+RDXmlField("endPoint",q->value(30).toInt());
+      ret+="  "+RDXmlField("fadeupPoint",q->value(31).toInt());
+      ret+="  "+RDXmlField("fadedownPoint",q->value(32).toInt());
+      ret+="  "+RDXmlField("segueStartPoint",q->value(33).toInt());
+      ret+="  "+RDXmlField("segueEndPoint",q->value(34).toInt());
+      ret+="  "+RDXmlField("segueGain",q->value(35).toInt());
+      ret+="  "+RDXmlField("hookStartPoint",q->value(36).toInt());
+      ret+="  "+RDXmlField("hookEndPoint",q->value(37).toInt());
+      ret+="  "+RDXmlField("talkStartPoint",q->value(38).toInt());
+      ret+="  "+RDXmlField("talkEndPoint",q->value(39).toInt());
+    }
+    else {
+      ret+="  "+RDXmlField("startPoint",0);
+      ret+="  "+
+	RDXmlField("endPoint",q->value(30).toInt()-q->value(29).toInt());
+      if(q->value(31).toInt()<0) {
+	ret+="  "+RDXmlField("fadeupPoint",-1);
+      }
+      else {
+	ret+="  "+
+	  RDXmlField("fadeupPoint",q->value(31).toInt()-q->value(29).toInt());
+      }
+      if(q->value(32).toInt()<0) {
+	ret+="  "+RDXmlField("fadedownPoint",-1);
+      }
+      else {
+	ret+="  "+
+	  RDXmlField("fadedownPoint",q->value(32).toInt()-q->value(29).toInt());
+      }
+      if(q->value(33).toInt()<0) {
+	ret+="  "+RDXmlField("segueStartPoint",-1);
+	ret+="  "+RDXmlField("segueEndPoint",-1);
+      }
+      else {
+	ret+="  "+RDXmlField("segueStartPoint",
+			     q->value(33).toInt()-q->value(29).toInt());
+	ret+="  "+RDXmlField("segueEndPoint",
+			     q->value(34).toInt()-q->value(29).toInt());
+      }
+      ret+="  "+RDXmlField("segueGain",q->value(35).toInt());
+      if(q->value(36).toInt()<0) {
+	ret+="  "+RDXmlField("hookStartPoint",-1);
+	ret+="  "+RDXmlField("hookEndPoint",-1);
+      }
+      else {
+	ret+="  "+RDXmlField("hookStartPoint",
+			     q->value(36).toInt()-q->value(29).toInt());
+	ret+="  "+RDXmlField("hookEndPoint",
+			     q->value(37).toInt()-q->value(29).toInt());
+      }
+      if(q->value(38).toInt()<0) {
+	ret+="  "+RDXmlField("talkStartPoint",-1);
+	ret+="  "+RDXmlField("talkEndPoint",-1);
+      }
+      else {
+	ret+="  "+RDXmlField("talkStartPoint",
+			     q->value(38).toInt()-q->value(29).toInt());
+	ret+="  "+RDXmlField("talkEndPoint",
+			     q->value(39).toInt()-q->value(29).toInt());
+      }
+    }
+
     ret+="</cut>\n";
   }
   delete q;

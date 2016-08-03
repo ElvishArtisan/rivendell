@@ -127,7 +127,7 @@ void Xport::Export()
     if(cart->enforceLength()) {
       speed_ratio=(float)cut->length()/(float)cart->forcedLength();
     }
-    rdxl=cart->xml(true,settings,cutnum);
+    rdxl=cart->xml(true,start_point<0,settings,cutnum);
     delete cut;
     delete cart;
   }

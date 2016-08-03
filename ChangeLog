@@ -15461,3 +15461,23 @@
 	* Refactored rdcastmanager(1) to use 'RDApplication'.
 2016-08-01 Fred Gleason <fredg@paravelsystems.com>
 	* Refactored rdcatch(1) to use 'RDApplication'.
+2016-08-01 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'rdadmin/createdb.cpp' that caused the
+	'SERVICE_CLOCKS' table to fail to be created when generating
+	a new database.
+2016-08-02 Fred Gleason <fredg@paravelsystems.com>
+	* Added wav_chunk_test(1) in 'tests/wav_chunk_test/'.
+2016-08-02 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'lib/rdwavefile.cpp' that caused an incorrect
+	payload size to be written for WAV files.
+2016-08-02 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'Start' fields to wav_chunk_test(1).
+2016-08-02 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'lib/rdwavefile.cpp' that caused WAV files to
+	be written with incorrect LEVL chunk data.
+2016-08-02 Fred Gleason <fredg@paravelsystems.com>
+	* Added a work-around in 'lib/rdwavefile.cpp' to ensure that RDXL
+	chunks are always of even length.
+2016-08-03 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdlibrary(1) that caused exports to contain incorrect
+	marker data in the RDXL file structure.
