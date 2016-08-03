@@ -985,7 +985,8 @@ bool RDCart::validateLengths(int len) const
 }
 
 
-QString RDCart::xml(bool include_cuts,RDSettings *settings,int cutnum) const
+QString RDCart::xml(bool include_cuts,bool absolute,
+		    RDSettings *settings,int cutnum) const
 {
 #ifdef WIN32
   return QString();
@@ -1025,16 +1026,6 @@ QString RDCart::xml(bool include_cuts,RDSettings *settings,int cutnum) const
     "METADATA_DATETIME,"+     // 24
     "CONDUCTOR "+             // 25
     QString().sprintf("from CART where NUMBER=%u",cart_number);
-  /*
-  sql=QString().sprintf("select TYPE,GROUP_NAME,TITLE,ARTIST,ALBUM,YEAR,\
-                         LABEL,CLIENT,AGENCY,PUBLISHER,COMPOSER,USER_DEFINED,\
-                         USAGE_CODE,FORCED_LENGTH,AVERAGE_LENGTH,\
-                         LENGTH_DEVIATION,AVERAGE_SEGUE_LENGTH,\
-                         AVERAGE_HOOK_LENGTH,CUT_QUANTITY,LAST_CUT_PLAYED,\
-                         VALIDITY,\
-                         ENFORCE_LENGTH,ASYNCRONOUS,OWNER,METADATA_DATETIME \
-                         from CART where NUMBER=%u",cart_number);
-  */
   q=new RDSqlQuery(sql);
   if(q->first()) {
     ret+="<cart>\n";
@@ -1090,7 +1081,7 @@ QString RDCart::xml(bool include_cuts,RDSettings *settings,int cutnum) const
 	    q1=new RDSqlQuery(sql);
 	    while(q1->next()) {
 	      cut=new RDCut(q1->value(0).toString());
-	      ret+=cut->xml(settings);
+	      ret+=cut->xml(absolute,settings);
 	      delete cut;
 	    }
 	    delete q1;
@@ -1098,7 +1089,7 @@ QString RDCart::xml(bool include_cuts,RDSettings *settings,int cutnum) const
 	  else {
 	    cut=new RDCut(RDCut::cutName(cart_number,cutnum));
 	    if(cut->exists()) {
-	      ret+=cut->xml(settings);
+	      ret+=cut->xml(absolute,settings);
 	    }
 	    delete cut;
 	  }

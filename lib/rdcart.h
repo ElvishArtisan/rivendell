@@ -136,7 +136,8 @@ class RDCart
   bool validateLengths(int len) const;
   void getMetadata(RDWaveData *data) const;
   void setMetadata(const RDWaveData *data);
-  QString xml(bool include_cuts,RDSettings *settings=NULL,int cutnum=-1) const;
+  QString xml(bool include_cuts,bool absolute,
+	      RDSettings *settings=NULL,int cutnum=-1) const;
   void updateLength();
   void updateLength(bool enforce_length,unsigned length);
   void resetRotation() const;

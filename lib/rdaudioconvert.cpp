@@ -1937,7 +1937,8 @@ void RDAudioConvert::ApplyId3Tag(const QString &filename,RDWaveData *wavedata)
   }
   RDCart *cart=new RDCart(wavedata->cartNumber());
   if(cart->exists()) {
-    QString xml=cart->xml(true,conv_settings,wavedata->cutNumber());
+    QString xml=
+      cart->xml(true,conv_start_point<0,conv_settings,wavedata->cutNumber());
     frame=new ID3_Frame(ID3FID_USERTEXT);
     frame->GetField(ID3FN_DESCRIPTION)->Set("rdxl");
     frame->GetField(ID3FN_TEXTENC)->Set(ID3TE_NONE);

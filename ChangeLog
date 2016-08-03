@@ -15452,3 +15452,6 @@
 2016-08-02 Fred Gleason <fredg@paravelsystems.com>
 	* Added a work-around in 'lib/rdwavefile.cpp' to ensure that RDXL
 	chunks are always of even length.
+2016-08-03 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdlibrary(1) that caused exports to contain incorrect
+	marker data in the RDXL file structure.
