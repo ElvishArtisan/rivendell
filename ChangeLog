@@ -15455,3 +15455,5 @@
 2016-08-03 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in rdlibrary(1) that caused exports to contain incorrect
 	marker data in the RDXL file structure.
+2016-08-03 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.15.0int00.
