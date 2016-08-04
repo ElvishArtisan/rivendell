@@ -15497,3 +15497,5 @@
 	* Refactored rdcatchd(8) to use 'RDApplication'.
 2016-08-04 Fred Gleason <fredg@paravelsystems.com>
 	* Refactored caed(8) to use 'RDApplication'.
+2016-08-04 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored nexgen_filter(1) to use 'RDApplication'.

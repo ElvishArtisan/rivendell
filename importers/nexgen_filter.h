@@ -24,13 +24,10 @@
 #include <stdio.h>
 
 #include <qobject.h>
-#include <qapplication.h>
 #include <qsqldatabase.h>
 #include <qdatetime.h>
 #include <qdir.h>
 
-#include <rdstation.h>
-#include <rdripc.h>
 #include <rdgroup.h>
 #include <rdwavedata.h>
 
@@ -65,9 +62,9 @@ class MainObject : public QObject
   int filter_cart_offset;
   bool filter_delete_cuts;
   int filter_normalization_level;
-  RDStation *filter_rdstation;
-  RDRipc *filter_ripc;
-  QSqlDatabase *filter_db;
+  //  RDStation *filter_rdstation;
+  //  RDRipc *filter_ripc;
+  //  QSqlDatabase *filter_db;
   bool filter_verbose;
 };
 
