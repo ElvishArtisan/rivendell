@@ -25,6 +25,7 @@
 #include <qsignalmapper.h>
 
 #include <rd.h>
+#include <rdapplication.h>
 #include <rddb.h>
 #include <rdescape_string.h>
 #include <rdringbuffer.h>
@@ -954,7 +955,7 @@ bool MainObject::jackLoadRecord(int card,int stream,int coding,int chans,
     jack_record_wave[stream]=NULL;
     return false;
   }
-  chown((const char *)wavename,rd_config->uid(),rd_config->gid());
+  chown((const char *)wavename,rda->config()->uid(),rda->config()->gid());
   jack_input_channels[stream]=chans;
   jack_record_ring[stream]=new RDRingBuffer(RINGBUFFER_SIZE);
   jack_record_ring[stream]->reset();
@@ -977,7 +978,7 @@ bool MainObject::jackLoadRecord(int card,int stream,int coding,int chans,
     jack_record_wave[stream]=NULL;
     return false;
   }
-  chown((const char *)wavename,rd_config->uid(),rd_config->gid());
+  chown((const char *)wavename,rda->config()->uid(),rda->config()->gid());
   jack_input_channels[stream]=chans; 
   jack_record_ring[stream]=new RDRingBuffer(RINGBUFFER_SIZE);
   jack_record_ring[stream]->reset();

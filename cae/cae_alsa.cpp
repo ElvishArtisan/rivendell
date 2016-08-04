@@ -26,6 +26,7 @@
 #include <qsignalmapper.h>
 
 #include <rd.h>
+#include <rdapplication.h>
 #include <rdringbuffer.h>
 #include <rdmeteraverage.h>
 
@@ -71,7 +72,7 @@ void AlsaCapture2Callback(struct alsa_format *alsa_format)
 
   while(!alsa_format->exiting) {
     int s=snd_pcm_readi(alsa_format->pcm,alsa_format->card_buffer,
-			rd_config->alsaPeriodSize()/(alsa_format->periods*2));
+			rda->config()->alsaPeriodSize()/(alsa_format->periods*2));
     if(((snd_pcm_state(alsa_format->pcm)!=SND_PCM_STATE_RUNNING)&&
 	(!alsa_format->exiting))||(s<0)) {
       snd_pcm_drop (alsa_format->pcm);
@@ -564,7 +565,7 @@ void *AlsaPlayCallback(void *ptr)
 void MainObject::AlsaInitCallback()
 {
   int avg_periods=
-    (330*system_sample_rate)/(1000*rd_config->alsaPeriodSize());
+    (330*system_sample_rate)/(1000*rda->config()->alsaPeriodSize());
   for(int i=0;i<RD_MAX_CARDS;i++) {
     for(int j=0;j<RD_MAX_PORTS;j++) {
       alsa_recording[i][j]=false;
@@ -681,7 +682,7 @@ void MainObject::alsaInit(RDStation *station)
       }
     }
   }
-  alsa_channels=rd_config->channels();
+  alsa_channels=rda->config()->channels();
 
   //
   // Stop & Fade Timers
@@ -768,9 +769,9 @@ void MainObject::alsaInit(RDStation *station)
 	}
 	station->
 	  setCardInputs(i,
-			alsa_capture_format[i].channels/rd_config->channels());
+			alsa_capture_format[i].channels/rda->config()->channels());
 	station->
-	  setCardOutputs(i,alsa_play_format[i].channels/rd_config->channels());
+	  setCardOutputs(i,alsa_play_format[i].channels/rda->config()->channels());
       }
       else {
 	i--;
@@ -1069,7 +1070,7 @@ bool MainObject::alsaLoadRecord(int card,int stream,int coding,int chans,
     alsa_record_wave[card][stream]=NULL;
     return false;
   }
-  chown((const char *)wavename,rd_config->uid(),rd_config->gid());
+  chown((const char *)wavename,rda->config()->uid(),rda->config()->gid());
   alsa_input_channels[card][stream]=chans;
   alsa_record_ring[card][stream]=new RDRingBuffer(RINGBUFFER_SIZE);
   alsa_record_ring[card][stream]->reset();
@@ -1456,11 +1457,11 @@ bool MainObject::AlsaStartCaptureDevice(QString &dev,int card,snd_pcm_t *pcm)
   //
   // Channels
   //
-  if(rd_config->alsaChannelsPerPcm()<0) {
-    alsa_capture_format[card].channels=rd_config->channels()*RD_MAX_PORTS;
+  if(rda->config()->alsaChannelsPerPcm()<0) {
+    alsa_capture_format[card].channels=rda->config()->channels()*RD_MAX_PORTS;
   }
   else {
-    alsa_capture_format[card].channels=rd_config->alsaChannelsPerPcm();
+    alsa_capture_format[card].channels=rda->config()->alsaChannelsPerPcm();
   }
   snd_pcm_hw_params_set_channels_near(pcm,hwparams,
 				      &alsa_capture_format[card].channels);
@@ -1472,13 +1473,13 @@ bool MainObject::AlsaStartCaptureDevice(QString &dev,int card,snd_pcm_t *pcm)
   //
   // Buffer Size
   //
-  alsa_capture_format[card].periods=rd_config->alsaPeriodQuantity();
+  alsa_capture_format[card].periods=rda->config()->alsaPeriodQuantity();
   snd_pcm_hw_params_set_periods_near(pcm,hwparams,
 				     &alsa_capture_format[card].periods,&dir);
   LogLine(RDConfig::LogDebug,QString().sprintf("  Periods = %u",
 		  alsa_capture_format[card].periods));
   alsa_capture_format[card].buffer_size=
-    alsa_capture_format[card].periods*rd_config->alsaPeriodSize();
+    alsa_capture_format[card].periods*rda->config()->alsaPeriodSize();
   snd_pcm_hw_params_set_buffer_size_near(pcm,hwparams,
 	       			 &alsa_capture_format[card].buffer_size);
   LogLine(RDConfig::LogDebug,QString().sprintf("  BufferSize = %u frames",
@@ -1521,7 +1522,7 @@ bool MainObject::AlsaStartCaptureDevice(QString &dev,int card,snd_pcm_t *pcm)
   //
   snd_pcm_sw_params_alloca(&swparams);
   snd_pcm_sw_params_current(pcm,swparams);
-  snd_pcm_sw_params_set_avail_min(pcm,swparams,rd_config->alsaPeriodSize());
+  snd_pcm_sw_params_set_avail_min(pcm,swparams,rda->config()->alsaPeriodSize());
   if((err=snd_pcm_sw_params(pcm,swparams))<0) {
     LogLine(RDConfig::LogErr,QString().sprintf("ALSA Device %s: %s",
 			      (const char *)dev,
@@ -1613,11 +1614,11 @@ bool MainObject::AlsaStartPlayDevice(QString &dev,int card,snd_pcm_t *pcm)
   //
   // Channels
   //
-  if(rd_config->alsaChannelsPerPcm()<0) {
-    alsa_play_format[card].channels=rd_config->channels()*RD_MAX_PORTS;
+  if(rda->config()->alsaChannelsPerPcm()<0) {
+    alsa_play_format[card].channels=rda->config()->channels()*RD_MAX_PORTS;
   }
   else {
-    alsa_play_format[card].channels=rd_config->alsaChannelsPerPcm();
+    alsa_play_format[card].channels=rda->config()->alsaChannelsPerPcm();
   }
   snd_pcm_hw_params_set_channels_near(pcm,hwparams,
 				      &alsa_play_format[card].channels);
@@ -1627,13 +1628,13 @@ bool MainObject::AlsaStartPlayDevice(QString &dev,int card,snd_pcm_t *pcm)
   //
   // Buffer Size
   //
-  alsa_play_format[card].periods=rd_config->alsaPeriodQuantity();
+  alsa_play_format[card].periods=rda->config()->alsaPeriodQuantity();
   snd_pcm_hw_params_set_periods_near(pcm,hwparams,
 				     &alsa_play_format[card].periods,&dir);
   LogLine(RDConfig::LogDebug,QString().sprintf("  Periods = %u",
 					       alsa_play_format[card].periods));
   alsa_play_format[card].buffer_size=
-    alsa_play_format[card].periods*rd_config->alsaPeriodSize();
+    alsa_play_format[card].periods*rda->config()->alsaPeriodSize();
   snd_pcm_hw_params_set_buffer_size_near(pcm,hwparams,
 					 &alsa_play_format[card].buffer_size);
   LogLine(RDConfig::LogDebug,QString().
@@ -1676,7 +1677,7 @@ bool MainObject::AlsaStartPlayDevice(QString &dev,int card,snd_pcm_t *pcm)
   //
   snd_pcm_sw_params_alloca(&swparams);
   snd_pcm_sw_params_current(pcm,swparams);
-  snd_pcm_sw_params_set_avail_min(pcm,swparams,rd_config->alsaPeriodSize());
+  snd_pcm_sw_params_set_avail_min(pcm,swparams,rda->config()->alsaPeriodSize());
   if((err=snd_pcm_sw_params(pcm,swparams))<0) {
     LogLine(RDConfig::LogErr,QString().sprintf("ALSA Device %s: %s",
 					       (const char *)dev,

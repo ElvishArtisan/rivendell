@@ -20,6 +20,7 @@
 
 #include <cae.h>
 
+#include <rdapplication.h>
 #include <rddebug.h>
 
 void MainObject::hpiInit(RDStation *station)
@@ -223,7 +224,7 @@ bool MainObject::hpiLoadRecord(int card,int stream,int coding,int chans,
     record[card][stream]=NULL;
     return false;
   }
-  chown((const char *)wavename,rd_config->uid(),rd_config->gid());
+  chown((const char *)wavename,rda->config()->uid(),rda->config()->gid());
   if(!record[card][stream]->recordReady()) {
     delete record[card][stream];
     record[card][stream]=NULL;
@@ -480,7 +481,7 @@ bool MainObject::hpiGetInputMeters(int card,int port,short levels[2])
 bool MainObject::hpiGetOutputMeters(int card,int port,short levels[2])
 {
 #ifdef HPI
-  if(rd_config->useStreamMeters()) {
+  if(rda->config()->useStreamMeters()) {
     //
     //  This is UGLY, but needed to semi-support cards (like the ASI4215)
     //  that lack output port metering.
