@@ -2,7 +2,7 @@
 //
 // A Library import filter for the Airforce Wings system
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -24,33 +24,15 @@
 #include <string.h>
 #include <ctype.h>
 
-#include <qapplication.h>
-
+#include <rdapplication.h>
 #include <rddb.h>
 #include <rd.h>
-#include <rdconfig.h>
-#include <rdcmd_switch.h>
 #include <rdcut.h>
 #include <wings_filter.h>
-
-
-//
-// Global Variables
-//
-RDConfig *rdconfig;
-
 
 MainObject::MainObject(QObject *parent)
   : QObject(parent)
 {
-  //
-  // Read Command Options
-  //
-  RDCmdSwitch *cmd=
-    new RDCmdSwitch(qApp->argc(),qApp->argv(),"wings_filter",
-		    WINGS_FILTER_USAGE);
-  delete cmd;
-
   WingsRecord wr;
   QString audioname;
   bool found;
@@ -60,59 +42,28 @@ MainObject::MainObject(QObject *parent)
   QString groupname;
   RDWaveFile *wavefile=NULL;
 
-  rdconfig=new RDConfig(RD_CONF_FILE);
-  rdconfig->load();
-
-  //
-  // Open Database
-  //
-
-
-  filter_db=QSqlDatabase::addDatabase(rdconfig->mysqlDriver());
-  if(!filter_db) {
-    fprintf(stderr,"wings_filter: can't open mySQL database\n");
-    exit(1);
-  }
-  filter_db->setDatabaseName(rdconfig->mysqlDbname());
-  filter_db->setUserName(rdconfig->mysqlUsername());
-  filter_db->setPassword(rdconfig->mysqlPassword());
-  filter_db->setHostName(rdconfig->mysqlHostname());
-  if(!filter_db->open()) {
-    fprintf(stderr,"wings_filter: unable to connect to mySQL Server\n");
-    filter_db->removeDatabase(rdconfig->mysqlDbname());
-    exit(1);
-  }
-
-  //
-  // RIPCD Connection
-  //
-  filter_ripc=new RDRipc("");
-  filter_ripc->connectHost("localhost",RIPCD_TCP_PORT,rdconfig->password());
-
-  //
-  // Station Configuration
-  //
-  filter_rdstation=new RDStation(rdconfig->stationName());
+  rda->
+    ripc()->connectHost("localhost",RIPCD_TCP_PORT,rda->config()->password());
 
   //
   // Read Arguments
   //
-  for(int i=1;i<(qApp->argc()-1);i+=2) {
+  for(unsigned i=1;i<(rda->cmdSwitch()->keys()-1);i+=2) {
     found=false;
-    if(!strcmp("-d",qApp->argv()[i])) {
-      dbname=qApp->argv()[i+1];
+    if(!strcmp("-d",rda->cmdSwitch()->key(i))) {
+      dbname=rda->cmdSwitch()->key(i+1);
       found=true;
     }
-    if(!strcmp("-A",qApp->argv()[i])) {
-      audiodir=qApp->argv()[i+1];
+    if(!strcmp("-A",rda->cmdSwitch()->key(i))) {
+      audiodir=rda->cmdSwitch()->key(i+1);
       found=true;
     }
-    if(!strcmp("-g",qApp->argv()[i])) {
-      groupname=qApp->argv()[i+1];
+    if(!strcmp("-g",rda->cmdSwitch()->key(i))) {
+      groupname=rda->cmdSwitch()->key(i+1);
       found=true;
     }
-    if(!strcmp("-e",qApp->argv()[i])) {
-      audio_extension=qApp->argv()[i+1];
+    if(!strcmp("-e",rda->cmdSwitch()->key(i))) {
+      audio_extension=rda->cmdSwitch()->key(i+1);
       found=true;
     }
     if(!found) {
@@ -255,7 +206,7 @@ bool MainObject::ImportCut(RDGroup *group,struct WingsRecord *rec,
 			cartnum,cartnum,(const char *)rec->title,
 			(const char *)QDateTime::currentDateTime().
 			toString("yyyy-MM-dd hh:mm:ss"),
-			(const char *)rdconfig->stationName(),format,
+			(const char *)rda->config()->stationName(),format,
 			wavefile->getSamplesPerSec(),
 			wavefile->getChannels(),wavefile->getHeadBitRate(),
 			wavefile->getExtTimeLength(),
@@ -320,7 +271,7 @@ void MainObject::TrimSpaces(char *str)
 
 int main(int argc,char *argv[])
 {
-  QApplication a(argc,argv,false);
+  RDApplication a(argc,argv,"wings_filter",WINGS_FILTER_USAGE,false);
   new MainObject(NULL);
   return a.exec();
 }
