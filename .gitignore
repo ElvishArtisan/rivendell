@@ -37,7 +37,6 @@ importers/nexgen_filter
 importers/panel_copy
 importers/rdcatch_copy
 importers/rivendell_filter
-importers/sas_filter
 importers/wings_filter
 install-sh
 lib/rdpaths.h

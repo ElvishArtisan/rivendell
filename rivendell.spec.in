@@ -407,7 +407,6 @@ rm -rf $RPM_BUILD_ROOT
 @LOCAL_PREFIX@/bin/wings_filter
 @LOCAL_PREFIX@/bin/rivendell_filter
 @LOCAL_PREFIX@/bin/nexgen_filter
-@LOCAL_PREFIX@/bin/sas_filter
 @LOCAL_PREFIX@/bin/crc-unity4k.sh
 @LOCAL_PREFIX@/bin/rdcatch_copy
 @LOCAL_PREFIX@/bin/panel_copy
