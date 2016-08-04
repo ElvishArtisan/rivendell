@@ -26,6 +26,7 @@
 #include <qpainter.h>
 #include <qmessagebox.h>
 
+#include <rdapplication.h>
 #include <rddb.h>
 #include <rd.h>
 #include <rdevent.h>
@@ -43,7 +44,7 @@ ListEvents::ListEvents(QString *eventname,QWidget *parent)
   QStringList services_list;
   QString str1=tr("Log Events - User: ");
   setCaption(QString().sprintf("%s%s",(const char *)str1,
-			       (const char *)rdripc->user()));
+			       (const char *)rda->ripc()->user()));
   edit_eventname=eventname;
 
   //

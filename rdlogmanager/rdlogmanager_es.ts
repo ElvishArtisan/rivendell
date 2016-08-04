@@ -1159,7 +1159,7 @@ Reportes</translation>
     <name>MainWidget</name>
     <message>
         <source>Can&apos;t Connect</source>
-        <translation>No puedo conectarme</translation>
+        <translation type="obsolete">No puedo conectarme</translation>
     </message>
     <message>
         <source>RDLogManager</source>
@@ -1199,12 +1199,12 @@ Reportes</translation>
     </message>
     <message>
         <source>RDLogEdit -- Database Skew</source>
-        <translation>RDLOgEdit -- Asimetría en la base de datos</translation>
+        <translation type="obsolete">RDLOgEdit -- Asimetría en la base de datos</translation>
     </message>
     <message>
         <source>This version of RDLogManager is incompatible with the version installed on the server.
 See your system administrator for an update!</source>
-        <translation>Esta versión de RDLogManager no es compatible con la versión instalada en el servidor.
+        <translation type="obsolete">Esta versión de RDLogManager no es compatible con la versión instalada en el servidor.
 ¡Solicite al administrador del sistema una actualización!</translation>
     </message>
 </context>

@@ -25,7 +25,6 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #endif  // WIN32
-#include <qapplication.h>
 #include <qwindowsstyle.h>
 #include <qwidget.h>
 #include <qpainter.h>
@@ -41,6 +40,7 @@
 #include <qtranslator.h>
 
 #include <rd.h>
+#include <rdapplication.h>
 #include <rduser.h>
 #include <rdripc.h>
 #include <rdstation.h>
@@ -70,14 +70,8 @@
 //
 // Global Resources
 //
-RDStation *rdstation_conf;
-RDUser *rduser;
-RDRipc *rdripc;
-RDCae *rdcae;
-RDConfig *log_config;
 QString *event_filter;
 QString *clock_filter;
-bool skip_db_check=false;
 
 #ifndef WIN32
 void SigHandler(int signo)
@@ -100,8 +94,6 @@ void SigHandler(int signo)
 MainWidget::MainWidget(QWidget *parent)
   :QWidget(parent)
 {
-  unsigned schema=0;
-
   //
   // Fix the Window Size
   //
@@ -117,59 +109,21 @@ MainWidget::MainWidget(QWidget *parent)
   RDInitializeDaemons();
 #endif  // WIN32
 
-  //
-  // Load Local Configs
-  //
-  log_config=new RDConfig();
-  log_config->load();
   setCaption(tr("RDLogManager"));
 
-  //
-  // Open Database
-  //
-  QString err;
-  log_db=RDInitDb(&schema,&err);
-  if(!log_db) {
-    QMessageBox::warning(this,tr("Can't Connect"),err);
-    exit(0);
-  }
-  if((schema!=RD_VERSION_DATABASE)&&(!skip_db_check)) {
-#ifdef WIN32
-	    QMessageBox::warning(this,tr("RDLogEdit -- Database Skew"),
-				 tr("This version of RDLogManager is incompatible with the version installed on the server.\nSee your system administrator for an update!"));
-#else
-    fprintf(stderr,
-	    "rdlogmanager: database version mismatch, should be %u, is %u\n",
-	    RD_VERSION_DATABASE,schema);
-#endif  // WIN32
-    exit(256);
-  }
-  new RDDbHeartbeat(log_config->mysqlHeartbeatInterval(),this);
-
-  //
-  // Allocate Global Resources
-  //
-  rdstation_conf=new RDStation(log_config->stationName());
-   
   //
   // CAE Connection
   //
 #ifndef WIN32
-  rdcae=new RDCae(rdstation_conf,log_config,parent);
-  rdcae->connectHost();
+  rda->cae()->connectHost();
 #endif  // WIN32
 
   //
   // RIPC Connection
   //
-  rdripc=new RDRipc(log_config->stationName());
-  connect(rdripc,SIGNAL(userChanged()),this,SLOT(userData()));
-  rdripc->connectHost("localhost",RIPCD_TCP_PORT,log_config->password());
-
-  //
-  // User
-  //
-  rduser=NULL;
+  connect(rda->ripc(),SIGNAL(userChanged()),this,SLOT(userData()));
+  rda->
+    ripc()->connectHost("localhost",RIPCD_TCP_PORT,rda->config()->password());
 
   //
   // Generate Fonts
@@ -286,19 +240,16 @@ void MainWidget::userData()
 {
   QString str1=tr("RDLogManager - User: ");
   setCaption(QString().sprintf("%s%s",(const char *)str1,
-			       (const char *)rdripc->user()));
+			       (const char *)rda->ripc()->user()));
 
-  if(rduser!=NULL) {
-    delete rduser;
-  }
-  rduser=new RDUser(rdripc->user());
+  rda->setUser(rda->ripc()->user());
 
   //
   // Set Control Perms
   //
-  bool templates_allowed=rduser->modifyTemplate();
-  bool creation_allowed=rduser->createLog();
-  bool rec_allowed=rduser->deleteRec();
+  bool templates_allowed=rda->user()->modifyTemplate();
+  bool creation_allowed=rda->user()->createLog();
+  bool rec_allowed=rda->user()->deleteRec();
   log_events_button->setEnabled(templates_allowed);
   log_clocks_button->setEnabled(templates_allowed);
   log_grids_button->setEnabled(templates_allowed);
@@ -349,14 +300,14 @@ void MainWidget::reportsData()
 
 void MainWidget::quitMainWidget()
 {
-  log_db->removeDatabase(log_config->mysqlDbname());
+  log_db->removeDatabase(rda->config()->mysqlDbname());
   exit(0);
 }
 
 
 int gui_main(int argc,char *argv[])
 {
-  QApplication a(argc,argv);
+  RDApplication a(argc,argv,"rdlogmanager",RDLOGMANAGER_USAGE);
   
   //
   // Load Translations
@@ -432,10 +383,6 @@ int main(int argc,char *argv[])
       cmd_merge_traffic = true;
       cmd->setProcessed(i,true);
     }
-    if(cmd->key(i)=="--skip-db-check") {
-      skip_db_check=true;
-      cmd->setProcessed(i,true);
-    }
     if (cmd->key(i)=="-s") {
       if (i+1<cmd->keys()) {
 	i++;
@@ -486,11 +433,13 @@ int main(int argc,char *argv[])
   }
 
   if(cmd_generate||cmd_merge_traffic||cmd_merge_music) {
+    RDApplication a(argc,argv,"rdlogmanager",RDLOGMANAGER_USAGE,false);
     return RunLogOperation(argc,argv,cmd_service,cmd_start_offset,
 			   cmd_protect_existing,cmd_generate,
 			   cmd_merge_music,cmd_merge_traffic);
   }
   if(!cmd_report.isEmpty()) {
+    RDApplication a(argc,argv,"rdlogmanager",RDLOGMANAGER_USAGE,false);
     return RunReportOperation(argc,argv,cmd_report,cmd_protect_existing,
 			      cmd_start_offset,cmd_end_offset);
   }

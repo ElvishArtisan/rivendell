@@ -27,6 +27,7 @@
 #include <qfile.h>
 #include <qtimer.h>
 
+#include <rdapplication.h>
 #include <rddb.h>
 #include <rddatedialog.h>
 #include <rdsvc.h>
@@ -61,7 +62,7 @@ GenerateLog::GenerateLog(QWidget *parent,int cmd_switch,QString *cmd_service,
 
   QString str1=tr("Generate Log - User: ");
   setCaption(QString().sprintf("%s%s",(const char *)str1,
-			       (const char *)rdripc->user()));
+			       (const char *)rda->ripc()->user()));
 
   gen_music_enabled=false;
   gen_traffic_enabled=false;
@@ -334,7 +335,7 @@ void GenerateLog::createData()
       }
     }
   }
-  log->removeTracks(rdstation_conf,rduser,log_config);
+  log->removeTracks(rda->station(),rda->user(),rda->config());
 
   //
   // Scheduler
@@ -419,7 +420,7 @@ void GenerateLog::musicData()
 	return;
       }
     }
-    log->removeTracks(rdstation_conf,rduser,log_config);
+    log->removeTracks(rda->station(),rda->user(),rda->config());
     svc->clearLogLinks(RDSvc::Traffic,gen_date_edit->date(),logname);
     svc->clearLogLinks(RDSvc::Music,gen_date_edit->date(),logname);
   }

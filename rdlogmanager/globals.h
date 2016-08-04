@@ -30,14 +30,8 @@
 //
 // Global Resources
 //
-extern RDStation *rdstation_conf;
-extern RDUser *rduser;
-extern RDRipc *rdripc;
-extern RDCae *rdcae;
-extern RDConfig *log_config;
 extern QString *event_filter;
 extern QString *clock_filter;
-extern bool skip_db_check;
 
 
 #endif  // GLOBALS_H

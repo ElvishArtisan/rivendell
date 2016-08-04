@@ -26,6 +26,7 @@
 #include <qpixmap.h>
 #include <qpainter.h>
 
+#include <rdapplication.h>
 #include <rddb.h>
 #include <rd.h>
 #include <rdescape_string.h>
@@ -44,7 +45,7 @@ ListClocks::ListClocks(QString *clockname,QWidget *parent)
   QStringList services_list;
   QString str1=tr("Log Clocks - User: ");
   setCaption(QString().sprintf("%s%s",(const char *)str1,
-			       (const char *)rdripc->user()));
+			       (const char *)rda->ripc()->user()));
   edit_clockname=clockname;
 
   //

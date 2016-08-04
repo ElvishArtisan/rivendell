@@ -25,6 +25,7 @@
 #include <qmessagebox.h>
 #include <qcolordialog.h>
 
+#include <rdapplication.h>
 #include <rddb.h>
 #include <rd.h>
 #include <rdconf.h>
@@ -175,16 +176,14 @@ EditEvent::EditEvent(QString eventname,bool new_event,
 #ifndef WIN32
   sql=QString().sprintf("select OUTPUT_CARD,OUTPUT_PORT,START_CART,END_CART \
                        from RDLOGEDIT where STATION=\"%s\"",
-			(const char *)rdstation_conf->name());
+			(const char *)rda->station()->name());
   q=new RDSqlQuery(sql);
   if(q->first()) {
     event_player=
-      new RDSimplePlayer(rdcae,rdripc,q->value(0).toInt(),q->value(1).toInt(),
+      new RDSimplePlayer(rda->cae(),rda->ripc(),q->value(0).toInt(),q->value(1).toInt(),
 			 q->value(2).toUInt(),q->value(3).toUInt(),this);
     event_player->playButton()->
       setGeometry(CENTER_LINE-180,sizeHint().height()-210,80,50);
-//    event_player->stopButton()->
-//      setPalette(QPalette(backgroundColor(),QColor(lightGray)));
     event_player->stopButton()->setGeometry(CENTER_LINE-90,sizeHint().height()-210,80,50);
     event_player->stopButton()->setOnColor(red);
   }

@@ -23,6 +23,7 @@
 #include <qmessagebox.h>
 #include <qfile.h>
 
+#include <rdapplication.h>
 #include <rddatedialog.h>
 #include <rdreport.h>
 #include <rddatedecode.h>
@@ -212,7 +213,7 @@ void PickReportDates::generateData()
   }
   QString out_path;
   report->generateReport(edit_startdate_edit->date(),
-			 edit_enddate_edit->date(),rdstation_conf,&out_path);
+			 edit_enddate_edit->date(),rda->station(),&out_path);
   switch(report->errorCode()) {
       case RDReport::ErrorOk:
 	QMessageBox::information(this,tr("Report Complete"),
