@@ -40,6 +40,7 @@ class RDApplication : public QApplication
   RDApplication(int argc,char **argv,const char *modname,const char *usage,
 		bool gui=true);
   RDAirPlayConf *airplayConf() const;
+  RDAirPlayConf *panelConf() const;
   RDLibraryConf *libraryConf() const;
   RDLogeditConf *logeditConf() const;
   RDCae *cae() const;
@@ -53,6 +54,7 @@ class RDApplication : public QApplication
 
  private:
   RDAirPlayConf *app_airplay_conf;
+  RDAirPlayConf *app_panel_conf;
   RDLibraryConf *app_library_conf;
   RDLogeditConf *app_logedit_conf;
   RDCae *app_cae;

@@ -27,9 +27,7 @@
 #include <qpixmap.h>
 
 #include <rdstereometer.h>
-#include <rdcae.h>
 #include <rdmacro.h>
-#include <rdconfig.h>
 #include <rdsound_panel.h>
 #include <rdevent_player.h>
 #include <rdemptycart.h>
@@ -63,7 +61,6 @@ class MainWidget : public QWidget
  private:
   void RunLocalMacros(RDMacro *rml);
   void SetCaption();
-  RDConfig *panel_config;
   QSqlDatabase *panel_db;
   QTimer *panel_master_timer;
   RDCae *panel_cae;

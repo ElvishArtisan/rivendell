@@ -21,22 +21,13 @@
 #ifndef GLOBALS_H
 #define GLOBALS_H
 
-#include <rdstation.h>
-#include <rdairplay_conf.h>
 #include <rdaudio_port.h>
-#include <rduser.h>
-#include <rdripc.h>
 #include <rdcart_dialog.h>
 
 //
 // Global Resources
 //
-extern RDStation *rdstation_conf;
-extern RDSystem *rdsystem_conf;
-extern RDAirPlayConf *rdairplay_conf;
 extern RDAudioPort *rdaudioport_conf;
-extern RDUser *rduser;
-extern RDRipc *rdripc;
 extern RDCartDialog *panel_cart_dialog;
 
 

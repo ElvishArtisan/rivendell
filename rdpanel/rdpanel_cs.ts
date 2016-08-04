@@ -3,11 +3,11 @@
     <name>MainWidget</name>
     <message>
         <source>rdpanel : </source>
-        <translation>rdpanel: </translation>
+        <translation type="obsolete">rdpanel: </translation>
     </message>
     <message>
         <source>Can&apos;t Connect</source>
-        <translation>Nelze spojit</translation>
+        <translation type="obsolete">Nelze spojit</translation>
     </message>
     <message>
         <source>Station</source>
