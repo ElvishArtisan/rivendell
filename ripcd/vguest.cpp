@@ -208,7 +208,7 @@ VGuest::VGuest(RDMatrix *matrix,QObject *parent)
   //
   for(int i=0;i<2;i++) {
     if(vguest_porttype[i]==RDMatrix::TtyPort) {
-      tty=new RDTty(rdstation->name(),matrix->port((RDMatrix::Role)i));
+      tty=new RDTty(rda->station()->name(),matrix->port((RDMatrix::Role)i));
       vguest_device[i]=new RDTTYDevice();
       if(tty->active()) {
 	vguest_device[i]->setName(tty->port());
@@ -806,7 +806,7 @@ void VGuest::ExecuteMacroCart(unsigned cartnum)
   RDMacro rml;
   rml.setRole(RDMacro::Cmd);
   rml.setCommand(RDMacro::EX);
-  rml.setAddress(rdstation->address());
+  rml.setAddress(rda->station()->address());
   rml.setEchoRequested(false);
   rml.setArgQuantity(1);
   rml.setArg(0,cartnum);

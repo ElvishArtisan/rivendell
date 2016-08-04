@@ -45,7 +45,7 @@ LiveWireMcastGpio::LiveWireMcastGpio(RDMatrix *matrix,QObject *parent)
   //
   // Get Matrix Parameters
   //
-  livewire_stationname=rdstation->name();
+  livewire_stationname=rda->station()->name();
   livewire_matrix=matrix->matrix();
   livewire_gpios=matrix->gpis();
   livewire_interface_addr=matrix->ipAddress(RDMatrix::Primary);

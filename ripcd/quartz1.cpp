@@ -71,7 +71,7 @@ Quartz1::Quartz1(RDMatrix *matrix,QObject *parent)
   for(int i=0;i<2;i++) {
       switch(sas_porttype[i]) {
 	  case RDMatrix::TtyPort:
-	      tty=new RDTty(rdstation->name(),sas_port[i]);
+	      tty=new RDTty(rda->station()->name(),sas_port[i]);
 	      sas_device[i]=new RDTTYDevice();
 	      if(tty->active()) {
 		  sas_device[i]->setName(tty->port());

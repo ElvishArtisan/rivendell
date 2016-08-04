@@ -47,7 +47,7 @@ BtSrc16::BtSrc16(RDMatrix *matrix,QObject *parent)
   //
   // Initialize the TTY Port
   //
-  RDTty *tty=new RDTty(rdstation->name(),matrix->port(RDMatrix::Primary));
+  RDTty *tty=new RDTty(rda->station()->name(),matrix->port(RDMatrix::Primary));
   bt_device=new RDTTYDevice();
   if(tty->active()) {
     bt_device->setName(tty->port());

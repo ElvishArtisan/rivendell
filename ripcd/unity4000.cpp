@@ -43,7 +43,7 @@ Unity4000::Unity4000(RDMatrix *matrix,QObject *parent)
   sql=QString().sprintf("select NUMBER,FEED_NAME,CHANNEL_MODE from INPUTS \
                          where STATION_NAME=\"%s\" && MATRIX=%d \
                          order by NUMBER",
-			(const char *)rdstation->name(),
+			(const char *)rda->station()->name(),
 			matrix->matrix());
   q=new RDSqlQuery(sql);
   q->first();
@@ -60,7 +60,7 @@ Unity4000::Unity4000(RDMatrix *matrix,QObject *parent)
   //
   // Initialize the TTY Port
   //
-  RDTty *tty=new RDTty(rdstation->name(),matrix->port(RDMatrix::Primary));
+  RDTty *tty=new RDTty(rda->station()->name(),matrix->port(RDMatrix::Primary));
   unity_device=new RDTTYDevice();
   if(tty->active()) {
     unity_device->setName(tty->port());

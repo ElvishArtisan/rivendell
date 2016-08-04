@@ -41,7 +41,7 @@ Sas16000::Sas16000(RDMatrix *matrix,QObject *parent)
   //
   // Initialize the connection
   //
-  tty=new RDTty(rdstation->name(),matrix->port(RDMatrix::Primary));
+  tty=new RDTty(rda->station()->name(),matrix->port(RDMatrix::Primary));
   sas_device=new RDTTYDevice();
   if(tty->active()) {
     sas_device->setName(tty->port());

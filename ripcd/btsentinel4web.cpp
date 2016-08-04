@@ -130,7 +130,7 @@ void BtSentinel4Web::processCommand(RDMacro *cmd)
 void BtSentinel4Web::connectedData()
 {
   bt_socket->writeBlock("*0U",3);
-  ripcd_config->log("ripcd",RDConfig::LogInfo,"connected to BT Sentinel4Web device at "+
+  rda->config()->log("ripcd",RDConfig::LogInfo,"connected to BT Sentinel4Web device at "+
 		    bt_socket->peerAddress().toString());
 }
 
@@ -154,7 +154,7 @@ void BtSentinel4Web::readyReadData()
 
 void BtSentinel4Web::watchdogData()
 {
-  ripcd_config->log("ripcd",RDConfig::LogWarning,"lost connection to BT Sentinel4Web device at "+
+  rda->config()->log("ripcd",RDConfig::LogWarning,"lost connection to BT Sentinel4Web device at "+
 		    bt_socket->peerAddress().toString());
   bt_watchdog_reset_timer->start(BTSENTINEL4WEB_WATCHDOG_INTERVAL,true);
 }

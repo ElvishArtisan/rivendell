@@ -21,17 +21,14 @@
 #ifndef GLOBALS_H
 #define GLOBALS_H
 
-#include <rdcae.h>
-#include <rdstation.h>
+#include <qstring.h>
+
 #include <rd.h>
 #include <rdconfig.h>
 
 //
 // Global Objects
 //
-extern RDConfig *ripcd_config;
-extern RDCae *rdcae;
-extern RDStation *rdstation;
 extern QString ripcd_active_locks[MAX_MATRICES];
 extern void LogLine(RDConfig::LogPriority prio,const QString &line);
 

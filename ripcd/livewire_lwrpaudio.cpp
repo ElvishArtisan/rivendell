@@ -32,7 +32,7 @@ LiveWireLwrpAudio::LiveWireLwrpAudio(RDMatrix *matrix,QObject *parent)
   //
   // Get Matrix Parameters
   //
-  livewire_stationname=rdstation->name();
+  livewire_stationname=rda->station()->name();
   livewire_matrix=matrix->matrix();
 
   //

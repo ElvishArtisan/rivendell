@@ -84,19 +84,19 @@ void LocalAudio::processCommand(RDMacro *cmd)
 	}
 	if(cmd->arg(1).toInt()==0) {
 	  for(int i=0;i<bt_inputs;i++) {
-	    rdcae->
+	    rda->cae()->
 	      setPassthroughVolume(bt_card,i,cmd->arg(2).toInt()-1,-10000);
 	  }
 	}
 	else {
-	  rdcae->setPassthroughVolume(bt_card,cmd->arg(1).toInt()-1,
+	  rda->cae()->setPassthroughVolume(bt_card,cmd->arg(1).toInt()-1,
 				      cmd->arg(2).toInt()-1,0);
 	  for(int i=0;i<(cmd->arg(1).toInt()-1);i++) {
-	    rdcae->
+	    rda->cae()->
 	      setPassthroughVolume(bt_card,i,cmd->arg(2).toInt()-1,-10000);
 	  }
 	  for(int i=cmd->arg(1).toInt();i<bt_inputs;i++) {
-	    rdcae->
+	    rda->cae()->
 	      setPassthroughVolume(bt_card,i,cmd->arg(2).toInt()-1,-10000);
 	  }
 	}
@@ -111,7 +111,7 @@ void LocalAudio::processCommand(RDMacro *cmd)
 	  emit rmlEcho(cmd);
 	  return;
 	}
-	rdcae->setPassthroughVolume(bt_card,cmd->arg(1).toInt()-1,
+	rda->cae()->setPassthroughVolume(bt_card,cmd->arg(1).toInt()-1,
 				    cmd->arg(2).toInt()-1,0);
 	cmd->acknowledge(true);
 	emit rmlEcho(cmd);
@@ -124,7 +124,7 @@ void LocalAudio::processCommand(RDMacro *cmd)
 	  emit rmlEcho(cmd);
 	  return;
 	}
-	rdcae->setPassthroughVolume(bt_card,cmd->arg(1).toInt()-1,
+	rda->cae()->setPassthroughVolume(bt_card,cmd->arg(1).toInt()-1,
 				    cmd->arg(2).toInt()-1,RD_MUTE_DEPTH);
 	cmd->acknowledge(true);
 	emit rmlEcho(cmd);
@@ -138,7 +138,7 @@ void LocalAudio::processCommand(RDMacro *cmd)
 	  emit rmlEcho(cmd);
 	  return;
 	}
-	rdcae->setPassthroughVolume(bt_card,cmd->arg(1).toInt()-1,
+	rda->cae()->setPassthroughVolume(bt_card,cmd->arg(1).toInt()-1,
 				    cmd->arg(2).toInt()-1,cmd->arg(3).toInt());
 	cmd->acknowledge(true);
 	emit rmlEcho(cmd);

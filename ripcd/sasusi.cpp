@@ -53,7 +53,7 @@ SasUsi::SasUsi(RDMatrix *matrix,QObject *parent)
     sprintf("select ENGINE_NUM,DEVICE_NUM,RELAY_NUM \
              from VGUEST_RESOURCES where (STATION_NAME=\"%s\")&&\
              (MATRIX_NUM=%d) order by NUMBER",
-	    (const char *)ripcd_config->stationName(),
+	    (const char *)rda->config()->stationName(),
 	    matrix->matrix());
   q=new RDSqlQuery(sql);
   while(q->next()) {
@@ -74,7 +74,7 @@ SasUsi::SasUsi(RDMatrix *matrix,QObject *parent)
   //
   switch(sas_porttype) {
   case RDMatrix::TtyPort:
-    tty=new RDTty(rdstation->name(),matrix->port(RDMatrix::Primary));
+    tty=new RDTty(rda->station()->name(),matrix->port(RDMatrix::Primary));
     sas_device=new RDTTYDevice();
     if(tty->active()) {
       sas_device->setName(tty->port());
@@ -486,7 +486,7 @@ void SasUsi::DispatchCommand()
     sql=QString().sprintf("select NUMBER from INPUTS where \
                            (STATION_NAME=\"%s\")&&	   \
                            (MATRIX=%d)&&(NUMBER=%d)",
-			  (const char *)rdstation->name(),
+			  (const char *)rda->station()->name(),
 			  sas_matrix,input);
     q=new RDSqlQuery(sql);
     if(q->first()) {
@@ -494,14 +494,14 @@ void SasUsi::DispatchCommand()
                             (STATION_NAME=\"%s\")&&\
                             (MATRIX=%d)&&(NUMBER=%d)",
 			    (const char *)label,
-			    (const char *)rdstation->name(),
+			    (const char *)rda->station()->name(),
 			    sas_matrix,input);
     }
     else {
       sql=QString().sprintf("insert into INPUTS set NAME=\"%s\",\
                             STATION_NAME=\"%s\",MATRIX=%d,NUMBER=%d",
 			    (const char *)label,
-			    (const char *)rdstation->name(),
+			    (const char *)rda->station()->name(),
 				sas_matrix,input);
     }
     delete q;
@@ -521,7 +521,7 @@ void SasUsi::DispatchCommand()
     sql=QString().sprintf("select NUMBER from OUTPUTS where \
                            (STATION_NAME=\"%s\")&&\
                            (MATRIX=%d)&&(NUMBER=%d)",
-			  (const char *)rdstation->name(),
+			  (const char *)rda->station()->name(),
 			  sas_matrix,output);
     q=new RDSqlQuery(sql);
     if(q->first()) {
@@ -529,14 +529,14 @@ void SasUsi::DispatchCommand()
                              (STATION_NAME=\"%s\")&&\
                              (MATRIX=%d)&&(NUMBER=%d)",
 			    (const char *)label,
-			    (const char *)rdstation->name(),
+			    (const char *)rda->station()->name(),
 			    sas_matrix,output);
     }
     else {
       sql=QString().sprintf("insert into OUTPUTS set NAME=\"%s\",\
                              STATION_NAME=\"%s\",MATRIX=%d,NUMBER=%d",
 			    (const char *)label,
-			    (const char *)rdstation->name(),
+			    (const char *)rda->station()->name(),
 			    sas_matrix,output);
     }
     delete q;
@@ -619,7 +619,7 @@ void SasUsi::ExecuteMacroCart(unsigned cartnum)
   RDMacro rml;
   rml.setRole(RDMacro::Cmd);
   rml.setCommand(RDMacro::EX);
-  rml.setAddress(rdstation->address());
+  rml.setAddress(rda->station()->address());
   rml.setEchoRequested(false);
   rml.setArgQuantity(1);
   rml.setArg(0,cartnum);

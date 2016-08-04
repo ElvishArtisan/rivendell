@@ -25,6 +25,7 @@
 
 #include <qobject.h>
 
+#include <rdapplication.h>
 #include <rdmatrix.h>
 #include <rdmacro.h>
 

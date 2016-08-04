@@ -54,7 +54,7 @@ ModemLines::ModemLines(RDMatrix *matrix,QObject *parent)
   //
   // Open TTY
   //
-  gpio_tty=new RDTty(rdstation->name(),matrix->port(RDMatrix::Primary));
+  gpio_tty=new RDTty(rda->station()->name(),matrix->port(RDMatrix::Primary));
   if((gpio_fd=open(gpio_tty->port(),O_RDONLY))<0) {
     syslog(LOG_ERR,"unable to open tty \"%s\"",(const char *)gpio_tty->port());
     return;

@@ -297,7 +297,7 @@ void SoftwareAuthority::DispatchCommand()
       swa_istate=0;
       sql=QString("update MATRICES set ")+
 	QString().sprintf("INPUTS=%d ",swa_inputs)+
-	"where (STATION_NAME=\""+RDEscapeString(rdstation->name())+"\")&&"+
+	"where (STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\")&&"+
 	QString().sprintf("(MATRIX=%d)",swa_matrix);
       q=new RDSqlQuery(sql);
       delete q;
@@ -312,7 +312,7 @@ void SoftwareAuthority::DispatchCommand()
     sql=QString().sprintf("select NUMBER from INPUTS where \
                            (STATION_NAME=\"%s\")&&	   \
                            (MATRIX=%d)&&(NUMBER=%d)",
-			  (const char *)rdstation->name(),
+			  (const char *)rda->station()->name(),
 			  swa_matrix,f0[0].toInt());
     q=new RDSqlQuery(sql);
     if(q->first()) {
@@ -320,14 +320,14 @@ void SoftwareAuthority::DispatchCommand()
                             (STATION_NAME=\"%s\")&&\
                             (MATRIX=%d)&&(NUMBER=%d)",
 			    (const char *)name,
-			    (const char *)rdstation->name(),
+			    (const char *)rda->station()->name(),
 			    swa_matrix,f0[0].toInt());
     }
     else {
       sql=QString().sprintf("insert into INPUTS set NAME=\"%s\",\
                             STATION_NAME=\"%s\",MATRIX=%d,NUMBER=%d",
 			    (const char *)name,
-			    (const char *)rdstation->name(),
+			    (const char *)rda->station()->name(),
 			    swa_matrix,f0[0].toInt());
     }
     delete q;
@@ -343,7 +343,7 @@ void SoftwareAuthority::DispatchCommand()
       swa_istate=0;
       sql=QString("update MATRICES set ")+
 	QString().sprintf("OUTPUTS=%d ",swa_outputs)+
-	"where (STATION_NAME=\""+RDEscapeString(rdstation->name())+"\")&&"+
+	"where (STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\")&&"+
 	QString().sprintf("(MATRIX=%d)",swa_matrix);
       q=new RDSqlQuery(sql);
       delete q;
@@ -366,7 +366,7 @@ void SoftwareAuthority::DispatchCommand()
     sql=QString().sprintf("select NUMBER from OUTPUTS where \
                            (STATION_NAME=\"%s\")&&\
                            (MATRIX=%d)&&(NUMBER=%d)",
-			  (const char *)rdstation->name(),
+			  (const char *)rda->station()->name(),
 			  swa_matrix,f0[0].toInt());
     q=new RDSqlQuery(sql);
     if(q->first()) {
@@ -374,14 +374,14 @@ void SoftwareAuthority::DispatchCommand()
                              (STATION_NAME=\"%s\")&&\
                              (MATRIX=%d)&&(NUMBER=%d)",
 			    (const char *)name,
-			    (const char *)rdstation->name(),
+			    (const char *)rda->station()->name(),
 			    swa_matrix,f0[0].toInt());
     }
     else {
       sql=QString().sprintf("insert into OUTPUTS set NAME=\"%s\",\
                              STATION_NAME=\"%s\",MATRIX=%d,NUMBER=%d",
 			    (const char *)name,
-			    (const char *)rdstation->name(),
+			    (const char *)rda->station()->name(),
 			    swa_matrix,f0[0].toInt());
     }
     delete q;
@@ -393,7 +393,7 @@ void SoftwareAuthority::DispatchCommand()
     //
     sql=QString("update MATRICES set ")+
       QString().sprintf("GPIS=%d,GPOS=%d where ",swa_gpis,swa_gpos)+
-      "(STATION_NAME=\""+RDEscapeString(rdstation->name())+"\")&&"+
+      "(STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\")&&"+
       QString().sprintf("(MATRIX=%d)",swa_matrix);
     q=new RDSqlQuery(sql);
     delete q;
@@ -446,7 +446,7 @@ void SoftwareAuthority::ExecuteMacroCart(unsigned cartnum)
   RDMacro rml;
   rml.setRole(RDMacro::Cmd);
   rml.setCommand(RDMacro::EX);
-  rml.setAddress(rdstation->address());
+  rml.setAddress(rda->station()->address());
   rml.setEchoRequested(false);
   rml.setArgQuantity(1);
   rml.setArg(0,cartnum);

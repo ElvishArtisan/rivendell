@@ -62,7 +62,7 @@
 
 bool MainObject::LoadSwitchDriver(int matrix_num)
 {
-  RDMatrix *matrix=new RDMatrix(rdstation->name(),matrix_num);
+  RDMatrix *matrix=new RDMatrix(rda->station()->name(),matrix_num);
 
   switch(matrix->type()) {
   case RDMatrix::Acu1p:

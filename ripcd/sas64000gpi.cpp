@@ -40,7 +40,7 @@ Sas64000Gpi::Sas64000Gpi(RDMatrix *matrix,QObject *parent)
   //
   // Initialize the TTY Port
   //
-  RDTty *tty=new RDTty(rdstation->name(),matrix->port(RDMatrix::Primary));
+  RDTty *tty=new RDTty(rda->station()->name(),matrix->port(RDMatrix::Primary));
   sas_device=new RDTTYDevice();
   if(tty->active()) {
     sas_device->setName(tty->port());
