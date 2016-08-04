@@ -15493,3 +15493,5 @@
 	* Refactored rdrepld(1) to use 'RDApplication'.
 2016-08-04 Fred Gleason <fredg@paravelsystems.com>
 	* Refactored ripcd(8) to use 'RDApplication'.
+2016-08-04 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored rdcatchd(8) to use 'RDApplication'.

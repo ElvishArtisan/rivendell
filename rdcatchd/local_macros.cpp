@@ -18,6 +18,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
+#include <rdapplication.h>
 #include <rdcart.h>
 #include <rduser.h>
 
@@ -67,7 +68,7 @@ void MainObject::RunLocalMacros(RDMacro *rml)
 	  }
 	  if(rml->echoRequested()) {
 	    rml->acknowledge(true);
-	    catch_ripc->sendRml(rml);
+	    rda->ripc()->sendRml(rml);
 	  }
 	  return;
 	}
@@ -75,7 +76,7 @@ void MainObject::RunLocalMacros(RDMacro *rml)
     }
     if(rml->echoRequested()) {
       rml->acknowledge(false);
-      catch_ripc->sendRml(rml);
+      rda->ripc()->sendRml(rml);
     }
     break;
 
@@ -88,22 +89,22 @@ void MainObject::RunLocalMacros(RDMacro *rml)
        (dst_cartnum<1)||(dst_cartnum>RD_MAX_CART_NUMBER)||
        (cutnum<1)||(cutnum>RD_MAX_CUT_NUMBER)||
        (dst_cutnum<1)||(dst_cutnum>RD_MAX_CUT_NUMBER)||
-       (catch_ripc->user().isEmpty())) {
+       (rda->ripc()->user().isEmpty())) {
       if(rml->echoRequested()) {
 	rml->acknowledge(false);
-	catch_ripc->sendRml(rml);
+	rda->ripc()->sendRml(rml);
       }
       return;
     }
-    user=new RDUser(catch_ripc->user());
+    user=new RDUser(rda->ripc()->user());
     cut=new RDCut(cartnum,cutnum);
-    ok=cut->copyTo(catch_rdstation,user,RDCut::cutName(dst_cartnum,dst_cutnum),
-		   catch_config);
+    ok=cut->copyTo(rda->station(),user,RDCut::cutName(dst_cartnum,dst_cutnum),
+		   rda->config());
     delete cut;
     delete user;
     if(rml->echoRequested()) {
       rml->acknowledge(ok);
-      catch_ripc->sendRml(rml);
+      rda->ripc()->sendRml(rml);
     }
     break;
 
@@ -113,7 +114,7 @@ void MainObject::RunLocalMacros(RDMacro *rml)
       if(ExecuteMacroCart(cart)) {
 	if(rml->echoRequested()) {
 	  rml->acknowledge(true);
-	  catch_ripc->sendRml(rml);
+	  rda->ripc()->sendRml(rml);
 	}
 	delete cart;
 	return;
@@ -122,7 +123,7 @@ void MainObject::RunLocalMacros(RDMacro *rml)
     else {
       if(rml->echoRequested()) {
 	rml->acknowledge(false);
-	catch_ripc->sendRml(rml);
+	rda->ripc()->sendRml(rml);
       }
     }
     delete cart;
@@ -136,7 +137,7 @@ void MainObject::RunLocalMacros(RDMacro *rml)
     if(rml->argQuantity()!=4) {
       if(rml->echoRequested()) {
 	rml->acknowledge(false);
-	catch_ripc->sendRml(rml);
+	rda->ripc()->sendRml(rml);
       }
       return;
     }
@@ -148,18 +149,18 @@ void MainObject::RunLocalMacros(RDMacro *rml)
        ||len==0) {
       if(rml->echoRequested()) {
 	rml->acknowledge(false);
-	catch_ripc->sendRml(rml);
+	rda->ripc()->sendRml(rml);
       }
       return;
     }
     cut=new RDCut(cartnum,cutnum);
-    deck=new RDDeck(catch_config->stationName(),chan);
+    deck=new RDDeck(rda->config()->stationName(),chan);
     if((!cut->exists())||(!deck->isActive())) {
       delete cut;
       delete deck;
       if(rml->echoRequested()) {
 	rml->acknowledge(false);
-	catch_ripc->sendRml(rml);
+	rda->ripc()->sendRml(rml);
       }
       return;
     }
@@ -174,7 +175,7 @@ void MainObject::RunLocalMacros(RDMacro *rml)
 	catch_record_pending_maxlen[chan-1]=len;
 	if(rml->echoRequested()) {
 	  rml->acknowledge(true);
-	  catch_ripc->sendRml(rml);
+	  rda->ripc()->sendRml(rml);
 	}
 	return;
       }
@@ -184,7 +185,7 @@ void MainObject::RunLocalMacros(RDMacro *rml)
 			chan));
 	if(rml->echoRequested()) {
 	  rml->acknowledge(false);
-	  catch_ripc->sendRml(rml);
+	  rda->ripc()->sendRml(rml);
 	}
 	return;
       }
@@ -196,7 +197,7 @@ void MainObject::RunLocalMacros(RDMacro *rml)
     StartRmlRecording(chan,cartnum,cutnum,len);
     if(rml->echoRequested()) {
       rml->acknowledge(true);
-      catch_ripc->sendRml(rml);
+      rda->ripc()->sendRml(rml);
     }
     break;
 
@@ -204,7 +205,7 @@ void MainObject::RunLocalMacros(RDMacro *rml)
     if(rml->argQuantity()!=1) {
       if(rml->echoRequested()) {
 	rml->acknowledge(false);
-	catch_ripc->sendRml(rml);
+	rda->ripc()->sendRml(rml);
       }
       return;
     }
@@ -213,7 +214,7 @@ void MainObject::RunLocalMacros(RDMacro *rml)
       switch(catch_record_deck_status[chan-1]) {
       case RDDeck::Recording:
 	catch_record_aborting[chan-1]=true;
-	catch_cae->stopRecord(catch_record_card[chan-1],
+	rda->cae()->stopRecord(catch_record_card[chan-1],
 			      catch_record_stream[chan-1]);
 	break;
 	
@@ -227,7 +228,7 @@ void MainObject::RunLocalMacros(RDMacro *rml)
     }
     if(rml->echoRequested()) {
       rml->acknowledge(true);
-      catch_ripc->sendRml(rml);
+      rda->ripc()->sendRml(rml);
     }
     break;
 

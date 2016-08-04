@@ -34,11 +34,11 @@
 
 #include <vector>
 
-#include <qapplication.h>
 #include <qtimer.h>
 #include <qsignalmapper.h>
 #include <qsessionmanager.h>
 
+#include <rdapplication.h>
 #include <rddb.h>
 #include <rdconf.h>
 #include <rdurl.h>
@@ -52,7 +52,6 @@
 #include <rdcheck_daemons.h>
 #include <rddebug.h>
 #include <rddatedecode.h>
-#include <rdcmd_switch.h>
 #include <rdescape_string.h>
 #include <rdpodcast.h>
 #include <rdsettings.h>
@@ -98,7 +97,6 @@ void MainObject::RunBatch(RDCmdSwitch *cmd)
 {
   bool ok=false;
   int id=-1;
-  unsigned schema=0;
 
   //
   // Set Process Priority
@@ -136,13 +134,6 @@ void MainObject::RunBatch(RDCmdSwitch *cmd)
   //
   // Open Database
   //
-  QString err (tr("ERROR rdcatchd aborting - "));
-
-  catch_db=RDInitDb (&schema,&err);
-  if(!catch_db) {
-    printf(err.ascii());
-    exit(1);
-  }
   connect (RDDbStatus(),SIGNAL(logText(RDConfig::LogPriority,const QString &)),
 	   this,SLOT(log(RDConfig::LogPriority,const QString &)));
 
@@ -167,7 +158,7 @@ void MainObject::RunBatch(RDCmdSwitch *cmd)
   connect(catch_connect,SIGNAL(connected(int,bool)),
 	  this,SLOT(catchConnectedData(int,bool)));
   catch_connect->
-    connectHost("localhost",RDCATCHD_TCP_PORT,catch_config->password());
+    connectHost("localhost",RDCATCHD_TCP_PORT,rda->config()->password());
 }
 
 
@@ -186,7 +177,7 @@ void MainObject::RunDownload(CatchEvent *evt)
   //
   // Resolve Wildcards
   //
-  RDStation *station=new RDStation(catch_config->stationName());
+  RDStation *station=new RDStation(rda->config()->stationName());
   evt->resolveUrl(station->timeOffset());
   delete station;
 
@@ -199,7 +190,7 @@ void MainObject::RunDownload(CatchEvent *evt)
 		  (const char *)evt->resolvedUrl(),
 		  (const char *)evt->tempName(),
 		  evt->id()));
-  RDDownload *conv=new RDDownload(catch_config->stationName(),this);
+  RDDownload *conv=new RDDownload(rda->config()->stationName(),this);
   
   conv->setSourceUrl(RDUrlEscape(evt->resolvedUrl()));
   conv->setDestinationFile(evt->tempName());
@@ -211,7 +202,7 @@ void MainObject::RunDownload(CatchEvent *evt)
     url_password=QString(RD_ANON_FTP_PASSWORD)+"-"+VERSION;
   }
   switch((conv_err=conv->runDownload(url_username,url_password,
-				     catch_config->logXloadDebugData()))) {
+				     rda->config()->logXloadDebugData()))) {
   case RDDownload::ErrorOk:
     LogLine(RDConfig::LogInfo,QString().
 	    sprintf("finished download of %s to %s, id=%d",
@@ -268,7 +259,7 @@ void MainObject::RunUpload(CatchEvent *evt)
   //
   // Resolve Wildcards
   //
-  RDStation *station=new RDStation(catch_config->stationName());
+  RDStation *station=new RDStation(rda->config()->stationName());
   evt->resolveUrl(station->timeOffset());
   delete station;
 
@@ -321,7 +312,7 @@ void MainObject::RunUpload(CatchEvent *evt)
 		  (const char *)evt->
 		  resolvedUrl(),
 		  evt->id()));
-  RDUpload *conv=new RDUpload(catch_config->stationName(),this);
+  RDUpload *conv=new RDUpload(rda->config()->stationName(),this);
   conv->setSourceFile(evt->tempName());
   conv->setDestinationUrl(evt->resolvedUrl());
   QString url_username=evt->urlUsername();
@@ -332,7 +323,7 @@ void MainObject::RunUpload(CatchEvent *evt)
     url_password=QString(RD_ANON_FTP_PASSWORD)+"-"+VERSION;
   }
   switch((conv_err=conv->runUpload(url_username,url_password,
-				   catch_config->logXloadDebugData()))) {
+				   rda->config()->logXloadDebugData()))) {
   case RDUpload::ErrorOk:
     catch_connect->setExitCode(evt->id(),RDRecording::Ok,tr("Ok"));
     qApp->processEvents();
@@ -379,8 +370,8 @@ void MainObject::RunUpload(CatchEvent *evt)
 						 (const char *)evt->tempName()));
   }
   else {
-    chown(evt->tempName(),catch_config->uid(),
-	  catch_config->gid());
+    chown(evt->tempName(),rda->config()->uid(),
+	  rda->config()->gid());
   }
 }
 
@@ -399,7 +390,7 @@ bool MainObject::Export(CatchEvent *evt)
     return false;
   }
   RDCart *cart=new RDCart(cut->cartNumber());
-  RDAudioConvert *conv=new RDAudioConvert(catch_config->stationName(),this);
+  RDAudioConvert *conv=new RDAudioConvert(rda->config()->stationName(),this);
   conv->setSourceFile(RDCut::pathName(evt->cutName()));
   conv->setRange(cut->startPoint(),cut->endPoint());
   conv->setDestinationFile(RDEscapeString(evt->tempName()));
@@ -471,7 +462,7 @@ bool MainObject::Import(CatchEvent *evt)
   unsigned msecs=wave->getExtTimeLength();
   delete wave;
   RDCart *cart=new RDCart(cut->cartNumber());
-  RDAudioConvert *conv=new RDAudioConvert(catch_config->stationName(),this);
+  RDAudioConvert *conv=new RDAudioConvert(rda->config()->stationName(),this);
   conv->setSourceFile(RDEscapeString(evt->tempName()));
   conv->setDestinationFile(RDCut::pathName(evt->cutName()));
   RDSettings *settings=new RDSettings();
@@ -491,7 +482,7 @@ bool MainObject::Import(CatchEvent *evt)
     break;
   }
   settings->setChannels(evt->channels());
-  settings->setSampleRate(catch_system->sampleRate());
+  settings->setSampleRate(rda->system()->sampleRate());
   settings->setBitRate(evt->bitrate());
   settings->setNormalizationLevel(evt->normalizeLevel()/100);
   LogLine(RDConfig::LogInfo,QString().

@@ -38,13 +38,9 @@
 #include <rdsocket.h>
 #include <rdtimeengine.h>
 #include <rd.h>
-#include <rdcae.h>
 #include <rdcart.h>
 #include <rddeck.h>
 #include <rdtty.h>
-#include <rdripc.h>
-#include <rdsystem.h>
-#include <rdstation.h>
 #include <rdmacro_event.h>
 #include <rdconfig.h>
 #include <rdcatch_conf.h>
@@ -67,7 +63,7 @@
 #define RDCATCHD_FREE_EVENTS_INTERVAL 1000
 #define RDCATCHD_HEARTBEAT_INTERVAL 10000
 #define RDCATCHD_ERROR_ID_OFFSET 1000000
-extern RDConfig *catch_config;
+//extern RDConfig *catch_config;
 
 //
 // Function Prototypes
@@ -186,15 +182,10 @@ class MainObject : public QObject
   void StartRmlRecording(int chan,int cartnum,int cutnum,int maxlen);
   void StartBatch(int id);
   QString GetTempRecordingName(int id) const;
-  QSqlDatabase *catch_db;
-  RDSystem *catch_system;
-  RDStation *catch_rdstation;
-  RDRipc *catch_ripc;
   QString catch_default_user;
   QString catch_host;
   bool debug;
   RDTimeEngine *catch_engine;
-  RDCae *catch_cae;
   Q_INT16 tcp_port;
   QServerSocket *server;
   RDCatchConnect *catch_connect;
