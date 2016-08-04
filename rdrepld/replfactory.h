@@ -21,7 +21,6 @@
 #ifndef REPLFACTORY_H
 #define REPLFACTORY_H
 
-#include <globals.h>
 #include <replconfig.h>
 
 class ReplFactory

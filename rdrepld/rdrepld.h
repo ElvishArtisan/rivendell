@@ -27,8 +27,6 @@
 #include <qtimer.h>
 
 #include <rdcheck_daemons.h>
-#include <rdsystem.h>
-#include <rdstation.h>
 #include <rdconfig.h>
 
 #include <replfactory.h>
@@ -53,8 +51,6 @@ class MainObject : public QObject
   void FreeReplicators();
   QTimer *repl_loop_timer;
   QString repl_temp_dir;
-  RDStation *repl_station;
-  QSqlDatabase *repl_db;
   std::vector<ReplFactory *> repl_replicators;
   bool debug;
 };

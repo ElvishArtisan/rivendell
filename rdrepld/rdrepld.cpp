@@ -22,8 +22,8 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
-#include <qapplication.h>
 
+#include <rdapplication.h>
 #include <rddb.h>
 #include <rdconf.h>
 #include <rdcmd_switch.h>
@@ -31,12 +31,8 @@
 #include <rdcart.h>
 #include <dbversion.h>
 
-#include <globals.h>
 #include <citadelxds.h>
 #include <rdrepld.h>
-
-RDConfig *rdconfig;
-RDSystem *rdsystem;
 
 void SigHandler(int signum)
 {
@@ -63,26 +59,6 @@ void SigHandler(int signum)
 MainObject::MainObject(QObject *parent)
   :QObject(parent)
 {
-  bool skip_db_check=false;
-  unsigned schema=0;
-
-  //
-  // Load the config
-  //
-  rdconfig=new RDConfig();
-  rdconfig->load();
-
-  //
-  // Read Command Options
-  //
-  RDCmdSwitch *cmd=
-    new RDCmdSwitch(qApp->argc(),qApp->argv(),"rdrepld",RDREPLD_USAGE);
-  for(unsigned i=0;i<cmd->keys();i++) {
-    if(cmd->key(i)=="--skip-db-check") {
-      skip_db_check=true;
-    }
-  }
-
   //
   // Make sure we're the only instance running
   //
@@ -102,38 +78,10 @@ MainObject::MainObject(QObject *parent)
   repl_temp_dir=RDTempDir();
 
   //
-  // Open Database
-  //
-  QString err (tr("ERROR rdrepld aborting - "));
-
-  repl_db=RDInitDb(&schema,&err);
-  if(!repl_db) {
-    printf(err.ascii());
-    exit(1);
-  }
-  if((schema!=RD_VERSION_DATABASE)&&(!skip_db_check)) {
-    fprintf(stderr,"rdrepld: database version mismatch, should be %u, is %u\n",
-	    RD_VERSION_DATABASE,schema);
-    exit(256);
-  }
-  connect (RDDbStatus(),SIGNAL(logText(RDConfig::LogPriority,const QString &)),
-	   this,SLOT(log(RDConfig::LogPriority,const QString &)));
-
-  //
-  // System Configuration
-  //
-  rdsystem=new RDSystem();
-
-  //
-  // Station Configuration
-  //
-  repl_station=new RDStation(rdconfig->stationName());
-
-  //
   // Detach
   //
   if(qApp->argc()==1) {
-    RDDetach(rdconfig->logCoreDumpDirectory());
+    RDDetach(rda->config()->logCoreDumpDirectory());
   }
   else {
     debug=true;
@@ -154,7 +102,7 @@ MainObject::MainObject(QObject *parent)
   connect(repl_loop_timer,SIGNAL(timeout()),this,SLOT(mainLoop()));
   repl_loop_timer->start(RD_RDREPL_SCAN_INTERVAL,true);
 
-  rdconfig->log("rdrepld",RDConfig::LogNotice,"started");
+  rda->config()->log("rdrepld",RDConfig::LogNotice,"started");
 }
 
 
@@ -169,7 +117,7 @@ void MainObject::mainLoop()
 
 void MainObject::log(RDConfig::LogPriority prio,const QString &msg)
 {
-  rdconfig->log("rdrepld",prio,msg);
+  rda->config()->log("rdrepld",prio,msg);
 }
 
 
@@ -252,7 +200,7 @@ void MainObject::LoadReplicators()
              BITRATE,QUALITY,URL,URL_USERNAME,URL_PASSWORD,\
              ENABLE_METADATA,NORMALIZATION_LEVEL from \
              REPLICATORS where STATION_NAME=\"%s\"",
-	    (const char *)RDEscapeString(rdconfig->stationName()));
+	    (const char *)RDEscapeString(rda->config()->stationName()));
   q=new RDSqlQuery(sql);
   while(q->next()) {
     config=new ReplConfig();
@@ -292,7 +240,7 @@ void MainObject::FreeReplicators()
 
 int main(int argc,char *argv[])
 {
-  QApplication a(argc,argv,false);
+  RDApplication a(argc,argv,"rdrepeld",RDREPLD_USAGE,false);
   new MainObject();
   return a.exec();
 }

@@ -29,11 +29,11 @@ moc_%.cpp:	%.h
 	$(MOC) $< -o $@
 
 bin_PROGRAMS = rdrepld
-dist_rdrepld_SOURCES = globals.h\
+dist_rdrepld_SOURCES = citadelxds.cpp citadelxds.h\
                        rdrepld.cpp rdrepld.h \
                        replconfig.cpp replconfig.h\
-                       replfactory.cpp replfactory.h\
-                       citadelxds.cpp citadelxds.h
+                       replfactory.cpp replfactory.h
+
 nodist_rdrepld_SOURCES = moc_rdrepld.cpp
 rdrepld_LDADD = @LIB_RDLIBS@ @LIBVORBIS@
 

@@ -26,6 +26,7 @@
 #include <qfileinfo.h>
 #include <qdatetime.h>
 
+#include <rdapplication.h>
 #include <rddb.h>
 #include <rdconf.h>
 #include <rdaudioconvert.h>
@@ -85,10 +86,10 @@ void CitadelXds::CheckIsciXreference()
   QString sql;
   RDSqlQuery *q;
 
-  QFileInfo *fi=new QFileInfo(rdsystem->isciXreferencePath());
+  QFileInfo *fi=new QFileInfo(rda->system()->isciXreferencePath());
   if(fi->exists()) {
     if(fi->lastModified()>xds_isci_datetime) {
-      if(LoadIsciXreference(rdsystem->isciXreferencePath())) {
+      if(LoadIsciXreference(rda->system()->isciXreferencePath())) {
 	sql="update VERSION set LAST_ISCI_XREFERENCE=now()";
 	q=new RDSqlQuery(sql);
 	delete q;
@@ -98,9 +99,9 @@ void CitadelXds::CheckIsciXreference()
     }
   }
   else {
-    rdconfig->log("rdrepld",RDConfig::LogErr,
+    rda->config()->log("rdrepld",RDConfig::LogErr,
 	  QString().sprintf("unable to load ISCI cross reference file \"%s\"",
-			    (const char *)rdsystem->isciXreferencePath()));
+			    (const char *)rda->system()->isciXreferencePath()));
   }
   delete fi;
 }
@@ -120,9 +121,9 @@ bool CitadelXds::LoadIsciXreference(const QString &filename)
   unsigned linenum=3;
 
   if((f=fopen(filename,"r"))==NULL) {
-    rdconfig->log("rdrepld",RDConfig::LogErr,
+    rda->config()->log("rdrepld",RDConfig::LogErr,
       QString().sprintf("unable to load ISCI cross reference file \"%s\" [%s]",
-			(const char *)rdsystem->isciXreferencePath(),
+			(const char *)rda->system()->isciXreferencePath(),
 			strerror(errno)));
     return false;
   }
@@ -171,31 +172,31 @@ bool CitadelXds::LoadIsciXreference(const QString &filename)
 	      delete q;
 	    }
 	    else {
-	      rdconfig->log("rdrepld",RDConfig::LogWarning,QString().
+	      rda->config()->log("rdrepld",RDConfig::LogWarning,QString().
 			    sprintf("invalid date in line %d of \"%s\"",
 				    linenum,(const char *)filename));
 	    }
 	  }
 	  else {
-	    rdconfig->log("rdrepld",RDConfig::LogWarning,QString().
+	    rda->config()->log("rdrepld",RDConfig::LogWarning,QString().
 	      sprintf("invalid FILENAME field \"%s\" in line %d of \"%s\"",
 		      (const char *)fields[8],linenum,(const char *)filename));
 	  }
 	}
 	else {
-	  rdconfig->log("rdrepld",RDConfig::LogWarning,QString().
+	  rda->config()->log("rdrepld",RDConfig::LogWarning,QString().
 			sprintf("invalid date in line %d of \"%s\"",
 				linenum,(const char *)filename));
 	}
       }
       else {
-	rdconfig->log("rdrepld",RDConfig::LogDebug,QString().
+	rda->config()->log("rdrepld",RDConfig::LogDebug,QString().
 		  sprintf("missing/invalid cart number in line %d of \"%s\"",
 			      linenum,(const char *)filename));
       }
     }
     else {
-      rdconfig->log("rdrepld",RDConfig::LogWarning,QString().
+      rda->config()->log("rdrepld",RDConfig::LogWarning,QString().
 		    sprintf("line %d malformed in \"%s\"",
 			    linenum,(const char *)filename));
     }
@@ -205,9 +206,9 @@ bool CitadelXds::LoadIsciXreference(const QString &filename)
   //
   // Clean Up
   //
-  rdconfig->log("rdrepld",RDConfig::LogInfo,
+  rda->config()->log("rdrepld",RDConfig::LogInfo,
 		QString().sprintf("loaded ISCI cross reference file \"%s\"",
-			      (const char *)rdsystem->isciXreferencePath()));
+			      (const char *)rda->system()->isciXreferencePath()));
   fclose(f);
   return true;
 }
@@ -346,7 +347,7 @@ bool CitadelXds::PostCut(const QString &cutname,const QString &filename)
   }
   RDSettings *settings=new RDSettings();
   QString tempfile=RDTempDir()+"/"+filename;
-  RDAudioConvert *conv=new RDAudioConvert(rdconfig->stationName());
+  RDAudioConvert *conv=new RDAudioConvert(rda->config()->stationName());
   conv->setSourceFile(RDCut::pathName(cutname));
   conv->setDestinationFile(tempfile);
   conv->setRange(cut->startPoint(),cut->endPoint());
@@ -365,7 +366,7 @@ bool CitadelXds::PostCut(const QString &cutname,const QString &filename)
     break;
 
   default:
-    rdconfig->log("rdrepld",RDConfig::LogErr,
+    rda->config()->log("rdrepld",RDConfig::LogErr,
       QString().sprintf("CitadelXds: audio conversion failed: %s, cutname: %s",
 			(const char *)RDAudioConvert::errorText(conv_err),
 			(const char *)cutname));
@@ -379,17 +380,17 @@ bool CitadelXds::PostCut(const QString &cutname,const QString &filename)
   //
   // Upload File
   //
-  RDUpload *upload=new RDUpload(rdconfig->stationName());
+  RDUpload *upload=new RDUpload(rda->config()->stationName());
   upload->setSourceFile(tempfile);
   upload->setDestinationUrl(config()->url()+"/"+filename);
   switch(upload_err=upload->runUpload(config()->urlUsername(),
 				      config()->urlPassword(),
-				      rdconfig->logXloadDebugData())) {
+				      rda->config()->logXloadDebugData())) {
   case RDUpload::ErrorOk:
     break;
 
   default:
-    rdconfig->log("rdrepld",RDConfig::LogErr,
+    rda->config()->log("rdrepld",RDConfig::LogErr,
 		  QString().sprintf("CitadelXds: audio upload failed: %s",
 			       (const char *)RDUpload::errorText(upload_err)));
     unlink(tempfile);
@@ -398,7 +399,7 @@ bool CitadelXds::PostCut(const QString &cutname,const QString &filename)
   }
   unlink(tempfile);
   delete upload;
-  rdconfig->log("rdrepld",RDConfig::LogInfo,
+  rda->config()->log("rdrepld",RDConfig::LogInfo,
 		QString().sprintf("CitadelXds: uploaded cut %s to %s/%s",
 				  (const char *)cutname,
 				  (const char *)config()->url(),
@@ -436,19 +437,19 @@ void CitadelXds::PurgeCuts()
       conv->setTargetUrl(url);
       if((conv_err=conv->runDelete(config()->urlUsername(),
 				   config()->urlPassword(),
-				   rdconfig->logXloadDebugData()))==
+				   rda->config()->logXloadDebugData()))==
 	 RDDelete::ErrorOk) {
 	sql=QString().sprintf("delete from REPL_CART_STATE where ID=%d",
 			      q->value(0).toInt());
 	q2=new RDSqlQuery(sql);
 	delete q2;
-	rdconfig->log("rdrepld",RDConfig::LogInfo,
+	rda->config()->log("rdrepld",RDConfig::LogInfo,
 		      QString().sprintf("purged \"%s\" for replicator \"%s\"",
 					(const char *)url.toString(),
 					(const char *)config()->name()));
       }
       else {
-	rdconfig->log("rdrepld",RDConfig::LogErr,
+	rda->config()->log("rdrepld",RDConfig::LogErr,
 	 QString().sprintf("unable to delete \"%s\" for replicator \"%s\" [%s]",
 			       (const char *)url.toString(),
 			       (const char *)config()->name(),
