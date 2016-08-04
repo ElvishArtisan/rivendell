@@ -18,8 +18,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qapplication.h>
-
+#include <rdapplication.h>
 #include <rddb.h>
 #include <rdcmd_switch.h>
 #include <rdaudioexport.h>
@@ -40,61 +39,57 @@ MainObject::MainObject(QObject *parent)
   bool ok=false;
   RDAudioConvert::ErrorCode audio_conv_err;
   RDAudioExport::ErrorCode conv_err;
-  unsigned schema=0;
 
   //
   // Read Command Options
   //
-  RDCmdSwitch *cmd=
-    new RDCmdSwitch(qApp->argc(),qApp->argv(),"audio_export_test",
-  		    AUDIO_EXPORT_TEST_USAGE);
-  for(unsigned i=0;i<cmd->keys();i++) {
-    if(cmd->key(i)=="--username") {
-      username=cmd->value(i);
-      cmd->setProcessed(i,true);
+  for(unsigned i=0;i<rda->cmdSwitch()->keys();i++) {
+    if(rda->cmdSwitch()->key(i)=="--username") {
+      username=rda->cmdSwitch()->value(i);
+      rda->cmdSwitch()->setProcessed(i,true);
     }
-    if(cmd->key(i)=="--password") {
-      password=cmd->value(i);
-      cmd->setProcessed(i,true);
+    if(rda->cmdSwitch()->key(i)=="--password") {
+      password=rda->cmdSwitch()->value(i);
+      rda->cmdSwitch()->setProcessed(i,true);
     }
-    if(cmd->key(i)=="--cart-number") {
-      cart_number=cmd->value(i).toUInt(&ok);
+    if(rda->cmdSwitch()->key(i)=="--cart-number") {
+      cart_number=rda->cmdSwitch()->value(i).toUInt(&ok);
       if((!ok)||(cart_number>999999)) {
 	fprintf(stderr,"audio_export_test: invalid cart number\n");
 	exit(256);
       }
-      cmd->setProcessed(i,true);
+      rda->cmdSwitch()->setProcessed(i,true);
     }
-    if(cmd->key(i)=="--cut-number") {
-      cut_number=cmd->value(i).toUInt(&ok);
+    if(rda->cmdSwitch()->key(i)=="--cut-number") {
+      cut_number=rda->cmdSwitch()->value(i).toUInt(&ok);
       if((!ok)||(cut_number>999)) {
 	fprintf(stderr,"audio_export_test: invalid cut number\n");
 	exit(256);
       }
-      cmd->setProcessed(i,true);
+      rda->cmdSwitch()->setProcessed(i,true);
     }
-    if(cmd->key(i)=="--destination-file") {
-      destination_filename=cmd->value(i);
-      cmd->setProcessed(i,true);
+    if(rda->cmdSwitch()->key(i)=="--destination-file") {
+      destination_filename=rda->cmdSwitch()->value(i);
+      rda->cmdSwitch()->setProcessed(i,true);
     }
-    if(cmd->key(i)=="--start-point") {
-      start_point=cmd->value(i).toInt(&ok);
+    if(rda->cmdSwitch()->key(i)=="--start-point") {
+      start_point=rda->cmdSwitch()->value(i).toInt(&ok);
       if(!ok) {
 	fprintf(stderr,"audio_export_test: invalid start point\n");
 	exit(256);
       }
-      cmd->setProcessed(i,true);
+      rda->cmdSwitch()->setProcessed(i,true);
     }
-    if(cmd->key(i)=="--end-point") {
-      end_point=cmd->value(i).toInt(&ok);
+    if(rda->cmdSwitch()->key(i)=="--end-point") {
+      end_point=rda->cmdSwitch()->value(i).toInt(&ok);
       if(!ok) {
 	fprintf(stderr,"audio_export_test: invalid end point\n");
 	exit(256);
       }
-      cmd->setProcessed(i,true);
+      rda->cmdSwitch()->setProcessed(i,true);
     }
-    if(cmd->key(i)=="--destination-format") {
-      RDSettings::Format format=(RDSettings::Format)cmd->value(i).toInt(&ok);
+    if(rda->cmdSwitch()->key(i)=="--destination-format") {
+      RDSettings::Format format=(RDSettings::Format)rda->cmdSwitch()->value(i).toInt(&ok);
       if(!ok) {
 	fprintf(stderr,"audio_export_test: invalid destination format\n");
 	exit(256);
@@ -107,7 +102,7 @@ MainObject::MainObject(QObject *parent)
       case RDSettings::Flac:
       case RDSettings::OggVorbis:
 	destination_settings->setFormat(format);
-	cmd->setProcessed(i,true);
+	rda->cmdSwitch()->setProcessed(i,true);
 	break;
 
       default:
@@ -116,50 +111,50 @@ MainObject::MainObject(QObject *parent)
       }
       destination_settings->setFormat(format);
     }
-    if(cmd->key(i)=="--destination-channels") {
-      unsigned channels=cmd->value(i).toInt(&ok);
+    if(rda->cmdSwitch()->key(i)=="--destination-channels") {
+      unsigned channels=rda->cmdSwitch()->value(i).toInt(&ok);
       if(!ok) {
 	fprintf(stderr,"audio_export_test: invalid destination channels\n");
 	exit(256);
       }
       destination_settings->setChannels(channels);
-      cmd->setProcessed(i,true);
+      rda->cmdSwitch()->setProcessed(i,true);
     }
-    if(cmd->key(i)=="--destination-sample-rate") {
-      unsigned sample_rate=cmd->value(i).toInt(&ok);
+    if(rda->cmdSwitch()->key(i)=="--destination-sample-rate") {
+      unsigned sample_rate=rda->cmdSwitch()->value(i).toInt(&ok);
       if(!ok) {
 	fprintf(stderr,"audio_export_test: invalid destination sample rate\n");
 	exit(256);
       }
       destination_settings->setSampleRate(sample_rate);
-      cmd->setProcessed(i,true);
+      rda->cmdSwitch()->setProcessed(i,true);
     }
-    if(cmd->key(i)=="--destination-bit-rate") {
-      unsigned bit_rate=cmd->value(i).toInt(&ok);
+    if(rda->cmdSwitch()->key(i)=="--destination-bit-rate") {
+      unsigned bit_rate=rda->cmdSwitch()->value(i).toInt(&ok);
       if(!ok) {
 	fprintf(stderr,"audio_export_test: invalid destination bit rate\n");
 	exit(256);
       }
       destination_settings->setBitRate(bit_rate);
-      cmd->setProcessed(i,true);
+      rda->cmdSwitch()->setProcessed(i,true);
     }
-    if(cmd->key(i)=="--quality") {
-      unsigned quality=cmd->value(i).toInt(&ok);
+    if(rda->cmdSwitch()->key(i)=="--quality") {
+      unsigned quality=rda->cmdSwitch()->value(i).toInt(&ok);
       if(!ok) {
 	fprintf(stderr,"audio_export_test: invalid destination quality\n");
 	exit(256);
       }
       destination_settings->setQuality(quality);
-      cmd->setProcessed(i,true);
+      rda->cmdSwitch()->setProcessed(i,true);
     }
-    if(cmd->key(i)=="--normalization-level") {
-      int normalization_level=cmd->value(i).toInt(&ok);
+    if(rda->cmdSwitch()->key(i)=="--normalization-level") {
+      int normalization_level=rda->cmdSwitch()->value(i).toInt(&ok);
       if((!ok)||(normalization_level>0)) {
 	fprintf(stderr,"audio_export_test: invalid normalization level\n");
 	exit(256);
       }
       destination_settings->setNormalizationLevel(normalization_level);
-      cmd->setProcessed(i,true);
+      rda->cmdSwitch()->setProcessed(i,true);
     }
   }
   if(cart_number==0) {
@@ -180,25 +175,7 @@ MainObject::MainObject(QObject *parent)
     exit(256);
   }
 
-  //
-  // Read Configuration
-  //
-  rdconfig=new RDConfig();
-  rdconfig->load();
-
-  //
-  // Open Database
-  //
-  QString err (tr("audio_export_test: "));
-  QSqlDatabase *db=RDInitDb(&schema,&err);
-  if(!db) {
-    fprintf(stderr,err.ascii());
-    delete cmd;
-    exit(256);
-  }
-
-  RDStation *station=new RDStation(rdconfig->stationName());
-  RDAudioExport *conv=new RDAudioExport(station,rdconfig,this);
+  RDAudioExport *conv=new RDAudioExport(rda->station(),rda->config(),this);
   conv->setCartNumber(cart_number);
   conv->setCutNumber(cut_number);
   conv->setDestinationFile(destination_filename);
@@ -216,7 +193,7 @@ MainObject::MainObject(QObject *parent)
 
 int main(int argc,char *argv[])
 {
-  QApplication a(argc,argv,false);
+  RDApplication a(argc,argv,"audio_export_test",AUDIO_EXPORT_TEST_USAGE,false);
   new MainObject();
   return a.exec();
 }

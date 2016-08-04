@@ -21,21 +21,13 @@
 #ifndef UPLOAD_TEST_H
 #define UPLOAD_TEST_H
 
+#include <stdlib.h>
+
 #include <list>
 
 #include <qobject.h>
-#include <qsqldatabase.h>
-
-#include <rdconfig.h>
-#include <rdcmd_switch.cpp>
 
 #define UPLOAD_TEST_USAGE "[options]\n\nTest the Rivendell upload routines\n\nOptions are:\n--username=<username>\n\n--password=<password>\n\n--source-file=<filename>\n\n--destination-url=<url>\n\n"
-
-//
-// Global Variables
-//
-RDConfig *rdconfig;
-
 
 class MainObject : public QObject
 {

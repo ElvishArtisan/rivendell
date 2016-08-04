@@ -21,10 +21,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include <qapplication.h>
 #include <qvariant.h>
 
-#include <rdcmd_switch.h>
+#include <rdapplication.h>
 #include <rdwavefile.h>
 
 #include "audio_peaks_test.h"
@@ -40,26 +39,23 @@ MainObject::MainObject(QObject *parent)
   //
   // Read Command Options
   //
-  RDCmdSwitch *cmd=
-    new RDCmdSwitch(qApp->argc(),qApp->argv(),"audio_peaks_test",
-		    AUDIO_PEAKS_TEST_USAGE);
-  for(unsigned i=0;i<cmd->keys();i++) {
-    if(cmd->key(i)=="--filename") {
-      filename=cmd->value(i);
-      cmd->setProcessed(i,true);
+  for(unsigned i=0;i<rda->cmdSwitch()->keys();i++) {
+    if(rda->cmdSwitch()->key(i)=="--filename") {
+      filename=rda->cmdSwitch()->value(i);
+      rda->cmdSwitch()->setProcessed(i,true);
     }
-    if(cmd->key(i)=="--frame") {
-      frame=cmd->value(i).toUInt(&ok);
+    if(rda->cmdSwitch()->key(i)=="--frame") {
+      frame=rda->cmdSwitch()->value(i).toUInt(&ok);
       if(!ok) {
 	fprintf(stderr,"audio_peaks_test: invalid --frame arguument\n");
 	exit(256);
       }
       frame_used=true;
-      cmd->setProcessed(i,true);
+      rda->cmdSwitch()->setProcessed(i,true);
     }
-    if(!cmd->processed(i)) {
+    if(!rda->cmdSwitch()->processed(i)) {
       fprintf(stderr,"audio_peaks_test: unknown option \"%s\"\n",
-	      (const char *)cmd->value(i));
+	      (const char *)rda->cmdSwitch()->value(i));
       exit(256);
     }
   }
@@ -101,7 +97,7 @@ MainObject::MainObject(QObject *parent)
 
 int main(int argc,char *argv[])
 {
-  QApplication a(argc,argv,false);
+  RDApplication a(argc,argv,"audio_peaks_test",AUDIO_PEAKS_TEST_USAGE,false);
   new MainObject();
   return a.exec();
 }

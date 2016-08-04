@@ -15503,3 +15503,11 @@
 	* Removed sas_filter(1) from 'importers/'.
 2016-08-04 Fred Gleason <fredg@paravelsystems.com>
 	* Refactored wings_filter(1) to use 'RDApplication'.
+2016-08-04 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored audio_export_test(1) to use 'RDApplication'.
+	* Refactored audio_import_test(1) to use 'RDApplication'.
+	* Refactored audio_peaks_test(1) to use 'RDApplication'.
+	* Refactored reserve_carts_test(1) to use 'RDApplication'.
+	* Removed sas_switch_torture(1) from 'tests/'.
+	* Removed sas_torture(1) from 'tests/'.
+	* Refactored upload_test(1) to use 'RDApplication'.

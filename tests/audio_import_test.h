@@ -24,19 +24,11 @@
 #include <list>
 
 #include <qobject.h>
-#include <qsqldatabase.h>
 
-#include <rdconfig.h>
 #include <rdsettings.h>
 #include <rdcmd_switch.cpp>
 
 #define AUDIO_IMPORT_TEST_USAGE "[options]\n\nTest the Rivendell audio importer routines\n\nOptions are:\n--username=<username>\n\n--password=<password>\n\n--cart-number=<cartnum>\n\n--cut-number=<cutnum>\n\n--source-file=<filename>\n\n--destination-channels=<chans>\n\n--normalization-level=<dbfs>\n\n--autotrim-level=<dbfs>\n\n--use-metadata\n\n"
-
-//
-// Global Variables
-//
-RDConfig *rdconfig;
-
 
 class MainObject : public QObject
 {
