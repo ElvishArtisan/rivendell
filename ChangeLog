@@ -15457,3 +15457,6 @@
 	marker data in the RDXL file structure.
 2016-08-03 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 2.15.0int00.
+2016-08-05 Fred Gleason <fredg@paravelsystems.com>
+	* Updated 'NEWS'.
+	* Incremented the package version to 2.15.1.
