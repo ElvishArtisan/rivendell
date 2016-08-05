@@ -219,8 +219,7 @@ bool Xport::Authenticate()
   if(!xport_post->getValue("PASSWORD",&passwd)) {
     return false;
   }
-  rdcgi->setName(name);
-
+  rdcgi->setUser(name);
   return rdcgi->user()->checkPassword(passwd,false);
 }
 

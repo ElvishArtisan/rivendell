@@ -15534,3 +15534,6 @@
 	* Refactored rdxport.cgi(1) to use 'RDCgiApplication'.
 2016-08-05 Fred Gleason <fredg@paravelsystems.com>
 	* Implemented console error messages in 'lib/rdapplication.cpp'.
+2016-08-05 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'web/rdxport/rdxport.cpp' that caused a segfault
+	when authenticating web connections.

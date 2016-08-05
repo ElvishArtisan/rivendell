@@ -1,6 +1,6 @@
-// rdapplication.cpp
+// rdcgiapplication.cpp
 //
-// Base class for Rivendell modules
+// Base class for Rivendell CGI programs
 //
 //   (C) Copyright 2016 Fred Gleason <fredg@paravelsystems.com>
 //
