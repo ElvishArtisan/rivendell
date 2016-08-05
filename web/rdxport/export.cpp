@@ -24,6 +24,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 
+#include <rdcgiapplication.h>
 #include <rdformpost.h>
 #include <rdweb.h>
 #include <rdcart.h>
@@ -31,7 +32,7 @@
 #include <rdsettings.h>
 #include <rdconf.h>
 
-#include <rdxport.h>
+#include "rdxport.h"
 
 void Xport::Export()
 {
@@ -95,7 +96,7 @@ void Xport::Export()
   //
   // Verify User Perms
   //
-  if(!xport_user->cartAuthorized(cartnum)) {
+  if(!rdcgi->user()->cartAuthorized(cartnum)) {
     XmlExit("No such cart",404);
   }
 
@@ -140,7 +141,7 @@ void Xport::Export()
   uint8_t data[2048];
   QString tmpdir=RDTempDir();
   QString tmpfile=tmpdir+"/exported_audio";
-  RDAudioConvert *conv=new RDAudioConvert(xport_config->stationName());
+  RDAudioConvert *conv=new RDAudioConvert(rdcgi->config()->stationName());
   conv->setSourceFile(RDCut::pathName(cartnum,cutnum));
   conv->setDestinationFile(tmpfile);
   conv->setDestinationSettings(settings);

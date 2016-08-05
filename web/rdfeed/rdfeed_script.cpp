@@ -23,23 +23,18 @@
 #include <fcntl.h>
 #include <ctype.h>
 
-#include <map>
-
-#include <qapplication.h>
 #include <qdatetime.h>
 #include <qstringlist.h>
 
+#include <rdcgiapplication.h>
 #include <rdconf.h>
-#include <rdconfig.h>
 #include <rdpodcast.h>
-#include <rddb.h>
 #include <rdweb.h>
 #include <rdfeedlog.h>
 #include <rdformpost.h>
 #include <rdfeed.h>
-#include <dbversion.h>
 
-#include <rdfeed_script.h>
+#include "rdfeed_script.h"
 
 char server_name[PATH_MAX];
 
@@ -97,42 +92,6 @@ MainObject::MainObject(QObject *parent)
   else {
     count=true;
   }
-
-  //
-  // Open Database
-  //
-  QSqlDatabase *db=QSqlDatabase::addDatabase(config->mysqlDriver());
-  if(!db) {
-    printf("Content-type: text/html\n\n");
-    printf("rdfeed: unable to initialize connection to database\n");
-    exit(0);
-  }
-  db->setDatabaseName(config->mysqlDbname());
-  db->setUserName(config->mysqlUsername());
-  db->setPassword(config->mysqlPassword());
-  db->setHostName(config->mysqlHostname());
-  if(!db->open()) {
-    printf("Content-type: text/html\n\n");
-    printf("rdfeed: unable to connect to database\n");
-    db->removeDatabase(config->mysqlDbname());
-    exit(0);
-  }
-  RDSqlQuery *q=new RDSqlQuery("select DB from VERSION");
-  if(!q->first()) {
-    printf("Content-type: text/html\n");
-    printf("Status: 500\n\n");
-    printf("rdfeed: missing/invalid database version!\n");
-    db->removeDatabase(config->mysqlDbname());
-    exit(0);
-  }
-  if(q->value(0).toUInt()!=RD_VERSION_DATABASE) {
-    printf("Content-type: text/html\n");
-    printf("Status: 500\n\n");
-    printf("rdfeed: skewed database version!\n");
-    db->removeDatabase(config->mysqlDbname());
-    exit(0);
-  }
-  delete q;
 
   if(cast_id<0) {
     ServeRss(keyname,count);
@@ -389,7 +348,7 @@ void MainObject::Redirect(const QString &url)
 
 int main(int argc,char *argv[])
 {
-  QApplication a(argc,argv,false);
+  RDCgiApplication a(argc,argv);
   new MainObject();
   return a.exec();
 }

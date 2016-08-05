@@ -136,6 +136,7 @@ x11 {
   SOURCES += rdcddblookup.cpp
   SOURCES += rdcdplayer.cpp
   SOURCES += rdcddbrecord.cpp
+  SOURCES += rdcgiapplication.cpp
   SOURCES += rdcheck_daemons.cpp
   SOURCES += rdcheck_version.cpp
   SOURCES += rdcmd_cache.cpp
@@ -269,6 +270,7 @@ x11 {
   HEADERS += rdcddblookup.h
   HEADERS += rdcdplayer.h
   HEADERS += rdcddbrecord.h
+  HEADERS += rdcgiapplication.h
   HEADERS += rdcheck_daemons.h
   HEADERS += rdcheck_version.h
   HEADERS += rdcmd_cache.h

@@ -24,15 +24,13 @@
 #include <fcntl.h>
 #include <errno.h>
 
-#include <rddb.h>
 #include <rdformpost.h>
 #include <rdweb.h>
-#include <rduser.h>
 #include <rdlog.h>
 #include <rdconf.h>
 #include <rdescape_string.h>
 
-#include <rdxport.h>
+#include "rdxport.h"
 
 void Xport::ListLogs()
 {

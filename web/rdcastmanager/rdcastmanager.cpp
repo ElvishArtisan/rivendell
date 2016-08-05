@@ -24,23 +24,17 @@
 #include <ctype.h>
 #include <unistd.h>
 
-#include <qapplication.h>
 #include <qdatetime.h>
 
-#include <rd.h>
+#include <rdcgiapplication.h>
 #include <rdconf.h>
-#include <rdconfig.h>
 #include <rdpodcast.h>
-#include <rddb.h>
 #include <rdweb.h>
 #include <rdescape_string.h>
 #include <rdfeed.h>
 #include <rdcastsearch.h>
-#include <rdsystem.h>
-#include <rdstation.h>
-#include <dbversion.h>
 
-#include <rdcastmanager.h>
+#include "rdcastmanager.h"
 
 char server_name[PATH_MAX];
 
@@ -59,62 +53,6 @@ MainObject::MainObject(QObject *parent)
   cast_post=NULL;
 
   //
-  // Read Configuration
-  //
-  cast_config=new RDConfig();
-  cast_config->load();
-
-  //
-  // Open Database
-  //
-  QSqlDatabase *db=QSqlDatabase::addDatabase(cast_config->mysqlDriver());
-  if(!db) {
-    printf("Content-type: text/html\n\n");
-    printf("rdcastmanager: unable to initialize connection to database\n");
-    Exit(0);
-  }
-  db->setDatabaseName(cast_config->mysqlDbname());
-  db->setUserName(cast_config->mysqlUsername());
-  db->setPassword(cast_config->mysqlPassword());
-  db->setHostName(cast_config->mysqlHostname());
-  if(!db->open()) {
-    printf("Content-type: text/html\n\n");
-    printf("rdcastmanager: unable to connect to database\n");
-    db->removeDatabase(cast_config->mysqlDbname());
-    Exit(0);
-  }
-  RDSqlQuery *q=new RDSqlQuery("select DB from VERSION");
-  if(!q->first()) {
-    printf("Content-type: text/html\n");
-    printf("Status: 500\n\n");
-    printf("rdcastmanager: missing/invalid database version!\n");
-    db->removeDatabase(cast_config->mysqlDbname());
-    Exit(0);
-  }
-  if(q->value(0).toUInt()!=RD_VERSION_DATABASE) {
-    printf("Content-type: text/html\n");
-    printf("Status: 500\n\n");
-    printf("rdcastmanager: skewed database version!\n");
-    db->removeDatabase(cast_config->mysqlDbname());
-    Exit(0);
-  }
-  delete q;
-
-  //
-  // Determine Connection Type
-  //
-  if(getenv("REQUEST_METHOD")==NULL) {
-    printf("Content-type: text/html\n\n");
-    printf("rdcastmanager: missing REQUEST_METHOD\n");
-    db->removeDatabase(cast_config->mysqlDbname());
-    Exit(0);
-  }
-  if(QString(getenv("REQUEST_METHOD")).lower()!="post") {
-    ServeLogin();
-    Exit(0);
-  }
-
-  //
   // Get the Server Name
   //
   if(getenv("SERVER_NAME")==NULL) {
@@ -127,10 +65,8 @@ MainObject::MainObject(QObject *parent)
   //
   // Read Post Variables and Dispatch 
   //
-  RDSystem *system=new RDSystem();
   cast_post=
-    new RDFormPost(RDFormPost::MultipartEncoded,system->maxPostLength());
-  delete system;
+    new RDFormPost(RDFormPost::MultipartEncoded,rdcgi->system()->maxPostLength());
   if(cast_post->error()!=RDFormPost::ErrorOk) {
     RDCgiError(cast_post->errorString(cast_post->error()));
     Exit(0);
@@ -1452,7 +1388,7 @@ void MainObject::DeleteCast()
 
   RDFeed *feed=new RDFeed(cast_feed_id);
   RDPodcast *cast=new RDPodcast(cast_cast_id);
-  cast->removeAudio(feed,&errs,cast_config->logXloadDebugData());
+  cast->removeAudio(feed,&errs,rdcgi->config()->logXloadDebugData());
   delete cast;
   delete feed;
 
@@ -1610,17 +1546,16 @@ void MainObject::PostEpisode()
     RDCgiError("No MEDIA_FILE submitted!");
     Exit(0);
   }
-  RDStation *station=new RDStation(cast_config->stationName(),0);
-  if(!station->exists()) {
+  
+  if(!rdcgi->station()->exists()) {
     RDCgiError("Server station entry not found!");
     Exit(0);
   }
   RDFeed::Error err;
   RDFeed *feed=new RDFeed(cast_feed_id,this);
-  int cast_id=feed->postFile(station,media_file,&err,
-			     cast_config->logXloadDebugData(),cast_config);
+  int cast_id=feed->postFile(rdcgi->station(),media_file,&err,
+			     rdcgi->config()->logXloadDebugData(),rdcgi->config());
   delete feed;
-  delete station;
   if(err!=RDFeed::ErrorOk) {
     RDCgiError(RDFeed::errorString(err));
     Exit(0);
@@ -1920,7 +1855,7 @@ void MainObject::Exit(int code)
 
 int main(int argc,char *argv[])
 {
-  QApplication a(argc,argv,false);
+  RDCgiApplication a(argc,argv);
   new MainObject();
   return a.exec();
 }

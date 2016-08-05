@@ -22,9 +22,6 @@
 #define RDFEED_SCRIPT_H
 
 #include <qobject.h>
-#include <qsqldatabase.h>
-
-#include <rddb.h>
 
 class MainObject : public QObject
 {

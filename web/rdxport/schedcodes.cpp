@@ -20,9 +20,11 @@
 
 #include <qstringlist.h>
 
-#include "rdcart.h"
-#include "rddb.h"
-#include "rdschedcode.h"
+#include <rdcgiapplication.h>
+
+#include <rdcart.h>
+#include <rdschedcode.h>
+
 #include "rdxport.h"
 
 void Xport::ListSchedCodes()
@@ -77,7 +79,7 @@ void Xport::AssignSchedCode()
   //
   // Verify User Perms
   //
-  if(!xport_user->cartAuthorized(cart_number)) {
+  if(!rdcgi->user()->cartAuthorized(cart_number)) {
     XmlExit("No such cart",404);
   }
 
@@ -122,7 +124,7 @@ void Xport::UnassignSchedCode()
   //
   // Verify User Perms
   //
-  if(!xport_user->cartAuthorized(cart_number)) {
+  if(!rdcgi->user()->cartAuthorized(cart_number)) {
     XmlExit("No such cart",404);
   }
 
@@ -158,7 +160,7 @@ void Xport::ListCartSchedCodes()
   //
   // Verify User Perms
   //
-  if(!xport_user->cartAuthorized(cart_number)) {
+  if(!rdcgi->user()->cartAuthorized(cart_number)) {
     XmlExit("No such cart",404);
   }
   //

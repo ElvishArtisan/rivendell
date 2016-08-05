@@ -15526,3 +15526,9 @@
 	* Refactored rdpurgecasts(1) to use 'RDApplication'.
 	* Refactored rdrevert(8) to use 'RDApplication'.
 	* Removed sas_shim(8) in 'utils/sas_shim/'.
+2016-08-05 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'RDCgiApplication' class in 'lib/rdcgiapplication.cpp'
+	and 'lib/rdcgiapplication.h'.
+	* Refactored rdcastmanager.cgi(1) to use 'RDCgiApplication'.
+	* Refactored rdfeed.xml(1) to use 'RDCgiApplication'.
+	* Refactored rdxport.cgi(1) to use 'RDCgiApplication'.

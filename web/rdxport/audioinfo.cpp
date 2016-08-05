@@ -24,13 +24,14 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 
+#include <rdcgiapplication.h>
 #include <rdformpost.h>
 #include <rdweb.h>
 #include <rdcart.h>
 #include <rdwavefile.h>
 #include <rdconf.h>
 
-#include <rdxport.h>
+#include "rdxport.h"
 
 void Xport::AudioInfo()
 {
@@ -51,7 +52,7 @@ void Xport::AudioInfo()
   //
   // Verify User Perms
   //
-  if(!xport_user->cartAuthorized(cartnum)) {
+  if(!rdcgi->user()->cartAuthorized(cartnum)) {
     XmlExit("No such cart",404);
   }
 

@@ -22,7 +22,6 @@
 #define RDCASTMANAGER_H
 
 #include <qobject.h>
-#include <qsqldatabase.h>
 #include <qhostaddress.h>
 
 #include <rdformpost.h>
@@ -84,7 +83,6 @@ class MainObject : public QObject
   bool cast_delete_priv;
   QDate cast_start_date;
   QDate cast_end_date;
-  RDConfig *cast_config;
 };
 
 

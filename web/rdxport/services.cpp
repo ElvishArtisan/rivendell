@@ -24,15 +24,14 @@
 #include <fcntl.h>
 #include <errno.h>
 
-#include <rddb.h>
+#include <rdcgiapplication.h>
 #include <rdformpost.h>
 #include <rdweb.h>
-#include <rduser.h>
 #include <rdsvc.h>
 #include <rdconf.h>
 #include <rdescape_string.h>
 
-#include <rdxport.h>
+#include "rdxport.h"
 
 void Xport::ListServices()
 {

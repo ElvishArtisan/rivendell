@@ -23,15 +23,15 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 
+#include <rdcgiapplication.h>
 #include <rdformpost.h>
 #include <rdweb.h>
 #include <rdcart.h>
 #include <rdaudioconvert.h>
 #include <rdsettings.h>
 #include <rdconf.h>
-#include <rdlibrary_conf.h>
 
-#include <rdxport.h>
+#include "rdxport.h"
 
 void Xport::Import()
 {
@@ -83,10 +83,10 @@ void Xport::Import()
   //
   // Verify User Perms
   //
-  if(!xport_user->cartAuthorized(cartnum)) {
+  if(!rdcgi->user()->cartAuthorized(cartnum)) {
     XmlExit("No such cart",404);
   }
-  if(!xport_user->editAudio()) {
+  if(!rdcgi->user()->editAudio()) {
     XmlExit("Unauthorized",401);
   }
 
@@ -95,9 +95,9 @@ void Xport::Import()
   //
   RDCart *cart=new RDCart(cartnum);
   RDCut *cut=new RDCut(cartnum,cutnum);
-  RDLibraryConf *conf=new RDLibraryConf(xport_config->stationName(),0);
+  //  RDLibraryConf *conf=new RDLibraryConf(rdcgi->config()->stationName(),0);
   RDSettings *settings=new RDSettings();
-  switch(conf->defaultFormat()) {
+  switch(rdcgi->libraryConf()->defaultFormat()) {
   case 0:
     settings->setFormat(RDSettings::Pcm16);
     break;
@@ -111,8 +111,8 @@ void Xport::Import()
     break;
   }
   settings->setChannels(channels);
-  settings->setSampleRate(xport_system->sampleRate());
-  settings->setBitRate(channels*conf->defaultBitrate());
+  settings->setSampleRate(rdcgi->system()->sampleRate());
+  settings->setBitRate(channels*rdcgi->libraryConf()->defaultBitrate());
   settings->setNormalizationLevel(normalization_level);
   RDWaveFile *wave=new RDWaveFile(filename);
   if(!wave->openWave()) {
@@ -121,14 +121,14 @@ void Xport::Import()
   }
   msecs=wave->getExtTimeLength();
   delete wave;
-  RDAudioConvert *conv=new RDAudioConvert(xport_config->stationName());
+  RDAudioConvert *conv=new RDAudioConvert(rdcgi->config()->stationName());
   conv->setSourceFile(filename);
   conv->setDestinationFile(RDCut::pathName(cartnum,cutnum));
   conv->setDestinationSettings(settings);
   RDAudioConvert::ErrorCode conv_err=conv->convert();
   switch(conv_err) {
   case RDAudioConvert::ErrorOk:
-    cut->checkInRecording(xport_config->stationName(),settings,msecs);
+    cut->checkInRecording(rdcgi->config()->stationName(),settings,msecs);
     if(use_metadata>0) {
       cart->setMetadata(conv->sourceWaveData());
       cut->setMetadata(conv->sourceWaveData());
@@ -168,7 +168,6 @@ void Xport::Import()
   }
   delete conv;
   delete settings;
-  delete conf;
   delete cut;
   delete cart;
   XmlExit(RDAudioConvert::errorText(conv_err),resp_code,conv_err);

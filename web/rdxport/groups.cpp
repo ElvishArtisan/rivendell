@@ -24,14 +24,14 @@
 #include <fcntl.h>
 #include <errno.h>
 
+#include <rdcgiapplication.h>
 #include <rdformpost.h>
 #include <rdweb.h>
-#include <rduser.h>
 #include <rdgroup.h>
 #include <rdconf.h>
 #include <rdescape_string.h>
 
-#include <rdxport.h>
+#include "rdxport.h"
 
 void Xport::ListGroups()
 {
@@ -44,7 +44,7 @@ void Xport::ListGroups()
   //
   sql=QString().sprintf("select GROUP_NAME from USER_PERMS \
                          where USER_NAME=\"%s\" order by GROUP_NAME",
-			(const char *)RDEscapeString(xport_user->name()));
+			(const char *)RDEscapeString(rdcgi->user()->name()));
   q=new RDSqlQuery(sql);
 
   //
@@ -85,7 +85,7 @@ void Xport::ListGroup()
   //
   sql=QString().sprintf("select GROUP_NAME from USER_PERMS \
                          where (USER_NAME=\"%s\")&&(GROUP_NAME=\"%s\")",
-			(const char *)RDEscapeString(xport_user->name()),
+			(const char *)RDEscapeString(rdcgi->user()->name()),
 			(const char *)RDEscapeString(group_name));
   q=new RDSqlQuery(sql);
   if(!q->first()) {

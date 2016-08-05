@@ -25,10 +25,7 @@
 #include <qobject.h>
 
 #include <rdaudioconvert.h>
-#include <rdconfig.h>
 #include <rdformpost.h>
-#include <rduser.h>
-#include <rdsystem.h>
 
 class Xport : public QObject
 {
@@ -70,9 +67,6 @@ class Xport : public QObject
   void XmlExit(const QString &str,int code,
 	       RDAudioConvert::ErrorCode err=RDAudioConvert::ErrorOk);
   RDFormPost *xport_post;
-  RDUser *xport_user;
-  RDConfig *xport_config;
-  RDSystem *xport_system;
 };
 
 
