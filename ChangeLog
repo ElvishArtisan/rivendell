@@ -15537,3 +15537,12 @@
 2016-08-05 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in 'web/rdxport/rdxport.cpp' that caused a segfault
 	when authenticating web connections.
+2016-08-05 Fred Gleason <fredg@paravelsystems.com>
+	* Removed (const char *) casts from SQL statements in
+	'importers/panel_copy.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'importers/rdcatch_copy.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'importers/rivendell_filter.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'importers/wings_filter.cpp'.
