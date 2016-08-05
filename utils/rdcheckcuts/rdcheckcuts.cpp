@@ -20,16 +20,12 @@
 
 #include <stdlib.h>
 
-#include <qapplication.h>
-
-#include <rddb.h>
-#include <rdcmd_switch.h>
-#include <rdstation.h>
+#include <rdapplication.h>
 #include <rdaudioinfo.h>
 #include <rdcart.h>
 #include <rdcut.h>
 
-#include <rdcheckcuts.h>
+#include "rdcheckcuts.h"
 
 MainObject::MainObject(QObject *parent)
   : QObject(parent)
@@ -42,30 +38,14 @@ MainObject::MainObject(QObject *parent)
   //
   // Read Command Options
   //
-  RDCmdSwitch *cmd=
-    new RDCmdSwitch(qApp->argc(),qApp->argv(),"rdcheckcuts",RDCHECKCUTS_USAGE);
-  for(unsigned i=0;i<cmd->keys();i++) {
-    if(cmd->key(i)=="--group") {
-      group_names.push_back(cmd->value(i));
-      cmd->setProcessed(i,true);
+  for(unsigned i=0;i<rda->cmdSwitch()->keys();i++) {
+    if(rda->cmdSwitch()->key(i)=="--group") {
+      group_names.push_back(rda->cmdSwitch()->value(i));
+      rda->cmdSwitch()->setProcessed(i,true);
     }
   }
-  if(!cmd->allProcessed()) {
+  if(!rda->cmdSwitch()->allProcessed()) {
     fprintf(stderr,"rdcheckcuts: unknown option\n");
-    exit(256);
-  }
-
-  //
-  // Open Configuration
-  //
-  cut_config=new RDConfig();
-  cut_config->load();
-
-  //
-  // Open Database
-  //
-  if(!OpenDb()) {
-    fprintf(stderr,"rdcheckcuts: unable to open database\n");
     exit(256);
   }
 
@@ -120,8 +100,7 @@ bool MainObject::ValidateGroup(const QString &groupname,
   bool ret=true;
   QString sql;
   RDSqlQuery *q;
-  RDStation *station=new RDStation(cut_config->stationName());
-  RDAudioInfo *info=new RDAudioInfo(station,cut_config);
+  RDAudioInfo *info=new RDAudioInfo(rda->station(),rda->config());
   RDAudioInfo::ErrorCode err_code;
   
   sql=QString("select CUTS.CUT_NAME,CUTS.CART_NUMBER,CUTS.LENGTH ")+
@@ -152,35 +131,14 @@ bool MainObject::ValidateGroup(const QString &groupname,
     }
   }
   delete info;
-  delete station;
   
   return ret;
 }
 
 
-bool MainObject::OpenDb()
-{
-  unsigned schema=0;
-
-  QString err(tr("rdcheckcuts: "));
-  QSqlDatabase *db=RDInitDb(&schema,&err);
-  if(!db) {
-    fprintf(stderr,err.ascii());
-    return false;
-  }
-  return true;
-}
-
-
-void MainObject::CloseDb()
-{
-  QSqlDatabase::removeDatabase(cut_config->mysqlDbname());
-}
-
-
 int main(int argc,char *argv[])
 {
-  QApplication a(argc,argv,false);
+  RDApplication a(argc,argv,"rdcheckcuts",RDCHECKCUTS_USAGE,false);
   new MainObject();
   return a.exec();
 }

@@ -47,8 +47,7 @@ SUBDIRS = $(ALSACONFIG_RD_OPT)\
           rdpurgecasts\
           rdrevert\
           rdsoftkeys\
-          rmlsend\
-          sas_shim
+          rmlsend
 
 AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" -DQTDIR=\"@QT_DIR@\" @QT_CXXFLAGS@ -I$(top_srcdir)/lib
 LIBS = @QT_LIBS@ -L$(top_srcdir)/lib

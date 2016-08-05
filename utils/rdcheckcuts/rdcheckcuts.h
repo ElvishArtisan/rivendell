@@ -25,8 +25,6 @@
 
 #include <qobject.h>
 
-#include <rdconfig.h>
-
 #define RDCHECKCUTS_USAGE "[options]\n\nCheck Rivendell cuts for valid audio\n\n--group=<group-name>\n     Name of group to scan.  This option may be given multiple times.\n     If no group is specified, then ALL groups will be scanned.\n"
 
 class MainObject : public QObject
@@ -37,9 +35,6 @@ class MainObject : public QObject
  private:
   void RenderCut(const QString &cutname);
   bool ValidateGroup(const QString &groupname,std::vector<QString> *cutnames);
-  bool OpenDb();
-  void CloseDb();
-  RDConfig *cut_config;
 };
 
 

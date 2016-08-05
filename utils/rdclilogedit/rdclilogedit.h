@@ -23,14 +23,9 @@
 
 #include <qobject.h>
 
-#include <rdairplay_conf.h>
-#include <rdconfig.h>
 #include <rdcut.h>
-#include <rddb.h>
 #include <rdlog.h>
 #include <rdlog_event.h>
-#include <rdripc.h>
-#include <rduser.h>
 
 #define RDCLILOGEDIT_USAGE "[options]\n"
 
@@ -87,11 +82,6 @@ class MainObject : public QObject
   QDate edit_end_date;
   QDate edit_purge_date;
   bool edit_auto_refresh;
-  RDUser *edit_user;
-  RDStation *edit_station;
-  RDRipc *edit_ripc;
-  RDAirPlayConf *edit_airplay_conf;
-  RDConfig *edit_config;
 };
 
 

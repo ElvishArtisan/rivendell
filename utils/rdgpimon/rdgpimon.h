@@ -37,16 +37,14 @@
 
 #include <rdlistview.h>
 #include <rdmatrix.h>
-#include <rdconfig.h>
-#include <rdripc.h>
-#include <rdstation.h>
 #include <rdtransportbutton.h>
 
-#include <gpi_label.h>
+#include "gpi_label.h"
 
 #define GPIMON_START_UP_DELAY 100
 #define GPIMON_ROWS 4
 #define GPIMON_COLS 8
+#define RDGPIMON_USAGE "\n\n"
 
 class MainWidget : public QWidget
 {
@@ -81,10 +79,6 @@ class MainWidget : public QWidget
   void UpdateLabelsDown(int first_line);
   void RefreshEventsList();
   void AddEventsItem(int line,bool state);
-  RDConfig *gpi_config;
-  QSqlDatabase *gpi_db;
-  RDRipc *gpi_ripc;
-  RDStation *gpi_station;
   RDMatrix *gpi_matrix;
   QComboBox *gpi_type_box;
   QComboBox *gpi_matrix_box;

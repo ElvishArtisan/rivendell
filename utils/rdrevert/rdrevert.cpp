@@ -23,13 +23,10 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-#include <map>
-
-#include <qapplication.h>
 #include <qstringlist.h>
 
+#include <rdapplication.h>
 #include <rdclock.h>
-#include <rdcmd_switch.h>
 #include <rdcreate_log.h>
 #include <rdescape_string.h>
 #include <rdevent.h>
@@ -56,51 +53,25 @@ MainObject::MainObject(QObject *parent)
   //
   // Read Command Options
   //
-  RDCmdSwitch *cmd=
-    new RDCmdSwitch(qApp->argc(),qApp->argv(),"rdcollect",RDREVERT_USAGE);
-  for(unsigned i=0;i<cmd->keys();i++) {
-    if(cmd->key(i)=="--set-schema") {
-      set_schema=cmd->value(i).toInt(&ok);
+  for(unsigned i=0;i<rda->cmdSwitch()->keys();i++) {
+    if(rda->cmdSwitch()->key(i)=="--set-schema") {
+      set_schema=rda->cmdSwitch()->value(i).toInt(&ok);
       if((!ok)||(set_schema<0)) {
 	fprintf(stderr,"rdrevert: invalid schema value\n");
 	exit(256);
       }
-      cmd->setProcessed(i,true);
+      rda->cmdSwitch()->setProcessed(i,true);
     }
-    if(cmd->key(i)=="--set-version") {
-      if((set_schema=MapSchema(cmd->value(i)))==0) {
+    if(rda->cmdSwitch()->key(i)=="--set-version") {
+      if((set_schema=MapSchema(rda->cmdSwitch()->value(i)))==0) {
 	fprintf(stderr,"rdrevert: invalid/unsupported Rivendell version\n");
 	exit(256);
       }
-      cmd->setProcessed(i,true);
+      rda->cmdSwitch()->setProcessed(i,true);
     }
   }
-  if(!cmd->allProcessed()) {
+  if(!rda->cmdSwitch()->allProcessed()) {
     fprintf(stderr,"rdrevert: unknown option\n");
-    exit(256);
-  }
-
-  //
-  // Load Local Configs
-  //
-  rev_config=new RDConfig();
-  rev_config->load();
-
-  //
-  // Open Database
-  //
-  rev_db=QSqlDatabase::addDatabase(rev_config->mysqlDriver());
-  if(!rev_db) {
-    fprintf(stderr,"rdrevert: unable to connect to mysql server\n");
-    exit(256);
-  }
-  rev_db->setDatabaseName(rev_config->mysqlDbname());
-  rev_db->setUserName(rev_config->mysqlUsername());
-  rev_db->setPassword(rev_config->mysqlPassword());
-  rev_db->setHostName(rev_config->mysqlHostname());
-  if(!rev_db->open()) {
-    fprintf(stderr,"rdrevert: unable to authenticate with mysql server\n");
-    rev_db->removeDatabase(rev_config->mysqlDbname());
     exit(256);
   }
 
@@ -602,7 +573,7 @@ int MainObject::MapSchema(const QString &ver)
 
 int main(int argc,char *argv[])
 {
-  QApplication a(argc,argv,false);
+  RDApplication a(argc,argv,"rdrevert",RDREVERT_USAGE,false,true);
   new MainObject();
   return a.exec();
 }

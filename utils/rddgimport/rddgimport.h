@@ -35,15 +35,9 @@
 #include <qdatetimeedit.h>
 #include <qtextedit.h>
 
-#include <rdconfig.h>
-#include <rddb.h>
 #include <rdgroup.h>
-#include <rdlibrary_conf.h>
-#include <rdstation.h>
 #include <rdbusybar.h>
 #include <rdsvc.h>
-#include <rduser.h>
-#include <rdripc.h>
 
 #include <event.h>
 
@@ -100,12 +94,6 @@ class MainWidget : public QWidget
   std::vector<Event *> dg_events;
   RDGroup *dg_group;
   RDSvc *dg_svc;
-  RDRipc *dg_ripc;
-  RDUser *dg_user;
-  RDStation *dg_station;
-  RDLibraryConf *dg_library_conf;
-  RDConfig *dg_config;
-  QSqlDatabase *dg_db;
 };
 
 

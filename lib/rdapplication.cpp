@@ -28,12 +28,11 @@
 RDApplication *rda=NULL;
 
 RDApplication::RDApplication(int argc,char **argv,const char *modname,
-			     const char *usage,bool gui)
+			     const char *usage,bool gui,bool skip_db_check)
   : QApplication(argc,argv,gui)
 {
   unsigned schema=0;
   QString err;
-  bool skip_db_check=false;
 
   rda=this;
 

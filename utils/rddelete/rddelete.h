@@ -24,21 +24,14 @@
 #include <vector>
 
 #include <qobject.h>
-#include <qsqldatabase.h>
 #include <qfileinfo.h>
 #include <qdatetime.h>
 
 #include <rdwavedata.h>
 #include <rdwavefile.h>
-#include <rdconfig.h>
-#include <rdcmd_switch.h>
 #include <rdgroup.h>
 #include <rdcart.h>
 #include <rdcut.h>
-#include <rdripc.h>
-#include <rduser.h>
-#include <rdsystem.h>
-#include <rdstation.h>
 
 #define RDDELETE_STDIN_BUFFER_LENGTH 1024
 #define RDDELETE_USAGE "[options] <obj-type> [<obj-id> ...]\n\nDelete objects from a Rivendell system.  Each type of object to be deleted\nis specified by an appropriate <obj-type> switch, followed optionally by\na list of objects.  If no list is specified, then rddelete(1) will read\nthe list of objects from standard input.\n\nThe following object types can be deleted:\n--carts\n     Delete carts.  The <obj-id> values should be cart numbers.\n\n--logs\n     Delete logs.  The <obj-id> values should be log names.\n\nThe following options are available:\n\n--verbose\n     Print progress messages during processing.\n\n--continue-after-error\n     Continue processing list of objects even in the face of errors in\n     that list.\n\n--dry-run\n     Process list of objects, but don't actually delete anything.\n"
@@ -59,13 +52,6 @@ class MainObject : public QObject
   bool GetNextObject(unsigned *cartnum);
   bool GetNextObject(QString *logname);
   bool GetNextStdinObject(QString *logname);
-  QSqlDatabase *del_db;
-  RDSystem *del_system;
-  RDStation *del_station;
-  RDCmdSwitch *del_cmd;
-  RDRipc *del_ripc;
-  RDUser *del_user;
-  RDConfig *del_config;
   bool del_carts;
   bool del_logs;
   bool del_verbose;

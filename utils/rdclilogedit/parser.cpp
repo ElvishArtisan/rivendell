@@ -20,6 +20,7 @@
 
 #include <stdlib.h>
 
+#include <rdapplication.h>
 #include <rdweb.h>
 
 #include "rdclilogedit.h"
@@ -46,7 +47,7 @@ void MainObject::DispatchCommand(QString cmd)
   // No loaded log needed for these
   //
   if(verb=="deletelog") {
-    if(edit_user->deleteLog()) {
+    if(rda->user()->deleteLog()) {
       if(cmds.size()==2) {
 	Deletelog(cmds[1]);
       }
@@ -120,7 +121,7 @@ void MainObject::DispatchCommand(QString cmd)
   //
   if((processed)||(edit_log_event!=NULL)) {
     if(verb=="addcart") {
-      if(edit_user->addtoLog()) {
+      if(rda->user()->addtoLog()) {
 	if(cmds.size()==3) {
 	  line=cmds[1].toInt(&ok);
 	  if(ok&&(line>=0)) {
@@ -147,7 +148,7 @@ void MainObject::DispatchCommand(QString cmd)
     }
 
     if(verb=="addchain") {
-      if(edit_user->addtoLog()) {
+      if(rda->user()->addtoLog()) {
 	if(cmds.size()==3) {
 	  line=cmds[1].toInt(&ok);
 	  if(ok&&(line>=0)) {
@@ -168,7 +169,7 @@ void MainObject::DispatchCommand(QString cmd)
     }
     
     if(verb=="addmarker") {
-      if(edit_user->addtoLog()) {
+      if(rda->user()->addtoLog()) {
 	if(cmds.size()==2) {
 	  line=cmds[1].toInt(&ok);
 	  if(ok&&(line>=0)) {
@@ -189,7 +190,7 @@ void MainObject::DispatchCommand(QString cmd)
     }
     
     if(verb=="addtrack") {
-      if(edit_user->addtoLog()) {
+      if(rda->user()->addtoLog()) {
 	if(cmds.size()==2) {
 	  line=cmds[1].toInt(&ok);
 	  if(ok&&(line>=0)) {
@@ -220,7 +221,7 @@ void MainObject::DispatchCommand(QString cmd)
     }
 
     if(verb=="remove") {
-      if(edit_user->removefromLog()) {
+      if(rda->user()->removefromLog()) {
 	if(cmds.size()==2) {
 	  line=cmds[1].toInt(&ok);
 	  if(ok&&(line>=0)&&(line<edit_log_event->size())) {
@@ -241,7 +242,7 @@ void MainObject::DispatchCommand(QString cmd)
     }
 
     if(verb=="save") {
-      if(edit_user->arrangeLog()) {
+      if(rda->user()->arrangeLog()) {
 	Save();
       }
       else {
@@ -251,7 +252,7 @@ void MainObject::DispatchCommand(QString cmd)
     }
 
     if(verb=="saveas") {
-      if(edit_user->arrangeLog()) {
+      if(rda->user()->arrangeLog()) {
 	if(cmds.size()==2) {
 	if(cmds[1].length()>64) {
 	  fprintf(stderr,"saveas: log name too long\n");
@@ -270,7 +271,7 @@ void MainObject::DispatchCommand(QString cmd)
     }
 
     if(verb=="setautorefresh") {
-      if(edit_user->arrangeLog()) {
+      if(rda->user()->arrangeLog()) {
 	if(cmds.size()==2) {
 	  QString arg=cmds[1].lower();
 	  if((arg=="yes")||(arg=="true")||(arg=="y")) {
@@ -297,7 +298,7 @@ void MainObject::DispatchCommand(QString cmd)
     }
 
     if(verb=="setcart") {
-      if(edit_user->arrangeLog()) {
+      if(rda->user()->arrangeLog()) {
 	if(cmds.size()==3) {
 	  line=cmds[1].toInt(&ok);
 	  if(ok&&(line>=0)&&(line<edit_log_event->size())) {
@@ -325,7 +326,7 @@ void MainObject::DispatchCommand(QString cmd)
     }
 
     if(verb=="setcomment") {
-      if(edit_user->arrangeLog()) {
+      if(rda->user()->arrangeLog()) {
 	if(cmds.size()>=3) {
 	  line=cmds[1].toInt(&ok);
 	  if(ok&&(line>=0)&&(line<edit_log_event->size())) {
@@ -349,7 +350,7 @@ void MainObject::DispatchCommand(QString cmd)
     }
 
     if(verb=="setdesc") {
-      if(edit_user->arrangeLog()) {
+      if(rda->user()->arrangeLog()) {
 	if(cmds.size()>=2) {
 	  cmds.erase(cmds.begin());
 	  Setdesc(cmds.join(" "));
@@ -366,7 +367,7 @@ void MainObject::DispatchCommand(QString cmd)
     }
 
     if(verb=="setenddate") {
-      if(edit_user->arrangeLog()) {
+      if(rda->user()->arrangeLog()) {
 	if(cmds.size()==1) {
 	  Setenddate(QDate());
 	}
@@ -393,7 +394,7 @@ void MainObject::DispatchCommand(QString cmd)
     }
 
     if(verb=="setlabel") {
-      if(edit_user->arrangeLog()) {
+      if(rda->user()->arrangeLog()) {
 	if(cmds.size()==3) {
 	  line=cmds[1].toInt(&ok);
 	  if(ok&&(line>=0)&&(line<edit_log_event->size())) {
@@ -415,7 +416,7 @@ void MainObject::DispatchCommand(QString cmd)
     }
 
     if(verb=="setpurgedate") {
-      if(edit_user->arrangeLog()) {
+      if(rda->user()->arrangeLog()) {
 	if(cmds.size()==1) {
 	  Setpurgedate(QDate());
 	}
@@ -442,7 +443,7 @@ void MainObject::DispatchCommand(QString cmd)
     }
 
     if(verb=="setservice") {
-      if(edit_user->arrangeLog()) {
+      if(rda->user()->arrangeLog()) {
 	if(cmds.size()==2) {
 	  Setservice(cmds[1]);
 	}
@@ -458,7 +459,7 @@ void MainObject::DispatchCommand(QString cmd)
     }
 
     if(verb=="setstartdate") {
-      if(edit_user->arrangeLog()) {
+      if(rda->user()->arrangeLog()) {
 	if(cmds.size()==1) {
 	  Setstartdate(QDate());
 	}
@@ -485,7 +486,7 @@ void MainObject::DispatchCommand(QString cmd)
     }
 
     if(verb=="settime") {
-      if(edit_user->arrangeLog()) {
+      if(rda->user()->arrangeLog()) {
 	if(cmds.size()>=3) {
 	  line=cmds[1].toInt(&ok);
 	  if(ok&&(line>=0)&&(line<edit_log_event->size())) {
@@ -537,7 +538,7 @@ void MainObject::DispatchCommand(QString cmd)
     }
 
     if(verb=="settrans") {
-      if(edit_user->arrangeLog()) {
+      if(rda->user()->arrangeLog()) {
 	if(cmds.size()==3) {
 	  line=cmds[1].toInt(&ok);
 	  if(ok&&(line>=0)&&(line<edit_log_event->size())) {

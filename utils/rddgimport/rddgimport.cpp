@@ -22,7 +22,6 @@
 #include <stdio.h>
 #include <errno.h>
 
-#include <qapplication.h>
 #include <qwindowsstyle.h>
 #include <qtextcodec.h>
 #include <qfiledialog.h>
@@ -30,8 +29,8 @@
 #include <qstringlist.h>
 #include <qfile.h>
 
+#include <rdapplication.h>
 #include <rdescape_string.h>
-#include <rdcmd_switch.h>
 #include <rdconf.h>
 #include <rddatedialog.h>
 #include <rdgroup.h>
@@ -40,23 +39,16 @@
 #include <rdaudioimport.h>
 #include <rddatedecode.h>
 
-#include <rddgimport.h>
+#include "rddgimport.h"
 
 MainWidget::MainWidget(QWidget *parent)
   : QWidget(parent)
 {
-  dg_user=NULL;
   dg_group=NULL;
   dg_svc=NULL;
 
   QString sql;
   RDSqlQuery *q;
-
-  //
-  // Read Command Options
-  //
-  RDCmdSwitch *cmd=new RDCmdSwitch(qApp->argc(),qApp->argv(),"rddgimport","\n");
-  delete cmd;
 
   //
   // Set Window Size
@@ -65,32 +57,6 @@ MainWidget::MainWidget(QWidget *parent)
   setMinimumHeight(sizeHint().height());
 
   SetCaption();
-
-  //
-  // Load Local Configs
-  //
-  dg_config=new RDConfig();
-  dg_config->load();
-
-  //
-  // Open Database
-  //
-  dg_db=QSqlDatabase::addDatabase(dg_config->mysqlDriver());
-  if(!dg_db) {
-    QMessageBox::warning(this,tr("Database Error"),
-		    tr("Can't Connect","Unable to connect to mySQL Server!"));
-    exit(0);
-  }
-  dg_db->setDatabaseName(dg_config->mysqlDbname());
-  dg_db->setUserName(dg_config->mysqlUsername());
-  dg_db->setPassword(dg_config->mysqlPassword());
-  dg_db->setHostName(dg_config->mysqlHostname());
-  if(!dg_db->open()) {
-    QMessageBox::warning(this,tr("Can't Connect"),
-			 tr("Unable to connect to mySQL Server!"));
-    dg_db->removeDatabase(dg_config->mysqlDbname());
-    exit(0);
-  }
 
   //
   // Fonts
@@ -104,11 +70,9 @@ MainWidget::MainWidget(QWidget *parent)
   //
   // Configuration Elements
   //
-  dg_station=new RDStation(dg_config->stationName(),this);
-  dg_library_conf=new RDLibraryConf(dg_config->stationName(),0);
-  dg_ripc=new RDRipc(dg_config->stationName(),this);
-  connect(dg_ripc,SIGNAL(userChanged()),this,SLOT(userChangedData()));
-  dg_ripc->connectHost("localhost",RIPCD_TCP_PORT,dg_config->password());
+  connect(rda->ripc(),SIGNAL(userChanged()),this,SLOT(userChangedData()));
+  rda->
+    ripc()->connectHost("localhost",RIPCD_TCP_PORT,rda->config()->password());
 
   //
   // Service Selector
@@ -268,10 +232,7 @@ void MainWidget::processData()
 
 void MainWidget::userChangedData()
 {
-  if(dg_user!=NULL) {
-    delete dg_user;
-  }
-  dg_user=new RDUser(dg_ripc->user());
+  rda->setUser(rda->ripc()->user());
   SetCaption();
 }
 
@@ -303,8 +264,8 @@ void MainWidget::resizeEvent(QResizeEvent *e)
 void MainWidget::SetCaption()
 {
   QString username=tr("[unknown]");
-  if(dg_user!=NULL) {
-    username=dg_user->name();
+  if(rda->user()!=NULL) {
+    username=rda->user()->name();
   }
   setCaption(tr("RDDgImport")+" v"+VERSION+" "+tr("User")+": "+username);
 }
@@ -492,8 +453,8 @@ bool MainWidget::ImportSpot(Event *evt)
   //
   // Initialize Audio Importer
   //
-  settings.setNormalizationLevel(dg_library_conf->ripperLevel()/100);
-  settings.setChannels(dg_library_conf->defaultChannels());
+  settings.setNormalizationLevel(rda->libraryConf()->ripperLevel()/100);
+  settings.setChannels(rda->libraryConf()->defaultChannels());
 
   if((dg_carts[evt->isci()]=dg_group->nextFreeCart())==0) {
     LogMessage(tr("Unable to allocate new cart for")+" "+evt->isci()+" ["+
@@ -507,9 +468,9 @@ bool MainWidget::ImportSpot(Event *evt)
   }
   cart=new RDCart(dg_carts[evt->isci()]);
   cart->create(dg_group->name(),RDCart::Audio);
-  if((cutnum=cart->addCut(dg_library_conf->defaultLayer(),
-			  dg_library_conf->defaultBitrate(),
-			  dg_library_conf->defaultChannels(),
+  if((cutnum=cart->addCut(rda->libraryConf()->defaultLayer(),
+			  rda->libraryConf()->defaultBitrate(),
+			  rda->libraryConf()->defaultChannels(),
 			  evt->isci(),evt->title()))<0) {
     LogMessage(tr("WARNING: Unable to create cut for cart")+" \""+
 	       QString().sprintf("%u",dg_carts[evt->isci()])+"\".");
@@ -522,14 +483,14 @@ bool MainWidget::ImportSpot(Event *evt)
 				addDays(RDDGIMPORT_KILLDATE_OFFSET),
 				QTime(23,59,59)),true);
   
-  conv=new RDAudioImport(dg_station,dg_config,this);
+  conv=new RDAudioImport(rda->station(),rda->config(),this);
   conv->setCartNumber(dg_carts[evt->isci()]);
   conv->setCutNumber(cutnum);
   conv->setSourceFile(audiofile);
   conv->setDestinationSettings(&settings);
   conv->setUseMetadata(false);
   conv_err=conv->
-    runImport(dg_user->name(),dg_user->password(),&audio_conv_err);
+    runImport(rda->user()->name(),rda->user()->password(),&audio_conv_err);
   switch(conv_err) {
   case RDAudioImport::ErrorOk:
     break;
@@ -638,7 +599,7 @@ void MainWidget::LogMessage(const QString &str)
 
 int main(int argc,char *argv[])
 {
-  QApplication a(argc,argv);
+  RDApplication a(argc,argv,"rddgimport",RDDGIMPORT_USAGE);
   
   //
   // Load Translations

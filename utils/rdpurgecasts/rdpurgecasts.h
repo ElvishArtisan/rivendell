@@ -22,10 +22,6 @@
 #define RDPURGECASTS_H
 
 #include <qobject.h>
-#include <qsqldatabase.h>
-
-#include <rdconfig.h>
-#include <rdcmd_switch.h>
 
 #define RDPURGECASTS_USAGE "[--help] [--verbose]\n\nPurge expired podcasts.\n"
 
@@ -36,9 +32,7 @@ class MainObject : public QObject
 
  private:
   void PurgeCast(unsigned id);
-  RDConfig *purge_config;
   bool purge_verbose;
-  RDCmdSwitch *purge_cmd;
 };
 
 

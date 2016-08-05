@@ -31,15 +31,9 @@
 
 #include <rdwavedata.h>
 #include <rdwavefile.h>
-#include <rdconfig.h>
-#include <rdcmd_switch.h>
 #include <rdgroup.h>
 #include <rdcart.h>
 #include <rdcut.h>
-#include <rdripc.h>
-#include <rduser.h>
-#include <rdsystem.h>
-#include <rdstation.h>
 
 #include "markerset.h"
 
@@ -79,12 +73,8 @@ class MainObject : public QObject
   void WriteTimestampCache(const QString &filename,const QDateTime &dt);
   bool SchedulerCodeExists(const QString &code) const;
   void ReadXmlFile(const QString &basename,RDWaveData *wavedata) const;
-  RDConfig *import_config;
-  RDCmdSwitch *import_cmd;
   unsigned import_file_key;
   RDGroup *import_group;
-  RDRipc *import_ripc;
-  RDUser *import_user;
   bool import_verbose;
   bool import_log_mode;
   bool import_use_cartchunk_cutid;
@@ -144,8 +134,6 @@ class MainObject : public QObject
   };
   std::list<DropboxList *> import_dropbox_list;
   QString import_temp_fix_filename;
-  RDSystem *import_system;
-  RDStation *import_station;
   MarkerSet *import_cut_markers;
   MarkerSet *import_talk_markers;
   MarkerSet *import_hook_markers;

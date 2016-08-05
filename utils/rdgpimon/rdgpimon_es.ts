@@ -3,20 +3,20 @@
     <name>MainWidget</name>
     <message>
         <source>Database Error</source>
-        <translation>Error de base de datos</translation>
+        <translation type="obsolete">Error de base de datos</translation>
     </message>
     <message>
         <source>Can&apos;t Connect</source>
         <comment>Unable to connect to mySQL Server!</comment>
-        <translation>No puedo conectarme</translation>
+        <translation type="obsolete">No puedo conectarme</translation>
     </message>
     <message>
         <source>Can&apos;t Connect</source>
-        <translation>No puedo conectarme</translation>
+        <translation type="obsolete">No puedo conectarme</translation>
     </message>
     <message>
         <source>Unable to connect to mySQL Server!</source>
-        <translation>¡No puedo conectarme al servidor MySQL!</translation>
+        <translation type="obsolete">¡No puedo conectarme al servidor MySQL!</translation>
     </message>
     <message>
         <source>Matrix:</source>

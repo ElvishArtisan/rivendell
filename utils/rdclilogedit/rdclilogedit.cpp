@@ -24,11 +24,10 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-#include <qapplication.h>
 #include <qfile.h>
 #include <qstringlist.h>
 
-#include <rdcmd_switch.h>
+#include <rdapplication.h>
 #include <rdconf.h>
 #include <rddbheartbeat.h>
 #include <rdweb.h>
@@ -48,53 +47,18 @@ MainObject::MainObject(QObject *parent)
   //
   // Read Command Options
   //
-  RDCmdSwitch *cmd=new RDCmdSwitch(qApp->argc(),qApp->argv(),"rdclilogedit",
-				   RDCLILOGEDIT_USAGE);
-  for(int i=0;i<(int)cmd->keys();i++) {
-    if((cmd->key(i)=="-n")||(cmd->key(i)=="--quiet")||
-       (cmd->key(i)=="--silent")) {
+  for(int i=0;i<(int)rda->cmdSwitch()->keys();i++) {
+    if((rda->cmdSwitch()->key(i)=="-n")||(rda->cmdSwitch()->key(i)=="--quiet")||
+       (rda->cmdSwitch()->key(i)=="--silent")) {
       edit_quiet_option=true;
     }
   }
 
   //
-  // Read Configuration
-  //
-  edit_config=new RDConfig();
-  edit_config->load();
-
-  //
-  // Open Database
-  //
-  QSqlDatabase *db=QSqlDatabase::addDatabase(edit_config->mysqlDriver());
-  if(!db) {
-    fprintf(stderr,"rdclilogedit: unable to initialize connection to database\n");
-    exit(256);
-  }
-  db->setDatabaseName(edit_config->mysqlDbname());
-  db->setUserName(edit_config->mysqlUsername());
-  db->setPassword(edit_config->mysqlPassword());
-  db->setHostName(edit_config->mysqlHostname());
-  if(!db->open()) {
-    fprintf(stderr,"rdclilogedit: unable to connect to database\n");
-    db->removeDatabase(edit_config->mysqlDbname());
-    exit(256);
-  }
-  new RDDbHeartbeat(edit_config->mysqlHeartbeatInterval(),this);
-
-  //
-  // Configuration Objects
-  //
-  edit_station=new RDStation(edit_config->stationName());
-  edit_airplay_conf=new RDAirPlayConf(edit_config->stationName(),"RDAIRPLAY");
-
-  //
   // RIPC Connection
   //
-  edit_user=NULL;
-  edit_ripc=new RDRipc(edit_config->stationName());
-  connect(edit_ripc,SIGNAL(userChanged()),this,SLOT(userData()));
-  edit_ripc->connectHost("localhost",RIPCD_TCP_PORT,edit_config->password());
+  connect(rda->ripc(),SIGNAL(userChanged()),this,SLOT(userData()));
+  rda->ripc()->connectHost("localhost",RIPCD_TCP_PORT,rda->config()->password());
 }
 
 
@@ -106,11 +70,8 @@ void MainObject::userData()
   //
   // Get User Context
   //
-  disconnect(edit_ripc,SIGNAL(userChanged()),this,SLOT(userData()));
-  if(edit_user!=NULL) {
-    delete edit_user;
-  }
-  edit_user=new RDUser(edit_ripc->user());
+  disconnect(rda->ripc(),SIGNAL(userChanged()),this,SLOT(userData()));
+  rda->setUser(rda->ripc()->user());
 
   //
   // Start up command processor
@@ -168,7 +129,7 @@ void MainObject::PrintPrompt() const
 
 int main(int argc,char *argv[])
 {
-  QApplication a(argc,argv,false);
+  RDApplication a(argc,argv,"rdclilogedit",RDCLILOGEDIT_USAGE,false);
   new MainObject();
   return a.exec();
 }

@@ -22,12 +22,6 @@
 #define RDMAINT_H
 
 #include <qobject.h>
-#include <qsqldatabase.h>
-
-#include <rdconfig.h>
-#include <rduser.h>
-#include <rdstation.h>
-#include <rdcmd_switch.h>
 
 #define RDMAINT_USAGE "[--help] [--verbose] [--system]\n\nRun Rivendell maintenance routines.\n"
 
@@ -44,12 +38,8 @@ class MainObject : public QObject
   void PurgeElr();
   void PurgeDropboxes();
   void PurgeGpioEvents();
-  RDConfig *maint_config;
   bool maint_verbose;
   bool maint_system;
-  RDCmdSwitch *maint_cmd;
-  RDStation *maint_station;
-  RDUser *maint_user;
 };
 
 

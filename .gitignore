@@ -75,8 +75,6 @@ tests/audio_peaks_test
 tests/datedecode_test
 tests/rdxml_parse_test
 tests/reserve_carts_test
-tests/sas_switch_torture
-tests/sas_torture
 tests/stringcode_test
 tests/test_pam
 tests/timer_test
@@ -104,5 +102,4 @@ utils/rdexport/rdexport
 utils/rdmaint/rdmaint
 utils/rdgen/rdgen
 utils/rdrevert/rdrevert
-utils/sas_shim/sas_shim
 web/rdfeed/rdfeed.xml

@@ -18,13 +18,12 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qapplication.h>
-
-#include <dbversion.h>
-#include <rdconf.h>
-#include <rddelete.h>
+#include <rdapplication.h>
 #include <rdcart.h>
+#include <rdconf.h>
 #include <rdlog.h>
+
+#include "rddelete.h"
 
 MainObject::MainObject(QObject *parent)
   :QObject(parent)
@@ -32,8 +31,6 @@ MainObject::MainObject(QObject *parent)
   //
   // Initialize Data Structures
   //
-  bool skip_db_check=false;
-  unsigned schema=0;
   int obj_start=qApp->argc();
   del_carts=false;
   del_logs=false;
@@ -45,37 +42,32 @@ MainObject::MainObject(QObject *parent)
   //
   // Read Command Options
   //
-  del_cmd=new RDCmdSwitch(qApp->argc(),qApp->argv(),"rddelete",RDDELETE_USAGE);
-  if(del_cmd->keys()<1) {
+  if(rda->cmdSwitch()->keys()<1) {
     fprintf(stderr,"\n");
     fprintf(stderr,"%s",RDDELETE_USAGE);
     fprintf(stderr,"\n");
-    delete del_cmd;
     exit(256);
   }
-  for(unsigned i=0;i<del_cmd->keys();i++) {
-    if(del_cmd->key(i)=="--verbose") {
+  for(unsigned i=0;i<rda->cmdSwitch()->keys();i++) {
+    if(rda->cmdSwitch()->key(i)=="--verbose") {
       del_verbose=true;
     }
-    if(del_cmd->key(i)=="--continue-after-error") {
+    if(rda->cmdSwitch()->key(i)=="--continue-after-error") {
       del_continue_after_error=true;
     }
-    if(del_cmd->key(i)=="--dry-run") {
+    if(rda->cmdSwitch()->key(i)=="--dry-run") {
       del_dry_run=true;
     }
-    if(del_cmd->key(i)=="--skip-db-check") {
-      skip_db_check=true;
-    }
-    if(del_cmd->key(i)=="--carts") {
+    if(rda->cmdSwitch()->key(i)=="--carts") {
       del_carts=true;
       obj_start=i+2;
-      i=del_cmd->keys();
+      i=rda->cmdSwitch()->keys();
       break;
     }
-    if(del_cmd->key(i)=="--logs") {
+    if(rda->cmdSwitch()->key(i)=="--logs") {
       del_logs=true;
       obj_start=i+2;
-      i=del_cmd->keys();
+      i=rda->cmdSwitch()->keys();
       break;
     }
   }
@@ -93,50 +85,32 @@ MainObject::MainObject(QObject *parent)
   }
 
   //
-  // Read Configuration
-  //
-  del_config=new RDConfig();
-  del_config->load();
-
-  //
   // Open Database
   //
-  QString err;
-
-  del_db=RDInitDb(&schema,&err);
-  if(!del_db) {
-    fprintf(stderr,"rddelete: %s\n",(const char *)err);
-    exit(1);
-  }
-  if((schema!=RD_VERSION_DATABASE)&&(!skip_db_check)) {
-    fprintf(stderr,"rddelete: database version mismatch, should be %u, is %u\n",
-	    RD_VERSION_DATABASE,schema);
-    exit(256);
-  }
   connect (RDDbStatus(),SIGNAL(logText(RDConfig::LogPriority,const QString &)),
 	   this,SLOT(log(RDConfig::LogPriority,const QString &)));
 
   //
   // System Configuration
   //
-  del_system=new RDSystem();
+  //  del_system=new RDSystem();
 
   //
   // Station Configuration
   //
-  del_station=new RDStation(del_config->stationName());
+  //  del_station=new RDStation(rda->config()->stationName());
 
   //
   // User
   //
-  del_user=NULL;
+  //  del_user=NULL;
 
   //
   // RIPC Connection
   //
-  del_ripc=new RDRipc(del_config->stationName());
-  connect(del_ripc,SIGNAL(userChanged()),this,SLOT(userData()));
-  del_ripc->connectHost("localhost",RIPCD_TCP_PORT,del_config->password());
+  //  del_ripc=new RDRipc(rda->config()->stationName());
+  connect(rda->ripc(),SIGNAL(userChanged()),this,SLOT(userData()));
+  rda->ripc()->connectHost("localhost",RIPCD_TCP_PORT,rda->config()->password());
 
   //
   // Print Status Messages
@@ -173,28 +147,31 @@ void MainObject::userData()
   //
   // Get User Context
   //
-  disconnect(del_ripc,SIGNAL(userChanged()),this,SLOT(userData()));
+  /*
+  disconnect(rda->ripc(),SIGNAL(userChanged()),this,SLOT(userData()));
   if(del_user!=NULL) {
     delete del_user;
   }
-  del_user=new RDUser(del_ripc->user());
+  del_user=new RDUser(rda->ripc()->user());
+  */
+  rda->setUser(rda->ripc()->user());
 
   //
   // Process Objects
   //
   if(del_carts) {
-    if(!del_user->editAudio()) {
+    if(!rda->user()->editAudio()) {
       fprintf(stderr,"rdimport: user \"%s\" has no edit audio permission\n",
-	      (const char *)del_user->name());
+	      (const char *)rda->user()->name());
       exit(256);
     }
     DeleteCarts();
   }
 
   if(del_logs) {
-    if(!del_user->deleteLog()) {
+    if(!rda->user()->deleteLog()) {
       fprintf(stderr,"rdimport: user \"%s\" has no delete log permission\n",
-	      (const char *)del_user->name());
+	      (const char *)rda->user()->name());
       exit(256);
     }
     DeleteLogs();
@@ -206,7 +183,7 @@ void MainObject::userData()
 
 void MainObject::log(RDConfig::LogPriority prio,const QString &msg)
 {
-  del_config->log("rddelete",prio,msg);
+  rda->config()->log("rddelete",prio,msg);
 }
 
 
@@ -235,7 +212,7 @@ void MainObject::DeleteCarts()
 	  }
 	}
 	else {
-	  if(cart->remove(del_station,del_user,del_config)) {
+	  if(cart->remove(rda->station(),rda->user(),rda->config())) {
 	    if(del_verbose) {
 	      printf("deleted cart %06u [%s]\n",cartnum,(const char *)title);
 	    }
@@ -275,7 +252,7 @@ void MainObject::DeleteLogs()
 	  }
 	}
 	else {
-	  if(log->remove(del_station,del_user,del_config)) {
+	  if(log->remove(rda->station(),rda->user(),rda->config())) {
 	    if(del_verbose) {
 	      printf("deleted log \"%s\"\n",(const char *)logname);
 	    }
@@ -364,7 +341,7 @@ bool MainObject::GetNextStdinObject(QString *logname)
 
 int main(int argc,char *argv[])
 {
-  QApplication a(argc,argv,false);
+  RDApplication a(argc,argv,"rddelete",RDDELETE_USAGE,false);
   new MainObject();
   return a.exec();
 }

@@ -3,20 +3,20 @@
     <name>MainWidget</name>
     <message>
         <source>Database Error</source>
-        <translation>Databasefeil</translation>
+        <translation type="obsolete">Databasefeil</translation>
     </message>
     <message>
         <source>Can&apos;t Connect</source>
         <comment>Unable to connect to mySQL Server!</comment>
-        <translation>Kan ikkje kopla til</translation>
+        <translation type="obsolete">Kan ikkje kopla til</translation>
     </message>
     <message>
         <source>Can&apos;t Connect</source>
-        <translation>Kan ikkje kopla til</translation>
+        <translation type="obsolete">Kan ikkje kopla til</translation>
     </message>
     <message>
         <source>Unable to connect to mySQL Server!</source>
-        <translation>Greier ikkje kopla til mySQL-tenaren!</translation>
+        <translation type="obsolete">Greier ikkje kopla til mySQL-tenaren!</translation>
     </message>
     <message>
         <source>Matrix:</source>

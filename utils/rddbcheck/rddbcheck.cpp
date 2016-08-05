@@ -23,14 +23,14 @@
 #include <signal.h>
 #include <math.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <unistd.h>
 #include <sys/types.h>
 
-#include <qapplication.h>
 #include <qdir.h>
 #include <qfileinfo.h>
 
-#include <rddb.h>
+#include <rdapplication.h>
 #include <rd.h>
 #include <rddbcheck.h>
 #include <rdcart.h>
@@ -50,9 +50,6 @@
 MainObject::MainObject(QObject *parent)
   :QObject(parent)
 {
-  bool skip_db_check=false;
-  unsigned schema=0;
-
   check_yes=false;
   check_no=false;
   QString username="user";
@@ -60,26 +57,21 @@ MainObject::MainObject(QObject *parent)
   //
   // Read Command Options
   //
-  RDCmdSwitch *cmd=
-    new RDCmdSwitch(qApp->argc(),qApp->argv(),"rddbcheck",RDDBCHECK_USAGE);
-  for(unsigned i=0;i<cmd->keys();i++) {
-    if(cmd->key(i)=="--skip-db-check") {
-      skip_db_check=true;
+  for(unsigned i=0;i<rda->cmdSwitch()->keys();i++) {
+    if(rda->cmdSwitch()->key(i)=="--user") {
+      username=rda->cmdSwitch()->value(i);
     }
-    if(cmd->key(i)=="--user") {
-      username=cmd->value(i);
-    }
-    if(cmd->key(i)=="--yes") {
+    if(rda->cmdSwitch()->key(i)=="--yes") {
       check_yes=true;
     }
-    if(cmd->key(i)=="--no") {
+    if(rda->cmdSwitch()->key(i)=="--no") {
       check_no=true;
     }
-    if(cmd->key(i)=="--orphan-group") {
-      orphan_group_name=cmd->value(i);
+    if(rda->cmdSwitch()->key(i)=="--orphan-group") {
+      orphan_group_name=rda->cmdSwitch()->value(i);
     }
-    if(cmd->key(i)=="--dump-cuts-dir") {
-      dump_cuts_dir=cmd->value(i);
+    if(rda->cmdSwitch()->key(i)=="--dump-cuts-dir") {
+      dump_cuts_dir=rda->cmdSwitch()->value(i);
     }
   }
   if(check_yes&&check_no) {
@@ -118,42 +110,18 @@ MainObject::MainObject(QObject *parent)
   }
 
   //
-  // Read Configuration
-  //
-  rdconfig=new RDConfig();
-  rdconfig->load();
-
-  //
-  // Open Database
-  //
-  QString err (tr("rddbcheck: "));
-  QSqlDatabase *db=RDInitDb(&schema,&err);
-  if(!db) {
-    fprintf(stderr,err.ascii());
-    delete cmd;
-    exit(256);
-  }
-  if((schema!=RD_VERSION_DATABASE)&&(!skip_db_check)) {
-    fprintf(stderr,
-	    "rddbcheck: database version mismatch, should be %u, is %u\n",
-	    RD_VERSION_DATABASE,schema);
-    exit(256);
-  }
-
-  //
   // Validate Station
   //
-  check_station=new RDStation(rdconfig->stationName());
-  if(!check_station->exists()) {
+  if(!rda->station()->exists()) {
     fprintf(stderr,"rddbcheck: no such host [\"%s\"]\n",
-	    (const char *)rdconfig->stationName());
+	    (const char *)rda->config()->stationName());
   }  
 
   //
   // Validate User
   //
-  check_user=new RDUser(username);
-  if(!check_user->exists()) {
+  rda->setUser(username);
+  if(!rda->user()->exists()) {
     fprintf(stderr,"rddbcheck: no such user [\"%s\"]\n",(const char *)username);
   }
 
@@ -260,7 +228,7 @@ void MainObject::CheckOrphanedTracks()
       fflush(NULL);
       if(UserResponse()) {
 	RDCart *cart=new RDCart(q->value(0).toUInt());
-	cart->remove(check_station,check_user,rdconfig);
+	cart->remove(rda->station(),rda->user(),rda->config());
 	delete cart;
 	RDLog *log=new RDLog(q->value(2).toString());
 	if(log->exists()) {
@@ -500,8 +468,8 @@ void MainObject::CheckPendingCarts()
     printf("  Cart %06u has stale reservation, delete cart(y/N)?",
 	   q->value(0).toUInt());
     if(UserResponse()) {
-      RDCart::removeCart(q->value(0).toUInt(),check_station,check_user,
-			 rdconfig);
+      RDCart::removeCart(q->value(0).toUInt(),rda->station(),rda->user(),
+			 rda->config());
     }
   }
   delete q;
@@ -621,7 +589,7 @@ void MainObject::CheckOrphanedCuts()
 
 void MainObject::CheckOrphanedAudio()
 {
-  QDir dir(rdconfig->audioRoot());
+  QDir dir(rda->config()->audioRoot());
   QStringList list=dir.entryList("??????_???.wav",QDir::Files);
   for(unsigned i=0;i<list.size();i++) {
     bool ok=false;
@@ -635,7 +603,7 @@ void MainObject::CheckOrphanedAudio()
 	QSqlQuery *q=new QSqlQuery(sql);
 	if(!q->first()) {
 	  printf("  File \"%s/%s\" is orphaned.\n",
-		 (const char *)rdconfig->audioRoot(),(const char *)list[i]);
+		 (const char *)rda->config()->audioRoot(),(const char *)list[i]);
 	  if(dump_cuts_dir.isEmpty()) {
 	    printf(
 	     "  Rerun rddbcheck with the --dump-cuts-dir= switch to fix.\n\n");
@@ -644,7 +612,7 @@ void MainObject::CheckOrphanedAudio()
 	    printf("  Move to \"%s\" (y/N)? ",(const char *)dump_cuts_dir);
 	    if(UserResponse()) {
 	      system(QString().sprintf("mv %s/%s %s/",
-				       (const char *)rdconfig->audioRoot(),
+				       (const char *)rda->config()->audioRoot(),
 				       (const char *)list[i],
 				       (const char *)dump_cuts_dir));
 	      printf("  Saved audio in \"%s/%s\"\n",(const char *)dump_cuts_dir,
@@ -812,7 +780,7 @@ bool MainObject::UserResponse()
 
 int main(int argc,char *argv[])
 {
-  QApplication a(argc,argv,false);
+  RDApplication a(argc,argv,"rddbcheck",RDDBCHECK_USAGE,false);
   new MainObject();
   return a.exec();
 }

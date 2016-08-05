@@ -29,18 +29,17 @@
 #include <sched.h>
 #include <errno.h>
 
-#include <qapplication.h>
 #include <qdir.h>
 #include <qstringlist.h>
 
-#include <rd.h>
+#include <rdapplication.h>
 #include <rdcut.h>
 #include <rdconf.h>
-#include <rdimport.h>
-#include <rdlibrary_conf.h>
 #include <rdescape_string.h>
 #include <rddbheartbeat.h>
 #include <rdaudioimport.h>
+
+#include "rdimport.h"
 
 volatile bool import_run=true;
 
@@ -94,83 +93,75 @@ MainObject::MainObject(QObject *parent)
   //
   // Read Command Options
   //
-  import_cmd=
-    new RDCmdSwitch(qApp->argc(),qApp->argv(),"rdimport",RDIMPORT_USAGE);
-  if(import_cmd->keys()<2) {
+  if(rda->cmdSwitch()->keys()<2) {
     fprintf(stderr,"\n");
     fprintf(stderr,"%s",RDIMPORT_USAGE);
     fprintf(stderr,"\n");
-    delete import_cmd;
     exit(256);
   }
-  for(unsigned i=0;i<import_cmd->keys()-2;i++) {
-    if(import_cmd->key(i)=="--verbose") {
+  for(unsigned i=0;i<rda->cmdSwitch()->keys()-2;i++) {
+    if(rda->cmdSwitch()->key(i)=="--verbose") {
       import_verbose=true;
     }
-    if(import_cmd->key(i)=="--log-mode") {
+    if(rda->cmdSwitch()->key(i)=="--log-mode") {
       import_verbose=true;
       import_log_mode=true;
     }
-    if(import_cmd->key(i)=="--to-cart") {
-      import_cart_number=import_cmd->value(i).toUInt(&ok);
+    if(rda->cmdSwitch()->key(i)=="--to-cart") {
+      import_cart_number=rda->cmdSwitch()->value(i).toUInt(&ok);
       if((!ok)||(import_cart_number<1)||(import_cart_number>999999)) {
 	fprintf(stderr,"rdimport: invalid cart number\n");
-	delete import_cmd;
 	exit(256);
       }
       if(import_use_cartchunk_cutid) {
 	fprintf(stderr,"rdimport: '--to-cart' and '--use-cartchunk-cutid' are mutually exclusive\n");
-	delete import_cmd;
 	exit(256);
       }
       import_single_cart=true;
     }
-    if(import_cmd->key(i)=="--use-cartchunk-cutid") {
+    if(rda->cmdSwitch()->key(i)=="--use-cartchunk-cutid") {
       if(import_cart_number!=0) {
 	fprintf(stderr,"rdimport: '--to-cart' and '--use-cartchunk-cutid' are mutually exclusive\n");
-	delete import_cmd;
 	exit(256);
       }
       import_use_cartchunk_cutid=true;
     }
-    if(import_cmd->key(i)=="--cart-number-offset") {
-      import_cart_number_offset=import_cmd->value(i).toInt(&ok);
+    if(rda->cmdSwitch()->key(i)=="--cart-number-offset") {
+      import_cart_number_offset=rda->cmdSwitch()->value(i).toInt(&ok);
       if(!ok) {
 	fprintf(stderr,"rdimport: invalid --cart-number-offset\n");
 	exit(256);
       }
     }
-    if(import_cmd->key(i)=="--title-from-cartchunk-cutid") {
+    if(rda->cmdSwitch()->key(i)=="--title-from-cartchunk-cutid") {
       import_title_from_cartchunk_cutid=true;
     }
-    if(import_cmd->key(i)=="--delete-source") {
+    if(rda->cmdSwitch()->key(i)=="--delete-source") {
       import_delete_source=true;
     }
-    if(import_cmd->key(i)=="--delete-cuts") {
+    if(rda->cmdSwitch()->key(i)=="--delete-cuts") {
       import_delete_cuts=true;
     }
-    if(import_cmd->key(i)=="--startdate-offset") {
-      import_startdate_offset=import_cmd->value(i).toInt(&ok);
+    if(rda->cmdSwitch()->key(i)=="--startdate-offset") {
+      import_startdate_offset=rda->cmdSwitch()->value(i).toInt(&ok);
       if(!ok) {
 	fprintf(stderr,"rdimport: invalid startdate-offset\n");
-	delete import_cmd;
 	exit(256);
       }
     }
-    if(import_cmd->key(i)=="--enddate-offset") {
-      import_enddate_offset=import_cmd->value(i).toInt(&ok);
+    if(rda->cmdSwitch()->key(i)=="--enddate-offset") {
+      import_enddate_offset=rda->cmdSwitch()->value(i).toInt(&ok);
       if(!ok) {
 	fprintf(stderr,"rdimport: invalid enddate-offset\n");
-	delete import_cmd;
 	exit(256);
       }
     }
-    if(import_cmd->key(i)=="--clear-datetimes") {
+    if(rda->cmdSwitch()->key(i)=="--clear-datetimes") {
       import_clear_datetimes=true;
-      import_cmd->setProcessed(i,true);
+      rda->cmdSwitch()->setProcessed(i,true);
     }
-    if(import_cmd->key(i)=="--set-datetimes") {
-      QStringList f0=QStringList().split(",",import_cmd->value(i));
+    if(rda->cmdSwitch()->key(i)=="--set-datetimes") {
+      QStringList f0=QStringList().split(",",rda->cmdSwitch()->value(i));
       if(f0.size()!=2) {
 	fprintf(stderr,"rdimport: invalid argument to --set-datetimes\n");
 	exit(256);
@@ -221,8 +212,8 @@ MainObject::MainObject(QObject *parent)
 	exit(256);
       }
     }
-    if(import_cmd->key(i)=="--set-daypart-times") {
-      QStringList f0=QStringList().split(",",import_cmd->value(i));
+    if(rda->cmdSwitch()->key(i)=="--set-daypart-times") {
+      QStringList f0=QStringList().split(",",rda->cmdSwitch()->value(i));
       if(f0.size()!=2) {
 	fprintf(stderr,"rdimport: invalid argument to --set-daypart-times\n");
 	exit(256);
@@ -254,135 +245,131 @@ MainObject::MainObject(QObject *parent)
 	exit(256);
       }
     }
-    if(import_cmd->key(i)=="--clear-daypart-times") {
+    if(rda->cmdSwitch()->key(i)=="--clear-daypart-times") {
       import_clear_dayparts=true;
-      import_cmd->setProcessed(i,true);
+      rda->cmdSwitch()->setProcessed(i,true);
     }
-    if(import_cmd->key(i)=="--drop-box") {
+    if(rda->cmdSwitch()->key(i)=="--drop-box") {
       import_drop_box=true;
       if(import_persistent_dropbox_id<0) {
 	import_delete_source=true;
       }
     }
-    if(import_cmd->key(i)=="--add-scheduler-code") {
-      import_add_scheduler_codes.push_back(import_cmd->value(i));
+    if(rda->cmdSwitch()->key(i)=="--add-scheduler-code") {
+      import_add_scheduler_codes.push_back(rda->cmdSwitch()->value(i));
     }
-    if(import_cmd->key(i)=="--set-user-defined") {
-      import_set_user_defined=import_cmd->value(i);
+    if(rda->cmdSwitch()->key(i)=="--set-user-defined") {
+      import_set_user_defined=rda->cmdSwitch()->value(i);
     }
-    if(import_cmd->key(i)=="--metadata-pattern") {
-      import_metadata_pattern=import_cmd->value(i);
+    if(rda->cmdSwitch()->key(i)=="--metadata-pattern") {
+      import_metadata_pattern=rda->cmdSwitch()->value(i);
       if(!VerifyPattern(import_metadata_pattern)) {
 	fprintf(stderr,"rdimport: invalid metadata pattern\n");
-	delete import_cmd;
 	exit(256);
       }
     }
-    if(import_cmd->key(i)=="--fix-broken-formats") {
+    if(rda->cmdSwitch()->key(i)=="--fix-broken-formats") {
       import_fix_broken_formats=true;
     }
-    if(import_cmd->key(i)=="--persistent-dropbox-id") {
-      import_persistent_dropbox_id=import_cmd->value(i).toInt(&ok);
+    if(rda->cmdSwitch()->key(i)=="--persistent-dropbox-id") {
+      import_persistent_dropbox_id=rda->cmdSwitch()->value(i).toInt(&ok);
       if(!ok) {
 	fprintf(stderr,"rdimport: invalid persistent dropbox id\n");
-	delete import_cmd;
 	exit(256);
       }
     }
-    if(import_cmd->key(i)=="--create-startdate-offset") {
-      import_create_startdate_offset=import_cmd->value(i).toInt(&ok);
+    if(rda->cmdSwitch()->key(i)=="--create-startdate-offset") {
+      import_create_startdate_offset=rda->cmdSwitch()->value(i).toInt(&ok);
       if(!ok) {
 	fprintf(stderr,"rdimport: invalid create-startddate-offset\n");
-	delete import_cmd;
 	exit(256);
       }
       import_create_dates=true;
     }
-    if(import_cmd->key(i)=="--create-enddate-offset") {
-      import_create_enddate_offset=import_cmd->value(i).toInt(&ok);
+    if(rda->cmdSwitch()->key(i)=="--create-enddate-offset") {
+      import_create_enddate_offset=rda->cmdSwitch()->value(i).toInt(&ok);
       if((!ok) || 
          (import_create_startdate_offset > import_create_enddate_offset )) {
 	fprintf(stderr,"rdimport: invalid create-enddate-offset\n");
-	delete import_cmd;
 	exit(256);
       }
       import_create_dates=true;
     }
-    if(import_cmd->key(i)=="--set-string-agency") {
-      import_string_agency=import_cmd->value(i);
-      import_cmd->setProcessed(i,true);
+    if(rda->cmdSwitch()->key(i)=="--set-string-agency") {
+      import_string_agency=rda->cmdSwitch()->value(i);
+      rda->cmdSwitch()->setProcessed(i,true);
     }
-    if(import_cmd->key(i)=="--set-string-album") {
-      import_string_album=import_cmd->value(i);
-      import_cmd->setProcessed(i,true);
+    if(rda->cmdSwitch()->key(i)=="--set-string-album") {
+      import_string_album=rda->cmdSwitch()->value(i);
+      rda->cmdSwitch()->setProcessed(i,true);
     }
-    if(import_cmd->key(i)=="--set-string-artist") {
-      import_string_artist=import_cmd->value(i);
-      import_cmd->setProcessed(i,true);
+    if(rda->cmdSwitch()->key(i)=="--set-string-artist") {
+      import_string_artist=rda->cmdSwitch()->value(i);
+      rda->cmdSwitch()->setProcessed(i,true);
     }
-    if(import_cmd->key(i)=="--set-string-bpm") {
-      import_string_bpm=import_cmd->value(i).toInt(&ok);
+    if(rda->cmdSwitch()->key(i)=="--set-string-bpm") {
+      import_string_bpm=rda->cmdSwitch()->value(i).toInt(&ok);
       if(!ok) {
 	fprintf(stderr,"rdimport: invalid value for --set-string-bpm\n");
 	exit(255);
       }
-      import_cmd->setProcessed(i,true);
+      rda->cmdSwitch()->setProcessed(i,true);
     }
-    if(import_cmd->key(i)=="--set-string-client") {
-      import_string_client=import_cmd->value(i);
-      import_cmd->setProcessed(i,true);
+    if(rda->cmdSwitch()->key(i)=="--set-string-client") {
+      import_string_client=rda->cmdSwitch()->value(i);
+      rda->cmdSwitch()->setProcessed(i,true);
     }
-    if(import_cmd->key(i)=="--set-string-composer") {
-      import_string_composer=import_cmd->value(i);
-      import_cmd->setProcessed(i,true);
+    if(rda->cmdSwitch()->key(i)=="--set-string-composer") {
+      import_string_composer=rda->cmdSwitch()->value(i);
+      rda->cmdSwitch()->setProcessed(i,true);
     }
-    if(import_cmd->key(i)=="--set-string-conductor") {
-      import_string_conductor=import_cmd->value(i);
-      import_cmd->setProcessed(i,true);
+    if(rda->cmdSwitch()->key(i)=="--set-string-conductor") {
+      import_string_conductor=rda->cmdSwitch()->value(i);
+      rda->cmdSwitch()->setProcessed(i,true);
     }
-    if(import_cmd->key(i)=="--set-string-description") {
-      import_string_description=import_cmd->value(i);
-      import_cmd->setProcessed(i,true);
+    if(rda->cmdSwitch()->key(i)=="--set-string-description") {
+      import_string_description=rda->cmdSwitch()->value(i);
+      rda->cmdSwitch()->setProcessed(i,true);
     }
-    if(import_cmd->key(i)=="--set-string-label") {
-      import_string_label=import_cmd->value(i);
-      import_cmd->setProcessed(i,true);
+    if(rda->cmdSwitch()->key(i)=="--set-string-label") {
+      import_string_label=rda->cmdSwitch()->value(i);
+      rda->cmdSwitch()->setProcessed(i,true);
     }
-    if(import_cmd->key(i)=="--set-string-outcue") {
-      import_string_outcue=import_cmd->value(i);
-      import_cmd->setProcessed(i,true);
+    if(rda->cmdSwitch()->key(i)=="--set-string-outcue") {
+      import_string_outcue=rda->cmdSwitch()->value(i);
+      rda->cmdSwitch()->setProcessed(i,true);
     }
-    if(import_cmd->key(i)=="--set-string-publisher") {
-      import_string_publisher=import_cmd->value(i);
-      import_cmd->setProcessed(i,true);
+    if(rda->cmdSwitch()->key(i)=="--set-string-publisher") {
+      import_string_publisher=rda->cmdSwitch()->value(i);
+      rda->cmdSwitch()->setProcessed(i,true);
     }
-    if(import_cmd->key(i)=="--set-string-song-id") {
-      import_string_song_id=import_cmd->value(i);
-      import_cmd->setProcessed(i,true);
+    if(rda->cmdSwitch()->key(i)=="--set-string-song-id") {
+      import_string_song_id=rda->cmdSwitch()->value(i);
+      rda->cmdSwitch()->setProcessed(i,true);
     }
-    if(import_cmd->key(i)=="--set-string-title") {
-      if(import_cmd->value(i).isEmpty()) {
+    if(rda->cmdSwitch()->key(i)=="--set-string-title") {
+      if(rda->cmdSwitch()->value(i).isEmpty()) {
 	fprintf(stderr,"title field cannot be empty\n");
 	exit(255);
       }
-      import_string_title=import_cmd->value(i);
-      import_cmd->setProcessed(i,true);
+      import_string_title=rda->cmdSwitch()->value(i);
+      rda->cmdSwitch()->setProcessed(i,true);
     }
-    if(import_cmd->key(i)=="--set-string-user-defined") {
-      import_string_user_defined=import_cmd->value(i);
-      import_cmd->setProcessed(i,true);
+    if(rda->cmdSwitch()->key(i)=="--set-string-user-defined") {
+      import_string_user_defined=rda->cmdSwitch()->value(i);
+      rda->cmdSwitch()->setProcessed(i,true);
     }
-    if(import_cmd->key(i)=="--set-string-year") {
-      import_string_year=import_cmd->value(i).toInt(&ok);
+    if(rda->cmdSwitch()->key(i)=="--set-string-year") {
+      import_string_year=rda->cmdSwitch()->value(i).toInt(&ok);
       if(!ok) {
 	fprintf(stderr,"rdimport: invalid value for --set-string-year\n");
 	exit(255);
       }
-      import_cmd->setProcessed(i,true);
+      rda->cmdSwitch()->setProcessed(i,true);
     }
-    if(import_cmd->key(i)=="--xml") {
+    if(rda->cmdSwitch()->key(i)=="--xml") {
       import_xml=true;
-      import_cmd->setProcessed(i,true);
+      rda->cmdSwitch()->setProcessed(i,true);
     }
   }
 
@@ -403,88 +390,48 @@ MainObject::MainObject(QObject *parent)
   }
 
   import_cut_markers=new MarkerSet();
-  import_cut_markers->loadMarker(import_cmd,"cut");
+  import_cut_markers->loadMarker(rda->cmdSwitch(),"cut");
   import_talk_markers=new MarkerSet();
-  import_talk_markers->loadMarker(import_cmd,"talk");
+  import_talk_markers->loadMarker(rda->cmdSwitch(),"talk");
   import_hook_markers=new MarkerSet();
-  import_hook_markers->loadMarker(import_cmd,"hook");
+  import_hook_markers->loadMarker(rda->cmdSwitch(),"hook");
   import_segue_markers=new MarkerSet();
-  import_segue_markers->loadMarker(import_cmd,"segue");
+  import_segue_markers->loadMarker(rda->cmdSwitch(),"segue");
   import_fadedown_marker=new MarkerSet();
-  import_fadedown_marker->loadFade(import_cmd,"fadedown");
+  import_fadedown_marker->loadFade(rda->cmdSwitch(),"fadedown");
   import_fadeup_marker=new MarkerSet();
-  import_fadeup_marker->loadFade(import_cmd,"fadeup");
-
-  //
-  // Read Configuration
-  //
-  import_config=new RDConfig();
-  import_config->load();
-
-  //
-  // Open Database
-  //
-  QSqlDatabase *db=QSqlDatabase::addDatabase(import_config->mysqlDriver());
-  if(!db) {
-    fprintf(stderr,"rdimport: unable to initialize connection to database\n");
-    delete import_cmd;
-    exit(256);
-  }
-  db->setDatabaseName(import_config->mysqlDbname());
-  db->setUserName(import_config->mysqlUsername());
-  db->setPassword(import_config->mysqlPassword());
-  db->setHostName(import_config->mysqlHostname());
-  if(!db->open()) {
-    fprintf(stderr,"rdimport: unable to connect to database\n");
-    db->removeDatabase(import_config->mysqlDbname());
-    exit(256);
-  }
-  new RDDbHeartbeat(import_config->mysqlHeartbeatInterval(),this);
+  import_fadeup_marker->loadFade(rda->cmdSwitch(),"fadeup");
 
   //
   // RIPC Connection
   //
-  import_ripc=new RDRipc(import_config->stationName());
-  connect(import_ripc,SIGNAL(userChanged()),this,SLOT(userData()));
-  import_ripc->
-    connectHost("localhost",RIPCD_TCP_PORT,import_config->password());
-
-  //
-  // Station Configuration
-  //
-  import_station=new RDStation(import_config->stationName());
-
-  //
-  // User
-  //
-  import_user=NULL;
+  connect(rda->ripc(),SIGNAL(userChanged()),this,SLOT(userData()));
+  rda->ripc()->
+    connectHost("localhost",RIPCD_TCP_PORT,rda->config()->password());
 
   //
   // Verify Group
   //
-  for(unsigned i=0;i<import_cmd->keys();i++) {
-    if(import_cmd->key(i).left(2)!="--") {
-      import_group=new RDGroup(import_cmd->key(i));
+  for(unsigned i=0;i<rda->cmdSwitch()->keys();i++) {
+    if(rda->cmdSwitch()->key(i).left(2)!="--") {
+      import_group=new RDGroup(rda->cmdSwitch()->key(i));
       if(!import_group->exists()) {
 	fprintf(stderr,"rdimport: invalid group specified\n");
 	delete import_group;
-	delete import_cmd;
 	exit(256);
       }
       import_file_key=i+1;
-      i=import_cmd->keys();
+      i=rda->cmdSwitch()->keys();
     }
   }
   if(import_group==NULL) {
     fprintf(stderr,"rdimport: invalid group specified\n");
-    delete import_cmd;
     exit(256);
   }
   if(import_cart_number>0) {
     if(!import_group->cartNumberValid(import_cart_number)) {
       fprintf(stderr,"rdimport: invalid cart number for group\n");
       delete import_group;
-      delete import_cmd;
       exit(256);
     }
   }
@@ -503,66 +450,59 @@ MainObject::MainObject(QObject *parent)
   //
   // Get Audio Parameters
   //
-  RDLibraryConf *library_conf=new RDLibraryConf(import_config->stationName(),0);
-  import_system=new RDSystem();
-  import_format=library_conf->defaultFormat();
-  import_samprate=import_system->sampleRate();
-  import_bitrate=library_conf->defaultBitrate();
-  import_channels=library_conf->defaultChannels();
-  import_normalization_level=library_conf->ripperLevel();
-  import_autotrim_level=library_conf->trimThreshold();
-  import_src_converter=library_conf->srcConverter();
-  delete library_conf;
+  import_format=rda->libraryConf()->defaultFormat();
+  import_samprate=rda->system()->sampleRate();
+  import_bitrate=rda->libraryConf()->defaultBitrate();
+  import_channels=rda->libraryConf()->defaultChannels();
+  import_normalization_level=rda->libraryConf()->ripperLevel();
+  import_autotrim_level=rda->libraryConf()->trimThreshold();
+  import_src_converter=rda->libraryConf()->srcConverter();
   import_segue_level=0;
   import_segue_length=0;
 
 
-  for(unsigned i=0;i<import_cmd->keys();i++) {
-    if(import_cmd->key(i)=="--normalization-level") {
-      n=import_cmd->value(i).toInt(&ok);
+  for(unsigned i=0;i<rda->cmdSwitch()->keys();i++) {
+    if(rda->cmdSwitch()->key(i)=="--normalization-level") {
+      n=rda->cmdSwitch()->value(i).toInt(&ok);
       if(ok&&(n<=0)) {
 	import_normalization_level=100*n;
       }
       else {
 	fprintf(stderr,"rdimport: invalid normalization level\n");
-	delete import_cmd;
 	exit(256);
       }
     }
-    if(import_cmd->key(i)=="--autotrim-level") {
-      n=import_cmd->value(i).toInt(&ok);
+    if(rda->cmdSwitch()->key(i)=="--autotrim-level") {
+      n=rda->cmdSwitch()->value(i).toInt(&ok);
       if(ok&&(n<=0)) {
 	import_autotrim_level=100*n;
       }
       else {
 	fprintf(stderr,"rdimport: invalid autotrim level\n");
-	delete import_cmd;
 	exit(256);
       }
     }
-    if(import_cmd->key(i)=="--segue-level") {
-      n=import_cmd->value(i).toInt(&ok);
+    if(rda->cmdSwitch()->key(i)=="--segue-level") {
+      n=rda->cmdSwitch()->value(i).toInt(&ok);
       if(ok&&(n<=0)) {
 	import_segue_level=n;
       }
       else {
 	fprintf(stderr,"rdimport: invalid segue level\n");
-	delete import_cmd;
 	exit(256);
         }
       }
-    if(import_cmd->key(i)=="--segue-length") {
-      n=import_cmd->value(i).toInt(&ok);
+    if(rda->cmdSwitch()->key(i)=="--segue-length") {
+      n=rda->cmdSwitch()->value(i).toInt(&ok);
       if(ok&&(n>=0)) {
 	import_segue_length=n;
       }
       else {
 	fprintf(stderr,"rdimport: invalid segue length\n");
-	delete import_cmd;
 	exit(256);
       }
     }
-    if(import_cmd->key(i)=="--single-cart") {
+    if(rda->cmdSwitch()->key(i)=="--single-cart") {
       import_single_cart=true;
     }
   }
@@ -745,8 +685,8 @@ MainObject::MainObject(QObject *parent)
     import_fadedown_marker->dump();
     import_fadeup_marker->dump();
     printf(" Files to process:\n");
-    for(unsigned i=import_file_key;i<import_cmd->keys();i++) {
-      printf("   \"%s\"\n",(const char *)import_cmd->key(i));
+    for(unsigned i=import_file_key;i<rda->cmdSwitch()->keys();i++) {
+      printf("   \"%s\"\n",(const char *)rda->cmdSwitch()->key(i));
     }
     printf("\n");
     fflush(stdout);
@@ -766,18 +706,15 @@ void MainObject::userData()
   //
   // Get User Context
   //
-  disconnect(import_ripc,SIGNAL(userChanged()),this,SLOT(userData()));
-  if(import_user!=NULL) {
-    delete import_user;
-  }
-  import_user=new RDUser(import_ripc->user());
+  disconnect(rda->ripc(),SIGNAL(userChanged()),this,SLOT(userData()));
+  rda->setUser(rda->ripc()->user());
 
   //
   // Verify Permissions
   //
-  if(!import_user->editAudio()) {
+  if(!rda->user()->editAudio()) {
     fprintf(stderr,"rdimport: user \"%s\" has no edit audio permission\n",
-	    (const char *)import_user->name());
+	    (const char *)rda->user()->name());
     exit(256);
   }
 
@@ -788,8 +725,8 @@ void MainObject::userData()
     RunDropBox();
   }
   else {
-    for(unsigned i=import_file_key;i<import_cmd->keys();i++) {
-      ProcessFileList(import_cmd->key(i));
+    for(unsigned i=import_file_key;i<rda->cmdSwitch()->keys();i++) {
+      ProcessFileList(rda->cmdSwitch()->key(i));
     }
     if(import_stdin_specified) {
       bool quote_mode=false;
@@ -843,7 +780,6 @@ void MainObject::userData()
   // Clean Up and Exit
   //
   delete import_group;
-  delete import_cmd;
 
   exit(0);
 }
@@ -873,8 +809,8 @@ void MainObject::RunDropBox()
     //
     // Scan for Eligible Imports
     //
-    for(unsigned i=import_file_key;i<import_cmd->keys();i++) {
-      ProcessFileList(import_cmd->key(i));
+    for(unsigned i=import_file_key;i<rda->cmdSwitch()->keys();i++) {
+      ProcessFileList(rda->cmdSwitch()->key(i));
     }
 
     //
@@ -1104,7 +1040,7 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
     return MainObject::NoCut;
   }
   RDCut *cut=new RDCut(*cartnum,cutnum);
-  RDAudioImport *conv=new RDAudioImport(import_station,import_config,this);
+  RDAudioImport *conv=new RDAudioImport(rda->station(),rda->config(),this);
   conv->setCartNumber(cart->number());
   conv->setCutNumber(cutnum);
   conv->setSourceFile(wavefile->getName());
@@ -1144,7 +1080,7 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
     fflush(stdout);
   }
 
-  switch(conv_err=conv->runImport(import_user->name(),import_user->password(),
+  switch(conv_err=conv->runImport(rda->user()->name(),rda->user()->password(),
 				  &audio_conv_err)) {
   case RDAudioImport::ErrorOk:
     if(import_verbose) {
@@ -1159,10 +1095,10 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
 	    (const char *)filename.utf8());
     fflush(stderr);
     if(cart_created) {
-      cart->remove(import_station,import_user,import_config);
+      cart->remove(rda->station(),rda->user(),rda->config());
     }
     else {
-      cart->removeCut(import_station,import_user,cut->cutName(),import_config);
+      cart->removeCut(rda->station(),rda->user(),cut->cutName(),rda->config());
     }
     delete cut;
     delete cart;
@@ -1190,8 +1126,8 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
     }
     cut->setMetadata(wavedata);
   }
-  cut->autoSegue(import_segue_level,import_segue_length,import_station,
-		 import_user,import_config);
+  cut->autoSegue(import_segue_level,import_segue_length,rda->station(),
+		 rda->user(),rda->config());
   if((wavedata->title().length()==0)||
      ((wavedata->title().length()>0)&&(wavedata->title()[0] == '\0'))) {
     QString title=effective_group->generateTitle(filename);
@@ -1242,7 +1178,7 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
       cut->setEndDatetime(dt.addDays(import_create_enddate_offset),true);
     }
   }
-  cut->setOriginName(import_station->name());
+  cut->setOriginName(rda->station()->name());
   for(unsigned i=0;i<import_add_scheduler_codes.size();i++) {
     cart->addSchedCode(import_add_scheduler_codes[i]);
   }
@@ -1842,7 +1778,7 @@ void MainObject::DeleteCuts(unsigned cartnum)
   }
   unsigned dev;
   RDCart *cart=new RDCart(cartnum);
-  cart->removeAllCuts(import_station,import_user,import_config);
+  cart->removeAllCuts(rda->station(),rda->user(),rda->config());
   cart->updateLength();
   cart->resetRotation();
   cart->calculateAverageLength(&dev);
@@ -1966,7 +1902,7 @@ void MainObject::ReadXmlFile(const QString &basename,RDWaveData *wavedata) const
 
 int main(int argc,char *argv[])
 {
-  QApplication a(argc,argv,false);
+  RDApplication a(argc,argv,"rdimport",RDIMPORT_USAGE,false);
   new MainObject();
   return a.exec();
 }

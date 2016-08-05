@@ -18,6 +18,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
+#include <rdapplication.h>
 #include <rdconf.h>
 #include <rdcreate_log.h>
 #include <rdescape_string.h>
@@ -32,7 +33,7 @@ void MainObject::Addcart(int line,unsigned cartnum)
   }
   edit_log_event->insert(line,1);
   edit_log_event->logLine(line)->
-    setTransType(edit_airplay_conf->defaultTransType());
+    setTransType(rda->airplayConf()->defaultTransType());
   edit_log_event->logLine(line)->setFadeupGain(-3000);
   edit_log_event->logLine(line)->setFadedownGain(-3000);
   edit_log_event->logLine(line)->setCartNumber(cartnum);
@@ -49,7 +50,7 @@ void MainObject::Addchain(int line,const QString &logname)
   edit_log_event->insert(line,1);
   edit_log_event->logLine(line)->setType(RDLogLine::Chain);
   edit_log_event->logLine(line)->
-    setTransType(edit_airplay_conf->defaultTransType());
+    setTransType(rda->airplayConf()->defaultTransType());
   edit_log_event->logLine(line)->setMarkerLabel(logname);
   edit_log_event->refresh(line);
   edit_modified=true;
@@ -64,7 +65,7 @@ void MainObject::Addmarker(int line)
   edit_log_event->insert(line,1);
   edit_log_event->logLine(line)->setType(RDLogLine::Marker);
   edit_log_event->logLine(line)->
-    setTransType(edit_airplay_conf->defaultTransType());
+    setTransType(rda->airplayConf()->defaultTransType());
   edit_log_event->logLine(line)->setMarkerLabel(tr("Label"));
   edit_log_event->logLine(line)->setMarkerComment(tr("Marker Comment"));
   edit_log_event->refresh(line);
@@ -80,7 +81,7 @@ void MainObject::Addtrack(int line)
   edit_log_event->insert(line,1);
   edit_log_event->logLine(line)->setType(RDLogLine::Track);
   edit_log_event->logLine(line)->
-    setTransType(edit_airplay_conf->defaultTransType());
+    setTransType(rda->airplayConf()->defaultTransType());
   edit_log_event->logLine(line)->setMarkerComment(tr("Voice Track"));
   edit_log_event->refresh(line);
   edit_modified=true;
@@ -109,7 +110,7 @@ void MainObject::Deletelog(QString logname)
   if((edit_log==NULL)||(edit_log->name()!=logname)) {
     RDLog *log=new RDLog(logname);
     if(log->exists()) {
-      if(!log->remove(edit_station,edit_user,edit_config)) {
+      if(!log->remove(rda->station(),rda->user(),rda->config())) {
 	fprintf(stderr,"deletelog: audio deletion error, log not deleted\n");
       }
     }
@@ -393,7 +394,7 @@ void MainObject::Saveas(const QString &logname)
       "NAME=\""+RDEscapeString(logname)+"\","+
       "TYPE=0,"+
       "DESCRIPTION=\""+RDEscapeString(edit_description)+"\","+
-      "ORIGIN_USER=\""+RDEscapeString(edit_user->name())+"\","+
+      "ORIGIN_USER=\""+RDEscapeString(rda->user()->name())+"\","+
       "ORIGIN_DATETIME=now(),"+
       "LINK_DATETIME=now(),"+
       "MODIFIED_DATETIME=now(),"+

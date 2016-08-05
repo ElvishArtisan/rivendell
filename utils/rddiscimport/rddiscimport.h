@@ -38,15 +38,8 @@
 #include <rdcdplayer.h>
 #include <rdcdripper.h>
 #include <rdaudioimport.h>
-#include <rdconfig.h>
-#include <rddb.h>
 #include <rdgroup.h>
 #include <rdlistview.h>
-#include <rdlibrary_conf.h>
-#include <rdsystem.h>
-#include <rdstation.h>
-#include <rduser.h>
-#include <rdripc.h>
 #include <rdtransportbutton.h>
 
 #include <metalibrary.h>
@@ -113,13 +106,6 @@ class MainWidget : public QWidget
   RDCdRipper *dg_ripper;
   RDAudioImport *dg_importer;
   RDGroup *dg_group;
-  RDRipc *dg_ripc;
-  RDUser *dg_user;
-  RDSystem *dg_system;
-  RDStation *dg_station;
-  RDLibraryConf *dg_library_conf;
-  QSqlDatabase *dg_db;
-  RDConfig *dg_config;
   QString dg_group_name;
   QString dg_tempfile;
   std::vector<bool> dg_rip_enableds;

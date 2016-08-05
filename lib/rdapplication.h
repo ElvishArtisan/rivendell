@@ -38,7 +38,7 @@ class RDApplication : public QApplication
 {
  public:
   RDApplication(int argc,char **argv,const char *modname,const char *usage,
-		bool gui=true);
+		bool gui=true,bool skip_db_check=false);
   RDAirPlayConf *airplayConf() const;
   RDAirPlayConf *panelConf() const;
   RDLibraryConf *libraryConf() const;

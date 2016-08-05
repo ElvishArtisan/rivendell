@@ -26,12 +26,7 @@
 #include <qobject.h>
 
 #include <rdcart.h>
-#include <rdconfig.h>
 #include <rdcut.h>
-#include <rddb.h>
-#include <rdripc.h>
-#include <rdstation.h>
-#include <rduser.h>
 
 #define RDEXPORT_USAGE "[options] <output-dir>\n"
 
@@ -63,10 +58,6 @@ class MainObject : public QObject
   unsigned export_channels;
   int export_quality;
   bool export_xml;
-  RDConfig *export_config;
-  RDRipc *export_ripc;
-  RDStation *export_station;
-  RDUser *export_user;
   bool export_verbose;
   QString export_escape_string;
   bool export_continue_after_error;

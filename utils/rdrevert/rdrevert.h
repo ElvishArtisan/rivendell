@@ -21,12 +21,7 @@
 #ifndef RDREVERT_H
 #define RDREVERT_H
 
-#include <map>
-
 #include <qobject.h>
-
-#include <rdconfig.h>
-#include <rddb.h>
 
 #define RDREVERT_BASE_SCHEMA 242
 #define RDREVERT_USAGE "[options]\n"
@@ -59,8 +54,8 @@ class MainObject : public QObject
   void SetVersion(int schema) const;
   int MapSchema(const QString &ver);
   bool rev_use_deadzone;
-  RDConfig *rev_config;
-  QSqlDatabase *rev_db;
+  //  RDConfig *rev_config;
+  //  QSqlDatabase *rev_db;
 };
 
 

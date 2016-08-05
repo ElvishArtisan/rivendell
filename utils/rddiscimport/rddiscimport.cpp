@@ -22,7 +22,6 @@
 #include <stdio.h>
 #include <errno.h>
 
-#include <qapplication.h>
 #include <qwindowsstyle.h>
 #include <qtextcodec.h>
 #include <qfiledialog.h>
@@ -30,8 +29,8 @@
 #include <qstringlist.h>
 #include <qfiledialog.h>
 
+#include <rdapplication.h>
 #include <rdescape_string.h>
-#include <rdcmd_switch.h>
 #include <rdconf.h>
 #include <rddatedialog.h>
 #include <rdgroup.h>
@@ -46,20 +45,12 @@
 #include <rdwavedata.h>
 #include <rdsystem.h>
 
-#include <rddiscimport.h>
+#include "rddiscimport.h"
 
 MainWidget::MainWidget(QWidget *parent)
   : QWidget(parent)
 {
-  dg_user=NULL;
   dg_group=NULL;
-
-  //
-  // Read Command Options
-  //
-  RDCmdSwitch *cmd=
-    new RDCmdSwitch(qApp->argc(),qApp->argv(),"RDDiscImport","\n");
-  delete cmd;
 
   //
   // Set Window Size
@@ -70,35 +61,9 @@ MainWidget::MainWidget(QWidget *parent)
   SetCaption();
 
   //
-  // Load Local Configs
-  //
-  dg_config=new RDConfig();
-  dg_config->load();
-
-  //
   // Get Temporary File
   //
   dg_tempfile=RDTempFile();
-
-  //
-  // Open Database
-  //
-  dg_db=QSqlDatabase::addDatabase(dg_config->mysqlDriver());
-  if(!dg_db) {
-    QMessageBox::warning(this,tr("Database Error"),
-		    tr("Can't Connect","Unable to connect to mySQL Server!"));
-    exit(0);
-  }
-  dg_db->setDatabaseName(dg_config->mysqlDbname());
-  dg_db->setUserName(dg_config->mysqlUsername());
-  dg_db->setPassword(dg_config->mysqlPassword());
-  dg_db->setHostName(dg_config->mysqlHostname());
-  if(!dg_db->open()) {
-    QMessageBox::warning(this,tr("Can't Connect"),
-			 tr("Unable to connect to mySQL Server!"));
-    dg_db->removeDatabase(dg_config->mysqlDbname());
-    exit(0);
-  }
 
   //
   // Fonts
@@ -113,12 +78,8 @@ MainWidget::MainWidget(QWidget *parent)
   //
   // Configuration Elements
   //
-  dg_system=new RDSystem();
-  dg_station=new RDStation(dg_config->stationName(),this);
-  dg_library_conf=new RDLibraryConf(dg_config->stationName(),0);
-  dg_ripc=new RDRipc(dg_config->stationName(),this);
-  connect(dg_ripc,SIGNAL(userChanged()),this,SLOT(userChangedData()));
-  dg_ripc->connectHost("localhost",RIPCD_TCP_PORT,dg_config->password());
+  connect(rda->ripc(),SIGNAL(userChanged()),this,SLOT(userChangedData()));
+  rda->ripc()->connectHost("localhost",RIPCD_TCP_PORT,rda->config()->password());
 
   //
   // Metadata Index Library
@@ -131,11 +92,11 @@ MainWidget::MainWidget(QWidget *parent)
   dg_player=new RDCdPlayer(NULL,this);
   connect(dg_player,SIGNAL(mediaChanged()),this,SLOT(mediaChangedData()));
   connect(dg_player,SIGNAL(ejected()),this,SLOT(ejectData()));
-  dg_player->setDevice(dg_library_conf->ripperDevice());
+  dg_player->setDevice(rda->libraryConf()->ripperDevice());
   dg_ripper=new RDCdRipper(NULL,this);
-  dg_ripper->setDevice(dg_library_conf->ripperDevice());
+  dg_ripper->setDevice(rda->libraryConf()->ripperDevice());
   dg_ripper->setDestinationFile(dg_tempfile);
-  dg_importer=new RDAudioImport(dg_station,dg_config,this);
+  dg_importer=new RDAudioImport(rda->station(),rda->config(),this);
   dg_importer->setSourceFile(dg_tempfile);
   dg_importer->setUseMetadata(false);
   
@@ -236,7 +197,7 @@ MainWidget::MainWidget(QWidget *parent)
   dg_channels_box=new QComboBox(this);
   dg_channels_box->insertItem("1");
   dg_channels_box->insertItem("2");
-  dg_channels_box->setCurrentItem(dg_library_conf->defaultChannels()-1);
+  dg_channels_box->setCurrentItem(rda->libraryConf()->defaultChannels()-1);
   dg_channels_label=new QLabel(dg_channels_box,tr("Channels")+":",this);
   dg_channels_label->setFont(label_font);
   dg_channels_label->setAlignment(AlignRight|AlignVCenter);
@@ -247,7 +208,7 @@ MainWidget::MainWidget(QWidget *parent)
   dg_autotrim_box=new QCheckBox(tr("Autotrim"),this);
   dg_autotrim_box->setChecked(true);
   dg_autotrim_box->setFont(label_font);
-  dg_autotrim_box->setChecked(dg_library_conf->trimThreshold()!=0);
+  dg_autotrim_box->setChecked(rda->libraryConf()->trimThreshold()!=0);
   connect(dg_autotrim_box,SIGNAL(toggled(bool)),
 	  this,SLOT(autotrimCheckData(bool)));
 
@@ -256,7 +217,7 @@ MainWidget::MainWidget(QWidget *parent)
   //
   dg_autotrim_spin=new QSpinBox(this);
   dg_autotrim_spin->setRange(-99,0);
-  dg_autotrim_spin->setValue(dg_library_conf->trimThreshold()/100);
+  dg_autotrim_spin->setValue(rda->libraryConf()->trimThreshold()/100);
   dg_autotrim_label=new QLabel(dg_autotrim_spin,tr("Level")+":",this);
   dg_autotrim_label->setFont(label_font);
   dg_autotrim_label->setAlignment(AlignRight|AlignVCenter);
@@ -270,7 +231,7 @@ MainWidget::MainWidget(QWidget *parent)
   dg_normalize_box=new QCheckBox(tr("Normalize"),this);
   dg_normalize_box->setChecked(true);
   dg_normalize_box->setFont(label_font);
-  dg_normalize_box->setChecked(dg_library_conf->ripperLevel()!=0);
+  dg_normalize_box->setChecked(rda->libraryConf()->ripperLevel()!=0);
   connect(dg_normalize_box,SIGNAL(toggled(bool)),
 	  this,SLOT(normalizeCheckData(bool)));
 
@@ -279,7 +240,7 @@ MainWidget::MainWidget(QWidget *parent)
   //
   dg_normalize_spin=new QSpinBox(this);
   dg_normalize_spin->setRange(-30,0);
-  dg_normalize_spin->setValue(dg_library_conf->ripperLevel()/100);
+  dg_normalize_spin->setValue(rda->libraryConf()->ripperLevel()/100);
   dg_normalize_label=new QLabel(dg_normalize_spin,tr("Level:"),this);
   dg_normalize_label->setFont(label_font);
   dg_normalize_label->setAlignment(AlignRight|AlignVCenter);
@@ -305,7 +266,7 @@ MainWidget::MainWidget(QWidget *parent)
   if(!dg_player->open()) {
     QMessageBox::warning(this,"RDDiscImport - "+tr("Ripper Error"),
 			 tr("Unable to open CD-ROM device at")+" "+
-			 " \""+dg_library_conf->ripperDevice()+"\".");
+			 " \""+rda->libraryConf()->ripperDevice()+"\".");
     exit(256);
   }
   if(dg_metalibrary->load(dg_indexfile_edit->text())&&
@@ -466,15 +427,15 @@ void MainWidget::ripData()
   // Load Importer Settings
   //
   RDSettings *s=new RDSettings();
-  if(dg_library_conf->defaultFormat()==1) {
+  if(rda->libraryConf()->defaultFormat()==1) {
     s->setFormat(RDSettings::MpegL2Wav);
   }
   else {
     s->setFormat(RDSettings::Pcm16);
   }
   s->setChannels(dg_channels_box->currentItem()+1);
-  s->setSampleRate(dg_system->sampleRate());
-  s->setBitRate(dg_library_conf->defaultBitrate());
+  s->setSampleRate(rda->system()->sampleRate());
+  s->setBitRate(rda->libraryConf()->defaultBitrate());
   if(dg_normalize_box->isChecked()) {
     s->setNormalizationLevel(dg_normalize_spin->value());
   }
@@ -498,14 +459,14 @@ void MainWidget::ripData()
 	if((cartnum=dg_group->nextFreeCart())>0) {
 	  cart=new RDCart(cartnum);
 	  cart->create(dg_group->name(),RDCart::Audio);
-	  cart->addCut(dg_library_conf->defaultFormat(),
-		       dg_library_conf->defaultBitrate(),
+	  cart->addCut(rda->libraryConf()->defaultFormat(),
+		       rda->libraryConf()->defaultBitrate(),
 		       dg_channels_box->currentItem()+1,"",r->discId());
 	  cut=new RDCut(cartnum,1);
 	  dg_importer->setCartNumber(cartnum);
 	  dg_importer->setCutNumber(1);
 	  if((import_err=dg_importer->
-	      runImport(dg_user->name(),dg_user->password(),&conv_err))==
+	      runImport(rda->user()->name(),rda->user()->password(),&conv_err))==
 	     RDAudioImport::ErrorOk) {
 	    data=new RDWaveData();
 	    r->getMetadata(data,dg_player->trackLength(i+1));
@@ -569,14 +530,9 @@ void MainWidget::userChangedData()
 {
   QStringList groups;
 
-  if(dg_user!=NULL) {
-    delete dg_user;
-  }
   dg_group_box->clear();
-
-  dg_user=new RDUser(dg_ripc->user());
-  
-  groups=dg_user->groups();
+  rda->setUser(rda->ripc()->user());
+  groups=rda->user()->groups();
   for(unsigned i=0;i<groups.size();i++) {
     dg_group_box->insertItem(groups[i]);
     if(dg_group_name==groups[i]) {
@@ -685,8 +641,8 @@ void MainWidget::LockGui(bool state)
 void MainWidget::SetCaption()
 {
   QString username=tr("[unknown]");
-  if(dg_user!=NULL) {
-    username=dg_user->name();
+  if(rda->user()!=NULL) {
+    username=rda->user()->name();
   }
   setCaption(tr("RDDiscImport")+" v"+VERSION+" "+tr("User")+": "+username);
 }
@@ -723,7 +679,7 @@ void MainWidget::SaveConfig()
 
 int main(int argc,char *argv[])
 {
-  QApplication a(argc,argv);
+  RDApplication a(argc,argv,"rddiscimport",RDDISCIMPORT_USAGE);
   
   //
   // Load Translations

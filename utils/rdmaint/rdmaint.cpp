@@ -27,27 +27,24 @@
 #include <fcntl.h>
 #include <ctype.h>
 
-#include <qapplication.h>
 #include <qdir.h>
 #include <qfile.h>
 
-#include <rd.h>
+#include <rdapplication.h>
 #include <rdconf.h>
-#include <rdmaint.h>
-#include <rdlibrary_conf.h>
 #include <rdescape_string.h>
-#include <rddb.h>
 #include <rdurl.h>
 #include <rdpodcast.h>
 #include <rdcart.h>
 #include <rdlog.h>
+
+#include "rdmaint.h"
 
 MainObject::MainObject(QObject *parent)
   :QObject(parent)
 {
   QString sql;
   RDSqlQuery *q;
-  unsigned schema=0;
 
   //
   // Initialize Data Structures
@@ -58,46 +55,20 @@ MainObject::MainObject(QObject *parent)
   //
   // Read Command Options
   //
-  maint_cmd=new RDCmdSwitch(qApp->argc(),qApp->argv(),
-			     "rdmaint",RDMAINT_USAGE);
-  if(maint_cmd->keys()>3) {
+  if(rda->cmdSwitch()->keys()>3) {
     fprintf(stderr,"\n");
     fprintf(stderr,"%s",RDMAINT_USAGE);
     fprintf(stderr,"\n");
-    delete maint_cmd;
     exit(256);
   }
-  for(unsigned i=0;i<maint_cmd->keys();i++) {
-    if(maint_cmd->key(i)=="--verbose") {
+  for(unsigned i=0;i<rda->cmdSwitch()->keys();i++) {
+    if(rda->cmdSwitch()->key(i)=="--verbose") {
       maint_verbose=true;
     }
-    if(maint_cmd->key(i)=="--system") {
+    if(rda->cmdSwitch()->key(i)=="--system") {
       maint_system=true;
     }
   }
-
-  //
-  // Read Configuration
-  //
-  maint_config=new RDConfig();
-  maint_config->load();
-
-  //
-  // Open Database
-  //
-  QString err (tr("rdmaint: "));
-  QSqlDatabase *db=RDInitDb(&schema,&err);
-  if(!db) {
-    fprintf(stderr,err.ascii());
-    delete maint_cmd;
-    exit(256);
-  }
-  delete maint_cmd;
-
-  //
-  // Get Station
-  //
-  maint_station=new RDStation(maint_config->stationName());
 
   //
   // Get User
@@ -108,7 +79,7 @@ MainObject::MainObject(QObject *parent)
     fprintf(stderr,"unable to find valid user\n");
     exit(256);
   }
-  maint_user=new RDUser(q->value(0).toString());
+  rda->setUser(q->value(0).toString());
   delete q;
 
   if(maint_system) {
@@ -166,14 +137,14 @@ void MainObject::PurgeCuts()
     q1=new RDSqlQuery(sql);
     while(q1->next()) {
       RDCart *cart=new RDCart(q1->value(0).toUInt());
-      if(cart->removeCut(maint_station,maint_user,q1->value(1).toString(),
-			 maint_config)) {
-	maint_config->
+      if(cart->removeCut(rda->station(),rda->user(),q1->value(1).toString(),
+			 rda->config())) {
+	rda->config()->
 	  log("rdmaint",RDConfig::LogInfo,QString().sprintf("purged cut %s",
 			(const char *)q1->value(1).toString()));
       }
       else {
-	maint_config->
+	rda->config()->
 	  log("rdmaint",RDConfig::LogErr,QString().
 	      sprintf("unable to purge cut %s: audio deletion error",
 		      (const char *)q1->value(1).toString()));
@@ -183,8 +154,8 @@ void MainObject::PurgeCuts()
 			      q1->value(0).toUInt());
 	q2=new RDSqlQuery(sql);
 	if(!q2->first()) {
-	  cart->remove(maint_station,maint_user,maint_config);
-	  maint_config->
+	  cart->remove(rda->station(),rda->user(),rda->config());
+	  rda->config()->
 	    log("rdmaint",RDConfig::LogInfo,QString().
 		sprintf("deleted purged cart %06u",cart->number()));
 	}
@@ -210,11 +181,11 @@ void MainObject::PurgeLogs()
     "(PURGE_DATE<\""+dt.date().toString("yyyy-MM-dd")+"\")";
   q=new RDSqlQuery(sql);
   while(q->next()) {
-    maint_config->
+    rda->config()->
       log("rdmain",RDConfig::LogInfo,QString().sprintf("purged log %s",
 		       (const char *)q->value(0).toString()));
     RDLog *log=new RDLog(q->value(0).toString());
-    log->remove(maint_station,maint_user,maint_config);
+    log->remove(rda->station(),rda->user(),rda->config());
     delete log;
   }
   delete q;
@@ -253,7 +224,7 @@ void MainObject::PurgeDropboxes()
                          DROPBOXES left join DROPBOX_PATHS \
                          on (DROPBOXES.ID=DROPBOX_PATHS.DROPBOX_ID) \
                          where DROPBOXES.STATION_NAME=\"%s\"",
-			(const char *)RDEscapeString(maint_config->
+			(const char *)RDEscapeString(rda->config()->
 						     stationName()));
   q=new RDSqlQuery(sql);
   while(q->next()) {
@@ -283,7 +254,7 @@ void MainObject::PurgeGpioEvents()
   
 int main(int argc,char *argv[])
 {
-  QApplication a(argc,argv,false);
+  RDApplication a(argc,argv,"rdmain",RDMAINT_USAGE,false);
   new MainObject();
   return a.exec();
 }
