@@ -479,6 +479,10 @@
         <source>is</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Unable to connect to MySQL.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RDAddCart</name>
@@ -602,10 +606,6 @@
     <name>RDApplication</name>
     <message>
         <source>DB Error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unable to connect to MySQL.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

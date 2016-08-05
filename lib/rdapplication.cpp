@@ -58,15 +58,26 @@ RDApplication::RDApplication(int argc,char **argv,const char *modname,
   //
   QSqlDatabase *db=RDInitDb(&schema,&err);
   if(!db) {
-    QMessageBox::warning(NULL,"Rivendell - "+tr("DB Error"),
-			 tr("Unable to connect to MySQL."),err);
+    if(gui) {
+      QMessageBox::warning(NULL,"Rivendell - "+tr("DB Error"),
+			   QObject::tr("Unable to connect to MySQL."),err);
+    }
+    else {
+      fprintf(stderr,"%s: unable to connect to MySQL\n",argv[0]);
+    }
     exit(256);
   }
   if((RD_VERSION_DATABASE!=schema)&&(!skip_db_check)) {
-    QMessageBox::warning(NULL,"Rivendell - "+tr("DB Error"),
-			 QObject::tr("database version mismatch, should be ")+
-			 QString().sprintf("%u, ",RD_VERSION_DATABASE)+
-			 QObject::tr("is")+QString().sprintf(" %u.",schema));
+    if(gui) {
+      QMessageBox::warning(NULL,"Rivendell - "+tr("DB Error"),
+			   QObject::tr("database version mismatch, should be ")+
+			   QString().sprintf("%u, ",RD_VERSION_DATABASE)+
+			   QObject::tr("is")+QString().sprintf(" %u.",schema));
+    }
+    else {
+      fprintf(stderr,"%s: database version mismatch, should be %u\n",
+	      argv[0],schema);
+    }
     exit(256);
   }
   new RDDbHeartbeat(config()->mysqlHeartbeatInterval());

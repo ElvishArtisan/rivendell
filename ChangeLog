@@ -15532,3 +15532,5 @@
 	* Refactored rdcastmanager.cgi(1) to use 'RDCgiApplication'.
 	* Refactored rdfeed.xml(1) to use 'RDCgiApplication'.
 	* Refactored rdxport.cgi(1) to use 'RDCgiApplication'.
+2016-08-05 Fred Gleason <fredg@paravelsystems.com>
+	* Implemented console error messages in 'lib/rdapplication.cpp'.
