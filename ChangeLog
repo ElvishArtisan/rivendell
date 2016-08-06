@@ -15460,3 +15460,5 @@
 2016-08-05 Fred Gleason <fredg@paravelsystems.com>
 	* Updated 'NEWS'.
 	* Incremented the package version to 2.15.1.
+2016-08-06 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored 'rlm/rlm_walltime.c' to use http PUTs.
