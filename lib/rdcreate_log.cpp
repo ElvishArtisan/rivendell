@@ -139,12 +139,12 @@ QString RDCreateReconciliationTableSql(QString name)
 QString RDCreateStackTableSql(QString name)
 {
   QString sql;
-  sql=QString().sprintf("create table if not exists `%s_STACK` (\
-                         SCHED_STACK_ID int unsigned not null primary key,\
-                         CART int unsigned not null,\
-                         ARTIST varchar(255),\
-                         SCHED_CODES varchar(255),\
-                         SCHEDULED_AT datetime default '1000-01-01 00:00:00')",
-			(const char *)name.replace(" ","_"));
+  sql=QString("create table if not exists `")+
+    name.replace(" ","_")+"_STACK` ("+
+    "SCHED_STACK_ID int unsigned not null primary key,"+
+    "CART int unsigned not null,"+
+    "ARTIST varchar(255),"+
+    "SCHED_CODES varchar(255),"+
+    "SCHEDULED_AT datetime default '1000-01-01 00:00:00')";
   return sql;
 }

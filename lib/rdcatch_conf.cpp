@@ -33,15 +33,13 @@ RDCatchConf::RDCatchConf(const QString &station)
 
   air_station=station;
 
-  sql=QString().
-    sprintf("select ID from RDCATCH where STATION=\"%s\"",
-			(const char *)air_station);
+  sql=QString("select ID from RDCATCH where ")+
+    "STATION=\""+RDEscapeString(air_station)+"\"";
   q=new RDSqlQuery(sql);
   if(!q->first()) {
     delete q;
-    sql=QString().
-      sprintf("insert into RDCATCH set STATION=\"%s\"",
-			  (const char *)air_station);
+    sql=QString("insert into RDCATCH set ")+
+      "STATION=\""+RDEscapeString(air_station)+"\"";
     q=new RDSqlQuery(sql);
     delete q;
   } else {
@@ -73,11 +71,9 @@ void RDCatchConf::SetRow(const QString &param,const QString &value) const
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString().
-    sprintf("UPDATE RDCATCH SET %s=\"%s\" WHERE STATION=\"%s\"",
-	    (const char *)param,
-	    (const char *)RDEscapeString(value),
-	    (const char *)RDEscapeString(air_station));
+  sql=QString("update RDCATCH set ")+
+    param+"=\""+RDEscapeString(value)+"\" where "+
+    "STATION=\""+RDEscapeString(air_station)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
 }

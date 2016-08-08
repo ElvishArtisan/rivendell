@@ -18,7 +18,6 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qsqldatabase.h>
 #include <qsignal.h>
 #include <qobject.h>
 
@@ -37,8 +36,8 @@ class RDCut
   enum AudioEnd {AudioBoth=0,AudioHead=1,AudioTail=2};
   enum IsrcFormat {RawIsrc=0,FormattedIsrc=1};
   enum Validity {NeverValid=0,ConditionallyValid=1,AlwaysValid=2,FutureValid=3};
-  RDCut(const QString &name,bool create=false,QSqlDatabase *db=0);
-  RDCut(unsigned cartnum,int cutnum,bool create=false,QSqlDatabase *db=0);
+  RDCut(const QString &name,bool create=false);
+  RDCut(unsigned cartnum,int cutnum,bool create=false);
   ~RDCut();
   bool exists() const;
   bool isValid() const;
@@ -154,7 +153,6 @@ class RDCut
   void SetRow(const QString &param,const QTime &value) const;
   void SetRow(const QString &param) const;
   QSignal *cut_signal;
-  QSqlDatabase *cut_db;
   QString cut_name;
   unsigned cart_number;
   unsigned cut_number;

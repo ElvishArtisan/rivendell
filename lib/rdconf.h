@@ -67,23 +67,21 @@ QString RDYesNo(bool);
 QHostAddress RDGetHostAddr();
 QString RDGetDisplay(bool strip_point=false);
 bool RDDoesRowExist(const QString &table,const QString &name,
-		    const QString &test,QSqlDatabase *db=0);
-bool RDDoesRowExist(const QString &table,const QString &name,unsigned test,
-		    QSqlDatabase *db=0);
+		    const QString &test);
+bool RDDoesRowExist(const QString &table,const QString &name,unsigned test);
 QVariant RDGetSqlValue(const QString &table,const QString &name,
-		       const QString &test,const QString &param,
-		       QSqlDatabase *db=0,bool *valid=0);
+		       const QString &test,const QString &param,bool *valid=0);
 QVariant RDGetSqlValue(const QString &table,const QString &name,unsigned test,
-		       const QString &param,QSqlDatabase *db=0,bool *valid=0);
+		       const QString &param,bool *valid=0);
 QVariant RDGetSqlValue(const QString &table,
 		       const QString &name1,const QString &test1,
 		       const QString &name2,const QString &test2,
 		       const QString &name3,const QString &test3,
-		       const QString &param,QSqlDatabase *db=0,bool *valid=0);
+		       const QString &param,bool *valid=0);
 bool RDIsSqlNull(const QString &table,const QString &name,
-		 const QString &test,const QString &param,QSqlDatabase *db=0);
+		 const QString &test,const QString &param);
 bool RDIsSqlNull(const QString &table,const QString &name,unsigned test,
-		 const QString &param,QSqlDatabase *db=0);
+		 const QString &param);
 QString RDGetTimeLength(int mseconds,bool leadzero=false,bool tenths=true);
 int RDSetTimeLength(const QString &string);
 bool RDCopy(const QString &srcfile,const QString &destfile);

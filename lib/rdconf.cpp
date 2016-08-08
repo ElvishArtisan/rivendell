@@ -520,14 +520,14 @@ QString RDGetDisplay(bool strip_point)
 
 
 bool RDDoesRowExist(const QString &table,const QString &name,
-		    const QString &test,QSqlDatabase *db)
+		    const QString &test)
 {
   RDSqlQuery *q;
   QString sql;
 
   sql="select `"+name+"` from `"+table+"` where `"+name+"`="+
     "\""+RDEscapeString(test)+"\"";
-  q=new RDSqlQuery(sql,db);
+  q=new RDSqlQuery(sql);
   if(q->first()) {
     delete q;
     return true;
@@ -537,15 +537,14 @@ bool RDDoesRowExist(const QString &table,const QString &name,
 }
 
 
-bool RDDoesRowExist(const QString &table,const QString &name,unsigned test,
-		    QSqlDatabase *db)
+bool RDDoesRowExist(const QString &table,const QString &name,unsigned test)
 {
   RDSqlQuery *q;
   QString sql;
 
   sql="select `"+name+"` from `"+table+"` where `"+name+"`="+
     QString().sprintf("%d",test);
-  q=new RDSqlQuery(sql,db);
+  q=new RDSqlQuery(sql);
   if(q->size()>0) {
     delete q;
     return true;
@@ -556,8 +555,7 @@ bool RDDoesRowExist(const QString &table,const QString &name,unsigned test,
 
 
 QVariant RDGetSqlValue(const QString &table,const QString &name,
-		       const QString &test,const QString &param,
-		       QSqlDatabase *db,bool *valid)
+		       const QString &test,const QString &param,bool *valid)
 {
   RDSqlQuery *q;
   QString sql;
@@ -565,7 +563,7 @@ QVariant RDGetSqlValue(const QString &table,const QString &name,
 
   sql="select `"+param+"` from `"+table+"` where `"+name+"`="+
     "\""+RDEscapeString(test)+"\"";
-  q=new RDSqlQuery(sql,db);
+  q=new RDSqlQuery(sql);
   if(q->isActive()) {
     q->first();
     v=q->value(0);
@@ -584,7 +582,7 @@ QVariant RDGetSqlValue(const QString &table,
 		       const QString &name1,const QString &test1,
 		       const QString &name2,const QString &test2,
                        const QString &name3,const QString &test3,
-		       const QString &param,QSqlDatabase *db,bool *valid)
+		       const QString &param,bool *valid)
 {
   RDSqlQuery *q;
   QString sql;
@@ -594,7 +592,7 @@ QVariant RDGetSqlValue(const QString &table,
     "(`"+name1+"`=\""+RDEscapeString(test1)+"\")&&"+
     "(`"+name2+"`=\""+RDEscapeString(test1)+"\")&&"+
     "(`"+name3+"`=\""+RDEscapeString(test1)+"\")";
-  q=new RDSqlQuery(sql,db);
+  q=new RDSqlQuery(sql);
   if(q->isActive()) {
     q->first();
     v=q->value(0);
@@ -610,14 +608,14 @@ QVariant RDGetSqlValue(const QString &table,
 
 
 bool RDIsSqlNull(const QString &table,const QString &name,const QString &test,
-		 const QString &param,QSqlDatabase *db)
+		 const QString &param)
 {
   RDSqlQuery *q;
   QString sql;
 
   sql="select `"+param+"` from `"+table+"` where `"+name+"`="+
     "\""+RDEscapeString(test)+"\"";
-  q=new RDSqlQuery(sql,db);
+  q=new RDSqlQuery(sql);
   if(q->isActive()) {
     q->first();
     if(q->isNull(0)) {
@@ -635,14 +633,14 @@ bool RDIsSqlNull(const QString &table,const QString &name,const QString &test,
 
 
 bool RDIsSqlNull(const QString &table,const QString &name,unsigned test,
-		 const QString &param,QSqlDatabase *db)
+		 const QString &param)
 {
   RDSqlQuery *q;
   QString sql;
 
   sql="select `"+param+"` from `"+table+"` where `"+name+"`="+
     QString().sprintf("%d",test);
-  q=new RDSqlQuery(sql,db);
+  q=new RDSqlQuery(sql);
   if(q->isActive()) {
     q->first();
     if(q->isNull(0)) {
@@ -660,7 +658,7 @@ bool RDIsSqlNull(const QString &table,const QString &name,unsigned test,
 
 
 QVariant RDGetSqlValue(const QString &table,const QString &name,unsigned test,
-		       const QString &param,QSqlDatabase *db,bool *valid)
+		       const QString &param,bool *valid)
 {
   RDSqlQuery *q;
   QString sql;
@@ -668,7 +666,7 @@ QVariant RDGetSqlValue(const QString &table,const QString &name,unsigned test,
 
   sql="select `"+param+"` from `"+table+"` where `"+name+"`="+
     QString().sprintf("%u",test);
-  q=new RDSqlQuery(sql,db);
+  q=new RDSqlQuery(sql);
   if(q->first()) {
     v=q->value(0);
     if(valid!=NULL) {

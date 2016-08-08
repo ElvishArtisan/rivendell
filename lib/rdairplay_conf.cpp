@@ -33,23 +33,21 @@ RDAirPlayConf::RDAirPlayConf(const QString &station,const QString &tablename)
   air_station=station;
   air_tablename=tablename;
 
-  sql=QString().
-    sprintf("select ID from %s where STATION=\"%s\"",
-	    (const char *)air_tablename,
-	    (const char *)RDEscapeString(air_station));
+  sql=QString("select ")+
+    "ID "+
+    "from "+air_tablename+" where "+
+    "STATION=\""+RDEscapeString(air_station)+"\"";
   q=new RDSqlQuery(sql);
   if(!q->first()) {
     delete q;
-    sql=QString().
-      sprintf("insert into %s set STATION=\"%s\"",
-	      (const char *)air_tablename,
-	      (const char *)RDEscapeString(air_station));
+    sql=QString("insert into ")+air_tablename+" set "+
+      "STATION=\""+RDEscapeString(air_station)+"\"";
     q=new RDSqlQuery(sql);
     delete q;
-    sql=QString().
-      sprintf("select ID from %s where STATION=\"%s\"",
-	      (const char *)air_tablename,
-	      (const char *)RDEscapeString(air_station));
+    sql=QString("select ")+
+      "ID "+
+      "from "+air_tablename+" where "+
+      "STATION=\""+RDEscapeString(air_station)+"\"";
     q=new RDSqlQuery(sql);
     q->first();
   }
@@ -603,11 +601,11 @@ bool RDAirPlayConf::exitPasswordValid(const QString &passwd) const
   QString sql;
   RDSqlQuery *q;
 
-  sql=QString().sprintf("select EXIT_PASSWORD from %s where \
-                         STATION=\"%s\" && EXIT_PASSWORD=PASSWORD(\"%s\")",
-			(const char *)air_tablename,
-			(const char *)air_station,
-			(const char *)passwd);
+  sql=QString("select ")+
+    "EXIT_PASSWORD "+
+    "from "+air_tablename+" where "+
+    "(STATION=\""+RDEscapeString(air_station)+"\")&&"+
+    "(EXIT_PASSWORD=PASSWORD(\""+RDEscapeString(passwd)+"\")";
   q=new RDSqlQuery(sql);
   if(q->size()>0) {
     delete q;
@@ -623,10 +621,9 @@ void RDAirPlayConf::setExitPassword(const QString &passwd) const
   QString sql;
   RDSqlQuery *q;
 
-  sql=QString().sprintf ("update %s set EXIT_PASSWORD=PASSWORD(\"%s\") \
-                          where STATION=\"%s\"",(const char *)air_tablename,
-			 (const char *)passwd,
-			 (const char *)air_station);
+  sql=QString("update ")+air_tablename+" set "+
+    "EXIT_PASSWORD=PASSWORD(\""+RDEscapeString(passwd)+"\") "+
+    "where STATION=\""+RDEscapeString(air_station)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
 }
@@ -952,12 +949,9 @@ void RDAirPlayConf::SetRow(const QString &param,int value) const
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString().
-    sprintf("UPDATE %s SET %s=%d WHERE STATION=\"%s\"",
-	    (const char *)air_tablename,
-	    (const char *)param,
-	    value,
-	    (const char *)RDEscapeString(air_station));
+  sql=QString("update ")+air_tablename+" set "+
+    param+QString().sprintf("=%d ",value)+
+    "where STATION=\""+RDEscapeString(air_station)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
 }
@@ -968,12 +962,9 @@ void RDAirPlayConf::SetRow(const QString &param,unsigned value) const
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString().
-    sprintf("UPDATE %s SET %s=%u WHERE STATION=\"%s\"",
-	    (const char *)air_tablename,
-	    (const char *)param,
-	    value,
-	    (const char *)RDEscapeString(air_station));
+  sql=QString("update ")+air_tablename+" set "+
+    param+QString().sprintf("=%u ",value)+
+    "where STATION=\""+RDEscapeString(air_station)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
 }
@@ -984,12 +975,9 @@ void RDAirPlayConf::SetRow(const QString &param,const QString &value) const
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString().
-    sprintf("UPDATE %s SET %s=\"%s\" WHERE STATION=\"%s\"",
-	    (const char *)air_tablename,
-	    (const char *)RDEscapeString(param),
-	    (const char *)RDEscapeString(value),
-	    (const char *)RDEscapeString(air_station));
+  sql=QString("update ")+air_tablename+" set "+
+    param+"=\""+RDEscapeString(value)+"\" "+
+    "where STATION=\""+RDEscapeString(air_station)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
 }

@@ -33,6 +33,7 @@
 #include <rdconf.h>
 #include <rdcart_dialog.h>
 #include <rdcart_search_text.h>
+#include <rdescape_string.h>
 #include <rdtextvalidator.h>
 #include <rdprofile.h>
 #include <rddb.h>
@@ -499,14 +500,24 @@ void RDCartDialog::editorData()
   QString sql;
   RDSqlQuery *q;
 
-  sql=QString().sprintf("select CUTS.CUT_NAME,CUTS.LENGTH,CART.GROUP_NAME,\
-                         CART.TITLE,CART.ARTIST,CART.ALBUM,CART.YEAR,\
-                         CART.LABEL,CART.CLIENT,CART.AGENCY,CART.COMPOSER,\
-                         CART.PUBLISHER,CART.USER_DEFINED \
-                         from CUTS left join CART \
-                         on CUTS.CART_NUMBER=CART.NUMBER \
-                         where (CUTS.CART_NUMBER=%u)&&(CUTS.LENGTH>0)",
-			item->text(1).toUInt());
+  sql=QString("select ")+
+    "CUTS.CUT_NAME,"+      // 00
+    "CUTS.LENGTH,"+        // 01
+    "CART.GROUP_NAME,"+    // 02
+    "CART.TITLE,"+         // 03
+    "CART.ARTIST,"+        // 04
+    "CART.ALBUM,"+         // 05
+    "CART.YEAR,"+          // 06
+    "CART.LABEL,"+         // 07
+    "CART.CLIENT,"+        // 08
+    "CART.AGENCY,"+        // 09
+    "CART.COMPOSER,"+      // 10
+    "CART.PUBLISHER,"+     // 11
+    "CART.USER_DEFINED "+  // 12
+    "from CUTS left join CART "+
+    "on CUTS.CART_NUMBER=CART.NUMBER where "+
+    QString().sprintf("(CUTS.CART_NUMBER=%u)&&",item->text(1).toUInt())+
+    "(CUTS.LENGTH>0)";
   q=new RDSqlQuery(sql);
   if(!q->first()) {
     delete q;
@@ -730,28 +741,45 @@ void RDCartDialog::RefreshCarts()
     schedcode="";
   }
   if(cart_type==RDCart::All) {
-    sql=QString().sprintf("select CART.NUMBER,CART.TITLE,CART.ARTIST,\
-                           CART.CLIENT,CART.AGENCY,CART.USER_DEFINED,\
-                           CART.COMPOSER,CART.CONDUCTOR,\
-                           CART.START_DATETIME,CART.END_DATETIME,CART.TYPE,\
-                           CART.FORCED_LENGTH,CART.GROUP_NAME,GROUPS.COLOR \
-                           from CART left join GROUPS \
-                           on CART.GROUP_NAME=GROUPS.NAME where %s",
-		 (const char *)GetSearchFilter(cart_filter_edit->text(),
-					       group,schedcode));
+    sql=QString("select ")+
+      "CART.NUMBER,"+          // 00
+      "CART.TITLE,"+           // 01
+      "CART.ARTIST,"+          // 02
+      "CART.CLIENT,"+          // 03
+      "CART.AGENCY,"+          // 04
+      "CART.USER_DEFINED,"+    // 05
+      "CART.COMPOSER,"+        // 06
+      "CART.CONDUCTOR,"+       // 07
+      "CART.START_DATETIME,"+  // 08
+      "CART.END_DATETIME,"+    // 09
+      "CART.TYPE,"+            // 10
+      "CART.FORCED_LENGTH,"+   // 11
+      "CART.GROUP_NAME,"+      // 12
+      "GROUPS.COLOR "+         // 13
+      "from CART left join GROUPS "+
+      "on CART.GROUP_NAME=GROUPS.NAME where "+
+      GetSearchFilter(cart_filter_edit->text(),group,schedcode);
   }
   else {
-    sql=QString().sprintf("select CART.NUMBER,CART.TITLE,CART.ARTIST,\
-                           CART.CLIENT,CART.AGENCY,CART.USER_DEFINED,\
-                           CART.COMPOSER,CART.CONDUCTOR,\
-                           CART.START_DATETIME,CART.END_DATETIME,CART.TYPE,\
-                           CART.FORCED_LENGTH,CART.GROUP_NAME,GROUPS.COLOR \
-                           from CART left join GROUPS \
-                           on CART.GROUP_NAME=GROUPS.NAME \
-                           where (%s)&&(TYPE=%d)",
-			(const char *)GetSearchFilter(cart_filter_edit->text(),
-						      group,schedcode),
-			  cart_type);
+    sql=QString("select ")+
+      "CART.NUMBER,"+          // 00
+      "CART.TITLE,"+           // 01
+      "CART.ARTIST,"+          // 02
+      "CART.CLIENT,"+          // 03
+      "CART.AGENCY,"+          // 04
+      "CART.USER_DEFINED,"+    // 05
+      "CART.COMPOSER,"+        // 06
+      "CART.CONDUCTOR,"+       // 07
+      "CART.START_DATETIME,"+  // 08
+      "CART.END_DATETIME,"+    // 09
+      "CART.TYPE,"+            // 10
+      "CART.FORCED_LENGTH,"+   // 11
+      "CART.GROUP_NAME,"+      // 12
+      "GROUPS.COLOR "+         // 13
+      "from CART left join GROUPS "+
+      "on CART.GROUP_NAME=GROUPS.NAME where "+
+      "("+GetSearchFilter(cart_filter_edit->text(),group,schedcode)+")&&"+
+      QString().sprintf("(TYPE=%d)",cart_type);
   }
   if(cart_limit_box->isChecked()) {
     sql+=QString().sprintf(" limit %d",RD_LIMITED_CART_SEARCH_QUANTITY);
@@ -823,8 +851,8 @@ void RDCartDialog::BuildGroupList()
     sql+=" where ";
     for(int i=0;i<cart_service_quan;i++) {
       if(!cart_service[i].isEmpty()) {
-	sql+=QString().sprintf("(SERVICE_NAME=\"%s\")||",
-			       (const char *)cart_service[i]);
+	sql+=QString("(SERVICE_NAME=\"")+
+	  RDEscapeString(cart_service[i])+"\")||";
       }
     }
     sql=sql.left(sql.length()-2);
@@ -892,14 +920,13 @@ QString RDCartDialog::GetSearchFilter(const QString &filter,
   //
   sql=QString().sprintf("select NAME from GROUPS where ");
   for(int i=1;i<cart_group_box->count();i++) {
-    sql+=QString().sprintf("(NAME!=\"%s\")&&",
-			   (const char *)cart_group_box->text(i));
+    sql+=QString("(NAME!=\"")+RDEscapeString(cart_group_box->text(i))+"\")&&";
   }
   sql=sql.left(sql.length()-2);
   q=new RDSqlQuery(sql);
   while(q->next()) {
-    search+=QString().sprintf("&&(GROUP_NAME!=\"%s\")",
-			      (const char *)q->value(0).toString());
+    search+=QString("&&(GROUP_NAME!=\"")+
+      RDEscapeString(q->value(0).toString())+"\")";
   }
   delete q;
   return search;

@@ -32,18 +32,17 @@
 //
 // Global Classes
 //
-RDGroup::RDGroup(QString name,bool create,QSqlDatabase *db)
+RDGroup::RDGroup(QString name,bool create)
 {
   RDSqlQuery *q;
   QString sql;
 
-  group_db=db;
   group_name=name;
 
   if(create) {
     sql=QString().sprintf("INSERT INTO GROUPS SET NAME=\"%s\"",
 			  (const char *)RDEscapeString(group_name));
-    q=new RDSqlQuery(sql,group_db);
+    q=new RDSqlQuery(sql);
     delete q;
   }
 }
@@ -51,7 +50,7 @@ RDGroup::RDGroup(QString name,bool create,QSqlDatabase *db)
 
 bool RDGroup::exists() const
 {
-  return RDDoesRowExist("GROUPS","NAME",group_name,group_db);
+  return RDDoesRowExist("GROUPS","NAME",group_name);
 }
 
 
@@ -63,7 +62,7 @@ QString RDGroup::name() const
 
 QString RDGroup::description() const
 {
-  return RDGetSqlValue("GROUPS","NAME",group_name,"DESCRIPTION",group_db).
+  return RDGetSqlValue("GROUPS","NAME",group_name,"DESCRIPTION").
     toString();
 }
 
@@ -77,7 +76,7 @@ void RDGroup::setDescription(const QString &desc) const
 RDCart::Type RDGroup::defaultCartType() const
 {
   return (RDCart::Type)RDGetSqlValue("GROUPS","NAME",group_name,
-				    "DEFAULT_CART_TYPE",group_db).toUInt();
+				    "DEFAULT_CART_TYPE").toUInt();
 }
 
 
@@ -89,7 +88,7 @@ void RDGroup::setDefaultCartType(RDCart::Type type) const
 
 unsigned RDGroup::defaultLowCart() const
 {
-  return RDGetSqlValue("GROUPS","NAME",group_name,"DEFAULT_LOW_CART",group_db).
+  return RDGetSqlValue("GROUPS","NAME",group_name,"DEFAULT_LOW_CART").
     toUInt();
 }
 
@@ -102,7 +101,7 @@ void RDGroup::setDefaultLowCart(unsigned cartnum) const
 
 unsigned RDGroup::defaultHighCart() const
 {
-  return RDGetSqlValue("GROUPS","NAME",group_name,"DEFAULT_HIGH_CART",group_db).
+  return RDGetSqlValue("GROUPS","NAME",group_name,"DEFAULT_HIGH_CART").
     toUInt();
 }
 
@@ -115,7 +114,7 @@ void RDGroup::setDefaultHighCart(unsigned cartnum) const
 
 int RDGroup::cutShelflife() const
 {
-  return RDGetSqlValue("GROUPS","NAME",group_name,"CUT_SHELFLIFE",group_db).
+  return RDGetSqlValue("GROUPS","NAME",group_name,"CUT_SHELFLIFE").
     toInt();
 }
 
@@ -128,8 +127,8 @@ void RDGroup::setCutShelflife(int days) const
 
 bool RDGroup::deleteEmptyCarts() const
 {
-  return RDBool(RDGetSqlValue("GROUPS","NAME",group_name,"DELETE_EMPTY_CARTS",
-			    group_db).toString());
+  return RDBool(RDGetSqlValue("GROUPS","NAME",group_name,"DELETE_EMPTY_CARTS").
+		toString());
 }
 
 
@@ -141,7 +140,7 @@ void RDGroup::setDeleteEmptyCarts(bool state) const
 
 QString RDGroup::defaultTitle() const
 {
-  return RDGetSqlValue("GROUPS","NAME",group_name,"DEFAULT_TITLE",group_db).
+  return RDGetSqlValue("GROUPS","NAME",group_name,"DEFAULT_TITLE").
     toString();
 }
 
@@ -167,8 +166,8 @@ QString RDGroup::generateTitle(const QString &pathname)
 
 bool RDGroup::enforceCartRange() const
 {
-  return RDBool(RDGetSqlValue("GROUPS","NAME",group_name,"ENFORCE_CART_RANGE",
-			    group_db).toString());
+  return RDBool(RDGetSqlValue("GROUPS","NAME",group_name,"ENFORCE_CART_RANGE").
+		toString());
 }
 
 
@@ -180,8 +179,8 @@ void RDGroup::setEnforceCartRange(bool state) const
 
 bool RDGroup::exportReport(ExportType type) const
 {
-  return RDBool(RDGetSqlValue("GROUPS","NAME",group_name,ReportField(type),
-			    group_db).toString());
+  return RDBool(RDGetSqlValue("GROUPS","NAME",group_name,ReportField(type)).
+		toString());
 }
 
 
@@ -193,8 +192,8 @@ void RDGroup::setExportReport(ExportType type,bool state) const
 
 bool RDGroup::enableNowNext() const
 {
-  return RDBool(RDGetSqlValue("GROUPS","NAME",group_name,"ENABLE_NOW_NEXT",
-			    group_db).toString());
+  return RDBool(RDGetSqlValue("GROUPS","NAME",group_name,"ENABLE_NOW_NEXT").
+		toString());
 }
 
 
@@ -206,7 +205,7 @@ void RDGroup::setEnableNowNext(bool state) const
 
 QColor RDGroup::color() const
 {
-  return QColor(RDGetSqlValue("GROUPS","NAME",group_name,"COLOR",group_db).
+  return QColor(RDGetSqlValue("GROUPS","NAME",group_name,"COLOR").
 		toString());
 }
 
@@ -446,7 +445,7 @@ void RDGroup::SetRow(const QString &param,int value) const
 			(const char *)param,
 			value,
 			(const char *)group_name);
-  q=new RDSqlQuery(sql,group_db);
+  q=new RDSqlQuery(sql);
   delete q;
 }
 
@@ -460,7 +459,7 @@ void RDGroup::SetRow(const QString &param,unsigned value) const
 			(const char *)param,
 			value,
 			(const char *)group_name);
-  q=new RDSqlQuery(sql,group_db);
+  q=new RDSqlQuery(sql);
   delete q;
 }
 
@@ -474,7 +473,7 @@ void RDGroup::SetRow(const QString &param,const QString &value) const
 			(const char *)param,
 			(const char *)RDEscapeString(value),
 			(const char *)group_name);
-  q=new RDSqlQuery(sql,group_db);
+  q=new RDSqlQuery(sql);
   delete q;
 }
 

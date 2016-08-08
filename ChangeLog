@@ -15570,3 +15570,37 @@
 	'lib/export_technical.cpp'.
 	* Removed (const char *) casts from SQL statements in
 	'lib/export_textlog.cpp'.
+2016-08-08 Fred Gleason <fredg@paravelsystems.com>
+	* Removed (const char *) casts from SQL statements in
+	'lib/rdadd_cart.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'lib/rdadd_log.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'lib/rdairplay_conf.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'lib/rdaudio_port.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'lib/rdcart.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'lib/rdcart_dialog.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'lib/rdcart_search_text.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'lib/rdcart_slot.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'lib/rdcatch_conf.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'lib/rdclock.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'lib/rdcreateauxfieldstable.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'lib/rdcreate_log.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'lib/rdcut.cpp'.
+	* Removed 'QSqlDatabase' parameter from the contructors for the
+	'RDCut' class in 'lib/rdcut.cpp' and 'lib/rdcut.h'.
+	* Removed 'QSqlDatabase' parameter from the contructors for the
+	'RDGroup' class in 'lib/rdgroup.cpp' and 'lib/rdgroup.h'.
+	* Removed 'QSqlDatabase' parameter from the 'RDDoesRowExist()',
+	'RDGetSqlValue()' and 'RDIsSqlNull()' functions in 'rdconf.cpp'
+	and 'rdconf.h'.

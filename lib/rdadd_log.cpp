@@ -31,7 +31,9 @@
 #include <qcheckbox.h>
 #include <qbuttongroup.h>
 #include <qsqldatabase.h>
+
 #include <rddb.h>
+#include <rdescape_string.h>
 #include <rdidvalidator.h>
 #include <rdadd_log.h>
 
@@ -123,9 +125,11 @@ RDAddLog::RDAddLog(QString *logname,QString *svcname,RDStation *station,
       sql="select NAME from SERVICES order by NAME";
     }
     else {
-      sql=QString().sprintf("select SERVICE_NAME from SERVICE_PERMS \
-                             where STATION_NAME=\"%s\" order by SERVICE_NAME",
-  			    (const char *)station->name());
+      sql=QString("select ")+
+	"SERVICE_NAME "+
+	"from SERVICE_PERMS where "+
+	"STATION_NAME=\""+RDEscapeString(station->name())+"\" "+
+	"order by SERVICE_NAME";
     }
     RDSqlQuery *q=new RDSqlQuery(sql);
     while(q->next()) {

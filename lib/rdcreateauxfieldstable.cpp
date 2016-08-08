@@ -23,9 +23,8 @@
 void RDCreateAuxFieldsTable(QString keyname)
 {
   keyname.replace(" ","_");
-  QString sql=QString().sprintf("create table if not exists %s_FIELDS (\
-                                 CAST_ID int unsigned not null primary key)",
-				(const char *)keyname);
+  QString sql=QString("create table if not exists `")+keyname+"_FIELDS` "+
+    "(CAST_ID int unsigned not null primary key)";
   RDSqlQuery *q=new RDSqlQuery(sql);
   delete q;
 }

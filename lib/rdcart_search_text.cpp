@@ -151,13 +151,12 @@ QString RDAllCartSearchText(const QString &filter,const QString &schedcode,
   RDSqlQuery *q;
   QString search="(";
 
-  sql=QString().sprintf("select GROUP_NAME from USER_PERMS\
-                         where USER_NAME=\"%s\"",
-			(const char *)user);
+  sql=QString("select GROUP_NAME from USER_PERMS where ")+
+    "USER_NAME=\""+RDEscapeString(user)+"\"";
   q=new RDSqlQuery(sql);
   while(q->next()) {
-    search+=QString().sprintf("(CART.GROUP_NAME=\"%s\")||",
-			      (const char *)q->value(0).toString());
+    search+=QString("(CART.GROUP_NAME=\"")+
+      RDEscapeString(q->value(0).toString())+"\")||";
   }
   delete q;
   search=search.left(search.length()-2)+QString(")");
