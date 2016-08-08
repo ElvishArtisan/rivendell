@@ -15546,3 +15546,7 @@
 	'importers/rivendell_filter.cpp'.
 	* Removed (const char *) casts from SQL statements in
 	'importers/wings_filter.cpp'.
+2016-08-08 Fred Gleason <fredg@paravelsystems.com>
+	* Removed dead code from 'lib/export_bmiemr.cpp'.
+2016-08-08 Fred Gleason <fredg@paravelsystems.com>
+	* Cleaned up lupdate warning in 'lib/rdapplication.cpp'.

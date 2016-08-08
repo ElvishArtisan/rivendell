@@ -65,12 +65,6 @@ bool RDReport::ExportBmiEmr(const QDate &startdate,const QDate &enddate,
     report_error_code=RDReport::ErrorCantOpen;
     return false;
   }
-  /*
-  sql=QString().sprintf("select EVENT_DATETIME,TITLE,ARTIST,COMPOSER,\
-                         LENGTH,ISRC,USAGE_CODE from `%s_SRT` \
-                         order by EVENT_DATETIME",
-			(const char *)mixtable);
-  */
   sql=QString("select EVENT_DATETIME,TITLE,ARTIST,COMPOSER,")+
     "LENGTH,ISRC,USAGE_CODE from `"+
     mixtable+"_SRT` order by EVENT_DATETIME"; 

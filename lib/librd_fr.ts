@@ -465,6 +465,10 @@
         <source>Unable to connect to MySQL.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>DB Error</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RDAddCart</name>
@@ -582,10 +586,6 @@
 </context>
 <context>
     <name>RDApplication</name>
-    <message>
-        <source>DB Error</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>RDAudioSettingsDialog</name>

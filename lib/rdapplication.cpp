@@ -59,7 +59,7 @@ RDApplication::RDApplication(int argc,char **argv,const char *modname,
   QSqlDatabase *db=RDInitDb(&schema,&err);
   if(!db) {
     if(gui) {
-      QMessageBox::warning(NULL,"Rivendell - "+tr("DB Error"),
+      QMessageBox::warning(NULL,"Rivendell - "+QObject::tr("DB Error"),
 			   QObject::tr("Unable to connect to MySQL."),err);
     }
     else {
@@ -69,7 +69,7 @@ RDApplication::RDApplication(int argc,char **argv,const char *modname,
   }
   if((RD_VERSION_DATABASE!=schema)&&(!skip_db_check)) {
     if(gui) {
-      QMessageBox::warning(NULL,"Rivendell - "+tr("DB Error"),
+      QMessageBox::warning(NULL,"Rivendell - "+QObject::tr("DB Error"),
 			   QObject::tr("database version mismatch, should be ")+
 			   QString().sprintf("%u, ",RD_VERSION_DATABASE)+
 			   QObject::tr("is")+QString().sprintf(" %u.",schema));
