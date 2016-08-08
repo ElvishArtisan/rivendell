@@ -603,9 +603,6 @@
     </message>
 </context>
 <context>
-    <name>RDApplication</name>
-</context>
-<context>
     <name>RDAudioSettingsDialog</name>
     <message>
         <source>Edit Settings</source>

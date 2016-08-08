@@ -57,25 +57,17 @@ bool RDReport::ExportMusicClassical(const QDate &startdate,const QDate &enddate,
   else {
     cart_fmt="%6u";
   }
-  sql=QString().sprintf("select `%s_SRT`.LENGTH,\
-                         `%s_SRT`.CART_NUMBER,\
-                         `%s_SRT`.EVENT_DATETIME,\
-                         `%s_SRT`.TITLE,\
-                         `%s_SRT`.ALBUM,\
-                         `%s_SRT`.COMPOSER,\
-                         `%s_SRT`.USER_DEFINED \
-                         from `%s_SRT` left join CART on\
-                         `%s_SRT`.CART_NUMBER=CART.NUMBER\
-                         order by EVENT_DATETIME",
-			(const char *)mixtable,
-			(const char *)mixtable,
-			(const char *)mixtable,
-			(const char *)mixtable,
-			(const char *)mixtable,
-			(const char *)mixtable,
-			(const char *)mixtable,
-			(const char *)mixtable,
-			(const char *)mixtable);
+  sql=QString("select ")+
+    "`"+mixtable+"_SRT`.LENGTH,"+          // 00
+    "`"+mixtable+"_SRT`.CART_NUMBER,"+     // 01
+    "`"+mixtable+"_SRT`.EVENT_DATETIME,"+  // 02
+    "`"+mixtable+"_SRT`.TITLE,"+           // 03
+    "`"+mixtable+"_SRT`.ALBUM,"+           // 04
+    "`"+mixtable+"_SRT`.COMPOSER,"+        // 05
+    "`"+mixtable+"_SRT`.USER_DEFINED "+    // 06
+    "from `"+mixtable+"_SRT` left join CART "+
+    "on `"+mixtable+"_SRT`.CART_NUMBER=CART.NUMBER "+
+    "order by EVENT_DATETIME";
   q=new RDSqlQuery(sql);
 
   //

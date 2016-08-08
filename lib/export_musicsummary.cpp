@@ -50,16 +50,13 @@ bool RDReport::ExportMusicSummary(const QDate &startdate,const QDate &enddate,
     report_error_code=RDReport::ErrorCantOpen;
     return false;
   }
-  sql=QString().sprintf("select `%s_SRT`.ARTIST,`%s_SRT`.TITLE,\
-                        `%s_SRT`.ALBUM \
-                         from `%s_SRT` left join CART on\
-                         `%s_SRT`.CART_NUMBER=CART.NUMBER\
-                         order by EVENT_DATETIME",
-			(const char *)mixtable,
-			(const char *)mixtable,
-			(const char *)mixtable,
-			(const char *)mixtable,
-			(const char *)mixtable);
+  sql=QString("select ")+
+    "`"+mixtable+"_SRT`.ARTIST,"+
+    "`"+mixtable+"_SRT`.TITLE,"+
+    "`"+mixtable+"_SRT`.ALBUM "+
+    "from `"+mixtable+"_SRT` left join CART "+
+    "on `"+mixtable+"_SRT`.CART_NUMBER=CART.NUMBER "+
+    "order by EVENT_DATETIME";
   q=new RDSqlQuery(sql);
 
   //

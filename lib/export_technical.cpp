@@ -63,32 +63,25 @@ bool RDReport::ExportTechnical(const QDate &startdate,const QDate &enddate,
   else {
     cart_fmt="%6u";
   }
-  sql=QString().sprintf("select `%s_SRT`.LENGTH,`%s_SRT`.CART_NUMBER,\
-                         `%s_SRT`.EVENT_DATETIME,`%s_SRT`.EVENT_TYPE,\
-                         `%s_SRT`.EXT_START_TIME,`%s_SRT`.EXT_LENGTH,\
-                         `%s_SRT`.EXT_DATA,`%s_SRT`.EXT_EVENT_ID,\
-                         `%s_SRT`.TITLE,CART.FORCED_LENGTH,\
-                         `%s_SRT`.STATION_NAME,`%s_SRT`.PLAY_SOURCE,\
-                         `%s_SRT`.CUT_NUMBER,`%s_SRT`.START_SOURCE,\
-                         `%s_SRT`.ONAIR_FLAG from `%s_SRT` left join CART on\
-                         `%s_SRT`.CART_NUMBER=CART.NUMBER\
-                         order by EVENT_DATETIME",
-			(const char *)mixtable,
-			(const char *)mixtable,
-			(const char *)mixtable,
-			(const char *)mixtable,
-			(const char *)mixtable,
-			(const char *)mixtable,
-			(const char *)mixtable,
-			(const char *)mixtable,
-			(const char *)mixtable,
-			(const char *)mixtable,
-			(const char *)mixtable,
-			(const char *)mixtable,
-			(const char *)mixtable,
-			(const char *)mixtable,
-			(const char *)mixtable,
-			(const char *)mixtable);
+  sql=QString("select ")+
+    "`"+mixtable+"_SRT`.LENGTH,"+          // 00
+    "`"+mixtable+"_SRT`.CART_NUMBER,"+     // 01
+    "`"+mixtable+"_SRT`.EVENT_DATETIME,"+  // 02
+    "`"+mixtable+"_SRT`.EVENT_TYPE,"+      // 03
+    "`"+mixtable+"_SRT`.EXT_START_TIME,"+  // 04
+    "`"+mixtable+"_SRT`.EXT_LENGTH,"+      // 05
+    "`"+mixtable+"_SRT`.EXT_DATA,"+        // 06
+    "`"+mixtable+"_SRT`.EXT_EVENT_ID,"+    // 07
+    "`"+mixtable+"_SRT`.TITLE,"+           // 08
+    "CART.FORCED_LENGTH,"+                 // 09
+    "`"+mixtable+"_SRT`.STATION_NAME,"+    // 10
+    "`"+mixtable+"%s_SRT`.PLAY_SOURCE,"+   // 11
+    "`"+mixtable+"_SRT`.CUT_NUMBER,"+      // 12
+    "`"+mixtable+"_SRT`.START_SOURCE,"+    // 13
+    "`"+mixtable+"_SRT`.ONAIR_FLAG "+      // 14
+    "from `"+mixtable+"_SRT` left join CART "+
+    "on `"+mixtable+"_SRT`.CART_NUMBER=CART.NUMBER "+
+    "order by EVENT_DATETIME";
   q=new RDSqlQuery(sql);
 
   //

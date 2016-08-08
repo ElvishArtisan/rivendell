@@ -15548,5 +15548,25 @@
 	'importers/wings_filter.cpp'.
 2016-08-08 Fred Gleason <fredg@paravelsystems.com>
 	* Removed dead code from 'lib/export_bmiemr.cpp'.
-2016-08-08 Fred Gleason <fredg@paravelsystems.com>
 	* Cleaned up lupdate warning in 'lib/rdapplication.cpp'.
+2016-08-08 Fred Gleason <fredg@paravelsystems.com>
+	* Removed (const char *) casts from SQL statements in
+	'lib/export_deltflex.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'lib/export_musicclassical.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'lib/export_musicplayout.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'lib/export_musicsummary.cpp'.
+	* Put SQL statements into standard form in
+	'lib/export_nprsoundex.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'lib/export_radiotraffic.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'lib/export_soundex.cpp'.
+	* Put SQL statements into standard form in
+	'lib/export_spincount.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'lib/export_technical.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'lib/export_textlog.cpp'.

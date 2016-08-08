@@ -57,29 +57,19 @@ bool RDReport::ExportMusicPlayout(const QDate &startdate,const QDate &enddate,
   else {
     cart_fmt="%6u";
   }
-  sql=QString().sprintf("select `%s_SRT`.LENGTH,\
-                         `%s_SRT`.CART_NUMBER,\
-                         `%s_SRT`.EVENT_DATETIME,\
-                         `%s_SRT`.EXT_EVENT_ID,\
-                         `%s_SRT`.TITLE,\
-                         `%s_SRT`.CUT_NUMBER,\
-                         `%s_SRT`.ARTIST,\
-                         `%s_SRT`.ALBUM,\
-                         `%s_SRT`.LABEL \
-                         from `%s_SRT` left join CART on\
-                         `%s_SRT`.CART_NUMBER=CART.NUMBER\
-                         order by EVENT_DATETIME",
-			(const char *)mixtable,
-			(const char *)mixtable,
-			(const char *)mixtable,
-			(const char *)mixtable,
-			(const char *)mixtable,
-			(const char *)mixtable,
-			(const char *)mixtable,
-			(const char *)mixtable,
-			(const char *)mixtable,
-			(const char *)mixtable,
-			(const char *)mixtable);
+  sql=QString("select ")+
+    "`"+mixtable+"_SRT`.LENGTH,"+            // 00
+    "`"+mixtable+"_SRT`.CART_NUMBER,"+       // 01
+    "`"+mixtable+"%s_SRT`.EVENT_DATETIME,"+  // 02
+    "`"+mixtable+"_SRT`.EXT_EVENT_ID,"+      // 03
+    "`"+mixtable+"_SRT`.TITLE,"+             // 04
+    "`"+mixtable+"_SRT`.CUT_NUMBER,"+        // 05
+    "`"+mixtable+"_SRT`.ARTIST,"+            // 06
+    "`"+mixtable+"_SRT`.ALBUM,"+             // 07
+    "`"+mixtable+"_SRT`.LABEL "+             // 08
+    "from `"+mixtable+"_SRT` left join CART "+
+    "on `"+mixtable+"_SRT`.CART_NUMBER=CART.NUMBER "+
+    "order by EVENT_DATETIME";
   q=new RDSqlQuery(sql);
 
   //

@@ -58,29 +58,23 @@ bool RDReport::ExportTextLog(const QDate &startdate,const QDate &enddate,
   else {
     cart_fmt="%6u";
   }
-  sql=QString().sprintf("select `%s_SRT`.LENGTH,`%s_SRT`.CART_NUMBER,\
-                         `%s_SRT`.EVENT_DATETIME,`%s_SRT`.EVENT_TYPE,\
-                         `%s_SRT`.EXT_START_TIME,`%s_SRT`.EXT_LENGTH,\
-                         `%s_SRT`.EXT_DATA,`%s_SRT`.EXT_EVENT_ID,\
-                         `%s_SRT`.TITLE,CART.FORCED_LENGTH,\
-                         `%s_SRT`.STATION_NAME,`%s_SRT`.PLAY_SOURCE,\
-                         `%s_SRT`.CUT_NUMBER from `%s_SRT` left join CART on\
-                         `%s_SRT`.CART_NUMBER=CART.NUMBER\
-                         order by EVENT_DATETIME",
-			(const char *)mixtable,
-			(const char *)mixtable,
-			(const char *)mixtable,
-			(const char *)mixtable,
-			(const char *)mixtable,
-			(const char *)mixtable,
-			(const char *)mixtable,
-			(const char *)mixtable,
-			(const char *)mixtable,
-			(const char *)mixtable,
-			(const char *)mixtable,
-			(const char *)mixtable,
-			(const char *)mixtable,
-			(const char *)mixtable);
+  sql=QString("select ")+
+    "`"+mixtable+"_SRT`.LENGTH,"+
+    "`"+mixtable+"_SRT`.CART_NUMBER,"+
+    "`"+mixtable+"_SRT`.EVENT_DATETIME,"+
+    "`"+mixtable+"_SRT`.EVENT_TYPE,"+
+    "`"+mixtable+"_SRT`.EXT_START_TIME,"+
+    "`"+mixtable+"_SRT`.EXT_LENGTH,"+
+    "`"+mixtable+"_SRT`.EXT_DATA,"+
+    "`"+mixtable+"_SRT`.EXT_EVENT_ID,"+
+    "`"+mixtable+"_SRT`.TITLE,"+
+    "CART.FORCED_LENGTH,"+
+    "`"+mixtable+"_SRT`.STATION_NAME,"+
+    "`"+mixtable+"_SRT`.PLAY_SOURCE,"+
+    "`"+mixtable+"_SRT`.CUT_NUMBER "+
+    "from `"+mixtable+"_SRT` left join CART "+
+    "on `"+mixtable+"_SRT`.CART_NUMBER=CART.NUMBER "+
+    "order by EVENT_DATETIME";
   q=new RDSqlQuery(sql);
 
   //

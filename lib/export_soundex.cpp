@@ -76,9 +76,14 @@ bool RDReport::ExportSoundEx(const QDate &startdate,const QDate &enddate,
   //
   // Roll Up Records
   //
-  sql=QString().sprintf("select CART_NUMBER,ARTIST,TITLE,ISRC,ALBUM,LABEL \
-                         from `%s_SRT` order by CART_NUMBER",
-			(const char *)mixtable);
+  sql=QString("select ")+
+    "CART_NUMBER,"+
+    "ARTIST,"+
+    "TITLE,"+
+    "ISRC,"+
+    "ALBUM,"+
+    "LABEL "+
+    "from `"+mixtable+"_SRT` order by CART_NUMBER";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     if(q->value(0).toUInt()==cartnum) {

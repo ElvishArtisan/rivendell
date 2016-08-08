@@ -70,7 +70,12 @@ bool RDReport::ExportSpinCount(const QDate &startdate,const QDate &enddate,
   //
   // Generate Spin Counts
   //
-  sql=QString("select CART_NUMBER,TITLE,ARTIST,ALBUM,LABEL ")+
+  sql=QString("select ")+
+    "CART_NUMBER,"+
+    "TITLE,"+
+    "ARTIST,"+
+    "ALBUM,"+
+    "LABEL "+
     "from `"+mixtable+"_SRT` order by TITLE";
   q=new RDSqlQuery(sql);
   while(q->next()) {
