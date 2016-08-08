@@ -87,7 +87,7 @@ RDApplication::RDApplication(int argc,char **argv,const char *modname,
   //
   app_airplay_conf=new RDAirPlayConf(config()->stationName(),"RDAIRPLAY");
   app_panel_conf=new RDAirPlayConf(config()->stationName(),"RDPANEL");
-  app_library_conf=new RDLibraryConf(config()->stationName(),0);
+  app_library_conf=new RDLibraryConf(config()->stationName());
   app_logedit_conf=new RDLogeditConf(config()->stationName());
   app_station=new RDStation(config()->stationName());
   app_ripc=new RDRipc(config()->stationName());

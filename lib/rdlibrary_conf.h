@@ -30,9 +30,8 @@ class RDLibraryConf
  public:
   enum RecordMode {Manual=0,Vox=1};
   enum SearchLimit {LimitNo=0,LimitYes=1,LimitPrevious=2};
-  RDLibraryConf(const QString &station,unsigned instance);
+  RDLibraryConf(const QString &station);
   QString station() const;
-  unsigned instance() const;
   int inputCard() const;
   void setInputCard(int input) const;
   int inputPort() const;
@@ -87,7 +86,6 @@ class RDLibraryConf
   void SetRow(const QString &param,const QString &value) const;
   void SetRow(const QString &param,bool value) const;
   QString lib_station;
-  unsigned lib_instance;
   unsigned lib_id;
 };
 

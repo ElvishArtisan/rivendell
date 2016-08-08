@@ -26,28 +26,23 @@
 //
 // Global Classes
 //
-RDLibraryConf::RDLibraryConf(const QString &station,unsigned instance)
+RDLibraryConf::RDLibraryConf(const QString &station)
 {
   RDSqlQuery *q;
   QString sql;
 
   lib_station=station;
-  lib_instance=instance;
 
-  sql=QString().sprintf("select ID from RDLIBRARY where STATION=\"%s\" && INSTANCE=%d",
-			(const char *)lib_station,
-			lib_instance);
+  sql=QString("select ID from RDLIBRARY where ")+
+    "STATION=\""+RDEscapeString(lib_station)+"\"";
   q=new RDSqlQuery(sql);
   if(!q->first()) {
     delete q;
-    sql=QString().sprintf("insert into RDLIBRARY set STATION=\"%s\",INSTANCE=%d",
-			  (const char *)lib_station,
-			  lib_instance);
+    sql=QString("insert into RDLIBRARY set ")+
+      "STATION=\""+RDEscapeString(lib_station)+"\"";
     q=new RDSqlQuery(sql);
     delete q;
-    sql=QString().sprintf("select ID from RDLIBRARY where STATION=\"%s\" && INSTANCE=%d",
-			  (const char *)lib_station,
-			  lib_instance);
+    sql="select LAST_INSERT_ID() from RDLIBRARY";
     q=new RDSqlQuery(sql);
     q->first();
   }
@@ -60,13 +55,6 @@ QString RDLibraryConf::station() const
 {
   return lib_station;
 }
-
-
-unsigned RDLibraryConf::instance() const
-{
-  return lib_instance;
-}
-
 
 int RDLibraryConf::inputCard() const
 {
@@ -355,11 +343,15 @@ void RDLibraryConf::getSettings(RDSettings *s) const
   QString sql;
   RDSqlQuery *q;
 
-  sql=QString().sprintf("select DEFAULT_CHANNELS,DEFAULT_SAMPRATE,\
-                         DEFAULT_FORMAT,DEFAULT_BITRATE,RIPPER_LEVEL,\
-                         TRIM_THRESHOLD from RDLIBRARY \
-                         where STATION=\"%s\" && INSTANCE=%d",
-			(const char *)lib_station,lib_instance);
+  sql=QString("select ")+
+    "DEFAULT_CHANNELS,"+
+    "DEFAULT_SAMPRATE,"+
+    "DEFAULT_FORMAT,"+
+    "DEFAULT_BITRATE,"+
+    "RIPPER_LEVEL,"+
+    "TRIM_THRESHOLD "+
+    "from RDLIBRARY where "+
+    "STATION=\""+RDEscapeString(lib_station)+"\"";
   q=new RDSqlQuery(sql);
   s->clear();
   if(q->first()) {
@@ -387,11 +379,9 @@ void RDLibraryConf::SetRow(const QString &param,int value) const
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString().sprintf("UPDATE RDLIBRARY SET %s=%d WHERE STATION=\"%s\" && INSTANCE=%d",
-			(const char *)param,
-			value,
-			(const char *)lib_station,
-			lib_instance);
+  sql=QString("update RDLIBRARY set ")+
+    param+QString().sprintf("=%d where ",value)+
+    "STATION=\""+RDEscapeString(lib_station)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
 }
@@ -402,11 +392,9 @@ void RDLibraryConf::SetRow(const QString &param,unsigned value) const
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString().sprintf("UPDATE RDLIBRARY SET %s=%d WHERE STATION=\"%s\" && INSTANCE=%d",
-			(const char *)param,
-			value,
-			(const char *)lib_station,
-			lib_instance);
+  sql=QString("update RDLIBRARY set ")+
+    param+QString().sprintf("=%d where ",value)+
+    "STATION=\""+RDEscapeString(lib_station)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
 }
@@ -417,11 +405,9 @@ void RDLibraryConf::SetRow(const QString &param,const QString &value) const
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString().sprintf("UPDATE RDLIBRARY SET %s=\"%s\" WHERE STATION=\"%s\" && INSTANCE=%d",
-			(const char *)param,
-			(const char *)RDEscapeString(value),
-			(const char *)lib_station,
-			lib_instance);
+  sql=QString("update RDLIBRARY set ")+
+    param+"=\""+RDEscapeString(value)+"\" where "+
+    "STATION=\""+RDEscapeString(lib_station)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
 }

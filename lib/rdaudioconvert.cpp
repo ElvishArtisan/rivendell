@@ -67,7 +67,7 @@ RDAudioConvert::RDAudioConvert(const QString &station_name,QObject *parent)
   conv_settings=NULL;
   conv_src_wavedata=new RDWaveData();
   conv_dst_wavedata=NULL;
-  RDLibraryConf *conf=new RDLibraryConf(station_name,0);
+  RDLibraryConf *conf=new RDLibraryConf(station_name);
   conv_src_converter=conf->srcConverter();
   delete conf;
 

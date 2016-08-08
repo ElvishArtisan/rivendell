@@ -29,6 +29,7 @@
 
 #include <rdcut_dialog.h>
 #include <rdcart_search_text.h>
+#include <rdescape_string.h>
 #include <rdtextvalidator.h>
 #include <rdadd_cart.h>
 #include <rdprofile.h>
@@ -401,16 +402,17 @@ void RDCutDialog::addButtonData()
     delete add_cart;
     return;
   }
-  sql=QString().sprintf("insert into CART set \
-                         NUMBER=%d,TYPE=%d,GROUP_NAME=\"%s\",TITLE=\"%s\"",
-			cart_num,cart_type,
-			(const char *)cart_group,
-			(const char *)cart_title);
+  sql=QString("insert into CART set ")+
+    QString().sprintf("NUMBER=%d,",cart_num)+
+    QString().sprintf("TYPE=%d,",cart_type)+
+    "GROUP_NAME=\""+RDEscapeString(cart_group)+"\","+
+    "TITLE=\""+RDEscapeString(cart_title)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
-  sql=QString().sprintf("insert into CUTS set CUT_NAME=\"%06d_001\",\
-                         CART_NUMBER=%d,DESCRIPTION=\"Cut 001\"",
-			cart_num,cart_num);
+  sql=QString("insert into CUTS set ")+
+    "CUT_NAME=\""+RDCut::cutName(cart_num,1)+"\","+
+    QString().sprintf("CART_NUMBER=%d,",cart_num)+
+    "DESCRIPTION=\"Cut 001\"";
   q=new RDSqlQuery(sql);
   delete q;
 
@@ -490,14 +492,16 @@ void RDCutDialog::RefreshCarts()
   if(cut_schedcode_box->currentText()!=tr("ALL")) {
     schedcode=cut_schedcode_box->currentText();
   }
-  sql=QString().sprintf("select CART.NUMBER,CART.TITLE,CART.GROUP_NAME,\
-                         GROUPS.COLOR,CART.TYPE from CART left join GROUPS \
-                         on CART.GROUP_NAME=GROUPS.NAME \
-                         where (%s)&&((CART.TYPE=%u))",
-			(const char *)RDCartSearchText(cut_filter_edit->text(),
-						       group,schedcode.utf8(),
-						       false),
-			RDCart::Audio);
+  sql=QString("select ")+
+    "CART.NUMBER,"+
+    "CART.TITLE,"+
+    "CART.GROUP_NAME,"+
+    "GROUPS.COLOR,"+
+    "CART.TYPE "+
+    "from CART left join GROUPS "+
+    "on CART.GROUP_NAME=GROUPS.NAME where "+
+    "("+RDCartSearchText(cut_filter_edit->text(),group,schedcode,false)+")&&"+
+    QString().sprintf("((CART.TYPE=%u))",RDCart::Audio);
   if(cut_exclude_tracks) {
     sql+="&&(CART.OWNER is null)";
   }
@@ -550,8 +554,11 @@ void RDCutDialog::RefreshCuts()
   if(cart_item==NULL) {
     return;
   }
-  sql=QString().sprintf("select DESCRIPTION,CUT_NAME from CUTS where \
-                         CART_NUMBER=%s",(const char *)cart_item->text(1));
+  sql=QString("select ")+
+    "DESCRIPTION,"+
+    "CUT_NAME "+
+    "from CUTS where "+
+    "CART_NUMBER="+cart_item->text(1);
   q=new RDSqlQuery(sql);
   while(q->next()) {
     l=new QListViewItem(cut_cut_list);
@@ -591,9 +598,9 @@ void RDCutDialog::BuildGroupList()
     sql="select NAME from GROUPS order by NAME desc";
   }
   else {
-    sql=QString().sprintf("select GROUP_NAME from USER_PERMS\
-                           where USER_NAME=\"%s\" order by GROUP_NAME desc",
-			  (const char *)cut_username);
+    sql=QString("select GROUP_NAME from USER_PERMS where ")+
+      "USER_NAME=\""+RDEscapeString(cut_username)+"\" "+
+      "order by GROUP_NAME desc";
   }
   q=new RDSqlQuery(sql);
   while(q->next()) {

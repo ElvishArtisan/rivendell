@@ -50,7 +50,7 @@ EditRDLibrary::EditRDLibrary(RDStation *station,RDStation *cae_station,
   setMinimumHeight(sizeHint().height());
   setMaximumHeight(sizeHint().height());
 
-  lib_lib=new RDLibraryConf(station->name(),0);
+  lib_lib=new RDLibraryConf(station->name());
 
   //
   // Create Fonts

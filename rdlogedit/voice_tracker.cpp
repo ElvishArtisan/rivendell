@@ -204,10 +204,8 @@ VoiceTracker::VoiceTracker(const QString &logname,QString *import_path,
   conf->getSettings(edit_settings);
   delete conf;
 
-  RDLibraryConf *lconf=new RDLibraryConf(rda->config()->stationName(),0);
-  edit_tail_preroll=lconf->tailPreroll();
-  edit_threshold_level=lconf->trimThreshold();
-  delete lconf;
+  edit_tail_preroll=rda->libraryConf()->tailPreroll();
+  edit_threshold_level=rda->libraryConf()->trimThreshold();
   
   //
   // Voicetrack Group

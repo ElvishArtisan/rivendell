@@ -15604,3 +15604,26 @@
 	* Removed 'QSqlDatabase' parameter from the 'RDDoesRowExist()',
 	'RDGetSqlValue()' and 'RDIsSqlNull()' functions in 'rdconf.cpp'
 	and 'rdconf.h'.
+2016-08-08 Fred Gleason <fredg@paravelsystems.com>
+	* Removed (const char *) casts from SQL statements in
+	'lib/rdcut_dialog.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'lib/rddeck.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'lib/rddropbox.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'lib/rdevent.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'lib/rdevent_line.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'lib/rdfeed.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'lib/rdfeedlog.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'lib/rdgroup.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'lib/rdhotkeys.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'lib/rdlibrary_conf.cpp'.
+	* Removed the 'instance' parameter from the RDLibraryConf' constructor
+	in 'lib/rdlibrary_conf.cpp' and 'lib/rdlibrary_conf.h'.

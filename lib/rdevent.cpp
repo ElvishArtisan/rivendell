@@ -33,14 +33,14 @@ RDEvent::RDEvent(const QString &name,bool create)
   event_name=name;
 
   if(create) {
-    sql=QString().sprintf("select NAME from EVENTS where \
-(NAME=\"%s\")",(const char *)event_name);
+    sql=QString("select NAME from EVENTS where ")+
+      "(NAME=\""+RDEscapeString(event_name)+"\")";
     q=new RDSqlQuery(sql);
     if(q->size()!=1) {
       delete q;
-      sql=QString().
-        sprintf("INSERT INTO EVENTS SET NAME=\"%s\",TITLE_SEP=100",
-		(const char *)event_name);
+      sql=QString("insert into EVENTS set ")+
+	"NAME=\""+RDEscapeString(event_name)+"\","+
+	"TITLE_SEP=100";
       q=new RDSqlQuery(sql);
       delete q;
     }
@@ -307,9 +307,8 @@ int RDEvent::GetIntValue(const QString &field) const
   RDSqlQuery *q;
   int accum;
   
-  sql=QString().sprintf("select %s from EVENTS where NAME=\"%s\"",
-			(const char *)field,
-			(const char *)event_name);
+  sql=QString("select ")+field+" from EVENTS where "+
+    "NAME=\""+RDEscapeString(event_name)+"\"";
   q=new RDSqlQuery(sql);
   if(q->first()) {
     accum=q->value(0).toInt();
@@ -327,9 +326,8 @@ QString RDEvent::GetStringValue(const QString &field,bool *ok) const
   RDSqlQuery *q;
   QString accum;
   
-  sql=QString().sprintf("select %s from EVENTS where NAME=\"%s\"",
-			(const char *)field,
-			(const char *)event_name);
+  sql=QString("select ")+field+" from EVENTS where "+
+    "NAME=\""+RDEscapeString(event_name)+"\"";
   q=new RDSqlQuery(sql);
   if(q->first()) {
     if(q->value(0).isNull()) {
@@ -352,10 +350,9 @@ void RDEvent::SetRow(const QString &param,int value) const
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString().sprintf("UPDATE EVENTS SET %s=%d WHERE NAME=\"%s\"",
-			(const char *)param,
-			value,
-			(const char *)event_name);
+  sql=QString("update EVENTS set ")+
+    param+QString().sprintf("=%d WHERE ",value)+
+    "NAME=\""+RDEscapeString(event_name)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
 }
@@ -367,15 +364,14 @@ void RDEvent::SetRow(const QString &param,const QString &value,bool ok) const
   QString sql;
 
   if(ok) {
-    sql=QString().sprintf("UPDATE EVENTS SET %s=\"%s\" WHERE NAME=\"%s\"",
-			  (const char *)param,
-			  (const char *)RDEscapeString(value),
-			  (const char *)event_name);
+    sql=QString("update EVENTS set ")+
+      param+"=\""+RDEscapeString(value)+"\" where "+
+      "NAME=\""+RDEscapeString(event_name)+"\"";
   }
   else {
-    sql=QString().sprintf("UPDATE EVENTS SET %s=NULL WHERE NAME=\"%s\"",
-			  (const char *)param,
-			  (const char *)event_name);
+    sql=QString("update EVENTS set ")+
+      param+"=null where "+
+      "NAME=\""+RDEscapeString(event_name)+"\"";
   }
   q=new RDSqlQuery(sql);
   delete q;
