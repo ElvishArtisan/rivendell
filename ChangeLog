@@ -15672,3 +15672,6 @@
 	'lib/rduser.cpp'.
 	* Removed (const char *) casts from SQL statements in
 	'lib/schedruleslist.cpp'.
+2016-08-09 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in 'lib/rdairplay_conf.cpp' that caused RDAirPlay
+	to lock out exiting.
