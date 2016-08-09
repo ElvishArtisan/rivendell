@@ -15627,3 +15627,48 @@
 	'lib/rdlibrary_conf.cpp'.
 	* Removed the 'instance' parameter from the RDLibraryConf' constructor
 	in 'lib/rdlibrary_conf.cpp' and 'lib/rdlibrary_conf.h'.
+2016-08-09 Fred Gleason <fredg@paravelsystems.com>
+	* Removed (const char *) casts from SQL statements in
+	'lib/rdlist_groups.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'lib/rdlist_logs.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'lib/rdlog.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'lib/rdlogedit_conf.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'lib/rdlog_event.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'lib/rdlog_line.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'lib/rdmacro_event.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'lib/rdmatrix.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'lib/rdpodcast.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'lib/rdrecording.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'lib/rdreplicator.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'lib/rdreport.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'lib/rdripc.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'lib/rdsettings.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'lib/rdsimpleplayer.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'lib/rdslotoptions.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'lib/rdstation.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'lib/rdsvc.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'lib/rdsystem.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'lib/rdtty.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'lib/rduser.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'lib/schedruleslist.cpp'.

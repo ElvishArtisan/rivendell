@@ -21,6 +21,7 @@
 #include <rd.h>
 #include <rddb.h>
 #include <rdconf.h>
+#include <rdescape_string.h>
 #include <rdsystem.h>
 
 RDSystem::RDSystem()
@@ -61,8 +62,8 @@ void RDSystem::setAllowDuplicateCartTitles(bool state) const
   QString sql;
   RDSqlQuery *q;
 
-  sql=QString().sprintf("update SYSTEM set DUP_CART_TITLES=\"%s\"",
-			(const char *)RDYesNo(state));
+  sql=QString("update SYSTEM set ")+
+    "DUP_CART_TITLES=\""+RDYesNo(state)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
 }
@@ -120,8 +121,8 @@ void RDSystem::setTempCartGroup(const QString &str) const
 QVariant RDSystem::GetValue(const QString &field) const
 {
   QVariant ret;
-  QString sql=QString().sprintf("select %s from SYSTEM",
-				(const char *)field);
+  QString sql=QString("select ")+
+    field+" from SYSTEM";
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     ret=q->value(0);
@@ -137,9 +138,8 @@ void RDSystem::SetRow(const QString &param,QString value) const
   QString sql;
 
   value.replace("\\","\\\\");  // Needed to preserve Windows pathnames
-  sql=QString().sprintf("update SYSTEM set %s=\"%s\"",
-			(const char *)param,
-			(const char *)value);
+  sql=QString("update SYSTEM set ")+
+    param+"=\""+RDEscapeString(value)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
 }
@@ -150,9 +150,8 @@ void RDSystem::SetRow(const QString &param,int value) const
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString().sprintf("update SYSTEM set %s=%d",
-			(const char *)param,
-			value);
+  sql=QString("update SYSTEM set ")+
+    param+QString().sprintf("=%d",value);
   q=new RDSqlQuery(sql);
   delete q;
 }

@@ -20,7 +20,9 @@
 
 #include <qpushbutton.h>
 #include <qdatetime.h>
+
 #include <rddb.h>
+#include <rdescape_string.h>
 #include <rdlist_logs.h>
 
 RDListLogs::RDListLogs(QString *logname,const QString &stationname,
@@ -147,24 +149,24 @@ void RDListLogs::RefreshList()
 
   list_log_list->clear();
 
-  if (list_user != 0) { // RDStation::UserSec
-    services_list = list_user->services();
-  } else { // RDStation::HostSec
-    sql=QString().sprintf("select SERVICE_NAME from SERVICE_PERMS \
-                           where STATION_NAME=\"%s\"",
-    		          (const char *)list_stationname);
-    RDSqlQuery *q=new RDSqlQuery(sql);
-    while(q->next()) {
-      services_list.append( q->value(0).toString() );
-    }
-    delete q;
+  sql=QString("select ")+
+    "SERVICE_NAME "+
+    "from SERVICE_PERMS where "+
+    "STATION_NAME=\""+RDEscapeString(list_stationname)+"\"";
+  q=new RDSqlQuery(sql);
+  while(q->next()) {
+    services_list.append( q->value(0).toString() );
   }
+  delete q;
 
   if(services_list.size()==0) {
     return;
   }
-  sql=QString("select NAME,DESCRIPTION,SERVICE from LOGS ")+
-    "where (TYPE=0)&&(LOG_EXISTS=\"Y\")&&"+
+  sql=QString("select ")+
+    "NAME,"+
+    "DESCRIPTION,"+
+    "SERVICE "+
+    "from LOGS where (TYPE=0)&&(LOG_EXISTS=\"Y\")&&"+
     "((START_DATE<=\""+current_date.toString("yyyy-MM-dd")+"\")||"+
     "(START_DATE=\"0000-00-00\")||"+
     "(START_DATE is null))&&"+

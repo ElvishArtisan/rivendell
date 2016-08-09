@@ -24,6 +24,7 @@
 #include <qapplication.h>
 
 #include <rddb.h>
+#include <rdescape_string.h>
 #include <rdripc.h>
 
 RDRipc::RDRipc(QString stationname,QObject *parent)
@@ -160,9 +161,8 @@ void RDRipc::sendRml(RDMacro *macro)
   }
   macro->generateString(buffer,RD_RML_MAX_LENGTH-1);
   QString rmlline(buffer);
-  QString sql=QString().sprintf("select NAME,VARVALUE from HOSTVARS \
-                                   where STATION_NAME=\"%s\"",
-				(const char *)ripc_stationname);
+  QString sql=QString("select NAME,VARVALUE from HOSTVARS where ")+
+    "STATION_NAME=\""+RDEscapeString(ripc_stationname)+"\"";
   RDSqlQuery *q=new RDSqlQuery(sql);
   while(q->next()) {
     rmlline.replace(q->value(0).toString(),q->value(1).toString());

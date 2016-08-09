@@ -21,6 +21,7 @@
 #include <qstringlist.h>
 
 #include <rddb.h>
+#include <rdescape_string.h>
 #include <rdmacro_event.h>
 #include <rdstation.h>
 
@@ -246,11 +247,11 @@ void RDMacroEvent::exec(int line)
 	  port=args[1].toUInt();
 	}
 	//stationname=event_cmds[line]->arg(0).toString();
-	sql=
-	  QString().sprintf("select VARVALUE from HOSTVARS \
-                             where (STATION_NAME=\"%s\")&&(NAME=\"%s\")",
-			    (const char *)event_ripc->station(),
-			    (const char *)stationname);
+	sql=QString("select ")+
+	  "VARVALUE "+
+	  "from HOSTVARS where "+
+	  "(STATION_NAME=\""+RDEscapeString(event_ripc->station())+"\")&&"+
+	  "(NAME=\""+RDEscapeString(stationname)+"\")";
 	q=new RDSqlQuery(sql);
 	if(q->first()) {
 	  stationname=q->value(0).toString();

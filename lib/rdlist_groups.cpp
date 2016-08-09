@@ -23,8 +23,8 @@
 #include <rddb.h>
 #include <qdatetime.h>
 
+#include <rdescape_string.h>
 #include <rdlist_groups.h>
-
 
 RDListGroups::RDListGroups(QString *groupname,const QString &username,
 			   QWidget *parent)
@@ -147,11 +147,12 @@ void RDListGroups::BuildGroupList(const QString &username)
   QListViewItem *cur_item=NULL;
 
   group_group_list->clear();
-  sql=QString().sprintf("select USER_PERMS.GROUP_NAME,GROUPS.DESCRIPTION\
-                         from USER_PERMS left join GROUPS\
-                         on USER_PERMS.GROUP_NAME=GROUPS.NAME\
-                         where USER_NAME=\"%s\"",
-			(const char *)username);
+  sql=QString("select ")+
+    "USER_PERMS.GROUP_NAME,"+
+    "GROUPS.DESCRIPTION "+
+    "from USER_PERMS left join GROUPS "+
+    "on USER_PERMS.GROUP_NAME=GROUPS.NAME where "+
+    "USER_NAME=\""+RDEscapeString(username)+"\"";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     item=new QListViewItem(group_group_list);

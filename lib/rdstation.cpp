@@ -525,11 +525,17 @@ int RDStation::cards() const
 {
   int n=0;
 
-  QString sql=QString().sprintf("select CARD0_DRIVER,CARD1_DRIVER,\
-                                 CARD2_DRIVER,CARD3_DRIVER,CARD4_DRIVER,\
-                                 CARD5_DRIVER,CARD6_DRIVER,CARD7_DRIVER\
-                                 from STATIONS where NAME=\"%s\"",
-				(const char *)station_name);
+  QString sql=QString("select ")+
+    "CARD0_DRIVER,"+
+    "CARD1_DRIVER,"+
+    "CARD2_DRIVER,"+
+    "CARD3_DRIVER,"+
+    "CARD4_DRIVER,"+
+    "CARD5_DRIVER,"+
+    "CARD6_DRIVER,"+
+    "CARD7_DRIVER "+
+    "from STATIONS where "+
+    "NAME=\""+RDEscapeString(station_name)+"\"";
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     for(int i=0;i<RD_MAX_CARDS;i++) {
@@ -650,10 +656,9 @@ void RDStation::SetRow(const QString &param,const QString &value) const
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString().sprintf("UPDATE STATIONS SET %s=\"%s\" WHERE NAME=\"%s\"",
-			(const char *)param,
-			(const char *)RDEscapeString(value),
-			(const char *)RDEscapeString(station_name));
+  sql=QString("update STATIONS set ")+
+    param+"=\""+RDEscapeString(value)+"\" where "+
+    "NAME=\""+RDEscapeString(station_name)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
 }
@@ -664,10 +669,9 @@ void RDStation::SetRow(const QString &param,int value) const
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString().sprintf("UPDATE STATIONS SET %s=%d WHERE NAME=\"%s\"",
-			(const char *)param,
-			value,
-			(const char *)RDEscapeString(station_name));
+  sql=QString("update STATIONS set ")+
+    param+QString().sprintf("=%d where ",value)+
+    "NAME=\""+RDEscapeString(station_name)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
 }
@@ -678,10 +682,9 @@ void RDStation::SetRow(const QString &param,unsigned value) const
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString().sprintf("UPDATE STATIONS SET %s=%u WHERE NAME=\"%s\"",
-			(const char *)param,
-			value,
-			(const char *)RDEscapeString(station_name));
+  sql=QString("update STATIONS set ")+
+    param+QString().sprintf("=%u where ",value)+
+    "NAME=\""+RDEscapeString(station_name)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
 }
@@ -692,10 +695,9 @@ void RDStation::SetRow(const QString &param,bool value) const
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString().sprintf("UPDATE STATIONS SET %s=\"%s\" WHERE NAME=\"%s\"",
-			(const char *)param,
-			(const char *)RDYesNo(value),
-			(const char *)RDEscapeString(station_name));
+  sql=QString("update STATIONS set ")+
+    param+"=\""+RDYesNo(value)+"\" where "+
+    "NAME=\""+RDEscapeString(station_name)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
 }

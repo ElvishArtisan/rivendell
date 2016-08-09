@@ -329,11 +329,10 @@ QString RDSvc::importFilename(ImportSource src,const QDate &date) const
 #ifdef WIN32
   os_flag="_WIN";
 #endif
-  QString sql=QString().sprintf("select %s%s_PATH from SERVICES \
-                                 where NAME=\"%s\"",
-				(const char *)src_str,
-				(const char *)os_flag,
-				(const char *)svc_name);
+  QString sql=QString("select ")+
+    src_str+os_flag+"_PATH "+
+    "from SERVICES where "+
+    "NAME=\""+RDEscapeString(svc_name)+"\"";
   QString ret;
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
@@ -391,18 +390,13 @@ bool RDSvc::import(ImportSource src,const QDate &date,const QString &break_str,
   //
   // Load Parser Parameters
   //
-  sql=QString().sprintf("select %s%s_PATH,\
-                         %s_LABEL_CART,\
-                         %s_TRACK_CART,\
-                         %s%s_PREIMPORT_CMD \
-                         from SERVICES where NAME=\"%s\"",
-			(const char *)src_str,
-			(const char *)os_flag,
-			(const char *)src_str,
-			(const char *)src_str,
-			(const char *)src_str,
-			(const char *)os_flag,
-			(const char *)RDEscapeString(svc_name));
+  sql=QString("select ")+
+    src_str+os_flag+"_PATH,"+
+    src_str+"_LABEL_CART,"+
+    src_str+"_TRACK_CART,"+
+    src_str+os_flag+"_PREIMPORT_CMD "+
+    "from SERVICES where "+
+    "NAME=\""+RDEscapeString(svc_name)+"\"";
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(!q->first()) {
     delete q;
@@ -497,7 +491,7 @@ bool RDSvc::import(ImportSource src,const QDate &date,const QString &break_str,
   //
   // Setup Data Source and Destination
   //
-  sql=QString().sprintf("drop table `%s`",(const char *)dest_table);
+  sql=QString("drop table `")+dest_table+"`";
   QSqlQuery *qq;          // Use QSqlQuery so we don't generate a 
   qq=new QSqlQuery(sql);  // spurious error message.
   delete qq;
@@ -722,19 +716,22 @@ bool RDSvc::generateLog(const QDate &date,const QString &logname,
   if(defaultLogShelflife()>=0) {
     purge_date=date.addDays(defaultLogShelflife());
   }
-  sql=QString().sprintf("select NAME from LOGS where NAME=\"%s\"",
-			(const char *)RDEscapeString(logname));
+  sql=QString("select NAME from LOGS where ")+
+    "NAME=\""+RDEscapeString(logname)+"\"";
   q=new RDSqlQuery(sql);
   if(q->first()) {   // Already Exists
     delete q;
-    sql=QString().sprintf("update LOGS set SERVICE=\"%s\",\
-                           DESCRIPTION=\"%s\",ORIGIN_USER=\"%s\",\
-                           ORIGIN_DATETIME=now(),LINK_DATETIME=now(),\
-                           MODIFIED_DATETIME=now(),START_DATE=null,\
-                           END_DATE=null,NEXT_ID=0",
-			  (const char *)RDEscapeString(svc_name),
-			  (const char *)RDEscapeString(RDDateDecode(descriptionTemplate(),date)),
-			  "RDLogManager");
+    sql=QString("update LOGS set ")+
+      "SERVICE=\""+RDEscapeString(svc_name)+"\","+
+      "DESCRIPTION=\""+
+      RDEscapeString(RDDateDecode(descriptionTemplate(),date))+"\","+
+      "ORIGIN_USER=\"RDLogManager\","+
+      "ORIGIN_DATETIME=now(),"+
+      "LINK_DATETIME=now(),"+
+      "MODIFIED_DATETIME=now(),"+
+      "START_DATE=null,"+
+      "END_DATE=null,"+
+      "NEXT_ID=0";
     if(!purge_date.isValid()) {
       sql+=(",PURGE_DATE=\""+purge_date.toString("yyyy-MM-dd")+"\"");
     }
@@ -748,16 +745,15 @@ bool RDSvc::generateLog(const QDate &date,const QString &logname,
   }
   else {             // Doesn't exist
     delete q;
-    sql=QString().sprintf("insert into LOGS set NAME=\"%s\",\
-                           SERVICE=\"%s\",DESCRIPTION=\"%s\",\
-                           ORIGIN_USER=\"%s\",ORIGIN_DATETIME=now(),\
-                           LINK_DATETIME=now(),MODIFIED_DATETIME=now(),\
-                           PURGE_DATE=%s",
-			  (const char *)RDEscapeString(logname),
-			  (const char *)RDEscapeString(svc_name),
-			  (const char *)RDEscapeString(RDDateDecode(descriptionTemplate(),date)),
-			  "RDLogManager",
-			  (const char *)RDCheckDateTime(purge_date,"yyyy-MM-dd"));
+    sql=QString("insert into LOGS set ")+
+      "NAME=\""+RDEscapeString(logname)+"\","+
+      "SERVICE=\""+RDEscapeString(svc_name)+"\","+
+      "DESCRIPTION=\""+RDEscapeString(RDDateDecode(descriptionTemplate(),date))+"\","+
+      "ORIGIN_USER=\"RDLogManager\","+
+      "ORIGIN_DATETIME=now(),"+
+      "LINK_DATETIME=now(),"+
+      "MODIFIED_DATETIME=now(),"+
+      "PURGE_DATE="+RDCheckDateTime(purge_date,"yyyy-MM-dd");
     q=new RDSqlQuery(sql);
     delete q;
   }
@@ -788,7 +784,9 @@ bool RDSvc::generateLog(const QDate &date,const QString &logname,
   // Get Current Count
   //
   int count;
-  sql=QString("select COUNT from `")+RDLog::tableName(logname)+"` order by COUNT desc";
+  sql=QString("select COUNT from `")+
+    RDLog::tableName(logname)+
+    "` order by COUNT desc";
   q=new RDSqlQuery(sql);
   if(q->first()) {
     count=q->value(0).toInt()+1;
@@ -920,13 +918,13 @@ bool RDSvc::linkLog(RDSvc::ImportSource src,const QDate &date,
   dest_event->validate(&missing_report,date);
   bool event=false;
   QString link_report=tr("The following events were not placed:\n");
-  sql=QString().sprintf("select `%s`.START_HOUR,`%s`.START_SECS,\
-                         `%s`.CART_NUMBER,CART.TITLE from `%s` LEFT JOIN CART\
-                         ON `%s`.CART_NUMBER=CART.NUMBER \
-                         where `%s`.EVENT_USED=\"N\"",
-			(const char *)import_name,(const char *)import_name,
-			(const char *)import_name,(const char *)import_name,
-			(const char *)import_name,(const char *)import_name);
+  sql=QString("select `")+import_name+"`.START_HOUR,"+
+    "`"+import_name+"`.START_SECS,"+
+    "`"+import_name+"`.CART_NUMBER,"+
+    "CART.TITLE "+
+    "from `"+import_name+"` LEFT JOIN CART "+
+    "on `"+import_name+"`.CART_NUMBER=CART.NUMBER where "+
+    "`"+import_name+"`.EVENT_USED=\"N\"";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     event=true;
@@ -968,7 +966,7 @@ bool RDSvc::linkLog(RDSvc::ImportSource src,const QDate &date,
   delete dest_event;
   //  printf("Import Table: %s\n",(const char *)import_name);
 
-  sql=QString().sprintf("drop table `%s`",(const char *)import_name);
+  sql=QString("drop table `")+import_name+"`";
   q=new RDSqlQuery(sql);
   delete q;
 
@@ -1055,11 +1053,9 @@ void RDSvc::create(const QString exemplar) const
     sql="select NAME from GROUPS";
     q=new RDSqlQuery(sql);
     while(q->next()) {
-      sql=QString().sprintf("insert into AUDIO_PERMS set\
-                           GROUP_NAME=\"%s\",SERVICE_NAME=\"%s\"",
-			    (const char *)
-			    RDEscapeString(q->value(0).toString()),
-			    (const char *)RDEscapeString(svc_name));
+      sql=QString("insert into AUDIO_PERMS set ")+
+	"GROUP_NAME=\""+RDEscapeString(q->value(0).toString())+"\","+
+	"SERVICE_NAME=\""+RDEscapeString(svc_name)+"\"";
       q1=new RDSqlQuery(sql);
       delete q1;
     }
@@ -1071,11 +1067,9 @@ void RDSvc::create(const QString exemplar) const
     sql="select NAME from STATIONS";
     q=new RDSqlQuery(sql);
     while(q->next()) {
-      sql=QString().sprintf("insert into SERVICE_PERMS set\
-                           STATION_NAME=\"%s\",SERVICE_NAME=\"%s\"",
-			    (const char *)
-			    RDEscapeString(q->value(0).toString()),
-			    (const char *)RDEscapeString(svc_name));
+      sql=QString("insert into SERVICE_PERMS set ")+
+	"STATION_NAME=\""+RDEscapeString(q->value(0).toString())+"\","+
+	"SERVICE_NAME=\""+RDEscapeString(svc_name)+"\"";
       q1=new RDSqlQuery(sql);
       delete q1;
     }
@@ -1212,16 +1206,13 @@ void RDSvc::create(const QString exemplar) const
     //
     // Clone Audio Perms
     //
-    sql=QString().sprintf("select GROUP_NAME from AUDIO_PERMS\
-                           where SERVICE_NAME=\"%s\"",
-			  (const char *)RDEscapeString(exemplar));
+    sql=QString("select GROUP_NAME from AUDIO_PERMS where ")+
+      "SERVICE_NAME=\""+RDEscapeString(exemplar)+"\"";
     q=new RDSqlQuery(sql);
     while(q->next()) {
-      sql=QString().sprintf("insert into AUDIO_PERMS set\
-                             GROUP_NAME=\"%s\",SERVICE_NAME=\"%s\"",
-			    (const char *)
-			    RDEscapeString(q->value(0).toString()),
-			    (const char *)RDEscapeString(svc_name));
+      sql=QString("insert into AUDIO_PERMS set ")+
+	"GROUP_NAME=\""+RDEscapeString(q->value(0).toString())+"\","+
+	"SERVICE_NAME=\""+RDEscapeString(svc_name)+"\"";
       q1=new RDSqlQuery(sql);
       delete q1;
     }
@@ -1230,16 +1221,13 @@ void RDSvc::create(const QString exemplar) const
     //
     // Clone Service Perms
     //
-    sql=QString().sprintf("select STATION_NAME from SERVICE_PERMS\
-                           where SERVICE_NAME=\"%s\"",
-			  (const char *)RDEscapeString(exemplar));
+    sql=QString("select STATION_NAME from SERVICE_PERMS where ")+
+      "SERVICE_NAME=\""+RDEscapeString(exemplar)+"\"";
     q=new RDSqlQuery(sql);
     while(q->next()) {
-      sql=QString().sprintf("insert into SERVICE_PERMS set\
-                             STATION_NAME=\"%s\",SERVICE_NAME=\"%s\"",
-			    (const char *)
-			    RDEscapeString(q->value(0).toString()),
-			    (const char *)RDEscapeString(svc_name));
+      sql=QString("insert into SERVICE_PERMS set ")+
+	"STATION_NAME=\""+RDEscapeString(q->value(0).toString())+"\","+
+	"SERVICE_NAME=\""+RDEscapeString(svc_name)+"\"";
       q1=new RDSqlQuery(sql);
       delete q1;
     }
@@ -1248,15 +1236,13 @@ void RDSvc::create(const QString exemplar) const
     //
     // Clone Autofill List
     //
-    sql=QString().sprintf("select CART_NUMBER from AUTOFILLS\
-                           where SERVICE=\"%s\"",
-			  (const char *)RDEscapeString(exemplar));
+    sql=QString("select CART_NUMBER from AUTOFILLS where ")+
+      "SERVICE=\""+RDEscapeString(exemplar)+"\"";
     q=new RDSqlQuery(sql);
     while(q->next()) {
-      sql=QString().sprintf("insert into AUTOFILLS set\
-                             CART_NUMBER=%u,SERVICE=\"%s\"",
-			    q->value(0).toUInt(),
-			    (const char *)RDEscapeString(svc_name));
+      sql=QString("insert into AUTOFILLS set ")+
+	QString().sprintf("CART_NUMBER=%u,",q->value(0).toInt())+
+	"SERVICE=\""+RDEscapeString(svc_name)+"\"";
       q1=new RDSqlQuery(sql);
       delete q1;
     }
@@ -1265,16 +1251,13 @@ void RDSvc::create(const QString exemplar) const
     //
     // Clone Clock Perms
     //
-    sql=QString().sprintf("select CLOCK_NAME from CLOCK_PERMS\
-                           where SERVICE_NAME=\"%s\"",
-			  (const char *)RDEscapeString(exemplar));
+    sql=QString("select CLOCK_NAME from CLOCK_PERMS where ")+
+      "SERVICE_NAME=\""+RDEscapeString(exemplar)+"\"";
     q=new RDSqlQuery(sql);
     while(q->next()) {
-      sql=QString().sprintf("insert into CLOCK_PERMS set\
-                             CLOCK_NAME=\"%s\",SERVICE_NAME=\"%s\"",
-			    (const char *)
-			    RDEscapeString(q->value(0).toString()),
-			    (const char *)RDEscapeString(svc_name));
+      sql=QString("insert into CLOCK_PERMS set ")+
+	"CLOCK_NAME=\""+RDEscapeString(q->value(0).toString())+"\","+
+	"SERVICE_NAME=\""+RDEscapeString(svc_name)+"\"";
       q1=new RDSqlQuery(sql);
       delete q1;
     }
@@ -1283,16 +1266,13 @@ void RDSvc::create(const QString exemplar) const
     //
     // Clone Event Perms
     //
-    sql=QString().sprintf("select EVENT_NAME from EVENT_PERMS\
-                           where SERVICE_NAME=\"%s\"",
-			  (const char *)RDEscapeString(exemplar));
+    sql=QString("select EVENT_NAME from EVENT_PERMS where ")+
+      "SERVICE_NAME=\""+RDEscapeString(exemplar)+"\"";
     q=new RDSqlQuery(sql);
     while(q->next()) {
-      sql=QString().sprintf("insert into EVENT_PERMS set\
-                             EVENT_NAME=\"%s\",SERVICE_NAME=\"%s\"",
-			    (const char *)
-			    RDEscapeString(q->value(0).toString()),
-			    (const char *)RDEscapeString(svc_name));
+      sql=QString("insert into EVENT_PERMS set ")+
+	"EVENT_NAME=\""+RDEscapeString(q->value(0).toString())+"\","+
+	"SERVICE_NAME=\""+RDEscapeString(svc_name)+"\"";
       q1=new RDSqlQuery(sql);
       delete q1;
     }
@@ -1370,7 +1350,7 @@ void RDSvc::remove() const
     sql=QString("drop table `")+RDLog::tableName(logname)+"`";
     q1=new RDSqlQuery(sql);
     delete q1;
-    sql=QString().sprintf("drop table `%s_REC`",(const char *)logname);
+    sql=QString("drop table `")+logname+"_REC`";
     q1=new RDSqlQuery(sql);
     delete q1;
   }
@@ -1378,11 +1358,11 @@ void RDSvc::remove() const
 
   QString tablename=svc_name;
   tablename.replace(" ","_");
-  sql=QString().sprintf("drop table `%s_SRT`",(const char *)tablename);
+  sql=QString("drop table `")+tablename+"_SRT`";
   q=new RDSqlQuery(sql);
   delete q;
 
-  sql=QString().sprintf("drop table `%s_STACK`",(const char *)tablename);
+  sql=QString("drop table `")+tablename+"_STACK`";
   q=new RDSqlQuery(sql);
   delete q;
 
@@ -1520,10 +1500,9 @@ void RDSvc::SetRow(const QString &param,QString value) const
   QString sql;
 
   value.replace("\\","\\\\");  // Needed to preserve Windows pathnames
-  sql=QString().sprintf("UPDATE SERVICES SET %s=\"%s\" WHERE NAME=\"%s\"",
-			(const char *)param,
-			(const char *)value,
-			(const char *)RDEscapeString(svc_name));
+  sql=QString("update SERVICES set ")+
+    param+"=\""+RDEscapeString(value)+"\" where "+
+    "NAME=\""+RDEscapeString(svc_name)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
 }
@@ -1534,10 +1513,9 @@ void RDSvc::SetRow(const QString &param,int value) const
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString().sprintf("UPDATE SERVICES SET %s=%d WHERE NAME=\"%s\"",
-			(const char *)param,
-			value,
-			(const char *)RDEscapeString(svc_name));
+  sql=QString("update SERVICES set ")+
+    param+QString().sprintf("=%d where ",value)+
+    "NAME=\""+RDEscapeString(svc_name)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
 }
@@ -1548,14 +1526,13 @@ void RDSvc::GetParserStrings(ImportSource src,QString *break_str,
 			     QString *track_cart)
 {
   QString src_str=SourceString(src);
-  QString sql=QString().sprintf("select %sBREAK_STRING,%sTRACK_STRING,\
-                                 %sLABEL_CART,%sTRACK_CART \
-                                 from SERVICES where NAME=\"%s\"",
-				(const char *)src_str,
-				(const char *)src_str,
-				(const char *)src_str,
-				(const char *)src_str,
-				(const char *)RDEscapeString(svc_name));
+  QString sql=QString("select ")+
+    src_str+"BREAK_STRING,"+
+    src_str+"TRACK_STRING,"+
+    src_str+"LABEL_CART,"+
+    src_str+"TRACK_CART "+
+    "from SERVICES where "+
+    "NAME=\""+RDEscapeString(svc_name)+"\"";
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     *break_str=q->value(0).toString();

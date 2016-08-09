@@ -49,11 +49,12 @@ bool RDUser::authenticated(bool webuser) const
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString().sprintf("select LOGIN_NAME,ENABLE_WEB from USERS \
-                         where LOGIN_NAME=\"%s\" \
-                         && PASSWORD=\"%s\"",
-			(const char *)RDEscapeString(user_name),
-			(const char *)RDEscapeString(user_password));
+  sql=QString("select ")+
+    "LOGIN_NAME,"+
+    "ENABLE_WEB "+
+    "from USERS where "+
+    "(LOGIN_NAME=\""+RDEscapeString(user_name)+"\")&&"+
+    "(PASSWORD=\""+RDEscapeString(user_password)+"\")";
   q=new RDSqlQuery(sql);
   if(q->first()) {
     bool ret=RDBool(q->value(1).toString())||
@@ -390,9 +391,8 @@ bool RDUser::groupAuthorized(const QString &group_name)
   RDSqlQuery *q;
   bool ret=false;
 
-  sql=QString().
-    sprintf("select GROUP_NAME from USER_PERMS where USER_NAME=\"%s\"",
-	    (const char *)RDEscapeString(user_name));
+  sql=QString("select GROUP_NAME from USER_PERMS where ")+
+    "USER_NAME=\""+RDEscapeString(user_name)+"\"";
   q=new RDSqlQuery(sql);
   ret=q->first();
   delete q;
@@ -424,12 +424,11 @@ bool RDUser::cartAuthorized(unsigned cartnum) const
   RDSqlQuery *q;
   bool ret=false;
 
-  sql=QString().
-      sprintf("select CART.NUMBER from CART \
-               left join USER_PERMS \
-               on CART.GROUP_NAME=USER_PERMS.GROUP_NAME \
-               where (USER_PERMS.USER_NAME=\"%s\")&&(CART.NUMBER=%u)",
-	      (const char *)RDEscapeString(user_name),cartnum);
+  sql=QString("select CART.NUMBER from CART ")+
+    "left join USER_PERMS "+
+    "on CART.GROUP_NAME=USER_PERMS.GROUP_NAME where "+
+    "(USER_PERMS.USER_NAME=\""+RDEscapeString(user_name)+"\")&&"+
+    QString().sprintf("(CART.NUMBER=%u)",cartnum);
   q=new RDSqlQuery(sql);
   ret=q->first();
   delete q;
@@ -467,11 +466,10 @@ QStringList RDUser::services() const
     sql=QString().sprintf("SELECT NAME FROM SERVICES" );
   } 
   else {
-    sql=QString().sprintf("select distinct AUDIO_PERMS.SERVICE_NAME \
-                           from USER_PERMS left join AUDIO_PERMS \
-                           on USER_PERMS.GROUP_NAME=AUDIO_PERMS.GROUP_NAME \
-                           where USER_PERMS.USER_NAME=\"%s\"",
-			  (const char *)RDEscapeString(user_name));
+    sql=QString("select distinct AUDIO_PERMS.SERVICE_NAME ")+
+      "from USER_PERMS left join AUDIO_PERMS "+
+      "on USER_PERMS.GROUP_NAME=AUDIO_PERMS.GROUP_NAME where "+
+      "USER_PERMS.USER_NAME=\""+RDEscapeString(user_name)+"\"";
   }
   
   q=new RDSqlQuery(sql);
@@ -489,10 +487,9 @@ void RDUser::SetRow(const QString &param,const QString &value) const
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString().sprintf("UPDATE USERS SET %s=\"%s\" WHERE LOGIN_NAME=\"%s\"",
-			(const char *)param,
-			(const char *)RDEscapeString(value),
-			(const char *)user_name);
+  sql=QString("update USERS set ")+
+    param+"=\""+RDEscapeString(value)+"\" where "+
+    "LOGIN_NAME=\""+RDEscapeString(user_name)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
 }

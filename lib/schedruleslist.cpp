@@ -19,6 +19,7 @@
 //
 
 #include <rddb.h>
+#include <rdescape_string.h>
 #include <schedruleslist.h>
 #include <qmessagebox.h>
 
@@ -28,17 +29,18 @@ SchedRulesList::SchedRulesList(QString clockname)
   RDSqlQuery *q;
   RDSqlQuery *q1;
 
-  sql=QString().sprintf("create table if not exists `%s_RULES` (\
-      CODE varchar(10) not null primary key,\
-      MAX_ROW int unsigned,\
-      MIN_WAIT int unsigned,\
-      NOT_AFTER varchar(10),\
-      OR_AFTER varchar(10),\
-      OR_AFTER_II varchar(10))",(const char*)clockname.replace(" ","_")); 
+  sql=QString("create table if not exists `")+clockname.replace(" ","_")+
+    "_RULES` ("+
+    "CODE varchar(10) not null primary key,"+
+    "MAX_ROW int unsigned,"+
+    "MIN_WAIT int unsigned,"+
+    "NOT_AFTER varchar(10),"+
+    "OR_AFTER varchar(10),"+
+    "OR_AFTER_II varchar(10))";
   q=new RDSqlQuery(sql);
   delete q;
 
-  sql=QString().sprintf("select CODE,DESCRIPTION from SCHED_CODES order by `CODE` asc"); 
+  sql=QString("select CODE,DESCRIPTION from SCHED_CODES order by CODE asc"); 
 
   q=new RDSqlQuery(sql);
 
@@ -55,8 +57,14 @@ SchedRulesList::SchedRulesList(QString clockname)
     q->next();
     sched_code[i] = q->value(0).toString();
     description[i] = q->value(1).toString();
-    sql=QString().sprintf("select MAX_ROW,MIN_WAIT,NOT_AFTER,OR_AFTER,OR_AFTER_II from %s_RULES where CODE=\"%s\"",
-	(const char *)clockname.replace(" ","_"),(const char *)sched_code[i]);
+    sql=QString("select ")+
+      "MAX_ROW,"+
+      "MIN_WAIT,"+
+      "NOT_AFTER,"+
+      "OR_AFTER,"+
+      "OR_AFTER_II "+
+      "from "+clockname.replace(" ","_")+"_RULES where "+
+      "CODE=\""+sched_code[i]+"\"";
     q1=new RDSqlQuery(sql);
     if(q1->first())
       {
@@ -144,13 +152,18 @@ void SchedRulesList::Save(QString clockname)
   QString sql;
   RDSqlQuery *q;
 
-  sql=QString().sprintf("delete from %s_RULES",
-			(const char *)clockname.replace(" ","_"));
+  sql=QString("delete from `")+clockname.replace(" ","_")+"_RULES`";
   q=new RDSqlQuery(sql);
   delete q;
   for (int i=0;i<itemcounter;i++) 
    {
-   sql=QString().sprintf("insert into %s_RULES set CODE=\"%s\",MAX_ROW=%d,MIN_WAIT=%d,NOT_AFTER=\"%s\",OR_AFTER=\"%s\",OR_AFTER_II=\"%s\"",(const char *)clockname.replace(" ","_"),(const char *)sched_code[i],max_row[i],min_wait[i],(const char *)not_after[i],(const char *)or_after[i],(const char *)or_after_II[i]);
+     sql=QString("insert into ")+clockname.replace(" ","_")+"_RULES set "+
+       "CODE=\""+sched_code[i]+"\","+
+       QString().sprintf("MAX_ROW=%d,",max_row[i])+
+       QString().sprintf("MIN_WAIT=%d,",min_wait[i])+
+       "NOT_AFTER=\""+RDEscapeString(not_after[i])+"\","+
+       "OR_AFTER=\""+RDEscapeString(or_after[i])+"\","+
+       "OR_AFTER_II=\""+RDEscapeString(or_after_II[i])+"\"";
    q=new RDSqlQuery(sql);
    delete q;
    }

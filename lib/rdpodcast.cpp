@@ -53,10 +53,10 @@ RDPodcast::RDPodcast(unsigned id)
   QString sql;
 
   podcast_id=id;
-  sql=QString().sprintf("select FEEDS.KEY_NAME from \
-                         PODCASTS left join FEEDS \
-                         on (PODCASTS.FEED_ID=FEEDS.ID) \
-                         where PODCASTS.ID=%u",id);
+  sql=QString("select FEEDS.KEY_NAME from ")+
+    "PODCASTS left join FEEDS "+
+    "on (PODCASTS.FEED_ID=FEEDS.ID) where "+
+    QString().sprintf("PODCASTS.ID=%u",id);
   q=new RDSqlQuery(sql);
   if(q->first()) {
     podcast_keyname=q->value(0).toString();
@@ -377,10 +377,9 @@ void RDPodcast::SetRow(const QString &param,int value) const
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString().sprintf("UPDATE PODCASTS SET %s=%d WHERE ID=%u",
-			(const char *)param,
-			value,
-			podcast_id);
+  sql=QString("update PODCASTS set ")+
+    param+QString().sprintf("=%d where ",value)+
+    QString().sprintf("ID=%u",podcast_id);
   q=new RDSqlQuery(sql);
   delete q;
 }
@@ -391,10 +390,9 @@ void RDPodcast::SetRow(const QString &param,const QString &value) const
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString().sprintf("UPDATE PODCASTS SET %s=\"%s\" WHERE ID=%u",
-			(const char *)param,
-			(const char *)RDEscapeString(value),
-			podcast_id);
+  sql=QString().sprintf("update PODCASTS set ")+
+    param+"=\""+RDEscapeString(value)+"\" where "+
+    QString().sprintf("ID=%u",podcast_id);
   q=new RDSqlQuery(sql);
   delete q;
 }
@@ -406,10 +404,9 @@ void RDPodcast::SetRow(const QString &param,const QDateTime &value,
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString().sprintf("UPDATE PODCASTS SET %s=%s WHERE ID=%u",
-			(const char *)param,
-			(const char *)RDCheckDateTime(value, format),
-			podcast_id);
+  sql=QString("update PODCASTS set ")+
+    param+"="+RDCheckDateTime(value,format)+" where "+
+    QString().sprintf("ID=%u",podcast_id);
   q=new RDSqlQuery(sql);
   delete q;
 }

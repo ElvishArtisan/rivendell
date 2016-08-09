@@ -138,11 +138,21 @@ bool RDSlotOptions::load()
   QString sql;
   RDSqlQuery *q;
 
-  sql=QString("select CARD,INPUT_PORT,OUTPUT_PORT,")+
-    "MODE,DEFAULT_MODE,HOOK_MODE,DEFAULT_HOOK_MODE,"+
-    "STOP_ACTION,DEFAULT_STOP_ACTION,"+
-    "CART_NUMBER,DEFAULT_CART_NUMBER,SERVICE_NAME from CARTSLOTS "+
-    "where (STATION_NAME=\""+RDEscapeString(set_stationname)+"\")&&"+
+  sql=QString("select ")+
+    "CARD,"+                 // 00
+    "INPUT_PORT,"+           // 01
+    "OUTPUT_PORT,"+          // 02
+    "MODE,"+                 // 03
+    "DEFAULT_MODE,"+         // 04
+    "HOOK_MODE,"+            // 05
+    "DEFAULT_HOOK_MODE,"+    // 06
+    "STOP_ACTION,"+          // 07
+    "DEFAULT_STOP_ACTION,"+  // 08
+    "CART_NUMBER,"+          // 09
+    "DEFAULT_CART_NUMBER,"+  // 10
+    "SERVICE_NAME "+         // 11
+    "from CARTSLOTS where "+
+    "(STATION_NAME=\""+RDEscapeString(set_stationname)+"\")&&"+
     QString().sprintf("(SLOT_NUMBER=%u)",set_slotno);
   q=new RDSqlQuery(sql);
   if(q->first()) {

@@ -20,6 +20,7 @@
 
 #include <rddb.h>
 #include <rdconf.h>
+#include <rdescape_string.h>
 #include <rdtty.h>
 
 //
@@ -34,13 +35,15 @@ RDTty::RDTty(const QString &station,unsigned port_id,bool create)
   tty_id=port_id;
 
   if(create) {
-    sql=QString().sprintf("select ID from TTYS where \
-(STATION_NAME=\"%s\")&&(PORT_ID=%d)",(const char *)tty_station,tty_id);
+    sql=QString("select ID from TTYS where ")+
+      "(STATION_NAME=\""+RDEscapeString(tty_station)+"\")&&"+
+      QString().sprintf("(PORT_ID=%d)",tty_id);
     q=new RDSqlQuery(sql);
     if(q->size()!=1) {
       delete q;
-      sql=QString().sprintf("INSERT INTO TTYS SET STATION_NAME=\"%s\",PORT_ID=%d",
-			    (const char *)tty_station,tty_id);
+      sql=QString().sprintf("insert into TTYS set ")+
+	"STATION_NAME=\""+RDEscapeString(tty_station)+"\","+
+	QString().sprintf("PORT_ID=%d",tty_id);
       q=new RDSqlQuery(sql);
       delete q;
     }
@@ -153,9 +156,10 @@ bool RDTty::GetBoolValue(const QString &field)
   RDSqlQuery *q;
   bool state;
 
-  sql=QString().sprintf("select %s from TTYS where \
-(STATION_NAME=\"%s\")&&(PORT_ID=%d)",(const char *)field,
-			(const char *)tty_station,tty_id);
+  sql=QString("select ")+
+    field+" from TTYS where "+
+    "(STATION_NAME=\""+RDEscapeString(tty_station)+"\")&&"+
+    QString().sprintf("(PORT_ID=%d)",tty_id);
   q=new RDSqlQuery(sql);
   if(q->first()) {
     state=RDBool(q->value(0).toString());
@@ -173,9 +177,10 @@ QString RDTty::GetStringValue(const QString &field)
   RDSqlQuery *q;
   QString accum;
 
-  sql=QString().sprintf("select %s from TTYS where \
-(STATION_NAME=\"%s\")&&(PORT_ID=%d)",(const char *)field,
-			(const char *)tty_station,tty_id);
+  sql=QString("select ")+
+    field+" from TTYS where "+
+    "(STATION_NAME=\""+RDEscapeString(tty_station)+"\")&&"+
+    QString().sprintf("(PORT_ID=%d)",tty_id);
   q=new RDSqlQuery(sql);
   if(q->first()) {
     accum=q->value(0).toString();
@@ -193,9 +198,10 @@ int RDTty::GetIntValue(const QString &field)
   RDSqlQuery *q;
   int accum;
 
-  sql=QString().sprintf("select %s from TTYS where \
-(STATION_NAME=\"%s\")&&(PORT_ID=%d)",(const char *)field,
-			(const char *)tty_station,tty_id);
+  sql=QString("select ")+
+    field+" from TTYS where "+
+    "(STATION_NAME=\""+RDEscapeString(tty_station)+"\")&&"+
+    QString().sprintf("(PORT_ID=%d)",tty_id);
   q=new RDSqlQuery(sql);
   if(q->first()) {
     accum=q->value(0).toInt();
@@ -212,12 +218,10 @@ void RDTty::SetRow(const QString &param,bool value)
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString().sprintf("UPDATE TTYS SET %s=\"%s\" \
-WHERE (STATION_NAME=\"%s\")&&(PORT_ID=%d)",
-			(const char *)param,
-			(const char *)RDYesNo(value),
-			(const char *)tty_station,
-			tty_id);
+  sql=QString("update TTYS set ")+
+    param+"=\""+RDYesNo(value)+"\" where "+
+    "(STATION_NAME=\""+RDEscapeString(tty_station)+"\")&&"+
+    QString().sprintf("(PORT_ID=%d)",tty_id);
   q=new RDSqlQuery(sql);
   delete q;
 }
@@ -228,12 +232,10 @@ void RDTty::SetRow(const QString &param,const QString &value)
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString().sprintf("UPDATE TTYS SET %s=\"%s\" \
-WHERE (STATION_NAME=\"%s\")&&(PORT_ID=%d)",
-			(const char *)param,
-			(const char *)value,
-			(const char *)tty_station,
-			tty_id);
+  sql=QString("update TTYS set ")+
+    param+"=\""+RDEscapeString(value)+"\" where "+
+    "(STATION_NAME=\""+RDEscapeString(tty_station)+"\")&&"+
+    QString().sprintf("(PORT_ID=%d)",tty_id);
   q=new RDSqlQuery(sql);
   delete q;
 }
@@ -244,12 +246,10 @@ void RDTty::SetRow(const QString &param,int value)
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString().sprintf("UPDATE TTYS SET %s=%d \
-WHERE (STATION_NAME=\"%s\")&&(PORT_ID=%d)",
-			(const char *)param,
-			value,
-			(const char *)tty_station,
-			tty_id);
+  sql=QString("update TTYS set ")+
+    param+QString().sprintf("=%d where ",value)+
+    "(STATION_NAME=\""+RDEscapeString(tty_station)+"\")&&"+
+    QString().sprintf("(PORT_ID=%d)",tty_id);
   q=new RDSqlQuery(sql);
   delete q;
 }

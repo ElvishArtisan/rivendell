@@ -121,8 +121,12 @@ void RDSimplePlayer::play(int start_pos)
       return;
     }
 
-    sql=QString().sprintf("select START_POINT,END_POINT,PLAY_GAIN \
-                          from CUTS where CUT_NAME='%s'", (const char *)cut);
+    sql=QString("select ")+
+      "START_POINT,"+
+      "END_POINT,"+
+      "PLAY_GAIN "+
+      "from CUTS where "+
+      "CUT_NAME=\""+cut+"\"";
     q=new RDSqlQuery(sql);
     if(q->first()) {
       play_cut_gain=q->value(2).toInt(); 
