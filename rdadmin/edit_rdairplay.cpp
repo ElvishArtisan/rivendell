@@ -34,6 +34,7 @@
 
 #include <rd.h>
 #include <rddb.h>
+#include <rdescape_string.h>
 #include <rdtextvalidator.h>
 #include <rdlist_logs.h>
 #include <globals.h>
@@ -854,9 +855,8 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
   air_default_transtype_box->setCurrentItem(air_conf->defaultTransType());
   air_defaultsvc_box->insertItem(tr("[none]"));
   QString defaultsvc=air_conf->defaultSvc();
-  sql=QString().sprintf("select SERVICE_NAME from SERVICE_PERMS \
-                         where STATION_NAME=\"%s\"",
-			(const char *)air_conf->station());
+  sql=QString("select SERVICE_NAME from SERVICE_PERMS where ")+
+    "STATION_NAME=\""+RDEscapeString(air_conf->station())+"\"";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     air_defaultsvc_box->insertItem(q->value(0).toString());

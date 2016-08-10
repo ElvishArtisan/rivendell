@@ -22,13 +22,14 @@
 #include <qdialog.h>
 #include <qstring.h>
 #include <qpushbutton.h>
-#include <qsqldatabase.h>
 #include <qmessagebox.h>
 #include <qlistbox.h>
-#include <rdhotkeylist.h>
-#include <edit_hotkeys.h>
-#include <globals.h>
 
+#include <rdescape_string.h>
+#include <rdhotkeylist.h>
+
+#include "edit_hotkeys.h"
+#include "globals.h"
 
 EditHotkeys::EditHotkeys(const QString &station,const QString &module,
 			 QWidget *parent)
@@ -126,7 +127,7 @@ EditHotkeys::EditHotkeys(const QString &station,const QString &module,
   clone_from_host_label->setFont(font);
   clone_from_host_label->setGeometry(sizeHint().width()-420,sizeHint().height()-110,120,30);
   clone_from_host_label->setAlignment(AlignRight|AlignVCenter);
-  sql=QString().sprintf("select NAME from STATIONS");
+  sql=QString("select NAME from STATIONS");
   q=new RDSqlQuery(sql);
   while(q->next()) {
     clone_from_host_box->insertItem(q->value(0).toString());
@@ -420,12 +421,13 @@ void EditHotkeys::RefreshList()
 
   //  Build Rows of List View  I do this in reverse...
 
-  sql=QString().sprintf("select KEY_LABEL , KEY_VALUE from RDHOTKEYS \
-                           where STATION_NAME = \"%s\" AND	     \
-                           MODULE_NAME = \"%s\"			     \
-                           ORDER BY KEY_ID DESC",
-			(const char *)hotkey_conf,
-			(const char *)hotkey_module);
+  sql=QString("select ")+
+    "KEY_LABEL,"+
+    "KEY_VALUE "+
+    "from RDHOTKEYS where "+
+    "(STATION_NAME=\""+RDEscapeString(hotkey_conf)+"\")&&"+
+    "(MODULE_NAME=\""+RDEscapeString(hotkey_module)+"\") "+
+    "ORDER BY KEY_ID DESC";
 
   q=new RDSqlQuery(sql);
   while(q->next()) {
@@ -448,12 +450,13 @@ void EditHotkeys::Clone_RefreshList(const QString& clone_station)
   QListViewItem *l;
   list_view->clear();
 
-  sql=QString().sprintf("select KEY_LABEL , KEY_VALUE from RDHOTKEYS \
-                           where STATION_NAME = \"%s\" AND	     \
-                           MODULE_NAME = \"%s\"			     \
-                           ORDER BY ID DESC",
-			(const char *)tmp_hotkey_conf,
-			(const char *)hotkey_module);
+  sql=QString("select ")+
+    "KEY_LABEL,"+
+    "KEY_VALUE "+
+    "from RDHOTKEYS where "+
+    "(STATION_NAME=\""+RDEscapeString(tmp_hotkey_conf)+"\")&&"+
+    "(MODULE_NAME=\""+RDEscapeString(hotkey_module)+"\") "+
+    "ORDER BY ID DESC";
 
   q=new RDSqlQuery(sql);
   while(q->next()) {

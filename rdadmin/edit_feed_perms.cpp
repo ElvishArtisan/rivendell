@@ -31,9 +31,11 @@
 #include <qbuttongroup.h>
 
 #include <rddb.h>
-#include <edit_feed_perms.h>
+#include <rdescape_string.h>
 #include <rduser.h>
 #include <rdpasswd.h>
+
+#include "edit_feed_perms.h"
 
 EditFeedPerms::EditFeedPerms(RDUser *user,QWidget *parent)
   : QDialog(parent,"",true)
@@ -90,9 +92,8 @@ EditFeedPerms::EditFeedPerms(RDUser *user,QWidget *parent)
   //
   // Populate Fields
   //
-  sql=QString().sprintf("select KEY_NAME from FEED_PERMS \
-                         where USER_NAME=\"%s\"",
-			(const char *)feed_user->name());
+  sql=QString("select KEY_NAME from FEED_PERMS where ")+
+    "USER_NAME=\""+RDEscapeString(feed_user->name())+"\"";
 
   q=new RDSqlQuery(sql);
   while(q->next()) {
@@ -100,7 +101,7 @@ EditFeedPerms::EditFeedPerms(RDUser *user,QWidget *parent)
   }
   delete q;
 
-  sql=QString().sprintf("select KEY_NAME from FEEDS");
+  sql=QString("select KEY_NAME from FEEDS");
   q=new RDSqlQuery(sql);
   while(q->next()) {
     if(feed_host_sel->destFindItem(q->value(0).toString(),ExactMatch)==0) {
@@ -137,18 +138,15 @@ void EditFeedPerms::okData()
   // Add New Groups
   //
   for(unsigned i=0;i<feed_host_sel->destCount();i++) {
-    sql=QString().sprintf("select KEY_NAME from FEED_PERMS \
-                           where USER_NAME=\"%s\" && KEY_NAME=\"%s\"",
-			  (const char *)feed_user->name(),
-			  (const char *)feed_host_sel->destText(i));
+    sql=QString("select KEY_NAME from FEED_PERMS where ")+
+      "(USER_NAME=\""+RDEscapeString(feed_user->name())+"\")&&"+
+      "(KEY_NAME=\""+RDEscapeString(feed_host_sel->destText(i))+"\")";
     q=new RDSqlQuery(sql);
     if(q->size()==0) {
       delete q;
-      sql=QString().
-	sprintf("insert into FEED_PERMS (USER_NAME,KEY_NAME) \
-                 values (\"%s\",\"%s\")",
-		(const char *)feed_user->name(),
-		(const char *)feed_host_sel->destText(i));
+      sql=QString("insert into FEED_PERMS set ")+
+	"USER_NAME=\""+RDEscapeString(feed_user->name())+"\","+
+	"KEY_NAME=\""+RDEscapeString(feed_host_sel->destText(i))+"\"";
       q=new RDSqlQuery(sql);
     }
     delete q;
@@ -157,11 +155,11 @@ void EditFeedPerms::okData()
   //
   // Delete Old Groups
   //
-  sql=QString().sprintf("delete from FEED_PERMS where USER_NAME=\"%s\"",
-			(const char *)feed_user->name());
+  sql=QString("delete from FEED_PERMS where ")+
+    "(USER_NAME=\""+RDEscapeString(feed_user->name())+"\")";
   for(unsigned i=0;i<feed_host_sel->destCount();i++) {
-    sql+=QString().sprintf(" && KEY_NAME<>\"%s\"",
-			   (const char *)feed_host_sel->destText(i));
+    sql+=QString("&&(KEY_NAME<>\")")+
+      RDEscapeString(feed_host_sel->destText(i))+"\")";
   }
   q=new RDSqlQuery(sql);
   delete q;

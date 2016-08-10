@@ -39,9 +39,6 @@
     </message>
 </context>
 <context>
-    <name>AddEncoder</name>
-</context>
-<context>
     <name>AddFeed</name>
     <message>
         <source>Add Feed</source>
@@ -982,9 +979,6 @@ configured to run the CAE service in order to populate the audio resources datab
         <source>Scheduler Codes</source>
         <translation type="unfinished"></translation>
     </message>
-</context>
-<context>
-    <name>EditEncoder</name>
 </context>
 <context>
     <name>EditEndpoint</name>
@@ -3865,9 +3859,6 @@ Are you sure you want to continue?</source>
         <source>User Defined</source>
         <translation type="unfinished"></translation>
     </message>
-</context>
-<context>
-    <name>ListEncoders</name>
 </context>
 <context>
     <name>ListEndpoints</name>

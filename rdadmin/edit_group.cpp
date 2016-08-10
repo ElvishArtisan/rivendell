@@ -33,10 +33,12 @@
 #include <rddb.h>
 #include <qcolordialog.h>
 
-#include <edit_group.h>
+#include <rdescape_string.h>
 #include <rduser.h>
 #include <rdpasswd.h>
 #include <rdtextvalidator.h>
+
+#include "edit_group.h"
 
 EditGroup::EditGroup(QString group,QWidget *parent)
   : QDialog(parent,"",true)
@@ -270,16 +272,15 @@ EditGroup::EditGroup(QString group,QWidget *parent)
   }
   purgeEnabledData(group_shelflife_check->isChecked());
   group_nownext_check->setChecked(group_group->enableNowNext());
-  sql=QString().sprintf("select SERVICE_NAME from AUDIO_PERMS \
-                         where GROUP_NAME=\"%s\"",
-			(const char *)group_group->name());
+  sql=QString("select SERVICE_NAME from AUDIO_PERMS where ")+
+    "GROUP_NAME=\""+RDEscapeString(group_group->name())+"\"";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     group_svcs_sel->destInsertItem(q->value(0).toString());
   }
   delete q;
 
-  sql=QString().sprintf("select NAME from SERVICES");
+  sql=QString("select NAME from SERVICES");
   q=new RDSqlQuery(sql);
   while(q->next()) {
     if(group_svcs_sel->destFindItem(q->value(0).toString())==0) {
@@ -392,17 +393,15 @@ void EditGroup::okData()
   // Add New Services
   //
   for(unsigned i=0;i<group_svcs_sel->destCount();i++) {
-    sql=QString().sprintf("select SERVICE_NAME from AUDIO_PERMS \
-where GROUP_NAME=\"%s\" && SERVICE_NAME=\"%s\"",
-			  (const char *)group_group->name(),
-			  (const char *)group_svcs_sel->destText(i));
+    sql=QString("select SERVICE_NAME from AUDIO_PERMS where ")+
+      "(GROUP_NAME=\""+RDEscapeString(group_group->name())+"\")&&"+
+      "(SERVICE_NAME=\""+group_svcs_sel->destText(i)+"\")";
     q=new RDSqlQuery(sql);
     if(q->size()==0) {
       delete q;
-      sql=QString().sprintf("insert into AUDIO_PERMS (GROUP_NAME,SERVICE_NAME) \
-values (\"%s\",\"%s\")",
-			    (const char *)group_group->name(),
-			    (const char *)group_svcs_sel->destText(i));
+      sql=QString("insert into AUDIO_PERMS set ")+
+	"GROUP_NAME=\""+RDEscapeString(group_group->name())+"\","+
+	"SERVICE_NAME=\""+RDEscapeString(group_svcs_sel->destText(i))+"\"";
       q=new RDSqlQuery(sql);
     }
     delete q;
@@ -411,11 +410,11 @@ values (\"%s\",\"%s\")",
   //
   // Delete Old Services
   //
-  sql=QString().sprintf("delete from AUDIO_PERMS where GROUP_NAME=\"%s\"",
-			(const char *)group_group->name());
+  sql=QString("delete from AUDIO_PERMS where ")+
+    "(GROUP_NAME=\""+RDEscapeString(group_group->name())+"\")";
   for(unsigned i=0;i<group_svcs_sel->destCount();i++) {
-    sql+=QString().sprintf(" && SERVICE_NAME<>\"%s\"",
-			   (const char *)group_svcs_sel->destText(i));
+    sql+=QString("&&(SERVICE_NAME<>")+"\""+
+      RDEscapeString(group_svcs_sel->destText(i))+"\")";
   }
   q=new RDSqlQuery(sql);
   delete q;
@@ -442,9 +441,12 @@ bool EditGroup::CheckRange()
   QString msg=
     tr("The selected cart range conflicts with the following groups:\n\n");
 
-  sql=QString().sprintf("select NAME,DEFAULT_LOW_CART,DEFAULT_HIGH_CART\
-                         from GROUPS where NAME!=\"%s\"",
-			(const char *)group_name_edit->text());
+  sql=QString("select ")+
+    "NAME,"+
+    "DEFAULT_LOW_CART,"+
+    "DEFAULT_HIGH_CART "+
+    "from GROUPS where "+
+    "NAME!=\""+RDEscapeString(group_name_edit->text())+"\"";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     if(((group_lowcart_box->value()<=q->value(1).toInt())&&

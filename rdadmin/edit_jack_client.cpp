@@ -27,8 +27,6 @@
 EditJackClient::EditJackClient(RDStation *station,QWidget *parent)
   : QDialog(parent,"",true)
 {
-  QString sql;
-
   edit_station=station;
 
   //

@@ -31,7 +31,6 @@
 #include <qmessagebox.h>
 #include <qcheckbox.h>
 #include <qbuttongroup.h>
-#include <qsqldatabase.h>
 
 #include <rd.h>
 #include <edit_rdlibrary.h>

@@ -399,11 +399,13 @@ EditNowNext::EditNowNext(RDAirPlayConf *conf,QWidget *parent)
 	setText(QString().sprintf("%06u",nownext_conf->logNextCart(i)));
     }
   }
-  sql=QString().sprintf("select ID,PLUGIN_PATH,PLUGIN_ARG \
-                           from NOWNEXT_PLUGINS		  \
-                           where (STATION_NAME=\"%s\")&&  \
-                           (LOG_MACHINE=0)",
-			(const char *)nownext_conf->station());
+  sql=QString("select ")+
+    "ID,"+
+    "PLUGIN_PATH,"+
+    "PLUGIN_ARG "+
+    "from NOWNEXT_PLUGINS where "+
+    "(STATION_NAME=\""+RDEscapeString(nownext_conf->station())+"\")&&"+
+    "(LOG_MACHINE=0)";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     item=new RDListViewItem(nownext_plugin_list);
@@ -545,24 +547,19 @@ void EditNowNext::okData()
     else {
       nownext_conf->setLogNextCart(i,nownext_nextcart_edit[i]->text().toUInt());
     }
-    sql=QString().sprintf("delete from NOWNEXT_PLUGINS where \
-                           (STATION_NAME=\"%s\")&&(LOG_MACHINE=%d)",
-			  (const char *)RDEscapeString(nownext_conf->station()),
-			  i);
+    sql=QString("delete from NOWNEXT_PLUGINS where ")+
+      "(STATION_NAME=\""+RDEscapeString(nownext_conf->station())+"\")&&"+
+      QString().sprintf("(LOG_MACHINE=%d)",i);
     q=new RDSqlQuery(sql);
     delete q;
   }
   item=(RDListViewItem *)nownext_plugin_list->firstChild();
   while(item!=NULL) {
-    sql=QString().sprintf("insert into NOWNEXT_PLUGINS set \
-                           STATION_NAME=\"%s\",	   \
-                           LOG_MACHINE=0,		   \
-                           PLUGIN_PATH=\"%s\",	   \
-                           PLUGIN_ARG=\"%s\"",
-			  (const char *)
-			  RDEscapeString(nownext_conf->station()),
-			  (const char *)RDEscapeString(item->text(0)),
-			  (const char *)RDEscapeString(item->text(1)));
+    sql=QString("insert into NOWNEXT_PLUGINS set ")+
+      "STATION_NAME=\""+RDEscapeString(nownext_conf->station())+"\","+
+      "LOG_MACHINE=0,"+
+      "PLUGIN_PATH=\""+RDEscapeString(item->text(0))+"\","+
+      "PLUGIN_ARG=\""+RDEscapeString(item->text(1))+"\"";
     q=new RDSqlQuery(sql);
     delete q;
     item=(RDListViewItem *)item->nextSibling();

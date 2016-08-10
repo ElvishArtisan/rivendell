@@ -15705,3 +15705,23 @@
 	* Removed 'rdadmin/add_encoder.cpp', 'rdadmin/add_encoder.h',
 	'rdadmin/edit_encoder.cpp, 'rdadmin/edit_encoder.h',
 	'rdadmin/list_encoders.cpp' and 'rdadmin/list_encoders.h'.
+	* Removed (const char *) casts from SQL statements in
+	'rdadmin/edit_feed_perms.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdadmin/edit_group.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdadmin/edit_hotkeys.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdadmin/edit_jack.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdadmin/edit_node.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdadmin/edit_now_next.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdadmin/edit_rdairplay.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdadmin/edit_rdpanel.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdadmin/edit_replicator.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdadmin/edit_report.cpp'.

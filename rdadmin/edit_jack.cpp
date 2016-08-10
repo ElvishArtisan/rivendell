@@ -329,10 +329,13 @@ void EditJack::RefreshList()
   RDListViewItem *l;
 
   edit_jack_client_view->clear();
-  QString sql=QString().
-    sprintf("select ID,DESCRIPTION,COMMAND_LINE from JACK_CLIENTS \
-             where STATION_NAME=\"%s\" order by DESCRIPTION",
-	    (const char *)edit_station->name());
+  QString sql=QString("select ")+
+    "ID,"+
+    "DESCRIPTION,"+
+    "COMMAND_LINE "+
+    "from JACK_CLIENTS where "+
+    "STATION_NAME=\""+RDEscapeString(edit_station->name())+"\" "+
+    "order by DESCRIPTION";
   RDSqlQuery *q=new RDSqlQuery(sql);
   while(q->next()) {
     l=new RDListViewItem(edit_jack_client_view);
