@@ -5526,87 +5526,87 @@ y un respaldo de la base de datos se guardó en </translation>
     </message>
     <message>
         <source>Start Line 1</source>
-        <translation>Iniciar Línea 1</translation>
+        <translation type="obsolete">Iniciar Línea 1</translation>
     </message>
     <message>
         <source>Stop Line 1</source>
-        <translation>Detener Línea 1</translation>
+        <translation type="obsolete">Detener Línea 1</translation>
     </message>
     <message>
         <source>Pause Line 1</source>
-        <translation>Pausar Línea 1</translation>
+        <translation type="obsolete">Pausar Línea 1</translation>
     </message>
     <message>
         <source>Start Line 2</source>
-        <translation>Iniciar Línea 2</translation>
+        <translation type="obsolete">Iniciar Línea 2</translation>
     </message>
     <message>
         <source>Stop Line 2</source>
-        <translation>Detener Línea 2</translation>
+        <translation type="obsolete">Detener Línea 2</translation>
     </message>
     <message>
         <source>Pause Line 2</source>
-        <translation>Pausar Línea 2</translation>
+        <translation type="obsolete">Pausar Línea 2</translation>
     </message>
     <message>
         <source>Start Line 3</source>
-        <translation>Iniciar Línea 3</translation>
+        <translation type="obsolete">Iniciar Línea 3</translation>
     </message>
     <message>
         <source>Stop Line 3</source>
-        <translation>Detener Línea 3</translation>
+        <translation type="obsolete">Detener Línea 3</translation>
     </message>
     <message>
         <source>Pause Line 3</source>
-        <translation>Pausar Línea 3</translation>
+        <translation type="obsolete">Pausar Línea 3</translation>
     </message>
     <message>
         <source>Start Line 4</source>
-        <translation>Iniciar Línea 4</translation>
+        <translation type="obsolete">Iniciar Línea 4</translation>
     </message>
     <message>
         <source>Stop Line 4</source>
-        <translation>Detener Línea 4</translation>
+        <translation type="obsolete">Detener Línea 4</translation>
     </message>
     <message>
         <source>Pause Line 4</source>
-        <translation>Pausar Línea 4</translation>
+        <translation type="obsolete">Pausar Línea 4</translation>
     </message>
     <message>
         <source>Start Line 5</source>
-        <translation>Iniciar Línea 5</translation>
+        <translation type="obsolete">Iniciar Línea 5</translation>
     </message>
     <message>
         <source>Stop Line 5</source>
-        <translation>Detener Línea 5</translation>
+        <translation type="obsolete">Detener Línea 5</translation>
     </message>
     <message>
         <source>Pause Line 5</source>
-        <translation>Pausar Línea 5</translation>
+        <translation type="obsolete">Pausar Línea 5</translation>
     </message>
     <message>
         <source>Start Line 6</source>
-        <translation>Iniciar Línea 6</translation>
+        <translation type="obsolete">Iniciar Línea 6</translation>
     </message>
     <message>
         <source>Stop Line 6</source>
-        <translation>Detener Línea 6</translation>
+        <translation type="obsolete">Detener Línea 6</translation>
     </message>
     <message>
         <source>Pause Line 6</source>
-        <translation>Pausar Línea 6</translation>
+        <translation type="obsolete">Pausar Línea 6</translation>
     </message>
     <message>
         <source>Start Line 7</source>
-        <translation>Iniciar Línea 7</translation>
+        <translation type="obsolete">Iniciar Línea 7</translation>
     </message>
     <message>
         <source>Stop Line 7</source>
-        <translation>Detener Línea 7</translation>
+        <translation type="obsolete">Detener Línea 7</translation>
     </message>
     <message>
         <source>Pause Line 7</source>
-        <translation>Pausar Línea 7</translation>
+        <translation type="obsolete">Pausar Línea 7</translation>
     </message>
     <message>
         <source>Add</source>
@@ -5654,6 +5654,18 @@ y un respaldo de la base de datos se guardó en </translation>
     </message>
     <message>
         <source>Created new Rivendell database.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start Line</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Stop Line</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Pause Line</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

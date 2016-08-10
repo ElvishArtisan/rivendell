@@ -15692,3 +15692,6 @@
 	'rdadmin/add_station.cpp'.
 	* Removed (const char *) casts from SQL statements in
 	'rdadmin/autofill_carts.cpp'.
+2016-08-10 Fred Gleason <fredg@paravelsystems.com>
+	* Removed (const char *) casts from SQL statements in
+	'rdadmin/createdb.cpp'.

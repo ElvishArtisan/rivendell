@@ -5439,87 +5439,87 @@ zopakování</translation>
     <name>QObject</name>
     <message>
         <source>Start Line 1</source>
-        <translation>Spustit řádek 1</translation>
+        <translation type="obsolete">Spustit řádek 1</translation>
     </message>
     <message>
         <source>Stop Line 1</source>
-        <translation>Zastavit řádek 1</translation>
+        <translation type="obsolete">Zastavit řádek 1</translation>
     </message>
     <message>
         <source>Pause Line 1</source>
-        <translation>Pozastavit řádek 1</translation>
+        <translation type="obsolete">Pozastavit řádek 1</translation>
     </message>
     <message>
         <source>Start Line 2</source>
-        <translation>Spustit řádek 2</translation>
+        <translation type="obsolete">Spustit řádek 2</translation>
     </message>
     <message>
         <source>Stop Line 2</source>
-        <translation>Zastavit řádek 2</translation>
+        <translation type="obsolete">Zastavit řádek 2</translation>
     </message>
     <message>
         <source>Pause Line 2</source>
-        <translation>Pozastavit řádek 2</translation>
+        <translation type="obsolete">Pozastavit řádek 2</translation>
     </message>
     <message>
         <source>Start Line 3</source>
-        <translation>Spustit řádek 3</translation>
+        <translation type="obsolete">Spustit řádek 3</translation>
     </message>
     <message>
         <source>Stop Line 3</source>
-        <translation>Zastavit řádek 3</translation>
+        <translation type="obsolete">Zastavit řádek 3</translation>
     </message>
     <message>
         <source>Pause Line 3</source>
-        <translation>Pozastavit řádek 3</translation>
+        <translation type="obsolete">Pozastavit řádek 3</translation>
     </message>
     <message>
         <source>Start Line 4</source>
-        <translation>Spustit řádek 4</translation>
+        <translation type="obsolete">Spustit řádek 4</translation>
     </message>
     <message>
         <source>Stop Line 4</source>
-        <translation>Zastavit řádek 4</translation>
+        <translation type="obsolete">Zastavit řádek 4</translation>
     </message>
     <message>
         <source>Pause Line 4</source>
-        <translation>Pozastavit řádek 4</translation>
+        <translation type="obsolete">Pozastavit řádek 4</translation>
     </message>
     <message>
         <source>Start Line 5</source>
-        <translation>Spustit řádek 5</translation>
+        <translation type="obsolete">Spustit řádek 5</translation>
     </message>
     <message>
         <source>Stop Line 5</source>
-        <translation>Zastavit řádek 5</translation>
+        <translation type="obsolete">Zastavit řádek 5</translation>
     </message>
     <message>
         <source>Pause Line 5</source>
-        <translation>Pozastavit řádek 5</translation>
+        <translation type="obsolete">Pozastavit řádek 5</translation>
     </message>
     <message>
         <source>Start Line 6</source>
-        <translation>Spustit řádek 6</translation>
+        <translation type="obsolete">Spustit řádek 6</translation>
     </message>
     <message>
         <source>Stop Line 6</source>
-        <translation>Zastavit řádek 6</translation>
+        <translation type="obsolete">Zastavit řádek 6</translation>
     </message>
     <message>
         <source>Pause Line 6</source>
-        <translation>Pozastavit řádek 6</translation>
+        <translation type="obsolete">Pozastavit řádek 6</translation>
     </message>
     <message>
         <source>Start Line 7</source>
-        <translation>Spustit řádek 7</translation>
+        <translation type="obsolete">Spustit řádek 7</translation>
     </message>
     <message>
         <source>Stop Line 7</source>
-        <translation>Zastavit řádek 7</translation>
+        <translation type="obsolete">Zastavit řádek 7</translation>
     </message>
     <message>
         <source>Pause Line 7</source>
-        <translation>Pozastavit řádek 7</translation>
+        <translation type="obsolete">Pozastavit řádek 7</translation>
     </message>
     <message>
         <source>Add</source>
@@ -5695,6 +5695,18 @@ a záloha původní databáze uložena v </translation>
     </message>
     <message>
         <source>Created new Rivendell database.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start Line</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Stop Line</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Pause Line</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
