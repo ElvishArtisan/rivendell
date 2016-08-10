@@ -159,28 +159,8 @@ atualizada para a Versão</translation>
 <context>
     <name>AddEncoder</name>
     <message>
-        <source>Add Encoder</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;New Encoder Name:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;OK</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;Cancel</source>
-        <translation type="unfinished">&amp;Cancelar</translation>
-    </message>
-    <message>
-        <source>Add Encoder Error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>A encoder with that name already exists!</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">&amp;Cancelar</translation>
     </message>
 </context>
 <context>
@@ -1207,40 +1187,32 @@ configured to run the CAE service in order to populate the audio resources datab
     <name>EditEncoder</name>
     <message>
         <source>RDAdmin - Edit Encoder</source>
-        <translation>RDAdmin - Editar Codificador</translation>
+        <translation type="obsolete">RDAdmin - Editar Codificador</translation>
     </message>
     <message>
         <source>Name:</source>
-        <translation>Nome:</translation>
+        <translation type="obsolete">Nome:</translation>
     </message>
     <message>
         <source>Allow Channels</source>
-        <translation>Permita Canais</translation>
+        <translation type="obsolete">Permita Canais</translation>
     </message>
     <message>
         <source>Allow Sample Rates</source>
-        <translation>Permitir Taxas de Amostragem</translation>
+        <translation type="obsolete">Permitir Taxas de Amostragem</translation>
     </message>
     <message>
         <source>Allow Bit Rates</source>
-        <translation>Permitir Taxa de Bits</translation>
+        <translation type="obsolete">Permitir Taxa de Bits</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>
+        <translation type="obsolete">
 &amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Cancelar</translation>
-    </message>
-    <message>
-        <source>Default Extension:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Command Line:</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">&amp;Cancelar</translation>
     </message>
 </context>
 <context>
@@ -4328,58 +4300,58 @@ Are you sure you want to continue?</source>
     <name>ListEncoders</name>
     <message>
         <source>RDAdmin - List Encoders</source>
-        <translation>RDAdmin - Listar Codificadores
+        <translation type="obsolete">RDAdmin - Listar Codificadores
 </translation>
     </message>
     <message>
         <source>Format Name</source>
-        <translation>Formato</translation>
+        <translation type="obsolete">Formato</translation>
     </message>
     <message>
         <source>Extension</source>
-        <translation>Extensão</translation>
+        <translation type="obsolete">Extensão</translation>
     </message>
     <message>
         <source>Valid Channels</source>
-        <translation>Canais Válidos</translation>
+        <translation type="obsolete">Canais Válidos</translation>
     </message>
     <message>
         <source>Valid Sample Rates</source>
-        <translation>Taxas de Amostragem</translation>
+        <translation type="obsolete">Taxas de Amostragem</translation>
     </message>
     <message>
         <source>Valid Bit Rates</source>
-        <translation>Taxa de Bits Válidas</translation>
+        <translation type="obsolete">Taxa de Bits Válidas</translation>
     </message>
     <message>
         <source>&amp;Add</source>
-        <translation>&amp;Adicionar</translation>
+        <translation type="obsolete">&amp;Adicionar</translation>
     </message>
     <message>
         <source>&amp;Edit</source>
-        <translation>&amp;Editar</translation>
+        <translation type="obsolete">&amp;Editar</translation>
     </message>
     <message>
         <source>&amp;Delete</source>
-        <translation>&amp;Deletar</translation>
+        <translation type="obsolete">&amp;Deletar</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation>&amp;Fechar</translation>
+        <translation type="obsolete">&amp;Fechar</translation>
     </message>
     <message>
         <source>RDAdmin - Delete Encoder</source>
-        <translation>RDAdmin - Deletar Codificador</translation>
+        <translation type="obsolete">RDAdmin - Deletar Codificador</translation>
     </message>
     <message>
         <source>Are you sure you want to delete this encoder?</source>
-        <translation>Tem certeza que quer deletar este codificador?</translation>
+        <translation type="obsolete">Tem certeza que quer deletar este codificador?</translation>
     </message>
     <message>
         <source>This encoder is in use by the following RSS feeds:
 
 </source>
-        <translation>Este Codificador está em uso pelo Feed RRS:
+        <translation type="obsolete">Este Codificador está em uso pelo Feed RRS:
 
 </translation>
     </message>
@@ -4387,16 +4359,12 @@ Are you sure you want to continue?</source>
         <source>
 
 Do you still want to delete it?</source>
-        <translation>
+        <translation type="obsolete">
 Você ainda quer Deletar?</translation>
     </message>
     <message>
         <source>[none]</source>
-        <translation>[Nenhum]</translation>
-    </message>
-    <message>
-        <source>Encoders on</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">[Nenhum]</translation>
     </message>
 </context>
 <context>

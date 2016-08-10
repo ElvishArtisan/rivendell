@@ -15695,3 +15695,13 @@
 2016-08-10 Fred Gleason <fredg@paravelsystems.com>
 	* Removed (const char *) casts from SQL statements in
 	'rdadmin/createdb.cpp'.
+2016-08-10 Fred Gleason <fredg@paravelsystems.com>
+	* Removed (const char *) casts from SQL statements in
+	'rdadmin/edit_aux_field.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdadmin/edit_cartslots.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdadmin/edit_decks.cpp'.
+	* Removed 'rdadmin/add_encoder.cpp', 'rdadmin/add_encoder.h',
+	'rdadmin/edit_encoder.cpp, 'rdadmin/edit_encoder.h',
+	'rdadmin/list_encoders.cpp' and 'rdadmin/list_encoders.h'.

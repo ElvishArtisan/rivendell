@@ -95,8 +95,8 @@ EditAuxField::EditAuxField(unsigned feed_id,QWidget *parent)
   //
   // Load Data
   //
-  sql=QString().sprintf("select VAR_NAME,CAPTION from AUX_METADATA \
-                         where ID=%u",edit_field_id);
+  sql=QString("select VAR_NAME,CAPTION from AUX_METADATA where ")+
+    QString().sprintf("ID=%u",edit_field_id);
   q=new RDSqlQuery(sql);
   if(q->first()) {
     edit_varname_edit->setText(q->value(0).toString());
@@ -123,10 +123,9 @@ void EditAuxField::okData()
   QString sql;
   RDSqlQuery *q;
 
-  sql=QString().sprintf("update AUX_METADATA set CAPTION=\"%s\" \
-                         where ID=%u",
-		       (const char *)RDEscapeString(edit_caption_edit->text()),
-		       edit_field_id);
+  sql=QString("update AUX_METADATA set ")+
+    "CAPTION=\""+RDEscapeString(edit_caption_edit->text())+"\" where "+
+    QString().sprintf("ID=%u",edit_field_id);
   q=new RDSqlQuery(sql);
   delete q;
 

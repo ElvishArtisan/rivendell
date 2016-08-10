@@ -393,10 +393,17 @@ void EditCartSlots::ReadSlot(unsigned slotnum)
   RDSlotOptions *opts=new RDSlotOptions(edit_station->name(),slotnum);
   delete opts;
 
-  sql=QString("select CARD,INPUT_PORT,OUTPUT_PORT,DEFAULT_MODE,")+
+  sql=QString("select ")+
+    "CARD,"+
+    "INPUT_PORT,"+
+    "OUTPUT_PORT,"+
+    "DEFAULT_MODE,"+
     "DEFAULT_HOOK_MODE,"+
-    "DEFAULT_STOP_ACTION,DEFAULT_CART_NUMBER,SERVICE_NAME from CARTSLOTS "+
-    "where (STATION_NAME=\""+RDEscapeString(edit_station->name())+"\")&&"+
+    "DEFAULT_STOP_ACTION,"+
+    "DEFAULT_CART_NUMBER,"+
+    "SERVICE_NAME "+
+    "from CARTSLOTS where "+
+    "(STATION_NAME=\""+RDEscapeString(edit_station->name())+"\")&&"+
     QString().sprintf("(SLOT_NUMBER=%u)",slotnum);
   q=new RDSqlQuery(sql);
   if(q->first()) {

@@ -158,28 +158,12 @@ oppdatert til versjon </translation>
 <context>
     <name>AddEncoder</name>
     <message>
-        <source>Add Encoder</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;New Encoder Name:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;OK</source>
-        <translation type="unfinished">&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation type="unfinished">&amp;Avbryt</translation>
-    </message>
-    <message>
-        <source>Add Encoder Error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>A encoder with that name already exists!</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">&amp;Avbryt</translation>
     </message>
 </context>
 <context>
@@ -1205,40 +1189,12 @@ configured to run the CAE service in order to populate the audio resources datab
 <context>
     <name>EditEncoder</name>
     <message>
-        <source>RDAdmin - Edit Encoder</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Name:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Allow Channels</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Allow Sample Rates</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Allow Bit Rates</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;OK</source>
-        <translation type="unfinished">&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation type="unfinished">&amp;Avbryt</translation>
-    </message>
-    <message>
-        <source>Default Extension:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Command Line:</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">&amp;Avbryt</translation>
     </message>
 </context>
 <context>
@@ -4316,72 +4272,24 @@ Are you sure you want to continue?</source>
 <context>
     <name>ListEncoders</name>
     <message>
-        <source>RDAdmin - List Encoders</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Format Name</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Extension</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Valid Channels</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Valid Sample Rates</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Valid Bit Rates</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;Add</source>
-        <translation type="unfinished">&amp;Legg til</translation>
+        <translation type="obsolete">&amp;Legg til</translation>
     </message>
     <message>
         <source>&amp;Edit</source>
-        <translation type="unfinished">R&amp;ediger</translation>
+        <translation type="obsolete">R&amp;ediger</translation>
     </message>
     <message>
         <source>&amp;Delete</source>
-        <translation type="unfinished">&amp;Slett</translation>
+        <translation type="obsolete">&amp;Slett</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation type="unfinished">&amp;Lukk</translation>
-    </message>
-    <message>
-        <source>RDAdmin - Delete Encoder</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Are you sure you want to delete this encoder?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>This encoder is in use by the following RSS feeds:
-
-</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>
-
-Do you still want to delete it?</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">&amp;Lukk</translation>
     </message>
     <message>
         <source>[none]</source>
-        <translation type="unfinished">[ingen]</translation>
-    </message>
-    <message>
-        <source>Encoders on</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">[ingen]</translation>
     </message>
 </context>
 <context>

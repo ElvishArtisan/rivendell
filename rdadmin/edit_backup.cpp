@@ -21,7 +21,6 @@
 #include <qdialog.h>
 #include <qstring.h>
 #include <qpushbutton.h>
-#include <qsqldatabase.h>
 #include <qmessagebox.h>
 
 #include <rd.h>

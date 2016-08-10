@@ -50,7 +50,6 @@
 #include <edit_backup.h>
 #include <view_adapters.h>
 #include <list_dropboxes.h>
-#include <list_encoders.h>
 #include <edit_jack.h>
 #include <globals.h>
 
