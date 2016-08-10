@@ -487,6 +487,10 @@ atualizada para a Versão</translation>
         <source>Host Already Exists!</source>
         <translation>Cliente já Existe!</translation>
     </message>
+    <message>
+        <source>Host</source>
+        <translation type="unfinished">Cliente</translation>
+    </message>
 </context>
 <context>
     <name>AddSvc</name>

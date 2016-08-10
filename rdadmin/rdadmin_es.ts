@@ -538,6 +538,10 @@ y un respaldo de la base de datos se guardó en </translation>
         <source>Host Already Exists!</source>
         <translation>¡El equipo ya existe!</translation>
     </message>
+    <message>
+        <source>Host</source>
+        <translation type="unfinished">Equipo</translation>
+    </message>
 </context>
 <context>
     <name>AddSvc</name>

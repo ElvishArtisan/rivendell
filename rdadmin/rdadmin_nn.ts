@@ -486,6 +486,10 @@ oppdatert til versjon </translation>
         <source>Host Already Exists!</source>
         <translation>Verten finst frå før!</translation>
     </message>
+    <message>
+        <source>Host</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>AddSvc</name>

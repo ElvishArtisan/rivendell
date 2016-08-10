@@ -33,6 +33,7 @@
 #include <rddb.h>
 #include <rdconf.h>
 #include <rd.h>
+#include <rdescape_string.h>
 #include <rduser.h>
 #include <rdcart_dialog.h>
 
@@ -174,15 +175,15 @@ void AutofillCarts::deleteData()
 
 void AutofillCarts::okData()
 {
-  QString sql=QString().sprintf("delete from AUTOFILLS where SERVICE=\"%s\"",
-				(const char *)svc_svc->name());
+  QString sql=QString("delete from AUTOFILLS where ")+
+    "SERVICE=\""+RDEscapeString(svc_svc->name())+"\"";
   RDSqlQuery *q=new RDSqlQuery(sql);
   delete q;
   QListViewItem *item=svc_cart_list->firstChild();
   while(item!=NULL) {
-    sql=QString().sprintf("insert into AUTOFILLS set SERVICE=\"%s\",\
-                           CART_NUMBER=%u",(const char *)svc_svc->name(),
-			  item->text(0).toUInt());
+    sql=QString("insert into AUTOFILLS set ")+
+      "SERVICE=\""+RDEscapeString(svc_svc->name())+"\","+
+      QString().sprintf("CART_NUMBER=%u",item->text(0).toUInt());
     q=new RDSqlQuery(sql);
     delete q;
     item=item->nextSibling();
@@ -202,12 +203,14 @@ void AutofillCarts::RefreshList()
   QListViewItem *item;
 
   svc_cart_list->clear();
-  QString sql=QString().sprintf("select AUTOFILLS.CART_NUMBER,\
-                                 CART.FORCED_LENGTH,CART.TITLE,CART.ARTIST\
-                                 from AUTOFILLS left join CART\
-                                 on AUTOFILLS.CART_NUMBER=CART.NUMBER\
-                                 where SERVICE=\"%s\"",
-				(const char *)svc_svc->name());
+  QString sql=QString("select ")+
+    "AUTOFILLS.CART_NUMBER,"+
+    "CART.FORCED_LENGTH,"+
+    "CART.TITLE,"+
+    "CART.ARTIST "+
+    "from AUTOFILLS left join CART "+
+    "on AUTOFILLS.CART_NUMBER=CART.NUMBER where "+
+    "SERVICE=\""+RDEscapeString(svc_svc->name())+"\"";
   RDSqlQuery *q=new RDSqlQuery(sql);
   while(q->next()) {
     item=new QListViewItem(svc_cart_list);

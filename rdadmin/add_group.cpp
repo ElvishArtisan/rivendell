@@ -150,8 +150,8 @@ void AddGroup::okData()
     return;
   }
 
-  sql=QString().sprintf("insert into GROUPS set NAME=\"%s\"",
-			(const char *)RDEscapeString(group_name_edit->text()));
+  sql=QString("insert into GROUPS set ")+
+    "NAME=\""+RDEscapeString(group_name_edit->text())+"\"";
 
   q=new RDSqlQuery(sql);
   if(!q->isActive()) {
@@ -169,10 +169,9 @@ void AddGroup::okData()
     sql="select LOGIN_NAME from USERS";
     q=new RDSqlQuery(sql);
     while(q->next()) {
-      sql=QString().sprintf("insert into USER_PERMS set USER_NAME=\"%s\",\
-                             GROUP_NAME=\"%s\"",
-			    (const char *)q->value(0).toString(),
-			    (const char *)RDEscapeString(group_name_edit->text()));
+      sql=QString("insert into USER_PERMS set ")+
+	"USER_NAME=\""+RDEscapeString(q->value(0).toString())+"\","+
+	"GROUP_NAME=\""+RDEscapeString(group_name_edit->text())+"\"";
       q1=new RDSqlQuery(sql);
       delete q1;
     }
@@ -186,10 +185,9 @@ void AddGroup::okData()
     sql="select NAME from SERVICES";
     q=new RDSqlQuery(sql);
     while(q->next()) {
-      sql=QString().sprintf("insert into AUDIO_PERMS set SERVICE_NAME=\"%s\",\
-                             GROUP_NAME=\"%s\"",
-			    (const char *)q->value(0).toString(),
-			    (const char *)RDEscapeString(group_name_edit->text()));
+      sql=QString("insert into AUDIO_PERMS set ")+
+	"SERVICE_NAME=\""+RDEscapeString(q->value(0).toString())+"\","+
+	"GROUP_NAME=\""+RDEscapeString(group_name_edit->text())+"\"";
       q1=new RDSqlQuery(sql);
       delete q1;
     }
@@ -198,16 +196,18 @@ void AddGroup::okData()
 
   EditGroup *group=new EditGroup(group_name_edit->text(),this);
   if(group->exec()<0) {
-    sql=QString().sprintf("delete from USER_PERMS where GROUP_NAME=\"%s\"",
-			  (const char *)RDEscapeString(group_name_edit->text()));
+    sql=QString("delete from USER_PERMS where ")+
+      "GROUP_NAME=\""+RDEscapeString(group_name_edit->text())+"\"";
+
     q=new RDSqlQuery(sql);
     delete q;
-    sql=QString().sprintf("delete from AUDIO_PERMS where GROUP_NAME=\"%s\"",
-			  (const char *)RDEscapeString(group_name_edit->text()));
+    sql=QString("delete from AUDIO_PERMS where ")+
+      "GROUP_NAME=\""+RDEscapeString(group_name_edit->text())+"\"";
     q=new RDSqlQuery(sql);
     delete q;
-    sql=QString().sprintf("delete from GROUPS where NAME=\"%s\"",
-			  (const char *)RDEscapeString(group_name_edit->text()));
+
+    sql=QString("delete from GROUPS where ")+
+      "NAME=\""+RDEscapeString(group_name_edit->text())+"\"";
     q=new RDSqlQuery(sql);
     delete q;
     delete group;

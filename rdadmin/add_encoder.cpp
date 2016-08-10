@@ -1,6 +1,6 @@
 // add_encoder.cpp
 //
-// Add a Rivendell Service
+// Add a Rivendell Encoder
 //
 //   (C) Copyright 2002,2016 Fred Gleason <fredg@paravelsystems.com>
 //

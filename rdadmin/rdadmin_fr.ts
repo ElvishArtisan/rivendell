@@ -321,6 +321,10 @@
         <source>Host Already Exists!</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Host</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>AddSvc</name>

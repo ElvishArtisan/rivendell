@@ -15675,3 +15675,20 @@
 2016-08-09 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in 'lib/rdairplay_conf.cpp' that caused RDAirPlay
 	to lock out exiting.
+2016-08-10 Fred Gleason <fredg@paravelsystems.com>
+	* Removed (const char *) casts from SQL statements in
+	'rdadmin/add_aux_field.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdadmin/add_feed.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdadmin/add_group.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdadmin/add_replicator.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdadmin/add_report.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdadmin/add_schedcodes.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdadmin/add_station.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdadmin/autofill_carts.cpp'.

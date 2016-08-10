@@ -31,6 +31,7 @@
 #include <qbuttongroup.h>
 
 #include <rddb.h>
+#include <rdescape_string.h>
 #include <rdpasswd.h>
 #include <rdtextvalidator.h>
 
@@ -128,8 +129,8 @@ void AddSchedCode::okData()
     return;
   }
 
-  sql=QString().sprintf("insert into SCHED_CODES set CODE=\"%s\"",
-			(const char *)schedCode_name_edit->text());
+  sql=QString("insert into SCHED_CODES set ")+
+    "CODE=\""+RDEscapeString(schedCode_name_edit->text())+"\"";
 
   q=new RDSqlQuery(sql);
   if(!q->isActive()) {

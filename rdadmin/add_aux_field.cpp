@@ -118,9 +118,9 @@ void AddAuxField::okData()
   QString sql;
   RDSqlQuery *q;
 
-  sql=QString().sprintf("select ID from AUX_METADATA \
-                         where (FEED_ID=%u)&&(VAR_NAME=\"%%AUX_%s%%\")",
-			add_feed_id,(const char *)add_varname_edit->text());
+  sql=QString("select ID from AUX_METADATA where ")+
+    QString().sprintf("(FEED_ID=%u)&&",add_feed_id)+
+    "(VAR_NAME=\"%%AUX_"+RDEscapeString(add_varname_edit->text())+"%%\")";
   q=new RDSqlQuery(sql);
   if(q->first()) {
     delete q;
@@ -129,19 +129,16 @@ void AddAuxField::okData()
     return;
   }
   delete q;
-  sql=QString().sprintf("insert into AUX_METADATA set VAR_NAME=\"%%AUX_%s%%\",\
-                         CAPTION=\"%s\",FEED_ID=%u",
-		       (const char *)RDEscapeString(add_varname_edit->text()),
-		       (const char *)RDEscapeString(add_caption_edit->text()),
-			add_feed_id);
+  sql=QString("insert into AUX_METADATA set ")+
+    "VAR_NAME=\"%%AUX_"+RDEscapeString(add_varname_edit->text())+"%%\","+
+    "CAPTION=\""+RDEscapeString(add_caption_edit->text())+"\","+
+    QString().sprintf("FEED_ID=%u",add_feed_id);
   q=new RDSqlQuery(sql);
   delete q;
 
-  sql=QString().sprintf("select ID from AUX_METADATA \
-                         where (FEED_ID=%u)&&(VAR_NAME=\"%%AUX_%s%%\")",
-			add_feed_id,
-			(const char *)RDEscapeString(add_varname_edit->
-						     text()));
+  sql=QString("select ID from AUX_METADATA where ")+
+    QString().sprintf("(FEED_ID=%u)&&",add_feed_id)+
+    "(VAR_NAME=\"%%AUX_"+RDEscapeString(add_varname_edit->text())+"%%\")";
   q=new RDSqlQuery(sql);
   if(q->first()) {
     *add_field_id=q->value(0).toUInt();
@@ -154,10 +151,8 @@ void AddAuxField::okData()
     QString keyname=q->value(0).toString();
     delete q;
     keyname.replace(" ","_");
-    sql=QString().sprintf("alter table %s_FIELDS add column AUX_%s char(255)",
-			  (const char *)keyname,
-			  (const char *)RDEscapeString(add_varname_edit->
-						       text()));
+    sql=QString("alter table `")+keyname+"_FIELDS` "+
+      "add column AUX_"+RDEscapeString(add_varname_edit->text())+" char(255)";
     q=new RDSqlQuery(sql);
   }
   delete q;  

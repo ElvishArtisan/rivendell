@@ -538,6 +538,10 @@ a záloha původní databáze uložena v </translation>
         <source>Host Already Exists!</source>
         <translation>Server již existuje!</translation>
     </message>
+    <message>
+        <source>Host</source>
+        <translation type="unfinished">Server</translation>
+    </message>
 </context>
 <context>
     <name>AddSvc</name>

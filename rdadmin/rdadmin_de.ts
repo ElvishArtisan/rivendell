@@ -504,6 +504,10 @@ worden. Aktuelle Version</translation>
         <source>Host Already Exists!</source>
         <translation>Host existiert bereits!</translation>
     </message>
+    <message>
+        <source>Host</source>
+        <translation type="unfinished">Host</translation>
+    </message>
 </context>
 <context>
     <name>AddSvc</name>

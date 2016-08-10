@@ -133,7 +133,8 @@ void AddMatrix::okData()
   }
   delete q;
 
-  sql=QString("insert into MATRICES set STATION_NAME=\"")+
+  sql=QString("insert into MATRICES set ")+
+    "STATION_NAME=\""+
     RDEscapeString(add_station)+"\","+
     "NAME=\""+tr("New Switcher")+"\","+
     "GPIO_DEVICE=\""+RD_DEFAULT_GPIO_DEVICE+"\","+

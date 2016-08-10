@@ -32,6 +32,7 @@
 
 #include <rddb.h>
 #include <rd.h>
+#include <rdescape_string.h>
 #include <rdtextvalidator.h>
 
 #include <add_report.h>
@@ -122,8 +123,8 @@ void AddReport::okData()
 			 tr("You must provide a report name!"));
     return;
   }
-  sql=QString().sprintf("select NAME from REPORTS where NAME=\"%s\"",
-			(const char *)add_name_edit->text());
+  sql=QString("select NAME from REPORTS where ")+
+    "NAME=\""+RDEscapeString(add_name_edit->text())+"\"";
   q=new RDSqlQuery(sql);
   if(q->first()) {
     QMessageBox::warning(this,tr("Report Exists"),
@@ -132,8 +133,8 @@ void AddReport::okData()
     return;
   }
   delete q;
-  sql=QString().sprintf("insert into REPORTS set NAME=\"%s\"",
-			(const char *)add_name_edit->text());
+  sql=QString("insert into REPORTS set ")+
+    "NAME=\""+RDEscapeString(add_name_edit->text())+"\"";
   q=new RDSqlQuery(sql);
   delete q;
   *add_name=add_name_edit->text();
