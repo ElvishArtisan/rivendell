@@ -30,11 +30,12 @@
 #include <rdcreate_log.h>
 
 #include <rdapplication.h>
+#include <rdescape_string.h>
 
-#include <list_log.h>
-#include <button_log.h>
-#include <colors.h>
-#include <globals.h>
+#include "button_log.h"
+#include "colors.h"
+#include "globals.h"
+#include "list_log.h"
 
 #include "../icons/play.xpm"
 #include "../icons/rml5.xpm"
@@ -875,18 +876,15 @@ void ListLog::loadButtonData()
 	break;
 
       case 3:
-        sql=QString().sprintf("insert into LOGS set \
-                                       NAME=\"%s\",TYPE=0,\
-                                       DESCRIPTION=\"%s log\",\
-                                       ORIGIN_USER=\"%s\",\
-                                       ORIGIN_DATETIME=NOW(),\
-                                       LINK_DATETIME=NOW(),\
-                                       MODIFIED_DATETIME=NOW(),\
-                                       SERVICE=\"%s\"",
-			      (const char *)name,
-			      (const char *)name,
-			      (const char *)rda->ripc()->user(),
-			      (const char *)svcname);
+        sql=QString("insert into LOGS set ")+
+	  "NAME=\""+RDEscapeString(name)+"\","+
+	  "TYPE=0,"+
+	  "DESCRIPTION=\""+RDEscapeString(name)+" "+tr("log")+"\","+
+	  "ORIGIN_USER=\""+RDEscapeString(rda->ripc()->user())+"\","+
+	  "ORIGIN_DATETIME=now(),"+
+	  "LINK_DATETIME=now(),"+
+	  "MODIFIED_DATETIME=now(),"+
+	  "SERVICE=\""+RDEscapeString(svcname)+"\"";
 	q=new RDSqlQuery(sql);
 	if(!q->isActive()) {
 	  QMessageBox::warning(this,tr("Log Exists"),

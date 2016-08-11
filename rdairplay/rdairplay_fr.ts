@@ -397,6 +397,10 @@ la Fin</translation>
         <source>ALBUM</source>
         <translation>ALBUM</translation>
     </message>
+    <message>
+        <source>log</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ListLogs</name>

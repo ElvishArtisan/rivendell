@@ -397,6 +397,10 @@ poslechu</translation>
         <source>ALBUM</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>log</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ListLogs</name>

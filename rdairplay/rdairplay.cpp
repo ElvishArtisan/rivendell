@@ -827,10 +827,12 @@ MainWidget::MainWidget(QWidget *parent)
   //
   // Load Plugins
   //
-  sql=QString().sprintf("select PLUGIN_PATH,PLUGIN_ARG from NOWNEXT_PLUGINS \
-                         where (STATION_NAME=\"%s\")&&(LOG_MACHINE=0)",
-			(const char *)
-			RDEscapeString(rda->config()->stationName()));
+  sql=QString("select ")+
+    "PLUGIN_PATH,"+
+    "PLUGIN_ARG "+
+    "from NOWNEXT_PLUGINS where "+
+    "(STATION_NAME=\""+RDEscapeString(rda->config()->stationName())+"\")&&"+
+    "(LOG_MACHINE=0)";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     air_plugin_hosts.
@@ -947,8 +949,8 @@ void MainWidget::ripcConnected(bool state)
       }
     }
     if(!air_start_logname[i].isEmpty()) {
-      sql=QString().sprintf("select NAME from LOGS where NAME=\"%s\"",
-			    (const char *)air_start_logname[i]);
+      sql=QString("select NAME from LOGS where ")+
+	"NAME=\""+RDEscapeString(air_start_logname[i])+"\"";
       q=new RDSqlQuery(sql);
       if(q->first()) {
 	rml.setCommand(RDMacro::LL);  // Load Log
@@ -2317,9 +2319,8 @@ void MainWidget::SetActionMode(StartButton::Mode mode)
 	  }
 	}
 	if(svc_quan==0) {
-	  sql=QString().sprintf("select SERVICE_NAME from SERVICE_PERMS \
-                                   where STATION_NAME=\"%s\"",
-				(const char *)rda->station()->name());
+	  sql=QString("select SERVICE_NAME from SERVICE_PERMS where ")+
+	    "STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\"";
 	  q=new RDSqlQuery(sql);
 	  while(q->next()) {
 	    services_list.append( q->value(0).toString() );

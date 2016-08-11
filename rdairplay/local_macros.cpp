@@ -35,7 +35,6 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
   QString logname;
   RDAirPlayConf::PanelType panel_type;
   int panel_number;
-  QString sql;
   QPalette pal;
   bool ret=false;
   int fade;

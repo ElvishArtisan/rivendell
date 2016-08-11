@@ -22,10 +22,10 @@
 
 #include <rdadd_log.h>
 #include <rdapplication.h>
-#include <rddb.h>
+#include <rdescape_string.h>
 
-#include <list_logs.h>
-#include <globals.h>
+#include "globals.h"
+#include "list_logs.h"
 
 ListLogs::ListLogs(LogPlay *log,QWidget *parent)
   : QDialog(parent,"",true)
@@ -212,9 +212,8 @@ void ListLogs::RefreshList()
 
   list_log_list->clear();
 
-  sql=QString().sprintf("select SERVICE_NAME from SERVICE_PERMS \
-                         where STATION_NAME=\"%s\"",
-			(const char *)rda->station()->name());
+  sql=QString("select SERVICE_NAME from SERVICE_PERMS where ")+
+    "STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\"";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     services_list.append( q->value(0).toString() );
