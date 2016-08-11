@@ -88,8 +88,8 @@ AddRecording::AddRecording(int id,QString *filter,QWidget *parent)
   button->setFont(button_font);
   button->setText(tr("&Recording"));
   button->setDisabled(true);
-  QString sql=QString("select CHANNEL from DECKS \
-                       where (CARD_NUMBER>=0)&&(CHANNEL>0)&&(CHANNEL<=9)");
+  QString sql=QString("select CHANNEL from DECKS where ")+
+    "(CARD_NUMBER>=0)&&(CHANNEL>0)&&(CHANNEL<=9)";
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     button->setEnabled(true);
@@ -105,8 +105,11 @@ AddRecording::AddRecording(int id,QString *filter,QWidget *parent)
   button->setFont(button_font);
   button->setText(tr("&Playout"));
   button->setDisabled(true);
-  sql=QString("select CHANNEL from DECKS where (CARD_NUMBER>=0)&&")+
-    "(PORT_NUMBER>=0)&&(CHANNEL>128)&&(CHANNEL<=137)";
+sql=QString("select CHANNEL from DECKS where ")+
+  "(CARD_NUMBER>=0)&&"+
+  "(PORT_NUMBER>=0)&&"+
+  "(CHANNEL>128)&&"+
+  "(CHANNEL<=137)";
   q=new RDSqlQuery(sql);
   if(q->first()) {
     button->setEnabled(true);

@@ -647,9 +647,10 @@ bool EditUpload::CheckFormat()
   }
   delete station;
 
+  /*
   QString sql;
   RDSqlQuery *q;
-  sql=QString().sprintf("select STATION_NAME from ENCODERS \
+  sql=QString("select STATION_NAME from ENCODERS \
                          where (NAME=\"%s\")&&(STATION_NAME=\"%s\")",
 			(const char *)RDEscapeString(edit_settings.
 						     formatName()),
@@ -660,7 +661,7 @@ bool EditUpload::CheckFormat()
     res=true;
   }
   delete q;
-
+  */
   return res;
 }
 
@@ -703,17 +704,13 @@ void EditUpload::Save()
 
 bool EditUpload::CheckEvent(bool include_myself)
 {
-  QString sql=
-    QString().sprintf("select ID from RECORDINGS \
-                       where (STATION_NAME=\"%s\")&&\
-                       (TYPE=%d)&&(START_TIME=\"%s\")&&\
-                       (URL=\"%s\")&&(CUT_NAME=\"%s\")",
-		      (const char *)edit_station_box->currentText(),
-		      RDRecording::Upload,
-		      (const char *)edit_starttime_edit->time().
-		      toString("hh:mm:ss"),
-		      (const char *)edit_url_edit->text(),
-		      (const char *)edit_destination_edit->text().right(10));
+  QString sql=QString("select ID from RECORDINGS where ")+
+    "(STATION_NAME=\""+RDEscapeString(edit_station_box->currentText())+"\")&&"+
+    QString().sprintf("(TYPE=%d)&&",RDRecording::Upload)+
+    "(START_TIME=\""+edit_starttime_edit->time().toString("hh:mm:ss")+"\")&&"+
+    "(URL=\""+RDEscapeString(edit_url_edit->text())+"\")&&"+
+    "(CUT_NAME=\""+RDEscapeString(edit_destination_edit->text().right(10))+
+    "\")";
   if(edit_sun_button->isChecked()) {
     sql+="&&(SUN=\"Y\")";
   }

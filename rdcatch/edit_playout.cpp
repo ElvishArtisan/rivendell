@@ -33,6 +33,7 @@
 #include <rdcut.h>
 #include <rdcut_dialog.h>
 #include <rdcut_path.h>
+#include <rdescape_string.h>
 #include <rdtextvalidator.h>
 
 #include <edit_playout.h>
@@ -398,9 +399,14 @@ void EditPlayout::PopulateDecks(QComboBox *box)
   int count=0;
 
   box->clear();
-  QString sql=QString("select STATION_NAME,CHANNEL from DECKS \
-where (CARD_NUMBER!=-1)&&(PORT_NUMBER!=-1)&&\
-(CHANNEL>128) order by STATION_NAME,CHANNEL");
+  QString sql=QString("select ")+
+    "STATION_NAME,"+
+    "CHANNEL "+
+    "from DECKS where "+
+    "(CARD_NUMBER!=-1)&&"+
+    "(PORT_NUMBER!=-1)&&"+
+    "(CHANNEL>128) "+
+    "order by STATION_NAME,CHANNEL";
   RDSqlQuery *q=new RDSqlQuery(sql);
   while(q->next()) {
     box->insertItem(QString().sprintf("%s : %dP",
@@ -468,13 +474,14 @@ bool EditPlayout::CheckEvent(bool include_myself)
 
   sscanf((const char *)edit_station_box->currentText(),"%s%s%d",
 	 station,gunk,&chan);
-  QString sql=
-    QString().sprintf("select RECORDINGS.START_TIME,CUTS.LENGTH\
-                       from RECORDINGS left join CUTS\
-                       on(RECORDINGS.CUT_NAME=CUTS.CUT_NAME)\
-                       where (RECORDINGS.STATION_NAME=\"%s\")&&\
-                       (RECORDINGS.TYPE=%d)&&(RECORDINGS.CHANNEL=%d)",
-		      station,RDRecording::Playout,chan+128);
+  QString sql=QString("select ")+
+    "RECORDINGS.START_TIME,"+
+    "CUTS.LENGTH "+
+    "from RECORDINGS left join CUTS "+
+    "on RECORDINGS.CUT_NAME=CUTS.CUT_NAME where "+
+    "(RECORDINGS.STATION_NAME=\""+RDEscapeString(station)+"\")&&"+
+    QString().sprintf("(RECORDINGS.TYPE=%d)&&",RDRecording::Playout)+
+    QString().sprintf("(RECORDINGS.CHANNEL=%d)",chan+128);
   if(edit_sun_button->isChecked()) {
     sql+="&&(RECORDINGS.SUN=\"Y\")";
   }

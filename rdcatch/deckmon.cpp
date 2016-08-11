@@ -22,9 +22,11 @@
 #include <rdcut.h>
 #include <rdcart.h>
 #include <rddb.h>
-#include <deckmon.h>
-#include <colors.h>
-#include <globals.h>
+#include <rdescape_string.h>
+
+#include "colors.h"
+#include "deckmon.h"
+#include "globals.h"
 
 DeckMon::DeckMon(QString station,unsigned channel,QWidget *parent)
   : QFrame(parent)
@@ -315,11 +317,12 @@ void DeckMon::SetCutInfo(int id,const QString &cutname)
       mon_cut_label->setText(tr("[unknown cut]"));
     }
     else {
-      sql=QString().sprintf("select CART.TITLE,CUTS.DESCRIPTION from \
-                             CART left join CUTS \
-                             on CART.NUMBER=CUTS.CART_NUMBER \
-                             where CUTS.CUT_NAME=\"%s\"",
-			    (const char *)cutname);
+      sql=QString("select ")+
+	"CART.TITLE,"+
+	"CUTS.DESCRIPTION "+
+	"from CART left join CUTS "+
+	"on CART.NUMBER=CUTS.CART_NUMBER where "+
+	"CUTS.CUT_NAME=\""+RDEscapeString(cutname)+"\"";
       q1=new RDSqlQuery(sql);
       if(q1->first()) {
 	mon_cut_label->

@@ -15794,3 +15794,24 @@
 	'rdcastmanager/pick_report_dates.cpp'.
 	* Removed (const char *) casts from SQL statements in
 	'rdcastmanager/rdcastmanager.cpp'.
+2016-08-11 Fred Gleason <fredg@paravelsystems.com>
+	* Removed (const char *) casts from SQL statements in
+	'rdcatch/add_recording.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdcatch/deckmon.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdcatch/edit_cartevent.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdcatch/edit_download.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdcatch/edit_playout.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdcatch/edit_recording.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdcatch/edit_switchevent.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdcatch/edit_upload.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdcatch/list_reports.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdcatch/rdcatch.cpp'.

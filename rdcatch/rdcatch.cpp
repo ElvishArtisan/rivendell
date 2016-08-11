@@ -35,6 +35,7 @@
 #include <qlayout.h>
 
 #include <rdapplication.h>
+#include <rdescape_string.h>
 #include <rdprofile.h>
 #include <rdconf.h>
 #include <rd.h>
@@ -271,9 +272,15 @@ MainWidget::MainWidget(QWidget *parent)
 		  rda->config()->password());
     catch_station_count++;
 
-    sql=QString().sprintf("select CHANNEL,MON_PORT_NUMBER from DECKS \
-where (CARD_NUMBER!=-1)&&(PORT_NUMBER!=-1)&&(CHANNEL>0)&&(STATION_NAME=\"%s\") \
-order by CHANNEL",(const char *)q->value(0).toString().lower());
+    sql=QString("select ")+
+      "CHANNEL,"+
+      "MON_PORT_NUMBER "+
+      "from DECKS where "+
+      "(CARD_NUMBER!=-1)&&"+
+      "(PORT_NUMBER!=-1)&&"+
+      "(CHANNEL>0)&&"+
+      "(STATION_NAME=\""+RDEscapeString(q->value(0).toString().lower())+"\") "+
+      "order by CHANNEL";
     q1=new RDSqlQuery(sql);
     while(q1->next()) {
       catch_connect[catch_station_count-1].
@@ -858,8 +865,8 @@ void MainWidget::deleteData()
     return;
   }
   catch_connect[conn].connect->removeEvent(item->text(28).toInt());
-  sql=QString().sprintf("delete from RECORDINGS where ID=%s",
-			(const char *)item->text(28));
+  sql=QString("delete from RECORDINGS where ")+
+    "ID="+item->text(28);
   q=new RDSqlQuery(sql);
   delete q;
   RDListViewItem *next=(RDListViewItem *)item->nextSibling();
@@ -1472,20 +1479,24 @@ int MainWidget::ShowNextEvents(int day,QTime time,QTime *next)
   QString sql;
   int count=0;
   if(time.isNull()) {
-    sql=QString().sprintf("select ID,START_TIME from RECORDINGS \
-                           where (IS_ACTIVE=\"Y\")&& \
-                           (%s=\"Y\") \
-                           order by START_TIME",
-			  (const char *)RDGetShortDayNameEN(day).upper());
+    sql=QString("select ")+
+      "ID,"+
+      "START_TIME "+
+      "from RECORDINGS where "+
+      "(IS_ACTIVE=\"Y\")&&"+
+      "("+RDGetShortDayNameEN(day).upper()+"=\"Y\") "+
+      "order by START_TIME";
   }
   else {
-    sql=QString().sprintf("select ID,START_TIME from RECORDINGS \
-                           where (IS_ACTIVE=\"Y\")&& \
-                           (time_to_sec(START_TIME)>time_to_sec(\"%s\"))&& \
-                           (%s=\"Y\") \
-                           order by START_TIME",
-			  (const char *)time.toString("hh:mm:ss"),
-			  (const char *)RDGetShortDayNameEN(day).upper());
+    sql=QString("select ")+
+      "ID,"+
+      "START_TIME "+
+      "from RECORDINGS where "+
+      "(IS_ACTIVE=\"Y\")&&"+
+      "(time_to_sec(START_TIME)>time_to_sec(\""+
+      time.toString("hh:mm:ss")+"\"))&&"+
+      "("+RDGetShortDayNameEN(day).upper()+"=\"Y\") "+
+      "order by START_TIME";
   }
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(!q->first()) {
@@ -1618,46 +1629,56 @@ void MainWidget::RefreshList()
   QString str;
 
   catch_recordings_list->clear();
-  sql=QString("select RECORDINGS.DESCRIPTION,RECORDINGS.IS_ACTIVE,\
-               RECORDINGS.STATION_NAME,RECORDINGS.START_TIME,\
-               RECORDINGS.LENGTH,RECORDINGS.CUT_NAME,RECORDINGS.SUN,\
-               RECORDINGS.MON,RECORDINGS.TUE,RECORDINGS.WED,RECORDINGS.THU,\
-               RECORDINGS.FRI,RECORDINGS.SAT,RECORDINGS.SWITCH_INPUT,\
-               RECORDINGS.START_GPI,RECORDINGS.END_GPI,\
-               RECORDINGS.TRIM_THRESHOLD,RECORDINGS.STARTDATE_OFFSET,\
-               RECORDINGS.ENDDATE_OFFSET,RECORDINGS.FORMAT,\
-               RECORDINGS.CHANNELS,RECORDINGS.SAMPRATE,RECORDINGS.BITRATE,\
-               RECORDINGS.CHANNEL,RECORDINGS.MACRO_CART,RECORDINGS.ID,\
-               RECORDINGS.TYPE,RECORDINGS.SWITCH_OUTPUT,RECORDINGS.EXIT_CODE,\
-               RECORDINGS.ONE_SHOT,RECORDINGS.START_TYPE,\
-               RECORDINGS.START_LENGTH,RECORDINGS.START_MATRIX,\
-               RECORDINGS.START_LINE,RECORDINGS.START_OFFSET,\
-               RECORDINGS.END_TYPE,RECORDINGS.END_TIME,RECORDINGS.END_LENGTH,\
-               RECORDINGS.END_MATRIX,RECORDINGS.END_LINE,CUTS.ORIGIN_NAME,\
-               CUTS.ORIGIN_DATETIME,RECORDINGS.URL,RECORDINGS.QUALITY,\
-               FEEDS.KEY_NAME,EXIT_TEXT from RECORDINGS left join CUTS\
-               on (RECORDINGS.CUT_NAME=CUTS.CUT_NAME) left join FEEDS \
-               on (RECORDINGS.FEED_ID=FEEDS.ID)");
-  // Field Offsets:
-  //
-  //  0 - REC.DESCRIPTION       18 - REC.ENDDATE_OFFSET 36 - REC.END_TIME
-  //  1 - REC.IS_ACTIVE         19 - REC.FORMAT         37 - REC.END_LENGTH
-  //  2 - REC.STATION_NAME      20 - REC.CHANNELS       38 - REC.END_MATRIX
-  //  3 - REC.START_TIME        21 - REC.SAMPRATE       39 - REC.END_LINE
-  //  4 - REC.LENGTH            22 - REC.BITRATE        40 - CUTS.ORIGIN_NAME
-  //  5 - REC.CUT_NAME          23 - REC.CHANNEL        41 - CUTS.ORIGIN_DATETIME
-  //  6 - REC.SUN               24 - REC.MACRO_CART     42 - REC.URL
-  //  7 - REC.MON               25 - REC.ID             43 - REC.QUALITY
-  //  8 - REC.TUE               26 - REC.TYPE           44 - FEEDS.KEY_NAME
-  //  9 - REC.WED               27 - REC.SWITCH_OUTPUT  45 - REC.EXIT_TEXT
-  // 10 - REC.THU               28 - REC.EXIT_CODE
-  // 11 - REC.FRI               29 - REC.ONE_SHOT
-  // 12 - REC.SAT               30 - REC.START_TYPE
-  // 13 - REC.SWITCH_INPUT      31 - REC.START_LENGTH
-  // 14 - REC.START_GPI         32 - REC.START_MATRIX
-  // 15 - REC.END_GPI           33 - REC.START_LINE
-  // 16 - REC.TRIM_THRESHOLD    34 - REC.START_OFFSET
-  // 17 - REC.STARTDATE_OFFSET  35 - REC.END_TYPE
+  sql=QString("select ")+
+    "RECORDINGS.DESCRIPTION,"+       // 00
+    "RECORDINGS.IS_ACTIVE,"+         // 01
+    "RECORDINGS.STATION_NAME,"+      // 02
+    "RECORDINGS.START_TIME,"+        // 03
+    "RECORDINGS.LENGTH,"+            // 04
+    "RECORDINGS.CUT_NAME,"+          // 05
+    "RECORDINGS.SUN,"+               // 06
+    "RECORDINGS.MON,"+               // 07
+    "RECORDINGS.TUE,"+               // 08
+    "RECORDINGS.WED,"+               // 09
+    "RECORDINGS.THU,"+               // 10
+    "RECORDINGS.FRI,"+               // 11
+    "RECORDINGS.SAT,"+               // 12
+    "RECORDINGS.SWITCH_INPUT,"+      // 13
+    "RECORDINGS.START_GPI,"+         // 14
+    "RECORDINGS.END_GPI,"+           // 15
+    "RECORDINGS.TRIM_THRESHOLD,"+    // 16
+    "RECORDINGS.STARTDATE_OFFSET,"+  // 17
+    "RECORDINGS.ENDDATE_OFFSET,"+    // 18
+    "RECORDINGS.FORMAT,"+            // 19
+    "RECORDINGS.CHANNELS,"+          // 20
+    "RECORDINGS.SAMPRATE,"+          // 21
+    "RECORDINGS.BITRATE,"+           // 22
+    "RECORDINGS.CHANNEL,"+           // 23
+    "RECORDINGS.MACRO_CART,"+        // 24
+    "RECORDINGS.ID,"+                // 25
+    "RECORDINGS.TYPE,"+              // 26
+    "RECORDINGS.SWITCH_OUTPUT,"+     // 27
+    "RECORDINGS.EXIT_CODE,"+         // 28
+    "RECORDINGS.ONE_SHOT,"+          // 29
+    "RECORDINGS.START_TYPE,"+        // 30
+    "RECORDINGS.START_LENGTH,"+      // 31
+    "RECORDINGS.START_MATRIX,"+      // 32
+    "RECORDINGS.START_LINE,"+        // 33
+    "RECORDINGS.START_OFFSET,"+      // 34
+    "RECORDINGS.END_TYPE,"+          // 35
+    "RECORDINGS.END_TIME,"+          // 36
+    "RECORDINGS.END_LENGTH,"+        // 37
+    "RECORDINGS.END_MATRIX,"+        // 38
+    "RECORDINGS.END_LINE,"+          // 39
+    "CUTS.ORIGIN_NAME,"+             // 40
+    "CUTS.ORIGIN_DATETIME,"+         // 41
+    "RECORDINGS.URL,"+               // 42
+    "RECORDINGS.QUALITY,"+           // 43
+    "FEEDS.KEY_NAME,"+               // 44
+    "EXIT_TEXT "+                    // 45
+    "from RECORDINGS left join CUTS "+
+    "on (RECORDINGS.CUT_NAME=CUTS.CUT_NAME) left join FEEDS "+
+    "on (RECORDINGS.FEED_ID=FEEDS.ID)";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     l=new RDListViewItem(catch_recordings_list);
@@ -1790,11 +1811,12 @@ void MainWidget::RefreshList()
       l->setText(6,QString().
 		 sprintf("%s %s",(const char *)str,
 			 (const char *)q->value(5).toString()));
-      sql=QString().sprintf("select SWITCH_STATION,SWITCH_MATRIX\
-                                 from DECKS where			\
-                                 (STATION_NAME=\"%s\")&&(CHANNEL=%d)",
-			    (const char *)q->value(2).toString(),
-			    q->value(23).toInt());
+      sql=QString("select ")+
+	"SWITCH_STATION,"+
+	"SWITCH_MATRIX "+
+	"from DECKS where "+
+	"(STATION_NAME=\""+RDEscapeString(q->value(2).toString())+"\")&&"+
+	QString().sprintf("(CHANNEL=%d)",q->value(23).toInt());
       q1=new RDSqlQuery(sql);
       if(q1->first()) {  // Source
 	l->setText(5,GetSourceName(q1->value(0).toString(),  
@@ -1971,55 +1993,56 @@ void MainWidget::RefreshLine(RDListViewItem *item)
   QString str;
 
   int id=item->text(28).toInt();
-  sql=QString().sprintf("select RECORDINGS.DESCRIPTION,\
-                                RECORDINGS.IS_ACTIVE,\
-                                RECORDINGS.STATION_NAME,\
-                                RECORDINGS.START_TIME,\
-                                RECORDINGS.LENGTH,\
-                                RECORDINGS.CUT_NAME,\
-                                RECORDINGS.SUN,\
-                                RECORDINGS.MON,\
-                                RECORDINGS.TUE,\
-                                RECORDINGS.WED,\
-                                RECORDINGS.THU,\
-                                RECORDINGS.FRI,\
-                                RECORDINGS.SAT,\
-                                RECORDINGS.SWITCH_INPUT,\
-                                RECORDINGS.START_GPI,\
-                                RECORDINGS.END_GPI,\
-                                RECORDINGS.TRIM_THRESHOLD,\
-                                RECORDINGS.STARTDATE_OFFSET,\
-                                RECORDINGS.ENDDATE_OFFSET,\
-                                RECORDINGS.FORMAT,\
-                                RECORDINGS.CHANNELS,\
-                                RECORDINGS.SAMPRATE,\
-                                RECORDINGS.BITRATE,\
-                                RECORDINGS.CHANNEL,\
-                                RECORDINGS.MACRO_CART,\
-                                RECORDINGS.TYPE,\
-                                RECORDINGS.SWITCH_OUTPUT,\
-                                RECORDINGS.EXIT_CODE,\
-                                RECORDINGS.ONE_SHOT,\
-                                RECORDINGS.START_TYPE,\
-                                RECORDINGS.START_LENGTH,\
-                                RECORDINGS.START_MATRIX,\
-                                RECORDINGS.START_LINE,\
-                                RECORDINGS.START_OFFSET,\
-                                RECORDINGS.END_TYPE,\
-                                RECORDINGS.END_TIME,\
-                                RECORDINGS.END_LENGTH,\
-                                RECORDINGS.END_MATRIX,\
-                                RECORDINGS.END_LINE,\
-                                CUTS.ORIGIN_NAME,\
-                                CUTS.ORIGIN_DATETIME,\
-                                RECORDINGS.URL,\
-                                RECORDINGS.QUALITY,\
-                                FEEDS.KEY_NAME,\
-                                RECORDINGS.EXIT_TEXT \
-                         from RECORDINGS left join CUTS \
-                        on (RECORDINGS.CUT_NAME=CUTS.CUT_NAME) left join FEEDS\
-                        on (RECORDINGS.FEED_ID=FEEDS.ID) \
-                        where RECORDINGS.ID=%d",id);
+  sql=QString("select ")+
+    "RECORDINGS.DESCRIPTION,"+       // 00
+    "RECORDINGS.IS_ACTIVE,"+         // 01
+    "RECORDINGS.STATION_NAME,"+      // 02
+    "RECORDINGS.START_TIME,"+        // 03
+    "RECORDINGS.LENGTH,"+            // 04
+    "RECORDINGS.CUT_NAME,"+          // 05
+    "RECORDINGS.SUN,"+               // 06
+    "RECORDINGS.MON,"+               // 07
+    "RECORDINGS.TUE,"+               // 08
+    "RECORDINGS.WED,"+               // 09
+    "RECORDINGS.THU,"+               // 10
+    "RECORDINGS.FRI,"+               // 11
+    "RECORDINGS.SAT,"+               // 12
+    "RECORDINGS.SWITCH_INPUT,"+      // 13
+    "RECORDINGS.START_GPI,"+         // 14
+    "RECORDINGS.END_GPI,"+           // 15
+    "RECORDINGS.TRIM_THRESHOLD,"+    // 16
+    "RECORDINGS.STARTDATE_OFFSET,"+  // 17
+    "RECORDINGS.ENDDATE_OFFSET,"+    // 18
+    "RECORDINGS.FORMAT,"+            // 19
+    "RECORDINGS.CHANNELS,"+          // 20
+    "RECORDINGS.SAMPRATE,"+          // 21
+    "RECORDINGS.BITRATE,"+           // 22
+    "RECORDINGS.CHANNEL,"+           // 23
+    "RECORDINGS.MACRO_CART,"+        // 24
+    "RECORDINGS.TYPE,"+              // 25
+    "RECORDINGS.SWITCH_OUTPUT,"+     // 26
+    "RECORDINGS.EXIT_CODE,"+         // 27
+    "RECORDINGS.ONE_SHOT,"+          // 28
+    "RECORDINGS.START_TYPE,"+        // 29
+    "RECORDINGS.START_LENGTH,"+      // 30
+    "RECORDINGS.START_MATRIX,"+      // 31
+    "RECORDINGS.START_LINE,"+        // 32
+    "RECORDINGS.START_OFFSET,"+      // 33
+    "RECORDINGS.END_TYPE,"+          // 34
+    "RECORDINGS.END_TIME,"+          // 35
+    "RECORDINGS.END_LENGTH,"+        // 36
+    "RECORDINGS.END_MATRIX,"+        // 37
+    "RECORDINGS.END_LINE,"+          // 38
+    "CUTS.ORIGIN_NAME,"+             // 39
+    "CUTS.ORIGIN_DATETIME,"+         // 40
+    "RECORDINGS.URL,"+               // 41
+    "RECORDINGS.QUALITY,"+           // 42
+    "FEEDS.KEY_NAME,"+               // 43
+    "RECORDINGS.EXIT_TEXT "+         // 44
+    "from RECORDINGS left join CUTS "+
+    "on (RECORDINGS.CUT_NAME=CUTS.CUT_NAME) left join FEEDS "+
+    "on (RECORDINGS.FEED_ID=FEEDS.ID) where "+
+    QString().sprintf("RECORDINGS.ID=%d",id);
   q=new RDSqlQuery(sql);
   if(q->first()) {
     if(RDBool(q->value(1).toString())) {
@@ -2172,11 +2195,12 @@ void MainWidget::RefreshLine(RDListViewItem *item)
 				      q->value(38).toInt()));
 		break;
 	  }	
-	  sql=QString().sprintf("select SWITCH_STATION,SWITCH_MATRIX\
-                                 from DECKS where \
-                                 (STATION_NAME=\"%s\")&&(CHANNEL=%d)",
-				(const char *)q->value(2).toString(),
-				q->value(23).toInt());
+	  sql=QString("select ")+
+	    "SWITCH_STATION,"+
+	    "SWITCH_MATRIX "+
+	    "from DECKS where "+
+	    "(STATION_NAME=\""+RDEscapeString(q->value(2).toString())+"\")&&"+
+	    QString().sprintf("(CHANNEL=%d)",q->value(23).toInt());
 	  q1=new RDSqlQuery(sql);
 	  if(q1->first()) {
 	    item->setText(5,GetSourceName(q1->value(0).toString(),
@@ -2372,13 +2396,14 @@ void MainWidget::UpdateExitCode(RDListViewItem *item)
 {
   RDRecording::ExitCode code=RDRecording::InternalError;
   QString err_text=tr("Unknown");
-  QString sql=QString().sprintf("select RECORDINGS.EXIT_CODE,\
-                                 CUTS.ORIGIN_NAME,CUTS.ORIGIN_DATETIME,\
-                                 RECORDINGS.EXIT_TEXT \
-                                 from RECORDINGS left join CUTS \
-                                 on RECORDINGS.CUT_NAME=CUTS.CUT_NAME \
-                                 where RECORDINGS.ID=%d",
-				item->text(28).toInt());
+  QString sql=QString("select ")+
+    "RECORDINGS.EXIT_CODE,"+
+    "CUTS.ORIGIN_NAME,"+
+    "CUTS.ORIGIN_DATETIME,"+
+    "RECORDINGS.EXIT_TEXT "+
+    "from RECORDINGS left join CUTS "+
+    "on RECORDINGS.CUT_NAME=CUTS.CUT_NAME where "+
+    QString().sprintf("RECORDINGS.ID=%d",item->text(28).toInt());
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     code=(RDRecording::ExitCode)q->value(0).toInt();
@@ -2432,11 +2457,10 @@ void MainWidget::DisplayExitCode(RDListViewItem *item,
 QString MainWidget::GetSourceName(QString station,int matrix,int input)
 {
   QString input_name;
-  QString sql=QString().sprintf("select NAME from INPUTS where \
-                                 (STATION_NAME=\"%s\")&&\
-                                 (MATRIX=%d)&&(NUMBER=%d)",
-				(const char *)station,
-				matrix,input);
+  QString sql=QString("select NAME from INPUTS where ")+
+    "(STATION_NAME=\""+RDEscapeString(station)+"\")&&"+
+    QString().sprintf("(MATRIX=%d)&&",matrix)+
+    QString().sprintf("(NUMBER=%d)",input);
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     input_name=q->value(0).toString();
@@ -2449,11 +2473,10 @@ QString MainWidget::GetSourceName(QString station,int matrix,int input)
 QString MainWidget::GetDestinationName(QString station,int matrix,int output)
 {
   QString output_name;
-  QString sql=QString().sprintf("select NAME from OUTPUTS where \
-                                 (STATION_NAME=\"%s\")&&\
-                                 (MATRIX=%d)&&(NUMBER=%d)",
-				(const char *)station,
-				matrix,output);
+  QString sql=QString("select NAME from OUTPUTS where ")+
+    "(STATION_NAME=\""+RDEscapeString(station)+"\")&&"+
+    QString().sprintf("(MATRIX=%d)&&",matrix)+
+    QString().sprintf("(NUMBER=%d)",output);
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     output_name=q->value(0).toString();
