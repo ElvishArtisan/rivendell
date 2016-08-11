@@ -536,8 +536,7 @@ void MainWidget::ClearTables()
   QString sql="show tables";
   RDSqlQuery *q=new RDSqlQuery(sql);
   while(q->next()) {
-    sql=QString().sprintf("drop table %s",
-			  (const char *)q->value(0).toString());
+    sql=QString("drop table ")+q->value(0).toString();
     q1=new RDSqlQuery(sql);
     delete q1;
   }

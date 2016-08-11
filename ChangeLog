@@ -15771,3 +15771,10 @@
 	'rdadmin/list_users.cpp'.
 	* Removed (const char *) casts from SQL statements in
 	'rdadmin/list_vguest_resources.cpp'.
+2016-08-11 Fred Gleason <fredg@paravelsystems.com>
+	* Removed (const char *) casts from SQL statements in
+	'rdadmin/rdadmin.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdadmin/rename_group.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdadmin/test_import.cpp'.

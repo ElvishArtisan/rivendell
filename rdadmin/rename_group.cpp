@@ -150,9 +150,8 @@ void RenameGroup::okData()
     return;
   }
 
-  sql=QString().
-    sprintf("select NAME from GROUPS where NAME=\"%s\"",
-	    (const char *)RDEscapeString(group_newname_edit->text()));
+  sql=QString("select NAME from GROUPS where ")+
+    "NAME=\""+RDEscapeString(group_newname_edit->text())+"\"";
   q=new RDSqlQuery(sql);
   if(q->first()) {
     str1=QString(tr("A"));
@@ -172,42 +171,36 @@ void RenameGroup::okData()
   //
   // Update Cart List
   //
-  sql=QString().
-    sprintf("update CART set GROUP_NAME=\"%s\" where GROUP_NAME=\"%s\"",
-	    (const char *)RDEscapeString(group_newname_edit->text()),
-	    (const char *)RDEscapeString(group_name_edit->text()));
+  sql=QString("update CART set ")+
+    "GROUP_NAME=\""+RDEscapeString(group_newname_edit->text())+"\" where "+
+    "GROUP_NAME=\""+RDEscapeString(group_name_edit->text())+"\"";
   q=new RDSqlQuery(sql);
   delete q;
 
   //
   // Update LogManager Events
   //
-  sql=QString().
-    sprintf("update EVENTS set SCHED_GROUP=\"%s\" where SCHED_GROUP=\"%s\"",
-	    (const char *)RDEscapeString(group_newname_edit->text()),
-	    (const char *)RDEscapeString(group_name_edit->text()));
+  sql=QString("update EVENTS set ")+
+    "SCHED_GROUP=\""+RDEscapeString(group_newname_edit->text())+"\" where "+
+    "SCHED_GROUP=\""+RDEscapeString(group_name_edit->text())+"\"";
   q=new RDSqlQuery(sql);
   delete q;
 
   //
   // Update Replicators
   //
-  sql=QString().
-    sprintf("update REPLICATOR_MAP set GROUP_NAME=\"%s\" \
-             where GROUP_NAME=\"%s\"",
-	    (const char *)RDEscapeString(group_newname_edit->text()),
-	    (const char *)RDEscapeString(group_name_edit->text()));
+  sql=QString("update REPLICATOR_MAP set ")+
+    "GROUP_NAME=\""+RDEscapeString(group_newname_edit->text())+"\" where "+
+    "GROUP_NAME=\""+RDEscapeString(group_name_edit->text())+"\"";
   q=new RDSqlQuery(sql);
   delete q;
 
   //
   // Update Dropboxes
   //
-  sql=QString().
-    sprintf("update DROPBOXES set GROUP_NAME=\"%s\" \
-             where GROUP_NAME=\"%s\"",
-	    (const char *)RDEscapeString(group_newname_edit->text()),
-	    (const char *)RDEscapeString(group_name_edit->text()));
+  sql=QString("update DROPBOXES set ")+
+    "GROUP_NAME=\""+RDEscapeString(group_newname_edit->text())+"\" where "+
+    "GROUP_NAME=\""+RDEscapeString(group_name_edit->text())+"\"";
   q=new RDSqlQuery(sql);
   delete q;
 
@@ -215,56 +208,49 @@ void RenameGroup::okData()
   // Update Group List
   //
   if(!merging) {
-    sql=QString().
-      sprintf("update GROUPS set NAME=\"%s\" where NAME=\"%s\"",
-	      (const char *)RDEscapeString(group_newname_edit->text()),
-	      (const char *)RDEscapeString(group_name_edit->text()));
+    sql=QString("update GROUPS set ")+
+      "NAME=\""+RDEscapeString(group_newname_edit->text())+"\" where "+
+      "NAME=\""+RDEscapeString(group_name_edit->text())+"\"";
     q=new RDSqlQuery(sql);
     delete q;
 
     //
     // Update AUDIO_PERMS
     //
-    sql=QString().
-      sprintf("update AUDIO_PERMS set GROUP_NAME=\"%s\" \
-               where GROUP_NAME=\"%s\"",
-	      (const char *)RDEscapeString(group_newname_edit->text()),
-	      (const char *)RDEscapeString(group_name_edit->text()));
+    sql=QString("update AUDIO_PERMS set ")+
+      "GROUP_NAME=\""+RDEscapeString(group_newname_edit->text())+"\" where "+
+      "GROUP_NAME=\""+RDEscapeString(group_name_edit->text())+"\"";
     q=new RDSqlQuery(sql);
     delete q;
 
     //
     // Update USER_PERMS
     //
-    sql=QString().
-      sprintf("update USER_PERMS set GROUP_NAME=\"%s\" where GROUP_NAME=\"%s\"",
-	      (const char *)RDEscapeString(group_newname_edit->text()),
-	      (const char *)RDEscapeString(group_name_edit->text()));
+    sql=QString("update USER_PERMS set ")+
+      "GROUP_NAME=\""+RDEscapeString(group_newname_edit->text())+"\" where "+
+      "GROUP_NAME=\""+RDEscapeString(group_name_edit->text())+"\"";
     q=new RDSqlQuery(sql);
     delete q;
   }
   else {
-    sql=QString().
-      sprintf("delete from GROUPS where NAME=\"%s\"",
-	      (const char *)RDEscapeString(group_name_edit->text()));
+    sql=QString("delete from GROUPS where ")+
+      "NAME=\""+RDEscapeString(group_name_edit->text())+"\"";
     q=new RDSqlQuery(sql);
     delete q;
 
     //
     // Update AUDIO_PERMS
     //
-    sql=QString().
-      sprintf("delete from AUDIO_PERMS where GROUP_NAME=\"%s\"",
-	      (const char *)RDEscapeString(group_name_edit->text()));
+    sql=QString("delete from AUDIO_PERMS where ")+
+      "GROUP_NAME=\""+RDEscapeString(group_name_edit->text())+"\"";
     q=new RDSqlQuery(sql);
     delete q;
     
     //
     // Update USER_PERMS
     //
-    sql=QString().
-      sprintf("delete from USER_PERMS where GROUP_NAME=\"%s\"",
-	      (const char *)RDEscapeString(group_name_edit->text()));
+    sql=QString("delete from USER_PERMS where ")+
+      "GROUP_NAME=\""+RDEscapeString(group_name_edit->text())+"\"";
     q=new RDSqlQuery(sql);
     delete q;
   }

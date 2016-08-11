@@ -19,7 +19,6 @@
 //
 
 #include <qmessagebox.h>
-#include <qsqldatabase.h>
 #include <qlabel.h>
 #include <qpushbutton.h>
 
