@@ -15785,3 +15785,12 @@
 	'rdairplay/list_logs.cpp'.
 	* Removed (const char *) casts from SQL statements in
 	'rdairplay/rdairplay.cpp'.
+2016-08-11 Fred Gleason <fredg@paravelsystems.com>
+	* Removed (const char *) casts from SQL statements in
+	'rdcastmanager/edit_cast.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdcastmanager/list_casts.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdcastmanager/pick_report_dates.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdcastmanager/rdcastmanager.cpp'.

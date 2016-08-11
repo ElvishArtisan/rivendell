@@ -38,6 +38,7 @@
 #include <rdapplication.h>
 #include <rdconf.h>
 #include <rdcastmanager.h>
+#include <rdescape_string.h>
 #include <rdpodcast.h>
 
 #include <list_casts.h>
@@ -217,9 +218,12 @@ void MainWidget::RefreshItem(RDListViewItem *item)
   int active=0;
   int total=0;
 
-  sql=QString().sprintf("select CHANNEL_TITLE,CHANNEL_DESCRIPTION,ID \
-                         from FEEDS where KEY_NAME=\"%s\"",
-			(const char *)item->text(1));
+  sql=QString("select ")+
+    "CHANNEL_TITLE,"+
+    "CHANNEL_DESCRIPTION,"+
+    "ID "+
+    "from FEEDS where "+
+    "KEY_NAME=\""+RDEscapeString(item->text(1))+"\"";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     sql=QString().sprintf("select STATUS from PODCASTS where FEED_ID=%u",
@@ -263,9 +267,8 @@ void MainWidget::RefreshList()
     id=item->id();
   }
   cast_feed_list->clear();
-  sql=QString().sprintf("select KEY_NAME from FEED_PERMS \
-                         where USER_NAME=\"%s\"",
-			(const char *)rda->user()->name());
+  sql=QString("select KEY_NAME from FEED_PERMS where ")+
+    "USER_NAME=\""+RDEscapeString(rda->user()->name())+"\"";
   q=new RDSqlQuery(sql);
   if(q->size()<=0) {  // No valid feeds!
     delete q;
@@ -273,8 +276,8 @@ void MainWidget::RefreshList()
   }
   sql="select ID,KEY_NAME from FEEDS where ";
   while(q->next()) {
-    sql+=QString().sprintf("(KEY_NAME=\"%s\")||",
-			   (const char *)q->value(0).toString());
+    sql+=QString("(KEY_NAME=")+"\""+
+      RDEscapeString(q->value(0).toString())+"\")||";
   }
   delete q;
   sql=sql.left(sql.length()-2);

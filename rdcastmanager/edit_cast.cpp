@@ -183,9 +183,12 @@ EditCast::EditCast(unsigned cast_id,QWidget *parent)
   QString keyname=cast_cast->keyName();
   keyname.replace(" ","_");
   QLabel *label;
-  sql=QString().sprintf("select VAR_NAME,CAPTION from AUX_METADATA \
-                         where FEED_ID=%u order by VAR_NAME",
-			cast_cast->feedId());
+  sql=QString("select ")+
+    "VAR_NAME,"+
+    "CAPTION "+
+    "from AUX_METADATA where "+
+    QString().sprintf("FEED_ID=%u ",cast_cast->feedId())+
+    "order by VAR_NAME";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     cast_aux_varnames.push_back(q->value(0).toString().
@@ -194,9 +197,9 @@ EditCast::EditCast(unsigned cast_id,QWidget *parent)
     cast_aux_edits.back()->
       setGeometry(115,cast_ypos,sizeHint().width()-125,20);
     cast_aux_edits.back()->setMaxLength(255);
-    sql=QString().sprintf("select %s from %s_FIELDS where CAST_ID=%u",
-			  (const char *)cast_aux_varnames.back(),
-			  (const char *)keyname,cast_cast->id());
+    sql=QString("select ")+cast_aux_varnames.back()+" "+
+      "from '"+keyname+"_FIELDS` where "+
+      QString().sprintf("CAST_ID=%u",cast_cast->id());
     q1=new RDSqlQuery(sql);
     if(q1->first()) {
       cast_aux_edits.back()->setText(q1->value(0).toString());
@@ -500,13 +503,10 @@ void EditCast::okData()
   QString keyname=cast_cast->keyName();
   keyname.replace(" ","_");
   for(unsigned i=0;i<cast_aux_varnames.size();i++) {
-    sql=QString().sprintf("update %s_FIELDS set %s=\"%s\" \
-                           where CAST_ID=%u",
-			  (const char *)keyname,
-			  (const char *)cast_aux_varnames[i],
-			  (const char *)RDEscapeString(cast_aux_edits[i]->
-						       text()),
-			  cast_cast->id());
+    sql=QString("update `")+keyname+"_FIELDS` set "+
+      cast_aux_varnames[i]+"=\""+
+      RDEscapeString(cast_aux_edits[i]->text())+"\" where "+
+      QString().sprintf("CAST_ID=%u",cast_cast->id());
     q=new RDSqlQuery(sql);
     delete q;
   }

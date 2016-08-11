@@ -215,14 +215,15 @@ void PickReportDates::GenerateSubscriptionReport(const QString &keyname,
   //
   QString keyname_esc=keyname;
   keyname_esc.replace(" ","_");
-  sql=QString().sprintf("select ACCESS_DATE,ACCESS_COUNT,CAST_ID from %s_FLG \
-                         where (ACCESS_DATE>=\"%s\")&&(ACCESS_DATE<=\"%s\") \
-                         order by ACCESS_DATE,CAST_ID desc",
-			(const char *)keyname_esc,
-			(const char *)edit_startdate_edit->date().
-			toString("yyyy-MM-dd"),
-			(const char *)edit_enddate_edit->date().
-			toString("yyyy-MM-dd"));
+  sql=QString("select ")+
+    "ACCESS_DATE,"+
+    "ACCESS_COUNT,"+
+    "CAST_ID "+
+    "from `"+keyname_esc+"_FLG` where "+
+    "(ACCESS_DATE>=\""+
+    edit_startdate_edit->date().toString("yyyy-MM-dd")+"\")&&"+
+    "(ACCESS_DATE<=\""+edit_enddate_edit->date().toString("yyyy-MM-dd")+"\") "+
+    "order by ACCESS_DATE,CAST_ID desc";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     if(q->value(2).toUInt()==0) {
@@ -286,15 +287,15 @@ void PickReportDates::GenerateEpisodeReport(const QString &keyname,
   unsigned total=0;
   QString keyname_esc=keyname;
   keyname_esc.replace(" ","_");
-  sql=QString().sprintf("select ACCESS_DATE,ACCESS_COUNT from %s_FLG \
-                         where (ACCESS_DATE>=\"%s\")&&(ACCESS_DATE<=\"%s\")&& \
-                         (CAST_ID=%u) order by ACCESS_DATE",
-			(const char *)keyname_esc,
-			(const char *)edit_startdate_edit->date().
-			toString("yyyy-MM-dd"),
-			(const char *)edit_enddate_edit->date().
-			toString("yyyy-MM-dd"),
-			cast_id);
+  sql=QString("select ")+
+    "ACCESS_DATE,"+
+    "ACCESS_COUNT "+
+    "from `"+keyname_esc+"_FLG` where "+
+    "(ACCESS_DATE>=\""+
+    edit_startdate_edit->date().toString("yyyy-MM-dd")+"\")&&"+
+    "(ACCESS_DATE<=\""+edit_enddate_edit->date().toString("yyyy-MM-dd")+"\")&&"+
+    QString().sprintf("(CAST_ID=%u) ",cast_id)+
+    "order by ACCESS_DATE";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     *rpt+=QString().sprintf("                       %s             %9u\n",

@@ -352,8 +352,9 @@ void ListCasts::deleteData()
   sql=QString().sprintf("delete from PODCASTS where ID=%u",item->id());
   q=new RDSqlQuery(sql);
   delete q;
-  sql=QString().sprintf("update FEEDS set LAST_BUILD_DATETIME=now() \
-                        where ID=%u",list_feed_id);
+  sql=QString("update FEEDS set ")+
+    "LAST_BUILD_DATETIME=now() where "+
+    QString().sprintf("ID=%u",list_feed_id);
   q=new RDSqlQuery(sql);
   delete q;
 
@@ -450,11 +451,11 @@ void ListCasts::RefreshList()
   RDListViewItem *item;
 
   list_casts_view->clear();
-  sql=QString().sprintf("select ID from PODCASTS %s \
-                         order by ORIGIN_DATETIME",
-       (const char *)RDCastSearch(list_feed_id,list_filter_edit->text(),
-				  list_unexpired_check->isChecked(),
-				  list_active_check->isChecked()));
+  sql=QString("select ID from PODCASTS ")+
+    RDCastSearch(list_feed_id,list_filter_edit->text(),
+		 list_unexpired_check->isChecked(),
+		 list_active_check->isChecked())+
+    "order by ORIGIN_DATETIME";
   q=new RDSqlQuery(sql);
   while (q->next()) {
     item=new RDListViewItem(list_casts_view);
@@ -470,9 +471,17 @@ void ListCasts::RefreshItem(RDListViewItem *item)
   QString sql;
   RDSqlQuery *q;
 
-  sql=QString().sprintf("select STATUS,ITEM_TITLE,ORIGIN_DATETIME,SHELF_LIFE,\
-                         AUDIO_TIME,ITEM_DESCRIPTION,ITEM_CATEGORY,ITEM_LINK \
-                         from PODCASTS where ID=%d",item->id());
+  sql=QString("select ")+
+    "STATUS,"+            // 00
+    "ITEM_TITLE,"+        // 01
+    "ORIGIN_DATETIME,"+   // 02
+    "SHELF_LIFE,"+        // 03
+    "AUDIO_TIME,"+        // 04
+    "ITEM_DESCRIPTION,"+  // 05
+    "ITEM_CATEGORY,"+     // 06
+    "ITEM_LINK "+         // 07
+    "from PODCASTS where "+
+    QString().sprintf("ID=%d",item->id());
   q=new RDSqlQuery(sql);
   if(q->first()) {
     switch((RDPodcast::Status)q->value(0).toUInt()) {
@@ -523,10 +532,9 @@ void ListCasts::GetEncoderId()
   sql=QString().sprintf("select NAME from ENCODERS where ID=%d",format);
   q=new RDSqlQuery(sql);
   if(q->first()) {
-    sql=QString().sprintf("select ID from ENCODERS \
-                           where (NAME=\"%s\")&&(STATION_NAME=\"%s\")",
-			  (const char *)RDEscapeString(q->value(0).toString()),
-			  (const char *)RDEscapeString(rda->station()->name()));
+    sql=QString("select ID from ENCODERS where ")+
+      "(NAME=\""+RDEscapeString(q->value(0).toString())+"\")&&"+
+      "(STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\")";
     delete q;
     q=new RDSqlQuery(sql);
     if(q->first()) {
