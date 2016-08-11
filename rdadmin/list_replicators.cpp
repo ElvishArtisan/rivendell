@@ -208,31 +208,28 @@ void ListReplicators::deleteData()
   //
   // Delete Group Assignments
   //
-  sql=QString().sprintf("delete from REPLICATOR_MAP \
-                         where REPLICATOR_NAME=\"%s\"",
-			(const char *)name);
+  sql=QString("delete from REPLICATOR_MAP where ")+
+    "REPLICATOR_NAME=\""+RDEscapeString(name)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
   
   //
   // Delete State Records
   //
-  sql=QString().sprintf("delete from REPL_CART_STATE \
-                         where REPLICATOR_NAME=\"%s\"",
-			(const char *)name);
+  sql=QString("delete from REPL_CART_STATE where ")+
+    "REPLICATOR_NAME=\""+RDEscapeString(name)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
-  sql=QString().sprintf("delete from REPL_CUT_STATE \
-                         where REPLICATOR_NAME=\"%s\"",
-			(const char *)name);
+  sql=QString("delete from REPL_CUT_STATE where ")+
+    "REPLICATOR_NAME=\""+RDEscapeString(name)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
 
   //
   // Delete from Replicator List
   //
-  sql=QString().sprintf("delete from REPLICATORS where NAME=\"%s\"",
-			(const char *)name);
+  sql=QString("delete from REPLICATORS where ")+
+    "NAME=\""+RDEscapeString(name)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
   delete item;
@@ -282,7 +279,12 @@ void ListReplicators::RefreshList()
   RDListViewItem *item;
 
   list_replicators_view->clear();
-  sql="select NAME,TYPE_ID,DESCRIPTION,STATION_NAME from REPLICATORS";
+  sql=QString("select ")+
+    "NAME,"+
+    "TYPE_ID,"+
+    "DESCRIPTION,"+
+    "STATION_NAME "+
+    "from REPLICATORS";
   q=new RDSqlQuery(sql);
   while (q->next()) {
     item=new RDListViewItem(list_replicators_view);
@@ -301,9 +303,12 @@ void ListReplicators::RefreshItem(RDListViewItem *item)
   QString sql;
   RDSqlQuery *q;
 
-  sql=QString().sprintf("select TYPE_ID,DESCRIPTION,STATION_NAME \
-                         from REPLICATORS where NAME=\"%s\"",
-			(const char *)RDEscapeString(item->text(0)));
+  sql=QString("select ")+
+    "TYPE_ID,"+
+    "DESCRIPTION,"+
+    "STATION_NAME "+
+    "from REPLICATORS where "+
+    "NAME=\""+RDEscapeString(item->text(0))+"\"";
   q=new RDSqlQuery(sql);
   if(q->first()) {
     item->setText(1,

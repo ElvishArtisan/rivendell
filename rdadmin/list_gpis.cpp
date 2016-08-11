@@ -25,14 +25,15 @@
 #include <qmessagebox.h>
 
 #include <rd.h>
+#include <rdescape_string.h>
 #include <rdpasswd.h>
 #include <rdmacro.h>
 #include <rdstation.h>
 #include <rddb.h>
 
-#include <list_gpis.h>
-#include <edit_gpi.h>
-#include <globals.h>
+#include "edit_gpi.h"
+#include "globals.h"
+#include "list_gpis.h"
 
 ListGpis::ListGpis(RDMatrix *matrix,RDMatrix::GpioType type,QWidget *parent)
   : QDialog(parent,"",true)
@@ -139,22 +140,17 @@ ListGpis::ListGpis(RDMatrix *matrix,RDMatrix::GpioType type,QWidget *parent)
   //
   // Load Values
   //
-  sql=QString().sprintf("select %s.NUMBER,%s.MACRO_CART,%s.OFF_MACRO_CART,\
-                         CART.TITLE \
-                         from %s left join CART \
-                         on %s.MACRO_CART=CART.NUMBER \
-                         where (%s.STATION_NAME=\"%s\")&&(%s.MATRIX=%d)\
-                         order by %s.NUMBER",
-			(const char *)list_tablename,
-			(const char *)list_tablename,
-			(const char *)list_tablename,
-			(const char *)list_tablename,
-			(const char *)list_tablename,
-			(const char *)list_tablename,
-			(const char *)list_matrix->station(),
-			(const char *)list_tablename,
-			list_matrix->matrix(),
-			(const char *)list_tablename);
+  sql=QString("select ")+
+    list_tablename+".NUMBER,"+
+    list_tablename+".MACRO_CART,"+
+    list_tablename+".OFF_MACRO_CART,"+
+    "CART.TITLE "+
+    "from "+list_tablename+" left join CART "+
+    "on "+list_tablename+".MACRO_CART=CART.NUMBER where "+
+    "("+list_tablename+".STATION_NAME=\""+
+    RDEscapeString(list_matrix->station())+"\")&&"+
+    "("+list_tablename+QString().sprintf(".MATRIX=%d) ",list_matrix->matrix())+
+    "order by "+list_tablename+".NUMBER";
   q=new RDSqlQuery(sql);
   if(list_matrix->type()==RDMatrix::LiveWireLwrpAudio) {
     while(q->next()) {
@@ -287,11 +283,9 @@ void ListGpis::okData()
   RDSqlQuery *q;
   RDMacro rml;
 
-  sql=QString().sprintf("delete from %s where (STATION_NAME=\"%s\")&&\
-                           MATRIX=%d",
-			(const char *)list_tablename,
-			(const char *)list_matrix->station(),
-			list_matrix->matrix());
+  sql=QString("delete from ")+list_tablename+" where "+
+    "(STATION_NAME=\""+RDEscapeString(list_matrix->station())+"\")&&"+
+    QString().sprintf("(MATRIX=%d)",list_matrix->matrix());
   q=new RDSqlQuery(sql);
   delete q;
   RDStation *station=new RDStation(list_matrix->station());
@@ -314,14 +308,12 @@ void ListGpis::okData()
 
   QListViewItem *item=list_list_view->firstChild();
   while(item!=NULL) {
-    sql=QString().sprintf("insert into %s set STATION_NAME=\"%s\",\
-                           MATRIX=%d,NUMBER=%d,MACRO_CART=%d,OFF_MACRO_CART=%d",
-			  (const char *)list_tablename,
-			  (const char *)list_matrix->station(),
-			  list_matrix->matrix(),
-			  item->text(0).toInt(),
-			  item->text(1).toInt(),
-			  item->text(3).toInt());
+    sql=QString("insert into ")+list_tablename+" set "+
+      "STATION_NAME=\""+RDEscapeString(list_matrix->station())+"\","+
+      QString().sprintf("MATRIX=%d,",list_matrix->matrix())+
+      QString().sprintf("NUMBER=%d,",item->text(0).toInt())+
+      QString().sprintf("MACRO_CART=%d,",item->text(1).toInt())+
+      QString().sprintf("OFF_MACRO_CART=%d",item->text(3).toInt());
     q=new RDSqlQuery(sql);
     delete q;
     rml.setArg(2,item->text(0).toInt());

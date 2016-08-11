@@ -206,126 +206,100 @@ void ListStations::DeleteStation(QString name)
 {
   QString sql;
   RDSqlQuery *q;
-  RDSqlQuery *q1;
 
-  sql=QString().sprintf("delete from DECKS where STATION_NAME=\"%s\"",
-			(const char *)RDEscapeString(name));
+  sql=QString("delete from DECKS where ")+
+    "STATION_NAME=\""+RDEscapeString(name)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
   sql=QString("delete from DECK_EVENTS where ")+
     "STATION_NAME=\""+RDEscapeString(name)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
-  sql=QString().sprintf("delete from TTYS where STATION_NAME=\"%s\"",
-			(const char *)RDEscapeString(name));
+  sql=QString("delete from TTYS where ")+
+    "STATION_NAME=\""+RDEscapeString(name)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
-  sql=QString().sprintf("delete from AUDIO_PORTS where STATION_NAME=\"%s\"",
-			(const char *)RDEscapeString(name));
+  sql=QString("delete from AUDIO_PORTS where ")+
+    "STATION_NAME=\""+RDEscapeString(name)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
-  sql=QString().sprintf("delete from RECORDINGS where STATION_NAME=\"%s\"",
-			(const char *)RDEscapeString(name));
-  q=new RDSqlQuery(sql);
-  delete q;
-  sql=
-    QString().sprintf("delete from SERVICE_PERMS where STATION_NAME=\"%s\"",
-		      (const char *)RDEscapeString(name));
-  q=new RDSqlQuery(sql);
-  delete q;
-  sql=QString().sprintf("delete from RDAIRPLAY where STATION=\"%s\"",
-			(const char *)RDEscapeString(name));
-  q=new RDSqlQuery(sql);
-  delete q;
-  sql=QString().sprintf("delete from RDAIRPLAY_CHANNELS where STATION_NAME=\"%s\"",
-			(const char *)RDEscapeString(name));
-  q=new RDSqlQuery(sql);
-  delete q;
-  sql=QString().sprintf("delete from RDPANEL where STATION=\"%s\"",
-			(const char *)RDEscapeString(name));
-  q=new RDSqlQuery(sql);
-  delete q;
-  sql=QString().sprintf("delete from RDPANEL_CHANNELS where STATION_NAME=\"%s\"",
-			(const char *)RDEscapeString(name));
-  q=new RDSqlQuery(sql);
-  delete q;
-  sql=QString().sprintf("delete from RDLOGEDIT where STATION=\"%s\"",
-			(const char *)RDEscapeString(name));
-  q=new RDSqlQuery(sql);
-  delete q;
-  sql=QString().sprintf("delete from MATRICES where STATION_NAME=\"%s\"",
-			(const char *)RDEscapeString(name));
-  q=new RDSqlQuery(sql);
-  delete q;
-  sql=QString().sprintf("delete from INPUTS where STATION_NAME=\"%s\"",
-			(const char *)RDEscapeString(name));
-  q=new RDSqlQuery(sql);
-  delete q;
-  sql=QString().sprintf("delete from OUTPUTS where STATION_NAME=\"%s\"",
-			(const char *)RDEscapeString(name));
-  q=new RDSqlQuery(sql);
-  delete q;
-  sql=QString().sprintf("delete from VGUEST_RESOURCES where\
-                           STATION_NAME=\"%s\"",
-			(const char *)RDEscapeString(name));
-  q=new RDSqlQuery(sql);
-  delete q;
-  sql=QString().sprintf("delete from RDLIBRARY where STATION=\"%s\"",
-			(const char *)RDEscapeString(name));
-  q=new RDSqlQuery(sql);
-  delete q;
-  sql=QString().sprintf("delete from GPIS where STATION_NAME=\"%s\"",
-			(const char *)RDEscapeString(name));
-  q=new RDSqlQuery(sql);
-  delete q;
-  sql=QString().sprintf("delete from HOSTVARS where STATION_NAME=\"%s\"",
-			(const char *)RDEscapeString(name));
-  q=new RDSqlQuery(sql);
-  delete q;
-  sql=QString().sprintf("delete from STATIONS where NAME=\"%s\"",
-			(const char *)RDEscapeString(name));
+  sql=QString("delete from RECORDINGS where ")+
+    "STATION_NAME=\""+RDEscapeString(name)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
   sql=
-    QString().sprintf("delete from REPORT_STATIONS where STATION_NAME=\"%s\"",
-		      (const char *)RDEscapeString(name));
+    QString("delete from SERVICE_PERMS where ")+
+    "STATION_NAME=\""+RDEscapeString(name)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
-  sql=QString().sprintf("delete from PANELS where (TYPE=%d && OWNER=\"%s\")",
-			RDAirPlayConf::StationPanel,
-			(const char *)RDEscapeString(name));
+  sql=QString("delete from RDAIRPLAY where ")+
+    "STATION=\""+RDEscapeString(name)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
-  sql=QString().
-    sprintf("delete from EXTENDED_PANELS where (TYPE=%d && OWNER=\"%s\")",
-	    RDAirPlayConf::StationPanel,(const char *)RDEscapeString(name));
+  sql=QString("delete from RDAIRPLAY_CHANNELS where ")+
+    "STATION=\""+RDEscapeString(name)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
-
-  sql=QString().sprintf("select ID from ENCODERS where STATION_NAME=\"%s\"",
-			(const char *)RDEscapeString(name));
-  q=new RDSqlQuery(sql);
-  while(q->next()) {
-    sql=QString().sprintf("delete from ENCODER_CHANNELS where ENCODER_ID=%d",
-			  q->value(0).toInt());
-    q1=new RDSqlQuery(sql);
-    delete q1;
-    sql=QString().sprintf("delete from ENCODER_SAMPLERATES where ENCODER_ID=%d",
-			  q->value(0).toInt());
-    q1=new RDSqlQuery(sql);
-    delete q1;
-    sql=QString().sprintf("delete from ENCODER_BITRATES where ENCODER_ID=%d",
-			  q->value(0).toInt());
-    q1=new RDSqlQuery(sql);
-    delete q1;
-  }
-  delete q;
-  sql=QString().sprintf("delete from ENCODERS where STATION_NAME=\"%s\"",
-			(const char *)RDEscapeString(name));
+  sql=QString("delete from RDPANEL where ")+
+    "STATION=\""+RDEscapeString(name)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
-  sql=QString().sprintf("delete from RDHOTKEYS where STATION_NAME=\"%s\"",
-			(const char *)RDEscapeString(name));
+  sql=QString("delete from RDPANEL_CHANNELS where ")+
+    "STATION=\""+RDEscapeString(name)+"\"";
+  q=new RDSqlQuery(sql);
+  delete q;
+  sql=QString("delete from RDLOGEDIT where ")+
+    "STATION=\""+RDEscapeString(name)+"\"";
+  q=new RDSqlQuery(sql);
+  delete q;
+  sql=QString("delete from MATRICES where ")+
+    "STATION_NAME=\""+RDEscapeString(name)+"\"";
+  q=new RDSqlQuery(sql);
+  delete q;
+  sql=QString("delete from INPUTS where ")+
+    "STATION_NAME=\""+RDEscapeString(name)+"\"";
+  q=new RDSqlQuery(sql);
+  delete q;
+  sql=QString("delete from OUTPUTS where ")+
+    "STATION_NAME=\""+RDEscapeString(name)+"\"";
+  q=new RDSqlQuery(sql);
+  delete q;
+  sql=QString("delete from VGUEST_RESOURCES where ")+
+    "STATION_NAME=\""+RDEscapeString(name)+"\"";
+  q=new RDSqlQuery(sql);
+  delete q;
+  sql=QString("delete from RDLIBRARY where ")+
+    "STATION=\""+RDEscapeString(name)+"\"";
+  q=new RDSqlQuery(sql);
+  delete q;
+  sql=QString("delete from GPIS where ")+
+    "STATION_NAME=\""+RDEscapeString(name)+"\"";
+  q=new RDSqlQuery(sql);
+  delete q;
+  sql=QString("delete from HOSTVARS where ")+
+    "STATION_NAME=\""+RDEscapeString(name)+"\"";
+  q=new RDSqlQuery(sql);
+  delete q;
+  sql=QString("delete from STATIONS where ")+
+    "NAME=\""+RDEscapeString(name)+"\"";
+  q=new RDSqlQuery(sql);
+  delete q;
+  sql=QString("delete from REPORT_STATIONS where ")+
+    "STATION_NAME=\""+RDEscapeString(name)+"\"";
+  q=new RDSqlQuery(sql);
+  delete q;
+  sql=QString("delete from PANELS where ")+
+    QString().sprintf("(TYPE=%d)&&",RDAirPlayConf::StationPanel)+
+    "(OWNER=\""+RDEscapeString(name)+"\")";
+  q=new RDSqlQuery(sql);
+  delete q;
+  sql=QString("delete from EXTENDED_PANELS where ")+
+    QString().sprintf("(TYPE=%d)&&",RDAirPlayConf::StationPanel)+
+    "OWNER=\""+RDEscapeString(name)+"\")";
+  q=new RDSqlQuery(sql);
+  delete q;
+  sql=QString("delete from RDHOTKEYS where ")+
+    "STATION_NAME=\""+RDEscapeString(name)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
 }

@@ -29,12 +29,14 @@
 #include <qmessagebox.h>
 #include <qbuttongroup.h>
 
-#include <rdstation.h>
 #include <rddb.h>
-#include <globals.h>
-#include <list_hostvars.h>
-#include <add_hostvar.h>
-#include <edit_hostvar.h>
+#include <rdescape_string.h>
+#include <rdstation.h>
+
+#include "add_hostvar.h"
+#include "edit_hostvar.h"
+#include "globals.h"
+#include "list_hostvars.h"
 
 ListHostvars::ListHostvars(QString station,QWidget *parent)
   : QDialog(parent,"",true)
@@ -214,18 +216,17 @@ void ListHostvars::okData()
   QString sql;
   RDSqlQuery *q;
 
-  sql=QString().sprintf("delete from HOSTVARS where STATION_NAME=\"%s\"",
-			(const char *)list_station);
+  sql=QString("delete from HOSTVARS where ")+
+    "STATION_NAME=\""+RDEscapeString(list_station)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
   QListViewItem *item=list_view->firstChild();
   while(item!=NULL) {
-    sql=QString().sprintf("insert into HOSTVARS set STATION_NAME=\"%s\",\
-                           NAME=\"%s\",VARVALUE=\"%s\",REMARK=\"%s\"",
-			  (const char *)list_station,
-			  (const char *)item->text(0),
-			  (const char *)item->text(1),
-			  (const char *)item->text(2));
+    sql=QString("insert into HOSTVARS set ")+
+      "STATION_NAME=\""+RDEscapeString(list_station)+"\","+
+      "NAME=\""+RDEscapeString(item->text(0))+"\","+
+      "VARVALUE=\""+RDEscapeString(item->text(1))+"\","+
+      "REMARK=\""+RDEscapeString(item->text(2))+"\"";
     q=new RDSqlQuery(sql);
     delete q;
     item=item->nextSibling();
@@ -245,9 +246,13 @@ void ListHostvars::RefreshList()
   QListViewItem *l;
 
   list_view->clear();
-  QString sql=QString().sprintf("select NAME,VARVALUE,REMARK from HOSTVARS \
-                                 where STATION_NAME=\"%s\" order by NAME",
-				(const char *)list_station);
+  QString sql=QString("select ")+
+    "NAME,"+
+    "VARVALUE,"+
+    "REMARK "+
+    "from HOSTVARS where "+
+    "STATION_NAME=\""+RDEscapeString(list_station)+"\" "+
+    "order by NAME";
   RDSqlQuery *q=new RDSqlQuery(sql);
   while(q->next()) {
     l=new QListViewItem(list_view);

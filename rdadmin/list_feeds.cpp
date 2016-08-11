@@ -37,14 +37,15 @@
 
 #include <rddb.h>
 #include <rdcart.h>
+#include <rdescape_string.h>
 #include <rdtextfile.h>
 #include <rdpodcast.h>
 #include <rdfeedlog.h>
 
-#include <list_feeds.h>
-#include <edit_feed.h>
-#include <add_feed.h>
-#include <globals.h>
+#include "add_feed.h"
+#include "edit_feed.h"
+#include "globals.h"
+#include "list_feeds.h"
 
 ListFeeds::ListFeeds(QWidget *parent)
   : QDialog(parent,"",true)
@@ -162,17 +163,17 @@ void ListFeeds::addData()
 
   EditFeed *edit_feed=new EditFeed(feed,this);
   if(edit_feed->exec()<0) {
-    sql=QString().sprintf("delete from FEED_PERMS where KEY_NAME=\"%s\"",
-			  (const char *)feed);
+    sql=QString("delete from FEED_PERMS where ")+
+      "KEY_NAME=\""+RDEscapeString(feed)+"\"";
     q=new RDSqlQuery(sql);
     delete q;
-    sql=QString().sprintf("delete from FEEDS where KEY_NAME=\"%s\"",
-			  (const char *)feed);
+    sql=QString("delete from FEEDS where ")+
+      "KEY_NAME=\""+RDEscapeString(feed)+"\"";
     q=new RDSqlQuery(sql);
     delete q;
     RDDeleteFeedLog(feed);
     feed.replace(" ","_");
-    sql=QString().sprintf("drop table %s_FIELDS",(const char *)feed);
+    sql=QString("drop table `")+feed+"_FIELDS`";
     q=new RDSqlQuery(sql);
     delete q;
     delete edit_feed;
@@ -267,17 +268,17 @@ void ListFeeds::deleteData()
   //
   // Delete Feed
   //
-  sql=QString().sprintf("delete from FEED_PERMS where KEY_NAME=\"%s\"",
-			(const char *)feedname);
+  sql=QString("delete from FEED_PERMS where ")+
+    "KEY_NAME=\""+RDEscapeString(feedname)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
-  sql=QString().sprintf("delete from FEEDS where KEY_NAME=\"%s\"",
-			(const char *)feedname);
+  sql=QString("delete from FEEDS where ")+
+    "KEY_NAME=\""+RDEscapeString(feedname)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
   RDDeleteFeedLog(feedname);
   feedname.replace(" ","_");
-  sql=QString().sprintf("drop table %s_FIELDS",(const char *)feedname);
+  sql=QString("drop table '")+feedname+"_FIELDS`";
   q=new RDSqlQuery(sql);
   delete q;
   item->setSelected(false);
@@ -341,9 +342,14 @@ void ListFeeds::RefreshItem(RDListViewItem *item)
   QString sql;
   RDSqlQuery *q;
 
-  sql=QString().sprintf("select KEY_NAME,CHANNEL_TITLE,ENABLE_AUTOPOST,\
-                         KEEP_METADATA,ORIGIN_DATETIME from FEEDS \
-                         where ID=%d",item->id());
+  sql=QString("select ")+
+    "KEY_NAME,"+
+    "CHANNEL_TITLE,"+
+    "ENABLE_AUTOPOST,"+
+    "KEEP_METADATA,"+
+    "ORIGIN_DATETIME "+
+    "from FEEDS where "+
+    QString().sprintf("ID=%d",item->id());
   q=new RDSqlQuery(sql);
   if(q->next()) {
     item->setText(0,q->value(0).toString());

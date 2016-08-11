@@ -30,9 +30,10 @@
 #include <qbuttongroup.h>
 
 #include <rddb.h>
-#include <list_dropboxes.h>
-#include <edit_dropbox.h>
+#include <rdescape_string.h>
 
+#include "edit_dropbox.h"
+#include "list_dropboxes.h"
 
 ListDropboxes::ListDropboxes(const QString &stationname,QWidget *parent)
   : QDialog(parent,"",true)
@@ -229,17 +230,22 @@ void ListDropboxes::RefreshList()
   RDListViewItem *item;
 
   list_dropboxes_view->clear();
-  sql=QString().sprintf("select DROPBOXES.ID,DROPBOXES.GROUP_NAME,\
-                         DROPBOXES.PATH,DROPBOXES.NORMALIZATION_LEVEL,\
-                         DROPBOXES.AUTOTRIM_LEVEL,\
-                         DROPBOXES.TO_CART,DROPBOXES.USE_CARTCHUNK_ID,\
-                         DROPBOXES.DELETE_CUTS,DROPBOXES.METADATA_PATTERN,\
-                         DROPBOXES.FIX_BROKEN_FORMATS,\
-                         DROPBOXES.SET_USER_DEFINED,GROUPS.COLOR \
-                         from DROPBOXES left join GROUPS on \
-                         DROPBOXES.GROUP_NAME=GROUPS.NAME \
-                         where DROPBOXES.STATION_NAME=\"%s\"",
-			(const char *)list_stationname);
+  sql=QString("select ")+
+    "DROPBOXES.ID,"+                    // 00
+    "DROPBOXES.GROUP_NAME,"+            // 01
+    "DROPBOXES.PATH,"+                  // 02
+    "DROPBOXES.NORMALIZATION_LEVEL,"+   // 03
+    "DROPBOXES.AUTOTRIM_LEVEL,"+        // 04
+    "DROPBOXES.TO_CART,"+               // 05
+    "DROPBOXES.USE_CARTCHUNK_ID,"+      // 06
+    "DROPBOXES.DELETE_CUTS,"+           // 07
+    "DROPBOXES.METADATA_PATTERN,"+      // 08
+    "DROPBOXES.FIX_BROKEN_FORMATS,"+    // 09
+    "DROPBOXES.SET_USER_DEFINED,"+      // 10
+    "GROUPS.COLOR "+                    // 11
+    "from DROPBOXES left join GROUPS "+
+    "on DROPBOXES.GROUP_NAME=GROUPS.NAME where "+
+    "DROPBOXES.STATION_NAME=\""+RDEscapeString(list_stationname)+"\"";
   q=new RDSqlQuery(sql);
   while (q->next()) {
     item=new RDListViewItem(list_dropboxes_view);
@@ -254,16 +260,22 @@ void ListDropboxes::RefreshItem(RDListViewItem *item)
   QString sql;
   RDSqlQuery *q;
 
-  sql=QString().sprintf("select DROPBOXES.ID,DROPBOXES.GROUP_NAME,\
-                         DROPBOXES.PATH,DROPBOXES.NORMALIZATION_LEVEL,\
-                         DROPBOXES.AUTOTRIM_LEVEL,\
-                         DROPBOXES.TO_CART,DROPBOXES.USE_CARTCHUNK_ID,\
-                         DROPBOXES.DELETE_CUTS,DROPBOXES.METADATA_PATTERN,\
-                         DROPBOXES.FIX_BROKEN_FORMATS,\
-                         DROPBOXES.SET_USER_DEFINED,GROUPS.COLOR \
-                         from DROPBOXES left join GROUPS on \
-                         DROPBOXES.GROUP_NAME=GROUPS.NAME \
-                         where DROPBOXES.ID=%d",item->id());
+  sql=QString("select ")+
+    "DROPBOXES.ID,"+                   // 00
+    "DROPBOXES.GROUP_NAME,"+           // 01
+    "DROPBOXES.PATH,"+                 // 02
+    "DROPBOXES.NORMALIZATION_LEVEL,"+  // 03
+    "DROPBOXES.AUTOTRIM_LEVEL,"+       // 04
+    "DROPBOXES.TO_CART,"+              // 05
+    "DROPBOXES.USE_CARTCHUNK_ID,"+     // 06
+    "DROPBOXES.DELETE_CUTS,"+          // 07
+    "DROPBOXES.METADATA_PATTERN,"+     // 08
+    "DROPBOXES.FIX_BROKEN_FORMATS,"+   // 09
+    "DROPBOXES.SET_USER_DEFINED,"+     // 10
+    "GROUPS.COLOR "+                   // 11
+    "from DROPBOXES left join GROUPS "+
+    "on DROPBOXES.GROUP_NAME=GROUPS.NAME where "+
+    QString().sprintf("DROPBOXES.ID=%d",item->id());
   q=new RDSqlQuery(sql);
   if(q->next()) {
     WriteItem(item,q);

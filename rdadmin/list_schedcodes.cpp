@@ -244,8 +244,8 @@ void ListSchedCodes::RefreshItem(QListViewItem *item)
   QString sql;
   RDSqlQuery *q;
 
-  sql=QString().sprintf("select CODE,DESCRIPTION from SCHED_CODES where CODE=\"%s\"",
-			(const char *)item->text(0));
+  sql=QString("select CODE,DESCRIPTION from SCHED_CODES where ")+
+    "CODE=\""+RDEscapeString(item->text(0))+"\"";
   q=new RDSqlQuery(sql);
   if(q->next()) {
     WriteItem(item,q);

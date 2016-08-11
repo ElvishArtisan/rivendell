@@ -29,12 +29,14 @@
 #include <qmessagebox.h>
 #include <qbuttongroup.h>
 
+#include <rdescape_string.h>
 #include <rdstation.h>
 #include <rddb.h>
-#include <globals.h>
-#include <list_matrices.h>
-#include <edit_matrix.h>
-#include <add_matrix.h>
+
+#include "add_matrix.h"
+#include "edit_matrix.h"
+#include "globals.h"
+#include "list_matrices.h"
 
 ListMatrices::ListMatrices(QString station,QWidget *parent)
   : QDialog(parent,"",true)
@@ -249,46 +251,39 @@ void ListMatrices::closeData()
 
 void ListMatrices::DeleteMatrix(int matrix)
 {
-  QString sql=QString().sprintf("delete from MATRICES where \
-                               STATION_NAME=\"%s\" && MATRIX=%d",
-				(const char *)list_station,
-				matrix);
+  QString sql=QString("delete from MATRICES where ")+
+    "(STATION_NAME=\""+RDEscapeString(list_station)+"\")&&"+
+    QString().sprintf("(MATRIX=%d)",matrix);
   RDSqlQuery *q=new RDSqlQuery(sql);
   delete q;
-  sql=QString().sprintf("delete from INPUTS where \
-                         STATION_NAME=\"%s\" && MATRIX=%d",
-			(const char *)list_station,
-			matrix);
+  sql=QString("delete from INPUTS where ")+
+    "(STATION_NAME=\""+RDEscapeString(list_station)+"\")&&"+
+    QString().sprintf("(MATRIX=%d)",matrix);
   q=new RDSqlQuery(sql);
   delete q;
-  sql=QString().sprintf("delete from OUTPUTS where \
-                         STATION_NAME=\"%s\" && MATRIX=%d",
-			(const char *)list_station,
-			matrix);
+  sql=QString("delete from OUTPUTS where ")+
+    "(STATION_NAME=\""+RDEscapeString(list_station)+"\")&&"+
+    QString().sprintf("(MATRIX=%d)",matrix);
   q=new RDSqlQuery(sql);
   delete q;
-  sql=QString().sprintf("delete from SWITCHER_NODES where \
-                         STATION_NAME=\"%s\" && MATRIX=%d",
-			(const char *)list_station,
-			matrix);
+  sql=QString("delete from SWITCHER_NODES where ")+
+    "(STATION_NAME=\""+RDEscapeString(list_station)+"\")&&"+
+    QString().sprintf("(MATRIX=%d)",matrix);
   q=new RDSqlQuery(sql);
   delete q;
-  sql=QString().sprintf("delete from GPIS where \
-                         STATION_NAME=\"%s\" && MATRIX=%d",
-			(const char *)list_station,
-			matrix);
+  sql=QString("delete from GPIS where ")+
+    "(STATION_NAME=\""+RDEscapeString(list_station)+"\")&&"+
+    QString().sprintf("(MATRIX=%d)",matrix);
   q=new RDSqlQuery(sql);
   delete q;
-  sql=QString().sprintf("delete from GPOS where \
-                         STATION_NAME=\"%s\" && MATRIX=%d",
-			(const char *)list_station,
-			matrix);
+  sql=QString("delete from GPOS where ")+
+    "(STATION_NAME=\""+RDEscapeString(list_station)+"\")&&"+
+    QString().sprintf("(MATRIX=%d)",matrix);
   q=new RDSqlQuery(sql);
   delete q;
-  sql=QString().sprintf("delete from VGUEST_RESOURCES where \
-                         STATION_NAME=\"%s\" && MATRIX_NUM=%d",
-			(const char *)list_station,
-			matrix);
+  sql=QString("delete from VGUEST_RESOURCES where ")+
+    "(STATION_NAME=\""+RDEscapeString(list_station)+"\")&&"+
+    QString().sprintf("MATRIX_NUM=%d",matrix);
   q=new RDSqlQuery(sql);
   delete q;
 }
@@ -299,9 +294,13 @@ void ListMatrices::RefreshList()
   QListViewItem *l;
 
   list_view->clear();
-  QString sql=QString().sprintf("select MATRIX,NAME,TYPE from MATRICES \
-                                 where STATION_NAME=\"%s\" order by MATRIX",
-				(const char *)list_station);
+  QString sql=QString("select ")+
+    "MATRIX,"+
+    "NAME,"+
+    "TYPE "+
+    "from MATRICES where "+
+    "STATION_NAME=\""+RDEscapeString(list_station)+"\" "+
+    "order by MATRIX";
   RDSqlQuery *q=new RDSqlQuery(sql);
   while(q->next()) {
     l=new QListViewItem(list_view);

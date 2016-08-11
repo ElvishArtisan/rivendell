@@ -28,11 +28,13 @@
 #include <qevent.h>
 #include <qmessagebox.h>
 #include <qbuttongroup.h>
-#include <rddb.h>
 
-#include <list_svcs.h>
-#include <edit_svc.h>
-#include <add_svc.h>
+#include <rddb.h>
+#include <rdescape_string.h>
+
+#include "add_svc.h"
+#include "edit_svc.h"
+#include "list_svcs.h"
 
 ListSvcs::ListSvcs(QWidget *parent)
   : QDialog(parent,"",true)
@@ -166,8 +168,8 @@ void ListSvcs::deleteData()
      QMessageBox::Yes) {
     return;
   }
-  sql=QString().sprintf("select NAME from LOGS where SERVICE=\"%s\"",
-			(const char *)list_box->currentText());
+  sql=QString("select NAME from LOGS where ")+
+    "SERVICE=\""+RDEscapeString(list_box->currentText())+"\"";
   q=new RDSqlQuery(sql);
   if(q->first()) {
     str1=tr("There are");

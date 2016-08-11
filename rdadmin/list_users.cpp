@@ -205,8 +205,8 @@ void ListUsers::deleteData()
   //
   // Check for default user assignments
   //
-  sql=QString().sprintf("select NAME from STATIONS where DEFAULT_NAME=\"%s\"",
-			(const char *)username);
+  sql=QString("select NAME from STATIONS where ")+
+    "DEFAULT_NAME=\""+RDEscapeString(username)+"\"";
   q=new RDSqlQuery(sql);
   if(q->size()>0) {
     str=tr("This user is set as the default user for the following hosts:\n\n");
@@ -237,32 +237,32 @@ void ListUsers::deleteData()
   //
   // Delete RSS Feed Perms
   //
-  sql=QString().sprintf("delete from FEED_PERMS where USER_NAME=\"%s\"",
-			(const char *)username);
+  sql=QString("delete from FEED_PERMS where ")+
+    "USER_NAME=\""+RDEscapeString(username)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
   
   //
   // Delete Member User Perms
   //
-  sql=QString().sprintf("delete from USER_PERMS where USER_NAME=\"%s\"",
-			(const char *)username);
+  sql=QString("delete from USER_PERMS where ")+
+    "USER_NAME=\""+RDEscapeString(username)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
   
   //
   // Delete from User List
   //
-  sql=QString().sprintf("delete from USERS where LOGIN_NAME=\"%s\"",
-			(const char *)username);
+  sql=QString("delete from USERS where ")+
+    "LOGIN_NAME=\""+RDEscapeString(username)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
 
   //
   // Delete from Cached Web Connections
   //
-  sql=QString().sprintf("delete from WEB_CONNECTIONS where LOGIN_NAME=\"%s\"",
-			(const char *)username);
+  sql=QString("delete from WEB_CONNECTIONS where ")+
+    "LOGIN_NAME=\""+RDEscapeString(username)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
 
@@ -301,7 +301,13 @@ void ListUsers::RefreshList()
   RDListViewItem *item;
 
   list_users_view->clear();
-  sql="select ADMIN_CONFIG_PRIV,LOGIN_NAME,FULL_NAME,DESCRIPTION from USERS";
+  sql=QString("select ")+
+    "ADMIN_CONFIG_PRIV,"+
+    "LOGIN_NAME,"+
+    "FULL_NAME,"+
+    "DESCRIPTION "+
+    "from USERS "+
+    "order by LOGIN_NAME";
   q=new RDSqlQuery(sql);
   while (q->next()) {
     item=new RDListViewItem(list_users_view);
@@ -324,9 +330,11 @@ void ListUsers::RefreshItem(RDListViewItem *item)
   QString sql;
   RDSqlQuery *q;
 
-  sql=QString().sprintf("select ADMIN_CONFIG_PRIV,FULL_NAME,DESCRIPTION \
-                         from USERS where LOGIN_NAME=\"%s\"",
-			(const char *)RDEscapeString(item->text(1)));
+  sql=QString("select ")+
+    "ADMIN_CONFIG_PRIV,"+
+    "FULL_NAME,DESCRIPTION "+
+    "from USERS where "+
+    "LOGIN_NAME=\""+RDEscapeString(item->text(1))+"\"";
   q=new RDSqlQuery(sql);
   if(q->first()) {
     if(q->value(0).toString()=="Y") {

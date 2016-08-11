@@ -166,9 +166,9 @@ void ListReplicatorCarts::repostAllData()
   QString sql;
   RDSqlQuery *q;
 
-  sql=QString().sprintf("update REPL_CART_STATE set REPOST=\"Y\" \
-                         where REPLICATOR_NAME=\"%s\"",
-			(const char *)list_replicator_name);
+  sql=QString("update REPL_CART_STATE set ")+
+    "REPOST=\"Y\" where "+
+    "REPLICATOR_NAME=\""+RDEscapeString(list_replicator_name)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
 }
@@ -187,9 +187,11 @@ void ListReplicatorCarts::refreshTimeoutData()
   RDSqlQuery *q;
   RDListViewItem *item;
 
-  sql=QString().sprintf("select ID,ITEM_DATETIME from REPL_CART_STATE \
-                         where REPLICATOR_NAME=\"%s\"",
-			(const char *)RDEscapeString(list_replicator_name));
+  sql=QString("select ")+
+    "ID,"+
+    "ITEM_DATETIME "+
+    "from REPL_CART_STATE where "+
+    "REPLICATOR_NAME=\""+RDEscapeString(list_replicator_name)+"\"";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     item=(RDListViewItem *)list_view->firstChild();
@@ -223,15 +225,16 @@ void ListReplicatorCarts::RefreshList()
   RDListViewItem *item;
 
   list_view->clear();
-  sql=QString().sprintf("select REPL_CART_STATE.ID,\
-                         CART.TYPE,REPL_CART_STATE.CART_NUMBER,\
-                         CART.TITLE,\
-                         REPL_CART_STATE.ITEM_DATETIME,\
-                         REPL_CART_STATE.POSTED_FILENAME \
-                         from REPL_CART_STATE left join CART \
-                         on REPL_CART_STATE.CART_NUMBER=CART.NUMBER \
-                         where REPLICATOR_NAME=\"%s\"",
-			(const char *)RDEscapeString(list_replicator_name));
+  sql=QString("select ")+
+    "REPL_CART_STATE.ID,"+
+    "CART.TYPE,"+
+    "REPL_CART_STATE.CART_NUMBER,"+
+    "CART.TITLE,"+
+    "REPL_CART_STATE.ITEM_DATETIME,"+
+    "REPL_CART_STATE.POSTED_FILENAME "+
+    "from REPL_CART_STATE left join CART "+
+    "on REPL_CART_STATE.CART_NUMBER=CART.NUMBER where "+
+    "REPLICATOR_NAME=\""+RDEscapeString(list_replicator_name)+"\"";
   q=new RDSqlQuery(sql);
   while (q->next()) {
     item=new RDListViewItem(list_view);

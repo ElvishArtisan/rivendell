@@ -25,12 +25,13 @@
 #include <qmessagebox.h>
 
 #include <rd.h>
+#include <rdescape_string.h>
 #include <rdpasswd.h>
 #include <rddb.h>
 
-#include <edit_node.h>
-#include <list_nodes.h>
-#include <edit_endpoint.h>
+#include "edit_endpoint.h"
+#include "edit_node.h"
+#include "list_nodes.h"
 
 ListNodes::ListNodes(RDMatrix *matrix,QWidget *parent)
   : QDialog(parent,"",true)
@@ -207,11 +208,15 @@ void ListNodes::RefreshList()
   RDListViewItem *item;
 
   list_list_view->clear();
-  sql=QString().sprintf("select ID,HOSTNAME,DESCRIPTION,BASE_OUTPUT,TCP_PORT \
-                         from SWITCHER_NODES \
-                         where (STATION_NAME=\"%s\")&&(MATRIX=%d)",
-			(const char *)list_matrix->station(),
-			list_matrix->matrix());
+  sql=QString("select ")+
+    "ID,"+
+    "HOSTNAME,"+
+    "DESCRIPTION,"+
+    "BASE_OUTPUT,"+
+    "TCP_PORT "+
+    "from SWITCHER_NODES where "+
+    "(STATION_NAME=\""+RDEscapeString(list_matrix->station())+"\")&&"+
+    QString().sprintf("(MATRIX=%d)",list_matrix->matrix());
   q=new RDSqlQuery(sql);
   while(q->next()) {
     item=new RDListViewItem(list_list_view);
@@ -258,16 +263,14 @@ void ListNodes::PurgeEndpoints(const QString &tablename)
   QString sql;
   RDSqlQuery *q;
 
-  sql=QString().sprintf("delete from %s where \
-                         (STATION_NAME=\"%s\")&&\
-                         (MATRIX=%d)&&",
-			(const char *)tablename,
-			(const char *)list_matrix->station(),
-			list_matrix->matrix());
+  sql=QString("delete from ")+tablename+" where "+
+    "(STATION_NAME=\""+RDEscapeString(list_matrix->station())+"\")&&"+
+    QString().sprintf("(MATRIX=%d)&&",list_matrix->matrix());
   RDListViewItem *item=(RDListViewItem *)list_list_view->firstChild();
   while(item!=NULL) {
-    sql+=QString().sprintf("((NODE_HOSTNAME!=\"%s\")&&(NODE_TCP_PORT!=%d))&&",
-			   (const char *)item->text(0),item->text(3).toInt());
+    sql+=QString("((NODE_HOSTNAME!=")+"\""+
+      RDEscapeString(item->text(0))+"\")&&"+
+      QString().sprintf("(NODE_TCP_PORT!=%d))&&",item->text(3).toInt());
     item=(RDListViewItem *)item->nextSibling();
   }
   sql=sql.left(sql.length()-2);

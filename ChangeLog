@@ -15736,3 +15736,38 @@
 	'rdadmin/edit_svc_perms.cpp'.
 	* Removed (const char *) casts from SQL statements in
 	'rdadmin/edit_user_perms.cpp'.
+2016-08-11 Fred Gleason <fredg@paravelsystems.com>
+	* Removed (const char *) casts from SQL statements in
+	'rdadmin/list_aux_fields.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdadmin/list_dropboxes.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdadmin/list_endpoints.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdadmin/list_feeds.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdadmin/list_gpis.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdadmin/list_groups.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdadmin/list_hostvars.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdadmin/list_matrices.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdadmin/list_nodes.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdadmin/list_replicator_carts.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdadmin/list_replicators.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdadmin/list_sas_resources.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdadmin/list_schedcodes.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdadmin/list_stations.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdadmin/list_svcs.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdadmin/list_users.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdadmin/list_vguest_resources.cpp'.
