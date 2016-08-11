@@ -26,7 +26,6 @@
 #include <qmessagebox.h>
 #include <qcheckbox.h>
 #include <qbuttongroup.h>
-#include <qsqldatabase.h>
 #include <qimage.h>
 
 #include <rdlabel.h>

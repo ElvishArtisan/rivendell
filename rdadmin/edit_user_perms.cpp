@@ -31,9 +31,11 @@
 #include <qbuttongroup.h>
 
 #include <rddb.h>
-#include <edit_user_perms.h>
+#include <rdescape_string.h>
 #include <rduser.h>
 #include <rdpasswd.h>
+
+#include "edit_user_perms.h"
 
 EditUserPerms::EditUserPerms(RDUser *user,QWidget *parent)
   : QDialog(parent,"",true)
@@ -90,9 +92,8 @@ EditUserPerms::EditUserPerms(RDUser *user,QWidget *parent)
   //
   // Populate Fields
   //
-  sql=QString().sprintf("select GROUP_NAME from USER_PERMS \
-                         where USER_NAME=\"%s\"",
-			(const char *)user_user->name());
+  sql=QString("select GROUP_NAME from USER_PERMS where ")+
+    "USER_NAME=\""+RDEscapeString(user_user->name())+"\"";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     user_host_sel->destInsertItem(q->value(0).toString());
@@ -136,18 +137,15 @@ void EditUserPerms::okData()
   // Add New Groups
   //
   for(unsigned i=0;i<user_host_sel->destCount();i++) {
-    sql=QString().sprintf("select GROUP_NAME from USER_PERMS \
-                           where USER_NAME=\"%s\" && GROUP_NAME=\"%s\"",
-			  (const char *)user_user->name(),
-			  (const char *)user_host_sel->destText(i));
+    sql=QString("select GROUP_NAME from USER_PERMS where ")+
+      "(USER_NAME=\""+RDEscapeString(user_user->name())+"\")&&"+
+      "(GROUP_NAME=\""+RDEscapeString(user_host_sel->destText(i))+"\")";
     q=new RDSqlQuery(sql);
     if(q->size()==0) {
       delete q;
-      sql=QString().
-	sprintf("insert into USER_PERMS (USER_NAME,GROUP_NAME) \
-                 values (\"%s\",\"%s\")",
-		(const char *)user_user->name(),
-		(const char *)user_host_sel->destText(i));
+      sql=QString("insert into USER_PERMS set ")+
+	"USER_NAME=\""+RDEscapeString(user_user->name())+"\""+
+	"GROUP_NAME=\""+RDEscapeString(user_host_sel->destText(i))+"\"";
       q=new RDSqlQuery(sql);
     }
     delete q;
@@ -156,11 +154,11 @@ void EditUserPerms::okData()
   //
   // Delete Old Groups
   //
-  sql=QString().sprintf("delete from USER_PERMS where USER_NAME=\"%s\"",
-			(const char *)user_user->name());
+  sql=QString("delete from USER_PERMS where ")+
+    "(USER_NAME=\""+RDEscapeString(user_user->name())+"\")";
   for(unsigned i=0;i<user_host_sel->destCount();i++) {
-    sql+=QString().sprintf(" && GROUP_NAME<>\"%s\"",
-			   (const char *)user_host_sel->destText(i));
+    sql+=QString("&&(GROUP_NAME<>")+"\""+
+      RDEscapeString(user_host_sel->destText(i))+"\")";
   }
   q=new RDSqlQuery(sql);
   delete q;

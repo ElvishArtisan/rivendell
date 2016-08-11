@@ -15725,3 +15725,14 @@
 	'rdadmin/edit_replicator.cpp'.
 	* Removed (const char *) casts from SQL statements in
 	'rdadmin/edit_report.cpp'.
+2016-08-11 Fred Gleason <fredg@paravelsystems.com>
+	* Removed (const char *) casts from SQL statements in
+	'rdadmin/edit_schedcodes.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdadmin/edit_settings.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdadmin/edit_station.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdadmin/edit_svc_perms.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdadmin/edit_user_perms.cpp'.

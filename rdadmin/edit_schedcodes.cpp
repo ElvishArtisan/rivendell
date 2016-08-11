@@ -27,12 +27,14 @@
 #include <qmessagebox.h>
 #include <qbuttongroup.h>
 
+#include <rdescape_string.h>
 #include <rduser.h>
 #include <rdpasswd.h>
 #include <rdtextvalidator.h>
 #include <rddb.h>
-#include <edit_group.h>
-#include <edit_schedcodes.h>
+
+#include "edit_group.h"
+#include "edit_schedcodes.h"
 
 EditSchedCode::EditSchedCode(QString schedCode,QString description,
 			     QWidget *parent)
@@ -140,7 +142,9 @@ void EditSchedCode::okData()
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString().sprintf("update SCHED_CODES set DESCRIPTION=\"%s\" where CODE=\"%s\"",(const char *)schedCode_description_edit->text(),(const char *)schedCode_name_edit->text());
+  sql=QString("update SCHED_CODES set ")+
+    "DESCRIPTION=\""+RDEscapeString(schedCode_description_edit->text())+"\" "+
+    "where CODE=\""+RDEscapeString(schedCode_name_edit->text())+"\"";
 
   q=new RDSqlQuery(sql);
   delete q;

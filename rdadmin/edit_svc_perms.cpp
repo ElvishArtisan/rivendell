@@ -31,9 +31,11 @@
 #include <qbuttongroup.h>
 
 #include <rddb.h>
-#include <edit_svc_perms.h>
+#include <rdescape_string.h>
 #include <rduser.h>
 #include <rdpasswd.h>
+
+#include "edit_svc_perms.h"
 
 EditSvcPerms::EditSvcPerms(RDSvc *svc,QWidget *parent)
   : QDialog(parent,"",true)
@@ -89,9 +91,8 @@ EditSvcPerms::EditSvcPerms(RDSvc *svc,QWidget *parent)
 
   //
   // Populate Fields
-  sql=QString().sprintf("select STATION_NAME from SERVICE_PERMS \
-                         where SERVICE_NAME=\"%s\"",
-			(const char *)svc_svc->name());
+  sql=QString("select STATION_NAME from SERVICE_PERMS where ")+
+    "SERVICE_NAME=\""+RDEscapeString(svc_svc->name())+"\"";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     svc_host_sel->destInsertItem(q->value(0).toString());
@@ -135,18 +136,15 @@ void EditSvcPerms::okData()
   // Add New Hosts
   //
   for(unsigned i=0;i<svc_host_sel->destCount();i++) {
-    sql=QString().sprintf("select STATION_NAME from SERVICE_PERMS \
-                           where SERVICE_NAME=\"%s\" && STATION_NAME=\"%s\"",
-			  (const char *)svc_svc->name(),
-			  (const char *)svc_host_sel->destText(i));
+    sql=QString("select STATION_NAME from SERVICE_PERMS where ")+
+      "(SERVICE_NAME=\""+RDEscapeString(svc_svc->name())+"\")&&"+
+      "(STATION_NAME=\""+RDEscapeString(svc_host_sel->destText(i))+"\")";
     q=new RDSqlQuery(sql);
     if(q->size()==0) {
       delete q;
-      sql=QString().
-	sprintf("insert into SERVICE_PERMS (SERVICE_NAME,STATION_NAME) \
-                 values (\"%s\",\"%s\")",
-		(const char *)svc_svc->name(),
-		(const char *)svc_host_sel->destText(i));
+      sql=QString("insert into SERVICE_PERMS set ")+
+	"SERVICE_NAME=\""+RDEscapeString(svc_svc->name())+"\","+
+	"STATION_NAME=\""+RDEscapeString(svc_host_sel->destText(i));
       q=new RDSqlQuery(sql);
     }
     delete q;
@@ -155,11 +153,11 @@ void EditSvcPerms::okData()
   //
   // Delete Old Hosts
   //
-  sql=QString().sprintf("delete from SERVICE_PERMS where SERVICE_NAME=\"%s\"",
-			(const char *)svc_svc->name());
+  sql=QString("delete from SERVICE_PERMS where ")+
+    "(SERVICE_NAME=\""+RDEscapeString(svc_svc->name())+"\")";
   for(unsigned i=0;i<svc_host_sel->destCount();i++) {
-    sql+=QString().sprintf(" && STATION_NAME<>\"%s\"",
-			   (const char *)svc_host_sel->destText(i));
+    sql+=QString("&&(STATION_NAME<>\"")+
+      RDEscapeString(svc_host_sel->destText(i))+"\")";
   }
   q=new RDSqlQuery(sql);
   delete q;
