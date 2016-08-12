@@ -122,18 +122,22 @@ void MainObject::PurgeCuts()
   RDSqlQuery *q2;
   QDateTime dt=QDateTime(QDate::currentDate(),QTime::currentTime());
 
-  sql=QString("select NAME,CUT_SHELFLIFE,DELETE_EMPTY_CARTS from GROUPS ")+
-    "where CUT_SHELFLIFE>=0";
+  sql=QString("select ")+
+    "NAME,"+
+    "CUT_SHELFLIFE,"+
+    "DELETE_EMPTY_CARTS "+
+    "from GROUPS where "+
+    "CUT_SHELFLIFE>=0";
   q=new RDSqlQuery(sql);
   while(q->next()) {
-    sql=QString().sprintf("select CART.NUMBER,CUTS.CUT_NAME \
-                           from CUTS left join CART \
-                           on CUTS.CART_NUMBER=CART.NUMBER \
-                           where (CART.GROUP_NAME=\"%s\")&&\
-                           (CUTS.END_DATETIME<\"%s 00:00:00\")",
-			  (const char *)RDEscapeString(q->value(0).toString()),
-			  (const char *)dt.addDays(-q->value(1).toInt()).
-			  toString("yyyy-MM-dd"));
+    sql=QString("select ")+
+      "CART.NUMBER,"+
+      "CUTS.CUT_NAME "+
+      "from CUTS left join CART "+
+      "on CUTS.CART_NUMBER=CART.NUMBER where "+
+      "(CART.GROUP_NAME=\""+RDEscapeString(q->value(0).toString())+"\")&&"+
+      "(CUTS.END_DATETIME<\""+
+      dt.addDays(-q->value(1).toInt()).toString("yyyy-MM-dd")+" 00:00:00\")";
     q1=new RDSqlQuery(sql);
     while(q1->next()) {
       RDCart *cart=new RDCart(q1->value(0).toUInt());
@@ -220,12 +224,13 @@ void MainObject::PurgeDropboxes()
   RDSqlQuery *q;
   RDSqlQuery *q1;
 
-  sql=QString().sprintf("select DROPBOX_PATHS.FILE_PATH,DROPBOX_PATHS.ID from \
-                         DROPBOXES left join DROPBOX_PATHS \
-                         on (DROPBOXES.ID=DROPBOX_PATHS.DROPBOX_ID) \
-                         where DROPBOXES.STATION_NAME=\"%s\"",
-			(const char *)RDEscapeString(rda->config()->
-						     stationName()));
+  sql=QString("select ")+
+    "DROPBOX_PATHS.FILE_PATH,"+
+    "DROPBOX_PATHS.ID "+
+    "from DROPBOXES left join DROPBOX_PATHS "+
+    "on (DROPBOXES.ID=DROPBOX_PATHS.DROPBOX_ID) where "+
+    "DROPBOXES.STATION_NAME=\""+RDEscapeString(rda->config()->stationName())+
+    "\"";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     if(!QFile::exists(q->value(0).toString())) {

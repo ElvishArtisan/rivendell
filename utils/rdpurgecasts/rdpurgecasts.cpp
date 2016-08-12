@@ -122,8 +122,8 @@ void MainObject::PurgeCast(unsigned id)
     else {
       QString keyname=q->value(2).toString();
       keyname.replace(" ","_");
-      sql=QString().sprintf("delete from %s_FLG where CAST_ID=%d",
-			    (const char *)keyname,id);
+      sql=QString("delete from `")+keyname+"_FLG` where "+
+	QString().sprintf("CAST_ID=%d",id);
       q1=new RDSqlQuery(sql);
       delete q1;
 
@@ -131,11 +131,10 @@ void MainObject::PurgeCast(unsigned id)
       q1=new RDSqlQuery(sql);
       delete q1;
     }
-    sql=QString().sprintf("update FEEDS set LAST_BUILD_DATETIME=\"%s\" \
-                           where ID=%u",
-			  (const char *)current_datetime.
-			  toString("yyyy-MM-dd hh:mm:ss"),
-			  q->value(0).toUInt());
+    sql=QString("update FEEDS set ")+
+      "LAST_BUILD_DATETIME=\""+
+      current_datetime.toString("yyyy-MM-dd hh:mm:ss")+"\" where "+
+      QString().sprintf("ID=%u",q->value(0).toUInt());
     q1=new RDSqlQuery(sql);
     delete q1;
 

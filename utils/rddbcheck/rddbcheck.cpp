@@ -126,9 +126,9 @@ MainObject::MainObject(QObject *parent)
   }
 
   if(!orphan_group_name.isEmpty()) {
-    QString sql=QString().sprintf("select NAME from GROUPS where NAME=\"%s\"",
-				  (const char *)orphan_group_name);
-    printf("SQL: %s\n",(const char *)sql);
+    QString sql=QString("select NAME from GROUPS where ")+
+      "NAME=\""+RDEscapeString(orphan_group_name)+"\"";
+    //    printf("SQL: %s\n",(const char *)sql);
     QSqlQuery *q=new QSqlQuery(sql);
     if(!q->first()) {
       fprintf(stderr,"rddbcheck: invalid group \"%s\"\n",
@@ -219,8 +219,8 @@ void MainObject::CheckOrphanedTracks()
   while(q->next()) {
     logname=q->value(2).toString()+"_LOG";
     logname.replace(" ","_");
-    sql=QString().sprintf("select ID from %s where CART_NUMBER=%u",
-			  (const char *)logname,q->value(0).toUInt());
+    sql=QString("select ID from `")+logname+"` where "+
+      QString().sprintf("CART_NUMBER=%u",q->value(0).toUInt());
     q1=new QSqlQuery(sql);
     if(!q1->first()) {
       printf("  Found orphaned track %u - \"%s\".  Delete? (y/N) ",
@@ -266,8 +266,8 @@ void MainObject::CheckClocks()
       // Check the clock -> event linkage
       //
       while(q1->next()) {
-	sql=QString().sprintf("select NAME from EVENTS where NAME=\"%s\"",
-			      (const char *)q1->value(0).toString());
+	sql=QString("select NAME from EVENTS where ")+
+	  "NAME=\""+RDEscapeString(q1->value(0).toString())+"\"";
 	q2=new QSqlQuery(sql);
 	if(q2->first()) {
 	  if(q1->value(0)!=q2->value(0)) {  // Make sure the cases match!
@@ -321,7 +321,7 @@ void MainObject::CheckEvents()
     //
     // Check the PRE Table
     //
-    sql=QString().sprintf ("select ID from %s_PRE",(const char *)eventname);
+    sql=QString("select ID from `")+eventname+"_PRE`";
     q1=new QSqlQuery(sql);
     if(q1->size()<0) {
       printf("  Event %s is missing the PRE table -- fix (y/N)? ",
@@ -338,7 +338,7 @@ void MainObject::CheckEvents()
     //
     // Check the POST Table
     //
-    sql=QString().sprintf ("select ID from %s_POST",(const char *)eventname);
+    sql=QString("select ID from `")+eventname+"_POST`";
     q1=new QSqlQuery(sql);
     if(!q1->isActive()) {
       printf("  Event %s is missing the POST table -- fix (y/N)? ",
@@ -432,9 +432,9 @@ void MainObject::CheckCutCounts()
   sql="select NUMBER,CUT_QUANTITY,TITLE from CART";
   q=new QSqlQuery(sql);
   while(q->next()) {
-    sql=QString().sprintf("select CUT_NAME from CUTS \
-                           where (CART_NUMBER=%u)&&(LENGTH>0)",
-			  q->value(0).toUInt());
+    sql=QString("select CUT_NAME from CUTS where ")+
+      QString().sprintf("(CART_NUMBER=%u)&&",q->value(0).toUInt())+
+      "(LENGTH>0)";
     q1=new QSqlQuery(sql);
     if(q1->size()!=q->value(1).toInt()) {
       printf("  Cart %u [%s] has invalid cut count, fix (y/N)?",
@@ -462,7 +462,7 @@ void MainObject::CheckPendingCarts()
     "(PENDING_STATION is not null)&&"+
     "(PENDING_DATETIME<\""+now.addDays(-1).
     toString("yyyy-MM-dd hh:mm:ss")+"\")";
-  printf("SQL: %s\n",(const char *)sql);
+  //printf("SQL: %s\n",(const char *)sql);
   q=new QSqlQuery(sql);
   while(q->next()) {
     printf("  Cart %06u has stale reservation, delete cart(y/N)?",
@@ -482,8 +482,12 @@ void MainObject::CheckOrphanedCarts()
   QSqlQuery *q;
   QSqlQuery *q1;
 
-  sql="select CART.NUMBER,CART.TITLE from CART left join GROUPS \
-       on CART.GROUP_NAME=GROUPS.NAME where GROUPS.NAME is null";
+  sql=QString("select ")+
+    "CART.NUMBER,"+
+    "CART.TITLE "+
+    "from CART left join GROUPS "+
+    "on CART.GROUP_NAME=GROUPS.NAME where "+
+    "GROUPS.NAME is null";
   q=new QSqlQuery(sql);
   while(q->next()) {
     printf("  Cart %06u [%s] has missing/invalid group.\n",
@@ -494,10 +498,9 @@ void MainObject::CheckOrphanedCarts()
     else {
       printf("  Assign to group \"%s\" (y/N)?",(const char *)orphan_group_name);
       if(UserResponse()) {
-	sql=QString().
-	  sprintf("update CART set GROUP_NAME=\"%s\" where NUMBER=%u",
-		  (const char *)RDEscapeString(orphan_group_name),
-		  q->value(0).toUInt());
+	sql=QString("update CART set ")+
+	  "GROUP_NAME=\""+RDEscapeString(orphan_group_name)+"\" where "+
+	  QString().sprintf("NUMBER=%u",q->value(0).toUInt());
 	q1=new QSqlQuery(sql);
 	delete q1;
       }
@@ -516,8 +519,12 @@ void MainObject::CheckOrphanedCuts()
   QSqlQuery *q2;
   QFileInfo *file=NULL;
 
-  sql="select CUTS.CUT_NAME,CUTS.DESCRIPTION from CUTS left join CART \
-       on CUTS.CART_NUMBER=CART.NUMBER where CART.NUMBER is null";
+  sql=QString("select ")+
+    "CUTS.CUT_NAME,"+
+    "CUTS.DESCRIPTION "+
+    "from CUTS left join CART "+
+    "on CUTS.CART_NUMBER=CART.NUMBER where "+
+    "CART.NUMBER is null";
   q=new QSqlQuery(sql);
   while(q->next()) {
     printf("  Cut %s [%s] is orphaned.\n",
@@ -535,10 +542,9 @@ void MainObject::CheckOrphanedCuts()
 	//
 	// FIXME: Regen Cart Data
 	//
-	sql=QString().
-	  sprintf("update CUTS set CART_NUMBER=%u where CUT_NAME=\"%s\"",
-		  q1->value(0).toUInt(),
-		  (const char *)q->value(0).toString());
+	sql=QString("update CUTS set ")+
+	  QString().sprintf("CART_NUMBER=%u where ",q1->value(0).toUInt())+
+	  "CUT_NAME=\""+RDEscapeString(q->value(0).toString())+"\"";
 	q2=new QSqlQuery(sql);
 	delete q2;
 	delete q1;
@@ -556,8 +562,8 @@ void MainObject::CheckOrphanedCuts()
     if(!file->exists()) {
       printf("  Clear it (y/N)?");
       if(UserResponse()) {
-	sql=QString().sprintf("delete from CUTS where CUT_NAME=\"%s\"",
-			      (const char *)q->value(0).toString());
+	sql=QString("delete from CUTS where ")+
+	  "CUT_NAME=\""+RDEscapeString(q->value(0).toString())+"\"";
 	q1=new QSqlQuery(sql);
 	delete q1;
       }
@@ -570,8 +576,8 @@ void MainObject::CheckOrphanedCuts()
 	printf("  Clear it (y/N)?");
 	if(UserResponse()) {
 	  system("mv "+file->filePath()+" "+dump_cuts_dir+"/");
-	  sql=QString().sprintf("delete from CUTS where CUT_NAME=\"%s\"",
-				(const char *)q->value(0).toString());
+	  sql=QString("delete from CUTS where ")+
+	    "CUT_NAME=\""+RDEscapeString(q->value(0).toString())+"\"";
 	  q1=new QSqlQuery(sql);
 	  delete q1;
 	  printf("  Saved audio in \"%s/%s\"\n",(const char *)dump_cuts_dir,
@@ -597,9 +603,8 @@ void MainObject::CheckOrphanedAudio()
     if(ok) {
       list[i].mid(7,3).toInt(&ok);
       if(ok) {
-	QString sql=QString().sprintf("select CUT_NAME from CUTS \
-                                       where CUT_NAME=\"%s\"",
-				      (const char *)list[i].left(10));
+	QString sql=QString("select CUT_NAME from CUTS where ")+
+	  "CUT_NAME=\""+RDEscapeString(list[i].left(10))+"\"";
 	QSqlQuery *q=new QSqlQuery(sql);
 	if(!q->first()) {
 	  printf("  File \"%s/%s\" is orphaned.\n",
@@ -633,7 +638,12 @@ void MainObject::ValidateAudioLengths()
   QSqlQuery *q;
   RDWaveFile *wave=NULL;
 
-  sql="select CUT_NAME,CART_NUMBER,LENGTH from CUTS order by CART_NUMBER";
+  sql=QString("select ")+
+    "CUT_NAME,"+
+    "CART_NUMBER,"+
+    "LENGTH "+
+    "from CUTS "+
+    "order by CART_NUMBER";
   q=new QSqlQuery(sql);
   while(q->next()) {
     if(q->value(2).toInt()>0) {
@@ -668,14 +678,20 @@ void MainObject::SetCutLength(const QString &cutname,int len)
   fflush(NULL);
   if(UserResponse()) {
     fflush(NULL);
-    sql=QString().sprintf("update CUTS set START_POINT=0,END_POINT=%d,\
-                           FADEUP_POINT=-1,FADEDOWN_POINT=-1,\
-                           SEGUE_START_POINT=-1,SEGUE_END_POINT=-1,\
-                           TALK_START_POINT=-1,TALK_END_POINT=-1,\
-                           HOOK_START_POINT=-1,HOOK_END_POINT=-1,\
-                           PLAY_GAIN=0,LENGTH=%d \
-                           where CUT_NAME=\"%s\"",
-			  len,len,(const char *)cutname);
+    sql=QString("update CUTS set ")+
+      "START_POINT=0,"+
+      QString().sprintf("END_POINT=%d,",len)+
+      "FADEUP_POINT=-1,"+
+      "FADEDOWN_POINT=-1,"+
+      "SEGUE_START_POINT=-1,"+
+      "SEGUE_END_POINT=-1,"+
+      "TALK_START_POINT=-1,"+
+      "TALK_END_POINT=-1,"+
+      "HOOK_START_POINT=-1,"+
+      "HOOK_END_POINT=-1,"+
+      "PLAY_GAIN=0,"+
+      QString().sprintf("LENGTH=%d where ",len)+
+      "CUT_NAME=\""+RDEscapeString(cutname)+"\"";
     q=new QSqlQuery(sql);
     delete q;
     cart->updateLength();
@@ -699,8 +715,7 @@ void MainObject::CleanTables(const QString &ext,QSqlQuery *table_q,
 	     (const char *)RDEscapeString(table_q->value(0).toString()));
       fflush(NULL);
       if(UserResponse()) {
-	sql=QString().sprintf("drop table %s",
-		  (const char *)RDEscapeString(table_q->value(0).toString()));
+	sql=QString("drop table `")+table_q->value(0).toString()+"`";
 	q1=new QSqlQuery(sql);
 	delete q1;
       }
@@ -721,8 +736,7 @@ void MainObject::CleanTables(const QString &ext,QSqlQuery *table_q)
 	     (const char *)table_q->value(0).toString());
       fflush(NULL);
       if(UserResponse()) {
-	sql=QString().sprintf("drop table %s",
-		  (const char *)RDEscapeString(table_q->value(0).toString()));
+	sql=QString("drop table `")+table_q->value(0).toString()+"`";
 	q1=new QSqlQuery(sql);
 	delete q1;
       }

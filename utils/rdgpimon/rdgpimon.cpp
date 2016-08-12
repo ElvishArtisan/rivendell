@@ -568,13 +568,15 @@ void MainWidget::UpdateLabelsUp(int last_line)
       tablename="GPOS";
       break;
   }
-  sql=QString().sprintf("select NUMBER,OFF_MACRO_CART,MACRO_CART from %s \
-                         where (STATION_NAME=\"%s\")&&\
-                         (MATRIX=%d)&&\
-                         (NUMBER<=%d) order by NUMBER desc",
-			(const char *)tablename,
-			(const char *)rda->station()->name(),
-			gpi_matrix->matrix(),last_line);
+  sql=QString("select ")+
+    "NUMBER,"+
+    "OFF_MACRO_CART,"+
+    "MACRO_CART "+
+    "from "+tablename+" where "+
+    "(STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\")&&"+
+    QString().sprintf("(MATRIX=%d)&&",gpi_matrix->matrix())+
+    QString().sprintf("(NUMBER<=%d) ",last_line)+
+    "order by NUMBER desc";
   q=new RDSqlQuery(sql);
   if(q->size()<count_limit) {
     count_limit=q->size();
@@ -616,13 +618,15 @@ void MainWidget::UpdateLabelsDown(int first_line)
       tablename="GPOS";
       break;
   }
-  sql=QString().sprintf("select NUMBER,OFF_MACRO_CART,MACRO_CART from %s \
-                         where (STATION_NAME=\"%s\")&&\
-                         (MATRIX=%d)&&\
-                         (NUMBER>=%d) order by NUMBER",
-			(const char *)tablename,
-			(const char *)rda->station()->name(),
-			gpi_matrix->matrix(),first_line);
+  sql=QString("select ")+
+    "NUMBER,"+
+    "OFF_MACRO_CART,"+
+    "MACRO_CART "+
+    "from "+tablename+" where "+
+    "(STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\")&&"+
+    QString().sprintf("(MATRIX=%d)&&",gpi_matrix->matrix())+
+    QString().sprintf("(NUMBER>=%d) ",first_line)+
+    "order by NUMBER";
   q=new RDSqlQuery(sql);
   while(q->next()&&(count<(GPIMON_ROWS*GPIMON_COLS))) {
     gpi_labels[count]->setLine(q->value(0).toInt()-1);

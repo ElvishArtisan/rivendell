@@ -103,8 +103,12 @@ bool MainObject::ValidateGroup(const QString &groupname,
   RDAudioInfo *info=new RDAudioInfo(rda->station(),rda->config());
   RDAudioInfo::ErrorCode err_code;
   
-  sql=QString("select CUTS.CUT_NAME,CUTS.CART_NUMBER,CUTS.LENGTH ")+
-    "from CUTS left join CART on CUTS.CART_NUMBER=CART.NUMBER "+
+  sql=QString("select ")+
+    "CUTS.CUT_NAME,"+
+    "CUTS.CART_NUMBER,"+
+    "CUTS.LENGTH "+
+    "from CUTS left join CART "+
+    "on CUTS.CART_NUMBER=CART.NUMBER "+
     "where CART.GROUP_NAME=\""+groupname+"\" order by CART_NUMBER";
   q=new RDSqlQuery(sql);
   while(q->next()) {

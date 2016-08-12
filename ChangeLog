@@ -15896,3 +15896,14 @@
 	'ripcd/unity4000.cpp'.
 	* Removed (const char *) casts from SQL statements in
 	'ripcd/vguest.cpp'.
+2016-08-12 Fred Gleason <fredg@paravelsystems.com>
+	* Removed (const char *) casts from SQL statements in
+	'utils/rddbcheck/rddbcheck.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'utils/rdgpimon/rdgpimon.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'utils/rdimport/rdimport.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'utils/rdmaint/rdmaint.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'utils/rdpurgecasts/rdpurgecasts.cpp'.
