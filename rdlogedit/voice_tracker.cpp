@@ -23,7 +23,6 @@
 
 #include <qdialog.h>
 #include <qpushbutton.h>
-#include <qsqldatabase.h>
 #include <qmessagebox.h>
 #include <qdatetime.h>
 

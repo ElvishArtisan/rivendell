@@ -15823,3 +15823,12 @@
 	'rdlibrary/list_reports.cpp'.
 	* Removed (const char *) casts from SQL statements in
 	'rdlibrary/rdlibrary.cpp'.
+2016-08-12 Fred Gleason <fredg@paravelsystems.com>
+	* Removed (const char *) casts from SQL statements in
+	'rdlogedit/edit_chain.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdlogedit/edit_log.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdlogedit/import_track.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdlogedit/rdlogedit.cpp'.

@@ -368,18 +368,18 @@ void MainWidget::addData()
       return;
     }
     delete log;
-    sql=QString().sprintf("INSERT INTO LOGS SET NAME=\"%s\",TYPE=0,\
-                           DESCRIPTION=\"%s log\",ORIGIN_USER=\"%s\",\
-                           ORIGIN_DATETIME=NOW(),LINK_DATETIME=NOW(),\
-                           SERVICE=\"%s\"",
-			  (const char *)logname,
-			  (const char *)logname,
+    sql=QString("insert into LOGS set ")+
+      "NAME=\""+RDEscapeString(logname)+"\","+
+      "TYPE=0,"+
+      "DESCRIPTION=\""+RDEscapeString(logname)+" log\","+
 #ifdef WIN32
-			  RD_USER_LOGIN_NAME,
+      "ORIGIN_USER=\""+RDEscapeString(RD_USER_LOGIN_NAME)+"\","+
 #else
-			  (const char *)rda->ripc()->user(),
+      "ORIGIN_USER=\""+RDEscapeString(rda->ripc()->user())+"\","+
 #endif  // WIN32
-			  (const char *)svcname);
+      "ORIGIN_DATETIME=now(),"+
+      "LINK_DATETIME=now(),"+
+      "SERVICE=\""+RDEscapeString(svcname)+"\"";
     q=new RDSqlQuery(sql);
     if(!q->isActive()) {
       QMessageBox::warning(this,tr("Log Exists"),tr("Log Already Exists!"));
@@ -508,9 +508,20 @@ void MainWidget::reportData()
   //
   // Report Body
   //
-  sql="select NAME,DESCRIPTION,SERVICE,MUSIC_LINKS,MUSIC_LINKED,\
-       TRAFFIC_LINKS,TRAFFIC_LINKED,COMPLETED_TRACKS,SCHEDULED_TRACKS,\
-       START_DATE,END_DATE,MODIFIED_DATETIME from LOGS order by NAME";
+  sql=QString("select ")+
+    "NAME,"+               // 00
+    "DESCRIPTION,"+        // 01
+    "SERVICE,"+            // 02
+    "MUSIC_LINKS,"+        // 03
+    "MUSIC_LINKED,"+       // 04
+    "TRAFFIC_LINKS,"+      // 05
+    "TRAFFIC_LINKED,"+     // 06
+    "COMPLETED_TRACKS,"+   // 07
+    "SCHEDULED_TRACKS,"+   // 08
+    "START_DATE,"+         // 09
+    "END_DATE,"+           // 10
+    "MODIFIED_DATETIME "+  // 11
+    "from LOGS order by NAME";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     //
@@ -663,13 +674,26 @@ void MainWidget::RefreshItem(ListListViewItem *item)
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString().sprintf("select DESCRIPTION,SERVICE,START_DATE,END_DATE,\
-                         ORIGIN_USER,ORIGIN_DATETIME,COMPLETED_TRACKS,\
-                         SCHEDULED_TRACKS,MUSIC_LINKS,MUSIC_LINKED,\
-                         TRAFFIC_LINKS,TRAFFIC_LINKED,LINK_DATETIME,\
-                         MODIFIED_DATETIME,AUTO_REFRESH from LOGS\
-                         where (TYPE=0)&&(LOG_EXISTS=\"Y\")&&(NAME=\"%s\")",
-			(const char *)item->text(1));
+  sql=QString("select ")+
+    "DESCRIPTION,"+        // 00
+    "SERVICE,"+            // 01
+    "START_DATE,"+         // 02
+    "END_DATE,"+           // 03
+    "ORIGIN_USER,"+        // 04
+    "ORIGIN_DATETIME,"+    // 05
+    "COMPLETED_TRACKS,"+   // 06
+    "SCHEDULED_TRACKS,"+   // 07
+    "MUSIC_LINKS,"+        // 08
+    "MUSIC_LINKED,"+       // 09
+    "TRAFFIC_LINKS,"+      // 10
+    "TRAFFIC_LINKED,"+     // 11
+    "LINK_DATETIME,"+      // 12
+    "MODIFIED_DATETIME,"+  // 13
+    "AUTO_REFRESH "+       // 14
+    "from LOGS where "+    // 15
+    "(TYPE=0)&&"+
+    "(LOG_EXISTS=\"Y\")&&"+
+    "(NAME=\""+RDEscapeString(item->text(1))+"\")";
   q=new RDSqlQuery(sql);
   if(q->next()) {
     item->setText(2,q->value(0).toString());
@@ -739,7 +763,9 @@ void MainWidget::RefreshList()
 
   log_log_list->clear(); // Note: clear here, in case user has no perms.
 
-  sql="select NAME from LOGS where (TYPE=0)&&(LOG_EXISTS=\"Y\")";
+  sql=QString("select NAME from LOGS where ")+
+    "(TYPE=0)&&"+
+    "(LOG_EXISTS=\"Y\")";
 
   if(log_service_box->currentItem()!=0) {
     sql+="&&(SERVICE=\""+RDEscapeString(log_service_box->currentText())+"\")";

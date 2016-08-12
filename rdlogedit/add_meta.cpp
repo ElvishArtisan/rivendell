@@ -27,12 +27,11 @@
 #include <qevent.h>
 #include <qmessagebox.h>
 #include <qcheckbox.h>
-#include <qsqldatabase.h>
 
 #include <rd.h>
 #include <rdlog_line.h>
 
-#include <add_meta.h>
+#include "add_meta.h"
 
 AddMeta::AddMeta(QWidget *parent)
   : QDialog(parent,"",true,Qt::WStyle_Customize|Qt::WStyle_DialogBorder)

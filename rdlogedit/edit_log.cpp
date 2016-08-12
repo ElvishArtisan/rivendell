@@ -34,6 +34,7 @@
 #include <rddb.h>
 #include <rdcreate_log.h>
 #include <rddebug.h>
+#include <rdescape_string.h>
 #include <rdadd_log.h>
 #include <rdtextvalidator.h>
 #include <rdtextfile.h>
@@ -42,13 +43,13 @@
 #include <rdconf.h>
 #include <rddatedialog.h>
 
-#include <globals.h>
-#include <add_meta.h>
-#include <edit_log.h>
-#include <edit_logline.h>
-#include <edit_marker.h>
-#include <edit_track.h>
-#include <edit_chain.h>
+#include "add_meta.h"
+#include "edit_log.h"
+#include "edit_logline.h"
+#include "edit_marker.h"
+#include "edit_track.h"
+#include "edit_chain.h"
+#include "globals.h"
 
 //
 // Icons
@@ -1051,13 +1052,14 @@ void EditLog::saveasData()
     if(log->exec()<0) {
       return;
     }
-    sql=QString().sprintf("insert into LOGS set \
-NAME=\"%s\",TYPE=0,DESCRIPTION=\"%s log\",ORIGIN_USER=\"%s\",\
-ORIGIN_DATETIME=NOW(),LINK_DATETIME=NOW(),SERVICE=\"%s\"",
-			  (const char *)logname,
-			  (const char *)logname,
-			  (const char *)rda->ripc()->user(),
-			  (const char *)svcname);
+    sql=QString("insert into LOGS set ")+
+      "NAME=\""+RDEscapeString(logname)+"\","+
+      "TYPE=0,"+
+      "DESCRIPTION=\""+RDEscapeString(logname)+" log\","+
+      "ORIGIN_USER=\""+RDEscapeString(rda->ripc()->user())+"\","+
+      "ORIGIN_DATETIME=now(),"+
+      "LINK_DATETIME=now(),"+
+      "SERVICE=\""+RDEscapeString(svcname)+"\"";
     q=new RDSqlQuery(sql);
     if(!q->isActive()) {
       QMessageBox::warning(this,tr("Log Exists"),tr("Log Already Exists!"));

@@ -19,9 +19,11 @@
 //
 
 #include <qpushbutton.h>
+
 #include <rddb.h>
-#include <list_logs.h>
-#include <globals.h>
+
+#include "globals.h"
+#include "list_logs.h"
 
 ListLogs::ListLogs(QString *logname,QWidget *parent)
   : QDialog(parent,"",true)

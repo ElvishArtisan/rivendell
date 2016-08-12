@@ -21,8 +21,10 @@
 #include <qpushbutton.h>
 #include <qmessagebox.h>
 #include <rddb.h>
-#include <edit_chain.h>
-#include <list_logs.h>
+#include <rdescape_string.h>
+
+#include "edit_chain.h"
+#include "list_logs.h"
 
 EditChain::EditChain(RDLogLine *line,QWidget *parent)
   : QDialog(parent,"",true)
@@ -298,9 +300,8 @@ void EditChain::selectLogData()
 
 void EditChain::labelChangedData(const QString &logname)
 {
-  QString sql=
-    QString().sprintf("select DESCRIPTION from LOGS where NAME=\"%s\"",
-		      (const char *)logname);
+  QString sql=QString("select DESCRIPTION from LOGS where ")+
+    "NAME=\""+RDEscapeString(logname)+"\"";
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(!q->first()) {
     delete q;

@@ -36,7 +36,7 @@
 #include <rdcut_dialog.h>
 #include <rdcut_path.h>
 
-#include <import_track.h>
+#include "import_track.h"
 
 extern RDStation *rdstation_conf;
 
@@ -82,8 +82,10 @@ ImportTrack::ImportTrack(QString *filter,QString *group,QWidget *parent)
   button->setFont(button_font);
   button->setText(tr("&Cart"));
   button->setDisabled(true);
-  QString sql=QString("select CHANNEL from DECKS \
-                       where (CARD_NUMBER>=0)&&(CHANNEL>0)&&(CHANNEL<=9)");
+  QString sql=QString("select CHANNEL from DECKS where ")+
+    "(CARD_NUMBER>=0)&&"+
+    "(CHANNEL>0)&&"+
+    "(CHANNEL<=9)";
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     button->setEnabled(true);
@@ -99,8 +101,10 @@ ImportTrack::ImportTrack(QString *filter,QString *group,QWidget *parent)
   button->setFont(button_font);
   button->setText(tr("&File"));
   button->setDisabled(true);
-  sql=QString("select CHANNEL from DECKS \
-               where (CARD_NUMBER>=0)&&(CHANNEL>128)&&(CHANNEL<=137)");
+  sql=QString("select CHANNEL from DECKS where ")+
+    "(CARD_NUMBER>=0)&&"+
+    "(CHANNEL>128)&&"+
+    "(CHANNEL<=137)";
   q=new RDSqlQuery(sql);
   if(q->first()) {
     button->setEnabled(true);
