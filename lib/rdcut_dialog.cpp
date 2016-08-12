@@ -27,6 +27,7 @@
 #include <qapplication.h>
 #include <qeventloop.h>
 
+#include <rdapplication.h>
 #include <rdcut_dialog.h>
 #include <rdcart_search_text.h>
 #include <rdescape_string.h>
@@ -43,10 +44,9 @@
 #include "../icons/rml5.xpm"
 
 
-RDCutDialog::RDCutDialog(QString *cutname,RDStation *station,RDSystem *system,
-			 QString *filter,QString *group,QString *schedcode,
-			 QString username,bool show_clear,bool allow_add,
-			 bool exclude_tracks,QWidget *parent)
+RDCutDialog::RDCutDialog(QString *cutname,QString *filter,QString *group,
+			 QString *schedcode,QString username,bool show_clear,
+			 bool allow_add,bool exclude_tracks,QWidget *parent)
   : QDialog(parent,"",true)
 {
   cut_cutname=cutname;
@@ -55,8 +55,7 @@ RDCutDialog::RDCutDialog(QString *cutname,RDStation *station,RDSystem *system,
   cut_schedcode=schedcode;
   cut_username=username;
   cut_allow_clear=show_clear;
-  cut_filter_mode=station->filterMode();
-  cut_system=system;
+  cut_filter_mode=rda->station()->filterMode();
 
   if(filter==NULL) {
     cut_filter=new QString();
@@ -397,7 +396,7 @@ void RDCutDialog::addButtonData()
   int cart_num=-1;
 
   RDAddCart *add_cart=new RDAddCart(&cart_group,&cart_type,&cart_title,
-				    cut_username,cut_system,this);
+				    cut_username,rda->system(),this);
   if((cart_num=add_cart->exec())<0) {
     delete add_cart;
     return;

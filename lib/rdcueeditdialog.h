@@ -25,14 +25,13 @@
 #include <qdialog.h>
 
 #include <rdlog_line.h>
-
 #include <rdcueedit.h>
 
 class RDCueEditDialog : public QDialog
 {
  Q_OBJECT
  public:
-  RDCueEditDialog(RDCae *cae,int play_card,int play_port,const QString &caption,
+  RDCueEditDialog(int play_card,int play_port,const QString &caption,
 		  QWidget *parent=0);
   ~RDCueEditDialog();
   QSize sizeHint() const;

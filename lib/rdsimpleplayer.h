@@ -23,8 +23,6 @@
 #include <qwidget.h>
 
 #include <rdtransportbutton.h>
-#include <rdcae.h>
-#include <rdripc.h>
 #include <rdevent_player.h>
 
 #ifndef RDSIMPLEPLAYER_H
@@ -34,8 +32,8 @@ class RDSimplePlayer : public QWidget
 {
   Q_OBJECT
  public:
-  RDSimplePlayer(RDCae *cae,RDRipc *ripc,int card,int port,
-		 unsigned start_cart,unsigned end_cart,QWidget *parent=0);
+  RDSimplePlayer(int card,int port,unsigned start_cart,unsigned end_cart,
+		 QWidget *parent=0);
   ~RDSimplePlayer();
   void setCart(unsigned cart);
   RDTransportButton *playButton() const;
@@ -55,8 +53,6 @@ class RDSimplePlayer : public QWidget
   void playStoppedData(int handle);
 
  private:
-  RDCae *play_cae;
-  RDRipc *play_ripc;
   int play_card;
   int play_stream;
   int play_port;

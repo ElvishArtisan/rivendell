@@ -15922,3 +15922,9 @@
 2016-08-12 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in 'rdlibrary/rdlibrary.cpp' that generated a
 	SQL error when saving a cart.
+2016-08-12 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the 'RDCae *', 'RDRipc *', RDStation *', 'RDSystem *' and
+	'RDConfig *' parameters from the contructor of the RDCartDialog
+	dialog.
+	* Removed the 'RDCae *' and 'RDRipc *' parameters from the
+	contructor of the RDSimplePlayer dialog.

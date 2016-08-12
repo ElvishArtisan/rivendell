@@ -28,10 +28,6 @@
 #include <qprogressdialog.h>
 #include <qcheckbox.h>
 
-#include <rdcae.h>
-#include <rdconfig.h>
-#include <rdripc.h>
-#include <rdsystem.h>
 #include <rdsimpleplayer.h>
 #include <rdlistviewitem.h>
 #include <rdcart.h>
@@ -46,9 +42,8 @@ class RDCartDialog : public QDialog
 {
  Q_OBJECT
  public:
-  RDCartDialog(QString *filter,QString *group,QString *schedcode,
-	       RDCae *cae,RDRipc *ripc,RDStation *station,RDSystem *system,
-	       RDConfig *config,QWidget *parent=0);
+ RDCartDialog(QString *filter,QString *group,QString *schedcode,
+	      QWidget *parent=0);
 
   ~RDCartDialog();
   QSize sizeHint() const;
@@ -116,9 +111,6 @@ class RDCartDialog : public QDialog
   QString cart_import_path;
   QString cart_import_file_filter;
   bool *cart_temp_allowed;
-  RDStation *cart_station;
-  RDSystem *cart_system;
-  RDConfig *cart_config;
   QString cart_user_name;
   QString cart_user_password;
   RDBusyDialog *cart_busy_dialog;

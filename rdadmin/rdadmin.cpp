@@ -25,7 +25,6 @@
 #include <sys/wait.h>
 #include <signal.h>
 
-#include <qapplication.h>
 #include <qwindowsstyle.h>
 #include <qwidget.h>
 #include <qpainter.h>
@@ -36,6 +35,7 @@
 #include <qtextcodec.h>
 #include <qtranslator.h>
 
+#include <rdapplication.h>
 #include <rdconf.h>
 #include <rduser.h>
 #include <rd.h>
@@ -146,7 +146,6 @@ MainWidget::MainWidget(QWidget *parent)
   //
   admin_config=new RDConfig();
   admin_config->load();
-
   str=QString(tr("RDAdmin")+" v"+VERSION+" - Host:");
   setCaption(QString().
 	     sprintf("%s %s",(const char *)str,
@@ -206,8 +205,7 @@ MainWidget::MainWidget(QWidget *parent)
   // Cart Dialog
   //
   admin_cart_dialog=
-    new RDCartDialog(&admin_filter,&admin_group,&admin_schedcode,NULL,
-		     rdripc,admin_station,admin_system,admin_config,this);
+    new RDCartDialog(&admin_filter,&admin_group,&admin_schedcode,this);
 
   //
   // User Labels
@@ -546,7 +544,7 @@ void MainWidget::ClearTables()
 
 int gui_main(int argc,char *argv[])
 {
-  QApplication a(argc,argv);
+  RDApplication a(argc,argv,"rdadmin",RDADMIN_USAGE);
 
   //
   // Load Translations
@@ -587,7 +585,7 @@ int gui_main(int argc,char *argv[])
 
 int cmdline_main(int argc,char *argv[])
 {
-  QApplication a(argc,argv,false);
+  RDApplication a(argc,argv,"rdadmin",RDADMIN_USAGE,false);
   
   //
   // Load Configs

@@ -535,8 +535,7 @@ void DiskRipper::setCutButtonData()
     return;
   }
   QString cutname=rip_cutnames[item->text(0).toUInt()-1];
-  RDCutDialog *dialog=new RDCutDialog(&cutname,rda->station(),rda->system(),
-				      rip_filter_text,
+  RDCutDialog *dialog=new RDCutDialog(&cutname,rip_filter_text,
 				      rip_group_text,rip_schedcode_text,
 				      rda->user()->name(),true,true,true,this);
   if(dialog->exec()==0) {

@@ -30,6 +30,7 @@
 #include <qfiledialog.h>
 #include <qmessagebox.h>
 
+#include <rdapplication.h>
 #include <rdconf.h>
 #include <rdcart_dialog.h>
 #include <rdcart_search_text.h>
@@ -51,8 +52,7 @@
 #include "../icons/rml5.xpm"
 
 RDCartDialog::RDCartDialog(QString *filter,QString *group,QString *schedcode,
-			   RDCae *cae,RDRipc *ripc,RDStation *station,
-			   RDSystem *system,RDConfig *config,QWidget *parent)
+			   QWidget *parent)
   : QDialog(parent,"",true)
 {
   //
@@ -61,9 +61,6 @@ RDCartDialog::RDCartDialog(QString *filter,QString *group,QString *schedcode,
   setMinimumWidth(sizeHint().width());
   setMinimumHeight(sizeHint().height());
 
-  cart_station=station;
-  cart_system=system;
-  cart_config=config;
   cart_cartnum=NULL;
   cart_type=RDCart::All;
   cart_group=group;
@@ -75,7 +72,7 @@ RDCartDialog::RDCartDialog(QString *filter,QString *group,QString *schedcode,
 #ifdef WIN32
   cart_filter_mode=RDStation::FilterSynchronous;
 #else
-  cart_filter_mode=station->filterMode();
+  cart_filter_mode=rda->station()->filterMode();
 #endif  // WIN32
 
   if(filter==NULL) {
@@ -249,13 +246,13 @@ RDCartDialog::RDCartDialog(QString *filter,QString *group,QString *schedcode,
   // Audition Player
   //
 #ifndef WIN32
-  if((cae==NULL)||(station->cueCard()<0)||(station->cuePort()<0)) {
+  if((rda->cae()==NULL)||(rda->station()->cueCard()<0)||(rda->station()->cuePort()<0)) {
     cart_player=NULL;
   }
   else {
     cart_player=
-      new RDSimplePlayer(cae,ripc,station->cueCard(),station->cuePort(),
-			 station->cueStartCart(),station->cueStopCart(),this);
+      new RDSimplePlayer(rda->station()->cueCard(),rda->station()->cuePort(),
+			 rda->station()->cueStartCart(),rda->station()->cueStopCart(),this);
     cart_player->playButton()->setDisabled(true);
     cart_player->stopButton()->setDisabled(true);
     cart_player->stopButton()->setOnColor(red);
@@ -268,7 +265,7 @@ RDCartDialog::RDCartDialog(QString *filter,QString *group,QString *schedcode,
   cart_editor_button=new QPushButton(tr("Send to\n&Editor"),this);
   cart_editor_button->setFont(button_font);
   connect(cart_editor_button,SIGNAL(clicked()),this,SLOT(editorData()));
-  if(station->editorPath().isEmpty()) {
+  if(rda->station()->editorPath().isEmpty()) {
     cart_editor_button->hide();
   }
 
@@ -278,7 +275,7 @@ RDCartDialog::RDCartDialog(QString *filter,QString *group,QString *schedcode,
   cart_file_button=new QPushButton(tr("Load From\n&File"),this);
   cart_file_button->setFont(button_font);
   connect(cart_file_button,SIGNAL(clicked()),this,SLOT(loadFileData()));
-  if(station->editorPath().isEmpty()) {
+  if(rda->station()->editorPath().isEmpty()) {
     cart_file_button->hide();
   }
 #ifdef WIN32
@@ -336,7 +333,7 @@ int RDCartDialog::exec(int *cartnum,RDCart::Type type,QString *svcname,
   switch(cart_type) {
     case RDCart::All:
     case RDCart::Audio:
-      if(cart_station->editorPath().isEmpty()) {
+      if(rda->station()->editorPath().isEmpty()) {
 	cart_editor_button->hide();
       }
       else {
@@ -523,7 +520,7 @@ void RDCartDialog::editorData()
     delete q;
     return;
   }
-  QString cmd=cart_station->editorPath();
+  QString cmd=rda->station()->editorPath();
   cmd.replace("%f",RDCut::pathName(q->value(0).toString()));
   cmd.replace("%n",QString().sprintf("%06u",item->text(1).toUInt()));
   cmd.replace("%h",QString().sprintf("%d",q->value(1).toInt()));
@@ -572,7 +569,7 @@ void RDCartDialog::loadFileData()
     // Get Cart Number
     //
     cart_import_path=RDGetPathPart(filename);
-    group=new RDGroup(cart_system->tempCartGroup());
+    group=new RDGroup(rda->system()->tempCartGroup());
     if((!group->exists())||((cartnum=group->nextFreeCart())==0)) {
       delete group;
       QMessageBox::warning(this,tr("Cart Error"),
@@ -585,20 +582,20 @@ void RDCartDialog::loadFileData()
     // Create Cart
     //
     cart=new RDCart(cartnum);
-    if(!cart->create(cart_system->tempCartGroup(),RDCart::Audio)) {
+    if(!cart->create(rda->system()->tempCartGroup(),RDCart::Audio)) {
       delete cart;
       QMessageBox::warning(this,tr("Cart Error"),
 			   tr("Unable to create temporary cart for import!"));
       return;
     }
-    cart->setOwner(cart_station->name());
+    cart->setOwner(rda->station()->name());
     cut=new RDCut(cartnum,1,true);
 
     //
     // Import Audio
     //
     cart_busy_dialog->show(tr("Importing"),tr("Importing..."));
-    conv=new RDAudioImport(cart_station,cart_config,this);
+    conv=new RDAudioImport(rda->station(),rda->config(),this);
     conv->setCartNumber(cartnum);
     conv->setCutNumber(1);
     conv->setSourceFile(filename);

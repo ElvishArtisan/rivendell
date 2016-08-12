@@ -21,13 +21,13 @@
 #include <qpainter.h>
 #include <qmessagebox.h>
 
+#include <rdapplication.h>
 #include <rdconf.h>
 #include <rdcueedit.h>
 
-RDCueEdit::RDCueEdit(RDCae *cae,int card,int port,QWidget *parent)
+RDCueEdit::RDCueEdit(int card,int port,QWidget *parent)
   : QWidget(parent)
 {
-  edit_cae=cae;
   edit_play_card=card;
   edit_play_port=port;
   edit_height=325;
@@ -190,7 +190,7 @@ RDCueEdit::RDCueEdit(RDCae *cae,int card,int port,QWidget *parent)
   //
   // Play Deck
   //
-  edit_play_deck=new RDPlayDeck(edit_cae,RDPLAYDECK_AUDITION_ID,this);
+  edit_play_deck=new RDPlayDeck(rda->cae(),RDPLAYDECK_AUDITION_ID,this);
   connect(edit_play_deck,SIGNAL(stateChanged(int,RDPlayDeck::State)),this,
 	  SLOT(stateChangedData(int,RDPlayDeck::State)));
   connect(edit_play_deck,SIGNAL(position(int,int)),
@@ -631,8 +631,8 @@ void RDCueEdit::UpdateCounters()
 
 void RDCueEdit::ClearChannel()
 {
-  if(edit_cae->playPortActive(edit_play_deck->card(),edit_play_deck->port(),
-			      edit_play_deck->stream())) {
+  if(rda->cae()->playPortActive(edit_play_deck->card(),edit_play_deck->port(),
+				edit_play_deck->stream())) {
     return;
   }
   if((!edit_stop_rml.isEmpty())&&(edit_event_player!=NULL)) {

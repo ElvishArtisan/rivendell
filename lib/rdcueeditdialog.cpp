@@ -23,7 +23,7 @@
 
 #include <rdcueeditdialog.h>
 
-RDCueEditDialog::RDCueEditDialog(RDCae *cae,int play_card,int play_port,
+RDCueEditDialog::RDCueEditDialog(int play_card,int play_port,
 				 const QString &caption,QWidget *parent)
   :QDialog(parent,"",true)
 {
@@ -37,7 +37,7 @@ RDCueEditDialog::RDCueEditDialog(RDCae *cae,int play_card,int play_port,
   //
   // Cue Editor
   //
-  cue_edit=new RDCueEdit(cae,play_card,play_port,this);
+  cue_edit=new RDCueEdit(play_card,play_port,this);
   cue_edit->setGeometry(15,10,
 			cue_edit->sizeHint().width(),
 			cue_edit->sizeHint().height());

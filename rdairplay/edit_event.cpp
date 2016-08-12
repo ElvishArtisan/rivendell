@@ -134,8 +134,7 @@ EditEvent::EditEvent(LogPlay *log,RDCae *cae,QWidget *parent)
   // Cue Editor
   //
   edit_cue_edit=
-    new RDCueEdit(edit_cae,rda->station()->cueCard(),
-                  rda->station()->cuePort(),this);
+    new RDCueEdit(rda->station()->cueCard(),rda->station()->cuePort(),this);
 
   //
   // Cart Notes

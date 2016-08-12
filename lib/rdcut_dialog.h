@@ -31,7 +31,6 @@
 
 #include <rdlistviewitem.h>
 #include <rdstation.h>
-#include <rdsystem.h>
 
 #define RDCUT_DIALOG_STEP_SIZE 1000
 
@@ -39,9 +38,10 @@ class RDCutDialog : public QDialog
 {
  Q_OBJECT
  public:
-  RDCutDialog(QString *cutname,RDStation *station,RDSystem *system,
-	      QString *filter=0,QString *group=0,QString *schedcode=NULL,
-	      QString username="",bool show_clear=false,bool allow_add=false,
+
+  RDCutDialog(QString *cutname,QString *filter=0,QString *group=0,
+	      QString *schedcode=NULL,QString username="",
+	      bool show_clear=false,bool allow_add=false,
 	      bool exclude_tracks=false,QWidget *parent=0);
   ~RDCutDialog();
   QSize sizeHint() const;
@@ -96,7 +96,6 @@ class RDCutDialog : public QDialog
   bool cut_allow_clear;
   bool cut_exclude_tracks;
   RDStation::FilterMode cut_filter_mode;
-  RDSystem *cut_system;
   QProgressDialog *cut_progress_dialog;
 };
 

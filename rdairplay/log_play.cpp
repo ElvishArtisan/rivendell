@@ -121,7 +121,7 @@ LogPlay::LogPlay(int id,QSocketDevice *nn_sock,QString logname,
   if((rda->station()->cueCard()>=0)&&
      (rda->station()->cuePort()>=0)) {
     play_audition_player=
-      new RDSimplePlayer(play_cae,rda->ripc(),rda->station()->cueCard(),
+      new RDSimplePlayer(rda->station()->cueCard(),
 			 rda->station()->cuePort(),0,0);
     play_audition_player->playButton()->hide();
     play_audition_player->stopButton()->hide();

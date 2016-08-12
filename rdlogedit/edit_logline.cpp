@@ -70,15 +70,7 @@ EditLogLine::EditLogLine(RDLogLine *line,QString *filter,QString *group,
   //
   // Cart Picker
   //
-#ifdef WIN32
-  edit_cart_dialog=new RDCartDialog(edit_filter,edit_group,edit_schedcode,
-				    NULL,NULL,rda->station(),rda->system(),
-				    rda->config(),this);
-#else
-  edit_cart_dialog=new RDCartDialog(edit_filter,edit_group,edit_schedcode,
-				    rda->cae(),rda->ripc(),rda->station(),rda->system(),
-				    rda->config(),this);
-#endif
+  edit_cart_dialog=new RDCartDialog(edit_filter,edit_group,edit_schedcode,this);
 
   //
   // Time Type

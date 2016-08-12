@@ -464,7 +464,7 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   edit_player=NULL;
 #else
   edit_player=
-    new RDSimplePlayer(rda->cae(),rda->ripc(),edit_output_card,edit_output_port,
+    new RDSimplePlayer(edit_output_card,edit_output_port,
 		       edit_start_macro,edit_end_macro,this);
   edit_player->stopButton()->setOnColor(red);
 #endif  // WIN32

@@ -184,7 +184,7 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   q=new RDSqlQuery(sql);
   if(q->first()) {
     event_player=
-      new RDSimplePlayer(rda->cae(),rda->ripc(),q->value(0).toInt(),q->value(1).toInt(),
+      new RDSimplePlayer(q->value(0).toInt(),q->value(1).toInt(),
 			 q->value(2).toUInt(),q->value(3).toUInt(),this);
     event_player->playButton()->
       setGeometry(CENTER_LINE-180,sizeHint().height()-210,80,50);

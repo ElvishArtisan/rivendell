@@ -147,8 +147,7 @@ MainWidget::MainWidget(QWidget *parent)
   // Cart Picker
   //
   panel_cart_dialog=
-    new RDCartDialog(&panel_filter,&panel_group,&panel_schedcode,panel_cae,
-		     rda->ripc(),rda->station(),rda->system(),rda->config(),this);
+    new RDCartDialog(&panel_filter,&panel_group,&panel_schedcode,this);
 
   //
   // Sound Panel Array

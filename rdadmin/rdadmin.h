@@ -25,7 +25,6 @@
 #include <qwidget.h>
 #include <qsize.h>
 #include <qsizepolicy.h>
-#include <qsqldatabase.h>
 #include <qpixmap.h>
 
 #include <rduser.h>

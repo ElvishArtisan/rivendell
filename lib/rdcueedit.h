@@ -41,7 +41,7 @@ class RDCueEdit : public QWidget
 {
   Q_OBJECT
  public:
-  RDCueEdit(RDCae *cae,int card,int port,QWidget *parent=0);
+  RDCueEdit(int card,int port,QWidget *parent=0);
   ~RDCueEdit();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
@@ -84,7 +84,6 @@ class RDCueEdit : public QWidget
   RDEventPlayer *edit_event_player;
   QString edit_start_rml;
   QString edit_stop_rml;
-  RDCae *edit_cae;
   int edit_play_card;
   int edit_play_port;
   RDSlider *edit_slider;
