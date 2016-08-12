@@ -15919,3 +15919,6 @@
 2016-08-12 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed regressions in 'lib/rdlog_event.cpp' and 'lib/rdlog.cpp'
 	that broke log saving.
+2016-08-12 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in 'rdlibrary/rdlibrary.cpp' that generated a
+	SQL error when saving a cart.

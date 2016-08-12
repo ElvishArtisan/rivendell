@@ -1237,7 +1237,7 @@ void MainWidget::RefreshLine(RDListViewItem *item)
     "from CART left join GROUPS "+
     "on CART.GROUP_NAME=GROUPS.NAME left join CUTS "+
     "on CART.NUMBER=CUTS.CART_NUMBER where "+
-    QString().sprintf("where CART.NUMBER=%u",item->text(1).toUInt());
+    QString().sprintf("CART.NUMBER=%u",item->text(1).toUInt());
   RDSqlQuery *q=new RDSqlQuery(sql);
   while(q->next()) {
     if((RDCart::Type)q->value(14).toUInt()==RDCart::Macro) {
