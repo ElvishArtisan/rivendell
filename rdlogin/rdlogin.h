@@ -24,7 +24,6 @@
 #include <qwidget.h>
 #include <qsize.h>
 #include <qsizepolicy.h>
-#include <qsqldatabase.h>
 #include <qcombobox.h>
 #include <qlabel.h>
 #include <qlineedit.h>
@@ -53,7 +52,6 @@ class MainWidget : public QWidget
   void resizeEvent(QResizeEvent *e);
 
  private:
-  QSqlDatabase *login_db;
   Q_UINT16 login_ripc_hostport;
   QLabel *login_label;
   QLabel *login_username_label;

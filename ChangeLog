@@ -15832,3 +15832,8 @@
 	'rdlogedit/import_track.cpp'.
 	* Removed (const char *) casts from SQL statements in
 	'rdlogedit/rdlogedit.cpp'.
+2016-08-12 Fred Gleason <fredg@paravelsystems.com>
+	* Removed (const char *) casts from SQL statements in
+	'rdlogin/rdlogin.cpp'.
+	* Removed direct SQL driver invocations from 'rdlogin.cpp'
+	and 'rdlogin.h'.

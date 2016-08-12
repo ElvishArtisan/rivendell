@@ -22,7 +22,6 @@
 
 #include <qwindowsstyle.h>
 #include <qpainter.h>
-#include <qsqldatabase.h>
 #include <qmessagebox.h>
 #include <qpushbutton.h>
 #include <qlabel.h>
@@ -117,8 +116,9 @@ MainWidget::MainWidget(QWidget *parent)
   login_username_box->setFont(line_edit_font);
   login_username_box->setFocus();
   QFontMetrics fm(line_edit_font);
-  sql="select LOGIN_NAME from USERS where ADMIN_CONFIG_PRIV=\"N\"\
-       order by LOGIN_NAME";
+  sql=QString("select LOGIN_NAME from USERS where ")+
+    "ADMIN_CONFIG_PRIV=\"N\" "+
+    "order by LOGIN_NAME";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     login_username_box->insertItem(q->value(0).toString());
@@ -177,9 +177,6 @@ MainWidget::MainWidget(QWidget *parent)
 
 MainWidget::~MainWidget()
 {
-  delete login_db;
-  //  delete login_ripc;
-  //  delete login_station;
   delete login_label;
   delete login_username_box;
   delete login_password_edit;
@@ -255,7 +252,6 @@ void MainWidget::cancelData()
 
 void MainWidget::quitMainWidget()
 {
-  login_db->removeDatabase(rda->config()->mysqlDbname());
   qApp->quit();
 }
 
