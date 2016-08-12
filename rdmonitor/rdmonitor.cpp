@@ -24,7 +24,6 @@
 
 #include <qapplication.h>
 #include <qpainter.h>
-#include <qsqldatabase.h>
 #include <qmessagebox.h>
 #include <qpushbutton.h>
 #include <qlabel.h>
@@ -34,7 +33,6 @@
 #include <qprocess.h>
 #include <qdir.h>
 #include <qsignalmapper.h>
-#include <qsqldatabase.h>
 
 #include <dbversion.h>
 #include <rd.h>

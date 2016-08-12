@@ -15866,3 +15866,6 @@
 	'rdlogmanager/rename_item.cpp'.
 	* Removed (const char *) casts from SQL statements in
 	'rdlogmanager/svc_rec.cpp'.
+2016-08-12 Fred Gleason <fredg@paravelsystems.com>
+	* Removed superfluous #include statements from
+	'rdmonitor/rdmonitor.cpp'.
