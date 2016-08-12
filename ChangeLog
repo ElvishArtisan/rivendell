@@ -15872,3 +15872,8 @@
 2016-08-12 Fred Gleason <fredg@paravelsystems.com>
 	* Removed superfluous #include statements from
 	'rdpanel/rdpanel.cpp'.
+2016-08-12 Fred Gleason <fredg@paravelsystems.com>
+	* Removed (const char *) casts from SQL statements in
+	'rdrepld/citadelxds.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdrepld/rdrepld.cpp'.

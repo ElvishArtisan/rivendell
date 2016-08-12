@@ -134,28 +134,28 @@ void MainObject::ProcessCarts()
   for(unsigned i=0;i<repl_replicators.size();i++) {
     where="";
     repl_name=repl_replicators[i]->config()->name();
-    sql=QString().
-      sprintf("select GROUP_NAME from REPLICATOR_MAP \
-                           where REPLICATOR_NAME=\"%s\"",
-	      (const char *)RDEscapeString(repl_name));
+    sql=QString("select GROUP_NAME from REPLICATOR_MAP where ")+
+      "REPLICATOR_NAME=\""+RDEscapeString(repl_name)+"\"";
     q=new RDSqlQuery(sql);
     while(q->next()) {
-      where+=QString().
-	sprintf("(GROUP_NAME=\"%s\")||",
-		(const char *)RDEscapeString(q->value(0).toString()));
+      where+=QString("(GROUP_NAME=\"")+RDEscapeString(q->value(0).toString())+
+	"\")||";
     }
     delete q;
     where=where.left(where.length()-2);
-    sql=QString().sprintf("select NUMBER,TYPE,METADATA_DATETIME \
-                           from CART where %s",
-			  (const char *)where);
+    sql=QString("select ")+
+      "NUMBER,"+
+      "TYPE,"+
+      "METADATA_DATETIME "+
+      "from CART where "+where;
     q=new RDSqlQuery(sql);
     while(q->next()) {
-      sql=QString().sprintf("select ID,ITEM_DATETIME from REPL_CART_STATE \
-                             where (REPLICATOR_NAME=\"%s\")&&\
-                             (CART_NUMBER=%u)",
-			    (const char *)RDEscapeString(repl_name),
-			    q->value(0).toUInt());
+      sql=QString("select ")+
+	"ID,"+
+	"ITEM_DATETIME "+
+	"from REPL_CART_STATE where "+
+	"(REPLICATOR_NAME=\""+RDEscapeString(repl_name)+"\")&&"+
+	QString().sprintf("(CART_NUMBER=%u)",q->value(0).toUInt());
       q1=new RDSqlQuery(sql);
       if(q1->first()) {
 	stale=q->value(2).toDateTime()>q1->value(1).toDateTime();
@@ -166,17 +166,15 @@ void MainObject::ProcessCarts()
       if(stale) {
 	if(repl_replicators[i]->processCart(q->value(0).toUInt())) {
 	  if(q1->isValid()) {
-	    sql=QString().sprintf("update REPL_CART_STATE set \
-                                   ITEM_DATETIME=now() where ID=%u",
-				  q1->value(0).toUInt());
+	    sql=QString("update REPL_CART_STATE set ")+
+	      "ITEM_DATETIME=now() where "+
+	      QString().sprintf("ID=%u",q1->value(0).toUInt());
 	  }
 	  else {
-	    sql=QString().sprintf("insert into REPL_CART_STATE set \
-                                   REPLICATOR_NAME=\"%s\",\
-                                   CART_NUMBER=%u,\
-                                   ITEM_DATETIME=now()",
-				  (const char *)RDEscapeString(repl_name),
-				  q->value(0).toUInt());
+	    sql=QString("insert into REPL_CART_STATE set ")+
+	      "REPLICATOR_NAME=\""+RDEscapeString(repl_name)+"\","+
+	      QString().sprintf("CART_NUMBER=%u,",q->value(0).toUInt())+
+	      "ITEM_DATETIME=now()";
 	  }
 	  q2=new RDSqlQuery(sql);
 	  delete q2;
@@ -195,12 +193,21 @@ void MainObject::LoadReplicators()
   RDSqlQuery *q;
   ReplConfig *config;
 
-  sql=QString().
-    sprintf("select NAME,TYPE_ID,FORMAT,CHANNELS,SAMPRATE,\
-             BITRATE,QUALITY,URL,URL_USERNAME,URL_PASSWORD,\
-             ENABLE_METADATA,NORMALIZATION_LEVEL from \
-             REPLICATORS where STATION_NAME=\"%s\"",
-	    (const char *)RDEscapeString(rda->config()->stationName()));
+  sql=QString("select ")+
+    "NAME,"+                 // 00
+    "TYPE_ID,"+              // 01
+    "FORMAT,"+               // 02
+    "CHANNELS,"+             // 03
+    "SAMPRATE,"+             // 04
+    "BITRATE,"+              // 05
+    "QUALITY,"+              // 06
+    "URL,"+                  // 07
+    "URL_USERNAME,"+         // 08
+    "URL_PASSWORD,"+         // 09
+    "ENABLE_METADATA,"+      // 10 
+    "NORMALIZATION_LEVEL "+  // 11
+    "from REPLICATORS where "+
+    "STATION_NAME=\""+RDEscapeString(rda->config()->stationName())+"\"";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     config=new ReplConfig();
