@@ -20,10 +20,12 @@
 
 #include <stdlib.h>
 
-#include <qsqldatabase.h>
 #include <rddb.h>
 #include <globals.h>
-#include <starguide3.h>
+
+#include <rdescape_string.h>
+
+#include "starguide3.h"
 
 StarGuide3::StarGuide3(RDMatrix *matrix,QObject *parent)
   : Switcher(matrix,parent)
@@ -40,11 +42,15 @@ StarGuide3::StarGuide3(RDMatrix *matrix,QObject *parent)
   //
   // Load Feed Data
   //
-  sql=QString().sprintf("select NUMBER,ENGINE_NUM,DEVICE_NUM,CHANNEL_MODE\
-                         from INPUTS  where STATION_NAME=\"%s\" && MATRIX=%d \
-                         order by NUMBER",
-			(const char *)rda->station()->name(),
-			matrix->matrix());
+  sql=QString("select ")+
+    "NUMBER,"+
+    "ENGINE_NUM,"+
+    "DEVICE_NUM,"+
+    "CHANNEL_MODE "+
+    "from INPUTS  where "+
+    "(STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\")&&"+
+    QString().sprintf("(MATRIX=%d)",matrix->matrix())+
+    "order by NUMBER";
   q=new RDSqlQuery(sql);
   q->first();
   for(int i=0;i<sg_inputs;i++) {

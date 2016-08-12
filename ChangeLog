@@ -15877,3 +15877,22 @@
 	'rdrepld/citadelxds.cpp'.
 	* Removed (const char *) casts from SQL statements in
 	'rdrepld/rdrepld.cpp'.
+2016-08-12 Fred Gleason <fredg@paravelsystems.com>
+	* Removed (const char *) casts from SQL statements in
+	'ripcd/livewire_lwrpaudio.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'ripcd/livewire_mcastgpio.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'ripcd/local_macros.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'ripcd/ripcd.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'ripcd/sasusi.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'ripcd/starguide3.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'ripcd/swauthority.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'ripcd/unity4000.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'ripcd/vguest.cpp'.

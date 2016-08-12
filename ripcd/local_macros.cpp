@@ -161,9 +161,14 @@ void MainObject::LoadLocalMacros()
   //
   // Initialize Matrices
   //
-  sql=QString().sprintf("select MATRIX,TYPE,PORT,INPUTS,OUTPUTS from MATRICES \
-                         where STATION_NAME=\"%s\"",
-			(const char *)rda->station()->name());
+  sql=QString("select ")+
+    "MATRIX,"+
+    "TYPE,"+
+    "PORT,"+
+    "INPUTS,"+
+    "OUTPUTS "+
+    "from MATRICES where "+
+    "STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\"";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     if(!LoadSwitchDriver(q->value(0).toInt())) {
@@ -177,10 +182,16 @@ void MainObject::LoadLocalMacros()
   //
   // Initialize TTYs
   //
-  sql=QString().sprintf("select PORT_ID,PORT,BAUD_RATE,DATA_BITS,PARITY,\
-                         TERMINATION from TTYS where (STATION_NAME=\"%s\")&&\
-                         (ACTIVE=\"Y\")",
-			(const char *)rda->station()->name());
+  sql=QString("select ")+
+    "PORT_ID,"+
+    "PORT,"+
+    "BAUD_RATE,"+
+    "DATA_BITS,"+
+    "PARITY,"+
+    "TERMINATION "+
+    "from TTYS where "+
+    "(STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\")&&"+
+    "(ACTIVE=\"Y\")";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     tty_port=q->value(0).toUInt();
@@ -778,10 +789,17 @@ void MainObject::RunLocalMacros(RDMacro *rml)
     //
     // Try to Restart
     //
-    sql=QString().sprintf("select PORT_ID,PORT,BAUD_RATE,DATA_BITS,PARITY,\
-                         TERMINATION from TTYS where (STATION_NAME=\"%s\")&& \
-                         (ACTIVE=\"Y\")&&(PORT_ID=%d)",
-			  (const char *)rda->station()->name(),tty_port);
+    sql=QString("select ")+
+      "PORT_ID,"+
+      "PORT,"+
+      "BAUD_RATE,"+
+      "DATA_BITS,"+
+      "PARITY,"+
+      "TERMINATION "+
+      "from TTYS where "+
+      "(STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\")&&"+
+      "(ACTIVE=\"Y\")&&"+
+      QString().sprintf("(PORT_ID=%d)",tty_port);
     q=new RDSqlQuery(sql);
     if(q->first()) {
       if(!ripcd_tty_inuse[tty_port]) {

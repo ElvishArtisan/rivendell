@@ -23,8 +23,10 @@
 #include <qsignalmapper.h>
 
 #include <rddb.h>
-#include <globals.h>
-#include <vguest.h>
+#include <rdescape_string.h>
+
+#include "globals.h"
+#include "vguest.h"
 
 
 VGuest::VGuest(RDMatrix *matrix,QObject *parent)
@@ -71,9 +73,14 @@ VGuest::VGuest(RDMatrix *matrix,QObject *parent)
   //
   // Load Engine Data - Inputs
   //
-  sql=QString().sprintf("select NUMBER,ENGINE_NUM,DEVICE_NUM from INPUTS where\
-                         (STATION_NAME=\"%s\")&&(MATRIX=%d) order by NUMBER",
-			(const char *)matrix->station(),matrix->matrix());
+  sql=QString("select ")+
+    "NUMBER,"+
+    "ENGINE_NUM,"+
+    "DEVICE_NUM "+
+    "from INPUTS where "+
+    "(STATION_NAME=\""+RDEscapeString(matrix->station())+"\")&&"+
+    QString().sprintf("(MATRIX=%d) ",matrix->matrix())+
+    "order by NUMBER";
   q=new RDSqlQuery(sql);
   n=1;
   while(q->next()) {
@@ -91,10 +98,14 @@ VGuest::VGuest(RDMatrix *matrix,QObject *parent)
   //
   // Load Engine Data - Outputs
   //
-  sql=
-    QString().sprintf("select NUMBER,ENGINE_NUM,DEVICE_NUM from OUTPUTS where\
-                       (STATION_NAME=\"%s\")&&(MATRIX=%d) order by NUMBER",
-		      (const char *)matrix->station(),matrix->matrix());
+sql=QString("select ")+
+  "NUMBER,"+
+  "ENGINE_NUM,"+
+  "DEVICE_NUM "+
+  "from OUTPUTS where "+
+  "(STATION_NAME=\""+RDEscapeString(matrix->station())+"\")&&"+
+  QString().sprintf("(MATRIX=%d) ",matrix->matrix())+
+  "order by NUMBER";
   q=new RDSqlQuery(sql);
   n=1;
   while(q->next()) {
@@ -112,13 +123,17 @@ VGuest::VGuest(RDMatrix *matrix,QObject *parent)
   //
   // Load Engine Data - Relays
   //
-  sql=
-    QString().sprintf("select NUMBER,ENGINE_NUM,DEVICE_NUM,SURFACE_NUM,\
-                       RELAY_NUM from VGUEST_RESOURCES where\
-                       (STATION_NAME=\"%s\")&&(MATRIX_NUM=%d)&&\
-                       (VGUEST_TYPE=%d) order by NUMBER",
-		      (const char *)matrix->station(),matrix->matrix(),
-		      RDMatrix::VguestTypeRelay);
+sql=QString("select ")+
+  "NUMBER,"+
+  "ENGINE_NUM,"+
+  "DEVICE_NUM,"+
+  "SURFACE_NUM,"+
+  "RELAY_NUM "+
+  "from VGUEST_RESOURCES where "+
+  "(STATION_NAME=\""+RDEscapeString(matrix->station())+"\")&&",
+  QString().sprintf("(MATRIX_NUM=%d)&&",matrix->matrix())+
+  QString().sprintf("(VGUEST_TYPE=%d) ",RDMatrix::VguestTypeRelay)+
+  "order by NUMBER";
   q=new RDSqlQuery(sql);
   n=1;
   while(q->next()) {
@@ -140,13 +155,16 @@ VGuest::VGuest(RDMatrix *matrix,QObject *parent)
   //
   // Load Engine Data - Displays
   //
-  sql=
-    QString().sprintf("select NUMBER,ENGINE_NUM,DEVICE_NUM,SURFACE_NUM\
-                       from VGUEST_RESOURCES where\
-                       (STATION_NAME=\"%s\")&&(MATRIX_NUM=%d)&&\
-                       (VGUEST_TYPE=%d) order by NUMBER",
-		      (const char *)matrix->station(),matrix->matrix(),
-		      RDMatrix::VguestTypeDisplay);
+  sql=QString("select ")+
+    "NUMBER,"+
+    "ENGINE_NUM,"+
+    "DEVICE_NUM,"+
+    "SURFACE_NUM "+
+    "from VGUEST_RESOURCES where "+
+    "(STATION_NAME=\""+RDEscapeString(matrix->station())+"\")&&"+
+    QString().sprintf("(MATRIX_NUM=%d)&&",matrix->matrix())+
+    QString().sprintf("(VGUEST_TYPE=%d) ",RDMatrix::VguestTypeDisplay)+
+    "order by NUMBER";
   q=new RDSqlQuery(sql);
   n=1;
   while(q->next()) {

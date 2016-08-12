@@ -41,10 +41,11 @@
 #include <rdconf.h>
 #include <rdcheck_daemons.h>
 #include <rddb.h>
+#include <rdescape_string.h>
 
-#include <globals.h>
-#include <ripcd_socket.h>
-#include <ripcd.h>
+#include "globals.h"
+#include "ripcd_socket.h"
+#include "ripcd.h"
 
 void SigHandler(int signo)
 {
@@ -693,10 +694,13 @@ void MainObject::LoadGpiTable()
       }
     }
   }
-  QString sql=QString().sprintf("select MATRIX,NUMBER,OFF_MACRO_CART,\
-                                 MACRO_CART from GPIS \
-                                 where STATION_NAME=\"%s\"",
-				(const char *)rda->config()->stationName());
+  QString sql=QString("select ")+
+    "MATRIX,"+
+    "NUMBER,"+
+    "OFF_MACRO_CART,"+
+    "MACRO_CART "+
+    "from GPIS where "+
+    "STATION_NAME=\""+RDEscapeString(rda->config()->stationName())+"\"";
   RDSqlQuery *q=new RDSqlQuery(sql);
   while(q->next()) {
     ripcd_gpi_macro[q->value(0).toInt()][q->value(1).toInt()-1][0]=
@@ -706,9 +710,13 @@ void MainObject::LoadGpiTable()
   }
   delete q;
 
-  sql=QString().sprintf("select MATRIX,NUMBER,OFF_MACRO_CART,MACRO_CART \
-                         from GPOS where STATION_NAME=\"%s\"",
-			(const char *)rda->config()->stationName());
+  sql=QString("select ")+
+    "MATRIX,"+
+    "NUMBER,"+
+    "OFF_MACRO_CART,"+
+    "MACRO_CART "+
+    "from GPOS where "+
+    "STATION_NAME=\""+RDEscapeString(rda->config()->stationName())+"\"";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     ripcd_gpo_macro[q->value(0).toInt()][q->value(1).toInt()-1][0]=
