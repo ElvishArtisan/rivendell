@@ -1231,7 +1231,7 @@ void RDLogEvent::InsertLineValues(QString *query, int line)
     "\""+RDEscapeString(log_line[line]->markerLabel())+"\","+
     QString().sprintf("%d,",log_line[line]->graceTime())+
     QString().sprintf("%d,",log_line[line]->source())+
-    RDCheckDateTime(log_line[line]->extStartTime(),"hh:mm:ss")+
+    RDCheckDateTime(log_line[line]->extStartTime(),"hh:mm:ss")+","+
     QString().sprintf("%d,",log_line[line]->extLength())+
     "\""+RDEscapeString(log_line[line]->extData())+"\","+
     "\""+RDEscapeString(log_line[line]->extEventId())+"\","+
@@ -1249,12 +1249,12 @@ void RDLogEvent::InsertLineValues(QString *query, int line)
     QString().sprintf("%d,",log_line[line]->linkId())+
     "\""+RDYesNo(log_line[line]->linkEmbedded())+"\","+
     "\""+RDEscapeString(log_line[line]->originUser())+"\","+
-    RDCheckDateTime(log_line[line]->originDateTime(),"yyyy-MM-dd hh:mm:ss")+
+    RDCheckDateTime(log_line[line]->originDateTime(),"yyyy-MM-dd hh:mm:ss")+","+
     QString().sprintf("%d,",log_line[line]->linkStartSlop())+
     QString().sprintf("%d,",log_line[line]->linkEndSlop())+
     QString().sprintf("%d,",log_line[line]->duckUpGain())+
     QString().sprintf("%d,",log_line[line]->duckDownGain())+
-    QString().sprintf("%d,",log_line[line]->eventLength());
+    QString().sprintf("%d)",log_line[line]->eventLength());
   *query += sql;
 }
 

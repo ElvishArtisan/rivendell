@@ -679,7 +679,7 @@ void RDLog::SetRow(const QString &param,const QDate &value) const
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString("uupdate LOGS set ")+
+  sql=QString("update LOGS set ")+
     param+"="+RDCheckDateTime(value,"yyyy-MM-dd")+" where "+
     "NAME=\""+RDEscapeString(log_name)+"\"";
   q=new RDSqlQuery(sql);

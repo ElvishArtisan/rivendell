@@ -15916,3 +15916,6 @@
 	'web/rdxport/carts.cpp'.
 	* Removed (const char *) casts from SQL statements in
 	'web/rdxport/groups.cpp'.
+2016-08-12 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed regressions in 'lib/rdlog_event.cpp' and 'lib/rdlog.cpp'
+	that broke log saving.
