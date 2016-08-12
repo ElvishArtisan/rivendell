@@ -22,7 +22,6 @@
 #define RDPANEL_H
 
 #include <qwidget.h>
-#include <qsqldatabase.h>
 #include <qtimer.h>
 #include <qpixmap.h>
 
@@ -61,7 +60,6 @@ class MainWidget : public QWidget
  private:
   void RunLocalMacros(RDMacro *rml);
   void SetCaption();
-  QSqlDatabase *panel_db;
   QTimer *panel_master_timer;
   RDCae *panel_cae;
   RDStereoMeter *panel_stereo_meter;

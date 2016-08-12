@@ -357,7 +357,6 @@ void MainWidget::masterTimerData()
 
 void MainWidget::closeEvent(QCloseEvent *e)
 {
-  panel_db->removeDatabase(rda->config()->mysqlDbname());
   exit(0);
 }
 
