@@ -294,17 +294,18 @@ void MainObject::ServeListFeeds()
   line_colors[1]=RD_WEB_LINE_COLOR2;
   int current_color=0;
 
-  sql=QString().sprintf("select FEED_PERMS.KEY_NAME from \
-                         FEED_PERMS left join WEB_CONNECTIONS \
-                         on(FEED_PERMS.USER_NAME=WEB_CONNECTIONS.LOGIN_NAME) \
-                         where WEB_CONNECTIONS.SESSION_ID=%ld",
-			cast_session_id);
+  sql=QString("select FEED_PERMS.KEY_NAME from ")+
+    "FEED_PERMS left join WEB_CONNECTIONS "+
+    "on (FEED_PERMS.USER_NAME=WEB_CONNECTIONS.LOGIN_NAME) where "+
+    QString().sprintf("WEB_CONNECTIONS.SESSION_ID=%ld",cast_session_id);
   q=new RDSqlQuery(sql);
-  sql=QString().sprintf("select ID,KEY_NAME,CHANNEL_TITLE from FEEDS \
-                         where ");
+  sql=QString("select ")+
+    "ID,"+
+    "KEY_NAME,"+
+    "CHANNEL_TITLE "+
+    "from FEEDS	where ";
   while(q->next()) {
-    sql+=QString().sprintf("(KEY_NAME=\"%s\")||",
-			   (const char *)q->value(0).toString());
+    sql+=QString("(KEY_NAME=\"")+RDEscapeString(q->value(0).toString())+"\")||";
   }
   delete q;
   if(sql.right(2)=="||") {
@@ -503,8 +504,15 @@ void MainObject::ServeListCasts()
   line_colors[0]=RD_WEB_LINE_COLOR1;
   line_colors[1]=RD_WEB_LINE_COLOR2;
   int current_color=0;
-  sql="select ID,STATUS,ITEM_TITLE,ORIGIN_DATETIME,SHELF_LIFE,ITEM_CATEGORY,\
-       AUDIO_TIME from PODCASTS "+
+  sql=QString("select ")+
+    "ID,"+
+    "STATUS,"+
+    "ITEM_TITLE,"+
+    "ORIGIN_DATETIME,"+
+    "SHELF_LIFE,"+
+    "ITEM_CATEGORY,"+
+    "AUDIO_TIME "+
+    "from PODCASTS "+
     RDCastSearch(cast_feed_id,filter,unexp_only,active_only)+
     " order by ORIGIN_DATETIME desc";
 
@@ -724,12 +732,22 @@ void MainObject::ServeEditCast(int cast_id)
     Exit(0);
   }
 
-  sql=QString().sprintf("select ITEM_TITLE,ITEM_AUTHOR,\
-                         ITEM_CATEGORY,ITEM_LINK,ITEM_DESCRIPTION,\
-                         ITEM_COMMENTS,ITEM_SOURCE_TEXT,ITEM_SOURCE_URL,\
-                         ITEM_COMMENTS,SHELF_LIFE,ORIGIN_DATETIME,STATUS,\
-                         EFFECTIVE_DATETIME \
-                         from PODCASTS where ID=%d",cast_cast_id);
+  sql=QString("select ")+
+    "ITEM_TITLE,"+          // 00
+    "ITEM_AUTHOR,"+         // 01
+    "ITEM_CATEGORY,"+       // 02
+    "ITEM_LINK,"+           // 03
+    "ITEM_DESCRIPTION,"+    // 04
+    "ITEM_COMMENTS,"+       // 05
+    "ITEM_SOURCE_TEXT,"+    // 06
+    "ITEM_SOURCE_URL,"+     // 07
+    "ITEM_COMMENTS,"+       // 08
+    "SHELF_LIFE,"+          // 09
+    "ORIGIN_DATETIME,"+     // 10
+    "STATUS,"+              // 11
+    "EFFECTIVE_DATETIME "+  // 12
+    "from PODCASTS where "+
+    QString().sprintf("ID=%d",cast_cast_id);
   q=new RDSqlQuery(sql);
   if(!q->first()) {
     delete q;
@@ -1080,10 +1098,12 @@ void MainObject::ServePlay()
     Exit(0);
   }
 
-  sql=QString().sprintf("select FEEDS.BASE_URL,PODCASTS.AUDIO_FILENAME \
-                         from FEEDS left join PODCASTS \
-                         on FEEDS.ID=PODCASTS.FEED_ID \
-                         where PODCASTS.ID=%d",cast_cast_id);
+  sql=QString("select ")+
+    "FEEDS.BASE_URL,"+
+    "PODCASTS.AUDIO_FILENAME "+
+    "from FEEDS left join PODCASTS "+
+    "on FEEDS.ID=PODCASTS.FEED_ID where "+
+    QString().sprintf("PODCASTS.ID=%d",cast_cast_id);
   q=new RDSqlQuery(sql);
   if(q->first()) {
     printf("Content-type: audio/x-mpeg\n");
@@ -1211,8 +1231,8 @@ void MainObject::CommitCast()
       RDCgiError("Missing EXPIRATION_SECOND");
       Exit(0);
     }
-    sql=QString().sprintf("select ORIGIN_DATETIME from PODCASTS \
-                           where ID=%d",cast_cast_id);
+    sql=QString("select ORIGIN_DATETIME from PODCASTS where ")+
+      QString().sprintf("ID=%d",cast_cast_id);
     q=new RDSqlQuery(sql);
     if(!q->first()) {
       delete q;
@@ -1235,37 +1255,26 @@ void MainObject::CommitCast()
   QDateTime 
     effective_datetime(QDate(effective_year,effective_month,effective_day),
 		      QTime(effective_hour,effective_minute,effective_second));
-  sql=QString().sprintf("update PODCASTS set \
-                         STATUS=%d,\
-                         ITEM_TITLE=\"%s\",\
-                         ITEM_DESCRIPTION=\"%s\",\
-                         ITEM_CATEGORY=\"%s\",\
-                         ITEM_LINK=\"%s\",\
-                         ITEM_COMMENTS=\"%s\",\
-                         ITEM_AUTHOR=\"%s\",\
-                         ITEM_SOURCE_TEXT=\"%s\",\
-                         ITEM_SOURCE_URL=\"%s\",\
-                         SHELF_LIFE=%d,\
-                         EFFECTIVE_DATETIME=%s \
-                         where ID=%d",
-			status,
-			(const char *)RDEscapeString(item_title),
-			(const char *)RDEscapeString(item_description),
-			(const char *)RDEscapeString(item_category),
-			(const char *)RDEscapeString(item_link),
-			(const char *)RDEscapeString(item_comments),
-			(const char *)RDEscapeString(item_author),
-			(const char *)RDEscapeString(item_source_text),
-			(const char *)RDEscapeString(item_source_url),
-			shelf_life,
-			(const char *)RDCheckDateTime(RDLocalToUtc(effective_datetime),
-			    "yyyy-MM-dd hh:mm:ss"),
-			cast_cast_id);
+  sql=QString("update PODCASTS set ")+
+    QString().sprintf("STATUS=%d,",status)+
+    "ITEM_TITLE=\""+RDEscapeString(item_title)+"\","+
+    "ITEM_DESCRIPTION=\""+RDEscapeString(item_description)+"\","+
+    "ITEM_CATEGORY=\""+RDEscapeString(item_category)+"\","+
+    "ITEM_LINK=\""+RDEscapeString(item_link)+"\","+
+    "ITEM_COMMENTS=\""+RDEscapeString(item_comments)+"\","+
+    "ITEM_AUTHOR=\""+RDEscapeString(item_author)+"\","+
+    "ITEM_SOURCE_TEXT=\""+RDEscapeString(item_source_text)+"\","+
+    "ITEM_SOURCE_URL=\""+RDEscapeString(item_source_url)+"\","+
+    QString().sprintf("SHELF_LIFE=%d,",shelf_life)+
+    "EFFECTIVE_DATETIME="+RDCheckDateTime(RDLocalToUtc(effective_datetime),
+					  "yyyy-MM-dd hh:mm:ss")+
+    " where "+
+    QString().sprintf("ID=%d",cast_cast_id);
   q=new RDSqlQuery(sql);
   delete q;
 
-  sql=QString().sprintf("update FEEDS set LAST_BUILD_DATETIME=UTC_TIMESTAMP()\
-                         where ID=%d",cast_feed_id);
+  sql=QString("update FEEDS set LAST_BUILD_DATETIME=UTC_TIMESTAMP() where ")+
+    QString().sprintf("ID=%d",cast_feed_id);
   q=new RDSqlQuery(sql);
   delete q;
 
@@ -1298,8 +1307,8 @@ void MainObject::ConfirmDeleteCast()
     Exit(0);
   }
 
-  sql=QString().sprintf("select ITEM_TITLE,ORIGIN_DATETIME from PODCASTS \
-                         where ID=%d",cast_cast_id);
+  sql=QString("select ITEM_TITLE,ORIGIN_DATETIME from PODCASTS where ")+
+    QString().sprintf("ID=%d",cast_cast_id);
   q=new RDSqlQuery(sql);
   if(!q->first()) {
     RDCgiError("unable to access cast record!");
@@ -1457,13 +1466,11 @@ void MainObject::ServeSubscriptionReport()
   int current_color=0;
   QString keyname_esc=cast_key_name;
   keyname_esc.replace(" ","_");
-  sql=QString().sprintf("select ACCESS_DATE,ACCESS_COUNT,CAST_ID from %s_FLG \
-                         where (ACCESS_DATE>=\"%s\")&&\
-                         (ACCESS_DATE<=\"%s\") \
-                         order by ACCESS_DATE,CAST_ID desc",
-			(const char *)keyname_esc,
-			(const char *)cast_start_date.toString("yyyy-MM-dd"),
-			(const char *)cast_end_date.toString("yyyy-MM-dd"));
+  sql=QString("select ACCESS_DATE,ACCESS_COUNT,CAST_ID from `")+keyname_esc+
+    "_FLG` where "+
+    "(ACCESS_DATE>=\""+cast_start_date.toString("yyyy-MM-dd")+"\")&&"+
+    "(ACCESS_DATE<=\""+cast_end_date.toString("yyyy-MM-dd")+"\") "+
+    "order by ACCESS_DATE,CAST_ID desc";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     if(q->value(2).toUInt()==0) {
@@ -1623,14 +1630,14 @@ void MainObject::ServeEpisodeReport()
   int current_color=0;
   QString keyname_esc=cast_key_name;
   keyname_esc.replace(" ","_");
-  sql=QString().sprintf("select ACCESS_DATE,ACCESS_COUNT from %s_FLG \
-                         where (ACCESS_DATE>=\"%s\")&&\
-                         (ACCESS_DATE<=\"%s\")&& \
-                         (CAST_ID=%d) order by ACCESS_DATE",
-			(const char *)keyname_esc,
-			(const char *)cast_start_date.toString("yyyy-MM-dd"),
-			(const char *)cast_end_date.toString("yyyy-MM-dd"),
-			cast_cast_id);
+  sql=QString("select ")+
+    "ACCESS_DATE,"+
+    "ACCESS_COUNT "+
+    "from `"+keyname_esc+"_FLG` where "+
+    "(ACCESS_DATE>=\""+cast_start_date.toString("yyyy-MM-dd")+"\")&&"+
+    "(ACCESS_DATE<=\""+cast_end_date.toString("yyyy-MM-dd")+"\")&&"+
+    QString().sprintf("(CAST_ID=%d) ",cast_cast_id)+
+    "order by ACCESS_DATE";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     printf("<tr><td align=\"center\" bgcolor=\"%s\">%s</td>\n",
@@ -1770,12 +1777,13 @@ void MainObject::GetUserPerms()
   QString sql;
   RDSqlQuery *q;
 
-  sql=QString().sprintf("select USERS.ADD_PODCAST_PRIV,\
-                         USERS.EDIT_PODCAST_PRIV,USERS.DELETE_PODCAST_PRIV \
-                         from USERS left join WEB_CONNECTIONS \
-                         on USERS.LOGIN_NAME=WEB_CONNECTIONS.LOGIN_NAME \
-                         where WEB_CONNECTIONS.SESSION_ID=%ld",
-			cast_session_id);
+  sql=QString("select ")+
+    "USERS.ADD_PODCAST_PRIV,"+
+    "USERS.EDIT_PODCAST_PRIV,"+
+    "USERS.DELETE_PODCAST_PRIV "+
+    "from USERS left join WEB_CONNECTIONS "+
+    "on USERS.LOGIN_NAME=WEB_CONNECTIONS.LOGIN_NAME where "+
+    QString().sprintf("WEB_CONNECTIONS.SESSION_ID=%ld",cast_session_id);
   q=new RDSqlQuery(sql);
   if(!q->first()) {
     delete q;

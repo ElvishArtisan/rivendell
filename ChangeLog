@@ -15907,3 +15907,12 @@
 	'utils/rdmaint/rdmaint.cpp'.
 	* Removed (const char *) casts from SQL statements in
 	'utils/rdpurgecasts/rdpurgecasts.cpp'.
+2016-08-12 Fred Gleason <fredg@paravelsystems.com>
+	* Removed (const char *) casts from SQL statements in
+	'web/rdcastmanager/rdcastmanager.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'web/rdfeed/rdfeed_script.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'web/rdxport/carts.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'web/rdxport/groups.cpp'.

@@ -42,9 +42,9 @@ void Xport::ListGroups()
   //
   // Generate Group List
   //
-  sql=QString().sprintf("select GROUP_NAME from USER_PERMS \
-                         where USER_NAME=\"%s\" order by GROUP_NAME",
-			(const char *)RDEscapeString(rdcgi->user()->name()));
+  sql=QString("select GROUP_NAME from USER_PERMS where ")+
+    "USER_NAME=\""+RDEscapeString(rdcgi->user()->name())+"\" "+
+    "order by GROUP_NAME";
   q=new RDSqlQuery(sql);
 
   //
@@ -83,10 +83,9 @@ void Xport::ListGroup()
   //
   // Check Group Accessibility
   //
-  sql=QString().sprintf("select GROUP_NAME from USER_PERMS \
-                         where (USER_NAME=\"%s\")&&(GROUP_NAME=\"%s\")",
-			(const char *)RDEscapeString(rdcgi->user()->name()),
-			(const char *)RDEscapeString(group_name));
+  sql=QString("select GROUP_NAME from USER_PERMS where ")+
+    "(USER_NAME=\""+RDEscapeString(rdcgi->user()->name())+"\")&&"+
+    "(GROUP_NAME=\""+RDEscapeString(group_name)+"\")";
   q=new RDSqlQuery(sql);
   if(!q->first()) {
     delete q;

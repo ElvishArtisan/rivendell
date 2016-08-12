@@ -146,11 +146,9 @@ void Xport::ListCarts()
     where=RDAllCartSearchText(filter,"",rdcgi->user()->name(),false);
   }
   else {
-    sql=QString().
-      sprintf("select GROUP_NAME from USER_PERMS \
-               where (GROUP_NAME=\"%s\")&&(USER_NAME=\"%s\")",
-	      (const char *)RDEscapeString(group_name),
-	      (const char *)RDEscapeString(rdcgi->user()->name()));
+    sql=QString("select GROUP_NAME from USER_PERMS where ")+
+      "(GROUP_NAME=\""+RDEscapeString(group_name)+"\")&&"+
+      "(USER_NAME=\""+RDEscapeString(rdcgi->user()->name())+"\")";
     q=new RDSqlQuery(sql);
     if(!q->first()) {
       delete q;
@@ -513,9 +511,9 @@ void Xport::ListCuts()
   //
   // Process Request
   //
-  sql=QString().sprintf("select CUT_NAME from CUTS where CART_NUMBER=%u \
-                         order by CUT_NAME",
-			cart_number);
+  sql=QString("select CUT_NAME from CUTS where ")+
+    QString().sprintf("CART_NUMBER=%u ",cart_number)+
+    "order by CUT_NAME";
   q=new RDSqlQuery(sql);
   printf("Content-type: application/xml\n");
   printf("Status: 200\n\n");

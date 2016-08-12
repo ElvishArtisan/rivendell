@@ -28,6 +28,7 @@
 
 #include <rdcgiapplication.h>
 #include <rdconf.h>
+#include <rdescape_string.h>
 #include <rdpodcast.h>
 #include <rdweb.h>
 #include <rdfeedlog.h>
@@ -106,14 +107,26 @@ void MainObject::ServeRss(const char *keyname,bool count)
   RDSqlQuery *q;
   RDSqlQuery *q1;
 
-  sql=QString().sprintf("select CHANNEL_TITLE,CHANNEL_DESCRIPTION,\
-                         CHANNEL_CATEGORY,CHANNEL_LINK,CHANNEL_COPYRIGHT,\
-                         CHANNEL_WEBMASTER,CHANNEL_LANGUAGE,\
-                         LAST_BUILD_DATETIME,ORIGIN_DATETIME,\
-                         HEADER_XML,CHANNEL_XML,ITEM_XML,BASE_URL,ID, \
-                         UPLOAD_EXTENSION,CAST_ORDER,REDIRECT_PATH,\
-                         BASE_PREAMBLE from FEEDS \
-                         where KEY_NAME=\"%s\"",keyname);
+  sql=QString("select ")+
+    "CHANNEL_TITLE,"+        // 00
+    "CHANNEL_DESCRIPTION,"+  // 01
+    "CHANNEL_CATEGORY,"+     // 02
+    "CHANNEL_LINK,"+         // 03
+    "CHANNEL_COPYRIGHT,"+    // 04
+    "CHANNEL_WEBMASTER,"+    // 05
+    "CHANNEL_LANGUAGE,"+     // 06
+    "LAST_BUILD_DATETIME,"+  // 07
+    "ORIGIN_DATETIME,"+      // 08
+    "HEADER_XML,"+           // 09
+    "CHANNEL_XML,"+          // 10
+    "ITEM_XML,"+             // 11
+    "BASE_URL,ID,"+          // 12
+    "UPLOAD_EXTENSION,"+     // 13
+    "CAST_ORDER,"+           // 14
+    "REDIRECT_PATH,"+        // 15
+    "BASE_PREAMBLE "+        // 16
+    "from FEEDS where "+
+    "KEY_NAME=\""+RDEscapeString(keyname)+"\"";
   q=new RDSqlQuery(sql);
   if(!q->first()) {
     printf("Content-type: text/html\n\n");
@@ -156,14 +169,24 @@ void MainObject::ServeRss(const char *keyname,bool count)
   //
   // Render Item XML
   //
-  sql=QString().sprintf("select ITEM_TITLE,ITEM_DESCRIPTION,ITEM_CATEGORY,\
-                         ITEM_LINK,ITEM_AUTHOR,ITEM_SOURCE_TEXT,\
-                         ITEM_SOURCE_URL,ITEM_COMMENTS,\
-                         AUDIO_FILENAME,AUDIO_LENGTH,AUDIO_TIME,\
-                         EFFECTIVE_DATETIME,ID from PODCASTS \
-                         where (FEED_ID=%d)&&(STATUS=%d) \
-                         order by EFFECTIVE_DATETIME",
-			q->value(13).toUInt(),RDPodcast::StatusActive);
+  sql=QString("select ")+
+    "ITEM_TITLE,"+          // 00
+    "ITEM_DESCRIPTION,"+    // 01
+    "ITEM_CATEGORY,"+       // 02
+    "ITEM_LINK,"+           // 03
+    "ITEM_AUTHOR,"+         // 04
+    "ITEM_SOURCE_TEXT,"+    // 05
+    "ITEM_SOURCE_URL,"+     // 06
+    "ITEM_COMMENTS,"+       // 06
+    "AUDIO_FILENAME,"+      // 07
+    "AUDIO_LENGTH,"+        // 08
+    "AUDIO_TIME,"+          // 09
+    "EFFECTIVE_DATETIME,"+  // 10
+    "ID "+                  // 11
+    "from PODCASTS where "+
+    QString().sprintf("(FEED_ID=%d)&&",q->value(13).toUInt())+
+    QString().sprintf("(STATUS=%d)",RDPodcast::StatusActive)+
+    "order by EFFECTIVE_DATETIME";
   if(q->value(15).toString()=="N") {
     sql+=" desc";
   }
@@ -193,11 +216,13 @@ void MainObject::ServeLink(const char *keyname,int cast_id,bool count)
   QString sql;
   RDSqlQuery *q;
 
-  sql=QString().sprintf("select FEEDS.BASE_URL,PODCASTS.AUDIO_FILENAME from \
-                         FEEDS left join PODCASTS \
-                         on FEEDS.ID=PODCASTS.FEED_ID \
-                         where (FEEDS.KEY_NAME=\"%s\")&&(PODCASTS.ID=%d)",
-			(const char *)keyname,cast_id);
+  sql=QString("select ")+
+    "FEEDS.BASE_URL,"+
+    "PODCASTS.AUDIO_FILENAME "+
+    "from FEEDS left join PODCASTS "+
+    "on FEEDS.ID=PODCASTS.FEED_ID where "+
+    "(FEEDS.KEY_NAME=\""+RDEscapeString(keyname)+"\")&&"+
+    QString().sprintf("(PODCASTS.ID=%d)",cast_id);
   q=new RDSqlQuery(sql);
   if(!q->first()) {
     delete q;
@@ -292,8 +317,8 @@ QString MainObject::ResolveAuxWildcards(QString xml,QString keyname,
     sql+=",";
   }
   sql=sql.left(sql.length()-1);
-  sql+=QString().sprintf(" from %s_FIELDS where CAST_ID=%u",
-			 (const char *)keyname,cast_id);
+  sql+=QString(" from `")+keyname+"_FIELDS` where "+
+    QString().sprintf("CAST_ID=%u",cast_id);
   q->seek(-1);
   q1=new RDSqlQuery(sql);
   while(q1->next()) {
