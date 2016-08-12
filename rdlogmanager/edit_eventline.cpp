@@ -27,13 +27,13 @@
 
 #include <rddb.h>
 #include <rd.h>
+#include <rdescape_string.h>
 #include <rdevent.h>
 #include <rdcreate_log.h>
 #include <rdtextvalidator.h>
 
-#include <list_events.h>
-#include <edit_eventline.h>
-
+#include "edit_eventline.h"
+#include "list_events.h"
 
 EditEventLine::EditEventLine(RDEventLine *eventline,RDClock *clock,int line,
 			     QWidget *parent)
@@ -201,8 +201,8 @@ void EditEventLine::okData()
 	    tr("The event end time cannot be earlier than the start time."));
     return;
   }
-  QString sql=QString().sprintf("select NAME from EVENTS where NAME=\"%s\"",
-				(const char *)edit_eventname_edit->text());
+  QString sql=QString("select NAME from EVENTS where ")+
+    "NAME=\""+RDEscapeString(edit_eventname_edit->text())+"\"";
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(!q->first()) {
     QMessageBox::information(this,tr("No Such Event"),

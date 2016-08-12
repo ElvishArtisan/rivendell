@@ -28,9 +28,10 @@
 #include <rd.h>
 #include <rdevent.h>
 #include <rdcreate_log.h>
+#include <rdescape_string.h>
 #include <rdtextvalidator.h>
 
-#include <rename_item.h>
+#include "rename_item.h"
 
 RenameItem::RenameItem(QString *text,QString table,QWidget *parent)
   : QDialog(parent,"",true)
@@ -133,9 +134,8 @@ void RenameItem::okData()
     done(-1);
     return;
   }
-  QString sql=QString().sprintf("select NAME from %s where NAME=\"%s\"",
-				(const char *)edit_tablename,
-				(const char *)edit_name_edit->text());
+  QString sql=QString("select NAME from `")+edit_tablename+"` where "+
+    "NAME=\""+RDEscapeString(edit_name_edit->text())+"\"";
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->next()) {
     delete q;

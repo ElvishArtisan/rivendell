@@ -28,7 +28,6 @@
 #include <qwindowsstyle.h>
 #include <qwidget.h>
 #include <qpainter.h>
-#include <qsqldatabase.h>
 #include <qsqlpropertymap.h>
 #include <qmessagebox.h>
 #include <qpushbutton.h>
@@ -300,7 +299,6 @@ void MainWidget::reportsData()
 
 void MainWidget::quitMainWidget()
 {
-  log_db->removeDatabase(rda->config()->mysqlDbname());
   exit(0);
 }
 

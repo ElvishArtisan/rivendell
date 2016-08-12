@@ -15837,3 +15837,32 @@
 	'rdlogin/rdlogin.cpp'.
 	* Removed direct SQL driver invocations from 'rdlogin.cpp'
 	and 'rdlogin.h'.
+2016-08-12 Fred Gleason <fredg@paravelsystems.com>
+	* Removed (const char *) casts from SQL statements in
+	'rdlogmanager/edit_clock.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdlogmanager/edit_event.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdlogmanager/edit_eventline.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdlogmanager/edit_grid.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdlogmanager/edit_perms.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdlogmanager/edit_schedrules.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdlogmanager/list_clocks.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdlogmanager/list_events.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdlogmanager/list_svcs.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdlogmanager/pick_report_dates.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdlogmanager/rdlogmanager.cpp'.
+	* Removed direct SQL driver invocations from 'rdlogmanager.cpp'
+	and 'rdlogmanager.h'.
+	* Removed (const char *) casts from SQL statements in
+	'rdlogmanager/rename_item.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdlogmanager/svc_rec.cpp'.

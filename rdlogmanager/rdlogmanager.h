@@ -24,7 +24,6 @@
 #include <qwidget.h>
 #include <qsize.h>
 #include <qsizepolicy.h>
-#include <qsqldatabase.h>
 #include <qlistview.h>
 #include <qpushbutton.h>
 #include <qpixmap.h>
@@ -66,7 +65,6 @@ class MainWidget : public QWidget
 
  private:
   void LoadConfig();
-  QSqlDatabase *log_db;
   QString log_filename;
   QLabel *log_user_label;
   QPushButton *log_events_button;

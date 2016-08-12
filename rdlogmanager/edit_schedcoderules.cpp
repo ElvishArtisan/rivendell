@@ -25,7 +25,6 @@
 #include <qtextedit.h>
 #include <qpainter.h>
 #include <qmessagebox.h>
-#include <qsqldatabase.h>
 #include <qspinbox.h>
 #include <qcombobox.h>
 

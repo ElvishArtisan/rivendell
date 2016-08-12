@@ -114,7 +114,6 @@ void ImportListView::refreshList(int line)
 {
   QListViewItem *item;
   QListViewItem *select_item=NULL;
-  QString sql;
   RDLogLine *logline;
   int total_len=0;
 

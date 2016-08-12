@@ -29,7 +29,6 @@
 #include <qmessagebox.h>
 #include <qcheckbox.h>
 #include <qbuttongroup.h>
-#include <qsqldatabase.h>
 
 #include <add_clock.h>
 #include <rdpasswd.h>

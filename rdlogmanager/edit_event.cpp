@@ -174,9 +174,13 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   RDSqlQuery *q;
   event_player = NULL;
 #ifndef WIN32
-  sql=QString().sprintf("select OUTPUT_CARD,OUTPUT_PORT,START_CART,END_CART \
-                       from RDLOGEDIT where STATION=\"%s\"",
-			(const char *)rda->station()->name());
+  sql=QString("select ")+
+    "OUTPUT_CARD,"+
+    "OUTPUT_PORT,"+
+    "START_CART,"+
+    "END_CART "+
+    "from RDLOGEDIT where "+
+    "STATION=\""+RDEscapeString(rda->station()->name())+"\"";
   q=new RDSqlQuery(sql);
   if(q->first()) {
     event_player=
@@ -785,9 +789,9 @@ EditEvent::EditEvent(QString eventname,bool new_event,
     event_color_button->setPalette(QPalette(color,backgroundColor()));
   }
   str=event_event->nestedEvent();
-  sql=QString().sprintf("select NAME from EVENTS where NAME!=\"%s\"\
-                         order by NAME",
-			(const char *)eventname);
+  sql=QString("select NAME from EVENTS where ")+
+    "NAME!=\""+RDEscapeString(eventname)+"\" "+
+    "order by NAME";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     event_nestevent_box->insertItem(q->value(0).toString());
@@ -1177,8 +1181,8 @@ void EditEvent::saveAsData()
     return;
   }
   delete add_dialog;
-  QString sql=QString().sprintf("select NAME from EVENTS where NAME=\"%s\"",
-				(const char *)RDEscapeString(event_name));
+  QString sql=QString("select NAME from EVENTS where ")+
+    "NAME=\""+RDEscapeString(event_name)+"\"";
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(!q->first()) {
     delete event_event;
@@ -1201,8 +1205,8 @@ void EditEvent::saveAsData()
     event_event=new RDEvent(event_name,true);
     Save();
     event_new_events->push_back(event_name);
-    sql=QString().sprintf("delete from EVENT_PERMS where EVENT_NAME=\"%s\"",
-			  (const char *)RDEscapeString(event_name));
+    sql=QString("delete from EVENT_PERMS where ")+
+      "EVENT_NAME=\""+RDEscapeString(event_name)+"\"";
     q=new RDSqlQuery(sql);
     delete q;
     CopyEventPerms(old_name,event_name);
@@ -1299,35 +1303,41 @@ void EditEvent::RefreshLibrary()
 	type_filter="(TYPE=2)";
 	break;
   }
-  QString sql="select TYPE,NUMBER,GROUP_NAME,FORCED_LENGTH,TITLE,ARTIST,\
-               START_DATETIME,END_DATETIME from CART";
+  QString sql=QString("select ")+
+    "TYPE,"+            // 00
+    "NUMBER,"+          // 01
+    "GROUP_NAME,"+      // 02
+    "FORCED_LENGTH,"+   // 03
+    "TITLE,"+           // 04
+    "ARTIST,"+          // 05
+    "START_DATETIME,"+  // 06
+    "END_DATETIME "+    // 07
+    "from CART";
   QString group=event_group_box->currentText();
   if(group==QString(tr("ALL"))) {
     group="";
   }
-  sql+=QString().
-    sprintf(" where %s && %s",
-	    (const char *)
-	    RDCartSearchText(event_lib_filter_edit->text(),group,"",false).
-	    utf8(),(const char *)type_filter);
+  sql+=QString(" where ")+
+    RDCartSearchText(event_lib_filter_edit->text(),group,"",false)+" && "+
+    type_filter;
   RDSqlQuery *q=new RDSqlQuery(sql);
   QListViewItem *item;
   event_lib_list->clear();
   while(q->next()) {
     item=new QListViewItem(event_lib_list);
     switch((RDCart::Type)q->value(0).toInt()) {
-	case RDCart::Audio:
-	  item->setPixmap(0,*event_playout_map);
-	  item->setText(8,tr("Audio"));
-	  break;
+    case RDCart::Audio:
+      item->setPixmap(0,*event_playout_map);
+      item->setText(8,tr("Audio"));
+      break;
 
-	case RDCart::Macro:
-	  item->setPixmap(0,*event_macro_map);
-	  item->setText(8,tr("Macro"));
-	  break;
+    case RDCart::Macro:
+      item->setPixmap(0,*event_macro_map);
+      item->setText(8,tr("Macro"));
+      break;
 
     case RDCart::All:
-	  break;
+      break;
     }
     item->setText(1,QString().sprintf("%06u",q->value(1).toInt()));
     item->setText(2,q->value(2).toString());
@@ -1624,16 +1634,13 @@ void EditEvent::CopyEventPerms(QString old_name,QString new_name)
   RDSqlQuery *q;
   RDSqlQuery *q1;
 
-  sql=QString().sprintf("select SERVICE_NAME from EVENT_PERMS where\
-                         EVENT_NAME=\"%s\"",
-			(const char *)RDEscapeString(old_name));
+  sql=QString("select SERVICE_NAME from EVENT_PERMS where ")+
+    "EVENT_NAME=\""+RDEscapeString(old_name)+"\"";
   q=new RDSqlQuery(sql);
   while(q->next()) {
-    sql=QString().sprintf("insert into EVENT_PERMS set\
-                          EVENT_NAME=\"%s\",SERVICE_NAME=\"%s\"",
-			  (const char *)RDEscapeString(new_name),
-			  (const char *)
-			  RDEscapeString(q->value(0).toString()));
+    sql=QString("insert into EVENT_PERMS set ")+
+      "EVENT_NAME=\""+RDEscapeString(new_name)+"\","+
+      "SERVICE_NAME=\""+RDEscapeString(q->value(0).toString())+"\"";
     q1=new RDSqlQuery(sql);
     delete q1;
   }
@@ -1646,12 +1653,12 @@ void EditEvent::AbandonEvent(QString name)
   if(name==event_name) {
     return;
   }
-  QString sql=QString().sprintf("delete from EVENTS where NAME=\"%s\"",
-				(const char *)RDEscapeString(name));
+  QString sql=QString("delete from EVENTS where ")+
+    "NAME=\""+RDEscapeString(name)+"\"";
   RDSqlQuery *q=new RDSqlQuery(sql);
   delete q;
-  sql=QString().sprintf("delete from EVENT_PERMS where EVENT_NAME=\"%s\"",
-			(const char *)RDEscapeString(name));
+  sql=QString("delete from EVENT_PERMS where ")+
+    "EVENT_NAME=\""+RDEscapeString(name)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
   sql=QString("drop table `")+RDEvent::preimportTableName(name)+"`";

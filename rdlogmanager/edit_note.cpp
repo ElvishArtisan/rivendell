@@ -23,13 +23,12 @@
 #include <qtextedit.h>
 #include <qpainter.h>
 #include <qmessagebox.h>
-#include <qsqldatabase.h>
 
 #include <rd.h>
 #include <rdevent.h>
 #include <rdcreate_log.h>
 
-#include <edit_note.h>
+#include "edit_note.h"
 
 EditNote::EditNote(QString *text,QWidget *parent)
   : QDialog(parent,"",true)

@@ -29,14 +29,15 @@
 #include <rdapplication.h>
 #include <rddb.h>
 #include <rd.h>
+#include <rdescape_string.h>
 #include <rdevent.h>
 #include <rdcreate_log.h>
 
-#include <list_events.h>
-#include <add_event.h>
-#include <edit_event.h>
-#include <globals.h>
-#include <rename_item.h>
+#include "add_event.h"
+#include "edit_event.h"
+#include "globals.h"
+#include "list_events.h"
+#include "rename_item.h"
 
 ListEvents::ListEvents(QString *eventname,QWidget *parent)
   : QDialog(parent,"",true)
@@ -208,8 +209,8 @@ void ListEvents::addData()
     return;
   }
   delete add_dialog;
-  QString sql=QString().sprintf("select NAME from EVENTS where NAME=\"%s\"",
-				(const char *)logname);
+  QString sql=QString("select NAME from EVENTS where ")+
+    "NAME=\""+RDEscapeString(logname)+"\"";
   q=new RDSqlQuery(sql);
   if(q->first()) {
     QMessageBox::
@@ -223,8 +224,8 @@ void ListEvents::addData()
   delete event;
   EditEvent *event_dialog=new EditEvent(logname,true,&new_events,this);
   if(event_dialog->exec()<-1) {
-    sql=QString().sprintf("delete from EVENTS where NAME=\"%s\"",
-			  (const char *)logname);
+    sql=QString("delete from EVENTS where ")+
+      "NAME=\""+RDEscapeString(logname)+"\"";
     q=new RDSqlQuery(sql);
     delete q;
     return;
@@ -234,20 +235,18 @@ void ListEvents::addData()
       sql="select NAME from SERVICES";
       q=new RDSqlQuery(sql);
       while(q->next()) {
-	sql=QString().sprintf("insert into EVENT_PERMS set\
-                               EVENT_NAME=\"%s\",SERVICE_NAME=\"%s\"",
-			      (const char *)logname,
-			      (const char *)q->value(0).toString());
+	sql=QString("insert into EVENT_PERMS set ")+
+	  "EVENT_NAME=\""+RDEscapeString(logname)+"\","+
+	  "SERVICE_NAME=\""+RDEscapeString(q->value(0).toString())+"\"";
 	q1=new RDSqlQuery(sql);
 	delete q1;
       }
       delete q;
     }
     else {
-      sql=QString().sprintf("insert into EVENT_PERMS set\
-                             EVENT_NAME=\"%s\",SERVICE_NAME=\"%s\"",
-			    (const char *)logname,
-			    (const char *)edit_filter_box->currentText());
+      sql=QString("insert into EVENT_PERMS set ")+
+	"EVENT_NAME=\""+RDEscapeString(logname)+"\","+
+	"SERVICE_NAME=\""+RDEscapeString(edit_filter_box->currentText())+"\"";
       q=new RDSqlQuery(sql);
       delete q;
     }
@@ -344,11 +343,9 @@ void ListEvents::renameData()
   while(q->next()) {
     clock_name_esc=q->value(0).toString();
     clock_name_esc.replace(" ","_");
-    sql=QString().sprintf("update %s_CLK set EVENT_NAME=\"%s\"\
-                           where EVENT_NAME=\"%s\"",
-			  (const char *)clock_name_esc,
-			  (const char *)new_name,
-			  (const char *)item->text(0));
+    sql=QString("update ")+clock_name_esc+"_CLK set "+
+      "EVENT_NAME=\""+RDEscapeString(new_name)+"\" where "+
+      "EVENT_NAME=\""+RDEscapeString(item->text(0))+"\"";
     q1=new RDSqlQuery(sql);
     delete q1;
   }
@@ -361,14 +358,12 @@ void ListEvents::renameData()
   old_name_esc.replace(" ","_");
   QString new_name_esc=new_name;
   new_name_esc.replace(" ","_");
-  sql=QString().sprintf("alter table %s_PRE rename to %s_PRE",
-			(const char *)old_name_esc,
-			(const char *)new_name_esc);
+  sql=QString("alter table `")+old_name_esc+"_PRE` "+
+    "rename to `"+new_name_esc+"_PRE`";
   q=new RDSqlQuery(sql);
   delete q;
-  sql=QString().sprintf("alter table %s_POST rename to %s_POST",
-			(const char *)old_name_esc,
-			(const char *)new_name_esc);
+  sql=QString("alter table '")+old_name_esc+"_POST` "+
+    "rename to '"+new_name_esc+"_POST`";
   q=new RDSqlQuery(sql);
   delete q;
 
@@ -385,9 +380,9 @@ void ListEvents::renameData()
   //
   // Rename Primary Key
   //
-  sql=QString().sprintf("update EVENTS set NAME=\"%s\" where NAME=\"%s\"",
-			(const char *)new_name,
-			(const char *)item->text(0));
+  sql=QString("update EVENTS set ")+
+    "NAME=\""+RDEscapeString(new_name)+"\" where "+
+    "NAME=\""+RDEscapeString(item->text(0))+"\"";
   q=new RDSqlQuery(sql);
   delete q;
 
@@ -472,8 +467,7 @@ void ListEvents::RefreshList()
   }
 
   edit_events_list->clear();
-  QString sql=QString().sprintf("select NAME,PROPERTIES,COLOR from EVENTS %s",
-				(const char *)filter);
+  QString sql=QString("select NAME,PROPERTIES,COLOR from EVENTS ")+filter;
   RDSqlQuery *q=new RDSqlQuery(sql);
   QListViewItem *item=NULL;
   while(q->next()) {
@@ -503,8 +497,12 @@ void ListEvents::RefreshItem(QListViewItem *item,
 
 void ListEvents::UpdateItem(QListViewItem *item,QString name)
 {
-  QString sql=QString().sprintf("select NAME,PROPERTIES,COLOR from EVENTS\
-                                 where NAME=\"%s\"",(const char *)name);
+  QString sql=QString("select ")+
+    "NAME,"+
+    "PROPERTIES,"+
+    "COLOR "+
+    "from EVENTS where "+
+    "NAME=\""+RDEscapeString(name)+"\"";
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->next()) {
     item->setText(0,name);
@@ -543,13 +541,11 @@ int ListEvents::ActiveEvents(QString event_name,QString *clock_list)
   while(q->next()) {
     clockname=q->value(0).toString();
     clockname.replace(" ","_");
-    sql=QString().sprintf("select EVENT_NAME from %s_CLK\
-                           where EVENT_NAME=\"%s\"",(const char *)clockname,
-			  (const char *)event_name);
+    sql=QString("select EVENT_NAME from `")+clockname+"_CLK` where "+
+      "EVENT_NAME=\""+RDEscapeString(event_name)+"\"";(const char *)clockname,
     q1=new RDSqlQuery(sql);
     if(q1->first()) {
-      *clock_list+=
-	QString().sprintf("    %s\n",(const char *)q->value(0).toString());
+      *clock_list+=QString("    ")+q->value(0).toString()+"\n";
       n++;
     }
     delete q1;
@@ -575,9 +571,8 @@ void ListEvents::DeleteEvent(QString event_name)
   while(q->next()) {
     clockname=q->value(0).toString();
     clockname.replace(" ","_");
-    sql=QString().sprintf("delete from %s_CLK\
-                           where EVENT_NAME=\"%s\"",(const char *)clockname,
-			  (const char *)event_name);
+    sql=QString("delete from `")+clockname+"_CLK` where "+
+      "EVENT_NAME=\""+RDEscapeString(event_name)+"\"";
     q1=new RDSqlQuery(sql);
     delete q1;
   }
@@ -586,22 +581,22 @@ void ListEvents::DeleteEvent(QString event_name)
   //
   // Delete Service Associations
   //
-  sql=QString().sprintf("delete from EVENT_PERMS where EVENT_NAME=\"%s\"",
-			(const char *)event_name);
+  sql=QString("delete from EVENT_PERMS where ")+
+    "EVENT_NAME=\""+RDEscapeString(event_name)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
 
   //
   // Delete Event Definition
   //
-  sql=QString().sprintf("delete from EVENTS where NAME=\"%s\"",
-			(const char *)event_name);
+  sql=QString("delete from EVENTS where ")+
+    "NAME=\""+RDEscapeString(event_name)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
-  sql=QString().sprintf("drop table %s_PRE",(const char *)base_name);
+  sql=QString("drop table `")+base_name+"_PRE`";
   q=new RDSqlQuery(sql);
   delete q;
-  sql=QString().sprintf("drop table %s_POST",(const char *)base_name);
+  sql=QString("drop table `")+base_name+"_POST`";
   q=new RDSqlQuery(sql);
 }
 
@@ -609,14 +604,13 @@ void ListEvents::DeleteEvent(QString event_name)
 QString ListEvents::GetEventFilter(QString svc_name)
 {
   QString filter="where ";
-  QString sql=QString().sprintf("select EVENT_NAME from EVENT_PERMS\
-                                 where SERVICE_NAME=\"%s\"",
-				(const char *)svc_name);
+  QString sql=QString("select EVENT_NAME from EVENT_PERMS where ")+
+    "SERVICE_NAME=\""+RDEscapeString(svc_name)+"\"";
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->size()>0) {
     while(q->next()) {
-      filter+=QString().sprintf("(NAME=\"%s\")||",
-				(const char *)q->value(0).toString());
+      filter+=QString("(NAME=\"")+
+	RDEscapeString(q->value(0).toString())+"\")||";
     }
     filter=filter.left(filter.length()-2);
   }
@@ -641,8 +635,7 @@ QString ListEvents::GetNoneFilter()
     filter="where ";
   }
   while(q->next()) {
-    filter+=QString().sprintf("(NAME!=\"%s\")&&",
-			      (const char *)q->value(0).toString());
+    filter+=QString("(NAME!=\"")+RDEscapeString(q->value(0).toString())+"\")&&";
   }
   if(q->size()>0) {
     filter=filter.left(filter.length()-2);

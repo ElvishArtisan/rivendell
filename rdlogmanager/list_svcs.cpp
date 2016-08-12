@@ -164,8 +164,8 @@ void ListSvcs::RefreshList()
     item->setText(0,q->value(0).toString());
     tablename=q->value(0).toString();
     tablename.replace(" ","_");
-    sql=QString().sprintf("select EVENT_DATETIME from `%s_SRT` \
-                           order by EVENT_DATETIME",(const char *)tablename);
+    sql=QString("select EVENT_DATETIME from `")+tablename+"_SRT` "+
+      "order by EVENT_DATETIME";
     q1=new RDSqlQuery(sql);
     if(q1->first()) {
       item->setText(1,q1->value(0).toDate().toString("MM/dd/yyyy"));
@@ -185,8 +185,8 @@ void ListSvcs::RefreshLine(QListViewItem *item)
   RDSqlQuery *q;
   QString tablename=item->text(0);
     tablename.replace(" ","_");
-    sql=QString().sprintf("select EVENT_DATETIME from `%s_SRT` \
-                           order by EVENT_DATETIME",(const char *)tablename);
+    sql=QString("select EVENT_DATETIME from `")+tablename+"_SRT` "+
+      "order by EVENT_DATETIME";
     q=new RDSqlQuery(sql);
     if(q->first()) {
       item->setText(1,q->value(0).toDate().toString("MM/dd/yyyy"));

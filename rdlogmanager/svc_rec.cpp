@@ -51,9 +51,8 @@ SvcRec::SvcRec(const QString &svcname,QWidget *parent)
   QDate current_date=QDate::currentDate();
   pick_high_year=current_date.year();
   pick_low_year=pick_high_year;
-  sql=QString().sprintf("select EVENT_DATETIME from `%s_SRT`\
-                         order by EVENT_DATETIME",
-			(const char *)pick_tablename);
+  sql=QString("select EVENT_DATETIME from `")+pick_tablename+"_SRT` "+
+    "order by EVENT_DATETIME";
   q=new RDSqlQuery(sql);
   if(q->first()) {
     pick_low_year=q->value(0).toDate().year();
@@ -216,12 +215,10 @@ void SvcRec::deleteDay()
 
   QString tablename=pick_service_name;
   tablename.replace(" ","_");
-  sql=QString().sprintf("delete from `%s_SRT` where \
-                         (EVENT_DATETIME>=\"%s\")&&\
-                         (EVENT_DATETIME<=\"%s\")",
-			(const char *)tablename,
-			(const char *)date().toString("yyyy-MM-dd 00:00:00"),
-			(const char *)date().toString("yyyy-MM-dd 23:59:59"));
+  sql=QString("delete from `")+tablename+"_SRT` where "+
+    "(EVENT_DATETIME>=\""+date().toString("yyyy-MM-dd 00:00:00")+"\")&&"+
+    "(EVENT_DATETIME<\""+date().addDays(1).toString("yyyy-MM-dd 00:00:00")+
+    "\")";
   q=new RDSqlQuery(sql);
   delete q;
   GetActiveDays(pick_date);
@@ -404,12 +401,11 @@ void SvcRec::GetActiveDays(const QDate &date)
   RDSqlQuery *q;
 
   for(int i=0;i<=31;i++) {
-    sql=QString().sprintf("select ID from `%s_SRT` where \
-                           (EVENT_DATETIME>=\"%s-%02d 00:00:00\")&&\
-                           (EVENT_DATETIME<=\"%s-%02d 23:59:59\")",
-			  (const char *)pick_tablename,
-			  (const char *)date.toString("yyyy-MM"),i+1,
-			  (const char *)date.toString("yyyy-MM"),i+1);
+    sql=QString("select ID from `")+pick_tablename+"_SRT` where	"+
+      "(EVENT_DATETIME>=\""+date.toString("yyyy-MM")+
+      QString().sprintf("-%02d 00:00:00\")&&",i+1)+
+      "(EVENT_DATETIME<=\""+date.toString("yyyy-MM")+
+      QString().sprintf("-%02d 23:59:59\")",i+1);
     q=new RDSqlQuery(sql);
     pick_active_days[i]=q->first();
     delete q;

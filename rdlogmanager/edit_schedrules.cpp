@@ -29,13 +29,13 @@
 
 #include <rd.h>
 #include <rddb.h>
+#include <rdescape_string.h>
 #include <rdlistviewitem.h>
 
-#include <edit_schedrules.h>
-#include <edit_schedcoderules.h>
-#include <schedruleslist.h>
-#include <list_clocks.h>
-
+#include "edit_schedrules.h"
+#include "edit_schedcoderules.h"
+#include "list_clocks.h"
+#include "schedruleslist.h"
 
 EditSchedRules::EditSchedRules(QString clock,unsigned *artistsep,SchedRulesList *schedruleslist,bool *rules_modified,QWidget *parent)
   : QDialog(parent,"",true)
@@ -240,7 +240,8 @@ void EditSchedRules::importData()
     }
   delete import_list;
 
-  sql=QString().sprintf("select ARTISTSEP from CLOCKS where NAME=\"%s\"",(const char *)clockname); 
+  sql=QString("select ARTISTSEP from CLOCKS where ")+
+    "NAME=\""+RDEscapeString(clockname)+"\"";
   q=new RDSqlQuery(sql);
   if (q->first())
     {

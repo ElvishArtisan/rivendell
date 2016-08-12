@@ -227,8 +227,8 @@ void ListClocks::addData()
     return;
   }
   delete add_dialog;
-  sql=QString().sprintf("select NAME from CLOCKS where NAME=\"%s\"",
-			(const char *)clockname);
+  sql=QString("select NAME from CLOCKS where ")+
+    "NAME=\""+RDEscapeString(clockname)+"\"";
   q=new RDSqlQuery(sql);
   if(q->first()) {
     QMessageBox::
@@ -238,8 +238,9 @@ void ListClocks::addData()
     return;
   }
   delete q;
-  sql=QString().sprintf("insert into CLOCKS set NAME=\"%s\",ARTISTSEP=15",
-			(const char *)clockname);
+  sql=QString("insert into CLOCKS set ")+
+    "NAME=\""+RDEscapeString(clockname)+"\","+
+    "ARTISTSEP=15",
   q=new RDSqlQuery(sql);
   delete q;
   sql=RDCreateClockTableSql(RDClock::tableName(clockname));
@@ -250,11 +251,11 @@ void ListClocks::addData()
     clockname_esc=clockname;
     clockname_esc.replace(" ","_");
     clockname_esc+="_CLK";
-    sql=QString().sprintf("drop table %s",(const char *)clockname_esc);
+    sql=QString("drop table ")+clockname_esc;
     q=new RDSqlQuery(sql);
     delete q;
-    sql=QString().sprintf("delete from CLOCKS where NAME=\"%s\"",
-			  (const char *)clockname);
+    sql=QString("delete from CLOCKS where ")+
+      "NAME=\""+RDEscapeString(clockname)+"\"";
     q=new RDSqlQuery(sql);
     delete q;
   }
@@ -263,23 +264,18 @@ void ListClocks::addData()
       sql="select NAME from SERVICES";
       q=new RDSqlQuery(sql);
       while(q->next()) {
-        // FIXME: not sure if the usersec service filter should be applied
-        // here, or if all services should be brought over and later filtered
-        // by edit_perms.cpp dialog.
-	sql=QString().sprintf("insert into CLOCK_PERMS set\
-                               CLOCK_NAME=\"%s\",SERVICE_NAME=\"%s\"",
-			      (const char *)clockname,
-			      (const char *)q->value(0).toString());
+	sql=QString("insert into CLOCK_PERMS set ")+
+	  "CLOCK_NAME=\""+RDEscapeString(clockname)+"\","+
+	  "SERVICE_NAME=\""+RDEscapeString(q->value(0).toString())+"\"";
 	q1=new RDSqlQuery(sql);
 	delete q1;
       }
       delete q;
     }
     else {
-      sql=QString().sprintf("insert into CLOCK_PERMS set\
-                             CLOCK_NAME=\"%s\",SERVICE_NAME=\"%s\"",
-			    (const char *)clockname,
-			    (const char *)edit_filter_box->currentText());
+      sql=QString("insert into CLOCK_PERMS set ")+
+	"CLOCK_NAME=\""+RDEscapeString(clockname)+"\","+
+	"SERVICE_NAME=\""+RDEscapeString(edit_filter_box->currentText())+"\"";
       q=new RDSqlQuery(sql);
       delete q;
     }
@@ -388,33 +384,30 @@ void ListClocks::renameData()
   old_name_esc.replace(" ","_");
   QString new_name_esc=new_name;
   new_name_esc.replace(" ","_");
-  sql=QString().sprintf("alter table %s_CLK rename to %s_CLK",
-			(const char *)old_name_esc,
-			(const char *)new_name_esc);
+  sql=QString("alter table ")+old_name_esc+"_CLK rename to "+
+    new_name_esc+"_CLK";
   q=new RDSqlQuery(sql);
   delete q;
-  sql=QString().sprintf("alter table %s_RULES rename to %s_RULES",
-			(const char *)old_name_esc,
-			(const char *)new_name_esc);
+  sql=QString("alter table ")+old_name_esc+"_RULES "+
+    "rename to "+new_name_esc+"_RULES";
   q=new RDSqlQuery(sql);
   delete q;
 
   //
   // Rename Service Permissions
   //
-  sql=QString().sprintf("update CLOCK_PERMS set CLOCK_NAME=\"%s\"\
-                         where CLOCK_NAME=\"%s\"",
-			(const char *)new_name,
-			(const char *)item->text(0));
+  sql=QString("update CLOCK_PERMS set ")+
+    "CLOCK_NAME=\""+RDEscapeString(new_name)+"\" where "+
+    "CLOCK_NAME=\""+RDEscapeString(item->text(0))+"\"";
   q=new RDSqlQuery(sql);
   delete q;
 
   //
   // Rename Primary Key
   //
-  sql=QString().sprintf("update CLOCKS set NAME=\"%s\" where NAME=\"%s\"",
-			(const char *)new_name,
-			(const char *)item->text(0));
+  sql=QString("update CLOCKS set ")+
+    "NAME=\""+RDEscapeString(new_name)+"\" where "+
+    "NAME=\""+RDEscapeString(item->text(0))+"\"";
   q=new RDSqlQuery(sql);
   delete q;
 
@@ -516,8 +509,11 @@ void ListClocks::RefreshList()
   }
 
   edit_clocks_list->clear();
-  QString sql=QString().sprintf("select NAME,SHORT_NAME,COLOR from CLOCKS %s",
-				(const char *)filter);
+  QString sql=QString("select ")+
+    "NAME,"+
+    "SHORT_NAME,"+
+    "COLOR "+
+    "from CLOCKS "+filter;
   RDSqlQuery *q=new RDSqlQuery(sql);
   QListViewItem *item=NULL;
   while(q->next()) {
@@ -547,8 +543,12 @@ void ListClocks::RefreshItem(QListViewItem *item,
 
 void ListClocks::UpdateItem(QListViewItem *item,QString name)
 {
-  QString sql=QString().sprintf("select NAME,SHORT_NAME,COLOR from CLOCKS\
-                                 where NAME=\"%s\"",(const char *)name);
+  QString sql=QString("select ")+
+    "NAME,"+
+    "SHORT_NAME,"+
+    "COLOR "+
+    "from CLOCKS where "+
+    "NAME=\""+RDEscapeString(name)+"\"";
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->next()) {
     item->setText(0,name);
@@ -619,22 +619,22 @@ void ListClocks::DeleteClock(QString clockname)
   //
   // Delete Service Associations
   //
-  sql=QString().sprintf("delete from CLOCK_PERMS where CLOCK_NAME=\"%s\"",
-			(const char *)clockname);
+  sql=QString("delete from CLOCK_PERMS where ")+
+    "CLOCK_NAME=\""+RDEscapeString(clockname)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
 
   //
   // Delete Clock Definition
   //
-  sql=QString().sprintf("delete from CLOCKS where NAME=\"%s\"",
-				(const char *)clockname);
+  sql=QString("delete from CLOCKS where ")+
+    "NAME=\""+RDEscapeString(clockname)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
-  sql=QString().sprintf("drop table %s_CLK",(const char *)base_name);
+  sql=QString("drop table ")+base_name+"_CLK";
   q=new RDSqlQuery(sql);
   delete q;
-  sql=QString().sprintf("drop table %s_RULES",(const char *)base_name);
+  sql=QString("drop table ")+base_name+"_RULES";
   q=new RDSqlQuery(sql);
   delete q;
 }
@@ -643,14 +643,13 @@ void ListClocks::DeleteClock(QString clockname)
 QString ListClocks::GetClockFilter(QString svc_name)
 {
   QString filter="where ";
-  QString sql=QString().sprintf("select CLOCK_NAME from CLOCK_PERMS\
-                                 where SERVICE_NAME=\"%s\"",
-				(const char *)svc_name);
+  QString sql=QString("select CLOCK_NAME from CLOCK_PERMS where ")+
+    "SERVICE_NAME=\""+RDEscapeString(svc_name)+"\"";
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->size()>0) {
     while(q->next()) {
-      filter+=QString().sprintf("(NAME=\"%s\")||",
-				(const char *)q->value(0).toString());
+      filter+=QString("(NAME=\"")+
+	RDEscapeString(q->value(0).toString())+"\")||";
     }
     filter=filter.left(filter.length()-2);
   }

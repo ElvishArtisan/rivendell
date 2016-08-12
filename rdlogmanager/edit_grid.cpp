@@ -314,9 +314,11 @@ void EditGrid::LabelButton(int dayofweek,int hour,QString clockname)
   QString code=QString("---");
   QColor color=backgroundColor();
 
-  QString sql=QString().sprintf("select SHORT_NAME,COLOR from CLOCKS\
-                                 where NAME=\"%s\"",
-				(const char *)clockname);
+  QString sql=QString("select ")+
+    "SHORT_NAME,"+
+    "COLOR "+
+    "from CLOCKS where "+
+    "NAME=\""+RDEscapeString(clockname)+"\"";
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     code=q->value(0).toString();
