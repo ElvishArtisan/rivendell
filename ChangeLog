@@ -15818,3 +15818,8 @@
 2016-08-11 Fred Gleason <fredg@paravelsystems.com>
 	* Removed (const char *) casts from SQL statements in
 	'rdcatchd/rdcatchd.cpp'.
+2016-08-12 Fred Gleason <fredg@paravelsystems.com>
+	* Removed (const char *) casts from SQL statements in
+	'rdlibrary/list_reports.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdlibrary/rdlibrary.cpp'.

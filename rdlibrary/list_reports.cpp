@@ -201,9 +201,18 @@ void ListReports::GenerateCartReport(QString *report)
   if(list_type_filter.isEmpty()) {
     return;
   }
-  sql=QString("select CART.TYPE,CART.NUMBER,CART.GROUP_NAME,")+
-    "CART.FORCED_LENGTH,CART.TITLE,CART.ARTIST,CART.CUT_QUANTITY,"+
-    "CART.PLAY_ORDER,CART.ENFORCE_LENGTH,CART.LENGTH_DEVIATION,CART.OWNER "+
+  sql=QString("select ")+
+    "CART.TYPE,"+              // 00
+    "CART.NUMBER,"+            // 01
+    "CART.GROUP_NAME,"+        // 02
+    "CART.FORCED_LENGTH,"+     // 03
+    "CART.TITLE,"+             // 04
+    "CART.ARTIST,"+            // 05
+    "CART.CUT_QUANTITY,"+      // 06
+    "CART.PLAY_ORDER,"+        // 07
+    "CART.ENFORCE_LENGTH,"+    // 08
+    "CART.LENGTH_DEVIATION,"+  // 09
+    "CART.OWNER "+             // 10
     "from CART left join CUTS on CART.NUMBER=CUTS.CART_NUMBER";
   if(list_group==QString("ALL")) {
     sql+=QString(" where ")+
@@ -356,11 +365,28 @@ void ListReports::GenerateCutReport(QString *report)
   if(list_type_filter.isEmpty()) {
     return;
   }
-  sql="select CART.NUMBER,CUTS.CUT_NAME,CUTS.WEIGHT,CART.TITLE,\
-       CUTS.DESCRIPTION,CUTS.LENGTH,CUTS.LAST_PLAY_DATETIME,CUTS.PLAY_COUNTER,\
-       CUTS.START_DATETIME,CUTS.END_DATETIME,SUN,MON,TUE,WED,THU,FRI,SAT,\
-       CUTS.START_DAYPART,CUTS.END_DAYPART from CART join CUTS \
-       on CART.NUMBER=CUTS.CART_NUMBER";
+  sql=QString("select ")+
+    "CART.NUMBER,"+              // 00
+    "CUTS.CUT_NAME,"+            // 01
+    "CUTS.WEIGHT,"+              // 02
+    "CART.TITLE,"+               // 03
+    "CUTS.DESCRIPTION,"+         // 04
+    "CUTS.LENGTH,"+              // 05
+    "CUTS.LAST_PLAY_DATETIME,"+  // 06
+    "CUTS.PLAY_COUNTER,"+        // 07
+    "CUTS.START_DATETIME,"+      // 08
+    "CUTS.END_DATETIME,"+        // 09
+    "SUN,"+                      // 10
+    "MON,"+                      // 11
+    "TUE,"+                      // 12
+    "WED,"+                      // 13
+    "THU,"+                      // 14
+    "FRI,"+                      // 15
+    "SAT,"+                      // 16
+    "CUTS.START_DAYPART,"+       // 17
+    "CUTS.END_DAYPART "+         // 18
+    "from CART join CUTS "+
+    "on CART.NUMBER=CUTS.CART_NUMBER";
   if(list_group==QString("ALL")) {
     sql+=QString(" where ")+
       RDAllCartSearchText(list_filter,schedcode,rda->user()->name(),true)+" && "+
@@ -562,10 +588,23 @@ void ListReports::GenerateCartDumpFixed(QString *report,bool prepend_names)
   if(list_type_filter.isEmpty()) {
     return;
   }
-  sql="select CUTS.CUT_NAME,CART.GROUP_NAME,CART.TITLE,CART.ARTIST,CART.ALBUM,\
-       CART.YEAR,CUTS.ISRC,CART.LABEL,CART.CLIENT,CART.AGENCY,CART.PUBLISHER,\
-       CART.COMPOSER,CART.USER_DEFINED,CUTS.LENGTH from CART \
-       join CUTS on CART.NUMBER=CUTS.CART_NUMBER";
+  sql=QString("select ")+
+    "CUTS.CUT_NAME,"+      // 01
+    "CART.GROUP_NAME,"+    // 02
+    "CART.TITLE,"+         // 03
+    "CART.ARTIST,"+        // 04
+    "CART.ALBUM,"+         // 05
+    "CART.YEAR,"+          // 06
+    "CUTS.ISRC,"+          // 07
+    "CART.LABEL,"+         // 08
+    "CART.CLIENT,"+        // 09
+    "CART.AGENCY,"+        // 10
+    "CART.PUBLISHER,"+     // 11
+    "CART.COMPOSER,"+      // 12
+    "CART.USER_DEFINED,"+  // 13
+    "CUTS.LENGTH "+        // 14
+    "from CART join CUTS "+
+    "on CART.NUMBER=CUTS.CART_NUMBER";
   if(list_group==QString("ALL")) {
     sql+=QString(" where ")+
       RDAllCartSearchText(list_filter,schedcode,rda->user()->name(),true)+" && "+
@@ -700,18 +739,41 @@ void ListReports::GenerateCartDumpCsv(QString *report,bool prepend_names)
   if(list_type_filter.isEmpty()) {
     return;
   }
-  sql=QString("select CART.NUMBER,CART.TYPE,CUTS.CUT_NAME,CART.GROUP_NAME,CART.TITLE,CART.ARTIST,")+
-    "CART.ALBUM,CART.YEAR,CUTS.ISRC,CUTS.ISCI,CART.LABEL,CART.CLIENT,"+
-    "CART.AGENCY,CART.PUBLISHER,CART.COMPOSER,CART.CONDUCTOR,CART.SONG_ID,"+
-    "CART.USER_DEFINED,CUTS.DESCRIPTION,CUTS.OUTCUE,"+
-    "CUTS.LENGTH,"+
-    "CUTS.START_POINT,CUTS.END_POINT,"+
-    "CUTS.SEGUE_START_POINT,CUTS.SEGUE_END_POINT,"+
-    "CUTS.HOOK_START_POINT,CUTS.HOOK_END_POINT,"+
-    "CUTS.TALK_START_POINT,CUTS.TALK_END_POINT,"+
-    "CUTS.FADEUP_POINT,CUTS.FADEDOWN_POINT,"+
-    "SCHED_CODES from CART "+
-    "left join CUTS on CART.NUMBER=CUTS.CART_NUMBER";
+  sql=QString("select ")+
+    "CART.NUMBER,"+             // 00
+    "CART.TYPE,"+               // 01
+    "CUTS.CUT_NAME,"+           // 02
+    "CART.GROUP_NAME,"+         // 03
+    "CART.TITLE,"+              // 04
+    "CART.ARTIST,"+             // 05
+    "CART.ALBUM,"+              // 06
+    "CART.YEAR,"+               // 07
+    "CUTS.ISRC,"+               // 08
+    "CUTS.ISCI,"+               // 09
+    "CART.LABEL,"+              // 10
+    "CART.CLIENT,"+             // 11
+    "CART.AGENCY,"+             // 12
+    "CART.PUBLISHER,"+          // 13
+    "CART.COMPOSER,"+           // 14
+    "CART.CONDUCTOR,"+          // 15
+    "CART.SONG_ID,"+            // 16
+    "CART.USER_DEFINED,"+       // 17
+    "CUTS.DESCRIPTION,"+        // 18
+    "CUTS.OUTCUE,"+             // 19
+    "CUTS.LENGTH,"+             // 20
+    "CUTS.START_POINT,"+        // 21
+    "CUTS.END_POINT,"+          // 22
+    "CUTS.SEGUE_START_POINT,"+  // 23
+    "CUTS.SEGUE_END_POINT,"+    // 24
+    "CUTS.HOOK_START_POINT,"+   // 25
+    "CUTS.HOOK_END_POINT,"+     // 26
+    "CUTS.TALK_START_POINT,"+   // 27
+    "CUTS.TALK_END_POINT,"+     // 28
+    "CUTS.FADEUP_POINT,"+       // 29
+    "CUTS.FADEDOWN_POINT,"+     // 30
+    "SCHED_CODES "+             // 31
+    "from CART left join CUTS "+
+    "on CART.NUMBER=CUTS.CART_NUMBER";
   if(list_group==QString("ALL")) {
     sql+=QString(" where ")+
       RDAllCartSearchText(list_filter,schedcode,rda->user()->name(),true)+" && "+

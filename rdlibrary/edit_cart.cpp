@@ -1061,26 +1061,6 @@ bool EditCart::ValidateLengths()
 {
   return rdcart_cart->validateLengths(QTime().
 		     msecsTo(rdcart_controls.forced_length_edit->time()));
-  /*
-  int maxlen=(int)(RD_TIMESCALE_MAX*
-		   (double)QTime().msecsTo(rdcart_controls.forced_length_edit->
-					   time()));
-  int minlen=(int)(RD_TIMESCALE_MIN*
-		   (double)QTime().msecsTo(rdcart_controls.forced_length_edit->
-					   time()));
-  QString sql=QString().sprintf("select LENGTH from CUTS where CART_NUMBER=%u",
-				rdcart_cart->number());
-  RDSqlQuery *q=new RDSqlQuery(sql);
-  while(q->next()) {
-    if((q->value(0).toInt()>maxlen)||(q->value(0).toInt()<minlen)) {
-      delete q;
-      return false;
-    }
-  }
-  delete q;
-
-  return true;
-  */
 }
 
 

@@ -21,7 +21,6 @@
 #include <qdialog.h>
 #include <qpushbutton.h>
 #include <qlabel.h>
-#include <qsqldatabase.h>
 
 #include <rdtextvalidator.h>
 

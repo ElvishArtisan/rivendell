@@ -1004,19 +1004,47 @@ void MainWidget::RefreshList()
   // 36 - CUTS.SUN
   //
 
-  sql="select CART.NUMBER,CART.FORCED_LENGTH,CART.TITLE,CART.ARTIST,\
-       CART.ALBUM,CART.LABEL,\
-       CART.CLIENT,CART.AGENCY,CART.USER_DEFINED,\
-       CART.COMPOSER,CART.PUBLISHER,CART.CONDUCTOR,\
-       CART.GROUP_NAME,CART.START_DATETIME,CART.END_DATETIME,CART.TYPE,\
-       CART.CUT_QUANTITY,CART.LAST_CUT_PLAYED,\
-       CART.ENFORCE_LENGTH,CART.PRESERVE_PITCH,\
-       CART.LENGTH_DEVIATION,CART.OWNER,CART.VALIDITY,GROUPS.COLOR, \
-       CUTS.LENGTH,CUTS.EVERGREEN,CUTS.START_DATETIME,CUTS.END_DATETIME,\
-       CUTS.START_DAYPART,CUTS.END_DAYPART,CUTS.MON,CUTS.TUE,\
-       CUTS.WED,CUTS.THU,CUTS.FRI,CUTS.SAT,CUTS.SUN from CART \
-       left join GROUPS on CART.GROUP_NAME=GROUPS.NAME \
-       left join CUTS on CART.NUMBER=CUTS.CART_NUMBER";
+  sql=QString("select ")+
+    "CART.NUMBER,"+            // 00
+    "CART.FORCED_LENGTH,"+     // 01
+    "CART.TITLE,"+             // 02
+    "CART.ARTIST,"+            // 03
+    "CART.ALBUM,"+             // 04
+    "CART.LABEL,"+             // 05
+    "CART.CLIENT,"+            // 06
+    "CART.AGENCY,"+            // 07
+    "CART.USER_DEFINED,"+      // 08
+    "CART.COMPOSER,"+          // 09
+    "CART.PUBLISHER,"+         // 10
+    "CART.CONDUCTOR,"+         // 11
+    "CART.GROUP_NAME,"+        // 12
+    "CART.START_DATETIME,"+    // 13
+    "CART.END_DATETIME,"+      // 14
+    "CART.TYPE,"+              // 15
+    "CART.CUT_QUANTITY,"+      // 16
+    "CART.LAST_CUT_PLAYED,"+   // 17
+    "CART.ENFORCE_LENGTH,"+    // 18
+    "CART.PRESERVE_PITCH,"+    // 19
+    "CART.LENGTH_DEVIATION,"+  // 20
+    "CART.OWNER,"+             // 21
+    "CART.VALIDITY,"+          // 22
+    "GROUPS.COLOR,"+           // 23
+    "CUTS.LENGTH,"+            // 24
+    "CUTS.EVERGREEN,"+         // 25
+    "CUTS.START_DATETIME,"+    // 26
+    "CUTS.END_DATETIME,"+      // 27
+    "CUTS.START_DAYPART,"+     // 28
+    "CUTS.END_DAYPART,"+       // 29
+    "CUTS.MON,"+               // 30
+    "CUTS.TUE,"+               // 31
+    "CUTS.WED,"+               // 32
+    "CUTS.THU,"+               // 33
+    "CUTS.FRI,"+               // 34
+    "CUTS.SAT,"+               // 35
+    "CUTS.SUN "+               // 36
+    "from CART left join GROUPS "+
+    "on CART.GROUP_NAME=GROUPS.NAME left join CUTS "+
+    "on CART.NUMBER=CUTS.CART_NUMBER";
   QString schedcode="";
   if(lib_codes_box->currentText()!=tr("ALL")) {
     schedcode=lib_codes_box->currentText();
@@ -1169,28 +1197,47 @@ void MainWidget::RefreshLine(RDListViewItem *item)
 {
   RDCart::Validity validity=RDCart::NeverValid;
   QDateTime current_datetime(QDate::currentDate(),QTime::currentTime());
-  QString sql=QString().sprintf("select CART.FORCED_LENGTH,CART.TITLE,\
-                                 CART.ARTIST,\
-                                 CART.ALBUM,CART.LABEL,\
-                                 CART.CLIENT,\
-                                 CART.AGENCY,CART.USER_DEFINED,\
-                                 CART.COMPOSER,CART.CONDUCTOR,CART.PUBLISHER,\
-                                 CART.GROUP_NAME,CART.START_DATETIME,\
-                                 CART.END_DATETIME,CART.TYPE,\
-                                 CART.CUT_QUANTITY,CART.LAST_CUT_PLAYED,\
-                                 CART.ENFORCE_LENGTH,\
-                                 CART.PRESERVE_PITCH,\
-                                 CART.LENGTH_DEVIATION,CART.OWNER,\
-                                 CART.VALIDITY,GROUPS.COLOR,CUTS.LENGTH,\
-                                 CUTS.EVERGREEN,CUTS.START_DATETIME,\
-                                 CUTS.END_DATETIME,CUTS.START_DAYPART,\
-                                 CUTS.END_DAYPART,CUTS.MON,CUTS.TUE,\
-                                 CUTS.WED,CUTS.THU,CUTS.FRI,CUTS.SAT,CUTS.SUN \
-                                 from CART left join GROUPS on \
-                                 CART.GROUP_NAME=GROUPS.NAME left join \
-                                 CUTS on CART.NUMBER=CUTS.CART_NUMBER \
-                                 where CART.NUMBER=%u",
-				item->text(1).toUInt());
+  QString sql=QString("select ")+
+    "CART.FORCED_LENGTH,"+     // 00
+    "CART.TITLE,"+             // 01
+    "CART.ARTIST,"+            // 02
+    "CART.ALBUM,"+             // 03
+    "CART.LABEL,"+             // 04
+    "CART.CLIENT,"+            // 05
+    "CART.AGENCY,"+            // 06
+    "CART.USER_DEFINED,"+      // 07
+    "CART.COMPOSER,"+          // 08
+    "CART.CONDUCTOR,"+         // 09
+    "CART.PUBLISHER,"+         // 10
+    "CART.GROUP_NAME,"+        // 11
+    "CART.START_DATETIME,"+    // 12
+    "CART.END_DATETIME,"+      // 13
+    "CART.TYPE,"+              // 14
+    "CART.CUT_QUANTITY,"+      // 15
+    "CART.LAST_CUT_PLAYED,"+   // 16
+    "CART.ENFORCE_LENGTH,"+    // 17
+    "CART.PRESERVE_PITCH,"+    // 18
+    "CART.LENGTH_DEVIATION,"+  // 19
+    "CART.OWNER,"+             // 20
+    "CART.VALIDITY,"+          // 21
+    "GROUPS.COLOR,"+           // 22
+    "CUTS.LENGTH,"+            // 23
+    "CUTS.EVERGREEN,"+         // 24
+    "CUTS.START_DATETIME,"+    // 25
+    "CUTS.END_DATETIME,"+      // 26
+    "CUTS.START_DAYPART,"+     // 27
+    "CUTS.END_DAYPART,"+       // 28
+    "CUTS.MON,"+               // 29
+    "CUTS.TUE,"+               // 30
+    "CUTS.WED,"+               // 31
+    "CUTS.THU,"+               // 32
+    "CUTS.FRI,"+               // 33
+    "CUTS.SAT,"+               // 34
+    "CUTS.SUN "+               // 35
+    "from CART left join GROUPS "+
+    "on CART.GROUP_NAME=GROUPS.NAME left join CUTS "+
+    "on CART.NUMBER=CUTS.CART_NUMBER where "+
+    QString().sprintf("where CART.NUMBER=%u",item->text(1).toUInt());
   RDSqlQuery *q=new RDSqlQuery(sql);
   while(q->next()) {
     if((RDCart::Type)q->value(14).toUInt()==RDCart::Macro) {
