@@ -15928,3 +15928,6 @@
 	dialog.
 	* Removed the 'RDCae *' and 'RDRipc *' parameters from the
 	contructor of the RDSimplePlayer dialog.
+2016-08-15 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in 'lib/export_technical.cpp' that caused a
+	SQL error.

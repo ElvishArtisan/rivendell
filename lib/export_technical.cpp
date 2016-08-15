@@ -75,7 +75,7 @@ bool RDReport::ExportTechnical(const QDate &startdate,const QDate &enddate,
     "`"+mixtable+"_SRT`.TITLE,"+           // 08
     "CART.FORCED_LENGTH,"+                 // 09
     "`"+mixtable+"_SRT`.STATION_NAME,"+    // 10
-    "`"+mixtable+"%s_SRT`.PLAY_SOURCE,"+   // 11
+    "`"+mixtable+"_SRT`.PLAY_SOURCE,"+   // 11
     "`"+mixtable+"_SRT`.CUT_NUMBER,"+      // 12
     "`"+mixtable+"_SRT`.START_SOURCE,"+    // 13
     "`"+mixtable+"_SRT`.ONAIR_FLAG "+      // 14
