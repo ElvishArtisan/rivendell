@@ -19,6 +19,13 @@
 //
 
 #include <qpainter.h>
+//Added by qt3to4:
+#include <QLabel>
+#include <QPixmap>
+#include <QDragEnterEvent>
+#include <QDropEvent>
+#include <QMouseEvent>
+#include <QPaintEvent>
 
 #include <rdapplication.h>
 #include <rdconf.h>
@@ -131,23 +138,23 @@ LogLineBox::LogLineBox(RDAirPlayConf *conf,QWidget *parent)
 
   line_text_palette=palette();
   line_text_palette.setColor(QPalette::Active,QColorGroup::Foreground,
-				  QColor(black));
+				  QColor(Qt::black));
   line_text_palette.setColor(QPalette::Inactive,QColorGroup::Foreground,
-				  QColor(black));
+				  QColor(Qt::black));
 
   //
   // Count Up
   //
   line_up_label=new QLabel(this);
   line_up_label->setGeometry(5,65,65,16);
-  line_up_label->setAlignment(AlignLeft|AlignVCenter);
+  line_up_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
   line_up_label->setFont(line_font);
   line_up_label->hide();
 
   //
   // Position Slider
   //
-  line_position_bar=new QProgressBar(this);
+  line_position_bar=new Q3ProgressBar(this);
   line_position_bar->setGeometry(75,66,sizeHint().width()-150,13);
   line_position_bar->setPercentageVisible(false);
   line_position_bar->hide();
@@ -157,7 +164,7 @@ LogLineBox::LogLineBox(RDAirPlayConf *conf,QWidget *parent)
   //
   line_down_label=new QLabel(this);
   line_down_label->setGeometry(sizeHint().width()-72,65,65,16);
-  line_down_label->setAlignment(AlignLeft|AlignVCenter);
+  line_down_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
   line_down_label->setFont(line_font);
   line_down_label->hide();
 
@@ -197,7 +204,7 @@ LogLineBox::LogLineBox(RDAirPlayConf *conf,QWidget *parent)
   line_comment_label=new RDLabel(this);
   line_comment_label->setGeometry(5,18,sizeHint().width()-10,62);
   line_comment_label->setFont(line_font);
-  line_comment_label->setAlignment(AlignTop|AlignLeft);
+  line_comment_label->setAlignment(Qt::AlignTop|Qt::AlignLeft);
   line_comment_label->setWordWrapEnabled(true);
   line_comment_label->hide();
 
@@ -234,7 +241,7 @@ LogLineBox::LogLineBox(RDAirPlayConf *conf,QWidget *parent)
   line_time_label=new QLabel(this);
   line_time_label->setGeometry(185,3,70,16);
   line_time_label->setFont(line_font);
-  line_time_label->setAlignment(AlignRight);
+  line_time_label->setAlignment(Qt::AlignRight);
   line_time_label->setPalette(line_time_palette);
 
   //
@@ -243,7 +250,7 @@ LogLineBox::LogLineBox(RDAirPlayConf *conf,QWidget *parent)
   line_talktime_label=new QLabel(this);
   line_talktime_label->setGeometry(257,3,36,16);
   line_talktime_label->setFont(talk_font);
-  line_talktime_label->setAlignment(AlignRight);
+  line_talktime_label->setAlignment(Qt::AlignRight);
 
   //
   // Length
@@ -251,14 +258,14 @@ LogLineBox::LogLineBox(RDAirPlayConf *conf,QWidget *parent)
   line_length_label=new QLabel(this);
   line_length_label->setGeometry(297,3,40,16);
   line_length_label->setFont(line_font);
-  line_length_label->setAlignment(AlignRight);
+  line_length_label->setAlignment(Qt::AlignRight);
 
   //
   // Transition Type
   //
   line_trans_label=new QLabel(this);
   line_trans_label->setGeometry(sizeHint().width()-53,3,48,16);
-  line_trans_label->setAlignment(AlignRight);
+  line_trans_label->setAlignment(Qt::AlignRight);
   line_trans_label->setFont(line_bold_font);
 
   SetColor(QColor(LOGLINEBOX_BACKGROUND_COLOR));
@@ -872,7 +879,7 @@ void LogLineBox::SetColor(QColor color)
   line_talktime_label->setPalette(line_text_palette);
   line_up_label->setBackgroundColor(color);
   line_up_label->setPalette(line_text_palette);
-  line_position_bar->setBackgroundColor(QColor(lightGray));
+  line_position_bar->setBackgroundColor(QColor(Qt::lightGray));
   line_down_label->setBackgroundColor(color);
   line_down_label->setPalette(line_text_palette);
   line_comment_label->setBackgroundColor(color);

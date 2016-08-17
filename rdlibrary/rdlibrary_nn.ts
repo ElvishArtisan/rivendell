@@ -1,4 +1,6 @@
-<!DOCTYPE TS><TS>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0">
 <context>
     <name>AudioCart</name>
     <message>
@@ -1217,9 +1219,9 @@ Vil du sletta ho likevel?</translation>
     </message>
     <message>
         <source>Deleting cart %06u will also empty the clipboard.
-      <byte value="x9"/>Do you still want to proceed?</source>
+      	Do you still want to proceed?</source>
         <translation>Viss du slettar korga %06u, tømer du utklyppstavla.
-      <byte value="x9"/>Vil du halda fram?</translation>
+      	Vil du halda fram?</translation>
     </message>
     <message>
         <source>Empty Clipboard</source>

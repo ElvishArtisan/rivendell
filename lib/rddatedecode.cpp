@@ -32,7 +32,7 @@ QString RDDateDecode(QString str,QDate date)
   QString field;
   int offset=0;
 
-  for(unsigned i=0;i<str.length();i++) {
+  for(int i=0;i<str.length();i++) {
     field="";
     offset=0;
     if(str.at(i)!='%') {
@@ -174,7 +174,7 @@ QString RDDateTimeDecode(QString str,QDateTime datetime)
   QString field;
   int offset=0;
 
-  for(unsigned i=0;i<str.length();i++) {
+  for(int i=0;i<str.length();i++) {
     field="";
     offset=0;
     if(str.at(i)!='%') {

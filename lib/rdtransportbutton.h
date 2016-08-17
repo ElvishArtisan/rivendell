@@ -25,8 +25,10 @@
 #include <qpushbutton.h>
 #include <qpixmap.h>
 #include <qcolor.h>
+//Added by qt3to4:
+#include <QResizeEvent>
 
-#define RDTRANSPORTBUTTON_DEFAULT_ON_COLOR green
+#define RDTRANSPORTBUTTON_DEFAULT_ON_COLOR Qt::green
 
 class RDTransportButton : public QPushButton
 {

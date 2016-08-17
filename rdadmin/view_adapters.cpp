@@ -19,11 +19,10 @@
 //
 
 #include <qpushbutton.h>
-#include <qtextedit.h>
+#include <q3textedit.h>
 #include <qlabel.h>
 
 #include <rd.h>
-#include <rdencoderlist.h>
 
 #include <view_adapters.h>
 
@@ -66,7 +65,7 @@ ViewAdapters::ViewAdapters(RDStation *rdstation,QWidget *parent)
   //
   // Resource List
   //
-  QTextEdit *text_edit=new QTextEdit(this,"adapter_edit");
+  Q3TextEdit *text_edit=new Q3TextEdit(this,"adapter_edit");
   text_edit->setGeometry(10,28,sizeHint().width()-20,sizeHint().height()-98);
   text_edit->setReadOnly(true);
   QString text;
@@ -119,11 +118,6 @@ ViewAdapters::ViewAdapters(RDStation *rdstation,QWidget *parent)
     }
     text+=tr("    PCM16 Linear\n");
     text+=tr("    PCM24 Linear\n");
-    RDEncoderList *encoders=new RDEncoderList(rdstation->name());
-    for(unsigned i=0;i<encoders->encoderQuantity();i++) {
-      text+="    "+encoders->encoder(i)->name()+" [Custom]\n";
-    }
-    delete encoders;
 
     text+="\n";
     

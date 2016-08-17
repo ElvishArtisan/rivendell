@@ -20,9 +20,12 @@
 
 #include <qdialog.h>
 #include <qstring.h>
-#include <qtextedit.h>
+#include <q3textedit.h>
 #include <qpainter.h>
 #include <qmessagebox.h>
+//Added by qt3to4:
+#include <QResizeEvent>
+#include <QLabel>
 
 #include <rd.h>
 #include <rdescape_string.h>
@@ -40,7 +43,7 @@ ListGpis::ListGpis(RDMatrix *matrix,RDMatrix::GpioType type,QWidget *parent)
 {
   QString sql;
   RDSqlQuery *q;
-  QListViewItem *l;
+  Q3ListViewItem *l;
   QString list_label;
 
   list_matrix=matrix;
@@ -78,16 +81,16 @@ ListGpis::ListGpis(RDMatrix *matrix,RDMatrix::GpioType type,QWidget *parent)
   //
   // Gpis List Box
   //
-  list_list_view=new QListView(this);
+  list_list_view=new Q3ListView(this);
   list_list_label=
     new QLabel(list_list_view,list_label,this);
   list_list_label->setFont(bold_font);
   list_list_view->setAllColumnsShowFocus(true);
   list_list_view->setItemMargin(5);
   connect(list_list_view,
-	  SIGNAL(doubleClicked(QListViewItem *,const QPoint &,int)),
+	  SIGNAL(doubleClicked(Q3ListViewItem *,const QPoint &,int)),
 	  this,
-	  SLOT(doubleClickedData(QListViewItem *,const QPoint &,int)));
+	  SLOT(doubleClickedData(Q3ListViewItem *,const QPoint &,int)));
 
   switch(list_type) {
     case RDMatrix::GpioInput:
@@ -154,7 +157,7 @@ ListGpis::ListGpis(RDMatrix *matrix,RDMatrix::GpioType type,QWidget *parent)
   q=new RDSqlQuery(sql);
   if(list_matrix->type()==RDMatrix::LiveWireLwrpAudio) {
     while(q->next()) {
-      l=new QListViewItem(list_list_view);
+      l=new Q3ListViewItem(list_list_view);
       l->setText(0,QString().sprintf("%05d",q->value(0).toInt()));
       if(q->value(1).toInt()>0) {
 	l->setText(1,QString().sprintf("%06d",q->value(1).toInt()));
@@ -173,7 +176,7 @@ ListGpis::ListGpis(RDMatrix *matrix,RDMatrix::GpioType type,QWidget *parent)
   else {
     q->first();
     for(int i=0;i<list_size;i++) {
-      l=new QListViewItem(list_list_view); 
+      l=new Q3ListViewItem(list_list_view); 
       l->setText(0,QString().sprintf("%03d",i+1));
       if(q->isValid()&&(q->value(0).toInt()==(i+1))){
 	if(q->value(1).toInt()>0) {
@@ -237,7 +240,7 @@ void ListGpis::editData()
 
   QString ondesc;
   QString offdesc;
-  QListViewItem *item=list_list_view->selectedItem();
+  Q3ListViewItem *item=list_list_view->selectedItem();
   if(item==NULL) {
     return;
   }
@@ -271,7 +274,7 @@ void ListGpis::editData()
 }
 
 
-void ListGpis::doubleClickedData(QListViewItem *,const QPoint &,int)
+void ListGpis::doubleClickedData(Q3ListViewItem *,const QPoint &,int)
 {
   editData();
 }
@@ -306,7 +309,7 @@ void ListGpis::okData()
   rml.setEchoRequested(false);
   delete station;
 
-  QListViewItem *item=list_list_view->firstChild();
+  Q3ListViewItem *item=list_list_view->firstChild();
   while(item!=NULL) {
     sql=QString("insert into ")+list_tablename+" set "+
       "STATION_NAME=\""+RDEscapeString(list_matrix->station())+"\","+

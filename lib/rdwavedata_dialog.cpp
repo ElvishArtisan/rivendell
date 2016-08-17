@@ -19,6 +19,10 @@
 //
 
 #include <qvalidator.h>
+//Added by qt3to4:
+#include <QCloseEvent>
+#include <QResizeEvent>
+#include <QLabel>
 
 #include "rdwavedata_dialog.h"
 

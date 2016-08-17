@@ -31,9 +31,11 @@
 #include <qmessagebox.h>
 #include <qpushbutton.h>
 #include <qlabel.h>
-#include <qfiledialog.h>
+#include <q3filedialog.h>
 #include <qtextcodec.h>
 #include <qtranslator.h>
+//Added by qt3to4:
+#include <QPixmap>
 
 #include <rdapplication.h>
 #include <rdconf.h>
@@ -414,7 +416,7 @@ void MainWidget::backupData()
   QString cmd;
   int status;
 
-  filename=QFileDialog::getSaveFileName(RDGetHomeDir(),
+  filename=Q3FileDialog::getSaveFileName(RDGetHomeDir(),
 				      tr("Rivendell Database Backup (*.sql)"),
 					this);
   if(filename.isEmpty()) {
@@ -549,6 +551,7 @@ int gui_main(int argc,char *argv[])
   //
   // Load Translations
   //
+  /*
   QTranslator qt(0);
   qt.load(QString(QTDIR)+QString("/translations/qt_")+QTextCodec::locale(),
 	  ".");
@@ -568,7 +571,7 @@ int gui_main(int argc,char *argv[])
   tr.load(QString(PREFIX)+QString("/share/rivendell/rdadmin_")+
 	  QTextCodec::locale(),".");
   a.installTranslator(&tr);
-
+  */
   //
   // Start Event Loop
   //

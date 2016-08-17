@@ -21,14 +21,16 @@
 #include <qdialog.h>
 #include <qstring.h>
 #include <qpushbutton.h>
-#include <qlistbox.h>
-#include <qtextedit.h>
+#include <q3listbox.h>
+#include <q3textedit.h>
 #include <qlabel.h>
 #include <qpainter.h>
 #include <qevent.h>
 #include <qmessagebox.h>
 #include <qcheckbox.h>
-#include <qbuttongroup.h>
+#include <q3buttongroup.h>
+//Added by qt3to4:
+#include <QCloseEvent>
 
 #include <rdtextvalidator.h>
 #include <rdpasswd.h>
@@ -103,7 +105,7 @@ AddEvent::AddEvent(QString *logname,QWidget *parent)
     new QLabel(event_name_edit,tr("&New Event Name:"),this);
   event_name_label->setGeometry(10,11,130,19);
   event_name_label->setFont(font);
-  event_name_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  event_name_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   //  Ok Button

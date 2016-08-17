@@ -21,15 +21,15 @@
 #ifndef EDIT_USER_H
 #define EDIT_USER_H
 
-#include <qdialog.h>
-#include <qlistbox.h>
-#include <qtextedit.h>
-#include <qpixmap.h>
-#include <qcheckbox.h>
-#include <qsqldatabase.h>
-#include <qlineedit.h>
-#include <qlabel.h>
-#include <qpushbutton.h>
+#include <Q3ButtonGroup>
+#include <Q3ListBox>
+#include <Q3TextEdit>
+#include <QCheckBox>
+#include <QDialog>
+#include <QLabel>
+#include <QLineEdit>
+#include <QPixmap>
+#include <QPushButton>
 
 #include <rduser.h>
 
@@ -57,11 +57,11 @@ class EditUser : public QDialog
   QLineEdit *user_phone_edit;
   QCheckBox *user_web_box;
   QLabel *user_web_label;
-  QButtonGroup *user_admin_group;
-  QButtonGroup *user_prod_group;
-  QButtonGroup *user_traffic_group;
-  QButtonGroup *user_onair_group;
-  QButtonGroup *user_podcast_group;
+  Q3ButtonGroup *user_admin_group;
+  Q3ButtonGroup *user_prod_group;
+  Q3ButtonGroup *user_traffic_group;
+  Q3ButtonGroup *user_onair_group;
+  Q3ButtonGroup *user_podcast_group;
   QCheckBox *user_admin_config_button;
   QCheckBox *user_create_carts_button;
   QCheckBox *user_delete_carts_button;

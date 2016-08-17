@@ -25,12 +25,14 @@
 #include <qpushbutton.h>
 #include <qpixmap.h>
 #include <qcolor.h>
+//Added by qt3to4:
+#include <QMouseEvent>
 
 /*
  * Widget Defaults
  */
 #define RDPUSHBUTTON_DEFAULT_FLASH_PERIOD 300
-#define RDPUSHBUTTON_DEFAULT_FLASH_COLOR blue
+#define RDPUSHBUTTON_DEFAULT_FLASH_COLOR Qt::blue
 
 class RDPushButton : public QPushButton
 {
@@ -39,7 +41,7 @@ class RDPushButton : public QPushButton
   enum ClockSource {InternalClock=0,ExternalClock=1};
   RDPushButton(QWidget *parent);
   RDPushButton(const QString &text,QWidget *parent);
-  RDPushButton(const QIconSet &icon,const QString &text,QWidget *parent);
+  RDPushButton(const QIcon &icon,const QString &text,QWidget *parent);
   QColor flashColor() const;
   void setFlashColor(QColor color);
   int flashPeriod() const;

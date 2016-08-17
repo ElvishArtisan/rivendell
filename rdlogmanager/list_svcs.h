@@ -23,8 +23,10 @@
 
 #include <qdialog.h>
 #include <qsqldatabase.h>
-#include <qlistview.h>
+#include <q3listview.h>
 #include <qpushbutton.h>
+//Added by qt3to4:
+#include <QResizeEvent>
 
 class ListSvcs : public QDialog
 {
@@ -37,7 +39,7 @@ class ListSvcs : public QDialog
  private slots:
   void generateData();
   void purgeData();
-  void listDoubleClickedData(QListViewItem *item,const QPoint &pt,int c);
+  void listDoubleClickedData(Q3ListViewItem *item,const QPoint &pt,int c);
   void closeData();
 
  protected:
@@ -45,8 +47,8 @@ class ListSvcs : public QDialog
 
  private:
   void RefreshList();
-  void RefreshLine(QListViewItem *item);
-  QListView *list_log_list;
+  void RefreshLine(Q3ListViewItem *item);
+  Q3ListView *list_log_list;
   QPushButton *list_generate_button;
   QPushButton *list_purge_button;
   QPushButton *list_close_button;

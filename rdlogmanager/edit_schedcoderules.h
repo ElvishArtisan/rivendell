@@ -27,6 +27,8 @@
 #include <qpushbutton.h>
 #include <qcombobox.h>
 #include <qvariant.h>
+//Added by qt3to4:
+#include <QCloseEvent>
 
 #include <schedruleslist.h>
 #include <clock_listview.h>
@@ -37,7 +39,7 @@ class editSchedCodeRules : public QDialog
 {
   Q_OBJECT
  public:
-  editSchedCodeRules(QListViewItem *item, SchedRulesList *sched_rules_list,
+  editSchedCodeRules(Q3ListViewItem *item, SchedRulesList *sched_rules_list,
 		     QWidget *parent=0);
   ~editSchedCodeRules();
   QSize sizeHint() const;
@@ -63,7 +65,7 @@ class editSchedCodeRules : public QDialog
   QComboBox* comboBox_or_after;
   QComboBox* comboBox_or_after_II;
   QLabel* label_description;
-  QListViewItem *item_edit; 
+  Q3ListViewItem *item_edit; 
  
  protected:
   void closeEvent(QCloseEvent *e);

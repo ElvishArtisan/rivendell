@@ -19,6 +19,8 @@
 //
 
 #include <qmessagebox.h>
+//Added by qt3to4:
+#include <QLabel>
 
 #include <rdtextvalidator.h>
 
@@ -81,7 +83,7 @@ EditEndpoint::EditEndpoint(RDMatrix::Type type,RDMatrix::Endpoint endpoint,
   QLabel *label=new QLabel(edit_endpoint_edit,tr("Name: "),this);
   label->setGeometry(10,13,60,20);
   label->setFont(bold_font);
-  label->setAlignment(AlignRight);
+  label->setAlignment(Qt::AlignRight);
 
   //
   // Unity Feed
@@ -92,7 +94,7 @@ EditEndpoint::EditEndpoint(RDMatrix::Type type,RDMatrix::Endpoint endpoint,
   label=new QLabel(edit_feed_edit,tr("Feed: "),this);
   label->setGeometry(10,43,60,20);
   label->setFont(bold_font);
-  label->setAlignment(AlignRight);
+  label->setAlignment(Qt::AlignRight);
   if((edit_type!=RDMatrix::Unity4000)||(edit_endpoint!=RDMatrix::Input)) {
     edit_feed_edit->hide();
     label->hide();
@@ -112,7 +114,7 @@ EditEndpoint::EditEndpoint(RDMatrix::Type type,RDMatrix::Endpoint endpoint,
     label->setGeometry(130,43,60,20);
   }
   label->setFont(bold_font);
-  label->setAlignment(AlignRight);
+  label->setAlignment(Qt::AlignRight);
   if(((edit_type!=RDMatrix::Unity4000)&&(edit_type!=RDMatrix::StarGuideIII))||
      (edit_endpoint!=RDMatrix::Input)) {
     edit_mode_box->hide();
@@ -133,7 +135,7 @@ EditEndpoint::EditEndpoint(RDMatrix::Type type,RDMatrix::Endpoint endpoint,
   }
   label->setGeometry(10,36,120,20);
   label->setFont(bold_font);
-  label->setAlignment(AlignRight|AlignVCenter);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   if((edit_type!=RDMatrix::LogitekVguest)&&
      ((edit_type!=RDMatrix::StarGuideIII)||(edit_endpoint!=RDMatrix::Input))) {
     edit_enginenum_edit->hide();
@@ -151,7 +153,7 @@ EditEndpoint::EditEndpoint(RDMatrix::Type type,RDMatrix::Endpoint endpoint,
   }
   label->setGeometry(10,62,120,20);
   label->setFont(bold_font);
-  label->setAlignment(AlignRight|AlignVCenter);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   if((edit_type!=RDMatrix::LogitekVguest)&&
      ((edit_type!=RDMatrix::StarGuideIII)||(edit_endpoint!=RDMatrix::Input))) {
     edit_devicenum_edit->hide();

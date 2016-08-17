@@ -82,12 +82,12 @@ AC_ARG_ENABLE(mp4v2,[ --disable-mp4           disable M4A decode support],
 		      [MP4V2_DISABLED=yes],[])
 
 #
-# Check for Qt
+# Check for Qt4 (Mandatory)
 #
-BNV_HAVE_QT
-if test $have_qt = "no" ; then
-  AC_MSG_ERROR([*** Qt toolkit not found, unable to continue ***])
-fi
+PKG_CHECK_MODULES(QT4,QtCore QtGui QtNetwork QtSql QtXml,[],[AC_MSG_ERROR([*** Qt4 not found ***])])
+AC_CHECK_PROG(MOC_NAME,moc-qt4,[moc-qt4],[moc])
+AC_SUBST(QT_MOC,$MOC_NAME)
+
 
 #
 # Determine the target architecture
@@ -234,7 +234,7 @@ AM_CONDITIONAL([DOCBOOK_AM], [test "$USING_DOCBOOK" = yes])
 #
 # Set Hard Library Dependencies
 #
-AC_SUBST(LIB_RDLIBS,"-lm -lpthread -lqui -lrd -lcurl -lid3 $FLAC_LIBS -lsndfile -lsamplerate -lcdda_interface -lcdda_paranoia -lcrypt -ldl -lpam -lSoundTouch")
+AC_SUBST(LIB_RDLIBS,"-lm -lpthread -lrd -lcurl -lid3 $FLAC_LIBS -lsndfile -lsamplerate -lcdda_interface -lcdda_paranoia -lcrypt -ldl -lpam -lSoundTouch")
 
 #
 # Setup MPEG Dependencies

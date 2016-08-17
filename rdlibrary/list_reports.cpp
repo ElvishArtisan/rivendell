@@ -21,6 +21,8 @@
 #include <qdialog.h>
 #include <qpushbutton.h>
 #include <qstringlist.h>
+//Added by qt3to4:
+#include <QLabel>
 
 #include <rdapplication.h>
 #include <rddb.h>
@@ -70,7 +72,7 @@ ListReports::ListReports(const QString &filter,const QString &type_filter,
   list_reports_label=new QLabel(list_reports_box,tr("Type:"),this);
   list_reports_label->setGeometry(10,10,35,19);
   list_reports_label->setFont(font);
-  list_reports_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  list_reports_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
   connect(list_reports_box,SIGNAL(activated(int)),
 	  this,SLOT(typeActivatedData(int)));
 
@@ -85,7 +87,7 @@ ListReports::ListReports(const QString &filter,const QString &type_filter,
     new QLabel(list_fieldnames_check,tr("Prepend Field Names"),this);
   list_fieldnames_label->setGeometry(75,32,sizeHint().width()-75,19);
   list_fieldnames_label->setFont(font);
-  list_fieldnames_label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  list_fieldnames_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
   list_fieldnames_label->setDisabled(true);
 
   //

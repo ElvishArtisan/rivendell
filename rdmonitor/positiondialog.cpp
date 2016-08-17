@@ -19,6 +19,10 @@
 //
 
 #include "positiondialog.h"
+//Added by qt3to4:
+#include <QResizeEvent>
+#include <QLabel>
+#include <QCloseEvent>
 
 PositionDialog::PositionDialog(QDesktopWidget *dw,RDMonitorConfig *config,
 			       QWidget *parent)

@@ -24,9 +24,12 @@
 #include <qpainter.h>
 #include <qpushbutton.h>
 #include <qsize.h>
+//Added by qt3to4:
+#include <QPixmap>
+#include <QPaintEvent>
 #include <stdio.h>
 #include <qslider.h>
-#include <qbuttongroup.h>
+#include <q3buttongroup.h>
 #include <qsizepolicy.h>
 #include <qmessagebox.h>
 
@@ -36,7 +39,7 @@ RDSegMeter::RDSegMeter(RDSegMeter::Orientation o,QWidget *parent)
   : QWidget(parent)
 {
   orient=o;
-  setBackgroundColor(black);
+  setBackgroundColor(Qt::black);
   dark_low_color=QColor(DEFAULT_DARK_LOW_COLOR);
   dark_high_color=QColor(DEFAULT_DARK_HIGH_COLOR);
   dark_clip_color=QColor(DEFAULT_DARK_CLIP_COLOR);

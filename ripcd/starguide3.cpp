@@ -74,7 +74,7 @@ StarGuide3::StarGuide3(RDMatrix *matrix,QObject *parent)
     sg_device->setSpeed(tty->baudRate());
     sg_device->setWordLength(tty->dataBits());
     sg_device->setParity(tty->parity());
-    sg_device->open(IO_Raw|IO_ReadWrite);
+    sg_device->open(QIODevice::Unbuffered|QIODevice::ReadWrite);
   }
   delete tty;
 }

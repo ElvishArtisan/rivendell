@@ -20,6 +20,8 @@
 
 #include <qmessagebox.h>
 #include <qdatetime.h>
+//Added by qt3to4:
+#include <QResizeEvent>
 
 #include <rdlog.h>
 #include <rddb.h>
@@ -50,7 +52,7 @@ ListSvcs::ListSvcs(QWidget *parent)
   //
   // Log List
   //
-  list_log_list=new QListView(this);
+  list_log_list=new Q3ListView(this);
   list_log_list->setAllColumnsShowFocus(true);
   list_log_list->setItemMargin(5);
   list_log_list->addColumn(tr("SERVICE"));
@@ -58,9 +60,9 @@ ListSvcs::ListSvcs(QWidget *parent)
   list_log_list->addColumn(tr("OLDEST REPORT"));
   list_log_list->setColumnAlignment(1,Qt::AlignCenter);
   connect(list_log_list,
-	  SIGNAL(doubleClicked(QListViewItem *,const QPoint &,int)),
+	  SIGNAL(doubleClicked(Q3ListViewItem *,const QPoint &,int)),
 	  this,
-	  SLOT(listDoubleClickedData(QListViewItem *,const QPoint &,int)));
+	  SLOT(listDoubleClickedData(Q3ListViewItem *,const QPoint &,int)));
 
   //
   //  Generate Report Button
@@ -105,7 +107,7 @@ QSizePolicy ListSvcs::sizePolicy() const
 
 void ListSvcs::generateData()
 {
-  QListViewItem *item=list_log_list->selectedItem();
+  Q3ListViewItem *item=list_log_list->selectedItem();
   if(item==NULL) {
     return;
   }
@@ -117,7 +119,7 @@ void ListSvcs::generateData()
 
 void ListSvcs::purgeData()
 {
-  QListViewItem *item=list_log_list->selectedItem();
+  Q3ListViewItem *item=list_log_list->selectedItem();
   if(item==NULL) {
     return;
   }
@@ -128,7 +130,7 @@ void ListSvcs::purgeData()
 }
 
 
-void ListSvcs::listDoubleClickedData(QListViewItem *item,const QPoint &pt,
+void ListSvcs::listDoubleClickedData(Q3ListViewItem *item,const QPoint &pt,
 				     int c)
 {
   generateData();
@@ -154,13 +156,13 @@ void ListSvcs::RefreshList()
 {
   RDSqlQuery *q1;
   QString tablename;
-  QListViewItem *item;
+  Q3ListViewItem *item;
   list_log_list->clear();
   QString sql="select NAME from SERVICES order by NAME";
 
   RDSqlQuery *q=new RDSqlQuery(sql);
   while(q->next()) {
-    item=new QListViewItem(list_log_list);
+    item=new Q3ListViewItem(list_log_list);
     item->setText(0,q->value(0).toString());
     tablename=q->value(0).toString();
     tablename.replace(" ","_");
@@ -179,7 +181,7 @@ void ListSvcs::RefreshList()
 }
 
 
-void ListSvcs::RefreshLine(QListViewItem *item)
+void ListSvcs::RefreshLine(Q3ListViewItem *item)
 {
   QString sql;
   RDSqlQuery *q;

@@ -19,7 +19,11 @@
 //
 
 #include <qpainter.h>
-#include <qpointarray.h>
+#include <q3pointarray.h>
+//Added by qt3to4:
+#include <Q3Frame>
+#include <QPixmap>
+#include <QLabel>
 
 #include <rdmarker_bar.h>
 
@@ -31,7 +35,7 @@ RDMarkerBar::RDMarkerBar(QWidget *parent)
   }
   setLineWidth(1);
   setMidLineWidth(0);
-  setFrameStyle(QFrame::Box|QFrame::Plain);
+  setFrameStyle(Q3Frame::Box|Q3Frame::Plain);
 }
 
 
@@ -83,14 +87,14 @@ void RDMarkerBar::DrawMap()
 {
   QPixmap *pix=new QPixmap(size());
   QPainter *p=new QPainter(pix);
-  QPointArray *pt;
+  Q3PointArray *pt;
   p->fillRect(0,0,size().width(),size().height(),backgroundColor());
   if(marker_length>0) {
     p->setPen(RD_CUEEDITOR_START_MARKER);
     p->setBrush(RD_CUEEDITOR_START_MARKER);
     p->fillRect(size().width()*marker_pos[RDMarkerBar::Start]/marker_length-2,0,
 		4,size().height(),RD_CUEEDITOR_START_MARKER);
-    pt=new QPointArray(3);
+    pt=new Q3PointArray(3);
     pt->setPoint(0,size().width()*marker_pos[RDMarkerBar::Start]/marker_length-2,
 		 size().height()/2-1);
     pt->setPoint(1,size().width()*marker_pos[RDMarkerBar::Start]/marker_length-12,

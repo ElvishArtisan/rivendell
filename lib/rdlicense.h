@@ -23,7 +23,7 @@
 #define RDLICENSE_H
 
 #include <qdialog.h>
-#include <qtextedit.h>
+#include <q3textedit.h>
 
 class RDLicense : public QDialog
 {
@@ -41,7 +41,7 @@ class RDLicense : public QDialog
   void closeData();
 
  private:
-  QTextEdit *license_edit;
+  Q3TextEdit *license_edit;
 };
 
 

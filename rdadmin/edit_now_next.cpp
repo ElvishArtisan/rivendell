@@ -20,6 +20,8 @@
 
 #include <qmessagebox.h>
 #include <qsignalmapper.h>
+//Added by qt3to4:
+#include <QLabel>
 
 #include <rdescape_string.h>
 #include <rdtextvalidator.h>
@@ -79,7 +81,7 @@ EditNowNext::EditNowNext(RDAirPlayConf *conf,QWidget *parent)
   QLabel *label=new QLabel(tr("Master Log"),this);
   label->setGeometry(10,7,100,19);
   label->setFont(section_font);
-  label->setAlignment(AlignLeft|AlignVCenter);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   //
   // Master Log UDP Address
@@ -89,7 +91,7 @@ EditNowNext::EditNowNext(RDAirPlayConf *conf,QWidget *parent)
   label=new QLabel(nownext_address_edit[0],tr("IP Address:"),this);
   label->setGeometry(10,33,120,19);
   label->setFont(font);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Master Log UDP Port
@@ -100,7 +102,7 @@ EditNowNext::EditNowNext(RDAirPlayConf *conf,QWidget *parent)
   label=new QLabel(nownext_port_spin[0],tr("UDP Port:"),this);
   label->setGeometry(270,33,100,19);
   label->setFont(font);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Master Log UDP String
@@ -110,7 +112,7 @@ EditNowNext::EditNowNext(RDAirPlayConf *conf,QWidget *parent)
   label=new QLabel(nownext_string_edit[0],tr("UDP String:"),this);
   label->setGeometry(10,55,120,19);
   label->setFont(font);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Master Log RML
@@ -121,7 +123,7 @@ EditNowNext::EditNowNext(RDAirPlayConf *conf,QWidget *parent)
   label=new QLabel(nownext_rml_edit[0],tr("RML:"),this);
   label->setGeometry(10,77,120,19);
   label->setFont(font);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Main Log Default Now Cart
@@ -132,7 +134,7 @@ EditNowNext::EditNowNext(RDAirPlayConf *conf,QWidget *parent)
   label=new QLabel(nownext_nowcart_edit[0],tr("Default Now Cart:"),this);
   label->setGeometry(10,104,120,19);
   label->setFont(font);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
   QPushButton *button=new QPushButton(this);
   button->setGeometry(205,101,50,26);
   button->setFont(normal_font);
@@ -149,7 +151,7 @@ EditNowNext::EditNowNext(RDAirPlayConf *conf,QWidget *parent)
   label=new QLabel(nownext_nextcart_edit[0],tr("Default Next Cart:"),this);
   label->setGeometry(10,136,120,19);
   label->setFont(font);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
   button=new QPushButton(this);
   button->setGeometry(205,132,50,26);
   button->setFont(normal_font);
@@ -163,7 +165,7 @@ EditNowNext::EditNowNext(RDAirPlayConf *conf,QWidget *parent)
   label=new QLabel(tr("Aux Log 1"),this);
   label->setGeometry(10,175,100,19);
   label->setFont(section_font);
-  label->setAlignment(AlignLeft|AlignVCenter);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   //
   // Aux Log 1 UDP Address
@@ -173,7 +175,7 @@ EditNowNext::EditNowNext(RDAirPlayConf *conf,QWidget *parent)
   label=new QLabel(nownext_address_edit[1],tr("IP Address:"),this);
   label->setGeometry(10,201,120,19);
   label->setFont(font);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Aux Log 1 UDP Port
@@ -184,7 +186,7 @@ EditNowNext::EditNowNext(RDAirPlayConf *conf,QWidget *parent)
   label=new QLabel(nownext_port_spin[1],tr("UDP Port:"),this);
   label->setGeometry(270,201,100,19);
   label->setFont(font);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Aux Log 1 UDP String
@@ -194,7 +196,7 @@ EditNowNext::EditNowNext(RDAirPlayConf *conf,QWidget *parent)
   label=new QLabel(nownext_string_edit[1],tr("UDP String:"),this);
   label->setGeometry(10,223,120,19);
   label->setFont(font);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Aux Log 1 RML
@@ -205,7 +207,7 @@ EditNowNext::EditNowNext(RDAirPlayConf *conf,QWidget *parent)
   label=new QLabel(nownext_rml_edit[1],tr("RML:"),this);
   label->setGeometry(10,245,120,19);
   label->setFont(font);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Aux 1 Log Default Now Cart
@@ -216,7 +218,7 @@ EditNowNext::EditNowNext(RDAirPlayConf *conf,QWidget *parent)
   label=new QLabel(nownext_nowcart_edit[1],tr("Default Now Cart:"),this);
   label->setGeometry(10,272,120,19);
   label->setFont(font);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
   button=new QPushButton(this);
   button->setGeometry(205,269,50,26);
   button->setFont(normal_font);
@@ -233,7 +235,7 @@ EditNowNext::EditNowNext(RDAirPlayConf *conf,QWidget *parent)
   label=new QLabel(nownext_nextcart_edit[1],tr("Default Next Cart:"),this);
   label->setGeometry(10,304,120,19);
   label->setFont(font);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
   button=new QPushButton(this);
   button->setGeometry(205,300,50,26);
   button->setFont(normal_font);
@@ -247,7 +249,7 @@ EditNowNext::EditNowNext(RDAirPlayConf *conf,QWidget *parent)
   label=new QLabel(tr("Aux Log 2"),this);
   label->setGeometry(10,343,100,19);
   label->setFont(section_font);
-  label->setAlignment(AlignLeft|AlignVCenter);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   //
   // Aux Log 2 UDP Address
@@ -257,7 +259,7 @@ EditNowNext::EditNowNext(RDAirPlayConf *conf,QWidget *parent)
   label=new QLabel(nownext_address_edit[2],tr("IP Address:"),this);
   label->setGeometry(10,369,120,19);
   label->setFont(font);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Aux Log 2 UDP Port
@@ -268,7 +270,7 @@ EditNowNext::EditNowNext(RDAirPlayConf *conf,QWidget *parent)
   label=new QLabel(nownext_port_spin[2],tr("UDP Port:"),this);
   label->setGeometry(270,369,100,19);
   label->setFont(font);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Aux Log 2 UDP String
@@ -278,7 +280,7 @@ EditNowNext::EditNowNext(RDAirPlayConf *conf,QWidget *parent)
   label=new QLabel(nownext_string_edit[2],tr("UDP String:"),this);
   label->setGeometry(10,391,120,19);
   label->setFont(font);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Aux Log 2 RML
@@ -289,7 +291,7 @@ EditNowNext::EditNowNext(RDAirPlayConf *conf,QWidget *parent)
   label=new QLabel(nownext_rml_edit[2],tr("RML:"),this);
   label->setGeometry(10,413,120,19);
   label->setFont(font);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Aux 1 Log Default Now Cart
@@ -300,7 +302,7 @@ EditNowNext::EditNowNext(RDAirPlayConf *conf,QWidget *parent)
   label=new QLabel(nownext_nowcart_edit[2],tr("Default Now Cart:"),this);
   label->setGeometry(10,440,120,19);
   label->setFont(font);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
   button=new QPushButton(this);
   button->setGeometry(205,437,50,26);
   button->setFont(normal_font);
@@ -317,7 +319,7 @@ EditNowNext::EditNowNext(RDAirPlayConf *conf,QWidget *parent)
   label=new QLabel(nownext_nextcart_edit[2],tr("Default Next Cart:"),this);
   label->setGeometry(10,472,120,19);
   label->setFont(font);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
   button=new QPushButton(this);
   button->setGeometry(205,469,50,26);
   button->setFont(normal_font);
@@ -332,19 +334,19 @@ EditNowNext::EditNowNext(RDAirPlayConf *conf,QWidget *parent)
   nownext_plugin_list->setGeometry(10,540,sizeHint().width()-20,120);
   nownext_plugin_list->setItemMargin(5);
   nownext_plugin_list->addColumn(tr("Path"));
-  nownext_plugin_list->setColumnAlignment(0,AlignLeft|AlignVCenter);
+  nownext_plugin_list->setColumnAlignment(0,Qt::AlignLeft|Qt::AlignVCenter);
   nownext_plugin_list->addColumn(tr("Argument"));
-  nownext_plugin_list->setColumnAlignment(1,AlignLeft|AlignVCenter);
+  nownext_plugin_list->setColumnAlignment(1,Qt::AlignLeft|Qt::AlignVCenter);
   nownext_plugin_list->setAllColumnsShowFocus(true);
   connect(nownext_plugin_list,
-	  SIGNAL(doubleClicked(QListViewItem *,const QPoint &,int)),
+	  SIGNAL(doubleClicked(Q3ListViewItem *,const QPoint &,int)),
 	  this,
-	  SLOT(pluginDoubleClickedData(QListViewItem *,const QPoint &,int)));
+	  SLOT(pluginDoubleClickedData(Q3ListViewItem *,const QPoint &,int)));
 
   label=new QLabel(nownext_plugin_list,tr("Loadable Modules:"),this);
   label->setGeometry(10,518,sizeHint().width()-20,19);
   label->setFont(section_font);
-  label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   nownext_add_button=new QPushButton(tr("Add"),this);
   nownext_add_button->setGeometry(sizeHint().width()-210,665,60,25);
@@ -478,7 +480,7 @@ void EditNowNext::deletePluginData()
 }
 
 
-void EditNowNext::pluginDoubleClickedData(QListViewItem *item,const QPoint &pt,
+void EditNowNext::pluginDoubleClickedData(Q3ListViewItem *item,const QPoint &pt,
 					int col)
 {
   editPluginData();

@@ -25,15 +25,17 @@
 #include <qdialog.h>
 #include <qstring.h>
 #include <qpushbutton.h>
-#include <qlistbox.h>
-#include <qtextedit.h>
+#include <q3listbox.h>
+#include <q3textedit.h>
 #include <qlabel.h>
 #include <qpainter.h>
 #include <qevent.h>
 #include <qmessagebox.h>
-#include <qbuttongroup.h>
-#include <qprogressdialog.h>
+#include <q3buttongroup.h>
+#include <q3progressdialog.h>
 #include <qapplication.h>
+//Added by qt3to4:
+#include <QResizeEvent>
 
 #include <rddb.h>
 #include <rdcart.h>
@@ -108,22 +110,22 @@ ListFeeds::ListFeeds(QWidget *parent)
   list_feeds_view->setFont(list_font);
   list_feeds_view->setAllColumnsShowFocus(true);
   list_feeds_view->addColumn(tr("Key"));
-  list_feeds_view->setColumnAlignment(0,AlignCenter);
+  list_feeds_view->setColumnAlignment(0,Qt::AlignCenter);
   list_feeds_view->addColumn(tr("Title"));
-  list_feeds_view->setColumnAlignment(1,AlignVCenter|AlignLeft);
+  list_feeds_view->setColumnAlignment(1,Qt::AlignVCenter|Qt::AlignLeft);
   list_feeds_view->addColumn(tr("AutoPost"));
-  list_feeds_view->setColumnAlignment(2,AlignVCenter|AlignLeft);
+  list_feeds_view->setColumnAlignment(2,Qt::AlignVCenter|Qt::AlignLeft);
   list_feeds_view->addColumn(tr("Keep Metadata"));
-  list_feeds_view->setColumnAlignment(3,AlignVCenter|AlignLeft);
+  list_feeds_view->setColumnAlignment(3,Qt::AlignVCenter|Qt::AlignLeft);
   list_feeds_view->addColumn(tr("Creation Date"));
-  list_feeds_view->setColumnAlignment(4,AlignCenter);
+  list_feeds_view->setColumnAlignment(4,Qt::AlignCenter);
   QLabel *list_box_label=new QLabel(list_feeds_view,tr("&Feeds:"),this);
   list_box_label->setFont(font);
   list_box_label->setGeometry(14,11,85,19);
   connect(list_feeds_view,
-	  SIGNAL(doubleClicked(QListViewItem *,const QPoint &,int)),
+	  SIGNAL(doubleClicked(Q3ListViewItem *,const QPoint &,int)),
 	  this,
-	  SLOT(doubleClickedData(QListViewItem *,const QPoint &,int)));
+	  SLOT(doubleClickedData(Q3ListViewItem *,const QPoint &,int)));
 
   RefreshList();
 }
@@ -243,8 +245,8 @@ void ListFeeds::deleteData()
   RDPodcast *cast;
   sql=QString().sprintf("select ID from PODCASTS where FEED_ID=%d",item->id());
   q=new RDSqlQuery(sql);
-  QProgressDialog *pd=new QProgressDialog(tr("Deleting Audio..."),tr("Cancel"),
-					  q->size()+1,this);
+  Q3ProgressDialog *pd=new Q3ProgressDialog(tr("Deleting Audio..."),tr("Cancel"),
+					    q->size()+1,this,windowFlags());
   pd->setCaption(tr("Deleting"));
   pd->setProgress(0);
   qApp->processEvents();
@@ -291,7 +293,7 @@ void ListFeeds::deleteData()
 }
 
 
-void ListFeeds::doubleClickedData(QListViewItem *item,const QPoint &pt,
+void ListFeeds::doubleClickedData(Q3ListViewItem *item,const QPoint &pt,
 				   int col)
 {
   editData();

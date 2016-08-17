@@ -56,8 +56,8 @@ RDApplication::RDApplication(int argc,char **argv,const char *modname,
   //
   // Open Database
   //
-  QSqlDatabase *db=RDInitDb(&schema,&err);
-  if(!db) {
+  QSqlDatabase db=RDInitDb(&schema,&err);
+  if(!db.isOpen()) {
     if(gui) {
       QMessageBox::warning(NULL,"Rivendell - "+QObject::tr("DB Error"),
 			   QObject::tr("Unable to connect to MySQL."),err);

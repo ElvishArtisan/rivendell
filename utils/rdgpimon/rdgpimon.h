@@ -32,7 +32,7 @@
 #include <qsqldatabase.h>
 #include <qcombobox.h>
 #include <qpixmap.h>
-#include <qdatetimeedit.h>
+#include <q3datetimeedit.h>
 #include <qtimer.h>
 
 #include <rdlistview.h>
@@ -89,7 +89,7 @@ class MainWidget : public QWidget
   int gpi_first_line;
   int gpi_last_line;
   QLabel *gpi_events_date_label;
-  QDateEdit *gpi_events_date_edit;
+  Q3DateEdit *gpi_events_date_edit;
   QLabel *gpi_events_state_label;
   QComboBox *gpi_events_state_box;
   QPushButton *gpi_events_scroll_button;

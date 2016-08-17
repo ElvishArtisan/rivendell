@@ -28,6 +28,8 @@
 #include <qlabel.h>
 #include <qlineedit.h>
 #include <qpushbutton.h>
+//Added by qt3to4:
+#include <QPaintEvent>
 
 #include <rduser.h>
 #include <rdmatrix.h>

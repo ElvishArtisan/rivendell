@@ -68,7 +68,7 @@ RDGetAth::RDGetAth(double *ath,QWidget *parent)
 				       "ath_ath_label");
   ath_ath_label->setGeometry(10,70,40,19);
   ath_ath_label->setFont(font);
-  ath_ath_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  ath_ath_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   //  Ok Button

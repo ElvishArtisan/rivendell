@@ -27,12 +27,12 @@
 
 #include <stdio.h>
 
-#include <qfile.h>
-#include <qmessagebox.h>
-#include <rddb.h>
-#include <rddatedecode.h>
-#include <rdreport.h>
+#include <QFile>
+#include <QMessageBox>
 
+#include <rddatedecode.h>
+#include <rddb.h>
+#include <rdreport.h>
 
 bool RDReport::ExportDeltaflex(const QDate &startdate,const QDate &enddate,
 			       const QString &mixtable)
@@ -119,7 +119,7 @@ bool RDReport::ExportDeltaflex(const QDate &startdate,const QDate &enddate,
     ext_data="";
     if(q->value(6).toString().length()>0) {
       if(q->value(6).toString().length()<=8) {
-	for(unsigned i=0;i<(8-q->value(6).toString().stripWhiteSpace().length());
+	for(int i=0;i<(8-q->value(6).toString().stripWhiteSpace().length());
 	    i++) {
 	  ext_data+="0";
 	}

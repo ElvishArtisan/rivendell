@@ -25,13 +25,16 @@
 #include <qsize.h>
 #include <qsizepolicy.h>
 #include <qsqldatabase.h>
+//Added by qt3to4:
+#include <QResizeEvent>
+#include <QCloseEvent>
 #include <rdlistview.h>
 #include <qpushbutton.h>
 #include <qcombobox.h>
 #include <qlabel.h>
 #include <qcheckbox.h>
 #include <qpixmap.h>
-#include <qprogressdialog.h>
+#include <q3progressdialog.h>
 #include <qtimer.h>
 
 #include <rdstation.h>
@@ -45,7 +48,7 @@
 
 #include <lib_listview.h>
 #include <disk_gauge.h>
-#include <cart_tip.h>
+//#include <cart_tip.h>
 
 #define RDLIBRARY_GEOMETRY_FILE ".rdlibrary"
 #define RDLIBRARY_STEP_SIZE 5000
@@ -54,10 +57,10 @@
 // Cut Length Deviation Values
 //
 #define RDLIBRARY_MID_LENGTH_LIMIT 500
-#define RDLIBRARY_MID_LENGTH_COLOR darkYellow
+#define RDLIBRARY_MID_LENGTH_COLOR Qt::darkYellow
 #define RDLIBRARY_MAX_LENGTH_LIMIT 1500
-#define RDLIBRARY_MAX_LENGTH_COLOR red
-#define RDLIBRARY_ENFORCE_LENGTH_COLOR blue
+#define RDLIBRARY_MAX_LENGTH_COLOR Qt::red
+#define RDLIBRARY_ENFORCE_LENGTH_COLOR Qt::blue
 
 #define RDLIBRARY_USAGE "[--profile-ripping]\n\n--profile-ripping\n     Print profiling information to stdout when performing rips from\n     optical media.\n\n"
 
@@ -81,9 +84,9 @@ class MainWidget : public QWidget
   void deleteData();
   void ripData();
   void reportsData();
-  void cartOnItemData(QListViewItem *item);
-  void cartClickedData(QListViewItem *item);
-  void cartDoubleclickedData(QListViewItem *,const QPoint &,int);
+  void cartOnItemData(Q3ListViewItem *item);
+  void cartClickedData(Q3ListViewItem *item);
+  void cartDoubleclickedData(Q3ListViewItem *,const QPoint &,int);
   void audioChangedData(int state);
   void macroChangedData(int state);
   void searchLimitChangedData(int state);
@@ -108,7 +111,7 @@ class MainWidget : public QWidget
   void LockUser();
   bool UnlockUser();
   LibListView *lib_cart_list;
-  CartTip *lib_cart_tip;
+  //  CartTip *lib_cart_tip;
   QString lib_filter_text;
   QString lib_search_text;
   QPixmap *lib_playout_map;
@@ -142,7 +145,7 @@ class MainWidget : public QWidget
   QString lib_import_path;
   QPixmap *lib_rivendell_map;
   RDStation::FilterMode lib_filter_mode;
-  QProgressDialog *lib_progress_dialog;
+  Q3ProgressDialog *lib_progress_dialog;
   bool profile_ripping;
   bool lib_edit_pending;
   bool lib_user_changed;

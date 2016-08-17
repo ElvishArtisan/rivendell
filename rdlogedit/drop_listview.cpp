@@ -19,7 +19,10 @@
 //
 //
 
-#include <qheader.h>
+#include <q3header.h>
+//Added by qt3to4:
+#include <QDropEvent>
+#include <QDragEnterEvent>
 
 #include <rdcartdrag.h>
 

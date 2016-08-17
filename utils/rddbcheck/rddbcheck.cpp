@@ -597,7 +597,7 @@ void MainObject::CheckOrphanedAudio()
 {
   QDir dir(rda->config()->audioRoot());
   QStringList list=dir.entryList("??????_???.wav",QDir::Files);
-  for(unsigned i=0;i<list.size();i++) {
+  for(int i=0;i<list.size();i++) {
     bool ok=false;
     list[i].left(6).toUInt(&ok);
     if(ok) {

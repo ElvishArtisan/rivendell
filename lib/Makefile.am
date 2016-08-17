@@ -20,7 +20,7 @@
 ##
 ## Use automake to process this into a Makefile.in
 
-AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" @QT_CXXFLAGS@ -Wno-strict-aliasing
+AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" @QT4_CFLAGS@ -Wno-strict-aliasing -DQT3_SUPPORT -I/usr/include/Qt3Support
 MOC = @QT_MOC@
 CWRAP = ../helpers/cwrap
 
@@ -43,8 +43,8 @@ uninstall-local:
 	rm -f $(DESTDIR)$(prefix)/share/rivendell/librd_*.qm
 
 all:	
-	@QT_BIN@/lupdate lib.pro
-	@QT_BIN@/lrelease lib.pro
+	lupdate-qt4 lib.pro
+	lrelease-qt4 lib.pro
 
 lib_LTLIBRARIES = librd.la
 dist_librd_la_SOURCES = dbversion.h\
@@ -124,8 +124,6 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdedit_audio.cpp rdedit_audio.h\
                         rdedit_panel_name.cpp rdedit_panel_name.h\
                         rdemptycart.cpp rdemptycart.h\
-                        rdencoder.cpp rdencoder.h\
-                        rdencoderlist.cpp rdencoderlist.h\
                         rdescape_string.cpp rdescape_string.h\
                         rdevent.cpp rdevent.h\
                         rdevent_line.cpp rdevent_line.h\
@@ -318,6 +316,7 @@ nodist_librd_la_SOURCES = moc_rdadd_cart.cpp\
                           moc_rdsvc.cpp\
                           moc_rdtimeedit.cpp\
                           moc_rdtimeengine.cpp\
+                          moc_rdttydevice.cpp\
                           moc_rdtransportbutton.cpp\
                           moc_rdtrimaudio.cpp\
                           moc_rdupload.cpp\

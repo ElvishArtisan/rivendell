@@ -26,7 +26,10 @@
 #include <qmessagebox.h>
 #include <qpainter.h>
 #include <qdatetime.h>
-#include <qurl.h>
+#include <q3url.h>
+//Added by qt3to4:
+#include <QLabel>
+#include <QPaintEvent>
 
 #include <rdexport_settings_dialog.h>
 
@@ -67,14 +70,14 @@ EditFeed::EditFeed(const QString &feed,QWidget *parent)
   QLabel *feed_keyname_label=new QLabel(feed_keyname_edit,tr("Key Name:"),this);
   feed_keyname_label->setGeometry(10,11,100,19);
   feed_keyname_label->setFont(font);
-  feed_keyname_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  feed_keyname_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Channel Section
   //
   feed_channel_section_label=new QLabel(tr("CHANNEL VALUES"),this);
   feed_channel_section_label->setGeometry(30,41,130,20);
-  feed_channel_section_label->setAlignment(AlignCenter);
+  feed_channel_section_label->setAlignment(Qt::AlignCenter);
   feed_channel_section_label->setFont(font);
 
   //
@@ -87,7 +90,7 @@ EditFeed::EditFeed(const QString &feed,QWidget *parent)
     new QLabel(feed_channel_title_edit,tr("Title:"),this);
   feed_channel_title_label->setGeometry(20,60,90,19);
   feed_channel_title_label->setFont(font);
-  feed_channel_title_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  feed_channel_title_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Channel Category
@@ -100,7 +103,7 @@ EditFeed::EditFeed(const QString &feed,QWidget *parent)
   feed_channel_category_label->setGeometry(20,82,90,19);
   feed_channel_category_label->setFont(font);
   feed_channel_category_label->
-    setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+    setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Channel Link
@@ -112,7 +115,7 @@ EditFeed::EditFeed(const QString &feed,QWidget *parent)
     new QLabel(feed_channel_link_edit,tr("Link:"),this);
   feed_channel_link_label->setGeometry(20,104,90,19);
   feed_channel_link_label->setFont(font);
-  feed_channel_link_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  feed_channel_link_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Channel Copyright
@@ -125,7 +128,7 @@ EditFeed::EditFeed(const QString &feed,QWidget *parent)
   feed_channel_copyright_label->setGeometry(20,126,90,19);
   feed_channel_copyright_label->setFont(font);
   feed_channel_copyright_label->
-    setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+    setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Channel Webmaster
@@ -138,7 +141,7 @@ EditFeed::EditFeed(const QString &feed,QWidget *parent)
   feed_channel_webmaster_label->setGeometry(20,148,90,19);
   feed_channel_webmaster_label->setFont(font);
   feed_channel_webmaster_label->
-    setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+    setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Channel Language
@@ -152,12 +155,12 @@ EditFeed::EditFeed(const QString &feed,QWidget *parent)
   feed_channel_language_label->setGeometry(20,170,90,19);
   feed_channel_language_label->setFont(font);
   feed_channel_language_label->
-    setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+    setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Channel Description
   //
-  feed_channel_description_edit=new QTextEdit(this);
+  feed_channel_description_edit=new Q3TextEdit(this);
   feed_channel_description_edit->
     setGeometry(115,192,375,76);
   feed_channel_description_label=
@@ -165,7 +168,7 @@ EditFeed::EditFeed(const QString &feed,QWidget *parent)
   feed_channel_description_label->setGeometry(20,192,90,19);
   feed_channel_description_label->setFont(font);
   feed_channel_description_label->
-    setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+    setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Purge Audio URL
@@ -179,7 +182,7 @@ EditFeed::EditFeed(const QString &feed,QWidget *parent)
     new QLabel(feed_purge_url_edit,tr("Audio Upload URL:"),this);
   feed_purge_url_label->setGeometry(20,280,130,19);
   feed_purge_url_label->setFont(font);
-  feed_purge_url_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  feed_purge_url_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Purge Username
@@ -193,7 +196,7 @@ EditFeed::EditFeed(const QString &feed,QWidget *parent)
     new QLabel(feed_purge_username_edit,tr("Username:"),this);
   feed_purge_username_label->setGeometry(40,302,180,19);
   feed_purge_username_label->setFont(font);
-  feed_purge_username_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  feed_purge_username_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Purge Password
@@ -206,7 +209,7 @@ EditFeed::EditFeed(const QString &feed,QWidget *parent)
     new QLabel(feed_purge_password_edit,tr("Password:"),this);
   feed_purge_password_label->setGeometry(320,302,70,19);
   feed_purge_password_label->setFont(font);
-  feed_purge_password_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  feed_purge_password_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Audio Format
@@ -217,7 +220,7 @@ EditFeed::EditFeed(const QString &feed,QWidget *parent)
   feed_format_label=new QLabel(feed_format_edit,tr("Upload Format:"),this);
   feed_format_label->setGeometry(5,324,145,20);
   feed_format_label->setFont(font);
-  feed_format_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  feed_format_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
   feed_format_button=new QPushButton(this);
   feed_format_button->setGeometry(450,324,40,24);
   feed_format_button->setFont(small_font);
@@ -234,7 +237,7 @@ EditFeed::EditFeed(const QString &feed,QWidget *parent)
     new QLabel(feed_normalize_box,tr("Normalize"),this);
   feed_normalize_check_label->setGeometry(175,346,83,20);
   feed_normalize_check_label->setFont(font);
-  feed_normalize_check_label->setAlignment(AlignLeft|AlignVCenter);
+  feed_normalize_check_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
   connect(feed_normalize_box,SIGNAL(toggled(bool)),
 	  this,SLOT(normalizeCheckData(bool)));
 
@@ -247,11 +250,11 @@ EditFeed::EditFeed(const QString &feed,QWidget *parent)
   feed_normalize_label=new QLabel(feed_normalize_spin,tr("Level:"),this);
   feed_normalize_label->setGeometry(245,346,45,20);
   feed_normalize_label->setFont(font);
-  feed_normalize_label->setAlignment(AlignRight|AlignVCenter);
+  feed_normalize_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   feed_normalize_unit_label=new QLabel(tr("dBFS"),this);
   feed_normalize_unit_label->setGeometry(340,346,40,20);
   feed_normalize_unit_label->setFont(font);
-  feed_normalize_unit_label->setAlignment(AlignLeft|AlignVCenter);
+  feed_normalize_unit_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   //
   // Base Audio URL
@@ -263,7 +266,7 @@ EditFeed::EditFeed(const QString &feed,QWidget *parent)
     new QLabel(feed_base_url_edit,tr("Audio Download URL:"),this);
   feed_base_url_label->setGeometry(20,368,130,19);
   feed_base_url_label->setFont(font);
-  feed_base_url_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  feed_base_url_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Keep Expired Metadata Checkbox
@@ -274,7 +277,7 @@ EditFeed::EditFeed(const QString &feed,QWidget *parent)
     new QLabel(feed_keep_metadata_box,tr("Keep Expired Metadata"),this);
   feed_keep_metadata_label->setGeometry(175,390,180,19);
   feed_keep_metadata_label->setFont(font);
-  feed_keep_metadata_label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  feed_keep_metadata_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
  
   //
   // AutoPost Checkbox
@@ -285,7 +288,7 @@ EditFeed::EditFeed(const QString &feed,QWidget *parent)
     new QLabel(feed_autopost_box,tr("Enable AutoPost"),this);
   feed_autopost_label->setGeometry(385,390,200,19);
   feed_autopost_label->setFont(font);
-  feed_autopost_label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  feed_autopost_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
  
   //
   // Enclosure Preamble
@@ -297,7 +300,7 @@ EditFeed::EditFeed(const QString &feed,QWidget *parent)
     new QLabel(feed_base_preamble_edit,tr("Enclosure Preamble:"),this);
   feed_base_preamble_label->setGeometry(20,412,130,19);
   feed_base_preamble_label->setFont(font);
-  feed_base_preamble_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  feed_base_preamble_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Audio File Extension
@@ -309,7 +312,7 @@ EditFeed::EditFeed(const QString &feed,QWidget *parent)
     new QLabel(feed_extension_edit,tr("Audio Extension:"),this);
   feed_extension_label->setGeometry(20,434,130,19);
   feed_extension_label->setFont(font);
-  feed_extension_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  feed_extension_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Maximum Shelf Life
@@ -323,13 +326,13 @@ EditFeed::EditFeed(const QString &feed,QWidget *parent)
   feed_max_shelf_life_label->setGeometry(20,456,130,19);
   feed_max_shelf_life_label->setFont(font);
   feed_max_shelf_life_label->
-    setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+    setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
   feed_max_shelf_life_unit_label=
     new QLabel(feed_max_shelf_life_spin,tr("days"),this);
   feed_max_shelf_life_unit_label->setGeometry(220,456,50,19);
   feed_max_shelf_life_unit_label->setFont(font);
   feed_max_shelf_life_unit_label->
-    setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+    setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Episode Order
@@ -342,7 +345,7 @@ EditFeed::EditFeed(const QString &feed,QWidget *parent)
     new QLabel(feed_castorder_box,tr("Episode Sort Order:"),this);
   feed_castorder_label->setGeometry(20,478,130,19);
   feed_castorder_label->setFont(font);
-  feed_castorder_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  feed_castorder_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Media Link Mode
@@ -356,7 +359,7 @@ EditFeed::EditFeed(const QString &feed,QWidget *parent)
     new QLabel(feed_media_link_mode_box,tr("Media Link Mode:"),this);
   feed_media_link_mode_label->setGeometry(20,500,130,19);
   feed_media_link_mode_label->setFont(font);
-  feed_media_link_mode_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  feed_media_link_mode_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Feed Redirection
@@ -367,31 +370,31 @@ EditFeed::EditFeed(const QString &feed,QWidget *parent)
     new QLabel(feed_redirect_check,tr("Enable Feed Redirection"),this);
   label->setGeometry(40,532,200,19);
   label->setFont(font);
-  label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   feed_redirect_edit=new QLineEdit(this);
   feed_redirect_edit->setGeometry(85,552,405,20);
   feed_redirect_label=new QLabel(feed_redirect_edit,tr("URL:"),this);
   feed_redirect_label->setGeometry(40,552,40,19);
   feed_redirect_label->setFont(font);
-  feed_redirect_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  feed_redirect_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Header XML
   //
-  feed_header_xml_edit=new QTextEdit(this);
+  feed_header_xml_edit=new Q3TextEdit(this);
   feed_header_xml_edit->
     setGeometry(615,10,365,76);
   feed_header_xml_label=new QLabel(feed_header_xml_edit,tr("Header XML:"),this);
   feed_header_xml_label->setGeometry(520,10,90,19);
   feed_header_xml_label->setFont(font);
   feed_header_xml_label->
-    setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+    setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Channel XML
   //
-  feed_channel_xml_edit=new QTextEdit(this);
+  feed_channel_xml_edit=new Q3TextEdit(this);
   feed_channel_xml_edit->
     setGeometry(615,88,365,176);
   feed_channel_xml_label=
@@ -399,19 +402,19 @@ EditFeed::EditFeed(const QString &feed,QWidget *parent)
   feed_channel_xml_label->setGeometry(520,88,90,19);
   feed_channel_xml_label->setFont(font);
   feed_channel_xml_label->
-    setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+    setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Item XML
   //
-  feed_item_xml_edit=new QTextEdit(this);
+  feed_item_xml_edit=new Q3TextEdit(this);
   feed_item_xml_edit->
     setGeometry(615,270,365,176);
   feed_item_xml_label=new QLabel(feed_item_xml_edit,tr("Item XML:"),this);
   feed_item_xml_label->setGeometry(520,270,90,19);
   feed_item_xml_label->setFont(font);
   feed_item_xml_label->
-    setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+    setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   //  Metadata Button
@@ -505,7 +508,7 @@ QSizePolicy EditFeed::sizePolicy() const
 
 void EditFeed::purgeUrlChangedData(const QString &str)
 {
-  QUrl url(str);
+  Q3Url url(str);
   QString protocol=url.protocol();
   if(((protocol=="ftp")||(protocol=="smb"))&&
      (!feed_redirect_check->isChecked())) {
@@ -633,11 +636,10 @@ void EditFeed::cancelData()
 void EditFeed::paintEvent(QPaintEvent *e)
 {
   QPainter *p=new QPainter(this);
-  p->moveTo(10,50);
-  p->lineTo(sizeHint().width()/2,50);
-  p->lineTo(sizeHint().width()/2,272);
-  p->lineTo(10,272);
-  p->lineTo(10,50);
+  p->drawLine(10,50,sizeHint().width()/2,50);
+  p->drawLine(sizeHint().width()/2,50,sizeHint().width()/2,272);
+  p->drawLine(sizeHint().width()/2,272,10,272);
+  p->drawLine(10,272,10,50);
   delete p;
 }
 

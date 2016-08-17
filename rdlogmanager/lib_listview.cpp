@@ -22,16 +22,19 @@
 #include <rdcartdrag.h>
 
 #include <lib_listview.h>
+//Added by qt3to4:
+#include <QFocusEvent>
+#include <QMouseEvent>
 
 LibListView::LibListView(QWidget *parent)
-  : QListView(parent)
+  : Q3ListView(parent)
 {
 }
 
 
 void LibListView::focusOutEvent(QFocusEvent *e)
 {
-  QListViewItem *item=selectedItem();
+  Q3ListViewItem *item=selectedItem();
   if(item==NULL) {
     return;
   }
@@ -41,8 +44,8 @@ void LibListView::focusOutEvent(QFocusEvent *e)
 
 void LibListView::contentsMousePressEvent(QMouseEvent *e)
 {
-  QListView::contentsMousePressEvent(e);
-  QListViewItem *item=selectedItem();
+  Q3ListView::contentsMousePressEvent(e);
+  Q3ListViewItem *item=selectedItem();
   if(item==NULL) {
     return;
   }

@@ -19,8 +19,8 @@
 ##
 ## Use automake to process this into a Makefile.in
 
-AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" -DQTDIR=\"@QT_DIR@\" @QT_CXXFLAGS@ -I$(top_srcdir)/lib
-LIBS = @QT_LIBS@ -L$(top_srcdir)/lib
+AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" -I$(top_srcdir)/lib
+LIBS = -L$(top_srcdir)/lib
 MOC = @QT_MOC@
 
 # The dependency for qt's Meta Object Compiler (moc)

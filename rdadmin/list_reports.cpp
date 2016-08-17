@@ -21,13 +21,13 @@
 #include <qdialog.h>
 #include <qstring.h>
 #include <qpushbutton.h>
-#include <qlistbox.h>
-#include <qtextedit.h>
+#include <q3listbox.h>
+#include <q3textedit.h>
 #include <qlabel.h>
 #include <qpainter.h>
 #include <qevent.h>
 #include <qmessagebox.h>
-#include <qbuttongroup.h>
+#include <q3buttongroup.h>
 
 #include <rddb.h>
 #include <list_reports.h>
@@ -95,13 +95,13 @@ ListReports::ListReports(QWidget *parent)
   //
   // Report List Box
   //
-  list_box=new QListBox(this);
+  list_box=new Q3ListBox(this);
   list_box->setGeometry(10,30,390,260);
   QLabel *list_box_label=new QLabel(list_box,tr("R&eports:"),this);
   list_box_label->setFont(font);
   list_box_label->setGeometry(14,10,85,19);
-  connect(list_box,SIGNAL(doubleClicked(QListBoxItem *)),
-	  this,SLOT(doubleClickedData(QListBoxItem *)));
+  connect(list_box,SIGNAL(doubleClicked(Q3ListBoxItem *)),
+	  this,SLOT(doubleClickedData(Q3ListBoxItem *)));
 
   RefreshList();
 }
@@ -186,7 +186,7 @@ void ListReports::closeData()
 }
 
 
-void ListReports::doubleClickedData(QListBoxItem *item)
+void ListReports::doubleClickedData(Q3ListBoxItem *item)
 {
   editData();
 }
@@ -218,7 +218,7 @@ void ListReports::RefreshList(QString rptname)
   RDSqlQuery *q;
 
   list_box->clear();
-  q=new RDSqlQuery("SELECT NAME FROM REPORTS",0);
+  q=new RDSqlQuery("select NAME from REPORTS");
   while (q->next()) {
     list_box->insertItem(q->value(0).toString());
     if(rptname==list_box->text(list_box->count()-1)) {

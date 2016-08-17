@@ -23,14 +23,14 @@
 #include <qdialog.h>
 #include <qstring.h>
 #include <qpushbutton.h>
-#include <qlistbox.h>
-#include <qtextedit.h>
+#include <q3listbox.h>
+#include <q3textedit.h>
 #include <qlabel.h>
 #include <qpainter.h>
 #include <qevent.h>
 #include <qmessagebox.h>
 #include <qcheckbox.h>
-#include <qbuttongroup.h>
+#include <q3buttongroup.h>
 #include <rddb.h>
 
 #include <rename_group.h>
@@ -77,7 +77,7 @@ RenameGroup::RenameGroup(QString group,QWidget *parent)
     new QLabel(group_name_edit,tr("Current Group Name:"),this);
   group_name_label->setGeometry(10,11,150,19);
   group_name_label->setFont(font);
-  group_name_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  group_name_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // New Group Name
@@ -90,7 +90,7 @@ RenameGroup::RenameGroup(QString group,QWidget *parent)
     new QLabel(group_newname_edit,tr("New &Group Name:"),this);
   group_newname_label->setGeometry(10,33,150,19);
   group_newname_label->setFont(font);
-  group_newname_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  group_newname_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   //  Ok Button

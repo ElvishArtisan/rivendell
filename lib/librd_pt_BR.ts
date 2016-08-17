@@ -1,4 +1,6 @@
-<!DOCTYPE TS><TS>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0">
 <context>
     <name></name>
     <message>
@@ -17,11 +19,11 @@
     <name>QObject</name>
     <message>
         <source>Couldn&apos;t initialize QSql driver!</source>
-        <translation>Não foi possível inicializar driver QSql !</translation>
+        <translation type="obsolete">Não foi possível inicializar driver QSql !</translation>
     </message>
     <message>
         <source>Couldn&apos;t open mySQL connection!</source>
-        <translation>Não foi possível conetar ao mySQL !</translation>
+        <translation type="obsolete">Não foi possível conetar ao mySQL !</translation>
     </message>
     <message>
         <source>Sequentially</source>
@@ -89,7 +91,7 @@
     </message>
     <message>
         <source>PLAY</source>
-        <translation type="unfinished">SIMPLES<byte value="x9"/></translation>
+        <translation type="unfinished">SIMPLES	</translation>
     </message>
     <message>
         <source>SEGUE</source>
@@ -373,10 +375,6 @@
     </message>
     <message>
         <source>Sound Panel Fifth and Later Play Output</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>invalid SQL or failed DB connection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1927,7 +1925,7 @@ Por Favor, cheque suas configurações e tenbte outra vez.</translation>
     </message>
     <message>
         <source>PLAY</source>
-        <translation type="obsolete">SIMPLES<byte value="x9"/></translation>
+        <translation type="obsolete">SIMPLES	</translation>
     </message>
     <message>
         <source>SEGUE</source>

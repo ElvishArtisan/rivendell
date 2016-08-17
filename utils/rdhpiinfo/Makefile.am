@@ -20,8 +20,8 @@
 ##   Use automake to process this into a Makefile.in
 ##
 
-AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" -DQTDIR=\"@QT_DIR@\" @QT_CXXFLAGS@ -I$(top_srcdir)/lib -I$(top_srcdir)/rdhpi
-LIBS = @QT_LIBS@ -L$(top_srcdir)/lib -L$(top_srcdir)/rdhpi
+AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" -I$(top_srcdir)/lib -I$(top_srcdir)/rdhpi @QT4_CFLAGS@ -DQT3_SUPPORT -I/usr/include/Qt3Support
+LIBS = -L$(top_srcdir)/lib -L$(top_srcdir)/rdhpi
 MOC = @QT_MOC@
 
 # The dependency for qt's Meta Object Compiler (moc)
@@ -38,7 +38,7 @@ nodist_rdhpiinfo_SOURCES = moc_change_mode.cpp\
                            moc_rdhpiinfo.cpp\
                            moc_virtdetails.cpp
 
-rdhpiinfo_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @LIBHPI@
+rdhpiinfo_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @LIBHPI@ @QT4_LIBS@ -lQt3Support
 
 EXTRA_DIST = rdhpiinfo.pro
 

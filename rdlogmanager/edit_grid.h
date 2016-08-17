@@ -24,7 +24,10 @@
 #include <qdialog.h>
 #include <qsqldatabase.h>
 #include <qlabel.h>
-#include <qpopupmenu.h>
+#include <q3popupmenu.h>
+//Added by qt3to4:
+#include <QPaintEvent>
+#include <QCloseEvent>
 
 #include <rdpushbutton.h>
 
@@ -59,7 +62,7 @@ class EditGrid : public QDialog
   QString edit_servicename;
   QString current_clockname;
   RDPushButton *edit_hour_button[7][24];
-  QPopupMenu *edit_right_menu;
+  Q3PopupMenu *edit_right_menu;
   int edit_rightclick_id;
 };
 

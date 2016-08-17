@@ -23,8 +23,8 @@
 
 #include <vector>
 
-#include <qobject.h>
-#include <qsqldatabase.h>
+#include <QDateTime>
+#include <QObject>
 
 class RDSvc : public QObject
 {

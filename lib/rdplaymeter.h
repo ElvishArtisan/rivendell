@@ -29,6 +29,8 @@
 #include <qstring.h>
 #include <qrect.h>
 #include <qfont.h>
+//Added by qt3to4:
+#include <QPaintEvent>
 
 #include <rdsegmeter.h>
 

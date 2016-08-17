@@ -42,7 +42,7 @@ RDRipc::RDRipc(QString stationname,QObject *parent)
   //
   // TCP Connection
   //
-  ripc_socket=new QSocket(this);
+  ripc_socket=new Q3Socket(this);
   connect(ripc_socket,SIGNAL(connected()),this,SLOT(connectedData()));
   connect(ripc_socket,SIGNAL(error(int)),this,SLOT(errorData(int)));
   connect(ripc_socket,SIGNAL(readyRead()),this,SLOT(readyData()));
@@ -303,7 +303,7 @@ void RDRipc::DispatchCommand()
     }
     strcat(str,"!");
     if(macro.parseString(str,strlen(str))) {
-      macro.setAddress(QHostAddress().setAddress(args[1]));
+      macro.setAddress(QHostAddress(args[1]));
       macro.setRole(RDMacro::Reply);
       emit rmlReceived(&macro);
     }

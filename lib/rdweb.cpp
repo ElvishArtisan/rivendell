@@ -829,7 +829,7 @@ bool RDParsePost(std::map<QString,QString> *vars)
 	  fields=fields.split(";",headers["content-disposition"]);
 	  if(fields.size()>0) {
 	    if(fields[0].lower().stripWhiteSpace()=="form-data") {
-	      for(unsigned i=1;i<fields.size();i++) {
+	      for(int i=1;i<fields.size();i++) {
 		QStringList pairs;
 		pairs=pairs.split("=",fields[i]);
 		if(pairs[0].lower().stripWhiteSpace()=="name") {
@@ -985,6 +985,12 @@ QString RDXmlDateTime(const QDateTime &datetime)
 }
 
 
+QString RDXmlField(const QString &tag,const QDate &value,const QString &attrs)
+{
+  return value.toString("yyyy-MM-dd");
+}
+
+
 QString RDXmlTimeZoneSuffix()
 {
   QString ret;
@@ -1070,8 +1076,8 @@ QString RDUrlUnescape(const QString &str)
    */
   QString ret="";
 
-  for(unsigned i=0;i<str.length();i++) {
-    if((str.at(i)=="%")&&(i<str.length()-2)) {
+  for(int i=0;i<str.length();i++) {
+    if((str.at(i).cell()=='%')&&(i<str.length()-2)) {
       ret+=QString().sprintf("%c",str.mid(i+1,2).toInt(NULL,16));
       i+=2;
     }

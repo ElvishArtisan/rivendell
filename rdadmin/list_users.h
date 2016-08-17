@@ -27,6 +27,8 @@
 #include <qsqldatabase.h>
 #include <qpushbutton.h>
 #include <qpixmap.h>
+//Added by qt3to4:
+#include <QResizeEvent>
 
 #include <rdlistviewitem.h>
 #include <rddb.h>
@@ -44,7 +46,7 @@ class ListUsers : public QDialog
   void addData();
   void editData();
   void deleteData();
-  void doubleClickedData(QListViewItem *item,const QPoint &pt,int col);
+  void doubleClickedData(Q3ListViewItem *item,const QPoint &pt,int col);
   void closeData();
 
  protected:

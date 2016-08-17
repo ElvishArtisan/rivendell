@@ -24,6 +24,8 @@
 #include <qpushbutton.h>
 #include <qdatetime.h>
 #include <qlabel.h>
+//Added by qt3to4:
+#include <QKeyEvent>
 #include <rdairplay_conf.h>
 //
 // Settings

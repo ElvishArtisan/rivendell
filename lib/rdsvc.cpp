@@ -18,7 +18,8 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qmessagebox.h>
+#include <QMessageBox>
+#include <QSqlQuery>
 
 #include <rdconf.h>
 #include <rd.h>

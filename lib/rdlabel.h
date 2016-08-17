@@ -24,7 +24,7 @@
 
 #include <qwidget.h>
 #include <qlabel.h>
-#include <qrangecontrol.h>
+#include <q3rangecontrol.h>
 #include <qcolor.h>
 #include <qpalette.h>
 #include <qsize.h>
@@ -35,9 +35,9 @@ class RDLabel : public QLabel
   Q_OBJECT
 
  public:
-  RDLabel(QWidget *parent=0,WFlags f=0);
-  RDLabel(const QString &text,QWidget *parent,WFlags f=0);
-  RDLabel(QWidget *buddy,const QString &text,QWidget *parent,WFlags f=0);
+  RDLabel(QWidget *parent=0,Qt::WFlags f=0);
+  RDLabel(const QString &text,QWidget *parent,Qt::WFlags f=0);
+  RDLabel(QWidget *buddy,const QString &text,QWidget *parent,Qt::WFlags f=0);
   QString text() const;
   void setFont(const QFont &font);
   bool wordWrapEnabled() const;

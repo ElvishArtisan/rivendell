@@ -18,6 +18,8 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
+#include <stdio.h>
+
 #ifndef WIN32
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -25,9 +27,10 @@
 #include <grp.h>
 #endif  // WIN32
 
-#include <qmessagebox.h>
-#include <qsettings.h>
-#include <qstringlist.h>
+#include <QDateTime>
+#include <QMessageBox>
+#include <QSettings>
+#include <QStringList>
 
 #include <rdprofile.h>
 #include <rdconfig.h>

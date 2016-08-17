@@ -23,8 +23,10 @@
 
 #include <qsqldatabase.h>
 #include <qdialog.h>
-#include <qlistview.h>
+#include <q3listview.h>
 #include <qpushbutton.h>
+//Added by qt3to4:
+#include <QCloseEvent>
 
 class ListLogs : public QDialog
 {
@@ -36,14 +38,14 @@ class ListLogs : public QDialog
   QSizePolicy sizePolicy() const;
 
  private slots:
-  void doubleClickedData(QListViewItem *,const QPoint &,int);
+  void doubleClickedData(Q3ListViewItem *,const QPoint &,int);
   void closeEvent(QCloseEvent *);
   void okButtonData();
   void cancelButtonData();
 
  private:
   void RefreshList();
-  QListView *list_log_list;
+  Q3ListView *list_log_list;
   QString *list_logname;
 };
 

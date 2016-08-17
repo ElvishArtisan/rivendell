@@ -1,4 +1,6 @@
-<!DOCTYPE TS><TS>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0">
 <context>
     <name>@default</name>
     <message>
@@ -1114,6 +1116,10 @@ nastaveném pro běh služby CAE pro naplnění databáze se zdroji zvuku.</tran
     </message>
     <message>
         <source>Event Carts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>RDAdmin - </source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3433,7 +3439,7 @@ Přepsat?</translation>
     </message>
     <message>
         <source>Unable to write file &quot;</source>
-        <translation type="obsolete">Nelze zapsat soubor &quot;</translation>
+        <translation type="unfinished">Nelze zapsat soubor &quot;</translation>
     </message>
     <message>
         <source>Checking the Library for duplicates.</source>
@@ -5667,10 +5673,6 @@ a záloha původní databáze uložena v </translation>
     </message>
     <message>
         <source>DB Error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unable to open MySQL database connection.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

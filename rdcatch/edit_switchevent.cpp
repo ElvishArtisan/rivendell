@@ -21,12 +21,17 @@
 #include <qdialog.h>
 #include <qstring.h>
 #include <qpushbutton.h>
-#include <qlistbox.h>
-#include <qtextedit.h>
+#include <q3listbox.h>
+#include <q3textedit.h>
 #include <qpainter.h>
 #include <qevent.h>
 #include <qmessagebox.h>
 #include <qcheckbox.h>
+//Added by qt3to4:
+#include <QCloseEvent>
+#include <QPaintEvent>
+#include <QLabel>
+#include <QKeyEvent>
 
 #include <rdapplication.h>
 #include <rd.h>
@@ -87,7 +92,7 @@ EditSwitchEvent::EditSwitchEvent(int id,std::vector<int> *adds,QWidget *parent)
   QLabel *label=new QLabel(edit_active_button,tr("Event Active"),this);
   label->setGeometry(30,11,125,20);
   label->setFont(label_font);
-  label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Station
@@ -97,17 +102,17 @@ EditSwitchEvent::EditSwitchEvent(int id,std::vector<int> *adds,QWidget *parent)
   label=new QLabel(edit_station_box,tr("Location:"),this);
   label->setGeometry(125,10,70,23);
   label->setFont(label_font);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Start Time
   //
-  edit_starttime_edit=new QTimeEdit(this);
+  edit_starttime_edit=new Q3TimeEdit(this);
   edit_starttime_edit->setGeometry(sizeHint().width()-90,12,80,20);
   label=new QLabel(edit_starttime_edit,tr("Start Time:"),this);
   label->setGeometry(sizeHint().width()-175,12,80,20);
   label->setFont(label_font);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Description
@@ -118,7 +123,7 @@ EditSwitchEvent::EditSwitchEvent(int id,std::vector<int> *adds,QWidget *parent)
   label=new QLabel(edit_description_edit,tr("Description:"),this);
   label->setGeometry(10,43,105,20);
   label->setFont(label_font);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Switch Matrix
@@ -128,7 +133,7 @@ EditSwitchEvent::EditSwitchEvent(int id,std::vector<int> *adds,QWidget *parent)
   label=new QLabel(edit_matrix_box,tr("Switch Matrix:"),this);
   label->setGeometry(10,70,105,20);
   label->setFont(label_font);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
   connect(edit_matrix_box,SIGNAL(activated(const QString &)),
 	  this,SLOT(activateMatrixData(const QString &)));
 
@@ -140,7 +145,7 @@ EditSwitchEvent::EditSwitchEvent(int id,std::vector<int> *adds,QWidget *parent)
   label=new QLabel(edit_input_box,tr("Switch Input:"),this);
   label->setGeometry(10,100,105,20);
   label->setFont(label_font);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
   edit_input_spin=new QSpinBox(this);
   edit_input_spin->setGeometry(140,125,50,20);
   connect(edit_input_box,SIGNAL(activated(const QString &)),
@@ -154,7 +159,7 @@ EditSwitchEvent::EditSwitchEvent(int id,std::vector<int> *adds,QWidget *parent)
   label=new QLabel(edit_output_box,tr("Switch Output:"),this);
   label->setGeometry(10,155,105,20);
   label->setFont(label_font);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
   edit_output_spin=new QSpinBox(this);
   edit_output_spin->setGeometry(140,180,50,20);
   connect(edit_output_box,SIGNAL(activated(const QString &)),
@@ -166,7 +171,7 @@ EditSwitchEvent::EditSwitchEvent(int id,std::vector<int> *adds,QWidget *parent)
   label=new QLabel(tr("Active Days"),this);
   label->setGeometry(47,210,80,19);
   label->setFont(label_font);
-  label->setAlignment(AlignHCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignHCenter|Qt::TextShowMnemonic);
 
   //
   // Monday Button
@@ -176,7 +181,7 @@ EditSwitchEvent::EditSwitchEvent(int id,std::vector<int> *adds,QWidget *parent)
   label=new QLabel(edit_mon_button,tr("Monday"),this);
   label->setGeometry(40,228,115,20);
   label->setFont(day_font);
-  label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Tuesday Button
@@ -186,7 +191,7 @@ EditSwitchEvent::EditSwitchEvent(int id,std::vector<int> *adds,QWidget *parent)
   label=new QLabel(edit_tue_button,tr("Tuesday"),this);
   label->setGeometry(135,228,115,20);
   label->setFont(day_font);
-  label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Wednesday Button
@@ -196,7 +201,7 @@ EditSwitchEvent::EditSwitchEvent(int id,std::vector<int> *adds,QWidget *parent)
   label=new QLabel(edit_wed_button,tr("Wednesday"),this);
   label->setGeometry(235,228,115,20);
   label->setFont(day_font);
-  label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Thursday Button
@@ -206,7 +211,7 @@ EditSwitchEvent::EditSwitchEvent(int id,std::vector<int> *adds,QWidget *parent)
   label=new QLabel(edit_thu_button,tr("Thursday"),this);
   label->setGeometry(355,228,115,20);
   label->setFont(day_font);
-  label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Friday Button
@@ -216,7 +221,7 @@ EditSwitchEvent::EditSwitchEvent(int id,std::vector<int> *adds,QWidget *parent)
   label=new QLabel(edit_fri_button,tr("Friday"),this);
   label->setGeometry(460,228,40,20);
   label->setFont(day_font);
-  label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Saturday Button
@@ -226,7 +231,7 @@ EditSwitchEvent::EditSwitchEvent(int id,std::vector<int> *adds,QWidget *parent)
   label=new QLabel(edit_sat_button,tr("Saturday"),this);
   label->setGeometry(150,253,60,20);
   label->setFont(day_font);
-  label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Sunday Button
@@ -236,7 +241,7 @@ EditSwitchEvent::EditSwitchEvent(int id,std::vector<int> *adds,QWidget *parent)
   label=new QLabel(edit_sun_button,tr("Sunday"),this);
   label->setGeometry(320,253,60,20);
   label->setFont(day_font);
-  label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // OneShot Button
@@ -246,7 +251,7 @@ EditSwitchEvent::EditSwitchEvent(int id,std::vector<int> *adds,QWidget *parent)
   label=new QLabel(edit_oneshot_box,tr("Make OneShot"),this);
   label->setGeometry(40,288,115,20);
   label->setFont(label_font);
-  label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   //  Save As Button
@@ -491,7 +496,7 @@ void EditSwitchEvent::cancelData()
 void EditSwitchEvent::paintEvent(QPaintEvent *e)
 {
   QPainter *p=new QPainter(this);
-  p->setPen(QColor(black));
+  p->setPen(QColor(Qt::black));
   p->drawRect(10,218,sizeHint().width()-20,62);
   p->end();
 }

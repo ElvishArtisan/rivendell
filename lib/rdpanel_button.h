@@ -26,6 +26,11 @@
 #include <qstring.h>
 #include <qpalette.h>
 #include <qtimer.h>
+//Added by qt3to4:
+#include <QDragEnterEvent>
+#include <QDropEvent>
+#include <QMouseEvent>
+#include <QKeyEvent>
 
 #include <rdstation.h>
 #include <rdairplay_conf.h>

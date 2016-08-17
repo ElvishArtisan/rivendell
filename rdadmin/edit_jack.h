@@ -22,13 +22,15 @@
 #define EDIT_JACK_H
 
 #include <qdialog.h>
-#include <qlistview.h>
-#include <qtextedit.h>
+#include <q3listview.h>
+#include <q3textedit.h>
 #include <qpixmap.h>
 #include <qcheckbox.h>
 #include <qlineedit.h>
 #include <qpushbutton.h>
 #include <qlabel.h>
+//Added by qt3to4:
+#include <QResizeEvent>
 
 #include <rdstation.h>
 #include <rdlistview.h>
@@ -48,7 +50,7 @@ class EditJack : public QDialog
   void addData();
   void editData();
   void deleteData();
-  void doubleClickedData(QListViewItem *item,const QPoint &pt,int col);
+  void doubleClickedData(Q3ListViewItem *item,const QPoint &pt,int col);
   void okData();
   void cancelData();
   

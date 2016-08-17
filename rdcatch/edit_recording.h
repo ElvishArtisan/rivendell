@@ -26,12 +26,16 @@
 #include <qdialog.h>
 #include <qsqldatabase.h>
 #include <qlineedit.h>
-#include <qdatetimeedit.h>
+#include <q3datetimeedit.h>
 #include <qcombobox.h>
 #include <qcheckbox.h>
 #include <qspinbox.h>
 #include <qlabel.h>
-#include <qbuttongroup.h>
+#include <q3buttongroup.h>
+//Added by qt3to4:
+#include <QKeyEvent>
+#include <QCloseEvent>
+#include <QPaintEvent>
 
 #include <rdrecording.h>
 #include <rddeck.h>
@@ -86,25 +90,25 @@ class EditRecording : public QDialog
   QSpinBox *edit_startoffset_box;
   QSpinBox *edit_endoffset_box;
   QCheckBox *edit_oneshot_box;
-  QButtonGroup *edit_starttype_group;
+  Q3ButtonGroup *edit_starttype_group;
   QLabel *edit_starttime_label;
-  QButtonGroup *edit_endtype_group;
+  Q3ButtonGroup *edit_endtype_group;
   QLabel *edit_endtime_label;
   QLabel *edit_endlength_label;
-  QTimeEdit *edit_starttime_edit;
-  QTimeEdit *edit_endtime_edit;
-  QTimeEdit *edit_endlength_edit;
+  Q3TimeEdit *edit_starttime_edit;
+  Q3TimeEdit *edit_endtime_edit;
+  Q3TimeEdit *edit_endlength_edit;
   QLabel *edit_start_startwindow_label;
-  QTimeEdit *edit_start_startwindow_edit;
+  Q3TimeEdit *edit_start_startwindow_edit;
   QLabel *edit_start_endwindow_label;
-  QTimeEdit *edit_start_endwindow_edit;
+  Q3TimeEdit *edit_start_endwindow_edit;
   QLabel *edit_end_startwindow_label;
   QCheckBox *edit_multirec_box;
   QLabel *edit_maxlength_label;
-  QTimeEdit *edit_maxlength_edit;
-  QTimeEdit *edit_end_startwindow_edit;
+  Q3TimeEdit *edit_maxlength_edit;
+  Q3TimeEdit *edit_end_startwindow_edit;
   QLabel *edit_end_endwindow_label;
-  QTimeEdit *edit_end_endwindow_edit;
+  Q3TimeEdit *edit_end_endwindow_edit;
   QLabel *edit_startmatrix_label;
   QSpinBox *edit_startmatrix_spin;
   QLabel *edit_startline_label;
@@ -114,9 +118,9 @@ class EditRecording : public QDialog
   QLabel *edit_endline_label;
   QSpinBox *edit_endline_spin;
   QLabel *edit_startlength_label;
-  QTimeEdit *edit_startlength_edit;
+  Q3TimeEdit *edit_startlength_edit;
   QLabel *edit_startoffset_label;
-  QTimeEdit *edit_startoffset_edit;
+  Q3TimeEdit *edit_startoffset_edit;
   std::vector<int> *edit_added_events;
   QComboBox *edit_channels_box;
   QCheckBox *edit_autotrim_box;

@@ -46,7 +46,8 @@
 #include <neaacdec.h>
 #endif // HAVE_MP4_LIBS
 #include <id3/tag.h>
-#include <qfile.h>
+
+#include <QFile>
 
 #include <rd.h>
 #include <rdaudioconvert.h>
@@ -1885,54 +1886,61 @@ void RDAudioConvert::ApplyId3Tag(const QString &filename,RDWaveData *wavedata)
 {
   ID3_Tag *tag=new ID3_Tag(filename);
   ID3_Frame *frame=new ID3_Frame(ID3FID_TITLE);
-  frame->GetField(ID3FN_TEXT)->Set(wavedata->title());
+  frame->GetField(ID3FN_TEXT)->Set((const char *)wavedata->title().toUtf8());
   tag->AddNewFrame(frame);
 
   if(wavedata->beatsPerMinute()>0) {
     frame=new ID3_Frame(ID3FID_BPM);
-    frame->GetField(ID3FN_TEXT)->
-      Set(QString().sprintf("%d",wavedata->beatsPerMinute()));
+    frame->GetField(ID3FN_TEXT)->Set((const char *)QString().
+		       sprintf("%d",wavedata->beatsPerMinute()).toUtf8());
     tag->AddNewFrame(frame);
   }
   if(!wavedata->album().isEmpty()) {
     frame=new ID3_Frame(ID3FID_ALBUM);
-    frame->GetField(ID3FN_TEXT)->Set(wavedata->album());
+    frame->GetField(ID3FN_TEXT)->Set((const char *)wavedata->album().toUtf8());
     tag->AddNewFrame(frame);
   }
   if(!wavedata->composer().isEmpty()) {
     frame=new ID3_Frame(ID3FID_COMPOSER);
-    frame->GetField(ID3FN_TEXT)->Set(wavedata->composer());
+    frame->GetField(ID3FN_TEXT)->
+      Set((const char *)wavedata->composer().toUtf8());
     tag->AddNewFrame(frame);
   }
   if(!wavedata->copyrightNotice().isEmpty()) {
     frame=new ID3_Frame(ID3FID_COPYRIGHT);
-    frame->GetField(ID3FN_TEXT)->Set(wavedata->copyrightNotice());
+    frame->GetField(ID3FN_TEXT)->
+      Set((const char *)wavedata->copyrightNotice().toUtf8());
     tag->AddNewFrame(frame);
   }
   if(!wavedata->artist().isEmpty()) {
     frame=new ID3_Frame(ID3FID_LEADARTIST);
-    frame->GetField(ID3FN_TEXT)->Set(wavedata->artist());
+    frame->GetField(ID3FN_TEXT)->
+      Set((const char *)wavedata->artist().toUtf8());
     tag->AddNewFrame(frame);
   }
   if(!wavedata->publisher().isEmpty()) {
     frame=new ID3_Frame(ID3FID_PUBLISHER);
-    frame->GetField(ID3FN_TEXT)->Set(wavedata->publisher());
+    frame->GetField(ID3FN_TEXT)->
+      Set((const char *)wavedata->publisher().toUtf8());
     tag->AddNewFrame(frame);
   }
   if(!wavedata->conductor().isEmpty()) {
     frame=new ID3_Frame(ID3FID_CONDUCTOR);
-    frame->GetField(ID3FN_TEXT)->Set(wavedata->conductor());
+    frame->GetField(ID3FN_TEXT)->
+      Set((const char *)wavedata->conductor().toUtf8());
     tag->AddNewFrame(frame);
   }
   if(!wavedata->isrc().isEmpty()) {
     frame=new ID3_Frame(ID3FID_ISRC);
-    frame->GetField(ID3FN_TEXT)->Set(wavedata->isrc());
+    frame->GetField(ID3FN_TEXT)->
+      Set((const char *)wavedata->isrc().toUtf8());
     tag->AddNewFrame(frame);
   }
   if(wavedata->releaseYear()>0) {
     frame=new ID3_Frame(ID3FID_YEAR);
     frame->GetField(ID3FN_TEXT)->
-      Set(QString().sprintf("%d",wavedata->releaseYear()));
+      Set((const char *)QString().
+	  sprintf("%d",wavedata->releaseYear()).toUtf8());
     tag->AddNewFrame(frame);
   }
   RDCart *cart=new RDCart(wavedata->cartNumber());
@@ -1942,7 +1950,7 @@ void RDAudioConvert::ApplyId3Tag(const QString &filename,RDWaveData *wavedata)
     frame=new ID3_Frame(ID3FID_USERTEXT);
     frame->GetField(ID3FN_DESCRIPTION)->Set("rdxl");
     frame->GetField(ID3FN_TEXTENC)->Set(ID3TE_NONE);
-    frame->GetField(ID3FN_TEXT)->Set(xml);
+    frame->GetField(ID3FN_TEXT)->Set((const char *)xml.toUtf8());
     tag->AddNewFrame(frame);
     delete cart;
   }

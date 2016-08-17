@@ -1,4 +1,6 @@
-<!DOCTYPE TS><TS>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0">
 <context>
     <name>AddRecording</name>
     <message>
@@ -1249,7 +1251,7 @@ como Nuevo</translation>
     </message>
     <message>
         <source>rdcatch : </source>
-        <translation>rdcatch : </translation>
+        <translation type="obsolete">rdcatch : </translation>
     </message>
     <message>
         <source>Unknown</source>

@@ -30,6 +30,9 @@
 #include <qtextcodec.h>
 #include <qpainter.h>
 #include <qpixmap.h>
+//Added by qt3to4:
+#include <QCloseEvent>
+#include <QPaintEvent>
 
 #include <rdapplication.h>
 #include <rdcartslots.h>
@@ -203,6 +206,7 @@ int main(int argc,char *argv[])
   //
   // Load Translations
   //
+  /*
   QTranslator qt(0);
   qt.load(QString(QTDIR)+QString("/translations/qt_")+QTextCodec::locale(),".");
   a.installTranslator(&qt);
@@ -220,7 +224,7 @@ int main(int argc,char *argv[])
   tr.load(QString(PREFIX)+QString("/share/rivendell/rdcartslots_")+
 	     QTextCodec::locale(),".");
   a.installTranslator(&tr);
-
+  */
   MainWidget *w=new MainWidget();
   a.setMainWidget(w);
   w->setGeometry(QRect(QPoint(0,0),w->sizeHint()));

@@ -21,13 +21,18 @@
 #include <qdialog.h>
 #include <qstring.h>
 #include <qpushbutton.h>
-#include <qlistbox.h>
-#include <qtextedit.h>
+#include <q3listbox.h>
+#include <q3textedit.h>
 #include <qpainter.h>
 #include <qevent.h>
 #include <qmessagebox.h>
 #include <qcheckbox.h>
-#include <qurl.h>
+#include <q3url.h>
+//Added by qt3to4:
+#include <QCloseEvent>
+#include <QPaintEvent>
+#include <QLabel>
+#include <QKeyEvent>
 
 #include <rdapplication.h>
 #include <rdescape_string.h>
@@ -92,7 +97,7 @@ EditDownload::EditDownload(int id,std::vector<int> *adds,QString *filter,
   QLabel *label=new QLabel(edit_active_button,tr("Event Active"),this);
   label->setGeometry(30,11,125,20);
   label->setFont(label_font);
-  label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Station
@@ -102,17 +107,17 @@ EditDownload::EditDownload(int id,std::vector<int> *adds,QString *filter,
   label=new QLabel(edit_station_box,tr("Location:"),this);
   label->setGeometry(125,10,70,23);
   label->setFont(label_font);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Start Time
   //
-  edit_starttime_edit=new QTimeEdit(this);
+  edit_starttime_edit=new Q3TimeEdit(this);
   edit_starttime_edit->setGeometry(sizeHint().width()-90,12,80,20);
   label=new QLabel(edit_starttime_edit,tr("Start Time:"),this);
   label->setGeometry(sizeHint().width()-175,12,80,20);
   label->setFont(label_font);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Description
@@ -123,7 +128,7 @@ EditDownload::EditDownload(int id,std::vector<int> *adds,QString *filter,
   label=new QLabel(edit_description_edit,tr("Description:"),this);
   label->setGeometry(10,43,100,20);
   label->setFont(label_font);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Url
@@ -137,7 +142,7 @@ EditDownload::EditDownload(int id,std::vector<int> *adds,QString *filter,
   label=new QLabel(edit_url_edit,tr("Url:"),this);
   label->setGeometry(10,70,100,20);
   label->setFont(label_font);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Username
@@ -149,7 +154,7 @@ EditDownload::EditDownload(int id,std::vector<int> *adds,QString *filter,
   edit_username_label=new QLabel(edit_username_edit,tr("Username:"),this);
   edit_username_label->setGeometry(10,97,100,20);
   edit_username_label->setFont(label_font);
-  edit_username_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  edit_username_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Password
@@ -162,7 +167,7 @@ EditDownload::EditDownload(int id,std::vector<int> *adds,QString *filter,
   edit_password_label=new QLabel(edit_password_edit,tr("Password:"),this);
   edit_password_label->setGeometry(275,97,80,20);
   edit_password_label->setFont(label_font);
-  edit_password_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  edit_password_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Destination
@@ -173,7 +178,7 @@ EditDownload::EditDownload(int id,std::vector<int> *adds,QString *filter,
   label=new QLabel(edit_destination_edit,tr("Destination:"),this);
   label->setGeometry(10,127,100,19);
   label->setFont(label_font);
-  label->setAlignment(AlignRight|ShowPrefix);
+  label->setAlignment(Qt::AlignRight|Qt::TextShowMnemonic);
   QPushButton *button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-70,122,60,24);
   button->setFont(day_font);
@@ -190,7 +195,7 @@ EditDownload::EditDownload(int id,std::vector<int> *adds,QString *filter,
   label=new QLabel(edit_channels_box,tr("Channels:"),this);
   label->setGeometry(120,149,70,20);
   label->setFont(label_font);
-  label->setAlignment(AlignVCenter|AlignLeft);
+  label->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
 
   //
   // Autotrim Controls
@@ -202,18 +207,18 @@ EditDownload::EditDownload(int id,std::vector<int> *adds,QString *filter,
   label=new QLabel(edit_autotrim_box,tr("Autotrim"),this);
   label->setGeometry(140,173,80,20);
   label->setFont(label_font);
-  label->setAlignment(AlignVCenter|AlignLeft);
+  label->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
   edit_autotrim_spin=new QSpinBox(this);
   edit_autotrim_spin->setGeometry(265,173,40,20);
   edit_autotrim_spin->setRange(-99,-1);
   edit_autotrim_label=new QLabel(edit_autotrim_spin,tr("Level:"),this);
   edit_autotrim_label->setGeometry(220,173,40,20);
   edit_autotrim_label->setFont(label_font);
-  edit_autotrim_label->setAlignment(AlignVCenter|AlignRight);
+  edit_autotrim_label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
   edit_autotrim_unit=new QLabel(edit_autotrim_spin,tr("dBFS"),this);
   edit_autotrim_unit->setGeometry(310,173,40,20);
   edit_autotrim_unit->setFont(label_font);
-  edit_autotrim_unit->setAlignment(AlignVCenter|AlignLeft);
+  edit_autotrim_unit->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
 
   //
   // Normalize Controls
@@ -225,18 +230,18 @@ EditDownload::EditDownload(int id,std::vector<int> *adds,QString *filter,
   label=new QLabel(edit_normalize_box,tr("Normalize"),this);
   label->setGeometry(140,197,80,20);
   label->setFont(label_font);
-  label->setAlignment(AlignVCenter|AlignLeft);
+  label->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
   edit_normalize_spin=new QSpinBox(this);
   edit_normalize_spin->setGeometry(265,197,40,20);
   edit_normalize_spin->setRange(-99,-1);
   edit_normalize_label=new QLabel(edit_normalize_spin,tr("Level:"),this);
   edit_normalize_label->setGeometry(220,197,40,20);
   edit_normalize_label->setFont(label_font);
-  edit_normalize_label->setAlignment(AlignVCenter|AlignRight);
+  edit_normalize_label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
   edit_normalize_unit=new QLabel(edit_normalize_spin,tr("dBFS"),this);
   edit_normalize_unit->setGeometry(310,197,40,20);
   edit_normalize_unit->setFont(label_font);
-  edit_normalize_unit->setAlignment(AlignVCenter|AlignLeft);
+  edit_normalize_unit->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
 
   //
   // Export Metadata Box
@@ -246,7 +251,7 @@ EditDownload::EditDownload(int id,std::vector<int> *adds,QString *filter,
   label=new QLabel(edit_metadata_box,tr("Update Library Metadata"),this);
   label->setGeometry(140,222,160,20);
   label->setFont(label_font);
-  label->setAlignment(AlignLeft|AlignVCenter);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   //
   // Button Label
@@ -254,7 +259,7 @@ EditDownload::EditDownload(int id,std::vector<int> *adds,QString *filter,
   label=new QLabel(tr("Active Days"),this);
   label->setGeometry(47,254,90,19);
   label->setFont(label_font);
-  label->setAlignment(AlignHCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignHCenter|Qt::TextShowMnemonic);
 
   //
   // Monday Button
@@ -264,7 +269,7 @@ EditDownload::EditDownload(int id,std::vector<int> *adds,QString *filter,
   label=new QLabel(edit_mon_button,tr("Monday"),this);
   label->setGeometry(40,273,115,20);
   label->setFont(day_font);
-  label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Tuesday Button
@@ -274,7 +279,7 @@ EditDownload::EditDownload(int id,std::vector<int> *adds,QString *filter,
   label=new QLabel(edit_tue_button,tr("Tuesday"),this);
   label->setGeometry(135,273,115,20);
   label->setFont(day_font);
-  label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Wednesday Button
@@ -284,7 +289,7 @@ EditDownload::EditDownload(int id,std::vector<int> *adds,QString *filter,
   label=new QLabel(edit_wed_button,tr("Wednesday"),this);
   label->setGeometry(235,273,115,20);
   label->setFont(day_font);
-  label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Thursday Button
@@ -294,7 +299,7 @@ EditDownload::EditDownload(int id,std::vector<int> *adds,QString *filter,
   label=new QLabel(edit_thu_button,tr("Thursday"),this);
   label->setGeometry(355,273,115,20);
   label->setFont(day_font);
-  label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Friday Button
@@ -304,7 +309,7 @@ EditDownload::EditDownload(int id,std::vector<int> *adds,QString *filter,
   label=new QLabel(edit_fri_button,tr("Friday"),this);
   label->setGeometry(460,273,40,20);
   label->setFont(day_font);
-  label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Saturday Button
@@ -314,7 +319,7 @@ EditDownload::EditDownload(int id,std::vector<int> *adds,QString *filter,
   label=new QLabel(edit_sat_button,tr("Saturday"),this);
   label->setGeometry(150,298,60,20);
   label->setFont(day_font);
-  label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Sunday Button
@@ -324,7 +329,7 @@ EditDownload::EditDownload(int id,std::vector<int> *adds,QString *filter,
   label=new QLabel(edit_sun_button,tr("Sunday"),this);
   label->setGeometry(320,298,60,20);
   label->setFont(day_font);
-  label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // OneShot Button
@@ -334,7 +339,7 @@ EditDownload::EditDownload(int id,std::vector<int> *adds,QString *filter,
   label=new QLabel(edit_oneshot_box,tr("Make OneShot"),this);
   label->setGeometry(40,333,115,20);
   label->setFont(label_font);
-  label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Event Offset
@@ -345,11 +350,11 @@ EditDownload::EditDownload(int id,std::vector<int> *adds,QString *filter,
   label=new QLabel(edit_eventoffset_spin,tr("Event Offset:"),this);
   label->setGeometry(140,333,100,20);
   label->setFont(label_font);
-  label->setAlignment(AlignVCenter|AlignRight);
+  label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
   label=new QLabel(edit_eventoffset_spin,tr("days"),this);
   label->setGeometry(295,333,40,20);
   label->setFont(label_font);
-  label->setAlignment(AlignVCenter|AlignLeft);
+  label->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
 
   //
   //  Save As Button
@@ -455,7 +460,7 @@ QSizePolicy EditDownload::sizePolicy() const
 
 void EditDownload::urlChangedData(const QString &str)
 {
-  QUrl url(str);
+  Q3Url url(str);
   QString protocol=url.protocol();
   if((protocol=="ftp")||(protocol=="http")||(protocol=="file")||
      (protocol=="scp")||(protocol=="sftp")) {
@@ -524,7 +529,7 @@ void EditDownload::saveasData()
 
 void EditDownload::okData()
 {
-  if(QUrl::isRelativeUrl(edit_url_edit->text())||
+  if(Q3Url::isRelativeUrl(edit_url_edit->text())||
      (edit_url_edit->text().right(1)=="/")) {
     QMessageBox::warning(this,tr("Invalid URL"),tr("The URL is invalid!"));
     return;
@@ -561,7 +566,7 @@ void EditDownload::cancelData()
 void EditDownload::paintEvent(QPaintEvent *e)
 {
   QPainter *p=new QPainter(this);
-  p->setPen(QColor(black));
+  p->setPen(QColor(Qt::black));
   p->drawRect(10,262,sizeHint().width()-20,62);
   p->end();
 }

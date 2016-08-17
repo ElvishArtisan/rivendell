@@ -21,14 +21,14 @@
 #include <qdialog.h>
 #include <qstring.h>
 #include <qpushbutton.h>
-#include <qlistbox.h>
-#include <qtextedit.h>
+#include <q3listbox.h>
+#include <q3textedit.h>
 #include <qlabel.h>
 #include <qpainter.h>
 #include <qevent.h>
 #include <qmessagebox.h>
 #include <qcheckbox.h>
-#include <qbuttongroup.h>
+#include <q3buttongroup.h>
 
 #include <rddb.h>
 #include <edit_svc.h>
@@ -73,7 +73,7 @@ AddSvc::AddSvc(QString *svcname,QWidget *parent)
     new QLabel(svc_name_edit,tr("&New Service Name:"),this);
   svc_name_label->setGeometry(10,11,140,19);
   svc_name_label->setFont(font);
-  svc_name_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  svc_name_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Exemplar
@@ -84,7 +84,7 @@ AddSvc::AddSvc(QString *svcname,QWidget *parent)
     new QLabel(svc_exemplar_box,tr("Base Service On:"),this);
   svc_exemplar_label->setGeometry(10,36,140,19);
   svc_exemplar_label->setFont(font);
-  svc_exemplar_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  svc_exemplar_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   //  Ok Button

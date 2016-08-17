@@ -19,6 +19,8 @@
 //
 
 #include <qpainter.h>
+//Added by qt3to4:
+#include <QPixmap>
 
 #include <mode_display.h>
 #include <colors.h>
@@ -99,7 +101,7 @@ void ModeDisplay::WriteMap()
     case RDAirPlayConf::LiveAssist:
       p->fillRect(0,0,sizeHint().width(),sizeHint().height(),
 		  BUTTON_MODE_LIVE_ASSIST_COLOR);
-      p->setPen(QColor(color1));
+      p->setPen(QColor(Qt::color1));
       p->setFont(mode_small_font);
       p->drawText((sizeHint().width()-p->fontMetrics().
 		   width(tr("Operating Mode")))/2,
@@ -113,7 +115,7 @@ void ModeDisplay::WriteMap()
     case RDAirPlayConf::Auto:
       p->fillRect(0,0,sizeHint().width(),sizeHint().height(),
 		  BUTTON_MODE_AUTO_COLOR);
-      p->setPen(QColor(color1));
+      p->setPen(QColor(Qt::color1));
       p->setFont(mode_small_font);
       p->drawText((sizeHint().width()-p->fontMetrics().
 		   width(tr("Operating Mode")))/2,
@@ -127,7 +129,7 @@ void ModeDisplay::WriteMap()
     case RDAirPlayConf::Manual:
       p->fillRect(0,0,sizeHint().width(),sizeHint().height(),
 		  BUTTON_MODE_MANUAL_COLOR);
-      p->setPen(QColor(color1));
+      p->setPen(QColor(Qt::color1));
       p->setFont(mode_small_font);
       p->drawText((sizeHint().width()-p->fontMetrics().
 		   width(tr("Operating Mode")))/2,
@@ -147,7 +149,7 @@ void ModeDisplay::WriteMap()
     case RDAirPlayConf::LiveAssist:
       p->fillRect(0,0,sizeHint().width(),sizeHint().height(),
 		  BUTTON_MODE_LIVE_ASSIST_COLOR);
-      p->setPen(QColor(color1));
+      p->setPen(QColor(Qt::color1));
       p->setFont(mode_small_font);
       p->drawText((sizeHint().width()-p->fontMetrics().
 		   width(tr("Operating Mode")))/2,
@@ -161,7 +163,7 @@ void ModeDisplay::WriteMap()
     case RDAirPlayConf::Auto:
       p->fillRect(0,0,sizeHint().width(),sizeHint().height(),
 		  BUTTON_MODE_AUTO_COLOR);
-      p->setPen(QColor(color1));
+      p->setPen(QColor(Qt::color1));
       p->setFont(mode_small_font);
       p->drawText((sizeHint().width()-p->fontMetrics().
 		   width(tr("Operating Mode")))/2,
@@ -175,7 +177,7 @@ void ModeDisplay::WriteMap()
     case RDAirPlayConf::Manual:
       p->fillRect(0,0,sizeHint().width(),sizeHint().height(),
 		  BUTTON_MODE_MANUAL_COLOR);
-      p->setPen(QColor(color1));
+      p->setPen(QColor(Qt::color1));
       p->setFont(mode_small_font);
       p->drawText((sizeHint().width()-p->fontMetrics().
 		   width(tr("Operating Mode")))/2,

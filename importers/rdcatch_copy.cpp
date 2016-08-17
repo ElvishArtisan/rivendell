@@ -32,6 +32,7 @@
 MainObject::MainObject(QObject *parent)
   : QObject(parent)
 {
+  /*
   bool found=false;
   QString src_hostname;
   QString dest_hostname;
@@ -326,6 +327,7 @@ MainObject::MainObject(QObject *parent)
   delete q;
 
   printf("done.\n");
+  */
   exit(0);
 }
 

@@ -23,13 +23,15 @@
 #include <qdialog.h>
 #include <qstring.h>
 #include <qpushbutton.h>
-#include <qlistbox.h>
-#include <qtextedit.h>
+#include <q3listbox.h>
+#include <q3textedit.h>
 #include <qpainter.h>
 #include <qevent.h>
 #include <qmessagebox.h>
 #include <qcheckbox.h>
-#include <qbuttongroup.h>
+#include <q3buttongroup.h>
+//Added by qt3to4:
+#include <QLabel>
 #include <rddb.h>
 #include <qcolordialog.h>
 
@@ -79,7 +81,7 @@ EditGroup::EditGroup(QString group,QWidget *parent)
   QLabel *group_name_label=new QLabel(group_name_edit,tr("&Group Name:"),this);
   group_name_label->setGeometry(10,11,150,19);
   group_name_label->setFont(font);
-  group_name_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  group_name_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::ShowPrefix);
 
   //
   // Group Description
@@ -92,7 +94,7 @@ EditGroup::EditGroup(QString group,QWidget *parent)
     new QLabel(group_description_edit,tr("Group &Description:"),this);
   group_description_label->setGeometry(10,32,150,19);
   group_description_label->setFont(font);
-  group_description_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  group_description_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::ShowPrefix);
 
   //
   // Default Title
@@ -105,7 +107,7 @@ EditGroup::EditGroup(QString group,QWidget *parent)
     new QLabel(group_title_edit,tr("Default Import &Title:"),this);
   group_title_label->setGeometry(10,53,150,19);
   group_title_label->setFont(font);
-  group_title_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  group_title_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::ShowPrefix);
 
   //
   // Default Cart Type
@@ -118,7 +120,7 @@ EditGroup::EditGroup(QString group,QWidget *parent)
     new QLabel(group_carttype_box,tr("Default Cart &Type:"),this);
   group_carttype_label->setGeometry(10,74,150,19);
   group_carttype_label->setFont(font);
-  group_carttype_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  group_carttype_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::ShowPrefix);
 
   //
   // Default Cart Numbers
@@ -131,7 +133,7 @@ EditGroup::EditGroup(QString group,QWidget *parent)
     new QLabel(group_lowcart_box,tr("Default Cart Number:"),this);
   label->setGeometry(10,95,150,19);
   label->setFont(font);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::ShowPrefix);
   group_highcart_box=new QSpinBox(this);
   group_highcart_box->setGeometry(265,95,70,19);
   group_highcart_box->setRange(1,999999);
@@ -139,7 +141,7 @@ EditGroup::EditGroup(QString group,QWidget *parent)
     new QLabel(group_highcart_box,tr("to"),this);
   group_highcart_label->setGeometry(240,95,20,19);
   group_highcart_label->setFont(font);
-  group_highcart_label->setAlignment(AlignCenter|ShowPrefix);
+  group_highcart_label->setAlignment(Qt::AlignCenter|Qt::ShowPrefix);
   connect(group_lowcart_box,SIGNAL(valueChanged(int)),
 	  this,SLOT(lowCartChangedData(int)));
 
@@ -152,7 +154,7 @@ EditGroup::EditGroup(QString group,QWidget *parent)
     new QLabel(group_enforcerange_box,tr("Enforce Cart Range"),this);
   group_enforcerange_label->setGeometry(40,118,sizeHint().width()-50,19);
   group_enforcerange_label->setFont(font);
-  group_enforcerange_label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  group_enforcerange_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::ShowPrefix);
 
   //
   // Traffic Report Checkbox
@@ -164,7 +166,7 @@ EditGroup::EditGroup(QString group,QWidget *parent)
 	       this);
   label->setGeometry(40,143,sizeHint().width()-50,19);
   label->setFont(font);
-  label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::ShowPrefix);
 
   //
   // Music Report Checkbox
@@ -175,7 +177,7 @@ EditGroup::EditGroup(QString group,QWidget *parent)
 		   this);
   label->setGeometry(40,164,sizeHint().width()-50,19);
   label->setFont(font);
-  label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::ShowPrefix);
 
   //
   // Cut Auto Purging
@@ -191,12 +193,12 @@ EditGroup::EditGroup(QString group,QWidget *parent)
     new QLabel(group_shelflife_check,tr("Purge expired cuts after"),this);
   group_shelflife_label->setGeometry(40,193,160,19);
   group_shelflife_label->setFont(font);
-  group_shelflife_label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  group_shelflife_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::ShowPrefix);
   group_shelflife_unit=
     new QLabel(group_shelflife_check,tr("days"),this);
   group_shelflife_unit->setGeometry(250,193,50,19);
   group_shelflife_unit->setFont(font);
-  group_shelflife_unit->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  group_shelflife_unit->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::ShowPrefix);
 
   group_delete_carts_check=new QCheckBox(this);
   group_delete_carts_check->setGeometry(40,214,15,15);
@@ -204,7 +206,7 @@ EditGroup::EditGroup(QString group,QWidget *parent)
     new QLabel(group_delete_carts_check,tr("Delete cart if empty"),this);
   group_delete_carts_label->setGeometry(60,214,160,19);
   group_delete_carts_label->setFont(font);
-  group_delete_carts_label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  group_delete_carts_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::ShowPrefix);
 
   //
   // Now & Next Data Checkbox
@@ -215,7 +217,7 @@ EditGroup::EditGroup(QString group,QWidget *parent)
 		   this,"group_nownext_label");
   label->setGeometry(40,241,sizeHint().width()-50,19);
   label->setFont(font);
-  label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::ShowPrefix);
 
   //
   // Services Selector

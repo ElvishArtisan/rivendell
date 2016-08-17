@@ -27,6 +27,8 @@
 #include <qpushbutton.h>
 #include <qlineedit.h>
 #include <qcombobox.h>
+//Added by qt3to4:
+#include <QPaintEvent>
 
 #include <rduser.h>
 #include <rdmatrix.h>

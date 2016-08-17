@@ -22,6 +22,8 @@
 #include <rdescape_string.h>
 
 #include <edit_notes.h>
+//Added by qt3to4:
+#include <QResizeEvent>
 
 EditNotes::EditNotes(RDCart *cart,QWidget *parent)
   : QDialog(parent,"",true)
@@ -45,8 +47,8 @@ EditNotes::EditNotes(RDCart *cart,QWidget *parent)
   //
   // Variable Name
   //
-  notes_view=new QTextView(this);
-  notes_view->setTextFormat(QTextView::PlainText);
+  notes_view=new Q3TextView(this);
+  notes_view->setTextFormat(Qt::PlainText);
   notes_view->setReadOnly(false);
 
   //

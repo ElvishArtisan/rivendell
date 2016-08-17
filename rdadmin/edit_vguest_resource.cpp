@@ -19,6 +19,8 @@
 //
 
 #include <qmessagebox.h>
+//Added by qt3to4:
+#include <QLabel>
 
 #include <rdtextvalidator.h>
 
@@ -61,7 +63,7 @@ EditVguestResource::EditVguestResource(RDMatrix::VguestType type,
   QLabel *label=new QLabel(edit_enginenum_edit,tr("Engine (Hex): "),this);
   label->setGeometry(10,10,120,20);
   label->setFont(bold_font);
-  label->setAlignment(AlignRight|AlignVCenter);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Logitek Device Number
@@ -71,7 +73,7 @@ EditVguestResource::EditVguestResource(RDMatrix::VguestType type,
   label=new QLabel(edit_devicenum_edit,tr("Device (Hex): "),this);
   label->setGeometry(10,36,120,20);
   label->setFont(bold_font);
-  label->setAlignment(AlignRight|AlignVCenter);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Logitek Surface Number
@@ -81,7 +83,7 @@ EditVguestResource::EditVguestResource(RDMatrix::VguestType type,
   label=new QLabel(edit_surfacenum_edit,tr("Surface (Hex): "),this);
   label->setGeometry(10,62,120,20);
   label->setFont(bold_font);
-  label->setAlignment(AlignRight|AlignVCenter);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Logitek Relay Number
@@ -92,7 +94,7 @@ EditVguestResource::EditVguestResource(RDMatrix::VguestType type,
     new QLabel(edit_relaynum_edit,tr("Bus/Relay (Hex): "),this);
   edit_relaynum_label->setGeometry(10,88,120,20);
   edit_relaynum_label->setFont(bold_font);
-  edit_relaynum_label->setAlignment(AlignRight|AlignVCenter);
+  edit_relaynum_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   //  Ok Button

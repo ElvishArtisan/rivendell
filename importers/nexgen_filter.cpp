@@ -175,7 +175,7 @@ MainObject::MainObject(QObject *parent)
   //
   // Main Loop
   //
-  for(unsigned i=0;i<xml_files.size();i++) {
+  for(int i=0;i<xml_files.size();i++) {
     if(IsXmlFile(xml_files[i])) {
       if(audio_dir.isEmpty()) {
 	fprintf(stderr,"unable to process \"%s\" [no --audio-dir specified]\n",
@@ -278,7 +278,7 @@ void MainObject::ProcessArchive(const QString &filename)
   //
   // Clean Up
   //
-  for(unsigned i=0;i<files.size();i++) {
+  for(int i=0;i<files.size();i++) {
     unlink(files[i]);
   }
   rmdir(tempdir);
@@ -357,9 +357,11 @@ void MainObject::ProcessXmlFile(const QString &xml,const QString &wavname,
   if(filter_delete_cuts) {
     delete_cuts_switch="--delete-cuts ";
   }
-  if(system(QString().sprintf("rdimport --autotrim-level=0 --normalization-level=%d --to-cart=%d ",
-			      filter_normalization_level,cartnum)+
-	    +delete_cuts_switch+filter_group->name()+" "+
+  if(system(QString("rdimport ")+
+	    "--autotrim-level=0 "+
+	    QString().sprintf("--normalization-level=%d ",filter_normalization_level)+
+	    QString().sprintf("--to-cart=%d ",cartnum)+
+	    delete_cuts_switch+filter_group->name()+" "+
 	    filter_temp_audiofile)!=0) {
     Print(QString().sprintf(" aborted.\n"));
     fprintf(stderr,"import of \"%s\" failed\n",(const char *)filename);

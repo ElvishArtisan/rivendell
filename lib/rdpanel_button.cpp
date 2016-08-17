@@ -23,6 +23,11 @@
 
 #include <qpixmap.h>
 #include <qpainter.h>
+//Added by qt3to4:
+#include <QDropEvent>
+#include <QMouseEvent>
+#include <QKeyEvent>
+#include <QDragEnterEvent>
 
 #include <rdcartdrag.h>
 
@@ -548,7 +553,7 @@ QString RDPanelButton::GetNextLine(QString *str,const QFontMetrics &m,int len)
 {
   QString ret;
 
-  for(unsigned i=0;i<str->length();i++) {
+  for(int i=0;i<str->length();i++) {
     if(m.width(str->left(i))>len) {
       int l=i;
       while((!str->at(l--).isSpace())&&(l>=0));

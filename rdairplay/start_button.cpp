@@ -214,12 +214,11 @@ void StartButton::Resize(int x,int y,int w,int h)
   p->fillRect(0,0,w,h,palette().color(QPalette::Active,QColorGroup::Button));
   //p->eraseRect(0,0,w,h);
   if(start_mode!=StartButton::Disabled) {
-    p->setPen(QColor(color1));
+    p->setPen(QColor(Qt::color1));
     p->setFont(start_label_font);
     p->drawText((geometry().width()-p->fontMetrics().width(start_title))/2,
 		22,start_title);
-    p->moveTo(10,24);
-    p->lineTo(70,24);
+    p->drawLine(10,24,70,24);
     p->setFont(start_counter_font);
     if(!start_time.isNull()) {
       if(start_time_mode==RDAirPlayConf::TwentyFourHour) {

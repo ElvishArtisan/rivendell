@@ -19,7 +19,7 @@
 //
 
 #include <qpushbutton.h>
-#include <qfiledialog.h>
+#include <q3filedialog.h>
 #include <qmessagebox.h>
 
 #include <rdconf.h>
@@ -40,7 +40,7 @@ RDExceptionDialog::RDExceptionDialog(QString report,QWidget *parent)
   //
   // Report Viewer
   //
-  report_view=new QTextView(this,"report_view");
+  report_view=new Q3TextView(this,"report_view");
   report_view->setGeometry(10,10,sizeHint().width()-20,sizeHint().height()-80);
   report_view->setText(report);
 
@@ -87,7 +87,7 @@ void RDExceptionDialog::saveData()
 {
   QString str1;
   QString str2;
-  QString filename=QFileDialog::getSaveFileName(RDGetHomeDir(),
+  QString filename=Q3FileDialog::getSaveFileName(RDGetHomeDir(),
 				   tr("Text (*.txt *.TXT)\nAll Files (*.*)"),
 						this,tr("Export File"));
   if(filename.isEmpty()) {

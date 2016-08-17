@@ -23,10 +23,10 @@
 
 #include <vector>
 
-#include <qlistview.h>
+#include <q3listview.h>
 #include <qpixmap.h>
 
-class RDListView : public QListView
+class RDListView : public Q3ListView
 {
   Q_OBJECT
 
@@ -38,11 +38,11 @@ class RDListView : public QListView
   RDListView::SortType columnSortType(int column) const;
   void setColumnSortType(int column,SortType type);
   int addColumn(const QString &label,int width=-1);
-  int addColumn(const QIconSet &iconset,const QString &label,int width=-1);
+  int addColumn(const QIcon &iconset,const QString &label,int width=-1);
   void selectLine(int line);
 
  private slots:
-  void mouseButtonClickedData(int button,QListViewItem *item,const QPoint &pt,
+  void mouseButtonClickedData(int button,Q3ListViewItem *item,const QPoint &pt,
 			      int col);
 
  private:

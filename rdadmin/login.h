@@ -23,9 +23,11 @@
 
 #include <qdialog.h>
 #include <qlineedit.h>
-#include <qtextedit.h>
+#include <q3textedit.h>
 #include <qpixmap.h>
 #include <qradiobutton.h>
+//Added by qt3to4:
+#include <QPaintEvent>
 
 class Login : public QDialog
 {

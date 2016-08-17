@@ -20,9 +20,11 @@
 
 #include <qdialog.h>
 #include <qstring.h>
-#include <qtextedit.h>
+#include <q3textedit.h>
 #include <qpainter.h>
 #include <qmessagebox.h>
+//Added by qt3to4:
+#include <QCloseEvent>
 
 #include <rd.h>
 #include <rdevent.h>
@@ -55,7 +57,7 @@ EditTrack::EditTrack(QString *text,QWidget *parent)
   //
   // The Text Editor
   //
-  edit_text_edit=new QTextEdit(this);
+  edit_text_edit=new Q3TextEdit(this);
   edit_text_edit->setGeometry(10,10,
 			      sizeHint().width()-20,sizeHint().height()-80);
   edit_text_edit->setText(*edit_text);

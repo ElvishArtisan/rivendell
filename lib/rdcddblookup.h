@@ -25,7 +25,7 @@
 #include <stdio.h>
 
 #include <qobject.h>
-#include <qsocket.h>
+#include <q3socket.h>
 #include <rdcddbrecord.h>
 
 //
@@ -77,7 +77,7 @@ class RDCddbLookup : public QObject
    void SendToServer(const QString &msg);
    void Profile(const QString &msg);
    RDCddbRecord *lookup_record;
-   QSocket *lookup_socket;
+   Q3Socket *lookup_socket;
    int lookup_state;
    QString lookup_username;
    QString lookup_appname;

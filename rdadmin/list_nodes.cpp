@@ -20,7 +20,7 @@
 
 #include <qdialog.h>
 #include <qstring.h>
-#include <qtextedit.h>
+#include <q3textedit.h>
 #include <qpainter.h>
 #include <qmessagebox.h>
 
@@ -72,9 +72,9 @@ ListNodes::ListNodes(RDMatrix *matrix,QWidget *parent)
   list_list_view->addColumn(tr("TCP PORT"));
   list_list_view->setColumnAlignment(3,Qt::AlignCenter);
   connect(list_list_view,
-	  SIGNAL(doubleClicked(QListViewItem *,const QPoint &,int)),
+	  SIGNAL(doubleClicked(Q3ListViewItem *,const QPoint &,int)),
 	  this,
-	  SLOT(doubleClickedData(QListViewItem *,const QPoint &,int)));
+	  SLOT(doubleClickedData(Q3ListViewItem *,const QPoint &,int)));
 
   //
   //  Add Button
@@ -186,7 +186,7 @@ void ListNodes::deleteData()
 }
 
 
-void ListNodes::doubleClickedData(QListViewItem *item,const QPoint &pt,
+void ListNodes::doubleClickedData(Q3ListViewItem *item,const QPoint &pt,
 				      int col)
 {
   editData();

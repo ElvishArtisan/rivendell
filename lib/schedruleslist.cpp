@@ -18,10 +18,12 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
+#include <QMessageBox>
+#include <QVariant>
+
 #include <rddb.h>
 #include <rdescape_string.h>
 #include <schedruleslist.h>
-#include <qmessagebox.h>
 
 SchedRulesList::SchedRulesList(QString clockname)
 {

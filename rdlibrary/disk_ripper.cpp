@@ -27,9 +27,13 @@
 #include <math.h>
 #include <linux/cdrom.h>
 #include <qpushbutton.h>
-#include <qfiledialog.h>
+#include <q3filedialog.h>
 #include <qmessagebox.h>
 #include <qcheckbox.h>
+//Added by qt3to4:
+#include <QLabel>
+#include <QResizeEvent>
+#include <QCloseEvent>
 
 #include <rdapplication.h>
 #include <rddb.h>
@@ -129,7 +133,7 @@ DiskRipper::DiskRipper(QString *filter,QString *group,QString *schedcode,
   QLabel *label=new QLabel(tr("Artist:"),this);
   label->setGeometry(10,10,50,18);
   label->setFont(label_font);
-  label->setAlignment(AlignRight|AlignVCenter);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   rip_artist_edit=new QLineEdit(this);
 
   //
@@ -138,7 +142,7 @@ DiskRipper::DiskRipper(QString *filter,QString *group,QString *schedcode,
   label=new QLabel(tr("Album:"),this);
   label->setGeometry(10,32,50,18);
   label->setFont(label_font);
-  label->setAlignment(AlignRight|AlignVCenter);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   rip_album_edit=new QLineEdit(this);
 
   //
@@ -147,8 +151,8 @@ DiskRipper::DiskRipper(QString *filter,QString *group,QString *schedcode,
   label=new QLabel(tr("Other:"),this);
   label->setGeometry(10,54,50,16);
   label->setFont(label_font);
-  label->setAlignment(AlignRight);
-  rip_other_edit=new QTextEdit(this);
+  label->setAlignment(Qt::AlignRight);
+  rip_other_edit=new Q3TextEdit(this);
   rip_other_edit->setReadOnly(true);
 
   //
@@ -160,24 +164,24 @@ DiskRipper::DiskRipper(QString *filter,QString *group,QString *schedcode,
   rip_apply_label=
     new QLabel(rip_apply_box,tr("Apply FreeDB Values to Carts"),this);
   rip_apply_label->setFont(label_font);
-  rip_apply_label->setAlignment(AlignLeft);
+  rip_apply_label->setAlignment(Qt::AlignLeft);
   rip_apply_box->setChecked(false);
   rip_apply_label->setDisabled(true);
 
   //
   // Track List
   //
-  rip_track_list=new QListView(this);
+  rip_track_list=new Q3ListView(this);
   rip_track_list->setAllColumnsShowFocus(true);
   rip_track_list->setItemMargin(5);
   rip_track_list->setSorting(-1);
-  rip_track_list->setSelectionMode(QListView::Extended);
+  rip_track_list->setSelectionMode(Q3ListView::Extended);
   connect(rip_track_list,SIGNAL(selectionChanged()),
 	  this,SLOT(selectionChangedData()));
   connect(rip_track_list,
-	  SIGNAL(doubleClicked(QListViewItem *,const QPoint &,int)),
+	  SIGNAL(doubleClicked(Q3ListViewItem *,const QPoint &,int)),
 	  this,
-	  SLOT(doubleClickedData(QListViewItem *,const QPoint &,int)));
+	  SLOT(doubleClickedData(Q3ListViewItem *,const QPoint &,int)));
   rip_track_label=new QLabel(rip_track_list,tr("Tracks"),this);
   rip_track_label->setFont(label_font);
   rip_track_list->addColumn(tr("TRACK"));
@@ -196,15 +200,15 @@ DiskRipper::DiskRipper(QString *filter,QString *group,QString *schedcode,
   //
   // Progress Bars
   //
-  rip_disk_bar=new QProgressBar(this);
+  rip_disk_bar=new Q3ProgressBar(this);
   rip_diskbar_label=new QLabel(tr("Disk Progress"),this);
   rip_diskbar_label->setFont(label_font);
-  rip_diskbar_label->setAlignment(AlignLeft|AlignVCenter);
+  rip_diskbar_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
   rip_diskbar_label->setDisabled(true);
-  rip_track_bar=new QProgressBar(this);
+  rip_track_bar=new Q3ProgressBar(this);
   rip_trackbar_label=new QLabel(tr("Track Progress"),this);
   rip_trackbar_label->setFont(label_font);
-  rip_trackbar_label->setAlignment(AlignLeft|AlignVCenter);
+  rip_trackbar_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
   rip_trackbar_label->setDisabled(true);
 
   //
@@ -223,7 +227,7 @@ DiskRipper::DiskRipper(QString *filter,QString *group,QString *schedcode,
   // Stop Button
   //
   rip_stop_button=new RDTransportButton(RDTransportButton::Stop,this);
-  rip_stop_button->setOnColor(red);
+  rip_stop_button->setOnColor(Qt::red);
   rip_stop_button->on();
   connect(rip_stop_button,SIGNAL(clicked()),this,SLOT(stopButtonData()));
   
@@ -276,7 +280,7 @@ DiskRipper::DiskRipper(QString *filter,QString *group,QString *schedcode,
   rip_normalize_box->setChecked(true);
   rip_normalizebox_label=new QLabel(rip_normalize_box,tr("Normalize"),this);
   rip_normalizebox_label->setFont(label_font);
-  rip_normalizebox_label->setAlignment(AlignLeft|AlignVCenter);
+  rip_normalizebox_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
   connect(rip_normalize_box,SIGNAL(toggled(bool)),
 	  this,SLOT(normalizeCheckData(bool)));
 
@@ -287,10 +291,10 @@ DiskRipper::DiskRipper(QString *filter,QString *group,QString *schedcode,
   rip_normalize_spin->setRange(-30,0);
   rip_normalize_label=new QLabel(rip_normalize_spin,tr("Level:"),this);
   rip_normalize_label->setFont(label_font);
-  rip_normalize_label->setAlignment(AlignRight|AlignVCenter);
+  rip_normalize_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   rip_normalize_unit=new QLabel(tr("dBFS"),this);
   rip_normalize_unit->setFont(label_font);
-  rip_normalize_unit->setAlignment(AlignLeft|AlignVCenter);
+  rip_normalize_unit->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   //
   // Autotrim Check Box
@@ -299,7 +303,7 @@ DiskRipper::DiskRipper(QString *filter,QString *group,QString *schedcode,
   rip_autotrim_box->setChecked(true);
   rip_autotrimbox_label=new QLabel(rip_autotrim_box,tr("Autotrim"),this);
   rip_autotrimbox_label->setFont(label_font);
-  rip_autotrimbox_label->setAlignment(AlignLeft|AlignVCenter);
+  rip_autotrimbox_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
   connect(rip_autotrim_box,SIGNAL(toggled(bool)),
 	  this,SLOT(autotrimCheckData(bool)));
 
@@ -310,10 +314,10 @@ DiskRipper::DiskRipper(QString *filter,QString *group,QString *schedcode,
   rip_autotrim_spin->setRange(-99,0);
   rip_autotrim_label=new QLabel(rip_autotrim_spin,tr("Level:"),this);
   rip_autotrim_label->setFont(label_font);
-  rip_autotrim_label->setAlignment(AlignRight|AlignVCenter);
+  rip_autotrim_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   rip_autotrim_unit=new QLabel(tr("dBFS"),this);
   rip_autotrim_unit->setFont(label_font);
-  rip_autotrim_unit->setAlignment(AlignLeft|AlignVCenter);
+  rip_autotrim_unit->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   //
   // Channels
@@ -321,7 +325,7 @@ DiskRipper::DiskRipper(QString *filter,QString *group,QString *schedcode,
   rip_channels_box=new QComboBox(this);
   rip_channels_label=new QLabel(rip_channels_box,tr("Channels:"),this);
   rip_channels_label->setFont(label_font);
-  rip_channels_label->setAlignment(AlignRight|AlignVCenter);
+  rip_channels_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Rip Disc Button
@@ -353,7 +357,7 @@ DiskRipper::DiskRipper(QString *filter,QString *group,QString *schedcode,
 DiskRipper::~DiskRipper()
 {
   QStringList files=rip_cdda_dir.entryList();
-  for(unsigned i=0;i<files.size();i++) {
+  for(int i=0;i<files.size();i++) {
     if((files[i]!=".")&&(files[i]!="..")) {
       rip_cdda_dir.remove(files[i]);
     }
@@ -557,7 +561,7 @@ void DiskRipper::setCutButtonData()
 				    QMessageBox::Yes,
 				    QMessageBox::No)) {
 	case QMessageBox::No:
-	case QMessageBox::NoButton:
+	case Qt::NoButton:
 	  delete dialog;
 	  return;
 	  
@@ -572,7 +576,7 @@ void DiskRipper::setCutButtonData()
 				      QMessageBox::Yes,
 				      QMessageBox::No)) {
 	  case QMessageBox::No:
-	  case QMessageBox::NoButton:
+	  case Qt::NoButton:
 	    return;
 	    
 	  default:
@@ -911,7 +915,7 @@ void DiskRipper::selectionChangedData()
 }
 
 
-void DiskRipper::doubleClickedData(QListViewItem *item,const QPoint &pt,
+void DiskRipper::doubleClickedData(Q3ListViewItem *item,const QPoint &pt,
 				   int col)
 {
   setCutButtonData();

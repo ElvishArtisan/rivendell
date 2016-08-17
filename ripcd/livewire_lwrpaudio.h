@@ -23,7 +23,7 @@
 
 #include <vector>
 
-#include <qsocket.h>
+#include <q3socket.h>
 #include <qhostaddress.h>
 #include <qtimer.h>
 

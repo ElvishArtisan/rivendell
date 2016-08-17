@@ -30,9 +30,14 @@
 #include <qtextcodec.h>
 #include <qtranslator.h>
 #include <qpainter.h>
-#include <qprocess.h>
+#include <q3process.h>
 #include <qdir.h>
 #include <qsignalmapper.h>
+//Added by qt3to4:
+#include <QPaintEvent>
+#include <QResizeEvent>
+#include <QPixmap>
+#include <QMouseEvent>
 
 #include <dbversion.h>
 #include <rd.h>
@@ -64,7 +69,7 @@ void SigHandler(int signo)
 }
 
 MainWidget::MainWidget(QWidget *parent)
-  :QWidget(parent,"",Qt::WStyle_Customize|Qt::WStyle_NoBorder|Qt::WStyle_StaysOnTop|WX11BypassWM)
+  :QWidget(parent,"",Qt::WStyle_Customize|Qt::WStyle_NoBorder|Qt::WStyle_StaysOnTop|Qt::WX11BypassWM)
 {
   QString str;
   mon_dialog_x=0;
@@ -131,7 +136,7 @@ MainWidget::MainWidget(QWidget *parent)
   connect(mon_validate_timer,SIGNAL(timeout()),this,SLOT(validate()));
   mon_validate_timer->start(5000);
 
-  mon_tooltip=new StatusTip(this);
+  //  mon_tooltip=new StatusTip(this);
 
   mon_name_label->setText(mon_rdconfig->label());
   SetPosition();
@@ -173,8 +178,10 @@ void MainWidget::validate()
   //
   // Record Results
   //
+  /*
   mon_tooltip->
     setStatus(QRect(0,0,size().width(),size().height()),db_ok,schema,snd_ok);
+  */
   SetSummaryState(db_ok&&(schema==RD_VERSION_DATABASE)&&snd_ok);
   SetPosition();
 }
@@ -188,7 +195,7 @@ void MainWidget::quitMainWidget()
 
 void MainWidget::mousePressEvent(QMouseEvent *e)
 {
-  if(e->button()!=QMouseEvent::RightButton) {
+  if(e->button()!=Qt::RightButton) {
     e->ignore();
     return;
   }
@@ -205,7 +212,7 @@ void MainWidget::mousePressEvent(QMouseEvent *e)
 
 void MainWidget::mouseDoubleClickEvent(QMouseEvent *e)
 {
-  if(e->button()!=QMouseEvent::LeftButton) {
+  if(e->button()!=Qt::LeftButton) {
     e->ignore();
     return;
   }
@@ -375,6 +382,7 @@ int main(int argc,char *argv[])
   //
   // Load Translations
   //
+  /*
   QTranslator qt(0);
   qt.load(QString(QTDIR)+QString("/translations/qt_")+QTextCodec::locale(),
 	  ".");
@@ -394,6 +402,7 @@ int main(int argc,char *argv[])
   tr.load(QString(PREFIX)+QString("/share/rivendell/rdmonitor_")+
 	     QTextCodec::locale(),".");
   a.installTranslator(&tr);
+  */
 
   //
   // Start Event Loop

@@ -57,9 +57,9 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
       }
       str+=rml->arg(rml->argQuantity()-1).toString();
       pal=air_message_label->palette();
-      pal.setColor(QPalette::Active,QColorGroup::Foreground,QColor(black));
+      pal.setColor(QPalette::Active,QColorGroup::Foreground,QColor(Qt::black));
       pal.setColor(QPalette::Inactive,QColorGroup::Foreground,
-		   QColor(black));
+		   QColor(Qt::black));
       air_message_label->setPalette(pal);
       air_message_label->setFont(MessageFont(str));
       air_message_label->setText(str);
@@ -77,7 +77,7 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
     else {
       QColor color(rml->arg(0).toString());
       if(!color.isValid()) {
-	color=QColor(black);
+	color=QColor(Qt::black);
       }
       for(int i=1;i<(rml->argQuantity()-1);i++) {
 	str+=(rml->arg(i).toString()+" ");

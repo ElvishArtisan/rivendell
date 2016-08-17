@@ -43,6 +43,8 @@
 #include <qobject.h>
 #include <qstring.h>
 #include <qdatetime.h>
+//Added by qt3to4:
+#include <Q3CString>
 
 #include <rd.h>
 #include <rdcart.h>
@@ -214,7 +216,7 @@ bool RDWaveFile::openWave(RDWaveData *data)
   unsigned char tmc_buffer[4];
 
   wave_data=data;
-  if(!wave_file.open(IO_ReadOnly)) {
+  if(!wave_file.open(QIODevice::ReadOnly)) {
     return false;
   }
 
@@ -538,7 +540,7 @@ bool RDWaveFile::createWave(RDWaveData *data,unsigned ptr_offset)
 	  return false;
 	}
         prev_mask = umask(0113);      // Set umask so files are user and group writable.
-        rc=wave_file.open(IO_ReadWrite|IO_Truncate);
+        rc=wave_file.open(QIODevice::ReadWrite|QIODevice::Truncate);
 	unlink((wave_file.name()+".energy").ascii());
         umask(prev_mask);
 	if(rc==false) {
@@ -585,7 +587,7 @@ bool RDWaveFile::createWave(RDWaveData *data,unsigned ptr_offset)
 	vorbis_encode_ctl(&vorbis_inf,OV_ECTL_RATEMANAGE_SET,NULL);
 
         prev_mask = umask(0113);      // Set umask so files are user and group writable.
-	    rc=wave_file.open(IO_ReadWrite|IO_Truncate);
+	    rc=wave_file.open(QIODevice::ReadWrite|QIODevice::Truncate);
         umask(prev_mask);
 	if(rc==false) {
 	  vorbis_info_clear(&vorbis_inf);
@@ -2326,7 +2328,7 @@ bool RDWaveFile::IsFlac(int fd)
 #ifdef HAVE_FLAC
   char buffer[5];
 
-  ID3_Tag id3_tag(QCString().sprintf("%s",(const char *)wave_file.name().utf8()));
+  ID3_Tag id3_tag(Q3CString().sprintf("%s",(const char *)wave_file.name().utf8()));
   lseek(fd,id3_tag.GetPrependedBytes(),SEEK_SET);
   if(read(fd,buffer,4)!=4) {
     return false;
@@ -3306,7 +3308,7 @@ void RDWaveFile::ReadTmcTag(const QString tag,const QString value)
     wave_data->setMetadataFound(true);
   }
   if(tag=="END") {
-    wave_data->setEndType((RDWaveData::EndType)((char)value[0]));
+    wave_data->setEndType((RDWaveData::EndType)(value.at(0).cell()));
     wave_data->setMetadataFound(true);
   }
   if(tag=="TMCIREF") {
@@ -3356,7 +3358,7 @@ void RDWaveFile::ReadId3Metadata()
     return;
   }
   ID3_Frame *frame=NULL;
-  ID3_Tag id3_tag(QCString().sprintf("%s",(const char *)wave_file.name().utf8()));
+  ID3_Tag id3_tag(Q3CString().sprintf("%s",(const char *)wave_file.name().utf8()));
   if((frame=id3_tag.Find(ID3FID_USERTEXT,ID3FN_DESCRIPTION,"rdxl"))!=NULL) {
     rdxl_contents=ID3_GetString(frame,ID3FN_TEXT);
     if(wave_data!=NULL) {
@@ -3988,7 +3990,7 @@ bool RDWaveFile::GetFlacStreamInfo()
 {
 #if HAVE_FLAC
   FLAC__StreamMetadata sinfo;
-  if(!FLAC__metadata_get_streaminfo(QCString().sprintf("%s",(const char *)wave_file.name().utf8()),&sinfo)) {
+  if(!FLAC__metadata_get_streaminfo(Q3CString().sprintf("%s",(const char *)wave_file.name().utf8()),&sinfo)) {
     return false;
   }
   samples_per_sec=sinfo.data.stream_info.sample_rate;
@@ -4010,7 +4012,7 @@ void RDWaveFile::ReadFlacMetadata()
   QString artist;
   QString composer;
   FLAC__StreamMetadata* tags;
-  if(!FLAC__metadata_get_tags(QCString().
+  if(!FLAC__metadata_get_tags(Q3CString().
 	    sprintf("%s",(const char *)wave_file.name().utf8()),&tags)) {
     return;
   }
@@ -4601,6 +4603,9 @@ unsigned RDWaveFile::LoadEnergy()
 
 bool RDWaveFile::ReadEnergyFile(QString wave_file_name)
 {
+  /*
+   * This can probably be removed!
+   *
   if(has_energy && energy_loaded) return true;
 
   QFile energy_file;
@@ -4608,13 +4613,13 @@ bool RDWaveFile::ReadEnergyFile(QString wave_file_name)
   unsigned char frame[50];
 
   energy_file.setName(wave_file_name+".energy");
-  if(!energy_file.open(IO_ReadOnly)) 
+  if(!energy_file.open(QIODevice::ReadOnly)) 
     return false;
-  if(energy_file.readLine(str,20) <= 0)
+  if(energy_file.readLine((const char *)str.toUtf8(),20).isNull())
      return false;
   normalize_level=str.toDouble();
   energy_file.close();
-  if(!energy_file.open(IO_ReadOnly)) 
+  if(!energy_file.open(QIODevice::ReadOnly)) 
     return false;
   read(energy_file.handle(),frame,str.length());
   int i=0;
@@ -4628,22 +4633,29 @@ bool RDWaveFile::ReadEnergyFile(QString wave_file_name)
   energy_loaded=true;
   has_energy=true;
   return true;
+  */
+  return false;
 }
 
 
 bool RDWaveFile::ReadNormalizeLevel(QString wave_file_name)
 {
+  /*
+   * This can probably be removed!
+   *
   QFile energy_file;
   QString str;
 
   energy_file.setName(wave_file_name+".energy");
-  if(!energy_file.open(IO_ReadOnly)) 
+  if(!energy_file.open(QIODevice::ReadOnly)) 
     return false;
   if(energy_file.readLine(str,20) <= 0)
      return false;
   normalize_level=str.toDouble();
   energy_file.close();
   return true;
+  */
+  return false;
 }
 
 

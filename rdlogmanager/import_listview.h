@@ -21,13 +21,18 @@
 #ifndef IMPORT_LISTVIEW_H
 #define IMPORT_LISTVIEW_H
 
-#include <qlistview.h>
+#include <q3listview.h>
 #include <qpixmap.h>
-#include <qpopupmenu.h>
+#include <q3popupmenu.h>
+//Added by qt3to4:
+#include <QMouseEvent>
+#include <QFocusEvent>
+#include <QDropEvent>
+#include <QDragEnterEvent>
 
 #include <rdlog_event.h>
 
-class ImportListView : public QListView
+class ImportListView : public Q3ListView
 {
   Q_OBJECT
 
@@ -68,10 +73,10 @@ class ImportListView : public QListView
   QPixmap *import_macro_map;
   QPixmap *import_notemarker_map;
   QPixmap *import_mic16_map;
-  QPopupMenu *import_menu;
+  Q3PopupMenu *import_menu;
   int import_menu_line;
   RDLogLine *import_menu_logline;
-  QListViewItem *import_menu_item;
+  Q3ListViewItem *import_menu_item;
   RDLogLine::TransType import_force_trans;
   bool import_allow_stop;
   bool import_allow_first_trans;

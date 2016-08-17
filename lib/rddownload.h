@@ -22,7 +22,7 @@
 #define RDDOWNLOAD_H
 
 #include <qobject.h>
-#include <qurl.h>
+#include <q3url.h>
 
 class RDDownload : public QObject
 {
@@ -54,7 +54,7 @@ class RDDownload : public QObject
   void UpdateProgress(int step);
   friend int DownloadProgressCallback(void *clientp,double dltotal,double dlnow,
 				      double ultotal,double ulnow);
-  QUrl conv_src_url;
+  Q3Url conv_src_url;
   QString conv_dst_filename;
   bool conv_aborting;
   uint conv_dst_size;

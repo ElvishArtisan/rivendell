@@ -18,7 +18,10 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qheader.h>
+#include <q3header.h>
+//Added by qt3to4:
+#include <QDropEvent>
+#include <QDragEnterEvent>
 
 #include <rdcartdrag.h>
 

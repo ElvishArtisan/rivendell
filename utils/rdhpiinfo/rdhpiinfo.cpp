@@ -20,6 +20,7 @@
 
 #include <stdlib.h>
 #include <stdint.h>
+#include <stdio.h>
 
 #include <qapplication.h>
 #include <qwindowsstyle.h>
@@ -94,7 +95,7 @@ MainWidget::MainWidget(QWidget *parent)
   info_name_label=new QLabel(info_name_box,tr("Adapter:"),this);
   info_name_label->setGeometry(10,34,85,20);
   info_name_label->setFont(label_font);
-  info_name_label->setAlignment(AlignRight|AlignVCenter);
+  info_name_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   connect(info_name_box,SIGNAL(activated(int)),
 	  this,SLOT(nameActivatedData(int)));
 
@@ -104,11 +105,11 @@ MainWidget::MainWidget(QWidget *parent)
   label=new QLabel(tr("Adapter Index:"),this);
   label->setGeometry(10,58,105,20);
   label->setFont(label_font);
-  label->setAlignment(AlignRight|AlignVCenter);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   info_index_label=new QLabel(this);
   info_index_label->setGeometry(120,58,100,20);
   info_index_label->setFont(font);
-  info_index_label->setAlignment(AlignLeft|AlignVCenter);
+  info_index_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   //
   // Serial Number
@@ -116,11 +117,11 @@ MainWidget::MainWidget(QWidget *parent)
   label=new QLabel(tr("Serial Number:"),this);
   label->setGeometry(10,78,105,20);
   label->setFont(label_font);
-  label->setAlignment(AlignRight|AlignVCenter);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   info_serial_label=new QLabel(this);
   info_serial_label->setGeometry(120,78,100,20);
   info_serial_label->setFont(font);
-  info_serial_label->setAlignment(AlignLeft|AlignVCenter);
+  info_serial_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   //
   // Output Streams
@@ -128,11 +129,11 @@ MainWidget::MainWidget(QWidget *parent)
   label=new QLabel(tr("Input Streams:"),this);
   label->setGeometry(10,98,105,20);
   label->setFont(label_font);
-  label->setAlignment(AlignRight|AlignVCenter);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   info_istreams_label=new QLabel(this);
   info_istreams_label->setGeometry(120,98,100,20);
   info_istreams_label->setFont(font);
-  info_istreams_label->setAlignment(AlignLeft|AlignVCenter);
+  info_istreams_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   //
   // Input Streams
@@ -140,11 +141,11 @@ MainWidget::MainWidget(QWidget *parent)
   label=new QLabel(tr("Output Streams:"),this);
   label->setGeometry(10,118,105,20);
   label->setFont(label_font);
-  label->setAlignment(AlignRight|AlignVCenter);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   info_ostreams_label=new QLabel(this);
   info_ostreams_label->setGeometry(120,118,100,20);
   info_ostreams_label->setFont(font);
-  info_ostreams_label->setAlignment(AlignLeft|AlignVCenter);
+  info_ostreams_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   //
   // DSP Version
@@ -152,11 +153,11 @@ MainWidget::MainWidget(QWidget *parent)
   label=new QLabel(tr("DSP Version:"),this);
   label->setGeometry(10,138,105,20);
   label->setFont(label_font);
-  label->setAlignment(AlignRight|AlignVCenter);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   info_dsp_label=new QLabel(this);
   info_dsp_label->setGeometry(120,138,100,20);
   info_dsp_label->setFont(font);
-  info_dsp_label->setAlignment(AlignLeft|AlignVCenter);
+  info_dsp_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   //
   // Adapter Version
@@ -164,11 +165,11 @@ MainWidget::MainWidget(QWidget *parent)
   label=new QLabel(tr("Adapter Version:"),this);
   label->setGeometry(10,158,105,20);
   label->setFont(label_font);
-  label->setAlignment(AlignRight|AlignVCenter);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   info_adapter_label=new QLabel(this);
   info_adapter_label->setGeometry(120,158,100,20);
   info_adapter_label->setFont(font);
-  info_adapter_label->setAlignment(AlignLeft|AlignVCenter);
+  info_adapter_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   //
   // DSP Utilization
@@ -196,12 +197,12 @@ MainWidget::MainWidget(QWidget *parent)
   label=new QLabel(tr("Adapter Mode:"),this);
   label->setGeometry(10,213,105,20);
   label->setFont(label_font);
-  label->setAlignment(AlignRight|AlignVCenter);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   info_mode_edit=new QLineEdit(this);
   info_mode_edit->setGeometry(120,213,sizeHint().width()-210,20);
   info_mode_edit->setReadOnly(true);
   info_mode_edit->setFont(font);
-  info_mode_edit->setAlignment(AlignLeft|AlignVCenter);
+  info_mode_edit->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
   info_changemode_button=
     new QPushButton(tr("Change"),this);
   info_changemode_button->setGeometry(sizeHint().width()-80,210,70,26);

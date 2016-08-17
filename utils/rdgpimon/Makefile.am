@@ -19,8 +19,8 @@
 ##
 ## Use automake to process this into a Makefile.in
 
-AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" -DQTDIR=\"@QT_DIR@\" @QT_CXXFLAGS@ -I$(top_srcdir)/lib
-LIBS = @QT_LIBS@ -L$(top_srcdir)/lib
+AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" -I$(top_srcdir)/lib @QT4_CFLAGS@ -DQT3_SUPPORT -I/usr/include/Qt3Support
+LIBS = -L$(top_srcdir)/lib
 MOC = @QT_MOC@
 
 # The dependency for qt's Meta Object Compiler (moc)
@@ -36,8 +36,8 @@ uninstall-local:
 	rm -f $(DESTDIR)$(prefix)/share/rivendell/rdgpimon_*.qm
 
 all:	
-	@QT_BIN@/lupdate rdgpimon.pro
-	@QT_BIN@/lrelease rdgpimon.pro
+	lupdate-qt4 rdgpimon.pro
+	lrelease-qt4 rdgpimon.pro
 
 bin_PROGRAMS = rdgpimon
 
@@ -47,7 +47,7 @@ dist_rdgpimon_SOURCES = gpi_label.cpp gpi_label.h\
 nodist_rdgpimon_SOURCES = moc_gpi_label.cpp\
                           moc_rdgpimon.cpp
 
-rdgpimon_LDADD = @LIB_RDLIBS@ @LIBVORBIS@
+rdgpimon_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT4_LIBS@ -lQt3Support
 
 EXTRA_DIST = rdgpimon.pro\
              rdgpimon_cs.ts\

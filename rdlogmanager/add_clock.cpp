@@ -21,14 +21,16 @@
 #include <qdialog.h>
 #include <qstring.h>
 #include <qpushbutton.h>
-#include <qlistbox.h>
-#include <qtextedit.h>
+#include <q3listbox.h>
+#include <q3textedit.h>
 #include <qlabel.h>
 #include <qpainter.h>
 #include <qevent.h>
 #include <qmessagebox.h>
 #include <qcheckbox.h>
-#include <qbuttongroup.h>
+#include <q3buttongroup.h>
+//Added by qt3to4:
+#include <QCloseEvent>
 
 #include <add_clock.h>
 #include <rdpasswd.h>
@@ -101,7 +103,7 @@ AddClock::AddClock(QString *logname,QWidget *parent)
     new QLabel(clock_name_edit,tr("&New Clock Name:"),this);
   clock_name_label->setGeometry(10,11,130,19);
   clock_name_label->setFont(font);
-  clock_name_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  clock_name_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   //  Ok Button

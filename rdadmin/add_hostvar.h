@@ -22,8 +22,8 @@
 #define ADD_HOSTVAR_H
 
 #include <qdialog.h>
-#include <qlistbox.h>
-#include <qtextedit.h>
+#include <q3listbox.h>
+#include <q3textedit.h>
 #include <qpixmap.h>
 #include <qcheckbox.h>
 #include <qsqldatabase.h>

@@ -24,7 +24,7 @@
 #include <qdialog.h>
 #include <qsqldatabase.h>
 #include <qcombobox.h>
-#include <qdatetimeedit.h>
+#include <q3datetimeedit.h>
 
 class PickReportDates : public QDialog
 {
@@ -45,8 +45,8 @@ class PickReportDates : public QDialog
   void GenerateSubscriptionReport(const QString &keyname,QString *rpt);
   void GenerateEpisodeReport(const QString &keyname,unsigned cast_id,
 			     QString *rpt);
-  QDateEdit *edit_startdate_edit;
-  QDateEdit *edit_enddate_edit;
+  Q3DateEdit *edit_startdate_edit;
+  Q3DateEdit *edit_enddate_edit;
   QString edit_keyname;
   unsigned edit_feed_id;
   unsigned edit_cast_id;

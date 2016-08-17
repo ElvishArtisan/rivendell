@@ -26,6 +26,8 @@
 
 #include <qapplication.h>
 #include <qdir.h>
+//Added by qt3to4:
+#include <QSqlQuery>
 
 #include <rddb.h>
 #include <rd.h>
@@ -45,6 +47,7 @@ RDConfig *rdconfig;
 MainObject::MainObject(QObject *parent)
   : QObject(parent)
 {
+  /*
   QString ext_dbname;
   QString ext_hostname;
   QString ext_username;
@@ -445,7 +448,7 @@ MainObject::MainObject(QObject *parent)
     printf("done.\n");
   }
   delete q;
-
+  */
   exit(0);
 }
 

@@ -23,10 +23,10 @@
 
 #include <qobject.h>
 #include <qstring.h>
-#include <qserversocket.h>
+#include <q3serversocket.h>
 #include <qhostaddress.h>
 
-class RipcdSocket : public QServerSocket
+class RipcdSocket : public Q3ServerSocket
 {
   Q_OBJECT
  public:
@@ -39,7 +39,7 @@ class RipcdSocket : public QServerSocket
   void connection(int);
 
  private:
-  QServerSocket *socket;
+  Q3ServerSocket *socket;
 };
 
 

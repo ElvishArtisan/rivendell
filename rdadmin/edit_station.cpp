@@ -20,14 +20,17 @@
 
 #include <qdialog.h>
 #include <qstring.h>
-#include <qlistbox.h>
-#include <qtextedit.h>
+#include <q3listbox.h>
+#include <q3textedit.h>
 #include <qpainter.h>
 #include <qevent.h>
 #include <qmessagebox.h>
 #include <qcheckbox.h>
-#include <qbuttongroup.h>
+#include <q3buttongroup.h>
 #include <qvalidator.h>
+//Added by qt3to4:
+#include <QLabel>
+#include <QPaintEvent>
 
 #include <rddb.h>
 #include <rdconf.h>
@@ -104,7 +107,7 @@ EditStation::EditStation(QString sname,QWidget *parent)
     new QLabel(station_name_edit,tr("Ho&st Name:"),this);
   station_name_label->setGeometry(10,11,100,19);
   station_name_label->setFont(font);
-  station_name_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  station_name_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Station Description
@@ -117,7 +120,7 @@ EditStation::EditStation(QString sname,QWidget *parent)
 					       tr("&Description:"),this);
   station_description_label->setGeometry(10,32,100,19);
   station_description_label->setFont(font);
-  station_description_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  station_description_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Station Default Name
@@ -129,7 +132,7 @@ EditStation::EditStation(QString sname,QWidget *parent)
 						tr("Default &User:"),this);
   station_default_name_label->setGeometry(10,53,100,19);
   station_default_name_label->setFont(font);
-  station_default_name_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  station_default_name_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Station IP Address
@@ -142,7 +145,7 @@ EditStation::EditStation(QString sname,QWidget *parent)
 					   tr("&IP Address:"),this);
   station_address_label->setGeometry(10,74,100,19);
   station_address_label->setFont(font);
-  station_address_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  station_address_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Station Editor Command
@@ -154,7 +157,7 @@ EditStation::EditStation(QString sname,QWidget *parent)
 					      tr("Editor &Command:"),this);
   station_editor_cmd_label->setGeometry(10,95,100,19);
   station_editor_cmd_label->setFont(font);
-  station_editor_cmd_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  station_editor_cmd_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Station Time Offset
@@ -167,7 +170,7 @@ EditStation::EditStation(QString sname,QWidget *parent)
 					      tr("&Time Offset:"),this);
   station_timeoffset_label->setGeometry(10,116,100,19);
   station_timeoffset_label->setFont(font);
-  station_timeoffset_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  station_timeoffset_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Startup Cart
@@ -180,7 +183,7 @@ EditStation::EditStation(QString sname,QWidget *parent)
 						tr("&Startup Cart:"),this);
   station_startup_cart_label->setGeometry(10,137,100,19);
   station_startup_cart_label->setFont(font);
-  station_startup_cart_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  station_startup_cart_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   QPushButton *select_button=new QPushButton(tr("Select"),this);
   select_button->setFont(small_font);
@@ -196,7 +199,7 @@ EditStation::EditStation(QString sname,QWidget *parent)
 					   tr("Cue &Output:"),this);
   station_cue_sel_label->setGeometry(10,158,100,19);
   station_cue_sel_label->setFont(font);
-  station_cue_sel_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  station_cue_sel_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   station_start_cart_edit=new QLineEdit(this);
   station_start_cart_edit->setGeometry(270,158,60,20);
@@ -235,7 +238,7 @@ EditStation::EditStation(QString sname,QWidget *parent)
   QLabel *label=new QLabel(station_heartbeat_box,tr("Enable Heartbeat"),this);
   label->setGeometry(30,201,150,20);
   label->setFont(font);
-  label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
   connect(station_heartbeat_box,SIGNAL(toggled(bool)),
 	  this,SLOT(heartbeatToggledData(bool)));
 
@@ -247,7 +250,7 @@ EditStation::EditStation(QString sname,QWidget *parent)
   label=new QLabel(station_filter_box,tr("Use Realtime Filtering"),this);
   label->setGeometry(230,201,150,20);
   label->setFont(font);
-  label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Heartbeat Cart
@@ -258,7 +261,7 @@ EditStation::EditStation(QString sname,QWidget *parent)
   station_hbcart_label=new QLabel(station_hbcart_edit,tr("Cart:"),this);
   station_hbcart_label->setGeometry(10,227,50,19);
   station_hbcart_label->setFont(font);
-  station_hbcart_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  station_hbcart_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
   station_hbcart_button=new QPushButton(this);
   station_hbcart_button->setGeometry(140,224,60,26);
   station_hbcart_button->setFont(font);
@@ -276,11 +279,11 @@ EditStation::EditStation(QString sname,QWidget *parent)
     new QLabel(station_hbinterval_spin,tr("Interval:"),this);
   station_hbinterval_label->setGeometry(220,227,50,19);
   station_hbinterval_label->setFont(font);
-  station_hbinterval_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  station_hbinterval_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
   station_hbinterval_unit=new QLabel(tr("secs"),this);
   station_hbinterval_unit->setGeometry(325,227,100,19);
   station_hbinterval_unit->setFont(font);
-  station_hbinterval_unit->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  station_hbinterval_unit->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // System Maintenance Checkbox
@@ -291,7 +294,7 @@ EditStation::EditStation(QString sname,QWidget *parent)
     new QLabel(station_maint_box,tr("Include in System Maintenance Pool"),this);
   label->setGeometry(30,252,sizeHint().width()-40,20);
   label->setFont(font);
-  label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Enable Drag & Drop Checkbox
@@ -301,7 +304,7 @@ EditStation::EditStation(QString sname,QWidget *parent)
   label=new QLabel(station_dragdrop_box,tr("Enable Drag && Drop"),this);
   label->setGeometry(30,272,sizeHint().width()-40,20);
   label->setFont(font);
-  label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Enforce Panel Setup Checkbox
@@ -313,7 +316,7 @@ EditStation::EditStation(QString sname,QWidget *parent)
 	       tr("Allow Drops on Panels not in Setup Mode"),this);
   station_panel_enforce_label->setGeometry(45,291,sizeHint().width()-55,20);
   station_panel_enforce_label->setFont(font);
-  station_panel_enforce_label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  station_panel_enforce_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
   connect(station_dragdrop_box,SIGNAL(toggled(bool)),
 	  station_panel_enforce_label,SLOT(setEnabled(bool)));
   connect(station_dragdrop_box,SIGNAL(toggled(bool)),
@@ -325,7 +328,7 @@ EditStation::EditStation(QString sname,QWidget *parent)
   label=new QLabel(tr("System Services"),this);
   label->setGeometry(30,312,110,20);
   label->setFont(font);
-  label->setAlignment(AlignCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignCenter|Qt::TextShowMnemonic);
 
   //
   // HTTP Service Host
@@ -337,7 +340,7 @@ EditStation::EditStation(QString sname,QWidget *parent)
     new QLabel(station_http_station_box,tr("HTTP Xport:"),this);
   station_http_station_label->setGeometry(11,354,130,19);
   station_http_station_label->setFont(font);
-  station_http_station_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  station_http_station_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // CAE Service Host
@@ -351,7 +354,7 @@ EditStation::EditStation(QString sname,QWidget *parent)
 					       tr("Core Audio Engine:"),this);
   station_cae_station_label->setGeometry(11,354,130,19);
   station_cae_station_label->setFont(font);
-  station_cae_station_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  station_cae_station_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   //  RDLibrary Configuration Button
@@ -691,17 +694,16 @@ QSizePolicy EditStation::sizePolicy() const
 void EditStation::paintEvent(QPaintEvent *e)
 {
   QPainter *p=new QPainter(this);
-  p->setPen(black);
-  p->setBrush(black);
+  p->setPen(Qt::black);
+  p->setBrush(Qt::black);
 
   //
   // System Services
   //
-  p->moveTo(10,322);
-  p->lineTo(sizeHint().width()-10,322);
-  p->lineTo(sizeHint().width()-10,380);
-  p->lineTo(10,380);
-  p->lineTo(10,322);
+  p->drawLine(10,322,sizeHint().width()-10,322);
+  p->drawLine(sizeHint().width()-10,322,sizeHint().width()-10,380);
+  p->drawLine(sizeHint().width()-10,380,10,380);
+  p->drawLine(10,380,10,322);
 
   delete p;
 }
@@ -944,7 +946,7 @@ void EditStation::stopCartClickedData()
 
 QString EditStation::DisplayPart(QString string)
 {
-  for(unsigned i=0;i<string.length();i++) {
+  for(int i=0;i<string.length();i++) {
     if(string.at(i)=='|') {
       return string.right(string.length()-i-1);
     }
@@ -955,7 +957,7 @@ QString EditStation::DisplayPart(QString string)
 
 QString EditStation::HostPart(QString string)
 {
-  for(unsigned i=0;i<string.length();i++) {
+  for(int i=0;i<string.length();i++) {
     if(string.at(i)=='|') {
       return string.left(i);
     }

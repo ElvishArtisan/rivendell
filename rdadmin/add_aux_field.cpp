@@ -19,6 +19,8 @@
 //
 
 #include <qmessagebox.h>
+//Added by qt3to4:
+#include <QLabel>
 #include <rdescape_string.h>
 #include <rddb.h>
 #include <add_aux_field.h>
@@ -57,15 +59,15 @@ AddAuxField::AddAuxField(unsigned feed_id,unsigned *field_id,QWidget *parent)
     new QLabel(add_varname_edit,tr("Variable Name: "),this);
   label->setGeometry(10,13,105,20);
   label->setFont(bold_font);
-  label->setAlignment(AlignRight);
+  label->setAlignment(Qt::AlignRight);
   label=new QLabel(add_varname_edit,tr("%AUX_"),this);
   label->setGeometry(120,13,45,20);
   label->setFont(font);
-  label->setAlignment(AlignRight);
+  label->setAlignment(Qt::AlignRight);
   label=new QLabel(add_varname_edit,tr("%"),this);
   label->setGeometry(295,13,30,20);
   label->setFont(font);
-  label->setAlignment(AlignLeft);
+  label->setAlignment(Qt::AlignLeft);
 
 
   //
@@ -77,7 +79,7 @@ AddAuxField::AddAuxField(unsigned feed_id,unsigned *field_id,QWidget *parent)
   label=new QLabel(add_caption_edit,tr("Caption: "),this);
   label->setGeometry(10,37,105,20);
   label->setFont(bold_font);
-  label->setAlignment(AlignRight);
+  label->setAlignment(Qt::AlignRight);
 
   //
   //  Ok Button

@@ -24,10 +24,12 @@
 #include <qdialog.h>
 #include <qsqldatabase.h>
 #include <qlineedit.h>
-#include <qlistview.h>
+#include <q3listview.h>
 #include <qcombobox.h>
 #include <qpushbutton.h>
 #include <qlabel.h>
+//Added by qt3to4:
+#include <QKeyEvent>
 
 #include <vector>
 #include <rdhotkeys.h>
@@ -64,7 +66,7 @@ class EditHotkeys : public QDialog
  private:
   void SetRow(const QString &param,QString value) const;
   RDHotkeys *station_hotkeys;
-  QListView *list_view;
+  Q3ListView *list_view;
   QString hotkeystrokes;
   QString hotkey_conf;
   QString hotkey_module;

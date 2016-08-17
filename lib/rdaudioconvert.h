@@ -34,7 +34,7 @@
 
 #include <rdmp4.h>
 
-#include <qobject.h>
+#include <QObject>
 
 #include <rdwavedata.h>
 #include <rdsettings.h>

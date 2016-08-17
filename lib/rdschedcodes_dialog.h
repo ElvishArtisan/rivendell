@@ -27,6 +27,10 @@
 #include <qlabel.h>
 #include <qpushbutton.h>
 #include <qstringlist.h>
+//Added by qt3to4:
+#include <QPaintEvent>
+#include <QResizeEvent>
+#include <QCloseEvent>
 
 #include <rdlistselector.h>
 

@@ -22,7 +22,7 @@
 #define EDIT_FEED_H
 
 #include <qdialog.h>
-#include <qtextedit.h>
+#include <q3textedit.h>
 #include <qspinbox.h>
 #include <qlineedit.h>
 #include <qsqldatabase.h>
@@ -30,6 +30,8 @@
 #include <qlabel.h>
 #include <qcombobox.h>
 #include <qpushbutton.h>
+//Added by qt3to4:
+#include <QPaintEvent>
 
 #include <rdfeed.h>
 #include <rdsettings.h>
@@ -61,7 +63,7 @@ class EditFeed : public QDialog
   RDFeed *feed_feed;
   QLineEdit *feed_keyname_edit;
   QLineEdit *feed_channel_title_edit;
-  QTextEdit *feed_channel_description_edit;
+  Q3TextEdit *feed_channel_description_edit;
   QLineEdit *feed_channel_category_edit;
   QLineEdit *feed_channel_link_edit;
   QLineEdit *feed_channel_copyright_edit;
@@ -74,9 +76,9 @@ class EditFeed : public QDialog
   QLineEdit *feed_purge_username_edit;
   QLabel *feed_purge_password_label;
   QLineEdit *feed_purge_password_edit;
-  QTextEdit *feed_header_xml_edit;
-  QTextEdit *feed_channel_xml_edit;
-  QTextEdit *feed_item_xml_edit;
+  Q3TextEdit *feed_header_xml_edit;
+  Q3TextEdit *feed_channel_xml_edit;
+  Q3TextEdit *feed_item_xml_edit;
   QSpinBox *feed_max_shelf_life_spin;
   QCheckBox *feed_autopost_box;
   QCheckBox *feed_keep_metadata_box;

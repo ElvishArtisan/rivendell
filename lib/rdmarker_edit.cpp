@@ -20,6 +20,8 @@
 //
 
 #include <rdmarker_edit.h>
+//Added by qt3to4:
+#include <QKeyEvent>
 
 RDMarkerEdit::RDMarkerEdit(QWidget *parent)
   : QLineEdit(parent)

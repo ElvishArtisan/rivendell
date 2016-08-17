@@ -27,15 +27,17 @@
 #include <qsize.h>
 #include <qsizepolicy.h>
 #include <qtimer.h>
+//Added by qt3to4:
+#include <QPaintEvent>
 
 /*
  * Default Colors
  */
-#define DEFAULT_LOW_COLOR green
+#define DEFAULT_LOW_COLOR Qt::green
 #define DEFAULT_DARK_LOW_COLOR 0,80,0
-#define DEFAULT_HIGH_COLOR yellow
+#define DEFAULT_HIGH_COLOR Qt::yellow
 #define DEFAULT_DARK_HIGH_COLOR 75,75,0
-#define DEFAULT_CLIP_COLOR red
+#define DEFAULT_CLIP_COLOR Qt::red
 #define DEFAULT_DARK_CLIP_COLOR 85,0,0
 
 /*

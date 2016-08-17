@@ -24,6 +24,9 @@
 #include <vector>
 
 #include <qcombobox.h>
+//Added by qt3to4:
+#include <QKeyEvent>
+#include <QMouseEvent>
 
 class RDComboBox : public QComboBox
 {

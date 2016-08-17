@@ -70,7 +70,7 @@ RDButtonDialog::RDButtonDialog(QString station_name,
 			   this,"edit_label_label");
   label->setGeometry(10,12,45,16);
   label->setFont(label_font);
-  label->setAlignment(AlignRight);
+  label->setAlignment(Qt::AlignRight);
 
   //
   // Button Cart
@@ -82,7 +82,7 @@ RDButtonDialog::RDButtonDialog(QString station_name,
   label=new QLabel(edit_cart_edit,tr("Cart:"),this,"edit_cart_label");
   label->setGeometry(10,36,45,16);
   label->setFont(label_font);
-  label->setAlignment(AlignRight);
+  label->setAlignment(Qt::AlignRight);
 
   //
   // Set Cart Button

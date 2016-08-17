@@ -1839,7 +1839,7 @@ void MainObject::KillSocket(int ch)
 void MainObject::EchoCommand(int ch,const char *command)
 {
 //  LogLine(RDConfig::LogDebug,QString().sprintf("rdcatchd: EchoCommand(%d,%s)",ch,command));
-  if(socket[ch]->state()==QSocket::Connection) {
+  if(socket[ch]->state()==Q3Socket::Connection) {
     socket[ch]->writeBlock(command,strlen(command));
   }
 }

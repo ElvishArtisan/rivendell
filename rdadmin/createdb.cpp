@@ -26,7 +26,8 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
-#include <qapplication.h>
+#include <QSqlError>
+#include <QSqlQuery>
 
 #include <rddb.h>
 #include <rd.h>

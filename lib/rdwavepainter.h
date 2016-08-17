@@ -33,13 +33,13 @@ class RDWavePainter : public QPainter
 {
  public:
   enum Channel {Mono=0,Left=1,Right=2};
-  RDWavePainter(const QPaintDevice *pd,RDCut *cut,RDStation *station,
+  RDWavePainter(QPaintDevice *pd,RDCut *cut,RDStation *station,
 		RDUser *user,RDConfig *config);
   RDWavePainter(RDStation *station,RDUser *user,RDConfig *config);
   ~RDWavePainter();
   void nameWave(RDCut *cut);
-  bool begin(const QPaintDevice *pd,RDCut *cut);
-  bool begin(const QPaintDevice *pd);
+  bool begin(QPaintDevice *pd,RDCut *cut);
+  bool begin(QPaintDevice *pd);
   void drawWaveBySamples(int x,int w,int startsamp,int endsamp,int gain,
 			 Channel channel,const QColor &color,
 			 int startclip=-1,int endclip=-1);

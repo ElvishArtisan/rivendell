@@ -27,9 +27,11 @@
 #include <qpainter.h>
 #include <qpushbutton.h>
 #include <qsize.h>
+//Added by qt3to4:
+#include <QPaintEvent>
 #include <stdio.h>
 #include <qslider.h>
-#include <qbuttongroup.h>
+#include <q3buttongroup.h>
 #include <qsizepolicy.h>
 #include <qmessagebox.h>
 
@@ -39,7 +41,7 @@ RDPlayMeter::RDPlayMeter(RDSegMeter::Orientation orient,QWidget *parent)
   : QWidget(parent)
 {
   meter_label=QString("");
-  setBackgroundColor(black);
+  setBackgroundColor(Qt::black);
   orientation=orient;
   makeFont();
   meter=new RDSegMeter(orientation,this);
@@ -217,7 +219,7 @@ void RDPlayMeter::paintEvent(QPaintEvent *paintEvent)
   //
   QPainter *p=new QPainter(this);
   p->setFont(label_font);
-  p->setPen(white);
+  p->setPen(Qt::white);
   if(!meter_label.isEmpty()) {
     switch(orientation) {
 	case RDSegMeter::Left:

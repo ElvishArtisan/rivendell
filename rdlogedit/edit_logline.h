@@ -22,13 +22,15 @@
 #define EDIT_LOGLINE_H
 
 #include <qdialog.h>
-#include <qdatetimeedit.h>
+#include <q3datetimeedit.h>
 #include <qcombobox.h>
 #include <qlineedit.h>
 #include <qlabel.h>
 #include <qcheckbox.h>
-#include <qbuttongroup.h>
+#include <q3buttongroup.h>
 #include <qspinbox.h>
+//Added by qt3to4:
+#include <QCloseEvent>
 
 #include <rdcart_dialog.h>
 #include <rdlog_event.h>
@@ -76,7 +78,7 @@ class EditLogLine : public QDialog
   QString *edit_filter;
   QString *edit_group;
   QString *edit_schedcode;
-  QButtonGroup *edit_grace_group;
+  Q3ButtonGroup *edit_grace_group;
   RDTimeEdit *edit_grace_edit;
   QString edit_service;
   RDGroupList *edit_group_list;

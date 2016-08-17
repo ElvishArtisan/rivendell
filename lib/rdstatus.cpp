@@ -25,6 +25,8 @@
 
 #include <qstringlist.h>
 #include <qsqldatabase.h>
+//Added by qt3to4:
+#include <QSqlQuery>
 
 #include "rdstatus.h"
 
@@ -64,9 +66,10 @@ bool RDAudioStoreValid(RDConfig *config)
 bool RDDbValid(RDConfig *config,int *schema)
 {
   QString sql;
-  QSqlQuery *q;
+  //  QSqlQuery *q;
   bool ret=false;
 
+  /*
   QSqlDatabase *db=QSqlDatabase::addDatabase(config->mysqlDriver());
   if(db) {
     db->setDatabaseName(config->mysqlDbname());
@@ -85,5 +88,6 @@ bool RDDbValid(RDConfig *config,int *schema)
     }
     QSqlDatabase::removeDatabase(db);
   }
+  */
   return ret;
 }

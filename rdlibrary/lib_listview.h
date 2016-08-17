@@ -23,6 +23,8 @@
 #define LIB_LISTVIEW_H
 
 #include <rdlistview.h>
+//Added by qt3to4:
+#include <QMouseEvent>
 
 class LibListView : public RDListView
 {

@@ -18,7 +18,8 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qobject.h>
+#include <QObject>
+#include <QVariant>
 
 #include <rddb.h>
 #include <rdescape_string.h>

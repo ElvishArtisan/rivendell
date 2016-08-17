@@ -30,6 +30,8 @@
 #include <qspinbox.h>
 #include <qlabel.h>
 #include <qlineedit.h>
+//Added by qt3to4:
+#include <QPaintEvent>
 
 #include <rddeck.h>
 #include <rdcardselector.h>

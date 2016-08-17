@@ -42,10 +42,10 @@ HelpAudioPorts::HelpAudioPorts(QWidget *parent)
   button_font.setPixelSize(14);
 
   // Help Text
-  help_edit=new QTextEdit(this,"help_edit");
+  help_edit=new Q3TextEdit(this,"help_edit");
   help_edit->
     setGeometry(10,10,sizeHint().width()-20,sizeHint().height()-70);
-  help_edit->setTextFormat(RichText);
+  help_edit->setTextFormat(Qt::RichText);
   help_edit->setReadOnly(true);
 // FIXME: add context sensitive help for other options on the Audio Port screen.
   help_edit->setText(tr("Mode - short for Channel Mode, configures the Left and Right behaviour when recording.<BR>\
@@ -54,12 +54,12 @@ HelpAudioPorts::HelpAudioPorts(QWidget *parent)
 <TR> <TH>Channels</TH>  <TH>Mode</TH>   <TH>Effect</TH> </TR>\
 <TR> <TD>Mono</TD>      <TD>Normal</TD> <TD>L+R sum to mono</TD> </TR>\
 <TR> <TD>Mono</TD>      <TD>Swap</TD>   <TD>R+L sum to mono (same result as Normal)</TD> </TR>\
-<TR> <TD>Mono</TD>      <TD>Left only</TD> <TD>L -> mono</TD> </TR>\
-<TR> <TD>Mono</TD>      <TD>Right only</TD> <TD>R -> mono</TD> </TR>\
+<TR> <TD>Mono</TD>      <TD>Qt::DockLeft only</TD> <TD>L -> mono</TD> </TR>\
+<TR> <TD>Mono</TD>      <TD>Qt::DockRight only</TD> <TD>R -> mono</TD> </TR>\
 <TR> <TD>Stereo</TD>    <TD>Normal</TD> <TD>Stereo</TD> </TR>\
 <TR> <TD>Stereo</TD>    <TD>Swap</TD>   <TD>Swapped stereo</TD> </TR>\
-<TR> <TD>Stereo</TD>    <TD>Left only</TD> <TD>L -> to L channel only, R channel is silent</TD> </TR>\
-<TR> <TD>Stereo</TD>    <TD>Right only</TD> <TD>R -> to R channel only, L channel is silent</TD> </TR>\
+<TR> <TD>Stereo</TD>    <TD>Qt::DockLeft only</TD> <TD>L -> to L channel only, R channel is silent</TD> </TR>\
+<TR> <TD>Stereo</TD>    <TD>Qt::DockRight only</TD> <TD>R -> to R channel only, L channel is silent</TD> </TR>\
 </TABLE>"));
 
   //

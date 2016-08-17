@@ -115,7 +115,7 @@ bool RDMacroEvent::load(QString str)
   int ptr=0;
   char c;
 
-  for(unsigned i=0;i<str.length();i++) {
+  for(int i=0;i<str.length();i++) {
     if((c=str.ascii()[i])=='!') {
       buffer[ptr++]=c;
       if(!cmd.parseString(buffer,ptr)) {

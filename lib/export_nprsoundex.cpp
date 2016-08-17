@@ -20,15 +20,16 @@
 
 #include <stdio.h>
 
-#include <qfile.h>
-#include <qmessagebox.h>
-#include <rddb.h>
-#include <rdlog_line.h>
+#include <QFile>
+#include <QMessageBox>
+
 #include <rdairplay_conf.h>
 #include <rddatedecode.h>
-#include <rdreport.h>
-#include <rdget_ath.h>
+#include <rddb.h>
 #include <rdescape_string.h>
+#include <rdget_ath.h>
+#include <rdlog_line.h>
+#include <rdreport.h>
 
 //
 // This implements a National Public Radio (NPR) standard.

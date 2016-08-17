@@ -22,9 +22,11 @@
 #include <syslog.h>
 #endif  // WIN32
 
+#include <QMessageBox>
+
+#include <stdio.h>
 #include <stdlib.h>
 #include <rdcmd_switch.h>
-#include <qmessagebox.h>
 
 RDCmdSwitch::RDCmdSwitch(int argc,char *argv[],const char *modname,
 			 const char *usage)

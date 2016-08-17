@@ -48,12 +48,12 @@ RDStringList RDStringList::split(const QString &sep,const QString &str,
   bool escape=false;
   QChar e=esc.at(0);
   list.push_back(QString());
-  for(unsigned i=0;i<str.length();i++) {
+  for(int i=0;i<str.length();i++) {
     if(str.at(i)==e) {
       escape=!escape;
     }
     else {
-      if((!escape)&&(str.at(i)==sep)) {
+      if((!escape)&&(str.at(i)==sep.at(0))) {
 	list.push_back(QString());
       }
       else {

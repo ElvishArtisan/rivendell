@@ -15931,3 +15931,42 @@
 2016-08-15 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in 'lib/export_technical.cpp' that caused a
 	SQL error.
+2016-08-17 Fred Gleason <fredg@paravelsystems.com>
+	* Ported contents of 'lib/' to Qt4.
+	* Ported contents of 'rdhpi/' to Qt4.
+	* Ported contents of 'cae/' to Qt4.
+	* Ported contents of 'importers/' to Qt4.
+	* Ported contents of 'rdadmin/' to Qt4.
+	* Ported contents of 'rdairplay/' to Qt4.
+	* Ported contents of 'rdcartslots/' to Qt4.
+	* Ported contents of 'rdcastmanager/' to Qt4.
+	* Ported contents of 'rdcatch/' to Qt4.
+	* Ported contents of 'rdcatchd/' to Qt4.
+	* Ported contents of 'rdlibrary/' to Qt4.
+	* Ported contents of 'rdlogedit/' to Qt4.
+	* Ported contents of 'rdlogin/' to Qt4.
+	* Ported contents of 'rdmonitor/' to Qt4.
+	* Ported contents of 'rdrepld/' to Qt4.
+	* Ported contents of 'rdselect/' to Qt4.
+	* Ported contents of 'ripcd/' to Qt4.
+	* Ported contents of 'tests/' to Qt4.
+	* Ported contents of 'utils/rdalsaconfig' to Qt4.
+	* Ported contents of 'utils/rdcheckcuts' to Qt4.
+	* Ported contents of 'utils/rdhpiinfo' to Qt4.
+	* Ported contents of 'utils/rddbcheck' to Qt4.
+	* Ported contents of 'utils/rddgimport' to Qt4.
+	* Ported contents of 'utils/rdchunk' to Qt4.
+	* Ported contents of 'utils/rdclilogedit' to Qt4.
+	* Ported contents of 'utils/rdcollect' to Qt4.
+	* Ported contents of 'utils/rddelete' to Qt4.
+	* Ported contents of 'utils/rddiscimport' to Qt4.
+	* Ported contents of 'utils/rdexport' to Qt4.
+	* Ported contents of 'utils/rdgpimon' to Qt4.
+	* Ported contents of 'utils/rdimport' to Qt4.
+	* Ported contents of 'utils/rdpopup' to Qt4.
+	* Ported contents of 'utils/rdrevert' to Qt4.
+	* Ported contents of 'utils/rdsoftkeys' to Qt4.
+	* Ported contents of 'utils/rmlsend' to Qt4.
+	* Ported contents of 'web/rdcastmanager' to Qt4.
+	* Ported contents of 'web/rdfeed' to Qt4.
+	* Ported contents of 'web/rdxport' to Qt4.

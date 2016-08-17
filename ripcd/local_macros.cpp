@@ -202,7 +202,7 @@ void MainObject::LoadLocalMacros()
       ripcd_tty_dev[tty_port]->setWordLength(q->value(3).toInt());
       ripcd_tty_dev[tty_port]->
 	setParity((RDTTYDevice::Parity)q->value(4).toInt());
-      if(ripcd_tty_dev[tty_port]->open(IO_ReadWrite)) {
+      if(ripcd_tty_dev[tty_port]->open(QIODevice::ReadWrite)) {
 	ripcd_tty_term[tty_port]=(RDTty::Termination)q->value(5).toInt();
 	ripcd_tty_inuse[tty_port]=true;
 	ripcd_tty_trap[tty_port]=new RDCodeTrap(this);
@@ -730,8 +730,7 @@ void MainObject::RunLocalMacros(RDMacro *rml)
     default:
       break;
     }
-    data=RDStringToData(str);
-    ripcd_tty_dev[tty_port]->writeBlock((const char *)data,data.size());
+    ripcd_tty_dev[tty_port]->writeBlock((const char *)str.toAscii());
     rml->acknowledge(true);
     sendRml(rml);
     return;
@@ -809,7 +808,7 @@ void MainObject::RunLocalMacros(RDMacro *rml)
 	ripcd_tty_dev[tty_port]->setWordLength(q->value(3).toInt());
 	ripcd_tty_dev[tty_port]->
 	  setParity((RDTTYDevice::Parity)q->value(4).toInt());
-	if(ripcd_tty_dev[tty_port]->open(IO_ReadWrite)) {
+	if(ripcd_tty_dev[tty_port]->open(QIODevice::ReadWrite)) {
 	  ripcd_tty_term[tty_port]=(RDTty::Termination)q->value(5).toInt();
 	  ripcd_tty_inuse[tty_port]=true;
 	  ripcd_tty_trap[tty_port]=new RDCodeTrap(this);
@@ -909,8 +908,7 @@ void MainObject::RunLocalMacros(RDMacro *rml)
     LogLine(RDConfig::LogDebug,QString().
 	    sprintf("Sending \"%s\" to %s:%d",(const char *)str,
 		    (const char *)addr.toString(),rml->arg(1).toInt()));
-    data=RDStringToData(str);
-    ripcd_rml_send->writeBlock((const char *)data,data.size(),addr,
+    ripcd_rml_send->writeBlock(str.toAscii(),str.length(),addr,
 			       (Q_UINT16)(rml->arg(1).toInt()));
     if(rml->echoRequested()) {
       rml->acknowledge(true);

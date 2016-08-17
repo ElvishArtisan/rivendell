@@ -24,7 +24,6 @@
 #include <rdreport.h>
 #include <rdcart.h>
 
-
 bool RDReport::ExportBmiEmr(const QDate &startdate,const QDate &enddate,
 			    const QString &mixtable)
 {

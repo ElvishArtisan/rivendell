@@ -20,6 +20,9 @@
 
 #include <qpushbutton.h>
 #include <qmessagebox.h>
+//Added by qt3to4:
+#include <QCloseEvent>
+#include <QLabel>
 
 #include <edit_track.h>
 
@@ -56,7 +59,7 @@ EditTrack::EditTrack(RDLogLine *line,QWidget *parent)
   edit_timetype_label=new QLabel(edit_timetype_box,tr("Start at:"),this);
   edit_timetype_label->setGeometry(30,21,85,17);
   edit_timetype_label->setFont(label_font);
-  edit_timetype_label->setAlignment(AlignLeft|AlignVCenter);
+  edit_timetype_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   //
   // Start Time
@@ -72,7 +75,7 @@ EditTrack::EditTrack(RDLogLine *line,QWidget *parent)
   // Grace Time
   //
   edit_grace_group
-    =new QButtonGroup(1,Qt::Vertical,
+    =new Q3ButtonGroup(1,Qt::Vertical,
 		      tr("Action If Previous Event Still Playing"),this);
   edit_grace_group->setGeometry(175,11,435,50);
   edit_grace_group->setFont(label_font);
@@ -87,9 +90,9 @@ EditTrack::EditTrack(RDLogLine *line,QWidget *parent)
   radio_button=new QRadioButton(tr("Wait up to"),edit_grace_group);
   edit_grace_group->insert(radio_button);
   radio_button->setFont(radio_font);
-  edit_grace_box=new QTimeEdit(this);
+  edit_grace_box=new Q3TimeEdit(this);
   edit_grace_box->setGeometry(543,31,60,20);
-  edit_grace_box->setDisplay(QTimeEdit::Minutes|QTimeEdit::Seconds);
+  edit_grace_box->setDisplay(Q3TimeEdit::Minutes|Q3TimeEdit::Seconds);
   connect(edit_timetype_box,SIGNAL(toggled(bool)),
 	  this,SLOT(timeToggledData(bool)));
   connect(edit_grace_group,SIGNAL(clicked(int)),
@@ -106,7 +109,7 @@ EditTrack::EditTrack(RDLogLine *line,QWidget *parent)
   edit_time_label=new QLabel(edit_transtype_box,"Transition Type:",this);
   edit_time_label->setGeometry(10,68,370,26);
   edit_time_label->setFont(label_font);
-  edit_time_label->setAlignment(AlignRight|AlignVCenter);
+  edit_time_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Comment

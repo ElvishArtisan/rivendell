@@ -20,6 +20,9 @@
 
 #include <qmessagebox.h>
 #include <qpainter.h>
+//Added by qt3to4:
+#include <QLabel>
+#include <QPaintEvent>
 
 #include <rdcart_dialog.h>
 #include <rdtextvalidator.h>
@@ -70,7 +73,7 @@ EditGpi::EditGpi(int gpi,int *oncart,QString *ondesc,
   QLabel *label=new QLabel("ON Transition",this);
   label->setGeometry(30,10,120,20);
   label->setFont(label_font);
-  label->setAlignment(AlignCenter);
+  label->setAlignment(Qt::AlignCenter);
 
   //
   // On Cart Macro Cart
@@ -82,7 +85,7 @@ EditGpi::EditGpi(int gpi,int *oncart,QString *ondesc,
   label=new QLabel(tr("Cart Number: "),this);
   label->setGeometry(15,30,100,20);
   label->setFont(bold_font);
-  label->setAlignment(AlignRight|AlignVCenter);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // On Select Button
@@ -112,7 +115,7 @@ EditGpi::EditGpi(int gpi,int *oncart,QString *ondesc,
   label=new QLabel(tr("Description: "),this);
   label->setGeometry(15,52,100,20);
   label->setFont(bold_font);
-  label->setAlignment(AlignRight|AlignVCenter);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Off Section Label
@@ -120,7 +123,7 @@ EditGpi::EditGpi(int gpi,int *oncart,QString *ondesc,
   label=new QLabel("OFF Transition",this);
   label->setGeometry(30,90,120,20);
   label->setFont(label_font);
-  label->setAlignment(AlignCenter);
+  label->setAlignment(Qt::AlignCenter);
 
   //
   // Off Cart Macro Cart
@@ -132,7 +135,7 @@ EditGpi::EditGpi(int gpi,int *oncart,QString *ondesc,
   label=new QLabel(tr("Cart Number: "),this);
   label->setGeometry(15,110,100,20);
   label->setFont(bold_font);
-  label->setAlignment(AlignRight|AlignVCenter);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Off Select Button
@@ -162,7 +165,7 @@ EditGpi::EditGpi(int gpi,int *oncart,QString *ondesc,
   label=new QLabel(tr("Description: "),this);
   label->setGeometry(15,132,100,20);
   label->setFont(bold_font);
-  label->setAlignment(AlignRight|AlignVCenter);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   //  Ok Button
@@ -316,17 +319,14 @@ void EditGpi::cancelData()
 void EditGpi::paintEvent(QPaintEvent *e)
 {
   QPainter *p=new QPainter(this);
-  p->moveTo(10,20);
-  p->lineTo(sizeHint().width()-10,20);
-  p->lineTo(sizeHint().width()-10,82);
-  p->lineTo(10,82);
-  p->lineTo(10,20);
-
-  p->moveTo(10,100);
-  p->lineTo(sizeHint().width()-10,100);
-  p->lineTo(sizeHint().width()-10,162);
-  p->lineTo(10,162);
-  p->lineTo(10,100);
+  p->drawLine(10,20,sizeHint().width()-10,20);
+  p->drawLine(sizeHint().width()-10,20,sizeHint().width()-10,82);
+  p->drawLine(sizeHint().width()-10,82,10,82);
+  p->drawLine(10,82,10,20);
+  p->drawLine(10,100,sizeHint().width()-10,100);
+  p->drawLine(sizeHint().width()-10,100,sizeHint().width()-10,162);
+  p->drawLine(sizeHint().width()-10,162,10,162);
+  p->drawLine(10,162,10,100);
 
   delete p;
 }

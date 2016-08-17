@@ -24,11 +24,13 @@
 #include <qdialog.h>
 #include <qsqldatabase.h>
 #include <qlineedit.h>
-#include <qdatetimeedit.h>
+#include <q3datetimeedit.h>
 #include <qcombobox.h>
 #include <qcheckbox.h>
 #include <qspinbox.h>
 #include <qlabel.h>
+//Added by qt3to4:
+#include <QCloseEvent>
 
 class AddMeta : public QDialog
 {

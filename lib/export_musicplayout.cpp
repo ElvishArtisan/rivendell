@@ -20,13 +20,14 @@
 
 #include <stdio.h>
 
-#include <qfile.h>
-#include <qmessagebox.h>
-#include <rddb.h>
-#include <rdlog_line.h>
+#include <QFile>
+#include <QMessageBox>
+
 #include <rdairplay_conf.h>
 #include <rdconf.h>
 #include <rddatedecode.h>
+#include <rddb.h>
+#include <rdlog_line.h>
 #include <rdreport.h>
 
 bool RDReport::ExportMusicPlayout(const QDate &startdate,const QDate &enddate,
@@ -86,7 +87,7 @@ bool RDReport::ExportMusicPlayout(const QDate &startdate,const QDate &enddate,
   }
   str=QString().sprintf("%s -- %s\n",(const char *)name(),
 			(const char *)description());
-  for(unsigned i=0;i<(180-str.length())/2;i++) {
+  for(int i=0;i<(180-str.length())/2;i++) {
     fprintf(f," ");
   }
   fprintf(f,"%s\n",(const char *)str);

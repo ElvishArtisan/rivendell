@@ -21,7 +21,7 @@
 #include <qsqldatabase.h>
 #include <qstring.h>
 #include <qobject.h>
-#include <qsocket.h>
+#include <q3socket.h>
 #include <qlabel.h>
 #include <qtimer.h>
 
@@ -76,7 +76,7 @@ class RDRipc : public QObject
  private:
   void SendCommand(QString cmd);
   void DispatchCommand();
-  QSocket *ripc_socket;
+  Q3Socket *ripc_socket;
   QString ripc_user;
   QString ripc_password;
   QString ripc_stationname;

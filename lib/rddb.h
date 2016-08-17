@@ -19,12 +19,13 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#ifndef RDDB_INC
-#define RDDB_INC
+#ifndef RDDB_H
+#define RDDB_H
 
-#include <qobject.h>
-#include <qsqldatabase.h>
-#include <qstring.h>
+#include <QObject>
+#include <QSqlDatabase>
+#include <QString>
+#include <QSqlQuery>
 
 #include <rdconfig.h>
 
@@ -48,15 +49,15 @@ class RDSqlDatabaseStatus : public QObject
 class RDSqlQuery : public QSqlQuery
 {
  public:
- RDSqlQuery ( const QString & query = QString::null, QSqlDatabase * db = 0 );
+  RDSqlQuery(const QString &query = QString::null);
 };
 
 // Setup the default database, returns true on success.
 // if error is non NULL, an error string will be appended to it
 // if there is a problem.
-QSqlDatabase * RDInitDb(unsigned *schema,QString *error=NULL);
+QSqlDatabase RDInitDb(unsigned *schema,QString *error=NULL);
 
 // Return a handle to the database status object.
-RDSqlDatabaseStatus * RDDbStatus();
+RDSqlDatabaseStatus *RDDbStatus();
 
-#endif
+#endif  // RDDB_H

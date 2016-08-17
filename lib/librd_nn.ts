@@ -1,4 +1,6 @@
-<!DOCTYPE TS><TS>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0">
 <context>
     <name></name>
     <message>
@@ -17,11 +19,11 @@
     <name>QObject</name>
     <message>
         <source>Couldn&apos;t initialize QSql driver!</source>
-        <translation>Greidde ikkje setja opp QSql-drivaren!</translation>
+        <translation type="obsolete">Greidde ikkje setja opp QSql-drivaren!</translation>
     </message>
     <message>
         <source>Couldn&apos;t open mySQL connection!</source>
-        <translation>Greidde ikkje kopla til mySQL-databasen!</translation>
+        <translation type="obsolete">Greidde ikkje kopla til mySQL-databasen!</translation>
     </message>
     <message>
         <source>Sequentially</source>
@@ -373,10 +375,6 @@
     </message>
     <message>
         <source>Sound Panel Fifth and Later Play Output</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>invalid SQL or failed DB connection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

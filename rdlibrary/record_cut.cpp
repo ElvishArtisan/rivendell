@@ -25,7 +25,11 @@
 #include <qtimer.h>
 #include <qmessagebox.h>
 #include <qfile.h>
-#include <qbuttongroup.h>
+#include <q3buttongroup.h>
+//Added by qt3to4:
+#include <QLabel>
+#include <QPaintEvent>
+#include <QCloseEvent>
 
 #include <rd.h>
 #include <rdapplication.h>
@@ -135,7 +139,7 @@ RecordCut::RecordCut(RDCart *cart,QString cut,bool use_weight,
     new QLabel(cut_description_edit,tr("&Description"),this);
   cut_description_label->setGeometry(15,11,120,19);
   cut_description_label->setFont(font);
-  cut_description_label->setAlignment(AlignLeft|ShowPrefix);
+  cut_description_label->setAlignment(Qt::AlignLeft|Qt::TextShowMnemonic);
 
   //
   // Cut Outcue
@@ -146,7 +150,7 @@ RecordCut::RecordCut(RDCart *cart,QString cut,bool use_weight,
   QLabel *cut_outcue_label=new QLabel(cut_outcue_edit,tr("&Outcue"),this);
   cut_outcue_label->setGeometry(15,56,120,19);
   cut_outcue_label->setFont(font);
-  cut_outcue_label->setAlignment(AlignLeft|ShowPrefix);
+  cut_outcue_label->setAlignment(Qt::AlignLeft|Qt::TextShowMnemonic);
 
   //
   // Cut ISCI Code
@@ -157,7 +161,7 @@ RecordCut::RecordCut(RDCart *cart,QString cut,bool use_weight,
   QLabel *cut_isci_label=new QLabel(cut_isci_edit,tr("&ISCI Code"),this);
   cut_isci_label->setGeometry(15,101,120,19);
   cut_isci_label->setFont(font);
-  cut_isci_label->setAlignment(AlignLeft|ShowPrefix);
+  cut_isci_label->setAlignment(Qt::AlignLeft|Qt::TextShowMnemonic);
 
   //
   // Cut Origin
@@ -169,7 +173,7 @@ RecordCut::RecordCut(RDCart *cart,QString cut,bool use_weight,
   QLabel *cut_origin_label=new QLabel(cut_origin_edit,tr("Origin"),this);
   cut_origin_label->setGeometry(15,146,120,19);
   cut_origin_label->setFont(font);
-  cut_origin_label->setAlignment(AlignLeft|ShowPrefix);
+  cut_origin_label->setAlignment(Qt::AlignLeft|Qt::TextShowMnemonic);
 
   //
   // Cut ISRC
@@ -180,7 +184,7 @@ RecordCut::RecordCut(RDCart *cart,QString cut,bool use_weight,
   QLabel *cut_isrc_label=new QLabel(cut_isrc_edit,tr("ISRC"),this);
   cut_isrc_label->setGeometry(225,146,120,19);
   cut_isrc_label->setFont(font);
-  cut_isrc_label->setAlignment(AlignLeft|ShowPrefix);
+  cut_isrc_label->setAlignment(Qt::AlignLeft|Qt::TextShowMnemonic);
 
   //
   // Cut Weight
@@ -191,7 +195,7 @@ RecordCut::RecordCut(RDCart *cart,QString cut,bool use_weight,
   QLabel *cut_weight_label=new QLabel(cut_weight_box,tr("Weight"),this);
   cut_weight_label->setGeometry(10,191,61,19);
   cut_weight_label->setFont(font);
-  cut_weight_label->setAlignment(AlignHCenter|ShowPrefix);
+  cut_weight_label->setAlignment(Qt::AlignHCenter|Qt::TextShowMnemonic);
 
   //
   // Cut Play Date Time
@@ -204,21 +208,21 @@ RecordCut::RecordCut(RDCart *cart,QString cut,bool use_weight,
     new QLabel(cut_playdate_edit,tr("Last Played"),this);
   cut_playdate_label->setGeometry(105,191,120,19);
   cut_playdate_label->setFont(font);
-  cut_playdate_label->setAlignment(AlignLeft|ShowPrefix);
+  cut_playdate_label->setAlignment(Qt::AlignLeft|Qt::TextShowMnemonic);
 
   //
   // Cut Play Counter
   //
   cut_playcounter_edit=new QLineEdit(this);
   cut_playcounter_edit->setGeometry(285,210,80,19);
-  cut_playcounter_edit->setAlignment(AlignRight);
+  cut_playcounter_edit->setAlignment(Qt::AlignRight);
   cut_playcounter_edit->setReadOnly(true);
   cut_playcounter_edit->setMaxLength(64);
   QLabel *cut_playcounter_label=
     new QLabel(cut_playcounter_edit,tr("# of Plays"),this);
   cut_playcounter_label->setGeometry(290,191,120,19);
   cut_playcounter_label->setFont(font);
-  cut_playcounter_label->setAlignment(AlignLeft|ShowPrefix);
+  cut_playcounter_label->setAlignment(Qt::AlignLeft|Qt::TextShowMnemonic);
 
   //
   // Evergreen Checkbox
@@ -228,7 +232,7 @@ RecordCut::RecordCut(RDCart *cart,QString cut,bool use_weight,
   rec_evergreen_label=new QLabel(rec_evergreen_box,tr("Cut is EVERGREEN"),this);
   rec_evergreen_label->setGeometry(30,245,sizeHint().width()-40,15);
   rec_evergreen_label->setFont(font);
-  rec_evergreen_label->setAlignment(AlignVCenter|AlignLeft);
+  rec_evergreen_label->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
   connect(rec_evergreen_box,SIGNAL(toggled(bool)),
 	  this,SLOT(evergreenToggledData(bool)));
 
@@ -239,7 +243,7 @@ RecordCut::RecordCut(RDCart *cart,QString cut,bool use_weight,
   cut_killdatetime_label->setGeometry(50,268,100,19);
   cut_killdatetime_label->setAlignment(Qt::AlignHCenter);
   cut_killdatetime_label->setFont(font);
-  QButtonGroup *button_group=new QButtonGroup(this);
+  Q3ButtonGroup *button_group=new Q3ButtonGroup(this);
   button_group->hide();
   connect(button_group,SIGNAL(clicked(int)),this,SLOT(airDateButtonData(int)));
   cut_startdatetime_enable_button=new QRadioButton(tr("Enabled"),this,
@@ -250,19 +254,19 @@ RecordCut::RecordCut(RDCart *cart,QString cut,bool use_weight,
   cut_startdatetime_disable_button->setGeometry(40,310,100,20);
   button_group->insert(cut_startdatetime_disable_button,false);
 
-  cut_startdatetime_edit=new QDateTimeEdit(this);
+  cut_startdatetime_edit=new Q3DateTimeEdit(this);
   cut_startdatetime_edit->setGeometry(165,289,170,19);
   cut_startdatetime_label=new QLabel(cut_startdatetime_edit,tr("&Start"),this);
   cut_startdatetime_label->setGeometry(120,293,40,12);
   cut_startdatetime_label->setFont(small_font);
-  cut_startdatetime_label->setAlignment(AlignRight|ShowPrefix);
+  cut_startdatetime_label->setAlignment(Qt::AlignRight|Qt::TextShowMnemonic);
 
-  cut_enddatetime_edit=new QDateTimeEdit(this);
+  cut_enddatetime_edit=new Q3DateTimeEdit(this);
   cut_enddatetime_edit->setGeometry(165,309,170,19);
   cut_enddatetime_label=new QLabel(cut_enddatetime_edit,tr("End"),this);
   cut_enddatetime_label->setGeometry(120,313,40,12);
   cut_enddatetime_label->setFont(small_font);
-  cut_enddatetime_label->setAlignment(AlignRight|ShowPrefix);
+  cut_enddatetime_label->setAlignment(Qt::AlignRight|Qt::TextShowMnemonic);
 
   //
   // Cut Daypart
@@ -271,7 +275,7 @@ RecordCut::RecordCut(RDCart *cart,QString cut,bool use_weight,
   cut_daypart_label->setGeometry(50,348,65,19);
   cut_daypart_label->setAlignment(Qt::AlignHCenter);
   cut_daypart_label->setFont(font);
-  button_group=new QButtonGroup(this);
+  button_group=new Q3ButtonGroup(this);
   button_group->hide();
   connect(button_group,SIGNAL(clicked(int)),this,SLOT(daypartButtonData(int)));
   cut_starttime_enable_button=new QRadioButton(tr("Enabled"),this);
@@ -286,14 +290,14 @@ RecordCut::RecordCut(RDCart *cart,QString cut,bool use_weight,
   cut_starttime_label=new QLabel(cut_starttime_edit,tr("&Start Time"),this);
   cut_starttime_label->setGeometry(137,373,80,12);
   cut_starttime_label->setFont(small_font);
-  cut_starttime_label->setAlignment(AlignRight|ShowPrefix);
+  cut_starttime_label->setAlignment(Qt::AlignRight|Qt::TextShowMnemonic);
 
   cut_endtime_edit=new RDTimeEdit(this);
   cut_endtime_edit->setGeometry(222,389,90,19);
   cut_endtime_label=new QLabel(cut_endtime_edit,tr("End Time"),this);
   cut_endtime_label->setGeometry(137,393,80,12);
   cut_endtime_label->setFont(small_font);
-  cut_endtime_label->setAlignment(AlignRight|ShowPrefix);
+  cut_endtime_label->setAlignment(Qt::AlignRight|Qt::TextShowMnemonic);
 
   //
   // Days of the Week
@@ -308,49 +312,49 @@ RecordCut::RecordCut(RDCart *cart,QString cut,bool use_weight,
 		   this,"rec_weekpart_label[0]");
   rec_weekpart_label[0]->setGeometry(62,445,80,20);
   rec_weekpart_label[0]->setFont(day_font);
-  rec_weekpart_label[0]->setAlignment(AlignVCenter|AlignLeft);
+  rec_weekpart_label[0]->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
 
   rec_weekpart_button[1]=new QCheckBox(this);
   rec_weekpart_button[1]->setGeometry(120,447,15,15);
   rec_weekpart_label[1]=new QLabel(rec_weekpart_button[1],tr("Tuesday"),this);
   rec_weekpart_label[1]->setGeometry(142,445,80,20);
   rec_weekpart_label[1]->setFont(day_font);
-  rec_weekpart_label[1]->setAlignment(AlignVCenter|AlignLeft);
+  rec_weekpart_label[1]->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
 
   rec_weekpart_button[2]=new QCheckBox(this);
   rec_weekpart_button[2]->setGeometry(200,447,15,15);
   rec_weekpart_label[2]=new QLabel(rec_weekpart_button[2],tr("Wednesday"),this);
   rec_weekpart_label[2]->setGeometry(222,445,80,20);
   rec_weekpart_label[2]->setFont(day_font);
-  rec_weekpart_label[2]->setAlignment(AlignVCenter|AlignLeft);
+  rec_weekpart_label[2]->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
 
   rec_weekpart_button[3]=new QCheckBox(this);
   rec_weekpart_button[3]->setGeometry(80,467,15,15);
   rec_weekpart_label[3]=new QLabel(rec_weekpart_button[3],tr("Thursday"),this);
   rec_weekpart_label[3]->setGeometry(102,465,80,20);
   rec_weekpart_label[3]->setFont(day_font);
-  rec_weekpart_label[3]->setAlignment(AlignVCenter|AlignLeft);
+  rec_weekpart_label[3]->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
 
   rec_weekpart_button[4]=new QCheckBox(this);
   rec_weekpart_button[4]->setGeometry(180,467,15,15);
   rec_weekpart_label[4]=new QLabel(rec_weekpart_button[4],tr("Friday"),this);
   rec_weekpart_label[4]->setGeometry(202,465,80,20);
   rec_weekpart_label[4]->setFont(day_font);
-  rec_weekpart_label[4]->setAlignment(AlignVCenter|AlignLeft);
+  rec_weekpart_label[4]->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
 
   rec_weekpart_button[5]=new QCheckBox(this);
   rec_weekpart_button[5]->setGeometry(80,487,15,15);
   rec_weekpart_label[5]=new QLabel(rec_weekpart_button[5],tr("Saturday"),this);
   rec_weekpart_label[5]->setGeometry(102,485,80,20);
   rec_weekpart_label[5]->setFont(day_font);
-  rec_weekpart_label[5]->setAlignment(AlignVCenter|AlignLeft);
+  rec_weekpart_label[5]->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
 
   rec_weekpart_button[6]=new QCheckBox(this);
   rec_weekpart_button[6]->setGeometry(180,485,15,15);
   rec_weekpart_label[6]=new QLabel(rec_weekpart_button[6],tr("Sunday"),this);
   rec_weekpart_label[6]->setGeometry(202,485,80,20);
   rec_weekpart_label[6]->setFont(day_font);
-  rec_weekpart_label[6]->setAlignment(AlignVCenter|AlignLeft);
+  rec_weekpart_label[6]->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
 
   rec_set_button=new QPushButton(tr("Set All"),this);
   rec_set_button->setGeometry(sizeHint().width()-80,441,55,30);
@@ -379,9 +383,9 @@ RecordCut::RecordCut(RDCart *cart,QString cut,bool use_weight,
   //
   rec_aes_alarm_label=new QLabel(this);
   rec_aes_alarm_label->setGeometry(15,592,110,22);
-  rec_aes_alarm_label->setAlignment(AlignHCenter|AlignVCenter);
+  rec_aes_alarm_label->setAlignment(Qt::AlignHCenter|Qt::AlignVCenter);
   rec_aes_alarm_label->setFont(large_font);
-  rec_aes_alarm_label->setPalette(QColor(red));
+  rec_aes_alarm_label->setPalette(QColor(Qt::red));
   rec_aes_alarm_label->setText(tr("AES ALARM"));
   rec_aes_alarm_label->hide();
 
@@ -393,7 +397,7 @@ RecordCut::RecordCut(RDCart *cart,QString cut,bool use_weight,
   rec_timer_label=new QLabel(this);
   rec_timer_label->setGeometry(130,580,120,50);
   rec_timer_label->setFont(timer_font);
-  rec_timer_label->setAlignment(AlignLeft|AlignVCenter);
+  rec_timer_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
   rec_timer_label->setText(RDGetTimeLength(rec_length,true));
 
   //
@@ -406,7 +410,7 @@ RecordCut::RecordCut(RDCart *cart,QString cut,bool use_weight,
   QLabel *rec_channels_box_label=
     new QLabel(rec_channels_box,tr("Channels"),this);
   rec_channels_box_label->setGeometry(10,616,80,16);
-  rec_channels_box_label->setAlignment(AlignHCenter);
+  rec_channels_box_label->setAlignment(Qt::AlignHCenter);
   rec_channels_box_label->setFont(font);
   connect(rec_channels_box,SIGNAL(activated(int)),
 	  this,SLOT(channelsData(int)));
@@ -434,7 +438,7 @@ RecordCut::RecordCut(RDCart *cart,QString cut,bool use_weight,
   rec_stop_button->setGeometry(280,620,80,50);
   rec_stop_button->setDefault(true);
   rec_stop_button->setState(RDTransportButton::On);
-  rec_stop_button->setOnColor(QColor(red));
+  rec_stop_button->setOnColor(QColor(Qt::red));
   connect(rec_stop_button,SIGNAL(clicked()),this,SLOT(stopData()));
 
   //
@@ -444,7 +448,7 @@ RecordCut::RecordCut(RDCart *cart,QString cut,bool use_weight,
   rec_mode_box->setGeometry(10,695,100,35);
   QLabel *rec_mode_box_label=new QLabel(rec_mode_box,tr("Record Mode"),this);
   rec_mode_box_label->setGeometry(10,676,100,16);
-  rec_mode_box_label->setAlignment(AlignHCenter);
+  rec_mode_box_label->setAlignment(Qt::AlignHCenter);
   rec_mode_box_label->setFont(font);
 
   //
@@ -454,7 +458,7 @@ RecordCut::RecordCut(RDCart *cart,QString cut,bool use_weight,
   rec_trim_box->setGeometry(145,695,70,35);
   QLabel *rec_trim_box_label=new QLabel(rec_trim_box,tr("AutoTrim"),this);
   rec_trim_box_label->setGeometry(130,676,100,16);
-  rec_trim_box_label->setAlignment(AlignHCenter);
+  rec_trim_box_label->setAlignment(Qt::AlignHCenter);
   rec_trim_box_label->setFont(font);
 
   //
@@ -913,13 +917,13 @@ void RecordCut::closeData()
 			   tr("The End Date is prior to the Start Date!"));
       return;
     }
-    if((cut_enddatetime_edit->dateTime()<QDate::currentDate())&&
+    if((cut_enddatetime_edit->dateTime().date()<QDate::currentDate())&&
        (!rec_evergreen_box->isChecked())) {
       switch(QMessageBox::warning(this,tr("Invalid Date"),
 				  tr("The End Date has already passed!\nDo you still want to save?"),
 				  QMessageBox::Yes,QMessageBox::No)) {
 	  case QMessageBox::No:
-	  case QMessageBox::NoButton:
+	  case Qt::NoButton:
 	    return;
 
 	  default:

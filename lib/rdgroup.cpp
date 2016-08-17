@@ -22,6 +22,8 @@
 #include <unistd.h>
 
 #include <qobject.h>
+//Added by qt3to4:
+#include <QSqlQuery>
 
 #include <rdconf.h>
 #include <rdgroup.h>

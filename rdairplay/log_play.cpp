@@ -30,7 +30,7 @@
 #include <log_traffic.h>
 #include <globals.h>
 
-LogPlay::LogPlay(int id,QSocketDevice *nn_sock,QString logname,
+LogPlay::LogPlay(int id,Q3SocketDevice *nn_sock,QString logname,
 		 std::vector<RLMHost *> *rlm_hosts,QObject *parent)
   : QObject(parent),RDLogEvent(logname)
 {

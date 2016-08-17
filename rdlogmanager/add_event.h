@@ -22,12 +22,14 @@
 #define ADD_EVENT_H
 
 #include <qdialog.h>
-#include <qlistbox.h>
-#include <qtextedit.h>
+#include <q3listbox.h>
+#include <q3textedit.h>
 #include <qpixmap.h>
 #include <qcheckbox.h>
 #include <qsqldatabase.h>
 #include <qlineedit.h>
+//Added by qt3to4:
+#include <QCloseEvent>
 
 #include <rdevent.h>
 

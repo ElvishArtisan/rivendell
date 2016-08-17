@@ -28,7 +28,7 @@
 #include <qcheckbox.h>
 #include <qlabel.h>
 #include <qspinbox.h>
-#include <qdatetimeedit.h>
+#include <q3datetimeedit.h>
 
 #include <rdlistselector.h>
 
@@ -80,9 +80,9 @@ class EditReport : public QDialog
   QCheckBox *edit_daypart_check;
   QLabel *edit_daypart_label;
   QLabel *edit_starttime_label;
-  QTimeEdit *edit_starttime_edit;
+  Q3TimeEdit *edit_starttime_edit;
   QLabel *edit_endtime_label;
-  QTimeEdit *edit_endtime_edit;
+  Q3TimeEdit *edit_endtime_edit;
 };
 
 

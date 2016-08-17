@@ -24,6 +24,8 @@
 #include <qwidget.h>
 #include <qpushbutton.h>
 #include <qlabel.h>
+//Added by qt3to4:
+#include <QPaintEvent>
 
 #include <rdwavefile.h>
 

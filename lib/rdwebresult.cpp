@@ -102,7 +102,7 @@ bool RDWebResult::readXml(const QString &xml)
   //        a proper XML parser.
   //
   QStringList list=list.split("\r\n",xml);
-  for(unsigned i=0;i<list.size();i++) {
+  for(int i=0;i<list.size();i++) {
     //printf("%d: %s\n",i,(const char *)list[i]);
     if(list[i].contains("ErrorString")) {
       QStringList list2=list.split("<",list[i]);

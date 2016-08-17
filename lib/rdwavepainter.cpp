@@ -20,16 +20,16 @@
 
 #include <math.h>
 
-#include <qpointarray.h>
-#include <qpixmap.h>
-#include <qfile.h>
-#include <qmessagebox.h>
-#include <qobject.h>
+#include <Q3PointArray>
+#include <QFile>
+#include <QMessageBox>
+#include <QObject>
+#include <QPixmap>
 
 #include <rdwavepainter.h>
 
 
-RDWavePainter::RDWavePainter(const QPaintDevice *pd,RDCut *cut,
+RDWavePainter::RDWavePainter(QPaintDevice *pd,RDCut *cut,
 			     RDStation *station,RDUser *user,RDConfig *config)
   : QPainter(pd)
 {
@@ -67,7 +67,7 @@ void RDWavePainter::nameWave(RDCut *cut)
 }
 
 
-bool RDWavePainter::begin(const QPaintDevice *pd,RDCut *cut)
+bool RDWavePainter::begin(QPaintDevice *pd,RDCut *cut)
 {
   wave_cut=cut;
   LoadWave();
@@ -75,7 +75,7 @@ bool RDWavePainter::begin(const QPaintDevice *pd,RDCut *cut)
 }
 
 
-bool RDWavePainter::begin(const QPaintDevice *pd)
+bool RDWavePainter::begin(QPaintDevice *pd)
 {
   return QPainter::begin(pd);
 }
@@ -124,7 +124,7 @@ void RDWavePainter::drawWaveBySamples(int x,int w,int startsamp,int endsamp,
   resetXForm();
   setPen(color);
   setBrush(color);
-  QPointArray array(w+2);
+  Q3PointArray array(w+2);
   array.setPoint(0,0,center);
   array.setPoint(w+1,w+1,center);
   switch(effective_channel) {

@@ -48,13 +48,13 @@ RDCgiApplication::RDCgiApplication(int argc,char **argv)
   //
   // Open Database
   //
-  QSqlDatabase *db=RDInitDb(&schema,&err);
-  if(!db) {
+  QSqlDatabase db=RDInitDb(&schema,&err);
+  if(!db.isOpen()) {
     printf("Content-type: text/html\n");
     printf("Status: 500\n");
     printf("\n");
     printf("Unable to connect to Rivendell database\n");
-    db->removeDatabase(config()->mysqlDbname());
+    db.close();
     exit(0);
   }
   if(RD_VERSION_DATABASE!=schema) { 
@@ -62,7 +62,7 @@ RDCgiApplication::RDCgiApplication(int argc,char **argv)
     printf("Status: 500\n");
     printf("\n");
     printf("Missing/invalid database version\n");
-    db->removeDatabase(config()->mysqlDbname());
+    db.close();
     exit(0);
   }
 

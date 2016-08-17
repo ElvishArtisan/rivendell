@@ -19,6 +19,7 @@
 //
 
 #include <errno.h>
+#include <stdio.h>
 
 #include <qapplication.h>
 

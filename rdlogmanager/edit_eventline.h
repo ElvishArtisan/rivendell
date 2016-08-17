@@ -24,7 +24,9 @@
 #include <qdialog.h>
 #include <qsqldatabase.h>
 #include <qlineedit.h>
-#include <qdatetimeedit.h>
+#include <q3datetimeedit.h>
+//Added by qt3to4:
+#include <QCloseEvent>
 
 #include <rdevent_line.h>
 #include <rdclock.h>

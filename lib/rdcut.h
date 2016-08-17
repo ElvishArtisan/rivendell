@@ -18,8 +18,8 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qsignal.h>
-#include <qobject.h>
+#include <Q3Signal>
+#include <QObject>
 
 #include <rdconfig.h>
 #include <rdwavedata.h>
@@ -152,7 +152,7 @@ class RDCut
   void SetRow(const QString &param,const QDate &value) const;
   void SetRow(const QString &param,const QTime &value) const;
   void SetRow(const QString &param) const;
-  QSignal *cut_signal;
+  Q3Signal *cut_signal;
   QString cut_name;
   unsigned cart_number;
   unsigned cut_number;

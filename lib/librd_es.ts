@@ -1,4 +1,6 @@
-<!DOCTYPE TS><TS>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0">
 <context>
     <name></name>
     <message>
@@ -17,11 +19,11 @@
     <name>QObject</name>
     <message>
         <source>Couldn&apos;t initialize QSql driver!</source>
-        <translation>¡No pude inicializar el driver QSql!</translation>
+        <translation type="obsolete">¡No pude inicializar el driver QSql!</translation>
     </message>
     <message>
         <source>Couldn&apos;t open mySQL connection!</source>
-        <translation>¡No pude abrir la conexión mySQL!</translation>
+        <translation type="obsolete">¡No pude abrir la conexión mySQL!</translation>
     </message>
     <message>
         <source>Sequentially</source>
@@ -373,10 +375,6 @@
     </message>
     <message>
         <source>Sound Panel Fifth and Later Play Output</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>invalid SQL or failed DB connection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -774,7 +772,7 @@ Color</translation>
     </message>
     <message>
         <source>ARTIST</source>
-        <translation>ARTISTA<byte value="x9"/></translation>
+        <translation>ARTISTA	</translation>
     </message>
     <message>
         <source>CLIENT</source>

@@ -20,6 +20,8 @@
 
 #include <qpixmap.h>
 #include <qpainter.h>
+//Added by qt3to4:
+#include <QKeyEvent>
 
 #include <rdapplication.h>
 
@@ -161,7 +163,7 @@ void PostCounter::UpdateDisplay()
 	  color=POSTPOINT_ONTIME_COLOR;
 	}
       }
-      system_button_text_color = color1;
+      system_button_text_color = Qt::color1;
     }
     else {
       state="--------";

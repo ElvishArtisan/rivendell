@@ -27,9 +27,9 @@
 
 #include <qobject.h>
 #include <qstring.h>
-#include <qserversocket.h>
+#include <q3serversocket.h>
 #include <qsqldatabase.h>
-#include <qsocketdevice.h>
+#include <q3socketdevice.h>
 #include <qtimer.h>
 
 #include <rdsocket.h>
@@ -88,7 +88,7 @@ class MainObject : public QObject
   void EchoCommand(int,const char *);
   void BroadcastCommand(const char *);
   void EchoArgs(int,const char);
-  void ReadRmlSocket(QSocketDevice *dev,RDMacro::Role role,bool echo);
+  void ReadRmlSocket(Q3SocketDevice *dev,RDMacro::Role role,bool echo);
   QString StripPoint(QString);
   void LoadLocalMacros();
   void RunLocalMacros(RDMacro *rml);
@@ -107,12 +107,12 @@ class MainObject : public QObject
   QSqlDatabase *ripcd_db;
   QString ripcd_host;
   bool debug;
-  QServerSocket *server;
+  Q3ServerSocket *server;
   std::vector<RipcdConnection *> ripcd_conns;
-  QSocketDevice *ripcd_rml_send;
-  QSocketDevice *ripcd_rml_echo;
-  QSocketDevice *ripcd_rml_noecho;
-  QSocketDevice *ripcd_rml_reply;
+  Q3SocketDevice *ripcd_rml_send;
+  Q3SocketDevice *ripcd_rml_echo;
+  Q3SocketDevice *ripcd_rml_noecho;
+  Q3SocketDevice *ripcd_rml_reply;
   QHostAddress ripcd_host_addr;
   Switcher *ripcd_switcher[MAX_MATRICES];
   bool ripcd_gpi_state[MAX_MATRICES][MAX_GPIO_PINS];

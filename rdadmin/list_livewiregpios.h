@@ -22,7 +22,7 @@
 #define LIST_LIVEWIREGPIOS_H
 
 #include <qdialog.h>
-#include <qtextedit.h>
+#include <q3textedit.h>
 #include <qpixmap.h>
 #include <qradiobutton.h>
 #include <qsqldatabase.h>
@@ -42,7 +42,7 @@ class ListLiveWireGpios : public QDialog
   
   private slots:
    void editData();
-   void doubleClickedData(QListViewItem *item,const QPoint &pt,int col);
+   void doubleClickedData(Q3ListViewItem *item,const QPoint &pt,int col);
    void okData();
    void cancelData();
 

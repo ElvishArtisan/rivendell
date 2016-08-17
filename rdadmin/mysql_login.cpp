@@ -23,12 +23,12 @@
 #include <qpushbutton.h>
 #include <qradiobutton.h>
 #include <qlineedit.h>
-#include <qtextedit.h>
+#include <q3textedit.h>
 #include <qlabel.h>
 #include <qpainter.h>
 #include <qevent.h>
 #include <qmessagebox.h>
-#include <qbuttongroup.h>
+#include <q3buttongroup.h>
 
 #include <rdlabel.h>
 
@@ -54,7 +54,7 @@ MySqlLogin::MySqlLogin(QString msg,QString *username,QString *password,
   RDLabel *label=new RDLabel(msg,this);
   label->setFont(font);
   label->setGeometry(10,10,sizeHint().width()-20,sizeHint().height()-130);
-  label->setAlignment(AlignCenter);
+  label->setAlignment(Qt::AlignCenter);
   
 
   //
@@ -68,7 +68,7 @@ MySqlLogin::MySqlLogin(QString msg,QString *username,QString *password,
   QLabel *login_name_label=new QLabel(login_name_edit,tr("User &Name:"),this);
   login_name_label->setFont(font);
   login_name_label->setGeometry(10,sizeHint().height()-109,85,19);
-  login_name_label->setAlignment(AlignRight|ShowPrefix);
+  login_name_label->setAlignment(Qt::AlignRight|Qt::TextShowMnemonic);
 
   //
   // MySql Login Password
@@ -81,7 +81,7 @@ MySqlLogin::MySqlLogin(QString msg,QString *username,QString *password,
   QLabel *login_password_label=new QLabel(login_password_edit,tr("&Password:"));
   login_password_label->setFont(font);
   login_password_label->setGeometry(10,sizeHint().height()-88,85,19);
-  login_password_label->setAlignment(AlignRight|ShowPrefix);
+  login_password_label->setAlignment(Qt::AlignRight|Qt::TextShowMnemonic);
 
   //
   // OK Button

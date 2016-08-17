@@ -23,16 +23,16 @@
 #define RDBUSYBAR_H
 
 #include <qwidget.h>
-#include <qframe.h>
+#include <q3frame.h>
 #include <qlabel.h>
 #include <qtimer.h>
 
-class RDBusyBar : public QFrame
+class RDBusyBar : public Q3Frame
 {
   Q_OBJECT
 
  public:
-  RDBusyBar(QWidget *parent=0,WFlags f=0);
+  RDBusyBar(QWidget *parent=0,Qt::WFlags f=0);
 
  public slots:
   void activate(bool state);

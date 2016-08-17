@@ -23,17 +23,19 @@
 
 #include <vector>
 
-#include <qmainwindow.h>
+#include <q3mainwindow.h>
 #include <qsize.h>
 #include <qsizepolicy.h>
 #include <qsqldatabase.h>
 #include <qcheckbox.h>
 #include <qlineedit.h>
-#include <qlistview.h>
+#include <q3listview.h>
 #include <qpushbutton.h>
 #include <qpixmap.h>
 #include <qcombobox.h>
 #include <qlabel.h>
+//Added by qt3to4:
+#include <QResizeEvent>
 
 #include <rdlog_line.h>
 
@@ -41,7 +43,7 @@
 
 #define RDLOGEDIT_USAGE "\n\n"
 
-class MainWidget : public QMainWindow
+class MainWidget : public Q3MainWindow
 {
  Q_OBJECT
  public:
@@ -60,7 +62,7 @@ class MainWidget : public QMainWindow
   void reportData();
   void filterChangedData(const QString &str);
   void filterClearedData();
-  void logDoubleclickedData(QListViewItem *item,const QPoint &pt,int col);
+  void logDoubleclickedData(Q3ListViewItem *item,const QPoint &pt,int col);
   void quitMainWidget();
 
  protected:
@@ -82,7 +84,7 @@ class MainWidget : public QMainWindow
   QPushButton *log_filter_button;
   QCheckBox *log_recent_check;
   QLabel *log_recent_label;
-  QListView *log_log_list;
+  Q3ListView *log_log_list;
   std::vector<RDLogLine> log_clipboard;
   QPushButton *log_add_button;
   QPushButton *log_edit_button;

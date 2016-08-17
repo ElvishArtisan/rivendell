@@ -23,10 +23,13 @@
 #ifndef LIB_LISTVIEW_H
 #define LIB_LISTVIEW_H
 
-#include <qlistview.h>
+#include <q3listview.h>
 #include <qpixmap.h>
+//Added by qt3to4:
+#include <QMouseEvent>
+#include <QFocusEvent>
 
-class LibListView : public QListView
+class LibListView : public Q3ListView
 {
   Q_OBJECT
 

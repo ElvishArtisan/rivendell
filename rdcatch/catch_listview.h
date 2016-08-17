@@ -21,7 +21,9 @@
 #ifndef CATCH_LISTVIEW_H
 #define CATCH_LISTVIEW_H
 
-#include <qpopupmenu.h>
+#include <q3popupmenu.h>
+//Added by qt3to4:
+#include <QMouseEvent>
 
 #include <rdlistview.h>
 
@@ -41,8 +43,8 @@ class CatchListView : public RDListView
   void contentsMouseDoubleClickEvent(QMouseEvent *e);
 
  private:
-  QPopupMenu *catch_menu;
-  QListViewItem *catch_menu_item;
+  Q3PopupMenu *catch_menu;
+  Q3ListViewItem *catch_menu_item;
   QString catch_cutname;
   QWidget *catch_parent;
 };

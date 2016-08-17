@@ -21,7 +21,7 @@
 #ifndef CART_TIP_H
 #define CART_TIP_H
 
-#include <qtooltip.h>
+#include <QToolTip>
 
 class CartTip : public QToolTip
 {

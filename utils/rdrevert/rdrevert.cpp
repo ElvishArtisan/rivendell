@@ -24,6 +24,8 @@
 #include <unistd.h>
 
 #include <qstringlist.h>
+//Added by qt3to4:
+#include <QSqlQuery>
 
 #include <rdapplication.h>
 #include <rdclock.h>

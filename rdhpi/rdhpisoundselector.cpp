@@ -36,7 +36,7 @@
 
 RDHPISoundSelector::RDHPISoundSelector(RDHPISoundCard::DeviceClass dev_class,
 				       QWidget *parent)
-  :QListBox(parent)
+  :Q3ListBox(parent)
 {  
   sound_card=new RDHPISoundCard(this);
 

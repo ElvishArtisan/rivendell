@@ -20,7 +20,8 @@
 
 #include <stdlib.h>
 
-#include <qfile.h>
+#include <QFile>
+#include <QSqlError>
 
 #include <rdapplication.h>
 #include <rdsvc.h>

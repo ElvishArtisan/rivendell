@@ -20,8 +20,8 @@
 ##
 ## Use automake to process this into a Makefile.in
 
-AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" -DQTDIR=\"@QT_DIR@\" @QT_CXXFLAGS@ -I$(top_srcdir)/lib
-LIBS = @QT_LIBS@ -L$(top_srcdir)/lib
+AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" -I$(top_srcdir)/lib @QT4_CFLAGS@ -DQT3_SUPPORT -I/usr/include/Qt3Support
+LIBS = -L$(top_srcdir)/lib
 MOC = @QT_MOC@
 
 # The dependency for qt's Meta Object Compiler (moc)
@@ -37,8 +37,8 @@ uninstall-local:
 	rm -f $(DESTDIR)$(prefix)/share/rivendell/rdlogmanager_*.qm
 
 all:	
-	@QT_BIN@/lupdate rdlogmanager.pro
-	@QT_BIN@/lrelease rdlogmanager.pro
+	lupdate-qt4 rdlogmanager.pro
+	lrelease-qt4 rdlogmanager.pro
 
 bin_PROGRAMS = rdlogmanager
 
@@ -93,7 +93,7 @@ nodist_rdlogmanager_SOURCES = moc_add_clock.cpp\
                               moc_svc_rec.cpp\
                               moc_svc_rec_dialog.cpp
 
-rdlogmanager_LDADD = @LIB_RDLIBS@ @LIBVORBIS@
+rdlogmanager_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT4_LIBS@ -lQt3Support
 
 EXTRA_DIST = rdlogmanager.pro\
              rdlogmanager_cs.ts\

@@ -24,6 +24,8 @@
 #include <qdialog.h>
 #include <qlabel.h>
 #include <qsqldatabase.h>
+//Added by qt3to4:
+#include <QPaintEvent>
 
 #include <rdlistselector.h>
 

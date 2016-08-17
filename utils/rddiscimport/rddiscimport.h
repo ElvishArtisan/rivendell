@@ -33,7 +33,9 @@
 #include <qlineedit.h>
 #include <qpushbutton.h>
 #include <qspinbox.h>
-#include <qprogressbar.h>
+#include <q3progressbar.h>
+//Added by qt3to4:
+#include <QResizeEvent>
 
 #include <rdcdplayer.h>
 #include <rdcdripper.h>
@@ -57,7 +59,7 @@ class MainWidget : public QWidget
   void indexFileSelectedData();
   void groupActivatedData(int);
   void autotrimCheckData(bool state);
-  void trackDoubleClickedData(QListViewItem *item,const QPoint &pt,int row);
+  void trackDoubleClickedData(Q3ListViewItem *item,const QPoint &pt,int row);
   void ripData();
   void normalizeCheckData(bool state);
   void mediaChangedData();
@@ -83,9 +85,9 @@ class MainWidget : public QWidget
   QLineEdit *dg_userdef_edit;
   RDListView *dg_track_list;
   QLabel *dg_disc_label;
-  QProgressBar *dg_disc_bar;
+  Q3ProgressBar *dg_disc_bar;
   QLabel *dg_track_label;
-  QProgressBar *dg_track_bar;
+  Q3ProgressBar *dg_track_bar;
   QLabel *dg_discid_label;
   QLineEdit *dg_discid_edit;
   QPushButton *dg_rip_button;

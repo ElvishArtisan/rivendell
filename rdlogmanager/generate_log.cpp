@@ -20,12 +20,16 @@
 
 #include <stdlib.h>
 
-#include <qdialog.h>
-#include <qstring.h>
-#include <qdatetimeedit.h>
-#include <qmessagebox.h>
-#include <qfile.h>
-#include <qtimer.h>
+#include <Q3DateTimeEdit>
+#include <QFile>
+#include <QDialog>
+#include <QLabel>
+#include <QMessageBox>
+#include <QPixmap>
+#include <QResizeEvent>
+#include <QSqlError>
+#include <QString>
+#include <QTimer>
 
 #include <rdapplication.h>
 #include <rddb.h>
@@ -95,7 +99,7 @@ GenerateLog::GenerateLog(QWidget *parent,int cmd_switch,QString *cmd_service,
   //
   // Progress Dialog
   //
-  gen_progress_dialog=new QProgressDialog(tr("Generating Log..."),tr("Cancel"),
+  gen_progress_dialog=new Q3ProgressDialog(tr("Generating Log..."),tr("Cancel"),
 					  24,this,"gen_progress_dialog",true);
   gen_progress_dialog->setCaption("Progress");
   gen_progress_dialog->setCancelButton(NULL);
@@ -108,7 +112,7 @@ GenerateLog::GenerateLog(QWidget *parent,int cmd_switch,QString *cmd_service,
 	  this,SLOT(serviceActivatedData(int)));
   gen_service_label=new QLabel(gen_service_box,tr("Service:"),this);
   gen_service_label->setFont(bold_font);
-  gen_service_label->setAlignment(AlignRight|AlignVCenter);
+  gen_service_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   QString sql="select NAME from SERVICES";
   RDSqlQuery *q=new RDSqlQuery(sql);
@@ -127,10 +131,10 @@ GenerateLog::GenerateLog(QWidget *parent,int cmd_switch,QString *cmd_service,
   //
   // Date
   //
-  gen_date_edit=new QDateEdit(this);
+  gen_date_edit=new Q3DateEdit(this);
   gen_date_label=new QLabel(gen_date_edit,tr("Date:"),this);
   gen_date_label->setFont(bold_font);
-  gen_date_label->setAlignment(AlignRight|AlignVCenter);
+  gen_date_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   if (cmdswitch==0)
   gen_date_edit->setDate(QDate::currentDate().addDays(1));
   else
@@ -178,15 +182,15 @@ GenerateLog::GenerateLog(QWidget *parent,int cmd_switch,QString *cmd_service,
   //
   gen_import_label=new QLabel(tr("Import Data"),this);
   gen_import_label->setFont(bold_font);
-  gen_import_label->setAlignment(AlignCenter);
+  gen_import_label->setAlignment(Qt::AlignCenter);
 
   gen_available_label=new QLabel(tr("Available"),this);
   gen_available_label->setFont(small_font);
-  gen_available_label->setAlignment(AlignCenter);
+  gen_available_label->setAlignment(Qt::AlignCenter);
 
   gen_merged_label=new QLabel(tr("Merged"),this);
   gen_merged_label->setFont(small_font);
-  gen_merged_label->setAlignment(AlignCenter);
+  gen_merged_label->setAlignment(Qt::AlignCenter);
 
   //
   // Music Indicators
@@ -194,12 +198,12 @@ GenerateLog::GenerateLog(QWidget *parent,int cmd_switch,QString *cmd_service,
   gen_mus_avail_label=new QLabel(this);
   gen_mus_avail_label->setPixmap(*gen_whiteball_map);
   gen_mus_avail_label->setFont(small_font);
-  gen_mus_avail_label->setAlignment(AlignCenter);
+  gen_mus_avail_label->setAlignment(Qt::AlignCenter);
 
   gen_mus_merged_label=new QLabel(this);
   gen_mus_merged_label->setPixmap(*gen_whiteball_map);
   gen_mus_merged_label->setFont(small_font);
-  gen_mus_merged_label->setAlignment(AlignCenter);
+  gen_mus_merged_label->setAlignment(Qt::AlignCenter);
 
   //
   // Traffic Indicators
@@ -207,12 +211,12 @@ GenerateLog::GenerateLog(QWidget *parent,int cmd_switch,QString *cmd_service,
   gen_tfc_avail_label=new QLabel(this);
   gen_tfc_avail_label->setPixmap(*gen_whiteball_map);
   gen_tfc_avail_label->setFont(small_font);
-  gen_tfc_avail_label->setAlignment(AlignCenter);
+  gen_tfc_avail_label->setAlignment(Qt::AlignCenter);
 
   gen_tfc_merged_label=new QLabel(this);
   gen_tfc_merged_label->setPixmap(*gen_whiteball_map);
   gen_tfc_merged_label->setFont(small_font);
-  gen_tfc_merged_label->setAlignment(AlignCenter);
+  gen_tfc_merged_label->setAlignment(Qt::AlignCenter);
 
 
   //

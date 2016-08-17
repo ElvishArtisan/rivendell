@@ -25,7 +25,7 @@
 #include <qsqldatabase.h>
 #include <qlabel.h>
 #include <qpushbutton.h>
-#include <qlistview.h>
+#include <q3listview.h>
 
 #include <rdlistviewitem.h>
 
@@ -41,13 +41,13 @@ class ListAuxFields : public QDialog
   void addData();
   void editData();
   void deleteData();
-  void doubleClickedData(QListViewItem *item,const QPoint &pt,int col);
+  void doubleClickedData(Q3ListViewItem *item,const QPoint &pt,int col);
   void closeData();
 
  private:
   void RefreshList();
   void RefreshItem(RDListViewItem *item);
-  QListView *list_list_view;
+  Q3ListView *list_list_view;
   unsigned list_feed_id;
 };
 

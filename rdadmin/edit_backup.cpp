@@ -22,6 +22,8 @@
 #include <qstring.h>
 #include <qpushbutton.h>
 #include <qmessagebox.h>
+//Added by qt3to4:
+#include <QLabel>
 
 #include <rd.h>
 #include <rdtextvalidator.h>
@@ -69,11 +71,11 @@ EditBackup::EditBackup(RDStation *station,QWidget *parent)
     new QLabel(edit_life_box,tr("Keep Backups For:"),this);
   edit_life_box_label->setGeometry(10,10,140,19);
   edit_life_box_label->setFont(small_font);
-  edit_life_box_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  edit_life_box_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
   QLabel *edit_life_box_unit=new QLabel(tr("days"),this);
   edit_life_box_unit->setGeometry(200,10,120,19);
   edit_life_box_unit->setFont(small_font);
-  edit_life_box_unit->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  edit_life_box_unit->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
   connect(edit_life_box,SIGNAL(valueChanged(int)),
 	  this,SLOT(lifeChangedData(int)));
 
@@ -86,7 +88,7 @@ EditBackup::EditBackup(RDStation *station,QWidget *parent)
   edit_path_label=new QLabel(edit_life_box,tr("Backup Directory:"),this);
   edit_path_label->setGeometry(10,35,140,19);
   edit_path_label->setFont(small_font);
-  edit_path_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  edit_path_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   //  Ok Button

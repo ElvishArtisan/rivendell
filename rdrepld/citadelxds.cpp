@@ -23,8 +23,9 @@
 #include <stdio.h>
 #include <errno.h>
 
-#include <qfileinfo.h>
-#include <qdatetime.h>
+#include <QDateTime>
+#include <QFileInfo>
+#include <QUrl>
 
 #include <rdapplication.h>
 #include <rddb.h>
@@ -148,7 +149,7 @@ bool CitadelXds::LoadIsciXreference(const QString &filename)
   while(fgets(line,1024,f)!=NULL) {
     fields=fields.split(",",line,"\"");
     if(fields.size()==9) {
-      for(unsigned i=0;i<fields.size();i++) {
+      for(int i=0;i<fields.size();i++) {
 	fields[i]=fields[i].replace("\"","").stripWhiteSpace();
       }
       cartnum=fields[3].right(fields[3].length()-1).toUInt(&ok);

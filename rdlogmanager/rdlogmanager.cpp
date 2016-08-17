@@ -28,15 +28,17 @@
 #include <qwindowsstyle.h>
 #include <qwidget.h>
 #include <qpainter.h>
-#include <qsqlpropertymap.h>
+#include <q3sqlpropertymap.h>
 #include <qmessagebox.h>
 #include <qpushbutton.h>
 #include <qlabel.h>
 #include <qsettings.h>
 #include <qlabel.h>
-#include <qlistview.h>
+#include <q3listview.h>
 #include <qtextcodec.h>
 #include <qtranslator.h>
+//Added by qt3to4:
+#include <QPixmap>
 
 #include <rd.h>
 #include <rdapplication.h>
@@ -155,11 +157,11 @@ MainWidget::MainWidget(QWidget *parent)
   QLabel *label=new QLabel(tr("RDLogManager"),this);
   label->setGeometry(0,5,sizeHint().width(),32);
   label->setFont(label_font);
-  label->setAlignment(AlignHCenter);
+  label->setAlignment(Qt::AlignHCenter);
   label=new QLabel(tr("Select an operation:"),this);
   label->setGeometry(0,25,sizeHint().width(),16);
   label->setFont(day_font);
-  label->setAlignment(AlignCenter);
+  label->setAlignment(Qt::AlignCenter);
 
   //
   //  Edit Events Button
@@ -310,6 +312,7 @@ int gui_main(int argc,char *argv[])
   //
   // Load Translations
   //
+  /*
   QString tr_path;
   QString qt_path;
 #ifdef WIN32
@@ -338,6 +341,7 @@ int gui_main(int argc,char *argv[])
   QTranslator tr(0);
   tr.load(tr_path+QString("rdlogmanager_")+QTextCodec::locale(),".");
   a.installTranslator(&tr);
+  */
 
   //
   // Start Event Loop

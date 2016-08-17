@@ -22,15 +22,17 @@
 
 #include <qdialog.h>
 #include <qstring.h>
-#include <qlistbox.h>
-#include <qtextedit.h>
+#include <q3listbox.h>
+#include <q3textedit.h>
 #include <qlabel.h>
 #include <qpainter.h>
 #include <qevent.h>
 #include <qmessagebox.h>
 #include <qcheckbox.h>
-#include <qbuttongroup.h>
+#include <q3buttongroup.h>
 #include <qsqldatabase.h>
+//Added by qt3to4:
+#include <QCloseEvent>
 
 #include <rddb.h>
 #include <rdescape_string.h>
@@ -79,7 +81,7 @@ RDAddLog::RDAddLog(QString *logname,QString *svcname,RDStation *station,
   QLabel *label=new QLabel(add_name_edit,tr("&New Log Name:"),this);
   label->setGeometry(10,13,100,19);
   label->setFont(button_font);
-  label->setAlignment(AlignRight|ShowPrefix);
+  label->setAlignment(Qt::AlignRight|Qt::TextShowMnemonic);
   connect(add_name_edit,SIGNAL(textChanged(const QString &)),
 	  this,SLOT(nameChangedData(const QString &)));
 
@@ -91,7 +93,7 @@ RDAddLog::RDAddLog(QString *logname,QString *svcname,RDStation *station,
   label=new QLabel(add_name_edit,tr("&Service:"),this);
   label->setGeometry(10,33,100,19);
   label->setFont(button_font);
-  label->setAlignment(AlignRight|ShowPrefix);
+  label->setAlignment(Qt::AlignRight|Qt::TextShowMnemonic);
 
   //
   //  Ok Button

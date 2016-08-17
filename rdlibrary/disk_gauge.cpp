@@ -21,6 +21,9 @@
 #include <sys/vfs.h>
 
 #include <qfontmetrics.h>
+//Added by qt3to4:
+#include <QResizeEvent>
+#include <QLabel>
 
 #include <globals.h>
 #include <rd.h>
@@ -44,17 +47,17 @@ DiskGauge::DiskGauge(int samp_rate,int chans,QWidget *parent)
   disk_label=new QLabel("Free:",this);
   disk_label->setGeometry(0,0,50,sizeHint().height());
   disk_label->setFont(label_font);
-  disk_label->setAlignment(AlignRight|AlignVCenter);
+  disk_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   disk_label->setDisabled(true);
 
-  disk_bar=new QProgressBar(this);
+  disk_bar=new Q3ProgressBar(this);
   disk_bar->setPercentageVisible(false);
   disk_bar->setGeometry(55,0,sizeHint().width()-55,sizeHint().height());
   disk_bar->setDisabled(true);
 
   disk_space_label=new QLabel(this);
   disk_space_label->setFont(label_font);
-  disk_space_label->setAlignment(AlignCenter);
+  disk_space_label->setAlignment(Qt::AlignCenter);
   disk_space_label->setDisabled(true);
 
   /*

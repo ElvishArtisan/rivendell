@@ -26,7 +26,7 @@
 #include <qobject.h>
 #include <ctype.h>
 
-#include <qsocketdevice.h>
+#include <q3socketdevice.h>
 #include <qtimer.h>
 #include <qstringlist.h>
 
@@ -47,13 +47,13 @@ RDCae::RDCae(RDStation *station,RDConfig *config,QObject *parent)
   //
   // TCP Connection
   //
-  cae_socket=new QSocketDevice(QSocketDevice::Stream);
+  cae_socket=new Q3SocketDevice(Q3SocketDevice::Stream);
   cae_socket->setBlocking(false);
 
   //
   // Meter Connection
   //
-  cae_meter_socket=new QSocketDevice(QSocketDevice::Datagram);
+  cae_meter_socket=new Q3SocketDevice(Q3SocketDevice::Datagram);
   cae_meter_socket->setBlocking(false);
   for(Q_INT16 i=30000;i<30100;i++) {
     if(cae_meter_socket->bind(QHostAddress(),i)) {

@@ -24,9 +24,11 @@
 #include <qwidget.h>
 #include <qsize.h>
 #include <qsizepolicy.h>
-#include <qlistview.h>
+#include <q3listview.h>
 #include <qpushbutton.h>
 #include <qpixmap.h>
+//Added by qt3to4:
+#include <QLabel>
 
 #include <rduser.h>
 #include <rdripc.h>

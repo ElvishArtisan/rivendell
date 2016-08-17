@@ -22,6 +22,8 @@
 #include <qstring.h>
 #include <qlabel.h>
 #include <qpalette.h>
+//Added by qt3to4:
+#include <QMouseEvent>
 #include <rddb.h>
 #include <svc_rec.h>
 
@@ -96,44 +98,44 @@ SvcRec::SvcRec(const QString &svcname,QWidget *parent)
   QLabel *label=new QLabel(tr("Mo"),this);
   label->setGeometry(SVC_REC_X_ORIGIN,30,30,30);
   label->setFont(pick_day_font[1]);
-  label->setAlignment(AlignCenter);
+  label->setAlignment(Qt::AlignCenter);
 
   label=new QLabel(tr("Tu"),this);
   label->setGeometry(SVC_REC_X_ORIGIN+SVC_REC_X_INTERVAL,
 		     SVC_REC_Y_ORIGIN,30,30);
   label->setFont(pick_day_font[1]);
-  label->setAlignment(AlignCenter);
+  label->setAlignment(Qt::AlignCenter);
 
   label=new QLabel(tr("We"),this);
   label->setGeometry(SVC_REC_X_ORIGIN+SVC_REC_X_INTERVAL*2,
 		     SVC_REC_Y_ORIGIN,30,30);
   label->setFont(pick_day_font[1]);
-  label->setAlignment(AlignCenter);
+  label->setAlignment(Qt::AlignCenter);
 
   label=new QLabel(tr("Th"),this);
   label->setGeometry(SVC_REC_X_ORIGIN+SVC_REC_X_INTERVAL*3,
 		     SVC_REC_Y_ORIGIN,30,30);
   label->setFont(pick_day_font[1]);
-  label->setAlignment(AlignCenter);
+  label->setAlignment(Qt::AlignCenter);
 
   label=new QLabel(tr("Fr"),this);
   label->setGeometry(SVC_REC_X_ORIGIN+SVC_REC_X_INTERVAL*4,
 		     SVC_REC_Y_ORIGIN,30,30);
   label->setFont(pick_day_font[1]);
-  label->setAlignment(AlignCenter);
+  label->setAlignment(Qt::AlignCenter);
 
   label=new QLabel(tr("Sa"),this);
   label->setGeometry(SVC_REC_X_ORIGIN+SVC_REC_X_INTERVAL*5,
 		     SVC_REC_Y_ORIGIN,30,30);
   label->setFont(pick_day_font[1]);
-  label->setAlignment(AlignCenter);
+  label->setAlignment(Qt::AlignCenter);
   label->setPalette(weekend_palette);
 
   label=new QLabel(tr("Su"),this);
   label->setGeometry(SVC_REC_X_ORIGIN+SVC_REC_X_INTERVAL*6,
 		     SVC_REC_Y_ORIGIN,30,30);
   label->setFont(pick_day_font[1]);
-  label->setAlignment(AlignCenter);
+  label->setAlignment(Qt::AlignCenter);
   label->setPalette(weekend_palette);
 
 
@@ -143,7 +145,7 @@ SvcRec::SvcRec(const QString &svcname,QWidget *parent)
       pick_date_label[i][j]->
 	setGeometry(SVC_REC_X_ORIGIN+SVC_REC_X_INTERVAL*j,
 		    SVC_REC_Y_ORIGIN+20+SVC_REC_Y_INTERVAL*i,30,30);
-      pick_date_label[i][j]->setAlignment(AlignCenter);
+      pick_date_label[i][j]->setAlignment(Qt::AlignCenter);
     }
   }
   PrintDays();

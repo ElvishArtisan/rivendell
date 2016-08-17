@@ -20,12 +20,14 @@
 
 #include <qstring.h>
 #include <qpushbutton.h>
-#include <qtextedit.h>
+#include <q3textedit.h>
 #include <qpainter.h>
 #include <qevent.h>
 #include <qmessagebox.h>
 #include <qcheckbox.h>
-#include <qbuttongroup.h>
+#include <q3buttongroup.h>
+//Added by qt3to4:
+#include <QLabel>
 
 #include <rddb.h>
 #include <edit_ttys.h>
@@ -69,12 +71,12 @@ EditTtys::EditTtys(QString station,QWidget *parent)
   //
   edit_port_box=new QComboBox(this);
   edit_port_box->setGeometry(75,10,100,24);
-  edit_port_box->setInsertionPolicy(QComboBox::NoInsertion);
+  edit_port_box->setInsertionPolicy(QComboBox::NoInsert);
   connect(edit_port_box,SIGNAL(activated(int)),this,SLOT(idSelectedData()));
   QLabel *label=new QLabel(edit_port_box,tr("Port ID:"),this);
   label->setGeometry(10,14,60,22);
   label->setFont(font);
-  label->setAlignment(AlignRight);
+  label->setAlignment(Qt::AlignRight);
 
   //
   // Enable Button
@@ -86,7 +88,7 @@ EditTtys::EditTtys(QString station,QWidget *parent)
   label=new QLabel(edit_enable_button,tr("Enabled"),this);
   label->setGeometry(200,14,60,22);
   label->setFont(font);
-  label->setAlignment(AlignRight);
+  label->setAlignment(Qt::AlignRight);
 
   //
   // The TTY Port
@@ -97,63 +99,63 @@ EditTtys::EditTtys(QString station,QWidget *parent)
   edit_port_label=new QLabel(edit_port_edit,tr("TTY Device:"),this);
   edit_port_label->setGeometry(20,56,120,22);
   edit_port_label->setFont(font);
-  edit_port_label->setAlignment(AlignRight);
+  edit_port_label->setAlignment(Qt::AlignRight);
   
   //
   // Baudrate Selector
   //
   edit_baudrate_box=new QComboBox(this);
   edit_baudrate_box->setGeometry(145,80,90,24);
-  edit_baudrate_box->setInsertionPolicy(QComboBox::NoInsertion);
+  edit_baudrate_box->setInsertionPolicy(QComboBox::NoInsert);
   edit_baudrate_label=new QLabel(edit_baudrate_box,tr("Baud Rate:"),this);
   edit_baudrate_label->setGeometry(20,84,120,22);
   edit_baudrate_label->setFont(font);
-  edit_baudrate_label->setAlignment(AlignRight);
+  edit_baudrate_label->setAlignment(Qt::AlignRight);
 
   //
   // Parity Selector
   //
   edit_parity_box=new QComboBox(this);
   edit_parity_box->setGeometry(145,108,90,24); 
-  edit_parity_box->setInsertionPolicy(QComboBox::NoInsertion);
+  edit_parity_box->setInsertionPolicy(QComboBox::NoInsert);
   edit_parity_label=new QLabel(edit_parity_box,tr("Parity:"),this);
   edit_parity_label->setGeometry(20,110,120,22);
   edit_parity_label->setFont(font);
-  edit_parity_label->setAlignment(AlignRight);
+  edit_parity_label->setAlignment(Qt::AlignRight);
 
   //
   // Data Bits Selector
   //
   edit_databits_box=new QComboBox(this);
   edit_databits_box->setGeometry(145,136,60,24);
-  edit_databits_box->setInsertionPolicy(QComboBox::NoInsertion);
+  edit_databits_box->setInsertionPolicy(QComboBox::NoInsert);
   edit_databits_label=new QLabel(edit_databits_box,tr("Data Bits:"),this);
   edit_databits_label->setGeometry(20,138,120,22);
   edit_databits_label->setFont(font);
-  edit_databits_label->setAlignment(AlignRight);
+  edit_databits_label->setAlignment(Qt::AlignRight);
 
   //
   // Stop Bits Selector
   //
   edit_stopbits_box=new QComboBox(this);
   edit_stopbits_box->setGeometry(145,164,60,24);
-  edit_stopbits_box->setInsertionPolicy(QComboBox::NoInsertion);
+  edit_stopbits_box->setInsertionPolicy(QComboBox::NoInsert);
   edit_stopbits_label=new QLabel(edit_stopbits_box,tr("Stop Bits:"),this);
   edit_stopbits_label->setGeometry(20,166,120,22);
   edit_stopbits_label->setFont(font);
-  edit_stopbits_label->setAlignment(AlignRight);
+  edit_stopbits_label->setAlignment(Qt::AlignRight);
 
   //
   // Termination Character Selector
   //
   edit_termination_box=new QComboBox(this);
   edit_termination_box->setGeometry(145,192,90,24);
-  edit_termination_box->setInsertionPolicy(QComboBox::NoInsertion);
+  edit_termination_box->setInsertionPolicy(QComboBox::NoInsert);
   edit_termination_label=
     new QLabel(edit_termination_box,tr("Terminator:"),this);
   edit_termination_label->setGeometry(20,194,120,22);
   edit_termination_label->setFont(font);
-  edit_termination_label->setAlignment(AlignRight);
+  edit_termination_label->setAlignment(Qt::AlignRight);
 
   //
   //  Close Button

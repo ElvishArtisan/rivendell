@@ -19,8 +19,8 @@
 ##
 ## Use automake to process this into a Makefile.in
 
-AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" -DQTDIR=\"@QT_DIR@\" @QT_CXXFLAGS@ -I$(top_srcdir)/lib
-LIBS = @QT_LIBS@ -L$(top_srcdir)/lib
+AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" -I$(top_srcdir)/lib @QT4_CFLAGS@ -DQT3_SUPPORT -I/usr/include/Qt3Support
+LIBS = -L$(top_srcdir)/lib
 MOC = @QT_MOC@
 
 # The dependency for qt's Meta Object Compiler (moc)
@@ -33,7 +33,7 @@ dist_rdmarkerset_SOURCES = rdmarkerset.cpp rdmarkerset.h
 
 nodist_rdmarkerset_SOURCES = moc_rdmarkerset.cpp
 
-rdmarkerset_LDADD = @LIB_RDLIBS@ @LIBVORBIS@
+rdmarkerset_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT4_LIBS@ -lQt3Support
 
 EXTRA_DIST = 
 

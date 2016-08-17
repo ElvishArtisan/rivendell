@@ -24,10 +24,13 @@
 
 #include <qwindowsstyle.h>
 #include <qtextcodec.h>
-#include <qfiledialog.h>
+#include <q3filedialog.h>
 #include <qmessagebox.h>
 #include <qstringlist.h>
-#include <qfiledialog.h>
+#include <q3filedialog.h>
+//Added by qt3to4:
+#include <QLabel>
+#include <QResizeEvent>
 
 #include <rdapplication.h>
 #include <rdescape_string.h>
@@ -137,12 +140,12 @@ MainWidget::MainWidget(QWidget *parent)
   //db_track_list->setFont(default_font);
   dg_track_list->setAllColumnsShowFocus(true);
   dg_track_list->setItemMargin(5);
-  dg_track_list->setSelectionMode(QListView::Single);
+  dg_track_list->setSelectionMode(Q3ListView::Single);
   dg_track_list->setSortColumn(-1);
   connect(dg_track_list,
-	  SIGNAL(doubleClicked(QListViewItem *,const QPoint &,int)),
+	  SIGNAL(doubleClicked(Q3ListViewItem *,const QPoint &,int)),
 	  this,
-	  SLOT(trackDoubleClickedData(QListViewItem *,const QPoint &,int)));
+	  SLOT(trackDoubleClickedData(Q3ListViewItem *,const QPoint &,int)));
 
   dg_track_list->addColumn("#");
   dg_track_list->setColumnAlignment(0,Qt::AlignHCenter);
@@ -162,13 +165,13 @@ MainWidget::MainWidget(QWidget *parent)
   dg_disc_label=new QLabel(tr("Disk Progress"),this);
   dg_disc_label->setFont(label_font);
   dg_disc_label->setDisabled(true);
-  dg_disc_bar=new QProgressBar(this);
+  dg_disc_bar=new Q3ProgressBar(this);
   dg_disc_bar->setDisabled(true);
 
   dg_track_label=new QLabel(tr("Track Progress"),this);
   dg_track_label->setFont(label_font);
   dg_track_label->setDisabled(true);
-  dg_track_bar=new QProgressBar(this);
+  dg_track_bar=new Q3ProgressBar(this);
   dg_track_bar->setTotalSteps(dg_ripper->totalSteps()+1);
   dg_track_bar->setDisabled(true);
   connect(dg_ripper,SIGNAL(progressChanged(int)),
@@ -200,7 +203,7 @@ MainWidget::MainWidget(QWidget *parent)
   dg_channels_box->setCurrentItem(rda->libraryConf()->defaultChannels()-1);
   dg_channels_label=new QLabel(dg_channels_box,tr("Channels")+":",this);
   dg_channels_label->setFont(label_font);
-  dg_channels_label->setAlignment(AlignRight|AlignVCenter);
+  dg_channels_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Autotrim Check Box
@@ -220,10 +223,10 @@ MainWidget::MainWidget(QWidget *parent)
   dg_autotrim_spin->setValue(rda->libraryConf()->trimThreshold()/100);
   dg_autotrim_label=new QLabel(dg_autotrim_spin,tr("Level")+":",this);
   dg_autotrim_label->setFont(label_font);
-  dg_autotrim_label->setAlignment(AlignRight|AlignVCenter);
+  dg_autotrim_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   dg_autotrim_unit=new QLabel(tr("dBFS"),this);
   dg_autotrim_unit->setFont(label_font);
-  dg_autotrim_unit->setAlignment(AlignLeft|AlignVCenter);
+  dg_autotrim_unit->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   //
   // Normalize Check Box
@@ -243,10 +246,10 @@ MainWidget::MainWidget(QWidget *parent)
   dg_normalize_spin->setValue(rda->libraryConf()->ripperLevel()/100);
   dg_normalize_label=new QLabel(dg_normalize_spin,tr("Level:"),this);
   dg_normalize_label->setFont(label_font);
-  dg_normalize_label->setAlignment(AlignRight|AlignVCenter);
+  dg_normalize_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   dg_normalize_unit=new QLabel(tr("dBFS"),this);
   dg_normalize_unit->setFont(label_font);
-  dg_normalize_unit->setAlignment(AlignLeft|AlignVCenter);
+  dg_normalize_unit->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   //
   // Eject Button
@@ -289,7 +292,7 @@ void MainWidget::indexFileSelectedData()
   QString filename;
   int lines;
 
-  filename=QFileDialog::getOpenFileName(dg_indexfile_edit->text(),
+  filename=Q3FileDialog::getOpenFileName(dg_indexfile_edit->text(),
 					"CSV Files *.csv",this,"",
 					tr("RDDiscImport - Open Index File"));
   dg_metalibrary->clear();
@@ -326,7 +329,7 @@ void MainWidget::autotrimCheckData(bool state)
 }
 
 
-void MainWidget::trackDoubleClickedData(QListViewItem *it,const QPoint &pt,
+void MainWidget::trackDoubleClickedData(Q3ListViewItem *it,const QPoint &pt,
 					int row)
 {
   RDListViewItem *item=(RDListViewItem *)it;
@@ -533,7 +536,7 @@ void MainWidget::userChangedData()
   dg_group_box->clear();
   rda->setUser(rda->ripc()->user());
   groups=rda->user()->groups();
-  for(unsigned i=0;i<groups.size();i++) {
+  for(int i=0;i<groups.size();i++) {
     dg_group_box->insertItem(groups[i]);
     if(dg_group_name==groups[i]) {
       dg_group_box->setCurrentItem(i);
@@ -684,6 +687,7 @@ int main(int argc,char *argv[])
   //
   // Load Translations
   //
+  /*
   QTranslator qt(0);
   qt.load(QString(QTDIR)+QString("/translations/qt_")+QTextCodec::locale(),
 	  ".");
@@ -703,7 +707,7 @@ int main(int argc,char *argv[])
   tr.load(QString(PREFIX)+QString("/share/rivendell/rddiscimport_")+
 	     QTextCodec::locale(),".");
   a.installTranslator(&tr);
-
+  */
   //
   // Start Event Loop
   //

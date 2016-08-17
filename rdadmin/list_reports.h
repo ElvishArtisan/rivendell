@@ -22,8 +22,8 @@
 #define LIST_REPORTS_H
 
 #include <qdialog.h>
-#include <qlistbox.h>
-#include <qtextedit.h>
+#include <q3listbox.h>
+#include <q3textedit.h>
 #include <qpixmap.h>
 #include <qradiobutton.h>
 #include <qsqldatabase.h>
@@ -41,13 +41,13 @@ class ListReports : public QDialog
    void addData();
    void editData();
    void deleteData();
-   void doubleClickedData(QListBoxItem *item);
+   void doubleClickedData(Q3ListBoxItem *item);
    void closeData();
 
   private:
    void DeleteReport(QString rptname);
    void RefreshList(QString rptname="");
-   QListBox *list_box;
+   Q3ListBox *list_box;
 };
 
 

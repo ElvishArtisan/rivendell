@@ -21,11 +21,13 @@
 #include <qdialog.h>
 #include <qpushbutton.h>
 #include <qstring.h>
-#include <qlistbox.h>
+#include <q3listbox.h>
 #include <qpainter.h>
 #include <qevent.h>
 #include <qmessagebox.h>
-#include <qbuttongroup.h>
+#include <q3buttongroup.h>
+//Added by qt3to4:
+#include <QLabel>
 
 #include <rdescape_string.h>
 #include <rduser.h>
@@ -75,7 +77,7 @@ EditSchedCode::EditSchedCode(QString schedCode,QString description,
     new QLabel(schedCode_name_edit,tr("Scheduler Code:"),this);
   schedCode_name_label->setGeometry(10,11,110,19);
   schedCode_name_label->setFont(font);
-  schedCode_name_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  schedCode_name_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::ShowPrefix);
 
   //
   // Code Description
@@ -88,7 +90,7 @@ EditSchedCode::EditSchedCode(QString schedCode,QString description,
     new QLabel(schedCode_description_edit,tr("Code Description:"),this);
   schedCode_description_label->setGeometry(10,32,110,19);
   schedCode_description_label->setFont(font);
-  schedCode_description_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  schedCode_description_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::ShowPrefix);
 
   //
   //  Ok Button

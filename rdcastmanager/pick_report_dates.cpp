@@ -72,13 +72,13 @@ PickReportDates::PickReportDates(unsigned feed_id,unsigned cast_id,
   //
   // Start Date
   //
-  edit_startdate_edit=new QDateEdit(this);
+  edit_startdate_edit=new Q3DateEdit(this);
   edit_startdate_edit->setGeometry(150,10,100,20);
   edit_startdate_edit->setDate(yesterday_date.addMonths(-1));
   QLabel *label=new QLabel(edit_startdate_edit,tr("&Start Date:"),this);
   label->setGeometry(75,10,70,20);
   label->setFont(bold_font);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
   QPushButton *button=new QPushButton(this);
   button->setGeometry(260,7,50,27);
   button->setFont(font);
@@ -88,13 +88,13 @@ PickReportDates::PickReportDates(unsigned feed_id,unsigned cast_id,
   //
   // End Date
   //
-  edit_enddate_edit=new QDateEdit(this);
+  edit_enddate_edit=new Q3DateEdit(this);
   edit_enddate_edit->setGeometry(150,40,100,20);
   edit_enddate_edit->setDate(yesterday_date);
   label=new QLabel(edit_enddate_edit,tr("&End Date:"),this);
   label->setGeometry(75,40,70,20);
   label->setFont(bold_font);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
   button=new QPushButton(this);
   button->setGeometry(260,37,50,27);
   button->setFont(font);
@@ -201,7 +201,7 @@ void PickReportDates::GenerateSubscriptionReport(const QString &keyname,
   //
   *rpt+="                      Rivendell Podcast Subscription Report\n";
   QString title=feed->channelTitle();
-  for(unsigned i=0;i<((80-title.length())/2);i++) {
+  for(int i=0;i<((80-title.length())/2);i++) {
     *rpt+=" ";
   }
   *rpt+=title;
@@ -262,13 +262,13 @@ void PickReportDates::GenerateEpisodeReport(const QString &keyname,
   //
   *rpt+="                       Rivendell Podcast Episode Report\n";
   QString channel_title=feed->channelTitle();
-  for(unsigned i=0;i<((80-channel_title.length())/2);i++) {
+  for(int i=0;i<((80-channel_title.length())/2);i++) {
     *rpt+=" ";
   }
   *rpt+=channel_title;
   *rpt+="\n";
   QString item_title=cast->itemTitle();
-  for(unsigned i=0;i<((80-item_title.length())/2);i++) {
+  for(int i=0;i<((80-item_title.length())/2);i++) {
     *rpt+=" ";
   }
   *rpt+=item_title;

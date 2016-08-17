@@ -23,11 +23,11 @@
 
 #include <qobject.h>
 #include <qstring.h>
-#include <qserversocket.h>
+#include <q3serversocket.h>
 #include <qhostaddress.h>
 
 
-class CaeSocket : public QServerSocket
+class CaeSocket : public Q3ServerSocket
 {
   Q_OBJECT
   public:
@@ -41,7 +41,7 @@ class CaeSocket : public QServerSocket
    void connection(int);
 
   private:
-   QServerSocket *socket;
+   Q3ServerSocket *socket;
 };
 
 

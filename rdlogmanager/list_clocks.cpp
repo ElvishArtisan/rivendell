@@ -20,11 +20,15 @@
 
 #include <qdialog.h>
 #include <qstring.h>
-#include <qtextedit.h>
+#include <q3textedit.h>
 #include <qpainter.h>
 #include <qmessagebox.h>
 #include <qpixmap.h>
 #include <qpainter.h>
+//Added by qt3to4:
+#include <QCloseEvent>
+#include <QResizeEvent>
+#include <QLabel>
 
 #include <rdapplication.h>
 #include <rddb.h>
@@ -68,23 +72,23 @@ ListClocks::ListClocks(QString *clockname,QWidget *parent)
   edit_filter_box=new QComboBox(this);
   edit_filter_label=new QLabel(edit_filter_box,tr("Filter:"),this);
   edit_filter_label->setFont(bold_font);
-  edit_filter_label->setAlignment(AlignRight|AlignVCenter);
+  edit_filter_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   connect(edit_filter_box,SIGNAL(activated(int)),
 	  this,SLOT(filterActivatedData(int)));
 
   //
   // Clocks List
   //
-  edit_clocks_list=new QListView(this);
+  edit_clocks_list=new Q3ListView(this);
   edit_clocks_list->setAllColumnsShowFocus(true);
   edit_clocks_list->setItemMargin(5);
   edit_clocks_list->addColumn(tr("Name"));
   edit_clocks_list->addColumn(tr("Code"));
   edit_clocks_list->addColumn(tr("Color"));
-  edit_clocks_list->setColumnAlignment(2,AlignCenter);
+  edit_clocks_list->setColumnAlignment(2,Qt::AlignCenter);
   connect(edit_clocks_list,
-	  SIGNAL(doubleClicked(QListViewItem *,const QPoint &,int)),
-	  this,SLOT(doubleClickedData(QListViewItem *,const QPoint &,int)));
+	  SIGNAL(doubleClicked(Q3ListViewItem *,const QPoint &,int)),
+	  this,SLOT(doubleClickedData(Q3ListViewItem *,const QPoint &,int)));
 
   //
   //  Add Button
@@ -189,7 +193,7 @@ ListClocks::ListClocks(QString *clockname,QWidget *parent)
   RefreshList();
 
   if(edit_clockname!=NULL) {
-    QListViewItem *item=edit_clocks_list->firstChild();
+    Q3ListViewItem *item=edit_clocks_list->firstChild();
     while(item!=NULL) {
       if(item->text(0)==*edit_clockname) {
 	edit_clocks_list->setSelected(item,true);
@@ -279,7 +283,7 @@ void ListClocks::addData()
       q=new RDSqlQuery(sql);
       delete q;
     }
-    QListViewItem *item=new QListViewItem(edit_clocks_list);
+    Q3ListViewItem *item=new Q3ListViewItem(edit_clocks_list);
     item->setText(0,clockname);
     RefreshItem(item,&new_clocks);
     edit_clocks_list->setSelected(item,true);
@@ -291,7 +295,7 @@ void ListClocks::addData()
 void ListClocks::editData()
 {
   std::vector<QString> new_clocks;
-  QListViewItem *item=edit_clocks_list->selectedItem();
+  Q3ListViewItem *item=edit_clocks_list->selectedItem();
   if(item==NULL) {
     return;
   }
@@ -311,7 +315,7 @@ void ListClocks::deleteData()
   QString str2;
   int n;
   QString svc_list;
-  QListViewItem *item=edit_clocks_list->selectedItem();
+  Q3ListViewItem *item=edit_clocks_list->selectedItem();
   if(item==NULL) {
     return;
   }
@@ -347,7 +351,7 @@ void ListClocks::renameData()
   QString sql;
   RDSqlQuery *q;
   RDSqlQuery *q1;
-  QListViewItem *item=edit_clocks_list->selectedItem();
+  Q3ListViewItem *item=edit_clocks_list->selectedItem();
   if(item==NULL) {
     return;
   }
@@ -422,7 +426,7 @@ void ListClocks::filterActivatedData(int id)
 }
 
 
-void ListClocks::doubleClickedData(QListViewItem *item,const QPoint &,int)
+void ListClocks::doubleClickedData(Q3ListViewItem *item,const QPoint &,int)
 {
   if(edit_clockname==NULL) {
     editData();
@@ -442,7 +446,7 @@ void ListClocks::closeData()
 
 void ListClocks::clearData()
 {
-  QListViewItem *item=edit_clocks_list->selectedItem();
+  Q3ListViewItem *item=edit_clocks_list->selectedItem();
   if(item!=NULL) {
     edit_clocks_list->setSelected(item,false);
   }
@@ -451,7 +455,7 @@ void ListClocks::clearData()
 
 void ListClocks::okData()
 {
-  QListViewItem *item=edit_clocks_list->selectedItem();
+  Q3ListViewItem *item=edit_clocks_list->selectedItem();
   *clock_filter=edit_filter_box->currentText();
   if(item==NULL) {
     *edit_clockname="";
@@ -515,25 +519,25 @@ void ListClocks::RefreshList()
     "COLOR "+
     "from CLOCKS "+filter;
   RDSqlQuery *q=new RDSqlQuery(sql);
-  QListViewItem *item=NULL;
+  Q3ListViewItem *item=NULL;
   while(q->next()) {
-    item=new QListViewItem(edit_clocks_list);
+    item=new Q3ListViewItem(edit_clocks_list);
     WriteItem(item,q);
   }
   delete q;
 }
 
 
-void ListClocks::RefreshItem(QListViewItem *item,
+void ListClocks::RefreshItem(Q3ListViewItem *item,
 			     std::vector<QString> *new_clocks)
 {
-  QListViewItem *new_item;
+  Q3ListViewItem *new_item;
   UpdateItem(item,item->text(0));
 
   if(new_clocks!=NULL) {
     for(unsigned i=0;i<new_clocks->size();i++) {
       if((new_item=edit_clocks_list->findItem(new_clocks->at(i),0))==NULL) {
-	new_item=new QListViewItem(edit_clocks_list);
+	new_item=new Q3ListViewItem(edit_clocks_list);
       }
       UpdateItem(new_item,new_clocks->at(i));
     }
@@ -541,7 +545,7 @@ void ListClocks::RefreshItem(QListViewItem *item,
 }
 
 
-void ListClocks::UpdateItem(QListViewItem *item,QString name)
+void ListClocks::UpdateItem(Q3ListViewItem *item,QString name)
 {
   QString sql=QString("select ")+
     "NAME,"+
@@ -558,7 +562,7 @@ void ListClocks::UpdateItem(QListViewItem *item,QString name)
 }
 
 
-void ListClocks::WriteItem(QListViewItem *item,RDSqlQuery *q)
+void ListClocks::WriteItem(Q3ListViewItem *item,RDSqlQuery *q)
 {
   QPixmap *pix;
   QPainter *p=new QPainter();
@@ -592,7 +596,7 @@ int ListClocks::ActiveClocks(QString clockname,QString *svc_list)
     }
   }
   delete q;
-  for(unsigned i=0;i<svcs.size();i++) {
+  for(int i=0;i<svcs.size();i++) {
     n++;
     *svc_list+="    "+svcs[i]+"\n";
   }

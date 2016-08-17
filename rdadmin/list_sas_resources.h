@@ -25,7 +25,7 @@
 #include <qsqldatabase.h>
 #include <qlabel.h>
 #include <qpushbutton.h>
-#include <qlistview.h>
+#include <q3listview.h>
 
 #include <rduser.h>
 #include <rdmatrix.h>
@@ -40,14 +40,14 @@ class ListSasResources : public QDialog
 
  private slots:
   void editData();
-  void doubleClickedData(QListViewItem *item,const QPoint &pt,int col);
+  void doubleClickedData(Q3ListViewItem *item,const QPoint &pt,int col);
   void okData();
   void cancelData();
 
  private:
   void RefreshList();
   RDMatrix *list_matrix;
-  QListView *list_list_view;
+  Q3ListView *list_list_view;
   int list_size;
   QString list_table;
 };

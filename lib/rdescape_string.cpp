@@ -78,7 +78,7 @@ QString RDEscapeString(QString const &str)
 {
   QString res;
 
-  for(unsigned i=0;i<str.length();i++) {
+  for(int i=0;i<str.length();i++) {
     switch(((const char *)str)[i]) {
 	case '(':
 	  res+=QString("\\\(");

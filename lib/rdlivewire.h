@@ -25,7 +25,7 @@
 
 #include <qstring.h>
 #include <qobject.h>
-#include <qsocket.h>
+#include <q3socket.h>
 #include <qstringlist.h>
 #include <qtimer.h>
 
@@ -131,7 +131,7 @@ class RDLiveWire : public QObject
   std::vector<QTimer *>live_gpi_timers;
   std::vector<QTimer *>live_gpo_timers;
   int live_gpos;
-  QSocket *live_socket;
+  Q3Socket *live_socket;
   char live_buf[RD_LIVEWIRE_MAX_CMD_LENGTH];
   int live_ptr;
   bool live_connected;

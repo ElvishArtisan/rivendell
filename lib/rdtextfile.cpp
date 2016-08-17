@@ -25,7 +25,7 @@
 #include <stdio.h>
 
 #include <qmessagebox.h>
-#include <qprocess.h>
+#include <q3process.h>
 
 #include <rdconf.h>
 #include <rd.h>
@@ -59,7 +59,7 @@ bool RDTextFile(const QString &data)
   QStringList args;
   args+=editor;
   args+=tempfile;
-  QProcess *proc=new QProcess(args);
+  Q3Process *proc=new Q3Process(args);
   proc->launch("");
   delete proc;
 #else

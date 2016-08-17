@@ -27,9 +27,15 @@
 #include <qtimer.h>
 #include <qdatetime.h>
 #include <qpushbutton.h>
-#include <qprogressbar.h>
+#include <q3progressbar.h>
 #include <qpalette.h>
 #include <qpixmap.h>
+//Added by qt3to4:
+#include <QDropEvent>
+#include <QPaintEvent>
+#include <QLabel>
+#include <QMouseEvent>
+#include <QDragEnterEvent>
 
 #include <rdlabel.h>
 #include <rdlog_line.h>
@@ -106,7 +112,7 @@ class LogLineBox : public QWidget
   QLabel *line_up_label;
   QLabel *line_down_label;
   RDLabel *line_comment_label;
-  QProgressBar *line_position_bar;
+  Q3ProgressBar *line_position_bar;
   QTimer *line_countdown_timer;
   QTime line_end_time;
   int log_id;

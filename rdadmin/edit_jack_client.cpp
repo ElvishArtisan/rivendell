@@ -23,6 +23,9 @@
 #include <globals.h>
 #include <rddb.h>
 #include <edit_jack_client.h>
+//Added by qt3to4:
+#include <QResizeEvent>
+#include <QLabel>
 
 EditJackClient::EditJackClient(RDStation *station,QWidget *parent)
   : QDialog(parent,"",true)
@@ -53,7 +56,7 @@ EditJackClient::EditJackClient(RDStation *station,QWidget *parent)
     new QLabel(edit_jack_description_edit,tr("Description:"),this);
   edit_jack_description_label->setFont(font);
   edit_jack_description_label->
-    setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+    setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // JACK Client Description
@@ -63,7 +66,7 @@ EditJackClient::EditJackClient(RDStation *station,QWidget *parent)
     new QLabel(edit_jack_command_line_edit,tr("Command Line:"),this);
   edit_jack_command_line_label->setFont(font);
   edit_jack_command_line_label->
-    setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+    setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   //  Ok Button

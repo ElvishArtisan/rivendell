@@ -21,14 +21,14 @@
 #ifndef RDLISTSELECTOR_H
 #define RDLISTSELECTOR_H
 
-#include <qwidget.h>
-#include <qlabel.h>
-#include <qhbox.h>
-#include <qcolor.h>
-#include <qlistbox.h>
-#include <qpushbutton.h>
+#include <Q3HBox>
+#include <Q3ListBox>
+#include <QColor>
+#include <QLabel>
+#include <QPushButton>
+#include <QWidget>
 
-class RDListSelector : public QHBox
+class RDListSelector : public Q3HBox
 {
   Q_OBJECT
 
@@ -54,10 +54,10 @@ class RDListSelector : public QHBox
   QString destCurrentText() const;
   void sourceSetCurrentItem(int item);
   void destSetCurrentItem(int item);
-  QListBoxItem *sourceFindItem(const QString &text,
-			       ComparisonFlags compare=ExactMatch) const;
-  QListBoxItem *destFindItem(const QString &text,
-			     ComparisonFlags compare=ExactMatch) const;
+  Q3ListBoxItem *sourceFindItem(const QString &text,
+				Q3ListBox::ComparisonFlags compare=Q3ListBox::ExactMatch) const;
+  Q3ListBoxItem *destFindItem(const QString &text,
+			      Q3ListBox::ComparisonFlags compare=Q3ListBox::ExactMatch) const;
   void clear();
   
  private slots:
@@ -66,9 +66,9 @@ class RDListSelector : public QHBox
 
  private:
   void CheckButtons();
-  QListBox *list_source_box;
+  Q3ListBox *list_source_box;
   QLabel *list_source_label;
-  QListBox *list_dest_box;
+  Q3ListBox *list_dest_box;
   QLabel *list_dest_label;
   QPushButton *list_add_button;
   QPushButton *list_remove_button;

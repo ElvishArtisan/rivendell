@@ -22,6 +22,8 @@
 #include <unistd.h>
 #include <qsqldriver.h>
 #include <qmessagebox.h>
+//Added by qt3to4:
+#include <QSqlQuery>
 #include <opendb.h>
 #include <createdb.h>
 #include <rd.h>
@@ -175,6 +177,7 @@ bool OpenDb(QString dbname,QString login,QString pwd,
   //
   // Open Database
   //
+  /*
   QSqlDatabase *db=QSqlDatabase::addDatabase(admin_config->mysqlDriver());
   if(!db) {
     return false;
@@ -188,7 +191,7 @@ bool OpenDb(QString dbname,QString login,QString pwd,
     PrintDbError(QObject::tr("Unable to open MySQL database connection."),
 		 interactive);
   }
-
+  */
   //
   // Identify DB
   //

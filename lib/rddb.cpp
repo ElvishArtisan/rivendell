@@ -19,23 +19,22 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qobject.h>
-#include <qstring.h>
-#include <qtextcodec.h>
-#include <qtranslator.h>
-#include <qserversocket.h>
-#include <qsqldatabase.h>
-#include <qsqlerror.h>
-#include <assert.h>
+#include <Q3ServerSocket>
+#include <QObject>
+#include <QString>
+#include <QTextCodec>
+#include <QTranslator>
+#include <QSqlError>
 
 #include "rddb.h"
 #include "rddbheartbeat.h"
 
-static QSqlDatabase *db = NULL;
+//static QSqlDatabase *db = NULL;
 static RDSqlDatabaseStatus * dbStatus = NULL;
 
-QSqlDatabase *RDInitDb (unsigned *schema,QString *error)
+QSqlDatabase RDInitDb (unsigned *schema,QString *error)
 {
+  /*
   static bool firsttime = true;
 
   *schema=0;
@@ -77,14 +76,18 @@ QSqlDatabase *RDInitDb (unsigned *schema,QString *error)
   delete q;
 
   return db;
+  */
+  return QSqlDatabase();
 }
 
-RDSqlQuery::RDSqlQuery (const QString &query, QSqlDatabase *dbase):
-  QSqlQuery (query,dbase)
+
+RDSqlQuery::RDSqlQuery (const QString &query):
+  QSqlQuery(query)
 {
   //printf("lastQuery: %s\n",(const char *)lastQuery());
 
   // With any luck, by the time we get here, we have already done the biz...
+  /*
   unsigned schema;
   if (!isActive()){ //DB Offline?
     QString err=QObject::tr("invalid SQL or failed DB connection")+
@@ -112,7 +115,10 @@ RDSqlQuery::RDSqlQuery (const QString &query, QSqlDatabase *dbase):
   } else {
     RDDbStatus()->sendRecon();
   }
+  */
 }
+
+
 void RDSqlDatabaseStatus::sendRecon()
 {
   if (discon){

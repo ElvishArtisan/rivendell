@@ -54,7 +54,7 @@ ChangeMode::ChangeMode(unsigned short card,unsigned short type,int mode,
   QLabel *label=new QLabel(QString().sprintf("AudioScience %X",type),this);
   label->setGeometry(10,10,sizeHint().width()-20,15);
   label->setFont(label_font);
-  label->setAlignment(AlignCenter);
+  label->setAlignment(Qt::AlignCenter);
 
   //
   // Adapter Mode

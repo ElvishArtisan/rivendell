@@ -20,8 +20,11 @@
 //
 
 #include <rdbusydialog.h>
+//Added by qt3to4:
+#include <QResizeEvent>
+#include <QLabel>
 
-RDBusyDialog::RDBusyDialog(QWidget *parent,WFlags f)
+RDBusyDialog::RDBusyDialog(QWidget *parent,Qt::WFlags f)
   : QDialog(parent,"",true,f)
 {
   QFont font("helvetica",16,QFont::Bold);

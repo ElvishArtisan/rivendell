@@ -26,7 +26,7 @@
 #include <qsqldatabase.h>
 #include <qstring.h>
 #include <qobject.h>
-#include <qsocketdevice.h>
+#include <q3socketdevice.h>
 #include <qlabel.h>
 
 #include <rd.h>
@@ -106,7 +106,7 @@ class RDCae : public QObject
   int StreamNumber(const char *arg);
   int GetHandle(const char *arg);
   void UpdateMeters();
-  QSocketDevice *cae_socket;
+  Q3SocketDevice *cae_socket;
   bool debug;
   char args[CAE_MAX_ARGS][CAE_MAX_LENGTH];
   int argnum;
@@ -115,7 +115,7 @@ class RDCae : public QObject
   bool input_status[RD_MAX_CARDS][RD_MAX_PORTS];
   int cae_handle[RD_MAX_CARDS][RD_MAX_STREAMS];
   unsigned cae_pos[RD_MAX_CARDS][RD_MAX_STREAMS];
-  QSocketDevice *cae_meter_socket;
+  Q3SocketDevice *cae_meter_socket;
   short cae_input_levels[RD_MAX_CARDS][RD_MAX_PORTS][2];
   short cae_output_levels[RD_MAX_CARDS][RD_MAX_PORTS][2];
   short cae_stream_output_levels[RD_MAX_CARDS][RD_MAX_PORTS][2];

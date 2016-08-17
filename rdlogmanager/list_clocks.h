@@ -27,8 +27,11 @@
 #include <qsqldatabase.h>
 #include <qlabel.h>
 #include <qpushbutton.h>
-#include <qlistview.h>
+#include <q3listview.h>
 #include <qcombobox.h>
+//Added by qt3to4:
+#include <QResizeEvent>
+#include <QCloseEvent>
 
 #include <rduser.h>
 #include <rdmatrix.h>
@@ -47,7 +50,7 @@ class ListClocks : public QDialog
   void editData();
   void deleteData();
   void renameData();
-  void doubleClickedData(QListViewItem *,const QPoint &,int);
+  void doubleClickedData(Q3ListViewItem *,const QPoint &,int);
   void filterActivatedData(int id);
   void closeData();
   void clearData();
@@ -60,14 +63,14 @@ class ListClocks : public QDialog
 
  private:
   void RefreshList();
-  void RefreshItem(QListViewItem *item,std::vector<QString> *new_clocks=NULL);
-  void UpdateItem(QListViewItem *item,QString name);
-  void WriteItem(QListViewItem *item,RDSqlQuery *q);
+  void RefreshItem(Q3ListViewItem *item,std::vector<QString> *new_clocks=NULL);
+  void UpdateItem(Q3ListViewItem *item,QString name);
+  void WriteItem(Q3ListViewItem *item,RDSqlQuery *q);
   int ActiveClocks(QString clockname,QString *svc_list);
   void DeleteClock(QString clockname);
   QString GetClockFilter(QString svc_name);
   QString GetNoneFilter();
-  QListView *edit_clocks_list;
+  Q3ListView *edit_clocks_list;
   QString *edit_clockname;
   QLabel *edit_filter_label;
   QComboBox *edit_filter_box;

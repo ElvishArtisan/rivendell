@@ -195,7 +195,7 @@ bool MainObject::ImportCut(RDGroup *group,struct WingsRecord *rec,
     QString().sprintf("CUT_QUANTITY=1,TYPE=%d,",RDCart::Audio)+
     QString().sprintf("FORCED_LENGTH=%u,",wavefile->getExtTimeLength())+
     QString().sprintf("AVERAGE_LENGTH=%u,",wavefile->getExtTimeLength())+
-    "USER_DEFINED=\""+rec->filename+"."+rec->extension+"\"";
+    "USER_DEFINED=\""+QString(rec->filename)+"."+QString(rec->extension)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
   sql=QString("insert into CUTS set ")+

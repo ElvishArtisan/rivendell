@@ -63,7 +63,7 @@ EditNode::EditNode(int *id,RDMatrix *matrix,QWidget *parent)
     new QLabel(edit_hostname_edit,tr("Hostname: "),this);
   label->setGeometry(10,10,80,20);
   label->setFont(bold_font);
-  label->setAlignment(AlignRight|AlignVCenter);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Node TCP Port
@@ -74,7 +74,7 @@ EditNode::EditNode(int *id,RDMatrix *matrix,QWidget *parent)
   label=new QLabel(edit_tcpport_spin,tr("Port: "),this);
   label->setGeometry(290,10,45,20);
   label->setFont(bold_font);
-  label->setAlignment(AlignRight|AlignVCenter);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Node Description
@@ -84,7 +84,7 @@ EditNode::EditNode(int *id,RDMatrix *matrix,QWidget *parent)
   label=new QLabel(edit_description_edit,tr("Description: "),this);
   label->setGeometry(10,32,80,20);
   label->setFont(bold_font);
-  label->setAlignment(AlignRight|AlignVCenter);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Base Output
@@ -97,7 +97,7 @@ EditNode::EditNode(int *id,RDMatrix *matrix,QWidget *parent)
     new QLabel(edit_output_spin,tr("First Output: "),this);
   label->setGeometry(10,54,80,20);
   label->setFont(bold_font);
-  label->setAlignment(AlignRight|AlignVCenter);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Node Password
@@ -112,7 +112,7 @@ EditNode::EditNode(int *id,RDMatrix *matrix,QWidget *parent)
     new QLabel(edit_password_edit,tr("Password: "),this);
   label->setGeometry(160,54,80,20);
   label->setFont(bold_font);
-  label->setAlignment(AlignRight|AlignVCenter);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   //  View Node Info Button

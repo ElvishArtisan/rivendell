@@ -24,6 +24,8 @@
 #include <qdialog.h>
 #include <qcombobox.h>
 #include <qlineedit.h>
+//Added by qt3to4:
+#include <QCloseEvent>
 
 #include <rdcart.h>
 #include <rduser.h>

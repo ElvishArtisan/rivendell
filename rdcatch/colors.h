@@ -24,26 +24,26 @@
 //
 // Text Colors
 //
-#define EVENT_ACTIVE_TEXT_COLOR black
-#define EVENT_INACTIVE_TEXT_COLOR darkGray
+#define EVENT_ACTIVE_TEXT_COLOR Qt::black
+#define EVENT_INACTIVE_TEXT_COLOR Qt::darkGray
 
 //
 // Background Event List Colors
 //
-#define EVENT_IDLE_COLOR white
-#define EVENT_READY_COLOR cyan
-#define EVENT_ACTIVE_COLOR green
-#define EVENT_NEXT_COLOR yellow
-#define EVENT_WAITING_COLOR magenta
+#define EVENT_IDLE_COLOR Qt::white
+#define EVENT_READY_COLOR Qt::cyan
+#define EVENT_ACTIVE_COLOR Qt::green
+#define EVENT_NEXT_COLOR Qt::yellow
+#define EVENT_WAITING_COLOR Qt::magenta
 #define EVENT_ERROR_COLOR "#F08888"
-#define EVENT_ERROR_TEXT_COLOR white
+#define EVENT_ERROR_TEXT_COLOR Qt::white
 
 //
 // Button Colors
 //
-#define BUTTON_ACTIVE_TEXT_COLOR white
-#define BUTTON_ACTIVE_BACKGROUND_COLOR blue
-#define BUTTON_MONITOR_FLASHING_COLOR red
+#define BUTTON_ACTIVE_TEXT_COLOR Qt::white
+#define BUTTON_ACTIVE_BACKGROUND_COLOR Qt::blue
+#define BUTTON_MONITOR_FLASHING_COLOR Qt::red
 
 
 #endif  // COLORS_H

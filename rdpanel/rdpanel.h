@@ -24,6 +24,8 @@
 #include <qwidget.h>
 #include <qtimer.h>
 #include <qpixmap.h>
+//Added by qt3to4:
+#include <QCloseEvent>
 
 #include <rdstereometer.h>
 #include <rdmacro.h>

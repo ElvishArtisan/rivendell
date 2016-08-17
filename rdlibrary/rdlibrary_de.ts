@@ -1,4 +1,6 @@
-<!DOCTYPE TS><TS>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0">
 <context>
     <name>AudioCart</name>
     <message>
@@ -1221,9 +1223,9 @@ verwendet. Trotzdem löschen?</translation>
     </message>
     <message>
         <source>Deleting cart %06u will also empty the clipboard.
-      <byte value="x9"/>Do you still want to proceed?</source>
+      	Do you still want to proceed?</source>
         <translation>Den Cart %06u zu löschen wird auch die Zwischenablage leeren
-      <byte value="x9"/>Trotzdem fortfahren?</translation>
+      	Trotzdem fortfahren?</translation>
     </message>
     <message>
         <source>Empty Clipboard</source>

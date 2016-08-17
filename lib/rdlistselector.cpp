@@ -21,16 +21,18 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <qwidget.h>
-#include <qhbox.h>
-#include <qvbox.h>
+#include <q3hbox.h>
+#include <q3vbox.h>
 #include <qstring.h>
 #include <qpixmap.h>
 #include <qpixmap.h>
+//Added by qt3to4:
+#include <QLabel>
 
 #include <rdlistselector.h>
 
 RDListSelector::RDListSelector(QWidget *parent)
-  : QHBox(parent)
+  : Q3HBox(parent)
 {
   QFont font;
 
@@ -42,14 +44,14 @@ RDListSelector::RDListSelector(QWidget *parent)
 
   setSpacing(10);
 
-  QVBox *source_box=new QVBox(this,"source_box");
+  Q3VBox *source_box=new Q3VBox(this,"source_box");
   list_source_label=new QLabel(source_box,"list_source_label");
   list_source_label->setFont(font);
   list_source_label->setText(tr("Available Services"));
-  list_source_label->setAlignment(AlignCenter);
-  list_source_box=new QListBox(source_box,"list_source_box");
+  list_source_label->setAlignment(Qt::AlignCenter);
+  list_source_box=new Q3ListBox(source_box,"list_source_box");
 
-  QVBox *button_box=new QVBox(this,"button_box");
+  Q3VBox *button_box=new Q3VBox(this,"button_box");
   list_add_button=new QPushButton(button_box,"list_add_button");
   list_add_button->setText(tr("Add >>"));
   list_add_button->setDisabled(true);
@@ -59,12 +61,12 @@ RDListSelector::RDListSelector(QWidget *parent)
   list_remove_button->setDisabled(true);
   connect(list_remove_button,SIGNAL(clicked()),this,SLOT(removeData()));
 
-  QVBox *dest_box=new QVBox(this,"dest_box");
+  Q3VBox *dest_box=new Q3VBox(this,"dest_box");
   list_dest_label=new QLabel(dest_box,"list_dest_label");
   list_dest_label->setFont(font);
   list_dest_label->setText(tr("Active Services"));
-  list_dest_label->setAlignment(AlignCenter);
-  list_dest_box=new QListBox(dest_box,"list_dest_box");
+  list_dest_label->setAlignment(Qt::AlignCenter);
+  list_dest_box=new Q3ListBox(dest_box,"list_dest_box");
 }
 
 
@@ -196,15 +198,15 @@ void RDListSelector::destSetCurrentItem(int item)
 }
 
 
-QListBoxItem *RDListSelector::sourceFindItem(const QString &text,
-				      ComparisonFlags compare) const
+Q3ListBoxItem *RDListSelector::sourceFindItem(const QString &text,
+				     Q3ListBox::ComparisonFlags compare) const
 {
   return list_source_box->findItem(text,compare);
 }
 
 
-QListBoxItem *RDListSelector::destFindItem(const QString &text,
-				      ComparisonFlags compare) const
+Q3ListBoxItem *RDListSelector::destFindItem(const QString &text,
+				     Q3ListBox::ComparisonFlags compare) const
 {
   return list_dest_box->findItem(text,compare);
 }

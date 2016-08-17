@@ -25,6 +25,8 @@
 #include <qlineedit.h>
 #include <qpixmap.h>
 #include <qcolor.h>
+//Added by qt3to4:
+#include <QKeyEvent>
 
 class RDLineEdit : public QLineEdit
 {

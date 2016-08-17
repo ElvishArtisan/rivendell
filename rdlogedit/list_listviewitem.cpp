@@ -20,6 +20,8 @@
 
 #include <qfontmetrics.h>
 #include <qpainter.h>
+//Added by qt3to4:
+#include <QPixmap>
 
 #include <list_listviewitem.h>
 
@@ -27,8 +29,8 @@
 #include "../icons/redball.xpm"
 #include "../icons/whiteball.xpm"
 
-ListListViewItem::ListListViewItem(QListView *parent)
-  : QListViewItem(parent)
+ListListViewItem::ListListViewItem(Q3ListView *parent)
+  : Q3ListViewItem(parent)
 {
   list_track_column=-1;
   list_tracks=-1;
@@ -84,7 +86,7 @@ void ListListViewItem::paintCell(QPainter *p,const QColorGroup &cg,int column,
 				 int width,int align)
 {
   if(column!=list_track_column) {
-    QListViewItem::paintCell(p,cg,column,width,align);
+    Q3ListViewItem::paintCell(p,cg,column,width,align);
     return;
   }
   QColor fg=cg.text();

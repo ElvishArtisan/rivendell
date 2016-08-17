@@ -19,8 +19,8 @@
 ##
 ## Use automake to process this into a Makefile.in
 
-AM_CPPFLAGS = -Wall @QT_CXXFLAGS@ -I$(top_srcdir)/lib -I$(top_srcdir)/rdhpi -Wno-strict-aliasing
-LIBS = @QT_LIBS@ -L$(top_srcdir)/lib -L$(top_srcdir)/rdhpi
+AM_CPPFLAGS = -Wall -I$(top_srcdir)/lib -I$(top_srcdir)/rdhpi -Wno-strict-aliasing @QT4_CFLAGS@ -DQT3_SUPPORT -I/usr/include/Qt3Support
+LIBS = -L$(top_srcdir)/lib -L$(top_srcdir)/rdhpi
 MOC = @QT_MOC@
 
 # The dependency for qt's Meta Object Compiler (moc)
@@ -43,7 +43,9 @@ caed_LDADD = @LIB_RDLIBS@\
              @LIBHPI@\
              @LIBJACK@\
              @LIBSRC@\
-             @LIBVORBIS@
+             @LIBVORBIS@\
+             @QT4_LIBS@\
+             -lQt3Support
 
 CLEANFILES = *~\
              moc_*

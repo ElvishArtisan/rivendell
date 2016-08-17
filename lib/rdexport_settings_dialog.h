@@ -21,16 +21,14 @@
 #ifndef RDEXPORT_SETTINGS_DIALOG_H
 #define RDEXPORT_SETTINGS_DIALOG_H
 
-#include <qdialog.h>
-#include <qsqldatabase.h>
-#include <qlineedit.h>
-#include <qcombobox.h>
-#include <qspinbox.h>
-#include <qlabel.h>
+#include <QComboBox>
+#include <QDialog>
+#include <QLabel>
+#include <QLineEdit>
+#include <QSpinBox>
 
 #include <rdsettings.h>
 #include <rdstation.h>
-#include <rdencoderlist.h>
 
 class RDExportSettingsDialog : public QDialog
 {
@@ -53,7 +51,6 @@ class RDExportSettingsDialog : public QDialog
    void ShowBitRates(RDSettings::Format fmt,int samprate,int bitrate,int qual);
    void SetCurrentItem(QComboBox *box,int value);
    RDSettings::Format GetFormat(QString str);
-   RDEncoderList *lib_encoders;
    RDSettings *lib_settings;
    RDStation *lib_station;
    QComboBox *lib_format_box;

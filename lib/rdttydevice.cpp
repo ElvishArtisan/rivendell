@@ -1,8 +1,8 @@
 //   rdttydevice.cpp
 //
-//   A Qt driver for tty ports on Linux.
+//   A Qt driver for tty ports.
 //
-//   (C) Copyright 2002,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2009-2013,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -22,59 +22,80 @@
 #include <errno.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <sys/ioctl.h>
 #include <fcntl.h>
-#include <qiodevice.h>
 
-#include <rdttydevice.h>
+#include "rdttydevice.h"
 
-RDTTYDevice::RDTTYDevice() : QIODevice()
+RDTTYDevice::RDTTYDevice(QObject *parent)
+  : QIODevice(parent)
 {
-  Init();
+  tty_speed=9600;
+  tty_length=8;
+  tty_parity=RDTTYDevice::None;
+  tty_flow_control=RDTTYDevice::FlowNone;
+  tty_open=false;
+  tty_notifier=NULL;
+
+  tty_write_timer=new QTimer(this);
+  tty_write_timer->setSingleShot(false);
+  connect(tty_write_timer,SIGNAL(timeout()),this,SLOT(writeTtyData()));
 }
 
 RDTTYDevice::~RDTTYDevice()
 {
-  if(tty_open) {
-    close();
-  }
+  close();
+  delete tty_write_timer;
 }
 
-bool RDTTYDevice::open(int mode)
+
+bool RDTTYDevice::open(QIODevice::OpenMode mode)
 {
   int flags=O_NONBLOCK|O_NOCTTY;
   struct termios term;
 
   tty_mode=mode;
-  if((mode&IO_ReadWrite)==IO_ReadWrite) {
+  if((mode&QIODevice::ReadWrite)==QIODevice::ReadWrite) {
     flags|=O_RDWR;
   }
   else {
-    if(((mode&IO_WriteOnly)!=0)) {
+    if(((mode&QIODevice::WriteOnly)!=0)) {
       flags|=O_WRONLY;
     }
-    if(((mode&IO_ReadOnly)!=0)) {
+    if(((mode&QIODevice::ReadOnly)!=0)) {
       flags|=O_RDONLY;
     }
   }
-  if((mode&IO_Append)!=0) {
+  if((mode&QIODevice::Append)!=0) {
     flags|=O_APPEND;
   }
-  if((mode&IO_Truncate)!=0) {
+  if((mode&QIODevice::Truncate)!=0) {
     flags|=O_TRUNC;
   }
 
-  if((tty_fd=::open((const char *)tty_name,flags))<0) {
-    tty_status=IO_OpenError;
+  if((tty_fd=::open(tty_name.toAscii(),flags))<0) {
     return false;
   }
   tty_open=true;
-  tty_status=IO_Ok;
 
   tcgetattr(tty_fd,&term);
-  cfsetispeed(&term,B0);
+
+  //
+  // Set Speed
+  //
+  //cfsetispeed(&term,B0);
+  cfsetispeed(&term,tty_speed);
   cfsetospeed(&term,tty_speed);
+
+  //
+  // Set Mode
+  //
   cfmakeraw(&term);
   term.c_iflag |= IGNBRK; 
+
+  //
+  // Set Parity
+  //
   switch(tty_parity) {
   case RDTTYDevice::None:
     term.c_iflag |= IGNPAR;
@@ -88,7 +109,58 @@ bool RDTTYDevice::open(int mode)
     term.c_cflag |= PARENB|PARODD;
     break;
   }
+
+  //
+  // Set Word Length
+  //
+  //term.c_cflag &= ~CSIZE;
+  switch(tty_length) {
+  case 5:
+    term.c_cflag |= CS5;
+    break;
+
+  case 6:
+    term.c_cflag |= CS6;
+    break;
+
+  case 7:
+    term.c_cflag |= CS7;
+    break;
+
+  case 8:
+    term.c_cflag |= CS8;
+    break;
+  }
+
+  //
+  // Set Flow Control
+  //
+  switch(tty_flow_control) {
+  case RDTTYDevice::FlowNone:
+    term.c_cflag &= ~CRTSCTS;
+    term.c_iflag &= ~IXON;
+    term.c_iflag &= ~IXOFF;
+    break;
+
+  case RDTTYDevice::FlowRtsCts:
+    term.c_cflag |= CRTSCTS;
+    term.c_iflag &= ~IXON;
+    term.c_iflag &= ~IXOFF;
+    break;
+
+  case RDTTYDevice::FlowXonXoff:
+    term.c_cflag &= ~CRTSCTS;
+    term.c_iflag |= IXON;
+    term.c_iflag |= IXOFF;
+    break;
+  }
+
   tcsetattr(tty_fd,TCSADRAIN,&term);
+
+  tty_notifier=new QSocketNotifier(tty_fd,QSocketNotifier::Read,this);
+  connect(tty_notifier,SIGNAL(activated(int)),this,SLOT(readTtyData(int)));
+
+  tty_write_timer->start(10);
 
   return true;
 }
@@ -97,220 +169,149 @@ bool RDTTYDevice::open(int mode)
 void RDTTYDevice::close()
 {
   if(tty_open) {
+    emit aboutToClose();
+    tty_write_timer->stop();
+    delete tty_notifier;
+    tty_notifier=NULL;
     ::close(tty_fd);
+    if((tty_mode&QIODevice::ReadOnly)!=0) {
+      emit readChannelFinished();
+    }
   }
   tty_open=false;
 }
 
 
-int RDTTYDevice::socket()
+QString RDTTYDevice::name() const
+{
+  return tty_name;
+}
+
+
+void RDTTYDevice::setName(const QString &str)
+{
+  tty_name=str;
+}
+
+
+int RDTTYDevice::fileDescriptor() const
 {
   return tty_fd;
 }
 
 
-void RDTTYDevice::flush()
+qint64 RDTTYDevice::read(char *data,qint64 maxlen)
 {
+  return readData(data,maxlen);
 }
 
 
-Q_LONG RDTTYDevice::readBlock(char *data,Q_ULONG maxlen)
+QByteArray RDTTYDevice::read(qint64 maxlen)
 {
-  Q_LONG n;
-
-  if((n=read(tty_fd,data,(size_t)maxlen))<0) {
-    if(errno!=EAGAIN) {
-      tty_status=IO_ReadError;
-      return -1;
-    }
-    return 0;
-  }
-  tty_status=IO_Ok;
-  return n;
+  qint64 n=0;
+  char *data=new char[maxlen];
+  n=readData(data,maxlen);
+  QByteArray ret(data,n);
+  delete data;
+  return ret;
 }
 
 
-Q_LONG RDTTYDevice::writeBlock(const char *data,Q_ULONG len)
+QByteArray RDTTYDevice::readAll()
 {
-  Q_LONG n;
-
-  if((n=write(tty_fd,data,(size_t)len))<0) {
-    tty_status=IO_WriteError;
-    return n;
-  }
-  tty_status=IO_Ok;
-  return n;
+  return read(bytesAvailable());
 }
 
 
-int RDTTYDevice::getch()
+qint64 RDTTYDevice::readBlock(char *data,qint64 maxlen)
 {
-  char c;
-  int n;
-
-  if((n=readBlock(&c,1))<0) {
-    tty_status=IO_ReadError;
-    return -1;
-  }
-  return (int)c;
+  return readData(data,maxlen);
 }
 
 
-int RDTTYDevice::putch(int ch)
+qint64 RDTTYDevice::write(const char *data,qint64 len)
 {
-  char c;
-  int n;
-
-  c=(char)ch;
-  if((n=writeBlock(&c,1))<0) {
-    tty_status=IO_WriteError;
-    return -1;
-  }
-  return ch;
+  return writeData(data,len);
 }
 
 
-int RDTTYDevice::ungetch(int ch)
+qint64 RDTTYDevice::write(const QByteArray &array)
 {
-  tty_status=IO_WriteError;
-  return -1;
+  return write(array.constData(),array.size());
 }
 
 
-QIODevice::Offset RDTTYDevice::size() const
+bool RDTTYDevice::getChar(char *ch)
 {
-  return 0;
+  return readData(ch,1)==1;
 }
 
 
-int RDTTYDevice::flags() const
+bool RDTTYDevice::putChar(char ch)
 {
-  return tty_mode|state();
+  return writeData(&ch,1)==1;
 }
 
 
-int RDTTYDevice::mode() const
+qint64 RDTTYDevice::size() const
 {
-  return tty_mode;
+  return bytesAvailable();
 }
 
 
-int RDTTYDevice::state() const
+qint64 RDTTYDevice::bytesAvailable() const
 {
+  int val=0;
   if(tty_open) {
-    return IO_Open;
+    ioctl(tty_fd,FIONREAD,&val);
   }
-  return 0;
+  return val;
 }
 
 
-bool RDTTYDevice::isDirectAccess() const
+qint64 RDTTYDevice::bytesToWrite() const
 {
-  return false;
+  int val=0;
+  if(tty_open) {
+    ioctl(tty_fd,TIOCOUTQ,&val);
+  }
+  return val;
 }
 
 
-bool RDTTYDevice::isSequentialAccess() const
-{
-  return true;
-}
-
-
-bool RDTTYDevice::isCombinedAccess() const
-{
-  return false;
-}
-
-
-bool RDTTYDevice::isBuffered() const
-{
-  return false;
-}
-
-
-bool RDTTYDevice::isRaw() const
+bool RDTTYDevice::isSequential() const
 {
   return true;
-}
-
-
-bool RDTTYDevice::isSynchronous() const
-{
-  return true;
-}
-
-
-bool RDTTYDevice::isAsynchronous() const
-{
-  return false;
-}
-
-
-bool RDTTYDevice::isTranslated() const
-{
-  return false;
 }
 
 
 bool RDTTYDevice::isReadable() const
 {
-  if(((tty_mode&IO_ReadOnly)!=0)||((tty_mode&IO_ReadWrite)!=0)) {
-    return true;
-  }
-  return false;
+  return((tty_mode&QIODevice::ReadOnly)!=0)||
+    ((tty_mode&QIODevice::ReadWrite)!=0);
 }
 
 
 bool RDTTYDevice::isWritable() const
 {
-  if(((tty_mode&IO_WriteOnly)!=0)||((tty_mode&IO_ReadWrite)!=0)) {
-    return true;
-  }
-  return false;
-}
-
-
-bool RDTTYDevice::isReadWrite() const
-{
-  if((tty_mode&IO_ReadWrite)!=0) {
-    return true;
-  }
-  return false;
-
-}
-
-
-bool RDTTYDevice::isInactive() const
-{
-  if(!tty_open) {
-    return true;
-  }
-  return false;
+  return ((tty_mode&QIODevice::WriteOnly)!=0)||
+    ((tty_mode&QIODevice::ReadWrite)!=0);
 }
 
 
 bool RDTTYDevice::isOpen() const
 {
-  if(tty_open) {
-    return true;
-  }
-  return false;
+  return tty_open;
 }
 
 
-int RDTTYDevice::status() const
+QString RDTTYDevice::deviceName() const
 {
-  return tty_status;
+  return tty_name;
 }
 
 
-void RDTTYDevice::resetStatus()
-{
-  tty_status=IO_Ok;
-}
-
-
-void RDTTYDevice::setName(QString name)
+void RDTTYDevice::setDeviceName(QString name)
 {
   tty_name=name;
 }
@@ -482,8 +483,6 @@ void RDTTYDevice::setSpeed(int speed)
     tty_speed=B9600;
     break;
   }
-   
-
 }
 
 
@@ -548,10 +547,62 @@ void RDTTYDevice::setParity(Parity parity)
 }
 
 
-void RDTTYDevice::Init()
+RDTTYDevice::FlowControl RDTTYDevice::flowControl() const
 {
-  tty_speed=9600;
-  tty_length=8;
-  tty_parity=RDTTYDevice::None;
-  tty_open=false;
+  return tty_flow_control;
+}
+
+
+void RDTTYDevice::setFlowControl(FlowControl ctrl)
+{
+  tty_flow_control=ctrl;
+}
+
+
+qint64 RDTTYDevice::readData(char *data,qint64 maxlen)
+{
+  qint64 n;
+
+  if((n=::read(tty_fd,data,(size_t)maxlen))<0) {
+    return 0;
+  }
+  return n;
+}
+
+
+qint64 RDTTYDevice::writeData(const char *data,qint64 len)
+{
+  for(qint64 i=0;i<len;i++) {
+    tty_write_queue.push(data[i]);
+  }
+  emit bytesWritten(len);
+  return len;
+}
+
+
+void RDTTYDevice::readTtyData(int sock)
+{
+  emit readyRead();
+}
+
+
+void RDTTYDevice::writeTtyData()
+{
+  char data[2048];
+  int bytes=0;
+
+  ioctl(tty_fd,TIOCOUTQ,&bytes);
+  int n=2048-bytes;
+  if((int)tty_write_queue.size()<n) {
+    n=tty_write_queue.size();
+  }
+  if(n==0) {
+    return;
+  }
+
+  for(ssize_t i=0;i<n;i++) {
+    data[i]=tty_write_queue.front();
+    tty_write_queue.pop();
+  }
+  ::write(tty_fd,data,n);
 }

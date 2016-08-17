@@ -21,14 +21,14 @@
 #include <qdialog.h>
 #include <qstring.h>
 #include <qpushbutton.h>
-#include <qlistbox.h>
-#include <qtextedit.h>
+#include <q3listbox.h>
+#include <q3textedit.h>
 #include <qlabel.h>
 #include <qpainter.h>
 #include <qevent.h>
 #include <qmessagebox.h>
 #include <qcheckbox.h>
-#include <qbuttongroup.h>
+#include <q3buttongroup.h>
 #include <qsqldatabase.h>
 
 #include <rdcatch_connect.h>
@@ -75,7 +75,7 @@ AddHostvar::AddHostvar(QString station,QString *var,QString *varvalue,
   QLabel *label=new QLabel(add_name_edit,tr("Variable Name:"),this);
   label->setGeometry(10,11,110,19);
   label->setFont(font);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Variable Value
@@ -86,7 +86,7 @@ AddHostvar::AddHostvar(QString station,QString *var,QString *varvalue,
   label=new QLabel(add_varvalue_edit,tr("Variable Value:"),this);
   label->setGeometry(10,33,110,19);
   label->setFont(font);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Remark
@@ -97,7 +97,7 @@ AddHostvar::AddHostvar(QString station,QString *var,QString *varvalue,
   label=new QLabel(add_remark_edit,tr("Remark:"),this);
   label->setGeometry(10,55,110,19);
   label->setFont(font);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   //  Ok Button

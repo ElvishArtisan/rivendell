@@ -22,9 +22,14 @@
 
 #include <qdialog.h>
 #include <qstring.h>
-#include <qtextedit.h>
+#include <q3textedit.h>
 #include <qpainter.h>
 #include <qmessagebox.h>
+//Added by qt3to4:
+#include <QCloseEvent>
+#include <QResizeEvent>
+#include <QPixmap>
+#include <QLabel>
 
 #include <rdapplication.h>
 #include <rddb.h>
@@ -69,23 +74,23 @@ ListEvents::ListEvents(QString *eventname,QWidget *parent)
   edit_filter_label=new QLabel(edit_filter_box,tr("Filter:"),this);
   edit_filter_label->setGeometry(10,10,50,20);
   edit_filter_label->setFont(bold_font);
-  edit_filter_label->setAlignment(AlignRight|AlignVCenter);
+  edit_filter_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   connect(edit_filter_box,SIGNAL(activated(int)),
 	  this,SLOT(filterActivatedData(int)));
 
   //
   // Events List
   //
-  edit_events_list=new QListView(this);
+  edit_events_list=new Q3ListView(this);
   edit_events_list->setAllColumnsShowFocus(true);
   edit_events_list->setItemMargin(5);
   edit_events_list->addColumn(tr("Name"));
   edit_events_list->addColumn(tr("Properties"));
   edit_events_list->addColumn(tr("Color"));
-  edit_events_list->setColumnAlignment(2,AlignCenter);
+  edit_events_list->setColumnAlignment(2,Qt::AlignCenter);
   connect(edit_events_list,
-	  SIGNAL(doubleClicked(QListViewItem *,const QPoint &,int)),
-	  this,SLOT(doubleClickedData(QListViewItem *,const QPoint &,int)));
+	  SIGNAL(doubleClicked(Q3ListViewItem *,const QPoint &,int)),
+	  this,SLOT(doubleClickedData(Q3ListViewItem *,const QPoint &,int)));
 
   //
   //  Add Button
@@ -252,7 +257,7 @@ void ListEvents::addData()
     }
   }
   delete event_dialog;
-  QListViewItem *item=new QListViewItem(edit_events_list);
+  Q3ListViewItem *item=new Q3ListViewItem(edit_events_list);
   item->setText(0,logname);
   RefreshItem(item,&new_events);
   edit_events_list->setSelected(item,true);
@@ -264,7 +269,7 @@ void ListEvents::editData()
 {
   std::vector<QString> new_events;
 
-  QListViewItem *item=edit_events_list->selectedItem();
+  Q3ListViewItem *item=edit_events_list->selectedItem();
   if(item==NULL) {
     return;
   }
@@ -285,7 +290,7 @@ void ListEvents::deleteData()
   QString str1;
   QString str2;
 
-  QListViewItem *item=edit_events_list->selectedItem();
+  Q3ListViewItem *item=edit_events_list->selectedItem();
   if(item==NULL) {
     return;
   }
@@ -323,7 +328,7 @@ void ListEvents::renameData()
   RDSqlQuery *q;
   RDSqlQuery *q1;
   QString clock_name_esc;
-  QListViewItem *item=edit_events_list->selectedItem();
+  Q3ListViewItem *item=edit_events_list->selectedItem();
   if(item==NULL) {
     return;
   }
@@ -397,7 +402,7 @@ void ListEvents::filterActivatedData(int id)
 }
 
 
-void ListEvents::doubleClickedData(QListViewItem *item,const QPoint &,int)
+void ListEvents::doubleClickedData(Q3ListViewItem *item,const QPoint &,int)
 {
   if(edit_eventname==NULL) {
     editData();
@@ -416,7 +421,7 @@ void ListEvents::closeData()
 
 void ListEvents::okData()
 {
-  QListViewItem *item=edit_events_list->selectedItem();
+  Q3ListViewItem *item=edit_events_list->selectedItem();
   *event_filter=edit_filter_box->currentText();
   if(item==NULL) {
     done(-1);
@@ -469,25 +474,25 @@ void ListEvents::RefreshList()
   edit_events_list->clear();
   QString sql=QString("select NAME,PROPERTIES,COLOR from EVENTS ")+filter;
   RDSqlQuery *q=new RDSqlQuery(sql);
-  QListViewItem *item=NULL;
+  Q3ListViewItem *item=NULL;
   while(q->next()) {
-    item=new QListViewItem(edit_events_list);
+    item=new Q3ListViewItem(edit_events_list);
     WriteItem(item,q);
   }
   delete q;
 }
 
 
-void ListEvents::RefreshItem(QListViewItem *item,
+void ListEvents::RefreshItem(Q3ListViewItem *item,
 			     std::vector<QString> *new_events)
 {
-  QListViewItem *new_item;
+  Q3ListViewItem *new_item;
   UpdateItem(item,item->text(0));
 
   if(new_events!=NULL) {
     for(unsigned i=0;i<new_events->size();i++) {
       if((new_item=edit_events_list->findItem(new_events->at(i),0))==NULL) {
-	new_item=new QListViewItem(edit_events_list);
+	new_item=new Q3ListViewItem(edit_events_list);
       }
       UpdateItem(new_item,new_events->at(i));
     }
@@ -495,7 +500,7 @@ void ListEvents::RefreshItem(QListViewItem *item,
 }
 
 
-void ListEvents::UpdateItem(QListViewItem *item,QString name)
+void ListEvents::UpdateItem(Q3ListViewItem *item,QString name)
 {
   QString sql=QString("select ")+
     "NAME,"+
@@ -512,7 +517,7 @@ void ListEvents::UpdateItem(QListViewItem *item,QString name)
 }
 
 
-void ListEvents::WriteItem(QListViewItem *item,RDSqlQuery *q)
+void ListEvents::WriteItem(Q3ListViewItem *item,RDSqlQuery *q)
 {
   QPixmap *pix;
   QPainter *p=new QPainter();

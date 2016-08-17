@@ -20,13 +20,16 @@
 
 #include <qstring.h>
 #include <qpushbutton.h>
-#include <qtextedit.h>
+#include <q3textedit.h>
 #include <qpainter.h>
 #include <qevent.h>
 #include <qmessagebox.h>
 #include <qcheckbox.h>
-#include <qbuttongroup.h>
+#include <q3buttongroup.h>
 #include <qimage.h>
+//Added by qt3to4:
+#include <QPixmap>
+#include <QLabel>
 
 #include <rdlabel.h>
 #include <rdlicense.h>
@@ -104,7 +107,7 @@ InfoDialog::InfoDialog(QWidget *parent)
   //
   label=new QLabel(tr("A Radio Automation System"),this);
   label->setGeometry(130,52,200,18);
-  label->setAlignment(AlignVCenter|AlignRight);
+  label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
   label->setFont(slogan_font);
 
   //
@@ -119,7 +122,7 @@ InfoDialog::InfoDialog(QWidget *parent)
   label=new QLabel(QString().sprintf("%s %d",(const char *)str,
 				     RD_VERSION_DATABASE),this);
   label->setGeometry(210,73,120,14);
-  label->setAlignment(AlignVCenter|AlignRight);
+  label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
   label->setFont(font);
 
   //

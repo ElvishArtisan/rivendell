@@ -30,11 +30,15 @@
 #include <qradiobutton.h>
 #include <qcheckbox.h>
 #include <qlineedit.h>
-#include <qdatetimeedit.h>
+#include <q3datetimeedit.h>
 #include <qspinbox.h>
 #include <qcombobox.h>
-#include <qbuttongroup.h>
-#include <qtextedit.h>
+#include <q3buttongroup.h>
+#include <q3textedit.h>
+//Added by qt3to4:
+#include <QCloseEvent>
+#include <QPaintEvent>
+#include <QPixmap>
 
 #include <rdtransportbutton.h>
 
@@ -66,7 +70,7 @@ class EditEvent : public QDialog
   void filterChangedData(const QString &str);
   void filterActivatedData(const QString &str);
   void filterClickedData(int id);
-  void cartClickedData(QListViewItem *item);
+  void cartClickedData(Q3ListViewItem *item);
   void prepositionToggledData(bool state);
   void timeToggledData(bool);
   void graceClickedData(int);
@@ -101,7 +105,7 @@ class EditEvent : public QDialog
   QString event_name;
   RDEvent *event_event;
   QLineEdit *event_lib_filter_edit;
-  QButtonGroup *event_lib_type_group;
+  Q3ButtonGroup *event_lib_type_group;
   QComboBox *event_group_box;
   QComboBox *event_sched_group_box;
   QSpinBox* event_title_sep_spinbox;
@@ -117,7 +121,7 @@ class EditEvent : public QDialog
   QLabel *event_position_label;
   QLabel *event_position_unit;
   QCheckBox *event_position_box;
-  QTimeEdit *event_position_edit;
+  Q3TimeEdit *event_position_edit;
   QLabel *event_timetype_header;
   QCheckBox *event_timetype_box;
   QLabel *event_timetype_label;
@@ -125,27 +129,27 @@ class EditEvent : public QDialog
   QLabel *event_post_label;
   QLabel *event_time_label;
   QLabel *event_grace_label;
-  QButtonGroup *event_grace_group;
+  Q3ButtonGroup *event_grace_group;
   QRadioButton *event_immediate_button;
   QRadioButton *event_next_button;
   QRadioButton *event_wait_button;
-  QTimeEdit *event_grace_edit;
+  Q3TimeEdit *event_grace_edit;
   QComboBox *event_transtype_box;
   QCheckBox *event_autofill_box;
   QCheckBox *event_autofill_slop_box;
   QLabel *event_autofill_slop_label1;
   QLabel *event_autofill_slop_label;
-  QTimeEdit *event_autofill_slop_edit;
+  Q3TimeEdit *event_autofill_slop_edit;
   QCheckBox *event_timescale_box;
   ImportListView *event_preimport_list;
   QLineEdit *event_preimport_length_edit;
   RDTransportButton *event_preimport_up_button;
   RDTransportButton *event_preimport_down_button;
-  QButtonGroup *event_source_group;
-  QTimeEdit *event_startslop_edit;
+  Q3ButtonGroup *event_source_group;
+  Q3TimeEdit *event_startslop_edit;
   QLabel *event_startslop_label;
   QLabel *event_startslop_unit;
-  QTimeEdit *event_endslop_edit;
+  Q3TimeEdit *event_endslop_edit;
   QLabel *event_endslop_label;
   QLabel *event_endslop_unit;
   QComboBox *event_firsttrans_box;
@@ -166,7 +170,7 @@ class EditEvent : public QDialog
   bool event_new_event;
   std::vector<QString> *event_new_events;
   RDSimplePlayer *event_player;
-  QTextEdit *event_remarks_edit;
+  Q3TextEdit *event_remarks_edit;
   RDEmptyCart *event_empty_cart;
 };
 

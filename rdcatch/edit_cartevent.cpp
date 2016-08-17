@@ -21,12 +21,17 @@
 #include <qdialog.h>
 #include <qstring.h>
 #include <qpushbutton.h>
-#include <qlistbox.h>
-#include <qtextedit.h>
+#include <q3listbox.h>
+#include <q3textedit.h>
 #include <qpainter.h>
 #include <qevent.h>
 #include <qmessagebox.h>
 #include <qcheckbox.h>
+//Added by qt3to4:
+#include <QCloseEvent>
+#include <QPaintEvent>
+#include <QLabel>
+#include <QKeyEvent>
 
 #include <rdapplication.h>
 #include <rd.h>
@@ -93,7 +98,7 @@ EditCartEvent::EditCartEvent(int id,std::vector<int> *adds,QWidget *parent)
   QLabel *label=new QLabel(edit_active_button,tr("Event Active"),this);
   label->setGeometry(30,11,125,20);
   label->setFont(label_font);
-  label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Station
@@ -103,17 +108,17 @@ EditCartEvent::EditCartEvent(int id,std::vector<int> *adds,QWidget *parent)
   label=new QLabel(edit_station_box,tr("Location:"),this);
   label->setGeometry(125,10,70,23);
   label->setFont(label_font);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Start Time
   //
-  edit_starttime_edit=new QTimeEdit(this);
+  edit_starttime_edit=new Q3TimeEdit(this);
   edit_starttime_edit->setGeometry(sizeHint().width()-90,12,80,20);
   label=new QLabel(edit_starttime_edit,tr("Start Time:"),this);
   label->setGeometry(sizeHint().width()-175,12,80,20);
   label->setFont(label_font);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Description
@@ -124,7 +129,7 @@ EditCartEvent::EditCartEvent(int id,std::vector<int> *adds,QWidget *parent)
   label=new QLabel(edit_description_edit,tr("Description:"),this);
   label->setGeometry(10,43,100,20);
   label->setFont(label_font);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Cart Number
@@ -135,7 +140,7 @@ EditCartEvent::EditCartEvent(int id,std::vector<int> *adds,QWidget *parent)
   label=new QLabel(edit_destination_edit,tr("Cart Number:"),this);
   label->setGeometry(10,73,100,19);
   label->setFont(label_font);
-  label->setAlignment(AlignRight|ShowPrefix);
+  label->setAlignment(Qt::AlignRight|Qt::TextShowMnemonic);
   QPushButton *button=new QPushButton(this);
   button->setGeometry(185,68,60,24);
   button->setFont(day_font);
@@ -148,7 +153,7 @@ EditCartEvent::EditCartEvent(int id,std::vector<int> *adds,QWidget *parent)
   label=new QLabel(tr("Active Days"),this);
   label->setGeometry(47,101,90,19);
   label->setFont(label_font);
-  label->setAlignment(AlignHCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignHCenter|Qt::TextShowMnemonic);
 
   //
   // Monday Button
@@ -158,7 +163,7 @@ EditCartEvent::EditCartEvent(int id,std::vector<int> *adds,QWidget *parent)
   label=new QLabel(edit_mon_button,tr("Monday"),this);
   label->setGeometry(40,120,115,20);
   label->setFont(day_font);
-  label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Tuesday Button
@@ -168,7 +173,7 @@ EditCartEvent::EditCartEvent(int id,std::vector<int> *adds,QWidget *parent)
   label=new QLabel(edit_tue_button,tr("Tuesday"),this);
   label->setGeometry(135,120,115,20);
   label->setFont(day_font);
-  label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Wednesday Button
@@ -178,7 +183,7 @@ EditCartEvent::EditCartEvent(int id,std::vector<int> *adds,QWidget *parent)
   label=new QLabel(edit_wed_button,tr("Wednesday"),this);
   label->setGeometry(235,120,115,20);
   label->setFont(day_font);
-  label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Thursday Button
@@ -188,7 +193,7 @@ EditCartEvent::EditCartEvent(int id,std::vector<int> *adds,QWidget *parent)
   label=new QLabel(edit_thu_button,tr("Thursday"),this);
   label->setGeometry(355,120,115,20);
   label->setFont(day_font);
-  label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Friday Button
@@ -198,7 +203,7 @@ EditCartEvent::EditCartEvent(int id,std::vector<int> *adds,QWidget *parent)
   label=new QLabel(edit_fri_button,tr("Friday"),this);
   label->setGeometry(460,120,40,20);
   label->setFont(day_font);
-  label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Saturday Button
@@ -208,7 +213,7 @@ EditCartEvent::EditCartEvent(int id,std::vector<int> *adds,QWidget *parent)
   label=new QLabel(edit_sat_button,tr("Saturday"),this);
   label->setGeometry(150,145,60,20);
   label->setFont(day_font);
-  label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Sunday Button
@@ -218,7 +223,7 @@ EditCartEvent::EditCartEvent(int id,std::vector<int> *adds,QWidget *parent)
   label=new QLabel(edit_sun_button,tr("Sunday"),this);
   label->setGeometry(320,145,60,20);
   label->setFont(day_font);
-  label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // OneShot Button
@@ -228,7 +233,7 @@ EditCartEvent::EditCartEvent(int id,std::vector<int> *adds,QWidget *parent)
   label=new QLabel(edit_oneshot_box,tr("Make OneShot"),this);
   label->setGeometry(40,178,115,20);
   label->setFont(label_font);
-  label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   //  Save As Button
@@ -375,7 +380,7 @@ void EditCartEvent::cancelData()
 void EditCartEvent::paintEvent(QPaintEvent *e)
 {
   QPainter *p=new QPainter(this);
-  p->setPen(QColor(black));
+  p->setPen(QColor(Qt::black));
   p->drawRect(10,109,sizeHint().width()-20,62);
   p->end();
 }

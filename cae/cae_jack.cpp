@@ -446,7 +446,7 @@ void MainObject::jackInit(RDStation *station)
   //
   if(station->startJack()) {
     QStringList fields=QStringList().split(" ",station->jackCommandLine());
-    QProcess *proc=new QProcess(fields,this);
+    Q3Process *proc=new Q3Process(fields,this);
     if(proc->start()) {
       LogLine(RDConfig::LogDebug,"JACK server started");
     }
@@ -546,7 +546,7 @@ void MainObject::jackInit(RDStation *station)
   q=new RDSqlQuery(sql);
   while(q->next()) {
     QStringList fields=QStringList().split(" ",q->value(1).toString());
-    jack_clients.push_back(new QProcess(fields,this));
+    jack_clients.push_back(new Q3Process(fields,this));
     if(jack_clients.back()->start()) {
       LogLine(RDConfig::LogDebug,"started JACK Client \""+
 	      q->value(0).toString()+"\"");

@@ -202,7 +202,7 @@ MainObject::MainObject(QObject *parent,const char *name)
   //
   // Allocate Meter Socket
   //
-  meter_socket=new QSocketDevice(QSocketDevice::Datagram);
+  meter_socket=new Q3SocketDevice(Q3SocketDevice::Datagram);
 
   //
   // Start Up the Drivers
@@ -1849,7 +1849,7 @@ void MainObject::BroadcastCommand(const char *command)
 
 void MainObject::EchoCommand(int ch,const char *command)
 {
-  if(socket[ch]->state()==QSocket::Connection) {
+  if(socket[ch]->state()==Q3Socket::Connection) {
 #ifdef PRINT_COMMANDS
     printf("CAE: Connection %d sending %s\n",ch,command);
 #endif  // PRINT_COMMANDS

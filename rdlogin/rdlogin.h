@@ -28,6 +28,9 @@
 #include <qlabel.h>
 #include <qlineedit.h>
 #include <qpushbutton.h>
+//Added by qt3to4:
+#include <QResizeEvent>
+#include <QPixmap>
 
 #define RDLOGIN_USAGE "\n\n"
 

@@ -24,6 +24,10 @@
 // Icons
 //
 #include "../icons/trashcan-32x32.xpm"
+//Added by qt3to4:
+#include <QPixmap>
+#include <QLabel>
+#include <QMouseEvent>
 
 RDEmptyCart::RDEmptyCart(QWidget *parent)
   : QWidget(parent)

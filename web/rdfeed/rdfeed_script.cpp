@@ -340,7 +340,7 @@ bool MainObject::ShouldCount(const QString &hdr)
   int n;
   QString str;
 
-  for(unsigned i=0;i<lines.size();i++) {
+  for(int i=0;i<lines.size();i++) {
     if((n=lines[i].find("="))>0) {
       if(lines[i].left(n).lower()=="bytes") {
 	str=lines[i].right(lines[i].length()-n-1).stripWhiteSpace();

@@ -21,13 +21,13 @@
 #include <qdialog.h>
 #include <qstring.h>
 #include <qpushbutton.h>
-#include <qlistbox.h>
-#include <qtextedit.h>
+#include <q3listbox.h>
+#include <q3textedit.h>
 #include <qlabel.h>
 #include <qpainter.h>
 #include <qevent.h>
 #include <qmessagebox.h>
-#include <qbuttongroup.h>
+#include <q3buttongroup.h>
 
 #include <rdstation.h>
 #include <rdescape_string.h>
@@ -77,8 +77,8 @@ ListLiveWireGpios::ListLiveWireGpios(RDMatrix *matrix,int slot_quan,
   list_view->addColumn(tr("Surface Address"));
   list_view->setColumnAlignment(2,Qt::AlignCenter);
   list_view->setColumnSortType(0,RDListView::GpioSort);
-  connect(list_view,SIGNAL(doubleClicked(QListViewItem *,const QPoint &,int)),
-	  this,SLOT(doubleClickedData(QListViewItem *,const QPoint &,int)));
+  connect(list_view,SIGNAL(doubleClicked(Q3ListViewItem *,const QPoint &,int)),
+	  this,SLOT(doubleClickedData(Q3ListViewItem *,const QPoint &,int)));
 
   RefreshList();
 
@@ -162,7 +162,7 @@ void ListLiveWireGpios::editData()
 }
 
 
-void ListLiveWireGpios::doubleClickedData(QListViewItem *item,const QPoint &pt,
+void ListLiveWireGpios::doubleClickedData(Q3ListViewItem *item,const QPoint &pt,
 				     int col)
 {
   editData();
@@ -208,7 +208,7 @@ void ListLiveWireGpios::cancelData()
 
 void ListLiveWireGpios::RefreshList()
 {
-  QListViewItem *l;
+  Q3ListViewItem *l;
   QString sql;
   RDSqlQuery *q;
   RDSqlQuery *q1;

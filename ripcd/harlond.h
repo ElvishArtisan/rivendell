@@ -27,7 +27,7 @@
 
 #include <qsignalmapper.h>
 #include <qtimer.h>
-#include <qsocket.h>
+#include <q3socket.h>
 
 #include <rd.h>
 #include <rdmatrix.h>
@@ -68,7 +68,7 @@ class Harlond : public Switcher
   bool AddCrosspoint(int input,int output);
   bool RemoveCrosspoint(int input,int output);
   QString GetBussCode(int output);
-  QSocket *bt_socket;
+  Q3Socket *bt_socket;
   QString bt_recv_buffer;
   QTimer *bt_watchdog_timer;
   QHostAddress bt_ip_address;

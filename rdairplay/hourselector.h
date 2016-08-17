@@ -24,6 +24,8 @@
 #include <qwidget.h>
 #include <qpushbutton.h>
 #include <qtimer.h>
+//Added by qt3to4:
+#include <QResizeEvent>
 
 #include <rdairplay_conf.h>
 #include <rdlistview.h>

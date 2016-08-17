@@ -56,7 +56,7 @@ RDEditPanelName::RDEditPanelName(QString *panelname,QWidget *parent)
 				       "panel_name_label");
   panel_name_label->setGeometry(10,13,80,19);
   panel_name_label->setFont(font);
-  panel_name_label->setAlignment(AlignRight|ShowPrefix);
+  panel_name_label->setAlignment(Qt::AlignRight|Qt::TextShowMnemonic);
 
   //
   //  Ok Button

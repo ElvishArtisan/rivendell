@@ -20,6 +20,8 @@
 //
 
 #include <rdlineedit.h>
+//Added by qt3to4:
+#include <QKeyEvent>
 
 RDLineEdit::RDLineEdit(QWidget *parent)
   : QLineEdit(parent)

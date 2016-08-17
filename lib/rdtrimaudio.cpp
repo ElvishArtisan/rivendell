@@ -211,7 +211,7 @@ bool RDTrimAudio::ParseXml(const QString &xml)
   bool ret=false;
 
   QStringList list=list.split("\n",xml);
-  for(unsigned i=0;i<list.size();i++) {
+  for(int i=0;i<list.size();i++) {
     if(list[i].contains("startTrimPoint")) {
       QStringList list2=list.split("<",list[i]);
       if(list2.size()>=2) {
@@ -235,7 +235,7 @@ int RDTrimAudio::ParsePoint(const QString &tag,const QString &xml)
   //        a proper XML parser.
   //
   QStringList list=list.split("\n",xml);
-  for(unsigned i=0;i<list.size();i++) {
+  for(int i=0;i<list.size();i++) {
     if(list[i].contains(tag)) {
       QStringList list2=list.split("<",list[i]);
       if(list2.size()>=2) {

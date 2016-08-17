@@ -19,21 +19,28 @@
 //
 
 #include <qfontmetrics.h>
+//Added by qt3to4:
+#include <QWheelEvent>
+#include <QFocusEvent>
+#include <Q3Frame>
+#include <QLabel>
+#include <QMouseEvent>
+#include <QKeyEvent>
 
 #include <rdtimeedit.h>
 
 RDTimeEdit::RDTimeEdit(QWidget *parent)
-  : QFrame(parent)
+  : Q3Frame(parent)
 {
   edit_display=0;
   edit_section=0;
   edit_read_only=false;
   edit_digit=0;
   GetSizeHint();
-  setFrameStyle(QFrame::StyledPanel|QFrame::Sunken);
+  setFrameStyle(Q3Frame::StyledPanel|Q3Frame::Sunken);
   setLineWidth(1);
   setMidLineWidth(3);
-  setFocusPolicy(QWidget::StrongFocus);
+  setFocusPolicy(Qt::StrongFocus);
   QPalette p=palette();
   p.setColor(QPalette::Active,QColorGroup::Background,
 	     p.color(QPalette::Active,QColorGroup::Base));
@@ -53,10 +60,10 @@ RDTimeEdit::RDTimeEdit(QWidget *parent)
   edit_sep_labels[2]=new QLabel(".",this);
   edit_sep_labels[2]->setAlignment(Qt::AlignCenter);
   edit_up_button=new RDTransportButton(RDTransportButton::Up,this);
-  edit_up_button->setFocusPolicy(QWidget::NoFocus);
+  edit_up_button->setFocusPolicy(Qt::NoFocus);
   connect(edit_up_button,SIGNAL(clicked()),this,SLOT(upClickedData()));
   edit_down_button=new RDTransportButton(RDTransportButton::Down,this);
-  edit_down_button->setFocusPolicy(QWidget::NoFocus);
+  edit_down_button->setFocusPolicy(Qt::NoFocus);
   connect(edit_down_button,SIGNAL(clicked()),this,SLOT(downClickedData()));
   setDisplay(RDTimeEdit::Hours|RDTimeEdit::Minutes|RDTimeEdit::Seconds);
 }
@@ -106,7 +113,7 @@ bool RDTimeEdit::isReadOnly() const
 
 void RDTimeEdit::setFont(const QFont &f)
 {
-  QFrame::setFont(f);
+  Q3Frame::setFont(f);
   GetSizeHint();
 }
 
@@ -147,7 +154,7 @@ void RDTimeEdit::setDisplay(uint disp)
 
 void RDTimeEdit::setGeometry(int x,int y,int w,int h)
 {
-  QFrame::setGeometry(x,y,w,h);
+  Q3Frame::setGeometry(x,y,w,h);
   QFontMetrics fm(font());
   int fy=h-fm.height();
   int fx=contentsRect().x()+fy;
@@ -199,10 +206,10 @@ void RDTimeEdit::setTime(const QTime &time)
 void RDTimeEdit::setReadOnly(bool state)
 {
   if(state) {
-    setFocusPolicy(QWidget::NoFocus);
+    setFocusPolicy(Qt::NoFocus);
   }
   else {
-    setFocusPolicy(QWidget::StrongFocus);
+    setFocusPolicy(Qt::StrongFocus);
   }
   edit_read_only=state;
 }
@@ -219,7 +226,7 @@ void RDTimeEdit::setFocus()
   p.setColor(QPalette::Active,QColorGroup::Foreground,
 	     p.color(QPalette::Active,QColorGroup::HighlightedText));
   edit_labels[edit_section]->setPalette(p);
-  QFrame::setFocus();
+  Q3Frame::setFocus();
 }
 
 
@@ -420,18 +427,18 @@ void RDTimeEdit::keyPressEvent(QKeyEvent *e)
 
 void RDTimeEdit::focusInEvent(QFocusEvent *e)
 {
-  QFrame::focusInEvent(e);
+  Q3Frame::focusInEvent(e);
 }
 
 
 void RDTimeEdit::focusOutEvent(QFocusEvent *e)
 {
-  QFrame::focusOutEvent(e);
+  Q3Frame::focusOutEvent(e);
   QPalette p=palette();
   for(int i=0;i<4;i++) {
     edit_labels[i]->setPalette(p);
   }
-  QFrame::focusOutEvent(e);
+  Q3Frame::focusOutEvent(e);
 }
 
 

@@ -78,12 +78,12 @@ Quartz1::Quartz1(RDMatrix *matrix,QObject *parent)
 		  sas_device[i]->setSpeed(tty->baudRate());
 		  sas_device[i]->setWordLength(tty->dataBits());
 		  sas_device[i]->setParity(tty->parity());
-		  sas_device[i]->open(IO_Raw|IO_ReadWrite);
+		  sas_device[i]->open(QIODevice::Unbuffered|QIODevice::ReadWrite);
 	      }
 	      delete tty;
 	      
 	  case RDMatrix::TcpPort:
-	      sas_socket[i]=new QSocket(this,"sas_socket");
+	      sas_socket[i]=new Q3Socket(this,"sas_socket");
 	      connected_mapper->setMapping(sas_socket[i],i);
 	      connect(sas_socket[i],SIGNAL(connected()),
 		      connected_mapper,SLOT(map()));
@@ -209,8 +209,8 @@ void Quartz1::connectionClosedData(int conn)
 
 void Quartz1::errorData(int conn,int err)
 {
-  switch((QSocket::Error)err) {
-      case QSocket::ErrConnectionRefused:
+  switch((Q3Socket::Error)err) {
+      case Q3Socket::ErrConnectionRefused:
 	LogLine(RDConfig::LogNotice,QString().sprintf(
 	  "Connection to Quartz1 device at %s:%d refused, attempting reconnect",
 				  (const char *)sas_ipaddress[conn].toString(),
@@ -218,14 +218,14 @@ void Quartz1::errorData(int conn,int err)
 	sas_reconnect_timer[conn]->start(QUARTZ1_RECONNECT_INTERVAL,true);
 	break;
 
-      case QSocket::ErrHostNotFound:
+      case Q3Socket::ErrHostNotFound:
 	LogLine(RDConfig::LogWarning,QString().sprintf(
 	  "Error on connection to Quartz1 device at %s:%d: Host Not Found",
 				  (const char *)sas_ipaddress[conn].toString(),
 				  sas_ipport[conn]));
 	break;
 
-      case QSocket::ErrSocketRead:
+      case Q3Socket::ErrSocketRead:
 	LogLine(RDConfig::LogWarning,QString().sprintf(
 	  "Error on connection to Quartz1 device at %s:%d: Socket Read Error",
 				  (const char *)sas_ipaddress[conn].toString(),

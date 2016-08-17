@@ -42,10 +42,10 @@ RDLicense::RDLicense(QWidget *parent)
   QFont button_font=QFont("Helvetica",14,QFont::Bold);
   button_font.setPixelSize(14);
 
-  license_edit=new QTextEdit(this,"license_edit");
+  license_edit=new Q3TextEdit(this,"license_edit");
   license_edit->
     setGeometry(10,10,sizeHint().width()-20,sizeHint().height()-70);
-  license_edit->setTextFormat(RichText);
+  license_edit->setTextFormat(Qt::RichText);
   license_edit->setReadOnly(true);
 
   //

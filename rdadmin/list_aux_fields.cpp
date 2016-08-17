@@ -20,9 +20,11 @@
 
 #include <qdialog.h>
 #include <qstring.h>
-#include <qtextedit.h>
+#include <q3textedit.h>
 #include <qpainter.h>
 #include <qmessagebox.h>
+//Added by qt3to4:
+#include <QLabel>
 
 #include <rddb.h>
 #include <list_aux_fields.h>
@@ -54,7 +56,7 @@ ListAuxFields::ListAuxFields(unsigned feed_id,QWidget *parent)
   //
   // Fields List Box
   //
-  list_list_view=new QListView(this);
+  list_list_view=new Q3ListView(this);
   list_list_view->
     setGeometry(10,24,sizeHint().width()-20,sizeHint().height()-94);
   QLabel *label=new QLabel(list_list_view,tr("Auxiliary Metadata Fields"),this);
@@ -67,9 +69,9 @@ ListAuxFields::ListAuxFields(unsigned feed_id,QWidget *parent)
   list_list_view->addColumn(tr("Caption"));
   list_list_view->setColumnAlignment(1,Qt::AlignLeft);
   connect(list_list_view,
-	  SIGNAL(doubleClicked(QListViewItem *,const QPoint &,int)),
+	  SIGNAL(doubleClicked(Q3ListViewItem *,const QPoint &,int)),
 	  this,
-	  SLOT(doubleClickedData(QListViewItem *,const QPoint &,int)));
+	  SLOT(doubleClickedData(Q3ListViewItem *,const QPoint &,int)));
 
   //
   //  Add Button
@@ -189,7 +191,7 @@ void ListAuxFields::deleteData()
 }
 
 
-void ListAuxFields::doubleClickedData(QListViewItem *item,const QPoint &pt,
+void ListAuxFields::doubleClickedData(Q3ListViewItem *item,const QPoint &pt,
 				      int col)
 {
   editData();

@@ -25,8 +25,10 @@
 #include <qsqldatabase.h>
 #include <qlabel.h>
 #include <qpushbutton.h>
-#include <qlistview.h>
+#include <q3listview.h>
 #include <qvariant.h>
+//Added by qt3to4:
+#include <QCloseEvent>
 
 #include <rdlistview.h>
 
@@ -48,7 +50,7 @@ class EditSchedRules : public QDialog
  private slots:
   void editData();
   void importData();
-  void doubleClickedData(QListViewItem *item,const QPoint &pt,int col);
+  void doubleClickedData(Q3ListViewItem *item,const QPoint &pt,int col);
   void okData();
   void cancelData();
 

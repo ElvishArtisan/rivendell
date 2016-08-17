@@ -92,7 +92,7 @@ void Xport::AssignSchedCode()
     XmlExit("No such scheduler code",404);
   }
   codes=cart->schedCodesList();
-  for(unsigned i=0;i<codes.size();i++) {
+  for(int i=0;i<codes.size();i++) {
     if(codes[i]==sched_code) {
       delete cart;
       XmlExit("OK",200);
@@ -176,7 +176,7 @@ void Xport::ListCartSchedCodes()
   printf("Status: 200\n\n");
   printf("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
   printf("<schedCodeList>\n");
-  for(unsigned i=0;i<codes.size();i++) {
+  for(int i=0;i<codes.size();i++) {
     schedcode=new RDSchedCode(codes[i]);
     printf("%s",(const char *)schedcode->xml().utf8());
     delete schedcode;

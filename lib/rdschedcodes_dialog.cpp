@@ -22,6 +22,10 @@
 
 #include <qpainter.h>
 #include <qmessagebox.h>
+//Added by qt3to4:
+#include <QResizeEvent>
+#include <QCloseEvent>
+#include <QPaintEvent>
 
 #include <rddb.h>
 #include "rdschedcodes_dialog.h"
@@ -122,11 +126,11 @@ int RDSchedCodesDialog::exec(QStringList *sched_codes,QStringList *remove_codes)
     remove_codes_sel->show();
   }
 
-  for(unsigned i=0;i<edit_sched_codes->size();i++) {
+  for(int i=0;i<edit_sched_codes->size();i++) {
     codes_sel->destInsertItem((*edit_sched_codes)[i]);
   } 
   if(edit_remove_codes!=NULL) {
-    for(unsigned i=0;i<edit_remove_codes->size();i++) {
+    for(int i=0;i<edit_remove_codes->size();i++) {
       remove_codes_sel->destInsertItem((*remove_codes)[i]);
     } 
   }
@@ -152,9 +156,8 @@ int RDSchedCodesDialog::exec(QStringList *sched_codes,QStringList *remove_codes)
 void RDSchedCodesDialog::paintEvent(QPaintEvent *e)
 {
   QPainter *p=new QPainter(this);
-  p->setPen(QColor(black));
-  p->moveTo(sizeHint().width(),10);
-  p->lineTo(sizeHint().width(),210);
+  p->setPen(QColor(Qt::black));
+  p->drawLine(sizeHint().width(),10,sizeHint().width(),210);
   p->end();
 }
 

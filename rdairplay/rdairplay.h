@@ -32,10 +32,14 @@
 #include <qtimer.h>
 #include <qsignalmapper.h>
 #include <qpalette.h>
-#include <qsocketdevice.h>
+#include <q3socketdevice.h>
 #include <qpixmap.h>
 #include <qsplashscreen.h>
 #include <qfontmetrics.h>
+//Added by qt3to4:
+#include <QCloseEvent>
+#include <QPaintEvent>
+#include <QKeyEvent>
 
 #include <rdpushbutton.h>
 #include <rdstereometer.h>
@@ -195,7 +199,7 @@ class MainWidget : public QWidget
   RDLabel *air_refresh_label;
   QPixmap *air_refresh_pixmap;
   QString air_editor_cmd;
-  QSocketDevice *air_nownext_socket;
+  Q3SocketDevice *air_nownext_socket;
   std::vector<RLMHost *> air_plugin_hosts;
   QSplashScreen *air_splash_screen;
   int  keystrokecount;

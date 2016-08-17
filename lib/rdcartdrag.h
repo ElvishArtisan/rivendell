@@ -22,13 +22,13 @@
 #define RDCARTDRAG_H
 
 #include <qcolor.h>
-#include <qdragobject.h>
+#include <q3dragobject.h>
 #include <qpixmap.h>
 
 #include <rdcart.h>
 #include <rdlog_line.h>
 
-class RDCartDrag : public QStoredDrag
+class RDCartDrag : public Q3StoredDrag
 {
  public:
   RDCartDrag(unsigned cartnum,const QPixmap *icon,QWidget *src=0);

@@ -296,7 +296,7 @@ bool RDPodcast::removeAudio(RDFeed *feed,QString *err_text,bool log_debug) const
   CURL *curl=NULL;
   struct curl_slist *cmds=NULL;
   CURLcode err;
-  QUrl *url;
+  Q3Url *url;
   bool ret=true;
   QString currentdir;
   char urlstr[1024];
@@ -306,7 +306,7 @@ bool RDPodcast::removeAudio(RDFeed *feed,QString *err_text,bool log_debug) const
     syslog(LOG_ERR,"unable to initialize curl library\n");
     return false;
   }
-  url=new QUrl(feed->purgeUrl());
+  url=new Q3Url(feed->purgeUrl());
   strncpy(urlstr,(const char *)(url->protocol()+"://"+url->host()+"/"),1024);
   curl_easy_setopt(curl,CURLOPT_URL,urlstr);
   strncpy(userpwd,(const char *)QString().

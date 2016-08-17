@@ -19,7 +19,10 @@
 //
 //
 
-#include <qheader.h>
+#include <q3header.h>
+//Added by qt3to4:
+#include <Q3PopupMenu>
+#include <QMouseEvent>
 
 #include <log_listview.h>
 
@@ -31,7 +34,7 @@ LogListView::LogListView(QWidget *parent)
   //
   // Right Button Menu
   //
-  log_menu=new QPopupMenu(this,"log_menu");
+  log_menu=new Q3PopupMenu(this,"log_menu");
   connect(log_menu,SIGNAL(aboutToShow()),this,SLOT(aboutToShowData()));
   log_menu->insertItem(tr("PLAY Transition"),this,SLOT(playData()),0,0);
   log_menu->insertItem(tr("SEGUE Transition"),this,SLOT(segueData()),0,1);
@@ -84,10 +87,10 @@ void LogListView::stopData()
 
 void LogListView::contentsMousePressEvent(QMouseEvent *e)
 {
-  QListView::contentsMousePressEvent(e);
+  Q3ListView::contentsMousePressEvent(e);
   log_menu_item=(RDListViewItem *)selectedItem();
   switch(e->button()) {
-      case QMouseEvent::RightButton:
+      case Qt::RightButton:
 	//log_menu->setGeometry(log_parent->geometry().x()+
 	//			 geometry().x()+e->pos().x()+2,
 	//			 log_parent->geometry().y()+

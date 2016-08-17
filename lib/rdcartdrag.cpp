@@ -21,6 +21,8 @@
 #include <string.h>
 
 #include <qstringlist.h>
+//Added by qt3to4:
+#include <QPixmap>
 
 #include <rd.h>
 #include <rdcart.h>
@@ -35,7 +37,7 @@
 #include "../icons/trashcan-16x16.xpm"
 
 RDCartDrag::RDCartDrag(unsigned cartnum,const QPixmap *icon,QWidget *src)
-  : QStoredDrag(RDMIMETYPE_CART,src)
+  : Q3StoredDrag(RDMIMETYPE_CART,src)
 {
   SetData(cartnum,QColor(),QString());
   if(icon==NULL) {
@@ -62,7 +64,7 @@ RDCartDrag::RDCartDrag(unsigned cartnum,const QPixmap *icon,QWidget *src)
 
 RDCartDrag::RDCartDrag(unsigned cartnum,const QString &title,
 		       const QColor &color,QWidget *src)
-  : QStoredDrag(RDMIMETYPE_CART,src)
+  : Q3StoredDrag(RDMIMETYPE_CART,src)
 {
   SetData(cartnum,color,title);
   if(cartnum==0) {

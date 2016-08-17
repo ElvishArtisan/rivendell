@@ -18,11 +18,11 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qobjectlist.h>
+#include <qobject.h>
 
 #include <vbox.h>
 
-VBox::VBox(QWidget *parent,const char *name,WFlags f)
+VBox::VBox(QWidget *parent,const char *name,Qt::WFlags f)
   : QWidget(parent,name,f)
 {
   box_spacing=0;

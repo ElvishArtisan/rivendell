@@ -34,7 +34,7 @@
 #include <qdatetime.h>
 #include <qcolor.h>
 #include <qstringlist.h>
-#include <qcstring.h>
+#include <q3cstring.h>
 
 /* Function Prototypes */
 int GetPrivateProfileBool(const char *,const char *,const char *,bool);
@@ -109,6 +109,6 @@ QColor RDGetTextColor(const QColor &background_color);
 bool RDProcessActive(const QString &cmd);
 bool RDProcessActive(const QStringList &cmds);
 bool RDModulesActive();
-QByteArray RDStringToData(const QString &str);
+//QByteArray RDStringToData(const QString &str);
 
 #endif   // RDCONF_H

@@ -21,13 +21,13 @@
 #include <qdialog.h>
 #include <qstring.h>
 #include <qpushbutton.h>
-#include <qlistbox.h>
-#include <qtextedit.h>
+#include <q3listbox.h>
+#include <q3textedit.h>
 #include <qlabel.h>
 #include <qevent.h>
 #include <qmessagebox.h>
 #include <qcheckbox.h>
-#include <qbuttongroup.h>
+#include <q3buttongroup.h>
 #include <rdconf.h>
 #include <math.h>
 
@@ -72,7 +72,7 @@ RDAudioSettingsDialog::RDAudioSettingsDialog(RDAudioSettings *settings,
 				      this,"lib_format_label");
   lib_format_label->setGeometry(25,10,120,20);
   lib_format_label->setFont(font);
-  lib_format_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  lib_format_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Default Channels
@@ -85,7 +85,7 @@ RDAudioSettingsDialog::RDAudioSettingsDialog(RDAudioSettings *settings,
 					this,"lib_channels_label");
   lib_channels_label->setGeometry(25,32,120,20);
   lib_channels_label->setFont(font);
-  lib_channels_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  lib_channels_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Default Sample Rate
@@ -98,7 +98,7 @@ RDAudioSettingsDialog::RDAudioSettingsDialog(RDAudioSettings *settings,
 	       "lib_samprate_label");
   lib_samprate_label->setGeometry(20,54,125,20);
   lib_samprate_label->setFont(font);
-  lib_samprate_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  lib_samprate_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Default Bitrate
@@ -111,7 +111,7 @@ RDAudioSettingsDialog::RDAudioSettingsDialog(RDAudioSettings *settings,
 	       "lib_bitrate_label");
   lib_bitrate_label->setGeometry(25,76,120,20);
   lib_bitrate_label->setFont(font);
-  lib_bitrate_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  lib_bitrate_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   //  Ok Button

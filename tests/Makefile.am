@@ -20,8 +20,8 @@
 ##
 ## Use automake to process this into a Makefile.in
 
-AM_CPPFLAGS = -Wall @QT_CXXFLAGS@ -I$(top_srcdir)/lib
-LIBS = @QT_LIBS@ -L$(top_srcdir)/lib
+AM_CPPFLAGS = -Wall -I$(top_srcdir)/lib @QT4_CFLAGS@ -DQT3_SUPPORT -I/usr/include/Qt3Support
+LIBS = -L$(top_srcdir)/lib
 MOC = @QT_MOC@
 
 # The dependency for qt's Meta Object Compiler (moc)
@@ -42,41 +42,41 @@ noinst_PROGRAMS = audio_convert_test\
                   wav_chunk_test
 
 dist_audio_convert_test_SOURCES = audio_convert_test.cpp audio_convert_test.h
-audio_convert_test_LDADD = @LIB_RDLIBS@ @LIBVORBIS@
+audio_convert_test_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT4_LIBS@ -lQt3Support
 
 dist_audio_export_test_SOURCES = audio_export_test.cpp audio_export_test.h
-audio_export_test_LDADD = @LIB_RDLIBS@ @LIBVORBIS@
+audio_export_test_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT4_LIBS@ -lQt3Support
 
 dist_audio_import_test_SOURCES = audio_import_test.cpp audio_import_test.h
-audio_import_test_LDADD = @LIB_RDLIBS@ @LIBVORBIS@
+audio_import_test_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT4_LIBS@ -lQt3Support
 
 dist_audio_peaks_test_SOURCES = audio_peaks_test.cpp audio_peaks_test.h
-audio_peaks_test_LDADD = @LIB_RDLIBS@ @LIBVORBIS@
+audio_peaks_test_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT4_LIBS@ -lQt3Support
 
 dist_datedecode_test_SOURCES = datedecode_test.cpp datedecode_test.h
-datedecode_test_LDADD = @LIB_RDLIBS@ @LIBVORBIS@
+datedecode_test_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT4_LIBS@ -lQt3Support
 
 dist_rdxml_parse_test_SOURCES = rdxml_parse_test.cpp rdxml_parse_test.h
-rdxml_parse_test_LDADD = @LIB_RDLIBS@ @LIBVORBIS@
+rdxml_parse_test_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT4_LIBS@ -lQt3Support
 
 dist_reserve_carts_test_SOURCES = reserve_carts_test.cpp reserve_carts_test.h
-reserve_carts_test_LDADD = @LIB_RDLIBS@ @LIBVORBIS@
+reserve_carts_test_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT4_LIBS@ -lQt3Support
 
 dist_stringcode_test_SOURCES = stringcode_test.cpp stringcode_test.h
-stringcode_test_LDADD = @LIB_RDLIBS@ @LIBVORBIS@
+stringcode_test_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT4_LIBS@ -lQt3Support
 
 dist_test_pam_SOURCES = test_pam.cpp test_pam.h
-test_pam_LDADD = @LIB_RDLIBS@ @LIBVORBIS@
+test_pam_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT4_LIBS@ -lQt3Support
 
 dist_timer_test_SOURCES = timer_test.cpp timer_test.h
 nodist_timer_test_SOURCES = moc_timer_test.cpp
-timer_test_LDADD = -lqui
+timer_test_LDADD = @QT4_LIBS@
 
 dist_upload_test_SOURCES = upload_test.cpp upload_test.h
-upload_test_LDADD = @LIB_RDLIBS@ @LIBVORBIS@
+upload_test_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT4_LIBS@ -lQt3Support
 
 dist_wav_chunk_test_SOURCES = wav_chunk_test.cpp wav_chunk_test.h
-wav_chunk_test_LDADD = @LIB_RDLIBS@ @LIBVORBIS@
+wav_chunk_test_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT4_LIBS@ -lQt3Support
 
 EXTRA_DIST = rivendell_standard.txt\
              visualtraffic.txt

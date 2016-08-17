@@ -23,13 +23,16 @@
 #include <qdialog.h>
 #include <qstring.h>
 #include <qpushbutton.h>
-#include <qlistbox.h>
-#include <qtextedit.h>
+#include <q3listbox.h>
+#include <q3textedit.h>
 #include <qlabel.h>
 #include <qpainter.h>
 #include <qevent.h>
 #include <qmessagebox.h>
-#include <qbuttongroup.h>
+#include <q3buttongroup.h>
+//Added by qt3to4:
+#include <QPixmap>
+#include <QResizeEvent>
 #include <rddb.h>
 
 #include <rdcart.h>
@@ -123,9 +126,9 @@ ListUsers::ListUsers(const QString &admin_name,QWidget *parent)
   list_box_label->setFont(font);
   list_box_label->setGeometry(14,11,85,19);
   connect(list_users_view,
-	  SIGNAL(doubleClicked(QListViewItem *,const QPoint &,int)),
+	  SIGNAL(doubleClicked(Q3ListViewItem *,const QPoint &,int)),
 	  this,
-	  SLOT(doubleClickedData(QListViewItem *,const QPoint &,int)));
+	  SLOT(doubleClickedData(Q3ListViewItem *,const QPoint &,int)));
 
   RefreshList();
 }
@@ -227,7 +230,7 @@ void ListUsers::deleteData()
   switch(QMessageBox::warning(this,tr("Delete User"),warning,
 			      QMessageBox::Yes,QMessageBox::No)) {
       case QMessageBox::No:
-      case QMessageBox::NoButton:
+      case Qt::NoButton:
 	return;
 
       default:
@@ -271,7 +274,7 @@ void ListUsers::deleteData()
 }
 
 
-void ListUsers::doubleClickedData(QListViewItem *item,const QPoint &pt,
+void ListUsers::doubleClickedData(Q3ListViewItem *item,const QPoint &pt,
 				   int col)
 {
   editData();

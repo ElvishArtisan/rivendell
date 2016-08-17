@@ -20,6 +20,8 @@
 
 #include <qpushbutton.h>
 #include <qdatetime.h>
+//Added by qt3to4:
+#include <QCloseEvent>
 
 #include <rddb.h>
 #include <rdescape_string.h>
@@ -57,16 +59,16 @@ RDListLogs::RDListLogs(QString *logname,const QString &stationname,
   //
   // Log List
   //
-  list_log_list=new QListView(this,"list_log_list");
+  list_log_list=new Q3ListView(this,"list_log_list");
   list_log_list->setGeometry(10,10,
 			    sizeHint().width()-20,sizeHint().height()-80);
   list_log_list->setAllColumnsShowFocus(true);
   list_log_list->setItemMargin(5);
-  list_log_list->setSelectionMode(QListView::Single);
+  list_log_list->setSelectionMode(Q3ListView::Single);
   connect(list_log_list,
-	  SIGNAL(doubleClicked(QListViewItem *,const QPoint &,int)),
+	  SIGNAL(doubleClicked(Q3ListViewItem *,const QPoint &,int)),
 	  this,
-	  SLOT(doubleClickedData(QListViewItem *,const QPoint &,int)));
+	  SLOT(doubleClickedData(Q3ListViewItem *,const QPoint &,int)));
   list_log_list->addColumn(tr("NAME"));
   list_log_list->setColumnAlignment(0,Qt::AlignLeft);
   list_log_list->addColumn(tr("DESCRIPTION"));
@@ -115,7 +117,7 @@ void RDListLogs::closeEvent(QCloseEvent *e)
 }
 
 
-void RDListLogs::doubleClickedData(QListViewItem *,const QPoint &,int)
+void RDListLogs::doubleClickedData(Q3ListViewItem *,const QPoint &,int)
 {
   okButtonData();
 }
@@ -123,7 +125,7 @@ void RDListLogs::doubleClickedData(QListViewItem *,const QPoint &,int)
 
 void RDListLogs::okButtonData()
 {
-  QListViewItem *item=list_log_list->selectedItem();
+  Q3ListViewItem *item=list_log_list->selectedItem();
   if(item==NULL) {
     return;
   }
@@ -142,8 +144,8 @@ void RDListLogs::RefreshList()
 {
   RDSqlQuery *q;
   QString sql;
-  QListViewItem *l;
-  QListViewItem *view_item=NULL;
+  Q3ListViewItem *l;
+  Q3ListViewItem *view_item=NULL;
   QDate current_date=QDate::currentDate();
   QStringList services_list;
 
@@ -182,7 +184,7 @@ void RDListLogs::RefreshList()
   sql+=")";
   q=new RDSqlQuery(sql);
   while(q->next()) {
-    l=new QListViewItem(list_log_list);
+    l=new Q3ListViewItem(list_log_list);
     l->setText(0,q->value(0).toString());
     l->setText(1,q->value(1).toString());
     l->setText(2,q->value(2).toString());

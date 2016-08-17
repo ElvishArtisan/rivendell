@@ -44,7 +44,7 @@ RossNkScp::RossNkScp(RDMatrix *matrix,QObject *parent)
     ross_device->setSpeed(tty->baudRate());
     ross_device->setWordLength(tty->dataBits());
     ross_device->setParity(tty->parity());
-    ross_device->open(IO_Raw|IO_ReadWrite);
+    ross_device->open(QIODevice::Unbuffered|QIODevice::ReadWrite);
   }
   delete tty;
 }
