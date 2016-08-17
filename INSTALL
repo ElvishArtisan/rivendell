@@ -39,10 +39,8 @@ A suite of shared libraries that enable the local system administrator to
 choose how applications authenticate users.  Included with virtually all modern
 distros, or see http://www.kernel.org/pub/linux/libs/pam/.
 
-Qt Toolkit, v3.3 or better
-Most modern Linux distros include this.  It's typically installed as part
-of the KDE Desktop Environment, although KDE is by no means required.
-It can also be downloaded directly from TrollTech (http://www.trolltech.com/).
+Qt4 Toolkit, v4.8.x or better
+Most modern Linux distros include this. Available at http:///www.qt.io/.
 
 Secret Rabbit Code
 A sample-rate converter library, written by Erik de Castro Lopo.  Included

@@ -15970,3 +15970,5 @@
 	* Ported contents of 'web/rdcastmanager' to Qt4.
 	* Ported contents of 'web/rdfeed' to Qt4.
 	* Ported contents of 'web/rdxport' to Qt4.
+2016-08-17 Fred Gleason <fredg@paravelsystems.com>
+	* Updated the Qt dependency in 'INSTALL'.
