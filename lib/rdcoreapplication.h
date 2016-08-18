@@ -1,6 +1,6 @@
-// rdcgiapplication.h
+// rdcoreapplication.h
 //
-// Base class for Rivendell CGI Programs
+// Base class for Rivendell Console Programs
 //
 //   (C) Copyright 2016 Fred Gleason <fredg@paravelsystems.com>
 //
@@ -18,8 +18,8 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#ifndef RDCGIAPPLICATION_H
-#define RDCGIAPPLICATION_H
+#ifndef RDCOREAPPLICATION_H
+#define RDCOREAPPLICATION_H
 
 #include <QCoreApplication>
 
@@ -35,10 +35,11 @@
 #include <rdripc.h>
 #include <rduser.h>
 
-class RDCgiApplication : public QCoreApplication
+class RDCoreApplication : public QCoreApplication
 {
  public:
-  RDCgiApplication(int argc,char **argv);
+  RDCoreApplication(int argc,char **argv,const char *modname,const char *usage,
+		    bool skip_schema_check=false);
   RDAirPlayConf *airplayConf() const;
   RDAirPlayConf *panelConf() const;
   RDLibraryConf *libraryConf() const;
@@ -81,7 +82,7 @@ class RDCgiApplication : public QCoreApplication
   QString app_db_password;
 };
 
-extern RDCgiApplication *rdcgi;
+extern RDCoreApplication *rdca;
 
 
-#endif  // RDCGIAPPLICATION_H
+#endif  // RDCOREAPPLICATION_H

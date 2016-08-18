@@ -444,15 +444,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>database version mismatch, should be </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>is</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unable to connect to MySQL.</source>
+        <source>Couldn&apos;t open mySQL connection!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

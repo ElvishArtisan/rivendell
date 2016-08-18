@@ -23,7 +23,7 @@
     </message>
     <message>
         <source>Couldn&apos;t open mySQL connection!</source>
-        <translation type="obsolete">Nepodařilo se vytvořit žádné spojení se serverem mySQL-Server!</translation>
+        <translation type="unfinished">Nepodařilo se vytvořit žádné spojení se serverem mySQL-Server!</translation>
     </message>
     <message>
         <source>Sequentially</source>
@@ -467,18 +467,6 @@
     </message>
     <message>
         <source>NoTime</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>database version mismatch, should be </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>is</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unable to connect to MySQL.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

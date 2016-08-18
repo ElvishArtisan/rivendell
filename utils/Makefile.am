@@ -47,6 +47,7 @@ SUBDIRS = $(ALSACONFIG_RD_OPT)\
           rdpurgecasts\
           rdrevert\
           rdsoftkeys\
+          rdunittest\
           rmlsend
 
 AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" -I$(top_srcdir)/lib

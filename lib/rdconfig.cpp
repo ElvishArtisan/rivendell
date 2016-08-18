@@ -148,9 +148,35 @@ QString RDConfig::mysqlDriver() const
 }
 
 
+QString RDConfig::mysqlEngine() const
+{
+  return conf_mysql_engine;
+}
+
+
+QString RDConfig::mysqlCharset() const
+{
+  return conf_mysql_charset;
+}
+
+
+QString RDConfig::mysqlCollation() const
+{
+  return conf_mysql_collation;
+}
+
+
 int RDConfig::mysqlHeartbeatInterval() const
 {
   return conf_mysql_heartbeat_interval;
+}
+
+
+QString RDConfig::createTablePostfix() const
+{
+  return QString(" ENGINE ")+conf_mysql_engine+" "+
+    "CHARACTER SET "+conf_mysql_charset+" "+
+    "COLLATE "+conf_mysql_collation;
 }
 
 
@@ -446,6 +472,12 @@ void RDConfig::load()
   conf_mysql_password=profile->stringValue("mySQL","Password",conf_password);
   conf_mysql_driver=
     profile->stringValue("mySQL","Driver",DEFAULT_MYSQL_DRIVER);
+  conf_mysql_engine=
+    profile->stringValue("mySQL","Engine",DEFAULT_MYSQL_ENGINE);
+  conf_mysql_charset=
+    profile->stringValue("mySQL","Charset",DEFAULT_MYSQL_CHARSET);
+  conf_mysql_collation=
+    profile->stringValue("mySQL","Collation",DEFAULT_MYSQL_COLLATION);
   conf_mysql_heartbeat_interval=
     profile->intValue("mySQL","HeartbeatInterval",
 		      DEFAULT_MYSQL_HEARTBEAT_INTERVAL);
@@ -523,6 +555,9 @@ void RDConfig::clear()
   conf_mysql_dbname="";
   conf_mysql_password="";
   conf_mysql_driver="";
+  conf_mysql_engine="";
+  conf_mysql_charset="";
+  conf_mysql_collation="";
   conf_mysql_heartbeat_interval=DEFAULT_MYSQL_HEARTBEAT_INTERVAL;
   conf_log_facility=RDConfig::LogSyslog;
   conf_log_directory="";

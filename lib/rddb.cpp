@@ -29,42 +29,39 @@
 #include "rddb.h"
 #include "rddbheartbeat.h"
 
-//static QSqlDatabase *db = NULL;
+static QSqlDatabase db;
 static RDSqlDatabaseStatus * dbStatus = NULL;
 
-QSqlDatabase RDInitDb (unsigned *schema,QString *error)
+bool RDOpenDb (unsigned *schema,QString *error,RDConfig *config)
 {
-  /*
   static bool firsttime = true;
 
   *schema=0;
-  RDConfig *cf = RDConfiguration();
-  cf->load();
-  assert (cf);
-  if (!db){
-    db=QSqlDatabase::addDatabase(cf->mysqlDriver());
-    if(!db) {
-      if (error){
-	(*error) += QString(QObject::tr("Couldn't initialize QSql driver!"));
-      }
-      return NULL;
+  //  RDConfig *cf = RDConfiguration();
+  //  cf->load();
+  //  assert (cf);
+  if (!db.isOpen()){
+    db=QSqlDatabase::addDatabase(config->mysqlDriver());
+    /*
+    if(db.isOpen()) {
+      *error+= QString(QObject::tr("Couldn't initialize QSql driver!"));
+      return false;
     }
-    db->setDatabaseName(cf->mysqlDbname());
-    db->setUserName(cf->mysqlUsername());
-    db->setPassword(cf->mysqlPassword());
-    db->setHostName(cf->mysqlHostname());
-    if(!db->open()) {
-      if (error){
-	(*error) += QString(QObject::tr("Couldn't open mySQL connection!"));
-      }
-      db->removeDatabase(cf->mysqlDbname());
-      db->close();
-      return NULL;
+    */
+    db.setHostName(config->mysqlHostname());
+    db.setDatabaseName(config->mysqlDbname());
+    db.setUserName(config->mysqlUsername());
+    db.setPassword(config->mysqlPassword());
+    if(!db.open()) {
+      *error+=QString(QObject::tr("Couldn't open mySQL connection!"));
+      db.removeDatabase(config->mysqlDbname());
+      db.close();
+      return false;
     }
   }
   if (firsttime){
-    new RDDbHeartbeat(cf->mysqlHeartbeatInterval());
-    firsttime = false;
+    new RDDbHeartbeat(config->mysqlHeartbeatInterval());
+    firsttime=false;
   }
   //  QSqlQuery *q=new QSqlQuery("set character_set_results='utf8'");
   //  delete q;
@@ -75,9 +72,7 @@ QSqlDatabase RDInitDb (unsigned *schema,QString *error)
   }
   delete q;
 
-  return db;
-  */
-  return QSqlDatabase();
+  return true;
 }
 
 

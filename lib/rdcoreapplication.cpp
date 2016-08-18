@@ -1,4 +1,4 @@
-// rdcgiapplication.cpp
+// rdcoreapplication.cpp
 //
 // Base class for Rivendell CGI programs
 //
@@ -19,14 +19,15 @@
 //
 
 #include "dbversion.h"
-#include "rdcgiapplication.h"
+#include "rdcoreapplication.h"
 
-RDCgiApplication *rdcgi=NULL;
+RDCoreApplication *rdca=NULL;
 
-RDCgiApplication::RDCgiApplication(int argc,char **argv)
+RDCoreApplication::RDCoreApplication(int argc,char **argv,const char *modname,
+				     const char *usage,bool skip_db_check)
   : QCoreApplication(argc,argv)
 {
-  rdcgi=this;
+  rdca=this;
 
   unsigned schema=0;
   QString err;
@@ -36,7 +37,7 @@ RDCgiApplication::RDCgiApplication(int argc,char **argv)
   //
   // Command-line Parser
   //
-  app_cmd_switch=new RDCmdSwitch(argc,argv,"CGI","");
+  app_cmd_switch=new RDCmdSwitch(argc,argv,modname,usage);
 
   //
   // Open Global Configuration
@@ -50,7 +51,7 @@ RDCgiApplication::RDCgiApplication(int argc,char **argv)
   if(!OpenDb()) {
     abort("unable to connect to database");
   }
-  if(RD_VERSION_DATABASE!=schema) { 
+  if((!skip_db_check)&&(RD_VERSION_DATABASE!=schema)) { 
     abort("skewed database schema");
   }
 
@@ -69,61 +70,61 @@ RDCgiApplication::RDCgiApplication(int argc,char **argv)
 }
 
 
-RDAirPlayConf *RDCgiApplication::airplayConf() const
+RDAirPlayConf *RDCoreApplication::airplayConf() const
 {
   return app_airplay_conf;
 }
 
 
-RDAirPlayConf *RDCgiApplication::panelConf() const
+RDAirPlayConf *RDCoreApplication::panelConf() const
 {
   return app_panel_conf;
 }
 
 
-RDLibraryConf *RDCgiApplication::libraryConf() const
+RDLibraryConf *RDCoreApplication::libraryConf() const
 {
   return app_library_conf;
 }
 
 
-RDLogeditConf *RDCgiApplication::logeditConf() const
+RDLogeditConf *RDCoreApplication::logeditConf() const
 {
   return app_logedit_conf;
 }
 
 
-RDCae *RDCgiApplication::cae() const
+RDCae *RDCoreApplication::cae() const
 {
   return app_cae;
 }
 
 
-RDRipc *RDCgiApplication::ripc() const
+RDRipc *RDCoreApplication::ripc() const
 {
   return app_ripc;
 }
 
 
-RDStation *RDCgiApplication::station() const
+RDStation *RDCoreApplication::station() const
 {
   return app_station;
 }
 
 
-RDSystem *RDCgiApplication::system() const
+RDSystem *RDCoreApplication::system() const
 {
   return app_system;
 }
 
 
-RDUser *RDCgiApplication::user() const
+RDUser *RDCoreApplication::user() const
 {
   return app_user;
 }
 
 
-void RDCgiApplication::setUser(const QString &username)
+void RDCoreApplication::setUser(const QString &username)
 {
   if(app_user!=NULL) {
     delete app_user;
@@ -132,49 +133,49 @@ void RDCgiApplication::setUser(const QString &username)
 }
 
 
-RDConfig *RDCgiApplication::config() const
+RDConfig *RDCoreApplication::config() const
 {
   return app_config;
 }
 
 
-RDCmdSwitch *RDCgiApplication::cmdSwitch() const
+RDCmdSwitch *RDCoreApplication::cmdSwitch() const
 {
   return app_cmd_switch;
 }
 
 
-QSqlDatabase RDCgiApplication::database() const
+QSqlDatabase RDCoreApplication::database() const
 {
   return QSqlDatabase::database();
 }
 
 
-QString RDCgiApplication::dbHostname() const
+QString RDCoreApplication::dbHostname() const
 {
   return app_db_hostname;
 }
 
 
-QString RDCgiApplication::dbDatabaseName() const
+QString RDCoreApplication::dbDatabaseName() const
 {
   return app_db_dbname;
 }
 
 
-QString RDCgiApplication::dbUsername() const
+QString RDCoreApplication::dbUsername() const
 {
   return app_db_username;
 }
 
 
-QString RDCgiApplication::dbPassword() const
+QString RDCoreApplication::dbPassword() const
 {
   return app_db_password;
 }
 
 
-void RDCgiApplication::abort(const QString &err_msg)
+void RDCoreApplication::abort(const QString &err_msg)
 {
   printf("Content-type: text-html\n");
   printf("Status: 500\n");
@@ -184,7 +185,7 @@ void RDCgiApplication::abort(const QString &err_msg)
 }
 
 
-bool RDCgiApplication::OpenDb()
+bool RDCoreApplication::OpenDb()
 {
   //
   // Get Credentials

@@ -94,6 +94,7 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdcdplayer.cpp rdcdplayer.h\
                         rdcdripper.cpp rdcdripper.h\
                         rdcgiapplication.cpp rdcgiapplication.h\
+                        rdcoreapplication.cpp rdcoreapplication.h\
                         rdcheck_daemons.cpp rdcheck_daemons.h\
                         rdcheck_version.cpp rdcheck_version.h\
                         rdclock.cpp rdclock.h\
@@ -224,6 +225,7 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdtty.cpp rdtty.h\
                         rdttydevice.cpp rdttydevice.h\
                         rdttyout.cpp rdttyout.h\
+                        rdunittestdata.cpp rdunittestdata.h\
                         rdurl.cpp rdurl.h\
                         rduser.cpp rduser.h\
                         rdupload.cpp rdupload.h\

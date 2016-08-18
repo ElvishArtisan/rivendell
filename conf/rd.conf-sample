@@ -25,6 +25,9 @@ Loginname=rduser
 Password=letmein
 Database=Rivendell
 Driver=QMYSQL3
+Engine=InnoDB
+Charset=utf8mb4
+Collation=utf8mb4_general_ci
 
 [AudioStore]
 MountSource=

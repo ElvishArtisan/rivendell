@@ -1,6 +1,6 @@
 // rdapplication.h
 //
-// Base class for Rivendell modules
+// Base class for Rivendell GUI Programs
 //
 //   (C) Copyright 2016 Fred Gleason <fredg@paravelsystems.com>
 //
@@ -21,12 +21,13 @@
 #ifndef RDAPPLICATION_H
 #define RDAPPLICATION_H
 
-#include <qapplication.h>
+#include <QApplication>
 
 #include <rdairplay_conf.h>
 #include <rdcae.h>
 #include <rdcmd_switch.h>
 #include <rdconfig.h>
+#include <rddbheartbeat.h>
 #include <rdlibrary_conf.h>
 #include <rdlogedit_conf.h>
 #include <rdstation.h>
@@ -38,7 +39,7 @@ class RDApplication : public QApplication
 {
  public:
   RDApplication(int argc,char **argv,const char *modname,const char *usage,
-		bool gui=true,bool skip_db_check=false);
+		bool skip_schema_check=false);
   RDAirPlayConf *airplayConf() const;
   RDAirPlayConf *panelConf() const;
   RDLibraryConf *libraryConf() const;
@@ -51,8 +52,17 @@ class RDApplication : public QApplication
   void setUser(const QString &username);
   RDConfig *config() const;
   RDCmdSwitch *cmdSwitch() const;
+  QSqlDatabase database() const;
+  QString dbHostname() const;
+  QString dbDatabaseName() const;
+  QString dbUsername() const;
+  QString dbPassword() const;
+
+ protected:
+  void abort(const QString &err_msg);
 
  private:
+  bool OpenDb();
   RDAirPlayConf *app_airplay_conf;
   RDAirPlayConf *app_panel_conf;
   RDLibraryConf *app_library_conf;
@@ -64,6 +74,12 @@ class RDApplication : public QApplication
   RDUser *app_user;
   RDConfig *app_config;
   RDCmdSwitch *app_cmd_switch;
+  int app_schema;
+  RDDbHeartbeat *app_heartbeat;
+  QString app_db_hostname;
+  QString app_db_dbname;
+  QString app_db_username;
+  QString app_db_password;
 };
 
 extern RDApplication *rda;

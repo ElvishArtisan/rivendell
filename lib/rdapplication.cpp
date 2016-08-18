@@ -1,6 +1,6 @@
 // rdapplication.cpp
 //
-// Base class for Rivendell modules
+// Base class for Rivendell GUI programs
 //
 //   (C) Copyright 2016 Fred Gleason <fredg@paravelsystems.com>
 //
@@ -18,34 +18,31 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qmessagebox.h>
+#include <unistd.h>
 
-#include "dbversion.h"
+#include <QMessageBox>
+
+#include <dbversion.h>
+
 #include "rdapplication.h"
-#include "rddb.h"
-#include "rddbheartbeat.h"
 
 RDApplication *rda=NULL;
 
 RDApplication::RDApplication(int argc,char **argv,const char *modname,
-			     const char *usage,bool gui,bool skip_db_check)
-  : QApplication(argc,argv,gui)
+			     const char *usage,bool skip_schema_check)
+  : QApplication(argc,argv)
 {
+  rda=this;
+
   unsigned schema=0;
   QString err;
 
-  rda=this;
+  app_heartbeat=NULL;
 
   //
   // Command-line Parser
   //
-  app_cmd_switch=new RDCmdSwitch(qApp->argc(),qApp->argv(),modname,usage);
-  for(unsigned i=0;i<app_cmd_switch->keys();i++) {
-    if(app_cmd_switch->key(i)=="--skip-db-check") {
-      skip_db_check=true;
-      app_cmd_switch->setProcessed(i,true);
-    }
-  }
+  app_cmd_switch=new RDCmdSwitch(argc,argv,modname,usage);
 
   //
   // Open Global Configuration
@@ -56,31 +53,12 @@ RDApplication::RDApplication(int argc,char **argv,const char *modname,
   //
   // Open Database
   //
-  QSqlDatabase db=RDInitDb(&schema,&err);
-  if(!db.isOpen()) {
-    if(gui) {
-      QMessageBox::warning(NULL,"Rivendell - "+QObject::tr("DB Error"),
-			   QObject::tr("Unable to connect to MySQL."),err);
-    }
-    else {
-      fprintf(stderr,"%s: unable to connect to MySQL\n",argv[0]);
-    }
-    exit(256);
+  if(!OpenDb()) {
+    abort("unable to connect to database");
   }
-  if((RD_VERSION_DATABASE!=schema)&&(!skip_db_check)) {
-    if(gui) {
-      QMessageBox::warning(NULL,"Rivendell - "+QObject::tr("DB Error"),
-			   QObject::tr("database version mismatch, should be ")+
-			   QString().sprintf("%u, ",RD_VERSION_DATABASE)+
-			   QObject::tr("is")+QString().sprintf(" %u.",schema));
-    }
-    else {
-      fprintf(stderr,"%s: database version mismatch, should be %u\n",
-	      argv[0],schema);
-    }
-    exit(256);
+  if((!skip_schema_check)&&(RD_VERSION_DATABASE!=schema)) { 
+    abort("skewed database schema");
   }
-  new RDDbHeartbeat(config()->mysqlHeartbeatInterval());
 
   //
   // Configuration Accessors
@@ -169,4 +147,96 @@ RDConfig *RDApplication::config() const
 RDCmdSwitch *RDApplication::cmdSwitch() const
 {
   return app_cmd_switch;
+}
+
+
+QSqlDatabase RDApplication::database() const
+{
+  return QSqlDatabase::database();
+}
+
+
+QString RDApplication::dbHostname() const
+{
+  return app_db_hostname;
+}
+
+
+QString RDApplication::dbDatabaseName() const
+{
+  return app_db_dbname;
+}
+
+
+QString RDApplication::dbUsername() const
+{
+  return app_db_username;
+}
+
+
+QString RDApplication::dbPassword() const
+{
+  return app_db_password;
+}
+
+
+void RDApplication::abort(const QString &err_msg)
+{
+  QMessageBox::warning(NULL,"Rivendell - "+QObject::tr("DB Error"),err_msg);
+  _exit(0);
+}
+
+
+bool RDApplication::OpenDb()
+{
+  //
+  // Get Credentials
+  //
+  app_db_hostname=config()->mysqlHostname();
+  app_db_dbname=config()->mysqlDbname();
+  app_db_username=config()->mysqlUsername();
+  app_db_password=config()->mysqlPassword();
+  for(unsigned i=0;i<cmdSwitch()->keys();i++) {
+    if(cmdSwitch()->key(i)=="--db-hostname") {
+      app_db_hostname=cmdSwitch()->value(i);
+    }
+    if(cmdSwitch()->key(i)=="--db-dbname") {
+      app_db_dbname=cmdSwitch()->value(i);
+    }
+    if(cmdSwitch()->key(i)=="--db-username") {
+      app_db_username=cmdSwitch()->value(i);
+    }
+    if(cmdSwitch()->key(i)=="--db-password") {
+      app_db_password=cmdSwitch()->value(i);
+    }
+  }
+
+  app_schema=0;
+  QSqlDatabase db=QSqlDatabase::database();
+
+  if (!db.isOpen()) {
+    db=QSqlDatabase::addDatabase(config()->mysqlDriver());
+    db.setHostName(app_db_hostname);
+    db.setDatabaseName(app_db_dbname);
+    db.setUserName(app_db_username);
+    db.setPassword(app_db_password);
+    if(!db.open()) {
+      db.removeDatabase(app_db_dbname);
+      db.close();
+      return false;
+    }
+  }
+  if(app_heartbeat==NULL){
+    app_heartbeat=new RDDbHeartbeat(config()->mysqlHeartbeatInterval());
+  }
+  //  QSqlQuery *q=new QSqlQuery("set character_set_results='utf8'");
+  //  delete q;
+
+  QSqlQuery *q=new QSqlQuery("select DB from VERSION");
+  if(q->first()) {
+    app_schema=q->value(0).toUInt();
+  }
+  delete q;
+
+  return true;
 }

@@ -23,7 +23,7 @@
     </message>
     <message>
         <source>Couldn&apos;t open mySQL connection!</source>
-        <translation type="obsolete">Greidde ikkje kopla til mySQL-databasen!</translation>
+        <translation type="unfinished">Greidde ikkje kopla til mySQL-databasen!</translation>
     </message>
     <message>
         <source>Sequentially</source>
@@ -463,18 +463,6 @@
     </message>
     <message>
         <source>NoTime</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>database version mismatch, should be </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>is</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unable to connect to MySQL.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

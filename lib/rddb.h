@@ -52,10 +52,7 @@ class RDSqlQuery : public QSqlQuery
   RDSqlQuery(const QString &query = QString::null);
 };
 
-// Setup the default database, returns true on success.
-// if error is non NULL, an error string will be appended to it
-// if there is a problem.
-QSqlDatabase RDInitDb(unsigned *schema,QString *error=NULL);
+bool RDOpenDb(unsigned *schema,QString *error,RDConfig *config);
 
 // Return a handle to the database status object.
 RDSqlDatabaseStatus *RDDbStatus();

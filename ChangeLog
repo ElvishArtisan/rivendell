@@ -15972,3 +15972,8 @@
 	* Ported contents of 'web/rdxport' to Qt4.
 2016-08-17 Fred Gleason <fredg@paravelsystems.com>
 	* Updated the Qt dependency in 'INSTALL'.
+2016-08-18 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'RDConfig::mysqlEngine()', 'RDConfig::mysqlCharset()' and
+	'RDConfig::mysqlCollation()' methods in 'lib/rdconfig.cpp' and
+	'lib/rdconfig.h'.
+	* Added an 'RDUnitTest' utility in 'utils/rdunittest/'.

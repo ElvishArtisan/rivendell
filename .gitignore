@@ -102,4 +102,5 @@ utils/rdexport/rdexport
 utils/rdmaint/rdmaint
 utils/rdgen/rdgen
 utils/rdrevert/rdrevert
+utils/rdunittest/rdunittest
 web/rdfeed/rdfeed.xml
