@@ -53,6 +53,8 @@ class MainWidget : public QWidget
 
   bool LowLevelDbTests(RDUnitTestData *data);
   bool MojibakeTests(RDUnitTestData *data);
+  bool MojibakeLanguageTest(RDUnitTestData *data,const QString &native,
+			    const QString &english);
 };
 
 

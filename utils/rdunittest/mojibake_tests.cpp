@@ -27,10 +27,11 @@ bool MainWidget::MojibakeTests(RDUnitTestData *data)
 {
   QString sql;
   QSqlQuery *q;
+  //  bool pass;
   bool ret=true;
 
   data->clear();
-  data->setGroupName("Mojibake Tests");
+  data->setGroupName(QString::fromUtf8("文字化け")+" (Mojibake) Tests");
 
   //
   // Character Set Support
@@ -74,6 +75,12 @@ bool MainWidget::MojibakeTests(RDUnitTestData *data)
     return ret;
   }
 
+  //
+  // Language Tests
+  //
+  ret=ret&&MojibakeLanguageTest(data,QString::fromUtf8("English"),"English");
+  ret=ret&&MojibakeLanguageTest(data,QString::fromUtf8("日本語"),"Japanese");
+  ret=ret&&MojibakeLanguageTest(data,QString::fromUtf8("한국어/조선말"),"Korean");
 
   //
   // Clean Up
@@ -81,6 +88,34 @@ bool MainWidget::MojibakeTests(RDUnitTestData *data)
   sql=QString("drop table TESTTAB");
   q=new QSqlQuery(sql);
   delete q;
-
   return ret;
+}
+
+
+bool MainWidget::MojibakeLanguageTest(RDUnitTestData *data,
+				      const QString &native,
+				      const QString &english)
+{
+  QString sql;
+  QSqlQuery *q;
+  bool pass=false;
+
+  sql=QString("insert into TESTTAB set ")+
+    "FIELD2=\""+native+"\"";
+  q=new QSqlQuery(sql);
+  delete q;
+  sql=QString("select ")+
+    "FIELD2 "+
+    "from TESTTAB";
+  q=new QSqlQuery(sql);
+  if(q->first()) {
+    pass=q->value(0).toString()==native;
+  }
+  delete q;
+  data->addTest(native+" ("+english+") Test",pass);
+  sql=QString("delete from TESTTAB");
+  q=new QSqlQuery(sql);
+  delete q;
+
+  return pass;
 }

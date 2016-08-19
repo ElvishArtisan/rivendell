@@ -15980,3 +15980,6 @@
 2016-08-19 Fred Gleason <fredg@paravelsystems.com>
 	* Refactored the 'RDApplication' class to be compatible with the Qt4
 	event loop.
+2016-08-19 Fred Gleason <fredg@paravelsystems.com>
+	* Added unit tests for English, Japanese and Korean typefaces in
+	'utils/rdunittest/mojibake_tests.cpp'.
