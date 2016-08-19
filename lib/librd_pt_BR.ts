@@ -19,7 +19,7 @@
     <name>QObject</name>
     <message>
         <source>Couldn&apos;t initialize QSql driver!</source>
-        <translation type="obsolete">Não foi possível inicializar driver QSql !</translation>
+        <translation type="unfinished">Não foi possível inicializar driver QSql !</translation>
     </message>
     <message>
         <source>Couldn&apos;t open mySQL connection!</source>
@@ -466,7 +466,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>DB Error</source>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>invalid SQL or failed DB connection</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2145,11 +2149,11 @@ por favor, tente novamente!</translation>
     <name>RDSqlDatabaseStatus</name>
     <message>
         <source>Database connection restored.</source>
-        <translation>Conexão à Base de Daods reestabelecido.</translation>
+        <translation type="obsolete">Conexão à Base de Daods reestabelecido.</translation>
     </message>
     <message>
         <source>Database connection failed : </source>
-        <translation>Conexão à Base de Daods falhou: </translation>
+        <translation type="obsolete">Conexão à Base de Daods falhou: </translation>
     </message>
 </context>
 <context>

@@ -21,13 +21,12 @@
 #ifndef RDAPPLICATION_H
 #define RDAPPLICATION_H
 
-#include <QApplication>
+#include <QCoreApplication>
 
 #include <rdairplay_conf.h>
 #include <rdcae.h>
 #include <rdcmd_switch.h>
 #include <rdconfig.h>
-#include <rddbheartbeat.h>
 #include <rdlibrary_conf.h>
 #include <rdlogedit_conf.h>
 #include <rdstation.h>
@@ -35,10 +34,11 @@
 #include <rdripc.h>
 #include <rduser.h>
 
-class RDApplication : public QApplication
+class RDApplication
 {
  public:
-  RDApplication(int argc,char **argv,const char *modname,const char *usage,
+  enum AppType {Gui=0,Console=1,Cgi=2};
+  RDApplication(AppType type,const char *modname,const char *usage,
 		bool skip_schema_check=false);
   RDAirPlayConf *airplayConf() const;
   RDAirPlayConf *panelConf() const;
@@ -53,16 +53,11 @@ class RDApplication : public QApplication
   RDConfig *config() const;
   RDCmdSwitch *cmdSwitch() const;
   QSqlDatabase database() const;
-  QString dbHostname() const;
-  QString dbDatabaseName() const;
-  QString dbUsername() const;
-  QString dbPassword() const;
-
- protected:
-  void abort(const QString &err_msg);
+  void startAccessors();
 
  private:
   bool OpenDb();
+  void Abend(const QString &err_msg) const;
   RDAirPlayConf *app_airplay_conf;
   RDAirPlayConf *app_panel_conf;
   RDLibraryConf *app_library_conf;
@@ -74,12 +69,8 @@ class RDApplication : public QApplication
   RDUser *app_user;
   RDConfig *app_config;
   RDCmdSwitch *app_cmd_switch;
-  int app_schema;
-  RDDbHeartbeat *app_heartbeat;
-  QString app_db_hostname;
-  QString app_db_dbname;
-  QString app_db_username;
-  QString app_db_password;
+  unsigned app_schema;
+  AppType app_type;
 };
 
 extern RDApplication *rda;

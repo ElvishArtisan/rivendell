@@ -23,11 +23,15 @@
 #include <rddb.h>
 #include <rdupload.h>
 
+#include <QCoreApplication>
+
 #include <upload_test.h>
 
 MainObject::MainObject(QObject *parent)
   :QObject(parent)
 {
+  new RDApplication(RDApplication::Console,"upload_test",UPLOAD_TEST_USAGE);
+
   username="";
   password="";
   RDUpload::ErrorCode conv_err;
@@ -76,7 +80,7 @@ MainObject::MainObject(QObject *parent)
 
 int main(int argc,char *argv[])
 {
-  RDApplication a(argc,argv,"upload_test",UPLOAD_TEST_USAGE,false);
+  QCoreApplication a(argc,argv);
   new MainObject();
   return a.exec();
 }

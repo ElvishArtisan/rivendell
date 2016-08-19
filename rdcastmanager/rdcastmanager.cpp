@@ -23,19 +23,20 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <unistd.h>
-#endif
-#include <qwindowsstyle.h>
-#include <qwidget.h>
-#include <qpushbutton.h>
-#include <qlabel.h>
-#include <qtextcodec.h>
-#include <qtranslator.h>
-#include <qsettings.h>
-#include <qpainter.h>
-#include <qmessagebox.h>
-//Added by qt3to4:
-#include <QResizeEvent>
+#endif  // WIN32
+
+#include <QApplication>
+#include <QLabel>
+#include <QMessageBox>
+#include <QPainter>
 #include <QPixmap>
+#include <QPushButton>
+#include <QResizeEvent>
+#include <QSettings>
+#include <QTextCodec>
+#include <QTranslator>
+#include <QWidget>
+#include <QWindowsStyle>
 
 #include <rd.h>
 #include <rdapplication.h>
@@ -64,6 +65,8 @@ QString cast_schedcode;
 MainWidget::MainWidget(QWidget *parent)
   :Q3MainWindow(parent)
 {
+  new RDApplication(RDApplication::Gui,"rdcastmanager",RDCASTMANAGER_USAGE);
+
   QString str1;
   QString str2;
 
@@ -304,7 +307,7 @@ void MainWidget::RefreshList()
 
 int main(int argc,char *argv[])
 {
-  RDApplication a(argc,argv,"rdcastmanager",RDCASTMANAGER_USAGE);
+  QApplication a(argc,argv);
   
   //
   // Load Translations

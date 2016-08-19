@@ -448,7 +448,15 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>DB Error</source>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>invalid SQL or failed DB connection</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Couldn&apos;t initialize QSql driver!</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1788,17 +1796,6 @@ please try again!</source>
     <message>
         <source>Panel</source>
         <translation>Panneau</translation>
-    </message>
-</context>
-<context>
-    <name>RDSqlDatabaseStatus</name>
-    <message>
-        <source>Database connection restored.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Database connection failed : </source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

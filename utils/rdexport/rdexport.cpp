@@ -22,7 +22,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include <qfile.h>
+#include <QCoreApplication>
+#include <QFile>
 
 #include <rdapplication.h>
 #include <rdaudioconvert.h>
@@ -38,6 +39,8 @@
 MainObject::MainObject(QObject *parent)
   :QObject(parent)
 {
+  new RDApplication(RDApplication::Console,"rdexport",RDEXPORT_USAGE);
+
   export_metadata_pattern="%n_%j";
   export_escape_string="_";
   export_continue_after_error=false;
@@ -479,7 +482,7 @@ void MainObject::Verbose(const QString &msg)
 
 int main(int argc,char *argv[])
 {
-  RDApplication a(argc,argv,"rdexport",RDEXPORT_USAGE,false);
+  QCoreApplication a(argc,argv);
   new MainObject();
   return a.exec();
 }

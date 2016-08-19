@@ -24,7 +24,7 @@
 #include <fcntl.h>
 #include <errno.h>
 
-#include <rdcgiapplication.h>
+#include <rdapplication.h>
 #include <rdformpost.h>
 #include <rdweb.h>
 #include <rdsvc.h>

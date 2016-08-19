@@ -24,22 +24,21 @@
 #include <sys/wait.h>
 #include <unistd.h>
 #endif  // WIN32
-#include <qwindowsstyle.h>
-#include <qwidget.h>
-#include <qpainter.h>
-#include <q3sqlpropertymap.h>
-#include <qmessagebox.h>
-#include <qpushbutton.h>
-#include <qlabel.h>
-#include <qlabel.h>
-#include <q3listview.h>
-#include <qtextcodec.h>
-#include <qtranslator.h>
-#include <qsettings.h>
-#include <qpixmap.h>
-#include <qpainter.h>
-//Added by qt3to4:
+
+#include <Q3ListView>
+#include <Q3SqlPropertyMap>
+#include <QApplication>
+#include <QLabel>
+#include <QMessageBox>
+#include <QPainter>
+#include <QPixmap>
+#include <QPushButton>
 #include <QResizeEvent>
+#include <QSettings>
+#include <QTextCodec>
+#include <QTranslator>
+#include <QWidget>
+#include <QWindowsStyle>
 
 #include <rd.h>
 #include <rdapplication.h>
@@ -96,6 +95,8 @@ void SigHandler(int signo)
 MainWidget::MainWidget(QWidget *parent)
   :Q3MainWindow(parent)
 {
+  new RDApplication(RDApplication::Gui,"rdlogedit",RDLOGEDIT_USAGE);
+
   QString str1;
   QString str2;
   log_log_list=NULL;
@@ -794,7 +795,7 @@ void MainWidget::RefreshList()
 
 int main(int argc,char *argv[])
 {
-  RDApplication a(argc,argv,"rdlogedit",RDLOGEDIT_USAGE);
+  QApplication a(argc,argv);
   
   //
   // Load Translations

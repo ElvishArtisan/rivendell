@@ -31,6 +31,7 @@
 #include <qstring.h>
 
 #include <rd.h>
+#include <rdcmd_switch.h>
 
 class RDConfig
 {
@@ -46,8 +47,8 @@ class RDConfig
 		    LogInfo=LOG_INFO,LogDebug=LOG_DEBUG};
 
 #endif  // WIN32
-  RDConfig();
-  RDConfig(QString filename);
+  RDConfig(RDCmdSwitch *cmd=0);
+  RDConfig(QString filename,RDCmdSwitch *cmd=0);
   QString filename() const;
   void setFilename(QString filename);
   QString mysqlHostname() const;
@@ -159,8 +160,8 @@ class RDConfig
   unsigned conf_sas_base_cart;
   QString conf_sas_tty_device;
   std::vector<QString> conf_destinations;
+  RDCmdSwitch *conf_cmd;
 };
 
-RDConfig *RDConfiguration(void); 
 
 #endif  // RDCONFIG_H

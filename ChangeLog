@@ -15977,3 +15977,6 @@
 	'RDConfig::mysqlCollation()' methods in 'lib/rdconfig.cpp' and
 	'lib/rdconfig.h'.
 	* Added an 'RDUnitTest' utility in 'utils/rdunittest/'.
+2016-08-19 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored the 'RDApplication' class to be compatible with the Qt4
+	event loop.

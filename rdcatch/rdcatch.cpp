@@ -20,23 +20,23 @@
 
 #include <unistd.h>
 
-#include <qwindowsstyle.h>
-#include <qwidget.h>
-#include <qpainter.h>
-#include <q3sqlpropertymap.h>
-#include <qmessagebox.h>
-#include <qpushbutton.h>
-#include <qlabel.h>
-#include <qlabel.h>
-#include <q3listview.h>
-#include <qsignalmapper.h>
-#include <qtextcodec.h>
-#include <qtranslator.h>
-#include <qlayout.h>
-//Added by qt3to4:
-#include <QResizeEvent>
-#include <QPixmap>
+#include <Q3ListView>
+#include <Q3SqlPropertyMap>
+#include <QApplication>
 #include <QCloseEvent>
+#include <QLabel>
+#include <QLabel>
+#include <QLayout>
+#include <QMessageBox>
+#include <QPainter>
+#include <QPixmap>
+#include <QPushButton>
+#include <QResizeEvent>
+#include <QSignalMapper>
+#include <QTextCodec>
+#include <QTranslator>
+#include <QWidget>
+#include <QWindowsStyle>
 
 #include <rdapplication.h>
 #include <rdescape_string.h>
@@ -90,6 +90,8 @@ int catch_audition_port=-1;
 MainWidget::MainWidget(QWidget *parent)
   :QWidget(parent)
 {
+  new RDApplication(RDApplication::Gui,"rdcatch",RDCATCH_USAGE);
+
   QString str;
   catch_host_warnings=false;
   catch_audition_stream=-1;
@@ -169,8 +171,9 @@ MainWidget::MainWidget(QWidget *parent)
   //
   // Open Database
   //
-  connect(RDDbStatus(),SIGNAL(logText(RDConfig::LogPriority,const QString &)),
-	  this,SLOT(log(RDConfig::LogPriority,const QString &)));
+  //  connect(RDDbStatus(),SIGNAL(logText(RDConfig::LogPriority,const QString &)),
+  //	  this,SLOT(log(RDConfig::LogPriority,const QString &)));
+
   //
   // Allocate Global Resources
   //
@@ -2565,7 +2568,7 @@ void MainWidget::SaveGeometry()
 
 int main(int argc,char *argv[])
 {
-  RDApplication a(argc,argv,"rdcatch",RDCATCH_USAGE);
+  QApplication a(argc,argv);
   
   //
   // Load Translations

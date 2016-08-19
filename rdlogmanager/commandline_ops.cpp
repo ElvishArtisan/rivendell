@@ -39,6 +39,8 @@ int RunLogOperation(int argc,char *argv[],const QString &svcname,
 		    int start_offset,bool protect_existing,bool gen_log,
 		    bool merge_mus,bool merge_tfc)
 {
+  new RDApplication(RDApplication::Console,"rdlogmanager",RDLOGMANAGER_USAGE);
+
   QString sql;
   RDSqlQuery *q;
   QString report;
@@ -170,6 +172,8 @@ int RunLogOperation(int argc,char *argv[],const QString &svcname,
 int RunReportOperation(int argc,char *argv[],const QString &rptname,
 		       bool protect_existing,int start_offset,int end_offset)
 {
+  new RDApplication(RDApplication::Console,"rdlogmanager",RDLOGMANAGER_USAGE);
+
   QString out_path;
 
   if(end_offset<start_offset) {

@@ -24,7 +24,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 
-#include <rdcgiapplication.h>
+#include <rdapplication.h>
 #include <rdformpost.h>
 #include <rdweb.h>
 #include <rdcart.h>
@@ -51,7 +51,7 @@ void Xport::ExportPeaks()
   //
   // Verify User Perms
   //
-  if(!rdcgi->user()->cartAuthorized(cartnum)) {
+  if(!rda->user()->cartAuthorized(cartnum)) {
     XmlExit("No such cart",404);
   }
 

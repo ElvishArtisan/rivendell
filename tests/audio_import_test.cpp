@@ -22,11 +22,15 @@
 #include <rddb.h>
 #include <rdaudioimport.h>
 
+#include <QCoreApplication>
+
 #include <audio_import_test.h>
 
 MainObject::MainObject(QObject *parent)
   :QObject(parent)
 {
+  new RDApplication(RDApplication::Console,"audio_import_test",
+		    AUDIO_IMPORT_TEST_USAGE);
   username="user";
   password="";
   destination_settings=new RDSettings();
@@ -132,7 +136,7 @@ MainObject::MainObject(QObject *parent)
 
 int main(int argc,char *argv[])
 {
-  RDApplication a(argc,argv,"audio_import_test",AUDIO_IMPORT_TEST_USAGE,false);
+  QCoreApplication a(argc,argv);
   new MainObject();
   return a.exec();
 }

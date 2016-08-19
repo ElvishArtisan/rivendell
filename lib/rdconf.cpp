@@ -964,7 +964,10 @@ QString RDHomeDir()
 
 QString RDTempDir()
 {
-  QString conf_temp_directory = RDConfiguration()->tempDirectory();
+  QString conf_temp_directory("/tmp");
+  if(getenv("TEMP")!=NULL) {
+    conf_temp_directory=getenv("TEMP");
+  }
   if (!conf_temp_directory.isEmpty()) {
     return conf_temp_directory;
   }

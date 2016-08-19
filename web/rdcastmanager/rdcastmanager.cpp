@@ -24,9 +24,10 @@
 #include <ctype.h>
 #include <unistd.h>
 
-#include <qdatetime.h>
+#include <QCoreApplication>
+#include <QDateTime>
 
-#include <rdcgiapplication.h>
+#include <rdapplication.h>
 #include <rdconf.h>
 #include <rdpodcast.h>
 #include <rdweb.h>
@@ -41,6 +42,8 @@ char server_name[PATH_MAX];
 MainObject::MainObject(QObject *parent)
   :QObject(parent)
 {
+  new RDApplication(RDApplication::Cgi,"rdcastmanager.cgi","CGI");
+
   //
   // Initialize Variables
   //
@@ -66,7 +69,7 @@ MainObject::MainObject(QObject *parent)
   // Read Post Variables and Dispatch 
   //
   cast_post=
-    new RDFormPost(RDFormPost::MultipartEncoded,rdcgi->system()->maxPostLength());
+    new RDFormPost(RDFormPost::MultipartEncoded,rda->system()->maxPostLength());
   if(cast_post->error()!=RDFormPost::ErrorOk) {
     RDCgiError(cast_post->errorString(cast_post->error()));
     Exit(0);
@@ -1397,7 +1400,7 @@ void MainObject::DeleteCast()
 
   RDFeed *feed=new RDFeed(cast_feed_id);
   RDPodcast *cast=new RDPodcast(cast_cast_id);
-  cast->removeAudio(feed,&errs,rdcgi->config()->logXloadDebugData());
+  cast->removeAudio(feed,&errs,rda->config()->logXloadDebugData());
   delete cast;
   delete feed;
 
@@ -1554,14 +1557,14 @@ void MainObject::PostEpisode()
     Exit(0);
   }
   
-  if(!rdcgi->station()->exists()) {
+  if(!rda->station()->exists()) {
     RDCgiError("Server station entry not found!");
     Exit(0);
   }
   RDFeed::Error err;
   RDFeed *feed=new RDFeed(cast_feed_id,this);
-  int cast_id=feed->postFile(rdcgi->station(),media_file,&err,
-			     rdcgi->config()->logXloadDebugData(),rdcgi->config());
+  int cast_id=feed->postFile(rda->station(),media_file,&err,
+			     rda->config()->logXloadDebugData(),rda->config());
   delete feed;
   if(err!=RDFeed::ErrorOk) {
     RDCgiError(RDFeed::errorString(err));
@@ -1863,7 +1866,7 @@ void MainObject::Exit(int code)
 
 int main(int argc,char *argv[])
 {
-  RDCgiApplication a(argc,argv);
+  QCoreApplication a(argc,argv);
   new MainObject();
   return a.exec();
 }

@@ -24,7 +24,7 @@
 #include <fcntl.h>
 #include <errno.h>
 
-#include <rdcgiapplication.h>
+#include <rdapplication.h>
 #include <rdformpost.h>
 #include <rdweb.h>
 #include <rdcart.h>
@@ -49,7 +49,7 @@ void Xport::DeleteAudio()
   //
   // Process Request
   //
-  if((!rdcgi->user()->deleteCarts())&&(!rdcgi->user()->adminConfig())) {
+  if((!rda->user()->deleteCarts())&&(!rda->user()->adminConfig())) {
     XmlExit("User not authorized",401);
   }
   RDCut *cut=new RDCut(cartnum,cutnum);

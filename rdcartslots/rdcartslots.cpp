@@ -24,15 +24,15 @@
 #include <sys/wait.h>
 #include <signal.h>
 
-#include <qmessagebox.h>
-#include <qwindowsstyle.h>
-#include <qtranslator.h>
-#include <qtextcodec.h>
-#include <qpainter.h>
-#include <qpixmap.h>
-//Added by qt3to4:
+#include <QApplication>
 #include <QCloseEvent>
+#include <QMessageBox>
+#include <QPainter>
 #include <QPaintEvent>
+#include <QPixmap>
+#include <QTextCodec>
+#include <QTranslator>
+#include <QWindowsStyle>
 
 #include <rdapplication.h>
 #include <rdcartslots.h>
@@ -50,6 +50,8 @@
 MainWidget::MainWidget(QWidget *parent)
   :QWidget(parent)
 {
+  new RDApplication(RDApplication::Gui,"rdcartslots",RDCARTSLOTS_USAGE);
+
   //
   // Force a reasonable default font.
   //
@@ -201,7 +203,7 @@ void MainWidget::SetCaption()
 
 int main(int argc,char *argv[])
 {
-  RDApplication a(argc,argv,"rdcartslots",RDCARTSLOTS_USAGE);
+  QApplication a(argc,argv);
   
   //
   // Load Translations

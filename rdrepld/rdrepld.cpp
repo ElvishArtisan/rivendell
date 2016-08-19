@@ -22,6 +22,7 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
+#include <QCoreApplication>
 
 #include <rdapplication.h>
 #include <rddb.h>
@@ -59,6 +60,8 @@ void SigHandler(int signum)
 MainObject::MainObject(QObject *parent)
   :QObject(parent)
 {
+  new RDApplication(RDApplication::Console,"rdrepld",RDREPLD_USAGE);
+
   //
   // Make sure we're the only instance running
   //
@@ -247,7 +250,7 @@ void MainObject::FreeReplicators()
 
 int main(int argc,char *argv[])
 {
-  RDApplication a(argc,argv,"rdrepeld",RDREPLD_USAGE,false);
+  QCoreApplication a(argc,argv);
   new MainObject();
   return a.exec();
 }

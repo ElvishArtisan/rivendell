@@ -19,35 +19,29 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <Q3ServerSocket>
+#include <stdio.h>
+
 #include <QObject>
 #include <QString>
 #include <QTextCodec>
 #include <QTranslator>
 #include <QSqlError>
+#include <QVariant>
 
 #include "rddb.h"
 #include "rddbheartbeat.h"
 
-static QSqlDatabase db;
-static RDSqlDatabaseStatus * dbStatus = NULL;
-
 bool RDOpenDb (unsigned *schema,QString *error,RDConfig *config)
 {
-  static bool firsttime = true;
+  QSqlDatabase db;
 
   *schema=0;
-  //  RDConfig *cf = RDConfiguration();
-  //  cf->load();
-  //  assert (cf);
   if (!db.isOpen()){
     db=QSqlDatabase::addDatabase(config->mysqlDriver());
-    /*
-    if(db.isOpen()) {
+    if(!db.isValid()) {
       *error+= QString(QObject::tr("Couldn't initialize QSql driver!"));
       return false;
     }
-    */
     db.setHostName(config->mysqlHostname());
     db.setDatabaseName(config->mysqlDbname());
     db.setUserName(config->mysqlUsername());
@@ -59,10 +53,7 @@ bool RDOpenDb (unsigned *schema,QString *error,RDConfig *config)
       return false;
     }
   }
-  if (firsttime){
-    new RDDbHeartbeat(config->mysqlHeartbeatInterval());
-    firsttime=false;
-  }
+  new RDDbHeartbeat(config->mysqlHeartbeatInterval());
   //  QSqlQuery *q=new QSqlQuery("set character_set_results='utf8'");
   //  delete q;
 
@@ -79,12 +70,7 @@ bool RDOpenDb (unsigned *schema,QString *error,RDConfig *config)
 RDSqlQuery::RDSqlQuery (const QString &query):
   QSqlQuery(query)
 {
-  //printf("lastQuery: %s\n",(const char *)lastQuery());
-
-  // With any luck, by the time we get here, we have already done the biz...
-  /*
-  unsigned schema;
-  if (!isActive()){ //DB Offline?
+  if(!isActive()) {
     QString err=QObject::tr("invalid SQL or failed DB connection")+
       +"["+lastError().text()+"]: "+query;
 
@@ -92,58 +78,5 @@ RDSqlQuery::RDSqlQuery (const QString &query):
 #ifndef WIN32
     syslog(LOG_ERR,(const char *)err);
 #endif  // WIN32
-    QSqlDatabase *ldb = QSqlDatabase::database();
-    // Something went wrong with the DB, trying a reconnect
-    ldb->removeDatabase(RDConfiguration()->mysqlDbname());
-    ldb->close();
-    db = NULL;
-    RDInitDb (&schema);
-    QSqlQuery::prepare (query);
-    QSqlQuery::exec ();
-    if (RDDbStatus()){
-      if (isActive()){
-	RDDbStatus()->sendRecon();
-      } else {
-	RDDbStatus()->sendDiscon(query);
-      }
-    }
-  } else {
-    RDDbStatus()->sendRecon();
   }
-  */
-}
-
-
-void RDSqlDatabaseStatus::sendRecon()
-{
-  if (discon){
-    discon = false;
-    emit reconnected();
-    fprintf (stderr,"Database connection restored.\n");
-    emit logText(RDConfig::LogErr,QString(tr("Database connection restored.")));
-  }
-}
-
-void RDSqlDatabaseStatus::sendDiscon(QString query)
-{
-  if (!discon){
-    emit connectionFailed();
-    fprintf (stderr,"Database connection failed: %s\n",(const char *)query);
-    emit logText(RDConfig::LogErr,
-		 QString(tr("Database connection failed : ")) + query);
-    discon = true;
-  }
-}
-
-RDSqlDatabaseStatus::RDSqlDatabaseStatus()
-{
-  discon = false;
-}
-
-RDSqlDatabaseStatus * RDDbStatus()
-{
-  if (!dbStatus){
-    dbStatus = new RDSqlDatabaseStatus;
-  }
-  return dbStatus;
 }

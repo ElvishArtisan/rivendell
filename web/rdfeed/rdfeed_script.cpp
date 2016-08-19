@@ -23,10 +23,11 @@
 #include <fcntl.h>
 #include <ctype.h>
 
-#include <qdatetime.h>
-#include <qstringlist.h>
+#include <QCoreApplication>
+#include <QDateTime>
+#include <QStringList>
 
-#include <rdcgiapplication.h>
+#include <rdapplication.h>
 #include <rdconf.h>
 #include <rdescape_string.h>
 #include <rdpodcast.h>
@@ -42,6 +43,8 @@ char server_name[PATH_MAX];
 MainObject::MainObject(QObject *parent)
   :QObject(parent)
 {
+  new RDApplication(RDApplication::Cgi,"rdfeed.cgi","CGI");
+
   char keyname[10];
   int cast_id=-1;
   bool count;
@@ -373,7 +376,7 @@ void MainObject::Redirect(const QString &url)
 
 int main(int argc,char *argv[])
 {
-  RDCgiApplication a(argc,argv);
+  QCoreApplication a(argc,argv);
   new MainObject();
   return a.exec();
 }

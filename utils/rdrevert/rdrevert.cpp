@@ -23,11 +23,11 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-#include <qstringlist.h>
-//Added by qt3to4:
+#include <QCoreApplication>
 #include <QSqlQuery>
+#include <QStringList>
 
-#include <rdcoreapplication.h>
+#include <rdapplication.h>
 #include <rdclock.h>
 #include <rdcreate_log.h>
 #include <rdescape_string.h>
@@ -40,6 +40,8 @@
 MainObject::MainObject(QObject *parent)
   :QObject(parent)
 {
+  new RDApplication(RDApplication::Console,"rdrevert",RDREVERT_USAGE);
+
   bool ok=false;
   int set_schema=0;
   rev_use_deadzone=false;
@@ -55,24 +57,24 @@ MainObject::MainObject(QObject *parent)
   //
   // Read Command Options
   //
-  for(unsigned i=0;i<rdca->cmdSwitch()->keys();i++) {
-    if(rdca->cmdSwitch()->key(i)=="--set-schema") {
-      set_schema=rdca->cmdSwitch()->value(i).toInt(&ok);
+  for(unsigned i=0;i<rda->cmdSwitch()->keys();i++) {
+    if(rda->cmdSwitch()->key(i)=="--set-schema") {
+      set_schema=rda->cmdSwitch()->value(i).toInt(&ok);
       if((!ok)||(set_schema<0)) {
 	fprintf(stderr,"rdrevert: invalid schema value\n");
 	exit(256);
       }
-      rdca->cmdSwitch()->setProcessed(i,true);
+      rda->cmdSwitch()->setProcessed(i,true);
     }
-    if(rdca->cmdSwitch()->key(i)=="--set-version") {
-      if((set_schema=MapSchema(rdca->cmdSwitch()->value(i)))==0) {
+    if(rda->cmdSwitch()->key(i)=="--set-version") {
+      if((set_schema=MapSchema(rda->cmdSwitch()->value(i)))==0) {
 	fprintf(stderr,"rdrevert: invalid/unsupported Rivendell version\n");
 	exit(256);
       }
-      rdca->cmdSwitch()->setProcessed(i,true);
+      rda->cmdSwitch()->setProcessed(i,true);
     }
   }
-  if(!rdca->cmdSwitch()->allProcessed()) {
+  if(!rda->cmdSwitch()->allProcessed()) {
     fprintf(stderr,"rdrevert: unknown option\n");
     exit(256);
   }
@@ -575,7 +577,7 @@ int MainObject::MapSchema(const QString &ver)
 
 int main(int argc,char *argv[])
 {
-  RDCoreApplication a(argc,argv,"rdrevert",RDREVERT_USAGE,true);
+  QCoreApplication a(argc,argv);
   new MainObject();
   return a.exec();
 }

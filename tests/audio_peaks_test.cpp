@@ -23,6 +23,8 @@
 
 #include <qvariant.h>
 
+#include <QCoreApplication>
+
 #include <rdapplication.h>
 #include <rdwavefile.h>
 
@@ -31,6 +33,9 @@
 MainObject::MainObject(QObject *parent)
   :QObject(parent)
 {
+  new RDApplication(RDApplication::Console,"audio_peaks_test",
+		    AUDIO_PEAKS_TEST_USAGE);
+
   QString filename;
   unsigned frame=0;
   bool frame_used=false;
@@ -97,7 +102,7 @@ MainObject::MainObject(QObject *parent)
 
 int main(int argc,char *argv[])
 {
-  RDApplication a(argc,argv,"audio_peaks_test",AUDIO_PEAKS_TEST_USAGE,false);
+  QCoreApplication a(argc,argv);
   new MainObject();
   return a.exec();
 }

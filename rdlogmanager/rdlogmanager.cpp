@@ -25,20 +25,21 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #endif  // WIN32
-#include <qwindowsstyle.h>
-#include <qwidget.h>
-#include <qpainter.h>
-#include <q3sqlpropertymap.h>
-#include <qmessagebox.h>
-#include <qpushbutton.h>
-#include <qlabel.h>
-#include <qsettings.h>
-#include <qlabel.h>
-#include <q3listview.h>
-#include <qtextcodec.h>
-#include <qtranslator.h>
-//Added by qt3to4:
+
+#include <Q3ListView>
+#include <Q3SqlPropertyMap>
+#include <QApplication>
+#include <QCoreApplication>
+#include <QLabel>
+#include <QMessageBox>
+#include <QPainter>
 #include <QPixmap>
+#include <QPushButton>
+#include <QTextCodec>
+#include <QTranslator>
+#include <QSettings>
+#include <QWindowsStyle>
+#include <QWidget>
 
 #include <rd.h>
 #include <rdapplication.h>
@@ -95,6 +96,8 @@ void SigHandler(int signo)
 MainWidget::MainWidget(QWidget *parent)
   :QWidget(parent)
 {
+  new RDApplication(RDApplication::Gui,"rdlogmanager",RDLOGMANAGER_USAGE);
+
   //
   // Fix the Window Size
   //
@@ -307,7 +310,7 @@ void MainWidget::quitMainWidget()
 
 int gui_main(int argc,char *argv[])
 {
-  RDApplication a(argc,argv,"rdlogmanager",RDLOGMANAGER_USAGE);
+  QApplication a(argc,argv);
   
   //
   // Load Translations
@@ -435,13 +438,13 @@ int main(int argc,char *argv[])
   }
 
   if(cmd_generate||cmd_merge_traffic||cmd_merge_music) {
-    RDApplication a(argc,argv,"rdlogmanager",RDLOGMANAGER_USAGE,false);
+    QCoreApplication a(argc,argv);
     return RunLogOperation(argc,argv,cmd_service,cmd_start_offset,
 			   cmd_protect_existing,cmd_generate,
 			   cmd_merge_music,cmd_merge_traffic);
   }
   if(!cmd_report.isEmpty()) {
-    RDApplication a(argc,argv,"rdlogmanager",RDLOGMANAGER_USAGE,false);
+    QCoreApplication a(argc,argv);
     return RunReportOperation(argc,argv,cmd_report,cmd_protect_existing,
 			      cmd_start_offset,cmd_end_offset);
   }

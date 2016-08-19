@@ -20,16 +20,16 @@
 
 #include <stdlib.h>
 
-#include <qwindowsstyle.h>
-#include <qpainter.h>
-#include <qmessagebox.h>
-#include <qpushbutton.h>
-#include <qlabel.h>
-#include <qtextcodec.h>
-#include <qtranslator.h>
-//Added by qt3to4:
-#include <QResizeEvent>
+#include <QApplication>
+#include <QLabel>
+#include <QMessageBox>
+#include <QPainter>
 #include <QPixmap>
+#include <QPushButton>
+#include <QResizeEvent>
+#include <QTextCodec>
+#include <QTranslator>
+#include <QWindowsStyle>
 
 #include <rd.h>
 #include <rdapplication.h>
@@ -48,6 +48,8 @@
 MainWidget::MainWidget(QWidget *parent)
   :QWidget(parent)
 {
+  new RDApplication(RDApplication::Gui,"rdlogin",RDLOGIN_USAGE);
+
   login_user_width=160;
 
   QString str;
@@ -274,7 +276,7 @@ void MainWidget::resizeEvent(QResizeEvent *e)
 
 int main(int argc,char *argv[])
 {
-  RDApplication a(argc,argv,"rdlogin",RDLOGIN_USAGE);
+  QApplication a(argc,argv);
   
   //
   // Load Translations

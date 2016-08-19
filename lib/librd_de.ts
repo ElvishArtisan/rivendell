@@ -19,7 +19,7 @@
     <name>QObject</name>
     <message>
         <source>Couldn&apos;t initialize QSql driver!</source>
-        <translation type="obsolete">Qsql-Treiber konnte nicht initialisiert werden!</translation>
+        <translation type="unfinished">Qsql-Treiber konnte nicht initialisiert werden!</translation>
     </message>
     <message>
         <source>Couldn&apos;t open mySQL connection!</source>
@@ -466,7 +466,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>DB Error</source>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>invalid SQL or failed DB connection</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2196,11 +2200,11 @@ bitte erneut versuchen!</translation>
     <name>RDSqlDatabaseStatus</name>
     <message>
         <source>Database connection restored.</source>
-        <translation>Datenbankverbindung wiederhergestellt.</translation>
+        <translation type="obsolete">Datenbankverbindung wiederhergestellt.</translation>
     </message>
     <message>
         <source>Database connection failed : </source>
-        <translation>Datenbankverbindung fehlgeschlagen:</translation>
+        <translation type="obsolete">Datenbankverbindung fehlgeschlagen:</translation>
     </message>
 </context>
 <context>

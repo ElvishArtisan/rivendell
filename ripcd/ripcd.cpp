@@ -18,11 +18,13 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qobject.h>
-#include <qtimer.h>
-#include <qdir.h>
-#include <qsessionmanager.h>
-#include <qsignalmapper.h>
+#include <QApplication>
+#include <QCoreApplication>
+#include <QDir>
+#include <QObject>
+#include <QSessionManager>
+#include <QSignalMapper>
+#include <QTimer>
 
 #include <unistd.h>
 #include <stdio.h>
@@ -80,6 +82,8 @@ void SigHandler(int signo)
 MainObject::MainObject(QObject *parent)
   :QObject(parent)
 {
+  new RDApplication(RDApplication::Console,"ripcd",RIPCD_USAGE);
+
   //
   // Make sure we're the only instance running
   //
@@ -123,8 +127,8 @@ MainObject::MainObject(QObject *parent)
   //
   // Open Database
   //
-  connect (RDDbStatus(),SIGNAL(logText(RDConfig::LogPriority,const QString &)),
-	   this,SLOT(log(RDConfig::LogPriority,const QString &)));
+  //  connect (RDDbStatus(),SIGNAL(logText(RDConfig::LogPriority,const QString &)),
+  //	   this,SLOT(log(RDConfig::LogPriority,const QString &)));
 
   //
   // Station 
@@ -842,7 +846,7 @@ void QApplication::saveState(QSessionManager &sm) {
 
 int main(int argc,char *argv[])
 {
-  RDApplication a(argc,argv,"ripcd",RIPCD_USAGE,false);
+  QCoreApplication a(argc,argv);
   new MainObject();
   return a.exec();
 }

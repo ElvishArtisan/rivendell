@@ -31,6 +31,7 @@
 #include <rdwavefile.h>
 #endif
 
+#include <rdapplication.h>
 #include <rdcut.h>
 #include <rdtextvalidator.h>
 #include <rdconfig.h>
@@ -1638,7 +1639,7 @@ QString RDCut::pathName(unsigned cartnum,unsigned cutnum)
 
 QString RDCut::pathName(const QString &cutname)
 {
-  return RDConfiguration()->audioFileName(cutname); 
+  return rda->config()->audioFileName(cutname); 
 }
 
 

@@ -23,7 +23,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 
-#include <rdcgiapplication.h>
+#include <rdapplication.h>
 #include <rdformpost.h>
 #include <rdweb.h>
 #include <rdcart.h>
@@ -83,10 +83,10 @@ void Xport::Import()
   //
   // Verify User Perms
   //
-  if(!rdcgi->user()->cartAuthorized(cartnum)) {
+  if(!rda->user()->cartAuthorized(cartnum)) {
     XmlExit("No such cart",404);
   }
-  if(!rdcgi->user()->editAudio()) {
+  if(!rda->user()->editAudio()) {
     XmlExit("Unauthorized",401);
   }
 
@@ -95,9 +95,9 @@ void Xport::Import()
   //
   RDCart *cart=new RDCart(cartnum);
   RDCut *cut=new RDCut(cartnum,cutnum);
-  //  RDLibraryConf *conf=new RDLibraryConf(rdcgi->config()->stationName(),0);
+  //  RDLibraryConf *conf=new RDLibraryConf(rda->config()->stationName(),0);
   RDSettings *settings=new RDSettings();
-  switch(rdcgi->libraryConf()->defaultFormat()) {
+  switch(rda->libraryConf()->defaultFormat()) {
   case 0:
     settings->setFormat(RDSettings::Pcm16);
     break;
@@ -111,8 +111,8 @@ void Xport::Import()
     break;
   }
   settings->setChannels(channels);
-  settings->setSampleRate(rdcgi->system()->sampleRate());
-  settings->setBitRate(channels*rdcgi->libraryConf()->defaultBitrate());
+  settings->setSampleRate(rda->system()->sampleRate());
+  settings->setBitRate(channels*rda->libraryConf()->defaultBitrate());
   settings->setNormalizationLevel(normalization_level);
   RDWaveFile *wave=new RDWaveFile(filename);
   if(!wave->openWave()) {
@@ -121,14 +121,14 @@ void Xport::Import()
   }
   msecs=wave->getExtTimeLength();
   delete wave;
-  RDAudioConvert *conv=new RDAudioConvert(rdcgi->config()->stationName());
+  RDAudioConvert *conv=new RDAudioConvert(rda->config()->stationName());
   conv->setSourceFile(filename);
   conv->setDestinationFile(RDCut::pathName(cartnum,cutnum));
   conv->setDestinationSettings(settings);
   RDAudioConvert::ErrorCode conv_err=conv->convert();
   switch(conv_err) {
   case RDAudioConvert::ErrorOk:
-    cut->checkInRecording(rdcgi->config()->stationName(),settings,msecs);
+    cut->checkInRecording(rda->config()->stationName(),settings,msecs);
     if(use_metadata>0) {
       cart->setMetadata(conv->sourceWaveData());
       cut->setMetadata(conv->sourceWaveData());

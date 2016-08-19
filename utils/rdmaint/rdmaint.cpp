@@ -27,8 +27,9 @@
 #include <fcntl.h>
 #include <ctype.h>
 
-#include <qdir.h>
-#include <qfile.h>
+#include <QCoreApplication>
+#include <QDir>
+#include <QFile>
 
 #include <rdapplication.h>
 #include <rdconf.h>
@@ -43,6 +44,8 @@
 MainObject::MainObject(QObject *parent)
   :QObject(parent)
 {
+  new RDApplication(RDApplication::Console,"rdmain",RDMAINT_USAGE);
+
   QString sql;
   RDSqlQuery *q;
 
@@ -259,7 +262,7 @@ void MainObject::PurgeGpioEvents()
   
 int main(int argc,char *argv[])
 {
-  RDApplication a(argc,argv,"rdmain",RDMAINT_USAGE,false);
+  QCoreApplication a(argc,argv);
   new MainObject();
   return a.exec();
 }

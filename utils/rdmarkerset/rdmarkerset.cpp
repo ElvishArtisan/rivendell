@@ -26,9 +26,9 @@
 #include <unistd.h>
 #include <sys/types.h>
 
-#include <qdir.h>
-#include <qfileinfo.h>
-//Added by qt3to4:
+#include <QCoreApplication>
+#include <QDir>
+#include <QFileInfo>
 #include <QSqlQuery>
 
 #include <rdapplication.h>
@@ -48,6 +48,8 @@
 MainObject::MainObject(QObject *parent)
   :QObject(parent)
 {
+  new RDApplication(RDApplication::Console,"rdmarkerset",RDMARKERSET_USAGE);
+
   bool ok=false;
   set_all_groups=false;
   set_auto_trim=1;
@@ -381,7 +383,7 @@ void MainObject::Print(const QString &msg)
 
 int main(int argc,char *argv[])
 {
-  RDApplication a(argc,argv,"rdmarkerset",RDMARKERSET_USAGE,false);
+  QCoreApplication a(argc,argv);
   new MainObject();
   return a.exec();
 }

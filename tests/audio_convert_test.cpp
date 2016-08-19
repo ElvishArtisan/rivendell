@@ -23,11 +23,16 @@
 #include <rdcmd_switch.h>
 #include <rdaudioconvert.h>
 
+#include <QCoreApplication>
+
 #include <audio_convert_test.h>
 
 MainObject::MainObject(QObject *parent)
   :QObject(parent)
 {
+  new RDApplication(RDApplication::Console,"audio_convert_test",
+		    AUDIO_CONVERT_TEST_USAGE);
+
   destination_settings=new RDSettings();
   start_point=-1;
   end_point=-1;
@@ -172,7 +177,7 @@ MainObject::MainObject(QObject *parent)
 
 int main(int argc,char *argv[])
 {
-  RDApplication a(argc,argv,"audio_convert_test",AUDIO_CONVERT_TEST_USAGE,false);
+  QCoreApplication a(argc,argv);
   new MainObject();
   return a.exec();
 }

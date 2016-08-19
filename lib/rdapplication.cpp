@@ -28,50 +28,51 @@
 
 RDApplication *rda=NULL;
 
-RDApplication::RDApplication(int argc,char **argv,const char *modname,
+RDApplication::RDApplication(RDApplication::AppType type,const char *modname,
 			     const char *usage,bool skip_schema_check)
-  : QApplication(argc,argv)
 {
   rda=this;
 
-  unsigned schema=0;
   QString err;
 
-  app_heartbeat=NULL;
+  app_type=type;
+  app_airplay_conf=NULL;
+  app_panel_conf=NULL;
+  app_library_conf=NULL;
+  app_logedit_conf=NULL;
+  app_station=NULL;
+  app_ripc=NULL;
+  app_cae=NULL;
+  app_system=NULL;
+  app_user=NULL;
 
   //
   // Command-line Parser
   //
-  app_cmd_switch=new RDCmdSwitch(argc,argv,modname,usage);
+  app_cmd_switch=new RDCmdSwitch(qApp->argc(),qApp->argv(),modname,usage);
 
   //
   // Open Global Configuration
   //
-  app_config=new RDConfig();
+  app_config=new RDConfig(app_cmd_switch);
   app_config->load();
 
   //
   // Open Database
   //
-  if(!OpenDb()) {
-    abort("unable to connect to database");
+  if(!RDOpenDb(&app_schema,&err,config())) {
+    Abend(err);
   }
-  if((!skip_schema_check)&&(RD_VERSION_DATABASE!=schema)) { 
-    abort("skewed database schema");
+  if((!skip_schema_check)&&(RD_VERSION_DATABASE!=app_schema)) { 
+    Abend("skewed database schema");
   }
 
   //
   // Configuration Accessors
   //
-  app_airplay_conf=new RDAirPlayConf(config()->stationName(),"RDAIRPLAY");
-  app_panel_conf=new RDAirPlayConf(config()->stationName(),"RDPANEL");
-  app_library_conf=new RDLibraryConf(config()->stationName());
-  app_logedit_conf=new RDLogeditConf(config()->stationName());
-  app_station=new RDStation(config()->stationName());
-  app_ripc=new RDRipc(config()->stationName());
-  app_cae=new RDCae(station(),config());
-  app_system=new RDSystem();
-  app_user=NULL;
+  if(!skip_schema_check) {
+    startAccessors();
+  }
 }
 
 
@@ -156,78 +157,35 @@ QSqlDatabase RDApplication::database() const
 }
 
 
-QString RDApplication::dbHostname() const
+void RDApplication::startAccessors()
 {
-  return app_db_hostname;
-}
-
-
-QString RDApplication::dbDatabaseName() const
-{
-  return app_db_dbname;
-}
-
-
-QString RDApplication::dbUsername() const
-{
-  return app_db_username;
-}
-
-
-QString RDApplication::dbPassword() const
-{
-  return app_db_password;
-}
-
-
-void RDApplication::abort(const QString &err_msg)
-{
-  QMessageBox::warning(NULL,"Rivendell - "+QObject::tr("DB Error"),err_msg);
-  _exit(0);
+  app_airplay_conf=new RDAirPlayConf(config()->stationName(),"RDAIRPLAY");
+  app_panel_conf=new RDAirPlayConf(config()->stationName(),"RDPANEL");
+  app_library_conf=new RDLibraryConf(config()->stationName());
+  app_logedit_conf=new RDLogeditConf(config()->stationName());
+  app_station=new RDStation(config()->stationName());
+  app_system=new RDSystem();
+  app_ripc=new RDRipc(config()->stationName());
+  app_cae=new RDCae(station(),config());
 }
 
 
 bool RDApplication::OpenDb()
 {
-  //
-  // Get Credentials
-  //
-  app_db_hostname=config()->mysqlHostname();
-  app_db_dbname=config()->mysqlDbname();
-  app_db_username=config()->mysqlUsername();
-  app_db_password=config()->mysqlPassword();
-  for(unsigned i=0;i<cmdSwitch()->keys();i++) {
-    if(cmdSwitch()->key(i)=="--db-hostname") {
-      app_db_hostname=cmdSwitch()->value(i);
-    }
-    if(cmdSwitch()->key(i)=="--db-dbname") {
-      app_db_dbname=cmdSwitch()->value(i);
-    }
-    if(cmdSwitch()->key(i)=="--db-username") {
-      app_db_username=cmdSwitch()->value(i);
-    }
-    if(cmdSwitch()->key(i)=="--db-password") {
-      app_db_password=cmdSwitch()->value(i);
-    }
-  }
-
   app_schema=0;
   QSqlDatabase db=QSqlDatabase::database();
 
   if (!db.isOpen()) {
     db=QSqlDatabase::addDatabase(config()->mysqlDriver());
-    db.setHostName(app_db_hostname);
-    db.setDatabaseName(app_db_dbname);
-    db.setUserName(app_db_username);
-    db.setPassword(app_db_password);
+    db.setHostName(config()->mysqlHostname());
+    db.setDatabaseName(config()->mysqlDbname());
+    db.setUserName(config()->mysqlUsername());
+    db.setPassword(config()->mysqlPassword());
     if(!db.open()) {
-      db.removeDatabase(app_db_dbname);
+      db.removeDatabase(config()->mysqlDbname());
       db.close();
       return false;
     }
-  }
-  if(app_heartbeat==NULL){
-    app_heartbeat=new RDDbHeartbeat(config()->mysqlHeartbeatInterval());
   }
   //  QSqlQuery *q=new QSqlQuery("set character_set_results='utf8'");
   //  delete q;
@@ -239,4 +197,28 @@ bool RDApplication::OpenDb()
   delete q;
 
   return true;
+}
+
+
+void RDApplication::Abend(const QString &err_msg) const
+{
+  switch(app_type) {
+  case RDApplication::Gui:
+    QMessageBox::information(NULL,"Rivendell - "+QObject::tr("Error"),err_msg);
+    _exit(256);
+    break;
+
+  case RDApplication::Console:
+    fprintf(stderr,"%s: %s\n",qApp->argv()[0],(const char *)err_msg.toUtf8());
+    _exit(256);
+    break;
+
+  case RDApplication::Cgi:
+    printf("Content-type: text-html\n");
+    printf("Status: 500\n");
+    printf("\n");
+    printf("%s\n",(const char *)err_msg.toUtf8());
+    _exit(0);
+  }
+  _exit(256);
 }

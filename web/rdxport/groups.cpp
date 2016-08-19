@@ -24,7 +24,7 @@
 #include <fcntl.h>
 #include <errno.h>
 
-#include <rdcgiapplication.h>
+#include <rdapplication.h>
 #include <rdformpost.h>
 #include <rdweb.h>
 #include <rdgroup.h>
@@ -43,7 +43,7 @@ void Xport::ListGroups()
   // Generate Group List
   //
   sql=QString("select GROUP_NAME from USER_PERMS where ")+
-    "USER_NAME=\""+RDEscapeString(rdcgi->user()->name())+"\" "+
+    "USER_NAME=\""+RDEscapeString(rda->user()->name())+"\" "+
     "order by GROUP_NAME";
   q=new RDSqlQuery(sql);
 
@@ -84,7 +84,7 @@ void Xport::ListGroup()
   // Check Group Accessibility
   //
   sql=QString("select GROUP_NAME from USER_PERMS where ")+
-    "(USER_NAME=\""+RDEscapeString(rdcgi->user()->name())+"\")&&"+
+    "(USER_NAME=\""+RDEscapeString(rda->user()->name())+"\")&&"+
     "(GROUP_NAME=\""+RDEscapeString(group_name)+"\")";
   q=new RDSqlQuery(sql);
   if(!q->first()) {

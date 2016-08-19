@@ -19,7 +19,7 @@
     <name>QObject</name>
     <message>
         <source>Couldn&apos;t initialize QSql driver!</source>
-        <translation type="obsolete">Greidde ikkje setja opp QSql-drivaren!</translation>
+        <translation type="unfinished">Greidde ikkje setja opp QSql-drivaren!</translation>
     </message>
     <message>
         <source>Couldn&apos;t open mySQL connection!</source>
@@ -466,7 +466,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>DB Error</source>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>invalid SQL or failed DB connection</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2130,11 +2134,11 @@ prøv ein gong til!</translation>
     <name>RDSqlDatabaseStatus</name>
     <message>
         <source>Database connection restored.</source>
-        <translation>Databasetilkoplinga er gjenoppretta.</translation>
+        <translation type="obsolete">Databasetilkoplinga er gjenoppretta.</translation>
     </message>
     <message>
         <source>Database connection failed : </source>
-        <translation>Feil med databasetilkoplinga: </translation>
+        <translation type="obsolete">Feil med databasetilkoplinga: </translation>
     </message>
 </context>
 <context>

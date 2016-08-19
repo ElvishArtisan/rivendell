@@ -26,7 +26,7 @@
 #include <errno.h>
 #include <unistd.h>
 
-#include <rdcgiapplication.h>
+#include <rdapplication.h>
 #include <rdformpost.h>
 #include <rdweb.h>
 #include <rdcart.h>
@@ -62,10 +62,10 @@ void Xport::CopyAudio()
   //
   // Verify User Perms
   //
-  if(!rdcgi->user()->cartAuthorized(source_cartnum)) {
+  if(!rda->user()->cartAuthorized(source_cartnum)) {
     XmlExit("No such cart",404);
   }
-  if(!rdcgi->user()->cartAuthorized(destination_cartnum)) {
+  if(!rda->user()->cartAuthorized(destination_cartnum)) {
     XmlExit("No such cart",404);
   }
 

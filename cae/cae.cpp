@@ -34,9 +34,10 @@
 #include <errno.h>
 #include <dlfcn.h>
 
-#include <qdir.h>
-#include <qsqldatabase.h>
-#include <qsessionmanager.h>
+#include <QApplication>
+#include <QCoreApplication>
+#include <QDir>
+#include <QSessionManager>
 
 #include <rdapplication.h>
 #include <rdsocket.h>
@@ -117,6 +118,8 @@ void SigHandler(int signum)
 MainObject::MainObject(QObject *parent,const char *name)
   :QObject(parent,name)
 {
+  new RDApplication(RDApplication::Console,"caed",CAED_USAGE);
+
   //
   // Make sure we're the only instance running
   //
@@ -2264,7 +2267,7 @@ void MainObject::SendMeterUpdate(const char *msg,unsigned len)
 int main(int argc,char *argv[])
 {
   int rc;
-  RDApplication a(argc,argv,"caed",CAED_USAGE,false);
+  QCoreApplication a(argc,argv);
   new MainObject(NULL,"main");
   rc=a.exec();
   LogLine(RDConfig::LogDebug,QString().sprintf("cae post a.exec() rc:%d", rc));

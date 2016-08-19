@@ -18,6 +18,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
+#include <QApplication>
 #include <QMessageBox>
 
 #include <rdapplication.h>
@@ -32,6 +33,8 @@
 MainWidget::MainWidget(QWidget *parent)
   :QWidget(parent)
 {
+  new RDApplication(RDApplication::Gui,"rdunittest",RDUNITTEST_USAGE,true);
+
   main_pass_count=0;
   main_fail_count=0;
 
@@ -80,7 +83,7 @@ void MainWidget::runTests()
 {
   SanityCheck();
 
-  Append("<strong>Connected to database \""+rda->dbDatabaseName()+
+  Append("<strong>Connected to database \""+rda->config()->mysqlDbname()+
 	 "\".</strong><br>");
 
   //
@@ -121,10 +124,9 @@ void MainWidget::SanityCheck()
   QString sql;
   QSqlQuery *q;
 
-  if(rda->dbDatabaseName().isEmpty()||
-     rda->dbDatabaseName()==rda->config()->mysqlDbname()) {
+  if(rda->config()->mysqlDbname().isEmpty()) {
     QMessageBox::warning(this,tr("RDUnitTest - Error"),
-			 tr("You must specify a valid DB name that is *not* used in rd.conf(5)."));
+			 tr("You must specify a valid DB name."));
     _exit(255);
   }
 
@@ -132,7 +134,8 @@ void MainWidget::SanityCheck()
   q=new QSqlQuery(sql);
   if(q->first()) {
     QMessageBox::warning(this,tr("RDUnitTest - Error"),
-			 tr("Database")+" \""+rda->dbDatabaseName()+"\" "+
+			 tr("Database")+" \""+
+			 rda->config()->mysqlDbname()+"\" "+
 			 tr("is not empty."));
     _exit(255);
   }
@@ -184,7 +187,7 @@ void MainWidget::Append(const char *str)
 
 int main(int argc,char *argv[])
 {
-  RDApplication a(argc,argv,"rdunittest",RDUNITTEST_USAGE,true);
+  QApplication a(argc,argv);
 
   //
   // Start Event Loop

@@ -26,24 +26,23 @@
 #include <sys/wait.h>
 #include <syslog.h>
 
-#include <qwindowsstyle.h>
-#include <qwidget.h>
-#include <qpainter.h>
-#include <q3sqlpropertymap.h>
-#include <qmessagebox.h>
-#include <qpushbutton.h>
-#include <q3listview.h>
-#include <qsignalmapper.h>
-#include <qtimer.h>
-#include <qtextcodec.h>
-#include <qtranslator.h>
-#include <qpainter.h>
-//Added by qt3to4:
-#include <QPixmap>
+#include <Q3Frame>
+#include <Q3ListView>
+#include <Q3SqlPropertyMap>
+#include <QApplication>
 #include <QCloseEvent>
 #include <QKeyEvent>
-#include <Q3Frame>
+#include <QMessageBox>
+#include <QPainter>
 #include <QPaintEvent>
+#include <QPixmap>
+#include <QPushButton>
+#include <QSignalMapper>
+#include <QTextCodec>
+#include <QTimer>
+#include <QTranslator>
+#include <QWidget>
+#include <QWindowsStyle>
 
 #include <rd.h>
 #include <rdapplication.h>
@@ -96,6 +95,8 @@ void MainWidget::logLine(RDConfig::LogPriority prio,const QString &s)
 MainWidget::MainWidget(QWidget *parent)
   :QWidget(parent)
 {
+  new RDApplication(RDApplication::Gui,"rdairplay",RDAIRPLAY_USAGE);
+
   prog_ptr=this;
   QString str;
   int cards[3];
@@ -216,8 +217,8 @@ MainWidget::MainWidget(QWidget *parent)
   //
   // Database Monitor
   //
-  connect (RDDbStatus(),SIGNAL(logText(RDConfig::LogPriority,const QString &)),
-	   this,SLOT(logLine(RDConfig::LogPriority,const QString &))); 
+  //  connect (RDDbStatus(),SIGNAL(logText(RDConfig::LogPriority,const QString &)),
+  //	   this,SLOT(logLine(RDConfig::LogPriority,const QString &))); 
 
   //
   // Master Clock Timer
@@ -2457,7 +2458,7 @@ void MainWidget::SetActionMode(StartButton::Mode mode)
 
 int main(int argc,char *argv[])
 {
-  RDApplication a(argc,argv,"rdairplay",RDAIRPLAY_USAGE);
+  QApplication a(argc,argv);
   
   //
   // Load Translations

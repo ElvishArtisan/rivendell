@@ -2,7 +2,7 @@
 //
 // A Library import filter for the Prophet NexGen system
 //
-//   (C) Copyright 2012 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2012,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -29,9 +29,10 @@
 #include <stdint.h>
 #include <errno.h>
 
-#include <qstringlist.h>
-#include <qfile.h>
-#include <qregexp.h>
+#include <QCoreApplication>
+#include <QFile>
+#include <QRegExp>
+#include <QStringList>
 
 #include <rdapplication.h>
 #include <rddb.h>
@@ -48,6 +49,8 @@
 MainObject::MainObject(QObject *parent)
   : QObject(parent)
 {
+  new RDApplication(RDApplication::Gui,"nexgen_filter",NEXGEN_FILTER_USAGE);
+
   QString group_name;
   QString audio_dir;
   QString reject_dir="/dev/null";
@@ -666,7 +669,7 @@ void MainObject::Print(const QString &msg) const
 
 int main(int argc,char *argv[])
 {
-  RDApplication a(argc,argv,"nexgen_filter",NEXGEN_FILTER_USAGE,false);
+  QCoreApplication a(argc,argv);
   new MainObject(NULL);
   return a.exec();
 }

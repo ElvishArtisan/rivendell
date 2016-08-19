@@ -27,8 +27,9 @@
 #include <unistd.h>
 #include <sys/types.h>
 
-#include <qdir.h>
-#include <qfileinfo.h>
+#include <QCoreApplication>
+#include <QDir>
+#include <QFileInfo>
 
 #include <rdapplication.h>
 #include <rd.h>
@@ -50,6 +51,8 @@
 MainObject::MainObject(QObject *parent)
   :QObject(parent)
 {
+  new RDApplication(RDApplication::Console,"rddbcheck",RDDBCHECK_USAGE);
+
   check_yes=false;
   check_no=false;
   QString username="user";
@@ -794,7 +797,7 @@ bool MainObject::UserResponse()
 
 int main(int argc,char *argv[])
 {
-  RDApplication a(argc,argv,"rddbcheck",RDDBCHECK_USAGE,false);
+  QCoreApplication a(argc,argv);
   new MainObject();
   return a.exec();
 }

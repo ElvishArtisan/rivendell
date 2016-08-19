@@ -35,25 +35,16 @@
 #include <rdprofile.h>
 #include <rdconfig.h>
 
-RDConfig *RDConfiguration(void) 
+RDConfig::RDConfig(RDCmdSwitch *cmd)
 {
-  static RDConfig *config = NULL;
-  if (!config){
-    config = new RDConfig();
-    config->load();
-  }
-  return config;
-}
-
-
-RDConfig::RDConfig()
-{
+  conf_cmd=cmd;
   clear();
 }
 
 
-RDConfig::RDConfig(QString filename)
+RDConfig::RDConfig(QString filename,RDCmdSwitch *cmd)
 {
+  conf_cmd=cmd;
   clear();
   conf_filename=filename;
 }
@@ -535,6 +526,26 @@ void RDConfig::load()
     conf_destinations.push_back(dest);
   }
   delete profile;
+
+  //
+  // Override rd.conf(5) values from the command line
+  //
+  if(conf_cmd!=NULL) {
+    for(unsigned i=0;i<conf_cmd->keys();i++) {
+      if(conf_cmd->key(i)=="--db-hostname") {
+	conf_mysql_hostname=conf_cmd->value(i);
+      }
+      if(conf_cmd->key(i)=="--db-dbname") {
+	conf_mysql_dbname=conf_cmd->value(i);
+      }
+      if(conf_cmd->key(i)=="--db-username") {
+	conf_mysql_username=conf_cmd->value(i);
+      }
+      if(conf_cmd->key(i)=="--db-password") {
+	conf_mysql_password=conf_cmd->value(i);
+      }
+    }
+  }
 }
 
 

@@ -24,6 +24,8 @@
 #include <string.h>
 #include <ctype.h>
 
+#include <QCoreApplication>
+
 #include <rdapplication.h>
 #include <rdescape_string.h>
 #include <rd.h>
@@ -33,6 +35,7 @@
 MainObject::MainObject(QObject *parent)
   : QObject(parent)
 {
+  new RDApplication(RDApplication::Console,"wings_filter",WINGS_FILTER_USAGE);
   WingsRecord wr;
   QString audioname;
   bool found;
@@ -273,7 +276,7 @@ void MainObject::TrimSpaces(char *str)
 
 int main(int argc,char *argv[])
 {
-  RDApplication a(argc,argv,"wings_filter",WINGS_FILTER_USAGE,false);
+  QCoreApplication a(argc,argv);
   new MainObject(NULL);
   return a.exec();
 }

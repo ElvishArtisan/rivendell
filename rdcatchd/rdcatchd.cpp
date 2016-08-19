@@ -36,9 +36,11 @@
 
 #include <vector>
 
-#include <qtimer.h>
-#include <qsignalmapper.h>
-#include <qsessionmanager.h>
+#include <QApplication>
+#include <QCoreApplication>
+#include <QSessionManager>
+#include <QSignalMapper>
+#include <QTimer>
 
 #include <rdapplication.h>
 #include <rddb.h>
@@ -118,6 +120,8 @@ void SigHandler(int signum)
 MainObject::MainObject(QObject *parent)
   :QObject(parent)
 {
+  new RDApplication(RDApplication::Console,"rdcatchd",RDCATCHD_USAGE);
+
   QString sql;
   RDSqlQuery *q;
 
@@ -198,8 +202,8 @@ MainObject::MainObject(QObject *parent)
   //
   // Open Database
   //
-  connect (RDDbStatus(),SIGNAL(logText(RDConfig::LogPriority,const QString &)),
-	   this,SLOT(log(RDConfig::LogPriority,const QString &)));
+  //  connect (RDDbStatus(),SIGNAL(logText(RDConfig::LogPriority,const QString &)),
+  //	   this,SLOT(log(RDConfig::LogPriority,const QString &)));
 
   //
   // Create RDCatchConf
@@ -2809,14 +2813,14 @@ void MainObject::StartBatch(int id)
 QString MainObject::GetTempRecordingName(int id) const
 {
   return QString().sprintf("%s/rdcatchd-record-%d.%s",
-			   RDConfiguration()->audioRoot().ascii(),id,
-			   RDConfiguration()->audioExtension().ascii());
+			   rda->config()->audioRoot().ascii(),id,
+			   rda->config()->audioExtension().ascii());
 }
 
 
 int main(int argc,char *argv[])
 {
-  RDApplication a(argc,argv,"rdcatchd",RDCATCHD_USAGE,false);
+  QCoreApplication a(argc,argv);
   new MainObject();
   return a.exec();
 }

@@ -1,6 +1,6 @@
 // rddb.h
 //
-// Database driver with automatic reconnect
+// Database driver with automatic error reporting and recovery
 //
 //   (C) Copyright 2007 Dan Mills <dmills@exponent.myzen.co.uk>
 //   (C) Copyright 2016 Fred Gleason <fredg@paravelsystems.com>
@@ -22,29 +22,10 @@
 #ifndef RDDB_H
 #define RDDB_H
 
-#include <QObject>
-#include <QSqlDatabase>
 #include <QString>
 #include <QSqlQuery>
 
 #include <rdconfig.h>
-
-class RDSqlDatabaseStatus : public QObject
-{
-  Q_OBJECT
- signals:
-  void logText(RDConfig::LogPriority prio,const QString &msg);
-  void reconnected();
-  void connectionFailed ();
- private:
-  RDSqlDatabaseStatus ();
-  bool discon;
-  friend RDSqlDatabaseStatus * RDDbStatus();
- public:
-  void sendRecon();
-  void sendDiscon(QString query);
-};
-
 
 class RDSqlQuery : public QSqlQuery
 {
@@ -53,8 +34,5 @@ class RDSqlQuery : public QSqlQuery
 };
 
 bool RDOpenDb(unsigned *schema,QString *error,RDConfig *config);
-
-// Return a handle to the database status object.
-RDSqlDatabaseStatus *RDDbStatus();
 
 #endif  // RDDB_H

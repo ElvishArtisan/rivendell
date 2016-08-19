@@ -20,6 +20,8 @@
 
 #include <stdlib.h>
 
+#include <QCoreApplication>
+
 #include <rdapplication.h>
 #include <rdaudioinfo.h>
 #include <rdcart.h>
@@ -30,6 +32,8 @@
 MainObject::MainObject(QObject *parent)
   : QObject(parent)
 {
+  new RDApplication(RDApplication::Console,"rdcheckcuts",RDCHECKCUTS_USAGE);
+
   std::vector<QString> group_names;
   std::vector<QString> bad_cuts;
   QString sql;
@@ -142,7 +146,7 @@ bool MainObject::ValidateGroup(const QString &groupname,
 
 int main(int argc,char *argv[])
 {
-  RDApplication a(argc,argv,"rdcheckcuts",RDCHECKCUTS_USAGE,false);
+  QCoreApplication a(argc,argv);
   new MainObject();
   return a.exec();
 }

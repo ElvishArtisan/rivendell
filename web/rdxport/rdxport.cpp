@@ -27,10 +27,11 @@
 
 #include <map>
 
-#include <qdatetime.h>
-#include <qstringlist.h>
+#include <QCoreApplication>
+#include <QDateTime>
+#include <QStringList>
 
-#include <rdcgiapplication.h>
+#include <rdapplication.h>
 #include <rdweb.h>
 #include <rdformpost.h>
 #include <rdxport_interface.h>
@@ -41,13 +42,15 @@
 Xport::Xport(QObject *parent)
   :QObject(parent)
 {
+  new RDApplication(RDApplication::Cgi,"rdxport.cgi","CGI");
+
   //
   // Drop Root Perms
   //
-  if(setgid(rdcgi->config()->gid())<0) {
+  if(setgid(rda->config()->gid())<0) {
     XmlExit("Unable to set Rivendell group",500);
   }
-  if(setuid(rdcgi->config()->uid())<0) {
+  if(setuid(rda->config()->uid())<0) {
     XmlExit("Unable to set Rivendell user",500);
   }
   if(getuid()==0) {
@@ -219,8 +222,8 @@ bool Xport::Authenticate()
   if(!xport_post->getValue("PASSWORD",&passwd)) {
     return false;
   }
-  rdcgi->setUser(name);
-  return rdcgi->user()->checkPassword(passwd,false);
+  rda->setUser(name);
+  return rda->user()->checkPassword(passwd,false);
 }
 
 
@@ -245,7 +248,7 @@ void Xport::XmlExit(const QString &str,int code,RDAudioConvert::ErrorCode err)
 
 int main(int argc,char *argv[])
 {
-  RDCgiApplication a(argc,argv);
+  QCoreApplication a(argc,argv);
   new Xport();
   return a.exec();
 }

@@ -23,7 +23,8 @@
 
 #include <vector>
 
-#include <qvariant.h>
+#include <QCoreApplication>
+#include <QVariant>
 
 #include <rdapplication.h>
 #include <rdgroup.h>
@@ -34,6 +35,8 @@
 MainObject::MainObject(QObject *parent)
   :QObject(parent)
 {
+  new RDApplication(RDApplication::Console,"reserve_carts_test",
+		    RESERVE_CARTS_TEST_USAGE);
   QString group_name;
   unsigned quantity=0;
   bool ok=false;
@@ -101,8 +104,7 @@ MainObject::MainObject(QObject *parent)
 
 int main(int argc,char *argv[])
 {
-  RDApplication a(argc,argv,"reserve_carts_test",RESERVE_CARTS_TEST_USAGE,
-		  false);
+  QCoreApplication a(argc,argv);
   new MainObject();
   return a.exec();
 }

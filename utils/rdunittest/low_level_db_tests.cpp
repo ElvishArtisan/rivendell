@@ -27,6 +27,7 @@ bool MainWidget::LowLevelDbTests(RDUnitTestData *data)
 {
   QString sql;
   QSqlQuery *q;
+  RDSqlQuery *r;
   bool pass;
   bool ret=true;
 
@@ -100,6 +101,19 @@ bool MainWidget::LowLevelDbTests(RDUnitTestData *data)
   sql=QString("unlock tables");
   q=new QSqlQuery(sql);
   delete q;
+
+  //
+  // Error Recovery Test
+  //
+  sql=QString("nonsense on stilts");
+  r=new RDSqlQuery(sql);
+  delete r;
+  sql=QString("select ")+
+    "FIELD2 "+
+    "from TESTTAB";
+  r=new RDSqlQuery(sql);
+  data->addTest("Error Recovery Test",r->first());
+  delete r;
 
   //
   // Delete Test

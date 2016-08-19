@@ -24,7 +24,7 @@
 #include <fcntl.h>
 #include <errno.h>
 
-#include <rdcgiapplication.h>
+#include <rdapplication.h>
 #include <rdformpost.h>
 #include <rdweb.h>
 #include <rdgroup.h>
@@ -68,7 +68,7 @@ void Xport::AddCart()
   //
   // Verify User Perms
   //
-  if(!rdcgi->user()->groupAuthorized(group_name)) {
+  if(!rda->user()->groupAuthorized(group_name)) {
     XmlExit("No such group",404);
   }
   group=new RDGroup(group_name);
@@ -83,7 +83,7 @@ void Xport::AddCart()
     XmlExit("Cart number out of range for group",401);
   }
   delete group;
-  if(!rdcgi->user()->createCarts()) {
+  if(!rda->user()->createCarts()) {
     XmlExit("Unauthorized",401);
   }
 
@@ -143,12 +143,12 @@ void Xport::ListCarts()
   // Generate Cart List
   //
   if(group_name.isEmpty()||(group_name==tr("ALL"))) {
-    where=RDAllCartSearchText(filter,"",rdcgi->user()->name(),false);
+    where=RDAllCartSearchText(filter,"",rda->user()->name(),false);
   }
   else {
     sql=QString("select GROUP_NAME from USER_PERMS where ")+
       "(GROUP_NAME=\""+RDEscapeString(group_name)+"\")&&"+
-      "(USER_NAME=\""+RDEscapeString(rdcgi->user()->name())+"\")";
+      "(USER_NAME=\""+RDEscapeString(rda->user()->name())+"\")";
     q=new RDSqlQuery(sql);
     if(!q->first()) {
       delete q;
@@ -201,7 +201,7 @@ void Xport::ListCart()
   //
   // Verify User Perms
   //
-  if(!rdcgi->user()->cartAuthorized(cart_number)) {
+  if(!rda->user()->cartAuthorized(cart_number)) {
     XmlExit("No such cart",404);
   }
 
@@ -247,14 +247,14 @@ void Xport::EditCart()
   //
   // Verify User Perms
   //
-  if(!rdcgi->user()->cartAuthorized(cart_number)) {
+  if(!rda->user()->cartAuthorized(cart_number)) {
     XmlExit("No such cart",404);
   }
-  if(!rdcgi->user()->modifyCarts()) {
+  if(!rda->user()->modifyCarts()) {
     XmlExit("Unauthorized",401);
   }
   if(xport_post->getValue("GROUP_NAME",&group_name)) {
-    if(!rdcgi->user()->groupAuthorized(group_name)) {
+    if(!rda->user()->groupAuthorized(group_name)) {
       XmlExit("No such group",404);
     }
     group=new RDGroup(group_name);
@@ -411,10 +411,10 @@ void Xport::RemoveCart()
   //
   // Verify User Perms
   //
-  if(!rdcgi->user()->cartAuthorized(cart_number)) {
+  if(!rda->user()->cartAuthorized(cart_number)) {
     XmlExit("No such cart",404);
   }
-  if(!rdcgi->user()->deleteCarts()) {
+  if(!rda->user()->deleteCarts()) {
     XmlExit("Unauthorized",401);
   }
 
@@ -426,7 +426,7 @@ void Xport::RemoveCart()
     delete cart;
     XmlExit("No such cart",404);
   }
-  if(!cart->remove(NULL,NULL,rdcgi->config())) {
+  if(!cart->remove(NULL,NULL,rda->config())) {
     delete cart;
     XmlExit("Unable to delete cart",500);
   }
@@ -452,10 +452,10 @@ void Xport::AddCut()
   //
   // Verify User Perms
   //
-  if(!rdcgi->user()->cartAuthorized(cart_number)) {
+  if(!rda->user()->cartAuthorized(cart_number)) {
     XmlExit("No such cart",404);
   }
-  if(!rdcgi->user()->editAudio()) {
+  if(!rda->user()->editAudio()) {
     XmlExit("Unauthorized",401);
   }
 
@@ -504,7 +504,7 @@ void Xport::ListCuts()
   //
   // Verify User Perms
   //
-  if(!rdcgi->user()->cartAuthorized(cart_number)) {
+  if(!rda->user()->cartAuthorized(cart_number)) {
     XmlExit("No such cart",404);
   }
 
@@ -552,7 +552,7 @@ void Xport::ListCut()
   //
   // Verify User Perms
   //
-  if(!rdcgi->user()->cartAuthorized(cart_number)) {
+  if(!rda->user()->cartAuthorized(cart_number)) {
     XmlExit("No such cart",404);
   }
 
@@ -624,10 +624,10 @@ void Xport::EditCut()
   //
   // Verify User Perms
   //
-  if(!rdcgi->user()->cartAuthorized(cart_number)) {
+  if(!rda->user()->cartAuthorized(cart_number)) {
     XmlExit("No such cart",404);
   }
-  if(!rdcgi->user()->editAudio()) {
+  if(!rda->user()->editAudio()) {
     XmlExit("Unauthorized",401);
   }
 
@@ -914,10 +914,10 @@ void Xport::RemoveCut()
   //
   // Verify User Perms
   //
-  if(!rdcgi->user()->cartAuthorized(cart_number)) {
+  if(!rda->user()->cartAuthorized(cart_number)) {
     XmlExit("No such cart",404);
   }
-  if(!rdcgi->user()->editAudio()) {
+  if(!rda->user()->editAudio()) {
     XmlExit("Unauthorized",401);
   }
 
@@ -930,7 +930,7 @@ void Xport::RemoveCut()
     XmlExit("No such cart",404);
   }
   if(!cart->removeCut(NULL,NULL,RDCut::cutName(cart_number,cut_number),
-		      rdcgi->config())) {
+		      rda->config())) {
     delete cart;
     XmlExit("No such cut",404);
   }

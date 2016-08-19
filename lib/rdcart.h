@@ -18,6 +18,9 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
+#ifndef RDCART_H
+#define RDCART_H
+
 #include <qdatetime.h>
 #include <qstringlist.h>
 #include <qvariant.h>
@@ -29,9 +32,6 @@
 #include <rddb.h>
 #include <rduser.h>
 #include <rdstation.h>
-
-#ifndef RDCART_H
-#define RDCART_H
 
 #define MAX_SERVICES 16
 

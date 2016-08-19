@@ -682,7 +682,7 @@ void AudioCart::doubleClickedData(Q3ListViewItem *,const QPoint &,int)
 void AudioCart::copyProgressData(const QVariant &step)
 {
   rdcart_progress_dialog->setProgress(step.toInt());
-  rda->processEvents();
+  qApp->processEvents();
 }
 
 

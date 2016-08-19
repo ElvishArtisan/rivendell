@@ -29,6 +29,7 @@
 #include <QSqlError>
 #include <QSqlQuery>
 
+#include <rdapplication.h>
 #include <rddb.h>
 #include <rd.h>
 #include <rdevent.h>
@@ -2431,14 +2432,14 @@ bool InitDb(QString station_name)
   //
   QString filename=
     QString().sprintf("%s/999999_001.%s",
-		      RDConfiguration()->audioRoot().ascii(),
-		      RDConfiguration()->audioExtension().ascii());
+		      rda->config()->audioRoot().ascii(),
+		      rda->config()->audioExtension().ascii());
 
   QString cmd=QString().sprintf("rdgen -t 10 -l 16 %s",
 				(const char *)filename);
   system((const char *)cmd);
   if(getuid()==0) {
-    chown(filename,RDConfiguration()->uid(),RDConfiguration()->gid());
+    chown(filename,rda->config()->uid(),rda->config()->gid());
     chmod (filename,S_IRUSR|S_IWUSR|S_IRGRP|S_IWGRP|S_IROTH);
   }
 

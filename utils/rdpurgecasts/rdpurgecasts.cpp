@@ -27,7 +27,8 @@
 #include <fcntl.h>
 #include <ctype.h>
 
-#include <qdir.h>
+#include <QCoreApplication>
+#include <QDir>
 
 #include <rd.h>
 #include <rdapplication.h>
@@ -42,6 +43,8 @@
 MainObject::MainObject(QObject *parent)
   :QObject(parent)
 {
+  new RDApplication(RDApplication::Console,"rdpurgecasts",RDPURGECASTS_USAGE);
+
   QString sql;
   RDSqlQuery *q;
 
@@ -145,7 +148,7 @@ void MainObject::PurgeCast(unsigned id)
   
 int main(int argc,char *argv[])
 {
-  RDApplication a(argc,argv,"rdpurgecasts",RDPURGECASTS_USAGE,false);
+  QCoreApplication a(argc,argv);
   new MainObject();
   return a.exec();
 }

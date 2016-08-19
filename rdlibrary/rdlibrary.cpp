@@ -23,23 +23,23 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
-#include <qwindowsstyle.h>
-#include <qeventloop.h>
-#include <qwidget.h>
-#include <qpainter.h>
-#include <q3sqlpropertymap.h>
-#include <qmessagebox.h>
-#include <qlabel.h>
-#include <qtextcodec.h>
-#include <qtranslator.h>
-#include <qlabel.h>
-#include <q3listview.h>
-#include <q3progressdialog.h>
-#include <qtooltip.h>
-//Added by qt3to4:
+#include <Q3ListView>
+#include <Q3ProgressDialog>
+#include <Q3SqlPropertyMap>
+#include <QApplication>
+#include <QCloseEvent>
+#include <QEventLoop>
+#include <QLabel>
+#include <QMessageBox>
+#include <QPainter>
 #include <QPixmap>
 #include <QResizeEvent>
-#include <QCloseEvent>
+#include <QTextCodec>
+#include <QToolTip>
+#include <QTranslator>
+#include <QWindowsStyle>
+#include <QWidget>
+
 #include <curl/curl.h>
 
 #include <rd.h>
@@ -92,6 +92,8 @@ void SigHandler(int signo);
 MainWidget::MainWidget(QWidget *parent)
   :QWidget(parent)
 {
+  new RDApplication(RDApplication::Gui,"rdlibrary",RDLIBRARY_USAGE);
+
   profile_ripping=false;
   lib_edit_pending=false;
   lib_user_changed=false;
@@ -128,7 +130,7 @@ MainWidget::MainWidget(QWidget *parent)
   //
   QFont default_font("Helvetica",12,QFont::Normal);
   default_font.setPixelSize(12);
-  rda->setFont(default_font);
+  qApp->setFont(default_font);
   QFont button_font=QFont("Helvetica",12,QFont::Bold);
   button_font.setPixelSize(12);
   QFont filter_font=QFont("Helvetica",16,QFont::Bold);
@@ -1172,7 +1174,7 @@ void MainWidget::RefreshList()
     if(count++>RDLIBRARY_STEP_SIZE) {
       lib_progress_dialog->setProgress(++step);
       count=0;
-      rda->processEvents(QEventLoop::ExcludeUserInput);
+      qApp->processEvents(QEventLoop::ExcludeUserInput);
     }
   }
   UpdateItemColor(l,validity,end_datetime,current_datetime);
@@ -1432,7 +1434,7 @@ void MainWidget::LoadGeometry()
 void MainWidget::SaveGeometry()
 {
   QString geometry_file = GeometryFile();
-  if(geometry_file==NULL) {
+  if(geometry_file.isNull()) {
     return;
   }
   FILE *file=fopen(geometry_file,"w");
@@ -1481,7 +1483,7 @@ bool MainWidget::UnlockUser()
 
 int main(int argc,char *argv[])
 {
-  RDApplication a(argc,argv,"rdlibrary",RDLIBRARY_USAGE);
+  QApplication a(argc,argv);
   
   //
   // Load Translations

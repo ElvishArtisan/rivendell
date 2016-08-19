@@ -24,8 +24,9 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-#include <qfile.h>
-#include <qstringlist.h>
+#include <QCoreApplication>
+#include <QFile>
+#include <QStringList>
 
 #include <rdapplication.h>
 #include <rdconf.h>
@@ -37,6 +38,8 @@
 MainObject::MainObject(QObject *parent)
   :QObject(parent)
 {
+  new RDApplication(RDApplication::Console,"rdclilogedit",RDCLILOGEDIT_USAGE);
+
   edit_quiet_option=false;
 
   edit_log=NULL;
@@ -129,7 +132,7 @@ void MainObject::PrintPrompt() const
 
 int main(int argc,char *argv[])
 {
-  RDApplication a(argc,argv,"rdclilogedit",RDCLILOGEDIT_USAGE,false);
+  QCoreApplication a(argc,argv);
   new MainObject();
   return a.exec();
 }

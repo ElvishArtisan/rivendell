@@ -29,8 +29,9 @@
 #include <sched.h>
 #include <errno.h>
 
-#include <qdir.h>
-#include <qstringlist.h>
+#include <QCoreApplication>
+#include <QDir>
+#include <QStringList>
 
 #include <rdapplication.h>
 #include <rdcut.h>
@@ -58,6 +59,8 @@ void SigHandler(int signo)
 MainObject::MainObject(QObject *parent)
   :QObject(parent)
 {
+  new RDApplication(RDApplication::Console,"rdimport",RDIMPORT_USAGE);
+
   //
   // Initialize Data Structures
   //
@@ -1897,7 +1900,7 @@ void MainObject::ReadXmlFile(const QString &basename,RDWaveData *wavedata) const
 
 int main(int argc,char *argv[])
 {
-  RDApplication a(argc,argv,"rdimport",RDIMPORT_USAGE,false);
+  QCoreApplication a(argc,argv);
   new MainObject();
   return a.exec();
 }

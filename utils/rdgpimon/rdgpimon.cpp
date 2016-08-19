@@ -20,20 +20,20 @@
 
 #include <stdlib.h>
 
-#include <qwindowsstyle.h>
-#include <qwidget.h>
-#include <qpushbutton.h>
-#include <qrect.h>
-#include <qpoint.h>
-#include <qpainter.h>
-#include <qstring.h>
-#include <qmessagebox.h>
-#include <qlineedit.h>
-#include <qtextcodec.h>
-#include <qtranslator.h>
-//Added by qt3to4:
-#include <QPixmap>
+#include <QApplication>
 #include <QLabel>
+#include <QLineEdit>
+#include <QMessageBox>
+#include <QPainter>
+#include <QPixmap>
+#include <QPoint>
+#include <QPushButton>
+#include <QRect>
+#include <QString>
+#include <QTextCodec>
+#include <QTranslator>
+#include <QWidget>
+#include <QWindowsStyle>
 
 #include <rdapplication.h>
 #include <rddbheartbeat.h>
@@ -51,6 +51,8 @@
 MainWidget::MainWidget(QWidget *parent)
   :QWidget(parent)
 {
+  new RDApplication(RDApplication::Gui,"rdgpimon","RDGPIMON_USAGE");
+
   gpi_scroll_mode=false;
   
   //
@@ -719,7 +721,7 @@ void MainWidget::AddEventsItem(int line,bool state)
 
 int main(int argc,char *argv[])
 {
-  RDApplication a(argc,argv,"rdgpimon",RDGPIMON_USAGE);
+  QApplication a(argc,argv);
   
   //
   // Load Translations

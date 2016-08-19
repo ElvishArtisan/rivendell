@@ -19,7 +19,7 @@
     <name>QObject</name>
     <message>
         <source>Couldn&apos;t initialize QSql driver!</source>
-        <translation type="obsolete">Nepodařilo se inicializovat ovladač QSql!</translation>
+        <translation type="unfinished">Nepodařilo se inicializovat ovladač QSql!</translation>
     </message>
     <message>
         <source>Couldn&apos;t open mySQL connection!</source>
@@ -470,7 +470,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>DB Error</source>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>invalid SQL or failed DB connection</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2205,11 +2209,11 @@ Zkuste to, prosím, znovu!</translation>
     <name>RDSqlDatabaseStatus</name>
     <message>
         <source>Database connection restored.</source>
-        <translation>Databázové spojení obnoveno.</translation>
+        <translation type="obsolete">Databázové spojení obnoveno.</translation>
     </message>
     <message>
         <source>Database connection failed : </source>
-        <translation>Databázové spojení se nezdařilo:</translation>
+        <translation type="obsolete">Databázové spojení se nezdařilo:</translation>
     </message>
 </context>
 <context>

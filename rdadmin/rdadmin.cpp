@@ -25,17 +25,18 @@
 #include <sys/wait.h>
 #include <signal.h>
 
-#include <qwindowsstyle.h>
-#include <qwidget.h>
-#include <qpainter.h>
-#include <qmessagebox.h>
-#include <qpushbutton.h>
-#include <qlabel.h>
-#include <q3filedialog.h>
-#include <qtextcodec.h>
-#include <qtranslator.h>
-//Added by qt3to4:
+#include <Q3FileDialog>
+#include <QApplication>
+#include <QCoreApplication>
+#include <QLabel>
+#include <QMessageBox>
+#include <QPainter>
 #include <QPixmap>
+#include <QPushButton>
+#include <QTextCodec>
+#include <QTranslator>
+#include <QWindowsStyle>
+#include <QWidget>
 
 #include <rdapplication.h>
 #include <rdconf.h>
@@ -118,6 +119,8 @@ void PrintError(const QString &str,bool interactive)
 MainWidget::MainWidget(QWidget *parent)
   :QWidget(parent)
 {
+  new RDApplication(RDApplication::Gui,"rdadmin",RDADMIN_USAGE);
+
   QString str;
 
   //
@@ -546,7 +549,7 @@ void MainWidget::ClearTables()
 
 int gui_main(int argc,char *argv[])
 {
-  RDApplication a(argc,argv,"rdadmin",RDADMIN_USAGE);
+  QApplication a(argc,argv);
 
   //
   // Load Translations
@@ -588,7 +591,7 @@ int gui_main(int argc,char *argv[])
 
 int cmdline_main(int argc,char *argv[])
 {
-  RDApplication a(argc,argv,"rdadmin",RDADMIN_USAGE,false);
+  QCoreApplication a(argc,argv);
   
   //
   // Load Configs

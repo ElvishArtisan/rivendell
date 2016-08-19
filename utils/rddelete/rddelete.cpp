@@ -18,6 +18,8 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
+#include <QCoreApplication>
+
 #include <rdapplication.h>
 #include <rdcart.h>
 #include <rdconf.h>
@@ -28,6 +30,8 @@
 MainObject::MainObject(QObject *parent)
   :QObject(parent)
 {
+  new RDApplication(RDApplication::Console,"rddelete",RDDELETE_USAGE);
+
   //
   // Initialize Data Structures
   //
@@ -85,30 +89,8 @@ MainObject::MainObject(QObject *parent)
   }
 
   //
-  // Open Database
-  //
-  connect (RDDbStatus(),SIGNAL(logText(RDConfig::LogPriority,const QString &)),
-	   this,SLOT(log(RDConfig::LogPriority,const QString &)));
-
-  //
-  // System Configuration
-  //
-  //  del_system=new RDSystem();
-
-  //
-  // Station Configuration
-  //
-  //  del_station=new RDStation(rda->config()->stationName());
-
-  //
-  // User
-  //
-  //  del_user=NULL;
-
-  //
   // RIPC Connection
   //
-  //  del_ripc=new RDRipc(rda->config()->stationName());
   connect(rda->ripc(),SIGNAL(userChanged()),this,SLOT(userData()));
   rda->ripc()->connectHost("localhost",RIPCD_TCP_PORT,rda->config()->password());
 
@@ -341,7 +323,7 @@ bool MainObject::GetNextStdinObject(QString *logname)
 
 int main(int argc,char *argv[])
 {
-  RDApplication a(argc,argv,"rddelete",RDDELETE_USAGE,false);
+  QCoreApplication a(argc,argv);
   new MainObject();
   return a.exec();
 }

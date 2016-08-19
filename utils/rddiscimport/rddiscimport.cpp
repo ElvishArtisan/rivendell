@@ -22,15 +22,14 @@
 #include <stdio.h>
 #include <errno.h>
 
-#include <qwindowsstyle.h>
-#include <qtextcodec.h>
-#include <q3filedialog.h>
-#include <qmessagebox.h>
-#include <qstringlist.h>
-#include <q3filedialog.h>
-//Added by qt3to4:
+#include <Q3FileDialog>
+#include <QApplication>
 #include <QLabel>
+#include <QMessageBox>
 #include <QResizeEvent>
+#include <QStringList>
+#include <QTextCodec>
+#include <QWindowsStyle>
 
 #include <rdapplication.h>
 #include <rdescape_string.h>
@@ -53,6 +52,8 @@
 MainWidget::MainWidget(QWidget *parent)
   : QWidget(parent)
 {
+  new RDApplication(RDApplication::Gui,"rddiscimport",RDDISCIMPORT_USAGE);
+
   dg_group=NULL;
 
   //
@@ -682,7 +683,7 @@ void MainWidget::SaveConfig()
 
 int main(int argc,char *argv[])
 {
-  RDApplication a(argc,argv,"rddiscimport",RDDISCIMPORT_USAGE);
+  QApplication a(argc,argv);
   
   //
   // Load Translations
