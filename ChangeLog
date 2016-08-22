@@ -15989,3 +15989,5 @@
 2016-08-22 Fred Gleason <fredg@paravelsystems.com>
 	* Added code to set MySQL connection character set and collation
 	explicitly in 'lib/rddb.cpp.
+2016-08-22 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'UPDATE' test in 'utils/rdunittest/low_level_db_tests.cpp'.
