@@ -78,9 +78,16 @@ bool MainWidget::MojibakeTests(RDUnitTestData *data)
   //
   // Language Tests
   //
+  ret=ret&&MojibakeLanguageTest(data,QString::fromUtf8("العَرَبِيَّة"),"Arabic");
+  ret=ret&&MojibakeLanguageTest(data,QString::fromUtf8("မြန်မာဘာသာ"),"Burmese");
+  ret=ret&&MojibakeLanguageTest(data,QString::fromUtf8("廣東話"),"Cantonese");
   ret=ret&&MojibakeLanguageTest(data,QString::fromUtf8("English"),"English");
   ret=ret&&MojibakeLanguageTest(data,QString::fromUtf8("日本語"),"Japanese");
-  ret=ret&&MojibakeLanguageTest(data,QString::fromUtf8("한국어/조선말"),"Korean");
+  ret=ret&&MojibakeLanguageTest(data,QString::fromUtf8("ភាសាខ្មែរ"),"Khmer");
+  ret=ret&&MojibakeLanguageTest(data,QString::fromUtf8("한국어"),"Korean");
+  ret=ret&&MojibakeLanguageTest(data,QString::fromUtf8("ລາວ"),"Lao");
+  ret=ret&&MojibakeLanguageTest(data,QString::fromUtf8("普通话"),"Mandarin");
+  ret=ret&&MojibakeLanguageTest(data,QString::fromUtf8("བོད་སྐད།"),"Tibetan");
 
   //
   // Clean Up
@@ -112,7 +119,7 @@ bool MainWidget::MojibakeLanguageTest(RDUnitTestData *data,
     pass=q->value(0).toString()==native;
   }
   delete q;
-  data->addTest(native+" ("+english+") Test",pass);
+  data->addTest(english+" ("+native+") Test",pass);
   sql=QString("delete from TESTTAB");
   q=new QSqlQuery(sql);
   delete q;

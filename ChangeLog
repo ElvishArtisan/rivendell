@@ -15983,3 +15983,6 @@
 2016-08-19 Fred Gleason <fredg@paravelsystems.com>
 	* Added unit tests for English, Japanese and Korean typefaces in
 	'utils/rdunittest/mojibake_tests.cpp'.
+2016-08-22 Fred Gleason <fredg@paravelsystems.com>
+	* Added unit tests for Arabic, Cantonese, Khmer, Korean, Lao,
+	Mandarin, Tibetan typefaces in 'utils/rdunittest/mojibake_tests.cpp'.
