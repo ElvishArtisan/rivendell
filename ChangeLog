@@ -15986,3 +15986,6 @@
 2016-08-22 Fred Gleason <fredg@paravelsystems.com>
 	* Added unit tests for Arabic, Cantonese, Khmer, Korean, Lao,
 	Mandarin, Tibetan typefaces in 'utils/rdunittest/mojibake_tests.cpp'.
+2016-08-22 Fred Gleason <fredg@paravelsystems.com>
+	* Added code to set MySQL connection character set and collation
+	explicitly in 'lib/rddb.cpp.

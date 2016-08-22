@@ -34,6 +34,8 @@
 bool RDOpenDb (unsigned *schema,QString *error,RDConfig *config)
 {
   QSqlDatabase db;
+  QString sql;
+  QSqlQuery *q;
 
   *schema=0;
   if (!db.isOpen()){
@@ -54,10 +56,12 @@ bool RDOpenDb (unsigned *schema,QString *error,RDConfig *config)
     }
   }
   new RDDbHeartbeat(config->mysqlHeartbeatInterval());
-  //  QSqlQuery *q=new QSqlQuery("set character_set_results='utf8'");
-  //  delete q;
+  sql=QString("set NAMES '")+config->mysqlCharset()+"'"+
+    "COLLATE '"+config->mysqlCollation()+"'";
+  q=new QSqlQuery(sql);
+  delete q;
 
-  QSqlQuery *q=new QSqlQuery("select DB from VERSION");
+  q=new QSqlQuery("select DB from VERSION");
   if(q->first()) {
     *schema=q->value(0).toUInt();
   }
