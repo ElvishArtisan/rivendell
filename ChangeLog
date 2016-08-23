@@ -16006,3 +16006,8 @@
 	'conf/rd.conf-sample'.
 2016-08-23 Fred Gleason <fredg@paravelsystems.com>
 	* Implemented DB open logic in 'rdadmin/opendb.cpp'.
+2016-08-23 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'lib/rddb.cpp' that caused incorrect host names
+	to be inserted into newly created databases.
+	* Added a 'Host Creation' test in
+	'utils/rdunittest/high_level_db_tests.cpp'.

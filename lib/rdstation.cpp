@@ -18,6 +18,8 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
+#include <unistd.h>
+
 #include "rdairplay_conf.h"
 #include "rdconf.h"
 #include "rdstation.h"
@@ -656,16 +658,31 @@ bool RDStation::create(const QString &name)
   QString sql;
   RDSqlQuery *q;
   bool ret;
+  QString host_name=name;
+
+  //
+  // Get our own hostname
+  //
+  if(host_name.isEmpty()) {
+    char stationname[HOST_NAME_MAX+1];
+    memset(stationname,0,HOST_NAME_MAX+1);
+    if(gethostname(stationname,HOST_NAME_MAX)==0) {
+      host_name=stationname;
+    }
+    else {
+      return false;
+    }
+  }
 
   sql=QString("insert into STATIONS set ")+
-    "NAME=\""+RDEscapeString(name)+"\"";
+    "NAME=\""+RDEscapeString(host_name)+"\"";
   q=new RDSqlQuery(sql);
   ret=q->isActive();
   delete q;
 
   for(unsigned i=0;i<10;i++) {
     sql=QString("insert into RDAIRPLAY_CHANNELS set ")+
-      "STATION_NAME=\""+RDEscapeString(name)+"\","+
+      "STATION_NAME=\""+RDEscapeString(host_name)+"\","+
       QString().sprintf("INSTANCE=%u",i);
     q=new RDSqlQuery(sql);
     ret=q->isActive();
@@ -673,7 +690,7 @@ bool RDStation::create(const QString &name)
   }
   for(unsigned i=0;i<10;i++) {
     sql=QString("insert into RDPANEL_CHANNELS set ")+
-      "STATION_NAME=\""+RDEscapeString(name)+"\","+
+      "STATION_NAME=\""+RDEscapeString(host_name)+"\","+
       QString().sprintf("INSTANCE=%u",i);
     q=new RDSqlQuery(sql);
     ret=q->isActive();
@@ -681,7 +698,7 @@ bool RDStation::create(const QString &name)
   }
   for(unsigned i=0;i<3;i++) {
     sql=QString("insert into LOG_MODES set ")+
-      "STATION_NAME=\""+RDEscapeString(name)+"\","+
+      "STATION_NAME=\""+RDEscapeString(host_name)+"\","+
       QString().sprintf("MACHINE=%u",i);
     q=new RDSqlQuery(sql);
     ret=q->isActive();
@@ -690,7 +707,7 @@ bool RDStation::create(const QString &name)
   for(unsigned i=0;i<RD_CUT_EVENT_ID_QUAN;i++) {
     for(unsigned j=0;j<MAX_DECKS;j++) {
       sql=QString("insert into DECK_EVENTS set ")+
-	"STATION_NAME=\""+RDEscapeString(name)+"\","+
+	"STATION_NAME=\""+RDEscapeString(host_name)+"\","+
 	QString().sprintf("CHANNEL=%u,",j+129)+
 	QString().sprintf("NUMBER=%u",i+1);
       q=new RDSqlQuery(sql);

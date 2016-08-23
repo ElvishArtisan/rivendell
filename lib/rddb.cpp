@@ -417,11 +417,11 @@ bool RDInitDb(QString *err_str,RDConfig *config)
   //
   // Create Default Workstation
   //
-  struct hostent *hostent=gethostbyname(RD_STATION_NAME);
-  if(!RDStation::create(RD_STATION_NAME)) {
+  struct hostent *hostent=gethostbyname(config->stationName());
+  if(!RDStation::create(config->stationName())) {
     return false;
   }
-  RDStation *station=new RDStation(RD_STATION_NAME);
+  RDStation *station=new RDStation(config->stationName());
   station->setDescription(RD_STATION_DESCRIPTION);
   station->setUserName(RD_USER_LOGIN_NAME);
   if(hostent!=NULL) {
