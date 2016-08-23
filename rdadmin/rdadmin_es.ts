@@ -3968,7 +3968,7 @@ debe guardarse.  ¿Hacerlo ahora?</translation>
     </message>
     <message>
         <source>Administrative Rights</source>
-        <translation>Permisos administrativos</translation>
+        <translation type="obsolete">Permisos administrativos</translation>
     </message>
     <message>
         <source>Administer S&amp;ystem</source>
@@ -4085,6 +4085,10 @@ Feeds para Podcasts</translation>
     <message>
         <source>Allow Web Logins</source>
         <translation>Permitir ingreso vía Web</translation>
+    </message>
+    <message>
+        <source>Administrative Privileges</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

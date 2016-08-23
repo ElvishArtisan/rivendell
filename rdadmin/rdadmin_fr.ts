@@ -3525,10 +3525,6 @@ must be saved.  Save now?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Administrative Rights</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Administer S&amp;ystem</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3636,6 +3632,10 @@ Permissions</source>
     </message>
     <message>
         <source>&amp;Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Administrative Privileges</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

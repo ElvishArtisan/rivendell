@@ -21,15 +21,8 @@
 #ifndef ADD_USER_H
 #define ADD_USER_H
 
-#include <qdialog.h>
-#include <q3listbox.h>
-#include <q3textedit.h>
-#include <qpixmap.h>
-#include <qcheckbox.h>
-#include <qsqldatabase.h>
-#include <qlineedit.h>
-
-#include <rduser.h>
+#include <QDialog>
+#include <QLineEdit>
 
 class AddUser : public QDialog
 {

@@ -4007,7 +4007,7 @@ uloženo. Uložit nyní?</translation>
     </message>
     <message>
         <source>Administrative Rights</source>
-        <translation>Správcovská práva</translation>
+        <translation type="obsolete">Správcovská práva</translation>
     </message>
     <message>
         <source>Administer S&amp;ystem</source>
@@ -4120,6 +4120,10 @@ pro přívod pro podcast</translation>
     <message>
         <source>&amp;Cancel</source>
         <translation>Z&amp;rušit</translation>
+    </message>
+    <message>
+        <source>Administrative Privileges</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

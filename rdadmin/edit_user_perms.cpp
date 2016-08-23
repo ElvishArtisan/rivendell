@@ -18,22 +18,11 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qdialog.h>
-#include <qstring.h>
 #include <qpushbutton.h>
-#include <q3listbox.h>
-#include <q3textedit.h>
 #include <qlabel.h>
-#include <qpainter.h>
-#include <qevent.h>
-#include <qmessagebox.h>
-#include <qcheckbox.h>
-#include <q3buttongroup.h>
 
-#include <rddb.h>
+#include <rdapplication.h>
 #include <rdescape_string.h>
-#include <rduser.h>
-#include <rdpasswd.h>
 
 #include "edit_user_perms.h"
 
@@ -144,7 +133,7 @@ void EditUserPerms::okData()
     if(q->size()==0) {
       delete q;
       sql=QString("insert into USER_PERMS set ")+
-	"USER_NAME=\""+RDEscapeString(user_user->name())+"\""+
+	"USER_NAME=\""+RDEscapeString(user_user->name())+"\","+
 	"GROUP_NAME=\""+RDEscapeString(user_host_sel->destText(i))+"\"";
       q=new RDSqlQuery(sql);
     }

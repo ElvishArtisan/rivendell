@@ -3949,7 +3949,7 @@ deve ser salva.  Salvar Agora?</translation>
     </message>
     <message>
         <source>Administrative Rights</source>
-        <translation>Direitos Administrativos</translation>
+        <translation type="obsolete">Direitos Administrativos</translation>
     </message>
     <message>
         <source>Administer S&amp;ystem</source>
@@ -4062,6 +4062,10 @@ Feeds de Podcasts </translation>
     <message>
         <source>&amp;Cancel</source>
         <translation>&amp;Cancelar</translation>
+    </message>
+    <message>
+        <source>Administrative Privileges</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

@@ -21,8 +21,8 @@
 #ifndef EDIT_FEED_PERMS_H
 #define EDIT_FEED_PERMS_H
 
-#include <qdialog.h>
-#include <qsqldatabase.h>
+#include <QDialog>
+
 #include <rdlistselector.h>
 
 #include <rduser.h>

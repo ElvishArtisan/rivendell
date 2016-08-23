@@ -18,28 +18,20 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <math.h>
+#include <QDialog>
+#include <QLabel>
+#include <QMessageBox>
+#include <QPushButton>
 
-#include <qdialog.h>
-#include <qstring.h>
-#include <qpushbutton.h>
-#include <q3listbox.h>
-#include <q3textedit.h>
-#include <qlabel.h>
-#include <qpainter.h>
-#include <qevent.h>
-#include <qmessagebox.h>
-#include <qcheckbox.h>
-#include <q3buttongroup.h>
-#include <rddb.h>
-
-#include <edit_user.h>
-#include <add_user.h>
+#include <rdapplication.h>
 #include <rdpasswd.h>
 #include <rdescape_string.h>
 
+#include "add_user.h"
+#include "edit_user.h"
+
 AddUser::AddUser(QString *username,QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
   user_name=username;
 

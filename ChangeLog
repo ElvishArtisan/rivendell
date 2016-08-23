@@ -16015,3 +16015,16 @@
 	* Removed Q3FileDialog class from 'rdadmin/rdadmin.cpp'.
 	* Fixed a bug in 'rdadmin/rdadmin.cpp' that caused the Login dialog
 	to generate a segfault upon receipt of windowing messages.
+2016-08-23 Fred Gleason <fredg@paravelsystems.com>
+	* Removed Qt3Support components from 'rdadmin/add_user.cpp' and
+	'rdadmin/add_user.h'.
+	* Removed Qt3Support components from 'rdadmin/edit_user.cpp' and
+	'rdadmin/edit_user.h'.
+	* Removed Qt3Support components from 'lib/rdpasswd.cpp' and
+	'lib/rdpasswd.h'.
+	* Removed Qt3Support components from 'rdadmin/edit_user_perms.cpp' and
+	'rdadmin/edit_user_perms.h'.
+	* Removed Qt3Support components from 'rdadmin/edit_feed_perms.cpp' and
+	'rdadmin/edit_feed_perms.h'.
+	* Fixed a bug in 'rdadmin/edit_user_perms.cpp' that caused a SQL
+	error when saving permissions.

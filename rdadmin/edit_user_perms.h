@@ -21,10 +21,9 @@
 #ifndef EDIT_USER_PERMS_H
 #define EDIT_USER_PERMS_H
 
-#include <qdialog.h>
-#include <qsqldatabase.h>
-#include <rdlistselector.h>
+#include <QDialog>
 
+#include <rdlistselector.h>
 #include <rduser.h>
 
 class EditUserPerms : public QDialog

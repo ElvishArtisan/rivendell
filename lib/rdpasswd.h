@@ -21,11 +21,8 @@
 #ifndef RDPASSWD_H
 #define RDPASSWD_H
 
-#include <qdialog.h>
-#include <qlineedit.h>
-#include <q3textedit.h>
-#include <qpixmap.h>
-#include <qradiobutton.h>
+#include <QDialog>
+#include <QLineEdit>
 
 class RDPasswd : public QDialog
 {
@@ -49,5 +46,4 @@ class RDPasswd : public QDialog
 };
 
 
-#endif
-
+#endif  // RDPASSWD_H

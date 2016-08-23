@@ -20,21 +20,11 @@
 
 #include <math.h>
 
-#include <Q3ButtonGroup>
-#include <Q3ListBox>
-#include <Q3TextEdit>
-#include <QCheckBox>
-#include <QDialog>
-#include <QEvent>
-#include <QLabel>
 #include <QMessageBox>
-#include <QPainter>
-#include <QString>
 
 #include <rdapplication.h>
 #include <rdpasswd.h>
 #include <rdtextvalidator.h>
-#include <rduser.h>
 
 #include "edit_user.h"
 #include "edit_user_perms.h"
@@ -42,7 +32,7 @@
 #include "globals.h"
 
 EditUser::EditUser(const QString &user,QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
   //
   // Fix the Window Size
@@ -140,17 +130,19 @@ EditUser::EditUser(const QString &user,QWidget *parent)
   //
   // Administrative Group Priviledges
   //
-  user_admin_group=new Q3ButtonGroup(tr("Administrative Rights"),this);
-  user_admin_group->setGeometry(10,125,355,45);
-  user_admin_group->setFont(font);
+  user_admin_groupbox=new QGroupBox(tr("Administrative Privileges"),this);
+  user_admin_groupbox->setGeometry(10,125,355,45);
+  user_admin_groupbox->setFont(font);
+  user_admin_group=new QButtonGroup(this);
 
-  user_admin_config_button=new QCheckBox(user_admin_group);
+  user_admin_config_button=new QCheckBox(user_admin_groupbox);
   user_admin_config_button->setGeometry(10,21,15,15);
+  user_admin_group->addButton(user_admin_config_button);
   connect(user_admin_config_button,SIGNAL(toggled(bool)),
 	  this,SLOT(adminToggledData(bool)));
-  QLabel *user_admin_config_label=
+  user_admin_config_label=
     new QLabel(user_admin_config_button,tr("Administer S&ystem"),
-	       user_admin_group);
+	       user_admin_groupbox);
   user_admin_config_label->setGeometry(192,21,150,19);
   user_admin_config_label->setGeometry(30,21,150,19);
   user_admin_config_label->setFont(small_font);
@@ -159,56 +151,57 @@ EditUser::EditUser(const QString &user,QWidget *parent)
   //
   // Production Group Priviledges
   //
-  user_prod_group=new Q3ButtonGroup(tr("Production Rights"),this);
-  user_prod_group->setGeometry(10,180,355,85);
-  user_prod_group->setFont(font);
+  user_prod_group=new QButtonGroup(this);
+  user_prod_groupbox=new QGroupBox(tr("Production Rights"),this); 
+  user_prod_groupbox->setGeometry(10,180,355,85);
+  user_prod_groupbox->setFont(font);
 
-  user_create_carts_button=new QCheckBox(user_prod_group);
+  user_create_carts_button=new QCheckBox(user_prod_groupbox);
   user_create_carts_button->setGeometry(10,21,15,15);
   user_create_carts_label=
-    new QLabel(user_create_carts_button,tr("&Create Carts"),user_prod_group);
+    new QLabel(user_create_carts_button,tr("&Create Carts"),user_prod_groupbox);
   user_create_carts_label->setGeometry(30,21,150,19);
   user_create_carts_label->setFont(small_font);
   user_create_carts_label->setAlignment(Qt::AlignLeft|Qt::TextShowMnemonic);
 
-  user_delete_carts_button=new QCheckBox(user_prod_group);
+  user_delete_carts_button=new QCheckBox(user_prod_groupbox);
   user_delete_carts_button->setGeometry(172,21,15,15);
   user_delete_carts_label=
-    new QLabel(user_delete_carts_button,tr("&Delete Carts"),user_prod_group);
+    new QLabel(user_delete_carts_button,tr("&Delete Carts"),user_prod_groupbox);
   user_delete_carts_label->setGeometry(192,21,150,19);
   user_delete_carts_label->setFont(small_font);
   user_delete_carts_label->setAlignment(Qt::AlignLeft|Qt::TextShowMnemonic);
 
-  user_modify_carts_button=new QCheckBox(user_prod_group);
+  user_modify_carts_button=new QCheckBox(user_prod_groupbox);
   user_modify_carts_button->setGeometry(10,42,15,15);
   user_modify_carts_label=
-    new QLabel(user_modify_carts_button,tr("&Modify Carts"),user_prod_group);
+    new QLabel(user_modify_carts_button,tr("&Modify Carts"),user_prod_groupbox);
   user_modify_carts_label->setGeometry(30,41,150,19);
   user_modify_carts_label->setFont(small_font);
   user_modify_carts_label->setAlignment(Qt::AlignLeft|Qt::TextShowMnemonic);
 
-  user_edit_audio_button=new QCheckBox(user_prod_group);
+  user_edit_audio_button=new QCheckBox(user_prod_groupbox);
   user_edit_audio_button->setGeometry(10,63,15,15);
   user_edit_audio_label=
-    new QLabel(user_edit_audio_button,tr("&Edit Audio"),user_prod_group);
+    new QLabel(user_edit_audio_button,tr("&Edit Audio"),user_prod_groupbox);
   user_edit_audio_label->setGeometry(30,62,150,19);
   user_edit_audio_label->setFont(small_font);
   user_edit_audio_label->setAlignment(Qt::AlignLeft|Qt::TextShowMnemonic);
 
-  user_edit_catches_button=new QCheckBox(user_prod_group);
+  user_edit_catches_button=new QCheckBox(user_prod_groupbox);
   user_edit_catches_button->setGeometry(172,42,15,15);
   user_edit_catches_label=
     new QLabel(user_edit_catches_button,tr("&Edit Netcatch Schedule"),
-	       user_prod_group);
+	       user_prod_groupbox);
   user_edit_catches_label->setGeometry(192,41,150,19);
   user_edit_catches_label->setFont(small_font);
   user_edit_catches_label->setAlignment(Qt::AlignLeft|Qt::TextShowMnemonic);
 
-  user_voicetrack_log_button=new QCheckBox(user_prod_group);
+  user_voicetrack_log_button=new QCheckBox(user_prod_groupbox);
   user_voicetrack_log_button->setGeometry(172,63,15,15);
   user_voicetrack_log_label=
     new QLabel(user_voicetrack_log_button,tr("&Voicetrack Logs"),
-	       user_prod_group);
+	       user_prod_groupbox);
   user_voicetrack_log_label->setGeometry(192,62,150,19);
   user_voicetrack_log_label->setFont(small_font);
   user_voicetrack_log_label->setAlignment(Qt::AlignLeft|Qt::TextShowMnemonic);
@@ -216,40 +209,41 @@ EditUser::EditUser(const QString &user,QWidget *parent)
   //
   // Traffic Group Priviledges
   //
-  user_traffic_group=new Q3ButtonGroup(tr("Traffic Rights"),this);
-  user_traffic_group->setGeometry(10,275,355,66);
-  user_traffic_group->setFont(font);
+  user_traffic_group=new QButtonGroup(this);
+  user_traffic_groupbox=new QGroupBox(tr("Traffic Rights"),this);
+  user_traffic_groupbox->setGeometry(10,275,355,66);
+  user_traffic_groupbox->setFont(font);
 
-  user_create_log_button=new QCheckBox(user_traffic_group);
+  user_create_log_button=new QCheckBox(user_traffic_groupbox);
   user_create_log_button->setGeometry(10,21,15,15);
   user_create_log_label=
-    new QLabel(user_create_log_button,tr("Create &Log"),user_traffic_group);
+    new QLabel(user_create_log_button,tr("Create &Log"),user_traffic_groupbox);
   user_create_log_label->setGeometry(30,21,150,19);
   user_create_log_label->setFont(small_font);
   user_create_log_label->setAlignment(Qt::AlignLeft|Qt::TextShowMnemonic);
 
-  user_delete_log_button=new QCheckBox(user_traffic_group);
+  user_delete_log_button=new QCheckBox(user_traffic_groupbox);
   user_delete_log_button->setGeometry(172,21,15,15);
   user_delete_log_label=
-    new QLabel(user_delete_log_button,tr("De&lete Log"),user_traffic_group);
+    new QLabel(user_delete_log_button,tr("De&lete Log"),user_traffic_groupbox);
   user_delete_log_label->setGeometry(192,21,150,19);
   user_delete_log_label->setFont(small_font);
   user_delete_log_label->setAlignment(Qt::AlignLeft|Qt::TextShowMnemonic);
 
-  user_delete_rec_button=new QCheckBox(user_traffic_group);
+  user_delete_rec_button=new QCheckBox(user_traffic_groupbox);
   user_delete_rec_button->setGeometry(172,42,15,15);
   user_delete_rec_label=
     new QLabel(user_delete_rec_button,tr("Delete &Report Data"),
-	       user_traffic_group);
+	       user_traffic_groupbox);
   user_delete_rec_label->setGeometry(192,42,150,19);
   user_delete_rec_label->setFont(small_font);
   user_delete_rec_label->setAlignment(Qt::AlignLeft|Qt::TextShowMnemonic);
 
-  user_modify_template_button=new QCheckBox(user_traffic_group);
+  user_modify_template_button=new QCheckBox(user_traffic_groupbox);
   user_modify_template_button->setGeometry(10,42,15,15);
   user_modify_template_label=
     new QLabel(user_modify_template_button,tr("&Modify Template"),
-	       user_traffic_group);
+	       user_traffic_groupbox);
   user_modify_template_label->setGeometry(30,42,100,19);
   user_modify_template_label->setFont(small_font);
   user_modify_template_label->setAlignment(Qt::AlignLeft|Qt::TextShowMnemonic);
@@ -257,49 +251,50 @@ EditUser::EditUser(const QString &user,QWidget *parent)
   //
   // OnAir Group Priviledges
   //
-  user_onair_group=new Q3ButtonGroup(tr("OnAir Rights"),this);
-  user_onair_group->setGeometry(10,351,355,85);
-  user_onair_group->setFont(font);
+  user_onair_group=new QButtonGroup(this);
+  user_onair_groupbox=new QGroupBox(tr("OnAir Rights"),this);
+  user_onair_groupbox->setGeometry(10,351,355,85);
+  user_onair_groupbox->setFont(font);
 
-  user_playout_log_button=new QCheckBox(user_onair_group);
+  user_playout_log_button=new QCheckBox(user_onair_groupbox);
   user_playout_log_button->setGeometry(10,21,15,15);
   user_playout_log_label=
-    new QLabel(user_playout_log_button,tr("&Playout Logs"),user_onair_group);
+    new QLabel(user_playout_log_button,tr("&Playout Logs"),user_onair_groupbox);
   user_playout_log_label->setGeometry(30,21,150,19);
   user_playout_log_label->setFont(small_font);
   user_playout_log_label->setAlignment(Qt::AlignLeft|Qt::TextShowMnemonic);
 
-  user_arrange_log_button=new QCheckBox(user_onair_group);
+  user_arrange_log_button=new QCheckBox(user_onair_groupbox);
   user_arrange_log_button->setGeometry(172,21,15,15);
   user_arrange_log_label=
     new QLabel(user_arrange_log_button,tr("&Rearrange Log Items"),
-	       user_onair_group);
+	       user_onair_groupbox);
   user_arrange_log_label->setGeometry(192,21,150,19);
   user_arrange_log_label->setFont(small_font);
   user_arrange_log_label->setAlignment(Qt::AlignLeft|Qt::TextShowMnemonic);
 
-  user_addto_log_button=new QCheckBox(user_onair_group);
+  user_addto_log_button=new QCheckBox(user_onair_groupbox);
   user_addto_log_button->setGeometry(10,42,15,15);
   user_addto_log_label=
-    new QLabel(user_addto_log_button,tr("Add Log &Items"),user_onair_group);
+    new QLabel(user_addto_log_button,tr("Add Log &Items"),user_onair_groupbox);
   user_addto_log_label->setGeometry(30,42,150,19);
   user_addto_log_label->setFont(small_font);
   user_addto_log_label->setAlignment(Qt::AlignLeft|Qt::TextShowMnemonic);
 
-  user_removefrom_log_button=new QCheckBox(user_onair_group);
+  user_removefrom_log_button=new QCheckBox(user_onair_groupbox);
   user_removefrom_log_button->setGeometry(172,42,15,15);
   user_removefrom_log_label=
     new QLabel(user_removefrom_log_button,tr("Delete Lo&g Items"),
-	       user_onair_group);
+	       user_onair_groupbox);
   user_removefrom_log_label->setGeometry(192,42,150,19);
   user_removefrom_log_label->setFont(small_font);
   user_removefrom_log_label->setAlignment(Qt::AlignLeft|Qt::TextShowMnemonic);
 
-  user_config_panels_button=new QCheckBox(user_onair_group);
+  user_config_panels_button=new QCheckBox(user_onair_groupbox);
   user_config_panels_button->setGeometry(10,63,15,15);
   user_config_panels_label=
     new QLabel(user_config_panels_button,tr("Configure System Panels"),
-	       user_onair_group);
+	       user_onair_groupbox);
   user_config_panels_label->setGeometry(30,63,150,19);
   user_config_panels_label->setFont(small_font);
   user_config_panels_label->setAlignment(Qt::AlignLeft|Qt::TextShowMnemonic);
@@ -307,32 +302,33 @@ EditUser::EditUser(const QString &user,QWidget *parent)
   //
   // Podcast Group Priviledges
   //
-  user_podcast_group=new Q3ButtonGroup(tr("Podcasting Rights"),this);
-  user_podcast_group->setGeometry(10,446,355,66);
-  user_podcast_group->setFont(font);
+  user_podcast_group=new QButtonGroup(this);
+  user_podcast_groupbox=new QGroupBox(tr("Podcasting Rights"),this);
+  user_podcast_groupbox->setGeometry(10,446,355,66);
+  user_podcast_groupbox->setFont(font);
 
-  user_add_podcast_button=new QCheckBox(user_podcast_group);
+  user_add_podcast_button=new QCheckBox(user_podcast_groupbox);
   user_add_podcast_button->setGeometry(10,21,15,15);
   user_add_podcast_label=
     new QLabel(user_add_podcast_button,tr("Cre&ate Podcast"),
-	       user_podcast_group);
+	       user_podcast_groupbox);
   user_add_podcast_label->setGeometry(30,21,150,19);
   user_add_podcast_label->setFont(small_font);
   user_add_podcast_label->setAlignment(Qt::AlignLeft|Qt::TextShowMnemonic);
 
-  user_edit_podcast_button=new QCheckBox(user_podcast_group);
+  user_edit_podcast_button=new QCheckBox(user_podcast_groupbox);
   user_edit_podcast_button->setGeometry(172,21,15,15);
   user_edit_podcast_label=
-    new QLabel(user_edit_podcast_button,tr("E&dit Podcast"),user_podcast_group);
+    new QLabel(user_edit_podcast_button,tr("E&dit Podcast"),user_podcast_groupbox);
   user_edit_podcast_label->setGeometry(192,21,150,19);
   user_edit_podcast_label->setFont(small_font);
   user_edit_podcast_label->setAlignment(Qt::AlignLeft|Qt::TextShowMnemonic);
 
-  user_delete_podcast_button=new QCheckBox(user_podcast_group);
+  user_delete_podcast_button=new QCheckBox(user_podcast_groupbox);
   user_delete_podcast_button->setGeometry(10,42,15,15);
   user_delete_podcast_label=
     new QLabel(user_delete_podcast_button,tr("Dele&te Podcast"),
-	       user_podcast_group);
+	       user_podcast_groupbox);
   user_delete_podcast_label->setGeometry(30,42,150,19);
   user_delete_podcast_label->setFont(small_font);
   user_delete_podcast_label->setAlignment(Qt::AlignLeft|Qt::TextShowMnemonic);

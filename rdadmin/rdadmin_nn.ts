@@ -3918,7 +3918,7 @@ Lagre no?</translation>
     </message>
     <message>
         <source>Administrative Rights</source>
-        <translation>Administrative tilgangsrettar</translation>
+        <translation type="obsolete">Administrative tilgangsrettar</translation>
     </message>
     <message>
         <source>Administer S&amp;ystem</source>
@@ -4031,6 +4031,10 @@ tilgangsrettar</translation>
     <message>
         <source>&amp;Cancel</source>
         <translation>&amp;Avbryt</translation>
+    </message>
+    <message>
+        <source>Administrative Privileges</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

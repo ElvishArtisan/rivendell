@@ -3960,7 +3960,7 @@ gespeichert werden. Jetzt speichern?</translation>
     </message>
     <message>
         <source>Administrative Rights</source>
-        <translation>Administrative Rechte</translation>
+        <translation type="obsolete">Administrative Rechte</translation>
     </message>
     <message>
         <source>Administer S&amp;ystem</source>
@@ -4073,6 +4073,10 @@ zuweisen</translation>
     <message>
         <source>&amp;Cancel</source>
         <translation>Abbre&amp;chen</translation>
+    </message>
+    <message>
+        <source>Administrative Privileges</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

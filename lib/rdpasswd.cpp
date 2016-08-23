@@ -18,21 +18,12 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qdialog.h>
-#include <qstring.h>
-#include <qpushbutton.h>
-#include <qradiobutton.h>
-#include <qlineedit.h>
-#include <q3textedit.h>
-#include <qlabel.h>
-#include <qpainter.h>
-#include <qevent.h>
-#include <qmessagebox.h>
-#include <q3buttongroup.h>
-#include <math.h>
+#include <QLabel>
+#include <QMessageBox>
+#include <QPushButton>
 
-#include <rdpasswd.h>
-#include <rdtextvalidator.h>
+#include "rdpasswd.h"
+#include "rdtextvalidator.h"
 
 RDPasswd::RDPasswd(QString *password,QWidget *parent)
   : QDialog(parent,"",true)
