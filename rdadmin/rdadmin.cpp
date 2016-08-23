@@ -40,6 +40,7 @@
 
 #include <rdapplication.h>
 #include <rdconf.h>
+#include <rdescape_string.h>
 #include <rduser.h>
 #include <rd.h>
 #include <dbversion.h>
@@ -62,9 +63,6 @@
 #include <rdadmin.h>
 #include <opendb.h>
 #include <info_dialog.h>
-#include <createdb.h>
-
-#include <rdescape_string.h>
 
 //
 // Icons

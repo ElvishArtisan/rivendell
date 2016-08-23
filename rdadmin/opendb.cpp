@@ -18,29 +18,27 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <stdlib.h>
-#include <unistd.h>
-#include <qsqldriver.h>
-#include <qmessagebox.h>
-//Added by qt3to4:
-#include <QSqlQuery>
-#include <opendb.h>
-#include <createdb.h>
-#include <rd.h>
-#include <rddb.h>
-#include <dbversion.h>
-#include <rdcheck_version.h>
-#include <rdcheck_daemons.h>
-#include <mysql_login.h>
-#include <globals.h>
-
-// Includes used for netmask and remote server detection.
 #include <net/if.h>
 #include <sys/ioctl.h>
 #include <netdb.h>
 #include <arpa/inet.h>
+#include <stdlib.h>
+#include <unistd.h>
 
-#include <qobject.h>
+#include <QMessageBox>
+#include <QObject>
+#include <QSqlQuery>
+
+#include <dbversion.h>
+#include <rd.h>
+#include <rdcheck_version.h>
+#include <rdcheck_daemons.h>
+#include <rddb.h>
+#include <rdapplication.h>
+
+#include "opendb.h"
+#include "mysql_login.h"
+#include "globals.h"
 
 /**
  * Get the netmask of an interface and return it via an in_addr struct pointer.
@@ -171,6 +169,7 @@ bool OpenDb(QString dbname,QString login,QString pwd,
   QString admin_pwd;
   QString msg;
   QString str;
+  QString err_str;
   QString sql;
   QSqlQuery *q;
 
@@ -211,8 +210,8 @@ bool OpenDb(QString dbname,QString login,QString pwd,
     }
   }
   else {
-    CreateDb();
-    InitDb(stationname);
+    RDMakeDb(&err_str,rda->config());
+    RDInitDb(&err_str,rda->config());
     if(interactive) {
       QMessageBox::information(NULL,"RDAdmin - "+QObject::tr("DB Message"),
 			       QObject::tr("Created new Rivendell database."));

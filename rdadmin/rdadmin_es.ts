@@ -5620,35 +5620,35 @@ y un respaldo de la base de datos se guardó en </translation>
     </message>
     <message>
         <source>Add</source>
-        <translation>Añadir</translation>
+        <translation type="obsolete">Añadir</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation>Borrar</translation>
+        <translation type="obsolete">Borrar</translation>
     </message>
     <message>
         <source>Copy</source>
-        <translation>Copiar</translation>
+        <translation type="obsolete">Copiar</translation>
     </message>
     <message>
         <source>Move</source>
-        <translation>Mover</translation>
+        <translation type="obsolete">Mover</translation>
     </message>
     <message>
         <source>Sound Panel</source>
-        <translation>Panel de sonidos</translation>
+        <translation type="obsolete">Panel de sonidos</translation>
     </message>
     <message>
         <source>Main Log</source>
-        <translation>Lista Ppal</translation>
+        <translation type="obsolete">Lista Ppal</translation>
     </message>
     <message>
         <source>Aux Log 1</source>
-        <translation>Lista aux. 1</translation>
+        <translation type="obsolete">Lista aux. 1</translation>
     </message>
     <message>
         <source>Aux Log 2</source>
-        <translation>Lista aux. 2</translation>
+        <translation type="obsolete">Lista aux. 2</translation>
     </message>
     <message>
         <source>DB Error</source>
@@ -5660,18 +5660,6 @@ y un respaldo de la base de datos se guardó en </translation>
     </message>
     <message>
         <source>Created new Rivendell database.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Start Line</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Stop Line</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Pause Line</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

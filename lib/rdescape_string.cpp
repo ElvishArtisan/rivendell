@@ -79,76 +79,28 @@ QString RDEscapeString(QString const &str)
   QString res;
 
   for(int i=0;i<str.length();i++) {
-    switch(((const char *)str)[i]) {
-	case '(':
-	  res+=QString("\\\(");
-	  break;
-
-	case ')':
-	  res+=QString("\\)");
-	  break;
-
-	case '{':
-	  res+=QString("\\\{");
-	  break;
-
-	case '"':
-	  res+=QString("\\\"");
-	  break;
-
-	case '`':
-	  res+=QString("\\`");
-	  break;
-
-	case '[':
-	  res+=QString("\\\[");
-	  break;
-
-	case '\'':
-	  res+=QString("\\\'");
-	  break;
-
-	case '\\':
-	  res+=QString("\\");
-	  res+=QString("\\");
-	  break;
-
-	case '?':
-	  res+=QString("\\\?");
-	  break;
-
-	case ' ':
-	  res+=QString("\\ ");
-	  break;
-
-	case '&':
-	  res+=QString("\\&");
-	  break;
-
-        case ';':
-	  res+=QString("\\;");
-	  break;
-
-        case '<':
-	  res+=QString("\\<");
-	  break;
-
-        case '>':
-	  res+=QString("\\>");
-	  break;
-
-        case '|':
-	  res+=QString("\\|");
-	  break;
-
-	default:
-	  res+=((const char *)str)[i];
-	  break;
+    bool sub=false;
+    if(str.at(i)==QChar('"')) {
+      res+=QChar('\\');
+      res+=QChar('"');
+      sub=true;
+    }
+    if(str.at(i)==QChar('\'')) {
+      res+=QChar('\\');
+      res+=QChar('\'');
+      sub=true;
+    }
+    if(str.at(i)==QChar('\\')) {
+      res+=QChar('\\');
+      res+=QChar('\\');
+      sub=true;
+    }
+    if(!sub) {
+      res+=str.at(i);
     }
   }
-
   /*
-  for(unsigned i=0;i<str.length();i++) {
+  for(int i=0;i<str.length();i++) {
     switch(((const char *)str)[i]) {
 	case '(':
 	  res+=QString("\\\(");
@@ -164,10 +116,6 @@ QString RDEscapeString(QString const &str)
 
 	case '"':
 	  res+=QString("\\\"");
-	  break;
-
-	case '´':
-	  res+=QString("\\´");
 	  break;
 
 	case '`':
@@ -221,6 +169,5 @@ QString RDEscapeString(QString const &str)
     }
   }
   */
-
   return res;
 }

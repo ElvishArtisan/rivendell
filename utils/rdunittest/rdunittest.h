@@ -47,11 +47,13 @@ class MainWidget : public QWidget
   void Append(RDUnitTestData *data);
   void Append(const QString &str);
   void Append(const char *str);
+  void RemoveAllTables() const;
   QTextEdit *main_edit;
   unsigned main_pass_count;
   unsigned main_fail_count;
 
   bool LowLevelDbTests(RDUnitTestData *data);
+  bool HighLevelDbTests(RDUnitTestData *data);
   bool MojibakeTests(RDUnitTestData *data);
   bool MojibakeLanguageTest(RDUnitTestData *data,const QString &native,
 			    const QString &english);

@@ -56,7 +56,6 @@ class RDApplication
   void startAccessors();
 
  private:
-  bool OpenDb();
   void Abend(const QString &err_msg) const;
   RDAirPlayConf *app_airplay_conf;
   RDAirPlayConf *app_panel_conf;

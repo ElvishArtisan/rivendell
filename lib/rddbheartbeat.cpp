@@ -33,7 +33,7 @@ RDDbHeartbeat::RDDbHeartbeat(int interval,QObject *parent)
 
 void RDDbHeartbeat::intervalTimeoutData()
 {
-  RDSqlQuery *q=new RDSqlQuery("select DB from VERSION");
+  RDSqlQuery *q=new RDSqlQuery("show tables");
   q->first();
   delete q;
 }

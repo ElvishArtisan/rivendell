@@ -97,6 +97,9 @@ void MainWidget::runTests()
   MojibakeTests(&unit_data);
   Append(&unit_data);
 
+  HighLevelDbTests(&unit_data);
+  Append(&unit_data);
+
   //
   // Show Statistics
   //
@@ -182,6 +185,23 @@ void MainWidget::Append(const QString &str)
 void MainWidget::Append(const char *str)
 {
   Append(QString(str));
+}
+
+
+void MainWidget::RemoveAllTables() const
+{
+  QString sql;
+  QSqlQuery *q;
+  QSqlQuery *q1;
+
+  sql=QString("show tables");
+  q=new QSqlQuery(sql);
+  while(q->next()) {
+    sql=QString("drop table `")+q->value(0).toString()+"`";
+    q1=new QSqlQuery(sql);
+    delete q1;
+  }
+  delete q;
 }
 
 

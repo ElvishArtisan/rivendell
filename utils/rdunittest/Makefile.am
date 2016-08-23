@@ -29,7 +29,8 @@ moc_%.cpp:	%.h
 
 bin_PROGRAMS = rdunittest
 
-dist_rdunittest_SOURCES = low_level_db_tests.cpp\
+dist_rdunittest_SOURCES = high_level_db_tests.cpp\
+                          low_level_db_tests.cpp\
                           mojibake_tests.cpp\
                           rdunittest.cpp rdunittest.h
 

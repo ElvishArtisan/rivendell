@@ -374,6 +374,27 @@ QString RDGroup::xml() const
 }
 
 
+bool RDGroup::create(const QString &name)
+{
+  QString sql;
+  RDSqlQuery *q;
+  bool ret;
+
+  sql=QString("insert into GROUPS set ")+
+    "NAME=\""+RDEscapeString(name)+"\"";
+  q=new RDSqlQuery(sql);
+  ret=q->isActive();
+  delete q;
+
+  return ret;
+}
+
+
+void RDGroup::remove(const QString &name)
+{
+}
+
+
 unsigned RDGroup::GetNextFreeCart(unsigned startcart) const
 {
   QString sql;

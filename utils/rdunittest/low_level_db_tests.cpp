@@ -78,7 +78,6 @@ bool MainWidget::LowLevelDbTests(RDUnitTestData *data)
   sql=QString("update TESTTAB set ")+
     "FIELD2=\""+RDEscapeString("A different kind of mayhem!")+"\" where "+
     "FIELD2=\""+RDEscapeString("Some kind of mayhem.")+"\"";
-  printf("SQL: %s\n",(const char *)sql.toUtf8());
   q=new QSqlQuery(sql);
   data->addTest("UPDATE Test",q->isActive());
   ret=ret&&q->isActive();

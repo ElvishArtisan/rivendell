@@ -5468,35 +5468,23 @@ Fortfahren?</translation>
     </message>
     <message>
         <source>Add</source>
-        <translation type="unfinished">Hinzufügen</translation>
+        <translation type="obsolete">Hinzufügen</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation type="unfinished">Löschen</translation>
-    </message>
-    <message>
-        <source>Copy</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Move</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Sound Panel</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Löschen</translation>
     </message>
     <message>
         <source>Main Log</source>
-        <translation type="unfinished">Haupt-Log</translation>
+        <translation type="obsolete">Haupt-Log</translation>
     </message>
     <message>
         <source>Aux Log 1</source>
-        <translation type="unfinished">Aux Log 1</translation>
+        <translation type="obsolete">Aux Log 1</translation>
     </message>
     <message>
         <source>Aux Log 2</source>
-        <translation type="unfinished">Aux Log 2</translation>
+        <translation type="obsolete">Aux Log 2</translation>
     </message>
     <message>
         <source>DB Error</source>
@@ -5508,18 +5496,6 @@ Fortfahren?</translation>
     </message>
     <message>
         <source>Created new Rivendell database.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Start Line</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Stop Line</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Pause Line</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

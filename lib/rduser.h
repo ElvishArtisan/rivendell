@@ -99,6 +99,8 @@ class RDUser
    * @return QStringList with all the services associated with the user.
    */
   QStringList services() const;
+  static bool create(const QString &login_name);
+  static void remove(const QString &login_name);
 
  private:
   void SetRow(const QString &param,const QString &value) const;

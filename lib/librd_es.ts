@@ -473,6 +473,66 @@
         <source>invalid SQL or failed DB connection</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Start Line</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Stop Line</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Pause Line</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add</source>
+        <translation type="unfinished">Añadir</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="unfinished">Borrar</translation>
+    </message>
+    <message>
+        <source>Copy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Move</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sound Panel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Main Log</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Aux Log 1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Aux Log 2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Test Tone</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rivendell Radio Automation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>1 kHz at Reference Level [-16 dBFS]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>tone</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RDAddCart</name>

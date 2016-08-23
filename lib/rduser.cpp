@@ -482,6 +482,75 @@ QStringList RDUser::services() const
 }
 
 
+bool RDUser::create(const QString &loginname)
+{
+  QString sql;
+  RDSqlQuery *q;
+  RDSqlQuery *q1;
+  bool ret;
+
+  sql=QString("insert into USERS set ")+
+    "LOGIN_NAME=\""+RDEscapeString(loginname)+"\"";
+  q=new RDSqlQuery(sql);
+  ret=q->isActive();
+  delete q;
+
+  if(ret) {
+    sql=QString("select NAME from GROUPS");
+    q=new RDSqlQuery(sql);
+    while(q->next()) {
+      sql=QString("insert into USER_PERMS set ")+
+	"USER_NAME=\""+RDEscapeString(loginname)+"\","+
+	"GROUP_NAME=\""+RDEscapeString(q->value(0).toString())+"\"";
+      q1=new RDSqlQuery(sql);
+      delete q1;
+    }
+  }
+  delete q;
+
+  return ret;
+}
+
+
+void RDUser::remove(const QString &login_name)
+{
+  QString sql;
+  RDSqlQuery *q;
+
+  //
+  // Delete RSS Feed Perms
+  //
+  sql=QString("delete from FEED_PERMS where ")+
+    "USER_NAME=\""+RDEscapeString(login_name)+"\"";
+  q=new RDSqlQuery(sql);
+  delete q;
+  
+  //
+  // Delete Member User Perms
+  //
+  sql=QString("delete from USER_PERMS where ")+
+    "USER_NAME=\""+RDEscapeString(login_name)+"\"";
+  q=new RDSqlQuery(sql);
+  delete q;
+  
+  //
+  // Delete from User List
+  //
+  sql=QString("delete from USERS where ")+
+    "LOGIN_NAME=\""+RDEscapeString(login_name)+"\"";
+  q=new RDSqlQuery(sql);
+  delete q;
+
+  //
+  // Delete from Cached Web Connections
+  //
+  sql=QString("delete from WEB_CONNECTIONS where ")+
+    "LOGIN_NAME=\""+RDEscapeString(login_name)+"\"";
+  q=new RDSqlQuery(sql);
+  delete q;
+}
+
+
 void RDUser::SetRow(const QString &param,const QString &value) const
 {
   RDSqlQuery *q;

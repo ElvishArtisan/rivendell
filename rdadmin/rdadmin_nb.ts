@@ -5374,36 +5374,16 @@ på denne maskina i nokre sekund. Halda fram?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Add</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Copy</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Move</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Sound Panel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Main Log</source>
-        <translation type="unfinished">Hovudlogg</translation>
+        <translation type="obsolete">Hovudlogg</translation>
     </message>
     <message>
         <source>Aux Log 1</source>
-        <translation type="unfinished">Hjelpelogg 1</translation>
+        <translation type="obsolete">Hjelpelogg 1</translation>
     </message>
     <message>
         <source>Aux Log 2</source>
-        <translation type="unfinished">Hjelpelogg 2</translation>
+        <translation type="obsolete">Hjelpelogg 2</translation>
     </message>
     <message>
         <source>DB Error</source>
@@ -5415,18 +5395,6 @@ på denne maskina i nokre sekund. Halda fram?</translation>
     </message>
     <message>
         <source>Created new Rivendell database.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Start Line</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Stop Line</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Pause Line</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

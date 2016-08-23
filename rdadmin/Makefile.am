@@ -55,7 +55,6 @@ dist_rdadmin_SOURCES = add_aux_field.cpp add_aux_field.h\
                        add_svc.cpp add_svc.h\
                        add_user.cpp add_user.h\
                        autofill_carts.cpp autofill_carts.h\
-                       createdb.cpp createdb.h\
                        edit_audios.cpp edit_audios.h\
                        edit_aux_field.cpp edit_aux_field.h\
                        edit_backup.cpp edit_backup.h\

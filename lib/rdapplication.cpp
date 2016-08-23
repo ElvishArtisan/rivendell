@@ -60,11 +60,18 @@ RDApplication::RDApplication(RDApplication::AppType type,const char *modname,
   //
   // Open Database
   //
-  if(!RDOpenDb(&app_schema,&err,config())) {
-    Abend(err);
+  if(skip_schema_check) {
+    if(!RDOpenDb(NULL,&err,config())) {
+      Abend(err);
+    }
   }
-  if((!skip_schema_check)&&(RD_VERSION_DATABASE!=app_schema)) { 
-    Abend("skewed database schema");
+  else {
+    if(!RDOpenDb(&app_schema,&err,config())) {
+      Abend(err);
+    }
+    if((!skip_schema_check)&&(RD_VERSION_DATABASE!=app_schema)) { 
+      Abend("skewed database schema");
+    }
   }
 
   //
@@ -167,36 +174,6 @@ void RDApplication::startAccessors()
   app_system=new RDSystem();
   app_ripc=new RDRipc(config()->stationName());
   app_cae=new RDCae(station(),config());
-}
-
-
-bool RDApplication::OpenDb()
-{
-  app_schema=0;
-  QSqlDatabase db=QSqlDatabase::database();
-
-  if (!db.isOpen()) {
-    db=QSqlDatabase::addDatabase(config()->mysqlDriver());
-    db.setHostName(config()->mysqlHostname());
-    db.setDatabaseName(config()->mysqlDbname());
-    db.setUserName(config()->mysqlUsername());
-    db.setPassword(config()->mysqlPassword());
-    if(!db.open()) {
-      db.removeDatabase(config()->mysqlDbname());
-      db.close();
-      return false;
-    }
-  }
-  //  QSqlQuery *q=new QSqlQuery("set character_set_results='utf8'");
-  //  delete q;
-
-  QSqlQuery *q=new QSqlQuery("select DB from VERSION");
-  if(q->first()) {
-    app_schema=q->value(0).toUInt();
-  }
-  delete q;
-
-  return true;
 }
 
 

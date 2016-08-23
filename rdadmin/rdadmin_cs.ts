@@ -5513,35 +5513,35 @@ zopakování</translation>
     </message>
     <message>
         <source>Add</source>
-        <translation>Přidat</translation>
+        <translation type="obsolete">Přidat</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation>Smazat</translation>
+        <translation type="obsolete">Smazat</translation>
     </message>
     <message>
         <source>Copy</source>
-        <translation>Kopírovat</translation>
+        <translation type="obsolete">Kopírovat</translation>
     </message>
     <message>
         <source>Move</source>
-        <translation>Posunout</translation>
+        <translation type="obsolete">Posunout</translation>
     </message>
     <message>
         <source>Sound Panel</source>
-        <translation>Zvukový panel</translation>
+        <translation type="obsolete">Zvukový panel</translation>
     </message>
     <message>
         <source>Main Log</source>
-        <translation>Hlavní zápis</translation>
+        <translation type="obsolete">Hlavní zápis</translation>
     </message>
     <message>
         <source>Aux Log 1</source>
-        <translation>Pomocný zápis 1</translation>
+        <translation type="obsolete">Pomocný zápis 1</translation>
     </message>
     <message>
         <source>Aux Log 2</source>
-        <translation>Pomocný zápis 2</translation>
+        <translation type="obsolete">Pomocný zápis 2</translation>
     </message>
     <message>
         <source>(default)</source>
@@ -5681,18 +5681,6 @@ a záloha původní databáze uložena v </translation>
     </message>
     <message>
         <source>Created new Rivendell database.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Start Line</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Stop Line</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Pause Line</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

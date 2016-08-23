@@ -15991,3 +15991,13 @@
 	explicitly in 'lib/rddb.cpp.
 2016-08-22 Fred Gleason <fredg@paravelsystems.com>
 	* Added an 'UPDATE' test in 'utils/rdunittest/low_level_db_tests.cpp'.
+2016-08-22 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'RdMakeDb()' function in 'lib/rddb.cpp' and 'lib/rddb.h'.
+	* Added 'RDUser::add()' and 'RDUser::remove()' methods in
+	'lib/rduser.cpp' and 'lib/rduser.h'.
+	* Added 'RDStation::add()' and 'RDStation::remove()' methods in
+	'lib/rdstation.cpp' and 'lib/rdstation.h'.
+	* Migrated database creation and initialization methods from
+	'rdadmin/createdb.cpp' to 'lib/rddb.cpp'.
+	* Added database creation and initialization tests in
+	'utils/rdunitest/high_level_tests.cpp'.
