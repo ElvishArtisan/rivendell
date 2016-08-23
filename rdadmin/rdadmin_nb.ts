@@ -5120,11 +5120,11 @@ Er du sikker på at du vil halda fram?</translation>
     </message>
     <message>
         <source>Daemons Failed</source>
-        <translation>Nissane vart ikkje starta</translation>
+        <translation type="obsolete">Nissane vart ikkje starta</translation>
     </message>
     <message>
         <source>Unable to start Rivendell System Daemons!</source>
-        <translation>Greidde ikkje starta Rivendell-systemnissane!</translation>
+        <translation type="obsolete">Greidde ikkje starta Rivendell-systemnissane!</translation>
     </message>
     <message>
         <source>Insufficient Priviledges</source>
@@ -5257,6 +5257,10 @@ Replicators</source>
     </message>
     <message>
         <source>RDAdmin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save Backup</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

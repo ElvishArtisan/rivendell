@@ -21,13 +21,8 @@
 #ifndef LOGIN_H
 #define LOGIN_H
 
-#include <qdialog.h>
-#include <qlineedit.h>
-#include <q3textedit.h>
-#include <qpixmap.h>
-#include <qradiobutton.h>
-//Added by qt3to4:
-#include <QPaintEvent>
+#include <QDialog>
+#include <QLineEdit>
 
 class Login : public QDialog
 {
@@ -37,9 +32,6 @@ class Login : public QDialog
    ~Login();
    QSize sizeHint() const;
    QSizePolicy sizePolicy() const;
-
-  protected:
-   void paintEvent(QPaintEvent *);
 
   private slots:
    void okData();

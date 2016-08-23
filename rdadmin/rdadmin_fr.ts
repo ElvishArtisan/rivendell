@@ -4621,14 +4621,6 @@ Do you still want to proceed?</source>
 <context>
     <name>MainWidget</name>
     <message>
-        <source>Daemons Failed</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unable to start Rivendell System Daemons!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Insufficient Priviledges</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4722,6 +4714,10 @@ Replicators</source>
     </message>
     <message>
         <source>RDAdmin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save Backup</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

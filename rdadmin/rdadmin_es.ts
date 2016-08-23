@@ -5237,11 +5237,11 @@ Do you still want to proceed?</source>
     </message>
     <message>
         <source>Daemons Failed</source>
-        <translation>Falla en los servicios</translation>
+        <translation type="obsolete">Falla en los servicios</translation>
     </message>
     <message>
         <source>Unable to start Rivendell System Daemons!</source>
-        <translation>¡No fue posible iniciar los Servicios del Sistema Rivendell!</translation>
+        <translation type="obsolete">¡No fue posible iniciar los Servicios del Sistema Rivendell!</translation>
     </message>
     <message>
         <source>Insufficient Priviledges</source>
@@ -5378,6 +5378,10 @@ Replicadores</translation>
     <message>
         <source>RDAdmin</source>
         <translation type="unfinished">RDAdmin</translation>
+    </message>
+    <message>
+        <source>Save Backup</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

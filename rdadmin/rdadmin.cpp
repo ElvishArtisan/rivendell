@@ -25,9 +25,9 @@
 #include <sys/wait.h>
 #include <signal.h>
 
-#include <Q3FileDialog>
 #include <QApplication>
 #include <QCoreApplication>
+#include <QFileDialog>
 #include <QLabel>
 #include <QMessageBox>
 #include <QPainter>
@@ -38,16 +38,12 @@
 #include <QWindowsStyle>
 #include <QWidget>
 
+#include <rd.h>
 #include <rdapplication.h>
+#include <rdcheck_daemons.h>
 #include <rdconf.h>
 #include <rdescape_string.h>
 #include <rduser.h>
-#include <rd.h>
-#include <dbversion.h>
-#include <rdcheck_daemons.h>
-#include <rdcmd_switch.h>
-#include <rddb.h>
-#include <rddbheartbeat.h>
 
 #include "edit_settings.h"
 #include "globals.h"
@@ -143,31 +139,26 @@ MainWidget::MainWidget(QWidget *parent)
   //
   // Check (and possibly start) daemons
   //
+  /*
   if(!RDStartDaemons()) {
     QMessageBox::warning(this,tr("Daemons Failed"),
 			 tr("Unable to start Rivendell System Daemons!"));
     exit(1);
   }
-
+  */
   //
-  // Initialize Global Classes
+  // Connect to ripcd(8).
   //
-  char temp[256];
-  GetPrivateProfileString(RD_CONF_FILE,"Identity","Password",
-			  temp,"",255);
-  //  rdripc=new RDRipc(rda->config()->stationName(),this);
-  rda->ripc()->connectHost("localhost",RIPCD_TCP_PORT,temp);
-  //  admin_station=new RDStation(rda->config()->stationName(),this);
-  //  admin_system=new RDSystem();
+  rda->
+    ripc()->connectHost("localhost",RIPCD_TCP_PORT,rda->config()->password());
 
   //
   // Log In
   //
-  Login *login=new Login(&admin_username,&admin_password,this);
+  Login *login=new Login(&admin_username,&admin_password,NULL);
   if(login->exec()!=0) {
     exit(0);
   }
-  //  admin_user=new RDUser(admin_username);
   rda->setUser(admin_username);
   if(!rda->user()->checkPassword(admin_password,false)) {
     QMessageBox::warning(this,"Login Failed","Login Failed!.\n");
@@ -393,9 +384,9 @@ void MainWidget::backupData()
   QString cmd;
   int status;
 
-  filename=Q3FileDialog::getSaveFileName(RDGetHomeDir(),
-				      tr("Rivendell Database Backup (*.sql)"),
-					this);
+  filename=QFileDialog::getSaveFileName(this,"RDAdmin - "+tr("Save Backup"),
+					RDGetHomeDir(),
+					tr("Rivendell Database Backup (*.sql)"));
   if(filename.isEmpty()) {
     return;
   }

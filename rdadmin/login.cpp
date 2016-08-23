@@ -20,26 +20,18 @@
 
 #include <math.h>
 
-#include <qdialog.h>
-#include <qstring.h>
-#include <qpushbutton.h>
-#include <qradiobutton.h>
-#include <qlineedit.h>
-#include <q3textedit.h>
-#include <qlabel.h>
-#include <qpainter.h>
-#include <qevent.h>
-#include <qmessagebox.h>
-#include <q3buttongroup.h>
-//Added by qt3to4:
-#include <QPaintEvent>
+#include <QString>
+#include <QPushButton>
+#include <QLabel>
+#include <QEvent>
+#include <QMessageBox>
 
 #include <rdtextvalidator.h>
 
-#include <login.h>
+#include "login.h"
 
 Login::Login(QString *username,QString *password,QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
   //
   // Fix the Window Size
@@ -49,7 +41,7 @@ Login::Login(QString *username,QString *password,QWidget *parent)
   setMinimumHeight(sizeHint().height());
   setMaximumHeight(sizeHint().height());
 
-  setCaption(tr("Login"));
+  setWindowTitle(tr("Login"));
   login_name=username;
   login_password=password;
 
@@ -75,7 +67,7 @@ Login::Login(QString *username,QString *password,QWidget *parent)
   connect(ok_button,SIGNAL(clicked()),this,SLOT(okData()));
 
   //
-  // CANCEL Button
+  // Cancel Button
   //
   QPushButton *cancel_button=new QPushButton(this);
   cancel_button->setGeometry(120,60,100,55);
@@ -143,12 +135,4 @@ void Login::okData()
 void Login::cancelData()
 {
   done(1);
-}
-
-
-void Login::paintEvent(QPaintEvent *paintevent)
-{
-  QPainter *p=new QPainter(this);
-    
-  p->end();
 }

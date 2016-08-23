@@ -5185,11 +5185,11 @@ Você quer proceder?</translation>
     </message>
     <message>
         <source>Daemons Failed</source>
-        <translation>Daemons Falharam</translation>
+        <translation type="obsolete">Daemons Falharam</translation>
     </message>
     <message>
         <source>Unable to start Rivendell System Daemons!</source>
-        <translation>Não foi possível iniciar os daemons do Rivendell!</translation>
+        <translation type="obsolete">Não foi possível iniciar os daemons do Rivendell!</translation>
     </message>
     <message>
         <source>Insufficient Priviledges</source>
@@ -5323,6 +5323,10 @@ Replicators</source>
     </message>
     <message>
         <source>RDAdmin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save Backup</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

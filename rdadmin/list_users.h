@@ -21,17 +21,13 @@
 #ifndef LIST_USERS_H
 #define LIST_USERS_H
 
-#include <qdialog.h>
-#include <qpixmap.h>
-#include <qradiobutton.h>
-#include <qsqldatabase.h>
-#include <qpushbutton.h>
-#include <qpixmap.h>
-//Added by qt3to4:
+#include <QDialog>
+#include <QPixmap>
+#include <QPushButton>
+#include <QRadioButton>
 #include <QResizeEvent>
 
 #include <rdlistviewitem.h>
-#include <rddb.h>
 
 class ListUsers : public QDialog
 {
