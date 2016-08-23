@@ -21,16 +21,12 @@
 #ifndef LIST_GROUPS_H
 #define LIST_GROUPS_H
 
-#include <qdialog.h>
-#include <qpixmap.h>
-#include <qradiobutton.h>
-#include <qsqldatabase.h>
-#include <qpushbutton.h>
-//Added by qt3to4:
+#include <QDialog>
+#include <QPushButton>
 #include <QResizeEvent>
 
-#include <rdlistviewitem.h>
 #include <rddb.h>
+#include <rdlistviewitem.h>
 
 class ListGroups : public QDialog
 {

@@ -21,21 +21,16 @@
 #ifndef EDIT_GROUP_H
 #define EDIT_GROUP_H
 
-#include <qdialog.h>
-#include <q3listbox.h>
-#include <q3textedit.h>
-#include <qpixmap.h>
-#include <qspinbox.h>
-#include <qcheckbox.h>
-#include <qsqldatabase.h>
-#include <qlineedit.h>
-#include <qcombobox.h>
-#include <qlabel.h>
-#include <qpushbutton.h>
-
-#include <rdlistselector.h>
+#include <QCheckBox>
+#include <QComboBox>
+#include <QDialog>
+#include <QLabel>
+#include <QLineEdit>
+#include <QPushButton>
+#include <QSpinBox>
 
 #include <rdgroup.h>
+#include <rdlistselector.h>
 
 class EditGroup : public QDialog
 {

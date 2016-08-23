@@ -16028,3 +16028,12 @@
 	'rdadmin/edit_feed_perms.h'.
 	* Fixed a bug in 'rdadmin/edit_user_perms.cpp' that caused a SQL
 	error when saving permissions.
+2016-08-23 Fred Gleason <fredg@paravelsystems.com>
+	* Removed Qt3Support components from 'rdadmin/list_groups.cpp' and
+	'rdadmin/list_groups.h'.
+	* Removed Qt3Support components from 'rdadmin/add_group.cpp' and
+	'rdadmin/add_group.h'.
+	* Removed Qt3Support components from 'rdadmin/edit_group.cpp' and
+	'rdadmin/edit_group.h'.
+	* Removed Qt3Support components from 'rdadmin/rename_group.cpp' and
+	'rdadmin/rename_group.h'.

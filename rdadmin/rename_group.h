@@ -21,15 +21,8 @@
 #ifndef RENAME_GROUP_H
 #define RENAME_GROUP_H
 
-#include <qdialog.h>
-#include <q3listbox.h>
-#include <q3textedit.h>
-#include <qpixmap.h>
-#include <qspinbox.h>
-#include <qsqldatabase.h>
-#include <qlineedit.h>
-
-#include <rdgroup.h>
+#include <QDialog>
+#include <QLineEdit>
 
 class RenameGroup : public QDialog
 {

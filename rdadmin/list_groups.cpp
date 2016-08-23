@@ -20,17 +20,10 @@
 
 #include <math.h>
 
-#include <Q3ButtonGroup>
-#include <Q3ListBox>
-#include <Q3TextEdit>
-#include <QDialog>
-#include <QEvent>
 #include <QLabel>
 #include <QMessageBox>
-#include <QPainter>
 #include <QPushButton>
 #include <QResizeEvent>
-#include <QString>
 
 #include <rdapplication.h>
 #include <rdcart.h>

@@ -21,9 +21,9 @@
 #ifndef ADD_GROUP_H
 #define ADD_GROUP_H
 
-#include <qdialog.h>
-#include <qcheckbox.h>
-#include <qlineedit.h>
+#include <QDialog>
+#include <QCheckBox>
+#include <QLineEdit>
 
 class AddGroup : public QDialog
 {

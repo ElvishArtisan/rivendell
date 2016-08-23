@@ -18,27 +18,17 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <math.h>
+#include <QLabel>
+#include <QMessageBox>
+#include <QPushButton>
 
-#include <qdialog.h>
-#include <qstring.h>
-#include <qpushbutton.h>
-#include <q3listbox.h>
-#include <q3textedit.h>
-#include <qlabel.h>
-#include <qpainter.h>
-#include <qevent.h>
-#include <qmessagebox.h>
-#include <qcheckbox.h>
-#include <q3buttongroup.h>
 #include <rddb.h>
-
-#include <rename_group.h>
-#include <rduser.h>
+#include <rdescape_string.h>
 #include <rdpasswd.h>
 #include <rdtextvalidator.h>
-#include <rdescape_string.h>
+#include <rduser.h>
 
+#include "rename_group.h"
 
 RenameGroup::RenameGroup(QString group,QWidget *parent)
   : QDialog(parent,"",true)
