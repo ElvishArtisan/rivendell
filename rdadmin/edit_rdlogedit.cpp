@@ -18,25 +18,24 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qdialog.h>
-#include <qstring.h>
-#include <qpushbutton.h>
-#include <q3listbox.h>
-#include <q3textedit.h>
-#include <qlabel.h>
-#include <qpainter.h>
-#include <qevent.h>
-#include <qmessagebox.h>
-#include <qcheckbox.h>
-#include <q3buttongroup.h>
+#include <Q3ButtonGroup>
+#include <Q3ListBox>
+#include <Q3TextEdit>
+#include <QCheckBox>
+#include <QDialog>
+#include <QEvent>
+#include <QLabel>
+#include <QMessageBox>
+#include <QPainter>
+#include <QPushButton>
+#include <QString>
 
 #include <rd.h>
-
-#include <globals.h>
-#include <edit_rdlogedit.h>
+#include <rdapplication.h>
 #include <rdtextvalidator.h>
-#include <rdcart_dialog.h>
 
+#include "edit_rdlogedit.h"
+#include "globals.h"
 
 EditRDLogedit::EditRDLogedit(RDStation *station,RDStation *cae_station,
 			     QWidget *parent)
@@ -387,7 +386,7 @@ void EditRDLogedit::selectStartData()
   int cartnum=lib_startcart_edit->text().toInt();
 
   if(admin_cart_dialog->exec(&cartnum,RDCart::Macro,NULL,0,
-			     admin_user->name(),admin_user->password())==0) {
+			     rda->user()->name(),rda->user()->password())==0) {
     lib_startcart_edit->setText(QString().sprintf("%d",cartnum));
   }
 }
@@ -397,7 +396,7 @@ void EditRDLogedit::selectEndData()
 {
   int cartnum=lib_endcart_edit->text().toInt();
   if(admin_cart_dialog->exec(&cartnum,RDCart::Macro,NULL,0,
-			     admin_user->name(),admin_user->password())==0) {
+			     rda->user()->name(),rda->user()->password())==0) {
     lib_endcart_edit->setText(QString().sprintf("%d",cartnum));
   }
 }
@@ -407,7 +406,7 @@ void EditRDLogedit::selectRecordStartData()
 {
   int cartnum=lib_recstartcart_edit->text().toInt();
   if(admin_cart_dialog->exec(&cartnum,RDCart::Macro,NULL,0,
-			     admin_user->name(),admin_user->password())==0) {
+			     rda->user()->name(),rda->user()->password())==0) {
     lib_recstartcart_edit->setText(QString().sprintf("%d",cartnum));
   }
 }
@@ -417,7 +416,7 @@ void EditRDLogedit::selectRecordEndData()
 {
   int cartnum=lib_recendcart_edit->text().toInt();
   if(admin_cart_dialog->exec(&cartnum,RDCart::Macro,NULL,0,
-			     admin_user->name(),admin_user->password())==0) {
+			     rda->user()->name(),rda->user()->password())==0) {
     lib_recendcart_edit->setText(QString().sprintf("%d",cartnum));
   }
 }

@@ -49,20 +49,20 @@
 #include <rddb.h>
 #include <rddbheartbeat.h>
 
-#include <globals.h>
-#include <login.h>
-#include <list_users.h>
-#include <list_groups.h>
-#include <list_svcs.h>
-#include <list_stations.h>
-#include <list_reports.h>
-#include <list_feeds.h>
-#include <list_schedcodes.h>
-#include <list_replicators.h>
-#include <edit_settings.h>
-#include <rdadmin.h>
-#include <opendb.h>
-#include <info_dialog.h>
+#include "edit_settings.h"
+#include "globals.h"
+#include "info_dialog.h"
+#include "list_feeds.h"
+#include "list_groups.h"
+#include "list_replicators.h"
+#include "list_reports.h"
+#include "list_schedcodes.h"
+#include "list_stations.h"
+#include "list_svcs.h"
+#include "list_users.h"
+#include "login.h"
+#include "opendb.h"
+#include "rdadmin.h"
 
 //
 // Icons
@@ -72,21 +72,8 @@
 //
 // Global Classes
 //
-RDRipc *rdripc;
-RDConfig *admin_config;
-RDUser *admin_user;
-RDStation *admin_station;
-RDSystem *admin_system;
 RDCartDialog *admin_cart_dialog;
 bool exiting=false;
-QString admin_admin_username;
-QString admin_admin_password;
-QString admin_admin_hostname;
-QString admin_admin_dbname;
-QString admin_create_db_hostname;
-bool admin_skip_backup=false;
-QString admin_backup_filename="";
-
 void SigHandler(int signo)
 {
   pid_t pLocalPid;
@@ -117,7 +104,7 @@ void PrintError(const QString &str,bool interactive)
 MainWidget::MainWidget(QWidget *parent)
   :QWidget(parent)
 {
-  new RDApplication(RDApplication::Gui,"rdadmin",RDADMIN_USAGE);
+  new RDApplication(RDApplication::Gui,"rdadmin",RDADMIN_USAGE,true);
 
   QString str;
 
@@ -139,30 +126,19 @@ MainWidget::MainWidget(QWidget *parent)
   qApp->setFont(default_font);
 
   //
-  // Create And Set Icon
+  // Window Titling
   //
   admin_rivendell_map=new QPixmap(rivendell_xpm);
-  setIcon(*admin_rivendell_map);
-
-  //
-  // Load Configs
-  //
-  admin_config=new RDConfig();
-  admin_config->load();
+  setWindowIcon(*admin_rivendell_map);
   str=QString(tr("RDAdmin")+" v"+VERSION+" - Host:");
-  setCaption(QString().
-	     sprintf("%s %s",(const char *)str,
-		     (const char *)admin_config->stationName()));
+  setWindowTitle(str+" "+rda->config()->stationName());
 
   //
   // Open Database
   //
-  if(!OpenDb(admin_config->mysqlDbname(),admin_config->mysqlUsername(),
-	     admin_config->mysqlPassword(),admin_config->mysqlHostname(),
-	     admin_config->stationName(),true)) {
-    exit(1);
+  if(!OpenDb()) {
+    exit(256);
   }
-  new RDDbHeartbeat(admin_config->mysqlHeartbeatInterval());
 
   //
   // Check (and possibly start) daemons
@@ -179,10 +155,10 @@ MainWidget::MainWidget(QWidget *parent)
   char temp[256];
   GetPrivateProfileString(RD_CONF_FILE,"Identity","Password",
 			  temp,"",255);
-  rdripc=new RDRipc(admin_config->stationName(),this);
-  rdripc->connectHost("localhost",RIPCD_TCP_PORT,temp);
-  admin_station=new RDStation(admin_config->stationName(),this);
-  admin_system=new RDSystem();
+  //  rdripc=new RDRipc(rda->config()->stationName(),this);
+  rda->ripc()->connectHost("localhost",RIPCD_TCP_PORT,temp);
+  //  admin_station=new RDStation(rda->config()->stationName(),this);
+  //  admin_system=new RDSystem();
 
   //
   // Log In
@@ -191,13 +167,14 @@ MainWidget::MainWidget(QWidget *parent)
   if(login->exec()!=0) {
     exit(0);
   }
-  admin_user=new RDUser(admin_username);
-  if(!admin_user->checkPassword(admin_password,false)) {
+  //  admin_user=new RDUser(admin_username);
+  rda->setUser(admin_username);
+  if(!rda->user()->checkPassword(admin_password,false)) {
     QMessageBox::warning(this,"Login Failed","Login Failed!.\n");
     exiting=true;
   }
   else {
-    if(!admin_user->adminConfig()) {
+    if(!rda->user()->adminConfig()) {
       QMessageBox::warning(this,tr("Insufficient Priviledges"),
          tr("This account has insufficient priviledges for this operation."));
       exiting=true;
@@ -217,13 +194,13 @@ MainWidget::MainWidget(QWidget *parent)
   name_label->setGeometry(0,5,sizeHint().width(),20);
   name_label->setAlignment(Qt::AlignVCenter|Qt::AlignCenter);
   name_label->setFont(font);
-  name_label->setText(QString().sprintf("USER: %s",(const char *)admin_user->name()));
+  name_label->setText(QString().sprintf("USER: %s",(const char *)rda->user()->name()));
 
   QLabel *description_label=new QLabel(this);
   description_label->setGeometry(0,24,sizeHint().width(),14);
   description_label->setAlignment(Qt::AlignVCenter|Qt::AlignCenter);
   name_label->setFont(font);
-  description_label->setText(admin_user->description());
+  description_label->setText(rda->user()->description());
 
   //
   // Manage Users Button
@@ -349,7 +326,6 @@ MainWidget::MainWidget(QWidget *parent)
 
 MainWidget::~MainWidget()
 {
-  delete admin_user;
 }
 
 
@@ -367,7 +343,7 @@ QSizePolicy MainWidget::sizePolicy() const
 
 void MainWidget::manageUsersData()
 {
-  ListUsers *list_users=new ListUsers(admin_user->name(),this);
+  ListUsers *list_users=new ListUsers(rda->user()->name(),this);
   list_users->exec();
   delete list_users;
 }
@@ -427,10 +403,10 @@ void MainWidget::backupData()
     filename+=".sql";
   }
   cmd=QString().sprintf("mysqldump -c %s -h %s -u %s -p%s > %s",
-			(const char *)admin_config->mysqlDbname(),
-			(const char *)admin_config->mysqlHostname(),
-			(const char *)admin_config->mysqlUsername(),
-			(const char *)admin_config->mysqlPassword(),
+			(const char *)rda->config()->mysqlDbname(),
+			(const char *)rda->config()->mysqlHostname(),
+			(const char *)rda->config()->mysqlUsername(),
+			(const char *)rda->config()->mysqlPassword(),
 			(const char *)filename);
   status=system((const char *)cmd);
   if(WEXITSTATUS(status)!=0) {
@@ -590,26 +566,12 @@ int gui_main(int argc,char *argv[])
 int cmdline_main(int argc,char *argv[])
 {
   QCoreApplication a(argc,argv);
+  new RDApplication(RDApplication::Console,"rdadmin",RDADMIN_USAGE,true);
   
-  //
-  // Load Configs
-  //
-  admin_config=new RDConfig();
-  admin_config->load();
-
   //
   // Open Database
   //
-  QString station_name=admin_config->stationName();
-  if(!admin_create_db_hostname.isEmpty()) {
-    station_name=admin_create_db_hostname;
-  }
-  if(!OpenDb(admin_config->mysqlDbname(),admin_config->mysqlUsername(),
-	     admin_config->mysqlPassword(),admin_config->mysqlHostname(),
-	     station_name,false)) {
-    return 1;
-  }
-
+  OpenDb();
   return 0;
 }
 
@@ -623,34 +585,6 @@ int main(int argc,char *argv[])
   for(unsigned i=0;i<cmd->keys();i++) {
     if(cmd->key(i)=="--check-db") {
       found_check_db=true;
-      cmd->setProcessed(i,true);
-    }
-    if(cmd->key(i)=="--mysql-admin-user") {
-      admin_admin_username=cmd->value(i);
-      cmd->setProcessed(i,true);
-    }
-    if(cmd->key(i)=="--mysql-admin-password") {
-      admin_admin_password=cmd->value(i);
-      cmd->setProcessed(i,true);
-    }
-    if(cmd->key(i)=="--mysql-admin-hostname") {
-      admin_admin_hostname=cmd->value(i);
-      cmd->setProcessed(i,true);
-    }
-    if(cmd->key(i)=="--mysql-admin-dbname") {
-      admin_admin_dbname=cmd->value(i);
-      cmd->setProcessed(i,true);
-    }
-    if(cmd->key(i)=="--create-db-hostname") {
-      admin_create_db_hostname=cmd->value(i);
-      cmd->setProcessed(i,true);
-    }
-    if(cmd->key(i)=="--backup-filename") {
-      admin_backup_filename=cmd->value(i);
-      cmd->setProcessed(i,true);
-    }
-    if(cmd->key(i)=="--skip-backup") {
-      admin_skip_backup=true;
       cmd->setProcessed(i,true);
     }
   }

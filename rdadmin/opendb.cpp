@@ -147,77 +147,45 @@ QString format_remote_host(const char *hostname) {
 }
 
 
-void PrintDbError(const QString &err,bool interactive)
+bool OpenDb()
 {
-  if(interactive) {
-    QMessageBox::warning(NULL,"RDAdmin - "+QObject::tr("DB Error"),err);
-  }
-  else {
-  }
-  exit(256);
-}
-
-bool OpenDb(QString dbname,QString login,QString pwd,
-	    QString host,QString stationname,bool interactive)
-{
-  // 
-  // Yeesh, this whole method really needs a rewrite!
-  // They shoot horses, don't they??
-  //
-
-  QString admin_name;
-  QString admin_pwd;
-  QString msg;
-  QString str;
   QString err_str;
-  QString sql;
-  QSqlQuery *q;
 
-  //
-  // Open Database
-  //
-  /*
-  QSqlDatabase *db=QSqlDatabase::addDatabase(admin_config->mysqlDriver());
-  if(!db) {
-    return false;
+  if(rda->schemaVersion()<0) {
+    rda->abend(256,QObject::tr("Unknown/corrupt database."));
   }
-  db->setDatabaseName(dbname);
-  db->setUserName(login);
-  db->setPassword(pwd);
-  db->setHostName(host);
-  if(!db->open()) {
-    RDKillDaemons();
-    PrintDbError(QObject::tr("Unable to open MySQL database connection."),
-		 interactive);
-  }
-  */
-  //
-  // Identify DB
-  //
-  sql=QString("show tables");
-  q=new QSqlQuery(sql);
-  if(q->first()) {
-    delete q;
-    sql=QString("select DB from VERSION");
-    q=new QSqlQuery(sql);
-    if(q->first()) {
-      if(q->value(0).toInt()!=RD_VERSION_DATABASE) {
-	PrintDbError("Unsupported database version",interactive);
-      }
+  if(rda->schemaVersion()==0) {
+    if(!RDMakeDb(&err_str,rda->config())) {
+      rda->abend(256,QObject::tr("Unable to create new database:")+"\n["+
+		 err_str+"].");
     }
-    else {
-      PrintDbError("Database is corrupt",interactive);
+    if(!RDInitDb(&err_str,rda->config())) {
+      rda->abend(256,QObject::tr("Unable to initialize new database:")+"\n["+
+		 err_str+"].");
     }
-  }
-  else {
-    RDMakeDb(&err_str,rda->config());
-    RDInitDb(&err_str,rda->config());
-    if(interactive) {
+    if(rda->appType()==RDApplication::Gui) {
       QMessageBox::information(NULL,"RDAdmin - "+QObject::tr("DB Message"),
-			       QObject::tr("Created new Rivendell database."));
+			       QObject::tr("New Rivendell database created."));
     }
+    if(!RDUpdateDb(&err_str,RD_VERSION3_BASE_DATABASE,rda->config())) {
+      rda->abend(256,QObject::tr("Unable to update new database:")+"\n["+
+		 err_str+"].");
+    }
+    rda->startAccessors();
+    return true;
   }
-  delete q;
+  if(rda->schemaVersion()<RD_VERSION3_BASE_DATABASE) {
+    rda->abend(256,QObject::tr("Unsupported database schema.")+"\n\n"+
+	       QObject::tr("This database must first be converted to Rivendell 3.x format."));
+  }
+  if(rda->schemaVersion()>RD_VERSION_DATABASE) {
+    rda->abend(256,QObject::tr("Skewed database schema."));
+  }
+  if(!RDUpdateDb(&err_str,rda->schemaVersion(),rda->config())) {
+    rda->abend(256,QObject::tr("Unable to update database:")+"\n["+
+	       err_str+"].");
+  }
+  rda->startAccessors();
 
   return true;
 }

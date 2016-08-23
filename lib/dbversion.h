@@ -24,7 +24,12 @@
 /*
  * Current Database Version
  */
-#define RD_VERSION_DATABASE 259
+#define RD_VERSION_DATABASE 1000
+
+/*
+ * Basic schema version for v3.x
+ */
+#define RD_VERSION3_BASE_DATABASE 1000
 
 
 #endif  // DBVERSION_H

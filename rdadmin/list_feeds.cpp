@@ -22,27 +22,25 @@
 #include <unistd.h>
 #include <stdlib.h>
 
-#include <qdialog.h>
-#include <qstring.h>
-#include <qpushbutton.h>
-#include <q3listbox.h>
-#include <q3textedit.h>
-#include <qlabel.h>
-#include <qpainter.h>
-#include <qevent.h>
-#include <qmessagebox.h>
-#include <q3buttongroup.h>
-#include <q3progressdialog.h>
-#include <qapplication.h>
-//Added by qt3to4:
+#include <Q3ButtonGroup>
+#include <Q3ListBox>
+#include <Q3ProgressDialog>
+#include <Q3TextEdit>
+#include <QDialog>
+#include <QEvent>
+#include <QLabel>
+#include <QMessageBox>
+#include <QPainter>
+#include <QPushButton>
 #include <QResizeEvent>
+#include <QString>
 
-#include <rddb.h>
+#include <rdapplication.h>
 #include <rdcart.h>
 #include <rdescape_string.h>
-#include <rdtextfile.h>
-#include <rdpodcast.h>
 #include <rdfeedlog.h>
+#include <rdpodcast.h>
+#include <rdtextfile.h>
 
 #include "add_feed.h"
 #include "edit_feed.h"
@@ -255,7 +253,7 @@ void ListFeeds::deleteData()
     pd->setProgress(pd->progress()+1);
     qApp->processEvents();
     cast=new RDPodcast(q->value(0).toUInt());
-    cast->removeAudio(feed,&errs,admin_config->logXloadDebugData());
+    cast->removeAudio(feed,&errs,rda->config()->logXloadDebugData());
     delete cast;
   }
   delete q;

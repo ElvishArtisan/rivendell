@@ -33,8 +33,9 @@ class RDSqlQuery : public QSqlQuery
   RDSqlQuery(const QString &query = QString::null);
 };
 
-bool RDOpenDb(unsigned *schema,QString *err_str,RDConfig *config);
+bool RDOpenDb(int *schema,QString *err_str,RDConfig *config);
 bool RDInitDb(QString *err_str,RDConfig *config);
 bool RDMakeDb(QString *err_str,RDConfig *config);
+bool RDUpdateDb(QString *err_str,int schema,RDConfig *config);
 
 #endif  // RDDB_H

@@ -5386,15 +5386,43 @@ på denne maskina i nokre sekund. Halda fram?</translation>
         <translation type="obsolete">Hjelpelogg 2</translation>
     </message>
     <message>
-        <source>DB Error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>DB Message</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Created new Rivendell database.</source>
+        <source>Unsupported database schema.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unknown/corrupt database.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to create new database:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to initialize new database:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New Rivendell database created.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to update new database:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Skewed database schema.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to update database:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This database must first be converted to Rivendell 3.x format.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

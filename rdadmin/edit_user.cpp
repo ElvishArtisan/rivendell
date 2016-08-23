@@ -20,27 +20,26 @@
 
 #include <math.h>
 
-#include <qdialog.h>
-#include <qstring.h>
-#include <q3listbox.h>
-#include <q3textedit.h>
-#include <qpainter.h>
-#include <qevent.h>
-#include <qmessagebox.h>
-#include <qcheckbox.h>
-#include <q3buttongroup.h>
-#include <qsqldatabase.h>
-//Added by qt3to4:
+#include <Q3ButtonGroup>
+#include <Q3ListBox>
+#include <Q3TextEdit>
+#include <QCheckBox>
+#include <QDialog>
+#include <QEvent>
 #include <QLabel>
+#include <QMessageBox>
+#include <QPainter>
+#include <QString>
 
-#include <edit_user.h>
-#include <rduser.h>
+#include <rdapplication.h>
 #include <rdpasswd.h>
 #include <rdtextvalidator.h>
+#include <rduser.h>
 
-#include <edit_user_perms.h>
-#include <edit_feed_perms.h>
-#include <globals.h>
+#include "edit_user.h"
+#include "edit_user_perms.h"
+#include "edit_feed_perms.h"
+#include "globals.h"
 
 EditUser::EditUser(const QString &user,QWidget *parent)
   : QDialog(parent,"",true)
@@ -417,7 +416,7 @@ EditUser::EditUser(const QString &user,QWidget *parent)
   //
   // Don't Allow an Administrator to Disable Himself!
   //
-  if(user_user->name()==admin_user->name()) {
+  if(user_user->name()==rda->user()->name()) {
     user_admin_config_label->setDisabled(true);
     user_admin_config_button->setDisabled(true);
   }

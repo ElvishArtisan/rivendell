@@ -21,29 +21,21 @@
 #ifndef GLOBALS_H
 #define GLOBALS_H
 
-#include <rdripc.h>
-#include <rdconfig.h>
-#include <rduser.h>
-#include <rdstation.h>
-#include <rdsystem.h>
 #include <rdcart_dialog.h>
 
 //
 // Global Classes
 //
-extern RDRipc *rdripc;
-extern RDConfig *admin_config;
-extern RDUser *admin_user;
-extern RDStation *admin_station;
-extern RDSystem *admin_system;
 extern RDCartDialog *admin_cart_dialog;
 extern QString admin_svc_name;
+/*
 extern QString admin_admin_username;
 extern QString admin_admin_password;
 extern QString admin_admin_hostname;
 extern QString admin_admin_dbname;
 extern bool admin_skip_backup;
 extern QString admin_backup_filename;
+*/
 extern void PrintError(const QString &str,bool interactive);
 
 #endif  // GLOBALS_H

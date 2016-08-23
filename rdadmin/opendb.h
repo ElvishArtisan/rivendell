@@ -21,10 +21,7 @@
 #ifndef OPENDB_H
 #define OPENDB_H
 
-#include <qstring.h>
-
-bool OpenDb(QString dbname,QString username,QString password,QString hostname,
-	    QString stationname,bool interactive);
+bool OpenDb();
 
 
 #endif  // OPENDB_H

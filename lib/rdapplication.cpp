@@ -60,18 +60,13 @@ RDApplication::RDApplication(RDApplication::AppType type,const char *modname,
   //
   // Open Database
   //
-  if(skip_schema_check) {
-    if(!RDOpenDb(NULL,&err,config())) {
-      Abend(err);
-    }
+  if(!RDOpenDb(&app_schema,&err,config())) {
+    abend(256,err);
   }
-  else {
-    if(!RDOpenDb(&app_schema,&err,config())) {
-      Abend(err);
-    }
-    if((!skip_schema_check)&&(RD_VERSION_DATABASE!=app_schema)) { 
-      Abend("skewed database schema");
-    }
+  if((!skip_schema_check)&&(RD_VERSION_DATABASE!=app_schema)) { 
+    abend(256,QString().
+	  sprintf("Skewed database schema [schema is %d, should be %d].",
+		  app_schema,RD_VERSION_DATABASE));
   }
 
   //
@@ -80,6 +75,18 @@ RDApplication::RDApplication(RDApplication::AppType type,const char *modname,
   if(!skip_schema_check) {
     startAccessors();
   }
+}
+
+
+RDApplication::AppType RDApplication::appType() const
+{
+  return app_type;
+}
+
+
+int RDApplication::schemaVersion() const
+{
+  return app_schema;
 }
 
 
@@ -166,6 +173,19 @@ QSqlDatabase RDApplication::database() const
 
 void RDApplication::startAccessors()
 {
+  //
+  // Re-read the DB schema
+  //
+  RDSqlQuery *q=new RDSqlQuery("select DB from VERSION");
+  if(!q->first()) {
+    abend(256,QObject::tr("unable to re-read database schema."));
+  }
+  app_schema=q->value(0).toInt();
+  delete q;
+
+  //
+  // Start Accessors
+  //
   app_airplay_conf=new RDAirPlayConf(config()->stationName(),"RDAIRPLAY");
   app_panel_conf=new RDAirPlayConf(config()->stationName(),"RDPANEL");
   app_library_conf=new RDLibraryConf(config()->stationName());
@@ -177,17 +197,17 @@ void RDApplication::startAccessors()
 }
 
 
-void RDApplication::Abend(const QString &err_msg) const
+void RDApplication::abend(int exit_code,const QString &err_msg) const
 {
   switch(app_type) {
   case RDApplication::Gui:
     QMessageBox::information(NULL,"Rivendell - "+QObject::tr("Error"),err_msg);
-    _exit(256);
+    _exit(exit_code);
     break;
 
   case RDApplication::Console:
     fprintf(stderr,"%s: %s\n",qApp->argv()[0],(const char *)err_msg.toUtf8());
-    _exit(256);
+    _exit(exit_code);
     break;
 
   case RDApplication::Cgi:
@@ -197,5 +217,5 @@ void RDApplication::Abend(const QString &err_msg) const
     printf("%s\n",(const char *)err_msg.toUtf8());
     _exit(0);
   }
-  _exit(256);
+  _exit(exit_code);
 }

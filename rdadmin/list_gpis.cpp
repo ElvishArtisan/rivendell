@@ -18,21 +18,19 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qdialog.h>
-#include <qstring.h>
-#include <q3textedit.h>
-#include <qpainter.h>
-#include <qmessagebox.h>
-//Added by qt3to4:
-#include <QResizeEvent>
+#include <Q3TextEdit>
+#include <QDialog>
 #include <QLabel>
+#include <QPainter>
+#include <QMessageBox>
+#include <QResizeEvent>
+#include <QString>
 
 #include <rd.h>
+#include <rdapplication.h>
 #include <rdescape_string.h>
-#include <rdpasswd.h>
 #include <rdmacro.h>
-#include <rdstation.h>
-#include <rddb.h>
+#include <rdpasswd.h>
 
 #include "edit_gpi.h"
 #include "globals.h"
@@ -322,10 +320,10 @@ void ListGpis::okData()
     rml.setArg(2,item->text(0).toInt());
     rml.setArg(3,true);
     rml.setArg(4,item->text(1).toInt());
-    rdripc->sendRml(&rml);
+    rda->ripc()->sendRml(&rml);
     rml.setArg(3,false);
     rml.setArg(4,item->text(3).toInt());
-    rdripc->sendRml(&rml);
+    rda->ripc()->sendRml(&rml);
     item=item->nextSibling();
   }
   done(0);

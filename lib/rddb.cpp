@@ -32,6 +32,7 @@
 #include <QSqlError>
 #include <QVariant>
 
+#include "dbversion.h"
 #include "rdcart.h"
 #include "rdcreate_log.h"
 #include "rdcut.h"
@@ -59,7 +60,7 @@ RDSqlQuery::RDSqlQuery (const QString &query):
 }
 
 
-bool RDOpenDb (unsigned *schema,QString *err_str,RDConfig *config)
+bool RDOpenDb (int *schema,QString *err_str,RDConfig *config)
 {
   QSqlDatabase db;
   QString sql;
@@ -76,7 +77,8 @@ bool RDOpenDb (unsigned *schema,QString *err_str,RDConfig *config)
     db.setUserName(config->mysqlUsername());
     db.setPassword(config->mysqlPassword());
     if(!db.open()) {
-      *err_str+=QString(QObject::tr("Couldn't open mySQL connection!"));
+      *err_str+=QString(QObject::tr("Couldn't open mySQL connection on"))+
+	" \""+config->mysqlHostname()+"\".";
       db.removeDatabase(config->mysqlDbname());
       db.close();
       return false;
@@ -88,13 +90,26 @@ bool RDOpenDb (unsigned *schema,QString *err_str,RDConfig *config)
   q=new QSqlQuery(sql);
   delete q;
 
-  if(schema!=NULL) {
+  *schema=-1;
+  sql=QString("show tables where ")+
+    "Tables_in_"+config->mysqlDbname()+"=\"VERSION\"";
+  q=new QSqlQuery(sql);
+  if(q->first()) {
+    delete q;
     q=new QSqlQuery("select DB from VERSION");
     if(q->first()) {
       *schema=q->value(0).toUInt();
     }
-    delete q;
   }
+  else {
+    delete q;
+    sql=QString("show tables");
+    q=new QSqlQuery(sql);
+    if(!q->first()) {
+      *schema=0;
+    }
+  }
+  delete q;
 
   return true;
 }
@@ -2485,7 +2500,8 @@ bool RDMakeDb(QString *err_str,RDConfig *config)
   //
   // Write Schema Version
   //
-  sql=QString("insert into VERSION set DB=1000");
+  sql=QString().sprintf("insert into VERSION set DB=%u",
+			RD_VERSION3_BASE_DATABASE);
   if(!RunQuery(err_str,sql)) {
      return false;
   }
@@ -2498,5 +2514,11 @@ bool RDMakeDb(QString *err_str,RDConfig *config)
      return false;
   }
 
+  return true;
+}
+
+
+bool RDUpdateDb(QString *err_str,int schema,RDConfig *config)
+{
   return true;
 }

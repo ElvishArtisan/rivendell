@@ -18,22 +18,21 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qdialog.h>
-#include <qstring.h>
-#include <q3textedit.h>
-#include <qpainter.h>
-#include <qmessagebox.h>
-#include <qsqldatabase.h>
-//Added by qt3to4:
+#include <Q3TextEdit>
+#include <QDialog>
 #include <QLabel>
+#include <QPainter>
 #include <QPaintEvent>
+#include <QMessageBox>
+#include <QString>
 
 #include <rd.h>
-#include <rdmatrix.h>
-#include <rdtextvalidator.h>
+#include <rdapplication.h>
 #include <rddb.h>
 #include <rdcart_dialog.h>
 #include <rdescape_string.h>
+#include <rdmatrix.h>
+#include <rdtextvalidator.h>
 
 #include "globals.h"
 #include "edit_user.h"
@@ -1126,7 +1125,7 @@ void EditMatrix::startCartData()
 {
   int cartnum=edit_start_cart_edit->text().toUInt();
   if(admin_cart_dialog->exec(&cartnum,RDCart::Macro,NULL,0,
-			     admin_user->name(),admin_user->password())==0) {
+			     rda->user()->name(),rda->user()->password())==0) {
     if(cartnum>0) {
       edit_start_cart_edit->setText(QString().sprintf("%06u",cartnum));
     }
@@ -1141,7 +1140,7 @@ void EditMatrix::stopCartData()
 {
   int cartnum=edit_stop_cart_edit->text().toUInt();
   if(admin_cart_dialog->exec(&cartnum,RDCart::Macro,NULL,0,
-			     admin_user->name(),admin_user->password())==0) {
+			     rda->user()->name(),rda->user()->password())==0) {
     if(cartnum>0) {
       edit_stop_cart_edit->setText(QString().sprintf("%06u",cartnum));
     }
@@ -1156,7 +1155,7 @@ void EditMatrix::startCart2Data()
 {
   int cartnum=edit_start_cart2_edit->text().toUInt();
   if(admin_cart_dialog->exec(&cartnum,RDCart::Macro,NULL,0,
-			     admin_user->name(),admin_user->password())==0) {
+			     rda->user()->name(),rda->user()->password())==0) {
     if(cartnum>0) {
       edit_start_cart2_edit->setText(QString().sprintf("%06u",cartnum));
     }
@@ -1171,7 +1170,7 @@ void EditMatrix::stopCart2Data()
 {
   int cartnum=edit_stop_cart2_edit->text().toUInt();
   if(admin_cart_dialog->exec(&cartnum,RDCart::Macro,NULL,0,
-			     admin_user->name(),admin_user->password())==0) {
+			     rda->user()->name(),rda->user()->password())==0) {
     if(cartnum>0) {
       edit_stop_cart2_edit->setText(QString().sprintf("%06u",cartnum));
     }

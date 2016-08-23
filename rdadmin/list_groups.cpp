@@ -20,29 +20,29 @@
 
 #include <math.h>
 
-#include <qdialog.h>
-#include <qstring.h>
-#include <qpushbutton.h>
-#include <q3listbox.h>
-#include <q3textedit.h>
-#include <qlabel.h>
-#include <qpainter.h>
-#include <qevent.h>
-#include <qmessagebox.h>
-#include <q3buttongroup.h>
-//Added by qt3to4:
+#include <Q3ButtonGroup>
+#include <Q3ListBox>
+#include <Q3TextEdit>
+#include <QDialog>
+#include <QEvent>
+#include <QLabel>
+#include <QMessageBox>
+#include <QPainter>
+#include <QPushButton>
 #include <QResizeEvent>
-#include <rddb.h>
+#include <QString>
 
+#include <rdapplication.h>
 #include <rdcart.h>
-#include <rdtextfile.h>
+#include <rddb.h>
 #include <rdescape_string.h>
+#include <rdtextfile.h>
 
-#include <globals.h>
-#include <list_groups.h>
-#include <edit_group.h>
-#include <add_group.h>
-#include <rename_group.h>
+#include "add_group.h"
+#include "edit_group.h"
+#include "globals.h"
+#include "list_groups.h"
+#include "rename_group.h"
 
 ListGroups::ListGroups(QWidget *parent)
   : QDialog(parent,"",true)
@@ -261,7 +261,7 @@ void ListGroups::deleteData()
   RDCart *cart;
   while(q->next()) {
     cart=new RDCart(q->value(0).toUInt());
-    cart->remove(admin_station,admin_user,admin_config);
+    cart->remove(rda->station(),rda->user(),rda->config());
     delete cart;
   }
   delete q;

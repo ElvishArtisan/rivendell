@@ -23,7 +23,7 @@
     </message>
     <message>
         <source>Couldn&apos;t open mySQL connection!</source>
-        <translation type="unfinished">Nepodařilo se vytvořit žádné spojení se serverem mySQL-Server!</translation>
+        <translation type="obsolete">Nepodařilo se vytvořit žádné spojení se serverem mySQL-Server!</translation>
     </message>
     <message>
         <source>Sequentially</source>
@@ -535,6 +535,14 @@
     </message>
     <message>
         <source>tone</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Couldn&apos;t open mySQL connection on</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>unable to re-read database schema.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

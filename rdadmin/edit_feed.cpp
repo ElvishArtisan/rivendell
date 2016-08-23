@@ -20,17 +20,16 @@
 
 #include <math.h>
 
-#include <qpushbutton.h>
-#include <qpainter.h>
-#include <qevent.h>
-#include <qmessagebox.h>
-#include <qpainter.h>
-#include <qdatetime.h>
-#include <q3url.h>
-//Added by qt3to4:
+#include <Q3Url>
+#include <QDateTime>
+#include <QEvent>
 #include <QLabel>
+#include <QMessageBox>
+#include <QPainter>
 #include <QPaintEvent>
+#include <QPushButton>
 
+#include <rdapplication.h>
 #include <rdexport_settings_dialog.h>
 
 #include <edit_feed.h>
@@ -536,7 +535,7 @@ void EditFeed::purgeUsernameChangedData(const QString &username)
 
 void EditFeed::setFormatData()
 {
-  RDStation *station=new RDStation(admin_config->stationName());
+  RDStation *station=new RDStation(rda->config()->stationName());
   RDExportSettingsDialog *dialog=
     new RDExportSettingsDialog(&feed_settings,station,this);
   dialog->exec();

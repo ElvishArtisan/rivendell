@@ -18,18 +18,18 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qmessagebox.h>
-//Added by qt3to4:
 #include <QCloseEvent>
 #include <QLabel>
+#include <QMessageBox>
 
 #include <rd.h>
+#include <rdapplication.h>
 #include <rdslotoptions.h>
 #include <rdcart_dialog.h>
 #include <rdescape_string.h>
 
-#include <globals.h>
-#include <edit_cartslots.h>
+#include "edit_cartslots.h"
+#include "globals.h"
 
 EditCartSlots::EditCartSlots(RDStation *station,RDStation *cae_station,
 			     QWidget *parent)
@@ -364,7 +364,7 @@ void EditCartSlots::cartSelectData()
   int cartnum=edit_cart_edit->text().toInt();
 
   if(admin_cart_dialog->exec(&cartnum,RDCart::All,NULL,0,
-			     admin_user->name(),admin_user->password())==0) {
+			     rda->user()->name(),rda->user()->password())==0) {
     edit_cart_edit->setText(QString().sprintf("%06d",cartnum));
   }
 }

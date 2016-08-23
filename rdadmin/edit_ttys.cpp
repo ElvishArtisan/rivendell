@@ -18,23 +18,22 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qstring.h>
-#include <qpushbutton.h>
-#include <q3textedit.h>
-#include <qpainter.h>
-#include <qevent.h>
-#include <qmessagebox.h>
-#include <qcheckbox.h>
-#include <q3buttongroup.h>
-//Added by qt3to4:
+#include <Q3ButtonGroup>
+#include <Q3TextEdit>
+#include <QCheckBox>
+#include <QEvent>
 #include <QLabel>
+#include <QMessageBox>
+#include <QPainter>
+#include <QPushButton>
+#include <QString>
 
-#include <rddb.h>
-#include <edit_ttys.h>
-#include <rdstation.h>
-#include <rdtextvalidator.h>
+#include <rdapplication.h>
 #include <rdmacro.h>
-#include <globals.h>
+#include <rdtextvalidator.h>
+
+#include "edit_ttys.h"
+#include "globals.h"
 
 EditTtys::EditTtys(QString station,QWidget *parent)
   : QDialog(parent,"",true)
@@ -293,7 +292,7 @@ void EditTtys::closeData()
 	macro.setArg(0,i);
       }
       macro.setAddress(rmt_station->address());
-      rdripc->sendRml(&macro);
+      rda->ripc()->sendRml(&macro);
       delete q;
     }
   }

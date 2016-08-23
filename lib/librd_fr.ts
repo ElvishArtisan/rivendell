@@ -444,10 +444,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Couldn&apos;t open mySQL connection!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
@@ -517,6 +513,14 @@
     </message>
     <message>
         <source>tone</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Couldn&apos;t open mySQL connection on</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>unable to re-read database schema.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

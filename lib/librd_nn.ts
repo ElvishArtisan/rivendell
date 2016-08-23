@@ -23,7 +23,7 @@
     </message>
     <message>
         <source>Couldn&apos;t open mySQL connection!</source>
-        <translation type="unfinished">Greidde ikkje kopla til mySQL-databasen!</translation>
+        <translation type="obsolete">Greidde ikkje kopla til mySQL-databasen!</translation>
     </message>
     <message>
         <source>Sequentially</source>
@@ -531,6 +531,14 @@
     </message>
     <message>
         <source>tone</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Couldn&apos;t open mySQL connection on</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>unable to re-read database schema.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

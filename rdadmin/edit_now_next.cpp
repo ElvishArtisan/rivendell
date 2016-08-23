@@ -18,19 +18,19 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qmessagebox.h>
-#include <qsignalmapper.h>
-//Added by qt3to4:
 #include <QLabel>
+#include <QMessageBox>
+#include <QSignalMapper>
 
-#include <rdescape_string.h>
-#include <rdtextvalidator.h>
-#include <rdlistviewitem.h>
+#include <rdapplication.h>
 #include <rdcart_dialog.h>
+#include <rdescape_string.h>
+#include <rdlistviewitem.h>
+#include <rdtextvalidator.h>
 
-#include <edit_now_next.h>
-#include <edit_nownextplugin.h>
-#include <globals.h>
+#include "edit_now_next.h"
+#include "edit_nownextplugin.h"
+#include "globals.h"
 
 EditNowNext::EditNowNext(RDAirPlayConf *conf,QWidget *parent)
   : QDialog(parent,"",true)
@@ -491,7 +491,7 @@ void EditNowNext::editNowcartData(int lognum)
 {
   int cartnum=nownext_nowcart_edit[lognum]->text().toInt();
   if(admin_cart_dialog->exec(&cartnum,RDCart::All,NULL,0,
-			     admin_user->name(),admin_user->password())==0) {
+			     rda->user()->name(),rda->user()->password())==0) {
     nownext_nowcart_edit[lognum]->setText(QString().sprintf("%06d",cartnum));
   }
 }
@@ -501,7 +501,7 @@ void EditNowNext::editNextcartData(int lognum)
 {
   int cartnum=nownext_nextcart_edit[lognum]->text().toInt();
   if(admin_cart_dialog->exec(&cartnum,RDCart::All,NULL,0,
-			     admin_user->name(),admin_user->password())==0) {
+			     rda->user()->name(),rda->user()->password())==0) {
     nownext_nextcart_edit[lognum]->setText(QString().sprintf("%06d",cartnum));
   }
 }

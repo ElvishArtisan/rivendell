@@ -20,27 +20,28 @@
 
 #include <math.h>
 
-#include <qdialog.h>
-#include <qstring.h>
-#include <qpushbutton.h>
-#include <q3listbox.h>
-#include <q3textedit.h>
-#include <qpainter.h>
-#include <qevent.h>
-#include <qmessagebox.h>
-#include <qcheckbox.h>
-#include <q3buttongroup.h>
-#include <qcolordialog.h>
-#include <qvalidator.h>
-#include <q3filedialog.h>
-//Added by qt3to4:
+#include <Q3ButtonGroup>
+#include <Q3FileDialog>
+#include <Q3ListBox>
+#include <Q3TextEdit>
+#include <QCheckBox>
+#include <QColorDialog>
+#include <QDialog>
+#include <QEvent>
 #include <QLabel>
+#include <QMessageBox>
+#include <QPainter>
+#include <QPushButton>
+#include <QString>
+#include <QValidator>
 
-#include <globals.h>
-#include <rdcart_dialog.h>
-#include <rddb.h>
-#include <rdescape_string.h>
-#include <edit_dropbox.h>
+#include <rdapplication.h>
+
+#include "globals.h"
+#include "rdcart_dialog.h"
+#include "rddb.h"
+#include "rdescape_string.h"
+#include "edit_dropbox.h"
 
 EditDropbox::EditDropbox(int id,QWidget *parent)
   : QDialog(parent,"",true)
@@ -430,7 +431,7 @@ void EditDropbox::selectCartData()
 {
   int cartnum=box_to_cart_edit->text().toInt();
   admin_cart_dialog->exec(&cartnum,RDCart::Audio,NULL,0,
-			  admin_user->name(),admin_user->password());
+			  rda->user()->name(),rda->user()->password());
   if(cartnum>0) {
     box_to_cart_edit->setText(QString().sprintf("%06d",cartnum));
   }

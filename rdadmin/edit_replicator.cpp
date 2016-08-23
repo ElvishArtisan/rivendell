@@ -20,22 +20,21 @@
 
 #include <math.h>
 
-#include <qpushbutton.h>
-#include <qpainter.h>
-#include <qevent.h>
-#include <qmessagebox.h>
-#include <qpainter.h>
-#include <qdatetime.h>
-#include <q3url.h>
-//Added by qt3to4:
+#include <Q3Url>
+#include <QDateTime>
+#include <QEvent>
 #include <QLabel>
+#include <QMessageBox>
+#include <QPainter>
+#include <QPushButton>
 
-#include <rdexport_settings_dialog.h>
+#include <rdapplication.h>
 #include <rdescape_string.h>
+#include <rdexport_settings_dialog.h>
 
-#include <edit_replicator.h>
-#include <list_aux_fields.h>
-#include <globals.h>
+#include "edit_replicator.h"
+#include "list_aux_fields.h"
+#include "globals.h"
 
 EditReplicator::EditReplicator(const QString &repl_name,QWidget *parent)
   : QDialog(parent,"",true)
@@ -292,7 +291,7 @@ QSizePolicy EditReplicator::sizePolicy() const
 
 void EditReplicator::setFormatData()
 {
-  RDStation *station=new RDStation(admin_config->stationName());
+  RDStation *station=new RDStation(rda->config()->stationName());
   RDExportSettingsDialog *dialog=
     new RDExportSettingsDialog(repl_settings,station,this);
   dialog->exec();

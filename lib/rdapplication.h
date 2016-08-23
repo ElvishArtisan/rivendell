@@ -40,6 +40,8 @@ class RDApplication
   enum AppType {Gui=0,Console=1,Cgi=2};
   RDApplication(AppType type,const char *modname,const char *usage,
 		bool skip_schema_check=false);
+  AppType appType() const;
+  int schemaVersion() const;
   RDAirPlayConf *airplayConf() const;
   RDAirPlayConf *panelConf() const;
   RDLibraryConf *libraryConf() const;
@@ -54,9 +56,9 @@ class RDApplication
   RDCmdSwitch *cmdSwitch() const;
   QSqlDatabase database() const;
   void startAccessors();
+  void abend(int exit_code,const QString &err_msg) const;
 
  private:
-  void Abend(const QString &err_msg) const;
   RDAirPlayConf *app_airplay_conf;
   RDAirPlayConf *app_panel_conf;
   RDLibraryConf *app_library_conf;
@@ -68,7 +70,7 @@ class RDApplication
   RDUser *app_user;
   RDConfig *app_config;
   RDCmdSwitch *app_cmd_switch;
-  unsigned app_schema;
+  int app_schema;
   AppType app_type;
 };
 

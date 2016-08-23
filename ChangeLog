@@ -16004,3 +16004,5 @@
 2016-08-23 Fred Gleason <fredg@paravelsystems.com>
 	* Changed the MySQL default character set to UTF-8 in
 	'conf/rd.conf-sample'.
+2016-08-23 Fred Gleason <fredg@paravelsystems.com>
+	* Implemented DB open logic in 'rdadmin/opendb.cpp'.

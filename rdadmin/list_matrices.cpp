@@ -18,20 +18,19 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qdialog.h>
-#include <qstring.h>
-#include <qpushbutton.h>
-#include <q3listbox.h>
-#include <q3textedit.h>
-#include <qlabel.h>
-#include <qpainter.h>
-#include <qevent.h>
-#include <qmessagebox.h>
-#include <q3buttongroup.h>
+#include <Q3ButtonGroup>
+#include <Q3ListBox>
+#include <Q3TextEdit>
+#include <QDialog>
+#include <QEvent>
+#include <QLabel>
+#include <QMessageBox>
+#include <QPainter>
+#include <QPushButton>
+#include <QString>
 
+#include <rdapplication.h>
 #include <rdescape_string.h>
-#include <rdstation.h>
-#include <rddb.h>
 
 #include "add_matrix.h"
 #include "edit_matrix.h"
@@ -241,7 +240,7 @@ void ListMatrices::closeData()
     if(list_matrix_modified[i]) {
       macro.setAddress(rmt_station->address());
       macro.setArg(0,i);
-      rdripc->sendRml(&macro);
+      rda->ripc()->sendRml(&macro);
     }
   }
   delete rmt_station;

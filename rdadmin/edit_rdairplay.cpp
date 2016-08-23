@@ -18,34 +18,32 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qdialog.h>
-#include <qstring.h>
-#include <qpushbutton.h>
-#include <qradiobutton.h>
-#include <q3listbox.h>
-#include <q3textedit.h>
-#include <qpainter.h>
-#include <qevent.h>
-#include <qmessagebox.h>
-#include <qcheckbox.h>
-#include <q3buttongroup.h>
-#include <qpainter.h>
-#include <q3filedialog.h>
-//Added by qt3to4:
+#include <Q3ButtonGroup>
+#include <Q3FileDialog>
+#include <Q3ListBox>
+#include <Q3TextEdit>
+#include <QCheckBox>
+#include <QDialog>
+#include <QEvent>
 #include <QLabel>
+#include <QMessageBox>
+#include <QPainter>
 #include <QPaintEvent>
+#include <QPushButton>
+#include <QRadioButton>
+#include <QString>
 
 #include <rd.h>
-#include <rddb.h>
+#include <rdapplication.h>
 #include <rdescape_string.h>
-#include <rdtextvalidator.h>
 #include <rdlist_logs.h>
-#include <globals.h>
+#include <rdtextvalidator.h>
 
-#include <edit_rdairplay.h>
-#include <edit_hotkeys.h>
-#include <edit_now_next.h>
-#include <edit_channelgpios.h>
+#include "edit_rdairplay.h"
+#include "edit_hotkeys.h"
+#include "edit_now_next.h"
+#include "edit_channelgpios.h"
+#include "globals.h"
 
 EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
 			     QWidget *parent)
@@ -1008,7 +1006,7 @@ void EditRDAirPlay::selectData()
 {
   QString logname=air_startlog_edit->text();
 
-  RDListLogs *ll=new RDListLogs(&logname,air_conf->station(),this,admin_user);
+  RDListLogs *ll=new RDListLogs(&logname,air_conf->station(),this,rda->user());
   if(ll->exec()==0) {
     air_startlog_edit->setText(logname);
   }
