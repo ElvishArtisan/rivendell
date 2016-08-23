@@ -16001,3 +16001,6 @@
 	'rdadmin/createdb.cpp' to 'lib/rddb.cpp'.
 	* Added database creation and initialization tests in
 	'utils/rdunitest/high_level_tests.cpp'.
+2016-08-23 Fred Gleason <fredg@paravelsystems.com>
+	* Changed the MySQL default character set to UTF-8 in
+	'conf/rd.conf-sample'.
