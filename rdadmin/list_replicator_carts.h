@@ -21,17 +21,13 @@
 #ifndef LIST_REPLICATOR_CARTS_H
 #define LIST_REPLICATOR_CARTS_H
 
-#include <qdialog.h>
-#include <qpixmap.h>
-#include <qradiobutton.h>
-#include <qpushbutton.h>
-#include <qpixmap.h>
-#include <qtimer.h>
-//Added by qt3to4:
+#include <QDialog>
+#include <QPixmap>
+#include <QPushButton>
 #include <QResizeEvent>
+#include <QTimer>
 
 #include <rdlistviewitem.h>
-#include <rddb.h>
 
 class ListReplicatorCarts : public QDialog
 {

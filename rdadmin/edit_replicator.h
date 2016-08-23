@@ -22,15 +22,13 @@
 #ifndef EDIT_REPLICATOR_H
 #define EDIT_REPLICATOR_H
 
-#include <qdialog.h>
-#include <q3textedit.h>
-#include <qspinbox.h>
-#include <qlineedit.h>
-#include <qsqldatabase.h>
-#include <qcheckbox.h>
-#include <qlabel.h>
-#include <qcombobox.h>
-#include <qpushbutton.h>
+#include <QDialog>
+#include <QSpinBox>
+#include <QLineEdit>
+#include <QCheckBox>
+#include <QLabel>
+#include <QComboBox>
+#include <QPushButton>
 
 #include <rdreplicator.h>
 #include <rdsettings.h>

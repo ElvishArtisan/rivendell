@@ -21,16 +21,11 @@
 #ifndef LIST_REPLICATORS_H
 #define LIST_REPLICATORS_H
 
-#include <qdialog.h>
-#include <qpixmap.h>
-#include <qradiobutton.h>
-#include <qpushbutton.h>
-#include <qpixmap.h>
-//Added by qt3to4:
+#include <QDialog>
+#include <QPushButton>
 #include <QResizeEvent>
 
 #include <rdlistviewitem.h>
-#include <rddb.h>
 
 class ListReplicators : public QDialog
 {

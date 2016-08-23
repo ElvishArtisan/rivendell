@@ -21,9 +21,8 @@
 #ifndef ADD_REPLICATOR_H
 #define ADD_REPLICATOR_H
 
-#include <qdialog.h>
-#include <qcheckbox.h>
-#include <qlineedit.h>
+#include <QDialog>
+#include <QLineEdit>
 
 class AddReplicator : public QDialog
 {
@@ -44,5 +43,4 @@ class AddReplicator : public QDialog
 };
 
 
-#endif
-
+#endif  // ADD_REPLICATOR_H

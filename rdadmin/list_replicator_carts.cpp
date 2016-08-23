@@ -18,37 +18,22 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <math.h>
-
-#include <qdialog.h>
-#include <qstring.h>
-#include <qpushbutton.h>
-#include <q3listbox.h>
-#include <q3textedit.h>
-#include <qlabel.h>
-#include <qpainter.h>
-#include <qevent.h>
-#include <qmessagebox.h>
-#include <q3buttongroup.h>
-//Added by qt3to4:
-#include <QPixmap>
 #include <QResizeEvent>
-#include <rddb.h>
 
 #include <rdcart.h>
-#include <rdtextfile.h>
 #include <rdescape_string.h>
 #include <rdreplicator.h>
+#include <rdtextfile.h>
 
-#include <list_replicator_carts.h>
-#include <edit_replicator.h>
-#include <add_replicator.h>
+#include "edit_replicator.h"
+#include "add_replicator.h"
+#include "list_replicator_carts.h"
 
 #include "../icons/play.xpm"
 #include "../icons/rml5.xpm"
 
 ListReplicatorCarts::ListReplicatorCarts(QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
   //
   // Fix the Window Size

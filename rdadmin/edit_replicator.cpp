@@ -20,7 +20,6 @@
 
 #include <math.h>
 
-#include <Q3Url>
 #include <QDateTime>
 #include <QEvent>
 #include <QLabel>
@@ -37,7 +36,7 @@
 #include "globals.h"
 
 EditReplicator::EditReplicator(const QString &repl_name,QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
   QString sql;
   RDSqlQuery *q;

@@ -16037,3 +16037,13 @@
 	'rdadmin/edit_group.h'.
 	* Removed Qt3Support components from 'rdadmin/rename_group.cpp' and
 	'rdadmin/rename_group.h'.
+2016-08-23 Fred Gleason <fredg@paravelsystems.com>
+	* Removed Qt3Support components from 'rdadmin/list_replicators.cpp' and
+	'rdadmin/list_replicators.h'.
+	* Removed Qt3Support components from 'rdadmin/add_replicator.cpp' and
+	'rdadmin/add_replicator.h'.
+	* Removed Qt3Support components from 'rdadmin/edit_replicator.cpp' and
+	'rdadmin/edit_replicator.h'.
+	* Removed Qt3Support components from
+	'rdadmin/list_replicator_carts.cpp' and
+	'rdadmin/list_replicator_carts.h'.
