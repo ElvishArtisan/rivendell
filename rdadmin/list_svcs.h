@@ -21,12 +21,11 @@
 #ifndef LIST_SVCS_H
 #define LIST_SVCS_H
 
-#include <qdialog.h>
-#include <q3listbox.h>
-#include <q3textedit.h>
-#include <qpixmap.h>
-#include <qradiobutton.h>
-#include <qsqldatabase.h>
+#include <QDialog>
+#include <QLabel>
+#include <QPushButton>
+#include <QListView>
+#include <QSqlQueryModel>
 
 class ListSvcs : public QDialog
 {
@@ -41,12 +40,19 @@ class ListSvcs : public QDialog
   void addData();
   void editData();
   void deleteData();
-  void doubleClickedData(Q3ListBoxItem *);
+  void doubleClickedData(const QModelIndex &index);
   void closeData();
   
+ protected:
+  void resizeEvent(QResizeEvent *e);
+
  private:
-  void RefreshList(QString svcname="");
-  Q3ListBox *list_box;
+  QListView *list_view;
+  QSqlQueryModel *list_model;
+  QPushButton *list_add_button;
+  QPushButton *list_edit_button;
+  QPushButton *list_delete_button;
+  QPushButton *list_close_button;
 };
 
 

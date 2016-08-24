@@ -18,11 +18,11 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
+#include <QLabel>
+
 #include <rd.h>
 
-#include <importfields.h>
-//Added by qt3to4:
-#include <QLabel>
+#include "importfields.h"
 
 ImportFields::ImportFields(QWidget *parent)
   : QWidget(parent)

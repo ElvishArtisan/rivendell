@@ -18,23 +18,15 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qdialog.h>
-#include <qstring.h>
-#include <qpushbutton.h>
-#include <q3listbox.h>
-#include <q3textedit.h>
-#include <qlabel.h>
-#include <qpainter.h>
-#include <qevent.h>
-#include <qmessagebox.h>
-#include <qcheckbox.h>
-#include <q3buttongroup.h>
+#include <QLabel>
+#include <QMessageBox>
+#include <QPushButton>
 
-#include <rddb.h>
-#include <edit_svc.h>
-#include <add_svc.h>
-#include <rdpasswd.h>
+#include <rdapplication.h>
 #include <rdtextvalidator.h>
+
+#include "add_svc.h"
+#include "edit_svc.h"
 
 AddSvc::AddSvc(QString *svcname,QWidget *parent)
   : QDialog(parent,"",true)

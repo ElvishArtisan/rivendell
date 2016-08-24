@@ -5070,29 +5070,45 @@ Carts</source>
     </message>
     <message>
         <source>&amp;Services:</source>
-        <translation>&amp;Serviços:</translation>
+        <translation type="obsolete">&amp;Serviços:</translation>
     </message>
     <message>
         <source>Are you sure you want to delete service</source>
-        <translation>Tem certeza que quer deletar este Serviço?</translation>
+        <translation type="unfinished">Tem certeza que quer deletar este Serviço?</translation>
     </message>
     <message>
         <source>Delete Service</source>
-        <translation>Deletar Serviço</translation>
+        <translation type="unfinished">Deletar Serviço</translation>
     </message>
     <message>
         <source>There are</source>
-        <translation>Há</translation>
+        <translation type="unfinished">Há</translation>
     </message>
     <message>
         <source>logs owned by this service that will also be deleted.
 Do you still want to proceed?</source>
-        <translation>listas pertencentes a este serviço que serão deletadas também.
+        <translation type="obsolete">listas pertencentes a este serviço que serão deletadas também.
 Você quer proceder?</translation>
     </message>
     <message>
         <source>Logs Exist</source>
-        <translation>Lista Existente</translation>
+        <translation type="unfinished">Lista Existente</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Services:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>logs owned by this service that will also be deleted.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do you still want to proceed?</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

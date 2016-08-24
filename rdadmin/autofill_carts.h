@@ -21,9 +21,8 @@
 #ifndef AUTOFILL_CARTS_H
 #define AUTOFILL_CARTS_H
 
-#include <qdialog.h>
-#include <qsqldatabase.h>
 #include <q3listview.h>
+#include <QDialog>
 
 #include <rdsvc.h>
 

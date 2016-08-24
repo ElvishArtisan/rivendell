@@ -5144,29 +5144,45 @@ vozíky</translation>
     </message>
     <message>
         <source>&amp;Services:</source>
-        <translation>&amp;Služby:</translation>
+        <translation type="obsolete">&amp;Služby:</translation>
     </message>
     <message>
         <source>Are you sure you want to delete service</source>
-        <translation>Opravdu chcete smazat tuto službu</translation>
+        <translation type="unfinished">Opravdu chcete smazat tuto službu</translation>
     </message>
     <message>
         <source>Delete Service</source>
-        <translation>Smazat službu</translation>
+        <translation type="unfinished">Smazat službu</translation>
     </message>
     <message>
         <source>There are</source>
-        <translation>Jsou tu</translation>
+        <translation type="unfinished">Jsou tu</translation>
     </message>
     <message>
         <source>logs owned by this service that will also be deleted.
 Do you still want to proceed?</source>
-        <translation>zápisy náležející této službě, které budou taktéž smazány.
+        <translation type="obsolete">zápisy náležející této službě, které budou taktéž smazány.
 Stále ještě chcete pokračovat?</translation>
     </message>
     <message>
         <source>Logs Exist</source>
-        <translation>Zápisy existují</translation>
+        <translation type="unfinished">Zápisy existují</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Services:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>logs owned by this service that will also be deleted.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do you still want to proceed?</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

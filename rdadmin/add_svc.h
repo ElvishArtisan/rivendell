@@ -21,15 +21,9 @@
 #ifndef ADD_SVC_H
 #define ADD_SVC_H
 
-#include <qdialog.h>
-#include <q3listbox.h>
-#include <q3textedit.h>
-#include <qpixmap.h>
-#include <qcombobox.h>
-#include <qsqldatabase.h>
-#include <qlineedit.h>
-
-#include <rdsvc.h>
+#include <QComboBox>
+#include <QDialog>
+#include <QLineEdit>
 
 class AddSvc : public QDialog
 {

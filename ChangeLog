@@ -16047,3 +16047,12 @@
 	* Removed Qt3Support components from
 	'rdadmin/list_replicator_carts.cpp' and
 	'rdadmin/list_replicator_carts.h'.
+2016-08-24 Fred Gleason <fredg@paravelsystems.com>
+	* Removed Qt3Support components from 'rdadmin/list_svcs.cpp' and
+	'rdadmin/list_svcs.h'.
+	* Removed Qt3Support components from 'rdadmin/add_svc.cpp' and
+	'rdadmin/add_svc.h'.
+	* Removed Qt3Support components from 'rdadmin/edit_svc.cpp' and
+	'rdadmin/edit_svc.h'.
+	* Removed Qt3Support components from 'rdadmin/edit_svc_perms.cpp' and
+	'rdadmin/edit_svc_perms.h'.

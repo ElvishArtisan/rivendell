@@ -21,15 +21,15 @@
 #ifndef EDIT_SVC_H
 #define EDIT_SVC_H
 
-#include <qdialog.h>
-#include <qsqldatabase.h>
-#include <qlineedit.h>
-#include <qspinbox.h>
-#include <qcheckbox.h>
-#include <qcombobox.h>
+#include <QCheckBox>
+#include <QComboBox>
+#include <QDialog>
+#include <QLineEdit>
+#include <QSpinBox>
 
 #include <rdsvc.h>
-#include <importfields.h>
+
+#include "importfields.h"
 
 class EditSvc : public QDialog
 {

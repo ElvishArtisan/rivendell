@@ -18,27 +18,18 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <Q3ButtonGroup>
-#include <Q3ListBox>
-#include <Q3TextEdit>
-#include <QCheckBox>
 #include <QDialog>
-#include <QEvent>
-#include <QLabel>
-#include <QMessageBox>
-#include <QPainter>
 #include <QPushButton>
-#include <QString>
 
-#include <rdapplication.h>
-#include <rdconf.h>
 #include <rd.h>
+#include <rdapplication.h>
 #include <rdcart_dialog.h>
+#include <rdconf.h>
 #include <rdescape_string.h>
 #include <rduser.h>
 
-#include "globals.h"
 #include "autofill_carts.h"
+#include "globals.h"
 
 AutofillCarts::AutofillCarts(RDSvc *svc,QWidget *parent)
   : QDialog(parent,"",true)

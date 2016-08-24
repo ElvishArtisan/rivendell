@@ -18,29 +18,20 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qdialog.h>
-#include <qstring.h>
-#include <qpushbutton.h>
-#include <q3listbox.h>
-#include <q3textedit.h>
-#include <qlabel.h>
-#include <qpainter.h>
-#include <qevent.h>
-#include <qmessagebox.h>
-#include <qcheckbox.h>
-#include <q3buttongroup.h>
+#include <QLabel>
+#include <QMessageBox>
+#include <QPushButton>
 
-#include <rddb.h>
 #include <rd.h>
-#include <rduser.h>
-#include <rdpasswd.h>
+#include <rdapplication.h>
 #include <rdidvalidator.h>
 #include <rdtextvalidator.h>
+#include <rduser.h>
 
-#include <edit_svc.h>
-#include <test_import.h>
-#include <autofill_carts.h>
-#include <edit_svc_perms.h>
+#include "autofill_carts.h"
+#include "edit_svc.h"
+#include "edit_svc_perms.h"
+#include "test_import.h"
 
 EditSvc::EditSvc(QString svc,QWidget *parent)
   : QDialog(parent,"",true)

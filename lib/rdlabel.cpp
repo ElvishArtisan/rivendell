@@ -94,6 +94,8 @@ void RDLabel::setText(const QString &string)
 
 QString RDLabel::WrapText()
 {
+  return label_text;
+  /*
   QFontMetrics fm(label_font);
   QString str;
   QString residue=label_text;
@@ -136,4 +138,5 @@ QString RDLabel::WrapText()
     }
   }
   return label_text;
+  */
 }

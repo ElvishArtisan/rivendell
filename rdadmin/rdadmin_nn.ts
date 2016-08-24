@@ -5003,29 +5003,45 @@ Carts</source>
     </message>
     <message>
         <source>&amp;Services:</source>
-        <translation>&amp;Tenester:</translation>
+        <translation type="obsolete">&amp;Tenester:</translation>
     </message>
     <message>
         <source>Are you sure you want to delete service</source>
-        <translation>Er du sikker på at du vil sletta tenesta</translation>
+        <translation type="unfinished">Er du sikker på at du vil sletta tenesta</translation>
     </message>
     <message>
         <source>Delete Service</source>
-        <translation>Slett tenesta</translation>
+        <translation type="unfinished">Slett tenesta</translation>
     </message>
     <message>
         <source>There are</source>
-        <translation>Denne tenesta eig</translation>
+        <translation type="unfinished">Denne tenesta eig</translation>
     </message>
     <message>
         <source>logs owned by this service that will also be deleted.
 Do you still want to proceed?</source>
-        <translation>loggar som òg vil bli sletta.
+        <translation type="obsolete">loggar som òg vil bli sletta.
 Er du sikker på at du vil halda fram?</translation>
     </message>
     <message>
         <source>Logs Exist</source>
-        <translation>Loggen eksisterer</translation>
+        <translation type="unfinished">Loggen eksisterer</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Services:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>logs owned by this service that will also be deleted.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do you still want to proceed?</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

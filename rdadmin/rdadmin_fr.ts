@@ -4509,7 +4509,11 @@ Carts</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&amp;Services:</source>
+        <source>Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Services:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4525,12 +4529,15 @@ Carts</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>logs owned by this service that will also be deleted.
-Do you still want to proceed?</source>
+        <source>Logs Exist</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Logs Exist</source>
+        <source>logs owned by this service that will also be deleted.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do you still want to proceed?</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

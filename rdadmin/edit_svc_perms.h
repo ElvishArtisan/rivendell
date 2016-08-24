@@ -21,11 +21,9 @@
 #ifndef EDIT_SVC_PERMS_H
 #define EDIT_SVC_PERMS_H
 
-#include <qdialog.h>
-#include <qsqldatabase.h>
+#include <QDialog>
 
 #include <rdlistselector.h>
-
 #include <rdsvc.h>
 
 class EditSvcPerms : public QDialog
