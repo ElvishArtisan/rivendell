@@ -3399,11 +3399,11 @@ pro naplnění databáze zdroji zvuku.</translation>
     </message>
     <message>
         <source>CART</source>
-        <translation>VOZÍK</translation>
+        <translation type="obsolete">VOZÍK</translation>
     </message>
     <message>
         <source>TITLE</source>
-        <translation>NÁZEV</translation>
+        <translation type="obsolete">NÁZEV</translation>
     </message>
     <message>
         <source>&amp;Save List</source>
@@ -3419,23 +3419,23 @@ pro naplnění databáze zdroji zvuku.</translation>
     </message>
     <message>
         <source>File Exists</source>
-        <translation>Soubor existuje</translation>
+        <translation type="unfinished">Soubor existuje</translation>
     </message>
     <message>
         <source>The file &quot;</source>
-        <translation>Soubor &quot;</translation>
+        <translation type="unfinished">Soubor &quot;</translation>
     </message>
     <message>
         <source>&quot; exists.
 
 Overwrite?</source>
-        <translation>&quot; existuje.
+        <translation type="unfinished">&quot; existuje.
 
 Přepsat?</translation>
     </message>
     <message>
         <source>File Error</source>
-        <translation>Chyba v souboru</translation>
+        <translation type="unfinished">Chyba v souboru</translation>
     </message>
     <message>
         <source>Unable to write file &quot;</source>
@@ -3447,6 +3447,18 @@ Přepsat?</translation>
     </message>
     <message>
         <source>Temporary Cart Group:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cart</source>
+        <translation type="unfinished">Vozík</translation>
+    </message>
+    <message>
+        <source>Title</source>
+        <translation type="unfinished">Název</translation>
+    </message>
+    <message>
+        <source>Save File</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

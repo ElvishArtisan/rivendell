@@ -3006,14 +3006,6 @@ in order to populate the audio resources database.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>CART</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>TITLE</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;Save List</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3023,6 +3015,26 @@ in order to populate the audio resources database.</source>
     </message>
     <message>
         <source>&amp;Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Checking the Library for duplicates.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Temporary Cart Group:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cart</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Title</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3041,14 +3053,6 @@ Overwrite?</source>
     </message>
     <message>
         <source>File Error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Checking the Library for duplicates.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Temporary Cart Group:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

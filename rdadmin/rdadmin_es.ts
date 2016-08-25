@@ -3418,11 +3418,11 @@ para generar la base de datos con los recursos de audio disponibles.</translatio
     </message>
     <message>
         <source>CART</source>
-        <translation>CARTUCHO</translation>
+        <translation type="obsolete">CARTUCHO</translation>
     </message>
     <message>
         <source>TITLE</source>
-        <translation>TÍTULO</translation>
+        <translation type="obsolete">TÍTULO</translation>
     </message>
     <message>
         <source>&amp;Save List</source>
@@ -3438,23 +3438,23 @@ para generar la base de datos con los recursos de audio disponibles.</translatio
     </message>
     <message>
         <source>File Exists</source>
-        <translation>El archivo ya existe</translation>
+        <translation type="unfinished">El archivo ya existe</translation>
     </message>
     <message>
         <source>The file &quot;</source>
-        <translation>El archivo &quot;</translation>
+        <translation type="unfinished">El archivo &quot;</translation>
     </message>
     <message>
         <source>&quot; exists.
 
 Overwrite?</source>
-        <translation>&quot; ya existe.
+        <translation type="unfinished">&quot; ya existe.
 
 ¿Sobreescribir?</translation>
     </message>
     <message>
         <source>File Error</source>
-        <translation>Error de archivo</translation>
+        <translation type="unfinished">Error de archivo</translation>
     </message>
     <message>
         <source>Checking the Library for duplicates.</source>
@@ -3462,6 +3462,18 @@ Overwrite?</source>
     </message>
     <message>
         <source>Temporary Cart Group:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cart</source>
+        <translation type="unfinished">Cartucho</translation>
+    </message>
+    <message>
+        <source>Title</source>
+        <translation type="unfinished">Título</translation>
+    </message>
+    <message>
+        <source>Save File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

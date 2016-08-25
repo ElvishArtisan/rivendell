@@ -18,26 +18,16 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qdialog.h>
-#include <qstring.h>
-#include <qmessagebox.h>
-#include <qcheckbox.h>
-#include <q3filedialog.h>
-#include <qfile.h>
-#include <qdatetime.h>
-#include <q3progressdialog.h>
-#include <qapplication.h>
-#include <q3filedialog.h>
-//Added by qt3to4:
+#include <QFileDialog>
 #include <QLabel>
+#include <QMessageBox>
 
-#include <rdescape_string.h>
-#include <rddb.h>
+#include <rdapplication.h>
 #include <rdconf.h>
-#include <rdaudiosettings_dialog.h>
+#include <rdescape_string.h>
 
-#include <edit_settings.h>
-#include <globals.h>
+#include "edit_settings.h"
+#include "globals.h"
 
 EditSettings::EditSettings(QWidget *parent)
   : QDialog(parent,"",true)
@@ -148,14 +138,15 @@ EditSettings::EditSettings(QWidget *parent)
   edit_duplicate_label->setGeometry(15,120,sizeHint().width()-30,50);
   edit_duplicate_label->setFont(normal_font);
   edit_duplicate_label->hide();
-  edit_duplicate_list=new Q3ListView(this);
+
+  edit_duplicate_list=new RDTableWidget(this);
   edit_duplicate_list->setGeometry(10,165,sizeHint().width()-20,200);
-  edit_duplicate_list->setItemMargin(5);
-  edit_duplicate_list->setAllColumnsShowFocus(true);
-  edit_duplicate_list->addColumn(tr("CART"));
-  edit_duplicate_list->setColumnAlignment(0,Qt::AlignCenter);
-  edit_duplicate_list->addColumn(tr("TITLE"));
-  edit_duplicate_list->setColumnAlignment(1,Qt::AlignLeft);
+  edit_duplicate_list->setSelectionMode(QAbstractItemView::NoSelection);
+  edit_duplicate_list->setColumnCount(2);
+  edit_duplicate_list->
+    setHorizontalHeaderItem(0,new QTableWidgetItem(tr("Cart")));
+  edit_duplicate_list->
+    setHorizontalHeaderItem(1,new QTableWidgetItem(tr("Title")));
   edit_duplicate_list->hide();
   edit_save_button=new QPushButton(this);
   edit_save_button->
@@ -226,7 +217,8 @@ QSizePolicy EditSettings::sizePolicy() const
 void EditSettings::saveData()
 {
   QString filename=RDGetHomeDir();
-  filename=Q3FileDialog::getSaveFileName(filename,"Text Files *.txt",this);
+  filename=QFileDialog::getSaveFileName(this,"RDAdmin - "+tr("Save File"),
+					RDHomeDir(),"Text Files *.txt");
   if(filename.isNull()) {
     return;
   }
@@ -255,11 +247,11 @@ void EditSettings::saveData()
   fprintf(f,"\n");
   fprintf(f,"Cart    Title\n");
   fprintf(f,"----    -----\n");
-  Q3ListViewItem *item=edit_duplicate_list->firstChild();
-  while(item!=NULL) {
-    fprintf(f,"%s  %s\n",(const char *)item->text(0),
-	    (const char *)item->text(1));
-    item=item->nextSibling();
+  for(int i=0;i<edit_duplicate_list->rowCount();i++) {
+    fprintf(f,"%s  %s\n",(const char *)edit_duplicate_list->item(i,0)->
+	    data(Qt::DisplayRole).toString().toUtf8(),
+	    (const char *)edit_duplicate_list->item(i,1)->
+	    data(Qt::DisplayRole).toString().toUtf8());
   }
   fclose(f);
 }
@@ -309,7 +301,6 @@ void EditSettings::okData()
       delete q;
       pd->reset();
       if(dups.size()>0) {
-	Q3ListViewItem *item;
 	y_pos=305;
 	setMinimumWidth(sizeHint().width());
 	setMaximumWidth(sizeHint().width());
@@ -319,21 +310,28 @@ void EditSettings::okData()
 	edit_duplicate_label->show();
 	edit_duplicate_list->show();
 	edit_save_button->show();
-	edit_duplicate_list->clear();
 	edit_ok_button->setGeometry(sizeHint().width()-180,
 				    sizeHint().height()-60,
 				    80,50);
 	edit_cancel_button->
 	  setGeometry(sizeHint().width()-90,sizeHint().height()-60,80,50);
+
+	edit_duplicate_list->setRowCount(dups.size());
+	int rownum=0;
 	for(std::map<unsigned,QString>::const_iterator ci=dups.begin();
 	    ci!=dups.end();ci++) {
-	  item=new Q3ListViewItem(edit_duplicate_list);
-	  item->setText(0,QString().sprintf("%06u",ci->first));
-	  item->setText(1,ci->second);
+	  QTableWidgetItem *item=
+	    new QTableWidgetItem(QString().sprintf("%06u",ci->first));
+	  edit_duplicate_list->setItem(rownum,0,item);
+	  item=new QTableWidgetItem(ci->second);
+	  edit_duplicate_list->setItem(rownum,1,item);
+	  edit_duplicate_list->
+	    setVerticalHeaderItem(rownum,new QTableWidgetItem(""));
+	  rownum++;
 	}
+	edit_duplicate_list->resizeColumnsToContents();
 	return;
       }
-
       //
       // All ok -- make the change
       //

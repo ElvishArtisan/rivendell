@@ -1,6 +1,6 @@
-// rdtablemodel.cpp
+// rdsqltablemodel.cpp
 //
-// Two dimensional data model for Rivendell.
+// Two dimensional, SQL-based data model for Rivendell.
 //
 //   (C) Copyright 2016 Fred Gleason <fredg@paravelsystems.com>
 //
@@ -20,33 +20,33 @@
 
 #include "rdconf.h"
 #include "rddb.h"
-#include "rdtablemodel.h"
+#include "rdsqltablemodel.h"
 
-RDTableModel::RDTableModel(QObject *parent)
+RDSqlTableModel::RDSqlTableModel(QObject *parent)
   : QAbstractTableModel(parent)
 {
   model_columns=0;
 }
 
 
-RDTableModel::~RDTableModel()
+RDSqlTableModel::~RDSqlTableModel()
 {
 }
 
 
-int RDTableModel::columnCount(const QModelIndex &index) const
+int RDSqlTableModel::columnCount(const QModelIndex &index) const
 {
   return model_columns;
 }
 
 
-int RDTableModel::rowCount(const QModelIndex &index) const
+int RDSqlTableModel::rowCount(const QModelIndex &index) const
 {
   return model_display_datas.size();
 }
 
 
-QVariant RDTableModel::data(const QModelIndex &index,int role) const
+QVariant RDSqlTableModel::data(const QModelIndex &index,int role) const
 {
   QVariant value;
 
@@ -54,13 +54,13 @@ QVariant RDTableModel::data(const QModelIndex &index,int role) const
   case Qt::DisplayRole:
     value=model_display_datas[index.row()][index.column()];
     switch(fieldType(index.column())) {
-    case RDTableModel::CartNumberType:
+    case RDSqlTableModel::CartNumberType:
       return QVariant(QString().sprintf("%06u",value.toUInt()));
 
-    case RDTableModel::LengthType:
+    case RDSqlTableModel::LengthType:
       return QVariant(RDGetTimeLength(value.toInt(),false,true));
 
-    case RDTableModel::DefaultType:
+    case RDSqlTableModel::DefaultType:
       return value;
     }
     break;
@@ -72,13 +72,13 @@ QVariant RDTableModel::data(const QModelIndex &index,int role) const
 }
 
 
-QVariant RDTableModel::data(int row,int column,int role) const
+QVariant RDSqlTableModel::data(int row,int column,int role) const
 {
   return data(index(row,column),role);
 }
 
 
-void RDTableModel::setQuery(const QString &sql)
+void RDSqlTableModel::setQuery(const QString &sql)
 {
   model_sql=sql;
   model_display_datas.clear();
@@ -97,7 +97,7 @@ void RDTableModel::setQuery(const QString &sql)
 }
 
 
-QVariant RDTableModel::headerData(int section,Qt::Orientation orient,
+QVariant RDSqlTableModel::headerData(int section,Qt::Orientation orient,
 					int role) const
 {
   if((role==Qt::DisplayRole)&&(orient==Qt::Horizontal)) {
@@ -113,7 +113,7 @@ QVariant RDTableModel::headerData(int section,Qt::Orientation orient,
 }
 
 
-bool RDTableModel::setHeaderData(int section,Qt::Orientation orient,
+bool RDSqlTableModel::setHeaderData(int section,Qt::Orientation orient,
 				       const QVariant &value,int role)
 {
   if((role==Qt::DisplayRole)&&(orient==Qt::Horizontal)) {
@@ -124,24 +124,24 @@ bool RDTableModel::setHeaderData(int section,Qt::Orientation orient,
 }
 
 
-RDTableModel::FieldType RDTableModel::fieldType(int section) const
+RDSqlTableModel::FieldType RDSqlTableModel::fieldType(int section) const
 {
   try {
     return model_field_types.at(section);
   }
   catch (...) {
-    return RDTableModel::DefaultType;
+    return RDSqlTableModel::DefaultType;
   }
 }
 
 
-void RDTableModel::setFieldType(int section,RDTableModel::FieldType type)
+void RDSqlTableModel::setFieldType(int section,RDSqlTableModel::FieldType type)
 {
   model_field_types[section]=type;
 }
 
 
-void RDTableModel::update()
+void RDSqlTableModel::update()
 {
   if(!model_sql.isEmpty()) {
     setQuery(model_sql);
@@ -149,7 +149,7 @@ void RDTableModel::update()
 }
 
 
-bool RDTableModel::insertRows(int row,const QString &sql)
+bool RDSqlTableModel::insertRows(int row,const QString &sql)
 {
   if((row<0)||(row>(int)model_display_datas.size())) {
     return false;
@@ -171,7 +171,7 @@ bool RDTableModel::insertRows(int row,const QString &sql)
 }
 
 
-bool RDTableModel::removeRows(int row,int count,const QModelIndex &parent)
+bool RDSqlTableModel::removeRows(int row,int count,const QModelIndex &parent)
 {
   if((row+count)>(int)model_display_datas.size()) {
     return false;

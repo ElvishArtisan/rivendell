@@ -25,7 +25,7 @@
 #include <QListView>
 #include <QPushButton>
 
-#include <rdtablemodel.h>
+#include <rdsqltablemodel.h>
 
 class ListReports : public QDialog
 {
@@ -47,7 +47,7 @@ class ListReports : public QDialog
   void resizeEvent(QResizeEvent *e);
 
  private:
-  RDTableModel *list_model;
+  RDSqlTableModel *list_model;
   QListView *list_view;
   QPushButton *list_add_button;
   QPushButton *list_edit_button;

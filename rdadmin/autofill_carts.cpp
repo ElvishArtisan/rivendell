@@ -61,7 +61,7 @@ AutofillCarts::AutofillCarts(RDSvc *svc,QWidget *parent)
   //
   // Cart List
   //
-  svc_cart_model=new RDTableModel(this);
+  svc_cart_model=new RDSqlTableModel(this);
   QString sql=QString("select ")+
     "AUTOFILLS.CART_NUMBER,"+
     "CART.FORCED_LENGTH,"+
@@ -72,9 +72,9 @@ AutofillCarts::AutofillCarts(RDSvc *svc,QWidget *parent)
     "SERVICE=\""+RDEscapeString(svc_svc->name())+"\"";
   svc_cart_model->setQuery(sql);
   svc_cart_model->setHeaderData(0,Qt::Horizontal,tr("Cart"),Qt::DisplayRole);
-  svc_cart_model->setFieldType(0,RDTableModel::CartNumberType);
+  svc_cart_model->setFieldType(0,RDSqlTableModel::CartNumberType);
   svc_cart_model->setHeaderData(1,Qt::Horizontal,tr("Length"),Qt::DisplayRole);
-  svc_cart_model->setFieldType(1,RDTableModel::LengthType);
+  svc_cart_model->setFieldType(1,RDSqlTableModel::LengthType);
   svc_cart_model->setHeaderData(2,Qt::Horizontal,tr("Title"),Qt::DisplayRole);
   svc_cart_model->setHeaderData(3,Qt::Horizontal,tr("Artist"),Qt::DisplayRole);
   svc_cart_view=new RDTableView(this);

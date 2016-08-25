@@ -1,6 +1,6 @@
-// rdtablemodel.h
+// rdsqltablemodel.h
 //
-// Two dimensional data model for Rivendell
+// Two dimensional, SQL-based data model for Rivendell
 //
 //   (C) Copyright 2016 Fred Gleason <fredg@paravelsystems.com>
 //
@@ -18,23 +18,24 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#ifndef RDTABLEMODEL_H
-#define RDTABLEMODEL_H
+#ifndef RDSQLTABLEMODEL_H
+#define RDSQLTABLEMODEL_H
 
 #include <map>
 #include <vector>
 
 #include <QAbstractTableModel>
 #include <QSize>
+#include <QStringList>
 #include <QVariant>
 
-class RDTableModel : public QAbstractTableModel
+class RDSqlTableModel : public QAbstractTableModel
 {
   Q_OBJECT
  public:
   enum FieldType {DefaultType=0,CartNumberType=1,LengthType=2};
-  RDTableModel(QObject *parent=0);
-  ~RDTableModel();
+  RDSqlTableModel(QObject *parent=0);
+  ~RDSqlTableModel();
   int columnCount(const QModelIndex &index=QModelIndex()) const;
   int rowCount(const QModelIndex &index=QModelIndex()) const;
   QVariant data(const QModelIndex &index,int role=Qt::DisplayRole) const;
@@ -59,4 +60,4 @@ class RDTableModel : public QAbstractTableModel
 };
 
 
-#endif  //  RDTABLEMODEL_H
+#endif  //  RDSQLTABLEMODEL_H

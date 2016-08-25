@@ -81,7 +81,7 @@ ListReports::ListReports(QWidget *parent)
   //
   // Report View
   //
-  list_model=new RDTableModel(this);
+  list_model=new RDSqlTableModel(this);
   list_model->setQuery("select NAME from REPORTS order by NAME");
   list_model->setHeaderData(0,Qt::Horizontal,tr("Name"));
   list_view=new QListView(this);

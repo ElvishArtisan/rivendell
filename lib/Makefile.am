@@ -62,6 +62,7 @@ dist_librd_la_SOURCES = dbversion.h\
                         export_technical.cpp\
                         export_textlog.cpp\
                         html_gpl2.cpp\
+                        rd.h\
                         rdadd_cart.cpp rdadd_cart.h\
                         rdadd_log.cpp rdadd_log.h\
                         rdairplay_conf.cpp rdairplay_conf.h\
@@ -148,7 +149,6 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdinstancelock.cpp rdinstancelock.h\
                         rdintegeredit.cpp rdintegeredit.h\
                         rdintegerdialog.cpp rdintegerdialog.h\
-                        rd.h\
                         rdlabel.cpp rdlabel.h\
                         rdlibrary_conf.cpp rdlibrary_conf.h\
                         rdlicense.cpp rdlicense.h\
@@ -206,6 +206,7 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdslotoptions.cpp rdslotoptions.h\
                         rdsocket.cpp rdsocket.h\
                         rdsound_panel.cpp rdsound_panel.h\
+                        rdsqltablemodel.cpp rdsqltablemodel.h\
                         rdstation.cpp rdstation.h\
                         rdstatus.cpp rdstatus.h\
                         rdstereometer.cpp rdstereometer.h\
@@ -213,8 +214,8 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdsvc.cpp rdsvc.h\
                         rdsystem.cpp rdsystem.h\
                         rdsystemuser.cpp rdsystemuser.h\
-                        rdtablemodel.cpp rdtablemodel.h\
                         rdtableview.cpp rdtableview.h\
+                        rdtablewidget.cpp rdtablewidget.h\
                         rdtextfile.cpp rdtextfile.h\
                         rdtextvalidator.cpp rdtextvalidator.h\
                         rdtimeedit.cpp rdtimeedit.h\
@@ -310,14 +311,15 @@ nodist_librd_la_SOURCES = moc_rdadd_cart.cpp\
                           moc_rdsegmeter.cpp\
                           moc_rdsimpleplayer.cpp\
                           moc_rdslider.cpp\
-                          moc_rdsocket.cpp\
                           moc_rdsound_panel.cpp\
                           moc_rdslotbox.cpp\
                           moc_rdslotdialog.cpp\
+                          moc_rdsocket.cpp\
+                          moc_rdsqltablemodel.cpp\
                           moc_rdstereometer.cpp\
                           moc_rdsvc.cpp\
-                          moc_rdtablemodel.cpp\
                           moc_rdtableview.cpp\
+                          moc_rdtablewidget.cpp\
                           moc_rdtimeedit.cpp\
                           moc_rdtimeengine.cpp\
                           moc_rdttydevice.cpp\

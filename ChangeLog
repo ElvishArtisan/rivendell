@@ -16070,3 +16070,9 @@
 	'rdadmin/add_report.h'.
 	* Removed Qt3Support components from 'rdadmin/edit_report.cpp' and
 	'rdadmin/edit_report.h'.
+2016-08-26 Fred Gleason <fredg@paravelsystems.com>
+	* Removed Qt3Support components from 'rdadmin/edit_settings.cpp' and
+	'rdadmin/edit_settings.h'.
+	* Renamed the 'RDTableModel' class to 'RDSqlTableModel'.
+	* Added an 'RDTableWidget' widget in 'lib/rdtablewidget.cpp' and
+	'lib/rdtablewidget.h'.

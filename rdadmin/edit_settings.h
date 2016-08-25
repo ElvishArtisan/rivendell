@@ -23,17 +23,16 @@
 
 #include <map>
 
-#include <qdialog.h>
-#include <qcheckbox.h>
-#include <q3listview.h>
-#include <qspinbox.h>
-#include <qpushbutton.h>
-#include <qlineedit.h>
-#include <qcombobox.h>
+#include <QComboBox>
+#include <QCheckBox>
+#include <QDialog>
+#include <QLineEdit>
+#include <QPushButton>
+#include <QSpinBox>
 
 #include <rdlabel.h>
 #include <rdsystem.h>
-#include <rdaudiosettings.h>
+#include <rdtablewidget.h>
 
 class EditSettings : public QDialog
 {
@@ -57,7 +56,7 @@ class EditSettings : public QDialog
    RDLabel *edit_duplicate_label;
    QLineEdit *edit_isci_path_edit;
    QComboBox *edit_temp_cart_group_box;
-   Q3ListView *edit_duplicate_list;
+   RDTableWidget *edit_duplicate_list;
    QPushButton *edit_settings_button;
    QPushButton *edit_save_button;
    QPushButton *edit_ok_button;

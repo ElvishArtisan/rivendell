@@ -1,8 +1,8 @@
-// autofill_carts.h
+// rdtablewidget.h
 //
-// Edit a List of Autofill Carts
+// Table Widget for Rivendell
 //
-//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,40 +18,25 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#ifndef AUTOFILL_CARTS_H
-#define AUTOFILL_CARTS_H
+#ifndef RDTABLEWIDGET_H
+#define RDTABLEWIDGET_H
 
 #include <map>
 
-#include <QDialog>
+#include <QTableWidget>
 
-#include <rdsvc.h>
-#include <rdsqltablemodel.h>
-#include <rdtableview.h>
-
-class AutofillCarts : public QDialog
+class RDTableWidget : public QTableWidget
 {
- Q_OBJECT
+  Q_OBJECT
  public:
-  AutofillCarts(RDSvc *svc,QWidget *parent=0);
-  ~AutofillCarts();
-  QSize sizeHint() const;
-  QSizePolicy sizePolicy() const;
-
- private slots:
-  void addData();
-  void deleteData();
-  void okData();
-  void cancelData();
+  RDTableWidget(QWidget *parent=0);
+  RDTableWidget(int rows,int cols,QWidget *parent=0);
+  bool select(int column,unsigned value);
+  bool select(int column,const QString &value,bool case_sensitive=true);
 
  private:
-  RDSvc *svc_svc;
-  RDSqlTableModel *svc_cart_model;
-  RDTableView *svc_cart_view;
-  QString svc_cart_filter;
-  QString svc_cart_group;
+  void Initialize();
 };
 
 
-#endif
-
+#endif  //  RDTABLEVIEW_H
