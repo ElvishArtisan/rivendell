@@ -21,17 +21,15 @@
 #ifndef EDIT_REPORT_H
 #define EDIT_REPORT_H
 
-#include <qdialog.h>
-#include <qsqldatabase.h>
-#include <qlineedit.h>
-#include <qcombobox.h>
-#include <qcheckbox.h>
-#include <qlabel.h>
-#include <qspinbox.h>
-#include <q3datetimeedit.h>
+#include <QCheckBox>
+#include <QComboBox>
+#include <QDateTimeEdit>
+#include <QDialog>
+#include <QLabel>
+#include <QLineEdit>
+#include <QSpinBox>
 
 #include <rdlistselector.h>
-
 #include <rdreport.h>
 
 class EditReport : public QDialog
@@ -80,11 +78,11 @@ class EditReport : public QDialog
   QCheckBox *edit_daypart_check;
   QLabel *edit_daypart_label;
   QLabel *edit_starttime_label;
-  Q3TimeEdit *edit_starttime_edit;
+  QDateTimeEdit *edit_starttime_edit;
   QLabel *edit_endtime_label;
-  Q3TimeEdit *edit_endtime_edit;
+  QDateTimeEdit *edit_endtime_edit;
 };
 
 
-#endif
+#endif  // EDIT_REPORT.H
 

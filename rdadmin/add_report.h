@@ -21,12 +21,11 @@
 #ifndef ADD_REPORT_H
 #define ADD_REPORT_H
 
-#include <qdialog.h>
-#include <qsqldatabase.h>
-#include <qlineedit.h>
-#include <qcombobox.h>
+#include <QComboBox>
+#include <QDialog>
+#include <QLineEdit>
 
-#include <rdreport.h>
+#include "rdreport.h"
 
 class AddReport : public QDialog
 {

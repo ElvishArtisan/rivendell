@@ -18,32 +18,22 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qdialog.h>
-#include <qstring.h>
-#include <qpushbutton.h>
-#include <q3listbox.h>
-#include <q3textedit.h>
-#include <qlabel.h>
-#include <qpainter.h>
-#include <qevent.h>
-#include <qmessagebox.h>
-#include <q3buttongroup.h>
+#include <QDialog>
+#include <QLabel>
+#include <QMessageBox>
 
-#include <rddb.h>
-#include <list_reports.h>
-#include <edit_report.h>
-#include <add_report.h>
+#include "add_report.h"
+#include "edit_report.h"
+#include "list_reports.h"
 
 ListReports::ListReports(QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
   //
   // Fix the Window Size
   //
   setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
   setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
 
   setCaption(tr("Rivendell Report List"));
 
@@ -58,52 +48,47 @@ ListReports::ListReports(QWidget *parent)
   //
   //  Add Button
   //
-  QPushButton *add_button=new QPushButton(this);
-  add_button->setGeometry(410,30,80,50);
-  add_button->setFont(font);
-  add_button->setText(tr("&Add"));
-  connect(add_button,SIGNAL(clicked()),this,SLOT(addData()));
+  list_add_button=new QPushButton(this);
+  list_add_button->setFont(font);
+  list_add_button->setText(tr("&Add"));
+  connect(list_add_button,SIGNAL(clicked()),this,SLOT(addData()));
 
   //
   //  Edit Button
   //
-  QPushButton *edit_button=new QPushButton(this);
-  edit_button->setGeometry(410,90,80,50);
-  edit_button->setFont(font);
-  edit_button->setText(tr("&Edit"));
-  connect(edit_button,SIGNAL(clicked()),this,SLOT(editData()));
+  list_edit_button=new QPushButton(this);
+  list_edit_button->setFont(font);
+  list_edit_button->setText(tr("&Edit"));
+  connect(list_edit_button,SIGNAL(clicked()),this,SLOT(editData()));
 
   //
   //  Delete Button
   //
-  QPushButton *delete_button=new QPushButton(this);
-  delete_button->setGeometry(410,150,80,50);
-  delete_button->setFont(font);
-  delete_button->setText(tr("&Delete"));
-  connect(delete_button,SIGNAL(clicked()),this,SLOT(deleteData()));
+  list_delete_button=new QPushButton(this);
+  list_delete_button->setFont(font);
+  list_delete_button->setText(tr("&Delete"));
+  connect(list_delete_button,SIGNAL(clicked()),this,SLOT(deleteData()));
 
   //
   //  Close Button
   //
-  QPushButton *close_button=new QPushButton(this);
-  close_button->setGeometry(410,240,80,50);
-  close_button->setDefault(true);
-  close_button->setFont(font);
-  close_button->setText(tr("&Close"));
-  connect(close_button,SIGNAL(clicked()),this,SLOT(closeData()));
+  list_close_button=new QPushButton(this);
+  list_close_button->setDefault(true);
+  list_close_button->setFont(font);
+  list_close_button->setText(tr("&Close"));
+  connect(list_close_button,SIGNAL(clicked()),this,SLOT(closeData()));
 
   //
-  // Report List Box
+  // Report View
   //
-  list_box=new Q3ListBox(this);
-  list_box->setGeometry(10,30,390,260);
-  QLabel *list_box_label=new QLabel(list_box,tr("R&eports:"),this);
-  list_box_label->setFont(font);
-  list_box_label->setGeometry(14,10,85,19);
-  connect(list_box,SIGNAL(doubleClicked(Q3ListBoxItem *)),
-	  this,SLOT(doubleClickedData(Q3ListBoxItem *)));
-
-  RefreshList();
+  list_model=new RDTableModel(this);
+  list_model->setQuery("select NAME from REPORTS order by NAME");
+  list_model->setHeaderData(0,Qt::Horizontal,tr("Name"));
+  list_view=new QListView(this);
+  list_view->setModel(list_model);
+  list_view->show();
+  connect(list_view,SIGNAL(doubleClicked(const QModelIndex &)),
+	  this,SLOT(doubleClickedData(const QModelIndex &)));
 }
 
 
@@ -126,55 +111,46 @@ QSizePolicy ListReports::sizePolicy() const
 
 void ListReports::addData()
 {
-  QString rptname;
+  QString report_name;
 
-  AddReport *add_report=new AddReport(&rptname,this);
+  AddReport *add_report=new AddReport(&report_name,this);
   if(add_report->exec()<0) {
     delete add_report;
     return;
   }
   delete add_report;
-  EditReport *edit_report=new EditReport(rptname,this);
+  EditReport *edit_report=new EditReport(report_name,this);
   if(edit_report->exec()<0) {
-    DeleteReport(rptname);
+    RDReport::remove(report_name);
     delete edit_report;
     return;
   }
   delete edit_report;
-  RefreshList(rptname);
+  list_model->update();
 }
 
 
 void ListReports::editData()
 {
-  if(list_box->currentItem()<0) {
-    return;
+  QItemSelectionModel *s=list_view->selectionModel();
+  if(s->hasSelection()) {
+    doubleClickedData(s->selectedRows()[0]);
   }
-  EditReport *edit_report=new EditReport(list_box->currentText(),this);
-  edit_report->exec();
-  delete edit_report;
 }
 
 
 void ListReports::deleteData()
 {
-  QString str;
-
-  if(list_box->currentText().isEmpty()) {
-    return;
-  }
-  str=QString(tr("Are you sure you want to delete report"));
-  if(QMessageBox::warning(this,tr("Delete Report"),
-			  QString().sprintf(
-			    "%s \"%s\"?",(const char *)str,
-			    (const char *)list_box->currentText()),
-			  QMessageBox::Yes,QMessageBox::No)==
-     QMessageBox::Yes) {
-    DeleteReport(list_box->currentText());
-
-    list_box->removeItem(list_box->currentItem());
-    if(list_box->currentItem()>=0) {
-      list_box->setSelected(list_box->currentItem(),true);
+  QItemSelectionModel *s=list_view->selectionModel();
+  QString rptname=s->selectedRows()[0].data().toString();
+  if(s->hasSelection()) {
+    if(QMessageBox::warning(this,"RDAdmin - "+tr("Delete Report"),
+			    tr("Are you sure you want to delete report")+
+			    " \""+rptname+"\"?",
+			    QMessageBox::Yes,QMessageBox::No)==
+       QMessageBox::Yes) {
+      RDReport::remove(rptname);
+      list_model->update();
     }
   }
 }
@@ -186,44 +162,19 @@ void ListReports::closeData()
 }
 
 
-void ListReports::doubleClickedData(Q3ListBoxItem *item)
+void ListReports::doubleClickedData(const QModelIndex &index)
 {
-  editData();
+  EditReport *edit_report=new EditReport(index.data().toString(),this);
+  edit_report->exec();
+  delete edit_report;
 }
 
 
-void ListReports::DeleteReport(QString rptname)
+void ListReports::resizeEvent(QResizeEvent *e)
 {
-  QString sql;
-  RDSqlQuery *q;
-
-  sql=QString().sprintf("delete from REPORTS where NAME=\"%s\"",
-			(const char *)rptname);
-  q=new RDSqlQuery(sql);
-  delete q;
-  sql=QString().sprintf("delete from REPORT_SERVICES where \
-                         REPORT_NAME=\"%s\"",(const char *)rptname);
-  q=new RDSqlQuery(sql);
-  delete q;
-  sql=QString().sprintf("delete from REPORT_STATIONS where \
-                         REPORT_NAME=\"%s\"",(const char *)rptname);
-  q=new RDSqlQuery(sql);
-  delete q;
-}
-
-
-void ListReports::RefreshList(QString rptname)
-{
-  QString sql;
-  RDSqlQuery *q;
-
-  list_box->clear();
-  q=new RDSqlQuery("select NAME from REPORTS");
-  while (q->next()) {
-    list_box->insertItem(q->value(0).toString());
-    if(rptname==list_box->text(list_box->count()-1)) {
-      list_box->setCurrentItem(list_box->count()-1);
-    }
-  }
-  delete q;
+  list_add_button->setGeometry(size().width()-90,30,80,50);
+  list_edit_button->setGeometry(size().width()-90,90,80,50);
+  list_delete_button->setGeometry(size().width()-90,150,80,50);
+  list_close_button->setGeometry(size().width()-90,size().height()-60,80,50);
+  list_view->setGeometry(10,10,size().width()-110,size().height()-20);
 }

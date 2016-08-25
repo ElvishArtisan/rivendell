@@ -5074,15 +5074,19 @@ vozíky</translation>
     </message>
     <message>
         <source>R&amp;eports:</source>
-        <translation>Z&amp;právy:</translation>
+        <translation type="obsolete">Z&amp;právy:</translation>
     </message>
     <message>
         <source>Are you sure you want to delete report</source>
-        <translation>Opravdu chcete smazat tuto zprávu</translation>
+        <translation type="unfinished">Opravdu chcete smazat tuto zprávu</translation>
     </message>
     <message>
         <source>Delete Report</source>
-        <translation>Smazat zprávu</translation>
+        <translation type="unfinished">Smazat zprávu</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

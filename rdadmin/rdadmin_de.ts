@@ -5019,15 +5019,19 @@ Carts</source>
     </message>
     <message>
         <source>R&amp;eports:</source>
-        <translation>R&amp;eporte:</translation>
+        <translation type="obsolete">R&amp;eporte:</translation>
     </message>
     <message>
         <source>Are you sure you want to delete report</source>
-        <translation>Sind Sie sicher,, dass sie den Report löschen wollen</translation>
+        <translation type="unfinished">Sind Sie sicher,, dass sie den Report löschen wollen</translation>
     </message>
     <message>
         <source>Delete Report</source>
-        <translation>Report Löschen</translation>
+        <translation type="unfinished">Report Löschen</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

@@ -5009,15 +5009,19 @@ Cartuchos</translation>
     </message>
     <message>
         <source>R&amp;eports:</source>
-        <translation>R&amp;eportes:</translation>
+        <translation type="obsolete">R&amp;eportes:</translation>
     </message>
     <message>
         <source>Are you sure you want to delete report</source>
-        <translation>Está seguro de querer eliminar este reporte</translation>
+        <translation type="unfinished">Está seguro de querer eliminar este reporte</translation>
     </message>
     <message>
         <source>Delete Report</source>
-        <translation>Eliminar reporte</translation>
+        <translation type="unfinished">Eliminar reporte</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

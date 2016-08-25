@@ -21,33 +21,38 @@
 #ifndef LIST_REPORTS_H
 #define LIST_REPORTS_H
 
-#include <qdialog.h>
-#include <q3listbox.h>
-#include <q3textedit.h>
-#include <qpixmap.h>
-#include <qradiobutton.h>
-#include <qsqldatabase.h>
+#include <QDialog>
+#include <QListView>
+#include <QPushButton>
+
+#include <rdtablemodel.h>
 
 class ListReports : public QDialog
 {
   Q_OBJECT
-  public:
-   ListReports(QWidget *parent=0);
-   ~ListReports();
-   QSize sizeHint() const;
-   QSizePolicy sizePolicy() const;
+ public:
+  ListReports(QWidget *parent=0);
+  ~ListReports();
+  QSize sizeHint() const;
+  QSizePolicy sizePolicy() const;
 
-  private slots:
-   void addData();
-   void editData();
-   void deleteData();
-   void doubleClickedData(Q3ListBoxItem *item);
-   void closeData();
+ private slots:
+  void addData();
+  void editData();
+  void deleteData();
+  void doubleClickedData(const QModelIndex &index);
+  void closeData();
 
-  private:
-   void DeleteReport(QString rptname);
-   void RefreshList(QString rptname="");
-   Q3ListBox *list_box;
+ protected:
+  void resizeEvent(QResizeEvent *e);
+
+ private:
+  RDTableModel *list_model;
+  QListView *list_view;
+  QPushButton *list_add_button;
+  QPushButton *list_edit_button;
+  QPushButton *list_delete_button;
+  QPushButton *list_close_button;
 };
 
 

@@ -4933,15 +4933,19 @@ Carts</source>
     </message>
     <message>
         <source>R&amp;eports:</source>
-        <translation>R&amp;apportar:</translation>
+        <translation type="obsolete">R&amp;apportar:</translation>
     </message>
     <message>
         <source>Are you sure you want to delete report</source>
-        <translation>Er du sikker på at du vil sletta rapporten</translation>
+        <translation type="unfinished">Er du sikker på at du vil sletta rapporten</translation>
     </message>
     <message>
         <source>Delete Report</source>
-        <translation>Slett rapporten</translation>
+        <translation type="unfinished">Slett rapporten</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

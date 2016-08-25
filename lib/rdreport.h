@@ -86,6 +86,7 @@ class RDReport
   bool outputExists(const QDate &startdate);
   bool generateReport(const QDate &startdate,const QDate &enddate,
 		      RDStation *station,QString *out_path);
+  static void remove(const QString &str);
   static QString filterText(RDReport::ExportFilter filter);
   static QString stationTypeText(RDReport::StationType type);
   static bool multipleDaysAllowed(RDReport::ExportFilter filter);

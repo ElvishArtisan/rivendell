@@ -16063,3 +16063,10 @@
 	'lib/rdtableview.h'.
 	* Removed Qt3Support components from 'rdadmin/autofill_carts.cpp' and
 	'rdadmin/autofill_carts.h'.
+2016-08-26 Fred Gleason <fredg@paravelsystems.com>
+	* Removed Qt3Support components from 'rdadmin/list_reports.cpp' and
+	'rdadmin/list_reports.h'.
+	* Removed Qt3Support components from 'rdadmin/add_report.cpp' and
+	'rdadmin/add_report.h'.
+	* Removed Qt3Support components from 'rdadmin/edit_report.cpp' and
+	'rdadmin/edit_report.h'.

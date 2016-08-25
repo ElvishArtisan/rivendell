@@ -18,30 +18,22 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qdialog.h>
-#include <qstring.h>
-#include <qpushbutton.h>
-#include <q3listbox.h>
-#include <q3textedit.h>
-#include <qlabel.h>
-#include <qpainter.h>
-#include <qevent.h>
-#include <qmessagebox.h>
-#include <qcheckbox.h>
-#include <q3buttongroup.h>
+#include <QCheckBox>
+#include <QLabel>
+#include <QMessageBox>
+#include <QPushButton>
 
-#include <rddb.h>
-#include <rd.h>
-#include <rdescape_string.h>
-#include <rdtextvalidator.h>
+#include "rd.h"
+#include "rdescape_string.h"
+#include "rdtextvalidator.h"
 
-#include <add_report.h>
-#include <test_import.h>
-#include <autofill_carts.h>
-#include <edit_svc_perms.h>
+#include "add_report.h"
+#include "autofill_carts.h"
+#include "edit_svc_perms.h"
+#include "test_import.h"
 
 AddReport::AddReport(QString *rptname,QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
   //
   // Fix the Window Size

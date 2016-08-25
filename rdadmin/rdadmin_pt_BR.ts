@@ -5000,15 +5000,19 @@ Carts</source>
     </message>
     <message>
         <source>R&amp;eports:</source>
-        <translation>&amp;Relatórios:</translation>
+        <translation type="obsolete">&amp;Relatórios:</translation>
     </message>
     <message>
         <source>Are you sure you want to delete report</source>
-        <translation>Tem certeza que quer deletar este Relatório?</translation>
+        <translation type="unfinished">Tem certeza que quer deletar este Relatório?</translation>
     </message>
     <message>
         <source>Delete Report</source>
-        <translation>Deletar Relatório</translation>
+        <translation type="unfinished">Deletar Relatório</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

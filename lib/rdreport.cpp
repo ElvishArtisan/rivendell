@@ -681,6 +681,26 @@ bool RDReport::generateReport(const QDate &startdate,const QDate &enddate,
 }
 
 
+void RDReport::remove(const QString &str)
+{
+  QString sql;
+  RDSqlQuery *q;
+
+  sql=QString("delete from REPORTS where ")+
+    "NAME=\""+RDEscapeString(str)+"\"";
+  q=new RDSqlQuery(sql);
+  delete q;
+  sql=QString("delete from REPORT_SERVICES where ")+
+    "REPORT_NAME=\""+RDEscapeString(str)+"\"";
+  q=new RDSqlQuery(sql);
+  delete q;
+  sql=QString("delete from REPORT_STATIONS where ")+
+    "REPORT_NAME=\""+RDEscapeString(str)+"\"";
+  q=new RDSqlQuery(sql);
+  delete q;
+}
+
+
 QString RDReport::filterText(RDReport::ExportFilter filter)
 {
   switch(filter) {

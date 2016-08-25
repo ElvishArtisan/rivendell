@@ -18,19 +18,11 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qdialog.h>
-#include <qstring.h>
-#include <qpushbutton.h>
-#include <q3listbox.h>
-#include <q3textedit.h>
-#include <qlabel.h>
-#include <qpainter.h>
-#include <qevent.h>
-#include <qmessagebox.h>
-#include <qcheckbox.h>
-#include <q3buttongroup.h>
+#include <QCheckBox>
+#include <QLabel>
+#include <QPainter>
+#include <QPushButton>
 
-#include <rddb.h>
 #include <rd.h>
 #include <rdescape_string.h>
 #include <rdtextvalidator.h>
@@ -309,15 +301,17 @@ EditReport::EditReport(QString rptname,QWidget *parent)
   edit_daypart_label->setFont(font);
   edit_daypart_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::ShowPrefix);
 
-  edit_starttime_edit=new Q3TimeEdit(this);
+  edit_starttime_edit=new QDateTimeEdit(this);
   edit_starttime_edit->setGeometry(150,334,80,20);
+  edit_starttime_edit->setDisplayFormat("hh:mm:ss");
   edit_starttime_label=new QLabel(edit_starttime_edit,tr("Start Time:"),this);
   edit_starttime_label->setGeometry(65,334,80,20);
   edit_starttime_label->setFont(font);
   edit_starttime_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::ShowPrefix);
 
-  edit_endtime_edit=new Q3TimeEdit(this);
+  edit_endtime_edit=new QDateTimeEdit(this);
   edit_endtime_edit->setGeometry(335,334,80,20);
+  edit_endtime_edit->setDisplayFormat("hh:mm:ss");
   edit_endtime_label=new QLabel(edit_endtime_edit,tr("End Time:"),this);
   edit_endtime_label->setGeometry(250,334,80,20);
   edit_endtime_label->setFont(font);
