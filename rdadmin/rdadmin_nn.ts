@@ -563,19 +563,19 @@ oppdatert til versjon </translation>
     </message>
     <message>
         <source>Cart</source>
-        <translation>Korg</translation>
+        <translation type="unfinished">Korg</translation>
     </message>
     <message>
         <source>Length</source>
-        <translation>Lengd</translation>
+        <translation type="unfinished">Lengd</translation>
     </message>
     <message>
         <source>Title</source>
-        <translation>Tittel</translation>
+        <translation type="unfinished">Tittel</translation>
     </message>
     <message>
         <source>Artist</source>
-        <translation>Artist</translation>
+        <translation type="unfinished">Artist</translation>
     </message>
     <message>
         <source>&amp;Add</source>

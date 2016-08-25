@@ -615,19 +615,19 @@ a záloha původní databáze uložena v </translation>
     </message>
     <message>
         <source>Cart</source>
-        <translation>Vozík</translation>
+        <translation type="unfinished">Vozík</translation>
     </message>
     <message>
         <source>Length</source>
-        <translation>Délka</translation>
+        <translation type="unfinished">Délka</translation>
     </message>
     <message>
         <source>Title</source>
-        <translation>Název</translation>
+        <translation type="unfinished">Název</translation>
     </message>
     <message>
         <source>Artist</source>
-        <translation>Umělec</translation>
+        <translation type="unfinished">Umělec</translation>
     </message>
     <message>
         <source>&amp;Add</source>

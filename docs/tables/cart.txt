@@ -8,7 +8,7 @@ FIELD NAME           TYPE              REMARKS
 --------------------------------------------------------------------------
 NUMBER               int(10) unsigned  Primary key
 TYPE                 int(10) unsigned  1 = Audio, 2 = Command, 3 = Split
-GROUP_NAME           char(10)          Index
+GROUP_NAME           char(10)          From GROUPS.NAME
 TITLE                char(255)         Index
 ARTIST               char(255)         Index
 ALBUM                char(255)         Name of release album

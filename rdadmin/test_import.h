@@ -22,12 +22,10 @@
 #define TEST_IMPORT_H
 
 #include <qdialog.h>
-#include <qsqldatabase.h>
 #include <qpushbutton.h>
 #include <q3datetimeedit.h>
 #include <qlabel.h>
 #include <qlineedit.h>
-//Added by qt3to4:
 #include <QPaintEvent>
 #include <QResizeEvent>
 

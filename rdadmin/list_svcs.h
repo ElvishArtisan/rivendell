@@ -25,7 +25,8 @@
 #include <QLabel>
 #include <QPushButton>
 #include <QListView>
-#include <QSqlQueryModel>
+
+#include <rdtablemodel.h>
 
 class ListSvcs : public QDialog
 {
@@ -48,7 +49,7 @@ class ListSvcs : public QDialog
 
  private:
   QListView *list_view;
-  QSqlQueryModel *list_model;
+  RDTableModel *list_model;
   QPushButton *list_add_button;
   QPushButton *list_edit_button;
   QPushButton *list_delete_button;

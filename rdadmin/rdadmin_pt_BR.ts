@@ -560,19 +560,19 @@ atualizada para a Versão</translation>
     </message>
     <message>
         <source>Cart</source>
-        <translation>Cartão</translation>
+        <translation type="unfinished">Cartão</translation>
     </message>
     <message>
         <source>Length</source>
-        <translation>Duração</translation>
+        <translation type="unfinished">Duração</translation>
     </message>
     <message>
         <source>Title</source>
-        <translation>Título</translation>
+        <translation type="unfinished">Título</translation>
     </message>
     <message>
         <source>Artist</source>
-        <translation>Artista</translation>
+        <translation type="unfinished">Artista</translation>
     </message>
     <message>
         <source>&amp;Add</source>

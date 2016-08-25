@@ -84,7 +84,7 @@ ListSvcs::ListSvcs(QWidget *parent)
   //
   // Services List Box
   //
-  list_model=new QSqlQueryModel(this);
+  list_model=new RDTableModel(this);
   list_model->setQuery("select NAME from SERVICES order by NAME");
   list_model->setHeaderData(0,Qt::Horizontal,tr("Name"));
   list_view=new QListView(this);
@@ -126,7 +126,7 @@ void ListSvcs::addData()
     return;
   }
   delete add_svc;
-  list_model->setQuery(list_model->query().lastQuery());
+  list_model->update();
 }
 
 
@@ -174,7 +174,7 @@ void ListSvcs::deleteData()
     RDSvc *svc=new RDSvc(svcname);
     svc->remove();
     delete svc;
-    list_model->setQuery(list_model->query().lastQuery());
+    list_model->update();
   }
 }
 

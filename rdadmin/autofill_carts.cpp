@@ -61,20 +61,27 @@ AutofillCarts::AutofillCarts(RDSvc *svc,QWidget *parent)
   //
   // Cart List
   //
-  svc_cart_list=new Q3ListView(this);
-  svc_cart_list->
+  svc_cart_model=new RDTableModel(this);
+  QString sql=QString("select ")+
+    "AUTOFILLS.CART_NUMBER,"+
+    "CART.FORCED_LENGTH,"+
+    "CART.TITLE,"+
+    "CART.ARTIST "+
+    "from AUTOFILLS left join CART "+
+    "on AUTOFILLS.CART_NUMBER=CART.NUMBER where "+
+    "SERVICE=\""+RDEscapeString(svc_svc->name())+"\"";
+  svc_cart_model->setQuery(sql);
+  svc_cart_model->setHeaderData(0,Qt::Horizontal,tr("Cart"),Qt::DisplayRole);
+  svc_cart_model->setFieldType(0,RDTableModel::CartNumberType);
+  svc_cart_model->setHeaderData(1,Qt::Horizontal,tr("Length"),Qt::DisplayRole);
+  svc_cart_model->setFieldType(1,RDTableModel::LengthType);
+  svc_cart_model->setHeaderData(2,Qt::Horizontal,tr("Title"),Qt::DisplayRole);
+  svc_cart_model->setHeaderData(3,Qt::Horizontal,tr("Artist"),Qt::DisplayRole);
+  svc_cart_view=new RDTableView(this);
+  svc_cart_view->
     setGeometry(10,10,sizeHint().width()-20,sizeHint().height()-110);
-  svc_cart_list->setAllColumnsShowFocus(true);
-  svc_cart_list->setItemMargin(5);
-  svc_cart_list->addColumn(tr("Cart"));
-  svc_cart_list->setColumnAlignment(0,Qt::AlignCenter);
-  svc_cart_list->addColumn(tr("Length"));
-  svc_cart_list->setColumnAlignment(1,Qt::AlignRight);
-  svc_cart_list->addColumn(tr("Title"));
-  svc_cart_list->setColumnAlignment(2,Qt::AlignLeft);
-  svc_cart_list->addColumn(tr("Artist"));
-  svc_cart_list->setColumnAlignment(3,Qt::AlignLeft);
-  svc_cart_list->setSortColumn(1);
+  svc_cart_view->setModel(svc_cart_model);
+  svc_cart_view->resizeColumnsToContents();
 
   //
   // Add Button
@@ -113,8 +120,6 @@ AutofillCarts::AutofillCarts(RDSvc *svc,QWidget *parent)
   button->setFont(font);
   button->setText(tr("&Cancel"));
   connect(button,SIGNAL(clicked()),this,SLOT(cancelData()));
-
-  RefreshList();
 }
 
 
@@ -137,30 +142,29 @@ QSizePolicy AutofillCarts::sizePolicy() const
 
 void AutofillCarts::addData()
 {
-  int cart=0;
-  if(admin_cart_dialog->exec(&cart,RDCart::Audio,NULL,0,
+  int cartnum=0;
+  if(admin_cart_dialog->exec(&cartnum,RDCart::Audio,NULL,0,
 			     rda->user()->name(),rda->user()->password())<0) {
     return;
   }
-  RDCart *rdcart=new RDCart(cart);
-  Q3ListViewItem *item=new Q3ListViewItem(svc_cart_list);
-  item->setText(0,QString().sprintf("%06d",cart));
-  item->setText(1,RDGetTimeLength(rdcart->forcedLength(),false,true));
-  item->setText(2,rdcart->title());
-  item->setText(3,rdcart->artist());
-  svc_cart_list->setSelected(item,true);
-  svc_cart_list->ensureItemVisible(item);
-  delete rdcart;
+  QString sql=QString("select ")+
+    "NUMBER,"+
+    "FORCED_LENGTH,"+
+    "TITLE,"+
+    "ARTIST "+
+    "from CART where "+
+    QString().sprintf("NUMBER=%u",cartnum);
+  svc_cart_model->insertRows(0,sql);
+  svc_cart_view->select(0,cartnum);
 }
 
 
 void AutofillCarts::deleteData()
 {
-  Q3ListViewItem *item=svc_cart_list->selectedItem();
-  if(item==NULL) {
-    return;
+  QItemSelectionModel *s=svc_cart_view->selectionModel();
+  if(s->hasSelection()) {
+    svc_cart_model->removeRow(s->selectedRows()[0].row());
   }
-  delete item;
 }
 
 
@@ -170,15 +174,14 @@ void AutofillCarts::okData()
     "SERVICE=\""+RDEscapeString(svc_svc->name())+"\"";
   RDSqlQuery *q=new RDSqlQuery(sql);
   delete q;
-  Q3ListViewItem *item=svc_cart_list->firstChild();
-  while(item!=NULL) {
+  for(int i=0;i<svc_cart_model->rowCount();i++) {
     sql=QString("insert into AUTOFILLS set ")+
       "SERVICE=\""+RDEscapeString(svc_svc->name())+"\","+
-      QString().sprintf("CART_NUMBER=%u",item->text(0).toUInt());
+      QString().sprintf("CART_NUMBER=%u",svc_cart_model->data(i,0).toUInt());
     q=new RDSqlQuery(sql);
     delete q;
-    item=item->nextSibling();
   }
+
   done(0);
 }
 
@@ -186,29 +189,4 @@ void AutofillCarts::okData()
 void AutofillCarts::cancelData()
 {
   done(1);
-}
-
-
-void AutofillCarts::RefreshList()
-{
-  Q3ListViewItem *item;
-
-  svc_cart_list->clear();
-  QString sql=QString("select ")+
-    "AUTOFILLS.CART_NUMBER,"+
-    "CART.FORCED_LENGTH,"+
-    "CART.TITLE,"+
-    "CART.ARTIST "+
-    "from AUTOFILLS left join CART "+
-    "on AUTOFILLS.CART_NUMBER=CART.NUMBER where "+
-    "SERVICE=\""+RDEscapeString(svc_svc->name())+"\"";
-  RDSqlQuery *q=new RDSqlQuery(sql);
-  while(q->next()) {
-    item=new Q3ListViewItem(svc_cart_list);
-    item->setText(0,QString().sprintf("%06u",q->value(0).toUInt()));
-    item->setText(1,RDGetTimeLength(q->value(1).toInt(),false,true));
-    item->setText(2,q->value(2).toString());
-    item->setText(3,q->value(3).toString());
-  }
-  delete q;
 }

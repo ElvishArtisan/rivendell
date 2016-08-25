@@ -16056,3 +16056,10 @@
 	'rdadmin/edit_svc.h'.
 	* Removed Qt3Support components from 'rdadmin/edit_svc_perms.cpp' and
 	'rdadmin/edit_svc_perms.h'.
+2016-08-26 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'RDTableModel' class in 'lib/rdtablemodel.cpp' and
+	'lib/rdtablemodel.h'.
+	* Added an 'RDTableView' class in 'lib/rdtableview.cpp' and
+	'lib/rdtableview.h'.
+	* Removed Qt3Support components from 'rdadmin/autofill_carts.cpp' and
+	'rdadmin/autofill_carts.h'.

@@ -30,6 +30,7 @@
 #include <QTextCodec>
 #include <QTranslator>
 #include <QSqlError>
+#include <QStringList>
 #include <QVariant>
 
 #include "dbversion.h"
@@ -48,7 +49,25 @@
 RDSqlQuery::RDSqlQuery (const QString &query):
   QSqlQuery(query)
 {
-  if(!isActive()) {
+  sql_columns=0;
+
+  if(isActive()) {
+    QStringList f0=query.split(" ");
+    if(f0[0].toLower()=="select") {
+      for(int i=1;i<f0.size();i++) {
+	if(f0[i].toLower()=="from") {
+	  QString fields;
+	  for(int j=1;j<i;j++) {
+	    fields+=f0[j];
+	  }
+	  QStringList f1=fields.split(",");
+	  sql_columns=f1.size();
+	  continue;
+	}
+      }
+    }
+  }
+  else {
     QString err=QObject::tr("invalid SQL or failed DB connection")+
       +"["+lastError().text()+"]: "+query;
 
@@ -57,6 +76,12 @@ RDSqlQuery::RDSqlQuery (const QString &query):
     syslog(LOG_ERR,(const char *)err);
 #endif  // WIN32
   }
+}
+
+
+int RDSqlQuery::columns() const
+{
+  return sql_columns;
 }
 
 

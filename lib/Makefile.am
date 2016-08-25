@@ -213,6 +213,8 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdsvc.cpp rdsvc.h\
                         rdsystem.cpp rdsystem.h\
                         rdsystemuser.cpp rdsystemuser.h\
+                        rdtablemodel.cpp rdtablemodel.h\
+                        rdtableview.cpp rdtableview.h\
                         rdtextfile.cpp rdtextfile.h\
                         rdtextvalidator.cpp rdtextvalidator.h\
                         rdtimeedit.cpp rdtimeedit.h\
@@ -314,6 +316,8 @@ nodist_librd_la_SOURCES = moc_rdadd_cart.cpp\
                           moc_rdslotdialog.cpp\
                           moc_rdstereometer.cpp\
                           moc_rdsvc.cpp\
+                          moc_rdtablemodel.cpp\
+                          moc_rdtableview.cpp\
                           moc_rdtimeedit.cpp\
                           moc_rdtimeengine.cpp\
                           moc_rdttydevice.cpp\

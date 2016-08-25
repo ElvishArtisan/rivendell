@@ -21,10 +21,13 @@
 #ifndef AUTOFILL_CARTS_H
 #define AUTOFILL_CARTS_H
 
-#include <q3listview.h>
+#include <map>
+
 #include <QDialog>
 
 #include <rdsvc.h>
+#include <rdtablemodel.h>
+#include <rdtableview.h>
 
 class AutofillCarts : public QDialog
 {
@@ -42,9 +45,9 @@ class AutofillCarts : public QDialog
   void cancelData();
 
  private:
-  void RefreshList();
   RDSvc *svc_svc;
-  Q3ListView *svc_cart_list;
+  RDTableModel *svc_cart_model;
+  RDTableView *svc_cart_view;
   QString svc_cart_filter;
   QString svc_cart_group;
 };

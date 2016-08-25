@@ -631,19 +631,19 @@ y un respaldo de la base de datos se guardó en </translation>
     </message>
     <message>
         <source>Cart</source>
-        <translation>Cartucho</translation>
+        <translation type="unfinished">Cartucho</translation>
     </message>
     <message>
         <source>Length</source>
-        <translation>Duración</translation>
+        <translation type="unfinished">Duración</translation>
     </message>
     <message>
         <source>Title</source>
-        <translation>Título</translation>
+        <translation type="unfinished">Título</translation>
     </message>
     <message>
         <source>Artist</source>
-        <translation>Artista</translation>
+        <translation type="unfinished">Artista</translation>
     </message>
     <message>
         <source>&amp;Add</source>

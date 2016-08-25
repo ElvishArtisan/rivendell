@@ -1,8 +1,7 @@
-// rddb.h
+// rdtableview.h
 //
-// Database driver with automatic error reporting and recovery
+// Table Viewer for Rivendell
 //
-//   (C) Copyright 2007 Dan Mills <dmills@exponent.myzen.co.uk>
 //   (C) Copyright 2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
@@ -19,27 +18,21 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#ifndef RDDB_H
-#define RDDB_H
+#ifndef RDTABLEVIEW_H
+#define RDTABLEVIEW_H
 
-#include <QString>
-#include <QSqlQuery>
+#include <map>
 
-#include <rdconfig.h>
+#include <QTableView>
 
-class RDSqlQuery : public QSqlQuery
+class RDTableView : public QTableView
 {
+  Q_OBJECT
  public:
-  RDSqlQuery(const QString &query = QString::null);
-  int columns() const;
-
- private:
-  int sql_columns;
+  RDTableView(QWidget *parent=0);
+  bool select(int column,unsigned value);
+  bool select(int column,const QString &value,bool case_sensitive=true);
 };
 
-bool RDOpenDb(int *schema,QString *err_str,RDConfig *config);
-bool RDInitDb(QString *err_str,RDConfig *config);
-bool RDMakeDb(QString *err_str,RDConfig *config);
-bool RDUpdateDb(QString *err_str,int schema,RDConfig *config);
 
-#endif  // RDDB_H
+#endif  //  RDTABLEVIEW_H

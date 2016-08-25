@@ -105,11 +105,6 @@ RDCartDialog::RDCartDialog(QString *filter,QString *group,QString *schedcode,
   cart_macro_map=new QPixmap(rml5_xpm);
 
   //
-  // Text Validator
-  //
-  RDTextValidator *validator=new RDTextValidator(this,"validator",true);
-
-  //
   // Progress Dialog
   //
   cart_progress_dialog=
@@ -130,7 +125,6 @@ RDCartDialog::RDCartDialog(QString *filter,QString *group,QString *schedcode,
   // Filter Selector
   //
   cart_filter_edit=new QLineEdit(this);
-  cart_filter_edit->setValidator(validator);
   cart_filter_label=new QLabel(cart_filter_edit,tr("Cart Filter:"),this);
   cart_filter_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   cart_filter_label->setFont(button_font);

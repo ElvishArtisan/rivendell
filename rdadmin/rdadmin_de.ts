@@ -581,19 +581,19 @@ worden. Aktuelle Version</translation>
     </message>
     <message>
         <source>Cart</source>
-        <translation>Cart</translation>
+        <translation type="unfinished">Cart</translation>
     </message>
     <message>
         <source>Length</source>
-        <translation>Länge</translation>
+        <translation type="unfinished">Länge</translation>
     </message>
     <message>
         <source>Title</source>
-        <translation>Titel</translation>
+        <translation type="unfinished">Titel</translation>
     </message>
     <message>
         <source>Artist</source>
-        <translation>Künstler</translation>
+        <translation type="unfinished">Künstler</translation>
     </message>
     <message>
         <source>&amp;Add</source>
