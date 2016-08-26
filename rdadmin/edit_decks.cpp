@@ -18,44 +18,32 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qstring.h>
-#include <qpushbutton.h>
-#include <q3textedit.h>
-#include <qpainter.h>
-#include <qevent.h>
-#include <qvalidator.h>
-#include <qmessagebox.h>
-#include <qsignalmapper.h>
-#include <qcheckbox.h>
-#include <q3buttongroup.h>
-#include <qstringlist.h>
-//Added by qt3to4:
+#include <QCheckBox>
 #include <QLabel>
-#include <QPaintEvent>
+#include <QMessageBox>
+#include <QPainter>
 
 #include <rd.h>
-#include <rddb.h>
 #include <rdescape_string.h>
 #include <rdlivewire.h>
 #include <rdmatrix.h>
 
-#include <edit_decks.h>
+#include "edit_decks.h"
 #include "globals.h"
 
 EditDecks::EditDecks(RDStation *station,RDStation *cae_station,QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
   //
   // Fix the Window Size
   //
   setMinimumWidth(sizeHint().width());
-  //  setMaximumWidth(sizeHint().width());
   setMinimumHeight(sizeHint().height());
   setMaximumHeight(sizeHint().height());
 
   edit_station=station;
 
-  setCaption(tr("Configure RDCatch"));
+  setWindowTitle("RDAdmin - "+tr("Configure RDCatch"));
 
   //
   // Create Fonts
@@ -157,7 +145,7 @@ EditDecks::EditDecks(RDStation *station,RDStation *cae_station,QWidget *parent)
   //
   // Switcher Matrix
   //
-  edit_swmatrix_box=new QComboBox(this);
+  edit_swmatrix_box=new RDComboBox(this);
   edit_swmatrix_box->setGeometry(125,214,250,24);
   edit_swmatrix_box->setInsertionPolicy(QComboBox::NoInsert);
   edit_swmatrix_box->setDisabled(true);
@@ -464,11 +452,14 @@ void EditDecks::stationActivatedData(const QString &str)
 
   edit_swmatrix_box->clear();
   edit_swmatrix_box->insertStringList(GetActiveOutputMatrices());
+  /*
   for(unsigned i=0;i<edit_matrix_ids.size();i++) {
     if(edit_matrix_ids[i]==edit_record_deck->switchMatrix()) {
       edit_swmatrix_box->setCurrentItem(i);
     }
   }
+  */
+  edit_swmatrix_box->setCurrentData(edit_record_deck->switchMatrix());
   matrixActivatedData(edit_swmatrix_box->currentText());
 }
 
@@ -493,14 +484,16 @@ void EditDecks::matrixActivatedData(const QString &str)
   edit_swdelay_box->setEnabled(true);
 
   edit_swoutput_box->clear();
+  /*
   if(edit_swmatrix_box->currentItem()>=(int)edit_matrix_ids.size()) {
     return;
   }
-  int matrix=edit_matrix_ids[edit_swmatrix_box->currentItem()];
+  */
+  //  int matrix=edit_matrix_ids[edit_swmatrix_box->currentItem()];
   sql=QString("select NAME from OUTPUTS where ")+
     "(STATION_NAME=\""+RDEscapeString(edit_swstation_box->currentText())+
     "\")&&"+
-    QString().sprintf("(MATRIX=%d)&&",matrix)+
+    QString().sprintf("(MATRIX=%d)&&",edit_swmatrix_box->currentData().toInt())+
     "(NAME!=\"\")";
   q=new RDSqlQuery(sql);
   while(q->next()) {
@@ -773,10 +766,16 @@ void EditDecks::WriteRecord(int chan)
 
 int EditDecks::GetMatrix()
 {
+  return edit_swmatrix_box->currentData().toInt();
+  /*
   if(edit_swmatrix_box->currentItem()<(int)edit_matrix_ids.size()) {
+    printf("ITEM: %d  SIZE: %lu\n",edit_swmatrix_box->currentItem(),
+	   edit_matrix_ids.size());
     return edit_matrix_ids[edit_swmatrix_box->currentItem()];
+    //    return edit_matrix_ids[edit_swmatrix_box->currentIndex()];
   }
   return -1;
+  */
 }
 
 
@@ -805,7 +804,7 @@ QStringList EditDecks::GetActiveOutputMatrices()
   RDSqlQuery *q;
   RDSqlQuery *q1;
   
-  edit_matrix_ids.clear();
+  //  edit_matrix_ids.clear();
   sql=QString("select TYPE,NAME,OUTPUTS,MATRIX from MATRICES where ")+
     "STATION_NAME=\""+RDEscapeString(edit_station->name())+"\"";
   q=new RDSqlQuery(sql);
@@ -829,19 +828,29 @@ QStringList EditDecks::GetActiveOutputMatrices()
 	  delete lw;
 	  return ret;
 	}
-	ret.push_back(q->value(1).toString()+
-	   " ["+RDMatrix::typeString((RDMatrix::Type)q->value(0).toInt())+"]");
+	edit_swmatrix_box->
+	  insertItem(q->value(1).toString()+" ["+
+		 RDMatrix::typeString((RDMatrix::Type)q->value(0).toInt())+"]",
+		     false,q->value(3));
+	//	ret.push_back(q->value(1).toString()+
+	//	   " ["+RDMatrix::typeString((RDMatrix::Type)q->value(0).toInt())+"]");
 	delete lw;
-	edit_matrix_ids.push_back(q->value(3).toInt());
+	//	edit_matrix_ids.push_back(q->value(3).toInt());
       }
       delete q1;
       break;
 
     default:
       if(q->value(2).toInt()>0) {
+	edit_swmatrix_box->
+	  insertItem(q->value(1).toString()+
+	    " ["+RDMatrix::typeString((RDMatrix::Type)q->value(0).toInt())+"]",
+		     false,q->value(3));
+	/*
 	ret.push_back(q->value(1).toString()+
 	   " ["+RDMatrix::typeString((RDMatrix::Type)q->value(0).toInt())+"]");
 	edit_matrix_ids.push_back(q->value(3).toInt());
+	*/
       }
       break;
     }

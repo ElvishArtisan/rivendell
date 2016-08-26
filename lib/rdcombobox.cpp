@@ -31,14 +31,32 @@ RDComboBox::RDComboBox(QWidget *parent)
 }
 
 
-void RDComboBox::insertItem(const QString &str,bool unique)
+void RDComboBox::insertItem(const QString &str,bool unique,const QVariant &data)
 {
   if(unique) {
     if(!IsItemUnique(str)) {
       return;
     }
   }
-  QComboBox::insertItem(str);
+  QComboBox::insertItem(count(),str,data);
+}
+
+
+QVariant RDComboBox::currentData()
+{
+  return itemData(currentIndex());
+}
+
+
+bool RDComboBox::setCurrentData(const QVariant &data)
+{
+  for(int i=0;i<count();i++) {
+    if(data==itemData(i)) {
+      setCurrentIndex(i);
+      return true;
+    }
+  }
+  return false;
 }
 
 

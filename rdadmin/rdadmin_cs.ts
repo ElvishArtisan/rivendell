@@ -2648,7 +2648,7 @@ GPIOs</source>
     </message>
     <message>
         <source>Ripper Level:</source>
-        <translation>Úroveň trhače:</translation>
+        <translation type="obsolete">Úroveň trhače:</translation>
     </message>
     <message>
         <source>&amp;FreeDB Server:</source>
@@ -2826,6 +2826,10 @@ nastaveném pro běh služby CAE pro naplnění databáze se zdroji zvuku.</tran
     </message>
     <message>
         <source>&amp;Read ISRCs from CD:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Normalization Level:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

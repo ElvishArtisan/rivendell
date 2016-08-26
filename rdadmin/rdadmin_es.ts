@@ -2658,7 +2658,7 @@ GPIOs</source>
     </message>
     <message>
         <source>Ripper Level:</source>
-        <translation>Nivel de Ripper:</translation>
+        <translation type="obsolete">Nivel de Ripper:</translation>
     </message>
     <message>
         <source>&amp;FreeDB Server:</source>
@@ -2822,6 +2822,10 @@ equipo configurado para ejecutar CAE para obtener la información de audio.</tra
     </message>
     <message>
         <source>&amp;Read ISRCs from CD:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Normalization Level:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

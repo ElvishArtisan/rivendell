@@ -33,7 +33,10 @@ class RDComboBox : public QComboBox
   Q_OBJECT
  public:
   RDComboBox(QWidget *parent=0);
-  void insertItem(const QString &str,bool unique=false);
+  void insertItem(const QString &str,bool unique=false,
+		  const QVariant &data=QVariant());
+  QVariant currentData();
+  bool setCurrentData(const QVariant &data);
   void setSetupMode(bool state);
   void addIgnoredKey(int key);
 

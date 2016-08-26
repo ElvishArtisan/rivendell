@@ -2589,7 +2589,7 @@ GPIOs</source>
     </message>
     <message>
         <source>Ripper Level:</source>
-        <translation>Uthenting-nivå:</translation>
+        <translation type="obsolete">Uthenting-nivå:</translation>
     </message>
     <message>
         <source>&amp;FreeDB Server:</source>
@@ -2765,6 +2765,10 @@ configured to run the CAE service in order to populate the audio resources datab
     </message>
     <message>
         <source>&amp;Read ISRCs from CD:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Normalization Level:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

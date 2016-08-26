@@ -16102,3 +16102,10 @@
 	'rdadmin/add_station.h'.
 	* Removed Qt3Support components from 'rdadmin/edit_station.cpp' and
 	'rdadmin/edit_station.h'.
+2016-08-27 Fred Gleason <fredg@paravelsystems.com>
+	* Removed Qt3Support components from 'rdadmin/edit_rdlibrary.cpp' and
+	'rdadmin/edit_rdlibrary.h'.
+	* Added 'RDCombBox::currentData()' and 'RDComboBox::inserItem()'
+	methods in 'lib/rdcombobox.cpp' and 'lib/rdcombobox.h'.
+	* Removed Qt3Support components from 'rdadmin/edit_rddeck.cpp' and
+	'rdadmin/edit_rddeck.h'.

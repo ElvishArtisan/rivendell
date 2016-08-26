@@ -20,26 +20,17 @@
 
 #include <samplerate.h>
 
-#include <qdialog.h>
-#include <qstring.h>
-#include <qpushbutton.h>
-#include <q3listbox.h>
-#include <q3textedit.h>
-#include <qlabel.h>
-#include <qpainter.h>
-#include <qevent.h>
-#include <qmessagebox.h>
-#include <qcheckbox.h>
-#include <q3buttongroup.h>
+#include <QLabel>
+#include <QMessageBox>
+#include <QPushButton>
 
-#include <rd.h>
-#include <edit_rdlibrary.h>
 #include <rdtextvalidator.h>
 
+#include "edit_rdlibrary.h"
 
 EditRDLibrary::EditRDLibrary(RDStation *station,RDStation *cae_station,
 			     QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
   //
   // Fix the Window Size
@@ -67,7 +58,7 @@ EditRDLibrary::EditRDLibrary(RDStation *station,RDStation *cae_station,
   //
   // Dialog Name
   //
-  setCaption(tr("RDLibrary config for ")+station->name());
+  setWindowTitle("RDAdmin - "+tr("RDLibrary config for ")+station->name());
 
   //
   // Input Configuration
@@ -100,8 +91,9 @@ EditRDLibrary::EditRDLibrary(RDStation *station,RDStation *cae_station,
   //
   // Maximum Record Length
   //
-  lib_maxlength_time=new Q3TimeEdit(this);
+  lib_maxlength_time=new QDateTimeEdit(this);
   lib_maxlength_time->setGeometry(160,100,85,19);
+  lib_maxlength_time->setDisplayFormat("hh:mm:ss");
   QLabel *lib_maxlength_label=
     new QLabel(lib_maxlength_time,tr("&Max Record Time:"),this);
   lib_maxlength_label->setGeometry(25,101,130,19);
@@ -111,7 +103,7 @@ EditRDLibrary::EditRDLibrary(RDStation *station,RDStation *cae_station,
   // VOX threshold
   //
   lib_vox_spin=new QSpinBox(this);
-  lib_vox_spin->setGeometry(160,122,40,19);
+  lib_vox_spin->setGeometry(160,122,60,19);
   lib_vox_spin->setMinValue(-99);
   lib_vox_spin->setMaxValue(0);
   QLabel *lib_vox_spin_label=
@@ -119,14 +111,14 @@ EditRDLibrary::EditRDLibrary(RDStation *station,RDStation *cae_station,
   lib_vox_spin_label->setGeometry(25,122,130,19);
   lib_vox_spin_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
   QLabel *lib_vox_spin_unit=new QLabel(tr("dbFS"),this);
-  lib_vox_spin_unit->setGeometry(205,122,120,19);
+  lib_vox_spin_unit->setGeometry(225,122,120,19);
   lib_vox_spin_unit->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // AutoTrim threshold
   //
   lib_trim_spin=new QSpinBox(this);
-  lib_trim_spin->setGeometry(160,144,40,19);
+  lib_trim_spin->setGeometry(160,144,60,19);
   lib_trim_spin->setMinValue(-99);
   lib_trim_spin->setMaxValue(0);
   QLabel *lib_trim_spin_label=
@@ -134,14 +126,14 @@ EditRDLibrary::EditRDLibrary(RDStation *station,RDStation *cae_station,
   lib_trim_spin_label->setGeometry(25,144,130,19);
   lib_trim_spin_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
   QLabel *lib_trim_spin_unit=new QLabel(tr("dbFS"),this);
-  lib_trim_spin_unit->setGeometry(205,144,120,19);
+  lib_trim_spin_unit->setGeometry(225,144,120,19);
   lib_trim_spin_unit->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Tail Preroll
   //
   lib_preroll_spin=new QSpinBox(this);
-  lib_preroll_spin->setGeometry(160,166,50,19);
+  lib_preroll_spin->setGeometry(160,166,70,19);
   lib_preroll_spin->setMinValue(0);
   lib_preroll_spin->setMaxValue(10000);
   lib_preroll_spin->setLineStep(100);
@@ -150,7 +142,7 @@ EditRDLibrary::EditRDLibrary(RDStation *station,RDStation *cae_station,
   lib_preroll_spin_label->setGeometry(25,166,130,19);
   lib_preroll_spin_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
   QLabel *lib_preroll_spin_unit=new QLabel(tr("milliseconds"),this);
-  lib_preroll_spin_unit->setGeometry(215,166,120,19);
+  lib_preroll_spin_unit->setGeometry(235,166,120,19);
   lib_preroll_spin_unit->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
@@ -185,18 +177,18 @@ EditRDLibrary::EditRDLibrary(RDStation *station,RDStation *cae_station,
   lib_isrc_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
-  // Ripper Level
+  // Normalization (Ripper) Level
   //
   lib_riplevel_spin=new QSpinBox(this);
-  lib_riplevel_spin->setGeometry(160,254,40,19);
+  lib_riplevel_spin->setGeometry(160,254,60,19);
   lib_riplevel_spin->setMinValue(-99);
   lib_riplevel_spin->setMaxValue(0);
   QLabel *lib_riplevel_spin_label=
-    new QLabel(lib_riplevel_spin,tr("Ripper Level:"),this);
+    new QLabel(lib_riplevel_spin,tr("Normalization Level:"),this);
   lib_riplevel_spin_label->setGeometry(25,254,130,19);
   lib_riplevel_spin_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
   QLabel *lib_riplevel_spin_unit=new QLabel(tr("dbFS"),this);
-  lib_riplevel_spin_unit->setGeometry(205,254,120,19);
+  lib_riplevel_spin_unit->setGeometry(225,254,120,19);
   lib_riplevel_spin_unit->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //

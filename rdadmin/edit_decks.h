@@ -23,20 +23,19 @@
 
 #include <vector>
 
-#include <qdialog.h>
-#include <qsqldatabase.h>
-#include <qcombobox.h>
-#include <qpushbutton.h>
-#include <qspinbox.h>
-#include <qlabel.h>
-#include <qlineedit.h>
-//Added by qt3to4:
+#include <QComboBox>
+#include <QDialog>
+#include <QLabel>
+#include <QLineEdit>
 #include <QPaintEvent>
+#include <QPushButton>
+#include <QSpinBox>
 
-#include <rddeck.h>
 #include <rdcardselector.h>
-#include <rdstation.h>
 #include <rdcatch_conf.h>
+#include <rdcombobox.h>
+#include <rddeck.h>
+#include <rdstation.h>
 
 class EditDecks : public QDialog
 {
@@ -90,8 +89,8 @@ class EditDecks : public QDialog
    QLabel *edit_swstation_label;
    QComboBox *edit_swstation_box;
    QLabel *edit_swmatrix_label;
-   QComboBox *edit_swmatrix_box;
-   std::vector<int> edit_matrix_ids;
+   RDComboBox *edit_swmatrix_box;
+   //   std::vector<int> edit_matrix_ids;
    QLabel *edit_swoutput_label;
    QComboBox *edit_swoutput_box;
    QLabel *edit_swdelay_label;
@@ -106,5 +105,4 @@ class EditDecks : public QDialog
 };
 
 
-#endif
-
+#endif  // EDIT_DECKS_H
