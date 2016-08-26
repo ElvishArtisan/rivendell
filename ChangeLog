@@ -16111,3 +16111,6 @@
 	'rdadmin/edit_rddeck.h'.
 	* Removed Qt3Support components from 'rdadmin/edit_rdrdairplay.cpp' and
 	'rdadmin/edit_rdrdairplay.h'.
+2016-08-27 Fred Gleason <fredg@paravelsystems.com>
+	* Restore wire frame around service controls in
+	'rdadmin/edit_station.cpp'.

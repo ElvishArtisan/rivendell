@@ -314,45 +314,35 @@ EditStation::EditStation(QString sname,QWidget *parent)
   //
   // System Services Section
   //
-  /*
   label=new QLabel(tr("System Services"),this);
   label->setGeometry(30,312,110,20);
   label->setFont(font);
   label->setAlignment(Qt::AlignCenter|Qt::TextShowMnemonic);
-  */
-  /*
-  p->drawLine(10,322,sizeHint().width()-10,322);
-  p->drawLine(sizeHint().width()-10,322,sizeHint().width()-10,380);
-  p->drawLine(sizeHint().width()-10,380,10,380);
-  p->drawLine(10,380,10,322);
-  */
+  label->setAutoFillBackground(true);
 
-  station_groupbox=new QGroupBox(tr("System Services"),this);
-  station_groupbox->setGeometry(10,315,sizeHint().width()-10,380);
-  
   //
   // HTTP Service Host
   //
-  station_http_station_box=new QComboBox(station_groupbox);
-  station_http_station_box->setGeometry(145,20,200,20);
+  station_http_station_box=new QComboBox(this);
+  station_http_station_box->setGeometry(155,335,200,20);
   station_http_station_box->setEditable(false);
   QLabel *station_http_station_label=
-    new QLabel(station_http_station_box,tr("HTTP Xport:"),station_groupbox);
-  station_http_station_label->setGeometry(10,20,130,20);
+    new QLabel(station_http_station_box,tr("HTTP Xport:"),this);
+  station_http_station_label->setGeometry(20,335,130,20);
   station_http_station_label->setFont(font);
   station_http_station_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // CAE Service Host
   //
-  station_cae_station_box=new QComboBox(station_groupbox);
-  station_cae_station_box->setGeometry(145,42,200,20);
+  station_cae_station_box=new QComboBox(this);
+  station_cae_station_box->setGeometry(155,357,200,20);
   station_cae_station_box->setEditable(false);
   connect(station_cae_station_box,SIGNAL(activated(const QString &)),
 	  this,SLOT(caeStationActivatedData(const QString &)));
   QLabel *station_cae_station_label=
-    new QLabel(station_cae_station_box,tr("Core Audio Engine:"),station_groupbox);
-  station_cae_station_label->setGeometry(11,42,130,20);
+    new QLabel(station_cae_station_box,tr("Core Audio Engine:"),this);
+  station_cae_station_label->setGeometry(20,357,130,20);
   station_cae_station_label->setFont(font);
   station_cae_station_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
@@ -923,6 +913,24 @@ void EditStation::stopCartClickedData()
 			     rda->user()->name(),rda->user()->password())==0) {
     station_stop_cart_edit->setText(QString().sprintf("%06d",cartnum));
   }
+}
+
+
+void EditStation::paintEvent(QPaintEvent *e)
+{
+  QPainter *p=new QPainter(this);
+  p->setPen(Qt::black);
+  p->setBrush(Qt::black);
+
+  //
+  // System Services
+  //
+  p->drawLine(10,323,sizeHint().width()-10,323);
+  p->drawLine(sizeHint().width()-10,323,sizeHint().width()-10,381);
+  p->drawLine(sizeHint().width()-10,381,10,381);
+  p->drawLine(10,381,10,323);
+
+  delete p;
 }
 
 
