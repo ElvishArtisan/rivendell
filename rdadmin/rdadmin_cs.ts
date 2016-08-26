@@ -2608,11 +2608,11 @@ GPIOs</source>
     </message>
     <message>
         <source>INPUT</source>
-        <translation>VSTUP</translation>
+        <translation type="obsolete">VSTUP</translation>
     </message>
     <message>
         <source>OUTPUT</source>
-        <translation>VÝSTUP</translation>
+        <translation type="obsolete">VÝSTUP</translation>
     </message>
     <message>
         <source>Settings</source>
@@ -2835,6 +2835,14 @@ nastaveném pro běh služby CAE pro naplnění databáze se zdroji zvuku.</tran
     <message>
         <source>Normalization Level:</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Input</source>
+        <translation type="unfinished">Vstup</translation>
+    </message>
+    <message>
+        <source>Output</source>
+        <translation type="unfinished">Výstup</translation>
     </message>
 </context>
 <context>

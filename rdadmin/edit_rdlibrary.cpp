@@ -65,7 +65,7 @@ EditRDLibrary::EditRDLibrary(RDStation *station,RDStation *cae_station,
   //
   lib_input_card=new RDCardSelector(this);
   lib_input_card->setGeometry(10,29,120,117);
-  QLabel *label=new QLabel(lib_input_card,tr("INPUT"),this);
+  QLabel *label=new QLabel(lib_input_card,tr("Input"),this);
   label->setGeometry(10,10,110,19);
   label->setFont(big_font);
   label->setAlignment(Qt::AlignCenter);
@@ -75,7 +75,7 @@ EditRDLibrary::EditRDLibrary(RDStation *station,RDStation *cae_station,
   //
   lib_output_card=new RDCardSelector(this);
   lib_output_card->setGeometry(170,29,120,87);
-  label=new QLabel(lib_output_card,tr("OUTPUT"),this);
+  label=new QLabel(lib_output_card,tr("Output"),this);
   label->setGeometry(170,10,110,19);
   label->setFont(big_font);
   label->setAlignment(Qt::AlignCenter);

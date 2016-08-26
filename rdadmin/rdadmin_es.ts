@@ -2618,11 +2618,11 @@ GPIOs</source>
     </message>
     <message>
         <source>INPUT</source>
-        <translation>ENTRADA</translation>
+        <translation type="obsolete">ENTRADA</translation>
     </message>
     <message>
         <source>OUTPUT</source>
-        <translation>SALIDA</translation>
+        <translation type="obsolete">SALIDA</translation>
     </message>
     <message>
         <source>Settings</source>
@@ -2831,6 +2831,14 @@ equipo configurado para ejecutar CAE para obtener la información de audio.</tra
     <message>
         <source>Normalization Level:</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Input</source>
+        <translation type="unfinished">Entrada</translation>
+    </message>
+    <message>
+        <source>Output</source>
+        <translation type="unfinished">Salida</translation>
     </message>
 </context>
 <context>

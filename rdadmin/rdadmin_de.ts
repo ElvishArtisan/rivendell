@@ -2573,11 +2573,11 @@ GPIOs</source>
     </message>
     <message>
         <source>INPUT</source>
-        <translation>EINGANG</translation>
+        <translation type="obsolete">EINGANG</translation>
     </message>
     <message>
         <source>OUTPUT</source>
-        <translation>AUSGANG</translation>
+        <translation type="obsolete">AUSGANG</translation>
     </message>
     <message>
         <source>Settings</source>
@@ -2798,6 +2798,14 @@ configured to run the CAE service in order to populate the audio resources datab
     <message>
         <source>Normalization Level:</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Input</source>
+        <translation type="unfinished">Eingang</translation>
+    </message>
+    <message>
+        <source>Output</source>
+        <translation type="unfinished">Ausgang</translation>
     </message>
 </context>
 <context>

@@ -16114,3 +16114,8 @@
 2016-08-27 Fred Gleason <fredg@paravelsystems.com>
 	* Restore wire frame around service controls in
 	'rdadmin/edit_station.cpp'.
+2016-08-27 Fred Gleason <fredg@paravelsystems.com>
+	* Adjusted dimensions of audio card controls in
+	'lib/rdcardselector.cpp' and 'lib/rdcardselector.h'.
+	* Removed Qt3Support components from 'lib/rdcartselector.cpp' and
+	'lib/rdcardselector.h'.
