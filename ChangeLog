@@ -16081,3 +16081,8 @@
 	'rdadmin/list_feeds.h'.
 	* Added 'RDFeed::create()', 'RDFeed::remove()' and 'RDFeed:tableName()'
 	methods in 'lib/rdfeed.cpp' and 'lib/rdfeed.h'.
+2016-08-27 Fred Gleason <fredg@paravelsystems.com>
+	* Removed Qt3Support components from 'rdadmin/add_feed.cpp' and
+	'rdadmin/add_feed.h'.
+	* Removed Qt3Support components from 'rdadmin/edit_feed.cpp' and
+	'rdadmin/edit_feed.h'.

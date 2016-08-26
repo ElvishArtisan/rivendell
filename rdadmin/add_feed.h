@@ -21,9 +21,9 @@
 #ifndef ADD_FEED_H
 #define ADD_FEED_H
 
-#include <qdialog.h>
-#include <qcheckbox.h>
-#include <qlineedit.h>
+#include <QCheckBox>
+#include <QDialog>
+#include <QLineEdit>
 
 class AddFeed : public QDialog
 {

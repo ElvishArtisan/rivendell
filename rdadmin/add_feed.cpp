@@ -18,19 +18,14 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qdialog.h>
-#include <qstring.h>
-#include <qpushbutton.h>
-#include <qlabel.h>
-#include <qmessagebox.h>
-#include <qdatetime.h>
+#include <QLabel>
+#include <QMessageBox>
+#include <QPushButton>
 
-#include <rddb.h>
 #include <rdtextvalidator.h>
-#include <rdescape_string.h>
 
-#include <edit_feed.h>
-#include <add_feed.h>
+#include "add_feed.h"
+#include "edit_feed.h"
 
 AddFeed::AddFeed(unsigned *id,QString *keyname,QWidget *parent)
   : QDialog(parent,"",true)
