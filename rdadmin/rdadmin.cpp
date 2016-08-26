@@ -548,7 +548,6 @@ int gui_main(int argc,char *argv[])
       exit(0);
   }
   a.setMainWidget(w);
-  w->setGeometry(QRect(QPoint(0,0),w->sizeHint()));
   w->show();
   return a.exec();
 }

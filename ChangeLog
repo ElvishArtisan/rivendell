@@ -16086,3 +16086,5 @@
 	'rdadmin/add_feed.h'.
 	* Removed Qt3Support components from 'rdadmin/edit_feed.cpp' and
 	'rdadmin/edit_feed.h'.
+2016-08-27 Fred Gleason <fredg@paravelsystems.com>
+	* Removed forced main window placement in 'rdadmin/rdadmin.cpp'.
