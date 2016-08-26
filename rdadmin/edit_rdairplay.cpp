@@ -18,20 +18,9 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <Q3ButtonGroup>
-#include <Q3FileDialog>
-#include <Q3ListBox>
-#include <Q3TextEdit>
-#include <QCheckBox>
-#include <QDialog>
-#include <QEvent>
-#include <QLabel>
+#include <QFileDialog>
 #include <QMessageBox>
 #include <QPainter>
-#include <QPaintEvent>
-#include <QPushButton>
-#include <QRadioButton>
-#include <QString>
 
 #include <rd.h>
 #include <rdapplication.h>
@@ -47,7 +36,7 @@
 
 EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
 			     QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
   QString sql;
   RDSqlQuery *q;
@@ -83,7 +72,7 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
   //
   // Dialog Name
   //
-  setCaption(tr("RDAirPlay config for ")+station->name());
+  setWindowTitle("RDAdmin - "+tr("RDAirPlay config for ")+station->name());
 
   //
   // Channel Assignments Section
@@ -633,10 +622,13 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
   //
   // Space Bar Action
   //
-  air_bar_group=new Q3ButtonGroup(1,Qt::Vertical,tr("Space Bar Action"),this);
-  air_bar_group->setGeometry(805,532,sizeHint().width()-815,55);
-  new QRadioButton(tr("None"),air_bar_group);
-  new QRadioButton(tr("Start Next"),air_bar_group);
+  air_spacebar_box=new RDComboBox(this);
+  air_spacebar_box->setGeometry(895,532,100,20);
+  air_spacebar_label=new QLabel(tr("Spacebar Action:"),this);
+  air_spacebar_label->setGeometry(785,532,105,20);
+  air_spacebar_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
+  air_spacebar_box->insertItem(tr("None"),false,RDAirPlayConf::NoAction);
+  air_spacebar_box->insertItem(tr("Start Next"),false,RDAirPlayConf::StartNext);
 
   //
   // Start/Stop Section
@@ -652,8 +644,10 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
   air_exitpasswd_edit->setGeometry(100,404,sizeHint().width()-905,20);
   air_exitpasswd_edit->setEchoMode(QLineEdit::Password);
   air_exitpasswd_edit->setText("******");
+  air_exitpasswd_edit->setAutoFillBackground(true);
   label=new QLabel(air_exitpasswd_edit,tr("Exit Password:"),this);
   label->setGeometry(0,404,95,20);
+  label->setAutoFillBackground(true);
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   connect(air_exitpasswd_edit,SIGNAL(textChanged(const QString &)),
 	  this,SLOT(exitPasswordChangedData(const QString &)));
@@ -700,8 +694,10 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
   //
   air_startlog_edit=new QLineEdit(this);
   air_startlog_edit->setGeometry(100,499,240,20);
+  air_startlog_edit->setAutoFillBackground(true);
   air_startlog_label=new QLabel(air_startlog_edit,tr("Log:"),this);
   air_startlog_label->setGeometry(30,499,65,20);
+  air_startlog_label->setAutoFillBackground(true);
   air_startlog_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
@@ -873,7 +869,7 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
     air_auxlog_box[i]->setChecked(air_conf->showAuxButton(i));
   }
   air_clearfilter_box->setChecked(air_conf->clearFilter());
-  air_bar_group->setButton((int)air_conf->barAction());
+  air_spacebar_box->setCurrentData(air_conf->barAction());
   air_flash_box->setChecked(air_conf->flashPanel());
   air_panel_pause_box->setChecked(air_conf->panelPauseEnabled());
   air_label_template_edit->setText(air_conf->buttonLabelTemplate());
@@ -1034,8 +1030,9 @@ void EditRDAirPlay::editHotKeys()
 void EditRDAirPlay::selectSkinData()
 {
   QString filename=air_skin_edit->text();
-  filename=Q3FileDialog::getOpenFileName(filename,RD_IMAGE_FILE_FILTER,this,"",
-					tr("Select Image File"));
+  filename=QFileDialog::getOpenFileName(this,"RDAdmin - "+
+					tr("Select Image File"),
+					filename,RD_IMAGE_FILE_FILTER);
   if(!filename.isNull()) {
     air_skin_edit->setText(filename);
   }
@@ -1110,8 +1107,10 @@ void EditRDAirPlay::okData()
     air_conf->setShowAuxButton(i,air_auxlog_box[i]->isChecked());
   }
   air_conf->setClearFilter(air_clearfilter_box->isChecked());
-  air_conf->
-    setBarAction((RDAirPlayConf::BarAction)air_bar_group->selectedId());
+  //  air_conf->
+  //    setBarAction((RDAirPlayConf::BarAction)air_bar_group->selectedId());
+  air_conf->setBarAction((RDAirPlayConf::BarAction)
+			 air_spacebar_box->currentData().toInt());
   air_conf->setFlashPanel(air_flash_box->isChecked());
   air_conf->setPanelPauseEnabled(air_panel_pause_box->isChecked());
   air_conf->setButtonLabelTemplate(air_label_template_edit->text());

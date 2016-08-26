@@ -16109,3 +16109,5 @@
 	methods in 'lib/rdcombobox.cpp' and 'lib/rdcombobox.h'.
 	* Removed Qt3Support components from 'rdadmin/edit_rddeck.cpp' and
 	'rdadmin/edit_rddeck.h'.
+	* Removed Qt3Support components from 'rdadmin/edit_rdrdairplay.cpp' and
+	'rdadmin/edit_rdrdairplay.h'.

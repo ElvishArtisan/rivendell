@@ -2416,7 +2416,7 @@ GPIOs</source>
     </message>
     <message>
         <source>Space Bar Action</source>
-        <translation>Činnost mezerníku</translation>
+        <translation type="obsolete">Činnost mezerníku</translation>
     </message>
     <message>
         <source>Start Next</source>
@@ -2593,6 +2593,10 @@ GPIOs</source>
     </message>
     <message>
         <source>Aux 2 Log Startup Mode:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Spacebar Action:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

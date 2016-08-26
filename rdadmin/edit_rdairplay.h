@@ -21,21 +21,16 @@
 #ifndef EDIT_RDAIRPLAY_H
 #define EDIT_RDAIRPLAY_H
 
-#include <qdialog.h>
-#include <qsqldatabase.h>
-#include <qlineedit.h>
-#include <qcombobox.h>
-#include <qspinbox.h>
-#include <q3datetimeedit.h>
-#include <qlabel.h>
-#include <qcheckbox.h>
-#include <q3buttongroup.h>
-//Added by qt3to4:
+#include <QButtonGroup>
+#include <QDialog>
+#include <QComboBox>
+#include <QCheckBox>
 #include <QPaintEvent>
 
 #include <rd.h>
 #include <rdairplay_conf.h>
 #include <rdcardselector.h>
+#include <rdcombobox.h>
 #include <rdstation.h>
 
 /*
@@ -104,7 +99,9 @@ class EditRDAirPlay : public QDialog
   QSpinBox *air_aux2_box;
   QCheckBox *air_auxlog_box[2];
   QCheckBox *air_clearfilter_box;
-  Q3ButtonGroup *air_bar_group;
+//QButtonGroup *air_bar_group;
+  QLabel *air_spacebar_label;
+  RDComboBox *air_spacebar_box;
   QCheckBox *air_flash_box;
   QCheckBox *air_panel_pause_box;
   QCheckBox *air_show_counters_box;

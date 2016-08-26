@@ -2438,7 +2438,7 @@ Parameters</source>
     </message>
     <message>
         <source>Space Bar Action</source>
-        <translation>Barra espaciadora</translation>
+        <translation type="obsolete">Barra espaciadora</translation>
     </message>
     <message>
         <source>Start Next</source>
@@ -2603,6 +2603,10 @@ GPIOs</source>
     </message>
     <message>
         <source>Aux 2 Log Startup Mode:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Spacebar Action:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
