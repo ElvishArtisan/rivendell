@@ -4580,23 +4580,23 @@ Stále ještě jej chcete smazat?</translation>
     </message>
     <message>
         <source>Key</source>
-        <translation>Klíč</translation>
+        <translation type="unfinished">Klíč</translation>
     </message>
     <message>
         <source>Title</source>
-        <translation>Název</translation>
+        <translation type="unfinished">Název</translation>
     </message>
     <message>
         <source>AutoPost</source>
-        <translation>Automatické vyvěšení</translation>
+        <translation type="unfinished">Automatické vyvěšení</translation>
     </message>
     <message>
         <source>Keep Metadata</source>
-        <translation>Zachovat popisná data</translation>
+        <translation type="unfinished">Zachovat popisná data</translation>
     </message>
     <message>
         <source>Creation Date</source>
-        <translation>Datum vytvoření</translation>
+        <translation type="unfinished">Datum vytvoření</translation>
     </message>
     <message>
         <source>&amp;Feeds:</source>
@@ -4604,23 +4604,35 @@ Stále ještě jej chcete smazat?</translation>
     </message>
     <message>
         <source>Are you sure you want to delete feed</source>
-        <translation>Opravdu chcete smazat tento přívod</translation>
+        <translation type="unfinished">Opravdu chcete smazat tento přívod</translation>
     </message>
     <message>
         <source>Delete Feed</source>
-        <translation>Smazat přívod</translation>
+        <translation type="obsolete">Smazat přívod</translation>
     </message>
     <message>
         <source>Deleting Audio...</source>
-        <translation>Mazání zvuku...</translation>
+        <translation type="obsolete">Mazání zvuku...</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation>Zrušit</translation>
+        <translation type="obsolete">Zrušit</translation>
     </message>
     <message>
         <source>Deleting</source>
-        <translation>Mazání</translation>
+        <translation type="obsolete">Mazání</translation>
+    </message>
+    <message>
+        <source>Id</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete RSS Feed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Feed Removal</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

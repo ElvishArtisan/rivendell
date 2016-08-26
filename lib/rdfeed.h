@@ -29,6 +29,13 @@
 #include <rdstation.h>
 #include <rdsettings.h>
 
+//
+// Default XML Templates
+//
+#define DEFAULT_HEADER_XML "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\n<rss version=\"2.0\">"
+#define DEFAULT_CHANNEL_XML "<title>%TITLE%</title>\n<description>%DESCRIPTION%</description>\n<category>%CATEGORY%</category>\n<link>%LINK%</link>\n<language>%LANGUAGE%</language>\n<copyright>%COPYRIGHT%</copyright>\n<lastBuildDate>%BUILD_DATE%</lastBuildDate>\n<pubDate>%PUBLISH_DATE%</pubDate>\n<webMaster>%WEBMASTER%</webMaster>\n<generator>%GENERATOR%</generator>"
+#define DEFAULT_ITEM_XML "<title>%ITEM_TITLE%</title>\n<link>%ITEM_LINK%</link>\n<guid isPermaLink=\"false\">%ITEM_GUID%</guid>\n<description>%ITEM_DESCRIPTION%</description>\n<author>%ITEM_AUTHOR%</author>\n<comments>%ITEM_COMMENTS%</comments>\n<source url=\"%ITEM_SOURCE_URL%\">%ITEM_SOURCE_TEXT%</source>\n<enclosure url=\"%ITEM_AUDIO_URL%\" length=\"%ITEM_AUDIO_LENGTH%\"  type=\"audio/mpeg\" />\n<category>%ITEM_CATEGORY%</category>\n<pubDate>%ITEM_PUBLISH_DATE%</pubDate>"
+
 #define RDFEED_TOTAL_POST_STEPS 4
 
 class RDFeed : public QObject
@@ -113,7 +120,10 @@ class RDFeed : public QObject
   unsigned postFile(RDStation *station,const QString &srcfile,Error *err,
 		    bool log_debug,RDConfig *config);
   int totalPostSteps() const;
+  static int create(const QString &keyname,bool allow_all_users);
+  static void remove(const QString &keyname,QString *errs=NULL);
   static QString errorString(RDFeed::Error err);
+  static QString tableName(const QString &keyname);
 
  signals:
   void postProgressChanged(int step);

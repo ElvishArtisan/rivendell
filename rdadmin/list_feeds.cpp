@@ -102,30 +102,32 @@ ListFeeds::ListFeeds(QWidget *parent)
   connect(list_close_button,SIGNAL(clicked()),this,SLOT(closeData()));
 
   //
-  // Group List
+  // Feed List
   //
-  list_feeds_view=new RDListView(this);
-  list_feeds_view->setFont(list_font);
-  list_feeds_view->setAllColumnsShowFocus(true);
-  list_feeds_view->addColumn(tr("Key"));
-  list_feeds_view->setColumnAlignment(0,Qt::AlignCenter);
-  list_feeds_view->addColumn(tr("Title"));
-  list_feeds_view->setColumnAlignment(1,Qt::AlignVCenter|Qt::AlignLeft);
-  list_feeds_view->addColumn(tr("AutoPost"));
-  list_feeds_view->setColumnAlignment(2,Qt::AlignVCenter|Qt::AlignLeft);
-  list_feeds_view->addColumn(tr("Keep Metadata"));
-  list_feeds_view->setColumnAlignment(3,Qt::AlignVCenter|Qt::AlignLeft);
-  list_feeds_view->addColumn(tr("Creation Date"));
-  list_feeds_view->setColumnAlignment(4,Qt::AlignCenter);
-  QLabel *list_box_label=new QLabel(list_feeds_view,tr("&Feeds:"),this);
+  list_model=new RDSqlTableModel(this);
+  QString sql=QString("select ")+
+    "ID,"+
+    "KEY_NAME,"+
+    "CHANNEL_TITLE,"+
+    "ENABLE_AUTOPOST,"+
+    "KEEP_METADATA,"+
+    "ORIGIN_DATETIME from FEEDS "+
+    "order by KEY_NAME";
+  list_model->setQuery(sql);
+  list_model->setHeaderData(0,Qt::Horizontal,tr("Id"));
+  list_model->setHeaderData(1,Qt::Horizontal,tr("Key"));
+  list_model->setHeaderData(2,Qt::Horizontal,tr("Title"));
+  list_model->setHeaderData(3,Qt::Horizontal,tr("AutoPost"));
+  list_model->setHeaderData(4,Qt::Horizontal,tr("Keep Metadata"));
+  list_model->setHeaderData(5,Qt::Horizontal,tr("Creation Date"));
+  list_view=new RDTableView(this);
+  list_view->setModel(list_model);
+  list_view->hideColumn(0);
+  connect(list_view,SIGNAL(doubleClicked(const QModelIndex &)),
+	  this,SLOT(doubleClickedData(const QModelIndex &)));
+  QLabel *list_box_label=new QLabel(list_view,tr("&Feeds:"),this);
   list_box_label->setFont(font);
   list_box_label->setGeometry(14,11,85,19);
-  connect(list_feeds_view,
-	  SIGNAL(doubleClicked(Q3ListViewItem *,const QPoint &,int)),
-	  this,
-	  SLOT(doubleClickedData(Q3ListViewItem *,const QPoint &,int)));
-
-  RefreshList();
 }
 
 
@@ -136,7 +138,7 @@ ListFeeds::~ListFeeds()
 
 QSize ListFeeds::sizeHint() const
 {
-  return QSize(400,280);
+  return QSize(600,280);
 } 
 
 
@@ -150,8 +152,6 @@ void ListFeeds::addData()
 {
   QString feed;
   unsigned id;
-  QString sql;
-  RDSqlQuery *q;
 
   AddFeed *add_feed=new AddFeed(&id,&feed,this);
   if(add_feed->exec()<0) {
@@ -163,138 +163,51 @@ void ListFeeds::addData()
 
   EditFeed *edit_feed=new EditFeed(feed,this);
   if(edit_feed->exec()<0) {
-    sql=QString("delete from FEED_PERMS where ")+
-      "KEY_NAME=\""+RDEscapeString(feed)+"\"";
-    q=new RDSqlQuery(sql);
-    delete q;
-    sql=QString("delete from FEEDS where ")+
-      "KEY_NAME=\""+RDEscapeString(feed)+"\"";
-    q=new RDSqlQuery(sql);
-    delete q;
-    RDDeleteFeedLog(feed);
-    feed.replace(" ","_");
-    sql=QString("drop table `")+feed+"_FIELDS`";
-    q=new RDSqlQuery(sql);
-    delete q;
-    delete edit_feed;
+    RDFeed::remove(feed);
     return;
   }
   delete edit_feed;
-  RDListViewItem *item=new RDListViewItem(list_feeds_view);
-  item->setId(id);
-  item->setText(0,feed);
-  RefreshItem(item);
-  item->setSelected(true);
-  list_feeds_view->setCurrentItem(item);
-  list_feeds_view->ensureItemVisible(item);
+  list_model->update();
 }
 
 
 void ListFeeds::editData()
 {
-  RDListViewItem *item=(RDListViewItem *)list_feeds_view->selectedItem();
-  if(item==NULL) {
-    return;
+  QItemSelectionModel *s=list_view->selectionModel();
+  if(s->hasSelection()) {
+    doubleClickedData(list_model->index(s->selectedRows()[0].row(),1));
   }
-  EditFeed *edit_feed=new EditFeed(item->text(0),this);
-  edit_feed->exec();
-  delete edit_feed;
-  RefreshItem(item);
 }
 
 
 void ListFeeds::deleteData()
 {
-  RDListViewItem *item=(RDListViewItem *)list_feeds_view->selectedItem();
-  if(item==NULL) {
-    return;
+  QString err_str;
+  QItemSelectionModel *s=list_view->selectionModel();
+  if(s->hasSelection()) {
+    QString keyname=list_model->data(s->selectedRows()[0].row(),1).toString();
+    if(QMessageBox::question(this,"RDAdmin - "+tr("Delete RSS Feed"),
+			     tr("Are you sure you want to delete feed")+
+			     " \""+keyname+"\"?",
+			     QMessageBox::Yes,QMessageBox::No)!=
+       QMessageBox::Yes) {
+      return;
+    }
+    RDFeed::remove(keyname,&err_str);
+    if(!err_str.isEmpty()) {
+      QMessageBox::warning(this,"RDAdmin - "+tr("Feed Removal"),err_str);
+    }
+    list_model->update();
   }
-
-  QString sql;
-  RDSqlQuery *q;
-  QString warning;
-  QString str;
-  RDFeed *feed;
-  QString errs;
-
-  QString feedname=item->text(0);
-  if(feedname.isEmpty()) {
-    return;
-  }
-  str=QString(tr("Are you sure you want to delete feed"));
-  warning+=QString().sprintf("%s %s?",(const char *)str,
-			     (const char *)feedname);
-  switch(QMessageBox::warning(this,tr("Delete Feed"),warning,
-			      QMessageBox::Yes,QMessageBox::No)) {
-      case QMessageBox::No:
-      case QMessageBox::NoButton:
-	return;
-
-      default:
-	break;
-  }
-  feed=new RDFeed(feedname);
-
-  //
-  // Delete Casts
-  //
-  // First, Delete Remote Audio
-  //
-  RDPodcast *cast;
-  sql=QString().sprintf("select ID from PODCASTS where FEED_ID=%d",item->id());
-  q=new RDSqlQuery(sql);
-  Q3ProgressDialog *pd=new Q3ProgressDialog(tr("Deleting Audio..."),tr("Cancel"),
-					    q->size()+1,this,windowFlags());
-  pd->setCaption(tr("Deleting"));
-  pd->setProgress(0);
-  qApp->processEvents();
-  sleep(1);
-  while(q->next()) {
-    pd->setProgress(pd->progress()+1);
-    qApp->processEvents();
-    cast=new RDPodcast(q->value(0).toUInt());
-    cast->removeAudio(feed,&errs,rda->config()->logXloadDebugData());
-    delete cast;
-  }
-  delete q;
-
-  //
-  // Delete Cast Entries
-  //
-  sql=QString().sprintf("delete from PODCASTS where FEED_ID=%d",item->id());
-  q=new RDSqlQuery(sql);
-  delete q;
-
-  //
-  // Delete Feed
-  //
-  sql=QString("delete from FEED_PERMS where ")+
-    "KEY_NAME=\""+RDEscapeString(feedname)+"\"";
-  q=new RDSqlQuery(sql);
-  delete q;
-  sql=QString("delete from FEEDS where ")+
-    "KEY_NAME=\""+RDEscapeString(feedname)+"\"";
-  q=new RDSqlQuery(sql);
-  delete q;
-  RDDeleteFeedLog(feedname);
-  feedname.replace(" ","_");
-  sql=QString("drop table '")+feedname+"_FIELDS`";
-  q=new RDSqlQuery(sql);
-  delete q;
-  item->setSelected(false);
-
-  pd->reset();
-
-  delete pd;
-  delete feed;
-  delete item;
 }
 
-
-void ListFeeds::doubleClickedData(Q3ListViewItem *item,const QPoint &pt,
-				   int col)
+void ListFeeds::doubleClickedData(const QModelIndex &index)
 {
-  editData();
+  EditFeed *edit_feed=
+    new EditFeed(list_model->data(index.row(),1).toString(),this);
+  edit_feed->exec();
+  delete edit_feed;
+  list_model->update();
 }
 
 
@@ -310,53 +223,5 @@ void ListFeeds::resizeEvent(QResizeEvent *e)
   list_edit_button->setGeometry(size().width()-90,90,80,50);
   list_delete_button->setGeometry(size().width()-90,150,80,50);
   list_close_button->setGeometry(size().width()-90,size().height()-60,80,50);
-  list_feeds_view->setGeometry(10,30,size().width()-120,size().height()-40);
-}
-
-
-void ListFeeds::RefreshList()
-{
-  QString sql;
-  RDSqlQuery *q;
-  RDListViewItem *item;
-
-  list_feeds_view->clear();
-  q=new 
-    RDSqlQuery("select ID,KEY_NAME,CHANNEL_TITLE,ENABLE_AUTOPOST,\
-                KEEP_METADATA,ORIGIN_DATETIME from FEEDS");
-  while (q->next()) {
-    item=new RDListViewItem(list_feeds_view);
-    item->setId(q->value(0).toInt());
-    item->setText(0,q->value(1).toString());
-    item->setText(1,q->value(2).toString());
-    item->setText(2,q->value(3).toString());
-    item->setText(3,q->value(4).toString());
-    item->setText(4,q->value(5).toDateTime().toString("MM/dd/yyyy"));
-  }
-  delete q;
-}
-
-
-void ListFeeds::RefreshItem(RDListViewItem *item)
-{
-  QString sql;
-  RDSqlQuery *q;
-
-  sql=QString("select ")+
-    "KEY_NAME,"+
-    "CHANNEL_TITLE,"+
-    "ENABLE_AUTOPOST,"+
-    "KEEP_METADATA,"+
-    "ORIGIN_DATETIME "+
-    "from FEEDS where "+
-    QString().sprintf("ID=%d",item->id());
-  q=new RDSqlQuery(sql);
-  if(q->next()) {
-    item->setText(0,q->value(0).toString());
-    item->setText(1,q->value(1).toString());
-    item->setText(2,q->value(2).toString());
-    item->setText(3,q->value(3).toString());
-    item->setText(4,q->value(4).toDateTime().toString("MM/dd/yyyy"));
-  }
-  delete q;
+  list_view->setGeometry(10,30,size().width()-120,size().height()-40);
 }

@@ -4518,12 +4518,16 @@ Wollen Sie ihn immernoch löschen?</translation>
         <translation type="unfinished">&amp;Schliessen</translation>
     </message>
     <message>
-        <source>Key</source>
+        <source>Title</source>
+        <translation type="unfinished">Titel</translation>
+    </message>
+    <message>
+        <source>&amp;Feeds:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Title</source>
-        <translation type="unfinished">Titel</translation>
+        <source>Key</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>AutoPost</source>
@@ -4538,7 +4542,11 @@ Wollen Sie ihn immernoch löschen?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&amp;Feeds:</source>
+        <source>Id</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete RSS Feed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4546,19 +4554,7 @@ Wollen Sie ihn immernoch löschen?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Delete Feed</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Deleting Audio...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Deleting</source>
+        <source>Feed Removal</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

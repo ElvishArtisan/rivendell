@@ -21,15 +21,12 @@
 #ifndef LIST_FEEDS_H
 #define LIST_FEEDS_H
 
-#include <qdialog.h>
-#include <qpixmap.h>
-#include <qradiobutton.h>
-#include <qsqldatabase.h>
-#include <qpushbutton.h>
-//Added by qt3to4:
+#include <QDialog>
+#include <QPushButton>
 #include <QResizeEvent>
 
-#include <rdlistviewitem.h>
+#include <rdtableview.h>
+#include <rdsqltablemodel.h>
 
 class ListFeeds : public QDialog
 {
@@ -44,16 +41,15 @@ class ListFeeds : public QDialog
   void addData();
   void editData();
   void deleteData();
-  void doubleClickedData(Q3ListViewItem *item,const QPoint &pt,int col);
+  void doubleClickedData(const QModelIndex &index);
   void closeData();
 
  protected:
   void resizeEvent(QResizeEvent *e);
 
  private:
-  void RefreshList();
-  void RefreshItem(RDListViewItem *item);
-  RDListView *list_feeds_view;
+  RDTableView *list_view;
+  RDSqlTableModel *list_model;
   QPushButton *list_add_button;
   QPushButton *list_edit_button;
   QPushButton *list_delete_button;

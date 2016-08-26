@@ -3996,6 +3996,10 @@ Are you sure you want to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>&amp;Feeds:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Key</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4016,7 +4020,11 @@ Are you sure you want to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&amp;Feeds:</source>
+        <source>Id</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete RSS Feed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4024,19 +4032,7 @@ Are you sure you want to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Delete Feed</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Deleting Audio...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Deleting</source>
+        <source>Feed Removal</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

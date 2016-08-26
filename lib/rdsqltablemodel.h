@@ -52,6 +52,7 @@ class RDSqlTableModel : public QAbstractTableModel
   bool removeRows(int row,int count,const QModelIndex &parent=QModelIndex());
 
  private:
+  QVariant GetHeader(int section) const;
   std::map<int,QVariant> model_headers;
   std::map<int,FieldType> model_field_types;
   std::vector<std::vector<QVariant> > model_display_datas;

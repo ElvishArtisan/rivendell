@@ -101,7 +101,7 @@ QVariant RDSqlTableModel::headerData(int section,Qt::Orientation orient,
 					int role) const
 {
   if((role==Qt::DisplayRole)&&(orient==Qt::Horizontal)) {
-    if(model_headers.at(section).isValid()) {
+    if(GetHeader(section).isValid()) {
       return model_headers.at(section);
     }
     return QVariant(QString().sprintf("%d",section));
@@ -116,7 +116,8 @@ QVariant RDSqlTableModel::headerData(int section,Qt::Orientation orient,
 bool RDSqlTableModel::setHeaderData(int section,Qt::Orientation orient,
 				       const QVariant &value,int role)
 {
-  if((role==Qt::DisplayRole)&&(orient==Qt::Horizontal)) {
+  if(((role==Qt::DisplayRole)||(role==Qt::EditRole))&&
+     (orient==Qt::Horizontal)) {
     model_headers[section]=value;
     emit headerDataChanged(orient,section,section);
   }
@@ -182,4 +183,16 @@ bool RDSqlTableModel::removeRows(int row,int count,const QModelIndex &parent)
   }
   endRemoveRows();
   return true;
+}
+
+
+QVariant RDSqlTableModel::GetHeader(int section) const
+{
+  try {
+    return model_headers.at(section);
+  }
+  catch(...) {
+    return QVariant();
+  }
+  return QVariant();
 }

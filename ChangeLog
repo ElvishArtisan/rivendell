@@ -16076,3 +16076,8 @@
 	* Renamed the 'RDTableModel' class to 'RDSqlTableModel'.
 	* Added an 'RDTableWidget' widget in 'lib/rdtablewidget.cpp' and
 	'lib/rdtablewidget.h'.
+2016-08-27 Fred Gleason <fredg@paravelsystems.com>
+	* Removed Qt3Support components from 'rdadmin/list_feeds.cpp' and
+	'rdadmin/list_feeds.h'.
+	* Added 'RDFeed::create()', 'RDFeed::remove()' and 'RDFeed:tableName()'
+	methods in 'lib/rdfeed.cpp' and 'lib/rdfeed.h'.

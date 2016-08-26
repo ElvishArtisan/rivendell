@@ -4555,23 +4555,23 @@ Do you still want to delete it?</source>
     </message>
     <message>
         <source>Key</source>
-        <translation>Nombre</translation>
+        <translation type="unfinished">Nombre</translation>
     </message>
     <message>
         <source>Title</source>
-        <translation>Título</translation>
+        <translation type="unfinished">Título</translation>
     </message>
     <message>
         <source>AutoPost</source>
-        <translation>AutoPublicar</translation>
+        <translation type="unfinished">AutoPublicar</translation>
     </message>
     <message>
         <source>Keep Metadata</source>
-        <translation>Mantener metadatos</translation>
+        <translation type="unfinished">Mantener metadatos</translation>
     </message>
     <message>
         <source>Creation Date</source>
-        <translation>Fecha de creación</translation>
+        <translation type="unfinished">Fecha de creación</translation>
     </message>
     <message>
         <source>&amp;Feeds:</source>
@@ -4579,23 +4579,35 @@ Do you still want to delete it?</source>
     </message>
     <message>
         <source>Are you sure you want to delete feed</source>
-        <translation>¿Está seguro de borrar el feed </translation>
+        <translation type="unfinished">¿Está seguro de borrar el feed </translation>
     </message>
     <message>
         <source>Delete Feed</source>
-        <translation>Eliminar Feed</translation>
+        <translation type="obsolete">Eliminar Feed</translation>
     </message>
     <message>
         <source>Deleting Audio...</source>
-        <translation>Eliminando Audio...</translation>
+        <translation type="obsolete">Eliminando Audio...</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation>Cancelar</translation>
+        <translation type="obsolete">Cancelar</translation>
     </message>
     <message>
         <source>Deleting</source>
-        <translation>Borrando</translation>
+        <translation type="obsolete">Borrando</translation>
+    </message>
+    <message>
+        <source>Id</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete RSS Feed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Feed Removal</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

@@ -28,8 +28,6 @@
 #include <rddb.h>
 #include <rdtextvalidator.h>
 #include <rdescape_string.h>
-#include <rdcreateauxfieldstable.h>
-#include <rdfeedlog.h>
 
 #include <edit_feed.h>
 #include <add_feed.h>
@@ -128,57 +126,12 @@ QSizePolicy AddFeed::sizePolicy() const
 
 void AddFeed::okData()
 {
-  QString sql;
-  RDSqlQuery *q;
-  RDSqlQuery *q1;
-
-  sql=QString("select KEY_NAME from FEEDS where ")+
-    "KEY_NAME=\""+RDEscapeString(feed_keyname_edit->text())+"\"";
-  q=new RDSqlQuery(sql);
-  if(q->first()) {
-    QMessageBox::warning(this,tr("Add Feed Error"),
+  if((*feed_id=
+     RDFeed::create(feed_keyname_edit->text(),feed_users_box->isChecked()))<0) {
+    QMessageBox::warning(this,"RDAdmin - "+tr("Add Feed Error"),
 			 tr("A feed with that key name already exists!"));
-    delete q;
     return;
   }
-  delete q;
-
-  //
-  // Create Default Feed Perms
-  //
-  if(feed_users_box->isChecked()) {
-    sql="select LOGIN_NAME from USERS \
-         where (ADMIN_USERS_PRIV='N')&&(ADMIN_CONFIG_PRIV='N')";
-    q=new RDSqlQuery(sql);
-    while(q->next()) {
-      sql=QString("insert into FEED_PERMS set ")+
-	"USER_NAME=\""+RDEscapeString(q->value(0).toString())+"\","+
-	"KEY_NAME=\""+RDEscapeString(feed_keyname_edit->text())+"\"";
-      q1=new RDSqlQuery(sql);
-      delete q1;
-    }
-    delete q;
-  }
-
-  //
-  // Create Feed
-  //
-  sql=QString("insert into FEEDS set ")+
-    "KEY_NAME=\""+RDEscapeString(feed_keyname_edit->text())+"\","+
-    "ORIGIN_DATETIME=\""+QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss")+"\","+
-    "HEADER_XML=\""+RDEscapeString(DEFAULT_HEADER_XML)+"\","+
-    "CHANNEL_XML=\""+RDEscapeString(DEFAULT_CHANNEL_XML)+"\","+
-    "ITEM_XML=\""+RDEscapeString(DEFAULT_ITEM_XML)+"\"";
-  q=new RDSqlQuery(sql);
-  delete q;
-  RDCreateFeedLog(feed_keyname_edit->text());
-  RDCreateAuxFieldsTable(feed_keyname_edit->text());
-  sql=QString("select LAST_INSERT_ID() from FEEDS");
-  q=new RDSqlQuery(sql);
-  if(q->first()) {
-    *feed_id=q->value(0).toUInt();
-  }
-  delete q;
   *feed_keyname=feed_keyname_edit->text();
   done(0);
 }

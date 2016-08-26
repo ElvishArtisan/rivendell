@@ -24,11 +24,14 @@
 #include <q3url.h>
 #include <qapplication.h>
 
+#include <rdapplication.h>
 #include <rddb.h>
 #include <rdfeed.h>
 #include <rdconf.h>
 #include <rdlibrary_conf.h>
 #include <rdescape_string.h>
+#include <rdcreateauxfieldstable.h>
+#include <rdfeedlog.h>
 #include <rdwavefile.h>
 #include <rdpodcast.h>
 #include <rdcart.h>
@@ -757,6 +760,128 @@ int RDFeed::totalPostSteps() const
 }
 
 
+int RDFeed::create(const QString &keyname,bool allow_all_users)
+{
+  QString sql;
+  RDSqlQuery *q;
+  RDSqlQuery *q1;
+  int new_id=-1;
+
+  sql=QString("select KEY_NAME from FEEDS where ")+
+    "KEY_NAME=\""+RDEscapeString(keyname)+"\"";
+  q=new RDSqlQuery(sql);
+  if(q->first()) {
+    delete q;
+    return -1;
+  }
+  delete q;
+
+  //
+  // Create Default Feed Perms
+  //
+  if(allow_all_users) {
+    sql=QString("select ")+
+      "LOGIN_NAME "+
+      "from USERS where "+
+      "(ADMIN_USERS_PRIV='N')&&"+
+      "(ADMIN_CONFIG_PRIV='N')";
+    q=new RDSqlQuery(sql);
+    while(q->next()) {
+      sql=QString("insert into FEED_PERMS set ")+
+	"USER_NAME=\""+RDEscapeString(q->value(0).toString())+"\","+
+	"KEY_NAME=\""+RDEscapeString(keyname)+"\"";
+      q1=new RDSqlQuery(sql);
+      delete q1;
+    }
+    delete q;
+  }
+
+  //
+  // Create Feed
+  //
+  sql=QString("insert into FEEDS set ")+
+    "KEY_NAME=\""+RDEscapeString(keyname)+"\","+
+    "ORIGIN_DATETIME=now(),"+
+    "HEADER_XML=\""+RDEscapeString(DEFAULT_HEADER_XML)+"\","+
+    "CHANNEL_XML=\""+RDEscapeString(DEFAULT_CHANNEL_XML)+"\","+
+    "ITEM_XML=\""+RDEscapeString(DEFAULT_ITEM_XML)+"\"";
+  q=new RDSqlQuery(sql);
+  new_id=q->lastInsertId().toInt();
+  delete q;
+  RDCreateFeedLog(keyname);
+  RDCreateAuxFieldsTable(keyname);
+
+  return new_id;
+}
+
+
+void RDFeed::remove(const QString &keyname,QString *errs)
+{
+  QString sql;
+  RDSqlQuery *q;
+  RDFeed *feed=NULL;
+  int feed_id=-1;
+
+  //
+  // Get Feed ID
+  //
+  sql=QString("select ")+
+    "ID "+
+    "from FEEDS where "+
+    "KEY_NAME=\""+RDEscapeString(keyname)+"\"";
+  q=new RDSqlQuery(sql);
+  if(q->first()) {
+    feed_id=q->value(0).toInt();
+    delete q;
+  }
+
+  //
+  // Delete Casts
+  //
+  // First, Delete Remote Audio
+  //
+  RDPodcast *cast;
+  sql=QString("select ")+
+    "ID "+
+    "from PODCASTS where "+
+    QString().sprintf("FEED_ID=%d",feed_id);
+  q=new RDSqlQuery(sql);
+  while(q->next()) {
+    cast=new RDPodcast(q->value(0).toUInt());
+    cast->removeAudio(feed,errs,rda->config()->logXloadDebugData());
+    delete cast;
+  }
+  delete q;
+
+  //
+  // Delete Cast Entries
+  //
+  sql=QString("delete ")+
+    "from PODCASTS where "+
+    QString().sprintf("FEED_ID=%d",feed_id);
+  q=new RDSqlQuery(sql);
+  delete q;
+
+  //
+  // Delete Feed
+  //
+  sql=QString("delete ")+
+    "from FEED_PERMS where "+
+    "KEY_NAME=\""+RDEscapeString(keyname)+"\"";
+  q=new RDSqlQuery(sql);
+  delete q;
+  sql=QString("delete from FEEDS where ")+
+    "KEY_NAME=\""+RDEscapeString(keyname)+"\"";
+  q=new RDSqlQuery(sql);
+  delete q;
+  RDDeleteFeedLog(keyname);
+  sql=QString("drop table `")+RDFeed::tableName(keyname)+"`";
+  q=new RDSqlQuery(sql);
+  delete q;
+  delete feed;
+}
+
+
 QString RDFeed::errorString(RDFeed::Error err)
 {
   QString ret="Unknown Error";
@@ -789,6 +914,15 @@ QString RDFeed::errorString(RDFeed::Error err)
   return ret;
 }
 
+
+QString RDFeed::tableName(const QString &keyname)
+{
+  QString ret=keyname;
+  
+  ret.replace(" ","_");
+
+  return ret+"_FIELDS";
+}
 
 unsigned RDFeed::CreateCast(QString *filename,int bytes,int msecs) const
 {
