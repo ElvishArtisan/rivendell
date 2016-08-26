@@ -68,6 +68,39 @@ QString RDSchedCode::xml() const
 }
 
 
+bool RDSchedCode::create(const QString &code)
+{
+  QString sql;
+  RDSqlQuery *q;
+  bool ret;
+
+  sql=QString("insert into SCHED_CODES set ")+
+    "CODE=\""+RDEscapeString(code)+"\"";
+  q=new RDSqlQuery(sql);
+  ret=q->isActive();
+  delete q;
+
+  return ret;
+}
+
+
+void RDSchedCode::remove(const QString &code)
+{
+  QString sql;
+  RDSqlQuery *q;
+
+  sql=QString("delete from DROPBOX_SCHED_CODES where ")+
+    "SCHED_CODE=\""+RDEscapeString(code)+"\"";
+  q=new RDSqlQuery(sql);
+  delete q;
+
+  sql=QString("delete from SCHED_CODES where ")+
+    "CODE=\""+RDEscapeString(code)+"\"";
+  q=new RDSqlQuery(sql);
+  delete q;
+}
+
+
 void RDSchedCode::SetRow(const QString &param,const QString &value) const
 {
   RDSqlQuery *q;

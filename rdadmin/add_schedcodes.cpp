@@ -18,30 +18,22 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qdialog.h>
-#include <qstring.h>
-#include <qpushbutton.h>
-#include <q3listbox.h>
-#include <q3textedit.h>
-#include <qlabel.h>
-#include <qpainter.h>
-#include <qevent.h>
-#include <qmessagebox.h>
-#include <qcheckbox.h>
-#include <q3buttongroup.h>
+#include <QLabel>
+#include <QMessageBox>
+#include <QPushButton>
 
-#include <rddb.h>
-#include <rdescape_string.h>
-#include <rdpasswd.h>
-#include <rdtextvalidator.h>
+#include "rddb.h"
+#include "rdescape_string.h"
+#include "rdschedcode.h"
+#include "rdtextvalidator.h"
 
-#include <edit_schedcodes.h>
-#include <add_schedcodes.h>
+#include "add_schedcodes.h"
+#include "edit_schedcodes.h"
 
-AddSchedCode::AddSchedCode(QString *schedCode,QWidget *parent)
-  : QDialog(parent,"",true)
+AddSchedCode::AddSchedCode(QString *schedcode,QWidget *parent)
+  : QDialog(parent)
 {
-  schedCode_schedCode=schedCode;
+  schedcode_schedcode=schedcode;
 
   //
   // Fix the Window Size
@@ -51,7 +43,7 @@ AddSchedCode::AddSchedCode(QString *schedCode,QWidget *parent)
   setMinimumHeight(sizeHint().height());
   setMaximumHeight(sizeHint().height());
 
-  setCaption(tr("Add Scheduler Code"));
+  setWindowTitle(tr("Add Scheduler Code"));
 
   //
   // Create Fonts
@@ -70,11 +62,11 @@ AddSchedCode::AddSchedCode(QString *schedCode,QWidget *parent)
   //
   // Code Name
   //
-  schedCode_name_edit=new QLineEdit(this);
-  schedCode_name_edit->setGeometry(105,11,sizeHint().width()-150,19);
-  schedCode_name_edit->setMaxLength(10);
-  schedCode_name_edit->setValidator(validator);
-  QLabel *label=new QLabel(schedCode_name_edit,tr("&New Code:"),this);
+  schedcode_name_edit=new QLineEdit(this);
+  schedcode_name_edit->setGeometry(105,11,sizeHint().width()-150,19);
+  schedcode_name_edit->setMaxLength(10);
+  schedcode_name_edit->setValidator(validator);
+  QLabel *label=new QLabel(schedcode_name_edit,tr("&New Code:"),this);
   label->setGeometry(10,11,90,19);
   label->setFont(font);
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
@@ -103,7 +95,7 @@ AddSchedCode::AddSchedCode(QString *schedCode,QWidget *parent)
 
 AddSchedCode::~AddSchedCode()
 {
-  delete schedCode_name_edit;
+  delete schedcode_name_edit;
 }
 
 
@@ -121,35 +113,25 @@ QSizePolicy AddSchedCode::sizePolicy() const
 
 void AddSchedCode::okData()
 {
-  RDSqlQuery *q;
-  QString sql;
-
-  if(schedCode_name_edit->text().isEmpty()) {
+  if(schedcode_name_edit->text().isEmpty()) {
     QMessageBox::warning(this,tr("Invalid Name"),tr("Invalid Name!"));
     return;
   }
 
-  sql=QString("insert into SCHED_CODES set ")+
-    "CODE=\""+RDEscapeString(schedCode_name_edit->text())+"\"";
-
-  q=new RDSqlQuery(sql);
-  if(!q->isActive()) {
-    QMessageBox::warning(this,tr("Code Exists"),tr("Code Already Exists!"),
-			 1,0,0);
-    delete q;
+  if(!RDSchedCode::create(schedcode_name_edit->text())) {
+    QMessageBox::warning(this,tr("Code Exists"),tr("Code Already Exists!"));
     return;
   }
-  delete q;
 
-  EditSchedCode *schedCode=
-    new EditSchedCode(schedCode_name_edit->text(),"",this);
-  if(schedCode->exec()<0) {
-    delete schedCode;
+  EditSchedCode *schedcode=
+    new EditSchedCode(schedcode_name_edit->text(),"",this);
+  if(schedcode->exec()<0) {
+    delete schedcode;
     done(-1);
     return;
   }
-  delete schedCode;
-  *schedCode_schedCode=schedCode_name_edit->text();
+  delete schedcode;
+  *schedcode_schedcode=schedcode_name_edit->text();
   done(0);
 }
 

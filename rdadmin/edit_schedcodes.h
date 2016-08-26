@@ -2,7 +2,8 @@
 //
 // Edit scheduler codes dialog
 //
-//   Stefan Gabriel <stg@st-gabriel.de>
+//   by Stefan Gabriel <stg@st-gabriel.de>
+//   Changes for Qt4 (C) 2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,18 +22,14 @@
 #ifndef EDIT_SCHEDCODES_H
 #define EDIT_SCHEDCODES_H
 
-#include <qdialog.h>
-#include <q3listbox.h>
-#include <qpixmap.h>
-#include <qsqldatabase.h>
-#include <qlineedit.h>
-#include <qlabel.h>
+#include <QDialog>
+#include <QLineEdit>
 
 class EditSchedCode : public QDialog
 {
   Q_OBJECT
   public:
-   EditSchedCode(QString schedCode,QString description,QWidget *parent=0);
+   EditSchedCode(QString schedcode,QString description,QWidget *parent=0);
    ~EditSchedCode();
    QSize sizeHint() const;
    QSizePolicy sizePolicy() const;
@@ -42,10 +39,10 @@ class EditSchedCode : public QDialog
    void cancelData();
 
   private:
-   QString *schedCode_code;
-   QString *schedCode_description;
-   QLineEdit *schedCode_name_edit;
-   QLineEdit *schedCode_description_edit;
+   QString *schedcode_code;
+   QString *schedcode_description;
+   QLineEdit *schedcode_name_edit;
+   QLineEdit *schedcode_description_edit;
    };
 
 

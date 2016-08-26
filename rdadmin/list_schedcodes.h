@@ -21,15 +21,13 @@
 #ifndef LIST_SCHEDCODES_H
 #define LIST_SCHEDCODES_H
 
-#include <qdialog.h>
-#include <qpixmap.h>
-#include <qsqldatabase.h>
-#include <qpushbutton.h>
-//Added by qt3to4:
+#include <QDialog>
+#include <QLabel>
+#include <QPushButton>
 #include <QResizeEvent>
 
-#include <rdlistviewitem.h>
-#include <rddb.h>
+#include <rdsqltablemodel.h>
+#include <rdtableview.h>
 
 class ListSchedCodes : public QDialog
 {
@@ -44,23 +42,21 @@ class ListSchedCodes : public QDialog
   void addData();
   void editData();
   void deleteData();
-  void doubleClickedData(Q3ListViewItem *item,const QPoint &pt,int col);
+  void doubleClickedData(const QModelIndex &index);
   void closeData();
 
  protected:
   void resizeEvent(QResizeEvent *e);
 
  private:
-  void RefreshList();
-  void RefreshItem(Q3ListViewItem *item);
-  void WriteItem(Q3ListViewItem *item,RDSqlQuery *q);
-  Q3ListView *list_schedCodes_view;
+  QLabel *list_box_label;
+  RDTableView *list_view;
+  RDSqlTableModel *list_model;
   QPushButton *list_add_button;
   QPushButton *list_edit_button;
   QPushButton *list_delete_button;
   QPushButton *list_close_button;
 };
-
 
 
 #endif  // LIST_SCHEDCODES_H

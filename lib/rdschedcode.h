@@ -30,6 +30,8 @@ class RDSchedCode
   QString description() const;
   void setDescription(const QString &desc) const;
   QString xml() const;
+  static bool create(const QString &code);
+  static void remove(const QString &code);
 
  private:
   void SetRow(const QString &param,const QString &value) const;

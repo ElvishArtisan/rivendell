@@ -16088,3 +16088,10 @@
 	'rdadmin/edit_feed.h'.
 2016-08-27 Fred Gleason <fredg@paravelsystems.com>
 	* Removed forced main window placement in 'rdadmin/rdadmin.cpp'.
+2016-08-27 Fred Gleason <fredg@paravelsystems.com>
+	* Removed Qt3Support components from 'rdadmin/list_schedcodes.cpp' and
+	'rdadmin/list_schedcodes.h'.
+	* Removed Qt3Support components from 'rdadmin/add_schedcode.cpp' and
+	'rdadmin/add_schedcode.h'.
+	* Removed Qt3Support components from 'rdadmin/edit_schedcode.cpp' and
+	'rdadmin/edit_schedcode.h'.
