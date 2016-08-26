@@ -18,36 +18,22 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qdialog.h>
-#include <qstring.h>
-#include <qpushbutton.h>
-#include <q3listbox.h>
-#include <q3textedit.h>
-#include <qlabel.h>
-#include <qpainter.h>
-#include <qevent.h>
-#include <qmessagebox.h>
-#include <q3buttongroup.h>
+#include <QMessageBox>
 
-#include <rdairplay_conf.h>
-#include <rdescape_string.h>
-#include <rddb.h>
-#include <list_stations.h>
-#include <edit_station.h>
-#include <add_station.h>
+#include "add_station.h"
+#include "edit_station.h"
+#include "list_stations.h"
 
 ListStations::ListStations(QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
   //
   // Fix the Window Size
   //
   setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
   setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
 
-  setCaption(tr("Rivendell Workstation List"));
+  setWindowTitle("RDAdmin - "+tr("Rivendell Workstation List"));
 
   //
   // Create Fonts
@@ -60,58 +46,49 @@ ListStations::ListStations(QWidget *parent)
   //
   //  Add Button
   //
-  QPushButton *add_button=new QPushButton(this);
-  add_button->setGeometry(410,30,80,50);
-  add_button->setFont(font);
-  add_button->setText(tr("&Add"));
-  connect(add_button,SIGNAL(clicked()),this,SLOT(addData()));
+  list_add_button=new QPushButton(this);
+  list_add_button->setFont(font);
+  list_add_button->setText(tr("&Add"));
+  connect(list_add_button,SIGNAL(clicked()),this,SLOT(addData()));
 
   //
   //  Edit Button
   //
-  QPushButton *edit_button=new QPushButton(this);
-  edit_button->setGeometry(410,90,80,50);
-  edit_button->setFont(font);
-  edit_button->setText(tr("&Edit"));
-  connect(edit_button,SIGNAL(clicked()),this,SLOT(editData()));
+  list_edit_button=new QPushButton(this);
+  list_edit_button->setFont(font);
+  list_edit_button->setText(tr("&Edit"));
+  connect(list_edit_button,SIGNAL(clicked()),this,SLOT(editData()));
 
   //
   //  Delete Button
   //
-  QPushButton *delete_button=new QPushButton(this);
-  delete_button->setGeometry(410,150,80,50);
-  delete_button->setFont(font);
-  delete_button->setText(tr("&Delete"));
-  connect(delete_button,SIGNAL(clicked()),this,SLOT(deleteData()));
+  list_delete_button=new QPushButton(this);
+  list_delete_button->setFont(font);
+  list_delete_button->setText(tr("&Delete"));
+  connect(list_delete_button,SIGNAL(clicked()),this,SLOT(deleteData()));
 
   //
   //  Close Button
   //
-  QPushButton *close_button=new QPushButton(this);
-  close_button->setGeometry(410,240,80,50);
-  close_button->setDefault(true);
-  close_button->setFont(font);
-  close_button->setText(tr("&Close"));
-  connect(close_button,SIGNAL(clicked()),this,SLOT(closeData()));
+  list_close_button=new QPushButton(this);
+  list_close_button->setDefault(true);
+  list_close_button->setFont(font);
+  list_close_button->setText(tr("&Close"));
+  connect(list_close_button,SIGNAL(clicked()),this,SLOT(closeData()));
 
   //
-  // Station List Box
+  // Station List
   //
-  list_box=new Q3ListBox(this);
-  list_box->setGeometry(10,30,390,260);
-  QLabel *list_box_label=new QLabel(list_box,tr("Ho&sts:"),this);
-  list_box_label->setFont(font);
-  list_box_label->setGeometry(14,10,85,19);
-  connect(list_box,SIGNAL(doubleClicked(Q3ListBoxItem *)),
-	  this,SLOT(doubleClickedData(Q3ListBoxItem *)));
-
-  RefreshList();
-}
-
-
-ListStations::~ListStations()
-{
-  delete list_box;
+  list_model=new RDSqlTableModel(this);
+  list_model->setQuery("select NAME from STATIONS order by NAME");
+  list_model->setHeaderData(0,Qt::Horizontal,tr("Name"));
+  list_view=new QListView(this);
+  list_view->setModel(list_model);
+  list_view->show();
+  connect(list_view,SIGNAL(doubleClicked(const QModelIndex &)),
+	  this,SLOT(doubleClickedData(const QModelIndex &)));
+  list_view_label=new QLabel(tr("Ho&sts:"),this);
+  list_view_label->setFont(font);
 }
 
 
@@ -133,42 +110,38 @@ void ListStations::addData()
 
   AddStation *add_station=new AddStation(&stationname,this);
   if(add_station->exec()<0) {
-    DeleteStation(stationname);
+    RDStation::remove(stationname);
     delete add_station;
     return;
   }
   delete add_station;
-  RefreshList(stationname);
+  list_model->update();
 }
 
 
 void ListStations::editData()
 {
-  if(list_box->currentItem()<0) {
-    return;
+  QItemSelectionModel *s=list_view->selectionModel();
+  if(s->hasSelection()) {
+    doubleClickedData(s->selectedRows()[0]);
   }
-  EditStation *edit_station=new EditStation(list_box->currentText(),this);
-  edit_station->exec();
-  delete edit_station;
 }
 
 
 void ListStations::deleteData()
 {
-  QString str;
-
-  str=QString(tr("Are you sure you want to delete host"));
-  if(QMessageBox::warning(this,tr("Delete Station"),
-			  QString().sprintf(
-			    "%s %s?",(const char *)str,
-			    (const char *)list_box->currentText()),
-			  QMessageBox::Yes,QMessageBox::No)==
-     QMessageBox::Yes) {
-    DeleteStation(list_box->currentText());
-    list_box->removeItem(list_box->currentItem());
-    if(list_box->currentItem()>=0) {
-      list_box->setSelected(list_box->currentItem(),true);
+  QItemSelectionModel *s=list_view->selectionModel();
+  if(s->hasSelection()) {
+    if(QMessageBox::question(this,"RDAdmin - "+tr("Delete Host"),
+			     tr("Are you sure you want to delete host")+
+			     " \""+
+			     s->selectedRows()[0].data().toString()+
+			     "\"?",QMessageBox::Yes,QMessageBox::No)!=
+       QMessageBox::Yes) {
+      return;
     }
+    RDStation::remove(s->selectedRows()[0].data().toString());
+    list_model->update();
   }
 }
 
@@ -179,128 +152,20 @@ void ListStations::closeData()
 }
 
 
-void ListStations::doubleClickedData(Q3ListBoxItem *item)
+void ListStations::resizeEvent(QResizeEvent *e)
 {
-  editData();
+  list_view->setGeometry(10,30,size().width()-110,size().height()-40);
+  list_view_label->setGeometry(14,10,85,22);
+  list_add_button->setGeometry(size().width()-90,30,80,50);
+  list_edit_button->setGeometry(size().width()-90,90,80,50);
+  list_delete_button->setGeometry(size().width()-90,150,80,50);
+  list_close_button->setGeometry(size().width()-90,size().height()-60,80,50);
 }
 
 
-void ListStations::RefreshList(QString stationname)
+void ListStations::doubleClickedData(const QModelIndex &index)
 {
-  QString sql;
-  RDSqlQuery *q;
-
-  list_box->clear();
-  q=new RDSqlQuery("select NAME from STATIONS");
-  while (q->next()) {
-    list_box->insertItem(q->value(0).toString());
-    if(stationname==list_box->text(list_box->count()-1)) {
-      list_box->setCurrentItem(list_box->count()-1);
-    }
-  }
-  delete q;
+  EditStation *edit_station=new EditStation(index.data().toString(),this);
+  edit_station->exec();
+  delete edit_station;
 }
-
-
-void ListStations::DeleteStation(QString name)
-{
-  QString sql;
-  RDSqlQuery *q;
-
-  sql=QString("delete from DECKS where ")+
-    "STATION_NAME=\""+RDEscapeString(name)+"\"";
-  q=new RDSqlQuery(sql);
-  delete q;
-  sql=QString("delete from DECK_EVENTS where ")+
-    "STATION_NAME=\""+RDEscapeString(name)+"\"";
-  q=new RDSqlQuery(sql);
-  delete q;
-  sql=QString("delete from TTYS where ")+
-    "STATION_NAME=\""+RDEscapeString(name)+"\"";
-  q=new RDSqlQuery(sql);
-  delete q;
-  sql=QString("delete from AUDIO_PORTS where ")+
-    "STATION_NAME=\""+RDEscapeString(name)+"\"";
-  q=new RDSqlQuery(sql);
-  delete q;
-  sql=QString("delete from RECORDINGS where ")+
-    "STATION_NAME=\""+RDEscapeString(name)+"\"";
-  q=new RDSqlQuery(sql);
-  delete q;
-  sql=
-    QString("delete from SERVICE_PERMS where ")+
-    "STATION_NAME=\""+RDEscapeString(name)+"\"";
-  q=new RDSqlQuery(sql);
-  delete q;
-  sql=QString("delete from RDAIRPLAY where ")+
-    "STATION=\""+RDEscapeString(name)+"\"";
-  q=new RDSqlQuery(sql);
-  delete q;
-  sql=QString("delete from RDAIRPLAY_CHANNELS where ")+
-    "STATION=\""+RDEscapeString(name)+"\"";
-  q=new RDSqlQuery(sql);
-  delete q;
-  sql=QString("delete from RDPANEL where ")+
-    "STATION=\""+RDEscapeString(name)+"\"";
-  q=new RDSqlQuery(sql);
-  delete q;
-  sql=QString("delete from RDPANEL_CHANNELS where ")+
-    "STATION=\""+RDEscapeString(name)+"\"";
-  q=new RDSqlQuery(sql);
-  delete q;
-  sql=QString("delete from RDLOGEDIT where ")+
-    "STATION=\""+RDEscapeString(name)+"\"";
-  q=new RDSqlQuery(sql);
-  delete q;
-  sql=QString("delete from MATRICES where ")+
-    "STATION_NAME=\""+RDEscapeString(name)+"\"";
-  q=new RDSqlQuery(sql);
-  delete q;
-  sql=QString("delete from INPUTS where ")+
-    "STATION_NAME=\""+RDEscapeString(name)+"\"";
-  q=new RDSqlQuery(sql);
-  delete q;
-  sql=QString("delete from OUTPUTS where ")+
-    "STATION_NAME=\""+RDEscapeString(name)+"\"";
-  q=new RDSqlQuery(sql);
-  delete q;
-  sql=QString("delete from VGUEST_RESOURCES where ")+
-    "STATION_NAME=\""+RDEscapeString(name)+"\"";
-  q=new RDSqlQuery(sql);
-  delete q;
-  sql=QString("delete from RDLIBRARY where ")+
-    "STATION=\""+RDEscapeString(name)+"\"";
-  q=new RDSqlQuery(sql);
-  delete q;
-  sql=QString("delete from GPIS where ")+
-    "STATION_NAME=\""+RDEscapeString(name)+"\"";
-  q=new RDSqlQuery(sql);
-  delete q;
-  sql=QString("delete from HOSTVARS where ")+
-    "STATION_NAME=\""+RDEscapeString(name)+"\"";
-  q=new RDSqlQuery(sql);
-  delete q;
-  sql=QString("delete from STATIONS where ")+
-    "NAME=\""+RDEscapeString(name)+"\"";
-  q=new RDSqlQuery(sql);
-  delete q;
-  sql=QString("delete from REPORT_STATIONS where ")+
-    "STATION_NAME=\""+RDEscapeString(name)+"\"";
-  q=new RDSqlQuery(sql);
-  delete q;
-  sql=QString("delete from PANELS where ")+
-    QString().sprintf("(TYPE=%d)&&",RDAirPlayConf::StationPanel)+
-    "(OWNER=\""+RDEscapeString(name)+"\")";
-  q=new RDSqlQuery(sql);
-  delete q;
-  sql=QString("delete from EXTENDED_PANELS where ")+
-    QString().sprintf("(TYPE=%d)&&",RDAirPlayConf::StationPanel)+
-    "OWNER=\""+RDEscapeString(name)+"\")";
-  q=new RDSqlQuery(sql);
-  delete q;
-  sql=QString("delete from RDHOTKEYS where ")+
-    "STATION_NAME=\""+RDEscapeString(name)+"\"";
-  q=new RDSqlQuery(sql);
-  delete q;
-}
-

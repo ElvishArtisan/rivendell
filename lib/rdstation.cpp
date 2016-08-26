@@ -755,7 +755,7 @@ void RDStation::remove(const QString &name)
   q=new RDSqlQuery(sql);
   delete q;
   sql=QString("delete from RDAIRPLAY_CHANNELS where ")+
-    "STATION=\""+RDEscapeString(name)+"\"";
+    "STATION_NAME=\""+RDEscapeString(name)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
   sql=QString("delete from RDPANEL where ")+
@@ -763,7 +763,7 @@ void RDStation::remove(const QString &name)
   q=new RDSqlQuery(sql);
   delete q;
   sql=QString("delete from RDPANEL_CHANNELS where ")+
-    "STATION=\""+RDEscapeString(name)+"\"";
+    "STATION_NAME=\""+RDEscapeString(name)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
   sql=QString("delete from RDLOGEDIT where ")+
@@ -813,7 +813,7 @@ void RDStation::remove(const QString &name)
   delete q;
   sql=QString("delete from EXTENDED_PANELS where ")+
     QString().sprintf("(TYPE=%d)&&",RDAirPlayConf::StationPanel)+
-    "OWNER=\""+RDEscapeString(name)+"\")";
+    "(OWNER=\""+RDEscapeString(name)+"\")";
   q=new RDSqlQuery(sql);
   delete q;
   sql=QString("delete from RDHOTKEYS where ")+

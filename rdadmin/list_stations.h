@@ -21,19 +21,18 @@
 #ifndef LIST_STATIONS_H
 #define LIST_STATIONS_H
 
-#include <qdialog.h>
-#include <q3listbox.h>
-#include <q3textedit.h>
-#include <qpixmap.h>
-#include <qradiobutton.h>
-#include <qsqldatabase.h>
+#include <QDialog>
+#include <QLabel>
+#include <QListView>
+#include <QPushButton>
+
+#include <rdsqltablemodel.h>
 
 class ListStations : public QDialog
 {
   Q_OBJECT
  public:
   ListStations(QWidget *parent=0);
-  ~ListStations();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
   
@@ -41,13 +40,20 @@ class ListStations : public QDialog
   void addData();
   void editData();
   void deleteData();
-  void doubleClickedData(Q3ListBoxItem *item);
+  void doubleClickedData(const QModelIndex &index);
   void closeData();
+
+ protected:
+  void resizeEvent(QResizeEvent *e);
   
  private:
-  void RefreshList(QString stationname="");
-  void DeleteStation(QString name);
-  Q3ListBox *list_box;
+  QLabel *list_view_label;
+  QListView *list_view;
+  QPushButton *list_add_button;
+  QPushButton *list_edit_button;
+  QPushButton *list_delete_button;
+  QPushButton *list_close_button;
+  RDSqlTableModel *list_model;
 };
 
 

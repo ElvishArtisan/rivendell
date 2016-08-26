@@ -5058,15 +5058,23 @@ Carts</source>
     </message>
     <message>
         <source>Ho&amp;sts:</source>
-        <translation>Ho&amp;sts:</translation>
+        <translation type="unfinished">Ho&amp;sts:</translation>
     </message>
     <message>
         <source>Are you sure you want to delete host</source>
-        <translation>Sind Sie sicher, daß sie den Host löschen wollen</translation>
+        <translation type="unfinished">Sind Sie sicher, daß sie den Host löschen wollen</translation>
     </message>
     <message>
         <source>Delete Station</source>
-        <translation>Station löschen</translation>
+        <translation type="obsolete">Station löschen</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete Host</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

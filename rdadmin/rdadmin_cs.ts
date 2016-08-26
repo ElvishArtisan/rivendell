@@ -5137,15 +5137,23 @@ vozíky</translation>
     </message>
     <message>
         <source>Ho&amp;sts:</source>
-        <translation>&amp;Servery:</translation>
+        <translation type="unfinished">&amp;Servery:</translation>
     </message>
     <message>
         <source>Are you sure you want to delete host</source>
-        <translation>Opravdu chcete smazat tento server</translation>
+        <translation type="unfinished">Opravdu chcete smazat tento server</translation>
     </message>
     <message>
         <source>Delete Station</source>
-        <translation>Smazat stanici</translation>
+        <translation type="obsolete">Smazat stanici</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete Host</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

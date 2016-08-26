@@ -21,24 +21,19 @@
 #ifndef EDIT_STATION_H
 #define EDIT_STATION_H
 
-#include <qdialog.h>
-#include <q3listbox.h>
-#include <q3textedit.h>
-#include <qpixmap.h>
-#include <qcheckbox.h>
-#include <qsqldatabase.h>
-#include <qlineedit.h>
-#include <qcombobox.h>
-#include <qspinbox.h>
-#include <qpushbutton.h>
-#include <qlabel.h>
-//Added by qt3to4:
+#include <QCheckBox>
+#include <QComboBox>
+#include <QDialog>
+#include <QGroupBox>
+#include <QLabel>
+#include <QLineEdit>
 #include <QPaintEvent>
+#include <QPushButton>
+#include <QSpinBox>
 
-#include <rdstation.h>
-#include <rdcatch_connect.h>
-#include <rdripc.h>
 #include <rdcardselector.h>
+#include <rdcatch_connect.h>
+#include <rdstation.h>
 
 class EditStation : public QDialog
 {
@@ -48,9 +43,6 @@ class EditStation : public QDialog
    ~EditStation();
    QSize sizeHint() const;
    QSizePolicy sizePolicy() const;
-
- protected:
-  void paintEvent(QPaintEvent *e);
 
  private slots:
    void selectClicked();
@@ -109,10 +101,12 @@ class EditStation : public QDialog
    QCheckBox *station_dragdrop_box;
    QLabel *station_panel_enforce_label;
    QCheckBox *station_panel_enforce_box;
+   QGroupBox *station_groupbox;
+   QLabel *station_http_station_label;
    QComboBox *station_http_station_box;
+   QLabel *station_cae_station_label;
    QComboBox *station_cae_station_box;
 };
 
 
-#endif
-
+#endif  // EDIT_STATION_H

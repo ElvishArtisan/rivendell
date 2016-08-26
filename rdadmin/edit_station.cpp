@@ -18,46 +18,35 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <Q3ButtonGroup>
-#include <Q3ListBox>
-#include <Q3TextEdit>
-#include <QCheckBox>
-#include <QDialog>
-#include <QEvent>
-#include <QLabel>
 #include <QMessageBox>
 #include <QPainter>
-#include <QPaintEvent>
-#include <QString>
-#include <QValidator>
 
-#include <rddb.h>
 #include <rdapplication.h>
 #include <rdconf.h>
 #include <rdcatch_connect.h>
 #include <rdcart_dialog.h>
-#include <rdtextvalidator.h>
 #include <rdescape_string.h>
+#include <rdtextvalidator.h>
 
-#include "edit_jack.h"
-#include "edit_station.h"
-#include "edit_rdlibrary.h"
-#include "edit_rdairplay.h"
-#include "edit_rdpanel.h"
-#include "edit_rdlogedit.h"
+#include "edit_audios.h"
+#include "edit_backup.h"
 #include "edit_cartslots.h"
 #include "edit_decks.h"
-#include "edit_audios.h"
+#include "edit_jack.h"
+#include "edit_rdairplay.h"
+#include "edit_rdlibrary.h"
+#include "edit_rdlogedit.h"
+#include "edit_rdpanel.h"
+#include "edit_station.h"
 #include "edit_ttys.h"
-#include "list_matrices.h"
-#include "list_hostvars.h"
-#include "edit_backup.h"
-#include "view_adapters.h"
-#include "list_dropboxes.h"
 #include "globals.h"
+#include "list_dropboxes.h"
+#include "list_hostvars.h"
+#include "list_matrices.h"
+#include "view_adapters.h"
 
 EditStation::EditStation(QString sname,QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
   RDSqlQuery *q;
   QString sql;
@@ -83,7 +72,7 @@ EditStation::EditStation(QString sname,QWidget *parent)
   station_station=new RDStation(sname);
   station_cae_station=NULL;
 
-  setCaption(tr("Host: ")+sname);
+  setWindowTitle("RDAdmin - "+tr("Host: ")+sname);
 
   GetPrivateProfileString(RD_CONF_FILE,"Identity","Password",temp,"",255);
   station_catch_connect=new RDCatchConnect(0,this);
@@ -325,34 +314,45 @@ EditStation::EditStation(QString sname,QWidget *parent)
   //
   // System Services Section
   //
+  /*
   label=new QLabel(tr("System Services"),this);
   label->setGeometry(30,312,110,20);
   label->setFont(font);
   label->setAlignment(Qt::AlignCenter|Qt::TextShowMnemonic);
+  */
+  /*
+  p->drawLine(10,322,sizeHint().width()-10,322);
+  p->drawLine(sizeHint().width()-10,322,sizeHint().width()-10,380);
+  p->drawLine(sizeHint().width()-10,380,10,380);
+  p->drawLine(10,380,10,322);
+  */
 
+  station_groupbox=new QGroupBox(tr("System Services"),this);
+  station_groupbox->setGeometry(10,315,sizeHint().width()-10,380);
+  
   //
   // HTTP Service Host
   //
-  station_http_station_box=new QComboBox(this);
-  station_http_station_box->setGeometry(145,333,200,19);
+  station_http_station_box=new QComboBox(station_groupbox);
+  station_http_station_box->setGeometry(145,20,200,20);
   station_http_station_box->setEditable(false);
   QLabel *station_http_station_label=
-    new QLabel(station_http_station_box,tr("HTTP Xport:"),this);
-  station_http_station_label->setGeometry(11,354,130,19);
+    new QLabel(station_http_station_box,tr("HTTP Xport:"),station_groupbox);
+  station_http_station_label->setGeometry(10,20,130,20);
   station_http_station_label->setFont(font);
   station_http_station_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // CAE Service Host
   //
-  station_cae_station_box=new QComboBox(this);
-  station_cae_station_box->setGeometry(145,354,200,19);
+  station_cae_station_box=new QComboBox(station_groupbox);
+  station_cae_station_box->setGeometry(145,42,200,20);
   station_cae_station_box->setEditable(false);
   connect(station_cae_station_box,SIGNAL(activated(const QString &)),
 	  this,SLOT(caeStationActivatedData(const QString &)));
-  QLabel *station_cae_station_label=new QLabel(station_cae_station_box,
-					       tr("Core Audio Engine:"),this);
-  station_cae_station_label->setGeometry(11,354,130,19);
+  QLabel *station_cae_station_label=
+    new QLabel(station_cae_station_box,tr("Core Audio Engine:"),station_groupbox);
+  station_cae_station_label->setGeometry(11,42,130,20);
   station_cae_station_label->setFont(font);
   station_cae_station_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
@@ -688,24 +688,6 @@ void EditStation::caeStationActivatedData(const QString &station_name)
 QSizePolicy EditStation::sizePolicy() const
 {
   return QSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed);
-}
-
-
-void EditStation::paintEvent(QPaintEvent *e)
-{
-  QPainter *p=new QPainter(this);
-  p->setPen(Qt::black);
-  p->setBrush(Qt::black);
-
-  //
-  // System Services
-  //
-  p->drawLine(10,322,sizeHint().width()-10,322);
-  p->drawLine(sizeHint().width()-10,322,sizeHint().width()-10,380);
-  p->drawLine(sizeHint().width()-10,380,10,380);
-  p->drawLine(10,380,10,322);
-
-  delete p;
 }
 
 

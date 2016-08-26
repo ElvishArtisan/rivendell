@@ -18,29 +18,19 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qdialog.h>
-#include <qstring.h>
-#include <qpushbutton.h>
-#include <q3listbox.h>
-#include <q3textedit.h>
-#include <qlabel.h>
-#include <qpainter.h>
-#include <qevent.h>
-#include <qmessagebox.h>
-#include <qcheckbox.h>
-#include <q3buttongroup.h>
+#include <QLabel>
+#include <QMessageBox>
+#include <QPushButton>
 
-#include <rddb.h>
-#include <rdairplay_conf.h>
+#include <rdapplication.h>
 #include <rdescape_string.h>
 
-#include <edit_station.h>
-#include <add_station.h>
-#include <rdpasswd.h>
-#include <rdtextvalidator.h>
+#include "add_station.h"
+#include "edit_station.h"
+#include "rdtextvalidator.h"
 
 AddStation::AddStation(QString *stationname,QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
   add_name=stationname;
 
@@ -52,7 +42,7 @@ AddStation::AddStation(QString *stationname,QWidget *parent)
   setMinimumHeight(sizeHint().height());
   setMaximumHeight(sizeHint().height());
 
-  setCaption(tr("Add Host"));
+  setWindowTitle("RDAdmin - "+tr("Add Host"));
 
   //
   // Create Fonts

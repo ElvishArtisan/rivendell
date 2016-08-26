@@ -4474,15 +4474,19 @@ Carts</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Ho&amp;sts:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Are you sure you want to delete host</source>
+        <source>Delete Host</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Delete Station</source>
+        <source>Are you sure you want to delete host</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

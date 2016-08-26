@@ -16095,3 +16095,10 @@
 	'rdadmin/add_schedcode.h'.
 	* Removed Qt3Support components from 'rdadmin/edit_schedcode.cpp' and
 	'rdadmin/edit_schedcode.h'.
+2016-08-27 Fred Gleason <fredg@paravelsystems.com>
+	* Removed Qt3Support components from 'rdadmin/list_stations.cpp' and
+	'rdadmin/list_stations.h'.
+	* Removed Qt3Support components from 'rdadmin/add_station.cpp' and
+	'rdadmin/add_station.h'.
+	* Removed Qt3Support components from 'rdadmin/edit_station.cpp' and
+	'rdadmin/edit_station.h'.

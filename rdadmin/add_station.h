@@ -21,13 +21,9 @@
 #ifndef ADD_STATION_H
 #define ADD_STATION_H
 
-#include <qdialog.h>
-#include <q3listbox.h>
-#include <q3textedit.h>
-#include <qpixmap.h>
-#include <qcombobox.h>
-#include <qsqldatabase.h>
-#include <qlineedit.h>
+#include <QComboBox>
+#include <QDialog>
+#include <QLineEdit>
 
 #include <rdstation.h>
 
@@ -52,5 +48,4 @@ class AddStation : public QDialog
 };
 
 
-#endif
-
+#endif  // ADD_STATION_H
