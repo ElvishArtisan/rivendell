@@ -1738,11 +1738,11 @@ Stále ještě chcete uložit?</translation>
     </message>
     <message>
         <source>Button / Function </source>
-        <translation>Tlačítko/Funkce</translation>
+        <translation type="obsolete">Tlačítko/Funkce</translation>
     </message>
     <message>
         <source>KeyStroke</source>
-        <translation>Klávesová zkratka</translation>
+        <translation type="unfinished">Klávesová zkratka</translation>
     </message>
     <message>
         <source>Set</source>
@@ -1770,11 +1770,11 @@ Stále ještě chcete uložit?</translation>
     </message>
     <message>
         <source>Duplicate Entries</source>
-        <translation>Zdvojené záznamy</translation>
+        <translation type="obsolete">Zdvojené záznamy</translation>
     </message>
     <message>
         <source>Hotkeys Clear</source>
-        <translation>Smazání klávesových zkratek</translation>
+        <translation type="unfinished">Smazání klávesových zkratek</translation>
     </message>
     <message>
         <source>Hotkeys Updated</source>
@@ -1782,11 +1782,19 @@ Stále ještě chcete uložit?</translation>
     </message>
     <message>
         <source>No Items Selected</source>
-        <translation>Nevybrány žádné položky</translation>
+        <translation type="unfinished">Nevybrány žádné položky</translation>
     </message>
     <message>
         <source>Please Select an Item From the List</source>
-        <translation>Vyberte, prosím, položku ze seznamu</translation>
+        <translation type="unfinished">Vyberte, prosím, položku ze seznamu</translation>
+    </message>
+    <message>
+        <source>Button / Function</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure - This will Clear All Hot Key Settings!</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2158,7 +2166,7 @@ GPIOs</source>
     </message>
     <message>
         <source>Invalid Address</source>
-        <translation>Neplatná adresa</translation>
+        <translation type="obsolete">Neplatná adresa</translation>
     </message>
     <message>
         <source>Add</source>
@@ -2174,11 +2182,11 @@ GPIOs</source>
     </message>
     <message>
         <source>Path</source>
-        <translation>Cesta</translation>
+        <translation type="unfinished">Cesta</translation>
     </message>
     <message>
         <source>Argument</source>
-        <translation>Argument</translation>
+        <translation type="unfinished">Argument</translation>
     </message>
     <message>
         <source>Loadable Modules:</source>
@@ -2199,6 +2207,14 @@ GPIOs</source>
     <message>
         <source>Aux Log 2</source>
         <translation>Pomocný zápis 2</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>is invalid.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2229,7 +2245,11 @@ GPIOs</source>
     </message>
     <message>
         <source>Select plugin</source>
-        <translation>Vybrat přídavný modul</translation>
+        <translation type="obsolete">Vybrat přídavný modul</translation>
+    </message>
+    <message>
+        <source>Select plug-in</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

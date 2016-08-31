@@ -1902,7 +1902,7 @@ Bitte Kofiguration prüfen und erneut versuchen.</translation>
     <name>RDListLogs</name>
     <message>
         <source>Select Log - User: </source>
-        <translation>Logbenutzer auswählen:</translation>
+        <translation type="obsolete">Logbenutzer auswählen:</translation>
     </message>
     <message>
         <source>Select Log</source>
@@ -1910,15 +1910,15 @@ Bitte Kofiguration prüfen und erneut versuchen.</translation>
     </message>
     <message>
         <source>NAME</source>
-        <translation>NAME</translation>
+        <translation type="obsolete">NAME</translation>
     </message>
     <message>
         <source>DESCRIPTION</source>
-        <translation>BESCHREIBUNG</translation>
+        <translation type="obsolete">BESCHREIBUNG</translation>
     </message>
     <message>
         <source>SERVICE</source>
-        <translation>SERVICE</translation>
+        <translation type="obsolete">SERVICE</translation>
     </message>
     <message>
         <source>OK</source>
@@ -1927,6 +1927,18 @@ Bitte Kofiguration prüfen und erneut versuchen.</translation>
     <message>
         <source>Cancel</source>
         <translation>Abbrechen</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Service</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

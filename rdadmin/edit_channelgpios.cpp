@@ -18,19 +18,16 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <edit_channelgpios.h>
-//Added by qt3to4:
-#include <QResizeEvent>
-#include <QLabel>
+#include "edit_channelgpios.h"
 
 EditChannelGpios::EditChannelGpios(RDAirPlayConf *conf,
 				   RDAirPlayConf::Channel chan,QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
   edit_airplay_conf=conf;
   edit_channel=chan;
 
-  setCaption(QString("RDAdmin - ")+tr("Edit Channel GPIOs"));
+  setWindowTitle(QString("RDAdmin - ")+tr("Edit Channel GPIOs"));
 
   //
   // Fonts

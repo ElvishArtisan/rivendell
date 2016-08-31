@@ -21,20 +21,19 @@
 #ifndef EDIT_HOTKEYS_H
 #define EDIT_HOTKEYS_H
 
-#include <qdialog.h>
-#include <qsqldatabase.h>
-#include <qlineedit.h>
-#include <q3listview.h>
-#include <qcombobox.h>
-#include <qpushbutton.h>
-#include <qlabel.h>
-//Added by qt3to4:
-#include <QKeyEvent>
-
 #include <vector>
+
+#include <QComboBox>
+#include <QDialog>
+#include <QKeyEvent>
+#include <QLabel>
+#include <QLineEdit>
+#include <QPushButton>
+
+#include <rdairplay_conf.h>
 #include <rdhotkeys.h>
 #include <rdhotkeylist.h>
-#include <rdairplay_conf.h>
+#include <rdtablewidget.h>
 
 class EditHotkeys : public QDialog
 {
@@ -66,7 +65,7 @@ class EditHotkeys : public QDialog
  private:
   void SetRow(const QString &param,QString value) const;
   RDHotkeys *station_hotkeys;
-  Q3ListView *list_view;
+  RDTableWidget *list_widget;
   QString hotkeystrokes;
   QString hotkey_conf;
   QString hotkey_module;

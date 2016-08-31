@@ -1906,7 +1906,7 @@ Por Favor, cheque suas configurações e tenbte outra vez.</translation>
     <name>RDListLogs</name>
     <message>
         <source>Select Log - User: </source>
-        <translation>Selecionar Lista - Usuario: </translation>
+        <translation type="obsolete">Selecionar Lista - Usuario: </translation>
     </message>
     <message>
         <source>Select Log</source>
@@ -1914,15 +1914,15 @@ Por Favor, cheque suas configurações e tenbte outra vez.</translation>
     </message>
     <message>
         <source>NAME</source>
-        <translation>NOME</translation>
+        <translation type="obsolete">NOME</translation>
     </message>
     <message>
         <source>DESCRIPTION</source>
-        <translation>DESCRIÇÃO</translation>
+        <translation type="obsolete">DESCRIÇÃO</translation>
     </message>
     <message>
         <source>SERVICE</source>
-        <translation>SERVIÇO</translation>
+        <translation type="obsolete">SERVIÇO</translation>
     </message>
     <message>
         <source>OK</source>
@@ -1931,6 +1931,18 @@ Por Favor, cheque suas configurações e tenbte outra vez.</translation>
     <message>
         <source>Cancel</source>
         <translation>Cancelar</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Service</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

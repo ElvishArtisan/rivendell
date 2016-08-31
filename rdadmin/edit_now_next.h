@@ -21,16 +21,14 @@
 #ifndef EDIT_NOW_NEXT_H
 #define EDIT_NOW_NEXT_H
 
-#include <qdialog.h>
-#include <qsqldatabase.h>
-#include <qlineedit.h>
-#include <qspinbox.h>
-#include <qpushbutton.h>
-#include <qlabel.h>
+#include <QDialog>
+#include <QLabel>
+#include <QPushButton>
+#include <QSpinBox>
 
-#include <rdlistview.h>
 #include <rdairplay_conf.h>
-#include <rdripc.h>
+#include <rdsqltablemodel.h>
+#include <rdtableview.h>
 
 class EditNowNext : public QDialog
 {
@@ -45,7 +43,7 @@ class EditNowNext : public QDialog
    void addPluginData();
    void editPluginData();
    void deletePluginData();
-   void pluginDoubleClickedData(Q3ListViewItem *item,const QPoint &pt,int col);
+   void pluginDoubleClickedData(const QModelIndex &index);
    void editNowcartData(int lognum);
    void editNextcartData(int lognum);
    void okData();
@@ -58,7 +56,8 @@ class EditNowNext : public QDialog
    QLineEdit *nownext_rml_edit[3];
    QLineEdit *nownext_nowcart_edit[3];
    QLineEdit *nownext_nextcart_edit[3];
-   RDListView *nownext_plugin_list;
+   RDSqlTableModel *nownext_model;
+   RDTableView *nownext_view;
    QPushButton *nownext_add_button;
    QPushButton *nownext_edit_button;
    QPushButton *nownext_delete_button;

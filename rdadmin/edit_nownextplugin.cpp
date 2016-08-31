@@ -18,20 +18,18 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qdialog.h>
-#include <qpushbutton.h>
-#include <qlabel.h>
-#include <q3filedialog.h>
+#include <QFileDialog>
+#include <QLabel>
+#include <QPushButton>
 
 #include <rd.h>
 #include <rdpaths.h>
 
-#include <edit_nownextplugin.h>
-
+#include "edit_nownextplugin.h"
 
 EditNowNextPlugin::EditNowNextPlugin(QString *path,QString *arg,
 				     QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
   plugin_path=path;
   plugin_arg=arg;
@@ -130,8 +128,8 @@ void EditNowNextPlugin::selectData()
   if(!plugin_path_edit->text().isEmpty()) {
     filename=plugin_path_edit->text();
   }
-  filename=Q3FileDialog::getOpenFileName(filename,RD_MODULE_FILE_FILTER,
-					this,"",tr("Select plugin"));
+  filename=QFileDialog::getOpenFileName(this,"RDAdmin - "+tr("Select plug-in"),
+					filename,RD_MODULE_FILE_FILTER);
   if(!filename.isNull()) {
     plugin_path_edit->setText(filename);
   }

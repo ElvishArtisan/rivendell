@@ -18,30 +18,24 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qpushbutton.h>
-#include <qdatetime.h>
-//Added by qt3to4:
-#include <QCloseEvent>
+#include <QDateTime>
+#include <QPushButton>
 
-#include <rddb.h>
-#include <rdescape_string.h>
-#include <rdlist_logs.h>
+#include "rdapplication.h"
+#include "rdescape_string.h"
+#include "rdlist_logs.h"
 
 RDListLogs::RDListLogs(QString *logname,const QString &stationname,
-		       QWidget *parent,RDUser *rduser)
-  : QDialog(parent,"",true)
+		       QWidget *parent)
+  : QDialog(parent)
 {
   list_stationname=stationname;
   list_logname=logname;
-  list_user=rduser;
 
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
 
   //
   // Generate Fonts
@@ -49,53 +43,67 @@ RDListLogs::RDListLogs(QString *logname,const QString &stationname,
   QFont button_font("Helvetica",12,QFont::Bold);
   button_font.setPixelSize(12);
 
-  if (list_user != 0) { // RDStation::UserSec
-    setCaption(QString().sprintf("%s%s",(const char *)tr("Select Log - User: "),
-                                 (const char *)list_user->name() ));
-  } else { // RDStation::HostSec
-    setCaption(tr("Select Log"));
-  }
+  setWindowTitle(tr("Select Log"));
 
   //
   // Log List
   //
-  list_log_list=new Q3ListView(this,"list_log_list");
-  list_log_list->setGeometry(10,10,
-			    sizeHint().width()-20,sizeHint().height()-80);
-  list_log_list->setAllColumnsShowFocus(true);
-  list_log_list->setItemMargin(5);
-  list_log_list->setSelectionMode(Q3ListView::Single);
-  connect(list_log_list,
-	  SIGNAL(doubleClicked(Q3ListViewItem *,const QPoint &,int)),
-	  this,
-	  SLOT(doubleClickedData(Q3ListViewItem *,const QPoint &,int)));
-  list_log_list->addColumn(tr("NAME"));
-  list_log_list->setColumnAlignment(0,Qt::AlignLeft);
-  list_log_list->addColumn(tr("DESCRIPTION"));
-  list_log_list->setColumnAlignment(1,Qt::AlignLeft);
-  list_log_list->addColumn(tr("SERVICE"));
-  list_log_list->setColumnAlignment(2,Qt::AlignLeft);
+  QDate current_date=QDate::currentDate();
+  list_model=new RDSqlTableModel(this);
+  QStringList services_list;
+  QString sql=QString("select ")+
+    "SERVICE_NAME "+
+    "from SERVICE_PERMS where "+
+    "STATION_NAME=\""+RDEscapeString(list_stationname)+"\"";
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  while(q->next()) {
+    services_list.append(q->value(0).toString());
+  }
+  delete q;
+  sql=QString("select ")+
+    "NAME,"+
+    "DESCRIPTION,"+
+    "SERVICE "+
+    "from LOGS where (TYPE=0)&&(LOG_EXISTS=\"Y\")&&"+
+    "((START_DATE<=\""+current_date.toString("yyyy-MM-dd")+"\")||"+
+    "(START_DATE=\"0000-00-00\")||"+
+    "(START_DATE is null))&&"+
+    "((END_DATE>=\""+current_date.toString("yyyy-MM-dd")+"\")||"+
+    "(END_DATE=\"0000-00-00\")||"+
+    "(END_DATE is null))&&(";
+  for(QStringList::Iterator it = services_list.begin();
+      it!=services_list.end();++it ) {
+    sql+=QString().sprintf("SERVICE=\"%s\"||",
+               (const char *)*it);
+  }
+  sql=sql.left(sql.length()-2);
+  sql+=")";
+  list_model->setQuery(sql);
+  list_model->setHeaderData(0,Qt::Horizontal,tr("Name"),Qt::DisplayRole);
+  list_model->setHeaderData(1,Qt::Horizontal,tr("Description"),Qt::DisplayRole);
+  list_model->setHeaderData(2,Qt::Horizontal,tr("Service"),Qt::DisplayRole);
+  list_view=new RDTableView(this);
+  list_view->setModel(list_model);
+  list_view->resizeColumnsToContents();
+  connect(list_view,SIGNAL(doubleClicked(const QModelIndex &)),
+	  this,SLOT(doubleClickedData(const QModelIndex &)));
 
   //
   // OK Button
   //
-  QPushButton *button=new QPushButton(this,"load_button");
-  button->setGeometry(sizeHint().width()-190,sizeHint().height()-60,80,50);
-  button->setFont(button_font);
-  button->setText(tr("OK"));
-  connect(button,SIGNAL(clicked()),this,SLOT(okButtonData()));
+  list_ok_button=new QPushButton(this);
+  list_ok_button->setFont(button_font);
+  list_ok_button->setText(tr("OK"));
+  connect(list_ok_button,SIGNAL(clicked()),this,SLOT(okButtonData()));
 
   //
   // Cancel Button
   //
-  button=new QPushButton(this,"cancel_button");
-  button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,80,50);
-  button->setFont(button_font);
-  button->setText(tr("Cancel"));
-  button->setDefault(true);
-  connect(button,SIGNAL(clicked()),this,SLOT(cancelButtonData()));
-
-  RefreshList();
+  list_cancel_button=new QPushButton(this);
+  list_cancel_button->setFont(button_font);
+  list_cancel_button->setText(tr("Cancel"));
+  list_cancel_button->setDefault(true);
+  connect(list_cancel_button,SIGNAL(clicked()),this,SLOT(cancelButtonData()));
 }
 
 
@@ -111,26 +119,19 @@ QSizePolicy RDListLogs::sizePolicy() const
 }
 
 
-void RDListLogs::closeEvent(QCloseEvent *e)
+void RDListLogs::doubleClickedData(const QModelIndex &index)
 {
-  done(1);
-}
-
-
-void RDListLogs::doubleClickedData(Q3ListViewItem *,const QPoint &,int)
-{
-  okButtonData();
+  *list_logname=list_model->data(index.row(),0).toString();
+  done(0);
 }
 
 
 void RDListLogs::okButtonData()
 {
-  Q3ListViewItem *item=list_log_list->selectedItem();
-  if(item==NULL) {
-    return;
+  QItemSelectionModel *s=list_view->selectionModel();
+  if(s->hasSelection()) {
+    doubleClickedData(s->selectedRows()[0]);
   }
-  *list_logname=item->text(0);
-  done(0);
 }
 
 
@@ -140,61 +141,15 @@ void RDListLogs::cancelButtonData()
 }
 
 
-void RDListLogs::RefreshList()
+void RDListLogs::resizeEvent(QResizeEvent *e)
 {
-  RDSqlQuery *q;
-  QString sql;
-  Q3ListViewItem *l;
-  Q3ListViewItem *view_item=NULL;
-  QDate current_date=QDate::currentDate();
-  QStringList services_list;
+  list_view->setGeometry(10,10,size().width()-20,size().height()-80);
+  list_ok_button->setGeometry(size().width()-190,size().height()-60,80,50);
+  list_cancel_button->setGeometry(size().width()-90,size().height()-60,80,50);
+}
 
-  list_log_list->clear();
 
-  sql=QString("select ")+
-    "SERVICE_NAME "+
-    "from SERVICE_PERMS where "+
-    "STATION_NAME=\""+RDEscapeString(list_stationname)+"\"";
-  q=new RDSqlQuery(sql);
-  while(q->next()) {
-    services_list.append( q->value(0).toString() );
-  }
-  delete q;
-
-  if(services_list.size()==0) {
-    return;
-  }
-  sql=QString("select ")+
-    "NAME,"+
-    "DESCRIPTION,"+
-    "SERVICE "+
-    "from LOGS where (TYPE=0)&&(LOG_EXISTS=\"Y\")&&"+
-    "((START_DATE<=\""+current_date.toString("yyyy-MM-dd")+"\")||"+
-    "(START_DATE=\"0000-00-00\")||"+
-    "(START_DATE is null))&&"+
-    "((END_DATE>=\""+current_date.toString("yyyy-MM-dd")+"\")||"+
-    "(END_DATE=\"0000-00-00\")||"+
-    "(END_DATE is null))&&(";
-  for ( QStringList::Iterator it = services_list.begin();
-        it != services_list.end(); ++it ) {
-    sql+=QString().sprintf("SERVICE=\"%s\"||",
-               (const char *)*it);
-  }
-  sql=sql.left(sql.length()-2);
-  sql+=")";
-  q=new RDSqlQuery(sql);
-  while(q->next()) {
-    l=new Q3ListViewItem(list_log_list);
-    l->setText(0,q->value(0).toString());
-    l->setText(1,q->value(1).toString());
-    l->setText(2,q->value(2).toString());
-    if(l->text(0)==*list_logname) {
-      view_item=l;
-    }
-  }
-  delete q;
-  if(view_item!=NULL) {
-    list_log_list->setCurrentItem(view_item);
-    list_log_list->ensureItemVisible(view_item);
-  }
+void RDListLogs::closeEvent(QCloseEvent *e)
+{
+  done(1);
 }

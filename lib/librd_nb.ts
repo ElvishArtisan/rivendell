@@ -1903,24 +1903,12 @@ Sjekk eksportoppsettet ditt og prøv att.</translation>
 <context>
     <name>RDListLogs</name>
     <message>
-        <source>Select Log - User: </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Select Log</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>NAME</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>DESCRIPTION</source>
-        <translation type="unfinished">SKILDRING</translation>
-    </message>
-    <message>
-        <source>SERVICE</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">SKILDRING</translation>
     </message>
     <message>
         <source>OK</source>
@@ -1928,6 +1916,18 @@ Sjekk eksportoppsettet ditt og prøv att.</translation>
     </message>
     <message>
         <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Service</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

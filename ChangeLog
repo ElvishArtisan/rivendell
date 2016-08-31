@@ -16119,3 +16119,15 @@
 	'lib/rdcardselector.cpp' and 'lib/rdcardselector.h'.
 	* Removed Qt3Support components from 'lib/rdcartselector.cpp' and
 	'lib/rdcardselector.h'.
+2016-08-31 Fred Gleason <fredg@paravelsystems.com>
+	* Removed Qt3Support components from 'rdadmin/edit_now_next.cpp' and
+	'rdadmin/edit_now_next.h'.
+	* Removed Qt3Support components from
+	'rdadmin/edit_nownextplugin.cpp' and
+	'rdadmin/edit_nownextplugin.h'.
+	* Removed Qt3Support components from 'lib/rdlist_logs.cpp' and
+	'lib/rdlist_logs.h'.
+	* Removed Qt3Support components from 'rdadmin/edit_channelgpios.cpp' and
+	'rdadmin/edit_channelgpios.h'.
+	* Removed Qt3Support components from 'rdadmin/edit_hotkeys.cpp' and
+	'rdadmin/edit_hotkeys.h'.

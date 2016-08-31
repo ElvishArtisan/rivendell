@@ -21,8 +21,8 @@
 #ifndef EDIT_NOWNEXTPLUGIN_H
 #define EDIT_NOWNEXTPLUGIN_H
 
-#include <qdialog.h>
-#include <qlineedit.h>
+#include <QDialog>
+#include <QLineEdit>
 
 class EditNowNextPlugin : public QDialog
 {

@@ -1744,11 +1744,11 @@ Do you still want to save?</source>
     </message>
     <message>
         <source>Button / Function </source>
-        <translation>Botón / Función </translation>
+        <translation type="obsolete">Botón / Función </translation>
     </message>
     <message>
         <source>KeyStroke</source>
-        <translation>Teclas</translation>
+        <translation type="unfinished">Teclas</translation>
     </message>
     <message>
         <source>Set</source>
@@ -1776,11 +1776,11 @@ Do you still want to save?</source>
     </message>
     <message>
         <source>Duplicate Entries</source>
-        <translation>Entradas duplicadas</translation>
+        <translation type="obsolete">Entradas duplicadas</translation>
     </message>
     <message>
         <source>Hotkeys Clear</source>
-        <translation>Borrar atajos de teclado</translation>
+        <translation type="unfinished">Borrar atajos de teclado</translation>
     </message>
     <message>
         <source>Hotkeys Updated</source>
@@ -1788,15 +1788,23 @@ Do you still want to save?</source>
     </message>
     <message>
         <source>No Items Selected</source>
-        <translation>No se han seleccionado ítems</translation>
+        <translation type="unfinished">No se han seleccionado ítems</translation>
     </message>
     <message>
         <source>Please Select an Item From the List</source>
-        <translation>Por favor, seleccione un ítem de la lista</translation>
+        <translation type="unfinished">Por favor, seleccione un ítem de la lista</translation>
     </message>
     <message>
         <source>Hot Key Configuration for</source>
         <translation>Atajos de teclado para</translation>
+    </message>
+    <message>
+        <source>Button / Function</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure - This will Clear All Hot Key Settings!</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2179,7 +2187,7 @@ GPIOs</source>
     </message>
     <message>
         <source>Invalid Address</source>
-        <translation>Dirección inválida</translation>
+        <translation type="obsolete">Dirección inválida</translation>
     </message>
     <message>
         <source>Add</source>
@@ -2195,11 +2203,11 @@ GPIOs</source>
     </message>
     <message>
         <source>Path</source>
-        <translation>Carpeta</translation>
+        <translation type="unfinished">Carpeta</translation>
     </message>
     <message>
         <source>Argument</source>
-        <translation>Argumento</translation>
+        <translation type="unfinished">Argumento</translation>
     </message>
     <message>
         <source>Loadable Modules:</source>
@@ -2220,6 +2228,14 @@ GPIOs</source>
     <message>
         <source>Aux Log 2</source>
         <translation>Lista aux. 2</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>is invalid.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2250,7 +2266,11 @@ GPIOs</source>
     </message>
     <message>
         <source>Select plugin</source>
-        <translation>Elegir plugin</translation>
+        <translation type="obsolete">Elegir plugin</translation>
+    </message>
+    <message>
+        <source>Select plug-in</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

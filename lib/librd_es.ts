@@ -1908,7 +1908,7 @@ Do you still want to proceed?</source>
     <name>RDListLogs</name>
     <message>
         <source>Select Log - User: </source>
-        <translation>Seleccionar Playlist - Usuario: </translation>
+        <translation type="obsolete">Seleccionar Playlist - Usuario: </translation>
     </message>
     <message>
         <source>Select Log</source>
@@ -1916,15 +1916,15 @@ Do you still want to proceed?</source>
     </message>
     <message>
         <source>NAME</source>
-        <translation>NOMBRE</translation>
+        <translation type="obsolete">NOMBRE</translation>
     </message>
     <message>
         <source>DESCRIPTION</source>
-        <translation>DESCRIPCIÓN</translation>
+        <translation type="obsolete">DESCRIPCIÓN</translation>
     </message>
     <message>
         <source>SERVICE</source>
-        <translation>SERVICIO</translation>
+        <translation type="obsolete">SERVICIO</translation>
     </message>
     <message>
         <source>OK</source>
@@ -1933,6 +1933,18 @@ Do you still want to proceed?</source>
     <message>
         <source>Cancel</source>
         <translation>Cancelar</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Service</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

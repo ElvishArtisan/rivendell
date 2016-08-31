@@ -1002,7 +1002,7 @@ void EditRDAirPlay::selectData()
 {
   QString logname=air_startlog_edit->text();
 
-  RDListLogs *ll=new RDListLogs(&logname,air_conf->station(),this,rda->user());
+  RDListLogs *ll=new RDListLogs(&logname,air_conf->station(),this);
   if(ll->exec()==0) {
     air_startlog_edit->setText(logname);
   }

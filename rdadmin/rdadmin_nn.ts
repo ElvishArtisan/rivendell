@@ -1655,14 +1655,6 @@ Vil du framleis lagra?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Button / Function </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>KeyStroke</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Set</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1687,15 +1679,19 @@ Vil du framleis lagra?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Duplicate Entries</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Hotkeys Clear</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Hotkeys Updated</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hot Key Configuration for</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Button / Function</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>KeyStroke</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1707,7 +1703,11 @@ Vil du framleis lagra?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Hot Key Configuration for</source>
+        <source>Hotkeys Clear</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure - This will Clear All Hot Key Settings!</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2097,7 +2097,7 @@ GPIOs</source>
     </message>
     <message>
         <source>Invalid Address</source>
-        <translation>Ugyldig adresse</translation>
+        <translation type="obsolete">Ugyldig adresse</translation>
     </message>
     <message>
         <source>Default Now Cart:</source>
@@ -2109,14 +2109,6 @@ GPIOs</source>
     </message>
     <message>
         <source>Default Next Cart:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Path</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Argument</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2138,6 +2130,22 @@ GPIOs</source>
     <message>
         <source>Aux Log 2</source>
         <translation type="unfinished">Hjelpelogg 2</translation>
+    </message>
+    <message>
+        <source>Path</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Argument</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>is invalid.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2167,7 +2175,7 @@ GPIOs</source>
         <translation type="unfinished">&amp;Avbryt</translation>
     </message>
     <message>
-        <source>Select plugin</source>
+        <source>Select plug-in</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

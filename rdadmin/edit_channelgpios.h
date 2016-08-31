@@ -21,13 +21,12 @@
 #ifndef EDIT_CHANNELGPIOS_H
 #define EDIT_CHANNELGPIOS_H
 
-#include <qdialog.h>
-#include <qspinbox.h>
-#include <qlabel.h>
-#include <qpushbutton.h>
-#include <qcombobox.h>
-//Added by qt3to4:
+#include <QComboBox>
+#include <QDialog>
+#include <QLabel>
+#include <QPushButton>
 #include <QResizeEvent>
+#include <QSpinBox>
 
 #include <rdairplay_conf.h>
 

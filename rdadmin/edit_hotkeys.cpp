@@ -18,15 +18,8 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qsignalmapper.h>
-#include <qdialog.h>
-#include <qstring.h>
-#include <qpushbutton.h>
-#include <qmessagebox.h>
-#include <q3listbox.h>
-//Added by qt3to4:
-#include <QLabel>
-#include <QKeyEvent>
+#include <QMessageBox>
+#include <QPushButton>
 
 #include <rdescape_string.h>
 #include <rdhotkeylist.h>
@@ -36,10 +29,11 @@
 
 EditHotkeys::EditHotkeys(const QString &station,const QString &module,
 			 QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
   QString sql;
   RDSqlQuery *q;
+  QTableWidgetItem *item=NULL;
 
   hotkey_conf=station;
   hotkey_module=module;
@@ -70,23 +64,18 @@ EditHotkeys::EditHotkeys(const QString &station,const QString &module,
   setCaption(hotkey_module.upper()+" "+tr("Hot Key Configuration for")+" "+
 	     hotkey_conf);
 
-  list_view=new Q3ListView(this);
-  list_view->setGeometry(10,24,320,220);
-  QLabel *label=new QLabel(list_view,tr("Host Hot Key Configurations"),this);
+  QLabel *label=new QLabel(tr("Host Hot Key Configurations"),this);
   label->setFont(font);
   label->setGeometry(14,5,sizeHint().width()-28,19);
-  //list_view->setItemMargin(5);
-  list_view->setSorting(-1);
-  list_view->addColumn(tr("Button / Function "));
-  list_view->setColumnAlignment(0,Qt::AlignLeft|Qt::AlignVCenter);
-  list_view->addColumn(tr("KeyStroke"));
-  list_view->setColumnAlignment(1,Qt::AlignLeft|Qt::AlignVCenter);
-  list_view->setAllColumnsShowFocus(true);
- 
-  connect(list_view,SIGNAL(clicked(Q3ListViewItem *,const QPoint &,int)),
-	  this,SLOT(showCurrentKey()));
-  connect(list_view,SIGNAL(doubleClicked(Q3ListViewItem *,const QPoint &,int)),
-	  this,SLOT(showCurrentKey()));
+  list_widget=new RDTableWidget(this);
+  list_widget->setGeometry(10,24,320,220);
+  list_widget->setColumnCount(2);
+  item=new QTableWidgetItem(tr("Button / Function"));
+  item->setFlags(Qt::NoItemFlags);
+  list_widget->setHorizontalHeaderItem(0,item);
+  item=new QTableWidgetItem(tr("KeyStroke"));
+  item->setFlags(Qt::NoItemFlags);
+  list_widget->setHorizontalHeaderItem(1,item);
 
   //  Keystroke Value field
   keystroke = new QLineEdit(this);
@@ -106,7 +95,8 @@ EditHotkeys::EditHotkeys(const QString &station,const QString &module,
   // Clear Button
   //
   QPushButton *clear_button = new QPushButton(this);
-  clear_button->setGeometry(sizeHint().width()-215,sizeHint().height()-160,60,30);
+  clear_button->
+    setGeometry(sizeHint().width()-215,sizeHint().height()-160,60,30);
   clear_button->setDefault(true);
   clear_button->setFont(font);
   clear_button->setText(tr("Clear"));
@@ -115,7 +105,8 @@ EditHotkeys::EditHotkeys(const QString &station,const QString &module,
   // Clear All Hot Keys Button
   //
   QPushButton *clear_all_button = new QPushButton(this);
-  clear_all_button->setGeometry(sizeHint().width()-140,sizeHint().height()-160,130,30);
+  clear_all_button->
+    setGeometry(sizeHint().width()-140,sizeHint().height()-160,130,30);
   clear_all_button->setDefault(true);
   clear_all_button->setFont(font);
   clear_all_button->setText(tr("Clear All Hotkeys"));
@@ -124,11 +115,13 @@ EditHotkeys::EditHotkeys(const QString &station,const QString &module,
   // Clone Host Drop Box
   //
   clone_from_host_box=new QComboBox(this);
-  clone_from_host_box->setGeometry(sizeHint().width()-295,sizeHint().height()-110,130,30);
+  clone_from_host_box->
+    setGeometry(sizeHint().width()-295,sizeHint().height()-110,130,30);
   clone_from_host_label=
     new QLabel(clone_from_host_box,tr("Set From Host:"),this);
   clone_from_host_label->setFont(font);
-  clone_from_host_label->setGeometry(sizeHint().width()-420,sizeHint().height()-110,120,30);
+  clone_from_host_label->
+    setGeometry(sizeHint().width()-420,sizeHint().height()-110,120,30);
   clone_from_host_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   sql=QString("select NAME from STATIONS");
   q=new RDSqlQuery(sql);
@@ -190,88 +183,49 @@ QSizePolicy EditHotkeys::sizePolicy() const
 
 void EditHotkeys::save()
 {
-
   QString sql;
   RDSqlQuery *q;
 
-  Q3ListViewItemIterator  *start;
-
-  start = new Q3ListViewItemIterator(list_view);
-
-  QString stringlist [40][45];   //  assumes no more than 40 entries...
-  int cur, top, i = 0;
-  while (start->current()) {
-    if (start->current()->text(1).isEmpty())  {
-      stringlist[i++][0] = QString("");
-    }
-    else  {
-      stringlist[i++][0] = QString().sprintf("%s",
-					     (const char *) start->current()->text(1));
-    }
-    ++(*start);
-  }
-  delete start;
-
-  for ( top = 0; top < (i- 1) ; top++)  {
-    for (cur = top + 1; cur < i; cur ++) {
-      if ( (strcmp(stringlist[top][0],stringlist[cur][0]) == 0)  &&
-	   (!(stringlist[top][0].isEmpty()) ) ){
-	QString str = tr(QString().sprintf(				\
-					   "Duplicate Hotkey defined %s\n No Duplicates allowed.",
-					   (const char *)stringlist[cur][0] ));
-	QMessageBox::warning(this,tr("Duplicate Entries"),str);
-	return;
-      }
-    }
-  }
-
-  start = new Q3ListViewItemIterator(list_view);
-    
-  while (start->current()) {
-    sql = QString().sprintf("UPDATE RDHOTKEYS  SET KEY_VALUE = \"%s\" \
-               WHERE KEY_LABEL = \"%s\" AND			      \
-               STATION_NAME = \"%s\" AND			      \
-               MODULE_NAME = \"%s\"",
-			    (const char *)start->current()->text(1),              
-			    (const char *)start->current()->text(0),              
-			    (const char *)hotkey_conf,
-			    (const char *)hotkey_module);
+  for(int i=0;i<list_widget->rowCount();i++) {
+    sql=QString("update RDHOTKEYS set ")+
+      "KEY_VALUE=\""+
+      RDEscapeString(list_widget->item(i,1)->data(Qt::DisplayRole).toString())+
+      "\" where "+
+      "(KEY_LABEL=\""+
+      RDEscapeString(list_widget->item(i,0)->data(Qt::DisplayRole).toString())+
+      "\")&&"+
+      "(STATION_NAME=\""+RDEscapeString(hotkey_conf)+"\")&&"+
+      "(MODULE_NAME=\""+RDEscapeString(hotkey_module)+"\")";
     q=new RDSqlQuery(sql);
     delete q;
-    ++(*start);
   }
-  
-  delete start;
-  delete station_hotkeys;
+
   done(0);
 }
 
 void EditHotkeys::SetHotKey()
 {
-  Q3ListViewItem *item=list_view->selectedItem();
-  if (item==NULL) return;
-
-  item->setText(1,hotkeystrokes);
+  QItemSelectionModel *s=list_widget->selectionModel();
+  if(!s->hasSelection()) {
+    return;
+  }
+  list_widget->item(s->selectedRows()[0].row(),1)->
+    setData(Qt::DisplayRole,hotkeystrokes);
   keyupdated = true;
 }
 
 void EditHotkeys::clearAll_Hotkeys()
 {
-  switch(QMessageBox::warning(this,tr("Hotkeys Clear"),
-			      "Are you sure - This will Clear All Hot Key Settings!",
-			      QMessageBox::Yes,QMessageBox::No)) {
-  case QMessageBox::No:
-  case QMessageBox::NoButton:
+  if(QMessageBox::warning(this,"RDAdmin - "+tr("Hotkeys Clear"),
+			  tr("Are you sure - This will Clear All Hot Key Settings!"),
+			  QMessageBox::Yes,QMessageBox::No)!=QMessageBox::Yes) {
     return;
-  default:
-    break;
   }
-    
-  Q3ListViewItem *l = list_view->firstChild();
-  while (l)  {
-    l->setText(1,"");
-    l = l->nextSibling();
+
+  for(int i=0;i<list_widget->rowCount();i++) {
+    list_widget->item(i,1)->setData(Qt::DisplayRole,QString());
   }
+
   keystroke->setText("");
   keystroke->setFocus();
   hotkeystrokes=QString("");
@@ -417,9 +371,9 @@ void EditHotkeys::RefreshList()
 
   QString sql;
   RDSqlQuery *q;
-  Q3ListViewItem *l;
-  list_view->clear();
-  
+  QTableWidgetItem *item=NULL;
+
+  list_widget->clear();
   keyupdated = false;
 
   //  Build Rows of List View  I do this in reverse...
@@ -433,10 +387,16 @@ void EditHotkeys::RefreshList()
     "ORDER BY KEY_ID DESC";
 
   q=new RDSqlQuery(sql);
+  list_widget->setRowCount(q->size());
+  int row=0;
   while(q->next()) {
-    l=new Q3ListViewItem(list_view);
-    l->setText(0,q->value(0).toString());
-    l->setText(1,q->value(1).toString());
+    item=new QTableWidgetItem(q->value(0).toString());
+    item->setFlags(Qt::ItemIsSelectable|Qt::ItemIsEnabled);
+    list_widget->setItem(row,0,item);
+    item=new QTableWidgetItem(q->value(1).toString());
+    item->setFlags(Qt::ItemIsSelectable|Qt::ItemIsEnabled);
+    list_widget->setItem(row,1,item);
+    row++;
   }
   delete q;
 }
@@ -445,13 +405,13 @@ void EditHotkeys::Clone_RefreshList(const QString& clone_station)
 {
   QString sql;
   RDSqlQuery *q;
+  QTableWidgetItem *item=NULL;
 
   QString tmp_hotkey_conf = QString().sprintf("%s",
 					      (const char *)clone_station);
   RDHotkeys *tmp_station_hotkeys= new RDHotkeys(tmp_hotkey_conf,hotkey_module);
   keyupdated = true;
-  Q3ListViewItem *l;
-  list_view->clear();
+  list_widget->clear();
 
   sql=QString("select ")+
     "KEY_LABEL,"+
@@ -462,10 +422,15 @@ void EditHotkeys::Clone_RefreshList(const QString& clone_station)
     "ORDER BY ID DESC";
 
   q=new RDSqlQuery(sql);
+  list_widget->setRowCount(q->size());
+  int row=0;
   while(q->next()) {
-    l=new Q3ListViewItem(list_view);
-    l->setText(0,q->value(0).toString());
-    l->setText(1,q->value(1).toString());
+    item=new QTableWidgetItem(q->value(0).toString());
+    item->setFlags(Qt::ItemIsSelectable|Qt::ItemIsEnabled);
+    list_widget->setItem(row,0,item);
+    item=new QTableWidgetItem(q->value(1).toString());
+    item->setFlags(Qt::ItemIsSelectable|Qt::ItemIsEnabled);
+    list_widget->setItem(row,1,item);
   }
   delete q;
   hotkeystrokes = QString ("");
@@ -475,12 +440,15 @@ void EditHotkeys::Clone_RefreshList(const QString& clone_station)
 
 void EditHotkeys::showCurrentKey()
 {
-  Q3ListViewItem *item=list_view->selectedItem();
-  if (item==NULL) return;
-  keystroke->setText((const char *)item->text(1));
+  QItemSelectionModel *s=list_widget->selectionModel();
+  if(!s->hasSelection()) {
+    return;
+  }
+  keystroke->setText(list_widget->item(s->selectedRows()[0].row(),1)->
+		     data(Qt::DisplayRole).toString());
   keystroke->displayText();
-  hotkeystrokes=QString((const char *)item->text(1));
-  return;
+  hotkeystrokes=list_widget->item(s->selectedRows()[0].row(),1)->
+    data(Qt::DisplayRole).toString();
 }
 
 
@@ -495,13 +463,12 @@ void EditHotkeys::clearCurrentItem()
 
 void EditHotkeys::SetButtonClicked()
 {
-  Q3ListViewItem *item=list_view->selectedItem();
-  if (item==NULL) {
-    QMessageBox::warning(this,tr("No Items Selected"),
+  QItemSelectionModel *s=list_widget->selectionModel();
+  if(!s->hasSelection()) {
+    QMessageBox::warning(this,"RDAdmin - "+tr("No Items Selected"),
                          tr("Please Select an Item From the List"));
     return;
   }
   SetHotKey();
-  return;
 }
 

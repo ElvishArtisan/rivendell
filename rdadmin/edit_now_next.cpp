@@ -36,9 +36,10 @@ EditNowNext::EditNowNext(RDAirPlayConf *conf,QWidget *parent)
   : QDialog(parent,"",true)
 {
   QString sql;
+  /*
   RDSqlQuery *q;
   RDListViewItem *item;
-
+  */
   nownext_conf=conf;
 
   //
@@ -330,20 +331,25 @@ EditNowNext::EditNowNext(RDAirPlayConf *conf,QWidget *parent)
   //
   // Plugin List
   //
-  nownext_plugin_list=new RDListView(this);
-  nownext_plugin_list->setGeometry(10,540,sizeHint().width()-20,120);
-  nownext_plugin_list->setItemMargin(5);
-  nownext_plugin_list->addColumn(tr("Path"));
-  nownext_plugin_list->setColumnAlignment(0,Qt::AlignLeft|Qt::AlignVCenter);
-  nownext_plugin_list->addColumn(tr("Argument"));
-  nownext_plugin_list->setColumnAlignment(1,Qt::AlignLeft|Qt::AlignVCenter);
-  nownext_plugin_list->setAllColumnsShowFocus(true);
-  connect(nownext_plugin_list,
-	  SIGNAL(doubleClicked(Q3ListViewItem *,const QPoint &,int)),
-	  this,
-	  SLOT(pluginDoubleClickedData(Q3ListViewItem *,const QPoint &,int)));
-
-  label=new QLabel(nownext_plugin_list,tr("Loadable Modules:"),this);
+  nownext_model=new RDSqlTableModel(this);
+  sql=QString("select ")+
+    "ID,"+
+    "PLUGIN_PATH,"+
+    "PLUGIN_ARG "+
+    "from NOWNEXT_PLUGINS where "+
+    "(STATION_NAME=\""+RDEscapeString(nownext_conf->station())+"\")&&"+
+    "(LOG_MACHINE=0)";
+  nownext_model->setQuery(sql);
+  nownext_model->setHeaderData(1,Qt::Horizontal,tr("Path"));
+  nownext_model->setHeaderData(2,Qt::Horizontal,tr("Argument"));
+  nownext_view=new RDTableView(this);
+  nownext_view->setGeometry(10,540,sizeHint().width()-20,120);
+  nownext_view->setModel(nownext_model);
+  nownext_view->hideColumn(0);
+  nownext_view->resizeColumnsToContents();
+  connect(nownext_view,SIGNAL(doubleClicked(const QModelIndex &)),
+	  this,SLOT(pluginDoubleClickedData(const QModelIndex &)));
+  label=new QLabel(tr("Loadable Modules:"),this);
   label->setGeometry(10,518,sizeHint().width()-20,19);
   label->setFont(section_font);
   label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
@@ -401,21 +407,6 @@ EditNowNext::EditNowNext(RDAirPlayConf *conf,QWidget *parent)
 	setText(QString().sprintf("%06u",nownext_conf->logNextCart(i)));
     }
   }
-  sql=QString("select ")+
-    "ID,"+
-    "PLUGIN_PATH,"+
-    "PLUGIN_ARG "+
-    "from NOWNEXT_PLUGINS where "+
-    "(STATION_NAME=\""+RDEscapeString(nownext_conf->station())+"\")&&"+
-    "(LOG_MACHINE=0)";
-  q=new RDSqlQuery(sql);
-  while(q->next()) {
-    item=new RDListViewItem(nownext_plugin_list);
-    item->setId(q->value(0).toInt());
-    item->setText(0,q->value(1).toString());
-    item->setText(1,q->value(2).toString());
-  }
-  delete q;
 }
 
 
@@ -440,13 +431,19 @@ void EditNowNext::addPluginData()
 {
   QString path;
   QString arg;
+  QString sql;
+  RDSqlQuery *q;
+
   EditNowNextPlugin *d=new EditNowNextPlugin(&path,&arg,this);
   if(d->exec()==0) {
-    RDListViewItem *item=new RDListViewItem(nownext_plugin_list);
-    item->setId(-1);
-    item->setText(0,path);
-    item->setText(1,arg);
-    nownext_plugin_list->ensureItemVisible(item);
+    nownext_model->update();
+    sql=QString("insert into NOWNEXT_PLUGINS set ")+
+      "STATION_NAME=\""+RDEscapeString(nownext_conf->station())+"\","+
+      "PLUGIN_PATH=\""+RDEscapeString(path)+"\","+
+      "PLUGIN_ARG=\""+RDEscapeString(arg)+"\"";
+    q=new RDSqlQuery(sql);
+    nownext_model->update();
+    nownext_view->select(0,q->lastInsertId().toInt());
   }
   delete d;
 }
@@ -454,36 +451,45 @@ void EditNowNext::addPluginData()
 
 void EditNowNext::editPluginData()
 {
-  RDListViewItem *item=
-    (RDListViewItem *)nownext_plugin_list->selectedItem();
-  if(item==NULL) {
-    return;
+  QItemSelectionModel *s=nownext_view->selectionModel();
+  if(s->hasSelection()) {
+    pluginDoubleClickedData(s->selectedRows()[0]);
   }
-  QString path=item->text(0);
-  QString arg=item->text(1);
-  EditNowNextPlugin *d=new EditNowNextPlugin(&path,&arg,this);
-  if(d->exec()==0) {
-    item->setText(0,path);
-    item->setText(1,arg);
-  }
-  delete d;  
 }
 
 
 void EditNowNext::deletePluginData()
 {
-  RDListViewItem *item=(RDListViewItem *)nownext_plugin_list->selectedItem();
-  if(item==NULL) {
-    return;
+  QString sql;
+  RDSqlQuery *q;
+
+  QItemSelectionModel *s=nownext_view->selectionModel();
+  if(s->hasSelection()) {
+    sql=QString("delete from NOWNEXT_PLUGINS where ")+
+      QString().sprintf("ID=%d",s->selectedRows()[0].data().toInt());
+    q=new RDSqlQuery(sql);
+    delete q;
+    nownext_model->update();
   }
-  delete item;
 }
 
 
-void EditNowNext::pluginDoubleClickedData(Q3ListViewItem *item,const QPoint &pt,
-					int col)
+void EditNowNext::pluginDoubleClickedData(const QModelIndex &index)
 {
-  editPluginData();
+  QString path=nownext_model->data(index.row(),1).toString();
+  QString arg=nownext_model->data(index.row(),2).toString();
+  EditNowNextPlugin *d=new EditNowNextPlugin(&path,&arg,this);
+  if(d->exec()==0) {
+    QString sql=QString("update NOWNEXT_PLUGINS set ")+
+      "PLUGIN_PATH=\""+RDEscapeString(path)+"\","+
+      "PLUGIN_ARG=\""+RDEscapeString(arg)+"\" "+
+      "where "+
+      QString().sprintf("ID=%d",nownext_model->data(index.row(),0).
+			toInt());
+    RDSqlQuery *q=new RDSqlQuery(sql);
+    delete q;
+    nownext_model->update();
+  }
 }
 
 
@@ -512,9 +518,6 @@ void EditNowNext::okData()
   QHostAddress addr[3];
   QString str1;
   QString str2;
-  QString sql;
-  RDSqlQuery *q;
-  RDListViewItem *item;
 
   for(int i=0;i<3;i++) {
     if(nownext_address_edit[i]->text().isEmpty()) {
@@ -523,12 +526,10 @@ void EditNowNext::okData()
     if(!addr[i].setAddress(nownext_address_edit[i]->text())) {
       str1=QString(tr("The IP address"));
       str2=QString(tr("is invalid!"));
-      QMessageBox::warning(this,tr("Invalid Address"),
-			   QString().
-			   sprintf("%s \"%s\" %s",(const char *)str1,
-				   (const char *)nownext_address_edit[i]->
-				   text(),
-				   (const char *)str2));
+      QMessageBox::warning(this,"RDAdmin - "+tr("Error"),
+			   tr("The IP address")+
+			   " \""+nownext_address_edit[i]->text()+"\" "+
+			   tr("is invalid."));
       return;
     }
   }
@@ -549,22 +550,6 @@ void EditNowNext::okData()
     else {
       nownext_conf->setLogNextCart(i,nownext_nextcart_edit[i]->text().toUInt());
     }
-    sql=QString("delete from NOWNEXT_PLUGINS where ")+
-      "(STATION_NAME=\""+RDEscapeString(nownext_conf->station())+"\")&&"+
-      QString().sprintf("(LOG_MACHINE=%d)",i);
-    q=new RDSqlQuery(sql);
-    delete q;
-  }
-  item=(RDListViewItem *)nownext_plugin_list->firstChild();
-  while(item!=NULL) {
-    sql=QString("insert into NOWNEXT_PLUGINS set ")+
-      "STATION_NAME=\""+RDEscapeString(nownext_conf->station())+"\","+
-      "LOG_MACHINE=0,"+
-      "PLUGIN_PATH=\""+RDEscapeString(item->text(0))+"\","+
-      "PLUGIN_ARG=\""+RDEscapeString(item->text(1))+"\"";
-    q=new RDSqlQuery(sql);
-    delete q;
-    item=(RDListViewItem *)item->nextSibling();
   }
   done(0);
 }
