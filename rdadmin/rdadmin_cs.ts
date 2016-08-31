@@ -806,10 +806,6 @@ a záloha původní databáze uložena v </translation>
 <context>
     <name>EditCartSlots</name>
     <message>
-        <source>RDAdmin - Edit CartSlots</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Global Settings</source>
         <translation type="unfinished"></translation>
     </message>
@@ -919,6 +915,10 @@ a záloha původní databáze uložena v </translation>
     </message>
     <message>
         <source>Slot selected has changed!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit CartSlots</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

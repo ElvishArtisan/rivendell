@@ -24,9 +24,9 @@
 
 #include <rd.h>
 #include <rdapplication.h>
-#include <rdslotoptions.h>
 #include <rdcart_dialog.h>
 #include <rdescape_string.h>
+#include <rdslotoptions.h>
 
 #include "edit_cartslots.h"
 #include "globals.h"
@@ -50,7 +50,7 @@ EditCartSlots::EditCartSlots(RDStation *station,RDStation *cae_station,
   setMinimumHeight(sizeHint().height());
   setMaximumHeight(sizeHint().height());
 
-  setCaption(tr("RDAdmin - Edit CartSlots"));
+  setWindowTitle("RDAdmin - "+tr("Edit CartSlots"));
 
   //
   // Fonts

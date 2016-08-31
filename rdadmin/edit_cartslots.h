@@ -21,14 +21,12 @@
 #ifndef EDIT_CARTSLOTS_H
 #define EDIT_CARTSLOTS_H
 
-#include <qdialog.h>
-#include <qspinbox.h>
-#include <qlineedit.h>
-#include <qcombobox.h>
-#include <qlabel.h>
-#include <qpushbutton.h>
-//Added by qt3to4:
-#include <QCloseEvent>
+#include <QComboBox>
+#include <QDialog>
+#include <QLabel>
+#include <QLineEdit>
+#include <QPushButton>
+#include <QSpinBox>
 
 #include <rdstation.h>
 
