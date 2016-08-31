@@ -16134,3 +16134,6 @@
 2016-08-31 Fred Gleason <fredg@paravelsystems.com>
 	* Removed Qt3Support components from 'rdadmin/edit_rdpanel.cpp' and
 	'rdadmin/edit_rdpanel.h'.
+2016-08-31 Fred Gleason <fredg@paravelsystems.com>
+	* Removed Qt3Support components from 'rdadmin/edit_rdlogedit.cpp' and
+	'rdadmin/edit_rdlogedit.h'.

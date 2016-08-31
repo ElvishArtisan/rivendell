@@ -21,17 +21,15 @@
 #ifndef EDIT_RDLOGEDIT_H
 #define EDIT_RDLOGEDIT_H
 
-#include <qdialog.h>
-#include <qsqldatabase.h>
-#include <qlineedit.h>
-#include <qcombobox.h>
-#include <qspinbox.h>
-#include <q3datetimeedit.h>
+#include <QDateTimeEdit>
+#include <QDialog>
+#include <QLineEdit>
+#include <QComboBox>
+#include <QSpinBox>
 
-#include <rdstation.h>
-#include <rdlogedit_conf.h>
 #include <rdcardselector.h>
-
+#include <rdlogedit_conf.h>
+#include <rdstation.h>
 
 class EditRDLogedit : public QDialog
 {
@@ -63,7 +61,7 @@ class EditRDLogedit : public QDialog
   QSpinBox *lib_preroll_spin;
   QSpinBox *lib_threshold_spin;
   QSpinBox *lib_normalization_spin;
-  Q3TimeEdit *lib_maxlength_time;
+  QDateTimeEdit *lib_maxlength_time;
   QLineEdit *lib_startcart_edit;
   QLineEdit *lib_endcart_edit;
   QLineEdit *lib_recstartcart_edit;

@@ -2,7 +2,7 @@
 //
 // Edit an RDLogedit Configuration
 //
-//   (C) Copyright 2002-2015 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,17 +18,8 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <Q3ButtonGroup>
-#include <Q3ListBox>
-#include <Q3TextEdit>
-#include <QCheckBox>
-#include <QDialog>
-#include <QEvent>
-#include <QLabel>
 #include <QMessageBox>
-#include <QPainter>
 #include <QPushButton>
-#include <QString>
 
 #include <rd.h>
 #include <rdapplication.h>
@@ -39,7 +30,7 @@
 
 EditRDLogedit::EditRDLogedit(RDStation *station,RDStation *cae_station,
 			     QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
   //
   // Fix the Window Size
@@ -62,7 +53,7 @@ EditRDLogedit::EditRDLogedit(RDStation *station,RDStation *cae_station,
   //
   // Dialog Name
   //
-  setCaption(tr("RDLogedit config for ")+station->name());
+  setWindowTitle("RDAdmin - "+tr("RDLogEdit config for ")+station->name());
 
   //
   // Input Configuration
@@ -95,8 +86,9 @@ EditRDLogedit::EditRDLogedit(RDStation *station,RDStation *cae_station,
   //
   // Maximum Record Length
   //
-  lib_maxlength_time=new Q3TimeEdit(this);
+  lib_maxlength_time=new QDateTimeEdit(this);
   lib_maxlength_time->setGeometry(160,100,85,19);
+  lib_maxlength_time->setDisplayFormat("hh:mm:ss");
   QLabel *lib_maxlength_label=
     new QLabel(lib_maxlength_time,tr("&Max Record Time:"),this);
   lib_maxlength_label->setGeometry(25,101,130,19);
