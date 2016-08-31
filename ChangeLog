@@ -16131,3 +16131,6 @@
 	'rdadmin/edit_channelgpios.h'.
 	* Removed Qt3Support components from 'rdadmin/edit_hotkeys.cpp' and
 	'rdadmin/edit_hotkeys.h'.
+2016-08-31 Fred Gleason <fredg@paravelsystems.com>
+	* Removed Qt3Support components from 'rdadmin/edit_rdpanel.cpp' and
+	'rdadmin/edit_rdpanel.h'.

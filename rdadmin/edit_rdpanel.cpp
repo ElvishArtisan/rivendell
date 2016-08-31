@@ -18,35 +18,22 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qdialog.h>
-#include <qstring.h>
-#include <qpushbutton.h>
-#include <qradiobutton.h>
-#include <q3listbox.h>
-#include <q3textedit.h>
-#include <qpainter.h>
-#include <qevent.h>
-#include <qmessagebox.h>
-#include <qcheckbox.h>
-#include <q3buttongroup.h>
-#include <qpainter.h>
-#include <q3filedialog.h>
-//Added by qt3to4:
-#include <QLabel>
+#include <QFileDialog>
+#include <QMessageBox>
 
 #include <rddb.h>
 #include <rd.h>
 #include <rdescape_string.h>
-#include <rdtextvalidator.h>
 #include <rdlist_logs.h>
+#include <rdtextvalidator.h>
 
-#include <edit_rdpanel.h>
-#include <edit_now_next.h>
+#include "edit_rdpanel.h"
+#include "edit_now_next.h"
 
 
 EditRDPanel::EditRDPanel(RDStation *station,RDStation *cae_station,
 			 QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
   QString sql;
   RDSqlQuery *q;
@@ -79,7 +66,7 @@ EditRDPanel::EditRDPanel(RDStation *station,RDStation *cae_station,
   //
   // Dialog Name
   //
-  setCaption(tr("RDPanel config for ")+station->name());
+  setWindowTitle("RDAdmin - "+tr("RDPanel config for ")+station->name());
 
   //
   // Channel Assignments Section
@@ -432,9 +419,10 @@ QSizePolicy EditRDPanel::sizePolicy() const
 
 void EditRDPanel::selectSkinData()
 {
- QString filename=air_skin_edit->text();
-  filename=Q3FileDialog::getOpenFileName(filename,RD_IMAGE_FILE_FILTER,this,"",
-					tr("Select Image File"));
+  QString filename=air_skin_edit->text();
+  filename=QFileDialog::getOpenFileName(this,"RDAdmin - "+
+					tr("Select Image File"),
+					filename,RD_IMAGE_FILE_FILTER);
   if(!filename.isNull()) {
     air_skin_edit->setText(filename);
   }

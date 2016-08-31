@@ -21,15 +21,12 @@
 #ifndef EDIT_RDPANEL_H
 #define EDIT_RDPANEL_H
 
-#include <qdialog.h>
-#include <qsqldatabase.h>
-#include <qlineedit.h>
-#include <qcombobox.h>
-#include <qspinbox.h>
-#include <q3datetimeedit.h>
-#include <qlabel.h>
-#include <qcheckbox.h>
-#include <q3buttongroup.h>
+#include <QCheckBox>
+#include <QComboBox>
+#include <QDialog>
+#include <QLabel>
+#include <QLineEdit>
+#include <QSpinBox>
 
 #include <rd.h>
 #include <rdairplay_conf.h>
