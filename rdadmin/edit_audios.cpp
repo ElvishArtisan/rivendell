@@ -18,22 +18,14 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qstring.h>
-#include <qpushbutton.h>
-#include <q3textedit.h>
-#include <qpainter.h>
-#include <qevent.h>
-#include <qmessagebox.h>
-#include <qcheckbox.h>
-#include <q3buttongroup.h>
-#include <qsignalmapper.h>
-//Added by qt3to4:
-#include <QLabel>
+#include <QPushButton>
+#include <QCheckBox>
+#include <QSignalMapper>
 
 #include <edit_audios.h>
 
 EditAudioPorts::EditAudioPorts(QString station,QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
   QString str;
 
@@ -49,7 +41,7 @@ EditAudioPorts::EditAudioPorts(QString station,QWidget *parent)
   edit_card=NULL;
   rdstation=NULL;
 
-  setCaption(tr("Edit Audio Ports"));
+  setWindowTitle("RDAdmin - "+tr("Edit Audio Ports"));
 
   //
   // Create Fonts

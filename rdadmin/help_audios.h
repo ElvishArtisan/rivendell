@@ -17,14 +17,12 @@
 //   License along with this program; if not, write to the Free Software
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
-//
 
 #ifndef HELP_AUDIOS_H
 #define HELP_AUDIOS_H
 
-#include <qdialog.h>
-#include <q3textedit.h>
-
+#include <QDialog>
+#include <QTextEdit>
 
 class HelpAudioPorts : public QDialog
 {
@@ -38,7 +36,7 @@ class HelpAudioPorts : public QDialog
   void closeData();
 
  private:
-  Q3TextEdit *help_edit;
+  QTextEdit *help_edit;
 };
 
 

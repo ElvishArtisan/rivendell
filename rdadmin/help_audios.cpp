@@ -18,12 +18,12 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qpushbutton.h>
+#include <QPushButton>
 
-#include <help_audios.h>
+#include "help_audios.h"
 
 HelpAudioPorts::HelpAudioPorts(QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
   //
   // Fix the Window Size
@@ -33,7 +33,7 @@ HelpAudioPorts::HelpAudioPorts(QWidget *parent)
   setMinimumHeight(sizeHint().height());
   setMaximumHeight(sizeHint().height());
 
-  setCaption(tr("Audio Ports Help"));
+  setWindowTitle("RDAdmin - "+tr("Audio Ports Help"));
 
   //
   // Create Fonts
@@ -42,9 +42,9 @@ HelpAudioPorts::HelpAudioPorts(QWidget *parent)
   button_font.setPixelSize(14);
 
   // Help Text
-  help_edit=new Q3TextEdit(this,"help_edit");
+  help_edit=new QTextEdit(this);
   help_edit->
-    setGeometry(10,10,sizeHint().width()-20,sizeHint().height()-70);
+    setGeometry(10,10,sizeHint().width()-20,sizeHint().height()-80);
   help_edit->setTextFormat(Qt::RichText);
   help_edit->setReadOnly(true);
 // FIXME: add context sensitive help for other options on the Audio Port screen.
