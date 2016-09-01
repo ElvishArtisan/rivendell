@@ -16151,3 +16151,10 @@
 	'rdadmin/edit_dropbox.h'
 	* Removed Qt3Support components from 'rdadmin/rdschedcodes_dialog.cpp'
 	and 'rdadmin/rdschedcodes_dialog.h'
+2016-09-01 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'RDHostVariable' class in 'lib/rdhostvariable.cpp' and
+	'lib/rdhostvariable.h'.
+	* Removed Qt3Support components from 'rdadmin/edit_hostvar.cpp' and
+	'rdadmin/edit_hostvar.h'
+	* Removed Qt3Support components from 'rdadmin/list_hostvars.cpp' and
+	'rdadmin/list_hostvars.h'

@@ -129,14 +129,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Variable Value:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Remark:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;OK</source>
         <translation type="unfinished"></translation>
     </message>
@@ -150,6 +142,26 @@
     </message>
     <message>
         <source>The variable name is invalid.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Variable Exists</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The variable</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>already exists!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Internal Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to create host variable!</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1416,23 +1428,23 @@ Do you still want to save?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Variable Name:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Variable Value:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Remark:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;OK</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Variable Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Variable Value</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remark</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -4206,23 +4218,7 @@ Are you sure you want to continue?</source>
 <context>
     <name>ListHostvars</name>
     <message>
-        <source>Host Variables for</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Host Variables</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>NAME</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>VALUE</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>REMARK</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4238,11 +4234,31 @@ Are you sure you want to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&amp;OK</source>
+        <source>Host variables for</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&amp;Cancel</source>
+        <source>Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Value</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remarks</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete Host Variable</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete the host variable?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Close</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

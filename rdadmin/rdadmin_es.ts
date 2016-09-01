@@ -323,11 +323,11 @@ y un respaldo de la base de datos se guardó en </translation>
     </message>
     <message>
         <source>Variable Value:</source>
-        <translation>Valor:</translation>
+        <translation type="obsolete">Valor:</translation>
     </message>
     <message>
         <source>Remark:</source>
-        <translation>Comentario:</translation>
+        <translation type="obsolete">Comentario:</translation>
     </message>
     <message>
         <source>&amp;OK</source>
@@ -344,6 +344,26 @@ y un respaldo de la base de datos se guardó en </translation>
     <message>
         <source>The variable name is invalid.</source>
         <translation>El nombre de la variable es inválido.</translation>
+    </message>
+    <message>
+        <source>Variable Exists</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The variable</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>already exists!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Internal Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to create host variable!</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1733,15 +1753,15 @@ Do you still want to save?</source>
     </message>
     <message>
         <source>Variable Name:</source>
-        <translation>Nombre de la variable:</translation>
+        <translation type="obsolete">Nombre de la variable:</translation>
     </message>
     <message>
         <source>Variable Value:</source>
-        <translation>Valor:</translation>
+        <translation type="obsolete">Valor:</translation>
     </message>
     <message>
         <source>Remark:</source>
-        <translation>Comentario:</translation>
+        <translation type="obsolete">Comentario:</translation>
     </message>
     <message>
         <source>&amp;OK</source>
@@ -1750,6 +1770,18 @@ Do you still want to save?</source>
     <message>
         <source>&amp;Cancel</source>
         <translation>&amp;Cancelar</translation>
+    </message>
+    <message>
+        <source>Variable Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Variable Value</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remark</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -4874,7 +4906,7 @@ Do you still want to delete it?</source>
     <name>ListHostvars</name>
     <message>
         <source>Host Variables for</source>
-        <translation>Variables de equipo para</translation>
+        <translation type="obsolete">Variables de equipo para</translation>
     </message>
     <message>
         <source>Host Variables</source>
@@ -4882,15 +4914,15 @@ Do you still want to delete it?</source>
     </message>
     <message>
         <source>NAME</source>
-        <translation>NOMBRE</translation>
+        <translation type="obsolete">NOMBRE</translation>
     </message>
     <message>
         <source>VALUE</source>
-        <translation>VALOR</translation>
+        <translation type="obsolete">VALOR</translation>
     </message>
     <message>
         <source>REMARK</source>
-        <translation>COMENTARIO</translation>
+        <translation type="obsolete">COMENTARIO</translation>
     </message>
     <message>
         <source>&amp;Add</source>
@@ -4906,11 +4938,39 @@ Do you still want to delete it?</source>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;Aceptar</translation>
+        <translation type="obsolete">&amp;Aceptar</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Cancelar</translation>
+        <translation type="obsolete">&amp;Cancelar</translation>
+    </message>
+    <message>
+        <source>Host variables for</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Value</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remarks</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete Host Variable</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete the host variable?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Close</source>
+        <translation type="unfinished">&amp;Cerrar</translation>
     </message>
 </context>
 <context>

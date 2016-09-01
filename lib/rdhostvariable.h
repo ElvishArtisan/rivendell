@@ -1,6 +1,6 @@
-// add_hostvar.h
+// rdhostvariable.h
 //
-// Add a Rivendell Host Variable
+// Abstract a Rivendell Host Variable
 //
 //   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
@@ -18,38 +18,33 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#ifndef ADD_HOSTVAR_H
-#define ADD_HOSTVAR_H
+#ifndef RDHOSTVARIABLE_H
+#define RDHOSTVARIABLE_H
 
-#include <QDialog>
-#include <QLabel>
-#include <QLineEdit>
-#include <QPushButton>
+#include <QString>
 
-class AddHostvar : public QDialog
+class RDHostVariable
 {
-  Q_OBJECT
  public:
-  AddHostvar(QString station,int *id,QWidget *parent=0);
-  ~AddHostvar();
-  QSize sizeHint() const;
-  QSizePolicy sizePolicy() const;
-  
- private slots:
-  void okData();
-  void cancelData();
-
- protected:
-  void resizeEvent(QResizeEvent *e);
+  RDHostVariable(const QString &stationname,const QString &name);
+  RDHostVariable(int id);
+  int id();
+  QString name() const;
+  bool exists() const;
+  QString value() const;
+  void setValue(const QString &str);
+  QString remarks() const;
+  void setRemarks(const QString &str);
+  static int create(const QString &stationname,const QString &name);
+  static void remove(int id);
+  static bool exists(const QString &stationname,const QString &name);
+  static bool exists(int id);
 
  private:
-  QLabel *add_name_label;
-  QLineEdit *add_name_edit;
-  QPushButton *add_ok_button;
-  QPushButton *add_cancel_button;
-  QString add_station_name;
-  int *add_id;
+  void SetRow(const QString &param,const QString &value) const;
+  int var_id;
+  QString var_name;
 };
 
 
-#endif  // ADD_HOSTVAR_H
+#endif  // RDHOSTVARIABLE_H

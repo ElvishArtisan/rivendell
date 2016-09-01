@@ -306,11 +306,11 @@ a záloha původní databáze uložena v </translation>
     </message>
     <message>
         <source>Variable Value:</source>
-        <translation>Hodnota proměnné:</translation>
+        <translation type="obsolete">Hodnota proměnné:</translation>
     </message>
     <message>
         <source>Remark:</source>
-        <translation>Poznámka:</translation>
+        <translation type="obsolete">Poznámka:</translation>
     </message>
     <message>
         <source>&amp;OK</source>
@@ -327,6 +327,26 @@ a záloha původní databáze uložena v </translation>
     <message>
         <source>The variable name is invalid.</source>
         <translation>Název proměnné je neplatný.</translation>
+    </message>
+    <message>
+        <source>Variable Exists</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The variable</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>already exists!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Internal Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to create host variable!</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1723,15 +1743,15 @@ Stále ještě chcete uložit?</translation>
     </message>
     <message>
         <source>Variable Name:</source>
-        <translation>Název proměnné:</translation>
+        <translation type="obsolete">Název proměnné:</translation>
     </message>
     <message>
         <source>Variable Value:</source>
-        <translation>Hodnota proměnné:</translation>
+        <translation type="obsolete">Hodnota proměnné:</translation>
     </message>
     <message>
         <source>Remark:</source>
-        <translation>Poznámka:</translation>
+        <translation type="obsolete">Poznámka:</translation>
     </message>
     <message>
         <source>&amp;OK</source>
@@ -1740,6 +1760,18 @@ Stále ještě chcete uložit?</translation>
     <message>
         <source>&amp;Cancel</source>
         <translation>Z&amp;rušit</translation>
+    </message>
+    <message>
+        <source>Variable Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Variable Value</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remark</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -4899,7 +4931,7 @@ Stále ještě jej chcete smazat?</translation>
     <name>ListHostvars</name>
     <message>
         <source>Host Variables for</source>
-        <translation>Proměnné serveru pro</translation>
+        <translation type="obsolete">Proměnné serveru pro</translation>
     </message>
     <message>
         <source>Host Variables</source>
@@ -4907,15 +4939,15 @@ Stále ještě jej chcete smazat?</translation>
     </message>
     <message>
         <source>NAME</source>
-        <translation>NÁZEV</translation>
+        <translation type="obsolete">NÁZEV</translation>
     </message>
     <message>
         <source>VALUE</source>
-        <translation>HODNOTA</translation>
+        <translation type="obsolete">HODNOTA</translation>
     </message>
     <message>
         <source>REMARK</source>
-        <translation>POZNÁMKA</translation>
+        <translation type="obsolete">POZNÁMKA</translation>
     </message>
     <message>
         <source>&amp;Add</source>
@@ -4931,11 +4963,39 @@ Stále ještě jej chcete smazat?</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>Z&amp;rušit</translation>
+        <translation type="obsolete">Z&amp;rušit</translation>
+    </message>
+    <message>
+        <source>Host variables for</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Value</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remarks</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete Host Variable</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete the host variable?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Close</source>
+        <translation type="unfinished">&amp;Zavřít</translation>
     </message>
 </context>
 <context>

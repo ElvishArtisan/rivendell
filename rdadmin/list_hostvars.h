@@ -21,15 +21,14 @@
 #ifndef LIST_HOSTVARS_H
 #define LIST_HOSTVARS_H
 
-#include <qdialog.h>
-#include <q3listview.h>
-#include <q3textedit.h>
-#include <qpixmap.h>
-#include <qradiobutton.h>
-#include <qsqldatabase.h>
+#include <QDialog>
+#include <QLabel>
+#include <QPushButton>
 
 #include <rd.h>
 #include <rdmatrix.h>
+#include <rdsqltablemodel.h>
+#include <rdtableview.h>
 
 class ListHostvars : public QDialog
 {
@@ -40,20 +39,26 @@ class ListHostvars : public QDialog
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
   
-  private slots:
-   void addData();
-   void editData();
-   void deleteData();
-   void doubleClickedData(Q3ListViewItem *,const QPoint &,int);
-   void okData();
-   void cancelData();
+ private slots:
+  void addData();
+  void editData();
+  void deleteData();
+  void doubleClickedData(const QModelIndex &index);
+  void closeData();
 
-  private:
-   void RefreshList();
-   Q3ListView *list_view;
-   QString list_station;
+ protected:
+  void resizeEvent(QResizeEvent *e);
+
+ private:
+  RDSqlTableModel *list_model;
+  QLabel *list_label;
+  RDTableView *list_view;
+  QString list_station;
+  QPushButton *list_add_button;
+  QPushButton *list_edit_button;
+  QPushButton *list_delete_button;
+  QPushButton *list_close_button;
 };
 
 
-#endif
-
+#endif  // LIST_HOSTVARS_H

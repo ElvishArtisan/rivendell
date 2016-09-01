@@ -142,6 +142,7 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdgrid.cpp rdgrid.h\
                         rdgroup.cpp rdgroup.h\
                         rdgroup_list.cpp rdgroup_list.h\
+                        rdhostvariable.cpp rdhostvariable.h\
                         rdhotkeys.cpp rdhotkeys.h\
                         rdhotkeylist.cpp rdhotkeylist.h\
                         rdidvalidator.cpp rdidvalidator.h\
@@ -284,7 +285,6 @@ nodist_librd_la_SOURCES = moc_rdadd_cart.cpp\
                           moc_rdgpio.cpp\
                           moc_rdgpioselector.cpp\
                           moc_rdhotkeys.cpp\
-                          moc_rdhotkeylist.cpp\
                           moc_rdimport_audio.cpp\
                           moc_rdintegeredit.cpp\
                           moc_rdintegerdialog.cpp\

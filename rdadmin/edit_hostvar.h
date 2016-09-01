@@ -21,25 +21,18 @@
 #ifndef EDIT_HOSTVAR_H
 #define EDIT_HOSTVAR_H
 
-#include <qdialog.h>
-#include <q3listbox.h>
-#include <q3textedit.h>
-#include <qpixmap.h>
-#include <qcheckbox.h>
-#include <qsqldatabase.h>
-#include <qlineedit.h>
-#include <qcombobox.h>
-#include <qspinbox.h>
+#include <QDialog>
+#include <QLabel>
+#include <QLineEdit>
+#include <QPushButton>
 
-#include <rdstation.h>
-#include <rdcatch_connect.h>
+#include <rdhostvariable.h>
 
 class EditHostvar : public QDialog
 {
   Q_OBJECT
  public:
-  EditHostvar(QString station,QString var,QString *varvalue,QString *remark,
-	      QWidget *parent=0);
+  EditHostvar(int id,QWidget *parent=0);
   ~EditHostvar();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
@@ -48,14 +41,21 @@ class EditHostvar : public QDialog
   void okData();
   void cancelData();
 
+ protected:
+  void resizeEvent(QResizeEvent *e);
+
  private:
+  QLabel *edit_name_label;
   QLineEdit *edit_name_edit;
+  QLabel *edit_varvalue_label;
   QLineEdit *edit_varvalue_edit;
+  QLabel *edit_remark_label;
   QLineEdit *edit_remark_edit;
-  QString *edit_varvalue;
-  QString *edit_remark;
+  RDHostVariable *edit_hostvar;
+  QPushButton *edit_ok_button;
+  QPushButton *edit_cancel_button;
 };
 
 
-#endif
+#endif  // EDIT_HOSTVAR_H
 
