@@ -20,19 +20,9 @@
 
 #include <math.h>
 
-#include <Q3ButtonGroup>
-#include <Q3FileDialog>
-#include <Q3ListBox>
-#include <Q3TextEdit>
-#include <QCheckBox>
 #include <QColorDialog>
-#include <QDialog>
-#include <QEvent>
-#include <QLabel>
+#include <QFileDialog>
 #include <QMessageBox>
-#include <QPainter>
-#include <QPushButton>
-#include <QString>
 #include <QValidator>
 
 #include <rdapplication.h>
@@ -44,7 +34,7 @@
 #include "edit_dropbox.h"
 
 EditDropbox::EditDropbox(int id,QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
   QString sql;
   RDSqlQuery *q;
@@ -72,7 +62,7 @@ EditDropbox::EditDropbox(int id,QWidget *parent)
   //
   // Dialogs
   //
-  box_schedcodes_dialog=new RDSchedCodesDialog(this);
+  box_schedcodes_dialog=new RDSchedCodesDialog("RDAdmin",this);
 
   //
   // Group Name
@@ -420,7 +410,8 @@ QSizePolicy EditDropbox::sizePolicy() const
 void EditDropbox::selectPathData()
 {
   QString path=box_path_edit->text();
-  path=Q3FileDialog::getExistingDirectory(path,this);
+  path=QFileDialog::
+    getExistingDirectory(this,"RDAdmin - "+tr("Select Dropbox Path"),path);
   if(!path.isEmpty()) {
     box_path_edit->setText(path);
   }
@@ -441,7 +432,8 @@ void EditDropbox::selectCartData()
 void EditDropbox::selectLogPathData()
 {
   QString path=box_log_path_edit->text();
-  path=Q3FileDialog::getSaveFileName(path,QString::null,this);
+  path=
+    QFileDialog::getSaveFileName(this,"RDAdmin - "+tr("Select Log File"),path);
   if(!path.isEmpty()) {
     box_log_path_edit->setText(path);
   }

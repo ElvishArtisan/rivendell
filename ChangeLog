@@ -16143,3 +16143,11 @@
 2016-09-01 Fred Gleason <fredg@paravelsystems.com>
 	* Removed Qt3Support components from 'rdadmin/list_groups.cpp' and
 	'rdadmin/list_groups.h'
+2016-09-01 Fred Gleason <fredg@paravelsystems.com>
+	* Removed Qt3Support components from 'rdadmin/list_dropboxes.cpp' and
+	'rdadmin/list_dropboxes.h'
+2016-09-01 Fred Gleason <fredg@paravelsystems.com>
+	* Removed Qt3Support components from 'rdadmin/edit_dropbox.cpp' and
+	'rdadmin/edit_dropbox.h'
+	* Removed Qt3Support components from 'rdadmin/rdschedcodes_dialog.cpp'
+	and 'rdadmin/rdschedcodes_dialog.h'

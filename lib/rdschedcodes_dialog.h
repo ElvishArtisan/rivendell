@@ -23,14 +23,11 @@
 #ifndef RDSCHEDCODE_DIALOG_H
 #define RDSCHEDCODE_DIALOG_H
 
-#include <qdialog.h>
-#include <qlabel.h>
-#include <qpushbutton.h>
-#include <qstringlist.h>
-//Added by qt3to4:
+#include <QDialog>
 #include <QPaintEvent>
+#include <QPushButton>
 #include <QResizeEvent>
-#include <QCloseEvent>
+#include <QStringList>
 
 #include <rdlistselector.h>
 
@@ -38,7 +35,7 @@ class RDSchedCodesDialog : public QDialog
 {
   Q_OBJECT
  public:
-  RDSchedCodesDialog(QWidget *parent=0);
+  RDSchedCodesDialog(const QString &caption,QWidget *parent=0);
   ~RDSchedCodesDialog();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;

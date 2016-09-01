@@ -20,20 +20,16 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qpainter.h>
-#include <qmessagebox.h>
-//Added by qt3to4:
-#include <QResizeEvent>
-#include <QCloseEvent>
+#include <QPainter>
 #include <QPaintEvent>
 
 #include <rddb.h>
 #include "rdschedcodes_dialog.h"
 
-RDSchedCodesDialog::RDSchedCodesDialog(QWidget *parent)
-  : QDialog(parent,"",true)
+RDSchedCodesDialog::RDSchedCodesDialog(const QString &caption,QWidget *parent)
+  : QDialog(parent)
 {
-  setCaption(tr("Select Scheduler Codes"));
+  setWindowTitle(caption+" - "+tr("Select Scheduler Codes"));
 
   //
   // Create Fonts

@@ -41,7 +41,7 @@ RDWaveDataDialog::RDWaveDataDialog(const QString &caption,QWidget *parent)
   //
   // Dialogs
   //
-  wave_schedcodes_dialog=new RDSchedCodesDialog(this);
+  wave_schedcodes_dialog=new RDSchedCodesDialog(caption,this);
 
   //
   // Title
