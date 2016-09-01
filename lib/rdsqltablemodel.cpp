@@ -34,6 +34,18 @@ RDSqlTableModel::~RDSqlTableModel()
 }
 
 
+QFont RDSqlTableModel::font() const
+{
+  return model_font;
+}
+
+
+void RDSqlTableModel::setFont(const QFont &font)
+{
+  model_font=font;
+}
+
+
 int RDSqlTableModel::columnCount(const QModelIndex &index) const
 {
   return model_columns;
@@ -60,10 +72,32 @@ QVariant RDSqlTableModel::data(const QModelIndex &index,int role) const
     case RDSqlTableModel::LengthType:
       return QVariant(RDGetTimeLength(value.toInt(),false,true));
 
+    case RDSqlTableModel::ColorTextType:
+      return value;
+
     case RDSqlTableModel::DefaultType:
       return value;
     }
     break;
+
+  case Qt::ForegroundRole:
+    switch(fieldType(index.column())) {
+    case RDSqlTableModel::ColorTextType:
+      return QVariant(model_display_datas[index.row()][model_field_key_columns.at(index.column())].value<QColor>());
+
+    default:
+      break;
+    }
+    break;
+
+  case Qt::FontRole:
+    switch(fieldType(index.column())) {
+    case RDSqlTableModel::ColorTextType:
+      return QVariant(QFont(font().family(),font().pointSize(),QFont::Bold));
+
+    default:
+      break;
+    }
 
   default:
     break;
@@ -136,9 +170,11 @@ RDSqlTableModel::FieldType RDSqlTableModel::fieldType(int section) const
 }
 
 
-void RDSqlTableModel::setFieldType(int section,RDSqlTableModel::FieldType type)
+void RDSqlTableModel::setFieldType(int section,RDSqlTableModel::FieldType type,
+				   int key_col)
 {
   model_field_types[section]=type;
+  model_field_key_columns[section]=key_col;
 }
 
 

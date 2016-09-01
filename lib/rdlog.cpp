@@ -440,7 +440,7 @@ int RDLog::removeTracks(RDStation *station,RDUser *user,RDConfig *config) const
   q=new RDSqlQuery(sql);
   while(q->next()) {
     cart=new RDCart(q->value(0).toUInt());
-    if(!cart->remove(station,user,config)) {
+    if(!cart->remove()) {
       delete cart;
       return -1;
     }

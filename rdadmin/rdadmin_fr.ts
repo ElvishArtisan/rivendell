@@ -110,7 +110,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Group Already Exists!</source>
+        <source>A</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>group already exists!</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -4131,55 +4135,55 @@ Are you sure you want to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>NAME</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>DESCRIPTION</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>START CART</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>END CART</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>ENFORCE RANGE</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>DEFAULT TYPE</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>TRAFFIC REPORT</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>MUSIC REPORT</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>NOW &amp; NEXT</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;Groups:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>member carts will be deleted along with group</source>
+        <source>Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Are you sure you want to delete group</source>
+        <source>Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start Cart</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>End Cart</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enforce Range</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Default Type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Traffic Report</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Music Report</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Now &amp; Next</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Delete Group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>member carts will deleted along with group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete group</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -62,8 +62,10 @@ class RDGroup
 		    unsigned quan) const;
   bool cartNumberValid(unsigned cartnum) const;
   QString xml() const;
-  static bool create(const QString &name);
+  static bool create(const QString &name,bool all_users,bool all_groups);
   static void remove(const QString &name);
+  static bool exists(const QString &name);
+  static unsigned cartQuantity(const QString &name);
   
  private:
   unsigned GetNextFreeCart(unsigned startcart) const;

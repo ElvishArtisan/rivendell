@@ -31,6 +31,7 @@
 #include <qobject.h>
 
 #include <rd.h>
+#include <rdapplication.h>
 #include <rdconf.h>
 #include <rdcart.h>
 #include <rdcut.h>
@@ -1355,7 +1356,7 @@ int RDCart::addCut(unsigned format,unsigned bitrate,unsigned chans,
 }
 
 
-bool RDCart::removeAllCuts(RDStation *station,RDUser *user,RDConfig *config)
+bool RDCart::removeAllCuts()
 {
   QString sql;
   RDSqlQuery *q;
@@ -1364,7 +1365,7 @@ bool RDCart::removeAllCuts(RDStation *station,RDUser *user,RDConfig *config)
 			cart_number);
   q=new RDSqlQuery(sql);
   while(q->next()) {
-    if(!removeCut(station,user,q->value(0).toString(),config)) {
+    if(!removeCut(q->value(0).toString())) {
       delete q;
       return false;
     }
@@ -1375,8 +1376,7 @@ bool RDCart::removeAllCuts(RDStation *station,RDUser *user,RDConfig *config)
 }
 
 
-bool RDCart::removeCut(RDStation *station,RDUser *user,const QString &cutname,
-		       RDConfig *config)
+bool RDCart::removeCut(const QString &cutname,bool bypass_rdxport)
 {
   if(!exists()) {
     return true;
@@ -1387,7 +1387,7 @@ bool RDCart::removeCut(RDStation *station,RDUser *user,const QString &cutname,
   QString filename;
 
   filename = RDCut::pathName(cutname); 
-  if(!RDCart::removeCutAudio(station,user,cart_number,cutname,config)) {
+  if(!RDCart::removeCutAudio(cutname,bypass_rdxport)) {
     return false;
   }
   sql=QString("delete from REPL_CUT_STATE where ")+
@@ -1402,13 +1402,6 @@ bool RDCart::removeCut(RDStation *station,RDUser *user,const QString &cutname,
   metadata_changed=true;
 
   return true;
-}
-
-
-bool RDCart::removeCutAudio(RDStation *station,RDUser *user,
-			    const QString &cutname,RDConfig *config)
-{
-  return RDCart::removeCutAudio(station,user,cart_number,cutname,config);
 }
 
 
@@ -1428,9 +1421,9 @@ bool RDCart::create(const QString &groupname,RDCart::Type type)
 }
 
 
-bool RDCart::remove(RDStation *station,RDUser *user,RDConfig *config) const
+bool RDCart::remove(bool bypass_rdxport) const
 {
-  return RDCart::removeCart(cart_number,station,user,config);
+  return RDCart::removeCart(cart_number,bypass_rdxport);
 }
 
 
@@ -1509,8 +1502,7 @@ QString RDCart::typeText(RDCart::Type type)
 }
 
 
-bool RDCart::removeCart(unsigned cart_num,RDStation *station,RDUser *user,
-			RDConfig *config)
+bool RDCart::removeCart(unsigned cart_num,bool bypass_rdxport)
 {
   QString sql;
   RDSqlQuery *q;
@@ -1519,8 +1511,7 @@ bool RDCart::removeCart(unsigned cart_num,RDStation *station,RDUser *user,
 			cart_num);
   q=new RDSqlQuery(sql);
   while(q->next()) {
-    if(!RDCart::removeCutAudio(station,user,cart_num,q->value(0).toString(),
-			       config)) {
+    if(!RDCart::removeCutAudio(q->value(0).toString()),bypass_rdxport) {
       delete q;
       return false;
     }
@@ -1541,8 +1532,7 @@ bool RDCart::removeCart(unsigned cart_num,RDStation *station,RDUser *user,
 }
 
 
-bool RDCart::removeCutAudio(RDStation *station,RDUser *user,unsigned cart_num,
-			    const QString &cutname,RDConfig *config)
+bool RDCart::removeCutAudio(const QString &cutname,bool bypass_rdxport)
 {
   bool ret=true;
 #ifndef WIN32
@@ -1550,48 +1540,47 @@ bool RDCart::removeCutAudio(RDStation *station,RDUser *user,unsigned cart_num,
   long response_code=0;
   char url[1024];
   QString xml="";
-  QString sql;
-  RDSqlQuery *q;
 
-  if(user==NULL) { 
+  if(bypass_rdxport) {
     unlink(RDCut::pathName(cutname));
     unlink(RDCut::pathName(cutname)+".energy");
-    sql=QString("delete from CUT_EVENTS where ")+
+    QString sql=QString("delete from CUT_EVENTS where ")+
       "CUT_NAME=\""+cutname+"\"";
-    q=new RDSqlQuery(sql);
+    RDSqlQuery *q=new RDSqlQuery(sql);
     delete q;
+    return true;
   }
-  else {
-    //
-    // Generate POST Data
-    //
-    QString post=QString().
-      sprintf("COMMAND=%d&LOGIN_NAME=%s&PASSWORD=%s&CART_NUMBER=%u&CUT_NUMBER=%u",
-	      RDXPORT_COMMAND_DELETEAUDIO,
-	      (const char *)RDFormPost::urlEncode(user->name()),
-	      (const char *)RDFormPost::urlEncode(user->password()),
-	      cart_num,
-	      cutname.right(3).toUInt());
-    if((curl=curl_easy_init())==NULL) {
-      return false;
-    }
-    //
-    // Write out URL as a C string before passing to curl_easy_setopt(), 
-    // otherwise some versions of LibCurl will throw a 'bad/illegal format' 
-    // error.
-    //
-    strncpy(url,station->webServiceUrl(config),1024);
-    curl_easy_setopt(curl,CURLOPT_URL,url);
-    curl_easy_setopt(curl,CURLOPT_POST,1);
-    curl_easy_setopt(curl,CURLOPT_POSTFIELDS,(const char *)post);
-    curl_easy_setopt(curl,CURLOPT_TIMEOUT,RD_CURL_TIMEOUT);
-    curl_easy_setopt(curl,CURLOPT_WRITEFUNCTION,CartWriteCallback);
-    curl_easy_setopt(curl,CURLOPT_WRITEDATA,&xml);
-    ret&=curl_easy_perform(curl)==0;
-    curl_easy_getinfo(curl,CURLINFO_RESPONSE_CODE,&response_code);
-    ret&=response_code==200;
-    curl_easy_cleanup(curl);
+
+  //
+  // Generate POST Data
+  //
+  QString post=QString().
+    sprintf("COMMAND=%d&LOGIN_NAME=%s&PASSWORD=%s&CART_NUMBER=%u&CUT_NUMBER=%u",
+	    RDXPORT_COMMAND_DELETEAUDIO,
+	    (const char *)RDFormPost::urlEncode(rda->user()->name()),
+	    (const char *)RDFormPost::urlEncode(rda->user()->password()),
+	    RDCut::cartNumber(cutname),
+	    RDCut::cutNumber(cutname));
+  if((curl=curl_easy_init())==NULL) {
+    return false;
   }
+  //
+  // Write out URL as a C string before passing to curl_easy_setopt(), 
+  // otherwise some versions of LibCurl will throw a 'bad/illegal format' 
+  // error.
+  //
+  strncpy(url,rda->station()->webServiceUrl(rda->config()),1024);
+  curl_easy_setopt(curl,CURLOPT_URL,url);
+  curl_easy_setopt(curl,CURLOPT_POST,1);
+  curl_easy_setopt(curl,CURLOPT_POSTFIELDS,(const char *)post);
+  curl_easy_setopt(curl,CURLOPT_TIMEOUT,RD_CURL_TIMEOUT);
+  curl_easy_setopt(curl,CURLOPT_WRITEFUNCTION,CartWriteCallback);
+  curl_easy_setopt(curl,CURLOPT_WRITEDATA,&xml);
+  ret&=curl_easy_perform(curl)==0;
+  curl_easy_getinfo(curl,CURLINFO_RESPONSE_CODE,&response_code);
+  ret&=response_code==200;
+  curl_easy_cleanup(curl);
+
 #endif  // WIN32
   return ret;
 }

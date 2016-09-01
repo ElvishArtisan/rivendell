@@ -724,7 +724,7 @@ void RDCartSlot::ClearTempCart()
   if(slot_temp_cart) {
     cart=new RDCart(slot_logline->cartNumber());
     if(cart->exists()) {
-      cart->remove(slot_station,slot_user,slot_config);
+      cart->remove();
     }
     slot_temp_cart=false;
     delete cart;

@@ -1021,7 +1021,7 @@ void VoiceTracker::resetData()
     edit_logline[1]->setForcedLength(0);
     edit_logline[1]->clearTrackData(RDLogLine::AllTrans);
     track_log_event->removeCustomTransition(edit_track_line[1]);
-    if(!edit_track_cart->remove(rda->station(),rda->user(),rda->config())) {
+    if(!edit_track_cart->remove()) {
       QMessageBox::warning(this,tr("RDLogEdit"),tr("Audio Deletion Error!"));
     }
     delete edit_track_cart;

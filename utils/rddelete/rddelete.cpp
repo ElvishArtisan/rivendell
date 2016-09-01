@@ -194,7 +194,7 @@ void MainObject::DeleteCarts()
 	  }
 	}
 	else {
-	  if(cart->remove(rda->station(),rda->user(),rda->config())) {
+	  if(cart->remove()) {
 	    if(del_verbose) {
 	      printf("deleted cart %06u [%s]\n",cartnum,(const char *)title);
 	    }

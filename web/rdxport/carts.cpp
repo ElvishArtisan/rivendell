@@ -426,7 +426,7 @@ void Xport::RemoveCart()
     delete cart;
     XmlExit("No such cart",404);
   }
-  if(!cart->remove(NULL,NULL,rda->config())) {
+  if(!cart->remove(true)) {
     delete cart;
     XmlExit("Unable to delete cart",500);
   }
@@ -929,8 +929,7 @@ void Xport::RemoveCut()
     delete cart;
     XmlExit("No such cart",404);
   }
-  if(!cart->removeCut(NULL,NULL,RDCut::cutName(cart_number,cut_number),
-		      rda->config())) {
+  if(!cart->removeCut(RDCut::cutName(cart_number,cut_number),true)) {
     delete cart;
     XmlExit("No such cut",404);
   }

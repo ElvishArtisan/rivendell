@@ -702,7 +702,7 @@ void RecordCut::recordData()
     }
     RDCart *cart=new RDCart(rec_cut->cartNumber());
     cart->
-      removeCutAudio(rda->station(),rda->user(),rec_cut->cutName(),rda->config());
+      removeCutAudio(rec_cut->cutName());
     delete cart;
     switch(rda->libraryConf()->defaultFormat()) {
 	case 0:

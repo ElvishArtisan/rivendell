@@ -374,24 +374,136 @@ QString RDGroup::xml() const
 }
 
 
-bool RDGroup::create(const QString &name)
+bool RDGroup::create(const QString &name,bool all_users,bool all_groups)
 {
-  QString sql;
   RDSqlQuery *q;
-  bool ret;
+  RDSqlQuery *q1;
+  QString sql;
 
   sql=QString("insert into GROUPS set ")+
     "NAME=\""+RDEscapeString(name)+"\"";
   q=new RDSqlQuery(sql);
-  ret=q->isActive();
+  if(!q->isActive()) {
+    delete q;
+    return false;
+  }
   delete q;
 
-  return ret;
+  //
+  // Create Default Users Perms
+  //
+  if(all_users) {
+    sql="select LOGIN_NAME from USERS";
+    q=new RDSqlQuery(sql);
+    while(q->next()) {
+      sql=QString("insert into USER_PERMS set ")+
+	"USER_NAME=\""+RDEscapeString(q->value(0).toString())+"\","+
+	"GROUP_NAME=\""+RDEscapeString(name)+"\"";
+      q1=new RDSqlQuery(sql);
+      delete q1;
+    }
+    delete q;
+  }
+
+  //
+  // Create Default Service Perms
+  //
+  if(all_groups) {
+    sql="select NAME from SERVICES";
+    q=new RDSqlQuery(sql);
+    while(q->next()) {
+      sql=QString("insert into AUDIO_PERMS set ")+
+	"SERVICE_NAME=\""+RDEscapeString(q->value(0).toString())+"\","+
+	"GROUP_NAME=\""+RDEscapeString(name)+"\"";
+      q1=new RDSqlQuery(sql);
+      delete q1;
+    }
+    delete q;
+  }
+
+  return true;
 }
 
 
 void RDGroup::remove(const QString &name)
 {
+  QString sql;
+  RDSqlQuery *q;
+  RDCart *cart=NULL;
+
+  //
+  // Delete Member Carts
+  //
+  sql=QString("select NUMBER from CART where ")+
+    "GROUP_NAME=\""+RDEscapeString(name)+"\"";
+  q=new RDSqlQuery(sql);
+  while(q->next()) {
+    cart=new RDCart(q->value(0).toUInt());
+    cart->remove();
+    delete cart;
+  }
+  delete q;
+  
+  //
+  // Delete Member Audio Perms
+  //
+  sql=QString("delete from AUDIO_PERMS where ")+
+    "GROUP_NAME=\""+RDEscapeString(name)+"\"";
+  q=new RDSqlQuery(sql);
+  delete q;
+  
+  //
+  // Delete Member User Perms
+  //
+  sql=QString("delete from USER_PERMS where ")+
+    "GROUP_NAME=\""+RDEscapeString(name)+"\"";
+  q=new RDSqlQuery(sql);
+  delete q;
+  
+  //
+  // Delete Replicator Map Records
+  //
+  sql=QString("delete from REPLICATOR_MAP where ")+
+    "GROUP_NAME=\""+RDEscapeString(name)+"\"";
+  q=new RDSqlQuery(sql);
+  delete q;
+  
+  //
+  // Delete from Group List
+  //
+  sql=QString("delete from GROUPS where ")+
+    "NAME=\""+RDEscapeString(name)+"\"";
+  q=new RDSqlQuery(sql);
+  delete q;
+}
+
+
+bool RDGroup::exists(const QString &name)
+{
+  QString sql;
+  RDSqlQuery *q;
+  bool ret=false;
+
+  sql=QString("select NAME from GROUPS where ")+
+    "NAME=\""+RDEscapeString(name)+"\"";
+  q=new RDSqlQuery(sql);
+  ret=q->first();
+  delete q;
+
+  return ret;
+}
+
+unsigned RDGroup::cartQuantity(const QString &name)
+{
+  unsigned ret=0;
+
+  QString sql=QString("select NUMBER from CART where ")+
+    "GROUP_NAME=\""+RDEscapeString(name)+"\"";
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  ret=q->size();
+  delete q;
+
+  return ret;
 }
 
 

@@ -231,7 +231,7 @@ void MainObject::CheckOrphanedTracks()
       fflush(NULL);
       if(UserResponse()) {
 	RDCart *cart=new RDCart(q->value(0).toUInt());
-	cart->remove(rda->station(),rda->user(),rda->config());
+	cart->remove();
 	delete cart;
 	RDLog *log=new RDLog(q->value(2).toString());
 	if(log->exists()) {
@@ -471,8 +471,7 @@ void MainObject::CheckPendingCarts()
     printf("  Cart %06u has stale reservation, delete cart(y/N)?",
 	   q->value(0).toUInt());
     if(UserResponse()) {
-      RDCart::removeCart(q->value(0).toUInt(),rda->station(),rda->user(),
-			 rda->config());
+      RDCart::removeCart(q->value(0).toUInt());
     }
   }
   delete q;

@@ -603,7 +603,7 @@ void MainWidget::addData()
     new EditCart(cart_num,&lib_import_path,true,profile_ripping,this);
   if(cart->exec() <0) {
     RDCart *rdcart=new RDCart(cart_num);
-    rdcart->remove(rda->station(),rda->user(),rda->config());
+    rdcart->remove();
     delete rdcart;
   } 
   else {
@@ -753,7 +753,7 @@ Do you still want to delete it?"),item->text(1).toUInt());
   }
   if(del_flag && item->text(21).isEmpty()) {
     RDCart *rdcart=new RDCart(item->text(1).toUInt());
-    if(!rdcart->remove(rda->station(),rda->user(),rda->config())) {
+    if(!rdcart->remove()) {
       QMessageBox::warning(this,tr("RDLibrary"),tr("Unable to delete audio!"));
       return;
     }

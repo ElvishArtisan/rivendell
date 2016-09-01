@@ -21,8 +21,8 @@
 #ifndef ADD_GROUP_H
 #define ADD_GROUP_H
 
-#include <QDialog>
 #include <QCheckBox>
+#include <QDialog>
 #include <QLineEdit>
 
 class AddGroup : public QDialog
@@ -46,5 +46,4 @@ class AddGroup : public QDialog
 };
 
 
-#endif
-
+#endif  // ADD_GROUP_H

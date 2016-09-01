@@ -1080,7 +1080,7 @@ void DiskRipper::RipTrack(int track,int end_track,QString cutname,QString title)
       break;
 
     default:
-      cart->remove(rda->station(),rda->user(),rda->config());
+      cart->remove();
       QMessageBox::warning(this,tr("RDLibrary - Importer Error"),
 			   RDAudioImport::errorText(conv_err,audio_conv_err));
       break;
@@ -1094,14 +1094,14 @@ void DiskRipper::RipTrack(int track,int end_track,QString cutname,QString title)
   case RDCdRipper::ErrorInternal:
   case RDCdRipper::ErrorNoDisc:
   case RDCdRipper::ErrorNoTrack:
-    cart->remove(rda->station(),rda->user(),rda->config());
+    cart->remove();
     QMessageBox::warning(this,tr("RDLibrary - Ripper Error"),
 			 RDCdRipper::errorText(ripper_err));
     break;
 
   case RDCdRipper::ErrorAborted:
     rip_aborting=true;
-    cart->remove(rda->station(),rda->user(),rda->config());
+    cart->remove();
     break;
   }
   delete ripper;

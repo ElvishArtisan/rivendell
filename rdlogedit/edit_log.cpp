@@ -1721,7 +1721,7 @@ bool EditLog::DeleteTracks()
   RDCart *cart;
   for(unsigned i=0;i<edit_deleted_tracks.size();i++) {
     cart=new RDCart(edit_deleted_tracks[i]);
-    if(!cart->remove(rda->station(),rda->user(),rda->config())) {
+    if(!cart->remove()) {
       delete cart;
       return false;
     }

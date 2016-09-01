@@ -395,8 +395,7 @@ void AudioCart::deleteCutData()
   // Delete Cuts
   //
   for(unsigned i=0;i<cutnames.size();i++) {
-    if(!rdcart_cart->removeCut(rda->station(),rda->user(),cutnames[i],
-			       rda->config())) {
+    if(!rdcart_cart->removeCut(cutnames[i])) {
       QMessageBox::warning(this,tr("RDLibrary"),
 			   tr("Unable to delete audio for cut")+
 			   QString().sprintf(" %d!",RDCut::cutNumber(cutnames[i])));

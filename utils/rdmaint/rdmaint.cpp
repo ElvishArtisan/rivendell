@@ -144,8 +144,7 @@ void MainObject::PurgeCuts()
     q1=new RDSqlQuery(sql);
     while(q1->next()) {
       RDCart *cart=new RDCart(q1->value(0).toUInt());
-      if(cart->removeCut(rda->station(),rda->user(),q1->value(1).toString(),
-			 rda->config())) {
+      if(cart->removeCut(q1->value(1).toString())) {
 	rda->config()->
 	  log("rdmaint",RDConfig::LogInfo,QString().sprintf("purged cut %s",
 			(const char *)q1->value(1).toString()));
@@ -161,7 +160,7 @@ void MainObject::PurgeCuts()
 			      q1->value(0).toUInt());
 	q2=new RDSqlQuery(sql);
 	if(!q2->first()) {
-	  cart->remove(rda->station(),rda->user(),rda->config());
+	  cart->remove();
 	  rda->config()->
 	    log("rdmaint",RDConfig::LogInfo,QString().
 		sprintf("deleted purged cart %06u",cart->number()));

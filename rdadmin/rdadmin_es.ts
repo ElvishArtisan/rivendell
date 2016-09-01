@@ -300,7 +300,15 @@ y un respaldo de la base de datos se guardó en </translation>
     </message>
     <message>
         <source>Group Already Exists!</source>
-        <translation>¡El grupo ya existe!</translation>
+        <translation type="obsolete">¡El grupo ya existe!</translation>
+    </message>
+    <message>
+        <source>A</source>
+        <translation type="unfinished">Un grupo </translation>
+    </message>
+    <message>
+        <source>group already exists!</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -4743,39 +4751,39 @@ Do you still want to delete it?</source>
     </message>
     <message>
         <source>NAME</source>
-        <translation>NOMBRE</translation>
+        <translation type="obsolete">NOMBRE</translation>
     </message>
     <message>
         <source>DESCRIPTION</source>
-        <translation>DESCRIPCIÓN</translation>
+        <translation type="obsolete">DESCRIPCIÓN</translation>
     </message>
     <message>
         <source>START CART</source>
-        <translation>CART INICIO</translation>
+        <translation type="obsolete">CART INICIO</translation>
     </message>
     <message>
         <source>END CART</source>
-        <translation>CART FIN</translation>
+        <translation type="obsolete">CART FIN</translation>
     </message>
     <message>
         <source>ENFORCE RANGE</source>
-        <translation>OBLIGAR RANGO</translation>
+        <translation type="obsolete">OBLIGAR RANGO</translation>
     </message>
     <message>
         <source>DEFAULT TYPE</source>
-        <translation>TIPO INICIAL</translation>
+        <translation type="obsolete">TIPO INICIAL</translation>
     </message>
     <message>
         <source>TRAFFIC REPORT</source>
-        <translation>REPORTE TRÁFICO</translation>
+        <translation type="obsolete">REPORTE TRÁFICO</translation>
     </message>
     <message>
         <source>MUSIC REPORT</source>
-        <translation>REPORTE MÚSICA</translation>
+        <translation type="obsolete">REPORTE MÚSICA</translation>
     </message>
     <message>
         <source>NOW &amp; NEXT</source>
-        <translation>NOW &amp; NEXT</translation>
+        <translation type="obsolete">NOW &amp; NEXT</translation>
     </message>
     <message>
         <source>&amp;Groups:</source>
@@ -4783,15 +4791,55 @@ Do you still want to delete it?</source>
     </message>
     <message>
         <source>member carts will be deleted along with group</source>
-        <translation>cartuchos serán borrados junto con el grupo</translation>
+        <translation type="obsolete">cartuchos serán borrados junto con el grupo</translation>
     </message>
     <message>
         <source>Are you sure you want to delete group</source>
-        <translation>Desea eliminar el grupo</translation>
+        <translation type="unfinished">Desea eliminar el grupo</translation>
     </message>
     <message>
         <source>Delete Group</source>
-        <translation>Borrar grupo</translation>
+        <translation type="unfinished">Borrar grupo</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start Cart</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>End Cart</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enforce Range</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Default Type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Traffic Report</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Music Report</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Now &amp; Next</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>member carts will deleted along with group</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

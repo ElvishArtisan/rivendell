@@ -1098,10 +1098,10 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
 	    (const char *)filename.utf8());
     fflush(stderr);
     if(cart_created) {
-      cart->remove(rda->station(),rda->user(),rda->config());
+      cart->remove();
     }
     else {
-      cart->removeCut(rda->station(),rda->user(),cut->cutName(),rda->config());
+      cart->removeCut(cut->cutName());
     }
     delete cut;
     delete cart;
@@ -1781,7 +1781,7 @@ void MainObject::DeleteCuts(unsigned cartnum)
   }
   unsigned dev;
   RDCart *cart=new RDCart(cartnum);
-  cart->removeAllCuts(rda->station(),rda->user(),rda->config());
+  cart->removeAllCuts();
   cart->updateLength();
   cart->resetRotation();
   cart->calculateAverageLength(&dev);

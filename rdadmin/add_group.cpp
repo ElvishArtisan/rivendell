@@ -25,7 +25,6 @@
 
 #include <rdescape_string.h>
 #include <rdpasswd.h>
-#include <rdtextvalidator.h>
 
 #include "edit_group.h"
 #include "add_group.h"
@@ -54,17 +53,11 @@ AddGroup::AddGroup(QString *group,QWidget *parent)
   user_font.setPixelSize(12);
 
   //
-  // Text Validator
-  //
-  RDTextValidator *validator=new RDTextValidator(this);
-
-  //
   // Group Name
   //
   group_name_edit=new QLineEdit(this);
   group_name_edit->setGeometry(145,11,sizeHint().width()-150,19);
   group_name_edit->setMaxLength(10);
-  group_name_edit->setValidator(validator);
   QLabel *label=new QLabel(group_name_edit,tr("&New Group Name:"),this);
   label->setGeometry(10,11,130,19);
   label->setFont(font);
@@ -134,76 +127,23 @@ QSizePolicy AddGroup::sizePolicy() const
 
 void AddGroup::okData()
 {
-  RDSqlQuery *q;
-  RDSqlQuery *q1;
-  QString sql;
-
   if(group_name_edit->text().isEmpty()) {
-    QMessageBox::warning(this,tr("Invalid Name"),tr("You must give the group a name!"));
+    QMessageBox::warning(this,"RDAdmin - "+tr("Invalid Name"),
+			 tr("You must give the group a name!"));
     return;
   }
 
-  sql=QString("insert into GROUPS set ")+
-    "NAME=\""+RDEscapeString(group_name_edit->text())+"\"";
-
-  q=new RDSqlQuery(sql);
-  if(!q->isActive()) {
-    QMessageBox::warning(this,tr("Group Exists"),tr("Group Already Exists!"),
-			 1,0,0);
-    delete q;
+  if(RDGroup::exists(group_name_edit->text())) {
+    QMessageBox::warning(this,"RDAdmin - "+tr("Group Exists"),
+			 tr("A")+" \""+group_name_edit->text()+"\" "+
+			 tr("group already exists!"));
     return;
   }
-  delete q;
-
-  //
-  // Create Default Users Perms
-  //
-  if(group_users_box->isChecked()) {
-    sql="select LOGIN_NAME from USERS";
-    q=new RDSqlQuery(sql);
-    while(q->next()) {
-      sql=QString("insert into USER_PERMS set ")+
-	"USER_NAME=\""+RDEscapeString(q->value(0).toString())+"\","+
-	"GROUP_NAME=\""+RDEscapeString(group_name_edit->text())+"\"";
-      q1=new RDSqlQuery(sql);
-      delete q1;
-    }
-    delete q;
-  }
-
-  //
-  // Create Default Service Perms
-  //
-  if(group_svcs_box->isChecked()) {
-    sql="select NAME from SERVICES";
-    q=new RDSqlQuery(sql);
-    while(q->next()) {
-      sql=QString("insert into AUDIO_PERMS set ")+
-	"SERVICE_NAME=\""+RDEscapeString(q->value(0).toString())+"\","+
-	"GROUP_NAME=\""+RDEscapeString(group_name_edit->text())+"\"";
-      q1=new RDSqlQuery(sql);
-      delete q1;
-    }
-    delete q;
-  }
-
+  RDGroup::create(group_name_edit->text(),group_users_box->isChecked(),
+		  group_svcs_box->isChecked());
   EditGroup *group=new EditGroup(group_name_edit->text(),this);
   if(group->exec()<0) {
-    sql=QString("delete from USER_PERMS where ")+
-      "GROUP_NAME=\""+RDEscapeString(group_name_edit->text())+"\"";
-
-    q=new RDSqlQuery(sql);
-    delete q;
-    sql=QString("delete from AUDIO_PERMS where ")+
-      "GROUP_NAME=\""+RDEscapeString(group_name_edit->text())+"\"";
-    q=new RDSqlQuery(sql);
-    delete q;
-
-    sql=QString("delete from GROUPS where ")+
-      "NAME=\""+RDEscapeString(group_name_edit->text())+"\"";
-    q=new RDSqlQuery(sql);
-    delete q;
-    delete group;
+    RDGroup::remove(group_name_edit->text());
     done(-1);
     return;
   }

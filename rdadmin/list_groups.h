@@ -26,7 +26,8 @@
 #include <QResizeEvent>
 
 #include <rddb.h>
-#include <rdlistviewitem.h>
+#include <rdsqltablemodel.h>
+#include <rdtableview.h>
 
 class ListGroups : public QDialog
 {
@@ -43,17 +44,15 @@ class ListGroups : public QDialog
   void renameData();
   void deleteData();
   void reportData();
-  void doubleClickedData(Q3ListViewItem *item,const QPoint &pt,int col);
+  void doubleClickedData(const QModelIndex &index);
   void closeData();
 
  protected:
   void resizeEvent(QResizeEvent *e);
 
  private:
-  void RefreshList();
-  void RefreshItem(RDListViewItem *item);
-  void WriteItem(RDListViewItem *item,RDSqlQuery *q);
-  RDListView *list_groups_view;
+  RDSqlTableModel *list_model;
+  RDTableView *list_view;
   QPushButton *list_add_button;
   QPushButton *list_edit_button;
   QPushButton *list_rename_button;
@@ -63,6 +62,4 @@ class ListGroups : public QDialog
 };
 
 
-#endif
-
-
+#endif  // LIST_GROUPS_H

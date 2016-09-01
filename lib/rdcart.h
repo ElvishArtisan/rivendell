@@ -144,21 +144,16 @@ class RDCart
   void writeTimestamp();
   int addCut(unsigned format,unsigned bitrate,unsigned chans,
 	     const QString &isci="",QString desc="");
-  bool removeAllCuts(RDStation *station,RDUser *user,RDConfig *config);
-  bool removeCut(RDStation *station,RDUser *user,const QString &cutname,
-		 RDConfig *config);
-  bool removeCutAudio(RDStation *station,RDUser *user,
-		      const QString &cutname,RDConfig *config);
+  bool removeAllCuts();
+  bool removeCut(const QString &cutname,bool bypass_rdxport=false);
   bool create(const QString &groupname,RDCart::Type type);
-  bool remove(RDStation *station,RDUser *user,RDConfig *config) const;
+  bool remove(bool bypass_rdxport=false) const;
   static bool exists(unsigned cartnum);
   static QString playOrderText(RDCart::PlayOrder order);
   static QString usageText(RDCart::UsageCode usage);
   static QString typeText(RDCart::Type type);
-  static bool removeCart(unsigned cart_num,RDStation *station,RDUser *user,
-			 RDConfig *config);
-  static bool removeCutAudio(RDStation *station,RDUser *user,unsigned cart_num,
-			     const QString &cutname,RDConfig *config);
+  static bool removeCart(unsigned cart_num,bool bypass_rdxport=false);
+  static bool removeCutAudio(const QString &cutname,bool bypass_rdxport=false);
   static void removePending(RDStation *station,RDUser *user,RDConfig *config);
   static unsigned readXml(std::vector<RDWaveData> *data,const QString &xml);
   

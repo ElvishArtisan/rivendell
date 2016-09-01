@@ -547,7 +547,7 @@ bool RDInitDb(QString *err_str,RDConfig *config)
 
   
   for(const struct Group *g=group;g->group!= NULL; g++) {
-    RDGroup::create(g->group);
+    RDGroup::create(g->group,true,true);
     RDGroup *group=new RDGroup(g->group);
     group->setDescription(g->description);
     if(g->macro) {

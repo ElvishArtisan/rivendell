@@ -25,6 +25,7 @@
 #include <vector>
 
 #include <QAbstractTableModel>
+#include <QFont>
 #include <QSize>
 #include <QStringList>
 #include <QVariant>
@@ -33,9 +34,11 @@ class RDSqlTableModel : public QAbstractTableModel
 {
   Q_OBJECT
  public:
-  enum FieldType {DefaultType=0,CartNumberType=1,LengthType=2};
+  enum FieldType {DefaultType=0,CartNumberType=1,LengthType=2,ColorTextType=3};
   RDSqlTableModel(QObject *parent=0);
   ~RDSqlTableModel();
+  QFont font() const;
+  void setFont(const QFont &font);
   int columnCount(const QModelIndex &index=QModelIndex()) const;
   int rowCount(const QModelIndex &index=QModelIndex()) const;
   QVariant data(const QModelIndex &index,int role=Qt::DisplayRole) const;
@@ -46,15 +49,17 @@ class RDSqlTableModel : public QAbstractTableModel
   bool setHeaderData(int section,Qt::Orientation orient,const QVariant &value,
   		     int role=Qt::EditRole);
   FieldType fieldType(int section) const;
-  void setFieldType(int section,FieldType type);
+  void setFieldType(int section,FieldType type,int key_col=-1);
   void update();
   bool insertRows(int row,const QString &sql);
   bool removeRows(int row,int count,const QModelIndex &parent=QModelIndex());
 
  private:
   QVariant GetHeader(int section) const;
+  QFont model_font;
   std::map<int,QVariant> model_headers;
   std::map<int,FieldType> model_field_types;
+  std::map<int,int> model_field_key_columns;
   std::vector<std::vector<QVariant> > model_display_datas;
   int model_columns;
   QString model_sql;
