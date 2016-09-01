@@ -18,16 +18,15 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qsqldatabase.h>
-
-
 #ifndef RDDROPBOX_H
 #define RDDROPBOX_H
+
+#include <QString>
 
 class RDDropbox
 {
  public:
-  RDDropbox(int id,const QString &stationname="");
+  RDDropbox(int id);
   int id() const;
   QString stationName() const;
   void setStationName(const QString &name) const;
@@ -69,6 +68,8 @@ class RDDropbox
   void setCreateStartdateOffset(int offset) const;
   int createEnddateOffset() const;
   void setCreateEnddateOffset(int offset) const;
+  static int create(const QString &stationname);
+  static void remove(int id);
 
  private:
   void SetRow(const QString &param,int value) const;

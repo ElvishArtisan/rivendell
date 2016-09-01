@@ -21,16 +21,11 @@
 #ifndef LIST_DROPBOXES_H
 #define LIST_DROPBOXES_H
 
-#include <qdialog.h>
-#include <qpixmap.h>
-#include <qradiobutton.h>
-#include <qsqldatabase.h>
-#include <qpushbutton.h>
-//Added by qt3to4:
-#include <QResizeEvent>
+#include <QDialog>
+#include <QPushButton>
 
-#include <rdlistviewitem.h>
-#include <rddb.h>
+#include <rdsqltablemodel.h>
+#include <rdtableview.h>
 
 class ListDropboxes : public QDialog
 {
@@ -45,17 +40,15 @@ class ListDropboxes : public QDialog
   void addData();
   void editData();
   void deleteData();
-  void doubleClickedData(Q3ListViewItem *item,const QPoint &pt,int col);
+  void doubleClickedData(const QModelIndex &index);
   void closeData();
 
  protected:
   void resizeEvent(QResizeEvent *e);
 
  private:
-  void RefreshList();
-  void RefreshItem(RDListViewItem *item);
-  void WriteItem(RDListViewItem *item,RDSqlQuery *q);
-  RDListView *list_dropboxes_view;
+  RDTableView *list_view;
+  RDSqlTableModel *list_model;
   QPushButton *list_add_button;
   QPushButton *list_edit_button;
   QPushButton *list_delete_button;

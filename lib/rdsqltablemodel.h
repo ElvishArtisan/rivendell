@@ -34,7 +34,8 @@ class RDSqlTableModel : public QAbstractTableModel
 {
   Q_OBJECT
  public:
-  enum FieldType {DefaultType=0,CartNumberType=1,LengthType=2,ColorTextType=3};
+  enum FieldType {DefaultType=0,CartNumberType=1,LengthType=2,ColorTextType=3,
+		  AudioLevelType=4,BooleanType=5};
   RDSqlTableModel(QObject *parent=0);
   ~RDSqlTableModel();
   QFont font() const;
@@ -57,12 +58,12 @@ class RDSqlTableModel : public QAbstractTableModel
  private:
   QVariant GetHeader(int section) const;
   QFont model_font;
+  int model_columns;
+  QString model_sql;
   std::map<int,QVariant> model_headers;
   std::map<int,FieldType> model_field_types;
   std::map<int,int> model_field_key_columns;
   std::vector<std::vector<QVariant> > model_display_datas;
-  int model_columns;
-  QString model_sql;
 };
 
 

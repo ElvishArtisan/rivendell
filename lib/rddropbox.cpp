@@ -23,28 +23,9 @@
 #include <rddropbox.h>
 #include <rdescape_string.h>
 
-//
-// Global Classes
-//
-RDDropbox::RDDropbox(int id,const QString &stationname)
+RDDropbox::RDDropbox(int id)
 {
-  RDSqlQuery *q;
-  QString sql;
-
   box_id=id;
-
-  if(id<0) {
-    sql=QString("insert into DROPBOXES set ")+
-      "STATION_NAME=\""+RDEscapeString(stationname)+"\"";
-    q=new RDSqlQuery(sql);
-    delete q;
-    sql="select LAST_INSERT_ID() from DROPBOXES";
-    q=new RDSqlQuery(sql);
-    if(q->first()) {
-      box_id=q->value(0).toInt();
-    }
-    delete q;
-  }
 }
 
 
@@ -296,6 +277,37 @@ int RDDropbox::createEnddateOffset() const
 void RDDropbox::setCreateEnddateOffset(int offset) const
 {
   SetRow("CREATE_ENDDATE_OFFSET",offset);
+}
+
+
+int RDDropbox::create(const QString &stationname)
+{
+  int ret=-1;
+
+  QString sql=QString("insert into DROPBOXES set ")+
+    "STATION_NAME=\""+RDEscapeString(stationname)+"\"";
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  ret=q->lastInsertId().toInt();
+  delete q;
+
+  return ret;
+}
+
+
+void RDDropbox::remove(int id)
+{
+  QString sql;
+  RDSqlQuery *q;
+
+  sql=QString("delete from DROPBOX_PATHS where ")+
+    QString().sprintf("DROPBOX_ID=%d",id);
+  q=new RDSqlQuery(sql);
+  delete q;
+
+  sql=QString("delete from DROPBOXES where ")+
+    QString().sprintf("ID=%d",id);
+  q=new RDSqlQuery(sql);
+  delete q;
 }
 
 

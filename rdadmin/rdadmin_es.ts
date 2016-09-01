@@ -4354,54 +4354,74 @@ Are you sure you want to continue?</source>
     </message>
     <message>
         <source>Group</source>
-        <translation>Grupo</translation>
+        <translation type="unfinished">Grupo</translation>
     </message>
     <message>
         <source>Path</source>
-        <translation>Carpeta</translation>
+        <translation type="unfinished">Carpeta</translation>
     </message>
     <message>
         <source>Normalization Level</source>
-        <translation>Nivel de Normalización</translation>
+        <translation type="unfinished">Nivel de Normalización</translation>
     </message>
     <message>
         <source>Autotrim Level</source>
-        <translation>Nivel de AutoRecorte</translation>
+        <translation type="unfinished">Nivel de AutoRecorte</translation>
     </message>
     <message>
         <source>To Cart</source>
-        <translation>A Cartucho</translation>
+        <translation type="unfinished">A Cartucho</translation>
     </message>
     <message>
         <source>Use CartChunk ID</source>
-        <translation>Usar ID de CartChunk</translation>
+        <translation type="unfinished">Usar ID de CartChunk</translation>
     </message>
     <message>
         <source>Delete Cuts</source>
-        <translation>Borrar audios</translation>
+        <translation type="unfinished">Borrar audios</translation>
     </message>
     <message>
         <source>Metadata Pattern</source>
-        <translation>Patrón de metadatos</translation>
+        <translation type="unfinished">Patrón de metadatos</translation>
     </message>
     <message>
         <source>Fix Broken Formats</source>
-        <translation>Arreglar formatos rotos</translation>
+        <translation type="unfinished">Arreglar formatos rotos</translation>
     </message>
     <message>
         <source>[off]</source>
-        <translation>[apagado]</translation>
+        <translation type="obsolete">[apagado]</translation>
     </message>
     <message>
         <source>[auto]</source>
-        <translation>[auto]</translation>
+        <translation type="obsolete">[auto]</translation>
     </message>
     <message>
         <source>[none]</source>
-        <translation>[ninguno]</translation>
+        <translation type="obsolete">[ninguno]</translation>
+    </message>
+    <message>
+        <source>Rivendell Dropbox Configurations on</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>User Defined</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to create dropbox!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete Dropbox</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete the dropbox?</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -2282,6 +2282,13 @@ please try again!</source>
     </message>
 </context>
 <context>
+    <name>RDSqlTableModel</name>
+    <message>
+        <source>[none]</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>RDStereoMeter</name>
     <message>
         <source>L</source>

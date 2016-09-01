@@ -26,8 +26,6 @@
 #include <QEvent>
 #include <QMessageBox>
 
-#include <rdtextvalidator.h>
-
 #include "login.h"
 
 Login::Login(QString *username,QString *password,QWidget *parent)
@@ -50,11 +48,6 @@ Login::Login(QString *username,QString *password,QWidget *parent)
   //
   QFont font=QFont("Helvetica",12,QFont::Bold);
   font.setPixelSize(12);
-
-  //
-  // Text Validator
-  //
-  RDTextValidator *validator=new RDTextValidator(this);
 
   //
   // OK Button
@@ -82,7 +75,6 @@ Login::Login(QString *username,QString *password,QWidget *parent)
   login_name_edit->setGeometry(100,10,100,19);
   login_name_edit->setMaxLength(16);
   login_name_edit->setFocus();
-  login_name_edit->setValidator(validator);
   QLabel *login_name_label=new QLabel(login_name_edit,tr("User &Name:"),this);
   login_name_label->setGeometry(10,10,85,19);
   login_name_label->setFont(font);
@@ -95,7 +87,6 @@ Login::Login(QString *username,QString *password,QWidget *parent)
   login_password_edit->setGeometry(100,31,100,19);
   login_password_edit->setMaxLength(16);
   login_password_edit->setEchoMode(QLineEdit::Password);
-  login_password_edit->setValidator(validator);
   QLabel *login_password_label=
     new QLabel(login_password_edit,tr("&Password:"),this);
   login_password_label->setGeometry(10,31,85,19);

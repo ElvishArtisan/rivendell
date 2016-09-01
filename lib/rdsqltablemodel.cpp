@@ -67,6 +67,9 @@ QVariant RDSqlTableModel::data(const QModelIndex &index,int role) const
     value=model_display_datas[index.row()][index.column()];
     switch(fieldType(index.column())) {
     case RDSqlTableModel::CartNumberType:
+      if(value.toUInt()==0) {
+	return QVariant(tr("[none]"));
+      }
       return QVariant(QString().sprintf("%06u",value.toUInt()));
 
     case RDSqlTableModel::LengthType:
@@ -75,6 +78,10 @@ QVariant RDSqlTableModel::data(const QModelIndex &index,int role) const
     case RDSqlTableModel::ColorTextType:
       return value;
 
+    case RDSqlTableModel::AudioLevelType:
+      return QVariant(QString().sprintf("%d",value.toInt()/100));
+
+    case RDSqlTableModel::BooleanType:
     case RDSqlTableModel::DefaultType:
       return value;
     }
@@ -99,6 +106,20 @@ QVariant RDSqlTableModel::data(const QModelIndex &index,int role) const
       break;
     }
 
+  case Qt::TextAlignmentRole:
+    switch(fieldType(index.column())) {
+    case RDSqlTableModel::AudioLevelType:
+      return QVariant(Qt::AlignVCenter|Qt::AlignRight);
+
+    case RDSqlTableModel::BooleanType:
+    case RDSqlTableModel::CartNumberType:
+      return QVariant(Qt::AlignCenter);
+
+    default:
+      break;
+    }
+    break;
+
   default:
     break;
   }
@@ -114,7 +135,6 @@ QVariant RDSqlTableModel::data(int row,int column,int role) const
 
 void RDSqlTableModel::setQuery(const QString &sql)
 {
-  model_sql=sql;
   model_display_datas.clear();
 
   RDSqlQuery *q=new RDSqlQuery(sql);
@@ -127,6 +147,7 @@ void RDSqlTableModel::setQuery(const QString &sql)
     model_display_datas.push_back(row);
   }
   delete q;
+  model_sql=sql;
   emit layoutChanged();
 }
 

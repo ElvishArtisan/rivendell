@@ -105,7 +105,7 @@ EditDropbox::EditDropbox(int id,QWidget *parent)
   //
   box_to_cart_edit=new QLineEdit(this);
   box_to_cart_edit->setGeometry(120,54,60,19);
-  box_to_cart_edit->setValidator(new QIntValidator(1,999999,this));
+  //  box_to_cart_edit->setValidator(new QIntValidator(1,999999,this));
   box_to_cart_edit->setMaxLength(6);
   label=new QLabel(box_to_cart_edit,tr("To &Cart:"),this);
   label->setGeometry(10,54,105,19);
