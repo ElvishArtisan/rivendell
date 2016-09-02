@@ -18,17 +18,12 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qdialog.h>
-#include <qstring.h>
-#include <qpushbutton.h>
-#include <qmessagebox.h>
-//Added by qt3to4:
-#include <QLabel>
+#include <QMessageBox>
+#include <QPushButton>
 
 #include <rd.h>
-#include <rdtextvalidator.h>
 
-#include <edit_backup.h>
+#include "edit_backup.h"
 
 EditBackup::EditBackup(RDStation *station,QWidget *parent)
   : QDialog(parent)
@@ -50,15 +45,10 @@ EditBackup::EditBackup(RDStation *station,QWidget *parent)
   big_font.setPixelSize(14);
 
   //
-  // Text Validator
-  //
-  RDTextValidator *validator=new RDTextValidator(this);
-
-  //
   // Dialog Name
   //
   edit_station=station;
-  setCaption(tr("Backup config for ")+station->name());
+  setWindowTitle("RDAdmin - "+tr("Backup config for ")+station->name());
 
   //
   // Backup Life
@@ -84,7 +74,6 @@ EditBackup::EditBackup(RDStation *station,QWidget *parent)
   //
   edit_path_edit=new QLineEdit(this);
   edit_path_edit->setGeometry(155,35,sizeHint().width()-165,19);
-  edit_path_edit->setValidator(validator);
   edit_path_label=new QLabel(edit_life_box,tr("Backup Directory:"),this);
   edit_path_label->setGeometry(10,35,140,19);
   edit_path_label->setFont(small_font);

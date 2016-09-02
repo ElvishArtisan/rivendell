@@ -16176,3 +16176,6 @@
 	'rdadmin/edit_jack.h'
 	* Removed Qt3Support components from 'rdadmin/edit_jack_client.cpp' and
 	'rdadmin/edit_jack_client.h'
+2016-09-02 Fred Gleason <fredg@paravelsystems.com>
+	* Removed Qt3Support components from 'rdadmin/edit_backup.cpp' and
+	'rdadmin/edit_backup.h'

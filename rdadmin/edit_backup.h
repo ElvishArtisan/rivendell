@@ -21,11 +21,10 @@
 #ifndef EDIT_BACKUP_H
 #define EDIT_BACKUP_H
 
-#include <qdialog.h>
-#include <qsqldatabase.h>
-#include <qlineedit.h>
-#include <qspinbox.h>
-#include <qlabel.h>
+#include <QDialog>
+#include <QLineEdit>
+#include <QSpinBox>
+#include <QLabel>
 
 #include <rdstation.h>
 
@@ -51,5 +50,4 @@ class EditBackup : public QDialog
 };
 
 
-#endif
-
+#endif  // EDIT_BACKUP_H
