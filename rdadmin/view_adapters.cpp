@@ -18,17 +18,16 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qpushbutton.h>
-#include <q3textedit.h>
-#include <qlabel.h>
+#include <QLabel>
+#include <QPushButton>
+#include <QTextEdit>
 
 #include <rd.h>
 
-#include <view_adapters.h>
-
+#include "view_adapters.h"
 
 ViewAdapters::ViewAdapters(RDStation *rdstation,QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
   QString str1;
   QString str2;
@@ -41,7 +40,7 @@ ViewAdapters::ViewAdapters(RDStation *rdstation,QWidget *parent)
   setMinimumHeight(sizeHint().height());
   setMaximumHeight(sizeHint().height());
 
-  setCaption(tr("Audio Resource Information"));
+  setWindowTitle("RDAdmin - "+tr("Audio Resource Information"));
 
   //
   // Create Fonts
@@ -65,7 +64,7 @@ ViewAdapters::ViewAdapters(RDStation *rdstation,QWidget *parent)
   //
   // Resource List
   //
-  Q3TextEdit *text_edit=new Q3TextEdit(this,"adapter_edit");
+  QTextEdit *text_edit=new QTextEdit(this);
   text_edit->setGeometry(10,28,sizeHint().width()-20,sizeHint().height()-98);
   text_edit->setReadOnly(true);
   QString text;
@@ -168,9 +167,8 @@ ViewAdapters::ViewAdapters(RDStation *rdstation,QWidget *parent)
   //
   //  Close Button
   //
-  QPushButton *button=new QPushButton(this,"close_button");
-  button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,
-			    80,50);
+  QPushButton *button=new QPushButton(this);
+  button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,80,50);
   button->setFont(button_font);
   button->setText(tr("&Close"));
   button->setDefault(true);

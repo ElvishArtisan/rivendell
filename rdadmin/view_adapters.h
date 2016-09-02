@@ -21,15 +21,8 @@
 #ifndef VIEW_ADAPTER_H
 #define VIEW_ADAPTER_H
 
-#include <qdialog.h>
-#include <qsqldatabase.h>
-#include <qcombobox.h>
-#include <qcheckbox.h>
-#include <qspinbox.h>
-#include <qlabel.h>
-#include <qlineedit.h>
+#include <QDialog>
 
-#include <rdtty.h>
 #include <rdstation.h>
 
 class ViewAdapters : public QDialog
@@ -45,5 +38,4 @@ class ViewAdapters : public QDialog
 };
 
 
-#endif
-
+#endif  // VIEW_ADAPTERS_H
