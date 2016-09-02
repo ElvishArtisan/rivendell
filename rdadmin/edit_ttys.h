@@ -21,13 +21,11 @@
 #ifndef EDIT_TTYS_H
 #define EDIT_TTYS_H
 
-#include <qdialog.h>
-#include <qsqldatabase.h>
-#include <qcombobox.h>
-#include <qcheckbox.h>
-#include <qspinbox.h>
-#include <qlabel.h>
-#include <qlineedit.h>
+#include <QCheckBox>
+#include <QComboBox>
+#include <QDialog>
+#include <QLabel>
+#include <QLineEdit>
 
 #include <rdtty.h>
 #include <rd.h>

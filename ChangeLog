@@ -16163,3 +16163,6 @@
 	'rdadmin/edit_audios.h'
 	* Removed Qt3Support components from 'rdadmin/help_audios.cpp' and
 	'rdadmin/help_audios.h'
+2016-09-02 Fred Gleason <fredg@paravelsystems.com>
+	* Removed Qt3Support components from 'rdadmin/edit_ttys.cpp' and
+	'rdadmin/edit_ttys.h'

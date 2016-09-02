@@ -18,25 +18,14 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <Q3ButtonGroup>
-#include <Q3TextEdit>
-#include <QCheckBox>
-#include <QEvent>
-#include <QLabel>
-#include <QMessageBox>
-#include <QPainter>
-#include <QPushButton>
-#include <QString>
-
 #include <rdapplication.h>
 #include <rdmacro.h>
-#include <rdtextvalidator.h>
 
 #include "edit_ttys.h"
 #include "globals.h"
 
 EditTtys::EditTtys(QString station,QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
   QString str;
 
@@ -52,18 +41,13 @@ EditTtys::EditTtys(QString station,QWidget *parent)
   for(int i=0;i<MAX_TTYS;i++) {
     edit_port_modified[i]=false;
   }
-  setCaption(tr("Edit TTYs"));
+  setWindowTitle("RDAdmin - "+tr("Edit TTYs"));
 
   //
   // Create Fonts
   //
   QFont font=QFont("Helvetica",12,QFont::Bold);
   font.setPixelSize(12);
-
-  //
-  // Text Validator
-  //
-  RDTextValidator *validator=new RDTextValidator(this);
 
   //
   // Port Selector
@@ -94,7 +78,6 @@ EditTtys::EditTtys(QString station,QWidget *parent)
   //
   edit_port_edit=new QLineEdit(this);
   edit_port_edit->setGeometry(145,54,100,20);
-  edit_port_edit->setValidator(validator);
   edit_port_label=new QLabel(edit_port_edit,tr("TTY Device:"),this);
   edit_port_label->setGeometry(20,56,120,22);
   edit_port_label->setFont(font);
@@ -379,12 +362,9 @@ void EditTtys::ReadRecord(int id)
 
 void EditTtys::WriteRecord(int id)
 {
-  int baud;
-
   edit_tty->setActive(edit_enable_button->isChecked());
   edit_tty->setPort(edit_port_edit->text());
-  sscanf((const char *)edit_baudrate_box->currentText(),"%d",&baud);
-  edit_tty->setBaudRate(baud);
+    edit_tty->setBaudRate(edit_baudrate_box->currentText().toInt());
   edit_tty->setParity((RDTTYDevice::Parity)edit_parity_box->currentItem());
   edit_tty->setDataBits(edit_databits_box->currentItem()+5);
   edit_tty->setStopBits(edit_stopbits_box->currentItem()+1);
