@@ -21,11 +21,10 @@
 #ifndef EDIT_JACK_CLIENT_H
 #define EDIT_JACK_CLIENT_H
 
-#include <qdialog.h>
-#include <qlineedit.h>
-#include <qpushbutton.h>
-#include <qlabel.h>
-//Added by qt3to4:
+#include <QDialog>
+#include <QLabel>
+#include <QLineEdit>
+#include <QPushButton>
 #include <QResizeEvent>
 
 #include <rdstation.h>
@@ -39,7 +38,7 @@ class EditJackClient : public QDialog
   QSizePolicy sizePolicy() const;
 
  public slots:
-  int exec(QString *desc,QString *cmd);
+  int exec(int id);
 
  private slots:
   void okData();
@@ -56,9 +55,8 @@ class EditJackClient : public QDialog
   QLineEdit *edit_jack_command_line_edit;
   QPushButton *edit_ok_button;
   QPushButton *edit_cancel_button;
-  QString *edit_description;
-  QString *edit_command_line;
   RDStation *edit_station;
+  int edit_id;
 };
 
 

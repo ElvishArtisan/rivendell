@@ -21,19 +21,16 @@
 #ifndef EDIT_JACK_H
 #define EDIT_JACK_H
 
-#include <qdialog.h>
-#include <q3listview.h>
-#include <q3textedit.h>
-#include <qpixmap.h>
-#include <qcheckbox.h>
-#include <qlineedit.h>
-#include <qpushbutton.h>
-#include <qlabel.h>
-//Added by qt3to4:
+#include <QCheckBox>
+#include <QDialog>
+#include <QLabel>
+#include <QLineEdit>
+#include <QPushButton>
 #include <QResizeEvent>
 
 #include <rdstation.h>
-#include <rdlistview.h>
+#include <rdsqltablemodel.h>
+#include <rdtableview.h>
 
 #define EDITJACK_DEFAULT_SERVERNAME QObject::tr("(default)")
 
@@ -50,7 +47,7 @@ class EditJack : public QDialog
   void addData();
   void editData();
   void deleteData();
-  void doubleClickedData(Q3ListViewItem *item,const QPoint &pt,int col);
+  void doubleClickedData(const QModelIndex &index);
   void okData();
   void cancelData();
   
@@ -58,7 +55,7 @@ class EditJack : public QDialog
   void resizeEvent(QResizeEvent *e);
 
  private:
-  void RefreshList();
+  //  void RefreshList();
   QLabel *edit_start_jack_label;
   QCheckBox *edit_start_jack_box;
   QLabel *edit_jack_server_name_label;
@@ -66,7 +63,9 @@ class EditJack : public QDialog
   QLabel *edit_jack_command_line_label;
   QLineEdit *edit_jack_command_line_edit;
   QLabel *edit_jack_client_label;
-  RDListView *edit_jack_client_view;
+  //  RDListView *edit_jack_client_view;
+  RDSqlTableModel *edit_model;
+  RDTableView *edit_view;
   RDStation *edit_station;
   QPushButton *edit_add_button;
   QPushButton *edit_edit_button;

@@ -1871,11 +1871,11 @@ Do you still want to save?</source>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;Aceptar</translation>
+        <translation type="unfinished">&amp;Aceptar</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Cancelar</translation>
+        <translation type="unfinished">&amp;Cancelar</translation>
     </message>
     <message>
         <source>JACK Command Line:</source>
@@ -1902,7 +1902,7 @@ Do you still want to save?</source>
         <translation type="unfinished">E&amp;liminar</translation>
     </message>
     <message>
-        <source>JACK Clients to Start:</source>
+        <source>&amp;Add</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1914,20 +1914,20 @@ Do you still want to save?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&amp;Add</source>
+        <source>JACK Clients to Start:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>[New Client]</source>
+        <source>Delete JACK Client</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>RDAdmin - JACK Clients</source>
+        <source>Are you sure you want to delete this JACK client?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Are you sure you want to delete JACK Client</source>
-        <translation type="unfinished"></translation>
+        <source>&amp;Close</source>
+        <translation type="obsolete">&amp;Cerrar</translation>
     </message>
 </context>
 <context>

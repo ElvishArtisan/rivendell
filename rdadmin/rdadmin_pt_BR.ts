@@ -1788,10 +1788,6 @@ Você ainda quer salvar?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&amp;OK</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;Cancel</source>
         <translation type="unfinished">&amp;Cancelar</translation>
     </message>
@@ -1824,10 +1820,6 @@ Você ainda quer salvar?</translation>
         <translation type="unfinished">&amp;Deletar</translation>
     </message>
     <message>
-        <source>JACK Clients to Start:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Client</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1836,15 +1828,23 @@ Você ainda quer salvar?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>[New Client]</source>
+        <source>JACK Clients to Start:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>RDAdmin - JACK Clients</source>
+        <source>Delete JACK Client</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Are you sure you want to delete JACK Client</source>
+        <source>Are you sure you want to delete this JACK client?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Close</source>
+        <translation type="obsolete">&amp;Fechar</translation>
+    </message>
+    <message>
+        <source>&amp;OK</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

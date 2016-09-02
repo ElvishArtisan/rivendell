@@ -85,6 +85,21 @@ int RDSqlQuery::columns() const
 }
 
 
+QVariant RDSqlQuery::run(const QString &sql,bool *ok)
+{
+  QVariant ret;
+
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  if(ok!=NULL) {
+    *ok=q->isActive();
+  }
+  ret=q->lastInsertId();
+  delete q;
+
+  return ret;
+}
+
+
 bool RDOpenDb (int *schema,QString *err_str,RDConfig *config)
 {
   QSqlDatabase db;
@@ -94,7 +109,7 @@ bool RDOpenDb (int *schema,QString *err_str,RDConfig *config)
   if (!db.isOpen()){
     db=QSqlDatabase::addDatabase(config->mysqlDriver());
     if(!db.isValid()) {
-      *err_str+= QString(QObject::tr("Couldn't initialize QSql driver!"));
+      *err_str+= QString(QObject::tr("Couldn't initialize MySql driver!"));
       return false;
     }
     db.setHostName(config->mysqlHostname());
@@ -102,7 +117,7 @@ bool RDOpenDb (int *schema,QString *err_str,RDConfig *config)
     db.setUserName(config->mysqlUsername());
     db.setPassword(config->mysqlPassword());
     if(!db.open()) {
-      *err_str+=QString(QObject::tr("Couldn't open mySQL connection on"))+
+      *err_str+=QString(QObject::tr("Couldn't open MySQL connection on"))+
 	" \""+config->mysqlHostname()+"\".";
       db.removeDatabase(config->mysqlDbname());
       db.close();

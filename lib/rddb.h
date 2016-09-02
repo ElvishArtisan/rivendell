@@ -24,6 +24,7 @@
 
 #include <QString>
 #include <QSqlQuery>
+#include <QVariant>
 
 #include <rdconfig.h>
 
@@ -32,6 +33,7 @@ class RDSqlQuery : public QSqlQuery
  public:
   RDSqlQuery(const QString &query = QString::null);
   int columns() const;
+  static QVariant run(const QString &sql,bool *ok=NULL);
 
  private:
   int sql_columns;

@@ -1861,26 +1861,14 @@ Stále ještě chcete uložit?</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="unfinished">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>Z&amp;rušit</translation>
+        <translation type="unfinished">Z&amp;rušit</translation>
     </message>
     <message>
         <source>JACK Command Line:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>JACK Clients to Start:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Client</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Command Line</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1896,16 +1884,28 @@ Stále ještě chcete uložit?</translation>
         <translation type="unfinished">S&amp;mazat</translation>
     </message>
     <message>
-        <source>[New Client]</source>
+        <source>Client</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>RDAdmin - JACK Clients</source>
+        <source>Command Line</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Are you sure you want to delete JACK Client</source>
+        <source>JACK Clients to Start:</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete JACK Client</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete this JACK client?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Close</source>
+        <translation type="obsolete">&amp;Zavřít</translation>
     </message>
 </context>
 <context>

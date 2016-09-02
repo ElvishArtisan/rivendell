@@ -19,7 +19,7 @@
     <name>QObject</name>
     <message>
         <source>Couldn&apos;t initialize QSql driver!</source>
-        <translation type="unfinished">Greidde ikkje setja opp QSql-drivaren!</translation>
+        <translation type="obsolete">Greidde ikkje setja opp QSql-drivaren!</translation>
     </message>
     <message>
         <source>Couldn&apos;t open mySQL connection!</source>
@@ -534,11 +534,15 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Couldn&apos;t open mySQL connection on</source>
+        <source>unable to re-read database schema.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>unable to re-read database schema.</source>
+        <source>Couldn&apos;t initialize MySql driver!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Couldn&apos;t open MySQL connection on</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

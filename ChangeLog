@@ -16169,3 +16169,10 @@
 2016-09-02 Fred Gleason <fredg@paravelsystems.com>
 	* Removed Qt3Support components from 'rdadmin/view_adapters.cpp' and
 	'rdadmin/view_adapters.h'
+2016-09-02 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'RDSqlQuery::run()' method in 'lib/rddb.cpp' and
+	'lib/rddb.h'.
+	* Removed Qt3Support components from 'rdadmin/edit_jack.cpp' and
+	'rdadmin/edit_jack.h'
+	* Removed Qt3Support components from 'rdadmin/edit_jack_client.cpp' and
+	'rdadmin/edit_jack_client.h'

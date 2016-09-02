@@ -1526,27 +1526,7 @@ Do you still want to save?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&amp;OK</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Cancel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>JACK Command Line:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>JACK Clients to Start:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Client</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Command Line</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1562,15 +1542,31 @@ Do you still want to save?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>[New Client]</source>
+        <source>Client</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>RDAdmin - JACK Clients</source>
+        <source>Command Line</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Are you sure you want to delete JACK Client</source>
+        <source>JACK Clients to Start:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete JACK Client</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete this JACK client?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Cancel</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
