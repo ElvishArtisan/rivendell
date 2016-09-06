@@ -306,7 +306,7 @@ atualizada para a Versão</translation>
     <name>AddMatrix</name>
     <message>
         <source>Add Switcher</source>
-        <translation type="obsolete">Adicionar Switcher</translation>
+        <translation type="unfinished">Adicionar Switcher</translation>
     </message>
     <message>
         <source>&amp;New Matrix Number:</source>
@@ -375,14 +375,6 @@ atualizada para a Versão</translation>
     <message>
         <source>BroadcastTools SS4.4</source>
         <translation type="obsolete">BroadcastTools SS4.4</translation>
-    </message>
-    <message>
-        <source>New Switcher</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>RDAdmin - Add Switcher</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1269,15 +1261,15 @@ configured to run the CAE service in order to populate the audio resources datab
     </message>
     <message>
         <source>Name: </source>
-        <translation>Nome:</translation>
+        <translation type="obsolete">Nome:</translation>
     </message>
     <message>
         <source>Feed: </source>
-        <translation>Feed: </translation>
+        <translation type="obsolete">Feed: </translation>
     </message>
     <message>
         <source>Mode: </source>
-        <translation>Modo:</translation>
+        <translation type="obsolete">Modo:</translation>
     </message>
     <message>
         <source>Stereo</source>
@@ -1293,7 +1285,7 @@ configured to run the CAE service in order to populate the audio resources datab
     </message>
     <message>
         <source>Engine (Hex): </source>
-        <translation>Mecanismo (Hex): </translation>
+        <translation type="obsolete">Mecanismo (Hex): </translation>
     </message>
     <message>
         <source>Provider ID:</source>
@@ -1301,7 +1293,7 @@ configured to run the CAE service in order to populate the audio resources datab
     </message>
     <message>
         <source>Device (Hex): </source>
-        <translation>Dispositivo (Hex): </translation>
+        <translation type="obsolete">Dispositivo (Hex): </translation>
     </message>
     <message>
         <source>Service ID:</source>
@@ -1317,23 +1309,43 @@ configured to run the CAE service in order to populate the audio resources datab
     </message>
     <message>
         <source>Invalid Number</source>
-        <translation>Número Inválido</translation>
+        <translation type="unfinished">Número Inválido</translation>
     </message>
     <message>
         <source>The Engine Number is Invalid!</source>
-        <translation>O Número do Mecanismo é inválido! </translation>
+        <translation type="unfinished">O Número do Mecanismo é inválido! </translation>
     </message>
     <message>
         <source>The Provider ID is Invalid!</source>
-        <translation>A Identificação do Provedor é inválida! </translation>
+        <translation type="unfinished">A Identificação do Provedor é inválida! </translation>
     </message>
     <message>
         <source>The Device Number is Invalid!</source>
-        <translation>O Número do Dispositivo é inválido! </translation>
+        <translation type="unfinished">O Número do Dispositivo é inválido! </translation>
     </message>
     <message>
         <source>The Service ID is Invalid!</source>
-        <translation>A Identificação do Serviçor é inválida! </translation>
+        <translation type="unfinished">A Identificação do Serviçor é inválida! </translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Feed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Engine</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Device (Hex)</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1914,7 +1926,7 @@ Você ainda quer salvar?</translation>
     <name>EditMatrix</name>
     <message>
         <source>Edit Switcher</source>
-        <translation type="obsolete">Editar Switcher</translation>
+        <translation type="unfinished">Editar Switcher</translation>
     </message>
     <message>
         <source>Matrix Number:</source>
@@ -2096,10 +2108,6 @@ Displays</translation>
     <message>
         <source>SAS
 Switches</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>RDAdmin - Edit Switcher</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4175,19 +4183,19 @@ Feeds de Podcasts </translation>
     <name>EditVguestResource</name>
     <message>
         <source>Engine (Hex): </source>
-        <translation>Mecanismo (Hex): </translation>
+        <translation type="obsolete">Mecanismo (Hex): </translation>
     </message>
     <message>
         <source>Device (Hex): </source>
-        <translation>Dispositivo (Hex): </translation>
+        <translation type="obsolete">Dispositivo (Hex): </translation>
     </message>
     <message>
         <source>Surface (Hex): </source>
-        <translation>Surface (Hex): </translation>
+        <translation type="obsolete">Surface (Hex): </translation>
     </message>
     <message>
         <source>Bus/Relay (Hex): </source>
-        <translation>Bus/Relay (Hex): </translation>
+        <translation type="obsolete">Bus/Relay (Hex): </translation>
     </message>
     <message>
         <source>&amp;OK</source>
@@ -4207,23 +4215,39 @@ Feeds de Podcasts </translation>
     </message>
     <message>
         <source>Invalid Number</source>
-        <translation>Número Inválido</translation>
+        <translation type="unfinished">Número Inválido</translation>
     </message>
     <message>
         <source>The Engine Number is Invalid!</source>
-        <translation>O Número do Mecanismo é inválido! </translation>
+        <translation type="unfinished">O Número do Mecanismo é inválido! </translation>
     </message>
     <message>
         <source>The Device Number is Invalid!</source>
-        <translation>O Número do Dispositivo é inválido! </translation>
+        <translation type="unfinished">O Número do Dispositivo é inválido! </translation>
     </message>
     <message>
         <source>The Surface Number is Invalid!</source>
-        <translation>O Número da surface é inválido! </translation>
+        <translation type="unfinished">O Número da surface é inválido! </translation>
     </message>
     <message>
         <source>The Bus/Relay Number is Invalid!</source>
-        <translation>O Número do Bus/Relay é inválido! </translation>
+        <translation type="unfinished">O Número do Bus/Relay é inválido! </translation>
+    </message>
+    <message>
+        <source>Engine</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Device (Hex)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Surface</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Bus/Relay</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -4485,47 +4509,47 @@ Você ainda quer Deletar?</translation>
     </message>
     <message>
         <source>INPUT</source>
-        <translation>ENTRADA</translation>
+        <translation type="obsolete">ENTRADA</translation>
     </message>
     <message>
         <source>OUTPUT</source>
-        <translation>SAÍDA</translation>
+        <translation type="obsolete">SAÍDA</translation>
     </message>
     <message>
         <source>LABEL</source>
-        <translation>IDENTIFICAÇÃO</translation>
+        <translation type="obsolete">IDENTIFICAÇÃO</translation>
     </message>
     <message>
         <source>SOURCE</source>
-        <translation>FONTE</translation>
+        <translation type="obsolete">FONTE</translation>
     </message>
     <message>
         <source>MODE</source>
-        <translation>MODO</translation>
+        <translation type="obsolete">MODO</translation>
     </message>
     <message>
         <source>ENGINE (Hex)</source>
-        <translation>MECANISMO (Hex)</translation>
+        <translation type="obsolete">MECANISMO (Hex)</translation>
     </message>
     <message>
         <source>DEVICE (Hex)</source>
-        <translation>DISPOSITIVO (Hex)</translation>
+        <translation type="obsolete">DISPOSITIVO (Hex)</translation>
     </message>
     <message>
         <source>PROVIDER ID</source>
-        <translation>PROVEDOR DE  ID</translation>
+        <translation type="obsolete">PROVEDOR DE  ID</translation>
     </message>
     <message>
         <source>SERVICE ID</source>
-        <translation>ID DO SERVIÇO</translation>
+        <translation type="obsolete">ID DO SERVIÇO</translation>
     </message>
     <message>
         <source>NODE</source>
-        <translation>NÓDULO</translation>
+        <translation type="obsolete">NÓDULO</translation>
     </message>
     <message>
         <source>#</source>
-        <translation>#</translation>
+        <translation type="unfinished">#</translation>
     </message>
     <message>
         <source>&amp;Edit</source>
@@ -4541,35 +4565,67 @@ Você ainda quer Deletar?</translation>
     </message>
     <message>
         <source>Stereo</source>
-        <translation>Estéreo</translation>
+        <translation type="obsolete">Estéreo</translation>
     </message>
     <message>
         <source>Left</source>
-        <translation>Esquerda </translation>
+        <translation type="obsolete">Esquerda </translation>
     </message>
     <message>
         <source>Right</source>
-        <translation>Direita</translation>
+        <translation type="obsolete">Direita</translation>
     </message>
     <message>
         <source>Input</source>
-        <translation>Entrada</translation>
+        <translation type="obsolete">Entrada</translation>
     </message>
     <message>
         <source>Output</source>
-        <translation>Saída</translation>
+        <translation type="obsolete">Saída</translation>
     </message>
     <message>
         <source>stereo</source>
-        <translation>Estéreo</translation>
+        <translation type="obsolete">Estéreo</translation>
     </message>
     <message>
         <source>left</source>
-        <translation>esquerda</translation>
+        <translation type="obsolete">esquerda</translation>
     </message>
     <message>
         <source>right</source>
-        <translation>direita</translation>
+        <translation type="obsolete">direita</translation>
+    </message>
+    <message>
+        <source>Label</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Source</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Device (hex)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Provider ID</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Service ID</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Node</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Engine</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -4945,15 +5001,15 @@ Você ainda quer Deletar?</translation>
     </message>
     <message>
         <source>MATRIX</source>
-        <translation>MATRIX</translation>
+        <translation type="obsolete">MATRIX</translation>
     </message>
     <message>
         <source>DESCRIPTION</source>
-        <translation>DESCRIÇÃO</translation>
+        <translation type="obsolete">DESCRIÇÃO</translation>
     </message>
     <message>
         <source>TYPE</source>
-        <translation>TIPO</translation>
+        <translation type="obsolete">TIPO</translation>
     </message>
     <message>
         <source>&amp;Add</source>
@@ -4973,19 +5029,19 @@ Você ainda quer Deletar?</translation>
     </message>
     <message>
         <source>Are you sure you want to delete switcher</source>
-        <translation>Tem certeza que quer deletar este switcher?</translation>
+        <translation type="obsolete">Tem certeza que quer deletar este switcher?</translation>
     </message>
     <message>
         <source>on</source>
-        <translation>Ligado</translation>
+        <translation type="obsolete">Ligado</translation>
     </message>
     <message>
         <source>ALL references to this switcher will be deleted!</source>
-        <translation>TODAS as referências deste switcher serão deletadas</translation>
+        <translation type="obsolete">TODAS as referências deste switcher serão deletadas</translation>
     </message>
     <message>
         <source>Deleting Switcher</source>
-        <translation>Deletando Switcher</translation>
+        <translation type="obsolete">Deletando Switcher</translation>
     </message>
     <message>
         <source>Local GPIO</source>
@@ -5034,6 +5090,26 @@ Você ainda quer Deletar?</translation>
     <message>
         <source>BroadcastTools SS4.4</source>
         <translation type="obsolete">BroadcastTools SS4.4</translation>
+    </message>
+    <message>
+        <source>Matrix</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete Switcher</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete this switcher?</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

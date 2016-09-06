@@ -105,7 +105,15 @@ class RDMatrix
   void setFaders(int quan) const;
   int displays() const;
   void setDisplays(int quan) const;
+  void resizeEndpoints(Endpoint pt,int size,bool grow_only);
+  void resizeVguestResources(VguestType type,int size,bool grow_only);
+  static bool create(const QString &stationname,int matrix_num,Type type);
+  static void remove(const QString &stationname,int matrix_num);
+  static bool exists(const QString &stationname,int matrix_num);
   static QString typeString(RDMatrix::Type type);
+  static QString endpointString(RDMatrix::Endpoint end);
+  static QString modeString(RDMatrix::Mode mode);
+  static Mode modeFromString(const QString &str);
   static bool controlActive(RDMatrix::Type type,RDMatrix::Role role,
 			    RDMatrix::Control control);
   static bool controlActive(RDMatrix::Type type,RDMatrix::Control control);

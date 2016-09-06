@@ -21,21 +21,19 @@
 #ifndef EDIT_SAS_RESOURCE_H
 #define EDIT_SAS_RESOURCE_H
 
-#include <qdialog.h>
-#include <qsqldatabase.h>
-#include <qlabel.h>
-#include <qpushbutton.h>
-#include <qlineedit.h>
-#include <qcombobox.h>
+#include <QDialog>
+#include <QLabel>
+#include <QLineEdit>
+#include <QPushButton>
 
-#include <rduser.h>
 #include <rdmatrix.h>
+#include <rdvguestresource.h>
 
 class EditSasResource : public QDialog
 {
  Q_OBJECT
  public:
- EditSasResource(int *enginenum,int *devicenum,int *relaynum,QWidget *parent=0);
+ EditSasResource(RDMatrix *matrix,int num,QWidget *parent=0);
  QSize sizeHint() const;
  QSizePolicy sizePolicy() const;
 
@@ -43,16 +41,23 @@ class EditSasResource : public QDialog
   void okData();
   void cancelData();
 
+ protected:
+  void resizeEvent(QResizeEvent *e);
+
  private:
-  int *edit_enginenum;
-  int *edit_devicenum;
-  int *edit_relaynum;
+  RDMatrix *edit_matrix;
+  int edit_number;
+  QLabel *edit_enginenum_label;
   QLineEdit *edit_enginenum_edit;
+  QLabel *edit_devicenum_label;
   QLineEdit *edit_devicenum_edit;
   QLabel *edit_relaynum_label;
   QLineEdit *edit_relaynum_edit;
+  RDVguestResource *edit_guest;
+  QPushButton *edit_ok_button;
+  QPushButton *edit_cancel_button;
 };
 
 
-#endif  // EDIT_ENDPOINT
+#endif  // EDIT_SAS_RESOURCE_H
 

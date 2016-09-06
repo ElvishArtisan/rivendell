@@ -21,14 +21,14 @@
 #ifndef LIST_ENDPOINTS_H
 #define LIST_ENDPOINTS_H
 
-#include <qdialog.h>
-#include <qsqldatabase.h>
-#include <qlabel.h>
-#include <qpushbutton.h>
-#include <q3listview.h>
+#include <QDialog>
+#include <QLabel>
+#include <QPushButton>
 
 #include <rduser.h>
 #include <rdmatrix.h>
+#include <rdsqltablemodel.h>
+#include <rdtableview.h>
 
 class ListEndpoints : public QDialog
 {
@@ -40,19 +40,29 @@ class ListEndpoints : public QDialog
 
  private slots:
   void editData();
-  void doubleClickedData(Q3ListViewItem *item,const QPoint &pt,int col);
+  void doubleClickedData(const QModelIndex &index);
   void okData();
   void cancelData();
 
+ protected:
+  void resizeEvent(QResizeEvent *e);
+
  private:
+  QString ModelSql(RDMatrix::Type type) const;
+  bool SetHeaders(RDSqlTableModel *model,RDMatrix::Type type,
+		  RDMatrix::Endpoint end);
   RDMatrix *list_matrix;
   RDMatrix::Endpoint list_endpoint;
-  Q3ListView *list_list_view;
+  RDSqlTableModel *list_model;
+  QLabel *list_label;
+  RDTableView *list_view;
   int list_size;
   QString list_table;
   bool list_readonly;
+  QPushButton *list_edit_button;
+  QPushButton *list_ok_button;
+  QPushButton *list_cancel_button;
 };
 
 
-#endif
-
+#endif  // LIST_ENDPOINTS_H

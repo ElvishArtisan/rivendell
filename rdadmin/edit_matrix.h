@@ -21,17 +21,13 @@
 #ifndef EDIT_MATRIX_H
 #define EDIT_MATRIX_H
 
-#include <qdialog.h>
-#include <qsqldatabase.h>
-#include <qcombobox.h>
-#include <qspinbox.h>
-#include <qlabel.h>
-#include <qlineedit.h>
-#include <qpushbutton.h>
-//Added by qt3to4:
-#include <QPaintEvent>
+#include <QComboBox>
+#include <QDialog>
+#include <QLabel>
+#include <QLineEdit>
+#include <QPushButton>
+#include <QSpinBox>
 
-#include <rduser.h>
 #include <rdmatrix.h>
 
 class EditMatrix : public QDialog
@@ -140,5 +136,4 @@ class EditMatrix : public QDialog
 };
 
 
-#endif
-
+#endif  // EDIT_MATRIX_H

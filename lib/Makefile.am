@@ -124,6 +124,7 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdedit_audio.cpp rdedit_audio.h\
                         rdedit_panel_name.cpp rdedit_panel_name.h\
                         rdemptycart.cpp rdemptycart.h\
+                        rdendpoint.cpp rdendpoint.h\
                         rdescape_string.cpp rdescape_string.h\
                         rdevent.cpp rdevent.h\
                         rdevent_line.cpp rdevent_line.h\
@@ -232,6 +233,7 @@ dist_librd_la_SOURCES = dbversion.h\
                         rduser.cpp rduser.h\
                         rdupload.cpp rdupload.h\
                         rdversion.cpp rdversion.h\
+                        rdvguestresource.cpp rdvguestresource.h\
                         rdwavedata.cpp rdwavedata.h\
                         rdwavedata_dialog.cpp rdwavedata_dialog.h\
                         rdwavefile.cpp rdwavefile.h\

@@ -21,12 +21,9 @@
 #ifndef ADD_MATRIX_H
 #define ADD_MATRIX_H
 
-#include <qdialog.h>
-#include <qsqldatabase.h>
-#include <qcombobox.h>
-#include <qspinbox.h>
-
-#include <rduser.h>
+#include <QComboBox>
+#include <QDialog>
+#include <QSpinBox>
 
 class AddMatrix : public QDialog
 {
@@ -48,5 +45,4 @@ class AddMatrix : public QDialog
 };
 
 
-#endif
-
+#endif  // ADD_MATRIX_H

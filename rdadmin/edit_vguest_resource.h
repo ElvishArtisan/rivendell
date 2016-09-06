@@ -21,22 +21,20 @@
 #ifndef EDIT_VGUEST_RESOURCE_H
 #define EDIT_VGUEST_RESOURCE_H
 
-#include <qdialog.h>
-#include <qsqldatabase.h>
-#include <qlabel.h>
-#include <qpushbutton.h>
-#include <qlineedit.h>
-#include <qcombobox.h>
+#include <QDialog>
+#include <QLabel>
+#include <QLineEdit>
+#include <QPushButton>
 
-#include <rduser.h>
 #include <rdmatrix.h>
+#include <rdvguestresource.h>
 
 class EditVguestResource : public QDialog
 {
  Q_OBJECT
  public:
- EditVguestResource(RDMatrix::VguestType type,int *enginenum,int *devicenum,
-		    int *surfacenum,int *relaynum,QWidget *parent=0);
+  EditVguestResource(RDMatrix *matrix,RDMatrix::VguestType type,int num,
+		     QWidget *parent=0);
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
 
@@ -45,18 +43,16 @@ class EditVguestResource : public QDialog
   void cancelData();
 
  private:
+  RDMatrix *edit_matrix;
   RDMatrix::VguestType edit_type;
-  int *edit_enginenum;
-  int *edit_devicenum;
-  int *edit_surfacenum;
-  int *edit_relaynum;
+  int edit_number;
   QLineEdit *edit_enginenum_edit;
   QLineEdit *edit_devicenum_edit;
   QLineEdit *edit_surfacenum_edit;
   QLabel *edit_relaynum_label;
   QLineEdit *edit_relaynum_edit;
+  RDVguestResource *edit_guest;
 };
 
 
-#endif  // EDIT_ENDPOINT
-
+#endif  // EDIT_VGUEST_RESOURCE

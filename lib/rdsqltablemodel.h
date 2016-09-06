@@ -35,7 +35,8 @@ class RDSqlTableModel : public QAbstractTableModel
   Q_OBJECT
  public:
   enum FieldType {DefaultType=0,CartNumberType=1,LengthType=2,ColorTextType=3,
-		  AudioLevelType=4,BooleanType=5};
+		  AudioLevelType=4,BooleanType=5,MatrixType=6,
+		  EngineNumberType=7,DeviceNumberType=8};
   RDSqlTableModel(QObject *parent=0);
   ~RDSqlTableModel();
   QFont font() const;

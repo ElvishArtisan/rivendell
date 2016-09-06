@@ -17,37 +17,28 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qdialog.h>
-#include <qsqldatabase.h>
-#include <qcombobox.h>
-#include <qspinbox.h>
-#include <qmessagebox.h>
-//Added by qt3to4:
-#include <QLabel>
+#include <QMessageBox>
 
 #include <rd.h>
-#include <rdmatrix.h>
 #include <rddb.h>
 #include <rdescape_string.h>
+#include <rdmatrix.h>
 
-#include "edit_user.h"
 #include "add_matrix.h"
-#include "rdpasswd.h"
+#include "edit_user.h"
 
 AddMatrix::AddMatrix(QString station,QWidget *parent)
-  : QDialog(parent,"")
+  : QDialog(parent)
 {
   add_station=station;
 
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
+  setMaximumSize(sizeHint());
 
-  setCaption(tr("RDAdmin - Add Switcher"));
+  setWindowTitle("RDAdmin - "+tr("Add Switcher"));
 
   //
   // Create Fonts
@@ -59,7 +50,7 @@ AddMatrix::AddMatrix(QString station,QWidget *parent)
   // Matrix Number
   //
   add_matrix_box=new QSpinBox(this);
-  add_matrix_box->setGeometry(165,11,30,19);
+  add_matrix_box->setGeometry(165,11,50,19);
   add_matrix_box->setRange(0,MAX_MATRICES-1);
   QLabel *label=new QLabel(add_matrix_box,tr("&New Matrix Number:"),this);
   label->setGeometry(10,11,150,19);
@@ -123,48 +114,13 @@ QSizePolicy AddMatrix::sizePolicy() const
 
 void AddMatrix::okData()
 {
-  QString sql=QString("select MATRIX from MATRICES where STATION_NAME=\"")+
-    RDEscapeString(add_station)+"\" && MATRIX="+
-    QString().sprintf("%d",add_matrix_box->value());
-  RDSqlQuery *q=new RDSqlQuery(sql);
-  if(q->first()) {
-    delete q;
-    QMessageBox::warning(this,tr("Invalid Matrix"),
+  if(RDMatrix::exists(add_station,add_matrix_box->value())) {
+    QMessageBox::warning(this,"RDAdmin - "+tr("Invalid Matrix"),
 			 tr("Matrix already exists!"));
     return;
   }
-  delete q;
-
-  sql=QString("insert into MATRICES set ")+
-    "STATION_NAME=\""+
-    RDEscapeString(add_station)+"\","+
-    "NAME=\""+tr("New Switcher")+"\","+
-    "GPIO_DEVICE=\""+RD_DEFAULT_GPIO_DEVICE+"\","+
-    QString().
-    sprintf("MATRIX=%d,\
-             PORT=0,\
-             TYPE=%d,\
-             INPUTS=%d,\
-             OUTPUTS=%d,\
-             GPIS=%d,\
-             GPOS=%d,\
-             PORT_TYPE=%d,\
-             PORT_TYPE_2=%d",
-	    add_matrix_box->value(),
-	    add_type_box->currentItem(),
-      RDMatrix::defaultControlValue((RDMatrix::Type)add_type_box->currentItem(),
-				    RDMatrix::InputsControl),
-      RDMatrix::defaultControlValue((RDMatrix::Type)add_type_box->currentItem(),
-				    RDMatrix::OutputsControl),
-      RDMatrix::defaultControlValue((RDMatrix::Type)add_type_box->currentItem(),
-				    RDMatrix::GpisControl),
-      RDMatrix::defaultControlValue((RDMatrix::Type)add_type_box->currentItem(),
-				    RDMatrix::GposControl),
-      RDMatrix::defaultControlValue((RDMatrix::Type)add_type_box->currentItem(),
-				    RDMatrix::PortTypeControl),
-	    RDMatrix::NoPort);
-  q=new RDSqlQuery(sql);
-  delete q;
+  RDMatrix::create(add_station,add_matrix_box->value(),
+		   (RDMatrix::Type)add_type_box->currentItem());
   done(add_matrix_box->value());
 }
 

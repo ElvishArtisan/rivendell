@@ -18,16 +18,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <Q3ButtonGroup>
-#include <Q3ListBox>
-#include <Q3TextEdit>
-#include <QDialog>
-#include <QEvent>
-#include <QLabel>
 #include <QMessageBox>
-#include <QPainter>
-#include <QPushButton>
-#include <QString>
 
 #include <rdapplication.h>
 #include <rdescape_string.h>
@@ -38,7 +29,7 @@
 #include "list_matrices.h"
 
 ListMatrices::ListMatrices(QString station,QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
   //
   // Fix the Window Size
@@ -49,7 +40,7 @@ ListMatrices::ListMatrices(QString station,QWidget *parent)
   setMaximumHeight(sizeHint().height());
 
   list_station=station;
-  setCaption(tr("Rivendell Switcher List"));
+  setWindowTitle("RDAdmin - "+tr("Rivendell Switcher List"));
 
   //
   // Create Fonts
@@ -69,23 +60,28 @@ ListMatrices::ListMatrices(QString station,QWidget *parent)
   //
   // Matrix List Box
   //
-  list_view=new Q3ListView(this,"list_box");
-  list_view->setGeometry(10,24,sizeHint().width()-20,sizeHint().height()-94);
-  QLabel *label=new QLabel(list_view,tr("Switchers:"),this);
+  QLabel *label=new QLabel(tr("Switchers:"),this);
   label->setFont(font);
   label->setGeometry(14,5,85,19);
-  list_view->setAllColumnsShowFocus(true);
-  list_view->setItemMargin(5);
-  list_view->addColumn(tr("MATRIX"));
-  list_view->setColumnAlignment(0,Qt::AlignHCenter);
-  list_view->addColumn(tr("DESCRIPTION"));
-  list_view->setColumnAlignment(1,Qt::AlignLeft);
-  list_view->addColumn(tr("TYPE"));
-  list_view->setColumnAlignment(2,Qt::AlignLeft);
-  connect(list_view,SIGNAL(doubleClicked(Q3ListViewItem *,const QPoint &,int)),
-	  this,SLOT(doubleClickedData(Q3ListViewItem *,const QPoint &,int)));
-
-  RefreshList();
+  list_model=new RDSqlTableModel(this);
+  QString sql=QString("select ")+
+    "MATRIX,"+
+    "NAME,"+
+    "TYPE "+
+    "from MATRICES where "+
+    "STATION_NAME=\""+RDEscapeString(list_station)+"\" "+
+    "order by MATRIX";
+  list_model->setQuery(sql);
+  list_model->setHeaderData(0,Qt::Horizontal,tr("Matrix"));
+  list_model->setHeaderData(1,Qt::Horizontal,tr("Description"));
+  list_model->setHeaderData(2,Qt::Horizontal,tr("Type"));
+  list_model->setFieldType(2,RDSqlTableModel::MatrixType);
+  list_view=new RDTableView(this);
+  list_view->setGeometry(10,24,sizeHint().width()-20,sizeHint().height()-94);
+  list_view->setModel(list_model);
+  list_view->resizeColumnsToContents();
+  connect(list_view,SIGNAL(doubleClicked(const QModelIndex &)),
+	  this,SLOT(doubleClickedData(const QModelIndex &)));
 
   //
   //  Add Button
@@ -158,11 +154,11 @@ void ListMatrices::addData()
   RDMatrix *matrix=new RDMatrix(list_station,matrix_num);
   EditMatrix *edit=new EditMatrix(matrix,this);
   if(edit->exec()!=0) {
-    DeleteMatrix(matrix_num);
+    RDMatrix::remove(list_station,matrix_num);
   }
   else {
     list_matrix_modified[matrix_num]=true;
-    AddList(matrix_num);
+    list_model->update();
   }
   delete edit;
   delete matrix;
@@ -171,56 +167,38 @@ void ListMatrices::addData()
 
 void ListMatrices::editData()
 {
-  if(list_view->selectedItem()==NULL) {
-    return;
+  QItemSelectionModel *s=list_view->selectionModel();
+  if(s->hasSelection()) {
+    RDMatrix *matrix=new RDMatrix(list_station,s->selectedRows()[0].data().toInt());
+    EditMatrix *edit=new EditMatrix(matrix,this);
+    if(edit->exec()==0) {
+      list_model->update();
+      list_matrix_modified[s->selectedRows()[0].data().toInt()]=true;
+    }
+    delete edit;
+    delete matrix;
   }
-  int matrix_num=list_view->currentItem()->text(0).toInt();
-  RDMatrix *matrix=new RDMatrix(list_station,matrix_num);
-  Q3ListViewItem *item=list_view->selectedItem();
-  EditMatrix *edit=new EditMatrix(matrix,this);
-  if(edit->exec()==0) {
-    RefreshRecord(item);
-    list_matrix_modified[matrix_num]=true;
-  }
-  delete edit;
-  delete matrix;
 }
 
 
 void ListMatrices::deleteData()
 {
-  QString str1;
-  QString str2;
-  QString str3;
-
-  if(list_view->currentItem()==NULL) {
-    return;
+  QItemSelectionModel *s=list_view->selectionModel();
+  if(s->hasSelection()) {
+    if(QMessageBox::question(this,"RDAdmin - "+tr("Delete Switcher"),
+			     tr("Are you sure you want to delete this switcher?"),
+			     QMessageBox::No,QMessageBox::Yes)!=
+       QMessageBox::Yes) {
+      return;
+    }
+    RDMatrix::remove(list_station,s->selectedRows()[0].data().toInt());
+    list_matrix_modified[s->selectedRows()[0].data().toInt()]=true;
+    list_model->update();
   }
-  int matrix=list_view->currentItem()->text(0).toInt();
-  QString desc=list_view->currentItem()->text(1);
-  str1=QString(tr("Are you sure you want to delete switcher"));
-  str2=QString(tr("on"));
-  str3=QString(tr("ALL references to this switcher will be deleted!"));
-  QString msg=QString().sprintf("%s \"%d:%s\" %s \"%s\"?\n%s",
-				(const char *)str1,
-				matrix,
-				(const char *)desc,
-				(const char *)str2,
-				(const char *)list_station,
-				(const char *)str3);
-  if(QMessageBox::warning(this,tr("Deleting Switcher"),msg,
-			  QMessageBox::Yes,QMessageBox::No)!=
-     QMessageBox::Yes) {
-    return;
-  }
-  DeleteMatrix(matrix);
-  list_matrix_modified[matrix]=true;
-  RefreshList();
 }
 
 
-void ListMatrices::doubleClickedData(Q3ListViewItem *item,const QPoint &pt,
-				     int col)
+void ListMatrices::doubleClickedData(const QModelIndex &index)
 {
   editData();
 }
@@ -245,88 +223,4 @@ void ListMatrices::closeData()
   }
   delete rmt_station;
   done(0);
-}
-
-
-void ListMatrices::DeleteMatrix(int matrix)
-{
-  QString sql=QString("delete from MATRICES where ")+
-    "(STATION_NAME=\""+RDEscapeString(list_station)+"\")&&"+
-    QString().sprintf("(MATRIX=%d)",matrix);
-  RDSqlQuery *q=new RDSqlQuery(sql);
-  delete q;
-  sql=QString("delete from INPUTS where ")+
-    "(STATION_NAME=\""+RDEscapeString(list_station)+"\")&&"+
-    QString().sprintf("(MATRIX=%d)",matrix);
-  q=new RDSqlQuery(sql);
-  delete q;
-  sql=QString("delete from OUTPUTS where ")+
-    "(STATION_NAME=\""+RDEscapeString(list_station)+"\")&&"+
-    QString().sprintf("(MATRIX=%d)",matrix);
-  q=new RDSqlQuery(sql);
-  delete q;
-  sql=QString("delete from SWITCHER_NODES where ")+
-    "(STATION_NAME=\""+RDEscapeString(list_station)+"\")&&"+
-    QString().sprintf("(MATRIX=%d)",matrix);
-  q=new RDSqlQuery(sql);
-  delete q;
-  sql=QString("delete from GPIS where ")+
-    "(STATION_NAME=\""+RDEscapeString(list_station)+"\")&&"+
-    QString().sprintf("(MATRIX=%d)",matrix);
-  q=new RDSqlQuery(sql);
-  delete q;
-  sql=QString("delete from GPOS where ")+
-    "(STATION_NAME=\""+RDEscapeString(list_station)+"\")&&"+
-    QString().sprintf("(MATRIX=%d)",matrix);
-  q=new RDSqlQuery(sql);
-  delete q;
-  sql=QString("delete from VGUEST_RESOURCES where ")+
-    "(STATION_NAME=\""+RDEscapeString(list_station)+"\")&&"+
-    QString().sprintf("MATRIX_NUM=%d",matrix);
-  q=new RDSqlQuery(sql);
-  delete q;
-}
-
-
-void ListMatrices::RefreshList()
-{
-  Q3ListViewItem *l;
-
-  list_view->clear();
-  QString sql=QString("select ")+
-    "MATRIX,"+
-    "NAME,"+
-    "TYPE "+
-    "from MATRICES where "+
-    "STATION_NAME=\""+RDEscapeString(list_station)+"\" "+
-    "order by MATRIX";
-  RDSqlQuery *q=new RDSqlQuery(sql);
-  while(q->next()) {
-    l=new Q3ListViewItem(list_view);
-    l->setText(0,q->value(0).toString());
-    l->setText(1,q->value(1).toString());
-    l->setText(2,RDMatrix::typeString((RDMatrix::Type)q->value(2).toInt()));
-  }
-  delete q;
-}
-
-
-void ListMatrices::AddList(int matrix_num)
-{
-  RDMatrix *matrix=new RDMatrix(list_station,matrix_num);
-  Q3ListViewItem *item=new Q3ListViewItem(list_view);
-  item->setText(0,QString().sprintf("%d",matrix_num));
-  item->setText(1,matrix->name());
-  item->setText(2,RDMatrix::typeString(matrix->type()));
-  delete matrix;
-  list_view->setCurrentItem(item);
-  list_view->setSelected(item,true);
-}
-
-
-void ListMatrices::RefreshRecord(Q3ListViewItem *item)
-{
-  RDMatrix *matrix=new RDMatrix(list_station,item->text(0).toInt());
-  item->setText(1,matrix->name());
-  delete matrix;
 }

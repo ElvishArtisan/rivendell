@@ -353,7 +353,7 @@ a záloha původní databáze uložena v </translation>
     <name>AddMatrix</name>
     <message>
         <source>Add Switcher</source>
-        <translation type="obsolete">Přidat přepínač</translation>
+        <translation type="unfinished">Přidat přepínač</translation>
     </message>
     <message>
         <source>&amp;New Matrix Number:</source>
@@ -433,11 +433,7 @@ a záloha původní databáze uložena v </translation>
     </message>
     <message>
         <source>New Switcher</source>
-        <translation>Nový přepínač</translation>
-    </message>
-    <message>
-        <source>RDAdmin - Add Switcher</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Nový přepínač</translation>
     </message>
 </context>
 <context>
@@ -1329,15 +1325,15 @@ nastaveném pro běh služby CAE pro naplnění databáze se zdroji zvuku.</tran
     </message>
     <message>
         <source>Name: </source>
-        <translation>Název: </translation>
+        <translation type="obsolete">Název: </translation>
     </message>
     <message>
         <source>Feed: </source>
-        <translation>Přívod:</translation>
+        <translation type="obsolete">Přívod:</translation>
     </message>
     <message>
         <source>Mode: </source>
-        <translation>Režim: </translation>
+        <translation type="obsolete">Režim: </translation>
     </message>
     <message>
         <source>Stereo</source>
@@ -1353,7 +1349,7 @@ nastaveném pro běh služby CAE pro naplnění databáze se zdroji zvuku.</tran
     </message>
     <message>
         <source>Engine (Hex): </source>
-        <translation>Stroj (Hex):</translation>
+        <translation type="obsolete">Stroj (Hex):</translation>
     </message>
     <message>
         <source>Provider ID:</source>
@@ -1361,7 +1357,7 @@ nastaveném pro běh služby CAE pro naplnění databáze se zdroji zvuku.</tran
     </message>
     <message>
         <source>Device (Hex): </source>
-        <translation>Zařízení (Hex):</translation>
+        <translation type="obsolete">Zařízení (Hex):</translation>
     </message>
     <message>
         <source>Service ID:</source>
@@ -1377,23 +1373,43 @@ nastaveném pro běh služby CAE pro naplnění databáze se zdroji zvuku.</tran
     </message>
     <message>
         <source>Invalid Number</source>
-        <translation>Neplatné číslo</translation>
+        <translation type="unfinished">Neplatné číslo</translation>
     </message>
     <message>
         <source>The Engine Number is Invalid!</source>
-        <translation>Číslo stroje je neplatné!</translation>
+        <translation type="unfinished">Číslo stroje je neplatné!</translation>
     </message>
     <message>
         <source>The Provider ID is Invalid!</source>
-        <translation>ID poskytovatele je neplatné!</translation>
+        <translation type="unfinished">ID poskytovatele je neplatné!</translation>
     </message>
     <message>
         <source>The Device Number is Invalid!</source>
-        <translation>Číslo zařízení je neplatné!</translation>
+        <translation type="unfinished">Číslo zařízení je neplatné!</translation>
     </message>
     <message>
         <source>The Service ID is Invalid!</source>
-        <translation>ID služby je neplatné!</translation>
+        <translation type="unfinished">ID služby je neplatné!</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Feed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Engine</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Device (Hex)</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1974,7 +1990,7 @@ Stále ještě chcete uložit?</translation>
     <name>EditMatrix</name>
     <message>
         <source>Edit Switcher</source>
-        <translation type="obsolete">Upravit přepínač</translation>
+        <translation type="unfinished">Upravit přepínač</translation>
     </message>
     <message>
         <source>Matrix Number:</source>
@@ -2155,10 +2171,6 @@ G&amp;POs</translation>
 Switches</source>
         <translation>Přepínače
 SAS</translation>
-    </message>
-    <message>
-        <source>RDAdmin - Edit Switcher</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>LiveWire
@@ -4253,19 +4265,19 @@ pro přívod pro podcast</translation>
     <name>EditVguestResource</name>
     <message>
         <source>Engine (Hex): </source>
-        <translation>Stroj (Hex):</translation>
+        <translation type="obsolete">Stroj (Hex):</translation>
     </message>
     <message>
         <source>Device (Hex): </source>
-        <translation>Zařízení (Hex):</translation>
+        <translation type="obsolete">Zařízení (Hex):</translation>
     </message>
     <message>
         <source>Surface (Hex): </source>
-        <translation>Povrch (Hex):</translation>
+        <translation type="obsolete">Povrch (Hex):</translation>
     </message>
     <message>
         <source>Bus/Relay (Hex): </source>
-        <translation>Sběrnice/relé (hex):</translation>
+        <translation type="obsolete">Sběrnice/relé (hex):</translation>
     </message>
     <message>
         <source>&amp;OK</source>
@@ -4285,23 +4297,39 @@ pro přívod pro podcast</translation>
     </message>
     <message>
         <source>Invalid Number</source>
-        <translation>Neplatné číslo</translation>
+        <translation type="unfinished">Neplatné číslo</translation>
     </message>
     <message>
         <source>The Engine Number is Invalid!</source>
-        <translation>Číslo stroje je neplatné!</translation>
+        <translation type="unfinished">Číslo stroje je neplatné!</translation>
     </message>
     <message>
         <source>The Device Number is Invalid!</source>
-        <translation>Číslo zařízení je neplatné!</translation>
+        <translation type="unfinished">Číslo zařízení je neplatné!</translation>
     </message>
     <message>
         <source>The Surface Number is Invalid!</source>
-        <translation>Číslo povrchu je neplatné!</translation>
+        <translation type="unfinished">Číslo povrchu je neplatné!</translation>
     </message>
     <message>
         <source>The Bus/Relay Number is Invalid!</source>
-        <translation>Číslo sběrnice/relé je neplatné!</translation>
+        <translation type="unfinished">Číslo sběrnice/relé je neplatné!</translation>
+    </message>
+    <message>
+        <source>Engine</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Device (Hex)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Surface</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Bus/Relay</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -4577,47 +4605,47 @@ Stále ještě jej chcete smazat?</translation>
     </message>
     <message>
         <source>INPUT</source>
-        <translation>VSTUP</translation>
+        <translation type="obsolete">VSTUP</translation>
     </message>
     <message>
         <source>OUTPUT</source>
-        <translation>VÝSTUP</translation>
+        <translation type="obsolete">VÝSTUP</translation>
     </message>
     <message>
         <source>LABEL</source>
-        <translation>ŠTÍTEK</translation>
+        <translation type="obsolete">ŠTÍTEK</translation>
     </message>
     <message>
         <source>SOURCE</source>
-        <translation>ZDROJ</translation>
+        <translation type="obsolete">ZDROJ</translation>
     </message>
     <message>
         <source>MODE</source>
-        <translation>REŽIM</translation>
+        <translation type="obsolete">REŽIM</translation>
     </message>
     <message>
         <source>ENGINE (Hex)</source>
-        <translation>STROJ (Hex)</translation>
+        <translation type="obsolete">STROJ (Hex)</translation>
     </message>
     <message>
         <source>DEVICE (Hex)</source>
-        <translation>ZAŘÍZENÍ (Hex)</translation>
+        <translation type="obsolete">ZAŘÍZENÍ (Hex)</translation>
     </message>
     <message>
         <source>PROVIDER ID</source>
-        <translation>ID POSKYTOVATELE</translation>
+        <translation type="obsolete">ID POSKYTOVATELE</translation>
     </message>
     <message>
         <source>SERVICE ID</source>
-        <translation>ID SLUŽBY</translation>
+        <translation type="obsolete">ID SLUŽBY</translation>
     </message>
     <message>
         <source>NODE</source>
-        <translation>UZEL</translation>
+        <translation type="obsolete">UZEL</translation>
     </message>
     <message>
         <source>#</source>
-        <translation>#</translation>
+        <translation type="unfinished">#</translation>
     </message>
     <message>
         <source>&amp;Edit</source>
@@ -4633,35 +4661,67 @@ Stále ještě jej chcete smazat?</translation>
     </message>
     <message>
         <source>Stereo</source>
-        <translation>Stereo</translation>
+        <translation type="obsolete">Stereo</translation>
     </message>
     <message>
         <source>Left</source>
-        <translation>Vlevo</translation>
+        <translation type="obsolete">Vlevo</translation>
     </message>
     <message>
         <source>Right</source>
-        <translation>Vpravo</translation>
+        <translation type="obsolete">Vpravo</translation>
     </message>
     <message>
         <source>Input</source>
-        <translation>Vstup</translation>
+        <translation type="obsolete">Vstup</translation>
     </message>
     <message>
         <source>Output</source>
-        <translation>Výstup</translation>
+        <translation type="obsolete">Výstup</translation>
     </message>
     <message>
         <source>stereo</source>
-        <translation>Stereo</translation>
+        <translation type="obsolete">Stereo</translation>
     </message>
     <message>
         <source>left</source>
-        <translation>Vlevo</translation>
+        <translation type="obsolete">Vlevo</translation>
     </message>
     <message>
         <source>right</source>
-        <translation>Vpravo</translation>
+        <translation type="obsolete">Vpravo</translation>
+    </message>
+    <message>
+        <source>Label</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Source</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Device (hex)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Provider ID</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Service ID</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Node</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Engine</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -5053,15 +5113,15 @@ Stále ještě jej chcete smazat?</translation>
     </message>
     <message>
         <source>MATRIX</source>
-        <translation>MATICE</translation>
+        <translation type="obsolete">MATICE</translation>
     </message>
     <message>
         <source>DESCRIPTION</source>
-        <translation>POPIS</translation>
+        <translation type="obsolete">POPIS</translation>
     </message>
     <message>
         <source>TYPE</source>
-        <translation>TYP</translation>
+        <translation type="obsolete">TYP</translation>
     </message>
     <message>
         <source>&amp;Add</source>
@@ -5081,19 +5141,19 @@ Stále ještě jej chcete smazat?</translation>
     </message>
     <message>
         <source>Are you sure you want to delete switcher</source>
-        <translation>Opravdu chcete smazat tento přepínač</translation>
+        <translation type="obsolete">Opravdu chcete smazat tento přepínač</translation>
     </message>
     <message>
         <source>on</source>
-        <translation>na</translation>
+        <translation type="obsolete">na</translation>
     </message>
     <message>
         <source>ALL references to this switcher will be deleted!</source>
-        <translation>VŠECHNY odkazy na tento přepínač budou smazány!</translation>
+        <translation type="obsolete">VŠECHNY odkazy na tento přepínač budou smazány!</translation>
     </message>
     <message>
         <source>Deleting Switcher</source>
-        <translation>Mazání přepínače</translation>
+        <translation type="obsolete">Mazání přepínače</translation>
     </message>
     <message>
         <source>Local GPIO</source>
@@ -5150,6 +5210,26 @@ Stále ještě jej chcete smazat?</translation>
     <message>
         <source>BroadcastTools SRC-16</source>
         <translation type="obsolete">BroadcastTools SRC-16</translation>
+    </message>
+    <message>
+        <source>Matrix</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete Switcher</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete this switcher?</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

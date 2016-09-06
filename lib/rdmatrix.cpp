@@ -562,6 +562,163 @@ void RDMatrix::setDisplays(int quan) const
 }
 
 
+void RDMatrix::resizeEndpoints(RDMatrix::Endpoint pt,int size,bool grow_only)
+{
+  QString sql;
+  RDSqlQuery *q;
+  RDSqlQuery *q1;
+  QString table="INPUTS";
+  QString label=QObject::tr("Input");
+
+  if(pt==RDMatrix::Output) {
+    table="OUTPUTS";
+    label=QObject::tr("Output");
+  }
+  sql=QString("select ID from ")+table+" where "+
+    "(STATION_NAME=\""+RDEscapeString(station())+"\")&&"+
+    QString().sprintf("(MATRIX=%d)",matrix());
+  q=new RDSqlQuery(sql);
+  for(int i=q->size();i<size;i++) {
+    sql=QString("insert into ")+table+" set "+
+      "STATION_NAME=\""+RDEscapeString(station())+"\","+
+      QString().sprintf("MATRIX=%d,",matrix())+
+      QString().sprintf("NUMBER=%d,",i+1)+
+      "NAME=\""+RDEscapeString(label+" "+QString().sprintf("%03d",i+1))+
+      "\"";
+    q1=new RDSqlQuery(sql);
+    delete q1;
+  }
+  delete q;
+
+  if(!grow_only) {
+    sql=QString("delete from ")+table+" where "+
+      "(STATION_NAME=\""+RDEscapeString(station())+"\")&&"+
+      QString().sprintf("(MATRIX=%d)&&",matrix())+
+      QString().sprintf("(NUMBER>%d)",size);
+    q=new RDSqlQuery(sql);
+    delete q;
+  }
+}
+
+
+void RDMatrix::resizeVguestResources(VguestType type,int size,bool grow_only)
+{
+  QString sql;
+  RDSqlQuery *q;
+  RDSqlQuery *q1;
+
+  sql=QString("select ID from VGUEST_RESOURCES where ")+
+    "(STATION_NAME=\""+RDEscapeString(station())+"\")&&"+
+    QString().sprintf("(MATRIX_NUM=%d)&&",matrix())+
+    QString().sprintf("(VGUEST_TYPE=%d)",(int)type);
+  q=new RDSqlQuery(sql);
+  for(int i=q->size();i<size;i++) {
+    sql=QString("insert into VGUEST_RESOURCES set ")+
+      "STATION_NAME=\""+RDEscapeString(station())+"\","+
+      QString().sprintf("MATRIX_NUM=%d,",matrix())+
+      QString().sprintf("VGUEST_TYPE=%d,",(int)type)+
+      QString().sprintf("NUMBER=%d",i+1);
+    q1=new RDSqlQuery(sql);
+    delete q1;
+  }
+
+  if(!grow_only) {
+    sql=QString("delete from VGUEST_RESOURCES where ")+
+      "(STATION_NAME=\""+RDEscapeString(station())+"\")&&"+
+      QString().sprintf("(MATRIX_NUM=%d)&&",matrix())+
+      QString().sprintf("(VGUEST_TYPE=%d)&&",(int)type)+
+      QString().sprintf("(NUMBER>%d)",size);
+    q=new RDSqlQuery(sql);
+    delete q;
+  }
+}
+
+
+bool RDMatrix::create(const QString &stationname,int matrix_num,
+		      RDMatrix::Type type)
+{
+  bool ret=false;
+
+  QString sql=QString("insert into MATRICES set ")+
+    "STATION_NAME=\""+
+    RDEscapeString(stationname)+"\","+
+    "NAME=\""+QObject::tr("New Switcher")+"\","+
+    "GPIO_DEVICE=\""+RD_DEFAULT_GPIO_DEVICE+"\","+
+    QString().sprintf("MATRIX=%d,",matrix_num)+
+    "PORT=0,"+
+    QString().sprintf("TYPE=%d,",type)+
+    QString().sprintf("INPUTS=%d,",RDMatrix::
+		      defaultControlValue(type,RDMatrix::InputsControl))+
+    QString().sprintf("OUTPUTS=%d,",RDMatrix::
+		      defaultControlValue(type,RDMatrix::OutputsControl))+
+    QString().sprintf("GPIS=%d,",RDMatrix::
+		      defaultControlValue(type,RDMatrix::GpisControl))+
+    QString().sprintf("GPOS=%d,",RDMatrix::
+		      defaultControlValue(type,RDMatrix::GposControl))+
+    QString().sprintf("PORT_TYPE=%d,",RDMatrix::
+		      defaultControlValue(type,RDMatrix::PortTypeControl))+
+    QString().sprintf("PORT_TYPE_2=%d",RDMatrix::NoPort);
+  RDSqlQuery::run(sql,&ret);
+
+  return ret;
+}
+
+
+void RDMatrix::remove(const QString &stationname,int matrix_num)
+{
+  QString sql=QString("delete from MATRICES where ")+
+    "(STATION_NAME=\""+RDEscapeString(stationname)+"\")&&"+
+    QString().sprintf("(MATRIX=%d)",matrix_num);
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  delete q;
+  sql=QString("delete from INPUTS where ")+
+    "(STATION_NAME=\""+RDEscapeString(stationname)+"\")&&"+
+    QString().sprintf("(MATRIX=%d)",matrix_num);
+  q=new RDSqlQuery(sql);
+  delete q;
+  sql=QString("delete from OUTPUTS where ")+
+    "(STATION_NAME=\""+RDEscapeString(stationname)+"\")&&"+
+    QString().sprintf("(MATRIX=%d)",matrix_num);
+  q=new RDSqlQuery(sql);
+  delete q;
+  sql=QString("delete from SWITCHER_NODES where ")+
+    "(STATION_NAME=\""+RDEscapeString(stationname)+"\")&&"+
+    QString().sprintf("(MATRIX=%d)",matrix_num);
+  q=new RDSqlQuery(sql);
+  delete q;
+  sql=QString("delete from GPIS where ")+
+    "(STATION_NAME=\""+RDEscapeString(stationname)+"\")&&"+
+    QString().sprintf("(MATRIX=%d)",matrix_num);
+  q=new RDSqlQuery(sql);
+  delete q;
+  sql=QString("delete from GPOS where ")+
+    "(STATION_NAME=\""+RDEscapeString(stationname)+"\")&&"+
+    QString().sprintf("(MATRIX=%d)",matrix_num);
+  q=new RDSqlQuery(sql);
+  delete q;
+  sql=QString("delete from VGUEST_RESOURCES where ")+
+    "(STATION_NAME=\""+RDEscapeString(stationname)+"\")&&"+
+    QString().sprintf("MATRIX_NUM=%d",matrix_num);
+  q=new RDSqlQuery(sql);
+  delete q;
+}
+
+
+bool RDMatrix::exists(const QString &stationname,int matrix_num)
+{
+  bool ret=false;
+
+  QString sql=QString("select MATRIX from MATRICES where ")+
+    "(STATION_NAME=\""+RDEscapeString(stationname)+"\")&&"+
+    QString().sprintf("(MATRIX=%d)",matrix_num);
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  ret=q->first();
+  delete q;
+
+  return ret;
+}
+
+
 QString RDMatrix::typeString(RDMatrix::Type type)
 {
   switch(type) {
@@ -722,6 +879,58 @@ QString RDMatrix::typeString(RDMatrix::Type type)
 	break;
   }
   return QString("Unknown Type");
+}
+
+
+QString RDMatrix::endpointString(RDMatrix::Endpoint end)
+{
+  QString ret=QObject::tr("unknown");
+
+  switch(end) {
+  case RDMatrix::Input:
+    ret=QObject::tr("Input");
+    break;
+
+  case RDMatrix::Output:
+    ret=QObject::tr("Output");
+    break;
+  }
+
+  return ret;
+}
+
+
+QString RDMatrix::modeString(RDMatrix::Mode mode)
+{
+  QString ret=QObject::tr("unknown");
+
+  switch(mode) {
+  case RDMatrix::Left:
+    ret=QObject::tr("Left");
+    break;
+
+  case RDMatrix::Right:
+    ret=QObject::tr("Right");
+    break;
+
+  case RDMatrix::Stereo:
+    ret=QObject::tr("Stereo");
+    break;
+  }
+
+  return ret;
+}
+
+
+RDMatrix::Mode RDMatrix::modeFromString(const QString &str)
+{
+  if(str.toLower()==RDMatrix::modeString(RDMatrix::Left).toLower()) {
+    return RDMatrix::Left;
+  }
+  if(str.toLower()==RDMatrix::modeString(RDMatrix::Right).toLower()) {
+    return RDMatrix::Right;
+  }
+  return RDMatrix::Stereo;
 }
 
 

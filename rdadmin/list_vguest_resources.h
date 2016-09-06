@@ -21,14 +21,13 @@
 #ifndef LIST_VGUEST_RESOURCES_H
 #define LIST_VGUEST_RESOURCES_H
 
-#include <qdialog.h>
-#include <qsqldatabase.h>
-#include <qlabel.h>
-#include <qpushbutton.h>
-#include <q3listview.h>
+#include <QDialog>
+#include <QLabel>
+#include <QPushButton>
 
-#include <rduser.h>
 #include <rdmatrix.h>
+#include <rdsqltablemodel.h>
+#include <rdtableview.h>
 
 class ListVguestResources : public QDialog
 {
@@ -41,17 +40,25 @@ class ListVguestResources : public QDialog
 
  private slots:
   void editData();
-  void doubleClickedData(Q3ListViewItem *item,const QPoint &pt,int col);
+  void doubleClickedData(const QModelIndex &index);
   void okData();
   void cancelData();
 
+ protected:
+  void resizeEvent(QResizeEvent *e);
+
  private:
-  void RefreshList();
+  QString ModelSql(RDMatrix::VguestType type) const;
+  void SetHeaders(RDSqlTableModel *model,RDMatrix::VguestType type);
   RDMatrix *list_matrix;
   RDMatrix::VguestType list_type;
-  Q3ListView *list_list_view;
+  RDSqlTableModel *list_model;
+  QLabel *list_label;
+  RDTableView *list_view;
   int list_size;
   QString list_table;
+  QPushButton *list_edit_button;
+  QPushButton *list_close_button;
 };
 
 

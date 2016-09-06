@@ -22,14 +22,11 @@
 #define LIST_MATRICES_H
 
 #include <qdialog.h>
-#include <q3listview.h>
-#include <q3textedit.h>
-#include <qpixmap.h>
-#include <qradiobutton.h>
-#include <qsqldatabase.h>
 
 #include <rd.h>
 #include <rdmatrix.h>
+#include <rdsqltablemodel.h>
+#include <rdtableview.h>
 
 class ListMatrices : public QDialog
 {
@@ -44,19 +41,16 @@ class ListMatrices : public QDialog
    void addData();
    void editData();
    void deleteData();
-   void doubleClickedData(Q3ListViewItem *item,const QPoint &pt,int col);
+   void doubleClickedData(const QModelIndex &index);
    void closeData();
 
   private:
-   void DeleteMatrix(int matrix);
-   void RefreshList();
-   void AddList(int matrix_num);
-   void RefreshRecord(Q3ListViewItem *item);
-   Q3ListView *list_view;
+   RDSqlTableModel *list_model;
+   RDTableView *list_view;
    QString list_station;
    bool list_matrix_modified[MAX_MATRICES];
 };
 
 
-#endif
+#endif  // LIST_MATRICES_H
 

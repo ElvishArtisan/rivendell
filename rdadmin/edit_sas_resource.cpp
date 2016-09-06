@@ -18,30 +18,26 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qmessagebox.h>
-//Added by qt3to4:
-#include <QLabel>
+#include <QMessageBox>
 
-#include <rdtextvalidator.h>
+#include "edit_sas_resource.h"
 
-#include <edit_sas_resource.h>
+EditSasResource::EditSasResource(RDMatrix *matrix,int num,QWidget *parent)
 
-EditSasResource::EditSasResource(int *enginenum,int *devicenum,int *relaynum,
-				 QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
-  edit_enginenum=enginenum;
-  edit_devicenum=devicenum;
-  edit_relaynum=relaynum;
-  setCaption(tr("Edit SAS Switch"));
+  edit_matrix=matrix;
+  edit_number=num;
+
+  edit_guest=new RDVguestResource(matrix,RDMatrix::VguestTypeRelay,num);
+
+  setWindowTitle("RDAdmin - "+tr("Edit SAS Switch"));
 
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
+  setMaximumSize(sizeHint());
 
   //
   // Create Fonts
@@ -55,64 +51,58 @@ EditSasResource::EditSasResource(int *enginenum,int *devicenum,int *relaynum,
   // Console Number
   //
   edit_enginenum_edit=new QLineEdit(this);
-  edit_enginenum_edit->setGeometry(135,10,50,20);
-  QLabel *label=new QLabel(edit_enginenum_edit,tr("Console Number: "),this);
-  label->setGeometry(10,10,120,20);
-  label->setFont(bold_font);
-  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
+  edit_enginenum_label=new QLabel(edit_enginenum_edit,tr("Console Number")+":",this);
+  edit_enginenum_label->setFont(bold_font);
+  edit_enginenum_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Source Number
   //
   edit_devicenum_edit=new QLineEdit(this);
-  edit_devicenum_edit->setGeometry(135,36,50,20);
-  label=new QLabel(edit_devicenum_edit,tr("Source Number: "),this);
-  label->setGeometry(10,36,120,20);
-  label->setFont(bold_font);
-  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
+  edit_devicenum_label=new QLabel(edit_devicenum_edit,tr("Source Number")+":",this);
+  edit_devicenum_label->setFont(bold_font);
+  edit_devicenum_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Opto/Relay Number
   //
   edit_relaynum_edit=new QLineEdit(this);
-  edit_relaynum_edit->setGeometry(135,62,50,20);
   edit_relaynum_label=
-    new QLabel(edit_relaynum_edit,tr("Opto/Relay Number: "),this);
-  edit_relaynum_label->setGeometry(10,62,120,20);
+    new QLabel(edit_relaynum_edit,tr("Opto/Relay Number")+":",this);
   edit_relaynum_label->setFont(bold_font);
   edit_relaynum_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   //  Ok Button
   //
-  QPushButton *button=new QPushButton(this);
-  button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
-  button->setDefault(true);
-  button->setFont(bold_font);
-  button->setText(tr("&OK"));
-  connect(button,SIGNAL(clicked()),this,SLOT(okData()));
+  edit_ok_button=new QPushButton(this);
+  edit_ok_button->setDefault(true);
+  edit_ok_button->setFont(bold_font);
+  edit_ok_button->setText(tr("&OK"));
+  connect(edit_ok_button,SIGNAL(clicked()),this,SLOT(okData()));
 
   //
   //  Cancel Button
   //
-  button=new QPushButton(this);
-  button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,
-			     80,50);
-  button->setFont(bold_font);
-  button->setText(tr("&Cancel"));
-  connect(button,SIGNAL(clicked()),this,SLOT(cancelData()));
+  edit_cancel_button=new QPushButton(this);
+  edit_cancel_button->setFont(bold_font);
+  edit_cancel_button->setText(tr("&Cancel"));
+  connect(edit_cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
 
   //
   // Load Data
   //
-  if(*enginenum>=0) {
-    edit_enginenum_edit->setText(QString().sprintf("%d",*enginenum));
+  if(edit_guest->engineNumber()>=0) {
+    edit_enginenum_edit->
+      setText(QString().sprintf("%d",edit_guest->engineNumber()));
   }
-  if(*devicenum>=0) {
-    edit_devicenum_edit->setText(QString().sprintf("%d",*devicenum));
+  if(edit_guest->deviceNumber()>=0) {
+    edit_devicenum_edit->
+      setText(QString().sprintf("%d",edit_guest->deviceNumber()));
   }
-  if(*relaynum>=0) {
-    edit_relaynum_edit->setText(QString().sprintf("%d",*relaynum));
+  if(edit_guest->relayNumber()>=0) {
+    edit_relaynum_edit->
+      setText(QString().sprintf("%d",edit_guest->relayNumber()));
   }
 }
 
@@ -165,9 +155,10 @@ void EditSasResource::okData()
       return;
     }
   }
-  *edit_enginenum=enginenum;
-  *edit_devicenum=devicenum;
-  *edit_relaynum=relaynum;
+  edit_guest->setEngineNumber(enginenum);
+  edit_guest->setDeviceNumber(devicenum);
+  edit_guest->setRelayNumber(relaynum);
+
   done(0);
 }
 
@@ -175,4 +166,17 @@ void EditSasResource::okData()
 void EditSasResource::cancelData()
 {
   done(1);
+}
+
+
+void EditSasResource::resizeEvent(QResizeEvent *e)
+{
+  edit_enginenum_edit->setGeometry(135,10,50,20);
+  edit_enginenum_label->setGeometry(10,10,120,20);
+  edit_devicenum_edit->setGeometry(135,36,50,20);
+  edit_devicenum_label->setGeometry(10,36,120,20);
+  edit_relaynum_edit->setGeometry(135,62,50,20);
+  edit_relaynum_label->setGeometry(10,62,120,20);
+  edit_ok_button->setGeometry(size().width()-180,size().height()-60,80,50);
+  edit_cancel_button->setGeometry(size().width()-90,size().height()-60,80,50);
 }

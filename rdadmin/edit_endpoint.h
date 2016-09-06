@@ -21,24 +21,22 @@
 #ifndef EDIT_ENDPOINT_H
 #define EDIT_ENDPOINT_H
 
-#include <qdialog.h>
-#include <qsqldatabase.h>
-#include <qlabel.h>
-#include <qpushbutton.h>
-#include <qlineedit.h>
-#include <qcombobox.h>
+#include <QComboBox>
+#include <QDialog>
+#include <QLabel>
+#include <QLineEdit>
+#include <QPushButton>
 
-#include <rduser.h>
+#include <rdendpoint.h>
 #include <rdmatrix.h>
+#include <rduser.h>
 
 class EditEndpoint : public QDialog
 {
  Q_OBJECT
  public:
-  EditEndpoint(RDMatrix::Type type,RDMatrix::Endpoint endpoint,
-	       int pointnum,QString *pointname,QString *feedname,
-	       RDMatrix::Mode *mode,int *enginenum,int *devicenum,
-	       QWidget *parent=0);
+ EditEndpoint(RDMatrix *matrix,int endpt,RDMatrix::Endpoint type,
+	      QWidget *parent);
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
 
@@ -46,21 +44,26 @@ class EditEndpoint : public QDialog
   void okData();
   void cancelData();
 
+ protected:
+  void resizeEvent(QResizeEvent *e);
+
  private:
-  RDMatrix::Type edit_type;
-  RDMatrix::Endpoint edit_endpoint;
-  int edit_pointnum;
-  QString *edit_pointname;
-  QString *edit_feedname;
-  RDMatrix::Mode *edit_mode;
-  int *edit_enginenum;
-  int *edit_devicenum;
+  RDMatrix *edit_matrix;
+  int edit_endpt;
+  RDEndPoint *edit_endpoint;
   QString edit_table;
+  QLabel *edit_endpoint_label;
   QLineEdit *edit_endpoint_edit;
+  QLabel *edit_feed_label;
   QLineEdit *edit_feed_edit;
+  QLabel *edit_enginenum_label;
   QLineEdit *edit_enginenum_edit;
+  QLabel *edit_devicenum_label;
   QLineEdit *edit_devicenum_edit;
+  QLabel *edit_mode_label;
   QComboBox *edit_mode_box;
+  QPushButton *edit_ok_button;
+  QPushButton *edit_cancel_button;
 };
 
 

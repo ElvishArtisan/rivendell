@@ -18,31 +18,21 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <Q3TextEdit>
-#include <QDialog>
-#include <QLabel>
-#include <QPainter>
-#include <QPaintEvent>
 #include <QMessageBox>
-#include <QString>
+#include <QPainter>
 
 #include <rd.h>
 #include <rdapplication.h>
-#include <rddb.h>
-#include <rdcart_dialog.h>
 #include <rdescape_string.h>
-#include <rdmatrix.h>
-#include <rdtextvalidator.h>
 
-#include "globals.h"
-#include "edit_user.h"
 #include "edit_matrix.h"
+#include "globals.h"
 #include "list_endpoints.h"
 #include "list_gpis.h"
-#include "list_nodes.h"
 #include "list_livewiregpios.h"
-#include "list_vguest_resources.h"
+#include "list_nodes.h"
 #include "list_sas_resources.h"
+#include "list_vguest_resources.h"
 
 EditMatrix::EditMatrix(RDMatrix *matrix,QWidget *parent)
   : QDialog(parent)
@@ -61,7 +51,7 @@ EditMatrix::EditMatrix(RDMatrix *matrix,QWidget *parent)
   setMinimumHeight(sizeHint().height());
   setMaximumHeight(sizeHint().height());
 
-  setCaption(tr("RDAdmin - Edit Switcher"));
+  setWindowTitle("RDAdmin - "+tr("Edit Switcher"));
 
   //
   // Create Fonts
@@ -70,11 +60,6 @@ EditMatrix::EditMatrix(RDMatrix *matrix,QWidget *parent)
   bold_font.setPixelSize(12);
   QFont font=QFont("Helvetica",12,QFont::Normal);
   font.setPixelSize(12);
-
-  //
-  // Text Validator
-  //
-  RDTextValidator *validator=new RDTextValidator(this);
 
   //
   // Matrix Number
@@ -103,7 +88,6 @@ EditMatrix::EditMatrix(RDMatrix *matrix,QWidget *parent)
   //
   edit_name_edit=new QLineEdit(this);
   edit_name_edit->setGeometry(135,50,240,19);
-  edit_name_edit->setValidator(validator);
   label=new QLabel(edit_name_edit,tr("Description:"),this);
   label->setGeometry(10,50,120,19);
   label->setFont(bold_font);
@@ -367,7 +351,6 @@ EditMatrix::EditMatrix(RDMatrix *matrix,QWidget *parent)
   //
   edit_device_edit=new QLineEdit(this);
   edit_device_edit->setGeometry(75,396,90,19);
-  edit_device_edit->setValidator(validator);
   edit_device_label=new QLabel(edit_device_edit,tr("Device:"),this);
   edit_device_label->setGeometry(5,396,65,19);
   edit_device_label->setFont(bold_font);
@@ -1094,6 +1077,8 @@ void EditMatrix::livewireGpioButtonData()
 
 void EditMatrix::vguestRelaysButtonData()
 {
+  edit_matrix->resizeVguestResources(RDMatrix::VguestTypeRelay,
+				     edit_gpos_box->value(),true);
   ListVguestResources *dialog=
     new ListVguestResources(edit_matrix,RDMatrix::VguestTypeRelay,
 			    edit_gpos_box->value(),this);
@@ -1104,6 +1089,8 @@ void EditMatrix::vguestRelaysButtonData()
 
 void EditMatrix::vguestDisplaysButtonData()
 {
+  edit_matrix->resizeVguestResources(RDMatrix::VguestTypeDisplay,
+				     edit_displays_box->value(),true);
   ListVguestResources *dialog=
     new ListVguestResources(edit_matrix,RDMatrix::VguestTypeDisplay,
 			    edit_displays_box->value(),this);
@@ -1321,6 +1308,15 @@ bool EditMatrix::WriteMatrix()
     setStartCart(RDMatrix::Backup,edit_start_cart2_edit->text().toUInt());
   edit_matrix->
     setStopCart(RDMatrix::Backup,edit_stop_cart2_edit->text().toUInt());
+
+  edit_matrix->resizeEndpoints(RDMatrix::Input,edit_inputs_box->value(),false);
+  edit_matrix->
+    resizeEndpoints(RDMatrix::Output,edit_outputs_box->value(),false);
+
+  edit_matrix->resizeVguestResources(RDMatrix::VguestTypeRelay,
+				     edit_gpos_box->value(),false);
+  edit_matrix->resizeVguestResources(RDMatrix::VguestTypeDisplay,
+				     edit_displays_box->value(),false);
 
   return true;
 }

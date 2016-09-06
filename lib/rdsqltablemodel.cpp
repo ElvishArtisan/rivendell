@@ -20,6 +20,7 @@
 
 #include "rdconf.h"
 #include "rddb.h"
+#include "rdmatrix.h"
 #include "rdsqltablemodel.h"
 
 RDSqlTableModel::RDSqlTableModel(QObject *parent)
@@ -78,8 +79,23 @@ QVariant RDSqlTableModel::data(const QModelIndex &index,int role) const
     case RDSqlTableModel::ColorTextType:
       return value;
 
+    case RDSqlTableModel::MatrixType:
+      return QVariant(RDMatrix::typeString((RDMatrix::Type)value.toInt()));
+
     case RDSqlTableModel::AudioLevelType:
       return QVariant(QString().sprintf("%d",value.toInt()/100));
+
+    case RDSqlTableModel::EngineNumberType:
+      if(value.toInt()<0) {
+	return QVariant();
+      }
+      return value;
+
+    case RDSqlTableModel::DeviceNumberType:
+      if(value.toInt()<0) {
+	return QVariant();
+      }
+      return QVariant(QString().sprintf("%04X",value.toInt()));
 
     case RDSqlTableModel::BooleanType:
     case RDSqlTableModel::DefaultType:

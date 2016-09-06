@@ -192,11 +192,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>New Switcher</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>RDAdmin - Add Switcher</source>
+        <source>Add Switcher</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1021,18 +1017,6 @@ configured to run the CAE service in order to populate the audio resources datab
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Name: </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Feed: </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Mode: </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Stereo</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1045,15 +1029,7 @@ configured to run the CAE service in order to populate the audio resources datab
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Engine (Hex): </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Provider ID:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Device (Hex): </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1066,6 +1042,26 @@ configured to run the CAE service in order to populate the audio resources datab
     </message>
     <message>
         <source>&amp;Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Feed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Engine</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Device (Hex)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1798,10 +1794,6 @@ Switches</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>RDAdmin - Edit Switcher</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Configure
 &amp;Outputs</source>
         <translation type="unfinished"></translation>
@@ -1809,6 +1801,10 @@ Switches</source>
     <message>
         <source>LiveWire
 GPIOs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit Switcher</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3693,22 +3689,6 @@ Permissions</source>
 <context>
     <name>EditVguestResource</name>
     <message>
-        <source>Engine (Hex): </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Device (Hex): </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Surface (Hex): </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Bus/Relay (Hex): </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;OK</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3722,6 +3702,22 @@ Permissions</source>
     </message>
     <message>
         <source>Edit vGuest Display</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Engine</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Device (Hex)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Surface</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Bus/Relay</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3917,50 +3913,6 @@ Are you sure you want to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>INPUT</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>OUTPUT</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>LABEL</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>SOURCE</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>MODE</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>ENGINE (Hex)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>DEVICE (Hex)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>PROVIDER ID</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>SERVICE ID</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>NODE</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>#</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;Edit</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3973,35 +3925,39 @@ Are you sure you want to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Stereo</source>
+        <source>Label</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Left</source>
+        <source>Source</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Right</source>
+        <source>Mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Input</source>
+        <source>Device (hex)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Output</source>
+        <source>Provider ID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>stereo</source>
+        <source>Service ID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>left</source>
+        <source>Node</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>right</source>
+        <source>#</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Engine</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -4312,18 +4268,6 @@ Are you sure you want to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>MATRIX</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>DESCRIPTION</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>TYPE</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;Add</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4340,19 +4284,23 @@ Are you sure you want to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Are you sure you want to delete switcher</source>
+        <source>Matrix</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>on</source>
+        <source>Description</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>ALL references to this switcher will be deleted!</source>
+        <source>Type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Deleting Switcher</source>
+        <source>Delete Switcher</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete this switcher?</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
