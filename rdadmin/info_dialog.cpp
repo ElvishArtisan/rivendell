@@ -18,26 +18,14 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qstring.h>
-#include <qpushbutton.h>
-#include <q3textedit.h>
-#include <qpainter.h>
-#include <qevent.h>
-#include <qmessagebox.h>
-#include <qcheckbox.h>
-#include <q3buttongroup.h>
-#include <qimage.h>
-//Added by qt3to4:
-#include <QPixmap>
-#include <QLabel>
+#include <QPushButton>
 
+#include <dbversion.h>
+#include <rd.h>
 #include <rdlabel.h>
 #include <rdlicense.h>
-#include <rdstation.h>
-#include <rd.h>
-#include <dbversion.h>
 
-#include <info_dialog.h>
+#include "info_dialog.h"
 
 //
 // This is a kludge, but apparently needed to get the bitmap data
@@ -48,19 +36,17 @@
 #include <xpm_info_banner2.cpp>
 
 InfoDialog::InfoDialog(QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
   QString str;
 
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
+  setMaximumSize(sizeHint());
 
-  setCaption(tr("System Information"));
+  setWindowTitle("RDAdmin - "+tr("System Information"));
 
   //
   // Create Fonts
@@ -128,7 +114,7 @@ InfoDialog::InfoDialog(QWidget *parent)
   //
   // Signature
   //
-  str=QString(tr("Copyright 2002-2014"));
+  str=QString(tr("Copyright 2002-2016"));
   label=new QLabel(QString().sprintf("%s %s",(const char *)str,
 				     PACKAGE_BUGREPORT),this);
   label->setGeometry(10,87,sizeHint().width()-20,14);

@@ -17,18 +17,11 @@
 //   License along with this program; if not, write to the Free Software
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
+
 #ifndef INFO_DIALOG_H
 #define INFO_DIALOG_H
 
-#include <qdialog.h>
-#include <qsqldatabase.h>
-#include <qcombobox.h>
-#include <qcheckbox.h>
-#include <qspinbox.h>
-#include <qlabel.h>
-#include <qlineedit.h>
-
-#include <rdtty.h>
+#include <QDialog>
 
 //
 // Globals
@@ -50,5 +43,4 @@ class InfoDialog : public QDialog
 };
 
 
-#endif
-
+#endif  // INFO_DIALOG_H

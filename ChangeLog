@@ -16227,3 +16227,6 @@
 	and 'rdadmin/list_livewiregpios.h'
 	* Removed Qt3Support components from 'rdadmin/edit_livewiregpio.cpp'
 	and 'rdadmin/edit_livewiregpio.h'
+2016-09-07 Fred Gleason <fredg@paravelsystems.com>
+	* Removed Qt3Support components from 'rdadmin/info_dialog.cpp'
+	and 'rdadmin/info_dialog.h'

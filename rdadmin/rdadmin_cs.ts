@@ -4387,7 +4387,11 @@ GNU Library General Public License. Klepněte na tlačítko pro zobrazení povol
     </message>
     <message>
         <source>Copyright 2002-2014</source>
-        <translation type="unfinished">Autorské právo 2002-2014</translation>
+        <translation type="obsolete">Autorské právo 2002-2014</translation>
+    </message>
+    <message>
+        <source>Copyright 2002-2016</source>
+        <translation type="unfinished">Autorské právo 2002-2016</translation>
     </message>
 </context>
 <context>
