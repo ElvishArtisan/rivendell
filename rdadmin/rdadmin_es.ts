@@ -5724,23 +5724,23 @@ Replicadores</translation>
     <name>MySqlLogin</name>
     <message>
         <source>mySQL Admin</source>
-        <translation>Admin. MySQL</translation>
+        <translation type="obsolete">Admin. MySQL</translation>
     </message>
     <message>
         <source>User &amp;Name:</source>
-        <translation>&amp;Usuario:</translation>
+        <translation type="obsolete">&amp;Usuario:</translation>
     </message>
     <message>
         <source>&amp;Password:</source>
-        <translation>&amp;Contraseña:</translation>
+        <translation type="obsolete">&amp;Contraseña:</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;Aceptar</translation>
+        <translation type="obsolete">&amp;Aceptar</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Cancelar</translation>
+        <translation type="obsolete">&amp;Cancelar</translation>
     </message>
 </context>
 <context>

@@ -5540,23 +5540,23 @@ Replicators</source>
     <name>MySqlLogin</name>
     <message>
         <source>mySQL Admin</source>
-        <translation>mySQL-admin</translation>
+        <translation type="obsolete">mySQL-admin</translation>
     </message>
     <message>
         <source>User &amp;Name:</source>
-        <translation>Br&amp;ukarnamn:</translation>
+        <translation type="obsolete">Br&amp;ukarnamn:</translation>
     </message>
     <message>
         <source>&amp;Password:</source>
-        <translation>&amp;Passord:</translation>
+        <translation type="obsolete">&amp;Passord:</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Avbryt</translation>
+        <translation type="obsolete">&amp;Avbryt</translation>
     </message>
 </context>
 <context>

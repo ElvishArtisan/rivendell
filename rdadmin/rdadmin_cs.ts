@@ -5750,23 +5750,23 @@ zopakování</translation>
     <name>MySqlLogin</name>
     <message>
         <source>mySQL Admin</source>
-        <translation>Správce mySQL</translation>
+        <translation type="obsolete">Správce mySQL</translation>
     </message>
     <message>
         <source>User &amp;Name:</source>
-        <translation>&amp;Uživatelské jméno:</translation>
+        <translation type="obsolete">&amp;Uživatelské jméno:</translation>
     </message>
     <message>
         <source>&amp;Password:</source>
-        <translation>He&amp;slo:</translation>
+        <translation type="obsolete">He&amp;slo:</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>Z&amp;rušit</translation>
+        <translation type="obsolete">Z&amp;rušit</translation>
     </message>
 </context>
 <context>

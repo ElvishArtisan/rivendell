@@ -5626,23 +5626,23 @@ Replicators</source>
     <name>MySqlLogin</name>
     <message>
         <source>mySQL Admin</source>
-        <translation>mySQL Admin</translation>
+        <translation type="obsolete">mySQL Admin</translation>
     </message>
     <message>
         <source>User &amp;Name:</source>
-        <translation>Usuário &amp;Nome:</translation>
+        <translation type="obsolete">Usuário &amp;Nome:</translation>
     </message>
     <message>
         <source>&amp;Password:</source>
-        <translation>&amp;Senha:</translation>
+        <translation type="obsolete">&amp;Senha:</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Cancelar</translation>
+        <translation type="obsolete">&amp;Cancelar</translation>
     </message>
 </context>
 <context>

@@ -5647,23 +5647,23 @@ managen</translation>
     <name>MySqlLogin</name>
     <message>
         <source>mySQL Admin</source>
-        <translation>mySQL Admin</translation>
+        <translation type="obsolete">mySQL Admin</translation>
     </message>
     <message>
         <source>User &amp;Name:</source>
-        <translation>Benutzer&amp;name:</translation>
+        <translation type="obsolete">Benutzer&amp;name:</translation>
     </message>
     <message>
         <source>&amp;Password:</source>
-        <translation>&amp;Passwort:</translation>
+        <translation type="obsolete">&amp;Passwort:</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>Abbre&amp;chen</translation>
+        <translation type="obsolete">Abbre&amp;chen</translation>
     </message>
 </context>
 <context>

@@ -116,7 +116,6 @@ dist_rdadmin_SOURCES = add_aux_field.cpp add_aux_field.h\
                        list_users.cpp list_users.h\
                        list_vguest_resources.cpp list_vguest_resources.h\
                        login.cpp login.h\
-                       mysql_login.cpp mysql_login.h\
                        opendb.cpp opendb.h\
                        rdadmin.cpp rdadmin.h\
                        rename_group.cpp rename_group.h\
@@ -196,7 +195,6 @@ nodist_rdadmin_SOURCES = moc_add_aux_field.cpp\
                          moc_list_users.cpp\
                          moc_list_vguest_resources.cpp\
                          moc_login.cpp\
-                         moc_mysql_login.cpp\
                          moc_rdadmin.cpp\
                          moc_rename_group.cpp\
                          moc_test_import.cpp\

@@ -37,7 +37,6 @@
 #include <rdapplication.h>
 
 #include "opendb.h"
-#include "mysql_login.h"
 #include "globals.h"
 
 /**

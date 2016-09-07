@@ -4709,29 +4709,6 @@ Replicators</source>
     </message>
 </context>
 <context>
-    <name>MySqlLogin</name>
-    <message>
-        <source>mySQL Admin</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>User &amp;Name:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Password:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;OK</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Cancel</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>QObject</name>
     <message>
         <source>RDAdmin Error</source>
