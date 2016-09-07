@@ -77,6 +77,7 @@ class RDLiveWire : public QObject
   void gpoSet(int slot,int line,unsigned interval=0);
   void gpoReset(int slot,int line,unsigned interval=0);
   void setRoute(int src_num,int dest_slot) const;
+  static QString gpioLineText(int slot);
 
  signals:
   void connected(unsigned id);

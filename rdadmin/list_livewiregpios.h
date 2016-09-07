@@ -21,15 +21,13 @@
 #ifndef LIST_LIVEWIREGPIOS_H
 #define LIST_LIVEWIREGPIOS_H
 
-#include <qdialog.h>
-#include <q3textedit.h>
-#include <qpixmap.h>
-#include <qradiobutton.h>
-#include <qsqldatabase.h>
+#include <QDialog>
+#include <QLabel>
+#include <QPushButton>
 
-#include <rd.h>
 #include <rdmatrix.h>
-#include <rdlistview.h>
+#include <rdsqltablemodel.h>
+#include <rdtableview.h>
 
 class ListLiveWireGpios : public QDialog
 {
@@ -40,19 +38,24 @@ class ListLiveWireGpios : public QDialog
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
   
-  private slots:
-   void editData();
-   void doubleClickedData(Q3ListViewItem *item,const QPoint &pt,int col);
-   void okData();
-   void cancelData();
+ private slots:
+  void editData();
+  void doubleClickedData(const QModelIndex &index);
+  void okData();
+  void cancelData();
 
-  private:
-   void RefreshList();
-   RDListView *list_view;
-   RDMatrix *list_matrix;
-   int list_slot_quan;
+ protected:
+  void resizeEvent(QResizeEvent *e);
+
+ private:
+  RDSqlTableModel *list_model;
+  QLabel *list_label;
+  RDTableView *list_view;
+  RDMatrix *list_matrix;
+  int list_slot_quan;
+  QPushButton *list_edit_button;
+  QPushButton *list_close_button;
 };
 
 
-#endif
-
+#endif  // LIST_LIVEWIREGPIOS_H

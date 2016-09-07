@@ -355,6 +355,12 @@ void RDLiveWire::setRoute(int src_num,int dest_slot) const
 }
 
 
+QString RDLiveWire::gpioLineText(int slot)
+{
+  return QString().sprintf("%d - %d",5*slot+1,5*slot+5);
+}
+
+
 void RDLiveWire::connectedData()
 {
   QString str="LOGIN";

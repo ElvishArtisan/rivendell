@@ -4993,7 +4993,7 @@ Generieren</translation>
     </message>
     <message>
         <source>Switchers:</source>
-        <translation type="unfinished">Schalter:</translation>
+        <translation type="obsolete">Schalter:</translation>
     </message>
     <message>
         <source>&amp;Edit</source>
@@ -5001,18 +5001,22 @@ Generieren</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation type="unfinished">&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation type="unfinished">Abbre&amp;chen</translation>
+        <translation type="obsolete">Abbre&amp;chen</translation>
     </message>
     <message>
         <source>[none]</source>
-        <translation type="unfinished">[keine]</translation>
+        <translation type="obsolete">[keine]</translation>
     </message>
     <message>
         <source>Lines</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Source #</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5020,12 +5024,12 @@ Generieren</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>[all]</source>
+        <source>GPIO Slots:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Source #</source>
-        <translation type="unfinished"></translation>
+        <source>&amp;Close</source>
+        <translation type="unfinished">&amp;Schliessen</translation>
     </message>
 </context>
 <context>

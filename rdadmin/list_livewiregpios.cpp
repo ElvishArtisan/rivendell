@@ -18,39 +18,24 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qdialog.h>
-#include <qstring.h>
-#include <qpushbutton.h>
-#include <q3listbox.h>
-#include <q3textedit.h>
-#include <qlabel.h>
-#include <qpainter.h>
-#include <qevent.h>
-#include <qmessagebox.h>
-#include <q3buttongroup.h>
-
-#include <rdstation.h>
 #include <rdescape_string.h>
 #include <rddb.h>
-#include <globals.h>
-#include <list_livewiregpios.h>
-#include <edit_livewiregpio.h>
+
+#include "edit_livewiregpio.h"
+#include "list_livewiregpios.h"
 
 ListLiveWireGpios::ListLiveWireGpios(RDMatrix *matrix,int slot_quan,
 				     QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
 
   list_matrix=matrix;
   list_slot_quan=slot_quan;
-  setCaption(tr("LiveWire GPIO Source Assignments"));
+  setWindowTitle("RDAdmin - "+tr("LiveWire GPIO Source Assignments"));
 
   //
   // Create Fonts
@@ -63,55 +48,47 @@ ListLiveWireGpios::ListLiveWireGpios(RDMatrix *matrix,int slot_quan,
   //
   // Matrix List Box
   //
-  list_view=new RDListView(this);
-  list_view->setGeometry(10,24,sizeHint().width()-20,sizeHint().height()-94);
-  QLabel *label=new QLabel(list_view,tr("Switchers:"),this);
-  label->setFont(font);
-  label->setGeometry(14,5,85,19);
-  list_view->setAllColumnsShowFocus(true);
-  list_view->setItemMargin(5);
-  list_view->addColumn(tr("Lines"));
-  list_view->setColumnAlignment(0,Qt::AlignHCenter);
-  list_view->addColumn(tr("Source #"));
-  list_view->setColumnAlignment(1,Qt::AlignCenter);
-  list_view->addColumn(tr("Surface Address"));
-  list_view->setColumnAlignment(2,Qt::AlignCenter);
-  list_view->setColumnSortType(0,RDListView::GpioSort);
-  connect(list_view,SIGNAL(doubleClicked(Q3ListViewItem *,const QPoint &,int)),
-	  this,SLOT(doubleClickedData(Q3ListViewItem *,const QPoint &,int)));
-
-  RefreshList();
+  list_label=new QLabel(tr("GPIO Slots:"),this);
+  list_label->setFont(font);
+  list_model=new RDSqlTableModel(this);
+  QString sql=QString("select ")+
+    "ID,"+
+    "SLOT,"+
+    "SOURCE_NUMBER,"+
+    "IP_ADDRESS "+
+    "from LIVEWIRE_GPIO_SLOTS where "+
+    "(STATION_NAME=\""+RDEscapeString(list_matrix->station())+"\")&&"+
+    QString().sprintf("(MATRIX=%d) ",list_matrix->matrix())+
+    "order by SLOT";
+  list_model->setQuery(sql);
+  list_model->setHeaderData(1,Qt::Horizontal,tr("Lines"));
+  list_model->setFieldType(1,RDSqlTableModel::LiveWireGpioLinesType);
+  list_model->setHeaderData(2,Qt::Horizontal,tr("Source #"));
+  list_model->setFieldType(2,RDSqlTableModel::LiveWireSourceType);
+  list_model->setHeaderData(3,Qt::Horizontal,tr("Surface Address"));
+  list_view=new RDTableView(this);
+  list_view->setModel(list_model);
+  list_view->hideColumn(0);
+  list_view->resizeColumnsToContents();
+  connect(list_view,SIGNAL(doubleClicked(const QModelIndex &)),
+	  this,SLOT(doubleClickedData(const QModelIndex &)));
 
   //
   //  Edit Button
   //
-  QPushButton *edit_button=new QPushButton(this);
-  edit_button->setGeometry(10,sizeHint().height()-60,80,50);
-  edit_button->setFont(font);
-  edit_button->setText(tr("&Edit"));
-  connect(edit_button,SIGNAL(clicked()),this,SLOT(editData()));
+  list_edit_button=new QPushButton(this);
+  list_edit_button->setFont(font);
+  list_edit_button->setText(tr("&Edit"));
+  connect(list_edit_button,SIGNAL(clicked()),this,SLOT(editData()));
 
   //
-  //  Ok Button
+  //  Close Button
   //
-  QPushButton *ok_button=new QPushButton(this);
-  ok_button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,
-			    80,50);
-  ok_button->setDefault(true);
-  ok_button->setFont(font);
-  ok_button->setText(tr("&OK"));
-  connect(ok_button,SIGNAL(clicked()),this,SLOT(okData()));
-
-  //
-  //  Cancel Button
-  //
-  QPushButton *cancel_button=new QPushButton(this);
-  cancel_button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,
-			    80,50);
-  cancel_button->setDefault(true);
-  cancel_button->setFont(font);
-  cancel_button->setText(tr("&Cancel"));
-  connect(cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
+  list_close_button=new QPushButton(this);
+  list_close_button->setDefault(true);
+  list_close_button->setFont(font);
+  list_close_button->setText(tr("&Close"));
+  connect(list_close_button,SIGNAL(clicked()),this,SLOT(cancelData()));
 }
 
 
@@ -135,35 +112,18 @@ QSizePolicy ListLiveWireGpios::sizePolicy() const
 
 void ListLiveWireGpios::editData()
 {
-  if(list_view->selectedItem()==NULL) {
-    return;
-  }
-  int source=list_view->currentItem()->text(1).toInt();
-  QHostAddress addr;
-  addr.setAddress(list_view->currentItem()->text(2));
-  EditLiveWireGpio *d=
-    new EditLiveWireGpio(list_view->currentItem()->text(0).toInt(),
-			 &source,&addr);
-  if(d->exec()==0) {
-    if(source==0) {
-      list_view->currentItem()->setText(1,tr("[none]"));
-    }
-    else {
-      list_view->currentItem()->setText(1,QString().sprintf("%d",source));
-    }
-    if(addr.isNull()) {
-      list_view->currentItem()->setText(2,tr("[all]"));
-    }
-    else {
-      list_view->currentItem()->setText(2,addr.toString());
+  QItemSelectionModel *s=list_view->selectionModel();
+  if(s->hasSelection()) {
+    EditLiveWireGpio *edit=
+      new EditLiveWireGpio(s->selectedRows()[0].data().toInt(),this);
+    if(edit->exec()==0) {
+      list_model->update();
     }
   }
-  delete d;
 }
 
 
-void ListLiveWireGpios::doubleClickedData(Q3ListViewItem *item,const QPoint &pt,
-				     int col)
+void ListLiveWireGpios::doubleClickedData(const QModelIndex &index)
 {
   editData();
 }
@@ -171,31 +131,6 @@ void ListLiveWireGpios::doubleClickedData(Q3ListViewItem *item,const QPoint &pt,
 
 void ListLiveWireGpios::okData()
 {
-  QString sql;
-  RDSqlQuery *q;
-  int slot=0;
-  QString addr_str="NULL";
-
-  RDListViewItem *item=(RDListViewItem *)list_view->firstChild();
-  while(item!=NULL) {
-    QHostAddress addr;
-    addr_str="NULL";
-    addr.setAddress(item->text(2));
-    if(!addr.isNull()) {
-      addr_str="\""+addr.toString()+"\"";
-    }
-    sql=QString("update LIVEWIRE_GPIO_SLOTS set ")+
-      QString().sprintf("SOURCE_NUMBER=%d,",item->text(1).toInt())+
-      "IP_ADDRESS="+addr_str+" "+
-      "where (STATION_NAME=\""+RDEscapeString(list_matrix->station())+"\")&&"+
-      QString().sprintf("(MATRIX=%d)&&",list_matrix->matrix())+
-      QString().sprintf("(SLOT=%d)",slot);
-    q=new RDSqlQuery(sql);
-    delete q;
-    slot++;
-    item=(RDListViewItem *)item->nextSibling();
-  }
-
   done(0);
 }
 
@@ -206,48 +141,10 @@ void ListLiveWireGpios::cancelData()
 }
 
 
-void ListLiveWireGpios::RefreshList()
+void ListLiveWireGpios::resizeEvent(QResizeEvent *e)
 {
-  Q3ListViewItem *l;
-  QString sql;
-  RDSqlQuery *q;
-  RDSqlQuery *q1;
-
-  list_view->clear();
-  sql=QString("select SLOT,SOURCE_NUMBER,IP_ADDRESS from LIVEWIRE_GPIO_SLOTS ")+
-    "where (STATION_NAME=\""+RDEscapeString(list_matrix->station())+"\")&&"+
-    QString().sprintf("(MATRIX=%d) ",list_matrix->matrix())+
-    "order by SLOT";
-  q=new RDSqlQuery(sql);
-  q->first();
-  for(int i=0;i<list_slot_quan;i++) {
-    l=new RDListViewItem(list_view);
-    l->setText(0,QString().sprintf("%d - %d",5*i+1,5*i+5));
-    if(q->isValid()&&(q->value(0).toInt()==i)) {
-      if(q->value(1).toInt()==0) {
-	l->setText(1,tr("[none]"));
-      }
-      else {
-	l->setText(1,QString().sprintf("%d",q->value(1).toInt()));
-      }
-      if(q->value(2).toString().isEmpty()) {
-	l->setText(2,tr("[all]"));
-      }
-      else {
-	l->setText(2,q->value(2).toString());
-      }
-      q->next();
-    }
-    else {
-      sql=QString("insert into LIVEWIRE_GPIO_SLOTS set ")+
-	"STATION_NAME=\""+RDEscapeString(list_matrix->station())+"\","+
-	QString().sprintf("MATRIX=%d,",list_matrix->matrix())+
-	QString().sprintf("SLOT=%d",i);
-      q1=new RDSqlQuery(sql);
-      delete q1;
-      l->setText(1,tr("[none]"));
-      l->setText(2,tr("[all]"));
-    }
-  }
-  delete q;
+  list_label->setGeometry(14,5,85,19);
+  list_view->setGeometry(10,24,size().width()-20,size().height()-94);
+  list_edit_button->setGeometry(10,size().height()-60,80,50);
+  list_close_button->setGeometry(size().width()-90,size().height()-60,80,50);
 }

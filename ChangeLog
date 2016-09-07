@@ -16222,3 +16222,8 @@
 	'rdadmin/view_node_info.h'
 2016-09-07 Fred Gleason <fredg@paravelsystems.com>
 	* Removed 'rdadmin/mysql_login.cpp' and 'rdadmin/mysql_login.h'.
+2016-09-07 Fred Gleason <fredg@paravelsystems.com>
+	* Removed Qt3Support components from 'rdadmin/list_livewiregpios.cpp'
+	and 'rdadmin/list_livewiregpios.h'
+	* Removed Qt3Support components from 'rdadmin/edit_livewiregpio.cpp'
+	and 'rdadmin/edit_livewiregpio.h'

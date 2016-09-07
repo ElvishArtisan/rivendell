@@ -20,6 +20,7 @@
 
 #include "rdconf.h"
 #include "rddb.h"
+#include "rdlivewire.h"
 #include "rdmatrix.h"
 #include "rdsqltablemodel.h"
 
@@ -96,6 +97,15 @@ QVariant RDSqlTableModel::data(const QModelIndex &index,int role) const
 	return QVariant();
       }
       return QVariant(QString().sprintf("%04X",value.toInt()));
+
+    case RDSqlTableModel::LiveWireSourceType:
+      if(value.toInt()<=0) {
+	return QVariant(tr("[none]"));
+      }
+      return value;
+
+    case RDSqlTableModel::LiveWireGpioLinesType:
+      return QVariant(RDLiveWire::gpioLineText(value.toInt()));
 
     case RDSqlTableModel::BooleanType:
     case RDSqlTableModel::DefaultType:
