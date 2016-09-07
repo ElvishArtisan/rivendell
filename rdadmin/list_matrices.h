@@ -21,7 +21,7 @@
 #ifndef LIST_MATRICES_H
 #define LIST_MATRICES_H
 
-#include <qdialog.h>
+#include <QDialog>
 
 #include <rd.h>
 #include <rdmatrix.h>

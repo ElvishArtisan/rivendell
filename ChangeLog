@@ -16230,3 +16230,6 @@
 2016-09-07 Fred Gleason <fredg@paravelsystems.com>
 	* Removed Qt3Support components from 'rdadmin/info_dialog.cpp'
 	and 'rdadmin/info_dialog.h'
+2016-09-07 Fred Gleason <fredg@paravelsystems.com>
+	* Removed Qt3Support components from 'rdadmin/list_matrices.cpp'
+	and 'rdadmin/list_matrices.h'
