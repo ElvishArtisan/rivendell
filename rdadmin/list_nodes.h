@@ -21,15 +21,12 @@
 #ifndef LIST_NODES_H
 #define LIST_NODES_H
 
-#include <qdialog.h>
-#include <qsqldatabase.h>
-#include <qlabel.h>
-#include <qpushbutton.h>
+#include <QDialog>
+#include <QPushButton>
 
-#include <rduser.h>
 #include <rdmatrix.h>
-#include <rdlistview.h>
-#include <rdlistviewitem.h>
+#include <rdsqltablemodel.h>
+#include <rdtableview.h>
 
 class ListNodes : public QDialog
 {
@@ -43,15 +40,21 @@ class ListNodes : public QDialog
   void addData();
   void editData();
   void deleteData();
-  void doubleClickedData(Q3ListViewItem *item,const QPoint &pt,int col);
+  void doubleClickedData(const QModelIndex &index);
   void closeData();
 
+ protected:
+  void resizeEvent(QResizeEvent *e);
+
  private:
-  void RefreshList();
-  void RefreshItem(RDListViewItem *item);
   void PurgeEndpoints(const QString &tablename);
   RDMatrix *list_matrix;
-  RDListView *list_list_view;
+  RDSqlTableModel *list_model;
+  RDTableView *list_view;
+  QPushButton *list_add_button;
+  QPushButton *list_edit_button;
+  QPushButton *list_delete_button;
+  QPushButton *list_close_button;
 };
 
 

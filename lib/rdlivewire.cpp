@@ -22,8 +22,8 @@
 #include <syslog.h>
 #include <unistd.h>
 
-#include <qapplication.h>
-#include <qsignalmapper.h>
+#include <QApplication>
+#include <QSignalMapper>
 
 #include <rd.h>
 #include <rdlivewire.h>
@@ -92,24 +92,25 @@ RDLiveWire::RDLiveWire(unsigned id,QObject *parent)
   //
   // Connection Socket
   //
-  live_socket=new Q3Socket(this,"live_socket");
+  live_socket=new QTcpSocket(this);
   connect(live_socket,SIGNAL(connected()),this,SLOT(connectedData()));
   connect(live_socket,SIGNAL(connectionClosed()),
 	  this,SLOT(connectionClosedData()));
   connect(live_socket,SIGNAL(readyRead()),this,SLOT(readyReadData()));
-  connect(live_socket,SIGNAL(error(int)),this,SLOT(errorData(int)));
+  connect(live_socket,SIGNAL(error(QAbstractSocket::SocketError)),
+	  this,SLOT(errorData(QAbstractSocket::SocketError)));
 
   //
   // Watchdog Timers
   //
-  live_watchdog_timer=new QTimer(this,",live_watchdog_timer");
+  live_watchdog_timer=new QTimer(this);
   connect(live_watchdog_timer,SIGNAL(timeout()),this,SLOT(watchdogData()));
 
-  live_watchdog_timeout_timer=new QTimer(this,",live_watchdog_timeout_timer");
+  live_watchdog_timeout_timer=new QTimer(this);
   connect(live_watchdog_timeout_timer,SIGNAL(timeout()),
 	  this,SLOT(watchdogTimeoutData()));
 
-  live_holdoff_timer=new QTimer(this,",live_holdoff_timer");
+  live_holdoff_timer=new QTimer(this);
   connect(live_holdoff_timer,SIGNAL(timeout()),this,SLOT(holdoffData()));
 }
 
@@ -406,35 +407,41 @@ void RDLiveWire::readyReadData()
 }
 
 
-void RDLiveWire::errorData(int err)
+void RDLiveWire::errorData(QAbstractSocket::SocketError err)
 {
   int interval=RDLIVEWIRE_RECONNECT_MIN_INTERVAL;
+  QString err_msg;
 
-  switch((Q3Socket::Error)err) {
-      case Q3Socket::ErrConnectionRefused:
-	live_watchdog_state=true;
-	interval=GetHoldoff();
-	emit watchdogStateChanged(live_id,QString().sprintf(
-	 "Connection to LiveWire node at %s:%d refused, attempting reconnect, holdoff = %d mS",
-				  (const char *)live_hostname,
-				  live_tcp_port,interval));
-	live_holdoff_timer->start(interval,true);
-	break;
+  switch((QAbstractSocket::SocketError)err) {
+  case QAbstractSocket::ErrConnectionRefused:
+    live_watchdog_state=true;
+    interval=GetHoldoff();
+    err_msg=tr("Connection to LiveWire node at")+
+      " "+live_hostname+QString().sprintf(" :%d ",live_tcp_port)+
+      tr("refused, attempting reconnect, holdoff =")+
+      QString().sprintf("%d mS",interval);
+    live_holdoff_timer->start(interval,true);
+    break;
 
-      case Q3Socket::ErrHostNotFound:
-	emit watchdogStateChanged(live_id,QString().sprintf(
-	  "Error on connection to LiveWire node at %s:%d: Host Not Found",
-				  (const char *)live_hostname,
-				  live_tcp_port));
-	break;
+  case QAbstractSocket::ErrHostNotFound:
+    err_msg=tr("Error on connection to LiveWire node at")+
+      " "+live_hostname+QString().sprintf(":%d: ",live_tcp_port)+
+      tr("host not found");
+    break;
 
-      case Q3Socket::ErrSocketRead:
-	emit watchdogStateChanged(live_id,QString().sprintf(
-	  "Error on connection to LiveWire node at %s:%d: Socket Read Error",
-				  (const char *)live_hostname,
-				  live_tcp_port));
-	break;
+  case QAbstractSocket::ErrSocketRead:
+    err_msg=tr("Error on connection to LiveWire node at")+
+      " "+live_hostname+QString().sprintf(":%d: ",live_tcp_port)+
+      tr("socket read error");
+    break;
+
+  default:
+    err_msg=tr("Unknown network error on connection to LiveWire node at")+
+      " "+live_hostname+QString().sprintf(":%d, ",live_tcp_port)+
+      tr("error number")+": "+QString().sprintf("%d",err);
+    break;
   }
+  emit watchdogStateChanged(live_id,err_msg);
 }
 
 

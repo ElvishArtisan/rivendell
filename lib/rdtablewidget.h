@@ -34,6 +34,7 @@ class RDTableWidget : public QTableWidget
   bool select(int column,unsigned value);
   bool select(int column,const QString &value,bool case_sensitive=true);
   void setItem(int row,int column,QTableWidgetItem *item);
+  void setRowCount(int rows);
 
  private:
   void Initialize();

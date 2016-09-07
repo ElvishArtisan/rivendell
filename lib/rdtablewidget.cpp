@@ -86,6 +86,21 @@ void RDTableWidget::setItem(int row,int column,QTableWidgetItem *item)
 }
 
 
+void RDTableWidget::setRowCount(int rows)
+{
+  QTableWidgetItem *item=NULL;
+  QTableWidget::setRowCount(rows);
+  for(int i=0;i<rows;i++) {
+    if((item=verticalHeaderItem(i))==NULL) {
+      setVerticalHeaderItem(i,new QTableWidgetItem(""));
+    }
+    else {
+      item->setData(Qt::DisplayRole,QString());
+    }
+  }
+}
+
+
 void RDTableWidget::Initialize()
 {
   setShowGrid(false);

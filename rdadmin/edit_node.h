@@ -21,10 +21,11 @@
 #ifndef EDIT_NODE_H
 #define EDIT_NODE_H
 
-#include <qdialog.h>
-#include <qlineedit.h>
-#include <qspinbox.h>
-#include <qdialog.h>
+#include <QDialog>
+#include <QLabel>
+#include <QLineEdit>
+#include <QPushButton>
+#include <QSpinBox>
 
 #include <rdmatrix.h>
 
@@ -42,16 +43,27 @@ class EditNode : public QDialog
   void okData();
   void cancelData();
 
+ protected:
+  void resizeEvent(QResizeEvent *e);
+
  private:
   int *edit_id;
   RDMatrix *edit_matrix;
+  QLabel *edit_hostname_label;
   QLineEdit *edit_hostname_edit;
+  QLabel *edit_tcpport_label;
   QSpinBox *edit_tcpport_spin;
+  QLabel *edit_description_label;
   QLineEdit *edit_description_edit;
+  QLabel *edit_output_label;
   QSpinBox *edit_output_spin;
+  QLabel *edit_password_label;
   QLineEdit *edit_password_edit;
   QString edit_password;
   bool edit_password_changed;
+  QPushButton *edit_view_button;
+  QPushButton *edit_ok_button;
+  QPushButton *edit_cancel_button;
 };
 
 

@@ -18,33 +18,28 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qmessagebox.h>
-#include <qsqldatabase.h>
-#include <qlabel.h>
-#include <qpushbutton.h>
+#include <QMessageBox>
 
 #include <rd.h>
 #include <rddb.h>
 #include <rdescape_string.h>
 
-#include <edit_node.h>
-#include <view_node_info.h>
+#include "edit_node.h"
+#include "view_node_info.h"
 
 EditNode::EditNode(int *id,RDMatrix *matrix,QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
   edit_id=id;
   edit_matrix=matrix;
   edit_password_changed=false;
-  setCaption(tr("Edit LiveWire Node"));
+  setWindowTitle("RDAdmin - "+tr("Edit LiveWire Node"));
 
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
+  setMaximumSize(sizeHint());
 
   //
   // Create Fonts
@@ -58,90 +53,73 @@ EditNode::EditNode(int *id,RDMatrix *matrix,QWidget *parent)
   // Node Hostname
   //
   edit_hostname_edit=new QLineEdit(this);
-  edit_hostname_edit->setGeometry(90,10,190,20);
-  QLabel *label=
-    new QLabel(edit_hostname_edit,tr("Hostname: "),this);
-  label->setGeometry(10,10,80,20);
-  label->setFont(bold_font);
-  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
+  edit_hostname_label=new QLabel(tr("Hostname: "),this);
+  edit_hostname_label->setFont(bold_font);
+  edit_hostname_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Node TCP Port
   //
   edit_tcpport_spin=new QSpinBox(this);
-  edit_tcpport_spin->setGeometry(335,10,sizeHint().width()-345,20);
   edit_tcpport_spin->setRange(0,0xFFFF);
-  label=new QLabel(edit_tcpport_spin,tr("Port: "),this);
-  label->setGeometry(290,10,45,20);
-  label->setFont(bold_font);
-  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
+  edit_tcpport_label=new QLabel(tr("Port: "),this);
+  edit_tcpport_label->setFont(bold_font);
+  edit_tcpport_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Node Description
   //
   edit_description_edit=new QLineEdit(this);
-  edit_description_edit->setGeometry(90,32,sizeHint().width()-100,20);
-  label=new QLabel(edit_description_edit,tr("Description: "),this);
-  label->setGeometry(10,32,80,20);
-  label->setFont(bold_font);
-  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
+  edit_description_label=new QLabel(tr("Description: "),this);
+  edit_description_label->setFont(bold_font);
+  edit_description_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Base Output
   //
   edit_output_spin=new QSpinBox(this);
-  edit_output_spin->setGeometry(90,54,60,20);
   edit_output_spin->setRange(0,0x7FFF);
   edit_output_spin->setSpecialValueText(tr("None"));
-  label=
-    new QLabel(edit_output_spin,tr("First Output: "),this);
-  label->setGeometry(10,54,80,20);
-  label->setFont(bold_font);
-  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
+  edit_output_label=new QLabel(tr("First Output: "),this);
+  edit_output_label->setFont(bold_font);
+  edit_output_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Node Password
   //
   edit_password_edit=new QLineEdit(this);
-  edit_password_edit->setGeometry(245,54,90,20);
   edit_password_edit->setEchoMode(QLineEdit::Password);
   edit_password_edit->setText("********");
   connect(edit_password_edit,SIGNAL(textChanged(const QString &)),
 	  this,SLOT(passwordChangedData(const QString &)));
-  label=
-    new QLabel(edit_password_edit,tr("Password: "),this);
-  label->setGeometry(160,54,80,20);
-  label->setFont(bold_font);
-  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
+  edit_password_label=new QLabel(tr("Password: "),this);
+  edit_password_label->setFont(bold_font);
+  edit_password_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   //  View Node Info Button
   //
-  QPushButton *button=new QPushButton(this);
-  button->setGeometry(10,sizeHint().height()-60,80,50);
-  button->setFont(bold_font);
-  button->setText(tr("&View Node\nInfo"));
-  connect(button,SIGNAL(clicked()),this,SLOT(viewData()));
+  edit_view_button=new QPushButton(this);
+  edit_view_button->setFont(bold_font);
+  edit_view_button->setText(tr("&View Node\nInfo"));
+  connect(edit_view_button,SIGNAL(clicked()),this,SLOT(viewData()));
 
   //
   //  Ok Button
   //
-  button=new QPushButton(this);
-  button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
-  button->setDefault(true);
-  button->setFont(bold_font);
-  button->setText(tr("&OK"));
-  connect(button,SIGNAL(clicked()),this,SLOT(okData()));
+  edit_ok_button=new QPushButton(this);
+  edit_ok_button->setDefault(true);
+  edit_ok_button->setFont(bold_font);
+  edit_ok_button->setText(tr("&OK"));
+  connect(edit_ok_button,SIGNAL(clicked()),this,SLOT(okData()));
 
   //
   //  Cancel Button
   //
-  button=new QPushButton(this);
-  button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,
-			     80,50);
-  button->setFont(bold_font);
-  button->setText(tr("&Cancel"));
-  connect(button,SIGNAL(clicked()),this,SLOT(cancelData()));
+  edit_cancel_button=new QPushButton(this);
+  edit_cancel_button->setFont(bold_font);
+  edit_cancel_button->setText(tr("&Cancel"));
+  connect(edit_cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
 
   //
   // Load Data
@@ -268,4 +246,22 @@ void EditNode::okData()
 void EditNode::cancelData()
 {
   done(1);
+}
+
+
+void EditNode::resizeEvent(QResizeEvent *e)
+{
+  edit_hostname_edit->setGeometry(90,10,190,20);
+  edit_hostname_label->setGeometry(10,10,80,20);
+  edit_tcpport_spin->setGeometry(335,10,size().width()-345,20);
+  edit_tcpport_label->setGeometry(290,10,45,20);
+  edit_description_edit->setGeometry(90,32,size().width()-100,20);
+  edit_description_label->setGeometry(10,32,80,20);
+  edit_output_spin->setGeometry(90,54,60,20);
+  edit_output_label->setGeometry(10,54,80,20);
+  edit_password_edit->setGeometry(245,54,90,20);
+  edit_password_label->setGeometry(160,54,80,20);
+  edit_view_button->setGeometry(10,size().height()-60,80,50);
+  edit_ok_button->setGeometry(size().width()-180,size().height()-60,80,50);
+  edit_cancel_button->setGeometry(size().width()-90,size().height()-60,80,50);
 }
