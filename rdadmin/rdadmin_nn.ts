@@ -1565,11 +1565,15 @@ Do you still want to enable redireciton?</source>
     </message>
     <message>
         <source>Invalid Cart</source>
-        <translation>Ugyldig korg</translation>
+        <translation type="obsolete">Ugyldig korg</translation>
     </message>
     <message>
         <source>Invalid Cart Number!</source>
-        <translation>Ugyldig korgnummer!</translation>
+        <translation type="obsolete">Ugyldig korgnummer!</translation>
+    </message>
+    <message>
+        <source>Edit GPO</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -4624,7 +4628,7 @@ Are you sure you want to continue?</source>
     </message>
     <message>
         <source>GPI</source>
-        <translation>GI</translation>
+        <translation type="unfinished">GI</translation>
     </message>
     <message>
         <source>MACRO CART</source>
@@ -4640,15 +4644,15 @@ Are you sure you want to continue?</source>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Avbryt</translation>
+        <translation type="obsolete">&amp;Avbryt</translation>
     </message>
     <message>
         <source>[unassigned]</source>
-        <translation>[ikkje kopla til]</translation>
+        <translation type="obsolete">[ikkje kopla til]</translation>
     </message>
     <message>
         <source>GPO Lines</source>
@@ -4659,24 +4663,32 @@ Are you sure you want to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>[none]</source>
+        <translation type="unfinished">[ingen]</translation>
+    </message>
+    <message>
+        <source>ON Macro Cart</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ON Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OFF Macro Cart</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OFF Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>GPO</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>ON MACRO CART</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>ON DESCRIPTION</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>OFF MACRO CART</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>OFF DESCRIPTION</source>
-        <translation type="unfinished"></translation>
+        <source>&amp;Close</source>
+        <translation type="unfinished">&amp;Lukk</translation>
     </message>
 </context>
 <context>

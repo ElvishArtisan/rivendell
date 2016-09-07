@@ -16206,3 +16206,8 @@
 	* Removed Qt3Support components from
 	'rdadmin/edit_sas_resource.cpp' and
 	'rdadmin/edit_sas_resource.h'
+2016-09-07 Fred Gleason <fredg@paravelsystems.com>
+	* Removed Qt3Support components from 'rdadmin/list_gpis.cpp' and
+	'rdadmin/list_gpis.h'
+	* Removed Qt3Support components from 'rdadmin/edit_gpi.cpp' and
+	'rdadmin/edit_gpi.h'

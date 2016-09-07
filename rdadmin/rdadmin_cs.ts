@@ -1647,11 +1647,15 @@ Pořád ještě chcete povolit přesměrování?</translation>
     </message>
     <message>
         <source>Invalid Cart</source>
-        <translation>Neplatný vozík</translation>
+        <translation type="obsolete">Neplatný vozík</translation>
     </message>
     <message>
         <source>Invalid Cart Number!</source>
-        <translation>Neplatné číslo vozíku!</translation>
+        <translation type="obsolete">Neplatné číslo vozíku!</translation>
+    </message>
+    <message>
+        <source>Edit GPO</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -4815,7 +4819,7 @@ Stále ještě jej chcete smazat?</translation>
     </message>
     <message>
         <source>GPI</source>
-        <translation>GPI</translation>
+        <translation type="unfinished">GPI</translation>
     </message>
     <message>
         <source>&amp;Edit</source>
@@ -4823,19 +4827,19 @@ Stále ještě jej chcete smazat?</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>Z&amp;rušit</translation>
+        <translation type="obsolete">Z&amp;rušit</translation>
     </message>
     <message>
         <source>[unassigned]</source>
-        <translation>[nepřiřazeno]</translation>
+        <translation type="obsolete">[nepřiřazeno]</translation>
     </message>
     <message>
         <source>GPO</source>
-        <translation>GPO</translation>
+        <translation type="unfinished">GPO</translation>
     </message>
     <message>
         <source>List GPOs</source>
@@ -4847,19 +4851,43 @@ Stále ještě jej chcete smazat?</translation>
     </message>
     <message>
         <source>ON MACRO CART</source>
-        <translation>ZAPNUTO - MAKROVOZÍK</translation>
+        <translation type="obsolete">ZAPNUTO - MAKROVOZÍK</translation>
     </message>
     <message>
         <source>ON DESCRIPTION</source>
-        <translation>ZAPNUTO - POPIS</translation>
+        <translation type="obsolete">ZAPNUTO - POPIS</translation>
     </message>
     <message>
         <source>OFF MACRO CART</source>
-        <translation>VYPPNUTO - MAKROVOZÍK</translation>
+        <translation type="obsolete">VYPPNUTO - MAKROVOZÍK</translation>
     </message>
     <message>
         <source>OFF DESCRIPTION</source>
-        <translation>ZAPNUTO - POPIS</translation>
+        <translation type="obsolete">ZAPNUTO - POPIS</translation>
+    </message>
+    <message>
+        <source>[none]</source>
+        <translation type="unfinished">[žádný]</translation>
+    </message>
+    <message>
+        <source>ON Macro Cart</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ON Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OFF Macro Cart</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OFF Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Close</source>
+        <translation type="unfinished">&amp;Zavřít</translation>
     </message>
 </context>
 <context>

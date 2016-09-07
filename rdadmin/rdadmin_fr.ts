@@ -1315,11 +1315,7 @@ Do you still want to enable redireciton?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Invalid Cart</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Invalid Cart Number!</source>
+        <source>Edit GPO</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -4035,27 +4031,7 @@ Are you sure you want to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>GPI</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;Edit</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;OK</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Cancel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>[unassigned]</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>GPO</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4067,19 +4043,35 @@ Are you sure you want to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>ON MACRO CART</source>
+        <source>[none]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>ON DESCRIPTION</source>
+        <source>ON Macro Cart</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>OFF MACRO CART</source>
+        <source>ON Description</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>OFF DESCRIPTION</source>
+        <source>OFF Macro Cart</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OFF Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>GPI</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>GPO</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Close</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -18,6 +18,8 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
+#include <stdio.h>
+
 #include "rdtablewidget.h"
 
 RDTableWidget::RDTableWidget(QWidget *parent)
@@ -31,6 +33,10 @@ RDTableWidget::RDTableWidget(int rows,int cols,QWidget *parent)
   : QTableWidget(rows,cols,parent)
 {
   Initialize();
+
+  for(int i=0;i<rows;i++) {
+    setVerticalHeaderItem(i,new QTableWidgetItem(""));
+  }
 }
 
 
@@ -70,6 +76,13 @@ bool RDTableWidget::select(int column,const QString &value,bool case_sensitive)
     }
   }
   return false;
+}
+
+
+void RDTableWidget::setItem(int row,int column,QTableWidgetItem *item)
+{
+  item->setFlags(Qt::ItemIsSelectable|Qt::ItemIsEnabled);
+  QTableWidget::setItem(row,column,item);
 }
 
 

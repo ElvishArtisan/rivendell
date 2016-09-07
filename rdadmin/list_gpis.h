@@ -21,16 +21,12 @@
 #ifndef LIST_GPIS_H
 #define LIST_GPIS_H
 
-#include <qdialog.h>
-#include <qsqldatabase.h>
-#include <qlabel.h>
-#include <qpushbutton.h>
-#include <q3listview.h>
-//Added by qt3to4:
-#include <QResizeEvent>
+#include <QDialog>
+#include <QLabel>
+#include <QPushButton>
 
-#include <rduser.h>
 #include <rdmatrix.h>
+#include <rdtablewidget.h>
 
 class ListGpis : public QDialog
 {
@@ -42,23 +38,23 @@ class ListGpis : public QDialog
 
  private slots:
   void editData();
-  void doubleClickedData(Q3ListViewItem *,const QPoint &,int);
-  void okData();
-  void cancelData();
+  void doubleClickedData(const QModelIndex &index);
+  void closeData();
 
  protected:
   void resizeEvent(QResizeEvent *e);
 
  private:
+  void RefreshList();
+  void UpdateRow(int row);
   RDMatrix *list_matrix;
   RDMatrix::GpioType list_type;
   QString list_tablename;
-  Q3ListView *list_list_view;
-  QLabel *list_list_label;
+  QLabel *list_label;
+  RDTableWidget *list_widget;
   int list_size;
   QPushButton *list_edit_button;
-  QPushButton *list_ok_button;
-  QPushButton *list_cancel_button;
+  QPushButton *list_close_button;
 };
 
 

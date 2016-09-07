@@ -25,32 +25,40 @@
 
 #include <rdapplication.h>
 #include <rdcart_dialog.h>
+#include <rdescape_string.h>
 #include <rdtextvalidator.h>
 
-#include "globals.h"
 #include "edit_gpi.h"
+#include "globals.h"
 
-EditGpi::EditGpi(int gpi,int *oncart,QString *ondesc,
-		 int *offcart,QString *offdesc,QWidget *parent)
-  : QDialog(parent,"",true)
+EditGpi::EditGpi(RDMatrix *matrix,RDMatrix::GpioType type,int gpi,
+		 QWidget *parent)
+  : QDialog(parent)
 {
-  QString str;
+  QString sql;
+  RDSqlQuery *q;
 
+  edit_matrix=matrix;
+  edit_type=type;
   edit_gpi=gpi;
-  edit_oncart=oncart;
-  edit_offcart=offcart;
-  edit_ondescription=ondesc;
-  edit_offdescription=offdesc;
-  str=QString(tr("Edit GPI"));
-  setCaption(QString().sprintf("%s %d",(const char *)str,gpi));
+  QString table;
+  switch(type) {
+  case RDMatrix::GpioInput:
+    setWindowTitle("RDAdmin - "+tr("Edit GPI")+QString().sprintf(" %d",gpi));
+    edit_table="GPIS";
+    break;
 
+  case RDMatrix::GpioOutput:
+    setWindowTitle("RDAdmin - "+tr("Edit GPO")+QString().sprintf(" %d",gpi));
+    edit_table="GPOS";
+    break;
+  }
+    
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
+  setMaximumSize(sizeHint());
 
   //
   // Create Fonts
@@ -63,47 +71,37 @@ EditGpi::EditGpi(int gpi,int *oncart,QString *ondesc,
   font.setPixelSize(12);
 
   //
-  // Text Validator
-  //
-  RDTextValidator *validator=new RDTextValidator(this);
-
-  //
   // On Section Label
   //
-  QLabel *label=new QLabel("ON Transition",this);
-  label->setGeometry(30,10,120,20);
-  label->setFont(label_font);
-  label->setAlignment(Qt::AlignCenter);
+  edit_onsection_label=new QLabel("ON Transition",this);
+  edit_onsection_label->setFont(label_font);
+  edit_onsection_label->setAlignment(Qt::AlignCenter);
+  edit_onsection_label->setAutoFillBackground(true);
 
   //
   // On Cart Macro Cart
   //
   edit_onmacro_edit=new QLineEdit(this);
-  edit_onmacro_edit->setGeometry(120,30,60,20);
   edit_onmacro_edit->setFont(font);
-  edit_onmacro_edit->setValidator(validator);
-  label=new QLabel(tr("Cart Number: "),this);
-  label->setGeometry(15,30,100,20);
-  label->setFont(bold_font);
-  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
+  edit_onmacro_label=new QLabel(tr("Cart Number: "),this);
+  edit_onmacro_label->setFont(bold_font);
+  edit_onmacro_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // On Select Button
   //
-  QPushButton *button=new QPushButton(this);
-  button->setGeometry(190,30,60,20);
-  button->setFont(font);
-  button->setText(tr("&Select"));
-  connect(button,SIGNAL(clicked()),this,SLOT(selectOnData()));
+  edit_onselect_button=new QPushButton(this);
+  edit_onselect_button->setFont(font);
+  edit_onselect_button->setText(tr("&Select"));
+  connect(edit_onselect_button,SIGNAL(clicked()),this,SLOT(selectOnData()));
 
   //
   // On Clear Button
   //
-  button=new QPushButton(this);
-  button->setGeometry(270,30,60,20);
-  button->setFont(font);
-  button->setText(tr("C&lear"));
-  connect(button,SIGNAL(clicked()),this,SLOT(clearOnData()));
+  edit_onclear_button=new QPushButton(this);
+  edit_onclear_button->setFont(font);
+  edit_onclear_button->setText(tr("C&lear"));
+  connect(edit_onclear_button,SIGNAL(clicked()),this,SLOT(clearOnData()));
 
   //
   // On Cart Description
@@ -112,48 +110,43 @@ EditGpi::EditGpi(int gpi,int *oncart,QString *ondesc,
   edit_ondescription_edit->setGeometry(120,52,sizeHint().width()-140,20);
   edit_ondescription_edit->setFont(font);
   edit_ondescription_edit->setReadOnly(true);
-  label=new QLabel(tr("Description: "),this);
-  label->setGeometry(15,52,100,20);
-  label->setFont(bold_font);
-  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
+  edit_ondescription_label=new QLabel(tr("Description: "),this);
+  edit_ondescription_label->setGeometry(15,52,100,20);
+  edit_ondescription_label->setFont(bold_font);
+  edit_ondescription_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Off Section Label
   //
-  label=new QLabel("OFF Transition",this);
-  label->setGeometry(30,90,120,20);
-  label->setFont(label_font);
-  label->setAlignment(Qt::AlignCenter);
+  edit_offsection_label=new QLabel("OFF Transition",this);
+  edit_offsection_label->setFont(label_font);
+  edit_offsection_label->setAlignment(Qt::AlignCenter);
+  edit_offsection_label->setAutoFillBackground(true);
 
   //
   // Off Cart Macro Cart
   //
   edit_offmacro_edit=new QLineEdit(this);
-  edit_offmacro_edit->setGeometry(120,110,60,20);
   edit_offmacro_edit->setFont(font);
-  edit_offmacro_edit->setValidator(validator);
-  label=new QLabel(tr("Cart Number: "),this);
-  label->setGeometry(15,110,100,20);
-  label->setFont(bold_font);
-  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
+  edit_offmacro_label=new QLabel(tr("Cart Number: "),this);
+  edit_offmacro_label->setFont(bold_font);
+  edit_offmacro_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Off Select Button
   //
-  button=new QPushButton(this);
-  button->setGeometry(190,110,60,20);
-  button->setFont(font);
-  button->setText(tr("&Select"));
-  connect(button,SIGNAL(clicked()),this,SLOT(selectOffData()));
+  edit_offselect_button=new QPushButton(this);
+  edit_offselect_button->setFont(font);
+  edit_offselect_button->setText(tr("&Select"));
+  connect(edit_offselect_button,SIGNAL(clicked()),this,SLOT(selectOffData()));
 
   //
   // Off Clear Button
   //
-  button=new QPushButton(this);
-  button->setGeometry(270,110,60,20);
-  button->setFont(font);
-  button->setText(tr("C&lear"));
-  connect(button,SIGNAL(clicked()),this,SLOT(clearOffData()));
+  edit_offclear_button=new QPushButton(this);
+  edit_offclear_button->setFont(font);
+  edit_offclear_button->setText(tr("C&lear"));
+  connect(edit_offclear_button,SIGNAL(clicked()),this,SLOT(clearOffData()));
 
   //
   // Off Cart Description
@@ -162,45 +155,61 @@ EditGpi::EditGpi(int gpi,int *oncart,QString *ondesc,
   edit_offdescription_edit->setGeometry(120,132,sizeHint().width()-140,20);
   edit_offdescription_edit->setFont(font);
   edit_offdescription_edit->setReadOnly(true);
-  label=new QLabel(tr("Description: "),this);
-  label->setGeometry(15,132,100,20);
-  label->setFont(bold_font);
-  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
+  edit_offdescription_label=new QLabel(tr("Description: "),this);
+  edit_offdescription_label->setFont(bold_font);
+  edit_offdescription_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   //  Ok Button
   //
-  button=new QPushButton(this);
-  button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
-  button->setDefault(true);
-  button->setFont(bold_font);
-  button->setText(tr("&OK"));
-  connect(button,SIGNAL(clicked()),this,SLOT(okData()));
+  edit_ok_button=new QPushButton(this);
+  edit_ok_button->setDefault(true);
+  edit_ok_button->setFont(bold_font);
+  edit_ok_button->setText(tr("&OK"));
+  connect(edit_ok_button,SIGNAL(clicked()),this,SLOT(okData()));
 
   //
   //  Cancel Button
   //
-  button=new QPushButton(this);
-  button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,
-			     80,50);
-  button->setFont(bold_font);
-  button->setText(tr("&Cancel"));
-  connect(button,SIGNAL(clicked()),this,SLOT(cancelData()));
+  edit_cancel_button=new QPushButton(this);
+  edit_cancel_button->setFont(bold_font);
+  edit_cancel_button->setText(tr("&Cancel"));
+  connect(edit_cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
 
   //
   // Load Data
   //
-  if(*edit_oncart>0) {
-    RDCart *rdcart=new RDCart(*oncart);
-    edit_onmacro_edit->setText(QString().sprintf("%06d",*oncart));
-    edit_ondescription_edit->setText(rdcart->title());
-    delete rdcart;
+  sql=QString("select ")+
+    edit_table+".MACRO_CART,"+
+    "CART.TITLE "+
+    "from "+edit_table+" left join CART "+
+    "on "+edit_table+".MACRO_CART=CART.NUMBER where "+
+    "(STATION_NAME=\""+RDEscapeString(edit_matrix->station())+"\")&&"+
+    QString().sprintf("(MATRIX=%d)&&",edit_matrix->matrix())+
+    "("+edit_table+QString().sprintf(".NUMBER=%d)",gpi);
+  q=new RDSqlQuery(sql);
+  if(q->first()) {
+    if(q->value(0).toInt()!=0) {
+      edit_onmacro_edit->
+	setText(QString().sprintf("%06u",q->value(0).toUInt()));
+      edit_ondescription_edit->setText(q->value(1).toString());
+    }
   }
-  if(*edit_offcart>0) {
-    RDCart *rdcart=new RDCart(*offcart);
-    edit_offmacro_edit->setText(QString().sprintf("%06d",*offcart));
-    edit_offdescription_edit->setText(rdcart->title());
-    delete rdcart;
+  sql=QString("select ")+
+    edit_table+".OFF_MACRO_CART,"+
+    "CART.TITLE "+
+    "from "+edit_table+" left join CART "+
+    "on "+edit_table+".OFF_MACRO_CART=CART.NUMBER where "+
+    "(STATION_NAME=\""+RDEscapeString(edit_matrix->station())+"\")&&"+
+    QString().sprintf("(MATRIX=%d)&&",edit_matrix->matrix())+
+    "("+edit_table+QString().sprintf(".NUMBER=%d)",gpi);
+  q=new RDSqlQuery(sql);
+  if(q->first()) {
+    if(q->value(0).toInt()!=0) {
+      edit_offmacro_edit->
+	setText(QString().sprintf("%06u",q->value(0).toUInt()));
+      edit_offdescription_edit->setText(q->value(1).toString());
+    }
   }
 }
 
@@ -271,41 +280,22 @@ void EditGpi::clearOffData()
 
 void EditGpi::okData()
 {
-  bool ok;
+  int oncart=0;
+  int offcart=0;
   if(!edit_onmacro_edit->text().isEmpty()) {
-    int oncart=edit_onmacro_edit->text().toInt(&ok);
-    if(ok) {
-      *edit_oncart=oncart;
-      RDCart *rdcart=new RDCart(oncart);
-      *edit_ondescription=rdcart->title();
-      delete rdcart;
-      done(0);
-    }
-    else {
-      QMessageBox::warning(this,tr("Invalid Cart"),tr("Invalid Cart Number!"));
-    }
-  }
-  else {
-    *edit_oncart=-1;
-    *edit_ondescription="";
+    oncart=edit_onmacro_edit->text().toInt();
   }
   if(!edit_offmacro_edit->text().isEmpty()) {
-    int offcart=edit_offmacro_edit->text().toInt(&ok);
-    if(ok) {
-      *edit_offcart=offcart;
-      RDCart *rdcart=new RDCart(offcart);
-      *edit_offdescription=rdcart->title();
-      delete rdcart;
-      done(0);
-    }
-    else {
-      QMessageBox::warning(this,tr("Invalid Cart"),tr("Invalid Cart Number!"));
-    }
+    offcart=edit_offmacro_edit->text().toInt();
   }
-  else {
-    *edit_offcart=-1;
-    *edit_offdescription="";
-  }
+  QString sql=QString("update ")+edit_table+" set "+
+    QString().sprintf("MACRO_CART=%u,",oncart)+
+    QString().sprintf("OFF_MACRO_CART=%u where ",offcart)+
+    "(STATION_NAME=\""+RDEscapeString(edit_matrix->station())+"\")&&"+
+    QString().sprintf("(MATRIX=%d)&&",edit_matrix->matrix())+
+    "("+edit_table+QString().sprintf(".NUMBER=%d)",edit_gpi);
+  RDSqlQuery::run(sql);
+
   done(0);
 }
 
@@ -319,14 +309,33 @@ void EditGpi::cancelData()
 void EditGpi::paintEvent(QPaintEvent *e)
 {
   QPainter *p=new QPainter(this);
-  p->drawLine(10,20,sizeHint().width()-10,20);
-  p->drawLine(sizeHint().width()-10,20,sizeHint().width()-10,82);
-  p->drawLine(sizeHint().width()-10,82,10,82);
+  p->drawLine(10,20,size().width()-10,20);
+  p->drawLine(size().width()-10,20,size().width()-10,82);
+  p->drawLine(size().width()-10,82,10,82);
   p->drawLine(10,82,10,20);
-  p->drawLine(10,100,sizeHint().width()-10,100);
-  p->drawLine(sizeHint().width()-10,100,sizeHint().width()-10,162);
-  p->drawLine(sizeHint().width()-10,162,10,162);
+  p->drawLine(10,100,size().width()-10,100);
+  p->drawLine(size().width()-10,100,size().width()-10,162);
+  p->drawLine(size().width()-10,162,10,162);
   p->drawLine(10,162,10,100);
 
   delete p;
 }
+
+
+void EditGpi::resizeEvent(QResizeEvent *e)
+{
+  edit_onsection_label->setGeometry(30,10,120,20);
+  edit_onmacro_edit->setGeometry(120,30,60,20);
+  edit_onmacro_label->setGeometry(15,30,100,20);
+  edit_onselect_button->setGeometry(190,30,60,20);
+  edit_onclear_button->setGeometry(270,30,60,20);
+  edit_offsection_label->setGeometry(30,90,120,20);
+  edit_offmacro_edit->setGeometry(120,110,60,20);
+  edit_offmacro_label->setGeometry(15,110,100,20);
+  edit_offselect_button->setGeometry(190,110,60,20);
+  edit_offclear_button->setGeometry(270,110,60,20);
+  edit_offdescription_label->setGeometry(15,132,100,20);
+  edit_ok_button->setGeometry(size().width()-180,size().height()-60,80,50);
+  edit_cancel_button->setGeometry(size().width()-90,size().height()-60,80,50);
+}
+
