@@ -18,17 +18,13 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qpushbutton.h>
-#include <qlabel.h>
-#include <qmessagebox.h>
-
 #include <rdapplication.h>
 #include <rdescape_string.h>
 
 #include "edit_svc_perms.h"
 
 EditSvcPerms::EditSvcPerms(RDSvc *svc,QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
   QString sql;
   RDSqlQuery *q;
@@ -38,12 +34,10 @@ EditSvcPerms::EditSvcPerms(RDSvc *svc,QWidget *parent)
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
+  setMaximumSize(sizeHint());
 
-  setCaption(tr("Service: ")+svc_svc->name());
+  setWindowTitle("RDAdmin - "+tr("Service: ")+svc_svc->name());
 
   //
   // Create Fonts

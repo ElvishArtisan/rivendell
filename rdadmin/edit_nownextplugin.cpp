@@ -37,12 +37,10 @@ EditNowNextPlugin::EditNowNextPlugin(QString *path,QString *arg,
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
+  setMaximumSize(sizeHint());
 
-  setCaption(tr("Edit Plugin"));
+  setWindowTitle("RDAdmin - "+tr("Edit Plugin"));
 
   //
   // Create Fonts

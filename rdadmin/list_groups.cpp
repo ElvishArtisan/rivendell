@@ -18,8 +18,6 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <math.h>
-
 #include <QLabel>
 #include <QMessageBox>
 #include <QPushButton>
@@ -37,15 +35,14 @@
 #include "rename_group.h"
 
 ListGroups::ListGroups(QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
 
-  setCaption(tr("Rivendell Group List"));
+  setWindowTitle("RDAdmin - "+tr("Rivendell Group List"));
 
   //
   // Create Fonts

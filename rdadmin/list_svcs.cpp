@@ -35,10 +35,9 @@ ListSvcs::ListSvcs(QWidget *parent)
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
 
-  setCaption(tr("Services"));
+  setWindowTitle("RDAdmin - "+tr("Services"));
 
   //
   // Create Fonts

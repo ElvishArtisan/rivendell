@@ -53,16 +53,14 @@ EditHotkeys::EditHotkeys(const QString &station,const QString &module,
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
+  setMaximumSize(sizeHint());
 
   //
   // Hot Key Configuration Label
   //
-  setCaption(hotkey_module.upper()+" "+tr("Hot Key Configuration for")+" "+
-	     hotkey_conf);
+  setWindowTitle("RDAdmin - "+hotkey_module.upper()+" "+
+		 tr("Hot Key Configuration for")+" "+hotkey_conf);
 
   QLabel *label=new QLabel(tr("Host Hot Key Configurations"),this);
   label->setFont(font);

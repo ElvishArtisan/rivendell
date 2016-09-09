@@ -31,19 +31,17 @@
 #include "edit_replicator.h"
 
 AddReplicator::AddReplicator(QString *rname,QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
   repl_name=rname;
 
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
+  setMaximumSize(sizeHint());
 
-  setCaption(tr("Add Replicator"));
+  setWindowTitle("RDAdmin - "+tr("Add Replicator"));
 
   //
   // Create Fonts

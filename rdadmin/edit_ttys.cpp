@@ -32,10 +32,8 @@ EditTtys::EditTtys(QString station,QWidget *parent)
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
+  setMaximumSize(sizeHint());
 
   edit_station=station;
   for(int i=0;i<MAX_TTYS;i++) {

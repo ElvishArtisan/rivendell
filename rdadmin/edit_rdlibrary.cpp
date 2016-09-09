@@ -35,10 +35,8 @@ EditRDLibrary::EditRDLibrary(RDStation *station,RDStation *cae_station,
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
+  setMaximumSize(sizeHint());
 
   lib_lib=new RDLibraryConf(station->name());
 

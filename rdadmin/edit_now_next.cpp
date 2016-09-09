@@ -33,13 +33,8 @@
 #include "globals.h"
 
 EditNowNext::EditNowNext(RDAirPlayConf *conf,QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
-  QString sql;
-  /*
-  RDSqlQuery *q;
-  RDListViewItem *item;
-  */
   nownext_conf=conf;
 
   //
@@ -55,12 +50,10 @@ EditNowNext::EditNowNext(RDAirPlayConf *conf,QWidget *parent)
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
+  setMaximumSize(sizeHint());
 
-  setCaption(tr("Edit Now & Next Data"));
+  setWindowTitle("RDAdmin - "+tr("Edit Now & Next Data"));
 
   //
   // Text Validator
@@ -332,7 +325,7 @@ EditNowNext::EditNowNext(RDAirPlayConf *conf,QWidget *parent)
   // Plugin List
   //
   nownext_model=new RDSqlTableModel(this);
-  sql=QString("select ")+
+  QString sql=QString("select ")+
     "ID,"+
     "PLUGIN_PATH,"+
     "PLUGIN_ARG "+

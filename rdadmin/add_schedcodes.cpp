@@ -38,12 +38,10 @@ AddSchedCode::AddSchedCode(QString *schedcode,QWidget *parent)
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
+  setMaximumSize(sizeHint());
 
-  setWindowTitle(tr("Add Scheduler Code"));
+  setWindowTitle("RDAdmin - "+tr("Add Scheduler Code"));
 
   //
   // Create Fonts

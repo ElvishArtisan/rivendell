@@ -18,8 +18,6 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <math.h>
-
 #include <QDateTime>
 #include <QEvent>
 #include <QLabel>
@@ -44,15 +42,13 @@ EditReplicator::EditReplicator(const QString &repl_name,QWidget *parent)
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
+  setMaximumSize(sizeHint());
 
   repl_replicator=new RDReplicator(repl_name);
   repl_settings=new RDSettings();
 
-  setCaption(tr("Replicator: ")+repl_name);
+  setWindowTitle("RDAdmin - "+tr("Replicator: ")+repl_name);
 
   //
   // Create Fonts

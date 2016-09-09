@@ -34,7 +34,7 @@
 #include "test_import.h"
 
 EditSvc::EditSvc(QString svc,QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
   QString sql;
   RDSqlQuery *q;
@@ -44,14 +44,12 @@ EditSvc::EditSvc(QString svc,QWidget *parent)
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
+  setMaximumSize(sizeHint());
 
   svc_svc=new RDSvc(svc);
 
-  setCaption(tr("Edit Service"));
+  setWindowTitle("RDAdmin  - "+tr("Edit Service"));
 
   //
   // Create Fonts

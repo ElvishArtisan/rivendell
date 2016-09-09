@@ -26,7 +26,6 @@
 #include <rdapplication.h>
 #include <rdescape_string.h>
 #include <rdlist_logs.h>
-#include <rdtextvalidator.h>
 
 #include "edit_rdairplay.h"
 #include "edit_hotkeys.h"
@@ -47,10 +46,8 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
+  setMaximumSize(sizeHint());
 
   air_conf=new RDAirPlayConf(station->name(),"RDAIRPLAY");
 
@@ -63,11 +60,6 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
   small_font.setPixelSize(12);
   QFont big_font=QFont("Helvetica",14,QFont::Bold);
   big_font.setPixelSize(14);
-
-  //
-  // Text Validator
-  //
-  RDTextValidator *validator=new RDTextValidator(this);
 
   //
   // Dialog Name
@@ -95,13 +87,11 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
   air_card_sel[0]->setGeometry(20,50,120,117);
   air_start_rml_edit[0]=new QLineEdit(this);
   air_start_rml_edit[0]->setGeometry(210,50,95,19);
-  air_start_rml_edit[0]->setValidator(validator);
   air_start_rml_label[0]=new QLabel(air_start_rml_edit[0],tr("Start RML:"),this);
   air_start_rml_label[0]->setGeometry(140,50,65,19);
   air_start_rml_label[0]->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
   air_stop_rml_edit[0]=new QLineEdit(this);
   air_stop_rml_edit[0]->setGeometry(210,71,95,19);
-  air_stop_rml_edit[0]->setValidator(validator);
   air_stop_rml_label[0]=new QLabel(air_start_rml_edit[0],tr("Stop RML:"),this);
   air_stop_rml_label[0]->setGeometry(140,71,65,19);
   air_stop_rml_label[0]->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
@@ -125,13 +115,11 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
   air_card_sel[1]->setGeometry(20,118,120,117);
   air_start_rml_edit[1]=new QLineEdit(this);
   air_start_rml_edit[1]->setGeometry(210,118,95,19);
-  air_start_rml_edit[1]->setValidator(validator);
   air_start_rml_label[1]=new QLabel(air_start_rml_edit[1],tr("Start RML:"),this);
   air_start_rml_label[1]->setGeometry(140,118,65,19);
   air_start_rml_label[1]->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
   air_stop_rml_edit[1]=new QLineEdit(this);
   air_stop_rml_edit[1]->setGeometry(210,139,95,19);
-  air_stop_rml_edit[1]->setValidator(validator);
   air_stop_rml_label[1]=new QLabel(air_start_rml_edit[1],tr("Stop RML:"),this);
   air_stop_rml_label[1]->setGeometry(140,139,65,19);
   air_stop_rml_label[1]->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
@@ -155,13 +143,11 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
   air_card_sel[4]->setGeometry(20,186,120,117);
   air_start_rml_edit[4]=new QLineEdit(this);
   air_start_rml_edit[4]->setGeometry(210,186,95,19);
-  air_start_rml_edit[4]->setValidator(validator);
   air_start_rml_label[4]=new QLabel(air_start_rml_edit[4],tr("Start RML:"),this);
   air_start_rml_label[4]->setGeometry(140,186,65,19);
   air_start_rml_label[4]->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
   air_stop_rml_edit[4]=new QLineEdit(this);
   air_stop_rml_edit[4]->setGeometry(210,207,95,19);
-  air_stop_rml_edit[4]->setValidator(validator);
   air_stop_rml_label[4]=new QLabel(air_start_rml_edit[4],tr("Stop RML:"),this);
   air_stop_rml_label[4]->setGeometry(140,207,65,19);
   air_stop_rml_label[4]->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
@@ -185,13 +171,11 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
   air_card_sel[5]->setGeometry(20,254,120,117);
   air_start_rml_edit[5]=new QLineEdit(this);
   air_start_rml_edit[5]->setGeometry(210,254,95,19);
-  air_start_rml_edit[5]->setValidator(validator);
   air_start_rml_label[5]=new QLabel(air_start_rml_edit[5],tr("Start RML:"),this);
   air_start_rml_label[5]->setGeometry(140,254,65,19);
   air_start_rml_label[5]->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
   air_stop_rml_edit[5]=new QLineEdit(this);
   air_stop_rml_edit[5]->setGeometry(210,275,95,19);
-  air_stop_rml_edit[5]->setValidator(validator);
   air_stop_rml_label[5]=new QLabel(air_start_rml_edit[5],tr("Stop RML:"),this);
   air_stop_rml_label[5]->setGeometry(140,275,65,19);
   air_stop_rml_label[5]->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
@@ -217,13 +201,11 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
   air_card_sel[3]->setGeometry(20,322,120,117);
   air_start_rml_edit[3]=new QLineEdit(this);
   air_start_rml_edit[3]->setGeometry(210,322,160,19);
-  air_start_rml_edit[3]->setValidator(validator);
   air_start_rml_label[3]=new QLabel(air_start_rml_edit[3],tr("Start RML:"),this);
   air_start_rml_label[3]->setGeometry(140,322,65,19);
   air_start_rml_label[3]->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
   air_stop_rml_edit[3]=new QLineEdit(this);
   air_stop_rml_edit[3]->setGeometry(210,343,160,19);
-  air_stop_rml_edit[3]->setValidator(validator);
   air_stop_rml_label[3]=new QLabel(air_start_rml_edit[3],tr("Stop RML:"),this);
   air_stop_rml_label[3]->setGeometry(140,343,65,19);
   air_stop_rml_label[3]->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
@@ -266,13 +248,11 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
   air_card_sel[2]->setGeometry(390,50,120,117);
   air_start_rml_edit[2]=new QLineEdit(this);
   air_start_rml_edit[2]->setGeometry(580,50,95,19);
-  air_start_rml_edit[2]->setValidator(validator);
   air_start_rml_label[2]=new QLabel(air_start_rml_edit[2],tr("Start RML:"),this);
   air_start_rml_label[2]->setGeometry(510,50,65,19);
   air_start_rml_label[2]->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
   air_stop_rml_edit[2]=new QLineEdit(this);
   air_stop_rml_edit[2]->setGeometry(580,71,95,19);
-  air_stop_rml_edit[2]->setValidator(validator);
   air_stop_rml_label[2]=new QLabel(air_start_rml_edit[2],tr("Stop RML:"),this);
   air_stop_rml_label[2]->setGeometry(510,71,65,19);
   air_stop_rml_label[2]->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
@@ -296,13 +276,11 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
   air_card_sel[6]->setGeometry(390,118,120,117);
   air_start_rml_edit[6]=new QLineEdit(this);
   air_start_rml_edit[6]->setGeometry(580,118,95,19);
-  air_start_rml_edit[6]->setValidator(validator);
   air_start_rml_label[6]=new QLabel(air_start_rml_edit[6],tr("Start RML:"),this);
   air_start_rml_label[6]->setGeometry(510,118,65,19);
   air_start_rml_label[6]->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
   air_stop_rml_edit[6]=new QLineEdit(this);
   air_stop_rml_edit[6]->setGeometry(580,139,95,19);
-  air_stop_rml_edit[6]->setValidator(validator);
   air_stop_rml_label[6]=new QLabel(air_start_rml_edit[6],tr("Stop RML:"),this);
   air_stop_rml_label[6]->setGeometry(510,139,65,19);
   air_stop_rml_label[6]->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
@@ -326,13 +304,11 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
   air_card_sel[7]->setGeometry(390,186,120,117);
   air_start_rml_edit[7]=new QLineEdit(this);
   air_start_rml_edit[7]->setGeometry(580,186,95,19);
-  air_start_rml_edit[7]->setValidator(validator);
   air_start_rml_label[7]=new QLabel(air_start_rml_edit[7],tr("Start RML:"),this);
   air_start_rml_label[7]->setGeometry(510,186,65,19);
   air_start_rml_label[7]->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
   air_stop_rml_edit[7]=new QLineEdit(this);
   air_stop_rml_edit[7]->setGeometry(580,207,95,19);
-  air_stop_rml_edit[7]->setValidator(validator);
   air_stop_rml_label[7]=new QLabel(air_start_rml_edit[7],tr("Stop RML:"),this);
   air_stop_rml_label[7]->setGeometry(510,207,65,19);
   air_stop_rml_label[7]->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
@@ -356,13 +332,11 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
   air_card_sel[8]->setGeometry(390,254,120,117);
   air_start_rml_edit[8]=new QLineEdit(this);
   air_start_rml_edit[8]->setGeometry(580,254,95,19);
-  air_start_rml_edit[8]->setValidator(validator);
   air_start_rml_label[8]=new QLabel(air_start_rml_edit[8],tr("Start RML:"),this);
   air_start_rml_label[8]->setGeometry(510,254,65,19);
   air_start_rml_label[8]->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
   air_stop_rml_edit[8]=new QLineEdit(this);
   air_stop_rml_edit[8]->setGeometry(580,275,95,19);
-  air_stop_rml_edit[8]->setValidator(validator);
   air_stop_rml_label[8]=new QLabel(air_start_rml_edit[8],tr("Stop RML:"),this);
   air_stop_rml_label[8]->setGeometry(510,275,65,19);
   air_stop_rml_label[8]->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
@@ -386,13 +360,11 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
   air_card_sel[9]->setGeometry(390,322,120,117);
   air_start_rml_edit[9]=new QLineEdit(this);
   air_start_rml_edit[9]->setGeometry(580,322,95,19);
-  air_start_rml_edit[9]->setValidator(validator);
   air_start_rml_label[9]=new QLabel(air_start_rml_edit[9],tr("Start RML:"),this);
   air_start_rml_label[9]->setGeometry(510,322,65,19);
   air_start_rml_label[9]->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
   air_stop_rml_edit[9]=new QLineEdit(this);
   air_stop_rml_edit[9]->setGeometry(580,343,95,19);
-  air_stop_rml_edit[9]->setValidator(validator);
   air_stop_rml_label[9]=new QLabel(air_start_rml_edit[9],tr("Stop RML:"),this);
   air_stop_rml_label[9]->setGeometry(510,343,65,19);
   air_stop_rml_label[9]->setAlignment(Qt::AlignVCenter|Qt::AlignRight);

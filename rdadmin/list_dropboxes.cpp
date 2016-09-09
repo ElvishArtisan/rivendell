@@ -34,8 +34,7 @@ ListDropboxes::ListDropboxes(const QString &stationname,QWidget *parent)
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
 
   setWindowTitle("RDAdmin - "+tr("Rivendell Dropbox Configurations on")+" "+
 		 stationname);

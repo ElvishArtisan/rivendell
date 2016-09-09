@@ -31,19 +31,17 @@
 #include "rename_group.h"
 
 RenameGroup::RenameGroup(QString group,QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
   group_name=group;
 
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
+  setMaximumSize(sizeHint());
 
-  setCaption(tr("Rename Group"));
+  setWindowTitle("RDAdmin  - "+tr("Rename Group"));
 
   //
   // Create Fonts

@@ -38,12 +38,10 @@ AddUser::AddUser(QString *username,QWidget *parent)
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
+  setMaximumSize(sizeHint());
 
-  setCaption(tr("Add User"));
+  setWindowTitle("RDAdmin  - "+tr("Add User"));
 
   //
   // Create Fonts

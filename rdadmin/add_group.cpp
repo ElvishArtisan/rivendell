@@ -30,19 +30,17 @@
 #include "add_group.h"
 
 AddGroup::AddGroup(QString *group,QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
   group_group=group;
 
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
+  setMaximumSize(sizeHint());
 
-  setCaption(tr("Add Group"));
+  setWindowTitle("RDAdmin  - "+tr("Add Group"));
 
   //
   // Create Fonts

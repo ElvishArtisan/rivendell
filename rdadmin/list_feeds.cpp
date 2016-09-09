@@ -18,22 +18,8 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <math.h>
-#include <unistd.h>
-#include <stdlib.h>
 
-#include <Q3ButtonGroup>
-#include <Q3ListBox>
-#include <Q3ProgressDialog>
-#include <Q3TextEdit>
-#include <QDialog>
-#include <QEvent>
-#include <QLabel>
 #include <QMessageBox>
-#include <QPainter>
-#include <QPushButton>
-#include <QResizeEvent>
-#include <QString>
 
 #include <rdapplication.h>
 #include <rdcart.h>
@@ -48,15 +34,14 @@
 #include "list_feeds.h"
 
 ListFeeds::ListFeeds(QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
 
-  setCaption(tr("Rivendell Feed List"));
+  setWindowTitle("RDAdmin - "+tr("Rivendell Feed List"));
 
   //
   // Create Fonts

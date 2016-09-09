@@ -635,7 +635,7 @@ a záloha původní databáze uložena v </translation>
     <name>AutofillCarts</name>
     <message>
         <source>Autofill Carts - Service:</source>
-        <translation>Služba automatického naplnění vozíku:</translation>
+        <translation type="obsolete">Služba automatického naplnění vozíku:</translation>
     </message>
     <message>
         <source>Cart</source>
@@ -668,6 +668,14 @@ a záloha původní databáze uložena v </translation>
     <message>
         <source>&amp;Cancel</source>
         <translation>Z&amp;rušit</translation>
+    </message>
+    <message>
+        <source>Autofill Carts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Service</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -4093,7 +4101,7 @@ uloženo. Uložit nyní?</translation>
     <name>EditUser</name>
     <message>
         <source>User: </source>
-        <translation>Uživatel:</translation>
+        <translation type="obsolete">Uživatel:</translation>
     </message>
     <message>
         <source>&amp;User Name:</source>
@@ -4240,6 +4248,10 @@ pro přívod pro podcast</translation>
     <message>
         <source>Administrative Privileges</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>User</source>
+        <translation type="unfinished">Uživatel</translation>
     </message>
 </context>
 <context>
@@ -5756,6 +5768,10 @@ zopakování</translation>
     <message>
         <source>Save Backup</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Host</source>
+        <translation type="unfinished">Server</translation>
     </message>
 </context>
 <context>

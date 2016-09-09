@@ -32,23 +32,20 @@
 #include "globals.h"
 
 AutofillCarts::AutofillCarts(RDSvc *svc,QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
   QString str;
 
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
+  setMaximumSize(sizeHint());
 
   svc_svc=svc;
 
-  str=QString(tr("Autofill Carts - Service:"));
-  setCaption(QString().sprintf("%s %s",(const char *)str,
-			       (const char *)svc_svc->name()));
+  setWindowTitle("RDAdmin - "+tr("Autofill Carts")+" - "+tr("Service")+": "+
+		 svc_svc->name());
 
   //
   // Create Fonts

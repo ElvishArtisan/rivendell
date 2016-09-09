@@ -37,8 +37,7 @@ EditDecks::EditDecks(RDStation *station,RDStation *cae_station,QWidget *parent)
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
   setMaximumHeight(sizeHint().height());
 
   edit_station=station;

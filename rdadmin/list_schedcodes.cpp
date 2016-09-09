@@ -34,10 +34,9 @@ ListSchedCodes::ListSchedCodes(QWidget *parent)
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
 
-  setWindowTitle(tr("Rivendell Scheduler Codes List"));
+  setWindowTitle("RDAdmin - "+tr("Rivendell Scheduler Codes List"));
 
   //
   // Create Fonts

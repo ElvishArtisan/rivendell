@@ -597,7 +597,7 @@ worden. Aktuelle Version</translation>
     <name>AutofillCarts</name>
     <message>
         <source>Autofill Carts - Service:</source>
-        <translation>Automatischer Cartfüllservice:</translation>
+        <translation type="obsolete">Automatischer Cartfüllservice:</translation>
     </message>
     <message>
         <source>Cart</source>
@@ -630,6 +630,14 @@ worden. Aktuelle Version</translation>
     <message>
         <source>&amp;Cancel</source>
         <translation>Abbre&amp;chen</translation>
+    </message>
+    <message>
+        <source>Autofill Carts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Service</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -4022,7 +4030,7 @@ gespeichert werden. Jetzt speichern?</translation>
     <name>EditUser</name>
     <message>
         <source>User: </source>
-        <translation>Benutzer:</translation>
+        <translation type="obsolete">Benutzer:</translation>
     </message>
     <message>
         <source>&amp;User Name:</source>
@@ -4169,6 +4177,10 @@ zuweisen</translation>
     <message>
         <source>Administrative Privileges</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>User</source>
+        <translation type="unfinished">Benutzer</translation>
     </message>
 </context>
 <context>
@@ -5649,6 +5661,10 @@ managen</translation>
     <message>
         <source>Save Backup</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Host</source>
+        <translation type="unfinished">Host</translation>
     </message>
 </context>
 <context>

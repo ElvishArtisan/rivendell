@@ -18,16 +18,13 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qpushbutton.h>
-#include <qlabel.h>
-
 #include <rdapplication.h>
 #include <rdescape_string.h>
 
 #include "edit_user_perms.h"
 
 EditUserPerms::EditUserPerms(RDUser *user,QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
   QString sql;
   RDSqlQuery *q;
@@ -37,12 +34,10 @@ EditUserPerms::EditUserPerms(RDUser *user,QWidget *parent)
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
+  setMaximumSize(sizeHint());
 
-  setCaption(tr("User: ")+user_user->name());
+  setWindowTitle("RDAdmin - "+tr("User: ")+user_user->name());
 
   //
   // Create Fonts

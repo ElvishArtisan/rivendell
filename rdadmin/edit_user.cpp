@@ -37,12 +37,10 @@ EditUser::EditUser(const QString &user,QWidget *parent)
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
+  setMaximumSize(sizeHint());
 
-  setCaption(tr("User: ")+user);
+  setWindowTitle("RDAdmin - "+tr("User")+": "+user);
   user_user=new RDUser(user);
 
   //

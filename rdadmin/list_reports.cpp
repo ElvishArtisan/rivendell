@@ -32,10 +32,9 @@ ListReports::ListReports(QWidget *parent)
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
 
-  setCaption(tr("Rivendell Report List"));
+  setWindowTitle("RDAdmin - "+tr("Rivendell Report List"));
 
   //
   // Create Fonts

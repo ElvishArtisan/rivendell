@@ -29,19 +29,17 @@
 #include "edit_svc.h"
 
 AddSvc::AddSvc(QString *svcname,QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
   svc_name=svcname;
 
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
+  setMaximumSize(sizeHint());
 
-  setCaption(tr("Add Service"));
+  setWindowTitle("RDAdmin - "+tr("Add Service"));
 
   //
   // Create Fonts

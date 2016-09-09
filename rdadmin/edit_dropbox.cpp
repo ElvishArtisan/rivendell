@@ -18,8 +18,6 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <math.h>
-
 #include <QColorDialog>
 #include <QFileDialog>
 #include <QMessageBox>
@@ -42,14 +40,12 @@ EditDropbox::EditDropbox(int id,QWidget *parent)
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
+  setMaximumSize(sizeHint());
 
   box_dropbox=new RDDropbox(id);
 
-  setCaption(tr("Dropbox Configuration"));
+  setWindowTitle("RDAdmin - "+tr("Dropbox Configuration"));
 
   //
   // Create Fonts

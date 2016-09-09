@@ -18,12 +18,8 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <math.h>
-
-#include <QString>
 #include <QPushButton>
 #include <QLabel>
-#include <QEvent>
 #include <QMessageBox>
 
 #include "login.h"
@@ -34,12 +30,10 @@ Login::Login(QString *username,QString *password,QWidget *parent)
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
+  setMaximumSize(sizeHint());
 
-  setWindowTitle(tr("Login"));
+  setWindowTitle("RDAdmin - "+tr("Login"));
   login_name=username;
   login_password=password;
 

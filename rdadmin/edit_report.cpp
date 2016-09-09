@@ -33,7 +33,7 @@
 #include "edit_svc_perms.h"
 
 EditReport::EditReport(QString rptname,QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
   QString sql;
   RDSqlQuery *q;
@@ -43,15 +43,11 @@ EditReport::EditReport(QString rptname,QWidget *parent)
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
+  setMaximumSize(sizeHint());
 
   edit_report=new RDReport(rptname);
-  str=QString(tr("Edit Report"));
-  setCaption(QString().sprintf("%s - %s",(const char *)str,
-			       (const char *)rptname));
+  setWindowTitle("RDAdmin - "+tr("Edit Report")+" - "+rptname);
 
   //
   // Create Fonts

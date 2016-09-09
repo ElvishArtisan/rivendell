@@ -27,7 +27,7 @@
 #include "edit_feed_perms.h"
 
 EditFeedPerms::EditFeedPerms(RDUser *user,QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
   QString sql;
   RDSqlQuery *q;
@@ -37,12 +37,10 @@ EditFeedPerms::EditFeedPerms(RDUser *user,QWidget *parent)
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
+  setMaximumSize(sizeHint());
 
-  setCaption(tr("User: ")+feed_user->name());
+  setWindowTitle("RDAdmin - "+tr("User: ")+feed_user->name());
 
   //
   // Create Fonts

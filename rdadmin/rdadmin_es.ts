@@ -651,7 +651,7 @@ y un respaldo de la base de datos se guardó en </translation>
     <name>AutofillCarts</name>
     <message>
         <source>Autofill Carts - Service:</source>
-        <translation>Autollenado de cartuchos - Servicio:</translation>
+        <translation type="obsolete">Autollenado de cartuchos - Servicio:</translation>
     </message>
     <message>
         <source>Cart</source>
@@ -684,6 +684,14 @@ y un respaldo de la base de datos se guardó en </translation>
     <message>
         <source>&amp;Cancel</source>
         <translation>&amp;Cancelar</translation>
+    </message>
+    <message>
+        <source>Autofill Carts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Service</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -4058,7 +4066,7 @@ debe guardarse.  ¿Hacerlo ahora?</translation>
     <name>EditUser</name>
     <message>
         <source>User: </source>
-        <translation>Usuario:</translation>
+        <translation type="obsolete">Usuario:</translation>
     </message>
     <message>
         <source>&amp;User Name:</source>
@@ -4205,6 +4213,10 @@ Feeds para Podcasts</translation>
     <message>
         <source>Administrative Privileges</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>User</source>
+        <translation type="unfinished">Usuario</translation>
     </message>
 </context>
 <context>
@@ -5726,6 +5738,10 @@ Replicadores</translation>
     <message>
         <source>Save Backup</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Host</source>
+        <translation type="unfinished">Equipo</translation>
     </message>
 </context>
 <context>

@@ -35,15 +35,13 @@ EditSchedCode::EditSchedCode(QString schedcode,QString description,
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
+  setMaximumSize(sizeHint());
 
   schedcode_code=new QString(schedcode);
   schedcode_description=new QString(description);
   
-  setWindowTitle(tr("Scheduler Code: ")+schedcode);
+  setWindowTitle("RDAdmin - "+tr("Scheduler Code: ")+schedcode);
 
   //
   // Create Fonts

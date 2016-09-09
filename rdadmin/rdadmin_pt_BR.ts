@@ -576,7 +576,7 @@ atualizada para a Versão</translation>
     <name>AutofillCarts</name>
     <message>
         <source>Autofill Carts - Service:</source>
-        <translation>Carts de Preenchimento - Serviço:</translation>
+        <translation type="obsolete">Carts de Preenchimento - Serviço:</translation>
     </message>
     <message>
         <source>Cart</source>
@@ -609,6 +609,14 @@ atualizada para a Versão</translation>
     <message>
         <source>&amp;Cancel</source>
         <translation>&amp;Cancelar</translation>
+    </message>
+    <message>
+        <source>Autofill Carts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Service</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -4011,7 +4019,7 @@ deve ser salva.  Salvar Agora?</translation>
     <name>EditUser</name>
     <message>
         <source>User: </source>
-        <translation>Usuário: </translation>
+        <translation type="obsolete">Usuário: </translation>
     </message>
     <message>
         <source>&amp;User Name:</source>
@@ -4158,6 +4166,10 @@ Feeds de Podcasts </translation>
     <message>
         <source>Administrative Privileges</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>User</source>
+        <translation type="unfinished">Usuário</translation>
     </message>
 </context>
 <context>
@@ -5624,6 +5636,10 @@ Replicators</source>
     <message>
         <source>Save Backup</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Host</source>
+        <translation type="unfinished">Cliente</translation>
     </message>
 </context>
 <context>

@@ -30,7 +30,7 @@
 #include "globals.h"
 
 EditSettings::EditSettings(QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
   QString sql;
   RDSqlQuery *q;
@@ -49,14 +49,12 @@ EditSettings::EditSettings(QWidget *parent)
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
+  setMaximumSize(sizeHint());
 
   edit_system=new RDSystem();
 
-  setCaption(tr("System-Wide Settings"));
+  setWindowTitle("RDAdmin - "+tr("System-Wide Settings"));
 
   edit_system=new RDSystem();
 
@@ -302,10 +300,8 @@ void EditSettings::okData()
       pd->reset();
       if(dups.size()>0) {
 	y_pos=305;
-	setMinimumWidth(sizeHint().width());
-	setMaximumWidth(sizeHint().width());
-	setMinimumHeight(sizeHint().height());
-	setMaximumHeight(sizeHint().height());
+	setMinimumSize(sizeHint());
+	setMaximumSize(sizeHint());
 	edit_duplicate_carts_box->setChecked(true);
 	edit_duplicate_label->show();
 	edit_duplicate_list->show();

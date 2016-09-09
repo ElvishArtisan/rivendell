@@ -107,10 +107,8 @@ MainWidget::MainWidget(QWidget *parent)
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
+  setMaximumSize(sizeHint());
 
   //
   // Create Fonts
@@ -127,7 +125,8 @@ MainWidget::MainWidget(QWidget *parent)
   admin_rivendell_map=new QPixmap(rivendell_xpm);
   setWindowIcon(*admin_rivendell_map);
   str=QString(tr("RDAdmin")+" v"+VERSION+" - Host:");
-  setWindowTitle(str+" "+rda->config()->stationName());
+  setWindowTitle(QString("RDAdmin v")+VERSION+" - "+tr("Host")+": "+
+		 rda->config()->stationName());
 
   //
   // Open Database

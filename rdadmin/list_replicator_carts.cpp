@@ -38,8 +38,7 @@ ListReplicatorCarts::ListReplicatorCarts(QWidget *parent)
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
 
   //
   // Create Fonts
@@ -126,7 +125,7 @@ QSizePolicy ListReplicatorCarts::sizePolicy() const
 int ListReplicatorCarts::exec(const QString &replname)
 {
   list_replicator_name=replname;
-  setCaption(replname+tr(" Replicator Carts"));
+  setWindowTitle("RDAdmin - "+replname+tr(" Replicator Carts"));
   RefreshList();
   list_refresh_timer->start(5000,true);
   return QDialog::exec();

@@ -23,9 +23,8 @@
 #include <QMessageBox>
 #include <QPushButton>
 
-#include "rd.h"
-#include "rdescape_string.h"
-#include "rdtextvalidator.h"
+#include <rd.h>
+#include <rdescape_string.h>
 
 #include "add_report.h"
 #include "autofill_carts.h"
@@ -38,12 +37,10 @@ AddReport::AddReport(QString *rptname,QWidget *parent)
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
+  setMaximumSize(sizeHint());
 
-  setCaption(tr("Add Report"));
+  setWindowTitle("RDAdmin  - "+tr("Add Report"));
   add_name=rptname;
 
   //
@@ -55,17 +52,11 @@ AddReport::AddReport(QString *rptname,QWidget *parent)
   section_font.setPixelSize(14);
 
   //
-  // Text Validator
-  //
-  RDTextValidator *validator=new RDTextValidator(this);
-
-  //
   // Report Description
   //
   add_name_edit=new QLineEdit(this);
   add_name_edit->setGeometry(170,10,sizeHint().width()-180,19);
   add_name_edit->setMaxLength(64);
-  add_name_edit->setValidator(validator);
   QLabel *label=new QLabel(add_name_edit,tr("&Report Name:"),this);
   label->setGeometry(10,10,155,19);
   label->setFont(font);

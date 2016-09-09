@@ -30,7 +30,7 @@
 #include "test_import.h"
 
 TestImport::TestImport(RDSvc *svc,RDSvc::ImportSource src,QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
   QString sql;
   QDateTime current_datetime=QDateTime::currentDateTime();
@@ -41,16 +41,15 @@ TestImport::TestImport(RDSvc *svc,RDSvc::ImportSource src,QWidget *parent)
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
 
   switch(test_src) {
       case RDSvc::Traffic:
-	setCaption(tr("Test Traffic Import"));
+	setWindowTitle("RDAdmin  - "+tr("Test Traffic Import"));
 	break;
 
       case RDSvc::Music:
-	setCaption(tr("Test Music Import"));
+	setWindowTitle("RDAdmin - "+tr("Test Music Import"));
 	break;
   }
 

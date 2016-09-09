@@ -28,10 +28,8 @@ HelpAudioPorts::HelpAudioPorts(QWidget *parent)
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
+  setMaximumSize(sizeHint());
 
   setWindowTitle("RDAdmin - "+tr("Audio Ports Help"));
 

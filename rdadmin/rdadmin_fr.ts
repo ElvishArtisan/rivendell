@@ -394,10 +394,6 @@
 <context>
     <name>AutofillCarts</name>
     <message>
-        <source>Autofill Carts - Service:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;Add</source>
         <translation type="unfinished"></translation>
     </message>
@@ -427,6 +423,14 @@
     </message>
     <message>
         <source>Artist</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Autofill Carts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Service</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3516,10 +3520,6 @@ must be saved.  Save now?</source>
 <context>
     <name>EditUser</name>
     <message>
-        <source>User: </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;User Name:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3656,6 +3656,10 @@ Permissions</source>
     </message>
     <message>
         <source>Administrative Privileges</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>User</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -4693,6 +4697,10 @@ Replicators</source>
     </message>
     <message>
         <source>Save Backup</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Host</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

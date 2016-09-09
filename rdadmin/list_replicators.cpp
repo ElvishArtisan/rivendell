@@ -39,10 +39,9 @@ ListReplicators::ListReplicators(QWidget *parent)
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
 
-  setCaption(tr("Rivendell Replicators"));
+  setWindowTitle("RDAdmin - "+tr("Rivendell Replicators"));
 
   //
   // Create Fonts

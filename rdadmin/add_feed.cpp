@@ -28,7 +28,7 @@
 #include "edit_feed.h"
 
 AddFeed::AddFeed(unsigned *id,QString *keyname,QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
   feed_keyname=keyname;
   feed_id=id;
@@ -36,12 +36,10 @@ AddFeed::AddFeed(unsigned *id,QString *keyname,QWidget *parent)
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
+  setMaximumSize(sizeHint());
 
-  setCaption(tr("Add Feed"));
+  setWindowTitle("RDAdmin  - "+tr("Add Feed"));
 
   //
   // Create Fonts

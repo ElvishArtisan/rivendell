@@ -579,7 +579,7 @@ oppdatert til versjon </translation>
     <name>AutofillCarts</name>
     <message>
         <source>Autofill Carts - Service:</source>
-        <translation>Tenest for å autofylla korger:</translation>
+        <translation type="obsolete">Tenest for å autofylla korger:</translation>
     </message>
     <message>
         <source>Cart</source>
@@ -612,6 +612,14 @@ oppdatert til versjon </translation>
     <message>
         <source>&amp;Cancel</source>
         <translation>&amp;Avbryt</translation>
+    </message>
+    <message>
+        <source>Autofill Carts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Service</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3976,7 +3984,7 @@ Lagre no?</translation>
     <name>EditUser</name>
     <message>
         <source>User: </source>
-        <translation>Brukar:</translation>
+        <translation type="obsolete">Brukar:</translation>
     </message>
     <message>
         <source>&amp;User Name:</source>
@@ -4122,6 +4130,10 @@ tilgangsrettar</translation>
     </message>
     <message>
         <source>Administrative Privileges</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>User</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -5541,6 +5553,10 @@ Replicators</source>
     </message>
     <message>
         <source>Save Backup</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Host</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

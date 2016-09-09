@@ -18,13 +18,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <math.h>
-
-#include <QEvent>
-#include <QLabel>
-#include <QPainter>
 #include <QMessageBox>
-#include <QResizeEvent>
 
 #include <rdcart.h>
 #include <rdescape_string.h>
@@ -41,17 +35,16 @@
 #include "../icons/user.xpm"
 
 ListUsers::ListUsers(const QString &admin_name,QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
   list_admin_name=admin_name;
 
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
 
-  setCaption(tr("Rivendell User List"));
+  setWindowTitle("RDAdmin  - "+tr("Rivendell User List"));
 
   //
   // Create Fonts

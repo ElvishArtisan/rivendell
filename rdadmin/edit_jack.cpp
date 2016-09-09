@@ -34,8 +34,7 @@ EditJack::EditJack(RDStation *station,QWidget *parent)
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
 
   setWindowTitle("RDAdmin - "+tr("JACK Configuration for ")+
   edit_station->name());

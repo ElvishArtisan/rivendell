@@ -18,32 +18,16 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <math.h>
+#include <QColorDialog>
+#include <QMessageBox>
 
-#include <qdialog.h>
-#include <qstring.h>
-#include <qpushbutton.h>
-#include <q3listbox.h>
-#include <q3textedit.h>
-#include <qpainter.h>
-#include <qevent.h>
-#include <qmessagebox.h>
-#include <qcheckbox.h>
-#include <q3buttongroup.h>
-//Added by qt3to4:
-#include <QLabel>
 #include <rddb.h>
-#include <qcolordialog.h>
-
 #include <rdescape_string.h>
-#include <rduser.h>
-#include <rdpasswd.h>
-#include <rdtextvalidator.h>
 
 #include "edit_group.h"
 
 EditGroup::EditGroup(QString group,QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
   QString sql;
   RDSqlQuery *q;
@@ -51,25 +35,18 @@ EditGroup::EditGroup(QString group,QWidget *parent)
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
+  setMaximumSize(sizeHint());
 
   group_group=new RDGroup(group);
 
-  setCaption(tr("Group: ")+group);
+  setWindowTitle("RDAdmin - "+tr("Group: ")+group);
 
   //
   // Create Fonts
   //
   QFont font=QFont("Helvetica",12,QFont::Bold);
   font.setPixelSize(12);
-
-  //
-  // Text Validator
-  //
-  RDTextValidator *validator=new RDTextValidator(this);
 
   //
   // Group Name
@@ -89,7 +66,6 @@ EditGroup::EditGroup(QString group,QWidget *parent)
   group_description_edit=new QLineEdit(this);
   group_description_edit->setGeometry(165,32,sizeHint().width()-175,19);
   group_description_edit->setMaxLength(255);
-  group_description_edit->setValidator(validator);
   QLabel *group_description_label=
     new QLabel(group_description_edit,tr("Group &Description:"),this);
   group_description_label->setGeometry(10,32,150,19);
@@ -102,7 +78,6 @@ EditGroup::EditGroup(QString group,QWidget *parent)
   group_title_edit=new QLineEdit(this);
   group_title_edit->setGeometry(165,53,sizeHint().width()-175,19);
   group_title_edit->setMaxLength(255);
-  group_title_edit->setValidator(validator);
   QLabel *group_title_label=
     new QLabel(group_title_edit,tr("Default Import &Title:"),this);
   group_title_label->setGeometry(10,53,150,19);

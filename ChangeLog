@@ -16246,3 +16246,5 @@
 	and 'rdadmin/add_aux_field.h'
 	* Removed Qt3Support components from 'rdadmin/edit_aux_field.cpp'
 	and 'rdadmin/edit_aux_field.h'
+2016-09-09 Fred Gleason <fredg@paravelsystems.com>
+	* Removed Qt3 convienence methods in 'rdadmin/'.

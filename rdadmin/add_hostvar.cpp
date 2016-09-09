@@ -36,7 +36,7 @@ AddHostvar::AddHostvar(QString station,int *id,QWidget *parent)
   QFont font=QFont("Helvetica",12,QFont::Bold);
   font.setPixelSize(12);
 
-  setCaption(tr("Add Host Variable"));
+  setWindowTitle("RDAdmin  - "+tr("Add Host Variable"));
 
   //
   // Fix the Window Size
