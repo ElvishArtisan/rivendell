@@ -21,16 +21,14 @@
 #ifndef TEST_IMPORT_H
 #define TEST_IMPORT_H
 
-#include <qdialog.h>
-#include <qpushbutton.h>
-#include <q3datetimeedit.h>
-#include <qlabel.h>
-#include <qlineedit.h>
-#include <QPaintEvent>
-#include <QResizeEvent>
+#include <QDateTimeEdit>
+#include <QDialog>
+#include <QLabel>
+#include <QLineEdit>
+#include <QPushButton>
 
 #include <rdsvc.h>
-#include <rdlistview.h>
+#include <rdtablewidget.h>
 
 class TestImport : public QDialog
 {
@@ -44,7 +42,7 @@ class TestImport : public QDialog
  private slots:
   void selectData();
   void importData();
-  void dateChangedData(const QDate &date);
+  void dateChangedData(const QDateTime &dt);
   void closeData();
 
  protected:
@@ -52,13 +50,14 @@ class TestImport : public QDialog
   void resizeEvent(QResizeEvent *e);
 
  private:
+  void AddLine(int line);
   RDSvc *test_svc;
   RDSvc::ImportSource test_src;
   QLabel *test_date_label;
-  Q3DateEdit *test_date_edit;
+  QDateTimeEdit *test_date_edit;
   QPushButton *test_import_button;
   QLabel *test_events_label;
-  RDListView *test_events_list;
+  RDTableWidget *test_events_widget;
   QLabel *test_filename_label;
   QLineEdit *test_filename_edit;
   QPushButton *test_close_button;

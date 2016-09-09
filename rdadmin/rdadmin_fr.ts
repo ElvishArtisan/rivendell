@@ -4830,10 +4830,6 @@ Do you want to combine the two?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Title</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Contract #</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4851,6 +4847,14 @@ Do you want to combine the two?</source>
     </message>
     <message>
         <source>&amp;Close</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cart Title</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Line</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

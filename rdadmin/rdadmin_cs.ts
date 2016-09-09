@@ -6149,7 +6149,7 @@ Chcete obě spojit?</translation>
     </message>
     <message>
         <source>Title</source>
-        <translation>Název</translation>
+        <translation type="obsolete">Název</translation>
     </message>
     <message>
         <source>Contract #</source>
@@ -6173,17 +6173,25 @@ Chcete obě spojit?</translation>
     </message>
     <message>
         <source>Import Error</source>
-        <translation>Chyba při zavedení</translation>
+        <translation type="unfinished">Chyba při zavedení</translation>
     </message>
     <message>
         <source>There was an error during import
 please check your settings and try again.</source>
-        <translation>Během zavedení se vyskytla chyba.
+        <translation type="unfinished">Během zavedení se vyskytla chyba.
 Prověřte, prosím, svá nastavení a zkuste to znovu.</translation>
     </message>
     <message>
         <source>[spot break]</source>
-        <translation>[přerušení místa]</translation>
+        <translation type="unfinished">[přerušení místa]</translation>
+    </message>
+    <message>
+        <source>Cart Title</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Line</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

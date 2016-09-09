@@ -6120,7 +6120,7 @@ Do you want to combine the two?</source>
     </message>
     <message>
         <source>Title</source>
-        <translation>Título</translation>
+        <translation type="obsolete">Título</translation>
     </message>
     <message>
         <source>Contract #</source>
@@ -6144,17 +6144,25 @@ Do you want to combine the two?</source>
     </message>
     <message>
         <source>Import Error</source>
-        <translation>Error de importación</translation>
+        <translation type="unfinished">Error de importación</translation>
     </message>
     <message>
         <source>There was an error during import
 please check your settings and try again.</source>
-        <translation>Ha habido un error durante la importación
+        <translation type="unfinished">Ha habido un error durante la importación
 Revise los parámetros e intente de nuevo.</translation>
     </message>
     <message>
         <source>[spot break]</source>
-        <translation>[parada del spot]</translation>
+        <translation type="unfinished">[parada del spot]</translation>
+    </message>
+    <message>
+        <source>Cart Title</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Line</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

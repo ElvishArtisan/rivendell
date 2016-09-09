@@ -5795,7 +5795,7 @@ Vil du kombinera desse to?</translation>
     </message>
     <message>
         <source>Title</source>
-        <translation>Tittel</translation>
+        <translation type="obsolete">Tittel</translation>
     </message>
     <message>
         <source>Contract #</source>
@@ -5819,17 +5819,25 @@ Vil du kombinera desse to?</translation>
     </message>
     <message>
         <source>Import Error</source>
-        <translation>Importfeil</translation>
+        <translation type="unfinished">Importfeil</translation>
     </message>
     <message>
         <source>There was an error during import
 please check your settings and try again.</source>
-        <translation>Det vart ein feil under importen.
+        <translation type="unfinished">Det vart ein feil under importen.
 Sjekk oppsettet ditt og prøv att.</translation>
     </message>
     <message>
         <source>[spot break]</source>
-        <translation>[spott-avbrot]</translation>
+        <translation type="unfinished">[spott-avbrot]</translation>
+    </message>
+    <message>
+        <source>Cart Title</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Line</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

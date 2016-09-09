@@ -18,29 +18,22 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qpushbutton.h>
-#include <qpainter.h>
-#include <qmessagebox.h>
-//Added by qt3to4:
-#include <QPaintEvent>
-#include <QResizeEvent>
-#include <QLabel>
+#include <QMessageBox>
+#include <QPainter>
 
-#include <rddatedialog.h>
 #include <rdconf.h>
 #include <rddb.h>
-#include <test_import.h>
-#include <rduser.h>
-#include <rdpasswd.h>
 #include <rddatedecode.h>
-#include <rdlistviewitem.h>
+#include <rddatedialog.h>
 #include <rdevent_line.h>
+
+#include "test_import.h"
 
 TestImport::TestImport(RDSvc *svc,RDSvc::ImportSource src,QWidget *parent)
   : QDialog(parent,"",true)
 {
   QString sql;
-  QDate current_date=QDate::currentDate();
+  QDateTime current_datetime=QDateTime::currentDateTime();
 
   test_svc=svc;
   test_src=src;
@@ -72,13 +65,14 @@ TestImport::TestImport(RDSvc *svc,RDSvc::ImportSource src,QWidget *parent)
   //
   // Date Selector
   //
-  test_date_edit=new Q3DateEdit(this);
+  test_date_edit=new QDateTimeEdit(this);
+  test_date_edit->setDisplayFormat("MM/dd/yyyy");
   test_date_label=new QLabel(test_date_edit,tr("Test Date:"),this);
   test_date_label->setFont(font);
   test_date_label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
-  test_date_edit->setDate(current_date);
-  connect(test_date_edit,SIGNAL(valueChanged(const QDate &)),
-	  this,SLOT(dateChangedData(const QDate &)));
+  test_date_edit->setDate(current_datetime.date());
+  connect(test_date_edit,SIGNAL(dateTimeChanged(const QDateTime &)),
+	  this,SLOT(dateChangedData(const QDateTime &)));
 
   //
   // Select Date Button
@@ -110,26 +104,27 @@ TestImport::TestImport(RDSvc *svc,RDSvc::ImportSource src,QWidget *parent)
   //
   // Events List
   //
-  test_events_list=new RDListView(this);
-  test_events_list->setItemMargin(2);
-  test_events_list->addColumn(tr("Start Time"));
-  test_events_list->setColumnAlignment(0,Qt::AlignCenter);
-  test_events_list->addColumn(tr("Cart"));
-  test_events_list->setColumnAlignment(1,Qt::AlignCenter);
-  test_events_list->addColumn(tr("Len"));
-  test_events_list->setColumnAlignment(2,Qt::AlignRight);
-  test_events_list->addColumn(tr("Title"));
-  test_events_list->setColumnAlignment(3,Qt::AlignLeft);
-  test_events_list->addColumn(tr("Contract #"));
-  test_events_list->setColumnAlignment(4,Qt::AlignCenter);
-  test_events_list->addColumn(tr("Event ID"));
-  test_events_list->setColumnAlignment(5,Qt::AlignCenter);
-  test_events_list->addColumn(tr("Announcement Type"));
-  test_events_list->setColumnAlignment(6,Qt::AlignCenter);
-  test_events_list->setColumnSortType(0,RDListView::LineSort);
-  test_events_label=new QLabel(test_events_list,tr("Imported Events"),this);
+  test_events_label=new QLabel(tr("Imported Events"),this);
   test_events_label->setGeometry(15,160,sizeHint().width()-30,18);
   test_events_label->setFont(font);
+  test_events_widget=new RDTableWidget(this);
+  test_events_widget->setColumnCount(8);
+  test_events_widget->
+    setHorizontalHeaderItem(0,new QTableWidgetItem(tr("Line")));
+  test_events_widget->
+    setHorizontalHeaderItem(1,new QTableWidgetItem(tr("Start Time")));
+  test_events_widget->
+    setHorizontalHeaderItem(2,new QTableWidgetItem(tr("Cart")));
+  test_events_widget->
+    setHorizontalHeaderItem(3,new QTableWidgetItem(tr("Len")));
+  test_events_widget->
+    setHorizontalHeaderItem(4,new QTableWidgetItem(tr("Cart Title")));
+  test_events_widget->
+    setHorizontalHeaderItem(5,new QTableWidgetItem(tr("Contract #")));
+  test_events_widget->
+    setHorizontalHeaderItem(6,new QTableWidgetItem(tr("Event ID")));
+  test_events_widget->
+    setHorizontalHeaderItem(7,new QTableWidgetItem(tr("Announcement Type")));
 
   //
   //  Close Button
@@ -139,7 +134,7 @@ TestImport::TestImport(RDSvc *svc,RDSvc::ImportSource src,QWidget *parent)
   test_close_button->setText(tr("&Close"));
   connect(test_close_button,SIGNAL(clicked()),this,SLOT(closeData()));
 
-  dateChangedData(current_date);
+  dateChangedData(current_datetime);
 }
 
 
@@ -177,10 +172,10 @@ void TestImport::selectData()
 
 void TestImport::importData()
 {
-  RDListViewItem *item;
+  QTableWidgetItem *item;
   int next_line=0;
 
-  test_events_list->clear();
+  test_events_widget->clearContents();
   if(!test_svc->import(test_src,test_date_edit->date(),test_svc->breakString(),
 		       test_svc->trackString(test_src),QString().
 		       sprintf("%s_TEST_IMP",
@@ -204,68 +199,110 @@ void TestImport::importData()
     "TRACK_STRING "+   // 11
     "from `"+test_svc->name()+"_TEST_IMP`";
   RDSqlQuery *q=new RDSqlQuery(sql);
+  test_events_widget->setRowCount(q->size());
   while(q->next()) {
+    AddLine(next_line);
     if(q->value(9).toUInt()==RDEventLine::InsertBreak) {
       if(q->value(7).toString()=="Y") {
-	item=new RDListViewItem(test_events_list);
-	item->setLine(next_line++);
-	item->
-	  setText(0,RDSvc::timeString(q->value(0).toInt(),
-				      q->value(1).toInt()));
-	item->setText(1,tr("[spot break]"));
+	item=new QTableWidgetItem(RDSvc::timeString(q->value(0).toInt(),
+						    q->value(1).toInt()));
+	item->setData(Qt::TextAlignmentRole,
+		      QVariant(Qt::AlignCenter|Qt::AlignVCenter));
+	test_events_widget->setItem(next_line,1,item);
+	item=new QTableWidgetItem(tr("[spot break]"));
+	item->setData(Qt::TextAlignmentRole,
+		      QVariant(Qt::AlignCenter|Qt::AlignVCenter));
+	test_events_widget->setItem(next_line,2,item);
+	AddLine(++next_line);
       }
       if(q->value(8).toString()=="Y") {
-	item=new RDListViewItem(test_events_list);
-	item->setLine(next_line++);
-	item->setText(0,RDSvc::timeString(q->value(0).toInt(),
-					  q->value(1).toInt()));
-	item->setText(1,QString().
-		      sprintf("[%s]",(const char *)q->value(11).toString()));
+	item=new QTableWidgetItem(RDSvc::timeString(q->value(0).toInt(),
+						    q->value(1).toInt()));
+	item->setData(Qt::TextAlignmentRole,
+		      QVariant(Qt::AlignCenter|Qt::AlignVCenter));
+	test_events_widget->setItem(next_line,1,item);
+	item=new QTableWidgetItem("["+q->value(11).toString()+"]");
+	item->setData(Qt::TextAlignmentRole,
+		      QVariant(Qt::AlignCenter|Qt::AlignVCenter));
+	test_events_widget->setItem(next_line,2,item);
+	AddLine(++next_line);
       }
     }
     else {
       if(q->value(8).toString()=="Y") {
-	item=new RDListViewItem(test_events_list);
-	item->setLine(next_line++);
-	item->setText(0,RDSvc::timeString(q->value(0).toInt(),
-					  q->value(1).toInt()));
-	item->setText(1,QString().
-		      sprintf("[%s]",(const char *)q->value(11).toString()));
+	item=new QTableWidgetItem(RDSvc::timeString(q->value(0).toInt(),
+						    q->value(1).toInt()));
+	item->setData(Qt::TextAlignmentRole,
+		      QVariant(Qt::AlignCenter|Qt::AlignVCenter));
+	test_events_widget->setItem(next_line,1,item);
+	item=new QTableWidgetItem("["+q->value(11).toString()+"]");
+	item->setData(Qt::TextAlignmentRole,
+		      QVariant(Qt::AlignCenter|Qt::AlignVCenter));
+	test_events_widget->setItem(next_line,2,item);
+	AddLine(++next_line);
       }
       if(q->value(7).toString()=="Y") {
-	item=new RDListViewItem(test_events_list);
-	item->setLine(next_line++);
-	item->
-	  setText(0,RDSvc::timeString(q->value(0).toInt(),
-				      q->value(1).toInt()));
-	item->setText(1,tr("[spot break]"));
+	item=new QTableWidgetItem(RDSvc::timeString(q->value(0).toInt(),
+						    q->value(1).toInt()));
+	item->setData(Qt::TextAlignmentRole,
+		      QVariant(Qt::AlignCenter|Qt::AlignVCenter));
+	test_events_widget->setItem(next_line,1,item);
+	item=new QTableWidgetItem(tr("[spot break]"));
+	item->setData(Qt::TextAlignmentRole,
+		      QVariant(Qt::AlignCenter|Qt::AlignVCenter));
+	test_events_widget->setItem(next_line,2,item);
+	AddLine(++next_line);
       }
     }
-    item=new RDListViewItem(test_events_list);
-    item->setLine(next_line++);
-    item->setText(0,RDSvc::timeString(q->value(0).toInt(),
-				      q->value(1).toInt()));
-    item->setText(1,q->value(2).toString());
+    item=new QTableWidgetItem(RDSvc::timeString(q->value(0).toInt(),
+						q->value(1).toInt()));
+    item->
+      setData(Qt::TextAlignmentRole,QVariant(Qt::AlignCenter|Qt::AlignVCenter));
+    test_events_widget->setItem(next_line,1,item);
+    item=new QTableWidgetItem(QString().sprintf("%06u",q->value(2).toUInt()));
+    item->
+      setData(Qt::TextAlignmentRole,QVariant(Qt::AlignCenter|Qt::AlignVCenter));
+    test_events_widget->setItem(next_line,2,item);
     if(q->value(3).toInt()>=0) {
-      item->setText(2,RDGetTimeLength(q->value(3).toInt(),false,false));
+      item=
+	new QTableWidgetItem(RDGetTimeLength(q->value(3).toInt(),false,false));
+      item->setData(Qt::TextAlignmentRole,
+		    QVariant(Qt::AlignRight|Qt::AlignVCenter));
+      test_events_widget->setItem(next_line,3,item);
     }
-    item->setText(3,q->value(10).toString());
-    item->setText(4,q->value(4).toString());
-    item->setText(5,q->value(5).toString());
-    item->setText(6,q->value(6).toString());
+    item=new QTableWidgetItem(q->value(10).toString());
+    item->
+      setData(Qt::TextAlignmentRole,QVariant(Qt::AlignLeft|Qt::AlignVCenter));
+    test_events_widget->setItem(next_line,4,item);    
+
+    item=new QTableWidgetItem(q->value(4).toString());
+    item->
+      setData(Qt::TextAlignmentRole,QVariant(Qt::AlignLeft|Qt::AlignVCenter));
+    test_events_widget->setItem(next_line,5,item);    
+
+    item=new QTableWidgetItem(q->value(5).toString());
+    item->
+      setData(Qt::TextAlignmentRole,QVariant(Qt::AlignLeft|Qt::AlignVCenter));
+    test_events_widget->setItem(next_line,6,item);    
+
+    item=new QTableWidgetItem(q->value(6).toString());
+    item->
+      setData(Qt::TextAlignmentRole,QVariant(Qt::AlignLeft|Qt::AlignVCenter));
+    test_events_widget->setItem(next_line,7,item);    
+    next_line++;
   }
   delete q;
+  test_events_widget->resizeColumnsToContents();
   //printf("IMPORT TABLE: %s_TEST_IMP\n",(const char *)test_svc->name());
   sql=QString("drop table `")+test_svc->name()+"_TEST_IMP`",
-  q=new RDSqlQuery(sql);
-  delete q;
+    RDSqlQuery::run(sql);
 }
 
 
-void TestImport::dateChangedData(const QDate &date)
+void TestImport::dateChangedData(const QDateTime &dt)
 {
   test_filename_edit->
-    setText(RDDateDecode(test_svc->importPath(test_src,RDSvc::Linux),date));
+    setText(RDDateDecode(test_svc->importPath(test_src,RDSvc::Linux),dt.date()));
 }
 
 
@@ -291,7 +328,16 @@ void TestImport::resizeEvent(QResizeEvent *e)
   test_date_label->setGeometry(5,10,85,20);
   test_filename_edit->setGeometry(10,133,size().width()-20,18);
   test_import_button->setGeometry(30,45,size().width()-60,50);
-  test_events_list->
+  test_events_widget->
     setGeometry(10,178,size().width()-20,size().height()-248);
   test_close_button->setGeometry(size().width()-90,size().height()-60,80,50);
+}
+
+
+void TestImport::AddLine(int line)
+{
+  QTableWidgetItem *item=
+    new QTableWidgetItem(QString().sprintf("%d",line+1));
+  item->setData(Qt::TextAlignmentRole,QVariant(Qt::Right|Qt::AlignVCenter));
+  test_events_widget->setItem(line,0,item);
 }

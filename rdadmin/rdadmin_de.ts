@@ -5916,7 +5916,7 @@ Wollen Sie die beiden kombinieren?</translation>
     </message>
     <message>
         <source>Title</source>
-        <translation>Titel</translation>
+        <translation type="obsolete">Titel</translation>
     </message>
     <message>
         <source>Contract #</source>
@@ -5940,17 +5940,25 @@ Wollen Sie die beiden kombinieren?</translation>
     </message>
     <message>
         <source>Import Error</source>
-        <translation>Importfehler</translation>
+        <translation type="unfinished">Importfehler</translation>
     </message>
     <message>
         <source>There was an error during import
 please check your settings and try again.</source>
-        <translation>Es gab einen Fehler während des Imports.
+        <translation type="unfinished">Es gab einen Fehler während des Imports.
 Bitte überprüfen Sie ihre Einstellungen und versuchen sie es erneut.</translation>
     </message>
     <message>
         <source>[spot break]</source>
-        <translation>[spot break]</translation>
+        <translation type="unfinished">[spot break]</translation>
+    </message>
+    <message>
+        <source>Cart Title</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Line</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
