@@ -18,38 +18,30 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <math.h>
-
-#include <Q3Url>
 #include <QDateTime>
-#include <QEvent>
-#include <QLabel>
 #include <QMessageBox>
 #include <QPainter>
-#include <QPaintEvent>
-#include <QPushButton>
+#include <QUrl>
 
 #include <rdapplication.h>
 #include <rdexport_settings_dialog.h>
 
-#include <edit_feed.h>
-#include <list_aux_fields.h>
-#include <globals.h>
+#include "edit_feed.h"
+#include "globals.h"
+#include "list_aux_fields.h"
 
 EditFeed::EditFeed(const QString &feed,QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
+  setMaximumSize(sizeHint());
 
   feed_feed=new RDFeed(feed,this);
 
-  setCaption(tr("Feed: ")+feed);
+  setWindowTitle("RDAdmin - "+tr("Feed: ")+feed);
 
   //
   // Create Fonts
@@ -159,7 +151,7 @@ EditFeed::EditFeed(const QString &feed,QWidget *parent)
   //
   // Channel Description
   //
-  feed_channel_description_edit=new Q3TextEdit(this);
+  feed_channel_description_edit=new QTextEdit(this);
   feed_channel_description_edit->
     setGeometry(115,192,375,76);
   feed_channel_description_label=
@@ -381,7 +373,7 @@ EditFeed::EditFeed(const QString &feed,QWidget *parent)
   //
   // Header XML
   //
-  feed_header_xml_edit=new Q3TextEdit(this);
+  feed_header_xml_edit=new QTextEdit(this);
   feed_header_xml_edit->
     setGeometry(615,10,365,76);
   feed_header_xml_label=new QLabel(feed_header_xml_edit,tr("Header XML:"),this);
@@ -393,7 +385,7 @@ EditFeed::EditFeed(const QString &feed,QWidget *parent)
   //
   // Channel XML
   //
-  feed_channel_xml_edit=new Q3TextEdit(this);
+  feed_channel_xml_edit=new QTextEdit(this);
   feed_channel_xml_edit->
     setGeometry(615,88,365,176);
   feed_channel_xml_label=
@@ -406,7 +398,7 @@ EditFeed::EditFeed(const QString &feed,QWidget *parent)
   //
   // Item XML
   //
-  feed_item_xml_edit=new Q3TextEdit(this);
+  feed_item_xml_edit=new QTextEdit(this);
   feed_item_xml_edit->
     setGeometry(615,270,365,176);
   feed_item_xml_label=new QLabel(feed_item_xml_edit,tr("Item XML:"),this);
@@ -507,7 +499,7 @@ QSizePolicy EditFeed::sizePolicy() const
 
 void EditFeed::purgeUrlChangedData(const QString &str)
 {
-  Q3Url url(str);
+  QUrl url(str);
   QString protocol=url.protocol();
   if(((protocol=="ftp")||(protocol=="smb"))&&
      (!feed_redirect_check->isChecked())) {

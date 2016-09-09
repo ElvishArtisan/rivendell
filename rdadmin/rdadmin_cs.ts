@@ -4402,11 +4402,11 @@ GNU Library General Public License. Klepněte na tlačítko pro zobrazení povol
     </message>
     <message>
         <source>Var Name</source>
-        <translation>Název proměnné</translation>
+        <translation type="obsolete">Název proměnné</translation>
     </message>
     <message>
         <source>Caption</source>
-        <translation>Popisek</translation>
+        <translation type="unfinished">Popisek</translation>
     </message>
     <message>
         <source>&amp;Add</source>
@@ -4426,13 +4426,17 @@ GNU Library General Public License. Klepněte na tlačítko pro zobrazení povol
     </message>
     <message>
         <source>Warning</source>
-        <translation>Varování</translation>
+        <translation type="unfinished">Varování</translation>
     </message>
     <message>
         <source>This will delete all data associated with this field!
 Are you sure you want to continue?</source>
-        <translation>Toto smaže všechna data spojená s tímto polem!
+        <translation type="unfinished">Toto smaže všechna data spojená s tímto polem!
 Jste si jistý, že chcete pokračovat?</translation>
+    </message>
+    <message>
+        <source>Variable Name</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

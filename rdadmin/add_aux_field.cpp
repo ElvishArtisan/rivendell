@@ -18,28 +18,26 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qmessagebox.h>
-//Added by qt3to4:
-#include <QLabel>
-#include <rdescape_string.h>
+#include <QMessageBox>
+
 #include <rddb.h>
-#include <add_aux_field.h>
+#include <rdescape_string.h>
+
+#include "add_aux_field.h"
 
 AddAuxField::AddAuxField(unsigned feed_id,unsigned *field_id,QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
   add_feed_id=feed_id;
   add_field_id=field_id;
-  setCaption(tr("Add Aux Field"));
 
+  setWindowTitle("RDAdmin - "+tr("Add Aux Field"));
 
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
+  setMaximumSize(sizeHint());
 
   //
   // Create Fonts
@@ -53,53 +51,43 @@ AddAuxField::AddAuxField(unsigned feed_id,unsigned *field_id,QWidget *parent)
   // Variable Name
   //
   add_varname_edit=new QLineEdit(this);
-  add_varname_edit->setGeometry(165,10,130,20);
   add_varname_edit->setMaxLength(11);
-  QLabel *label=
-    new QLabel(add_varname_edit,tr("Variable Name: "),this);
-  label->setGeometry(10,13,105,20);
-  label->setFont(bold_font);
-  label->setAlignment(Qt::AlignRight);
-  label=new QLabel(add_varname_edit,tr("%AUX_"),this);
-  label->setGeometry(120,13,45,20);
-  label->setFont(font);
-  label->setAlignment(Qt::AlignRight);
-  label=new QLabel(add_varname_edit,tr("%"),this);
-  label->setGeometry(295,13,30,20);
-  label->setFont(font);
-  label->setAlignment(Qt::AlignLeft);
-
+  add_varname_label=new QLabel(add_varname_edit,tr("Variable Name: "),this);
+  add_varname_label->setFont(bold_font);
+  add_varname_label->setAlignment(Qt::AlignRight);
+  add_varname_label1=new QLabel(add_varname_edit,tr("%AUX_"),this);
+  add_varname_label1->setFont(font);
+  add_varname_label1->setAlignment(Qt::AlignRight);
+  add_varname_label2=new QLabel(add_varname_edit,tr("%"),this);
+  add_varname_label2->setFont(font);
+  add_varname_label2->setAlignment(Qt::AlignLeft);
 
   //
   // Caption
   //
   add_caption_edit=new QLineEdit(this);
-  add_caption_edit->setGeometry(120,37,sizeHint().width()-130,20);
   add_caption_edit->setMaxLength(64);
-  label=new QLabel(add_caption_edit,tr("Caption: "),this);
-  label->setGeometry(10,37,105,20);
-  label->setFont(bold_font);
-  label->setAlignment(Qt::AlignRight);
+  add_caption_label=new QLabel(add_caption_edit,tr("Caption: "),this);
+  add_caption_label->setGeometry(10,37,105,20);
+  add_caption_label->setFont(bold_font);
+  add_caption_label->setAlignment(Qt::AlignRight);
 
   //
   //  Ok Button
   //
-  QPushButton *button=new QPushButton(this);
-  button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
-  button->setDefault(true);
-  button->setFont(bold_font);
-  button->setText(tr("&OK"));
-  connect(button,SIGNAL(clicked()),this,SLOT(okData()));
+  add_ok_button=new QPushButton(this);
+  add_ok_button->setDefault(true);
+  add_ok_button->setFont(bold_font);
+  add_ok_button->setText(tr("&OK"));
+  connect(add_ok_button,SIGNAL(clicked()),this,SLOT(okData()));
 
   //
   //  Cancel Button
   //
-  button=new QPushButton(this);
-  button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,
-			     80,50);
-  button->setFont(bold_font);
-  button->setText(tr("&Cancel"));
-  connect(button,SIGNAL(clicked()),this,SLOT(cancelData()));
+  add_cancel_button=new QPushButton(this);
+  add_cancel_button->setFont(bold_font);
+  add_cancel_button->setText(tr("&Cancel"));
+  connect(add_cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
 }
 
 
@@ -132,19 +120,11 @@ void AddAuxField::okData()
   }
   delete q;
   sql=QString("insert into AUX_METADATA set ")+
-    "VAR_NAME=\"%%AUX_"+RDEscapeString(add_varname_edit->text())+"%%\","+
+    "VAR_NAME=\"AUX_"+RDEscapeString(add_varname_edit->text())+"\","+
     "CAPTION=\""+RDEscapeString(add_caption_edit->text())+"\","+
     QString().sprintf("FEED_ID=%u",add_feed_id);
   q=new RDSqlQuery(sql);
-  delete q;
-
-  sql=QString("select ID from AUX_METADATA where ")+
-    QString().sprintf("(FEED_ID=%u)&&",add_feed_id)+
-    "(VAR_NAME=\"%%AUX_"+RDEscapeString(add_varname_edit->text())+"%%\")";
-  q=new RDSqlQuery(sql);
-  if(q->first()) {
-    *add_field_id=q->value(0).toUInt();
-  }
+  *add_field_id=q->lastInsertId().toInt();
   delete q;
 
   sql=QString().sprintf("select KEY_NAME from FEEDS where ID=%u",add_feed_id);
@@ -166,4 +146,16 @@ void AddAuxField::okData()
 void AddAuxField::cancelData()
 {
   done(-1);
+}
+
+
+void AddAuxField::resizeEvent(QResizeEvent *e)
+{
+  add_varname_edit->setGeometry(165,10,130,20);
+  add_varname_label->setGeometry(10,13,105,20);
+  add_varname_label1->setGeometry(120,13,45,20);
+  add_varname_label2->setGeometry(295,13,30,20);
+  add_caption_edit->setGeometry(120,37,size().width()-130,20);
+  add_ok_button->setGeometry(size().width()-180,size().height()-60,80,50);
+  add_cancel_button->setGeometry(size().width()-90,size().height()-60,80,50);
 }

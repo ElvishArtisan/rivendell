@@ -18,30 +18,26 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qmessagebox.h>
-//Added by qt3to4:
-#include <QLabel>
 #include <rddb.h>
 #include <rdescape_string.h>
-#include <edit_aux_field.h>
 
+#include "edit_aux_field.h"
 
 EditAuxField::EditAuxField(unsigned feed_id,QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
   QString sql;
   RDSqlQuery *q;
 
   edit_field_id=feed_id;
-  setCaption(tr("Edit Auxiliary Metadata Fields"));
+
+  setWindowTitle("RDAdmin - "+tr("Edit Auxiliary Metadata Fields"));
 
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
+  setMaximumSize(sizeHint());
 
   //
   // Create Fonts
@@ -55,44 +51,36 @@ EditAuxField::EditAuxField(unsigned feed_id,QWidget *parent)
   // Variable Name
   //
   edit_varname_edit=new QLineEdit(this);
-  edit_varname_edit->setGeometry(120,10,130,20);
   edit_varname_edit->setReadOnly(true);
-  QLabel *label=
-    new QLabel(edit_varname_edit,tr("Variable Name: "),this);
-  label->setGeometry(10,13,105,20);
-  label->setFont(bold_font);
-  label->setAlignment(Qt::AlignRight);
+  edit_varname_label=new QLabel(edit_varname_edit,tr("Variable Name: "),this);
+  edit_varname_label->setFont(bold_font);
+  edit_varname_label->setAlignment(Qt::AlignRight);
 
   //
   // Variable Name
   //
   edit_caption_edit=new QLineEdit(this);
-  edit_caption_edit->setGeometry(120,37,sizeHint().width()-130,20);
   edit_caption_edit->setMaxLength(64);
-  label=new QLabel(edit_caption_edit,tr("Caption: "),this);
-  label->setGeometry(10,37,105,20);
-  label->setFont(bold_font);
-  label->setAlignment(Qt::AlignRight);
+  edit_caption_label=new QLabel(edit_caption_edit,tr("Caption: "),this);
+  edit_caption_label->setFont(bold_font);
+  edit_caption_label->setAlignment(Qt::AlignRight);
 
   //
   //  Ok Button
   //
-  QPushButton *button=new QPushButton(this);
-  button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
-  button->setDefault(true);
-  button->setFont(bold_font);
-  button->setText(tr("&OK"));
-  connect(button,SIGNAL(clicked()),this,SLOT(okData()));
+  edit_ok_button=new QPushButton(this);
+  edit_ok_button->setDefault(true);
+  edit_ok_button->setFont(bold_font);
+  edit_ok_button->setText(tr("&OK"));
+  connect(edit_ok_button,SIGNAL(clicked()),this,SLOT(okData()));
 
   //
   //  Cancel Button
   //
-  button=new QPushButton(this);
-  button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,
-			     80,50);
-  button->setFont(bold_font);
-  button->setText(tr("&Cancel"));
-  connect(button,SIGNAL(clicked()),this,SLOT(cancelData()));
+  edit_cancel_button=new QPushButton(this);
+  edit_cancel_button->setFont(bold_font);
+  edit_cancel_button->setText(tr("&Cancel"));
+  connect(edit_cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
 
   //
   // Load Data
@@ -138,4 +126,15 @@ void EditAuxField::okData()
 void EditAuxField::cancelData()
 {
   done(-1);
+}
+
+
+void EditAuxField::resizeEvent(QResizeEvent *e)
+{
+  edit_varname_edit->setGeometry(120,10,130,20);
+  edit_varname_label->setGeometry(10,13,105,20);
+  edit_caption_edit->setGeometry(120,37,size().width()-130,20);
+  edit_caption_label->setGeometry(10,37,105,20);
+  edit_ok_button->setGeometry(size().width()-180,size().height()-60,80,50);
+  edit_cancel_button->setGeometry(size().width()-90,size().height()-60,80,50);
 }

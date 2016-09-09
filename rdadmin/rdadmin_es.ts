@@ -4377,11 +4377,11 @@ PARA UN PROPÓSITO PARTICULAR.  Oprima el botón &quot;Ver licencia&quot; para d
     </message>
     <message>
         <source>Var Name</source>
-        <translation>Nombre</translation>
+        <translation type="obsolete">Nombre</translation>
     </message>
     <message>
         <source>Caption</source>
-        <translation>Texto</translation>
+        <translation type="unfinished">Texto</translation>
     </message>
     <message>
         <source>&amp;Add</source>
@@ -4401,13 +4401,17 @@ PARA UN PROPÓSITO PARTICULAR.  Oprima el botón &quot;Ver licencia&quot; para d
     </message>
     <message>
         <source>Warning</source>
-        <translation>Advertencia</translation>
+        <translation type="unfinished">Advertencia</translation>
     </message>
     <message>
         <source>This will delete all data associated with this field!
 Are you sure you want to continue?</source>
-        <translation>¡Esto eliminará todos los datos asociados con este campo!
+        <translation type="unfinished">¡Esto eliminará todos los datos asociados con este campo!
 ¿Está seguro de continuar?</translation>
+    </message>
+    <message>
+        <source>Variable Name</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

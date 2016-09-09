@@ -21,12 +21,10 @@
 #ifndef EDIT_AUX_FIELD_H
 #define EDIT_AUX_FIELD_H
 
-#include <qdialog.h>
-#include <qsqldatabase.h>
-#include <qlabel.h>
-#include <qpushbutton.h>
-#include <qlineedit.h>
-#include <qcombobox.h>
+#include <QDialog>
+#include <QLabel>
+#include <QLineEdit>
+#include <QPushButton>
 
 class EditAuxField : public QDialog
 {
@@ -40,9 +38,16 @@ class EditAuxField : public QDialog
   void okData();
   void cancelData();
 
+ protected:
+  void resizeEvent(QResizeEvent *e);
+
  private:
+  QLabel *edit_varname_label;
   QLineEdit *edit_varname_edit;
+  QLabel *edit_caption_label;
   QLineEdit *edit_caption_edit;
+  QPushButton *edit_ok_button;
+  QPushButton *edit_cancel_button;
   unsigned edit_field_id;
 };
 

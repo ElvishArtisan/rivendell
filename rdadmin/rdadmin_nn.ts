@@ -4287,14 +4287,6 @@ Klikk på &quot;Lisens&quot;-knappen for fleire opplysningar.</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Var Name</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Caption</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;Add</source>
         <translation type="unfinished">&amp;Legg til</translation>
     </message>
@@ -4311,12 +4303,20 @@ Klikk på &quot;Lisens&quot;-knappen for fleire opplysningar.</translation>
         <translation type="unfinished">&amp;Lukk</translation>
     </message>
     <message>
+        <source>Caption</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Warning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>This will delete all data associated with this field!
 Are you sure you want to continue?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Variable Name</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

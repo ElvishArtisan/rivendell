@@ -21,12 +21,10 @@
 #ifndef ADD_AUX_FIELD_H
 #define ADD_AUX_FIELD_H
 
-#include <qdialog.h>
-#include <qsqldatabase.h>
-#include <qlabel.h>
-#include <qpushbutton.h>
-#include <qlineedit.h>
-#include <qcombobox.h>
+#include <QDialog>
+#include <QLabel>
+#include <QLineEdit>
+#include <QPushButton>
 
 class AddAuxField : public QDialog
 {
@@ -40,9 +38,18 @@ class AddAuxField : public QDialog
   void okData();
   void cancelData();
 
+ protected:
+  void resizeEvent(QResizeEvent *e);
+
  private:
+  QLabel *add_varname_label;
+  QLabel *add_varname_label1;
+  QLabel *add_varname_label2;
   QLineEdit *add_varname_edit;
+  QLabel *add_caption_label;
   QLineEdit *add_caption_edit;
+  QPushButton *add_ok_button;
+  QPushButton *add_cancel_button;
   unsigned add_feed_id;
   unsigned *add_field_id;
 };

@@ -3786,14 +3786,6 @@ PARTICULAR PURPOSE.  Touch the &quot;View License&quot; button for details.</sou
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Var Name</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Caption</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;Add</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3810,12 +3802,20 @@ PARTICULAR PURPOSE.  Touch the &quot;View License&quot; button for details.</sou
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Caption</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Warning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>This will delete all data associated with this field!
 Are you sure you want to continue?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Variable Name</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

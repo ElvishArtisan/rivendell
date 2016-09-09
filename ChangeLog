@@ -16236,3 +16236,13 @@
 2016-09-09 Fred Gleason <fredg@paravelsystems.com>
 	* Removed Qt3Support components from 'rdadmin/test_import.cpp'
 	and 'rdadmin/test_import.h'
+2016-09-09 Fred Gleason <fredg@paravelsystems.com>
+	* Removed Qt3Support components from 'rdadmin/edit_feed.cpp'
+	and 'rdadmin/edit_feed.h'
+2016-09-09 Fred Gleason <fredg@paravelsystems.com>
+	* Removed Qt3Support components from 'rdadmin/list_aux_fields.cpp'
+	and 'rdadmin/list_aux_fields.h'
+	* Removed Qt3Support components from 'rdadmin/add_aux_field.cpp'
+	and 'rdadmin/add_aux_field.h'
+	* Removed Qt3Support components from 'rdadmin/edit_aux_field.cpp'
+	and 'rdadmin/edit_aux_field.h'
