@@ -15465,3 +15465,10 @@
 2016-08-07 Fred Gleason <fredg@paravelsystems.com>
 	* Removed support for the 'HostAddress=' parameter from the
 	'rlm_walltime' plug-in in 'rlm/rlm_walltime.c'.
+2016-09-10 Fred Gleason <fredg@paravelsystems.com>
+	* Documented the interface for inserting inline traffic breaks
+	in 'docs/scheduler_formats.ods'.
+	* Documented the interface for inserting voice track markers
+	in 'docs/scheduler_formats.ods'.
+	* Added examples for adding inline traffic breaks and voice track
+	markers to the sample files in 'docs/examples/'.
