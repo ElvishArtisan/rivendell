@@ -15472,3 +15472,6 @@
 	in 'docs/scheduler_formats.ods'.
 	* Added examples for adding inline traffic breaks and voice track
 	markers to the sample files in 'docs/examples/'.
+2016-09-11 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'rdadmin/createdb.cpp' that caused obsolete fields
+	in the 'SERVICES' table to be included when creating a new database.

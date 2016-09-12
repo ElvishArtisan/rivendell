@@ -930,15 +930,11 @@ bool CreateDb(QString name,QString pwd)
       MUS_EVENT_ID_OFFSET int,\
       MUS_EVENT_ID_LENGTH int,\
       MUS_ANNC_TYPE_OFFSET int,\
-      MUS_ANNC_TYPE_LENGTH int, ");
-
-  for(int i=0;i<167;i++) {
-    sql+=QString().sprintf("CLOCK%d char(64),",i);
-  }
-  sql+=QString("CLOCK167 char(64))");
+      MUS_ANNC_TYPE_LENGTH int)");
   if(!RunQuery(sql)) {
     return false;
   }
+
 
 //
 // Create GROUPS table
