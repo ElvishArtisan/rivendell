@@ -15512,6 +15512,13 @@
 	* Removed sas_torture(1) from 'tests/'.
 	* Refactored upload_test(1) to use 'RDApplication'.
 2016-08-05 Fred Gleason <fredg@paravelsystems.com>
+	* Updated 'NEWS'.
+2016-08-06 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored 'rlm/rlm_walltime.c' to use http PUTs.
+2016-08-07 Fred Gleason <fredg@paravelsystems.com>
+	* Removed support for the 'HostAddress=' parameter from the
+	'rlm_walltime' plug-in in 'rlm/rlm_walltime.c'.
+2016-08-05 Fred Gleason <fredg@paravelsystems.com>
 	* Refactored rdcheckcuts(1) to use 'RDApplication'.
 	* Refactored rdclilogedit(1) to use 'RDApplication'.
 	* Refactored rddbcheck(8) to use 'RDApplication'.
@@ -16248,3 +16255,10 @@
 	and 'rdadmin/edit_aux_field.h'
 2016-09-09 Fred Gleason <fredg@paravelsystems.com>
 	* Removed Qt3 convienence methods in 'rdadmin/'.
+2016-09-10 Fred Gleason <fredg@paravelsystems.com>
+	* Documented the interface for inserting inline traffic breaks
+	in 'docs/scheduler_formats.ods'.
+	* Documented the interface for inserting voice track markers
+	in 'docs/scheduler_formats.ods'.
+	* Added examples for adding inline traffic breaks and voice track
+	markers to the sample files in 'docs/examples/'.

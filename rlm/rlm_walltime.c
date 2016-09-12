@@ -28,13 +28,14 @@
 #include <stdio.h>
 #include <string.h>
 #include <strings.h>
+#include <unistd.h>
+
 #include <rlm/rlm.h>
 
 int rlm_walltime_devs;
 char *rlm_walltime_addresses;
-uint16_t *rlm_walltime_ports;
+char *rlm_walltime_passwords;
 char *rlm_walltime_formats;
-char *rlm_walltime_host_addresses;
 int *rlm_walltime_masters;
 int *rlm_walltime_aux1s;
 int *rlm_walltime_aux2s;
@@ -77,9 +78,8 @@ void rlm_walltime_RLMStart(void *ptr,const char *arg)
 
   rlm_walltime_devs=0;
   rlm_walltime_addresses=NULL;
-  rlm_walltime_ports=NULL;
+  rlm_walltime_passwords=NULL;
   rlm_walltime_formats=NULL;
-  rlm_walltime_host_addresses=NULL;
   rlm_walltime_masters=NULL;
   rlm_walltime_aux1s=NULL;
   rlm_walltime_aux2s=NULL;
@@ -94,16 +94,12 @@ void rlm_walltime_RLMStart(void *ptr,const char *arg)
     rlm_walltime_addresses=
       realloc(rlm_walltime_addresses,(rlm_walltime_devs+1)*(rlm_walltime_devs+1)*16);
     strcpy(rlm_walltime_addresses+16*rlm_walltime_devs,address);
-    rlm_walltime_ports=realloc(rlm_walltime_ports,(rlm_walltime_devs+1)*sizeof(uint16_t));
-    rlm_walltime_ports[rlm_walltime_devs]=
-      RLMGetIntegerValue(ptr,arg,section,"UdpPort",0);
+    rlm_walltime_passwords=realloc(rlm_walltime_passwords,(rlm_walltime_devs+1)*1024);
+    strncpy(rlm_walltime_passwords+1024*rlm_walltime_devs,
+	    RLMGetStringValue(ptr,arg,section,"Password",""),1023);
     rlm_walltime_formats=realloc(rlm_walltime_formats,(rlm_walltime_devs+1)*8192);
     strncpy(rlm_walltime_formats+8192*rlm_walltime_devs,
 	    RLMGetStringValue(ptr,arg,section,"FormatString",""),8192);
-    rlm_walltime_host_addresses=
-      realloc(rlm_walltime_host_addresses,(rlm_walltime_devs+1)*(rlm_walltime_devs+1)*16);
-    strncpy(rlm_walltime_host_addresses+16*rlm_walltime_devs,
-	    RLMGetStringValue(ptr,arg,section,"HostAddress",""),15);
     rlm_walltime_masters=realloc(rlm_walltime_masters,
 			    (rlm_walltime_devs+1)*sizeof(int));
     rlm_walltime_masters[rlm_walltime_devs]=
@@ -117,8 +113,7 @@ void rlm_walltime_RLMStart(void *ptr,const char *arg)
 			  (rlm_walltime_devs+1)*sizeof(int));
     rlm_walltime_aux2s[rlm_walltime_devs]=
       rlm_walltime_GetLogStatus(ptr,arg,section,"Aux2Log");
-    sprintf(errtext,"rlm_walltime: configured destination \"%s:%d\"",address,
-	    rlm_walltime_ports[rlm_walltime_devs]);
+    sprintf(errtext,"rlm_walltime: configured destination \"%s\"",address);
     rlm_walltime_devs++;
     RLMLog(ptr,LOG_INFO,errtext);
     sprintf(section,"Walltime%d",i++);
@@ -130,9 +125,8 @@ void rlm_walltime_RLMStart(void *ptr,const char *arg)
 void rlm_walltime_RLMFree(void *ptr)
 {
   free(rlm_walltime_addresses);
-  free(rlm_walltime_ports);
+  free(rlm_walltime_passwords);
   free(rlm_walltime_formats);
-  free(rlm_walltime_host_addresses);
   free(rlm_walltime_masters);
   free(rlm_walltime_aux1s);
   free(rlm_walltime_aux2s);
@@ -146,8 +140,11 @@ void rlm_walltime_RLMPadDataSent(void *ptr,const struct rlm_svc *svc,
 {
   int i;
   int flag=0;
-  char timer[1500];
   FILE *f;
+  char tempfile[256];
+  int fd=-1;
+  char url[1024];
+  char password[1024];
 
   for(i=0;i<rlm_walltime_devs;i++) {
     switch(log->log_mach) {
@@ -164,26 +161,32 @@ void rlm_walltime_RLMPadDataSent(void *ptr,const struct rlm_svc *svc,
 	break;
     }
     if((flag==1)||((flag==2)&&(log->log_onair!=0))) {
-      f=fopen("/var/www/html/walltime/walltime.html","w");
-      if(now->rlm_len==0) {
-	snprintf(timer,1500,
-		 "SP!RS!WU http://%s/walltime/walltime.html!",
-		 rlm_walltime_host_addresses+16*i);
-	fprintf(f,"<body bgcolor=\"#000000\">&nbsp;</body>");
+      strncpy(tempfile,"/tmp/walltimeXXXXXX",256);
+      if((fd=mkstemp(tempfile))>0) {
+	f=fdopen(fd,"w");
+	if(now->rlm_len==0) {
+	  fprintf(f,"<body bgcolor=\"#000000\">&nbsp;</body>");
+	}
+	else {
+	  fprintf(f,"%s\n",
+	    RLMResolveNowNextEncoded(ptr,now,next,rlm_walltime_formats+8192*i,
+					   RLM_ENCODE_XML));
+	}
+	fclose(f);
+	snprintf(url,1024,"http://%s/webwidget",
+		 rlm_walltime_addresses+16*i);
+	snprintf(password,1024,"user:%s",rlm_walltime_passwords+1024*i);
+	if(fork()==0) {
+	  execlp("curl","curl","-u",password,"-o","/dev/null","-s","-T",
+		 tempfile,url,(char *)NULL);
+	  RLMLog(ptr,LOG_WARNING,"rlm_icecast2: unable to execute curl(1)");
+	  exit(0);
+	}
+	RLMLog(ptr,LOG_INFO,"rlm_walltime: sending pad update!");
       }
-      else {
-	snprintf(timer,1500,
-		 "SM D!PS %d!ST!WU http://%s/walltime/walltime.html!",
-		 now->rlm_len/1000,
-		 rlm_walltime_host_addresses+16*i);
-	fprintf(f,"%s\n",
-	     RLMResolveNowNextEncoded(ptr,now,next,rlm_walltime_formats+8192*i,
-				      RLM_ENCODE_XML));
-      }
-      fclose(f);
-      RLMSendUdp(ptr,rlm_walltime_addresses+i*16,rlm_walltime_ports[i],
-		 timer,strlen(timer));
-      RLMLog(ptr,LOG_INFO,"rlm_walltime: sending pad update!");
+    }
+    else {
+      RLMLog(ptr,LOG_WARNING,"rlm_walltime: unable to create temp file");
     }
   }
 }
