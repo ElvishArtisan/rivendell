@@ -15478,3 +15478,5 @@
 2016-09-13 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in 'lib/rdwavefile.cpp' that caused RDXL
 	chunks to be written with odd chunk lengths.
+2016-09-13 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.15.1int00.
