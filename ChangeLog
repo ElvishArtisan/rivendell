@@ -16262,3 +16262,6 @@
 	in 'docs/scheduler_formats.ods'.
 	* Added examples for adding inline traffic breaks and voice track
 	markers to the sample files in 'docs/examples/'.
+2016-09-13 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in 'lib/rdwavefile.cpp' that caused RDXL
+	chunks to be written with odd chunk lengths.
