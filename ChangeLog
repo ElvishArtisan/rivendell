@@ -15475,3 +15475,6 @@
 2016-09-11 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in 'rdadmin/createdb.cpp' that caused obsolete fields
 	in the 'SERVICES' table to be included when creating a new database.
+2016-09-13 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in 'lib/rdwavefile.cpp' that caused RDXL
+	chunks to be written with odd chunk lengths.

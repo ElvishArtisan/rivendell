@@ -2156,7 +2156,7 @@ void RDWaveFile::setRdxlContents(const QString &xml)
   // Make sure that the RDXL chunk is of even length.
   // (To avoid goosing a bug in CoolEdit Pro 2003).
   //
-  if((rdxl_contents.length()%2)!=2) {
+  if((rdxl_contents.length()%2)!=0) {
     rdxl_contents+=" ";
   }
 }
@@ -2478,6 +2478,7 @@ void RDWaveFile::WriteChunk(int fd,const char *cname,unsigned char *buf,
 
 void RDWaveFile::WriteChunk(int fd,const char *cname,const QString &contents)
 {
+  syslog(LOG_NOTICE,"writing %s: %d",cname,contents.length());
   unsigned char size_buf[4];
   size_buf[0]=contents.length()&0xff;
   size_buf[1]=(contents.length()>>8)&0xff;
