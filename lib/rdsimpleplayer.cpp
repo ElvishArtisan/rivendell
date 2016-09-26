@@ -113,7 +113,10 @@ void RDSimplePlayer::play(int start_pos)
 
   QString cut = "";
   RDCart *cart=new RDCart(play_cart);
-  if (cart->selectCut(&cut)) {
+  if(cart->selectCut(&cut)) {
+    if(cut.isEmpty()) {
+      return;
+    }
     play_cae->
       loadPlay(play_card,cut,&play_stream,&handle);
 

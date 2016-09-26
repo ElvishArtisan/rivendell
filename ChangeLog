@@ -15480,3 +15480,7 @@
 	chunks to be written with odd chunk lengths.
 2016-09-13 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 2.15.1int00.
+2016-09-26 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'lib/rdsimpleplayer.cpp' that caused RDAirPlay
+	to freeze when attempting to audition an expired cart
+	[GitHub issue #000051].
