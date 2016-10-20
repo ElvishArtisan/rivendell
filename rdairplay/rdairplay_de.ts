@@ -596,6 +596,14 @@ AKTUALISIERT</translation>
         <source>Host:</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Memory Warning</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to lock all memory</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ModeDisplay</name>

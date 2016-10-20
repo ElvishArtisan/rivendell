@@ -18,9 +18,11 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
+#include <errno.h>
 #include <math.h>
 #include <unistd.h>
 #include <signal.h>
+#include <sys/mman.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <sys/wait.h>
@@ -908,6 +910,17 @@ MainWidget::MainWidget(QWidget *parent)
   // Start the RIPC Connection
   //
   rdripc->connectHost("localhost",RIPCD_TCP_PORT,air_config->password());
+
+  //
+  // (Perhaps) Lock Memory
+  //
+  if(air_config->lockRdairplayMemory()) {
+    if(mlockall(MCL_CURRENT|MCL_FUTURE)<0) {
+      QMessageBox::warning(this,"RDAirPlay - "+tr("Memory Warning"),
+			   tr("Unable to lock all memory")+
+			   " ["+strerror(errno)+"].");
+    }
+  }
 
   LogLine(RDConfig::LogInfo,"RDAirPlay started");
 }

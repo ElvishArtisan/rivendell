@@ -112,6 +112,9 @@ Channels=2
 ; Completely disable maintenance checks on this host.
 ; DisableMaintChecks=Yes
 
+; Lock memory in RDAirPlay
+; LockRdairplayMemory=Yes
+
 ;
 ; Log Generation (old method, deprecated)
 ;

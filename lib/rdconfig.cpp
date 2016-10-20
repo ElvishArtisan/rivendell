@@ -308,6 +308,12 @@ bool RDConfig::disableMaintChecks() const
 }
 
 
+bool RDConfig::lockRdairplayMemory() const
+{
+  return conf_lock_rdairplay_memory;
+}
+
+
 unsigned RDConfig::channels() const
 {
   return conf_channels;
@@ -474,6 +480,8 @@ void RDConfig::load()
   conf_use_stream_meters=profile->boolValue("Hacks","UseStreamMeters",false);
   conf_disable_maint_checks=
     profile->boolValue("Hacks","DisableMaintChecks",false);
+  conf_lock_rdairplay_memory=
+    profile->boolValue("Hacks","LockRdairplayMemory",false);
   conf_channels=profile->intValue("Format","Channels",RD_DEFAULT_CHANNELS);
 #ifndef WIN32
   if((user=getpwnam(profile->stringValue("Identity","AudioOwner")))!=NULL) {
@@ -548,6 +556,7 @@ void RDConfig::clear()
   conf_jack_ports[1].clear();
   conf_use_stream_meters=false;
   conf_disable_maint_checks=false;
+  conf_lock_rdairplay_memory=false;
   conf_channels=RD_DEFAULT_CHANNELS;
 #ifndef WIN32
   conf_uid=65535;
