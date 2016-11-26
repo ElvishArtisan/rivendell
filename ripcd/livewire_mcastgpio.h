@@ -57,12 +57,14 @@ class LiveWireMcastGpio : public Switcher
  private slots:
   void gpioActivatedData(int sock);
   void gpiTimeoutData(int gpo);
-  void gpoTimeoutData(int gpo);
+  void gpoInTimeoutData(int gpo);
+  void gpoOutTimeoutData(int gpo);
 
  private:
   void ProcessGpi(const QHostAddress &src_addr,int chan,unsigned line,
 		  bool state,bool pulse);
-  void ProcessGpo(int chan,unsigned line,bool state);
+  void ProcessGpoIn(int chan,unsigned line,bool state);
+  void ProcessGpoOut(int chan,unsigned line,bool state);
   QString AddressString(uint32_t addr) const;
   void subscribe(const QHostAddress &addr) const;
   void subscribe(const uint32_t addr) const;
@@ -81,9 +83,12 @@ class LiveWireMcastGpio : public Switcher
   std::map<uint32_t,uint32_t> livewire_gpio_recv_serials;
   QSignalMapper *livewire_gpi_timer_mapper;
   std::vector<QTimer *> livewire_gpi_timers;
-  QSignalMapper *livewire_gpo_timer_mapper;
-  std::vector<QTimer *> livewire_gpo_timers;
-  std::vector<bool> livewire_gpo_states;
+  QSignalMapper *livewire_gpo_in_timer_mapper;
+  std::vector<QTimer *> livewire_gpo_in_timers;
+  std::vector<bool> livewire_gpo_in_states;
+  QSignalMapper *livewire_gpo_out_timer_mapper;
+  std::vector<QTimer *> livewire_gpo_out_timers;
+  std::vector<bool> livewire_gpo_out_states;
 };
 
 

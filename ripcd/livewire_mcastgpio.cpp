@@ -70,15 +70,26 @@ LiveWireMcastGpio::LiveWireMcastGpio(RDMatrix *matrix,QObject *parent)
     connect(livewire_gpi_timers.back(),SIGNAL(timeout()),
 	    livewire_gpi_timer_mapper,SLOT(map()));
   }
-  livewire_gpo_timer_mapper=new QSignalMapper(this);
-  connect(livewire_gpo_timer_mapper,SIGNAL(mapped(int)),
-	  this,SLOT(gpoTimeoutData(int)));
+  livewire_gpo_out_timer_mapper=new QSignalMapper(this);
+  connect(livewire_gpo_out_timer_mapper,SIGNAL(mapped(int)),
+	  this,SLOT(gpoOutTimeoutData(int)));
   for(unsigned i=0;i<livewire_gpios;i++) {
-    livewire_gpo_timers.push_back(new QTimer(this));
-    livewire_gpo_timer_mapper->setMapping(livewire_gpo_timers.back(),i);
-    connect(livewire_gpo_timers.back(),SIGNAL(timeout()),
-	    livewire_gpo_timer_mapper,SLOT(map()));
-    livewire_gpo_states.push_back(false);
+    livewire_gpo_out_timers.push_back(new QTimer(this));
+    livewire_gpo_out_timer_mapper->setMapping(livewire_gpo_out_timers.back(),i);
+    connect(livewire_gpo_out_timers.back(),SIGNAL(timeout()),
+	    livewire_gpo_out_timer_mapper,SLOT(map()));
+    livewire_gpo_out_states.push_back(false);
+  }
+
+  livewire_gpo_in_timer_mapper=new QSignalMapper(this);
+  connect(livewire_gpo_in_timer_mapper,SIGNAL(mapped(int)),
+	  this,SLOT(gpoInTimeoutData(int)));
+  for(unsigned i=0;i<livewire_gpios;i++) {
+    livewire_gpo_in_timers.push_back(new QTimer(this));
+    livewire_gpo_in_timer_mapper->setMapping(livewire_gpo_in_timers.back(),i);
+    connect(livewire_gpo_in_timers.back(),SIGNAL(timeout()),
+	    livewire_gpo_in_timer_mapper,SLOT(map()));
+    livewire_gpo_in_states.push_back(false);
   }
 
   //
@@ -150,8 +161,11 @@ LiveWireMcastGpio::~LiveWireMcastGpio()
   for(unsigned i=0;i<livewire_gpi_timers.size();i++) {
     delete livewire_gpi_timers[i];
   }
-  for(unsigned i=0;i<livewire_gpo_timers.size();i++) {
-    delete livewire_gpo_timers[i];
+  for(unsigned i=0;i<livewire_gpo_out_timers.size();i++) {
+    delete livewire_gpo_out_timers[i];
+  }
+  for(unsigned i=0;i<livewire_gpo_in_timers.size();i++) {
+    delete livewire_gpo_in_timers[i];
   }
 }
 
@@ -204,12 +218,27 @@ void LiveWireMcastGpio::processCommand(RDMacro *cmd)
 	}
 
 	if(cmd->arg(1).toString().lower()=="i") {
+	  slot=(cmd->arg(2).toInt()-1)/5;
+	  line=(cmd->arg(2).toInt()-1)%5;
+	  if(livewire_source_numbers[slot]<=0) {
+	    cmd->acknowledge(false);
+	    emit rmlEcho(cmd);
+	    return;
+	  }
+	  if(cmd->arg(4).toInt()>0) {
+	    livewire_gpo_in_timers[cmd->arg(2).toInt()-1]->
+	      start(cmd->arg(4).toInt(),true);
+	  }
+	  ProcessGpoIn(livewire_source_numbers[slot],line,cmd->arg(3).toInt());
+	  livewire_gpo_in_states[cmd->arg(2).toInt()-1]=cmd->arg(3).toInt();
+	  /*
 	  emit gpiChanged(livewire_matrix,cmd->arg(2).toInt()-1,
 			  cmd->arg(3).toInt());
 	  if(cmd->arg(4).toInt()>0) {
 	    livewire_gpi_timers[cmd->arg(2).toInt()-1]->
 	      start(cmd->arg(4).toInt(),true);
 	  }
+	  */
 	}
 	if(cmd->arg(1).toString().lower()=="o") {
 	  slot=(cmd->arg(2).toInt()-1)/5;
@@ -220,11 +249,11 @@ void LiveWireMcastGpio::processCommand(RDMacro *cmd)
 	    return;
 	  }
 	  if(cmd->arg(4).toInt()>0) {
-	    livewire_gpo_timers[cmd->arg(2).toInt()-1]->
+	    livewire_gpo_out_timers[cmd->arg(2).toInt()-1]->
 	      start(cmd->arg(4).toInt(),true);
 	  }
-	  ProcessGpo(livewire_source_numbers[slot],line,cmd->arg(3).toInt());
-	  livewire_gpo_states[cmd->arg(2).toInt()-1]=cmd->arg(3).toInt();
+	  ProcessGpoOut(livewire_source_numbers[slot],line,cmd->arg(3).toInt());
+	  livewire_gpo_out_states[cmd->arg(2).toInt()-1]=cmd->arg(3).toInt();
 	}
 	cmd->acknowledge(true);
 	emit rmlEcho(cmd);
@@ -266,14 +295,26 @@ void LiveWireMcastGpio::gpiTimeoutData(int gpi)
 }
 
 
-void LiveWireMcastGpio::gpoTimeoutData(int gpo)
+void LiveWireMcastGpio::gpoInTimeoutData(int gpo)
 {
   int slot=gpo/5;
   int line=gpo%5;
 
   if(livewire_source_numbers[slot]>0) {
-    ProcessGpo(livewire_source_numbers[slot],line,!livewire_gpo_states[gpo]);
-    livewire_gpo_states[gpo]=!livewire_gpo_states[gpo];
+    ProcessGpoIn(livewire_source_numbers[slot],line,!livewire_gpo_in_states[gpo]);
+    livewire_gpo_in_states[gpo]=!livewire_gpo_in_states[gpo];
+  }
+}
+
+
+void LiveWireMcastGpio::gpoOutTimeoutData(int gpo)
+{
+  int slot=gpo/5;
+  int line=gpo%5;
+
+  if(livewire_source_numbers[slot]>0) {
+    ProcessGpoOut(livewire_source_numbers[slot],line,!livewire_gpo_out_states[gpo]);
+    livewire_gpo_out_states[gpo]=!livewire_gpo_out_states[gpo];
   }
 }
 
@@ -296,7 +337,54 @@ void LiveWireMcastGpio::ProcessGpi(const QHostAddress &src_addr,int chan,
 }
 
 
-void LiveWireMcastGpio::ProcessGpo(int chan,unsigned line,bool state)
+void LiveWireMcastGpio::ProcessGpoIn(int chan,unsigned line,bool state)
+{
+  //
+  // Destination Address
+  //
+  struct sockaddr_in sa;
+  memset(&sa,0,sizeof(sa));
+  sa.sin_family=AF_INET;
+  sa.sin_port=htons(RD_LIVEWIRE_GPIO_RECV_PORT);
+  sa.sin_addr.s_addr=
+    htonl(QHostAddress(RD_LIVEWIRE_GPIO_MCAST_ADDR).toIPv4Address());
+
+  uint8_t data[60]={0x03,0x00,0x02,0x07,0x36,0x0B,0x97,0xA9,
+		    0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
+		    'W','R','N','I',0x00,0x04,0x00,0x03,0xF6,
+		    0x05,0x07,0xCA,0xFF,0xFF,0xFF,0xFD,0x07,
+		    0x01,0xFF,0xFF,0xFF,0xFC,0x09,0x00,0x02,
+		    0x15,0x07,0x00,0x12,0x00,0x8F,0xFF,0xFF,
+		    0xFF,0xFF,0x09,0x00,0x02,0x15,0x07,0x00,
+		    0x00,0x00,0x8F};
+  data[4]=0xFF&(livewire_gpio_send_serial>>24);
+  data[5]=0xFF&(livewire_gpio_send_serial>>16);
+  data[6]=0xFF&(livewire_gpio_send_serial>>8);
+  data[7]=0xFF&livewire_gpio_send_serial;
+  data[23]=0xFF&(chan>>8);
+  data[24]=0xFF&chan;
+  data[25]=0x08-(0x07&line);
+  if(state) {
+    data[27]|=0x40;
+  }
+  else {
+    data[27]&=~0x40;
+  }
+  data[27]&=~0x0A;  // No pulse
+  sendto(livewire_gpio_write_socket,data,28,MSG_DONTWAIT,
+	 (struct sockaddr *)(&sa),sizeof(sa));
+  livewire_gpio_send_serial++;
+  data[4]=0xFF&(livewire_gpio_send_serial>>24);
+  data[5]=0xFF&(livewire_gpio_send_serial>>16);
+  data[6]=0xFF&(livewire_gpio_send_serial>>8);
+  data[7]=0xFF&livewire_gpio_send_serial;
+  sendto(livewire_gpio_write_socket,data,60,MSG_DONTWAIT,
+	 (struct sockaddr *)(&sa),sizeof(sa));
+  livewire_gpio_send_serial++;
+}
+
+
+void LiveWireMcastGpio::ProcessGpoOut(int chan,unsigned line,bool state)
 {
   //
   // Destination Address

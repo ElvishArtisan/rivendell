@@ -15487,3 +15487,6 @@
 2016-10-20 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'LockRdairplayMemory=' parameter to the [Hacks] section
 	of rd.conf(5).
+2016-11-26 Fred Gleason <fredg@paravelsystems.com>
+	* Modified the LiveWire Multicast GPIO driver to generate GPO
+	events using the 'I' event type.
