@@ -29,6 +29,7 @@
 #include <rdaudioconvert.h>
 #include <rdsettings.h>
 #include <rdconf.h>
+#include <rdgroup.h>
 #include <rdlibrary_conf.h>
 
 #include <rdxport.h>
@@ -66,16 +67,24 @@ void Xport::Import()
   if(!xport_post->getValue("USE_METADATA",&use_metadata)) {
     XmlExit("Missing USE_METADATA",400);
   }
+  int create=0;
+  if(!xport_post->getValue("CREATE",&create)) {
+    create=-1;
+  }
+  QString group_name;
+  xport_post->getValue("GROUP_NAME",&group_name);
   QString filename;
   if(!xport_post->getValue("FILENAME",&filename)) {
     XmlExit("Missing FILENAME",400);
   }
+  /*
   if(!RDCart::exists(cartnum)) {
     XmlExit("No such cart",404);
   }
   if(!RDCut::exists(cartnum,cutnum)) {
     XmlExit("No such cut",404);
   }
+  */
   if(!xport_post->isFile("FILENAME")) {
     XmlExit("Missing file data",400);
   }
@@ -83,10 +92,25 @@ void Xport::Import()
   //
   // Verify User Perms
   //
-  if(!xport_user->cartAuthorized(cartnum)) {
-    XmlExit("No such cart",404);
+  if(RDCart::exists(cartnum)) {
+    if(!xport_user->cartAuthorized(cartnum)) {
+      XmlExit("No such cart",404);
+    }
+  }
+  else {
+    if(create) {
+      if(!xport_user->groupAuthorized(group_name)) {
+	XmlExit("No such cart",404);
+      }
+    }
+    else {
+      XmlExit("No such cart",404);
+    }
   }
   if(!xport_user->editAudio()) {
+    XmlExit("Unauthorized",401);
+  }
+  if(create&&(!xport_user->createCarts())) {
     XmlExit("Unauthorized",401);
   }
 
@@ -94,7 +118,38 @@ void Xport::Import()
   // Load Configuration
   //
   RDCart *cart=new RDCart(cartnum);
-  RDCut *cut=new RDCut(cartnum,cutnum);
+  if(!RDCart::exists(cartnum)) {
+    if(create) {
+      if(group_name.isEmpty()) {
+	XmlExit("Missing GROUP_NAME",400);
+      }
+      RDGroup *group=new RDGroup(group_name);
+      if(!group->exists()) {
+	XmlExit("No such group",404);
+      }
+      if(!group->cartNumberValid(cartnum)) {
+	XmlExit("Cart number out of range for group",401);
+      }
+      cart->create(group_name,RDCart::Audio);
+      delete group;
+    }
+    else {
+      XmlExit("No such cart",404);
+    }
+  }
+  RDCut *cut=NULL;
+  if(RDCut::exists(cartnum,cutnum)) {
+    cut=new RDCut(cartnum,cutnum);
+  }
+  else {
+    if(create) {
+      cut=new RDCut(cartnum,cutnum,true);
+      cut->setDescription(QString().sprintf("Cut %03d",cutnum));
+    }
+    else {
+      XmlExit("No such cut",404);
+    }
+  }
   RDLibraryConf *conf=new RDLibraryConf(xport_config->stationName(),0);
   RDSettings *settings=new RDSettings();
   switch(conf->defaultFormat()) {

@@ -1780,6 +1780,28 @@
 	</row>
 	<row>
 	  <entry>
+	    CREATE
+	  </entry>
+	  <entry>
+	    Create cart/cut if it does not exist
+	  </entry>
+	  <entry>
+	   Optional, 0 = No, 1 = Yes
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    GROUP_NAME
+	  </entry>
+	  <entry>
+	    Add newly created cart/cut to specified group.
+	  </entry>
+	  <entry>
+	   Optional
+	  </entry>
+	</row>
+	<row>
+	  <entry>
 	    FILENAME
 	  </entry>
 	  <entry>

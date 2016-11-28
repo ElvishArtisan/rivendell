@@ -15493,3 +15493,6 @@
 2016-11-28 Fred Gleason <fredg@paravelsystems.com>
 	* Updated 'docs/tables/services.txt' to reflect changes made in
 	database version 259.
+2016-11-28 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'CREATE' and 'GROUP_NAME' call fields to the 'Import' web
+	API call in 'web/rdxport/import.cpp'.
