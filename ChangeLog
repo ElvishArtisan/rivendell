@@ -15490,3 +15490,6 @@
 2016-11-26 Fred Gleason <fredg@paravelsystems.com>
 	* Modified the LiveWire Multicast GPIO driver to generate GPO
 	events using the 'I' event type.
+2016-11-28 Fred Gleason <fredg@paravelsystems.com>
+	* Updated 'docs/tables/services.txt' to reflect changes made in
+	database version 259.
