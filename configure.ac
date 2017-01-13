@@ -19,7 +19,7 @@ dnl   License along with this program; if not, write to the Free Software
 dnl   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 dnl
 
-AC_INIT([rivendell],m4_esyscmd(cat PACKAGE_VERSION))
+AC_INIT([rivendell],m4_esyscmd(cat PACKAGE_VERSION | tr -d '\n'))
 AM_INIT_AUTOMAKE
 AC_SUBST(RPM_RELEASE,1)
 m4_ifdef([AM_SILENT_RULES],[AM_SILENT_RULES([yes])])
@@ -84,7 +84,7 @@ AC_ARG_ENABLE(mp4v2,[ --disable-mp4           disable M4A decode support],
 #
 # Check for Qt4 (Mandatory)
 #
-PKG_CHECK_MODULES(QT4,QtCore QtGui QtNetwork QtSql QtXml,[],[AC_MSG_ERROR([*** Qt4 not found ***])])
+PKG_CHECK_MODULES(QT4,QtCore QtGui QtNetwork QtSql QtXml Qt3Support,,[AC_MSG_ERROR([*** Qt4 not found ***])])
 AC_CHECK_PROG(MOC_NAME,moc-qt4,[moc-qt4],[moc])
 AC_SUBST(QT_MOC,$MOC_NAME)
 
