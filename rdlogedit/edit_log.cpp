@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Log
 //
-//   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2017 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -105,6 +105,8 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   //
   // Create Fonts
   //
+  QFont modified_font=QFont("Helvetica",18,QFont::Bold);
+  modified_font.setPixelSize(18);
   QFont button_font=QFont("Helvetica",12,QFont::Bold);
   button_font.setPixelSize(12);
   QFont label_font=QFont("Helvetica",12,QFont::Bold);
@@ -146,6 +148,10 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   //
   // Log Name
   //
+  edit_modified_label=new QLabel(this);
+  edit_modified_label->setBackgroundColor(QColor(system_mid_color));
+  edit_modified_label->setAlignment(Qt::AlignCenter|Qt::AlignVCenter);
+  edit_modified_label->setFont(modified_font);
   edit_logname_label=new QLabel(logname,this);
   edit_logname_label->setBackgroundColor(QColor(system_mid_color));
   edit_logname_label->setAlignment(AlignLeft|AlignVCenter);
@@ -437,6 +443,7 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   edit_save_button=new QPushButton(this);
   edit_save_button->setFont(button_font);
   edit_save_button->setText(tr("&Save"));
+  edit_save_button->setDisabled(true);
   connect(edit_save_button,SIGNAL(clicked()),this,SLOT(saveData()));
 
   //
@@ -552,7 +559,7 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   }
   RefreshList();
   serviceActivatedData(edit_service_box->currentText());
-  edit_changed=false;
+  SetLogModified(false);
   UpdateTracks();
 
   //
@@ -614,7 +621,7 @@ QSizePolicy EditLog::sizePolicy() const
 
 void EditLog::descriptionChangedData(const QString &)
 {
-  edit_changed=true;
+  SetLogModified(true);
 }
 
 
@@ -624,14 +631,14 @@ void EditLog::selectPurgeDateData()
   RDDateDialog *d=new RDDateDialog(2008,QDate::currentDate().year()+5,this);
   if(d->exec(&date)==0) {
     edit_purgedate_edit->setDate(date);
-    edit_changed=true;
+    SetLogModified(true);
   }
 }
 
 
 void EditLog::serviceActivatedData(const QString &svcname)
 {
-  edit_changed=true;
+  SetLogModified(true);
   edit_group_list.loadSvc(svcname);
   if(!ValidateSvc()) {
     QMessageBox::warning(this,tr("Invalid Carts"),
@@ -647,7 +654,7 @@ void EditLog::startDateEnabledData(bool state)
   }
   edit_startdate_edit->setEnabled(state);
   edit_startdate_label->setEnabled(state);
-  edit_changed=true;
+  SetLogModified(true);
 }
 
 
@@ -658,13 +665,13 @@ void EditLog::endDateEnabledData(bool state)
   }
   edit_enddate_edit->setEnabled(state);
   edit_enddate_label->setEnabled(state);
-  edit_changed=true;
+  SetLogModified(true);
 }
 
 
 void EditLog::dateValueChangedData(const QDate &)
 {
-  edit_changed=true;
+  SetLogModified(true);
 }
 
 
@@ -691,7 +698,7 @@ void EditLog::insertCartButtonData()
   int ret=edit->exec();
   if(ret>=0) {
     edit_log_event->refresh(line);
-    edit_changed=true;
+    SetLogModified(true);
   }
   else {
     edit_log_event->remove(line,1);
@@ -729,7 +736,7 @@ void EditLog::insertMarkerButtonData()
 	ret=edit_marker->exec();
 	if(ret>=0) {
 	  edit_log_event->refresh(line);
-	  edit_changed=true;
+	  SetLogModified(true);
 	}
 	else {
 	  edit_log_event->remove(line,1);
@@ -746,7 +753,7 @@ void EditLog::insertMarkerButtonData()
 	ret=edit_track->exec();
 	if(ret>=0) {
 	  edit_log_event->refresh(line);
-	  edit_changed=true;
+	  SetLogModified(true);
 	}
 	else {
 	  edit_log_event->remove(line,1);
@@ -761,7 +768,7 @@ void EditLog::insertMarkerButtonData()
 	ret=edit_chain->exec();
 	if(ret>=0) {
 	  edit_log_event->refresh(line);
-	  edit_changed=true;
+	  SetLogModified(true);
 	}
 	else {
 	  edit_log_event->remove(line,1);
@@ -836,7 +843,7 @@ void EditLog::editButtonData()
 			  &edit_group_list,edit_log_event,line,this);
 	if(edit_cart->exec()>=0) {
 	  edit_log_event->refresh(item->text(14).toInt());
-	  edit_changed=true;
+	  SetLogModified(true);
 	}
 	delete edit_cart;
 	break;
@@ -844,7 +851,7 @@ void EditLog::editButtonData()
       case RDLogLine::Marker:
 	edit_marker=new EditMarker(edit_log_event->logLine(line),this);
 	if(edit_marker->exec()>=0) {
-	  edit_changed=true;
+	  SetLogModified(true);
 	}
 	delete edit_marker;
 	break;
@@ -852,7 +859,7 @@ void EditLog::editButtonData()
       case RDLogLine::Track:
 	edit_track=new EditTrack(edit_log_event->logLine(line),this);
 	if(edit_track->exec()>=0) {
-	  edit_changed=true;
+	  SetLogModified(true);
 	}
 	delete edit_track;
 	break;
@@ -860,7 +867,7 @@ void EditLog::editButtonData()
       case RDLogLine::Chain:
 	edit_chain=new EditChain(edit_log_event->logLine(line),this);
 	if(edit_chain->exec()>=0) {
-	  edit_changed=true;
+	  SetLogModified(true);
 	}
 	delete edit_chain;
 	break;
@@ -907,7 +914,7 @@ void EditLog::upButtonData()
   sscanf((const char *)item->text(13),"%u",&id);
   edit_log_event->move(item->text(14).toInt(),
 		       item->text(14).toInt()-1);
-  edit_changed=true;
+  SetLogModified(true);
   RefreshList();
   SelectRecord(id);
   UpdateSelection();
@@ -925,7 +932,7 @@ void EditLog::downButtonData()
   int id=item->text(13).toInt();
   edit_log_event->move(item->text(14).toInt(),
 		       item->text(14).toInt()+1);
-  edit_changed=true;
+  SetLogModified(true);
   RefreshList();
   SelectRecord(id);
   UpdateSelection();
@@ -962,7 +969,7 @@ void EditLog::pasteButtonData()
     edit_log_event->logLine(line+i)->setSource(RDLogLine::Manual);
     edit_clipboard->at(i).clearExternalData();
   }
-  edit_changed=true;
+  SetLogModified(true);
   RefreshList();
   UpdateTracks();
   SelectRecord(id);
@@ -991,7 +998,7 @@ void EditLog::cartDroppedData(int line,RDLogLine *ll)
   edit_log_event->logLine(line)->setFadeupGain(-3000);
   edit_log_event->logLine(line)->setFadedownGain(-3000);
   edit_log_event->refresh(line);
-  edit_changed=true;
+  SetLogModified(true);
   if(appended) {
     item=(RDListViewItem *)edit_log_list->lastItem();
     item->setText(14,QString().sprintf("%d",item->text(14).toInt()+1));
@@ -1027,7 +1034,7 @@ void EditLog::saveData()
     return;
   }
   edit_log_event->save();
-  edit_changed=false;
+  SetLogModified(false);
   edit_log->setAutoRefresh(edit_autorefresh_box->currentItem()==0);
   edit_log->
     setModifiedDatetime(QDateTime(QDate::currentDate(),QTime::currentTime()));
@@ -1091,7 +1098,7 @@ ORIGIN_DATETIME=NOW(),LINK_DATETIME=NOW(),SERVICE=\"%s\"",
   }
   delete log;
   RefreshList();
-  edit_changed=false;
+  SetLogModified(false);
   edit_deleted_tracks.clear();
 }
 
@@ -1118,14 +1125,16 @@ void EditLog::reportsData()
 
 void EditLog::okData()
 {
-  if(!ValidateSvc()) {
-    if(QMessageBox::warning(this,tr("Invalid Carts"),
-			    tr("The log contains carts that are disabled\nfor the selected service!\n\nDo you still want to save?"),QMessageBox::Yes,QMessageBox::No)==QMessageBox::No) {
-      return;
+  if(edit_changed) {
+    if(!ValidateSvc()) {
+      if(QMessageBox::warning(this,tr("Invalid Carts"),
+			      tr("The log contains carts that are disabled\nfor the selected service!\n\nDo you still want to save?"),QMessageBox::Yes,QMessageBox::No)==QMessageBox::No) {
+	return;
+      }
     }
+    SaveLog();
+    DeleteTracks();
   }
-  SaveLog();
-  DeleteTracks();
 #ifndef WIN32
   edit_player->stop();
 #endif  // WIN32
@@ -1178,7 +1187,8 @@ void EditLog::closeEvent(QCloseEvent *e)
 void EditLog::resizeEvent(QResizeEvent *e)
 {
   edit_logname_label->setGeometry(155,11,size().width()-500,18);
-  edit_logname_label_label->setGeometry(70,11,80,18);
+  edit_logname_label_label->setGeometry(80,11,70,18);
+  edit_modified_label->setGeometry(60,14,20,18);
   edit_origin_label->setGeometry(size().width()-300,11,200,18);
   edit_origin_label_label->setGeometry(size().width()-345,11,40,18);
   edit_track_label->setGeometry(size().width()-425,11,40,18);
@@ -1280,7 +1290,7 @@ void EditLog::DeleteLines(int line,int count)
       next->setSelected(true);
     }
     edit_log_event->remove(line,count);
-    edit_changed=true;
+    SetLogModified(true);
     RenumberList(line);
   }
   UpdateTracks();
@@ -1746,5 +1756,20 @@ void EditLog::LoadClipboard(bool clear_ext)
       }
     }
     next=next->nextSibling();
+  }
+}
+
+
+void EditLog::SetLogModified(bool state)
+{
+  if(state!=edit_changed) {
+    if(state) {
+      edit_modified_label->setText("*");
+    }
+    else {
+      edit_modified_label->setText("");
+    }
+    edit_save_button->setEnabled(state);
+    edit_changed=state;
   }
 }

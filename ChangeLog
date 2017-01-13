@@ -15501,3 +15501,9 @@
 2017-01-13 Fred Gleason <fredg@paravelsystems.com>
 	* Updated 'NEWS'.
 	* Incremented the package version to 2.15.2.
+2017-01-13 Fred Gleason <fredg@paravelsystems.com>
+	* Modified the Edit Log dialog so as to provide indication when
+	the log has been modified.
+	* Fixed a bug in 'rdlogedit/edit_log.cpp' that caused the Modified
+	datestamp to be updated when 'OK' was clicked even if no changes
+	were made.

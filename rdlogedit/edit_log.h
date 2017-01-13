@@ -2,7 +2,7 @@
 //
 // Create a Rivendell Log
 //
-//   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2017 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -104,6 +104,7 @@ class EditLog : public QDialog
   bool ValidateSvc();
   void LoadClipboard(bool clear_ext);
   RDListViewItem *SingleSelection();
+  void SetLogModified(bool state);
   RDLog *edit_log;
   RDLogEvent *edit_log_event;
   std::vector<RDLogLine> *edit_clipboard;
@@ -139,6 +140,7 @@ class EditLog : public QDialog
   QPixmap *edit_music_map;
   QPixmap *edit_mic16_map;
   QPixmap *edit_traffic_map;
+  QLabel *edit_modified_label;
   QLabel *edit_logname_label_label;
   QLabel *edit_logname_label;
   QLabel *edit_origin_label_label;
