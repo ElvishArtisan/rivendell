@@ -15498,3 +15498,6 @@
 	API call in 'web/rdxport/import.cpp'.
 2016-11-28 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 2.15.1int01.
+2017-01-13 Fred Gleason <fredg@paravelsystems.com>
+	* Updated 'NEWS'.
+	* Incremented the package version to 2.15.2.
