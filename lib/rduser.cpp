@@ -390,9 +390,9 @@ bool RDUser::groupAuthorized(const QString &group_name)
   RDSqlQuery *q;
   bool ret=false;
 
-  sql=QString().
-    sprintf("select GROUP_NAME from USER_PERMS where USER_NAME=\"%s\"",
-	    (const char *)RDEscapeString(user_name));
+  sql=QString("select GROUP_NAME from USER_PERMS where ")+
+    "(USER_NAME=\""+RDEscapeString(user_name)+"\")&&"+
+    "(GROUP_NAME=\""+RDEscapeString(group_name)+"\")";
   q=new RDSqlQuery(sql);
   ret=q->first();
   delete q;

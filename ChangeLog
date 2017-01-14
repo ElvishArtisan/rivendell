@@ -15507,3 +15507,6 @@
 	* Fixed a bug in 'rdlogedit/edit_log.cpp' that caused the Modified
 	datestamp to be updated when 'OK' was clicked even if no changes
 	were made.
+2017-01-13 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'lib/rduser.cpp' that caused the
+	'RDUser::groupAuthorized()' to return false positive results.
