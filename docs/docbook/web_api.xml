@@ -1658,6 +1658,13 @@
   <para>
     NOTE: The method must be called with 'multipart/form-data' encoding.
   </para>
+  <para>
+    If the CREATE field is set to '1', a valid GROUP_NAME specified and both
+    CART_NUMBER and CUT_NUMBER fields are set to zero, the system will
+    attempt to create a new cart/cut in the specified group. If successful,
+    the cart and cut numbers will be returned as part of the RDWebResult
+    return.
+  </para>
   <table xml:id="ex.import
 " frame="all">
     <title>Import Call Fields</title>

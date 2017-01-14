@@ -62,8 +62,10 @@ RDCut::RDCut(const QString &name,bool create,QSqlDatabase *db)
   sscanf((const char *)name+7,"%u",&cut_number);
   sscanf((const char *)name.left(6),"%u",&cart_number);
   if(create) {
-    sql=QString().sprintf("insert into CUTS set CUT_NAME=\"%s\",CART_NUMBER=%u",
-			  (const char *)cut_name,cart_number);
+    sql=QString("insert into CUTS set ")+
+      "CUT_NAME=\""+RDEscapeString(cut_name)+"\","+
+      QString().sprintf("CART_NUMBER=%u,",cart_number)+
+      QString().sprintf("DESCRIPTION=\"Cut %03d\"",cut_number);
     q=new RDSqlQuery(sql,cut_db);
     delete q;
   }
@@ -81,8 +83,10 @@ RDCut::RDCut(unsigned cartnum,int cutnum,bool create,QSqlDatabase *db)
   cut_signal=new QSignal();
 
   if(create) {
-    sql=QString().sprintf("insert into CUTS set CUT_NAME=\"%s\",CART_NUMBER=%u",
-			  (const char *)cut_name,cartnum);
+    sql=QString("insert into CUTS set ")+
+      "CUT_NAME=\""+RDEscapeString(cut_name)+"\","+
+      QString().sprintf("CART_NUMBER=%u,",cartnum)+
+      QString().sprintf("DESCRIPTION=\"Cut %03d\"",cutnum);
     q=new RDSqlQuery(sql,cut_db);
     delete q;
   }

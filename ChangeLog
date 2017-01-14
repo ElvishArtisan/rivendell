@@ -15510,3 +15510,6 @@
 2017-01-13 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in 'lib/rduser.cpp' that caused the
 	'RDUser::groupAuthorized()' to return false positive results.
+2017-01-13 Fred Gleason <fredg@paravelsystems.com>
+	* Implemented automatic cart/cut creation as part of the 'Import'
+	web method.
