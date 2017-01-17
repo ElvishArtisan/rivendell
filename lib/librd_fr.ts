@@ -122,10 +122,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Link</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Relative</source>
         <translation type="unfinished"></translation>
     </message>
@@ -451,6 +447,14 @@
     </message>
     <message>
         <source>NoTime</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>MusicLink</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>TrafficLink</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

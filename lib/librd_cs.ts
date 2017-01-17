@@ -129,7 +129,7 @@
     </message>
     <message>
         <source>Link</source>
-        <translation>Propojení</translation>
+        <translation type="obsolete">Propojení</translation>
     </message>
     <message>
         <source>Traffic</source>
@@ -469,6 +469,14 @@
     </message>
     <message>
         <source>NoTime</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>MusicLink</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>TrafficLink</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

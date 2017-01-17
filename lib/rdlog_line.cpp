@@ -2103,8 +2103,10 @@ QString RDLogLine::typeText(RDLogLine::Type type)
 	return QObject::tr("Track");
 
       case RDLogLine::MusicLink:
+	return QObject::tr("MusicLink");
+
       case RDLogLine::TrafficLink:
-	return QObject::tr("Link");
+	return QObject::tr("TrafficLink");
 
       case RDLogLine::UnknownType:
 	return QObject::tr("Unknown");
