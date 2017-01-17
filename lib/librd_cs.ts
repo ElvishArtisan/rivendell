@@ -121,7 +121,7 @@
     </message>
     <message>
         <source>ChainTo</source>
-        <translation>ŘetězDo</translation>
+        <translation type="obsolete">ŘetězDo</translation>
     </message>
     <message>
         <source>Track</source>
@@ -477,6 +477,10 @@
     </message>
     <message>
         <source>TrafficLink</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Chain</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

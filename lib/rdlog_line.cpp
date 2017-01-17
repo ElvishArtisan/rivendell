@@ -2097,7 +2097,7 @@ QString RDLogLine::typeText(RDLogLine::Type type)
 	return QObject::tr("Close Bracket");
 
       case RDLogLine::Chain:
-	return QObject::tr("ChainTo");
+	return QObject::tr("Chain");
 
       case RDLogLine::Track:
 	return QObject::tr("Track");

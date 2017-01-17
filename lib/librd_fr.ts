@@ -114,10 +114,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>ChainTo</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Track</source>
         <translation type="unfinished"></translation>
     </message>
@@ -455,6 +451,10 @@
     </message>
     <message>
         <source>TrafficLink</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Chain</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

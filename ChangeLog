@@ -15516,3 +15516,6 @@
 2017-01-17 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in 'lib/rdlog_line.cpp' that caused invalid 'Type' values
 	to be returned for Traffic and Music Link events.
+2017-01-17 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'lib/rdlog_line.cpp' that caused invalid 'Type' values
+	to be returned for Chain events.
