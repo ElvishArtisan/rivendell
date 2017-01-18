@@ -40,20 +40,25 @@ void Xport::ListLogs()
   RDSqlQuery *q;
   RDLog *log;
   QString service_name="";
+  QString log_name="";
   QString trackable;
 
   //
   // Get Options
   //
   xport_post->getValue("SERVICE_NAME",&service_name);
+  xport_post->getValue("LOG_NAME",&log_name);
   xport_post->getValue("TRACKABLE",&trackable);
 
   //
   // Generate Log List
   //
   sql="select NAME from LOGS";
-  if((!service_name.isEmpty())||(trackable=="1")) {
+  if((!service_name.isEmpty())||(!log_name.isEmpty())||(trackable=="1")) {
     sql+=" where";
+    if(!log_name.isEmpty()) {
+      sql+=" (NAME=\""+RDEscapeString(log_name)+"\")&&";
+    }
     if(!service_name.isEmpty()) {
       sql+=" (SERVICE=\""+RDEscapeString(service_name)+"\")&&";
     }

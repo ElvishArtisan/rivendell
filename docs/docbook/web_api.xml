@@ -2601,6 +2601,17 @@
 	</row>
 	<row>
 	  <entry>
+	    LOG_NAME
+	  </entry>
+	  <entry>
+	    Return the log with this name.
+	  </entry>
+	  <entry>
+	    Optional.  Default is to return all logs.
+	  </entry>
+	</row>
+	<row>
+	  <entry>
 	    TRACKABLE
 	  </entry>
 	  <entry>

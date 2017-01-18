@@ -15519,3 +15519,5 @@
 2017-01-17 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in 'lib/rdlog_line.cpp' that caused invalid 'Type' values
 	to be returned for Chain events.
+2017-01-18 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'LOG_NAME' call parameter to the 'ListLogs' web service.
