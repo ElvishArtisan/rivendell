@@ -457,10 +457,25 @@ QString RDLog::xml() const
   RDSqlQuery *q;
   QString ret;
 #ifndef WIN32
-  sql=QString("select NAME,SERVICE,DESCRIPTION,ORIGIN_USER,")+
-    "ORIGIN_DATETIME,LINK_DATETIME,MODIFIED_DATETIME,"+
-    "AUTO_REFRESH,START_DATE,END_DATE,SCHEDULED_TRACKS,COMPLETED_TRACKS,"+
-    "MUSIC_LINKS,MUSIC_LINKED,TRAFFIC_LINKS,TRAFFIC_LINKED,NEXT_ID "+
+  sql=QString("select ")+
+    "NAME,"+                // 00
+    "SERVICE,"+             // 01
+    "DESCRIPTION,"+         // 02
+    "ORIGIN_USER,"+         // 03
+    "ORIGIN_DATETIME,"+     // 04
+    "LINK_DATETIME,"+       // 05
+    "MODIFIED_DATETIME,"+   // 06
+    "PURGE_DATE,"+          // 07
+    "AUTO_REFRESH,"+        // 08
+    "START_DATE,"+          // 09
+    "END_DATE,"+            // 10
+    "SCHEDULED_TRACKS,"+    // 11
+    "COMPLETED_TRACKS,"+    // 12
+    "MUSIC_LINKS,"+         // 13
+    "MUSIC_LINKED,"+        // 14
+    "TRAFFIC_LINKS,"+       // 15
+    "TRAFFIC_LINKED,"+      // 16
+    "NEXT_ID "+             // 17
     "from LOGS where NAME=\""+RDEscapeString(log_name)+"\"";
 
   q=new RDSqlQuery(sql);
@@ -473,15 +488,16 @@ QString RDLog::xml() const
     ret+="   "+RDXmlField("originDatetime",q->value(4).toDateTime());
     ret+="   "+RDXmlField("linkDatetime",q->value(5).toDateTime());
     ret+="   "+RDXmlField("modifiedDatetime",q->value(6).toDateTime());
-    ret+="   "+RDXmlField("autoRefresh",RDBool(q->value(7).toString()));
-    ret+="   "+RDXmlField("startDate",q->value(8).toDate());
-    ret+="   "+RDXmlField("endDate",q->value(9).toDate());
-    ret+="   "+RDXmlField("scheduledTracks",q->value(10).toInt());
-    ret+="   "+RDXmlField("completedTracks",q->value(11).toInt());
-    ret+="   "+RDXmlField("musicLinks",q->value(12).toInt());
-    ret+="   "+RDXmlField("musicLinked",RDBool(q->value(13).toString()));
-    ret+="   "+RDXmlField("trafficLinks",q->value(14).toInt());
-    ret+="   "+RDXmlField("trafficLinked",RDBool(q->value(15).toString()));
+    ret+="   "+RDXmlField("purgeDate",q->value(7).toDate());
+    ret+="   "+RDXmlField("autoRefresh",RDBool(q->value(8).toString()));
+    ret+="   "+RDXmlField("startDate",q->value(9).toDate());
+    ret+="   "+RDXmlField("endDate",q->value(10).toDate());
+    ret+="   "+RDXmlField("scheduledTracks",q->value(11).toInt());
+    ret+="   "+RDXmlField("completedTracks",q->value(12).toInt());
+    ret+="   "+RDXmlField("musicLinks",q->value(13).toInt());
+    ret+="   "+RDXmlField("musicLinked",RDBool(q->value(14).toString()));
+    ret+="   "+RDXmlField("trafficLinks",q->value(15).toInt());
+    ret+="   "+RDXmlField("trafficLinked",RDBool(q->value(16).toString()));
     ret+="  </log>\n";
   }
   delete q;

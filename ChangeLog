@@ -15524,3 +15524,6 @@
 2017-01-18 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in 'rdlogedit/edit_log.cpp' that caused a change
 	to the Auto Refresh flag to fail to be saved.
+2017-01-18 Fred Gleason <fredg@paravelsystems.com>
+	* Added a <purgeDate> tag to the return document for the 'ListLogs'
+	web service call.
