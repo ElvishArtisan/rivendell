@@ -241,6 +241,8 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
     new QLabel(edit_autorefresh_box,tr("Enable AutoRefresh:"),this);
   edit_autorefresh_label->setFont(label_font);
   edit_autorefresh_label->setAlignment(AlignRight|AlignVCenter);  
+  connect(edit_autorefresh_box,SIGNAL(activated(int)),
+	  this,SLOT(autorefreshChangedData(int)));
 
   //
   // Start Date
@@ -670,6 +672,12 @@ void EditLog::endDateEnabledData(bool state)
 
 
 void EditLog::dateValueChangedData(const QDate &)
+{
+  SetLogModified(true);
+}
+
+
+void EditLog::autorefreshChangedData(int index)
 {
   SetLogModified(true);
 }

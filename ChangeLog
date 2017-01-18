@@ -15521,3 +15521,6 @@
 	to be returned for Chain events.
 2017-01-18 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'LOG_NAME' call parameter to the 'ListLogs' web service.
+2017-01-18 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in 'rdlogedit/edit_log.cpp' that caused a change
+	to the Auto Refresh flag to fail to be saved.

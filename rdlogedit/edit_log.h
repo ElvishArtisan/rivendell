@@ -64,6 +64,7 @@ class EditLog : public QDialog
   void selectPurgeDateData();
   void serviceActivatedData(const QString &svcname);
   void dateValueChangedData(const QDate &);
+  void autorefreshChangedData(int index);
   void startDateEnabledData(bool);
   void endDateEnabledData(bool);
   void insertCartButtonData();
