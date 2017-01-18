@@ -61,6 +61,8 @@ class EditLog : public QDialog
   
  private slots:
   void descriptionChangedData(const QString &);
+  void purgeDateChangedData(const QDate &date);
+  void purgeDateToggledData(bool state);
   void selectPurgeDateData();
   void serviceActivatedData(const QString &svcname);
   void dateValueChangedData(const QDate &);

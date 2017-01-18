@@ -211,9 +211,13 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   edit_purgedate_button=new QPushButton(tr("Select"),this);
   edit_purgedate_button->setFont(label_font);
   connect(edit_purgedate_box,SIGNAL(toggled(bool)),
+	  this,SLOT(purgeDateToggledData(bool)));
+  connect(edit_purgedate_box,SIGNAL(toggled(bool)),
 	  edit_purgedate_edit,SLOT(setEnabled(bool)));
   connect(edit_purgedate_box,SIGNAL(toggled(bool)),
 	  edit_purgedate_button,SLOT(setEnabled(bool)));
+  connect(edit_purgedate_edit,SIGNAL(valueChanged(const QDate &)),
+	  this,SLOT(purgeDateChangedData(const QDate &)));
   connect(edit_purgedate_button,SIGNAL(clicked()),
 	  this,SLOT(selectPurgeDateData()));
 
@@ -622,6 +626,18 @@ QSizePolicy EditLog::sizePolicy() const
 
 
 void EditLog::descriptionChangedData(const QString &)
+{
+  SetLogModified(true);
+}
+
+
+void EditLog::purgeDateChangedData(const QDate &date)
+{
+  SetLogModified(true);
+}
+
+
+void EditLog::purgeDateToggledData(bool state)
 {
   SetLogModified(true);
 }

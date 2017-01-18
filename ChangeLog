@@ -15527,3 +15527,6 @@
 2017-01-18 Fred Gleason <fredg@paravelsystems.com>
 	* Added a <purgeDate> tag to the return document for the 'ListLogs'
 	web service call.
+2017-01-18 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed regressions in 'rdlogedit/edit_log.cpp' that caused a change
+	to the Purge Date values to fail to be saved.
