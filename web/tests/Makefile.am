@@ -23,11 +23,13 @@ install-exec-am:
 	mkdir -p $(DESTDIR)@libexecdir@
 	cp addcart.html $(DESTDIR)@libexecdir@
 	cp addcut.html $(DESTDIR)@libexecdir@
+	cp addlog.html $(DESTDIR)@libexecdir@
 	cp assignschedcode.html $(DESTDIR)@libexecdir@
 	cp audioinfo.html $(DESTDIR)@libexecdir@
 	cp audiostore.html $(DESTDIR)@libexecdir@
 	cp copyaudio.html $(DESTDIR)@libexecdir@
 	cp delete_audio.html $(DESTDIR)@libexecdir@
+	cp deletelog.html $(DESTDIR)@libexecdir@
 	cp editcart.html $(DESTDIR)@libexecdir@
 	cp editcut.js $(DESTDIR)@libexecdir@
 	cp editcut.html $(DESTDIR)@libexecdir@
@@ -49,6 +51,7 @@ install-exec-am:
 	cp listservices.html $(DESTDIR)@libexecdir@
 	cp removecart.html $(DESTDIR)@libexecdir@
 	cp removecut.html $(DESTDIR)@libexecdir@
+	cp savelog.html $(DESTDIR)@libexecdir@
 	cp trimaudio.html $(DESTDIR)@libexecdir@
 	cp unassignschedcode.html $(DESTDIR)@libexecdir@
 	cp utils.js $(DESTDIR)@libexecdir@
@@ -56,11 +59,13 @@ install-exec-am:
 uninstall-local:	
 	rm -f $(DESTDIR)@libexecdir@/addcart.html
 	rm -f $(DESTDIR)@libexecdir@/addcut.html
+	rm -f $(DESTDIR)@libexecdir@/addlog.html
 	rm -f $(DESTDIR)@libexecdir@/assignschedcode.html
 	rm -f $(DESTDIR)@libexecdir@/audioinfo.html
 	rm -f $(DESTDIR)@libexecdir@/audiostore.html
 	rm -f $(DESTDIR)@libexecdir@/copyaudio.html
 	rm -f $(DESTDIR)@libexecdir@/delete_audio.html
+	rm -f $(DESTDIR)@libexecdir@/deletelog.html
 	rm -f $(DESTDIR)@libexecdir@/editcart.html
 	rm -f $(DESTDIR)@libexecdir@/editcart.js
 	rm -f $(DESTDIR)@libexecdir@/editcut.html
@@ -81,17 +86,20 @@ uninstall-local:
 	rm -f $(DESTDIR)@libexecdir@/listservices.html
 	rm -f $(DESTDIR)@libexecdir@/removecart.html
 	rm -f $(DESTDIR)@libexecdir@/removecut.html
+	rm -f $(DESTDIR)@libexecdir@/savelog.html
 	rm -f $(DESTDIR)@libexecdir@/trimaudio.html
 	rm -f $(DESTDIR)@libexecdir@/unassignschedcode.html
 	rm -f $(DESTDIR)@libexecdir@/utils.js
 
 EXTRA_DIST = addcart.html\
              addcut.html\
+             addlog.html\
              assignschedcode.html\
              audioinfo.html\
              audiostore.html\
              copyaudio.html\
              delete_audio.html\
+             deletelog.html\
              editcart.html\
              editcart.js\
              editcut.html\
@@ -112,6 +120,7 @@ EXTRA_DIST = addcart.html\
              listservices.html\
              removecart.html\
              removecut.html\
+             savelog.html\
              trimaudio.html\
              unassignschedcode.html\
              utils.js

@@ -15530,3 +15530,15 @@
 2017-01-18 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed regressions in 'rdlogedit/edit_log.cpp' that caused a change
 	to the Purge Date values to fail to be saved.
+2017-01-31 Fred Gleason <fredg@paravelsystems.com>
+	* Added an RLM for the TagStation NextRadio framework in
+	'rlm/rlm_tagstation.c'
+2017-01-31 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'AddLog' method to the Web API.
+	* Added an 'DeleteLog' method to the Web API.
+	* Added a 'SaveLog' method to the Web API.
+	* Added 'eventLength', 'linkEventName', 'linkStartSlop',
+	'linkEndSlop', 'linkId', 'linkEmbedded', 'extStartTime',
+	'extLength', 'extCartName', 'extData', 'extEventId',
+	and 'extAnncType' XML fields to the return of the ListLog web
+	API method

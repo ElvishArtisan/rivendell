@@ -36,8 +36,8 @@ RDLog::RDLog(const QString &name,bool create)
   log_name=name;
 
   if(create) {
-    sql=QString().sprintf("select NAME from LOGS where \
-(NAME=\"%s\")",(const char *)RDEscapeString(log_name));
+    sql=QString("select NAME from LOGS where ")+
+      "(NAME=\""+RDEscapeString(log_name)+"\")";
     q=new RDSqlQuery(sql);
     if(q->size()!=1) {
       delete q;

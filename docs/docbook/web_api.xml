@@ -329,6 +329,95 @@
 </sect1>
 
 <sect1>
+  <title>AddLog</title>
+  <subtitle>Add a new log</subtitle>
+  <para>
+    Command Code: <code>RDXPORT_COMMAND_ADDLOG</code>
+  </para>
+  <para>
+    Required User Permissions: <code>Create Log</code>
+  </para>
+  <table xml:id="ex.addlog" frame="all">
+    <title>AddLog Call Fields</title>
+    <tgroup cols="3" align="left" colsep="1" rowsep="1">
+      <colspec colname="FIELD NAME" />
+      <colspec colname="MEANING" />
+      <colspec colname="REMARKS" />
+      <thead>
+	<row>
+	  <entry>
+	    FIELD NAME
+	  </entry>
+	  <entry>
+	    MEANING
+	  </entry>
+	  <entry>
+	    REMARKS
+	  </entry>
+	</row>
+      </thead>
+      <tbody>
+	<row>
+	  <entry>
+	    COMMAND
+	  </entry>
+	  <entry>
+	    29
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    LOGIN_NAME
+	  </entry>
+	  <entry>
+	    Rivendell User Name
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    PASSWORD
+	  </entry>
+	  <entry>
+	    Login Password
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    LOG_NAME
+	  </entry>
+	  <entry>
+	    Name of log to be created.
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    SERVICE_NAME
+	  </entry>
+	  <entry>
+	    Name of the service to own the new log.
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+      </tbody>
+    </tgroup>
+  </table>
+</sect1>
+
+<sect1>
   <title>AssignSchedCode</title>
   <subtitle>Assign a scheduler code to an existing cart</subtitle>
   <para>
@@ -657,6 +746,84 @@
 	  </entry>
 	  <entry>
 	    Number of Cut
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+      </tbody>
+    </tgroup>
+  </table>
+</sect1>
+
+<sect1>
+  <title>DeleteLog</title>
+  <subtitle>Delete a log</subtitle>
+  <para>
+    Command Code: <code>RDXPORT_COMMAND_DELETELOG</code>
+  </para>
+  <para>
+    Required User Permissions: <code>Delete Log</code>
+  </para>
+  <table xml:id="ex.deletelog" frame="all">
+    <title>DeleteLog Call Fields</title>
+    <tgroup cols="3" align="left" colsep="1" rowsep="1">
+      <colspec colname="FIELD NAME" />
+      <colspec colname="MEANING" />
+      <colspec colname="REMARKS" />
+      <thead>
+	<row>
+	  <entry>
+	    FIELD NAME
+	  </entry>
+	  <entry>
+	    MEANING
+	  </entry>
+	  <entry>
+	    REMARKS
+	  </entry>
+	</row>
+      </thead>
+      <tbody>
+	<row>
+	  <entry>
+	    COMMAND
+	  </entry>
+	  <entry>
+	    30
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    LOGIN_NAME
+	  </entry>
+	  <entry>
+	    Rivendell User Name
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    PASSWORD
+	  </entry>
+	  <entry>
+	    Login Password
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    LOG_NAME
+	  </entry>
+	  <entry>
+	    Name of log to be deleted.
 	  </entry>
 	  <entry>
 	    Mandatory
@@ -2528,7 +2695,7 @@
 
 <sect1>
   <title>ListLogs</title>
-  <subtitle>Return information about all available logs</subtitle>
+  <subtitle>Return information about one or more logs</subtitle>
   <para>
     Command Code: <code>RDXPORT_COMMAND_LISTLOGS</code>
   </para>
@@ -2933,6 +3100,544 @@
 	  </entry>
 	  <entry>
 	    Mandatory
+	  </entry>
+	</row>
+      </tbody>
+    </tgroup>
+  </table>
+</sect1>
+
+
+<sect1>
+  <title>SaveLog</title>
+  <subtitle>Save a log to the Rivendell Database</subtitle>
+  <para>
+    Command Code: <code>RDXPORT_COMMAND_SAVELOG</code>
+  </para>
+  <para>
+    Required User Permissions: none
+  </para>
+  <table xml:id="ex.savelog" frame="all">
+    <title>ListLogs Call Fields</title>
+    <tgroup cols="3" align="left" colsep="1" rowsep="1">
+      <colspec colname="FIELD NAME" />
+      <colspec colname="MEANING" />
+      <colspec colname="REMARKS" />
+      <thead>
+	<row>
+	  <entry>
+	    FIELD NAME
+	  </entry>
+	  <entry>
+	    MEANING
+	  </entry>
+	  <entry>
+	    REMARKS
+	  </entry>
+	</row>
+      </thead>
+      <tbody>
+	<row>
+	  <entry>
+	    COMMAND
+	  </entry>
+	  <entry>
+	    28
+	  </entry>
+	  <entry>
+	    Mandatory.
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    LOGIN_NAME
+	  </entry>
+	  <entry>
+	    Rivendell User Name
+	  </entry>
+	  <entry>
+	    Mandatory. String.
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    PASSWORD
+	  </entry>
+	  <entry>
+	    Login Password
+	  </entry>
+	  <entry>
+	    Mandatory. String.
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    LOG_NAME
+	  </entry>
+	  <entry>
+	    Save the log to this name. If it does not already exist, it will
+	    be created.
+	  </entry>
+	  <entry>
+	    Mandatory. String, 64 characters max.
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    SERVICE_NAME
+	  </entry>
+	  <entry>
+	    The name of the Service to which the log belongs.
+	  </entry>
+	  <entry>
+	    Mandatory. String, 10 characters max.
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    DESCRIPTION
+	  </entry>
+	  <entry>
+	    The Description field.
+	  </entry>
+	  <entry>
+	    Mandatory. String, 64 characters max.
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    PURGE_DATE
+	  </entry>
+	  <entry>
+	    The date on which the log should be automatically deleted.
+	  </entry>
+	  <entry>
+	    Mandatory. Date.
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    AUTO_REFRESH
+	  </entry>
+	  <entry>
+	    Enable/disable auto-refresh.
+	  </entry>
+	  <entry>
+	    Mandatory. Boolean.
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    START_DATE
+	  </entry>
+	  <entry>
+	    The Start Date.
+	  </entry>
+	  <entry>
+	    Mandatory. Date.
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    END_DATE
+	  </entry>
+	  <entry>
+	    The End Date.
+	  </entry>
+	  <entry>
+	    Mandatory. Date.
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    LINE_QUANTITY
+	  </entry>
+	  <entry>
+	    The number of log line entries in this call.
+	  </entry>
+	  <entry>
+	    Mandatory. Positive integer.
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    LINE<replaceable>num</replaceable>_ID
+	  </entry>
+	  <entry>
+	    Integer Id.
+	  </entry>
+	  <entry>
+	    Mandatory. Unique positive integer.
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    LINE<replaceable>num</replaceable>_TYPE
+	  </entry>
+	  <entry>
+	    Event type.
+	  </entry>
+	  <entry>
+	    Mandatory. One of the following key words:
+	    <simplelist>
+	      <member><userinput>Audio</userinput></member>
+	      <member><userinput>Chain</userinput></member>
+	      <member><userinput>Macro</userinput></member>
+	      <member><userinput>Marker</userinput></member>
+	      <member><userinput>Track</userinput></member>
+	      <member><userinput>MusicLink</userinput></member>
+	      <member><userinput>TrafficLink</userinput></member>
+	    </simplelist>
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    LINE<replaceable>num</replaceable>_CART_NUMBER
+	  </entry>
+	  <entry>
+	    Cart number for Audio or Macro events.
+	  </entry>
+	  <entry>
+	    Mandatory. Positive integer in the range 0 - 999999.
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    LINE<replaceable>num</replaceable>_START_TIME
+	  </entry>
+	  <entry>
+	    Event start time.
+	  </entry>
+	  <entry>
+	    Mandatory. Integer, expressing milliseconds past midnight.
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    LINE<replaceable>num</replaceable>_GRACE_TIME
+	  </entry>
+	  <entry>
+	    Event start time.
+	  </entry>
+	  <entry>
+	    Mandatory. Integer, expressing milliseconds.
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    LINE<replaceable>num</replaceable>_TIME_TYPE
+	  </entry>
+	  <entry>
+	    Start time type.
+	  </entry>
+	  <entry>
+	    Mandatory. One of the following key words:
+	    <simplelist>
+	      <member><userinput>Hard</userinput></member>
+	      <member><userinput>Relative</userinput></member>
+	    </simplelist>
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    LINE<replaceable>num</replaceable>_TRANS_TYPE
+	  </entry>
+	  <entry>
+	    Event transition type.
+	  </entry>
+	  <entry>
+	    Mandatory. One of the following key words:
+	    <simplelist>
+	      <member><userinput>Play</userinput></member>
+	      <member><userinput>Segue</userinput></member>
+	      <member><userinput>Stop</userinput></member>
+	    </simplelist>
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    LINE<replaceable>num</replaceable>_START_POINT
+	  </entry>
+	  <entry>
+	    Start point for one-off (voice-tracked) play-outs.
+	  </entry>
+	  <entry>
+	    Mandatory. Positive integer, or -1 if not defined.
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    LINE<replaceable>num</replaceable>_END_POINT
+	  </entry>
+	  <entry>
+	    End point for one-off (voice-tracked) play-outs.
+	  </entry>
+	  <entry>
+	    Mandatory. Positive integer, or -1 if not defined.
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    LINE<replaceable>num</replaceable>_SEGUE_START_POINT
+	  </entry>
+	  <entry>
+	    Segue start point for one-off (voice-tracked) play-outs.
+	  </entry>
+	  <entry>
+	    Mandatory. Positive integer, or -1 if not defined.
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    LINE<replaceable>num</replaceable>_SEGUE_END_POINT
+	  </entry>
+	  <entry>
+	    Segue end point for one-off (voice-tracked) play-outs.
+	  </entry>
+	  <entry>
+	    Mandatory. Positive integer, or -1 if not defined.
+	  </entry>
+	</row>
+ 	<row>
+	  <entry>
+	    LINE<replaceable>num</replaceable>_FADEUP_POINT
+	  </entry>
+	  <entry>
+	    FadeUp point for one-off (voice-tracked) play-outs.
+	  </entry>
+	  <entry>
+	    Mandatory. Positive integer, or -1 if not defined.
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    LINE<replaceable>num</replaceable>_FADEDOWN_POINT
+	  </entry>
+	  <entry>
+	    FadeDown point for one-off (voice-tracked) play-outs.
+	  </entry>
+	  <entry>
+	    Mandatory. Positive integer, or -1 if not defined.
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    LINE<replaceable>num</replaceable>_DUCK_UP_GAIN
+	  </entry>
+	  <entry>
+	    Duck Up level for one-off (voice-tracked) play-outs.
+	  </entry>
+	  <entry>
+	    Mandatory. Negative integer, or 0 if not defined.
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    LINE<replaceable>num</replaceable>_DUCK_DOWN_GAIN
+	  </entry>
+	  <entry>
+	    Duck Down level for one-off (voice-tracked) play-outs.
+	  </entry>
+	  <entry>
+	    Mandatory. Negative integer, or 0 if not defined.
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    LINE<replaceable>num</replaceable>_COMMENT
+	  </entry>
+	  <entry>
+	    Marker and Track event body text.
+	  </entry>
+	  <entry>
+	    Mandatory. String, max length 255.
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    LINE<replaceable>num</replaceable>_LABEL
+	  </entry>
+	  <entry>
+	    Marker and Track event label text.
+	  </entry>
+	  <entry>
+	    Mandatory. String, max length 64.
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    LINE<replaceable>num</replaceable>_ORIGIN_USER
+	  </entry>
+	  <entry>
+	    User name for one-off (voice-tracked) events.
+	  </entry>
+	  <entry>
+	    Mandatory. String, max length 255.
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    LINE<replaceable>num</replaceable>_ORIGIN_DATETIME
+	  </entry>
+	  <entry>
+	    Date/time stamp for one-off (voice-tracked) events.
+	  </entry>
+	  <entry>
+	    Mandatory. DateTime value.
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    LINE<replaceable>num</replaceable>_EVENT_LENGTH
+	  </entry>
+	  <entry>
+	    Link event length, in mS.
+	  </entry>
+	  <entry>
+	    Mandatory. Integer.
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    LINE<replaceable>num</replaceable>_LINK_EVENT_NAME
+	  </entry>
+	  <entry>
+	    Link event name.
+	  </entry>
+	  <entry>
+	    Mandatory. String, max length 64.
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    LINE<replaceable>num</replaceable>_LINK_START_TIME
+	  </entry>
+	  <entry>
+	    Link event start time, in mS past midnight.
+	  </entry>
+	  <entry>
+	    Mandatory. Integer.
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    LINE<replaceable>num</replaceable>_LINK_LENGTH
+	  </entry>
+	  <entry>
+	    Link event length, in mS.
+	  </entry>
+	  <entry>
+	    Mandatory. Integer.
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    LINE<replaceable>num</replaceable>_LINK_START_SLOP
+	  </entry>
+	  <entry>
+	    Link event start slop, in mS.
+	  </entry>
+	  <entry>
+	    Mandatory. Integer.
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    LINE<replaceable>num</replaceable>_LINK_END_SLOP
+	  </entry>
+	  <entry>
+	    Link event end slop, in mS.
+	  </entry>
+	  <entry>
+	    Mandatory. Integer.
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    LINE<replaceable>num</replaceable>_LINK_ID
+	  </entry>
+	  <entry>
+	    Link event id.
+	  </entry>
+	  <entry>
+	    Mandatory. Integer.
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    LINE<replaceable>num</replaceable>_LINK_EMBEDDED
+	  </entry>
+	  <entry>
+	    Link event embedded flag.
+	  </entry>
+	  <entry>
+	    Mandatory. Boolean.
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    LINE<replaceable>num</replaceable>_EXT_START_TIME
+	  </entry>
+	  <entry>
+	    External data start time.
+	  </entry>
+	  <entry>
+	    Mandatory. Time value.
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    LINE<replaceable>num</replaceable>_EXT_LENGTH
+	  </entry>
+	  <entry>
+	    External data length.
+	  </entry>
+	  <entry>
+	    Mandatory. Integer.
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    LINE<replaceable>num</replaceable>_EXT_CART_NAME
+	  </entry>
+	  <entry>
+	    External data cart name.
+	  </entry>
+	  <entry>
+	    Mandatory. String, max length 32.
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    LINE<replaceable>num</replaceable>_EXT_DATA
+	  </entry>
+	  <entry>
+	    External data data field.
+	  </entry>
+	  <entry>
+	    Mandatory. String, max length 32.
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    LINE<replaceable>num</replaceable>_EXT_EVENT_ID
+	  </entry>
+	  <entry>
+	    External data event id.
+	  </entry>
+	  <entry>
+	    Mandatory. String, max length 32.
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    LINE<replaceable>num</replaceable>_EXT_ANNC_TYPE
+	  </entry>
+	  <entry>
+	    External data announcement type.
+	  </entry>
+	  <entry>
+	    Mandatory. String, max length 8.
 	  </entry>
 	</row>
       </tbody>

@@ -96,6 +96,7 @@ extern QString RDUrlEscape(const QString &str);
 extern QString RDUrlUnescape(const QString &str);
 extern QString RDWebDateTime(const QDateTime &datetime);
 extern QDateTime RDGetWebDateTime(const QString &str,bool *ok=NULL);
+extern QDate RDGetWebDate(const QString &str,bool *ok=NULL);
 extern QTime RDGetWebTime(const QString &str,bool *ok=NULL);
 extern int RDGetWebMonth(const QString &str,bool *ok=NULL);
 

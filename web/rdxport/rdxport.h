@@ -27,8 +27,9 @@
 #include <rdaudioconvert.h>
 #include <rdconfig.h>
 #include <rdformpost.h>
-#include <rduser.h>
+#include <rdstation.h>
 #include <rdsystem.h>
+#include <rduser.h>
 
 class Xport : public QObject
 {
@@ -59,8 +60,11 @@ class Xport : public QObject
   void CopyAudio();
   void AudioInfo();
   void AudioStore();
+  void AddLog();
+  void DeleteLog();
   void ListLogs();
   void ListLog();
+  void SaveLog();
   void ListSchedCodes();
   void AssignSchedCode();
   void UnassignSchedCode();
@@ -73,6 +77,7 @@ class Xport : public QObject
   RDUser *xport_user;
   RDConfig *xport_config;
   RDSystem *xport_system;
+  RDStation *xport_station;
 };
 
 

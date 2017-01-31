@@ -1,0 +1,57 @@
+<html>
+<head>
+<title>Rivendell SAVELOG Service Test Harness</title>
+<body>
+<form action="/rd-bin/rdxport.cgi" method="post" enctype="multipart/form-data">
+<input type="hidden" name="COMMAND" value="28">
+<table cellpadding="0" cellspacing="2" border="0">
+<tr>
+<td align="right">LOGIN NAME:</td>
+<td><input type="text" name="LOGIN_NAME" size="20" maxlength="255"></td>
+</tr>
+<tr>
+<td align="right">PASSWORD:</td>
+<td><input type="password" name="PASSWORD" size="20" maxlength="32"></td>
+</tr>
+<tr>
+<td align="right">LOG_NAME:</td>
+<td><input type="text" name="LOG_NAME" size="20" maxlength="64"></td>
+</tr>
+<tr>
+<td align="right">SERVICE_NAME:</td>
+<td><input type="text" name="SERVICE_NAME" size="20" maxlength="10"></td>
+</tr>
+<tr>
+<td align="right">DESCRIPTION:</td>
+<td><input type="text" name="DESCRIPTION" size="20" maxlength="64"></td>
+</tr>
+<tr>
+<td align="right">PURGE DATE (YYYY-MM-DD):</td>
+<td><input type="text" name="PURGE_DATE" size="20" maxlength="10"></td>
+</tr>
+<tr>
+<td align="right">AUTO REFRESH:</td>
+<td><input type="text" name="AUTO_REFRESH" size="20" maxlength="1"></td>
+</tr>
+<tr>
+<td align="right">START DATE (YYYY-MM-DD):</td>
+<td><input type="text" name="START_DATE" size="20" maxlength="10"></td>
+</tr>
+<tr>
+<td align="right">END DATE (YYYY-MM-DD):</td>
+<td><input type="text" name="END_DATE" size="20" maxlength="10"></td>
+</tr>
+<tr>
+<td align="right">LINE QUANTITY:</td>
+<td><input type="text" name="LINE_QUANTITY" size="20" maxlength="6"></td>
+</tr>
+<tr>
+<td colspan="2" align="right">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" align="right"><input type="submit" value="OK"></td>
+</tr>
+</table>
+</form>
+</body>
+</html>

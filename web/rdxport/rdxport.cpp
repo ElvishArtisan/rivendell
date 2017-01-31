@@ -119,6 +119,7 @@ Xport::Xport(QObject *parent)
   // Load System Settings
   //
   xport_system=new RDSystem();
+  xport_station=new RDStation(xport_config->stationName());
 
   //
   // Generate Post
@@ -221,12 +222,24 @@ Xport::Xport(QObject *parent)
     AudioStore();
     break;
 
+  case RDXPORT_COMMAND_ADDLOG:
+    AddLog();
+    break;
+
+  case RDXPORT_COMMAND_DELETELOG:
+    DeleteLog();
+    break;
+
   case RDXPORT_COMMAND_LISTLOGS:
     ListLogs();
     break;
 
   case RDXPORT_COMMAND_LISTLOG:
     ListLog();
+    break;
+
+  case RDXPORT_COMMAND_SAVELOG:
+    SaveLog();
     break;
 
   case RDXPORT_COMMAND_LISTSCHEDCODES:

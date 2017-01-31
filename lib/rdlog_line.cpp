@@ -2014,6 +2014,20 @@ QString RDLogLine::xml(int line) const
   ret+="    "+RDXmlField("hookStartPoint",hookStartPoint());
   ret+="    "+RDXmlField("hookEndPoint",hookEndPoint());
 
+  ret+="    "+RDXmlField("eventLength",eventLength());
+  ret+="    "+RDXmlField("linkEventName",linkEventName());
+  ret+="    "+RDXmlField("linkStartSlop",linkStartSlop());
+  ret+="    "+RDXmlField("linkEndSlop",linkEndSlop());
+  ret+="    "+RDXmlField("linkId",linkId());
+  ret+="    "+RDXmlField("linkEmbedded",linkEmbedded());
+
+  ret+="    "+RDXmlField("extStartTime",extStartTime());
+  ret+="    "+RDXmlField("extLength",extLength());
+  ret+="    "+RDXmlField("extCartName",extCartName());
+  ret+="    "+RDXmlField("extData",extData());
+  ret+="    "+RDXmlField("extEventId",extEventId());
+  ret+="    "+RDXmlField("extAnncType",extAnncType());
+
   ret+="  </logLine>\n";
 #endif  // WIN32
   return ret;

@@ -221,6 +221,26 @@ bool RDFormPost::getValue(const QString &name,QDateTime *datetime,bool *ok)
 }
 
 
+bool RDFormPost::getValue(const QString &name,QDate *date,bool *ok)
+{
+  QString str;
+
+  if(ok!=NULL) {
+    *ok=false;
+  }
+  if(!getValue(name,&str)) {
+    return false;
+  }
+  if(str.length()==0) {
+    *date=QDate();
+  }
+  else {
+    *date=RDGetWebDate(str,ok);
+  }
+  return true;
+}
+
+
 bool RDFormPost::getValue(const QString &name,QTime *time,bool *ok)
 {
   QString str;
@@ -238,6 +258,17 @@ bool RDFormPost::getValue(const QString &name,QTime *time,bool *ok)
     *time=RDGetWebTime(str,ok);
   }
   return true;
+}
+
+
+bool RDFormPost::getValue(const QString &name,bool *state,bool *ok)
+{
+  if(post_values.count(name)>0) {
+    *state=post_values[name].toInt(ok);
+    return true;
+  }
+  return false;
+  
 }
 
 

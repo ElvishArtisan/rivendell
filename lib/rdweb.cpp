@@ -1206,6 +1206,18 @@ QDateTime RDGetWebDateTime(const QString &str,bool *ok)
 }
 
 
+QDate RDGetWebDate(const QString &str,bool *ok)
+{
+  QDate ret;
+
+  ret=QDate::fromString(str,Qt::ISODate);
+  if(ok!=NULL) {
+    *ok=ret.isValid();
+  }
+  return ret;
+}
+
+
 QTime RDGetWebTime(const QString &str,bool *ok)
 {
   QTime ret;
