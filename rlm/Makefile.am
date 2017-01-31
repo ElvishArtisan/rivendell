@@ -33,6 +33,7 @@ RLM_MODULES=rlm_ando.rlm\
             rlm_shoutcast1.rlm\
             rlm_spinitron_plus.rlm\
             rlm_spottrap.rlm\
+            rlm_tagstation.rlm\
             rlm_test.rlm\
             rlm_twitter.rlm\
             rlm_udp.rlm\
