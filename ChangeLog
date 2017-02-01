@@ -15542,3 +15542,5 @@
 	'extLength', 'extCartName', 'extData', 'extEventId',
 	and 'extAnncType' XML fields to the return of the ListLog web
 	API method
+2017-02-01 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'Group' field to 'rlm/rlm_test.c'.

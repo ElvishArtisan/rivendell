@@ -107,6 +107,7 @@ void rlm_test_RLMPadDataSent(void *ptr,const struct rlm_svc *svc,
 	 now->rlm_start_hour,now->rlm_start_min,now->rlm_start_sec,
 	 now->rlm_start_msec);
   printf("         Length: %u mS\n",now->rlm_len);
+  printf("          Group: %s\n",now->rlm_group);
   printf("          Title: %s\n",now->rlm_title);
   printf("         Artist: %s\n",now->rlm_artist);
   printf("          Label: %s\n",now->rlm_label);
@@ -133,6 +134,7 @@ void rlm_test_RLMPadDataSent(void *ptr,const struct rlm_svc *svc,
 	 next->rlm_start_hour,next->rlm_start_min,next->rlm_start_sec,
 	 next->rlm_start_msec);
   printf("         Length: %u mS\n",next->rlm_len);
+  printf("          Group: %s\n",now->rlm_group);
   printf("          Title: %s\n",next->rlm_title);
   printf("         Artist: %s\n",next->rlm_artist);
   printf("          Label: %s\n",next->rlm_label);
