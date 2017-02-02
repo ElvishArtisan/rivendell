@@ -69,5 +69,5 @@ function EditCart_ShowPost()
 
 function EditCart_Submit()
 {
-    PostForm(EditCart_MakePost(),"http://localhost/rd-bin/rdxport.cgi");
+    PostForm(EditCart_MakePost(),"rdxport.cgi");
 }

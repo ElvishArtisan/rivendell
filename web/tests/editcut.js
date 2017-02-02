@@ -74,5 +74,5 @@ function EditCut_ShowPost()
 
 function EditCut_Submit()
 {
-    PostForm(EditCut_MakePost(),"http://localhost/rd-bin/rdxport.cgi");
+    PostForm(EditCut_MakePost(),"rdxport.cgi");
 }

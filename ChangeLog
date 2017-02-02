@@ -15546,3 +15546,8 @@
 	* Added a 'Group' field to 'rlm/rlm_test.c'.
 2017-02-02 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'linkStartTime' tag to the output of 'RDLogLine::xml()'.
+2017-02-02 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'web/tests/editcut.js' that caused the EditCut
+	test harness to fail when using non-localhost URLs.
+	* Fixed a bug in 'web/tests/editcart.js' that caused the EditCut
+	test harness to fail when using non-localhost URLs.
