@@ -23,7 +23,7 @@
 
 #include <vector>
 
-#include <QTableWidgetItem>
+#include <q3listview.h>
 #include <qpixmap.h>
 
 #include <rdlistview.h>
