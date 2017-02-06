@@ -17,7 +17,9 @@
 //   License along with this program; if not, write to the Free Software
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
-
+#include <QAbstractItemView>
+#include <QHeaderView>
+#include <QIcon>
 #include <QMessageBox>
 
 #include <rdcart.h>
@@ -98,21 +100,21 @@ ListUsers::ListUsers(const QString &admin_name,QWidget *parent)
   //
   // User List
   //
-  list_users_view=new RDListView(this);
+  list_users_view=new RDTableWidget(this);
   list_users_view->setFont(list_font);
-  list_users_view->setAllColumnsShowFocus(true);
-  list_users_view->setItemMargin(5);
-  list_users_view->addColumn("");
-  list_users_view->addColumn(tr("USER NAME"));
-  list_users_view->addColumn(tr("FULL NAME"));
-  list_users_view->addColumn(tr("DESCRIPTION"));
+  list_users_view->setSelectionBehavior(QAbstractItemView::SelectRows);
+  list_users_view->setColumnCount(4);
+  QStringList headings = {"",tr("USER NAME"),tr("FULL NAME"),tr("DESCRIPTION")};
+  list_users_view->setHorizontalHeaderLabels(headings);
+  list_users_view->verticalHeader()->setVisible(false);
+  list_users_view->horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);
   QLabel *list_box_label=new QLabel(list_users_view,tr("&Users:"),this);
   list_box_label->setFont(font);
   list_box_label->setGeometry(14,11,85,19);
   connect(list_users_view,
-	  SIGNAL(doubleClicked(Q3ListViewItem *,const QPoint &,int)),
+	  SIGNAL(itemDoubleClicked(QTableWidgetItem *)),
 	  this,
-	  SLOT(doubleClickedData(Q3ListViewItem *,const QPoint &,int)));
+	  SLOT(doubleClickedData(QTableWidgetItem *)));
 
   RefreshList();
 }
@@ -146,22 +148,23 @@ void ListUsers::addData()
   }
   delete add_user;
   add_user=NULL;
-  RDListViewItem *item=new RDListViewItem(list_users_view);
-  item->setText(1,user);
+  QTableWidgetItem *item=new QTableWidgetItem(user);
+  int newRow = list_users_view->rowCount();
+  list_users_view->insertRow(newRow);
+  list_users_view->setItem(newRow,1,item);
   RefreshItem(item);
   item->setSelected(true);
   list_users_view->setCurrentItem(item);
-  list_users_view->ensureItemVisible(item);
 }
 
 
 void ListUsers::editData()
 {
-  RDListViewItem *item=(RDListViewItem *)list_users_view->selectedItem();
-  if(item==NULL) {
+  if(list_users_view->selectedItems().isEmpty()) {
     return;
   }
-  EditUser *edit_user=new EditUser(item->text(1),this);
+  QTableWidgetItem *item=list_users_view->selectedItems().at(1);
+  EditUser *edit_user=new EditUser(item->text(),this);
   if(edit_user->exec()==0) {
     RefreshItem(item);
   }
@@ -171,12 +174,12 @@ void ListUsers::editData()
 
 void ListUsers::deleteData()
 {
-  RDListViewItem *item=(RDListViewItem *)list_users_view->selectedItem();
-  if(item==NULL) {
+  if(list_users_view->selectedItems().isEmpty()) {
     return;
   }
+  QTableWidgetItem *item=list_users_view->selectedItems().at(1);
 
-  if(list_admin_name==item->text(1)) {
+  if(list_admin_name==item->text()) {
     QMessageBox::warning(this,tr("Delete User"),
 			 tr("You cannot delete yourself!"));
     return;
@@ -187,7 +190,7 @@ void ListUsers::deleteData()
   QString warning;
   QString str;
 
-  QString username=RDEscapeString(item->text(1));
+  QString username=RDEscapeString(item->text());
 
   //
   // Check for default user assignments
@@ -210,7 +213,7 @@ void ListUsers::deleteData()
 
   str=QString(tr("Are you sure you want to delete user"));
   warning+=QString().sprintf("%s \"%s\"?",(const char *)str,
-			     (const char *)item->text(1));
+			     (const char *)item->text());
   switch(QMessageBox::warning(this,tr("Delete User"),warning,
 			      QMessageBox::Yes,QMessageBox::No)) {
       case QMessageBox::No:
@@ -254,12 +257,11 @@ void ListUsers::deleteData()
   delete q;
 
   item->setSelected(false);
-  delete item;
+  list_users_view->removeRow(item->row());
 }
 
 
-void ListUsers::doubleClickedData(Q3ListViewItem *item,const QPoint &pt,
-				   int col)
+void ListUsers::doubleClickedData(QTableWidgetItem *item)
 {
   editData();
 }
@@ -285,9 +287,14 @@ void ListUsers::RefreshList()
 {
   QString sql;
   RDSqlQuery *q;
-  RDListViewItem *item;
+  QTableWidgetItem *icon;
+  QTableWidgetItem *username;
+  QTableWidgetItem *name;
+  QTableWidgetItem *description;
 
   list_users_view->clear();
+  QStringList headings = {"",tr("USER NAME"),tr("FULL NAME"),tr("DESCRIPTION")};
+  list_users_view->setHorizontalHeaderLabels(headings);
   sql=QString("select ")+
     "ADMIN_CONFIG_PRIV,"+
     "LOGIN_NAME,"+
@@ -297,41 +304,66 @@ void ListUsers::RefreshList()
     "order by LOGIN_NAME";
   q=new RDSqlQuery(sql);
   while (q->next()) {
-    item=new RDListViewItem(list_users_view);
+    icon=new QTableWidgetItem();
     if(q->value(0).toString()=="Y") {
-      item->setPixmap(0,*list_admin_map);
+      icon->setIcon(QIcon(*list_admin_map));
     }
     else {
-      item->setPixmap(0,*list_user_map);
+      icon->setIcon(QIcon(*list_user_map));
     }
-    item->setText(1,q->value(1).toString());
-    item->setText(2,q->value(2).toString());
-    item->setText(3,q->value(3).toString());
+    username = new QTableWidgetItem(q->value(1).toString());
+    name = new QTableWidgetItem(q->value(2).toString());
+    description = new QTableWidgetItem(q->value(3).toString());
+
+    int newRow = list_users_view->rowCount();
+    list_users_view->insertRow(newRow);
+    list_users_view->setItem(newRow,0,icon);
+    list_users_view->setItem(newRow,1,username);
+    list_users_view->setItem(newRow,2,name);
+    list_users_view->setItem(newRow,3,description);
   }
   delete q;
 }
 
 
-void ListUsers::RefreshItem(RDListViewItem *item)
+void ListUsers::RefreshItem(QTableWidgetItem *username)
 {
+  int row = username->row();
   QString sql;
   RDSqlQuery *q;
+  QTableWidgetItem *icon = list_users_view->item(row,0);
+  QTableWidgetItem *name = list_users_view->item(row,2);
+  QTableWidgetItem *description = list_users_view->item(row,3);
 
   sql=QString("select ")+
     "ADMIN_CONFIG_PRIV,"+
     "FULL_NAME,DESCRIPTION "+
     "from USERS where "+
-    "LOGIN_NAME=\""+RDEscapeString(item->text(1))+"\"";
+    "LOGIN_NAME=\""+RDEscapeString(username->text())+"\"";
   q=new RDSqlQuery(sql);
   if(q->first()) {
+    if(!icon) {
+      icon = new QTableWidgetItem();
+      list_users_view->setItem(row,0,icon);
+    }
     if(q->value(0).toString()=="Y") {
-      item->setPixmap(0,*list_admin_map);
+      icon->setIcon(QIcon(*list_admin_map));
     }
     else {
-      item->setPixmap(0,*list_user_map);
+      icon->setIcon(QIcon(*list_user_map));
     }
-    item->setText(2,q->value(1).toString());
-    item->setText(3,q->value(2).toString());
+    if(!name) {
+      name = new QTableWidgetItem(q->value(1).toString());
+      list_users_view->setItem(row,2,name);
+    } else {
+      name->setText(q->value(1).toString());
+    }
+    if(!description) {
+      description = new QTableWidgetItem(q->value(2).toString());
+      list_users_view->setItem(row,3,description);
+    } else {
+      description->setText(q->value(2).toString());
+    }
   }
   delete q;
 }

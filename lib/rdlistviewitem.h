@@ -1,6 +1,6 @@
 //   rdlistviewitem.h
 //
-//   A color-selectable QListViewItem class for Rivendell
+//   A color-selectable QTableWidgetItem class for Rivendell
 //
 //   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
@@ -23,7 +23,7 @@
 
 #include <vector>
 
-#include <q3listview.h>
+#include <QTableWidgetItem>
 #include <qpixmap.h>
 
 #include <rdlistview.h>
