@@ -21,6 +21,7 @@
 #include <QFileDialog>
 #include <QLabel>
 #include <QMessageBox>
+#include <QProgressDialog>
 
 #include <rdapplication.h>
 #include <rdconf.h>
@@ -265,7 +266,7 @@ void EditSettings::okData()
   if(edit_duplicate_carts_box->isChecked()!=
      edit_system->allowDuplicateCartTitles()) {
     QLabel *msg=new QLabel(this);
-    Q3ProgressDialog *pd=new Q3ProgressDialog(this);
+    QProgressDialog *pd=new QProgressDialog(this);
     pd->setLabel(msg);
     pd->setCancelButton(NULL);
     pd->setMinimumDuration(2);
@@ -279,7 +280,8 @@ void EditSettings::okData()
       int count=0;
       int step=0;
       int step_size=q->size()/10;
-      pd->setProgress(0,10);
+      pd->setMaximum(step_size);
+      pd->setValue(0);
       while(q->next()) {
 	sql=QString("select NUMBER from CART where ")+
 	  "(TITLE=\""+RDEscapeString(q->value(1).toString())+"\")&&"+
@@ -291,7 +293,7 @@ void EditSettings::okData()
 	delete q1;
 	count++;
 	if(count>=step_size) {
-	  pd->setProgress(++step);
+	  pd->setValue(++step);
 	  count=0;
 	  qApp->processEvents();
 	}

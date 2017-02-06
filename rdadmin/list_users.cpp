@@ -104,7 +104,7 @@ ListUsers::ListUsers(const QString &admin_name,QWidget *parent)
   list_users_view->setFont(list_font);
   list_users_view->setSelectionBehavior(QAbstractItemView::SelectRows);
   list_users_view->setColumnCount(4);
-  QStringList headings = {"",tr("USER NAME"),tr("FULL NAME"),tr("DESCRIPTION")};
+  QStringList headings={"",tr("USER NAME"),tr("FULL NAME"),tr("DESCRIPTION")};
   list_users_view->setHorizontalHeaderLabels(headings);
   list_users_view->verticalHeader()->setVisible(false);
   list_users_view->horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);
@@ -149,7 +149,7 @@ void ListUsers::addData()
   delete add_user;
   add_user=NULL;
   QTableWidgetItem *item=new QTableWidgetItem(user);
-  int newRow = list_users_view->rowCount();
+  int newRow=list_users_view->rowCount();
   list_users_view->insertRow(newRow);
   list_users_view->setItem(newRow,1,item);
   RefreshItem(item);
@@ -293,7 +293,7 @@ void ListUsers::RefreshList()
   QTableWidgetItem *description;
 
   list_users_view->clear();
-  QStringList headings = {"",tr("USER NAME"),tr("FULL NAME"),tr("DESCRIPTION")};
+  QStringList headings={"",tr("USER NAME"),tr("FULL NAME"),tr("DESCRIPTION")};
   list_users_view->setHorizontalHeaderLabels(headings);
   sql=QString("select ")+
     "ADMIN_CONFIG_PRIV,"+
@@ -311,11 +311,11 @@ void ListUsers::RefreshList()
     else {
       icon->setIcon(QIcon(*list_user_map));
     }
-    username = new QTableWidgetItem(q->value(1).toString());
-    name = new QTableWidgetItem(q->value(2).toString());
-    description = new QTableWidgetItem(q->value(3).toString());
+    username=new QTableWidgetItem(q->value(1).toString());
+    name=new QTableWidgetItem(q->value(2).toString());
+    description=new QTableWidgetItem(q->value(3).toString());
 
-    int newRow = list_users_view->rowCount();
+    int newRow=list_users_view->rowCount();
     list_users_view->insertRow(newRow);
     list_users_view->setItem(newRow,0,icon);
     list_users_view->setItem(newRow,1,username);
@@ -328,12 +328,12 @@ void ListUsers::RefreshList()
 
 void ListUsers::RefreshItem(QTableWidgetItem *username)
 {
-  int row = username->row();
+  int row=username->row();
   QString sql;
   RDSqlQuery *q;
-  QTableWidgetItem *icon = list_users_view->item(row,0);
-  QTableWidgetItem *name = list_users_view->item(row,2);
-  QTableWidgetItem *description = list_users_view->item(row,3);
+  QTableWidgetItem *icon=list_users_view->item(row,0);
+  QTableWidgetItem *name=list_users_view->item(row,2);
+  QTableWidgetItem *description=list_users_view->item(row,3);
 
   sql=QString("select ")+
     "ADMIN_CONFIG_PRIV,"+
@@ -343,7 +343,7 @@ void ListUsers::RefreshItem(QTableWidgetItem *username)
   q=new RDSqlQuery(sql);
   if(q->first()) {
     if(!icon) {
-      icon = new QTableWidgetItem();
+      icon=new QTableWidgetItem();
       list_users_view->setItem(row,0,icon);
     }
     if(q->value(0).toString()=="Y") {
@@ -353,13 +353,13 @@ void ListUsers::RefreshItem(QTableWidgetItem *username)
       icon->setIcon(QIcon(*list_user_map));
     }
     if(!name) {
-      name = new QTableWidgetItem(q->value(1).toString());
+      name=new QTableWidgetItem(q->value(1).toString());
       list_users_view->setItem(row,2,name);
     } else {
       name->setText(q->value(1).toString());
     }
     if(!description) {
-      description = new QTableWidgetItem(q->value(2).toString());
+      description=new QTableWidgetItem(q->value(2).toString());
       list_users_view->setItem(row,3,description);
     } else {
       description->setText(q->value(2).toString());
