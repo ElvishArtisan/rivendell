@@ -25,7 +25,7 @@
 #include <QPushButton>
 #include <QResizeEvent>
 
-#include <rdlistviewitem.h>
+#include <rdtablewidget.h>
 
 class ListReplicators : public QDialog
 {
@@ -41,7 +41,7 @@ class ListReplicators : public QDialog
   void editData();
   void deleteData();
   void listData();
-  void doubleClickedData(Q3ListViewItem *item,const QPoint &pt,int col);
+  void doubleClickedData(QTableWidgetItem *item);
   void closeData();
 
  protected:
@@ -49,8 +49,8 @@ class ListReplicators : public QDialog
 
  private:
   void RefreshList();
-  void RefreshItem(RDListViewItem *item);
-  RDListView *list_replicators_view;
+  void RefreshItem(QTableWidgetItem *name);
+  RDTableWidget *list_replicators_view;
   QPushButton *list_add_button;
   QPushButton *list_edit_button;
   QPushButton *list_delete_button;
