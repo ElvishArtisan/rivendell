@@ -15551,3 +15551,12 @@
 	test harness to fail when using non-localhost URLs.
 	* Fixed a bug in 'web/tests/editcart.js' that caused the EditCut
 	test harness to fail when using non-localhost URLs.
+2017-02-07 Fred Gleason <fredg@paravelsystems.com>
+	* Changed the DLL load target for libmad from 'libmad.so' to
+	'libmad.so.0' in 'cae/cae.cpp' and 'lib/rdaudioconvert.cpp'.
+	* Changed the DLL load target for lame from 'libmp3lame.so' to
+	'libmp3lame.so.0' in 'cae/cae.cpp' and 'lib/rdaudioconvert.cpp'.
+	* Changed the DLL load target for faad from 'libfaad.so' to
+	'libfaad.so.2' in 'cae/cae.cpp' and 'lib/rdmp4.cpp'.
+	* Changed the DLL load target for mp4v2 from 'libmp4v2.so' to
+	'libmp4v2.so.2' in 'cae/cae.cpp' and 'lib/rdaudioconvert.cpp'.

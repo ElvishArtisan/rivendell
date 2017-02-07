@@ -74,9 +74,9 @@ RDAudioConvert::RDAudioConvert(const QString &station_name,QObject *parent)
   //
   // Load MPEG Libraries
   //
-  conv_mad_handle=dlopen("libmad.so",RTLD_LAZY);
-  conv_lame_handle=dlopen("libmp3lame.so",RTLD_LAZY);
-  conv_twolame_handle=dlopen("libtwolame.so",RTLD_LAZY);
+  conv_mad_handle=dlopen("libmad.so.0",RTLD_LAZY);
+  conv_lame_handle=dlopen("libmp3lame.so.0",RTLD_LAZY);
+  conv_twolame_handle=dlopen("libtwolame.so.0",RTLD_LAZY);
 }
 
 

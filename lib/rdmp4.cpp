@@ -64,8 +64,8 @@ bool DLMP4::load()
   if(loadSuccess)
     return true;
 
-  neaac_handle = dlopen("libfaad.so",RTLD_LAZY);
-  mp4_handle = dlopen("libmp4v2.so",RTLD_LAZY);
+  neaac_handle = dlopen("libfaad.so.2",RTLD_LAZY);
+  mp4_handle = dlopen("libmp4v2.so.2",RTLD_LAZY);
 
   if(!neaac_handle || !mp4_handle)
     return false;
