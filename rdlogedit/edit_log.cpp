@@ -1367,6 +1367,18 @@ void EditLog::RefreshLine(RDListViewItem *item)
 
       default:
 	if(logline->
+	   startTime(RDLogLine::Predicted).isNull()) {
+	  item->setText(1,edit_log_event->
+			blockStartTime(line).
+			toString("hh:mm:ss.zzz").left(10));
+	}
+	else {
+	  item->setText(1,edit_log_event->
+			logLine(line)->startTime(RDLogLine::Predicted).
+			toString("hh:mm:ss.zzz").left(10));
+	}
+	/*
+	if(logline->
 	   startTime(RDLogLine::Logged).isNull()) {
 	  item->setText(1,edit_log_event->
 			blockStartTime(line).
@@ -1377,6 +1389,7 @@ void EditLog::RefreshLine(RDListViewItem *item)
 			logLine(line)->startTime(RDLogLine::Logged).
 			toString("hh:mm:ss.zzz").left(10));
 	}
+	*/
 	break;
   }
   switch(logline->transType()) {
