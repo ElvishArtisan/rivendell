@@ -15560,3 +15560,6 @@
 	'libfaad.so.2' in 'cae/cae.cpp' and 'lib/rdmp4.cpp'.
 	* Changed the DLL load target for mp4v2 from 'libmp4v2.so' to
 	'libmp4v2.so.2' in 'cae/cae.cpp' and 'lib/rdaudioconvert.cpp'.
+2017-02-07 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'web/rdxport/logs.cpp' the caused the 'SaveLog'
+	web method to fail.

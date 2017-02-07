@@ -259,7 +259,7 @@ void Xport::SaveLog()
   for(int i=0;i<line_quantity;i++) {
     logevt->insert(i,1);
     RDLogLine *ll=logevt->logLine(i);
-    QString line=QString().sprintf("LINE%d_",i);
+    QString line=QString().sprintf("LINE%d",i);
     QString str;
     int integer1;
     int integer2;
