@@ -297,7 +297,6 @@ void ListReplicators::RefreshList()
     list_replicators_view->setItem(newRow,1,type);
     list_replicators_view->setItem(newRow,2,description);
     list_replicators_view->setItem(newRow,3,host);
-    list_replicators_view->setItem(newRow,2,description);
   }
   delete q;
 }
