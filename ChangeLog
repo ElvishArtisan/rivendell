@@ -15571,3 +15571,5 @@
 2017-02-08 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed bugs in 'conf/Makefile.am' and 'rlm/Makefile.am' that broke
 	the 'make rpm' target.
+2017-02-08 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.15.2int01.
