@@ -44,6 +44,7 @@ EXTRA_DIST = my.cnf-master\
              rlm_shoutcast1.conf\
              rlm_spinitron_plus.conf\
              rlm_spottrap.conf\
+             rlm_tagstation.conf\
              rlm_twitter.conf\
              rlm_udp.conf\
              rlm_walltime.conf\

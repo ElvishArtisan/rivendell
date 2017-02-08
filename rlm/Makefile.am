@@ -72,6 +72,7 @@ EXTRA_DIST = Makefile-example\
              rlm_shoutcast1.c\
              rlm_spinitron_plus.c\
              rlm_spottrap.c\
+             rlm_tagstation.c\
              rlm_test.c\
              rlm_twitter.c\
              rlm_udp.c\
