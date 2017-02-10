@@ -1955,6 +1955,7 @@ QString RDLogLine::xml(int line) const
   }
   ret+="    "+RDXmlField("client",client());
   ret+="    "+RDXmlField("agency",agency());
+  ret+="    "+RDXmlField("conductor",conductor());
   ret+="    "+RDXmlField("userDefined",userDefined());
   ret+="    "+RDXmlField("usageCode",usageCode());
   ret+="    "+RDXmlField("enforceLength",enforceLength());
