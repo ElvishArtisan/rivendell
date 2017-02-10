@@ -1968,7 +1968,12 @@ QString RDLogLine::xml(int line) const
 			   toString("hh:mm:ss.zzz"));
   }
   else {
-    ret+="    "+RDXmlField("startTime");
+    if(timeType()==RDLogLine::Hard) {
+      ret+="    "+RDXmlField("startTime","00:00:00.000");
+    }
+    else {
+      ret+="    "+RDXmlField("startTime");
+    }
   }
   ret+="    "+RDXmlField("transitionType",RDLogLine::transText(transType()));
   ret+="    "+RDXmlField("cutQuantity",cutQuantity());
