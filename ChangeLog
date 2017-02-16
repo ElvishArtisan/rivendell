@@ -15580,3 +15580,8 @@
 2017-02-10 Fred Gleason <fredg@paravelsystems.com>
 	* Added a '<conductor>' field to the output of the 'ListLog' web
 	API method.
+2017-02-16 Fred Gleason <fredg@paravelsystems.com>
+	* Modified the '<forcedLength>', '<averageLength>',
+	'<lengthDeviation>', '<averageSegueLength>' and
+	'<averageHookLength>' fields in the return of the 'ListCart'
+	and 'ListCarts' web methods to return a two-digit hours field.
