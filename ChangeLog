@@ -15585,3 +15585,6 @@
 	'<lengthDeviation>', '<averageSegueLength>' and
 	'<averageHookLength>' fields in the return of the 'ListCart'
 	and 'ListCarts' web methods to return a two-digit hours field.
+2017-02-17 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'rdlogedit/voice_tracker.cpp' where the Title
+	of voice track carts was not having whitespace trimmed properly.

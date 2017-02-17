@@ -3930,7 +3930,7 @@ bool VoiceTracker::InitTrack()
   }
   edit_track_cart=new RDCart(next_cart);
   edit_track_cart->setOwner(track_log->name());
-  edit_track_cart->setTitle(edit_logline[1]->markerComment());
+  edit_track_cart->setTitle(edit_logline[1]->markerComment().stripWhiteSpace());
   if(edit_track_cuts[1]!=NULL) {
     delete edit_track_cuts[1];
   }
