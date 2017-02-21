@@ -15588,3 +15588,5 @@
 2017-02-17 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in 'rdlogedit/voice_tracker.cpp' where the Title
 	of voice track carts was not having whitespace trimmed properly.
+2017-02-21 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a typo in 'conf/rlm_tagstation.conf'.
