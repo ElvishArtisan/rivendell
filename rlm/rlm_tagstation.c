@@ -39,7 +39,7 @@ char *rlm_tagstation_titles;
 char *rlm_tagstation_artists;
 char *rlm_tagstation_albums;
 char *rlm_tagstation_adps;
-char *rlm_tagstation_etos;
+char *rlm_tagstation_pros;
 char *rlm_tagstation_muss;
 int *rlm_tagstation_masters;
 int *rlm_tagstation_aux1s;
@@ -65,13 +65,13 @@ char *rlm_tagstation_GetCategory(const char *grp_name,int num)
 {
   static char ret[3];
 
-  strncpy(ret,"PRO",3);
+  memset(ret,0,3);
   if(strlen(grp_name)!=0) {
     if(rlm_tagstation_ContainsString(rlm_tagstation_adps+256*num,grp_name)>0) {
       strncpy(ret,"ADP",3);
     }
-    if(rlm_tagstation_ContainsString(rlm_tagstation_etos+256*num,grp_name)>0) {
-      strncpy(ret,"ETO",3);
+    if(rlm_tagstation_ContainsString(rlm_tagstation_pros+256*num,grp_name)>0) {
+      strncpy(ret,"PRO",3);
     }
     if(rlm_tagstation_ContainsString(rlm_tagstation_muss+256*num,grp_name)>0) {
       strncpy(ret,"MUS",3);
@@ -124,7 +124,7 @@ void rlm_tagstation_RLMStart(void *ptr,const char *arg)
   rlm_tagstation_artists=NULL;
   rlm_tagstation_albums=NULL;
   rlm_tagstation_adps=NULL;
-  rlm_tagstation_etos=NULL;
+  rlm_tagstation_pros=NULL;
   rlm_tagstation_muss=NULL;
   rlm_tagstation_masters=NULL;
   rlm_tagstation_aux1s=NULL;
@@ -163,9 +163,9 @@ void rlm_tagstation_RLMStart(void *ptr,const char *arg)
     strncpy(rlm_tagstation_adps+256*rlm_tagstation_devs,
 	    RLMGetStringValue(ptr,arg,section,"CategoryAdvertisement",""),256);
 
-    rlm_tagstation_etos=realloc(rlm_tagstation_etos,(rlm_tagstation_devs+1)*256);
-    strncpy(rlm_tagstation_etos+256*rlm_tagstation_devs,
-	    RLMGetStringValue(ptr,arg,section,"CategoryGapLookup",""),256);
+    rlm_tagstation_pros=realloc(rlm_tagstation_pros,(rlm_tagstation_devs+1)*256);
+    strncpy(rlm_tagstation_pros+256*rlm_tagstation_devs,
+	    RLMGetStringValue(ptr,arg,section,"CategoryPromotion",""),256);
 
     rlm_tagstation_muss=realloc(rlm_tagstation_muss,(rlm_tagstation_devs+1)*256);
     strncpy(rlm_tagstation_muss+256*rlm_tagstation_devs,
@@ -203,7 +203,7 @@ void rlm_tagstation_RLMFree(void *ptr)
   free(rlm_tagstation_artists);
   free(rlm_tagstation_albums);
   free(rlm_tagstation_adps);
-  free(rlm_tagstation_etos);
+  free(rlm_tagstation_pros);
   free(rlm_tagstation_muss);
   free(rlm_tagstation_masters);
   free(rlm_tagstation_aux1s);
@@ -222,6 +222,7 @@ void rlm_tagstation_RLMPadDataSent(void *ptr,const struct rlm_svc *svc,
   char fmt[1024];
   char url[4096];
   char msg[1500];
+  char category[4];
 
   for(i=0;i<rlm_tagstation_devs;i++) {
     switch(log->log_mach) {
@@ -238,28 +239,31 @@ void rlm_tagstation_RLMPadDataSent(void *ptr,const struct rlm_svc *svc,
 	break;
     }
     if((flag==1)||((flag==2)&&(log->log_onair!=0))) {
-      snprintf(fmt,1024,"https://tsl.tagstation.com/tsl.ashx?CID=%s&Title=%s&Artist=%s&Album=%s&EventCategory=%s&EventID=%%n&Duration=%%h&LookAhead=False",
-	       rlm_tagstation_clientids+256*i,
-	       rlm_tagstation_titles+256*i,
-	       rlm_tagstation_artists+256*i,
-	       rlm_tagstation_albums+256*i,
-	       rlm_tagstation_GetCategory(now->rlm_group,i));
+      strncpy(category,rlm_tagstation_GetCategory(now->rlm_group,i),3);
+      if(category[0]!=0) {
+	snprintf(fmt,1024,"https://tsl.tagstation.com/tsl.ashx?CID=%s&Title=%s&Artist=%s&Album=%s&EventCategory=%s&EventID=%%n&Duration=%%h&LookAhead=False",
+		 rlm_tagstation_clientids+256*i,
+		 rlm_tagstation_titles+256*i,
+		 rlm_tagstation_artists+256*i,
+		 rlm_tagstation_albums+256*i,
+		 category);
 	      
-      strncpy(url,RLMResolveNowNextEncoded(ptr,now,next,fmt,RLM_ENCODE_URL),
-	      4096);
-      snprintf(account,1024,"%s:%s",rlm_tagstation_clientids+256*i,
-	       rlm_tagstation_passwords+256*i);
-      if(strlen(now->rlm_title)!=0) {
-	if(fork()==0) {
-	  execlp("curl","curl","-u",account,"-o","/dev/null","-s",
-		 url,(char *)NULL);
-	  RLMLog(ptr,LOG_WARNING,"rlm_tagstation: unable to execute curl(1)");
-	  exit(0);
+	strncpy(url,RLMResolveNowNextEncoded(ptr,now,next,fmt,RLM_ENCODE_URL),
+		4096);
+	snprintf(account,1024,"%s:%s",rlm_tagstation_clientids+256*i,
+		 rlm_tagstation_passwords+256*i);
+	if(strlen(now->rlm_title)!=0) {
+	  if(fork()==0) {
+	    execlp("curl","curl","-u",account,"-o","/dev/null","-s",
+		   url,(char *)NULL);
+	    RLMLog(ptr,LOG_WARNING,"rlm_tagstation: unable to execute curl(1)");
+	    exit(0);
+	  }
 	}
+	snprintf(msg,1500,"rlm_tagstation: sending pad update: \"%s\"",
+		 (const char *)url);
+	RLMLog(ptr,LOG_INFO,msg);
       }
-      snprintf(msg,1500,"rlm_tagstation: sending pad update: \"%s\"",
-	       (const char *)url);
-      RLMLog(ptr,LOG_INFO,msg);
     }
   }
 }

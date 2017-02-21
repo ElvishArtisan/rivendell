@@ -15593,3 +15593,10 @@
 2017-02-21 Fred Gleason <fredg@paravelsystems.com>
 	* Renamed the 'CustomerID' parameter in 'rlm/rlm_tagstation.c' to
 	'ClientID'.
+2017-02-21 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the 'CategoryGapLookup=' parameter from
+	rlm_tagstation.conf(5).
+	* Added a 'CategoryPromotion=' parameter to rlm_tagstation.conf(5).
+	* Changed the behavior of the TagStation RLM as to not send an update
+	if its group is not explicitly listed in one of the TagStation
+	categories.
