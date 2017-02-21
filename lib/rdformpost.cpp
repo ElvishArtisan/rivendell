@@ -112,7 +112,7 @@ RDFormPost::~RDFormPost()
     for(std::map<QString,bool>::const_iterator ci=post_filenames.begin();
 	ci!=post_filenames.end();ci++) {
       if(ci->second) {
-	unlink(post_values[ci->first].toString());
+	unlink(post_values.at(ci->first).toString());
       }
     }
     if(!post_tempdir.isNull()) {
@@ -143,7 +143,7 @@ QVariant RDFormPost::value(const QString &name,bool *ok)
 {
   QVariant v;
   if(post_values.count(name)>0) {
-    v=post_values[name];
+    v=post_values.at(name);
   }
   if(ok!=NULL) {
     *ok=(post_values.count(name)>0);
@@ -170,7 +170,7 @@ bool RDFormPost::getValue(const QString &name,QHostAddress *addr,bool *ok)
 bool RDFormPost::getValue(const QString &name,QString *str,bool *ok)
 {
   if(post_values.count(name)>0) {
-    *str=post_values[name].toString();
+    *str=post_values.at(name).toString();
     return true;
   }
   return false;
@@ -180,7 +180,7 @@ bool RDFormPost::getValue(const QString &name,QString *str,bool *ok)
 bool RDFormPost::getValue(const QString &name,int *n,bool *ok)
 {
   if(post_values.count(name)>0) {
-    *n=post_values[name].toInt(ok);
+    *n=post_values.at(name).toInt(ok);
     return true;
   }
   return false;
@@ -190,7 +190,7 @@ bool RDFormPost::getValue(const QString &name,int *n,bool *ok)
 bool RDFormPost::getValue(const QString &name,long *n,bool *ok)
 {
   if(post_values.count(name)>0) {
-    *n=post_values[name].toLongLong(ok);
+    *n=post_values.at(name).toLongLong(ok);
     return true;
   }
   *n=0;
@@ -264,7 +264,7 @@ bool RDFormPost::getValue(const QString &name,QTime *time,bool *ok)
 bool RDFormPost::getValue(const QString &name,bool *state,bool *ok)
 {
   if(post_values.count(name)>0) {
-    *state=post_values[name].toInt(ok);
+    *state=post_values.at(name).toInt(ok);
     return true;
   }
   return false;
@@ -445,6 +445,7 @@ void RDFormPost::LoadUrlEncoding(char first)
   printf("POST DUMPED TO \"/tmp/output.dat\"!\n");
   exit(0);
   */
+
   lines=lines.split("&",data);
   for(unsigned i=0;i<lines.size();i++) {
     line=line.split("=",lines[i]);
@@ -558,14 +559,14 @@ void RDFormPost::LoadMultipartEncoding(char first)
     }
     else {  // Read data
       if(filename.isEmpty()) {
-	QString str=post_values[name].toString();
+	QString str=post_values.at(name).toString();
 	str+=QString(data);
 	post_filenames[name]=false;
-	post_values[name]=str.simplifyWhiteSpace();
+	post_values.at(name)=str.simplifyWhiteSpace();
       }
       else {
 	post_filenames[name]=true;
-	post_values[name]=filename;
+	post_values.at(name)=filename;
 	write(fd,data,n);
       }
     }

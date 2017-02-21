@@ -266,8 +266,13 @@ void Xport::SaveLog()
     QDateTime datetime;
     QTime time;
     bool state;
-    if(!xport_post->getValue(line+"_ID",&integer1)) {
+    bool ok=false;
+
+    if(!xport_post->getValue(line+"_ID",&integer1,&ok)) {
       XmlExit("Missing "+line+"_ID",400);
+    }
+    if(!ok) {
+      XmlExit("Invalid "+line+"_ID",400);
     }
     ll->setId(integer1);
 
@@ -452,5 +457,5 @@ void Xport::SaveLog()
 
   logevt->save();
 
-  XmlExit("OK",200);
+  XmlExit(QString().sprintf("OK Saved %d events",logevt->size()),200);
 }

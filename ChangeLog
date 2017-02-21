@@ -15600,3 +15600,8 @@
 	* Changed the behavior of the TagStation RLM as to not send an update
 	if its group is not explicitly listed in one of the TagStation
 	categories.
+2017-02-21 Fred Gleason <fredg@paravelsystems.com>
+	* Modified 'lib/rdformpost.cpp' to use read-only accessors for
+	std::map values.
+	* Added a check for valid event IDs for the 'SaveLog' method in
+	'web/rdxport/logs.cpp'.
