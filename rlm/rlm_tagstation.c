@@ -33,7 +33,7 @@
 #include <rlm/rlm.h>
 
 int rlm_tagstation_devs;
-char *rlm_tagstation_customerids;
+char *rlm_tagstation_clientids;
 char *rlm_tagstation_passwords;
 char *rlm_tagstation_titles;
 char *rlm_tagstation_artists;
@@ -118,7 +118,7 @@ void rlm_tagstation_RLMStart(void *ptr,const char *arg)
   int i=1;
 
   rlm_tagstation_devs=0;
-  rlm_tagstation_customerids=NULL;
+  rlm_tagstation_clientids=NULL;
   rlm_tagstation_passwords=NULL;
   rlm_tagstation_titles=NULL;
   rlm_tagstation_artists=NULL;
@@ -131,16 +131,16 @@ void rlm_tagstation_RLMStart(void *ptr,const char *arg)
   rlm_tagstation_aux2s=NULL;
 
   sprintf(section,"TagStation%d",i++);
-  strncpy(username,RLMGetStringValue(ptr,arg,section,"CustomerId",""),255);
+  strncpy(username,RLMGetStringValue(ptr,arg,section,"ClientId",""),255);
   username[255]=0;
   if(strlen(username)==0) {
     RLMLog(ptr,LOG_WARNING,"rlm_tagstation: no tagstation instances specified");
     return;
   }
   while(strlen(username)>0) {
-    rlm_tagstation_customerids=realloc(rlm_tagstation_customerids,
+    rlm_tagstation_clientids=realloc(rlm_tagstation_clientids,
 			   (rlm_tagstation_devs+1)*(rlm_tagstation_devs+1)*256);
-    strcpy(rlm_tagstation_customerids+256*rlm_tagstation_devs,username);
+    strcpy(rlm_tagstation_clientids+256*rlm_tagstation_devs,username);
 
     rlm_tagstation_passwords=realloc(rlm_tagstation_passwords,
 			   (rlm_tagstation_devs+1)*(rlm_tagstation_devs+1)*256);
@@ -184,8 +184,8 @@ void rlm_tagstation_RLMStart(void *ptr,const char *arg)
     rlm_tagstation_aux2s[rlm_tagstation_devs]=
       rlm_tagstation_GetLogStatus(ptr,arg,section,"Aux2Log");
     sprintf(errtext,
-	"rlm_tagstation: configured TagStation instance for Customer ID \"%s\"",
-	    rlm_tagstation_customerids+256*rlm_tagstation_devs);
+	"rlm_tagstation: configured TagStation instance for Client ID \"%s\"",
+	    rlm_tagstation_clientids+256*rlm_tagstation_devs);
     rlm_tagstation_devs++;
     RLMLog(ptr,LOG_INFO,errtext);
     sprintf(section,"TagStation%d",i++);
@@ -197,7 +197,7 @@ void rlm_tagstation_RLMStart(void *ptr,const char *arg)
 
 void rlm_tagstation_RLMFree(void *ptr)
 {
-  free(rlm_tagstation_customerids);
+  free(rlm_tagstation_clientids);
   free(rlm_tagstation_passwords);
   free(rlm_tagstation_titles);
   free(rlm_tagstation_artists);
@@ -239,7 +239,7 @@ void rlm_tagstation_RLMPadDataSent(void *ptr,const struct rlm_svc *svc,
     }
     if((flag==1)||((flag==2)&&(log->log_onair!=0))) {
       snprintf(fmt,1024,"https://tsl.tagstation.com/tsl.ashx?CID=%s&Title=%s&Artist=%s&Album=%s&EventCategory=%s&EventID=%%n&Duration=%%h&LookAhead=False",
-	       rlm_tagstation_customerids+256*i,
+	       rlm_tagstation_clientids+256*i,
 	       rlm_tagstation_titles+256*i,
 	       rlm_tagstation_artists+256*i,
 	       rlm_tagstation_albums+256*i,
@@ -247,7 +247,7 @@ void rlm_tagstation_RLMPadDataSent(void *ptr,const struct rlm_svc *svc,
 	      
       strncpy(url,RLMResolveNowNextEncoded(ptr,now,next,fmt,RLM_ENCODE_URL),
 	      4096);
-      snprintf(account,1024,"%s:%s",rlm_tagstation_customerids+256*i,
+      snprintf(account,1024,"%s:%s",rlm_tagstation_clientids+256*i,
 	       rlm_tagstation_passwords+256*i);
       if(strlen(now->rlm_title)!=0) {
 	if(fork()==0) {

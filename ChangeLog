@@ -15590,3 +15590,6 @@
 	of voice track carts was not having whitespace trimmed properly.
 2017-02-21 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a typo in 'conf/rlm_tagstation.conf'.
+2017-02-21 Fred Gleason <fredg@paravelsystems.com>
+	* Renamed the 'CustomerID' parameter in 'rlm/rlm_tagstation.c' to
+	'ClientID'.
