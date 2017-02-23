@@ -796,7 +796,7 @@ void AudioCart::RefreshList()
       l->setText(8,tr("None"));
     }
     if(!q->value(15).isNull()) {
-      l->setText(9,q->value(15).toTime().toString("hh:mm:ss"));
+      l->setText(9,q->value(14).toTime().toString("hh:mm:ss"));
       l->setText(10,q->value(15).toTime().toString("hh:mm:ss"));
     }
     else {
