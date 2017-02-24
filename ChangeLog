@@ -15605,3 +15605,5 @@
 	std::map values.
 	* Added a check for valid event IDs for the 'SaveLog' method in
 	'web/rdxport/logs.cpp'.
+2017-02-24 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.15.2int02.
