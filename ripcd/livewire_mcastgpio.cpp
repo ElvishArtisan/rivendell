@@ -279,7 +279,8 @@ void LiveWireMcastGpio::gpioActivatedData(int sock)
 		    (struct sockaddr *)(&sa),&sa_len))>0) {
     serial=((0xFF&data[4])<<24)+((0xFF&data[5])<<16)+((0xFF&data[6])<<8)+
       (0xFF&data[7]);
-    if(livewire_gpio_recv_serials[sa.sin_addr.s_addr]!=(serial-1)) {
+    if((livewire_gpio_recv_serials[sa.sin_addr.s_addr]!=serial)&&
+       (livewire_gpio_recv_serials[sa.sin_addr.s_addr]!=(serial-1))) {
       livewire_gpio_recv_serials[sa.sin_addr.s_addr]=serial;
       ProcessGpi(QHostAddress(ntohl(sa.sin_addr.s_addr)),
 		 ((0xFF&data[23])<<8)+(0xFF&data[24]),0x08-(0xff&data[25]),
@@ -380,7 +381,7 @@ void LiveWireMcastGpio::ProcessGpoIn(int chan,unsigned line,bool state)
   data[7]=0xFF&livewire_gpio_send_serial;
   sendto(livewire_gpio_write_socket,data,60,MSG_DONTWAIT,
 	 (struct sockaddr *)(&sa),sizeof(sa));
-  livewire_gpio_send_serial++;
+  livewire_gpio_send_serial+=2;
 }
 
 
@@ -434,7 +435,7 @@ void LiveWireMcastGpio::ProcessGpoOut(int chan,unsigned line,bool state)
   data[7]=0xFF&livewire_gpio_send_serial;
   sendto(livewire_gpio_write_socket,data,28,MSG_DONTWAIT,
 	 (struct sockaddr *)(&sa),sizeof(sa));
-  livewire_gpio_send_serial++;
+  livewire_gpio_send_serial+=2;
 }
 
 

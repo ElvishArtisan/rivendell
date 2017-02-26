@@ -15607,3 +15607,6 @@
 	'web/rdxport/logs.cpp'.
 2017-02-24 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 2.15.2int02.
+2017-02-26 Fred Gleason <fredg@paravelsystems.com>
+	* Modified 'ripcd/livewire_mcastgpio.cpp' to double-signal GPIO
+	events.
