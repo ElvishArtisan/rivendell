@@ -559,14 +559,14 @@ void RDFormPost::LoadMultipartEncoding(char first)
     }
     else {  // Read data
       if(filename.isEmpty()) {
-	QString str=post_values.at(name).toString();
+	QString str=post_values[name].toString();
 	str+=QString(data);
 	post_filenames[name]=false;
-	post_values.at(name)=str.simplifyWhiteSpace();
+	post_values[name]=str.simplifyWhiteSpace();
       }
       else {
 	post_filenames[name]=true;
-	post_values.at(name)=filename;
+	post_values[name]=filename;
 	write(fd,data,n);
       }
     }
