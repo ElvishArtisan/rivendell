@@ -630,9 +630,9 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
       }
       delete q;
       
-      sql=QString().sprintf("SELECT SCHED_STACK_ID from %s_STACK order by SCHED_STACK_ID",(const char*)svcname_rp);
+      sql=QString().sprintf("SELECT MAX(SCHED_STACK_ID) from %s_STACK",(const char*)svcname_rp);
       q=new RDSqlQuery(sql);
-      if (q->last())
+      if (q->next())
       { 
 	stackid=q->value(0).toUInt();
       }
@@ -833,11 +833,13 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
 
       count++;
 
+      time_type=RDLogLine::Relative;
 
 
-      sql=QString().sprintf("insert into `%s_STACK` set SCHED_STACK_ID=%u,CART=%u,ARTIST=\"%s\",SCHED_CODES=\"%s\"",(const char*)svcname_rp,
+      sql=QString().sprintf("insert into `%s_STACK` set SCHED_STACK_ID=%u,CART=%u,ARTIST=\"%s\",SCHED_CODES=\"%s\",SCHEDULED_AT=\"%s\"",(const char*)svcname_rp,
 			    stackid,schedCL->getItemCartnumber(schedpos),
-			    (const char *)RDEscapeString(schedCL->getItemArtist(schedpos)),(const char *)schedCL->getItemSchedCodes(schedpos));
+			    (const char *)RDEscapeString(schedCL->getItemArtist(schedpos)),(const char *)schedCL->getItemSchedCodes(schedpos),
+			    (const char *)QDateTime(QDate::currentDate(),QTime::currentTime()).toString("yyyy-MM-dd hh:mm:ss"));
       q=new RDSqlQuery(sql);
       delete q;
       delete schedCL;
