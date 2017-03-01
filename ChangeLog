@@ -15621,3 +15621,5 @@
 	* Fixed a bug in 'rdlibrary/audio_cart.cpp' where the 'Conductor'
 	failed to be imported from RDXL chunks.
 	* Added a 'songId' field to the cart metadata XML.
+2017-03-01 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.15.2int03.
