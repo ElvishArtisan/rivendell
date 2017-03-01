@@ -15612,3 +15612,8 @@
 	events.
 2017-02-28 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in 'lib/rdformpost.cpp'.
+2017-03-01 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'RDCart::xmlSql()' and second 'RDCart::xml()' methods.
+	* Refactored the 'RDCart::xml()' method to use a SQL query.
+	* Refactored the Cart and Cut web methods in 'web/rdxport/carts.cpp'
+	to use SQL queries.

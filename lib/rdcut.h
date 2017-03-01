@@ -23,6 +23,7 @@
 #include <qobject.h>
 
 #include <rdconfig.h>
+#include <rddb.h>
 #include <rdwavedata.h>
 #include <rdsettings.h>
 #include <rdstation.h>
@@ -127,7 +128,6 @@ class RDCut
 	      RDConfig *config) const;
   void getMetadata(RDWaveData *data) const;
   void setMetadata(RDWaveData *data) const;
-  QString xml(bool absolute,RDSettings *settings=NULL) const;
   bool checkInRecording(const QString &stationname,RDSettings *settings,
 			unsigned msecs) const;
   void autoTrim(RDCut::AudioEnd end,int level);
@@ -136,6 +136,7 @@ class RDCut
   void reset() const;
   void connect(QObject *receiver,const char *member) const;
   void disconnect(QObject *receiver,const char *member) const;
+  static QString xml(RDSqlQuery *q,bool absolute,RDSettings *settings=NULL);
   static QString cutName(unsigned cartnum,unsigned cutnum);
   static unsigned cartNumber(const QString &cutname);
   static unsigned cutNumber(const QString &cutname);

@@ -991,129 +991,16 @@ QString RDCart::xml(bool include_cuts,bool absolute,
 #ifdef WIN32
   return QString();
 #else
-  QString sql;
-  RDSqlQuery *q;
-  RDSqlQuery *q1;
-  QString ret="";
-  RDCut *cut;
-  QStringList mlist;
-
-  sql=QString("select ")+
-    "TYPE,"+                  // 00
-    "GROUP_NAME,"+            // 01
-    "TITLE,"+                 // 02
-    "ARTIST,"+                // 03
-    "ALBUM,"+                 // 04
-    "YEAR,"+                  // 05
-    "LABEL,"+                 // 06
-    "CLIENT,"+                // 07
-    "AGENCY,"+                // 08
-    "PUBLISHER,"+             // 09
-    "COMPOSER,"+              // 10
-    "USER_DEFINED,"+          // 11
-    "USAGE_CODE,"+            // 12
-    "FORCED_LENGTH,"+         // 13
-    "AVERAGE_LENGTH,"+        // 14
-    "LENGTH_DEVIATION,"+      // 15
-    "AVERAGE_SEGUE_LENGTH,"+  // 16
-    "AVERAGE_HOOK_LENGTH,"+   // 17
-    "CUT_QUANTITY,"+          // 18
-    "LAST_CUT_PLAYED,"+       // 19
-    "VALIDITY,"+              // 20
-    "ENFORCE_LENGTH,"+        // 21
-    "ASYNCRONOUS,"+           // 22
-    "OWNER,"+                 // 23
-    "METADATA_DATETIME,"+     // 24
-    "CONDUCTOR "+             // 25
-    QString().sprintf("from CART where NUMBER=%u",cart_number);
-  q=new RDSqlQuery(sql);
-  if(q->first()) {
-    ret+="<cart>\n";
-    ret+="  "+RDXmlField("number",cart_number);
-    switch((RDCart::Type)q->value(0).toUInt()) {
-    case RDCart::Audio:
-      ret+="  "+RDXmlField("type","audio");
-      break;
-
-    case RDCart::Macro:
-      ret+="  "+RDXmlField("type","macro");
-      break;
-
-    case RDCart::All:
-      break;
-    }
-    ret+="  "+RDXmlField("groupName",q->value(1).toString());
-    ret+="  "+RDXmlField("title",q->value(2).toString());
-    ret+="  "+RDXmlField("artist",q->value(3).toString());
-    ret+="  "+RDXmlField("album",q->value(4).toString());
-    ret+="  "+RDXmlField("year",q->value(5).toDate().toString("yyyy"));
-    ret+="  "+RDXmlField("label",q->value(6).toString());
-    ret+="  "+RDXmlField("client",q->value(7).toString());
-    ret+="  "+RDXmlField("agency",q->value(8).toString());
-    ret+="  "+RDXmlField("publisher",q->value(9).toString());
-    ret+="  "+RDXmlField("composer",q->value(10).toString());
-    ret+="  "+RDXmlField("conductor",q->value(25).toString());
-    ret+="  "+RDXmlField("userDefined",q->value(11).toString());
-    ret+="  "+RDXmlField("usageCode",q->value(12).toInt());
-    ret+="  "+RDXmlField("forcedLength",
-			 "0"+RDGetTimeLength(q->value(13).toUInt(),true));
-    ret+="  "+RDXmlField("averageLength",
-			 "0"+RDGetTimeLength(q->value(14).toUInt(),true));
-    ret+="  "+RDXmlField("lengthDeviation",
-			 "0"+RDGetTimeLength(q->value(15).toUInt(),true));
-    ret+="  "+RDXmlField("averageSegueLength",
-			 "0"+RDGetTimeLength(q->value(16).toUInt(),true));
-    ret+="  "+RDXmlField("averageHookLength",
-			 "0"+RDGetTimeLength(q->value(17).toUInt(),true));
-    ret+="  "+RDXmlField("cutQuantity",q->value(18).toUInt());
-    ret+="  "+RDXmlField("lastCutPlayed",q->value(19).toUInt());
-    ret+="  "+RDXmlField("enforceLength",RDBool(q->value(21).toString()));
-    ret+="  "+RDXmlField("asyncronous",RDBool(q->value(22).toString()));
-    ret+="  "+RDXmlField("owner",q->value(23).toString());
-    ret+="  "+RDXmlField("metadataDatetime",q->value(24).toDateTime());
-      switch(type()) {
-      case RDCart::Audio:
-	if(include_cuts) {
-	  ret+="<cutList>\n";
-	  if(cutnum<0) {
-	    sql=QString("select CUT_NAME from CUTS where ")+
-	      QString().sprintf("(CART_NUMBER=%u)",cart_number);
-	    q1=new RDSqlQuery(sql);
-	    while(q1->next()) {
-	      cut=new RDCut(q1->value(0).toString());
-	      ret+=cut->xml(absolute,settings);
-	      delete cut;
-	    }
-	    delete q1;
-	  }
-	  else {
-	    cut=new RDCut(RDCut::cutName(cart_number,cutnum));
-	    if(cut->exists()) {
-	      ret+=cut->xml(absolute,settings);
-	    }
-	    delete cut;
-	  }
-	  ret+="</cutList>\n";
-	}
-	break;
-
-      case RDCart::Macro:
-	mlist=mlist.split("!",macros());
-	ret+="  <macroList>\n";
-	for(unsigned i=0;i<mlist.size();i++) {
-	  ret+=QString().sprintf("    <macro%d>",i)+mlist[i]+
-	    QString().sprintf("!</macro%d>\n",i);
-	}
-	ret+="  </macroList>\n";
-	break;
-	
-      case RDCart::All:
-	break;
-      }
-      ret+="</cart>\n";
+  QString sql=RDCart::xmlSql(include_cuts)+
+    QString().sprintf(" where (CART.NUMBER=%u)",cart_number);
+  if(cutnum>=0) {
+    sql+=QString("&&(CUT_NAME=\"")+RDCut::cutName(cart_number,cutnum)+"\")";
   }
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  QString xml=RDCart::xml(q,include_cuts,absolute,settings);
   delete q;
-  return ret;
+
+  return xml;
 #endif  // WIN32
 }
 
@@ -1400,6 +1287,205 @@ bool RDCart::create(const QString &groupname,RDCart::Type type)
 bool RDCart::remove(RDStation *station,RDUser *user,RDConfig *config) const
 {
   return RDCart::removeCart(cart_number,station,user,config);
+}
+
+
+QString RDCart::xmlSql(bool include_cuts)
+{
+  QString sql=QString("select ")+
+    "CART.NUMBER,"+                // 00
+    "CART.TYPE,"+                  // 01
+    "CART.GROUP_NAME,"+            // 02
+    "CART.TITLE,"+                 // 03
+    "CART.ARTIST,"+                // 04
+    "CART.ALBUM,"+                 // 05
+    "CART.YEAR,"+                  // 06
+    "CART.LABEL,"+                 // 07
+    "CART.CLIENT,"+                // 08
+    "CART.AGENCY,"+                // 09
+    "CART.PUBLISHER,"+             // 10
+    "CART.COMPOSER,"+              // 11
+    "CART.USER_DEFINED,"+          // 12
+    "CART.USAGE_CODE,"+            // 13
+    "CART.FORCED_LENGTH,"+         // 14
+    "CART.AVERAGE_LENGTH,"+        // 15
+    "CART.LENGTH_DEVIATION,"+      // 16
+    "CART.AVERAGE_SEGUE_LENGTH,"+  // 17
+    "CART.AVERAGE_HOOK_LENGTH,"+   // 18
+    "CART.CUT_QUANTITY,"+          // 19
+    "CART.LAST_CUT_PLAYED,"+       // 20
+    "CART.VALIDITY,"+              // 21
+    "CART.ENFORCE_LENGTH,"+        // 22
+    "CART.ASYNCRONOUS,"+           // 23
+    "CART.OWNER,"+                 // 24
+    "CART.METADATA_DATETIME,"+     // 25
+    "CART.CONDUCTOR,"+             // 26
+    "CART.MACROS";                 // 27
+  if(include_cuts) {
+    sql+=QString(",")+
+      "CUTS.CUT_NAME,"+            // 28
+      "CUTS.EVERGREEN,"+           // 29
+      "CUTS.DESCRIPTION,"+         // 30
+      "CUTS.OUTCUE,"+              // 31
+      "CUTS.ISRC,"+                // 32
+      "CUTS.ISCI,"+                // 33
+      "CUTS.LENGTH,"+              // 34
+      "CUTS.ORIGIN_DATETIME,"+     // 35
+      "CUTS.START_DATETIME,"+      // 36
+      "CUTS.END_DATETIME,"+        // 37
+      "CUTS.SUN,"+                 // 38
+      "CUTS.MON,"+                 // 39
+      "CUTS.TUE,"+                 // 40
+      "CUTS.WED,"+                 // 41
+      "CUTS.THU,"+                 // 42
+      "CUTS.FRI,"+                 // 43
+      "CUTS.SAT,"+                 // 44
+      "CUTS.START_DAYPART,"+       // 45
+      "CUTS.END_DAYPART,"+         // 46
+      "CUTS.ORIGIN_NAME,"+         // 47
+      "CUTS.WEIGHT,"+              // 48
+      "CUTS.LAST_PLAY_DATETIME,"+  // 49
+      "CUTS.PLAY_COUNTER,"+        // 50
+      "CUTS.LOCAL_COUNTER,"+       // 51
+      "CUTS.VALIDITY,"+            // 52
+      "CUTS.CODING_FORMAT,"+       // 53
+      "CUTS.SAMPLE_RATE,"+         // 54
+      "CUTS.BIT_RATE,"+            // 55
+      "CUTS.CHANNELS,"+            // 56
+      "CUTS.PLAY_GAIN,"+           // 57
+      "CUTS.START_POINT,"+         // 58
+      "CUTS.END_POINT,"+           // 59
+      "CUTS.FADEUP_POINT,"+        // 60
+      "CUTS.FADEDOWN_POINT,"+      // 61
+      "CUTS.SEGUE_START_POINT,"+   // 62
+      "CUTS.SEGUE_END_POINT,"+     // 63
+      "CUTS.SEGUE_GAIN,"+          // 64
+      "CUTS.HOOK_START_POINT,"+    // 65
+      "CUTS.HOOK_END_POINT,"+      // 66
+      "CUTS.TALK_START_POINT,"+    // 67
+      "CUTS.TALK_END_POINT "+      // 68
+      "from CART left join CUTS "+
+      "on CART.NUMBER=CUTS.CART_NUMBER ";
+  }
+  else {
+    sql+=" from CART ";
+  }
+  return sql;
+}
+
+
+QString RDCart::xml(RDSqlQuery *q,bool include_cuts,
+		    bool absolute,RDSettings *settings,int cutnum)
+{
+  QStringList mlist;
+  unsigned cartnum;
+  QString xml="";
+
+  while(q->next()) {
+    xml+="<cart>\n";
+    xml+="  "+RDXmlField("number",q->value(0).toUInt());
+    switch((RDCart::Type)q->value(1).toUInt()) {
+    case RDCart::Audio:
+      xml+="  "+RDXmlField("type","audio");
+      break;
+
+    case RDCart::Macro:
+      xml+="  "+RDXmlField("type","macro");
+      break;
+
+    case RDCart::All:
+      break;
+    }
+    xml+="  "+RDXmlField("groupName",q->value(2).toString());
+    xml+="  "+RDXmlField("title",q->value(3).toString());
+    xml+="  "+RDXmlField("artist",q->value(4).toString());
+    xml+="  "+RDXmlField("album",q->value(5).toString());
+    xml+="  "+RDXmlField("year",q->value(6).toDate().toString("yyyy"));
+    xml+="  "+RDXmlField("label",q->value(7).toString());
+    xml+="  "+RDXmlField("client",q->value(8).toString());
+    xml+="  "+RDXmlField("agency",q->value(9).toString());
+    xml+="  "+RDXmlField("publisher",q->value(10).toString());
+    xml+="  "+RDXmlField("composer",q->value(11).toString());
+    xml+="  "+RDXmlField("conductor",q->value(26).toString());
+    xml+="  "+RDXmlField("userDefined",q->value(12).toString());
+    xml+="  "+RDXmlField("usageCode",q->value(13).toInt());
+    xml+="  "+RDXmlField("forcedLength",
+			 "0"+RDGetTimeLength(q->value(14).toUInt(),true));
+    xml+="  "+RDXmlField("averageLength",
+			 "0"+RDGetTimeLength(q->value(15).toUInt(),true));
+    xml+="  "+RDXmlField("lengthDeviation",
+			 "0"+RDGetTimeLength(q->value(16).toUInt(),true));
+    xml+="  "+RDXmlField("averageSegueLength",
+			 "0"+RDGetTimeLength(q->value(17).toUInt(),true));
+    xml+="  "+RDXmlField("averageHookLength",
+			 "0"+RDGetTimeLength(q->value(18).toUInt(),true));
+    xml+="  "+RDXmlField("cutQuantity",q->value(19).toUInt());
+    xml+="  "+RDXmlField("lastCutPlayed",q->value(20).toUInt());
+    xml+="  "+RDXmlField("enforceLength",RDBool(q->value(22).toString()));
+    xml+="  "+RDXmlField("asyncronous",RDBool(q->value(23).toString()));
+    xml+="  "+RDXmlField("owner",q->value(24).toString());
+    xml+="  "+RDXmlField("metadataDatetime",q->value(25).toDateTime());
+    switch((RDCart::Type)q->value(1).toInt()) {
+    case RDCart::Audio:
+      if(include_cuts) {
+	cartnum=q->value(0).toUInt();
+	if(q->value(28).toString().isEmpty()) {
+	  xml+="  <cutList/>\n";
+	}
+	else {
+	  xml+="  <cutList>\n";
+	  xml+="  "+RDCut::xml(q,absolute,settings);
+	  while(q->next()) {
+	    if(q->value(0).toUInt()==cartnum) {
+	      xml+="  "+RDCut::xml(q,absolute,settings);
+	    }
+	    else {
+	      q->prev();
+	      break;
+	    }
+	  }
+	  xml+="  </cutList>\n";
+	}
+      }
+      break;
+
+    case RDCart::Macro:
+      mlist=mlist.split("!",q->value(27).toString());
+      if(mlist.size()==0) {
+	xml+="  <macroList/>\n";
+      }
+      else {
+	xml+="  <macroList>\n";
+	for(unsigned i=0;i<mlist.size();i++) {
+	  xml+="    "+RDXmlField(QString().sprintf("macro%d",i),mlist[i]+"!");
+	}
+	xml+="  </macroList>\n";
+      }
+      break;
+	
+    case RDCart::All:
+      break;
+    }
+    xml+="</cart>\n";
+  }
+
+  return xml;
+}
+
+
+QString RDCart::cutXml(unsigned cartnum,int cutnum,bool absolute,
+		       RDSettings *settings)
+{
+  QString xml="";
+  QString sql=RDCart::xmlSql(true)+" where "+
+    "CUTS.CUT_NAME=\""+RDCut::cutName(cartnum,cutnum)+"\"";
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  if(q->first()) {
+    xml=RDCut::xml(q,absolute,settings);
+  }
+  delete q;
+
+  return xml;
 }
 
 

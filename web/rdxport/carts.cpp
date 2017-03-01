@@ -25,6 +25,7 @@
 #include <errno.h>
 
 #include <rdformpost.h>
+#include <rdlog_line.h>
 #include <rdweb.h>
 #include <rduser.h>
 #include <rdgroup.h>
@@ -118,12 +119,12 @@ void Xport::ListCarts()
   QString sql;
   RDSqlQuery *q;
   QString where="";
-  RDCart *cart;
   QString group_name;
   QString filter;
   int include_cuts;
   RDCart::Type cart_type=RDCart::All;
   QString type;
+  QStringList mlist;
 
   //
   // Verify Post
@@ -161,7 +162,7 @@ void Xport::ListCarts()
   if(cart_type!=RDCart::All) {
     where+=QString().sprintf("&&(TYPE=%u)",cart_type);
   }
-  sql="select NUMBER from CART where "+where+"order by NUMBER";
+  sql=RDCart::xmlSql(include_cuts)+"where "+where+" order by CART.NUMBER";
   q=new RDSqlQuery(sql);
 
   //
@@ -171,13 +172,8 @@ void Xport::ListCarts()
   printf("Status: 200\n\n");
   printf("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
   printf("<cartList>\n");
-  while(q->next()) {
-    cart=new RDCart(q->value(0).toUInt());
-    printf("%s",(const char *)cart->xml(include_cuts,true));
-    delete cart;
-  }
+  printf("%s\n",(const char *)RDCart::xml(q,include_cuts,true)); 
   printf("</cartList>\n");
-  
   delete q;
   Exit(0);
 }
@@ -479,7 +475,7 @@ void Xport::AddCut()
   printf("<cutAdd>\n");
   cut=new RDCut(cart_number,cut_number);
   if(cut->exists()) {
-    printf("%s",(const char *)cut->xml(true));
+    printf("%s",(const char *)RDCart::cutXml(cart_number,cut_number,true));
   }
   delete cut;
   delete cart;
@@ -491,7 +487,6 @@ void Xport::AddCut()
 
 void Xport::ListCuts()
 {
-  RDCut *cut;
   int cart_number;
   QString sql;
   RDSqlQuery *q;
@@ -513,23 +508,18 @@ void Xport::ListCuts()
   //
   // Process Request
   //
-  sql=QString().sprintf("select CUT_NAME from CUTS where CART_NUMBER=%u \
-                         order by CUT_NAME",
-			cart_number);
+  sql=RDCart::xmlSql(true)+
+    QString().sprintf(" where CART.NUMBER=%u",cart_number);
   q=new RDSqlQuery(sql);
   printf("Content-type: application/xml\n");
   printf("Status: 200\n\n");
   printf("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
   printf("<cutList>\n");
   while(q->next()) {
-    cut=new RDCut(q->value(0).toString());
-    if(cut->exists()) {
-      printf("%s",(const char *)cut->xml(true));
-    }
-    delete cut;
+    printf("%s\n",(const char *)RDCut::xml(q,false));
   }
-  delete q;
   printf("</cutList>\n");
+  delete q;
 
   Exit(0);
 }
@@ -570,7 +560,7 @@ void Xport::ListCut()
   printf("Status: 200\n\n");
   printf("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
   printf("<cutList>\n");
-  printf("%s",(const char *)cut->xml(true));
+  printf("%s",(const char *)RDCart::cutXml(cart_number,cut_number,true));
   printf("</cutList>\n");
   delete cut;
 
@@ -839,11 +829,12 @@ void Xport::EditCut()
     }
     delete cart;
   }
+
   printf("Content-type: application/xml\n");
   printf("Status: 200\n\n");
   printf("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
   printf("<cutList>\n");
-  printf("%s",(const char *)cut->xml(true));
+  printf("%s",(const char *)RDCart::cutXml(cart_number,cut_number,true));
   printf("</cutList>\n");
   delete cut;
 

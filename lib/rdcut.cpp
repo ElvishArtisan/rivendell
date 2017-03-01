@@ -1160,195 +1160,6 @@ void RDCut::setMetadata(RDWaveData *data) const
 }
 
 
-QString RDCut::xml(bool absolute,RDSettings *settings) const
-{
-#ifdef WIN32
-  return QString();
-#else
-  QString sql;
-  RDSqlQuery *q;
-  QString ret="";
-
-  sql=QString("select ")+
-    "EVERGREEN,"+              // 00
-    "DESCRIPTION,"+            // 01
-    "OUTCUE,"+                 // 02
-    "ISRC,"+                   // 03
-    "ISCI,"+                   // 04
-    "LENGTH,"+                 // 05
-    "ORIGIN_DATETIME,"+        // 06
-    "START_DATETIME,"+         // 07
-    "END_DATETIME,"+           // 08
-    "SUN,"+                    // 09
-    "MON,"+                    // 10
-    "TUE,"+                    // 11
-    "WED,"+                    // 12
-    "THU,"+                    // 13
-    "FRI,"+                    // 14
-    "SAT,"+                    // 15
-    "START_DAYPART,"+          // 16
-    "END_DAYPART,"+            // 17
-    "ORIGIN_NAME,"+            // 18
-    "WEIGHT,"+                 // 19
-    "LAST_PLAY_DATETIME,"+     // 20
-    "PLAY_COUNTER,"+           // 21
-    "LOCAL_COUNTER,"+          // 22
-    "VALIDITY,"+               // 23
-    "CODING_FORMAT,"+          // 24
-    "SAMPLE_RATE,"+            // 25
-    "BIT_RATE,"+               // 26
-    "CHANNELS,"+               // 27
-    "PLAY_GAIN,"+              // 28
-    "START_POINT,"+            // 29
-    "END_POINT,"+              // 30
-    "FADEUP_POINT,"+           // 31
-    "FADEDOWN_POINT,"+         // 32
-    "SEGUE_START_POINT,"+      // 33
-    "SEGUE_END_POINT,"+        // 34
-    "SEGUE_GAIN,"+             // 35
-    "HOOK_START_POINT,"+       // 36
-    "HOOK_END_POINT,"+         // 37
-    "TALK_START_POINT,"+       // 38
-    "TALK_END_POINT "+         // 39
-    "from CUTS where CUT_NAME=\""+cut_name+"\"";
-  q=new RDSqlQuery(sql);
-  if(q->first()) {
-    ret+="<cut>\n";
-    ret+="  "+RDXmlField("cutName",cut_name);
-    ret+="  "+RDXmlField("cartNumber",cart_number);
-    ret+="  "+RDXmlField("cutNumber",cut_number);
-    ret+="  "+RDXmlField("evergreen",RDBool(q->value(0).toString()));
-    ret+="  "+RDXmlField("description",q->value(1).toString());
-    ret+="  "+RDXmlField("outcue",q->value(2).toString());
-    ret+="  "+RDXmlField("isrc",q->value(3).toString());
-    ret+="  "+RDXmlField("isci",q->value(4).toString());
-    ret+="  "+RDXmlField("length",q->value(5).toUInt());
-    if(q->value(6).isNull()) {
-      ret+="  "+RDXmlField("originDatetime","");
-    }
-    else {
-      ret+="  "+RDXmlField("originDatetime",q->value(6).toDateTime());
-    }
-    if(q->value(7).isNull()) {
-      ret+="  "+RDXmlField("startDatetime","");
-    }
-    else {
-      ret+="  "+RDXmlField("startDatetime",q->value(7).toDateTime());
-    }
-    if(q->value(8).isNull()) {
-      ret+="  "+RDXmlField("endDatetime","");
-    }
-    else {
-      ret+="  "+RDXmlField("endDatetime",q->value(8).toDateTime());
-    }
-    ret+="  "+RDXmlField("sun",RDBool(q->value(9).toString()));
-    ret+="  "+RDXmlField("mon",RDBool(q->value(10).toString()));
-    ret+="  "+RDXmlField("tue",RDBool(q->value(11).toString()));
-    ret+="  "+RDXmlField("wed",RDBool(q->value(12).toString()));
-    ret+="  "+RDXmlField("thu",RDBool(q->value(13).toString()));
-    ret+="  "+RDXmlField("fri",RDBool(q->value(14).toString()));
-    ret+="  "+RDXmlField("sat",RDBool(q->value(15).toString()));
-    if(q->value(16).isNull()) {
-      ret+="  "+RDXmlField("startDaypart","");
-    }
-    else {
-      ret+="  "+RDXmlField("startDaypart",q->value(16).toTime());
-    }
-    if(q->value(17).isNull()) {
-      ret+="  "+RDXmlField("endDaypart","");
-    }
-    else {
-      ret+="  "+RDXmlField("endDaypart",q->value(17).toTime());
-    }
-    ret+="  "+RDXmlField("originName",q->value(18).toString());
-    ret+="  "+RDXmlField("weight",q->value(19).toUInt());
-    ret+="  "+RDXmlField("lastPlayDatetime",q->value(20).toDateTime());
-    ret+="  "+RDXmlField("playCounter",q->value(21).toUInt());
-    if(settings==NULL) {
-      ret+="  "+RDXmlField("codingFormat",q->value(24).toUInt());
-      ret+="  "+RDXmlField("sampleRate",q->value(25).toUInt());
-      ret+="  "+RDXmlField("bitRate",q->value(26).toUInt());
-      ret+="  "+RDXmlField("channels",q->value(27).toUInt());
-    }
-    else {
-      ret+="  "+RDXmlField("codingFormat",(int)settings->format());
-      ret+="  "+RDXmlField("sampleRate",settings->sampleRate());
-      ret+="  "+RDXmlField("bitRate",settings->bitRate());
-      ret+="  "+RDXmlField("channels",settings->channels());
-    }
-    ret+="  "+RDXmlField("playGain",q->value(28).toUInt());
-    if(absolute) {
-      ret+="  "+RDXmlField("startPoint",q->value(29).toInt());
-      ret+="  "+RDXmlField("endPoint",q->value(30).toInt());
-      ret+="  "+RDXmlField("fadeupPoint",q->value(31).toInt());
-      ret+="  "+RDXmlField("fadedownPoint",q->value(32).toInt());
-      ret+="  "+RDXmlField("segueStartPoint",q->value(33).toInt());
-      ret+="  "+RDXmlField("segueEndPoint",q->value(34).toInt());
-      ret+="  "+RDXmlField("segueGain",q->value(35).toInt());
-      ret+="  "+RDXmlField("hookStartPoint",q->value(36).toInt());
-      ret+="  "+RDXmlField("hookEndPoint",q->value(37).toInt());
-      ret+="  "+RDXmlField("talkStartPoint",q->value(38).toInt());
-      ret+="  "+RDXmlField("talkEndPoint",q->value(39).toInt());
-    }
-    else {
-      ret+="  "+RDXmlField("startPoint",0);
-      ret+="  "+
-	RDXmlField("endPoint",q->value(30).toInt()-q->value(29).toInt());
-      if(q->value(31).toInt()<0) {
-	ret+="  "+RDXmlField("fadeupPoint",-1);
-      }
-      else {
-	ret+="  "+
-	  RDXmlField("fadeupPoint",q->value(31).toInt()-q->value(29).toInt());
-      }
-      if(q->value(32).toInt()<0) {
-	ret+="  "+RDXmlField("fadedownPoint",-1);
-      }
-      else {
-	ret+="  "+
-	  RDXmlField("fadedownPoint",q->value(32).toInt()-q->value(29).toInt());
-      }
-      if(q->value(33).toInt()<0) {
-	ret+="  "+RDXmlField("segueStartPoint",-1);
-	ret+="  "+RDXmlField("segueEndPoint",-1);
-      }
-      else {
-	ret+="  "+RDXmlField("segueStartPoint",
-			     q->value(33).toInt()-q->value(29).toInt());
-	ret+="  "+RDXmlField("segueEndPoint",
-			     q->value(34).toInt()-q->value(29).toInt());
-      }
-      ret+="  "+RDXmlField("segueGain",q->value(35).toInt());
-      if(q->value(36).toInt()<0) {
-	ret+="  "+RDXmlField("hookStartPoint",-1);
-	ret+="  "+RDXmlField("hookEndPoint",-1);
-      }
-      else {
-	ret+="  "+RDXmlField("hookStartPoint",
-			     q->value(36).toInt()-q->value(29).toInt());
-	ret+="  "+RDXmlField("hookEndPoint",
-			     q->value(37).toInt()-q->value(29).toInt());
-      }
-      if(q->value(38).toInt()<0) {
-	ret+="  "+RDXmlField("talkStartPoint",-1);
-	ret+="  "+RDXmlField("talkEndPoint",-1);
-      }
-      else {
-	ret+="  "+RDXmlField("talkStartPoint",
-			     q->value(38).toInt()-q->value(29).toInt());
-	ret+="  "+RDXmlField("talkEndPoint",
-			     q->value(39).toInt()-q->value(29).toInt());
-      }
-    }
-
-    ret+="</cut>\n";
-  }
-  delete q;
-  return ret;
-#endif  // WIN32
-}
-
-
 bool RDCut::checkInRecording(const QString &stationname,RDSettings *settings,
 			     unsigned msecs) const
 {
@@ -1583,6 +1394,145 @@ void RDCut::connect(QObject *receiver,const char *member) const
 void RDCut::disconnect(QObject *receiver,const char *member) const
 {
   cut_signal->disconnect(receiver,member);
+}
+
+
+QString RDCut::xml(RDSqlQuery *q,bool absolute,RDSettings *settings)
+{
+  QString xml="";
+
+  xml+="<cut>\n";
+  xml+="  "+RDXmlField("cutName",q->value(28).toString());
+  xml+="  "+RDXmlField("cartNumber",RDCut::cartNumber(q->value(28).toString()));
+  xml+="  "+RDXmlField("cutNumber",RDCut::cutNumber(q->value(28).toString()));
+
+  xml+="  "+RDXmlField("evergreen",RDBool(q->value(29).toString()));
+  xml+="  "+RDXmlField("description",q->value(30).toString());
+  xml+="  "+RDXmlField("outcue",q->value(31).toString());
+  xml+="  "+RDXmlField("isrc",q->value(32).toString());
+  xml+="  "+RDXmlField("isci",q->value(33).toString());
+  xml+="  "+RDXmlField("length",q->value(34).toUInt());
+  if(q->value(35).isNull()) {
+    xml+="  "+RDXmlField("originDatetime","");
+  }
+  else {
+    xml+="  "+RDXmlField("originDatetime",q->value(35).toDateTime());
+  }
+  if(q->value(36).isNull()) {
+    xml+="  "+RDXmlField("startDatetime","");
+  }
+  else {
+    xml+="  "+RDXmlField("startDatetime",q->value(36).toDateTime());
+  }
+  if(q->value(37).isNull()) {
+    xml+="  "+RDXmlField("endDatetime","");
+  }
+  else {
+    xml+="  "+RDXmlField("endDatetime",q->value(37).toDateTime());
+  }
+  xml+="  "+RDXmlField("sun",RDBool(q->value(38).toString()));
+  xml+="  "+RDXmlField("mon",RDBool(q->value(39).toString()));
+  xml+="  "+RDXmlField("tue",RDBool(q->value(40).toString()));
+  xml+="  "+RDXmlField("wed",RDBool(q->value(41).toString()));
+  xml+="  "+RDXmlField("thu",RDBool(q->value(42).toString()));
+  xml+="  "+RDXmlField("fri",RDBool(q->value(43).toString()));
+  xml+="  "+RDXmlField("sat",RDBool(q->value(44).toString()));
+  if(q->value(45).isNull()) {
+    xml+="  "+RDXmlField("startDaypart","");
+  }
+  else {
+    xml+="  "+RDXmlField("startDaypart",q->value(45).toTime());
+  }
+  if(q->value(46).isNull()) {
+    xml+="  "+RDXmlField("endDaypart","");
+  }
+  else {
+    xml+="  "+RDXmlField("endDaypart",q->value(46).toTime());
+  }
+  xml+="  "+RDXmlField("originName",q->value(47).toString());
+  xml+="  "+RDXmlField("weight",q->value(48).toUInt());
+  xml+="  "+RDXmlField("lastPlayDatetime",q->value(49).toDateTime());
+  xml+="  "+RDXmlField("playCounter",q->value(50).toUInt());
+  if(settings==NULL) {
+    xml+="  "+RDXmlField("codingFormat",q->value(53).toUInt());
+    xml+="  "+RDXmlField("sampleRate",q->value(54).toUInt());
+    xml+="  "+RDXmlField("bitRate",q->value(55).toUInt());
+    xml+="  "+RDXmlField("channels",q->value(56).toUInt());
+  }
+  else {
+    xml+="  "+RDXmlField("codingFormat",(int)settings->format());
+    xml+="  "+RDXmlField("sampleRate",settings->sampleRate());
+    xml+="  "+RDXmlField("bitRate",settings->bitRate());
+    xml+="  "+RDXmlField("channels",settings->channels());
+  }
+  xml+="  "+RDXmlField("playGain",q->value(57).toUInt());
+  if(absolute) {
+    xml+="  "+RDXmlField("startPoint",q->value(58).toInt());
+    xml+="  "+RDXmlField("endPoint",q->value(59).toInt());
+    xml+="  "+RDXmlField("fadeupPoint",q->value(60).toInt());
+    xml+="  "+RDXmlField("fadedownPoint",q->value(61).toInt());
+    xml+="  "+RDXmlField("segueStartPoint",q->value(62).toInt());
+    xml+="  "+RDXmlField("segueEndPoint",q->value(63).toInt());
+    xml+="  "+RDXmlField("segueGain",q->value(64).toInt());
+    xml+="  "+RDXmlField("hookStartPoint",q->value(65).toInt());
+    xml+="  "+RDXmlField("hookEndPoint",q->value(66).toInt());
+    xml+="  "+RDXmlField("talkStartPoint",q->value(67).toInt());
+    xml+="  "+RDXmlField("talkEndPoint",q->value(68).toInt());
+  }
+  else {
+    xml+="  "+RDXmlField("startPoint",0);
+    xml+="  "+
+      RDXmlField("endPoint",q->value(30).toInt()-q->value(58).toInt());
+    if(q->value(60).toInt()<0) {
+      xml+="  "+RDXmlField("fadeupPoint",-1);
+    }
+    else {
+      xml+="  "+
+	RDXmlField("fadeupPoint",q->value(60).toInt()-q->value(58).toInt());
+    }
+    if(q->value(61).toInt()<0) {
+      xml+="  "+RDXmlField("fadedownPoint",-1);
+    }
+    else {
+      xml+="  "+
+	RDXmlField("fadedownPoint",q->value(61).toInt()-q->value(58).toInt());
+    }
+    if(q->value(62).toInt()<0) {
+      xml+="  "+RDXmlField("segueStartPoint",-1);
+      xml+="  "+RDXmlField("segueEndPoint",-1);
+    }
+    else {
+      xml+="  "+RDXmlField("segueStartPoint",
+			   q->value(62).toInt()-q->value(58).toInt());
+      xml+="  "+RDXmlField("segueEndPoint",
+			   q->value(63).toInt()-q->value(58).toInt());
+    }
+    xml+="  "+RDXmlField("segueGain",q->value(64).toInt());
+    if(q->value(65).toInt()<0) {
+      xml+="  "+RDXmlField("hookStartPoint",-1);
+      xml+="  "+RDXmlField("hookEndPoint",-1);
+    }
+    else {
+      xml+="  "+RDXmlField("hookStartPoint",
+			   q->value(65).toInt()-q->value(58).toInt());
+      xml+="  "+RDXmlField("hookEndPoint",
+			   q->value(66).toInt()-q->value(58).toInt());
+    }
+    if(q->value(38).toInt()<0) {
+      xml+="  "+RDXmlField("talkStartPoint",-1);
+      xml+="  "+RDXmlField("talkEndPoint",-1);
+    }
+    else {
+      xml+="  "+RDXmlField("talkStartPoint",
+			   q->value(67).toInt()-q->value(58).toInt());
+      xml+="  "+RDXmlField("talkEndPoint",
+			   q->value(68).toInt()-q->value(58).toInt());
+    }
+  }
+  
+  xml+="</cut>\n";
+
+  return xml;
 }
 
 

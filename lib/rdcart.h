@@ -151,6 +151,11 @@ class RDCart
 		      const QString &cutname,RDConfig *config);
   bool create(const QString &groupname,RDCart::Type type);
   bool remove(RDStation *station,RDUser *user,RDConfig *config) const;
+  static QString xmlSql(bool include_cuts);
+  static QString xml(RDSqlQuery *q,bool include_cuts,bool absolute,
+		     RDSettings *settings=NULL,int cutnum=-1);
+  static QString cutXml(unsigned cartnum,int cutnum,bool absolute,
+			RDSettings *settings=NULL);
   static bool exists(unsigned cartnum);
   static QString playOrderText(RDCart::PlayOrder order);
   static QString usageText(RDCart::UsageCode usage);
