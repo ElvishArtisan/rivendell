@@ -15617,3 +15617,7 @@
 	* Refactored the 'RDCart::xml()' method to use a SQL query.
 	* Refactored the Cart and Cut web methods in 'web/rdxport/carts.cpp'
 	to use SQL queries.
+2017-03-01 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'rdlibrary/audio_cart.cpp' where the 'Conductor'
+	failed to be imported from RDXL chunks.
+	* Added a 'songId' field to the cart metadata XML.

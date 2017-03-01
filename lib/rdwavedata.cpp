@@ -209,6 +209,18 @@ void RDWaveData::setPublisher(const QString &str)
 }
 
 
+QString RDWaveData::songId() const
+{
+  return data_song_id;
+}
+
+
+void RDWaveData::setSongId(const QString &str)
+{
+  data_song_id=str;
+}
+
+
 RDWaveData::UsageCode RDWaveData::usageCode() const
 {
   return data_usage_code;

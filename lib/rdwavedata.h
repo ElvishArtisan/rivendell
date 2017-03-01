@@ -65,6 +65,8 @@ class RDWaveData
   void setComposer(const QString &str);
   QString publisher() const;
   void setPublisher(const QString &str);
+  QString songId() const;
+  void setSongId(const QString &str);
   UsageCode usageCode() const;
   void setUsageCode(UsageCode code);
   QStringList schedCodes() const;
@@ -201,6 +203,7 @@ class RDWaveData
   QString data_artist;
   QString data_album;
   QString data_conductor;
+  QString data_song_id;
   QString data_label;
   int data_release_year;
   QString data_client;

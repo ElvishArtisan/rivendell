@@ -642,6 +642,9 @@ void AudioCart::importCutData()
       rdcart_controls->year_edit->
 	setText(QString().sprintf("%d",wavedata.releaseYear()));
     }
+    if(rdcart_controls->song_id_edit->text().isEmpty()) {
+      rdcart_controls->song_id_edit->setText(wavedata.songId());
+    }
     if(rdcart_controls->label_edit->text().isEmpty()) {
       rdcart_controls->label_edit->setText(wavedata.label());
     }
@@ -653,6 +656,9 @@ void AudioCart::importCutData()
     }
     if(rdcart_controls->publisher_edit->text().isEmpty()) {
       rdcart_controls->publisher_edit->setText(wavedata.publisher());
+    }
+    if(rdcart_controls->conductor_edit->text().isEmpty()) {
+      rdcart_controls->conductor_edit->setText(wavedata.conductor());
     }
     if(rdcart_controls->composer_edit->text().isEmpty()) {
       rdcart_controls->composer_edit->setText(wavedata.composer());

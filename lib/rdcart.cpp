@@ -1320,50 +1320,51 @@ QString RDCart::xmlSql(bool include_cuts)
     "CART.OWNER,"+                 // 24
     "CART.METADATA_DATETIME,"+     // 25
     "CART.CONDUCTOR,"+             // 26
-    "CART.MACROS";                 // 27
+    "CART.MACROS,"+                // 27
+    "CART.SONG_ID ";               // 28
   if(include_cuts) {
     sql+=QString(",")+
-      "CUTS.CUT_NAME,"+            // 28
-      "CUTS.EVERGREEN,"+           // 29
-      "CUTS.DESCRIPTION,"+         // 30
-      "CUTS.OUTCUE,"+              // 31
-      "CUTS.ISRC,"+                // 32
-      "CUTS.ISCI,"+                // 33
-      "CUTS.LENGTH,"+              // 34
-      "CUTS.ORIGIN_DATETIME,"+     // 35
-      "CUTS.START_DATETIME,"+      // 36
-      "CUTS.END_DATETIME,"+        // 37
-      "CUTS.SUN,"+                 // 38
-      "CUTS.MON,"+                 // 39
-      "CUTS.TUE,"+                 // 40
-      "CUTS.WED,"+                 // 41
-      "CUTS.THU,"+                 // 42
-      "CUTS.FRI,"+                 // 43
-      "CUTS.SAT,"+                 // 44
-      "CUTS.START_DAYPART,"+       // 45
-      "CUTS.END_DAYPART,"+         // 46
-      "CUTS.ORIGIN_NAME,"+         // 47
-      "CUTS.WEIGHT,"+              // 48
-      "CUTS.LAST_PLAY_DATETIME,"+  // 49
-      "CUTS.PLAY_COUNTER,"+        // 50
-      "CUTS.LOCAL_COUNTER,"+       // 51
-      "CUTS.VALIDITY,"+            // 52
-      "CUTS.CODING_FORMAT,"+       // 53
-      "CUTS.SAMPLE_RATE,"+         // 54
-      "CUTS.BIT_RATE,"+            // 55
-      "CUTS.CHANNELS,"+            // 56
-      "CUTS.PLAY_GAIN,"+           // 57
-      "CUTS.START_POINT,"+         // 58
-      "CUTS.END_POINT,"+           // 59
-      "CUTS.FADEUP_POINT,"+        // 60
-      "CUTS.FADEDOWN_POINT,"+      // 61
-      "CUTS.SEGUE_START_POINT,"+   // 62
-      "CUTS.SEGUE_END_POINT,"+     // 63
-      "CUTS.SEGUE_GAIN,"+          // 64
-      "CUTS.HOOK_START_POINT,"+    // 65
-      "CUTS.HOOK_END_POINT,"+      // 66
-      "CUTS.TALK_START_POINT,"+    // 67
-      "CUTS.TALK_END_POINT "+      // 68
+      "CUTS.CUT_NAME,"+            // 29
+      "CUTS.EVERGREEN,"+           // 30
+      "CUTS.DESCRIPTION,"+         // 31
+      "CUTS.OUTCUE,"+              // 32
+      "CUTS.ISRC,"+                // 33
+      "CUTS.ISCI,"+                // 34
+      "CUTS.LENGTH,"+              // 35
+      "CUTS.ORIGIN_DATETIME,"+     // 36
+      "CUTS.START_DATETIME,"+      // 37
+      "CUTS.END_DATETIME,"+        // 38
+      "CUTS.SUN,"+                 // 39
+      "CUTS.MON,"+                 // 40
+      "CUTS.TUE,"+                 // 41
+      "CUTS.WED,"+                 // 42
+      "CUTS.THU,"+                 // 43
+      "CUTS.FRI,"+                 // 44
+      "CUTS.SAT,"+                 // 45
+      "CUTS.START_DAYPART,"+       // 46
+      "CUTS.END_DAYPART,"+         // 47
+      "CUTS.ORIGIN_NAME,"+         // 48
+      "CUTS.WEIGHT,"+              // 49
+      "CUTS.LAST_PLAY_DATETIME,"+  // 50
+      "CUTS.PLAY_COUNTER,"+        // 51
+      "CUTS.LOCAL_COUNTER,"+       // 52
+      "CUTS.VALIDITY,"+            // 53
+      "CUTS.CODING_FORMAT,"+       // 54
+      "CUTS.SAMPLE_RATE,"+         // 55
+      "CUTS.BIT_RATE,"+            // 56
+      "CUTS.CHANNELS,"+            // 57
+      "CUTS.PLAY_GAIN,"+           // 58
+      "CUTS.START_POINT,"+         // 59
+      "CUTS.END_POINT,"+           // 60
+      "CUTS.FADEUP_POINT,"+        // 61
+      "CUTS.FADEDOWN_POINT,"+      // 62
+      "CUTS.SEGUE_START_POINT,"+   // 63
+      "CUTS.SEGUE_END_POINT,"+     // 64
+      "CUTS.SEGUE_GAIN,"+          // 65
+      "CUTS.HOOK_START_POINT,"+    // 66
+      "CUTS.HOOK_END_POINT,"+      // 67
+      "CUTS.TALK_START_POINT,"+    // 68
+      "CUTS.TALK_END_POINT "+      // 69
       "from CART left join CUTS "+
       "on CART.NUMBER=CUTS.CART_NUMBER ";
   }
@@ -1425,6 +1426,7 @@ QString RDCart::xml(RDSqlQuery *q,bool include_cuts,
     xml+="  "+RDXmlField("asyncronous",RDBool(q->value(23).toString()));
     xml+="  "+RDXmlField("owner",q->value(24).toString());
     xml+="  "+RDXmlField("metadataDatetime",q->value(25).toDateTime());
+    xml+="  "+RDXmlField("songId",q->value(28).toString());
     switch((RDCart::Type)q->value(1).toInt()) {
     case RDCart::Audio:
       if(include_cuts) {
@@ -1737,6 +1739,10 @@ unsigned RDCart::readXml(std::vector<RDWaveData> *data,const QString &xml)
       }
       if(f0[i].contains("<publisher>")) {
 	cartdata.setPublisher(GetXmlValue("publisher",f0[i]).toString());
+	cartdata.setMetadataFound(true);
+      }
+      if(f0[i].contains("<songId>")) {
+	cartdata.setSongId(GetXmlValue("songId",f0[i]).toString());
 	cartdata.setMetadataFound(true);
       }
       if(f0[i].contains("<conductor>")) {
