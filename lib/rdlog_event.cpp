@@ -615,10 +615,10 @@ QTime RDLogEvent::blockStartTime(int line)
   //
   for(int i=start_line;i<line;i++) {
     if((i<(size()+1))&&((logLine(i+1)->transType()==RDLogLine::Segue))) {
-      actual_length+=logLine(i)->averageSegueLength();
+      actual_length+=100*(logLine(i)->averageSegueLength()/100);
     }
     else {
-      actual_length+=logLine(i)->forcedLength();
+      actual_length+=100*(logLine(i)->forcedLength()/100);
     }
   }
   return_time=start_time.addMSecs(actual_length);

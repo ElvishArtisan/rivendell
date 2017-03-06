@@ -15623,3 +15623,6 @@
 	* Added a 'songId' field to the cart metadata XML.
 2017-03-01 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 2.15.2int03.
+2017-03-06 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug that introduced round-off errors when calculating
+	event start times in RDLogEdit(1) in 'lib/rdlog_event.cpp'.
