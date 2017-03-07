@@ -377,10 +377,12 @@ void EditClock::deleteData()
   if(item->text(4).isEmpty()) {
     return;
   }
-  str=QString(tr("Are you sure you want to\ndelete"));
+  str=QString(tr("Are you sure you want to delete\n"));
   if(QMessageBox::question(this,tr("Delete Event"),
-			   QString().sprintf("%s \'%s\'?",(const char *)str,
-			 (const char *)item->text(3)),
+			   QString().sprintf("%s \'(%s-%s) %s\'?",(const char *)str,
+			 (const char *)item->text(0),
+			 (const char *)item->text(1),
+			 (const char *)item->text(2)),
 			  QMessageBox::Yes,QMessageBox::No)!=
      QMessageBox::Yes) {
     return;
