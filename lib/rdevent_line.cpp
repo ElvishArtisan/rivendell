@@ -833,7 +833,7 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
 
       count++;
 
-
+      time_type=RDLogLine::Relative;
 
       sql=QString().sprintf("insert into `%s_STACK` set SCHED_STACK_ID=%u,CART=%u,ARTIST=\"%s\",SCHED_CODES=\"%s\"",(const char*)svcname_rp,
 			    stackid,schedCL->getItemCartnumber(schedpos),
