@@ -15633,3 +15633,6 @@
 	predicted event start times in logs containing voice tracks.
 2017-03-15 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 2.15.2int05.
+2017-03-15 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'lib/rdlog_event.cpp' that caused errors in
+	predicted event start times in RDLogEdit(1).

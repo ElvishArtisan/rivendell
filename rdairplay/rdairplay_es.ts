@@ -321,7 +321,7 @@ Lista</translation>
     </message>
     <message>
         <source>T</source>
-        <translation>T</translation>
+        <translation type="unfinished">T</translation>
     </message>
     <message>
         <source>[NO AUDIO AVAILABLE]</source>

@@ -359,7 +359,7 @@ logg</translation>
     </message>
     <message>
         <source>T</source>
-        <translation>S</translation>
+        <translation type="unfinished">S</translation>
     </message>
     <message>
         <source>Pause</source>

@@ -615,7 +615,19 @@ QTime RDLogEvent::blockStartTime(int line)
   //
   for(int i=start_line;i<line;i++) {
     if((i<(size()+1))&&((logLine(i+1)->transType()==RDLogLine::Segue))) {
-      actual_length+=100*(logLine(i)->averageSegueLength()/100);
+      if(logLine(i)->segueStartPoint(RDLogLine::LogPointer)<0) {
+	actual_length+=100*(logLine(i)->averageSegueLength()/100);
+      }
+      else {
+	if(logLine(i)->startPoint(RDLogLine::LogPointer)<0) {
+	  actual_length+=(logLine(i)->segueStartPoint(RDLogLine::LogPointer)-
+			  logLine(i)->startPoint(RDLogLine::CartPointer));
+	}
+	else {
+	  actual_length+=(logLine(i)->segueStartPoint(RDLogLine::LogPointer)-
+			  logLine(i)->startPoint(RDLogLine::LogPointer));
+	}
+      }
     }
     else {
       actual_length+=100*(logLine(i)->forcedLength()/100);

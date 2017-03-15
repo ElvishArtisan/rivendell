@@ -1417,7 +1417,7 @@ void ListLog::UpdateTimes(int removed_line,int num_lines)
 		default:
 		  if(!logline->startTime(RDLogLine::Predicted).isNull()) {
 		    next->setText(1,
-			TimeString(logline->startTime(RDLogLine::Predicted)));
+		        TimeString(logline->startTime(RDLogLine::Predicted)));
 		  }
 		  else {
 		    next->setText(1,"");

@@ -351,7 +351,7 @@ auswählen</translation>
     </message>
     <message>
         <source>T</source>
-        <translation>T</translation>
+        <translation type="unfinished">T</translation>
     </message>
     <message>
         <source>Pause</source>
