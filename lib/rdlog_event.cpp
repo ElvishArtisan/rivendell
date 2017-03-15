@@ -970,7 +970,7 @@ from `%s` left join CART on `%s`.CART_NUMBER=CART.NUMBER order by COUNT",
       line.setSongId(q->value(20).toString());          // Song ID
       line.setUsageCode((RDCart::UsageCode)q->value(47).toInt());
       line.setForcedLength(q->value(21).toUInt());      // Forced Length
-      if((q->value(7).toInt()<0)||(q->value(8).toInt()<0)) {
+      if(q->value(7).toInt()<0) {
 	line.setAverageSegueLength(q->value(48).toInt());
       }
       else {
