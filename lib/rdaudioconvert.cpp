@@ -558,7 +558,7 @@ RDAudioConvert::ErrorCode RDAudioConvert::Stage1Mpeg(const QString &dstfile,
   unsigned char buffer[STAGE1BUFSIZE];
   float sf_buffer[1152*2];
   sf_count_t start=0;
-  sf_count_t end=wave->getSampleLength();
+  int64_t end=-1;
   sf_count_t frames=0;
 
   //
@@ -607,13 +607,13 @@ RDAudioConvert::ErrorCode RDAudioConvert::Stage1Mpeg(const QString &dstfile,
 
       int thiserr=mad_frame_decode(&mad_frame,&mad_stream);
       if(thiserr!=0) {
-	if(!MAD_RECOVERABLE(mad_stream.error))
+	if(!MAD_RECOVERABLE(mad_stream.error)) {
 	  break;
-	else
+	}
+	else {
 	  continue;
+	}
       }
-
-      //printf("decoding...\n");
       mad_synth_frame(&mad_synth,&mad_frame);
       for(int i=0;i<mad_synth.pcm.length;i++) {
 	for(int j=0;j<mad_synth.pcm.channels;j++) {
@@ -622,7 +622,7 @@ RDAudioConvert::ErrorCode RDAudioConvert::Stage1Mpeg(const QString &dstfile,
 	}
       }
       if(frames>=start) {
-	if((frames+mad_synth.pcm.length)<end) {    // Write entire buffer 
+	if((end<0)||((frames+mad_synth.pcm.length)<end)) { // Write full buffer 
 	  UpdatePeak(sf_buffer,mad_synth.pcm.length*wave->getChannels());
 	  sf_writef_float(sf_dst,sf_buffer,mad_synth.pcm.length);
 	}
@@ -659,9 +659,9 @@ RDAudioConvert::ErrorCode RDAudioConvert::Stage1Mpeg(const QString &dstfile,
     // Prevent buffer overflow on malformed files.
     // The amount checked for should match the maximum amount that may be read
     // by the next top-of-loop wave->readWave call.
-    if(left_over + fsize + 1 > STAGE1BUFSIZE)
+    if(left_over + fsize + 1 > STAGE1BUFSIZE) {
       return RDAudioConvert::ErrorFormatError;
-
+    }
     memmove(buffer,mad_stream.next_frame,left_over);
 
   }

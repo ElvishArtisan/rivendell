@@ -37,7 +37,7 @@
 void Xport::Import()
 {
   unsigned length_deviation=0;
-  unsigned msecs;
+  unsigned msecs=0;
   int resp_code=0;
 
   //
@@ -159,7 +159,6 @@ void Xport::Import()
     delete wave;
     XmlExit("Format Not Supported",415);
   }
-  msecs=wave->getExtTimeLength();
   delete wave;
   RDAudioConvert *conv=new RDAudioConvert(xport_config->stationName());
   conv->setSourceFile(filename);
@@ -168,6 +167,15 @@ void Xport::Import()
   RDAudioConvert::ErrorCode conv_err=conv->convert();
   switch(conv_err) {
   case RDAudioConvert::ErrorOk:
+    wave=new RDWaveFile(RDCut::pathName(cartnum,cutnum));
+    if(wave->openWave()) {
+      msecs=wave->getExtTimeLength();
+    }
+    else {
+      delete wave;
+      XmlExit("Unable to access imported file",500);
+    }
+    delete wave;
     cut->checkInRecording(xport_config->stationName(),settings,msecs);
     if(use_metadata>0) {
       cart->setMetadata(conv->sourceWaveData());

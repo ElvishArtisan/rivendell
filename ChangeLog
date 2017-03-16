@@ -15642,3 +15642,10 @@
 	* Fixed typos in 'rlm/rlm_tagstation.c' that caused failure to
 	read the 'CategoryAdvertisements=' and 'CategoryPromotions='
 	directives.
+2017-03-16 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'lib/rdaudioconvert.cpp' that caused conversions
+	from MPEG Layer 3 VBR data to be truncated when no end point
+	was specified.
+	* Fixed a bug in 'web/rdxport/import.cpp' that caused the
+	end marker to be positioned incorrectly when importing MPEG
+	Layer 3 VBR files.
