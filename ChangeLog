@@ -15638,3 +15638,7 @@
 	predicted event start times in RDLogEdit(1).
 2017-03-15 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 2.15.2int06.
+2017-03-16 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed typos in 'rlm/rlm_tagstation.c' that caused failure to
+	read the 'CategoryAdvertisements=' and 'CategoryPromotions='
+	directives.

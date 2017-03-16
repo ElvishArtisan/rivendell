@@ -161,11 +161,11 @@ void rlm_tagstation_RLMStart(void *ptr,const char *arg)
 
     rlm_tagstation_adps=realloc(rlm_tagstation_adps,(rlm_tagstation_devs+1)*256);
     strncpy(rlm_tagstation_adps+256*rlm_tagstation_devs,
-	    RLMGetStringValue(ptr,arg,section,"CategoryAdvertisement",""),256);
+	    RLMGetStringValue(ptr,arg,section,"CategoryAdvertisements",""),256);
 
     rlm_tagstation_pros=realloc(rlm_tagstation_pros,(rlm_tagstation_devs+1)*256);
     strncpy(rlm_tagstation_pros+256*rlm_tagstation_devs,
-	    RLMGetStringValue(ptr,arg,section,"CategoryPromotion",""),256);
+	    RLMGetStringValue(ptr,arg,section,"CategoryPromotions",""),256);
 
     rlm_tagstation_muss=realloc(rlm_tagstation_muss,(rlm_tagstation_devs+1)*256);
     strncpy(rlm_tagstation_muss+256*rlm_tagstation_devs,
@@ -222,7 +222,7 @@ void rlm_tagstation_RLMPadDataSent(void *ptr,const struct rlm_svc *svc,
   char fmt[1024];
   char url[4096];
   char msg[1500];
-  char category[4];
+  char category[4]={0};
 
   for(i=0;i<rlm_tagstation_devs;i++) {
     switch(log->log_mach) {
@@ -239,6 +239,7 @@ void rlm_tagstation_RLMPadDataSent(void *ptr,const struct rlm_svc *svc,
 	break;
     }
     if((flag==1)||((flag==2)&&(log->log_onair!=0))) {
+      
       strncpy(category,rlm_tagstation_GetCategory(now->rlm_group,i),3);
       if(category[0]!=0) {
 	snprintf(fmt,1024,"https://tsl.tagstation.com/tsl.ashx?CID=%s&Title=%s&Artist=%s&Album=%s&EventCategory=%s&EventID=%%n&Duration=%%h&LookAhead=False",
