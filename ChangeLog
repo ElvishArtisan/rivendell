@@ -15649,3 +15649,5 @@
 	* Fixed a bug in 'web/rdxport/import.cpp' that caused the
 	end marker to be positioned incorrectly when importing MPEG
 	Layer 3 VBR files.
+2017-03-16 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.15.2int07.
