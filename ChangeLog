@@ -15651,3 +15651,6 @@
 	Layer 3 VBR files.
 2017-03-16 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 2.15.2int07.
+2017-03-24 Fred Gleason <fredg@paravelsystems.com>
+	* Updated 'NEWS'.
+	* Incremented the package version to 2.15.3.
