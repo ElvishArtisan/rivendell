@@ -4127,6 +4127,14 @@ pro přívod pro podcast</translation>
         <source>&amp;Cancel</source>
         <translation>Z&amp;rušit</translation>
     </message>
+    <message>
+        <source>Disabled</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>WebAPI Timeout:</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditUserPerms</name>

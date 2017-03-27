@@ -42,6 +42,13 @@ RDFormPost::RDFormPost(RDFormPost::Encoding encoding,unsigned maxsize,
   post_auto_delete=auto_delete;
 
   //
+  // Client Info
+  //
+  if(getenv("REMOTE_ADDR")!=NULL) {
+    post_client_address.setAddress(getenv("REMOTE_ADDR"));
+  }
+
+  //
   // Verify Transfer Type
   //
   if(getenv("REQUEST_METHOD")==NULL) {
@@ -125,6 +132,12 @@ RDFormPost::~RDFormPost()
 RDFormPost::Error RDFormPost::error() const
 {
   return post_error;
+}
+
+
+QHostAddress RDFormPost::clientAddress() const
+{
+  return post_client_address;
 }
 
 

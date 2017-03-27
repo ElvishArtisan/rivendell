@@ -24,6 +24,7 @@
 #include <ctype.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <openssl/sha.h>
 
 #include <map>
 
@@ -32,6 +33,7 @@
 #include <qstringlist.h>
 
 #include <rddb.h>
+#include <rdescape_string.h>
 #include <rdweb.h>
 #include <rdformpost.h>
 #include <rdxport_interface.h>
@@ -278,6 +280,26 @@ bool Xport::Authenticate()
 {
   QString name;
   QString passwd;
+  QString ticket;
+  int command;
+  QString sql;
+  RDSqlQuery *q;
+  unsigned char rawstr[1024];
+  unsigned char sha1[SHA_DIGEST_LENGTH];
+
+  if(xport_post->getValue("TICKET",&ticket)) {
+    sql=QString("select LOGIN_NAME from WEBAPI_AUTHS where ")+
+      "(TICKET=\""+RDEscapeString(ticket)+"\")&&"+
+      "(IPV4_ADDRESS=\""+xport_post->clientAddress().toString()+"\")&&"+
+      "(EXPIRATION_DATETIME>now())";
+    q=new RDSqlQuery(sql);
+    if(q->first()) {
+      xport_user=new RDUser(q->value(0).toString());
+      delete q;
+      return true;
+    }
+    delete q;
+  }
 
   if(!xport_post->getValue("LOGIN_NAME",&name)) {
     return false;
@@ -286,8 +308,43 @@ bool Xport::Authenticate()
     return false;
   }
   xport_user=new RDUser(name);
+  if(!xport_user->checkPassword(passwd,false)) {
+    return false;
+  }
 
-  return xport_user->checkPassword(passwd,false);
+  if(xport_post->getValue("COMMAND",&command)) {
+    if(command==RDXPORT_COMMAND_CREATETICKET) {
+      QDateTime now=QDateTime::currentDateTime();
+      snprintf((char *)rawstr,1024,"%s %s %s",
+	       (const char *)now.toString("yyyy-MM-dd hh:mm:ss.zzz"),
+	       (const char *)name,
+	       (const char *)xport_post->clientAddress().toString());
+      SHA1(rawstr,strlen((char *)rawstr),sha1);
+      ticket="";
+      for(int i=0;i<SHA_DIGEST_LENGTH;i++) {
+	ticket+=QString().sprintf("%02x",0xFF&rawstr[i]);
+      }
+      sql=QString("insert into WEBAPI_AUTHS set ")+
+	"TICKET=\""+RDEscapeString(ticket)+"\","+
+	"LOGIN_NAME=\""+RDEscapeString(name)+"\","+
+	"IPV4_ADDRESS=\""+xport_post->clientAddress().toString()+"\","+
+	"EXPIRATION_DATETIME=\""+
+	now.addSecs(xport_user->webapiAuthTimeout()).
+	toString("yyyy-MM-dd hh:mm:ss")+"\"";
+      q=new RDSqlQuery(sql);
+      delete q;
+      printf("Content-type: application/xml\n\n");
+      printf("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
+      printf("<ticketInfo>\n");
+      printf("  %s\n",(const char *)RDXmlField("ticket",ticket));
+      printf("  %s\n",(const char *)
+	  RDXmlField("expires",now.addSecs(xport_user->webapiAuthTimeout())));
+      printf("</ticketInfo>\n");
+      exit(0);
+    }
+  }
+
+  return true;
 }
 
 

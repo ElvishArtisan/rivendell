@@ -137,6 +137,19 @@ void RDUser::setPhone(const QString &phone) const
 }
 
 
+int RDUser::webapiAuthTimeout() const
+{
+  return RDGetSqlValue("USERS","LOGIN_NAME",user_name,"WEBAPI_AUTH_TIMEOUT").
+    toInt();
+}
+
+
+void RDUser::setWebapiAuthTimeout(int sec) const
+{
+  SetRow("WEBAPI_AUTH_TIMEOUT",sec);
+}
+
+
 bool RDUser::adminConfig() const
 {
   return RDBool(RDGetSqlValue("USERS","LOGIN_NAME",user_name,
@@ -492,6 +505,20 @@ void RDUser::SetRow(const QString &param,const QString &value) const
   sql=QString().sprintf("UPDATE USERS SET %s=\"%s\" WHERE LOGIN_NAME=\"%s\"",
 			(const char *)param,
 			(const char *)RDEscapeString(value),
+			(const char *)user_name);
+  q=new RDSqlQuery(sql);
+  delete q;
+}
+
+
+void RDUser::SetRow(const QString &param,int value) const
+{
+  RDSqlQuery *q;
+  QString sql;
+
+  sql=QString().sprintf("UPDATE USERS SET %s=%d WHERE LOGIN_NAME=\"%s\"",
+			(const char *)param,
+			value,
 			(const char *)user_name);
   q=new RDSqlQuery(sql);
   delete q;

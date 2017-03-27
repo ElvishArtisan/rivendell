@@ -131,6 +131,7 @@ void MainObject::RunSystemMaintenance()
   PurgeLogs();
   PurgeElr();
   PurgeGpioEvents();
+  PurgeWebapiAuths();
   sql="update VERSION set LAST_MAINT_DATETIME=now()";
   q=new RDSqlQuery(sql);
   delete q;
@@ -276,6 +277,17 @@ void MainObject::PurgeGpioEvents()
   sql=QString("delete from GPIO_EVENTS where ")+
     "EVENT_DATETIME<\""+
     QDate::currentDate().addDays(-30).toString("yyyy-MM-dd")+" 00:00:00\"";
+  q=new RDSqlQuery(sql);
+  delete q;
+}
+
+
+void MainObject::PurgeWebapiAuths()
+{
+  QString sql;
+  RDSqlQuery *q;
+
+  sql=QString("delete from WEBAPI_AUTHS where EXPIRATION_DATETIME<now()");
   q=new RDSqlQuery(sql);
   delete q;
 }

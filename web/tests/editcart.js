@@ -32,6 +32,7 @@ function EditCart_MakePost()
     var form='COMMAND=14';
     form+='&LOGIN_NAME='+document.getElementById("LOGIN_NAME").value;
     form+='&PASSWORD='+document.getElementById("PASSWORD").value;
+    form+='&TICKET='+document.getElementById("TICKET").value;
     form+='&CART_NUMBER='+document.getElementById("CART_NUMBER").value;
     if(document.getElementById("INCLUDE_CUTS").value.length==0) {
 	form+="&INCLUDE_CUTS=0";

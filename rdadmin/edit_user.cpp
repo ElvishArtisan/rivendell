@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell User
 //
-//   (C) Copyright 2002-2003,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2003,2016-2017 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -71,11 +71,11 @@ EditUser::EditUser(const QString &user,QWidget *parent)
   // User Name
   //
   user_name_edit=new QLineEdit(this);
-  user_name_edit->setGeometry(100,11,sizeHint().width()-110,19);
+  user_name_edit->setGeometry(120,11,sizeHint().width()-130,19);
   user_name_edit->setMaxLength(255);
   user_name_edit->setValidator(validator);
   QLabel *user_name_label=new QLabel(user_name_edit,tr("&User Name:"),this);
-  user_name_label->setGeometry(5,11,90,19);
+  user_name_label->setGeometry(5,11,110,19);
   user_name_label->setFont(font);
   user_name_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
 
@@ -83,12 +83,12 @@ EditUser::EditUser(const QString &user,QWidget *parent)
   // Full Name
   //
   user_full_name_edit=new QLineEdit(this);
-  user_full_name_edit->setGeometry(100,32,sizeHint().width()-110,19);
+  user_full_name_edit->setGeometry(120,32,sizeHint().width()-130,19);
   user_full_name_edit->setMaxLength(255);
   user_full_name_edit->setValidator(validator);
   QLabel *user_full_name_label=
     new QLabel(user_full_name_edit,tr("&Full Name:"),this);
-  user_full_name_label->setGeometry(10,32,85,19);
+  user_full_name_label->setGeometry(10,32,105,19);
   user_full_name_label->setFont(font);
   user_full_name_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
 
@@ -96,12 +96,12 @@ EditUser::EditUser(const QString &user,QWidget *parent)
   // User Description
   //
   user_description_edit=new QLineEdit(this);
-  user_description_edit->setGeometry(100,53,sizeHint().width()-110,19);
+  user_description_edit->setGeometry(120,53,sizeHint().width()-130,19);
   user_description_edit->setMaxLength(255);
   user_description_edit->setValidator(validator);
   QLabel *user_description_label=
     new QLabel(user_description_edit,tr("&Description:"),this);
-  user_description_label->setGeometry(5,53,90,19);
+  user_description_label->setGeometry(5,53,110,19);
   user_description_label->setFont(font);
   user_description_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
 
@@ -109,21 +109,34 @@ EditUser::EditUser(const QString &user,QWidget *parent)
   // User Phone
   //
   user_phone_edit=new QLineEdit(this);
-  user_phone_edit->setGeometry(100,75,120,19);
+  user_phone_edit->setGeometry(120,75,120,19);
   user_phone_edit->setMaxLength(20);
   user_phone_edit->setValidator(validator);
   QLabel *user_phone_label=new QLabel(user_phone_edit,tr("&Phone:"),this);
-  user_phone_label->setGeometry(10,75,85,19);
+  user_phone_label->setGeometry(10,75,105,19);
   user_phone_label->setFont(font);
   user_phone_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+
+  //
+  // WebAPI Authorization Timeout
+  //
+  user_webapi_auth_spin=new QSpinBox(this);
+  user_webapi_auth_spin->setGeometry(120,97,80,19);
+  user_webapi_auth_spin->setRange(0,86400);
+  user_webapi_auth_spin->setSpecialValueText(tr("Disabled"));
+  QLabel *user_webapi_auth_label=
+    new QLabel(user_webapi_auth_spin,tr("WebAPI Timeout:"),this);
+  user_webapi_auth_label->setGeometry(10,97,105,19);
+  user_webapi_auth_label->setFont(font);
+  user_webapi_auth_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
 
   //
   // Enable Web Login
   //
   user_web_box=new QCheckBox(this);
-  user_web_box->setGeometry(20,96,15,15);
+  user_web_box->setGeometry(20,118,15,15);
   user_web_label=new QLabel(user_web_box,tr("Allow Web Logins"),this);
-  user_web_label->setGeometry(40,96,180,19);
+  user_web_label->setGeometry(40,118,180,19);
   user_web_label->setFont(font);
   user_web_label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
 
@@ -131,7 +144,7 @@ EditUser::EditUser(const QString &user,QWidget *parent)
   // Change Password Button
   //
   QPushButton *password_button=new QPushButton(this);
-  password_button->setGeometry(230,75,80,50);
+  password_button->setGeometry(sizeHint().width()-90,75,80,50);
   password_button->setFont(font);
   password_button->setText(tr("Change\n&Password"));
   connect(password_button,SIGNAL(clicked()),this,SLOT(passwordData()));
@@ -140,7 +153,7 @@ EditUser::EditUser(const QString &user,QWidget *parent)
   // Administrative Group Priviledges
   //
   user_admin_group=new QButtonGroup(tr("Administrative Rights"),this);
-  user_admin_group->setGeometry(10,125,355,45);
+  user_admin_group->setGeometry(10,147,355,45);
   user_admin_group->setFont(font);
 
   user_admin_config_button=new QCheckBox(user_admin_group);
@@ -159,7 +172,7 @@ EditUser::EditUser(const QString &user,QWidget *parent)
   // Production Group Priviledges
   //
   user_prod_group=new QButtonGroup(tr("Production Rights"),this);
-  user_prod_group->setGeometry(10,180,355,85);
+  user_prod_group->setGeometry(10,202,355,85);
   user_prod_group->setFont(font);
 
   user_create_carts_button=new QCheckBox(user_prod_group);
@@ -216,7 +229,7 @@ EditUser::EditUser(const QString &user,QWidget *parent)
   // Traffic Group Priviledges
   //
   user_traffic_group=new QButtonGroup(tr("Traffic Rights"),this);
-  user_traffic_group->setGeometry(10,275,355,66);
+  user_traffic_group->setGeometry(10,297,355,66);
   user_traffic_group->setFont(font);
 
   user_create_log_button=new QCheckBox(user_traffic_group);
@@ -257,7 +270,7 @@ EditUser::EditUser(const QString &user,QWidget *parent)
   // OnAir Group Priviledges
   //
   user_onair_group=new QButtonGroup(tr("OnAir Rights"),this);
-  user_onair_group->setGeometry(10,351,355,85);
+  user_onair_group->setGeometry(10,373,355,85);
   user_onair_group->setFont(font);
 
   user_playout_log_button=new QCheckBox(user_onair_group);
@@ -307,7 +320,7 @@ EditUser::EditUser(const QString &user,QWidget *parent)
   // Podcast Group Priviledges
   //
   user_podcast_group=new QButtonGroup(tr("Podcasting Rights"),this);
-  user_podcast_group->setGeometry(10,446,355,66);
+  user_podcast_group->setGeometry(10,468,355,66);
   user_podcast_group->setFont(font);
 
   user_add_podcast_button=new QCheckBox(user_podcast_group);
@@ -340,7 +353,7 @@ EditUser::EditUser(const QString &user,QWidget *parent)
   //  Group Permissions Button
   //
   user_assign_perms_button=new QPushButton(this);
-  user_assign_perms_button->setGeometry(10,516,sizeHint().width()/2-20,50);
+  user_assign_perms_button->setGeometry(10,538,sizeHint().width()/2-20,50);
   user_assign_perms_button->setFont(font);
   user_assign_perms_button->setText(tr("Assign Group\nPermissions"));
   connect(user_assign_perms_button,SIGNAL(clicked()),this,SLOT(groupsData()));
@@ -350,7 +363,7 @@ EditUser::EditUser(const QString &user,QWidget *parent)
   //
   user_assign_feeds_button=new QPushButton(this);
   user_assign_feeds_button->
-    setGeometry(sizeHint().width()/2+10,516,sizeHint().width()/2-20,50);
+    setGeometry(sizeHint().width()/2+10,538,sizeHint().width()/2-20,50);
   user_assign_feeds_button->setFont(font);
   user_assign_feeds_button->setText(tr("Assign Podcast Feed\nPermissions"));
   connect(user_assign_feeds_button,SIGNAL(clicked()),this,SLOT(feedsData()));
@@ -383,6 +396,7 @@ EditUser::EditUser(const QString &user,QWidget *parent)
   user_full_name_edit->setText(user_user->fullName());
   user_description_edit->setText(user_user->description());
   user_phone_edit->setText(user_user->phone());
+  user_webapi_auth_spin->setValue(user_user->webapiAuthTimeout());
   user_web_box->setChecked(user_user->enableWeb());
   if(user_user->adminConfig()) {
     user_admin_config_button->setChecked(true);
@@ -437,7 +451,7 @@ EditUser::~EditUser()
 
 QSize EditUser::sizeHint() const
 {
-  return QSize(375,636);
+  return QSize(375,658);
 } 
 
 
@@ -525,6 +539,7 @@ void EditUser::okData()
   user_user->setFullName(user_full_name_edit->text());
   user_user->setDescription(user_description_edit->text());
   user_user->setPhone(user_phone_edit->text());
+  user_user->setWebapiAuthTimeout(user_webapi_auth_spin->value());
   user_user->setEnableWeb(user_web_box->isChecked());
   user_user->setAdminConfig(user_admin_config_button->isChecked());
   user_user->setCreateCarts(user_create_carts_button->isChecked());

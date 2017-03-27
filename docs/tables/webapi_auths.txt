@@ -1,0 +1,12 @@
+            WEBAPI_AUTH Table Layout for Rivendell
+
+The WEB_CONNECTIONS table holds data concerning each authenticated Web API
+user.
+
+
+FIELD NAME           TYPE             REMARKS
+--------------------------------------------------------------------------
+TICKET               char(41)         Primary key
+LOGIN_NAME           char(255)        From USERS.LOGIN_NAME
+IP_ADDRESS           char(16)
+EXPIRATION_DATETIME  datetime

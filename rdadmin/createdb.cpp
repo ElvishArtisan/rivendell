@@ -576,6 +576,7 @@ bool CreateDb(QString name,QString pwd)
     PHONE_NUMBER CHAR(20),\
     DESCRIPTION CHAR(255),\
     PASSWORD CHAR(32),\
+    WEBAPI_AUTH_TIMEOUT int not null default 3600,\
     ENABLE_WEB enum('N','Y') default 'N',\
     ADMIN_USERS_PRIV ENUM('N','Y') NOT NULL DEFAULT 'N',\
     ADMIN_CONFIG_PRIV ENUM('N','Y') NOT NULL DEFAULT 'N',\
@@ -2408,6 +2409,19 @@ bool CreateDb(QString name,QString pwd)
     "CLOCK_NAME char(64) default null,"+
     "index SERVICE_NAME_IDX(SERVICE_NAME,HOUR),"+
     "index CLOCK_NAME_IDX(CLOCK_NAME))";
+  if(!RunQuery(sql)) {
+     return false;
+  }
+
+  //
+  // Create WEBAPI_AUTH table
+  //
+  sql=QString("create table if not exists WEBAPI_AUTHS(")+
+    "TICKET char(41) not null primary key,"+
+    "LOGIN_NAME char(255) not null,"+
+    "IPV4_ADDRESS char(16) not null,"+
+    "EXPIRATION_DATETIME datetime not null,"+
+    "index TICKET_IDX(TICKET,IPV4_ADDRESS,EXPIRATION_DATETIME))";
   if(!RunQuery(sql)) {
      return false;
   }
@@ -8313,6 +8327,25 @@ int UpdateDb(int ver)
     }
     delete q;
   }
+
+  if(ver<260) {
+    sql=QString("create table if not exists WEBAPI_AUTHS(")+
+      "TICKET char(41) not null primary key,"+
+      "LOGIN_NAME char(255) not null,"+
+      "IPV4_ADDRESS char(16) not null,"+
+      "EXPIRATION_DATETIME datetime not null,"+
+      "index TICKET_IDX(TICKET,IPV4_ADDRESS,EXPIRATION_DATETIME))";
+    if(!RunQuery(sql)) {
+      return false;
+    }
+
+    sql=QString("alter table USERS add column ")+
+      "WEBAPI_AUTH_TIMEOUT int not null default 3600 after PASSWORD";
+    if(!RunQuery(sql)) {
+      return false;
+    }
+  }
+
   
   //
   // Update Version Field

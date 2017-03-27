@@ -28,6 +28,7 @@ install-exec-am:
 	cp audioinfo.html $(DESTDIR)@libexecdir@
 	cp audiostore.html $(DESTDIR)@libexecdir@
 	cp copyaudio.html $(DESTDIR)@libexecdir@
+	cp createticket.html $(DESTDIR)@libexecdir@
 	cp delete_audio.html $(DESTDIR)@libexecdir@
 	cp deletelog.html $(DESTDIR)@libexecdir@
 	cp editcart.html $(DESTDIR)@libexecdir@
@@ -64,6 +65,7 @@ uninstall-local:
 	rm -f $(DESTDIR)@libexecdir@/audioinfo.html
 	rm -f $(DESTDIR)@libexecdir@/audiostore.html
 	rm -f $(DESTDIR)@libexecdir@/copyaudio.html
+	rm -f $(DESTDIR)@libexecdir@/createticket.html
 	rm -f $(DESTDIR)@libexecdir@/delete_audio.html
 	rm -f $(DESTDIR)@libexecdir@/deletelog.html
 	rm -f $(DESTDIR)@libexecdir@/editcart.html
@@ -98,6 +100,7 @@ EXTRA_DIST = addcart.html\
              audioinfo.html\
              audiostore.html\
              copyaudio.html\
+             createticket.html\
              delete_audio.html\
              deletelog.html\
              editcart.html\

@@ -41,6 +41,8 @@ class RDUser
   void setDescription(const QString &desc) const;
   QString phone() const;
   void setPhone(const QString &phone) const;
+  int webapiAuthTimeout() const;
+  void setWebapiAuthTimeout(int sec) const;
   bool adminConfig() const;
   void setAdminConfig(bool priv) const;
   bool createCarts() const;
@@ -102,6 +104,7 @@ class RDUser
 
  private:
   void SetRow(const QString &param,const QString &value) const;
+  void SetRow(const QString &param,int value) const;
   void SetRow(const QString &param,bool value) const;
   QString user_name;
   QString user_password;

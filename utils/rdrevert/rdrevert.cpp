@@ -194,6 +194,10 @@ void MainObject::Revert(int schema) const
   case 259:
     Revert259();
     break;
+
+  case 260:
+    Revert260();
+    break;
   }
 }
 
@@ -529,6 +533,23 @@ void MainObject::Revert259() const
 }
 
 
+void MainObject::Revert260() const
+{
+  QString sql;
+  QSqlQuery *q;
+
+  sql=QString("alter table USERS drop column WEBAPI_AUTH_TIMEOUT");
+  q=new QSqlQuery(sql);
+  delete q;
+
+  sql=QString("drop table WEBAPI_AUTHS");
+  q=new QSqlQuery(sql);
+  delete q;
+
+  SetVersion(259);
+}
+
+
 int MainObject::GetVersion() const
 {
   QString sql;
@@ -571,6 +592,7 @@ int MainObject::MapSchema(const QString &ver)
   version_map["2.13"]=255;
   version_map["2.14"]=258;
   version_map["2.15"]=259;
+  version_map["2.16"]=260;
 
   //
   // Normalize String

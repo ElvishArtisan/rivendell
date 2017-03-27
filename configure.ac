@@ -143,6 +143,11 @@ else
 fi
 
 #
+# Check for OpenSSL
+#
+AC_CHECK_HEADER(openssl/sha.h,[],[AC_MSG_ERROR([*** OpenSSL not found ***])])
+
+#
 # Check for OggVorbis
 #
 AC_CHECK_HEADER(vorbis/vorbisfile.h,[VORBIS_FOUND=yes],[])
@@ -236,7 +241,7 @@ AM_CONDITIONAL([DOCBOOK_AM], [test "$USING_DOCBOOK" = yes])
 #
 # Set Hard Library Dependencies
 #
-AC_SUBST(LIB_RDLIBS,"-lm -lpthread -lqui -lrd -lcurl -lid3 $FLAC_LIBS -lsndfile -lsamplerate -lcdda_interface -lcdda_paranoia -lcrypt -ldl -lpam -lSoundTouch")
+AC_SUBST(LIB_RDLIBS,"-lm -lpthread -lqui -lrd -lcurl -lid3 $FLAC_LIBS -lsndfile -lsamplerate -lcdda_interface -lcdda_paranoia -lcrypt -ldl -lpam -lSoundTouch -lcrypto")
 
 #
 # Setup MPEG Dependencies

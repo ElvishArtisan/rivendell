@@ -38,6 +38,7 @@ class RDFormPost
 	     bool auto_delete=true);
   ~RDFormPost();
   RDFormPost::Error error() const;
+  QHostAddress clientAddress() const;
   QStringList names() const;
   QVariant value(const QString &name,bool *ok=NULL);
   bool getValue(const QString &name,QHostAddress *addr,bool *ok=NULL);
@@ -58,6 +59,7 @@ class RDFormPost
  private:
   void LoadUrlEncoding(char first);
   void LoadMultipartEncoding(char first);
+  QHostAddress post_client_address;
   RDFormPost::Encoding post_encoding;
   RDFormPost::Error post_error;
   std::map<QString,QVariant> post_values;

@@ -88,6 +88,112 @@
 </sect1>
 
 <sect1>
+  <title>Authentication</title>
+  <para>
+    With the exception of the <command>CreateTicket</command> command, all
+    commands in this API must be authenticated by one of the following two
+    methods:
+  </para>
+  <sect2>
+    <title>
+      Username / Password
+    </title>
+    <para>
+      <table xml:id="ex.authentication.userpassword" frame="all">
+	<title>Username/Password Authentication Fields</title>
+	<tgroup cols="3" align="left" colsep="1" rowsep="1">
+	  <colspec colname="FIELD NAME" />
+	  <colspec colname="MEANING" />
+	  <colspec colname="REMARKS" />
+	  <thead>
+	    <row>
+	      <entry>
+		FIELD NAME
+	      </entry>
+	      <entry>
+		MEANING
+	      </entry>
+	      <entry>
+		REMARKS
+	      </entry>
+	    </row>
+	  </thead>
+	  <tbody>
+	    <row>
+	      <entry>
+		LOGIN_NAME
+	      </entry>
+	      <entry>
+		Rivendell User Name
+	      </entry>
+	      <entry>
+		Mandatory
+	      </entry>
+	    </row>
+	    <row>
+	      <entry>
+		PASSWORD
+	      </entry>
+	      <entry>
+		Login Password
+	      </entry>
+	      <entry>
+		Mandatory
+	      </entry>
+	    </row>
+	  </tbody>
+	</tgroup>      
+      </table>
+    </para>
+  </sect2>
+
+
+
+  <sect2>
+    <title>
+      Ticket
+    </title>
+    <para>
+      <table xml:id="ex.authentication.ticket" frame="all">
+	<title>Ticket Authentication Fields</title>
+	<tgroup cols="3" align="left" colsep="1" rowsep="1">
+	  <colspec colname="FIELD NAME" />
+	  <colspec colname="MEANING" />
+	  <colspec colname="REMARKS" />
+	  <thead>
+	    <row>
+	      <entry>
+		FIELD NAME
+	      </entry>
+	      <entry>
+		MEANING
+	      </entry>
+	      <entry>
+		REMARKS
+	      </entry>
+	    </row>
+	  </thead>
+	  <tbody>
+	    <row>
+	      <entry>
+		TICKET
+	      </entry>
+	      <entry>
+		40 character ticket code, obtained from a previous 
+		<command>CreateTicket</command> call.
+	      </entry>
+	      <entry>
+		Mandatory
+	      </entry>
+	    </row>
+	  </tbody>
+	</tgroup>      
+      </table>
+    </para>
+  </sect2>
+</sect1>
+
+<sect1>
   <title>Result Reporting</title>
   <para>
     Commands that return an error or do not return specialized data types
@@ -186,28 +292,6 @@
 	</row>
 	<row>
 	  <entry>
-	    LOGIN_NAME
-	  </entry>
-	  <entry>
-	    Rivendell User Name
-	  </entry>
-	  <entry>
-	    Mandatory
-	  </entry>
-	</row>
-	<row>
-	  <entry>
-	    PASSWORD
-	  </entry>
-	  <entry>
-	    Login Password
-	  </entry>
-	  <entry>
-	    Mandatory
-	  </entry>
-	</row>
-	<row>
-	  <entry>
 	    GROUP_NAME
 	  </entry>
 	  <entry>
@@ -292,28 +376,6 @@
 	</row>
 	<row>
 	  <entry>
-	    LOGIN_NAME
-	  </entry>
-	  <entry>
-	    Rivendell User Name
-	  </entry>
-	  <entry>
-	    Mandatory
-	  </entry>
-	</row>
-	<row>
-	  <entry>
-	    PASSWORD
-	  </entry>
-	  <entry>
-	    Login Password
-	  </entry>
-	  <entry>
-	    Mandatory
-	  </entry>
-	</row>
-	<row>
-	  <entry>
 	    CART_NUMBER
 	  </entry>
 	  <entry>
@@ -363,28 +425,6 @@
 	  </entry>
 	  <entry>
 	    29
-	  </entry>
-	  <entry>
-	    Mandatory
-	  </entry>
-	</row>
-	<row>
-	  <entry>
-	    LOGIN_NAME
-	  </entry>
-	  <entry>
-	    Rivendell User Name
-	  </entry>
-	  <entry>
-	    Mandatory
-	  </entry>
-	</row>
-	<row>
-	  <entry>
-	    PASSWORD
-	  </entry>
-	  <entry>
-	    Login Password
 	  </entry>
 	  <entry>
 	    Mandatory
@@ -464,28 +504,6 @@
 	</row>
 	<row>
 	  <entry>
-	    LOGIN_NAME
-	  </entry>
-	  <entry>
-	    Rivendell User Name
-	  </entry>
-	  <entry>
-	    Mandatory
-	  </entry>
-	</row>
-	<row>
-	  <entry>
-	    PASSWORD
-	  </entry>
-	  <entry>
-	    Login Password
-	  </entry>
-	  <entry>
-	    Mandatory
-	  </entry>
-	</row>
-	<row>
-	  <entry>
 	    CART_NUMBER
 	  </entry>
 	  <entry>
@@ -553,28 +571,6 @@
 	</row>
 	<row>
 	  <entry>
-	    LOGIN_NAME
-	  </entry>
-	  <entry>
-	    Rivendell User Name
-	  </entry>
-	  <entry>
-	    Mandatory
-	  </entry>
-	</row>
-	<row>
-	  <entry>
-	    PASSWORD
-	  </entry>
-	  <entry>
-	    Login Password
-	  </entry>
-	  <entry>
-	    Mandatory
-	  </entry>
-	</row>
-	<row>
-	  <entry>
 	    CART_NUMBER
 	  </entry>
 	  <entry>
@@ -635,6 +631,51 @@
 	  </entry>
 	  <entry>
 	    23
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+      </tbody>
+    </tgroup>
+  </table>
+</sect1>
+
+<sect1>
+  <title>CreateTicket</title>
+  <subtitle>Create an authorization ticket for a given user/client IP address</subtitle>
+  <para>
+    Command Code: <code>RDXPORT_COMMAND_CREATETICKET</code>
+  </para>
+  <para>
+    Required User Permissions: none
+  </para>
+  <table xml:id="ex.createticket" frame="all">
+    <title>CreateTicket Call Fields</title>
+    <tgroup cols="3" align="left" colsep="1" rowsep="1">
+      <colspec colname="FIELD NAME" />
+      <colspec colname="MEANING" />
+      <colspec colname="REMARKS" />
+      <thead>
+	<row>
+	  <entry>
+	    FIELD NAME
+	  </entry>
+	  <entry>
+	    MEANING
+	  </entry>
+	  <entry>
+	    REMARKS
+	  </entry>
+	</row>
+      </thead>
+      <tbody>
+	<row>
+	  <entry>
+	    COMMAND
+	  </entry>
+	  <entry>
+	    31
 	  </entry>
 	  <entry>
 	    Mandatory
@@ -709,28 +750,6 @@
 	</row>
 	<row>
 	  <entry>
-	    LOGIN_NAME
-	  </entry>
-	  <entry>
-	    Rivendell User Name
-	  </entry>
-	  <entry>
-	    Mandatory
-	  </entry>
-	</row>
-	<row>
-	  <entry>
-	    PASSWORD
-	  </entry>
-	  <entry>
-	    Login Password
-	  </entry>
-	  <entry>
-	    Mandatory
-	  </entry>
-	</row>
-	<row>
-	  <entry>
 	    CART_NUMBER
 	  </entry>
 	  <entry>
@@ -791,28 +810,6 @@
 	  </entry>
 	  <entry>
 	    30
-	  </entry>
-	  <entry>
-	    Mandatory
-	  </entry>
-	</row>
-	<row>
-	  <entry>
-	    LOGIN_NAME
-	  </entry>
-	  <entry>
-	    Rivendell User Name
-	  </entry>
-	  <entry>
-	    Mandatory
-	  </entry>
-	</row>
-	<row>
-	  <entry>
-	    PASSWORD
-	  </entry>
-	  <entry>
-	    Login Password
 	  </entry>
 	  <entry>
 	    Mandatory
@@ -887,28 +884,6 @@
 	  </entry>
 	  <entry>
 	    14
-	  </entry>
-	  <entry>
-	    Mandatory
-	  </entry>
-	</row>
-	<row>
-	  <entry>
-	    LOGIN_NAME
-	  </entry>
-	  <entry>
-	    Rivendell User Name
-	  </entry>
-	  <entry>
-	    Mandatory
-	  </entry>
-	</row>
-	<row>
-	  <entry>
-	    PASSWORD
-	  </entry>
-	  <entry>
-	    Login Password
 	  </entry>
 	  <entry>
 	    Mandatory
@@ -1174,28 +1149,6 @@
 	  </entry>
 	  <entry>
 	    15
-	  </entry>
-	  <entry>
-	    Mandatory
-	  </entry>
-	</row>
-	<row>
-	  <entry>
-	    LOGIN_NAME
-	  </entry>
-	  <entry>
-	    Rivendell User Name
-	  </entry>
-	  <entry>
-	    Mandatory
-	  </entry>
-	</row>
-	<row>
-	  <entry>
-	    PASSWORD
-	  </entry>
-	  <entry>
-	    Login Password
 	  </entry>
 	  <entry>
 	    Mandatory
@@ -1567,28 +1520,6 @@
 	</row>
 	<row>
 	  <entry>
-	    LOGIN_NAME
-	  </entry>
-	  <entry>
-	    Rivendell User Name
-	  </entry>
-	  <entry>
-	    Mandatory
-	  </entry>
-	</row>
-	<row>
-	  <entry>
-	    PASSWORD
-	  </entry>
-	  <entry>
-	    Login Password
-	  </entry>
-	  <entry>
-	    Mandatory
-	  </entry>
-	</row>
-	<row>
-	  <entry>
 	    CART_NUMBER
 	  </entry>
 	  <entry>
@@ -1761,28 +1692,6 @@
 	</row>
 	<row>
 	  <entry>
-	    LOGIN_NAME
-	  </entry>
-	  <entry>
-	    Rivendell User Name
-	  </entry>
-	  <entry>
-	    Mandatory
-	  </entry>
-	</row>
-	<row>
-	  <entry>
-	    PASSWORD
-	  </entry>
-	  <entry>
-	    Login Password
-	  </entry>
-	  <entry>
-	    Mandatory
-	  </entry>
-	</row>
-	<row>
-	  <entry>
 	    CART_NUMBER
 	  </entry>
 	  <entry>
@@ -1859,28 +1768,6 @@
 	  </entry>
 	  <entry>
 	    2
-	  </entry>
-	  <entry>
-	    Mandatory
-	  </entry>
-	</row>
-	<row>
-	  <entry>
-	    LOGIN_NAME
-	  </entry>
-	  <entry>
-	    Rivendell User Name
-	  </entry>
-	  <entry>
-	    Mandatory
-	  </entry>
-	</row>
-	<row>
-	  <entry>
-	    PASSWORD
-	  </entry>
-	  <entry>
-	    Login Password
 	  </entry>
 	  <entry>
 	    Mandatory
@@ -2037,28 +1924,6 @@
 	</row>
 	<row>
 	  <entry>
-	    LOGIN_NAME
-	  </entry>
-	  <entry>
-	    Rivendell User Name
-	  </entry>
-	  <entry>
-	    Mandatory
-	  </entry>
-	</row>
-	<row>
-	  <entry>
-	    PASSWORD
-	  </entry>
-	  <entry>
-	    Login Password
-	  </entry>
-	  <entry>
-	    Mandatory
-	  </entry>
-	</row>
-	<row>
-	  <entry>
 	    CART_NUMBER
 	  </entry>
 	  <entry>
@@ -2123,28 +1988,6 @@
 	  </entry>
 	  <entry>
 	    6
-	  </entry>
-	  <entry>
-	    Mandatory
-	  </entry>
-	</row>
-	<row>
-	  <entry>
-	    LOGIN_NAME
-	  </entry>
-	  <entry>
-	    Rivendell User Name
-	  </entry>
-	  <entry>
-	    Mandatory
-	  </entry>
-	</row>
-	<row>
-	  <entry>
-	    PASSWORD
-	  </entry>
-	  <entry>
-	    Login Password
 	  </entry>
 	  <entry>
 	    Mandatory
@@ -2247,28 +2090,6 @@
 	</row>
 	<row>
 	  <entry>
-	    LOGIN_NAME
-	  </entry>
-	  <entry>
-	    Rivendell User Name
-	  </entry>
-	  <entry>
-	    Mandatory
-	  </entry>
-	</row>
-	<row>
-	  <entry>
-	    PASSWORD
-	  </entry>
-	  <entry>
-	    Login Password
-	  </entry>
-	  <entry>
-	    Mandatory
-	  </entry>
-	</row>
-	<row>
-	  <entry>
 	    CART_NUMBER
 	  </entry>
 	  <entry>
@@ -2323,28 +2144,6 @@
 	  </entry>
 	  <entry>
 	    8
-	  </entry>
-	  <entry>
-	    Mandatory
-	  </entry>
-	</row>
-	<row>
-	  <entry>
-	    LOGIN_NAME
-	  </entry>
-	  <entry>
-	    Rivendell User Name
-	  </entry>
-	  <entry>
-	    Mandatory
-	  </entry>
-	</row>
-	<row>
-	  <entry>
-	    PASSWORD
-	  </entry>
-	  <entry>
-	    Login Password
 	  </entry>
 	  <entry>
 	    Mandatory
@@ -2424,28 +2223,6 @@
 	</row>
 	<row>
 	  <entry>
-	    LOGIN_NAME
-	  </entry>
-	  <entry>
-	    Rivendell User Name
-	  </entry>
-	  <entry>
-	    Mandatory
-	  </entry>
-	</row>
-	<row>
-	  <entry>
-	    PASSWORD
-	  </entry>
-	  <entry>
-	    Login Password
-	  </entry>
-	  <entry>
-	    Mandatory
-	  </entry>
-	</row>
-	<row>
-	  <entry>
 	    CART_NUMBER
 	  </entry>
 	  <entry>
@@ -2500,28 +2277,6 @@
 	  </entry>
 	  <entry>
 	    5
-	  </entry>
-	  <entry>
-	    Mandatory
-	  </entry>
-	</row>
-	<row>
-	  <entry>
-	    LOGIN_NAME
-	  </entry>
-	  <entry>
-	    Rivendell User Name
-	  </entry>
-	  <entry>
-	    Mandatory
-	  </entry>
-	</row>
-	<row>
-	  <entry>
-	    PASSWORD
-	  </entry>
-	  <entry>
-	    Login Password
 	  </entry>
 	  <entry>
 	    Mandatory
@@ -2588,28 +2343,6 @@
 	    Mandatory
 	  </entry>
 	</row>
-	<row>
-	  <entry>
-	    LOGIN_NAME
-	  </entry>
-	  <entry>
-	    Rivendell User Name
-	  </entry>
-	  <entry>
-	    Mandatory
-	  </entry>
-	</row>
-	<row>
-	  <entry>
-	    PASSWORD
-	  </entry>
-	  <entry>
-	    Login Password
-	  </entry>
-	  <entry>
-	    Mandatory
-	  </entry>
-	</row>
       </tbody>
     </tgroup>
   </table>
@@ -2650,28 +2383,6 @@
 	  </entry>
 	  <entry>
 	    22
-	  </entry>
-	  <entry>
-	    Mandatory
-	  </entry>
-	</row>
-	<row>
-	  <entry>
-	    LOGIN_NAME
-	  </entry>
-	  <entry>
-	    Rivendell User Name
-	  </entry>
-	  <entry>
-	    Mandatory
-	  </entry>
-	</row>
-	<row>
-	  <entry>
-	    PASSWORD
-	  </entry>
-	  <entry>
-	    Login Password
 	  </entry>
 	  <entry>
 	    Mandatory
@@ -2728,28 +2439,6 @@
 	  </entry>
 	  <entry>
 	    20
-	  </entry>
-	  <entry>
-	    Mandatory
-	  </entry>
-	</row>
-	<row>
-	  <entry>
-	    LOGIN_NAME
-	  </entry>
-	  <entry>
-	    Rivendell User Name
-	  </entry>
-	  <entry>
-	    Mandatory
-	  </entry>
-	</row>
-	<row>
-	  <entry>
-	    PASSWORD
-	  </entry>
-	  <entry>
-	    Login Password
 	  </entry>
 	  <entry>
 	    Mandatory
@@ -2833,28 +2522,6 @@
 	    Mandatory
 	  </entry>
 	</row>
-	<row>
-	  <entry>
-	    LOGIN_NAME
-	  </entry>
-	  <entry>
-	    Rivendell User Name
-	  </entry>
-	  <entry>
-	    Mandatory
-	  </entry>
-	</row>
-	<row>
-	  <entry>
-	    PASSWORD
-	  </entry>
-	  <entry>
-	    Login Password
-	  </entry>
-	  <entry>
-	    Mandatory
-	  </entry>
-	</row>
       </tbody>
     </tgroup>
   </table>
@@ -2895,28 +2562,6 @@
 	  </entry>
 	  <entry>
 	    21
-	  </entry>
-	  <entry>
-	    Mandatory
-	  </entry>
-	</row>
-	<row>
-	  <entry>
-	    LOGIN_NAME
-	  </entry>
-	  <entry>
-	    Rivendell User Name
-	  </entry>
-	  <entry>
-	    Mandatory
-	  </entry>
-	</row>
-	<row>
-	  <entry>
-	    PASSWORD
-	  </entry>
-	  <entry>
-	    Login Password
 	  </entry>
 	  <entry>
 	    Mandatory
@@ -2982,28 +2627,6 @@
 	</row>
 	<row>
 	  <entry>
-	    LOGIN_NAME
-	  </entry>
-	  <entry>
-	    Rivendell User Name
-	  </entry>
-	  <entry>
-	    Mandatory
-	  </entry>
-	</row>
-	<row>
-	  <entry>
-	    PASSWORD
-	  </entry>
-	  <entry>
-	    Login Password
-	  </entry>
-	  <entry>
-	    Mandatory
-	  </entry>
-	</row>
-	<row>
-	  <entry>
 	    CART_NUMBER
 	  </entry>
 	  <entry>
@@ -3053,28 +2676,6 @@
 	  </entry>
 	  <entry>
 	    11
-	  </entry>
-	  <entry>
-	    Mandatory
-	  </entry>
-	</row>
-	<row>
-	  <entry>
-	    LOGIN_NAME
-	  </entry>
-	  <entry>
-	    Rivendell User Name
-	  </entry>
-	  <entry>
-	    Mandatory
-	  </entry>
-	</row>
-	<row>
-	  <entry>
-	    PASSWORD
-	  </entry>
-	  <entry>
-	    Login Password
 	  </entry>
 	  <entry>
 	    Mandatory
@@ -3146,28 +2747,6 @@
 	  </entry>
 	  <entry>
 	    Mandatory.
-	  </entry>
-	</row>
-	<row>
-	  <entry>
-	    LOGIN_NAME
-	  </entry>
-	  <entry>
-	    Rivendell User Name
-	  </entry>
-	  <entry>
-	    Mandatory. String.
-	  </entry>
-	</row>
-	<row>
-	  <entry>
-	    PASSWORD
-	  </entry>
-	  <entry>
-	    Login Password
-	  </entry>
-	  <entry>
-	    Mandatory. String.
 	  </entry>
 	</row>
 	<row>
@@ -3695,28 +3274,6 @@
 	</row>
 	<row>
 	  <entry>
-	    LOGIN_NAME
-	  </entry>
-	  <entry>
-	    Rivendell User Name
-	  </entry>
-	  <entry>
-	    Mandatory
-	  </entry>
-	</row>
-	<row>
-	  <entry>
-	    PASSWORD
-	  </entry>
-	  <entry>
-	    Login Password
-	  </entry>
-	  <entry>
-	    Mandatory
-	  </entry>
-	</row>
-	<row>
-	  <entry>
 	    CART_NUMBER
 	  </entry>
 	  <entry>
@@ -3793,28 +3350,6 @@
 	  </entry>
 	  <entry>
 	    26
-	  </entry>
-	  <entry>
-	    Mandatory
-	  </entry>
-	</row>
-	<row>
-	  <entry>
-	    LOGIN_NAME
-	  </entry>
-	  <entry>
-	    Rivendell User Name
-	  </entry>
-	  <entry>
-	    Mandatory
-	  </entry>
-	</row>
-	<row>
-	  <entry>
-	    PASSWORD
-	  </entry>
-	  <entry>
-	    Login Password
 	  </entry>
 	  <entry>
 	    Mandatory

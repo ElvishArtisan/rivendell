@@ -32,6 +32,7 @@ function EditCut_MakePost()
     var form='COMMAND=15';
     form+='&LOGIN_NAME='+document.getElementById("LOGIN_NAME").value;
     form+='&PASSWORD='+document.getElementById("PASSWORD").value;
+    form+='&TICKET='+document.getElementById("TICKET").value;
     form+='&CART_NUMBER='+document.getElementById("CART_NUMBER").value;
     form+='&CUT_NUMBER='+document.getElementById("CUT_NUMBER").value;
 

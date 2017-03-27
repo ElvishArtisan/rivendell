@@ -44,6 +44,7 @@ class MainObject : public QObject
   void PurgeElr();
   void PurgeDropboxes();
   void PurgeGpioEvents();
+  void PurgeWebapiAuths();
   RDConfig *maint_config;
   bool maint_verbose;
   bool maint_system;

@@ -15654,3 +15654,13 @@
 2017-03-24 Fred Gleason <fredg@paravelsystems.com>
 	* Updated 'NEWS'.
 	* Incremented the package version to 2.15.3.
+2017-03-27 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'WEBAPI_AUTHS' table to the database.
+	* Added a 'USERS.WEBAPI_AUTH_TIMEOUT' field to the database.
+	* Incremented the database version to 260.
+	* Added 'RDUser::webapiAuthTimeout()' and
+	'RDUser::setWebapiAuthTimeout()' methods in 'lib/rduser.cpp' and
+	'lib/rduser.h'.
+	* Added a 'WebAPI Timeout' control to the Edit User dialog in
+	'rdadmin/edit_user.cpp' and 'rdadmin/edit_user.h'.
+	* Implemented a 'CreateTicket' Web API call.

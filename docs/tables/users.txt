@@ -11,6 +11,7 @@ FULL_NAME            char(255)        Indexed
 PHONE_NUMBER         char(20)
 DESCRIPTION          char(255)
 PASSWORD             char(32)         Not-NULL, Hashed
+WEBAPI_AUTH_TIMEOUT  int(11) signed   Seconds
 ENABLE_WEB           enum('N','Y')
 ADMIN_USERS_PRIV     enum('N','Y')    Retired
 ADMIN_CONFIG_PRIV    enum('N','Y')

@@ -30,6 +30,7 @@
 #include <qlineedit.h>
 #include <qlabel.h>
 #include <qpushbutton.h>
+#include <qspinbox.h>
 
 #include <rduser.h>
 
@@ -55,6 +56,7 @@ class EditUser : public QDialog
   QLineEdit *user_full_name_edit;
   QLineEdit *user_description_edit;
   QLineEdit *user_phone_edit;
+  QSpinBox *user_webapi_auth_spin;
   QCheckBox *user_web_box;
   QLabel *user_web_label;
   QButtonGroup *user_admin_group;

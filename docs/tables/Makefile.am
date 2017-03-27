@@ -76,6 +76,7 @@ EXTRA_DIST = audio_perms.txt\
              users.txt\
              version.txt\
              vguest_resources.txt\
+             webapi_auths.txt\
              web_connections.txt
 
 CLEANFILES = *~

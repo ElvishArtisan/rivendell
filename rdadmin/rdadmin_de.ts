@@ -4084,6 +4084,14 @@ zuweisen</translation>
         <source>&amp;Cancel</source>
         <translation>Abbre&amp;chen</translation>
     </message>
+    <message>
+        <source>Disabled</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>WebAPI Timeout:</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditUserPerms</name>
