@@ -922,7 +922,7 @@ void MainObject::ProcessFileEntry(const QString &entry)
   }
   globbuf.gl_offs=RDIMPORT_GLOB_SIZE;
   while((globbuf.gl_pathc==RDIMPORT_GLOB_SIZE)||(gflags==GLOB_MARK)) {
-    glob(RDEscapeString(entry),gflags,NULL,&globbuf);
+    glob(RDEscapeStringLite(entry),gflags,NULL,&globbuf);
     if((globbuf.gl_pathc==0)&&(gflags==GLOB_MARK)&&(!import_drop_box)) {
       PrintLogDateTime(stderr);
       fprintf(stderr," Unable to open \"%s\", skipping...\n",

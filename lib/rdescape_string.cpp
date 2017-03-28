@@ -224,3 +224,67 @@ QString RDEscapeString(QString const &str)
 
   return res;
 }
+
+QString RDEscapeStringLite(QString const &str)
+{
+  QString res;
+
+  for(unsigned i=0;i<str.length();i++) {
+    switch(((const char *)str)[i]) {
+	case '(':
+	  res+=QString("\\\(");
+	  break;
+
+	case ')':
+	  res+=QString("\\)");
+	  break;
+
+	case '"':
+	  res+=QString("\\\"");
+	  break;
+
+	case '`':
+	  res+=QString("\\`");
+	  break;
+
+	case '\'':
+	  res+=QString("\\\'");
+	  break;
+
+	case '\\':
+	  res+=QString("\\");
+	  res+=QString("\\");
+	  break;
+
+	case ' ':
+	  res+=QString("\\ ");
+	  break;
+
+	case '&':
+	  res+=QString("\\&");
+	  break;
+
+        case ';':
+	  res+=QString("\\;");
+	  break;
+
+        case '<':
+	  res+=QString("\\<");
+	  break;
+
+        case '>':
+	  res+=QString("\\>");
+	  break;
+
+        case '|':
+	  res+=QString("\\|");
+	  break;
+
+	default:
+	  res+=((const char *)str)[i];
+	  break;
+    }
+  }
+
+  return res;
+}
