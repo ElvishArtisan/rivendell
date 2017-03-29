@@ -164,7 +164,6 @@ MainObject::MainObject(QObject *parent)
   if(!orphan_group_name.isEmpty()) {
     QString sql=QString().sprintf("select NAME from GROUPS where NAME=\"%s\"",
 				  (const char *)orphan_group_name);
-    printf("SQL: %s\n",(const char *)sql);
     QSqlQuery *q=new QSqlQuery(sql);
     if(!q->first()) {
       fprintf(stderr,"rddbcheck: invalid group \"%s\"\n",

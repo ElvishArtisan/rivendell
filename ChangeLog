@@ -15673,3 +15673,5 @@
 	* Added a '--rehash=' directive to rddbcheck(8).
 	* Added a 'Rehash' Web API call.
 	* Added an 'RDRehash' class in 'lib/rdrehash.cpp' and 'lib/rdrehash.h'.
+2017-03-29 Fred Gleason <fredg@paravelsystems.com>
+	* Added a man page for rddbcheck(8).

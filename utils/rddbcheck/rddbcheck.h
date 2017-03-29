@@ -31,7 +31,7 @@
 #include <rdcmd_switch.cpp>
 #include <rdstation.h>
 
-#define RDDBCHECK_USAGE "[options]\n\nCheck the Rivendell database and audio store for consistency\nand correctness.\n\n--yes\n     Answer all questions with 'yes'\n\n--no\n     Answer all questions with 'no'\n\n--user=<username>\n     Connect using the Rivendell user <username> (default is \"user\").\n\n--orphan-group=<group-name>\n     Move carts with missing/invalid GROUP information to the <group-name>\n     group.\n\n--dump-cuts-dir=<dir-name>\n     Move orphaned cut audio to the <dir-name> directory.\n\n--rehash=<cartnum>/ALL"
+#define RDDBCHECK_USAGE "[options]\n"
 
 //
 // Global Variables
