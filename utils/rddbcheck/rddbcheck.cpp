@@ -175,14 +175,6 @@ MainObject::MainObject(QObject *parent)
   }
 
   //
-  // Rehash
-  //
-  if(!rehash.isEmpty()) {
-    Rehash(rehash);
-    exit(0);
-  }
-
-  //
   // Check for Orphaned Voice Tracks
   //
   printf("Checking voice tracks...\n");
@@ -247,6 +239,15 @@ MainObject::MainObject(QObject *parent)
   printf("Validating audio lengths (this may take some time)...\n");
   ValidateAudioLengths();
   printf("done.\n\n");
+
+  //
+  // Rehash
+  //
+  if(!rehash.isEmpty()) {
+    printf("Checking hashes...\n");
+    Rehash(rehash);
+    printf("done.\n\n");
+  }
 
   exit(0);
 }
@@ -505,7 +506,6 @@ void MainObject::CheckPendingCarts()
     "(PENDING_STATION is not null)&&"+
     "(PENDING_DATETIME<\""+now.addDays(-1).
     toString("yyyy-MM-dd hh:mm:ss")+"\")";
-  printf("SQL: %s\n",(const char *)sql);
   q=new QSqlQuery(sql);
   while(q->next()) {
     printf("  Cart %06u has stale reservation, delete cart(y/N)?",
@@ -764,7 +764,7 @@ void MainObject::RehashCut(const QString &cutnum)
       else {
 	if(cut->sha1Hash()!=hash) {
 	  RDCart *cart=new RDCart(RDCut::cartNumber(cutnum));
-	  printf("  Cut %d [%s] in cart %06u [%s] has inconsistent SHA1 hash.  Correct? (y/N) ",
+	  printf("  Cut %d [%s] in cart %06u [%s] has inconsistent SHA1 hash.  Fix? (y/N) ",
 		 cut->cutNumber(),
 		 (const char *)cut->description(),
 		 cart->number(),

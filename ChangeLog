@@ -15675,3 +15675,6 @@
 	* Added an 'RDRehash' class in 'lib/rdrehash.cpp' and 'lib/rdrehash.h'.
 2017-03-29 Fred Gleason <fredg@paravelsystems.com>
 	* Added a man page for rddbcheck(8).
+2017-03-29 Fred Gleason <fredg@paravelsystems.com>
+	* Modified rddbcheck(8) so as to process a --rehash command after
+	the inexpensive checks.

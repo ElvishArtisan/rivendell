@@ -40,9 +40,10 @@
     <command>rddbcheck</command><manvolnum>8</manvolnum> is a command-line
     tool for checking the consistency of a Rivendell database and (perhaps)
     repairing any inconsistencies found.  When invoked without any options,
-    <command>rddbcheck</command><manvolnum>8</manvolnum> will run all of the
-    &quot;inexpensive&quot; consistency checks, report any problems found
-    and offer to repair the problem.
+    <command>rddbcheck</command><manvolnum>8</manvolnum> will run a set of
+    consistency checks (with the exception of the check of the SHA-1 hashes),
+    report any problems found and offer to repair the problem. To force a
+    SHA-1 hash check as well, see the <option>--rehash</option> option below.
   </para>
   </refsect1>
 
@@ -90,8 +91,15 @@
       </term>
       <listitem>
 	<para>
-	  Run the <command>REHASH</command> check. The
-	  <replaceable>target</replaceable> value can be one of the following:
+	  Generate SHA-1 hashes from the specified files in the audio store
+	  and validate them against the values stored in the database. This
+	  is an inherently expensive operation that may require a
+	  significant amount of time to complete as each audio
+	  file to be checked must be opened and read in its entirety.
+	</para>
+	<para>
+	  The <replaceable>target</replaceable> value can be one of the
+	  following:
 	</para>
 	<variablelist>
 	  <varlistentry>
