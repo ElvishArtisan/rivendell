@@ -30,6 +30,7 @@
 #include <rdsettings.h>
 #include <rdconf.h>
 #include <rdgroup.h>
+#include <rdhash.h>
 #include <rdlibrary_conf.h>
 
 #include <rdxport.h>
@@ -214,12 +215,15 @@ void Xport::Import()
     resp_code=400;
     break;
   }
+  /*
   delete conv;
   delete settings;
   delete conf;
   delete cut;
   delete cart;
+  */
   if(resp_code==200) {
+    cut->setSha1Hash(RDSha1Hash(RDCut::pathName(cut->cutName())));
     printf("Content-type: application/xml\n");
     printf("Status: %d\n",resp_code);
     printf("\n");

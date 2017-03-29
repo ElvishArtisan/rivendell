@@ -64,6 +64,7 @@ class Xport : public QObject
   void DeleteLog();
   void ListLogs();
   void ListLog();
+  void Rehash();
   void SaveLog();
   void ListSchedCodes();
   void AssignSchedCode();

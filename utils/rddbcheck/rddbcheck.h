@@ -31,7 +31,7 @@
 #include <rdcmd_switch.cpp>
 #include <rdstation.h>
 
-#define RDDBCHECK_USAGE "[options]\n\nCheck the Rivendell database and audio store for consistency\nand correctness.\n\n--yes\n     Answer all questions with 'yes'\n\n--no\n     Answer all questions with 'no'\n\n--user=<username>\n     Connect using the Rivendell user <username> (default is \"user\").\n\n--orphan-group=<group-name>\n     Move carts with missing/invalid GROUP information to the <group-name>\n     group.\n\n--dump-cuts-dir=<dir-name>\n     Move orphaned cut audio to the <dir-name> directory.\n"
+#define RDDBCHECK_USAGE "[options]\n\nCheck the Rivendell database and audio store for consistency\nand correctness.\n\n--yes\n     Answer all questions with 'yes'\n\n--no\n     Answer all questions with 'no'\n\n--user=<username>\n     Connect using the Rivendell user <username> (default is \"user\").\n\n--orphan-group=<group-name>\n     Move carts with missing/invalid GROUP information to the <group-name>\n     group.\n\n--dump-cuts-dir=<dir-name>\n     Move orphaned cut audio to the <dir-name> directory.\n\n--rehash=<cartnum>/ALL"
 
 //
 // Global Variables
@@ -54,6 +54,9 @@ class MainObject : public QObject
   void CheckOrphanedCuts();
   void CheckOrphanedAudio();
   void ValidateAudioLengths();
+  void Rehash(const QString &arg);
+  void RehashCart(unsigned cartnum);
+  void RehashCut(const QString &cutnum);
   void SetCutLength(const QString &cutname,int len);
   void CleanTables(const QString &ext,QSqlQuery *table_q,QSqlQuery *name_q);
   void CleanTables(const QString &ext,QSqlQuery *table_q);
@@ -63,6 +66,7 @@ class MainObject : public QObject
   bool check_no;
   QString orphan_group_name;
   QString dump_cuts_dir;
+  QString rehash;
   RDStation *check_station;
   RDUser *check_user;
 };

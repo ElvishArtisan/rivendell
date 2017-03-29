@@ -220,6 +220,14 @@ Do you still want to delete?</source>
         <source>ORD</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>SHA1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>not available</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>CdRipper</name>

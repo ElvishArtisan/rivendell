@@ -149,6 +149,7 @@ x11 {
   SOURCES += rdgpioselector.cpp
   SOURCES += rdgrid.cpp
   SOURCES += rdgroup.cpp
+  SOURCES += rdhash.cpp
   SOURCES += rdimport_audio.cpp
   SOURCES += rdlist_groups.cpp
   SOURCES += rdlist_logs.cpp
@@ -160,6 +161,7 @@ x11 {
   SOURCES += rdpasswd.cpp
   SOURCES += rdplay_deck.cpp
   SOURCES += rdrecording.cpp
+  SOURCES += rdrehash.cpp
   SOURCES += rdsimpleplayer.cpp
   SOURCES += rdsound_panel.cpp
   SOURCES += rdstatus.cpp
@@ -282,6 +284,7 @@ x11 {
   HEADERS += rdgrid.h
   HEADERS += rdgpio.h
   HEADERS += rdgroup.h
+  HEADERS += rdhash.h
   HEADERS += rdimport_audio.h
   HEADERS += rdlist_groups.h
   HEADERS += rdlist_logs.h
@@ -294,6 +297,7 @@ x11 {
   HEADERS += rdpasswd.h
   HEADERS += rdplay_deck.h
   HEADERS += rdrecording.h
+  HEADERS += rdrehash.h
   HEADERS += rdsimpleplayer.h
   HEADERS += rdsound_panel.h
   HEADERS += rdstatus.h

@@ -33,6 +33,7 @@
 
 #include <rd.h>
 #include <rdconf.h>
+#include <rdrehash.h>
 #include <rdmaint.h>
 #include <rdlibrary_conf.h>
 #include <rdescape_string.h>
@@ -127,14 +128,16 @@ void MainObject::RunSystemMaintenance()
   QString sql;
   RDSqlQuery *q;
 
+  sql="update VERSION set LAST_MAINT_DATETIME=now()";
+  q=new RDSqlQuery(sql);
+  delete q;
+
   PurgeCuts();
   PurgeLogs();
   PurgeElr();
   PurgeGpioEvents();
   PurgeWebapiAuths();
-  sql="update VERSION set LAST_MAINT_DATETIME=now()";
-  q=new RDSqlQuery(sql);
-  delete q;
+  RehashCuts();
 }
 
 
@@ -289,6 +292,36 @@ void MainObject::PurgeWebapiAuths()
 
   sql=QString("delete from WEBAPI_AUTHS where EXPIRATION_DATETIME<now()");
   q=new RDSqlQuery(sql);
+  delete q;
+}
+
+
+void MainObject::RehashCuts()
+{
+  QString sql;
+  RDSqlQuery *q;
+  RDRehash::ErrorCode err;
+
+  sql="select CUT_NAME from CUTS where SHA1_HASH is null limit 100";
+  q=new RDSqlQuery(sql);
+  while(q->next()) {
+    printf("CUT: %s\n",(const char *)q->value(0).toString());
+    if((err=RDRehash::rehash(maint_station,maint_user,maint_config,
+			     RDCut::cartNumber(q->value(0).toString()),
+			     RDCut::cutNumber(q->value(0).toString())))!=RDRehash::ErrorOk) {
+      maint_config->
+	log("rdmaint",
+	    RDConfig::LogErr,QString().sprintf("failed to rehash cut %s [%s]",
+					       (const char *)q->value(0).toString(),
+					       (const char *)RDRehash::errorText(err)));
+      
+    }
+    if(maint_verbose) {
+      fprintf(stderr,"rehashed cut \"%s\"\n",
+	      (const char *)q->value(0).toString());
+    }
+    sleep(1);
+  }
   delete q;
 }
 

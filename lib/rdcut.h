@@ -59,6 +59,8 @@ class RDCut
   void setIsrc(const QString &isrc) const;
   QString isci() const;
   void setIsci(const QString &isci) const;
+  QString sha1Hash() const;
+  void setSha1Hash(const QString &str);
   unsigned length() const;
   void setLength(int length) const;
   QDateTime originDatetime(bool *valid) const;

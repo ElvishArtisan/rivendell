@@ -174,6 +174,9 @@ AudioCart::AudioCart(AudioControls *controls,RDCart *cart,QString *path,
   rdcart_cut_list->addColumn(tr("NAME"));
   rdcart_cut_list->setColumnAlignment(11,Qt::AlignLeft);
 
+  rdcart_cut_list->addColumn(tr("SHA1"));
+  rdcart_cut_list->setColumnAlignment(12,Qt::AlignLeft);
+
   RefreshList();
 
   //
@@ -810,6 +813,12 @@ void AudioCart::RefreshList()
       l->setText(10,tr("None"));
     }
     l->setText(11,q->value(9).toString());
+    if(q->value(23).toString().isEmpty()) {
+      l->setText(12,"["+tr("not available")+"]");
+    }
+    else {
+      l->setText(12,q->value(23).toString());
+    }
     total_length+=q->value(3).toUInt();
     pass++;
   }
@@ -908,6 +917,12 @@ void AudioCart::RefreshLine(RDListViewItem *item)
       item->setText(10,tr("None"));
     }
     item->setText(11,q->value(9).toString());
+    if(q->value(23).toString().isEmpty()) {
+      item->setText(12,"["+tr("not available")+"]");
+    }
+    else {
+      item->setText(12,q->value(23).toString());
+    }
     total_length+=q->value(3).toUInt();
   }
   if(q->size()>0) {

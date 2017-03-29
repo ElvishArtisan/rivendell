@@ -31,24 +31,25 @@ QString ValidateCutFields()
     "DESCRIPTION,"+         // 02
     "LENGTH,"+              // 03
     "LAST_PLAY_DATETIME,"+  // 04
-    "PLAY_COUNTER,"+        // 03
-    "ORIGIN_DATETIME,"+     // 04
-    "ORIGIN_NAME,"+         // 05
-    "OUTCUE,"+              // 06
-    "CUT_NAME,"+            // 07
-    "LENGTH,"+              // 08
-    "EVERGREEN,"+           // 09
-    "START_DATETIME,"+      // 10
-    "END_DATETIME,"+        // 11
-    "START_DAYPART,"+       // 12
-    "END_DAYPART,"+         // 13
-    "MON,"+                 // 14
-    "TUE,"+                 // 15
-    "WED,"+                 // 16
-    "THU,"+                 // 17
-    "FRI,"+                 // 18
-    "SAT,"+                 // 19
-    "SUN "+                 // 20
+    "PLAY_COUNTER,"+        // 05
+    "ORIGIN_DATETIME,"+     // 06
+    "ORIGIN_NAME,"+         // 07
+    "OUTCUE,"+              // 08
+    "CUT_NAME,"+            // 09
+    "LENGTH,"+              // 10
+    "EVERGREEN,"+           // 11
+    "START_DATETIME,"+      // 12
+    "END_DATETIME,"+        // 13
+    "START_DAYPART,"+       // 14
+    "END_DAYPART,"+         // 15
+    "MON,"+                 // 16
+    "TUE,"+                 // 17
+    "WED,"+                 // 18
+    "THU,"+                 // 19
+    "FRI,"+                 // 20
+    "SAT,"+                 // 21
+    "SUN,"+                 // 22
+    "SHA1_HASH "+           // 23
     "from CUTS";
 
   return sql;

@@ -763,6 +763,7 @@ bool CreateDb(QString name,QString pwd)
       ISRC char(12),\
       ISCI char(32),\
       LENGTH INT UNSIGNED,\
+      SHA1_HASH char(40),\
       ORIGIN_DATETIME DATETIME,\
       START_DATETIME DATETIME,\
       END_DATETIME DATETIME,\
@@ -8345,6 +8346,20 @@ int UpdateDb(int ver)
       return false;
     }
   }
+
+  if(ver<261) {
+    sql=QString("alter table CUTS add column ")+
+      "SHA1_HASH char(40) after LENGTH";
+    if(!RunQuery(sql)) {
+      return false;
+    }
+
+    sql="create index SHA1_HASH_IDX on CUTS(SHA1_HASH)";
+    if(!RunQuery(sql)) {
+      return false;
+    }
+  }
+
 
   
   //

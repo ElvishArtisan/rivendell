@@ -38,6 +38,7 @@ noinst_PROGRAMS = audio_convert_test\
                   sas_switch_torture\
                   sas_torture\
                   stringcode_test\
+                  test_hash\
                   test_pam\
                   timer_test\
                   upload_test\
@@ -74,6 +75,9 @@ sas_torture_LDADD = @LIB_RDLIBS@ @LIBVORBIS@
 
 dist_stringcode_test_SOURCES = stringcode_test.cpp stringcode_test.h
 stringcode_test_LDADD = @LIB_RDLIBS@ @LIBVORBIS@
+
+dist_test_hash_SOURCES = test_hash.cpp test_hash.h
+test_hash_LDADD = @LIB_RDLIBS@ @LIBVORBIS@
 
 dist_test_pam_SOURCES = test_pam.cpp test_pam.h
 test_pam_LDADD = @LIB_RDLIBS@ @LIBVORBIS@

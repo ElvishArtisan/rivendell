@@ -15664,3 +15664,12 @@
 	* Added a 'WebAPI Timeout' control to the Edit User dialog in
 	'rdadmin/edit_user.cpp' and 'rdadmin/edit_user.h'.
 	* Implemented a 'CreateTicket' Web API call.
+2017-03-29 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'CUTS.SHA1_HASH' field to the database.
+	* Incremented the database version to 261.
+	* Added a 'Sha1' column to the Cut List in 'rdlibrary/audio_cart.cpp'.
+	* Added 'RDCut::sha1Hash()' and 'RDCut::setSha1Hash()' methods in
+	'lib/rdcut.cpp' and 'lib/rdcut.h'.
+	* Added a '--rehash=' directive to rddbcheck(8).
+	* Added a 'Rehash' Web API call.
+	* Added an 'RDRehash' class in 'lib/rdrehash.cpp' and 'lib/rdrehash.h'.

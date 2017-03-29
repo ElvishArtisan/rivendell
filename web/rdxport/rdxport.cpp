@@ -264,6 +264,10 @@ Xport::Xport(QObject *parent)
     ListServices();
     break;
 
+  case RDXPORT_COMMAND_REHASH:
+    Rehash();
+    break;
+
   default:
     printf("Content-type: text/html\n\n");
     printf("rdxport: missing/invalid command\n");

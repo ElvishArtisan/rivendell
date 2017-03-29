@@ -2586,6 +2586,73 @@
 </sect1>
 
 <sect1>
+  <title>Rehash</title>
+  <subtitle>Generate a SHA-1 hash for a cut and write it to the database</subtitle>
+  <para>
+    Command Code: <code>RDXPORT_COMMAND_REHASH</code>
+  </para>
+  <para>
+    Required User Permissions: None
+  </para>
+  <table xml:id="ex.rehash" frame="all">
+    <title>Rehash Call Fields</title>
+    <tgroup cols="3" align="left" colsep="1" rowsep="1">
+      <colspec colname="FIELD NAME" />
+      <colspec colname="MEANING" />
+      <colspec colname="REMARKS" />
+      <thead>
+	<row>
+	  <entry>
+	    FIELD NAME
+	  </entry>
+	  <entry>
+	    MEANING
+	  </entry>
+	  <entry>
+	    REMARKS
+	  </entry>
+	</row>
+      </thead>
+      <tbody>
+	<row>
+	  <entry>
+	    COMMAND
+	  </entry>
+	  <entry>
+	    32
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    CART_NUMBER
+	  </entry>
+	  <entry>
+	    Number of cart
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    CUT_NUMBER
+	  </entry>
+	  <entry>
+	    Number of cut
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+      </tbody>
+    </tgroup>
+  </table>
+</sect1>
+
+<sect1>
   <title>RemoveCart</title>
   <subtitle>Remove a cart from the Library</subtitle>
   <para>

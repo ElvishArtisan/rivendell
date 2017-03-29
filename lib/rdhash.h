@@ -1,8 +1,8 @@
-// dbversion.h
+// rdhash.h
 //
-// The Current Database Schema Version for Rivendell
+// Functions for generating hashes.
 //
-//   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2017 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,13 +18,12 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#ifndef DBVERSION_H
-#define DBVERSION_H
+#ifndef RDHASH_H
+#define RDHASH_H
 
-/*
- * Current Database Version
- */
-#define RD_VERSION_DATABASE 261
+#include <qstring.h>
+
+QString RDSha1Hash(const QString &filename,bool throttle=false);
 
 
-#endif  // DBVERSION_H
+#endif  // RD_H
