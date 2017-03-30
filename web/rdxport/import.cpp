@@ -101,10 +101,10 @@ void Xport::Import()
     }
   }
   if(!xport_user->editAudio()) {
-    XmlExit("Unauthorized",401);
+    XmlExit("Forbidden",403);
   }
   if(create&&(!xport_user->createCarts())) {
-    XmlExit("Unauthorized",401);
+    XmlExit("Forbidden",403);
   }
 
   //

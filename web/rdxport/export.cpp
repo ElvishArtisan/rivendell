@@ -189,7 +189,7 @@ void Xport::Export()
     break;
 
   case RDAudioConvert::ErrorNoSource:
-    resp_code=403;
+    resp_code=404;
     break;
 
   case RDAudioConvert::ErrorNoDestination:

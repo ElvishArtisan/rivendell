@@ -15681,3 +15681,15 @@
 2017-03-30 Fred Gleason <fredg@paravelsystems.com>
 	* Added '--relink-audio' and '--relink-audio-move' commands to
 	rddbcheck(8) in 'utils/rddbcheck.cpp' and 'utils/rddbcheck.h'.
+2017-03-30 Fred Gleason <fredg@paravelsystems.com>
+	* Changed the result code of the 'AddCart' service when the cart
+	already exists from '403' to '400'.
+	* Changed the result code of the 'EditCart' service when attempting
+	to set a forced length on a macro cart from '403' to '400'.
+	* Changed the result code of the 'EditCart' service when attempting
+	to set a forced length outside of the valid range from '403' to '400'.
+	* Changed the result code of the 'Export' service when attempting
+	to export from a cut with no audio content from '403' to '404'.
+	* Changed the '401' result code of the 'EditCart' service to be 403.
+	* Changed the '401' result code of the 'DeleteAudio' service to be 403.
+	* Changed the '401' result code of the 'Export' service to be 403.

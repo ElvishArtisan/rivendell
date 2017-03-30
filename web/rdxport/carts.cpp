@@ -81,11 +81,11 @@ void Xport::AddCart()
   }
   if(!group->cartNumberValid(cart_number)) {
     delete group;
-    XmlExit("Cart number out of range for group",401);
+    XmlExit("Cart number out of range for group",403);
   }
   delete group;
   if(!xport_user->createCarts()) {
-    XmlExit("Unauthorized",401);
+    XmlExit("Forbidden",403);
   }
 
   //
@@ -94,7 +94,7 @@ void Xport::AddCart()
   cart=new RDCart(cart_number);
   if(cart->exists()) {
     delete cart;
-    XmlExit("Cart already exists",403);
+    XmlExit("Cart already exists",400);
   }
   if(!cart->create(group_name,cart_type)) {
     delete cart;
@@ -249,7 +249,7 @@ void Xport::EditCart()
     XmlExit("No such cart",404);
   }
   if(!xport_user->modifyCarts()) {
-    XmlExit("Unauthorized",401);
+    XmlExit("Unauthorized",403);
   }
   if(xport_post->getValue("GROUP_NAME",&group_name)) {
     if(!xport_user->groupAuthorized(group_name)) {
@@ -282,11 +282,11 @@ void Xport::EditCart()
     number=RDSetTimeLength(value);
     if(cart->type()==RDCart::Macro) {
       delete cart;
-      XmlExit("Unsupported operation for cart type",403);
+      XmlExit("Unsupported operation for cart type",400);
     }
     if(!cart->validateLengths(number)) {
       delete cart;
-      XmlExit("Forced length out of range",403);
+      XmlExit("Forced length out of range",400);
     }
   }
   switch(cart->type()) {
@@ -413,7 +413,7 @@ void Xport::RemoveCart()
     XmlExit("No such cart",404);
   }
   if(!xport_user->deleteCarts()) {
-    XmlExit("Unauthorized",401);
+    XmlExit("Unauthorized",403);
   }
 
   //
@@ -454,7 +454,7 @@ void Xport::AddCut()
     XmlExit("No such cart",404);
   }
   if(!xport_user->editAudio()) {
-    XmlExit("Unauthorized",401);
+    XmlExit("Forbidden",403);
   }
 
   //
@@ -620,7 +620,7 @@ void Xport::EditCut()
     XmlExit("No such cart",404);
   }
   if(!xport_user->editAudio()) {
-    XmlExit("Unauthorized",401);
+    XmlExit("Forbidden",403);
   }
 
   //
@@ -911,7 +911,7 @@ void Xport::RemoveCut()
     XmlExit("No such cart",404);
   }
   if(!xport_user->editAudio()) {
-    XmlExit("Unauthorized",401);
+    XmlExit("Forbidden",403);
   }
 
   //
