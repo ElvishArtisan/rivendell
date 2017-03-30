@@ -79,6 +79,7 @@ tests/reserve_carts_test
 tests/sas_switch_torture
 tests/sas_torture
 tests/stringcode_test
+tests/test_hash
 tests/test_pam
 tests/timer_test
 tests/upload_test

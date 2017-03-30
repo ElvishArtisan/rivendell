@@ -37,6 +37,7 @@
 #include <rdlibrary_conf.h>
 #include <rdedit_audio.h>
 #include <rdimport_audio.h>
+#include <rdrehash.h>
 #include <rdwavedata.h>
 
 #include <globals.h>
@@ -1873,6 +1874,9 @@ void VoiceTracker::recordUnloadedData(int card,int stream,unsigned msecs)
   if(!track_aborting) {
     edit_track_cuts[1]->
       checkInRecording(rdstation_conf->name(),edit_settings,msecs);
+    RDRehash::rehash(rdstation_conf,rduser,log_config,
+		     edit_track_cuts[1]->cartNumber(),
+		     edit_track_cuts[1]->cutNumber());
     edit_track_cuts[1]->setSampleRate(rdsystem->sampleRate());
     edit_track_cart->updateLength();
     edit_track_cart->resetRotation();

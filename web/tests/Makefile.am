@@ -50,6 +50,7 @@ install-exec-am:
 	cp listlogs.html $(DESTDIR)@libexecdir@
 	cp listschedcodes.html $(DESTDIR)@libexecdir@
 	cp listservices.html $(DESTDIR)@libexecdir@
+	cp rehash.html $(DESTDIR)@libexecdir@
 	cp removecart.html $(DESTDIR)@libexecdir@
 	cp removecut.html $(DESTDIR)@libexecdir@
 	cp savelog.html $(DESTDIR)@libexecdir@
@@ -86,6 +87,7 @@ uninstall-local:
 	rm -f $(DESTDIR)@libexecdir@/listlogs.html
 	rm -f $(DESTDIR)@libexecdir@/listschedcodes.html
 	rm -f $(DESTDIR)@libexecdir@/listservices.html
+	rm -f $(DESTDIR)@libexecdir@/rehash.html
 	rm -f $(DESTDIR)@libexecdir@/removecart.html
 	rm -f $(DESTDIR)@libexecdir@/removecut.html
 	rm -f $(DESTDIR)@libexecdir@/savelog.html
@@ -121,6 +123,7 @@ EXTRA_DIST = addcart.html\
              listlogs.html\
              listschedcodes.html\
              listservices.html\
+             rehash.html\
              removecart.html\
              removecut.html\
              savelog.html\

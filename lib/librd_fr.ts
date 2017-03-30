@@ -1766,6 +1766,33 @@ please try again!</source>
     </message>
 </context>
 <context>
+    <name>RDRehash</name>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Internal Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Invalid URL</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>RDXport service returned an error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Invalid user or password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Audio does not exist</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>RDSoundPanel</name>
     <message>
         <source>Play All</source>

@@ -256,6 +256,19 @@ void RDCut::setIsci(const QString &isci) const
 }
 
 
+QString RDCut::sha1Hash() const
+{
+  return RDGetSqlValue("CUTS","CUT_NAME",cut_name,"SHA1_HASH",cut_db).
+    toString();
+}
+
+
+void RDCut::setSha1Hash(const QString &str)
+{
+  SetRow("SHA1_HASH",str);
+}
+
+
 unsigned RDCut::length() const
 {
   return RDGetSqlValue("CUTS","CUT_NAME",cut_name,"LENGTH",cut_db).
@@ -1169,6 +1182,7 @@ bool RDCut::checkInRecording(const QString &stationname,RDSettings *settings,
   QString sql;
   RDSqlQuery *q;
   int format;
+  QString hash;
 
   switch(settings->format()) {
   case RDSettings::MpegL2:

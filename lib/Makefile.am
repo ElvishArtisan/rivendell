@@ -142,6 +142,7 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdgrid.cpp rdgrid.h\
                         rdgroup.cpp rdgroup.h\
                         rdgroup_list.cpp rdgroup_list.h\
+                        rdhash.cpp rdhas.h\
                         rdhotkeys.cpp rdhotkeys.h\
                         rdhotkeylist.cpp rdhotkeylist.h\
                         rdidvalidator.cpp rdidvalidator.h\
@@ -192,6 +193,7 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdprofilesection.cpp rdprofilesection.h\
                         rdpushbutton.cpp rdpushbutton.h\
                         rdrecording.cpp rdrecording.h\
+                        rdrehash.cpp rdrehash.h\
                         rdreplicator.cpp rdreplicator.h\
                         rdreport.cpp rdreport.h\
                         rdringbuffer.cpp rdringbuffer.h\
@@ -307,6 +309,7 @@ nodist_librd_la_SOURCES = moc_rdadd_cart.cpp\
                           moc_rdschedcodes_dialog.cpp\
                           moc_rdsegmeter.cpp\
                           moc_rdsimpleplayer.cpp\
+                          moc_rdrehash.cpp\
                           moc_rdslider.cpp\
                           moc_rdsocket.cpp\
                           moc_rdsound_panel.cpp\

@@ -34,6 +34,7 @@
 #include <rd.h>
 #include <rddbcheck.h>
 #include <rdcart.h>
+#include <rdhash.h>
 #include <rdlog.h>
 #include <rdclock.h>
 #include <rdcreate_log.h>
@@ -80,6 +81,9 @@ MainObject::MainObject(QObject *parent)
     }
     if(cmd->key(i)=="--dump-cuts-dir") {
       dump_cuts_dir=cmd->value(i);
+    }
+    if(cmd->key(i)=="--rehash") {
+      rehash=cmd->value(i);
     }
   }
   if(check_yes&&check_no) {
@@ -160,7 +164,6 @@ MainObject::MainObject(QObject *parent)
   if(!orphan_group_name.isEmpty()) {
     QString sql=QString().sprintf("select NAME from GROUPS where NAME=\"%s\"",
 				  (const char *)orphan_group_name);
-    printf("SQL: %s\n",(const char *)sql);
     QSqlQuery *q=new QSqlQuery(sql);
     if(!q->first()) {
       fprintf(stderr,"rddbcheck: invalid group \"%s\"\n",
@@ -236,6 +239,15 @@ MainObject::MainObject(QObject *parent)
   printf("Validating audio lengths (this may take some time)...\n");
   ValidateAudioLengths();
   printf("done.\n\n");
+
+  //
+  // Rehash
+  //
+  if(!rehash.isEmpty()) {
+    printf("Checking hashes...\n");
+    Rehash(rehash);
+    printf("done.\n\n");
+  }
 
   exit(0);
 }
@@ -494,7 +506,6 @@ void MainObject::CheckPendingCarts()
     "(PENDING_STATION is not null)&&"+
     "(PENDING_DATETIME<\""+now.addDays(-1).
     toString("yyyy-MM-dd hh:mm:ss")+"\")";
-  printf("SQL: %s\n",(const char *)sql);
   q=new QSqlQuery(sql);
   while(q->next()) {
     printf("  Cart %06u has stale reservation, delete cart(y/N)?",
@@ -682,6 +693,95 @@ void MainObject::ValidateAudioLengths()
     }
   }
   delete q;
+}
+
+
+void MainObject::Rehash(const QString &arg)
+{
+  QString sql;
+  QSqlQuery *q;
+  unsigned cartnum;
+  bool ok=false;
+
+  if(arg.lower()=="all") {
+    sql=QString("select NUMBER from CART where ")+
+      QString().sprintf("TYPE=%d ",RDCart::Audio)+
+      "order by NUMBER";
+    q=new QSqlQuery(sql);
+    while(q->next()) {
+      RehashCart(q->value(0).toUInt());
+    }
+    delete q;
+    return;
+  }
+  cartnum=arg.toUInt(&ok);
+  if(ok&&(cartnum>0)&&(cartnum<=RD_MAX_CART_NUMBER)) {
+    RehashCart(cartnum);
+    return;
+  }
+  RDCut *cut=new RDCut(arg);
+  if(cut->exists()) {
+    RehashCut(arg);
+  }
+  delete cut;
+}
+
+
+void MainObject::RehashCart(unsigned cartnum)
+{
+  RDCart *cart=new RDCart(cartnum);
+  if(cart->exists()) {
+    if(cart->type()==RDCart::Audio) {
+      QString sql=QString("select CUT_NAME from CUTS where ")+
+	QString().sprintf("CART_NUMBER=%u ",cartnum)+
+	"order by CUT_NAME";
+      QSqlQuery *q=new QSqlQuery(sql);
+      while(q->next()) {
+	RehashCut(q->value(0).toString());
+      }
+      delete q;
+    }
+  }
+  else {
+    printf("  Cart %06u does not exist.\n",cartnum);
+  }
+}
+
+
+void MainObject::RehashCut(const QString &cutnum)
+{
+  QString hash=RDSha1Hash(RDCut::pathName(cutnum),true);
+  if(hash.isEmpty()) {
+    printf("  Unable to generate hash for \"%s\"\n",
+	    (const char *)RDCut::pathName(cutnum));
+  }
+  else {
+    RDCut *cut=new RDCut(cutnum);
+    if(cut->exists()) {
+      if(cut->sha1Hash().isEmpty()) {
+	cut->setSha1Hash(hash);
+      }
+      else {
+	if(cut->sha1Hash()!=hash) {
+	  RDCart *cart=new RDCart(RDCut::cartNumber(cutnum));
+	  printf("  Cut %d [%s] in cart %06u [%s] has inconsistent SHA1 hash.  Fix? (y/N) ",
+		 cut->cutNumber(),
+		 (const char *)cut->description(),
+		 cart->number(),
+		 (const char *)cart->title());
+	  fflush(NULL);
+	  if(UserResponse()) {
+	    cut->setSha1Hash(hash);
+	  }
+	  delete cart;
+	}
+      }
+    }
+    else {
+      printf("  Cut \"%s\" does not exist.\n",(const char *)cutnum);
+    }
+    delete cut;
+  }
 }
 
 

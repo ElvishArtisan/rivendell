@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<refentry id="stdin" xmlns="http://docbook.org/ns/docbook" version="5.0">
+  <!--
+      Header
+  -->
+  <refmeta>
+    <refentrytitle>rddbcheck</refentrytitle>
+    <manvolnum>8</manvolnum>
+    <refmiscinfo class='source'>June 2016</refmiscinfo>
+    <refmiscinfo class='manual'>Linux Audio Manual</refmiscinfo>
+  </refmeta>
+  <refnamediv>
+    <refname>rddbcheck</refname>
+    <refpurpose>Tool for checking and repairing Rivendell databases</refpurpose>
+  </refnamediv>
+  <info>
+    <author>
+      <personname>
+	<firstname>Fred</firstname>
+	<surname>Gleason</surname>
+	<email>fredg@paravelsystems.com</email>
+      </personname>
+      <contrib>Application Author</contrib>
+    </author>
+  </info>
+
+  <!--
+      Body
+  -->
+  <refsynopsisdiv id='synopsis'>
+    <cmdsynopsis>
+      <command>rddbcheck</command>
+      <arg choice='opt'><replaceable>OPTIONS</replaceable></arg>
+      <sbr/>
+    </cmdsynopsis>
+  </refsynopsisdiv>
+
+  <refsect1 id='description'><title>Description</title>
+  <para>
+    <command>rddbcheck</command><manvolnum>8</manvolnum> is a command-line
+    tool for checking the consistency of a Rivendell database and (perhaps)
+    repairing any inconsistencies found.  When invoked without any options,
+    <command>rddbcheck</command><manvolnum>8</manvolnum> will run a set of
+    consistency checks (with the exception of the check of the SHA-1 hashes),
+    report any problems found and offer to repair the problem. To force a
+    SHA-1 hash check as well, see the <option>--rehash</option> option below.
+  </para>
+  </refsect1>
+
+  <refsect1 id='general_options'><title>Options</title>
+  <variablelist remap='TP'>
+    <varlistentry>
+      <term>
+	<option>--dump-cuts-dir=</option><replaceable>dir-name</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  Move any &quot;orphaned&quot; audio files found to the
+	  <replaceable>dir-name</replaceable> directory.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
+	<option>--no</option>
+      </term>
+      <listitem>
+	<para>
+	  Automatically answer all interactive prompts with
+	  <userinput>No</userinput>.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
+	<option>--orphan-group=</option><replaceable>grp-name</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  Move carts with missing/invalid GROUP information to the
+	  <replaceable>grp-name</replaceable> group.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
+	<option>--rehash=</option><replaceable>target</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  Generate SHA-1 hashes from the specified files in the audio store
+	  and validate them against the values stored in the database. This
+	  is an inherently expensive operation that may require a
+	  significant amount of time to complete as each audio
+	  file to be checked must be opened and read in its entirety.
+	</para>
+	<para>
+	  The <replaceable>target</replaceable> value can be one of the
+	  following:
+	</para>
+	<variablelist>
+	  <varlistentry>
+	    <term>
+	      Cart number --e.g. <userinput>123456</userinput>
+	    </term>
+	    <listitem>
+	      <para>
+		Check hashs for all cuts within the specified cart.
+	      </para>
+	    </listitem>
+	  </varlistentry>
+	  <varlistentry>
+	    <term>
+	      Cart/cut specification --e.g. <userinput>123456_001</userinput>
+	    </term>
+	    <listitem>
+	      <para>
+		Check the hash for the specified cut.
+	      </para>
+	    </listitem>
+	  </varlistentry>
+	  <varlistentry>
+	    <term>
+	      <userinput>ALL</userinput>
+	    </term>
+	    <listitem>
+	      <para>
+		Check hashes for all cuts in the audio store.
+	      </para>
+	    </listitem>
+	  </varlistentry>
+	</variablelist>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
+	<option>--user=</option><replaceable>user-name</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  Use the <replaceable>user-name</replaceable> Rivendell user.
+	  Default value is <userinput>user</userinput>.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
+	<option>--yes</option>
+      </term>
+      <listitem>
+	<para>
+	  Automatically answer all interactive prompts with
+	  <userinput>Yes</userinput>.
+	</para>
+      </listitem>
+    </varlistentry>
+
+  </variablelist>
+
+  <refsect1 id='see_also'><title>See Also</title>
+  <para>
+  <citerefentry>
+    <refentrytitle>rdmarkerset</refentrytitle><manvolnum>8</manvolnum>
+  </citerefentry>
+  <literal>,</literal>
+  <citerefentry>
+    <refentrytitle>rdrevert</refentrytitle><manvolnum>8</manvolnum>
+  </citerefentry>
+  </para>
+  </refsect1>
+</refsect1>
+
+</refentry>
+

@@ -290,6 +290,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/rdexport.1.gz
 %{_mandir}/man1/rdimport.1.gz
 %{_mandir}/man1/rdclilogedit.1.gz
+%{_mandir}/man8/rddbcheck.8.gz
 %{_mandir}/man8/rdmarkerset.8.gz
 %{_mandir}/man8/rdrevert.8.gz
 %doc AUTHORS

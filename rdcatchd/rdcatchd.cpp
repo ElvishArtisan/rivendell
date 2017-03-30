@@ -43,6 +43,7 @@
 
 #include <rddb.h>
 #include <rdconf.h>
+#include <rdhash.h>
 #include <rdurl.h>
 #include <rdwavefile.h>
 #include <rdcut.h>
@@ -2394,6 +2395,7 @@ void MainObject::CheckInRecording(QString cutname,CatchEvent *evt,
   s->setBitRate(evt->bitrate());
   s->setChannels(evt->channels());
   cut->checkInRecording(catch_config->stationName(),s,msecs);
+  cut->setSha1Hash(RDSha1Hash(RDCut::pathName(cut->cutName())));
   delete s;
   cut->autoTrim(RDCut::AudioBoth,-threshold);
   RDCart *cart=new RDCart(cut->cartNumber());

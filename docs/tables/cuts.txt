@@ -14,6 +14,7 @@ DESCRIPTION          char(64)          Indexed
 OUTCUE               char(64)          Indexed
 ISRC                 char(12)          International Standard Recording Code
 ISCI                 char(32)          ISCI Code
+SHA1_HASH            char(40)
 LENGTH               int(10) unsigned  Overall length in ms.
 ORIGIN_DATETIME      datetime          Date/Time when recorded
 START_DATETIME       datetime

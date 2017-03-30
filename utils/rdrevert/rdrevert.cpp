@@ -198,6 +198,10 @@ void MainObject::Revert(int schema) const
   case 260:
     Revert260();
     break;
+
+  case 261:
+    Revert261();
+    break;
   }
 }
 
@@ -550,6 +554,19 @@ void MainObject::Revert260() const
 }
 
 
+void MainObject::Revert261() const
+{
+  QString sql;
+  QSqlQuery *q;
+
+  sql=QString("alter table CUTS drop column SHA1_HASH");
+  q=new QSqlQuery(sql);
+  delete q;
+
+  SetVersion(260);
+}
+
+
 int MainObject::GetVersion() const
 {
   QString sql;
@@ -592,7 +609,7 @@ int MainObject::MapSchema(const QString &ver)
   version_map["2.13"]=255;
   version_map["2.14"]=258;
   version_map["2.15"]=259;
-  version_map["2.16"]=260;
+  version_map["2.16"]=261;
 
   //
   // Normalize String
