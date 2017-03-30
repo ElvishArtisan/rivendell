@@ -6,7 +6,7 @@
   <refmeta>
     <refentrytitle>rddbcheck</refentrytitle>
     <manvolnum>8</manvolnum>
-    <refmiscinfo class='source'>June 2016</refmiscinfo>
+    <refmiscinfo class='source'>March 2017</refmiscinfo>
     <refmiscinfo class='manual'>Linux Audio Manual</refmiscinfo>
   </refmeta>
   <refnamediv>
@@ -47,7 +47,7 @@
   </para>
   </refsect1>
 
-  <refsect1 id='general_options'><title>Options</title>
+  <refsect1 id='consistency_check_options'><title>Consistency Check Options</title>
   <variablelist remap='TP'>
     <varlistentry>
       <term>
@@ -159,8 +159,39 @@
 	</para>
       </listitem>
     </varlistentry>
-
   </variablelist>
+
+  <refsect1 id='audio_recovery_options'><title>Audio Recovery Options</title>
+  <variablelist remap='TP'>
+    <varlistentry>
+      <term>
+	<option>--relink-audio=</option><replaceable>dir-name</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  Scan the files in the directory <replaceable>dir-name</replaceable>
+	  and copy/rename them into the Rivendell audio store if their SHA-1
+	  hash matches that for one or more Rivendell cuts.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
+	<option>--relink-audio-move</option>
+      </term>
+      <listitem>
+	<para>
+	  When given along with <option>--relink-audio</option>, move the
+	  audio data to the Rivendell audio store rather than copying it
+	  --i.e. copy the audio data, then delete the original.
+	</para>
+      </listitem>
+    </varlistentry>
+  </variablelist>
+</refsect1>
+
+
 
   <refsect1 id='see_also'><title>See Also</title>
   <para>

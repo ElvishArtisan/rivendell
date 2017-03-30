@@ -20,10 +20,13 @@
 
 #include <limits.h>
 #include <glob.h>
+#include <errno.h>
+#include <fcntl.h>
 #include <signal.h>
 #include <math.h>
 #include <stdio.h>
 #include <unistd.h>
+#include <sys/stat.h>
 #include <sys/types.h>
 
 #include <qapplication.h>
@@ -57,6 +60,8 @@ MainObject::MainObject(QObject *parent)
   check_yes=false;
   check_no=false;
   QString username="user";
+  relink_audio="";
+  relink_audio_move=false;
 
   //
   // Read Command Options
@@ -81,6 +86,12 @@ MainObject::MainObject(QObject *parent)
     }
     if(cmd->key(i)=="--dump-cuts-dir") {
       dump_cuts_dir=cmd->value(i);
+    }
+    if(cmd->key(i)=="--relink-audio") {
+      relink_audio=cmd->value(i);
+    }
+    if(cmd->key(i)=="--relink-audio-move") {
+      relink_audio_move=true;
     }
     if(cmd->key(i)=="--rehash") {
       rehash=cmd->value(i);
@@ -172,6 +183,14 @@ MainObject::MainObject(QObject *parent)
       exit(256);
     }
     delete q;
+  }
+
+  //
+  // Recover Audio
+  //
+  if(!relink_audio.isEmpty()) {
+    RelinkAudio(relink_audio);
+    exit(0);
   }
 
   //
@@ -785,6 +804,83 @@ void MainObject::RehashCut(const QString &cutnum)
 }
 
 
+void MainObject::RelinkAudio(const QString &srcdir)
+{
+  QString sql;
+  RDSqlQuery *q;
+
+  QDir dir(srcdir);
+  if(!dir.exists()) {
+    fprintf(stderr,"rddbcheck: --relink-audio directory does not exist\n");
+    exit(256);
+  }
+  QStringList files=dir.entryList(QDir::Files|QDir::Readable|QDir::Hidden);
+  for(unsigned i=0;i<files.size();i++) {
+    QString filename=dir.path()+"/"+files[i];
+    QString hash=RDSha1Hash(filename);
+    QString firstdest;
+    bool delete_source=true;
+    sql=QString("select CUTS.CUT_NAME,CART.TITLE from ")+
+      "CUTS left join CART "+
+      "on CUTS.CART_NUMBER=CART.NUMBER where "+
+      "CUTS.SHA1_HASH=\""+RDEscapeString(hash)+"\"";
+    q=new RDSqlQuery(sql);
+    while(q->next()) {
+      printf("  Recovering %06u/%03d [%s]...",
+	     RDCut::cartNumber(q->value(0).toString()),
+	     RDCut::cutNumber(q->value(0).toString()),
+	     (const char *)q->value(1).toString());
+      fflush(stdout);
+      if(relink_audio_move) {
+	unlink(RDCut::pathName(q->value(0).toString()));
+	if(link(filename,RDCut::pathName(q->value(0).toString()))<0) {
+	  if(errno==EXDEV) {
+	    if(firstdest.isEmpty()) {
+	      if(CopyFile(RDCut::pathName(q->value(0).toString()),filename)) {
+		firstdest=RDCut::pathName(q->value(0).toString());
+	      }
+	      else {
+		fprintf(stderr,"unable to copy file \"%s\"\n",
+			(const char *)filename);
+		delete_source=false;
+	      }
+	    }
+	    else {
+	      unlink(RDCut::pathName(q->value(0).toString()));
+	      link(firstdest,RDCut::pathName(q->value(0).toString()));
+	    }
+	  }
+	  else {
+	    fprintf(stderr,"unable to move file \"%s\" [%s]\n",
+		    (const char *)filename,strerror(errno));
+	    delete_source=false;
+	  }
+	}
+      }
+      else {
+	if(firstdest.isEmpty()) {
+	  if(CopyFile(RDCut::pathName(q->value(0).toString()),filename)) {
+	    firstdest=RDCut::pathName(q->value(0).toString());
+	  }
+	  else {
+	    fprintf(stderr,"unable to copy file \"%s\"\n",
+		    (const char *)filename);
+	  }
+	}
+	else {
+	  unlink(RDCut::pathName(q->value(0).toString()));
+	  link(firstdest,RDCut::pathName(q->value(0).toString()));
+	}
+      }
+      printf("  done.\n");
+    }
+    if(relink_audio_move&&delete_source) {
+      unlink(filename);
+    }
+  }
+}
+
+
 void MainObject::SetCutLength(const QString &cutname,int len)
 {
   QString sql;
@@ -880,6 +976,46 @@ bool MainObject::IsTableLinked(QSqlQuery *name_q,const QString &ext,
     }
   }
   return false;
+}
+
+
+bool MainObject::CopyFile(const QString &destfile,const QString &srcfile) const
+{
+  int src_fd=-1;
+  struct stat src_stat;
+  int dest_fd=-1;
+  struct stat dest_stat;
+  int n;
+  int blksize;
+  char *data=NULL;
+
+  if((src_fd=open(srcfile,O_RDONLY))<0) {
+    return false;
+  }
+  fstat(src_fd,&src_stat);
+  mode_t mask=umask(S_IRWXO);
+  if((dest_fd=open(destfile,O_WRONLY|O_CREAT|O_TRUNC,
+		   S_IRUSR|S_IWUSR|S_IRGRP|S_IWGRP))<0) {
+    close(src_fd);
+    return false;
+  }
+  umask(mask);
+  fstat(dest_fd,&dest_stat);
+  blksize=src_stat.st_blksize;
+  if(dest_stat.st_blksize<blksize) {
+    blksize=dest_stat.st_blksize;
+  }
+  data=(char *)malloc(blksize);
+  while((n=read(src_fd,data,blksize))!=0) {
+    write(dest_fd,data,n);
+  }
+  free(data);
+  fchown(dest_fd,150,150);  // FIXME: do name lookup!
+  close(dest_fd);
+  close(src_fd);
+  
+
+  return true;
 }
 
 

@@ -57,10 +57,12 @@ class MainObject : public QObject
   void Rehash(const QString &arg);
   void RehashCart(unsigned cartnum);
   void RehashCut(const QString &cutnum);
+  void RelinkAudio(const QString &srcdir);
   void SetCutLength(const QString &cutname,int len);
   void CleanTables(const QString &ext,QSqlQuery *table_q,QSqlQuery *name_q);
   void CleanTables(const QString &ext,QSqlQuery *table_q);
   bool IsTableLinked(QSqlQuery *name_q,const QString &ext,const QString &table);
+  bool CopyFile(const QString &destfile,const QString &srcfile) const;
   bool UserResponse();
   bool check_yes;
   bool check_no;
@@ -69,6 +71,8 @@ class MainObject : public QObject
   QString rehash;
   RDStation *check_station;
   RDUser *check_user;
+  QString relink_audio;
+  bool relink_audio_move;
 };
 
 
