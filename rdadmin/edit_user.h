@@ -44,6 +44,7 @@ class EditUser : public QDialog
   QSizePolicy sizePolicy() const;
 
  private slots:
+  void localAuthToggledData(bool state);
   void passwordData();
   void groupsData();
   void feedsData();
@@ -55,6 +56,11 @@ class EditUser : public QDialog
   QLineEdit *user_name_edit;
   QLineEdit *user_full_name_edit;
   QLineEdit *user_description_edit;
+  QCheckBox *user_localauth_check;
+  QLabel *user_localauth_label;
+  QLineEdit *user_pamservice_edit;
+  QLabel *user_pamservice_label;
+  QPushButton *user_password_button;
   QLineEdit *user_phone_edit;
   QSpinBox *user_webapi_auth_spin;
   QCheckBox *user_web_box;

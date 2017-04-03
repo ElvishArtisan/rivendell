@@ -53,19 +53,6 @@ Xport::Xport(QObject *parent)
   xport_config->load();
 
   //
-  // Drop Root Perms
-  //
-  if(setgid(xport_config->gid())<0) {
-    XmlExit("Unable to set Rivendell group",500);
-  }
-  if(setuid(xport_config->uid())<0) {
-    XmlExit("Unable to set Rivendell user",500);
-  }
-  if(getuid()==0) {
-    XmlExit("Rivendell user should never be \"root\"!",500);
-  }
-
-  //
   // Open Database
   //
   QSqlDatabase *db=QSqlDatabase::addDatabase(xport_config->mysqlDriver());
@@ -137,6 +124,19 @@ Xport::Xport(QObject *parent)
   //
   if(!Authenticate()) {
     XmlExit("Invalid User",403);
+  }
+
+  //
+  // Drop root permissions
+  //
+  if(setgid(xport_config->gid())<0) {
+    XmlExit("Unable to set Rivendell group",500);
+  }
+  if(setuid(xport_config->uid())<0) {
+    XmlExit("Unable to set Rivendell user",500);
+  }
+  if(getuid()==0) {
+    XmlExit("Rivendell user should never be \"root\"!",500);
   }
 
   //
@@ -291,6 +291,9 @@ bool Xport::Authenticate()
   unsigned char rawstr[1024];
   unsigned char sha1[SHA_DIGEST_LENGTH];
 
+  //
+  // First, attempt ticket authentication
+  //
   if(xport_post->getValue("TICKET",&ticket)) {
     sql=QString("select LOGIN_NAME from WEBAPI_AUTHS where ")+
       "(TICKET=\""+RDEscapeString(ticket)+"\")&&"+
@@ -305,6 +308,9 @@ bool Xport::Authenticate()
     delete q;
   }
 
+  //
+  // Next, check the whitelist
+  //
   if(!xport_post->getValue("LOGIN_NAME",&name)) {
     return false;
   }
@@ -312,6 +318,24 @@ bool Xport::Authenticate()
     return false;
   }
   xport_user=new RDUser(name);
+  if(!xport_user->exists()) {
+    return false;
+  }
+  if((xport_post->clientAddress().toIPv4Address()>>24)==127) {  // Localhost
+    return true;
+  }
+  sql=QString("select NAME from STATIONS where ")+
+    "IPV4_ADDRESS=\""+xport_post->clientAddress().toString()+"\"";
+  q=new RDSqlQuery(sql);
+  if(q->first()) {
+    delete q;
+    return true;
+  }
+  delete q;
+
+  //
+  // Finally, try password
+  //
   if(!xport_user->checkPassword(passwd,false)) {
     return false;
   }

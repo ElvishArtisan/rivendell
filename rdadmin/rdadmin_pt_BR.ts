@@ -4085,6 +4085,14 @@ Feeds de Podcasts </translation>
         <source>WebAPI Timeout:</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Authenticate This User Locally</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>PAM Service</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditUserPerms</name>

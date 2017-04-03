@@ -13,6 +13,8 @@ DESCRIPTION          char(255)
 PASSWORD             char(32)         Not-NULL, Hashed
 WEBAPI_AUTH_TIMEOUT  int(11) signed   Seconds
 ENABLE_WEB           enum('N','Y')
+LOCAL_AUTH           enum('N','Y')
+PAM_SERVICE          char(32)
 ADMIN_USERS_PRIV     enum('N','Y')    Retired
 ADMIN_CONFIG_PRIV    enum('N','Y')
 CREATE_CARTS_PRIV    enum('N','Y')

@@ -35,6 +35,10 @@ class RDUser
   void setPassword(const QString &password);
   bool enableWeb() const;
   void setEnableWeb(bool state) const;
+  bool localAuthentication() const;
+  void setLocalAuthentication(bool state) const;
+  QString pamService() const;
+  void setPamService(const QString &str) const;
   QString fullName() const;
   void setFullName(const QString &name) const;
   QString description() const;

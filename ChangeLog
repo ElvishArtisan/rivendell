@@ -15696,3 +15696,16 @@
 2017-04-03 Fred Gleason <fredg@paravelsystems.com>
 	* Changed all instances of authorization failure in the rdxport service
 	to return code 404.
+2017-04-03 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'USERS.LOCAL_AUTH' field to the database.
+	* Added a 'USERS.PAM_SERVICE' field to the database.
+	* Added an index on 'STATIONS.IPV4_ADDRESS' to the database.
+	* Incremented the database version to 262.
+	* Added 'RDUser::localAuthentication()',
+	'RDUser::setLocalAuthentication()', 'RDUser::pamService()' and
+	'RDUser::setPamService()' methods in 'lib/rduser.cpp' and
+	'lib/rduser.h'.
+	* Added 'PAM Service' and 'Authenticate This User Locally' controls
+	to the Edit User dialog in 'rdadmin/edit_user.cpp' and
+	'rdadmin/edit_user.h'.
+	* Added a PAM service configuration in 'conf/rivendell.pam'.

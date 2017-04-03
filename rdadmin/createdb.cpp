@@ -2,7 +2,7 @@
 //
 // Create, Initialize and/or Update a Rivendell Database
 //
-//   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2017 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -578,6 +578,8 @@ bool CreateDb(QString name,QString pwd)
     PASSWORD CHAR(32),\
     WEBAPI_AUTH_TIMEOUT int not null default 3600,\
     ENABLE_WEB enum('N','Y') default 'N',\
+    LOCAL_AUTH enum('N','Y') default 'Y',\
+    PAM_SERVICE char(32) default \"rivendell\",\
     ADMIN_USERS_PRIV ENUM('N','Y') NOT NULL DEFAULT 'N',\
     ADMIN_CONFIG_PRIV ENUM('N','Y') NOT NULL DEFAULT 'N',\
     CREATE_CARTS_PRIV ENUM('N','Y') NOT NULL DEFAULT 'N',\
@@ -679,7 +681,8 @@ bool CreateDb(QString name,QString pwd)
       CARD7_NAME char(64),\
       CARD7_INPUTS int default -1,\
       CARD7_OUTPUTS int default -1,\
-      INDEX DESCRIPTION_IDX (DESCRIPTION))");
+      INDEX DESCRIPTION_IDX (DESCRIPTION),\
+      index IPV4_ADDRESS_IDX (IPV4_ADDRESS))");
   if(!RunQuery(sql)) {
     return false;
   }
@@ -8360,6 +8363,24 @@ int UpdateDb(int ver)
     }
   }
 
+  if(ver<262) {
+    sql=QString("alter table USERS add column ")+
+      "LOCAL_AUTH enum('N','Y') default 'Y' after ENABLE_WEB";
+    if(!RunQuery(sql)) {
+      return false;
+    }
+
+    sql=QString("alter table USERS add column ")+
+      "PAM_SERVICE char(32) default \"rivendell\" after LOCAL_AUTH";
+    if(!RunQuery(sql)) {
+      return false;
+    }
+
+    sql=QString("create index IPV4_ADDRESS_IDX on STATIONS (IPV4_ADDRESS)");
+    if(!RunQuery(sql)) {
+      return false;
+    }
+  }
 
   
   //

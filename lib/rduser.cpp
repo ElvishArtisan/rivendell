@@ -19,6 +19,7 @@
 //
 
 #include <rdconf.h>
+#include <rdpam.h>
 #include <rduser.h>
 #include <rddb.h>
 #include <rdescape_string.h>
@@ -49,19 +50,27 @@ bool RDUser::authenticated(bool webuser) const
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString().sprintf("select LOGIN_NAME,ENABLE_WEB from USERS \
-                         where LOGIN_NAME=\"%s\" \
+  if(localAuthentication()) {
+    sql=QString().sprintf("select LOGIN_NAME,ENABLE_WEB from USERS \
+                         where LOGIN_NAME=\"%s\"		   \
                          && PASSWORD=\"%s\"",
-			(const char *)RDEscapeString(user_name),
-			(const char *)RDEscapeString(user_password));
-  q=new RDSqlQuery(sql);
-  if(q->first()) {
-    bool ret=RDBool(q->value(1).toString())||
-      ((!RDBool(q->value(1).toString()))&&(!webuser));
+			  (const char *)RDEscapeString(user_name),
+			  (const char *)RDEscapeString(user_password));
+    q=new RDSqlQuery(sql);
+    if(q->first()) {
+      bool ret=RDBool(q->value(1).toString())||
+	((!RDBool(q->value(1).toString()))&&(!webuser));
+      delete q;
+      return ret;
+    }
     delete q;
+  }
+  else {
+    RDPam *pam=new RDPam(pamService());
+    bool ret=pam->authenticate(user_name,user_password);
+    delete pam;
     return ret;
   }
-  delete q;
 
   return false;
 }
@@ -97,6 +106,31 @@ bool RDUser::enableWeb() const
 void RDUser::setEnableWeb(bool state) const
 {
   SetRow("ENABLE_WEB",RDYesNo(state));
+}
+
+
+bool RDUser::localAuthentication() const
+{
+  return RDBool(RDGetSqlValue("USERS","LOGIN_NAME",user_name,"LOCAL_AUTH").
+	       toString());
+}
+
+
+void RDUser::setLocalAuthentication(bool state) const
+{
+  SetRow("LOCAL_AUTH",RDYesNo(state));
+}
+
+
+QString RDUser::pamService() const
+{
+  return RDGetSqlValue("USERS","LOGIN_NAME",user_name,"PAM_SERVICE").toString();
+}
+
+
+void RDUser::setPamService(const QString &str) const
+{
+  SetRow("PAM_SERVICE",str);
 }
 
 

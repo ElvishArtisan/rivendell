@@ -1,0 +1,5 @@
+#%PAM-1.0
+auth       substack     system-auth
+account    required     pam_deny.so
+password   required     pam_deny.so
+session    required     pam_deny.so

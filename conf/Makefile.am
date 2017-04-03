@@ -23,9 +23,12 @@
 install-exec-am:	
 	mkdir -p $(DESTDIR)/$(sysconfdir)
 	cp rd-bin.conf $(DESTDIR)/$(sysconfdir)/
+	mkdir -p $(DESTDIR)/etc/pam.d
+	cp rivendell.pam $(DESTDIR)/etc/pam.d/rivendell
 
 uninstall:	
 	rm -f $(DESTDIR)/$(sysconfdir)/rd-bin.conf
+	rm -f $(DESTDIR)/etc/pam.d/rivendell
 
 EXTRA_DIST = my.cnf-master\
              my.cnf-standby\
@@ -33,6 +36,7 @@ EXTRA_DIST = my.cnf-master\
              rd.conf-sample\
              rd.conf-slax\
              rd-sample.ini\
+             rivendell.pam\
              rlm_ando.conf\
              rlm_facebook.conf\
              rlm_filewrite.conf\

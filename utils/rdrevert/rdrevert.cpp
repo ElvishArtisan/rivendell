@@ -202,6 +202,10 @@ void MainObject::Revert(int schema) const
   case 261:
     Revert261();
     break;
+
+  case 262:
+    Revert262();
+    break;
   }
 }
 
@@ -567,6 +571,27 @@ void MainObject::Revert261() const
 }
 
 
+void MainObject::Revert262() const
+{
+  QString sql;
+  QSqlQuery *q;
+
+  sql=QString("alter table USERS drop column LOCAL_AUTH");
+  q=new QSqlQuery(sql);
+  delete q;
+
+  sql=QString("alter table USERS drop column PAM_SERVICE");
+  q=new QSqlQuery(sql);
+  delete q;
+
+  sql=QString("drop index IPV4_ADDRESS_IDX on STATIONS");
+  q=new QSqlQuery(sql);
+  delete q;  
+
+  SetVersion(261);
+}
+
+
 int MainObject::GetVersion() const
 {
   QString sql;
@@ -609,7 +634,7 @@ int MainObject::MapSchema(const QString &ver)
   version_map["2.13"]=255;
   version_map["2.14"]=258;
   version_map["2.15"]=259;
-  version_map["2.16"]=261;
+  version_map["2.16"]=262;
 
   //
   // Normalize String

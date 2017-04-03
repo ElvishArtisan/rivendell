@@ -285,6 +285,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(6755,root,root) @libexecdir@/rdxport.cgi
 @sysconfdir@/rd-bin.conf
 @WIN32_PATH@
+/etc/pam.d/rivendell
 /etc/pam.d/rdalsaconfig-root
 /etc/security/console.apps/rdalsaconfig-root
 %{_mandir}/man1/rdexport.1.gz
