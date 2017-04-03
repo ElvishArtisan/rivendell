@@ -15693,3 +15693,6 @@
 	* Changed the '401' result code of the 'EditCart' service to be 403.
 	* Changed the '401' result code of the 'DeleteAudio' service to be 403.
 	* Changed the '401' result code of the 'Export' service to be 403.
+2017-04-03 Fred Gleason <fredg@paravelsystems.com>
+	* Changed all instances of authorization failure in the rdxport service
+	to return code 404.
