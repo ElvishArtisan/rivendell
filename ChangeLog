@@ -15709,3 +15709,6 @@
 	to the Edit User dialog in 'rdadmin/edit_user.cpp' and
 	'rdadmin/edit_user.h'.
 	* Added a PAM service configuration in 'conf/rivendell.pam'.
+2017-04-05 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in 'lib/carts.cpp' that broke cut listings
+	in the 'ListCarts' web API call.

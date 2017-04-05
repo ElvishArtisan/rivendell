@@ -1431,7 +1431,7 @@ QString RDCart::xml(RDSqlQuery *q,bool include_cuts,
     case RDCart::Audio:
       if(include_cuts) {
 	cartnum=q->value(0).toUInt();
-	if(q->value(28).toString().isEmpty()) {
+	if(q->value(29).toString().isEmpty()) {
 	  xml+="  <cutList/>\n";
 	}
 	else {
