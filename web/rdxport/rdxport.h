@@ -38,6 +38,7 @@ class Xport : public QObject
 
  private:
   bool Authenticate();
+  void TryCreateTicket(const QString &name);
   void Export();
   void Import();
   void DeleteAudio();

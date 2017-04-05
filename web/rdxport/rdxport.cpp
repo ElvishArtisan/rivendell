@@ -282,14 +282,11 @@ Xport::Xport(QObject *parent)
 
 bool Xport::Authenticate()
 {
-  QString name;
-  QString passwd;
   QString ticket;
-  int command;
   QString sql;
   RDSqlQuery *q;
-  unsigned char rawstr[1024];
-  unsigned char sha1[SHA_DIGEST_LENGTH];
+  QString name;
+  QString passwd;
 
   //
   // First, attempt ticket authentication
@@ -322,6 +319,7 @@ bool Xport::Authenticate()
     return false;
   }
   if((xport_post->clientAddress().toIPv4Address()>>24)==127) {  // Localhost
+    TryCreateTicket(name);
     return true;
   }
   sql=QString("select NAME from STATIONS where ")+
@@ -329,6 +327,7 @@ bool Xport::Authenticate()
   q=new RDSqlQuery(sql);
   if(q->first()) {
     delete q;
+    TryCreateTicket(name);
     return true;
   }
   delete q;
@@ -339,6 +338,21 @@ bool Xport::Authenticate()
   if(!xport_user->checkPassword(passwd,false)) {
     return false;
   }
+  TryCreateTicket(name);
+
+  return true;
+}
+
+
+void Xport::TryCreateTicket(const QString &name)
+{
+  QString ticket;
+  QString passwd;
+  int command;
+  unsigned char rawstr[1024];
+  unsigned char sha1[SHA_DIGEST_LENGTH];
+  QString sql;
+  RDSqlQuery *q;
 
   if(xport_post->getValue("COMMAND",&command)) {
     if(command==RDXPORT_COMMAND_CREATETICKET) {
@@ -371,8 +385,6 @@ bool Xport::Authenticate()
       exit(0);
     }
   }
-
-  return true;
 }
 
 
