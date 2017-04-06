@@ -121,7 +121,7 @@ List</source>
     <message>
         <source>Are you sure you want to
 delete</source>
-        <translation>Jste si jistý, že chcete smazat</translation>
+        <translation type="obsolete">Jste si jistý, že chcete smazat</translation>
     </message>
     <message>
         <source>Delete Event</source>
@@ -187,6 +187,11 @@ Chcete je uložit?</translation>
     </message>
     <message>
         <source>&amp;Clone</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete
+</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

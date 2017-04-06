@@ -126,7 +126,7 @@ List</source>
     <message>
         <source>Are you sure you want to
 delete</source>
-        <translation>Tem certeza que quer 
+        <translation type="obsolete">Tem certeza que quer 
 deletar</translation>
     </message>
     <message>
@@ -189,6 +189,11 @@ Você quer salvar?</translation>
     </message>
     <message>
         <source>&amp;Clone</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete
+</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

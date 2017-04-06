@@ -121,7 +121,7 @@ tene&amp;ster</translation>
     <message>
         <source>Are you sure you want to
 delete</source>
-        <translation>Er du sikker på at du vil
+        <translation type="obsolete">Er du sikker på at du vil
 sletta</translation>
     </message>
     <message>
@@ -188,6 +188,11 @@ Vil du lagra?</translation>
     </message>
     <message>
         <source>&amp;Clone</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete
+</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

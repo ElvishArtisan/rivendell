@@ -121,7 +121,7 @@ Liste</translation>
     <message>
         <source>Are you sure you want to
 delete</source>
-        <translation>Löschen von</translation>
+        <translation type="obsolete">Löschen von</translation>
     </message>
     <message>
         <source>Delete Event</source>
@@ -187,6 +187,11 @@ Wollen Sie sie speichern?</translation>
     </message>
     <message>
         <source>&amp;Clone</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete
+</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

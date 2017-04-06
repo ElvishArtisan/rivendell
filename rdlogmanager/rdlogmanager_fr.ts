@@ -117,11 +117,6 @@ List</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Are you sure you want to
-delete</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Delete Event</source>
         <translation type="unfinished"></translation>
     </message>
@@ -184,6 +179,11 @@ Do you want to save?</source>
     </message>
     <message>
         <source>&amp;Clone</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete
+</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

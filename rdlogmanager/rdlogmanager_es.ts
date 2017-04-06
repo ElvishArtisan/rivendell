@@ -116,7 +116,7 @@ List</source>
     <message>
         <source>Are you sure you want to
 delete</source>
-        <translation>¿Realmente desea
+        <translation type="obsolete">¿Realmente desea
 eliminar</translation>
     </message>
     <message>
@@ -189,6 +189,11 @@ horario</translation>
     </message>
     <message>
         <source>&amp;Clone</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete
+</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
