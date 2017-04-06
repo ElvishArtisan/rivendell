@@ -53,6 +53,19 @@ Xport::Xport(QObject *parent)
   xport_config->load();
 
   //
+  // Drop root permissions
+  //
+  if(setgid(xport_config->gid())<0) {
+    XmlExit("Unable to set Rivendell group",500);
+  }
+  if(setuid(xport_config->uid())<0) {
+    XmlExit("Unable to set Rivendell user",500);
+  }
+  if(getuid()==0) {
+    XmlExit("Rivendell user should never be \"root\"!",500);
+  }
+
+  //
   // Open Database
   //
   QSqlDatabase *db=QSqlDatabase::addDatabase(xport_config->mysqlDriver());
@@ -124,19 +137,6 @@ Xport::Xport(QObject *parent)
   //
   if(!Authenticate()) {
     XmlExit("Invalid User",403);
-  }
-
-  //
-  // Drop root permissions
-  //
-  if(setgid(xport_config->gid())<0) {
-    XmlExit("Unable to set Rivendell group",500);
-  }
-  if(setuid(xport_config->uid())<0) {
-    XmlExit("Unable to set Rivendell user",500);
-  }
-  if(getuid()==0) {
-    XmlExit("Rivendell user should never be \"root\"!",500);
   }
 
   //

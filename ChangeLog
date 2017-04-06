@@ -15716,3 +15716,7 @@
 	* Fixed a regression in 'web/rdxport/rdxport.cpp' that broke
 	the CreateTicket web API call when connecting from localhost
 	or the machines registered IP address.
+2017-04-06 Fred Gleason <fredg@paravelsystems.com>
+	* Added an rdauth(1) utility in 'utils/rdauth/'.
+	* Fixed a regression in 'lib/rdcart.cpp' that caused the 'Import'
+	web API call to fail with an 'unsupported format' error.

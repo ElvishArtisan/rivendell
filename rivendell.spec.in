@@ -212,6 +212,7 @@ rm -rf $RPM_BUILD_ROOT
 @LOCAL_PREFIX@/@RD_LIB_PATH@/rivendell/*.rlm
 @LOCAL_PREFIX@/bin/rdadmin
 @LOCAL_PREFIX@/bin/rdairplay
+%attr(6755,root,root)@LOCAL_PREFIX@/bin/rdauth
 @LOCAL_PREFIX@/bin/rdpanel
 @LOCAL_PREFIX@/bin/rdcartslots
 @LOCAL_PREFIX@/bin/rdcatch

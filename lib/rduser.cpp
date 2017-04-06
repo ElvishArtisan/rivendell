@@ -18,6 +18,8 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
+#include <stdlib.h>
+
 #include <rdconf.h>
 #include <rdpam.h>
 #include <rduser.h>
@@ -66,10 +68,10 @@ bool RDUser::authenticated(bool webuser) const
     delete q;
   }
   else {
-    RDPam *pam=new RDPam(pamService());
-    bool ret=pam->authenticate(user_name,user_password);
-    delete pam;
-    return ret;
+    QString cmd=
+      "rdauth "+pamService()+" \""+user_name+"\" \""+user_password+"\"";
+    int exitcode=system(cmd);
+    return WEXITSTATUS(exitcode)==0;
   }
 
   return false;

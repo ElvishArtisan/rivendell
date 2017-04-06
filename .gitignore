@@ -84,6 +84,7 @@ tests/test_pam
 tests/timer_test
 tests/upload_test
 tests/wav_chunk_test
+utils/rdauth/rdauth
 utils/rdhpiinfo/rdhpiinfo
 utils/rddgimport/rddgimport
 utils/rddiscimport/rddiscimport
