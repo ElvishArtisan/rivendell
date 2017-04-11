@@ -67,13 +67,14 @@ bool RDUser::authenticated(bool webuser) const
     }
     delete q;
   }
+#ifndef WIN32
   else {
     QString cmd=
       "rdauth "+pamService()+" \""+user_name+"\" \""+user_password+"\"";
     int exitcode=system(cmd);
     return WEXITSTATUS(exitcode)==0;
   }
-
+#endif  // WIN32
   return false;
 }
 
