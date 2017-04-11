@@ -15723,3 +15723,5 @@
 2017-04-11 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in 'web/rdxport/import.cpp' that caused temporary files
 	to be left behind after processing an Import web call.
+2017-04-11 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.15.3int00.
