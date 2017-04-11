@@ -115,6 +115,7 @@ if test $ar_gcc_distro = suse ; then
   AC_SUBST(APACHE_CONFIG_DIR,"/etc/apache2/conf.d")
   AC_SUBST(CONSOLEHELPER_RDALSACONFIG,"")
   AC_SUBST(USERMODE_PKG,"")
+  AC_SUBST(MYSQL_PKG,"mysql")
   AC_SUBST(QT3_MYSQL_PKG,"qt3-mysql")
   AC_SUBST(QT3_DEVEL_PKG,"qt3-devel")
   AC_SUBST(MYSQL_PKG,"mysql")
@@ -124,17 +125,20 @@ else
   AC_SUBST(CONSOLEHELPER_RDALSACONFIG,"/usr/bin/rdalsaconfig-root")
   if test $ar_distro_major -ge 7 ; then
     AC_SUBST(USERMODE_PKG,"usermode usermode-gtk")
+    AC_SUBST(MYSQL_PKG,"mariadb")
     AC_SUBST(QT3_MYSQL_PKG,"qt3-MySQL")
     AC_SUBST(QT3_DEVEL_PKG,"qt3-devel")
     AC_SUBST(MYSQL_PKG,"mariadb")
   else
     if test $ar_distro_major -ge 6 ; then
     AC_SUBST(USERMODE_PKG,"usermode")
+      AC_SUBST(MYSQL_PKG,"mysql")
       AC_SUBST(QT3_MYSQL_PKG,"qt-MySQL")
       AC_SUBST(QT3_DEVEL_PKG,"qt3-devel")
       AC_SUBST(MYSQL_PKG,"mysqld")
     else
       AC_SUBST(USERMODE_PKG,"usermode")
+      AC_SUBST(MYSQL_PKG,"mysql")
       AC_SUBST(QT3_MYSQL_PKG,"qt-MySQL")
       AC_SUBST(QT3_DEVEL_PKG,"qt-devel")
       AC_SUBST(MYSQL_PKG,"mysqld")
