@@ -233,6 +233,8 @@ void Xport::Import()
     printf("  <CartNumber>%d</CartNumber>\r\n",cartnum);
     printf("  <CutNumber>%d</CutNumber>\r\n",cutnum);
     printf("</RDWebResult>\r\n");
+    unlink(filename);
+    rmdir(xport_post->tempDir());
     exit(0);
   }
   XmlExit(RDAudioConvert::errorText(conv_err),resp_code,conv_err);

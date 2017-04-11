@@ -15720,3 +15720,6 @@
 	* Added an rdauth(1) utility in 'utils/rdauth/'.
 	* Fixed a regression in 'lib/rdcart.cpp' that caused the 'Import'
 	web API call to fail with an 'unsupported format' error.
+2017-04-11 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'web/rdxport/import.cpp' that caused temporary files
+	to be left behind after processing an Import web call.
