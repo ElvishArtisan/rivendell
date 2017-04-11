@@ -15729,3 +15729,5 @@
 	* Fixed a typo in 'lib/Makefile.am'.
 2017-04-11 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in 'lib/rduser.cpp' that broke the build on Windows.
+2017-04-11 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.15.3int01.
