@@ -142,7 +142,7 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdgrid.cpp rdgrid.h\
                         rdgroup.cpp rdgroup.h\
                         rdgroup_list.cpp rdgroup_list.h\
-                        rdhash.cpp rdhas.h\
+                        rdhash.cpp rdhash.h\
                         rdhotkeys.cpp rdhotkeys.h\
                         rdhotkeylist.cpp rdhotkeylist.h\
                         rdidvalidator.cpp rdidvalidator.h\
