@@ -15740,3 +15740,5 @@
 2017-04-17 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in 'rdlogedit/edit_log.cpp' that caused header data
 	to fail to be saved when clicking the 'Save' button.
+2017-04-17 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.15.3int02.
