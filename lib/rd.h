@@ -488,11 +488,6 @@
 #define RD_LIMITED_CART_SEARCH_QUANTITY 100
 
 /*
- * Default title for a new cart
- */
-#define RD_DEFAULT_CART_TITLE "[new cart]"
-
-/*
  * Timeout for libcurl (secs)
  */
 #define RD_CURL_TIMEOUT 1200

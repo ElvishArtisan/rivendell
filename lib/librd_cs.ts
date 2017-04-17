@@ -483,6 +483,14 @@
         <source>Chain</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>new cart</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>cart</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RDAddCart</name>

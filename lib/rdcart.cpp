@@ -1274,7 +1274,7 @@ bool RDCart::create(const QString &groupname,RDCart::Type type)
 				cart_number,type,
 				(const char *)RDEscapeString(groupname),
 				(const char *)
-				RDEscapeString(RD_DEFAULT_CART_TITLE));
+				RDEscapeString(RDCart::uniqueCartTitle(cart_number)));
   RDSqlQuery *q=new RDSqlQuery(sql);
   bool ret=q->isActive();
   delete q;
@@ -1982,6 +1982,32 @@ unsigned RDCart::readXml(std::vector<RDWaveData> *data,const QString &xml)
     }
   }
   return data->size();
+}
+
+
+QString RDCart::uniqueCartTitle(unsigned cartnum)
+{
+  QString basename=QObject::tr("new cart");
+  QString title;
+  QString sql;
+  RDSqlQuery *q=NULL;
+  int count=0;
+
+  if(cartnum!=0) {
+    basename=QObject::tr("cart")+QString().sprintf(" %06u",cartnum);
+  }
+  do {
+    title="["+basename+QString().sprintf("-%d",count+1)+"]";
+    sql=QString("select NUMBER from CART where ")+
+      "TITLE=\""+RDEscapeString(title)+"\"";
+    count++;
+    if(q!=NULL) {
+      delete q;
+    }
+    q=new RDSqlQuery(sql);
+  } while(q->first());
+
+  return title;
 }
 
 

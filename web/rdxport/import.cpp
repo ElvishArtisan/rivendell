@@ -2,7 +2,7 @@
 //
 // Rivendell web service portal -- Import service
 //
-//   (C) Copyright 2010,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2010,2016-2017 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -215,13 +215,6 @@ void Xport::Import()
     resp_code=400;
     break;
   }
-  /*
-  delete conv;
-  delete settings;
-  delete conf;
-  delete cut;
-  delete cart;
-  */
   if(resp_code==200) {
     cut->setSha1Hash(RDSha1Hash(RDCut::pathName(cut->cutName())));
     printf("Content-type: application/xml\n");
