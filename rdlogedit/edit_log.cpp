@@ -1057,7 +1057,7 @@ void EditLog::saveData()
 			 tr("Unable to save log, audio deletion error!"));
     return;
   }
-  edit_log_event->save();
+  SaveLog();
   SetLogModified(false);
   edit_log->setAutoRefresh(edit_autorefresh_box->currentItem()==0);
   edit_log->

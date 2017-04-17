@@ -15737,3 +15737,6 @@
 	* Fixed a bug in 'lib/rdcart.cpp' that caused the 'Import' web API call
 	to return 404 when importing with 'CREATE' set to '1' and unique titles
 	enabled in the database.
+2017-04-17 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'rdlogedit/edit_log.cpp' that caused header data
+	to fail to be saved when clicking the 'Save' button.
