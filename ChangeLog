@@ -15745,3 +15745,5 @@
 2017-04-17 Fred Gleason <fredg@paravelsystems.com>
 	* Removed the password field length limitation in
 	'rdlogin/rdlogin.cpp'.
+2017-04-18 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.15.3int03.
