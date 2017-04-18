@@ -35,7 +35,6 @@
 #include <rdripc.h>
 #include <rdcheck_daemons.h>
 #include <rdcmd_switch.h>
-#include <rdtextvalidator.h>
 #include <rddbheartbeat.h>
 #include <rddb.h>
 #include <dbversion.h>
@@ -96,11 +95,6 @@ MainWidget::MainWidget(QWidget *parent)
   //
   login_rivendell_map=new QPixmap(rivendell_xpm);
   setIcon(*login_rivendell_map);
-
-  //
-  // Text Validator
-  //
-  RDTextValidator *validator=new RDTextValidator(this);
 
   //
   // Ensure that the system daemons are running
@@ -183,8 +177,6 @@ MainWidget::MainWidget(QWidget *parent)
   //
   login_password_edit=new QLineEdit(this);
   login_password_edit->setFont(line_edit_font);
-  login_password_edit->setMaxLength(16);
-  login_password_edit->setValidator(validator);
   login_password_edit->setEchoMode(QLineEdit::Password);
   login_password_label=new QLabel(login_password_edit,tr("&Password:"),this);
   login_password_label->setFont(small_label_font);

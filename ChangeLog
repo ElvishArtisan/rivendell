@@ -15742,3 +15742,6 @@
 	to fail to be saved when clicking the 'Save' button.
 2017-04-17 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 2.15.3int02.
+2017-04-17 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the password field length limitation in
+	'rdlogin/rdlogin.cpp'.
