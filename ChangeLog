@@ -15749,3 +15749,5 @@
 	* Incremented the package version to 2.15.3int03.
 2017-04-20 Fred Gleason <fredg@paravelsystems.com>
 	* Added a '--enable-rdxport-debug' switch to 'configure.ac'.
+2017-04-20 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.15.3int04.
