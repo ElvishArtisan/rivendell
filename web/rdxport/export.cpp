@@ -43,60 +43,60 @@ void Xport::Export()
   //
   int cartnum=0;
   if(!xport_post->getValue("CART_NUMBER",&cartnum)) {
-    XmlExit("Missing CART_NUMBER",400);
+    XmlExit("Missing CART_NUMBER",400,"export.cpp",LINE_NUMBER);
   }
   int cutnum=0;
   if(!xport_post->getValue("CUT_NUMBER",&cutnum)) {
-    XmlExit("Missing CUT_NUMBER",400);
+    XmlExit("Missing CUT_NUMBER",400,"export.cpp",LINE_NUMBER);
   }
   int format=0;
   if(!xport_post->getValue("FORMAT",&format)) {
-    XmlExit("Missing FORMAT",400);
+    XmlExit("Missing FORMAT",400,"export.cpp",LINE_NUMBER);
   }
   int channels=0;
   if(!xport_post->getValue("CHANNELS",&channels)) {
-    XmlExit("Missing CHANNELS",400);
+    XmlExit("Missing CHANNELS",400,"export.cpp",LINE_NUMBER);
   }
   int sample_rate=0;
   if(!xport_post->getValue("SAMPLE_RATE",&sample_rate)) {
-    XmlExit("Missing SAMPLE_RATE",400);
+    XmlExit("Missing SAMPLE_RATE",400,"export.cpp",LINE_NUMBER);
   }
   int bit_rate=0;
   if(!xport_post->getValue("BIT_RATE",&bit_rate)) {
-    XmlExit("Missing BIT_RATE",400);
+    XmlExit("Missing BIT_RATE",400,"export.cpp",LINE_NUMBER);
   }
   int quality=0;
   if(!xport_post->getValue("QUALITY",&quality)) {
-    XmlExit("Missing QUALITY",400);
+    XmlExit("Missing QUALITY",400,"export.cpp",LINE_NUMBER);
   }
   int start_point=-1;
   if(!xport_post->getValue("START_POINT",&start_point)) {
-    XmlExit("Missing START_POINT",400);
+    XmlExit("Missing START_POINT",400,"export.cpp",LINE_NUMBER);
   }
   int end_point=-1;
   if(!xport_post->getValue("END_POINT",&end_point)) {
-    XmlExit("Missing END_POINT",400);
+    XmlExit("Missing END_POINT",400,"export.cpp",LINE_NUMBER);
   }
   int normalization_level=0;
   if(!xport_post->getValue("NORMALIZATION_LEVEL",&normalization_level)) {
-    XmlExit("Missing NORMALIZATION_LEVEL",400);
+    XmlExit("Missing NORMALIZATION_LEVEL",400,"export.cpp",LINE_NUMBER);
   }
   int enable_metadata=false;
   if(!xport_post->getValue("ENABLE_METADATA",&enable_metadata)) {
-    XmlExit("Missing ENABLE_METADATA",400);
+    XmlExit("Missing ENABLE_METADATA",400,"export.cpp",LINE_NUMBER);
   }
   if(!RDCart::exists(cartnum)) {
-    XmlExit("No such cart",404);
+    XmlExit("No such cart",404,"export.cpp",LINE_NUMBER);
   }
   if(!RDCut::exists(cartnum,cutnum)) {
-    XmlExit("No such cut",404);
+    XmlExit("No such cut",404,"export.cpp",LINE_NUMBER);
   }
 
   //
   // Verify User Perms
   //
   if(!xport_user->cartAuthorized(cartnum)) {
-    XmlExit("No such cart",404);
+    XmlExit("No such cart",404,"export.cpp",LINE_NUMBER);
   }
 
   //
@@ -214,6 +214,7 @@ void Xport::Export()
     Exit(200);
   }
   else {
-    XmlExit(RDAudioConvert::errorText(conv_err),resp_code,conv_err);
+    XmlExit(RDAudioConvert::errorText(conv_err),resp_code,"export.cpp",
+	    LINE_NUMBER,conv_err);
   }
 }

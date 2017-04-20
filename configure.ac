@@ -80,8 +80,10 @@ AC_ARG_ENABLE(lame,[  --disable-lame          disable MPEG Layer 3 encode suppor
 		      [LAME_DISABLED=yes],[])
 AC_ARG_ENABLE(flac,[  --disable-flac          disable FLAC encode/decode support],
 		      [FLAC_DISABLED=yes],[])
-AC_ARG_ENABLE(mp4v2,[ --disable-mp4           disable M4A decode support],
+AC_ARG_ENABLE(mp4v2,[  --disable-mp4           disable M4A decode support],
 		      [MP4V2_DISABLED=yes],[])
+AC_ARG_ENABLE(rdxport-debug,[  --enable-rdxport-debug  enable DEBUG support for RDXport services],
+		      [RDXPORT_DEBUG_ENABLED=yes],[])
 
 #
 # Check for Qt
@@ -241,6 +243,13 @@ if test -z $DOCBOOK_DISABLED ; then
   USING_DOCBOOK=yes
 fi
 AM_CONDITIONAL([DOCBOOK_AM], [test "$USING_DOCBOOK" = yes])
+
+#
+# RDXport Debug
+#
+if test $RDXPORT_DEBUG_ENABLED ; then
+  AC_DEFINE(RDXPORT_DEBUG)
+fi
 
 #
 # Set Hard Library Dependencies

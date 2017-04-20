@@ -46,27 +46,27 @@ void Xport::Import()
   //
   int cartnum=0;
   if(!xport_post->getValue("CART_NUMBER",&cartnum)) {
-    XmlExit("Missing CART_NUMBER",400);
+    XmlExit("Missing CART_NUMBER",400,"import.cpp",LINE_NUMBER);
   }
   int cutnum=0;
   if(!xport_post->getValue("CUT_NUMBER",&cutnum)) {
-    XmlExit("Missing CUT_NUMBER",400);
+    XmlExit("Missing CUT_NUMBER",400,"import.cpp",LINE_NUMBER);
   }
   int channels=0;
   if(!xport_post->getValue("CHANNELS",&channels)) {
-    XmlExit("Missing CHANNELS",400);
+    XmlExit("Missing CHANNELS",400,"import.cpp",LINE_NUMBER);
   }
   int normalization_level=0;
   if(!xport_post->getValue("NORMALIZATION_LEVEL",&normalization_level)) {
-    XmlExit("Missing NORMALIZATION_LEVEL",400);
+    XmlExit("Missing NORMALIZATION_LEVEL",400,"import.cpp",LINE_NUMBER);
   }
   int autotrim_level=0;
   if(!xport_post->getValue("AUTOTRIM_LEVEL",&autotrim_level)) {
-    XmlExit("Missing AUTOTRIM_LEVEL",400);
+    XmlExit("Missing AUTOTRIM_LEVEL",400,"import.cpp",LINE_NUMBER);
   }
   int use_metadata=0;
   if(!xport_post->getValue("USE_METADATA",&use_metadata)) {
-    XmlExit("Missing USE_METADATA",400);
+    XmlExit("Missing USE_METADATA",400,"import.cpp",LINE_NUMBER);
   }
   int create=0;
   if(!xport_post->getValue("CREATE",&create)) {
@@ -76,10 +76,10 @@ void Xport::Import()
   xport_post->getValue("GROUP_NAME",&group_name);
   QString filename;
   if(!xport_post->getValue("FILENAME",&filename)) {
-    XmlExit("Missing FILENAME",400);
+    XmlExit("Missing FILENAME",400,"import.cpp",LINE_NUMBER);
   }
   if(!xport_post->isFile("FILENAME")) {
-    XmlExit("Missing file data",400);
+    XmlExit("Missing file data",400,"import.cpp",LINE_NUMBER);
   }
 
   //
@@ -87,24 +87,24 @@ void Xport::Import()
   //
   if(RDCart::exists(cartnum)) {
     if(!xport_user->cartAuthorized(cartnum)) {
-      XmlExit("No such cart",404);
+      XmlExit("No such cart",404,"import.cpp",LINE_NUMBER);
     }
   }
   else {
     if(create) {
       if(!xport_user->groupAuthorized(group_name)) {
-	XmlExit("No such group",404);
+	XmlExit("No such group",404,"import.cpp",LINE_NUMBER);
       }
     }
     else {
-      XmlExit("No such cart",404);
+      XmlExit("No such cart",404,"import.cpp",LINE_NUMBER);
     }
   }
   if(!xport_user->editAudio()) {
-    XmlExit("Forbidden",404);
+    XmlExit("Forbidden",404,"import.cpp",LINE_NUMBER);
   }
   if(create&&(!xport_user->createCarts())) {
-    XmlExit("Forbidden",404);
+    XmlExit("Forbidden",404,"import.cpp",LINE_NUMBER);
   }
 
   //
@@ -115,10 +115,10 @@ void Xport::Import()
   if(cartnum==0) {
     RDGroup *group=new RDGroup(group_name);
     if(!group->exists()) {
-      XmlExit("No such group",404);
+      XmlExit("No such group",404,"import.cpp",LINE_NUMBER);
     }
     if((cartnum=group->nextFreeCart())==0) {
-      XmlExit("No available carts for specified group",404);
+      XmlExit("No available carts for specified group",404,"import.cpp",LINE_NUMBER);
     }
     cart=new RDCart(cartnum);
     cart->create(group_name,RDCart::Audio);
@@ -131,10 +131,10 @@ void Xport::Import()
     cut=new RDCut(cartnum,cutnum);
   }
   if(!RDCart::exists(cartnum)) {
-    XmlExit("No such cart",404);
+    XmlExit("No such cart",404,"import.cpp",LINE_NUMBER);
   }
   if(!RDCut::exists(cartnum,cutnum)) {
-    XmlExit("No such cut",404);
+    XmlExit("No such cut",404,"import.cpp",LINE_NUMBER);
   }
   RDLibraryConf *conf=new RDLibraryConf(xport_config->stationName(),0);
   RDSettings *settings=new RDSettings();
@@ -158,7 +158,7 @@ void Xport::Import()
   RDWaveFile *wave=new RDWaveFile(filename);
   if(!wave->openWave()) {
     delete wave;
-    XmlExit("Format Not Supported",415);
+    XmlExit("Format Not Supported",415,"import.cpp",LINE_NUMBER);
   }
   delete wave;
   RDAudioConvert *conv=new RDAudioConvert(xport_config->stationName());
@@ -174,7 +174,7 @@ void Xport::Import()
     }
     else {
       delete wave;
-      XmlExit("Unable to access imported file",500);
+      XmlExit("Unable to access imported file",500,"import.cpp",LINE_NUMBER);
     }
     delete wave;
     cut->checkInRecording(xport_config->stationName(),settings,msecs);
@@ -230,5 +230,6 @@ void Xport::Import()
     rmdir(xport_post->tempDir());
     exit(0);
   }
-  XmlExit(RDAudioConvert::errorText(conv_err),resp_code,conv_err);
+  XmlExit(RDAudioConvert::errorText(conv_err),resp_code,"import.cpp",
+	  LINE_NUMBER,conv_err);
 }

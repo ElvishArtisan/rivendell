@@ -41,18 +41,18 @@ void Xport::AudioInfo()
   //
   int cartnum=0;
   if(!xport_post->getValue("CART_NUMBER",&cartnum)) {
-    XmlExit("Missing CART_NUMBER",400);
+    XmlExit("Missing CART_NUMBER",400,"audioinfo.cpp",LINE_NUMBER);
   }
   int cutnum=0;
   if(!xport_post->getValue("CUT_NUMBER",&cutnum)) {
-    XmlExit("Missing CUT_NUMBER",400);
+    XmlExit("Missing CUT_NUMBER",400,"audioinfo.cpp",LINE_NUMBER);
   }
 
   //
   // Verify User Perms
   //
   if(!xport_user->cartAuthorized(cartnum)) {
-    XmlExit("No such cart",404);
+    XmlExit("No such cart",404,"audioinfo.cpp",LINE_NUMBER);
   }
 
   //
@@ -60,7 +60,7 @@ void Xport::AudioInfo()
   //
   RDWaveFile *wave=new RDWaveFile(RDCut::pathName(cartnum,cutnum));
   if(!wave->openWave()) {
-    XmlExit("No such audio",404);
+    XmlExit("No such audio",404,"audioinfo.cpp",LINE_NUMBER);
   }
 
   //
@@ -94,7 +94,7 @@ void Xport::AudioInfo()
     break;
 
   default:
-    XmlExit("Unknown audio format",400);
+    XmlExit("Unknown audio format",400,"audioinfo.cpp",LINE_NUMBER);
     break;
   }
   printf("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");

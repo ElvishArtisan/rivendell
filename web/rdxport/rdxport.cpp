@@ -56,13 +56,14 @@ Xport::Xport(QObject *parent)
   // Drop root permissions
   //
   if(setgid(xport_config->gid())<0) {
-    XmlExit("Unable to set Rivendell group",500);
+    XmlExit("Unable to set Rivendell group",500,"rdxport.cpp",LINE_NUMBER);
   }
   if(setuid(xport_config->uid())<0) {
-    XmlExit("Unable to set Rivendell user",500);
+    XmlExit("Unable to set Rivendell user",500,"rdxport.cpp",LINE_NUMBER);
   }
   if(getuid()==0) {
-    XmlExit("Rivendell user should never be \"root\"!",500);
+    XmlExit("Rivendell user should never be \"root\"!",500,"rdxport.cpp",
+	    LINE_NUMBER);
   }
 
   //
@@ -128,7 +129,8 @@ Xport::Xport(QObject *parent)
   //
   xport_post=new RDFormPost(RDFormPost::AutoEncoded,false);
   if(xport_post->error()!=RDFormPost::ErrorOk) {
-    XmlExit(xport_post->errorString(xport_post->error()),400);
+    XmlExit(xport_post->errorString(xport_post->error()),400,"rdxport.cpp",
+	    LINE_NUMBER);
     Exit(0);
   }
 
@@ -136,7 +138,7 @@ Xport::Xport(QObject *parent)
   // Authenticate Connection
   //
   if(!Authenticate()) {
-    XmlExit("Invalid User",403);
+    XmlExit("Invalid User",403,"rdxport.cpp",LINE_NUMBER);
   }
 
   //
@@ -397,12 +399,23 @@ void Xport::Exit(int code)
 }
 
 
-void Xport::XmlExit(const QString &str,int code,RDAudioConvert::ErrorCode err)
+void Xport::XmlExit(const QString &str,int code,const QString &srcfile,
+		    int srcline,RDAudioConvert::ErrorCode err)
 {
   if(xport_post!=NULL) {
     delete xport_post;
   }
+#ifdef RDXPORT_DEBUG
+  if(srcline>0) {
+    RDXMLResult(str+"\""+srcfile+"\" "+QString().sprintf("line %d",srcline),
+		code,err);
+  }
+  else {
+    RDXMLResult(str,code,err);
+  }
+#else
   RDXMLResult(str,code,err);
+#endif  // RDXPORT_DEBUG
   exit(0);
 }
 

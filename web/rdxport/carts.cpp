@@ -48,10 +48,10 @@ void Xport::AddCart()
   // Verify Post
   //
   if(!xport_post->getValue("GROUP_NAME",&group_name)) {
-    XmlExit("Missing GROUP_NAME",400);
+    XmlExit("Missing GROUP_NAME",400,"carts.cpp",LINE_NUMBER);
   }
   if(!xport_post->getValue("TYPE",&type)) {
-    XmlExit("Missing TYPE",400);
+    XmlExit("Missing TYPE",400,"carts.cpp",LINE_NUMBER);
   }
   if(type.lower()=="audio") {
     cart_type=RDCart::Audio;
@@ -61,7 +61,7 @@ void Xport::AddCart()
       cart_type=RDCart::Macro;
     }
     else {
-      XmlExit("Invalid TYPE",400);
+      XmlExit("Invalid TYPE",400,"carts.cpp",LINE_NUMBER);
     }
   }
   xport_post->getValue("CART_NUMBER",&cart_number);
@@ -70,22 +70,22 @@ void Xport::AddCart()
   // Verify User Perms
   //
   if(!xport_user->groupAuthorized(group_name)) {
-    XmlExit("No such group",404);
+    XmlExit("No such group",404,"carts.cpp",LINE_NUMBER);
   }
   group=new RDGroup(group_name);
   if(cart_number==0) {
     if((cart_number=group->nextFreeCart())==0) {
       delete group;
-      XmlExit("No free carts in group",500);
+      XmlExit("No free carts in group",500,"carts.cpp",LINE_NUMBER);
     }
   }
   if(!group->cartNumberValid(cart_number)) {
     delete group;
-    XmlExit("Cart number out of range for group",404);
+    XmlExit("Cart number out of range for group",404,"carts.cpp",LINE_NUMBER);
   }
   delete group;
   if(!xport_user->createCarts()) {
-    XmlExit("Forbidden",404);
+    XmlExit("Forbidden",404,"carts.cpp",LINE_NUMBER);
   }
 
   //
@@ -94,11 +94,11 @@ void Xport::AddCart()
   cart=new RDCart(cart_number);
   if(cart->exists()) {
     delete cart;
-    XmlExit("Cart already exists",400);
+    XmlExit("Cart already exists",400,"carts.cpp",LINE_NUMBER);
   }
   if(!cart->create(group_name,cart_type)) {
     delete cart;
-    XmlExit("Unable to create cart",500);
+    XmlExit("Unable to create cart",500,"carts.cpp",LINE_NUMBER);
   }
   printf("Content-type: application/xml\n");
   printf("Status: 200\n\n");
@@ -155,7 +155,7 @@ void Xport::ListCarts()
     q=new RDSqlQuery(sql);
     if(!q->first()) {
       delete q;
-      XmlExit("No such group",404);
+      XmlExit("No such group",404,"carts.cpp",LINE_NUMBER);
     }
     where=RDCartSearchText(filter,group_name,"",false);
   }
@@ -192,7 +192,7 @@ void Xport::ListCart()
   // Verify Post
   //
   if(!xport_post->getValue("CART_NUMBER",&cart_number)) {
-    XmlExit("Missing CART_NUMBER",400);
+    XmlExit("Missing CART_NUMBER",400,"carts.cpp",LINE_NUMBER);
   }
   xport_post->getValue("INCLUDE_CUTS",&include_cuts);
 
@@ -200,7 +200,7 @@ void Xport::ListCart()
   // Verify User Perms
   //
   if(!xport_user->cartAuthorized(cart_number)) {
-    XmlExit("No such cart",404);
+    XmlExit("No such cart",404,"carts.cpp",LINE_NUMBER);
   }
 
   //
@@ -238,7 +238,7 @@ void Xport::EditCart()
   // Verify Post
   //
   if(!xport_post->getValue("CART_NUMBER",&cart_number)) {
-    XmlExit("Missing CART_NUMBER",400);
+    XmlExit("Missing CART_NUMBER",400,"carts.cpp",LINE_NUMBER);
   }
   xport_post->getValue("INCLUDE_CUTS",&include_cuts);
 
@@ -246,25 +246,25 @@ void Xport::EditCart()
   // Verify User Perms
   //
   if(!xport_user->cartAuthorized(cart_number)) {
-    XmlExit("No such cart",404);
+    XmlExit("No such cart",404,"carts.cpp",LINE_NUMBER);
   }
   if(!xport_user->modifyCarts()) {
-    XmlExit("Unauthorized",404);
+    XmlExit("Unauthorized",404,"carts.cpp",LINE_NUMBER);
   }
   if(xport_post->getValue("GROUP_NAME",&group_name)) {
     if(!xport_user->groupAuthorized(group_name)) {
-      XmlExit("No such group",404);
+      XmlExit("No such group",404,"carts.cpp",LINE_NUMBER);
     }
     group=new RDGroup(group_name);
     if(!group->exists()) {
       delete group;
-      XmlExit("No such group",404);
+      XmlExit("No such group",404,"carts.cpp",LINE_NUMBER);
     }
     if(group->enforceCartRange()) {
       if(((unsigned)cart_number<group->defaultLowCart())||
 	 ((unsigned)cart_number>group->defaultHighCart())) {
 	delete group;
-	XmlExit("Invalid cart number for group",409);
+	XmlExit("Invalid cart number for group",409,"carts.cpp",LINE_NUMBER);
       }
     }
     delete group;
@@ -276,17 +276,17 @@ void Xport::EditCart()
   cart=new RDCart(cart_number);
   if(!cart->exists()) {
     delete cart;
-    XmlExit("No such cart",404);
+    XmlExit("No such cart",404,"carts.cpp",LINE_NUMBER);
   }
   if(xport_post->getValue("FORCED_LENGTH",&value)) {
     number=RDSetTimeLength(value);
     if(cart->type()==RDCart::Macro) {
       delete cart;
-      XmlExit("Unsupported operation for cart type",400);
+      XmlExit("Unsupported operation for cart type",400,"carts.cpp",LINE_NUMBER);
     }
     if(!cart->validateLengths(number)) {
       delete cart;
-      XmlExit("Forced length out of range",400);
+      XmlExit("Forced length out of range",400,"carts.cpp",LINE_NUMBER);
     }
   }
   switch(cart->type()) {
@@ -299,7 +299,7 @@ void Xport::EditCart()
       value.stripWhiteSpace();
       if(value.right(1)!="!") {
 	delete cart;
-	XmlExit("Invalid macro data",400);
+	XmlExit("Invalid macro data",400,"carts.cpp",LINE_NUMBER);
       }
       macro+=value;
     }
@@ -403,17 +403,17 @@ void Xport::RemoveCart()
   // Verify Post
   //
   if(!xport_post->getValue("CART_NUMBER",&cart_number)) {
-    XmlExit("Missing CART_NUMBER",400);
+    XmlExit("Missing CART_NUMBER",400,"carts.cpp",LINE_NUMBER);
   }
 
   //
   // Verify User Perms
   //
   if(!xport_user->cartAuthorized(cart_number)) {
-    XmlExit("No such cart",404);
+    XmlExit("No such cart",404,"carts.cpp",LINE_NUMBER);
   }
   if(!xport_user->deleteCarts()) {
-    XmlExit("Unauthorized",404);
+    XmlExit("Unauthorized",404,"carts.cpp",LINE_NUMBER);
   }
 
   //
@@ -422,14 +422,14 @@ void Xport::RemoveCart()
   cart=new RDCart(cart_number);
   if(!cart->exists()) {
     delete cart;
-    XmlExit("No such cart",404);
+    XmlExit("No such cart",404,"carts.cpp",LINE_NUMBER);
   }
   if(!cart->remove(NULL,NULL,xport_config)) {
     delete cart;
-    XmlExit("Unable to delete cart",500);
+    XmlExit("Unable to delete cart",500,"carts.cpp",LINE_NUMBER);
   }
   delete cart;
-  XmlExit("OK",200);
+  XmlExit("OK",200,"carts.cpp",LINE_NUMBER);
 }
 
 

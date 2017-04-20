@@ -77,7 +77,7 @@ void Xport::ListGroup()
   //
   QString group_name;
   if(!xport_post->getValue("GROUP_NAME",&group_name)) {
-    XmlExit("Missing GROUP_NAME",400);
+    XmlExit("Missing GROUP_NAME",400,"groups.cpp",LINE_NUMBER);
   }
 
   //
@@ -90,7 +90,7 @@ void Xport::ListGroup()
   q=new RDSqlQuery(sql);
   if(!q->first()) {
     delete q;
-    XmlExit("No such group",404);
+    XmlExit("No such group",404,"groups.cpp",LINE_NUMBER);
   }
 
   //

@@ -68,17 +68,17 @@ void Xport::AssignSchedCode()
   // Verify Post
   //
   if(!xport_post->getValue("CART_NUMBER",&cart_number)) {
-    XmlExit("Missing CART_NUMBER",400);
+    XmlExit("Missing CART_NUMBER",400,"schedcodes.cpp",LINE_NUMBER);
   }
   if(!xport_post->getValue("CODE",&sched_code)) {
-    XmlExit("Missing CODE",400);
+    XmlExit("Missing CODE",400,"schedcodes.cpp",LINE_NUMBER);
   }
 
   //
   // Verify User Perms
   //
   if(!xport_user->cartAuthorized(cart_number)) {
-    XmlExit("No such cart",404);
+    XmlExit("No such cart",404,"schedcodes.cpp",LINE_NUMBER);
   }
 
   //
@@ -87,17 +87,17 @@ void Xport::AssignSchedCode()
   cart=new RDCart(cart_number);
   code=new RDSchedCode(sched_code);
   if(!code->exists()) {
-    XmlExit("No such scheduler code",404);
+    XmlExit("No such scheduler code",404,"schedcodes.cpp",LINE_NUMBER);
   }
   codes=cart->schedCodesList();
   for(unsigned i=0;i<codes.size();i++) {
     if(codes[i]==sched_code) {
       delete cart;
-      XmlExit("OK",200);
+      XmlExit("OK",200,"schedcodes.cpp",LINE_NUMBER);
     }
   }
   cart->addSchedCode(sched_code);
-  XmlExit("OK",200);
+  XmlExit("OK",200,"schedcodes.cpp",LINE_NUMBER);
 }
 
 
@@ -113,17 +113,17 @@ void Xport::UnassignSchedCode()
   // Verify Post
   //
   if(!xport_post->getValue("CART_NUMBER",&cart_number)) {
-    XmlExit("Missing CART_NUMBER",400);
+    XmlExit("Missing CART_NUMBER",400,"schedcodes.cpp",LINE_NUMBER);
   }
   if(!xport_post->getValue("CODE",&sched_code)) {
-    XmlExit("Missing CODE",400);
+    XmlExit("Missing CODE",400,"schedcodes.cpp",LINE_NUMBER);
   }
 
   //
   // Verify User Perms
   //
   if(!xport_user->cartAuthorized(cart_number)) {
-    XmlExit("No such cart",404);
+    XmlExit("No such cart",404,"schedcodes.cpp",LINE_NUMBER);
   }
 
   //
@@ -132,12 +132,12 @@ void Xport::UnassignSchedCode()
   cart=new RDCart(cart_number);
   code=new RDSchedCode(sched_code);
   if(!code->exists()) {
-    XmlExit("No such scheduler code",404);
+    XmlExit("No such scheduler code",404,"schedcodes.cpp",LINE_NUMBER);
   }
   cart->removeSchedCode(sched_code);
   delete cart;
   delete code;
-  XmlExit("OK",200);
+  XmlExit("OK",200,"schedcodes.cpp",LINE_NUMBER);
 }
 
 
@@ -152,14 +152,14 @@ void Xport::ListCartSchedCodes()
   // Verify Post
   //
   if(!xport_post->getValue("CART_NUMBER",&cart_number)) {
-    XmlExit("Missing CART_NUMBER",400);
+    XmlExit("Missing CART_NUMBER",400,"schedcodes.cpp",LINE_NUMBER);
   }
 
   //
   // Verify User Perms
   //
   if(!xport_user->cartAuthorized(cart_number)) {
-    XmlExit("No such cart",404);
+    XmlExit("No such cart",404,"schedcodes.cpp",LINE_NUMBER);
   }
   //
   // Generate Scheduler Code List

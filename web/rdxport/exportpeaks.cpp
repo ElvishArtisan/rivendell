@@ -40,18 +40,18 @@ void Xport::ExportPeaks()
   //
   int cartnum=0;
   if(!xport_post->getValue("CART_NUMBER",&cartnum)) {
-    XmlExit("Missing CART_NUMBER",400);
+    XmlExit("Missing CART_NUMBER",400,"exportpeaks.cpp",LINE_NUMBER);
   }
   int cutnum=0;
   if(!xport_post->getValue("CUT_NUMBER",&cutnum)) {
-    XmlExit("Missing CUT_NUMBER",400);
+    XmlExit("Missing CUT_NUMBER",400,"exportpeaks.cpp",LINE_NUMBER);
   }
 
   //
   // Verify User Perms
   //
   if(!xport_user->cartAuthorized(cartnum)) {
-    XmlExit("No such cart",404);
+    XmlExit("No such cart",404,"exportpeaks.cpp",LINE_NUMBER);
   }
 
   //
@@ -59,10 +59,10 @@ void Xport::ExportPeaks()
   //
   RDWaveFile *wave=new RDWaveFile(RDCut::pathName(cartnum,cutnum));
   if(!wave->openWave()) {
-    XmlExit("No such audio",404);
+    XmlExit("No such audio",404,"exportpeaks.cpp",LINE_NUMBER);
   }
   if(!wave->hasEnergy()) {
-    XmlExit("No peak data available",400);
+    XmlExit("No peak data available",400,"exportpeaks.cpp",LINE_NUMBER);
   }
 
   //

@@ -31,6 +31,10 @@
 #include <rdsystem.h>
 #include <rduser.h>
 
+#define STRINGIZE(x) STRINGIZE2(x)
+#define STRINGIZE2(x) #x
+#define LINE_NUMBER QString(STRINGIZE(__LINE__)).toInt()
+
 class Xport : public QObject
 {
  public:
@@ -73,7 +77,8 @@ class Xport : public QObject
   void ListCartSchedCodes();
   void ListServices();
   void Exit(int code);
-  void XmlExit(const QString &str,int code,
+  void XmlExit(const QString &msg,int code,
+	       const QString &srcfile="",int line=-1,
 	       RDAudioConvert::ErrorCode err=RDAudioConvert::ErrorOk);
   RDFormPost *xport_post;
   RDUser *xport_user;

@@ -38,23 +38,23 @@ void Xport::DeleteAudio()
   //
   int cartnum=0;
   if(!xport_post->getValue("CART_NUMBER",&cartnum)) {
-    XmlExit("Missing CART_NUMBER",400);
+    XmlExit("Missing CART_NUMBER",400,"deleteaudio.cpp",LINE_NUMBER);
   }
   int cutnum=0;
   if(!xport_post->getValue("CUT_NUMBER",&cutnum)) {
-    XmlExit("Missing CUT_NUMBER",400);
+    XmlExit("Missing CUT_NUMBER",400,"deleteaudio.cpp",LINE_NUMBER);
   }
 
   //
   // Process Request
   //
   if((!xport_user->deleteCarts())&&(!xport_user->adminConfig())) {
-    XmlExit("User not authorized",404);
+    XmlExit("User not authorized",404,"deleteaudio.cpp",LINE_NUMBER);
   }
   RDCut *cut=new RDCut(cartnum,cutnum);
   if(!cut->exists()) {
     delete cut;
-    XmlExit("No such cut",404);
+    XmlExit("No such cut",404,"deleteaudio.cpp",LINE_NUMBER);
   }
   unlink(RDCut::pathName(cartnum,cutnum));
   unlink(RDCut::pathName(cartnum,cutnum)+".energy");
@@ -64,5 +64,5 @@ void Xport::DeleteAudio()
   delete q;
   syslog(LOG_NOTICE,"unlink(%s): %s",(const char *)RDCut::pathName(cartnum,cutnum),strerror(errno));
   delete cut;
-  XmlExit("OK",200);
+  XmlExit("OK",200,"deleteaudio.cpp",LINE_NUMBER);
 }

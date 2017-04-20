@@ -45,10 +45,10 @@ void Xport::Rehash()
   // Verify Post
   //
   if(!xport_post->getValue("CART_NUMBER",&cart_number)) {
-    XmlExit("Missing CART_NUMBER",400);
+    XmlExit("Missing CART_NUMBER",400,"rdhash.cpp",LINE_NUMBER);
   }
   if(!xport_post->getValue("CUT_NUMBER",&cut_number)) {
-    XmlExit("Missing CUT_NUMBER",400);
+    XmlExit("Missing CUT_NUMBER",400,"rdhash.cpp",LINE_NUMBER);
   }
 
   //
@@ -57,9 +57,9 @@ void Xport::Rehash()
   RDCut *cut=new RDCut(cart_number,cut_number);
   if(!cut->exists()) {
     delete cut;
-    XmlExit("No such cut",404);
+    XmlExit("No such cut",404,"rdhash.cpp",LINE_NUMBER);
   }
   cut->setSha1Hash(RDSha1Hash(RDCut::pathName(cart_number,cut_number)));
   delete cut;
-  XmlExit("OK",200);
+  XmlExit("OK",200,"rdhash.cpp",LINE_NUMBER);
 }
