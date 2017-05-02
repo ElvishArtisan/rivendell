@@ -2,7 +2,7 @@
 //
 // The cart slot widget.
 //
-//   (C) Copyright 2012-2014,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2012-2014,2016-2017 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -285,7 +285,6 @@ bool RDCartSlot::play()
 	slot_deck->play(slot_logline->playPosition());
       }
       slot_logline->setStartTime(RDLogLine::Actual,QTime::currentTime());
-      //      LogPlayout(RDAirPlayConf::TrafficStart);
       ret=true;
     }
   }
@@ -305,7 +304,9 @@ bool RDCartSlot::stop()
   if(slot_logline->cartNumber()!=0) {
     slot_stop_requested=true;
     slot_deck->stop();
-    //    LogPlayout(RDAirPlayConf::TrafficStop);
+    RDCart *cart=new RDCart(slot_logline->cartNumber());
+    setCart(cart);
+    delete cart;
     ret=true;
   }
   return ret;
@@ -474,6 +475,7 @@ void RDCartSlot::stateChangedData(int id,RDPlayDeck::State state)
 {
   //printf("stateChangedData(%d,%d)\n",id,state);
   short lvls[2]={-10000,-10000};
+  RDCart *cart=NULL;
 
   switch(state) {
   case RDPlayDeck::Playing:
@@ -501,6 +503,9 @@ void RDCartSlot::stateChangedData(int id,RDPlayDeck::State state)
       if(!slot_stop_requested) {
 	switch(slot_options->stopAction()) {
 	case RDSlotOptions::RecueOnStop:
+	  cart=new RDCart(slot_logline->cartNumber());
+	  setCart(cart);
+	  delete cart;
 	  break;
 	  
 	case RDSlotOptions::UnloadOnStop:
