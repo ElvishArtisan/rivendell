@@ -24,6 +24,7 @@ LiveWire LWRP GPIO
 LiveWire Multicast GPIO
 Local Audio Adapter
 Logitek vGuest
+Modbus TCP
 Quartz Electronics Type 1 Routing Protocol
 Ross NK Video Switchers (via SCP/A Serial Interface)
 Serial Port Modem Control Lines
@@ -578,6 +579,19 @@ and 'Configure Outputs' dialogs.  For the GPO RMLs, various Logitek
 'switches' (by which we mean anything that can be turned on and off,
 such as faders feeds, not just GPIO) are mapped to logical Rivendell
 GPIO lines by means of their Logitek Engine, Device and Buss numbers.
+
+
+----------------------------------------------------------------------------
+Driver Name: Modbus TCP
+
+Supported RML Commands:
+  GPI Enable ('GE')
+  GPI Set ('GI')
+
+GENERAL NOTES:
+This driver supports GPI devices that use the industry-standard Modbus TCP
+protocol at TCP port 502. The device to be controlled should be configured
+to use Modbus ID #1. For more information on Modbus, see http://www.modbus.org/.
 
 
 ----------------------------------------------------------------------------

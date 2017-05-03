@@ -15754,3 +15754,7 @@
 2017-05-02 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug that caused RDCartSlots to fail to rotate cuts when
 	replaying a cart without a reload.
+2017-05-03 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'RDMatrix::Modbus' element to the 'RDMatrix::Type enum.
+	* Implemented a Modbus TCP switcher driver in 'ripcd/modbus.cpp' and
+	'ripcd/modbus.h'.

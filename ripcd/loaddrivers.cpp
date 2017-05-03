@@ -47,6 +47,7 @@
 #include <livewire_mcastgpio.h>
 #include <local_audio.h>
 #include <local_gpio.h>
+#include <modbus.h>
 #include <modemlines.h>
 #include <quartz1.h>
 #include <rossnkscp.h>
@@ -163,6 +164,10 @@ bool MainObject::LoadSwitchDriver(int matrix_num)
 
   case RDMatrix::LogitekVguest:
     ripcd_switcher[matrix_num]=new VGuest(matrix,this);
+    break;
+
+  case RDMatrix::Modbus:
+    ripcd_switcher[matrix_num]=new Modbus(matrix,this);
     break;
 
   case RDMatrix::ModemLines:

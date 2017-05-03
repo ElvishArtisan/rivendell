@@ -57,6 +57,7 @@ dist_ripcd_SOURCES = acu1p.cpp acu1p.h\
                      local_gpio.cpp local_gpio.h\
                      local_macros.cpp maint_routines.cpp\
                      loaddrivers.cpp\
+                     modbus.cpp modbus.h\
                      modemlines.cpp modemlines.h\
                      quartz1.cpp quartz1.h\
                      ripcd.cpp ripcd.h globals.h\
@@ -100,6 +101,7 @@ nodist_ripcd_SOURCES = moc_am16.cpp\
                        moc_livewire_mcastgpio.cpp\
                        moc_local_audio.cpp\
                        moc_local_gpio.cpp\
+                       moc_modbus.cpp\
                        moc_modemlines.cpp\
                        moc_quartz1.cpp\
                        moc_ripcd.cpp\
