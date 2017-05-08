@@ -222,7 +222,6 @@ void Modbus::ProcessInputByte(char byte,int base)
 
 void Modbus::PollInputs()
 {
-  printf("HERE1\n");
   char msg[12];
   msg[0]=0x88;  // Transaction Identifier
   msg[1]=0x88;
@@ -246,5 +245,4 @@ void Modbus::PollInputs()
   modbus_socket->writeBlock(msg,12);
   modbus_watchdog_timer->stop();
   modbus_watchdog_timer->start(MODBUS_WATCHDOG_INTERVAL,true);
-  printf("HERE2\n");
 }

@@ -15758,5 +15758,7 @@
 	* Added an 'RDMatrix::Modbus' element to the 'RDMatrix::Type enum.
 	* Implemented a Modbus TCP switcher driver in 'ripcd/modbus.cpp' and
 	'ripcd/modbus.h'.
+2017-05-06 Fred Gleason <fredg@paravelsystems.com>
+	* Removed debugging printfs.
 2017-05-08 Fred Gleason <fredg@paravelsystems.com>
 	* Added a dependency for cdda2wav(1) in 'rivendell.spec.in'.
