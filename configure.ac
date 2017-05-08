@@ -131,6 +131,7 @@ else
     AC_SUBST(QT3_MYSQL_PKG,"qt3-MySQL")
     AC_SUBST(QT3_DEVEL_PKG,"qt3-devel")
     AC_SUBST(MYSQL_PKG,"mariadb")
+    AC_SUBST(CDDA2WAV_PKG,"icedax")
   else
     if test $ar_distro_major -ge 6 ; then
     AC_SUBST(USERMODE_PKG,"usermode")
@@ -138,12 +139,14 @@ else
       AC_SUBST(QT3_MYSQL_PKG,"qt-MySQL")
       AC_SUBST(QT3_DEVEL_PKG,"qt3-devel")
       AC_SUBST(MYSQL_PKG,"mysqld")
+      AC_SUBST(CDDA2WAV_PKG,"icedax")
     else
       AC_SUBST(USERMODE_PKG,"usermode")
       AC_SUBST(MYSQL_PKG,"mysql")
       AC_SUBST(QT3_MYSQL_PKG,"qt-MySQL")
       AC_SUBST(QT3_DEVEL_PKG,"qt-devel")
       AC_SUBST(MYSQL_PKG,"mysqld")
+      AC_SUBST(CDDA2WAV_PKG,"")
     fi
   fi
 fi
