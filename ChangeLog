@@ -15765,3 +15765,5 @@
 2017-05-10 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in the 'SaveLog' web API that failed to update the
 	last modified datestamp.
+2017-05-10 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.15.3int05.
