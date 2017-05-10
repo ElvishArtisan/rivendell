@@ -15762,3 +15762,6 @@
 	* Removed debugging printfs.
 2017-05-08 Fred Gleason <fredg@paravelsystems.com>
 	* Added a dependency for cdda2wav(1) in 'rivendell.spec.in'.
+2017-05-10 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in the 'SaveLog' web API that failed to update the
+	last modified datestamp.

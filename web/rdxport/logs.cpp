@@ -455,6 +455,7 @@ void Xport::SaveLog()
   log->setAutoRefresh(auto_refresh);
   log->setStartDate(start_date);
   log->setEndDate(end_date);
+  log->setModifiedDatetime(QDateTime::currentDateTime());
 
   logevt->save();
 
