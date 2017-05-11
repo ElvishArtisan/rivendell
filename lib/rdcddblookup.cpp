@@ -346,12 +346,10 @@ bool RDCddbLookup::ReadCdText(const QString &cdda_dir,const QString &cdda_dev)
     output=proc->readStderr();
     if(output.size()>0) {  // Work around icedax(1)'s idiotic user prompt
       if(strncmp(output,"load cdrom please and press enter",33)==0) {
-	printf("icedax killed!\n");
 	proc->kill();
 	delete proc;
 	return false;
       }
-      printf("icedax spinning...\n");
     }
   }
   if((!proc->normalExit())||(proc->exitStatus()!=0)) {
@@ -359,7 +357,6 @@ bool RDCddbLookup::ReadCdText(const QString &cdda_dir,const QString &cdda_dev)
     return false;
   }
   delete proc;
-  printf("icedax success!\n");
 
   //
   // Read the Track Title Data File

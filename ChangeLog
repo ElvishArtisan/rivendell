@@ -15771,3 +15771,5 @@
 	* Added a workaround for icedax(1)'s idiotic user prompt in
 	'lib/rdcddblookup.cpp' to prevent freezes when attempting to read
 	CD-TEXT.
+2017-05-11 Fred Gleason <fredg@paravelsystems.com>
+	* Removed debug printfs from 'lib/rdcddblookup.cpp'.
