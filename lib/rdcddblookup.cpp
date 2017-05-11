@@ -24,6 +24,7 @@
 #include <qtimer.h>
 #include <qregexp.h>
 #include <qdatetime.h>
+#include <qprocess.h>
 
 #include <rdcddblookup.h>
 #include <rdprofile.h>
@@ -320,7 +321,6 @@ int RDCddbLookup::GetIndex(QString *tag)
 
 bool RDCddbLookup::ReadCdText(const QString &cdda_dir,const QString &cdda_dev)
 {
-  int err=0;
   RDProfile *title_profile=new RDProfile();
   bool ret=false;
   QString str;
@@ -329,12 +329,37 @@ bool RDCddbLookup::ReadCdText(const QString &cdda_dir,const QString &cdda_dev)
   //
   // Write the Track Title Data to a Temp File
   //
-  cmd=QString().sprintf("CURDIR=`pwd`;cd %s;cdda2wav -D %s --info-only -v titles 2> /dev/null;cd $CURDIR",
-				(const char *)cdda_dir,
-				(const char *)cdda_dev);
-  if((err=system(cmd))!=0) {
+  QByteArray output;
+  QProcess *proc=new QProcess(this);
+  proc->addArgument("cdda2wav");
+  proc->addArgument("-D");
+  proc->addArgument(cdda_dev);
+  proc->addArgument("--info-only");
+  proc->addArgument("-v");
+  proc->addArgument("titles");
+  proc->setWorkingDirectory(cdda_dir);
+  if(!proc->start()) {
+    delete proc;
     return false;
   }
+  while(proc->isRunning()) {
+    output=proc->readStderr();
+    if(output.size()>0) {  // Work around icedax(1)'s idiotic user prompt
+      if(strncmp(output,"load cdrom please and press enter",33)==0) {
+	printf("icedax killed!\n");
+	proc->kill();
+	delete proc;
+	return false;
+      }
+      printf("icedax spinning...\n");
+    }
+  }
+  if((!proc->normalExit())||(proc->exitStatus()!=0)) {
+    delete proc;
+    return false;
+  }
+  delete proc;
+  printf("icedax success!\n");
 
   //
   // Read the Track Title Data File
