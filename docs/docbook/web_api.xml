@@ -2586,6 +2586,51 @@
 </sect1>
 
 <sect1>
+  <title>ListSystemSettings</title>
+  <subtitle>Return information about system-wide settings</subtitle>
+  <para>
+    Command Code: <code>RDXPORT_COMMAND_LISTSYSTEMSETTINGS</code>
+  </para>
+  <para>
+    Required User Permissions: none
+  </para>
+  <table xml:id="ex.listsystemsettings" frame="all">
+    <title>ListSystemSettings Call Fields</title>
+    <tgroup cols="3" align="left" colsep="1" rowsep="1">
+      <colspec colname="FIELD NAME" />
+      <colspec colname="MEANING" />
+      <colspec colname="REMARKS" />
+      <thead>
+	<row>
+	  <entry>
+	    FIELD NAME
+	  </entry>
+	  <entry>
+	    MEANING
+	  </entry>
+	  <entry>
+	    REMARKS
+	  </entry>
+	</row>
+      </thead>
+      <tbody>
+	<row>
+	  <entry>
+	    COMMAND
+	  </entry>
+	  <entry>
+	    33
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+      </tbody>
+    </tgroup>
+  </table>
+</sect1>
+
+<sect1>
   <title>Rehash</title>
   <subtitle>Generate a SHA-1 hash for a cut and write it to the database</subtitle>
   <para>

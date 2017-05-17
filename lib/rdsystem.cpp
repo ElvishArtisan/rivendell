@@ -22,6 +22,7 @@
 #include <rddb.h>
 #include <rdconf.h>
 #include <rdsystem.h>
+#include <rdweb.h>
 
 RDSystem::RDSystem()
 {
@@ -114,6 +115,20 @@ QString RDSystem::tempCartGroup() const
 void RDSystem::setTempCartGroup(const QString &str) const
 {
   SetRow("TEMP_CART_GROUP",str);
+}
+
+
+QString RDSystem::xml() const
+{
+  QString xml="<systemSettings>\n";
+  xml+=RDXmlField("sampleRate",sampleRate());
+  xml+=RDXmlField("duplicateTitles",allowDuplicateCartTitles());
+  xml+=RDXmlField("maxPostLength",maxPostLength());
+  xml+=RDXmlField("isciXreferencePath",isciXreferencePath());
+  xml+=RDXmlField("tempCartGroup",tempCartGroup());
+  xml+="</systemSettings>\n";
+
+  return xml;
 }
 
 

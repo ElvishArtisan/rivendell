@@ -42,6 +42,7 @@ dist_rdxport_cgi_SOURCES = audioinfo.cpp\
                            rehash.cpp\
                            schedcodes.cpp\
                            services.cpp\
+                           systemsettings.cpp\
                            trimaudio.cpp
 
 rdxport_cgi_LDADD = @LIB_RDLIBS@ -lsndfile @LIBVORBIS@

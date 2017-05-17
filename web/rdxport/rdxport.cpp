@@ -266,6 +266,10 @@ Xport::Xport(QObject *parent)
     ListServices();
     break;
 
+  case RDXPORT_COMMAND_LISTSYSTEMSETTINGS:
+    ListSystemSettings();
+    break;
+
   case RDXPORT_COMMAND_REHASH:
     Rehash();
     break;

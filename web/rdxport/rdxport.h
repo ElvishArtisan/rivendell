@@ -76,6 +76,7 @@ class Xport : public QObject
   void UnassignSchedCode();
   void ListCartSchedCodes();
   void ListServices();
+  void ListSystemSettings();
   void Exit(int code);
   void XmlExit(const QString &msg,int code,
 	       const QString &srcfile="",int line=-1,

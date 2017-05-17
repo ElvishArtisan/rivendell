@@ -37,6 +37,7 @@ class RDSystem
   void setIsciXreferencePath(const QString &str) const;
   QString tempCartGroup() const;
   void setTempCartGroup(const QString &str) const;
+  QString xml() const;
 
  private:
   QVariant GetValue(const QString &field) const;
