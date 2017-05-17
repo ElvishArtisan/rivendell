@@ -15777,3 +15777,6 @@
 	* Added an 'RDSystem::xml()' method in 'lib/rdsystem.cpp' and
 	'lib/rdsystem.h'.
 	* Added a 'ListSystemSettings' web API call.
+2017-05-17 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'Ticket' field to the test harness page at
+	'web/test/listsystemsettings.html'.
