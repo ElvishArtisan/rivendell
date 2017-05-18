@@ -207,6 +207,17 @@ void AddStation::okData()
 	delete q;
       }
     }
+
+    //
+    // RDAirPlay Log Modes
+    //
+    for(int i=0;i<RDAIRPLAY_LOG_QUANTITY;i++) {
+      sql=QString().sprintf("insert into LOG_MODES set ")+
+	"STATION_NAME=\""+RDEscapeString(add_name_edit->text())+"\","+
+	QString().sprintf("MACHINE=%d",i);
+      q=new RDSqlQuery(sql);
+      delete q;
+    }
   }
   else {    // Use Specified Config
 
@@ -532,6 +543,26 @@ void AddStation::okData()
 	QString().sprintf("STOP_GPI_LINE=%d,",q->value(10).toInt())+
 	QString().sprintf("STOP_GPO_MATRIX=%d,",q->value(11).toInt())+
 	QString().sprintf("STOP_GPO_LINE=%d",q->value(12).toInt());
+      q1=new RDSqlQuery(sql);
+      delete q1;
+    }
+    delete q;
+
+    //
+    // RDAirPlay Log Modes
+    //
+    sql=QString("select ")+
+      "MACHINE,"+
+      "START_MODE,"+
+      "OP_MODE from LOG_MODES where "+
+      "STATION_NAME=\""+RDEscapeString(add_exemplar_box->currentText())+"\"";
+    q=new RDSqlQuery(sql);
+    while(q->next()) {
+      sql=QString().sprintf("insert into LOG_MODES set ")+
+	"STATION_NAME=\""+RDEscapeString(add_name_edit->text())+"\","+
+	QString().sprintf("MACHINE=%d,",q->value(0).toInt())+
+	QString().sprintf("START_MODE=%d,",q->value(1).toInt())+
+	QString().sprintf("OP_MODE=%d",q->value(2).toInt());
       q1=new RDSqlQuery(sql);
       delete q1;
     }

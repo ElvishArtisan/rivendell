@@ -206,6 +206,10 @@ void MainObject::Revert(int schema) const
   case 262:
     Revert262();
     break;
+
+  case 263:
+    Revert263();
+    break;
   }
 }
 
@@ -592,6 +596,14 @@ void MainObject::Revert262() const
 }
 
 
+void MainObject::Revert263() const
+{
+  // Nothing to do here as this is a pseudo-schema change.
+
+  SetVersion(262);
+}
+
+
 int MainObject::GetVersion() const
 {
   QString sql;
@@ -634,7 +646,7 @@ int MainObject::MapSchema(const QString &ver)
   version_map["2.13"]=255;
   version_map["2.14"]=258;
   version_map["2.15"]=259;
-  version_map["2.16"]=262;
+  version_map["2.16"]=263;
 
   //
   // Normalize String

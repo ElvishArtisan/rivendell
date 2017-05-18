@@ -328,5 +328,10 @@ void ListStations::DeleteStation(QString name)
 			(const char *)RDEscapeString(name));
   q=new RDSqlQuery(sql);
   delete q;
+
+  sql=QString("delete from LOG_MODES where ")+
+    "STATION_NAME=\""+RDEscapeString(name)+"\"";
+  q=new RDSqlQuery(sql);
+  delete q;
 }
 

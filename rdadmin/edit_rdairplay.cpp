@@ -216,11 +216,6 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
   //
   // Audition/Cue Output
   //
-  /*
-  label=new QLabel(tr("Audition/Cue Output"),this);
-  label->setFont(small_font);
-  label->setGeometry(25,304,200,16);
-  */
   air_card_sel[3]=new RDCardSelector(this);
   air_card_sel[3]->setId(3);
   air_card_sel[3]->setGeometry(20,322,120,117);

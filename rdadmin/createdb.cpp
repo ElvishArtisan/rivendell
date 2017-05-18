@@ -8382,6 +8382,28 @@ int UpdateDb(int ver)
     }
   }
 
+  if(ver<263) {  // Add missing LOG_MODES records
+    sql=QString("select NAME from STATIONS");
+    q=new QSqlQuery(sql);
+    while(q->next()) {
+      for(int i=0;i<3;i++) {
+	sql=QString("select ID from LOG_MODES where ")+
+	  "(STATION_NAME=\""+RDEscapeString(q->value(0).toString())+"\")&&"+
+	  QString().sprintf("(MACHINE=%d)",i);
+	q1=new QSqlQuery(sql);
+	if(!q1->first()) {
+	  sql=QString("insert into LOG_MODES set ")+
+	    "STATION_NAME=\""+RDEscapeString(q->value(0).toString())+"\","+
+	    QString().sprintf("MACHINE=%d",i);
+	  q2=new QSqlQuery(sql);
+	  delete q2;
+	}
+	delete q1;
+      }
+    }
+    delete q;
+  }
+
   
   //
   // Update Version Field

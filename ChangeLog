@@ -15785,3 +15785,9 @@
 	dependency when generating RPMs for RHEL6.
 2017-05-18 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 2.15.3int06.
+2017-05-18 Fred Gleason <fredg@paravelsystems.com>
+	* Added pseudo-schema change 263 to restore missing LOG_MODES table
+	records [GitHub issue #000175].
+	* Added code to create and remove LOG_MODES table records when
+	adding and removing Host definitions.
+	* Incremented the database version to 263.
