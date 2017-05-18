@@ -46,6 +46,9 @@ Modbus::Modbus(RDMatrix *matrix,QObject *parent)
   connect(modbus_socket,SIGNAL(error(int)),this,SLOT(errorData(int)));
   modbus_socket->connectToHost(modbus_ip_address.toString(),modbus_ip_port);
 
+  modbus_poll_timer=new QTimer(this);
+  connect(modbus_poll_timer,SIGNAL(timeout()),this,SLOT(pollInputs()));
+
   modbus_watchdog_timer=new QTimer(this);
   connect(modbus_watchdog_timer,SIGNAL(timeout()),this,SLOT(watchdogData()));
 }
@@ -99,7 +102,7 @@ void Modbus::connectedData()
 	 "connection to Modbus device at %s:%u established",
 	 (const char *)modbus_ip_address.toString(),0xffff&modbus_ip_port);
   modbus_watchdog_active=false;
-  PollInputs();
+  pollInputs();
 }
 
 
@@ -176,7 +179,7 @@ void Modbus::readyReadData()
 	base=modbus_input_bytes-count;
 	ProcessInputByte(byte,base);
 	if(--count==0) {
-	  PollInputs();
+	  modbus_poll_timer->start(MODBUS_POLL_INTERVAL,true);
 	  modbus_istate=0;
 	}
 	break;
@@ -189,6 +192,34 @@ void Modbus::readyReadData()
 void Modbus::errorData(int err)
 {
   watchdogData();
+}
+
+
+void Modbus::pollInputs()
+{
+  char msg[12];
+  msg[0]=0x88;  // Transaction Identifier
+  msg[1]=0x88;
+
+  msg[2]=0x00;  // Protocol Identifier
+  msg[3]=0x00;
+
+  msg[4]=0x00;  // Message Length
+  msg[5]=0x06;
+
+  msg[6]=0x01;  // Modbus ID
+
+  msg[7]=0x02;  // Function Code (Read Discrete Input)
+
+  msg[8]=0x00;  // Starting Address
+  msg[9]=0x00;
+
+  msg[10]=0xff&(modbus_gpis>>8);  // Quantity of Inputs
+  msg[11]=0xff&modbus_gpis;
+
+  modbus_socket->writeBlock(msg,12);
+  modbus_watchdog_timer->stop();
+  modbus_watchdog_timer->start(MODBUS_WATCHDOG_INTERVAL,true);
 }
 
 
@@ -217,32 +248,4 @@ void Modbus::ProcessInputByte(char byte,int base)
     }
   }
   modbus_input_states[base]=byte;
-}
-
-
-void Modbus::PollInputs()
-{
-  char msg[12];
-  msg[0]=0x88;  // Transaction Identifier
-  msg[1]=0x88;
-
-  msg[2]=0x00;  // Protocol Identifier
-  msg[3]=0x00;
-
-  msg[4]=0x00;  // Message Length
-  msg[5]=0x06;
-
-  msg[6]=0x01;  // Modbus ID
-
-  msg[7]=0x02;  // Function Code (Read Discrete Input)
-
-  msg[8]=0x00;  // Starting Address
-  msg[9]=0x00;
-
-  msg[10]=0xff&(modbus_gpis>>8);  // Quantity of Inputs
-  msg[11]=0xff&modbus_gpis;
-
-  modbus_socket->writeBlock(msg,12);
-  modbus_watchdog_timer->stop();
-  modbus_watchdog_timer->start(MODBUS_WATCHDOG_INTERVAL,true);
 }

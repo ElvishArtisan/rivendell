@@ -32,6 +32,7 @@
 
 #include <switcher.h>
 
+#define MODBUS_POLL_INTERVAL 100
 #define MODBUS_WATCHDOG_INTERVAL 1000
 
 class Modbus : public Switcher
@@ -51,15 +52,16 @@ class Modbus : public Switcher
   void connectedData();
   void readyReadData();
   void errorData(int err);
+  void pollInputs();
   void watchdogData();
 
  private:
   void ProcessInputByte(char byte,int base);
-  void PollInputs();
   int modbus_istate;
   int modbus_input_bytes;
   std::vector<char> modbus_input_states;
   QSocket *modbus_socket;
+  QTimer *modbus_poll_timer;
   QTimer *modbus_watchdog_timer;
   bool modbus_watchdog_active;
   QHostAddress modbus_ip_address;

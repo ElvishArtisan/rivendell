@@ -15791,3 +15791,6 @@
 	* Added code to create and remove LOG_MODES table records when
 	adding and removing Host definitions.
 	* Incremented the database version to 263.
+2017-05-18 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 1/10 second hold-off between input polling calls to the
+	Modbus driver in 'ripcd/modbus.cpp' and 'ripcd/modbus.h'.
