@@ -15780,3 +15780,6 @@
 2017-05-17 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'Ticket' field to the test harness page at
 	'web/test/listsystemsettings.html'.
+2017-05-18 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'configure.ac' to generated an invalid 'mysqld'
+	dependency when generating RPMs for RHEL6.
