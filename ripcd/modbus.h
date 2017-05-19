@@ -21,8 +21,10 @@
 #ifndef MODBUS_H
 #define MODBUS_H
 
+#include <queue>
 #include <vector>
 
+#include <qsignalmapper.h>
 #include <qsocket.h>
 #include <qtimer.h>
 
@@ -53,10 +55,13 @@ class Modbus : public Switcher
   void readyReadData();
   void errorData(int err);
   void pollInputs();
+  void resetStateData(int line);
   void watchdogData();
 
  private:
   void ProcessInputByte(char byte,int base);
+  void SetCoil(int line,bool state);
+  bool InputState(int line) const;
   int modbus_istate;
   int modbus_input_bytes;
   std::vector<char> modbus_input_states;
@@ -68,6 +73,12 @@ class Modbus : public Switcher
   uint16_t modbus_ip_port;
   int modbus_gpis;
   int modbus_gpos;
+  std::queue<int> modbus_coil_lines;
+  std::queue<bool> modbus_coil_states;
+  bool modbus_busy;
+  QSignalMapper *modbus_reset_mapper;
+  std::vector<QTimer *> modbus_reset_timers;
+  std::vector<bool> modbus_reset_states;
 };
 
 

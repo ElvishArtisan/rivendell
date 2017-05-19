@@ -587,6 +587,7 @@ Driver Name: Modbus TCP
 Supported RML Commands:
   GPI Enable ('GE')
   GPI Set ('GI')
+  GPO Set ('GO')
 
 GENERAL NOTES:
 This driver supports GPI devices that use the industry-standard Modbus TCP

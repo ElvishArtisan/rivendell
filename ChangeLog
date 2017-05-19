@@ -15794,3 +15794,6 @@
 2017-05-18 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 1/10 second hold-off between input polling calls to the
 	Modbus driver in 'ripcd/modbus.cpp' and 'ripcd/modbus.h'.
+2017-05-19 Fred Gleason <fredg@paravelsystems.com>
+	* Added support for the 'GPO Set' ['GO'] RML to the Modbus driver
+	in 'ripcd/modbus.cpp' and 'ripcd/modbus.h'.
