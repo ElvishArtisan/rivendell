@@ -15804,3 +15804,5 @@
 2017-05-23 Fred Gleason <fredg@paravelsystems.com>
 	* Modified ripcd(8) to allow switcher drivers to execute cleanup
 	code at program shutdown.
+2017-05-23 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.15.3int07.
