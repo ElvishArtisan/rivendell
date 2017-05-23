@@ -19,6 +19,7 @@ Broadcast Tools SS 4.4 Audio Switcher
 Broadcast Tools ACS 8.2 Audio Control Switcher
 Broadcast Tools SS 8.2 Audio Switcher
 Harlond Virtual Mixer
+Kernel GPIO
 LiveWire LWRP Audio
 LiveWire LWRP GPIO
 LiveWire Multicast GPIO
@@ -463,6 +464,25 @@ OUTPUT  BUSS
 
 Input channel ON/OFF is sensed/controlled by means of the respective GPIO
 number using GE/GI/GO RMLs.
+
+
+----------------------------------------------------------------------------
+Kernel GPIO
+
+Driver Name: Kernel GPIO
+
+Supported RML Commands:
+  GPI Enable ('GE')
+  GPI Set ('GI')
+  GPO Set ('GO')
+
+GENERAL NOTES:
+This driver can be used to control kernel-based GPIO interfaces, such as
+the GPIO pins on a Raspberry Pi. Pins are allocated such that inputs come
+first, followed by outputs.
+
+Further information on kernel GPIO devices can be found at
+https://www.kernel.org/doc/Documentation/gpio/sysfs.txt
 
 
 ----------------------------------------------------------------------------

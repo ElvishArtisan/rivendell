@@ -151,6 +151,7 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdintegeredit.cpp rdintegeredit.h\
                         rdintegerdialog.cpp rdintegerdialog.h\
                         rd.h\
+                        rdkernelgpio.cpp rdkernelgpio.h\
                         rdlabel.cpp rdlabel.h\
                         rdlibrary_conf.cpp rdlibrary_conf.h\
                         rdlicense.cpp rdlicense.h\
@@ -287,6 +288,7 @@ nodist_librd_la_SOURCES = moc_rdadd_cart.cpp\
                           moc_rdimport_audio.cpp\
                           moc_rdintegeredit.cpp\
                           moc_rdintegerdialog.cpp\
+                          moc_rdkernelgpio.cpp\
                           moc_rdlabel.cpp\
                           moc_rdlicense.cpp\
                           moc_rdlineedit.cpp\

@@ -151,6 +151,7 @@ x11 {
   SOURCES += rdgroup.cpp
   SOURCES += rdhash.cpp
   SOURCES += rdimport_audio.cpp
+  SOURCES += rdkernelgpio.cpp
   SOURCES += rdlist_groups.cpp
   SOURCES += rdlist_logs.cpp
   SOURCES += rdmarker_button.cpp
@@ -286,6 +287,7 @@ x11 {
   HEADERS += rdgroup.h
   HEADERS += rdhash.h
   HEADERS += rdimport_audio.h
+  HEADERS += rdkernelgpio.h
   HEADERS += rdlist_groups.h
   HEADERS += rdlist_logs.h
   HEADERS += rdmarker_button.h

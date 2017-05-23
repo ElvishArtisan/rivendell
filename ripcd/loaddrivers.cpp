@@ -42,6 +42,7 @@
 #include <btss44.h>
 #include <btss82.h>
 #include <harlond.h>
+#include <kernelgpio.h>
 #include <livewire_lwrpaudio.h>
 #include <livewire_lwrpgpio.h>
 #include <livewire_mcastgpio.h>
@@ -140,6 +141,10 @@ bool MainObject::LoadSwitchDriver(int matrix_num)
 
   case RDMatrix::Harlond:
     ripcd_switcher[matrix_num]=new Harlond(matrix,this);
+    break;
+
+  case RDMatrix::KernelGpio:
+    ripcd_switcher[matrix_num]=new KernelGpio(matrix,this);
     break;
 
   case RDMatrix::LiveWireLwrpAudio:

@@ -50,6 +50,7 @@ dist_ripcd_SOURCES = acu1p.cpp acu1p.h\
                      btsrc16.cpp btsrc16.h\
                      btsrc8iii.cpp btsrc8iii.h\
                      harlond.cpp harlond.h\
+                     kernelgpio.cpp kernelgpio.h\
                      livewire_lwrpaudio.cpp livewire_lwrpaudio.h\
                      livewire_lwrpgpio.cpp livewire_lwrpgpio.h\
                      livewire_mcastgpio.cpp livewire_mcastgpio.h\
@@ -96,6 +97,7 @@ nodist_ripcd_SOURCES = moc_am16.cpp\
                        moc_btss44.cpp\
                        moc_btss82.cpp\
                        moc_harlond.cpp\
+                       moc_kernelgpio.cpp\
                        moc_livewire_lwrpaudio.cpp\
                        moc_livewire_lwrpgpio.cpp\
                        moc_livewire_mcastgpio.cpp\

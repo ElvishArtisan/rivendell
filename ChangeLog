@@ -15797,3 +15797,7 @@
 2017-05-19 Fred Gleason <fredg@paravelsystems.com>
 	* Added support for the 'GPO Set' ['GO'] RML to the Modbus driver
 	in 'ripcd/modbus.cpp' and 'ripcd/modbus.h'.
+2017-05-23 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'RDMatrix::KernelGpio' element to the 'RDMatrix::Type enum.
+	* Implemented a Kernel GPIO switcher driver in 'ripcd/kernelgpio.cpp'
+	and 'ripcd/kernelgpio.h'.
