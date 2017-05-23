@@ -77,6 +77,7 @@ class MainObject : public QObject
   void socketData(int);
   void socketKill(int);
   void checkMaintData();
+  void exitTimerData();
   
  private:
   void SetUser(QString username);

@@ -55,7 +55,7 @@
 RDConfig *ripcd_config;
 RDCae *rdcae;
 RDStation *rdstation;
-
+bool global_exiting=false;
 
 void SigHandler(int signo)
 {
@@ -73,15 +73,8 @@ void SigHandler(int signo)
     return;
 
   case SIGTERM:
-    LogLine(RDConfig::LogInfo,"ripcd exiting normally");
-    RDDeletePid(RD_PID_DIR,"ripcd.pid");
-    exit(0);
-    break;
-
   case SIGINT:
-    LogLine(RDConfig::LogInfo,"ripcd exiting on SIGINT");
-    RDDeletePid(RD_PID_DIR,"ripcd.pid");
-    exit(0);
+    global_exiting=true;
     break;
   }
 }
@@ -249,6 +242,13 @@ MainObject::MainObject(QObject *parent)
     log(RDConfig::LogInfo,"maintenance checks disabled on this host!");
   }
 
+  //
+  // Exit Timer
+  //
+  timer=new QTimer(this);
+  connect(timer,SIGNAL(timeout()),this,SLOT(exitTimerData()));
+  timer->start(200);
+
   LogLine(RDConfig::LogInfo,"started");
 }
 
@@ -405,6 +405,21 @@ void MainObject::macroTimerData(int num)
 {
   ExecCart(ripc_macro_cart[num]);
   ripc_macro_cart[num]=0;
+}
+
+
+void MainObject::exitTimerData()
+{
+  if(global_exiting) {
+    for(int i=0;i<MAX_MATRICES;i++) {
+      if(ripcd_switcher[i]!=NULL) {
+	delete ripcd_switcher[i];
+      }
+    }
+    LogLine(RDConfig::LogInfo,"ripcd exiting normally");
+    RDDeletePid(RD_PID_DIR,"ripcd.pid");
+    exit(0);
+  }
 }
 
 
