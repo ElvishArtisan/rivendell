@@ -143,9 +143,11 @@ LiveWireMcastGpio::LiveWireMcastGpio(RDMatrix *matrix,QObject *parent)
     "order by SLOT";
   q=new RDSqlQuery(sql);
   while(q->next()) {
-    livewire_source_numbers[q->value(0).toInt()]=q->value(1).toInt();
-    livewire_surface_addresses[q->value(0).toInt()]=
-      QHostAddress(q->value(2).toString());
+    if(q->value(0).toInt()<((int)livewire_gpios/RD_LIVEWIRE_GPIO_BUNDLE_SIZE)) {
+      livewire_source_numbers[q->value(0).toInt()]=q->value(1).toInt();
+      livewire_surface_addresses[q->value(0).toInt()]=
+	QHostAddress(q->value(2).toString());
+    }
   }
   delete q;
 }
@@ -231,14 +233,6 @@ void LiveWireMcastGpio::processCommand(RDMacro *cmd)
 	  }
 	  ProcessGpoIn(livewire_source_numbers[slot],line,cmd->arg(3).toInt());
 	  livewire_gpo_in_states[cmd->arg(2).toInt()-1]=cmd->arg(3).toInt();
-	  /*
-	  emit gpiChanged(livewire_matrix,cmd->arg(2).toInt()-1,
-			  cmd->arg(3).toInt());
-	  if(cmd->arg(4).toInt()>0) {
-	    livewire_gpi_timers[cmd->arg(2).toInt()-1]->
-	      start(cmd->arg(4).toInt(),true);
-	  }
-	  */
 	}
 	if(cmd->arg(1).toString().lower()=="o") {
 	  slot=(cmd->arg(2).toInt()-1)/5;

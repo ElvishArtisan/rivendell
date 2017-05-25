@@ -15806,3 +15806,7 @@
 	code at program shutdown.
 2017-05-23 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 2.15.3int07.
+2017-05-24 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'ripcd/livewiremcastgpio.cpp' that caused a segfault
+	when send a LiveWire multicast GPIO event that existed in the driver
+	configuration but was beyond the number of active GPIOS set.
