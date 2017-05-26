@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<refentry id="stdin" xmlns="http://docbook.org/ns/docbook" version="5.0">
+  <!--
+      Header
+  -->
+  <refmeta>
+    <refentrytitle>rdconvert</refentrytitle>
+    <manvolnum>1</manvolnum>
+    <refmiscinfo class='source'>May 2017</refmiscinfo>
+    <refmiscinfo class='manual'>Linux Audio Manual</refmiscinfo>
+  </refmeta>
+  <refnamediv>
+    <refname>rdconvert</refname>
+    <refpurpose>Convert an audio file to a different format</refpurpose>
+  </refnamediv>
+  <info>
+    <author>
+      <personname>
+	<firstname>Fred</firstname>
+	<surname>Gleason</surname>
+	<email>fredg@paravelsystems.com</email>
+      </personname>
+      <contrib>Application Author</contrib>
+    </author>
+  </info>
+
+  <!--
+      Body
+  -->
+  <refsynopsisdiv id='synopsis'>
+    <cmdsynopsis>
+      <command>rdconvert</command>
+      <arg choice='opt'><replaceable>OPTIONS</replaceable></arg>
+      <arg choice='req'><replaceable>src-file</replaceable></arg>
+      <sbr/>
+    </cmdsynopsis>
+  </refsynopsisdiv>
+
+  <refsect1 id='description'><title>Description</title>
+  <para>
+    <command>rdconvert</command><manvolnum>1</manvolnum> can be used to convert
+    audio files between different formats.
+  </para>
+  </refsect1>
+
+  <refsect1 id='options'><title>Options</title>
+  <variablelist remap='TP'>
+    <varlistentry>
+      <term>
+	<option>--destination-bit-rate=</option><replaceable>bit-rate</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  Use a bit rate of <replaceable>bit-rate</replaceable> bits per
+	  second. This option is ignored for PCM and FLAC formats, and is
+	  mutually exclusive with the <option>--destination-quality</option>
+	  option. The default value is <userinput>0</userinput>.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
+	<option>--destination-channels=</option><replaceable>chans</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  Use <replaceable>chans</replaceable> channels. Supported values
+	  are <userinput>1</userinput> and <userinput>2</userinput>. The
+	  default value is <userinput>2</userinput>.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
+	<option>--destination-file=</option><replaceable>filename</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  Write the converted data to <replaceable>filename</replaceable>.
+	  If not specified, the data will be written to the name of the
+	  input file with the default extension of the destination format
+	  appended.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
+	<option>--destination-format=</option><replaceable>format</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  Write the converted data to the specified format.
+	  <replaceable>format</replaceable> can be one of the following:
+	</para>
+	<variablelist>
+	  <varlistentry>
+	    <term><userinput>0</userinput></term>
+	    <listitem>
+	      <para>
+		PCM16 WAV
+	      </para>
+	    </listitem>
+	  </varlistentry>
+	  <varlistentry>
+	    <term><userinput>2</userinput></term>
+	    <listitem>
+	      <para>
+		MPEG Layer 2 (Raw)
+	      </para>
+	    </listitem>
+	  </varlistentry>
+	  <varlistentry>
+	    <term><userinput>3</userinput></term>
+	    <listitem>
+	      <para>
+		MPEG Layer 3 (Raw)
+	      </para>
+	    </listitem>
+	  </varlistentry>
+	  <varlistentry>
+	    <term><userinput>4</userinput></term>
+	    <listitem>
+	      <para>
+		Free Lossless Audio Codec (FLAC)
+	      </para>
+	    </listitem>
+	  </varlistentry>
+	  <varlistentry>
+	    <term><userinput>5</userinput></term>
+	    <listitem>
+	      <para>
+		OggVorbis
+	      </para>
+	    </listitem>
+	  </varlistentry>
+	  <varlistentry>
+	    <term><userinput>6</userinput></term>
+	    <listitem>
+	      <para>
+		MPEG Layer 2 (BWF WAV Container)
+	      </para>
+	    </listitem>
+	  </varlistentry>
+	  <varlistentry>
+	    <term><userinput>7</userinput></term>
+	    <listitem>
+	      <para>
+		PCM24 WAV
+	      </para>
+	    </listitem>
+	  </varlistentry>
+	</variablelist>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
+	<option>--destination-quality=</option><replaceable>qual</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  Use a variable bitrate with a quality of
+	  <replaceable>chans</replaceable>. Supported values
+	  are <userinput>-1</userinput> through <userinput>10</userinput>.
+	  This parameter is used only with a format of <userinput>5</userinput>
+	  (OggVorbis). The default value is <userinput>0</userinput>.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
+	<option>--destination-sample-rate=</option><replaceable>rate</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  Use a sample rate of <replaceable>rate</replaceable> samples per
+	  second. Not all sample rates are supported for all formats; see
+	  the relevant MPEG specifications for details. The default value is
+	  <userinput>48000</userinput>.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
+	<option>--end-point=</option><replaceable>msec</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  Stop converting the audio data at the point
+	  <replaceable>msec</replaceable> mS from the start of the source
+	  file. A value of <userinput>-1</userinput> means to continue
+	  conversion to the end of the source file, which is the default.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
+	<option>--normalization-level=</option><replaceable>lvl</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  Peak-normalize the audio to <replaceable>lvl</replaceable> dBFS.
+	  A value of <userinput>0</userinput> disables normalization, which
+	  is the default.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
+	<option>--speed-ratio=</option><replaceable>ratio</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  Alter the tempo of the audio by <replaceable>ratio</replaceable>.
+	  A value of <userinput>1.0</userinput> specifies no tempo alteration,
+	  which is the default.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
+	<option>--start-point=</option><replaceable>msec</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  Start converting the audio data at the point
+	  <replaceable>msec</replaceable> mS into the source file. The
+	  default value is <userinput>0</userinput>.
+	</para>
+      </listitem>
+    </varlistentry>
+
+  </variablelist>
+</refsect1>
+
+<refsect1 id='see_also'><title>See Also</title>
+<para>
+  <citerefentry>
+    <refentrytitle>rdexport</refentrytitle><manvolnum>1</manvolnum>
+  </citerefentry>
+  <literal>,</literal>
+  <citerefentry>
+    <refentrytitle>rdimport</refentrytitle><manvolnum>1</manvolnum>
+  </citerefentry>
+  <literal>,</literal>
+  <citerefentry>
+    <refentrytitle>rdmarkerset</refentrytitle><manvolnum>8</manvolnum>
+  </citerefentry>
+</para>
+</refsect1>
+
+</refentry>
+

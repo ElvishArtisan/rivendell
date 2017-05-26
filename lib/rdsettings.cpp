@@ -276,6 +276,41 @@ QString RDSettings::pathName(const QString &stationname,QString pathname,
 }
 
 
+QString RDSettings::defaultExtension(RDSettings::Format fmt)
+{
+  QString ret="dat";
+
+  switch(fmt) {
+  case RDSettings::Pcm16:
+  case RDSettings::Pcm24:
+  case RDSettings::MpegL2Wav:
+    ret="wav";
+    break;
+
+  case RDSettings::MpegL1:
+    ret="mp1";
+    break;
+
+  case RDSettings::MpegL2:
+    ret="mp2";
+    break;
+
+  case RDSettings::MpegL3:
+    ret="mp3";
+    break;
+
+  case RDSettings::Flac:
+    ret="flac";
+    break;
+
+  case RDSettings::OggVorbis:
+    ret="ogg";
+    break;
+  }
+  return ret;
+}
+
+
 QString RDSettings::defaultExtension(const QString &stationname,
 				     RDSettings::Format fmt)
 {

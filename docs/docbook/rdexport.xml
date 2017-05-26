@@ -398,6 +398,10 @@
 <refsect1 id='see_also'><title>See Also</title>
 <para>
   <citerefentry>
+    <refentrytitle>rdconvert</refentrytitle><manvolnum>1</manvolnum>
+  </citerefentry>
+  <literal>,</literal>
+  <citerefentry>
     <refentrytitle>rdimport</refentrytitle><manvolnum>1</manvolnum>
   </citerefentry>
   <literal>,</literal>

@@ -53,6 +53,7 @@ class RDSettings
   QString resolvedCustomCommandLine(const QString &destfile);
   static QString pathName(const QString &stationname,QString pathname,
 			  RDSettings::Format fmt);
+  static QString defaultExtension(RDSettings::Format fmt);
   static QString defaultExtension(const QString &stationname,
 				  RDSettings::Format fmt);
   static unsigned bytesPerSec(const QString &stationname,

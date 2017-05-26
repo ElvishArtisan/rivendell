@@ -15812,3 +15812,5 @@
 	configuration but was beyond the number of active GPIOS set.
 2017-05-25 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 2.15.3int08.
+2017-05-26 Fred Gleason <fredg@paravelsystems.com>
+	* Added rdconvert(1).
