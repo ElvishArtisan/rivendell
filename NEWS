@@ -1,6 +1,40 @@
 The NEWS file for the Rivendell package.
 
 -------------------------------------------------------------------------------
+v2.16.0 --  6/2/2017
+
+Changes:
+   Audio Store Hashing. Rivendell now automatically generates a SHA1 hash
+   for each file in the audio store and records this value in the database,
+   thus permitting automated recovery of audio in the event of loss or damage
+   to the audio store's filesystem directory. See the --relink-audio option
+   in the rddbcheck(8) man page for details.
+
+   Kernel GPIO. Added switcher support for Kernel GPIO devices, such as
+   the GPIO interface on the Raspberry Pi 2 and 3.
+
+   Modbus TCP. Added switcher support for Modbus TCP devices.
+
+   RDConvert. Added an rdconvert(1) utility,
+
+   User Authentication. It is now possible to delegate authentication of
+   Rivendell users by means of a PAM module, thus permitting 'single sign-on'
+   integration with systems such as ActiveDirectory and FreeIPA.
+
+   Web API. Added various methods to the Rivendell Web API to permit
+   integration with external audio and log editors.
+
+   Various other bug fixes.  See the ChangeLog for details.   
+
+Database Update:
+   This version of Rivendell uses database schema version 263, and will
+   automatically upgrade any earlier versions.  To see the current schema
+   version prior to upgrade, see RDAdmin->SystemInfo.
+
+   As always, be sure to run RDAdmin immediately after upgrading to allow 
+   any necessary changes to the database schema to be applied.
+
+-------------------------------------------------------------------------------
 v2.15.3 --  3/24/2017
 
 Changes:

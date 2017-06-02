@@ -15816,3 +15816,6 @@
 	* Added rdconvert(1).
 2017-05-26 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 2.15.3int09.
+2017-06-02 Fred Gleason <fredg@paravelsystems.com>
+	* Updated 'NEWS'.
+	* Incremented the package version to 2.16.0.
