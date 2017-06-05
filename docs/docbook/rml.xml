@@ -182,6 +182,33 @@
 <sect1>
   <title>Commands</title>
   <sect2>
+    <title><command>Air Gate [AG]</command></title>
+    <para>
+      <variablelist>
+	<varlistentry>
+	  <term>Module</term>
+	  <listitem><command>ripcd</command><manvolnum>8</manvolnum></listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>Mnemonic</term>
+	  <listitem><userinput>AG</userinput></listitem>
+	</varlistentry>
+      </variablelist>
+    </para>
+    <para>
+      Process an RML only if the On-Air flag is ON.
+    </para>
+    <para>
+      <userinput>AG</userinput>
+      <replaceable>rml</replaceable>!
+    </para>
+    <para>
+      Execute RML <replaceable>rml</replaceable> only if the On-Air flag on
+      the local machine is ON.
+    </para>
+  </sect2>
+
+  <sect2>
     <title><command>Add Next [PX]</command></title>
     <para>
       <variablelist>

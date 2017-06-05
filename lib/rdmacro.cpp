@@ -161,6 +161,7 @@ bool RDMacro::parseString(const char *str,int n)
   //
   rml_cmd=(RDMacro::Command)((str[0]<<8)+str[1]);
   switch(rml_cmd) {
+      case RDMacro::AG:
       case RDMacro::AL:
       case RDMacro::BO:
       case RDMacro::CC:

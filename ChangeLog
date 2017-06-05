@@ -15822,3 +15822,5 @@
 2017-06-05 Fred Gleason <fredg@paravelsystems.com>
 	* Modified the 'Command Send' ['CC'] RML so as to have a destination
 	argument of 'localhost' be sent to the localhost.
+2017-06-05 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'Air Gate' ['AG'] RML.
