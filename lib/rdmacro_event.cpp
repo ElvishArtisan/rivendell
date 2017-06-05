@@ -245,31 +245,35 @@ void RDMacroEvent::exec(int line)
 	if(args.size()==2) {
 	  port=args[1].toUInt();
 	}
-	//stationname=event_cmds[line]->arg(0).toString();
-	sql=
-	  QString().sprintf("select VARVALUE from HOSTVARS \
-                             where (STATION_NAME=\"%s\")&&(NAME=\"%s\")",
-			    (const char *)event_ripc->station(),
-			    (const char *)stationname);
-	q=new RDSqlQuery(sql);
-	if(q->first()) {
-	  stationname=q->value(0).toString();
-	}
-	delete q;
-	station=new RDStation(stationname);
-	if(station->exists()) {
-	  rml.setAddress(station->address());
+	if(stationname.lower()=="localhost") {
+	  rml.setAddress(QString("127.0.0.2"));
 	}
 	else {
-	  addr.setAddress(stationname);
-	  if(addr.isNull()) {
-	    emit finished(line);
-	    delete station;
-	    return;
+	  sql=
+	    QString().sprintf("select VARVALUE from HOSTVARS \
+                             where (STATION_NAME=\"%s\")&&(NAME=\"%s\")",
+			      (const char *)event_ripc->station(),
+			      (const char *)stationname);
+	  q=new RDSqlQuery(sql);
+	  if(q->first()) {
+	    stationname=q->value(0).toString();
 	  }
-	  rml.setAddress(addr);
+	  delete q;
+	  station=new RDStation(stationname);
+	  if(station->exists()) {
+	    rml.setAddress(station->address());
+	  }
+	  else {
+	    addr.setAddress(stationname);
+	    if(addr.isNull()) {
+	      emit finished(line);
+	      delete station;
+	      return;
+	    }
+	    rml.setAddress(addr);
+	  }
+	  delete station;
 	}
-	delete station;
 	rml.setArgQuantity(event_cmds[line]->argQuantity()-2);
 	cmd=
 	  (RDMacro::Command)(256*event_cmds[line]->arg(1).toString().ascii()[0]+
