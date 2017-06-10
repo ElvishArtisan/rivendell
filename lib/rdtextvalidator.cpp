@@ -34,6 +34,10 @@ RDTextValidator::RDTextValidator(QObject *parent,const char *name,bool allow_quo
 
 QValidator::State RDTextValidator::validate(QString &input,int &pos) const
 {
+  if (input.length()==0) {
+    return QValidator::Acceptable;
+  }
+  int inspectionPos = std::max(0,std::min(input.length()-1,pos));
   char c=input.at(pos-1).latin1();
   for(unsigned i=0;i<banned_chars.size();i++) {
     if(banned_chars[i]==c) {
