@@ -43,7 +43,7 @@ RDMeterAverage *alsa_output_meter[RD_MAX_CARDS][RD_MAX_PORTS][2];
 RDMeterAverage *alsa_stream_output_meter[RD_MAX_CARDS][RD_MAX_STREAMS][2];
 volatile double alsa_input_volume[RD_MAX_CARDS][RD_MAX_PORTS];
 volatile double alsa_output_volume[RD_MAX_CARDS][RD_MAX_PORTS][RD_MAX_STREAMS];
-volatile double 
+volatile double
   alsa_passthrough_volume[RD_MAX_CARDS][RD_MAX_PORTS][RD_MAX_PORTS];
 volatile double alsa_input_vox[RD_MAX_CARDS][RD_MAX_PORTS];
 RDRingBuffer *alsa_play_ring[RD_MAX_CARDS][RD_MAX_STREAMS];
@@ -104,7 +104,7 @@ void AlsaCapture2Callback(struct alsa_format *alsa_format)
 			alsa_record_ring[alsa_format->card][i]->
 			  write(alsa_buffer,s*sizeof(int16_t));
 			break;
-			
+
 		      case 2:
 			for(int k=0;k<s;k++) {
 			  ((int16_t *)alsa_buffer)[2*k]=
@@ -125,7 +125,7 @@ void AlsaCapture2Callback(struct alsa_format *alsa_format)
 		}
 	      }
 	    }
-	    
+
 	    //
 	    // Process Passthroughs
 	    //
@@ -161,7 +161,7 @@ void AlsaCapture2Callback(struct alsa_format *alsa_format)
 	      }
 	    }
 	    break;
-	    
+
 	  case SND_PCM_FORMAT_S32_LE:
 	    modulo=alsa_format->channels*2;
 	    for(unsigned i=0;i<(alsa_format->channels/2);i++) {
@@ -183,7 +183,7 @@ void AlsaCapture2Callback(struct alsa_format *alsa_format)
 			alsa_record_ring[alsa_format->card][i]->
 			  write(alsa_buffer,s*sizeof(int16_t));
 			break;
-			
+
 		      case 2:
 			for(int k=0;k<s;k++) {
 			  ((int16_t *)alsa_buffer)[2*k]=
@@ -202,7 +202,7 @@ void AlsaCapture2Callback(struct alsa_format *alsa_format)
 		}
 	      }
 	    }
-	    
+
 	    //
 	    // Process Passthroughs
 	    //
@@ -285,249 +285,260 @@ void AlsaPlay2Callback(struct alsa_format *alsa_format)
     memset(alsa_format->card_buffer,0,alsa_format->card_buffer_size);
 
     switch(alsa_format->format) {
-	case SND_PCM_FORMAT_S16_LE:
-	  for(unsigned j=0;j<RD_MAX_STREAMS;j++) {
-	    if(alsa_playing[alsa_format->card][j]) {
-	      switch(alsa_output_channels[alsa_format->card][j]) {
-		  case 1:
-		    n=alsa_play_ring[alsa_format->card][j]->
-		      read(alsa_buffer,alsa_format->
-			   buffer_size/alsa_format->periods)/
-		      (2*sizeof(int16_t));
-		    stream_out_meter=0;  // Stream Output Meters
-		    for(int k=0;k<n;k++) {
-		      if(abs(((int16_t *)alsa_buffer)[k])>stream_out_meter) {
-			stream_out_meter=abs(((int16_t *)alsa_buffer)[k]);
-		      }
-		    }
-		    alsa_stream_output_meter[alsa_format->card][j][0]->
-		      addValue(((double)stream_out_meter)/32768.0);
-		    alsa_stream_output_meter[alsa_format->card][j][1]->
-		      addValue(((double)stream_out_meter)/32768.0);
-		    modulo=alsa_format->channels;
-		    for(unsigned i=0;i<(alsa_format->channels/2);i++) {
-		      if(alsa_output_volume[alsa_format->card][i][j]!=0.0) {
-			for(int k=0;k<(2*n);k++) {
-			  ((int16_t *)alsa_format->card_buffer)[modulo*k+2*i]+=
-			   (int16_t)(alsa_output_volume[alsa_format->card][i][j]*
-				   (double)(((int16_t *)alsa_buffer)[k]));
-			  ((int16_t *)alsa_format->card_buffer)[modulo*k+2*i+1]+=
-			   (int16_t)(alsa_output_volume[alsa_format->card][i][j]*
-				   (double)(((int16_t *)alsa_buffer)[k]));
-			}
-		      }
-		    }
-		    n*=2;
-		    break;
+    case SND_PCM_FORMAT_S16_LE:
+      for(unsigned j=0;j<RD_MAX_STREAMS;j++) {
+        if(alsa_playing[alsa_format->card][j]) {
+          switch(alsa_output_channels[alsa_format->card][j]) {
+          case 1:
+            n=alsa_play_ring[alsa_format->card][j]->
+              read(alsa_buffer,alsa_format->
+                   buffer_size/alsa_format->periods)/
+              (2*sizeof(int16_t));
+            stream_out_meter=0;  // Stream Output Meters
+            for(int k=0;k<n;k++) {
+              if(abs(((int16_t *)alsa_buffer)[k])>stream_out_meter) {
+                stream_out_meter=abs(((int16_t *)alsa_buffer)[k]);
+              }
+            }
+            alsa_stream_output_meter[alsa_format->card][j][0]->
+              addValue(((double)stream_out_meter)/32768.0);
+            alsa_stream_output_meter[alsa_format->card][j][1]->
+              addValue(((double)stream_out_meter)/32768.0);
+            modulo=alsa_format->channels;
+            for(unsigned i=0;i<(alsa_format->channels/2);i++) {
+              if(alsa_output_volume[alsa_format->card][i][j]!=0.0) {
+                for(int k=0;k<(2*n);k++) {
+                  ((int16_t *)alsa_format->card_buffer)[modulo*k+2*i]+=
+                    (int16_t)(alsa_output_volume[alsa_format->card][i][j]*
+                              (double)(((int16_t *)alsa_buffer)[k]));
+                  ((int16_t *)alsa_format->card_buffer)[modulo*k+2*i+1]+=
+                    (int16_t)(alsa_output_volume[alsa_format->card][i][j]*
+                              (double)(((int16_t *)alsa_buffer)[k]));
+                }
+              }
+            }
+            n*=2;
+            break;
 
-		  case 2:
-		    n=alsa_play_ring[alsa_format->card][j]->
-		      read(alsa_buffer,alsa_format->buffer_size*2/
-			   alsa_format->periods)/(2*sizeof(int16_t));
-		    for(unsigned k=0;k<2;k++) {  // Stream Output Meters
-		      stream_out_meter=0;
-		      for(int l=0;l<n;l+=2) {
-			if(abs(((int16_t *)alsa_buffer)[l+k])>stream_out_meter) {
-			  stream_out_meter=abs(((int16_t *)alsa_buffer)[l+k]);
-			}
-		      }
-		      alsa_stream_output_meter[alsa_format->card][j][k]->
-			addValue(((double)stream_out_meter)/32768.0);
-		    }
-		    modulo=alsa_format->channels;
-		    for(unsigned i=0;i<(alsa_format->channels/2);i++) {
-		      if(alsa_output_volume[alsa_format->card][i][j]!=0.0) {
-			for(int k=0;k<n;k++) {
-			  ((int16_t *)alsa_format->card_buffer)[modulo*k+2*i]+=
-			   (int16_t)(alsa_output_volume[alsa_format->card][i][j]*
-				   (double)(((int16_t *)alsa_buffer)[2*k]));
-			  ((int16_t *)alsa_format->card_buffer)[modulo*k+2*i+1]+=
-			   (int16_t)(alsa_output_volume[alsa_format->card][i][j]*
-				   (double)(((int16_t *)alsa_buffer)[2*k+1]));
-			}
-		      }
-		    }
-		    break;
-	      }
-	      alsa_output_pos[alsa_format->card][j]+=n;
-	      if((n==0)&&alsa_eof[alsa_format->card][j]) {
-		alsa_stopping[alsa_format->card][j]=true;
-	      }
-	    }
-	  }
-	  n=alsa_format->buffer_size/(2*alsa_format->periods);
+          case 2:
+            n=alsa_play_ring[alsa_format->card][j]->
+              read(alsa_buffer,alsa_format->buffer_size*2/
+                   alsa_format->periods)/(2*sizeof(int16_t));
+            for(unsigned k=0;k<2;k++) {  // Stream Output Meters
+              stream_out_meter=0;
+              for(int l=0;l<n;l+=2) {
+                if(abs(((int16_t *)alsa_buffer)[l+k])>stream_out_meter) {
+                  stream_out_meter=abs(((int16_t *)alsa_buffer)[l+k]);
+                }
+              }
+              alsa_stream_output_meter[alsa_format->card][j][k]->
+                addValue(((double)stream_out_meter)/32768.0);
+            }
+            modulo=alsa_format->channels;
+            for(unsigned i=0;i<(alsa_format->channels/2);i++) {
+              if(alsa_output_volume[alsa_format->card][i][j]!=0.0) {
+                for(int k=0;k<n;k++) {
+                  ((int16_t *)alsa_format->card_buffer)[modulo*k+2*i]+=
+                    (int16_t)(alsa_output_volume[alsa_format->card][i][j]*
+                              (double)(((int16_t *)alsa_buffer)[2*k]));
+                  ((int16_t *)alsa_format->card_buffer)[modulo*k+2*i+1]+=
+                    (int16_t)(alsa_output_volume[alsa_format->card][i][j]*
+                              (double)(((int16_t *)alsa_buffer)[2*k+1]));
+                }
+              }
+            }
+            break;
+          }
+          alsa_output_pos[alsa_format->card][j]+=n;
+          if((n==0)&&alsa_eof[alsa_format->card][j]) {
+            alsa_stopping[alsa_format->card][j]=true;
+          }
+        }
+      }
+      n=alsa_format->buffer_size/(2*alsa_format->periods);
 
-	  //
-	  // Process Passthroughs
-	  //
-	  for(unsigned i=0;i<alsa_format->capture_channels;i+=2) {
-	    p=alsa_passthrough_ring[alsa_format->card][i/2]->
-	      read(alsa_format->passthrough_buffer,4*n)/4;
-	    for(unsigned j=0;j<alsa_format->channels;j+=2) {
-	      for(unsigned k=0;k<2;k++) {
-		for(int l=0;l<p;l++) {
-		  ((int16_t *)alsa_format->
-		   card_buffer)[alsa_format->channels*l+j+k]+=
-		    (int16_t)((double)((int16_t *)
-				       alsa_format->passthrough_buffer)[2*l+k]*
-			alsa_passthrough_volume[alsa_format->card][i/2][j/2]);
-		}
-	      }
-	    }
-	  }
+      //
+      // Process Passthroughs
+      //
+      for(unsigned i=0;i<alsa_format->capture_channels;i+=2) {
+        p=alsa_passthrough_ring[alsa_format->card][i/2]->
+          read(alsa_format->passthrough_buffer,4*n)/4;
+        bool zero_volume = true;
+        for (unsigned j=0;j<alsa_format->channels && zero_volume;j+=1) {
+          zero_volume = (alsa_passthrough_volume[alsa_format->card][i/2][j] == 0.0);
+        }
+        if (!zero_volume) {
+          for(unsigned j=0;j<alsa_format->channels;j+=2) {
+            double passthrough_volume = alsa_passthrough_volume[alsa_format->card][i/2][j/2];
+            if (passthrough_volume != 0.0) {
+              for(unsigned k=0;k<2;k++) {
+                for(int l=0;l<p;l++) {
+                  ((int16_t *)alsa_format->
+                   card_buffer)[alsa_format->channels*l+j+k]+=
+                    (int16_t)((double)((int16_t *)alsa_format->passthrough_buffer)[2*l+k]*passthrough_volume);
+                }
+              }
+            }
+          }
+        }
+      }
 
-	  //
-	  // Process Output Meters
-	  //
-	  for(unsigned i=0;i<alsa_format->channels;i+=2) {
-	    unsigned port=i/2;
-	    for(unsigned j=0;j<2;j++) {
-	      out_meter[port][j]=0;
-	      for(unsigned k=0;k<alsa_format->buffer_size;k++) {
-		if(((int16_t *)alsa_format->
-		    card_buffer)[alsa_format->channels*k+2*i+j]>
-		   out_meter[i][j]) {
-		  out_meter[i][j]=
-		    ((int16_t *)alsa_format->
-		     card_buffer)[alsa_format->channels*k+2*i+j];
-		}
-	      }
-	      alsa_output_meter[alsa_format->card][i][j]->
-		addValue(((double)out_meter[i][j])/32768.0);
-	    }
-	  }
-	  break;
+      //
+      // Process Output Meters
+      //
+      for(unsigned i=0;i<alsa_format->channels;i+=2) {
+        unsigned port=i/2;
+        for(unsigned j=0;j<2;j++) {
+          out_meter[port][j]=0;
+          for(unsigned k=0;k<alsa_format->buffer_size;k++) {
+            int16_t sample = ((int16_t *)alsa_format->
+                              card_buffer)[alsa_format->channels*k+2*i+j];
 
-	case SND_PCM_FORMAT_S32_LE:
-	  for(unsigned j=0;j<RD_MAX_STREAMS;j++) {
-	    if(alsa_playing[alsa_format->card][j]) {
-	      switch(alsa_output_channels[alsa_format->card][j]) {
-		  case 1:
-		    n=alsa_play_ring[alsa_format->card][j]->
-		      read(alsa_buffer,alsa_format->buffer_size/
-			   alsa_format->periods)/(2*sizeof(int16_t));
-		    stream_out_meter=0;
-		    for(int k=0;k<n;k++) {  // Stream Output Meters
-		      if(abs(((int16_t *)alsa_buffer)[k])>stream_out_meter) {
-			stream_out_meter=abs(((int16_t *)alsa_buffer)[k]);
-		      }
-		    }
-		    alsa_stream_output_meter[alsa_format->card][j][0]->
-		      addValue(((double)stream_out_meter)/32768.0);
-		    alsa_stream_output_meter[alsa_format->card][j][1]->
-		      addValue(((double)stream_out_meter)/32768.0);
-		    modulo=alsa_format->channels*2;
-		    for(unsigned i=0;i<(alsa_format->channels/2);i++) {
-		      if(alsa_output_volume[alsa_format->card][i][j]!=0.0) {
-			for(int k=0;k<(2*n);k++) {
-			  ((int16_t *)alsa_format->card_buffer)[modulo*k+4*i+1]+=
-			   (int16_t)(alsa_output_volume[alsa_format->card][i][j]*
-				   (double)(((int16_t *)alsa_buffer)[k]));
-			  ((int16_t *)alsa_format->card_buffer)[modulo*k+4*i+3]+=
-			   (int16_t)(alsa_output_volume[alsa_format->card][i][j]*
-				   (double)(((int16_t *)alsa_buffer)[k]));
-			}
-		      }
-		    }
-		    n*=2;
-		    break;
+            if(sample> out_meter[i][j]) {
+              out_meter[i][j]= sample;
+            }
+          }
+          alsa_output_meter[alsa_format->card][i][j]->
+            addValue(((double)out_meter[i][j])/32768.0);
+        }
+      }
+      break;
 
-		  case 2:
-		    n=alsa_play_ring[alsa_format->card][j]->
-		      read(alsa_buffer,alsa_format->buffer_size*2/
-			   alsa_format->periods)/(2*sizeof(int16_t));
-		    for(unsigned k=0;k<2;k++) {  // Stream Output Meters
-		      stream_out_meter=0;
-		      for(int l=0;l<n;l+=2) {
-			if(abs(((int16_t *)alsa_buffer)[l+k])>stream_out_meter) {
-			  stream_out_meter=abs(((int16_t *)alsa_buffer)[l+k]);
-			}
-		      }
-		      alsa_stream_output_meter[alsa_format->card][j][k]->
-			addValue(((double)stream_out_meter)/32768.0);
-		    }
-		    modulo=alsa_format->channels*2;
-		    for(unsigned i=0;i<(alsa_format->channels/2);i++) {
-		      if(alsa_output_volume[alsa_format->card][i][j]!=0.0) {
-			for(int k=0;k<n;k++) {
-			  ((int16_t *)alsa_format->card_buffer)[modulo*k+4*i+1]+=
-			   (int16_t)(alsa_output_volume[alsa_format->card][i][j]*
-				   (double)(((int16_t *)alsa_buffer)[2*k]));
-			  ((int16_t *)alsa_format->card_buffer)[modulo*k+4*i+3]+=
-			   (int16_t)(alsa_output_volume[alsa_format->card][i][j]*
-				   (double)(((int16_t *)alsa_buffer)[2*k+1]));
-			}
-		      }
-		    }
-		    break;
-	      }
-	      alsa_output_pos[alsa_format->card][j]+=n;
-	      if((n==0)&&alsa_eof[alsa_format->card][j]) {
-		alsa_stopping[alsa_format->card][j]=true;
-		// Empty the ring buffer
-		while(alsa_play_ring[alsa_format->card][j]->
-		      read(alsa_buffer,alsa_format->buffer_size*2/
-			   alsa_format->periods)/(2*sizeof(int16_t))>0);	       
-	      }
-	    }
-	  }
-	  n=alsa_format->buffer_size/(2*alsa_format->periods);
+    case SND_PCM_FORMAT_S32_LE:
+      for(unsigned j=0;j<RD_MAX_STREAMS;j++) {
+        if(alsa_playing[alsa_format->card][j]) {
+          switch(alsa_output_channels[alsa_format->card][j]) {
+          case 1:
+            n=alsa_play_ring[alsa_format->card][j]->
+              read(alsa_buffer,alsa_format->buffer_size/
+                   alsa_format->periods)/(2*sizeof(int16_t));
+            stream_out_meter=0;
+            for(int k=0;k<n;k++) {  // Stream Output Meters
+              if(abs(((int16_t *)alsa_buffer)[k])>stream_out_meter) {
+                stream_out_meter=abs(((int16_t *)alsa_buffer)[k]);
+              }
+            }
+            alsa_stream_output_meter[alsa_format->card][j][0]->
+              addValue(((double)stream_out_meter)/32768.0);
+            alsa_stream_output_meter[alsa_format->card][j][1]->
+              addValue(((double)stream_out_meter)/32768.0);
+            modulo=alsa_format->channels*2;
+            for(unsigned i=0;i<(alsa_format->channels/2);i++) {
+              if(alsa_output_volume[alsa_format->card][i][j]!=0.0) {
+                for(int k=0;k<(2*n);k++) {
+                  ((int16_t *)alsa_format->card_buffer)[modulo*k+4*i+1]+=
+                    (int16_t)(alsa_output_volume[alsa_format->card][i][j]*
+                              (double)(((int16_t *)alsa_buffer)[k]));
+                  ((int16_t *)alsa_format->card_buffer)[modulo*k+4*i+3]+=
+                    (int16_t)(alsa_output_volume[alsa_format->card][i][j]*
+                              (double)(((int16_t *)alsa_buffer)[k]));
+                }
+              }
+            }
+            n*=2;
+            break;
 
-	  //
-	  // Process Passthroughs
-	  //
-	  for(unsigned i=0;i<alsa_format->capture_channels;i+=2) {
-	    p=alsa_passthrough_ring[alsa_format->card][i/2]->
-	      read(alsa_format->passthrough_buffer,8*n)/8;
-	    for(unsigned j=0;j<alsa_format->channels;j+=2) {
-	      for(unsigned k=0;k<2;k++) {
-		for(int l=0;l<p;l++) {
-		  ((int32_t *)alsa_format->
-		   card_buffer)[alsa_format->channels*l+j+k]+=
-		    (int32_t)((double)((int32_t *)
-				       alsa_format->passthrough_buffer)[2*l+k]*
-			alsa_passthrough_volume[alsa_format->card][i/2][j/2]);
-		}
-	      }
-	    }
-	  }
+          case 2:
+            n=alsa_play_ring[alsa_format->card][j]->
+              read(alsa_buffer,alsa_format->buffer_size*2/
+                   alsa_format->periods)/(2*sizeof(int16_t));
+            for(unsigned k=0;k<2;k++) {  // Stream Output Meters
+              stream_out_meter=0;
+              for(int l=0;l<n;l+=2) {
+                if(abs(((int16_t *)alsa_buffer)[l+k])>stream_out_meter) {
+                  stream_out_meter=abs(((int16_t *)alsa_buffer)[l+k]);
+                }
+              }
+              alsa_stream_output_meter[alsa_format->card][j][k]->
+                addValue(((double)stream_out_meter)/32768.0);
+            }
+            modulo=alsa_format->channels*2;
+            for(unsigned i=0;i<(alsa_format->channels/2);i++) {
+              if(alsa_output_volume[alsa_format->card][i][j]!=0.0) {
+                for(int k=0;k<n;k++) {
+                  ((int16_t *)alsa_format->card_buffer)[modulo*k+4*i+1]+=
+                    (int16_t)(alsa_output_volume[alsa_format->card][i][j]*
+                              (double)(((int16_t *)alsa_buffer)[2*k]));
+                  ((int16_t *)alsa_format->card_buffer)[modulo*k+4*i+3]+=
+                    (int16_t)(alsa_output_volume[alsa_format->card][i][j]*
+                              (double)(((int16_t *)alsa_buffer)[2*k+1]));
+                }
+              }
+            }
+            break;
+          }
+          alsa_output_pos[alsa_format->card][j]+=n;
+          if((n==0)&&alsa_eof[alsa_format->card][j]) {
+            alsa_stopping[alsa_format->card][j]=true;
+            // Empty the ring buffer
+            while(alsa_play_ring[alsa_format->card][j]->
+                  read(alsa_buffer,alsa_format->buffer_size*2/
+                       alsa_format->periods)/(2*sizeof(int16_t))>0);
+          }
+        }
+      }
+      n=alsa_format->buffer_size/(2*alsa_format->periods);
 
-	  //
-	  // Process Output Meters
-	  //
-	  for(unsigned i=0;i<alsa_format->channels;i+=2) {
-	    unsigned port=i/2;
-	    for(unsigned j=0;j<2;j++) {
-	      out_meter[port][j]=0;
-	      for(unsigned k=0;
-		  k<(alsa_format->buffer_size*2/alsa_format->periods);
-		  k++) {
-		if(((int16_t *)alsa_format->
-		    card_buffer)[alsa_format->channels*2*k+2*i+1+2*j]>
-		   out_meter[port][j]) {
-		  out_meter[port][j]=
-		    ((int16_t *)alsa_format->
-		     card_buffer)[alsa_format->channels*2*k+2*i+1+2*j];
-		}
-	      }
-	      alsa_output_meter[alsa_format->card][port][j]->
-		addValue(((double)out_meter[port][j])/32768.0);
-	    }
-	  }
-	  break;
+      //
+      // Process Passthroughs
+      //
+      for(unsigned i=0;i<alsa_format->capture_channels;i+=2) {
+        p=alsa_passthrough_ring[alsa_format->card][i/2]->
+          read(alsa_format->passthrough_buffer,8*n)/8;
+        bool zero_volume = true;
+        for (unsigned j=0;j<alsa_format->channels && zero_volume;j+=1) {
+          zero_volume = (alsa_passthrough_volume[alsa_format->card][i/2][j] == 0.0);
+        }
+        if (!zero_volume) {
+          for(unsigned j=0;j<alsa_format->channels;j+=2) {
+            double passthrough_volume = alsa_passthrough_volume[alsa_format->card][i/2][j/2];
+            if (passthrough_volume != 0.0) {
+              for(unsigned k=0;k<2;k++) {
+                for(int l=0;l<p;l++) {
+                  ((int32_t *)alsa_format->
+                   card_buffer)[alsa_format->channels*l+j+k]+=
+                    (int32_t)((double)((int32_t *)alsa_format->passthrough_buffer)[2*l+k]*passthrough_volume);
+                }
+              }
+            }
+          }
+        }
+      }
 
-	default:
-	  break;
+      //
+      // Process Output Meters
+      //
+      unsigned buffer_width;
+      buffer_width = (alsa_format->buffer_size*2/alsa_format->periods);
+      for(unsigned i=0;i<alsa_format->channels;i+=2) {
+        unsigned port=i/2;
+        for(unsigned j=0;j<2;j++) {
+          out_meter[port][j]=0;
+          for(unsigned k=0; k<buffer_width; k++) {
+            int16_t sample = ((int16_t *)alsa_format->
+                              card_buffer)[alsa_format->channels*2*k+2*i+1+2*j];
+            if (sample > out_meter[port][j]) {
+              out_meter[port][j] = sample;
+            }
+          }
+          alsa_output_meter[alsa_format->card][port][j]->
+            addValue(((double)out_meter[port][j])/32768.0);
+        }
+      }
+      break;
+
+    default:
+      break;
     }
     int s=snd_pcm_writei(alsa_format->pcm,alsa_format->card_buffer,n);
     if(s!=n) {
       if(s<0) {
-	LogLine(RDConfig::LogNotice,
-		QString().sprintf("*** alsa error %d: %s",-s,snd_strerror(s)));
+        LogLine(RDConfig::LogNotice,
+                QString().sprintf("*** alsa error %d: %s",-s,snd_strerror(s)));
       }
       else {
-	LogLine(RDConfig::LogNotice,
-		QString().sprintf("period size mismatch - wrote %d\n",s));
+        LogLine(RDConfig::LogNotice,
+                QString().sprintf("period size mismatch - wrote %d\n",s));
       }
     }
     if((snd_pcm_state(alsa_format->pcm)!=SND_PCM_STATE_RUNNING)&&
@@ -535,8 +546,8 @@ void AlsaPlay2Callback(struct alsa_format *alsa_format)
       snd_pcm_drop (alsa_format->pcm);
       snd_pcm_prepare(alsa_format->pcm);
       LogLine(RDConfig::LogNotice,QString().
-	      sprintf("****** ALSA Playout Xrun - Card: %d ******",
-		      alsa_format->card));
+              sprintf("****** ALSA Playout Xrun - Card: %d ******",
+                      alsa_format->card));
     }
   }
 }
@@ -834,11 +845,11 @@ bool MainObject::alsaLoadPlayback(int card,QString wavename,int *stream)
   case WAVE_FORMAT_PCM:
   case WAVE_FORMAT_VORBIS:
     break;
-    
+
   case WAVE_FORMAT_MPEG:
     InitMadDecoder(card,*stream,alsa_play_wave[card][*stream]);
     break;
-    
+
   default:
     LogLine(RDConfig::LogErr,QString().sprintf(
 	   "Error: alsaLoadPlayback(%s)   getFormatTag()%d || getBistsPerSample()%d failed",
@@ -1352,7 +1363,7 @@ void MainObject::alsaGetOutputPosition(int card,unsigned *pos)
       pos[i]=1000*(unsigned long long)(alsa_offset[card][i]+
 				       alsa_output_pos[card][i])/
 	alsa_play_wave[card][i]->getSamplesPerSec();
-    } 
+    }
     else {
       pos[i]=0;
     }
