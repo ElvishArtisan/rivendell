@@ -20,6 +20,8 @@
 
 #include <math.h>
 
+#include <QAbstractItemView>
+#include <QHeaderView>
 #include <QMessageBox>
 #include <QResizeEvent>
 
@@ -97,22 +99,22 @@ ListReplicators::ListReplicators(QWidget *parent)
   //
   // Replicator List
   //
-  list_replicators_view=new RDListView(this);
+  list_replicators_view=new RDTableWidget(this);
   list_replicators_view->setFont(list_font);
-  list_replicators_view->setAllColumnsShowFocus(true);
-  list_replicators_view->setItemMargin(5);
-  list_replicators_view->addColumn(tr("NAME"));
-  list_replicators_view->addColumn(tr("TYPE"));
-  list_replicators_view->addColumn(tr("DESCRIPTION"));
-  list_replicators_view->addColumn(tr("HOST"));
+  list_replicators_view->setSelectionBehavior(QAbstractItemView::SelectRows);
+  list_replicators_view->setColumnCount(4);
+  QStringList headings={tr("NAME"),tr("TYPE"),tr("DESCRIPTION"),tr("HOST")};
+  list_replicators_view->setHorizontalHeaderLabels(headings);
+  list_replicators_view->verticalHeader()->setVisible(false);
+  list_replicators_view->horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);
   QLabel *list_box_label=
     new QLabel(list_replicators_view,tr("&Replicators:"),this);
   list_box_label->setFont(font);
   list_box_label->setGeometry(14,11,85,19);
   connect(list_replicators_view,
-	  SIGNAL(doubleClicked(Q3ListViewItem *,const QPoint &,int)),
+	  SIGNAL(itemDoubleClicked(QTableWidgetItem *)),
 	  this,
-	  SLOT(doubleClickedData(Q3ListViewItem *,const QPoint &,int)));
+	  SLOT(doubleClickedData(QTableWidgetItem *)));
 
   RefreshList();
 }
@@ -145,22 +147,23 @@ void ListReplicators::addData()
     return;
   }
   delete d;
-  RDListViewItem *item=new RDListViewItem(list_replicators_view);
-  item->setText(0,name);
+  QTableWidgetItem *item=new QTableWidgetItem(name);
+  int newRow=list_replicators_view->rowCount();
+  list_replicators_view->insertRow(newRow);
+  list_replicators_view->setItem(newRow,0,item);
   RefreshItem(item);
   item->setSelected(true);
   list_replicators_view->setCurrentItem(item);
-  list_replicators_view->ensureItemVisible(item);
 }
 
 
 void ListReplicators::editData()
 {
-  RDListViewItem *item=(RDListViewItem *)list_replicators_view->selectedItem();
-  if(item==NULL) {
-    return;
+  if(list_replicators_view->selectedItems().isEmpty()) {
+      return;
   }
-  EditReplicator *d=new EditReplicator(item->text(0),this);
+  QTableWidgetItem *item=list_replicators_view->selectedItems().at(0);
+  EditReplicator *d=new EditReplicator(item->text(),this);
   if(d->exec()==0) {
     RefreshItem(item);
   }
@@ -170,21 +173,21 @@ void ListReplicators::editData()
 
 void ListReplicators::deleteData()
 {
-  RDListViewItem *item=(RDListViewItem *)list_replicators_view->selectedItem();
-  if(item==NULL) {
-    return;
+  if(list_replicators_view->selectedItems().isEmpty()) {
+      return;
   }
+  QTableWidgetItem *item=list_replicators_view->selectedItems().at(0);
 
   QString sql;
   RDSqlQuery *q;
   QString warning;
   QString str;
 
-  QString name=RDEscapeString(item->text(0));
+  QString name=RDEscapeString(item->text());
 
   str=QString(tr("Are you sure you want to delete replicator"));
   warning+=QString().sprintf("%s \"%s\"?",(const char *)str,
-			     (const char *)item->text(0));
+			     (const char *)item->text());
   switch(QMessageBox::warning(this,tr("Delete Replicator"),warning,
 			      QMessageBox::Yes,QMessageBox::No)) {
       case QMessageBox::No:
@@ -222,24 +225,24 @@ void ListReplicators::deleteData()
     "NAME=\""+RDEscapeString(name)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
-  delete item;
+  item->setSelected(false);
+  list_replicators_view->removeRow(item->row());
 }
 
 
 void ListReplicators::listData()
 {
-  RDListViewItem *item=(RDListViewItem *)list_replicators_view->selectedItem();
-  if(item==NULL) {
-    return;
+  if(list_replicators_view->selectedItems().isEmpty()) {
+      return;
   }
+  QTableWidgetItem *item=list_replicators_view->selectedItems().at(0);
   ListReplicatorCarts *d=new ListReplicatorCarts(this);
-  d->exec(item->text(0));
+  d->exec(item->text());
   delete d;
 }
 
 
-void ListReplicators::doubleClickedData(Q3ListViewItem *item,const QPoint &pt,
-				   int col)
+void ListReplicators::doubleClickedData(QTableWidgetItem *item)
 {
   editData();
 }
@@ -266,9 +269,14 @@ void ListReplicators::RefreshList()
 {
   QString sql;
   RDSqlQuery *q;
-  RDListViewItem *item;
+  QTableWidgetItem *name;
+  QTableWidgetItem *type;
+  QTableWidgetItem *description;
+  QTableWidgetItem *host;
 
   list_replicators_view->clear();
+  QStringList headings={tr("NAME"),tr("TYPE"),tr("DESCRIPTION"),tr("HOST")};
+  list_replicators_view->setHorizontalHeaderLabels(headings);
   sql=QString("select ")+
     "NAME,"+
     "TYPE_ID,"+
@@ -277,34 +285,60 @@ void ListReplicators::RefreshList()
     "from REPLICATORS";
   q=new RDSqlQuery(sql);
   while (q->next()) {
-    item=new RDListViewItem(list_replicators_view);
-    item->setText(0,q->value(0).toString());
-    item->setText(1,
-	   RDReplicator::typeString((RDReplicator::Type)q->value(1).toUInt()));
-    item->setText(2,q->value(2).toString());
-    item->setText(3,q->value(3).toString());
+    name=new QTableWidgetItem(q->value(0).toString());
+    type=new QTableWidgetItem(
+            RDReplicator::typeString((RDReplicator::Type)q->value(1).toUInt()));
+    description=new QTableWidgetItem(q->value(2).toString());
+    host=new QTableWidgetItem(q->value(3).toString());
+    
+    int newRow=list_replicators_view->rowCount();
+    list_replicators_view->insertRow(newRow);
+    list_replicators_view->setItem(newRow,0,name);
+    list_replicators_view->setItem(newRow,1,type);
+    list_replicators_view->setItem(newRow,2,description);
+    list_replicators_view->setItem(newRow,3,host);
   }
   delete q;
 }
 
 
-void ListReplicators::RefreshItem(RDListViewItem *item)
+void ListReplicators::RefreshItem(QTableWidgetItem *name)
 {
+  int row=name->row();
   QString sql;
   RDSqlQuery *q;
+  QTableWidgetItem *type=list_replicators_view->item(row,1);
+  QTableWidgetItem *description=list_replicators_view->item(row,2);
+  QTableWidgetItem *host=list_replicators_view->item(row,3);
 
   sql=QString("select ")+
     "TYPE_ID,"+
     "DESCRIPTION,"+
     "STATION_NAME "+
     "from REPLICATORS where "+
-    "NAME=\""+RDEscapeString(item->text(0))+"\"";
+    "NAME=\""+RDEscapeString(name->text())+"\"";
   q=new RDSqlQuery(sql);
   if(q->first()) {
-    item->setText(1,
-	   RDReplicator::typeString((RDReplicator::Type)q->value(0).toUInt()));
-    item->setText(2,q->value(1).toString());
-    item->setText(3,q->value(2).toString());
+    if(!type) {
+      type=new QTableWidgetItem(
+	      RDReplicator::typeString((RDReplicator::Type)q->value(0).toUInt()));
+      list_replicators_view->setItem(row,1,type);
+    } else {
+      type->setText(
+	     RDReplicator::typeString((RDReplicator::Type)q->value(0).toUInt()));
+    }
+    if(!description) {
+      description=new QTableWidgetItem(q->value(1).toString());
+      list_replicators_view->setItem(row,2,description);
+    } else {
+      description->setText(q->value(1).toString());
+    }
+    if(!host) {
+      host=new QTableWidgetItem(q->value(2).toString());
+      list_replicators_view->setItem(row,3,host);
+    } else {
+      host->setText(q->value(2).toString());
+    }
   }
   delete q;
 }

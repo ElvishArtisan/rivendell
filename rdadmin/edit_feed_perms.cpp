@@ -91,7 +91,7 @@ EditFeedPerms::EditFeedPerms(RDUser *user,QWidget *parent)
   sql=QString("select KEY_NAME from FEEDS");
   q=new RDSqlQuery(sql);
   while(q->next()) {
-    if(feed_host_sel->destFindItem(q->value(0).toString(),Q3ListBox::ExactMatch)==0) {
+    if(feed_host_sel->destFindItem(q->value(0).toString(),Qt::MatchExactly)==0) {
       feed_host_sel->sourceInsertItem(q->value(0).toString());
     }
   }

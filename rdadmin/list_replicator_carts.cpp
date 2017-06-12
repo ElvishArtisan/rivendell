@@ -17,7 +17,11 @@
 //   License along with this program; if not, write to the Free Software
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
+#include <iostream> //TODO: REMOVE
 
+#include <QAbstractItemView>
+#include <QHeaderView>
+#include <QIcon>
 #include <QResizeEvent>
 
 #include <rdcart.h>
@@ -90,15 +94,14 @@ ListReplicatorCarts::ListReplicatorCarts(QWidget *parent)
   //
   // Replicator List
   //
-  list_view=new RDListView(this);
+  list_view=new RDTableWidget(this);
   list_view->setFont(list_font);
-  list_view->setAllColumnsShowFocus(true);
-  list_view->setItemMargin(5);
-  list_view->addColumn(" ");
-  list_view->addColumn(tr("CART"));
-  list_view->addColumn(tr("TITLE"));
-  list_view->addColumn(tr("LAST POSTED"));
-  list_view->addColumn(tr("POSTED FILENAME"));
+  list_view->setSelectionBehavior(QAbstractItemView::SelectRows);
+  list_view->setColumnCount(5);
+  QStringList headings={" ",tr("CART"),tr("TITLE"),tr("LAST POSTED"),tr("POSTED FILENAME")};
+  list_view->setHorizontalHeaderLabels(headings);
+  list_view->verticalHeader()->setVisible(false);
+  list_view->horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);
   QLabel *list_box_label=new QLabel(list_view,tr("&Active Carts:"),this);
   list_box_label->setFont(font);
   list_box_label->setGeometry(14,11,85,19);
@@ -134,15 +137,15 @@ int ListReplicatorCarts::exec(const QString &replname)
 
 void ListReplicatorCarts::repostData()
 {
+  if(list_view->selectedItems().isEmpty()) {
+      return;
+  }
+  QTableWidgetItem *item=list_view->selectedItems().at(0);
   QString sql;
   RDSqlQuery *q;
 
-  RDListViewItem *item=(RDListViewItem *)list_view->selectedItem();
-  if(item==NULL) {
-    return;
-  }
   sql=QString().sprintf("update REPL_CART_STATE set REPOST=\"Y\" \
-                         where ID=%d",item->id());
+                         where ID=%d",item->data(Qt::UserRole).toInt());
   q=new RDSqlQuery(sql);
   delete q;
 }
@@ -172,7 +175,7 @@ void ListReplicatorCarts::refreshTimeoutData()
 {
   QString sql;
   RDSqlQuery *q;
-  RDListViewItem *item;
+  QTableWidgetItem *item;
 
   sql=QString("select ")+
     "ID,"+
@@ -181,14 +184,15 @@ void ListReplicatorCarts::refreshTimeoutData()
     "REPLICATOR_NAME=\""+RDEscapeString(list_replicator_name)+"\"";
   q=new RDSqlQuery(sql);
   while(q->next()) {
-    item=(RDListViewItem *)list_view->firstChild();
+    item=list_view->item(0,0);
     while(item!=NULL) {
-      if(item->id()==q->value(0).toInt()) {
-	item->setText(3,q->value(1).
-		      toDateTime().toString("hh:mm:ss dd/MM/yyyy"));
-	break;
+      if(item->data(Qt::UserRole)==q->value(0).toInt()) {
+        QTableWidgetItem *time=list_view->item(item->row(),3);
+        time->setText(q->value(1).
+                toDateTime().toString("hh:mm:ss dd/MM/yyyy"));
+        break;
       }
-      item=(RDListViewItem *)item->nextSibling();
+      item=list_view->item(item->row()+1,0);
     }
   }
   delete q;
@@ -209,9 +213,15 @@ void ListReplicatorCarts::RefreshList()
 {
   QString sql;
   RDSqlQuery *q;
-  RDListViewItem *item;
+  QTableWidgetItem *icon;
+  QTableWidgetItem *cart;
+  QTableWidgetItem *title;
+  QTableWidgetItem *posted;
+  QTableWidgetItem *filename;
 
   list_view->clear();
+  QStringList headings={" ",tr("CART"),tr("TITLE"),tr("LAST POSTED"),tr("POSTED FILENAME")};
+  list_view->setHorizontalHeaderLabels(headings);
   sql=QString("select ")+
     "REPL_CART_STATE.ID,"+
     "CART.TYPE,"+
@@ -224,24 +234,31 @@ void ListReplicatorCarts::RefreshList()
     "REPLICATOR_NAME=\""+RDEscapeString(list_replicator_name)+"\"";
   q=new RDSqlQuery(sql);
   while (q->next()) {
-    item=new RDListViewItem(list_view);
-    item->setId(q->value(0).toInt());
-    item->setText(1,QString().sprintf("%06u",q->value(2).toUInt()));
+    icon=new QTableWidgetItem();
+    icon->setData(q->value(0).toInt(), Qt::UserRole);
+    cart=new QTableWidgetItem(QString().sprintf("%06u",q->value(2).toUInt()));
     switch((RDCart::Type)q->value(1).toInt()) {
     case RDCart::Audio:
-      item->setPixmap(0,*list_playout_map);
+      icon->setIcon(QIcon(*list_playout_map));
       break;
 
     case RDCart::Macro:
-      item->setPixmap(0,*list_macro_map);
+      icon->setIcon(QIcon(*list_macro_map));
       break;
 
     case RDCart::All:
       break;
     }
-    item->setText(2,q->value(3).toString());
-    item->setText(3,q->value(4).toDateTime().toString("hh:mm:ss dd/MM/yyyy"));
-    item->setText(4,q->value(5).toString());
+    title=new QTableWidgetItem(q->value(3).toString());
+    posted=new QTableWidgetItem(q->value(4).toDateTime().toString("hh:mm:ss dd/MM/yyyy"));
+    filename=new QTableWidgetItem(q->value(5).toString());
+    
+    int newRow = list_view->rowCount();
+    list_view->setItem(newRow,0,icon);
+    list_view->setItem(newRow,1,cart);
+    list_view->setItem(newRow,2,title);
+    list_view->setItem(newRow,3,posted);
+    list_view->setItem(newRow,4,filename);
   }
   delete q;
 }

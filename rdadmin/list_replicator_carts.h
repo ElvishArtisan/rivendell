@@ -27,7 +27,7 @@
 #include <QResizeEvent>
 #include <QTimer>
 
-#include <rdlistviewitem.h>
+#include <rdtablewidget.h>
 
 class ListReplicatorCarts : public QDialog
 {
@@ -52,7 +52,7 @@ class ListReplicatorCarts : public QDialog
 
  private:
   void RefreshList();
-  RDListView *list_view;
+  RDTableWidget *list_view;
   QPushButton *list_repost_button;
   QPushButton *list_repost_all_button;
   QPushButton *list_close_button;

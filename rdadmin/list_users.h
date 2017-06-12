@@ -27,7 +27,7 @@
 #include <QRadioButton>
 #include <QResizeEvent>
 
-#include <rdlistviewitem.h>
+#include <rdtablewidget.h>
 
 class ListUsers : public QDialog
 {
@@ -42,7 +42,7 @@ class ListUsers : public QDialog
   void addData();
   void editData();
   void deleteData();
-  void doubleClickedData(Q3ListViewItem *item,const QPoint &pt,int col);
+  void doubleClickedData(QTableWidgetItem *item);
   void closeData();
 
  protected:
@@ -50,8 +50,8 @@ class ListUsers : public QDialog
 
  private:
   void RefreshList();
-  void RefreshItem(RDListViewItem *item);
-  RDListView *list_users_view;
+  void RefreshItem(QTableWidgetItem *username);
+  RDTableWidget *list_users_view;
   QPushButton *list_add_button;
   QPushButton *list_edit_button;
   QPushButton *list_delete_button;
@@ -63,5 +63,3 @@ class ListUsers : public QDialog
 
 
 #endif
-
-

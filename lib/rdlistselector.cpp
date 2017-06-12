@@ -20,19 +20,18 @@
 
 #include <stdlib.h>
 #include <stdio.h>
-#include <qwidget.h>
-#include <q3hbox.h>
-#include <q3vbox.h>
-#include <qstring.h>
-#include <qpixmap.h>
-#include <qpixmap.h>
-//Added by qt3to4:
+#include <QHBoxLayout>
 #include <QLabel>
+#include <QModelIndex>
+#include <QPixmap>
+#include <QString>
+#include <QVBoxLayout>
+#include <QWidget>
 
 #include <rdlistselector.h>
 
 RDListSelector::RDListSelector(QWidget *parent)
-  : Q3HBox(parent)
+  : QWidget(parent)
 {
   QFont font;
 
@@ -42,31 +41,45 @@ RDListSelector::RDListSelector(QWidget *parent)
   font=QFont("Helvetica",10,QFont::Bold);
   font.setPixelSize(10);
 
-  setSpacing(10);
-
-  Q3VBox *source_box=new Q3VBox(this,"source_box");
-  list_source_label=new QLabel(source_box,"list_source_label");
+  QHBoxLayout *hbox_layout=new QHBoxLayout;
+  QWidget *source=new QWidget(this);
+  hbox_layout->setSpacing(10);
+  QVBoxLayout *source_box=new QVBoxLayout();
+  list_source_label=new QLabel(tr("Available Services"));
+  source_box->addWidget(list_source_label);
   list_source_label->setFont(font);
-  list_source_label->setText(tr("Available Services"));
   list_source_label->setAlignment(Qt::AlignCenter);
-  list_source_box=new Q3ListBox(source_box,"list_source_box");
+  list_source_box=new QListWidget();
+  list_source_box->setSortingEnabled(true);
+  source_box->addWidget(list_source_box);
+  source->setLayout(source_box);
+  hbox_layout->addWidget(source);
 
-  Q3VBox *button_box=new Q3VBox(this,"button_box");
-  list_add_button=new QPushButton(button_box,"list_add_button");
-  list_add_button->setText(tr("Add >>"));
+  QVBoxLayout *button_box=new QVBoxLayout();
+  QWidget *buttons=new QWidget(this);
+  list_add_button=new QPushButton(tr("Add >>"));
+  button_box->addWidget(list_add_button);
   list_add_button->setDisabled(true);
   connect(list_add_button,SIGNAL(clicked()),this,SLOT(addData()));
-  list_remove_button=new QPushButton(button_box,"list_add_button");
-  list_remove_button->setText(tr("<< Remove"));
+  list_remove_button=new QPushButton(tr("<< Remove"));
+  button_box->addWidget(list_remove_button);
   list_remove_button->setDisabled(true);
   connect(list_remove_button,SIGNAL(clicked()),this,SLOT(removeData()));
+  buttons->setLayout(button_box);
+  hbox_layout->addWidget(buttons);
 
-  Q3VBox *dest_box=new Q3VBox(this,"dest_box");
-  list_dest_label=new QLabel(dest_box,"list_dest_label");
+  QVBoxLayout *dest_box=new QVBoxLayout();
+  QWidget *dest=new QWidget(this);
+  list_dest_label=new QLabel(tr("Active Services"));
+  dest_box->addWidget(list_dest_label);
   list_dest_label->setFont(font);
-  list_dest_label->setText(tr("Active Services"));
   list_dest_label->setAlignment(Qt::AlignCenter);
-  list_dest_box=new Q3ListBox(dest_box,"list_dest_box");
+  list_dest_box=new QListWidget();
+  list_dest_box->setSortingEnabled(true);
+  dest_box->addWidget(list_dest_box);
+  dest->setLayout(dest_box);
+  hbox_layout->addWidget(dest);
+  setLayout(hbox_layout);
 }
 
 
@@ -96,119 +109,161 @@ void RDListSelector::destSetLabel(QString label)
 
 void RDListSelector::sourceInsertItem(const QString &text,int index)
 {
-  list_source_box->insertItem(text,index);
-  list_source_box->sort();
+  list_source_box->setSortingEnabled(false);
+  list_source_box->insertItem(index,text);
+  list_source_box->setSortingEnabled(true);
   CheckButtons();
 }
 
 
 void RDListSelector::destInsertItem(const QString &text,int index)
 {
-  list_dest_box->insertItem(text,index);
-  list_dest_box->sort();
+  list_dest_box->setSortingEnabled(false);
+  list_dest_box->insertItem(index,text);
+  list_dest_box->setSortingEnabled(true);
   CheckButtons();
 }
 
 
 void RDListSelector::sourceRemoveItem(int index)
 {
-  list_source_box->removeItem(index);
+  QListWidgetItem *item=list_source_box->takeItem(index);
+  delete item;
   CheckButtons();
 }
 
 
 void RDListSelector::destRemoveItem(int index)
 {
-  list_dest_box->removeItem(index);
+  QListWidgetItem *item=list_dest_box->takeItem(index);
+  delete item;
   CheckButtons();
 }
 
 
 QString RDListSelector::sourceText(int index) const
 {
-  return list_source_box->text(index);
+  QListWidgetItem *item=list_source_box->item(index);
+  if(item==NULL) {
+    return "";
+  }
+  return item->text();
 }
 
 
 QString RDListSelector::destText(int index) const
 {
-  return list_dest_box->text(index);
+  QListWidgetItem *item=list_dest_box->item(index);
+  if(item==NULL) {
+    return "";
+  }
+  return item->text();
 }
 
 
 void RDListSelector::sourceChangeItem(const QString &text,int index)
 {
-  list_source_box->changeItem(text,index);
-  list_source_box->sort();
+  list_source_box->setSortingEnabled(false);
+  QListWidgetItem *item=list_source_box->takeItem(index);
+  list_source_box->insertItem(index,item);
+  delete item;
+  list_source_box->setSortingEnabled(true);
 }
 
 
 void RDListSelector::destChangeItem(const QString &text,int index)
 {
-  list_dest_box->changeItem(text,index);
-  list_dest_box->sort();
-}
-
-
-int RDListSelector::sourceNumItemsVisible() const
-{
-  return list_source_box->numItemsVisible();
-}
-
-
-int RDListSelector::destNumItemsVisible() const
-{
-  return list_dest_box->numItemsVisible();
+  list_dest_box->setSortingEnabled(false);
+  QListWidgetItem *item=list_dest_box->takeItem(index);
+  list_dest_box->insertItem(index,item);
+  delete item;
+  list_dest_box->setSortingEnabled(true);
 }
 
 
 int RDListSelector::sourceCurrentItem() const
 {
-  return list_source_box->currentItem();
+  QList<QListWidgetItem *> items=list_source_box->selectedItems();
+  if(items.isEmpty()) {
+      return -1;
+  }
+  return list_source_box->row(items.at(0));
 }
 
 
 int RDListSelector::destCurrentItem() const
 {
-  return list_dest_box->currentItem();
+  QList<QListWidgetItem *> items=list_dest_box->selectedItems();
+  if(items.isEmpty()) {
+      return -1;
+  }
+  return list_dest_box->row(items.at(0));
 }
 
 
 QString RDListSelector::sourceCurrentText() const
 {
-  return list_source_box->currentText();
+  QListWidgetItem *item=list_source_box->item(sourceCurrentItem());
+  if(item==NULL) {
+    return "";
+  }
+  return item->text();
 }
 
 
 QString RDListSelector::destCurrentText() const
 {
-  return list_dest_box->currentText();
+  QListWidgetItem *item=list_dest_box->item(destCurrentItem());
+  if(item==NULL) {
+    return "";
+  }
+  return item->text();
 }
 
 
 void RDListSelector::sourceSetCurrentItem(int item)
 {
-  list_source_box->setCurrentItem(item);
+  if(item==-1) {
+    QModelIndex item_index=list_source_box->model()->index(sourceCurrentItem(),0);
+    list_source_box->selectionModel()->select(item_index,QItemSelectionModel::Deselect);
+  } else {
+    QModelIndex item_index=list_source_box->model()->index(item,0);
+    list_source_box->selectionModel()->select(item_index,QItemSelectionModel::Select);
+  }
 }
 
 
 void RDListSelector::destSetCurrentItem(int item)
 {
-  list_dest_box->setCurrentItem(item);
+  if(item==-1) {
+    QModelIndex item_index=list_dest_box->model()->index(destCurrentItem(),0);
+    list_dest_box->selectionModel()->select(item_index,QItemSelectionModel::Deselect);
+  } else {
+    QModelIndex item_index=list_dest_box->model()->index(item,0);
+    list_dest_box->selectionModel()->select(item_index,QItemSelectionModel::Select);
+  }
 }
 
 
-Q3ListBoxItem *RDListSelector::sourceFindItem(const QString &text,
-				     Q3ListBox::ComparisonFlags compare) const
+QListWidgetItem *RDListSelector::sourceFindItem(const QString &text,
+				     Qt::MatchFlags compare) const
 {
-  return list_source_box->findItem(text,compare);
+  QList<QListWidgetItem *> items=list_source_box->findItems(text,compare);
+  if (items.isEmpty()) {
+      return NULL;
+  }
+  return items.at(0);
 }
 
 
-Q3ListBoxItem *RDListSelector::destFindItem(const QString &text,
-				     Q3ListBox::ComparisonFlags compare) const
+QListWidgetItem *RDListSelector::destFindItem(const QString &text,
+				     Qt::MatchFlags compare) const
 {
-  return list_dest_box->findItem(text,compare);
+  QList<QListWidgetItem *> items=list_dest_box->findItems(text,compare);
+  if (items.isEmpty()) {
+      return NULL;
+  }
+  return items.at(0);
 }
 
 
@@ -222,15 +277,13 @@ void RDListSelector::clear()
 void RDListSelector::addData()
 {
   if(list_source_box->currentItem()>=0) {
-    list_dest_box->
-      insertItem(list_source_box->currentText());
-    list_source_box->removeItem(list_source_box->currentItem());
-    list_dest_box->sort();
+    destInsertItem(sourceCurrentText());
+    sourceRemoveItem(sourceCurrentItem());
     if(list_source_box->count()==0) {
       list_add_button->setDisabled(true);
     }
     list_remove_button->setEnabled(true);
-    list_source_box->setCurrentItem(-1);
+    sourceSetCurrentItem(-1);
   }
 }
 
@@ -238,15 +291,13 @@ void RDListSelector::addData()
 void RDListSelector::removeData()
 {
   if(list_dest_box->currentItem()>=0) {
-    list_source_box->
-      insertItem(list_dest_box->currentText());
-    list_dest_box->removeItem(list_dest_box->currentItem());
-    list_source_box->sort();
+    sourceInsertItem(destCurrentText());
+    destRemoveItem(destCurrentItem());
     if(list_dest_box->count()==0) {
       list_remove_button->setDisabled(true);
     }
     list_add_button->setEnabled(true);
-    list_dest_box->setCurrentItem(-1);
+    destSetCurrentItem(-1);
   }
 }
 
