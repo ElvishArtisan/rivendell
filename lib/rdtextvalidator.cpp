@@ -38,7 +38,7 @@ QValidator::State RDTextValidator::validate(QString &input,int &pos) const
     return QValidator::Acceptable;
   }
   int inspectionPos = std::max(0,std::min(input.length()-1,pos));
-  char c=input.at(pos-1).latin1();
+  char c=input.at(inspectionPos).latin1();
   for(unsigned i=0;i<banned_chars.size();i++) {
     if(banned_chars[i]==c) {
       return QValidator::Invalid;
