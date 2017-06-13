@@ -15826,3 +15826,5 @@
 	* Added a 'Air Gate' ['AG'] RML.
 2017-06-08 Fred Gleason <fredg@paravelsystems.com>
 	* Added 'scripts/engine_conv.py'.
+2017-06-13 Fred Gleason <fredg@paravelsystems.com>
+	* Applied fix for RDValidator from Robert Chipperfield.
