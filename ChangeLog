@@ -15830,3 +15830,6 @@
 	* Applied fix for RDValidator from Robert Chipperfield.
 2017-06-13 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 2.16.0int00.
+2017-06-13 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'scripts/Makefile.am' that broke the 'make rpm'
+	target.

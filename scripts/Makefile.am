@@ -35,6 +35,7 @@ bin_SCRIPTS = crc-unity4k.sh\
               sage_endec_rwt.sh
 
 EXTRA_DIST = crc-unity4k.sh\
+             engine_conv.py\
              kill_rd\
              rd_audio_sync\
              rd_backup\
