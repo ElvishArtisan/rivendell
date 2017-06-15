@@ -248,6 +248,9 @@ AM_CONDITIONAL([DOCBOOK_AM], [test "$USING_DOCBOOK" = yes])
 #
 if test $RDXPORT_DEBUG_ENABLED ; then
   AC_DEFINE(RDXPORT_DEBUG)
+  AC_SUBST(RDXPORTDEBUG,--enable-rdxport-debug)
+else
+  AC_SUBST(RDXPORTDEBUG,"")
 fi
 
 #

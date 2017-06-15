@@ -15835,3 +15835,6 @@
 	target.
 2017-06-13 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 2.16.0int01.
+2017-06-15 Fred Gleason <fredg@paravelsystems.com>
+	* Added code so that the --enable-rdxport-debug' switch to 'configure'
+	is carried through to the 'make rpm' target.

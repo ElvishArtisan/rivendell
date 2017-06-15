@@ -92,7 +92,7 @@ associated with.
 
 
 %build
-%configure --libexecdir=@libexecdir@ --sysconfdir=@sysconfdir@
+%configure --libexecdir=@libexecdir@ --sysconfdir=@sysconfdir@ @RDXPORTDEBUG@
 make
 
 
