@@ -15849,3 +15849,5 @@
 	'rdadmin/edit_settings.h'.
 	* Modified the 'EditCart' web call to enforce the 'Auto-Correct
 	Duplicate Cart Titles' setting.
+2017-06-19 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'TITLE' field to the 'Import' web call.

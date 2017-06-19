@@ -74,6 +74,8 @@ void Xport::Import()
   }
   QString group_name;
   xport_post->getValue("GROUP_NAME",&group_name);
+  QString title;
+  xport_post->getValue("TITLE",&title);
   QString filename;
   if(!xport_post->getValue("FILENAME",&filename)) {
     XmlExit("Missing FILENAME",400,"import.cpp",LINE_NUMBER);
@@ -105,6 +107,17 @@ void Xport::Import()
   }
   if(create&&(!xport_user->createCarts())) {
     XmlExit("Forbidden",404,"import.cpp",LINE_NUMBER);
+  }
+
+  //
+  // Verify Title Uniqueness
+  //
+  if(!title.isEmpty()) {
+    if((!xport_system->allowDuplicateCartTitles())&&
+       (!xport_system->fixDuplicateCartTitles())&&
+       (!RDCart::titleIsUnique(title))) {
+      XmlExit("Duplicate Cart Title Not Allowed",404,"import.cpp",LINE_NUMBER);
+    }
   }
 
   //
@@ -225,6 +238,9 @@ void Xport::Import()
   }
   if(resp_code==200) {
     cut->setSha1Hash(RDSha1Hash(RDCut::pathName(cut->cutName())));
+    if(!title.isEmpty()) {
+      cart->setTitle(title);
+    }
     printf("Content-type: application/xml\n");
     printf("Status: %d\n",resp_code);
     printf("\n");

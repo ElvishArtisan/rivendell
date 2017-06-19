@@ -1729,7 +1729,9 @@
   <para>
     A <computeroutput>404</computeroutput> error will be returned if the
     requested cart is not authorized for the specified Rivendell user in
-    RDAdmin->ManageUsers->AssignGroupPerms.
+    RDAdmin->ManageUsers->AssignGroupPerms or if the system is configured
+    to require unique titles and a non-unique title is provided in the
+    TITLE field.
   </para>
   <para>
     NOTE: The method must be called with 'multipart/form-data' encoding.
@@ -1856,6 +1858,18 @@
 	  </entry>
 	  <entry>
 	    Add newly created cart/cut to specified group.
+	  </entry>
+	  <entry>
+	   Optional
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    TITLE
+	  </entry>
+	  <entry>
+	    The TITLE value for the imported audio. This will override any
+	    value found in in-file metadata.
 	  </entry>
 	  <entry>
 	   Optional
