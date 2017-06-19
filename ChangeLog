@@ -15838,3 +15838,14 @@
 2017-06-15 Fred Gleason <fredg@paravelsystems.com>
 	* Added code so that the --enable-rdxport-debug' switch to 'configure'
 	is carried through to the 'make rpm' target.
+2017-06-19 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'SYSTEM.FIX_DUP_CART_TITLES' field to the database.
+	* Incremented the database version to 264.
+	* Added 'RDSystem::fixDuplicateCartTitles()' and
+	'RDSystem::setFixDuplicateCartTitles()' methods in 'lib/rdsystem.cpp'
+	and 'lib/rdsystem.h'.
+	* Added an 'Auto-Correct Duplicate Cart Titles' checkbox to the
+	'System Settings' dialog in 'rdadmin/edit_settings.cpp' and
+	'rdadmin/edit_settings.h'.
+	* Modified the 'EditCart' web call to enforce the 'Auto-Correct
+	Duplicate Cart Titles' setting.

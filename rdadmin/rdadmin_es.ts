@@ -3454,6 +3454,10 @@ Overwrite?</source>
         <source>Temporary Cart Group:</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Auto-Correct Duplicate Cart Titles</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditStation</name>

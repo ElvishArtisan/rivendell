@@ -46,6 +46,7 @@ class EditSettings : public QDialog
 
   private slots:
    void BuildDuplicatesList(std::map<unsigned,QString> *dups);
+   void duplicatesCheckedData(bool state);
    void saveData();
    void okData();
    void cancelData();
@@ -53,8 +54,10 @@ class EditSettings : public QDialog
  private:
    QComboBox *edit_sample_rate_box;
    QCheckBox *edit_duplicate_carts_box;
-   QSpinBox *edit_maxpost_spin;
    RDLabel *edit_duplicate_label;
+   QCheckBox *edit_fix_duplicate_carts_box;
+   QLabel *edit_fix_duplicate_carts_label;
+   QSpinBox *edit_maxpost_spin;
    QLineEdit *edit_isci_path_edit;
    QComboBox *edit_temp_cart_group_box;
    QListView *edit_duplicate_list;

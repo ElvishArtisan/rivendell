@@ -167,6 +167,7 @@ class RDCart
   static void removePending(RDStation *station,RDUser *user,RDConfig *config);
   static unsigned readXml(std::vector<RDWaveData> *data,const QString &xml);
   static QString uniqueCartTitle(unsigned cartnum=0);
+  static bool titleIsUnique(const QString &str);
   
  private:
   static QVariant GetXmlValue(const QString &tag,const QString &line);

@@ -313,6 +313,11 @@ void Xport::EditCart()
     cart->setGroupName(group_name);
   }
   if(xport_post->getValue("TITLE",&value)) {
+    if((!xport_system->allowDuplicateCartTitles())&&
+       (!xport_system->fixDuplicateCartTitles())&&
+       (!RDCart::titleIsUnique(value))) {
+      XmlExit("Duplicate Cart Title Not Allowed",404,"carts.cpp",LINE_NUMBER);
+    }
     cart->setTitle(value);
   }
   if(xport_post->getValue("ARTIST",&value)) {

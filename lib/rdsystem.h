@@ -31,6 +31,8 @@ class RDSystem
   void setSampleRate(unsigned rate) const;
   bool allowDuplicateCartTitles() const;
   void setAllowDuplicateCartTitles(bool state) const;
+  bool fixDuplicateCartTitles() const;
+  void setFixDuplicateCartTitles(bool state) const;
   unsigned maxPostLength() const;
   void setMaxPostLength(unsigned bytes) const;
   QString isciXreferencePath() const;

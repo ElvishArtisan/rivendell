@@ -155,12 +155,20 @@ void Xport::Import()
   settings->setSampleRate(xport_system->sampleRate());
   settings->setBitRate(channels*conf->defaultBitrate());
   settings->setNormalizationLevel(normalization_level);
+  RDWaveData wavedata;
   RDWaveFile *wave=new RDWaveFile(filename);
-  if(!wave->openWave()) {
+  if(!wave->openWave(&wavedata)) {
     delete wave;
     XmlExit("Format Not Supported",415,"import.cpp",LINE_NUMBER);
   }
   delete wave;
+  if(use_metadata) {
+    if((!xport_system->allowDuplicateCartTitles())&&
+       (!xport_system->fixDuplicateCartTitles())&&
+       (!RDCart::titleIsUnique(wavedata.title()))) {
+      XmlExit("Duplicate Cart Title Not Allowed",404,"import.cpp",LINE_NUMBER);
+    }
+  }
   RDAudioConvert *conv=new RDAudioConvert(xport_config->stationName());
   conv->setSourceFile(filename);
   conv->setDestinationFile(RDCut::pathName(cartnum,cutnum));

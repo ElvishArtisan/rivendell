@@ -2011,6 +2011,20 @@ QString RDCart::uniqueCartTitle(unsigned cartnum)
 }
 
 
+bool RDCart::titleIsUnique(const QString &str)
+{
+  bool ret=false;
+
+  QString sql=QString("select NUMBER from CART where ")+
+    "TITLE=\""+RDEscapeString(str)+"\"";
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  ret=!q->first();
+  delete q;
+
+  return ret;
+}
+
+
 QVariant RDCart::GetXmlValue(const QString &tag,const QString &line)
 {
   bool ok=false;

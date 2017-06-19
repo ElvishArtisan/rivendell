@@ -70,6 +70,7 @@ EXTRA_DIST = audio_perms.txt\
              sources.txt\
              stations.txt\
              svc_rec_format.txt\
+             system.txt\
              triggers.txt\
              ttys.txt\
              user_perms.txt\

@@ -2088,6 +2088,7 @@ bool CreateDb(QString name,QString pwd)
                          ID int auto_increment not null primary key,\
                          SAMPLE_RATE int unsigned default %d,\
                          DUP_CART_TITLES enum('N','Y') not null default 'Y',\
+                         FIX_DUP_CART_TITLES enum('N','Y') not null default 'Y',\
                          MAX_POST_LENGTH int unsigned default %u,\
                          ISCI_XREFERENCE_PATH char(255),\
                          TEMP_CART_GROUP char(10))",
@@ -8404,6 +8405,13 @@ int UpdateDb(int ver)
     delete q;
   }
 
+  if(ver<264) {
+    sql=QString("alter table SYSTEM add column ")+
+      "FIX_DUP_CART_TITLES enum('N','Y') not null default 'Y' after "+
+      "DUP_CART_TITLES";
+    q=new QSqlQuery(sql);
+    delete q;
+  }
   
   //
   // Update Version Field

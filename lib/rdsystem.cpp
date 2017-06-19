@@ -69,6 +69,34 @@ void RDSystem::setAllowDuplicateCartTitles(bool state) const
 }
 
 
+bool RDSystem::fixDuplicateCartTitles() const
+{
+  bool ret=false;
+  QString sql;
+  RDSqlQuery *q;
+
+  sql="select FIX_DUP_CART_TITLES from SYSTEM";
+  q=new RDSqlQuery(sql);
+  if(q->first()) {
+    ret=RDBool(q->value(0).toString());
+  }
+  delete q;
+  return ret;
+}
+
+
+void RDSystem::setFixDuplicateCartTitles(bool state) const
+{
+  QString sql;
+  RDSqlQuery *q;
+
+  sql=QString().sprintf("update SYSTEM set FIX_DUP_CART_TITLES=\"%s\"",
+			(const char *)RDYesNo(state));
+  q=new RDSqlQuery(sql);
+  delete q;
+}
+
+
 unsigned RDSystem::maxPostLength() const
 {
   unsigned ret;
@@ -123,6 +151,7 @@ QString RDSystem::xml() const
   QString xml="<systemSettings>\n";
   xml+=RDXmlField("sampleRate",sampleRate());
   xml+=RDXmlField("duplicateTitles",allowDuplicateCartTitles());
+  xml+=RDXmlField("fixDuplicateTitles",fixDuplicateCartTitles());
   xml+=RDXmlField("maxPostLength",maxPostLength());
   xml+=RDXmlField("isciXreferencePath",isciXreferencePath());
   xml+=RDXmlField("tempCartGroup",tempCartGroup());
