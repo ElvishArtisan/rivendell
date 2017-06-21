@@ -15854,3 +15854,5 @@
 2017-06-21 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in 'lib/rdmacro_event.cpp' that broke the build
 	under Windows.
+2017-06-21 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.16.0int02.
