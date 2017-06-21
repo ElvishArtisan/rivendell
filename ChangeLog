@@ -15851,3 +15851,6 @@
 	Duplicate Cart Titles' setting.
 2017-06-19 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'TITLE' field to the 'Import' web call.
+2017-06-21 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'lib/rdmacro_event.cpp' that broke the build
+	under Windows.

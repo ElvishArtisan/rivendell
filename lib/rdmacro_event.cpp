@@ -246,7 +246,8 @@ void RDMacroEvent::exec(int line)
 	  port=args[1].toUInt();
 	}
 	if(stationname.lower()=="localhost") {
-	  rml.setAddress(QString("127.0.0.2"));
+	  addr.setAddress("127.0.0.2");
+	  rml.setAddress(addr);
 	}
 	else {
 	  sql=
