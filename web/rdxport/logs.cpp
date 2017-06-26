@@ -286,14 +286,20 @@ void Xport::SaveLog()
     }
     ll->setCartNumber(integer1);
 
-    if(!xport_post->getValue(line+"_START_TIME",&integer1)) {
-      XmlExit("Missing "+line+"_START_TIME",400,"logs.cpp",LINE_NUMBER);
-    }
     if(!xport_post->getValue(line+"_TIME_TYPE",&integer2)) {
       XmlExit("Missing "+line+"_TIME_TYPE",400,"logs.cpp",LINE_NUMBER);
     }
-    ll->setStartTime((RDLogLine::StartTimeType)integer2,
-		     QTime().addMSecs(integer1));
+    ll->setTimeType((RDLogLine::TimeType)integer2);
+
+    if(!xport_post->getValue(line+"_START_TIME",&integer1)) {
+      XmlExit("Missing "+line+"_START_TIME",400,"logs.cpp",LINE_NUMBER);
+    }
+    if(ll->timeType()==RDLogLine::Hard) {
+      ll->setStartTime(RDLogLine::Logged,QTime().addMSecs(integer1));
+    }
+    else {
+      ll->setStartTime(RDLogLine::Predicted,QTime().addMSecs(integer1));
+    }
 
     if(!xport_post->getValue(line+"_GRACE_TIME",&integer1)) {
       XmlExit("Missing "+line+"_GRACE_TIME",400,"logs.cpp",LINE_NUMBER);

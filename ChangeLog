@@ -15861,3 +15861,6 @@
 	web API call.
 	* Added 'FADEUP_GAIN' and 'FADEDOWN_GAIN' parameters to the 'SaveLog'
 	web API call.
+2017-06-26 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'web/rdxport'logs.cpp' that prevented saving of
+	events with a hard time set when using the web API 'SaveLog' call.
