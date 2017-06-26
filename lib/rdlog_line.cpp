@@ -2012,6 +2012,7 @@ QString RDLogLine::xml(int line) const
 			 fadedownPoint(RDLogLine::CartPointer),"src=\"cart\"");
   ret+="    "+RDXmlField("fadedownPoint",
 			 fadedownPoint(RDLogLine::LogPointer),"src=\"log\"");
+  ret+="    "+RDXmlField("fadedownGain",fadedownGain());
   ret+="    "+RDXmlField("duckUpGain",duckUpGain());
   ret+="    "+RDXmlField("duckDownGain",duckDownGain());
   ret+="    "+RDXmlField("talkStartPoint",talkStartPoint());

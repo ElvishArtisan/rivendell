@@ -344,10 +344,20 @@ void Xport::SaveLog()
     }
     ll->setFadeupPoint(integer1,RDLogLine::LogPointer);
 
+    if(!xport_post->getValue(line+"_FADEUP_GAIN",&integer1)) {
+      XmlExit("Missing "+line+"_FADEUP_GAIN",400,"logs.cpp",LINE_NUMBER);
+    }
+    ll->setFadeupGain(integer1);
+
     if(!xport_post->getValue(line+"_FADEDOWN_POINT",&integer1)) {
       XmlExit("Missing "+line+"_FADEDOWN_POINT",400,"logs.cpp",LINE_NUMBER);
     }
     ll->setFadedownPoint(integer1,RDLogLine::LogPointer);
+
+    if(!xport_post->getValue(line+"_FADEDOWN_GAIN",&integer1)) {
+      XmlExit("Missing "+line+"_FADEDOWN_GAIN",400,"logs.cpp",LINE_NUMBER);
+    }
+    ll->setFadedownGain(integer1);
 
     if(!xport_post->getValue(line+"_DUCK_UP_GAIN",&integer1)) {
       XmlExit("Missing "+line+"_DUCK_UP_GAIN",400,"logs.cpp",LINE_NUMBER);

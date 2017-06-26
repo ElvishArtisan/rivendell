@@ -3114,6 +3114,17 @@
 	    Mandatory. Positive integer, or -1 if not defined.
 	  </entry>
 	</row>
+ 	<row>
+	  <entry>
+	    LINE<replaceable>num</replaceable>_FADEUP_GAIN
+	  </entry>
+	  <entry>
+	    Gain for FadeUp events.
+	  </entry>
+	  <entry>
+	    Mandatory. 1/100 dBFS.
+	  </entry>
+	</row>
 	<row>
 	  <entry>
 	    LINE<replaceable>num</replaceable>_FADEDOWN_POINT
@@ -3123,6 +3134,17 @@
 	  </entry>
 	  <entry>
 	    Mandatory. Positive integer, or -1 if not defined.
+	  </entry>
+	</row>
+ 	<row>
+	  <entry>
+	    LINE<replaceable>num</replaceable>_FADEDOWN_GAIN
+	  </entry>
+	  <entry>
+	    Gain for FadeDown events.
+	  </entry>
+	  <entry>
+	    Mandatory. 1/100 dBFS.
 	  </entry>
 	</row>
 	<row>

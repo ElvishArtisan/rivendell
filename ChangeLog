@@ -15856,3 +15856,8 @@
 	under Windows.
 2017-06-21 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 2.16.0int02.
+2017-06-26 Fred Gleason <fredg@paravelsystems.com>
+	* Added a '<fadedownGain>' parameter to the return of the 'ListLog'
+	web API call.
+	* Added 'FADEUP_GAIN' and 'FADEDOWN_GAIN' parameters to the 'SaveLog'
+	web API call.
