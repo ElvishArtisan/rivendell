@@ -15864,3 +15864,5 @@
 2017-06-26 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in 'web/rdxport'logs.cpp' that prevented saving of
 	events with a hard time set when using the web API 'SaveLog' call.
+2017-06-26 Fred Gleason <fredg@paravelsystems.com>
+	* Updated the package version to 2.16.0int03.
