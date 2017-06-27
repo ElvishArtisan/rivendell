@@ -15870,3 +15870,6 @@
 	* Added a '--title=' option to rdexport(1).
 2017-06-27 Fred Gleason <fredg@paravelsystems.com>
 	* Updated the package version to 2.16.0int04.
+2017-06-27 Fred Gleason <fredg@paravelsystems.com>
+	* Added an output error to rdexport(1) for when invoked without the
+	output directory specified.

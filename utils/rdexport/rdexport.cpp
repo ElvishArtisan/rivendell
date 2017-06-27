@@ -23,6 +23,7 @@
 #include <stdlib.h>
 
 #include <qapplication.h>
+#include <qdir.h>
 #include <qfile.h>
 
 #include <rd.h>
@@ -193,6 +194,11 @@ MainObject::MainObject(QObject *parent)
     }
   }
   export_output_to=cmd->key(cmd->keys()-1);
+  QDir dir;
+  if(!dir.exists(export_output_to)) {
+    fprintf(stderr,"rdexport: no such output directory\n");
+    exit(256);
+  }
 
   //
   // Read Configuration
