@@ -45,6 +45,7 @@ class MainObject : public QObject
   void userData();
 
  private:
+  void ExportTitle(const QString &title);
   void ExportGroup(const QString &groupname);
   void ExportCart(unsigned cartnum);
   void ExportCut(RDCart *cart,RDCut *cut);
@@ -54,6 +55,7 @@ class MainObject : public QObject
   std::vector<unsigned> export_start_carts;
   std::vector<unsigned> export_end_carts;
   std::vector<QString> export_groups;
+  std::vector<QString> export_titles;
   QString export_metadata_pattern;
   QString export_output_to;
   QString export_format;

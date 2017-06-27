@@ -175,6 +175,10 @@ MainObject::MainObject(QObject *parent)
       }
       cmd->setProcessed(i,true);
     }
+    if(cmd->key(i)=="--title") {
+      export_titles.push_back(cmd->value(i));
+      cmd->setProcessed(i,true);
+    }
     if(cmd->key(i)=="--verbose") {
       export_verbose=true;
       cmd->setProcessed(i,true);
@@ -277,6 +281,14 @@ void MainObject::userData()
   }
 
   //
+  // Process Titles
+  //
+  for(unsigned i=0;i<export_titles.size();i++) {
+    Verbose("Processing title \""+export_titles[i]+"\"...");
+    ExportTitle(export_titles[i]);
+  }
+
+  //
   // Process Groups
   //
   for(unsigned i=0;i<export_groups.size();i++) {
@@ -297,6 +309,23 @@ void MainObject::userData()
   // Clean Up and Exit
   //
   exit(0);
+}
+
+
+void MainObject::ExportTitle(const QString &title)
+{
+  QString sql;
+  RDSqlQuery *q;
+
+  sql=QString("select NUMBER from CART where ")+
+    "(TITLE=\""+RDEscapeString(title)+"\")&&"+
+    QString().sprintf("(TYPE=%u) ",RDCart::Audio)+
+    "order by NUMBER";
+  q=new RDSqlQuery(sql);
+  while(q->next()) {
+    ExportCart(q->value(0).toUInt());
+  }
+  delete q;
 }
 
 

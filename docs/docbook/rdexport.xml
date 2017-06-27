@@ -382,6 +382,18 @@
 
     <varlistentry>
       <term>
+	<option>--title=</option><replaceable>title</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  Export all carts with a title of <replaceable>title</replaceable>.
+	  This option may be given multiple times.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
 	<option>--xml</option>
       </term>
       <listitem>
