@@ -15883,3 +15883,5 @@
 	Allow Duplicate Cart Titles was not enabled.
 2017-06-28 Fred Gleason <fredg@paravelsystems.com>
 	* Added a new icon set created by Josh Edelstein.
+2017-06-28 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.16.0int05.
