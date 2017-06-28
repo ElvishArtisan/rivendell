@@ -15876,3 +15876,8 @@
 2017-06-28 Fred Gleason <fredg@paravelsystems.com>
 	* Added code to rdexport(1) to write the name of each file written
 	to standard output.
+2017-06-28 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'web/rdxport/carts.cpp' and 'web/rdxport/import.cpp'
+	that caused the 'EditCart' web API call to return an error when
+	attempting to set the Title field to its current value when
+	Allow Duplicate Cart Titles was not enabled.

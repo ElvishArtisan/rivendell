@@ -315,7 +315,7 @@ void Xport::EditCart()
   if(xport_post->getValue("TITLE",&value)) {
     if((!xport_system->allowDuplicateCartTitles())&&
        (!xport_system->fixDuplicateCartTitles())&&
-       (!RDCart::titleIsUnique(value))) {
+       (!RDCart::titleIsUnique(cart_number,value))) {
       XmlExit("Duplicate Cart Title Not Allowed",404,"carts.cpp",LINE_NUMBER);
     }
     cart->setTitle(value);

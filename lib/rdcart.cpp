@@ -2011,12 +2011,13 @@ QString RDCart::uniqueCartTitle(unsigned cartnum)
 }
 
 
-bool RDCart::titleIsUnique(const QString &str)
+bool RDCart::titleIsUnique(unsigned except_cartnum,const QString &str)
 {
   bool ret=false;
 
   QString sql=QString("select NUMBER from CART where ")+
-    "TITLE=\""+RDEscapeString(str)+"\"";
+    "(TITLE=\""+RDEscapeString(str)+"\")&&"+
+    QString().sprintf("NUMBER!=%u",except_cartnum);
   RDSqlQuery *q=new RDSqlQuery(sql);
   ret=!q->first();
   delete q;

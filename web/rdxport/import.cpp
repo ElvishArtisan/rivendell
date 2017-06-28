@@ -115,7 +115,7 @@ void Xport::Import()
   if(!title.isEmpty()) {
     if((!xport_system->allowDuplicateCartTitles())&&
        (!xport_system->fixDuplicateCartTitles())&&
-       (!RDCart::titleIsUnique(title))) {
+       (!RDCart::titleIsUnique(cartnum,title))) {
       XmlExit("Duplicate Cart Title Not Allowed",404,"import.cpp",LINE_NUMBER);
     }
   }
@@ -178,7 +178,7 @@ void Xport::Import()
   if(use_metadata) {
     if((!xport_system->allowDuplicateCartTitles())&&
        (!xport_system->fixDuplicateCartTitles())&&
-       (!RDCart::titleIsUnique(wavedata.title()))) {
+       (!RDCart::titleIsUnique(cartnum,wavedata.title()))) {
       XmlExit("Duplicate Cart Title Not Allowed",404,"import.cpp",LINE_NUMBER);
     }
   }
