@@ -64,7 +64,7 @@
 //
 // Icons
 //
-#include "../icons/rivendell-22x22.xpm"
+#include "../icons/rdlogedit-22x22.xpm"
 #include "../icons/greencheckmark.xpm"
 #include "../icons/redx.xpm"
 #include "../icons/greenball.xpm"
@@ -219,7 +219,7 @@ MainWidget::MainWidget(QWidget *parent)
   //
   // Create Icons
   //
-  log_rivendell_map=new QPixmap(rivendell_xpm);
+  log_rivendell_map=new QPixmap(rdlogedit_22x22_xpm);
   setIcon(*log_rivendell_map);
   log_greencheckmark_map=new QPixmap(greencheckmark_xpm);
   log_redx_map=new QPixmap(redx_xpm);

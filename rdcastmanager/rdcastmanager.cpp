@@ -51,7 +51,7 @@
 //
 // Icons
 //
-#include "../icons/rivendell-22x22.xpm"
+#include "../icons/rdcastmanager-22x22.xpm"
 #include "../icons/greencheckmark.xpm"
 #include "../icons/redx.xpm"
 
@@ -158,7 +158,7 @@ MainWidget::MainWidget(QWidget *parent)
   //
   // Create Icons
   //
-  cast_rivendell_map=new QPixmap(rivendell_xpm);
+  cast_rivendell_map=new QPixmap(rdcastmanager_22x22_xpm);
   setIcon(*cast_rivendell_map);
   cast_greencheckmark_map=new QPixmap(greencheckmark_xpm);
   cast_redx_map=new QPixmap(redx_xpm);

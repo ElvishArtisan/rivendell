@@ -95,7 +95,7 @@ MainWidget::MainWidget(QWidget *parent)
   //
   // Create And Set Icon
   //
-  setIcon(QPixmap(rivendell_xpm));
+  setIcon(QPixmap(rivendell_22x22_xpm));
 
   //
   // Dialogs

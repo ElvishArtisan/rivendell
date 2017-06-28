@@ -254,11 +254,75 @@ rm -rf $RPM_BUILD_ROOT
 @LOCAL_PREFIX@/share/rivendell/*
 /etc/init.d/rdrepld
 @LOCAL_PREFIX@/share/icons/hicolor/16x16/apps/rivendell.png
+@LOCAL_PREFIX@/share/icons/hicolor/16x16/apps/rdadmin.png
+@LOCAL_PREFIX@/share/icons/hicolor/16x16/apps/rdairplay.png
+@LOCAL_PREFIX@/share/icons/hicolor/16x16/apps/rdcartslots.png
+@LOCAL_PREFIX@/share/icons/hicolor/16x16/apps/rdcastmanager.png
+@LOCAL_PREFIX@/share/icons/hicolor/16x16/apps/rdcatch.png
+@LOCAL_PREFIX@/share/icons/hicolor/16x16/apps/rdlibrary.png
+@LOCAL_PREFIX@/share/icons/hicolor/16x16/apps/rdlogedit.png
+@LOCAL_PREFIX@/share/icons/hicolor/16x16/apps/rdlogmanager.png
+@LOCAL_PREFIX@/share/icons/hicolor/16x16/apps/rdpanel.png
 @LOCAL_PREFIX@/share/icons/hicolor/22x22/apps/rivendell.png
+@LOCAL_PREFIX@/share/icons/hicolor/22x22/apps/rdadmin.png
+@LOCAL_PREFIX@/share/icons/hicolor/22x22/apps/rdairplay.png
+@LOCAL_PREFIX@/share/icons/hicolor/22x22/apps/rdcartslots.png
+@LOCAL_PREFIX@/share/icons/hicolor/22x22/apps/rdcastmanager.png
+@LOCAL_PREFIX@/share/icons/hicolor/22x22/apps/rdcatch.png
+@LOCAL_PREFIX@/share/icons/hicolor/22x22/apps/rdlibrary.png
+@LOCAL_PREFIX@/share/icons/hicolor/22x22/apps/rdlogedit.png
+@LOCAL_PREFIX@/share/icons/hicolor/22x22/apps/rdlogmanager.png
+@LOCAL_PREFIX@/share/icons/hicolor/22x22/apps/rdpanel.png
 @LOCAL_PREFIX@/share/icons/hicolor/32x32/apps/rivendell.png
-@LOCAL_PREFIX@/share/icons/hicolor/48x48/apps/rivendell.png
+@LOCAL_PREFIX@/share/icons/hicolor/32x32/apps/rdadmin.png
+@LOCAL_PREFIX@/share/icons/hicolor/32x32/apps/rdairplay.png
+@LOCAL_PREFIX@/share/icons/hicolor/32x32/apps/rdcartslots.png
+@LOCAL_PREFIX@/share/icons/hicolor/32x32/apps/rdcastmanager.png
+@LOCAL_PREFIX@/share/icons/hicolor/32x32/apps/rdcatch.png
+@LOCAL_PREFIX@/share/icons/hicolor/32x32/apps/rdlibrary.png
+@LOCAL_PREFIX@/share/icons/hicolor/32x32/apps/rdlogedit.png
+@LOCAL_PREFIX@/share/icons/hicolor/32x32/apps/rdlogmanager.png
+@LOCAL_PREFIX@/share/icons/hicolor/32x32/apps/rdpanel.png
 @LOCAL_PREFIX@/share/icons/hicolor/64x64/apps/rivendell.png
+@LOCAL_PREFIX@/share/icons/hicolor/64x64/apps/rdadmin.png
+@LOCAL_PREFIX@/share/icons/hicolor/64x64/apps/rdairplay.png
+@LOCAL_PREFIX@/share/icons/hicolor/64x64/apps/rdcartslots.png
+@LOCAL_PREFIX@/share/icons/hicolor/64x64/apps/rdcastmanager.png
+@LOCAL_PREFIX@/share/icons/hicolor/64x64/apps/rdcatch.png
+@LOCAL_PREFIX@/share/icons/hicolor/64x64/apps/rdlibrary.png
+@LOCAL_PREFIX@/share/icons/hicolor/64x64/apps/rdlogedit.png
+@LOCAL_PREFIX@/share/icons/hicolor/64x64/apps/rdlogmanager.png
+@LOCAL_PREFIX@/share/icons/hicolor/64x64/apps/rdpanel.png
 @LOCAL_PREFIX@/share/icons/hicolor/128x128/apps/rivendell.png
+@LOCAL_PREFIX@/share/icons/hicolor/128x128/apps/rdadmin.png
+@LOCAL_PREFIX@/share/icons/hicolor/128x128/apps/rdairplay.png
+@LOCAL_PREFIX@/share/icons/hicolor/128x128/apps/rdcartslots.png
+@LOCAL_PREFIX@/share/icons/hicolor/128x128/apps/rdcastmanager.png
+@LOCAL_PREFIX@/share/icons/hicolor/128x128/apps/rdcatch.png
+@LOCAL_PREFIX@/share/icons/hicolor/128x128/apps/rdlibrary.png
+@LOCAL_PREFIX@/share/icons/hicolor/128x128/apps/rdlogedit.png
+@LOCAL_PREFIX@/share/icons/hicolor/128x128/apps/rdlogmanager.png
+@LOCAL_PREFIX@/share/icons/hicolor/128x128/apps/rdpanel.png
+@LOCAL_PREFIX@/share/icons/hicolor/256x256/apps/rivendell.png
+@LOCAL_PREFIX@/share/icons/hicolor/256x256/apps/rdadmin.png
+@LOCAL_PREFIX@/share/icons/hicolor/256x256/apps/rdairplay.png
+@LOCAL_PREFIX@/share/icons/hicolor/256x256/apps/rdcartslots.png
+@LOCAL_PREFIX@/share/icons/hicolor/256x256/apps/rdcastmanager.png
+@LOCAL_PREFIX@/share/icons/hicolor/256x256/apps/rdcatch.png
+@LOCAL_PREFIX@/share/icons/hicolor/256x256/apps/rdlibrary.png
+@LOCAL_PREFIX@/share/icons/hicolor/256x256/apps/rdlogedit.png
+@LOCAL_PREFIX@/share/icons/hicolor/256x256/apps/rdlogmanager.png
+@LOCAL_PREFIX@/share/icons/hicolor/256x256/apps/rdpanel.png
+@LOCAL_PREFIX@/share/icons/hicolor/512x512/apps/rivendell.png
+@LOCAL_PREFIX@/share/icons/hicolor/512x512/apps/rdadmin.png
+@LOCAL_PREFIX@/share/icons/hicolor/512x512/apps/rdairplay.png
+@LOCAL_PREFIX@/share/icons/hicolor/512x512/apps/rdcartslots.png
+@LOCAL_PREFIX@/share/icons/hicolor/512x512/apps/rdcastmanager.png
+@LOCAL_PREFIX@/share/icons/hicolor/512x512/apps/rdcatch.png
+@LOCAL_PREFIX@/share/icons/hicolor/512x512/apps/rdlibrary.png
+@LOCAL_PREFIX@/share/icons/hicolor/512x512/apps/rdlogedit.png
+@LOCAL_PREFIX@/share/icons/hicolor/512x512/apps/rdlogmanager.png
+@LOCAL_PREFIX@/share/icons/hicolor/512x512/apps/rdpanel.png
 @LOCAL_PREFIX@/share/X11/fvwm2/pixmaps/mini.rivendell.xpm
 @LOCAL_PREFIX@/share/X11/fvwm2/pixmaps/rivendell.xpm
 @LOCAL_PREFIX@/share/applications/rivendell-rdadmin.desktop
@@ -376,12 +440,6 @@ rm -rf $RPM_BUILD_ROOT
 %doc docs/metadata_wildcards.txt
 %doc scripts/rd_backup
 %doc scripts/start_traverso.sh
-%doc icons/rivendell-16x16.png
-%doc icons/rivendell-22x22.png
-%doc icons/rivendell-32x32.png
-%doc icons/rivendell-48x48.png
-%doc icons/rivendell-64x64.png
-%doc icons/rivendell-128x128.png
 %doc scripts/rd_mysql_enable_host.sh
 %doc scripts/rd_backup_system.sh
 %doc scripts/rd_restore_system.sh

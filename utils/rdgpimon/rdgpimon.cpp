@@ -81,7 +81,7 @@ MainWidget::MainWidget(QWidget *parent)
   //
   // Create And Set Icon
   //
-  gpi_rivendell_map=new QPixmap(rivendell_xpm);
+  gpi_rivendell_map=new QPixmap(rivendell_22x22_xpm);
   setIcon(*gpi_rivendell_map);
 
   //

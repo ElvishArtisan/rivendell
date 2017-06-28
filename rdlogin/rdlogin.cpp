@@ -93,7 +93,7 @@ MainWidget::MainWidget(QWidget *parent)
   //
   // Create And Set Icon
   //
-  login_rivendell_map=new QPixmap(rivendell_xpm);
+  login_rivendell_map=new QPixmap(rivendell_22x22_xpm);
   setIcon(*login_rivendell_map);
 
   //

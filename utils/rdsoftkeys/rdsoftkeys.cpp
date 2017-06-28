@@ -80,7 +80,7 @@ MainWidget::MainWidget(QWidget *parent)
   //
   // Create And Set Icon
   //
-  key_icon_map=new QPixmap(rivendell_xpm);
+  key_icon_map=new QPixmap(rivendell_22x22_xpm);
   setIcon(*key_icon_map);
 
   //

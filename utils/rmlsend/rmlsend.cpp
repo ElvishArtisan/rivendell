@@ -95,7 +95,7 @@ MainWidget::MainWidget(QWidget *parent)
   //
   // Create And Set Icon
   //
-  rivendell_map=new QPixmap(rivendell_xpm);
+  rivendell_map=new QPixmap(rivendell_22x22_xpm);
   setIcon(*rivendell_map);
 
   setCaption(QString("RMLSend")+" v"+VERSION+" - "+tr("Macro Command Utility"));

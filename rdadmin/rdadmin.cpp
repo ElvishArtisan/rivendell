@@ -66,7 +66,7 @@
 //
 // Icons
 //
-#include "../icons/rivendell-22x22.xpm"
+#include "../icons/rdadmin-22x22.xpm"
 
 //
 // Global Classes
@@ -138,7 +138,7 @@ MainWidget::MainWidget(QWidget *parent)
   //
   // Create And Set Icon
   //
-  admin_rivendell_map=new QPixmap(rivendell_xpm);
+  admin_rivendell_map=new QPixmap(rdadmin_22x22_xpm);
   setIcon(*admin_rivendell_map);
 
   //

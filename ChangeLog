@@ -15881,3 +15881,5 @@
 	that caused the 'EditCart' web API call to return an error when
 	attempting to set the Title field to its current value when
 	Allow Duplicate Cart Titles was not enabled.
+2017-06-28 Fred Gleason <fredg@paravelsystems.com>
+	* Added a new icon set created by Josh Edelstein.

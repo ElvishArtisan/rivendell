@@ -5,6 +5,6 @@ Categories=Qt;KDE;Rivendell;
 Name=RDAdmin
 GenericName=Rivendell Configuration
 Exec=rdadmin
-Icon=rivendell
+Icon=rdadmin
 Type=Application
 Terminal=false

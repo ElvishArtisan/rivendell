@@ -5,7 +5,7 @@ Categories=Qt;KDE;Rivendell;
 Name=RDLogManager
 GenericName=Rivendell Log Management
 Exec=rdlogmanager
-Icon=rivendell
+Icon=rdlogmanager
 Type=Application
 Terminal=false
 

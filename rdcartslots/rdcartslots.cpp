@@ -42,7 +42,7 @@
 //
 // Icons
 //
-#include "../icons/rivendell-22x22.xpm"
+#include "../icons/rdcartslots-22x22.xpm"
 
 MainWidget::MainWidget(QWidget *parent)
   :QWidget(parent)
@@ -77,7 +77,7 @@ MainWidget::MainWidget(QWidget *parent)
   //
   // Create Icons
   //
-  lib_rivendell_map=new QPixmap(rivendell_xpm);
+  lib_rivendell_map=new QPixmap(rdcartslots_22x22_xpm);
   setIcon(*lib_rivendell_map);
 
   //

@@ -87,8 +87,8 @@ RDHotkeys *rdhotkeys;
 //
 // Icons
 //
-#include "../icons/rivendell-128x128.xpm"
-#include "../icons/rivendell-22x22.xpm"
+#include "../icons/rdairplay-128x128.xpm"
+#include "../icons/rdairplay-22x22.xpm"
 
 //
 // Prototypes
@@ -131,7 +131,7 @@ MainWidget::MainWidget(QWidget *parent)
   //
   // Splash Screen
   //
-  air_splash_screen=new QSplashScreen(QPixmap(rivendell_128x128_xpm));
+  air_splash_screen=new QSplashScreen(QPixmap(rdairplay_128x128_xpm));
   air_splash_screen->hide();
   QTimer *timer=new QTimer(this);
   connect(timer,SIGNAL(timeout()),this,SLOT(clearSplashData()));
@@ -208,7 +208,7 @@ MainWidget::MainWidget(QWidget *parent)
   //
   // Create And Set Icon
   //
-  air_rivendell_map=new QPixmap(rivendell_xpm);
+  air_rivendell_map=new QPixmap(rdairplay_22x22_xpm);
   setIcon(*air_rivendell_map);
 
   air_start_next=false;

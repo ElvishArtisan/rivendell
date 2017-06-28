@@ -91,8 +91,7 @@ RDSystem *catch_system=NULL;
 #include "../icons/switch3.xpm"
 #include "../icons/download.xpm"
 #include "../icons/upload.xpm"
-#include "../icons/rivendell-22x22.xpm"
-
+#include "../icons/rdcatch-22x22.xpm"
 
 MainWidget::MainWidget(QWidget *parent)
   :QWidget(parent)
@@ -150,7 +149,7 @@ MainWidget::MainWidget(QWidget *parent)
   catch_switch_map=new QPixmap(switch3_xpm);
   catch_download_map=new QPixmap(download_xpm);
   catch_upload_map=new QPixmap(upload_xpm);
-  catch_rivendell_map=new QPixmap(rivendell_xpm);
+  catch_rivendell_map=new QPixmap(rdcatch_22x22_xpm);
   setIcon(*catch_rivendell_map);
 
 

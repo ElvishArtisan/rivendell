@@ -65,7 +65,7 @@
 //
 // Icons
 //
-#include "../icons/rivendell-22x22.xpm"
+#include "../icons/rdlogmanager-22x22.xpm"
 
 //
 // Global Resources
@@ -187,7 +187,7 @@ MainWidget::MainWidget(QWidget *parent)
   //
   // Create And Set Icon
   //
-  log_rivendell_map=new QPixmap(rivendell_xpm);
+  log_rivendell_map=new QPixmap(rdlogmanager_22x22_xpm);
   setIcon(*log_rivendell_map);
 
   //

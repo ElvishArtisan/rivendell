@@ -117,7 +117,7 @@ MainWidget::MainWidget(QWidget *parent)
   //
   // Create And Set Icons
   //
-  login_rivendell_map=new QPixmap(rivendell_xpm);
+  login_rivendell_map=new QPixmap(rivendell_22x22_xpm);
   setIcon(*login_rivendell_map);
   setCaption(tr("RDSelect")+" v"+VERSION);
   greencheckmark_map=new QPixmap(greencheckmark_xpm);

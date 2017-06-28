@@ -54,7 +54,7 @@ RDCartDialog *panel_cart_dialog;
 //
 // Icons
 //
-#include "../icons/rivendell-22x22.xpm"
+#include "../icons/rdpanel-22x22.xpm"
 
 void SigHandler(int signo)
 {
@@ -109,7 +109,7 @@ MainWidget::MainWidget(QWidget *parent)
   //
   // Create Icons
   //
-  lib_rivendell_map=new QPixmap(rivendell_xpm);
+  lib_rivendell_map=new QPixmap(rdpanel_22x22_xpm);
   setIcon(*lib_rivendell_map);
 
   //

@@ -5,7 +5,7 @@ Terminal=false
 Name=RDCastManager
 GenericName=Rivendell RSS Feed Management
 Exec=rdcastmanager
-Icon=rivendell
+Icon=rdcastmanager
 Type=Application
 Terminal=false
 

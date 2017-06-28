@@ -91,8 +91,7 @@ void SigHandler(int signo);
 #include "../icons/play.xpm"
 #include "../icons/rml5.xpm"
 #include "../icons/track_cart.xpm"
-#include "../icons/rivendell-22x22.xpm"
-
+#include "../icons/rdlibrary-22x22.xpm"
 
 MainWidget::MainWidget(QWidget *parent)
   :QWidget(parent)
@@ -154,7 +153,7 @@ MainWidget::MainWidget(QWidget *parent)
   lib_playout_map=new QPixmap(play_xpm);
   lib_macro_map=new QPixmap(rml5_xpm);
   lib_track_cart_map=new QPixmap(track_cart_xpm);
-  lib_rivendell_map=new QPixmap(rivendell_xpm);
+  lib_rivendell_map=new QPixmap(rdlibrary_22x22_xpm);
   setIcon(*lib_rivendell_map);
 
   //
