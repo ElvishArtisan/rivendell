@@ -15873,3 +15873,6 @@
 2017-06-27 Fred Gleason <fredg@paravelsystems.com>
 	* Added an output error to rdexport(1) for when invoked without the
 	output directory specified.
+2017-06-28 Fred Gleason <fredg@paravelsystems.com>
+	* Added code to rdexport(1) to write the name of each file written
+	to standard output.

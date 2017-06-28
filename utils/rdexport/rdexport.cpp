@@ -190,7 +190,7 @@ MainObject::MainObject(QObject *parent)
     }
     if(!cmd->processed(i)) {
       fprintf(stderr,"rdexport: unrecognized option\n");
-      exit(256);
+      qApp->exit(256);
     }
   }
   export_output_to=cmd->key(cmd->keys()-1);
@@ -460,9 +460,11 @@ void MainObject::ExportCut(RDCart *cart,RDCut *cut)
 
   if((export_err=conv->runExport(export_user->name(),export_user->password(),
 				 &conv_err))==RDAudioExport::ErrorOk) {
+    QStringList f0=f0.split("/",conv->destinationFile());
+    printf("%s\n",(const char *)f0[f0.size()-1]);
     if(export_xml) {
       FILE *f=NULL;
-      QStringList f0=f0.split(".",conv->destinationFile(),true);
+      f0=f0.split(".",conv->destinationFile(),true);
       QString filename;
       for(unsigned i=0;i<f0.size()-1;i++) {
 	filename+=f0[i]+".";
