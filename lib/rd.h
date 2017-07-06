@@ -123,11 +123,6 @@
 #define MAX_GPIO_PINS 32768
 
 /*
- * Max number of possible workstations
- */
-#define RD_MAX_STATIONS 64
-
-/*
  * Max number of possible audio adapters
  */
 #define RD_MAX_CARDS 8

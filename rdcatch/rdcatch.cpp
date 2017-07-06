@@ -93,6 +93,27 @@ RDSystem *catch_system=NULL;
 #include "../icons/upload.xpm"
 #include "../icons/rdcatch-22x22.xpm"
 
+CatchConnector::CatchConnector(RDCatchConnect *conn,const QString &station_name)
+{
+  catch_connect=conn;
+  catch_station_name=station_name;
+}
+
+
+RDCatchConnect *CatchConnector::connector() const
+{
+  return catch_connect;
+}
+
+
+QString CatchConnector::stationName()
+{
+  return catch_station_name;
+}
+
+
+
+
 MainWidget::MainWidget(QWidget *parent)
   :QWidget(parent)
 {
@@ -268,58 +289,50 @@ MainWidget::MainWidget(QWidget *parent)
   RDSqlQuery *q=
     new RDSqlQuery("select NAME,IPV4_ADDRESS from STATIONS\
                    where NAME!=\"DEFAULT\"");
-  catch_station_count=0;
   while(q->next()) {
-    catch_connect[catch_station_count].connect=
-      new RDCatchConnect(catch_station_count,this);
-    catch_connect[catch_station_count].station=
-      q->value(0).toString().lower();
-    connect(catch_connect[catch_station_count].connect,
+    catch_connect.push_back(new CatchConnector(new RDCatchConnect(catch_connect.size(),this),q->value(0).toString().lower()));
+    connect(catch_connect.back()->connector(),
       SIGNAL(statusChanged(int,unsigned,RDDeck::Status,int,const QString &)),
       this,
       SLOT(statusChangedData(int,unsigned,RDDeck::Status,int,const QString &)));
-    connect(catch_connect[catch_station_count].connect,
+    connect(catch_connect.back()->connector(),
 	    SIGNAL(monitorChanged(int,unsigned,bool)),
 	    this,SLOT(monitorChangedData(int,unsigned,bool)));
-    connect(catch_connect[catch_station_count].connect,
+    connect(catch_connect.back()->connector(),
 	    SIGNAL(connected(int,bool)),
 	    this,SLOT(connectedData(int,bool)));
-    connect(catch_connect[catch_station_count].connect,
+    connect(catch_connect.back()->connector(),
 	    SIGNAL(meterLevel(int,int,int,int)),
 	    this,SLOT(meterLevelData(int,int,int,int)));
-    connect(catch_connect[catch_station_count].connect,
+    connect(catch_connect.back()->connector(),
 	    SIGNAL(eventUpdated(int)),
 	    this,SLOT(eventUpdatedData(int)));
-    connect(catch_connect[catch_station_count].connect,
+    connect(catch_connect.back()->connector(),
 	    SIGNAL(eventPurged(int)),
 	    this,SLOT(eventPurgedData(int)));
-    connect(catch_connect[catch_station_count].connect,
+    connect(catch_connect.back()->connector(),
 	    SIGNAL(deckEventSent(int,int,int)),
 	    this,SLOT(deckEventSentData(int,int,int)));
-    connect(catch_connect[catch_station_count].connect,
+    connect(catch_connect.back()->connector(),
 	    SIGNAL(heartbeatFailed(int)),
 	    this,SLOT(heartbeatFailedData(int)));
-    catch_connect[catch_station_count].connect->
+    catch_connect.back()->connector()->
       connectHost(q->value(1).toString(),RDCATCHD_TCP_PORT,
 		  catch_config->password());
-    catch_station_count++;
-
     sql=QString().sprintf("select CHANNEL,MON_PORT_NUMBER from DECKS \
 where (CARD_NUMBER!=-1)&&(PORT_NUMBER!=-1)&&(CHANNEL>0)&&(STATION_NAME=\"%s\") \
 order by CHANNEL",(const char *)q->value(0).toString().lower());
     q1=new RDSqlQuery(sql);
     while(q1->next()) {
-      catch_connect[catch_station_count-1].
-	chan.push_back(q1->value(0).toUInt());
-      catch_connect[catch_station_count-1].
-	mon_id.push_back(catch_monitor.size());
+      catch_connect.back()->chan.push_back(q1->value(0).toUInt());
+      catch_connect.back()->mon_id.push_back(catch_monitor.size());
 
 
       catch_monitor.push_back(new CatchMonitor());
       catch_monitor.back()->setDeckMon(new DeckMon(q->value(0).toString(),
 						   q1->value(0).toUInt(),
 						   catch_monitor_vbox));
-      catch_monitor.back()->setSerialNumber(catch_station_count-1);
+      catch_monitor.back()->setSerialNumber(catch_connect.size()-1);
       catch_monitor.back()->setChannelNumber(q1->value(0).toUInt());
       catch_monitor_vbox->addWidget(catch_monitor.back()->deckMon());
 
@@ -620,7 +633,7 @@ void MainWidget::resizeData()
 void MainWidget::connectedData(int serial,bool state)
 {
   if(state) {
-    catch_connect[serial].connect->enableMetering(true);
+    catch_connect[serial]->connector()->enableMetering(true);
   }
 }
 
@@ -705,7 +718,7 @@ void MainWidget::addData()
 	}
 	catch_recordings_list->setSelected(item,true);
 	catch_recordings_list->ensureItemVisible(item);
-	catch_connect[conn].connect->addEvent(n);
+	catch_connect[conn]->connector()->addEvent(n);
 	nextEventData();
 	break;
 
@@ -769,8 +782,8 @@ void MainWidget::editData()
 	    fprintf(stderr,"rdcatch: invalid connection index!\n");
 	    return;
 	  }
-	  catch_connect[old_conn].connect->removeEvent(id);
-	  catch_connect[new_conn].connect->addEvent(id);
+	  catch_connect[old_conn]->connector()->removeEvent(id);
+	  catch_connect[new_conn]->connector()->addEvent(id);
 	  nextEventData();
 	}
 	delete recording;
@@ -785,8 +798,8 @@ void MainWidget::editData()
 	    fprintf(stderr,"rdcatch: invalid connection index!\n");
 	    return;
 	  }
-	  catch_connect[old_conn].connect->removeEvent(id);
-	  catch_connect[new_conn].connect->addEvent(id);
+	  catch_connect[old_conn]->connector()->removeEvent(id);
+	  catch_connect[new_conn]->connector()->addEvent(id);
 	  nextEventData();
 	}
 	delete playout;
@@ -801,8 +814,8 @@ void MainWidget::editData()
 	    fprintf(stderr,"rdcatch: invalid connection index!\n");
 	    return;
 	  }
-	  catch_connect[old_conn].connect->removeEvent(id);
-	  catch_connect[new_conn].connect->addEvent(id);
+	  catch_connect[old_conn]->connector()->removeEvent(id);
+	  catch_connect[new_conn]->connector()->addEvent(id);
 	  nextEventData();
 	}
 	delete event;
@@ -817,8 +830,8 @@ void MainWidget::editData()
 	    fprintf(stderr,"rdcatch: invalid connection index!\n");
 	    return;
 	  }
-	  catch_connect[old_conn].connect->removeEvent(id);
-	  catch_connect[new_conn].connect->addEvent(id);
+	  catch_connect[old_conn]->connector()->removeEvent(id);
+	  catch_connect[new_conn]->connector()->addEvent(id);
 	  nextEventData();
 	}
 	delete switch_event;
@@ -833,8 +846,8 @@ void MainWidget::editData()
 	    fprintf(stderr,"rdcatch: invalid connection index!\n");
 	    return;
 	  }
-	  catch_connect[old_conn].connect->removeEvent(id);
-	  catch_connect[new_conn].connect->addEvent(id);
+	  catch_connect[old_conn]->connector()->removeEvent(id);
+	  catch_connect[new_conn]->connector()->addEvent(id);
 	  nextEventData();
 	}
 	delete download;
@@ -849,8 +862,8 @@ void MainWidget::editData()
 	    fprintf(stderr,"rdcatch: invalid connection index!\n");
 	    return;
 	  }
-	  catch_connect[old_conn].connect->removeEvent(id);
-	  catch_connect[new_conn].connect->addEvent(id);
+	  catch_connect[old_conn]->connector()->removeEvent(id);
+	  catch_connect[new_conn]->connector()->addEvent(id);
 	  nextEventData();
 	}
 	delete upload;
@@ -895,7 +908,7 @@ void MainWidget::deleteData()
     fprintf(stderr,"rdcatch: invalid connection index!\n");
     return;
   }
-  catch_connect[conn].connect->removeEvent(item->text(28).toInt());
+  catch_connect[conn]->connector()->removeEvent(item->text(28).toInt());
   sql=QString().sprintf("delete from RECORDINGS where ID=%s",
 			(const char *)item->text(28));
   q=new RDSqlQuery(sql);
@@ -1168,9 +1181,9 @@ void MainWidget::meterLevelData(int serial,int deck,int l_r,int level)
 {
   DeckMon *monitor;
 
-  for(unsigned i=0;i<catch_connect[serial].chan.size();i++) {
-    if(catch_connect[serial].chan[i]==(unsigned)deck) {
-       monitor=catch_monitor[catch_connect[serial].mon_id[i]]->deckMon();
+  for(unsigned i=0;i<catch_connect[serial]->chan.size();i++) {
+    if(catch_connect[serial]->chan[i]==(unsigned)deck) {
+       monitor=catch_monitor[catch_connect[serial]->mon_id[i]]->deckMon();
        if(l_r==0) {
 	 monitor->setLeftMeter(level);
        }
@@ -1185,14 +1198,14 @@ void MainWidget::meterLevelData(int serial,int deck,int l_r,int level)
 
 void MainWidget::abortData(int id)
 {
-  catch_connect[catch_monitor[id]->serialNumber()].connect->
+  catch_connect[catch_monitor[id]->serialNumber()]->connector()->
     stop(catch_monitor[id]->channelNumber());
 }
 
 
 void MainWidget::monitorData(int id)
 {
-  catch_connect[catch_monitor[id]->serialNumber()].connect->
+  catch_connect[catch_monitor[id]->serialNumber()]->connector()->
     toggleMonitor(catch_monitor[id]->channelNumber());
 }
 
@@ -1262,7 +1275,7 @@ void MainWidget::heartbeatFailedData(int id)
 
   str=QString(tr("Control connection timed out to host"));
   QString msg=QString().sprintf("%s '%s'!",(const char *)str,
-			       (const char *)catch_connect[id].station);
+				(const char *)catch_connect[id]->stationName());
   QMessageBox::warning(this,"RDCatch",msg);
 }
 
@@ -1592,7 +1605,7 @@ void MainWidget::ProcessNewRecords(std::vector<int> *adds)
       fprintf(stderr,"rdcatch: invalid connection index!\n");
       return;
     }
-    catch_connect[conn].connect->addEvent(adds->at(i));
+    catch_connect[conn]->connector()->addEvent(adds->at(i));
   }
   nextEventData();
 }
@@ -2533,14 +2546,13 @@ int MainWidget::GetMonitor(int serial,int chan)
 
 int MainWidget::GetConnection(QString station,unsigned chan)
 {
-  for(int i=0;i<catch_station_count;i++) {
-    if(catch_connect[i].station==station.lower()) {
+  for(unsigned i=0;i<catch_connect.size();i++) {
+    if(catch_connect[i]->stationName()==station.lower()) {
       if(chan==0) {
 	return i;
       }
-      for(unsigned j=0;j<catch_connect[i].chan.size();j++) {
-    printf("J: %u\n",j);
-	if(catch_connect[i].chan[j]==chan) {
+      for(unsigned j=0;j<catch_connect[i]->chan.size();j++) {
+	if(catch_connect[i]->chan[j]==chan) {
 	  return i;
 	}
       }

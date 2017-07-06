@@ -15885,3 +15885,7 @@
 	* Added a new icon set created by Josh Edelstein.
 2017-06-28 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 2.16.0int05.
+2017-07-06 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored catch connector code in RDCatch(1) to support an
+	arbitrary number of hosts.
+	* Removed RD_MAX_STATIONS from 'lib/rd.h'.

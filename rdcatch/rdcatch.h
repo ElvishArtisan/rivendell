@@ -57,6 +57,21 @@
 #define RDCATCH_MAX_VISIBLE_MONITORS 8
 #define RDCATCH_USAGE "[--offline-host-warnings=yes|no]\n"
 
+class CatchConnector
+{
+ public:
+  CatchConnector(RDCatchConnect *conn,const QString &station_name);
+  RDCatchConnect *connector() const;
+  QString stationName();
+  std::vector<unsigned> chan;
+  std::vector<unsigned> mon_id;
+
+ private:
+  RDCatchConnect *catch_connect;
+  QString catch_station_name;
+};
+
+
 class MainWidget : public QWidget
 {
   Q_OBJECT
@@ -128,13 +143,7 @@ class MainWidget : public QWidget
   std::vector<CatchMonitor *> catch_monitor;
   QScrollView *catch_monitor_view;
   VBox *catch_monitor_vbox;
-  struct {
-    RDCatchConnect *connect;
-    QString station;
-    std::vector<unsigned> chan;
-    std::vector<unsigned> mon_id;
-  } catch_connect[RD_MAX_STATIONS];
-  int catch_station_count;
+  std::vector<CatchConnector *> catch_connect;
   QSqlDatabase *catch_db;
   int catch_audition_stream;
   int catch_play_handle;
