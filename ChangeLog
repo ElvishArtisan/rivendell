@@ -15900,3 +15900,5 @@
 	dialog in 'rdadmin/edit_settings.cpp' and 'rdadmin/edit_settings.h'.
 	* Altered RDLogin to display a text  input field for the user name
 	when 'Show User List in RDLogin' is unchecked.
+2017-07-14 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.16.0int07.
