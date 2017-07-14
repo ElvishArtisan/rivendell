@@ -15891,3 +15891,12 @@
 	* Removed RD_MAX_STATIONS from 'lib/rd.h'.
 2017-07-06 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 2.16.0int06.
+2017-07-14 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'SYSTEM.SHOW_USER_LIST' field to the database.
+	* Incremented the database version to 265.
+	* Added 'RDSystem::showUserList()' and 'RDSystem::setShowUserList()'
+	methods in 'lib/rdsystem.cpp' and 'lib/rdsystem.h'.
+	* Added a 'Show User List in RDLogin' control to the 'Edit System'
+	dialog in 'rdadmin/edit_settings.cpp' and 'rdadmin/edit_settings.h'.
+	* Altered RDLogin to display a text  input field for the user name
+	when 'Show User List in RDLogin' is unchecked.

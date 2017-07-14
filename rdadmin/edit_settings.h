@@ -60,6 +60,7 @@ class EditSettings : public QDialog
    QSpinBox *edit_maxpost_spin;
    QLineEdit *edit_isci_path_edit;
    QComboBox *edit_temp_cart_group_box;
+   QCheckBox *edit_show_user_list_box;
    QListView *edit_duplicate_list;
    QPushButton *edit_settings_button;
    QPushButton *edit_save_button;

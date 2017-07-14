@@ -50,7 +50,11 @@ Padrão</translation>
     </message>
     <message>
         <source>Invalid Password!</source>
-        <translation>Senha Inválida!</translation>
+        <translation type="obsolete">Senha Inválida!</translation>
+    </message>
+    <message>
+        <source>Invalid Username or Password!</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

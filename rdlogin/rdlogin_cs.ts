@@ -49,7 +49,11 @@ uživatel</translation>
     </message>
     <message>
         <source>Invalid Password!</source>
-        <translation>Ungültiges Paßwort!</translation>
+        <translation type="obsolete">Ungültiges Paßwort!</translation>
+    </message>
+    <message>
+        <source>Invalid Username or Password!</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

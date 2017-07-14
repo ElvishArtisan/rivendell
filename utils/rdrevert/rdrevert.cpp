@@ -210,6 +210,14 @@ void MainObject::Revert(int schema) const
   case 263:
     Revert263();
     break;
+
+  case 264:
+    Revert264();
+    break;
+
+  case 265:
+    Revert265();
+    break;
   }
 }
 
@@ -604,6 +612,32 @@ void MainObject::Revert263() const
 }
 
 
+void MainObject::Revert264() const
+{
+  QString sql;
+  QSqlQuery *q;
+
+  sql="alter table SYSTEM drop column FIX_DUP_CART_TITLES";
+  q=new QSqlQuery(sql);
+  delete q;  
+
+  SetVersion(263);
+}
+
+
+void MainObject::Revert265() const
+{
+  QString sql;
+  QSqlQuery *q;
+
+  sql="alter table SYSTEM drop column SHOW_USER_LIST";
+  q=new QSqlQuery(sql);
+  delete q;  
+
+  SetVersion(264);
+}
+
+
 int MainObject::GetVersion() const
 {
   QString sql;
@@ -647,6 +681,7 @@ int MainObject::MapSchema(const QString &ver)
   version_map["2.14"]=258;
   version_map["2.15"]=259;
   version_map["2.16"]=263;
+  version_map["2.17"]=266;
 
   //
   // Normalize String

@@ -33,6 +33,7 @@
 #include <rdstation.h>
 #include <rdripc.h>
 #include <rdconfig.h>
+#include <rdsystem.h>
 
 class MainWidget : public QWidget
 {
@@ -58,11 +59,13 @@ class MainWidget : public QWidget
   RDConfig *login_config;
   QSqlDatabase *login_db;
   RDStation *login_station;
+  RDSystem *login_system;
   RDRipc *login_ripc;
   Q_UINT16 login_ripc_hostport;
   QLabel *login_label;
   QLabel *login_username_label;
   QComboBox *login_username_box;
+  QLineEdit *login_username_edit;
   QLabel *login_password_label;
   QLineEdit *login_password_edit;
   QPixmap *login_rivendell_map;

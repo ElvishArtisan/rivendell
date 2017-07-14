@@ -141,6 +141,11 @@ MainWidget::MainWidget(QWidget *parent)
   login_station=new RDStation(login_config->stationName());
 
   //
+  // System
+  //
+  login_system=new RDSystem();
+
+  //
   // User Label
   //
   login_label=new QLabel(this);
@@ -165,12 +170,19 @@ MainWidget::MainWidget(QWidget *parent)
     }
   }
   delete q;
+  login_username_edit=new QLineEdit(this);
   if(login_user_width>900) {
     login_user_width=900;
   }
   login_username_label=new QLabel(login_username_box,tr("&Username:"),this);
   login_username_label->setFont(small_label_font);
   login_username_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  if(login_system->showUserList()) {
+    login_username_edit->hide();
+  }
+  else {
+    login_username_box->hide();
+  }
 
   //
   // Password
@@ -252,8 +264,15 @@ void MainWidget::userData()
 
 void MainWidget::loginData()
 {
-  RDUser *user=new RDUser(login_username_box->currentText());
-  if(user->checkPassword(login_password_edit->text(),false)) {
+  RDUser *user;
+
+  if(login_system->showUserList()) {
+    user=new RDUser(login_username_box->currentText());
+  }
+  else {
+    user=new RDUser(login_username_edit->text());
+  }
+  if(user->exists()&&user->checkPassword(login_password_edit->text(),false)) {
     login_ripc->setUser(login_username_box->currentText());
     login_password_edit->clear();
     delete user;
@@ -261,7 +280,7 @@ void MainWidget::loginData()
     cancelData();
   }
   else {
-    QMessageBox::warning(this,tr("RDLogin"),tr("Invalid Password!"));
+    QMessageBox::warning(this,tr("RDLogin"),tr("Invalid Username or Password!"));
     delete user;
   }
 }
@@ -300,6 +319,7 @@ void MainWidget::resizeEvent(QResizeEvent *e)
 {
   login_label->setGeometry(0,10,size().width(),21);
   login_username_box->setGeometry(110,40,size().width()-120,19);
+  login_username_edit->setGeometry(110,40,size().width()-120,19);
   login_username_label->setGeometry(10,40,85,19);
   login_password_edit->setGeometry(110,61,size().width()-120,19);
   login_password_label->setGeometry(10,61,85,19);

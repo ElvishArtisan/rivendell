@@ -149,12 +149,25 @@ EditSettings::EditSettings(QWidget *parent)
   label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
 
   //
+  // Show User List
+  //
+  edit_show_user_list_box=new QCheckBox(this);
+  edit_show_user_list_box->setGeometry(20,143,15,15);
+  connect(edit_show_user_list_box,SIGNAL(toggled(bool)),
+	  this,SLOT(duplicatesCheckedData(bool)));
+  label=
+    new QLabel(edit_show_user_list_box,tr("Show User List in RDLogin"),this);
+  label->setGeometry(40,141,sizeHint().width()-50,20);
+  label->setFont(font);
+  label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+
+  //
   // Duplicate List (initially hidden)
   //
   edit_duplicate_label=new RDLabel(this);
   edit_duplicate_label->setText(tr("The following duplicate titles must be corrected before \"Allow Duplicate Values\" can be turned off."));
   edit_duplicate_label->setWordWrapEnabled(true);
-  edit_duplicate_label->setGeometry(15,142,sizeHint().width()-30,50);
+  edit_duplicate_label->setGeometry(15,164,sizeHint().width()-30,50);
   edit_duplicate_label->setFont(normal_font);
   edit_duplicate_label->hide();
   edit_duplicate_list=new QListView(this);
@@ -200,6 +213,7 @@ EditSettings::EditSettings(QWidget *parent)
   duplicatesCheckedData(edit_system->allowDuplicateCartTitles());
   edit_maxpost_spin->setValue(edit_system->maxPostLength()/1000000);
   edit_isci_path_edit->setText(edit_system->isciXreferencePath());
+  edit_show_user_list_box->setChecked(edit_system->showUserList());
 
   for(int i=0;i<edit_sample_rate_box->count();i++) {
     if(edit_sample_rate_box->text(i).toUInt()==edit_system->sampleRate()) {
@@ -225,7 +239,7 @@ EditSettings::~EditSettings()
 
 QSize EditSettings::sizeHint() const
 {
-  return QSize(500,218+y_pos);
+  return QSize(500,240+y_pos);
 } 
 
 
@@ -385,6 +399,8 @@ void EditSettings::okData()
   edit_system->setMaxPostLength(edit_maxpost_spin->value()*1000000);
   edit_system->setIsciXreferencePath(edit_isci_path_edit->text());
   edit_system->setTempCartGroup(edit_temp_cart_group_box->currentText());
+  edit_system->setShowUserList(edit_show_user_list_box->isChecked());
+
   done(0);
 }
 

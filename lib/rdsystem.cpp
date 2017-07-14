@@ -146,6 +146,34 @@ void RDSystem::setTempCartGroup(const QString &str) const
 }
 
 
+bool RDSystem::showUserList() const
+{
+  bool ret=false;
+  QString sql;
+  RDSqlQuery *q;
+
+  sql="select SHOW_USER_LIST from SYSTEM";
+  q=new RDSqlQuery(sql);
+  if(q->first()) {
+    ret=RDBool(q->value(0).toString());
+  }
+  delete q;
+  return ret;
+}
+
+
+void RDSystem::setShowUserList(bool state) const
+{
+  QString sql;
+  RDSqlQuery *q;
+
+  sql=QString().sprintf("update SYSTEM set SHOW_USER_LIST=\"%s\"",
+			(const char *)RDYesNo(state));
+  q=new RDSqlQuery(sql);
+  delete q;
+}
+
+
 QString RDSystem::xml() const
 {
   QString xml="<systemSettings>\n";

@@ -3111,6 +3111,10 @@ Overwrite?</source>
         <source>Auto-Correct Duplicate Cart Titles</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Show User List in RDLogin</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditStation</name>

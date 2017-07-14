@@ -39,6 +39,8 @@ class RDSystem
   void setIsciXreferencePath(const QString &str) const;
   QString tempCartGroup() const;
   void setTempCartGroup(const QString &str) const;
+  bool showUserList() const;
+  void setShowUserList(bool state) const;
   QString xml() const;
 
  private:

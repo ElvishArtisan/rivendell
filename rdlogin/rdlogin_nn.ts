@@ -49,7 +49,11 @@ brukar</translation>
     </message>
     <message>
         <source>Invalid Password!</source>
-        <translation>Ugyldig passord!</translation>
+        <translation type="obsolete">Ugyldig passord!</translation>
+    </message>
+    <message>
+        <source>Invalid Username or Password!</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>
