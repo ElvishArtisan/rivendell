@@ -15905,3 +15905,5 @@
 2017-07-14 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in 'rdlogin/rdlogin.cpp' that caused user login to fail
 	to be effective when not listing users.
+2017-07-14 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to v2.16.0int08
