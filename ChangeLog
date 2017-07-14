@@ -15902,3 +15902,6 @@
 	when 'Show User List in RDLogin' is unchecked.
 2017-07-14 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 2.16.0int07.
+2017-07-14 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed abug in 'rdlogin/rdlogin.cpp' that caused user login to fail
+	to be effective when not listing users.

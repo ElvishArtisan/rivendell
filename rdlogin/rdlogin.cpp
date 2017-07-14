@@ -273,7 +273,12 @@ void MainWidget::loginData()
     user=new RDUser(login_username_edit->text());
   }
   if(user->exists()&&user->checkPassword(login_password_edit->text(),false)) {
-    login_ripc->setUser(login_username_box->currentText());
+    if(login_system->showUserList()) {
+      login_ripc->setUser(login_username_box->currentText());
+    }
+    else {
+      login_ripc->setUser(login_username_edit->text());
+    }
     login_password_edit->clear();
     delete user;
     qApp->processEvents();
