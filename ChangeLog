@@ -15896,3 +15896,5 @@
 	and 'lib/rdescape_string.cpp'.
 	* Fixed a bug in 'lib/rduser.cpp' that caused PAM authentication of
 	accounts with a password containing one or more '$' characters to fail.
+2017-07-17 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.16.0int06_rfa00.
