@@ -70,7 +70,8 @@ bool RDUser::authenticated(bool webuser) const
 #ifndef WIN32
   else {
     QString cmd=
-      "rdauth "+pamService()+" \""+user_name+"\" \""+user_password+"\"";
+      "rdauth "+pamService()+" "+RDEscapeShellString(user_name)+" "+
+      RDEscapeShellString(user_password);
     int exitcode=system(cmd);
     return WEXITSTATUS(exitcode)==0;
   }
