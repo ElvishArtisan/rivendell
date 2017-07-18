@@ -15901,3 +15901,5 @@
 2017-07-18 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in the 'ListCuts web API call that caused incorrect
 	<startPoint> and <endPoint> values to the returned.
+2017-07-18 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.16.0int06_rfa01.
