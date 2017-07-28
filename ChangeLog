@@ -15910,3 +15910,5 @@
 2017-07-28 Fred Gleason <fredg@paravelsystems.com>
 	* Refactored the 'RDUser::authenticated()' method to eliminate use
 	of rdauth(8).
+2017-07-28 Fred Gleason <fredg@paravelsystems.com>
+	* Removed rdauth(8).
