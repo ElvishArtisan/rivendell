@@ -15829,3 +15829,5 @@
 	* Fixed a bug in 'lib/rdevent_line.cpp' that caused an embedded traffic
 	import event to be assigned incorrect link parameters when scheduled
 	at midnight.
+2017-07-28 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.16.0kxxo01.
