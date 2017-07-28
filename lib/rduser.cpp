@@ -69,11 +69,11 @@ bool RDUser::authenticated(bool webuser) const
   }
 #ifndef WIN32
   else {
-    QString cmd=
-      "rdauth "+pamService()+" "+RDEscapeShellString(user_name)+" "+
-      RDEscapeShellString(user_password);
-    int exitcode=system(cmd);
-    return WEXITSTATUS(exitcode)==0;
+    bool ret=false;
+    RDPam *pam=new RDPam(pamService());
+    ret=pam->authenticate(user_name,user_password);
+    delete pam;
+    return ret;
   }
 #endif  // WIN32
   return false;
