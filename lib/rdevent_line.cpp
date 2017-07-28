@@ -1040,8 +1040,14 @@ bool RDEventLine::linkLog(RDLogEvent *e,int next_id,const QString &svcname,
 	  logline->setTransType(trans_type);
 	  logline->setEventLength(event_length);
 	  logline->setLinkEventName(event_nested_event);
-	  logline->setLinkStartTime(link_logline->linkStartTime());
-	  logline->setLinkLength(link_logline->linkLength());
+	  if((!q->value(12).isNull())&&(!q->value(13).isNull())) {
+	    logline->setLinkStartTime(q->value(12).toTime());
+	    logline->setLinkLength(q->value(13).toInt());
+	  }
+	  else {
+	    logline->setLinkStartTime(link_logline->linkStartTime());
+	    logline->setLinkLength(link_logline->linkLength());
+	  }
 	  logline->setLinkStartSlop(link_logline->linkStartSlop());
 	  logline->setLinkEndSlop(link_logline->linkEndSlop());
 	  logline->setLinkId(link_logline->linkId());
