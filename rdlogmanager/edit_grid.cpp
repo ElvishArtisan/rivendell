@@ -264,9 +264,10 @@ void EditGrid::clearHourData()
 {
   int dayofweek=edit_rightclick_id/24+1;
   int hour=edit_rightclick_id-24*(dayofweek-1);
+
   QString sql=QString("update SERVICE_CLOCKS set CLOCK_NAME=null where ")+
     "(SERVICE_NAME=\""+RDEscapeString(edit_servicename)+"\")&&"+
-    QString().sprintf("HOUR=%d)",hour);
+    QString().sprintf("(HOUR=%d)",(dayofweek-1)*24+hour);
   RDSqlQuery *q=new RDSqlQuery(sql);
   delete q;
   LabelButton(dayofweek,hour,"");
