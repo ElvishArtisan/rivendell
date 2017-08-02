@@ -18,6 +18,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
+#include <sys/time.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
@@ -355,23 +356,32 @@ void Xport::TryCreateTicket(const QString &name)
   QString ticket;
   QString passwd;
   int command;
-  unsigned char rawstr[1024];
+  char rawstr[1024];
   unsigned char sha1[SHA_DIGEST_LENGTH];
   QString sql;
   RDSqlQuery *q;
 
   if(xport_post->getValue("COMMAND",&command)) {
     if(command==RDXPORT_COMMAND_CREATETICKET) {
-      QDateTime now=QDateTime::currentDateTime();
-      snprintf((char *)rawstr,1024,"%s %s %s",
-	       (const char *)now.toString("yyyy-MM-dd hh:mm:ss.zzz"),
-	       (const char *)name,
-	       (const char *)xport_post->clientAddress().toString());
-      SHA1(rawstr,strlen((char *)rawstr),sha1);
+      struct timeval tv;
+      memset(&tv,0,sizeof(tv));
+      gettimeofday(&tv,NULL);
+      srandom(tv.tv_usec);
+      for(int i=0;i<5;i++) {
+	long r=random();
+	unsigned ipv4_addr=xport_post->clientAddress().toIPv4Address();
+	snprintf(rawstr+i*8,8,"%c%c%c%c%c%c%c%c",
+		 0xff&((int)r>>24),0xff&(ipv4_addr>>24),
+		 0xff&((int)r>>16),0xff&(ipv4_addr>>16),
+		 0xff&((int)r>>8),0xff&(ipv4_addr>>8),
+		 0xff&(int)r,0xff&ipv4_addr);
+      }
+      SHA1((const unsigned char *)rawstr,40,sha1);
       ticket="";
       for(int i=0;i<SHA_DIGEST_LENGTH;i++) {
 	ticket+=QString().sprintf("%02x",0xFF&rawstr[i]);
       }
+      QDateTime now=QDateTime::currentDateTime();
       sql=QString("insert into WEBAPI_AUTHS set ")+
 	"TICKET=\""+RDEscapeString(ticket)+"\","+
 	"LOGIN_NAME=\""+RDEscapeString(name)+"\","+

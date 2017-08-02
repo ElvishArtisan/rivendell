@@ -15919,3 +15919,6 @@
 2017-08-01 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in 'rdlogmanager/edit_grid.cpp' to broke functioning of
 	the 'Clear Hour' item in the right-click menu.
+2017-08-02 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored the algorithm for calculating web tickets in
+	'web/rdxport/rdxport.cpp'.
