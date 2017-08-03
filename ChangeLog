@@ -15922,3 +15922,5 @@
 2017-08-02 Fred Gleason <fredg@paravelsystems.com>
 	* Refactored the algorithm for calculating web tickets in
 	'web/rdxport/rdxport.cpp'.
+2017-08-03 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'rlm_urlwrite' RLM in 'rlm/rlm_urlwrite.c'.

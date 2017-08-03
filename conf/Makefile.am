@@ -51,6 +51,7 @@ EXTRA_DIST = my.cnf-master\
              rlm_tagstation.conf\
              rlm_twitter.conf\
              rlm_udp.conf\
+             rlm_urlwrite.conf\
              rlm_walltime.conf\
              rlm_xds.conf\
              rlm_xmpad.conf

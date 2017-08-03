@@ -423,6 +423,7 @@ rm -rf $RPM_BUILD_ROOT
 %doc conf/rlm_shoutcast1.conf
 %doc conf/rlm_spottrap.conf
 %doc conf/rlm_filewrite.conf
+%doc conf/rlm_urlwrite.conf
 %doc conf/rlm_spinitron_plus.conf
 %doc conf/rlm_tagstation.conf
 %doc docs/implemented_macros.txt
