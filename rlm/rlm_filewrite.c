@@ -132,9 +132,9 @@ void rlm_filewrite_RLMStart(void *ptr,const char *arg)
 			    (rlm_filewrite_devs+1)*sizeof(int));
     rlm_filewrite_appends[rlm_filewrite_devs]=
       RLMGetIntegerValue(ptr,arg,section,"Append",0);
-    rlm_filewrite_formats=realloc(rlm_filewrite_formats,(rlm_filewrite_devs+1)*256);
-    strncpy(rlm_filewrite_formats+256*rlm_filewrite_devs,
-	    RLMGetStringValue(ptr,arg,section,"FormatString",""),256);
+    rlm_filewrite_formats=realloc(rlm_filewrite_formats,(rlm_filewrite_devs+1)*8192);
+    strncpy(rlm_filewrite_formats+8192*rlm_filewrite_devs,
+	    RLMGetStringValue(ptr,arg,section,"FormatString",""),8192);
     rlm_filewrite_masters=realloc(rlm_filewrite_masters,
 			    (rlm_filewrite_devs+1)*sizeof(int));
     rlm_filewrite_masters[rlm_filewrite_devs]=
@@ -202,7 +202,7 @@ void rlm_filewrite_RLMPadDataSent(void *ptr,const struct rlm_svc *svc,
     }
     if((flag==1)||((flag==2)&&(log->log_onair!=0))) {
       strncpy(str,RLMResolveNowNextEncoded(ptr,now,next,
-					   rlm_filewrite_formats+256*i,
+					   rlm_filewrite_formats+8192*i,
 					   rlm_filewrite_encodings[i]),8192);
       rlm_filewrite_ProcessString(str);
       if(rlm_filewrite_appends[i]==0) {

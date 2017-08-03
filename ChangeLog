@@ -15924,3 +15924,6 @@
 	'web/rdxport/rdxport.cpp'.
 2017-08-03 Fred Gleason <fredg@paravelsystems.com>
 	* Added an 'rlm_urlwrite' RLM in 'rlm/rlm_urlwrite.c'.
+2017-08-03 Fred Gleason <fredg@paravelsystems.com>
+	* Increased the length of the 'Formats=' parameter in the
+	'rlm_filewrite' RLM from 256 to 8192 characters.
