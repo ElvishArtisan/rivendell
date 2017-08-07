@@ -15927,3 +15927,5 @@
 2017-08-03 Fred Gleason <fredg@paravelsystems.com>
 	* Increased the length of the 'Formats=' parameter in the
 	'rlm_filewrite' RLM from 256 to 8192 characters.
+2017-08-07 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.16.0int06_rfa02.
