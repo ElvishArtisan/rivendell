@@ -15931,3 +15931,5 @@
 	* Incremented the package version to 2.16.0int06_rfa02.
 2017-08-12 Fred Gleason <fredg@paravelsystems.com>
 	* Implemented a driver for WheatNet SLIO devices.
+2017-08-12 Fred Gleason <fredg@paravelsystems.com>
+	* Implemented a driver for WheatNet LIO devices.

@@ -61,6 +61,7 @@
 #include <swauthority.h>
 #include <unity4000.h>
 #include <vguest.h>
+#include <wheatnet_lio.h>
 #include <wheatnet_slio.h>
 
 bool MainObject::LoadSwitchDriver(int matrix_num)
@@ -218,6 +219,10 @@ bool MainObject::LoadSwitchDriver(int matrix_num)
 
   case RDMatrix::Unity4000:
     ripcd_switcher[matrix_num]=new Unity4000(matrix,this);
+    break;
+
+  case RDMatrix::WheatnetLio:
+    ripcd_switcher[matrix_num]=new WheatnetLio(matrix,this);
     break;
 
   case RDMatrix::WheatnetSlio:
