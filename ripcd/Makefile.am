@@ -76,7 +76,8 @@ dist_ripcd_SOURCES = acu1p.cpp acu1p.h\
                      switcher.cpp switcher.h\
                      unity4000.cpp unity4000.h\
                      unity_feed.cpp unity_feed.h\
-                     vguest.cpp vguest.h
+                     vguest.cpp vguest.h\
+                     wheatnet_slio.cpp wheatnet_slio.h
 
 nodist_ripcd_SOURCES = moc_am16.cpp\
                        moc_acu1p.cpp\
@@ -118,7 +119,8 @@ nodist_ripcd_SOURCES = moc_am16.cpp\
                        moc_swauthority.cpp\
                        moc_switcher.cpp\
                        moc_unity4000.cpp\
-                       moc_vguest.cpp
+                       moc_vguest.cpp\
+                       moc_wheatnet_slio.cpp
 
 ripcd_LDADD = @LIB_RDLIBS@ @LIBVORBIS@
 
