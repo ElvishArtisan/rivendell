@@ -15935,3 +15935,5 @@
 	* Implemented a driver for WheatNet LIO devices.
 2017-08-13 Fred Gleason <fredg@paravelsystems.com>
 	* Refactored the WheatNet LIO driver to use event subscription.
+2017-08-13 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored the WheatNet SLIO driver to use event subscription.

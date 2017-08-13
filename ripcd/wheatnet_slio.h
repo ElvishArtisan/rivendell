@@ -33,8 +33,8 @@
 
 #include <switcher.h>
 
-#define WHEATNET_SLIO_POLL_INTERVAL 100
-#define WHEATNET_SLIO_WATCHDOG_INTERVAL 1000
+#define WHEATNET_SLIO_POLL_INTERVAL 1000
+#define WHEATNET_SLIO_WATCHDOG_INTERVAL 5000
 
 class WheatnetSlio : public Switcher
 {
@@ -53,18 +53,17 @@ class WheatnetSlio : public Switcher
   void connectedData();
   void readyReadData();
   void errorData(int err);
-  void pollInputs();
   void resetStateData(int line);
+  void pollData();
   void watchdogData();
 
  private:
   void CheckLineEntry(int line);
   void ProcessSys(const QString &cmd);
-  void ProcessSlio(int chan,QString &cmd);
+  void ProcessSlioevent(int chan,QString &cmd);
   void ProcessCommand(const QString &cmd);
   void SendCommand(const QString &cmd);
   QSocket *slio_socket;
-  QTimer *slio_poll_timer;
   QTimer *slio_watchdog_timer;
   bool slio_watchdog_active;
   QHostAddress slio_ip_address;
@@ -75,6 +74,7 @@ class WheatnetSlio : public Switcher
   QSignalMapper *slio_reset_mapper;
   std::vector<QTimer *> slio_reset_timers;
   std::vector<bool> slio_reset_states;
+  QTimer *slio_poll_timer;
 };
 
 

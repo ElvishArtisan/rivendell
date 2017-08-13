@@ -41,7 +41,7 @@ WheatnetSlio::WheatnetSlio(RDMatrix *matrix,QObject *parent)
   slio_socket->connectToHost(slio_ip_address.toString(),slio_ip_port);
 
   slio_poll_timer=new QTimer(this);
-  connect(slio_poll_timer,SIGNAL(timeout()),this,SLOT(pollInputs()));
+  connect(slio_poll_timer,SIGNAL(timeout()),this,SLOT(pollData()));
 
   slio_reset_mapper=new QSignalMapper(this);
   connect(slio_reset_mapper,SIGNAL(mapped(int)),
@@ -208,19 +208,17 @@ void WheatnetSlio::errorData(int err)
 }
 
 
-void WheatnetSlio::pollInputs()
-{
-  for(int i=0;i<slio_gpios;i++) {
-    SendCommand(QString().sprintf("<SLIO:%d?LVL>",i+1));
-  }
-}
-
-
 void WheatnetSlio::resetStateData(int line)
 {
   SendCommand(QString().sprintf("<SLIO:%d|LVL:%d>",line+1,
 				(int)slio_reset_states[line]));
   emit gpoChanged(matrixNumber(),line,slio_reset_states[line]);
+}
+
+
+void WheatnetSlio::pollData()
+{
+  SendCommand("<SYS?BLID>");
 }
 
 
@@ -300,6 +298,7 @@ void WheatnetSlio::ProcessSys(const QString &cmd)
 	slio_reset_states.push_back(false);
 	slio_gpi_states.push_back(false);
 	CheckLineEntry(i+1);
+	SendCommand(QString().sprintf("<SLIOSUB:%d|LVL:1>",i+1));
       }
       sql=QString("update MATRICES set ")+
 	QString().sprintf("GPIS=%d,GPOS=%d where ",slio_gpios,slio_gpios)+
@@ -307,13 +306,19 @@ void WheatnetSlio::ProcessSys(const QString &cmd)
 	QString().sprintf("(MATRIX=%d)",matrixNumber());
       q=new RDSqlQuery(sql);
       delete q;
-      pollInputs();
+      slio_watchdog_timer->start(WHEATNET_SLIO_WATCHDOG_INTERVAL,true);
+      slio_poll_timer->start(WHEATNET_SLIO_POLL_INTERVAL,true);
     }
+  }
+  if((f0[0]=="BLID")&&(f0.size()==2)) {
+    slio_watchdog_timer->stop();
+    slio_watchdog_timer->start(WHEATNET_SLIO_WATCHDOG_INTERVAL,true);
+    slio_poll_timer->start(WHEATNET_SLIO_POLL_INTERVAL,true);
   }
 }
 
 
-void WheatnetSlio::ProcessSlio(int chan,QString &cmd)
+void WheatnetSlio::ProcessSlioevent(int chan,QString &cmd)
 {
   //  printf("ProcessSlip(%d,%s)\n",chan,(const char *)cmd);
   QStringList f0=f0.split(":",cmd);
@@ -321,14 +326,13 @@ void WheatnetSlio::ProcessSlio(int chan,QString &cmd)
     if(chan<=(int)slio_gpi_states.size()) {
       bool state=f0[1]=="1";
       if(state!=slio_gpi_states[chan-1]) {
-	printf("change chan: %d  state: %d\n",chan,state);
 	slio_gpi_states[chan-1]=state;
 	emit gpiChanged(matrixNumber(),chan-1,state);
       }
     }
     else {
       syslog(LOG_WARNING,
-	     "WheatNet device at %s:%d sent invalid SLIO LVL update [%s]",
+	     "WheatNet device at %s:%d sent invalid SLIOEVENT LVL update [%s]",
 	     (const char *)slio_ip_address.toString(),
 	     slio_ip_port,(const char *)cmd);
     }
@@ -353,10 +357,10 @@ void WheatnetSlio::ProcessCommand(const QString &cmd)
       if(f1[0]=="SYS") {
 	ProcessSys(f0[1]);
       }
-      if((f1[0]=="SLIO")&&(f1.size()==2)) {
+      if((f1[0]=="SLIOEVENT")&&(f1.size()==2)) {
 	int chan=f1[1].toUInt(&ok);
 	if(ok) {
-	  ProcessSlio(chan,f0[1]);
+	  ProcessSlioevent(chan,f0[1]);
 	}
       }
     }
