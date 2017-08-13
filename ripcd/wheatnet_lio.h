@@ -33,8 +33,8 @@
 
 #include <switcher.h>
 
-#define WHEATNET_LIO_POLL_INTERVAL 100
-#define WHEATNET_LIO_WATCHDOG_INTERVAL 1000
+#define WHEATNET_LIO_POLL_INTERVAL 1000
+#define WHEATNET_LIO_WATCHDOG_INTERVAL 5000
 
 class WheatnetLio : public Switcher
 {
@@ -53,18 +53,17 @@ class WheatnetLio : public Switcher
   void connectedData();
   void readyReadData();
   void errorData(int err);
-  void pollInputs();
   void resetStateData(int line);
+  void pollData();
   void watchdogData();
 
  private:
   void CheckLineEntry(int line);
   void ProcessSys(const QString &cmd);
-  void ProcessLio(int chan,QString &cmd);
+  void ProcessLioevent(int chan,QString &cmd);
   void ProcessCommand(const QString &cmd);
   void SendCommand(const QString &cmd);
   QSocket *lio_socket;
-  QTimer *lio_poll_timer;
   QTimer *lio_watchdog_timer;
   bool lio_watchdog_active;
   QHostAddress lio_ip_address;
@@ -76,6 +75,7 @@ class WheatnetLio : public Switcher
   QSignalMapper *lio_reset_mapper;
   std::vector<QTimer *> lio_reset_timers;
   std::vector<bool> lio_reset_states;
+  QTimer *lio_poll_timer;
 };
 
 

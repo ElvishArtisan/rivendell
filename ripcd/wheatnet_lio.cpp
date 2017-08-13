@@ -42,7 +42,7 @@ WheatnetLio::WheatnetLio(RDMatrix *matrix,QObject *parent)
   lio_socket->connectToHost(lio_ip_address.toString(),lio_ip_port);
 
   lio_poll_timer=new QTimer(this);
-  connect(lio_poll_timer,SIGNAL(timeout()),this,SLOT(pollInputs()));
+  connect(lio_poll_timer,SIGNAL(timeout()),this,SLOT(pollData()));
 
   lio_reset_mapper=new QSignalMapper(this);
   connect(lio_reset_mapper,SIGNAL(mapped(int)),
@@ -211,19 +211,17 @@ void WheatnetLio::errorData(int err)
 }
 
 
-void WheatnetLio::pollInputs()
-{
-  for(int i=0;i<lio_gpios;i++) {
-    SendCommand(QString().sprintf("<LIO:%d?LVL>",i));
-  }
-}
-
-
 void WheatnetLio::resetStateData(int line)
 {
   SendCommand(QString().sprintf("<LIO:%d|LVL:%d>",line,
 				(int)lio_reset_states[line]));
   emit gpoChanged(matrixNumber(),line,lio_reset_states[line]);
+}
+
+
+void WheatnetLio::pollData()
+{
+  SendCommand("<SYS?BLID>");
 }
 
 
@@ -303,6 +301,7 @@ void WheatnetLio::ProcessSys(const QString &cmd)
 	lio_reset_states.push_back(false);
 	lio_gpi_states.push_back(false);
 	CheckLineEntry(i+1);
+	SendCommand(QString().sprintf("<LIOSUB:0.%d|LVL:1>",i));
       }
       sql=QString("update MATRICES set ")+
 	QString().sprintf("GPIS=%d,GPOS=%d where ",lio_gpios,lio_gpios)+
@@ -310,15 +309,21 @@ void WheatnetLio::ProcessSys(const QString &cmd)
 	QString().sprintf("(MATRIX=%d)",matrixNumber());
       q=new RDSqlQuery(sql);
       delete q;
-      pollInputs();
+      lio_watchdog_timer->start(WHEATNET_LIO_WATCHDOG_INTERVAL,true);
+      lio_poll_timer->start(WHEATNET_LIO_POLL_INTERVAL,true);
     }
+  }
+  if((f0[0]=="BLID")&&(f0.size()==2)) {
+    lio_watchdog_timer->stop();
+    lio_watchdog_timer->start(WHEATNET_LIO_WATCHDOG_INTERVAL,true);
+    lio_poll_timer->start(WHEATNET_LIO_POLL_INTERVAL,true);
   }
 }
 
 
-void WheatnetLio::ProcessLio(int chan,QString &cmd)
+void WheatnetLio::ProcessLioevent(int chan,QString &cmd)
 {
-  //  printf("ProcessSlip(%d,%s)\n",chan,(const char *)cmd);
+  //  printf("ProcessLioevent(%d,%s)\n",chan,(const char *)cmd);
   QStringList f0=f0.split(":",cmd);
   if((f0[0]=="LVL")&&(f0.size()==2)) {
     if(chan<(int)lio_gpi_states.size()) {
@@ -330,12 +335,11 @@ void WheatnetLio::ProcessLio(int chan,QString &cmd)
     }
     else {
       syslog(LOG_WARNING,
-	     "WheatNet device at %s:%d sent invalid LIO LVL update [%s]",
+	     "WheatNet device at %s:%d sent invalid LIOEVENT LVL update [%s]",
 	     (const char *)lio_ip_address.toString(),
 	     lio_ip_port,(const char *)cmd);
     }
     if((chan+1)==lio_gpios) {
-      lio_poll_timer->start(50,true);
       lio_watchdog_timer->stop();
       lio_watchdog_timer->start(1000,true);
     }
@@ -355,10 +359,13 @@ void WheatnetLio::ProcessCommand(const QString &cmd)
       if(f1[0]=="SYS") {
 	ProcessSys(f0[1]);
       }
-      if((f1[0]=="LIO")&&(f1.size()==2)) {
-	int chan=f1[1].toUInt(&ok);
-	if(ok) {
-	  ProcessLio(chan,f0[1]);
+      if((f1[0]=="LIOEVENT")&&(f1.size()==2)) {
+	QStringList f2=f2.split(".",f1[1]);
+	if((f2[0]=="0")&&(f2.size()==2)) {
+	  int chan=f2[1].toUInt(&ok);
+	  if(ok) {
+	    ProcessLioevent(chan,f0[1]);
+	  }
 	}
       }
     }
