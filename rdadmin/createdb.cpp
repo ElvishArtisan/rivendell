@@ -8422,7 +8422,42 @@ int UpdateDb(int ver)
     delete q;
   }
 
+  if(ver<266) {
+    sql=QString("select NAME from LOGS");
+    q=new QSqlQuery(sql);
+    while(q->next()) {
+      sql=QString("select `")+RDLog::tableName(q->value(0).toString())+
+	"`.ID from "+
+	"`"+RDLog::tableName(q->value(0).toString())+"` left join CART "+
+	"on `"+RDLog::tableName(q->value(0).toString())+
+	"`.CART_NUMBER=CART.NUMBER where "+
+	"CART.OWNER is not null";
+      q1=new RDSqlQuery(sql);
+      int completed=q1->size();
+      delete q1;
 
+      sql=QString("select ID from `")+RDLog::tableName(q->value(0).toString())+
+	"` where "+QString().sprintf("TYPE=%d",RDLogLine::Track);
+      q1=new RDSqlQuery(sql);
+      int scheduled=q1->size()+completed;
+      delete q1;
+
+      sql=QString("update LOGS set ")+
+	QString().sprintf("SCHEDULED_TRACKS=%d,",scheduled)+
+	QString().sprintf("COMPLETED_TRACKS=%u ",completed)+
+	"where NAME=\""+RDEscapeString(q->value(0).toString())+"\"";
+      q1=new RDSqlQuery(sql);
+      delete q1;
+    }
+    delete q;
+  }
+
+  //
+  // Maintainer's Note:
+  //
+  // When adding a schema update here, be sure also to implement the
+  // corresponding reversion in rdrevert(8)!
+  //
   
   //
   // Update Version Field

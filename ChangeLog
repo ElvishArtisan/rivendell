@@ -15956,3 +15956,7 @@
 2017-08-16 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in 'lib/rdlog.cpp' that caused incorrect results when
 	calculating the total number of voice tracks in a log.
+2017-08-16 Fred Gleason <fredg@paravelsystems.com>
+	* Added fixup code in 'rdadmin/createdb.cpp' to recalculate
+	voice track counts.
+	* Incremented the database version to 266.

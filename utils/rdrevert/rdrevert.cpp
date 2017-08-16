@@ -218,6 +218,10 @@ void MainObject::Revert(int schema) const
   case 265:
     Revert265();
     break;
+
+  case 266:
+    Revert266();
+    break;
   }
 }
 
@@ -635,6 +639,14 @@ void MainObject::Revert265() const
   delete q;  
 
   SetVersion(264);
+}
+
+
+void MainObject::Revert266() const
+{
+  // Nothing to do here as this is a pseudo-schema change.
+
+  SetVersion(265);
 }
 
 
