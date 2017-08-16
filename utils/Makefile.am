@@ -28,7 +28,6 @@ if ALSA_RD_AM
 endif
 SUBDIRS = $(ALSACONFIG_RD_OPT)\
           $(HPIINFO_RD_OPT)\
-          rdauth\
           rddbcheck\
           rddgimport\
           rdcheckcuts\

@@ -212,7 +212,6 @@ rm -rf $RPM_BUILD_ROOT
 @LOCAL_PREFIX@/@RD_LIB_PATH@/rivendell/*.rlm
 @LOCAL_PREFIX@/bin/rdadmin
 @LOCAL_PREFIX@/bin/rdairplay
-%attr(6755,root,root)@LOCAL_PREFIX@/bin/rdauth
 @LOCAL_PREFIX@/bin/rdpanel
 @LOCAL_PREFIX@/bin/rdcartslots
 @LOCAL_PREFIX@/bin/rdcatch
@@ -424,6 +423,7 @@ rm -rf $RPM_BUILD_ROOT
 %doc conf/rlm_shoutcast1.conf
 %doc conf/rlm_spottrap.conf
 %doc conf/rlm_filewrite.conf
+%doc conf/rlm_urlwrite.conf
 %doc conf/rlm_spinitron_plus.conf
 %doc conf/rlm_tagstation.conf
 %doc docs/implemented_macros.txt

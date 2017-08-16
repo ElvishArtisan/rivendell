@@ -470,7 +470,6 @@ AC_CONFIG_FILES([rivendell.spec \
     cae/Makefile \
     utils/Makefile \
     utils/rdalsaconfig/Makefile \
-    utils/rdauth/Makefile \
     utils/rdcheckcuts/Makefile \
     utils/rdchunk/Makefile \
     utils/rdcleandirs/Makefile \

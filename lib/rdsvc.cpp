@@ -966,8 +966,8 @@ bool RDSvc::linkLog(RDSvc::ImportSource src,const QDate &date,
   emit generationProgress(24);
   delete src_event;
   delete dest_event;
-  //  printf("Import Table: %s\n",(const char *)import_name);
 
+  //  printf("Import Table: %s\n",(const char *)import_name);
   sql=QString().sprintf("drop table `%s`",(const char *)import_name);
   q=new RDSqlQuery(sql);
   delete q;

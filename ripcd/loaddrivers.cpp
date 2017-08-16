@@ -2,7 +2,7 @@
 //
 // Load Switcher drivers for ripcd(8)
 //
-//   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2017 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -61,6 +61,8 @@
 #include <swauthority.h>
 #include <unity4000.h>
 #include <vguest.h>
+#include <wheatnet_lio.h>
+#include <wheatnet_slio.h>
 
 bool MainObject::LoadSwitchDriver(int matrix_num)
 {
@@ -217,6 +219,14 @@ bool MainObject::LoadSwitchDriver(int matrix_num)
 
   case RDMatrix::Unity4000:
     ripcd_switcher[matrix_num]=new Unity4000(matrix,this);
+    break;
+
+  case RDMatrix::WheatnetLio:
+    ripcd_switcher[matrix_num]=new WheatnetLio(matrix,this);
+    break;
+
+  case RDMatrix::WheatnetSlio:
+    ripcd_switcher[matrix_num]=new WheatnetSlio(matrix,this);
     break;
 
   default:

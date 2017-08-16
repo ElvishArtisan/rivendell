@@ -1496,7 +1496,7 @@ QString RDCut::xml(RDSqlQuery *q,bool absolute,RDSettings *settings)
   else {
     xml+="  "+RDXmlField("startPoint",0);
     xml+="  "+
-      RDXmlField("endPoint",q->value(31).toInt()-q->value(59).toInt());
+      RDXmlField("endPoint",q->value(60).toInt()-q->value(59).toInt());
     if(q->value(61).toInt()<0) {
       xml+="  "+RDXmlField("fadeupPoint",-1);
     }

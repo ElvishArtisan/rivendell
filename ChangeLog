@@ -15907,3 +15907,52 @@
 	to be effective when not listing users.
 2017-07-14 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to v2.16.0int08
+2017-07-17 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'RDEscapeShellString()' function in 'lib/rdescape_string.h'
+	and 'lib/rdescape_string.cpp'.
+	* Fixed a bug in 'lib/rduser.cpp' that caused PAM authentication of
+	accounts with a password containing one or more '$' characters to fail.
+2017-07-17 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.16.0int06_rfa00.
+2017-07-18 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in the 'ListCuts web API call that caused incorrect
+	<startPoint> and <endPoint> values to the returned.
+2017-07-18 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.16.0int06_rfa01.
+2017-07-28 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'lib/rdevent_line.cpp' that caused embedded traffic
+	import events to be assigned incorrect link parameters when scheduled
+	immediately after a voice track.
+2017-07-28 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored the 'RDUser::authenticated()' method to eliminate use
+	of rdauth(8).
+2017-07-28 Fred Gleason <fredg@paravelsystems.com>
+	* Removed rdauth(8).
+2017-07-28 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'lib/rdevent_line.cpp' that caused an embedded traffic
+	import event to be assigned incorrect link parameters when scheduled
+	at midnight.
+2017-08-01 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'rdlogmanager/edit_grid.cpp' to broke functioning of
+	the 'Clear Hour' item in the right-click menu.
+2017-08-02 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored the algorithm for calculating web tickets in
+	'web/rdxport/rdxport.cpp'.
+2017-08-03 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'rlm_urlwrite' RLM in 'rlm/rlm_urlwrite.c'.
+2017-08-03 Fred Gleason <fredg@paravelsystems.com>
+	* Increased the length of the 'Formats=' parameter in the
+	'rlm_filewrite' RLM from 256 to 8192 characters.
+2017-08-07 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.16.0int06_rfa02.
+2017-08-12 Fred Gleason <fredg@paravelsystems.com>
+	* Implemented a driver for WheatNet SLIO devices.
+2017-08-12 Fred Gleason <fredg@paravelsystems.com>
+	* Implemented a driver for WheatNet LIO devices.
+2017-08-13 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored the WheatNet LIO driver to use event subscription.
+2017-08-13 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored the WheatNet SLIO driver to use event subscription.
+2017-08-16 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'lib/rdlog.cpp' that caused incorrect results when
+	calculating the total number of voice tracks in a log.

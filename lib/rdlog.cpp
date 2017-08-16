@@ -394,8 +394,10 @@ void RDLog::updateTracks()
   unsigned scheduled=0;
   unsigned completed=0;
 
-  sql=QString().sprintf("select NUMBER from CART where OWNER=\"%s\"",
-			(const char *)RDEscapeString(log_name));
+  sql=QString("select `")+RDLog::tableName(log_name)+"`.ID from "+
+    "`"+RDLog::tableName(log_name)+"` left join CART "+
+    "on `"+RDLog::tableName(log_name)+"`.CART_NUMBER=CART.NUMBER where "+
+    "CART.OWNER is not null";
   q=new RDSqlQuery(sql);
   completed=q->size();
   delete q;

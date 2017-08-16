@@ -2,7 +2,7 @@
 //
 // Escape non-valid characters in a string.
 //
-//   (C) Copyright 2002-2005,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2005,2016-2017 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -28,7 +28,7 @@ QString RDCheckDateTime(const QTime &time, const QString &format);
 QString RDCheckDateTime(const QDateTime &datetime, const QString &format);
 QString RDCheckDateTime(const QDate &date, const QString &format);
 QString RDEscapeString(const QString &str);
-
+QString RDEscapeShellString(QString str);
 
 
 #endif  // RDESCAPE_STRING_H

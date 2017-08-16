@@ -2,7 +2,7 @@
 ##
 ## Automake.am for rivendell/rlm
 ##
-##   (C) Copyright 2008,2016 Fred Gleason <fredg@paravelsystems.com>
+##   (C) Copyright 2008,2016-2017 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -37,6 +37,7 @@ RLM_MODULES=rlm_ando.rlm\
             rlm_test.rlm\
             rlm_twitter.rlm\
             rlm_udp.rlm\
+            rlm_urlwrite.rlm\
             rlm_walltime.rlm\
             rlm_xds.rlm\
             rlm_xmpad.rlm
@@ -76,6 +77,7 @@ EXTRA_DIST = Makefile-example\
              rlm_test.c\
              rlm_twitter.c\
              rlm_udp.c\
+             rlm_urlwrite.c\
              rlm_walltime.c\
              rlm_xds.c\
              rlm_xmpad.c
