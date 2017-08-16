@@ -15929,3 +15929,6 @@
 	'rlm_filewrite' RLM from 256 to 8192 characters.
 2017-08-07 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 2.16.0int06_rfa02.
+2017-08-16 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'lib/rdlog.cpp' that caused incorrect results when
+	calculating the total number of voice tracks in a log.
