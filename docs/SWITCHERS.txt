@@ -37,6 +37,8 @@ Sine Systems ACU-1 (Prophet version)
 Software Authority Protocol
 StarGuide III Satellite Receiver
 Wegener Unity4000 DVB Satellite Receiver
+WheatNet Blade LIO
+WheatNet Blade SLIO
 
 See the sections below for notes on each specific model.
 
@@ -849,6 +851,38 @@ Caution is needed when scheduling record events from the Unity4000, as
 the unit is capable of outputting a given DVB stream to only a single 
 output at a time.  Commanding a stream to an output will cause that 
 stream to be silently deselected from a previously selected output.
+
+
+----------------------------------------------------------------------------
+WHEATNET BLADE LIO
+
+Driver Name: WheatNet LIO
+
+Supported RML Commands:
+  GPI Enable ('GE')
+  GPI Set ('GI')
+  GPO Set ('GO')
+
+GENERAL NOTES:
+Control is done by means of a TCP/IP connection to port 55776 on a blade.
+The only required configuration parameters are IP Address and IP Port.
+The number of pins is auto-detected at driver startup.
+
+
+----------------------------------------------------------------------------
+WHEATNET BLADE SLIO
+
+Driver Name: WheatNet SLIO
+
+Supported RML Commands:
+  GPI Enable ('GE')
+  GPI Set ('GI')
+  GPO Set ('GO')
+
+GENERAL NOTES:
+Control is done by means of a TCP/IP connection to port 55776 on a blade.
+The only required configuration parameters are IP Address and IP Port.
+The number of soft pins is auto-detected at driver startup.
 
 
 ----------------------------------------------------------------------------
