@@ -107,6 +107,7 @@ utils/rdcollect/rdcollect
 utils/rdexport/rdexport
 utils/rdmaint/rdmaint
 utils/rdgen/rdgen
+utils/rdrender/rdrender
 utils/rdrevert/rdrevert
 utils/sas_shim/sas_shim
 web/rdfeed/rdfeed.xml

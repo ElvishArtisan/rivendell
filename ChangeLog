@@ -15960,3 +15960,5 @@
 	* Added fixup code in 'rdadmin/createdb.cpp' to recalculate
 	voice track counts.
 	* Incremented the database version to 266.
+2017-08-18 Fred Gleason <fredg@paravelsystems.com>
+	* Added rdrender(1) in 'utils/rdrender/'.
