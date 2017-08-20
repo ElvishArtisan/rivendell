@@ -70,12 +70,6 @@ int MainObject::MainLoop()
 	QString cutname;
 	if(cart->selectCut(&cutname,current_time)) {
 	  RDCut *cut=new RDCut(cutname);
-	  //
-	  // FIXME: This breaks on setups where caed(8) has been delegated
-	  //        to a different host!
-	  //
-	  // FIXME: This breaks with MPEG audio stores!
-	  //
 	  QString filename;
 	  if(GetCutFile(cutname,cut->startPoint(),cut->endPoint(),&filename)) {
 	    SNDFILE *sf_in=sf_open(filename,SFM_READ,&sf_info);

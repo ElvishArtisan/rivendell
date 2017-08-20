@@ -15962,3 +15962,5 @@
 	* Incremented the database version to 266.
 2017-08-18 Fred Gleason <fredg@paravelsystems.com>
 	* Added rdrender(1) in 'utils/rdrender/'.
+2017-08-20 Fred Gleason <fredg@paravelsystems.com>
+	* Removed FIXME entries from 'utils/rdrender/mainloop.cpp'.
