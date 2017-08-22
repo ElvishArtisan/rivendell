@@ -18,9 +18,10 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
+#include <math.h>
 #include <stdio.h>
 
-#include <sndfile.h>
+#include <vector>
 
 #include <rdcart.h>
 #include <rdcut.h>
@@ -32,7 +33,7 @@
 
 int MainObject::MainLoop()
 {
-  static float pcm[16384];
+  float *pcm=NULL;
   QTime current_time=render_start_time;
   //  QDate current_date=render_start_date;
 
@@ -60,38 +61,86 @@ int MainObject::MainLoop()
   }
 
   //
-  // Iterate through the log
+  // Initialize the log
   //
+  std::vector<LogLine *> lls;
   for(int i=0;i<log_event->size();i++) {
-    RDLogLine *ll=log_event->logLine(i);
-    if(ll->type()==RDLogLine::Cart) {
-      RDCart *cart=new RDCart(ll->cartNumber());
-      if(cart->exists()&&(cart->type()==RDCart::Audio)) {
-	QString cutname;
-	if(cart->selectCut(&cutname,current_time)) {
-	  RDCut *cut=new RDCut(cutname);
-	  QString filename;
-	  if(GetCutFile(cutname,cut->startPoint(),cut->endPoint(),&filename)) {
-	    SNDFILE *sf_in=sf_open(filename,SFM_READ,&sf_info);
-	    int n;
-	    if(sf_in!=NULL) {
-	      DeleteCutFile(filename);
-	      while((n=sf_readf_float(sf_in,pcm,8192))>0) {
-		sf_writef_float(sf_out,pcm,n);
-	      }
-	      sf_close(sf_in);
-	    }
-	  }
-	  delete cut;
-	}
+    lls.push_back(new LogLine(log_event->logLine(i),render_user,render_station,
+			      render_system,render_config,render_channels));
+  }
+  lls.push_back(new LogLine(new RDLogLine(),render_user,render_station,
+			      render_system,render_config,render_channels));
+  lls.back()->setTransType(RDLogLine::Play);
+
+  //
+  // Iterate through it
+  //
+  for(unsigned i=0;i<lls.size();i++) {
+    if((lls.at(i)->transType()==RDLogLine::Stop)&&
+       (lls.at(i)->timeType()!=RDLogLine::Hard)) {
+      Verbose(current_time,i,QString().sprintf("Unconditional STOP on %06u [",
+					     lls.at(i)->cartNumber())+
+	      lls.at(i)->title()+"]");
+      break;
+    }
+    if(lls.at(i)->open(current_time)) {
+      Verbose(current_time,i,
+	      QString().sprintf("starting cart %06u [",lls.at(i)->cartNumber())+
+	      lls.at(i)->title()+"]");
+      sf_count_t frames=0;
+      if((lls.at(i+1)->transType()==RDLogLine::Segue)&&
+	 (lls.at(i)->cut()->segueStartPoint()>=0)) {
+	frames=FramesFromMsec(lls.at(i)->cut()->segueStartPoint()-
+			      lls.at(i)->cut()->startPoint());
+	current_time=current_time.addMSecs(lls.at(i)->cut()->segueStartPoint()-
+					   lls.at(i)->cut()->startPoint());
       }
-      delete cart;
+      else {
+	frames=FramesFromMsec(lls.at(i)->cut()->endPoint()-
+			      lls.at(i)->cut()->startPoint());
+	current_time=current_time.addMSecs(lls.at(i)->cut()->endPoint()-
+					   lls.at(i)->cut()->startPoint());
+      }
+      pcm=new float[frames*render_channels];
+      memset(pcm,0,frames*render_channels);
+
+      for(unsigned j=0;j<i;j++) {
+	Sum(pcm,lls.at(j),frames);
+      }
+      Sum(pcm,lls.at(i),frames);
+      sf_writef_float(sf_out,pcm,frames);
+      delete pcm;
+      pcm=NULL;
+      lls.at(i)->setRamp(lls.at(i+1)->transType());
     }
   }
+  Verbose(current_time,lls.size()-1,"--- end of log ---");
 
   //
   // Clean up
   //
   sf_close(sf_out);
   return 0;
+}
+
+
+void MainObject::Sum(float *pcm_out,LogLine *ll,sf_count_t frames)
+{
+  if(ll->handle()!=NULL) {
+    float *pcm=new float[frames*render_channels];
+
+    memset(pcm,0,frames*render_channels);
+    sf_count_t n=sf_readf_float(ll->handle(),pcm,frames);
+    for(sf_count_t i=0;i<n;i+=render_channels) {
+      double ratio=exp10(((double)i*ll->rampRate()+ll->rampLevel())/2000.0);
+      for(sf_count_t j=0;j<render_channels;j++) {
+	pcm_out[i*render_channels+j]+=ratio*pcm[i*render_channels+j];
+      }
+    }
+    ll->setRampLevel((double)n*ll->rampRate()+ll->rampLevel());
+    if(n<frames) {
+      ll->close();
+    }
+    delete pcm;
+  }
 }

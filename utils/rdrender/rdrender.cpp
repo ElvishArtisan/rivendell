@@ -177,6 +177,12 @@ void MainObject::Verbose(const QString &msg)
 }
 
 
+void MainObject::Verbose(const QTime &time,int line,const QString &msg)
+{
+  Verbose(time.toString("hh:mm:ss.zzz")+QString().sprintf("-%04d : ",line)+msg);
+}
+
+
 bool MainObject::GetCutFile(const QString &cutname,int start_pt,int end_pt,
 			    QString *dest_filename) const
 {

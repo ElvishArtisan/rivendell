@@ -23,6 +23,8 @@
 
 #include <stdint.h>
 
+#include <sndfile.h>
+
 #include <qdatetime.h>
 #include <qobject.h>
 
@@ -32,6 +34,8 @@
 #include <rdstation.h>
 #include <rdsystem.h>
 #include <rduser.h>
+
+#include "logline.h"
 
 #define RDRENDER_DEFAULT_CHANNELS 2
 #define RDRENDER_USAGE "[options] <logname> <output-file>\n"
@@ -47,8 +51,10 @@ class MainObject : public QObject
 
  private:
   int MainLoop();
+  void Sum(float *pcm_out,LogLine *ll,sf_count_t frames);
   uint64_t FramesFromMsec(uint64_t msec);
   void Verbose(const QString &msg);
+  void Verbose(const QTime &time,int line,const QString &msg);
   bool GetCutFile(const QString &cutname,int start_pt,int end_pt,
 		  QString *dest_filename) const;
   void DeleteCutFile(const QString &dest_filename) const;

@@ -29,7 +29,8 @@ moc_%.cpp:	%.h
 
 bin_PROGRAMS = rdrender
 
-dist_rdrender_SOURCES = mainloop.cpp\
+dist_rdrender_SOURCES = logline.cpp logline.h\
+                        mainloop.cpp\
                         rdrender.cpp rdrender.h
 
 nodist_rdrender_SOURCES = moc_rdrender.cpp
