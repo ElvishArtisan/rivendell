@@ -31,8 +31,6 @@
     <cmdsynopsis>
       <command>rdrender</command>
       <arg choice='opt'><replaceable>OPTIONS</replaceable></arg>
-      <arg choice='opt'><userinput>--channels=</userinput><replaceable>chans</replaceable></arg>
-      <arg choice='opt'><userinput>--start-time=</userinput><replaceable>HH:MM:SS</replaceable></arg>
       <sbr/>
     </cmdsynopsis>
   </refsynopsisdiv>
@@ -53,6 +51,30 @@
       <listitem>
 	<para>
 	  Use <replaceable>chans</replaceable> channels in the output file.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
+	<option>--first-line=</option><replaceable>lineno</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  Use line number <replaceable>lineno</replaceable> as the first
+	  event in the rendered log.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
+	<option>--last-line=</option><replaceable>lineno</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  Use line number <replaceable>lineno</replaceable> as the last
+	  event in the rendered log.
 	</para>
       </listitem>
     </varlistentry>

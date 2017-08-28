@@ -15970,3 +15970,5 @@
 	* Added verbose messages for non-audio events to rdrender(1).
 2017-08-28 Fred Gleason <fredg@paravelsystems.com>
 	* Added a rdrender(1) man page.
+2017-08-28 Fred Gleason <fredg@paravelsystems.com>
+	* Added '--first-line=' and '--last-line=' switches to rdrender(1).

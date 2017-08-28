@@ -76,57 +76,60 @@ int MainObject::MainLoop()
   // Iterate through it
   //
   for(unsigned i=0;i<lls.size();i++) {
-    if(lls.at(i)->transType()==RDLogLine::Stop) {
-      Verbose(current_time,i,"STOP ",lls.at(i)->summary());
-      warnings+=
-	QString().sprintf("log render halted at line %d due to STOP\n",i);
-      break;
-    }
-    if(lls.at(i)->open(current_time)) {
-      Verbose(current_time,i,RDLogLine::transText(lls.at(i)->transType()),
-	      QString().sprintf(" cart %06u [",lls.at(i)->cartNumber())+
-	      lls.at(i)->title()+"]");
-      sf_count_t frames=0;
-      if((lls.at(i+1)->transType()==RDLogLine::Segue)&&
-	 (lls.at(i)->cut()->segueStartPoint()>=0)) {
-	frames=FramesFromMsec(lls.at(i)->cut()->segueStartPoint()-
-			      lls.at(i)->cut()->startPoint());
-	current_time=current_time.addMSecs(lls.at(i)->cut()->segueStartPoint()-
-					   lls.at(i)->cut()->startPoint());
+    if(((render_first_line==-1)||(render_first_line<=(int)i))&&
+       ((render_last_line==-1)||(render_last_line>=(int)i))) {
+      if(lls.at(i)->transType()==RDLogLine::Stop) {
+	Verbose(current_time,i,"STOP ",lls.at(i)->summary());
+	warnings+=
+	  QString().sprintf("log render halted at line %d due to STOP\n",i);
+	break;
       }
-      else {
-	frames=FramesFromMsec(lls.at(i)->cut()->endPoint()-
-			      lls.at(i)->cut()->startPoint());
-	current_time=current_time.addMSecs(lls.at(i)->cut()->endPoint()-
-					   lls.at(i)->cut()->startPoint());
-      }
-      pcm=new float[frames*render_channels];
-      memset(pcm,0,frames*render_channels);
-
-      for(unsigned j=0;j<i;j++) {
-	Sum(pcm,lls.at(j),frames);
-      }
-      Sum(pcm,lls.at(i),frames);
-      sf_writef_float(sf_out,pcm,frames);
-      delete pcm;
-      pcm=NULL;
-      lls.at(i)->setRamp(lls.at(i+1)->transType());
-    }
-    else {
-      if(i<(lls.size()-1)) {
-	if(lls.at(i)->type()==RDLogLine::Cart) {
-	  Verbose(current_time,i,"FAIL",lls.at(i)->summary()+
-		  " (NO AUDIO AVAILABLE)");
-	  warnings+=
-	    lls.at(i)->summary()+QString().
-	    sprintf("at line %d failed to play (NO AUDIO AVAILABLE)\n",i);
+      if(lls.at(i)->open(current_time)) {
+	Verbose(current_time,i,RDLogLine::transText(lls.at(i)->transType()),
+		QString().sprintf(" cart %06u [",lls.at(i)->cartNumber())+
+		lls.at(i)->title()+"]");
+	sf_count_t frames=0;
+	if((lls.at(i+1)->transType()==RDLogLine::Segue)&&
+	   (lls.at(i)->cut()->segueStartPoint()>=0)) {
+	  frames=FramesFromMsec(lls.at(i)->cut()->segueStartPoint()-
+				lls.at(i)->cut()->startPoint());
+	  current_time=current_time.addMSecs(lls.at(i)->cut()->segueStartPoint()-
+					     lls.at(i)->cut()->startPoint());
 	}
 	else {
-	  Verbose(current_time,i,"SKIP",lls.at(i)->summary());
+	  frames=FramesFromMsec(lls.at(i)->cut()->endPoint()-
+				lls.at(i)->cut()->startPoint());
+	  current_time=current_time.addMSecs(lls.at(i)->cut()->endPoint()-
+					     lls.at(i)->cut()->startPoint());
 	}
+	pcm=new float[frames*render_channels];
+	memset(pcm,0,frames*render_channels);
+	
+	for(unsigned j=0;j<i;j++) {
+	  Sum(pcm,lls.at(j),frames);
+	}
+	Sum(pcm,lls.at(i),frames);
+	sf_writef_float(sf_out,pcm,frames);
+	delete pcm;
+	pcm=NULL;
+	lls.at(i)->setRamp(lls.at(i+1)->transType());
       }
       else {
-	Verbose(current_time,lls.size()-1,"STOP","--- end of log ---");
+	if(i<(lls.size()-1)) {
+	  if(lls.at(i)->type()==RDLogLine::Cart) {
+	    Verbose(current_time,i,"FAIL",lls.at(i)->summary()+
+		    " (NO AUDIO AVAILABLE)");
+	    warnings+=
+	      lls.at(i)->summary()+QString().
+	      sprintf("at line %d failed to play (NO AUDIO AVAILABLE)\n",i);
+	  }
+	  else {
+	    Verbose(current_time,i,"SKIP",lls.at(i)->summary());
+	  }
+	}
+	else {
+	  Verbose(current_time,lls.size()-1,"STOP","--- end of log ---");
+	}
       }
     }
   }

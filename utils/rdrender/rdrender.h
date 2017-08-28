@@ -64,6 +64,8 @@ class MainObject : public QObject
   QString render_output_filename;
   unsigned render_channels;
   QTime render_start_time;
+  int render_first_line;
+  int render_last_line;
   RDRipc *render_ripc;
   RDStation *render_station;
   RDSystem *render_system;

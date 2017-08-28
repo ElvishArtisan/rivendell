@@ -2,7 +2,7 @@
 //
 // Render a Rivendell log.
 //
-//   (C) Copyright 2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2017 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -42,6 +42,8 @@ MainObject::MainObject(QObject *parent)
 {
   render_verbose=false;
   render_channels=RDRENDER_DEFAULT_CHANNELS;
+  render_first_line=-1;
+  render_last_line=-1;
 
   //
   // Read Command Options
@@ -72,6 +74,22 @@ MainObject::MainObject(QObject *parent)
       }
       cmd->setProcessed(i,true);
     }
+    if(cmd->key(i)=="--first-line") {
+      render_first_line=cmd->value(i).toInt(&ok);
+      if((!ok)|(render_first_line<0)) {
+	fprintf(stderr,"rdrender: invalid --first-line argument\n");
+	exit(1);
+      }
+      cmd->setProcessed(i,true);
+    }
+    if(cmd->key(i)=="--last-line") {
+      render_last_line=cmd->value(i).toInt(&ok);
+      if((!ok)||(render_last_line<0)) {
+	fprintf(stderr,"rdrender: invalid --last-line argument\n");
+	exit(1);
+      }
+      cmd->setProcessed(i,true);
+    }
     if(cmd->key(i)=="--start-time") {
       render_start_time=QTime::fromString(cmd->value(i));
       if(!render_start_time.isValid()) {
@@ -84,6 +102,11 @@ MainObject::MainObject(QObject *parent)
       fprintf(stderr,"rdrender: unrecognized option\n");
       exit(256);
     }
+  }
+  if((render_last_line>=0)&&(render_first_line>=0)&&
+     (render_last_line<render_first_line)) {
+    fprintf(stderr,"--last-line must be greater than --first-line\n");
+    exit(1);
   }
   render_logname=cmd->key(cmd->keys()-2);
   render_output_filename=cmd->key(cmd->keys()-1);
