@@ -35,7 +35,6 @@ int MainObject::MainLoop()
 {
   float *pcm=NULL;
   QTime current_time=render_start_time;
-  //  QDate current_date=render_start_date;
   QString warnings="";
 
   //
@@ -78,13 +77,13 @@ int MainObject::MainLoop()
   //
   for(unsigned i=0;i<lls.size();i++) {
     if(lls.at(i)->transType()==RDLogLine::Stop) {
-      Verbose(current_time,i,"STOP "+lls.at(i)->summary());
+      Verbose(current_time,i,"STOP ",lls.at(i)->summary());
       warnings+=
 	QString().sprintf("log render halted at line %d due to STOP\n",i);
       break;
     }
     if(lls.at(i)->open(current_time)) {
-      Verbose(current_time,i,RDLogLine::transText(lls.at(i)->transType())+
+      Verbose(current_time,i,RDLogLine::transText(lls.at(i)->transType()),
 	      QString().sprintf(" cart %06u [",lls.at(i)->cartNumber())+
 	      lls.at(i)->title()+"]");
       sf_count_t frames=0;
@@ -116,18 +115,18 @@ int MainObject::MainLoop()
     else {
       if(i<(lls.size()-1)) {
 	if(lls.at(i)->type()==RDLogLine::Cart) {
-	  Verbose(current_time,i,"unable to start "+lls.at(i)->summary()+
+	  Verbose(current_time,i,"FAIL",lls.at(i)->summary()+
 		  " (NO AUDIO AVAILABLE)");
 	  warnings+=
 	    lls.at(i)->summary()+QString().
 	    sprintf("at line %d failed to play (NO AUDIO AVAILABLE)\n",i);
 	}
 	else {
-	  Verbose(current_time,i,"SKIP "+lls.at(i)->summary());
+	  Verbose(current_time,i,"SKIP",lls.at(i)->summary());
 	}
       }
       else {
-	Verbose(current_time,lls.size()-1,"--- end of log ---");
+	Verbose(current_time,lls.size()-1,"STOP","--- end of log ---");
       }
     }
   }

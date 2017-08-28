@@ -53,9 +53,9 @@ class MainObject : public QObject
   int MainLoop();
   void Sum(float *pcm_out,LogLine *ll,sf_count_t frames);
   uint64_t FramesFromMsec(uint64_t msec);
-  void Warning(const QTime &time,int line,const QString &msg) const;
   void Verbose(const QString &msg);
-  void Verbose(const QTime &time,int line,const QString &msg);
+  void Verbose(const QTime &time,int line,const QString &trans,
+	       const QString &msg);
   bool GetCutFile(const QString &cutname,int start_pt,int end_pt,
 		  QString *dest_filename) const;
   void DeleteCutFile(const QString &dest_filename) const;
@@ -63,7 +63,6 @@ class MainObject : public QObject
   QString render_logname;
   QString render_output_filename;
   unsigned render_channels;
-  QDate render_start_date;
   QTime render_start_time;
   RDRipc *render_ripc;
   RDStation *render_station;

@@ -42,8 +42,6 @@ MainObject::MainObject(QObject *parent)
 {
   render_verbose=false;
   render_channels=RDRENDER_DEFAULT_CHANNELS;
-  render_start_date=QDate::currentDate();
-  render_start_time=QTime::currentTime();
 
   //
   // Read Command Options
@@ -74,15 +72,6 @@ MainObject::MainObject(QObject *parent)
       }
       cmd->setProcessed(i,true);
     }
-    /*
-    if(cmd->key(i)=="--start-date") {
-      render_start_date=QDate::fromString(cmd->value(i),Qt::ISODate);
-      if(!render_start_date.isValid()) {
-	fprintf(stderr,"rdrender: invalid --start-date\n");
-	exit(1);
-      }
-      cmd->setProcessed(i,true);
-    }
     if(cmd->key(i)=="--start-time") {
       render_start_time=QTime::fromString(cmd->value(i));
       if(!render_start_time.isValid()) {
@@ -91,7 +80,6 @@ MainObject::MainObject(QObject *parent)
       }
       cmd->setProcessed(i,true);
     }
-    */
     if(!cmd->processed(i)) {
       fprintf(stderr,"rdrender: unrecognized option\n");
       exit(256);
@@ -99,6 +87,9 @@ MainObject::MainObject(QObject *parent)
   }
   render_logname=cmd->key(cmd->keys()-2);
   render_output_filename=cmd->key(cmd->keys()-1);
+  if(render_start_time.isNull()) {
+    render_start_time=QTime(0,0,0,1);
+  }
 
   //
   // Read Configuration
@@ -171,12 +162,6 @@ uint64_t MainObject::FramesFromMsec(uint64_t msec)
 }
 
 
-void MainObject::Warning(const QTime &time,int line,const QString &msg) const
-{
-  fprintf(stderr,"%s\n",(const char *)(QString().sprintf("%04d : ",line)+msg));
-}
-
-
 void MainObject::Verbose(const QString &msg)
 {
   if(render_verbose) {
@@ -185,10 +170,14 @@ void MainObject::Verbose(const QString &msg)
 }
 
 
-void MainObject::Verbose(const QTime &time,int line,const QString &msg)
+void MainObject::Verbose(const QTime &time,int line,const QString &trans,
+			 const QString &msg)
 {
   if(render_verbose) {
-    Warning(time,line,msg);
+    fprintf(stderr,"%s\n",
+	    (const char *)(QString().sprintf("%04d : ",line)+
+			   time.toString("hh:mm:ss")+" : "+
+			   QString().sprintf("%-5s",(const char *)trans)+msg));
   }
 }
 
