@@ -47,6 +47,7 @@ class LogLine : public RDLogLine
   void setRamp(RDLogLine::TransType next_trans);
   bool open(const QTime &time);
   void close();
+  QString summary() const;
 
  private:
   bool GetCutFile(const QString &cutname,int start_pt,int end_pt,

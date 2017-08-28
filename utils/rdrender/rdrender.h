@@ -53,6 +53,7 @@ class MainObject : public QObject
   int MainLoop();
   void Sum(float *pcm_out,LogLine *ll,sf_count_t frames);
   uint64_t FramesFromMsec(uint64_t msec);
+  void Warning(const QTime &time,int line,const QString &msg) const;
   void Verbose(const QString &msg);
   void Verbose(const QTime &time,int line,const QString &msg);
   bool GetCutFile(const QString &cutname,int start_pt,int end_pt,

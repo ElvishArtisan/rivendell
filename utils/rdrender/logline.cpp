@@ -126,6 +126,47 @@ void LogLine::close()
 }
 
 
+QString LogLine::summary() const
+{
+  QString ret=QString().sprintf("unknown event [type: %d]",type());
+  switch(type()) {
+  case RDLogLine::Cart:
+    ret=QString().sprintf("cart %06u [",cartNumber())+title()+"]";
+    break;
+	  
+  case RDLogLine::Marker:
+    ret="marker ["+markerComment()+"]";
+    break;
+
+  case RDLogLine::Macro:
+    ret="macro cart ["+title()+"]";
+    break;
+
+  case RDLogLine::Chain:
+    ret="chain-to ["+markerLabel()+"]";
+    break;
+
+  case RDLogLine::Track:
+    ret="track marker ["+markerComment()+"]";
+    break;
+
+  case RDLogLine::MusicLink:
+    ret="music link";
+    break;
+
+  case RDLogLine::TrafficLink:
+    ret="traffic link";
+    break;
+
+  case RDLogLine::OpenBracket:
+  case RDLogLine::CloseBracket:
+  case RDLogLine::UnknownType:
+    break;
+  }
+  return ret;
+}
+
+
 bool LogLine::GetCutFile(const QString &cutname,int start_pt,int end_pt,
 			 QString *dest_filename) const
 {

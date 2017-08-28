@@ -15966,3 +15966,5 @@
 	* Removed FIXME entries from 'utils/rdrender/mainloop.cpp'.
 2017-08-22 Fred Gleason <fredg@paravelsystems.com>
 	* Implemented SEGUE transitions in rdrender(1).
+2017-08-28 Fred Gleason <fredg@paravelsystems.com>
+	* Added verbose messages for non-audio events to rdrender(1).

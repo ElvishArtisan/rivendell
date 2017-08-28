@@ -74,6 +74,7 @@ MainObject::MainObject(QObject *parent)
       }
       cmd->setProcessed(i,true);
     }
+    /*
     if(cmd->key(i)=="--start-date") {
       render_start_date=QDate::fromString(cmd->value(i),Qt::ISODate);
       if(!render_start_date.isValid()) {
@@ -90,9 +91,10 @@ MainObject::MainObject(QObject *parent)
       }
       cmd->setProcessed(i,true);
     }
+    */
     if(!cmd->processed(i)) {
       fprintf(stderr,"rdrender: unrecognized option\n");
-      qApp->exit(256);
+      exit(256);
     }
   }
   render_logname=cmd->key(cmd->keys()-2);
@@ -169,6 +171,12 @@ uint64_t MainObject::FramesFromMsec(uint64_t msec)
 }
 
 
+void MainObject::Warning(const QTime &time,int line,const QString &msg) const
+{
+  fprintf(stderr,"%s\n",(const char *)(QString().sprintf("%04d : ",line)+msg));
+}
+
+
 void MainObject::Verbose(const QString &msg)
 {
   if(render_verbose) {
@@ -179,7 +187,9 @@ void MainObject::Verbose(const QString &msg)
 
 void MainObject::Verbose(const QTime &time,int line,const QString &msg)
 {
-  Verbose(time.toString("hh:mm:ss.zzz")+QString().sprintf("-%04d : ",line)+msg);
+  if(render_verbose) {
+    Warning(time,line,msg);
+  }
 }
 
 
