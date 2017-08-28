@@ -2,7 +2,7 @@
 ##
 ## docs/docbook/automake.am for Rivendell
 ##
-## (C) Copyright 2015 Fred Gleason <fredg@paravelsystems.com>
+## (C) Copyright 2015-2017 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -37,6 +37,7 @@ all-local:	cae.html\
                 rdconvert.1\
                 rddbcheck.8\
                 rdmarkerset.8\
+                rdrender.1\
                 rdrevert.8\
                 rdexport.1\
                 rdimport.1\
@@ -51,6 +52,7 @@ man_MANS = rdclilogedit.1\
            rdexport.1\
            rdimport.1\
            rdmarkerset.8\
+           rdrender.1\
            rdrevert.8
 
 EXTRA_DIST = cae.html\
@@ -64,6 +66,8 @@ EXTRA_DIST = cae.html\
              rddbcheck.xml\
              rdmarkerset.8\
              rdmarkerset.xml\
+             rdrender.1\
+             rdrender.xml\
              rdrevert.8\
              rdrevert.xml\
              rdexport.1\

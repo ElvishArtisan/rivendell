@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<refentry id="stdin" xmlns="http://docbook.org/ns/docbook" version="5.0">
+  <!--
+      Header
+  -->
+  <refmeta>
+    <refentrytitle>rdrender</refentrytitle>
+    <manvolnum>1</manvolnum>
+    <refmiscinfo class='source'>August 2017</refmiscinfo>
+    <refmiscinfo class='manual'>Linux Audio Manual</refmiscinfo>
+  </refmeta>
+  <refnamediv>
+    <refname>rdrender</refname>
+    <refpurpose>Render a Rivendell log as a single audio file</refpurpose>
+  </refnamediv>
+  <info>
+    <author>
+      <personname>
+	<firstname>Fred</firstname>
+	<surname>Gleason</surname>
+	<email>fredg@paravelsystems.com</email>
+      </personname>
+      <contrib>Application Author</contrib>
+    </author>
+  </info>
+
+  <!--
+      Body
+  -->
+  <refsynopsisdiv id='synopsis'>
+    <cmdsynopsis>
+      <command>rdrender</command>
+      <arg choice='opt'><replaceable>OPTIONS</replaceable></arg>
+      <arg choice='opt'><userinput>--channels=</userinput><replaceable>chans</replaceable></arg>
+      <arg choice='opt'><userinput>--start-time=</userinput><replaceable>HH:MM:SS</replaceable></arg>
+      <sbr/>
+    </cmdsynopsis>
+  </refsynopsisdiv>
+
+  <refsect1 id='description'><title>Description</title>
+  <para>
+    <command>rdrender</command><manvolnum>1</manvolnum> can be used to render
+    an existing Rivendell log as a single audio WAV file.
+  </para>
+  </refsect1>
+
+  <refsect1 id='options'><title>Options</title>
+  <variablelist remap='TP'>
+    <varlistentry>
+      <term>
+	<option>--channels=</option><replaceable>chans</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  Use <replaceable>chans</replaceable> channels in the output file.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
+	<option>--start-time=</option><replaceable>HH:MM:SS</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  Render the log as if it had been started at a time of
+	  <replaceable>HH:MM:SS</replaceable>.
+	</para>
+      </listitem>
+    </varlistentry>
+
+  </variablelist>
+</refsect1>
+
+</refentry>
+
