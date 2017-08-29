@@ -30,7 +30,11 @@
   <refsynopsisdiv id='synopsis'>
     <cmdsynopsis>
       <command>rdrender</command>
-      <arg choice='opt'><replaceable>OPTIONS</replaceable></arg>
+      <arg choice='opt'><replaceable>GENERAL OPTS</replaceable></arg>
+      <arg choice='opt'><replaceable>RENDERING OPTS</replaceable></arg>
+      <arg choice='opt'><replaceable>AUDIO OPTS</replaceable></arg>
+      <arg choice='req'><replaceable>logname</replaceable></arg>
+      <arg choice='req'><replaceable>output-file</replaceable></arg>
       <sbr/>
     </cmdsynopsis>
   </refsynopsisdiv>
@@ -38,12 +42,141 @@
   <refsect1 id='description'><title>Description</title>
   <para>
     <command>rdrender</command><manvolnum>1</manvolnum> can be used to render
-    an existing Rivendell log as a single audio WAV file.
+    an existing Rivendell log as a single audio file, thus enabling playback
+    of the rendered content independently of Rivendell.
+  </para>
+  <para>
+    Three different types of options can be given to
+    <command>rdrender</command><manvolnum>1</manvolnum>: General,
+    which affect the operation of the program itself, Rendering,
+    which control how a log is virtually &quot;played&quot; and Audio,
+    which control the format of the resulting audio file. Each group of
+    options is documented separately below.
   </para>
   </refsect1>
 
-  <refsect1 id='options'><title>Options</title>
+  <refsect1 id='general;_options'><title>General Options</title>
   <variablelist remap='TP'>
+    <varlistentry>
+      <term>
+	<option>--verbose</option>
+      </term>
+      <listitem>
+	<para>
+	  Be verbose. Among other things, this will cause
+	  <command>rdrender</command><manvolnum>1</manvolnum> to print
+	  a disposition for each log event encountered to standard error.
+	</para>
+      </listitem>
+    </varlistentry>
+
+  </variablelist>
+  </refsect1>
+
+  <refsect1 id='rendering_options'><title>Rendering Options</title>
+  <variablelist remap='TP'>
+    <varlistentry>
+      <term>
+	<option>--first-line=</option><replaceable>lineno</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  Start rendering the log at line <replaceable>lineno</replaceable>.
+	  This option is mutually exclusive with the
+	  <option>--first-time</option> option, below.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
+	<option>--first-time=</option><replaceable>HH:MM:SS</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  Start rendering the log at the event having a hard-start time
+	  of <replaceable>HH:MM:SS</replaceable>. This option is mutually
+	  exclusive with the <option>--first-line</option> option, above.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
+	<option>--ignore-stops</option>
+      </term>
+      <listitem>
+	<para>
+	  Treat any STOP transitions encountered as if they were PLAY
+	  transitions. If not given, a STOP transition will cause rendering
+	  of the log to be terminated at the point where the STOP was
+	  encountered.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
+	<option>--last-line=</option><replaceable>lineno</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  Stop rendering the log at line <replaceable>lineno</replaceable>-1.
+	  This option is mutually exclusive with the
+	  <option>--last-time</option> option, below.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
+	<option>--last-time=</option><replaceable>HH:MM:SS</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  Stop rendering the log at the event having a hard-start time of
+	  <replaceable>HH:MM:SS</replaceable>.
+	  This option is mutually exclusive with the
+	  <option>--last-line</option> option, above.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
+	<option>--start-time=</option><replaceable>HH:MM:SS</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  Render the log as if it had been started at a time of
+	  <replaceable>HH:MM:SS</replaceable> (useful for ensuring that
+	  dayparted carts play as expected). If not given, the current
+	  system time will be used.
+	</para>
+      </listitem>
+    </varlistentry>
+
+  </variablelist>
+  </refsect1>
+
+  <refsect1 id='audio_options'><title>Audio Options</title>
+  <variablelist remap='TP'>
+    <varlistentry>
+      <term>
+	<option>--bitrate=</option><replaceable>rate</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  Specify the bitrate to use, in <replaceable>rate</replaceable>
+	  bits per second.  Default value is  256000 bits/sec.
+	</para>
+	<para>
+	  This setting is meaningful only when used with the
+	  <userinput>MP2</userinput> or <userinput>MP3</userinput> formats.
+	</para>
+      </listitem>
+    </varlistentry>
+
     <varlistentry>
       <term>
 	<option>--channels=</option><replaceable>chans</replaceable>
@@ -59,98 +192,118 @@
 
     <varlistentry>
       <term>
-	<option>--first-line=</option><replaceable>lineno</replaceable>
+	<option>--format=</option><replaceable>format</replaceable>
       </term>
       <listitem>
 	<para>
-	  Start the rendered file with line <replaceable>lineno</replaceable>.
-	  This option is mutually exclusive with the
-	  <option>--first-time</option> option, below.
+	  Specify the file and audio encoding format to be used. The
+	  following values for <replaceable>format</replaceable> are
+	  recognized:
+	</para>
+	<variablelist>
+	  <varlistentry>
+	    <term><userinput>FLAC</userinput></term>
+	    <listitem>
+	      <para>Free Lossless Audio Codec (.flac)</para>
+	    </listitem>
+	  </varlistentry>
+
+	  <varlistentry>
+	    <term><userinput>MP2</userinput></term>
+	    <listitem>
+	      <para>MPEG-1 Layer 2 (.mp2)</para>
+	    </listitem>
+	  </varlistentry>
+
+	  <varlistentry>
+	    <term><userinput>MP3</userinput></term>
+	    <listitem>
+	      <para>MPEG-1 Layer 3 (.mp3)</para>
+	    </listitem>
+	  </varlistentry>
+
+	  <varlistentry>
+	    <term><userinput>PCM16</userinput></term>
+	    <listitem>
+	      <para>PCM16 audio in a WAV file format (.wav)</para>
+	    </listitem>
+	  </varlistentry>
+
+	  <varlistentry>
+	    <term><userinput>PCM24</userinput></term>
+	    <listitem>
+	      <para>PCM24 audio in a WAV file format (.wav)</para>
+	    </listitem>
+	  </varlistentry>
+
+	  <varlistentry>
+	    <term><userinput>VORBIS</userinput></term>
+	    <listitem>
+	      <para>OggVorbis (.ogg)</para>
+	    </listitem>
+	  </varlistentry>
+	</variablelist>
+	<para>
+	  Default value is <userinput>PCM16</userinput>.
 	</para>
       </listitem>
     </varlistentry>
 
     <varlistentry>
       <term>
-	<option>--first-time=</option><replaceable>HH:MM:SS</replaceable>
+	<option>--normalization-level=</option><replaceable>level</replaceable>
       </term>
       <listitem>
 	<para>
-	  Start the rendered file with the event having a hard-start time
-	  of <replaceable>HH:MM:SS</replaceable>. This option is mutually
-	  exclusive with the <option>--first-line</option> option, above.
+	  Peak normalize the audio to <replaceable>level</replaceable> dBFS.
+	  Default value is <userinput>0</userinput>, which will disable
+	  peak normalization.
 	</para>
       </listitem>
     </varlistentry>
 
     <varlistentry>
       <term>
-	<option>--ignore-stops</option>
+	<option>--quality=</option><replaceable>qual</replaceable>
       </term>
       <listitem>
 	<para>
-	  Treat any STOP transitions encountered as if they were PLAY.
-	  If not given, a STOP transition will cause rendering of the log
-	  to be terminated at that point.
+	  Specify the quality level to use, in the range
+	  <userinput>-1</userinput> through <userinput>10</userinput>,
+	  inclusive. Default value is <userinput>3</userinput>.
+	</para>
+	<para>
+	  This setting is meaningful only when used with the
+	  <userinput>VORBIS</userinput> format.
 	</para>
       </listitem>
     </varlistentry>
 
     <varlistentry>
       <term>
-	<option>--last-line=</option><replaceable>lineno</replaceable>
+	<option>--samplerate=</option><replaceable>rate</replaceable>
       </term>
       <listitem>
 	<para>
-	  End the rendered file with line <replaceable>lineno</replaceable>-1.
-	  This option is mutually exclusive with the
-	  <option>--last-time</option> option, below.
-	</para>
-      </listitem>
-    </varlistentry>
-
-    <varlistentry>
-      <term>
-	<option>--last-time=</option><replaceable>HH:MM:SS</replaceable>
-      </term>
-      <listitem>
-	<para>
-	  End the rendered file with the event immediately prior to the
-	  one having a hard-start time of <replaceable>HH:MM:SS</replaceable>.
-	  This option is mutually exclusive with the
-	  <option>--last-line</option> option, above.
-	</para>
-      </listitem>
-    </varlistentry>
-
-    <varlistentry>
-      <term>
-	<option>--start-time=</option><replaceable>HH:MM:SS</replaceable>
-      </term>
-      <listitem>
-	<para>
-	  Render the log as if it had been started at a time of
-	  <replaceable>HH:MM:SS</replaceable>. (Useful for ensuring that
-	  dayparted carts play as expected). If not given, the current
-	  system time will be used.
-	</para>
-      </listitem>
-    </varlistentry>
-
-    <varlistentry>
-      <term>
-	<option>--verbose</option>
-      </term>
-      <listitem>
-	<para>
-	  Be verbose. Among other things, this will cause
-	  <command>rdrender</command><manvolnum>1</manvolnum> to print
-	  a disposition for each log event encountered to standard error.
+	  Specify the sample rate to use, in <replaceable>rate</replaceable>
+	  samples per second.  Default value is the sample rate configured
+	  in <computeroutput>System Settings</computeroutput> in
+	  <command>rdadmin</command><manvolnum>1</manvolnum>.
 	</para>
       </listitem>
     </varlistentry>
 
   </variablelist>
+</refsect1>
+
+<refsect1 id='bugs'><title>Bugs</title>
+<para>
+  <command>rdrender</command><manvolnum>1</manvolnum> makes no attempt to
+  interpret hard-start time values beyond allowing them to be
+  used to flag the start and end of rendering. (See the
+  <option>--first-time</option> and <option>--last-time</option> rendering
+  options).
+</para>
 </refsect1>
 
 </refentry>

@@ -15979,3 +15979,6 @@
 	* Updated the rdrender(1) man page.
 2017-08-29 Fred Gleason <fredg@paravelsystems.com>
 	* Added an '--ignore-stops' switch to rdrender(1).
+2017-08-29 Fred Gleason <fredg@paravelsystems.com>
+	* Added '--bitrate=', '--format=', '--normalization-level=',
+	'--quality=' and '--samplerate=' switches to rdrender(1).

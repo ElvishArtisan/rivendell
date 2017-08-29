@@ -27,6 +27,7 @@
 #include <qfile.h>
 
 #include <rd.h>
+#include <rdaudioconvert.h>
 #include <rdaudioexport.h>
 #include <rdcart.h>
 #include <rdcmd_switch.h>
@@ -45,6 +46,17 @@ MainObject::MainObject(QObject *parent)
   render_first_line=-1;
   render_last_line=-1;
   render_ignore_stops=false;
+
+  //
+  // Initialize Audio Settings
+  //
+  render_settings.setChannels(RDRENDER_DEFAULT_CHANNELS);
+  render_settings.setSampleRate(0);
+  render_settings.setFormat(RDRENDER_DEFAULT_FORMAT);
+  render_settings.setBitRate(RDRENDER_DEFAULT_BITRATE);
+  render_settings.setQuality(RDRENDER_DEFAULT_BITRATE);
+  render_settings.setNormalizationLevel(RDRENDER_DEFAULT_NORMALIZATION_LEVEL);
+  render_settings_modified=false;
 
   //
   // Read Command Options
@@ -67,10 +79,57 @@ MainObject::MainObject(QObject *parent)
       render_verbose=true;
       cmd->setProcessed(i,true);
     }
+    if(cmd->key(i)=="--bitrate") {
+      render_settings.setBitRate(cmd->value(i).toUInt(&ok));
+      if(!ok) {
+	fprintf(stderr,"rdrender: invalid --bitrate argument\n");
+	exit(1);
+      }
+      render_settings_modified=true;
+      cmd->setProcessed(i,true);
+    }
     if(cmd->key(i)=="--channels") {
       render_channels=cmd->value(i).toUInt(&ok);
       if((!ok)||(render_channels>2)) {
 	fprintf(stderr,"rdrender: invalid --channels argument\n");
+	exit(1);
+      }
+      cmd->setProcessed(i,true);
+    }
+    if(cmd->key(i)=="--format") {
+      QString format=cmd->value(i);
+      ok=false;
+      if(format.lower()=="flac") {
+	render_settings.setFormat(RDSettings::Flac);
+	render_settings_modified=true;
+	ok=true;
+      }
+      if(format.lower()=="mp2") {
+	render_settings.setFormat(RDSettings::MpegL2);
+	render_settings_modified=true;
+	ok=true;
+      }
+      if(format.lower()=="mp3") {
+	render_settings.setFormat(RDSettings::MpegL3);
+	render_settings_modified=true;
+	ok=true;
+      }
+      if(format.lower()=="pcm16") {
+	render_settings.setFormat(RDSettings::Pcm16);
+	ok=true;
+      }
+      if(format.lower()=="pcm24") {
+	render_settings.setFormat(RDSettings::Pcm24);
+	ok=true;
+      }
+      if(format.lower()=="vorbis") {
+	render_settings.setFormat(RDSettings::OggVorbis);
+	render_settings_modified=true;
+	ok=true;
+      }
+      if(!ok) {
+	fprintf(stderr,"rdrender: unknown --format \"%s\"\n",
+		(const char *)format);
 	exit(1);
       }
       cmd->setProcessed(i,true);
@@ -111,6 +170,33 @@ MainObject::MainObject(QObject *parent)
       }
       cmd->setProcessed(i,true);
     }
+    if(cmd->key(i)=="--normalization-level") {
+      render_settings.setNormalizationLevel(cmd->value(i).toInt(&ok));
+      if(!ok) {
+	fprintf(stderr,"rdrender: invalid --normalization-level argument\n");
+	exit(1);
+      }
+      render_settings_modified=true;
+      cmd->setProcessed(i,true);
+    }
+    if(cmd->key(i)=="--quality") {
+      render_settings.setQuality(cmd->value(i).toUInt(&ok));
+      if(!ok) {
+	fprintf(stderr,"rdrender: invalid --quality argument\n");
+	exit(1);
+      }
+      render_settings_modified=true;
+      cmd->setProcessed(i,true);
+    }
+    if(cmd->key(i)=="--samplerate") {
+      render_settings.setSampleRate(cmd->value(i).toUInt(&ok));
+      if(!ok) {
+	fprintf(stderr,"rdrender: invalid --samplerate argument\n");
+	exit(1);
+      }
+      render_settings_modified=true;
+      cmd->setProcessed(i,true);
+    }
     if(cmd->key(i)=="--start-time") {
       render_start_time=QTime::fromString(cmd->value(i));
       if(!render_start_time.isValid()) {
@@ -126,9 +212,14 @@ MainObject::MainObject(QObject *parent)
   }
   if((render_last_line>=0)&&(render_first_line>=0)&&
      (render_last_line<render_last_line)) {
-    fprintf(stderr,"--last-line must be greater than --first-line\n");
+    fprintf(stderr,"rdrender: --last-line must be greater than --first-line\n");
     exit(1);
   }
+  if(!RDAudioConvert::settingsValid(&render_settings)) {
+    fprintf(stderr,"rdrender: invalid audio settings\n");
+    exit(1);
+  }
+
   render_logname=cmd->key(cmd->keys()-2);
   render_output_filename=cmd->key(cmd->keys()-1);
   if(render_start_time.isNull()) {
@@ -172,6 +263,9 @@ MainObject::MainObject(QObject *parent)
   // System Configuration
   //
   render_system=new RDSystem();
+  if(render_settings.sampleRate()==0) {
+    render_settings.setSampleRate(render_system->sampleRate());
+  }
 
   //
   // Station Configuration
@@ -241,7 +335,12 @@ bool MainObject::GetCutFile(const QString &cutname,int start_pt,int end_pt,
   conv->setCartNumber(RDCut::cartNumber(cutname));
   conv->setCutNumber(RDCut::cutNumber(cutname));
   RDSettings s;
-  s.setFormat(RDSettings::Pcm16);
+  if(render_settings.format()==RDSettings::Pcm16) {
+    s.setFormat(RDSettings::Pcm16);
+  }
+  else {
+    s.setFormat(RDSettings::Pcm24);
+  }
   s.setSampleRate(render_system->sampleRate());
   s.setChannels(render_channels);
   s.setNormalizationLevel(0);
@@ -272,6 +371,23 @@ void MainObject::DeleteCutFile(const QString &dest_filename) const
   QStringList f0=f0.split("/",dest_filename);
   f0.erase(f0.fromLast());
   rmdir("/"+f0.join("/"));
+}
+
+
+bool MainObject::ConvertAudio(const QString &srcfile,const QString &dstfile,
+			      RDSettings *s,QString *err_msg)
+{
+  RDAudioConvert::ErrorCode err_code;
+
+  RDAudioConvert *conv=new RDAudioConvert(render_station->name(),this);
+  conv->setSourceFile(srcfile);
+  conv->setDestinationFile(dstfile);
+  conv->setDestinationSettings(s);
+  err_code=conv->convert();
+  *err_msg=RDAudioConvert::errorText(err_code);
+  delete conv;
+
+  return err_code==RDAudioConvert::ErrorOk;
 }
 
 

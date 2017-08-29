@@ -18,6 +18,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
+#include <errno.h>
 #include <math.h>
 #include <stdio.h>
 
@@ -25,6 +26,7 @@
 
 #include <rdcart.h>
 #include <rdcut.h>
+#include <rdconf.h>
 #include <rdlog.h>
 #include <rdlog_event.h>
 #include <rdlog_line.h>
@@ -38,7 +40,7 @@ int MainObject::MainLoop()
   QString warnings="";
 
   //
-  // Open Endpoints
+  // Open Log
   //
   RDLog *log=new RDLog(render_logname);
   if(!log->exists()) {
@@ -48,16 +50,53 @@ int MainObject::MainLoop()
   RDLogEvent *log_event=new RDLogEvent(RDLog::tableName(render_logname));
   log_event->load();
 
+  //
+  // Open Output File
+  //
   SF_INFO sf_info;
+  SNDFILE *sf_out;
+  FILE *f;
+  char tempdir[PATH_MAX];
   memset(&sf_info,0,sizeof(sf_info));
   sf_info.samplerate=render_system->sampleRate();
   sf_info.channels=render_channels;
-  sf_info.format=SF_FORMAT_WAV|SF_FORMAT_PCM_16;
-  SNDFILE *sf_out=sf_open(render_output_filename,SFM_WRITE,&sf_info);
-  if(sf_out==NULL) {
-    fprintf(stderr,"rdrender: unable to open output file [%s]\n",
-	    sf_strerror(sf_out));
-    return 1;
+  if(render_settings.format()==RDSettings::Pcm16) {
+    sf_info.format=SF_FORMAT_WAV|SF_FORMAT_PCM_16;
+  }
+  else {
+    sf_info.format=SF_FORMAT_WAV|SF_FORMAT_PCM_24;
+  }
+  if(render_settings_modified) {
+    //
+    // 2nd pass will be needed, so just create a placeholder for now
+    // and then output to a temp file
+    //
+    Verbose("Pass 1 of 2");
+    if((f=fopen(render_output_filename,"w"))==NULL) {
+      fprintf(stderr,"rdrender: unable to open output file [%s]\n",
+	      strerror(errno));
+      return 1;
+    }
+    fclose(f);
+    strncpy(tempdir,RDTempDir()+"/rdrenderXXXXXX",PATH_MAX);
+    render_temp_output_filename=QString(mkdtemp(tempdir))+"/log.wav";
+    sf_out=sf_open(render_temp_output_filename,SFM_WRITE,&sf_info);
+    if(sf_out==NULL) {
+      fprintf(stderr,"rdrender: unable to open temporary file \"%s\" [%s]\n",
+	      (const char *)render_temp_output_filename,
+	      sf_strerror(sf_out));
+      return 1;
+    }
+    Verbose("Using temporary file \""+render_temp_output_filename+"\".");
+  }
+  else {
+    Verbose("Pass 1 of 1");
+    sf_out=sf_open(render_output_filename,SFM_WRITE,&sf_info);
+    if(sf_out==NULL) {
+      fprintf(stderr,"rdrender: unable to open output file [%s]\n",
+	      sf_strerror(sf_out));
+      return 1;
+    }
   }
 
   //
@@ -165,13 +204,28 @@ int MainObject::MainLoop()
       }
     }
   }
+  sf_close(sf_out);
+
+  //
+  // Process 2nd Pass
+  //
+  if(render_settings_modified) {
+    QString err_msg;
+    bool ok=false;
+    Verbose("Pass 2 of 2");
+    ok=ConvertAudio(render_temp_output_filename,render_output_filename,
+		    &render_settings,&err_msg);
+    DeleteCutFile(render_temp_output_filename);
+    if(!ok) {
+      fprintf(stderr,"rdrender: unable to convert output [%s]\n",
+	      (const char *)err_msg);
+    }
+    return 1;
+  }
+
   fprintf(stderr,"%s",(const char *)warnings);
   fflush(stderr);
 
-  //
-  // Clean up
-  //
-  sf_close(sf_out);
   return 0;
 }
 
