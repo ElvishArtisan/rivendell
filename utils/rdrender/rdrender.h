@@ -68,6 +68,7 @@ class MainObject : public QObject
   int render_last_line;
   QTime render_first_time;
   QTime render_last_time;
+  bool render_ignore_stops;
   RDRipc *render_ripc;
   RDStation *render_station;
   RDSystem *render_system;

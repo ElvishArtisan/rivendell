@@ -67,6 +67,9 @@ int MainObject::MainLoop()
   for(int i=0;i<log_event->size();i++) {
     lls.push_back(new LogLine(log_event->logLine(i),render_user,render_station,
 			      render_system,render_config,render_channels));
+    if(render_ignore_stops&&(lls.back()->transType()==RDLogLine::Stop)) {
+      lls.back()->setTransType(RDLogLine::Play);
+    }
     if((!render_first_time.isNull())&&
        (lls.back()->timeType()==RDLogLine::Hard)&&
        (render_first_line==-1)&&

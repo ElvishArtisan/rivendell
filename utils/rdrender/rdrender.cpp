@@ -44,6 +44,7 @@ MainObject::MainObject(QObject *parent)
   render_channels=RDRENDER_DEFAULT_CHANNELS;
   render_first_line=-1;
   render_last_line=-1;
+  render_ignore_stops=false;
 
   //
   // Read Command Options
@@ -88,6 +89,10 @@ MainObject::MainObject(QObject *parent)
 	fprintf(stderr,"rdrender: invalid --first-time argument\n");
 	exit(1);
       }
+      cmd->setProcessed(i,true);
+    }
+    if(cmd->key(i)=="--ignore-stops") {
+      render_ignore_stops=true;
       cmd->setProcessed(i,true);
     }
     if(cmd->key(i)=="--last-time") {

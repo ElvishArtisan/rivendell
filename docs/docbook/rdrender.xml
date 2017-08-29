@@ -85,6 +85,19 @@
 
     <varlistentry>
       <term>
+	<option>--ignore-stops</option>
+      </term>
+      <listitem>
+	<para>
+	  Treat any STOP transitions encountered as if they were PLAY.
+	  If not given, a STOP transition will cause rendering of the log
+	  to be terminated at that point.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
 	<option>--last-line=</option><replaceable>lineno</replaceable>
       </term>
       <listitem>
@@ -120,6 +133,19 @@
 	  <replaceable>HH:MM:SS</replaceable>. (Useful for ensuring that
 	  dayparted carts play as expected). If not given, the current
 	  system time will be used.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
+	<option>--verbose</option>
+      </term>
+      <listitem>
+	<para>
+	  Be verbose. Among other things, this will cause
+	  <command>rdrender</command><manvolnum>1</manvolnum> to print
+	  a disposition for each log event encountered to standard error.
 	</para>
       </listitem>
     </varlistentry>
