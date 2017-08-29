@@ -82,6 +82,22 @@ MainObject::MainObject(QObject *parent)
       }
       cmd->setProcessed(i,true);
     }
+    if(cmd->key(i)=="--first-time") {
+      render_first_time=QTime::fromString(cmd->value(i));
+      if(!render_first_time.isValid()) {
+	fprintf(stderr,"rdrender: invalid --first-time argument\n");
+	exit(1);
+      }
+      cmd->setProcessed(i,true);
+    }
+    if(cmd->key(i)=="--last-time") {
+      render_last_time=QTime::fromString(cmd->value(i));
+      if(!render_last_time.isValid()) {
+	fprintf(stderr,"rdrender: invalid --last-time argument\n");
+	exit(1);
+      }
+      cmd->setProcessed(i,true);
+    }
     if(cmd->key(i)=="--last-line") {
       render_last_line=cmd->value(i).toInt(&ok);
       if((!ok)||(render_last_line<0)) {
@@ -104,7 +120,7 @@ MainObject::MainObject(QObject *parent)
     }
   }
   if((render_last_line>=0)&&(render_first_line>=0)&&
-     (render_last_line<render_first_line)) {
+     (render_last_line<render_last_line)) {
     fprintf(stderr,"--last-line must be greater than --first-line\n");
     exit(1);
   }

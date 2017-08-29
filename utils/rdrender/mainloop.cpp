@@ -67,17 +67,46 @@ int MainObject::MainLoop()
   for(int i=0;i<log_event->size();i++) {
     lls.push_back(new LogLine(log_event->logLine(i),render_user,render_station,
 			      render_system,render_config,render_channels));
+    if((!render_first_time.isNull())&&
+       (lls.back()->timeType()==RDLogLine::Hard)&&
+       (render_first_line==-1)&&
+       (lls.back()->startTime(RDLogLine::Imported)==render_first_time)) {
+      render_first_line=i;
+    }
+    if((!render_last_time.isNull())&&
+       (lls.back()->timeType()==RDLogLine::Hard)&&
+       (render_last_line==-1)&&
+       (lls.back()->startTime(RDLogLine::Imported)==render_last_time)) {
+      render_last_line=i;
+    }
+  }
+  QString time_errs="";
+  if((!render_first_time.isNull())&&(render_first_line==-1)) {
+    time_errs+="--first-time event not found";
+  }
+  if((!render_last_time.isNull())&&(render_last_line==-1)) {
+    if(!time_errs.isEmpty()) {
+      time_errs+=", ";
+    }
+    time_errs+="--last-time event not found";
+  }
+  if(!time_errs.isEmpty()) {
+    fprintf(stderr,"rdrender: %s\n",(const char *)time_errs);
+    return 1;
   }
   lls.push_back(new LogLine(new RDLogLine(),render_user,render_station,
 			      render_system,render_config,render_channels));
   lls.back()->setTransType(RDLogLine::Play);
+  if((!render_first_time.isNull())&&(render_first_line==-1)) {
+    render_first_line=log_event->size();
+  }
 
   //
   // Iterate through it
   //
   for(unsigned i=0;i<lls.size();i++) {
     if(((render_first_line==-1)||(render_first_line<=(int)i))&&
-       ((render_last_line==-1)||(render_last_line>=(int)i))) {
+       ((render_last_line==-1)||(render_last_line>(int)i))) {
       if(lls.at(i)->transType()==RDLogLine::Stop) {
 	Verbose(current_time,i,"STOP ",lls.at(i)->summary());
 	warnings+=

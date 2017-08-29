@@ -15972,3 +15972,6 @@
 	* Added a rdrender(1) man page.
 2017-08-28 Fred Gleason <fredg@paravelsystems.com>
 	* Added '--first-line=' and '--last-line=' switches to rdrender(1).
+2017-08-29 Fred Gleason <fredg@paravelsystems.com>
+	* Added '--first-time=' and '--last-time=' switches to rdrender(1).
+	* Changed the behavior of the '--last-line=' switch to be non-inclusive.
