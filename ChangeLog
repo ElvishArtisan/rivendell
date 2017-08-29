@@ -15975,3 +15975,5 @@
 2017-08-29 Fred Gleason <fredg@paravelsystems.com>
 	* Added '--first-time=' and '--last-time=' switches to rdrender(1).
 	* Changed the behavior of the '--last-line=' switch to be non-inclusive.
+2017-08-29 Fred Gleason <fredg@paravelsystems.com>
+	* Updated the rdrender(1) man page.

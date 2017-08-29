@@ -51,6 +51,8 @@
       <listitem>
 	<para>
 	  Use <replaceable>chans</replaceable> channels in the output file.
+	  If not given, <computeroutput>2</computeroutput> channels (stereo)
+	  will be used.
 	</para>
       </listitem>
     </varlistentry>
@@ -61,8 +63,22 @@
       </term>
       <listitem>
 	<para>
-	  Use line number <replaceable>lineno</replaceable> as the first
-	  event in the rendered log.
+	  Start the rendered file with line <replaceable>lineno</replaceable>.
+	  This option is mutually exclusive with the
+	  <option>--first-time</option> option, below.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
+	<option>--first-time=</option><replaceable>HH:MM:SS</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  Start the rendered file with the event having a hard-start time
+	  of <replaceable>HH:MM:SS</replaceable>. This option is mutually
+	  exclusive with the <option>--first-line</option> option, above.
 	</para>
       </listitem>
     </varlistentry>
@@ -73,8 +89,23 @@
       </term>
       <listitem>
 	<para>
-	  Use line number <replaceable>lineno</replaceable> as the last
-	  event in the rendered log.
+	  End the rendered file with line <replaceable>lineno</replaceable>-1.
+	  This option is mutually exclusive with the
+	  <option>--last-time</option> option, below.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
+	<option>--last-time=</option><replaceable>HH:MM:SS</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  End the rendered file with the event immediately prior to the
+	  one having a hard-start time of <replaceable>HH:MM:SS</replaceable>.
+	  This option is mutually exclusive with the
+	  <option>--last-line</option> option, above.
 	</para>
       </listitem>
     </varlistentry>
@@ -86,7 +117,9 @@
       <listitem>
 	<para>
 	  Render the log as if it had been started at a time of
-	  <replaceable>HH:MM:SS</replaceable>.
+	  <replaceable>HH:MM:SS</replaceable>. (Useful for ensuring that
+	  dayparted carts play as expected). If not given, the current
+	  system time will be used.
 	</para>
       </listitem>
     </varlistentry>
