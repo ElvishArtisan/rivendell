@@ -29,9 +29,11 @@
 #include <rd.h>
 #include <rdaudioconvert.h>
 #include <rdaudioexport.h>
+#include <rdaudioimport.h>
 #include <rdcart.h>
 #include <rdcmd_switch.h>
 #include <rdconf.h>
+#include <rdcut.h>
 #include <rdescape_string.h>
 #include <rddbheartbeat.h>
 #include <rdsettings.h>
@@ -46,6 +48,8 @@ MainObject::MainObject(QObject *parent)
   render_first_line=-1;
   render_last_line=-1;
   render_ignore_stops=false;
+  render_cart_number=0;
+  render_cut_number=-1;
 
   //
   // Initialize Audio Settings
@@ -65,15 +69,10 @@ MainObject::MainObject(QObject *parent)
     new RDCmdSwitch(qApp->argc(),qApp->argv(),"rdimport",RDRENDER_USAGE);
   if(cmd->keys()<1) {
     fprintf(stderr,
-	    "rdrender: you must specify a logname and output filename\n");
+	    "rdrender: you must specify a logname\n");
     exit(256);
   }
-  if(cmd->keys()<2) {
-    fprintf(stderr,
-	    "rdrender: you must specify an output filename\n");
-    exit(256);
-  }
-  for(int i=0;i<(int)cmd->keys()-2;i++) {
+  for(int i=0;i<(int)cmd->keys()-1;i++) {
     bool ok=false;
     if(cmd->key(i)=="--verbose") {
       render_verbose=true;
@@ -205,6 +204,28 @@ MainObject::MainObject(QObject *parent)
       }
       cmd->setProcessed(i,true);
     }
+    if(cmd->key(i)=="--to-cart") {
+      QStringList f0=f0.split(":",cmd->value(i));
+      if(f0.size()!=2) {
+	fprintf(stderr,"rdrender: invalid --to-cart argument\n");
+	exit(1);
+      }
+      render_cart_number=f0[0].toUInt(&ok);
+      if((!ok)||(render_cart_number>RD_MAX_CART_NUMBER)) {
+	fprintf(stderr,"rdrender: invalid cart number in --to-cart argument\n");
+	exit(1);
+      }
+      render_cut_number=f0[1].toInt(&ok);
+      if((!ok)||(render_cut_number>RD_MAX_CUT_NUMBER)||(render_cut_number<1)) {
+	fprintf(stderr,"rdrender: invalid cut number in --to-cart argument\n");
+	exit(1);
+      }
+      cmd->setProcessed(i,true);
+    }
+    if(cmd->key(i)=="--to-file") {
+      render_to_file=cmd->value(i);
+      cmd->setProcessed(i,true);
+    }
     if(!cmd->processed(i)) {
       fprintf(stderr,"rdrender: unrecognized option\n");
       exit(256);
@@ -219,9 +240,12 @@ MainObject::MainObject(QObject *parent)
     fprintf(stderr,"rdrender: invalid audio settings\n");
     exit(1);
   }
-
-  render_logname=cmd->key(cmd->keys()-2);
-  render_output_filename=cmd->key(cmd->keys()-1);
+  if(render_to_file.isEmpty()&&
+     ((render_cart_number==0)||(render_cut_number==-1))) {
+    fprintf(stderr,"rdrender: you must specify exactly one --to-cart or --to-file option\n");
+    exit(1);
+  }
+  render_logname=cmd->key(cmd->keys()-1);
   if(render_start_time.isNull()) {
     render_start_time=QTime(0,0,0,1);
   }
@@ -265,6 +289,15 @@ MainObject::MainObject(QObject *parent)
   render_system=new RDSystem();
   if(render_settings.sampleRate()==0) {
     render_settings.setSampleRate(render_system->sampleRate());
+  }
+  if((render_cart_number>0)&&(!RDCart::exists(render_cart_number))) {
+    fprintf(stderr,"rdrender: no such cart\n");
+    exit(1);
+  }
+  if((render_cut_number>0)&&
+     (!RDCut::exists(render_cart_number,render_cut_number))) {
+    fprintf(stderr,"rdrender: no such cut\n");
+    exit(1);
   }
 
   //
@@ -388,6 +421,29 @@ bool MainObject::ConvertAudio(const QString &srcfile,const QString &dstfile,
   delete conv;
 
   return err_code==RDAudioConvert::ErrorOk;
+}
+
+
+bool MainObject::ImportCart(const QString &srcfile,unsigned cartnum,int cutnum,
+			    QString *err_msg)
+{
+  RDAudioImport::ErrorCode err_import_code;
+  RDAudioConvert::ErrorCode err_conv_code;
+  RDSettings settings;
+  
+  settings.setNormalizationLevel(0);
+
+  RDAudioImport *conv=new RDAudioImport(render_station,render_config,this);
+  conv->setCartNumber(cartnum);
+  conv->setCutNumber(cutnum);
+  conv->setSourceFile(srcfile);
+  conv->setUseMetadata(false);
+  conv->setDestinationSettings(&settings);
+  err_import_code=
+    conv->runImport(render_user->name(),render_user->password(),&err_conv_code);
+  *err_msg=RDAudioImport::errorText(err_import_code,err_conv_code);
+  delete conv;
+  return err_import_code==RDAudioImport::ErrorOk;
 }
 
 

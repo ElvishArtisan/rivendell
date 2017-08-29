@@ -66,18 +66,20 @@ int MainObject::MainLoop()
   else {
     sf_info.format=SF_FORMAT_WAV|SF_FORMAT_PCM_24;
   }
-  if(render_settings_modified) {
+  if(render_settings_modified||render_to_file.isEmpty()) {
     //
     // 2nd pass will be needed, so just create a placeholder for now
     // and then output to a temp file
     //
     Verbose("Pass 1 of 2");
-    if((f=fopen(render_output_filename,"w"))==NULL) {
-      fprintf(stderr,"rdrender: unable to open output file [%s]\n",
-	      strerror(errno));
-      return 1;
+    if(!render_to_file.isEmpty()) {
+      if((f=fopen(render_to_file,"w"))==NULL) {
+	fprintf(stderr,"rdrender: unable to open output file [%s]\n",
+		strerror(errno));
+	return 1;
+      }
+      fclose(f);
     }
-    fclose(f);
     strncpy(tempdir,RDTempDir()+"/rdrenderXXXXXX",PATH_MAX);
     render_temp_output_filename=QString(mkdtemp(tempdir))+"/log.wav";
     sf_out=sf_open(render_temp_output_filename,SFM_WRITE,&sf_info);
@@ -91,7 +93,7 @@ int MainObject::MainLoop()
   }
   else {
     Verbose("Pass 1 of 1");
-    sf_out=sf_open(render_output_filename,SFM_WRITE,&sf_info);
+    sf_out=sf_open(render_to_file,SFM_WRITE,&sf_info);
     if(sf_out==NULL) {
       fprintf(stderr,"rdrender: unable to open output file [%s]\n",
 	      sf_strerror(sf_out));
@@ -209,23 +211,35 @@ int MainObject::MainLoop()
   //
   // Process 2nd Pass
   //
-  if(render_settings_modified) {
+  if(render_settings_modified||render_to_file.isEmpty()) {
     QString err_msg;
     bool ok=false;
     Verbose("Pass 2 of 2");
-    ok=ConvertAudio(render_temp_output_filename,render_output_filename,
-		    &render_settings,&err_msg);
-    DeleteCutFile(render_temp_output_filename);
-    if(!ok) {
-      fprintf(stderr,"rdrender: unable to convert output [%s]\n",
-	      (const char *)err_msg);
+    if(!render_to_file.isEmpty()) {
+      Verbose("Writing output file");
+      ok=ConvertAudio(render_temp_output_filename,render_to_file,
+		      &render_settings,&err_msg);
+      DeleteCutFile(render_temp_output_filename);
+      if(!ok) {
+	fprintf(stderr,"rdrender: unable to convert output [%s]\n",
+		(const char *)err_msg);
+	return 1;
+      }
     }
-    return 1;
+    else {
+      Verbose("Importing cart");
+      ok=ImportCart(render_temp_output_filename,render_cart_number,
+		    render_cut_number,&err_msg);
+      DeleteCutFile(render_temp_output_filename);
+      if(!ok) {
+	fprintf(stderr,"rdrender: unable to import to cart [%s]\n",
+		(const char *)err_msg);
+	return 1;
+      }
+    }
   }
-
   fprintf(stderr,"%s",(const char *)warnings);
   fflush(stderr);
-
   return 0;
 }
 

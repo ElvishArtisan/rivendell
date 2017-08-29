@@ -66,9 +66,13 @@ class MainObject : public QObject
   void DeleteCutFile(const QString &dest_filename) const;
   bool ConvertAudio(const QString &srcfile,const QString &dstfile,
 		    RDSettings *s,QString *err_msg);
+  bool ImportCart(const QString &srcfile,unsigned cartnum,int cutnum,
+		  QString *err_msg);
   bool render_verbose;
   QString render_logname;
-  QString render_output_filename;
+  QString render_to_file;
+  unsigned render_cart_number;
+  int render_cut_number;
   QString render_temp_output_filename;
   unsigned render_channels;
   QTime render_start_time;

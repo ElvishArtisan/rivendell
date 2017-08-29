@@ -15982,3 +15982,5 @@
 2017-08-29 Fred Gleason <fredg@paravelsystems.com>
 	* Added '--bitrate=', '--format=', '--normalization-level=',
 	'--quality=' and '--samplerate=' switches to rdrender(1).
+2017-08-29 Fred Gleason <fredg@paravelsystems.com>
+	* Added '--to-cart=' and '--to-file=' switches to rdrender(1).

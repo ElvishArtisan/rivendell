@@ -30,11 +30,10 @@
   <refsynopsisdiv id='synopsis'>
     <cmdsynopsis>
       <command>rdrender</command>
-      <arg choice='opt'><replaceable>GENERAL OPTS</replaceable></arg>
+      <arg choice='opt'><replaceable>OUTPUT OPTS</replaceable></arg>
       <arg choice='opt'><replaceable>RENDERING OPTS</replaceable></arg>
       <arg choice='opt'><replaceable>AUDIO OPTS</replaceable></arg>
       <arg choice='req'><replaceable>logname</replaceable></arg>
-      <arg choice='req'><replaceable>output-file</replaceable></arg>
       <sbr/>
     </cmdsynopsis>
   </refsynopsisdiv>
@@ -47,16 +46,53 @@
   </para>
   <para>
     Three different types of options can be given to
-    <command>rdrender</command><manvolnum>1</manvolnum>: General,
-    which affect the operation of the program itself, Rendering,
+    <command>rdrender</command><manvolnum>1</manvolnum>: Output,
+    which affect the outputs of the program, Rendering,
     which control how a log is virtually &quot;played&quot; and Audio,
     which control the format of the resulting audio file. Each group of
     options is documented separately below.
   </para>
   </refsect1>
 
-  <refsect1 id='general;_options'><title>General Options</title>
+  <refsect1 id='output_options'><title>Output Options</title>
   <variablelist remap='TP'>
+    <varlistentry>
+      <term>
+	<option>--to-cart=</option><replaceable>cartnum</replaceable>:<replaceable>cutnum</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  Save the rendered log to cut number
+	  <replaceable>cutnum</replaceable> in cart number
+	  <replaceable>cartnum</replaceable>. Both cart and cut must already
+	  exist.
+	</para>
+	<para>
+	  This option is mutually exclusive with the
+	  <option>--to-file</option> option, below. Exactly one
+	  <option>--to-cart</option> or <option>--to-cart</option>
+	  option must be specified.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
+	<option>--to-file=</option><replaceable>filename</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  Save the rendered log to the <replaceable>filename</replaceable> file.
+	</para>
+	<para>
+	  This option is mutually exclusive with the
+	  <option>--to-cart</option> option, above. Exactly one
+	  <option>--to-cart</option> or <option>--to-cart</option>
+	  option must be specified.
+	</para>
+      </listitem>
+    </varlistentry>
+
     <varlistentry>
       <term>
 	<option>--verbose</option>
