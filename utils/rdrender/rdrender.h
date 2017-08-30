@@ -36,14 +36,12 @@
 #include <rdsystem.h>
 #include <rduser.h>
 
-#include "logline.h"
-
 #define RDRENDER_DEFAULT_CHANNELS 2
 #define RDRENDER_DEFAULT_FORMAT RDSettings::Pcm16
 #define RDRENDER_DEFAULT_BITRATE 256000
 #define RDRENDER_DEFAULT_QUALITY 3
 #define RDRENDER_DEFAULT_NORMALIZATION_LEVEL 0
-#define RDRENDER_USAGE "[options] <logname> <output-file>\n"
+#define RDRENDER_USAGE "[options] <logname>\n"
 
 class MainObject : public QObject
 {
@@ -53,21 +51,9 @@ class MainObject : public QObject
 
  private slots:
   void userData();
+  void printProgressMessage(const QString &msg);
 
  private:
-  int MainLoop();
-  void Sum(float *pcm_out,LogLine *ll,sf_count_t frames);
-  uint64_t FramesFromMsec(uint64_t msec);
-  void Verbose(const QString &msg);
-  void Verbose(const QTime &time,int line,const QString &trans,
-	       const QString &msg);
-  bool GetCutFile(const QString &cutname,int start_pt,int end_pt,
-		  QString *dest_filename) const;
-  void DeleteCutFile(const QString &dest_filename) const;
-  bool ConvertAudio(const QString &srcfile,const QString &dstfile,
-		    RDSettings *s,QString *err_msg);
-  bool ImportCart(const QString &srcfile,unsigned cartnum,int cutnum,
-		  QString *err_msg);
   bool render_verbose;
   QString render_logname;
   QString render_to_file;
@@ -82,7 +68,6 @@ class MainObject : public QObject
   QTime render_last_time;
   bool render_ignore_stops;
   RDSettings render_settings;
-  bool render_settings_modified;
   RDRipc *render_ripc;
   RDStation *render_station;
   RDSystem *render_system;

@@ -2140,6 +2140,89 @@ bitte erneut versuchen!</translation>
     </message>
 </context>
 <context>
+    <name>RDRenderer</name>
+    <message>
+        <source>no such cart</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>no such cut</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Using temporary file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Pass 2 of 2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Writing output file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Pass 1 of 1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Pass 1 of 2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Importing cart</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>first-time event not found</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>last-time event not found</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>STOP</source>
+        <translation type="unfinished">STOP</translation>
+    </message>
+    <message>
+        <source>FAIL</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>NO AUDIO AVAILABLE</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>SKIP</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>--- end of log ---</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>unable to open output file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>log render halted at line</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>due to STOP</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>at line</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>failed to play (NO AUDIO AVAILABLE)</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>RDReport</name>
     <message>
         <source>CBSI DeltaFlex Traffic Reconciliation v2.01</source>

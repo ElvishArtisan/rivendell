@@ -195,6 +195,7 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdpushbutton.cpp rdpushbutton.h\
                         rdrecording.cpp rdrecording.h\
                         rdrehash.cpp rdrehash.h\
+                        rdrenderer.cpp rdrenderer.h\
                         rdreplicator.cpp rdreplicator.h\
                         rdreport.cpp rdreport.h\
                         rdringbuffer.cpp rdringbuffer.h\
@@ -312,6 +313,7 @@ nodist_librd_la_SOURCES = moc_rdadd_cart.cpp\
                           moc_rdsegmeter.cpp\
                           moc_rdsimpleplayer.cpp\
                           moc_rdrehash.cpp\
+                          moc_rdrenderer.cpp\
                           moc_rdslider.cpp\
                           moc_rdsocket.cpp\
                           moc_rdsound_panel.cpp\

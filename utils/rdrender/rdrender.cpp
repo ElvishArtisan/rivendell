@@ -36,6 +36,8 @@
 #include <rdcut.h>
 #include <rdescape_string.h>
 #include <rddbheartbeat.h>
+#include <rdlog.h>
+#include <rdrenderer.h>
 #include <rdsettings.h>
 
 #include "rdrender.h"
@@ -60,7 +62,6 @@ MainObject::MainObject(QObject *parent)
   render_settings.setBitRate(RDRENDER_DEFAULT_BITRATE);
   render_settings.setQuality(RDRENDER_DEFAULT_BITRATE);
   render_settings.setNormalizationLevel(RDRENDER_DEFAULT_NORMALIZATION_LEVEL);
-  render_settings_modified=false;
 
   //
   // Read Command Options
@@ -84,7 +85,6 @@ MainObject::MainObject(QObject *parent)
 	fprintf(stderr,"rdrender: invalid --bitrate argument\n");
 	exit(1);
       }
-      render_settings_modified=true;
       cmd->setProcessed(i,true);
     }
     if(cmd->key(i)=="--channels") {
@@ -100,17 +100,14 @@ MainObject::MainObject(QObject *parent)
       ok=false;
       if(format.lower()=="flac") {
 	render_settings.setFormat(RDSettings::Flac);
-	render_settings_modified=true;
 	ok=true;
       }
       if(format.lower()=="mp2") {
 	render_settings.setFormat(RDSettings::MpegL2);
-	render_settings_modified=true;
 	ok=true;
       }
       if(format.lower()=="mp3") {
 	render_settings.setFormat(RDSettings::MpegL3);
-	render_settings_modified=true;
 	ok=true;
       }
       if(format.lower()=="pcm16") {
@@ -123,7 +120,6 @@ MainObject::MainObject(QObject *parent)
       }
       if(format.lower()=="vorbis") {
 	render_settings.setFormat(RDSettings::OggVorbis);
-	render_settings_modified=true;
 	ok=true;
       }
       if(!ok) {
@@ -175,7 +171,6 @@ MainObject::MainObject(QObject *parent)
 	fprintf(stderr,"rdrender: invalid --normalization-level argument\n");
 	exit(1);
       }
-      render_settings_modified=true;
       cmd->setProcessed(i,true);
     }
     if(cmd->key(i)=="--quality") {
@@ -184,7 +179,6 @@ MainObject::MainObject(QObject *parent)
 	fprintf(stderr,"rdrender: invalid --quality argument\n");
 	exit(1);
       }
-      render_settings_modified=true;
       cmd->setProcessed(i,true);
     }
     if(cmd->key(i)=="--samplerate") {
@@ -193,7 +187,6 @@ MainObject::MainObject(QObject *parent)
 	fprintf(stderr,"rdrender: invalid --samplerate argument\n");
 	exit(1);
       }
-      render_settings_modified=true;
       cmd->setProcessed(i,true);
     }
     if(cmd->key(i)=="--start-time") {
@@ -290,15 +283,6 @@ MainObject::MainObject(QObject *parent)
   if(render_settings.sampleRate()==0) {
     render_settings.setSampleRate(render_system->sampleRate());
   }
-  if((render_cart_number>0)&&(!RDCart::exists(render_cart_number))) {
-    fprintf(stderr,"rdrender: no such cart\n");
-    exit(1);
-  }
-  if((render_cut_number>0)&&
-     (!RDCut::exists(render_cart_number,render_cut_number))) {
-    fprintf(stderr,"rdrender: no such cut\n");
-    exit(1);
-  }
 
   //
   // Station Configuration
@@ -323,127 +307,58 @@ void MainObject::userData()
   }
   render_user=new RDUser(render_ripc->user());
 
-  exit(MainLoop());
+  //
+  // Open Log
+  //
+  RDLog *log=new RDLog(render_logname);
+  if(!log->exists()) {
+    fprintf(stderr,"rdrender: no such log\n");
+    exit(1);
+  }
+  RDLogEvent *log_event=new RDLogEvent(RDLog::tableName(render_logname));
+  log_event->load();
+
+  //
+  // Render It
+  //
+  QString err_msg;
+  RDRenderer *r=new RDRenderer(render_user,render_station,render_system,
+			       render_config,this);
+  connect(r,SIGNAL(progressMessageSent(const QString &)),
+	  this,SLOT(printProgressMessage(const QString &)));
+  if(render_to_file.isEmpty()) {
+    if(!r->renderToCart(render_cart_number,render_cut_number,log_event,
+			render_channels,&render_settings,render_start_time,
+			render_ignore_stops,&err_msg,render_first_line,
+			render_last_line,render_first_time,render_last_time)) {
+      fprintf(stderr,"rdrender: %s\n",(const char *)err_msg);
+      exit(1);
+    }
+  }
+  else {
+    if(!r->renderToFile(render_to_file,log_event,render_channels,
+			&render_settings,render_start_time,render_ignore_stops,
+			&err_msg,render_first_line,render_last_line,
+			render_first_time,render_last_time)) {
+      fprintf(stderr,"rdrender: %s\n",(const char *)err_msg);
+      exit(1);
+    }
+  }
+  QStringList warnings=r->warnings();
+  for(unsigned i=0;i<warnings.size();i++) {
+    fprintf(stderr,"%s: %s\n",(const char *)tr("WARNING"),
+	    (const char *)warnings[i]);
+  }
+
+  exit(0);
 }
 
 
-uint64_t MainObject::FramesFromMsec(uint64_t msec)
-{
-  return msec*render_system->sampleRate()/1000;
-}
-
-
-void MainObject::Verbose(const QString &msg)
+void MainObject::printProgressMessage(const QString &msg)
 {
   if(render_verbose) {
     fprintf(stderr,"%s\n",(const char *)msg);
   }
-}
-
-
-void MainObject::Verbose(const QTime &time,int line,const QString &trans,
-			 const QString &msg)
-{
-  if(render_verbose) {
-    fprintf(stderr,"%s\n",
-	    (const char *)(QString().sprintf("%04d : ",line)+
-			   time.toString("hh:mm:ss")+" : "+
-			   QString().sprintf("%-5s",(const char *)trans)+msg));
-  }
-}
-
-
-bool MainObject::GetCutFile(const QString &cutname,int start_pt,int end_pt,
-			    QString *dest_filename) const
-{
-  bool ret=false;
-  RDAudioConvert::ErrorCode conv_err;
-  RDAudioExport::ErrorCode export_err;
-  char tempdir[PATH_MAX];
-  
-  strncpy(tempdir,RDTempDir()+"/rdrenderXXXXXX",PATH_MAX);
-  *dest_filename=QString(mkdtemp(tempdir))+"/"+cutname+".wav";
-  RDAudioExport *conv=new RDAudioExport(render_station,render_config);
-  conv->setDestinationFile(*dest_filename);
-  conv->setCartNumber(RDCut::cartNumber(cutname));
-  conv->setCutNumber(RDCut::cutNumber(cutname));
-  RDSettings s;
-  if(render_settings.format()==RDSettings::Pcm16) {
-    s.setFormat(RDSettings::Pcm16);
-  }
-  else {
-    s.setFormat(RDSettings::Pcm24);
-  }
-  s.setSampleRate(render_system->sampleRate());
-  s.setChannels(render_channels);
-  s.setNormalizationLevel(0);
-  conv->setDestinationSettings(&s);
-  conv->setRange(start_pt,end_pt);
-  conv->setEnableMetadata(false);
-  switch(export_err=conv->runExport(render_user->name(),
-				    render_user->password(),&conv_err)) {
-  case RDAudioExport::ErrorOk:
-    ret=true;
-    break;
-
-  default:
-    ret=false;
-    printf("export err %d [%s]\n",export_err,
-	   (const char *)RDAudioExport::errorText(export_err,conv_err));
-    break;
-  }
-
-  delete conv;
-  return ret;
-}
-
-
-void MainObject::DeleteCutFile(const QString &dest_filename) const
-{
-  unlink(dest_filename);
-  QStringList f0=f0.split("/",dest_filename);
-  f0.erase(f0.fromLast());
-  rmdir("/"+f0.join("/"));
-}
-
-
-bool MainObject::ConvertAudio(const QString &srcfile,const QString &dstfile,
-			      RDSettings *s,QString *err_msg)
-{
-  RDAudioConvert::ErrorCode err_code;
-
-  RDAudioConvert *conv=new RDAudioConvert(render_station->name(),this);
-  conv->setSourceFile(srcfile);
-  conv->setDestinationFile(dstfile);
-  conv->setDestinationSettings(s);
-  err_code=conv->convert();
-  *err_msg=RDAudioConvert::errorText(err_code);
-  delete conv;
-
-  return err_code==RDAudioConvert::ErrorOk;
-}
-
-
-bool MainObject::ImportCart(const QString &srcfile,unsigned cartnum,int cutnum,
-			    QString *err_msg)
-{
-  RDAudioImport::ErrorCode err_import_code;
-  RDAudioConvert::ErrorCode err_conv_code;
-  RDSettings settings;
-  
-  settings.setNormalizationLevel(0);
-
-  RDAudioImport *conv=new RDAudioImport(render_station,render_config,this);
-  conv->setCartNumber(cartnum);
-  conv->setCutNumber(cutnum);
-  conv->setSourceFile(srcfile);
-  conv->setUseMetadata(false);
-  conv->setDestinationSettings(&settings);
-  err_import_code=
-    conv->runImport(render_user->name(),render_user->password(),&err_conv_code);
-  *err_msg=RDAudioImport::errorText(err_import_code,err_conv_code);
-  delete conv;
-  return err_import_code==RDAudioImport::ErrorOk;
 }
 
 

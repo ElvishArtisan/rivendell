@@ -163,6 +163,7 @@ x11 {
   SOURCES += rdplay_deck.cpp
   SOURCES += rdrecording.cpp
   SOURCES += rdrehash.cpp
+  SOURCES += rdrenderer.cpp
   SOURCES += rdsimpleplayer.cpp
   SOURCES += rdsound_panel.cpp
   SOURCES += rdstatus.cpp
@@ -300,6 +301,7 @@ x11 {
   HEADERS += rdplay_deck.h
   HEADERS += rdrecording.h
   HEADERS += rdrehash.h
+  HEADERS += rdrenderer.h
   HEADERS += rdsimpleplayer.h
   HEADERS += rdsound_panel.h
   HEADERS += rdstatus.h

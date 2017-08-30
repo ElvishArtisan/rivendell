@@ -15984,3 +15984,7 @@
 	'--quality=' and '--samplerate=' switches to rdrender(1).
 2017-08-29 Fred Gleason <fredg@paravelsystems.com>
 	* Added '--to-cart=' and '--to-file=' switches to rdrender(1).
+2017-08-30 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'RDRenderer' class in 'lib/rdrenderer.cpp' and
+	'lib/rdrenderer.h'.
+	* Refactored rdrender(1) to use the 'RDRenderer' class.
