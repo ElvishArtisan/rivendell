@@ -102,6 +102,8 @@ RDCopyAudio::ErrorCode RDCopyAudio::runCopy(const QString &username,
   curl_easy_setopt(curl,CURLOPT_URL,url);
   curl_easy_setopt(curl,CURLOPT_POST,1);
   curl_easy_setopt(curl,CURLOPT_POSTFIELDS,(const char *)post);
+  curl_easy_setopt(curl,CURLOPT_USERAGENT,
+		   (const char *)conv_config->userAgent());
   curl_easy_setopt(curl,CURLOPT_TIMEOUT,RD_CURL_TIMEOUT);
 
   switch(curl_easy_perform(curl)) {

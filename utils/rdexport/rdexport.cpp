@@ -205,6 +205,7 @@ MainObject::MainObject(QObject *parent)
   //
   export_config=new RDConfig();
   export_config->load();
+  export_config->setModuleName("rdexport");
 
   //
   // Open Database

@@ -89,6 +89,7 @@ MainWidget::MainWidget(QWidget *parent)
   //
   gpi_config=new RDConfig();
   gpi_config->load();
+  gpi_config->setModuleName("RDGpiMon");
 
   //
   // Open Database

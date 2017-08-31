@@ -24,6 +24,8 @@
 #include <qobject.h>
 #include <qurl.h>
 
+#include <rdconfig.h>
+
 class RDDelete : public QObject
 {
   Q_OBJECT;
@@ -34,7 +36,7 @@ class RDDelete : public QObject
 		  ErrorUnspecified=8,ErrorInvalidUser=9,
 		  ErrorInvalidLogin=11,ErrorRemoteAccess=12,
 		  ErrorRemoteConnection=13,ErrorUnknown=14};
-  RDDelete(QObject *parent=0);
+  RDDelete(RDConfig *config,QObject *parent=0);
   void setTargetUrl(const QString &url);
   RDDelete::ErrorCode runDelete(const QString &username,
 				const QString &password,
@@ -43,6 +45,7 @@ class RDDelete : public QObject
 
  private:
   QUrl conv_target_url;
+  RDConfig *conv_config;
 };
 
 

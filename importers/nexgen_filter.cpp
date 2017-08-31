@@ -134,6 +134,7 @@ MainObject::MainObject(QObject *parent)
   //
   rdconfig=new RDConfig(RD_CONF_FILE);
   rdconfig->load();
+  rdconfig->setModuleName("nexgen_filter");
 
   //
   // Open Database

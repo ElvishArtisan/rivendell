@@ -47,9 +47,12 @@ class RDConfig
 
 #endif  // WIN32
   RDConfig();
-  RDConfig(QString filename);
+  RDConfig(const QString &filename);
   QString filename() const;
   void setFilename(QString filename);
+  QString moduleName() const;
+  void setModuleName(const QString &modname);
+  QString userAgent() const;
   QString mysqlHostname() const;
   QString mysqlUsername() const;
   QString mysqlDbname() const;
@@ -103,9 +106,11 @@ class RDConfig
   QString destination(unsigned n);
   void load();
   void clear();
+  static QString userAgent(const QString &modname);
 
  private:
   QString conf_filename;
+  QString conf_module_name;
   QString conf_mysql_hostname;
   QString conf_mysql_username;
   QString conf_mysql_dbname;

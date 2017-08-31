@@ -106,6 +106,7 @@ MainWidget::MainWidget(QWidget *parent)
   //
   login_config=new RDConfig();
   login_config->load();
+  login_config->setModuleName("RDLogin");
 
   str=QString(tr("RDLogin - Station:"));
   setCaption(QString().sprintf("%s %s",(const char *)str,

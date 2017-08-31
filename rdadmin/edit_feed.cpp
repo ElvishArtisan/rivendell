@@ -45,7 +45,7 @@ EditFeed::EditFeed(const QString &feed,QWidget *parent)
   setMinimumHeight(sizeHint().height());
   setMaximumHeight(sizeHint().height());
 
-  feed_feed=new RDFeed(feed,this);
+  feed_feed=new RDFeed(feed,admin_config,this);
 
   setCaption(tr("Feed: ")+feed);
 

@@ -144,6 +144,8 @@ MainWidget::MainWidget(QWidget *parent)
   //
   log_config=new RDConfig();
   log_config->load();
+  log_config->setModuleName("RDLogEdit");
+
   str1=QString("RDLogEdit")+"v"+VERSION+" - "+tr("Host");
   str2=tr("User")+": ["+tr("Unknown")+"]";
   setCaption(QString().sprintf("%s: %s, %s",(const char *)str1,

@@ -62,6 +62,7 @@ MainObject::MainObject(QObject *parent)
   //
   edit_config=new RDConfig();
   edit_config->load();
+  edit_config->setModuleName("rdclilogedit");
 
   //
   // Open Database

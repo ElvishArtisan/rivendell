@@ -85,6 +85,7 @@ MainObject::MainObject(QObject *parent)
   //
   rev_config=new RDConfig();
   rev_config->load();
+  rev_config->setModuleName("rdrevert");
 
   //
   // Open Database

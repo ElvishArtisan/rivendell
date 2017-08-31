@@ -2,7 +2,7 @@
 //
 // Import an Audio File using the RdXport Web Service
 //
-//   (C) Copyright 2010-2014,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2010-2014,2016-2017 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -169,6 +169,8 @@ RDAudioImport::ErrorCode RDAudioImport::runImport(const QString &username,
   }
   curl_easy_setopt(curl,CURLOPT_WRITEDATA,stdout);
   curl_easy_setopt(curl,CURLOPT_HTTPPOST,first);
+  curl_easy_setopt(curl,CURLOPT_USERAGENT,
+		   (const char *)conv_config->userAgent());
   curl_easy_setopt(curl,CURLOPT_TIMEOUT,RD_CURL_TIMEOUT);
   curl_easy_setopt(curl,CURLOPT_PROGRESSFUNCTION,ImportProgressCallback);
   curl_easy_setopt(curl,CURLOPT_PROGRESSDATA,this);

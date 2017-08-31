@@ -38,8 +38,8 @@ class RDFeed : public QObject
   enum Error {ErrorOk=0,ErrorNoFile=1,ErrorCannotOpenFile=2,
 	      ErrorUnsupportedType=3,ErrorUploadFailed=4,ErrorGeneral=5};
   enum MediaLinkMode {LinkNone=0,LinkDirect=1,LinkCounted=2};
-  RDFeed(const QString &keyname,QObject *parent=0);
-  RDFeed(unsigned id,QObject *parent=0);
+  RDFeed(const QString &keyname,RDConfig *config,QObject *parent=0);
+  RDFeed(unsigned id,RDConfig *config,QObject *parent=0);
   QString keyName() const;
   unsigned id() const;
   bool exists() const;
@@ -127,7 +127,8 @@ class RDFeed : public QObject
               const QString &format) const;
   QString feed_keyname;
   unsigned feed_id;
+  RDConfig *feed_config;
 };
 
 
-#endif 
+#endif  // RDFEED_H

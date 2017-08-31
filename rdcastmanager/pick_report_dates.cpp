@@ -191,7 +191,7 @@ void PickReportDates::GenerateSubscriptionReport(const QString &keyname,
   QString sql;
   RDSqlQuery *q;
 
-  RDFeed *feed=new RDFeed(keyname,this);
+  RDFeed *feed=new RDFeed(keyname,config,this);
   unsigned total=0;
   unsigned rss_total=0;
   unsigned audio_total=0;
@@ -253,8 +253,8 @@ void PickReportDates::GenerateEpisodeReport(const QString &keyname,
   QString sql;
   RDSqlQuery *q;
 
-  RDFeed *feed=new RDFeed(keyname,this);
-  RDPodcast *cast=new RDPodcast(cast_id);
+  RDFeed *feed=new RDFeed(keyname,config,this);
+  RDPodcast *cast=new RDPodcast(config,cast_id);
 
   //
   // Header

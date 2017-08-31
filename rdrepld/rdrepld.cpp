@@ -71,6 +71,7 @@ MainObject::MainObject(QObject *parent)
   //
   rdconfig=new RDConfig();
   rdconfig->load();
+  rdconfig->setModuleName("rdrepld");
 
   //
   // Read Command Options

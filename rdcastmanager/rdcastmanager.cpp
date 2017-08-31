@@ -96,8 +96,10 @@ MainWidget::MainWidget(QWidget *parent)
   //
   // Load Local Configs
   //
-  config=new RDConfig();
+  config=new RDConfig(RD_CONF_FILE);
   config->load();
+  config->setModuleName("RDCastManager");
+
   str1=QString("RDCastManager")+" v"+VERSION+" - "+tr("Host");
   str2=QString(tr("User: [Unknown]"));
   setCaption(QString().sprintf("%s: %s, %s",(const char *)str1,

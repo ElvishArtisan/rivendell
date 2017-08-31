@@ -166,6 +166,7 @@ MainObject::MainObject(QObject *parent)
   //
   rdconfig=new RDConfig();
   rdconfig->load();
+  rdconfig->setModuleName("audio_convert_test");
 
   //
   // Open Database

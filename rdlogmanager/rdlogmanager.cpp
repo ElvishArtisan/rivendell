@@ -122,6 +122,8 @@ MainWidget::MainWidget(QWidget *parent)
   //
   log_config=new RDConfig();
   log_config->load();
+  log_config->setModuleName("RDLogManager");
+
   setCaption(tr("RDLogManager"));
 
   //

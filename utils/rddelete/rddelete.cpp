@@ -97,6 +97,7 @@ MainObject::MainObject(QObject *parent)
   //
   del_config=new RDConfig();
   del_config->load();
+  del_config->setModuleName("rddelete");
 
   //
   // Open Database

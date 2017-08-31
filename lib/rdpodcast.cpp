@@ -47,8 +47,10 @@ int PodcastErrorCallback(CURL *curl,curl_infotype type,char *msg,size_t size,
 }
 
 
-RDPodcast::RDPodcast(unsigned id)
+RDPodcast::RDPodcast(RDConfig *config,unsigned id)
 {
+  podcast_config=config;
+
   RDSqlQuery *q;
   QString sql;
 
@@ -314,6 +316,8 @@ bool RDPodcast::removeAudio(RDFeed *feed,QString *err_text,bool log_debug) const
 			   (const char *)feed->purgePassword()),256);
   curl_easy_setopt(curl,CURLOPT_USERPWD,userpwd);
   curl_easy_setopt(curl,CURLOPT_HTTPAUTH,CURLAUTH_ANY);
+  curl_easy_setopt(curl,CURLOPT_USERAGENT,
+		   (const char *)podcast_config->userAgent());
   if(log_debug) {
     curl_easy_setopt(curl,CURLOPT_VERBOSE,1);
     curl_easy_setopt(curl,CURLOPT_DEBUGFUNCTION,PodcastErrorCallback);

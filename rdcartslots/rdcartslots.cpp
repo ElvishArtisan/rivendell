@@ -60,8 +60,9 @@ MainWidget::MainWidget(QWidget *parent)
   //
   // Load Local Configs
   //
-  panel_config=new RDConfig();
+  panel_config=new RDConfig(RD_CONF_FILE);
   panel_config->load();
+  panel_config->setModuleName("RDCartSlots");
 
   //
   // Load the command-line arguments

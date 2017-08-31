@@ -45,8 +45,8 @@ EditCast::EditCast(unsigned cast_id,QWidget *parent)
   RDSqlQuery *q1;
   int ypos=0;
 
-  cast_cast=new RDPodcast(cast_id);
-  cast_feed=new RDFeed(cast_cast->feedId());
+  cast_cast=new RDPodcast(config,cast_id);
+  cast_feed=new RDFeed(cast_cast->feedId(),config);
   cast_status=cast_cast->status();
   setCaption(tr("Editing PodCast"));
 

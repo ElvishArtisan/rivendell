@@ -148,6 +148,7 @@ MainWidget::MainWidget(QWidget *parent)
     select_configs.push_back(new RDConfig());
     select_configs.back()->setFilename(select_filenames[i]);
     select_configs.back()->load();
+    select_configs.back()->setModuleName("RDSelect");
   }
 
   //

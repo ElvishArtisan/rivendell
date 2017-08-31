@@ -2,7 +2,7 @@
 //
 // The Event Schedule Manager for Rivendell.
 //
-//   (C) Copyright 2002-2015 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2017 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -202,6 +202,7 @@ MainWidget::MainWidget(QWidget *parent)
   //
   catch_config=new RDConfig();
   catch_config->load();
+  catch_config->setModuleName("RDCatch");
 
   str=QString("RDCatch")+" v"+VERSION+" - "+tr("Host")+":";
   setCaption(QString().sprintf("%s %s",(const char *)str,

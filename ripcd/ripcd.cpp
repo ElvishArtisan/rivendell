@@ -103,6 +103,7 @@ MainObject::MainObject(QObject *parent)
   //
   ripcd_config=new RDConfig(RD_CONF_FILE);
   ripcd_config->load();
+  ripcd_config->setModuleName("ripcd");
 
   //
   // Make sure we're the only instance running

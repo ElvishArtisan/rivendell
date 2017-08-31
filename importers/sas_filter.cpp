@@ -59,6 +59,8 @@ MainObject::MainObject(QObject *parent)
 
   rd_config=new RDConfig(RD_CONF_FILE);
   rd_config->load();
+  rd_config->setModuleName("sas_filter");
+
   filter_switch_count=0;
   filter_macro_count=0;
 

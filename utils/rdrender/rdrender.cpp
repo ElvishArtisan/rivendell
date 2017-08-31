@@ -248,6 +248,7 @@ MainObject::MainObject(QObject *parent)
   //
   render_config=new RDConfig();
   render_config->load();
+  render_config->setModuleName("rdrender");
 
   //
   // Open Database

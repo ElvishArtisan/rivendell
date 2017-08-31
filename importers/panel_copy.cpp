@@ -52,6 +52,7 @@ MainObject::MainObject(QObject *parent)
 
   rd_config=new RDConfig(RD_CONF_FILE);
   rd_config->load();
+  rd_config->setModuleName("panel_copy");
 
   //
   // Read Switches

@@ -60,6 +60,7 @@ MainObject::MainObject(QObject *parent)
   //
   cut_config=new RDConfig();
   cut_config->load();
+  cut_config->setModuleName("rdcheckcuts");
 
   //
   // Open Database

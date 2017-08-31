@@ -72,6 +72,7 @@ MainObject::MainObject(QObject *parent)
   //
   rdconfig=new RDConfig();
   rdconfig->load();
+  rdconfig->setModuleName("upload_test");
 
   //
   // Open Database
@@ -84,7 +85,7 @@ MainObject::MainObject(QObject *parent)
     exit(256);
   }
 
-  RDUpload *conv=new RDUpload(rdconfig->stationName(),this);
+  RDUpload *conv=new RDUpload(rdconfig,this);
   conv->setSourceFile(source_filename);
   conv->setDestinationUrl(destination_url);
   printf("Uploading...\n");

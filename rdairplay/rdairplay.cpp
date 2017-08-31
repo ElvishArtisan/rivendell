@@ -224,8 +224,10 @@ MainWidget::MainWidget(QWidget *parent)
   //
   // Load Local Configs
   //
-  air_config=new RDConfig();
+  air_config=new RDConfig(RD_CONF_FILE);
   air_config->load();
+  air_config->setModuleName("RDAirPlay");
+
   logfile=air_config->airplayLogname();
 
   str=QString("RDAirPlay")+" v"+VERSION+" - "+tr("Host:");

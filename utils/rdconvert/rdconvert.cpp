@@ -173,6 +173,7 @@ MainObject::MainObject(QObject *parent)
   //
   rdconfig=new RDConfig();
   rdconfig->load();
+  rdconfig->setModuleName("rdconvert");
 
   //
   // Open Database

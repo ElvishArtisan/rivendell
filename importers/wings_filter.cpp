@@ -62,6 +62,7 @@ MainObject::MainObject(QObject *parent)
 
   rdconfig=new RDConfig(RD_CONF_FILE);
   rdconfig->load();
+  rdconfig->setModuleName("wings_filter");
 
   //
   // Open Database

@@ -144,8 +144,9 @@ MainWidget::MainWidget(QWidget *parent)
   //
   // Load Configs
   //
-  admin_config=new RDConfig();
+  admin_config=new RDConfig(RD_CONF_FILE);
   admin_config->load();
+  admin_config->setModuleName("RDAdmin");
 
   str=QString(tr("RDAdmin")+" v"+VERSION+" - Host:");
   setCaption(QString().

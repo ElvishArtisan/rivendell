@@ -63,6 +63,7 @@ MainObject::MainObject(QObject *parent)
   //
   cast_config=new RDConfig();
   cast_config->load();
+  cast_config->setModuleName("rdcastmanager.cgi");
 
   //
   // Open Database
@@ -803,7 +804,7 @@ void MainObject::ServeEditCast(int cast_id)
   QDateTime origin_datetime=RDUtcToLocal(q->value(10).toDateTime());
   QDateTime effective_datetime=RDUtcToLocal(q->value(12).toDateTime());
 
-  RDFeed *feed=new RDFeed(cast_feed_id);
+  RDFeed *feed=new RDFeed(cast_feed_id,cast_config);
 
   printf("Content-type: text/html\n\n");
   printf("<html>\n");
@@ -1450,8 +1451,8 @@ void MainObject::DeleteCast()
     Exit(0);
   }
 
-  RDFeed *feed=new RDFeed(cast_feed_id);
-  RDPodcast *cast=new RDPodcast(cast_cast_id);
+  RDFeed *feed=new RDFeed(cast_feed_id,cast_config);
+  RDPodcast *cast=new RDPodcast(cast_config,cast_cast_id);
   cast->removeAudio(feed,&errs,cast_config->logXloadDebugData());
   delete cast;
   delete feed;
@@ -1482,7 +1483,7 @@ void MainObject::ServeSubscriptionReport()
     Exit(0);
   }
   cast_cast_id=-1;
-  RDFeed *feed=new RDFeed(cast_key_name,this);
+  RDFeed *feed=new RDFeed(cast_key_name,cast_config,this);
 
   printf("Content-type: text/html\n\n");
   printf("<html>\n");
@@ -1616,7 +1617,7 @@ void MainObject::PostEpisode()
     Exit(0);
   }
   RDFeed::Error err;
-  RDFeed *feed=new RDFeed(cast_feed_id,this);
+  RDFeed *feed=new RDFeed(cast_feed_id,cast_config,this);
   int cast_id=feed->postFile(station,media_file,&err,
 			     cast_config->logXloadDebugData(),cast_config);
   delete feed;
@@ -1650,7 +1651,7 @@ void MainObject::ServeEpisodeReport()
     RDCgiError("Missing CAST_ID");
     Exit(0);
   }
-  RDPodcast *cast=new RDPodcast(cast_cast_id);
+  RDPodcast *cast=new RDPodcast(cast_config,cast_cast_id);
 
   printf("Content-type: text/html\n\n");
   printf("<html>\n");

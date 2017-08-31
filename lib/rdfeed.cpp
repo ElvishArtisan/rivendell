@@ -37,13 +37,14 @@
 #include <rdaudioconvert.h>
 #include <rdupload.h>
 
-RDFeed::RDFeed(const QString &keyname,QObject *parent)
+RDFeed::RDFeed(const QString &keyname,RDConfig *config,QObject *parent)
   : QObject(parent)
 {
   RDSqlQuery *q;
   QString sql;
 
   feed_keyname=keyname;
+  feed_config=config;
 
   sql=QString().sprintf("select ID from FEEDS where KEY_NAME=\"%s\"",
 			(const char *)RDEscapeString(keyname));
@@ -55,13 +56,14 @@ RDFeed::RDFeed(const QString &keyname,QObject *parent)
 }
 
 
-RDFeed::RDFeed(unsigned id,QObject *parent)
+RDFeed::RDFeed(unsigned id,RDConfig *config,QObject *parent)
   : QObject(parent)
 {
   RDSqlQuery *q;
   QString sql;
 
   feed_id=id;
+  feed_config=config;
 
   sql=QString().sprintf("select KEY_NAME from FEEDS where ID=%u",id);
   q=new RDSqlQuery(sql);
@@ -507,7 +509,7 @@ QString RDFeed::audioUrl(RDFeed::MediaLinkMode mode,
       break;
 
     case RDFeed::LinkDirect:
-      cast=new RDPodcast(cast_id);
+      cast=new RDPodcast(feed_config,cast_id);
       ret=QString().sprintf("%s/%s",
 			    (const char *)baseUrl(),
 			    (const char *)cast->audioFilename());
@@ -601,8 +603,8 @@ unsigned RDFeed::postCut(RDUser *user,RDStation *station,
   int length=file.size();
   unsigned cast_id=CreateCast(&destfile,length,cut->length());
   delete cut;
-  cast=new RDPodcast(cast_id);
-  upload=new RDUpload(station->name(),this);
+  cast=new RDPodcast(feed_config,cast_id);
+  upload=new RDUpload(feed_config,this);
   upload->setSourceFile(tmpfile);
   upload->setDestinationUrl(purgeUrl()+"/"+cast->audioFilename());
   switch((upload_err=upload->runUpload(purgeUsername(),purgePassword(),
@@ -714,8 +716,8 @@ unsigned RDFeed::postFile(RDStation *station,const QString &srcfile,Error *err,
   int length=file.size();
 
   unsigned cast_id=CreateCast(&destfile,length,time_length);
-  RDPodcast *cast=new RDPodcast(cast_id);
-  upload=new RDUpload(station->name(),this);
+  RDPodcast *cast=new RDPodcast(feed_config,cast_id);
+  upload=new RDUpload(feed_config,this);
   upload->setSourceFile(tmpfile);
   upload->setDestinationUrl(purgeUrl()+"/"+cast->audioFilename());
   switch((upload_err=upload->runUpload(purgeUsername(),purgePassword(),

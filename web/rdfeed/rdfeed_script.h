@@ -24,6 +24,7 @@
 #include <qobject.h>
 #include <qsqldatabase.h>
 
+#include <rdconfig.h>
 #include <rddb.h>
 
 class MainObject : public QObject
@@ -41,6 +42,7 @@ class MainObject : public QObject
 			      unsigned cast_id);
   bool ShouldCount(const QString &hdr);
   void Redirect(const QString &url);
+  RDConfig *config;
 };
 
 

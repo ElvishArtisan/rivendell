@@ -2,7 +2,7 @@
 //
 // Abstract a Rivendell Podcast Entry
 //
-//   (C) Copyright 2002-2007,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2007,2016-2017 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,6 +20,7 @@
 
 #include <qsqldatabase.h>
 
+#include <rdconfig.h>
 #include <rdfeed.h>
 
 #ifndef RDPODCAST_H
@@ -29,7 +30,7 @@ class RDPodcast
 {
  public:
   enum Status {StatusPending=1,StatusActive=2,StatusExpired=3};
-  RDPodcast(unsigned id);
+  RDPodcast(RDConfig *config,unsigned id);
   unsigned id() const;
   QString keyName() const;
   bool exists() const;
@@ -79,6 +80,7 @@ class RDPodcast
   void SetRow(const QString &param,const QDateTime &datetime,const QString &value) const;
   QString podcast_keyname;
   unsigned podcast_id;
+  RDConfig *podcast_config;
 };
 
 

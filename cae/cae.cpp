@@ -131,6 +131,7 @@ MainObject::MainObject(QObject *parent,const char *name)
   // 
   rd_config=new RDConfig(RD_CONF_FILE);
   rd_config->load();
+  rd_config->setModuleName("caed");
 
   //
   // Make sure we're the only instance running

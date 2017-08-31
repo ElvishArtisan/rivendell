@@ -181,6 +181,7 @@ MainWidget::MainWidget(QWidget *parent)
   //
   lib_config=new RDConfig();
   lib_config->load();
+  lib_config->setModuleName("RDLibrary");
 
   SetCaption("");
   lib_import_path=RDGetHomeDir();

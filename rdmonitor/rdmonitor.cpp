@@ -102,6 +102,8 @@ MainWidget::MainWidget(QWidget *parent)
   //
   mon_rdconfig=new RDConfig();
   mon_rdconfig->load();
+  mon_rdconfig->setModuleName("RDMonitor");
+
   mon_desktop_widget=new QDesktopWidget();
   mon_config=new RDMonitorConfig();
   mon_config->load();

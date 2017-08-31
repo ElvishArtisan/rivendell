@@ -2,7 +2,7 @@
 //
 // Delete a file from the audio store via the Rivendell Web Service
 //
-//   (C) Copyright 2010,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2010,2016-2017 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -67,9 +67,10 @@ int DeleteErrorCallback(CURL *curl,curl_infotype type,char *msg,size_t size,
 }
 
 
-RDDelete::RDDelete(QObject *parent)
+RDDelete::RDDelete(RDConfig *config,QObject *parent)
   : QObject(parent)
 {
+  conv_config=config;
 }
 
 
@@ -104,9 +105,10 @@ RDDelete::ErrorCode RDDelete::runDelete(const QString &username,
 			   (const char *)password),256);
   curl_easy_setopt(curl,CURLOPT_USERPWD,userpwd);
   curl_easy_setopt(curl,CURLOPT_HTTPAUTH,CURLAUTH_ANY);
-  printf("HERE\n");
   curl_easy_setopt(curl,CURLOPT_WRITEFUNCTION,DeleteWriteCallback);
   curl_easy_setopt(curl,CURLOPT_WRITEDATA,&xml);
+  curl_easy_setopt(curl,CURLOPT_USERAGENT,
+		   (const char *)conv_config->userAgent());
   if(log_debug) {
     curl_easy_setopt(curl,CURLOPT_VERBOSE,1);
     curl_easy_setopt(curl,CURLOPT_DEBUGFUNCTION,DeleteErrorCallback);

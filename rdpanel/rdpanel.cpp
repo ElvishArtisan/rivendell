@@ -122,6 +122,7 @@ MainWidget::MainWidget(QWidget *parent)
   //
   panel_config=new RDConfig();
   panel_config->load();
+  panel_config->setModuleName("RDPanel");
 
   //
   // Open Database

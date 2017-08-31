@@ -55,6 +55,8 @@ MainWidget::MainWidget(QWidget *parent)
   //
   rd_config=new RDConfig(RD_CONF_FILE);
   rd_config->load();
+  rd_config->setModuleName("sas_torture");
+
   QString err;
   test_db=RDInitDb(&schema,&err);
   if(!test_db) {

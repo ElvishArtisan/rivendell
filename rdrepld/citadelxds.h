@@ -21,12 +21,13 @@
 #ifndef CITADELXDS_H
 #define CITADELXDS_H
 
-#include <replfactory.h>
+#include "globals.h"
+#include "replfactory.h"
 
 class CitadelXds : public ReplFactory
 {
  public:
-  CitadelXds(ReplConfig *config);
+  CitadelXds(ReplConfig *repl_config);
   void startProcess();
   bool processCart(const unsigned cartnum);
 

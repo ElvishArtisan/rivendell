@@ -85,8 +85,9 @@ MainObject::MainObject(QObject *parent)
   //
   // Read Configuration
   //
-  RDConfig *config=new RDConfig();
+  config=new RDConfig();
   config->load();
+  config->setModuleName("rdfeed.cgi");
 
   //
   // Determine Range
@@ -279,7 +280,7 @@ QString MainObject::ResolveChannelWildcards(RDSqlQuery *chan_q)
 QString MainObject::ResolveItemWildcards(const QString &keyname,
 					 RDSqlQuery *item_q,RDSqlQuery *chan_q)
 {
-  RDFeed *feed=new RDFeed(keyname);
+  RDFeed *feed=new RDFeed(keyname,config);
   QString ret=chan_q->value(11).toString();
   ret.replace("%ITEM_TITLE%",RDXmlEscape(item_q->value(0).toString()));
   ret.replace("%ITEM_DESCRIPTION%",

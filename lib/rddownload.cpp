@@ -2,7 +2,7 @@
 //
 // Download a File
 //
-//   (C) Copyright 2010,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2010,2016-2017 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -68,9 +68,10 @@ int DownloadErrorCallback(CURL *curl,curl_infotype type,char *msg,size_t size,
 }
 
 
-RDDownload::RDDownload(const QString &station_name,QObject *parent)
+RDDownload::RDDownload(RDConfig *config,QObject *parent)
   : QObject(parent)
 {
+  conv_config=config;
   conv_aborting=false;
 }
 
@@ -142,6 +143,8 @@ RDDownload::ErrorCode RDDownload::runDownload(const QString &username,
   curl_easy_setopt(curl,CURLOPT_PROGRESSFUNCTION,DownloadProgressCallback);
   curl_easy_setopt(curl,CURLOPT_PROGRESSDATA,this);
   curl_easy_setopt(curl,CURLOPT_NOPROGRESS,0);
+  curl_easy_setopt(curl,CURLOPT_USERAGENT,
+		   (const char *)conv_config->userAgent());
   if(log_debug) {
     curl_easy_setopt(curl,CURLOPT_VERBOSE,1);
     curl_easy_setopt(curl,CURLOPT_DEBUGFUNCTION,DownloadErrorCallback);

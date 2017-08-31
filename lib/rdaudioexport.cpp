@@ -2,7 +2,7 @@
 //
 // Export an Audio File using the RdXport Web Service
 //
-//   (C) Copyright 2010,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2010,2016-2017 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -175,6 +175,8 @@ RDAudioExport::ErrorCode RDAudioExport::runExport(const QString &username,
   curl_easy_setopt(curl,CURLOPT_WRITEDATA,f);
   curl_easy_setopt(curl,CURLOPT_POST,1);
   curl_easy_setopt(curl,CURLOPT_POSTFIELDS,(const char *)post);
+  curl_easy_setopt(curl,CURLOPT_USERAGENT,
+		   (const char *)conv_config->userAgent());
   curl_easy_setopt(curl,CURLOPT_TIMEOUT,RD_CURL_TIMEOUT);
   curl_easy_setopt(curl,CURLOPT_PROGRESSFUNCTION,ExportProgressCallback);
   curl_easy_setopt(curl,CURLOPT_PROGRESSDATA,this);

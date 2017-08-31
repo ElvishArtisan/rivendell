@@ -76,6 +76,7 @@ MainObject::MainObject(QObject *parent)
   //
   purge_config=new RDConfig();
   purge_config->load();
+  purge_config->setModuleName("rdpurgecasts");
 
   //
   // Open Database
@@ -128,8 +129,8 @@ void MainObject::PurgeCast(unsigned id)
                          where PODCASTS.ID=%u",id);
   q=new RDSqlQuery(sql);
   while(q->next()) {
-    feed=new RDFeed(q->value(0).toUInt());
-    cast=new RDPodcast(id);
+    feed=new RDFeed(q->value(0).toUInt(),purge_config);
+    cast=new RDPodcast(purge_config,id);
     cast->removeAudio(feed,&errs,purge_config->logXloadDebugData());
     if(purge_verbose) {
       printf("purging cast: ID=%d,cmd=\"%s\"\n",id,(const char *)cmd);

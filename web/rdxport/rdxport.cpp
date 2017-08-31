@@ -52,6 +52,7 @@ Xport::Xport(QObject *parent)
   //
   xport_config=new RDConfig();
   xport_config->load();
+  xport_config->setModuleName("rdxport.cgi");
 
   //
   // Drop root permissions

@@ -232,7 +232,7 @@ void ListFeeds::deleteData()
       default:
 	break;
   }
-  feed=new RDFeed(feedname);
+  feed=new RDFeed(feedname,admin_config);
 
   //
   // Delete Casts
@@ -251,7 +251,7 @@ void ListFeeds::deleteData()
   while(q->next()) {
     pd->setProgress(pd->progress()+1);
     qApp->processEvents();
-    cast=new RDPodcast(q->value(0).toUInt());
+    cast=new RDPodcast(admin_config,q->value(0).toUInt());
     cast->removeAudio(feed,&errs,admin_config->logXloadDebugData());
     delete cast;
   }

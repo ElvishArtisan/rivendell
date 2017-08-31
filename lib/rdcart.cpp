@@ -32,6 +32,7 @@
 
 #include <rd.h>
 #include <rdconf.h>
+#include <rdconfig.h>
 #include <rdcart.h>
 #include <rdcut.h>
 #include <rdtextvalidator.h>
@@ -1641,6 +1642,8 @@ bool RDCart::removeCutAudio(RDStation *station,RDUser *user,unsigned cart_num,
     curl_easy_setopt(curl,CURLOPT_URL,url);
     curl_easy_setopt(curl,CURLOPT_POST,1);
     curl_easy_setopt(curl,CURLOPT_POSTFIELDS,(const char *)post);
+    curl_easy_setopt(curl,CURLOPT_USERAGENT,
+		     (const char *)RDConfig::userAgent(""));
     curl_easy_setopt(curl,CURLOPT_TIMEOUT,RD_CURL_TIMEOUT);
     curl_easy_setopt(curl,CURLOPT_WRITEFUNCTION,CartWriteCallback);
     curl_easy_setopt(curl,CURLOPT_WRITEDATA,&xml);

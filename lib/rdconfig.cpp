@@ -49,7 +49,7 @@ RDConfig::RDConfig()
 }
 
 
-RDConfig::RDConfig(QString filename)
+RDConfig::RDConfig(const QString &filename)
 {
   clear();
   conf_filename=filename;
@@ -67,15 +67,36 @@ void RDConfig::setFilename(QString filename)
   conf_filename=filename;
 }
 
+
+QString RDConfig::moduleName() const
+{
+  return conf_module_name;
+}
+
+
+void RDConfig::setModuleName(const QString &modname)
+{
+  conf_module_name=modname;
+}
+
+
+QString RDConfig::userAgent() const
+{
+  return RDConfig::userAgent(conf_module_name);
+}
+
+
 QString RDConfig::audioRoot() const
 {
   return conf_audio_root;
 }
 
+
 QString RDConfig::audioExtension() const
 {
   return conf_audio_extension;
 }
+
 
 QString RDConfig::audioFileName (QString cutname)
 {
@@ -83,20 +104,24 @@ QString RDConfig::audioFileName (QString cutname)
     audioExtension();
 };
 
+
 QString RDConfig::label() const
 {
   return conf_label;
 }
+
 
 QString RDConfig::audioStoreMountSource() const
 {
   return conf_audio_store_mount_source;
 }
 
+
 QString RDConfig::audioStoreMountType() const
 {
   return conf_audio_store_mount_type;
 }
+
 
 QString RDConfig::audioStoreMountOptions() const
 {
@@ -523,6 +548,7 @@ void RDConfig::clear()
 #else
   conf_filename=RD_CONF_FILE;
 #endif
+  conf_module_name="";
   conf_mysql_hostname="";
   conf_mysql_username="";
   conf_mysql_dbname="";
@@ -572,4 +598,13 @@ void RDConfig::clear()
   conf_sas_base_cart=1;
   conf_sas_tty_device="";
   conf_destinations.clear();
+}
+
+
+QString RDConfig::userAgent(const QString &modname)
+{
+  if(modname.isEmpty()) {
+    return QString("Mozilla/5.0")+" rivendell/"+VERSION;
+  }
+  return QString("Mozilla/5.0 rivendell/")+VERSION+" ("+modname+")";
 }

@@ -133,6 +133,7 @@ MainObject::MainObject(QObject *parent)
   //
   catch_config=new RDConfig();
   catch_config->load();
+  catch_config->setModuleName("rdcatchd");
 
   //
   // Read Command Options

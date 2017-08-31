@@ -243,8 +243,9 @@ PAM_EXTERN int pam_sm_authenticate (pam_handle_t *pamh,
     }
 
     /* Load configs */
-    login_config=new RDConfig();
+    login_config=new RDConfig(RD_CONF_FILE);
     login_config->load();
+    login_config->setModuleName("pam_rd");
 
     /* kill daemons if requested */
     if (ctrl & PAM_RD_KILL_RD_DAEMONS) {

@@ -40,8 +40,8 @@
 
 #define RD_MAX_CART_NUMBER 999999
 
-CitadelXds::CitadelXds(ReplConfig *config)
-  : ReplFactory(config)
+CitadelXds::CitadelXds(ReplConfig *repl_config)
+  : ReplFactory(repl_config)
 {
   QString sql;
   RDSqlQuery *q;
@@ -379,7 +379,7 @@ bool CitadelXds::PostCut(const QString &cutname,const QString &filename)
   //
   // Upload File
   //
-  RDUpload *upload=new RDUpload(rdconfig->stationName());
+  RDUpload *upload=new RDUpload(rdconfig);
   upload->setSourceFile(tempfile);
   upload->setDestinationUrl(config()->url()+"/"+filename);
   switch(upload_err=upload->runUpload(config()->urlUsername(),
@@ -432,7 +432,7 @@ void CitadelXds::PurgeCuts()
 	path+="/";
       }
       QUrl url(path+q->value(1).toString());
-      conv=new RDDelete();
+      conv=new RDDelete(rdconfig);
       conv->setTargetUrl(url);
       if((conv_err=conv->runDelete(config()->urlUsername(),
 				   config()->urlPassword(),

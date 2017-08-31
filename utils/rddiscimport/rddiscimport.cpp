@@ -74,6 +74,7 @@ MainWidget::MainWidget(QWidget *parent)
   //
   dg_config=new RDConfig();
   dg_config->load();
+  dg_config->setModuleName("RDDiscImport");
 
   //
   // Get Temporary File

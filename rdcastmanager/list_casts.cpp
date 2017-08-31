@@ -95,7 +95,7 @@ ListCasts::ListCasts(unsigned feed_id,QWidget *parent)
   //
   // The Feed
   //
-  list_feed=new RDFeed(feed_id,this);
+  list_feed=new RDFeed(feed_id,config,this);
 
   //
   // Progress Dialog
@@ -335,7 +335,7 @@ void ListCasts::deleteData()
   qApp->processEvents();
   sleep(1);
   qApp->processEvents();
-  RDPodcast *cast=new RDPodcast(item->id());
+  RDPodcast *cast=new RDPodcast(config,item->id());
   if(!cast->removeAudio(list_feed,&err_text,config->logXloadDebugData())) {
     if(QMessageBox::warning(this,tr("Remote Error"),
 			    tr("Unable to delete remote audio!\n")+
@@ -513,7 +513,7 @@ void ListCasts::GetEncoderId()
   RDSqlQuery *q;
 
   list_encoder_id=-1;
-  RDFeed *feed=new RDFeed(list_feed_id);
+  RDFeed *feed=new RDFeed(list_feed_id,config);
   int format=feed->uploadFormat();
   delete feed;
   if((format>0)&&(format<100)) {  // Built-in format

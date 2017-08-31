@@ -137,6 +137,7 @@ MainObject::MainObject(QObject *parent)
   //
   rdconfig=new RDConfig();
   rdconfig->load();
+  rdconfig->setModuleName("rddbcheck");
 
   //
   // Open Database

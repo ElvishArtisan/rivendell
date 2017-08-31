@@ -420,6 +420,7 @@ MainObject::MainObject(QObject *parent)
   //
   import_config=new RDConfig();
   import_config->load();
+  import_config->setModuleName("rdimport");
 
   //
   // Open Database

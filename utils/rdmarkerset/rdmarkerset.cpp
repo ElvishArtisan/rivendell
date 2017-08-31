@@ -129,6 +129,7 @@ MainObject::MainObject(QObject *parent)
   //
   set_config=new RDConfig();
   set_config->load();
+  set_config->setModuleName("rdmarkerset");
 
   //
   // Open Database

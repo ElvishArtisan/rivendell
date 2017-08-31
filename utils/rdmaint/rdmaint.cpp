@@ -82,6 +82,7 @@ MainObject::MainObject(QObject *parent)
   //
   maint_config=new RDConfig();
   maint_config->load();
+  maint_config->setModuleName("rdmaint");
 
   //
   // Open Database

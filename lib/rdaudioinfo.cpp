@@ -2,7 +2,7 @@
 //
 // Get information about a cut in the audio store.
 //
-//   (C) Copyright 2011,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2011,2016-2017 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -141,6 +141,8 @@ RDAudioInfo::ErrorCode RDAudioInfo::runInfo(const QString &username,
   curl_easy_setopt(curl,CURLOPT_WRITEDATA,&conv_xml);
   curl_easy_setopt(curl,CURLOPT_POST,1);
   curl_easy_setopt(curl,CURLOPT_POSTFIELDS,(const char *)post);
+  curl_easy_setopt(curl,CURLOPT_USERAGENT,
+		   (const char *)conv_config->userAgent());
   curl_easy_setopt(curl,CURLOPT_TIMEOUT,RD_CURL_TIMEOUT);
 
   switch(curl_err=curl_easy_perform(curl)) {

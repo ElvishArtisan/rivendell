@@ -87,6 +87,7 @@ MainObject::MainObject(QObject *parent)
   //
   config=new RDConfig();
   config->load();
+  config->setModuleName("reserve_carts_test");
 
   //
   // Open Database
