@@ -1873,7 +1873,8 @@ void VoiceTracker::recordUnloadedData(int card,int stream,unsigned msecs)
   track_recording=false;
   if(!track_aborting) {
     edit_track_cuts[1]->
-      checkInRecording(rdstation_conf->name(),edit_settings,msecs);
+      checkInRecording(rdstation_conf->name(),rduser->name(),
+		       rdstation_conf->name(),edit_settings,msecs);
     RDRehash::rehash(rdstation_conf,rduser,log_config,
 		     edit_track_cuts[1]->cartNumber(),
 		     edit_track_cuts[1]->cutNumber());

@@ -40,6 +40,19 @@ void Xport::Import()
   unsigned length_deviation=0;
   unsigned msecs=0;
   int resp_code=0;
+  QString remote_host;
+
+  if(getenv("REMOTE_HOST")==NULL) {
+    if(getenv("REMOTE_ADDR")==NULL) {
+      XmlExit("Internal server error",500,"import.cpp",LINE_NUMBER);
+    }
+    else {
+      remote_host=getenv("REMOTE_ADDR");
+    }
+  }
+  else {
+    remote_host=getenv("REMOTE_HOST");
+  }
 
   //
   // Verify Post
@@ -198,13 +211,11 @@ void Xport::Import()
       XmlExit("Unable to access imported file",500,"import.cpp",LINE_NUMBER);
     }
     delete wave;
-    cut->checkInRecording(xport_config->stationName(),settings,msecs);
+    cut->checkInRecording(xport_config->stationName(),xport_user->name(),
+			  remote_host,settings,msecs);
     if(use_metadata>0) {
       cart->setMetadata(conv->sourceWaveData());
       cut->setMetadata(conv->sourceWaveData());
-      syslog(LOG_NOTICE,"SOURCE: title: %s  startDateTime: %s %s",
-	     (const char *)conv->sourceWaveData()->title(),
-	     (const char *)conv->sourceWaveData()->startDate().toString("yyyy-MM-dd"),(const char *)conv->sourceWaveData()->startTime().toString("hh:mm:ss"));
     }
     if(autotrim_level!=0) {
       cut->autoTrim(RDCut::AudioBoth,100*autotrim_level);

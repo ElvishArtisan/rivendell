@@ -16007,3 +16007,7 @@
 	* Fixed a bug in 'rdlibrary/record_cut.cpp' that caused the 'Weight'
 	control to fail to be disabled when the cut was placed in evergreen
 	mode.
+2017-09-01 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'src_hostname' and 'user_name' parameters to the
+	'RDCut::checkInRecording()' method in 'lib/rdcut.cpp' and
+	'lib/rdcut.h'.

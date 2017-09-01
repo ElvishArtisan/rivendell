@@ -1199,7 +1199,10 @@ void RDCut::setMetadata(RDWaveData *data) const
 }
 
 
-bool RDCut::checkInRecording(const QString &stationname,RDSettings *settings,
+bool RDCut::checkInRecording(const QString &station_name,
+			     const QString &user_name,
+			     QString src_hostname,
+			     RDSettings *settings,
 			     unsigned msecs) const
 {
 #ifdef WIN32
@@ -1209,6 +1212,38 @@ bool RDCut::checkInRecording(const QString &stationname,RDSettings *settings,
   RDSqlQuery *q;
   int format;
   QString hash;
+  QHostAddress addr;
+
+  QString user="null";
+  if(!user_name.isEmpty()) {
+    user="\""+RDEscapeString(user_name)+"\"";
+  }
+
+  //
+  // Attempt to resolve IP address
+  //
+  if(addr.setAddress(src_hostname)) {
+    if(addr.isIPv4Address()) {
+      QStringList f0=f0.split(".",addr.toString());
+      if(f0[0]=="127") {
+	src_hostname=station_name;
+      }
+      else {
+	sql=QString("select NAME from STATIONS where ")+
+	  "IPV4_ADDRESS=\""+RDEscapeString(addr.toString())+"\"";
+	q=new RDSqlQuery(sql);
+	if(q->first()) {
+	  src_hostname=q->value(0).toString();
+	}
+      }
+    }
+    if(addr.isIPv6Address()) {
+      QStringList f0=f0.split(":",addr.toString());
+      if(f0.back()=="1") {
+	src_hostname=station_name;
+      }
+    }
+  }
 
   switch(settings->format()) {
   case RDSettings::MpegL2:
@@ -1219,29 +1254,31 @@ bool RDCut::checkInRecording(const QString &stationname,RDSettings *settings,
     format=0;
     break;
   }
-  sql=QString().sprintf("update CUTS set START_POINT=0,END_POINT=%d,\
-                         FADEUP_POINT=-1,FADEDOWN_POINT=-1,\
-                         SEGUE_START_POINT=-1,SEGUE_END_POINT=-1,\
-                         TALK_START_POINT=-1,TALK_END_POINT=-1,\
-                         HOOK_START_POINT=-1,HOOK_END_POINT=-1,\
-                         PLAY_GAIN=0,PLAY_COUNTER=0,LOCAL_COUNTER=0,\
-                         CODING_FORMAT=%d,SAMPLE_RATE=%d,\
-                         BIT_RATE=%d,CHANNELS=%d,LENGTH=%d,\
-                         ORIGIN_DATETIME=\"%s %s\",ORIGIN_NAME=\"%s\",\
-                         UPLOAD_DATETIME=null \
-                         where CUT_NAME=\"%s\"",
-			msecs,
-			format,
-			settings->sampleRate(),
-			settings->bitRate(),
-			settings->channels(),
-			msecs,
-			(const char *)QDate::currentDate().
-			toString("yyyy-MM-dd"),
-			(const char *)QTime::currentTime().
-			toString("hh:mm:ss"),
-			(const char *)stationname,
-			(const char *)cut_name);
+  sql=QString("update CUTS set ")+
+    "START_POINT=0,"+
+    QString().sprintf("END_POINT=%d,",msecs)+
+    "FADEUP_POINT=-1,"+
+    "FADEDOWN_POINT=-1,"+
+    "SEGUE_START_POINT=-1,"+
+    "SEGUE_END_POINT=-1,"+
+    "TALK_START_POINT=-1,"+
+    "TALK_END_POINT=-1,"+
+    "HOOK_START_POINT=-1,"+
+    "HOOK_END_POINT=-1,"+
+    "PLAY_GAIN=0,"+
+    "PLAY_COUNTER=0,"+
+    "LOCAL_COUNTER=0,"+
+    QString().sprintf("CODING_FORMAT=%d,",format)+
+    QString().sprintf("SAMPLE_RATE=%d,",settings->sampleRate())+
+    QString().sprintf("BIT_RATE=%d,",settings->bitRate())+
+    QString().sprintf("CHANNELS=%d,",settings->channels())+
+    QString().sprintf("LENGTH=%d,",msecs)+
+    "ORIGIN_DATETIME=now(),"+
+    "ORIGIN_NAME=\""+RDEscapeString(station_name)+"\","+
+    "ORIGIN_LOGIN_NAME="+user+","+
+    "SOURCE_HOSTNAME=\""+RDEscapeString(src_hostname)+"\","+
+    "UPLOAD_DATETIME=null "+
+    "where CUT_NAME=\""+cut_name+"\"";
   q=new RDSqlQuery(sql);
   delete q;
   return true;

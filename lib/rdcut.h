@@ -134,7 +134,8 @@ class RDCut
 	      RDConfig *config) const;
   void getMetadata(RDWaveData *data) const;
   void setMetadata(RDWaveData *data) const;
-  bool checkInRecording(const QString &stationname,RDSettings *settings,
+  bool checkInRecording(const QString &station_name,const QString &user_name,
+			QString src_hostname,RDSettings *settings,
 			unsigned msecs) const;
   void autoTrim(RDCut::AudioEnd end,int level);
   void autoSegue(int level,int length,RDStation *station,RDUser *user,

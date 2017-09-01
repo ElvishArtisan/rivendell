@@ -817,7 +817,8 @@ void RecordCut::recordUnloadedData(int card,int stream,unsigned len)
   s->setBitRate(rec_bitrate);
   s->setChannels(rec_channels);
   s->setFormat((RDSettings::Format)rec_format);
-  rec_cut->checkInRecording(rdstation_conf->name(),s,len);
+  rec_cut->checkInRecording(rdstation_conf->name(),lib_user->name(),
+			    rdstation_conf->name(),s,len);
   RDRehash::rehash(rdstation_conf,lib_user,lib_config,rec_cut->cartNumber(),
 		   rec_cut->cutNumber());
   if(rec_trim_box->currentItem()==0) {

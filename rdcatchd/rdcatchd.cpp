@@ -2395,7 +2395,8 @@ void MainObject::CheckInRecording(QString cutname,CatchEvent *evt,
   s->setSampleRate(evt->sampleRate());
   s->setBitRate(evt->bitrate());
   s->setChannels(evt->channels());
-  cut->checkInRecording(catch_config->stationName(),s,msecs);
+  cut->checkInRecording(catch_config->stationName(),"",
+			catch_config->stationName(),s,msecs);
   cut->setSha1Hash(RDSha1Hash(RDCut::pathName(cut->cutName())));
   delete s;
   cut->autoTrim(RDCut::AudioBoth,-threshold);
