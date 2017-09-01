@@ -399,6 +399,32 @@ void RDCut::setOriginName(const QString &name) const
 }
 
 
+QString RDCut::originLoginName() const
+{
+  return RDGetSqlValue("CUTS","CUT_NAME",cut_name,"ORIGIN_LOGIN_NAME",cut_db).
+    toString();
+}
+
+
+void RDCut::setOriginLoginName(const QString &name) const
+{
+  SetRow("ORIGIN_LOGIN_NAME",name);
+}
+
+
+QString RDCut::sourceHostname() const
+{
+  return RDGetSqlValue("CUTS","CUT_NAME",cut_name,"SOURCE_HOSTNAME",cut_db).
+    toString();
+}
+
+
+void RDCut::setSourceHostname(const QString &name) const
+{
+  SetRow("SOURCE_HOSTNAME",name);
+}
+
+
 unsigned RDCut::weight() const
 {
   return RDGetSqlValue("CUTS","CUT_NAME",cut_name,"WEIGHT",cut_db).
@@ -1464,14 +1490,20 @@ QString RDCut::xml(RDSqlQuery *q,bool absolute,RDSettings *settings)
     xml+="  "+RDXmlField("endDaypart",q->value(47).toTime());
   }
   xml+="  "+RDXmlField("originName",q->value(48).toString());
-  xml+="  "+RDXmlField("weight",q->value(49).toUInt());
-  xml+="  "+RDXmlField("lastPlayDatetime",q->value(50).toDateTime());
-  xml+="  "+RDXmlField("playCounter",q->value(51).toUInt());
+  xml+="  "+RDXmlField("originLoginName",q->value(49).toString());
+  xml+="  "+RDXmlField("sourceHostname",q->value(50).toString());
+  xml+="  "+RDXmlField("weight",q->value(51).toUInt());
+  xml+="  "+RDXmlField("lastPlayDatetime",q->value(52).toDateTime());
+  xml+="  "+RDXmlField("playCounter",q->value(53).toUInt());
   if(settings==NULL) {
-    xml+="  "+RDXmlField("codingFormat",q->value(54).toUInt());
-    xml+="  "+RDXmlField("sampleRate",q->value(55).toUInt());
-    xml+="  "+RDXmlField("bitRate",q->value(56).toUInt());
-    xml+="  "+RDXmlField("channels",q->value(57).toUInt());
+
+
+
+
+    xml+="  "+RDXmlField("codingFormat",q->value(56).toUInt());
+    xml+="  "+RDXmlField("sampleRate",q->value(57).toUInt());
+    xml+="  "+RDXmlField("bitRate",q->value(58).toUInt());
+    xml+="  "+RDXmlField("channels",q->value(59).toUInt());
   }
   else {
     xml+="  "+RDXmlField("codingFormat",(int)settings->format());
@@ -1479,58 +1511,58 @@ QString RDCut::xml(RDSqlQuery *q,bool absolute,RDSettings *settings)
     xml+="  "+RDXmlField("bitRate",settings->bitRate());
     xml+="  "+RDXmlField("channels",settings->channels());
   }
-  xml+="  "+RDXmlField("playGain",q->value(58).toUInt());
+  xml+="  "+RDXmlField("playGain",q->value(60).toUInt());
   if(absolute) {
-    xml+="  "+RDXmlField("startPoint",q->value(59).toInt());
-    xml+="  "+RDXmlField("endPoint",q->value(60).toInt());
-    xml+="  "+RDXmlField("fadeupPoint",q->value(61).toInt());
-    xml+="  "+RDXmlField("fadedownPoint",q->value(62).toInt());
-    xml+="  "+RDXmlField("segueStartPoint",q->value(63).toInt());
-    xml+="  "+RDXmlField("segueEndPoint",q->value(64).toInt());
-    xml+="  "+RDXmlField("segueGain",q->value(65).toInt());
-    xml+="  "+RDXmlField("hookStartPoint",q->value(66).toInt());
-    xml+="  "+RDXmlField("hookEndPoint",q->value(67).toInt());
-    xml+="  "+RDXmlField("talkStartPoint",q->value(68).toInt());
-    xml+="  "+RDXmlField("talkEndPoint",q->value(69).toInt());
+    xml+="  "+RDXmlField("startPoint",q->value(61).toInt());
+    xml+="  "+RDXmlField("endPoint",q->value(62).toInt());
+    xml+="  "+RDXmlField("fadeupPoint",q->value(63).toInt());
+    xml+="  "+RDXmlField("fadedownPoint",q->value(64).toInt());
+    xml+="  "+RDXmlField("segueStartPoint",q->value(65).toInt());
+    xml+="  "+RDXmlField("segueEndPoint",q->value(66).toInt());
+    xml+="  "+RDXmlField("segueGain",q->value(67).toInt());
+    xml+="  "+RDXmlField("hookStartPoint",q->value(68).toInt());
+    xml+="  "+RDXmlField("hookEndPoint",q->value(69).toInt());
+    xml+="  "+RDXmlField("talkStartPoint",q->value(70).toInt());
+    xml+="  "+RDXmlField("talkEndPoint",q->value(71).toInt());
   }
   else {
     xml+="  "+RDXmlField("startPoint",0);
     xml+="  "+
-      RDXmlField("endPoint",q->value(60).toInt()-q->value(59).toInt());
-    if(q->value(61).toInt()<0) {
+      RDXmlField("endPoint",q->value(62).toInt()-q->value(61).toInt());
+    if(q->value(63).toInt()<0) {
       xml+="  "+RDXmlField("fadeupPoint",-1);
     }
     else {
       xml+="  "+
-	RDXmlField("fadeupPoint",q->value(61).toInt()-q->value(59).toInt());
+	RDXmlField("fadeupPoint",q->value(63).toInt()-q->value(61).toInt());
     }
-    if(q->value(62).toInt()<0) {
+    if(q->value(64).toInt()<0) {
       xml+="  "+RDXmlField("fadedownPoint",-1);
     }
     else {
       xml+="  "+
-	RDXmlField("fadedownPoint",q->value(62).toInt()-q->value(59).toInt());
+	RDXmlField("fadedownPoint",q->value(64).toInt()-q->value(61).toInt());
     }
-    if(q->value(63).toInt()<0) {
+    if(q->value(65).toInt()<0) {
       xml+="  "+RDXmlField("segueStartPoint",-1);
       xml+="  "+RDXmlField("segueEndPoint",-1);
     }
     else {
       xml+="  "+RDXmlField("segueStartPoint",
-			   q->value(63).toInt()-q->value(59).toInt());
+			   q->value(65).toInt()-q->value(61).toInt());
       xml+="  "+RDXmlField("segueEndPoint",
-			   q->value(64).toInt()-q->value(59).toInt());
+			   q->value(66).toInt()-q->value(61).toInt());
     }
-    xml+="  "+RDXmlField("segueGain",q->value(65).toInt());
-    if(q->value(66).toInt()<0) {
+    xml+="  "+RDXmlField("segueGain",q->value(67).toInt());
+    if(q->value(68).toInt()<0) {
       xml+="  "+RDXmlField("hookStartPoint",-1);
       xml+="  "+RDXmlField("hookEndPoint",-1);
     }
     else {
       xml+="  "+RDXmlField("hookStartPoint",
-			   q->value(66).toInt()-q->value(59).toInt());
+			   q->value(68).toInt()-q->value(61).toInt());
       xml+="  "+RDXmlField("hookEndPoint",
-			   q->value(67).toInt()-q->value(59).toInt());
+			   q->value(69).toInt()-q->value(61).toInt());
     }
     if(q->value(39).toInt()<0) {
       xml+="  "+RDXmlField("talkStartPoint",-1);
@@ -1538,9 +1570,9 @@ QString RDCut::xml(RDSqlQuery *q,bool absolute,RDSettings *settings)
     }
     else {
       xml+="  "+RDXmlField("talkStartPoint",
-			   q->value(68).toInt()-q->value(59).toInt());
+			   q->value(70).toInt()-q->value(61).toInt());
       xml+="  "+RDXmlField("talkEndPoint",
-			   q->value(69).toInt()-q->value(59).toInt());
+			   q->value(71).toInt()-q->value(61).toInt());
     }
   }
   

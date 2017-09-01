@@ -29,6 +29,8 @@ THU                  enum('N','Y')
 FRI                  enum('N','Y')
 SAT                  enum('N','Y')
 ORIGIN_NAME          char(64)          Workstation ID where recorded
+ORIGIN_LOGIN_NAME    char(255)         From USERS.LOGIN_NAME
+SOURCE_HOSTNAME      char(255)         Hostname of remote originator of audio
 WEIGHT               int(10) unsigned  Relative airplay frequency, 1 = normal
 PLAY_ORDER           int(11)           Play order when weighting disabled
 LAST_PLAY_DATETIME   datetime

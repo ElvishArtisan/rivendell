@@ -1345,27 +1345,29 @@ QString RDCart::xmlSql(bool include_cuts)
       "CUTS.START_DAYPART,"+       // 46
       "CUTS.END_DAYPART,"+         // 47
       "CUTS.ORIGIN_NAME,"+         // 48
-      "CUTS.WEIGHT,"+              // 49
-      "CUTS.LAST_PLAY_DATETIME,"+  // 50
-      "CUTS.PLAY_COUNTER,"+        // 51
-      "CUTS.LOCAL_COUNTER,"+       // 52
-      "CUTS.VALIDITY,"+            // 53
-      "CUTS.CODING_FORMAT,"+       // 54
-      "CUTS.SAMPLE_RATE,"+         // 55
-      "CUTS.BIT_RATE,"+            // 56
-      "CUTS.CHANNELS,"+            // 57
-      "CUTS.PLAY_GAIN,"+           // 58
-      "CUTS.START_POINT,"+         // 59
-      "CUTS.END_POINT,"+           // 60
-      "CUTS.FADEUP_POINT,"+        // 61
-      "CUTS.FADEDOWN_POINT,"+      // 62
-      "CUTS.SEGUE_START_POINT,"+   // 63
-      "CUTS.SEGUE_END_POINT,"+     // 64
-      "CUTS.SEGUE_GAIN,"+          // 65
-      "CUTS.HOOK_START_POINT,"+    // 66
-      "CUTS.HOOK_END_POINT,"+      // 67
-      "CUTS.TALK_START_POINT,"+    // 68
-      "CUTS.TALK_END_POINT "+      // 69
+      "CUTS.ORIGIN_LOGIN_NAME,"+   // 49
+      "CUTS.SOURCE_HOSTNAME,"+     // 50
+      "CUTS.WEIGHT,"+              // 51
+      "CUTS.LAST_PLAY_DATETIME,"+  // 52
+      "CUTS.PLAY_COUNTER,"+        // 53
+      "CUTS.LOCAL_COUNTER,"+       // 54
+      "CUTS.VALIDITY,"+            // 55
+      "CUTS.CODING_FORMAT,"+       // 56
+      "CUTS.SAMPLE_RATE,"+         // 57
+      "CUTS.BIT_RATE,"+            // 58
+      "CUTS.CHANNELS,"+            // 59
+      "CUTS.PLAY_GAIN,"+           // 60
+      "CUTS.START_POINT,"+         // 61
+      "CUTS.END_POINT,"+           // 62
+      "CUTS.FADEUP_POINT,"+        // 63
+      "CUTS.FADEDOWN_POINT,"+      // 64
+      "CUTS.SEGUE_START_POINT,"+   // 65
+      "CUTS.SEGUE_END_POINT,"+     // 66
+      "CUTS.SEGUE_GAIN,"+          // 67
+      "CUTS.HOOK_START_POINT,"+    // 68
+      "CUTS.HOOK_END_POINT,"+      // 69
+      "CUTS.TALK_START_POINT,"+    // 70
+      "CUTS.TALK_END_POINT "+      // 71
       "from CART left join CUTS "+
       "on CART.NUMBER=CUTS.CART_NUMBER ";
   }

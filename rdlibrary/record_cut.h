@@ -75,6 +75,7 @@ class RecordCut : public QDialog
    void evergreenToggledData(bool);
 
   protected:
+   void resizeEvent(QResizeEvent *e);
    void paintEvent(QPaintEvent *e);
    void closeEvent(QCloseEvent *e);
 
@@ -84,13 +85,23 @@ class RecordCut : public QDialog
    unsigned rec_length;
    QString cut_origin_name;
    QDateTime cut_origin_datetime;
+   QLabel *cut_description_label;
    QLineEdit *cut_description_edit;
+   QLabel *cut_outcue_label;
    QLineEdit *cut_outcue_edit;
-   QLineEdit *cut_origin_edit;
+   QLabel *cut_isrc_label;
    QLineEdit *cut_isrc_edit;
+   QLabel *cut_isci_label;
    QLineEdit *cut_isci_edit;
+   QLabel *cut_origin_label;
+   QLineEdit *cut_origin_edit;
+   QLabel *cut_source_label;
+   QLineEdit *cut_source_edit;
+   QLabel *cut_weight_label;
    QSpinBox *cut_weight_box;
+   QLabel *cut_playdate_label;
    QLineEdit *cut_playdate_edit;
+   QLabel *cut_playcounter_label;
    QLineEdit *cut_playcounter_edit;
    QLabel *cut_killdatetime_label;
    QRadioButton *cut_startdatetime_enable_button;
@@ -115,15 +126,19 @@ class RecordCut : public QDialog
    RDTransportButton *rec_stop_button;
    RDStereoMeter *rec_meter;
    QString rec_name;
+   QLabel *rec_channels_box_label;
    QComboBox *rec_channels_box;
    QLineEdit *rec_channels_edit;
+   QLabel *rec_mode_box_label;
    QComboBox *rec_mode_box;
+   QLabel *rec_trim_box_label;
    QComboBox *rec_trim_box;
    QLabel *rec_dayofweek_label;
    QPushButton *rec_set_button;
    QPushButton *rec_clear_button;
    QCheckBox *rec_weekpart_button[7];
    QLabel *rec_weekpart_label[7];
+   QPushButton *close_button;
    int rec_card_no[2];
    int rec_stream_no[2];
    int rec_port_no[2];

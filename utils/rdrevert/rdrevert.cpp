@@ -223,6 +223,10 @@ void MainObject::Revert(int schema) const
   case 266:
     Revert266();
     break;
+
+  case 267:
+    Revert267();
+    break;
   }
 }
 
@@ -651,6 +655,23 @@ void MainObject::Revert266() const
 }
 
 
+void MainObject::Revert267() const
+{
+  QString sql;
+  QSqlQuery *q;
+
+  sql="alter table CUTS drop column ORIGIN_LOGIN_NAME";
+  q=new QSqlQuery(sql);
+  delete q;  
+
+  sql="alter table CUTS drop column SOURCE_HOSTNAME";
+  q=new QSqlQuery(sql);
+  delete q;  
+
+  SetVersion(266);
+}
+
+
 int MainObject::GetVersion() const
 {
   QString sql;
@@ -694,7 +715,7 @@ int MainObject::MapSchema(const QString &ver)
   version_map["2.14"]=258;
   version_map["2.15"]=259;
   version_map["2.16"]=263;
-  version_map["2.17"]=266;
+  version_map["2.17"]=267;
 
   //
   // Normalize String

@@ -77,6 +77,10 @@ class RDCut
   void setWeekPart(int dayofweek,bool state) const;
   QString originName() const;
   void setOriginName(const QString &name) const;
+  QString originLoginName() const;
+  void setOriginLoginName(const QString &name) const;
+  QString sourceHostname() const;
+  void setSourceHostname(const QString &name) const;
   unsigned weight() const;
   void setWeight(int value) const;
   int playOrder() const;

@@ -15991,3 +15991,15 @@
 2017-08-31 Fred Gleason <fredg@paravelsystems.com>
 	* Modified web client components to use a distinctive http USER_AGENT
 	string.
+2017-09-01 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'CUTS.ORIGIN_LOGIN_NAME' and 'CUTS.SOURCE_HOSTNAME' fields to
+	the database.
+	* Incremented the database version to 267.
+	* Added 'RDCut::originLoginName()', 'RDCut::setOriginLoginName()',
+	'RDCut::sourceHostname()' and 'RDCut::setSourceHostname()' methods
+	in 'lib/rdcut.cpp' and 'lib/rdcut.h'.
+	* Added '<originLoginName>' and '<sourceHostname>' tags to the cut
+	XML schema in 'RDCart::xmlSql()' and 'RDCut::xml()' methods.
+	* Refactored the layout of the 'Cut Info/Record' dialog in RDLibrary.
+	* Added a 'Source Host' control to the 'Cut Info/Record' dialog
+	in RDLibrary.

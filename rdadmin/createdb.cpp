@@ -780,6 +780,8 @@ bool CreateDb(QString name,QString pwd)
       START_DAYPART TIME,\
       END_DAYPART TIME,\
       ORIGIN_NAME CHAR(64),\
+      ORIGIN_LOGIN_NAME char(255),\
+      SOURCE_HOSTNAME char(255),\
       WEIGHT INT UNSIGNED DEFAULT 1,\
       PLAY_ORDER int,\
       LAST_PLAY_DATETIME DATETIME,\
@@ -8451,6 +8453,19 @@ int UpdateDb(int ver)
     }
     delete q;
   }
+
+  if(ver<267) {
+    sql=QString("alter table CUTS add column ORIGIN_LOGIN_NAME char(255) ")+
+      "after ORIGIN_NAME";
+    q=new RDSqlQuery(sql);
+    delete q;
+
+    sql=QString("alter table CUTS add column SOURCE_HOSTNAME char(255) ")+
+      "after ORIGIN_LOGIN_NAME";
+    q=new RDSqlQuery(sql);
+    delete q;
+  }
+
 
   //
   // Maintainer's Note:

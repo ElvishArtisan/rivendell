@@ -1556,5 +1556,13 @@ Você ainda quer salvar?</translation>
         <source>Order</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Source Host</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>unknown</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 </TS>
