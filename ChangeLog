@@ -16003,3 +16003,7 @@
 	* Refactored the layout of the 'Cut Info/Record' dialog in RDLibrary.
 	* Added a 'Source Host' control to the 'Cut Info/Record' dialog
 	in RDLibrary.
+2017-09-01 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'rdlibrary/record_cut.cpp' that caused the 'Weight'
+	control to fail to be disabled when the cut was placed in evergreen
+	mode.

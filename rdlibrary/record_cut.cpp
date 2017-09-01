@@ -1002,6 +1002,8 @@ void RecordCut::meterData()
 
 void RecordCut::evergreenToggledData(bool state)
 {
+  cut_weight_label->setDisabled(state);
+  cut_weight_box->setDisabled(state);
   cut_killdatetime_label->setDisabled(state);
   cut_startdatetime_enable_button->setDisabled(state);
   cut_startdatetime_disable_button->setDisabled(state);
@@ -1035,7 +1037,6 @@ void RecordCut::evergreenToggledData(bool state)
 void RecordCut::resizeEvent(QResizeEvent *e)
 {
   int w=size().width();
-  int h=size().height();
 
   cut_description_label->setGeometry(0,10,85,20);
   cut_description_edit->setGeometry(90,10,w-100,20);
