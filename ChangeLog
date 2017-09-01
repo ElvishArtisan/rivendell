@@ -16011,3 +16011,6 @@
 	* Added 'src_hostname' and 'user_name' parameters to the
 	'RDCut::checkInRecording()' method in 'lib/rdcut.cpp' and
 	'lib/rdcut.h'.
+2017-09-01 Fred Gleason <fredg@paravelsystems.com>
+	* Renamed 'Origin' field to 'Ingest' in the 'Cut Info/Record' dialog
+	in RDLibrary.

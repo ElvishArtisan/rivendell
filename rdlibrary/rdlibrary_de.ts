@@ -1334,7 +1334,7 @@ verwendet. Trotzdem löschen?</translation>
     </message>
     <message>
         <source>Origin</source>
-        <translation>HERKUNFT</translation>
+        <translation type="obsolete">HERKUNFT</translation>
     </message>
     <message>
         <source>ISRC</source>
@@ -1559,11 +1559,15 @@ Trotzdem speichern?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Source Host</source>
+        <source>unknown</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>unknown</source>
+        <source>Ingest</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Source</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -1339,7 +1339,7 @@ Do you still want to delete it?</source>
     </message>
     <message>
         <source>Origin</source>
-        <translation>Origen</translation>
+        <translation type="obsolete">Origen</translation>
     </message>
     <message>
         <source>Weight</source>
@@ -1564,11 +1564,15 @@ Do you still want to save?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Source Host</source>
+        <source>unknown</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>unknown</source>
+        <source>Ingest</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Source</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

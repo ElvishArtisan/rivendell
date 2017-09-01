@@ -163,22 +163,22 @@ RecordCut::RecordCut(RDCart *cart,QString cut,bool use_weight,
   cut_isrc_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
-  // Cut Origin
-  //
-  cut_origin_edit=new QLineEdit(this);
-  cut_origin_edit->setReadOnly(true);
-  cut_origin_label=new QLabel(cut_origin_edit,tr("Origin")+":",this);
-  cut_origin_label->setFont(font);
-  cut_origin_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
-
-  //
   // Cut Source
   //
   cut_source_edit=new QLineEdit(this);
   cut_source_edit->setReadOnly(true);
-  cut_source_label=new QLabel(cut_source_edit,tr("Source Host")+":",this);
+  cut_source_label=new QLabel(cut_source_edit,tr("Source")+":",this);
   cut_source_label->setFont(font);
   cut_source_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
+
+  //
+  // Cut Ingest
+  //
+  cut_ingest_edit=new QLineEdit(this);
+  cut_ingest_edit->setReadOnly(true);
+  cut_ingest_label=new QLabel(cut_ingest_edit,tr("Ingest")+":",this);
+  cut_ingest_label->setFont(font);
+  cut_ingest_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Cut Play Date Time
@@ -421,14 +421,14 @@ RecordCut::RecordCut(RDCart *cart,QString cut,bool use_weight,
     user="";
   }
   if(valid) {
-    cut_origin_edit->setText(user+cut_origin_name+" - "+
+    cut_ingest_edit->setText(cut_origin_name+" - "+
 	       	     cut_origin_datetime.toString("M/d/yyyy hh:mm:ss"));
   }
   if(rec_cut->sourceHostname().isEmpty()) {
     cut_source_edit->setText("["+tr("unknown")+"]");
   }
   else {
-    cut_source_edit->setText(rec_cut->sourceHostname());
+    cut_source_edit->setText(user+rec_cut->sourceHostname());
   }
   cut_isci_edit->setText(rec_cut->isci());
   cut_isrc_edit->setText(rec_cut->isrc(RDCut::FormattedIsrc));
@@ -682,7 +682,7 @@ void RecordCut::recordData()
     rec_cut->setOriginName(rdstation_conf->name());
     cut_origin_name=rdstation_conf->name();
     cut_origin_datetime=QDateTime::currentDateTime();
-    cut_origin_edit->setText(cut_origin_name+" - "+
+    cut_ingest_edit->setText(cut_origin_name+" - "+
 			    cut_origin_datetime.toString("M/d/yyyy hh:mm:ss"));
     rdcae->loadRecord(rec_card_no[0],rec_port_no[0],rec_name,rec_format,
 			rec_channels,rec_samprate,rec_bitrate*rec_channels);
@@ -1051,11 +1051,11 @@ void RecordCut::resizeEvent(QResizeEvent *e)
   cut_isrc_label->setGeometry(0,76,85,20);
   cut_isrc_edit->setGeometry(90,76,w-100,20);
 
-  cut_origin_label->setGeometry(0,105,85,20);
-  cut_origin_edit->setGeometry(90,105,w-100,20);
+  cut_source_label->setGeometry(0,105,85,20);
+  cut_source_edit->setGeometry(90,105,w-100,20);
 
-  cut_source_label->setGeometry(0,127,85,20);
-  cut_source_edit->setGeometry(90,127,w-100,20);
+  cut_ingest_label->setGeometry(0,127,85,20);
+  cut_ingest_edit->setGeometry(90,127,w-100,20);
 
   cut_playdate_label->setGeometry(0,149,85,20);
   cut_playdate_edit->setGeometry(90,149,130,20);

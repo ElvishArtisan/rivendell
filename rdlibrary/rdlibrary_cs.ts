@@ -1357,7 +1357,7 @@ Přesto smazat?</translation>
     </message>
     <message>
         <source>Origin</source>
-        <translation>Původ</translation>
+        <translation type="obsolete">Původ</translation>
     </message>
     <message>
         <source>ISRC</source>
@@ -1582,11 +1582,15 @@ Přesto uložit?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Source Host</source>
+        <source>unknown</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>unknown</source>
+        <source>Ingest</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Source</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

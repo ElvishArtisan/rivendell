@@ -1332,7 +1332,7 @@ Você ainda quer deletá-lo?</translation>
     </message>
     <message>
         <source>Origin</source>
-        <translation>Origem</translation>
+        <translation type="obsolete">Origem</translation>
     </message>
     <message>
         <source>ISRC</source>
@@ -1557,11 +1557,15 @@ Você ainda quer salvar?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Source Host</source>
+        <source>unknown</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>unknown</source>
+        <source>Ingest</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Source</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

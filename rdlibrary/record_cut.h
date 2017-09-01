@@ -93,8 +93,8 @@ class RecordCut : public QDialog
    QLineEdit *cut_isrc_edit;
    QLabel *cut_isci_label;
    QLineEdit *cut_isci_edit;
-   QLabel *cut_origin_label;
-   QLineEdit *cut_origin_edit;
+   QLabel *cut_ingest_label;
+   QLineEdit *cut_ingest_edit;
    QLabel *cut_source_label;
    QLineEdit *cut_source_edit;
    QLabel *cut_weight_label;
