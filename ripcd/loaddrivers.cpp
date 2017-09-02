@@ -41,6 +41,7 @@
 #include <btss42.h>
 #include <btss44.h>
 #include <btss82.h>
+#include <btu41mlrweb.h>
 #include <harlond.h>
 #include <kernelgpio.h>
 #include <livewire_lwrpaudio.h>
@@ -139,6 +140,10 @@ bool MainObject::LoadSwitchDriver(int matrix_num)
 
   case RDMatrix::BtSs82:
     ripcd_switcher[matrix_num]=new BtSs82(matrix,this);
+    break;
+
+  case RDMatrix::BtU41MlrWeb:
+    ripcd_switcher[matrix_num]=new BtU41MlrWeb(matrix,this);
     break;
 
   case RDMatrix::Harlond:

@@ -70,7 +70,8 @@ bool __mx_primary_controls[RDMatrix::LastType][RDMatrix::LastControl]=
     {0,0,1,1,0,0,0,0,0,0,0,0,0,1,1,0,0,0,1,1,0,0,0,0,0,0,0,0,0},  // Modbus
     {0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,1,1,0,0,0,0,0,0,0,0,0},  // Kernel GPIO
     {0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0},  // WheatNet SLIO
-    {0,0,1,1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0}   // WheatNet LIO
+    {0,0,1,1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0},  // WheatNet LIO
+    {0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0}   // BT Universale 4.1 MLR>>Web
   };
 bool __mx_backup_controls[RDMatrix::LastType][RDMatrix::LastControl]=
   {
@@ -117,7 +118,8 @@ bool __mx_backup_controls[RDMatrix::LastType][RDMatrix::LastControl]=
     {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},  // Modbus
     {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},  // Kernel GPIO
     {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},  // WheatNet SLIO
-    {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}   // WheatNet LIO
+    {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},  // WheatNet LIO
+    {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}   // BT Universal 4.1 MLR>>Web
   };
 
 int __mx_default_values[RDMatrix::LastType][RDMatrix::LastControl]=
@@ -165,7 +167,8 @@ int __mx_default_values[RDMatrix::LastType][RDMatrix::LastControl]=
     {1,0,0,502,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0}, // Modbus
     {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0},  // Kernel GPIO
     {1,0,0,55776,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0},  // WheatNet SLIO
-    {1,0,0,55776,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0}   // WheatNet LIO
+    {1,0,0,55776,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0},  // WheatNet LIO
+    {1,0,0,56,0,0,0,0,0,0,0,4,1,5,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0}   // BT Universal 4.1 MLR>>Web
   };
 
 RDMatrix::RDMatrix(const QString &station,int matrix)
@@ -743,6 +746,10 @@ QString RDMatrix::typeString(RDMatrix::Type type)
 
       case RDMatrix::WheatnetLio:
 	return QString("WheatNet LIO");
+	break;
+
+      case RDMatrix::BtU41MlrWeb:
+	return QString("BroadcastTools 4.1 MLR>>Web");
 	break;
 
       default:

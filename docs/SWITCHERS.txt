@@ -18,6 +18,7 @@ Broadcast Tools SS 4.2 Audio Switcher
 Broadcast Tools SS 4.4 Audio Switcher
 Broadcast Tools ACS 8.2 Audio Control Switcher
 Broadcast Tools SS 8.2 Audio Switcher
+Broadcast Tools Universal 4.1MLR>>Web
 Harlond Virtual Mixer
 Kernel GPIO
 LiveWire LWRP Audio
@@ -437,6 +438,20 @@ GPI (referred to as 'PIP', for 'Parallel Input Port' in the Broadcast
 Tools documentation), then you will also need to be sure that DIP
 switch SW-14-10 is ON.
 
+
+----------------------------------------------------------------------------
+BROADCAST TOOLS UNIVERSAL 4.1MLR>>WEB
+
+Driver Name: BroadcastTools 4.1 MLR>>Web
+
+Supported RML Commands:
+  GPI Enable ('GE')
+  GPI Set ('GI')
+  Switch Take ('ST')
+
+Control is by means of a TCP/IP connection to port 56. In 'Email/Network
+Setup' on the web configuration page, both the 'TCP Enabled' and 'PIP Mode
+Enabled' controls must be set to 'Enabled'.
 
 ----------------------------------------------------------------------------
 Harlond Virtual Mixer
