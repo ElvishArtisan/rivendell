@@ -16020,3 +16020,5 @@
 2017-09-18 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a typo in 'rdadmin/createdb.cpp' that broke creation of a
 	new database.
+2017-09-18 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed typos in the rdrender(1) man page.

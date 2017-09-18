@@ -70,7 +70,7 @@
 	<para>
 	  This option is mutually exclusive with the
 	  <option>--to-file</option> option, below. Exactly one
-	  <option>--to-cart</option> or <option>--to-cart</option>
+	  <option>--to-cart</option> or <option>--to-file</option>
 	  option must be specified.
 	</para>
       </listitem>
@@ -87,7 +87,7 @@
 	<para>
 	  This option is mutually exclusive with the
 	  <option>--to-cart</option> option, above. Exactly one
-	  <option>--to-cart</option> or <option>--to-cart</option>
+	  <option>--to-cart</option> or <option>--to-file</option>
 	  option must be specified.
 	</para>
       </listitem>
@@ -339,6 +339,10 @@
   used to flag the start and end of rendering. (See the
   <option>--first-time</option> and <option>--last-time</option> rendering
   options).
+</para>
+<para>
+  Maximum length of the rendered log is limited to appoximately two hours when
+  using <option>--to-cart</option>.
 </para>
 </refsect1>
 
