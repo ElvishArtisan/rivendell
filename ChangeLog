@@ -16022,3 +16022,6 @@
 	new database.
 2017-09-18 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed typos in the rdrender(1) man page.
+2017-09-18 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdrender that caused the the default start time
+	to be midnight.

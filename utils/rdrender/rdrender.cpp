@@ -52,6 +52,7 @@ MainObject::MainObject(QObject *parent)
   render_ignore_stops=false;
   render_cart_number=0;
   render_cut_number=-1;
+  render_start_time=QTime::currentTime();
 
   //
   // Initialize Audio Settings
