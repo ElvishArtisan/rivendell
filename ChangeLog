@@ -16017,3 +16017,6 @@
 2017-09-02 Fred Gleason <fredg@paravelsystems.com>
 	* Implemented a driver for the Broadcast Tools Universal 4.1 MLR>>Web
 	switcher.
+2017-09-18 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a typo in 'rdadmin/createdb.cpp' that broke creation of a
+	new database.

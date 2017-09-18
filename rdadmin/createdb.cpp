@@ -2093,7 +2093,7 @@ bool CreateDb(QString name,QString pwd)
                          FIX_DUP_CART_TITLES enum('N','Y') not null default 'Y',\
                          MAX_POST_LENGTH int unsigned default %u,\
                          ISCI_XREFERENCE_PATH char(255),\
-                         TEMP_CART_GROUP char(10)\
+                         TEMP_CART_GROUP char(10),\
                          SHOW_USER_LIST enum('N','Y') not null default 'Y')",
 			RD_DEFAULT_SAMPLE_RATE,
 			RD_DEFAULT_MAX_POST_LENGTH);
