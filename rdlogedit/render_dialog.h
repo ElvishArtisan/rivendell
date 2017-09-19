@@ -31,6 +31,7 @@
 
 #include <rdbusybar.h>
 #include <rdconfig.h>
+#include <rdcut_dialog.h>
 #include <rdsettings.h>
 #include <rdlog_event.h>
 #include <rdsystem.h>
@@ -56,6 +57,7 @@ class RenderDialog : public QDialog
    int exec(RDUser *user,RDLogEvent *log,int first_line,int last_line);
 
  private slots:
+  void toChangedData(int item);
   void filenameChangedData(const QString &str);
   void selectData();
   void starttimeSourceData(int item);
@@ -77,6 +79,8 @@ class RenderDialog : public QDialog
   int render_last_line;
   RDSettings *render_settings;
   QProgressDialog *render_progress_dialog;
+  QLabel *render_to_label;
+  QComboBox *render_to_box;
   QLabel *render_filename_label;
   QLineEdit *render_filename_edit;
   QLabel *render_starttime_label;
@@ -93,6 +97,8 @@ class RenderDialog : public QDialog
   QPushButton *render_render_button;
   QPushButton *render_cancel_button;
   QString render_save_path;
+  unsigned render_to_cartnum;
+  int render_to_cutnum;
 };
 
 

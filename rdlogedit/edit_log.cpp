@@ -466,11 +466,11 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   connect(edit_saveas_button,SIGNAL(clicked()),this,SLOT(saveasData()));
 
   //
-  //  Render As Button
+  //  Render Button
   //
   edit_renderas_button=new QPushButton(this);
   edit_renderas_button->setFont(button_font);
-  edit_renderas_button->setText(tr("Render")+"\n"+tr("As"));
+  edit_renderas_button->setText(tr("Render"));
   connect(edit_renderas_button,SIGNAL(clicked()),this,SLOT(renderasData()));
 
   //

@@ -81,12 +81,24 @@ RenderDialog::RenderDialog(RDStation *station,RDSystem *system,RDConfig *config,
   render_settings->setNormalizationLevel(0);
 
   //
+  // Render To Type
+  //
+  render_to_box=new QComboBox(this);
+  render_to_box->insertItem(tr("Cart/Cut"));
+  render_to_box->insertItem(tr("File"));
+  connect(render_to_box,SIGNAL(activated(int)),this,SLOT(toChangedData(int)));
+  render_to_label=new QLabel(tr("Render To")+":",this);
+  render_to_label->setFont(button_font);
+  render_to_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
+
+  //
   // Filename
   //
   render_filename_edit=new QLineEdit(this);
+  render_filename_edit->setReadOnly(true);
   connect(render_filename_edit,SIGNAL(textChanged(const QString &)),
 	  this,SLOT(filenameChangedData(const QString &)));
-  render_filename_label=new QLabel(tr("Render To File")+":",this);
+  render_filename_label=new QLabel(tr("Cart/Cut")+":",this);
   render_filename_label->setFont(button_font);
   render_filename_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   render_filename_button=new QPushButton(tr("Select"),this);
@@ -168,7 +180,7 @@ RenderDialog::~RenderDialog()
 
 QSize RenderDialog::sizeHint() const
 {
-  return QSize(500,200);
+  return QSize(500,230);
 }
 
 
@@ -186,6 +198,23 @@ int RenderDialog::exec(RDUser *user,RDLogEvent *log,
 }
 
 
+void RenderDialog::toChangedData(int item)
+{
+  if(item) {
+    render_filename_label->setText(tr("Filename")+":");
+    render_filename_edit->setReadOnly(false);
+  }
+  else {
+    render_filename_label->setText(tr("Cart/Cut")+":");
+    render_filename_edit->setReadOnly(true);
+  }
+  render_filename_edit->clear();
+  render_to_cartnum=0;
+  render_to_cutnum=-1;
+  render_render_button->setDisabled(true);
+}
+
+
 void RenderDialog::filenameChangedData(const QString &str)
 {
   render_render_button->setDisabled(str.isEmpty());
@@ -194,13 +223,27 @@ void RenderDialog::filenameChangedData(const QString &str)
 
 void RenderDialog::selectData()
 {
-  QString filename=
-    QFileDialog::getSaveFileName(render_save_path,RD_AUDIO_FILE_FILTER,this,"",
-				 "RDLogEdit - "+tr("Render Log"));
-  if(!filename.isEmpty()) {
-    render_filename_edit->setText(filename);
-    filenameChangedData(filename);
-    render_save_path=RDGetPathPart(filename);
+  if(render_to_box->currentItem()) {
+    QString filename=
+      QFileDialog::getSaveFileName(render_save_path,RD_AUDIO_FILE_FILTER,
+				   this,"","RDLogEdit - "+tr("Render Log"));
+    if(!filename.isEmpty()) {
+      render_filename_edit->setText(filename);
+      filenameChangedData(filename);
+      render_save_path=RDGetPathPart(filename);
+    }
+  }
+  else {
+    QString cutname;
+    RDCutDialog *d=new RDCutDialog(&cutname,render_station,render_system,
+				   NULL,NULL,NULL,"",false,true,true,this);
+    if(d->exec()==0) {
+      render_to_cartnum=RDCut::cartNumber(cutname);
+      render_to_cutnum=RDCut::cutNumber(cutname);
+      render_filename_edit->setText(QString().sprintf("%06u:%03d",
+				    render_to_cartnum,render_to_cutnum));
+    }
+    delete d;
   }
 }
 
@@ -225,6 +268,7 @@ void RenderDialog::audiosettingsData()
 void RenderDialog::renderData()
 {
   QString err_msg;
+  bool result;
 
   int first_line=0;
   int last_line=render_log->size();
@@ -238,20 +282,28 @@ void RenderDialog::renderData()
   }
   RDRenderer *r=
     new RDRenderer(render_user,render_station,render_system,render_config,this);
-  connect(r,SIGNAL(lineStarted(int)),
-	  render_progress_dialog,SLOT(setProgress(int)));
+  connect(r,SIGNAL(lineStarted(int,int)),
+	  render_progress_dialog,SLOT(setProgress(int,int)));
   connect(render_progress_dialog,SIGNAL(cancelled()),r,SLOT(abort()));
-  render_progress_dialog->setTotalSteps(render_log->size());
-  if(!r->renderToFile(render_filename_edit->text(),render_log,2,render_settings,
+  if(render_to_box->currentItem()) {
+    result=
+      r->renderToFile(render_filename_edit->text(),render_log,2,render_settings,
 		      start_time,render_ignorestop_box->currentItem(),
-		      &err_msg,first_line,last_line)) {
+		      &err_msg,first_line,last_line);
+  }
+  else {
+    result=
+      r->renderToCart(render_to_cartnum,render_to_cutnum,render_log,2,
+		      render_settings,start_time,
+		      render_ignorestop_box->currentItem(),
+		      &err_msg,first_line,last_line);
+  }
+  if(!result) {
     QMessageBox::warning(this,"RDLogEdit - "+tr("Rendering Error"),
 			 err_msg);
-    render_progress_dialog->setProgress(render_log->size());
     delete r;
     return;
   }
-  render_progress_dialog->setProgress(render_log->size());
   delete r;
 
   done(true);
@@ -272,23 +324,26 @@ void RenderDialog::closeEvent(QCloseEvent *e)
 
 void RenderDialog::resizeEvent(QResizeEvent *e)
 {
-  render_filename_label->setGeometry(10,10,95,20);
-  render_filename_edit->setGeometry(110,10,size().width()-190,20);
-  render_filename_button->setGeometry(size().width()-70,8,60,25);
+  render_to_label->setGeometry(10,10,65,20);
+  render_to_box->setGeometry(80,10,100,20);
 
-  render_audiosettings_label->setGeometry(10,40,135,20);
-  render_audiosettings_edit->setGeometry(150,40,size().width()-230,20);
-  render_audiosettings_button->setGeometry(size().width()-70,38,60,25);
+  render_filename_label->setGeometry(10,40,95,20);
+  render_filename_edit->setGeometry(110,40,size().width()-190,20);
+  render_filename_button->setGeometry(size().width()-70,38,60,25);
 
-  render_starttime_label->setGeometry(10,62,135,20);
-  render_starttime_box->setGeometry(150,62,160,20);
-  render_starttime_edit->setGeometry(315,62,80,20);
+  render_audiosettings_label->setGeometry(10,70,135,20);
+  render_audiosettings_edit->setGeometry(150,70,size().width()-230,20);
+  render_audiosettings_button->setGeometry(size().width()-70,68,60,25);
 
-  render_events_label->setGeometry(10,84,135,20);
-  render_events_box->setGeometry(150,84,160,20);
+  render_starttime_label->setGeometry(10,95,135,20);
+  render_starttime_box->setGeometry(150,95,160,20);
+  render_starttime_edit->setGeometry(315,95,80,20);
 
-  render_ignorestop_label->setGeometry(10,106,135,20);
-  render_ignorestop_box->setGeometry(150,106,160,20);
+  render_events_label->setGeometry(10,117,135,20);
+  render_events_box->setGeometry(150,117,160,20);
+
+  render_ignorestop_label->setGeometry(10,139,135,20);
+  render_ignorestop_box->setGeometry(150,139,160,20);
 
   render_render_button->
     setGeometry(size().width()-180,size().height()-60,80,50);

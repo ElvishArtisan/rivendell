@@ -16027,3 +16027,8 @@
 	to be midnight.
 2017-09-19 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'Render Log' dialog to rdlogedit(1).
+2017-09-19 Fred Gleason <fredg@paravelsystems.com>
+	* Added support for cart/cut rendering to the 'Render Log' dialog
+	in rdlogedit(1).
+	* Added a length check when rendering to cart/cut in
+	'lib/rdrenderer.cpp'.

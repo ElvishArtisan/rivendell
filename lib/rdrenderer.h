@@ -97,7 +97,7 @@ class RDRenderer : public QObject
 
  signals:
   void progressMessageSent(const QString &msg);
-  void lineStarted(int linno);
+  void lineStarted(int linno,int totallines);
 
  private:
   bool Render(const QString &outfile,RDLogEvent *log,unsigned chans,
@@ -121,6 +121,7 @@ class RDRenderer : public QObject
   RDConfig *render_config;
   QStringList render_warnings;
   bool render_abort;
+  int render_total_passes;
 };
 
 
