@@ -287,13 +287,13 @@ void RenderDialog::renderData()
   connect(render_progress_dialog,SIGNAL(cancelled()),r,SLOT(abort()));
   if(render_to_box->currentItem()) {
     result=
-      r->renderToFile(render_filename_edit->text(),render_log,2,render_settings,
+      r->renderToFile(render_filename_edit->text(),render_log,render_settings,
 		      start_time,render_ignorestop_box->currentItem(),
 		      &err_msg,first_line,last_line);
   }
   else {
     result=
-      r->renderToCart(render_to_cartnum,render_to_cutnum,render_log,2,
+      r->renderToCart(render_to_cartnum,render_to_cutnum,render_log,
 		      render_settings,start_time,
 		      render_ignorestop_box->currentItem(),
 		      &err_msg,first_line,last_line);

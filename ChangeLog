@@ -16032,3 +16032,10 @@
 	in rdlogedit(1).
 	* Added a length check when rendering to cart/cut in
 	'lib/rdrenderer.cpp'.
+2017-09-19 Fred Gleason <fredg@paravelsystems.com>
+	* Removed redundant 'int chans' parameter from the
+	'RDRenderer::renderTo*()' methods in 'lib/rdrenderer.cpp' and
+	'lib/rdrenderer.h'.
+	* Fixed a bug in 'lib/rdrenderer.cpp' and 'lib/rdrenerer.h' that
+	caused logs rendered to cart/cut in stereo regardless of the number
+	of channels specified.

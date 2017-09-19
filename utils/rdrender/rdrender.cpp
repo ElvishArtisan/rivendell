@@ -330,7 +330,7 @@ void MainObject::userData()
 	  this,SLOT(printProgressMessage(const QString &)));
   if(render_to_file.isEmpty()) {
     if(!r->renderToCart(render_cart_number,render_cut_number,log_event,
-			render_channels,&render_settings,render_start_time,
+			&render_settings,render_start_time,
 			render_ignore_stops,&err_msg,render_first_line,
 			render_last_line,render_first_time,render_last_time)) {
       fprintf(stderr,"rdrender: %s\n",(const char *)err_msg);
@@ -338,8 +338,8 @@ void MainObject::userData()
     }
   }
   else {
-    if(!r->renderToFile(render_to_file,log_event,render_channels,
-			&render_settings,render_start_time,render_ignore_stops,
+    if(!r->renderToFile(render_to_file,log_event,&render_settings,
+			render_start_time,render_ignore_stops,
 			&err_msg,render_first_line,render_last_line,
 			render_first_time,render_last_time)) {
       fprintf(stderr,"rdrender: %s\n",(const char *)err_msg);
