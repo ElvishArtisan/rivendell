@@ -234,7 +234,7 @@ einfügen</translation>
     <message>
         <source>Save
 &amp;As</source>
-        <translation>Speichern
+        <translation type="obsolete">Speichern
 &amp;Als</translation>
     </message>
     <message>
@@ -407,6 +407,18 @@ die für den gewählten Service ungültig sind!</translation>
     </message>
     <message>
         <source>Len</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>As</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Render</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

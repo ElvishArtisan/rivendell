@@ -92,8 +92,12 @@ class RDRenderer : public QObject
 		    const QTime &last_time=QTime());
   QStringList warnings() const;
 
+ public slots:
+  void abort();
+
  signals:
   void progressMessageSent(const QString &msg);
+  void lineStarted(int linno);
 
  private:
   bool Render(const QString &outfile,RDLogEvent *log,unsigned chans,
@@ -116,6 +120,7 @@ class RDRenderer : public QObject
   RDSystem *render_system;
   RDConfig *render_config;
   QStringList render_warnings;
+  bool render_abort;
 };
 
 

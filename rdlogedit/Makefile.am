@@ -55,6 +55,7 @@ dist_rdlogedit_SOURCES = add_meta.cpp add_meta.h\
                          list_logs.cpp list_logs.h\
                          log_listview.cpp log_listview.h\
                          rdlogedit.cpp rdlogedit.h globals.h\
+                         render_dialog.cpp render_dialog.h\
                          voice_tracker.cpp voice_tracker.h
 
 nodist_rdlogedit_SOURCES = moc_add_meta.cpp\
@@ -69,6 +70,7 @@ nodist_rdlogedit_SOURCES = moc_add_meta.cpp\
                            moc_list_reports.cpp\
                            moc_log_listview.cpp\
                            moc_rdlogedit.cpp\
+                           moc_render_dialog.cpp\
                            moc_voice_tracker.cpp
 
 rdlogedit_LDADD = @LIB_RDLIBS@ @LIBVORBIS@

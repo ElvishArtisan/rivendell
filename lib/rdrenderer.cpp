@@ -364,6 +364,12 @@ QStringList RDRenderer::warnings() const
 }
 
 
+void RDRenderer::abort()
+{
+  render_abort=true;
+}
+
+
 bool RDRenderer::Render(const QString &outfile,RDLogEvent *log,unsigned chans,
 			RDSettings *s,const QTime &start_time,bool ignore_stops,
 			QString *err_msg,int first_line,int last_line,
@@ -374,6 +380,7 @@ bool RDRenderer::Render(const QString &outfile,RDLogEvent *log,unsigned chans,
   QString temp_output_filename;
 
   render_warnings.clear();
+  render_abort=false;
 
   //
   // Open Output File
@@ -445,6 +452,13 @@ bool RDRenderer::Render(const QString &outfile,RDLogEvent *log,unsigned chans,
   // Iterate through it
   //
   for(unsigned i=0;i<lls.size();i++) {
+    if(render_abort) {
+      emit lineStarted(lls.size());
+      *err_msg+="Render aborted.\n";
+      sf_close(sf_out);
+      return false;
+    }
+    emit lineStarted(i);
     if(((first_line==-1)||(first_line<=(int)i))&&
        ((last_line==-1)||(last_line>(int)i))) {
       if(lls.at(i)->transType()==RDLogLine::Stop) {

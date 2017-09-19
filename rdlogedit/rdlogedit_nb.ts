@@ -238,7 +238,7 @@ meta</translation>
     <message>
         <source>Save
 &amp;As</source>
-        <translation>Lagra &amp;som</translation>
+        <translation type="obsolete">Lagra &amp;som</translation>
     </message>
     <message>
         <source>&amp;Reports</source>
@@ -414,6 +414,18 @@ skrudd av for denne tenesta!</translation>
     </message>
     <message>
         <source>Len</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>As</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Render</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

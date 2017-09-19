@@ -40,8 +40,9 @@
 #include <rdgroup_list.h>
 #include <rdsimpleplayer.h>
 
-#include <drop_listview.h>
-#include <list_reports.h>
+#include "drop_listview.h"
+#include "list_reports.h"
+#include "render_dialog.h"
 
 //
 // Widget Settings
@@ -84,6 +85,7 @@ class EditLog : public QDialog
   void cartDroppedData(int line,RDLogLine *ll);
   void saveData();
   void saveasData();
+  void renderasData();
   void reportsData();
   void okData();
   void cancelData();
@@ -162,6 +164,7 @@ class EditLog : public QDialog
   QPushButton *edit_paste_button;
   QPushButton *edit_save_button;
   QPushButton *edit_saveas_button;
+  QPushButton *edit_renderas_button;
   QPushButton *edit_reports_button;
   RDTransportButton *edit_play_button;
   RDTransportButton *edit_stop_button;
@@ -183,6 +186,7 @@ class EditLog : public QDialog
   QLabel *edit_purgedate_label;
   QDateEdit *edit_purgedate_edit;
   QPushButton *edit_purgedate_button;
+  RenderDialog *edit_render_dialog;
 };
 
 
