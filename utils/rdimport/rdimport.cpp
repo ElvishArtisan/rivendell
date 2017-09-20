@@ -90,6 +90,7 @@ MainObject::MainObject(QObject *parent)
   import_clear_datetimes=false;
   import_clear_dayparts=false;
   import_xml=false;
+  import_to_mono=false;
 
   //
   // Read Command Options
@@ -253,6 +254,9 @@ MainObject::MainObject(QObject *parent)
 	fprintf(stderr,"rdimport: daypart cannot end before it begins\n");
 	exit(256);
       }
+    }
+    if(import_cmd->key(i)=="--to-mono") {
+      import_to_mono=true;
     }
     if(import_cmd->key(i)=="--clear-daypart-times") {
       import_clear_dayparts=true;
@@ -567,6 +571,9 @@ MainObject::MainObject(QObject *parent)
       import_single_cart=true;
     }
   }
+  if(import_to_mono) {
+    import_channels=1;
+  }
 
   //
   // Print Status Messages
@@ -583,6 +590,12 @@ MainObject::MainObject(QObject *parent)
     }
     else {
       printf(" Log mode is OFF\n");
+    }
+    if(import_to_mono) {
+      printf(" Force to Mono is ON\n");
+    }
+    else {
+      printf(" Force to Mono is OFF\n");
     }
     if(import_normalization_level==0) {
       printf(" Normalization is OFF\n");

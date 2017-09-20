@@ -741,6 +741,18 @@
 
     <varlistentry>
       <term>
+	<option>--to-mono</option>
+      </term>
+      <listitem>
+	<para>
+	  Import the file as a monaural cut. If the file is stereo, both
+	  left and right channels will be mixed together.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
 	<option>--use-cartchunk-cutid</option>
       </term>
       <listitem>

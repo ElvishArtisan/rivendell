@@ -87,6 +87,7 @@ class MainObject : public QObject
   RDUser *import_user;
   bool import_verbose;
   bool import_log_mode;
+  bool import_to_mono;
   bool import_use_cartchunk_cutid;
   int import_cart_number_offset;
   bool import_single_cart;
