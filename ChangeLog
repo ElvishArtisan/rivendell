@@ -16028,3 +16028,5 @@
 2017-09-20 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a race in 'lib/rdformpost.cpp' that could cause POST data
 	to be truncated.
+2017-09-20 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a formatting bobble in 'web/rdxport/rdxport.cpp'.

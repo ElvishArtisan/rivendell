@@ -422,7 +422,7 @@ void Xport::XmlExit(const QString &str,int code,const QString &srcfile,
   }
 #ifdef RDXPORT_DEBUG
   if(srcline>0) {
-    RDXMLResult(str+"\""+srcfile+"\" "+QString().sprintf("line %d",srcline),
+    RDXMLResult(str+" \""+srcfile+"\" "+QString().sprintf("line %d",srcline),
 		code,err);
   }
   else {
