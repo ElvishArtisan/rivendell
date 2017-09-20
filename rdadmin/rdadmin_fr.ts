@@ -1006,6 +1006,31 @@ configured to run the CAE service in order to populate the audio resources datab
         <source>Force to Monaural</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>&amp;Reset</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ID</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reset Dropbox</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reset the dropbox?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The dropbox has been reset.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Resetting the dropbox will clear the list of already imported
+files, causing any whose files remain to be imported again.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditEncoder</name>

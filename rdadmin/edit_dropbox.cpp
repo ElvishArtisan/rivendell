@@ -56,7 +56,8 @@ EditDropbox::EditDropbox(int id,QWidget *parent)
 
   box_dropbox=new RDDropbox(id);
 
-  setCaption(tr("Dropbox Configuration"));
+  setCaption(tr("Dropbox Configuration")+" ["+
+	     tr("ID")+QString().sprintf(": %d]",id));
 
   //
   // Create Fonts
@@ -344,6 +345,17 @@ EditDropbox::EditDropbox(int id,QWidget *parent)
 
 
   //
+  //  Reset Button
+  //
+  QPushButton *reset_button=new QPushButton(this);
+  reset_button->
+    setGeometry(10,sizeHint().height()-60,80,50);
+  reset_button->setDefault(true);
+  reset_button->setFont(font);
+  reset_button->setText(tr("&Reset"));
+  connect(reset_button,SIGNAL(clicked()),this,SLOT(resetData()));
+
+  //
   //  Ok Button
   //
   QPushButton *ok_button=new QPushButton(this);
@@ -489,6 +501,23 @@ void EditDropbox::createDatesToggledData(bool state)
     box_create_startdate_offset_spin->setValue(0);
     box_create_enddate_offset_spin->setValue(0);
   }
+}
+
+
+void EditDropbox::resetData()
+{
+  if(QMessageBox::question(this,"RDAdmin - "+tr("Reset Dropbox"),
+			   tr("Resetting the dropbox will clear the list of already imported\nfiles, causing any whose files remain to be imported again.")+"\n\n"+tr("Reset the dropbox?"),
+			   QMessageBox::Yes,QMessageBox::No)!=QMessageBox::Yes) {
+    return;
+  }
+  QString sql=QString("delete from DROPBOX_PATHS where ")+
+    QString().sprintf("DROPBOX_ID=%d",box_dropbox->id());
+  printf("SQL: %s\n",(const char *)sql);
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  delete q;
+  QMessageBox::information(this,"RDAdmin - "+tr("Reset Dropbox"),
+			   tr("The dropbox has been reset."));
 }
 
 

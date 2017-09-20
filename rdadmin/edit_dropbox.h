@@ -54,6 +54,7 @@ class EditDropbox : public QDialog
   void normalizationToggledData(bool state);
   void autotrimToggledData(bool state);
   void createDatesToggledData(bool state);
+  void resetData();
   void okData();
   void cancelData();
   

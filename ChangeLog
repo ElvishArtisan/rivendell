@@ -16039,3 +16039,6 @@
 	in 'lib/rddropbox.cpp' and 'lib/rddropbox.h'.
 	* Added a 'Force to Monaural' checkbox to the 'Edit Dropbox' dialog
 	in rdadmin(1).
+2017-09-20 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'Reset' button to the 'Edit Dropbox' dialog
+	in rdadmin(1).
