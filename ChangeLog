@@ -16025,3 +16025,6 @@
 2017-09-18 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in rdrender that caused the the default start time
 	to be midnight.
+2017-09-20 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a race in 'lib/rdformpost.cpp' that could cause POST data
+	to be truncated.

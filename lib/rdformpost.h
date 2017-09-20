@@ -51,7 +51,10 @@ class RDFormPost
   bool getValue(const QString &name,bool *state,bool *ok=NULL);
   bool isFile(const QString &name);
   QString tempDir() const;
+  unsigned headerContentLength() const;
+  QString headerContentType() const;
   void dump();
+  void dumpRawPost();
   static QString errorString(RDFormPost::Error err);
   static QString urlEncode(const QString &str);
   static QString urlDecode(const QString &str);
@@ -67,6 +70,8 @@ class RDFormPost
   QString post_tempdir;
   bool post_auto_delete;
   unsigned post_content_length;
+  QString post_content_type;
+  char *post_data;
 };
 
 
