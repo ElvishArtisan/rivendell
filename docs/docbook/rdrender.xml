@@ -341,8 +341,9 @@
   options).
 </para>
 <para>
-  Maximum length of the rendered log is limited to appoximately two hours when
-  using <option>--to-cart</option>.
+  Due to limitations inherent in the 32 bit Broadcast Wave File format used in
+  Rivendell's audio store, the maximum length of the rendered log is limited
+  to appoximately three hours when using <option>--to-cart</option>.
 </para>
 </refsect1>
 

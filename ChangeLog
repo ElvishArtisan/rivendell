@@ -16039,3 +16039,6 @@
 	* Fixed a bug in 'lib/rdrenderer.cpp' and 'lib/rdrenerer.h' that
 	caused logs rendered to cart/cut in stereo regardless of the number
 	of channels specified.
+2017-09-20 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdrender(1) that caused the --channels option
+	to be ignored.

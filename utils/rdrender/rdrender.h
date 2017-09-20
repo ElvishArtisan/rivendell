@@ -60,7 +60,6 @@ class MainObject : public QObject
   unsigned render_cart_number;
   int render_cut_number;
   QString render_temp_output_filename;
-  unsigned render_channels;
   QTime render_start_time;
   int render_first_line;
   int render_last_line;

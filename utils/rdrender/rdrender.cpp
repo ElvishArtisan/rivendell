@@ -46,7 +46,6 @@ MainObject::MainObject(QObject *parent)
   :QObject(parent)
 {
   render_verbose=false;
-  render_channels=RDRENDER_DEFAULT_CHANNELS;
   render_first_line=-1;
   render_last_line=-1;
   render_ignore_stops=false;
@@ -89,8 +88,9 @@ MainObject::MainObject(QObject *parent)
       cmd->setProcessed(i,true);
     }
     if(cmd->key(i)=="--channels") {
-      render_channels=cmd->value(i).toUInt(&ok);
-      if((!ok)||(render_channels>2)) {
+      render_settings.setChannels(cmd->value(i).toUInt(&ok));
+      if((!ok)||
+	 (render_settings.channels()>2)||(render_settings.channels()==0)) {
 	fprintf(stderr,"rdrender: invalid --channels argument\n");
 	exit(1);
       }
