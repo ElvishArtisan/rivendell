@@ -1749,6 +1749,7 @@ bool CreateDb(QString name,QString pwd)
         AUTOTRIM_LEVEL int default 1,\
         SINGLE_CART enum('N','Y') default 'N',\
         TO_CART int unsigned default 0,\
+        FORCE_TO_MONO enum('N','Y') default 'N',\
         USE_CARTCHUNK_ID enum('N','Y') default 'N',\
         TITLE_FROM_CARTCHUNK_ID enum('N','Y') default 'N',\
         DELETE_CUTS enum('N','Y') default 'N',\
@@ -8462,6 +8463,13 @@ int UpdateDb(int ver)
 
     sql=QString("alter table CUTS add column SOURCE_HOSTNAME char(255) ")+
       "after ORIGIN_LOGIN_NAME";
+    q=new RDSqlQuery(sql);
+    delete q;
+  }
+
+  if(ver<268) {
+    sql=QString("alter table DROPBOXES add column ")+
+      "FORCE_TO_MONO enum('N','Y') default 'N' after TO_CART";
     q=new RDSqlQuery(sql);
     delete q;
   }

@@ -41,6 +41,8 @@ class RDDropbox
   void setAutotrimLevel(int lvl) const;
   bool singleCart() const;
   void setSingleCart(bool state) const;
+  bool forceToMono() const;
+  void setForceToMono(bool state) const;
   unsigned toCart() const;
   void setToCart(unsigned cart) const;
   bool useCartchunkId() const;

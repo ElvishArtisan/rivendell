@@ -126,6 +126,19 @@ void RDDropbox::setSingleCart(bool state) const
 }
 
 
+bool RDDropbox::forceToMono() const
+{
+  return RDBool(RDGetSqlValue("DROPBOXES","ID",box_id,"FORCE_TO_MONO").
+		toString());
+}
+
+
+void RDDropbox::setForceToMono(bool state) const
+{
+  SetRow("FORCE_TO_MONO",state);
+}
+
+
 unsigned RDDropbox::toCart() const
 {
   return RDGetSqlValue("DROPBOXES","ID",box_id,"TO_CART").toUInt();

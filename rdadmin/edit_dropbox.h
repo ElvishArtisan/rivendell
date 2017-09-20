@@ -65,6 +65,8 @@ class EditDropbox : public QDialog
   QPushButton *box_schedcodes_button;
   QCheckBox *box_delete_cuts_box;
   QLabel *box_delete_cuts_label;
+  QCheckBox *box_force_to_mono_box;
+  QLabel *box_force_to_mono_label;
   QLineEdit *box_metadata_pattern_edit;
   QLineEdit *box_user_defined_edit;
   QLineEdit *box_log_path_edit;

@@ -1241,6 +1241,10 @@ computador para obtener los recursos de audio de dicho equipo.</translation>
         <source>Scheduler Codes</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Force to Monaural</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditEncoder</name>

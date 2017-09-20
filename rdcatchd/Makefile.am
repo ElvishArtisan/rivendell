@@ -35,7 +35,8 @@ dist_rdcatchd_SOURCES = batch.cpp\
                         event_player.cpp event_player.h\
                         local_macros.cpp\
                         rdcatchd.cpp rdcatchd.h\
-                        rdcatchd_socket.cpp rdcatchd_socket.h
+                        rdcatchd_socket.cpp rdcatchd_socket.h\
+                        startdropboxes.cpp
 
 nodist_rdcatchd_SOURCES = moc_event_player.cpp\
                           moc_rdcatchd.cpp\

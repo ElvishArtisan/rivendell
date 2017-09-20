@@ -16032,3 +16032,10 @@
 	* Fixed a formatting bobble in 'web/rdxport/rdxport.cpp'.
 2017-09-20 Fred Gleason <fredg@paravelsystems.com>
 	* Added a '--to-mono' option to rdimport(1).
+2017-09-20 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'DROPBOXES.FORCE_TO_MONO' field to the database.
+	* Incremented the database version to 268.
+	* 'RDDropbox::forceToMono()' and 'RDDropbox::setForceToMon()' methods
+	in 'lib/rddropbox.cpp' and 'lib/rddropbox.h'.
+	* Added a 'Force to Monaural' checkbox to the 'Edit Dropbox' dialog
+	in rdadmin(1).

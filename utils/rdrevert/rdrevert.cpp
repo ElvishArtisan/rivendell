@@ -227,6 +227,10 @@ void MainObject::Revert(int schema) const
   case 267:
     Revert267();
     break;
+
+  case 268:
+    Revert268();
+    break;
   }
 }
 
@@ -672,6 +676,19 @@ void MainObject::Revert267() const
 }
 
 
+void MainObject::Revert268() const
+{
+  QString sql;
+  QSqlQuery *q;
+
+  sql="alter table DROPBOXES drop column FORCE_TO_MONO";
+  q=new QSqlQuery(sql);
+  delete q;  
+
+  SetVersion(267);
+}
+
+
 int MainObject::GetVersion() const
 {
   QString sql;
@@ -715,7 +732,7 @@ int MainObject::MapSchema(const QString &ver)
   version_map["2.14"]=258;
   version_map["2.15"]=259;
   version_map["2.16"]=263;
-  version_map["2.17"]=267;
+  version_map["2.17"]=268;
 
   //
   // Normalize String

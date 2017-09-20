@@ -1247,6 +1247,10 @@ nastaveném pro běh služby CAE pro naplnění databáze se zdroji zvuku.</tran
         <source>Scheduler Codes</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Force to Monaural</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditEncoder</name>

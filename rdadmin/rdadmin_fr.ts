@@ -1002,6 +1002,10 @@ configured to run the CAE service in order to populate the audio resources datab
         <source>Scheduler Codes</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Force to Monaural</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditEncoder</name>
