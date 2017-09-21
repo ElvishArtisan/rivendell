@@ -16045,3 +16045,5 @@
 2017-09-21 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in 'lib/rdrenderer.cpp' that caused audio corruption
 	when rendering logs longer than 44:30.
+2017-09-21 Fred Gleason <fredg@paravelsystems.com>
+	* Updated the rdrender(1) man page.
