@@ -132,7 +132,9 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   //
   // Dialogs
   //
+#ifndef WIN32
   edit_render_dialog=new RenderDialog(rdstation_conf,rdsystem,log_config,this);
+#endif  // WIN32
 
   //
   // Text Validator
@@ -468,10 +470,12 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   //
   //  Render Button
   //
+#ifndef WIN32
   edit_renderas_button=new QPushButton(this);
   edit_renderas_button->setFont(button_font);
   edit_renderas_button->setText(tr("Render"));
   connect(edit_renderas_button,SIGNAL(clicked()),this,SLOT(renderasData()));
+#endif  // WIN32
 
   //
   //  Reports Button
@@ -1142,6 +1146,7 @@ ORIGIN_DATETIME=NOW(),LINK_DATETIME=NOW(),SERVICE=\"%s\"",
 
 void EditLog::renderasData()
 {
+#ifndef WIN32
   int first_line=-1;
   int last_line=-1;
 
@@ -1163,6 +1168,7 @@ void EditLog::renderasData()
   else {
     edit_render_dialog->exec(rduser,edit_log_event,first_line,last_line+1);
   }
+#endif  // WIN32
 }
 
 
@@ -1299,9 +1305,9 @@ void EditLog::resizeEvent(QResizeEvent *e)
     setGeometry(size().width()-100,size().height()-125,80,50);
   edit_save_button->setGeometry(10,size().height()-60,80,50);
   edit_saveas_button->setGeometry(100,size().height()-60,80,50);
-  edit_renderas_button->setGeometry(190,size().height()-60,80,50);
   edit_reports_button->setGeometry(300,size().height()-60,80,50);
 #ifndef WIN32
+  edit_renderas_button->setGeometry(190,size().height()-60,80,50);
   edit_player->playButton()->setGeometry(410,size().height()-60,80,50);
   edit_player->stopButton()->setGeometry(500,size().height()-60,80,50);
 #endif  // WIN32

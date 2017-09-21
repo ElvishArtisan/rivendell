@@ -16064,3 +16064,5 @@
 	when rendering logs longer than 44:30.
 2017-09-21 Fred Gleason <fredg@paravelsystems.com>
 	* Updated the rdrender(1) man page.
+2017-09-21 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed bugs that broke the build under Windows.

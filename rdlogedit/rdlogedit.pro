@@ -42,6 +42,7 @@ SOURCES += list_logs.cpp
 SOURCES += list_reports.cpp
 SOURCES += rdlogedit.cpp
 x11 {
+  SOURCES += render_dialog.cpp
   SOURCES += voice_tracker.cpp
 }
 
@@ -58,6 +59,7 @@ HEADERS += list_logs.h
 HEADERS += list_reports.h
 HEADERS += rdlogedit.h
 x11 {
+  HEADERS += render_dialog.h
   HEADERS += voice_tracker.h
 }
 
