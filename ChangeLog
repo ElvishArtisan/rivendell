@@ -16025,6 +16025,23 @@
 2017-09-18 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in rdrender that caused the the default start time
 	to be midnight.
+2017-09-19 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'Render Log' dialog to rdlogedit(1).
+2017-09-19 Fred Gleason <fredg@paravelsystems.com>
+	* Added support for cart/cut rendering to the 'Render Log' dialog
+	in rdlogedit(1).
+	* Added a length check when rendering to cart/cut in
+	'lib/rdrenderer.cpp'.
+2017-09-19 Fred Gleason <fredg@paravelsystems.com>
+	* Removed redundant 'int chans' parameter from the
+	'RDRenderer::renderTo*()' methods in 'lib/rdrenderer.cpp' and
+	'lib/rdrenderer.h'.
+	* Fixed a bug in 'lib/rdrenderer.cpp' and 'lib/rdrenerer.h' that
+	caused logs rendered to cart/cut in stereo regardless of the number
+	of channels specified.
+2017-09-20 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdrender(1) that caused the --channels option
+	to be ignored.
 2017-09-20 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a race in 'lib/rdformpost.cpp' that could cause POST data
 	to be truncated.
@@ -16042,3 +16059,8 @@
 2017-09-20 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'Reset' button to the 'Edit Dropbox' dialog
 	in rdadmin(1).
+2017-09-21 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'lib/rdrenderer.cpp' that caused audio corruption
+	when rendering logs longer than 44:30.
+2017-09-21 Fred Gleason <fredg@paravelsystems.com>
+	* Updated the rdrender(1) man page.

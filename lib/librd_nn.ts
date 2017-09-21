@@ -2171,6 +2171,10 @@ prøv ein gong til!</translation>
         <source>failed to play (NO AUDIO AVAILABLE)</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Rendered log is too long!</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RDReport</name>

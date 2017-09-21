@@ -80,24 +80,28 @@ class RDRenderer : public QObject
   RDRenderer(RDUser *user,RDStation *station,RDSystem *system,RDConfig *config,
 	     QObject *parent=0);
   ~RDRenderer();
-  bool renderToFile(const QString &outfile,RDLogEvent *log,unsigned chans,
-		    RDSettings *s,const QTime &start_time,bool ignore_stops,
+  bool renderToFile(const QString &outfile,RDLogEvent *log,RDSettings *s,
+		    const QTime &start_time,bool ignore_stops,
 		    QString *err_msg,int first_line,int last_line,
 		    const QTime &first_time=QTime(),
 		    const QTime &last_time=QTime());
-  bool renderToCart(unsigned cartnum,int cutnum,RDLogEvent *log,unsigned chans,
-		    RDSettings *s,const QTime &start_time,bool ignore_stops,
+  bool renderToCart(unsigned cartnum,int cutnum,RDLogEvent *log,RDSettings *s,
+		    const QTime &start_time,bool ignore_stops,
 		    QString *err_msg,int first_line,int last_line,
 		    const QTime &first_time=QTime(),
 		    const QTime &last_time=QTime());
   QStringList warnings() const;
 
+ public slots:
+  void abort();
+
  signals:
   void progressMessageSent(const QString &msg);
+  void lineStarted(int linno,int totallines);
 
  private:
-  bool Render(const QString &outfile,RDLogEvent *log,unsigned chans,
-	      RDSettings *s,const QTime &start_time,bool ignore_stops,
+  bool Render(const QString &outfile,RDLogEvent *log,RDSettings *s,
+	      const QTime &start_time,bool ignore_stops,
 	      QString *err_msg,int first_line,int last_line,
 	      const QTime &first_time,const QTime &last_time);
   void Sum(float *pcm_out,__RDRenderLogLine *ll,sf_count_t frames,
@@ -105,7 +109,7 @@ class RDRenderer : public QObject
   bool ConvertAudio(const QString &srcfile,const QString &dstfile,
 		    RDSettings *s,QString *err_msg);
   bool ImportCart(const QString &srcfile,unsigned cartnum,int cutnum,
-		  QString *err_msg);
+		  unsigned chans,QString *err_msg);
   uint64_t FramesFromMsec(uint64_t msec) const;
   void DeleteTempFile(const QString &filename) const;
   void ProgressMessage(const QString &msg);
@@ -116,6 +120,8 @@ class RDRenderer : public QObject
   RDSystem *render_system;
   RDConfig *render_config;
   QStringList render_warnings;
+  bool render_abort;
+  int render_total_passes;
 };
 
 

@@ -214,7 +214,7 @@ Meta</translation>
     <message>
         <source>Save
 &amp;As</source>
-        <translation>Guardar
+        <translation type="obsolete">Guardar
 &amp;como</translation>
     </message>
     <message>
@@ -407,6 +407,18 @@ desactivados para el servicio actual!
     </message>
     <message>
         <source>Len</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save</source>
+        <translation type="unfinished">Guardar</translation>
+    </message>
+    <message>
+        <source>As</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Render</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

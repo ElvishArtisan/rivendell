@@ -130,6 +130,11 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   edit_traffic_map=new QPixmap(traffic_xpm);
 
   //
+  // Dialogs
+  //
+  edit_render_dialog=new RenderDialog(rdstation_conf,rdsystem,log_config,this);
+
+  //
   // Text Validator
   //
   RDTextValidator *validator=new RDTextValidator(this);
@@ -453,12 +458,20 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   connect(edit_save_button,SIGNAL(clicked()),this,SLOT(saveData()));
 
   //
-  //  SaveAs Button
+  //  Save As Button
   //
   edit_saveas_button=new QPushButton(this);
   edit_saveas_button->setFont(button_font);
-  edit_saveas_button->setText(tr("Save\n&As"));
+  edit_saveas_button->setText(tr("Save")+"\n"+tr("As"));
   connect(edit_saveas_button,SIGNAL(clicked()),this,SLOT(saveasData()));
+
+  //
+  //  Render Button
+  //
+  edit_renderas_button=new QPushButton(this);
+  edit_renderas_button->setFont(button_font);
+  edit_renderas_button->setText(tr("Render"));
+  connect(edit_renderas_button,SIGNAL(clicked()),this,SLOT(renderasData()));
 
   //
   //  Reports Button
@@ -1127,6 +1140,32 @@ ORIGIN_DATETIME=NOW(),LINK_DATETIME=NOW(),SERVICE=\"%s\"",
 }
 
 
+void EditLog::renderasData()
+{
+  int first_line=-1;
+  int last_line=-1;
+
+  QListViewItem *next=edit_log_list->firstChild();
+  while(next!=NULL) {
+    if(edit_log_list->isSelected(next)) {
+      if(next->text(13).toInt()!=END_MARKER_ID) {
+	if(first_line<0) {
+	  first_line=next->text(14).toInt();
+	}
+	last_line=next->text(14).toInt();
+      }
+    }
+    next=next->nextSibling();
+  }
+  if(first_line<0) {
+    edit_render_dialog->exec(rduser,edit_log_event,0,0);
+  }
+  else {
+    edit_render_dialog->exec(rduser,edit_log_event,first_line,last_line+1);
+  }
+}
+
+
 void EditLog::reportsData()
 {
   QDate start_date;
@@ -1260,10 +1299,11 @@ void EditLog::resizeEvent(QResizeEvent *e)
     setGeometry(size().width()-100,size().height()-125,80,50);
   edit_save_button->setGeometry(10,size().height()-60,80,50);
   edit_saveas_button->setGeometry(100,size().height()-60,80,50);
-  edit_reports_button->setGeometry(250,size().height()-60,80,50);
+  edit_renderas_button->setGeometry(190,size().height()-60,80,50);
+  edit_reports_button->setGeometry(300,size().height()-60,80,50);
 #ifndef WIN32
-  edit_player->playButton()->setGeometry(400,size().height()-60,80,50);
-  edit_player->stopButton()->setGeometry(490,size().height()-60,80,50);
+  edit_player->playButton()->setGeometry(410,size().height()-60,80,50);
+  edit_player->stopButton()->setGeometry(500,size().height()-60,80,50);
 #endif  // WIN32
   edit_ok_button->
     setGeometry(size().width()-180,size().height()-60,80,50);

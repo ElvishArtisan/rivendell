@@ -30,9 +30,9 @@
   <refsynopsisdiv id='synopsis'>
     <cmdsynopsis>
       <command>rdrender</command>
-      <arg choice='opt'><replaceable>OUTPUT OPTS</replaceable></arg>
-      <arg choice='opt'><replaceable>RENDERING OPTS</replaceable></arg>
-      <arg choice='opt'><replaceable>AUDIO OPTS</replaceable></arg>
+      <arg choice='opt'><replaceable>OUTPUT-OPTS</replaceable></arg>
+      <arg choice='opt'><replaceable>RENDERING-OPTS</replaceable></arg>
+      <arg choice='opt'><replaceable>AUDIO-OPTS</replaceable></arg>
       <arg choice='req'><replaceable>logname</replaceable></arg>
       <sbr/>
     </cmdsynopsis>
@@ -66,12 +66,8 @@
 	  <replaceable>cutnum</replaceable> in cart number
 	  <replaceable>cartnum</replaceable>. Both cart and cut must already
 	  exist.
-	</para>
-	<para>
 	  This option is mutually exclusive with the
-	  <option>--to-file</option> option, below. Exactly one
-	  <option>--to-cart</option> or <option>--to-file</option>
-	  option must be specified.
+	  <option>--to-file</option> option, below.
 	</para>
       </listitem>
     </varlistentry>
@@ -83,12 +79,8 @@
       <listitem>
 	<para>
 	  Save the rendered log to the <replaceable>filename</replaceable> file.
-	</para>
-	<para>
 	  This option is mutually exclusive with the
-	  <option>--to-cart</option> option, above. Exactly one
-	  <option>--to-cart</option> or <option>--to-file</option>
-	  option must be specified.
+	  <option>--to-cart</option> option, above.
 	</para>
       </listitem>
     </varlistentry>
@@ -105,8 +97,11 @@
 	</para>
       </listitem>
     </varlistentry>
-
   </variablelist>
+  <para>
+    Exactly one <option>--to-cart</option> or <option>--to-file</option>
+    option must be specified.
+  </para>
   </refsect1>
 
   <refsect1 id='rendering_options'><title>Rendering Options</title>
@@ -205,8 +200,6 @@
 	<para>
 	  Specify the bitrate to use, in <replaceable>rate</replaceable>
 	  bits per second.  Default value is  256000 bits/sec.
-	</para>
-	<para>
 	  This setting is meaningful only when used with the
 	  <userinput>MP2</userinput> or <userinput>MP3</userinput> formats.
 	</para>
@@ -307,8 +300,6 @@
 	  Specify the quality level to use, in the range
 	  <userinput>-1</userinput> through <userinput>10</userinput>,
 	  inclusive. Default value is <userinput>3</userinput>.
-	</para>
-	<para>
 	  This setting is meaningful only when used with the
 	  <userinput>VORBIS</userinput> format.
 	</para>
@@ -341,8 +332,10 @@
   options).
 </para>
 <para>
-  Maximum length of the rendered log is limited to appoximately two hours when
-  using <option>--to-cart</option>.
+  Due to limitations inherent in the 32 bit Broadcast Wave File format used in
+  Rivendell's audio store, the maximum length of the rendered log is limited
+  to appoximately three hours for stereo and six hours for mono when using
+  the <option>--to-cart</option> option.
 </para>
 </refsect1>
 

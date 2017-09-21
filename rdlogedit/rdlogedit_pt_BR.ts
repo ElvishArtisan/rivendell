@@ -256,7 +256,7 @@ Meta
     <message>
         <source>Save
 &amp;As</source>
-        <translation>&amp;Salvar
+        <translation type="obsolete">&amp;Salvar
 Como</translation>
     </message>
     <message>
@@ -409,6 +409,18 @@ para o serviço selecionado!</translation>
     </message>
     <message>
         <source>Len</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>As</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Render</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

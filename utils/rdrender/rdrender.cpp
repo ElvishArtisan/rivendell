@@ -46,7 +46,6 @@ MainObject::MainObject(QObject *parent)
   :QObject(parent)
 {
   render_verbose=false;
-  render_channels=RDRENDER_DEFAULT_CHANNELS;
   render_first_line=-1;
   render_last_line=-1;
   render_ignore_stops=false;
@@ -89,8 +88,9 @@ MainObject::MainObject(QObject *parent)
       cmd->setProcessed(i,true);
     }
     if(cmd->key(i)=="--channels") {
-      render_channels=cmd->value(i).toUInt(&ok);
-      if((!ok)||(render_channels>2)) {
+      render_settings.setChannels(cmd->value(i).toUInt(&ok));
+      if((!ok)||
+	 (render_settings.channels()>2)||(render_settings.channels()==0)) {
 	fprintf(stderr,"rdrender: invalid --channels argument\n");
 	exit(1);
       }
@@ -330,7 +330,7 @@ void MainObject::userData()
 	  this,SLOT(printProgressMessage(const QString &)));
   if(render_to_file.isEmpty()) {
     if(!r->renderToCart(render_cart_number,render_cut_number,log_event,
-			render_channels,&render_settings,render_start_time,
+			&render_settings,render_start_time,
 			render_ignore_stops,&err_msg,render_first_line,
 			render_last_line,render_first_time,render_last_time)) {
       fprintf(stderr,"rdrender: %s\n",(const char *)err_msg);
@@ -338,8 +338,8 @@ void MainObject::userData()
     }
   }
   else {
-    if(!r->renderToFile(render_to_file,log_event,render_channels,
-			&render_settings,render_start_time,render_ignore_stops,
+    if(!r->renderToFile(render_to_file,log_event,&render_settings,
+			render_start_time,render_ignore_stops,
 			&err_msg,render_first_line,render_last_line,
 			render_first_time,render_last_time)) {
       fprintf(stderr,"rdrender: %s\n",(const char *)err_msg);

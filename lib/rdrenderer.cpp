@@ -239,6 +239,7 @@ RDRenderer::RDRenderer(RDUser *user,RDStation *station,RDSystem *system,
   render_station=station;
   render_system=system;
   render_config=config;
+  render_total_passes=0;
 }
 
 
@@ -248,15 +249,16 @@ RDRenderer::~RDRenderer()
 
 
 bool RDRenderer::renderToFile(const QString &outfile,RDLogEvent *log,
-			      unsigned chans,RDSettings *s,
-			      const QTime &start_time,bool ignore_stops,
-			      QString *err_msg,int first_line,int last_line,
+			      RDSettings *s,const QTime &start_time,
+			      bool ignore_stops,QString *err_msg,
+			      int first_line,int last_line,
 			      const QTime &first_time,const QTime &last_time)
 {
   QString temp_output_filename;
   char tempdir[PATH_MAX];
   bool ok=false;
   FILE *f=NULL;
+  bool ret;
 
   //
   // Verify Destination
@@ -270,6 +272,8 @@ bool RDRenderer::renderToFile(const QString &outfile,RDLogEvent *log,
   if(((s->format()!=RDSettings::Pcm16)&&(s->format()!=RDSettings::Pcm24))||
      (s->normalizationLevel()!=0)) {
     ProgressMessage("Pass 1 of 2");
+    render_total_passes=2;
+
     //
     // Get Temporary File
     //
@@ -280,7 +284,7 @@ bool RDRenderer::renderToFile(const QString &outfile,RDLogEvent *log,
     //
     // Render It
     //
-    if(!Render(temp_output_filename,log,chans,s,start_time,ignore_stops,err_msg,
+    if(!Render(temp_output_filename,log,s,start_time,ignore_stops,err_msg,
 	       first_line,last_line,first_time,last_time)) {
       return false;
     }
@@ -292,30 +296,54 @@ bool RDRenderer::renderToFile(const QString &outfile,RDLogEvent *log,
     ProgressMessage(tr("Writing output file"));
     ok=ConvertAudio(temp_output_filename,outfile,s,err_msg);
     DeleteTempFile(temp_output_filename);
+    emit lineStarted(log->size()+1,log->size()+1);
     if(!ok) {
       return false;
     }
   }
   else {
     ProgressMessage(tr("Pass 1 of 1"));
-    return Render(outfile,log,chans,s,start_time,ignore_stops,err_msg,
-		  first_line,last_line,first_time,last_time);
+    render_total_passes=1;
+
+    ret=Render(outfile,log,s,start_time,ignore_stops,err_msg,
+	       first_line,last_line,first_time,last_time);
+    emit lineStarted(log->size(),log->size());
+    return ret;
   }
   return true;
 }
 
 
 bool RDRenderer::renderToCart(unsigned cartnum,int cutnum,RDLogEvent *log,
-			      unsigned chans,RDSettings *s,
-			      const QTime &start_time,bool ignore_stops,
-			      QString *err_msg,int first_line,int last_line,
+			      RDSettings *s,const QTime &start_time,
+			      bool ignore_stops,QString *err_msg,
+			      int first_line,int last_line,
 			      const QTime &first_time,const QTime &last_time)
 {
   QString temp_output_filename;
   char tempdir[PATH_MAX];
   bool ok=false;
 
+  if(first_line<0) {
+    first_line=0;
+  }
+  if(last_line<0) {
+    last_line=log->size();
+  }
+
+  //
+  // Check that we won't overflow the 32 bit BWF structures
+  // when we go to import the rendered log back into the audio store
+  //
+  if((double)log->length(first_line,last_line-1)/1000.0>=
+     (1073741824.0/((double)s->channels()*(double)s->sampleRate()))) {
+    *err_msg=tr("Rendered log is too long!");
+    return false;
+  }
+
   ProgressMessage(tr("Pass 1 of 2"));
+  render_total_passes=2;
+
   //
   // Verify Destination
   //
@@ -338,7 +366,7 @@ bool RDRenderer::renderToCart(unsigned cartnum,int cutnum,RDLogEvent *log,
   //
   // Render It
   //
-  if(!Render(temp_output_filename,log,chans,s,start_time,ignore_stops,err_msg,
+  if(!Render(temp_output_filename,log,s,start_time,ignore_stops,err_msg,
 	     first_line,last_line,first_time,last_time)) {
     return false;
   }
@@ -348,8 +376,9 @@ bool RDRenderer::renderToCart(unsigned cartnum,int cutnum,RDLogEvent *log,
   //
   ProgressMessage(tr("Pass 2 of 2"));
   ProgressMessage(tr("Importing cart"));
-  ok=ImportCart(temp_output_filename,cartnum,cutnum,err_msg);
+  ok=ImportCart(temp_output_filename,cartnum,cutnum,s->channels(),err_msg);
   DeleteTempFile(temp_output_filename);
+  emit lineStarted(log->size()+1,log->size()+1);
   if(!ok) {
     return false;
   }
@@ -364,8 +393,14 @@ QStringList RDRenderer::warnings() const
 }
 
 
-bool RDRenderer::Render(const QString &outfile,RDLogEvent *log,unsigned chans,
-			RDSettings *s,const QTime &start_time,bool ignore_stops,
+void RDRenderer::abort()
+{
+  render_abort=true;
+}
+
+
+bool RDRenderer::Render(const QString &outfile,RDLogEvent *log,RDSettings *s,
+			const QTime &start_time,bool ignore_stops,
 			QString *err_msg,int first_line,int last_line,
 			const QTime &first_time,const QTime &last_time)
 {
@@ -374,6 +409,7 @@ bool RDRenderer::Render(const QString &outfile,RDLogEvent *log,unsigned chans,
   QString temp_output_filename;
 
   render_warnings.clear();
+  render_abort=false;
 
   //
   // Open Output File
@@ -383,7 +419,7 @@ bool RDRenderer::Render(const QString &outfile,RDLogEvent *log,unsigned chans,
 
   memset(&sf_info,0,sizeof(sf_info));
   sf_info.samplerate=render_system->sampleRate();
-  sf_info.channels=chans;
+  sf_info.channels=s->channels();
   if(s->format()==RDSettings::Pcm16) {
     sf_info.format=SF_FORMAT_WAV|SF_FORMAT_PCM_16;
   }
@@ -404,7 +440,7 @@ bool RDRenderer::Render(const QString &outfile,RDLogEvent *log,unsigned chans,
   for(int i=0;i<log->size();i++) {
     lls.push_back(new __RDRenderLogLine(log->logLine(i),render_user,
 					render_station,render_system,
-					render_config,chans));
+					render_config,s->channels()));
     if(ignore_stops&&(lls.back()->transType()==RDLogLine::Stop)) {
       lls.back()->setTransType(RDLogLine::Play);
     }
@@ -435,7 +471,7 @@ bool RDRenderer::Render(const QString &outfile,RDLogEvent *log,unsigned chans,
   }
   lls.push_back(new __RDRenderLogLine(new RDLogLine(),render_user,
 				      render_station,render_system,
-				      render_config,chans));
+				      render_config,s->channels()));
   lls.back()->setTransType(RDLogLine::Play);
   if((!first_time.isNull())&&(first_line==-1)) {
     first_line=log->size();
@@ -445,6 +481,14 @@ bool RDRenderer::Render(const QString &outfile,RDLogEvent *log,unsigned chans,
   // Iterate through it
   //
   for(unsigned i=0;i<lls.size();i++) {
+    if(render_abort) {
+      emit lineStarted(log->size()+render_total_passes-1,
+		       log->size()+render_total_passes-1);
+      *err_msg+="Render aborted.\n";
+      sf_close(sf_out);
+      return false;
+    }
+    emit lineStarted(i,log->size()+render_total_passes-1);
     if(((first_line==-1)||(first_line<=(int)i))&&
        ((last_line==-1)||(last_line>(int)i))) {
       if(lls.at(i)->transType()==RDLogLine::Stop) {
@@ -474,13 +518,13 @@ bool RDRenderer::Render(const QString &outfile,RDLogEvent *log,unsigned chans,
 	  current_time=current_time.addMSecs(lls.at(i)->cut()->endPoint()-
 					     lls.at(i)->cut()->startPoint());
 	}
-	pcm=new float[frames*chans];
-	memset(pcm,0,frames*chans);
-	
+	pcm=new float[frames*s->channels()];
+	memset(pcm,0,frames*s->channels()*sizeof(float));
+
 	for(unsigned j=0;j<i;j++) {
-	  Sum(pcm,lls.at(j),frames,chans);
+	  Sum(pcm,lls.at(j),frames,s->channels());
 	}
-	Sum(pcm,lls.at(i),frames,chans);
+	Sum(pcm,lls.at(i),frames,s->channels());
 	sf_writef_float(sf_out,pcm,frames);
 	delete pcm;
 	pcm=NULL;
@@ -554,12 +598,13 @@ bool RDRenderer::ConvertAudio(const QString &srcfile,const QString &dstfile,
 
 
 bool RDRenderer::ImportCart(const QString &srcfile,unsigned cartnum,int cutnum,
-			    QString *err_msg)
+			    unsigned chans,QString *err_msg)
 {
   RDAudioImport::ErrorCode err_import_code;
   RDAudioConvert::ErrorCode err_conv_code;
   RDSettings settings;
   
+  settings.setChannels(chans);
   settings.setNormalizationLevel(0);
 
   RDAudioImport *conv=new RDAudioImport(render_station,render_config,this);

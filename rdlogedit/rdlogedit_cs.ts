@@ -234,7 +234,7 @@ popisná data</translation>
     <message>
         <source>Save
 &amp;As</source>
-        <translation>Uložit
+        <translation type="obsolete">Uložit
 &amp;jako</translation>
     </message>
     <message>
@@ -407,6 +407,18 @@ jež jsou pro vybranou službu zakázány!</translation>
     </message>
     <message>
         <source>Len</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>As</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Render</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

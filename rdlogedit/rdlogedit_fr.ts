@@ -230,11 +230,6 @@ Meta</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Save
-&amp;As</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;Reports</source>
         <translation type="unfinished"></translation>
     </message>
@@ -398,6 +393,18 @@ for the selected service!</source>
     </message>
     <message>
         <source>Len</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>As</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Render</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
