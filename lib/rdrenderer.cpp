@@ -519,8 +519,8 @@ bool RDRenderer::Render(const QString &outfile,RDLogEvent *log,RDSettings *s,
 					     lls.at(i)->cut()->startPoint());
 	}
 	pcm=new float[frames*s->channels()];
-	memset(pcm,0,frames*s->channels());
-	
+	memset(pcm,0,frames*s->channels()*sizeof(float));
+
 	for(unsigned j=0;j<i;j++) {
 	  Sum(pcm,lls.at(j),frames,s->channels());
 	}

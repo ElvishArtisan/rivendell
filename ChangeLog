@@ -16042,3 +16042,6 @@
 2017-09-20 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in rdrender(1) that caused the --channels option
 	to be ignored.
+2017-09-21 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'lib/rdrenderer.cpp' that caused audio corruption
+	when rendering logs longer than 44:30.
