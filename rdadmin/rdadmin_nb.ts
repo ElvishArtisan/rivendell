@@ -480,11 +480,19 @@ oppdatert til versjon </translation>
     </message>
     <message>
         <source>Host Exists</source>
-        <translation>Verten eksisterer</translation>
+        <translation type="obsolete">Verten eksisterer</translation>
     </message>
     <message>
         <source>Host Already Exists!</source>
-        <translation>Verten finst frå før!</translation>
+        <translation type="obsolete">Verten finst frå før!</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to create host!</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

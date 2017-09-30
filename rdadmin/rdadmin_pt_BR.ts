@@ -481,11 +481,19 @@ atualizada para a Versão</translation>
     </message>
     <message>
         <source>Host Exists</source>
-        <translation>Cliente existente</translation>
+        <translation type="obsolete">Cliente existente</translation>
     </message>
     <message>
         <source>Host Already Exists!</source>
-        <translation>Cliente já Existe!</translation>
+        <translation type="obsolete">Cliente já Existe!</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to create host!</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

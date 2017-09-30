@@ -16025,3 +16025,9 @@
 2017-09-18 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in rdrender that caused the the default start time
 	to be midnight.
+2017-09-30 Fred Gleason <fredg@paravelsystems.com>
+	* Added a [Provisioning] section to rd.conf(5).
+	* Moved code to create new hosts to the 'RDStation::create()' method.
+	* Moved code to delete hosts to the 'RDStation::remove()' method.
+	* Implemented 'CreateHost=' and 'NewHostTemplate=' parameters
+	in the [Provisioning] section of rd.conf(5).

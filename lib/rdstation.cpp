@@ -18,6 +18,9 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
+#include <qobject.h>
+
+#include <rdairplay_conf.h>
 #include <rdconf.h>
 #include <rdstation.h>
 #include <rd.h>
@@ -659,6 +662,977 @@ void RDStation::setCardOutputs(int cardnum,int outputs) const
   SetRow(QString().sprintf("CARD%d_OUTPUTS",cardnum),outputs);
 }
 
+
+bool RDStation::create(const QString &name,QString *err_msg,
+		       const QString &exemplar)
+{
+  QString sql;
+  RDSqlQuery *q;
+  RDSqlQuery *q1;
+
+  if(exemplar.isEmpty()) {  // Create Blank Host Config
+    sql=QString("insert into STATIONS set ")+
+      "NAME=\""+RDEscapeString(name)+"\","+
+      "DESCRIPTION=\"Workstation "+RDEscapeString(name)+"\","+
+      "USER_NAME=\"user\","+
+      "DEFAULT_NAME=\"user\"";
+    q=new RDSqlQuery(sql);
+    if(!q->isActive()) {
+      *err_msg=QObject::tr("Host already exists!");
+      delete q;
+      return false;
+    }
+    delete q;
+
+    //
+    // Create Service Perms
+    //
+    sql=QString("select NAME from SERVICES");
+    q=new RDSqlQuery(sql);
+    while(q->next()) {
+      sql=QString("insert into SERVICE_PERMS set ")+
+	"SERVICE_NAME=\""+RDEscapeString(q->value(0).toString())+"\","+
+	"STATION_NAME=\""+RDEscapeString(name)+"\"";
+      q1=new RDSqlQuery(sql);
+      delete q1;
+    }
+    delete q;
+
+    //
+    // RDAirPlay/RDPanel Channel Data
+    //
+    for(unsigned i=0;i<10;i++) {
+      sql=QString("insert into RDAIRPLAY_CHANNELS set ")+
+	"STATION_NAME=\""+RDEscapeString(name)+"\","+
+	QString().sprintf("INSTANCE=%u",i);
+      q=new RDSqlQuery(sql);
+      delete q;
+
+      sql=QString("insert into RDPANEL_CHANNELS set ")+
+	"STATION_NAME=\""+RDEscapeString(name)+"\","+
+	QString().sprintf("INSTANCE=%u",i);
+      q=new RDSqlQuery(sql);
+      delete q;
+    }
+    for(unsigned i=0;i<RD_CUT_EVENT_ID_QUAN;i++) {
+      for(unsigned j=0;j<MAX_DECKS;j++) {
+	sql=QString("insert into DECK_EVENTS set ")+
+	  "STATION_NAME=\""+RDEscapeString(name)+"\","+
+	  QString().sprintf("CHANNEL=%u,",j+129)+
+	  QString().sprintf("NUMBER=%u",i+1);
+	q=new RDSqlQuery(sql);
+	delete q;
+      }
+    }
+
+    //
+    // RDAirPlay Log Modes
+    //
+    for(int i=0;i<RDAIRPLAY_LOG_QUANTITY;i++) {
+      sql=QString().sprintf("insert into LOG_MODES set ")+
+	"STATION_NAME=\""+RDEscapeString(name)+"\","+
+	QString().sprintf("MACHINE=%d",i);
+      q=new RDSqlQuery(sql);
+      delete q;
+    }
+  }
+  else {    // Use Template Host
+    sql=QString("select ")+
+      "DEFAULT_NAME,"+        // 00
+      "STARTUP_CART,"+        // 01
+      "TIME_OFFSET,"+         // 02
+      "BROADCAST_SECURITY,"+  // 03
+      "HEARTBEAT_CART,"+      // 04
+      "HEARTBEAT_INTERVAL,"+  // 05
+      "EDITOR_PATH,"+         // 06
+      "FILTER_MODE,"+         // 07
+      "SYSTEM_MAINT,"+        // 08
+      "HTTP_STATION,"+        // 09
+      "CAE_STATION "+         // 10
+      "from STATIONS where "+
+      "NAME=\""+RDEscapeString(exemplar)+"\"";
+    q=new RDSqlQuery(sql);
+    if(q->first()) {
+      sql=QString("insert into STATIONS set ")+
+	"NAME=\""+RDEscapeString(name)+"\","+
+	"DESCRIPTION=\""+RDEscapeString("Workstation "+name)+"\","+
+	"USER_NAME=\""+RDEscapeString(q->value(0).toString())+"\","+
+	"DEFAULT_NAME=\""+RDEscapeString(q->value(0).toString())+"\","+
+	QString().sprintf("STARTUP_CART=%u,",q->value(1).toUInt())+
+	QString().sprintf("TIME_OFFSET=%d,",q->value(2).toInt())+
+	QString().sprintf("BROADCAST_SECURITY=%u,",q->value(3).toUInt())+
+	QString().sprintf("HEARTBEAT_CART=%u,",q->value(4).toUInt())+
+	QString().sprintf("HEARTBEAT_INTERVAL=%u,",q->value(5).toUInt())+
+	"EDITOR_PATH=\""+RDEscapeString(q->value(6).toString())+"\","+
+	QString().sprintf("FILTER_MODE=%d,",q->value(7).toInt())+
+	"SYSTEM_MAINT=\""+RDEscapeString(q->value(8).toString())+"\","+
+	"HTTP_STATION=\""+RDEscapeString(q->value(9).toString())+"\","+
+	"CAE_STATION=\""+RDEscapeString(q->value(10).toString())+"\"";
+      q1=new RDSqlQuery(sql);
+      if(!q1->isActive()) {
+	*err_msg=QObject::tr("host already exists");
+	delete q1;
+	delete q;
+	return false;
+      }
+      delete q1;
+    }
+    else {
+      *err_msg=QObject::tr("template host does not exist");
+      delete q;
+      return false;
+    }
+    delete q;
+
+    //
+    // Clone Service Perms
+    //
+    sql=QString("select SERVICE_NAME from SERVICE_PERMS where ")+
+      "STATION_NAME=\""+RDEscapeString(exemplar)+"\"";
+    q=new RDSqlQuery(sql);
+    while(q->next()) {
+      sql=QString("insert into SERVICE_PERMS set ")+
+	"STATION_NAME=\""+RDEscapeString(name)+"\","+
+	"SERVICE_NAME=\""+RDEscapeString(q->value(0).toString())+"\"";
+      q1=new RDSqlQuery(sql);
+      delete q1;
+    }
+    delete q;
+
+    //
+    // Clone RDLibrary Config
+    //
+    sql=QString("select ")+
+      "INPUT_CARD,"+           // 00
+      "INPUT_PORT,"+           // 01
+      "INPUT_TYPE,"+           // 02
+      "OUTPUT_CARD,"+          // 03
+      "OUTPUT_PORT,"+          // 04
+      "VOX_THRESHOLD,"+        // 05
+      "TRIM_THRESHOLD,"+       // 06
+      "DEFAULT_FORMAT,"+       // 07
+      "DEFAULT_CHANNELS,"+     // 08
+      "DEFAULT_SAMPRATE,"+     // 09
+      "DEFAULT_LAYER,"+        // 10
+      "DEFAULT_BITRATE,"+      // 11
+      "DEFAULT_RECORD_MODE,"+  // 12
+      "DEFAULT_TRIM_STATE,"+   // 13
+      "MAXLENGTH,"+            // 14
+      "TAIL_PREROLL,"+         // 15
+      "RIPPER_DEVICE,"+        // 16
+      "PARANOIA_LEVEL,"+       // 17
+      "RIPPER_LEVEL,"+         // 18
+      "CDDB_SERVER "+          // 19
+      "from RDLIBRARY where "+
+      "(STATION=\""+RDEscapeString(exemplar)+"\")&&"+
+      "(INSTANCE=0)";
+    q=new RDSqlQuery(sql);
+    if(q->first()) {
+      sql=QString("insert into RDLIBRARY set ")+
+	QString().sprintf("INPUT_CARD=%d,",q->value(0).toInt())+
+	QString().sprintf("INPUT_PORT=%d,",q->value(1).toInt())+
+	QString().sprintf("INPUT_TYPE=%d,",q->value(2).toInt())+
+	QString().sprintf("OUTPUT_CARD=%d,",q->value(3).toInt())+
+	QString().sprintf("OUTPUT_PORT=%d,",q->value(4).toInt())+
+	QString().sprintf("VOX_THRESHOLD=%d,",q->value(5).toInt())+
+	QString().sprintf("TRIM_THRESHOLD=%d,",q->value(6).toInt())+
+	QString().sprintf("DEFAULT_FORMAT=%u,",q->value(7).toUInt())+
+	QString().sprintf("DEFAULT_CHANNELS=%u,",q->value(8).toUInt())+
+	QString().sprintf("DEFAULT_SAMPRATE=%u,",q->value(9).toUInt())+
+	QString().sprintf("DEFAULT_LAYER=%u,",q->value(10).toUInt())+
+	QString().sprintf("DEFAULT_BITRATE=%u,",q->value(11).toUInt())+
+	QString().sprintf("DEFAULT_RECORD_MODE=%u,",q->value(12).toUInt())+
+	"DEFAULT_TRIM_STATE=\""+RDEscapeString(q->value(13).toString())+"\","+
+	QString().sprintf("MAXLENGTH=%d,",q->value(14).toInt())+
+	QString().sprintf("TAIL_PREROLL=%u,",q->value(15).toUInt())+
+	"RIPPER_DEVICE=\""+RDEscapeString(q->value(16).toString())+"\","+
+	QString().sprintf("PARANOIA_LEVEL=%d,",q->value(17).toInt())+
+	QString().sprintf("RIPPER_LEVEL=%d,",q->value(18).toInt())+
+	"CDDB_SERVER=\""+RDEscapeString(q->value(19).toString())+"\","+
+	"STATION=\""+RDEscapeString(name)+"\"";
+      q1=new RDSqlQuery(sql);
+      delete q1;
+    }
+    delete q;
+
+    //
+    // Clone RDLogEdit Config
+    //
+    sql=QString("select ")+
+      "INPUT_CARD,"+          // 00
+      "INPUT_PORT,"+          // 01
+      "OUTPUT_CARD,"+         // 02
+      "OUTPUT_PORT,"+         // 03
+      "FORMAT,"+              // 04
+      "DEFAULT_CHANNELS,"+    // 05
+      "SAMPRATE,"+            // 06
+      "LAYER,"+               // 07
+      "BITRATE,"+             // 08
+      "MAXLENGTH,"+           // 09
+      "TAIL_PREROLL,"+        // 10
+      "START_CART,"+          // 11
+      "END_CART,"+            // 12
+      "REC_START_CART,"+      // 13
+      "REC_END_CART,"+        // 14
+      "TRIM_THRESHOLD,"+      // 15
+      "RIPPER_LEVEL,"+        // 16
+      "DEFAULT_TRANS_TYPE "+  // 17
+      "from RDLOGEDIT where "+
+      "STATION=\""+RDEscapeString(exemplar)+"\"";
+    q=new RDSqlQuery(sql);
+    if(q->first()) {
+      sql=QString("insert into RDLOGEDIT set ")+
+	QString().sprintf("INPUT_CARD=%d,",q->value(0).toInt())+
+	QString().sprintf("INPUT_PORT=%d,",q->value(1).toInt())+
+	QString().sprintf("OUTPUT_CARD=%d,",q->value(2).toInt())+
+	QString().sprintf("OUTPUT_PORT=%d,",q->value(3).toInt())+
+	QString().sprintf("FORMAT=%u,",q->value(4).toUInt())+
+	QString().sprintf("DEFAULT_CHANNELS=%u,",q->value(5).toUInt())+
+	QString().sprintf("SAMPRATE=%u,",q->value(6).toUInt())+
+	QString().sprintf("LAYER=%u,",q->value(7).toUInt())+
+	QString().sprintf("BITRATE=%u,",q->value(8).toUInt())+
+	QString().sprintf("MAXLENGTH=%d,",q->value(9).toInt())+
+	QString().sprintf("TAIL_PREROLL=%u,",q->value(10).toUInt())+
+	"STATION=\""+RDEscapeString(name)+"\","+
+	QString().sprintf("START_CART=%u,",q->value(11).toUInt())+
+	QString().sprintf("END_CART=%u,",q->value(12).toUInt())+
+	QString().sprintf("REC_START_CART=%u,",q->value(13).toUInt())+
+	QString().sprintf("REC_END_CART=%u,",q->value(14).toUInt())+
+	QString().sprintf("TRIM_THRESHOLD=%d,",q->value(15).toInt())+
+	QString().sprintf("RIPPER_LEVEL=%d,",q->value(16).toInt())+
+	QString().sprintf("DEFAULT_TRANS_TYPE=%d",q->value(17).toInt());
+      q1=new RDSqlQuery(sql);
+      delete q1;
+    }
+    delete q;
+
+    //
+    // Clone RDCatch Config
+    //
+    sql=QString("select ")+
+      "CHANNEL,"+             // 00
+      "CARD_NUMBER,"+         // 01
+      "PORT_NUMBER,"+         // 02
+      "MON_PORT_NUMBER,"+     // 03
+      "PORT_TYPE,"+           // 04
+      "DEFAULT_FORMAT,"+      // 05
+      "DEFAULT_CHANNELS,"+    // 06
+      "DEFAULT_SAMPRATE,"+    // 07
+      "DEFAULT_BITRATE,"+     // 08
+      "DEFAULT_THRESHOLD,"+   // 09
+      "DEFAULT_MONITOR_ON "+  // 10
+      "from DECKS where "+
+      "STATION_NAME=\""+RDEscapeString(exemplar)+"\"";
+    q=new RDSqlQuery(sql);
+    if(q->first()) {
+      sql=QString("insert into DECKS set ")+
+	QString().sprintf("CHANNEL=%u,",q->value(0).toUInt())+
+	QString().sprintf("CARD_NUMBER=%d,",q->value(1).toInt())+
+	QString().sprintf("PORT_NUMBER=%d,",q->value(2).toInt())+
+	QString().sprintf("MON_PORT_NUMBER=%d,",q->value(3).toInt())+
+	"PORT_TYPE=\""+RDEscapeString(q->value(4).toString())+"\","+
+	QString().sprintf("DEFAULT_FORMAT=%d,",q->value(5).toInt())+
+	QString().sprintf("DEFAULT_CHANNELS=%d,",q->value(6).toInt())+
+	QString().sprintf("DEFAULT_SAMPRATE=%d,",q->value(7).toInt())+
+	QString().sprintf("DEFAULT_BITRATE=%d,",q->value(8).toInt())+
+	QString().sprintf("DEFAULT_THRESHOLD=%d,",q->value(9).toInt())+
+	"STATION_NAME=\""+RDEscapeString(name)+"\","+
+	"DEFAULT_MONITOR_ON=\""+RDEscapeString(q->value(10).toString())+"\"";
+      q1=new RDSqlQuery(sql);
+      delete q1;
+    }
+    delete q;
+
+    //
+    // Clone Deck Events
+    //
+    sql=QString("select ")+
+      "CHANNEL,"+      // 00
+      "NUMBER,"+       // 01
+      "CART_NUMBER "+  // 02
+      "from DECK_EVENTS where "+
+      "STATION_NAME=\""+RDEscapeString(exemplar)+"\"";
+    q=new RDSqlQuery(sql);
+    while(q->next()) {
+      sql=QString("insert into DECK_EVENTS set ")+
+	"STATION_NAME=\""+RDEscapeString(name)+"\","+
+	QString().sprintf("CHANNEL=%u,",q->value(0).toUInt())+
+	QString().sprintf("NUMBER=%d,",q->value(1).toInt())+
+	QString().sprintf("CART_NUMBER=%u",q->value(2).toUInt());
+      q1=new RDSqlQuery(sql);
+      delete q1;
+    }
+    delete q;
+
+    //
+    // Clone RDAirPlay Config
+    //
+    sql=QString("select ")+
+      "SEGUE_LENGTH,"+           // 00
+      "TRANS_LENGTH,"+           // 01
+      "OP_MODE,"+                // 02
+      "START_MODE,"+             // 03
+      "PIE_COUNT_LENGTH,"+       // 04
+      "PIE_COUNT_ENDPOINT,"+     // 05
+      "CHECK_TIMESYNC,"+         // 06
+      "STATION_PANELS,"+         // 07
+      "USER_PANELS,"             // 08
+      "SHOW_AUX_1,"+             // 09
+      "SHOW_AUX_2,"+             // 10
+      "CLEAR_FILTER,"+           // 11
+      "DEFAULT_TRANS_TYPE,"+     // 12
+      "BAR_ACTION,"+             // 13
+      "FLASH_PANEL,"+            // 14
+      "PAUSE_ENABLED,"+          // 15
+      "UDP_ADDR0,"+              // 16
+      "UDP_PORT0,"+              // 17
+      "UDP_STRING0,"+            // 18
+      "UDP_ADDR1,"+              // 19
+      "UDP_PORT1,"+              // 20
+      "UDP_STRING1,"+            // 21
+      "UDP_ADDR2,"+              // 22
+      "UDP_PORT2,"+              // 23
+      "UDP_STRING2,"+            // 24
+      "DEFAULT_SERVICE,"+        // 25
+      "LOG_RML0,"+               // 26
+      "LOG_RML1,"+               // 27
+      "LOG_RML2,"+               // 28
+      "BUTTON_LABEL_TEMPLATE,"+  // 29
+      "EXIT_PASSWORD "+          // 30
+      "from RDAIRPLAY where "+
+      "STATION=\""+RDEscapeString(exemplar)+"\"";
+    q=new RDSqlQuery(sql);
+    if(q->first()) {
+      sql=QString("insert into RDAIRPLAY set ")+
+	QString().sprintf("SEGUE_LENGTH=%d,",q->value(0).toInt())+
+	QString().sprintf("TRANS_LENGTH=%d,",q->value(1).toInt())+
+	QString().sprintf("OP_MODE=%d,",q->value(2).toInt())+
+	QString().sprintf("START_MODE=%d,",q->value(3).toInt())+
+	QString().sprintf("PIE_COUNT_LENGTH=%d,",q->value(4).toInt())+
+	QString().sprintf("PIE_COUNT_ENDPOINT=%d,",q->value(5).toInt())+
+	"CHECK_TIMESYNC=\""+RDEscapeString(q->value(6).toString())+"\","+
+	QString().sprintf("STATION_PANELS=%d,",q->value(7).toInt())+
+	QString().sprintf("USER_PANELS=%d,",q->value(8).toInt())+
+	"SHOW_AUX_1=\""+RDEscapeString(q->value(9).toString())+"\","+
+	"SHOW_AUX_2=\""+RDEscapeString(q->value(10).toString())+"\","+
+	"CLEAR_FILTER=\""+RDEscapeString(q->value(11).toString())+"\","+
+	QString().sprintf("DEFAULT_TRANS_TYPE=%u,",q->value(12).toUInt())+
+	QString().sprintf("BAR_ACTION=%u,",q->value(13).toUInt())+
+	"FLASH_PANEL=\""+RDEscapeString(q->value(14).toString())+"\","+
+	"PAUSE_ENABLED=\""+RDEscapeString(q->value(15).toString())+"\","+
+	"UDP_ADDR0=\""+RDEscapeString(q->value(16).toString())+"\","+
+	QString().sprintf("UDP_PORT0=%u,",q->value(17).toUInt())+
+	"UDP_STRING0=\""+RDEscapeString(q->value(18).toString())+"\","+
+	"UDP_ADDR1=\""+RDEscapeString(q->value(19).toString())+"\","+
+	QString().sprintf("UDP_PORT1=%u,",q->value(20).toUInt())+
+	"UDP_STRING1=\""+RDEscapeString(q->value(21).toString())+"\","+
+	"UDP_ADDR2=\""+RDEscapeString(q->value(22).toString())+"\","+
+	QString().sprintf("UDP_PORT2=%u,",q->value(23).toUInt())+
+	"UDP_STRING2=\""+RDEscapeString(q->value(24).toString())+"\","+
+	"STATION=\""+RDEscapeString(name)+"\","+
+	"DEFAULT_SERVICE=\""+RDEscapeString(q->value(25).toString())+"\","+
+	"LOG_RML0=\""+RDEscapeString(q->value(26).toString())+"\","+
+	"LOG_RML1=\""+RDEscapeString(q->value(27).toString())+"\","+
+	"LOG_RML2=\""+RDEscapeString(q->value(28).toString())+"\","+
+	"BUTTON_LABEL_TEMPLATE=\""+RDEscapeString(q->value(29).toString())+
+	"\","+
+	"EXIT_PASSWORD=\""+RDEscapeString(q->value(30).toString())+"\"";
+      q1=new RDSqlQuery(sql);
+      delete q1;
+    }
+    delete q;
+
+    sql=QString("select ")+
+      "INSTANCE,"+          // 00
+      "CARD,"+              // 01
+      "PORT,"+              // 02
+      "START_RML,"+         // 03
+      "STOP_RML,"+          // 04
+      "START_GPI_MATRIX,"+  // 05
+      "START_GPI_LINE,"+    // 06
+      "START_GPO_MATRIX,"+  // 07
+      "START_GPO_LINE,"+    // 08
+      "STOP_GPI_MATRIX,"+   // 09
+      "STOP_GPI_LINE,"+     // 10
+      "STOP_GPO_MATRIX,"+   // 11
+      "STOP_GPO_LINE "+     // 12
+      "from RDAIRPLAY_CHANNELS where "+
+      "STATION_NAME=\""+RDEscapeString(exemplar)+"\"";
+
+    q=new RDSqlQuery(sql);
+    while(q->next()) {
+      sql=QString("insert into RDAIRPLAY_CHANNELS set ")+
+	"STATION_NAME=\""+RDEscapeString(name)+"\","+
+	QString().sprintf("INSTANCE=%u,",q->value(0).toUInt())+
+	QString().sprintf("CARD=%d,",q->value(1).toInt())+
+	QString().sprintf("PORT=%d,",q->value(2).toInt())+
+	"START_RML=\""+RDEscapeString(q->value(3).toString())+"\","+
+	"STOP_RML=\""+RDEscapeString(q->value(4).toString())+"\","+
+	QString().sprintf("START_GPI_MATRIX=%d,",q->value(5).toInt())+
+	QString().sprintf("START_GPI_LINE=%d,",q->value(6).toInt())+
+	QString().sprintf("START_GPO_MATRIX=%d,",q->value(7).toInt())+
+	QString().sprintf("START_GPO_LINE=%d,",q->value(8).toInt())+
+	QString().sprintf("STOP_GPI_MATRIX=%d,",q->value(9).toInt())+
+	QString().sprintf("STOP_GPI_LINE=%d,",q->value(10).toInt())+
+	QString().sprintf("STOP_GPO_MATRIX=%d,",q->value(11).toInt())+
+	QString().sprintf("STOP_GPO_LINE=%d",q->value(12).toInt());
+      q1=new RDSqlQuery(sql);
+      delete q1;
+    }
+    delete q;
+
+    //
+    // RDAirPlay Log Modes
+    //
+    sql=QString("select ")+
+      "MACHINE,"+     // 00
+      "START_MODE,"+  // 01
+      "OP_MODE from LOG_MODES where "+
+      "STATION_NAME=\""+RDEscapeString(exemplar)+"\"";
+    q=new RDSqlQuery(sql);
+    while(q->next()) {
+      sql=QString().sprintf("insert into LOG_MODES set ")+
+	"STATION_NAME=\""+RDEscapeString(name)+"\","+
+	QString().sprintf("MACHINE=%d,",q->value(0).toInt())+
+	QString().sprintf("START_MODE=%d,",q->value(1).toInt())+
+	QString().sprintf("OP_MODE=%d",q->value(2).toInt());
+      q1=new RDSqlQuery(sql);
+      delete q1;
+    }
+    delete q;
+
+    //
+    // Clone RDPanel Config
+    //
+    sql=QString("select ")+
+      "STATION_PANELS,"+         // 00
+      "USER_PANELS,"+            // 01
+      "CLEAR_FILTER,"+           // 02
+      "FLASH_PANEL,"+            // 03
+      "DEFAULT_SERVICE,"+        // 04
+      "BUTTON_LABEL_TEMPLATE "+  // 05
+      "from RDPANEL where "+
+      "STATION=\""+RDEscapeString(exemplar)+"\"";
+    q=new RDSqlQuery(sql);
+    if(q->first()) {
+      sql=QString("insert into RDPANEL set ")+
+	QString().sprintf("STATION_PANELS=%d,",q->value(0).toInt())+
+	QString().sprintf("USER_PANELS=%d,",q->value(1).toInt())+
+	"CLEAR_FILTER=\""+RDEscapeString(q->value(2).toString())+"\","+
+	"FLASH_PANEL=\""+RDEscapeString(q->value(3).toString())+"\","+
+	"STATION=\""+RDEscapeString(name)+"\","+
+	"DEFAULT_SERVICE=\""+RDEscapeString(q->value(4).toString())+"\","+
+	"BUTTON_LABEL_TEMPLATE=\""+RDEscapeString(q->value(5).toString())+"\"";
+      q1=new RDSqlQuery(sql);
+      delete q1;
+    }
+    delete q;
+
+    sql=QString("select ")+
+      "INSTANCE,"+
+      "CARD,"+
+      "PORT,"+
+      "START_RML,"+
+      "STOP_RML,"+
+      "START_GPI_MATRIX,"+
+      "START_GPI_LINE,"+
+      "START_GPO_MATRIX,"+
+      "START_GPO_LINE,"+
+      "STOP_GPI_MATRIX,"+
+      "STOP_GPI_LINE,"+
+      "STOP_GPO_MATRIX,"+
+      "STOP_GPO_LINE "+
+      "from RDPANEL_CHANNELS where "+
+      "STATION_NAME=\""+RDEscapeString(exemplar)+"\"";
+    q=new RDSqlQuery(sql);
+    while(q->next()) {
+      sql=QString("insert into RDPANEL_CHANNELS set ")+
+	"STATION_NAME=\""+RDEscapeString(name)+"\","+
+	QString().sprintf("INSTANCE=%u,",q->value(0).toUInt())+
+	QString().sprintf("CARD=%d,",q->value(1).toInt())+
+	QString().sprintf("PORT=%d,",q->value(2).toInt())+
+	"START_RML=\""+RDEscapeString(q->value(3).toString())+"\","+
+	"STOP_RML=\""+RDEscapeString(q->value(4).toString())+"\","+
+	QString().sprintf("START_GPI_MATRIX=%d,",q->value(5).toInt())+
+	QString().sprintf("START_GPI_LINE=%d,",q->value(6).toInt())+
+	QString().sprintf("START_GPO_MATRIX=%d,",q->value(7).toInt())+
+	QString().sprintf("START_GPO_LINE=%d,",q->value(8).toInt())+
+	QString().sprintf("STOP_GPI_MATRIX=%d,",q->value(9).toInt())+
+	QString().sprintf("STOP_GPI_LINE=%d,",q->value(10).toInt())+
+	QString().sprintf("STOP_GPO_MATRIX=%d,",q->value(11).toInt())+
+	QString().sprintf("STOP_GPO_LINE=%d",q->value(12).toInt());
+      q1=new RDSqlQuery(sql);
+      delete q1;
+    }
+    delete q;
+
+    //
+    // Clone Audio Port Settings
+    //
+    sql=QString("select ")+
+      "CARD_NUMBER,"    // 00
+      "CLOCK_SOURCE,";  // 01
+    for(int i=0;i<RD_MAX_PORTS;i++) {
+      sql+=QString().sprintf("INPUT_%d_LEVEL,",i)+
+	QString().sprintf("INPUT_%d_MODE,",i)+
+	QString().sprintf("INPUT_%d_TYPE,",i)+
+	QString().sprintf("OUTPUT_%d_LEVEL,",i);
+    }
+    sql=sql.left(sql.length()-1);
+    sql+=QString(" from AUDIO_PORTS where ")+
+      "STATION_NAME=\""+RDEscapeString(exemplar)+"\"";
+    q=new RDSqlQuery(sql);
+    while(q->next()) {
+      sql=QString("insert into AUDIO_PORTS set ")+
+	QString().sprintf("CARD_NUMBER=%u,",q->value(0).toUInt())+
+	QString().sprintf("CLOCK_SOURCE=%d,",q->value(1).toInt())+
+	"STATION_NAME=\""+RDEscapeString(name)+"\",";
+      for(int i=0;i<RD_MAX_PORTS;i++) {
+	sql+=QString().sprintf("INPUT_%d_LEVEL=%d,INPUT_%d_MODE=%d,\
+                                INPUT_%d_TYPE=%d,OUTPUT_%d_LEVEL=%d,",
+			       i,q->value(2+3*i).toInt(),
+			       i,q->value(3+3*i).toInt(),
+			       i,q->value(4+3*i).toInt(),
+			       i,q->value(5+3*i).toInt());
+      }
+      sql=sql.left(sql.length()-1);
+      q1=new RDSqlQuery(sql);
+      delete q1;
+    }
+    delete q;
+
+    //
+    // Clone the Serial Setups
+    //
+    sql=QString("select ")+
+      "PORT_ID,"+      // 00
+      "ACTIVE,"+       // 01
+      "PORT,"+         // 02
+      "BAUD_RATE,"+    // 03
+      "DATA_BITS,"+    // 04
+      "STOP_BITS,"+    // 05
+      "PARITY,"+       // 06
+      "TERMINATION "+  // 07
+      "from TTYS where "+
+      "STATION_NAME=\""+RDEscapeString(exemplar)+"\"";
+     q=new RDSqlQuery(sql);
+     while(q->next()) {
+       sql=QString("insert into TTYS set ")+
+	 QString().sprintf("PORT_ID=%u,",q->value(0).toUInt())+
+	 "ACTIVE=\""+RDEscapeString(q->value(1).toString())+"\","+
+	 "PORT=\""+RDEscapeString(q->value(2).toString())+"\","+
+	 QString().sprintf("BAUD_RATE=%d,",q->value(3).toInt())+
+	 QString().sprintf("DATA_BITS=%d,",q->value(4).toInt())+
+	 QString().sprintf("STOP_BITS=%d,",q->value(5).toInt())+
+	 QString().sprintf("PARITY=%d,",q->value(6).toInt())+
+	 QString().sprintf("TERMINATION=%d,",q->value(7).toInt())+
+	 "STATION_NAME=\""+RDEscapeString(name)+"\"";
+       q1=new RDSqlQuery(sql);
+       delete q1;
+     }
+     delete q;
+
+     //
+     // Clone Matrices
+     //
+     sql=QString("select ")+
+       "NAME,"+          // 00
+       "MATRIX,"+        // 01
+       "TYPE,"+          // 02
+       "PORT_TYPE,"+     // 03
+       "CARD,PORT,"+     // 04
+       "IP_ADDRESS,"+    // 05
+       "IP_PORT,"+       // 06
+       "USERNAME,"+      // 07
+       "PASSWORD,"+      // 08
+       "GPIO_DEVICE,"+   // 09
+       "INPUTS,"+        // 10
+       "OUTPUTS,"+       // 11
+       "GPIS,"+          // 12
+       "GPOS,"+          // 13
+       "DISPLAYS,"+      // 14
+       "FADERS,"+        // 15
+       "PORT_TYPE_2,"+   // 16
+       "PORT_2,"+        // 17
+       "IP_ADDRESS_2,"+  // 18
+       "IP_PORT_2,"+     // 19
+       "USERNAME_2,"+    // 20
+       "PASSWORD_2 "+    // 21
+       "from MATRICES where "+
+       "STATION_NAME=\""+RDEscapeString(exemplar)+"\"";
+     q=new RDSqlQuery(sql);
+     while(q->next()) {
+       sql=QString("insert into MATRICES set ")+
+	 "NAME=\""+RDEscapeString(q->value(0).toString())+"\","+
+	 QString().sprintf("MATRIX=%d,",q->value(1).toInt())+
+	 QString().sprintf("TYPE=%d,",q->value(2).toInt())+
+	 QString().sprintf("PORT_TYPE=%d,",q->value(3).toInt())+
+	 QString().sprintf("CARD=%d,",q->value(4).toInt())+
+	 QString().sprintf("PORT=%d,",q->value(5).toInt())+
+	 "IP_ADDRESS=\""+RDEscapeString(q->value(6).toString())+"\","+
+	 QString().sprintf("IP_PORT=%d,",q->value(7).toInt())+
+	 "USERNAME=\""+RDEscapeString(q->value(8).toString())+"\","+
+	 "PASSWORD=\""+RDEscapeString(q->value(9).toString())+"\","+
+	 "GPIO_DEVICE=\""+RDEscapeString(q->value(10).toString())+"\","+
+	 QString().sprintf("INPUTS=%d,",q->value(11).toInt())+
+	 QString().sprintf("OUTPUTS=%d,",q->value(12).toInt())+
+	 QString().sprintf("GPIS=%d,",q->value(13).toInt())+
+	 QString().sprintf("GPOS=%d,",q->value(14).toInt())+
+	 QString().sprintf("DISPLAYS=%d,",q->value(15).toInt())+
+	 "STATION_NAME=\""+RDEscapeString(name)+"\","+
+	 QString().sprintf("FADERS=%d,",q->value(16).toInt())+
+	 QString().sprintf("PORT_TYPE_2=%d,",q->value(17).toInt())+
+	 QString().sprintf("PORT_2=%d,",q->value(18).toInt())+
+	 "IP_ADDRESS_2=\""+RDEscapeString(q->value(19).toString())+"\","+
+	 QString().sprintf("IP_PORT_2=%d,",q->value(20).toInt())+
+	 "USERNAME_2=\""+RDEscapeString(q->value(21).toString())+"\","+
+	 "PASSWORD_2=\""+RDEscapeString(q->value(22).toString())+"\"";
+       q1=new RDSqlQuery(sql);
+       delete q1;
+     }
+     delete q;
+
+     //
+     // Clone Matrix Inputs
+     //
+     sql=QString("select ")+
+       "MATRIX,"+        // 00
+       "NUMBER,"+        // 01
+       "NAME,"+          // 02
+       "FEED_NAME,"+     // 03
+       "CHANNEL_MODE,"+  // 04
+       "ENGINE_NUM,"+    // 05
+       "DEVICE_NUM "+    // 06
+       "from INPUTS where "+
+       "STATION_NAME=\""+RDEscapeString(exemplar)+"\"";
+     q=new RDSqlQuery(sql);
+     while(q->next()) {
+       sql=QString("insert into INPUTS set ")+
+	 QString().sprintf("MATRIX=%d,",q->value(0).toInt())+
+	 QString().sprintf("NUMBER=%d,",q->value(1).toInt())+
+	 "NAME=\""+RDEscapeString(q->value(2).toString())+"\","+
+	 "FEED_NAME=\""+RDEscapeString(q->value(3).toString())+"\","+
+	 QString().sprintf("CHANNEL_MODE=%d,",q->value(4).toInt())+
+	 QString().sprintf("ENGINE_NUM=%d,",q->value(5).toInt())+
+	 QString().sprintf("QDEVICE_NUM=%d,",q->value(6).toInt())+
+	 "STATION_NAME=\""+RDEscapeString(name)+"\"";
+       q1=new RDSqlQuery(sql);
+       delete q1;
+     }
+     delete q;
+
+     //
+     // Clone Matrix Outputs
+     //
+     sql=QString("select ")+
+       "MATRIX,"+      // 00
+       "NUMBER,"+      // 01
+       "NAME,"+        // 02
+       "ENGINE_NUM,"+  // 03
+       "DEVICE_NUM "+  // 04
+       "from OUTPUTS where "+
+       "STATION_NAME=\""+RDEscapeString(exemplar)+"\"";
+     q=new RDSqlQuery(sql);
+     while(q->next()) {
+       sql=QString("insert into OUTPUTS set ")+
+	 QString().sprintf("MATRIX=%d,",q->value(0).toInt())+
+	 QString().sprintf("NUMBER=%d,",q->value(1).toInt())+
+	 "NAME=\""+RDEscapeString(q->value(2).toString())+"\","+
+	 QString().sprintf("ENGINE_NUM=%d,",q->value(3).toInt())+
+	 QString().sprintf("DEVICE_NUM=%d,",q->value(4).toInt())+
+	 "STATION_NAME=\""+RDEscapeString(name)+"\"";
+      q1=new RDSqlQuery(sql);
+      delete q1;
+    }
+    delete q;
+
+    //
+    // Clone GPIs
+    //
+    sql=QString("select ")+
+      "MATRIX,"+      // 00
+      "NUMBER,"+      // 01
+      "MACRO_CART "+  // 02
+      "from GPIS where "+
+      "STATION_NAME=\""+RDEscapeString(exemplar)+"\"";
+    q=new RDSqlQuery(sql);
+    while(q->next()) {
+      sql=QString("insert into GPIS set ")+
+	QString().sprintf("MATRIX=%d,",q->value(0).toInt())+
+	QString().sprintf("NUMBER=%d,",q->value(1).toInt())+
+	QString().sprintf("MACRO_CART=%d,",q->value(2).toInt())+
+	"STATION_NAME=\""+RDEscapeString(name)+"\"";
+      q1=new RDSqlQuery(sql);
+      delete q1;
+    }
+    delete q;
+
+    //
+    // Close vGuest Settings
+    //
+    sql=QString("select ")+
+      "MATRIX_NUM,"+
+      "VGUEST_TYPE,"+
+      "NUMBER,"+
+      "ENGINE_NUM,"+
+      "DEVICE_NUM,"+
+      "SURFACE_NUM,"+
+      "RELAY_NUM,"+
+      "BUSS_NUM "+
+      "from VGUEST_RESOURCES where "+
+      "STATION_NAME=\""+RDEscapeString(exemplar)+"\"";
+    q=new RDSqlQuery(sql);
+    while(q->next()) {
+      sql=QString("insert into VGUEST_RESOURCES set ")+
+	QString().sprintf("MATRIX_NUM=%d,",q->value(0).toInt())+
+	QString().sprintf("VGUEST_TYPE=%d,",q->value(1).toInt())+
+	QString().sprintf("NUMBER=%d,",q->value(2).toInt())+
+	QString().sprintf("ENGINE_NUM=%d,",q->value(3).toInt())+
+	QString().sprintf("DEVICE_NUM=%d,",q->value(4).toInt())+
+	QString().sprintf("SURFACE_NUM=%d,",q->value(5).toInt())+
+	QString().sprintf("RELAY_NUM=%d,",q->value(6).toInt())+
+	QString().sprintf("BUSS_NUM=%d,",q->value(7).toInt())+
+	"STATION_NAME=\""+RDEscapeString(name)+"\"";
+      q1=new RDSqlQuery(sql);
+      delete q1;
+    }
+    delete q;
+
+    //
+    // Clone Host Variables
+    //
+    sql=QString("select ")+
+      "NAME,"+
+      "VARVALUE,"+
+      "REMARK "+
+      "from HOSTVARS where "+
+      "STATION_NAME=\""+RDEscapeString(exemplar)+"\"";
+    q=new RDSqlQuery(sql);
+    while(q->next()) {
+      sql=QString("insert into HOSTVARS set ")+
+	"NAME=\""+RDEscapeString(q->value(0).toString())+"\","+
+	"VARVALUE=\""+RDEscapeString(q->value(1).toString())+"\","+
+	"REMARK=\""+RDEscapeString(q->value(2).toString())+"\","+
+	"STATION_NAME=\""+RDEscapeString(name)+"\"";
+      q1=new RDSqlQuery(sql);
+      delete q1;
+    }
+    delete q;
+
+    //
+    // Clone System Panels
+    //
+    sql=QString("select ")+
+      "PANEL_NO,"+
+      "ROW_NO,"+
+      "COLUMN_NO,"+
+      "LABEL,"+
+      "CART,"+
+      "DEFAULT_COLOR "+
+      "from PANELS where "+
+      QString().sprintf("(TYPE=%d)&&",RDAirPlayConf::StationPanel)+
+      "(OWNER=\""+RDEscapeString(exemplar)+"\")";
+    q=new RDSqlQuery(sql);
+    while(q->next()) {
+      sql=QString("insert into PANELS set ")+
+	QString().sprintf("PANEL_NO=%d,",q->value(0).toInt())+
+	QString().sprintf("ROW_NO=%d,",q->value(1).toInt())+
+	QString().sprintf("COLUMN_NO=%d,",q->value(2).toInt())+
+	"LABEL=\""+RDEscapeString(q->value(3).toString())+"\","+
+	QString().sprintf("CART=%u,",q->value(4).toUInt())+
+	"DEFAULT_COLOR=\""+RDEscapeString(q->value(5).toString())+"\","+
+	QString().sprintf("TYPE=%d,",RDAirPlayConf::StationPanel)+
+	"OWNER=\""+RDEscapeString(name)+"\"";
+      q1=new RDSqlQuery(sql);
+      delete q1;
+    }
+    delete q;
+
+    sql=QString("select ")+
+      "PANEL_NO,"+       // 00
+      "ROW_NO,"+         // 01
+      "COLUMN_NO,"+      // 02
+      "LABEL,"+          // 03
+      "CART,"+           // 04
+      "DEFAULT_COLOR "+  // 05
+      "from EXTENDED_PANELS where "+
+      QString().sprintf("(TYPE=%d)&&",RDAirPlayConf::StationPanel)+
+      "(OWNER=\""+RDEscapeString(exemplar)+"\")";
+    q=new RDSqlQuery(sql);
+    while(q->next()) {
+      sql=QString("insert into EXTENDED_PANELS set ")+
+	QString().sprintf("PANEL_NO=%d,",q->value(0).toInt())+
+	QString().sprintf("ROW_NO=%d,",q->value(1).toInt())+
+	QString().sprintf("COLUMN_NO=%d,",q->value(2).toInt())+
+	"LABEL=\""+RDEscapeString(q->value(3).toString())+"\","+
+	QString().sprintf("CART=%u,",q->value(4).toUInt())+
+	"DEFAULT_COLOR=\""+RDEscapeString(q->value(5).toString())+"\","+
+	QString().sprintf("TYPE=%d,",RDAirPlayConf::StationPanel)+
+	"OWNER=\""+RDEscapeString(name)+"\"";
+      q1=new RDSqlQuery(sql);
+      delete q1;
+    }
+    delete q;
+
+    //
+    // Clone Hotkeys
+    //
+    sql=QString("select ")+
+      "MODULE_NAME,"+  // 00
+      "KEY_ID,"+       // 01
+      "KEY_VALUE,"+    // 02
+      "KEY_LABEL "+    // 03
+      "from RDHOTKEYS where "+
+      "STATION_NAME=\""+RDEscapeString(exemplar)+"\"";
+    q=new RDSqlQuery(sql);
+    while(q->next()) {
+      sql=QString("insert into RDHOTKEYS set ")+
+	"MODULE_NAME=\""+RDEscapeString(q->value(0).toString())+"\","+
+	QString().sprintf("KEY_ID=%d,",q->value(1).toInt())+
+	"KEY_VALUE=\""+RDEscapeString(q->value(2).toString())+"\","+	\
+	"KEY_LABEL=\""+RDEscapeString(q->value(3).toString())+"\","+
+	"STATION_NAME=\""+RDEscapeString(name)+"\"";
+      q1=new RDSqlQuery(sql);
+      delete q1;
+    }
+    delete q;
+  }
+  return true;
+}
+
+
+void RDStation::remove(const QString &name)
+{
+  QString sql;
+  RDSqlQuery *q;
+  RDSqlQuery *q1;
+
+  sql=QString().sprintf("delete from DECKS where STATION_NAME=\"%s\"",
+			(const char *)RDEscapeString(name));
+  q=new RDSqlQuery(sql);
+  delete q;
+  sql=QString("delete from DECK_EVENTS where ")+
+    "STATION_NAME=\""+RDEscapeString(name)+"\"";
+  q=new RDSqlQuery(sql);
+  delete q;
+  sql=QString().sprintf("delete from TTYS where STATION_NAME=\"%s\"",
+			(const char *)RDEscapeString(name));
+  q=new RDSqlQuery(sql);
+  delete q;
+  sql=QString().sprintf("delete from AUDIO_PORTS where STATION_NAME=\"%s\"",
+			(const char *)RDEscapeString(name));
+  q=new RDSqlQuery(sql);
+  delete q;
+  sql=QString().sprintf("delete from RECORDINGS where STATION_NAME=\"%s\"",
+			(const char *)RDEscapeString(name));
+  q=new RDSqlQuery(sql);
+  delete q;
+  sql=
+    QString().sprintf("delete from SERVICE_PERMS where STATION_NAME=\"%s\"",
+		      (const char *)RDEscapeString(name));
+  q=new RDSqlQuery(sql);
+  delete q;
+  sql=QString().sprintf("delete from RDAIRPLAY where STATION=\"%s\"",
+			(const char *)RDEscapeString(name));
+  q=new RDSqlQuery(sql);
+  delete q;
+  sql=QString().sprintf("delete from RDAIRPLAY_CHANNELS where STATION_NAME=\"%s\"",
+			(const char *)RDEscapeString(name));
+  q=new RDSqlQuery(sql);
+  delete q;
+  sql=QString().sprintf("delete from RDPANEL where STATION=\"%s\"",
+			(const char *)RDEscapeString(name));
+  q=new RDSqlQuery(sql);
+  delete q;
+  sql=QString().sprintf("delete from RDPANEL_CHANNELS where STATION_NAME=\"%s\"",
+			(const char *)RDEscapeString(name));
+  q=new RDSqlQuery(sql);
+  delete q;
+  sql=QString().sprintf("delete from RDLOGEDIT where STATION=\"%s\"",
+			(const char *)RDEscapeString(name));
+  q=new RDSqlQuery(sql);
+  delete q;
+  sql=QString().sprintf("delete from MATRICES where STATION_NAME=\"%s\"",
+			(const char *)RDEscapeString(name));
+  q=new RDSqlQuery(sql);
+  delete q;
+  sql=QString().sprintf("delete from INPUTS where STATION_NAME=\"%s\"",
+			(const char *)RDEscapeString(name));
+  q=new RDSqlQuery(sql);
+  delete q;
+  sql=QString().sprintf("delete from OUTPUTS where STATION_NAME=\"%s\"",
+			(const char *)RDEscapeString(name));
+  q=new RDSqlQuery(sql);
+  delete q;
+  sql=QString().sprintf("delete from VGUEST_RESOURCES where\
+                           STATION_NAME=\"%s\"",
+			(const char *)RDEscapeString(name));
+  q=new RDSqlQuery(sql);
+  delete q;
+  sql=QString().sprintf("delete from RDLIBRARY where STATION=\"%s\"",
+			(const char *)RDEscapeString(name));
+  q=new RDSqlQuery(sql);
+  delete q;
+  sql=QString().sprintf("delete from GPIS where STATION_NAME=\"%s\"",
+			(const char *)RDEscapeString(name));
+  q=new RDSqlQuery(sql);
+  delete q;
+  sql=QString().sprintf("delete from HOSTVARS where STATION_NAME=\"%s\"",
+			(const char *)RDEscapeString(name));
+  q=new RDSqlQuery(sql);
+  delete q;
+  sql=QString().sprintf("delete from STATIONS where NAME=\"%s\"",
+			(const char *)RDEscapeString(name));
+  q=new RDSqlQuery(sql);
+  delete q;
+  sql=
+    QString().sprintf("delete from REPORT_STATIONS where STATION_NAME=\"%s\"",
+		      (const char *)RDEscapeString(name));
+  q=new RDSqlQuery(sql);
+  delete q;
+  sql=QString().sprintf("delete from PANELS where (TYPE=%d && OWNER=\"%s\")",
+			RDAirPlayConf::StationPanel,
+			(const char *)RDEscapeString(name));
+  q=new RDSqlQuery(sql);
+  delete q;
+  sql=QString().
+    sprintf("delete from EXTENDED_PANELS where (TYPE=%d && OWNER=\"%s\")",
+	    RDAirPlayConf::StationPanel,(const char *)RDEscapeString(name));
+  q=new RDSqlQuery(sql);
+  delete q;
+
+  sql=QString().sprintf("select ID from ENCODERS where STATION_NAME=\"%s\"",
+			(const char *)RDEscapeString(name));
+  q=new RDSqlQuery(sql);
+  while(q->next()) {
+    sql=QString().sprintf("delete from ENCODER_CHANNELS where ENCODER_ID=%d",
+			  q->value(0).toInt());
+    q1=new RDSqlQuery(sql);
+    delete q1;
+    sql=QString().sprintf("delete from ENCODER_SAMPLERATES where ENCODER_ID=%d",
+			  q->value(0).toInt());
+    q1=new RDSqlQuery(sql);
+    delete q1;
+    sql=QString().sprintf("delete from ENCODER_BITRATES where ENCODER_ID=%d",
+			  q->value(0).toInt());
+    q1=new RDSqlQuery(sql);
+    delete q1;
+  }
+  delete q;
+  sql=QString().sprintf("delete from ENCODERS where STATION_NAME=\"%s\"",
+			(const char *)RDEscapeString(name));
+  q=new RDSqlQuery(sql);
+  delete q;
+  sql=QString().sprintf("delete from RDHOTKEYS where STATION_NAME=\"%s\"",
+			(const char *)RDEscapeString(name));
+  q=new RDSqlQuery(sql);
+  delete q;
+
+  sql=QString("delete from LOG_MODES where ")+
+    "STATION_NAME=\""+RDEscapeString(name)+"\"";
+  q=new RDSqlQuery(sql);
+  delete q;
+}
 
 void RDStation::SetRow(const QString &param,const QString &value) const
 {

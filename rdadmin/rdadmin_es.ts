@@ -532,11 +532,19 @@ y un respaldo de la base de datos se guardó en </translation>
     </message>
     <message>
         <source>Host Exists</source>
-        <translation>El equipo ya existe</translation>
+        <translation type="obsolete">El equipo ya existe</translation>
     </message>
     <message>
         <source>Host Already Exists!</source>
-        <translation>¡El equipo ya existe!</translation>
+        <translation type="obsolete">¡El equipo ya existe!</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to create host!</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

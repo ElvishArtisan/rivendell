@@ -532,11 +532,19 @@ a záloha původní databáze uložena v </translation>
     </message>
     <message>
         <source>Host Exists</source>
-        <translation>Server existuje</translation>
+        <translation type="obsolete">Server existuje</translation>
     </message>
     <message>
         <source>Host Already Exists!</source>
-        <translation>Server již existuje!</translation>
+        <translation type="obsolete">Server již existuje!</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to create host!</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

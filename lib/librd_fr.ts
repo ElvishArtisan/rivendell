@@ -465,6 +465,18 @@
         <source>cart</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Host already exists!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>host already exists</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>template host does not exist</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RDAddCart</name>

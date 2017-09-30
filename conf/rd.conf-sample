@@ -33,6 +33,19 @@ MountOptions=defaults
 CaeHostname=
 XportHostname=
 
+[Provisioning]
+; If CreateHost=Yes, a Host entry will be automatically created in the DB
+; when the 'rivendell' system service is started, using the Host definition
+; specified in NewHostTemplate= as the template.
+CreateHost=No
+NewHostTemplate=some_host_entry
+
+; If CreateService=Yes, a Service entry will be automatically created in the DB
+; when the 'rivendell' system service is started, using the Service definition
+; specified in NewServiceTemplate= as the template.
+CreateService=No
+NewServiceTemplate=some_service_entry
+
 [Logs]
 ; Set the method to be used for logging.  Possible values are:
 ;  Syslog = Use the syslog facility.

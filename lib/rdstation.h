@@ -131,6 +131,9 @@ class RDStation
   void setCardInputs(int cardnum,int inputs) const;
   int cardOutputs(int cardnum) const;
   void setCardOutputs(int cardnum,int outputs) const;
+  static bool create(const QString &name,QString *err_msg,
+		     const QString &exemplar="");
+  static void remove(const QString &name);
 
  private:
   void SetRow(const QString &param,const QString &value) const;

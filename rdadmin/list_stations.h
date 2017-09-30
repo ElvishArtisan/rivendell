@@ -46,7 +46,6 @@ class ListStations : public QDialog
   
  private:
   void RefreshList(QString stationname="");
-  void DeleteStation(QString name);
   QListBox *list_box;
 };
 

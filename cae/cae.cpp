@@ -42,6 +42,8 @@
 #include <rdsocket.h>
 #include <rdconf.h>
 #include <rdcheck_daemons.h>
+#include <rddb.h>
+#include <rdescape_string.h>
 #include <rddebug.h>
 #include <rdcmd_switch.h>
 #include <rdsystem.h>
@@ -239,6 +241,11 @@ MainObject::MainObject(QObject *parent,const char *name)
     db->removeDatabase(rd_config->mysqlDbname());
     exit(1);
   }
+
+  //
+  // Provisioning
+  //
+  InitProvisioning();
 
   //
   // Start Up the Drivers
@@ -565,6 +572,34 @@ void MainObject::updateMeters()
     //
   }
   //  SendMeterOutputStatusUpdate();
+}
+
+
+void MainObject::InitProvisioning() const
+{
+  QString sql;
+  RDSqlQuery *q;
+  QString err_msg;
+
+  if(rd_config->provisioningCreateHost()) {
+    if(!rd_config->provisioningHostTemplate().isEmpty()) {
+      sql=QString("select NAME from STATIONS where ")+
+	"NAME=\""+RDEscapeString(rd_config->stationName())+"\"";
+      q=new RDSqlQuery(sql);
+      if(!q->first()) {
+	if(RDStation::create(rd_config->stationName(),&err_msg,rd_config->provisioningHostTemplate())) {
+	  syslog(LOG_INFO,"created new host entry \"%s\"",
+		 (const char *)rd_config->stationName());
+	}
+	else {
+	  fprintf(stderr,"caed: unable to provision host [%s]\n",
+		  (const char *)err_msg);
+	  exit(256);
+	}
+      }
+      delete q;
+    }
+  }
 }
 
 

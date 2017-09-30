@@ -498,11 +498,19 @@ worden. Aktuelle Version</translation>
     </message>
     <message>
         <source>Host Exists</source>
-        <translation>Host existiert</translation>
+        <translation type="obsolete">Host existiert</translation>
     </message>
     <message>
         <source>Host Already Exists!</source>
-        <translation>Host existiert bereits!</translation>
+        <translation type="obsolete">Host existiert bereits!</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to create host!</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

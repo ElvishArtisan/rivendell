@@ -249,6 +249,30 @@ void RDConfig::log(const QString &module,LogPriority prio,const QString &msg)
 }
 
 
+bool RDConfig::provisioningCreateHost() const
+{
+  return conf_provisioning_create_host;
+}
+
+
+QString RDConfig::provisioningHostTemplate() const
+{
+  return conf_provisioning_host_template;
+}
+
+
+bool RDConfig::provisioningCreateService() const
+{
+  return conf_provisioning_create_service;
+}
+
+
+QString RDConfig::provisioningServiceTemplate() const
+{
+  return conf_provisioning_service_template;
+}
+
+
 int RDConfig::alsaPeriodQuantity() const
 {
   return conf_alsa_period_quantity;
@@ -461,6 +485,15 @@ void RDConfig::load()
   conf_audio_store_xport_hostname=
     profile->stringValue("AudioStore","XportHostname","localhost");
 
+  conf_provisioning_create_host=
+    profile->boolValue("Provisioning","CreateHost");
+  conf_provisioning_host_template=
+    profile->stringValue("Provisioning","NewHostTemplate");
+  conf_provisioning_create_service=
+    profile->boolValue("Provisioning","CreateService");
+  conf_provisioning_service_template=
+    profile->stringValue("Provisioning","NewServiceTemplate");
+
   conf_audio_root=
     profile->stringValue("Cae","AudioRoot",RD_AUDIO_ROOT);
   conf_audio_extension=
@@ -560,6 +593,10 @@ void RDConfig::clear()
   conf_log_core_dump_directory=DEFAULT_LOG_CORE_DUMP_DIRECTORY;
   conf_log_pattern=DEFAULT_LOG_PATTERN;
   conf_log_xload_debug_data=false;
+  conf_provisioning_create_host=false;
+  conf_provisioning_host_template="";
+  conf_provisioning_create_service=false;
+  conf_provisioning_service_template="";
   conf_alsa_period_quantity=RD_ALSA_DEFAULT_PERIOD_QUANTITY;
   conf_alsa_period_size=RD_ALSA_DEFAULT_PERIOD_SIZE;
   conf_alsa_channels_per_pcm=-1;
