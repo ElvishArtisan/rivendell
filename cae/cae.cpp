@@ -46,6 +46,7 @@
 #include <rdescape_string.h>
 #include <rddebug.h>
 #include <rdcmd_switch.h>
+#include <rdsvc.h>
 #include <rdsystem.h>
 
 #include <cae_socket.h>
@@ -581,6 +582,9 @@ void MainObject::InitProvisioning() const
   RDSqlQuery *q;
   QString err_msg;
 
+  //
+  // Provision a Host
+  //
   if(rd_config->provisioningCreateHost()) {
     if(!rd_config->provisioningHostTemplate().isEmpty()) {
       sql=QString("select NAME from STATIONS where ")+
@@ -593,6 +597,29 @@ void MainObject::InitProvisioning() const
 	}
 	else {
 	  fprintf(stderr,"caed: unable to provision host [%s]\n",
+		  (const char *)err_msg);
+	  exit(256);
+	}
+      }
+      delete q;
+    }
+  }
+
+  //
+  // Provision a Service
+  //
+  if(rd_config->provisioningCreateService()) {
+    if(!rd_config->provisioningServiceTemplate().isEmpty()) {
+      sql=QString("select NAME from SERVICES where ")+
+	"NAME=\""+RDEscapeString(rd_config->stationName())+"\"";
+      q=new RDSqlQuery(sql);
+      if(!q->first()) {
+	if(RDSvc::create(rd_config->stationName(),&err_msg,rd_config->provisioningServiceTemplate())) {
+	  syslog(LOG_INFO,"created new service entry \"%s\"",
+		 (const char *)rd_config->stationName());
+	}
+	else {
+	  fprintf(stderr,"caed: unable to provision service [%s]\n",
 		  (const char *)err_msg);
 	  exit(256);
 	}

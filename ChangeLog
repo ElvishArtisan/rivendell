@@ -16031,3 +16031,7 @@
 	* Moved code to delete hosts to the 'RDStation::remove()' method.
 	* Implemented 'CreateHost=' and 'NewHostTemplate=' parameters
 	in the [Provisioning] section of rd.conf(5).
+2017-09-30 Fred Gleason <fredg@paravelsystems.com>
+	* Added static 'RDSvc::create()' and 'RDSvc::remove()' methods.
+	* Implemented 'CreateService=' and 'NewServiceTemplate=' parameters
+	in the [Provisioning] section of rd.conf(5).

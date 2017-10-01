@@ -500,7 +500,19 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>template host does not exist</source>
+        <source>service already exists</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>template service</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>does not exist</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>template host</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

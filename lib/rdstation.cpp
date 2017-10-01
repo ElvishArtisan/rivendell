@@ -778,7 +778,8 @@ bool RDStation::create(const QString &name,QString *err_msg,
       delete q1;
     }
     else {
-      *err_msg=QObject::tr("template host does not exist");
+      *err_msg=QObject::tr("template host")+" \""+exemplar+"\" "+
+	QObject::tr("does not exist");
       delete q;
       return false;
     }
