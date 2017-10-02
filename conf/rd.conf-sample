@@ -42,7 +42,8 @@ NewHostTemplate=some_host_entry
 
 ; If CreateService=Yes, a Service entry will be automatically created in the DB
 ; when the 'rivendell' system service is started, using the Service definition
-; specified in NewServiceTemplate= as the template.
+; specified in NewServiceTemplate= as the template. The new service entry will
+; have the same name as the hostname.
 CreateService=No
 NewServiceTemplate=some_service_entry
 

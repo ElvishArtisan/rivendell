@@ -87,7 +87,7 @@ where:
 
     R -- [unassigned]
 
-    s -- [unassigned]
+    s -- Service Name
 
     S -- Seconds, zero padded (00 - 60)
 

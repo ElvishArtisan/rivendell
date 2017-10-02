@@ -16035,3 +16035,5 @@
 	* Added static 'RDSvc::create()' and 'RDSvc::remove()' methods.
 	* Implemented 'CreateService=' and 'NewServiceTemplate=' parameters
 	in the [Provisioning] section of rd.conf(5).
+2017-10-02 Fred Gleason <fredg@paravelsystems.com>
+	* Added an '%s' datetime wildcard for Service Name.
