@@ -2,7 +2,7 @@
 //
 // Abstract a Rivendell Service
 //
-//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2004,2016-2017 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -90,6 +90,9 @@ class RDSvc : public QObject
   void create(const QString exemplar) const;
   void remove() const;
   QString xml() const;
+  static bool create(const QString &name,QString *err_msg,
+		     const QString &exemplar);
+  static void remove(const QString &name);
   static QString timeString(int hour,int secs);
   static QString svcTableName(const QString &svc_name);
 

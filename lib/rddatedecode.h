@@ -23,8 +23,9 @@
 
 #include <qdatetime.h>
 
-QString RDDateDecode(QString str,QDate date);
-QString RDDateTimeDecode(QString str,QDateTime datetime);
+QString RDDateDecode(QString str,const QDate &date,const QString &svcname="");
+QString RDDateTimeDecode(QString str,const QDateTime &datetime,
+			 const QString &svcname="");
 
 
 #endif  // RDDATEDECODE

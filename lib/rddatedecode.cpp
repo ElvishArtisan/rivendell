@@ -22,7 +22,7 @@
 
 #include <rddatedecode.h>
 
-QString RDDateDecode(QString str,QDate date)
+QString RDDateDecode(QString str,const QDate &date,const QString &svcname)
 {
   QString string;
   int yearnum;
@@ -117,6 +117,12 @@ QString RDDateDecode(QString str,QDate date)
 	field=QString().sprintf("%02d",date.month());
 	break;
 
+      case 's':   // Service name
+	if(!svcname.isEmpty()) {
+	  field=svcname;
+	}
+	break;
+
       case 'u':   // Day of week (numeric, 1..7, 1=Monday)
 	field=QString().sprintf("%d",date.dayOfWeek());
 	break;
@@ -164,7 +170,8 @@ QString RDDateDecode(QString str,QDate date)
 }
 
 
-QString RDDateTimeDecode(QString str,QDateTime datetime)
+QString RDDateTimeDecode(QString str,const QDateTime &datetime,
+			 const QString &svcname)
 {
   QString string;
   int yearnum;
@@ -289,6 +296,12 @@ QString RDDateTimeDecode(QString str,QDateTime datetime)
 	    
       case 'S':   // Second (SS)
 	field=QString().sprintf("%02d",datetime.time().second());
+	break;
+
+      case 's':   // Service name
+	if(!svcname.isEmpty()) {
+	  field=svcname;
+	}
 	break;
 
       case 'u':   // Day of week (numeric, 1..7, 1=Monday)

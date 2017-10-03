@@ -65,6 +65,10 @@ class RDConfig
   QString logPattern() const;
   bool logXloadDebugData() const;
   void log(const QString &module,LogPriority prio,const QString &msg);
+  bool provisioningCreateHost() const;
+  QString provisioningHostTemplate() const;
+  bool provisioningCreateService() const;
+  QString provisioningServiceTemplate() const;
   int alsaPeriodQuantity() const;
   int alsaPeriodSize() const;
   int alsaChannelsPerPcm() const;
@@ -121,6 +125,10 @@ class RDConfig
   QString conf_log_directory;
   QString conf_log_core_dump_directory;
   QString conf_log_pattern;
+  bool conf_provisioning_create_host;
+  QString conf_provisioning_host_template;
+  bool conf_provisioning_create_service;
+  QString conf_provisioning_service_template;
   bool conf_log_xload_debug_data;
   int conf_alsa_period_quantity;
   int conf_alsa_period_size;

@@ -16068,3 +16068,17 @@
 	* Fixed bugs that broke the build under Windows.
 2017-09-21 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 2.16.0int09.
+2017-09-30 Fred Gleason <fredg@paravelsystems.com>
+	* Added a [Provisioning] section to rd.conf(5).
+	* Moved code to create new hosts to the 'RDStation::create()' method.
+	* Moved code to delete hosts to the 'RDStation::remove()' method.
+	* Implemented 'CreateHost=' and 'NewHostTemplate=' parameters
+	in the [Provisioning] section of rd.conf(5).
+2017-09-30 Fred Gleason <fredg@paravelsystems.com>
+	* Added static 'RDSvc::create()' and 'RDSvc::remove()' methods.
+	* Implemented 'CreateService=' and 'NewServiceTemplate=' parameters
+	in the [Provisioning] section of rd.conf(5).
+2017-10-02 Fred Gleason <fredg@paravelsystems.com>
+	* Added an '%s' datetime wildcard for Service Name.
+2017-10-03 Fred Gleason <fredg@paravelsystems.com>
+	* Implemented the '%s' wildcard in the report file path.

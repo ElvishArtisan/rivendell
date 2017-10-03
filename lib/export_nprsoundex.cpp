@@ -51,9 +51,11 @@ bool RDReport::ExportNprSoundEx(const QDate &startdate,const QDate &enddate,
   QString channel_name=stationId();
 
 #ifdef WIN32
-  QString filename=RDDateDecode(exportPath(RDReport::Windows),startdate);
+  QString filename=
+    RDDateDecode(exportPath(RDReport::Windows),startdate,serviceName());
 #else
-  QString filename=RDDateDecode(exportPath(RDReport::Linux),startdate);
+  QString filename=
+    RDDateDecode(exportPath(RDReport::Linux),startdate,serviceName());
 #endif
   if((f=fopen(filename,"wb"))==NULL) {
     report_error_code=RDReport::ErrorCantOpen;

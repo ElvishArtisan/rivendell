@@ -195,10 +195,10 @@ void PickReportDates::generateData()
   }
 #ifdef WIN32
   QString filename=RDDateDecode(report->exportPath(RDReport::Windows),
-				edit_startdate_edit->date());
+				edit_startdate_edit->date(),edit_svcname);
 #else
   QString filename=RDDateDecode(report->exportPath(RDReport::Linux),
-				edit_startdate_edit->date());
+				edit_startdate_edit->date(),edit_svcname);
 #endif
   QFile file(filename);
   if(file.exists()) {

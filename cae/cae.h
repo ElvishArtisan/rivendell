@@ -121,6 +121,7 @@ class MainObject : public QObject
   void updateMeters();
   
  private:
+  void InitProvisioning() const;
   void InitMixers();
   void ParseCommand(int);
   void DispatchCommand(int);

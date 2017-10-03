@@ -314,11 +314,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Host Exists</source>
+        <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Host Already Exists!</source>
+        <source>Unable to create host!</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

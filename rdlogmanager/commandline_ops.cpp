@@ -83,7 +83,7 @@ int RunLogOperation(int argc,char *argv[],const QString &svcname,
     return 256;
   }
   QDate start_date=QDate::currentDate().addDays(1+start_offset);
-  QString logname=RDDateDecode(svc->nameTemplate(),start_date);
+  QString logname=RDDateDecode(svc->nameTemplate(),start_date,svc->name());
   RDLog *log=new RDLog(logname);
 
   //
@@ -106,8 +106,10 @@ int RunLogOperation(int argc,char *argv[],const QString &svcname,
     }
     delete q;
     if(!svc->generateLog(start_date,
-			 RDDateDecode(svc->nameTemplate(),start_date),
-			 RDDateDecode(svc->nameTemplate(),start_date.addDays(1)),
+			 RDDateDecode(svc->nameTemplate(),start_date,
+				      svc->name()),
+			 RDDateDecode(svc->nameTemplate(),start_date.addDays(1),
+				      svc->name()),
 			 &unused_report)) {
       fprintf(stderr,"rdlogmanager: unable to generate log\n");
       return 256;
