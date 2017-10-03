@@ -253,7 +253,8 @@ void TestImport::importData()
 void TestImport::dateChangedData(const QDate &date)
 {
   test_filename_edit->
-    setText(RDDateDecode(test_svc->importPath(test_src,RDSvc::Linux),date));
+    setText(RDDateDecode(test_svc->importPath(test_src,RDSvc::Linux),date,
+			 test_svc->name()));
 }
 
 

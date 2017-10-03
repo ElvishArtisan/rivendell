@@ -44,9 +44,11 @@ bool RDReport::ExportTechnical(const QDate &startdate,const QDate &enddate,
   char eol[3]="\n";
 
 #ifdef WIN32
-  QString filename=RDDateDecode(exportPath(RDReport::Windows),startdate);
+  QString filename=
+    RDDateDecode(exportPath(RDReport::Windows),startdate,serviceName());
 #else
-  QString filename=RDDateDecode(exportPath(RDReport::Linux),startdate);
+  QString filename=
+    RDDateDecode(exportPath(RDReport::Linux),startdate,serviceName());
   if(incl_crs) {
     strcpy(eol,"\r\n");
   }

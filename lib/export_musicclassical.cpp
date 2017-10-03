@@ -41,9 +41,11 @@ bool RDReport::ExportMusicClassical(const QDate &startdate,const QDate &enddate,
   QString cart_num;
 
 #ifdef WIN32
-  QString filename=RDDateDecode(exportPath(RDReport::Windows),startdate);
+  QString filename=
+    RDDateDecode(exportPath(RDReport::Windows),startdate,serviceName());
 #else
-  QString filename=RDDateDecode(exportPath(RDReport::Linux),startdate);
+  QString filename=
+    RDDateDecode(exportPath(RDReport::Linux),startdate,serviceName());
 #endif
 
   QFile file(filename);

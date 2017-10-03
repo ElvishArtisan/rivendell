@@ -50,9 +50,11 @@ bool RDReport::ExportSpinCount(const QDate &startdate,const QDate &enddate,
 
 
 #ifdef WIN32
-  QString filename=RDDateDecode(exportPath(RDReport::Windows),startdate);
+  QString filename=
+    RDDateDecode(exportPath(RDReport::Windows),startdate,serviceName());
 #else
-  QString filename=RDDateDecode(exportPath(RDReport::Linux),startdate);
+  QString filename=
+    RDDateDecode(exportPath(RDReport::Linux),startdate,serviceName());
 #endif
 
   QFile file(filename);
