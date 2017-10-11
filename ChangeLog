@@ -16084,3 +16084,6 @@
 	* Implemented the '%s' wildcard in the report file path.
 2017-10-03 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 2.16.0int10.
+2017-10-11 Fred Gleason <fredg@paravelsystems.com>
+	* Updated the 'NEWS' file.
+	* Updated the package version to 2.17.0.

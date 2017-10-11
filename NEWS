@@ -1,6 +1,54 @@
 The NEWS file for the Rivendell package.
 
 -------------------------------------------------------------------------------
+v2.17.0 -- 10/11/2017
+
+Changes:
+   New RML. Added the 'Air Gate' ['AG'] RML to permit conditional execution
+   of RML on the basis of the status of the On-Air flag.
+
+   New Icons. Implemented a new icon set, with individualized icons for
+   each Rivendell module. A big thanks to Josh Edelstein <edelsteinj@rfa.org>
+   for the artwork!
+
+   User Authentication. It is now possible to configure RDLogin to require
+   entry of the user-name, rather than picking the name off of a list. See
+   the 'Show User List in RDLogin' checkbox in RDAdmin->SystemSettings.
+
+   New Switcher/GPIO Devices. Support has been added for the following
+   Switcher/GPIO devices:
+      Broadcast Tools Universal 4.1 MLR>>Web Switcher
+      WheatNet LIO
+      WheatNet SLIO
+
+   Dropbox Enhancements. Added the ability to force imports to be imported
+   as mono, as well as the ability to reset an individual dropbox.
+
+   Log Rendering (EXPERIMENTAL). It is now possible to 'render' a log as a
+   single audio object (file or cart/cut) without the need to play it out
+   while capturing the audio in realtime. Render support is available
+   through the 'Render' button in RDLogEdit and through the command-line
+   rdrender(1) utility. See the rdrender(1) man page for details.
+
+   Web API. Many fixes and enhancements to improve operation. See the
+   ChangeLog for details.
+
+   Provisioning Support. Added a [Provisioning] section to rd.conf(5)
+   with directives to facilitate the automatic provisioning of Rivendell
+   instances. See the comments in the [Provisioning] section of the
+   sample rd.conf(5) file.
+
+   Various other bug fixes.  See the ChangeLog for details.   
+
+Database Update:
+   This version of Rivendell uses database schema version 268, and will
+   automatically upgrade any earlier versions.  To see the current schema
+   version prior to upgrade, see RDAdmin->SystemInfo.
+
+   As always, be sure to run RDAdmin immediately after upgrading to allow 
+   any necessary changes to the database schema to be applied.
+
+-------------------------------------------------------------------------------
 v2.16.0 --  6/2/2017
 
 Changes:
