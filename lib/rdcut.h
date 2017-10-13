@@ -147,6 +147,8 @@ class RDCut
   static QString cutName(unsigned cartnum,unsigned cutnum);
   static unsigned cartNumber(const QString &cutname);
   static unsigned cutNumber(const QString &cutname);
+  static bool create(unsigned cartnum,int cutnum);
+  static bool create(const QString &cutname);
   static bool exists(unsigned cartnum,unsigned cutnum);
   static bool exists(const QString &cutname);
   static QString pathName(unsigned cartnum,unsigned cutnum);
@@ -161,6 +163,8 @@ class RDCut
   void SetRow(const QString &param,const QDate &value) const;
   void SetRow(const QString &param,const QTime &value) const;
   void SetRow(const QString &param) const;
+  static void GetDefaultDateTimes(QString *start_dt,QString *end_dt,
+				  const QString &cutname);
   QSignal *cut_signal;
   QSqlDatabase *cut_db;
   QString cut_name;

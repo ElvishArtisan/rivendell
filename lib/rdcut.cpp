@@ -25,6 +25,8 @@
 #include <sys/types.h>
 #include <fcntl.h>
 
+#include <qobject.h>
+
 #include <rd.h>
 #include <rdconf.h>
 #ifndef WIN32
@@ -36,6 +38,7 @@
 #include <rdconfig.h>
 #include <rddb.h>
 #include <rdescape_string.h>
+#include <rdgroup.h>
 #include <rdweb.h>
 #include <rdcopyaudio.h>
 #include <rdtrimaudio.h>
@@ -45,9 +48,6 @@
 //
 RDCut::RDCut(const QString &name,bool create,QSqlDatabase *db)
 {
-  RDSqlQuery *q;
-  QString sql;
-
   cut_db=db;
   cut_name=name;
 
@@ -62,33 +62,20 @@ RDCut::RDCut(const QString &name,bool create,QSqlDatabase *db)
   sscanf((const char *)name+7,"%u",&cut_number);
   sscanf((const char *)name.left(6),"%u",&cart_number);
   if(create) {
-    sql=QString("insert into CUTS set ")+
-      "CUT_NAME=\""+RDEscapeString(cut_name)+"\","+
-      QString().sprintf("CART_NUMBER=%u,",cart_number)+
-      QString().sprintf("DESCRIPTION=\"Cut %03d\"",cut_number);
-    q=new RDSqlQuery(sql,cut_db);
-    delete q;
+    RDCut::create(cut_name);
   }
 }
 
 
 RDCut::RDCut(unsigned cartnum,int cutnum,bool create,QSqlDatabase *db)
 {
-  RDSqlQuery *q;
-  QString sql;
-
   cut_db=db;
   cut_name=RDCut::cutName(cartnum,cutnum);
 
   cut_signal=new QSignal();
 
   if(create) {
-    sql=QString("insert into CUTS set ")+
-      "CUT_NAME=\""+RDEscapeString(cut_name)+"\","+
-      QString().sprintf("CART_NUMBER=%u,",cartnum)+
-      QString().sprintf("DESCRIPTION=\"Cut %03d\"",cutnum);
-    q=new RDSqlQuery(sql,cut_db);
-    delete q;
+    RDCut::create(cut_name);
   }
   cut_number=cutnum;
   cart_number=cartnum;
@@ -1254,6 +1241,14 @@ bool RDCut::checkInRecording(const QString &station_name,
     format=0;
     break;
   }
+
+  //
+  // Get Group Attributes
+  //
+  QString start_datetime;
+  QString end_datetime;
+  RDCut::GetDefaultDateTimes(&start_datetime,&end_datetime,cutName());
+
   sql=QString("update CUTS set ")+
     "START_POINT=0,"+
     QString().sprintf("END_POINT=%d,",msecs)+
@@ -1277,6 +1272,8 @@ bool RDCut::checkInRecording(const QString &station_name,
     "ORIGIN_NAME=\""+RDEscapeString(station_name)+"\","+
     "ORIGIN_LOGIN_NAME="+user+","+
     "SOURCE_HOSTNAME=\""+RDEscapeString(src_hostname)+"\","+
+    "START_DATETIME="+start_datetime+","+
+    "END_DATETIME="+end_datetime+","+
     "UPLOAD_DATETIME=null "+
     "where CUT_NAME=\""+cut_name+"\"";
   q=new RDSqlQuery(sql);
@@ -1641,6 +1638,41 @@ unsigned RDCut::cutNumber(const QString &cutname)
 }
 
 
+bool RDCut::create(unsigned cartnum,int cutnum)
+{
+  return RDCut::create(RDCut::cutName(cartnum,cutnum));
+}
+
+
+bool RDCut::create(const QString &cutname)
+{
+  QString sql;
+  RDSqlQuery *q;
+  bool ret=false;
+
+  //
+  // Get Default Start/End Datetimes
+  //
+  QString start_datetime;
+  QString end_datetime;
+  RDCut::GetDefaultDateTimes(&start_datetime,&end_datetime,cutname);
+
+  sql=QString("insert into CUTS set ")+
+    "CUT_NAME=\""+cutname+"\","+
+    QString().sprintf("CART_NUMBER=%u,",RDCut::cartNumber(cutname))+
+    "ORIGIN_DATETIME=now(),"+
+    "DESCRIPTION=\""+RDEscapeString(QObject::tr("Cut")+
+		   QString().sprintf(" %03d",RDCut::cutNumber(cutname)))+"\","+
+    "START_DATETIME="+start_datetime+","+
+    "END_DATETIME="+end_datetime;
+  q=new RDSqlQuery(sql);
+  ret=q->isActive();
+  delete q;
+  
+  return ret;
+}
+
+
 bool RDCut::exists(unsigned cartnum,unsigned cutnum)
 {
   return RDCut::exists(RDCut::cutName(cartnum,cutnum));
@@ -1667,6 +1699,30 @@ QString RDCut::pathName(unsigned cartnum,unsigned cutnum)
 QString RDCut::pathName(const QString &cutname)
 {
   return RDConfiguration()->audioFileName(cutname); 
+}
+
+
+void RDCut::GetDefaultDateTimes(QString *start_dt,QString *end_dt,
+				const QString &cutname)
+{
+  *start_dt="null";
+  *end_dt="null";
+  QString sql=QString("select ")+
+    "GROUPS.DEFAULT_CUT_LIFE "+
+    "from GROUPS left join CART "+
+    "on GROUPS.NAME=CART.GROUP_NAME where "+
+    QString().sprintf("CART.NUMBER=%u",RDCut::cartNumber(cutname));
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  if(q->first()) {
+    if(q->value(0).toInt()>=0) {
+      QDateTime now=QDateTime(QDate::currentDate(),QTime::currentTime());
+      *start_dt=
+	"\""+now.toString("yyyy-MM-dd hh:mm:ss")+"\"";
+      *end_dt="\""+now.addDays(q->value(0).toInt()).
+	toString("yyyy-MM-dd hh:mm:ss")+"\"";
+    }
+  }
+  delete q;
 }
 
 

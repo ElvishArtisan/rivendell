@@ -31,8 +31,8 @@
 #include <rdconfig.h>
 #include <rdcmd_switch.h>
 #include <rdcut.h>
+#include <rdescape_string.h>
 #include <wings_filter.h>
-
 
 //
 // Global Variables
@@ -247,20 +247,19 @@ bool MainObject::ImportCut(RDGroup *group,struct WingsRecord *rec,
 			rec->filename,rec->extension);
   q=new RDSqlQuery(sql);
   delete q;
-  sql=QString().sprintf("insert into CUTS set CUT_NAME=\"%06u_001\",\
-                         CART_NUMBER=%u,DESCRIPTION=\"%s\",\
-                         ORIGIN_DATETIME=\"%s\",ORIGIN_NAME=\"%s\",\
-                         CODING_FORMAT=%d,SAMPLE_RATE=%u,CHANNELS=%d,\
-                         BIT_RATE=%d,LENGTH=%u,START_POINT=0,\
-                         END_POINT=%d",
-			cartnum,cartnum,(const char *)rec->title,
-			(const char *)QDateTime::currentDateTime().
-			toString("yyyy-MM-dd hh:mm:ss"),
-			(const char *)rdconfig->stationName(),format,
-			wavefile->getSamplesPerSec(),
-			wavefile->getChannels(),wavefile->getHeadBitRate(),
-			wavefile->getExtTimeLength(),
-			wavefile->getExtTimeLength());
+  RDCut::create(cartnum,1);
+  sql=QString("update CUTS set ")+
+    "DESCRIPTION=\""+RDEscapeString(rec->title)+"\","+
+    "ORIGIN_DATETIME=now(),"+
+    "ORIGIN_NAME=\""+RDEscapeString(rdconfig->stationName())+"\","+
+    QString().sprintf("CODING_FORMAT=%d,",format)+
+    QString().sprintf("SAMPLE_RATE=%u,",wavefile->getSamplesPerSec())+
+    QString().sprintf("CHANNELS=%d,",wavefile->getChannels())+
+    QString().sprintf("BIT_RATE=%d,",wavefile->getHeadBitRate())+
+    QString().sprintf("LENGTH=%u,",wavefile->getExtTimeLength())+
+    "START_POINT=0,"+
+    QString().sprintf("END_POINT=%d where ",wavefile->getExtTimeLength())+
+    "CUT_NAME=\""+RDCut::cutName(cartnum,1)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
 

@@ -1191,15 +1191,18 @@ int RDCart::addCut(unsigned format,unsigned bitrate,unsigned chans,
   if(desc.isEmpty()) {
     desc=QString().sprintf("Cut %03d",next);
   }
-  sql=QString("insert into CUTS set CUT_NAME=\"")+next_name+"\","+
-    QString().sprintf("CART_NUMBER=%d,",cart_number)+
+  if(!RDCut::create(next_name)) {
+    return -1;
+  }
+  sql=QString("update CUTS set ")+
     "ISCI=\""+RDEscapeString(isci)+"\","+
     "DESCRIPTION=\""+RDEscapeString(desc)+"\","+
     "LENGTH=0,"+
     QString().sprintf("CODING_FORMAT=%d,",format)+
     QString().sprintf("BIT_RATE=%d,",bitrate)+
     QString().sprintf("CHANNELS=%d,",chans)+
-    QString().sprintf("PLAY_ORDER=%d",next);
+    QString().sprintf("PLAY_ORDER=%d where ",next)+
+    "CUT_NAME=\""+next_name+"\"";
   q=new RDSqlQuery(sql);
   delete q;
 

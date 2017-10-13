@@ -16087,3 +16087,10 @@
 2017-10-11 Fred Gleason <fredg@paravelsystems.com>
 	* Updated the 'NEWS' file.
 	* Updated the package version to 2.17.0.
+2017-10-13 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'GROUPS.DEFAULT_CUT_LIFE' field to the database.
+	* Incremented the database version to 269.
+	* Added 'RDGroup::defaultCutLife()' and 'RDGroup::setDefaultCutLife()'
+	methods.
+	* Added a 'Set End Date/Time' control to the 'Edit Group' dialog in
+	RDAdmin(1).

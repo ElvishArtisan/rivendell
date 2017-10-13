@@ -376,96 +376,45 @@ MainObject::MainObject(QObject *parent)
 					(const char *)RDCheckDateTime(q1->value(17).
 					toTime(),"hh:mm:ss"));//Invalid possible?
       }
-      sql=QString().sprintf("insert into CUTS set CART_NUMBER=%u,\
-                             CUT_NAME=\"%s\",\
-                             EVERGREEN=\"%s\",\
-                             DESCRIPTION=\"%s\",\
-                             OUTCUE=\"%s\",\
-                             ISRC=\"%s\",\
-                             LENGTH=%u,\
-                             ORIGIN_DATETIME=\"%s\",\
-                             START_DATETIME=%s,\
-                             END_DATETIME=%s,\
-                             SUN=\"%s\",\
-                             MON=\"%s\",\
-                             TUE=\"%s\",\
-                             WED=\"%s\",\
-                             THU=\"%s\",\
-                             FRI=\"%s\",\
-                             SAT=\"%s\",\
-                             START_DAYPART=%s,\
-                             END_DAYPART=%s,\
-                             ORIGIN_NAME=\"%s\",\
-                             WEIGHT=%u,\
-                             VALIDITY=%u,\
-                             CODING_FORMAT=%u,\
-                             SAMPLE_RATE=%u,\
-                             BIT_RATE=%u,\
-                             CHANNELS=%u,\
-                             PLAY_GAIN=%d,\
-                             START_POINT=%d,\
-                             END_POINT=%d,\
-                             FADEUP_POINT=%d,\
-                             FADEDOWN_POINT=%d,\
-                             SEGUE_START_POINT=%d,\
-                             SEGUE_END_POINT=%d,\
-                             SEGUE_GAIN=%d,\
-                             HOOK_START_POINT=%d,\
-                             HOOK_END_POINT=%d,\
-                             TALK_START_POINT=%d,\
-                             TALK_END_POINT=%d",
-			    q->value(0).toUInt(),
-			    (const char *)RDEscapeString(q1->value(0).
-							 toString()),
-			    (const char *)RDEscapeString(q1->value(1).
-							 toString()),
-			    (const char *)RDEscapeString(q1->value(2).
-							 toString()),
-			    (const char *)RDEscapeString(q1->value(3).
-							 toString()),
-			    (const char *)RDEscapeString(q1->value(4).
-							 toString()),
-			    q1->value(5).toUInt(),
-			    (const char *)RDEscapeString(q1->value(6).
-							 toString()),
-			    (const char *)start_datetime,
-			    (const char *)end_datetime,
-			    (const char *)RDEscapeString(q1->value(9).
-							 toString()),
-			    (const char *)RDEscapeString(q1->value(10).
-							 toString()),
-			    (const char *)RDEscapeString(q1->value(11).
-							 toString()),
-			    (const char *)RDEscapeString(q1->value(12).
-							 toString()),
-			    (const char *)RDEscapeString(q1->value(13).
-							 toString()),
-			    (const char *)RDEscapeString(q1->value(14).
-							 toString()),
-			    (const char *)RDEscapeString(q1->value(15).
-							 toString()),
-			    (const char *)start_daypart,
-			    (const char *)end_daypart,
-			    (const char *)RDEscapeString(q1->value(18).
-							 toString()),
-			    q1->value(19).toUInt(),
-			    q1->value(20).toUInt(),
-			    q1->value(21).toUInt(),
-			    q1->value(22).toUInt(),
-			    q1->value(23).toUInt(),
-			    q1->value(24).toUInt(),
-			    q1->value(25).toInt(),
-			    q1->value(26).toInt(),
-			    q1->value(27).toInt(),
-			    q1->value(28).toInt(),
-			    q1->value(29).toInt(),
-			    q1->value(30).toInt(),
-			    q1->value(31).toInt(),
-			    q1->value(32).toInt(),
-			    q1->value(33).toInt(),
-			    q1->value(34).toInt(),
-			    q1->value(35).toInt(),
-			    q1->value(36).toInt());
+      RDCut::create(q1->value(0).toString());
+      sql=QString("update CUTS set ")+
+	"EVERGREEN=\""+RDEscapeString(q1->value(1).toString())+"\","+
+	"DESCRIPTION=\""+RDEscapeString(q1->value(2).toString())+"\","+
+	"OUTCUE=\""+RDEscapeString(q1->value(3).toString())+"\","+
+	"ISRC=\""+RDEscapeString(q1->value(4).toString())+"\","+
+	QString().sprintf("LENGTH=%u,",q1->value(5).toUInt())+
+	"ORIGIN_DATETIME=\""+RDEscapeString(q1->value(6).toString())+"\","+
+	"START_DATETIME="+start_datetime+","+
+	"END_DATETIME="+end_datetime+","+
+	"SUN=\""+RDEscapeString(q1->value(9).toString())+"\","+
+	"MON=\""+RDEscapeString(q1->value(10).toString())+"\","+
+	"TUE=\""+RDEscapeString(q1->value(11).toString())+"\","+
+	"WED=\""+RDEscapeString(q1->value(12).toString())+"\","+
+	"THU=\""+RDEscapeString(q1->value(13).toString())+"\","+
+	"FRI=\""+RDEscapeString(q1->value(14).toString())+"\","+
+	"SAT=\""+RDEscapeString(q1->value(15).toString())+"\","+
+	"START_DAYPART="+start_daypart+","+
+	"END_DAYPART="+end_daypart+","+
+	"ORIGIN_NAME=\""+RDEscapeString(q1->value(18).toString())+"\","+
+	QString().sprintf("WEIGHT=%u,",q1->value(19).toUInt())+
+	QString().sprintf("VALIDITY=%u,",q1->value(20).toUInt())+
+	QString().sprintf("CODING_FORMAT=%u,",q1->value(21).toUInt())+
+	QString().sprintf("SAMPLE_RATE=%u,",q1->value(22).toUInt())+
+	QString().sprintf("BIT_RATE=%u,",q1->value(23).toUInt())+
+	QString().sprintf("CHANNELS=%u,",q1->value(24).toUInt())+
+	QString().sprintf("PLAY_GAIN=%d,",q1->value(25).toInt())+
+	QString().sprintf("START_POINT=%d,",q1->value(26).toInt())+
+	QString().sprintf("END_POINT=%d,",q1->value(27).toInt())+
+	QString().sprintf("FADEUP_POINT=%d,",q1->value(28).toInt())+
+	QString().sprintf("FADEDOWN_POINT=%d,",q1->value(29).toInt())+
+	QString().sprintf("SEGUE_START_POINT=%d,",q1->value(30).toInt())+
+	QString().sprintf("SEGUE_END_POINT=%d,",q1->value(31).toInt())+
+	QString().sprintf("SEGUE_GAIN=%d,",q1->value(32).toInt())+
+	QString().sprintf("HOOK_START_POINT=%d,",q1->value(33).toInt())+
+	QString().sprintf("HOOK_END_POINT=%d,",q1->value(34).toInt())+
+	QString().sprintf("TALK_START_POINT=%d,",q1->value(35).toInt())+
+	QString().sprintf("TALK_END_POINT=%d where ",q1->value(36).toInt())+
+	"CUT_NAME=\""+RDEscapeString(q1->value(0).toString())+"\"";
       q2=new QSqlQuery(sql,filter_db);
       delete q2;
       ok=RDCopy(QString().sprintf("%s%s.%s",(const char *)ext_audiodir,

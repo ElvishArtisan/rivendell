@@ -952,6 +952,7 @@ bool CreateDb(QString name,QString pwd)
       DEFAULT_CART_TYPE int unsigned default 1,\
       DEFAULT_LOW_CART int unsigned default 0,\
       DEFAULT_HIGH_CART int unsigned default 0,\
+      DEFAULT_CUT_LIFE int default -1,\
       CUT_SHELFLIFE int default -1,\
       DELETE_EMPTY_CARTS enum('N','Y') default 'N',\
       DEFAULT_TITLE char(255) default \"Imported from %f.%e\",\
@@ -8470,6 +8471,13 @@ int UpdateDb(int ver)
   if(ver<268) {
     sql=QString("alter table DROPBOXES add column ")+
       "FORCE_TO_MONO enum('N','Y') default 'N' after TO_CART";
+    q=new RDSqlQuery(sql);
+    delete q;
+  }
+
+  if(ver<269) {
+    sql=QString("alter table GROUPS add column ")+
+      "DEFAULT_CUT_LIFE int default -1 after DEFAULT_HIGH_CART";
     q=new RDSqlQuery(sql);
     delete q;
   }

@@ -511,6 +511,10 @@
         <source>template host</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Cut</source>
+        <translation type="unfinished">Conteúdo</translation>
+    </message>
 </context>
 <context>
     <name>RDAddCart</name>
