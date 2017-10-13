@@ -8482,6 +8482,14 @@ int UpdateDb(int ver)
     delete q;
   }
 
+  if(ver<270) {
+    sql=QString("alter table DROPBOXES ")+
+      "add column SEGUE_LEVEL int(11) default 1 after FORCE_TO_MONO, "+
+      "add column SEGUE_LENGTH int(11) default 0 after SEGUE_LEVEL";
+    q=new RDSqlQuery(sql);
+    delete q;
+  }
+
 
   //
   // Maintainer's Note:

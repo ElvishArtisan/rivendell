@@ -311,6 +311,27 @@ void RDDropbox::setCreateEnddateOffset(int offset) const
   SetRow("CREATE_ENDDATE_OFFSET",offset);
 }
 
+int RDDropbox::segueLevel() const
+{
+  return RDGetSqlValue("DROPBOXES","ID",box_id,"SEGUE_LEVEL").toInt();
+}
+
+
+void RDDropbox::setSegueLevel(int level) const
+{
+  SetRow("SEGUE_LEVEL",level);
+}
+
+int RDDropbox::segueLength() const
+{
+  return RDGetSqlValue("DROPBOXES","ID",box_id,"SEGUE_LENGTH").toInt();
+}
+
+
+void RDDropbox::setSegueLength(int length) const
+{
+  SetRow("SEGUE_LENGTH",length);
+}
 
 void RDDropbox::SetRow(const QString &param,int value) const
 {

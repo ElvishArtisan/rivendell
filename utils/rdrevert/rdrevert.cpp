@@ -236,6 +236,10 @@ void MainObject::Revert(int schema) const
     Revert269();
     break;
   }
+
+  case 270:
+    Revert270();
+    break;
 }
 
 
@@ -701,6 +705,18 @@ void MainObject::Revert269() const
   sql="alter table GROUPS drop column DEFAULT_CUT_LIFE";
   q=new QSqlQuery(sql);
   delete q;  
+
+  SetVersion(268);
+}
+
+void MainObject::Revert270() const
+{
+  QString sql;
+  QSqlQuery *q;
+  sql=QString("alter table DROPBOXES drop column SEGUE_LEVEL, ")+
+    "drop column SEGUE_LENGTH";
+  q=new QSqlQuery(sql);
+  delete q;
 
   SetVersion(268);
 }
