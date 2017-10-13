@@ -235,11 +235,11 @@ void MainObject::Revert(int schema) const
   case 269:
     Revert269();
     break;
-  }
-
+ 
   case 270:
     Revert270();
     break;
+  }
 }
 
 
