@@ -901,6 +901,101 @@ See your system administrator for an update!</source>
     </message>
 </context>
 <context>
+    <name>RenderDialog</name>
+    <message>
+        <source>Render Log</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rendering Log...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Render Progress</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cart/Cut</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Render To</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Audio Parameters</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>[now]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>As Specified</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Virtual Start Time</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>All Events</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Only Selected Events</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Include</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Stop Rendering</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Treat as PLAY</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>At STOP transition</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Render</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Cancel</source>
+        <translation type="unfinished">&amp;Cancelar</translation>
+    </message>
+    <message>
+        <source>Filename</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rendering Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>VoiceTracker</name>
     <message>
         <source>Voice Tracker</source>
