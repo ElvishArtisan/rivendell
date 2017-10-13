@@ -1481,6 +1481,14 @@ Do you still want to save?</source>
         <source>Delete cart if empty</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Set End Date/Time to</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>days after audio update</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditHostvar</name>

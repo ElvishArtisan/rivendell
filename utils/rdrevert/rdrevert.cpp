@@ -231,6 +231,10 @@ void MainObject::Revert(int schema) const
   case 268:
     Revert268();
     break;
+
+  case 269:
+    Revert269();
+    break;
   }
 }
 
@@ -689,6 +693,19 @@ void MainObject::Revert268() const
 }
 
 
+void MainObject::Revert269() const
+{
+  QString sql;
+  QSqlQuery *q;
+
+  sql="alter table GROUPS drop column DEFAULT_CUT_LIFE";
+  q=new QSqlQuery(sql);
+  delete q;  
+
+  SetVersion(268);
+}
+
+
 int MainObject::GetVersion() const
 {
   QString sql;
@@ -733,6 +750,7 @@ int MainObject::MapSchema(const QString &ver)
   version_map["2.15"]=259;
   version_map["2.16"]=263;
   version_map["2.17"]=268;
+  version_map["2.18"]=269;
 
   //
   // Normalize String

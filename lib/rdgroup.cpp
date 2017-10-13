@@ -113,6 +113,19 @@ void RDGroup::setDefaultHighCart(unsigned cartnum) const
 }
 
 
+int RDGroup::defaultCutLife() const
+{
+  return RDGetSqlValue("GROUPS","NAME",group_name,"DEFAULT_CUT_LIFE",group_db).
+    toInt();  
+}
+
+
+void RDGroup::setDefaultCutLife(int days) const
+{
+  SetRow("DEFAULT_CUT_LIFE",days);
+}
+
+
 int RDGroup::cutShelflife() const
 {
   return RDGetSqlValue("GROUPS","NAME",group_name,"CUT_SHELFLIFE",group_db).

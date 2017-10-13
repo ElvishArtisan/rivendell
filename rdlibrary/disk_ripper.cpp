@@ -991,18 +991,11 @@ void DiskRipper::RipTrack(int track,int end_track,QString cutname,QString title)
   RDCdRipper *ripper=NULL;
   RDCut *cut=new RDCut(cutname);
   RDCart *cart=new RDCart(cut->cartNumber());
-  QString sql;
-  RDSqlQuery *q;
 
   //
   // Create Cut
   //
-  sql=QString("insert into CUTS set ")+
-    "CUT_NAME=\""+RDEscapeString(cutname)+"\","+
-    QString().sprintf("CART_NUMBER=%u,",cut->cartNumber())+
-    "DESCRIPTION=\""+tr("Cut")+" 001\"";
-  q=new RDSqlQuery(sql);
-  delete q;
+  RDCut::create(cutname);
   
   rip_done=false;
   rip_rip_aborted=false;

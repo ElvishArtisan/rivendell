@@ -41,6 +41,8 @@ class RDGroup
   void setDefaultLowCart(unsigned cartnum) const;
   unsigned defaultHighCart() const;
   void setDefaultHighCart(unsigned cartnum) const;
+  int defaultCutLife() const;
+  void setDefaultCutLife(int days) const;
   int cutShelflife() const;
   void setCutShelflife(int days) const;
   bool deleteEmptyCarts() const;

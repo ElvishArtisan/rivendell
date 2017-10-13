@@ -49,34 +49,52 @@ class EditGroup : public QDialog
  private slots:
   void lowCartChangedData(int value);
   void colorData();
+  void cutLifeEnabledData(bool state);
   void purgeEnabledData(bool state);
   void okData();
   void cancelData();
+
+ protected:
+  void resizeEvent(QResizeEvent *e);
   
  private:
   void SetButtonColor(const QColor &color);
   bool CheckRange();
   RDGroup *group_group;
+  QLabel *group_name_label;
   QLineEdit *group_name_edit;
+  QLabel *group_description_label;
   QLineEdit *group_description_edit;
+  QLabel *group_cartrange_label;
   QSpinBox *group_lowcart_box;
   QLabel *group_highcart_label;
   QSpinBox *group_highcart_box;
   QLabel *group_enforcerange_label;
   QCheckBox *group_enforcerange_box;
   RDListSelector *group_svcs_sel;
+  QLabel *group_music_label;
   QCheckBox *group_music_check;
+  QLabel *group_traffic_label;
   QCheckBox *group_traffic_check;
+  QLabel *group_nownext_label;
   QCheckBox *group_nownext_check;
+  QLabel *group_carttype_label;
   QComboBox *group_carttype_box;
   QPushButton *group_color_button;
+  QLabel *group_title_label;
   QLineEdit *group_title_edit;
   QSpinBox *group_shelflife_spin;
+  QLabel *group_cutlife_label;
+  QLabel *group_cutlife_unit;
+  QCheckBox *group_cutlife_check;
+  QSpinBox *group_cutlife_spin;
   QCheckBox *group_shelflife_check;
   QLabel *group_delete_carts_label;
   QCheckBox *group_delete_carts_check;
   QLabel *group_shelflife_label;
   QLabel *group_shelflife_unit;
+  QPushButton *group_ok_button;
+  QPushButton *group_cancel_button;
 };
 
 

@@ -408,12 +408,7 @@ void RDCutDialog::addButtonData()
 			(const char *)cart_title);
   q=new RDSqlQuery(sql);
   delete q;
-  sql=QString().sprintf("insert into CUTS set CUT_NAME=\"%06d_001\",\
-                         CART_NUMBER=%d,DESCRIPTION=\"Cut 001\"",
-			cart_num,cart_num);
-  q=new RDSqlQuery(sql);
-  delete q;
-
+  RDCut::create(cart_num,1);
   RDListViewItem *item=new RDListViewItem(cut_cart_list);
   item->setPixmap(0,*cut_playout_map);
   item->setText(1,QString().sprintf("%06d",cart_num));
