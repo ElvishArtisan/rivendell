@@ -718,7 +718,7 @@ void MainObject::Revert270() const
   q=new QSqlQuery(sql);
   delete q;
 
-  SetVersion(268);
+  SetVersion(269);
 }
 
 
