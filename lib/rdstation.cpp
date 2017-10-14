@@ -1273,54 +1273,65 @@ bool RDStation::create(const QString &name,QString *err_msg,
        "NAME,"+          // 00
        "MATRIX,"+        // 01
        "TYPE,"+          // 02
-       "PORT_TYPE,"+     // 03
-       "CARD,PORT,"+     // 04
-       "IP_ADDRESS,"+    // 05
-       "IP_PORT,"+       // 06
-       "USERNAME,"+      // 07
-       "PASSWORD,"+      // 08
-       "GPIO_DEVICE,"+   // 09
-       "INPUTS,"+        // 10
-       "OUTPUTS,"+       // 11
-       "GPIS,"+          // 12
-       "GPOS,"+          // 13
-       "DISPLAYS,"+      // 14
-       "FADERS,"+        // 15
-       "PORT_TYPE_2,"+   // 16
-       "PORT_2,"+        // 17
-       "IP_ADDRESS_2,"+  // 18
-       "IP_PORT_2,"+     // 19
-       "USERNAME_2,"+    // 20
-       "PASSWORD_2 "+    // 21
+       "LAYER,"+         // 03
+       "PORT_TYPE,"+     // 04
+       "PORT_TYPE_2,"+   // 05
+       "CARD,"+          // 06
+       "PORT,"+          // 07
+       "PORT_2,"+        // 08
+       "IP_ADDRESS,"+    // 09
+       "IP_ADDRESS_2,"+  // 10
+       "IP_PORT,"+       // 11
+       "IP_PORT_2,"+     // 12
+       "USERNAME,"+      // 13
+       "USERNAME_2,"+    // 14
+       "PASSWORD,"+      // 15
+       "PASSWORD_2,"+    // 16
+       "START_CART,"+    // 17
+       "STOP_CART,"+     // 18
+       "START_CART_2,"+  // 19
+       "STOP_CART_2,"+   // 20
+       "GPIO_DEVICE,"+   // 21
+       "INPUTS,"+        // 22
+       "OUTPUTS,"+       // 23
+       "GPIS,"+          // 24
+       "GPOS,"+          // 25
+       "FADERS,"+        // 26
+       "DISPLAYS "+      // 27
        "from MATRICES where "+
        "STATION_NAME=\""+RDEscapeString(exemplar)+"\"";
      q=new RDSqlQuery(sql);
      while(q->next()) {
        sql=QString("insert into MATRICES set ")+
+	 "STATION_NAME=\""+RDEscapeString(name)+"\","+
 	 "NAME=\""+RDEscapeString(q->value(0).toString())+"\","+
 	 QString().sprintf("MATRIX=%d,",q->value(1).toInt())+
 	 QString().sprintf("TYPE=%d,",q->value(2).toInt())+
-	 QString().sprintf("PORT_TYPE=%d,",q->value(3).toInt())+
-	 QString().sprintf("CARD=%d,",q->value(4).toInt())+
-	 QString().sprintf("PORT=%d,",q->value(5).toInt())+
-	 "IP_ADDRESS=\""+RDEscapeString(q->value(6).toString())+"\","+
-	 QString().sprintf("IP_PORT=%d,",q->value(7).toInt())+
-	 "USERNAME=\""+RDEscapeString(q->value(8).toString())+"\","+
-	 "PASSWORD=\""+RDEscapeString(q->value(9).toString())+"\","+
-	 "GPIO_DEVICE=\""+RDEscapeString(q->value(10).toString())+"\","+
-	 QString().sprintf("INPUTS=%d,",q->value(11).toInt())+
-	 QString().sprintf("OUTPUTS=%d,",q->value(12).toInt())+
-	 QString().sprintf("GPIS=%d,",q->value(13).toInt())+
-	 QString().sprintf("GPOS=%d,",q->value(14).toInt())+
-	 QString().sprintf("DISPLAYS=%d,",q->value(15).toInt())+
-	 "STATION_NAME=\""+RDEscapeString(name)+"\","+
-	 QString().sprintf("FADERS=%d,",q->value(16).toInt())+
-	 QString().sprintf("PORT_TYPE_2=%d,",q->value(17).toInt())+
-	 QString().sprintf("PORT_2=%d,",q->value(18).toInt())+
-	 "IP_ADDRESS_2=\""+RDEscapeString(q->value(19).toString())+"\","+
-	 QString().sprintf("IP_PORT_2=%d,",q->value(20).toInt())+
-	 "USERNAME_2=\""+RDEscapeString(q->value(21).toString())+"\","+
-	 "PASSWORD_2=\""+RDEscapeString(q->value(22).toString())+"\"";
+	 QString().sprintf("LAYER=%d,",q->value(3).toInt())+
+	 QString().sprintf("PORT_TYPE=%d,",q->value(4).toInt())+
+	 QString().sprintf("PORT_TYPE_2=%d,",q->value(5).toInt())+
+	 QString().sprintf("CARD=%d,",q->value(6).toInt())+
+	 QString().sprintf("PORT=%d,",q->value(7).toInt())+
+	 QString().sprintf("PORT_2=%d,",q->value(8).toInt())+
+	 "IP_ADDRESS=\""+RDEscapeString(q->value(9).toString())+"\","+
+	 "IP_ADDRESS_2=\""+RDEscapeString(q->value(10).toString())+"\","+
+	 QString().sprintf("IP_PORT=%d,",q->value(11).toInt())+
+	 QString().sprintf("IP_PORT_2=%d,",q->value(12).toInt())+
+	 "USERNAME=\""+RDEscapeString(q->value(13).toString())+"\","+
+	 "USERNAME_2=\""+RDEscapeString(q->value(14).toString())+"\","+
+	 "PASSWORD=\""+RDEscapeString(q->value(15).toString())+"\","+
+	 "PASSWORD_2=\""+RDEscapeString(q->value(16).toString())+"\","+
+	 "START_CART=\""+RDEscapeString(q->value(17).toString())+"\","+
+	 "STOP_CART=\""+RDEscapeString(q->value(18).toString())+"\","+
+	 "START_CART_2=\""+RDEscapeString(q->value(19).toString())+"\","+
+	 "STOP_CART_2=\""+RDEscapeString(q->value(20).toString())+"\","+
+	 "GPIO_DEVICE=\""+RDEscapeString(q->value(21).toString())+"\","+
+	 QString().sprintf("INPUTS=%d,",q->value(22).toInt())+
+	 QString().sprintf("OUTPUTS=%d,",q->value(23).toInt())+
+	 QString().sprintf("GPIS=%d,",q->value(24).toInt())+
+	 QString().sprintf("GPOS=%d,",q->value(25).toInt())+
+	 QString().sprintf("FADERS=%d,",q->value(26).toInt())+
+	 QString().sprintf("DISPLAYS=%d ",q->value(27).toInt());
        q1=new RDSqlQuery(sql);
        delete q1;
      }
@@ -1348,7 +1359,7 @@ bool RDStation::create(const QString &name,QString *err_msg,
 	 "FEED_NAME=\""+RDEscapeString(q->value(3).toString())+"\","+
 	 QString().sprintf("CHANNEL_MODE=%d,",q->value(4).toInt())+
 	 QString().sprintf("ENGINE_NUM=%d,",q->value(5).toInt())+
-	 QString().sprintf("QDEVICE_NUM=%d,",q->value(6).toInt())+
+	 QString().sprintf("DEVICE_NUM=%d,",q->value(6).toInt())+
 	 "STATION_NAME=\""+RDEscapeString(name)+"\"";
        q1=new RDSqlQuery(sql);
        delete q1;
