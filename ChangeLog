@@ -16108,3 +16108,6 @@
 2017-10-14 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in RDStation that caused RDCartSlot parameters to
 	fail to be copied as part of the profile of a new host.
+2017-10-14 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in RDStation that caused Livewire node parameters to
+	fail to be copied as part of the profile of a new host.

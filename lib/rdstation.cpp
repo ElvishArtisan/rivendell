@@ -1592,6 +1592,33 @@ bool RDStation::create(const QString &name,QString *err_msg,
       delete q1;
     }
     delete q;
+
+    //
+    // Clone Livewire Nodes
+    //
+    sql=QString("select ")+
+      "MATRIX,"+       // 00
+      "BASE_OUTPUT,"+  // 01
+      "HOSTNAME,"+     // 02
+      "PASSWORD,"+     // 03
+      "TCP_PORT,"+     // 04
+      "DESCRIPTION "+  // 05
+      "from SWITCHER_NODES where "+
+      "STATION_NAME=\""+RDEscapeString(exemplar)+"\"";
+    q=new RDSqlQuery(sql);
+    while(q->next()) {
+      sql=QString("insert into SWITCHER_NODES set ")+
+	"STATION_NAME=\""+RDEscapeString(name)+"\","+
+	QString().sprintf("MATRIX=%d,",q->value(0).toInt())+
+	QString().sprintf("BASE_OUTPUT=%d,",q->value(1).toInt())+
+	"HOSTNAME=\""+RDEscapeString(q->value(2).toString())+"\","+
+	"PASSWORD=\""+RDEscapeString(q->value(3).toString())+"\","+
+	QString().sprintf("TCP_PORT=%d,",q->value(4).toInt())+
+	"DESCRIPTION=\""+RDEscapeString(q->value(5).toString())+"\"";
+      q1=new RDSqlQuery(sql);
+      delete q1;
+    }
+    delete q;
   }
   return true;
 }
@@ -1738,7 +1765,13 @@ void RDStation::remove(const QString &name)
     "STATION_NAME=\""+RDEscapeString(name)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
+
+  sql=QString("delete from SWITCHER_NODES where ")+
+    "STATION_NAME=\""+RDEscapeString(name)+"\"";
+  q=new RDSqlQuery(sql);
+  delete q;
 }
+
 
 void RDStation::SetRow(const QString &param,const QString &value) const
 {
