@@ -1207,19 +1207,20 @@ bool RDStation::create(const QString &name,QString *err_msg,
     delete q;
 
     sql=QString("select ")+
-      "INSTANCE,"+
-      "CARD,"+
-      "PORT,"+
-      "START_RML,"+
-      "STOP_RML,"+
-      "START_GPI_MATRIX,"+
-      "START_GPI_LINE,"+
-      "START_GPO_MATRIX,"+
-      "START_GPO_LINE,"+
-      "STOP_GPI_MATRIX,"+
-      "STOP_GPI_LINE,"+
-      "STOP_GPO_MATRIX,"+
-      "STOP_GPO_LINE "+
+      "INSTANCE,"+          // 00
+      "CARD,"+              // 01
+      "PORT,"+              // 02
+      "START_RML,"+         // 03
+      "STOP_RML,"+          // 04
+      "GPIO_TYPE,"+         // 05
+      "START_GPI_MATRIX,"+  // 06
+      "START_GPI_LINE,"+    // 07
+      "START_GPO_MATRIX,"+  // 08
+      "START_GPO_LINE,"+    // 09
+      "STOP_GPI_MATRIX,"+   // 10
+      "STOP_GPI_LINE,"+     // 11
+      "STOP_GPO_MATRIX,"+   // 12
+      "STOP_GPO_LINE "+     // 13
       "from RDPANEL_CHANNELS where "+
       "STATION_NAME=\""+RDEscapeString(exemplar)+"\"";
     q=new RDSqlQuery(sql);
@@ -1231,14 +1232,15 @@ bool RDStation::create(const QString &name,QString *err_msg,
 	QString().sprintf("PORT=%d,",q->value(2).toInt())+
 	"START_RML=\""+RDEscapeString(q->value(3).toString())+"\","+
 	"STOP_RML=\""+RDEscapeString(q->value(4).toString())+"\","+
-	QString().sprintf("START_GPI_MATRIX=%d,",q->value(5).toInt())+
-	QString().sprintf("START_GPI_LINE=%d,",q->value(6).toInt())+
-	QString().sprintf("START_GPO_MATRIX=%d,",q->value(7).toInt())+
-	QString().sprintf("START_GPO_LINE=%d,",q->value(8).toInt())+
-	QString().sprintf("STOP_GPI_MATRIX=%d,",q->value(9).toInt())+
-	QString().sprintf("STOP_GPI_LINE=%d,",q->value(10).toInt())+
-	QString().sprintf("STOP_GPO_MATRIX=%d,",q->value(11).toInt())+
-	QString().sprintf("STOP_GPO_LINE=%d",q->value(12).toInt());
+	QString().sprintf("GPIO_TYPE=%d,",q->value(5).toInt())+
+	QString().sprintf("START_GPI_MATRIX=%d,",q->value(6).toInt())+
+	QString().sprintf("START_GPI_LINE=%d,",q->value(7).toInt())+
+	QString().sprintf("START_GPO_MATRIX=%d,",q->value(8).toInt())+
+	QString().sprintf("START_GPO_LINE=%d,",q->value(9).toInt())+
+	QString().sprintf("STOP_GPI_MATRIX=%d,",q->value(10).toInt())+
+	QString().sprintf("STOP_GPI_LINE=%d,",q->value(11).toInt())+
+	QString().sprintf("STOP_GPO_MATRIX=%d,",q->value(12).toInt())+
+	QString().sprintf("STOP_GPO_LINE=%d",q->value(13).toInt());
       q1=new RDSqlQuery(sql);
       delete q1;
     }
