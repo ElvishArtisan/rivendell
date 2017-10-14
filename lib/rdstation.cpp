@@ -754,7 +754,20 @@ bool RDStation::create(const QString &name,QString *err_msg,
       "FILTER_MODE,"+         // 07
       "SYSTEM_MAINT,"+        // 08
       "HTTP_STATION,"+        // 09
-      "CAE_STATION "+         // 10
+      "CAE_STATION,"+         // 10
+      "BACKUP_DIR,"+          // 11
+      "BACKUP_LIFE,"+         // 12
+      "START_JACK,"+          // 13
+      "JACK_SERVER_NAME,"+    // 14
+      "JACK_COMMAND_LINE,"+   // 15
+      "CUE_CARD,"+            // 16
+      "CUE_PORT,"+            // 17
+      "CUE_START_CART,"+      // 18
+      "CUE_STOP_CART,"+       // 19
+      "CARTSLOT_COLUMNS,"+    // 20
+      "CARTSLOT_ROWS,"+       // 21
+      "ENABLE_DRAGDROP,"+     // 22
+      "ENFORCE_PANEL_SETUP "+ // 23
       "from STATIONS where "+
       "NAME=\""+RDEscapeString(exemplar)+"\"";
     q=new RDSqlQuery(sql);
@@ -774,7 +787,20 @@ bool RDStation::create(const QString &name,QString *err_msg,
 	QString().sprintf("FILTER_MODE=%d,",q->value(7).toInt())+
 	"SYSTEM_MAINT=\""+RDEscapeString(q->value(8).toString())+"\","+
 	"HTTP_STATION=\""+RDEscapeString(q->value(9).toString())+"\","+
-	"CAE_STATION=\""+RDEscapeString(q->value(10).toString())+"\"";
+	"CAE_STATION=\""+RDEscapeString(q->value(10).toString())+"\","+
+	"BACKUP_DIR=\""+RDEscapeString(q->value(11).toString())+"\","+
+	QString().sprintf("BACKUP_LIFE=%d,",q->value(12).toInt())+
+	"START_JACK=\""+RDEscapeString(q->value(13).toString())+"\","+
+	"JACK_SERVER_NAME=\""+RDEscapeString(q->value(14).toString())+"\","+
+	"JACK_COMMAND_LINE=\""+RDEscapeString(q->value(15).toString())+"\","+
+	QString().sprintf("CUE_CARD=%d,",q->value(16).toInt())+
+	QString().sprintf("CUE_PORT=%d,",q->value(17).toInt())+
+	QString().sprintf("CUE_START_CART=%u,",q->value(18).toInt())+
+	QString().sprintf("CUE_STOP_CART=%u,",q->value(19).toInt())+
+	QString().sprintf("CARTSLOT_COLUMNS=%d,",q->value(20).toInt())+
+	QString().sprintf("CARTSLOT_ROWS=%d,",q->value(21).toInt())+
+	"ENABLE_DRAGDROP=\""+RDEscapeString(q->value(22).toString())+"\","+
+	"ENFORCE_PANEL_SETUP=\""+RDEscapeString(q->value(23).toString())+"\"";
       q1=new RDSqlQuery(sql);
       if(!q1->isActive()) {
 	*err_msg=QObject::tr("host already exists");
@@ -1525,6 +1551,47 @@ bool RDStation::create(const QString &name,QString *err_msg,
       delete q1;
     }
     delete q;
+
+    //
+    // Clone CARTSLOTS
+    //
+    sql=QString("select ")+
+      "SLOT_NUMBER,"+          // 00
+      "MODE,"+                 // 01
+      "DEFAULT_MODE,"+         // 02
+      "STOP_ACTION,"+          // 03
+      "DEFAULT_STOP_ACTION,"+  // 04
+      "CART_NUMBER,"+          // 05
+      "DEFAULT_CART_NUMBER,"+  // 06
+      "HOOK_MODE,"+            // 07
+      "DEFAULT_HOOK_MODE,"+    // 08
+      "SERVICE_NAME,"+         // 09
+      "CARD,"+                 // 10
+      "INPUT_PORT,"+           // 11
+      "OUTPUT_PORT "+          // 12
+      "from CARTSLOTS where "+
+      "STATION_NAME=\""+RDEscapeString(exemplar)+"\"";
+    q=new RDSqlQuery(sql);
+    while(q->next()) {
+      sql=QString("insert into CARTSLOTS set ")+
+	"STATION_NAME=\""+RDEscapeString(name)+"\","+
+	QString().sprintf("SLOT_NUMBER=%u,",q->value(0).toUInt())+
+	QString().sprintf("MODE=%d,",q->value(1).toInt())+
+	QString().sprintf("DEFAULT_MODE=%d,",q->value(2).toInt())+
+	QString().sprintf("STOP_ACTION=%d,",q->value(3).toInt())+
+	QString().sprintf("DEFAULT_STOP_ACTION=%d,",q->value(4).toInt())+
+	QString().sprintf("CART_NUMBER=%d,",q->value(5).toInt())+
+	QString().sprintf("DEFAULT_CART_NUMBER=%d,",q->value(6).toInt())+
+	QString().sprintf("HOOK_MODE=%d,",q->value(7).toInt())+
+	QString().sprintf("DEFAULT_HOOK_MODE=%d,",q->value(8).toInt())+
+	"SERVICE_NAME=\""+RDEscapeString(q->value(9).toString())+"\","+
+	QString().sprintf("CARD=%d,",q->value(10).toInt())+
+	QString().sprintf("INPUT_PORT=%d,",q->value(11).toInt())+
+	QString().sprintf("OUTPUT_PORT=%d",q->value(12).toInt());
+      q1=new RDSqlQuery(sql);
+      delete q1;
+    }
+    delete q;
   }
   return true;
 }
@@ -1663,6 +1730,11 @@ void RDStation::remove(const QString &name)
   delete q;
 
   sql=QString("delete from NOWNEXT_PLUGINS where ")+
+    "STATION_NAME=\""+RDEscapeString(name)+"\"";
+  q=new RDSqlQuery(sql);
+  delete q;
+
+  sql=QString("delete from CARTSLOTS where ")+
     "STATION_NAME=\""+RDEscapeString(name)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
