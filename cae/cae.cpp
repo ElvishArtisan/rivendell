@@ -591,7 +591,7 @@ void MainObject::InitProvisioning() const
 	"NAME=\""+RDEscapeString(rd_config->stationName())+"\"";
       q=new RDSqlQuery(sql);
       if(!q->first()) {
-	if(RDStation::create(rd_config->stationName(),&err_msg,rd_config->provisioningHostTemplate())) {
+	if(RDStation::create(rd_config->stationName(),&err_msg,rd_config->provisioningHostTemplate(),rd_config->provisioningHostIpAddress())) {
 	  syslog(LOG_INFO,"created new host entry \"%s\"",
 		 (const char *)rd_config->stationName());
 	}

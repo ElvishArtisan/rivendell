@@ -664,15 +664,21 @@ void RDStation::setCardOutputs(int cardnum,int outputs) const
 
 
 bool RDStation::create(const QString &name,QString *err_msg,
-		       const QString &exemplar)
+		       const QString &exemplar,const QHostAddress &hostaddr)
 {
   QString sql;
   RDSqlQuery *q;
   RDSqlQuery *q1;
+  QHostAddress addr=hostaddr;
+
+  if(addr.isNull()) {
+    addr.setAddress("127.0.0.1");
+  }
 
   if(exemplar.isEmpty()) {  // Create Blank Host Config
     sql=QString("insert into STATIONS set ")+
       "NAME=\""+RDEscapeString(name)+"\","+
+      "IPV4_ADDRESS=\""+RDEscapeString(addr.toString())+"\","+
       "DESCRIPTION=\"Workstation "+RDEscapeString(name)+"\","+
       "USER_NAME=\"user\","+
       "DEFAULT_NAME=\"user\"";
@@ -755,6 +761,7 @@ bool RDStation::create(const QString &name,QString *err_msg,
     if(q->first()) {
       sql=QString("insert into STATIONS set ")+
 	"NAME=\""+RDEscapeString(name)+"\","+
+	"IPV4_ADDRESS=\""+RDEscapeString(addr.toString())+"\","+
 	"DESCRIPTION=\""+RDEscapeString("Workstation "+name)+"\","+
 	"USER_NAME=\""+RDEscapeString(q->value(0).toString())+"\","+
 	"DEFAULT_NAME=\""+RDEscapeString(q->value(0).toString())+"\","+

@@ -36,9 +36,12 @@ XportHostname=
 [Provisioning]
 ; If CreateHost=Yes, a Host entry will be automatically created in the DB
 ; when the 'rivendell' system service is started, using the Host definition
-; specified in NewHostTemplate= as the template.
+; specified in NewHostTemplate= as the template. The new host entry will be
+; assigned the IP address bound to the network interface specified by
+; NewHostIpAddress= ('lo' by default).
 CreateHost=No
 NewHostTemplate=some_host_entry
+NewHostIpAddress=lo
 
 ; If CreateService=Yes, a Service entry will be automatically created in the DB
 ; when the 'rivendell' system service is started, using the Service definition

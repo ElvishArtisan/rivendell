@@ -2,7 +2,7 @@
 //
 // A container class for a Rivendell Base Configuration
 //
-//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2004,2016-2017 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -28,6 +28,7 @@
 
 #include <vector>
 
+#include <qhostaddress.h>
 #include <qstring.h>
 
 #include <rd.h>
@@ -67,6 +68,7 @@ class RDConfig
   void log(const QString &module,LogPriority prio,const QString &msg);
   bool provisioningCreateHost() const;
   QString provisioningHostTemplate() const;
+  QHostAddress provisioningHostIpAddress() const;
   bool provisioningCreateService() const;
   QString provisioningServiceTemplate() const;
   int alsaPeriodQuantity() const;
@@ -127,6 +129,7 @@ class RDConfig
   QString conf_log_pattern;
   bool conf_provisioning_create_host;
   QString conf_provisioning_host_template;
+  QHostAddress conf_provisioning_host_ip_address;
   bool conf_provisioning_create_service;
   QString conf_provisioning_service_template;
   bool conf_log_xload_debug_data;

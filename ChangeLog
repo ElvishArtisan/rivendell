@@ -16099,3 +16099,6 @@
 2017-10-14 Fred Gleason <fredg@paravelsystems.com>
 	* Implemented resolution of date wildcards for the RLM 'Path' and
 	'Argument' parameters.
+2017-10-14 Fred Gleason <fredg@paravelsystems.com>
+	* Implemented a 'NewHostIpAddress=' parameter in the [Provisioning]
+	section of rd.conf(5).

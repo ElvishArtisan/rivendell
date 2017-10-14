@@ -132,7 +132,8 @@ class RDStation
   int cardOutputs(int cardnum) const;
   void setCardOutputs(int cardnum,int outputs) const;
   static bool create(const QString &name,QString *err_msg,
-		     const QString &exemplar="");
+		     const QString &exemplar="",
+		     const QHostAddress &hostaddr=QHostAddress());
   static void remove(const QString &name);
 
  private:

@@ -23,6 +23,10 @@
 #include <sys/stat.h>
 #include <pwd.h>
 #include <grp.h>
+#include <unistd.h>
+#include <arpa/inet.h>
+#include <net/if.h>
+#include <sys/ioctl.h>
 #endif  // WIN32
 
 #include <qmessagebox.h>
@@ -261,6 +265,12 @@ QString RDConfig::provisioningHostTemplate() const
 }
 
 
+QHostAddress RDConfig::provisioningHostIpAddress() const
+{
+  return conf_provisioning_host_ip_address;
+}
+
+
 bool RDConfig::provisioningCreateService() const
 {
   return conf_provisioning_create_service;
@@ -450,6 +460,7 @@ void RDConfig::load()
   char sname[256];
   QString client;
   QString facility;
+  QString iface;
 #ifndef WIN32
   struct passwd *user;
   struct group *groups;
@@ -489,6 +500,7 @@ void RDConfig::load()
     profile->boolValue("Provisioning","CreateHost");
   conf_provisioning_host_template=
     profile->stringValue("Provisioning","NewHostTemplate");
+  iface=profile->stringValue("Provisioning","NewHostIpAddress","lo");
   conf_provisioning_create_service=
     profile->boolValue("Provisioning","CreateService");
   conf_provisioning_service_template=
@@ -566,6 +578,33 @@ void RDConfig::load()
     conf_destinations.push_back(dest);
   }
   delete profile;
+
+  //
+  // Resolve Interface Address
+  //
+  int sock=-1;
+
+  if((sock=socket(PF_INET,SOCK_DGRAM,IPPROTO_IP))<0) {
+    return;
+  }
+#ifndef WIN32
+  struct ifreq ifr;
+  int index=0;
+
+  memset(&ifr,0,sizeof(ifr));
+  index=1;
+  ifr.ifr_ifindex=index;
+  while(ioctl(sock,SIOCGIFNAME,&ifr)==0) {
+    if(ifr.ifr_name==iface) {
+      if(ioctl(sock,SIOCGIFADDR,&ifr)==0) {
+	struct sockaddr_in sa=*(sockaddr_in *)(&ifr.ifr_addr);
+	conf_provisioning_host_ip_address.setAddress(ntohl(sa.sin_addr.s_addr));
+      }
+    }
+    ifr.ifr_ifindex=++index;
+  }
+  close(sock);
+#endif  // WIN32
 }
 
 
@@ -595,6 +634,7 @@ void RDConfig::clear()
   conf_log_xload_debug_data=false;
   conf_provisioning_create_host=false;
   conf_provisioning_host_template="";
+  conf_provisioning_host_ip_address.setAddress("127.0.0.2");
   conf_provisioning_create_service=false;
   conf_provisioning_service_template="";
   conf_alsa_period_quantity=RD_ALSA_DEFAULT_PERIOD_QUANTITY;
