@@ -920,7 +920,8 @@ bool RDStation::create(const QString &name,QString *err_msg,
       "REC_END_CART,"+        // 14
       "TRIM_THRESHOLD,"+      // 15
       "RIPPER_LEVEL,"+        // 16
-      "DEFAULT_TRANS_TYPE "+  // 17
+      "DEFAULT_TRANS_TYPE,"+  // 17
+      "ENABLE_SECOND_START "+ // 18
       "from RDLOGEDIT where "+
       "STATION=\""+RDEscapeString(exemplar)+"\"";
     q=new RDSqlQuery(sql);
@@ -944,7 +945,8 @@ bool RDStation::create(const QString &name,QString *err_msg,
 	QString().sprintf("REC_END_CART=%u,",q->value(14).toUInt())+
 	QString().sprintf("TRIM_THRESHOLD=%d,",q->value(15).toInt())+
 	QString().sprintf("RIPPER_LEVEL=%d,",q->value(16).toInt())+
-	QString().sprintf("DEFAULT_TRANS_TYPE=%d",q->value(17).toInt());
+	QString().sprintf("DEFAULT_TRANS_TYPE=%d,",q->value(17).toInt())+
+	"ENABLE_SECOND_START=\""+RDEscapeString(q->value(18).toString())+"\"";
       q1=new RDSqlQuery(sql);
       delete q1;
     }
