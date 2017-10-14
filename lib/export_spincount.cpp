@@ -2,7 +2,7 @@
 //
 // Export a Rivendell Spin Count Report to an ASCII Text File.
 //
-//   (C) Copyright 2015 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2015,2017 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -50,11 +50,11 @@ bool RDReport::ExportSpinCount(const QDate &startdate,const QDate &enddate,
 
 
 #ifdef WIN32
-  QString filename=
-    RDDateDecode(exportPath(RDReport::Windows),startdate,serviceName());
+  QString filename=RDDateDecode(exportPath(RDReport::Windows),startdate,
+				report_config,serviceName());
 #else
-  QString filename=
-    RDDateDecode(exportPath(RDReport::Linux),startdate,serviceName());
+  QString filename=RDDateDecode(exportPath(RDReport::Linux),startdate,
+				report_config,serviceName());
 #endif
 
   QFile file(filename);

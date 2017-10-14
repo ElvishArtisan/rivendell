@@ -34,10 +34,11 @@
 #include <rd.h>
 #include <rdtextvalidator.h>
 
-#include <edit_report.h>
-#include <test_import.h>
-#include <autofill_carts.h>
-#include <edit_svc_perms.h>
+#include "autofill_carts.h"
+#include "edit_report.h"
+#include "edit_svc_perms.h"
+#include "globals.h"
+#include "test_import.h"
 
 EditReport::EditReport(QString rptname,QWidget *parent)
   : QDialog(parent,"",true)
@@ -55,7 +56,7 @@ EditReport::EditReport(QString rptname,QWidget *parent)
   setMinimumHeight(sizeHint().height());
   setMaximumHeight(sizeHint().height());
 
-  edit_report=new RDReport(rptname);
+  edit_report=new RDReport(rptname,admin_config);
   str=QString(tr("Edit Report"));
   setCaption(QString().sprintf("%s - %s",(const char *)str,
 			       (const char *)rptname));

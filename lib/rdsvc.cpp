@@ -34,10 +34,11 @@
 //
 // Global Classes
 //
-RDSvc::RDSvc(QString svcname,QObject *parent)
+RDSvc::RDSvc(QString svcname,RDConfig *config,QObject *parent)
   : QObject(parent)
 {
   svc_name=svcname;
+  svc_config=config;
 }
 
 
@@ -337,7 +338,7 @@ QString RDSvc::importFilename(ImportSource src,const QDate &date) const
   QString ret;
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
-    ret=RDDateDecode(q->value(0).toString(),date);
+    ret=RDDateDecode(q->value(0).toString(),date,svc_config,svc_name);
   }
   delete q;
   return ret;
@@ -417,7 +418,8 @@ bool RDSvc::import(ImportSource src,const QDate &date,const QString &break_str,
   //
   // Open Source File
   //
-  if((infile=fopen(RDDateDecode(infilename,date),"r"))==NULL) {
+  if((infile=fopen(RDDateDecode(infilename,date,svc_config,svc_name),"r"))==
+     NULL) {
     return false;
   }
 
@@ -425,7 +427,7 @@ bool RDSvc::import(ImportSource src,const QDate &date,const QString &break_str,
   // Run Preimport Command
   //
   if(!preimport_cmd.isEmpty()) {
-    system(RDDateDecode(preimport_cmd,date));
+    system(RDDateDecode(preimport_cmd,date,svc_config,svc_name));
   }
 
   QString parser_table;
@@ -733,7 +735,7 @@ bool RDSvc::generateLog(const QDate &date,const QString &logname,
                            MODIFIED_DATETIME=now(),START_DATE=null,\
                            END_DATE=null,NEXT_ID=0",
 			  (const char *)RDEscapeString(svc_name),
-			  (const char *)RDEscapeString(RDDateDecode(descriptionTemplate(),date)),
+			  (const char *)RDEscapeString(RDDateDecode(descriptionTemplate(),date,svc_config,svc_name)),
 			  "RDLogManager");
     if(!purge_date.isValid()) {
       sql+=(",PURGE_DATE=\""+purge_date.toString("yyyy-MM-dd")+"\"");
@@ -755,7 +757,7 @@ bool RDSvc::generateLog(const QDate &date,const QString &logname,
                            PURGE_DATE=%s",
 			  (const char *)RDEscapeString(logname),
 			  (const char *)RDEscapeString(svc_name),
-			  (const char *)RDEscapeString(RDDateDecode(descriptionTemplate(),date)),
+			  (const char *)RDEscapeString(RDDateDecode(descriptionTemplate(),date,svc_config,svc_name)),
 			  "RDLogManager",
 			  (const char *)RDCheckDateTime(purge_date,"yyyy-MM-dd"));
     q=new RDSqlQuery(sql);

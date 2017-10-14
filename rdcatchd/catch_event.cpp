@@ -22,8 +22,9 @@
 
 #include <catch_event.h>
 
-CatchEvent::CatchEvent()
+CatchEvent::CatchEvent(RDConfig *config)
 {
+  catch_config=config;
   clear();
 }
 
@@ -661,7 +662,7 @@ void CatchEvent::resolveUrl(int time_offset)
   }
   setResolvedUrl(RDDateTimeDecode(url(),
 				  QDateTime(date.addDays(eventdateOffset()),
-					    current_time)));
+					    current_time),catch_config));
 }
 
 

@@ -34,6 +34,7 @@ MainObject::MainObject(QObject *parent)
 {
   QString date="";
   QString datetime="";
+  QString service="";
 
   //
   // Read Command Options
@@ -48,6 +49,10 @@ MainObject::MainObject(QObject *parent)
     }
     if(cmd->key(i)=="--datetime") {
       datetime=cmd->value(i);
+      cmd->setProcessed(i,true);
+    }
+    if(cmd->key(i)=="--service") {
+      service=cmd->value(i);
       cmd->setProcessed(i,true);
     }
     if(!cmd->processed(i)) {
@@ -68,14 +73,22 @@ MainObject::MainObject(QObject *parent)
   }
 
   //
+  // Open Config
+  //
+  RDConfig *config=new RDConfig();
+  config->load();
+
+  //
   // Process Code
   //
   if(!date.isEmpty()) {
     printf("%s\n",
-	   (const char *)RDDateDecode(date,QDate::currentDate()));
+	   (const char *)RDDateDecode(date,QDate::currentDate(),config,
+				      service));
   }
   if(!datetime.isEmpty()) {
-    printf("%s\n",(const char *)RDDateTimeDecode(datetime,QDateTime(QDate::currentDate(),QTime::currentTime())));
+    printf("%s\n",(const char *)RDDateTimeDecode(datetime,
+	  QDateTime(QDate::currentDate(),QTime::currentTime()),config,service));
   }
   exit(0);
 }

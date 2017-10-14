@@ -23,9 +23,12 @@
 
 #include <qdatetime.h>
 
-QString RDDateDecode(QString str,const QDate &date,const QString &svcname="");
+#include <rdconfig.h>
+
+QString RDDateDecode(QString str,const QDate &date,RDConfig *config,
+		     const QString &svcname="");
 QString RDDateTimeDecode(QString str,const QDateTime &datetime,
-			 const QString &svcname="");
+			 RDConfig *config,const QString &svcname="");
 
 
 #endif  // RDDATEDECODE

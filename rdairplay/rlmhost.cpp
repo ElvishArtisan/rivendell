@@ -85,7 +85,7 @@ void RLMHost::sendEvent(const QString &svcname,const QString &logname,
     struct rlm_pad *now=new struct rlm_pad;
     struct rlm_pad *next=new struct rlm_pad;
     memset(svc,0,sizeof(struct rlm_svc));
-    RDSvc *service=new RDSvc(svcname);
+    RDSvc *service=new RDSvc(svcname,air_config);
     if(!svcname.isEmpty()) {
       sprintf(svc->svc_name,"%s",(const char *)svcname.left(255));
       if(!service->programCode().isEmpty()) {

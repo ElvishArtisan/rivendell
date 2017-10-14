@@ -83,7 +83,7 @@ where:
 
     Q -- [unassigned]
 
-    r -- [unassigned]
+    r -- Rivendell Host Name [not FQDN]
 
     R -- [unassigned]
 

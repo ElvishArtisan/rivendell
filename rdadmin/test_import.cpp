@@ -22,15 +22,17 @@
 #include <qpainter.h>
 #include <qmessagebox.h>
 
-#include <rddatedialog.h>
-#include <rdconf.h>
-#include <rddb.h>
-#include <test_import.h>
-#include <rduser.h>
-#include <rdpasswd.h>
-#include <rddatedecode.h>
-#include <rdlistviewitem.h>
-#include <rdevent_line.h>
+#include "globals.h"
+#include "rdconf.h"
+#include "rddatedecode.h"
+#include "rddatedialog.h"
+#include "rddb.h"
+#include "rdevent_line.h"
+#include "rdlistviewitem.h"
+#include "rdpasswd.h"
+#include "rduser.h"
+
+#include "test_import.h"
 
 TestImport::TestImport(RDSvc *svc,RDSvc::ImportSource src,QWidget *parent)
   : QDialog(parent,"",true)
@@ -254,7 +256,7 @@ void TestImport::dateChangedData(const QDate &date)
 {
   test_filename_edit->
     setText(RDDateDecode(test_svc->importPath(test_src,RDSvc::Linux),date,
-			 test_svc->name()));
+			 admin_config,test_svc->name()));
 }
 
 

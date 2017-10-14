@@ -31,10 +31,12 @@
 #include <qbuttongroup.h>
 
 #include <rddb.h>
-#include <edit_svc.h>
-#include <add_svc.h>
 #include <rdpasswd.h>
 #include <rdtextvalidator.h>
+
+#include "add_svc.h"
+#include "edit_svc.h"
+#include "globals.h"
 
 AddSvc::AddSvc(QString *svcname,QWidget *parent)
   : QDialog(parent,"",true)
@@ -145,7 +147,7 @@ void AddSvc::okData()
     return;
   }
 
-  RDSvc *svc=new RDSvc(svc_name_edit->text(),this);
+  RDSvc *svc=new RDSvc(svc_name_edit->text(),admin_config,this);
   if(svc->exists()) {
     QMessageBox::warning(this,tr("Service Exists"),
 			 tr("Service Already Exists!"));

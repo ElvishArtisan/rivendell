@@ -23,7 +23,7 @@
 
 #include <qobject.h>
 
-#define DATEDECODE_TEST_USAGE "[options]\n\nTest the Rivendell date decoding routines\n\nOptions are:\n--date=<date-code>\n     Decode the <date-code> string using RDDateDecode() and print the result\n     on stdout.\n\n--datetime=<datetime-code>\n     Decode the <datetime-code> string using RDDateTimeDecode() and print\n     the result on stdout.\n\n"
+#define DATEDECODE_TEST_USAGE "[options]\n\nTest the Rivendell date decoding routines\n\nOptions are:\n--date=<date-code>\n     Decode the <date-code> string using RDDateDecode() and print the result\n     on stdout.\n\n--datetime=<datetime-code>\n     Decode the <datetime-code> string using RDDateTimeDecode() and print\n     the result on stdout.\n\n--service=<svc-name>\n     Service name to use.\n\n"
 
 class MainObject : public QObject
 {

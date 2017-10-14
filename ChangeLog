@@ -16094,3 +16094,5 @@
 	methods.
 	* Added a 'Set End Date/Time' control to the 'Edit Group' dialog in
 	RDAdmin(1).
+2017-10-14 Fred Gleason <fredg@paravelsystems.com>
+	* Implemented a '%r' wildcard for Rivendell Host Name.

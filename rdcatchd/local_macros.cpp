@@ -39,7 +39,7 @@ void MainObject::RunLocalMacros(RDMacro *rml)
   QDateTime dt;
   RDUser *user;
   bool ok=false;
-  CatchEvent e;
+  CatchEvent e(RDConfiguration());
   unsigned event_ptr=0;
   QString sql;
   RDSqlQuery *q;

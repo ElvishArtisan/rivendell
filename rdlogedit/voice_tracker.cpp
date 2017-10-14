@@ -214,7 +214,7 @@ VoiceTracker::VoiceTracker(const QString &logname,QString *import_path,
   // Voicetrack Group
   //
   RDLog *log=new RDLog(logname);
-  RDSvc *svc=new RDSvc(log->service());
+  RDSvc *svc=new RDSvc(log->service(),log_config);
   track_group=new RDGroup(svc->trackGroup());
   track_tracks=log->scheduledTracks()-log->completedTracks();
   delete svc;

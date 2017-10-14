@@ -37,10 +37,11 @@
 #include <rdidvalidator.h>
 #include <rdtextvalidator.h>
 
-#include <edit_svc.h>
-#include <test_import.h>
-#include <autofill_carts.h>
-#include <edit_svc_perms.h>
+#include "autofill_carts.h"
+#include "edit_svc.h"
+#include "globals.h"
+#include "edit_svc_perms.h"
+#include "test_import.h"
 
 EditSvc::EditSvc(QString svc,QWidget *parent)
   : QDialog(parent,"",true)
@@ -58,7 +59,7 @@ EditSvc::EditSvc(QString svc,QWidget *parent)
   setMinimumHeight(sizeHint().height());
   setMaximumHeight(sizeHint().height());
 
-  svc_svc=new RDSvc(svc);
+  svc_svc=new RDSvc(svc,admin_config);
 
   setCaption(tr("Edit Service"));
 

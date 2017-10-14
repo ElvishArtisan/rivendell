@@ -30,9 +30,10 @@
 #include <qbuttongroup.h>
 #include <rddb.h>
 
-#include <list_svcs.h>
-#include <edit_svc.h>
-#include <add_svc.h>
+#include "add_svc.h"
+#include "edit_svc.h"
+#include "globals.h"
+#include "list_svcs.h"
 
 ListSvcs::ListSvcs(QWidget *parent)
   : QDialog(parent,"",true)
@@ -184,7 +185,7 @@ void ListSvcs::deleteData()
     }
   }
   delete q;
-  RDSvc *svc=new RDSvc(list_box->currentText());
+  RDSvc *svc=new RDSvc(list_box->currentText(),admin_config);
   svc->remove();
   delete svc;
   list_box->removeItem(list_box->currentItem());

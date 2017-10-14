@@ -2588,7 +2588,7 @@ bool InitDb(QString name,QString pwd,QString station_name)
   //
   // Create Default Service
   //
-  RDSvc *svc=new RDSvc(RD_SERVICE_NAME);
+  RDSvc *svc=new RDSvc(RD_SERVICE_NAME,admin_config);
   svc->create("");
   svc->setDescription(RD_SERVICE_DESCRIPTION);
   delete svc;

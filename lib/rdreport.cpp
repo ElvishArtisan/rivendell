@@ -32,9 +32,10 @@
 #include <rdescape_string.h>
 #include <rddatedecode.h>
 
-RDReport::RDReport(const QString &rptname,QObject *parent)
+RDReport::RDReport(const QString &rptname,RDConfig *config,QObject *parent)
 {
   report_name=rptname;
+  report_config=config;
   report_error_code=RDReport::ErrorOk;
 }
 
@@ -311,9 +312,11 @@ bool RDReport::outputExists(const QDate &startdate)
 {
   QString out_path;
 #ifdef WIN32
-  out_path=RDDateDecode(exportPath(RDReport::Windows),startdate);
+  out_path=RDDateDecode(exportPath(RDReport::Windows),startdate,report_config,
+			serviceName());
 #else
-  out_path=RDDateDecode(exportPath(RDReport::Linux),startdate);
+  out_path=RDDateDecode(exportPath(RDReport::Linux),startdate,report_config,
+			serviceName());
 #endif
   return QFile::exists(out_path);
 }
@@ -448,7 +451,7 @@ bool RDReport::generateReport(const QDate &startdate,const QDate &enddate,
 			(const char *)name());
   q=new RDSqlQuery(sql);
   while(q->next()) {
-    svc=new RDSvc(q->value(0).toString());
+    svc=new RDSvc(q->value(0).toString(),report_config);
     if(svc->exists()) {
       rec_name=q->value(0).toString();
       rec_name.replace(" ","_");
@@ -672,10 +675,13 @@ bool RDReport::generateReport(const QDate &startdate,const QDate &enddate,
   }
 #ifdef WIN32
   *out_path=RDDateDecode(exportPath(RDReport::Windows),startdate);
-  QString post_cmd=RDDateDecode(postExportCommand(RDReport::Windows),startdate);
+  QString post_cmd=RDDateDecode(postExportCommand(RDReport::Windows),startdate,
+				report_config,serviceName());
 #else
-  *out_path=RDDateDecode(exportPath(RDReport::Linux),startdate);
-  QString post_cmd=RDDateDecode(postExportCommand(RDReport::Linux),startdate);
+  *out_path=RDDateDecode(exportPath(RDReport::Linux),startdate,report_config,
+			 serviceName());
+  QString post_cmd=RDDateDecode(postExportCommand(RDReport::Linux),startdate,
+				report_config,serviceName());
 #endif
   system(post_cmd);
   //  printf("MIXDOWN TABLE: %s_SRT\n",(const char *)mixname);

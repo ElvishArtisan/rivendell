@@ -22,7 +22,8 @@
 
 #include <rddatedecode.h>
 
-QString RDDateDecode(QString str,const QDate &date,const QString &svcname)
+QString RDDateDecode(QString str,const QDate &date,RDConfig *config,
+		     const QString &svcname)
 {
   QString string;
   int yearnum;
@@ -117,6 +118,10 @@ QString RDDateDecode(QString str,const QDate &date,const QString &svcname)
 	field=QString().sprintf("%02d",date.month());
 	break;
 
+      case 'r':   // Rivendell Host Name
+	field=config->stationName();
+	break;
+
       case 's':   // Service name
 	if(!svcname.isEmpty()) {
 	  field=svcname;
@@ -171,7 +176,7 @@ QString RDDateDecode(QString str,const QDate &date,const QString &svcname)
 
 
 QString RDDateTimeDecode(QString str,const QDateTime &datetime,
-			 const QString &svcname)
+			 RDConfig *config,const QString &svcname)
 {
   QString string;
   int yearnum;
@@ -294,6 +299,10 @@ QString RDDateTimeDecode(QString str,const QDateTime &datetime,
 	field=datetime.time().toString("ap");
 	break;
 	    
+      case 'r':   // Rivendell Host Name
+	field=config->stationName();
+	break;
+
       case 'S':   // Second (SS)
 	field=QString().sprintf("%02d",datetime.time().second());
 	break;

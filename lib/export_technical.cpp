@@ -2,7 +2,7 @@
 //
 // Export a Rivendell Technical Report to an ASCII Text File.
 //
-//   (C) Copyright 2002-2006,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2006,2016-2017 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -44,11 +44,11 @@ bool RDReport::ExportTechnical(const QDate &startdate,const QDate &enddate,
   char eol[3]="\n";
 
 #ifdef WIN32
-  QString filename=
-    RDDateDecode(exportPath(RDReport::Windows),startdate,serviceName());
+  QString filename=RDDateDecode(exportPath(RDReport::Windows),startdate,
+				report_config,serviceName());
 #else
-  QString filename=
-    RDDateDecode(exportPath(RDReport::Linux),startdate,serviceName());
+  QString filename=RDDateDecode(exportPath(RDReport::Linux),startdate,
+				report_config,serviceName());
   if(incl_crs) {
     strcpy(eol,"\r\n");
   }

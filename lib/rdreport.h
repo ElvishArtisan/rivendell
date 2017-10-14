@@ -2,7 +2,7 @@
 //
 // Abstract a Rivendell Report Descriptor
 //
-//   (C) Copyright 2002-2006,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2006,2017 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -24,9 +24,10 @@
 #include <qobject.h>
 #include <qsqldatabase.h>
 
+#include <rdconfig.h>
+#include <rdlog_line.h>
 #include <rdstation.h>
 #include <rdsvc.h>
-#include <rdlog_line.h>
 
 class RDReport
 {
@@ -41,7 +42,7 @@ class RDReport
   enum ExportType {Generic=0,Traffic=1,Music=2};
   enum StationType {TypeOther=0,TypeAm=1,TypeFm=2,TypeLast=3};
   enum ErrorCode {ErrorOk=0,ErrorCanceled=1,ErrorCantOpen=2};
-  RDReport(const QString &rptname,QObject *parent=0);
+  RDReport(const QString &rptname,RDConfig *config,QObject *parent=0);
   QString name() const;
   bool exists() const;
   QString description() const;
@@ -127,6 +128,7 @@ class RDReport
   QString OsFieldName(ExportOs os) const;
   QString TypeFieldName(ExportType type,bool forced) const;
   QString report_name;
+  RDConfig *report_config;
   RDReport::ErrorCode report_error_code;
 };
 

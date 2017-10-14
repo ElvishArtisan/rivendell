@@ -52,7 +52,7 @@ void Xport::AddLog()
   if(!xport_post->getValue("SERVICE_NAME",&service_name)) {
     XmlExit("Missing SERVICE_NAME",400,"logs.cpp",LINE_NUMBER);
   }
-  RDSvc *svc=new RDSvc(service_name);
+  RDSvc *svc=new RDSvc(service_name,xport_config);
   if(!svc->exists()) {
     XmlExit("No such service",404,"logs.cpp",LINE_NUMBER);
   }
