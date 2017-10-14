@@ -1090,7 +1090,7 @@ bool RDStation::create(const QString &name,QString *err_msg,
     delete q;
 
     //
-    // RDAirPlay Log Modes
+    // Clone RDAirPlay Log Modes
     //
     sql=QString("select ")+
       "MACHINE,"+     // 00
@@ -1504,6 +1504,27 @@ bool RDStation::create(const QString &name,QString *err_msg,
       delete q1;
     }
     delete q;
+
+    //
+    // Clone RLM Parameters
+    //
+    sql=QString("select ")+
+      "LOG_MACHINE,"+  // 00
+      "PLUGIN_PATH,"+  // 01
+      "PLUGIN_ARG "+   // 02
+      "from NOWNEXT_PLUGINS where "+
+      "STATION_NAME=\""+RDEscapeString(exemplar)+"\"";
+    q=new RDSqlQuery(sql);
+    while(q->next()) {
+      sql=QString("insert into NOWNEXT_PLUGINS set ")+
+	"STATION_NAME=\""+RDEscapeString(name)+"\","+
+	QString().sprintf("LOG_MACHINE=%u,",q->value(0).toUInt())+
+	"PLUGIN_PATH=\""+RDEscapeString(q->value(1).toString())+"\","+
+	"PLUGIN_ARG=\""+RDEscapeString(q->value(2).toString())+"\"";
+      q1=new RDSqlQuery(sql);
+      delete q1;
+    }
+    delete q;
   }
   return true;
 }
@@ -1637,6 +1658,11 @@ void RDStation::remove(const QString &name)
   delete q;
 
   sql=QString("delete from LOG_MODES where ")+
+    "STATION_NAME=\""+RDEscapeString(name)+"\"";
+  q=new RDSqlQuery(sql);
+  delete q;
+
+  sql=QString("delete from NOWNEXT_PLUGINS where ")+
     "STATION_NAME=\""+RDEscapeString(name)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
