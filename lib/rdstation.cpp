@@ -960,30 +960,38 @@ bool RDStation::create(const QString &name,QString *err_msg,
       "CARD_NUMBER,"+         // 01
       "PORT_NUMBER,"+         // 02
       "MON_PORT_NUMBER,"+     // 03
-      "PORT_TYPE,"+           // 04
-      "DEFAULT_FORMAT,"+      // 05
-      "DEFAULT_CHANNELS,"+    // 06
-      "DEFAULT_SAMPRATE,"+    // 07
-      "DEFAULT_BITRATE,"+     // 08
-      "DEFAULT_THRESHOLD,"+   // 09
-      "DEFAULT_MONITOR_ON "+  // 10
+      "DEFAULT_MONITOR_ON,"+  // 04
+      "PORT_TYPE,"+           // 05
+      "DEFAULT_FORMAT,"+      // 06
+      "DEFAULT_CHANNELS,"+    // 07
+      "DEFAULT_SAMPRATE,"+    // 08
+      "DEFAULT_BITRATE,"+     // 09
+      "DEFAULT_THRESHOLD,"+   // 10
+      "SWITCH_STATION,"+      // 11
+      "SWITCH_MATRIX,"+       // 12
+      "SWITCH_OUTPUT,"+       // 13
+      "SWITCH_DELAY "+        // 14
       "from DECKS where "+
       "STATION_NAME=\""+RDEscapeString(exemplar)+"\"";
     q=new RDSqlQuery(sql);
-    if(q->first()) {
+    while(q->next()) {
       sql=QString("insert into DECKS set ")+
 	QString().sprintf("CHANNEL=%u,",q->value(0).toUInt())+
 	QString().sprintf("CARD_NUMBER=%d,",q->value(1).toInt())+
 	QString().sprintf("PORT_NUMBER=%d,",q->value(2).toInt())+
 	QString().sprintf("MON_PORT_NUMBER=%d,",q->value(3).toInt())+
-	"PORT_TYPE=\""+RDEscapeString(q->value(4).toString())+"\","+
-	QString().sprintf("DEFAULT_FORMAT=%d,",q->value(5).toInt())+
-	QString().sprintf("DEFAULT_CHANNELS=%d,",q->value(6).toInt())+
-	QString().sprintf("DEFAULT_SAMPRATE=%d,",q->value(7).toInt())+
-	QString().sprintf("DEFAULT_BITRATE=%d,",q->value(8).toInt())+
-	QString().sprintf("DEFAULT_THRESHOLD=%d,",q->value(9).toInt())+
-	"STATION_NAME=\""+RDEscapeString(name)+"\","+
-	"DEFAULT_MONITOR_ON=\""+RDEscapeString(q->value(10).toString())+"\"";
+	"DEFAULT_MONITOR_ON=\""+RDEscapeString(q->value(4).toString())+"\","+
+	"PORT_TYPE=\""+RDEscapeString(q->value(5).toString())+"\","+
+	QString().sprintf("DEFAULT_FORMAT=%d,",q->value(6).toInt())+
+	QString().sprintf("DEFAULT_CHANNELS=%d,",q->value(7).toInt())+
+	QString().sprintf("DEFAULT_SAMPRATE=%d,",q->value(8).toInt())+
+	QString().sprintf("DEFAULT_BITRATE=%d,",q->value(9).toInt())+
+	QString().sprintf("DEFAULT_THRESHOLD=%d,",q->value(10).toInt())+
+	"SWITCH_STATION=\""+RDEscapeString(q->value(11).toString())+"\","+
+	QString().sprintf("SWITCH_MATRIX=%d,",q->value(12).toInt())+
+	QString().sprintf("SWITCH_OUTPUT=%d,",q->value(13).toInt())+
+	QString().sprintf("SWITCH_DELAY=%d,",q->value(14).toInt())+
+	"STATION_NAME=\""+RDEscapeString(name)+"\"";
       q1=new RDSqlQuery(sql);
       delete q1;
     }
