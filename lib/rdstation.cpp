@@ -856,7 +856,12 @@ bool RDStation::create(const QString &name,QString *err_msg,
       "RIPPER_DEVICE,"+        // 16
       "PARANOIA_LEVEL,"+       // 17
       "RIPPER_LEVEL,"+         // 18
-      "CDDB_SERVER "+          // 19
+      "CDDB_SERVER,"+          // 19
+      "READ_ISRC,"+            // 20
+      "ENABLE_EDITOR,"+        // 21
+      "SRC_CONVERTER,"+        // 22
+      "LIMIT_SEARCH,"+         // 23
+      "SEARCH_LIMITED "+       // 24
       "from RDLIBRARY where "+
       "(STATION=\""+RDEscapeString(exemplar)+"\")&&"+
       "(INSTANCE=0)";
@@ -883,6 +888,11 @@ bool RDStation::create(const QString &name,QString *err_msg,
 	QString().sprintf("PARANOIA_LEVEL=%d,",q->value(17).toInt())+
 	QString().sprintf("RIPPER_LEVEL=%d,",q->value(18).toInt())+
 	"CDDB_SERVER=\""+RDEscapeString(q->value(19).toString())+"\","+
+	"READ_ISRC=\""+RDEscapeString(q->value(20).toString())+"\","+
+	"ENABLE_EDITOR=\""+RDEscapeString(q->value(21).toString())+"\","+
+	QString().sprintf("SRC_CONVERTER=%d,",q->value(22).toInt())+
+	QString().sprintf("LIMIT_SEARCH=%d,",q->value(23).toInt())+
+	"SEARCH_LIMITED=\""+RDEscapeString(q->value(24).toString())+"\","+
 	"STATION=\""+RDEscapeString(name)+"\"";
       q1=new RDSqlQuery(sql);
       delete q1;

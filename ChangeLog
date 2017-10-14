@@ -16114,3 +16114,6 @@
 2017-10-14 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in RDStation that caused matrix parameters to
 	fail to be copied as part of the profile of a new host.
+2017-10-14 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in RDStation that caused RDLibrary parameters to
+	fail to be copied as part of the profile of a new host.
