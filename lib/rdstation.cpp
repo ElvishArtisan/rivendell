@@ -1183,8 +1183,10 @@ bool RDStation::create(const QString &name,QString *err_msg,
       "USER_PANELS,"+            // 01
       "CLEAR_FILTER,"+           // 02
       "FLASH_PANEL,"+            // 03
-      "DEFAULT_SERVICE,"+        // 04
-      "BUTTON_LABEL_TEMPLATE "+  // 05
+      "PANEL_PAUSE_ENABLED,"+    // 04
+      "BUTTON_LABEL_TEMPLATE,"+  // 05
+      "DEFAULT_SERVICE,"+        // 06
+      "SKIN_PATH "+              // 07
       "from RDPANEL where "+
       "STATION=\""+RDEscapeString(exemplar)+"\"";
     q=new RDSqlQuery(sql);
@@ -1194,9 +1196,11 @@ bool RDStation::create(const QString &name,QString *err_msg,
 	QString().sprintf("USER_PANELS=%d,",q->value(1).toInt())+
 	"CLEAR_FILTER=\""+RDEscapeString(q->value(2).toString())+"\","+
 	"FLASH_PANEL=\""+RDEscapeString(q->value(3).toString())+"\","+
-	"STATION=\""+RDEscapeString(name)+"\","+
-	"DEFAULT_SERVICE=\""+RDEscapeString(q->value(4).toString())+"\","+
-	"BUTTON_LABEL_TEMPLATE=\""+RDEscapeString(q->value(5).toString())+"\"";
+	"PANEL_PAUSE_ENABLED=\""+RDEscapeString(q->value(4).toString())+"\","+
+	"BUTTON_LABEL_TEMPLATE=\""+RDEscapeString(q->value(5).toString())+"\","+
+	"DEFAULT_SERVICE=\""+RDEscapeString(q->value(6).toString())+"\","+
+	"SKIN_PATH=\""+RDEscapeString(q->value(7).toString())+"\","+
+	"STATION=\""+RDEscapeString(name)+"\"";
       q1=new RDSqlQuery(sql);
       delete q1;
     }
