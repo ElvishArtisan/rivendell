@@ -16096,3 +16096,6 @@
 	RDAdmin(1).
 2017-10-14 Fred Gleason <fredg@paravelsystems.com>
 	* Implemented a '%r' wildcard for Rivendell Host Name.
+2017-10-14 Fred Gleason <fredg@paravelsystems.com>
+	* Implemented resolution of date wildcards for the RLM 'Path' and
+	'Argument' parameters.

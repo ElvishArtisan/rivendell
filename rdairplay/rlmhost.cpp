@@ -2,7 +2,7 @@
 //
 // A container class for a Rivendell Loadable Module host.
 //
-//   (C) Copyright 2008,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2008,2016-2017 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -22,20 +22,21 @@
 #include <iostream>
 
 #include <rdconf.h>
-#include <rdprofile.h>
+#include <rddatedecode.h>
 #include <rdnownext.h>
+#include <rdprofile.h>
 #include <rdsvc.h>
 
-#include <globals.h>
-#include <rlmhost.h>
+#include "globals.h"
+#include "rlmhost.h"
 
 
 RLMHost::RLMHost(const QString &path,const QString &arg,
 		 QSocketDevice *udp_socket,QObject *parent)
   : QObject(parent)
 {
-  plugin_path=path;
-  plugin_arg=arg;
+  plugin_path=RDDateDecode(path,QDate::currentDate(),air_config);
+  plugin_arg=RDDateDecode(arg,QDate::currentDate(),air_config);
   plugin_udp_socket=udp_socket;
   plugin_handle=NULL;
   plugin_start_sym=NULL;
