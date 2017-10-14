@@ -1026,33 +1026,42 @@ bool RDStation::create(const QString &name,QString *err_msg,
       "TRANS_LENGTH,"+           // 01
       "OP_MODE,"+                // 02
       "START_MODE,"+             // 03
-      "PIE_COUNT_LENGTH,"+       // 04
-      "PIE_COUNT_ENDPOINT,"+     // 05
-      "CHECK_TIMESYNC,"+         // 06
-      "STATION_PANELS,"+         // 07
-      "USER_PANELS,"             // 08
-      "SHOW_AUX_1,"+             // 09
-      "SHOW_AUX_2,"+             // 10
-      "CLEAR_FILTER,"+           // 11
-      "DEFAULT_TRANS_TYPE,"+     // 12
-      "BAR_ACTION,"+             // 13
-      "FLASH_PANEL,"+            // 14
-      "PAUSE_ENABLED,"+          // 15
-      "UDP_ADDR0,"+              // 16
-      "UDP_PORT0,"+              // 17
-      "UDP_STRING0,"+            // 18
-      "UDP_ADDR1,"+              // 19
-      "UDP_PORT1,"+              // 20
-      "UDP_STRING1,"+            // 21
-      "UDP_ADDR2,"+              // 22
-      "UDP_PORT2,"+              // 23
-      "UDP_STRING2,"+            // 24
-      "DEFAULT_SERVICE,"+        // 25
-      "LOG_RML0,"+               // 26
-      "LOG_RML1,"+               // 27
-      "LOG_RML2,"+               // 28
-      "BUTTON_LABEL_TEMPLATE,"+  // 29
-      "EXIT_PASSWORD "+          // 30
+      "LOG_MODE_STYLE,"+         // 04
+      "PIE_COUNT_LENGTH,"+       // 05
+      "PIE_COUNT_ENDPOINT,"+     // 06
+      "CHECK_TIMESYNC,"+         // 07
+      "STATION_PANELS,"+         // 08
+      "USER_PANELS,"             // 09
+      "SHOW_AUX_1,"+             // 10
+      "SHOW_AUX_2,"+             // 11
+      "CLEAR_FILTER,"+           // 12
+      "DEFAULT_TRANS_TYPE,"+     // 13
+      "BAR_ACTION,"+             // 14
+      "FLASH_PANEL,"+            // 15
+      "PANEL_PAUSE_ENABLED,"+    // 16
+      "BUTTON_LABEL_TEMPLATE,"+  // 17
+      "PAUSE_ENABLED,"+          // 18
+      "DEFAULT_SERVICE,"+        // 19
+      "HOUR_SELECTOR_ENABLED,"+  // 20
+      "TITLE_TEMPLATE,"+         // 21
+      "ARTIST_TEMPLATE,"+        // 22
+      "OUTCUE_TEMPLATE,"+        // 23
+      "DESCRIPTION_TEMPLATE,"+   // 24
+      "UDP_ADDR0,"+              // 25
+      "UDP_PORT0,"+              // 26
+      "UDP_STRING0,"+            // 27
+      "LOG_RML0,"+               // 28
+      "UDP_ADDR1,"+              // 29
+      "UDP_PORT1,"+              // 30
+      "UDP_STRING1,"+            // 31
+      "LOG_RML1,"+               // 32
+      "UDP_ADDR2,"+              // 33
+      "UDP_PORT2,"+              // 34
+      "UDP_STRING2,"+            // 35
+      "LOG_RML2,"+               // 36
+      "EXIT_PASSWORD,"+          // 37
+      "SKIN_PATH,"+              // 38
+      "SHOW_COUNTERS "+          // 39
       "from RDAIRPLAY where "+
       "STATION=\""+RDEscapeString(exemplar)+"\"";
     q=new RDSqlQuery(sql);
@@ -1062,35 +1071,45 @@ bool RDStation::create(const QString &name,QString *err_msg,
 	QString().sprintf("TRANS_LENGTH=%d,",q->value(1).toInt())+
 	QString().sprintf("OP_MODE=%d,",q->value(2).toInt())+
 	QString().sprintf("START_MODE=%d,",q->value(3).toInt())+
-	QString().sprintf("PIE_COUNT_LENGTH=%d,",q->value(4).toInt())+
-	QString().sprintf("PIE_COUNT_ENDPOINT=%d,",q->value(5).toInt())+
-	"CHECK_TIMESYNC=\""+RDEscapeString(q->value(6).toString())+"\","+
-	QString().sprintf("STATION_PANELS=%d,",q->value(7).toInt())+
-	QString().sprintf("USER_PANELS=%d,",q->value(8).toInt())+
-	"SHOW_AUX_1=\""+RDEscapeString(q->value(9).toString())+"\","+
-	"SHOW_AUX_2=\""+RDEscapeString(q->value(10).toString())+"\","+
-	"CLEAR_FILTER=\""+RDEscapeString(q->value(11).toString())+"\","+
-	QString().sprintf("DEFAULT_TRANS_TYPE=%u,",q->value(12).toUInt())+
-	QString().sprintf("BAR_ACTION=%u,",q->value(13).toUInt())+
-	"FLASH_PANEL=\""+RDEscapeString(q->value(14).toString())+"\","+
-	"PAUSE_ENABLED=\""+RDEscapeString(q->value(15).toString())+"\","+
-	"UDP_ADDR0=\""+RDEscapeString(q->value(16).toString())+"\","+
-	QString().sprintf("UDP_PORT0=%u,",q->value(17).toUInt())+
-	"UDP_STRING0=\""+RDEscapeString(q->value(18).toString())+"\","+
-	"UDP_ADDR1=\""+RDEscapeString(q->value(19).toString())+"\","+
-	QString().sprintf("UDP_PORT1=%u,",q->value(20).toUInt())+
-	"UDP_STRING1=\""+RDEscapeString(q->value(21).toString())+"\","+
-	"UDP_ADDR2=\""+RDEscapeString(q->value(22).toString())+"\","+
-	QString().sprintf("UDP_PORT2=%u,",q->value(23).toUInt())+
-	"UDP_STRING2=\""+RDEscapeString(q->value(24).toString())+"\","+
-	"STATION=\""+RDEscapeString(name)+"\","+
-	"DEFAULT_SERVICE=\""+RDEscapeString(q->value(25).toString())+"\","+
-	"LOG_RML0=\""+RDEscapeString(q->value(26).toString())+"\","+
-	"LOG_RML1=\""+RDEscapeString(q->value(27).toString())+"\","+
-	"LOG_RML2=\""+RDEscapeString(q->value(28).toString())+"\","+
-	"BUTTON_LABEL_TEMPLATE=\""+RDEscapeString(q->value(29).toString())+
+	QString().sprintf("LOG_MODE_STYLE=%d,",q->value(4).toInt())+
+	QString().sprintf("PIE_COUNT_LENGTH=%d,",q->value(5).toInt())+
+	QString().sprintf("PIE_COUNT_ENDPOINT=%d,",q->value(6).toInt())+
+	"CHECK_TIMESYNC=\""+RDEscapeString(q->value(7).toString())+"\","+
+	QString().sprintf("STATION_PANELS=%d,",q->value(8).toInt())+
+	QString().sprintf("USER_PANELS=%d,",q->value(9).toInt())+
+	"SHOW_AUX_1=\""+RDEscapeString(q->value(10).toString())+"\","+
+	"SHOW_AUX_2=\""+RDEscapeString(q->value(11).toString())+"\","+
+	"CLEAR_FILTER=\""+RDEscapeString(q->value(12).toString())+"\","+
+	QString().sprintf("DEFAULT_TRANS_TYPE=%u,",q->value(13).toUInt())+
+	QString().sprintf("BAR_ACTION=%u,",q->value(14).toUInt())+
+	"FLASH_PANEL=\""+RDEscapeString(q->value(15).toString())+"\","+
+	"PANEL_PAUSE_ENABLED=\""+RDEscapeString(q->value(16).toString())+"\","+
+	"BUTTON_LABEL_TEMPLATE=\""+RDEscapeString(q->value(17).toString())+
 	"\","+
-	"EXIT_PASSWORD=\""+RDEscapeString(q->value(30).toString())+"\"";
+	"PAUSE_ENABLED=\""+RDEscapeString(q->value(18).toString())+"\","+
+	"DEFAULT_SERVICE=\""+RDEscapeString(q->value(19).toString())+"\","+
+	"HOUR_SELECTOR_ENABLED=\""+RDEscapeString(q->value(20).toString())+
+	"\","+
+	"TITLE_TEMPLATE=\""+RDEscapeString(q->value(21).toString())+"\","+
+	"ARTIST_TEMPLATE=\""+RDEscapeString(q->value(22).toString())+"\","+
+	"OUTCUE_TEMPLATE=\""+RDEscapeString(q->value(23).toString())+"\","+
+	"DESCRIPTION_TEMPLATE=\""+RDEscapeString(q->value(24).toString())+"\","+
+	"UDP_ADDR0=\""+RDEscapeString(q->value(25).toString())+"\","+
+	QString().sprintf("UDP_PORT0=%u,",q->value(26).toUInt())+
+	"UDP_STRING0=\""+RDEscapeString(q->value(27).toString())+"\","+
+	"LOG_RML0=\""+RDEscapeString(q->value(28).toString())+"\","+
+	"UDP_ADDR1=\""+RDEscapeString(q->value(29).toString())+"\","+
+	QString().sprintf("UDP_PORT1=%u,",q->value(30).toUInt())+
+	"UDP_STRING1=\""+RDEscapeString(q->value(31).toString())+"\","+
+	"LOG_RML1=\""+RDEscapeString(q->value(32).toString())+"\","+
+	"UDP_ADDR2=\""+RDEscapeString(q->value(33).toString())+"\","+
+	QString().sprintf("UDP_PORT2=%u,",q->value(34).toUInt())+
+	"UDP_STRING2=\""+RDEscapeString(q->value(35).toString())+"\","+
+	"LOG_RML2=\""+RDEscapeString(q->value(36).toString())+"\","+
+	"EXIT_PASSWORD=\""+RDEscapeString(q->value(37).toString())+"\","+
+	"SKIN_PATH=\""+RDEscapeString(q->value(38).toString())+"\","+
+	"SHOW_COUNTERS=\","+RDEscapeString(q->value(39).toString())+"\","+
+	"STATION=\""+RDEscapeString(name)+"\"";
       q1=new RDSqlQuery(sql);
       delete q1;
     }
@@ -1141,7 +1160,8 @@ bool RDStation::create(const QString &name,QString *err_msg,
     sql=QString("select ")+
       "MACHINE,"+     // 00
       "START_MODE,"+  // 01
-      "OP_MODE from LOG_MODES where "+
+      "OP_MODE "+     // 02
+      "from LOG_MODES where "+
       "STATION_NAME=\""+RDEscapeString(exemplar)+"\"";
     q=new RDSqlQuery(sql);
     while(q->next()) {
