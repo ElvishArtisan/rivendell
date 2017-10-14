@@ -1393,7 +1393,10 @@ bool RDStation::create(const QString &name,QString *err_msg,
        "FEED_NAME,"+     // 03
        "CHANNEL_MODE,"+  // 04
        "ENGINE_NUM,"+    // 05
-       "DEVICE_NUM "+    // 06
+       "DEVICE_NUM,"+    // 06
+       "NODE_HOSTNAME,"+ // 07
+       "NODE_TCP_PORT,"+ // 08
+       "NODE_SLOT "+     // 09
        "from INPUTS where "+
        "STATION_NAME=\""+RDEscapeString(exemplar)+"\"";
      q=new RDSqlQuery(sql);
@@ -1406,6 +1409,9 @@ bool RDStation::create(const QString &name,QString *err_msg,
 	 QString().sprintf("CHANNEL_MODE=%d,",q->value(4).toInt())+
 	 QString().sprintf("ENGINE_NUM=%d,",q->value(5).toInt())+
 	 QString().sprintf("DEVICE_NUM=%d,",q->value(6).toInt())+
+	 "NODE_HOSTNAME=\""+RDEscapeString(q->value(7).toString())+"\","+
+	 QString().sprintf("NODE_TCP_PORT=%d,",q->value(8).toInt())+
+	 QString().sprintf("NODE_SLOT=%d,",q->value(9).toInt())+
 	 "STATION_NAME=\""+RDEscapeString(name)+"\"";
        q1=new RDSqlQuery(sql);
        delete q1;
@@ -1416,11 +1422,14 @@ bool RDStation::create(const QString &name,QString *err_msg,
      // Clone Matrix Outputs
      //
      sql=QString("select ")+
-       "MATRIX,"+      // 00
-       "NUMBER,"+      // 01
-       "NAME,"+        // 02
-       "ENGINE_NUM,"+  // 03
-       "DEVICE_NUM "+  // 04
+       "MATRIX,"+         // 00
+       "NUMBER,"+         // 01
+       "NAME,"+           // 02
+       "ENGINE_NUM,"+     // 03
+       "DEVICE_NUM,"+     // 04
+       "NODE_HOSTNAME,"+  // 05
+       "NODE_TCP_PORT,"+  // 06
+       "NODE_SLOT "+      // 07
        "from OUTPUTS where "+
        "STATION_NAME=\""+RDEscapeString(exemplar)+"\"";
      q=new RDSqlQuery(sql);
@@ -1431,6 +1440,9 @@ bool RDStation::create(const QString &name,QString *err_msg,
 	 "NAME=\""+RDEscapeString(q->value(2).toString())+"\","+
 	 QString().sprintf("ENGINE_NUM=%d,",q->value(3).toInt())+
 	 QString().sprintf("DEVICE_NUM=%d,",q->value(4).toInt())+
+	 "NODE_HOSTNAME=\""+RDEscapeString(q->value(5).toString())+"\","+
+	 QString().sprintf("NODE_TCP_PORT=%d,",q->value(6).toInt())+
+	 QString().sprintf("NODE_SLOT=%d,",q->value(7).toInt())+
 	 "STATION_NAME=\""+RDEscapeString(name)+"\"";
       q1=new RDSqlQuery(sql);
       delete q1;
@@ -1441,9 +1453,10 @@ bool RDStation::create(const QString &name,QString *err_msg,
     // Clone GPIs
     //
     sql=QString("select ")+
-      "MATRIX,"+      // 00
-      "NUMBER,"+      // 01
-      "MACRO_CART "+  // 02
+      "MATRIX,"+          // 00
+      "NUMBER,"+          // 01
+      "MACRO_CART,"+      // 02
+      "OFF_MACRO_CART "+  // 03
       "from GPIS where "+
       "STATION_NAME=\""+RDEscapeString(exemplar)+"\"";
     q=new RDSqlQuery(sql);
@@ -1452,6 +1465,7 @@ bool RDStation::create(const QString &name,QString *err_msg,
 	QString().sprintf("MATRIX=%d,",q->value(0).toInt())+
 	QString().sprintf("NUMBER=%d,",q->value(1).toInt())+
 	QString().sprintf("MACRO_CART=%d,",q->value(2).toInt())+
+	QString().sprintf("OFF_MACRO_CART=%d,",q->value(3).toInt())+
 	"STATION_NAME=\""+RDEscapeString(name)+"\"";
       q1=new RDSqlQuery(sql);
       delete q1;
@@ -1459,17 +1473,40 @@ bool RDStation::create(const QString &name,QString *err_msg,
     delete q;
 
     //
-    // Close vGuest Settings
+    // Clone GPOs
     //
     sql=QString("select ")+
-      "MATRIX_NUM,"+
-      "VGUEST_TYPE,"+
-      "NUMBER,"+
-      "ENGINE_NUM,"+
-      "DEVICE_NUM,"+
-      "SURFACE_NUM,"+
-      "RELAY_NUM,"+
-      "BUSS_NUM "+
+      "MATRIX,"+          // 00
+      "NUMBER,"+          // 01
+      "MACRO_CART,"+      // 02
+      "OFF_MACRO_CART "+  // 03
+      "from GPOS where "+
+      "STATION_NAME=\""+RDEscapeString(exemplar)+"\"";
+    q=new RDSqlQuery(sql);
+    while(q->next()) {
+      sql=QString("insert into GPOS set ")+
+	QString().sprintf("MATRIX=%d,",q->value(0).toInt())+
+	QString().sprintf("NUMBER=%d,",q->value(1).toInt())+
+	QString().sprintf("MACRO_CART=%d,",q->value(2).toInt())+
+	QString().sprintf("OFF_MACRO_CART=%d,",q->value(3).toInt())+
+	"STATION_NAME=\""+RDEscapeString(name)+"\"";
+      q1=new RDSqlQuery(sql);
+      delete q1;
+    }
+    delete q;
+
+    //
+    // Clone vGuest Settings
+    //
+    sql=QString("select ")+
+      "MATRIX_NUM,"+    // 00
+      "VGUEST_TYPE,"+   // 01
+      "NUMBER,"+        // 02
+      "ENGINE_NUM,"+    // 03
+      "DEVICE_NUM,"+    // 04
+      "SURFACE_NUM,"+   // 05
+      "RELAY_NUM,"+     // 06
+      "BUSS_NUM "+      // 07
       "from VGUEST_RESOURCES where "+
       "STATION_NAME=\""+RDEscapeString(exemplar)+"\"";
     q=new RDSqlQuery(sql);
