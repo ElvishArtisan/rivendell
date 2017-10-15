@@ -1530,9 +1530,9 @@ bool RDStation::create(const QString &name,QString *err_msg,
     // Clone Host Variables
     //
     sql=QString("select ")+
-      "NAME,"+
-      "VARVALUE,"+
-      "REMARK "+
+      "NAME,"+      // 00
+      "VARVALUE,"+  // 01
+      "REMARK "+    // 02
       "from HOSTVARS where "+
       "STATION_NAME=\""+RDEscapeString(exemplar)+"\"";
     q=new RDSqlQuery(sql);
