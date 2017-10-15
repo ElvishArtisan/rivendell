@@ -3293,18 +3293,6 @@ Variables</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Security Model:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Host</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>User</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Include in System Maintenance Pool</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3366,6 +3354,10 @@ configured to run the CAE service in order to populate the audio resources datab
     </message>
     <message>
         <source>Stop Cart</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Short Name:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

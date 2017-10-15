@@ -77,14 +77,15 @@ int RunLogOperation(int argc,char *argv[],const QString &svcname,
 #ifndef WIN32
   rduser=new RDUser(rdstation_conf->defaultName());
 #endif  // WIN32
-  RDSvc *svc=new RDSvc(svcname,config);
+  RDSvc *svc=new RDSvc(svcname,rdstation_conf,config);
   if(!svc->exists()) {
     fprintf(stderr,"rdlogmanager: no such service\n");
     return 256;
   }
   QDate start_date=QDate::currentDate().addDays(1+start_offset);
   QString logname=
-    RDDateDecode(svc->nameTemplate(),start_date,config,svc->name());
+    RDDateDecode(svc->nameTemplate(),start_date,rdstation_conf,config,
+		 svc->name());
   RDLog *log=new RDLog(logname);
 
   //
@@ -108,9 +109,9 @@ int RunLogOperation(int argc,char *argv[],const QString &svcname,
     delete q;
     if(!svc->generateLog(start_date,
 			 RDDateDecode(svc->nameTemplate(),start_date,
-				      config,svc->name()),
+				      rdstation_conf,config,svc->name()),
 			 RDDateDecode(svc->nameTemplate(),start_date.addDays(1),
-				      config,svc->name()),
+				      rdstation_conf,config,svc->name()),
 			 &unused_report)) {
       fprintf(stderr,"rdlogmanager: unable to generate log\n");
       return 256;
@@ -235,7 +236,7 @@ int RunReportOperation(int argc,char *argv[],const QString &rptname,
   //
   // Open Report Generator
   //
-  RDReport *report=new RDReport(rptname,config);
+  RDReport *report=new RDReport(rptname,rdstation_conf,config);
   if(!report->exists()) {
     fprintf(stderr,"rdlogmanager: no such report\n");
     return 256;

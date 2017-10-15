@@ -27,11 +27,12 @@
 #include <rdconfig.h>
 #include <rddeck.h>
 #include <rdrecording.h>
+#include <rdstation.h>
 
 class CatchEvent
 {
  public:
-  CatchEvent(RDConfig *config);
+  CatchEvent(RDStation *station,RDConfig *config);
   unsigned id() const;
   void setId(int id);
   bool isActive() const;
@@ -192,6 +193,7 @@ class CatchEvent
   int catch_podcast_length;
   int catch_podcast_time;
   int catch_eventdate_offset;
+  RDStation *catch_station;
   RDConfig *catch_config;
 };
 

@@ -262,4 +262,4 @@ class MainObject : public QObject
 };
 
 
-#endif 
+#endif  // RDCATCHD_H

@@ -42,7 +42,8 @@ class RDReport
   enum ExportType {Generic=0,Traffic=1,Music=2};
   enum StationType {TypeOther=0,TypeAm=1,TypeFm=2,TypeLast=3};
   enum ErrorCode {ErrorOk=0,ErrorCanceled=1,ErrorCantOpen=2};
-  RDReport(const QString &rptname,RDConfig *config,QObject *parent=0);
+  RDReport(const QString &rptname,RDStation *station,RDConfig *config,
+	   QObject *parent=0);
   QString name() const;
   bool exists() const;
   QString description() const;
@@ -94,30 +95,31 @@ class RDReport
   static QString errorText(RDReport::ErrorCode code);
 
  private:
-  bool ExportDeltaflex(const QDate &startdate,const QDate &enddate,
+  bool ExportDeltaflex(const QString &filename,const QDate &startdate,
+		       const QDate &enddate,const QString &mixtable);
+  bool ExportTextLog(const QString &filename,const QDate &startdate,
+		     const QDate &enddate,const QString &mixtable);
+  bool ExportBmiEmr(const QString &filename,const QDate &startdate,
+		    const QDate &enddate,const QString &mixtable);
+  bool ExportTechnical(const QString &filename,const QDate &startdate,
+		       const QDate &enddate,bool incl_hdr,bool incl_crs,
 		       const QString &mixtable);
-  bool ExportTextLog(const QDate &startdate,const QDate &enddate,
-		     const QString &mixtable);
-  bool ExportBmiEmr(const QDate &startdate,const QDate &enddate,
-		    const QString &mixtable);
-  bool ExportTechnical(const QDate &startdate,const QDate &enddate,
-		       bool incl_hdr,bool incl_crs,const QString &mixtable);
-  bool ExportSoundEx(const QDate &startdate,const QDate &enddate,
-		     const QString &mixtable);
-  bool ExportNprSoundEx(const QDate &startdate,const QDate &enddate,
-			const QString &mixtable);
-  bool ExportRadioTraffic(const QDate &startdate,const QDate &enddate,
-			  const QString &mixtable);
-  bool ExportMusicClassical(const QDate &startdate,const QDate &enddate,
-			    const QString &mixtable);
-  bool ExportMusicPlayout(const QDate &startdate,const QDate &enddate,
-			  const QString &mixtable);
-  bool ExportMusicSummary(const QDate &startdate,const QDate &enddate,
-			  const QString &mixtable);
-  bool ExportSpinCount(const QDate &startdate,const QDate &enddate,
-		       const QString &mixtable);
-  bool ExportCutLog(const QDate &startdate,const QDate &enddate,
-		    const QString &mixtable);
+  bool ExportSoundEx(const QString &filename,const QDate &startdate,
+		     const QDate &enddate,const QString &mixtable);
+  bool ExportNprSoundEx(const QString &filename,const QDate &startdate,
+			const QDate &enddate,const QString &mixtable);
+  bool ExportRadioTraffic(const QString &filename,const QDate &startdate,
+			  const QDate &enddate,const QString &mixtable);
+  bool ExportMusicClassical(const QString &filename,const QDate &startdate,
+			    const QDate &enddate,const QString &mixtable);
+  bool ExportMusicPlayout(const QString &filename,const QDate &startdate,
+			  const QDate &enddate,const QString &mixtable);
+  bool ExportMusicSummary(const QString &filename,const QDate &startdate,
+			  const QDate &enddate,const QString &mixtable);
+  bool ExportSpinCount(const QString &filename,const QDate &startdate,
+		       const QDate &enddate,const QString &mixtable);
+  bool ExportCutLog(const QString &filename,const QDate &startdate,
+		    const QDate &enddate,const QString &mixtable);
   QString StringField(const QString &str,const QString &null_text="") const;
   void SetRow(const QString &param,const QString &value) const;
   void SetRow(const QString &param,int value) const;
@@ -128,6 +130,7 @@ class RDReport
   QString OsFieldName(ExportOs os) const;
   QString TypeFieldName(ExportType type,bool forced) const;
   QString report_name;
+  RDStation *report_station;
   RDConfig *report_config;
   RDReport::ErrorCode report_error_code;
 };

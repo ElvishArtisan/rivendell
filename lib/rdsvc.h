@@ -26,6 +26,7 @@
 #include <qobject.h>
 #include <qsqldatabase.h>
 
+#include <rdstation.h>
 #include <rdconfig.h>
 
 class RDSvc : public QObject
@@ -37,7 +38,7 @@ class RDSvc : public QObject
   enum ImportField {CartNumber=0,ExtData=3,ExtEventId=4,ExtAnncType=5,
 		    Title=6,StartHours=7,StartMinutes=8,StartSeconds=9,
 		    LengthHours=10,LengthMinutes=11,LengthSeconds=12};
-  RDSvc(QString svcname,RDConfig *config,QObject *parent=0);
+  RDSvc(QString svcname,RDStation *station,RDConfig *config,QObject *parent=0);
   QString name() const;
   bool exists() const;
   QString description() const;
@@ -111,6 +112,7 @@ class RDSvc : public QObject
 			QString *label_cart,QString *track_cart);
   bool CheckId(std::vector<int> *v,int value);
   QString svc_name;
+  RDStation *svc_station;
   RDConfig *svc_config;
 };
 

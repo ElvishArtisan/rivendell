@@ -25,8 +25,8 @@
 #include <rdcart.h>
 
 
-bool RDReport::ExportBmiEmr(const QDate &startdate,const QDate &enddate,
-			    const QString &mixtable)
+bool RDReport::ExportBmiEmr(const QString &filename,const QDate &startdate,
+			    const QDate &enddate,const QString &mixtable)
 {
   QString sql;
   RDSqlQuery *q;
@@ -37,14 +37,6 @@ bool RDReport::ExportBmiEmr(const QDate &startdate,const QDate &enddate,
   QString type_code;
   QString usage_code;
   QString station_format=stationFormat();
-
-#ifdef WIN32
-  QString filename=RDDateDecode(exportPath(RDReport::Windows),startdate,
-				report_config,serviceName());
-#else
-  QString filename=RDDateDecode(exportPath(RDReport::Linux),startdate,
-				report_config,serviceName());
-#endif
 
   //
   // Station Type

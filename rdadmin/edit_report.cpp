@@ -56,7 +56,7 @@ EditReport::EditReport(QString rptname,QWidget *parent)
   setMinimumHeight(sizeHint().height());
   setMaximumHeight(sizeHint().height());
 
-  edit_report=new RDReport(rptname,admin_config);
+  edit_report=new RDReport(rptname,admin_station,admin_config);
   str=QString(tr("Edit Report"));
   setCaption(QString().sprintf("%s - %s",(const char *)str,
 			       (const char *)rptname));

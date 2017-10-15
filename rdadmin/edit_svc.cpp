@@ -59,7 +59,7 @@ EditSvc::EditSvc(QString svc,QWidget *parent)
   setMinimumHeight(sizeHint().height());
   setMaximumHeight(sizeHint().height());
 
-  svc_svc=new RDSvc(svc,admin_config);
+  svc_svc=new RDSvc(svc,admin_station,admin_config);
 
   setCaption(tr("Edit Service"));
 

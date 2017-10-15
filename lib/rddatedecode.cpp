@@ -22,8 +22,8 @@
 
 #include <rddatedecode.h>
 
-QString RDDateDecode(QString str,const QDate &date,RDConfig *config,
-		     const QString &svcname)
+QString RDDateDecode(QString str,const QDate &date,RDStation *station,
+		     RDConfig *config,const QString &svcname)
 {
   QString string;
   int yearnum;
@@ -122,6 +122,10 @@ QString RDDateDecode(QString str,const QDate &date,RDConfig *config,
 	field=config->stationName();
 	break;
 
+      case 'R':   // Rivendell Host Short Name
+	field=station->shortName();
+	break;
+
       case 's':   // Service name
 	if(!svcname.isEmpty()) {
 	  field=svcname;
@@ -176,7 +180,8 @@ QString RDDateDecode(QString str,const QDate &date,RDConfig *config,
 
 
 QString RDDateTimeDecode(QString str,const QDateTime &datetime,
-			 RDConfig *config,const QString &svcname)
+			 RDStation *station,RDConfig *config,
+			 const QString &svcname)
 {
   QString string;
   int yearnum;
@@ -301,6 +306,10 @@ QString RDDateTimeDecode(QString str,const QDateTime &datetime,
 	    
       case 'r':   // Rivendell Host Name
 	field=config->stationName();
+	break;
+
+      case 'R':   // Rivendell Host Short Name
+	field=station->shortName();
 	break;
 
       case 'S':   // Second (SS)

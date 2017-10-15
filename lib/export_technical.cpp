@@ -29,9 +29,8 @@
 #include <rddatedecode.h>
 #include <rdreport.h>
 
-
-bool RDReport::ExportTechnical(const QDate &startdate,const QDate &enddate,
-			       bool incl_hdr,bool incl_crs,
+bool RDReport::ExportTechnical(const QString &filename,const QDate &startdate,
+			       const QDate &enddate,bool incl_hdr,bool incl_crs,
 			       const QString &mixtable)
 {
   QString sql;
@@ -43,16 +42,9 @@ bool RDReport::ExportTechnical(const QDate &startdate,const QDate &enddate,
   QString cart_num;
   char eol[3]="\n";
 
-#ifdef WIN32
-  QString filename=RDDateDecode(exportPath(RDReport::Windows),startdate,
-				report_config,serviceName());
-#else
-  QString filename=RDDateDecode(exportPath(RDReport::Linux),startdate,
-				report_config,serviceName());
   if(incl_crs) {
     strcpy(eol,"\r\n");
   }
-#endif
 
   QFile file(filename);
   if((f=fopen((const char *)filename,"w"))==NULL) {

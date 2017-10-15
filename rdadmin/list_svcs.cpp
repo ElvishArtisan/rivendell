@@ -185,7 +185,7 @@ void ListSvcs::deleteData()
     }
   }
   delete q;
-  RDSvc *svc=new RDSvc(list_box->currentText(),admin_config);
+  RDSvc *svc=new RDSvc(list_box->currentText(),admin_station,admin_config);
   svc->remove();
   delete svc;
   list_box->removeItem(list_box->currentItem());

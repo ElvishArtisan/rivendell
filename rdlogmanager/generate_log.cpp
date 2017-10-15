@@ -306,9 +306,10 @@ void GenerateLog::createData()
   //
   // Generate Log
   //
-  RDSvc *svc=new RDSvc(gen_service_box->currentText(),log_config,this);
+  RDSvc *svc=
+    new RDSvc(gen_service_box->currentText(),rdstation_conf,log_config,this);
   QString logname=RDDateDecode(svc->nameTemplate(),gen_date_edit->date(),
-			       log_config,svc->name());
+			       rdstation_conf,log_config,svc->name());
   RDLog *log=new RDLog(logname);
   if(log->exists()) {
     str1=QString(tr("The log for"));
@@ -363,9 +364,10 @@ void GenerateLog::createData()
 	  gen_progress_dialog,SLOT(setProgress(int)));
   svc->generateLog(gen_date_edit->date(),
 		   RDDateDecode(svc->nameTemplate(),gen_date_edit->date(),
-				log_config,svc->name()),
+				rdstation_conf,log_config,svc->name()),
 		   RDDateDecode(svc->nameTemplate(),gen_date_edit->date().
-				addDays(1),log_config,svc->name()),
+				addDays(1),rdstation_conf,log_config,
+				svc->name()),
 		   &unused_report);
   log->updateTracks();
   delete log;
@@ -394,9 +396,10 @@ void GenerateLog::musicData()
 {
   unsigned tracks=0;
 
-  RDSvc *svc=new RDSvc(gen_service_box->currentText(),log_config,this);
+  RDSvc *svc=
+    new RDSvc(gen_service_box->currentText(),rdstation_conf,log_config,this);
   QString logname=RDDateDecode(svc->nameTemplate(),gen_date_edit->date(),
-			       log_config,svc->name());
+			       rdstation_conf,log_config,svc->name());
   RDLog *log=new RDLog(logname);
   if(((log->linkState(RDLog::SourceMusic)==RDLog::LinkDone)||
       (log->linkState(RDLog::SourceTraffic)==RDLog::LinkDone))) {
@@ -446,9 +449,10 @@ void GenerateLog::musicData()
 
 void GenerateLog::trafficData()
 {
-  RDSvc *svc=new RDSvc(gen_service_box->currentText(),log_config,this);
+  RDSvc *svc=
+    new RDSvc(gen_service_box->currentText(),rdstation_conf,log_config,this);
   QString logname=RDDateDecode(svc->nameTemplate(),gen_date_edit->date(),
-			       log_config,svc->name());
+			       rdstation_conf,log_config,svc->name());
   RDLog *log=new RDLog(logname);
   if((log->linkState(RDLog::SourceTraffic)==RDLog::LinkDone)) {
     QString str1=QString(tr("The log for"));
@@ -481,9 +485,10 @@ void GenerateLog::trafficData()
 
 void GenerateLog::fileScanData()
 {
-  RDSvc *svc=new RDSvc(gen_service_box->currentText(),log_config,this);
+  RDSvc *svc=
+    new RDSvc(gen_service_box->currentText(),rdstation_conf,log_config,this);
   QString logname=RDDateDecode(svc->nameTemplate(),gen_date_edit->date(),
-			       log_config,svc->name());
+			       rdstation_conf,log_config,svc->name());
   RDLog *log=new RDLog(logname);
   if(gen_music_enabled) {
     if(QFile::exists(svc->
@@ -550,9 +555,10 @@ void GenerateLog::resizeEvent(QResizeEvent *e)
 
 void GenerateLog::UpdateControls()
 {
-  RDSvc *svc=new RDSvc(gen_service_box->currentText(),log_config,this);
+  RDSvc *svc=
+    new RDSvc(gen_service_box->currentText(),rdstation_conf,log_config,this);
   QString logname=RDDateDecode(svc->nameTemplate(),gen_date_edit->date(),
-			       log_config,svc->name());
+			       rdstation_conf,log_config,svc->name());
   RDLog *log=new RDLog(logname);
   if(log->exists()) {
     if(log->linkQuantity(RDLog::SourceMusic)>0) {

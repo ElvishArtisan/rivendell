@@ -23,12 +23,14 @@
 
 #include <qdatetime.h>
 
+#include <rdstation.h>
 #include <rdconfig.h>
 
-QString RDDateDecode(QString str,const QDate &date,RDConfig *config,
-		     const QString &svcname="");
+QString RDDateDecode(QString str,const QDate &date,RDStation *station,
+		     RDConfig *config,const QString &svcname="");
 QString RDDateTimeDecode(QString str,const QDateTime &datetime,
-			 RDConfig *config,const QString &svcname="");
+			 RDStation *station,RDConfig *config,
+			 const QString &svcname="");
 
 
 #endif  // RDDATEDECODE

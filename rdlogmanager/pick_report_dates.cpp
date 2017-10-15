@@ -178,7 +178,8 @@ void PickReportDates::generateData()
 		 tr("The end date cannot be earlier than the start date!"));
     return;
   }
-  RDReport *report=new RDReport(edit_report_box->currentText(),log_config,this);
+  RDReport *report=
+    new RDReport(edit_report_box->currentText(),rdstation_conf,log_config,this);
   if((edit_startdate_edit->date()!=edit_enddate_edit->date())&&
      (!RDReport::multipleDaysAllowed(report->filter()))) {
     QMessageBox::warning(this,tr("Invalid Date Range"),
@@ -200,7 +201,8 @@ void PickReportDates::generateData()
 #else
   QString filename=
     RDDateDecode(report->exportPath(RDReport::Linux),
-		 edit_startdate_edit->date(),log_config,edit_svcname);
+		 edit_startdate_edit->date(),rdstation_conf,log_config,
+		 edit_svcname);
 #endif
   QFile file(filename);
   if(file.exists()) {

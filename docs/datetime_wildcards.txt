@@ -85,7 +85,7 @@ where:
 
     r -- Rivendell Host Name [not FQDN]
 
-    R -- [unassigned]
+    R -- Rivendell Host Short Name
 
     s -- Service Name
 

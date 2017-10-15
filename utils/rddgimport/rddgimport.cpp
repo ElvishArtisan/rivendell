@@ -209,7 +209,7 @@ void MainWidget::serviceActivatedData(int index)
   if(dg_svc!=NULL) {
     delete dg_svc;
   }
-  dg_svc=new RDSvc(dg_service_box->currentText(),dg_config);
+  dg_svc=new RDSvc(dg_service_box->currentText(),dg_station,dg_config);
   if(dg_group!=NULL) {
     delete dg_group;
   }
@@ -391,7 +391,8 @@ bool MainWidget::WriteTrafficFile()
   // Open Output File
   //
   outname=RDDateDecode(dg_svc->importPath(RDSvc::Traffic,RDSvc::Linux),
-		       dg_date_edit->date(),dg_config,dg_svc->name());
+		       dg_date_edit->date(),dg_station,
+		       dg_config,dg_svc->name());
   if((f=fopen(outname,"w"))==NULL) {
     LogMessage(tr("WARNING: Unable to open traffic output file")+" \""+
 	       outname+"\" ["+strerror(errno)+"].");

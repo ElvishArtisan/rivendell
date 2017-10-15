@@ -235,6 +235,10 @@ void MainObject::Revert(int schema) const
   case 269:
     Revert269();
     break;
+
+  case 270:
+    Revert270();
+    break;
   }
 }
 
@@ -706,6 +710,19 @@ void MainObject::Revert269() const
 }
 
 
+void MainObject::Revert270() const
+{
+  QString sql;
+  QSqlQuery *q;
+
+  sql="alter table STATIONS drop column SHORT_NAME";
+  q=new QSqlQuery(sql);
+  delete q;  
+
+  SetVersion(269);
+}
+
+
 int MainObject::GetVersion() const
 {
   QString sql;
@@ -750,7 +767,7 @@ int MainObject::MapSchema(const QString &ver)
   version_map["2.15"]=259;
   version_map["2.16"]=263;
   version_map["2.17"]=268;
-  version_map["2.18"]=269;
+  version_map["2.18"]=270;
 
   //
   // Normalize String

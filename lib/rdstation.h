@@ -46,6 +46,8 @@ class RDStation
   ~RDStation();
   QString name() const;
   bool exists() const;
+  QString shortName() const;
+  void setShortName(const QString &str) const;
   QString description() const;
   void setDescription(QString path) const;
   QString userName() const;

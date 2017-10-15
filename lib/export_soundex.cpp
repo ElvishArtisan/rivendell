@@ -29,9 +29,8 @@
 #include <rdreport.h>
 #include <rdget_ath.h>
 
-
-bool RDReport::ExportSoundEx(const QDate &startdate,const QDate &enddate,
-			     const QString &mixtable)
+bool RDReport::ExportSoundEx(const QString &filename,const QDate &startdate,
+			     const QDate &enddate,const QString &mixtable)
 {
   QString sql;
   RDSqlQuery *q;
@@ -46,14 +45,6 @@ bool RDReport::ExportSoundEx(const QDate &startdate,const QDate &enddate,
   QString service_name=serviceName();
   QString trans_category=stationFormat();
   QString channel_name=stationId();
-
-#ifdef WIN32
-  QString filename=RDDateDecode(exportPath(RDReport::Windows),startdate,
-				report_config,serviceName());
-#else
-  QString filename=RDDateDecode(exportPath(RDReport::Linux),startdate,
-				report_config,serviceName());
-#endif
 
   //
   // Get ATH Value

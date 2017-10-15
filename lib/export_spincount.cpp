@@ -31,9 +31,8 @@
 #include <rddatedecode.h>
 #include <rdreport.h>
 
-
-bool RDReport::ExportSpinCount(const QDate &startdate,const QDate &enddate,
-			       const QString &mixtable)
+bool RDReport::ExportSpinCount(const QString &filename,const QDate &startdate,
+			       const QDate &enddate,const QString &mixtable)
 {
   QString sql;
   RDSqlQuery *q;
@@ -47,15 +46,6 @@ bool RDReport::ExportSpinCount(const QDate &startdate,const QDate &enddate,
   std::map<unsigned,QString> artists;
   std::map<unsigned,QString> labels;
   std::map<unsigned,QString> albums;
-
-
-#ifdef WIN32
-  QString filename=RDDateDecode(exportPath(RDReport::Windows),startdate,
-				report_config,serviceName());
-#else
-  QString filename=RDDateDecode(exportPath(RDReport::Linux),startdate,
-				report_config,serviceName());
-#endif
 
   QFile file(filename);
   if((f=fopen((const char *)filename,"w"))==NULL) {

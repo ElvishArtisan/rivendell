@@ -22,8 +22,9 @@
 
 #include <catch_event.h>
 
-CatchEvent::CatchEvent(RDConfig *config)
+CatchEvent::CatchEvent(RDStation *station,RDConfig *config)
 {
+  catch_station=station;
   catch_config=config;
   clear();
 }
@@ -660,9 +661,9 @@ void CatchEvent::resolveUrl(int time_offset)
   if((current_time.msecsTo(QTime(23,59,59))+1000)<time_offset) {
     date=date.addDays(1);
   }
-  setResolvedUrl(RDDateTimeDecode(url(),
-				  QDateTime(date.addDays(eventdateOffset()),
-					    current_time),catch_config));
+  setResolvedUrl(RDDateTimeDecode(url(),QDateTime(date.addDays(eventdateOffset()),
+						  current_time),catch_station,
+				  catch_config));
 }
 
 

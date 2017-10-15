@@ -611,6 +611,7 @@ bool CreateDb(QString name,QString pwd)
 //
   sql=QString("CREATE TABLE IF NOT EXISTS STATIONS (\
       NAME CHAR(64) PRIMARY KEY NOT NULL,\
+      SHORT_NAME char(64),\
       DESCRIPTION CHAR(64),\
       USER_NAME CHAR(255),\
       DEFAULT_NAME CHAR(255),\
@@ -2588,7 +2589,7 @@ bool InitDb(QString name,QString pwd,QString station_name)
   //
   // Create Default Service
   //
-  RDSvc *svc=new RDSvc(RD_SERVICE_NAME,admin_config);
+  RDSvc *svc=new RDSvc(RD_SERVICE_NAME,admin_station,admin_config);
   svc->create("");
   svc->setDescription(RD_SERVICE_DESCRIPTION);
   delete svc;
@@ -8436,13 +8437,13 @@ int UpdateDb(int ver)
 	"on `"+RDLog::tableName(q->value(0).toString())+
 	"`.CART_NUMBER=CART.NUMBER where "+
 	"CART.OWNER is not null";
-      q1=new RDSqlQuery(sql);
+      q1=new QSqlQuery(sql);
       int completed=q1->size();
       delete q1;
 
       sql=QString("select ID from `")+RDLog::tableName(q->value(0).toString())+
 	"` where "+QString().sprintf("TYPE=%d",RDLogLine::Track);
-      q1=new RDSqlQuery(sql);
+      q1=new QSqlQuery(sql);
       int scheduled=q1->size()+completed;
       delete q1;
 
@@ -8450,7 +8451,7 @@ int UpdateDb(int ver)
 	QString().sprintf("SCHEDULED_TRACKS=%d,",scheduled)+
 	QString().sprintf("COMPLETED_TRACKS=%u ",completed)+
 	"where NAME=\""+RDEscapeString(q->value(0).toString())+"\"";
-      q1=new RDSqlQuery(sql);
+      q1=new QSqlQuery(sql);
       delete q1;
     }
     delete q;
@@ -8459,26 +8460,44 @@ int UpdateDb(int ver)
   if(ver<267) {
     sql=QString("alter table CUTS add column ORIGIN_LOGIN_NAME char(255) ")+
       "after ORIGIN_NAME";
-    q=new RDSqlQuery(sql);
+    q=new QSqlQuery(sql);
     delete q;
 
     sql=QString("alter table CUTS add column SOURCE_HOSTNAME char(255) ")+
       "after ORIGIN_LOGIN_NAME";
-    q=new RDSqlQuery(sql);
+    q=new QSqlQuery(sql);
     delete q;
   }
 
   if(ver<268) {
     sql=QString("alter table DROPBOXES add column ")+
       "FORCE_TO_MONO enum('N','Y') default 'N' after TO_CART";
-    q=new RDSqlQuery(sql);
+    q=new QSqlQuery(sql);
     delete q;
   }
 
   if(ver<269) {
     sql=QString("alter table GROUPS add column ")+
       "DEFAULT_CUT_LIFE int default -1 after DEFAULT_HIGH_CART";
-    q=new RDSqlQuery(sql);
+    q=new QSqlQuery(sql);
+    delete q;
+  }
+
+  if(ver<270) {
+    sql=QString("alter table STATIONS add column ")+
+      "SHORT_NAME char(64) after NAME";
+    q=new QSqlQuery(sql);
+    delete q;
+
+    sql=QString("select NAME from STATIONS");
+    q=new QSqlQuery(sql);
+    while(q->next()) {
+      sql=QString("update STATIONS set ")+
+	"SHORT_NAME=\""+RDEscapeString(q->value(0).toString())+"\" where "+
+	"NAME=\""+RDEscapeString(q->value(0).toString())+"\"";
+      q1=new QSqlQuery(sql);
+      delete q1;
+    }
     delete q;
   }
 

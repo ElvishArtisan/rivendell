@@ -156,7 +156,7 @@ void MainObject::RunBatch(RDCmdSwitch *cmd)
     fprintf(stderr,"rdcatchd: id %d not found\n",id);
     exit(256);
   }
-  batch_event=new CatchEvent(RDConfiguration());
+  batch_event=new CatchEvent(catch_rdstation,RDConfiguration());
   LoadEvent(q,batch_event,false);
   delete q;
 

@@ -3615,15 +3615,15 @@ Variablen</translation>
     </message>
     <message>
         <source>Security Model:</source>
-        <translation>Sicherheitsmodell:</translation>
+        <translation type="obsolete">Sicherheitsmodell:</translation>
     </message>
     <message>
         <source>Host</source>
-        <translation>Host</translation>
+        <translation type="obsolete">Host</translation>
     </message>
     <message>
         <source>User</source>
-        <translation>Benutzer</translation>
+        <translation type="obsolete">Benutzer</translation>
     </message>
     <message>
         <source>Custom
@@ -3693,6 +3693,10 @@ configured to run the CAE service in order to populate the audio resources datab
     </message>
     <message>
         <source>Stop Cart</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Short Name:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

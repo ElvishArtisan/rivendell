@@ -32,9 +32,11 @@
 #include <rdescape_string.h>
 #include <rddatedecode.h>
 
-RDReport::RDReport(const QString &rptname,RDConfig *config,QObject *parent)
+RDReport::RDReport(const QString &rptname,RDStation *station,RDConfig *config,
+		   QObject *parent)
 {
   report_name=rptname;
+  report_station=station;
   report_config=config;
   report_error_code=RDReport::ErrorOk;
 }
@@ -312,11 +314,11 @@ bool RDReport::outputExists(const QDate &startdate)
 {
   QString out_path;
 #ifdef WIN32
-  out_path=RDDateDecode(exportPath(RDReport::Windows),startdate,report_config,
-			serviceName());
+  out_path=RDDateDecode(exportPath(RDReport::Windows),startdate,report_station,
+			report_config,serviceName());
 #else
-  out_path=RDDateDecode(exportPath(RDReport::Linux),startdate,report_config,
-			serviceName());
+  out_path=RDDateDecode(exportPath(RDReport::Linux),startdate,report_station,
+			report_config,serviceName());
 #endif
   return QFile::exists(out_path);
 }
@@ -451,7 +453,7 @@ bool RDReport::generateReport(const QDate &startdate,const QDate &enddate,
 			(const char *)name());
   q=new RDSqlQuery(sql);
   while(q->next()) {
-    svc=new RDSvc(q->value(0).toString(),report_config);
+    svc=new RDSvc(q->value(0).toString(),report_station,report_config);
     if(svc->exists()) {
       rec_name=q->value(0).toString();
       rec_name.replace(" ","_");
@@ -602,71 +604,79 @@ bool RDReport::generateReport(const QDate &startdate,const QDate &enddate,
   delete q;
 
   bool ret=false;
+#ifdef WIN32
+  QString filename=RDDateDecode(exportPath(RDReport::Windows),startdate,
+				report_station,report_config,serviceName());
+#else
+  QString filename=RDDateDecode(exportPath(RDReport::Linux),startdate,
+				report_station,report_config,serviceName());
+#endif
+
   switch(filter()) {
   case RDReport::CbsiDeltaFlex:
-    ret=ExportDeltaflex(startdate,enddate,mixname);
+    ret=ExportDeltaflex(filename,startdate,enddate,mixname);
     break;
 
   case RDReport::TextLog:
-    ret=ExportTextLog(startdate,enddate,mixname);
+    ret=ExportTextLog(filename,startdate,enddate,mixname);
     break;
 
   case RDReport::BmiEmr:
-    ret=ExportBmiEmr(startdate,enddate,mixname);
+    ret=ExportBmiEmr(filename,startdate,enddate,mixname);
     break;
 
   case RDReport::NaturalLog:
   case RDReport::Technical:
-    ret=ExportTechnical(startdate,enddate,true,false,mixname);
+    ret=ExportTechnical(filename,startdate,enddate,true,false,mixname);
     break;
 
   case RDReport::SoundExchange:
-    ret=ExportSoundEx(startdate,enddate,mixname);
+    ret=ExportSoundEx(filename,startdate,enddate,mixname);
     break;
 
   case RDReport::NprSoundExchange:
-    ret=ExportNprSoundEx(startdate,enddate,mixname);
+    ret=ExportNprSoundEx(filename,startdate,enddate,mixname);
     break;
 
   case RDReport::RadioTraffic:
-    ret=ExportRadioTraffic(startdate,enddate,mixname);
+    ret=ExportRadioTraffic(filename,startdate,enddate,mixname);
     break;
 
   case RDReport::VisualTraffic:
-    ret=ExportDeltaflex(startdate,enddate,mixname);
+    ret=ExportDeltaflex(filename,startdate,enddate,mixname);
     break;
 
   case RDReport::CounterPoint:
   case RDReport::WideOrbit:
-    ret=ExportRadioTraffic(startdate,enddate,mixname);
+    ret=ExportRadioTraffic(filename,startdate,enddate,mixname);
     break;
 
   case RDReport::Music1:
-    ret=ExportRadioTraffic(startdate,enddate,mixname);
+    ret=ExportRadioTraffic(filename,startdate,enddate,mixname);
     break;
 
   case RDReport::MusicClassical:
-    ret=ExportMusicClassical(startdate,enddate,mixname);
+    ret=ExportMusicClassical(filename,startdate,enddate,mixname);
     break;
 
   case RDReport::MusicPlayout:
-    ret=ExportMusicPlayout(startdate,enddate,mixname);
+    ret=ExportMusicPlayout(filename,startdate,enddate,mixname);
     break;
 
   case RDReport::SpinCount:
-    ret=ExportSpinCount(startdate,enddate,mixname);
+    ret=ExportSpinCount(filename,startdate,enddate,mixname);
     break;
 
   case RDReport::MusicSummary:
-    ret=ExportMusicSummary(startdate,enddate,mixname);
+    ret=ExportMusicSummary(filename,startdate,enddate,mixname);
     break;
 
   case RDReport::MrMaster:
-    ret=ExportTechnical(startdate,enddate,false,true,mixname);
+    ret=ExportTechnical(filename,startdate,enddate,false,true,mixname);
     break;
 
   case RDReport::CutLog:
-    ret=ExportCutLog(startdate,enddate,mixname);
+    ret=ExportCutLog(filename,startdate,enddate,mixname);
     break;
 
   default:
@@ -678,10 +688,10 @@ bool RDReport::generateReport(const QDate &startdate,const QDate &enddate,
   QString post_cmd=RDDateDecode(postExportCommand(RDReport::Windows),startdate,
 				report_config,serviceName());
 #else
-  *out_path=RDDateDecode(exportPath(RDReport::Linux),startdate,report_config,
-			 serviceName());
+  *out_path=RDDateDecode(exportPath(RDReport::Linux),startdate,report_station,
+			 report_config,serviceName());
   QString post_cmd=RDDateDecode(postExportCommand(RDReport::Linux),startdate,
-				report_config,serviceName());
+				report_station,report_config,serviceName());
 #endif
   system(post_cmd);
   //  printf("MIXDOWN TABLE: %s_SRT\n",(const char *)mixname);

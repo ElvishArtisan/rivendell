@@ -47,9 +47,6 @@ class EditStation : public QDialog
    QSize sizeHint() const;
    QSizePolicy sizePolicy() const;
 
- protected:
-  void paintEvent(QPaintEvent *e);
-
  private slots:
    void selectClicked();
    void heartbeatToggledData(bool state);
@@ -75,27 +72,46 @@ class EditStation : public QDialog
    void startCartClickedData();
    void stopCartClickedData();
 
+ protected:
+  void paintEvent(QPaintEvent *e);
+  void resizeEvent(QResizeEvent *e);
+
   private:
    QString DisplayPart(QString);
    QString HostPart(QString);
    RDStation *station_station;
    RDStation *station_cae_station;
    RDCatchConnect *station_catch_connect;
+   QLabel *station_name_label;
    QLineEdit *station_name_edit;
+   QLabel *station_short_name_label;
+   QLineEdit *station_short_name_edit;
+   QLabel *station_description_label;
    QLineEdit *station_description_edit;
+   QLabel *station_default_name_label;
    QComboBox *station_default_name_edit;
-   QComboBox *station_broadcast_sec_edit;
+   //   QComboBox *station_broadcast_sec_edit;
+   QLabel *station_address_label;
    QLineEdit *station_address_edit;
+   QLabel *station_editor_cmd_label;
    QLineEdit *station_editor_cmd_edit;
+   QLabel *station_timeoffset_label;
    QSpinBox *station_timeoffset_box;
+   QLabel *station_startup_cart_label;
    QLineEdit *station_startup_cart_edit;
+   QLabel *station_cue_sel_label;
    RDCardSelector *station_cue_sel;
+   QLabel *station_start_cart_label;
    QLineEdit *station_start_cart_edit;
+   QPushButton *station_startup_select_button;
    QPushButton *station_start_cart_button;
+   QLabel *station_stop_cart_label;
    QLineEdit *station_stop_cart_edit;
    QPushButton *station_stop_cart_button;
    QCheckBox *station_heartbeat_box;
+   QLabel *station_heartbeat_label;
    QCheckBox *station_filter_box;
+   QLabel *station_filter_label;
    QLabel *station_hbcart_label;
    QLineEdit *station_hbcart_edit;
    QPushButton *station_hbcart_button;
@@ -105,11 +121,32 @@ class EditStation : public QDialog
    QString station_cart_filter;
    QString station_cart_group;
    QCheckBox *station_maint_box;
+   QLabel *station_maint_label;
    QCheckBox *station_dragdrop_box;
+   QLabel *station_dragdrop_label;
    QLabel *station_panel_enforce_label;
    QCheckBox *station_panel_enforce_box;
+   QLabel *station_systemservices_label;
+   QLabel *station_http_station_label;
    QComboBox *station_http_station_box;
+   QLabel *station_cae_station_label;
    QComboBox *station_cae_station_box;
+   QPushButton *station_rdlibrary_button;
+   QPushButton *station_rdcatch_button;
+   QPushButton *station_rdairplay_button;
+   QPushButton *station_rdpanel_button;
+   QPushButton *station_rdlogedit_button;
+   QPushButton *station_rdcartslots_button;
+   QPushButton *station_dropboxes_button;
+   QPushButton *station_switchers_button;
+   QPushButton *station_hostvars_button;
+   QPushButton *station_audioports_button;
+   QPushButton *station_ttys_button;
+   QPushButton *station_adapters_button;
+   QPushButton *station_jack_button;
+   QPushButton *station_backups_button;
+   QPushButton *station_ok_button;
+   QPushButton *station_cancel_button;
 };
 
 

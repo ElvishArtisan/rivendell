@@ -6,6 +6,7 @@ Following is the layout of a record in the SERVICES table:
 FIELD NAME           TYPE               REMARKS
 ---------------------------------------------------------------
 NAME                 char(64)           Primary Key
+SHORT_NAME           char(64)
 DESCRIPTION          char(64)           Indexed
 USER_NAME            char(255)          Current User
 DEFAULT_NAME         char(255)          Default User

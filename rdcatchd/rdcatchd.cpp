@@ -821,7 +821,7 @@ void MainObject::engineData(int id)
 	catch_events[event].
 	  setResolvedUrl(RDDateTimeDecode(catch_events[event].url(),
 	       QDateTime(date.addDays(catch_events[event].eventdateOffset()),
-			 current_time),RDConfiguration()));
+			 current_time),catch_rdstation,RDConfiguration()));
 	StartDownloadEvent(event);
 	break;
 
@@ -1911,7 +1911,7 @@ void MainObject::LoadEngine(bool adv_day)
 				       (const char *)catch_rdstation->name());
   q=new RDSqlQuery(sql);
   while(q->next()) {
-    catch_events.push_back(CatchEvent(RDConfiguration()));
+    catch_events.push_back(CatchEvent(catch_rdstation,RDConfiguration()));
     LoadEvent(q,&catch_events.back(),true);
   }
   LogLine(RDConfig::LogInfo,QString().sprintf("loaded %d events",(int)catch_events.size()));
@@ -2184,7 +2184,7 @@ bool MainObject::AddEvent(int id)
 		      (const char *)catch_rdstation->name(),id);
   q=new RDSqlQuery(sql);
   if(q->first()) {
-    catch_events.push_back(CatchEvent(RDConfiguration()));
+    catch_events.push_back(CatchEvent(catch_rdstation,RDConfiguration()));
     LoadEvent(q,&catch_events.back(),true);
     switch((RDRecording::Type)q->value(2).toInt()) {
 	case RDRecording::Recording:
@@ -2685,7 +2685,7 @@ void MainObject::StartRmlRecording(int chan,int cartnum,int cutnum,int maxlen)
   RDDeck *deck=new RDDeck(catch_config->stationName(),chan);
   RDCut *cut=new RDCut(cartnum,cutnum);
   QDateTime dt=QDateTime(QDate::currentDate(),QTime::currentTime());
-  catch_events.push_back(CatchEvent(RDConfiguration()));
+  catch_events.push_back(CatchEvent(catch_rdstation,RDConfiguration()));
   catch_events.back().setId(GetNextDynamicId());
   catch_events.back().setIsActive(true);
   catch_events.back().setOneShot(true);

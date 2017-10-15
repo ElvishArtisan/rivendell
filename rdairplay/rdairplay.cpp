@@ -163,7 +163,7 @@ MainWidget::MainWidget(QWidget *parent)
 	  if(cmd->value(j).at(k)==QChar(':')) {
 	    air_start_logname[i]=
 	      RDDateTimeDecode(cmd->value(j).left(k),air_startup_datetime,
-			       air_config);
+			       rdstation_conf,air_config);
 	    lineno=cmd->value(j).right(cmd->value(j).length()-(k+1));
 	    if(lineno.right(1)=="+") {
 	      air_start_start[i]=true;
@@ -970,7 +970,7 @@ void MainWidget::ripcConnected(bool state)
 	  case RDAirPlayConf::StartPrevious:
 	    air_start_logname[i]=
 	      RDDateTimeDecode(rdairplay_conf->currentLog(i),
-			       air_startup_datetime,air_config);
+			       air_startup_datetime,rdstation_conf,air_config);
 	    if(!air_start_logname[i].isEmpty()) {
 	      if(rdairplay_previous_exit_code==RDAirPlayConf::ExitDirty) {
 		if((air_start_line[i]=rdairplay_conf->logCurrentLine(i))>=0) {
@@ -988,7 +988,7 @@ void MainWidget::ripcConnected(bool state)
 	  case RDAirPlayConf::StartSpecified:
 	    air_start_logname[i]=
 	      RDDateTimeDecode(rdairplay_conf->logName(i),
-			       air_startup_datetime,air_config);
+			       air_startup_datetime,rdstation_conf,air_config);
 	    if(!air_start_logname[i].isEmpty()) {
 	      if(rdairplay_previous_exit_code==RDAirPlayConf::ExitDirty) {
 		if(air_start_logname[i]==rdairplay_conf->currentLog(i)) {

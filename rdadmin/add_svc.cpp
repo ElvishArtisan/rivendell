@@ -147,7 +147,7 @@ void AddSvc::okData()
     return;
   }
 
-  RDSvc *svc=new RDSvc(svc_name_edit->text(),admin_config,this);
+  RDSvc *svc=new RDSvc(svc_name_edit->text(),admin_station,admin_config,this);
   if(svc->exists()) {
     QMessageBox::warning(this,tr("Service Exists"),
 			 tr("Service Already Exists!"));

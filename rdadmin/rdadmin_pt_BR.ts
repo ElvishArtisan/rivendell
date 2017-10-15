@@ -3481,15 +3481,15 @@ Overwrite?</source>
     </message>
     <message>
         <source>Host</source>
-        <translation>Cliente</translation>
+        <translation type="obsolete">Cliente</translation>
     </message>
     <message>
         <source>User</source>
-        <translation>Usuário</translation>
+        <translation type="obsolete">Usuário</translation>
     </message>
     <message>
         <source>Security Model:</source>
-        <translation>Modelo de Seg:</translation>
+        <translation type="obsolete">Modelo de Seg:</translation>
     </message>
     <message>
         <source>&amp;IP Address:</source>
@@ -3686,6 +3686,10 @@ configured to run the CAE service in order to populate the audio resources datab
     </message>
     <message>
         <source>Stop Cart</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Short Name:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

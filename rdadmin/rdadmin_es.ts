@@ -3654,15 +3654,15 @@ del Equipo</translation>
     </message>
     <message>
         <source>Security Model:</source>
-        <translation>Modelo segurid:</translation>
+        <translation type="obsolete">Modelo segurid:</translation>
     </message>
     <message>
         <source>Host</source>
-        <translation>Equipo</translation>
+        <translation type="obsolete">Equipo</translation>
     </message>
     <message>
         <source>User</source>
-        <translation>Usuario</translation>
+        <translation type="obsolete">Usuario</translation>
     </message>
     <message>
         <source>Custom
@@ -3733,6 +3733,10 @@ configured to run the CAE service in order to populate the audio resources datab
     </message>
     <message>
         <source>Stop Cart</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Short Name:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

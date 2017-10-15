@@ -30,7 +30,8 @@
 #include <rdreport.h>
 
 
-bool RDReport::ExportMusicSummary(const QDate &startdate,const QDate &enddate,
+bool RDReport::ExportMusicSummary(const QString &filename,
+				  const QDate &startdate,const QDate &enddate,
 				  const QString &mixtable)
 {
   QString sql;
@@ -38,14 +39,6 @@ bool RDReport::ExportMusicSummary(const QDate &startdate,const QDate &enddate,
   FILE *f;
   QString cut;
   QString str;
-
-#ifdef WIN32
-  QString filename=RDDateDecode(exportPath(RDReport::Windows),startdate,
-				report_config,serviceName());
-#else
-  QString filename=RDDateDecode(exportPath(RDReport::Linux),startdate,
-				report_config,serviceName());
-#endif
 
   QFile file(filename);
   if((f=fopen((const char *)filename,"w"))==NULL) {

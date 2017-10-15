@@ -56,6 +56,18 @@ QString RDStation::name() const
 }
 
 
+QString RDStation::shortName() const
+{
+  return RDGetSqlValue("STATIONS","NAME",station_name,"SHORT_NAME").toString();
+}
+
+
+void RDStation::setShortName(const QString &str) const
+{
+  SetRow("SHORT_NAME",str);
+}
+
+
 QString RDStation::description() const
 {
   return RDGetSqlValue("STATIONS","NAME",station_name,"DESCRIPTION").toString();
@@ -678,6 +690,7 @@ bool RDStation::create(const QString &name,QString *err_msg,
   if(exemplar.isEmpty()) {  // Create Blank Host Config
     sql=QString("insert into STATIONS set ")+
       "NAME=\""+RDEscapeString(name)+"\","+
+      "SHORT_NAME=\""+RDEscapeString(name)+"\","+
       "IPV4_ADDRESS=\""+RDEscapeString(addr.toString())+"\","+
       "DESCRIPTION=\"Workstation "+RDEscapeString(name)+"\","+
       "USER_NAME=\"user\","+
@@ -774,6 +787,7 @@ bool RDStation::create(const QString &name,QString *err_msg,
     if(q->first()) {
       sql=QString("insert into STATIONS set ")+
 	"NAME=\""+RDEscapeString(name)+"\","+
+	"SHORT_NAME=\""+RDEscapeString(name)+"\","+
 	"IPV4_ADDRESS=\""+RDEscapeString(addr.toString())+"\","+
 	"DESCRIPTION=\""+RDEscapeString("Workstation "+name)+"\","+
 	"USER_NAME=\""+RDEscapeString(q->value(0).toString())+"\","+

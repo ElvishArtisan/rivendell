@@ -3655,15 +3655,15 @@ serveru</translation>
     </message>
     <message>
         <source>Security Model:</source>
-        <translation>Bezpečnostní model:</translation>
+        <translation type="obsolete">Bezpečnostní model:</translation>
     </message>
     <message>
         <source>Host</source>
-        <translation>Server</translation>
+        <translation type="obsolete">Server</translation>
     </message>
     <message>
         <source>User</source>
-        <translation>Uživatel</translation>
+        <translation type="obsolete">Uživatel</translation>
     </message>
     <message>
         <source>Custom
@@ -3736,6 +3736,10 @@ nastaveném pro běh služby CAE pro naplnění databáze se zdroji zvuku.</tran
     </message>
     <message>
         <source>Stop Cart</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Short Name:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

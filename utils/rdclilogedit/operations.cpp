@@ -509,7 +509,7 @@ void MainObject::Setpurgedate(const QDate &date)
 
 void MainObject::Setservice(const QString &str)
 {
-  RDSvc *svc=new RDSvc(str,edit_config);
+  RDSvc *svc=new RDSvc(str,edit_station,edit_config);
   if(svc->exists()) {
     edit_service=str;
     edit_modified=true;

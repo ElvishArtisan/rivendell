@@ -29,21 +29,14 @@
 #include <rdreport.h>
 
 
-bool RDReport::ExportRadioTraffic(const QDate &startdate,const QDate &enddate,
+bool RDReport::ExportRadioTraffic(const QString &filename,
+				  const QDate &startdate,const QDate &enddate,
 				  const QString &mixtable)
 {
   QString sql;
   RDSqlQuery *q;
   FILE *f;
   QString air_fmt;
-
-#ifdef WIN32
-  QString filename=RDDateDecode(exportPath(RDReport::Windows),startdate,
-				report_config,serviceName());
-#else
-  QString filename=RDDateDecode(exportPath(RDReport::Linux),startdate,
-				report_config,serviceName());
-#endif
 
   QFile file(filename);
   if((f=fopen((const char *)filename,"wb"))==NULL) {
