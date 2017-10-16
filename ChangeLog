@@ -16159,3 +16159,6 @@
 2017-10-16 Fred Gleason <fredg@paravelsystems.com>
 	* Removed policy to update cut expiration date/time automatically
 	upon audio update.
+2017-10-16 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'RDCut::autoSegue()' that caused an error when
+	setting segues by level [Github issue #000182].

@@ -1352,7 +1352,7 @@ void RDCut::autoSegue(int level,int length,RDStation *station,RDUser *user,
     RDTrimAudio *trim=new RDTrimAudio(station,config);
     trim->setCartNumber(cart_number);
     trim->setCutNumber(cut_number);
-    trim->setTrimLevel(level);
+    trim->setTrimLevel(100*level);
     if(trim->runTrim(user->name(),user->password())==RDTrimAudio::ErrorOk) {
       if((point=trim->endPoint())>=0) {
 	setSegueStartPoint(trim->endPoint());
