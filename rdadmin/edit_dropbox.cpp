@@ -239,13 +239,54 @@ EditDropbox::EditDropbox(int id,QWidget *parent)
 	  this,SLOT(autotrimToggledData(bool)));
 
   //
+  // Segue
+  //
+  box_segue_box=new QCheckBox(this);
+  box_segue_box->setGeometry(90,271,15,15);
+  label=new QLabel(box_segue_box,tr("Insert Segue Markers"),
+     this);
+  label->setGeometry(110,269,sizeHint().width()-40,20);
+  label->setFont(font);
+  label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  box_segue_level_spin=
+    new QSpinBox(this);
+  box_segue_level_spin->setGeometry(300,295,50,20);
+  box_segue_level_spin->setRange(-100,0);
+  box_segue_level_label=
+    new QLabel(box_segue_level_spin,tr("Segue Level:"),
+        this);
+  box_segue_level_label->setGeometry(120,295,160,20);
+  box_segue_level_label->setFont(font);
+  box_segue_level_label->setAlignment(AlignVCenter|AlignRight);
+  box_segue_level_unit=
+    new QLabel(box_segue_level_spin,("dBFS"),this);
+  box_segue_level_unit->setGeometry(360,296,60,20);
+  box_segue_level_unit->setAlignment(AlignVCenter|AlignLeft);
+
+  box_segue_length_spin=new QSpinBox(this);
+  box_segue_length_spin->setGeometry(300,320,70,20);
+  box_segue_length_spin->setRange(0,180000);
+  box_segue_length_label=
+     new QLabel(box_segue_length_spin,tr("Segue Length:"),
+      this);
+  box_segue_length_label->setGeometry(120,320,160,20);
+  box_segue_length_label->setFont(font);
+  box_segue_length_label->setAlignment(AlignVCenter|AlignRight);
+  box_segue_length_unit=
+    new QLabel(box_segue_length_spin,("msec"),this);
+  box_segue_length_unit->setGeometry(375,321,60,20);
+  box_segue_length_unit->setAlignment(AlignVCenter|AlignLeft);
+  connect(box_segue_box,SIGNAL(toggled(bool)),
+          this,SLOT(segueToggledData(bool)));
+
+  //
   // Use CartChunk ID
   //
   box_use_cartchunk_id_box=new QCheckBox(this);
-  box_use_cartchunk_id_box->setGeometry(90,271,15,15);
+  box_use_cartchunk_id_box->setGeometry(90,350,15,15);
   label=new QLabel(box_use_cartchunk_id_box,
 		   tr("Get cart number from CartChunk CutID"),this);
-  label->setGeometry(110,269,sizeHint().width()-40,20);
+  label->setGeometry(110,348,sizeHint().width()-40,20);
   label->setFont(font);
   label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
 
@@ -253,10 +294,10 @@ EditDropbox::EditDropbox(int id,QWidget *parent)
   // Title from CartChunk ID
   //
   box_title_from_cartchunk_id_box=new QCheckBox(this);
-  box_title_from_cartchunk_id_box->setGeometry(90,295,15,15);
+  box_title_from_cartchunk_id_box->setGeometry(90,374,15,15);
   label=new QLabel(box_title_from_cartchunk_id_box,
 		   tr("Get cart title from CartChunk CutID"),this);
-  label->setGeometry(110,293,sizeHint().width()-40,20);
+  label->setGeometry(110,372,sizeHint().width()-40,20);
   label->setFont(font);
   label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
 
@@ -264,10 +305,10 @@ EditDropbox::EditDropbox(int id,QWidget *parent)
   // Fix Broken Formats
   //
   box_fix_broken_formats_box=new QCheckBox(this);
-  box_fix_broken_formats_box->setGeometry(90,319,15,15);
+  box_fix_broken_formats_box->setGeometry(90,398,15,15);
   label=new QLabel(box_fix_broken_formats_box,
 		   tr("Attempt to work around malformatted input files"),this);
-  label->setGeometry(110,317,sizeHint().width()-40,20);
+  label->setGeometry(110,396,sizeHint().width()-40,20);
   label->setFont(font);
   label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
 
@@ -276,14 +317,14 @@ EditDropbox::EditDropbox(int id,QWidget *parent)
   //
   box_startoffset_spin=
     new QSpinBox(this);
-  box_startoffset_spin->setGeometry(215,341,50,20);
+  box_startoffset_spin->setGeometry(215,422,50,20);
   box_startoffset_spin->setRange(-7,7);
   label=new QLabel(box_startoffset_spin,tr("Offset start date by"),this);
-  label->setGeometry(90,341,120,20);
+  label->setGeometry(90,422,120,20);
   label->setFont(font);
   label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
   label=new QLabel(box_startoffset_spin,tr("days"),this);
-  label->setGeometry(275,343,100,20);
+  label->setGeometry(275,424,100,20);
   label->setFont(font);
   label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
 
@@ -292,14 +333,14 @@ EditDropbox::EditDropbox(int id,QWidget *parent)
   //
   box_endoffset_spin=
     new QSpinBox(this);
-  box_endoffset_spin->setGeometry(215,365,50,20);
+  box_endoffset_spin->setGeometry(215,446,50,20);
   box_endoffset_spin->setRange(-7,7);
   label=new QLabel(box_endoffset_spin,tr("Offset end date by"),this);
-  label->setGeometry(90,365,120,20);
+  label->setGeometry(90,446,120,20);
   label->setFont(font);
   label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
   label=new QLabel(box_endoffset_spin,tr("days"),this);
-  label->setGeometry(275,365,100,20);
+  label->setGeometry(275,446,100,20);
   label->setFont(font);
   label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
 
@@ -307,38 +348,38 @@ EditDropbox::EditDropbox(int id,QWidget *parent)
   // Create Dates
   //
   box_create_dates_box=new QCheckBox(this);
-  box_create_dates_box->setGeometry(90,399,15,15);
+  box_create_dates_box->setGeometry(90,470,15,15);
   label=new QLabel(box_create_dates_box,tr("Create Dates when no Dates Exist"),
 		   this);
-  label->setGeometry(110,397,sizeHint().width()-40,20);
+  label->setGeometry(110,468,sizeHint().width()-40,20);
   label->setFont(font);
   label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
   box_create_startdate_offset_spin=
     new QSpinBox(this);
-  box_create_startdate_offset_spin->setGeometry(300,423,50,20);
+  box_create_startdate_offset_spin->setGeometry(300,494,50,20);
   box_create_startdate_offset_spin->setRange(-180,180);
   box_create_startdate_label= 
     new QLabel(box_create_startdate_offset_spin,tr("Create start date offset:"),
 	       this);
-  box_create_startdate_label->setGeometry(120,423,160,20);
+  box_create_startdate_label->setGeometry(120,494,160,20);
   box_create_startdate_label->setFont(font);
   box_create_startdate_label->setAlignment(AlignVCenter|AlignRight);
   box_create_startdate_unit=
     new QLabel(box_create_startdate_offset_spin,("days"),this);
-  box_create_startdate_unit->setGeometry(360,424,60,20);
+  box_create_startdate_unit->setGeometry(360,495,60,20);
   box_create_startdate_unit->setAlignment(AlignVCenter|AlignLeft);
   box_create_enddate_offset_spin=new QSpinBox(this);
-  box_create_enddate_offset_spin->setGeometry(300,453,50,20);
+  box_create_enddate_offset_spin->setGeometry(300,524,50,20);
   box_create_enddate_offset_spin->setRange(-180,180);
   box_create_enddate_label= 
      new QLabel(box_create_enddate_offset_spin,tr("Create end date offset:"),
 		this);
-  box_create_enddate_label->setGeometry(120,453,160,20);
+  box_create_enddate_label->setGeometry(120,524,160,20);
   box_create_enddate_label->setFont(font);
   box_create_enddate_label->setAlignment(AlignVCenter|AlignRight);
   box_create_enddate_unit=
     new QLabel(box_create_enddate_offset_spin,("days"),this);
-  box_create_enddate_unit->setGeometry(360,453,60,20);
+  box_create_enddate_unit->setGeometry(360,524,60,20);
   box_create_enddate_unit->setAlignment(AlignVCenter|AlignLeft);
   connect(box_create_dates_box,SIGNAL(toggled(bool)),
           this,SLOT(createDatesToggledData(bool)));
@@ -413,7 +454,12 @@ EditDropbox::EditDropbox(int id,QWidget *parent)
   box_create_enddate_offset_spin->setValue(box_dropbox->createEnddateOffset());
   normalizationToggledData(box_normalization_box->isChecked());
   autotrimToggledData(box_autotrim_box->isChecked());
+  segueToggledData(box_segue_box->isChecked());
   createDatesToggledData(box_create_dates_box->isChecked());
+  segueToggledData(box_segue_box->isChecked());
+  box_segue_box->setChecked(box_dropbox->segueLevel()<1);
+  box_segue_level_spin->setValue(box_dropbox->segueLevel()/100);
+  box_segue_length_spin->setValue(box_dropbox->segueLength());
 
   sql=QString("select SCHED_CODE from DROPBOX_SCHED_CODES ")+
     QString().sprintf("where DROPBOX_ID=%d",box_dropbox->id());
@@ -427,7 +473,7 @@ EditDropbox::EditDropbox(int id,QWidget *parent)
 
 QSize EditDropbox::sizeHint() const
 {
-  return QSize(450,573);
+  return QSize(450,644);
 } 
 
 
@@ -487,6 +533,20 @@ void EditDropbox::autotrimToggledData(bool state)
   box_autotrim_level_spin->setEnabled(state);
   box_autotrim_level_label->setEnabled(state);
   box_autotrim_level_unit->setEnabled(state);
+}
+
+void EditDropbox::segueToggledData(bool state)
+{
+  box_segue_level_spin->setEnabled(state);
+  box_segue_level_label->setEnabled(state);
+  box_segue_level_unit->setEnabled(state);
+  box_segue_length_spin->setEnabled(state);
+  box_segue_length_label->setEnabled(state);
+  box_segue_length_unit->setEnabled(state);
+  if (!state) {
+    box_segue_level_spin->setValue(1);
+    box_segue_length_spin->setValue(0);
+  }
 }
 
 void EditDropbox::createDatesToggledData(bool state)
@@ -560,6 +620,7 @@ void EditDropbox::okData()
     box_dropbox->
       setAutotrimLevel(box_autotrim_level_spin->value()*100);
   }
+
   else {
     box_dropbox->setAutotrimLevel(0);
   }
@@ -572,6 +633,15 @@ void EditDropbox::okData()
   box_dropbox->setCreateDates(box_create_dates_box->isChecked());
   box_dropbox->setCreateStartdateOffset(box_create_startdate_offset_spin->value());
   box_dropbox->setCreateEnddateOffset(box_create_enddate_offset_spin->value());
+
+  if(box_segue_box->isChecked()){
+    box_dropbox->setSegueLevel(box_segue_level_spin->value()*100);
+    box_dropbox->setSegueLength(box_segue_length_spin->value());
+  }
+  else{
+    box_dropbox->setSegueLevel(1);
+    box_dropbox->setSegueLength(0);
+  }
 
   sql=QString("delete from DROPBOX_SCHED_CODES where ")+
     QString().sprintf("DROPBOX_ID=%d",box_dropbox->id());

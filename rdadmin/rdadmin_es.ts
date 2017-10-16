@@ -1278,6 +1278,18 @@ computador para obtener los recursos de audio de dicho equipo.</translation>
 files, causing any whose files remain to be imported again.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Insert Segue Markers</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Segue Level:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Segue Length:</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditEncoder</name>

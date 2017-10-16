@@ -1752,6 +1752,8 @@ bool CreateDb(QString name,QString pwd)
         SINGLE_CART enum('N','Y') default 'N',\
         TO_CART int unsigned default 0,\
         FORCE_TO_MONO enum('N','Y') default 'N',\
+        SEGUE_LEVEL int(11) default 1,\
+        SEGUE_LENGTH int(11) default 0,\
         USE_CARTCHUNK_ID enum('N','Y') default 'N',\
         TITLE_FROM_CARTCHUNK_ID enum('N','Y') default 'N',\
         DELETE_CUTS enum('N','Y') default 'N',\
@@ -8498,6 +8500,14 @@ int UpdateDb(int ver)
       q1=new QSqlQuery(sql);
       delete q1;
     }
+    delete q;
+  }
+
+  if(ver<271) {
+    sql=QString("alter table DROPBOXES ")+
+      "add column SEGUE_LEVEL int(11) default 1 after FORCE_TO_MONO, "+
+      "add column SEGUE_LENGTH int(11) default 0 after SEGUE_LEVEL";
+    q=new RDSqlQuery(sql);
     delete q;
   }
 

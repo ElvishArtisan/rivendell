@@ -16145,3 +16145,11 @@
 	* Added 'NewHostShortNameRegex=', 'NewHostShortNameGroup=',
 	'NewServiceNameRegex=' and 'NewServiceNameGroup=' parameters
 	to rd.conf(5).
+2017-10-16 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'DROPBOXES.SEGUE_LEVEL' and 'DROPBOXES.SEGUE_LENGTH' fields
+	to the database.
+	* Incremented the database version to 271.
+	* Applied a pull request from Dennis Graiani <dennis.graiani@gmail.com>
+	the added Segue parameters to the 'Edit Dropbox' dialog.
+	* Modified the 'Segue Length' control in the 'Edit Dropbox' dialog
+	to take mS as units.

@@ -2,7 +2,7 @@
 //
 // Revert the Rivendell database schema to an earlier version.
 //
-//   (C) Copyright 2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2016-2017 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -238,6 +238,10 @@ void MainObject::Revert(int schema) const
 
   case 270:
     Revert270();
+    break;
+
+  case 271:
+    Revert271();
     break;
   }
 }
@@ -709,7 +713,6 @@ void MainObject::Revert269() const
   SetVersion(268);
 }
 
-
 void MainObject::Revert270() const
 {
   QString sql;
@@ -720,6 +723,19 @@ void MainObject::Revert270() const
   delete q;  
 
   SetVersion(269);
+}
+
+
+void MainObject::Revert271() const
+{
+  QString sql;
+  QSqlQuery *q;
+  sql=QString("alter table DROPBOXES drop column SEGUE_LEVEL, ")+
+    "drop column SEGUE_LENGTH";
+  q=new QSqlQuery(sql);
+  delete q;
+
+  SetVersion(270);
 }
 
 
@@ -767,7 +783,7 @@ int MainObject::MapSchema(const QString &ver)
   version_map["2.15"]=259;
   version_map["2.16"]=263;
   version_map["2.17"]=268;
-  version_map["2.18"]=270;
+  version_map["2.18"]=271;
 
   //
   // Normalize String

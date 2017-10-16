@@ -53,6 +53,7 @@ class EditDropbox : public QDialog
   void schedcodesData();
   void normalizationToggledData(bool state);
   void autotrimToggledData(bool state);
+  void segueToggledData(bool state);
   void createDatesToggledData(bool state);
   void resetData();
   void okData();
@@ -93,6 +94,13 @@ class EditDropbox : public QDialog
   QSpinBox *box_create_enddate_offset_spin;
   QLabel *box_create_enddate_label;
   QLabel *box_create_enddate_unit;
+  QCheckBox *box_segue_box;
+  QSpinBox *box_segue_level_spin;
+  QLabel *box_segue_level_label;
+  QLabel *box_segue_level_unit;
+  QSpinBox *box_segue_length_spin;
+  QLabel *box_segue_length_label;
+  QLabel *box_segue_length_unit;
   RDSchedCodesDialog *box_schedcodes_dialog;
   QStringList box_schedcodes;
 };

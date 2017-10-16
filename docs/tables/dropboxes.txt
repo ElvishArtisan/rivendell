@@ -14,6 +14,8 @@ AUTOTRIM_LEVEL               int(11)
 SINGLE_CART                  enum('N','Y')
 TO_CART                      uint(10)
 FORCE_TO_MONO                enum('N','Y')
+SEGUE_LEVEL                  int(11)       dBFS
+SEGUE_LENGTH                 int(11)       msec
 USE_CARTCHUNK_ID             enum('N','Y')
 TITLE_FROM_CARTCHUNK_ID      enum('N','Y') Set Rivendell cart title from cartchunk cutid.
 DELETE_CUTS                  enum('N','Y')

@@ -60,7 +60,9 @@ void MainObject::StartDropboxes()
     "CREATE_STARTDATE_OFFSET,"+  // 17
     "CREATE_ENDDATE_OFFSET,"+    // 18
     "SET_USER_DEFINED,"+         // 19
-    "FORCE_TO_MONO "+            // 20
+    "FORCE_TO_MONO,"+            // 20
+    "SEGUE_LEVEL,"+              // 21
+    "SEGUE_LENGTH "+             // 22
     "from DROPBOXES where "+
     "STATION_NAME=\""+RDEscapeString(catch_config->stationName())+"\"";
   q=new RDSqlQuery(sql);
@@ -84,6 +86,12 @@ void MainObject::StartDropboxes()
     }
     if(q->value(6).toString()=="Y") {
       cmd+=" --use-cartchunk-cutid";
+    }
+    if(q->value(21).toInt()<1) {
+        cmd+=
+          QString().sprintf(" --segue-level=%d",q->value(21).toInt());
+        cmd+=
+          QString().sprintf(" --segue-length=%u",q->value(22).toUInt());
     }
     if(q->value(7).toString()=="Y") {
       cmd+=" --title-from-cartchunk-cutid";

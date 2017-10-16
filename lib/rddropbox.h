@@ -71,6 +71,10 @@ class RDDropbox
   void setCreateStartdateOffset(int offset) const;
   int createEnddateOffset() const;
   void setCreateEnddateOffset(int offset) const;
+  int segueLevel() const;
+  void setSegueLevel(int level) const;
+  int segueLength() const;
+  void setSegueLength(int length) const;
 
  private:
   void SetRow(const QString &param,int value) const;
