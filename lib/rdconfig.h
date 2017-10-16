@@ -69,8 +69,10 @@ class RDConfig
   bool provisioningCreateHost() const;
   QString provisioningHostTemplate() const;
   QHostAddress provisioningHostIpAddress() const;
+  QString provisioningHostShortName(const QString &hostname) const;
   bool provisioningCreateService() const;
   QString provisioningServiceTemplate() const;
+  QString provisioningServiceName(const QString &hostname) const;
   int alsaPeriodQuantity() const;
   int alsaPeriodSize() const;
   int alsaChannelsPerPcm() const;
@@ -130,8 +132,12 @@ class RDConfig
   bool conf_provisioning_create_host;
   QString conf_provisioning_host_template;
   QHostAddress conf_provisioning_host_ip_address;
+  QString conf_provisioning_host_short_name_regex;
+  unsigned conf_provisioning_host_short_name_group;
   bool conf_provisioning_create_service;
   QString conf_provisioning_service_template;
+  QString conf_provisioning_service_name_regex;
+  unsigned conf_provisioning_service_name_group;
   bool conf_log_xload_debug_data;
   int conf_alsa_period_quantity;
   int conf_alsa_period_size;

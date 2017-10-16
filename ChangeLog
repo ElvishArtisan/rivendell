@@ -16141,3 +16141,7 @@
 	Host' dialog.
 	* Added a 'Short Name' control to the 'Edit Host' dialog.
 	* Implemented a '%R' wildcard for Rivendell Host Short Name.
+2017-10-16 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'NewHostShortNameRegex=', 'NewHostShortNameGroup=',
+	'NewServiceNameRegex=' and 'NewServiceNameGroup=' parameters
+	to rd.conf(5).

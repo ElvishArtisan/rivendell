@@ -38,17 +38,26 @@ XportHostname=
 ; when the 'rivendell' system service is started, using the Host definition
 ; specified in NewHostTemplate= as the template. The new host entry will be
 ; assigned the IP address bound to the network interface specified by
-; NewHostIpAddress= ('lo' by default).
+; NewHostIpAddress= ('lo' by default). The new host's Short Name can be
+; populated using the NewHostShortName= parameter, which takes a Perl-style
+; regex to capture the required text from the full host name, using the
+; captured group from the regex specified in 'NewHostShortNameGroup='.
 CreateHost=No
 NewHostTemplate=some_host_entry
 NewHostIpAddress=lo
+NewHostShortNameRegex=[^*]*
+NewHostShortNameGroup=0
 
 ; If CreateService=Yes, a Service entry will be automatically created in the DB
 ; when the 'rivendell' system service is started, using the Service definition
-; specified in NewServiceTemplate= as the template. The new service entry will
-; have the same name as the hostname.
+; specified in NewServiceTemplate= as the template. The new service's name
+; is determined by the NewServiceNameRegex= parameter, which takes a Perl-style
+; regex to capture the required text from the full host name, using the
+; captured group from the regex specified in 'NewServiceNameGroup='.
 CreateService=No
 NewServiceTemplate=some_service_entry
+NewServiceNameRegex=[^*]*
+NewServiceNameGroup=0
 
 [Logs]
 ; Set the method to be used for logging.  Possible values are:

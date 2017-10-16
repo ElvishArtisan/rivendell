@@ -594,6 +594,13 @@ void MainObject::InitProvisioning() const
 	if(RDStation::create(rd_config->stationName(),&err_msg,rd_config->provisioningHostTemplate(),rd_config->provisioningHostIpAddress())) {
 	  syslog(LOG_INFO,"created new host entry \"%s\"",
 		 (const char *)rd_config->stationName());
+	  if(!rd_config->provisioningHostShortName(rd_config->stationName()).
+	     isEmpty()) {
+	    RDStation *station=new RDStation(rd_config->stationName());
+	    station->setShortName(rd_config->
+		     provisioningHostShortName(rd_config->stationName()));
+	    delete station;
+	  }
 	}
 	else {
 	  fprintf(stderr,"caed: unable to provision host [%s]\n",
@@ -610,13 +617,16 @@ void MainObject::InitProvisioning() const
   //
   if(rd_config->provisioningCreateService()) {
     if(!rd_config->provisioningServiceTemplate().isEmpty()) {
+      QString svcname=
+	rd_config->provisioningServiceName(rd_config->stationName());
       sql=QString("select NAME from SERVICES where ")+
-	"NAME=\""+RDEscapeString(rd_config->stationName())+"\"";
+	"NAME=\""+RDEscapeString(svcname)+"\"";
       q=new RDSqlQuery(sql);
       if(!q->first()) {
-	if(RDSvc::create(rd_config->stationName(),&err_msg,rd_config->provisioningServiceTemplate())) {
+	if(RDSvc::create(svcname,&err_msg,
+			 rd_config->provisioningServiceTemplate())) {
 	  syslog(LOG_INFO,"created new service entry \"%s\"",
-		 (const char *)rd_config->stationName());
+		 (const char *)svcname);
 	}
 	else {
 	  fprintf(stderr,"caed: unable to provision service [%s]\n",

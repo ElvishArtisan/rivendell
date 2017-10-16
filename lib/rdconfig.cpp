@@ -30,6 +30,7 @@
 #endif  // WIN32
 
 #include <qmessagebox.h>
+#include <qregexp.h>
 #include <qsettings.h>
 #include <qstringlist.h>
 
@@ -271,6 +272,19 @@ QHostAddress RDConfig::provisioningHostIpAddress() const
 }
 
 
+QString RDConfig::provisioningHostShortName(const QString &hostname) const
+{
+  QRegExp exp(conf_provisioning_host_short_name_regex);
+
+  exp.search(hostname);
+  QStringList texts=exp.capturedTexts();
+  if(texts.size()<conf_provisioning_host_short_name_group) {
+    return QString();
+  }
+  return texts[conf_provisioning_host_short_name_group];
+}
+
+
 bool RDConfig::provisioningCreateService() const
 {
   return conf_provisioning_create_service;
@@ -280,6 +294,19 @@ bool RDConfig::provisioningCreateService() const
 QString RDConfig::provisioningServiceTemplate() const
 {
   return conf_provisioning_service_template;
+}
+
+
+QString RDConfig::provisioningServiceName(const QString &hostname) const
+{
+  QRegExp exp(conf_provisioning_service_name_regex);
+
+  exp.search(hostname);
+  QStringList texts=exp.capturedTexts();
+  if(texts.size()<conf_provisioning_service_name_group) {
+    return QString();
+  }
+  return texts[conf_provisioning_service_name_group];
 }
 
 
@@ -501,10 +528,18 @@ void RDConfig::load()
   conf_provisioning_host_template=
     profile->stringValue("Provisioning","NewHostTemplate");
   iface=profile->stringValue("Provisioning","NewHostIpAddress","lo");
+  conf_provisioning_host_short_name_regex=
+    profile->stringValue("Provisioning","NewHostShortNameRegex","[^*]*");
+  conf_provisioning_host_short_name_group=
+    profile->intValue("Provisioning","NewHostShortNameGroup");
   conf_provisioning_create_service=
     profile->boolValue("Provisioning","CreateService");
   conf_provisioning_service_template=
     profile->stringValue("Provisioning","NewServiceTemplate");
+  conf_provisioning_service_name_regex=
+    profile->stringValue("Provisioning","NewServiceNameRegex","[^*]*");
+  conf_provisioning_service_name_group=
+    profile->intValue("Provisioning","NewServiceNameGroup");
 
   conf_audio_root=
     profile->stringValue("Cae","AudioRoot",RD_AUDIO_ROOT);
@@ -635,6 +670,8 @@ void RDConfig::clear()
   conf_provisioning_create_host=false;
   conf_provisioning_host_template="";
   conf_provisioning_host_ip_address.setAddress("127.0.0.2");
+  conf_provisioning_host_short_name_regex="[^%]*";
+  conf_provisioning_host_short_name_group=0;
   conf_provisioning_create_service=false;
   conf_provisioning_service_template="";
   conf_alsa_period_quantity=RD_ALSA_DEFAULT_PERIOD_QUANTITY;
