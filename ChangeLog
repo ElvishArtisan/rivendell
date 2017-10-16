@@ -16165,3 +16165,5 @@
 2017-10-16 Fred Gleason <fredg@paravelsystems.com>
 	* Implemented '%k', '%K', '%q' and '%Q' metadata wildcards for
 	rdimport(1).
+2017-10-16 Fred Gleason <fredg@paravelsystems.com>
+	* Updated 'NEWS'.
