@@ -16156,3 +16156,6 @@
 2017-10-16 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in RDLibrary that prevented more than 64 characters
 	from being entered for the 'Album' field [Github issue #000184].
+2017-10-16 Fred Gleason <fredg@paravelsystems.com>
+	* Removed policy to update cut expiration date/time automatically
+	upon audio update.

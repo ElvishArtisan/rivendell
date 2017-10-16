@@ -170,7 +170,7 @@ EditGroup::EditGroup(QString group,QWidget *parent)
   group_cutlife_label->setFont(font);
   group_cutlife_label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
   group_cutlife_unit=
-    new QLabel(group_cutlife_check,tr("days after audio update"),this);
+    new QLabel(group_cutlife_check,tr("days after cut creation"),this);
   group_cutlife_unit->setFont(font);
   group_cutlife_unit->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
 

@@ -1242,13 +1242,6 @@ bool RDCut::checkInRecording(const QString &station_name,
     break;
   }
 
-  //
-  // Get Group Attributes
-  //
-  QString start_datetime;
-  QString end_datetime;
-  RDCut::GetDefaultDateTimes(&start_datetime,&end_datetime,cutName());
-
   sql=QString("update CUTS set ")+
     "START_POINT=0,"+
     QString().sprintf("END_POINT=%d,",msecs)+
@@ -1272,8 +1265,6 @@ bool RDCut::checkInRecording(const QString &station_name,
     "ORIGIN_NAME=\""+RDEscapeString(station_name)+"\","+
     "ORIGIN_LOGIN_NAME="+user+","+
     "SOURCE_HOSTNAME=\""+RDEscapeString(src_hostname)+"\","+
-    "START_DATETIME="+start_datetime+","+
-    "END_DATETIME="+end_datetime+","+
     "UPLOAD_DATETIME=null "+
     "where CUT_NAME=\""+cut_name+"\"";
   q=new RDSqlQuery(sql);

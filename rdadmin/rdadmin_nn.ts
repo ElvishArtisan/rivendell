@@ -1708,7 +1708,7 @@ Vil du framleis lagra?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>days after audio update</source>
+        <source>days after cut creation</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
