@@ -377,7 +377,7 @@ EditCart::EditCart(unsigned number,QString *path,bool new_cart,bool profile_rip,
   rdcart_controls.album_edit=new QLineEdit(this);
   rdcart_controls.album_edit->setGeometry(135,158,480,21);
   rdcart_controls.album_edit->setFont(line_edit_font);
-  rdcart_controls.album_edit->setMaxLength(64);
+  rdcart_controls.album_edit->setMaxLength(255);
   QLabel *rdcart_album_label=
     new QLabel(rdcart_controls.album_edit,tr("Al&bum:"),this);
   rdcart_album_label->setGeometry(10,158,120,21);

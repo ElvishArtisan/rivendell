@@ -16153,3 +16153,6 @@
 	the added Segue parameters to the 'Edit Dropbox' dialog.
 	* Modified the 'Segue Length' control in the 'Edit Dropbox' dialog
 	to take mS as units.
+2017-10-16 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in RDLibrary that prevented more than 64 characters
+	from being entered for the 'Album' field [Github issue #000184].
