@@ -105,7 +105,6 @@ class RDWaveData
   void setOutCue(const QString &str);
   RDWaveData::EndType endType() const;
   void setEndType(RDWaveData::EndType type);
-
   int forcedLength() const;
   void setForcedLength(int msecs);
   int averageLength() const;
@@ -132,7 +131,6 @@ class RDWaveData
   void setOwner(const QString &str);
   QDateTime metadataDatetime() const;
   void setMetadataDatetime(const QDateTime &dt);
-
   bool dayOfWeek(int dow) const;
   void setDayOfWeek(int dow,bool state);
   int weight() const;
@@ -173,10 +171,12 @@ class RDWaveData
   void setStartDate(const QDate &date);
   QTime startTime() const;
   void setStartTime(const QTime &time);
+  QDateTime startDateTime() const;
   QDate endDate() const;
   void setEndDate(const QDate &date);
   QTime endTime() const;
   void setEndTime(const QTime &time);
+  QDateTime endDateTime() const;
   QTime daypartStartTime() const;
   void setDaypartStartTime(const QTime &time);
   QTime daypartEndTime() const;
@@ -187,6 +187,7 @@ class RDWaveData
   void setAudioSettings(const RDSettings &settings);
   int playGain() const;
   void setPlayGain(int lvl);
+  bool checkDateTimes();
   QString dump() const;
   void clear();
   static QString endTypeText(EndType type);
@@ -195,6 +196,7 @@ class RDWaveData
 
  private:
   bool data_metadata_found;
+  bool data_datetime_set;
   unsigned data_cart_number;
   CartType data_cart_type;
   int data_cut_number;

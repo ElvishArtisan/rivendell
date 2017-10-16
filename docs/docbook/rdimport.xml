@@ -295,6 +295,22 @@
 	  </varlistentry>
 
 	  <varlistentry>
+	    <term><userinput>%k</userinput></term>
+	    <listitem>
+	      <para>Time component of the cut start date/time, in
+	      format <userinput>HH:MM:SS</userinput></para>
+	    </listitem>
+	  </varlistentry>
+
+	  <varlistentry>
+	    <term><userinput>%K</userinput></term>
+	    <listitem>
+	      <para>Time component of the cut end date/time, in
+	      format <userinput>HH:MM:SS</userinput></para>
+	    </listitem>
+	  </varlistentry>
+
+	  <varlistentry>
 	    <term><userinput>%l</userinput></term>
 	    <listitem>
 	      <para>Album</para>
@@ -326,6 +342,29 @@
 	    <term><userinput>%p</userinput></term>
 	    <listitem>
 	      <para>Publisher</para>
+	    </listitem>
+	  </varlistentry>
+
+	  <varlistentry>
+	    <term><userinput>%q</userinput></term>
+	    <listitem>
+	      <para>Date component of the cut start date/time, in
+	      format <userinput>YYYY-MM-DD</userinput></para>
+	    </listitem>
+	  </varlistentry>
+
+	  <varlistentry>
+	    <term><userinput>%Q</userinput></term>
+	    <listitem>
+	      <para>Date component of the cut end date/time, in
+	      format <userinput>YYYY-MM-DD</userinput></para>
+	    </listitem>
+	  </varlistentry>
+
+	  <varlistentry>
+	    <term><userinput>%l</userinput></term>
+	    <listitem>
+	      <para>Album</para>
 	    </listitem>
 	  </varlistentry>
 

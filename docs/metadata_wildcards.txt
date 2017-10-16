@@ -17,13 +17,13 @@ Now       Next       Field
  %h        %H        Event length (in milliseconds)
  %i        %I        Cut Description
  %j        %J        Cut Number
- %k        %K        [Unassigned]
+ %k        %K        Start [%k]/end [%K] time for rdimport(1) [HH:MM:SS]
  %l        %L        Album
  %m        %M        Composer
  %n        %N        The Rivendell cart number
  %o        %O        Outcue
  %p        %P        Publisher
- %q        %Q        [Unassigned]
+ %q        %Q        Start [%q]/end [%Q] date for rdimport(1) [YYYY-MM-DD]
  %r        %R        Conductor
  %s        %S        Song ID
  %t        %T        Title

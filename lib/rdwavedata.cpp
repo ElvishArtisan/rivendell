@@ -806,6 +806,7 @@ QDate RDWaveData::startDate() const
 void RDWaveData::setStartDate(const QDate &date)
 {
   data_start_date=date;
+  data_datetime_set=true;
 }
 
 
@@ -818,6 +819,13 @@ QTime RDWaveData::startTime() const
 void RDWaveData::setStartTime(const QTime &time)
 {
   data_start_time=time;
+  data_datetime_set=true;
+}
+
+
+QDateTime RDWaveData::startDateTime() const
+{
+  return QDateTime(data_start_date,data_start_time);
 }
 
 
@@ -854,6 +862,7 @@ QDate RDWaveData::endDate() const
 void RDWaveData::setEndDate(const QDate &date)
 {
   data_end_date=date;
+  data_datetime_set=true;
 }
 
 
@@ -866,6 +875,13 @@ QTime RDWaveData::endTime() const
 void RDWaveData::setEndTime(const QTime &time)
 {
   data_end_time=time;
+  data_datetime_set=true;
+}
+
+
+QDateTime RDWaveData::endDateTime() const
+{
+  return QDateTime(data_end_date,data_end_time);
 }
 
 
@@ -926,6 +942,24 @@ int RDWaveData::playGain() const
 void RDWaveData::setPlayGain(int lvl)
 {
   data_play_gain=lvl;
+}
+
+
+bool RDWaveData::checkDateTimes()
+{
+  if(data_datetime_set) {
+    if(startDateTime()<endDateTime()) {
+      return true;
+    }
+    else {
+      setStartDate(QDate());
+      setEndDate(QDate());
+      setStartTime(QTime());
+      setEndTime(QTime());
+      return false;
+    }
+  }
+  return true;
 }
 
 
@@ -1072,6 +1106,7 @@ QString RDWaveData::dump() const
 void RDWaveData::clear()
 {
   data_metadata_found=false;
+  data_datetime_set=false;
   data_cart_number=0;
   data_cart_type=RDWaveData::AudioType;
   data_cut_number=0;

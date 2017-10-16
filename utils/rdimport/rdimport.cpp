@@ -1039,6 +1039,12 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
     QString groupname=effective_group->name();
     found_cart=RunPattern(import_metadata_pattern,RDGetBasePart(filename),
 			  wavedata,&groupname);
+    if(!wavedata->checkDateTimes()) {
+      PrintLogDateTime(stderr);
+      fprintf(stderr,
+	      " File \"%s\": End date/time cannot be prior to start date/time, ignoring...\n",
+	      (const char *)filename.utf8());
+    }
     if(groupname!=effective_group->name()) {
       delete effective_group;
       effective_group=new RDGroup(groupname);
@@ -1652,6 +1658,8 @@ bool MainObject::RunPattern(const QString &pattern,const QString &filename,
   QString value;
   QChar delimiter;
   bool found_cartnum=false;
+  QTime time;
+  QDate date;
 
   //
   // Initialize Pattern Parser
@@ -1672,85 +1680,117 @@ bool MainObject::RunPattern(const QString &pattern,const QString &filename,
     if(macro_active) {
       if((filename.at(i)==delimiter)||(i==filename.length())) {
 	switch(field) {
-	  case 'a':
-	    wavedata->setArtist(value);
-	    wavedata->setMetadataFound(true);
-	    break;
+	case 'a':
+	  wavedata->setArtist(value);
+	  wavedata->setMetadataFound(true);
+	  break;
+  
+	case 'b':
+	  wavedata->setLabel(value);
+	  wavedata->setMetadataFound(true);
+	  break;
 
-	  case 'b':
-	    wavedata->setLabel(value);
-	    wavedata->setMetadataFound(true);
-	    break;
+	case 'c':
+	  wavedata->setClient(value);
+	  wavedata->setMetadataFound(true);
+	  break;
 
-	  case 'c':
-	    wavedata->setClient(value);
-	    wavedata->setMetadataFound(true);
-	    break;
+	case 'e':
+	  wavedata->setAgency(value);
+	  wavedata->setMetadataFound(true);
+	  break;
 
-	  case 'e':
-	    wavedata->setAgency(value);
-	    wavedata->setMetadataFound(true);
-	    break;
+	case 'g':
+	  *groupname=value;
+	  break;
 
-	  case 'g':
-	    *groupname=value;
-	    break;
+	case 'i':
+	  wavedata->setDescription(value);
+	  wavedata->setMetadataFound(true);
+	  break;
 
-	  case 'i':
-	    wavedata->setDescription(value);
+	case 'k':
+	  time=QTime::fromString(value);
+	  if(time.isValid()) {
+	    wavedata->setStartTime(time);
 	    wavedata->setMetadataFound(true);
-	    break;
+	  }
+	  break;
 
-	  case 'l':
-	    wavedata->setAlbum(value);
+	case 'K':
+	  time=QTime::fromString(value);
+	  if(time.isValid()) {
+	    wavedata->setEndTime(time);
 	    wavedata->setMetadataFound(true);
-	    break;
+	  }
+	  break;
 
-	  case 'm':
-	    wavedata->setComposer(value);
-	    wavedata->setMetadataFound(true);
-	    break;
+	case 'l':
+	  wavedata->setAlbum(value);
+	  wavedata->setMetadataFound(true);
+	  break;
 
-	  case 'n':
-	    wavedata->setCutId(value);
-	    wavedata->setMetadataFound(true);
-	    found_cartnum=true;
-	    break;
+	case 'm':
+	  wavedata->setComposer(value);
+	  wavedata->setMetadataFound(true);
+	  break;
 
-	  case 'o':
-	    wavedata->setOutCue(value);
-	    wavedata->setMetadataFound(true);
-	    break;
+	case 'n':
+	  wavedata->setCutId(value);
+	  wavedata->setMetadataFound(true);
+	  found_cartnum=true;
+	  break;
 
-	  case 'p':
-	    wavedata->setPublisher(value);
-	    wavedata->setMetadataFound(true);
-	    break;
+	case 'o':
+	  wavedata->setOutCue(value);
+	  wavedata->setMetadataFound(true);
+	  break;
 
-	  case 'r':
-	    wavedata->setConductor(value);
-	    wavedata->setMetadataFound(true);
-	    break;
+	case 'p':
+	  wavedata->setPublisher(value);
+	  wavedata->setMetadataFound(true);
+	  break;
 
-	  case 's':
-	    wavedata->setTmciSongId(value);
+	case 'q':
+	  date=QDate::fromString(value,Qt::ISODate);
+	  if(date.isValid()) {
+	    wavedata->setStartDate(date);
 	    wavedata->setMetadataFound(true);
-	    break;
+	  }
+	  break;
 
-	  case 't':
-	    wavedata->setTitle(value);
+	case 'Q':
+	  date=QDate::fromString(value,Qt::ISODate);
+	  if(date.isValid()) {
+	    wavedata->setEndDate(date);
 	    wavedata->setMetadataFound(true);
-	    break;
+	  }
+	  break;
 
-	  case 'u':
-	    wavedata->setUserDefined(value);
-	    wavedata->setMetadataFound(true);
-	    break;
+	case 'r':
+	  wavedata->setConductor(value);
+	  wavedata->setMetadataFound(true);
+	  break;
 
-	  case 'y':
-	    wavedata->setReleaseYear(value.toInt());
-	    wavedata->setMetadataFound(true);
-	    break;
+	case 's':
+	  wavedata->setTmciSongId(value);
+	  wavedata->setMetadataFound(true);
+	  break;
+
+	case 't':
+	  wavedata->setTitle(value);
+	  wavedata->setMetadataFound(true);
+	  break;
+
+	case 'u':
+	  wavedata->setUserDefined(value);
+	  wavedata->setMetadataFound(true);
+	  break;
+
+	case 'y':
+	  wavedata->setReleaseYear(value.toInt());
+	  wavedata->setMetadataFound(true);
+	  break;
 	}
 	value="";
 	if((ptr>=pattern.length())||(i==filename.length())) {
@@ -1792,6 +1832,7 @@ bool MainObject::RunPattern(const QString &pattern,const QString &filename,
       }
     }
   }
+
   return found_cartnum;
 }
 
@@ -1812,11 +1853,15 @@ bool MainObject::VerifyPattern(const QString &pattern)
       case 'e':
       case 'g':
       case 'i':
+      case 'k':
+      case 'K':
       case 'l':
       case 'm':
       case 'n':
       case 'o':
       case 'p':
+      case 'q':
+      case 'Q':
       case 'r':
       case 's':
       case 't':
