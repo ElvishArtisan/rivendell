@@ -1,7 +1,7 @@
 The NEWS file for the Rivendell package.
 
 -------------------------------------------------------------------------------
-v2.17.0int00 -- 10/16/2017
+INPROGRESS -- 10/17/2017
 
 Changes:
    Group Cut Expiration Policy. Added the ability to set a default
@@ -23,7 +23,9 @@ Changes:
 
    Dropbox Enhancements. Added the ability to specify creation of default
    Segue Markers when processing files via dropbox. See
-   RDAdmin->ManageHosts->Dropbox, as well as the ability to specify start
+   RDAdmin->ManageHosts->Dropbox.
+
+   RDImport/DropBox Enhancements. Added the ability to specify start
    and end datetimes via metadata pattern.
 
    Various other bug fixes.  See the ChangeLog for details.   
