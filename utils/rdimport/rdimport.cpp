@@ -1658,6 +1658,9 @@ bool MainObject::RunPattern(const QString &pattern,const QString &filename,
   QString value;
   QChar delimiter;
   bool found_cartnum=false;
+  bool found_end_date=false;
+  bool found_start_time=false;
+  bool found_end_time=false;
   QTime time;
   QDate date;
 
@@ -1713,6 +1716,7 @@ bool MainObject::RunPattern(const QString &pattern,const QString &filename,
 	  time=QTime::fromString(value);
 	  if(time.isValid()) {
 	    wavedata->setStartTime(time);
+	    found_start_time=true;
 	    wavedata->setMetadataFound(true);
 	  }
 	  break;
@@ -1721,6 +1725,7 @@ bool MainObject::RunPattern(const QString &pattern,const QString &filename,
 	  time=QTime::fromString(value);
 	  if(time.isValid()) {
 	    wavedata->setEndTime(time);
+	    found_end_time=true;
 	    wavedata->setMetadataFound(true);
 	  }
 	  break;
@@ -1756,6 +1761,15 @@ bool MainObject::RunPattern(const QString &pattern,const QString &filename,
 	  if(date.isValid()) {
 	    wavedata->setStartDate(date);
 	    wavedata->setMetadataFound(true);
+	    if(!found_end_date) {
+	      wavedata->setEndDate(date);
+	      if(!found_end_time) {
+		wavedata->setEndTime(QTime(23,59,59));
+	      }
+	    }
+	    if(!found_start_time) {
+	      wavedata->setStartTime(QTime(0,0,0,1));
+	    }
 	  }
 	  break;
 
@@ -1763,7 +1777,11 @@ bool MainObject::RunPattern(const QString &pattern,const QString &filename,
 	  date=QDate::fromString(value,Qt::ISODate);
 	  if(date.isValid()) {
 	    wavedata->setEndDate(date);
+	    found_end_date=true;
 	    wavedata->setMetadataFound(true);
+	    if(!found_end_time) {
+	      wavedata->setEndTime(QTime(23,59,59));
+	    }
 	  }
 	  break;
 

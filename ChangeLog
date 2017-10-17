@@ -16167,3 +16167,6 @@
 	rdimport(1).
 2017-10-16 Fred Gleason <fredg@paravelsystems.com>
 	* Updated 'NEWS'.
+2017-10-17 Fred Gleason <fredg@paravelsystems.com>
+	* Added sane defaults when processing '%k','%K', '%q' and '%Q'
+	wildcards in rdimport(1).

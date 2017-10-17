@@ -348,8 +348,18 @@
 	  <varlistentry>
 	    <term><userinput>%q</userinput></term>
 	    <listitem>
-	      <para>Date component of the cut start date/time, in
-	      format <userinput>YYYY-MM-DD</userinput></para>
+	      <para>
+		Date component of the cut start date/time, in
+		format <userinput>YYYY-MM-DD</userinput>. If the
+		<userinput>%Q</userinput> wildcard has not also been provided,
+		the end date will be assumed to be the same as the start date.
+		If the <userinput>%k</userinput> wildcard has not been
+		provided, a start time of
+		<userinput>00:00:00</userinput> will
+		be assumed, while if the <userinput>%K</userinput> wildcard
+		has not	been provided, an end time of
+		<userinput>23:59:59</userinput> will be assumed.
+	      </para>
 	    </listitem>
 	  </varlistentry>
 
@@ -357,7 +367,11 @@
 	    <term><userinput>%Q</userinput></term>
 	    <listitem>
 	      <para>Date component of the cut end date/time, in
-	      format <userinput>YYYY-MM-DD</userinput></para>
+	      format <userinput>YYYY-MM-DD</userinput>.
+	      If the <userinput>%K</userinput> wildcard
+	      has not been provided, an end time of
+	      <userinput>23:59:59</userinput> will be assumed.
+	      </para>
 	    </listitem>
 	  </varlistentry>
 
