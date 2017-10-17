@@ -16172,3 +16172,5 @@
 	wildcards in rdimport(1).
 2017-10-17 Fred Gleason <fredg@paravelsystems.com>
 	* Updated 'NEWS'.
+2017-10-17 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.17.0int00.
