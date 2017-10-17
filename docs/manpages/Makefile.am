@@ -1,6 +1,6 @@
-## automake.am
+## Makefile.am
 ##
-## docs/docbook/automake.am for Rivendell
+## docs/manpages/automake.am for Rivendell
 ##
 ## (C) Copyright 2015-2017 Fred Gleason <fredg@paravelsystems.com>
 ##
@@ -31,22 +31,40 @@
 %.8:	%.xml
 	xsltproc $(DOCBOOK_STYLESHEETS)/manpages/docbook.xsl $<
 
-all-local:	cae.html\
-                cae.pdf\
-                rml.html\
-                rml.pdf\
-                web_api.html\
-                web_api.pdf
+all-local:	rdclilogedit.1\
+                rdconvert.1\
+                rddbcheck.8\
+                rdmarkerset.8\
+                rdrender.1\
+                rdrevert.8\
+                rdexport.1\
+                rdimport.1
 
-EXTRA_DIST = cae.html\
-             cae.pdf\
-             cae.xml\
-             rml.html\
-             rml.pdf\
-             rml.xml\
-             web_api.html\
-             web_api.pdf\
-             web_api.xml
+man_MANS = rdclilogedit.1\
+           rdconvert.1\
+           rddbcheck.8\
+           rdexport.1\
+           rdimport.1\
+           rdmarkerset.8\
+           rdrender.1\
+           rdrevert.8
+
+EXTRA_DIST = rdclilogedit.1\
+             rdclilogedit.xml\
+             rdconvert.1\
+             rdconvert.xml\
+             rddbcheck.8\
+             rddbcheck.xml\
+             rdmarkerset.8\
+             rdmarkerset.xml\
+             rdrender.1\
+             rdrender.xml\
+             rdrevert.8\
+             rdrevert.xml\
+             rdexport.1\
+             rdexport.xml\
+             rdimport.1\
+             rdimport.xml
 
 CLEANFILES = *~
 MAINTAINERCLEANFILES = *~\

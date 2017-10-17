@@ -1,4 +1,7 @@
 *~
+*.1
+*.5
+*.8
 *.cgi
 *.exe
 *.la
@@ -26,11 +29,10 @@ config.status
 config.sub
 configure
 depcomp
-docs/docbook/*.1
-docs/docbook/*.5
-docs/docbook/*.8
 docs/docbook/*.html
 docs/docbook/*.pdf
+docs/opsguide/*.html
+docs/opsguide/*.pdf
 helpers/cwrap
 helpers/jsmin
 importers/nexgen_filter

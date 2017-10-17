@@ -16174,3 +16174,6 @@
 	* Updated 'NEWS'.
 2017-10-17 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 2.17.0int00.
+2017-10-17 Fred Gleason <fredg@paravelsystems.com>
+	* Moved the man pages to 'docs/manpages/'.
+	* Stubbed out a Rivendell Operations Guide in 'docs/opsguide/'.

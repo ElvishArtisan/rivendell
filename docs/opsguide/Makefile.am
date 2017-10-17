@@ -1,8 +1,8 @@
 ## automake.am
 ##
-## docs/docbook/automake.am for Rivendell
+## docs/opsguide/automake.am for Rivendell
 ##
-## (C) Copyright 2015-2017 Fred Gleason <fredg@paravelsystems.com>
+## (C) Copyright 2017 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -31,22 +31,12 @@
 %.8:	%.xml
 	xsltproc $(DOCBOOK_STYLESHEETS)/manpages/docbook.xsl $<
 
-all-local:	cae.html\
-                cae.pdf\
-                rml.html\
-                rml.pdf\
-                web_api.html\
-                web_api.pdf
+all-local:	opsguide.html\
+                opsguide.pdf
 
-EXTRA_DIST = cae.html\
-             cae.pdf\
-             cae.xml\
-             rml.html\
-             rml.pdf\
-             rml.xml\
-             web_api.html\
-             web_api.pdf\
-             web_api.xml
+EXTRA_DIST = opsguide.html\
+             opsguide.pdf\
+             opsguide.xml
 
 CLEANFILES = *~
 MAINTAINERCLEANFILES = *~\

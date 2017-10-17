@@ -1,0 +1,1779 @@
+<?xml version='1.0'?>
+<book xmlns="http://docbook.org/ns/docbook" version="5.0">
+<info>
+  <title>Rivendell Radio Automation System</title>
+  <subtitle>Operations Guide</subtitle>
+  <author>
+    <personname>
+      <firstname>Fred</firstname><surname>Gleason</surname>
+    </personname>
+  </author>
+  <publisher>
+    <publishername>Paravel Systems LLC</publishername>
+    <address>
+      <street>41 West Lee Highway, Suite 59</street>
+      <city>Warrenton</city>
+      <state>VA</state>
+      <postcode>20186</postcode>
+    </address>
+  </publisher>
+  <orgname class="corporation">
+    
+  </orgname>
+  <edition>
+    v1.0.0
+  </edition>
+  <copyright><year>-2003-2017</year><holder>Fred Gleason</holder></copyright>
+  <cover>
+    <mediaobject>
+      <imageobject>
+	<imagedata fileref="manual-outputdefault.png" scale="20"/>
+      </imageobject>
+    </mediaobject>
+  </cover>
+</info>
+<!--
+<preface><title>Forward</title></preface>
+-->
+
+<chapter>
+  <title>System Overview</title>
+<!--
+  <mediaobject>
+    <imageobject>
+      <imagedata fileref="manual-outputdefault.png" scale="30"/>
+    </imageobject>
+  </mediaobject>
+-->
+  <sect1>
+    <title>Introducing Rivendell</title>
+    <para>
+      Rivendell is a digital audio content management and delivery system
+      that is targeted for use in professional radio broadcast environments.
+      It includes robust tools for the acquisition, organization, management
+      and play out of audio material from and to a diverse array of sources
+      and destinations.  Support for a wide variety of external third party
+      hardware devices and software packages commonly used in the radio
+      industry is featured, including interfaces for:
+    </para>
+    <para>
+      <itemizedlist>
+	<listitem>Audio Routing Switchers</listitem>
+	<listitem>Satellite Downlink Receivers</listitem>
+	<listitem>Audio Mixing Consoles</listitem>
+	<listitem>Commercial Traffic and Music Scheduling Systems</listitem>
+      </itemizedlist>
+    </para>
+    <para>
+      Rivendell is made available under the terms of the GNU General Public
+      License version 2 (GPLv2), a copy of which can be found in Appendix A.
+      As such, it comes with absolutely no warranty, not even the implied
+      warranties of merchantability or fitness for a particular purpose.
+      See the full text of the GPLv2 for details.
+    </para>
+    <para>
+      Rivendell has been designed and developed from the ground up to run
+      on the popular and highly stable GNU/Linux1 operating system.
+      Selected tools (mostly having to do with log generation) have also
+      been ported to run in the Microsoft Windows2 environment as well.
+      Full source code as well as binary installation packages for Windows
+      and select Linux distributions are available on line.  Consult the
+      Rivendell Technical and Administration Guide for details.
+    </para>
+    <para>
+      Rivendell has been designed to be able to operate in a wide variety
+      of roles, ranging from single, self-contained workstations to large,
+      multi-station clusters consisting of multiple workstations and
+      centralized servers.  Also included are redundancy and hot-standby
+      capabilities to allow for reliable operation even in the presence of
+      hardware faults.  Details can be found in the Rivendell Technical
+      and Administration Guide.
+    </para>
+    <para>
+      Rivendell is implemented as a set of interactive tools or 'modules'
+      that collectively provide the complete functionality of the system.
+      Briefly, these modules and their functions are:
+    </para>
+    <para>
+      <variablelist>
+	<varlistentry>
+	  <term>RDAdmin</term>
+	  <listitem>
+	    System wide configuration
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>RDLibrary</term>
+	  <listitem>
+	    Library content management
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>RDCatch</term>
+	  <listitem>
+	    Automatic event scheduler
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>RDAirPlay</term>
+	  <listitem>
+	    On-air play out application
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>RDLogEdit</term>
+	  <listitem>
+	    Log editing and voicetracking tool
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>RDLogManager</term>
+	  <listitem>
+	    Automated log generation and interface utility
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>RDLogin</term>
+	  <listitem>
+	    Set the current user on a Rivendell host
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>RDCartSlots</term>
+	  <listitem>
+	    Emulate a traditional broadcast cart machine
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>RDPanel</term>
+	  <listitem>
+	    Large &quot;cart wall&quot; application
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>RDCastManager</term>
+	  <listitem>
+	    Podcast feed manager
+	  </listitem>
+	</varlistentry>
+      </variablelist>
+    </para>
+    <para>
+      The operation of each of these modules is explained in detail in the
+      chapters that follow.  However, we first need to cover some basic
+      concepts common to all Rivendell modules.
+    </para>
+    <sect2>
+      <title>The Rivendell Security Paradigm</title>
+      <para>
+	All Rivendell modules make use of the following four classes of
+	system resources:
+      </para>
+      <para>
+	<itemizedlist>
+	  <listitem>
+	    Hosts
+	  </listitem>
+	  <listitem>
+	    Users
+	  </listitem>
+	  <listitem>
+	    Groups
+	  </listitem>
+	  <listitem>
+	    Services
+	  </listitem>
+	</itemizedlist>
+      </para>
+      <para>
+	We'll cover each of these concepts in turn.
+      </para>
+      <sect3>
+	<title>Hosts</title>
+	<para>
+	  Every physical computer within a given network that is running
+	  Rivendell software is referred to as a host.  Any host in a
+	  Rivendell network can be individually configured and controlled
+	  from any other host (provided the system administrator has enabled
+	  this capability).  Hosts can be used for a wide variety of
+	  applications, including content ingestion and management,
+	  automatic recording (sometimes referred to as netcatching),
+	  on-air play out or log (sometimes also referred to as playlist)
+	  generation.  It is also possible for a single host to perform all
+	  of these functions.
+	</para>
+      </sect3>
+      <sect3>
+	<title>Users</title>
+	<para>
+	  Every host on a Rivendell network has one or more users available
+	  to it.  In this context, a 'user' is merely a set of access
+	  policies established by the system administrator that defines what
+	  tasks a given host is or is not allowed to perform.  Every host
+	  has at least one user, called the default user.  As the name
+	  suggests, this is the set of user policies that are loaded by
+	  default when the system starts up.  It is also possible to change
+	  the user currently in use on a given host by running the RDLogin
+	  module. 
+	</para>
+      </sect3>
+      <sect3>
+	<title>Groups</title>
+	<para>
+	  A Rivendell group is a system of categories that is used by the
+	  audio library to classify and organize the audio within the library.
+	  Groups are a very powerful capability, and many operations within
+	  Rivendell can be specified on the basis of group membership.
+	  The actual classification scheme, including the number of available
+	  groups and their names, is completely arbitrary so as to allow each
+	  facility to tailor a schema that best fits its own operational
+	  requirements.  Designing and implementing the group schema is one
+	  of the most important tasks facing the Rivendell system
+	  administrator, as a well-designed schema can make long-term
+	  maintenance and management of the system substantially easier
+	  vis-a-vis a poorly thought out one.  We will cover groups in
+	  detail in the chapters devoted to the RDLibrary and RDAdmin modules.
+	</para>
+      </sect3>
+      <sect3>
+	<title>Services</title>
+	<para>
+	  Every facility at which Rivendell is deployed is presumed to have 
+	  one or more ultimate destinations for which audio is intended.
+	  These could be radio stations (e.g. WAVA), satellite uplink
+	  channels, live Internet audio streams, or any mix of the above.
+	  Each of these sorts of destinations is referred to in Rivendell
+	  as a service, and certain parameters, particularly as regards
+	  audio play out and log (playlist) creation, can be configured on
+	  the basis of what particular service is being referenced.
+	</para>
+      </sect3>
+    </sect2>
+    <sect2>
+      <title>The Rivendell Hardware Paradigm</title>
+      <para>
+	In addition to the core computer hardware (CPU, motherboard, etc),
+	each Rivendell host typically interacts with specialized hardware
+	required to accomplish the task at hand.  Three main categories of
+	such 'special' hardware are of interest to us here, the three being
+	audio adapters, serial ports and GPIO/switcher devices.  We'll
+	cover each below.
+      </para>
+      <sect3>
+	<title>Audio Adapters</title>
+	<para>
+	  An audio adapter in Rivendell is simply a device or facility for
+	  getting audio into and/or out of a host on a realtime basis.
+	  Most commonly this will be a sound card, although other, more
+	  exotic possibilities (using TCP/IP networking or direct routing
+	  to other audio applications) also exist.  The three main classes
+	  of audio adapters supported by Rivendell are:
+	</para>
+	<para>
+	  <variablelist>
+	    <varlistentry>
+	      <term>Advanced Linux Sound Architecture (ALSA)</term>
+	      <listitem>
+		<para>
+		  The standard Linux sound card driver starting with the 2.6.x
+		  kernel series, ALSA supports a huge array of commercially
+		  available sound cards, ranging from entry level 'game' cards
+		  to high-end cards aimed at professional audio uses.
+		  More information, including a current list of supported
+		  cards, is available at the ALSA web site,
+		  http://www.alsa-project.org/.
+		</para>
+	      </listitem>
+	    </varlistentry>
+	    <varlistentry>
+	      <term>HPI Adapters</term>
+	      <listitem>
+		<para>
+		  These are high-performance sound cards manufactured by
+		  AudioScience Corporation.  Designed and built specifically
+		  for broadcast automation applications, many feature advanced
+		  capabilities (such as on-board MPEG codecs and AES3 i/o)
+		  specially aimed for use in that setting.  They are so-called
+		  because Rivendell uses AudioScience's special 'HPI' driver
+		  to access and control them.  More information is available
+		  at AudioScience's web site, http://www.audioscience.com/.
+		</para>
+	      </listitem>
+	    </varlistentry>
+	    <varlistentry>
+	      <term>JACK Audio Interconnect Kit</term>
+	      <listitem>
+		<para>
+		  JACK is not a particular set of hardware devices, but rather
+		  an audio 'framework' that allows compliant applications to
+		  share audio resources and route audio in realtime amongst
+		  themselves.  JACK is different from similar efforts within
+		  the Linux realm in that it was designed from the ground up
+		  for professional audio work, with particular focus upon
+		  low-latency operation and synchronous  execution of all
+		  clients.  More information can be found at the JACK web
+		  site, http://jackit.sourceforge.net/.
+		</para>
+	      </listitem>
+	    </varlistentry>
+	  </variablelist>
+	</para>
+      </sect3>
+      <sect3>
+	<title>Serial Ports</title>
+	<para>
+	  Commonly known in the DOS/Windows world as 'COM ports', serial
+	  ports are often used to communicate with outboard gear, such as
+	  satellite receivers and audio switchers.  Up to eight serial ports
+	  can be accessed simultaneously by each Rivendell host.
+	</para>
+      </sect3>
+      <sect3>
+	<title>GPIO/Switcher Devices</title>
+	<para>
+	  Because these capabilities are often (although not always)
+	  bundled together in the same device, Rivendell lumps GPIO and
+	  switcher devices together within the same class.  'GPIO' stands
+	  for 'General Purpose Input Output'.  As the name implies, these
+	  devices can be used to interface to a huge variety of outboard
+	  equipment by means of control lines.  GPI (General Purpose Input)
+	  lines can be used to sense changes in an outboard system's state
+	  (and Rivendell programmed to take various actions on the basis of
+	  that), while GPO (General Purpose Output) lines can be used to
+	  send commands to an outboard system.  The actual physical
+	  interfacing of GPIO devices is complex and generally beyond
+	  the scope of this document.  Readers are encouraged to consult
+	  a good handbook on radio engineering for more information. 
+	  A current list of GPIO/Switcher devices supported by Rivendell
+	  can be found in 'docs/GPIO.txt' file in the Rivendell sources.
+	</para>
+      </sect3>
+    </sect2>
+  </sect1>
+</chapter>
+
+<chapter>
+  <title>Managing the Current User with RDLogin</title>
+  <sect1>
+    <title>RDLogin</title>
+    <para>
+      Rivendell uses a sophisticated system of user privileges to keep track
+      of which users have permission to perform what operations.
+      These privileges are tracked by the system on the basis of user
+      accounts.  Creating user accounts and administering their permissions
+      are done in the RDAdmin module and are covered in the Rivendell
+      Technical and Administration Guide.
+    </para>
+    <para>
+      It's important to note that these user accounts are not the same
+      thing as the “Login Name” that is used to log into the computer system
+      itself.  Rather, they exist and have meaning only within the Rivendell
+      system.  For the rest of this discussion, when we talk about “users”,
+      it is these “Rivendell users” that we are referring to.
+    </para>
+    <para>
+      Each Rivendell host has a default user.  As the name implies, this is
+      the user that is automatically logged in after the system is booted.
+      By default, the name of this user is “user”, but the system
+      administrator may have changed this to some other name.
+    </para>
+    <para>
+      For many sites, a single default user is all that is ever required.
+      For some sites however, particularly larger ones, it is desirable
+      to have multiple user accounts, each tailored to a particular person
+      or “role”, with privileges assigned appropriately.  Such sites
+      require a means to log different users in and out of the system,
+      without interfering with any playout operations that may be ongoing
+      at the time.  RDLogin is the module for doing this.
+    </para>
+    <para>
+      RDLogin will display a small window after being started, showing the
+      currently logged-in user (see Illustration 1).  To change to a
+      different user, select the desired user name from the Username:
+      control, enter the correct password, and then touch the Set User
+      button.  To “log out” of the system (in reality, just return to the
+      default user), simply touch the Default User button (no password is
+      required to set the default user).  To exit RDLogin and do nothing,
+      simply touch the Cancel button.
+    </para>
+  </sect1>
+</chapter>
+
+<chapter>
+  <title>Content Management with RDLibrary</title>
+  <sect1>
+    <title>The Rivendell Library Structure and RDLibrary</title>
+    <sect2>
+      <title>Carts</title>
+      <para>
+	The Rivendell Library consists of a set of objects called carts.
+	A cart is a data container that  holds either one or more pieces
+	of audio (called an audio cart), or macro commands to the system
+	(called a macro cart).  The cart is the fundamental schedule
+	building block in Rivendell, in that it is the smallest object or
+	'atom' that the outside world (like a traffic or music scheduler)
+	can see.
+      </para>
+      <para>
+	RDLibrary, upon startup, will show the current list of all carts
+	on the system, as in  Illustration 2 below:
+      </para>
+      <para>
+	A number of important attributes of carts can be seen from this
+	illustration.  First is the cart's number.  Each cart in the Library
+	gets assigned a unique number when it is created.  This number can
+	range between 000001 and 999999, and is the primary 'handle' by which
+	both Rivendell and external systems (like traffic or music schedulers)
+	refer to the cart.  Very often, sites have specific rules concerning
+	which types of audio (commercials, promos, music, etc) and macros get
+	assigned which numbers.  We'll cover this area in some detail when
+	we discuss groups.
+      </para>
+      <para>
+	Immediately to the left of the cart number is an icon indicating
+	the type of cart. Just to the right of the cart number is the
+	average length of the cart.  Except in the case of where
+	timescaling is in use (in which case it will be indicated in
+	blue numerals), this value is calculated automatically by the system.
+      </para>
+      <para>
+	Next comes various columns showing information from the cart
+	label – Title, Artist, Client and Agency data, etc.  This
+	information can be edited by opening RDLibrary's Edit Cart dialog
+	(Illustration 3), either by double-clicking on the desired cart
+	entry in the list, or by touching the desired cart entry and then
+	touching the Edit button.  In either case, you should get a dialog
+	similar to that shown in Illustration 3.
+      </para>
+      <para>
+	This is how an audio cart looks when loaded into the Edit Cart dialog.
+	The upper half of the dialog is the cart label data.  The meaning
+	of most of these fields should be fairly self-evident, but a few
+	call for special comment:
+      </para>
+      <para>
+	<variablelist>
+	  <varlistentry>
+	    <term>Enforce Length</term>
+	    <listitem>
+	      <para>
+		When checked, this indicates that timescaling should be
+		applied to this cart when it is played in RDAirPlay,
+		meaning that the cart will air at the length indicated by
+		the Forced Length field, rather than the native length of
+		the audio.  Care is needed when implementing timescaling
+		within a facility, as there are limits to how much the
+		length can be altered, while only certain types of audio
+		adapters support it at all.  See the Rivendell Technical
+		Guide for more information.
+	      </para>
+	    </listitem>
+	  </varlistentry>
+	  <varlistentry>
+	    <term>Group</term>
+	    <listitem>
+	      <para>
+		This is a pull down menu by which the group ownership for
+		the cart can be set.  The system administrator configures
+		the list of available groups for each user in RDAdmin.
+	      </para>
+	    </listitem>
+	  </varlistentry>
+	  <varlistentry>
+	    <term>User Defined</term>
+	    <listitem>
+	      <para>
+		As the name implies, this field has no dedicated meaning
+		to Rivendell itself, but is provided for each site to use
+		as is seen fit.
+	      </para>
+	    </listitem>
+	  </varlistentry>
+	</variablelist>
+      </para>
+      <para>
+	The example in Illustration 3 shows an audio cart.  As such, the
+	bottom half of the dialog displays the lists of cuts contained
+	within the cart.  
+      </para>
+    </sect2>
+    <sect2>
+      <title>Cuts</title>
+      <para>
+	Each audio cart can contain one or more cuts.  A Rivendell cut is
+	an actual piece of audio, somewhat analogous to a 'track' on a CD.
+	Up to 999 such cuts can exist within a single cart.  Each line in
+	the cut list contains information about the cut, including:
+      </para>
+      <para>
+      <variablelist>
+	<varlistentry>
+	  <term>Description</term>
+	  <listitem>
+	    <para>
+	      n arbitrary name, assignable by the user as an aid in keeping
+	      track of the content, it is roughly analogous to the 'Title'
+	      field in the cart label.
+	    </para>
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>Length</term>
+	  <listitem>
+	    <para>
+	      The actual, measured play out length of the cut audio.
+	      This field is calculated automatically by the system.
+	    </para>
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>Last Played</term>
+	  <listitem>
+	    <para>
+	      he last date and time that the cut was aired by one of the
+	      on-air modules.  Useful for keeping track of stale inventory.
+	    </para>
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term># Of Plays</term>
+	  <listitem>
+	    <para>
+	      The total number of times the cut has been aired by the
+	      one of the on-air modules.
+	    </para>
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>Origin</term>
+	  <listitem>
+	    <para>
+	      The name of the host upon which the audio in the cut was last
+	      recorded, along with the date and time.
+	    </para>
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>Outcue</term>
+	  <listitem>
+	    <para>
+	      A user settable field. This line shows up in the RDAirPlay
+	      log when the cut is played.
+	    </para>
+	  </listitem>
+	</varlistentry>
+      </variablelist>
+      </para>
+      <sect3>
+	<title>Multiple Cuts in a Cart</title>
+	<para>
+	  What happens when more than one cut is placed into a cart? The
+	  answer, in a word, is rotation.  Rotation is the ability to
+	  schedule a single cart in a log, but to have that cart play out
+	  different material at different times.  This capability has a
+	  myriad of uses.  One of the simplest, common in commercial radio
+	  facilities, is to allow multiple versions of a spot to be placed
+	  into the system, while still allowing the traffic department to
+	  have to track and schedule only one cart number.  A more
+	  sophisticated use involves use of the cut's dayparting settings,
+	  forcing different cuts to play based upon certain date/time
+	  criteria, such as day of the week or time of day. Cut dayparting
+	  is a very powerful feature in Rivendell, and is something we
+	  will discuss shortly.
+	</para>
+	<para>
+	  To edit the properties of a cut, either double-click its entry
+	  in the cut list, or touch it once to highlight and then touch
+	  the Cut Info/Record button.  The Record Dialog (Illustration 4)
+	  will now open up.
+	</para>
+	<para>
+	  Roughly the upper third of the dialog is for editing the various
+	  cut parameters, the middle section is for  configuring the cut's
+	  daypart settings, and the bottom third is a record machine that
+	  can be used both to record new audio into the system and to
+	  audition any recording already made.
+	</para>
+      </sect3>
+      <sect3>
+	<title>Cut Dayparting</title>
+	<para>
+	  Each cut in Rivendell can be dayparted on the basis of three
+	  parameters:
+	</para>
+	<para>
+	  <itemizedlist>
+	    <listitem>
+	      Absolute Start and End Date-Time
+	    </listitem>
+	    <listitem>
+	      Relative Start and End Time
+	    </listitem>
+	    <listitem>
+	      Day of the Week
+	    </listitem>
+	  </itemizedlist>
+	</para>
+	<para>
+	  By default, each newly created cut starts out with dayparting
+	  disabled, meaning that it will be 'eligible to play' at all times.
+	  By clicking the Enabled button in the Air Date/Time box, an
+	  absolute start and end date for the cut can be entered, meaning
+	  that the cut will be prevented from airing in the RDAirPlay module
+	  at any time outside the range of those date-times.  Likewise, by
+	  selecting the  Enabled button in the Daypart box, start and end
+	  times (relative to the day the cut is to air) can be entered.
+	  Cuts designated in this way will be allowed to air only within
+	  the specified range of times.  Finally, by selecting or clearing
+	  the appropriate boxes in the Day of the Week box, a cut can be
+	  designed to air only on certain days of the week.
+	</para>
+	<para>
+	  All of the dayparting parameters can be used either singly or in
+	  combination with each other.  When combined, the resulting
+	  'eligibility' is calculated as the logical AND of the applied
+	  dayparting limits.  For example, a cut with the 'Monday' box
+	  cleared will refuse to air on Mondays, regardless of whether
+	  any of the other daypart rules match.
+	</para>
+	<para>
+	  It's important to remember that dayparting rules affect audio
+	  play out only within the RDAirPlay module.  You will still be
+	  able to audition and play the audio without limitation in the
+	  other Rivendell modules.
+	</para>
+      </sect3>
+      <sect3>
+	<title>Cart and Cut Color Coding</title>
+	<para>
+	  Each cart or cut in RDLibrary is assigned a color to indicate
+	  it's 'playability' for air, as follows:
+	</para>
+	<para>
+	  <variablelist>
+	    <varlistentry>
+	      <term>NO COLOR</term>
+	      <listitem>
+		<para>
+		  Event will play normally
+		</para>
+	      </listitem>
+	    </varlistentry>
+	    <varlistentry>
+	      <term>CYAN</term>
+	      <listitem>
+		<para>
+		  Event will not play (cut datetime is in the future)
+		</para>
+	      </listitem>
+	    </varlistentry>
+	    <varlistentry>
+	      <term>RED</term>
+	      <listitem>
+		<para>
+		  Event will not play (cut daytime has passed or lack of audio)
+		</para>
+	      </listitem>
+	    </varlistentry>
+	    <varlistentry>
+	      <term>GREEN</term>
+	      <listitem>
+		<para>
+		  Event will play an Evergreen
+		</para>
+	      </listitem>
+	    </varlistentry>
+	  </variablelist>
+	</para>
+	<para>
+	  It's important to remember that the color displayed for each
+	  event indicates playability at the instant that the event is
+	  being viewed.
+	</para>
+      </sect3>
+      <sect3>
+	<title>Recording and Auditioning a Cut in the Record Dialog</title>
+	<para>
+	  The lower third of the Record Dialog is used both to audition and
+	  record audio.  To audition the cut, simply press the play button
+	  (the one with the triangular symbol).  The button should
+	  illuminate, audio should show on the bar meter and start playing
+	  immediately.  The audio will play to completion, unless either 
+	  the stop button (square symbol) is pressed, or the Record Dialog
+	  is closed.
+	</para>
+	<para>
+	  To record new material into a cut, first ensure that the Channels
+	  drop-down menu is set to record the appropriate number of channels,
+	  then touch the record button (round symbol).  If the cut contains
+	  audio that was recorded previously, a warning box will pop up at
+	  this point to inform you of this and to give you a chance to abort
+	  the recording without erasing what was previously recorded.  If
+	  Yes is selected here, the previous recording will be overwritten
+	  and no longer accessible.  The record button should now be
+	  illuminated steadily, while the play button will be flashing,
+	  indicating that the record machine is in 'ready' mode.  The bar
+	  meter will also be active to indicate input levels, and this is
+	  the point where you want to verify that your levels are correct,
+	  with peaks just into the yellow area being optimal.  Nothing is
+	  actually being recorded just yet.
+	</para>
+	<para>
+	  We have two options for actually starting the record machine.
+	  We can start it manually by pressing the play button, at which
+	  point the machine will immediately begin recording, or we can set
+	  the Record Mode drop-down menu to the VOX (short for voice
+	  activated) setting.  When in VOX mode, the record machine will
+	  start automatically as soon as it senses the presence of audio
+	  at the input.
+	</para>
+	<para>
+	  Once started, recording will continue until either the stop button
+	  is pushed, or the maximum allowed length for a manual recording
+	  (set by the system administrator) has been reached.  Once stopped,
+	  if the AutoTrim drop-down menu has been set to On, the Start and
+	  End markers will be automatically set to the beginning and end of
+	  detected audio within the cut.  (We will discuss Markers in detail
+	  when we get to the section on the Edit Markers dialog).
+	</para>
+      </sect3>
+    </sect2>
+  </sect1>
+  <sect1>
+    <title>Alternative Methods of Audio Ingestion</title>
+    <para>
+      In addition to manually recording material in realtime, RDLibrary
+      supports two alternative methods for audio ingestion:
+    </para>
+    <para>
+      <itemizedlist>
+	<listitem>
+	  Importing from a File
+	</listitem>
+	<listitem>
+	  Ripping from a CD
+	</listitem>
+      </itemizedlist>
+    </para>
+    <sect2>
+      <title>Importing Audio from a File</title>
+      <para>
+	To import audio from a file directly into a cut, we start by
+	opening the cut's parent cart in the Edit Cart Dialog.  Next,
+	touch the cut's entry in the cut list and then touch the
+	Import/Export button to open the Import/Export Audio Dialog
+	(Illustration 5).
+      </para>
+      <para>
+	Select the file you wish to import, either by entering the path
+	and filename to it in the Filename field or by clicking the Select
+	button to open a file browsing dialog.  Rivendell is capable of
+	importing the following types of audio files:
+      </para>
+      <para>
+	<itemizedlist>
+	  <listitem>
+	    Microsoft WAV (*.wav) – PCM16, PCM24 and MPEG are supported
+	  </listitem>
+	  <listitem>
+	    MPEG (*.mp1, *.mp2, *.mp3)
+	  </listitem>
+	  <listitem>
+	    OggVorbis (*.ogg)
+	  </listitem>
+	  <listitem>
+	    Free Lossless Audio Codec [FLAC] (*.flac)
+	  </listitem>
+	</itemizedlist>
+      </para>
+      <para>
+	Next, set the Channels drop-down menu to the appropriate number of
+	channels.  You may also wish to adjust the Normalize or Autotrim
+	controls, although these will normally be set to reasonable default
+	values by the system administrator and should seldom have to be
+	altered.  If Normalize is selected, then the imported audio will
+	be peak normalized to the level indicated.  The Autotrim does the
+	same thing as in the Record Dialog (see section 2.0.1.2, 'Recording
+	and Auditioning a Cut in the Record Dialog' above for details).
+      </para>
+      <para>
+	Finally, touch the Import button.  A progress bar will indicate
+	percentage completion of the import, followed by a popup box to
+	announce completion.  The Import Audio Dialog will automatically
+	close after acknowledging completion.  The audio is now imported,
+	and can now be auditioned and otherwise processed in the usual way.
+      </para>
+    </sect2>
+    <sect2>
+      <title>Ripping Audio from a CD Track</title>
+      <para>
+	To rip audio directly off of a CD into a cut, we again start by
+	opening the cut's parent cart in the Edit Cart Dialog.  Next,
+	select the cut's by touching the cut's entry in the cut list,
+	and then touch the Rip button to open the Rip CD Dialog
+	(Illustration 6).
+      </para>
+      <para>
+	Load a CD into the CD drive.  After a few seconds, list of tracks
+	should appear in the Tracks area.  If the system administrator has
+	enabled the FreeDB CD Lookup Service, the names of the various
+	tracks may appear as well.  
+      </para>
+      <para>
+	Set the Channels, Normalize and Autotrim controls appropriately (see
+	section 2.1.0 for more details on using the Normalize and Autotrim
+	controls).  Next, touch the track you wish to rip and then press
+	the Rip Track button.  The track will now be ripped into the cut,
+	with a progress bar keeping you informed of progress.  When the
+	rip is complete, a message box will pop up to inform you of this.
+      </para>
+      <para>
+	If FreeDB data was found for the CD, you can have the FreeDB track,
+	artist and album names be automatically placed on the cart label
+	for the cart by checking  Apply FreeDB Values to Cart before
+	closing the Dialog.
+      </para>
+    </sect2>
+    <sect2>
+      <title>Ripping Multiple CD Tracks at a Time</title>
+      <para>
+	Sometimes, when transferring multiple audio tracks from CD,
+	it's more convenient to be able to set up the entire transfer at
+	once and then let the rip run in a 'batch' mode.  RDLibrary is
+	capable of ripping audio in this manner as well.  To do this, click
+	the Rip CD button near the bottom of the main RDLibrary screen,
+	bringing up the Rip Disk Dialog (Illustration 7).
+      </para>
+      <para>
+	This dialog is similar in many ways to the Rip CD Dialog described
+	above, except that each track can be assigned to transfer to a
+	different cut by double clicking on its listing, or by touching
+	the listing and then the Set Cut button, bringing up the Select
+	Cut Dialog (see Illustration 8).
+      </para>
+      <para>
+	The destination cut is selected by first choosing the cart from the
+	left-hand pane, followed by the desired cut within that cart on the
+	right-hand pane.  The complete set of library filtering tools are
+	available to you here – see section 2.2, 'Navigating the Audio
+	Library' for details on their function, just as in the main
+	RDLibrary screen.
+      </para>
+      <para>
+	Once all of the desired tracks have been assigned to cuts, be sure
+	that the Normalize, Autotrim, Channels and Apply FreeDB Values to
+	Carts controls have been set as desired, then click the Rip Disk
+	button.  A set of progress bars will keep you informed of the
+	progress of each track, as well as overall progress.  When, the
+	rip is finished, a message box will let you know.
+      </para>
+    </sect2>
+  </sect1>
+  <sect1>
+    <title>Macro Carts</title>
+    <para>
+      A macro cart is a cart that contains one or more commands written in
+      Rivendell Macro Language (or 'RML' for short).  The Edit Cart dialog
+      for a macro cart is similar in many ways to that for an audio cart
+      with the exception of the lower half, which contains a list of RML
+      commands to be executed rather than a list of cuts (see Illustration
+      9).  (NOTE:  for a complete description of Rivendell Macro Language,
+      including a breakdown of available commands, see Chapter Nine).
+    </para>
+    <para>
+      To add a new line of RML, select the desired location in the list
+      and touch the Add button.  Similarly, a line can be deleted by
+      selecting it and then touching the Delete button, or modified by
+      touching the Edit button.  The RML can be tested, eight line-by-line
+      or as a whole by touching the Run Line or Run Cart button
+      respectively.  It is also possible to Copy and Paste individual
+      lines both within a given cart or between carts.
+    </para>
+  </sect1>
+  <sect1>
+    <title>Navigating the Audio Library</title>
+    <para>
+      The uppermost section of RDLibrary's main window contains tools
+      designed to allow for fast searching of the entire audio library,
+      making locating a particular piece of audio easy even in a library
+      containing thousands of carts.  It's possible to  control what carts
+      are listed, as well as how they are sorted.
+    </para>
+    <sect2>
+      <title>Changing the Cart Sort Order</title>
+      <para>
+	The order in which carts are displayed in the cart list can be
+	changed by simply clicking on the header of the column by which
+	you want them sorted by.  By default, the carts are sorted by Cart
+	Number.  To instead sort them alphabetically by Title, simply click
+	the TITLE header once.  To sort them by Title in reverse –i.e.
+	from 'Z' to 'A' – click the TITLE header once again.  Clicking the
+	TITLE header a third time restores the sort to normal 'A' to 'Z'
+	again.  And so on for all of the columns in the cart list – it's
+	possible to sort the Library by Artist, Length, or any other
+	parameter shown in the cart list.
+      </para>
+    </sect2>
+    <sect2>
+      <title>Selecting Carts by the Filter Field</title>
+      <para>
+	Very often, one will want to find a cart or set of carts whose
+	label(s) contains a particular word or phrase.  It's possible to
+	narrow the list of displayed carts to this set by simply entering
+	the desired word or phrase into the Filter field at the top of the
+	main RDLibrary screen.  The full list can be restored by clearing
+	the Filter field or by clicking the Clear button.
+      </para>
+    </sect2>
+    <sect2>
+      <title>Selecting Carts by Group</title>
+      <para>
+	It's possible to limit the list of carts to only those in a
+	particular group by setting the Group drop-down menu to the
+	desired group name.
+      </para>
+    </sect2>
+    <sect2>
+      <title>Selecting Carts by Type</title>
+      <para>
+	You can tell RDLibrary what type of carts to list by checking the
+	Show Audio Carts and Show Macro Carts boxes. Clearing both boxes
+	obviously results in no carts at all being displayed.
+      </para>
+      <para>
+	It's also possible to combine all four of the above search and
+	sorting methods.
+      </para>
+    </sect2>
+    <sect2>
+      <title>Selecting and Opening Carts</title>
+      <para>
+	Once the desired cart has been located on the cart list, load it
+	into the Edit Cart Dialog (Illustration 3) by either double
+	clicking its list entry, or by touching its list entry and then
+	touching the Edit button.
+      </para>
+    </sect2>
+  </sect1>
+  <sect1>
+    <title>Library Maintenance</title>
+    <sect2>
+      <title>Editing Markers</title>
+      <para>
+	Rivendell uses a system of cue points within audio cuts, referred
+	to as markers.  Markers can be used to specify a number of
+	parameters for a piece of audio.    Table One shows what markers
+	are available, their purpose and their corresponding color.
+      </para>
+      <para>
+	Markers are set in the Edit Markers Dialog (see Illustration 10).
+	To access the Dialog, open an audio cart, select the cut to open
+	on the cut list and then touch the Edit button.
+      </para>
+      <para>
+	The Dialog is divided into three areas:  the waveform area in the
+	upper half, consisting of the waveform display and Amplitude and
+	Time buttons; the transport controls area in the center, consisting
+	of Start, Pause, Stop and Loop buttons along with an audio meter;
+	and the marker button area in the lower third of the window,
+	consisting of controls for selecting and positioning markers.  
+      </para>
+      <para>
+	It's possible to 'zoom-in' on the waveform in various ways by
+	clicking the Amplitude and Time buttons.  By default, the waveform
+	is displayed fully 'zoomed-out', thus showing the entire length of
+	the audio cut.  The GoTo buttons can be used to jump directly to
+	the current play out cursor position, start or end of the waveform.
+      </para>
+      <para>
+	Audio can be played one of two ways:  either by clicking on the
+	waveform to indicate where play out should start and then clicking
+	the left-hand Play button, causing play out to start from the
+	selected position, or by clicking the right-hand Play button, which
+	will cause play out to start from the Start Marker (just as it
+	would in RDAirPlay).  Clicking the Pause button while playing will
+	cause audio to stop and the play out cursor (a thin vertical black
+	line in the waveform area) to freeze at its current position, while
+	pressing the Stop button will stop the audio while resetting the
+	play out cursor to the position it was in when Play was started.
+	Clicking the Loop button will cause the audio to play out
+	continuously, looping from end back to start, until either the
+	Stop, Pause, Save or Cancel buttons are clicked.
+      </para>
+      <para>
+	To set a marker, click on the corresponding marker button and then
+	left-click on the waveform area to indicate where on the audio
+	the marker should be placed.  (NOTE:  With the exception of the
+	FadeUp and FadeDown markers, all markers inRivendell are assigned
+	in pairs. For example, placing a TalkStart marker will also cause
+	a TalkEnd marker to be placed.)  Markers that have already been
+	placed can be moved by selecting the appropriate marker button and
+	then dragging the marker to the desired location.  It's also possible
+	to specify the position of a marker in the form of hh:mm:ss.s
+	(relative to time after the Start marker) by entering the desired
+	value next to a selected marker button.  It is also possible to
+	remove a set of markers that have already been placed, either by
+	accessing the marker menu by doing a right-click on the waveform
+	display, or by touching the Remove Marker button and then touch
+	the marker button corresponding to the marker to be removed.
+	(NOTE: the exceptions to this are the Start / End markers, which
+	are always present and hence cannot be removed.)
+      </para>
+      <table xml:id="marker_types" frame="all">
+	<title>Rivendell Marker Types</title>
+	<tgroup cols="3" align="left" colsep="1" rowsep="1">
+	  <colspec colname="Marker Type" />
+	  <colspec colname="Function" />
+	  <colspec colname="Color" />
+	  <thead>
+	    <row>
+	      <entry>
+		Marker Type
+	      </entry>
+	      <entry>
+		Function
+	      </entry>
+	      <entry>
+		Color
+	      </entry>
+	    </row>
+	  </thead>
+	  <tbody>
+	    <row>
+	      <entry>
+		Start / Stop
+	      </entry>
+	      <entry>
+		Indicates start and end points of audio.
+	      </entry>
+	      <entry>
+		RED
+	      </entry>
+	    </row>
+	    <row>
+	      <entry>
+		TalkStart / Talk Stop
+	      </entry>
+	      <entry>
+		Indicates point to start and stop the Talk Counter in RDAirPlay.
+	      </entry>
+	      <entry>
+		BLUE
+	      </entry>
+	    </row>
+	    <row>
+	      <entry>
+		SegueStart / SegueEnd
+	      </entry>
+	      <entry>
+		Indicates the start and end of the audio overlap during
+		Segue transitions in RDAirPlay.
+	      </entry>
+	      <entry>
+		CYAN
+	      </entry>
+	    </row>
+	    <row>
+	      <entry>
+		HookStart / HookEnd
+	      </entry>
+	      <entry>
+		Indicates &quot;highlighted&quot; audio, used by button
+		panels and RDCartSlots when placed in Hook Mode.
+	      </entry>
+	      <entry>
+		VIOLET
+	      </entry>
+	    </row>
+	    <row>
+	      <entry>
+		FadeUp
+	      </entry>
+	      <entry>
+		Indicates the point at which audio should be faded up to
+		full level after starting in RDAirPlay.
+	      </entry>
+	      <entry>
+		YELLOW
+	      </entry>
+	    </row>
+	    <row>
+	      <entry>
+		FadeDown
+	      </entry>
+	      <entry>
+		Indicates the point at which audio should start fading
+		down to off before ending in RDAirPlay.
+	      </entry>
+	      <entry>
+		YELLOW
+	      </entry>
+	    </row>
+	  </tbody>
+	</tgroup>
+      </table>
+      <para>
+	As an aid for accurately setting the Start and End markers, it's
+	possible to use the Trim Start and Trim End buttons to automatically
+	set the markers to the first and last instances of the level
+	specified by the Threshold field, respectively.
+      </para>
+    </sect2>
+    <sect2>
+      <title>Copying and Pasting Audio from Cut to Cut</title>
+      <para>
+	It's possible to make copies of existing an audio cut on the system
+	by opening up the cut's parent cart in the Edit Cart Dialog,
+	selecting it on the cut list and clicking the Copy button. To
+	paste the copied audio, simply select the desired destination
+	cut (within the same cart or a different one) and press Paste.
+      </para>
+    </sect2>
+  </sect1>
+  <sect1>
+    <title>Generating Library Reports</title>
+    <para>
+      Various Library reports can be generated by touching the Reports
+      button on the main RDLibrary screen and then selecting the desired
+      report and touching the Generate button.  The following reports are
+      available:
+    </para>
+    <sect2>
+      <title>The Cart Report</title>
+      <para>
+	The cart report consists of a list of all selected carts on the
+	system, with their attributes.
+      </para>
+    </sect2>
+    <sect2>
+      <title>The Cut Report</title>
+      <para>
+	The cut report consists of a list of all cuts contained by the
+	selected carts on the system, with their attributes.
+      </para>
+    </sect2>
+    <sect2>
+      <title>The Cart Data Dump</title>
+      <para>
+	The cart data dump is a special type of report that consists of
+	column-aligned data elements, one line per cut for the selected
+	carts on the system.  It is intended for use where a 'dump' of
+	available carts in the system is desired for import into an
+	external system (such as a music scheduling system).
+      </para>
+    </sect2>
+  </sect1>
+</chapter>
+
+<chapter>
+  <title>Automating Tasks with RDCatch</title>
+  <sect1>
+    <title>Choosing the Correct Automation Tool</title>
+    <para>
+      Rivendell includes two modules specially optimized for performing
+      automatic operations:  The RDCatch and RDAirPlay modules.  The two
+      modules take radically different approaches in how they go about
+      organizing and controlling operations, so a few words regarding
+      each may be in order here.
+    </para>
+    <para>
+      RDCatch is aimed at executing actions on the basis of a strict
+      time-based schedule, referred to as an event list.  Each action
+      (which can be a recording, a play out, an up- or download, a macro
+      execution or an operation on an audio switcher device) executes on
+      the basis of its scheduled time in the event list, independently of
+      all other actions.  As such, RDCatch is often best suited for use in
+      settings such as network head end operations or 'auxiliary' roles at
+      broadcast stations, where the transitions between events are 
+      generally not an important part of the presentation.
+    </para>
+    <para>
+      RDAirPlay takes a very different approach, in that most events are
+      organized into one or more playlists or logs.  A Rivendell log is a
+      list of one or more carts, organized in chronological order.  As the
+      name implies, RDAirPlay is optimized for use in situations where the
+      transitions between the various program elements are a key part of
+      the delivery and presentation of the content, such as in live air
+      play environments.
+    </para>
+    <para>
+      Of course, it's entirely possible to use both modules, even together
+      on the same machine at the same time – the Linux OS makes for a very
+      robust and capable multitasking system.
+    </para>
+  </sect1>
+  <sect1>
+    <title>The RDCatch Main Window</title>
+    <para>
+      After starting up RDCatch, you should see the main RDCatch window,
+      looking something like Illustration 11.  The window consists of four
+      areas:  the record / play out decks at the top, the filter areas just
+      below the decks, the events list and the audition buttons and other
+      buttons at the bottom.  We'll cover each of these in turn.
+    </para>
+    <sect2>
+      <title>The Record / Play Out Deck Area</title>
+      <para>
+	If the system administrator has configured one or more RDCatch
+	record or play out decks, they will be visible at the top of the
+	RDCatch main window.  A record deck is a virtual 'recorder' that
+	can be used to make automated recordings, while a play out deck
+	can be used to automatically play out audio.   It does not matter
+	on which particular host  a particular deck 'resides' – all
+	Rivendell decks throughout the system are visible in RDCatch,
+	regardless of which host it is run upon.
+      </para>
+      <para>
+	Starting at the left-hand edge of each deck, there is the deck's
+	name, consisting of the name of the deck's host machine followed
+	by a number and a letter, an 'R' to indicate a record deck and a
+	'P' to indicate a play out deck.  Next, for record decks, there is
+	a MON button, used to monitor the audio present at the deck input,
+	followed by an ABORT button, used to manually stop an event
+	running in the deck.  A description of the currently running event
+	next appears (this area will be blank if no event is currently
+	active), followed by the deck's status, which could be any of the 
+	values shown in Table 2.
+    </para>
+    <table xml:id="rdcatch_event_states" frame="all">
+      <title>RDCatch Event States</title>
+      <tgroup cols="2" align="left" colsep="1" rowsep="1">
+	<colspec colname="Status" />
+	<colspec colname="Meaning" />
+	<thead>
+	  <row>
+	    <entry>
+	      Status
+	    </entry>
+	    <entry>
+	      Meaning
+	    </entry>
+	  </row>
+	</thead>
+	<tbody>
+	  <row>
+	    <entry>
+	      IDLE
+	    </entry>
+	    <entry>
+	      The deck is available for events
+	    </entry>
+	  </row>
+	  <row>
+	    <entry>
+	      READY
+	    </entry>
+	    <entry>
+	      The deck has started monitoring audio but the transport is
+	      not yet rolling (record decks only).
+	    </entry>
+	  </row>
+	  <row>
+	    <entry>
+	      WAITING
+	    </entry>
+	    <entry>
+	      The deck is waiting for a GPI event (record decks only)
+	    </entry>
+	  </row>
+	  <row>
+	    <entry>
+	      RECORDING
+	    </entry>
+	    <entry>
+	      The deck is recording (record decks only)
+	    </entry>
+	  </row>
+	  <row>
+	    <entry>
+	      PLAYING
+	    </entry>
+	    <entry>
+	      The deck is playing out (play out decks only)
+	    </entry>
+	  </row>
+	  <row>
+	    <entry>
+	      OFFLINE
+	    </entry>
+	    <entry>
+	      The deck is configured but not available
+	    </entry>
+	  </row>
+	</tbody>
+      </tgroup>
+    </table>
+    <para>
+      Finally, each deck has an audio meter on its right-hand end, used
+      to verify audio levels in realtime.
+    </para>
+    </sect2>
+    <sect2>
+      <title>The Filter Area</title>
+      <para>
+	Immediately below the decks is the filter area, consisting of the
+	Show Only Active Events, Show Only Today's Events and Show DayOfWeek
+	controls.  These controls are used to select which events will be
+	visible in the events list area immediately below.
+      </para>
+    </sect2>
+    <sect2>
+      <title>The Event List</title>
+      <para>
+	The event list is a system wide list of all events to be executed
+	by RDCatch on all of the various hosts on the Rivendell network,
+	with each event occupying a single line.  The status of each event
+	is indicated by its background color, as shown in Table 3.
+      </para>
+      <table xml:id="rdcatch_event_colors" frame="all">
+	<title>RDCatch Event States</title>
+	<tgroup cols="2" align="left" colsep="1" rowsep="1">
+	  <colspec colname="Color" />
+	  <colspec colname="Meaning" />
+	  <thead>
+	    <row>
+	      <entry>
+		Color
+	      </entry>
+	      <entry>
+		Meaning
+	      </entry>
+	    </row>
+	  </thead>
+	  <tbody>
+	    <row>
+	      <entry>
+		YELLOW
+	      </entry>
+	      <entry>
+		The event is next to be executed.
+	      </entry>
+	    </row>
+	    <row>
+	      <entry>
+		GREEN
+	      </entry>
+	      <entry>
+		The event is active.
+	      </entry>
+	    </row>
+	    <row>
+	      <entry>
+		CYAN
+	      </entry>
+	      <entry>
+		The event is in the READY state.
+	      </entry>
+	    </row>
+	    <row>
+	      <entry>
+		VIOLET
+	      </entry>
+	      <entry>
+		The event is in the WAITING state.
+	      </entry>
+	    </row>
+	    <row>
+	      <entry>
+		RED/PINK
+	      </entry>
+	      <entry>
+		The event is reporting an error.
+	      </entry>
+	    </row>
+	  </tbody>
+	</tgroup>
+      </table>
+      <para>
+	Each entry in the event list starts with an icon that indicates
+	the type of the event, as shown in Table 4.
+      </para>
+      <table xml:id="rdcatch_event_icons" frame="all">
+	<title>RDCatch Event States</title>
+	<tgroup cols="2" align="left" colsep="1" rowsep="1">
+	  <colspec colname="Color" />
+	  <colspec colname="Meaning" />
+	  <tbody>
+	    <row>
+	      <entry>
+		[RECORD_ICON]
+	      </entry>
+	      <entry>
+		Record Event
+	      </entry>
+	    </row>
+	    <row>
+	      <entry>
+		[PLAYOUT ICON]
+	      </entry>
+	      <entry>
+		Play Out Event
+	      </entry>
+	    </row>
+	    <row>
+	      <entry>
+		[SWITCH ICON]
+	      </entry>
+	      <entry>
+		Switch Event
+	      </entry>
+	    </row>
+	    <row>
+	      <entry>
+		[MACRO ICON]
+	      </entry>
+	      <entry>
+		Macro Event
+	      </entry>
+	    </row>
+	    <row>
+	      <entry>
+		[UPLOAD ICON]
+	      </entry>
+	      <entry>
+		Upload Event
+	      </entry>
+	    </row>
+	    <row>
+	      <entry>
+		[DOWNLOAD ICON]
+	      </entry>
+	      <entry>
+		Download Event
+	      </entry>
+	    </row>
+	  </tbody>
+	</tgroup>
+      </table>
+      <para>
+	Next on each line comes the description (settable by the user) and
+	location for the event, the location being the name of the host/deck
+	where the event will run.  Then, comes the start and end parameters.
+	These time-based parameters come in one of three different forms:
+	a hard time, which is simply an absolute time (in twenty-four hour
+	'military' format), a length (in HH:MM format, relative to an
+	earlier start time), or a GPI start.  The GPI parameters can be
+	somewhat involved.  They are specified in the following format:
+      </para>
+      <para>
+	Gpi: &lt;start-time&gt;,&lt;end-time&gt;,&lt;gpi-num&gt;,&lt;wait-time&gt;
+      </para>
+      <para>
+	Where:
+      </para>
+      <para>
+	<variablelist>
+	  <varlistentry>
+	    <term>&lt;start-time&gt;</term>
+	    <listitem>
+	      <para>
+		The time, in HH:MM:SS format, when RDCatch will start looking
+		for a GPI event (also sometimes referred to as the window
+		start time).
+	      </para>
+	    </listitem>
+	  </varlistentry>
+	  <varlistentry>
+	    <term>&lt;end-time&gt;</term>
+	    <listitem>
+	      <para>
+		The time, in HH:MM:SS format, when RDCatch will stop looking
+		for a GPI event (also sometime referred to as the window end
+		time). 
+	      </para>
+	    </listitem>
+	  </varlistentry>
+	  <varlistentry>
+	    <term>&lt;gpi-num&gt;</term>
+	    <listitem>
+	      <para>
+		The number of the GPI event to wait for, in the format
+		MATRIX:LINE.  We will deal with GPI matrix and line numbers
+		in detail when we cover RDAdmin.
+	      </para>
+	    </listitem>
+	  </varlistentry>
+	  <varlistentry>
+	    <term>&lt;wait-time&gt;</term>
+	    <listitem>
+	      <para>
+		The amount of time to wait, in MM:SS format, between the
+		reception of the GPI event and the actual start of the event
+		(used only for Start parameters).
+	      </para>
+	    </listitem>
+	  </varlistentry>
+	</variablelist>
+      </para>
+      <para>
+	For example, the start parameter 'Gpi: 14:00:00,14:05:59,0:1,01:00'
+	has a window start time of 14:00:00 [2:00:00 PM], a window end time
+	of 14:05:59, looks for a GPI event on line 0:1 and will wait one
+	minute [01:00] after receiving the GPI before starting the event.
+      </para>
+      <para>
+	Next come the source and destination fields.  The uses of these will
+	vary depending upon what type of event is being listed, but should
+	normally be fairly self-evident.  For example, for a record event,
+	the source field indicates the audio source from which the recording
+	is to be made, while the destination indicates the cat/cut combo to
+	which the recording should be made.  Some events may leave one or the
+	other of these fields blank.
+      </para>
+      <para>
+	Now come the day of the week fields.  These indicate on which days
+	of the week the listed event should be executed, followed by the
+	origin field, which is simply a readout of the Origin data of the
+	events underlying cut.  There are a number of other fields which
+	follow, but these are less important for understanding the
+	operation of RDCatch.
+      </para>
+    </sect2>
+    <sect2>
+      <title>The Button Area</title>
+      <para>
+	At the bottom of the main window are various buttons.  On the
+	left-hand side, the Add, Edit and Delete buttons are used to manage
+	events in the event list.  Clicking the Scroll button  toggles
+	RDCatch into and out of 'scroll mode'.  In this mode, the event
+	list display will be advanced automatically so as to keep the first
+	actively running event centered within the event list area.
+      </para>
+      <para>
+	On the right hand side, in addition to Close, are three audition
+	buttons.  These buttons can be used to audition the head and tail
+	of each cut referenced by an event, thus making it possible to
+	quickly verify that a set of automatic recordings were properly
+	executed.
+      </para>
+    </sect2>
+  </sect1>
+  <sect1>
+    <title>Adding New Events</title>
+    <para>
+      A new event can be added to the event list by simply clicking the
+      Add button to bring up the Add Event Dialog (see Illustration 12).
+      Simply clicking the button that correspond to the desired type of
+      event will create it.
+    </para>
+  </sect1>
+  <sect1>
+    <title>Automating Recordings</title>
+    <para>
+      Automated recordings are configured by means of the Edit Recording
+      dialog (see Illustration 13), which can be accessed either by clicking
+      the Recording button in the Add Event dialog to create a new record
+      event or by touching the Edit button to modify an existing event.
+    </para>
+    <sect2>
+      <title>The 'Start Parameters' Section</title>
+      <para>
+	The start parameters of each recording are configured in the
+	'Start Parameters' section.  A recording can be programmed to start
+	on the basis of the wall clock time, referred to the hard start
+	time, or upon reception of a general-purpose input, or GPI event
+	originated by a satellite receiver, tone decoder or other external
+	device.  Programming a hard start time is merely a matter of
+	entering the desired start time, in 24 hour 'military' format.
+	Programming a GPI start involves, in addition to entry of the GPI
+	parameters themselves (matrix and GPI line numbers) that Window
+	Start and Windows End times be entered, that define the 'window'
+	during which reception of  the appropriate GPI event will be
+	'recognized' by RDCatch.  It is also optionally possible to specify
+	a Start Delay between reception of the GPI event and the actual
+	start of the recording.
+      </para>
+    </sect2>
+    <sect2>
+      <title>The 'End Parameters' Section</title>
+      <para>
+	The end parameters of each recording are configured in the
+	'End Parameters' section.  A recording can be programmed to end on
+	the basis of a hard time, its absolute length or in response to a
+	GPI event.  Programming of the Hard Time and Length parameters
+	should be fairly self-explanatory, while the parameters needed to
+	program a GPI event are similar to those used for the start
+	parameters, with the exception of the 'Max Record Length' setting,
+	which limits the maximum length of the recording in the event that
+	the expected GPI event is never received.
+      </para>
+    </sect2>
+    <sect2>
+      <title>Programming Multiple Recordings in a Single Event</title>
+      <para>
+	If a record event is configured to use GPI for its start and Length
+	or GPI for its end parameter, then it is possible to configure the
+	event to make repeated, multiple recordings within a single event
+	by checking the 'Allow Multiple Recordings Within This Window' box
+	in the 'Start Parameters' section.  This can significantly reduce
+	the amount of required record events when capturing material with
+	high on-air turnover, such as newscasts or traffic reports.
+      </para>
+    </sect2>
+    <sect2>
+      <title>Selecting a Record Source</title>
+      <para>
+	If the selected record deck (chosen in the Location drop-down menu
+	at the top of the dialog) as been configured to operate with an
+	audio switcher device, the appropriate audio input can be chosen
+	from the Source drop-down menu.
+      </para>
+    </sect2>
+    <sect2>
+      <title>Selecting a Record Destination</title>
+      <para>
+	Each programmed recording must have a 'destination', a designated
+	Cart/Cut which will hold the audio.  The currently programmed
+	destination is shown in the Destination field, and can be changed
+	by clicking the Select button.
+      </para>
+    </sect2>
+    <sect2>
+      <title>Setting the Active Days for a Recording</title>
+      <para>
+	A check should be placed next to each day of the week for which a
+	recording should be made in the Active Days box.  If no days are
+	checked, then no recordings at all will be made. 
+      </para>
+    </sect2>
+    <sect2>
+      <title>Record List Management with Event Active and Make OneShot</title>
+      <para>
+	The record event will be actually executed only if Event Active
+	(in the upper left corner of the dialog box) is checked.  By
+	clearing this box, it's possible to 'bank' a record event without
+	actually having it run, useful for events that are only used
+	sporadically.
+      </para>
+      <para>
+	For events that need to be executed only once, the Make OneShot
+	box can be checked.  Such an event will execute just once, and
+	then automatically delete itself from the event list.
+      </para>
+    </sect2>
+  </sect1>
+  <sect1>
+    <title>Automating Playouts</title>
+    <para>
+      Automated playouts are configured by means of the Edit Playout
+      dialog (see Illustration 14), which can be accessed either by
+      clicking the Playout button in the Add Event dialog to create a new
+      record event or by touching the Edit button to modify an existing
+      event.  The process of configuring a playout is very similar to that
+      for configuring a recording – see the relevant part of Section 3.3,
+      'Automating Recordings' above for details.
+    </para>
+  </sect1>
+  <sect1>
+    <title>Automating Uploads/Downloads</title>
+    <para>
+      It's possible to use RDCatch to automatically upload and download
+      material from both local and Internet-based servers.  Automated
+      downloads are configured by means of the Edit Download dialog, which
+      can be accessed either by clicking the Download button in the Add
+      Event dialog (see Illustration 15) to create a new record event or
+      by touching the Edit button to modify an existing event.
+    </para>
+    <para>
+      With the exception of the Url, Username and Password controls,
+      the process of configuring a download is very similar to that for
+      configuring a recording – see the relevant part of Section 3.3,
+      'Automating Recordings' above for details.  
+    </para>
+    <para>
+      The Url control is used to specify the Uniform Resource Locater for
+      the material to be downloaded.  The following download types are
+      supported: http, ftp, smb and file.  The URL field can also include
+      wildcard characters that can be used to construct date-based URLs,
+      as shown in Table 5.
+    </para>
+    <para>
+      The Username and Password fields are used to indicate the username
+      and password required for access to the server referenced in the URL.
+      For public web pages and anonymous FTP servers, these fields can be
+      left blank.
+    </para>
+    <para>
+      Automated uploads are configured by means of the Edit Upload dialog
+      (see Illustration 16), which can be accessed either by clicking the
+      Upload button in the Add Event dialog to create a new record event or
+      by touching the Edit button to modify an existing event.  The
+      following upload types are supported: ftp, smb and file.  As with
+      downloads, the URL field can also include wildcard characters that
+      can be used to construct date-based URLs, as shown in Table 5.
+    </para>
+    <para>
+      Configuration of an upload event is very similar to that of a download,
+      with the addition of the Export Format control.  This is used to set
+      what file format should be used for the upload.  Depending upon what
+      software encoders have been installed by the system administrator,
+      the following export types may be available: 
+    </para>
+    <para>
+      <itemizedlist>
+	<listitem>
+	  PCM16 Linear (*.wav)
+	</listitem>
+	<listitem>
+	  Free Lossless Audio Codec [FLAC] (*.flac)
+	</listitem>
+	<listitem>
+	  MPEG Layer 2 (*.mp2)
+	</listitem>
+	<listitem>
+	  MPEG Layer 3 (*.mp3)
+	</listitem>
+	<listitem>
+	  OggVorbis (*.ogg)
+	</listitem>
+      </itemizedlist>
+    </para>
+    <para>
+      The desired upload format and parameters are set by clicking the Set
+      button.
+    </para>
+  </sect1>
+  <sect1>
+    <title>Automating Macro Execution</title>
+    <para>
+      It's possible to configure the automatic execution of a Macro Cart
+      by means of the Edit Cart Event dialog (see Illustration 17), which
+      can be accessed either by clicking the Macro Cart button in the Add
+      Event dialog to create a new Macro Cart event or by touching the
+      Edit button to modify an existing event.  The process of configuring
+      a macro cart event is very similar to that for configuring a
+      recording – see the relevant part of Section 3.3, 'Automating
+      Recordings' above for details.
+    </para>
+  </sect1>
+  <sect1>
+    <title>Automating Switcher Operations</title>
+    <para>
+      It's possible to configure an automatic operation on a switcher
+      device by means of the Edit Switcher Event dialog (see Illustration
+      18), which can be accessed either by clicking the Switch Event button
+      in the Add Event dialog to create a new switch  event or by touching
+      the Edit button to modify an existing event.
+    </para>
+    <para>
+      In addition to the usual fields, a switch event has Switch Matrix
+      (the name of one of the switch matrices associated with the selected
+      Location), Switch Input and Switch Output controls.  When executed, a
+      switch events causes a take operation to be performed on the specified
+      switcher device between the specified input and output.  It is
+      possible to specify the input and output either by their alphanumeric
+      names (assigned in RDAdmin) or by their absolute numbers.
+    </para>
+  </sect1>
+</chapter>
+<!--
+<index>
+</index>
+-->
+</book>
+
+<!--
+<structure xml:id="manual">
+  <output renderas="book"/>
+</structure>
+-->
