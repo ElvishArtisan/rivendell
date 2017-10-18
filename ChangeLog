@@ -16177,3 +16177,6 @@
 2017-10-17 Fred Gleason <fredg@paravelsystems.com>
 	* Moved the man pages to 'docs/manpages/'.
 	* Stubbed out a Rivendell Operations Guide in 'docs/opsguide/'.
+2017-10-17 Fred Gleason <fredg@paravelsystems.com>
+	* Added the text of the 'Generating and Maintaining Logs with
+	RDLogEdit' chapter to the Ops Guide.
