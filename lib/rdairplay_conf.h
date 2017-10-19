@@ -24,7 +24,7 @@
 #include <qsqldatabase.h>
 #include <qhostaddress.h>
 
-#include <rdlog_line.h>         
+#include <rdlog_line.h>
 
 
 class RDAirPlayConf
@@ -42,10 +42,11 @@ class RDAirPlayConf
   enum PanelType {StationPanel=0,UserPanel=1};
   enum ExitCode {ExitClean=0,ExitDirty=1};
   enum StartMode {StartEmpty=0,StartPrevious=1,StartSpecified=2};
-  enum Channel {MainLog1Channel=0,MainLog2Channel=1,SoundPanel1Channel=2,
-		CueChannel=3,AuxLog1Channel=4,AuxLog2Channel=5,
-		SoundPanel2Channel=6,SoundPanel3Channel=7,
-		SoundPanel4Channel=8,SoundPanel5Channel=9,LastChannel=10};
+  enum Channel {MainLog1Channel=0,MainLog2Channel=1,MainLog3Channel=2,
+        MainLog4Channel=3,SoundPanel1Channel=4,
+		CueChannel=5,AuxLog1Channel=6,AuxLog2Channel=7,
+		SoundPanel2Channel=8,SoundPanel3Channel=9,
+		SoundPanel4Channel=10,SoundPanel5Channel=11,LastChannel=12};
   enum GpioType {EdgeGpio=0,LevelGpio=1};
   RDAirPlayConf(const QString &station,const QString &tablename);
   QString station() const;
@@ -58,7 +59,7 @@ class RDAirPlayConf
   QString stopRml(Channel chan) const;
   void setStopRml(Channel chan,QString str) const;
   RDAirPlayConf::GpioType gpioType(RDAirPlayConf::Channel chan) const;
-  void setGpioType(RDAirPlayConf::Channel chan,RDAirPlayConf::GpioType type) 
+  void setGpioType(RDAirPlayConf::Channel chan,RDAirPlayConf::GpioType type)
     const;
   int startGpiMatrix(Channel chan) const;
   void setStartGpiMatrix(Channel chan,int matrix) const;

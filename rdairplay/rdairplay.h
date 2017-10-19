@@ -128,7 +128,7 @@ class MainWidget : public QWidget
   void keyReleaseEvent(QKeyEvent *e);
   void closeEvent(QCloseEvent *);
   void paintEvent(QPaintEvent *e);
-  
+
  private:
   void RunLocalMacros(RDMacro *rml);
   void StopEvent(int button_id);
@@ -181,8 +181,8 @@ class MainWidget : public QWidget
   QString air_add_schedcode;
   RDLabel *air_message_label;
   int air_source_id;
-  int air_meter_card[3];
-  int air_meter_port[3];
+  int air_meter_card[5];
+  int air_meter_port[5];
   int air_cue_card;
   int air_cue_port;
   RDInstanceLock *air_lock;
@@ -216,10 +216,10 @@ class MainWidget : public QWidget
   int air_stop_gpo_matrices[RDAirPlayConf::LastChannel];
   int air_stop_gpo_lines[RDAirPlayConf::LastChannel];
   RDAirPlayConf::GpioType air_channel_gpio_types[RDAirPlayConf::LastChannel];
-  std::map<unsigned,QTimer *> air_channel_timers[2];
+  std::map<unsigned,QTimer *> air_channel_timers[4];
   RDEmptyCart *air_empty_cart;
   RDCae *air_cae;
 };
 
 
-#endif 
+#endif

@@ -44,6 +44,8 @@ LogPlay::LogPlay(int id,QSocketDevice *nn_sock,QString logname,
   play_trans_length=rdairplay_conf->transLength()+1;
   play_duck_volume_port1=0;
   play_duck_volume_port2=0;
+  play_duck_volume_port3=0;
+  play_duck_volume_port4=0;
   play_start_next=false;
   play_running=false;
   play_next_line=0;
@@ -69,7 +71,7 @@ LogPlay::LogPlay(int id,QSocketDevice *nn_sock,QString logname,
   play_cae=new RDCae(rdstation_conf,air_config,parent);
   play_cae->connectHost();
 
-  for(int i=0;i<2;i++) {
+  for(int i=0;i<4;i++) {
     play_card[i]=0;
     play_port[i]=0;
   }
@@ -217,10 +219,10 @@ void LogPlay::setLogName(QString name)
 }
 
 
-void LogPlay::setChannels(int cards[2],int ports[2],
-			  const QString start_rml[2],const QString stop_rml[2])
+void LogPlay::setChannels(int cards[4],int ports[4],
+			  const QString start_rml[4],const QString stop_rml[4])
 {
-  for(int i=0;i<2;i++) {
+  for(int i=0;i<4;i++) {
     play_card[i]=cards[i];
     play_port[i]=ports[i];
     play_start_rml[i]=start_rml[i];
@@ -365,7 +367,7 @@ bool LogPlay::stop(bool all,int port,int fade)
 
   int n=runningEvents(lines);
   for(int i=0;i<n;i++) {
-    if(all || port<1) { 
+    if(all || port<1) {
       stop(lines[i],fade);
       }
     else {
@@ -399,11 +401,11 @@ bool LogPlay::stop(int line,int fade)
     ((RDPlayDeck *)logline->playDeck())->stop(fade,RD_FADE_DEPTH);
     return true;
     break;
-    
+
   case RDCart::Macro:
     play_macro_deck->stop();
     break;
-    
+
   case RDCart::All:
     break;
   }
@@ -435,7 +437,7 @@ bool LogPlay::channelStop(int mport)
 bool LogPlay::pause(int line)
 {
   RDLogLine *logline;
-  
+
   if((logline=logLine(line))==NULL) {
     return false;
   }
@@ -467,17 +469,23 @@ void LogPlay::duckVolume(int level,int fade,int mport)
   if(mport==-1 || mport==2) {
 	  play_duck_volume_port2=level;
   }
+  if(mport==-1 || mport==3) {
+	  play_duck_volume_port3=level;
+  }
+  if(mport==-1 || mport==4) {
+	  play_duck_volume_port4=level;
+  }
   int n=runningEvents(lines);
   for(int i=0;i<n;i++) {
     logline=logLine(lines[i]);
-    if((logline->cartType()==RDCart::Audio) 
+    if((logline->cartType()==RDCart::Audio)
        && (RDPlayDeck *)logline->playDeck()!=NULL
        && ((logline->portName().toInt()==mport) || mport<1) ) {
       ((RDPlayDeck *)logline->playDeck())->duckVolume(level,fade);
     }
   }
 }
-		
+
 
 
 void LogPlay::makeNext(int line,bool refresh_status)
@@ -501,7 +509,8 @@ void LogPlay::load()
 
   play_duck_volume_port1=0;
   play_duck_volume_port2=0;
-  
+  play_duck_volume_port3=0;
+  play_duck_volume_port4=0;
   //
   // Remove All Idle Events
   //
@@ -592,8 +601,8 @@ void LogPlay::append(const QString &log_name)
 }
 
 
-bool LogPlay::refresh()            
-{                                  
+bool LogPlay::refresh()
+{
   RDLogLine *s;
   RDLogLine *d;
   int prev_line;
@@ -693,8 +702,8 @@ bool LogPlay::refresh()
 	insert(first_non_holdover,s,false,true);
       }
       else {
-	prev_id=e->logLine(prev_line)->id();   
-	insert(lineById(prev_id, /*ignore_holdovers=*/true)+1,s,false,true);   
+	prev_id=e->logLine(prev_line)->id();
+	insert(lineById(prev_id, /*ignore_holdovers=*/true)+1,s,false,true);
       }
     }
     else {
@@ -719,16 +728,16 @@ bool LogPlay::refresh()
     // Make Next after currently playing cart
     // The next event cannot have been a holdover,
     // as holdovers are always either active or finished.
-    if((next_line=lineById(current_id, /*ignore_holdovers=*/true))>=0) {    
-      makeNext(next_line+1,false);              
+    if((next_line=lineById(current_id, /*ignore_holdovers=*/true))>=0) {
+      makeNext(next_line+1,false);
     }
   }
   else {
-    if((next_line=lineById(next_id, /*ignore_holdovers=*/true))>=0) {     
-     makeNext(next_line,false);               
+    if((next_line=lineById(next_id, /*ignore_holdovers=*/true))>=0) {
+     makeNext(next_line,false);
     }
-  } 
-  
+  }
+
   //
   // Clean Up
   //
@@ -777,6 +786,8 @@ void LogPlay::clear()
   int start_line=0;
   play_duck_volume_port1=0;
   play_duck_volume_port2=0;
+  play_duck_volume_port3=0;
+  play_duck_volume_port4=0;
   while(ClearBlock(start_line++));
   play_svc_name=play_defaultsvc_name;
   play_rescan_pos=0;
@@ -801,7 +812,7 @@ void LogPlay::insert(int line,int cartnum,RDLogLine::TransType next_type,
   int lines[TRANSPORT_QUANTITY];
   RDPlayDeck *playdeck;
   int mod_line=-1;
-  
+
   if(line<(size()-1)) {
     if(logLine(line)->hasCustomTransition()) {
       mod_line=line+1;
@@ -855,7 +866,7 @@ void LogPlay::insert(int line,RDLogLine *l,bool update,bool preserv_custom_trans
   int lines[TRANSPORT_QUANTITY];
   RDPlayDeck *playdeck;
   int mod_line=-1;
-  
+
   if(line<(size()-1)) {
     if(logLine(line)->hasCustomTransition()) {
       mod_line=line+1;
@@ -1150,7 +1161,7 @@ RDLogLine::TransType LogPlay::nextTrans(int line)
 
 //  if((logline=logLine(nextLine(line)))!=NULL) {
 
-  int next_line; 
+  int next_line;
   next_line=nextLine(line);
   logline=logLine(next_line);
   if(logline!=NULL) {
@@ -1384,7 +1395,7 @@ void LogPlay::transTimerData()
       makeNext(play_trans_line);
       if(logline->transType()!=RDLogLine::Stop || grace>=0) {
         StartEvent(trans_line,RDLogLine::Play,0,RDLogLine::StartTime);
-      } 
+      }
     }
     else {
       if(logline==NULL) {
@@ -1407,7 +1418,7 @@ void LogPlay::transTimerData()
 	  case -1:
 	    makeNext(play_trans_line);
 	    break;
-	    
+
 	  default:
 	    if(logline->transType()==RDLogLine::Stop) {
 	      logline->setTransType(RDLogLine::Play);
@@ -1733,7 +1744,7 @@ bool LogPlay::StartEvent(int line,RDLogLine::TransType trans_type,
 		case RDCart::Audio:
 		  ((RDPlayDeck *)logLine(lines[i])->playDeck())->stop();
 		  break;
-		  
+
 		case RDCart::Macro:
 		  play_macro_deck->stop();
 		  break;
@@ -1745,7 +1756,7 @@ bool LogPlay::StartEvent(int line,RDLogLine::TransType trans_type,
 	    }
 	  }
 	  break;
-	  
+
 	case RDLogLine::Segue:
 	  for(int i=0;i<running;i++) {
 	    RDLogLine *prev_logline=logLine(lines[i]);
@@ -1810,10 +1821,16 @@ bool LogPlay::StartEvent(int line,RDLogLine::TransType trans_type,
 	if(logline->portName().toInt()==2){
 	  playdeck->duckVolume(play_duck_volume_port2,0);
 	  }
+    else if(logline->portName().toInt()==3){
+      playdeck->duckVolume(play_duck_volume_port3,0);
+    }
+    else if(logline->portName().toInt()==4){
+      playdeck->duckVolume(play_duck_volume_port4,0);
+    }
 	else  {
 	  playdeck->duckVolume(play_duck_volume_port1,0);
 	  }
-		
+
 	if(!playdeck->setCart(logline,logline->status()!=RDLogLine::Paused)) {
 	  // No audio to play, so fake it
 	  logline->setZombified(true);
@@ -2172,8 +2189,8 @@ void LogPlay::UpdateStartTimes(int line)
 	end_time=
 	  time.addMSecs(logline->effectiveLength()-
 			logline->playPosition());
-	break; 
-      default: 
+	break;
+      default:
 	prev_total_length=logline->effectiveLength();
 	prev_segue_length=
 	  logline->segueLength(next_trans);
@@ -2240,7 +2257,7 @@ QTime LogPlay::GetStartTime(QTime sched_time,
 	  time=prev_time.addMSecs(prev_total_length);
 	}
 	break;
-	
+
       case RDLogLine::Segue:
 	if(!prev_time.isNull()) {
 	  time=prev_time.addMSecs(prev_segue_length);
@@ -2414,8 +2431,8 @@ void LogPlay::AdvanceActiveEvent()
 
 QString LogPlay::GetPortName(int card,int port)
 {
-  for(int i=0;i<2;i++) {
-    for(int j=0;j<2;j++) {
+  for(int i=0;i<4;i++) {
+    for(int j=0;j<4;j++) {
       if((play_card[i]==card)&&(play_port[i]==port)) {
 	return QString().sprintf("%d",i+1);
       }
@@ -2467,7 +2484,7 @@ int LogPlay::GetNextChannel(int mport,int *card,int *port)
   if(mport<0) {
     *card=play_card[next_channel];
     *port=play_port[next_channel];
-    if(++next_channel>1) {
+    if(++next_channel>3) {
       next_channel=0;
     }
   }
@@ -2476,7 +2493,7 @@ int LogPlay::GetNextChannel(int mport,int *card,int *port)
     *card=play_card[mport];
     *port=play_port[mport];
     next_channel=mport+1;
-    if(next_channel>1) {
+    if(next_channel>3) {
       next_channel=0;
     }
   }
@@ -2538,7 +2555,7 @@ bool LogPlay::GetNextPlayable(int *line,bool skip_meta,bool forced_start)
       emit modified(i);
     }
     else {
-      if(logline->status()==RDLogLine::Scheduled || logline->status()==RDLogLine::Paused || 
+      if(logline->status()==RDLogLine::Scheduled || logline->status()==RDLogLine::Paused ||
 		      logline->status()==RDLogLine::Auditioning) {
         if(((logline->transType()==RDLogLine::Stop)||
 	    (play_op_mode==RDAirPlayConf::LiveAssist))&&((i-skipped)!=*line)) {
