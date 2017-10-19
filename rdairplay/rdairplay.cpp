@@ -1392,12 +1392,7 @@ void MainWidget::logReloadedData(int log)
 			left(air_log[0]->logName().length()-4)));
 	if(air_log[0]->logName().isEmpty()) {
 	  if(air_panel!=NULL) {
-	    if(rdstation_conf->broadcastSecurity()==RDStation::UserSec) {
-	      air_panel->setSvcName(
-                rduser->serviceCheckDefault( rdairplay_conf->defaultSvc() ) );
-	    } else { // RDStation::HostSec
-	      air_panel->setSvcName(rdairplay_conf->defaultSvc());
-	    }
+	    air_panel->setSvcName(rdairplay_conf->defaultSvc());
 	  }
 	}
 	else {
@@ -1492,19 +1487,6 @@ void MainWidget::userData()
     air_log_list[i]->userChanged(add_allowed,delete_allowed,
 				 arrange_allowed,playout_allowed);
   }
-
-  // Update default services for the new user, if applicable.
-  if (rdstation_conf->broadcastSecurity() == RDStation::UserSec) {
-    QString default_svcname = 
-        rduser->serviceCheckDefault( rdairplay_conf->defaultSvc() );
-    for(int i=0;i<RDAIRPLAY_LOG_QUANTITY;i++) {
-      air_log[i]->setDefaultServiceName(default_svcname);
-    }
-    if(air_panel!=NULL) {
-      air_panel->setSvcName(default_svcname);
-    }
-  }
-
 }
 
 
@@ -2399,19 +2381,14 @@ void MainWidget::SetActionMode(StartButton::Mode mode)
 	  }
 	}
 	if(svc_quan==0) {
-          if (rdstation_conf->broadcastSecurity() == RDStation::UserSec) {
-            services_list = rduser->services();
-          } else { // RDStation::HostSec
-            sql=QString().sprintf("select SERVICE_NAME from SERVICE_PERMS \
+	  sql=QString().sprintf("select SERVICE_NAME from SERVICE_PERMS \
                                    where STATION_NAME=\"%s\"",
-                                   (const char *)rdstation_conf->name());
-            q=new RDSqlQuery(sql);
-            while(q->next()) {
-              services_list.append( q->value(0).toString() );
-            }
-            delete q;
-          }
-
+				(const char *)rdstation_conf->name());
+	  q=new RDSqlQuery(sql);
+	  while(q->next()) {
+	    services_list.append( q->value(0).toString() );
+	  }
+	  delete q;
           for ( QStringList::Iterator it = services_list.begin(); 
                 it != services_list.end()&&svc_quan<(RD_MAX_DEFAULT_SERVICES-1);
                 ++it ) {

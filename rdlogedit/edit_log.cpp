@@ -529,16 +529,13 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
     edit_purgedate_box->setChecked(true);
     edit_purgedate_edit->setDate(purge_date);
   }
-  if (rdstation_conf->broadcastSecurity() == RDStation::UserSec) {
-    services_list = rduser->services();
-  } else { // RDStation::HostSec
-    sql=QString("select NAME from SERVICES");
-    q=new RDSqlQuery(sql);
-    while(q->next()) {
-      services_list.append( q->value(0).toString() );
-    }
-    delete q;
+  sql=QString("select NAME from SERVICES");
+  q=new RDSqlQuery(sql);
+  while(q->next()) {
+    services_list.append( q->value(0).toString() );
   }
+  delete q;
+
   int n=-1;
   int ncounter=0;
   QString service=edit_log->service();
@@ -1097,11 +1094,7 @@ void EditLog::saveasData()
   RDAddLog *log=NULL;
 
   if(rduser->createLog()) {
-    if (rdstation_conf->broadcastSecurity() == RDStation::UserSec) {
-      log=new RDAddLog(&logname,&svcname,NULL,tr("Add Log"),this,rduser);
-    } else { // RDStation::HostSec
-      log=new RDAddLog(&logname,&svcname,NULL,tr("Add Log"),this);
-    }
+    log=new RDAddLog(&logname,&svcname,NULL,tr("Add Log"),this);
     if(log->exec()<0) {
       return;
     }

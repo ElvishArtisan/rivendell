@@ -109,16 +109,12 @@ GenerateLog::GenerateLog(QWidget *parent,int cmd_switch,QString *cmd_service,
   gen_service_label->setFont(bold_font);
   gen_service_label->setAlignment(AlignRight|AlignVCenter);
 
-  if (rdstation_conf->broadcastSecurity() == RDStation::UserSec) {
-    services_list = rduser->services();
-  } else { // RDStation::HostSec
-    QString sql="select NAME from SERVICES";
-    RDSqlQuery *q=new RDSqlQuery(sql);
-    while(q->next()) {
-      services_list.append( q->value(0).toString() );
-    }
-    delete q;
+  QString sql="select NAME from SERVICES";
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  while(q->next()) {
+    services_list.append( q->value(0).toString() );
   }
+  delete q;
   for ( QStringList::Iterator it = services_list.begin(); 
         it != services_list.end();
         ++it ) {

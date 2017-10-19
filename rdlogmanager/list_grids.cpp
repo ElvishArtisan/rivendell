@@ -132,28 +132,6 @@ void ListGrids::RefreshList()
   QListViewItem *prev_item=edit_grids_list->selectedItem();
   QString sql="select NAME,DESCRIPTION from SERVICES";
 
-  if (rdstation_conf->broadcastSecurity() == RDStation::UserSec
-      && rduser != NULL) {
-    QStringList services_list;
-    QString sql_where;
-
-    services_list = rduser->services();
-    if(services_list.size()==0) {
-      return;
-    }
-
-    sql_where=" where (";
-    for ( QStringList::Iterator it = services_list.begin(); 
-          it != services_list.end(); ++it ) {
-      sql_where+=QString().sprintf("NAME=\"%s\"||",
-                             (const char *)*it);
-    }
-    sql_where=sql_where.left(sql_where.length()-2);
-    sql_where+=")";
-
-    sql=sql+sql_where;
-  } // else no filter for RDStation::HostSec
-
   edit_grids_list->clear();
   RDSqlQuery *q=new RDSqlQuery(sql);
   QListViewItem *item=NULL;

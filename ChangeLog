@@ -16185,3 +16185,6 @@
 	in RDLogManager->ManageReports.
 2017-10-19 Fred Gleason <fredg@paravelsystems.com>
 	* Cleaned up build warnings under Linux.
+2017-10-19 Fred Gleason <fredg@paravelsystems.com>
+	* Removed 'RDStation::broadcastSecurity()' and
+	'RDStation::setBroadcastSecurity()' methods.

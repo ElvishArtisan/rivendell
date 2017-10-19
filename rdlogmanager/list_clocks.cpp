@@ -170,16 +170,12 @@ ListClocks::ListClocks(QString *clockname,QWidget *parent)
   edit_filter_box->insertItem(tr("ALL"));
   edit_filter_box->insertItem(tr("NONE"));
 
-  if (rdstation_conf->broadcastSecurity() == RDStation::UserSec) {
-    services_list = rduser->services();
-  } else { // RDStation::HostSec
-    QString sql="select NAME from SERVICES";
-    RDSqlQuery *q=new RDSqlQuery(sql);
-    while(q->next()) {
-      services_list.append( q->value(0).toString() );
-    }
-    delete q;
-  } 
+  QString sql="select NAME from SERVICES";
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  while(q->next()) {
+    services_list.append( q->value(0).toString() );
+  }
+  delete q;
   services_list.sort();
   for ( QStringList::Iterator it = services_list.begin(); 
         it != services_list.end();
