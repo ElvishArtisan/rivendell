@@ -1,7 +1,7 @@
 The NEWS file for the Rivendell package.
 
 -------------------------------------------------------------------------------
-v2.17.0int00 -- 10/17/2017
+v2.17.0int01 -- 10/19/2017
 
 Changes:
    Group Cut Expiration Policy. Added the ability to set a default
@@ -27,6 +27,9 @@ Changes:
 
    RDImport/DropBox Enhancements. Added the ability to specify start
    and end datetimes via metadata pattern.
+
+   RDCatch Event Filtering. Added ahe ability to filter by event type in
+   RDCatch.
 
    Various other bug fixes.  See the ChangeLog for details.   
 

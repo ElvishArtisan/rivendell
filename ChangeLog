@@ -16188,3 +16188,6 @@
 2017-10-19 Fred Gleason <fredg@paravelsystems.com>
 	* Removed 'RDStation::broadcastSecurity()' and
 	'RDStation::setBroadcastSecurity()' methods.
+2017-10-19 Fred Gleason <fredg@paravelsystems.com>
+	* Updated 'NEWS'.
+	* Incremented the package version to 2.17.0int01.
