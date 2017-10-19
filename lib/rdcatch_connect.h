@@ -2,7 +2,7 @@
 //
 // Connect to the Rivendell Netcatcher Daemon.
 //
-//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2004,2016-2017 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -74,7 +74,6 @@ class RDCatchConnect : public QObject
   
  private slots:
   void connectedData();
-  void errorData(int errorcode);
   void readyData();
   void heartbeatTimeoutData();
   

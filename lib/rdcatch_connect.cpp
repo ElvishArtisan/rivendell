@@ -2,7 +2,7 @@
 //
 // Connect to the Rivendell Netcatcher Daemon.
 //
-//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2004,2016-2017 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -42,7 +42,6 @@ RDCatchConnect::RDCatchConnect(int serial,QObject *parent)
   //
   cc_socket=new QSocket(this,"cc_socket");
   connect(cc_socket,SIGNAL(connected()),this,SLOT(connectedData()));
-  connect(cc_socket,SIGNAL(error(int)),this,SLOT(errorData(int)));
   connect(cc_socket,SIGNAL(readyRead()),this,SLOT(readyData()));
 
   //
@@ -182,12 +181,6 @@ void RDCatchConnect::setExitCode(int id,RDRecording::ExitCode code,
 void RDCatchConnect::connectedData()
 {
   SendCommand(QString().sprintf("PW %s!",(const char *)cc_password));
-}
-
-
-void RDCatchConnect::errorData(int errorcode)
-{
-  fprintf(stderr,"RDCatchConnect: socket error %d\n",errorcode);
 }
 
 
