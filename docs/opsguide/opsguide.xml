@@ -36,7 +36,7 @@
 <preface><title>Forward</title></preface>
 -->
 
-<chapter>
+<chapter id="overview">
   <title>System Overview</title>
 <!--
   <mediaobject>
@@ -45,7 +45,7 @@
     </imageobject>
   </mediaobject>
 -->
-  <sect1>
+  <sect1 id="sect1.overview.introducting_rivendell">
     <title>Introducing Rivendell</title>
     <para>
       Rivendell is a digital audio content management and delivery system
@@ -166,7 +166,7 @@
       chapters that follow.  However, we first need to cover some basic
       concepts common to all Rivendell modules.
     </para>
-    <sect2>
+    <sect2 id="sect2.overview.the_rivendell_security_paradigm">
       <title>The Rivendell Security Paradigm</title>
       <para>
 	All Rivendell modules make use of the following four classes of
@@ -191,7 +191,7 @@
       <para>
 	We'll cover each of these concepts in turn.
       </para>
-      <sect3>
+      <sect3 id="sect3.overview.hosts">
 	<title>Hosts</title>
 	<para>
 	  Every physical computer within a given network that is running
@@ -207,7 +207,7 @@
 	  of these functions.
 	</para>
       </sect3>
-      <sect3>
+      <sect3 id="sect3.overview.users">
 	<title>Users</title>
 	<para>
 	  Every host on a Rivendell network has one or more
@@ -223,7 +223,7 @@
 	  module. 
 	</para>
       </sect3>
-      <sect3>
+      <sect3 id="sect3.overview_hosts">
 	<title>Groups</title>
 	<para>
 	  A Rivendell <emphasis>group</emphasis> is a system of categories
@@ -242,7 +242,7 @@
 	  detail in the chapters devoted to the RDLibrary and RDAdmin modules.
 	</para>
       </sect3>
-      <sect3>
+      <sect3 id="sect3.hosts.services">
 	<title>Services</title>
 	<para>
 	  Every facility at which Rivendell is deployed is presumed to have 
@@ -257,7 +257,7 @@
 	</para>
       </sect3>
     </sect2>
-    <sect2>
+    <sect2 id="sect2.overview_the_rivendell_hardware_paradigm">
       <title>The Rivendell Hardware Paradigm</title>
       <para>
 	In addition to the core computer hardware (CPU, motherboard, etc),
@@ -267,7 +267,7 @@
 	audio adapters, serial ports and GPIO/switcher devices.  We'll
 	cover each below.
       </para>
-      <sect3>
+      <sect3 id="sect3.overview.audio_adapters">
 	<title>Audio Adapters</title>
 	<para>
 	  An <emphasis>audio adapter</emphasis> in Rivendell is simply a
@@ -328,7 +328,7 @@
 	  </variablelist>
 	</para>
       </sect3>
-      <sect3>
+      <sect3 id="sect3.overview.serial_ports">
 	<title>Serial Ports</title>
 	<para>
 	  Commonly known in the DOS/Windows world as 'COM ports', 
@@ -338,7 +338,7 @@
 	  can be accessed simultaneously by each Rivendell host.
 	</para>
       </sect3>
-      <sect3>
+      <sect3 id="sect3.overview.gpio_switcher_devices">
 	<title>GPIO/Switcher Devices</title>
 	<para>
 	  Because these capabilities are often (although not always)
@@ -365,9 +365,9 @@
   </sect1>
 </chapter>
 
-<chapter>
+<chapter id="rdlogin">
   <title>Managing the Current User with RDLogin</title>
-  <sect1>
+  <sect1 id="sect1.rdlogin.managing_the_current_user_with_rdlogin">
     <title>RDLogin</title>
     <para>
       Rivendell uses a sophisticated system of user privileges to keep track
@@ -413,11 +413,11 @@
   </sect1>
 </chapter>
 
-<chapter>
+<chapter id="rdlibrary">
   <title>Content Management with RDLibrary</title>
-  <sect1>
+  <sect1 id="sect1.rdlibrary.the_rivendell_library_structure_and_rdlibrary">
     <title>The Rivendell Library Structure and RDLibrary</title>
-    <sect2>
+    <sect2 id="sect2_rdlibrary_carts">
       <title>Carts</title>
       <para>
 	The Rivendell Library consists of a set of objects called
@@ -461,6 +461,15 @@
 	entry in the list, or by touching the desired cart entry and then
 	touching the Edit button.  In either case, you should get a dialog
 	similar to that shown in Illustration 3.
+      </para>
+      <para>
+	Near the center of the dialog will be a dropdown box labeled
+	<computeroutput>Schedule Cuts</computeroutput>. When set to
+	<computeroutput>By Weight</computeroutput> (the default), this will
+	allow cut rotation to be managed by means of daypart settings (see
+	<xref linkend="sect3.rdlibrary.cut_dayparting"/>). When set to
+	<computeroutput>By Specified Order</computeroutput>, the precise
+	rotation of the cuts within the cart can be set manually.
       </para>
       <para>
 	This is how an audio cart looks when loaded into the Edit Cart dialog.
@@ -514,7 +523,7 @@
 	within the cart.  
       </para>
     </sect2>
-    <sect2>
+    <sect2 id="sect2.rdlibrary.cuts">
       <title>Cuts</title>
       <para>
 	Each audio cart can contain one or more <emphasis>cuts</emphasis>.
@@ -523,10 +532,27 @@
 	Up to 999 such cuts can exist within a single cart.  Each line in
 	the cut list contains information about the cut, including:
       </para>
-      <para>
       <variablelist>
 	<varlistentry>
-	  <term>Description</term>
+	  <term><computeroutput>WT</computeroutput></term>
+	  <listitem>
+	    <para>
+	      The <emphasis>weighting</emphasis> value for the cut. see
+	      <xref linkend="sect3.rdlibrary.cut_dayparting"/> for discussion.
+	    </para>
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term><computeroutput>ORDER</computeroutput></term>
+	  <listitem>
+	    <para>
+	      The <emphasis>order</emphasis> value for the cut. see
+	      <xref linkend="sect3.rdlibrary.cut_dayparting"/> for discussion.
+	    </para>
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term><computeroutput>DESCRIPTION</computeroutput></term>
 	  <listitem>
 	    <para>
 	      n arbitrary name, assignable by the user as an aid in keeping
@@ -536,7 +562,7 @@
 	  </listitem>
 	</varlistentry>
 	<varlistentry>
-	  <term>Length</term>
+	  <term><computeroutput>LENGTH</computeroutput></term>
 	  <listitem>
 	    <para>
 	      The actual, measured play out length of the cut audio.
@@ -545,7 +571,7 @@
 	  </listitem>
 	</varlistentry>
 	<varlistentry>
-	  <term>Last Played</term>
+	  <term><computeroutput>LAST PLAYED</computeroutput></term>
 	  <listitem>
 	    <para>
 	      he last date and time that the cut was aired by one of the
@@ -554,7 +580,7 @@
 	  </listitem>
 	</varlistentry>
 	<varlistentry>
-	  <term># Of Plays</term>
+	  <term><computeroutput># OF PLAYS</computeroutput></term>
 	  <listitem>
 	    <para>
 	      The total number of times the cut has been aired by the
@@ -563,7 +589,7 @@
 	  </listitem>
 	</varlistentry>
 	<varlistentry>
-	  <term>Origin</term>
+	  <term><computeroutput>ORIGIN</computeroutput></term>
 	  <listitem>
 	    <para>
 	      The name of the host upon which the audio in the cut was last
@@ -572,7 +598,7 @@
 	  </listitem>
 	</varlistentry>
 	<varlistentry>
-	  <term>Outcue</term>
+	  <term><computeroutput>OUTCUE</computeroutput></term>
 	  <listitem>
 	    <para>
 	      A user settable field. This line shows up in the RDAirPlay
@@ -580,20 +606,69 @@
 	    </para>
 	  </listitem>
 	</varlistentry>
+	<varlistentry>
+	  <term><computeroutput>START DATE</computeroutput></term>
+	  <listitem>
+	    <para>
+	      The effective start date/time of the cut.
+	    </para>
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term><computeroutput>END DATE</computeroutput></term>
+	  <listitem>
+	    <para>
+	      The effective end date/time of the cut.
+	    </para>
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term><computeroutput>START DAYPART</computeroutput></term>
+	  <listitem>
+	    <para>
+	      The start time of the cut's daypart.
+	    </para>
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term><computeroutput>END DAYPART</computeroutput></term>
+	  <listitem>
+	    <para>
+	      The start time of the cut's daypart.
+	    </para>
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term><computeroutput>NAME</computeroutput></term>
+	  <listitem>
+	    <para>
+	      The internal CUTNAME of the cut as used in Rivendell's
+	      database.
+	    </para>
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term><computeroutput>SHA1</computeroutput></term>
+	  <listitem>
+	    <para>
+	      The SHA-1 hash value of the cut's file in Rivendell's audio
+	      store.
+	    </para>
+	  </listitem>
+	</varlistentry>
       </variablelist>
-      </para>
-      <sect3>
+      <sect3 id="sect3.rdlibrary.multiple_cuts_in_a_cart">
 	<title>Multiple Cuts in a Cart</title>
 	<para>
 	  What happens when more than one cut is placed into a cart? The
 	  answer, in a word, is <emphasis>rotation</emphasis>. Rotation is
 	  the ability to
 	  schedule a single cart in a log, but to have that cart play out
-	  different material at different times.  This capability has a
+	  different material at different times. This capability has a
 	  myriad of uses.  One of the simplest, common in commercial radio
 	  facilities, is to allow multiple versions of a spot to be placed
 	  into the system, while still allowing the traffic department to
-	  have to track and schedule only one cart number.  A more
+	  have to track and schedule only one cart number. A more
 	  sophisticated use involves use of the cut's
 	  <emphasis>dayparting</emphasis> settings,
 	  forcing different cuts to play based upon certain date/time
@@ -604,8 +679,8 @@
 	<para>
 	  To edit the properties of a cut, either double-click its entry
 	  in the cut list, or touch it once to highlight and then touch
-	  the Cut Info/Record button.  The Record Dialog (Illustration 4)
-	  will now open up.
+	  the <computeroutput>Cut Info/Record</computeroutput> button.
+	  The Record Dialog (Illustration 4) will now open up.
 	</para>
 	<para>
 	  Roughly the upper third of the dialog is for editing the various
@@ -615,14 +690,18 @@
 	  audition any recording already made.
 	</para>
       </sect3>
-      <sect3>
+      <sect3 id="sect3.rdlibrary.cut_dayparting">
 	<title>Cut Dayparting</title>
 	<para>
-	  Each cut in Rivendell can be dayparted on the basis of three
-	  parameters:
+	  For carts for which <computeroutput>Schedule Cuts</computeroutput>
+	  is set to <computeroutput>By Weight</computeroutput>,each cut in
+	  can be dayparted on the basis of these parameters:
 	</para>
 	<para>
 	  <itemizedlist>
+	    <listitem>
+	      Weight
+	    </listitem>
 	    <listitem>
 	      Absolute Start and End Date-Time
 	    </listitem>
@@ -635,18 +714,37 @@
 	  </itemizedlist>
 	</para>
 	<para>
-	  By default, each newly created cut starts out with dayparting
+	  While not strictly a dayparting parameter, the
+	  <computeroutput>WEIGHT</computeroutput> setting of a cut can
+	  strongly influence
+	  the order (and hence placement) of when a particular cut will play.
+	  The weight value of each cut in a cart consistutes the numerator
+	  of a fraction, the denominator of which is the sum of the weight
+	  values of every cut in the cart. Rivendell's cut selection
+	  algorithm will seek to play each cut in like proportion. If it is
+	  important in some cases to be able to specify the precise order
+	  of each cut play-out, consider changing the
+	  <computeroutput>Schedule Cuts</computeroutput> dropdown to
+	  <computeroutput>By Specified Order</computeroutput>.
+	</para>
+	<para>
+	  By default, each newly created cut in a
+	  <computeroutput>By Weight</computeroutput> cart starts out with
+	  dayparting
 	  disabled, meaning that it will be 'eligible to play' at all times.
-	  By clicking the Enabled button in the Air Date/Time box, an
+	  By clicking the <computeroutput>Enabled</computeroutput> radio
+	  button in the <computeroutput>Air Date/Time</computeroutput> box, an
 	  absolute start and end date for the cut can be entered, meaning
-	  that the cut will be prevented from airing in the RDAirPlay module
-	  at any time outside the range of those date-times.  Likewise, by
-	  selecting the  Enabled button in the Daypart box, start and end
+	  that the cut will be prevented from airing in the on-air modules
+	  at any time outside the range of those date-times. Likewise, by
+	  selecting the <computeroutput>Enabled</computeroutput> radio button
+	  in the <computeroutput>Daypart</computeroutput> box, start and end
 	  times (relative to the day the cut is to air) can be entered.
 	  Cuts designated in this way will be allowed to air only within
-	  the specified range of times.  Finally, by selecting or clearing
-	  the appropriate boxes in the Day of the Week box, a cut can be
-	  designed to air only on certain days of the week.
+	  the specified range of times. Finally, by ticking or clearing
+	  the appropriate boxes in the 
+	  <computeroutput>Day of the Week</computeroutput> box, a cut can be
+	  constrained to air only on certain days of the week.
 	</para>
 	<para>
 	  All of the dayparting parameters can be used either singly or in
@@ -658,12 +756,12 @@
 	</para>
 	<para>
 	  It's important to remember that dayparting rules affect audio
-	  play out only within the RDAirPlay module.  You will still be
+	  play out only within the on-air modules. You will still be
 	  able to audition and play the audio without limitation in the
 	  other Rivendell modules.
 	</para>
       </sect3>
-      <sect3>
+      <sect3 id="sect3.rdlibrary.cart_and_cut_color_coding">
 	<title>Cart and Cut Color Coding</title>
 	<para>
 	  Each cart or cut in RDLibrary is assigned a color to indicate
@@ -691,7 +789,8 @@
 	      <term>RED</term>
 	      <listitem>
 		<para>
-		  Event will not play (cut daytime has passed or lack of audio)
+		  Event will not play (outside of dayparting limits or audio
+		  is not available)
 		</para>
 	      </listitem>
 	    </varlistentry>
@@ -711,27 +810,32 @@
 	  is being viewed</emphasis>.
 	</para>
       </sect3>
-      <sect3>
+      <sect3 id="sect3.rdlibrary.recording_and_auditioning_a_cut_in_the_record_dialog">
 	<title>Recording and Auditioning a Cut in the Record Dialog</title>
 	<para>
 	  The lower third of the Record Dialog is used both to audition and
 	  record audio.  To audition the cut, simply press the play button
-	  (the one with the triangular symbol).  The button should
-	  illuminate, audio should show on the bar meter and start playing
-	  immediately.  The audio will play to completion, unless either 
+	  (the one with the triangular symbol). The button will
+	  illuminate, audio will show on the bar meter and start playing
+	  immediately. The audio will play to completion, unless either 
 	  the stop button (square symbol) is pressed, or the Record Dialog
 	  is closed.
 	</para>
 	<para>
-	  To record new material into a cut, first ensure that the Channels
+	  To record new material into a cut, first ensure that the
+	  <computeroutput>Channels</computeroutput>
 	  drop-down menu is set to record the appropriate number of channels,
-	  then touch the record button (round symbol).  If the cut contains
+	  then touch the <computeroutput>Record</computeroutput> button
+	  (round symbol).  If the cut contains
 	  audio that was recorded previously, a warning box will pop up at
 	  this point to inform you of this and to give you a chance to abort
 	  the recording without erasing what was previously recorded.  If
-	  Yes is selected here, the previous recording will be overwritten
-	  and no longer accessible.  The record button should now be
-	  illuminated steadily, while the play button will be flashing,
+	  <computeroutput>Yes</computeroutput> is selected here, the
+	  previous recording will be overwritten
+	  and no longer accessible.
+	  The <computeroutput>Record</computeroutput> button will now be
+	  illuminated steadily, while the
+	  <computeroutput>Play</computeroutput> button will be flashing,
 	  indicating that the record machine is in 'ready' mode.  The bar
 	  meter will also be active to indicate input levels, and this is
 	  the point where you want to verify that your levels are correct,
@@ -740,26 +844,31 @@
 	</para>
 	<para>
 	  We have two options for actually starting the record machine.
-	  We can start it manually by pressing the play button, at which
+	  We can start it manually by pressing the
+	  <computeroutput>Play</computeroutput> button, at which
 	  point the machine will immediately begin recording, or we can set
-	  the Record Mode drop-down menu to the VOX (short for voice
-	  activated) setting.  When in VOX mode, the record machine will
+	  the <computeroutput>Record Mode</computeroutput> drop-down menu
+	  to the <computeroutput>VOX</computeroutput> (short for voice
+	  activated) setting. When in <computeroutput>VOX</computeroutput>
+	  mode, the record machine will
 	  start automatically as soon as it senses the presence of audio
 	  at the input.
 	</para>
 	<para>
-	  Once started, recording will continue until either the stop button
+	  Once started, recording will continue until either the
+	  <computeroutput>Stop</computeroutput> button
 	  is pushed, or the maximum allowed length for a manual recording
-	  (set by the system administrator) has been reached.  Once stopped,
-	  if the AutoTrim drop-down menu has been set to On, the Start and
+	  (set by the system administrator) has been reached. Once stopped,
+	  if the <computeroutput>AutoTrim</computeroutput> drop-down menu
+	  has been set to <computeroutput>On</computeroutput>, the Start and
 	  End markers will be automatically set to the beginning and end of
-	  detected audio within the cut.  (We will discuss Markers in detail
+	  detected audio within the cut. (We will discuss Markers in detail
 	  when we get to the section on the Edit Markers dialog).
 	</para>
       </sect3>
     </sect2>
   </sect1>
-  <sect1>
+  <sect1 id="sect1.rdlibrary.alternative_methods_of_audio_ingestion">
     <title>Alternative Methods of Audio Ingestion</title>
     <para>
       In addition to manually recording material in realtime, RDLibrary
@@ -775,7 +884,7 @@
 	</listitem>
       </itemizedlist>
     </para>
-    <sect2>
+    <sect2 id="sect2_rdlibrary_importing_audio_from_a_file">
       <title>Importing Audio from a File</title>
       <para>
 	To import audio from a file directly into a cut, we start by
@@ -810,7 +919,7 @@
       <para>
 	Next, set the <computeroutput>Channels</computeroutput> drop-down
 	menu to the appropriate number of
-	channels.  You may also wish to adjust the
+	channels. You may also wish to adjust the
 	<computeroutput>Normalize</computeroutput> or
 	<computeroutput>Autotrim</computeroutput>
 	controls, although these will normally be set to reasonable default
@@ -831,7 +940,7 @@
 	and can now be auditioned and otherwise processed in the usual way.
       </para>
     </sect2>
-    <sect2>
+    <sect2 id="sect2.rdlibrary.importing_audio_from_a_cd_track">
       <title>Ripping Audio from a CD Track</title>
       <para>
 	To rip audio directly off of a CD into a cut, we again start by
@@ -867,7 +976,7 @@
 	closing the Dialog.
       </para>
     </sect2>
-    <sect2>
+    <sect2 id="sect2.rdlibrary.ripping_multiple_cd_tracks_at_a_time">
       <title>Ripping Multiple CD Tracks at a Time</title>
       <para>
 	Sometimes, when transferring multiple audio tracks from CD,
@@ -907,7 +1016,7 @@
       </para>
     </sect2>
   </sect1>
-  <sect1>
+  <sect1 id="sect1.rdlibrary.macro_carts">
     <title>Macro Carts</title>
     <para>
       A macro cart is a cart that contains one or more commands written in
@@ -934,7 +1043,7 @@
       lines both within a given cart or between carts.
     </para>
   </sect1>
-  <sect1>
+  <sect1 id="sect1.rdlibrary.navigating_the_audio_library">
     <title>Navigating the Audio Library</title>
     <para>
       The uppermost section of RDLibrary's main window contains tools
@@ -943,7 +1052,7 @@
       containing thousands of carts.  It's possible to  control what carts
       are listed, as well as how they are sorted.
     </para>
-    <sect2>
+    <sect2 id="sect2.rdlibrary.changing_the_cart_sort_order">
       <title>Changing the Cart Sort Order</title>
       <para>
 	The order in which carts are displayed in the cart list can be
@@ -963,7 +1072,7 @@
 	parameter shown in the cart list.
       </para>
     </sect2>
-    <sect2>
+    <sect2 id="sect2.rdlibrary.selecting_carts_by_the_filter_field">
       <title>Selecting Carts by the Filter Field</title>
       <para>
 	Very often, one will want to find a cart or set of carts whose
@@ -976,7 +1085,7 @@
 	the Clear button.
       </para>
     </sect2>
-    <sect2>
+    <sect2 id="sect2.rdlibrary.selecting_carts_by_group">
       <title>Selecting Carts by Group</title>
       <para>
 	It's possible to limit the list of carts to only those in a
@@ -985,7 +1094,7 @@
 	desired group name.
       </para>
     </sect2>
-    <sect2>
+    <sect2 id="sect2.rdlibrary.selecting_carts_by_type">
       <title>Selecting Carts by Type</title>
       <para>
 	You can tell RDLibrary what type of carts to list by checking the
@@ -999,7 +1108,7 @@
 	sorting methods.
       </para>
     </sect2>
-    <sect2>
+    <sect2 id="sect2.rdlibrary.selecting_and_opening_carts">
       <title>Selecting and Opening Carts</title>
       <para>
 	Once the desired cart has been located on the cart list, load it
@@ -1009,16 +1118,16 @@
       </para>
     </sect2>
   </sect1>
-  <sect1>
+  <sect1 id="sect1.rdlibrary.library_maintenance">
     <title>Library Maintenance</title>
-    <sect2>
+    <sect2 id="sect1.rdlibrary.editing_markers">
       <title>Editing Markers</title>
       <para>
 	Rivendell uses a system of cue points within audio cuts, referred
 	to as <emphasis>markers</emphasis>. Markers can be used to specify
 	a number of
 	parameters for a piece of audio.
-	Consult <xref linkend="marker_types"/> to see what
+	Consult <xref linkend="table.rdlibrary.marker_types"/> to see what
 	markers are available, their purpose and their corresponding color.
       </para>
       <para>
@@ -1095,7 +1204,7 @@
 	(NOTE: the exceptions to this are the Start / End markers, which
 	are always present and hence cannot be removed.)
       </para>
-      <table xml:id="marker_types" frame="all">
+      <table xml:id="table.rdlibrary.marker_types" frame="all">
 	<title>Rivendell Marker Types</title>
 	<tgroup cols="3" align="left" colsep="1" rowsep="1">
 	  <colspec colname="Marker Type" />
@@ -1197,7 +1306,7 @@
 	respectively.
       </para>
     </sect2>
-    <sect2>
+    <sect2 id="sect2.rdlibrary.copying_and_pasting_audio_from_cut_to_cut">
       <title>Copying and Pasting Audio from Cut to Cut</title>
       <para>
 	It's possible to make copies of existing an audio cut on the system
@@ -1210,7 +1319,7 @@
       </para>
     </sect2>
   </sect1>
-  <sect1>
+  <sect1 id="sect1.rdlibrary.generating_library_reports">
     <title>Generating Library Reports</title>
     <para>
       Various Library reports can be generated by touching the
@@ -1219,21 +1328,21 @@
       report and touching the <computeroutput>Generate</computeroutput>
       button. The following reports are available:
     </para>
-    <sect2>
+    <sect2 id="sect2.rdlibrary.the_cart_report">
       <title>The Cart Report</title>
       <para>
 	The cart report consists of a list of all selected carts on the
 	system, with their attributes.
       </para>
     </sect2>
-    <sect2>
+    <sect2 id="sect2.rdlibrary.the_cut_report">
       <title>The Cut Report</title>
       <para>
 	The cut report consists of a list of all cuts contained by the
 	selected carts on the system, with their attributes.
       </para>
     </sect2>
-    <sect2>
+    <sect2 id="sect2.rdlibrary.the_cart_data_dump__fixed_width_">
       <title>The Cart Data Dump (fixed width)</title>
       <para>
 	The fixed-width cart data dump is a special type of report that
@@ -1244,7 +1353,7 @@
 	external system (such as a music scheduling system).
       </para>
     </sect2>
-    <sect2>
+    <sect2 id="sect2.rdlibrary.the_cart_data_dump__csv_">
       <title>The Cart Data Dump (CSV)</title>
       <para>
 	The CSV cart data dump is a special type of report that
@@ -1258,9 +1367,9 @@
   </sect1>
 </chapter>
 
-<chapter>
+<chapter id="rdcatch">
   <title>Automating Tasks with RDCatch</title>
-  <sect1>
+  <sect1 id="sect1.rdcatch.automating_tasks_with_rdcatch">
     <title>Choosing the Correct Automation Tool</title>
     <para>
       Rivendell includes two modules specially optimized for performing
@@ -1295,7 +1404,7 @@
       robust and capable multitasking system.
     </para>
   </sect1>
-  <sect1>
+  <sect1 id="sect1.rdcatch.the_rdcatch_main_window">
     <title>The RDCatch Main Window</title>
     <para>
       After starting up RDCatch, you should see the main RDCatch window,
@@ -1304,7 +1413,7 @@
       below the decks, the events list and the audition buttons and other
       buttons at the bottom.  We'll cover each of these in turn.
     </para>
-    <sect2>
+    <sect2 id="sect2.rdcatch.the_record___play_out_deck_area">
       <title>The Record / Play Out Deck Area</title>
       <para>
 	If the system administrator has configured one or more RDCatch
@@ -1401,7 +1510,7 @@
       to verify audio levels in realtime.
     </para>
     </sect2>
-    <sect2>
+    <sect2 id="sect2.rdcatch.the_filter_area">
       <title>The Filter Area</title>
       <para>
 	Immediately below the decks is the filter area, consisting of the
@@ -1410,7 +1519,7 @@
 	visible in the events list area immediately below.
       </para>
     </sect2>
-    <sect2>
+    <sect2 id="sect2.rdcatch.the_event_list">
       <title>The Event List</title>
       <para>
 	The event list is a system wide list of all events to be executed
@@ -1622,7 +1731,7 @@
 	operation of RDCatch.
       </para>
     </sect2>
-    <sect2>
+    <sect2 id="sect2.rdcatch_the_button_area">
       <title>The Button Area</title>
       <para>
 	At the bottom of the main window are various buttons.  On the
@@ -1641,7 +1750,7 @@
       </para>
     </sect2>
   </sect1>
-  <sect1>
+  <sect1 id="sect1.rdcatch.adding_new_events">
     <title>Adding New Events</title>
     <para>
       A new event can be added to the event list by simply clicking the
@@ -1650,7 +1759,7 @@
       event will create it.
     </para>
   </sect1>
-  <sect1>
+  <sect1 id="sect1.rdcatch.automating_recordings">
     <title>Automating Recordings</title>
     <para>
       Automated recordings are configured by means of the Edit Recording
@@ -1658,7 +1767,7 @@
       the Recording button in the Add Event dialog to create a new record
       event or by touching the Edit button to modify an existing event.
     </para>
-    <sect2>
+    <sect2 id="sect2.rdcatch.the__start_parameters__section">
       <title>The 'Start Parameters' Section</title>
       <para>
 	The start parameters of each recording are configured in the
@@ -1677,7 +1786,7 @@
 	start of the recording.
       </para>
     </sect2>
-    <sect2>
+    <sect2 id="sect2.rdcatch_the__end_parameters__section">
       <title>The 'End Parameters' Section</title>
       <para>
 	The end parameters of each recording are configured in the
@@ -1691,7 +1800,7 @@
 	the expected GPI event is never received.
       </para>
     </sect2>
-    <sect2>
+    <sect2 id="sect2.rdcatch.programming_multiple_recordings_in_a_single_event">
       <title>Programming Multiple Recordings in a Single Event</title>
       <para>
 	If a record event is configured to use GPI for its start and Length
@@ -1703,7 +1812,7 @@
 	high on-air turnover, such as newscasts or traffic reports.
       </para>
     </sect2>
-    <sect2>
+    <sect2 id="sect2.rdcatch.selecting_a_record_source">
       <title>Selecting a Record Source</title>
       <para>
 	If the selected record deck (chosen in the Location drop-down menu
@@ -1712,7 +1821,7 @@
 	from the Source drop-down menu.
       </para>
     </sect2>
-    <sect2>
+    <sect2 id="sect2.rdcatch.selecting_a_record_destination">
       <title>Selecting a Record Destination</title>
       <para>
 	Each programmed recording must have a 'destination', a designated
@@ -1721,7 +1830,7 @@
 	by clicking the Select button.
       </para>
     </sect2>
-    <sect2>
+    <sect2 id="sect2.rdcatch.setting_the_active_days_for_a_recording">
       <title>Setting the Active Days for a Recording</title>
       <para>
 	A check should be placed next to each day of the week for which a
@@ -1729,7 +1838,7 @@
 	checked, then no recordings at all will be made. 
       </para>
     </sect2>
-    <sect2>
+    <sect2 id="sect2.rdcatch.record_list_management_with_event_active_and_make_oneshot">
       <title>Record List Management with Event Active and Make OneShot</title>
       <para>
 	The record event will be actually executed only if Event Active
@@ -1745,7 +1854,7 @@
       </para>
     </sect2>
   </sect1>
-  <sect1>
+  <sect1 id="sect1.rdcatch.automating_playouts">
     <title>Automating Playouts</title>
     <para>
       Automated playouts are configured by means of the Edit Playout
@@ -1757,7 +1866,7 @@
       'Automating Recordings' above for details.
     </para>
   </sect1>
-  <sect1>
+  <sect1 id="sect1.rdcatch.automating_uploads_downloads">
     <title>Automating Uploads/Downloads</title>
     <para>
       It's possible to use RDCatch to automatically upload and download
@@ -1826,7 +1935,7 @@
       button.
     </para>
   </sect1>
-  <sect1>
+  <sect1 id="sect1.rdcatch_automating_macro_execution">
     <title>Automating Macro Execution</title>
     <para>
       It's possible to configure the automatic execution of a Macro Cart
@@ -1839,7 +1948,7 @@
       Recordings' above for details.
     </para>
   </sect1>
-  <sect1>
+  <sect1 id="sect1.rdcatch.automating_switcher_operations">
     <title>Automating Switcher Operations</title>
     <para>
       It's possible to configure an automatic operation on a switcher
@@ -1859,9 +1968,9 @@
     </para>
   </sect1>
 </chapter>
-<chapter>
+<chapter id="rdlogedit">
   <title>Generating and Maintaining Logs with RDLogEdit</title>
-  <sect1>
+  <sect1 id="sect1.rdlogedit.logs_and_log_events">
     <title>Logs and Log Events</title>
     <para>
       A Rivendell log is a sequence of one or more events to be executed by
@@ -1941,7 +2050,7 @@
       icons).  The following types of events can be incorporated into a
       Rivendell log:
     </para>
-    <sect2>
+    <sect2 id="sect2.rdlogedit.audio_carts">
       <title>Audio Carts</title>
       <para>
 	The first, and usually most common type of log event is an audio cart.
@@ -1950,7 +2059,7 @@
 	detail in Chapter Two in the discussion about RDLibrary.
       </para>
     </sect2>
-    <sect2>
+    <sect2 id="sect2.rdlogedit.macro_carts">
       <title>Macro Carts</title>
       <para>
 	A macro cart is a cart from the Library that contains one or more
@@ -1959,7 +2068,7 @@
 	about RDLibrary, and will be discussed in detail in Chapter Seven.
       </para>
     </sect2>
-    <sect2>
+    <sect2 id="sect2.rdlogedit.note_markers">
       <title>Note Markers</title>
       <para>
 	A note marker is an entry in the log that contains text intended to
@@ -1976,7 +2085,7 @@
 	to others who may be executing the log.
       </para>
     </sect2>
-    <sect2>
+    <sect2 id="sect2.rdlogedit.track_markers">
       <title>Track Markers</title>
       <para>
 	A track marker is another meta event that is very similar in operation
@@ -1987,16 +2096,17 @@
 	markers have absolutely no effect on the execution of a log.
       </para>
     </sect2>
-    <sect2>
+    <sect2 id="sect2.rdlogedit.chain_events">
       <title>Chain Events</title>
       <para>
-	Each event in a log has a transition type, shown in the &quot;TRANS&quot;
+	Each event in a log has a transition type, shown in the
+	&quot;TRANS&quot;
 	column of the Edit Log dialog.  The transition type determines what
 	happens when one event in a log ends and the next starts. Three basic
 	transition types can exist in a Rivendell log:  PLAY, SEGUE and STOP.
       </para>
     </sect2>
-    <sect2>
+    <sect2 id="sect2.rdlogedit.import_links">
       <title>Import Links</title>
       <para>
 	An import link is a placeholder event that shows where events imported
@@ -2011,7 +2121,7 @@
       </para>
     </sect2>
   </sect1>
-  <sect1>
+  <sect1 id="sect1.rdlogedit.event_transitions">
     <title>Event Transitions</title>
     <para>
       Each event in a log has a transition type, shown in the &quot;TRANS&quot;
@@ -2092,7 +2202,7 @@
 	</tbody>
       </tgroup>
     </table>
-    <sect2>
+    <sect2 id="sect2.rdlogedit.the_play_transition">
       <title>The PLAY Transition</title>
       <para>
 	If an event has a PLAY transition, then it will begin playing when
@@ -2101,7 +2211,7 @@
 	as when playing two voice-only announcements back-to-back).
       </para>
     </sect2>
-    <sect2>
+    <sect2 id="sect2.the_segue_transition">
       <title>The SEGUE Transition</title>
       <para>
 	SEGUE transitions are similar to PLAY transitions, with one key
@@ -2114,7 +2224,7 @@
 	musical material.
       </para>
     </sect2>
-    <sect2>
+    <sect2 id="sect2.rdlogedit.the_stop_transition">
       <title>The STOP Transition</title>
       <para>
 	As the name implies, STOP transitions cause execution of the log to
@@ -2126,7 +2236,7 @@
       </para>
     </sect2>
   </sect1>
-  <sect1>
+  <sect1 id="sect1.rdlogedit.time_and_time_types">
     <title>Time and Time Types</title>
     <para>
       All Rivendell log events have an associated time type, which controls
@@ -2135,7 +2245,7 @@
       the hard time type has several additional options that further modify
       its behavior.
     </para>
-    <sect2>
+    <sect2 id="sect2.rdlogedit.the_relative_time_type">
       <title>The Relative Time Type</title>
       <para>
 	The default time type for log events, a relative time type simply
@@ -2144,7 +2254,7 @@
 	or whenever it is started (if it has a STOP transition).
       </para>
     </sect2>
-    <sect2>
+    <sect2 id="sect2.rdlogedit.the_hard_time_type">
       <title>The Hard Time Type</title>
       <para>
 	A hard time type causes the event to be executed or otherwise acted
@@ -2177,7 +2287,7 @@
 	  </listitem>
 	</itemizedlist>
       </para>
-      <sect3>
+      <sect3 id="sect3.rdlogedit.start_immediately">
 	<title>Start Immediately</title>
 	<para>
 	  As implied by the name, if the event is set to start immediately,
@@ -2185,7 +2295,7 @@
 	  currently playing events in the log will be stopped down.
 	</para>
       </sect3>
-      <sect3>
+      <sect3 id="sect3.rdlogedit.cue_to_the_event___make_next___">
 	<title>Cue to the Event (&quot;Make Next&quot;)</title>
 	<para>
 	  If set to 'Make Next', the event will be cued up to become the
@@ -2194,7 +2304,7 @@
 	  hard timed one.  Any currently playing events are unaffected.
 	</para>
       </sect3>
-      <sect3>
+      <sect3 id="sect2.rdlogedit.wait_up_to_n_seconds__then_start_the_event">
 	<title>Wait up to N Seconds, then start the event</title>
 	<para>
 	  Very similar to &quot;start immediately&quot;, with the
@@ -2205,9 +2315,9 @@
       </sect3>
     </sect2>
   </sect1>
-  <sect1>
+  <sect1 id="sect1.rdlogedit.editing_log_event_parameters">
     <title>Editing Log Event Parameters</title>
-    <sect2>
+    <sect2 id="sect2.rdlogedit.specifying_a_cart">
       <title>Specifying a Cart</title>
       <para>
 	The cart number to use for an event can be specified by touching
@@ -2219,7 +2329,7 @@
 	from the cart's label.
       </para>
     </sect2>
-    <sect2>
+    <sect2 id="sect2.rdlogedit.specifying_meta_event_parameters">
       <title>Specifying Meta Event Parameters</title>
       <para>
 	Note marker and track marker events each take only a single
@@ -2231,8 +2341,8 @@
 	assigned transition and time types just the same as cart events.
       </para>
     </sect2>
-    <sect2>
-      <title>Rearranging Log EventsRearranging Log Events</title>
+    <sect2 id="sect2.rdlogedit.rearranging_log_events">
+      <title>Rearranging Log Events</title>
       <para>
 	Existing events in a log can be cut, copied, pasted or rearranged
 	by touching the appropriate buttons in the Edit Log dialog.
@@ -2240,7 +2350,7 @@
 	log event(s) to be removed from the log.
       </para>
     </sect2>
-    <sect2>
+    <sect2 id="sect2.rdlogedit.saving_or_abandoning_changes_to_a_log">
       <title>Saving or Abandoning Changes to a Log</title>
       <para>
 	Any changes made to a log can be saved by touching either the Save
@@ -2249,7 +2359,7 @@
 	touching Cancel will abandon any changes made since the last save.
       </para>
     </sect2>
-    <sect2>
+    <sect2 id="sect2.rdlogedit.missing_invalid_cart_events">
       <title>Missing/Invalid Cart Events</title>
       <para>
 	If a given event has a problem (such as referencing a cart that
@@ -2262,27 +2372,27 @@
       </para>
     </sect2>
   </sect1>
-  <sect1>
+  <sect1 id="sect1.rdlogedit.generating_log_reports">
     <title>Generating Log Reports</title>
     <para>
       Various Log reports can be generated by touching the Reports button
       on the Edit Log dialog and then selecting the desired report and
       touching the Generate button.  The following reports are available:
     </para>
-    <sect2>
+    <sect2 id="sect2.rdlogedit.log_listing">
       <title>Log Listing</title>
       <para>
 	A chronological listing of all events in the log.
       </para>
     </sect2>
-    <sect2>
+    <sect2 id="sect2.rdlogedit.log_exception_report">
       <title>Log Exception Report</title>
       <para>
 	A list of missing/unplayable carts referenced in the log.
       </para>
     </sect2>
   </sect1>
-  <sect1>
+  <sect1 id="sect1.rdlogedit.auditioning_audio">
     <title>Auditioning Audio</title>
     <para>
       The audio referenced by an audio event can be sampled in the Edit
@@ -2294,9 +2404,9 @@
   </sect1>
 </chapter>
 
-<chapter>
+<chapter id="rdairplay">
   <title>Running Logs with RDAirPlay</title>
- <sect1>
+ <sect1 id="sect1.rdairplay.overview">
    <title>Overview</title>
    <para>
      RDAirPlay is the Rivendell module used to run logs generated by the
@@ -2306,7 +2416,7 @@
      environments.
    </para>
  </sect1>
- <sect1>
+ <sect1 id="sect1.rdairplay.log_machines">
    <title>Log Machines</title>
    <para>
      Fundamental to the operation of RDAirPlay is the concept of a log
@@ -2318,7 +2428,7 @@
      machines.
    </para>
  </sect1>
- <sect1>
+ <sect1 id="sect1.rdairplay.layout">
    <title>Layout</title>
    <para>
      As shown in Illustration 24, the RDAirPlay main screen consists of
@@ -2332,7 +2442,7 @@
    <para>
      The top area contains the following indicators:
    </para>
-   <sect2>
+   <sect2 id="sect2.rdairplay.the_wall_clock">
      <title>The Wall Clock</title>
      <para>
        In the upper left-hand corner is wall clock indicator, which indicates
@@ -2344,7 +2454,7 @@
        of master clock synchronization.
      </para>
    </sect2>
-   <sect2>
+   <sect2 id="sect2.rdairplay.the_post_point_counter">
      <title>The Post Point Counter</title>
      <para>
        Immediately to the right of the wall clock is the Post Point Counter.
@@ -2380,7 +2490,7 @@
        much material would need to be removed to make the join on time.
      </para>
    </sect2>
-   <sect2>
+   <sect2 id="sect2.rdairplay.the_audio_meter">
      <title>The Audio Meter</title>
      <para>
        Immediately beneath the wall clock and post point counter is the audio
@@ -2388,7 +2498,7 @@
        out of RDAirPlay, with '0' level referenced to -16 dBFS.
      </para>
    </sect2>
-   <sect2>
+   <sect2 id="sect2.rdairplay.the_pie_wedge_widget">
      <title>The Pie Wedge Widget</title>
      <para>
        In the top center of the top area is the pie wedge widget.  This
@@ -2403,7 +2513,7 @@
        talk time (if talk time markers have been set in the underlying cart).
      </para>
    </sect2>
-   <sect2>
+   <sect2 id="sect2.rdairplay.the_next_stop_counter">
      <title>The Next Stop Counter</title>
      <para>
        Immediately to the right of the pie wedge widget is the next stop
@@ -2413,7 +2523,7 @@
        stopped, then the counter simply displays 'Stopped'.
      </para>
    </sect2>
-   <sect2>
+   <sect2 id="sect2.rdairplay.the_mode_indicator">
      <title>The Mode Indicator</title>
      <para>
        In the upper right-hand corner of the top area is the mode indicator,
@@ -2429,7 +2539,7 @@
        indicator until the desired mode is indicated.
      </para>
    </sect2>
-   <sect2>
+   <sect2 id="sect2.rdairplay.the_label_area">
      <title>The Label Area</title>
      <para>
        Immediately below the next stop counter and mode indicator is the
@@ -2438,7 +2548,7 @@
        system or need to take some kind of action.
      </para>
    </sect2>
-   <sect2>
+   <sect2 id="sect2.rdairplay.the_right_hand_side">
      <title>The Right-Hand Side</title>
      <para>
        Directly below the label area is the right-hand side. The right-hand
@@ -2450,7 +2560,7 @@
        system).
      </para>
    </sect2>
-   <sect2>
+   <sect2 id="sect2.rdairplay.the_full_log_widget">
      <title>The Full Log Widget</title>
      <para>
        As the name implies, the full log widget can be used to view the
@@ -2490,7 +2600,7 @@
        button on (blue background).
      </para>
    </sect2>
-   <sect2>
+   <sect2 id="sect2.rdairplay.the_button_log_widget">
      <title>The Button Log Widget</title>
      <para>
        To the left of the full log widget is the button log widget,
@@ -2513,14 +2623,14 @@
      </para>
    </sect2>
  </sect1>
- <sect1>
+ <sect1 id="sect1.rdairplay.editing_a_log">
    <title>Editing a Log</title>
    <para>
      It is possible to edit the log loaded into any of the three log
      machines by means of the log edit buttons in the lower left-hand corner
      of the screen.
    </para>
-   <sect2>
+   <sect2 id="sect2.rdairplay_adding_an_event">
      <title>Adding an Event</title>
      <para>
        To add an event, touch the ADD button to open the Select Cart dialog,
@@ -2533,7 +2643,7 @@
        to cancel the operation (see Illustration 39).
      </para>
    </sect2>
-   <sect2>
+   <sect2 id="sect2.rdairplay_deleting_an_event">
      <title>Deleting an Event</title>
      <para>
        To delete an event, touch the DEL button, then touch one of the
@@ -2542,7 +2652,7 @@
        simply touch the DEL button again (see Illustration 40).
      </para>
    </sect2>
-   <sect2>
+   <sect2 id="sect2.rdairplay.moving_an_event">
      <title>Moving an Event</title>
      <para>
        To move an event, touch the Move button, then touch one of the violet
@@ -2554,7 +2664,7 @@
        between two different log machines.
      </para>
    </sect2>
-   <sect2>
+   <sect2 id="sect2.rdairplay.copying_an_event">
      <title>Copying an Event</title>
      <para>
        To copy an event, touch the Copy button, then touch one of the
@@ -2566,7 +2676,7 @@
        copy an event between two different log machines.
      </para>
    </sect2>
-   <sect2>
+   <sect2 id="sect2.rdairplay.the_soundpanel">
      <title>The SoundPanel</title>
      <para>
        The SoundPanel is an array of buttons that appears in the right-hand
@@ -2578,7 +2688,7 @@
        drop in some piece of audio on a live, improvised basis.
      </para>
    </sect2>
-   <sect2>
+   <sect2 id="sect2.rdairplay.panel_types">
      <title>Panel Types</title>
      <para>
        The SoundPanel has multiple panels or “panes” that can scrolled
@@ -2595,7 +2705,7 @@
        you).
      </para>
    </sect2>
-   <sect2>
+   <sect2 id="sect2.rdairplay.programming_a_soundpanel_button">
      <title>Programming a SoundPanel Button</title>
      <para>
        To associate a cart with a panel button, first touch the Setup
@@ -2618,9 +2728,9 @@
  </sect1>
 </chapter>
 
-<chapter>
+<chapter id="rdlogmanager">
   <title>Generating Logs with RDLogManager</title>
-  <sect1>
+  <sect1 id="sect1.rdlogmanager.generating_logs_with_rdlogmanager">
     <title>Overview</title>
     <para>
       RDLogManager is a tool for generating Rivendell logs. It is different
@@ -2648,7 +2758,7 @@
       Illustration 42).
     </para>
   </sect1>
-  <sect1>
+  <sect1 id="sect1.rdlogmanager.grids">
     <title>Grids</title>
     <para>
       Each Rivendell service has an RDLogManager grid. To see the list of
@@ -2678,7 +2788,7 @@
       the relevant hour in a grid and selecting Edit Clock.
     </para>
   </sect1>
-  <sect1>
+  <sect1 id="sect1.rdlogmanager.clocks">
     <title>Clocks</title>
     <para>
       An RDLogManager clock is a collection of RDLogManager events,
@@ -2737,7 +2847,7 @@
       Enabled Services list and then touch the &lt;&lt; Remove button.
     </para>
   </sect1>
-  <sect1>
+  <sect1 id="sect1.rdlogmanager.events">
     <title>Events</title>
     <para>
       An RDLogManager event is a set of rules that define a series of log
@@ -2837,7 +2947,7 @@
       As buttons.
     </para>
   </sect1>
-  <sect1>
+  <sect1 id="sect1.rdlogmanager.generating_logs">
     <title>Generating Logs</title>
     <para>
       After all of the appropriate hours have been populated in a service's
@@ -2900,7 +3010,7 @@
       indicator lights will be &quot;whited out&quot; accordingly.
     </para>
  </sect1>
- <sect1>
+ <sect1 id="sect1.rdlogmanager.generating_reports">
    <title>Generating Reports</title>
    <para>
      A Rivendell report is a data output that details whether certain
@@ -2931,7 +3041,7 @@
      as to span more than one day). Once the parameters are set, touch the
      Generate Report button to write out the report.
    </para>
-   <sect2>
+   <sect2 id="sect2.rdlogmanager.purging_old_report_data">
      <title>Purging Old Report Data</title>
      <para>
        Rivendell keeps the raw data used to generate reports indefinitely,
@@ -2950,9 +3060,9 @@
  </sect1>
 </chapter>
 
-<chapter>
+<chapter id="voicetracking">
   <title>VoiceTracking</title>
-  <sect1>
+  <sect1 id="sect1.voicetracking.voicetracking_in_rivendell">
     <title>Voicetracking in Rivendell</title>
     <para>
       Voicetracking is a capability wherein custom &quot;one-off&quot;
@@ -2965,7 +3075,7 @@
       The voicetracker module also includes extensive capabilities for
       allowing customization of the transitions between log elements.
     </para>
-    <sect2>
+    <sect2 id="sect2.voicetracking.prerequisites">
       <title>Prerequisites</title>
       <para>
 	Before beginning voicetracking for a particular service, a
@@ -2974,7 +3084,7 @@
 	the Rivendell Technical and Administration Guide.
       </para>
     </sect2>
-    <sect2>
+    <sect2 id="sect2.voicetracking.voicetrack_markers">
       <title>VoiceTrack Markers</title>
       <para>
 	A voicetrack marker is a meta event that can be inserted into a log
@@ -2985,9 +3095,9 @@
       </para>
     </sect2>
   </sect1>
-  <sect1>
+  <sect1 id="sect1.voicetracking.using_the_voicetracker_dialog">
     <title>Using the Voicetrack Interface</title>
-    <sect2>
+    <sect2 id="sect2.voicetracking.the_voicetracker_dialog">
       <title>The VoiceTracker Dialog</title>
       <para>
 	To voicetrack a log, start the RDLogEdit module (see Illustration 19),
@@ -3005,7 +3115,7 @@
 	buttons occupy the bottom and right-hand edges of the dialog.
       </para>
     </sect2>
-    <sect2>
+    <sect2 id="sect2.voicetracking.editing_transitions">
       <title>Editing Transitions</title>
       <para>
 	When an event is selected in the log list, a graphical depiction of
@@ -3035,7 +3145,7 @@
 	type from the menu.
       </para>
     </sect2>
-    <sect2>
+    <sect2 id="sect2.voicetracking.inserting_and_deleting_track_markers">
       <title>Inserting and Deleting Track Markers</title>
       <para>
 	It is possible to insert a new voicetrack marker by selecting the
@@ -3044,7 +3154,7 @@
 	selecting it in the log list and touching the Delete Track button.
       </para>
     </sect2>
-    <sect2>
+    <sect2 id="sect2.voicetracking.moving_between_track_markers">
       <title>Moving Between Track Markers</title>
       <para>
 	It is possible to move directly to the next or previous voicetrack
@@ -3052,7 +3162,7 @@
 	respectively.
       </para>
     </sect2>
-    <sect2>
+    <sect2 id="sect2.voicetracking.recording_a_voicetrack">
       <title>Recording a Voicetrack</title>
       <para>
 	Once the desired voicetrack marker has been selected, the process
@@ -3078,7 +3188,7 @@
 	dragging the appropriate waveforms with the mouse.
       </para>
     </sect2>
-    <sect2>
+    <sect2 id="sect2.voicetracking.adjusting_transition_levels">
       <title>Adjusting Transition Levels</title>
       <para>
 	It is possible to adjust the audio fade levels applied during
@@ -3088,7 +3198,7 @@
 	desired location.
       </para>
     </sect2>
-    <sect2>
+    <sect2 id="sect2.voicetracking.importing_voicetracks">
       <title>Importing Voicetracks</title>
       <para>
 	In addition to recording in realtime, it's possible to import a
@@ -3101,7 +3211,7 @@
 	recorded.
       </para>
     </sect2>
-    <sect2>
+    <sect2 id="sect2.voicetracking.hitting_the_post">
       <title>Hitting the Post</title>
       <para>
 	If the event following a voicetrack has its Talk Time markers set,
@@ -3114,9 +3224,9 @@
   </sect1>
 </chapter>
 
-<chapter>
+<chapter id="rml">
   <title>Rivendell Macro Langauge</title>
-  <sect1>
+  <sect1 id="sect2.rml.overview">
     <title>Overview</title>
     <para>
       Rivendell Macro Language (or RML for short) is a set of commands
@@ -3127,7 +3237,7 @@
       Rivendell user management.
     </para>
   </sect1>
-<sect1>
+<sect1 id="sect1.rml.protocol">
   <title>Protocol</title>
   <para>
     The Normal form of a command takes the following syntax:
@@ -3171,7 +3281,7 @@
   </variablelist>
 </sect1>
 
-<sect1>
+<sect1 id="sect1.rml.command_delivery">
   <title>Command Delivery</title>
   <para>
     To be executed by a Rivendell system, an appropriate command should be
@@ -3183,7 +3293,7 @@
   </para>
 </sect1>
 
-<sect1>
+<sect1 id="sect1.rml.command_reply">
   <title>Command Reply</title>
   <para>
     If delivered to UDP port 5858, each command may receive a reply, 
@@ -3226,7 +3336,7 @@
   </variablelist>
 </sect1>
 
-<sect1>
+<sect1 id="sect1.rml.specifying_color">
   <title>Specifying Color</title>
   <para>
     In places where a color can be specified as a macro argument, the
@@ -3253,7 +3363,7 @@
   </simplelist>
 </sect1>
 
-<sect1>
+<sect1 id="sect1.rml.binary_data">
   <title>Binary Data</title>
   <para>
     Certain commands (e.g. <command>SO</command> and <command>UO</command>)
@@ -3285,9 +3395,9 @@
   </para>
 </sect1>
 
-<sect1>
+<sect1 id="sect1.rml.commands">
   <title>Commands</title>
-  <sect2>
+  <sect2 id="sect2.rml.air_gate__ag_">
     <title><command>Air Gate [AG]</command></title>
     <para>
       <variablelist>
@@ -3314,7 +3424,7 @@
     </para>
   </sect2>
 
-  <sect2>
+  <sect2 id="sect2.rml.add_next__px_">
     <title><command>Add Next [PX]</command></title>
     <para>
       <variablelist>
@@ -3342,7 +3452,7 @@
     </para>
   </sect2>
 
-  <sect2>
+  <sect2 id="sect2.rml.binary_serial_out__bo_">
     <title><command>Binary Serial Out [BO]</command></title>
     <para>
       <variablelist>
@@ -3372,7 +3482,7 @@
     </para>
   </sect2>
 
-  <sect2>
+  <sect2 id="sect2.rml.clear_serial_trap__sc_">
     <title><command>Clear Serial Trap [SC]</command></title>
     <para>
       <variablelist>
@@ -3415,7 +3525,7 @@
     </para>
   </sect2>
 
-  <sect2>
+  <sect2 id="sect2.rml.command_send__cc_">
     <title><command>Command Send [CC]</command></title>
     <para>
       <variablelist>
@@ -3447,7 +3557,7 @@
     </para>
   </sect2>
 
-  <sect2>
+  <sect2 id="sect2.rml.connect_jack_ports__jc_">
     <title><command>Connect Jack Ports [JC]</command></title>
     <para>
       <variablelist>
@@ -3475,7 +3585,7 @@
     </para>
   </sect2>
 
-  <sect2>
+  <sect2 id="sect2.rml.console_label__cl_">
     <title><command>Console Label [CL]</command></title>
     <para>
       <variablelist>
@@ -3506,7 +3616,7 @@
     </para>
   </sect2>
 
-  <sect2>
+  <sect2 id="sect2.rml.copy_cut__cp_">
     <title><command>Copy Cut [CP]</command></title>
     <para>
       <variablelist>
@@ -3540,7 +3650,7 @@
     </para>
   </sect2>
 
-  <sect2>
+  <sect2 id="sect2.rml.cut_event__ce_">
     <title><command>Cut Event [CE]</command></title>
     <para>
       <variablelist>
@@ -3570,7 +3680,7 @@
     </para>
   </sect2>
 
-  <sect2>
+  <sect2 id="sect2.rml.database_backup__db_">
     <title><command>Database Backup [DB]</command></title>
     <para>
       <variablelist>
@@ -3597,7 +3707,7 @@
     </para>
   </sect2>
 
-  <sect2>
+  <sect2 id="sect2.rml.disconnect_jack_ports__jd_">
     <title><command>Disconnect Jack Ports [JD]</command></title>
     <para>
       <variablelist>
@@ -3625,7 +3735,7 @@
     </para>
   </sect2>
 
-  <sect2>
+  <sect2 id="sect2.rml.duck_panel_button__pd_">
     <title><command>Duck Panel Button [PD]</command></title>
     <para>
       <variablelist>
@@ -3670,7 +3780,7 @@
     </para>
   </sect2>
 
-  <sect2>
+  <sect2 id="sect2.rml.execute_breakaway__dx_">
     <title><command>Execute Breakaway [DX]</command></title>
     <para>
       <variablelist>
@@ -3702,7 +3812,7 @@
     </para>
   </sect2>
 
-  <sect2>
+  <sect2 id="sect2.rml.execute_cart__ex_">
     <title><command>Execute Cart [EX]</command></title>
     <para>
       <variablelist>
@@ -3728,7 +3838,7 @@
     </para>
   </sect2>
 
-  <sect2>
+  <sect2 id="sect2.rml.fire_salvo__fs_">
     <title><command>Fire Salvo [FS]</command></title>
     <para>
       <variablelist>
@@ -3756,7 +3866,7 @@
     </para>
   </sect2>
 
-  <sect2>
+  <sect2 id="sect2.rml.gpi_enable__ge_">
     <title><command>GPI Enable [GE]</command></title>
     <para>
       <variablelist>
@@ -3799,7 +3909,7 @@
     </para>
   </sect2>
 
-  <sect2>
+  <sect2 id="sect2.rml.gpi_enable__ge___old_format__deprecated_">
     <title><command>GPI Enable [GE]</command> (old format, deprecated)</title>
     <para>
       <variablelist>
@@ -3829,7 +3939,7 @@
     </para>
   </sect2>
 
-  <sect2>
+  <sect2 id="sect2.rml.gpi_set__gi_">
     <title><command>GPI Set [GI]</command></title>
     <para>
       <variablelist>
@@ -3875,7 +3985,7 @@
     </para>
   </sect2>
 
-  <sect2>
+  <sect2 id="sect2.rml.gpi_set__gi___old_format__deprecated_">
     <title><command>GPI Set [GI]</command> (old format, deprecated)</title>
     <para>
       <variablelist>
@@ -3906,7 +4016,7 @@
     </para>
   </sect2>
 
-  <sect2>
+  <sect2 id="sect2.rml.gpo_set__go_">
     <title><command>GPO Set [GO]</command></title>
     <para>
       <variablelist>
@@ -3972,7 +4082,7 @@
     </para>
   </sect2>
 
-  <sect2>
+  <sect2 id="sect2.rml.gpo_set__go___old_format__deprecated_">
     <title><command>GPO Set [GO]</command> (old format, deprecated)</title>
     <para>
       <variablelist>
@@ -4004,7 +4114,7 @@
     </para>
   </sect2>
 
-  <sect2>
+  <sect2 id="sect2.rml.insert_serial_trap__si_">
     <title><command>Insert Serial Trap [SI]</command></title>
     <para>
       <variablelist>
@@ -4035,7 +4145,7 @@
     </para>
   </sect2>
 
-  <sect2>
+  <sect2 id="sect2.rml.label_panel__pc_">
     <title><command>Label Panel [PC]</command></title>
     <para>
       <variablelist>
@@ -4072,7 +4182,7 @@
     </para>
   </sect2>
 
-  <sect2>
+  <sect2 id="sect2.rml.load_log__ll_">
     <title><command>Load Log [LL]</command></title>
     <para>
       <variablelist>
@@ -4107,7 +4217,7 @@
     </para>
   </sect2>
 
-  <sect2>
+  <sect2 id="sect2.load_panel__pe_">
     <title><command>Load Panel [PE]</command></title>
     <para>
       <variablelist>
@@ -4142,7 +4252,7 @@
     </para>
   </sect2>
 
-  <sect2>
+  <sect2 id="sect2.rml.load_slot__dl_">
     <title><command>Load Slot [DL]</command></title>
     <para>
       <variablelist>
@@ -4193,7 +4303,7 @@
     </para>
   </sect2>
 
-  <sect2>
+  <sect2 id="sect2.rml.login__lo_">
     <title><command>Login [LO]</command></title>
     <para>
       <variablelist>
@@ -4222,7 +4332,7 @@
     </para>
   </sect2>
 
-  <sect2>
+  <sect2 id="sect2.rml.macro_timer__mt_">
     <title><command>Macro Timer [MT]</command></title>
     <para>
       <variablelist>
@@ -4255,7 +4365,7 @@
     </para>
   </sect2>
 
-  <sect2>
+  <sect2 id="sect2.rml.make_next__mn_">
     <title><command>Make Next [MN]</command></title>
     <para>
       <variablelist>
@@ -4283,7 +4393,7 @@
     </para>
   </sect2>
 
-  <sect2>
+  <sect2 id="sect2.rml.message_box__mb_">
     <title><command>Message Box [MB]</command></title>
     <para>
       <variablelist>
@@ -4328,7 +4438,7 @@
     </variablelist>
   </sect2>
 
-  <sect2>
+  <sect2 id="sect2.rml.pause_panel__pu_">
     <title><command>Pause Panel [PU]</command></title>
     <para>
       <variablelist>
@@ -4367,7 +4477,7 @@
     </para>
   </sect2>
 
-  <sect2>
+  <sect2 id="sect2.rml.play_panel__pp_">
     <title><command>Play Panel [PP]</command></title>
     <para>
       <variablelist>
@@ -4407,7 +4517,7 @@
     </para>
   </sect2>
 
-  <sect2>
+  <sect2 id="sect2.rml.play_slot__dp_">
     <title><command>Play Slot [DP]</command></title>
     <para>
       <variablelist>
@@ -4435,7 +4545,7 @@
     </para>
   </sect2>
 
-  <sect2>
+  <sect2 id="sect2.rml.refresh_log__rl_">
     <title><command>Refresh Log [RL]</command></title>
     <para>
       <variablelist>
@@ -4462,7 +4572,7 @@
     </para>
   </sect2>
 
-  <sect2>
+  <sect2 id="sect2.rml.run_shell_command__rn_">
     <title><command>Run Shell Command [RN]</command></title>
     <para>
       <variablelist>
@@ -4488,7 +4598,7 @@
     </para>
   </sect2>
 
-  <sect2>
+  <sect2 id="sect2.rml.select_widget__pw_">
     <title><command>Select Widget [PW]</command></title>
     <para>
       <variablelist>
@@ -4515,7 +4625,7 @@
     </para>
   </sect2>
 
-  <sect2>
+  <sect2 id="sect2.rml.serial_out__so_">
     <title><command>Serial Out [SO]</command></title>
     <para>
       <variablelist>
@@ -4545,7 +4655,7 @@
     </para>
   </sect2>
 
-  <sect2>
+  <sect2 id="sect2.rml.serial_reload__sy_">
     <title><command>Serial Reload [SY]</command></title>
     <para>
       <variablelist>
@@ -4573,7 +4683,7 @@
     </para>
   </sect2>
 
-  <sect2>
+  <sect2 id="sect2.rml.set_color_label__lc_">
     <title><command>Set Color Label [LC]</command></title>
     <para>
       <variablelist>
@@ -4601,7 +4711,7 @@
     </para>
   </sect2>
 
-  <sect2>
+  <sect2 id="sect2.rml.set_default_now___next_cart__sn_">
     <title><command>Set Default Now &amp; Next Cart [SN]</command></title>
     <para>
       <variablelist>
@@ -4630,7 +4740,7 @@
     </para>
   </sect2>
 
-  <sect2>
+  <sect2 id="sect2.rml.set_display__sd_">
     <title><command>Set Display [SD]</command></title>
     <para>
       <variablelist>
@@ -4741,7 +4851,7 @@
     </variablelist>
   </sect2>
 
-  <sect2>
+  <sect2 id="sect2.rml.set_duck_level__md_">
     <title><command>Set Duck Level [MD]</command></title>
     <para>
       <variablelist>
@@ -4775,7 +4885,7 @@
     </para>
   </sect2>
 
-  <sect2>
+  <sect2 id="sect2.rml.set_label__lb_">
     <title><command>Set Label [LB]</command></title>
     <para>
       <variablelist>
@@ -4801,7 +4911,7 @@
     </para>
   </sect2>
 
-  <sect2>
+  <sect2 id="sect2.rml.set_mode__pm_">
     <title><command>Set Mode [PM]</command></title>
     <para>
       <variablelist>
@@ -4846,7 +4956,7 @@
     </para>
   </sect2>
 
-  <sect2>
+  <sect2 id="sect2.rml.sleep__sp_">
     <title><command>Sleep [SP]</command></title>
     <para>
       <variablelist>
@@ -4872,7 +4982,7 @@
     </para>
   </sect2>
 
-  <sect2>
+  <sect2 id="sect2.rml.start__pl_">
     <title><command>Start [PL]</command></title>
     <para>
       <variablelist>
@@ -4900,7 +5010,7 @@
     </para>
   </sect2>
 
-  <sect2>
+  <sect2 id="sect2.rml.start_button__pb_">
     <title><command>Start Button [PB]</command></title>
     <para>
       <variablelist>
@@ -4926,7 +5036,7 @@
     </para>
   </sect2>
 
-  <sect2>
+  <sect2 id="sect2.rml.start_next__pn_">
     <title><command>Start Next [PN]</command></title>
     <para>
       <variablelist>
@@ -4960,7 +5070,7 @@
     </para>
   </sect2>
 
-  <sect2>
+  <sect2 id="sect2.rml.start_record_deck__rs_">
     <title><command>Start Record Deck [RS]</command></title>
     <para>
       <variablelist>
@@ -4996,7 +5106,7 @@
     </para>
   </sect2>
 
-  <sect2>
+  <sect2 id="sect2.stop__rs_">
     <title><command>Stop [PS]</command></title>
     <para>
       <variablelist>
@@ -5027,7 +5137,7 @@
     </para>
   </sect2>
 
-  <sect2>
+  <sect2 id="sect2.rml.stop_panel__pt_">
     <title><command>Stop Panel [PT]</command></title>
     <para>
       <variablelist>
@@ -5069,7 +5179,7 @@
     </para>
   </sect2>
 
-  <sect2>
+  <sect2 id="sect2.rml.stop_record_deck__rr_">
     <title><command>Stop Record Deck [RR]</command></title>
     <para>
       <variablelist>
@@ -5095,7 +5205,7 @@
     </para>
   </sect2>
 
-  <sect2>
+  <sect2 id="sect2.rml.stop_slot__ds_">
     <title><command>Stop Slot [DS]</command></title>
     <para>
       <variablelist>
@@ -5123,7 +5233,7 @@
     </para>
   </sect2>
 
-  <sect2>
+  <sect2 id="sect2.rml.switch_add__sa_">
     <title><command>Switch Add [SA]</command></title>
     <para>
       <variablelist>
@@ -5154,7 +5264,7 @@
     </para>
   </sect2>
 
-  <sect2>
+  <sect2 id="sect2.rml.switch_add_with_gain__sg_">
     <title><command>Switch Add With Gain [SG]</command></title>
     <para>
       <variablelist>
@@ -5188,7 +5298,7 @@
     </para>
   </sect2>
 
-  <sect2>
+  <sect2 id="sect2.rml.switch_crosspoint_gain__sx_">
     <title><command>Switch Crosspoint Gain [SX]</command></title>
     <para>
       <variablelist>
@@ -5220,7 +5330,7 @@
     </para>
   </sect2>
 
-  <sect2>
+  <sect2 id="sect2.rml.switch_level__sl_">
     <title><command>Switch Level [SL]</command></title>
     <para>
       <variablelist>
@@ -5250,7 +5360,7 @@
     </para>
   </sect2>
 
-  <sect2>
+  <sect2 id="sect2.rml.switch_reload__sz_">
     <title><command>Switch Reload [SZ]</command></title>
     <para>
       <variablelist>
@@ -5278,7 +5388,7 @@
     </para>
   </sect2>
 
-  <sect2>
+  <sect2 id="sect2.rml.switch_remove__sr_">
     <title><command>Switch Remove [SR]</command></title>
     <para>
       <variablelist>
@@ -5309,7 +5419,7 @@
     </para>
   </sect2>
 
-  <sect2>
+  <sect2 id="sect2.rml.switch_take__st_">
     <title><command>Switch Take [ST]</command></title>
     <para>
       <variablelist>
@@ -5340,7 +5450,7 @@
     </para>
   </sect2>
 
-  <sect2>
+  <sect2 id="sect2.rml.toggle_on_air_flag__ta_">
     <title><command>Toggle On Air Flag [TA]</command></title>
     <para>
       <variablelist>
@@ -5366,7 +5476,7 @@
     </para>
   </sect2>
 
-  <sect2>
+  <sect2 id="sect2.rml.udp_out__uo_">
     <title><command>UDP Out [UO]</command></title>
     <para>
       <variablelist>
@@ -5399,9 +5509,9 @@
 </sect1>
 </chapter>
 
-<chapter>
+<chapter id="interfacing">
   <title>Interfacing with the Linux Ecosystem:  RMLSend and RDImport</title>
-  <sect1>
+  <sect1 id="sect1.interfacing.interfacing_with_the_linux_ecosystem__rmlsend_and_rdimport">
     <title>RMLSend</title>
     <para>
       RMLSend is a small utility that can be used to send RML commands to a
@@ -5444,7 +5554,7 @@
   </sect1>
 </chapter>
 
-<chapter>
+<chapter id="gplv2">
   <title>The GNU General Public License, Version Two</title>
   <sect1>
     <title>GNU GENERAL PUBLIC LICENSE</title>
