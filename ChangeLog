@@ -16182,3 +16182,6 @@
 	RDLogEdit' chapter to the Ops Guide.
 2017-10-18 Fred Gleason <fredg@paravelsystems.com>
 	* Finished transcribing previous text into the Ops Guide.
+2017-10-19 Fred Gleason <fredg@paravelsystems.com>
+	* Applied structural markup to the first three chapters of the
+	Operations Guide.

@@ -67,15 +67,18 @@
     <para>
       Rivendell is made available under the terms of the GNU General Public
       License version 2 (GPLv2), a copy of which can be found in Appendix A.
-      As such, it comes with absolutely no warranty, not even the implied
+      As such, it comes with <emphasis>absolutely no warranty</emphasis>,
+      not even the implied
       warranties of merchantability or fitness for a particular purpose.
       See the full text of the GPLv2 for details.
     </para>
     <para>
       Rivendell has been designed and developed from the ground up to run
-      on the popular and highly stable GNU/Linux1 operating system.
+      on the popular and highly stable <trademark>GNU/Linux</trademark>
+      operating system.
       Selected tools (mostly having to do with log generation) have also
-      been ported to run in the Microsoft Windows2 environment as well.
+      been ported to run in the Microsoft <trademark>Windows</trademark>
+      environment as well.
       Full source code as well as binary installation packages for Windows
       and select Linux distributions are available on line.  Consult the
       Rivendell Technical and Administration Guide for details.
@@ -192,7 +195,8 @@
 	<title>Hosts</title>
 	<para>
 	  Every physical computer within a given network that is running
-	  Rivendell software is referred to as a host.  Any host in a
+	  Rivendell software is referred to as a <emphasis>host</emphasis>.
+	  Any host in a
 	  Rivendell network can be individually configured and controlled
 	  from any other host (provided the system administrator has enabled
 	  this capability).  Hosts can be used for a wide variety of
@@ -206,11 +210,13 @@
       <sect3>
 	<title>Users</title>
 	<para>
-	  Every host on a Rivendell network has one or more users available
+	  Every host on a Rivendell network has one or more
+	  <emphasis>users</emphasis> available
 	  to it.  In this context, a 'user' is merely a set of access
 	  policies established by the system administrator that defines what
 	  tasks a given host is or is not allowed to perform.  Every host
-	  has at least one user, called the default user.  As the name
+	  has at least one user, called the <emphasis>default user</emphasis>.
+	  As the name
 	  suggests, this is the set of user policies that are loaded by
 	  default when the system starts up.  It is also possible to change
 	  the user currently in use on a given host by running the RDLogin
@@ -220,14 +226,15 @@
       <sect3>
 	<title>Groups</title>
 	<para>
-	  A Rivendell group is a system of categories that is used by the
+	  A Rivendell <emphasis>group</emphasis> is a system of categories
+	  that is used by the
 	  audio library to classify and organize the audio within the library.
 	  Groups are a very powerful capability, and many operations within
 	  Rivendell can be specified on the basis of group membership.
 	  The actual classification scheme, including the number of available
 	  groups and their names, is completely arbitrary so as to allow each
 	  facility to tailor a schema that best fits its own operational
-	  requirements.  Designing and implementing the group schema is one
+	  requirements. Designing and implementing the group schema is one
 	  of the most important tasks facing the Rivendell system
 	  administrator, as a well-designed schema can make long-term
 	  maintenance and management of the system substantially easier
@@ -243,7 +250,8 @@
 	  These could be radio stations (e.g. WAVA), satellite uplink
 	  channels, live Internet audio streams, or any mix of the above.
 	  Each of these sorts of destinations is referred to in Rivendell
-	  as a service, and certain parameters, particularly as regards
+	  as a <emphasis>service</emphasis>, and certain parameters,
+	  particularly as regards
 	  audio play out and log (playlist) creation, can be configured on
 	  the basis of what particular service is being referenced.
 	</para>
@@ -262,7 +270,8 @@
       <sect3>
 	<title>Audio Adapters</title>
 	<para>
-	  An audio adapter in Rivendell is simply a device or facility for
+	  An <emphasis>audio adapter</emphasis> in Rivendell is simply a
+	  device or facility for
 	  getting audio into and/or out of a host on a realtime basis.
 	  Most commonly this will be a sound card, although other, more
 	  exotic possibilities (using TCP/IP networking or direct routing
@@ -322,8 +331,9 @@
       <sect3>
 	<title>Serial Ports</title>
 	<para>
-	  Commonly known in the DOS/Windows world as 'COM ports', serial
-	  ports are often used to communicate with outboard gear, such as
+	  Commonly known in the DOS/Windows world as 'COM ports', 
+	  <emphasis>serial ports</emphasis> are often used to communicate
+	  with outboard gear, such as
 	  satellite receivers and audio switchers.  Up to eight serial ports
 	  can be accessed simultaneously by each Rivendell host.
 	</para>
@@ -333,13 +343,16 @@
 	<para>
 	  Because these capabilities are often (although not always)
 	  bundled together in the same device, Rivendell lumps GPIO and
-	  switcher devices together within the same class.  'GPIO' stands
+	  switcher devices together within the same class.
+	  <emphasis>GPIO</emphasis> stands
 	  for 'General Purpose Input Output'.  As the name implies, these
 	  devices can be used to interface to a huge variety of outboard
-	  equipment by means of control lines.  GPI (General Purpose Input)
+	  equipment by means of control lines. <emphasis>GPI</emphasis>
+	  (General Purpose Input)
 	  lines can be used to sense changes in an outboard system's state
 	  (and Rivendell programmed to take various actions on the basis of
-	  that), while GPO (General Purpose Output) lines can be used to
+	  that), while <emphasis>GPO</emphasis> (General Purpose Output)
+	  lines can be used to
 	  send commands to an outboard system.  The actual physical
 	  interfacing of GPIO devices is complex and generally beyond
 	  the scope of this document.  Readers are encouraged to consult
@@ -359,8 +372,9 @@
     <para>
       Rivendell uses a sophisticated system of user privileges to keep track
       of which users have permission to perform what operations.
-      These privileges are tracked by the system on the basis of user
-      accounts.  Creating user accounts and administering their permissions
+      These privileges are tracked by the system on the basis of
+      <emphasis>user accounts</emphasis>.
+      Creating user accounts and administering their permissions
       are done in the RDAdmin module and are covered in the Rivendell
       Technical and Administration Guide.
     </para>
@@ -372,7 +386,7 @@
       it is these “Rivendell users” that we are referring to.
     </para>
     <para>
-      Each Rivendell host has a default user.  As the name implies, this is
+      Each Rivendell host has a default user. As the name implies, this is
       the user that is automatically logged in after the system is booted.
       By default, the name of this user is “user”, but the system
       administrator may have changed this to some other name.
@@ -406,10 +420,13 @@
     <sect2>
       <title>Carts</title>
       <para>
-	The Rivendell Library consists of a set of objects called carts.
-	A cart is a data container that  holds either one or more pieces
-	of audio (called an audio cart), or macro commands to the system
-	(called a macro cart).  The cart is the fundamental schedule
+	The Rivendell Library consists of a set of objects called
+	<emphasis>carts</emphasis>.
+	A cart is a data container that holds either one or more pieces
+	of audio (called an <emphasis>audio cart</emphasis>), or macro
+	commands to the system
+	(called a <emphasis>macro cart</emphasis>). The cart is the
+	fundamental schedule
 	building block in Rivendell, in that it is the smallest object or
 	'atom' that the outside world (like a traffic or music scheduler)
 	can see.
@@ -500,7 +517,8 @@
     <sect2>
       <title>Cuts</title>
       <para>
-	Each audio cart can contain one or more cuts.  A Rivendell cut is
+	Each audio cart can contain one or more <emphasis>cuts</emphasis>.
+	A Rivendell cut is
 	an actual piece of audio, somewhat analogous to a 'track' on a CD.
 	Up to 999 such cuts can exist within a single cart.  Each line in
 	the cut list contains information about the cut, including:
@@ -568,14 +586,16 @@
 	<title>Multiple Cuts in a Cart</title>
 	<para>
 	  What happens when more than one cut is placed into a cart? The
-	  answer, in a word, is rotation.  Rotation is the ability to
+	  answer, in a word, is <emphasis>rotation</emphasis>. Rotation is
+	  the ability to
 	  schedule a single cart in a log, but to have that cart play out
 	  different material at different times.  This capability has a
 	  myriad of uses.  One of the simplest, common in commercial radio
 	  facilities, is to allow multiple versions of a spot to be placed
 	  into the system, while still allowing the traffic department to
 	  have to track and schedule only one cart number.  A more
-	  sophisticated use involves use of the cut's dayparting settings,
+	  sophisticated use involves use of the cut's
+	  <emphasis>dayparting</emphasis> settings,
 	  forcing different cuts to play based upon certain date/time
 	  criteria, such as day of the week or time of day. Cut dayparting
 	  is a very powerful feature in Rivendell, and is something we
@@ -687,8 +707,8 @@
 	</para>
 	<para>
 	  It's important to remember that the color displayed for each
-	  event indicates playability at the instant that the event is
-	  being viewed.
+	  event indicates playability <emphasis>at the instant that the event
+	  is being viewed</emphasis>.
 	</para>
       </sect3>
       <sect3>
@@ -761,12 +781,13 @@
 	To import audio from a file directly into a cut, we start by
 	opening the cut's parent cart in the Edit Cart Dialog.  Next,
 	touch the cut's entry in the cut list and then touch the
-	Import/Export button to open the Import/Export Audio Dialog
-	(Illustration 5).
+	<computeroutput>Import/Export</computeroutput> button to open the
+	Import/Export Audio Dialog (Illustration 5).
       </para>
       <para>
 	Select the file you wish to import, either by entering the path
-	and filename to it in the Filename field or by clicking the Select
+	and filename to it in the <computeroutput>Filename</computeroutput>
+	field or by clicking the <computeroutput>Select</computeroutput>
 	button to open a file browsing dialog.  Rivendell is capable of
 	importing the following types of audio files:
       </para>
@@ -787,17 +808,23 @@
 	</itemizedlist>
       </para>
       <para>
-	Next, set the Channels drop-down menu to the appropriate number of
-	channels.  You may also wish to adjust the Normalize or Autotrim
+	Next, set the <computeroutput>Channels</computeroutput> drop-down
+	menu to the appropriate number of
+	channels.  You may also wish to adjust the
+	<computeroutput>Normalize</computeroutput> or
+	<computeroutput>Autotrim</computeroutput>
 	controls, although these will normally be set to reasonable default
 	values by the system administrator and should seldom have to be
-	altered.  If Normalize is selected, then the imported audio will
-	be peak normalized to the level indicated.  The Autotrim does the
+	altered.  If <computeroutput>Normalize</computeroutput> is selected,
+	then the imported audio will
+	be peak normalized to the level indicated. The
+	<computeroutput>Autotrim</computeroutput> does the
 	same thing as in the Record Dialog (see section 2.0.1.2, 'Recording
 	and Auditioning a Cut in the Record Dialog' above for details).
       </para>
       <para>
-	Finally, touch the Import button.  A progress bar will indicate
+	Finally, touch the <computeroutput>Import</computeroutput> button.
+	A progress bar will indicate
 	percentage completion of the import, followed by a popup box to
 	announce completion.  The Import Audio Dialog will automatically
 	close after acknowledging completion.  The audio is now imported,
@@ -810,7 +837,7 @@
 	To rip audio directly off of a CD into a cut, we again start by
 	opening the cut's parent cart in the Edit Cart Dialog.  Next,
 	select the cut's by touching the cut's entry in the cut list,
-	and then touch the Rip button to open the Rip CD Dialog
+	and then touch the <computeroutput>Rip</computeroutput> button to open the Rip CD Dialog
 	(Illustration 6).
       </para>
       <para>
@@ -820,17 +847,23 @@
 	tracks may appear as well.  
       </para>
       <para>
-	Set the Channels, Normalize and Autotrim controls appropriately (see
-	section 2.1.0 for more details on using the Normalize and Autotrim
+	Set the <computeroutput>Channels</computeroutput>,
+	<computeroutput>Normalize</computeroutput> and 
+	<computeroutput>Autotrim</computeroutput> controls appropriately (see
+	section 2.1.0 for more details on using the
+	<computeroutput>Normalize</computeroutput> and
+	<computeroutput>Autotrim</computeroutput>
 	controls).  Next, touch the track you wish to rip and then press
-	the Rip Track button.  The track will now be ripped into the cut,
+	the <computeroutput>Rip Track</computeroutput> button. The track will
+	now be ripped into the cut,
 	with a progress bar keeping you informed of progress.  When the
 	rip is complete, a message box will pop up to inform you of this.
       </para>
       <para>
 	If FreeDB data was found for the CD, you can have the FreeDB track,
 	artist and album names be automatically placed on the cart label
-	for the cart by checking  Apply FreeDB Values to Cart before
+	for the cart by checking
+	<computeroutput>Apply FreeDB Values to Cart</computeroutput> before
 	closing the Dialog.
       </para>
     </sect2>
@@ -839,9 +872,10 @@
       <para>
 	Sometimes, when transferring multiple audio tracks from CD,
 	it's more convenient to be able to set up the entire transfer at
-	once and then let the rip run in a 'batch' mode.  RDLibrary is
-	capable of ripping audio in this manner as well.  To do this, click
-	the Rip CD button near the bottom of the main RDLibrary screen,
+	once and then let the rip run in a 'batch' mode. RDLibrary is
+	capable of ripping audio in this manner as well. To do this, click
+	the <computeroutput>Rip CD</computeroutput> button near the bottom of
+	the main RDLibrary screen,
 	bringing up the Rip Disk Dialog (Illustration 7).
       </para>
       <para>
@@ -861,8 +895,12 @@
       </para>
       <para>
 	Once all of the desired tracks have been assigned to cuts, be sure
-	that the Normalize, Autotrim, Channels and Apply FreeDB Values to
-	Carts controls have been set as desired, then click the Rip Disk
+	that the <computeroutput>Normalize</computeroutput>, 
+	<computeroutput>Autotrim</computeroutput>, 
+	<computeroutput>Channels</computeroutput> and
+	<computeroutput>Apply FreeDB Values to Cart</computeroutput>
+	controls have been set as desired, then click the
+	<computeroutput>Rip Disk</computeroutput>
 	button.  A set of progress bars will keep you informed of the
 	progress of each track, as well as overall progress.  When, the
 	rip is finished, a message box will let you know.
@@ -873,20 +911,26 @@
     <title>Macro Carts</title>
     <para>
       A macro cart is a cart that contains one or more commands written in
-      Rivendell Macro Language (or 'RML' for short).  The Edit Cart dialog
+      Rivendell Macro Language (or 'RML' for short). The Edit Cart dialog
       for a macro cart is similar in many ways to that for an audio cart
       with the exception of the lower half, which contains a list of RML
       commands to be executed rather than a list of cuts (see Illustration
-      9).  (NOTE:  for a complete description of Rivendell Macro Language,
+      9). (NOTE: for a complete description of Rivendell Macro Language,
       including a breakdown of available commands, see Chapter Nine).
     </para>
     <para>
       To add a new line of RML, select the desired location in the list
-      and touch the Add button.  Similarly, a line can be deleted by
-      selecting it and then touching the Delete button, or modified by
-      touching the Edit button.  The RML can be tested, eight line-by-line
-      or as a whole by touching the Run Line or Run Cart button
-      respectively.  It is also possible to Copy and Paste individual
+      and touch the <computeroutput>Add button</computeroutput>.
+      Similarly, a line can be deleted by
+      selecting it and then touching the
+      <computeroutput>Delete</computeroutput> button, or modified by
+      touching the <computeroutput>Edit</computeroutput> button. The RML
+      can be tested, eight line-by-line
+      or as a whole by touching the <computeroutput>Run Line</computeroutput>
+      or <computeroutput>Run Cart</computeroutput> button
+      respectively. It is also possible to
+      <computeroutput>Copy</computeroutput> and
+      <computeroutput>Paste</computeroutput> individual
       lines both within a given cart or between carts.
     </para>
   </sect1>
@@ -906,11 +950,16 @@
 	changed by simply clicking on the header of the column by which
 	you want them sorted by.  By default, the carts are sorted by Cart
 	Number.  To instead sort them alphabetically by Title, simply click
-	the TITLE header once.  To sort them by Title in reverse –i.e.
-	from 'Z' to 'A' – click the TITLE header once again.  Clicking the
-	TITLE header a third time restores the sort to normal 'A' to 'Z'
-	again.  And so on for all of the columns in the cart list – it's
-	possible to sort the Library by Artist, Length, or any other
+	the <computeroutput>TITLE</computeroutput> header once.
+	To sort them by Title in reverse –i.e.
+	from 'Z' to 'A' – click the <computeroutput>TITLE</computeroutput>
+	header once again.  Clicking the
+	<computeroutput>TITLE</computeroutput> header a third time restores
+	the sort to normal 'A' to 'Z' again. And so on for all of the columns
+	in the cart list – it's
+	possible to sort the Library by
+	<computeroutput>ARTIST</computeroutput>,
+	<computeroutput>LENGTH</computeroutput>, or any other
 	parameter shown in the cart list.
       </para>
     </sect2>
@@ -920,16 +969,19 @@
 	Very often, one will want to find a cart or set of carts whose
 	label(s) contains a particular word or phrase.  It's possible to
 	narrow the list of displayed carts to this set by simply entering
-	the desired word or phrase into the Filter field at the top of the
-	main RDLibrary screen.  The full list can be restored by clearing
-	the Filter field or by clicking the Clear button.
+	the desired word or phrase into the
+	<computeroutput>Filter</computeroutput> field at the top of the
+	main RDLibrary screen. The full list can be restored by clearing
+	the <computeroutput>Filter</computeroutput> field or by clicking
+	the Clear button.
       </para>
     </sect2>
     <sect2>
       <title>Selecting Carts by Group</title>
       <para>
 	It's possible to limit the list of carts to only those in a
-	particular group by setting the Group drop-down menu to the
+	particular group by setting the <computeroutput>Group</computeroutput>
+	drop-down menu to the
 	desired group name.
       </para>
     </sect2>
@@ -937,7 +989,9 @@
       <title>Selecting Carts by Type</title>
       <para>
 	You can tell RDLibrary what type of carts to list by checking the
-	Show Audio Carts and Show Macro Carts boxes. Clearing both boxes
+	<computeroutput>Show Audio Carts</computeroutput> and 
+	<computeroutput>Show Macro Carts</computeroutput> boxes. Clearing
+	both boxes
 	obviously results in no carts at all being displayed.
       </para>
       <para>
@@ -951,7 +1005,7 @@
 	Once the desired cart has been located on the cart list, load it
 	into the Edit Cart Dialog (Illustration 3) by either double
 	clicking its list entry, or by touching its list entry and then
-	touching the Edit button.
+	touching the <computeroutput>Edit</computeroutput> button.
       </para>
     </sect2>
   </sect1>
@@ -961,50 +1015,71 @@
       <title>Editing Markers</title>
       <para>
 	Rivendell uses a system of cue points within audio cuts, referred
-	to as markers.  Markers can be used to specify a number of
-	parameters for a piece of audio.    Table One shows what markers
-	are available, their purpose and their corresponding color.
+	to as <emphasis>markers</emphasis>. Markers can be used to specify
+	a number of
+	parameters for a piece of audio.
+	Consult <xref linkend="marker_types"/> to see what
+	markers are available, their purpose and their corresponding color.
       </para>
       <para>
 	Markers are set in the Edit Markers Dialog (see Illustration 10).
 	To access the Dialog, open an audio cart, select the cut to open
-	on the cut list and then touch the Edit button.
+	on the cut list and then touch the
+	<computeroutput>Edit</computeroutput> button.
       </para>
       <para>
 	The Dialog is divided into three areas:  the waveform area in the
-	upper half, consisting of the waveform display and Amplitude and
-	Time buttons; the transport controls area in the center, consisting
-	of Start, Pause, Stop and Loop buttons along with an audio meter;
+	upper half, consisting of the waveform display and
+	<computeroutput>Amplitude</computeroutput> and
+	<computeroutput>Time</computeroutput> buttons; the transport
+	controls area in the center, consisting
+	of <computeroutput>Start</computeroutput>,
+	<computeroutput>Pause</computeroutput>, 
+	<computeroutput>Stop</computeroutput> and
+	<computeroutput>Loop</computeroutput> buttons along with an
+	audio meter;
 	and the marker button area in the lower third of the window,
 	consisting of controls for selecting and positioning markers.  
       </para>
       <para>
 	It's possible to 'zoom-in' on the waveform in various ways by
-	clicking the Amplitude and Time buttons.  By default, the waveform
+	clicking the <computeroutput>Amplitude</computeroutput>
+	and <computeroutput>Time</computeroutput> buttons.
+	By default, the waveform
 	is displayed fully 'zoomed-out', thus showing the entire length of
-	the audio cut.  The GoTo buttons can be used to jump directly to
+	the audio cut.  The <computeroutput>GoTo</computeroutput> buttons
+	can be used to jump directly to
 	the current play out cursor position, start or end of the waveform.
       </para>
       <para>
 	Audio can be played one of two ways:  either by clicking on the
 	waveform to indicate where play out should start and then clicking
-	the left-hand Play button, causing play out to start from the
-	selected position, or by clicking the right-hand Play button, which
+	the left-hand <computeroutput>Play</computeroutput> button,
+	causing play out to start from the
+	selected position, or by clicking the right-hand 
+	<computeroutput>Play</computeroutput> button, which
 	will cause play out to start from the Start Marker (just as it
-	would in RDAirPlay).  Clicking the Pause button while playing will
+	would in RDAirPlay).  Clicking the
+	<computeroutput>Pause</computeroutput> button while playing will
 	cause audio to stop and the play out cursor (a thin vertical black
 	line in the waveform area) to freeze at its current position, while
-	pressing the Stop button will stop the audio while resetting the
-	play out cursor to the position it was in when Play was started.
-	Clicking the Loop button will cause the audio to play out
+	pressing the <computeroutput>Stop</computeroutput> button will stop
+	the audio while resetting the
+	play out cursor to the position it was in when
+	<computeroutput>Play</computeroutput> was started.
+	Clicking the <computeroutput>Loop</computeroutput> button will
+	cause the audio to play out
 	continuously, looping from end back to start, until either the
-	Stop, Pause, Save or Cancel buttons are clicked.
+	<computeroutput>Stop</computeroutput>, 
+	<computeroutput>Pause</computeroutput>, 
+	<computeroutput>Save</computeroutput> or
+	<computeroutput>Cancel</computeroutput> buttons are clicked.
       </para>
       <para>
 	To set a marker, click on the corresponding marker button and then
 	left-click on the waveform area to indicate where on the audio
 	the marker should be placed.  (NOTE:  With the exception of the
-	FadeUp and FadeDown markers, all markers inRivendell are assigned
+	FadeUp and FadeDown markers, all markers in Rivendell are assigned
 	in pairs. For example, placing a TalkStart marker will also cause
 	a TalkEnd marker to be placed.)  Markers that have already been
 	placed can be moved by selecting the appropriate marker button and
@@ -1014,7 +1089,8 @@
 	value next to a selected marker button.  It is also possible to
 	remove a set of markers that have already been placed, either by
 	accessing the marker menu by doing a right-click on the waveform
-	display, or by touching the Remove Marker button and then touch
+	display, or by touching the
+	<computeroutput>Remove Marker</computeroutput> button and then touch
 	the marker button corresponding to the marker to be removed.
 	(NOTE: the exceptions to this are the Start / End markers, which
 	are always present and hence cannot be removed.)
@@ -1114,9 +1190,11 @@
       </table>
       <para>
 	As an aid for accurately setting the Start and End markers, it's
-	possible to use the Trim Start and Trim End buttons to automatically
+	possible to use the <computeroutput>Trim Start</computeroutput>
+	and <computeroutput>Trim End</computeroutput> buttons to automatically
 	set the markers to the first and last instances of the level
-	specified by the Threshold field, respectively.
+	specified by the <computeroutput>Threshold</computeroutput> field,
+	respectively.
       </para>
     </sect2>
     <sect2>
@@ -1124,19 +1202,22 @@
       <para>
 	It's possible to make copies of existing an audio cut on the system
 	by opening up the cut's parent cart in the Edit Cart Dialog,
-	selecting it on the cut list and clicking the Copy button. To
+	selecting it on the cut list and clicking the
+	<computeroutput>Copy</computeroutput> button. To
 	paste the copied audio, simply select the desired destination
-	cut (within the same cart or a different one) and press Paste.
+	cut (within the same cart or a different one) and press
+	<computeroutput>Paste</computeroutput>.
       </para>
     </sect2>
   </sect1>
   <sect1>
     <title>Generating Library Reports</title>
     <para>
-      Various Library reports can be generated by touching the Reports
+      Various Library reports can be generated by touching the
+      <computeroutput>Reports</computeroutput>
       button on the main RDLibrary screen and then selecting the desired
-      report and touching the Generate button.  The following reports are
-      available:
+      report and touching the <computeroutput>Generate</computeroutput>
+      button. The following reports are available:
     </para>
     <sect2>
       <title>The Cart Report</title>
@@ -1153,10 +1234,22 @@
       </para>
     </sect2>
     <sect2>
-      <title>The Cart Data Dump</title>
+      <title>The Cart Data Dump (fixed width)</title>
       <para>
-	The cart data dump is a special type of report that consists of
-	column-aligned data elements, one line per cut for the selected
+	The fixed-width cart data dump is a special type of report that
+	consists of column-aligned data elements, one line per cut for the
+	selected
+	carts on the system.  It is intended for use where a 'dump' of
+	available carts in the system is desired for import into an
+	external system (such as a music scheduling system).
+      </para>
+    </sect2>
+    <sect2>
+      <title>The Cart Data Dump (CSV)</title>
+      <para>
+	The CSV cart data dump is a special type of report that
+	consists of CSV formatted data elements, one line per cut for the
+	selected
 	carts on the system.  It is intended for use where a 'dump' of
 	available carts in the system is desired for import into an
 	external system (such as a music scheduling system).
@@ -1171,7 +1264,7 @@
     <title>Choosing the Correct Automation Tool</title>
     <para>
       Rivendell includes two modules specially optimized for performing
-      automatic operations:  The RDCatch and RDAirPlay modules.  The two
+      automatic operations: The RDCatch and RDAirPlay modules.  The two
       modules take radically different approaches in how they go about
       organizing and controlling operations, so a few words regarding
       each may be in order here.
@@ -1326,7 +1419,7 @@
 	is indicated by its background color, as shown in Table 3.
       </para>
       <table xml:id="rdcatch_event_colors" frame="all">
-	<title>RDCatch Event States</title>
+	<title>RDCatch Event State Colors</title>
 	<tgroup cols="2" align="left" colsep="1" rowsep="1">
 	  <colspec colname="Color" />
 	  <colspec colname="Meaning" />
@@ -1389,7 +1482,7 @@
 	the type of the event, as shown in Table 4.
       </para>
       <table xml:id="rdcatch_event_icons" frame="all">
-	<title>RDCatch Event States</title>
+	<title>RDCatch Event Icons</title>
 	<tgroup cols="2" align="left" colsep="1" rowsep="1">
 	  <colspec colname="Color" />
 	  <colspec colname="Meaning" />
@@ -1927,7 +2020,7 @@
       transition types can exist in a Rivendell log:  PLAY, SEGUE and STOP.
     </para>
     <table xml:id="rdlogedit_event_type_icons" frame="all">
-      <title>Rivendell Log Event Type Icons</title>
+      <title>Log Event Type Icons</title>
       <tgroup cols="2" align="left" colsep="1" rowsep="1">
 	<colspec colname="Icon" />
 	<colspec colname="Meaning" />
