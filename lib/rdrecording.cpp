@@ -671,32 +671,35 @@ QString RDRecording::feedKeyName() const
 
 QString RDRecording::typeString(RDRecording::Type type)
 {
-  QString str;
+  QString str=QObject::tr("Unknown");
 
   switch(type) {
-      case RDRecording::Recording:
-	str=QObject::tr("Recording");
-	break;
+  case RDRecording::Recording:
+    str=QObject::tr("Recording");
+    break;
 
-      case RDRecording::MacroEvent:
-	str=QObject::tr("Macro Event");
-	break;
+  case RDRecording::MacroEvent:
+    str=QObject::tr("Macro Event");
+    break;
 
-      case RDRecording::SwitchEvent:
-	str=QObject::tr("Switch Event");
-	break;
+  case RDRecording::SwitchEvent:
+    str=QObject::tr("Switch Event");
+    break;
 
-      case RDRecording::Playout:
-	str=QObject::tr("Playout");
-	break;
+  case RDRecording::Playout:
+    str=QObject::tr("Playout");
+    break;
 
-      case RDRecording::Download:
-	str=QObject::tr("Download");
-	break;
+  case RDRecording::Download:
+    str=QObject::tr("Download");
+    break;
 
-      case RDRecording::Upload:
-	str=QObject::tr("Upload");
-	break;
+  case RDRecording::Upload:
+    str=QObject::tr("Upload");
+    break;
+
+  case RDRecording::LastType:
+    break;
   }
 
   return str;

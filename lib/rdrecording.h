@@ -32,7 +32,7 @@ class RDRecording
   enum StartType {HardStart=0,GpiStart=1};
   enum EndType {HardEnd=0,GpiEnd=1,LengthEnd=2};
   enum Type {Recording=0,MacroEvent=1,SwitchEvent=2,Playout=3,
-	     Download=4,Upload=5};
+	     Download=4,Upload=5,LastType=6};
   enum ExitCode {Ok=0,Short=1,LowLevel=2,HighLevel=3,
 		 Downloading=4,Uploading=5,ServerError=6,InternalError=7,
 		 Interrupted=8,RecordActive=9,PlayActive=10,Waiting=11,

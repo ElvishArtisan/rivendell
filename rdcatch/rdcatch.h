@@ -108,7 +108,7 @@ class MainWidget : public QWidget
   void selectionChangedData(QListViewItem *item);
   void doubleClickedData(QListViewItem *,const QPoint &,int);
   void filterChangedData(bool state);
-  void dowChangedData(int id);
+  void filterActivatedData(int id);
   void clockData();
   void midnightData();
   void eventUpdatedData(int id);
@@ -162,12 +162,7 @@ class MainWidget : public QWidget
   QString catch_filter;
   QString catch_group;
   QString catch_schedcode;
-  QPixmap *catch_record_map;
-  QPixmap *catch_playout_map;
-  QPixmap *catch_macro_map;
-  QPixmap *catch_switch_map;
-  QPixmap *catch_download_map;
-  QPixmap *catch_upload_map;
+  QPixmap *catch_type_maps[RDRecording::LastType];
   QTimer *catch_next_timer;
   QPalette catch_scroll_color[2];
   bool catch_scroll;
@@ -179,6 +174,8 @@ class MainWidget : public QWidget
   QCheckBox *catch_show_today_box;
   QLabel *catch_dow_label;
   QComboBox *catch_dow_box;
+  QLabel *catch_type_label;
+  QComboBox *catch_type_box;
   QString catch_filter_string;
   QTimer *catch_midnight_timer;
   int catch_time_offset;
@@ -187,4 +184,4 @@ class MainWidget : public QWidget
 };
 
 
-#endif 
+#endif  // RDCATCH_H

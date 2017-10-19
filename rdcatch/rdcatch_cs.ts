@@ -1323,5 +1323,13 @@ nové</translation>
         <source>PCM24</source>
         <translation type="unfinished">PCM24</translation>
     </message>
+    <message>
+        <source>Show Event Type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>All Types</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 </TS>
