@@ -71,8 +71,8 @@ class LogPlay : public QObject,public RDLogEvent
   RDAirPlayConf::OpMode mode() const;
   void setOpMode(RDAirPlayConf::OpMode mode);
   void setLogName(QString name);
-  void setChannels(int cards[2],int ports[2],
-		   const QString start_rml[2],const QString stop_rml[2]);
+  void setChannels(int cards[4],int ports[4],
+		   const QString start_rml[4],const QString stop_rml[4]);
   void setSegueLength(int len);
   void setNowCart(unsigned cartnum);
   void setNextCart(unsigned cartnum);
@@ -214,10 +214,10 @@ class LogPlay : public QObject,public RDLogEvent
   QTimer *play_grace_timer;
   int play_trans_line;
   int play_grace_line;
-  int play_card[2];
-  int play_port[2];
-  QString play_start_rml[2];
-  QString play_stop_rml[2];
+  int play_card[4];
+  int play_port[4];
+  QString play_start_rml[4];
+  QString play_stop_rml[4];
   bool play_timescaling_available;
   RDPlayDeck *play_deck[RD_MAX_STREAMS];
   bool play_deck_active[RD_MAX_STREAMS];
@@ -239,6 +239,8 @@ class LogPlay : public QObject,public RDLogEvent
   bool play_onair_flag;
   int play_duck_volume_port1;
   int play_duck_volume_port2;
+  int play_duck_volume_port3;
+  int play_duck_volume_port4;
   std::vector<RLMHost *> *play_rlm_hosts;
   unsigned play_now_cartnum;
   unsigned play_next_cartnum;
@@ -251,4 +253,4 @@ class LogPlay : public QObject,public RDLogEvent
 };
 
 
-#endif 
+#endif

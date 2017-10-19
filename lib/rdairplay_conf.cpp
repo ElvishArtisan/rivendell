@@ -119,7 +119,7 @@ RDAirPlayConf::GpioType RDAirPlayConf::gpioType(RDAirPlayConf::Channel chan)
 }
 
 
-void RDAirPlayConf::setGpioType(RDAirPlayConf::Channel chan,GpioType type) 
+void RDAirPlayConf::setGpioType(RDAirPlayConf::Channel chan,GpioType type)
   const
 {
   SetChannelValue("GPIO_TYPE",chan,(int)type);
@@ -363,7 +363,7 @@ void RDAirPlayConf::setShowAuxButton(int auxbutton,bool state) const
 
 bool RDAirPlayConf::clearFilter() const
 {
-  return 
+  return
     RDBool(RDGetSqlValue(air_tablename,"ID",air_id,"CLEAR_FILTER").toString());
 }
 
@@ -402,7 +402,7 @@ void RDAirPlayConf::setBarAction(RDAirPlayConf::BarAction action) const
 
 bool RDAirPlayConf::flashPanel() const
 {
-  return 
+  return
     RDBool(RDGetSqlValue(air_tablename,"ID",air_id,"FLASH_PANEL").toString());
 }
 
@@ -441,7 +441,7 @@ void RDAirPlayConf::setButtonLabelTemplate(const QString &str) const
 
 bool RDAirPlayConf::pauseEnabled() const
 {
-  return 
+  return
     RDBool(RDGetSqlValue(air_tablename,"ID",air_id,"PAUSE_ENABLED").toString());
 }
 
@@ -466,7 +466,7 @@ void RDAirPlayConf::setDefaultSvc(const QString &svcname) const
 
 bool RDAirPlayConf::hourSelectorEnabled() const
 {
-  return 
+  return
     RDBool(RDGetSqlValue(air_tablename,"ID",air_id,"HOUR_SELECTOR_ENABLED").
 	   toString());
 }
@@ -800,6 +800,14 @@ QString RDAirPlayConf::channelText(RDAirPlayConf::Channel chan)
 
   case RDAirPlayConf::MainLog2Channel:
     ret=QObject::tr("Main Log Output 2");
+    break;
+
+  case RDAirPlayConf::MainLog3Channel:
+    ret=QObject::tr("Main Log Output 3");
+    break;
+
+  case RDAirPlayConf::MainLog4Channel:
+    ret=QObject::tr("Main Log Output 4");
     break;
 
   case RDAirPlayConf::SoundPanel1Channel:
