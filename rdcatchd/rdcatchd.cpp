@@ -636,208 +636,211 @@ void MainObject::engineData(int id)
   // Load Deck Parameters
   //
   switch(catch_events[event].type()) {
-      case RDRecording::Recording:
-	if(!RDCut::exists(catch_events[event].cutName())) {
-	  WriteExitCode(event,RDRecording::NoCut);
-	  BroadcastCommand(QString().
-			   sprintf("RE %d %d %d!",
-				catch_events[event].channel(),
-				catch_record_deck_status[catch_events[event].
-							 channel()-1],
-				catch_events[event].id()));
-	  LogLine(RDConfig::LogWarning,QString().
-		  sprintf("record aborted: no such cut: %s, id: %d",
-			  (const char *)catch_events[event].cutName(),
-			  catch_events[event].id()));
-	  return;
-	}
-	catch_record_card[catch_events[event].channel()-1]=-1;
-	catch_record_stream[catch_events[event].channel()-1]=-1;
-	sql=QString().sprintf("select CARD_NUMBER,PORT_NUMBER,\
-                         SWITCH_STATION,SWITCH_MATRIX,SWITCH_OUTPUT,\
-                         SWITCH_DELAY from DECKS \
+  case RDRecording::Recording:
+    if(!RDCut::exists(catch_events[event].cutName())) {
+      WriteExitCode(event,RDRecording::NoCut);
+      BroadcastCommand(QString().
+		       sprintf("RE %d %d %d!",
+			       catch_events[event].channel(),
+			       catch_record_deck_status[catch_events[event].
+							channel()-1],
+			       catch_events[event].id()));
+      LogLine(RDConfig::LogWarning,QString().
+	      sprintf("record aborted: no such cut: %s, id: %d",
+		      (const char *)catch_events[event].cutName(),
+		      catch_events[event].id()));
+      return;
+    }
+    catch_record_card[catch_events[event].channel()-1]=-1;
+    catch_record_stream[catch_events[event].channel()-1]=-1;
+    sql=QString().sprintf("select CARD_NUMBER,PORT_NUMBER,\
+                         SWITCH_STATION,SWITCH_MATRIX,SWITCH_OUTPUT,	\
+                         SWITCH_DELAY from DECKS			\
                          where (STATION_NAME=\"%s\")&&(CHANNEL=%d)",
-			      (const char *)catch_config->stationName(),
-			      catch_events[event].channel());
-	q=new RDSqlQuery(sql);
-	if(q->first()) {
-	  catch_record_card[catch_events[event].channel()-1]=
-	    q->value(0).toInt();
-	  catch_record_stream[catch_events[event].channel()-1]=
-	    q->value(1).toInt();
-	  if(q->value(2).toString()==QString("[none]")) {
-	    catch_swaddress[catch_events[event].channel()-1]=QHostAddress();
-	  }
-	  else {
-	    rdstation=new RDStation(q->value(2).toString());
-	    catch_swaddress[catch_events[event].channel()-1]=
-	      rdstation->address();
-	    delete rdstation;
-	  }
-	  catch_swmatrix[catch_events[event].channel()-1]=q->value(3).toInt();
-	  catch_swoutput[catch_events[event].channel()-1]=q->value(4).toInt();
-	  catch_swdelay[catch_events[event].channel()-1]=q->value(5).toInt();
-	}
-	else {
-	  LogLine(RDConfig::LogNotice,QString().
-		  sprintf("id %d specified non-existent record deck, ignored",
-			  catch_events[event].id()));
-	  delete q;
-	  return;
-	}
-	delete q;
+			  (const char *)catch_config->stationName(),
+			  catch_events[event].channel());
+    q=new RDSqlQuery(sql);
+    if(q->first()) {
+      catch_record_card[catch_events[event].channel()-1]=
+	q->value(0).toInt();
+      catch_record_stream[catch_events[event].channel()-1]=
+	q->value(1).toInt();
+      if(q->value(2).toString()==QString("[none]")) {
+	catch_swaddress[catch_events[event].channel()-1]=QHostAddress();
+      }
+      else {
+	rdstation=new RDStation(q->value(2).toString());
+	catch_swaddress[catch_events[event].channel()-1]=
+	  rdstation->address();
+	delete rdstation;
+      }
+      catch_swmatrix[catch_events[event].channel()-1]=q->value(3).toInt();
+      catch_swoutput[catch_events[event].channel()-1]=q->value(4).toInt();
+      catch_swdelay[catch_events[event].channel()-1]=q->value(5).toInt();
+    }
+    else {
+      LogLine(RDConfig::LogNotice,QString().
+	      sprintf("id %d specified non-existent record deck, ignored",
+		      catch_events[event].id()));
+      delete q;
+      return;
+    }
+    delete q;
+    
+    sql=QString("delete from CUT_EVENTS where ")+
+      "CUT_NAME=\""+catch_events[event].cutName()+"\"";
+    q=new RDSqlQuery(sql);
+    delete q;
 
-	sql=QString("delete from CUT_EVENTS where ")+
-	  "CUT_NAME=\""+catch_events[event].cutName()+"\"";
-	q=new RDSqlQuery(sql);
-	delete q;
+    switch(catch_events[event].startType()) {
+    case RDRecording::HardStart:
+      StartRecording(event);
+      break;
 
-	switch(catch_events[event].startType()) {
-	    case RDRecording::HardStart:
-	      StartRecording(event);
-	      break;
+    case RDRecording::GpiStart:
+      catch_events[event].gpiStartTimer()->
+	start(catch_events[event].startLength()-
+	      (QTime().msecsTo(current_time)-
+	       QTime().msecsTo(catch_events[event].startTime())),true);
+      catch_record_deck_status[catch_events[event].channel()-1]=
+	RDDeck::Waiting;
+      catch_record_id[catch_events[event].channel()-1]=
+	catch_events[event].id();
+      catch_events[event].setStatus(RDDeck::Waiting);
+      WriteExitCode(event,RDRecording::Waiting);
+      BroadcastCommand(QString().sprintf("RE %d %d %d!",
+		       catch_events[event].channel(),
+		       catch_record_deck_status[catch_events[event].
+						channel()-1],
+					 catch_events[event].id()));
+      LogLine(RDConfig::LogNotice,QString().
+	      sprintf("gpi start window opens: event: %d, gpi: %d:%d",
+		      id,catch_events[event].startMatrix(),
+		      catch_events[event].startLine()));
+      break;
+    }
+    break;
 
-	    case RDRecording::GpiStart:
-	      catch_events[event].gpiStartTimer()->
-		start(catch_events[event].startLength()-
-		      (QTime().msecsTo(current_time)-
-		       QTime().msecsTo(catch_events[event].startTime())),true);
-	      catch_record_deck_status[catch_events[event].channel()-1]=
-		RDDeck::Waiting;
-	      catch_record_id[catch_events[event].channel()-1]=
-		catch_events[event].id();
-	      catch_events[event].setStatus(RDDeck::Waiting);
-	      WriteExitCode(event,RDRecording::Waiting);
-	      BroadcastCommand(QString().sprintf("RE %d %d %d!",
-			 catch_events[event].channel(),
-			 catch_record_deck_status[catch_events[event].
-			 channel()-1],
-                         catch_events[event].id()));
-	      LogLine(RDConfig::LogNotice,QString().
-		      sprintf("gpi start window opens: event: %d, gpi: %d:%d",
-			      id,catch_events[event].startMatrix(),
-			      catch_events[event].startLine()));
-	      break;
-	}
-	break;
-
-      case RDRecording::Playout:
-	if(!RDCut::exists(catch_events[event].cutName())) {
-	  WriteExitCode(event,RDRecording::NoCut);
-	  BroadcastCommand(QString().
-			   sprintf("RE %d %d %d!",
-				catch_events[event].channel(),
-				catch_playout_deck_status[catch_events[event].
-							  channel()-129],
-				   catch_events[event].id()));
-	  LogLine(RDConfig::LogNotice,QString().
-		  sprintf("playout aborted: no such cut: %s, id: %d",
-			  (const char *)catch_events[event].cutName(),
-			  catch_events[event].id()));
-	  return;
-	}
-	catch_playout_card[catch_events[event].channel()-129]=-1;
-	catch_playout_stream[catch_events[event].channel()-129]=-1;
-	sql=QString().sprintf("select CARD_NUMBER,PORT_NUMBER,PORT_NUMBER \
+  case RDRecording::Playout:
+    if(!RDCut::exists(catch_events[event].cutName())) {
+      WriteExitCode(event,RDRecording::NoCut);
+      BroadcastCommand(QString().
+		       sprintf("RE %d %d %d!",
+			       catch_events[event].channel(),
+			       catch_playout_deck_status[catch_events[event].
+							 channel()-129],
+			       catch_events[event].id()));
+      LogLine(RDConfig::LogNotice,QString().
+	      sprintf("playout aborted: no such cut: %s, id: %d",
+		      (const char *)catch_events[event].cutName(),
+		      catch_events[event].id()));
+      return;
+    }
+    catch_playout_card[catch_events[event].channel()-129]=-1;
+    catch_playout_stream[catch_events[event].channel()-129]=-1;
+    sql=QString().sprintf("select CARD_NUMBER,PORT_NUMBER,PORT_NUMBER \
                          from DECKS where (STATION_NAME=\"%s\")&&(CHANNEL=%d)",
-			      (const char *)catch_config->stationName(),
-			      catch_events[event].channel());
-	q=new RDSqlQuery(sql);
-	if(q->first()) {
-	  catch_playout_id[catch_events[event].channel()-129]=id;
-	  catch_playout_card[catch_events[event].channel()-129]=
-	    q->value(0).toInt();
-	  catch_playout_stream[catch_events[event].channel()-129]=
-	    q->value(1).toInt();
-	  catch_playout_port[catch_events[event].channel()-129]=
-	    q->value(2).toInt();
-	}
-	else {
-	  LogLine(RDConfig::LogDebug,QString().
-		  sprintf("id %d specified non-existent play deck, ignored",
-			  catch_events[event].id()));
-	  delete q;
-	  return;
-	}
-	delete q;
-	StartPlayout(event);
-	break;
+			  (const char *)catch_config->stationName(),
+			  catch_events[event].channel());
+    q=new RDSqlQuery(sql);
+    if(q->first()) {
+      catch_playout_id[catch_events[event].channel()-129]=id;
+      catch_playout_card[catch_events[event].channel()-129]=
+	q->value(0).toInt();
+      catch_playout_stream[catch_events[event].channel()-129]=
+	q->value(1).toInt();
+      catch_playout_port[catch_events[event].channel()-129]=
+	q->value(2).toInt();
+    }
+    else {
+      LogLine(RDConfig::LogDebug,QString().
+	      sprintf("id %d specified non-existent play deck, ignored",
+		      catch_events[event].id()));
+      delete q;
+      return;
+    }
+    delete q;
+    StartPlayout(event);
+    break;
 
-      case RDRecording::MacroEvent:
-	if(!RDCart::exists(catch_events[event].macroCart())) {
-	  WriteExitCode(event,RDRecording::NoCut);
-	  BroadcastCommand(QString().
-			   sprintf("RE 0 0 %d!",catch_events[event].id()));
-	  LogLine(RDConfig::LogDebug,
-		  QString().sprintf("macro aborted: no such cart: %u, id: %d",
-				    catch_events[event].macroCart(),
-				    catch_events[event].id()));
-	  return;
-	}
-	StartMacroEvent(event);
-	break;
+  case RDRecording::MacroEvent:
+    if(!RDCart::exists(catch_events[event].macroCart())) {
+      WriteExitCode(event,RDRecording::NoCut);
+      BroadcastCommand(QString().
+		       sprintf("RE 0 0 %d!",catch_events[event].id()));
+      LogLine(RDConfig::LogDebug,
+	      QString().sprintf("macro aborted: no such cart: %u, id: %d",
+				catch_events[event].macroCart(),
+				catch_events[event].id()));
+      return;
+    }
+    StartMacroEvent(event);
+    break;
 	
-      case RDRecording::SwitchEvent:
-	StartSwitchEvent(event);
-	break;
+  case RDRecording::SwitchEvent:
+    StartSwitchEvent(event);
+    break;
 
-      case RDRecording::Download:
-	if(!RDCut::exists(catch_events[event].cutName())) {
-	  WriteExitCode(event,RDRecording::NoCut);
-	  BroadcastCommand(QString().
-			   sprintf("RE 0 0 %d!",catch_events[event].id()));
-	  LogLine(RDConfig::LogDebug,QString().
-		  sprintf("download aborted: no such cut: %s, id: %d",
-			  (const char *)catch_events[event].cutName(),
-			  catch_events[event].id()));
-	  return;
-	}
+  case RDRecording::Download:
+    if(!RDCut::exists(catch_events[event].cutName())) {
+      WriteExitCode(event,RDRecording::NoCut);
+      BroadcastCommand(QString().
+		       sprintf("RE 0 0 %d!",catch_events[event].id()));
+      LogLine(RDConfig::LogDebug,QString().
+	      sprintf("download aborted: no such cut: %s, id: %d",
+		      (const char *)catch_events[event].cutName(),
+		      catch_events[event].id()));
+      return;
+    }
 
-	//
-	// Load Import Parameters
-	//
-	sql=QString().sprintf("select DEFAULT_FORMAT,DEFAULT_CHANNELS,\
-                               DEFAULT_SAMPRATE,DEFAULT_LAYER,DEFAULT_BITRATE,\
-                               RIPPER_LEVEL\
+    //
+    // Load Import Parameters
+    //
+    sql=QString().sprintf("select DEFAULT_FORMAT,DEFAULT_CHANNELS,\
+                               DEFAULT_SAMPRATE,DEFAULT_LAYER,DEFAULT_BITRATE, \
+                               RIPPER_LEVEL				\
                                from RDLIBRARY where STATION=\"%s\"",
-			      (const char *)catch_config->stationName());
-	q=new RDSqlQuery(sql);
-	if(q->first())
-	{
-	  catch_default_format=q->value(0).toInt();
-	  catch_default_channels=q->value(1).toInt();
-	  catch_default_samplerate=q->value(2).toInt();
-	  catch_default_layer=q->value(3).toInt();
-	  catch_default_bitrate=q->value(4).toInt();
-	  catch_ripper_level=q->value(5).toInt();
-	}
-	else {
-	  LogLine(RDConfig::LogWarning,
-		  "unable to load import audio configuration");
-	  delete q;
-	  return;
-	}
-	delete q;
-	catch_events[event].
-	  setResolvedUrl(RDDateTimeDecode(catch_events[event].url(),
+			  (const char *)catch_config->stationName());
+    q=new RDSqlQuery(sql);
+    if(q->first())
+      {
+	catch_default_format=q->value(0).toInt();
+	catch_default_channels=q->value(1).toInt();
+	catch_default_samplerate=q->value(2).toInt();
+	catch_default_layer=q->value(3).toInt();
+	catch_default_bitrate=q->value(4).toInt();
+	catch_ripper_level=q->value(5).toInt();
+      }
+    else {
+      LogLine(RDConfig::LogWarning,
+	      "unable to load import audio configuration");
+      delete q;
+      return;
+    }
+    delete q;
+    catch_events[event].
+      setResolvedUrl(RDDateTimeDecode(catch_events[event].url(),
 	       QDateTime(date.addDays(catch_events[event].eventdateOffset()),
 			 current_time),catch_rdstation,RDConfiguration()));
 	StartDownloadEvent(event);
 	break;
 
-      case RDRecording::Upload:
-	if(!RDCut::exists(catch_events[event].cutName())) {
-	  WriteExitCode(event,RDRecording::NoCut);
-	  BroadcastCommand(QString().
-			   sprintf("RE 0 0 %d!",catch_events[event].id()));
-	  LogLine(RDConfig::LogNotice,QString().
-		  sprintf("upload aborted: no such cut: %s, id: %d",
-			  (const char *)catch_events[event].cutName(),
-			  catch_events[event].id()));
-	  return;
-	}
-	StartUploadEvent(event);
-	break;
+  case RDRecording::Upload:
+    if(!RDCut::exists(catch_events[event].cutName())) {
+      WriteExitCode(event,RDRecording::NoCut);
+      BroadcastCommand(QString().
+		       sprintf("RE 0 0 %d!",catch_events[event].id()));
+      LogLine(RDConfig::LogNotice,QString().
+	      sprintf("upload aborted: no such cut: %s, id: %d",
+		      (const char *)catch_events[event].cutName(),
+		      catch_events[event].id()));
+      return;
+    }
+    StartUploadEvent(event);
+    break;
+
+  case RDRecording::LastType:
+    break;
   }
 }
 
@@ -2187,42 +2190,45 @@ bool MainObject::AddEvent(int id)
     catch_events.push_back(CatchEvent(catch_rdstation,RDConfiguration()));
     LoadEvent(q,&catch_events.back(),true);
     switch((RDRecording::Type)q->value(2).toInt()) {
-	case RDRecording::Recording:
-	  LogLine(RDConfig::LogNotice,QString().
-		  sprintf("loading event %d, Type: recording, Cut: %s",
-			  id,(const char *)q->value(4).toString()));
-	  break;
+    case RDRecording::Recording:
+      LogLine(RDConfig::LogNotice,QString().
+	      sprintf("loading event %d, Type: recording, Cut: %s",
+		      id,(const char *)q->value(4).toString()));
+      break;
 
-	case RDRecording::Playout:
-	  LogLine(RDConfig::LogNotice,QString().
-		  sprintf("loading event %d, Type: playout, Cut: %s",
-			  id,(const char *)q->value(4).toString()));
-	  break;
+    case RDRecording::Playout:
+      LogLine(RDConfig::LogNotice,QString().
+	      sprintf("loading event %d, Type: playout, Cut: %s",
+		      id,(const char *)q->value(4).toString()));
+      break;
 
-	case RDRecording::MacroEvent:
-	  LogLine(RDConfig::LogNotice,QString().
-		  sprintf("loading event %d, Type: macro, Cart: %d",
-			  id,q->value(23).toUInt()));
-	  break;
+    case RDRecording::MacroEvent:
+      LogLine(RDConfig::LogNotice,QString().
+	      sprintf("loading event %d, Type: macro, Cart: %d",
+		      id,q->value(23).toUInt()));
+      break;
 
-	case RDRecording::SwitchEvent:
-	  LogLine(RDConfig::LogNotice,QString().sprintf(
+    case RDRecording::SwitchEvent:
+      LogLine(RDConfig::LogNotice,QString().sprintf(
 	    "loading event %d, Type: switch, Matrix: %d, Source: %d  Dest: %d",
-			id,q->value(3).toInt(),q->value(24).toInt(),
-			q->value(25).toInt()));
-	  break;
+	    id,q->value(3).toInt(),q->value(24).toInt(),
+	    q->value(25).toInt()));
+      break;
 
-	case RDRecording::Download:
-	  LogLine(RDConfig::LogNotice,QString().
-		  sprintf("loading event %d, Type: download, Cut: %s",
-			  id,(const char *)q->value(4).toString()));
-	  break;
+    case RDRecording::Download:
+      LogLine(RDConfig::LogNotice,QString().
+	      sprintf("loading event %d, Type: download, Cut: %s",
+		      id,(const char *)q->value(4).toString()));
+      break;
 
-	case RDRecording::Upload:
-	  LogLine(RDConfig::LogNotice,QString().
-		  sprintf("loading event %d, Type: upload, Cut: %s",
-			  id,(const char *)q->value(4).toString()));
-	  break;
+    case RDRecording::Upload:
+      LogLine(RDConfig::LogNotice,QString().
+	      sprintf("loading event %d, Type: upload, Cut: %s",
+		      id,(const char *)q->value(4).toString()));
+      break;
+
+    case RDRecording::LastType:
+      break;
     }
     delete q;
     return true;
@@ -2242,47 +2248,49 @@ void MainObject::RemoveEvent(int id)
     return;
   }
   switch(catch_events[event].type()) {
-      case RDRecording::Recording:
-	LogLine(RDConfig::LogDebug,QString().
-		sprintf("removed event %d, Type: recording, Cut: %s",
-			id,(const char *)catch_events[event].cutName()));
-	break;
+  case RDRecording::Recording:
+    LogLine(RDConfig::LogDebug,QString().
+	    sprintf("removed event %d, Type: recording, Cut: %s",
+		    id,(const char *)catch_events[event].cutName()));
+    break;
 	
-      case RDRecording::Playout:
-	LogLine(RDConfig::LogDebug,QString().
-		sprintf("removed event %d, Type: playout, Cut: %s",
-			id,
-			(const char *)catch_events[event].cutName()));
-	break;
+  case RDRecording::Playout:
+    LogLine(RDConfig::LogDebug,QString().
+	    sprintf("removed event %d, Type: playout, Cut: %s",
+		    id,
+		    (const char *)catch_events[event].cutName()));
+    break;
 	
-      case RDRecording::MacroEvent:
-	LogLine(RDConfig::LogDebug,QString().
-		sprintf("removed event %d, Type: macro, Cart: %u",
-			id,
-			catch_events[event].macroCart()));
-	break;
+  case RDRecording::MacroEvent:
+    LogLine(RDConfig::LogDebug,QString().
+	    sprintf("removed event %d, Type: macro, Cart: %u",
+		    id,
+		    catch_events[event].macroCart()));
+    break;
 	
-      case RDRecording::SwitchEvent:
-	LogLine(RDConfig::LogDebug,QString().sprintf(
-	   "removed event %d, Type: switch, Matrix: %d, Source: %d  Dest: %d",
-		  id,
-		  catch_events[event].channel(),
-		  catch_events[event].switchInput(),
-		  catch_events[event].switchOutput()));
-	break;
+  case RDRecording::SwitchEvent:
+    LogLine(RDConfig::LogDebug,QString().sprintf(
+	    "removed event %d, Type: switch, Matrix: %d, Source: %d  Dest: %d",
+	    id,
+	    catch_events[event].channel(),
+	    catch_events[event].switchInput(),
+	    catch_events[event].switchOutput()));
+    break;
 	
-      case RDRecording::Download:
-	LogLine(RDConfig::LogDebug,QString().
-		sprintf("removed event %d, Type: download, Cut: %s",
-			id,(const char *)catch_events[event].cutName()));
-	break;
+  case RDRecording::Download:
+    LogLine(RDConfig::LogDebug,QString().
+	    sprintf("removed event %d, Type: download, Cut: %s",
+		    id,(const char *)catch_events[event].cutName()));
+    break;
 	
-      case RDRecording::Upload:
-	LogLine(RDConfig::LogDebug,QString().
-		sprintf("removed event %d, Type: upload, Cut: %s",
-			id,(const char *)catch_events[event].cutName()));
-	break;
-	
+  case RDRecording::Upload:
+    LogLine(RDConfig::LogDebug,QString().
+	    sprintf("removed event %d, Type: upload, Cut: %s",
+		    id,(const char *)catch_events[event].cutName()));
+    break;
+
+  case RDRecording::LastType:
+    break;
   }
   std::vector<CatchEvent>::iterator it=catch_events.begin()+event;
   catch_events.erase(it,it+1);
@@ -2316,49 +2324,52 @@ void MainObject::PurgeEvent(int event)
   delete q;
   BroadcastCommand(QString().sprintf("PE %d!",catch_events[event].id()));
   switch(catch_events[event].type()) {
-	case RDRecording::Recording:
-	  LogLine(RDConfig::LogDebug,QString().
-		  sprintf("purged event %d, Type: recording, Cut: %s",
-			  catch_events[event].id(),
-			  (const char *)catch_events[event].cutName()));
-	  break;
+  case RDRecording::Recording:
+    LogLine(RDConfig::LogDebug,QString().
+	    sprintf("purged event %d, Type: recording, Cut: %s",
+		    catch_events[event].id(),
+		    (const char *)catch_events[event].cutName()));
+    break;
 
-	case RDRecording::Playout:
-	  LogLine(RDConfig::LogDebug,QString().
-		  sprintf("purged event %d, Type: playout, Cut: %s",
-			  catch_events[event].id(),
-			  (const char *)catch_events[event].cutName()));
-	  break;
+  case RDRecording::Playout:
+    LogLine(RDConfig::LogDebug,QString().
+	    sprintf("purged event %d, Type: playout, Cut: %s",
+		    catch_events[event].id(),
+		    (const char *)catch_events[event].cutName()));
+    break;
 
-	case RDRecording::MacroEvent:
-	  LogLine(RDConfig::LogDebug,QString().
-		  sprintf("purged event %d, Type: macro, Cart: %u",
-			  catch_events[event].id(),
-			  catch_events[event].macroCart()));
-	  break;
+  case RDRecording::MacroEvent:
+    LogLine(RDConfig::LogDebug,QString().
+	    sprintf("purged event %d, Type: macro, Cart: %u",
+		    catch_events[event].id(),
+		    catch_events[event].macroCart()));
+    break;
 
-	case RDRecording::SwitchEvent:
-	  LogLine(RDConfig::LogDebug,QString().sprintf(
+  case RDRecording::SwitchEvent:
+    LogLine(RDConfig::LogDebug,QString().sprintf(
 	    "purged event %d, Type: switch, Matrix: %d, Source: %d  Dest: %d",
 	    catch_events[event].id(),
 	    catch_events[event].channel(),
 	    catch_events[event].switchInput(),
 	    catch_events[event].switchOutput()));
-	  break;
+    break;
 
-	case RDRecording::Download:
-	  LogLine(RDConfig::LogDebug,QString().
-		  sprintf("purged event %d, Type: download, Cut: %s",
-			  catch_events[event].id(),
-			  (const char *)catch_events[event].cutName()));
-	  break;
+  case RDRecording::Download:
+    LogLine(RDConfig::LogDebug,QString().
+	    sprintf("purged event %d, Type: download, Cut: %s",
+		    catch_events[event].id(),
+		    (const char *)catch_events[event].cutName()));
+    break;
 
-	case RDRecording::Upload:
-	  LogLine(RDConfig::LogDebug,QString().
-		  sprintf("purged event %d, Type: upload, Cut: %s",
-			  catch_events[event].id(),
-			  (const char *)catch_events[event].cutName()));
-	  break;
+  case RDRecording::Upload:
+    LogLine(RDConfig::LogDebug,QString().
+	    sprintf("purged event %d, Type: upload, Cut: %s",
+		    catch_events[event].id(),
+		    (const char *)catch_events[event].cutName()));
+    break;
+
+  case RDRecording::LastType:
+    break;
   }
   catch_engine->removeEvent(catch_events[event].id());
   std::vector<CatchEvent>::iterator it=catch_events.begin()+event;
@@ -2616,41 +2627,44 @@ void MainObject::ResolveErrorWildcards(CatchEvent *event,
   rml->replace("%t",event->startTime().toString("hh:mm:ss"));
   rml->replace("%y",RDRecording::typeString(event->type()));
   switch(event->type()) {
-      case RDRecording::Recording:
-	rml->replace("%k",QString().sprintf("%d",event->channel()));
-	rml->replace("%n",event->cutName().left(6));
-	rml->replace("%u","n/a");
-	break;
+  case RDRecording::Recording:
+    rml->replace("%k",QString().sprintf("%d",event->channel()));
+    rml->replace("%n",event->cutName().left(6));
+    rml->replace("%u","n/a");
+    break;
 
-      case RDRecording::Playout:
-	rml->replace("%k",QString().sprintf("%d",event->channel()-128));
-	rml->replace("%n",event->cutName().left(6));
-	rml->replace("%u","n/a");
-	break;
+  case RDRecording::Playout:
+    rml->replace("%k",QString().sprintf("%d",event->channel()-128));
+    rml->replace("%n",event->cutName().left(6));
+    rml->replace("%u","n/a");
+    break;
 
-      case RDRecording::Upload:
-	rml->replace("%k","n/a");
-	rml->replace("%n",event->cutName().left(6));
-	rml->replace("%u",event->resolvedUrl());
-	break;
+  case RDRecording::Upload:
+    rml->replace("%k","n/a");
+    rml->replace("%n",event->cutName().left(6));
+    rml->replace("%u",event->resolvedUrl());
+    break;
 
-      case RDRecording::Download:
-	rml->replace("%k","n/a");
-	rml->replace("%n",event->cutName().left(6));
-	rml->replace("%u",event->resolvedUrl());
-	break;
+  case RDRecording::Download:
+    rml->replace("%k","n/a");
+    rml->replace("%n",event->cutName().left(6));
+    rml->replace("%u",event->resolvedUrl());
+    break;
 
-      case RDRecording::MacroEvent:
-	rml->replace("%k","n/a");
-	rml->replace("%n",QString().sprintf("%06u",event->macroCart()));
-	rml->replace("%u","n/a");
-	break;
+  case RDRecording::MacroEvent:
+    rml->replace("%k","n/a");
+    rml->replace("%n",QString().sprintf("%06u",event->macroCart()));
+    rml->replace("%u","n/a");
+    break;
 
-      case RDRecording::SwitchEvent:
-	rml->replace("%k","n/a");
-	rml->replace("%n",tr("n/a"));
-	rml->replace("%u","n/a");
-	break;
+  case RDRecording::SwitchEvent:
+    rml->replace("%k","n/a");
+    rml->replace("%n",tr("n/a"));
+    rml->replace("%u","n/a");
+    break;
+
+  case RDRecording::LastType:
+    break;
   }
 }
 

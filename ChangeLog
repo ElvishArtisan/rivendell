@@ -16183,3 +16183,5 @@
 2017-10-19 Fred Gleason <fredg@paravelsystems.com>
 	* Added the report path to the 'Unable to open report file' message
 	in RDLogManager->ManageReports.
+2017-10-19 Fred Gleason <fredg@paravelsystems.com>
+	* Cleaned up build warnings under Linux.

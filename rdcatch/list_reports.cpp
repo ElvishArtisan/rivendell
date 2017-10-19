@@ -328,63 +328,66 @@ void ListReports::GenerateEventReport(QString *report)
     // Source and Destination
     //
     switch((RDRecording::Type)q->value(0).toInt()) {
-	case RDRecording::Recording:
-	  sql=QString().sprintf("select SWITCH_STATION,SWITCH_MATRIX\
-                                 from DECKS where \
+    case RDRecording::Recording:
+      sql=QString().sprintf("select SWITCH_STATION,SWITCH_MATRIX\
+                                 from DECKS where			\
                                  (STATION_NAME=\"%s\")&&(CHANNEL=%d)",
-				(const char *)q->value(13).toString(),
-				q->value(14).toInt());
-	  q1=new RDSqlQuery(sql);
-	  if(q1->first()) {
-	    *report+=QString().sprintf("%-20s ",
-		    (const char *)GetSourceName(q1->value(0).toString(),
-						q1->value(1).toInt(),
-						q->value(18).toInt()).left(20));
-	  }
-	  else {
-	    *report+="                     ";
-	  }
-	  delete q1;
-	  *report+=QString().sprintf("Cut %10s       ",
-			   (const char *)q->value(15).toString().left(20));
-	  break;
+			    (const char *)q->value(13).toString(),
+			    q->value(14).toInt());
+      q1=new RDSqlQuery(sql);
+      if(q1->first()) {
+	*report+=QString().sprintf("%-20s ",
+		 (const char *)GetSourceName(q1->value(0).toString(),
+					     q1->value(1).toInt(),
+					     q->value(18).toInt()).left(20));
+      }
+      else {
+	*report+="                     ";
+      }
+      delete q1;
+      *report+=QString().sprintf("Cut %10s       ",
+	       (const char *)q->value(15).toString().left(20));
+      break;
 
-	case RDRecording::MacroEvent:
-	  *report+=QString().sprintf("Cart %06u          ",
-				     q->value(17).toUInt());
-	  *report+="                     ";
-	  break;
+    case RDRecording::MacroEvent:
+      *report+=QString().sprintf("Cart %06u          ",
+				 q->value(17).toUInt());
+      *report+="                     ";
+      break;
 
-	case RDRecording::SwitchEvent:
-	  *report+=QString().sprintf("%-20s ",
-	      (const char *)GetSourceName(q->value(13).toString(),
-					  q->value(14).toInt(),
-					  q->value(18).toInt()).left(20));
-	  *report+=QString().sprintf("%-20s ",
-	      (const char *)GetDestinationName(q->value(13).toString(),
-					       q->value(14).toInt(),
-					       q->value(19).toInt()).left(20));
-	  break;
+    case RDRecording::SwitchEvent:
+      *report+=QString().sprintf("%-20s ",
+	       (const char *)GetSourceName(q->value(13).toString(),
+					   q->value(14).toInt(),
+					   q->value(18).toInt()).left(20));
+      *report+=QString().sprintf("%-20s ",
+	       (const char *)GetDestinationName(q->value(13).toString(),
+						q->value(14).toInt(),
+						q->value(19).toInt()).left(20));
+      break;
 
-	case RDRecording::Playout:
-	  *report+=QString().sprintf("Cut %10s       ",
-			   (const char *)q->value(15).toString().left(20));
-	  *report+="                     ";
-	  break;
+    case RDRecording::Playout:
+      *report+=QString().sprintf("Cut %10s       ",
+				 (const char *)q->value(15).toString().left(20));
+      *report+="                     ";
+      break;
 
-	case RDRecording::Download:
-	  *report+=QString().sprintf("%-20s ",
-			   (const char *)q->value(16).toString().left(20));
-	  *report+=QString().sprintf("Cut %10s       ",
-			   (const char *)q->value(15).toString().left(20));
-	  break;
+    case RDRecording::Download:
+      *report+=QString().sprintf("%-20s ",
+	       (const char *)q->value(16).toString().left(20));
+      *report+=QString().sprintf("Cut %10s       ",
+	       (const char *)q->value(15).toString().left(20));
+      break;
 
-	case RDRecording::Upload:
-	  *report+=QString().sprintf("Cut %10s       ",
-			   (const char *)q->value(15).toString().left(20));
-	  *report+=QString().sprintf("%-20s ",
-			   (const char *)q->value(16).toString().left(20));
-	  break;
+    case RDRecording::Upload:
+      *report+=QString().sprintf("Cut %10s       ",
+	       (const char *)q->value(15).toString().left(20));
+      *report+=QString().sprintf("%-20s ",
+	       (const char *)q->value(16).toString().left(20));
+      break;
+
+    case RDRecording::LastType:
+      break;
     }
 
     //
