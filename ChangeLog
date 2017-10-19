@@ -16180,3 +16180,6 @@
 	* Removed the 'socket error' message from 'RDCatchConnect'.
 2017-10-19 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed bugs that broke the build under Windows.
+2017-10-19 Fred Gleason <fredg@paravelsystems.com>
+	* Added the report path to the 'Unable to open report file' message
+	in RDLogManager->ManageReports.

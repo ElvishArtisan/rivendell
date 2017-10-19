@@ -226,7 +226,8 @@ void PickReportDates::generateData()
 	break;
 
       case RDReport::ErrorCantOpen:
-	QMessageBox::warning(this,"File Error","Unable to open report file!");
+	QMessageBox::warning(this,"File Error","Unable to open report file at"+
+			     QString("\"")+out_path+"\"!");
 	break;
 
       case RDReport::ErrorCanceled:
