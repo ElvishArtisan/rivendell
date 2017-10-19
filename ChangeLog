@@ -16178,3 +16178,5 @@
 	* Added a 'Show Event Type' filter to rdcatch(1).
 2017-10-19 Fred Gleason <fredg@paravelsystems.com>
 	* Removed the 'socket error' message from 'RDCatchConnect'.
+2017-10-19 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed bugs that broke the build under Windows.

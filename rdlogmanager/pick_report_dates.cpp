@@ -197,7 +197,8 @@ void PickReportDates::generateData()
 #ifdef WIN32
   QString filename=
     RDDateDecode(report->exportPath(RDReport::Windows),
-		 edit_startdate_edit->date(),log_config,edit_svcname);
+		 edit_startdate_edit->date(),rdstation_conf,log_config,
+		 edit_svcname);
 #else
   QString filename=
     RDDateDecode(report->exportPath(RDReport::Linux),

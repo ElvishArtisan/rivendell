@@ -619,10 +619,10 @@ void RDConfig::load()
   //
   int sock=-1;
 
+#ifndef WIN32
   if((sock=socket(PF_INET,SOCK_DGRAM,IPPROTO_IP))<0) {
     return;
   }
-#ifndef WIN32
   struct ifreq ifr;
   int index=0;
 

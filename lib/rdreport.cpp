@@ -684,9 +684,10 @@ bool RDReport::generateReport(const QDate &startdate,const QDate &enddate,
     break;
   }
 #ifdef WIN32
-  *out_path=RDDateDecode(exportPath(RDReport::Windows),startdate);
+  *out_path=RDDateDecode(exportPath(RDReport::Windows),startdate,report_station,
+			 report_config,serviceName());
   QString post_cmd=RDDateDecode(postExportCommand(RDReport::Windows),startdate,
-				report_config,serviceName());
+				report_station,report_config,serviceName());
 #else
   *out_path=RDDateDecode(exportPath(RDReport::Linux),startdate,report_station,
 			 report_config,serviceName());
