@@ -223,7 +223,7 @@
 	  module. 
 	</para>
       </sect3>
-      <sect3 id="sect.overview_hosts">
+      <sect3 id="sect.overview.groups">
 	<title>Groups</title>
 	<para>
 	  A Rivendell <emphasis>group</emphasis> is a system of categories
@@ -242,7 +242,7 @@
 	  detail in the chapters devoted to the RDLibrary and RDAdmin modules.
 	</para>
       </sect3>
-      <sect3 id="sect.hosts.services">
+      <sect3 id="sect.overview.services">
 	<title>Services</title>
 	<para>
 	  Every facility at which Rivendell is deployed is presumed to have 
@@ -257,7 +257,7 @@
 	</para>
       </sect3>
     </sect2>
-    <sect2 id="sect.overview_the_rivendell_hardware_paradigm">
+    <sect2 id="sect.overview.the_rivendell_hardware_paradigm">
       <title>The Rivendell Hardware Paradigm</title>
       <para>
 	In addition to the core computer hardware (CPU, motherboard, etc),
@@ -2041,7 +2041,7 @@
     <title>Logs and Log Events</title>
     <para>
       A Rivendell log is a sequence of one or more events to be executed by
-      the system, arranged in chronological order.  (This functionality is
+      the system, arranged in chronological order. (This functionality is
       sometimes referred to as a playlist in other automation systems).
       Several different types of events can be included in a log, along
       with parameters governing how and under what circumstances they will
@@ -2049,43 +2049,50 @@
     </para>
     <para>
       Upon startup, RDLogEdit will show the current list of all logs on the
-      system, as in Illustration 19.  A number of important attributes of
+      system, as in FIXME.  A number of important attributes of
       logs can be seen from this illustration, the first being the log
       name, with a summary status indicator next to it. The name is an
       alpha-numeric label that is used as a unique “handle” by the system
       to reference each log, and can be up to a maximum of 64 characters
-      long.  The status indicator is intended as a quick visual guide as
+      long. The status indicator is intended as a quick visual guide as
       to whether a particular log is ready for air (green check mark) or
       not (red ex). 
     </para>
     <para>
-      Next comes the log's description. This is a free-form alpha-numeric
+      Next comes the log's unique <computeroutput>Name</computeroutput>,
+      assigned at the time the log was created, followed by it's
+      <computeroutput>Description</computeroutput>.
+      This is a free-form alpha-numeric
       label that can be used to record any information that might be useful
       to have appear on the log list (e.g. “This log for Sunday's show, don't
       modify!”).
     </para>
     <para>
-      Next comes a column showing the owning service.  Each log is owned
+      Next comes a column showing the owning
+      <computeroutput>Service</computeroutput>. Each log is owned
       by exactly one service, which determines under what circumstances
       the log can be played and where electronic log reconciliation (ELR)
       data resulting from log playouts is sent (for an overview of
-      Rivendell services, see section 1.1.3).
+      Rivendell services, see <xref linkend="sect.overview.services"/>).
     </para>
     <para>
-      Next comes three “status indicator” columns (&quot;MUSIC&quot;,
-      &quot;TRAFFIC&quot; and &quot;TRACKS&quot;) indicating the log's
-      degree of readiness for air.  A red indicator indicates that the
+      Next comes three “status indicator” columns
+      (<computeroutput>Music</computeroutput>,
+      <computeroutput>Traffic</computeroutput> and
+      <computeroutput>Tracks</computeroutput>) indicating the log's
+      degree of readiness for air. A red indicator indicates that the
       particular data element is required but currently missing, a green
       indicator indicates an element is required and present, while a
       white indicator indicates that an element is not required.
-      Additionally, the “TRACKS” column contains a pair of numbers
+      Additionally, the <computeroutput>TRACKS</computeroutput> column
+      contains a pair of numbers
       indicating how many completed voice tracks exist in the log versus
       how many total track markers exist (the subject of voice tracks and
-      track markers will be covered in more detail below).  When all three
+      track markers will be covered in more detail below). When all three
       of these status indicators show either green or white, the summary
       status indicator (at the beginning of the log's entry in the list)
       will show as a green check mark, while a red indicator in any of
-      these three fields will show a red ex.  (NOTE: because a log sports
+      these three fields will show a red ex. (NOTE: because a log sports
       a red ex does not indicate that the respective log cannot be played.
       It is merely a visual indicator to allow logs to be quickly
       &quot;eyeballed&quot; for completeness).
@@ -2095,108 +2102,38 @@
       date for the log.
     </para>
     <para>
-      Finally, there is a column indicating the log's origin –i.e. the
-      place, date and time it was originally created.
+      Next comes an <computeroutput>Auto Refresh</computeroutput> column
+      that indicates whether the log has auto refresh enabled. (For a
+      discussion of auto refresh, see FIXME).
+    </para>
+    <para>
+      Finally, there are &quot;datestamp&quot; columns, indicating 
+      date/time of the log's <computeroutput>Origin</computeroutput>,
+      <computeroutput>Last Linked</computeroutput> and
+      <computeroutput>Last Modified</computeroutput> operation.
     </para>
     <para>
       A report that lists the available logs on the system can be generated
-      by touching the Log Report button.
+      by touching the <computeroutput>Log Report</computeroutput> button.
     </para>
     <para>
-      A new log can be created by touching the Add button and entering a
+      A new log can be created by touching the
+      <computeroutput>Add</computeroutput> button and entering a
       name, or an existing log inspected and modified by touching its entry
-      on the log list and then touching the Edit button, resulting in the
-      log being opened in the Edit Log dialog as shown in Illustration 20.
-      The Edit Log dialog consists of three parts:  the top section, where
+      on the log list and then touching the
+      <computeroutput>Edit</computeroutput> button, resulting in the
+      log being opened in the Edit Log dialog as shown in FIXME.
+      The Edit Log dialog consists of three parts: the top section, where
       much of the information shown on the log list can be inspected and
       modified; the middle section, which shows the list of events
       comprising the log, and the bottom section, where buttons for
-      modifying and saving the log are located.  Each event in a log can
+      modifying and saving the log are located. Each event in a log can
       be one of several different types, indicated by the icon displayed
-      at the start of the line (see Table 6 for a breakdown of the various
-      icons).  The following types of events can be incorporated into a
-      Rivendell log:
+      at the start of the line (see
+      <xref linkend="table.rdlogedit.log_event_type_icons"/> for a
+      breakdown of the various icons).
     </para>
-    <sect2 id="sect.rdlogedit.audio_carts">
-      <title>Audio Carts</title>
-      <para>
-	The first, and usually most common type of log event is an audio cart.
-	As the name implies, audio carts are Library entries that contain
-	audio material intended for playout.  Audio carts were covered in
-	detail in Chapter Two in the discussion about RDLibrary.
-      </para>
-    </sect2>
-    <sect2 id="sect.rdlogedit.macro_carts">
-      <title>Macro Carts</title>
-      <para>
-	A macro cart is a cart from the Library that contains one or more
-	system commands that can be used to cause the system to take various
-	actions.  They were touched upon in Chapter Two in the discussion
-	about RDLibrary, and will be discussed in detail in Chapter Seven.
-      </para>
-    </sect2>
-    <sect2 id="sect.rdlogedit.note_markers">
-      <title>Note Markers</title>
-      <para>
-	A note marker is an entry in the log that contains text intended to
-	be seen by operators and used as a guide or reminder (program coders
-	sometimes refer to this sort of functionality as a remark or comment,
-	as seen in the REM command used by BASIC programmers).  Note markers
-	belong to a class of log events known as meta events because (unlike
-	carts, which exist in the Library independently of whether they are
-	placed in a log or not), they have no independent existence outside
-	of the specific log where they are placed.  A note marker has
-	absolutely no effect on the execution of a log other than to simply
-	display some text at a specified point in a log, and as such can be
-	useful as a mechanism for making notes or reminders to oneself or
-	to others who may be executing the log.
-      </para>
-    </sect2>
-    <sect2 id="sect.rdlogedit.track_markers">
-      <title>Track Markers</title>
-      <para>
-	A track marker is another meta event that is very similar in operation
-	to note markers, with one key addition:  track markers designate or
-	&quot;bookmark&quot; a place in the log where a voice track is to be
-	recorded.  (The entire topic of voice tracks and tracking will be
-	covered in detail in Chapter Eight).  As with note markers, track
-	markers have absolutely no effect on the execution of a log.
-      </para>
-    </sect2>
-    <sect2 id="sect.rdlogedit.chain_events">
-      <title>Chain Events</title>
-      <para>
-	Each event in a log has a transition type, shown in the
-	&quot;TRANS&quot;
-	column of the Edit Log dialog.  The transition type determines what
-	happens when one event in a log ends and the next starts. Three basic
-	transition types can exist in a Rivendell log:  PLAY, SEGUE and STOP.
-      </para>
-    </sect2>
-    <sect2 id="sect.rdlogedit.import_links">
-      <title>Import Links</title>
-      <para>
-	An import link is a placeholder event that shows where events imported
-	from the external music or traffic scheduling system will eventually
-	go. They will be covered in detail in the chapter on RDLogManager.
-      </para>
-      <para>
-	Each event in a Rivendell log can have its parameters modified by
-	touching its entry in the Edit Log dialog and then clicking the Edit
-	button, thus opening up the Edit Log Entry dialog, shown in
-	Illustration 21 for a cart event, or Illustration 22 for a meta event.  
-      </para>
-    </sect2>
-  </sect1>
-  <sect1 id="sect.rdlogedit.event_transitions">
-    <title>Event Transitions</title>
-    <para>
-      Each event in a log has a transition type, shown in the &quot;TRANS&quot;
-      column of the Edit Log dialog.  The transition type determines what
-      happens when one event in a log ends and the next starts.  Three basic
-      transition types can exist in a Rivendell log:  PLAY, SEGUE and STOP.
-    </para>
-    <table xml:id="rdlogedit_event_type_icons" frame="all">
+    <table xml:id="table.rdlogedit.log_event_type_icons" frame="all">
       <title>Log Event Type Icons</title>
       <tgroup cols="2" align="left" colsep="1" rowsep="1">
 	<colspec colname="Icon" />
@@ -2269,11 +2206,109 @@
 	</tbody>
       </tgroup>
     </table>
+    <para>
+      The following types of events can be incorporated into a
+      Rivendell log:
+    </para>
+    <sect2 id="sect.rdlogedit.audio_carts">
+      <title>Audio Carts</title>
+      <para>
+	The first, and usually most common type of log event is an audio cart.
+	As the name implies, audio carts are Library entries that contain
+	audio material intended for playout. Audio carts were covered in
+	detail in <xref linkend="chapter.rdlibrary"/>.
+      </para>
+    </sect2>
+    <sect2 id="sect.rdlogedit.macro_carts">
+      <title>Macro Carts</title>
+      <para>
+	A macro cart is a cart from the Library that contains one or more
+	system commands that can be used to cause the system to take various
+	actions.  They were touched upon in
+	<xref linkend="chapter.rdlibrary"/>, and will be discussed in detail
+	in <xref linkend="chapter.rml"/>.
+      </para>
+    </sect2>
+    <sect2 id="sect.rdlogedit.note_markers">
+      <title>Note Markers</title>
+      <para>
+	A note marker is an entry in the log that contains text intended to
+	be seen by operators and used as a guide or reminder (program coders
+	sometimes refer to this sort of functionality as a
+	<emphasis>remark</emphasis> or <emphasis>comment</emphasis>,
+	as seen in the <code>REM</code> command used by BASIC programmers).
+	Note markers
+	belong to a class of log events known as meta events because (unlike
+	carts, which exist in the Library independently of whether they are
+	placed in a log or not), they have no independent existence outside
+	of the specific log where they are placed. A note marker has
+	absolutely no effect on the execution of a log other than to simply
+	display some text at a specified point in a log, and as such can be
+	useful as a mechanism for making notes or reminders to oneself or
+	to others who may be executing the log.
+      </para>
+    </sect2>
+    <sect2 id="sect.rdlogedit.track_markers">
+      <title>Track Markers</title>
+      <para>
+	A track marker is another meta event that is very similar in operation
+	to note markers, with one key addition: track markers designate or
+	&quot;bookmark&quot; a place in the log where a voice track is to be
+	recorded. (The entire topic of voice tracks and tracking will be
+	covered in detail in <xref linkend="chapter.voicetracking"/>).
+	As with note markers, track
+	markers have absolutely no effect on the execution of a log.
+      </para>
+    </sect2>
+    <sect2 id="sect.rdlogedit.chain_events">
+      <title>Chain Events</title>
+      <para>
+	Each event in a log has a transition type, shown in the
+	<computeroutput>Trans</computeroutput>
+	column of the Edit Log dialog. The transition type determines what
+	happens when one event in a log ends and the next starts. Three basic
+	transition types can exist in a Rivendell log: 
+	<computeroutput>PLAY</computeroutput>,
+	<computeroutput>SEGUE</computeroutput> and
+	<computeroutput>STOP</computeroutput>.
+      </para>
+    </sect2>
+    <sect2 id="sect.rdlogedit.import_links">
+      <title>Import Links</title>
+      <para>
+	An import link is a placeholder event that shows where events imported
+	from the external music or traffic scheduling system will eventually
+	go. They will be covered in detail in
+	<xref linkend="chapter.rdlogmanager"/>.
+      </para>
+      <para>
+	Each event in a Rivendell log can have its parameters modified by
+	touching its entry in the Edit Log dialog and then clicking the
+	<computeroutput>Edit</computeroutput>
+	button, thus opening up the Edit Log Entry dialog, shown in
+	FIXME for a cart event, or FIXME for a meta event.  
+      </para>
+    </sect2>
+  </sect1>
+  <sect1 id="sect.rdlogedit.event_transitions">
+    <title>Event Transitions</title>
+    <para>
+      Each event in a log has a transition type, shown in the
+      <computeroutput>Trans</computeroutput>
+      column of the Edit Log dialog. The transition type determines what
+      happens when one event in a log ends and the next starts. Three basic
+      transition types can exist in a Rivendell log:
+      <computeroutput>PLAY</computeroutput>, 
+      <computeroutput>SEGUE</computeroutput> and
+      <computeroutput>STOP</computeroutput>.
+    </para>
     <sect2 id="sect.rdlogedit.the_play_transition">
       <title>The PLAY Transition</title>
       <para>
-	If an event has a PLAY transition, then it will begin playing when
-	the previous event has finished.  PLAY transitions are used when
+	If an event has a <computeroutput>PLAY</computeroutput> transition,
+	then it will begin playing when
+	the previous event has finished.
+	<computeroutput>PLAY</computeroutput> transitions are used when
 	automatic event sequencing is desired with no audio overlap (such
 	as when playing two voice-only announcements back-to-back).
       </para>
@@ -2281,12 +2316,14 @@
     <sect2 id="sect.the_segue_transition">
       <title>The SEGUE Transition</title>
       <para>
-	SEGUE transitions are similar to PLAY transitions, with one key
-	difference:  if the finishing event contains segue data (either from
+	<computeroutput>SEGUE</computeroutput> transitions are similar to
+	<computeroutput>PLAY</computeroutput> transitions, with one key
+	difference: if the finishing event contains segue data (either from
 	the Library or from a custom transition programmed in the voice
 	tracker), then the event will start before the prior event is
 	finished, causing the two pieces of audio to overlap and mix together.
-	SEGUE transitions can be a very powerful tool for creating a variety
+	<computeroutput>SEGUE</computeroutput> transitions can be a very
+	powerful tool for creating a variety
 	of special effects, particularly when used in conjunction with
 	musical material.
       </para>
@@ -2294,12 +2331,13 @@
     <sect2 id="sect.rdlogedit.the_stop_transition">
       <title>The STOP Transition</title>
       <para>
-	As the name implies, STOP transitions cause execution of the log to
+	As the name implies, <computeroutput>STOP</computeroutput>
+	transitions cause execution of the log to
 	be suspended prior to execution of the event. This is often the
 	desired behavior in situations where the log playout needs to be
 	synchronized to one or more external audio sources (such as remote
 	satellite feeds), and is commonly used in conjunction with Hard
-	Timed events (see below).
+	Timed events (see <xref linkend="sect.rdlogedit.time_and_time_types"/>).
       </para>
     </sect2>
   </sect1>
@@ -2308,7 +2346,8 @@
     <para>
       All Rivendell log events have an associated time type, which controls
       what effect (if any) the passage of time will have on the event.
-      There are two basic time types:  relative and hard.  Additionally,
+      There are two basic time types: <emphasis>relative</emphasis> and
+      <emphasis>hard</emphasis>. Additionally,
       the hard time type has several additional options that further modify
       its behavior.
     </para>
@@ -2317,8 +2356,11 @@
       <para>
 	The default time type for log events, a relative time type simply
 	means that the event is assumed to have a start time of whenever
-	the previous event ends (if it has a PLAY or SEGUE transition)
-	or whenever it is started (if it has a STOP transition).
+	the previous event ends (if it has a
+	<computeroutput>PLAY</computeroutput> or 
+	<computeroutput>SEGUE</computeroutput> transition)
+	or whenever it is started (if it has a 
+	<computeroutput>STOP</computeroutput> transition).
       </para>
     </sect2>
     <sect2 id="sect.rdlogedit.the_hard_time_type">
@@ -2328,13 +2370,12 @@
 	upon when the wall clock equals the time associated with the event.
 	Hard times are a powerful feature that can be used to synchronize
 	the log to various external events.  An event can be assigned a
-	hard time by clicking the Start at check box in the Edit Log Entry
+	hard time by clicking the <computeroutput>Start at</computeroutput>
+	check box in the Edit Log Entry
 	and filling in the desired time, and will show up with the letter
-	'T' appearing at the beginning of its listed time in the
-	&quot;TIME&quot; column of the Edit Log dialog. An event which has
-	been assigned a hard time can also be set to be a Post Point by
-	checking the Make Post Point check box (the concept of post points
-	will be discussed in detail in the chapter covering RDAirPlay).
+	<computeroutput>T</computeroutput> appearing at the beginning of
+	its listed time in the
+	<computeroutput>Time</computeroutput> column of the Edit Log dialog.
       </para>
       <para>
 	The specific action that is performed when the time matches is
@@ -2350,7 +2391,7 @@
 	    Cue to the event (&quot;Make Next&quot;)
 	  </listitem>1
 	  <listitem>
-	    Wait up to N Seconds, then start the event
+	    Wait up to some period of time, then start the event
 	  </listitem>
 	</itemizedlist>
       </para>
@@ -2359,7 +2400,8 @@
 	<para>
 	  As implied by the name, if the event is set to start immediately,
 	  it will be started as soon as the hard time is reached. Any
-	  currently playing events in the log will be stopped down.
+	  currently playing events in the log will be simultaneously
+	  stopped down.
 	</para>
       </sect3>
       <sect3 id="sect.rdlogedit.cue_to_the_event___make_next___">
@@ -2371,13 +2413,15 @@
 	  hard timed one.  Any currently playing events are unaffected.
 	</para>
       </sect3>
-      <sect3 id="sect.rdlogedit.wait_up_to_n_seconds__then_start_the_event">
-	<title>Wait up to N Seconds, then start the event</title>
+      <sect3 id="sect.rdlogedit.wait_up_to_some_period_of_time__then_start_the_event">
+	<title>Wait up to some period of time, then start the event</title>
 	<para>
 	  Very similar to &quot;start immediately&quot;, with the
 	  difference that, if one or more events are currently playing,
-	  the log will wait up to the specified number of seconds
-	  before stopping them and starting the new event.
+	  the log will wait up to the specified amount of time
+	  before stopping them and starting the new event. If the currently
+	  playing event(s) finish before the specified time period has elapsed,
+	  then the event is started immediately.
 	</para>
       </sect3>
     </sect2>
@@ -2388,11 +2432,14 @@
       <title>Specifying a Cart</title>
       <para>
 	The cart number to use for an event can be specified by touching
-	the Select Cart button in the Edit Log Entry dialog, which will
-	open up the Select Cart dialog, as shown in Illustration 23.
+	the <computeroutput>Select Cart</computeroutput> button in the
+	Edit Log Entry dialog, which will
+	open up the Select Cart dialog, as shown in FIXME.
 	Alternatively, it is possible to simply enter the cart number in
-	the Cart field if the number is already known.  The Title and
-	Artist information will be automatically supplied by the system
+	the <computeroutput>Cart</computeroutput> field if the number is
+	already known. The <computeroutput>Title</computeroutput> and
+	<computeroutput>Artist</computeroutput> information will be
+	supplied automatically by the system
 	from the cart's label.
       </para>
     </sect2>
@@ -2400,9 +2447,11 @@
       <title>Specifying Meta Event Parameters</title>
       <para>
 	Note marker and track marker events each take only a single
-	parameter:  a Comment text that will show up on the log entry.
+	parameter:  a <computeroutput>Comment</computeroutput> text that
+	will show up on the log entry.
 	In the case of a chain event, the name of the log to chain to must
-	be supplied in the Log Name field, or the Select button can be
+	be supplied in the <computeroutput>Log Name</computeroutput> field,
+	or the <computeroutput>Select</computeroutput> button can be
 	touched to bring up the Select Log dialog to allow a name to picked
 	from a list of all those available.  Note that meta events are
 	assigned transition and time types just the same as cart events.
@@ -2413,17 +2462,22 @@
       <para>
 	Existing events in a log can be cut, copied, pasted or rearranged
 	by touching the appropriate buttons in the Edit Log dialog.
-	In addition, touch the Delete button will cause the selected
+	In addition, touch the <computeroutput>Delete</computeroutput>
+	button will cause the selected
 	log event(s) to be removed from the log.
       </para>
     </sect2>
     <sect2 id="sect.rdlogedit.saving_or_abandoning_changes_to_a_log">
       <title>Saving or Abandoning Changes to a Log</title>
       <para>
-	Any changes made to a log can be saved by touching either the Save
-	or OK buttons in the Edit Log dialog.  The current log can be saved
-	under a different name by touching the Save As button, while
-	touching Cancel will abandon any changes made since the last save.
+	Any changes made to a log can be saved by touching either the
+	<computeroutput>Save</computeroutput>
+	or <computeroutput>OK</computeroutput> buttons in the Edit Log
+	dialog.  The current log can be saved
+	under a different name by touching the
+	<computeroutput>Save As</computeroutput> button, while
+	touching <computeroutput>Cancel</computeroutput> will abandon
+	any changes made since the last save.
       </para>
     </sect2>
     <sect2 id="sect.rdlogedit.missing_invalid_cart_events">
@@ -2433,18 +2487,21 @@
 	does not exist in the Library, or that is not enabled for play on
 	the log's owning service) its entry will be highlighted either
 	RED (indicating a missing/invalid cart) or MAGENTA (indicating a
-	cart without permission to run on the owning service).  It's also
-	possible to generate an   exception report summarizing problem cart
-	entries by touching the Check Log button.
+	cart without permission to run on the owning service). It's also
+	possible to generate an  exception report summarizing problem cart
+	entries by touching the 
+	<computeroutput>Check Log</computeroutput> button.
       </para>
     </sect2>
   </sect1>
   <sect1 id="sect.rdlogedit.generating_log_reports">
     <title>Generating Log Reports</title>
     <para>
-      Various Log reports can be generated by touching the Reports button
+      Various Log reports can be generated by touching the
+      <computeroutput>Reports</computeroutput> button
       on the Edit Log dialog and then selecting the desired report and
-      touching the Generate button.  The following reports are available:
+      touching the <computeroutput>Generate</computeroutput> button.
+      The following reports are available:
     </para>
     <sect2 id="sect.rdlogedit.log_listing">
       <title>Log Listing</title>
@@ -2464,7 +2521,8 @@
     <para>
       The audio referenced by an audio event can be sampled in the Edit
       Audio dialog by highlighting the desired event and then touching the
-      play button.  No attempt to evaluate the rotation logic of the event
+      <computeroutput>Play</computeroutput> button. No attempt to evaluate
+      the rotation logic of the event
       is made – the audio played is intended solely as a 'sample' to help
       identify the type of material.
     </para>
