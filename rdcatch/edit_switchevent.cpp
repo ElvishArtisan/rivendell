@@ -32,6 +32,7 @@
 #include <rd.h>
 #include <rdcart_dialog.h>
 #include <rdcut_path.h>
+#include <rdescape_string.h>
 #include <rdtextvalidator.h>
 
 #include <edit_switchevent.h>
@@ -97,6 +98,8 @@ EditSwitchEvent::EditSwitchEvent(int id,std::vector<int> *adds,QWidget *parent)
   label->setGeometry(125,10,70,23);
   label->setFont(label_font);
   label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  connect(edit_station_box,SIGNAL(activated(const QString &)),
+	  this,SLOT(activateStationData(const QString &)));
 
   //
   // Start Time
@@ -122,7 +125,7 @@ EditSwitchEvent::EditSwitchEvent(int id,std::vector<int> *adds,QWidget *parent)
   //
   // Switch Matrix
   //
-  edit_matrix_box=new QComboBox(this);
+  edit_matrix_box=new QComboBox(this,"matrix");
   edit_matrix_box->setGeometry(120,70,sizeHint().width()-130,20);
   label=new QLabel(edit_matrix_box,tr("Switch Matrix:"),this);
   label->setGeometry(10,70,105,20);
@@ -134,7 +137,7 @@ EditSwitchEvent::EditSwitchEvent(int id,std::vector<int> *adds,QWidget *parent)
   //
   // Switch Input
   //
-  edit_input_box=new QComboBox(this);
+  edit_input_box=new QComboBox(this,"input");
   edit_input_box->setGeometry(120,100,sizeHint().width()-130,20);
   label=new QLabel(edit_input_box,tr("Switch Input:"),this);
   label->setGeometry(10,100,105,20);
@@ -148,7 +151,7 @@ EditSwitchEvent::EditSwitchEvent(int id,std::vector<int> *adds,QWidget *parent)
   //
   // Switch Output
   //
-  edit_output_box=new QComboBox(this);
+  edit_output_box=new QComboBox(this,"output");
   edit_output_box->setGeometry(120,155,sizeHint().width()-130,20);
   label=new QLabel(edit_output_box,tr("Switch Output:"),this);
   label->setGeometry(10,155,105,20);
@@ -336,10 +339,14 @@ QSizePolicy EditSwitchEvent::sizePolicy() const
 
 void EditSwitchEvent::activateStationData(const QString &str)
 {
-  QString sql=QString().sprintf("select NAME,MATRIX from MATRICES where \
-                                 (STATION_NAME=\"%s\")&&(INPUTS>0)&&\
-                                 (OUTPUTS>0) order by NAME",
-				(const char *)str);
+  QString sql=QString("select ")+
+    "NAME,"+
+    "MATRIX "+
+    "from MATRICES where "+
+    "(STATION_NAME=\""+RDEscapeString(str)+"\")&&"+
+    "(INPUTS>0)&&"
+    "(OUTPUTS>0) "+
+    "order by NAME";
   edit_matrix_box->clear();
   RDSqlQuery *q=new RDSqlQuery(sql);
   int matrix=edit_recording->channel();
@@ -363,11 +370,13 @@ void EditSwitchEvent::activateMatrixData(const QString &str)
     delete edit_matrix;
   }
   edit_matrix=new RDMatrix(edit_station_box->currentText(),GetMatrix());
-  QString sql=QString().sprintf("select NAME,NUMBER from INPUTS where \
-                                 (STATION_NAME=\"%s\")&&(MATRIX=%d) \
-                                 order by NAME",
-				(const char *)edit_station_box->currentText(),
-				GetMatrix());
+  QString sql=QString("select ")+
+    "NAME,"
+    "NUMBER "+
+    "from INPUTS where "+
+    "(STATION_NAME=\""+RDEscapeString(edit_station_box->currentText())+"\")&&"+
+    QString().sprintf("(MATRIX=%d) ",GetMatrix())+
+    "order by NAME";
   edit_input_box->clear();
   edit_input_box->insertItem(tr("--OFF--"));
   int input=edit_recording->switchSource();
@@ -389,11 +398,13 @@ void EditSwitchEvent::activateMatrixData(const QString &str)
   }
   delete q;
 
-  sql=QString().sprintf("select NAME,NUMBER from OUTPUTS where \
-                                 (STATION_NAME=\"%s\")&&(MATRIX=%d) \
-                                 order by NAME",
-				(const char *)edit_station_box->currentText(),
-				GetMatrix());
+  sql=QString("select ")+
+    "NAME,"+
+    "NUMBER "+
+    "from OUTPUTS where "+
+    "(STATION_NAME=\""+RDEscapeString(edit_station_box->currentText())+"\")&&"+
+    QString().sprintf("(MATRIX=%d) ",GetMatrix())+
+    "order by NAME";
   edit_output_box->clear();
   int output=edit_recording->switchDestination();
   if((outputs=edit_matrix->outputs())>0) {
@@ -441,7 +452,7 @@ void EditSwitchEvent::inputChangedData(int value)
 
 void EditSwitchEvent::outputChangedData(int value)
 {
-  if(value>0) {
+  if((value>0)&&(edit_output_box->count()>0)) {
     edit_output_box->setCurrentText(edit_matrix->outputName(value));
   }
 }
@@ -538,11 +549,13 @@ int EditSwitchEvent::GetMatrix()
 {
   int matrix=-1;
 
-  QString sql=QString().sprintf("select MATRIX from MATRICES where \
-                                (STATION_NAME=\"%s\")&&(NAME=\"%s\")&&\
-                                (INPUTS>0)&&(OUTPUTS>0)",
-				(const char *)edit_station_box->currentText(),
-				(const char *)edit_matrix_box->currentText());
+  QString sql=QString("select ")+
+    "MATRIX "+
+    "from MATRICES where "+
+    "(STATION_NAME=\""+RDEscapeString(edit_station_box->currentText())+"\")&&"
+    "(NAME=\""+RDEscapeString(edit_matrix_box->currentText())+"\")&&"+
+    "(INPUTS>0)&&"+
+    "(OUTPUTS>0)";
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     matrix=q->value(0).toInt();
@@ -556,12 +569,12 @@ int EditSwitchEvent::GetSource()
 {
   int input=0;
 
-  QString sql=QString().sprintf("select NUMBER from INPUTS where \
-                                (STATION_NAME=\"%s\")&&(MATRIX=%d)&&\
-                                (NAME=\"%s\")",
-				(const char *)edit_station_box->currentText(),
-				GetMatrix(),
-				(const char *)edit_input_box->currentText());
+  QString sql=QString("select ")+
+    "NUMBER "+
+    "from INPUTS where "+
+    "(STATION_NAME=\""+RDEscapeString(edit_station_box->currentText())+"\")&&"+
+    QString().sprintf("(MATRIX=%d)&&",GetMatrix())+
+    "(NAME=\""+RDEscapeString(edit_input_box->currentText())+"\")";
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     input=q->value(0).toInt();
@@ -575,12 +588,12 @@ int EditSwitchEvent::GetDestination()
 {
   int output=-1;
 
-  QString sql=QString().sprintf("select NUMBER from OUTPUTS where \
-                                (STATION_NAME=\"%s\")&&(MATRIX=%d)&&\
-                                (NAME=\"%s\")",
-				(const char *)edit_station_box->currentText(),
-				GetMatrix(),
-				(const char *)edit_output_box->currentText());
+  QString sql=QString("select ")+
+    "NUMBER "+
+    "from OUTPUTS where "+
+    "(STATION_NAME=\""+RDEscapeString(edit_station_box->currentText())+"\")&&"+
+    QString().sprintf("(MATRIX=%d)&&",GetMatrix())+
+    "(NAME=\""+RDEscapeString(edit_output_box->currentText())+"\")";
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     output=q->value(0).toInt();
@@ -592,17 +605,16 @@ int EditSwitchEvent::GetDestination()
 
 bool EditSwitchEvent::CheckEvent(bool include_myself)
 {
-  QString sql=
-    QString().sprintf("select ID from RECORDINGS \
-                       where (STATION_NAME=\"%s\")&&\
-                       (TYPE=%d)&&(START_TIME=\"%s\")&&\
-                       (CHANNEL=%d)&&(SWITCH_INPUT=%d)&&\
-                       (SWITCH_OUTPUT=%d)",
-		      (const char *)edit_station_box->currentText(),
-		      RDRecording::SwitchEvent,
-		      (const char *)edit_starttime_edit->time().
-		      toString("hh:mm:ss"),GetMatrix(),GetSource(),
-		      GetDestination());
+  QString sql=QString("select ")+
+    "ID "+
+    "from RECORDINGS where "+
+    "(STATION_NAME=\""+RDEscapeString(edit_station_box->currentText())+"\")&&"+
+    QString().sprintf("(TYPE=%d)&&",RDRecording::SwitchEvent)+
+    "(START_TIME=\""+
+    RDEscapeString(edit_starttime_edit->time().toString("hh:mm:ss"))+"\")&&"+
+    QString().sprintf("(CHANNEL=%d)&&",GetMatrix())+
+    QString().sprintf("(SWITCH_INPUT=%d)&&",GetSource())+
+    QString().sprintf("(SWITCH_OUTPUT=%d)",GetDestination());
   if(edit_sun_button->isChecked()) {
     sql+="&&(SUN=\"Y\")";
   }

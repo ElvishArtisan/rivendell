@@ -16191,3 +16191,7 @@
 2017-10-19 Fred Gleason <fredg@paravelsystems.com>
 	* Updated 'NEWS'.
 	* Incremented the package version to 2.17.0int01.
+2017-10-19 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in the 'Edit Switch Event' dialog in rdcatch(1) that
+	would cause the matrix dropdown to be empty if the first host in the
+	'Location' list had no matrices defined.
