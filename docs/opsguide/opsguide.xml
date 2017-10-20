@@ -36,7 +36,7 @@
 <preface><title>Forward</title></preface>
 -->
 
-<chapter id="overview">
+<chapter id="chapter.overview">
   <title>System Overview</title>
 <!--
   <mediaobject>
@@ -365,7 +365,7 @@
   </sect1>
 </chapter>
 
-<chapter id="rdlogin">
+<chapter id="chapter.rdlogin">
   <title>Managing the Current User with RDLogin</title>
   <sect1 id="sect1.rdlogin.managing_the_current_user_with_rdlogin">
     <title>RDLogin</title>
@@ -413,7 +413,7 @@
   </sect1>
 </chapter>
 
-<chapter id="rdlibrary">
+<chapter id="chapter.rdlibrary">
   <title>Content Management with RDLibrary</title>
   <sect1 id="sect1.rdlibrary.the_rivendell_library_structure_and_rdlibrary">
     <title>The Rivendell Library Structure and RDLibrary</title>
@@ -1367,7 +1367,7 @@
   </sect1>
 </chapter>
 
-<chapter id="rdcatch">
+<chapter id="chapter.rdcatch">
   <title>Automating Tasks with RDCatch</title>
   <sect1 id="sect1.rdcatch.automating_tasks_with_rdcatch">
     <title>Choosing the Correct Automation Tool</title>
@@ -1968,7 +1968,7 @@
     </para>
   </sect1>
 </chapter>
-<chapter id="rdlogedit">
+<chapter id="chapter.rdlogedit">
   <title>Generating and Maintaining Logs with RDLogEdit</title>
   <sect1 id="sect1.rdlogedit.logs_and_log_events">
     <title>Logs and Log Events</title>
@@ -2404,7 +2404,7 @@
   </sect1>
 </chapter>
 
-<chapter id="rdairplay">
+<chapter id="chapter.rdairplay">
   <title>Running Logs with RDAirPlay</title>
  <sect1 id="sect1.rdairplay.overview">
    <title>Overview</title>
@@ -2728,7 +2728,7 @@
  </sect1>
 </chapter>
 
-<chapter id="rdlogmanager">
+<chapter id="chapter.rdlogmanager">
   <title>Generating Logs with RDLogManager</title>
   <sect1 id="sect1.rdlogmanager.generating_logs_with_rdlogmanager">
     <title>Overview</title>
@@ -3060,7 +3060,7 @@
  </sect1>
 </chapter>
 
-<chapter id="voicetracking">
+<chapter id="chapter.voicetracking">
   <title>VoiceTracking</title>
   <sect1 id="sect1.voicetracking.voicetracking_in_rivendell">
     <title>Voicetracking in Rivendell</title>
@@ -3224,7 +3224,7 @@
   </sect1>
 </chapter>
 
-<chapter id="rml">
+<chapter id="chapter.rml">
   <title>Rivendell Macro Langauge</title>
   <sect1 id="sect2.rml.overview">
     <title>Overview</title>
@@ -3398,7 +3398,7 @@
 <sect1 id="sect1.rml.commands">
   <title>Commands</title>
   <sect2 id="sect2.rml.air_gate__ag_">
-    <title><command>Air Gate [AG]</command></title>
+    <title>Air Gate [AG]</title>
     <para>
       <variablelist>
 	<varlistentry>
@@ -3425,7 +3425,7 @@
   </sect2>
 
   <sect2 id="sect2.rml.add_next__px_">
-    <title><command>Add Next [PX]</command></title>
+    <title>Add Next [PX]</title>
     <para>
       <variablelist>
 	<varlistentry>
@@ -3453,7 +3453,7 @@
   </sect2>
 
   <sect2 id="sect2.rml.binary_serial_out__bo_">
-    <title><command>Binary Serial Out [BO]</command></title>
+    <title>Binary Serial Out [BO]</title>
     <para>
       <variablelist>
 	<varlistentry>
@@ -3483,7 +3483,7 @@
   </sect2>
 
   <sect2 id="sect2.rml.clear_serial_trap__sc_">
-    <title><command>Clear Serial Trap [SC]</command></title>
+    <title>Clear Serial Trap [SC]</title>
     <para>
       <variablelist>
 	<varlistentry>
@@ -3526,7 +3526,7 @@
   </sect2>
 
   <sect2 id="sect2.rml.command_send__cc_">
-    <title><command>Command Send [CC]</command></title>
+    <title>Command Send [CC]</title>
     <para>
       <variablelist>
 	<varlistentry>
@@ -3558,7 +3558,7 @@
   </sect2>
 
   <sect2 id="sect2.rml.connect_jack_ports__jc_">
-    <title><command>Connect Jack Ports [JC]</command></title>
+    <title>Connect Jack Ports [JC]</title>
     <para>
       <variablelist>
 	<varlistentry>
@@ -3586,7 +3586,7 @@
   </sect2>
 
   <sect2 id="sect2.rml.console_label__cl_">
-    <title><command>Console Label [CL]</command></title>
+    <title>Console Label [CL]</title>
     <para>
       <variablelist>
 	<varlistentry>
@@ -3617,7 +3617,7 @@
   </sect2>
 
   <sect2 id="sect2.rml.copy_cut__cp_">
-    <title><command>Copy Cut [CP]</command></title>
+    <title>Copy Cut [CP]</title>
     <para>
       <variablelist>
 	<varlistentry>
@@ -3651,7 +3651,7 @@
   </sect2>
 
   <sect2 id="sect2.rml.cut_event__ce_">
-    <title><command>Cut Event [CE]</command></title>
+    <title>Cut Event [CE]</title>
     <para>
       <variablelist>
 	<varlistentry>
@@ -3681,7 +3681,7 @@
   </sect2>
 
   <sect2 id="sect2.rml.database_backup__db_">
-    <title><command>Database Backup [DB]</command></title>
+    <title>Database Backup [DB]</title>
     <para>
       <variablelist>
 	<varlistentry>
@@ -3708,7 +3708,7 @@
   </sect2>
 
   <sect2 id="sect2.rml.disconnect_jack_ports__jd_">
-    <title><command>Disconnect Jack Ports [JD]</command></title>
+    <title>Disconnect Jack Ports [JD]</title>
     <para>
       <variablelist>
 	<varlistentry>
@@ -3736,7 +3736,7 @@
   </sect2>
 
   <sect2 id="sect2.rml.duck_panel_button__pd_">
-    <title><command>Duck Panel Button [PD]</command></title>
+    <title>Duck Panel Button [PD]</title>
     <para>
       <variablelist>
 	<varlistentry>
@@ -3781,7 +3781,7 @@
   </sect2>
 
   <sect2 id="sect2.rml.execute_breakaway__dx_">
-    <title><command>Execute Breakaway [DX]</command></title>
+    <title>Execute Breakaway [DX]</title>
     <para>
       <variablelist>
 	<varlistentry>
@@ -3813,7 +3813,7 @@
   </sect2>
 
   <sect2 id="sect2.rml.execute_cart__ex_">
-    <title><command>Execute Cart [EX]</command></title>
+    <title>Execute Cart [EX]</title>
     <para>
       <variablelist>
 	<varlistentry>
@@ -3839,7 +3839,7 @@
   </sect2>
 
   <sect2 id="sect2.rml.fire_salvo__fs_">
-    <title><command>Fire Salvo [FS]</command></title>
+    <title>Fire Salvo [FS]</title>
     <para>
       <variablelist>
 	<varlistentry>
@@ -3867,7 +3867,7 @@
   </sect2>
 
   <sect2 id="sect2.rml.gpi_enable__ge_">
-    <title><command>GPI Enable [GE]</command></title>
+    <title>GPI Enable [GE]</title>
     <para>
       <variablelist>
 	<varlistentry>
@@ -3910,7 +3910,7 @@
   </sect2>
 
   <sect2 id="sect2.rml.gpi_enable__ge___old_format__deprecated_">
-    <title><command>GPI Enable [GE]</command> (old format, deprecated)</title>
+    <title>GPI Enable [GE] (old format, deprecated)</title>
     <para>
       <variablelist>
 	<varlistentry>
@@ -3940,7 +3940,7 @@
   </sect2>
 
   <sect2 id="sect2.rml.gpi_set__gi_">
-    <title><command>GPI Set [GI]</command></title>
+    <title>GPI Set [GI]</title>
     <para>
       <variablelist>
 	<varlistentry>
@@ -3986,7 +3986,7 @@
   </sect2>
 
   <sect2 id="sect2.rml.gpi_set__gi___old_format__deprecated_">
-    <title><command>GPI Set [GI]</command> (old format, deprecated)</title>
+    <title>GPI Set [GI] (old format, deprecated)</title>
     <para>
       <variablelist>
 	<varlistentry>
@@ -4017,7 +4017,7 @@
   </sect2>
 
   <sect2 id="sect2.rml.gpo_set__go_">
-    <title><command>GPO Set [GO]</command></title>
+    <title>GPO Set [GO]</title>
     <para>
       <variablelist>
 	<varlistentry>
@@ -4083,7 +4083,7 @@
   </sect2>
 
   <sect2 id="sect2.rml.gpo_set__go___old_format__deprecated_">
-    <title><command>GPO Set [GO]</command> (old format, deprecated)</title>
+    <title>GPO Set [GO] (old format, deprecated)</title>
     <para>
       <variablelist>
 	<varlistentry>
@@ -4115,7 +4115,7 @@
   </sect2>
 
   <sect2 id="sect2.rml.insert_serial_trap__si_">
-    <title><command>Insert Serial Trap [SI]</command></title>
+    <title>Insert Serial Trap [SI]</title>
     <para>
       <variablelist>
 	<varlistentry>
@@ -4146,7 +4146,7 @@
   </sect2>
 
   <sect2 id="sect2.rml.label_panel__pc_">
-    <title><command>Label Panel [PC]</command></title>
+    <title>Label Panel [PC]</title>
     <para>
       <variablelist>
 	<varlistentry>
@@ -4183,7 +4183,7 @@
   </sect2>
 
   <sect2 id="sect2.rml.load_log__ll_">
-    <title><command>Load Log [LL]</command></title>
+    <title>Load Log [LL]</title>
     <para>
       <variablelist>
 	<varlistentry>
@@ -4218,7 +4218,7 @@
   </sect2>
 
   <sect2 id="sect2.load_panel__pe_">
-    <title><command>Load Panel [PE]</command></title>
+    <title>Load Panel [PE]</title>
     <para>
       <variablelist>
 	<varlistentry>
@@ -4253,7 +4253,7 @@
   </sect2>
 
   <sect2 id="sect2.rml.load_slot__dl_">
-    <title><command>Load Slot [DL]</command></title>
+    <title>Load Slot [DL]</title>
     <para>
       <variablelist>
 	<varlistentry>
@@ -4304,7 +4304,7 @@
   </sect2>
 
   <sect2 id="sect2.rml.login__lo_">
-    <title><command>Login [LO]</command></title>
+    <title>Login [LO]</title>
     <para>
       <variablelist>
 	<varlistentry>
@@ -4333,7 +4333,7 @@
   </sect2>
 
   <sect2 id="sect2.rml.macro_timer__mt_">
-    <title><command>Macro Timer [MT]</command></title>
+    <title>Macro Timer [MT]</title>
     <para>
       <variablelist>
 	<varlistentry>
@@ -4366,7 +4366,7 @@
   </sect2>
 
   <sect2 id="sect2.rml.make_next__mn_">
-    <title><command>Make Next [MN]</command></title>
+    <title>Make Next [MN]</title>
     <para>
       <variablelist>
 	<varlistentry>
@@ -4394,7 +4394,7 @@
   </sect2>
 
   <sect2 id="sect2.rml.message_box__mb_">
-    <title><command>Message Box [MB]</command></title>
+    <title>Message Box [MB]</title>
     <para>
       <variablelist>
 	<varlistentry>
@@ -4439,7 +4439,7 @@
   </sect2>
 
   <sect2 id="sect2.rml.pause_panel__pu_">
-    <title><command>Pause Panel [PU]</command></title>
+    <title>Pause Panel [PU]</title>
     <para>
       <variablelist>
 	<varlistentry>
@@ -4478,7 +4478,7 @@
   </sect2>
 
   <sect2 id="sect2.rml.play_panel__pp_">
-    <title><command>Play Panel [PP]</command></title>
+    <title>Play Panel [PP]</title>
     <para>
       <variablelist>
 	<varlistentry>
@@ -4518,7 +4518,7 @@
   </sect2>
 
   <sect2 id="sect2.rml.play_slot__dp_">
-    <title><command>Play Slot [DP]</command></title>
+    <title>Play Slot [DP]</title>
     <para>
       <variablelist>
 	<varlistentry>
@@ -4546,7 +4546,7 @@
   </sect2>
 
   <sect2 id="sect2.rml.refresh_log__rl_">
-    <title><command>Refresh Log [RL]</command></title>
+    <title>Refresh Log [RL]</title>
     <para>
       <variablelist>
 	<varlistentry>
@@ -4573,7 +4573,7 @@
   </sect2>
 
   <sect2 id="sect2.rml.run_shell_command__rn_">
-    <title><command>Run Shell Command [RN]</command></title>
+    <title>Run Shell Command [RN]</title>
     <para>
       <variablelist>
 	<varlistentry>
@@ -4599,7 +4599,7 @@
   </sect2>
 
   <sect2 id="sect2.rml.select_widget__pw_">
-    <title><command>Select Widget [PW]</command></title>
+    <title>Select Widget [PW]</title>
     <para>
       <variablelist>
 	<varlistentry>
@@ -4626,7 +4626,7 @@
   </sect2>
 
   <sect2 id="sect2.rml.serial_out__so_">
-    <title><command>Serial Out [SO]</command></title>
+    <title>Serial Out [SO]</title>
     <para>
       <variablelist>
 	<varlistentry>
@@ -4656,7 +4656,7 @@
   </sect2>
 
   <sect2 id="sect2.rml.serial_reload__sy_">
-    <title><command>Serial Reload [SY]</command></title>
+    <title>Serial Reload [SY]</title>
     <para>
       <variablelist>
 	<varlistentry>
@@ -4684,7 +4684,7 @@
   </sect2>
 
   <sect2 id="sect2.rml.set_color_label__lc_">
-    <title><command>Set Color Label [LC]</command></title>
+    <title>Set Color Label [LC]</title>
     <para>
       <variablelist>
 	<varlistentry>
@@ -4712,7 +4712,7 @@
   </sect2>
 
   <sect2 id="sect2.rml.set_default_now___next_cart__sn_">
-    <title><command>Set Default Now &amp; Next Cart [SN]</command></title>
+    <title>Set Default Now &amp; Next Cart [SN]</title>
     <para>
       <variablelist>
 	<varlistentry>
@@ -4741,7 +4741,7 @@
   </sect2>
 
   <sect2 id="sect2.rml.set_display__sd_">
-    <title><command>Set Display [SD]</command></title>
+    <title>Set Display [SD]</title>
     <para>
       <variablelist>
 	<varlistentry>
@@ -4852,7 +4852,7 @@
   </sect2>
 
   <sect2 id="sect2.rml.set_duck_level__md_">
-    <title><command>Set Duck Level [MD]</command></title>
+    <title>Set Duck Level [MD]</title>
     <para>
       <variablelist>
 	<varlistentry>
@@ -4886,7 +4886,7 @@
   </sect2>
 
   <sect2 id="sect2.rml.set_label__lb_">
-    <title><command>Set Label [LB]</command></title>
+    <title>Set Label [LB]</title>
     <para>
       <variablelist>
 	<varlistentry>
@@ -4912,7 +4912,7 @@
   </sect2>
 
   <sect2 id="sect2.rml.set_mode__pm_">
-    <title><command>Set Mode [PM]</command></title>
+    <title>Set Mode [PM]</title>
     <para>
       <variablelist>
 	<varlistentry>
@@ -4957,7 +4957,7 @@
   </sect2>
 
   <sect2 id="sect2.rml.sleep__sp_">
-    <title><command>Sleep [SP]</command></title>
+    <title>Sleep [SP]</title>
     <para>
       <variablelist>
 	<varlistentry>
@@ -4983,7 +4983,7 @@
   </sect2>
 
   <sect2 id="sect2.rml.start__pl_">
-    <title><command>Start [PL]</command></title>
+    <title>Start [PL]</title>
     <para>
       <variablelist>
 	<varlistentry>
@@ -5011,7 +5011,7 @@
   </sect2>
 
   <sect2 id="sect2.rml.start_button__pb_">
-    <title><command>Start Button [PB]</command></title>
+    <title>Start Button [PB]</title>
     <para>
       <variablelist>
 	<varlistentry>
@@ -5037,7 +5037,7 @@
   </sect2>
 
   <sect2 id="sect2.rml.start_next__pn_">
-    <title><command>Start Next [PN]</command></title>
+    <title>Start Next [PN]</title>
     <para>
       <variablelist>
 	<varlistentry>
@@ -5071,7 +5071,7 @@
   </sect2>
 
   <sect2 id="sect2.rml.start_record_deck__rs_">
-    <title><command>Start Record Deck [RS]</command></title>
+    <title>Start Record Deck [RS]</title>
     <para>
       <variablelist>
 	<varlistentry>
@@ -5107,7 +5107,7 @@
   </sect2>
 
   <sect2 id="sect2.stop__rs_">
-    <title><command>Stop [PS]</command></title>
+    <title>Stop [PS]</title>
     <para>
       <variablelist>
 	<varlistentry>
@@ -5138,7 +5138,7 @@
   </sect2>
 
   <sect2 id="sect2.rml.stop_panel__pt_">
-    <title><command>Stop Panel [PT]</command></title>
+    <title>Stop Panel [PT]</title>
     <para>
       <variablelist>
 	<varlistentry>
@@ -5180,7 +5180,7 @@
   </sect2>
 
   <sect2 id="sect2.rml.stop_record_deck__rr_">
-    <title><command>Stop Record Deck [RR]</command></title>
+    <title>Stop Record Deck [RR]</title>
     <para>
       <variablelist>
 	<varlistentry>
@@ -5206,7 +5206,7 @@
   </sect2>
 
   <sect2 id="sect2.rml.stop_slot__ds_">
-    <title><command>Stop Slot [DS]</command></title>
+    <title>Stop Slot [DS]</title>
     <para>
       <variablelist>
 	<varlistentry>
@@ -5234,7 +5234,7 @@
   </sect2>
 
   <sect2 id="sect2.rml.switch_add__sa_">
-    <title><command>Switch Add [SA]</command></title>
+    <title>Switch Add [SA]</title>
     <para>
       <variablelist>
 	<varlistentry>
@@ -5509,9 +5509,9 @@
 </sect1>
 </chapter>
 
-<chapter id="interfacing">
-  <title>Interfacing with the Linux Ecosystem:  RMLSend and RDImport</title>
-  <sect1 id="sect1.interfacing.interfacing_with_the_linux_ecosystem__rmlsend_and_rdimport">
+<chapter id="chapter.interfacing_with_the_linux_ecosystem__command_line_utilities">
+  <title>Interfacing with the Linux Ecosystem: Command-Line Utilities</title>
+  <sect1 id="sect1.interfacing_with_the_linux_ecosystem__command_line_utilities.rmlsend">
     <title>RMLSend</title>
     <para>
       RMLSend is a small utility that can be used to send RML commands to a
@@ -5540,7 +5540,7 @@
       page for details.
     </para>
   </sect1>
-  <sect1>
+  <sect1 id="sect1.interfacing_with_the_linux_ecosystem__command_line_utilities.rdimport">
     <title>RDImport</title>
     <para>
       RDImport is a command-line interface (CLI) program that can be used to
@@ -5554,9 +5554,9 @@
   </sect1>
 </chapter>
 
-<chapter id="gplv2">
+<chapter id="chapter.gplv2">
   <title>The GNU General Public License, Version Two</title>
-  <sect1>
+  <sect1 id="sect1.gplv2.the_gnu_general_public_license__version_two">
     <title>GNU GENERAL PUBLIC LICENSE</title>
     <subtitle>Version 2, June 1991</subtitle>
     <para>
@@ -5567,7 +5567,7 @@
       Everyone is permitted to copy and distribute verbatim copies of
       this license document, but changing it is not allowed.
     </para>
-    <sect2>
+    <sect2 id="sect2.gplv2.preamble">
       <title>Preamble</title>
       <para>
 	The licenses for most software are designed to take away your
@@ -5629,7 +5629,7 @@
 	modification follow.
       </para>
     </sect2>
-    <sect2>
+    <sect2 id="sect2.gplv2.gnu_general_public_license">
       <title>GNU GENERAL PUBLIC LICENSE</title>
       <subtitle>TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND
       MODIFICATION</subtitle>
@@ -5914,7 +5914,7 @@
 	</listitem>
       </orderedlist>
     </sect2>
-    <sect2>
+    <sect2 id="sect2.gplv2.no_warranty">
       <title>NO WARRANTY</title>
       <orderedlist startingnumber="11" numeration="arabic">
 	<listitem>
@@ -5947,11 +5947,11 @@
 	</listitem>
       </orderedlist>
     </sect2>
-    <sect2>
+    <sect2 id="sect2.gplv2.end_of_terms_and_conditions">
       <title>END OF TERMS AND CONDITIONS</title>
     </sect2>
   </sect1>
-  <sect1>
+  <sect1 id="sect1.gplv2.how_to_apply_these_terms_to_your_new_programs">
     <title>How to Apply These Terms to Your New Programs</title>
     <para>
        If you develop a new program, and you want it to be of the greatest
@@ -5965,7 +5965,7 @@
       convey the exclusion of warranty; and each file should have at least
       the "copyright" line and a pointer to where the full notice is found.
     </para>
-    <sect2>
+    <sect2 id="sect2.gplv2.example">
       <para>
 	<literallayout>
 	  &lt;one line to give the program's name and a brief idea of what it does.&gt;
@@ -6018,7 +6018,7 @@ under certain conditions; type `show c' for details.
       your school, if any, to sign a "copyright disclaimer" for the program,
       if necessary.  Here is a sample; alter the names:
     </para>
-    <sect2>
+    <sect2 id="sect2.gplv2.example2">
       <para>
 	Yoyodyne, Inc., hereby disclaims all copyright interest in the program
 	`Gnomovision' (which makes passes at compilers) written by James Hacker.
