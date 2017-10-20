@@ -1,7 +1,7 @@
 The NEWS file for the Rivendell package.
 
 -------------------------------------------------------------------------------
-v2.17.0int01 -- 10/19/2017
+v2.17.0int02 -- 10/19/2017
 
 Changes:
    Group Cut Expiration Policy. Added the ability to set a default
