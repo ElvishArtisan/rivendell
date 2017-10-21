@@ -16178,4 +16178,6 @@
 	* Modified rdairplay to increase Main Log Outputs from 2 to 4
 	* Modified RDAIRPLAY_CHANNELS table to store the two additional outputs
 	(changes all instance numbers >2)
+	* Incremented the database version to 272.
+	* Added additional Main Log Outputs to 'RDAirPlay Config' dialog in RDAdmin.
 
