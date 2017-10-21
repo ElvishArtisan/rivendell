@@ -9,14 +9,16 @@ ID                     int(10) unsigned  * Primary key, Auto Increment
 STATION_NAME           char(64)          From STATIONS.NAME
 INSTANCE               int(10) unsigned  0 = Main Log Output 1
                                          1 = Main Log Output 2
-                                         2 = Sound Panel Output 1
-                                         3 = Cue Output
-                                         4 = Aux Log 1 Output
-                                         5 = Aux Log 2 Output
-                                         6 = Sound Panel Output 2
-                                         7 = Sound Panel Output 3
-                                         8 = Sound Panel Output 4
-                                         9 = Sound Panel Output 5
+					 2 = Main Log Output 3
+					 3 = Main Log Output 4
+                                         4 = Sound Panel Output 1
+                                         5 = Cue Output
+                                         6 = Aux Log 1 Output
+                                         7 = Aux Log 2 Output
+                                         8 = Sound Panel Output 2
+                                         9 = Sound Panel Output 3
+                                        10 = Sound Panel Output 4
+                                        11 = Sound Panel Output 5
 CARD                   int(11)
 PORT                   int(11)
 START_RML              char(255)

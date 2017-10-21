@@ -39,7 +39,7 @@
 /*
  * Application Settings
  */
-#define LOG_PLAY_PORTS 2
+#define LOG_PLAY_PORTS 4
 #define MAX_MANUAL_SEGUE 10
 
 class EditRDAirPlay : public QDialog

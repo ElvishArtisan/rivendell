@@ -2652,6 +2652,14 @@ GPIOs</source>
         <source>Aux 2 Log Startup Mode:</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Main Log Output 3</source>
+        <translation type="unfinished">Salida PlayList Ppal 3</translation>
+    </message>
+    <message>
+        <source>Main Log Output 4</source>
+        <translation type="unfinished">Salida PlayList Ppal 4</translation>
+    </message>
 </context>
 <context>
     <name>EditRDLibrary</name>

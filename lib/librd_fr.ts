@@ -493,6 +493,14 @@
         <source>Cut</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Main Log Output 3</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Main Log Output 4</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RDAddCart</name>

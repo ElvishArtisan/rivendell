@@ -2518,7 +2518,7 @@ bool InitDb(QString name,QString pwd,QString station_name)
   if(!RunQuery(sql)) {
     return false;
   }
-  for(unsigned i=0;i<10;i++) {
+  for(unsigned i=0;i<12;i++) {
     sql=QString("insert into RDAIRPLAY_CHANNELS set ")+
       "STATION_NAME=\""+RDEscapeString(station_name)+"\","+
       QString().sprintf("INSTANCE=%u",i);
@@ -8507,6 +8507,39 @@ int UpdateDb(int ver)
     sql=QString("alter table DROPBOXES ")+
       "add column SEGUE_LEVEL int(11) default 1 after FORCE_TO_MONO, "+
       "add column SEGUE_LENGTH int(11) default 0 after SEGUE_LEVEL";
+    q=new RDSqlQuery(sql);
+    delete q;
+  }
+  
+  if(ver<272) {
+    sql=QString("update RDAIRPLAY_CHANNELS ")+
+      "set INSTANCE = INSTANCE + 2 WHERE INSTANCE >1";
+    q=new RDSqlQuery(sql);
+    delete q;
+    sql=QString("INSERT into RDAIRPLAY_CHANNELS ")+
+      "(STATION_NAME, INSTANCE, CARD, PORT, "+
+      "START_RML, STOP_RML, GPIO_TYPE, START_GPI_MATRIX, "+
+      "START_GPI_LINE, START_GPO_MATRIX, "+
+      "START_GPO_LINE, STOP_GPI_MATRIX, STOP_GPI_LINE, "+
+      "STOP_GPO_MATRIX, STOP_GPO_LINE) SELECT STATION_NAME, "+
+      "\"2\", CARD, PORT, START_RML, STOP_RML, GPIO_TYPE, "+
+      "START_GPI_MATRIX, START_GPI_LINE, START_GPO_MATRIX, "+
+      "START_GPO_LINE, STOP_GPI_MATRIX, STOP_GPI_LINE, "+
+      "STOP_GPO_MATRIX, STOP_GPO_LINE "+
+      "FROM RDAIRPLAY_CHANNELS WHERE INSTANCE = 0";
+    q=new RDSqlQuery(sql);
+    delete q;
+    sql=QString("INSERT into RDAIRPLAY_CHANNELS ")+
+      "(STATION_NAME, INSTANCE, CARD, PORT, "+
+      "START_RML, STOP_RML, GPIO_TYPE, START_GPI_MATRIX, "+
+      "START_GPI_LINE, START_GPO_MATRIX, "+
+      "START_GPO_LINE, STOP_GPI_MATRIX, STOP_GPI_LINE, "+
+      "STOP_GPO_MATRIX, STOP_GPO_LINE) SELECT STATION_NAME, "+
+      "\"3\", CARD, PORT, START_RML, STOP_RML, GPIO_TYPE, "+
+      "START_GPI_MATRIX, START_GPI_LINE, START_GPO_MATRIX, "+
+      "START_GPO_LINE, STOP_GPI_MATRIX, STOP_GPI_LINE, "+
+      "STOP_GPO_MATRIX, STOP_GPO_LINE "+
+      "FROM RDAIRPLAY_CHANNELS WHERE INSTANCE = 1";
     q=new RDSqlQuery(sql);
     delete q;
   }
