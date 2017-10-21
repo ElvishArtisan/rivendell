@@ -243,6 +243,10 @@ void MainObject::Revert(int schema) const
   case 271:
     Revert271();
     break;
+
+  case 272:
+    Revert272();
+    break;
   }
 }
 
@@ -738,6 +742,23 @@ void MainObject::Revert271() const
   SetVersion(270);
 }
 
+void MainObject::Revert272() const
+{
+  QString sql;
+  QSqlQuery *q;
+  sql=QString("delete from RDAIRPLAY_CHANNELS where INSTANCE in ('2', '3')");
+  q=new QSqlQuery(sql);
+  delete q;
+
+  sql=QString("update RDAIRPLAY_CHANNELS set INSTANCE = INSTANCE - 2 ")+
+    "WHERE INSTANCE >1;";
+    
+  q=new QSqlQuery(sql);
+  delete q;
+
+  SetVersion(271);
+}
+
 
 int MainObject::GetVersion() const
 {
@@ -783,7 +804,7 @@ int MainObject::MapSchema(const QString &ver)
   version_map["2.15"]=259;
   version_map["2.16"]=263;
   version_map["2.17"]=268;
-  version_map["2.18"]=271;
+  version_map["2.18"]=272;
 
   //
   // Normalize String
