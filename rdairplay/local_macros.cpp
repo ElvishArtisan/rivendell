@@ -417,7 +417,7 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
       return;
     }
     if(rml->argQuantity()>=2) {
-      if((rml->arg(1).toInt()<1)||(rml->arg(1).toInt()>2)) {
+      if((rml->arg(1).toInt()<1)||(rml->arg(1).toInt()>4)) {
 	if(rml->echoRequested()) {
 	  rml->acknowledge(false);
 	  rdripc->sendRml(rml);
