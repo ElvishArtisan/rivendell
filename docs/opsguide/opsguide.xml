@@ -2946,56 +2946,63 @@
       RDLogManager is a tool for generating Rivendell logs. It is different
       from RDLogEdit in that, instead of building logs line-by-line,
       it allows log structures to be defined by a series of rules (called
-      events and clocks) that are then plugged into a time framework
-      (called a grid).  This grid is then used to automatically generate
-      logs on an as-needed basis.  Each Rivendell service has its own,
+      <emphasis>events</emphasis> and <emphasis>clocks</emphasis>) that
+      are then plugged into a time framework
+      (called a <emphasis>grid</emphasis>). This grid is then used to
+      generate logs automatically
+      on an as-needed basis.  Each Rivendell service has its own,
       separately defined grid, thus allowing for separate log generation
-      rules for each service.  This system of rules allows for very
+      rules for each service. This system of rules allows for very
       powerful, modular features, including the ability to import and use
       scheduling data from various external third party systems, such as
       music schedulers and traffic and billing systems.
     </para>
     <para>
-      RDLogManager also includes facilities for generating reports. Reports
+      RDLogManager also includes facilities for generating
+      <emphasis>reports</emphasis>. Reports
       are data outputs that detail whether certain events aired as
-      scheduled, and under what circumstances.  Reports are available in
-      various formats.  Some are intended to be read by humans, while
+      scheduled, and under what circumstances. Reports are available in
+      various formats. Some are intended to be read by humans, while
       others are intended for use by other, external software systems as a
       means of reconciling exported schedules.
     </para>
     <para>
-      When RDLogManager is started, it displays its main menu (see
-      Illustration 42).
+      When RDLogManager is started, it displays its main menu (see FIXME).
     </para>
   </sect1>
   <sect1 id="sect.rdlogmanager.grids">
     <title>Grids</title>
     <para>
       Each Rivendell service has an RDLogManager grid. To see the list of
-      available grids, touch the Edit Grids button to open the Log Grids
-      dialog (see Illustration 43).
+      available grids, touch the <computeroutput>Edit Grids</computeroutput>
+      button to open the Log Grids dialog (see FIXME).
     </para>
     <para>
-      To open a particular grid, select its service name and touch the Edit
-      button (see Illustration 44).
+      To open a particular grid, select its service name and touch the
+      <computeroutput>Edit</computeroutput>
+      button (see FIXME).
     </para>
     <para>
       Each grid has slots for every hour of every day of the broadcast week
       – 168 slots in all.  By specifying a particular clock to go into each
       of these slots, a set of rules that RDLogManager can use to generate
-      a log for any given day of the week is built up.  To specify a clock,
-      simply touch the particular hour of interest to open up the Select
-      Log Clock dialog (see Illustration 45).
+      a log for any given day of the week is built up. To specify a clock,
+      simply touch the particular hour of interest to open up the
+      <computeroutput>Select Log Clock</computeroutput> dialog
+      (see FIXME).
     </para>
     <para>
-      Click the desired clock, then touch the OK button.  To clear the
-      assignment of any clock to the selected hour, touch the Clear button,
-      then OK.
+      Click the desired clock, then touch the
+      <computeroutput>OK</computeroutput> button. To clear the
+      assignment of any clock to the selected hour, touch the
+      <computeroutput>Clear</computeroutput> button,
+      then <computeroutput>OK</computeroutput>.
     </para>
     <para>
       It is possible to 'drill down' directly to the underlying
       configuration of a clock (to be covered shortly) by right-clicking on
-      the relevant hour in a grid and selecting Edit Clock.
+      the relevant hour in a grid and selecting
+      <computeroutput> Edit Clock</computeroutput>.
     </para>
   </sect1>
   <sect1 id="sect.rdlogmanager.clocks">
@@ -3003,58 +3010,78 @@
     <para>
       An RDLogManager clock is a collection of RDLogManager events,
       arranged in terms of their start time (relative to the beginning of
-      the hour) and length.  It basically can be thought of as the
-      &quot;schedule&quot; of an hour – any hour.  Once defined, a clock
+      the hour) and length. It basically can be thought of as the
+      &quot;schedule&quot; of an hour – <emphasis>any</emphasis> hour.
+      Once defined, a clock
       can be plugged into any hour of a grid of any service, thus making
       for easy modularization and changes to a service's schedule.
     </para>
     <para>
-      To see the list of available clocks, touch the Edit Clocks button in
+      To see the list of available clocks, touch the
+      <computeroutput>Edit Clocks</computeroutput> button in
       RDLogManager's Main Menu to open the Log Clocks dialog (see
-      Illustration 46).  Each RDLogManager clock can be assigned a
+      FIXME).  Each RDLogManager clock can be assigned a
       three-letter code and color, as an aid in identifying it when
-      assigned to grids.  To add a new clock, touch the Add button, or to
-      edit a clock's parameters, click on it and touch the Edit button.
-      In each case, the Edit Clock dialog (see Illustration 47) will open.
-      Clocks can also be deleted by touching the Delete button or renamed
-      by touching the Rename button.
+      assigned to grids.  To add a new clock, touch the 
+      <computeroutput>Add</computeroutput> button, or to
+      edit a clock's parameters, click on it and touch the
+      <computeroutput>Edit</computeroutput> button.
+      In each case, the Edit Clock dialog (see FIXME) will open.
+      Clocks can also be deleted by touching the
+      <computeroutput>Delete</computeroutput> button or renamed
+      by touching the <computeroutput>Rename</computeroutput> button.
     </para>
     <para>
-      The Edit Clock dialog consists of three main sections:  a tabular
+      The Edit Clock dialog consists of three main sections: a tabular
       list of events in chronological order, a graphical depiction of the
       clock in the traditional “broadcast clock” format, and a series of
       action buttons across the bottom. The clock's three-letter code is
-      set by means of the Code: field in the upper right-hand corner of the
-      table area.  Its color can be set by touching the Color button. To
-      save the clock without exiting the dialog, touch the Save or Save As
-      buttons.  To add a new event to the clock, touch the Add button, or
-      to edit an existing entry touch the Edit button.  In either case,
-      the Edit Event Assignment dialog will open (see Illustration 48). To
-      delete an entry, touch the Delete button.  As in the case of grids,
+      set by means of the <computeroutput>Code</computeroutput> field
+      in the upper right-hand corner of the
+      table area. Its color can be set by touching the
+      <computeroutput>Color</computeroutput> button. To
+      save the clock without exiting the dialog, touch the
+      <computeroutput>Save</computeroutput>
+      or <computeroutput>Save As</computeroutput>
+      buttons. To add a new event to the clock, touch the
+      <computeroutput>Add</computeroutput> button, or
+      to edit an existing entry touch the 
+      <computeroutput>Edit</computeroutput> button. In either case,
+      the Edit Event Assignment dialog will open (see FIXME). To
+      delete an entry, touch the <computeroutput>Delete</computeroutput>
+      button. As in the case of grids,
       it is possible to 'drill down' into the underlying RDLogManager
       event by right-clicking on the respective entry in the clock event
-      table and selecting Edit Event.
+      table and selecting <computeroutput>Edit Event</computeroutput>.
     </para>
     <para>
-      The Edit Event Assignment dialog simply consists of an Event field
-      for the name of the RDLogManager event and Start Time: and End Time:
+      The Edit Event Assignment dialog simply consists of an
+      <computeroutput>Event</computeroutput> field
+      for the name of the RDLogManager event and
+      <computeroutput>Start Time</computeroutput> and
+      <computeroutput>End Time</computeroutput>
       fields for the start and end times relative to the start of the
-      hour.  A list of available events can be brought up by touching the
-      Select button to bring up the Log Events dialog.
+      hour. A list of available events can be brought up by touching the
+      <computeroutput>Select</computeroutput> button to bring up the
+      Log Events dialog.
     </para>
     <para>
       Each clock can be designated as being associated with one or more
-      services.  This can make finding the correct clock for a given
-      service much faster, as the Filter control on the List Clocks dialog
-      can then be used.  To program these associations, touch the Services
-      List button in the Edit Clock dialog to bring up the Service
-      Associations dialog (see Illustration 49).
+      services. This can make finding the correct clock for a given
+      service much faster, as the
+      <computeroutput>Filter</computeroutput> control on the List Clocks dialog
+      can then be used. To program these associations, touch the
+      <computeroutput>Services List</computeroutput> button in the Edit
+      Clock dialog to bring up the Service
+      Associations dialog (see FIXME).
     </para>
     <para>
       To designate a service as being valid for this clock, select the
-      services name in the Available Services list and then touch the Add
-      &gt;&gt; button.  Likewise, to deselect a service, select its name in the
-      Enabled Services list and then touch the &lt;&lt; Remove button.
+      services name in the <computeroutput>Available Services</computeroutput>
+      list and then touch the <computeroutput>Add &gt;&gt;</computeroutput>
+      button.  Likewise, to deselect a service, select its name in the
+      <computeroutput>Enabled Services</computeroutput> list and then touch
+      the <computeroutput>&lt;&lt; Remove</computeroutput> button.
     </para>
   </sect1>
   <sect1 id="sect.rdlogmanager.events">
@@ -3067,37 +3094,47 @@
       The actual elements to be inserted can be specified directly within
       the event itself, or imported from a data file generated by an
       external scheduling system.  Up to two such external scheduling
-      sources can be defined for each service.  While for convenience sake
+      sources can be defined for each service. While for convenience sake
       these are designated as 'Traffic' and 'Music' within RDLogManager,
       they can each be used anywhere a means of importing external
       scheduling data into the system is needed, regardless of whether such
       data actually references commercial or musical material or not.
     </para>
     <para>
-      To see the list of available RDLogManager events, touch the Edit
-      Events button on the RDLogManager Main Menu to open the Log Events
-      dialog (see Illustration 50).  It is possible to filter the list of
+      To see the list of available RDLogManager events, touch the
+      <computeroutput>Edit Events</computeroutput> button on the
+      RDLogManager Main Menu to open the Log Events
+      dialog (see FIXME). It is possible to filter the list of
       available events to only those used for a particular service by
-      selecting the service in the Filter: control.  To add a new event,
-      touch the Add button, or to edit an event's parameters, click on it
-      and touch the Edit button.  In each case, the Edit  Event dialog (see
-      Illustration 51) will open.  Events can also be deleted by touching
-      the Delete button or renamed by touching the Rename button.
+      selecting the service in the <computeroutput>Filter</computeroutput>
+      control. To add a new event,
+      touch the <computeroutput>Add</computeroutput> button, or to edit
+      an event's parameters, click on it
+      and touch the <computeroutput>Edit</computeroutput> button.
+      In each case, the Edit Event dialog (see FIXME) will open.
+      Events can also be deleted by touching
+      the <computeroutput>Delete</computeroutput> button or renamed by
+      touching the <computeroutput>Rename</computeroutput> button.
     </para>
     <para>
-      The Edit Event dialog consists of two main parts:  a Library cart
+      The Edit Event dialog consists of two main parts: a Library cart
       picker widget on the left side, and an area showing the various event
-      parameters on the right.  Audio contained within audio carts can be
-      sampled by selecting the desired cart and then touching the Play
+      parameters on the right. Audio contained within audio carts can be
+      sampled by selecting the desired cart and then touching the
+      <computeroutput>Play</computeroutput>
       button. Programming an event basically consists of specifying four
-      things:  its log parameters (transition and time types), the list of
-      pre-import events, the event import (if any) and the list of
-      post-import events.  The first matter to be decided is if the event
-      should have a hard start time:  if so, then the Use hard start time
-      box in the TIMED START section should be checked.  Checking this box
+      things: its log parameters (transition and time types), the list of
+      <computeroutput>Pre-Import</computeroutput> events, the event import
+      (if any) and the list of
+      <computeroutput>Post-Import</computeroutput> events.
+      The first matter to be decided is if the event
+      should have a hard start time: if so, then the
+      <computeroutput>Use hard start time</computeroutput>
+      check box in the TIMED START section should be ticked. Ticking this box
       will enable all of the usual hard start parameters to be specified.
       If an automatic timed start is not desired, then it is possible to
-      check the Cue to this event box in the PREPOSITION LOG section.
+      check the <computeroutput>Cue to this event</computeroutput> checkbox
+      in the <computeroutput>PREPOSITION LOG</computeroutput> section.
       This will cause RDLogManager to place a hard time with a 'Make Next'
       attribute on the first item of the event – effectively, causing the
       event to be automatically “cued up” at the scheduled time – something
@@ -3106,78 +3143,100 @@
     </para>
     <para>
       Next, if it is desired to have RDLogManager try to insert
-      automatically material from the Autofill List to ensure that the event
-      has the length indicated by its parent clock, the Use Autofill box in
-      the ENFORCING LENGTH section should be checked.  (Configuring the
+      material automatically from the Autofill List to ensure that the event
+      has the length indicated by its parent clock, the
+      <computeroutput>Use Autofill</computeroutput> box in
+      the <computeroutput>ENFORCING LENGTH</computeroutput> section
+      should be checked.  (Configuring the
       Autofill List is covered in detail in the Rivendell Technical and
       Administration Guide).  If Autofill is enabled, it is also possible
-      to check the Warn if fill is under or over box to have RDLogManager
+      to tick the
+      <computeroutput>Warn if fill is under or over</computeroutput> checkbox
+      to have RDLogManager
       generate a warning if it was unable to properly fill the event when
       the log was generated.
     </para>
     <para>
       Next, the list of log events (if any) to be inserted before the data
-      import should be placed in the PRE-IMPORT CARTS list.  For audio or
+      import should be placed in the
+      <computeroutput>PRE-IMPORT CARTS</computeroutput> list. For audio or
       macro carts, these can be simply dragged and dropped from the Library
-      cart list on the left-hand side of the dialog.  Meta events can be
+      cart list on the left-hand side of the dialog. Meta events can be
       inserted by right-clicking on the list and selecting the desired
-      element.  It is also possible to edit or delete elements and set the
+      element. It is also possible to edit or delete elements and set the
       transition type of each element through the right-click menu.
     </para>
     <para>
-      The IMPORT section then defines which (if any) source will be used
-      for importing external scheduling events into the log.  Either Music,
-      Traffic or None can be selected.  If Music or Traffic is selected,
+      The <computeroutput>IMPORT</computeroutput> section then defines
+      which (if any) source will be used
+      for importing external scheduling events into the log.  Either
+      <computeroutput>Music</computeroutput>,
+      <computeroutput>Traffic</computeroutput> or
+      <computeroutput>None</computeroutput> can be selected.  If 
+      <computeroutput>Music</computeroutput> or
+      <computeroutput>Traffic</computeroutput> is selected,
       then RDLogManager will import any events from those sources that fall
       within the start and end times of the event (as supplied by the
-      parent clock).  These start and end times can be further broadened by
+      parent clock). These start and end times can be further broadened by
       means of 'slop factors' entered into the Import carts scheduled
       controls (this is sometimes necessary to get the import to work
-      properly with certain external scheduler systems).  The transition
+      properly with certain external scheduler systems). The transition
       types to be used for the first and subsequent imported elements can
-      be specified with the First cart has a and Imported carts have a
-      controls.  If Music has been selected as the import source, it is
+      be specified with the <computeroutput>First cart has a</computeroutput>
+      and <computeroutput>Imported carts have a</computeroutput>
+      controls.  If <computeroutput>Music</computeroutput> has been selected
+      as the import source, it is
       also possible to specify the event to use to import traffic breaks
-      embedded in the music log with the Import inline traffic with the
+      embedded in the music log with the 
+      <computeroutput>Import inline traffic</computeroutput> with the
       control.  (Configuration of the actual parser parameters for data
       importation is covered in the Rivendell Technical and Administration
       Guide).
     </para>
     <para>
       Finally, the list of log events (if any) to be inserted after the
-      data import should be placed in the POST-IMPORT CARTS list.
-      Configuration of the events work very similarly to that of the
-      PRE-IMPORT CARTS list.
+      data import should be placed in the
+      <computeroutput>POST-IMPORT CARTS</computeroutput> list.
+      Configuration of the events works very similarly to that of the
+      <computeroutput>PRE-IMPORT CARTS</computeroutput> list.
     </para>
     <para>
       The color of the event (as seen in the Edit Clock dialog) can be set
-      by touching the Color button.  The list of services for which this
-      event is valid can be edited by touching the Services List button.
-      To save the event without exiting the dialog, touch the Save or Save
-      As buttons.
+      by touching the <computeroutput>Color</computeroutput> button.
+      The list of services for which this
+      event is valid can be edited by touching the
+      <computeroutput>Services List</computeroutput> button.
+      To save the event without exiting the dialog, touch the
+      <computeroutput>Save</computeroutput> or
+      <computeroutput>Save As</computeroutput> buttons.
     </para>
   </sect1>
   <sect1 id="sect.rdlogmanager.generating_logs">
     <title>Generating Logs</title>
     <para>
       After all of the appropriate hours have been populated in a service's
-      grid, it's time to start generating logs.  To do this, touch the
-      Generate Logs button in RDLogManager's Main Menu to open the Generate
-      Log dialog (see Illustration 52).
+      grid, it's time to start generating logs. To do this, touch the
+      <computeroutput>Generate Logs</computeroutput> button in
+      RDLogManager's Main Menu to open the Generate
+      Log dialog (see FIXME).
     </para>
     <para>
       Depending upon how many external scheduling sources are involved,
-      generating a log involves one, two or three steps.  Before performing
+      generating a log involves one, two or three steps. Before performing
       any of the steps, it is first necessary to select the relevant
-      service for which to generate the log (using the Service: control)
-      and the log date (either by entering the date in the Date: control
-      or by touching the Select button and picking it off of the calendar).
+      service for which to generate the log (using the
+      <computeroutput>Service</computeroutput> control)
+      and the log date (either by entering the date in the
+      <computeroutput>Date</computeroutput> control
+      or by touching the <computeroutput>Select</computeroutput> button
+      and picking it off of the calendar).
     </para>
     <para>
-      In all cases, a new log is initially generated by touching the Create
-      New Log button.  If the log for the selected date and service does not
+      In all cases, a new log is initially generated by touching the
+      <computeroutput>Create New Log</computeroutput> button.
+      If the log for the selected date and service does not
       already exist, it will be created at this point (becoming visible in
-      RDLogEdit).  It the log already exists, it will be overwritten.
+      RDLogEdit). It the log already exists, it will be overwritten.
       (NOTE: if completed voicetracks exist in the old log, they will be
       deleted when the log is overwritten!)
     </para>
@@ -3189,25 +3248,29 @@
     <para>
       Once generated, the status lights in the Generate Log dialog indicate
       which (if any) additional import data are needed to complete the log.
-      Two types of status light exist:  Available, which indicates if the
-      required data file is available to RDLogManager, and Merged,
+      Two types of status light exist:
+      <computeroutput>Available</computeroutput>, which indicates if the
+      required data file is available to RDLogManager, and
+      <computeroutput>Merged</computeroutput>,
       indicating whether the data has been merged into the log as yet.
       Each light can show one of three different colors:  GREEN, meaning
       &quot;yes&quot;, RED, meaning &quot;no&quot; and WHITE, meaning
       &quot;not required&quot;.
     </para>
     <para>
-      For an example, see Illustration 53.  This is showing a log that has
+      For an example, see FIXME. This is showing a log that has
       been generated and has music data available but not yet merged. To
-      perform the merge, touch the Merge Music button.  The dialog now
-      changes to that shown in Illustration 54, indicating that Music data
-      has been merged but that traffic data is still needed.  Once a log
+      perform the merge, touch the
+      <computeroutput>Merge Music</computeroutput> button. The dialog now
+      changes to that shown in FIXME, indicating that Music data
+      has been merged but that traffic data is still needed. Once a log
       has reached this state – that of having any necessary music data
       merged – it can be voicetracked without having to wait for traffic
-      data to become available.  Traffic data can be merged at any time
-      before, during or after the generation of voicetracks.  The actual
-      traffic merge is performed by touching the Merge Traffic button,
-      resulting in a dialog like that shown in Illustration 55.  (NOTE:
+      data to become available. Traffic data can be merged at any time
+      before, during or after the generation of voicetracks. The actual
+      traffic merge is performed by touching the
+      <computeroutput>Merge Traffic</computeroutput> button,
+      resulting in a dialog like that shown in FIXME.  (NOTE:
       the configuration of the various data file names and parser parameters
       needed for data import is done in the RDAdmin module and is covered
       in the Rivendell Technical and Administration Guide).
@@ -3239,30 +3302,38 @@
      RDLogManager module.
    </para>
    <para>
-     To generate a report, touch the Manage Reports button on the
+     To generate a report, touch the
+     <computeroutput>Manage Reports</computeroutput> button on the
      RDLogManager Main Menu to open the Select Service dialog (see
-     Illustration 56).  The dialog will show each service on the system,
+     FIXME). The dialog will show each service on the system,
      along with the date of the oldest data available for generating
-     reports.  Touch the Generate Reports button to open the Select Report
-     Dates dialog (see Illustration 57).  The desired report can be
-     selected with the Report: control, and the start and end dates of the
-     report specified with the Start Date: and End Date: controls,
+     reports. Touch the <computeroutput>Generate Reports</computeroutput>
+     button to open the Select Report
+     Dates dialog (see FIXME). The desired report can be
+     selected with the <computeroutput>Report</computeroutput> control,
+     and the start and end dates of the
+     report specified with the
+     <computeroutput>Start Date</computeroutput> and
+     <computeroutput>End Date</computeroutput> controls,
      respectively (NOTE: not all reports are capable of being generated so
      as to span more than one day). Once the parameters are set, touch the
-     Generate Report button to write out the report.
+     <computeroutput>Generate Report</computeroutput> button to write out
+     the report.
    </para>
    <sect2 id="sect.rdlogmanager.purging_old_report_data">
      <title>Purging Old Report Data</title>
      <para>
        Rivendell keeps the raw data used to generate reports indefinitely,
-       until manually purged out of the system.  Periodic purging of old
+       until manually purged out of the system. Periodic purging of old
        data is a good idea from the standpoint of minimizing the amount of
        system resources utilized, and can be done by selecting the desired
-       service and then touching the Purge Data button in the Select
-       Service dialog, opening up a calendar dialog (see Illustration 58).
+       service and then touching the
+       <computeroutput>Purge Data</computeroutput> button in the Select
+       Service dialog, opening up a calendar dialog (see FIXME).
        Each date that has data eligible for purging will be shown in bold.
-       To purge a particular day, select it and the touch the Purge Data
-       button.  (NOTE: once purged, no reports can be generated for that
+       To purge a particular day, select it and the touch the
+       <computeroutput>Purge Data</computeroutput>
+       button. (NOTE: once purged, no reports can be generated for that
        particular service/date, so be sure that all required reports have
        been produced before purging!)
      </para>
@@ -3279,7 +3350,7 @@
       content is created and inserted into logs, making it possible to
       create programming that sounds very spontaneous and &quot;live&quot;.
       In Rivendell, such voicetracks are placed into a special type of audio
-      cart known as a voicetrack cart.  These carts are automatically
+      cart known as a voicetrack cart. These carts are automatically
       created, deleted and managed by the voicetracker interface (part of
       the RDLogEdit module), with no manual user intervention required.
       The voicetracker module also includes extensive capabilities for
@@ -3290,7 +3361,7 @@
       <para>
 	Before beginning voicetracking for a particular service, a
 	voicetracker group and pool of available cart numbers must be
-	configured in the RDAdmin module.  These procedures are detailed in
+	configured in the RDAdmin module. These procedures are detailed in
 	the Rivendell Technical and Administration Guide.
       </para>
     </sect2>
@@ -3310,10 +3381,11 @@
     <sect2 id="sect.voicetracking.the_voicetracker_dialog">
       <title>The VoiceTracker Dialog</title>
       <para>
-	To voicetrack a log, start the RDLogEdit module (see Illustration 19),
-	highlight the desired log and touch the VoiceTracker button, opening
-	the VoiceTracker dialog (see Illustration 59).  This dialog consists
-	of three major parts:  the waveform area, the log list and the control
+	To voicetrack a log, start the RDLogEdit module (see FIXME),
+	highlight the desired log and touch the
+	<computeroutput>VoiceTracker</computeroutput> button, opening
+	the VoiceTracker dialog (see FIXME). This dialog consists
+	of three major parts: the waveform area, the log list and the control
 	buttons.
       </para>
       <para>
@@ -3347,10 +3419,13 @@
 	to adjust the degree of audio overlap by dragging the second or
 	third waveform as well.  It's possible to “undo” changes made in
 	the segue overlap by right-clicking on the waveform and selecting
-	Undo Segue Changes from the menu.  To make the overlap permanent,
-	touch the Save button.  To restore the transition to its default
+	<computeroutput>Undo Segue Changes</computeroutput> from the menu.
+	To make the overlap permanent,
+	touch the <computeroutput>Save</computeroutput> button. To restore
+	the transition to its default
 	state (calculated on the basis of segue markers from the Library)
-	touch the Do Over  button.  The transition type can be changed by
+	touch the <computeroutput>Do Over</computeroutput>  button.
+	The transition type can be changed by
 	right-clicking on an event and selecting the desired transition
 	type from the menu.
       </para>
@@ -3359,16 +3434,20 @@
       <title>Inserting and Deleting Track Markers</title>
       <para>
 	It is possible to insert a new voicetrack marker by selecting the
-	desired location in the log list and touching the Insert Track
+	desired location in the log list and touching the
+	<computeroutput>Insert Track</computeroutput>
 	button. An existing voicetrack marker can likewise by deleted by
-	selecting it in the log list and touching the Delete Track button.
+	selecting it in the log list and touching the
+	<computeroutput>Delete Track</computeroutput> button.
       </para>
     </sect2>
     <sect2 id="sect.voicetracking.moving_between_track_markers">
       <title>Moving Between Track Markers</title>
       <para>
 	It is possible to move directly to the next or previous voicetrack
-	marker simply by touching the Next Track or Previous Track buttons,
+	marker simply by touching the
+	<computeroutput>Next Track</computeroutput> or
+	<computeroutput>Previous Track</computeroutput> buttons,
 	respectively.
       </para>
     </sect2>
@@ -3378,19 +3457,25 @@
 	Once the desired voicetrack marker has been selected, the process
 	of recording a voicetrack consists of four steps, each initiated by
 	one of the four square control buttons in the upper right-hand
-	corner of the dialog.  (See Illustration 50).
+	corner of the dialog. (See FIXME).
       </para>
       <para>
-	To begin, touch the topmost Start button.  This will cause the
+	To begin, touch the topmost
+	<computeroutput>Start</computeroutput> button. This will cause the
 	audio in the topmost pane to begin playing, with a cursor to show
-	playback position (see Illustration 61).  To begin the actual
-	recording, touch the Record button (see Illustration 62). To start
-	the following event (in the third pane), touch the second Start
-	button (see Illustration 63).  Finally, to stop recording, touch
-	the Save button (see Illustration 64).  The record process can be
-	canceled at any time by touching the Abort button, restoring the 
+	playback position (see FIXME). To begin the actual
+	recording, touch the <computeroutput>Record</computeroutput> button
+	(see FIXME). To start
+	the following event (in the third pane), touch the second 
+	<computeroutput>Start</computeroutput>
+	button (see FIXME).  Finally, to stop recording, touch
+	the <computeroutput>Save</computeroutput> button (see FIXME).
+	The record process can be
+	canceled at any time by touching the
+	<computeroutput>Abort</computeroutput> button, restoring the 
 	transition to its default state. It is also possible to undo a
-	completed voicetrack by touching the Do Over button.
+	completed voicetrack by touching the
+	<computeroutput>Do Over</computeroutput> button.
       </para>
       <para>
 	Once completed, the segue overlaps into and out of a voicetrack can
@@ -3413,8 +3498,9 @@
       <para>
 	In addition to recording in realtime, it's possible to import a
 	voicetrack directly from an audio file.  To do so, select the
-	desired voicetrack marker and then touch the Import button to open
-	the Import/Export Audio dialog (see Illustration 5). (For more
+	desired voicetrack marker and then touch the
+	<computeroutput>Import</computeroutput> button to open
+	the Import/Export Audio dialog (see FIXME). (For more
 	information on using the Import/Export Audio dialog, see Section 
 	3.1.0 Importing Audio from a File). Once imported, the voicetrack
 	can be manipulated in the same manner as those that were directly
@@ -3428,7 +3514,7 @@
 	it is possible to set the transition so that the end of the
 	voicetrack automatically aligns with the end of the Talk Time
 	(commonly referred to as hitting the post). To do this, simply
-	touch the Hit Post button.
+	touch the <computeroutput>Hit Post</computeroutput> button.
       </para>
     </sect2>
   </sect1>
