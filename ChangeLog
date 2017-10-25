@@ -16207,3 +16207,6 @@
 	* Fixed a bug in the 'RDStation::removed()' method that caused JACK
 	client setting to fail to be cleaned up when deleting host
 	configurations.
+2017-10-25 Fred Gleason <fredg@paravelsystems.com>
+	* Updated 'NEWS'.
+	* Incremented the package version to 2.17.0int03.
