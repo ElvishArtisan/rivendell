@@ -16198,3 +16198,6 @@
 2017-10-19 Fred Gleason <fredg@paravelsystems.com>
 	* Updated 'NEWS'.
 	* Incremented the package version to 2.17.0int02.
+2017-10-25 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdadmin(1) that caused a segfault when opening the
+	'Edit Host' dialog.
