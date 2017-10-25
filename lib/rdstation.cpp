@@ -1712,6 +1712,25 @@ bool RDStation::create(const QString &name,QString *err_msg,
       delete q1;
     }
     delete q;
+
+    //
+    // Clone JACK Clients
+    //
+    sql=QString("select ")+
+      "DESCRIPTION,"+   // 00
+      "COMMAND_LINE "+  // 01
+      "from JACK_CLIENTS where "+
+      "STATION_NAME=\""+RDEscapeString(exemplar)+"\"";
+    q=new RDSqlQuery(sql);
+    while(q->next()) {
+      sql=QString("insert into JACK_CLIENTS set ")+
+	"STATION_NAME=\""+RDEscapeString(name)+"\","+
+	"DESCRIPTION=\""+RDEscapeString(q->value(0).toString())+"\","+
+	"COMMAND_LINE=\""+RDEscapeString(q->value(1).toString())+"\"";
+      q1=new RDSqlQuery(sql);
+      delete q1;
+    }
+    delete q;
   }
   return true;
 }
@@ -1860,6 +1879,11 @@ void RDStation::remove(const QString &name)
   delete q;
 
   sql=QString("delete from SWITCHER_NODES where ")+
+    "STATION_NAME=\""+RDEscapeString(name)+"\"";
+  q=new RDSqlQuery(sql);
+  delete q;
+
+  sql=QString("delete from JACK_CLIENTS where ")+
     "STATION_NAME=\""+RDEscapeString(name)+"\"";
   q=new RDSqlQuery(sql);
   delete q;

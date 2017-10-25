@@ -16201,3 +16201,9 @@
 2017-10-25 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in rdadmin(1) that caused a segfault when opening the
 	'Edit Host' dialog.
+2017-10-25 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in the 'RDStation::create()' method that caused JACK
+	client setting to fail to be copied to new host configurations.
+	* Fixed a bug in the 'RDStation::removed()' method that caused JACK
+	client setting to fail to be cleaned up when deleting host
+	configurations.
