@@ -321,19 +321,21 @@ MainWidget::MainWidget(QWidget *parent)
       rdairplay_conf->port(RDAirPlayConf::MainLog2Channel)))||
      rdairplay_conf->card(RDAirPlayConf::MainLog2Channel)<0) {
     air_start_gpi_matrices[RDAirPlayConf::MainLog2Channel]=-1;
-    air_start_gpo_matrices[RDAirPlayConf::MainLog2Channel]=-1;
+    air_start_gpo_matrices[RDAirPlayConf::MainLog2Channel]=
+      air_start_gpo_matrices[RDAirPlayConf::MainLog1Channel];
     air_stop_gpi_matrices[RDAirPlayConf::MainLog2Channel]=
       air_stop_gpi_matrices[RDAirPlayConf::MainLog1Channel];
     air_stop_gpo_matrices[RDAirPlayConf::MainLog2Channel]=-1;
   }
 
-  if(((rdairplay_conf->card(RDAirPlayConf::MainLog1Channel)==
+    if(((rdairplay_conf->card(RDAirPlayConf::MainLog1Channel)==
       rdairplay_conf->card(RDAirPlayConf::MainLog3Channel))&&
      (rdairplay_conf->port(RDAirPlayConf::MainLog1Channel)==
       rdairplay_conf->port(RDAirPlayConf::MainLog3Channel)))||
      rdairplay_conf->card(RDAirPlayConf::MainLog3Channel)<0) {
     air_start_gpi_matrices[RDAirPlayConf::MainLog3Channel]=-1;
-    air_start_gpo_matrices[RDAirPlayConf::MainLog3Channel]=-1;
+    air_start_gpo_matrices[RDAirPlayConf::MainLog3Channel]=
+      air_start_gpo_matrices[RDAirPlayConf::MainLog1Channel];
     air_stop_gpi_matrices[RDAirPlayConf::MainLog3Channel]=
       air_stop_gpi_matrices[RDAirPlayConf::MainLog1Channel];
     air_stop_gpo_matrices[RDAirPlayConf::MainLog3Channel]=-1;
@@ -345,10 +347,11 @@ MainWidget::MainWidget(QWidget *parent)
       rdairplay_conf->port(RDAirPlayConf::MainLog4Channel)))||
      rdairplay_conf->card(RDAirPlayConf::MainLog4Channel)<0) {
     air_start_gpi_matrices[RDAirPlayConf::MainLog4Channel]=-1;
-    air_start_gpo_matrices[RDAirPlayConf::MainLog4Channel]=-1;
+    air_start_gpo_matrices[RDAirPlayConf::MainLog4Channel]=
+      air_start_gpo_matrices[RDAirPlayConf::MainLog1Channel];
     air_stop_gpi_matrices[RDAirPlayConf::MainLog4Channel]=
       air_stop_gpi_matrices[RDAirPlayConf::MainLog1Channel];
-    air_stop_gpo_matrices[RDAirPlayConf::MainLog4Channel]=-1;
+   air_stop_gpo_matrices[RDAirPlayConf::MainLog4Channel]=-1;
   }
 
   if(((rdairplay_conf->card(RDAirPlayConf::MainLog2Channel)==
@@ -357,7 +360,8 @@ MainWidget::MainWidget(QWidget *parent)
       rdairplay_conf->port(RDAirPlayConf::MainLog3Channel)))||
      rdairplay_conf->card(RDAirPlayConf::MainLog3Channel)<0) {
     air_start_gpi_matrices[RDAirPlayConf::MainLog3Channel]=-1;
-    air_start_gpo_matrices[RDAirPlayConf::MainLog3Channel]=-1;
+    air_start_gpo_matrices[RDAirPlayConf::MainLog3Channel]=
+      air_start_gpo_matrices[RDAirPlayConf::MainLog2Channel];
     air_stop_gpi_matrices[RDAirPlayConf::MainLog3Channel]=
       air_stop_gpi_matrices[RDAirPlayConf::MainLog2Channel];
     air_stop_gpo_matrices[RDAirPlayConf::MainLog3Channel]=-1;
@@ -369,7 +373,8 @@ MainWidget::MainWidget(QWidget *parent)
       rdairplay_conf->port(RDAirPlayConf::MainLog4Channel)))||
      rdairplay_conf->card(RDAirPlayConf::MainLog4Channel)<0) {
     air_start_gpi_matrices[RDAirPlayConf::MainLog4Channel]=-1;
-    air_start_gpo_matrices[RDAirPlayConf::MainLog4Channel]=-1;
+    air_start_gpo_matrices[RDAirPlayConf::MainLog4Channel]=
+      air_start_gpo_matrices[RDAirPlayConf::MainLog2Channel];
     air_stop_gpi_matrices[RDAirPlayConf::MainLog4Channel]=
       air_stop_gpi_matrices[RDAirPlayConf::MainLog2Channel];
     air_stop_gpo_matrices[RDAirPlayConf::MainLog4Channel]=-1;
@@ -381,7 +386,8 @@ MainWidget::MainWidget(QWidget *parent)
       rdairplay_conf->port(RDAirPlayConf::MainLog4Channel)))||
      rdairplay_conf->card(RDAirPlayConf::MainLog4Channel)<0) {
     air_start_gpi_matrices[RDAirPlayConf::MainLog4Channel]=-1;
-    air_start_gpo_matrices[RDAirPlayConf::MainLog4Channel]=-1;
+    air_start_gpo_matrices[RDAirPlayConf::MainLog4Channel]=
+      air_start_gpo_matrices[RDAirPlayConf::MainLog3Channel];
     air_stop_gpi_matrices[RDAirPlayConf::MainLog4Channel]=
       air_stop_gpi_matrices[RDAirPlayConf::MainLog3Channel];
     air_stop_gpo_matrices[RDAirPlayConf::MainLog4Channel]=-1;
@@ -471,18 +477,7 @@ MainWidget::MainWidget(QWidget *parent)
     cards[1]=cards[0];
     ports[1]=ports[0];
   }
-  if(air_meter_card[2]<0) {  // Fixup disabled main log port 3 playout
-    air_meter_card[2]=air_meter_card[0];
-    air_meter_port[2]=air_meter_port[0];
-    cards[2]=cards[0];
-    ports[2]=ports[0];
-  }
-  if(air_meter_card[3]<0) {  // Fixup disabled main log port 4 playout
-    air_meter_card[3]=air_meter_card[1];
-    air_meter_port[3]=air_meter_port[1];
-    cards[3]=cards[1];
-    ports[3]=ports[1];
-  }
+ 
   air_log[0]->setChannels(cards,ports,start_rmls,stop_rmls);
 
   for(int i=0;i<2;i++) {
