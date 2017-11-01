@@ -16201,3 +16201,7 @@
 	Operations Guide.
 	* Applied structural markup to the 'voicetracking' chapter of the
 	Operations Guide.
+2017-11-01 Fred Gleason <fredg@paravelsystems.com>
+	* Added an rmlsend(1) man page.
+	* Revised the "Interfacing with the Linux Ecosystem" chapter in the
+	Operations Guide to include all command-line utilities.

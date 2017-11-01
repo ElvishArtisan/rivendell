@@ -38,7 +38,8 @@ all-local:	rdclilogedit.1\
                 rdrender.1\
                 rdrevert.8\
                 rdexport.1\
-                rdimport.1
+                rdimport.1\
+                rmlsend.1
 
 man_MANS = rdclilogedit.1\
            rdconvert.1\
@@ -47,7 +48,8 @@ man_MANS = rdclilogedit.1\
            rdimport.1\
            rdmarkerset.8\
            rdrender.1\
-           rdrevert.8
+           rdrevert.8\
+           rmlsend.1
 
 EXTRA_DIST = rdclilogedit.1\
              rdclilogedit.xml\
@@ -64,7 +66,9 @@ EXTRA_DIST = rdclilogedit.1\
              rdexport.1\
              rdexport.xml\
              rdimport.1\
-             rdimport.xml
+             rdimport.xml\
+             rmlsend.1\
+             rmlsend.xml
 
 CLEANFILES = *~
 MAINTAINERCLEANFILES = *~\
