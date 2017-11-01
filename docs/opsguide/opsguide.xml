@@ -5561,7 +5561,7 @@
   </sect2>
 
   <sect2 id="sect.rml.switch_add_with_gain__sg_">
-    <title><command>Switch Add With Gain [SG]</command></title>
+    <title>Switch Add With Gain [SG]</title>
     <para>
       <variablelist>
 	<varlistentry>
@@ -5595,7 +5595,7 @@
   </sect2>
 
   <sect2 id="sect.rml.switch_crosspoint_gain__sx_">
-    <title><command>Switch Crosspoint Gain [SX]</command></title>
+    <title>Switch Crosspoint Gain [SX]</title>
     <para>
       <variablelist>
 	<varlistentry>
@@ -5627,7 +5627,7 @@
   </sect2>
 
   <sect2 id="sect.rml.switch_level__sl_">
-    <title><command>Switch Level [SL]</command></title>
+    <title>Switch Level [SL]</title>
     <para>
       <variablelist>
 	<varlistentry>
@@ -5657,7 +5657,7 @@
   </sect2>
 
   <sect2 id="sect.rml.switch_reload__sz_">
-    <title><command>Switch Reload [SZ]</command></title>
+    <title>Switch Reload [SZ]</title>
     <para>
       <variablelist>
 	<varlistentry>
@@ -5685,7 +5685,7 @@
   </sect2>
 
   <sect2 id="sect.rml.switch_remove__sr_">
-    <title><command>Switch Remove [SR]</command></title>
+    <title>Switch Remove [SR]</title>
     <para>
       <variablelist>
 	<varlistentry>
@@ -5716,7 +5716,7 @@
   </sect2>
 
   <sect2 id="sect.rml.switch_take__st_">
-    <title><command>Switch Take [ST]</command></title>
+    <title>Switch Take [ST]</title>
     <para>
       <variablelist>
 	<varlistentry>
@@ -5747,7 +5747,7 @@
   </sect2>
 
   <sect2 id="sect.rml.toggle_on_air_flag__ta_">
-    <title><command>Toggle On Air Flag [TA]</command></title>
+    <title>Toggle On Air Flag [TA]</title>
     <para>
       <variablelist>
 	<varlistentry>
@@ -5773,7 +5773,7 @@
   </sect2>
 
   <sect2 id="sect.rml.udp_out__uo_">
-    <title><command>UDP Out [UO]</command></title>
+    <title>UDP Out [UO]</title>
     <para>
       <variablelist>
 	<varlistentry>
@@ -5807,126 +5807,124 @@
 
 <chapter id="chapter.interfacing_with_the_linux_ecosystem__command_line_utilities">
   <title>Interfacing with the Linux Ecosystem: Command-Line Utilities</title>
-  <sect1 id="sect.interfacing_with_the_linux_ecosystem__command_line_utilities">
+  <para>
+    Rivendell includes a number of command-line utilities. Some of these
+    can be used to perform efficient &quot;bulk&quot; operations --e.g.
+    import thousands of audio files in one command -- while others are
+    useful in various aspects of system maintenance. This section provides
+    a brief overview of the available utilities; full documentation for each
+    is available via the Linux man page facility.
+  </para>
+  <sect1 id="sect.interfacing_with_the_linux_ecosystem__command_line_utilities.rdclilogedit">
+    <title>rdclilogedit(1)</title>
     <para>
-      Rivendell includes a number of command-line utilities. Some of these
-      can be used to perform efficient &quot;bulk&quot; operations --e.g.
-      import thousands of audio files in one command -- while others are
-      useful in various aspects of system maintenance. This section provides
-      a brief overview of the available utilities; full documentation for each
-      is available via the Linux man page facility.
+      <command>rdclilogedit</command><manvolnum>1</manvolnum> is a
+      command-line interface (CLI) program that can be used to edit
+      Rivendell logs. It is loosely modeled after the venerable
+      <command>ed</command><manvolnum>1</manvolnum> command-line editor
+      and so is particularly well suited for use in scripting
+      environments.
     </para>
-    <sect2 id="sect.interfacing_with_the_linux_ecosystem__command_line_utilities.rdclilogedit">
-      <title><command>rdclilogedit</command><manvolnum>1</manvolnum></title>
-      <para>
-	<command>rdclilogedit</command><manvolnum>1</manvolnum> is a
-	command-line interface (CLI) program that can be used to edit
-	Rivendell logs. It is loosely modeled after the venerable
-	<command>ed</command><manvolnum>1</manvolnum> command-line editor
-	and so is particularly well suited for use in scripting
-	environments.
-      </para>
-      <para>
-	Full documentation is available by doing
-	<userinput>man 1 rdclilogedit</userinput>.
-      </para>
-    </sect2>
-    <sect2 id="sect.interfacing_with_the_linux_ecosystem__command_line_utilities.rdconvert">
-      <title><command>rdconvert</command><manvolnum>1</manvolnum></title>
-      <para>
-	<command>rdconvert</command><manvolnum>1</manvolnum> is a command-line
-	interface (CLI) program that can be used to convert an audio file
-	into a different format.
-      </para>
-      <para>
-	Full documentation is available by doing
-	<userinput>man 1 rdconvert</userinput>.
-      </para>
-    </sect2>
-    <sect2 id="sect.interfacing_with_the_linux_ecosystem__command_line_utilities.rddbcheck">
-      <title><command>rddbcheck</command><manvolnum>8</manvolnum></title>
-      <para>
-	<command>rddbcheck</command><manvolnum>8</manvolnum> is a
-	command-line interface (CLI) program that can be used to check a
-	Rivendell database for consistency and correct errors found.
-      </para>
-      <para>
-	Full documentation is available by doing
-	<userinput>man 8 rddbcheck</userinput>.
-      </para>
-    </sect2>
-    <sect2 id="sect.interfacing_with_the_linux_ecosystem__command_line_utilities.rdexport">
-      <title><command>rdexport</command><manvolnum>1</manvolnum></title>
-      <para>
-	<command>rdexport</command><manvolnum>1</manvolnum> is a command-line
-	interface (CLI) program that can be used to
-	export audio material from the Rivendell Library. It is particularly
-	useful in situations where a large number of audio files need to be
-	exported in an automated fashion, and is capable of exporting
-	thousands of files with a single command-line invocation.
-      </para>
-      <para>
-	Full documentation is available by doing
-	<userinput>man 1 rdexport</userinput>.
-      </para>
-    </sect2>
-    <sect2 id="sect.interfacing_with_the_linux_ecosystem__command_line_utilities.rdimport">
-      <title><command>rdimport</command><manvolnum>1</manvolnum></title>
-      <para>
-	<command>rdimport</command><manvolnum>1</manvolnum> is a command-line
-	interface (CLI) program that can be used to
-	import audio material into the Rivendell Library. It is particularly
-	useful in situations where a large number of audio files need to be
-	imported in an automated fashion, and is capable of importing
-	thousands of files with a single command-line invocation.
-      </para>
-      <para>
-	Full documentation is available by doing
-	<userinput>man 1 rdimport</userinput>.
-      </para>
-    </sect2>
-    <sect2 id="sect.interfacing_with_the_linux_ecosystem__command_line_utilities.rdmarkerset">
-      <title><command>rdmarkerset</command><manvolnum>8</manvolnum></title>
-      <para>
-	<command>rdmarkerset</command><manvolnum>8</manvolnum> is a
-	command-line interface (CLI) program that can be used to set or
-	alter audio cut markers in the Rivendell Radio Automation System.
-	It is capable of altering multiple cuts in a single operation.
-      </para>
-      <para>
-	Full documentation is available by doing
-	<userinput>man 8 rdmarkerset</userinput>.
-      </para>
-    </sect2>
-    <sect2 id="sect.interfacing_with_the_linux_ecosystem__command_line_utilities.rdrevert">
-      <title><command>rdrevert</command><manvolnum>8</manvolnum></title>
-      <para>
-	<command>rdrevert</command><manvolnum>8</manvolnum> is a
-	command-line interface (CLI) program that can be used to revert a
-	Rivendell database to a previous schema version.
-      </para>
-      <para>
-	Full documentation is available by doing
-	<userinput>man 8 rdrevert</userinput>.
-      </para>
-    </sect2>
-    <sect2 id="sect.rinterfacing_with_the_linux_ecosystem__command_line_utilities.mlsend_1_">
-      <title><command>rmlsend</command><manvolnum>1</manvolnum></title>
-      <para>
-	<command>rmlsend</command><manvolnum>1</manvolnum> is a small
-	utility that can be used to send RML commands to a
-	local or remote Rivendell host. It can operate in two modes: GUI or
-	a command line interface (CLI).
-      </para>
-      <para>
-	If started with no arguments, RMLSend will come up in GUI mode (see
-	FIXME).
-      </para>
-      <para>
-	Full documentation is available by doing
-	<userinput>man 1 rmlsend</userinput>.
-      </para>
-    </sect2>
+    <para>
+      Full documentation is available by doing
+      <userinput>man 1 rdclilogedit</userinput>.
+    </para>
+  </sect1>
+  <sect1 id="sect.interfacing_with_the_linux_ecosystem__command_line_utilities.rdconvert">
+    <title>rdconvert(1)</title>
+    <para>
+      <command>rdconvert</command><manvolnum>1</manvolnum> is a command-line
+      interface (CLI) program that can be used to convert an audio file
+      into a different format.
+    </para>
+    <para>
+      Full documentation is available by doing
+      <userinput>man 1 rdconvert</userinput>.
+    </para>
+  </sect1>
+  <sect1 id="sect.interfacing_with_the_linux_ecosystem__command_line_utilities.rddbcheck">
+    <title>rddbcheck(8)</title>
+    <para>
+      <command>rddbcheck</command><manvolnum>8</manvolnum> is a
+      command-line interface (CLI) program that can be used to check a
+      Rivendell database for consistency and correct errors found.
+    </para>
+    <para>
+      Full documentation is available by doing
+      <userinput>man 8 rddbcheck</userinput>.
+    </para>
+  </sect1>
+  <sect1 id="sect.interfacing_with_the_linux_ecosystem__command_line_utilities.rdexport">
+    <title>rdexport(1)</title>
+    <para>
+      <command>rdexport</command><manvolnum>1</manvolnum> is a command-line
+      interface (CLI) program that can be used to
+      export audio material from the Rivendell Library. It is particularly
+      useful in situations where a large number of audio files need to be
+      exported in an automated fashion, and is capable of exporting
+      thousands of files with a single command-line invocation.
+    </para>
+    <para>
+      Full documentation is available by doing
+      <userinput>man 1 rdexport</userinput>.
+    </para>
+  </sect1>
+  <sect1 id="sect.interfacing_with_the_linux_ecosystem__command_line_utilities.rdimport">
+    <title>rdimport(1)</title>
+    <para>
+      <command>rdimport</command><manvolnum>1</manvolnum> is a command-line
+      interface (CLI) program that can be used to
+      import audio material into the Rivendell Library. It is particularly
+      useful in situations where a large number of audio files need to be
+      imported in an automated fashion, and is capable of importing
+      thousands of files with a single command-line invocation.
+    </para>
+    <para>
+      Full documentation is available by doing
+      <userinput>man 1 rdimport</userinput>.
+    </para>
+  </sect1>
+  <sect1 id="sect.interfacing_with_the_linux_ecosystem__command_line_utilities.rdmarkerset">
+    <title>rdmarkerset(8)</title>
+    <para>
+      <command>rdmarkerset</command><manvolnum>8</manvolnum> is a
+      command-line interface (CLI) program that can be used to set or
+      alter audio cut markers in the Rivendell Radio Automation System.
+      It is capable of altering multiple cuts in a single operation.
+    </para>
+    <para>
+      Full documentation is available by doing
+      <userinput>man 8 rdmarkerset</userinput>.
+    </para>
+  </sect1>
+  <sect1 id="sect.interfacing_with_the_linux_ecosystem__command_line_utilities.rdrevert">
+    <title>rdrevert(8)</title>
+    <para>
+      <command>rdrevert</command><manvolnum>8</manvolnum> is a
+      command-line interface (CLI) program that can be used to revert a
+      Rivendell database to a previous schema version.
+    </para>
+    <para>
+      Full documentation is available by doing
+      <userinput>man 8 rdrevert</userinput>.
+    </para>
+  </sect1>
+  <sect1 id="sect.rinterfacing_with_the_linux_ecosystem__command_line_utilities.mlsend_1_">
+    <title>rmlsend(1)</title>
+    <para>
+      <command>rmlsend</command><manvolnum>1</manvolnum> is a small
+      utility that can be used to send RML commands to a
+      local or remote Rivendell host. It can operate in two modes: GUI or
+      a command line interface (CLI).
+    </para>
+    <para>
+      If started with no arguments, RMLSend will come up in GUI mode (see
+      FIXME).
+    </para>
+    <para>
+      Full documentation is available by doing
+      <userinput>man 1 rmlsend</userinput>.
+    </para>
   </sect1>
 </chapter>
 

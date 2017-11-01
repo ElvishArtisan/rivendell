@@ -16205,3 +16205,5 @@
 	* Added an rmlsend(1) man page.
 	* Revised the "Interfacing with the Linux Ecosystem" chapter in the
 	Operations Guide to include all command-line utilities.
+2017-11-01 Fred Gleason <fredg@paravelsystems.com>
+	* Cleaned up title formatting in the Operations Guide.
