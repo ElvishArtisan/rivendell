@@ -410,6 +410,13 @@
       required to set the default user).  To exit RDLogin and do nothing,
       simply touch the Cancel button.
     </para>
+    <para>
+      <mediaobject>
+	<imageobject>
+	  <imagedata align="center" fileref="rdlogin.rdlogin_screenshot.png" scale="70"/>
+	</imageobject>
+      </mediaobject>
+    </para>
   </sect1>
 </chapter>
 
@@ -433,7 +440,17 @@
       </para>
       <para>
 	RDLibrary, upon startup, will show the current list of all carts
-	on the system, as in  Illustration 2 below:
+	on the system (see below).
+      </para>
+      <para>
+	<mediaobject>
+	  <imageobject>
+	    <imagedata align="center" fileref="rdlibrary.rdlibrary_screenshot.png" scale="50"/>
+	  </imageobject>
+	  <caption>
+	    <para>RDLibrary Main Window</para>
+	  </caption>
+	</mediaobject>
       </para>
       <para>
 	A number of important attributes of carts can be seen from this
@@ -461,6 +478,16 @@
 	entry in the list, or by touching the desired cart entry and then
 	touching the Edit button.  In either case, you should get a dialog
 	similar to that shown in Illustration 3.
+      </para>
+      <para>
+	<mediaobject>
+	  <imageobject>
+	    <imagedata align="center" fileref="rdlibrary.edit_cart_dialog.png" scale="50"/>
+	  </imageobject>
+	  <caption>
+	    <para>The Edit Cart Dialog</para>
+	  </caption>
+	</mediaobject>
       </para>
       <para>
 	Near the center of the dialog will be a dropdown box labeled
@@ -683,6 +710,16 @@
 	  The Record Dialog (Illustration 4) will now open up.
 	</para>
 	<para>
+	  <mediaobject>
+	    <imageobject>
+	      <imagedata align="center" fileref="rdlibrary.edit_cut_info_dialog.png" scale="50"/>
+	    </imageobject>
+	    <caption>
+	      <para>The Cut Info Dialog</para>
+	    </caption>
+	  </mediaobject>
+	</para>
+	<para>
 	  Roughly the upper third of the dialog is for editing the various
 	  cut parameters, the middle section is for  configuring the cut's
 	  daypart settings, and the bottom third is a record machine that
@@ -891,7 +928,17 @@
 	opening the cut's parent cart in the Edit Cart Dialog.  Next,
 	touch the cut's entry in the cut list and then touch the
 	<computeroutput>Import/Export</computeroutput> button to open the
-	Import/Export Audio Dialog (Illustration 5).
+	Import/Export Audio Dialog.
+      </para>
+      <para>
+	<mediaobject>
+	  <imageobject>
+	    <imagedata align="center" fileref="rdlibrary.import_export_dialog.png" scale="50"/>
+	  </imageobject>
+	  <caption>
+	    <para>The Import/Export Audio Dialog</para>
+	  </caption>
+	</mediaobject>
       </para>
       <para>
 	Select the file you wish to import, either by entering the path
@@ -946,8 +993,18 @@
 	To rip audio directly off of a CD into a cut, we again start by
 	opening the cut's parent cart in the Edit Cart Dialog.  Next,
 	select the cut's by touching the cut's entry in the cut list,
-	and then touch the <computeroutput>Rip</computeroutput> button to open the Rip CD Dialog
-	(Illustration 6).
+	and then touch the <computeroutput>Rip</computeroutput> button
+	to open the Rip CD Dialog.
+      </para>
+     <para>
+	<mediaobject>
+	  <imageobject>
+	    <imagedata align="center" fileref="rdlibrary.cd_ripper_dialog.png" scale="50"/>
+	  </imageobject>
+	  <caption>
+	    <para>The Rip CD Dialog</para>
+	  </caption>
+	</mediaobject>
       </para>
       <para>
 	Load a CD into the CD drive.  After a few seconds, list of tracks
@@ -984,15 +1041,34 @@
 	once and then let the rip run in a 'batch' mode. RDLibrary is
 	capable of ripping audio in this manner as well. To do this, click
 	the <computeroutput>Rip CD</computeroutput> button near the bottom of
-	the main RDLibrary screen,
-	bringing up the Rip Disk Dialog (Illustration 7).
+	the main RDLibrary screen, bringing up the Rip Disk Dialog.
+      </para>
+      <para>
+	<mediaobject>
+	  <imageobject>
+	    <imagedata align="center" fileref="rdlibrary.rip_disk_dialog.png" scale="50"/>
+	  </imageobject>
+	  <caption>
+	    <para>The Rip Disk Dialog</para>
+	  </caption>
+	</mediaobject>
       </para>
       <para>
 	This dialog is similar in many ways to the Rip CD Dialog described
 	above, except that each track can be assigned to transfer to a
 	different cut by double clicking on its listing, or by touching
 	the listing and then the Set Cut button, bringing up the Select
-	Cut Dialog (see Illustration 8).
+	Cart/Cut Dialog.
+      </para>
+      <para>
+	<mediaobject>
+	  <imageobject>
+	    <imagedata align="center" fileref="rdlibrary.set_cart_cut_dialog.png" scale="50"/>
+	  </imageobject>
+	  <caption>
+	    <para>The Set Cart/Cut Dialog</para>
+	  </caption>
+	</mediaobject>
       </para>
       <para>
 	The destination cut is selected by first choosing the cart from the
@@ -1041,6 +1117,16 @@
       <computeroutput>Copy</computeroutput> and
       <computeroutput>Paste</computeroutput> individual
       lines both within a given cart or between carts.
+    </para>
+    <para>
+      <mediaobject>
+	<imageobject>
+	  <imagedata align="center" fileref="rdlibrary.edit_macro_cart_dialog.png" scale="50"/>
+	</imageobject>
+	<caption>
+	  <para>The Edit Macro Cart Dialog</para>
+	</caption>
+      </mediaobject>
     </para>
   </sect1>
   <sect1 id="sect.rdlibrary.navigating_the_audio_library">
@@ -1149,6 +1235,16 @@
 	audio meter;
 	and the marker button area in the lower third of the window,
 	consisting of controls for selecting and positioning markers.  
+      </para>
+      <para>
+	<mediaobject>
+	  <imageobject>
+	    <imagedata align="center" fileref="rdlibrary.edit_marker_dialog.png" scale="50"/>
+	  </imageobject>
+	  <caption>
+	    <para>The Edit Marker Dialog</para>
+	  </caption>
+	</mediaobject>
       </para>
       <para>
 	It's possible to 'zoom-in' on the waveform in various ways by
@@ -1514,6 +1610,16 @@
 	</tbody>
       </tgroup>
     </table>
+      <para>
+	<mediaobject>
+	  <imageobject>
+	    <imagedata align="center" fileref="rdcatch.rdcatch_screenshot.png" scale="45"/>
+	  </imageobject>
+	  <caption>
+	    <para>The RDCatch Main Window</para>
+	  </caption>
+	</mediaobject>
+      </para>
     <para>
       Finally, each deck has an audio meter on its right-hand end, used
       to verify audio levels in realtime.
@@ -1784,6 +1890,16 @@
       Simply clicking the button that correspond to the desired type of
       event will create it.
     </para>
+      <para>
+	<mediaobject>
+	  <imageobject>
+	    <imagedata align="center" fileref="rdcatch.add_event_dialog.png" scale="50"/>
+	  </imageobject>
+	  <caption>
+	    <para>The Add Event Dialog</para>
+	  </caption>
+	</mediaobject>
+      </para>
   </sect1>
   <sect1 id="sect.rdcatch.automating_recordings">
     <title>Automating Recordings</title>
@@ -1814,6 +1930,16 @@
 	'recognized' by RDCatch. It is also optionally possible to specify
 	a <computeroutput>Start Delay</computeroutput> between reception of
 	the GPI event and the actual start of the recording.
+      </para>
+      <para>
+	<mediaobject>
+	  <imageobject>
+	    <imagedata align="center" fileref="rdcatch.edit_recording_dialog.png" scale="50"/>
+	  </imageobject>
+	  <caption>
+	    <para>The Edit Recording Dialog</para>
+	  </caption>
+	</mediaobject>
       </para>
     </sect2>
     <sect2 id="sect.rdcatch_the__end_parameters__section">
@@ -1906,6 +2032,16 @@
       <xref linkend="sect.rdcatch.automating_recordings"/>
       above for details.
     </para>
+      <para>
+	<mediaobject>
+	  <imageobject>
+	    <imagedata align="center" fileref="rdcatch.edit_playout_dialog.png" scale="50"/>
+	  </imageobject>
+	  <caption>
+	    <para>The Edit Playout Dialog</para>
+	  </caption>
+	</mediaobject>
+      </para>
   </sect1>
   <sect1 id="sect.rdcatch.automating_uploads_downloads">
     <title>Automating Uploads/Downloads</title>
@@ -1918,6 +2054,16 @@
       Event dialog (see Illustration 15) to create a new record event or
       by touching the <computeroutput>Edit</computeroutput> button to
       modify an existing event.
+    </para>
+    <para>
+      <mediaobject>
+	<imageobject>
+	  <imagedata align="center" fileref="rdcatch.edit_download_dialog.png" scale="50"/>
+	</imageobject>
+	<caption>
+	  <para>The Edit Download Dialog</para>
+	</caption>
+      </mediaobject>
     </para>
     <para>
       With the exception of the <computeroutput>Url</computeroutput>,
@@ -1960,6 +2106,16 @@
       downloads, the <computeroutput>Url</computeroutput> field can also
       include wildcard characters that
       can be used to construct date-based URLs, as shown in FIXME.
+    </para>
+    <para>
+      <mediaobject>
+	<imageobject>
+	  <imagedata align="center" fileref="rdcatch.edit_upload_dialog.png" scale="50"/>
+	</imageobject>
+	<caption>
+	  <para>The Edit Upload Dialog</para>
+	</caption>
+      </mediaobject>
     </para>
     <para>
       Configuration of an upload event is very similar to that of a download,
@@ -2008,6 +2164,16 @@
       recording – see <xref linkend="sect.rdcatch.automating_recordings"/>
       above for details.
     </para>
+    <para>
+      <mediaobject>
+	<imageobject>
+	  <imagedata align="center" fileref="rdcatch.edit_cart_event_dialog.png" scale="50"/>
+	</imageobject>
+	<caption>
+	  <para>The Edit Cart Event Dialog</para>
+	</caption>
+      </mediaobject>
+    </para>
   </sect1>
   <sect1 id="sect.rdcatch.automating_switcher_operations">
     <title>Automating Switcher Operations</title>
@@ -2019,6 +2185,16 @@
       in the Add Event dialog to create a new switch event or by touching
       the <computeroutput>Edit</computeroutput> button to modify an
       existing event.
+    </para>
+    <para>
+      <mediaobject>
+	<imageobject>
+	  <imagedata align="center" fileref="rdcatch.edit_switcher_event_dialog.png" scale="50"/>
+	</imageobject>
+	<caption>
+	  <para>The Edit Switcher Event Dialog</para>
+	</caption>
+      </mediaobject>
     </para>
     <para>
       In addition to the usual fields, a switch event has
@@ -2035,6 +2211,7 @@
     </para>
   </sect1>
 </chapter>
+
 <chapter id="chapter.rdlogedit">
   <title>Generating and Maintaining Logs with RDLogEdit</title>
   <sect1 id="sect.rdlogedit.logs_and_log_events">
@@ -2057,6 +2234,16 @@
       long. The status indicator is intended as a quick visual guide as
       to whether a particular log is ready for air (green check mark) or
       not (red ex). 
+    </para>
+    <para>
+      <mediaobject>
+	<imageobject>
+	  <imagedata align="center" fileref="rdlogedit.rdlogedit_screenshot.png" scale="65"/>
+	</imageobject>
+	<caption>
+	  <para>The RDLogEdit Main Window</para>
+	</caption>
+      </mediaobject>
     </para>
     <para>
       Next comes the log's unique <computeroutput>Name</computeroutput>,
@@ -2133,71 +2320,117 @@
       <xref linkend="table.rdlogedit.log_event_type_icons"/> for a
       breakdown of the various icons).
     </para>
-    <table xml:id="table.rdlogedit.log_event_type_icons" frame="all">
+    <para>
+      <mediaobject>
+	<imageobject>
+	  <imagedata align="center" fileref="rdlogedit.edit_log_dialog.png" scale="55"/>
+	</imageobject>
+	<caption>
+	  <para>The Edit Log Dialog</para>
+	</caption>
+      </mediaobject>
+    </para>
+    <para>
+      The following types of events can be incorporated into a
+      Rivendell log:
+    </para>
+    <table xml:id="table.rdlogedit.log_event_type_icons" frame="all" pgwide="0">
       <title>Log Event Type Icons</title>
       <tgroup cols="2" align="left" colsep="1" rowsep="1">
-	<colspec colname="Icon" />
-	<colspec colname="Meaning" />
+	<colspec colname="Icon" colwidth="1.0*"/>
+	<colspec colname="Meaning" colwidth="10.0*"/>
 	<tbody>
 	  <row>
-	    <entry>
-	      [AUDIO_ICON]
+	    <entry align="center">
+	      <inlinemediaobject>
+		<imageobject>
+		  <imagedata fileref="../../icons/play.png" scale="100"/>
+		</imageobject>
+	      </inlinemediaobject>
 	    </entry>
 	    <entry>
 	      Audio Cart
 	    </entry>
 	  </row>
 	  <row>
-	    <entry>
-	      [TRACK AUDIO ICON]
+	    <entry align="center">
+	      <inlinemediaobject>
+		<imageobject>
+		  <imagedata fileref="../../icons/track_cart.png" scale="100"/>
+		</imageobject>
+	      </inlinemediaobject>
 	    </entry>
 	    <entry>
 	      Voice Track Audio Cart
 	    </entry>
 	  </row>
 	  <row>
-	    <entry>
-	      [MACRO ICON]
+	    <entry align="center">
+	      <inlinemediaobject>
+		<imageobject>
+		  <imagedata fileref="../../icons/rml5.png" scale="100"/>
+		</imageobject>
+	      </inlinemediaobject>
 	    </entry>
 	    <entry>
 	      Macro Cart
 	    </entry>
 	  </row>
 	  <row>
-	    <entry>
-	      [NOTE ICON]
+	    <entry align="center">
+	      <inlinemediaobject>
+		<imageobject>
+		  <imagedata fileref="../../icons/notemarker.png" scale="100"/>
+		</imageobject>
+	      </inlinemediaobject>
 	    </entry>
 	    <entry>
 	      Note Marker
 	    </entry>
 	  </row>
 	  <row>
-	    <entry>
-	      [TRACK ICON]
+	    <entry align="center">
+	      <inlinemediaobject>
+		<imageobject>
+		  <imagedata fileref="../../icons/mic16.png" scale="100"/>
+		</imageobject>
+	      </inlinemediaobject>
 	    </entry>
 	    <entry>
 	      Track Marker
 	    </entry>
 	  </row>
 	  <row>
-	    <entry>
-	      [CHAINTO ICON]
+	    <entry align="center">
+	      <inlinemediaobject>
+		<imageobject>
+		  <imagedata fileref="../../icons/chain.png" scale="100"/>
+		</imageobject>
+	      </inlinemediaobject>
 	    </entry>
 	    <entry>
 	      Chain Event
 	    </entry>
 	  </row>
 	  <row>
-	    <entry>
-	      [MUSICLINK ICON]
+	    <entry align="center">
+	      <inlinemediaobject>
+		<imageobject>
+		  <imagedata fileref="../../icons/music.png" scale="100"/>
+		</imageobject>
+	      </inlinemediaobject>
 	    </entry>
 	    <entry>
 	      Music Import Link
 	    </entry>
 	  </row>
 	  <row>
-	    <entry>
-	      [TRAFFICLINK ICON]
+	    <entry align="center">
+	      <inlinemediaobject>
+		<imageobject>
+		  <imagedata fileref="../../icons/traffic.png" scale="100"/>
+		</imageobject>
+	      </inlinemediaobject>
 	    </entry>
 	    <entry>
 	      Traffic Import Link
@@ -2206,10 +2439,6 @@
 	</tbody>
       </tgroup>
     </table>
-    <para>
-      The following types of events can be incorporated into a
-      Rivendell log:
-    </para>
     <sect2 id="sect.rdlogedit.audio_carts">
       <title>Audio Carts</title>
       <para>
@@ -2285,8 +2514,47 @@
 	Each event in a Rivendell log can have its parameters modified by
 	touching its entry in the Edit Log dialog and then clicking the
 	<computeroutput>Edit</computeroutput>
-	button, thus opening up the Edit Log Entry dialog, shown in
-	FIXME for a cart event, or FIXME for a meta event.  
+	button, thus opening up the Edit Log Entry dialog, shown below.
+      </para>
+      <para>
+	<mediaobject>
+	  <imageobject>
+	    <imagedata align="center" fileref="rdlogedit.edit_log_entry_dialog.png" scale="55"/>
+	  </imageobject>
+	  <caption>
+	    <para>The Edit Log Entry Dialog</para>
+	  </caption>
+	</mediaobject>
+      </para>
+      <para>
+	<mediaobject>
+	  <imageobject>
+	    <imagedata align="center" fileref="rdlogedit.edit_log_marker_dialog.png" scale="55"/>
+	  </imageobject>
+	  <caption>
+	    <para>The Edit Log Marker Dialog</para>
+	  </caption>
+	</mediaobject>
+      </para>
+      <para>
+	<mediaobject>
+	  <imageobject>
+	    <imagedata align="center" fileref="rdlogedit.edit_voice_track_marker_dialog.png" scale="55"/>
+	  </imageobject>
+	  <caption>
+	    <para>The Edit Voice Track Marker Dialog</para>
+	  </caption>
+	</mediaobject>
+      </para>
+      <para>
+	<mediaobject>
+	  <imageobject>
+	    <imagedata align="center" fileref="rdlogedit.edit_log_chain_dialog.png" scale="55"/>
+	  </imageobject>
+	  <caption>
+	    <para>The Edit Log Chain Dialog</para>
+	  </caption>
+	</mediaobject>
       </para>
     </sect2>
   </sect1>
@@ -2442,6 +2710,16 @@
 	supplied automatically by the system
 	from the cart's label.
       </para>
+      <para>
+	<mediaobject>
+	  <imageobject>
+	    <imagedata align="center" fileref="rdlogedit.select_cart_dialog.png" scale="55"/>
+	  </imageobject>
+	  <caption>
+	    <para>The Select Cart Dialog</para>
+	  </caption>
+	</mediaobject>
+      </para>
     </sect2>
     <sect2 id="sect.rdlogedit.specifying_meta_event_parameters">
       <title>Specifying Meta Event Parameters</title>
@@ -2541,6 +2819,16 @@
      playout of audio content in live assist as well as fully automated
      environments.
    </para>
+   <para>
+     <mediaobject>
+       <imageobject>
+	 <imagedata align="center" fileref="rdairplay.rdairplay_screenshot.png" scale="45"/>
+       </imageobject>
+       <caption>
+	 <para>The RDAirPlay Main Window</para>
+       </caption>
+     </mediaobject>
+   </para>
  </sect1>
  <sect1 id="sect.rdairplay.log_machines">
    <title>Log Machines</title>
@@ -2574,6 +2862,13 @@
    <sect2 id="sect.rdairplay.the_wall_clock">
      <title>The Wall Clock</title>
      <para>
+       <mediaobject>
+	 <imageobject>
+	   <imagedata align="left" fileref="rdairplay.wallclock_widget.png" scale="60"/>
+	 </imageobject>
+       </mediaobject>
+     </para>
+     <para>
        In the upper left-hand corner is the wall clock indicator, which
        indicates
        the current system date and time. The style used for displaying times
@@ -2586,6 +2881,13 @@
    </sect2>
    <sect2 id="sect.rdairplay.the_post_point_counter">
      <title>The Post Point Counter</title>
+     <para>
+       <mediaobject>
+	 <imageobject>
+	   <imagedata align="left" fileref="rdairplay.postpoint_ontime_widget.png" scale="60"/>
+	 </imageobject>
+       </mediaobject>
+     </para>
      <para>
        Immediately to the right of the wall clock is the Post Point Counter.
        A post point is an attribute applied to a log event with a hard time
@@ -2610,12 +2912,26 @@
        scheduled time of the hard-timed event.
      </para>
      <para>
+       <mediaobject>
+	 <imageobject>
+	   <imagedata align="left" fileref="rdairplay.postpoint_early_widget.png" scale="60"/>
+	 </imageobject>
+       </mediaobject>
+     </para>
+     <para>
        If the playout is such that the next hard time will be reached
        one second
        or more before its programmed time, then the counter will be in
        <computeroutput>Early</computeroutput>
        mode (see FIXME). It will also give an indication of how
        much more material would need to be added to make the join on time.
+     </para>
+     <para>
+       <mediaobject>
+	 <imageobject>
+	   <imagedata align="left" fileref="rdairplay.postpoint_late_widget.png" scale="60"/>
+	 </imageobject>
+       </mediaobject>
      </para>
      <para>
        If the playout is such that the next hard time will be reached one
@@ -2628,6 +2944,13 @@
    <sect2 id="sect.rdairplay.the_audio_meter">
      <title>The Audio Meter</title>
      <para>
+       <mediaobject>
+	 <imageobject>
+	   <imagedata align="left" fileref="rdairplay.audio_meter.png" scale="60"/>
+	 </imageobject>
+       </mediaobject>
+     </para>
+     <para>
        Immediately beneath the wall clock and post point counter is the audio
        meter. The meter shows the current peak levels of audio being played
        out of RDAirPlay, with '0' level referenced to -16 dBFS.
@@ -2635,6 +2958,13 @@
    </sect2>
    <sect2 id="sect.rdairplay.the_pie_wedge_widget">
      <title>The Pie Wedge Widget</title>
+     <para>
+       <mediaobject>
+	 <imageobject>
+	   <imagedata align="left" fileref="rdairplay.piewedge_widget.png" scale="60"/>
+	 </imageobject>
+       </mediaobject>
+     </para>
      <para>
        In the top center of the top area is the pie wedge widget. This
        widget counts down the final few seconds of each event. The length
@@ -2651,6 +2981,13 @@
    <sect2 id="sect.rdairplay.the_next_stop_counter">
      <title>The Next Stop Counter</title>
      <para>
+       <mediaobject>
+	 <imageobject>
+	   <imagedata align="left" fileref="rdairplay.next_stop_widget.png" scale="60"/>
+	 </imageobject>
+       </mediaobject>
+     </para>
+     <para>
        Immediately to the right of the pie wedge widget is the next stop
        counter. The large numerals indicate the predicted interval of time
        before the next stopdown of the
@@ -2663,6 +3000,13 @@
    </sect2>
    <sect2 id="sect.rdairplay.the_mode_indicator">
      <title>The Mode Indicator</title>
+     <para>
+       <mediaobject>
+	 <imageobject>
+	   <imagedata align="left" fileref="rdairplay.mode_widget.png" scale="60"/>
+	 </imageobject>
+       </mediaobject>
+     </para>
      <para>
        In the upper right-hand corner of the top area is the mode indicator,
        showing the current automation mode of the log machines. Three
@@ -2685,6 +3029,13 @@
    <sect2 id="sect.rdairplay.the_label_area">
      <title>The Label Area</title>
      <para>
+       <mediaobject>
+	 <imageobject>
+	   <imagedata align="left" fileref="rdairplay.label_widget.png" scale="60"/>
+	 </imageobject>
+       </mediaobject>
+     </para>
+     <para>
        Immediately below the next stop counter and mode indicator is the
        label area. Text messages can be made to appear here (by means of
        RML commands) to signal the operator concerning the state of the
@@ -2706,6 +3057,13 @@
    <sect2 id="sect.rdairplay.the_full_log_widget">
      <title>The Full Log Widget</title>
      <para>
+       <mediaobject>
+	 <imageobject>
+	   <imagedata align="left" fileref="rdairplay.full_log_widget.png" scale="60"/>
+	 </imageobject>
+       </mediaobject>
+     </para>
+     <para>
        As the name implies, the full log widget can be used to view the
        contents of a log over its entire length. To load a log, touch the
        <computeroutput>Select Log</computeroutput> button to bring up the
@@ -2716,7 +3074,15 @@
        <computeroutput>Save</computeroutput> or
        <computeroutput>Save As</computeroutput> buttons, or
        the current log unloaded by touching
-       <computeroutput>Unload</computeroutput>. See FIXME.
+       <computeroutput>Unload</computeroutput>.
+     </para>
+     <para>
+       <mediaobject>
+	 <imageobject>
+	   <imagedata align="center" fileref="rdairplay.select_a_log_dialog.png" scale="60"/>
+	 </imageobject>
+	 <caption><para>The Select Log Dialog</para></caption>
+       </mediaobject>
      </para>
      <para>
        Once a log is loaded, it can be started at any point by touching an
@@ -2749,6 +3115,14 @@
        the dialog to Audition mode.
      </para>
      <para>
+       <mediaobject>
+	 <imageobject>
+	   <imagedata align="center" fileref="rdairplay.edit_event_dialog.png" scale="60"/>
+	 </imageobject>
+	 <caption><para>The Edit Event Dialog</para></caption>
+       </mediaobject>
+     </para>
+     <para>
        When running a log, it is often desirable to have the currently
        playing event always in sight. To do this, toggle the
        <computeroutput>Scroll</computeroutput>
@@ -2757,6 +3131,13 @@
    </sect2>
    <sect2 id="sect.rdairplay.the_button_log_widget">
      <title>The Button Log Widget</title>
+     <para>
+       <mediaobject>
+	 <imageobject>
+	   <imagedata align="left" fileref="rdairplay.button_log_widget.png" scale="60"/>
+	 </imageobject>
+       </mediaobject>
+     </para>
      <para>
        To the left of the full log widget is the button log widget,
        consisting of a column of seven large buttons adjacent to cart labels.
@@ -2782,99 +3163,149 @@
  </sect1>
  <sect1 id="sect.rdairplay.editing_a_log">
    <title>Editing a Log</title>
-   <para>
-     It is possible to edit the log loaded into any of the three log
-     machines by means of the log edit buttons in the lower left-hand corner
-     of the screen.
-   </para>
-   <sect2 id="sect.rdairplay_adding_an_event">
-     <title>Adding an Event</title>
+   <sect2 id="sect.rdairplay.drag_and_drop">
+     <title>Drag and Drop</title>
      <para>
-       To add an event, touch the <computeroutput>ADD</computeroutput>
-       button to open the Select Cart dialog,
-       pick the desired cart and then touch
-       <computeroutput>OK</computeroutput>. To place the selected cart
-       using the button log widget, simply touch one of the yellow
-       <computeroutput>WHERE?</computeroutput>
-       buttons. To place it using the full log widget, click the event
-       where you wish it to go and then touch the yellow
-       <computeroutput>WHERE?</computeroutput> button.
-       If, after selecting a cart from the Select Cart dialog, you decide
-       you don't want to add it after all, simply touch the
-       <computeroutput>ADD</computeroutput> button again
-       to cancel the operation (see FIXME).
+       <mediaobject>
+	 <imageobject>
+	   <imagedata align="left" fileref="../../icons/trashcan-32x32.png" scale="60"/>
+	 </imageobject>
+       </mediaobject>
      </para>
      <para>
-       Alternatively, if the System Administrator has enabled Drag and Drop
-       functionality, carts can be dragged directly from an instance of
-       RDLibrary and dropped into the desired location on RDAirPlay.
+       If the System Administrator has enabled Drag and Drop operation, any
+       event can be copied by clicking and holding the right mouse button and
+       then dragging it to the desired location of the copy. An event can
+       also be deleted from a log by dragging the trash can icon and dropping
+       it onto the event to be deleted.
      </para>
    </sect2>
-   <sect2 id="sect.rdairplay_deleting_an_event">
-     <title>Deleting an Event</title>
+   <sect2 id="sect.rdairplay.the_editing_buttons">
+     <title>The Editing Buttons</title>
      <para>
-       To delete an event, touch the <computeroutput>DEL</computeroutput>
-       button, then touch one of the
-       violet <computeroutput>DELETE</computeroutput> buttons in the button
-       log widget, or select an event
-       and then touch the violet <computeroutput>DELETE</computeroutput>
-       button. To cancel the operation,
-       simply touch the <computeroutput>DEL</computeroutput> button again
-       (see FIXME).
+       <mediaobject>
+	 <imageobject>
+	   <imagedata align="left" fileref="rdairplay.edit_buttons.png" scale="60"/>
+	 </imageobject>
+       </mediaobject>
      </para>
      <para>
-       If the System Administrator has enabled Drag and Drop
-       functionality, carts can also be deleted by dragging the icon
-       of the trash can and dropping it onto the appropriate event.
+       It is possible to edit the log loaded into any of the three log
+       machines by means of the log edit buttons in the lower left-hand corner
+       of the screen.
      </para>
-   </sect2>
-   <sect2 id="sect.rdairplay.moving_an_event">
-     <title>Moving an Event</title>
+     <sect3 id="sect.rdairplay_adding_an_event">
+       <title>Adding an Event</title>
+       <para>
+	 To add an event, touch the <computeroutput>ADD</computeroutput>
+	 button to open the Select Cart dialog,
+	 pick the desired cart and then touch
+	 <computeroutput>OK</computeroutput>. To place the selected cart
+	 using the button log widget, simply touch one of the yellow
+	 <computeroutput>WHERE?</computeroutput>
+	 buttons. To place it using the full log widget, click the event
+	 where you wish it to go and then touch the yellow
+	 <computeroutput>WHERE?</computeroutput> button.
+	 If, after selecting a cart from the Select Cart dialog, you decide
+	 you don't want to add it after all, simply touch the
+	 <computeroutput>ADD</computeroutput> button again
+	 to cancel the operation (see FIXME).
+       </para>
      <para>
-       To move an event, touch the <computeroutput>MOVE</computeroutput>
-       button, then touch one of the violet
-       <computeroutput>MOVE</computeroutput> buttons in the button log
-       widget, or select an event and then
-       touch the violet <computeroutput>MOVE</computeroutput> button,
-       then touch one of the yellow <computeroutput>TO</computeroutput>
-       buttons
-       in the button log widget, or select an event and then touch the
-       yellow <computeroutput>TO</computeroutput> button.
-       To cancel the operation at any stage, simply touch
-       the <computeroutput>MOVE</computeroutput> button again.
-       It is perfectly permissible to move an event
-       between two different log machines.
+       <mediaobject>
+	 <imageobject>
+	   <imagedata align="center" fileref="rdairplay.where_to.png" scale="45"/>
+	 </imageobject>
+	 <caption><para>RDAirPlay Prompting for a Location</para></caption>
+       </mediaobject>
      </para>
-   </sect2>
-   <sect2 id="sect.rdairplay.copying_an_event">
-     <title>Copying an Event</title>
+       <para>
+	 Alternatively, if the System Administrator has enabled Drag and Drop
+	 functionality, carts can be dragged directly from an instance of
+	 RDLibrary and dropped into the desired location on RDAirPlay.
+       </para>
+     </sect3>
+     <sect3 id="sect.rdairplay_deleting_an_event">
+       <title>Deleting an Event</title>
+       <para>
+	 To delete an event, touch the <computeroutput>DEL</computeroutput>
+	 button, then touch one of the
+	 violet <computeroutput>DELETE</computeroutput> buttons in the button
+	 log widget, or select an event
+	 and then touch the violet <computeroutput>DELETE</computeroutput>
+	 button. To cancel the operation,
+	 simply touch the <computeroutput>DEL</computeroutput> button again
+	 (see FIXME).
+       </para>
+       <para>
+	 If the System Administrator has enabled Drag and Drop
+	 functionality, carts can also be deleted by dragging the icon
+	 of the trash can and dropping it onto the appropriate event.
+       </para>
+     </sect3>
+     <sect3 id="sect.rdairplay.moving_an_event">
+       <title>Moving an Event</title>
+       <para>
+	 To move an event, touch the <computeroutput>MOVE</computeroutput>
+	 button, then touch one of the violet
+	 <computeroutput>MOVE</computeroutput> buttons in the button log
+	 widget, or select an event and then
+	 touch the violet <computeroutput>MOVE</computeroutput> button,
+	 then touch one of the yellow <computeroutput>TO</computeroutput>
+	 buttons
+	 in the button log widget, or select an event and then touch the
+	 yellow <computeroutput>TO</computeroutput> button.
+	 To cancel the operation at any stage, simply touch
+	 the <computeroutput>MOVE</computeroutput> button again.
+	 It is perfectly permissible to move an event
+	 between two different log machines.
+       </para>
+     </sect3>
+     <sect3 id="sect.rdairplay.copying_an_event">
+       <title>Copying an Event</title>
+       <para>
+	 To copy an event, touch the <computeroutput>COPY</computeroutput>
+	 button, then touch one of the
+	 violet <computeroutput>COPY</computeroutput> buttons in the button
+	 log widget, or select an event
+	 and then touch the violet <computeroutput>COPY</computeroutput>
+	 button, then touch one of the yellow
+	 <computeroutput>TO</computeroutput> buttons in the button log
+	 widget, or select an event and then
+	 touch the yellow <computeroutput>TO</computeroutput> button.
+	 To cancel the operation at any stage,
+	 simply touch the <computeroutput>COPY</computeroutput> button again.
+	 It is perfectly permissible to
+	 copy an event between two different log machines.
+       </para>
      <para>
-       To copy an event, touch the <computeroutput>COPY</computeroutput>
-       button, then touch one of the
-       violet <computeroutput>COPY</computeroutput> buttons in the button
-       log widget, or select an event
-       and then touch the violet <computeroutput>COPY</computeroutput>
-       button, then touch one of the yellow
-       <computeroutput>TO</computeroutput> buttons in the button log
-       widget, or select an event and then
-       touch the yellow <computeroutput>TO</computeroutput> button.
-       To cancel the operation at any stage,
-       simply touch the <computeroutput>COPY</computeroutput> button again.
-       It is perfectly permissible to
-       copy an event between two different log machines.
+       <mediaobject>
+	 <imageobject>
+	   <imagedata align="center" fileref="rdairplay.delete_from.png" scale="45"/>
+	 </imageobject>
+	 <caption><para>RDAirPlay Prompting for a Cart to Copy</para></caption>
+       </mediaobject>
      </para>
-     <para>
-       If the System Administrator has enabled Drag and Drop
-       functionality, carts can also be copied by simply dragging them
-       from where they are to the new location where they are wanted.
-     </para>
+       <para>
+	 If the System Administrator has enabled Drag and Drop
+	 functionality, carts can also be copied by simply dragging them
+	 from where they are to the new location where they are wanted.
+       </para>
+     </sect3>
    </sect2>
    <sect2 id="sect.rdairplay.the_soundpanel">
+     <para>
+       <mediaobject>
+	 <imageobject>
+	   <imagedata align="left" fileref="rdairplay.soundpanel_widget.png" scale="60"/>
+	 </imageobject>
+       </mediaobject>
+     </para>
      <title>The SoundPanel</title>
      <para>
        The SoundPanel is an array of buttons that appears in the right-hand
        side of RDAirPlay when the <computeroutput>Sound Panel</computeroutput>
-       button is selected (see FIXME).  Each button can be associated with
+       button is selected. Each button can be associated with
        a particular
        cart in the Library (either Audio or Macro carts), which is then
        played each time the button is clicked. The soundpanel is
@@ -2912,6 +3343,14 @@
        <computeroutput>Setup</computeroutput> button may be
        disabled). Next, touch the button you wish to program, opening the
        Edit Button dialog (see FIXME).
+     </para>
+     <para>
+       <mediaobject>
+	 <imageobject>
+	   <imagedata align="center" fileref="rdairplay.edit_button_dialog.png" scale="45"/>
+	 </imageobject>
+	 <caption><para>The Edit Button Dialog</para></caption>
+       </mediaobject>
      </para>
      <para>
        Touch the <computeroutput>Set Cart</computeroutput> button to open
@@ -2967,8 +3406,16 @@
       means of reconciling exported schedules.
     </para>
     <para>
-      When RDLogManager is started, it displays its main menu (see FIXME).
+      When RDLogManager is started, it displays its main menu.
     </para>
+     <para>
+       <mediaobject>
+	 <imageobject>
+	   <imagedata align="center" fileref="rdlogmanager.rdlogmanager_screenshot.png" scale="45"/>
+	 </imageobject>
+	 <caption><para>The RDLogManager Main Menu</para></caption>
+       </mediaobject>
+     </para>
   </sect1>
   <sect1 id="sect.rdlogmanager.grids">
     <title>Grids</title>

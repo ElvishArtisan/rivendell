@@ -16207,3 +16207,16 @@
 	Operations Guide to include all command-line utilities.
 2017-11-01 Fred Gleason <fredg@paravelsystems.com>
 	* Cleaned up title formatting in the Operations Guide.
+2017-11-01 Fred Gleason <fredg@paravelsystems.com>
+	* Added screenshots for the 'System Overview' chapter of the
+	Operations Guide.
+	* Added screenshots for the 'Managing the Current User with RDLogin'
+	chapter of the Operations Guide.
+	* Added screenshots for the 'Content Management with RDLibrary'
+	chapter of the Operations Guide.
+	* Added screenshots for the 'Automating Tasks with RDCatch'
+	chapter of the Operations Guide.
+	* Added screenshots for the 'Generating and Maintaining Logs with
+	RDLogEdit' chapter of the Operations Guide.
+	* Added screenshots for the 'Running Logs with RDAirPlay' chapter
+	of the Operations Guide.

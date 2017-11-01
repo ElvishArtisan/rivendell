@@ -265,6 +265,7 @@ uninstall-local:
 
 EXTRA_DIST = admin.xpm\
              blueball.xpm\
+             chain.png\
              chain.xpm\
              checkmark.xpm\
              download.xpm\
@@ -276,12 +277,17 @@ EXTRA_DIST = admin.xpm\
              greenball.xpm\
              greencheckmark.xpm\
              marker.xpm\
+             mic16.png\
              mic16.xpm\
+             music.png\
              music.xpm\
              note.xpm\
              note2.xpm\
+             notemarker.png\
              notemarker.xpm\
-             play.xpm macro.xpm\
+             play.png\
+             play.xpm\
+             macro.xpm\
              post.xpm\
              post2.xpm\
              post3.xpm\
@@ -449,15 +455,19 @@ EXTRA_DIST = admin.xpm\
              rml.xpm\
              rml2.xpm\
              rml3.xpm\
+             rml5.png\
              rml5.xpm\
              split.xpm\
              switch.xpm\
              switch2.xpm\
              switch3.xpm\
              track.xpm\
+             track_cart.png\
              track_cart.xpm\
+             traffic.png\
              traffic.xpm\
              trashcan-16x16.xpm\
+             trashcan-32x32.png\
              trashcan-32x32.xpm\
              upload.xpm\
              user.xpm\

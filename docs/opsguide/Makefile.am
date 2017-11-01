@@ -36,7 +36,52 @@ all-local:	opsguide.html\
 
 EXTRA_DIST = opsguide.html\
              opsguide.pdf\
-             opsguide.xml
+             opsguide.xml\
+             rdairplay.audio_meter.png\
+             rdairplay.button_log_widget.png\
+             rdairplay.delete_from.png\
+             rdairplay.edit_button_dialog.png\
+             rdairplay.edit_buttons.png\
+             rdairplay.edit_event_dialog.png\
+             rdairplay.full_log_widget.png\
+             rdairplay.label_widget.png\
+             rdairplay.mode_widget.png\
+             rdairplay.next_stop_widget.png\
+             rdairplay.piewedge_widget.png\
+             rdairplay.postpoint_early_widget.png\
+             rdairplay.postpoint_late_widget.png\
+             rdairplay.postpoint_ontime_widget.png\
+             rdairplay.rdairplay_screenshot.png\
+             rdairplay.select_a_log_dialog.png\
+             rdairplay.soundpanel_widget.png\
+             rdairplay.wallclock_widget.png\
+             rdairplay.where_to.png\
+             rdcatch.add_event_dialog.png\
+             rdcatch.edit_cart_event_dialog.png\
+             rdcatch.edit_download_dialog.png\
+             rdcatch.edit_playout_dialog.png\
+             rdcatch.edit_recording_dialog.png\
+             rdcatch.edit_switcher_event_dialog.png\
+             rdcatch.edit_upload_dialog.png\
+             rdcatch.rdcatch_screenshot.png\
+             rdlibrary.cd_ripper_dialog.png\
+             rdlibrary.edit_cart_dialog.png\
+             rdlibrary.edit_cut_info_dialog.png\
+             rdlibrary.edit_macro_cart_dialog.png\
+             rdlibrary.edit_marker_dialog.png\
+             rdlibrary.import_export_dialog.png\
+             rdlibrary.rdlibrary_screenshot.png\
+             rdlibrary.rip_disk_dialog.png\
+             rdlibrary.set_cart_cut_dialog.png\
+             rdlogedit.edit_log_chain_dialog.png\
+             rdlogedit.edit_log_dialog.png\
+             rdlogedit.edit_log_entry_dialog.png\
+             rdlogedit.edit_log_marker_dialog.png\
+             rdlogedit.edit_voice_track_marker_dialog.png\
+             rdlogedit.rdlogedit_screenshot.png\
+             rdlogedit.select_cart_dialog.png\
+             rdlogin.rdlogin_screenshot.png\
+             rdlogmanager.rdlogmanager_screenshot.png
 
 CLEANFILES = *~
 MAINTAINERCLEANFILES = *~\
