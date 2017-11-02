@@ -81,7 +81,23 @@ EXTRA_DIST = opsguide.html\
              rdlogedit.rdlogedit_screenshot.png\
              rdlogedit.select_cart_dialog.png\
              rdlogin.rdlogin_screenshot.png\
-             rdlogmanager.rdlogmanager_screenshot.png
+             rdlogmanager.edit_clock_dialog.png\
+             rdlogmanager.edit_event_assignment_dialog.png\
+             rdlogmanager.edit_grid_dialog.png\
+             rdlogmanager.editing_event.png\
+             rdlogmanager.generate_log_dialog.png\
+             rdlogmanager.generate_log_dialog_fully_merged.png\
+             rdlogmanager.generate_log_dialog_music_merge_required.png\
+             rdlogmanager.generate_log_dialog_traffic_merge_required.png\
+             rdlogmanager.log_clock_list.png\
+             rdlogmanager.log_clocks.png\
+             rdlogmanager.log_events_dialog.png\
+             rdlogmanager.log_grids_dialog.png\
+             rdlogmanager.rdlogmanager_screenshot.png\
+             rdlogmanager.rivendell_services_dialog.png\
+             rdlogmanager.select_date_dialog.png\
+             rdlogmanager.select_report_dates_dialog.png\
+             rdlogmanager.service_association_dialog.png
 
 CLEANFILES = *~
 MAINTAINERCLEANFILES = *~\

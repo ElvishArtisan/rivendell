@@ -3413,7 +3413,7 @@
 	 <imageobject>
 	   <imagedata align="center" fileref="rdlogmanager.rdlogmanager_screenshot.png" scale="45"/>
 	 </imageobject>
-	 <caption><para>The RDLogManager Main Menu</para></caption>
+	 <caption><para>The Log Grids Dialog</para></caption>
        </mediaobject>
      </para>
   </sect1>
@@ -3422,21 +3422,44 @@
     <para>
       Each Rivendell service has an RDLogManager grid. To see the list of
       available grids, touch the <computeroutput>Edit Grids</computeroutput>
-      button to open the Log Grids dialog (see FIXME).
+      button to open the Log Grids dialog.
     </para>
+     <para>
+       <mediaobject>
+	 <imageobject>
+	   <imagedata align="center" fileref="rdlogmanager.log_grids_dialog.png" scale="45"/>
+	 </imageobject>
+	 <caption><para>The Log Grids Dialog</para></caption>
+       </mediaobject>
+     </para>
     <para>
       To open a particular grid, select its service name and touch the
       <computeroutput>Edit</computeroutput>
-      button (see FIXME).
+      button.
     </para>
+     <para>
+       <mediaobject>
+	 <imageobject>
+	   <imagedata align="center" fileref="rdlogmanager.edit_grid_dialog.png" scale="40"/>
+	 </imageobject>
+	 <caption><para>The Edit Grid Dialog</para></caption>
+       </mediaobject>
+     </para>
     <para>
       Each grid has slots for every hour of every day of the broadcast week
       – 168 slots in all.  By specifying a particular clock to go into each
       of these slots, a set of rules that RDLogManager can use to generate
       a log for any given day of the week is built up. To specify a clock,
       simply touch the particular hour of interest to open up the
-      <computeroutput>Select Log Clock</computeroutput> dialog
-      (see FIXME).
+      <computeroutput>Select Log Clock</computeroutput> dialog.
+    </para>
+    <para>
+      <mediaobject>
+	<imageobject>
+	  <imagedata align="center" fileref="rdlogmanager.log_clocks.png" scale="45"/>
+	</imageobject>
+	<caption><para>The Log Clocks Dialog</para></caption>
+      </mediaobject>
     </para>
     <para>
       Click the desired clock, then touch the
@@ -3479,6 +3502,22 @@
       by touching the <computeroutput>Rename</computeroutput> button.
     </para>
     <para>
+      <mediaobject>
+	<imageobject>
+	  <imagedata align="center" fileref="rdlogmanager.log_clock_list.png" scale="45"/>
+	</imageobject>
+	<caption><para>The Log Clock List Dialog</para></caption>
+      </mediaobject>
+    </para>
+    <para>
+      <mediaobject>
+	<imageobject>
+	  <imagedata align="center" fileref="rdlogmanager.edit_clock_dialog.png" scale="40"/>
+	</imageobject>
+	<caption><para>The Edit Clock Dialog</para></caption>
+      </mediaobject>
+    </para>
+    <para>
       The Edit Clock dialog consists of three main sections: a tabular
       list of events in chronological order, a graphical depiction of the
       clock in the traditional “broadcast clock” format, and a series of
@@ -3502,6 +3541,14 @@
       table and selecting <computeroutput>Edit Event</computeroutput>.
     </para>
     <para>
+      <mediaobject>
+	<imageobject>
+	  <imagedata align="center" fileref="rdlogmanager.edit_event_assignment_dialog.png" scale="45"/>
+	</imageobject>
+	<caption><para>The Edit Event Assignment Dialog</para></caption>
+      </mediaobject>
+    </para>
+    <para>
       The Edit Event Assignment dialog simply consists of an
       <computeroutput>Event</computeroutput> field
       for the name of the RDLogManager event and
@@ -3520,7 +3567,15 @@
       can then be used. To program these associations, touch the
       <computeroutput>Services List</computeroutput> button in the Edit
       Clock dialog to bring up the Service
-      Associations dialog (see FIXME).
+      Associations dialog.
+    </para>
+    <para>
+      <mediaobject>
+	<imageobject>
+	  <imagedata align="center" fileref="rdlogmanager.service_association_dialog.png" scale="45"/>
+	</imageobject>
+	<caption><para>The Service Association Dialog</para></caption>
+      </mediaobject>
     </para>
     <para>
       To designate a service as being valid for this clock, select the
@@ -3562,6 +3617,22 @@
       Events can also be deleted by touching
       the <computeroutput>Delete</computeroutput> button or renamed by
       touching the <computeroutput>Rename</computeroutput> button.
+    </para>
+    <para>
+      <mediaobject>
+	<imageobject>
+	  <imagedata align="center" fileref="rdlogmanager.log_events_dialog.png" scale="45"/>
+	</imageobject>
+	<caption><para>The Log Events Dialog</para></caption>
+      </mediaobject>
+    </para>
+    <para>
+      <mediaobject>
+	<imageobject>
+	  <imagedata align="center" fileref="rdlogmanager.editing_event.png" scale="40"/>
+	</imageobject>
+	<caption><para>The Editing Event Dialog</para></caption>
+      </mediaobject>
     </para>
     <para>
       The Edit Event dialog consists of two main parts: a Library cart
@@ -3679,6 +3750,14 @@
       and picking it off of the calendar).
     </para>
     <para>
+      <mediaobject>
+	<imageobject>
+	  <imagedata align="center" fileref="rdlogmanager.generate_log_dialog.png" scale="45"/>
+	</imageobject>
+	<caption><para>The Generate Log Dialog</para></caption>
+      </mediaobject>
+    </para>
+    <para>
       In all cases, a new log is initially generated by touching the
       <computeroutput>Create New Log</computeroutput> button.
       If the log for the selected date and service does not
@@ -3705,12 +3784,31 @@
       &quot;not required&quot;.
     </para>
     <para>
-      For an example, see FIXME. This is showing a log that has
+      <mediaobject>
+	<imageobject>
+	  <imagedata align="center" fileref="rdlogmanager.generate_log_dialog_music_merge_required.png" scale="45"/>
+	</imageobject>
+	<caption><para>The Generate Log Dialog (music merge required)</para></caption>
+      </mediaobject>
+    </para>
+    <para>
+      For an example, see the figure above. This is showing a log that has
       been generated and has music data available but not yet merged. To
       perform the merge, touch the
       <computeroutput>Merge Music</computeroutput> button. The dialog now
-      changes to that shown in FIXME, indicating that Music data
-      has been merged but that traffic data is still needed. Once a log
+      changes to that shown below, indicating that Music data
+      has been merged but that traffic data is still needed.
+    </para>
+    <para>
+      <mediaobject>
+	<imageobject>
+	  <imagedata align="center" fileref="rdlogmanager.generate_log_dialog_traffic_merge_required.png" scale="45"/>
+	</imageobject>
+	<caption><para>The Generate Log Dialog (traffic merge required)</para></caption>
+      </mediaobject>
+    </para>
+    <para>
+      Once a log
       has reached this state – that of having any necessary music data
       merged – it can be voicetracked without having to wait for traffic
       data to become available. Traffic data can be merged at any time
@@ -3728,6 +3826,14 @@
       administrator has configured RDLogManager at each site.  Some services,
       for example, will have no music data, only traffic, so the music
       indicator lights will be &quot;whited out&quot; accordingly.
+    </para>
+    <para>
+      <mediaobject>
+	<imageobject>
+	  <imagedata align="center" fileref="rdlogmanager.generate_log_dialog_fully_merged.png" scale="45"/>
+	</imageobject>
+	<caption><para>The Generate Log Dialog (fully merged)</para></caption>
+      </mediaobject>
     </para>
  </sect1>
  <sect1 id="sect.rdlogmanager.generating_reports">
@@ -3751,19 +3857,51 @@
    <para>
      To generate a report, touch the
      <computeroutput>Manage Reports</computeroutput> button on the
-     RDLogManager Main Menu to open the Select Service dialog (see
-     FIXME). The dialog will show each service on the system,
+     RDLogManager Main Menu to open the Select Service dialog.
+   </para>
+   <para>
+     <mediaobject>
+       <imageobject>
+	 <imagedata align="center" fileref="rdlogmanager.rivendell_services_dialog.png" scale="45"/>
+       </imageobject>
+       <caption><para>The Rivendell Services Dialog</para></caption>
+     </mediaobject>
+   </para>
+   <para>
+     The dialog will show each service on the system,
      along with the date of the oldest data available for generating
      reports. Touch the <computeroutput>Generate Reports</computeroutput>
      button to open the Select Report
-     Dates dialog (see FIXME). The desired report can be
+     Dates dialog.
+   </para>
+   <para>
+     <mediaobject>
+       <imageobject>
+	 <imagedata align="center" fileref="rdlogmanager.select_report_dates_dialog.png" scale="45"/>
+       </imageobject>
+       <caption><para>The Select Report Dates Dialog</para></caption>
+     </mediaobject>
+   </para>
+   <para>
+     The desired report can be
      selected with the <computeroutput>Report</computeroutput> control,
      and the start and end dates of the
      report specified with the
      <computeroutput>Start Date</computeroutput> and
      <computeroutput>End Date</computeroutput> controls,
      respectively (NOTE: not all reports are capable of being generated so
-     as to span more than one day). Once the parameters are set, touch the
+     as to span more than one day).
+   </para>
+   <para>
+     <mediaobject>
+       <imageobject>
+	 <imagedata align="center" fileref="rdlogmanager.select_date_dialog.png" scale="45"/>
+       </imageobject>
+       <caption><para>The Select Date Dialog</para></caption>
+     </mediaobject>
+   </para>
+   <para>
+     Once the parameters are set, touch the
      <computeroutput>Generate Report</computeroutput> button to write out
      the report.
    </para>
