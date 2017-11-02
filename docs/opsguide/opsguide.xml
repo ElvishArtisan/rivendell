@@ -402,7 +402,7 @@
     </para>
     <para>
       RDLogin will display a small window after being started, showing the
-      currently logged-in user (see Illustration 1).  To change to a
+      currently logged-in user. To change to a
       different user, select the desired user name from the Username:
       control, enter the correct password, and then touch the Set User
       button.  To “log out” of the system (in reality, just return to the
@@ -473,11 +473,11 @@
       <para>
 	Next comes various columns showing information from the cart
 	label – Title, Artist, Client and Agency data, etc.  This
-	information can be edited by opening RDLibrary's Edit Cart dialog
-	(Illustration 3), either by double-clicking on the desired cart
+	information can be edited by opening RDLibrary's Edit Cart dialog,
+	either by double-clicking on the desired cart
 	entry in the list, or by touching the desired cart entry and then
 	touching the Edit button.  In either case, you should get a dialog
-	similar to that shown in Illustration 3.
+	similar to that shown in the illustration.
       </para>
       <para>
 	<mediaobject>
@@ -545,8 +545,8 @@
 	</variablelist>
       </para>
       <para>
-	The example in Illustration 3 shows an audio cart.  As such, the
-	bottom half of the dialog displays the lists of cuts contained
+	The example in the illustration above shows an audio cart. As such,
+	the bottom half of the dialog displays the lists of cuts contained
 	within the cart.  
       </para>
     </sect2>
@@ -707,7 +707,7 @@
 	  To edit the properties of a cut, either double-click its entry
 	  in the cut list, or touch it once to highlight and then touch
 	  the <computeroutput>Cut Info/Record</computeroutput> button.
-	  The Record Dialog (Illustration 4) will now open up.
+	  The Record Dialog will now open up.
 	</para>
 	<para>
 	  <mediaobject>
@@ -715,7 +715,7 @@
 	      <imagedata align="center" fileref="rdlibrary.edit_cut_info_dialog.png" scale="50"/>
 	    </imageobject>
 	    <caption>
-	      <para>The Cut Info Dialog</para>
+	      <para>The Record Dialog</para>
 	    </caption>
 	  </mediaobject>
 	</para>
@@ -1099,9 +1099,10 @@
       Rivendell Macro Language (or 'RML' for short). The Edit Cart dialog
       for a macro cart is similar in many ways to that for an audio cart
       with the exception of the lower half, which contains a list of RML
-      commands to be executed rather than a list of cuts (see Illustration
-      9). (NOTE: for a complete description of Rivendell Macro Language,
-      including a breakdown of available commands, see Chapter Nine).
+      commands to be executed rather than a list of cuts. (NOTE: for a
+      complete description of Rivendell Macro Language,
+      including a breakdown of available commands, see 
+      <xref linkend="chapter.rml"/>).
     </para>
     <para>
       To add a new line of RML, select the desired location in the list
@@ -1198,7 +1199,7 @@
       <title>Selecting and Opening Carts</title>
       <para>
 	Once the desired cart has been located on the cart list, load it
-	into the Edit Cart Dialog (Illustration 3) by either double
+	into the Edit Cart Dialog by either double
 	clicking its list entry, or by touching its list entry and then
 	touching the <computeroutput>Edit</computeroutput> button.
       </para>
@@ -1217,7 +1218,7 @@
 	markers are available, their purpose and their corresponding color.
       </para>
       <para>
-	Markers are set in the Edit Markers Dialog (see Illustration 10).
+	Markers are set in the Edit Markers Dialog.
 	To access the Dialog, open an audio cart, select the cut to open
 	on the cut list and then touch the
 	<computeroutput>Edit</computeroutput> button.
@@ -1508,8 +1509,8 @@
   <sect1 id="sect.rdcatch.the_rdcatch_main_window">
     <title>The RDCatch Main Window</title>
     <para>
-      After starting up RDCatch, you will see the main RDCatch window,
-      looking something like Illustration 11. The window consists of four
+      After starting up RDCatch, you will see the
+      <xref endterm="para.rdcatch.the_rdcatch_main_window" endlink="mediaobject.rdcatch.rdcatch_screenshot"/>. The window consists of four
       areas:  the record / play out decks at the top, the filter areas just
       below the decks, the events list and the audition buttons and other
       buttons at the bottom. We'll cover each of these in turn.
@@ -1611,12 +1612,12 @@
       </tgroup>
     </table>
       <para>
-	<mediaobject>
+	<mediaobject id="mediaobject.rdcatch.rdcatch_screenshot">
 	  <imageobject>
 	    <imagedata align="center" fileref="rdcatch.rdcatch_screenshot.png" scale="45"/>
 	  </imageobject>
 	  <caption>
-	    <para>The RDCatch Main Window</para>
+	    <para id="para.rdcatch.the_rdcatch_main_window">The RDCatch Main Window</para>
 	  </caption>
 	</mediaobject>
       </para>
@@ -1886,17 +1887,17 @@
     <para>
       A new event can be added to the event list by simply clicking the
       <computeroutput>Add</computeroutput> button to bring up the Add
-      Event Dialog (see Illustration 12).
+      Event Dialog (see <xref endterm="para.the_add_event_dialog" endlinl="mediaobject.rdcatch.add_event_dialog"/>).
       Simply clicking the button that correspond to the desired type of
       event will create it.
     </para>
       <para>
-	<mediaobject>
+	<mediaobject id="mediaobject.rdcatch.add_event_dialog">
 	  <imageobject>
 	    <imagedata align="center" fileref="rdcatch.add_event_dialog.png" scale="50"/>
 	  </imageobject>
 	  <caption>
-	    <para>The Add Event Dialog</para>
+	    <para id="para.the_add_event_dialog">The Add Event Dialog</para>
 	  </caption>
 	</mediaobject>
       </para>
@@ -1905,7 +1906,7 @@
     <title>Automating Recordings</title>
     <para>
       Automated recordings are configured by means of the Edit Recording
-      dialog (see Illustration 13), which can be accessed either by clicking
+      dialog (see <xref endterm="the_edit_recording_dialog" endlink="mediaobject.rdcatch.edit_recording_dialog"/>), which can be accessed either by clicking
       the <computeroutput>Recording</computeroutput> button in the Add Event
       dialog to create a new record
       event or by touching the <computeroutput>Edit</computeroutput> button
@@ -1932,12 +1933,12 @@
 	the GPI event and the actual start of the recording.
       </para>
       <para>
-	<mediaobject>
+	<mediaobject id="mediaobject.rdcatch.edit_recording_dialog">
 	  <imageobject>
 	    <imagedata align="center" fileref="rdcatch.edit_recording_dialog.png" scale="50"/>
 	  </imageobject>
 	  <caption>
-	    <para>The Edit Recording Dialog</para>
+	    <para id="the_edit_recording_dialog">The Edit Recording Dialog</para>
 	  </caption>
 	</mediaobject>
       </para>
@@ -2022,7 +2023,7 @@
     <title>Automating Playouts</title>
     <para>
       Automated playouts are configured by means of the Edit Playout
-      dialog (see Illustration 14), which can be accessed either by
+      dialog (see <xref endterm="the_edit_playout_dialog" endlink="mediaobject.rdcatch.edit_playout_dialog"/>), which can be accessed either by
       clicking the <computeroutput>Playout</computeroutput> button in
       the Add Event dialog to create a new
       record event or by touching the
@@ -2033,12 +2034,12 @@
       above for details.
     </para>
       <para>
-	<mediaobject>
+	<mediaobject id="mediaobject.rdcatch.edit_playout_dialog">
 	  <imageobject>
 	    <imagedata align="center" fileref="rdcatch.edit_playout_dialog.png" scale="50"/>
 	  </imageobject>
 	  <caption>
-	    <para>The Edit Playout Dialog</para>
+	    <para id="the_edit_playout_dialog">The Edit Playout Dialog</para>
 	  </caption>
 	</mediaobject>
       </para>
@@ -2051,17 +2052,17 @@
       downloads are configured by means of the Edit Download dialog, which
       can be accessed either by clicking the
       <computeroutput>Download</computeroutput> button in the Add
-      Event dialog (see Illustration 15) to create a new record event or
+      Event dialog (see <xref endterm="para.rdcatch.the_edit_download_dialog" endlink="mediaobject.rdcatch.edit_download_dialog"/>) to create a new record event or
       by touching the <computeroutput>Edit</computeroutput> button to
       modify an existing event.
     </para>
     <para>
-      <mediaobject>
+      <mediaobject id="mediaobject.rdcatch.edit_download_dialog">
 	<imageobject>
 	  <imagedata align="center" fileref="rdcatch.edit_download_dialog.png" scale="50"/>
 	</imageobject>
 	<caption>
-	  <para>The Edit Download Dialog</para>
+	  <para id="para.rdcatch.the_edit_download_dialog">The Edit Download Dialog</para>
 	</caption>
       </mediaobject>
     </para>
@@ -2082,8 +2083,7 @@
       <userinput>ftp:</userinput>, <userinput>sftp:</userinput> and
       <userinput>file:</userinput>. The <computeroutput>Url</computeroutput>
       field can also include
-      wildcard characters that can be used to construct date-based URLs,
-      as shown in FIXME.
+      wildcard characters that can be used to construct date-based URLs.
     </para>
     <para>
       The <computeroutput>Username</computeroutput> and
@@ -2096,7 +2096,7 @@
     </para>
     <para>
       Automated uploads are configured by means of the Edit Upload dialog
-      (see Illustration 16), which can be accessed either by clicking the
+      (see <xref endterm="para.rdcatch.the_edit_upload_dialog" endlink="metaobject.rdcatch.edit_upload_dialog"/>), which can be accessed either by clicking the
       <computeroutput>Upload</computeroutput> button in the Add Event
       dialog to create a new record event or
       by touching the <computeroutput>Edit</computeroutput> button to
@@ -2105,15 +2105,15 @@
       <userinput>sftp:</userinput> and <userinput>file:</userinput>.  As with
       downloads, the <computeroutput>Url</computeroutput> field can also
       include wildcard characters that
-      can be used to construct date-based URLs, as shown in FIXME.
+      can be used to construct date-based URLs.
     </para>
     <para>
-      <mediaobject>
+      <mediaobject id="metaobject.rdcatch.edit_upload_dialog">
 	<imageobject>
 	  <imagedata align="center" fileref="rdcatch.edit_upload_dialog.png" scale="50"/>
 	</imageobject>
 	<caption>
-	  <para>The Edit Upload Dialog</para>
+	  <para id="para.rdcatch.the_edit_upload_dialog">The Edit Upload Dialog</para>
 	</caption>
       </mediaobject>
     </para>
@@ -2154,7 +2154,7 @@
     <title>Automating Macro Execution</title>
     <para>
       It's possible to configure the automatic execution of a Macro Cart
-      by means of the Edit Cart Event dialog (see Illustration 17), which
+      by means of the Edit Cart Event dialog (see <xref endterm="para.rdcatch.the_edit_cart_event_dialog" endlink="mediaobject.dcatch.edit_cart_event_dialog"/>), which
       can be accessed either by clicking the
       <computeroutput>Macro Cart</computeroutput> button in the Add
       Event dialog to create a new Macro Cart event or by touching the
@@ -2165,12 +2165,12 @@
       above for details.
     </para>
     <para>
-      <mediaobject>
+      <mediaobject id="mediaobject.dcatch.edit_cart_event_dialog">
 	<imageobject>
 	  <imagedata align="center" fileref="rdcatch.edit_cart_event_dialog.png" scale="50"/>
 	</imageobject>
 	<caption>
-	  <para>The Edit Cart Event Dialog</para>
+	  <para id="para.rdcatch.the_edit_cart_event_dialog">The Edit Cart Event Dialog</para>
 	</caption>
       </mediaobject>
     </para>
@@ -2179,20 +2179,20 @@
     <title>Automating Switcher Operations</title>
     <para>
       It's possible to configure an automatic operation on a switcher
-      device by means of the Edit Switcher Event dialog (see Illustration
-      18), which can be accessed either by clicking the
+      device by means of the Edit Switcher Event dialog (see 
+      <xref endterm="para.rdcatch.the_edit_switcher_event_dialog" endlink="mediaobject.rdcatch.edit_switcher_event_dialog"/>), which can be accessed either by clicking the
       <computeroutput>Switch Event</computeroutput> button
       in the Add Event dialog to create a new switch event or by touching
       the <computeroutput>Edit</computeroutput> button to modify an
       existing event.
     </para>
     <para>
-      <mediaobject>
+      <mediaobject id="mediaobject.rdcatch.edit_switcher_event_dialog">
 	<imageobject>
 	  <imagedata align="center" fileref="rdcatch.edit_switcher_event_dialog.png" scale="50"/>
 	</imageobject>
 	<caption>
-	  <para>The Edit Switcher Event Dialog</para>
+	  <para id="para.rdcatch.the_edit_switcher_event_dialog">The Edit Switcher Event Dialog</para>
 	</caption>
       </mediaobject>
     </para>
@@ -2226,8 +2226,8 @@
     </para>
     <para>
       Upon startup, RDLogEdit will show the current list of all logs on the
-      system, as in FIXME.  A number of important attributes of
-      logs can be seen from this illustration, the first being the log
+      system. A number of important attributes of
+      logs can be seen from <xref endterm="para.rdlogedit.the_rdlogedit_main_window" endlink="mediaobject.rdlogedit.rdlogedit_screenshot"/>, the first being the log
       name, with a summary status indicator next to it. The name is an
       alpha-numeric label that is used as a unique “handle” by the system
       to reference each log, and can be up to a maximum of 64 characters
@@ -2236,12 +2236,12 @@
       not (red ex). 
     </para>
     <para>
-      <mediaobject>
+      <mediaobject id="mediaobject.rdlogedit.rdlogedit_screenshot">
 	<imageobject>
 	  <imagedata align="center" fileref="rdlogedit.rdlogedit_screenshot.png" scale="65"/>
 	</imageobject>
 	<caption>
-	  <para>The RDLogEdit Main Window</para>
+	  <para id="para.rdlogedit.the_rdlogedit_main_window">The RDLogEdit Main Window</para>
 	</caption>
       </mediaobject>
     </para>
@@ -2309,7 +2309,7 @@
       name, or an existing log inspected and modified by touching its entry
       on the log list and then touching the
       <computeroutput>Edit</computeroutput> button, resulting in the
-      log being opened in the Edit Log dialog as shown in FIXME.
+      log being opened in the Edit Log dialog.
       The Edit Log dialog consists of three parts: the top section, where
       much of the information shown on the log list can be inspected and
       modified; the middle section, which shows the list of events
@@ -2702,7 +2702,7 @@
 	The cart number to use for an event can be specified by touching
 	the <computeroutput>Select Cart</computeroutput> button in the
 	Edit Log Entry dialog, which will
-	open up the Select Cart dialog, as shown in FIXME.
+	open up the Select Cart dialog.
 	Alternatively, it is possible to simply enter the cart number in
 	the <computeroutput>Cart</computeroutput> field if the number is
 	already known. The <computeroutput>Title</computeroutput> and
@@ -2848,7 +2848,7 @@
  <sect1 id="sect.rdairplay.layout">
    <title>Layout</title>
    <para>
-     As shown in FIXME, the RDAirPlay main screen consists of
+     The RDAirPlay main screen consists of
      four primary areas: the top area, which contains a variety of
      indicators for use in live assist situations as well as a set of
      audio meters; the button widget, which occupies the bulk of the
@@ -2907,8 +2907,8 @@
      <para>
        If the playout is such that the next hard time will be reached within one
        second of its programmed time, then the counter will be in
-       <computeroutput>On Time</computeroutput> mode
-       (see FIXME). The value shown in the square brackets is the
+       <computeroutput>On Time</computeroutput> mode. The value shown in
+       the square brackets is the
        scheduled time of the hard-timed event.
      </para>
      <para>
@@ -2923,7 +2923,7 @@
        one second
        or more before its programmed time, then the counter will be in
        <computeroutput>Early</computeroutput>
-       mode (see FIXME). It will also give an indication of how
+       mode. It will also give an indication of how
        much more material would need to be added to make the join on time.
      </para>
      <para>
@@ -2937,7 +2937,7 @@
        If the playout is such that the next hard time will be reached one
        second or more after its programmed time, then the counter will be in
        <computeroutput>Late</computeroutput>
-       mode (see FIXME). It will also give an indication of how
+       mode. It will also give an indication of how
        much material would need to be removed to make the join on time.
      </para>
    </sect2>
@@ -2971,7 +2971,8 @@
        of time it counts down, along with whether it counts to the start
        of the next transition or the absolute end of the event are both
        configurable in RDADmin. The color of the band that grows as the
-       countdown progresses (shown RED in FIXME) will change color
+       countdown progresses (shown in GREEN in the illustration) will
+       change color
        to indicate if the currently playing event is the last event before
        a log stopdown. If it is the last, it will be RED, if not, GREEN.
        A BLUE band and countdown will also appear to indicate the event's
@@ -3095,8 +3096,7 @@
        background), touch the event and then press the
        <computeroutput>Make Next</computeroutput> button.
        The play parameters of an event can be modified by touching the event,
-       then pressing the Modify button, bringing up the Edit Event dialog
-       (see FIXME).
+       then pressing the Modify button, bringing up the Edit Event dialog.
      </para>
      <para>
        In addition to having the ability to modify the event's time and
@@ -3209,7 +3209,7 @@
 	 If, after selecting a cart from the Select Cart dialog, you decide
 	 you don't want to add it after all, simply touch the
 	 <computeroutput>ADD</computeroutput> button again
-	 to cancel the operation (see FIXME).
+	 to cancel the operation.
        </para>
      <para>
        <mediaobject>
@@ -3234,8 +3234,7 @@
 	 log widget, or select an event
 	 and then touch the violet <computeroutput>DELETE</computeroutput>
 	 button. To cancel the operation,
-	 simply touch the <computeroutput>DEL</computeroutput> button again
-	 (see FIXME).
+	 simply touch the <computeroutput>DEL</computeroutput> button again.
        </para>
        <para>
 	 If the System Administrator has enabled Drag and Drop
@@ -3342,7 +3341,7 @@
        administrator has configured RDAirPlay, the
        <computeroutput>Setup</computeroutput> button may be
        disabled). Next, touch the button you wish to program, opening the
-       Edit Button dialog (see FIXME).
+       Edit Button dialog.
      </para>
      <para>
        <mediaobject>
@@ -3489,14 +3488,14 @@
     <para>
       To see the list of available clocks, touch the
       <computeroutput>Edit Clocks</computeroutput> button in
-      RDLogManager's Main Menu to open the Log Clocks dialog (see
-      FIXME).  Each RDLogManager clock can be assigned a
+      RDLogManager's Main Menu to open the Log Clocks dialog.
+      Each RDLogManager clock can be assigned a
       three-letter code and color, as an aid in identifying it when
       assigned to grids.  To add a new clock, touch the 
       <computeroutput>Add</computeroutput> button, or to
       edit a clock's parameters, click on it and touch the
       <computeroutput>Edit</computeroutput> button.
-      In each case, the Edit Clock dialog (see FIXME) will open.
+      In each case, the Edit Clock dialog will open.
       Clocks can also be deleted by touching the
       <computeroutput>Delete</computeroutput> button or renamed
       by touching the <computeroutput>Rename</computeroutput> button.
@@ -3533,7 +3532,7 @@
       <computeroutput>Add</computeroutput> button, or
       to edit an existing entry touch the 
       <computeroutput>Edit</computeroutput> button. In either case,
-      the Edit Event Assignment dialog will open (see FIXME). To
+      the Edit Event Assignment dialog will open. To
       delete an entry, touch the <computeroutput>Delete</computeroutput>
       button. As in the case of grids,
       it is possible to 'drill down' into the underlying RDLogManager
@@ -3606,14 +3605,14 @@
       To see the list of available RDLogManager events, touch the
       <computeroutput>Edit Events</computeroutput> button on the
       RDLogManager Main Menu to open the Log Events
-      dialog (see FIXME). It is possible to filter the list of
+      dialog. It is possible to filter the list of
       available events to only those used for a particular service by
       selecting the service in the <computeroutput>Filter</computeroutput>
       control. To add a new event,
       touch the <computeroutput>Add</computeroutput> button, or to edit
       an event's parameters, click on it
       and touch the <computeroutput>Edit</computeroutput> button.
-      In each case, the Edit Event dialog (see FIXME) will open.
+      In each case, the Edit Event dialog will open.
       Events can also be deleted by touching
       the <computeroutput>Delete</computeroutput> button or renamed by
       touching the <computeroutput>Rename</computeroutput> button.
@@ -3735,8 +3734,7 @@
       After all of the appropriate hours have been populated in a service's
       grid, it's time to start generating logs. To do this, touch the
       <computeroutput>Generate Logs</computeroutput> button in
-      RDLogManager's Main Menu to open the Generate
-      Log dialog (see FIXME).
+      RDLogManager's Main Menu to open the Generate Log dialog.
     </para>
     <para>
       Depending upon how many external scheduling sources are involved,
@@ -3815,7 +3813,7 @@
       before, during or after the generation of voicetracks. The actual
       traffic merge is performed by touching the
       <computeroutput>Merge Traffic</computeroutput> button,
-      resulting in a dialog like that shown in FIXME.  (NOTE:
+      resulting in a dialog as illustrated. (NOTE:
       the configuration of the various data file names and parser parameters
       needed for data import is done in the RDAdmin module and is covered
       in the Rivendell Technical and Administration Guide).
@@ -3914,7 +3912,7 @@
        system resources utilized, and can be done by selecting the desired
        service and then touching the
        <computeroutput>Purge Data</computeroutput> button in the Select
-       Service dialog, opening up a calendar dialog (see FIXME).
+       Service dialog, opening up a calendar dialog.
        Each date that has data eligible for purging will be shown in bold.
        To purge a particular day, select it and the touch the
        <computeroutput>Purge Data</computeroutput>
@@ -3982,7 +3980,7 @@
     <sect2 id="sect.voicetracking.the_voicetracker_dialog">
       <title>The VoiceTracker Dialog</title>
       <para>
-	To voicetrack a log, start the RDLogEdit module (see FIXME),
+	To voicetrack a log, start the RDLogEdit module,
 	highlight the desired log and touch the
 	<computeroutput>VoiceTracker</computeroutput> button, opening
 	the VoiceTracker dialog. This dialog consists
@@ -4082,19 +4080,18 @@
 	Once the desired voicetrack marker has been selected, the process
 	of recording a voicetrack consists of four steps, each initiated by
 	one of the four square control buttons in the upper right-hand
-	corner of the dialog. (See FIXME).
+	corner of the dialog.
       </para>
       <para>
 	To begin, touch the topmost
 	<computeroutput>Start</computeroutput> button. This will cause the
 	audio in the topmost pane to begin playing, with a cursor to show
-	playback position (see FIXME). To begin the actual
-	recording, touch the <computeroutput>Record</computeroutput> button
-	(see FIXME). To start
-	the following event (in the third pane), touch the second 
+	playback position. To begin the actual
+	recording, touch the <computeroutput>Record</computeroutput> button.
+	To start the following event (in the third pane), touch the second 
 	<computeroutput>Start</computeroutput>
-	button (see FIXME).  Finally, to stop recording, touch
-	the <computeroutput>Save</computeroutput> button (see FIXME).
+	button.  Finally, to stop recording, touch
+	the <computeroutput>Save</computeroutput> button.
 	The record process can be
 	canceled at any time by touching the
 	<computeroutput>Abort</computeroutput> button, restoring the 
@@ -4133,7 +4130,7 @@
 	voicetrack directly from an audio file.  To do so, select the
 	desired voicetrack marker and then touch the
 	<computeroutput>Import</computeroutput> button to open
-	the Import/Export Audio dialog (see FIXME). (For more
+	the Import/Export Audio dialog. (For more
 	information on using the Import/Export Audio dialog, see Section 
 	3.1.0 Importing Audio from a File). Once imported, the voicetrack
 	can be manipulated in the same manner as those that were directly
@@ -6438,7 +6435,7 @@
 </sect1>
 </chapter>
 
-<chapter id="chapter.interfacing_with_the_linux_ecosystem__command_line_utilities">
+<chapter id="chapter.utilities">
   <title>Interfacing with the Linux Ecosystem: Command-Line Utilities</title>
   <para>
     Rivendell includes a number of command-line utilities. Some of these
@@ -6448,7 +6445,7 @@
     a brief overview of the available utilities; full documentation for each
     is available via the Linux man page facility.
   </para>
-  <sect1 id="sect.interfacing_with_the_linux_ecosystem__command_line_utilities.rdclilogedit">
+  <sect1 id="sect.utilities.rdclilogedit">
     <title>rdclilogedit(1)</title>
     <para>
       <command>rdclilogedit</command><manvolnum>1</manvolnum> is a
@@ -6463,7 +6460,7 @@
       <userinput>man 1 rdclilogedit</userinput>.
     </para>
   </sect1>
-  <sect1 id="sect.interfacing_with_the_linux_ecosystem__command_line_utilities.rdconvert">
+  <sect1 id="sect.utilities.rdconvert">
     <title>rdconvert(1)</title>
     <para>
       <command>rdconvert</command><manvolnum>1</manvolnum> is a command-line
@@ -6475,7 +6472,7 @@
       <userinput>man 1 rdconvert</userinput>.
     </para>
   </sect1>
-  <sect1 id="sect.interfacing_with_the_linux_ecosystem__command_line_utilities.rddbcheck">
+  <sect1 id="sect.utilities.rddbcheck">
     <title>rddbcheck(8)</title>
     <para>
       <command>rddbcheck</command><manvolnum>8</manvolnum> is a
@@ -6487,7 +6484,7 @@
       <userinput>man 8 rddbcheck</userinput>.
     </para>
   </sect1>
-  <sect1 id="sect.interfacing_with_the_linux_ecosystem__command_line_utilities.rdexport">
+  <sect1 id="sect.utilities.rdexport">
     <title>rdexport(1)</title>
     <para>
       <command>rdexport</command><manvolnum>1</manvolnum> is a command-line
@@ -6502,7 +6499,7 @@
       <userinput>man 1 rdexport</userinput>.
     </para>
   </sect1>
-  <sect1 id="sect.interfacing_with_the_linux_ecosystem__command_line_utilities.rdimport">
+  <sect1 id="sect.utilities.rdimport">
     <title>rdimport(1)</title>
     <para>
       <command>rdimport</command><manvolnum>1</manvolnum> is a command-line
@@ -6517,7 +6514,7 @@
       <userinput>man 1 rdimport</userinput>.
     </para>
   </sect1>
-  <sect1 id="sect.interfacing_with_the_linux_ecosystem__command_line_utilities.rdmarkerset">
+  <sect1 id="sect.utilities.rdmarkerset">
     <title>rdmarkerset(8)</title>
     <para>
       <command>rdmarkerset</command><manvolnum>8</manvolnum> is a
@@ -6530,7 +6527,7 @@
       <userinput>man 8 rdmarkerset</userinput>.
     </para>
   </sect1>
-  <sect1 id="sect.interfacing_with_the_linux_ecosystem__command_line_utilities.rdrevert">
+  <sect1 id="sect.utilities.rdrevert">
     <title>rdrevert(8)</title>
     <para>
       <command>rdrevert</command><manvolnum>8</manvolnum> is a
@@ -6542,7 +6539,7 @@
       <userinput>man 8 rdrevert</userinput>.
     </para>
   </sect1>
-  <sect1 id="sect.rinterfacing_with_the_linux_ecosystem__command_line_utilities.mlsend_1_">
+  <sect1 id="sect.utilities.mlsend_1_">
     <title>rmlsend(1)</title>
     <para>
       <command>rmlsend</command><manvolnum>1</manvolnum> is a small
@@ -6551,8 +6548,15 @@
       a command line interface (CLI).
     </para>
     <para>
-      If started with no arguments, RMLSend will come up in GUI mode (see
-      FIXME).
+      If started with no arguments, RMLSend will come up in GUI mode.
+    </para>
+    <para>
+      <mediaobject>
+	<imageobject>
+	  <imagedata align="center" fileref="utilities.rmlsend_screenshot.png" scale="60"/>
+	</imageobject>
+	<caption><para>RMLSend in GUI Mode</para></caption>
+      </mediaobject>
     </para>
     <para>
       Full documentation is available by doing

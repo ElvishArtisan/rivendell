@@ -16226,3 +16226,6 @@
 2017-11-02 Fred Gleason <fredg@paravelsystems.com>
 	* Added screenshots for the 'VoiceTracking' chapter of the
 	Operations Guide.
+2017-11-02 Fred Gleason <fredg@paravelsystems.com>
+	* Removed FIXME clauses from the Operations Guide.
+	* Added a screenshot for RMLSend to the Operations Guide.

@@ -98,6 +98,7 @@ EXTRA_DIST = opsguide.html\
              rdlogmanager.select_date_dialog.png\
              rdlogmanager.select_report_dates_dialog.png\
              rdlogmanager.service_association_dialog.png\
+             utilities.rmlsend_screenshot.png\
              voicetracking.voice_tracker_dialog.png\
              voicetracking.voice_tracker_dialog_recording.png\
              voicetracking.voice_tracker_dialog_track_1_playing.png\
