@@ -97,7 +97,13 @@ EXTRA_DIST = opsguide.html\
              rdlogmanager.rivendell_services_dialog.png\
              rdlogmanager.select_date_dialog.png\
              rdlogmanager.select_report_dates_dialog.png\
-             rdlogmanager.service_association_dialog.png
+             rdlogmanager.service_association_dialog.png\
+             voicetracking.voice_tracker_dialog.png\
+             voicetracking.voice_tracker_dialog_recording.png\
+             voicetracking.voice_tracker_dialog_track_1_playing.png\
+             voicetracking.voice_tracker_dialog_track_2_playing.png\
+             voicetracking.voice_tracker_dialog_track_completed.png\
+             voicetracking.voice_tracker_dialog_track_selected.png
 
 CLEANFILES = *~
 MAINTAINERCLEANFILES = *~\
