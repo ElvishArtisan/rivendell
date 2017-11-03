@@ -33,7 +33,6 @@ EXTRA_DIST = ALSA.txt\
              colors\
              copy_split_format.odt\
              MESSAGE_BOX.txt\
-             metadata_wildcards.txt\
              NEXGEN_FILTER.txt\
              NOW+NEXT.txt\
              pam_rd.txt\

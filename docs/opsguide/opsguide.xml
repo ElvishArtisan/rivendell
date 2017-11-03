@@ -9576,6 +9576,86 @@ under certain conditions; type `show c' for details.
   </sect1>
 </appendix>
 
+<appendix xml:id="appendix.metadata_wildcards">
+  <title>Metadata Wildcards</title>
+  <para>
+    These codes are used in Rivendell to indicate when a substitution of the
+    indicated cart metadata field should be performed --e.g. in the
+    '--metadata-pattern' switch of rdimport(1) or the RLMResolveNowNext*()
+    functions in the Rivendell Loadable Module API.
+  </para>
+  <table xml:id="table.metadata_wildcards" frame="all" pgwide="0">
+    <title>Metadata Wildcards</title>
+    <tgroup cols="3" align="left" colsep="1" rowsep="1">
+      <colspec colname="Now" colwidth="2.0*"/>
+      <colspec colname="Next" colwidth="2.0*"/>
+      <colspec colname="Field" colwidth="10.0*"/>
+      <tbody>
+	<row><entry>Now</entry><entry>Next</entry><entry>Field</entry></row>
+	<row><entry><userinput>%a</userinput></entry><entry><userinput>%A</userinput></entry><entry>Artist</entry></row>
+	<row><entry><userinput>%b</userinput></entry><entry><userinput>%B</userinput></entry><entry>Record Label</entry></row>
+	<row><entry><userinput>%c</userinput></entry><entry><userinput>%C</userinput></entry><entry>Client</entry></row>
+	<row><entry><userinput>%d(<replaceable>&lt;dt&gt;</replaceable>)</userinput></entry><entry><userinput>%D(<replaceable>&lt;dt&gt;</replaceable>)</userinput></entry><entry>Date/Time (see the <link linkend="table.metadata_wildcards.datetimes">Metadata DateTime Specification</link> for values of <userinput><replaceable>&lt;dt&gt;</replaceable></userinput>)</entry></row>
+	<row><entry><userinput>%e</userinput></entry><entry><userinput>%E</userinput></entry><entry>Agency</entry></row>
+	<row><entry><userinput>%f</userinput></entry><entry><userinput>%F</userinput></entry><entry>[unassigned]</entry></row>
+	<row><entry><userinput>%g</userinput></entry><entry><userinput>%G</userinput></entry><entry>Rivendell group name</entry></row>
+	<row><entry><userinput>%h</userinput></entry><entry><userinput>%H</userinput></entry><entry>Event length (milliseconds)</entry></row>
+	<row><entry><userinput>%i</userinput></entry><entry><userinput>%I</userinput></entry><entry>Cut Description</entry></row>
+	<row><entry><userinput>%j</userinput></entry><entry><userinput>%J</userinput></entry><entry>Cut Number</entry></row>
+	<row><entry><userinput>%k</userinput></entry><entry><userinput>%K</userinput></entry><entry>Start [<userinput>%k</userinput>]/end [<userinput>%K</userinput>] time for <command>rdimport</command><manvolnum>1</manvolnum> [HH:MM:SS]</entry></row>
+	<row><entry><userinput>%l</userinput></entry><entry><userinput>%L</userinput></entry><entry>Album</entry></row>
+	<row><entry><userinput>%m</userinput></entry><entry><userinput>%M</userinput></entry><entry>Composer</entry></row>
+	<row><entry><userinput>%n</userinput></entry><entry><userinput>%N</userinput></entry><entry>Rivendell cart number</entry></row>
+	<row><entry><userinput>%o</userinput></entry><entry><userinput>%O</userinput></entry><entry>Outcue</entry></row>
+	<row><entry><userinput>%p</userinput></entry><entry><userinput>%P</userinput></entry><entry>Publisher</entry></row>
+	<row><entry><userinput>%q</userinput></entry><entry><userinput>%Q</userinput></entry><entry>Start [<userinput>%q</userinput>]/end [<userinput>%Q</userinput>] date for <command>rdimport</command><manvolnum>1</manvolnum> [YYYY-MM-DD]</entry></row>
+	<row><entry><userinput>%r</userinput></entry><entry><userinput>%R</userinput></entry><entry>Conductor</entry></row>
+	<row><entry><userinput>%s</userinput></entry><entry><userinput>%S</userinput></entry><entry>Song ID</entry></row>
+	<row><entry><userinput>%t</userinput></entry><entry><userinput>%T</userinput></entry><entry>Title</entry></row>
+	<row><entry><userinput>%u</userinput></entry><entry><userinput>%U</userinput></entry><entry>User Definied</entry></row>
+	<row><entry><userinput>%v</userinput></entry><entry><userinput>%V</userinput></entry><entry>[Unassigned]</entry></row>
+	<row><entry><userinput>%w</userinput></entry><entry><userinput>%W</userinput></entry><entry>[Unassigned]</entry></row>
+	<row><entry><userinput>%x</userinput></entry><entry><userinput>%X</userinput></entry><entry>[Unassigned]</entry></row>
+	<row><entry><userinput>%y</userinput></entry><entry><userinput>%Y</userinput></entry><entry>Release Year</entry></row>
+	<row><entry><userinput>%z</userinput></entry><entry><userinput>%Z</userinput></entry><entry>[Unassigned]</entry></row>
+	<row><entry><userinput>\r</userinput></entry><entry><userinput>\r</userinput></entry><entry>Literal Carriage Return (ASCII 13)</entry></row>
+	<row><entry><userinput>\n</userinput></entry><entry><userinput>\n</userinput></entry><entry>Literal Linefeed (ASCII 10)</entry></row>
+      </tbody>
+    </tgroup>
+  </table>
+
+  <table xml:id="table.metadata_wildcards.datetimes" frame="all" pgwide="0">
+    <title>Metadata DateTime Specification</title>
+    <tgroup cols="2" align="left" colsep="1" rowsep="1">
+      <colspec colname="Wildcard" colwidth="2.0*"/>
+      <colspec colname="Meaning" colwidth="10.0*"/>
+      <tbody>
+	<row><entry>Wildcard</entry><entry>Meaning</entry></row>
+	<row><entry><userinput>d</userinput></entry><entry>The day as a number without a leading zero (1 to 31)</entry></row>
+	<row><entry><userinput>dd</userinput></entry><entry>The day as a number with a leading zero (01 to 31)</entry></row>
+	<row><entry><userinput>ddd</userinput></entry><entry>The abbreviated localized day name ('Mon' or 'Sun')</entry></row>
+	<row><entry><userinput>dddd</userinput></entry><entry>The long localized day name ('Monday' or 'Sunday')</entry></row>
+	<row><entry><userinput>M</userinput></entry><entry>The month as a number without a leading zero (1 to 12)</entry></row>
+	<row><entry><userinput>MM</userinput></entry><entry>The month as a number with a leading zero (01 to 12)</entry></row>
+	<row><entry><userinput>MMM</userinput></entry><entry>The abbreviated localized month name ('Jan' or 'Dec')</entry></row>
+	<row><entry><userinput>MMMM</userinput></entry><entry> The long localized month name ('January' or 'December')</entry></row>
+	<row><entry><userinput>yy</userinput></entry><entry>The last two digits of the year</entry></row>
+	<row><entry><userinput>yyyy</userinput></entry><entry>The full four digits of the year</entry></row>
+	<row><entry><userinput>h</userinput></entry><entry>The hour without a leading zero (0 - 23, or 1 - 12 if using AM/PM display)</entry></row>
+	<row><entry><userinput>hh</userinput></entry><entry>The hour with a leading zero (00 - 23, or 01 -12 if using AM/PM display)</entry></row>
+	<row><entry><userinput>m</userinput></entry><entry>The minute without a leading zero (0 - 59)</entry></row>
+	<row><entry><userinput>mm</userinput></entry><entry>The minute with a leading zero (00 - 59)</entry></row>
+	<row><entry><userinput>s</userinput></entry><entry>The second without a leading zero (00 - 60)</entry></row>
+	<row><entry><userinput>ss</userinput></entry><entry>The second with a leading zero (00 - 60)</entry></row>
+	<row><entry><userinput>z</userinput></entry><entry>The milliseconds without a leading zero (0 - 999)</entry></row>
+	<row><entry><userinput>zzz</userinput></entry><entry>The milliseconds with leading zeros (000 - 999)</entry></row>
+	<row><entry><userinput>AP</userinput></entry><entry>Use AM/PM display.  The 'AP' will be replaced by 'AM' or 'PM' as appropriate</entry></row>
+	<row><entry><userinput>ap</userinput></entry><entry>Use AM/PM display.  The 'ap' will be replaced by 'am' or 'pm' as appropriate</entry></row>
+      </tbody>
+    </tgroup>
+  </table>
+
+</appendix>
 <!--
 <index>
 </index>

@@ -16244,3 +16244,6 @@
 2017-11-03 Fred Gleason <fredg@paravelsystems.com>
 	* Moved the contents of 'docs/datetime_wildcards.txt' to an
 	appendix in the	Operations Guide.
+2017-11-03 Fred Gleason <fredg@paravelsystems.com>
+	* Moved the contents of 'docs/metadata_wildcards.txt' to an
+	appendix in the	Operations Guide.

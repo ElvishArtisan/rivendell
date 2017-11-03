@@ -434,7 +434,6 @@ rm -rf $RPM_BUILD_ROOT
 %doc docs/scheduler_formats.ods
 %doc docs/copy_split_format.odt
 %doc docs/ando_interface.odt
-%doc docs/metadata_wildcards.txt
 %doc scripts/rd_backup
 %doc scripts/start_traverso.sh
 %doc scripts/rd_mysql_enable_host.sh
