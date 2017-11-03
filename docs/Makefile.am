@@ -20,7 +20,7 @@
 ## Use automake to process this into a Makefile.in
 
 if DOCBOOK_AM
-  DOCBOOK_AM_OPT = docbook manpages opsguide
+  DOCBOOK_AM_OPT = apis manpages opsguide
 endif
 
 SUBDIRS = $(DOCBOOK_AM_OPT) examples\

@@ -16237,3 +16237,7 @@
 	* Removed 'docs/ENCODERS.txt'.
 	* Removed 'docs/implemented_macros.txt'.
 	* Removed 'docs/JACK.txt'.
+2017-11-03 Fred Gleason <fredg@paravelsystems.com>
+	* Renamed 'docs/docbook/' to 'docs/apis/'.
+	* Qualified all 'id=' tag attributes as 'xml:id=' in the Operations
+	Guide.

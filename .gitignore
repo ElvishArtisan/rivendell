@@ -29,8 +29,8 @@ config.status
 config.sub
 configure
 depcomp
-docs/docbook/*.html
-docs/docbook/*.pdf
+docs/apis/*.html
+docs/apis/*.pdf
 docs/opsguide/*.html
 docs/opsguide/*.pdf
 helpers/cwrap

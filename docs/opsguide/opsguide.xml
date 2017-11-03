@@ -36,7 +36,7 @@
 <preface><title>Forward</title></preface>
 -->
 
-<chapter id="chapter.overview">
+<chapter xml:id="chapter.overview">
   <title>System Overview</title>
 <!--
   <mediaobject>
@@ -45,7 +45,7 @@
     </imageobject>
   </mediaobject>
 -->
-  <sect1 id="sect.overview.introducting_rivendell">
+  <sect1 xml:id="sect.overview.introducting_rivendell">
     <title>Introducing Rivendell</title>
     <para>
       Rivendell is a digital audio content management and delivery system
@@ -165,7 +165,7 @@
       chapters that follow.  However, we first need to cover some basic
       concepts common to all Rivendell modules.
     </para>
-    <sect2 id="sect.overview.the_rivendell_object_paradigm">
+    <sect2 xml:id="sect.overview.the_rivendell_object_paradigm">
       <title>The Rivendell Object Paradigm</title>
       <para>
 	All Rivendell modules make use of the following four classes of
@@ -190,7 +190,7 @@
       <para>
 	We'll cover each of these concepts in turn.
       </para>
-      <sect3 id="sect.overview.hosts">
+      <sect3 xml:id="sect.overview.hosts">
 	<title>Hosts</title>
 	<para>
 	  Every physical computer within a given network that is running
@@ -206,7 +206,7 @@
 	  of these functions.
 	</para>
       </sect3>
-      <sect3 id="sect.overview.users">
+      <sect3 xml:id="sect.overview.users">
 	<title>Users</title>
 	<para>
 	  Every host on a Rivendell network has one or more
@@ -222,7 +222,7 @@
 	  module. 
 	</para>
       </sect3>
-      <sect3 id="sect.overview.groups">
+      <sect3 xml:id="sect.overview.groups">
 	<title>Groups</title>
 	<para>
 	  A Rivendell <emphasis>group</emphasis> is a system of categories
@@ -241,7 +241,7 @@
 	  detail in the chapters devoted to the RDLibrary and RDAdmin modules.
 	</para>
       </sect3>
-      <sect3 id="sect.overview.services">
+      <sect3 xml:id="sect.overview.services">
 	<title>Services</title>
 	<para>
 	  Every facility at which Rivendell is deployed is presumed to have 
@@ -256,7 +256,7 @@
 	</para>
       </sect3>
     </sect2>
-    <sect2 id="sect.overview.the_rivendell_hardware_paradigm">
+    <sect2 xml:id="sect.overview.the_rivendell_hardware_paradigm">
       <title>The Rivendell Hardware Paradigm</title>
       <para>
 	In addition to the core computer hardware (CPU, motherboard, etc),
@@ -266,7 +266,7 @@
 	audio adapters, serial ports and GPIO/switcher devices.  We'll
 	cover each below.
       </para>
-      <sect3 id="sect.overview.audio_adapters">
+      <sect3 xml:id="sect.overview.audio_adapters">
 	<title>Audio Adapters</title>
 	<para>
 	  An <emphasis>audio adapter</emphasis> in Rivendell is simply a
@@ -327,7 +327,7 @@
 	  </variablelist>
 	</para>
       </sect3>
-      <sect3 id="sect.overview.serial_ports">
+      <sect3 xml:id="sect.overview.serial_ports">
 	<title>Serial Ports</title>
 	<para>
 	  Commonly known in the DOS/Windows world as 'COM ports', 
@@ -337,7 +337,7 @@
 	  can be accessed simultaneously by each Rivendell host.
 	</para>
       </sect3>
-      <sect3 id="sect.overview.gpio_switcher_devices">
+      <sect3 xml:id="sect.overview.gpio_switcher_devices">
 	<title>GPIO/Switcher Devices</title>
 	<para>
 	  Because these capabilities are often (although not always)
@@ -364,9 +364,9 @@
   </sect1>
 </chapter>
 
-<chapter id="chapter.rdlogin">
+<chapter xml:id="chapter.rdlogin">
   <title>Managing the Current User with RDLogin</title>
-  <sect1 id="sect.rdlogin.managing_the_current_user_with_rdlogin">
+  <sect1 xml:id="sect.rdlogin.managing_the_current_user_with_rdlogin">
     <title>RDLogin</title>
     <para>
       Rivendell uses a sophisticated system of user privileges to keep track
@@ -419,11 +419,11 @@
   </sect1>
 </chapter>
 
-<chapter id="chapter.rdlibrary">
+<chapter xml:id="chapter.rdlibrary">
   <title>Content Management with RDLibrary</title>
-  <sect1 id="sect.rdlibrary.the_rivendell_library_structure_and_rdlibrary">
+  <sect1 xml:id="sect.rdlibrary.the_rivendell_library_structure_and_rdlibrary">
     <title>The Rivendell Library Structure and RDLibrary</title>
-    <sect2 id="sect2_rdlibrary_carts">
+    <sect2 xml:id="sect2_rdlibrary_carts">
       <title>Carts</title>
       <para>
 	The Rivendell Library consists of a set of objects called
@@ -549,7 +549,7 @@
 	within the cart.  
       </para>
     </sect2>
-    <sect2 id="sect.rdlibrary.cuts">
+    <sect2 xml:id="sect.rdlibrary.cuts">
       <title>Cuts</title>
       <para>
 	Each audio cart can contain one or more <emphasis>cuts</emphasis>.
@@ -683,7 +683,7 @@
 	  </listitem>
 	</varlistentry>
       </variablelist>
-      <sect3 id="sect.rdlibrary.multiple_cuts_in_a_cart">
+      <sect3 xml:id="sect.rdlibrary.multiple_cuts_in_a_cart">
 	<title>Multiple Cuts in a Cart</title>
 	<para>
 	  What happens when more than one cut is placed into a cart? The
@@ -726,7 +726,7 @@
 	  audition any recording already made.
 	</para>
       </sect3>
-      <sect3 id="sect.rdlibrary.cut_dayparting">
+      <sect3 xml:id="sect.rdlibrary.cut_dayparting">
 	<title>Cut Dayparting</title>
 	<para>
 	  For carts for which <computeroutput>Schedule Cuts</computeroutput>
@@ -797,7 +797,7 @@
 	  other Rivendell modules.
 	</para>
       </sect3>
-      <sect3 id="sect.rdlibrary.cart_and_cut_color_coding">
+      <sect3 xml:id="sect.rdlibrary.cart_and_cut_color_coding">
 	<title>Cart and Cut Color Coding</title>
 	<para>
 	  Each cart or cut in RDLibrary is assigned a color to indicate
@@ -846,7 +846,7 @@
 	  is being viewed</emphasis>.
 	</para>
       </sect3>
-      <sect3 id="sect.rdlibrary.recording_and_auditioning_a_cut_in_the_record_dialog">
+      <sect3 xml:id="sect.rdlibrary.recording_and_auditioning_a_cut_in_the_record_dialog">
 	<title>Recording and Auditioning a Cut in the Record Dialog</title>
 	<para>
 	  The lower third of the Record Dialog is used both to audition and
@@ -904,7 +904,7 @@
       </sect3>
     </sect2>
   </sect1>
-  <sect1 id="sect.rdlibrary.alternative_methods_of_audio_ingestion">
+  <sect1 xml:id="sect.rdlibrary.alternative_methods_of_audio_ingestion">
     <title>Alternative Methods of Audio Ingestion</title>
     <para>
       In addition to manually recording material in realtime, RDLibrary
@@ -920,7 +920,7 @@
 	</listitem>
       </itemizedlist>
     </para>
-    <sect2 id="sect2_rdlibrary_importing_audio_from_a_file">
+    <sect2 xml:id="sect2_rdlibrary_importing_audio_from_a_file">
       <title>Importing Audio from a File</title>
       <para>
 	To import audio from a file directly into a cut, we start by
@@ -986,7 +986,7 @@
 	and can now be auditioned and otherwise processed in the usual way.
       </para>
     </sect2>
-    <sect2 id="sect.rdlibrary.importing_audio_from_a_cd_track">
+    <sect2 xml:id="sect.rdlibrary.importing_audio_from_a_cd_track">
       <title>Ripping Audio from a CD Track</title>
       <para>
 	To rip audio directly off of a CD into a cut, we again start by
@@ -1032,7 +1032,7 @@
 	closing the Dialog.
       </para>
     </sect2>
-    <sect2 id="sect.rdlibrary.ripping_multiple_cd_tracks_at_a_time">
+    <sect2 xml:id="sect.rdlibrary.ripping_multiple_cd_tracks_at_a_time">
       <title>Ripping Multiple CD Tracks at a Time</title>
       <para>
 	Sometimes, when transferring multiple audio tracks from CD,
@@ -1091,7 +1091,7 @@
       </para>
     </sect2>
   </sect1>
-  <sect1 id="sect.rdlibrary.macro_carts">
+  <sect1 xml:id="sect.rdlibrary.macro_carts">
     <title>Macro Carts</title>
     <para>
       A macro cart is a cart that contains one or more commands written in
@@ -1129,7 +1129,7 @@
       </mediaobject>
     </para>
   </sect1>
-  <sect1 id="sect.rdlibrary.navigating_the_audio_library">
+  <sect1 xml:id="sect.rdlibrary.navigating_the_audio_library">
     <title>Navigating the Audio Library</title>
     <para>
       The uppermost section of RDLibrary's main window contains tools
@@ -1138,7 +1138,7 @@
       containing thousands of carts.  It's possible to  control what carts
       are listed, as well as how they are sorted.
     </para>
-    <sect2 id="sect.rdlibrary.changing_the_cart_sort_order">
+    <sect2 xml:id="sect.rdlibrary.changing_the_cart_sort_order">
       <title>Changing the Cart Sort Order</title>
       <para>
 	The order in which carts are displayed in the cart list can be
@@ -1158,7 +1158,7 @@
 	parameter shown in the cart list.
       </para>
     </sect2>
-    <sect2 id="sect.rdlibrary.selecting_carts_by_the_filter_field">
+    <sect2 xml:id="sect.rdlibrary.selecting_carts_by_the_filter_field">
       <title>Selecting Carts by the Filter Field</title>
       <para>
 	Very often, one will want to find a cart or set of carts whose
@@ -1171,7 +1171,7 @@
 	the Clear button.
       </para>
     </sect2>
-    <sect2 id="sect.rdlibrary.selecting_carts_by_group">
+    <sect2 xml:id="sect.rdlibrary.selecting_carts_by_group">
       <title>Selecting Carts by Group</title>
       <para>
 	It's possible to limit the list of carts to only those in a
@@ -1180,7 +1180,7 @@
 	desired group name.
       </para>
     </sect2>
-    <sect2 id="sect.rdlibrary.selecting_carts_by_type">
+    <sect2 xml:id="sect.rdlibrary.selecting_carts_by_type">
       <title>Selecting Carts by Type</title>
       <para>
 	You can tell RDLibrary what type of carts to list by checking the
@@ -1194,7 +1194,7 @@
 	sorting methods.
       </para>
     </sect2>
-    <sect2 id="sect.rdlibrary.selecting_and_opening_carts">
+    <sect2 xml:id="sect.rdlibrary.selecting_and_opening_carts">
       <title>Selecting and Opening Carts</title>
       <para>
 	Once the desired cart has been located on the cart list, load it
@@ -1204,9 +1204,9 @@
       </para>
     </sect2>
   </sect1>
-  <sect1 id="sect.rdlibrary.library_maintenance">
+  <sect1 xml:id="sect.rdlibrary.library_maintenance">
     <title>Library Maintenance</title>
-    <sect2 id="rdlibrary.editing_markers">
+    <sect2 xml:id="rdlibrary.editing_markers">
       <title>Editing Markers</title>
       <para>
 	Rivendell uses a system of cue points within audio cuts, referred
@@ -1402,7 +1402,7 @@
 	respectively.
       </para>
     </sect2>
-    <sect2 id="sect.rdlibrary.copying_and_pasting_audio_from_cut_to_cut">
+    <sect2 xml:id="sect.rdlibrary.copying_and_pasting_audio_from_cut_to_cut">
       <title>Copying and Pasting Audio from Cut to Cut</title>
       <para>
 	It's possible to make copies of existing an audio cut on the system
@@ -1415,7 +1415,7 @@
       </para>
     </sect2>
   </sect1>
-  <sect1 id="sect.rdlibrary.generating_library_reports">
+  <sect1 xml:id="sect.rdlibrary.generating_library_reports">
     <title>Generating Library Reports</title>
     <para>
       Various Library reports can be generated by touching the
@@ -1424,21 +1424,21 @@
       report and touching the <computeroutput>Generate</computeroutput>
       button. The following reports are available:
     </para>
-    <sect2 id="sect.rdlibrary.the_cart_report">
+    <sect2 xml:id="sect.rdlibrary.the_cart_report">
       <title>The Cart Report</title>
       <para>
 	The cart report consists of a list of all selected carts on the
 	system, with their attributes.
       </para>
     </sect2>
-    <sect2 id="sect.rdlibrary.the_cut_report">
+    <sect2 xml:id="sect.rdlibrary.the_cut_report">
       <title>The Cut Report</title>
       <para>
 	The cut report consists of a list of all cuts contained by the
 	selected carts on the system, with their attributes.
       </para>
     </sect2>
-    <sect2 id="sect.rdlibrary.the_cart_data_dump__fixed_width_">
+    <sect2 xml:id="sect.rdlibrary.the_cart_data_dump__fixed_width_">
       <title>The Cart Data Dump (fixed width)</title>
       <para>
 	The fixed-width cart data dump is a special type of report that
@@ -1449,7 +1449,7 @@
 	external system (such as a music scheduling system).
       </para>
     </sect2>
-    <sect2 id="sect.rdlibrary.the_cart_data_dump__csv_">
+    <sect2 xml:id="sect.rdlibrary.the_cart_data_dump__csv_">
       <title>The Cart Data Dump (CSV)</title>
       <para>
 	The CSV cart data dump is a special type of report that
@@ -1463,9 +1463,9 @@
   </sect1>
 </chapter>
 
-<chapter id="chapter.rdcatch">
+<chapter xml:id="chapter.rdcatch">
   <title>Automating Tasks with RDCatch</title>
-  <sect1 id="sect.rdcatch.automating_tasks_with_rdcatch">
+  <sect1 xml:id="sect.rdcatch.automating_tasks_with_rdcatch">
     <title>Choosing the Correct Automation Tool</title>
     <para>
       Rivendell includes two modules specially optimized for performing
@@ -1505,7 +1505,7 @@
       take a look at the capabilities of RDCatch.
     </para>
   </sect1>
-  <sect1 id="sect.rdcatch.the_rdcatch_main_window">
+  <sect1 xml:id="sect.rdcatch.the_rdcatch_main_window">
     <title>The RDCatch Main Window</title>
     <para>
       After starting up RDCatch, you will see the
@@ -1514,7 +1514,7 @@
       below the decks, the events list and the audition buttons and other
       buttons at the bottom. We'll cover each of these in turn.
     </para>
-    <sect2 id="sect.rdcatch.the_record___play_out_deck_area">
+    <sect2 xml:id="sect.rdcatch.the_record___play_out_deck_area">
       <title>The Record / Play Out Deck Area</title>
       <para>
 	If the system administrator has configured one or more RDCatch
@@ -1542,7 +1542,7 @@
 	active), followed by the deck's status, which could be any of the 
 	values in <xref linkend="table.rdcatch.rdcatch_event_states"/>.
     </para>
-    <table id="table.rdcatch.rdcatch_event_states" frame="all">
+    <table xml:id="table.rdcatch.rdcatch_event_states" frame="all">
       <title>RDCatch Event States</title>
       <tgroup cols="2" align="left" colsep="1" rowsep="1">
 	<colspec colname="Status" />
@@ -1611,12 +1611,12 @@
       </tgroup>
     </table>
       <para>
-	<mediaobject id="mediaobject.rdcatch.rdcatch_screenshot">
+	<mediaobject xml:id="mediaobject.rdcatch.rdcatch_screenshot">
 	  <imageobject>
 	    <imagedata align="center" fileref="rdcatch.rdcatch_screenshot.png" scale="45"/>
 	  </imageobject>
 	  <caption>
-	    <para id="para.rdcatch.the_rdcatch_main_window">The RDCatch Main Window</para>
+	    <para xml:id="para.rdcatch.the_rdcatch_main_window">The RDCatch Main Window</para>
 	  </caption>
 	</mediaobject>
       </para>
@@ -1625,7 +1625,7 @@
       to verify audio levels in realtime.
     </para>
     </sect2>
-    <sect2 id="sect.rdcatch.the_filter_area">
+    <sect2 xml:id="sect.rdcatch.the_filter_area">
       <title>The Filter Area</title>
       <para>
 	Immediately below the decks is the filter area, consisting of the
@@ -1637,7 +1637,7 @@
 	visible in the events list area immediately below.
       </para>
     </sect2>
-    <sect2 id="sect.rdcatch.the_event_list">
+    <sect2 xml:id="sect.rdcatch.the_event_list">
       <title>The Event List</title>
       <para>
 	The event list is a system wide list of all events to be executed
@@ -1858,7 +1858,7 @@
 	operation of RDCatch.
       </para>
     </sect2>
-    <sect2 id="sect.rdcatch_the_button_area">
+    <sect2 xml:id="sect.rdcatch_the_button_area">
       <title>The Button Area</title>
       <para>
 	At the bottom of the main window are various buttons. On the
@@ -1881,7 +1881,7 @@
       </para>
     </sect2>
   </sect1>
-  <sect1 id="sect.rdcatch.adding_new_events">
+  <sect1 xml:id="sect.rdcatch.adding_new_events">
     <title>Adding New Events</title>
     <para>
       A new event can be added to the event list by simply clicking the
@@ -1891,17 +1891,17 @@
       event will create it.
     </para>
       <para>
-	<mediaobject id="mediaobject.rdcatch.add_event_dialog">
+	<mediaobject xml:id="mediaobject.rdcatch.add_event_dialog">
 	  <imageobject>
 	    <imagedata align="center" fileref="rdcatch.add_event_dialog.png" scale="50"/>
 	  </imageobject>
 	  <caption>
-	    <para id="para.the_add_event_dialog">The Add Event Dialog</para>
+	    <para xml:id="para.the_add_event_dialog">The Add Event Dialog</para>
 	  </caption>
 	</mediaobject>
       </para>
   </sect1>
-  <sect1 id="sect.rdcatch.automating_recordings">
+  <sect1 xml:id="sect.rdcatch.automating_recordings">
     <title>Automating Recordings</title>
     <para>
       Automated recordings are configured by means of the Edit Recording
@@ -1911,7 +1911,7 @@
       event or by touching the <computeroutput>Edit</computeroutput> button
       to modify an existing event.
     </para>
-    <sect2 id="sect.rdcatch.the__start_parameters__section">
+    <sect2 xml:id="sect.rdcatch.the__start_parameters__section">
       <title>The 'Start Parameters' Section</title>
       <para>
 	The start parameters of each recording are configured in the
@@ -1932,17 +1932,17 @@
 	the GPI event and the actual start of the recording.
       </para>
       <para>
-	<mediaobject id="mediaobject.rdcatch.edit_recording_dialog">
+	<mediaobject xml:id="mediaobject.rdcatch.edit_recording_dialog">
 	  <imageobject>
 	    <imagedata align="center" fileref="rdcatch.edit_recording_dialog.png" scale="50"/>
 	  </imageobject>
 	  <caption>
-	    <para id="the_edit_recording_dialog">The Edit Recording Dialog</para>
+	    <para xml:id="the_edit_recording_dialog">The Edit Recording Dialog</para>
 	  </caption>
 	</mediaobject>
       </para>
     </sect2>
-    <sect2 id="sect.rdcatch_the__end_parameters__section">
+    <sect2 xml:id="sect.rdcatch_the__end_parameters__section">
       <title>The 'End Parameters' Section</title>
       <para>
 	The end parameters of each recording are configured in the
@@ -1959,7 +1959,7 @@
 	the expected GPI event is never received.
       </para>
     </sect2>
-    <sect2 id="sect.rdcatch.programming_multiple_recordings_in_a_single_event">
+    <sect2 xml:id="sect.rdcatch.programming_multiple_recordings_in_a_single_event">
       <title>Programming Multiple Recordings in a Single Event</title>
       <para>
 	If a record event is configured to use GPI for its start and Length
@@ -1972,7 +1972,7 @@
 	high on-air turnover, such as newscasts or traffic reports.
       </para>
     </sect2>
-    <sect2 id="sect.rdcatch.selecting_a_record_source">
+    <sect2 xml:id="sect.rdcatch.selecting_a_record_source">
       <title>Selecting a Record Source</title>
       <para>
 	If the selected record deck (chosen in the
@@ -1982,7 +1982,7 @@
 	from the <computeroutput>Source</computeroutput> drop-down menu.
       </para>
     </sect2>
-    <sect2 id="sect.rdcatch.selecting_a_record_destination">
+    <sect2 xml:id="sect.rdcatch.selecting_a_record_destination">
       <title>Selecting a Record Destination</title>
       <para>
 	Each programmed recording must have a 'destination', a designated
@@ -1991,7 +1991,7 @@
 	by clicking the <computeroutput>Select</computeroutput> button.
       </para>
     </sect2>
-    <sect2 id="sect.rdcatch.setting_the_active_days_for_a_recording">
+    <sect2 xml:id="sect.rdcatch.setting_the_active_days_for_a_recording">
       <title>Setting the Active Days for a Recording</title>
       <para>
 	A check should be placed next to each day of the week for which a
@@ -2000,7 +2000,7 @@
 	checked, then no recordings at all will be made. 
       </para>
     </sect2>
-    <sect2 id="sect.rdcatch.record_list_management_with_event_active_and_make_oneshot">
+    <sect2 xml:id="sect.rdcatch.record_list_management_with_event_active_and_make_oneshot">
       <title>Record List Management with Event Active and Make OneShot</title>
       <para>
 	The record event will be actually executed only if
@@ -2018,7 +2018,7 @@
       </para>
     </sect2>
   </sect1>
-  <sect1 id="sect.rdcatch.automating_playouts">
+  <sect1 xml:id="sect.rdcatch.automating_playouts">
     <title>Automating Playouts</title>
     <para>
       Automated playouts are configured by means of the Edit Playout
@@ -2033,17 +2033,17 @@
       above for details.
     </para>
       <para>
-	<mediaobject id="mediaobject.rdcatch.edit_playout_dialog">
+	<mediaobject xml:id="mediaobject.rdcatch.edit_playout_dialog">
 	  <imageobject>
 	    <imagedata align="center" fileref="rdcatch.edit_playout_dialog.png" scale="50"/>
 	  </imageobject>
 	  <caption>
-	    <para id="the_edit_playout_dialog">The Edit Playout Dialog</para>
+	    <para xml:id="the_edit_playout_dialog">The Edit Playout Dialog</para>
 	  </caption>
 	</mediaobject>
       </para>
   </sect1>
-  <sect1 id="sect.rdcatch.automating_uploads_downloads">
+  <sect1 xml:id="sect.rdcatch.automating_uploads_downloads">
     <title>Automating Uploads/Downloads</title>
     <para>
       It's possible to use RDCatch to automatically upload and download
@@ -2056,12 +2056,12 @@
       modify an existing event.
     </para>
     <para>
-      <mediaobject id="mediaobject.rdcatch.edit_download_dialog">
+      <mediaobject xml:id="mediaobject.rdcatch.edit_download_dialog">
 	<imageobject>
 	  <imagedata align="center" fileref="rdcatch.edit_download_dialog.png" scale="50"/>
 	</imageobject>
 	<caption>
-	  <para id="para.rdcatch.the_edit_download_dialog">The Edit Download Dialog</para>
+	  <para xml:id="para.rdcatch.the_edit_download_dialog">The Edit Download Dialog</para>
 	</caption>
       </mediaobject>
     </para>
@@ -2107,12 +2107,12 @@
       can be used to construct date-based URLs.
     </para>
     <para>
-      <mediaobject id="metaobject.rdcatch.edit_upload_dialog">
+      <mediaobject xml:id="metaobject.rdcatch.edit_upload_dialog">
 	<imageobject>
 	  <imagedata align="center" fileref="rdcatch.edit_upload_dialog.png" scale="50"/>
 	</imageobject>
 	<caption>
-	  <para id="para.rdcatch.the_edit_upload_dialog">The Edit Upload Dialog</para>
+	  <para xml:id="para.rdcatch.the_edit_upload_dialog">The Edit Upload Dialog</para>
 	</caption>
       </mediaobject>
     </para>
@@ -2149,7 +2149,7 @@
       <computeroutput>Set</computeroutput> button.
     </para>
   </sect1>
-  <sect1 id="sect.rdcatch_automating_macro_execution">
+  <sect1 xml:id="sect.rdcatch_automating_macro_execution">
     <title>Automating Macro Execution</title>
     <para>
       It's possible to configure the automatic execution of a Macro Cart
@@ -2164,17 +2164,17 @@
       above for details.
     </para>
     <para>
-      <mediaobject id="mediaobject.dcatch.edit_cart_event_dialog">
+      <mediaobject xml:id="mediaobject.dcatch.edit_cart_event_dialog">
 	<imageobject>
 	  <imagedata align="center" fileref="rdcatch.edit_cart_event_dialog.png" scale="50"/>
 	</imageobject>
 	<caption>
-	  <para id="para.rdcatch.the_edit_cart_event_dialog">The Edit Cart Event Dialog</para>
+	  <para xml:id="para.rdcatch.the_edit_cart_event_dialog">The Edit Cart Event Dialog</para>
 	</caption>
       </mediaobject>
     </para>
   </sect1>
-  <sect1 id="sect.rdcatch.automating_switcher_operations">
+  <sect1 xml:id="sect.rdcatch.automating_switcher_operations">
     <title>Automating Switcher Operations</title>
     <para>
       It's possible to configure an automatic operation on a switcher
@@ -2186,12 +2186,12 @@
       existing event.
     </para>
     <para>
-      <mediaobject id="mediaobject.rdcatch.edit_switcher_event_dialog">
+      <mediaobject xml:id="mediaobject.rdcatch.edit_switcher_event_dialog">
 	<imageobject>
 	  <imagedata align="center" fileref="rdcatch.edit_switcher_event_dialog.png" scale="50"/>
 	</imageobject>
 	<caption>
-	  <para id="para.rdcatch.the_edit_switcher_event_dialog">The Edit Switcher Event Dialog</para>
+	  <para xml:id="para.rdcatch.the_edit_switcher_event_dialog">The Edit Switcher Event Dialog</para>
 	</caption>
       </mediaobject>
     </para>
@@ -2211,9 +2211,9 @@
   </sect1>
 </chapter>
 
-<chapter id="chapter.rdlogedit">
+<chapter xml:id="chapter.rdlogedit">
   <title>Generating and Maintaining Logs with RDLogEdit</title>
-  <sect1 id="sect.rdlogedit.logs_and_log_events">
+  <sect1 xml:id="sect.rdlogedit.logs_and_log_events">
     <title>Logs and Log Events</title>
     <para>
       A Rivendell log is a sequence of one or more events to be executed by
@@ -2235,12 +2235,12 @@
       not (red ex). 
     </para>
     <para>
-      <mediaobject id="mediaobject.rdlogedit.rdlogedit_screenshot">
+      <mediaobject xml:id="mediaobject.rdlogedit.rdlogedit_screenshot">
 	<imageobject>
 	  <imagedata align="center" fileref="rdlogedit.rdlogedit_screenshot.png" scale="65"/>
 	</imageobject>
 	<caption>
-	  <para id="para.rdlogedit.the_rdlogedit_main_window">The RDLogEdit Main Window</para>
+	  <para xml:id="para.rdlogedit.the_rdlogedit_main_window">The RDLogEdit Main Window</para>
 	</caption>
       </mediaobject>
     </para>
@@ -2438,7 +2438,7 @@
 	</tbody>
       </tgroup>
     </table>
-    <sect2 id="sect.rdlogedit.audio_carts">
+    <sect2 xml:id="sect.rdlogedit.audio_carts">
       <title>Audio Carts</title>
       <para>
 	The first, and usually most common type of log event is an audio cart.
@@ -2447,7 +2447,7 @@
 	detail in <xref linkend="chapter.rdlibrary"/>.
       </para>
     </sect2>
-    <sect2 id="sect.rdlogedit.macro_carts">
+    <sect2 xml:id="sect.rdlogedit.macro_carts">
       <title>Macro Carts</title>
       <para>
 	A macro cart is a cart from the Library that contains one or more
@@ -2457,7 +2457,7 @@
 	in <xref linkend="chapter.rml"/>.
       </para>
     </sect2>
-    <sect2 id="sect.rdlogedit.note_markers">
+    <sect2 xml:id="sect.rdlogedit.note_markers">
       <title>Note Markers</title>
       <para>
 	A note marker is an entry in the log that contains text intended to
@@ -2476,7 +2476,7 @@
 	to others who may be executing the log.
       </para>
     </sect2>
-    <sect2 id="sect.rdlogedit.track_markers">
+    <sect2 xml:id="sect.rdlogedit.track_markers">
       <title>Track Markers</title>
       <para>
 	A track marker is another meta event that is very similar in operation
@@ -2488,7 +2488,7 @@
 	markers have absolutely no effect on the execution of a log.
       </para>
     </sect2>
-    <sect2 id="sect.rdlogedit.chain_events">
+    <sect2 xml:id="sect.rdlogedit.chain_events">
       <title>Chain Events</title>
       <para>
 	Each event in a log has a transition type, shown in the
@@ -2501,7 +2501,7 @@
 	<computeroutput>STOP</computeroutput>.
       </para>
     </sect2>
-    <sect2 id="sect.rdlogedit.import_links">
+    <sect2 xml:id="sect.rdlogedit.import_links">
       <title>Import Links</title>
       <para>
 	An import link is a placeholder event that shows where events imported
@@ -2557,7 +2557,7 @@
       </para>
     </sect2>
   </sect1>
-  <sect1 id="sect.rdlogedit.event_transitions">
+  <sect1 xml:id="sect.rdlogedit.event_transitions">
     <title>Event Transitions</title>
     <para>
       Each event in a log has a transition type, shown in the
@@ -2569,7 +2569,7 @@
       <computeroutput>SEGUE</computeroutput> and
       <computeroutput>STOP</computeroutput>.
     </para>
-    <sect2 id="sect.rdlogedit.the_play_transition">
+    <sect2 xml:id="sect.rdlogedit.the_play_transition">
       <title>The PLAY Transition</title>
       <para>
 	If an event has a <computeroutput>PLAY</computeroutput> transition,
@@ -2580,7 +2580,7 @@
 	as when playing two voice-only announcements back-to-back).
       </para>
     </sect2>
-    <sect2 id="sect.the_segue_transition">
+    <sect2 xml:id="sect.the_segue_transition">
       <title>The SEGUE Transition</title>
       <para>
 	<computeroutput>SEGUE</computeroutput> transitions are similar to
@@ -2595,7 +2595,7 @@
 	musical material.
       </para>
     </sect2>
-    <sect2 id="sect.rdlogedit.the_stop_transition">
+    <sect2 xml:id="sect.rdlogedit.the_stop_transition">
       <title>The STOP Transition</title>
       <para>
 	As the name implies, <computeroutput>STOP</computeroutput>
@@ -2608,7 +2608,7 @@
       </para>
     </sect2>
   </sect1>
-  <sect1 id="sect.rdlogedit.time_and_time_types">
+  <sect1 xml:id="sect.rdlogedit.time_and_time_types">
     <title>Time and Time Types</title>
     <para>
       All Rivendell log events have an associated time type, which controls
@@ -2618,7 +2618,7 @@
       the hard time type has several additional options that further modify
       its behavior.
     </para>
-    <sect2 id="sect.rdlogedit.the_relative_time_type">
+    <sect2 xml:id="sect.rdlogedit.the_relative_time_type">
       <title>The Relative Time Type</title>
       <para>
 	The default time type for log events, a relative time type simply
@@ -2630,7 +2630,7 @@
 	<computeroutput>STOP</computeroutput> transition).
       </para>
     </sect2>
-    <sect2 id="sect.rdlogedit.the_hard_time_type">
+    <sect2 xml:id="sect.rdlogedit.the_hard_time_type">
       <title>The Hard Time Type</title>
       <para>
 	A hard time type causes the event to be executed or otherwise acted
@@ -2662,7 +2662,7 @@
 	  </listitem>
 	</itemizedlist>
       </para>
-      <sect3 id="sect.rdlogedit.start_immediately">
+      <sect3 xml:id="sect.rdlogedit.start_immediately">
 	<title>Start Immediately</title>
 	<para>
 	  As implied by the name, if the event is set to start immediately,
@@ -2671,7 +2671,7 @@
 	  stopped down.
 	</para>
       </sect3>
-      <sect3 id="sect.rdlogedit.cue_to_the_event___make_next___">
+      <sect3 xml:id="sect.rdlogedit.cue_to_the_event___make_next___">
 	<title>Cue to the Event (&quot;Make Next&quot;)</title>
 	<para>
 	  If set to 'Make Next', the event will be cued up to become the
@@ -2680,7 +2680,7 @@
 	  hard timed one.  Any currently playing events are unaffected.
 	</para>
       </sect3>
-      <sect3 id="sect.rdlogedit.wait_up_to_some_period_of_time__then_start_the_event">
+      <sect3 xml:id="sect.rdlogedit.wait_up_to_some_period_of_time__then_start_the_event">
 	<title>Wait up to some period of time, then start the event</title>
 	<para>
 	  Very similar to &quot;start immediately&quot;, with the
@@ -2693,9 +2693,9 @@
       </sect3>
     </sect2>
   </sect1>
-  <sect1 id="sect.rdlogedit.editing_log_event_parameters">
+  <sect1 xml:id="sect.rdlogedit.editing_log_event_parameters">
     <title>Editing Log Event Parameters</title>
-    <sect2 id="sect.rdlogedit.specifying_a_cart">
+    <sect2 xml:id="sect.rdlogedit.specifying_a_cart">
       <title>Specifying a Cart</title>
       <para>
 	The cart number to use for an event can be specified by touching
@@ -2720,7 +2720,7 @@
 	</mediaobject>
       </para>
     </sect2>
-    <sect2 id="sect.rdlogedit.specifying_meta_event_parameters">
+    <sect2 xml:id="sect.rdlogedit.specifying_meta_event_parameters">
       <title>Specifying Meta Event Parameters</title>
       <para>
 	Note marker and track marker events each take only a single
@@ -2734,7 +2734,7 @@
 	assigned transition and time types just the same as cart events.
       </para>
     </sect2>
-    <sect2 id="sect.rdlogedit.rearranging_log_events">
+    <sect2 xml:id="sect.rdlogedit.rearranging_log_events">
       <title>Rearranging Log Events</title>
       <para>
 	Existing events in a log can be cut, copied, pasted or rearranged
@@ -2744,7 +2744,7 @@
 	log event(s) to be removed from the log.
       </para>
     </sect2>
-    <sect2 id="sect.rdlogedit.saving_or_abandoning_changes_to_a_log">
+    <sect2 xml:id="sect.rdlogedit.saving_or_abandoning_changes_to_a_log">
       <title>Saving or Abandoning Changes to a Log</title>
       <para>
 	Any changes made to a log can be saved by touching either the
@@ -2757,7 +2757,7 @@
 	any changes made since the last save.
       </para>
     </sect2>
-    <sect2 id="sect.rdlogedit.missing_invalid_cart_events">
+    <sect2 xml:id="sect.rdlogedit.missing_invalid_cart_events">
       <title>Missing/Invalid Cart Events</title>
       <para>
 	If a given event has a problem (such as referencing a cart that
@@ -2771,7 +2771,7 @@
       </para>
     </sect2>
   </sect1>
-  <sect1 id="sect.rdlogedit.generating_log_reports">
+  <sect1 xml:id="sect.rdlogedit.generating_log_reports">
     <title>Generating Log Reports</title>
     <para>
       Various Log reports can be generated by touching the
@@ -2780,20 +2780,20 @@
       touching the <computeroutput>Generate</computeroutput> button.
       The following reports are available:
     </para>
-    <sect2 id="sect.rdlogedit.log_listing">
+    <sect2 xml:id="sect.rdlogedit.log_listing">
       <title>Log Listing</title>
       <para>
 	A chronological listing of all events in the log.
       </para>
     </sect2>
-    <sect2 id="sect.rdlogedit.log_exception_report">
+    <sect2 xml:id="sect.rdlogedit.log_exception_report">
       <title>Log Exception Report</title>
       <para>
 	A list of missing/unplayable carts referenced in the log.
       </para>
     </sect2>
   </sect1>
-  <sect1 id="sect.rdlogedit.auditioning_audio">
+  <sect1 xml:id="sect.rdlogedit.auditioning_audio">
     <title>Auditioning Audio</title>
     <para>
       The audio referenced by an audio event can be sampled in the Edit
@@ -2806,9 +2806,9 @@
   </sect1>
 </chapter>
 
-<chapter id="chapter.rdairplay">
+<chapter xml:id="chapter.rdairplay">
   <title>Running Logs with RDAirPlay</title>
- <sect1 id="sect.rdairplay.overview">
+ <sect1 xml:id="sect.rdairplay.overview">
    <title>Overview</title>
    <para>
      RDAirPlay is the Rivendell module used to run logs generated by the
@@ -2829,7 +2829,7 @@
      </mediaobject>
    </para>
  </sect1>
- <sect1 id="sect.rdairplay.log_machines">
+ <sect1 xml:id="sect.rdairplay.log_machines">
    <title>Log Machines</title>
    <para>
      Fundamental to the operation of RDAirPlay is the concept of a
@@ -2844,7 +2844,7 @@
      machines.
    </para>
  </sect1>
- <sect1 id="sect.rdairplay.layout">
+ <sect1 xml:id="sect.rdairplay.layout">
    <title>Layout</title>
    <para>
      The RDAirPlay main screen consists of
@@ -2858,7 +2858,7 @@
    <para>
      The top area contains the following indicators:
    </para>
-   <sect2 id="sect.rdairplay.the_wall_clock">
+   <sect2 xml:id="sect.rdairplay.the_wall_clock">
      <title>The Wall Clock</title>
      <para>
        <mediaobject>
@@ -2878,7 +2878,7 @@
        of master clock synchronization.
      </para>
    </sect2>
-   <sect2 id="sect.rdairplay.the_post_point_counter">
+   <sect2 xml:id="sect.rdairplay.the_post_point_counter">
      <title>The Post Point Counter</title>
      <para>
        <mediaobject>
@@ -2940,7 +2940,7 @@
        much material would need to be removed to make the join on time.
      </para>
    </sect2>
-   <sect2 id="sect.rdairplay.the_audio_meter">
+   <sect2 xml:id="sect.rdairplay.the_audio_meter">
      <title>The Audio Meter</title>
      <para>
        <mediaobject>
@@ -2955,7 +2955,7 @@
        out of RDAirPlay, with '0' level referenced to -16 dBFS.
      </para>
    </sect2>
-   <sect2 id="sect.rdairplay.the_pie_wedge_widget">
+   <sect2 xml:id="sect.rdairplay.the_pie_wedge_widget">
      <title>The Pie Wedge Widget</title>
      <para>
        <mediaobject>
@@ -2978,7 +2978,7 @@
        talk time (if talk time markers have been set in the underlying cart).
      </para>
    </sect2>
-   <sect2 id="sect.rdairplay.the_next_stop_counter">
+   <sect2 xml:id="sect.rdairplay.the_next_stop_counter">
      <title>The Next Stop Counter</title>
      <para>
        <mediaobject>
@@ -2998,7 +2998,7 @@
        <computeroutput>Stopped</computeroutput>.
      </para>
    </sect2>
-   <sect2 id="sect.rdairplay.the_mode_indicator">
+   <sect2 xml:id="sect.rdairplay.the_mode_indicator">
      <title>The Mode Indicator</title>
      <para>
        <mediaobject>
@@ -3026,7 +3026,7 @@
        indicator until the desired mode is indicated.
      </para>
    </sect2>
-   <sect2 id="sect.rdairplay.the_label_area">
+   <sect2 xml:id="sect.rdairplay.the_label_area">
      <title>The Label Area</title>
      <para>
        <mediaobject>
@@ -3042,7 +3042,7 @@
        system or need to take some kind of action.
      </para>
    </sect2>
-   <sect2 id="sect.rdairplay.the_right_hand_side">
+   <sect2 xml:id="sect.rdairplay.the_right_hand_side">
      <title>The Right-Hand Side</title>
      <para>
        Directly below the label area is the right-hand side. The right-hand
@@ -3054,7 +3054,7 @@
        system).
      </para>
    </sect2>
-   <sect2 id="sect.rdairplay.the_full_log_widget">
+   <sect2 xml:id="sect.rdairplay.the_full_log_widget">
      <title>The Full Log Widget</title>
      <para>
        <mediaobject>
@@ -3128,7 +3128,7 @@
        button &quot;ON&quot; (blue background).
      </para>
    </sect2>
-   <sect2 id="sect.rdairplay.the_button_log_widget">
+   <sect2 xml:id="sect.rdairplay.the_button_log_widget">
      <title>The Button Log Widget</title>
      <para>
        <mediaobject>
@@ -3160,9 +3160,9 @@
      </para>
    </sect2>
  </sect1>
- <sect1 id="sect.rdairplay.editing_a_log">
+ <sect1 xml:id="sect.rdairplay.editing_a_log">
    <title>Editing a Log</title>
-   <sect2 id="sect.rdairplay.drag_and_drop">
+   <sect2 xml:id="sect.rdairplay.drag_and_drop">
      <title>Drag and Drop</title>
      <para>
        <mediaobject>
@@ -3179,7 +3179,7 @@
        it onto the event to be deleted.
      </para>
    </sect2>
-   <sect2 id="sect.rdairplay.the_editing_buttons">
+   <sect2 xml:id="sect.rdairplay.the_editing_buttons">
      <title>The Editing Buttons</title>
      <para>
        <mediaobject>
@@ -3193,7 +3193,7 @@
        machines by means of the log edit buttons in the lower left-hand corner
        of the screen.
      </para>
-     <sect3 id="sect.rdairplay_adding_an_event">
+     <sect3 xml:id="sect.rdairplay_adding_an_event">
        <title>Adding an Event</title>
        <para>
 	 To add an event, touch the <computeroutput>ADD</computeroutput>
@@ -3224,7 +3224,7 @@
 	 RDLibrary and dropped into the desired location on RDAirPlay.
        </para>
      </sect3>
-     <sect3 id="sect.rdairplay_deleting_an_event">
+     <sect3 xml:id="sect.rdairplay_deleting_an_event">
        <title>Deleting an Event</title>
        <para>
 	 To delete an event, touch the <computeroutput>DEL</computeroutput>
@@ -3241,7 +3241,7 @@
 	 of the trash can and dropping it onto the appropriate event.
        </para>
      </sect3>
-     <sect3 id="sect.rdairplay.moving_an_event">
+     <sect3 xml:id="sect.rdairplay.moving_an_event">
        <title>Moving an Event</title>
        <para>
 	 To move an event, touch the <computeroutput>MOVE</computeroutput>
@@ -3259,7 +3259,7 @@
 	 between two different log machines.
        </para>
      </sect3>
-     <sect3 id="sect.rdairplay.copying_an_event">
+     <sect3 xml:id="sect.rdairplay.copying_an_event">
        <title>Copying an Event</title>
        <para>
 	 To copy an event, touch the <computeroutput>COPY</computeroutput>
@@ -3291,7 +3291,7 @@
        </para>
      </sect3>
    </sect2>
-   <sect2 id="sect.rdairplay.the_soundpanel">
+   <sect2 xml:id="sect.rdairplay.the_soundpanel">
      <para>
        <mediaobject>
 	 <imageobject>
@@ -3311,7 +3311,7 @@
        drop in some piece of audio on a live, improvised basis.
      </para>
    </sect2>
-   <sect2 id="sect.rdairplay.panel_types">
+   <sect2 xml:id="sect.rdairplay.panel_types">
      <title>Panel Types</title>
      <para>
        The SoundPanel has multiple panels or “panes” that can scrolled
@@ -3331,7 +3331,7 @@
        you).
      </para>
    </sect2>
-   <sect2 id="sect.rdairplay.programming_a_soundpanel_button">
+   <sect2 xml:id="sect.rdairplay.programming_a_soundpanel_button">
      <title>Programming a SoundPanel Button</title>
      <para>
        To associate a cart with a panel button, first touch the
@@ -3375,9 +3375,9 @@
  </sect1>
 </chapter>
 
-<chapter id="chapter.rdlogmanager">
+<chapter xml:id="chapter.rdlogmanager">
   <title>Generating Logs with RDLogManager</title>
-  <sect1 id="sect.rdlogmanager.generating_logs_with_rdlogmanager">
+  <sect1 xml:id="sect.rdlogmanager.generating_logs_with_rdlogmanager">
     <title>Overview</title>
     <para>
       RDLogManager is a tool for generating Rivendell logs. It is different
@@ -3415,7 +3415,7 @@
        </mediaobject>
      </para>
   </sect1>
-  <sect1 id="sect.rdlogmanager.grids">
+  <sect1 xml:id="sect.rdlogmanager.grids">
     <title>Grids</title>
     <para>
       Each Rivendell service has an RDLogManager grid. To see the list of
@@ -3473,7 +3473,7 @@
       <computeroutput> Edit Clock</computeroutput>.
     </para>
   </sect1>
-  <sect1 id="sect.rdlogmanager.clocks">
+  <sect1 xml:id="sect.rdlogmanager.clocks">
     <title>Clocks</title>
     <para>
       An RDLogManager clock is a collection of RDLogManager events,
@@ -3584,7 +3584,7 @@
       the <computeroutput>&lt;&lt; Remove</computeroutput> button.
     </para>
   </sect1>
-  <sect1 id="sect.rdlogmanager.events">
+  <sect1 xml:id="sect.rdlogmanager.events">
     <title>Events</title>
     <para>
       An RDLogManager event is a set of rules that define a series of log
@@ -3727,7 +3727,7 @@
       <computeroutput>Save As</computeroutput> buttons.
     </para>
   </sect1>
-  <sect1 id="sect.rdlogmanager.generating_logs">
+  <sect1 xml:id="sect.rdlogmanager.generating_logs">
     <title>Generating Logs</title>
     <para>
       After all of the appropriate hours have been populated in a service's
@@ -3833,7 +3833,7 @@
       </mediaobject>
     </para>
  </sect1>
- <sect1 id="sect.rdlogmanager.generating_reports">
+ <sect1 xml:id="sect.rdlogmanager.generating_reports">
    <title>Generating Reports</title>
    <para>
      A Rivendell report is a data output that details whether certain
@@ -3902,7 +3902,7 @@
      <computeroutput>Generate Report</computeroutput> button to write out
      the report.
    </para>
-   <sect2 id="sect.rdlogmanager.purging_old_report_data">
+   <sect2 xml:id="sect.rdlogmanager.purging_old_report_data">
      <title>Purging Old Report Data</title>
      <para>
        Rivendell keeps the raw data used to generate reports indefinitely,
@@ -3923,9 +3923,9 @@
  </sect1>
 </chapter>
 
-<chapter id="chapter.voicetracking">
+<chapter xml:id="chapter.voicetracking">
   <title>VoiceTracking</title>
-  <sect1 id="sect.voicetracking.voicetracking_in_rivendell">
+  <sect1 xml:id="sect.voicetracking.voicetracking_in_rivendell">
     <title>Voicetracking in Rivendell</title>
     <para>
       Voicetracking is a capability wherein custom &quot;one-off&quot;
@@ -3946,7 +3946,7 @@
        <caption><para>The Voice Tracker Dialog</para></caption>
      </mediaobject>
    </para>
-    <sect2 id="sect.voicetracking.prerequisites">
+    <sect2 xml:id="sect.voicetracking.prerequisites">
       <title>Prerequisites</title>
       <para>
 	Before beginning voicetracking for a particular service, a
@@ -3955,7 +3955,7 @@
 	the Rivendell Technical and Administration Guide.
       </para>
     </sect2>
-    <sect2 id="sect.voicetracking.voicetrack_markers">
+    <sect2 xml:id="sect.voicetracking.voicetrack_markers">
       <title>VoiceTrack Markers</title>
       <para>
 	A voicetrack marker is a meta event that can be inserted into a log
@@ -3974,9 +3974,9 @@
       </para>
     </sect2>
   </sect1>
-  <sect1 id="sect.voicetracking.using_the_voicetracker_dialog">
+  <sect1 xml:id="sect.voicetracking.using_the_voicetracker_dialog">
     <title>Using the Voicetrack Interface</title>
-    <sect2 id="sect.voicetracking.the_voicetracker_dialog">
+    <sect2 xml:id="sect.voicetracking.the_voicetracker_dialog">
       <title>The VoiceTracker Dialog</title>
       <para>
 	To voicetrack a log, start the RDLogEdit module,
@@ -4003,7 +4003,7 @@
 	</mediaobject>
       </para>
     </sect2>
-    <sect2 id="sect.voicetracking.editing_transitions">
+    <sect2 xml:id="sect.voicetracking.editing_transitions">
       <title>Editing Transitions</title>
       <para>
 	When an event is selected in the log list, a graphical depiction of
@@ -4044,7 +4044,7 @@
 	</mediaobject>
       </para>
     </sect2>
-    <sect2 id="sect.voicetracking.inserting_and_deleting_track_markers">
+    <sect2 xml:id="sect.voicetracking.inserting_and_deleting_track_markers">
       <title>Inserting and Deleting Track Markers</title>
       <para>
 	It is possible to insert a new voicetrack marker by selecting the
@@ -4055,7 +4055,7 @@
 	<computeroutput>Delete Track</computeroutput> button.
       </para>
     </sect2>
-    <sect2 id="sect.voicetracking.moving_between_track_markers">
+    <sect2 xml:id="sect.voicetracking.moving_between_track_markers">
       <title>Moving Between Track Markers</title>
       <para>
 	It is possible to move directly to the next or previous voicetrack
@@ -4073,7 +4073,7 @@
 	</mediaobject>
       </para>
     </sect2>
-    <sect2 id="sect.voicetracking.recording_a_voicetrack">
+    <sect2 xml:id="sect.voicetracking.recording_a_voicetrack">
       <title>Recording a Voicetrack</title>
       <para>
 	Once the desired voicetrack marker has been selected, the process
@@ -4112,7 +4112,7 @@
 	</mediaobject>
       </para>
     </sect2>
-    <sect2 id="sect.voicetracking.adjusting_transition_levels">
+    <sect2 xml:id="sect.voicetracking.adjusting_transition_levels">
       <title>Adjusting Transition Levels</title>
       <para>
 	It is possible to adjust the audio fade levels applied during
@@ -4122,7 +4122,7 @@
 	desired location.
       </para>
     </sect2>
-    <sect2 id="sect.voicetracking.importing_voicetracks">
+    <sect2 xml:id="sect.voicetracking.importing_voicetracks">
       <title>Importing Voicetracks</title>
       <para>
 	In addition to recording in realtime, it's possible to import a
@@ -4136,7 +4136,7 @@
 	recorded.
       </para>
     </sect2>
-    <sect2 id="sect.voicetracking.hitting_the_post">
+    <sect2 xml:id="sect.voicetracking.hitting_the_post">
       <title>Hitting the Post</title>
       <para>
 	If the event following a voicetrack has its Talk Time markers set,
@@ -4149,9 +4149,9 @@
   </sect1>
 </chapter>
 
-<chapter id="chapter.rml">
+<chapter xml:id="chapter.rml">
   <title>Rivendell Macro Langauge</title>
-  <sect1 id="sect.rml.overview">
+  <sect1 xml:id="sect.rml.overview">
     <title>Overview</title>
     <para>
       Rivendell Macro Language (or RML for short) is a set of commands
@@ -4162,7 +4162,7 @@
       Rivendell user management.
     </para>
   </sect1>
-<sect1 id="sect.rml.protocol">
+<sect1 xml:id="sect.rml.protocol">
   <title>Protocol</title>
   <para>
     The Normal form of a command takes the following syntax:
@@ -4206,7 +4206,7 @@
   </variablelist>
 </sect1>
 
-<sect1 id="sect.rml.command_delivery">
+<sect1 xml:id="sect.rml.command_delivery">
   <title>Command Delivery</title>
   <para>
     To be executed by a Rivendell system, an appropriate command should be
@@ -4218,7 +4218,7 @@
   </para>
 </sect1>
 
-<sect1 id="sect.rml.command_reply">
+<sect1 xml:id="sect.rml.command_reply">
   <title>Command Reply</title>
   <para>
     If delivered to UDP port 5858, each command may receive a reply, 
@@ -4261,7 +4261,7 @@
   </variablelist>
 </sect1>
 
-<sect1 id="sect.rml.specifying_color">
+<sect1 xml:id="sect.rml.specifying_color">
   <title>Specifying Color</title>
   <para>
     In places where a color can be specified as a macro argument, the
@@ -4288,7 +4288,7 @@
   </simplelist>
 </sect1>
 
-<sect1 id="sect.rml.binary_data">
+<sect1 xml:id="sect.rml.binary_data">
   <title>Binary Data</title>
   <para>
     Certain commands (e.g. <command>SO</command> and <command>UO</command>)
@@ -4320,9 +4320,9 @@
   </para>
 </sect1>
 
-<sect1 id="sect.rml.commands">
+<sect1 xml:id="sect.rml.commands">
   <title>Commands</title>
-  <sect2 id="sect.rml.air_gate__ag_">
+  <sect2 xml:id="sect.rml.air_gate__ag_">
     <title>Air Gate [AG]</title>
     <para>
       <variablelist>
@@ -4349,7 +4349,7 @@
     </para>
   </sect2>
 
-  <sect2 id="sect.rml.add_next__px_">
+  <sect2 xml:id="sect.rml.add_next__px_">
     <title>Add Next [PX]</title>
     <para>
       <variablelist>
@@ -4377,7 +4377,7 @@
     </para>
   </sect2>
 
-  <sect2 id="sect.rml.binary_serial_out__bo_">
+  <sect2 xml:id="sect.rml.binary_serial_out__bo_">
     <title>Binary Serial Out [BO]</title>
     <para>
       <variablelist>
@@ -4407,7 +4407,7 @@
     </para>
   </sect2>
 
-  <sect2 id="sect.rml.clear_serial_trap__sc_">
+  <sect2 xml:id="sect.rml.clear_serial_trap__sc_">
     <title>Clear Serial Trap [SC]</title>
     <para>
       <variablelist>
@@ -4450,7 +4450,7 @@
     </para>
   </sect2>
 
-  <sect2 id="sect.rml.command_send__cc_">
+  <sect2 xml:id="sect.rml.command_send__cc_">
     <title>Command Send [CC]</title>
     <para>
       <variablelist>
@@ -4482,7 +4482,7 @@
     </para>
   </sect2>
 
-  <sect2 id="sect.rml.connect_jack_ports__jc_">
+  <sect2 xml:id="sect.rml.connect_jack_ports__jc_">
     <title>Connect Jack Ports [JC]</title>
     <para>
       <variablelist>
@@ -4510,7 +4510,7 @@
     </para>
   </sect2>
 
-  <sect2 id="sect.rml.console_label__cl_">
+  <sect2 xml:id="sect.rml.console_label__cl_">
     <title>Console Label [CL]</title>
     <para>
       <variablelist>
@@ -4541,7 +4541,7 @@
     </para>
   </sect2>
 
-  <sect2 id="sect.rml.copy_cut__cp_">
+  <sect2 xml:id="sect.rml.copy_cut__cp_">
     <title>Copy Cut [CP]</title>
     <para>
       <variablelist>
@@ -4575,7 +4575,7 @@
     </para>
   </sect2>
 
-  <sect2 id="sect.rml.cut_event__ce_">
+  <sect2 xml:id="sect.rml.cut_event__ce_">
     <title>Cut Event [CE]</title>
     <para>
       <variablelist>
@@ -4605,7 +4605,7 @@
     </para>
   </sect2>
 
-  <sect2 id="sect.rml.database_backup__db_">
+  <sect2 xml:id="sect.rml.database_backup__db_">
     <title>Database Backup [DB]</title>
     <para>
       <variablelist>
@@ -4632,7 +4632,7 @@
     </para>
   </sect2>
 
-  <sect2 id="sect.rml.disconnect_jack_ports__jd_">
+  <sect2 xml:id="sect.rml.disconnect_jack_ports__jd_">
     <title>Disconnect Jack Ports [JD]</title>
     <para>
       <variablelist>
@@ -4660,7 +4660,7 @@
     </para>
   </sect2>
 
-  <sect2 id="sect.rml.duck_panel_button__pd_">
+  <sect2 xml:id="sect.rml.duck_panel_button__pd_">
     <title>Duck Panel Button [PD]</title>
     <para>
       <variablelist>
@@ -4705,7 +4705,7 @@
     </para>
   </sect2>
 
-  <sect2 id="sect.rml.execute_breakaway__dx_">
+  <sect2 xml:id="sect.rml.execute_breakaway__dx_">
     <title>Execute Breakaway [DX]</title>
     <para>
       <variablelist>
@@ -4737,7 +4737,7 @@
     </para>
   </sect2>
 
-  <sect2 id="sect.rml.execute_cart__ex_">
+  <sect2 xml:id="sect.rml.execute_cart__ex_">
     <title>Execute Cart [EX]</title>
     <para>
       <variablelist>
@@ -4763,7 +4763,7 @@
     </para>
   </sect2>
 
-  <sect2 id="sect.rml.fire_salvo__fs_">
+  <sect2 xml:id="sect.rml.fire_salvo__fs_">
     <title>Fire Salvo [FS]</title>
     <para>
       <variablelist>
@@ -4791,7 +4791,7 @@
     </para>
   </sect2>
 
-  <sect2 id="sect.rml.gpi_enable__ge_">
+  <sect2 xml:id="sect.rml.gpi_enable__ge_">
     <title>GPI Enable [GE]</title>
     <para>
       <variablelist>
@@ -4834,7 +4834,7 @@
     </para>
   </sect2>
 
-  <sect2 id="sect.rml.gpi_enable__ge___old_format__deprecated_">
+  <sect2 xml:id="sect.rml.gpi_enable__ge___old_format__deprecated_">
     <title>GPI Enable [GE] (old format, deprecated)</title>
     <para>
       <variablelist>
@@ -4864,7 +4864,7 @@
     </para>
   </sect2>
 
-  <sect2 id="sect.rml.gpi_set__gi_">
+  <sect2 xml:id="sect.rml.gpi_set__gi_">
     <title>GPI Set [GI]</title>
     <para>
       <variablelist>
@@ -4910,7 +4910,7 @@
     </para>
   </sect2>
 
-  <sect2 id="sect.rml.gpi_set__gi___old_format__deprecated_">
+  <sect2 xml:id="sect.rml.gpi_set__gi___old_format__deprecated_">
     <title>GPI Set [GI] (old format, deprecated)</title>
     <para>
       <variablelist>
@@ -4941,7 +4941,7 @@
     </para>
   </sect2>
 
-  <sect2 id="sect.rml.gpo_set__go_">
+  <sect2 xml:id="sect.rml.gpo_set__go_">
     <title>GPO Set [GO]</title>
     <para>
       <variablelist>
@@ -5007,7 +5007,7 @@
     </para>
   </sect2>
 
-  <sect2 id="sect.rml.gpo_set__go___old_format__deprecated_">
+  <sect2 xml:id="sect.rml.gpo_set__go___old_format__deprecated_">
     <title>GPO Set [GO] (old format, deprecated)</title>
     <para>
       <variablelist>
@@ -5039,7 +5039,7 @@
     </para>
   </sect2>
 
-  <sect2 id="sect.rml.insert_serial_trap__si_">
+  <sect2 xml:id="sect.rml.insert_serial_trap__si_">
     <title>Insert Serial Trap [SI]</title>
     <para>
       <variablelist>
@@ -5070,7 +5070,7 @@
     </para>
   </sect2>
 
-  <sect2 id="sect.rml.label_panel__pc_">
+  <sect2 xml:id="sect.rml.label_panel__pc_">
     <title>Label Panel [PC]</title>
     <para>
       <variablelist>
@@ -5107,7 +5107,7 @@
     </para>
   </sect2>
 
-  <sect2 id="sect.rml.load_log__ll_">
+  <sect2 xml:id="sect.rml.load_log__ll_">
     <title>Load Log [LL]</title>
     <para>
       <variablelist>
@@ -5142,7 +5142,7 @@
     </para>
   </sect2>
 
-  <sect2 id="sect.load_panel__pe_">
+  <sect2 xml:id="sect.load_panel__pe_">
     <title>Load Panel [PE]</title>
     <para>
       <variablelist>
@@ -5177,7 +5177,7 @@
     </para>
   </sect2>
 
-  <sect2 id="sect.rml.load_slot__dl_">
+  <sect2 xml:id="sect.rml.load_slot__dl_">
     <title>Load Slot [DL]</title>
     <para>
       <variablelist>
@@ -5228,7 +5228,7 @@
     </para>
   </sect2>
 
-  <sect2 id="sect.rml.login__lo_">
+  <sect2 xml:id="sect.rml.login__lo_">
     <title>Login [LO]</title>
     <para>
       <variablelist>
@@ -5257,7 +5257,7 @@
     </para>
   </sect2>
 
-  <sect2 id="sect.rml.macro_timer__mt_">
+  <sect2 xml:id="sect.rml.macro_timer__mt_">
     <title>Macro Timer [MT]</title>
     <para>
       <variablelist>
@@ -5290,7 +5290,7 @@
     </para>
   </sect2>
 
-  <sect2 id="sect.rml.make_next__mn_">
+  <sect2 xml:id="sect.rml.make_next__mn_">
     <title>Make Next [MN]</title>
     <para>
       <variablelist>
@@ -5318,7 +5318,7 @@
     </para>
   </sect2>
 
-  <sect2 id="sect.rml.message_box__mb_">
+  <sect2 xml:id="sect.rml.message_box__mb_">
     <title>Message Box [MB]</title>
     <para>
       <variablelist>
@@ -5363,7 +5363,7 @@
     </variablelist>
   </sect2>
 
-  <sect2 id="sect.rml.pause_panel__pu_">
+  <sect2 xml:id="sect.rml.pause_panel__pu_">
     <title>Pause Panel [PU]</title>
     <para>
       <variablelist>
@@ -5402,7 +5402,7 @@
     </para>
   </sect2>
 
-  <sect2 id="sect.rml.play_panel__pp_">
+  <sect2 xml:id="sect.rml.play_panel__pp_">
     <title>Play Panel [PP]</title>
     <para>
       <variablelist>
@@ -5442,7 +5442,7 @@
     </para>
   </sect2>
 
-  <sect2 id="sect.rml.play_slot__dp_">
+  <sect2 xml:id="sect.rml.play_slot__dp_">
     <title>Play Slot [DP]</title>
     <para>
       <variablelist>
@@ -5470,7 +5470,7 @@
     </para>
   </sect2>
 
-  <sect2 id="sect.rml.refresh_log__rl_">
+  <sect2 xml:id="sect.rml.refresh_log__rl_">
     <title>Refresh Log [RL]</title>
     <para>
       <variablelist>
@@ -5497,7 +5497,7 @@
     </para>
   </sect2>
 
-  <sect2 id="sect.rml.run_shell_command__rn_">
+  <sect2 xml:id="sect.rml.run_shell_command__rn_">
     <title>Run Shell Command [RN]</title>
     <para>
       <variablelist>
@@ -5523,7 +5523,7 @@
     </para>
   </sect2>
 
-  <sect2 id="sect.rml.select_widget__pw_">
+  <sect2 xml:id="sect.rml.select_widget__pw_">
     <title>Select Widget [PW]</title>
     <para>
       <variablelist>
@@ -5550,7 +5550,7 @@
     </para>
   </sect2>
 
-  <sect2 id="sect.rml.serial_out__so_">
+  <sect2 xml:id="sect.rml.serial_out__so_">
     <title>Serial Out [SO]</title>
     <para>
       <variablelist>
@@ -5580,7 +5580,7 @@
     </para>
   </sect2>
 
-  <sect2 id="sect.rml.serial_reload__sy_">
+  <sect2 xml:id="sect.rml.serial_reload__sy_">
     <title>Serial Reload [SY]</title>
     <para>
       <variablelist>
@@ -5608,7 +5608,7 @@
     </para>
   </sect2>
 
-  <sect2 id="sect.rml.set_color_label__lc_">
+  <sect2 xml:id="sect.rml.set_color_label__lc_">
     <title>Set Color Label [LC]</title>
     <para>
       <variablelist>
@@ -5636,7 +5636,7 @@
     </para>
   </sect2>
 
-  <sect2 id="sect.rml.set_default_now___next_cart__sn_">
+  <sect2 xml:id="sect.rml.set_default_now___next_cart__sn_">
     <title>Set Default Now &amp; Next Cart [SN]</title>
     <para>
       <variablelist>
@@ -5665,7 +5665,7 @@
     </para>
   </sect2>
 
-  <sect2 id="sect.rml.set_display__sd_">
+  <sect2 xml:id="sect.rml.set_display__sd_">
     <title>Set Display [SD]</title>
     <para>
       <variablelist>
@@ -5776,7 +5776,7 @@
     </variablelist>
   </sect2>
 
-  <sect2 id="sect.rml.set_duck_level__md_">
+  <sect2 xml:id="sect.rml.set_duck_level__md_">
     <title>Set Duck Level [MD]</title>
     <para>
       <variablelist>
@@ -5810,7 +5810,7 @@
     </para>
   </sect2>
 
-  <sect2 id="sect.rml.set_label__lb_">
+  <sect2 xml:id="sect.rml.set_label__lb_">
     <title>Set Label [LB]</title>
     <para>
       <variablelist>
@@ -5836,7 +5836,7 @@
     </para>
   </sect2>
 
-  <sect2 id="sect.rml.set_mode__pm_">
+  <sect2 xml:id="sect.rml.set_mode__pm_">
     <title>Set Mode [PM]</title>
     <para>
       <variablelist>
@@ -5881,7 +5881,7 @@
     </para>
   </sect2>
 
-  <sect2 id="sect.rml.sleep__sp_">
+  <sect2 xml:id="sect.rml.sleep__sp_">
     <title>Sleep [SP]</title>
     <para>
       <variablelist>
@@ -5907,7 +5907,7 @@
     </para>
   </sect2>
 
-  <sect2 id="sect.rml.start__pl_">
+  <sect2 xml:id="sect.rml.start__pl_">
     <title>Start [PL]</title>
     <para>
       <variablelist>
@@ -5935,7 +5935,7 @@
     </para>
   </sect2>
 
-  <sect2 id="sect.rml.start_button__pb_">
+  <sect2 xml:id="sect.rml.start_button__pb_">
     <title>Start Button [PB]</title>
     <para>
       <variablelist>
@@ -5961,7 +5961,7 @@
     </para>
   </sect2>
 
-  <sect2 id="sect.rml.start_next__pn_">
+  <sect2 xml:id="sect.rml.start_next__pn_">
     <title>Start Next [PN]</title>
     <para>
       <variablelist>
@@ -5995,7 +5995,7 @@
     </para>
   </sect2>
 
-  <sect2 id="sect.rml.start_record_deck__rs_">
+  <sect2 xml:id="sect.rml.start_record_deck__rs_">
     <title>Start Record Deck [RS]</title>
     <para>
       <variablelist>
@@ -6031,7 +6031,7 @@
     </para>
   </sect2>
 
-  <sect2 id="sect.stop__rs_">
+  <sect2 xml:id="sect.stop__rs_">
     <title>Stop [PS]</title>
     <para>
       <variablelist>
@@ -6062,7 +6062,7 @@
     </para>
   </sect2>
 
-  <sect2 id="sect.rml.stop_panel__pt_">
+  <sect2 xml:id="sect.rml.stop_panel__pt_">
     <title>Stop Panel [PT]</title>
     <para>
       <variablelist>
@@ -6104,7 +6104,7 @@
     </para>
   </sect2>
 
-  <sect2 id="sect.rml.stop_record_deck__rr_">
+  <sect2 xml:id="sect.rml.stop_record_deck__rr_">
     <title>Stop Record Deck [RR]</title>
     <para>
       <variablelist>
@@ -6130,7 +6130,7 @@
     </para>
   </sect2>
 
-  <sect2 id="sect.rml.stop_slot__ds_">
+  <sect2 xml:id="sect.rml.stop_slot__ds_">
     <title>Stop Slot [DS]</title>
     <para>
       <variablelist>
@@ -6158,7 +6158,7 @@
     </para>
   </sect2>
 
-  <sect2 id="sect.rml.switch_add__sa_">
+  <sect2 xml:id="sect.rml.switch_add__sa_">
     <title>Switch Add [SA]</title>
     <para>
       <variablelist>
@@ -6189,7 +6189,7 @@
     </para>
   </sect2>
 
-  <sect2 id="sect.rml.switch_add_with_gain__sg_">
+  <sect2 xml:id="sect.rml.switch_add_with_gain__sg_">
     <title>Switch Add With Gain [SG]</title>
     <para>
       <variablelist>
@@ -6223,7 +6223,7 @@
     </para>
   </sect2>
 
-  <sect2 id="sect.rml.switch_crosspoint_gain__sx_">
+  <sect2 xml:id="sect.rml.switch_crosspoint_gain__sx_">
     <title>Switch Crosspoint Gain [SX]</title>
     <para>
       <variablelist>
@@ -6255,7 +6255,7 @@
     </para>
   </sect2>
 
-  <sect2 id="sect.rml.switch_level__sl_">
+  <sect2 xml:id="sect.rml.switch_level__sl_">
     <title>Switch Level [SL]</title>
     <para>
       <variablelist>
@@ -6285,7 +6285,7 @@
     </para>
   </sect2>
 
-  <sect2 id="sect.rml.switch_reload__sz_">
+  <sect2 xml:id="sect.rml.switch_reload__sz_">
     <title>Switch Reload [SZ]</title>
     <para>
       <variablelist>
@@ -6313,7 +6313,7 @@
     </para>
   </sect2>
 
-  <sect2 id="sect.rml.switch_remove__sr_">
+  <sect2 xml:id="sect.rml.switch_remove__sr_">
     <title>Switch Remove [SR]</title>
     <para>
       <variablelist>
@@ -6344,7 +6344,7 @@
     </para>
   </sect2>
 
-  <sect2 id="sect.rml.switch_take__st_">
+  <sect2 xml:id="sect.rml.switch_take__st_">
     <title>Switch Take [ST]</title>
     <para>
       <variablelist>
@@ -6375,7 +6375,7 @@
     </para>
   </sect2>
 
-  <sect2 id="sect.rml.toggle_on_air_flag__ta_">
+  <sect2 xml:id="sect.rml.toggle_on_air_flag__ta_">
     <title>Toggle On Air Flag [TA]</title>
     <para>
       <variablelist>
@@ -6401,7 +6401,7 @@
     </para>
   </sect2>
 
-  <sect2 id="sect.rml.udp_out__uo_">
+  <sect2 xml:id="sect.rml.udp_out__uo_">
     <title>UDP Out [UO]</title>
     <para>
       <variablelist>
@@ -6434,7 +6434,7 @@
 </sect1>
 </chapter>
 
-<chapter id="chapter.utilities">
+<chapter xml:id="chapter.utilities">
   <title>Interfacing with the Linux Ecosystem: Command-Line Utilities</title>
   <para>
     Rivendell includes a number of command-line utilities. Some of these
@@ -6444,7 +6444,7 @@
     a brief overview of the available utilities; full documentation for each
     is available via the Linux man page facility.
   </para>
-  <sect1 id="sect.utilities.rdclilogedit">
+  <sect1 xml:id="sect.utilities.rdclilogedit">
     <title>rdclilogedit(1)</title>
     <para>
       <command>rdclilogedit</command><manvolnum>1</manvolnum> is a
@@ -6459,7 +6459,7 @@
       <userinput>man 1 rdclilogedit</userinput>.
     </para>
   </sect1>
-  <sect1 id="sect.utilities.rdconvert">
+  <sect1 xml:id="sect.utilities.rdconvert">
     <title>rdconvert(1)</title>
     <para>
       <command>rdconvert</command><manvolnum>1</manvolnum> is a command-line
@@ -6471,7 +6471,7 @@
       <userinput>man 1 rdconvert</userinput>.
     </para>
   </sect1>
-  <sect1 id="sect.utilities.rddbcheck">
+  <sect1 xml:id="sect.utilities.rddbcheck">
     <title>rddbcheck(8)</title>
     <para>
       <command>rddbcheck</command><manvolnum>8</manvolnum> is a
@@ -6483,7 +6483,7 @@
       <userinput>man 8 rddbcheck</userinput>.
     </para>
   </sect1>
-  <sect1 id="sect.utilities.rdexport">
+  <sect1 xml:id="sect.utilities.rdexport">
     <title>rdexport(1)</title>
     <para>
       <command>rdexport</command><manvolnum>1</manvolnum> is a command-line
@@ -6498,7 +6498,7 @@
       <userinput>man 1 rdexport</userinput>.
     </para>
   </sect1>
-  <sect1 id="sect.utilities.rdimport">
+  <sect1 xml:id="sect.utilities.rdimport">
     <title>rdimport(1)</title>
     <para>
       <command>rdimport</command><manvolnum>1</manvolnum> is a command-line
@@ -6513,7 +6513,7 @@
       <userinput>man 1 rdimport</userinput>.
     </para>
   </sect1>
-  <sect1 id="sect.utilities.rdmarkerset">
+  <sect1 xml:id="sect.utilities.rdmarkerset">
     <title>rdmarkerset(8)</title>
     <para>
       <command>rdmarkerset</command><manvolnum>8</manvolnum> is a
@@ -6526,7 +6526,7 @@
       <userinput>man 8 rdmarkerset</userinput>.
     </para>
   </sect1>
-  <sect1 id="sect.utilities.rdrevert">
+  <sect1 xml:id="sect.utilities.rdrevert">
     <title>rdrevert(8)</title>
     <para>
       <command>rdrevert</command><manvolnum>8</manvolnum> is a
@@ -6538,7 +6538,7 @@
       <userinput>man 8 rdrevert</userinput>.
     </para>
   </sect1>
-  <sect1 id="sect.utilities.mlsend_1_">
+  <sect1 xml:id="sect.utilities.mlsend_1_">
     <title>rmlsend(1)</title>
     <para>
       <command>rmlsend</command><manvolnum>1</manvolnum> is a small
@@ -6564,9 +6564,9 @@
   </sect1>
 </chapter>
 
-<appendix id="appendix.gplv2">
+<appendix xml:id="appendix.gplv2">
   <title>The GNU General Public License, Version Two</title>
-  <sect1 id="sect.gplv2.the_gnu_general_public_license__version_two">
+  <sect1 xml:id="sect.gplv2.the_gnu_general_public_license__version_two">
     <title>GNU GENERAL PUBLIC LICENSE</title>
     <subtitle>Version 2, June 1991</subtitle>
     <para>
@@ -6577,7 +6577,7 @@
       Everyone is permitted to copy and distribute verbatim copies of
       this license document, but changing it is not allowed.
     </para>
-    <sect2 id="sect.gplv2.preamble">
+    <sect2 xml:id="sect.gplv2.preamble">
       <title>Preamble</title>
       <para>
 	The licenses for most software are designed to take away your
@@ -6639,7 +6639,7 @@
 	modification follow.
       </para>
     </sect2>
-    <sect2 id="sect.gplv2.gnu_general_public_license">
+    <sect2 xml:id="sect.gplv2.gnu_general_public_license">
       <title>GNU GENERAL PUBLIC LICENSE</title>
       <subtitle>TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND
       MODIFICATION</subtitle>
@@ -6924,7 +6924,7 @@
 	</listitem>
       </orderedlist>
     </sect2>
-    <sect2 id="sect.gplv2.no_warranty">
+    <sect2 xml:id="sect.gplv2.no_warranty">
       <title>NO WARRANTY</title>
       <orderedlist startingnumber="11" numeration="arabic">
 	<listitem>
@@ -6957,11 +6957,11 @@
 	</listitem>
       </orderedlist>
     </sect2>
-    <sect2 id="sect.gplv2.end_of_terms_and_conditions">
+    <sect2 xml:id="sect.gplv2.end_of_terms_and_conditions">
       <title>END OF TERMS AND CONDITIONS</title>
     </sect2>
   </sect1>
-  <sect1 id="sect.gplv2.how_to_apply_these_terms_to_your_new_programs">
+  <sect1 xml:id="sect.gplv2.how_to_apply_these_terms_to_your_new_programs">
     <title>How to Apply These Terms to Your New Programs</title>
     <para>
        If you develop a new program, and you want it to be of the greatest
@@ -6975,7 +6975,7 @@
       convey the exclusion of warranty; and each file should have at least
       the "copyright" line and a pointer to where the full notice is found.
     </para>
-    <sect2 id="sect.gplv2.example">
+    <sect2 xml:id="sect.gplv2.example">
       <para>
 	<literallayout>
 	  &lt;one line to give the program's name and a brief idea of what it does.&gt;
@@ -7028,7 +7028,7 @@ under certain conditions; type `show c' for details.
       your school, if any, to sign a "copyright disclaimer" for the program,
       if necessary.  Here is a sample; alter the names:
     </para>
-    <sect2 id="sect.gplv2.example2">
+    <sect2 xml:id="sect.gplv2.example2">
       <para>
 	Yoyodyne, Inc., hereby disclaims all copyright interest in the program
 	`Gnomovision' (which makes passes at compilers) written by James Hacker.
@@ -7048,12 +7048,12 @@ under certain conditions; type `show c' for details.
   </sect1>
 </appendix>
 
-<appendix id="appendix.gpio_switcher_devices">
+<appendix xml:id="appendix.gpio_switcher_devices">
   <title>Supported GPIO/Switcher Devices</title>
   <para>
     The following GPIO/switcher devices are supported under Rivendell:
   </para>
-  <sect1 id="sect.gpio_switcher_devices.am16">
+  <sect1 xml:id="sect.gpio_switcher_devices.am16">
     <title>360 Systems AM-16/B Audio Crosspoint Switcher</title>
     <variablelist>
       <varlistentry>
@@ -7127,7 +7127,7 @@ under certain conditions; type `show c' for details.
     </sect2>
   </sect1>
 
-  <sect1 id="sect.gpio_switcher_devices.bt10x1">
+  <sect1 xml:id="sect.gpio_switcher_devices.bt10x1">
     <title>BroadcastTools 10x1</title>
     <variablelist>
       <varlistentry>
@@ -7161,7 +7161,7 @@ under certain conditions; type `show c' for details.
     </sect2>
   </sect1>
 
-  <sect1 id="sect.gpio_switcher_devices.bt16x1">
+  <sect1 xml:id="sect.gpio_switcher_devices.bt16x1">
     <title>BroadcastTools 16x1</title>
     <variablelist>
       <varlistentry>
@@ -7195,7 +7195,7 @@ under certain conditions; type `show c' for details.
     </sect2>
   </sect1>
 
-  <sect1 id="sect.gpio_switcher_devices.bt16x2">
+  <sect1 xml:id="sect.gpio_switcher_devices.bt16x2">
     <title>BroadcastTools 16x2</title>
     <variablelist>
       <varlistentry>
@@ -7233,7 +7233,7 @@ under certain conditions; type `show c' for details.
     </sect2>
   </sect1>
 
-  <sect1 id="sect.gpio_switcher_devices.8x2">
+  <sect1 xml:id="sect.gpio_switcher_devices.8x2">
     <title>BroadcastTools 8x2</title>
     <variablelist>
       <varlistentry>
@@ -7276,7 +7276,7 @@ under certain conditions; type `show c' for details.
     </sect2>
   </sect1>
 
-  <sect1 id="sect.gpio_switcher_devices.btacs82">
+  <sect1 xml:id="sect.gpio_switcher_devices.btacs82">
     <title>BroadcastTools ACS8.2</title>
     <variablelist>
       <varlistentry>
@@ -7337,7 +7337,7 @@ under certain conditions; type `show c' for details.
     </sect2>
   </sect1>
 
-  <sect1 id="sect.gpio_switcher_devices.btadms4422">
+  <sect1 xml:id="sect.gpio_switcher_devices.btadms4422">
     <title>BroadcastTools ADMS 44.22 Analog/AES Digital Matrix Switcher</title>
     <variablelist>
       <varlistentry>
@@ -7391,7 +7391,7 @@ under certain conditions; type `show c' for details.
     </sect2>
   </sect1>
 
-  <sect1 id="sect.gpio_switcher_devices.btgpi16">
+  <sect1 xml:id="sect.gpio_switcher_devices.btgpi16">
     <title>BroadcastTools GPI-16 General Purpose Input Module</title>
     <variablelist>
       <varlistentry>
@@ -7430,7 +7430,7 @@ under certain conditions; type `show c' for details.
     </sect2>
   </sect1>
 
-  <sect1 id="sect.gpio_switcher_devices.btsentinel4web">
+  <sect1 xml:id="sect.gpio_switcher_devices.btsentinel4web">
     <title>BroadcastTools Sentinel 4 Web AES Switcher</title>
     <variablelist>
       <varlistentry>
@@ -7470,7 +7470,7 @@ under certain conditions; type `show c' for details.
     </sect2>
   </sect1>
 
-  <sect1 id="sect.gpio_switcher_devices.btsrc16">
+  <sect1 xml:id="sect.gpio_switcher_devices.btsrc16">
     <title>BroadcastTools SRC-16</title>
     <variablelist>
       <varlistentry>
@@ -7507,7 +7507,7 @@ under certain conditions; type `show c' for details.
     </sect2>
   </sect1>
 
-  <sect1 id="sect.gpio_switcher_devices.btss124">
+  <sect1 xml:id="sect.gpio_switcher_devices.btss124">
     <title>BroadcastTools SS 12.4</title>
     <variablelist>
       <varlistentry>
@@ -7550,7 +7550,7 @@ under certain conditions; type `show c' for details.
     </sect2>
   </sect1>
 
-  <sect1 id="sect.gpio_switcher_devices.btss164">
+  <sect1 xml:id="sect.gpio_switcher_devices.btss164">
     <title>BroadcastTools SS 16.4</title>
     <variablelist>
       <varlistentry>
@@ -7602,7 +7602,7 @@ under certain conditions; type `show c' for details.
     </sect2>
   </sect1>
 
-  <sect1 id="sect.gpio_switcher_devices.btss41mlr">
+  <sect1 xml:id="sect.gpio_switcher_devices.btss41mlr">
     <title>BroadcastTools SS 4.1 MLR Switcher/Router</title>
     <variablelist>
       <varlistentry>
@@ -7650,7 +7650,7 @@ under certain conditions; type `show c' for details.
     </sect2>
   </sect1>
 
-  <sect1 id="sect.gpio_switcher_devices.btss42">
+  <sect1 xml:id="sect.gpio_switcher_devices.btss42">
     <title>BroadcastTools SS4.2</title>
     <variablelist>
       <varlistentry>
@@ -7702,7 +7702,7 @@ under certain conditions; type `show c' for details.
     </sect2>
   </sect1>
 
-  <sect1 id="sect.gpio_switcher_devices.btss44">
+  <sect1 xml:id="sect.gpio_switcher_devices.btss44">
     <title>BroadcastTools SS4.4</title>
     <variablelist>
       <varlistentry>
@@ -7755,7 +7755,7 @@ under certain conditions; type `show c' for details.
     </sect2>
   </sect1>
 
-  <sect1 id="sect.gpio_switcher_devices.btss82">
+  <sect1 xml:id="sect.gpio_switcher_devices.btss82">
     <title>BroadcastTools SS8.2</title>
     <variablelist>
       <varlistentry>
@@ -7808,7 +7808,7 @@ under certain conditions; type `show c' for details.
     </sect2>
   </sect1>
 
-  <sect1 id="sect.gpio_switcher_devices.btu41mlrweb">
+  <sect1 xml:id="sect.gpio_switcher_devices.btu41mlrweb">
     <title>BroadcastTools Universal 4.1MLR>>Web</title>
     <variablelist>
       <varlistentry>
@@ -7840,7 +7840,7 @@ under certain conditions; type `show c' for details.
     </sect2>
   </sect1>
 
-  <sect1 id="sect.gpio_switcher_devices.harlond">
+  <sect1 xml:id="sect.gpio_switcher_devices.harlond">
     <title>Harlond Virtual Mixer</title>
     <variablelist>
       <varlistentry>
@@ -7898,7 +7898,7 @@ under certain conditions; type `show c' for details.
     </sect2>
   </sect1>
 
-  <sect1 id="sect.gpio_switcher_devices.kernelgpio">
+  <sect1 xml:id="sect.gpio_switcher_devices.kernelgpio">
     <title>Kernel GPIO</title>
     <variablelist>
       <varlistentry>
@@ -7936,7 +7936,7 @@ under certain conditions; type `show c' for details.
     </sect2>
   </sect1>
 
-  <sect1 id="sect.gpio_switcher_devices.livewire_lwrpaudio">
+  <sect1 xml:id="sect.gpio_switcher_devices.livewire_lwrpaudio">
     <title>Livewire LWRP Audio</title>
     <variablelist>
       <varlistentry>
@@ -7984,7 +7984,7 @@ under certain conditions; type `show c' for details.
     </sect2>
   </sect1>
 
-  <sect1 id="sect.gpio_switcher_devices.livewire_lwrpgpio">
+  <sect1 xml:id="sect.gpio_switcher_devices.livewire_lwrpgpio">
     <title>Livewire LWRP GPIO</title>
     <variablelist>
       <varlistentry>
@@ -8034,7 +8034,7 @@ under certain conditions; type `show c' for details.
     </sect2>
   </sect1>
 
-  <sect1 id="sect.gpio_switcher_devices.livewire_mcastgpio">
+  <sect1 xml:id="sect.gpio_switcher_devices.livewire_mcastgpio">
     <title>Livewire Multicast GPIO</title>
     <variablelist>
       <varlistentry>
@@ -8082,7 +8082,7 @@ under certain conditions; type `show c' for details.
     </sect2>
   </sect1>
 
-  <sect1 id="sect.gpio_switcher_devices.local_audio">
+  <sect1 xml:id="sect.gpio_switcher_devices.local_audio">
     <title>Local Audio Adapter</title>
     <variablelist>
       <varlistentry>
@@ -8126,7 +8126,7 @@ under certain conditions; type `show c' for details.
     </sect2>
   </sect1>
 
-  <sect1 id="sect.gpio_switcher_devices.local_gpio">
+  <sect1 xml:id="sect.gpio_switcher_devices.local_gpio">
     <title>Local GPIO</title>
     <variablelist>
       <varlistentry>
@@ -8160,7 +8160,7 @@ under certain conditions; type `show c' for details.
 	  <member>MeasurementComputing GPIO Cards</member>
 	</simplelist>
       </para>
-      <sect3 id="sect.gpio_switcher_devices.joysticks">
+      <sect3 xml:id="sect.gpio_switcher_devices.joysticks">
 	<title>15 Pin Joystick Port</title>
 	<para>
 	  Joystick support utilizes the Linux Input Device subsystem.  Inputs
@@ -8209,7 +8209,7 @@ under certain conditions; type `show c' for details.
 	the problem.
 	</para>
       </sect3>
-      <sect3 id="sect.gpio_switcher_devices.measurementcomputing">
+      <sect3 xml:id="sect.gpio_switcher_devices.measurementcomputing">
 	<title>MeasurementComputing GPIO Cards</title>
 	<para>
 	  The following MeasurementComputing cards are supported:
@@ -8223,7 +8223,7 @@ under certain conditions; type `show c' for details.
 	  The device name for the card should be 
 	  <userinput>/dev/gpio<replaceable>n</replaceable></userinput>.
 	</para>
-	<sect4 id="sect.gpio_switcher_devices.measurementcomputing.pci_pdis08_and_pci_pdis16">
+	<sect4 xml:id="sect.gpio_switcher_devices.measurementcomputing.pci_pdis08_and_pci_pdis16">
 	  <title>PCI-PDIS08 and PCI-PDIS16</title>
 	  <para>
 	    The Measurement Computing PCI-PDIS08 and PCI-PDIS16 boards
@@ -8297,7 +8297,7 @@ under certain conditions; type `show c' for details.
 	    </tgroup>
 	  </table>
 	</sect4>
-	<sect4 id="sect.gpio_switcher_devices.measurementcomputing.pci_dio24">
+	<sect4 xml:id="sect.gpio_switcher_devices.measurementcomputing.pci_dio24">
 	  <title>PCI-DIO24</title>
 	  <para>
 	    The Measurement Computing PCI-DIO24 board features 24
@@ -8359,7 +8359,7 @@ under certain conditions; type `show c' for details.
     </sect2>
   </sect1>
 
-  <sect1 id="sect.gpio_switcher_devices.vguest">
+  <sect1 xml:id="sect.gpio_switcher_devices.vguest">
     <title>Logitek vGuest</title>
     <variablelist>
       <varlistentry>
@@ -8406,7 +8406,7 @@ under certain conditions; type `show c' for details.
     </sect2>
   </sect1>
 
-  <sect1 id="sect.gpio_switcher_devices.modbus">
+  <sect1 xml:id="sect.gpio_switcher_devices.modbus">
     <title>Modbus TCP</title>
     <variablelist>
       <varlistentry>
@@ -8441,7 +8441,7 @@ under certain conditions; type `show c' for details.
     </sect2>
   </sect1>
 
-  <sect1 id="sect.gpio_switcher_devices.quartz1">
+  <sect1 xml:id="sect.gpio_switcher_devices.quartz1">
     <title>Quartz Electronics Type 1 Routing Protocol</title>
     <variablelist>
       <varlistentry>
@@ -8473,7 +8473,7 @@ under certain conditions; type `show c' for details.
     </sect2>
   </sect1>
 
-  <sect1 id="sect.gpio_switcher_devices.rossnkscp">
+  <sect1 xml:id="sect.gpio_switcher_devices.rossnkscp">
     <title>Ross NK Video Switchers (via SCP/A Serial Interface)</title>
     <variablelist>
       <varlistentry>
@@ -8507,7 +8507,7 @@ under certain conditions; type `show c' for details.
     </sect2>
   </sect1>
 
-  <sect1 id="sect.gpio_switcher_devices.modemlines">
+  <sect1 xml:id="sect.gpio_switcher_devices.modemlines">
     <title>Serial Port Modem Control Lines</title>
     <variablelist>
       <varlistentry>
@@ -8570,7 +8570,7 @@ under certain conditions; type `show c' for details.
     </sect2>
   </sect1>
 
-  <sect1 id="sect.gpio_switcher_devices.sas16000">
+  <sect1 xml:id="sect.gpio_switcher_devices.sas16000">
     <title>Sierra Automated Systems 16000(D) Audio Router</title>
     <variablelist>
       <varlistentry>
@@ -8603,7 +8603,7 @@ under certain conditions; type `show c' for details.
     </sect2>
   </sect1>
 
-  <sect1 id="sect.gpio_switcher_devices.sas32000">
+  <sect1 xml:id="sect.gpio_switcher_devices.sas32000">
     <title>Sierra Automated Systems 32000 Audio Router</title>
     <variablelist>
       <varlistentry>
@@ -8641,7 +8641,7 @@ under certain conditions; type `show c' for details.
     </sect2>
   </sect1>
 
-  <sect1 id="sect.gpio_switcher_devices.sas64000">
+  <sect1 xml:id="sect.gpio_switcher_devices.sas64000">
     <title>Sierra Automated Systems 64000 Audio Router</title>
     <variablelist>
       <varlistentry>
@@ -8676,7 +8676,7 @@ under certain conditions; type `show c' for details.
     </sect2>
   </sect1>
 
-  <sect1 id="sect.gpio_switcher_devices.sas64000gpi">
+  <sect1 xml:id="sect.gpio_switcher_devices.sas64000gpi">
     <title>Sierra Automated Systems 64000 Audio Router</title>
     <variablelist>
       <varlistentry>
@@ -8711,7 +8711,7 @@ under certain conditions; type `show c' for details.
     </sect2>
   </sect1>
 
-  <sect1 id="sect.gpio_switcher_devices.sasusi">
+  <sect1 xml:id="sect.gpio_switcher_devices.sasusi">
     <title>Sierra Automated Systems User Serial Interface (USI)</title>
     <variablelist>
       <varlistentry>
@@ -8752,7 +8752,7 @@ under certain conditions; type `show c' for details.
     </sect2>
   </sect1>
 
-  <sect1 id="sect.gpio_switcher_devices.acu1p">
+  <sect1 xml:id="sect.gpio_switcher_devices.acu1p">
     <title>Sine Systems ACU-1 (Prophet Version)</title>
     <variablelist>
       <varlistentry>
@@ -8792,7 +8792,7 @@ under certain conditions; type `show c' for details.
     </sect2>
   </sect1>
 
-  <sect1 id="sect.gpio_switcher_devices.swauthority">
+  <sect1 xml:id="sect.gpio_switcher_devices.swauthority">
     <title>Software Authority Protocol</title>
     <variablelist>
       <varlistentry>
@@ -8834,7 +8834,7 @@ under certain conditions; type `show c' for details.
     </sect2>
   </sect1>
 
-  <sect1 id="sect.gpio_switcher_devices.starguide3">
+  <sect1 xml:id="sect.gpio_switcher_devices.starguide3">
     <title>Starguide III Satellite Receiver</title>
     <variablelist>
       <varlistentry>
@@ -8871,7 +8871,7 @@ under certain conditions; type `show c' for details.
     </sect2>
   </sect1>
 
-  <sect1 id="sect.gpio_switcher_devices.unity4000">
+  <sect1 xml:id="sect.gpio_switcher_devices.unity4000">
     <title>Wegener Unity4000 DVB Satellite Receiver</title>
     <variablelist>
       <varlistentry>
@@ -8915,7 +8915,7 @@ under certain conditions; type `show c' for details.
     </sect2>
   </sect1>
 
-  <sect1 id="sect.gpio_switcher_devices.wheatnet_lio">
+  <sect1 xml:id="sect.gpio_switcher_devices.wheatnet_lio">
     <title>Wheatnet Blade LIO</title>
     <variablelist>
       <varlistentry>
@@ -8951,7 +8951,7 @@ under certain conditions; type `show c' for details.
     </sect2>
   </sect1>
 
-  <sect1 id="sect.gpio_switcher_devices.wheatnet_slio">
+  <sect1 xml:id="sect.gpio_switcher_devices.wheatnet_slio">
     <title>Wheatnet Blade SLIO</title>
     <variablelist>
       <varlistentry>
@@ -8986,9 +8986,9 @@ under certain conditions; type `show c' for details.
       </para>
     </sect2>
   </sect1>
-
-'
 </appendix>
+
+
 <!--
 <index>
 </index>
