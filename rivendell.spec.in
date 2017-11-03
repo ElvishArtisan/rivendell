@@ -377,8 +377,6 @@ rm -rf $RPM_BUILD_ROOT
 %doc docs/catchd.txt 
 %doc docs/colors 
 %doc docs/ripc.txt 
-%doc docs/JACK.txt
-%doc docs/ENCODERS.txt
 %doc docs/pam_rd.txt
 %doc docs/MESSAGE_BOX.txt
 %doc docs/docbook/cae.pdf
@@ -427,7 +425,6 @@ rm -rf $RPM_BUILD_ROOT
 %doc conf/rlm_urlwrite.conf
 %doc conf/rlm_spinitron_plus.conf
 %doc conf/rlm_tagstation.conf
-%doc docs/implemented_macros.txt
 %doc utils/sas_shim/rc.sas_shim
 %doc docs/datetime_wildcards.txt
 %doc docs/reports.txt
