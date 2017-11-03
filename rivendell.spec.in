@@ -376,9 +376,7 @@ rm -rf $RPM_BUILD_ROOT
 %doc conf/my.cnf-standby
 %doc docs/catchd.txt 
 %doc docs/colors 
-%doc docs/GPIO.txt 
 %doc docs/ripc.txt 
-%doc docs/SWITCHERS.txt
 %doc docs/JACK.txt
 %doc docs/ENCODERS.txt
 %doc docs/pam_rd.txt

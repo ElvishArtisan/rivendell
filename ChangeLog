@@ -16231,3 +16231,5 @@
 	* Added a screenshot for RMLSend to the Operations Guide.
 2017-11-02 Fred Gleason <fredg@paravelsystems.com>
 	* Moved the contents of 'docs/SWITCHERS.txt' to the Operations Guide.
+2017-11-03 Fred Gleason <fredg@paravelsystems.com>
+	* Moved the contents of 'docs/GPIO.txt' to the Operations Guide.

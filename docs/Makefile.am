@@ -35,7 +35,6 @@ EXTRA_DIST = ALSA.txt\
              datetime_wildcards.txt\
              implemented_macros.txt\
              ENCODERS.txt\
-             GPIO.txt\
              JACK.txt\
              MESSAGE_BOX.txt\
              metadata_wildcards.txt\
@@ -49,7 +48,6 @@ EXTRA_DIST = ALSA.txt\
              RIVENDELL_FILTER.txt\
              SAGE_ENDEC.txt\
              scheduler_formats.ods\
-             SWITCHERS.txt\
              WIN32.txt\
 	     WINGS_FILTER.txt
 
