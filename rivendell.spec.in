@@ -426,7 +426,6 @@ rm -rf $RPM_BUILD_ROOT
 %doc conf/rlm_spinitron_plus.conf
 %doc conf/rlm_tagstation.conf
 %doc utils/sas_shim/rc.sas_shim
-%doc docs/datetime_wildcards.txt
 %doc docs/reports.txt
 %doc docs/NOW+NEXT.txt
 %doc docs/WIN32.txt

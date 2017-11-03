@@ -32,7 +32,6 @@ EXTRA_DIST = ALSA.txt\
              catchd.txt\
              colors\
              copy_split_format.odt\
-             datetime_wildcards.txt\
              MESSAGE_BOX.txt\
              metadata_wildcards.txt\
              NEXGEN_FILTER.txt\
