@@ -33,6 +33,7 @@ docs/apis/*.html
 docs/apis/*.pdf
 docs/opsguide/*.html
 docs/opsguide/*.pdf
+docs/opsguide/frontspiece.xml
 helpers/cwrap
 helpers/jsmin
 importers/nexgen_filter

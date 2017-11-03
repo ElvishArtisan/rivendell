@@ -1,0 +1,54 @@
+<chapter xmlns="http://docbook.org/ns/docbook" xml:id="chapter.rdlogin">
+  <title>Managing the Current User with RDLogin</title>
+  <sect1 xml:id="sect.rdlogin.managing_the_current_user_with_rdlogin">
+    <title>RDLogin</title>
+    <para>
+      Rivendell uses a sophisticated system of user privileges to keep track
+      of which users have permission to perform what operations.
+      These privileges are tracked by the system on the basis of
+      <emphasis>user accounts</emphasis>.
+      Creating user accounts and administering their permissions
+      are done in the RDAdmin module and are covered in the Rivendell
+      Technical and Administration Guide.
+    </para>
+    <para>
+      It's important to note that these user accounts are not the same
+      thing as the “Login Name” that is used to log into the computer system
+      itself.  Rather, they exist and have meaning only within the Rivendell
+      system.  For the rest of this discussion, when we talk about “users”,
+      it is these “Rivendell users” that we are referring to.
+    </para>
+    <para>
+      Each Rivendell host has a default user. As the name implies, this is
+      the user that is automatically logged in after the system is booted.
+      By default, the name of this user is “user”, but the system
+      administrator may have changed this to some other name.
+    </para>
+    <para>
+      For many sites, a single default user is all that is ever required.
+      For some sites however, particularly larger ones, it is desirable
+      to have multiple user accounts, each tailored to a particular person
+      or “role”, with privileges assigned appropriately.  Such sites
+      require a means to log different users in and out of the system,
+      without interfering with any playout operations that may be ongoing
+      at the time.  RDLogin is the module for doing this.
+    </para>
+    <para>
+      RDLogin will display a small window after being started, showing the
+      currently logged-in user. To change to a
+      different user, select the desired user name from the Username:
+      control, enter the correct password, and then touch the Set User
+      button.  To “log out” of the system (in reality, just return to the
+      default user), simply touch the Default User button (no password is
+      required to set the default user).  To exit RDLogin and do nothing,
+      simply touch the Cancel button.
+    </para>
+    <para>
+      <mediaobject>
+	<imageobject>
+	  <imagedata align="center" fileref="rdlogin.rdlogin_screenshot.png" scale="70"/>
+	</imageobject>
+      </mediaobject>
+    </para>
+  </sect1>
+</chapter>

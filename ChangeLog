@@ -16247,3 +16247,6 @@
 2017-11-03 Fred Gleason <fredg@paravelsystems.com>
 	* Moved the contents of 'docs/metadata_wildcards.txt' to an
 	appendix in the	Operations Guide.
+2017-11-03 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored the XML source for the Operations Guide up into
+	per-chapter files.

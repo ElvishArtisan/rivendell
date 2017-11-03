@@ -1,0 +1,20 @@
+<info xmlns="http://docbook.org/ns/docbook">
+  <title>Rivendell Radio Automation System</title>
+  <subtitle>Operations Guide</subtitle>
+  <author>
+    <personname>
+      <firstname>Fred</firstname><surname>Gleason</surname>
+    </personname>
+  </author>
+  <edition>
+    @VERSION@
+  </edition>
+  <copyright><year>-2003-2017</year><holder>Fred Gleason</holder></copyright>
+  <cover>
+    <mediaobject>
+      <imageobject>
+	<imagedata fileref="manual-outputdefault.png" scale="20"/>
+      </imageobject>
+    </mediaobject>
+  </cover>
+</info>

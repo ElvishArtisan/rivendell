@@ -1,0 +1,1939 @@
+<appendix xmlns="http://docbook.org/ns/docbook" xml:id="appendix.gpio_switcher_devices">
+  <title>Supported GPIO/Switcher Devices</title>
+  <para>
+    The following GPIO/switcher devices are supported under Rivendell:
+  </para>
+  <sect1 xml:id="sect.gpio_switcher_devices.am16">
+    <title>360 Systems AM-16/B Audio Crosspoint Switcher</title>
+    <variablelist>
+      <varlistentry>
+	<term>Driver Name:</term>
+	<listitem>
+	  <para>
+	    360 Systems AM-16/B
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term>Supported RML Commands:</term>
+	<listitem>
+	  <para>
+	    <simplelist>
+	      <member>Switch Take ['<command>ST</command>']</member>
+	    </simplelist>
+	  </para>
+	</listitem>
+      </varlistentry>
+    </variablelist>
+    <sect2>
+      <title>General Notes</title>
+      <para>
+	Control is done by means of MIDI connections to the 'MIDI IN' and
+	'MIDI OUT' ports on the back of the unit, with the appropriate
+	MIDI device specified in the
+	<computeroutput>Device:</computeroutput> field in
+	<code>RDAdmin->ManageHosts->Switchers/GPIO</code>.
+	The following settings should be configured on the AM-16/B:
+      </para>
+      <variablelist>
+	<varlistentry>
+	  <term>Control Port Type:</term>
+	  <listitem>
+	    <para>
+	      MIDI (jumper JMP1)
+	    </para>
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>Program Send:</term>
+	  <listitem>
+	    <para>
+	      OFF
+	    </para>
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>Receive Channel: o</term>
+	  <listitem>
+	    <para>
+	      o (Omni mode)
+	    </para>
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>Memory Protect:</term>
+	  <listitem>
+	    <para>
+	      OFF
+	    </para>
+	  </listitem>
+	</varlistentry>
+      </variablelist>
+      <para>
+	The driver uses MIDI programs '0' and '1' on the AM-16/B when
+	processing crosspoint changes; anything previously saved in
+	those programs will be overwritten!
+      </para>
+    </sect2>
+  </sect1>
+
+  <sect1 xml:id="sect.gpio_switcher_devices.bt10x1">
+    <title>BroadcastTools 10x1</title>
+    <variablelist>
+      <varlistentry>
+	<term>Driver Name:</term>
+	<listitem>
+	  <para>
+	    BroadcastTools 10x1
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term>Supported RML Commands:</term>
+	<listitem>
+	  <para>
+	    <simplelist>
+	      <member>Switch Take ['<command>ST</command>']</member>
+	    </simplelist>
+	  </para>
+	</listitem>
+      </varlistentry>
+    </variablelist>
+    <sect2>
+      <title>General Notes</title>
+      <para>
+	Control is done by means of an RS-232C connection to a four pin RJ11
+	modular jack on the back of the unit (an adapter to a standard DB9
+	connector is supplied by Broadcast Tools with the unit).  Serial port
+	parameters should be set to 2400 baud rate, no parity, 8 data bits, 1
+	stop bit, CR/LF termination.
+      </para>
+    </sect2>
+  </sect1>
+
+  <sect1 xml:id="sect.gpio_switcher_devices.bt16x1">
+    <title>BroadcastTools 16x1</title>
+    <variablelist>
+      <varlistentry>
+	<term>Driver Name:</term>
+	<listitem>
+	  <para>
+	    BroadcastTools 16x1
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term>Supported RML Commands:</term>
+	<listitem>
+	  <para>
+	    <simplelist>
+	      <member>Switch Take ['<command>ST</command>']</member>
+	    </simplelist>
+	  </para>
+	</listitem>
+      </varlistentry>
+    </variablelist>
+    <sect2>
+      <title>General Notes</title>
+      <para>
+	Control is done by means of an RS-232C connection to a four pin RJ11
+	modular jack on the back of the unit (an adapter to a standard DB9
+	connector is supplied by Broadcast Tools with the unit).  Serial port
+	parameters should be set to 9600 baud rate, no parity, 8 data bits, 1
+	stop bit, CR/LF termination.
+      </para>
+    </sect2>
+  </sect1>
+
+  <sect1 xml:id="sect.gpio_switcher_devices.bt16x2">
+    <title>BroadcastTools 16x2</title>
+    <variablelist>
+      <varlistentry>
+	<term>Driver Name:</term>
+	<listitem>
+	  <para>
+	    BroadcastTools 16x2
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term>Supported RML Commands:</term>
+	<listitem>
+	  <para>
+	    <simplelist>
+	      <member>GPO Set ['<command>GO</command>']</member>
+	      <member>Switch Take ['<command>ST</command>']</member>
+	    </simplelist>
+	  </para>
+	</listitem>
+      </varlistentry>
+    </variablelist>
+    <sect2>
+      <title>General Notes</title>
+      <para>
+	Control is done by means of an RS-232C connection to a four pin RJ11
+	modular jack on the back of the unit (an adapter to a standard DB9
+	connector is supplied by Broadcast Tools with the unit).  Serial port
+	parameters should be set to 9600 baud rate, no parity, 8 data bits, 1
+	stop bit, CR/LF termination.
+      </para>
+      <para>
+	Operation in 'multidrop' mode is not supported.
+      </para>
+    </sect2>
+  </sect1>
+
+  <sect1 xml:id="sect.gpio_switcher_devices.8x2">
+    <title>BroadcastTools 8x2</title>
+    <variablelist>
+      <varlistentry>
+	<term>Driver Name:</term>
+	<listitem>
+	  <para>
+	    BroadcastTools 8x2
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term>Supported RML Commands:</term>
+	<listitem>
+	  <para>
+	    <simplelist>
+	      <member>Switch Add ['<command>SA</command>']</member>
+	      <member>Switch Remove ['<command>SR</command>']</member>
+	      <member>Switch Take ['<command>ST</command>']</member>
+	    </simplelist>
+	  </para>
+	</listitem>
+      </varlistentry>
+    </variablelist>
+    <sect2>
+      <title>General Notes</title>
+      <para>
+	Control is done by means of an RS-232C connection to a four pin RJ11
+	modular jack on the back of the unit (an adapter to a standard DB9
+	connector is supplied by Broadcast Tools with the unit).  Serial port
+	parameters should be set to 2400 baud rate, no parity, 8 data bits, 1
+	stop bit, CR/LF termination.
+      </para>
+      <para>
+	The 8x2 should be configured to use 'Mix' mode.  This can be done
+	by holding down the F1 button on the switcher while powering up.
+      </para>
+      <para>
+	Operation in 'multidrop' mode is not supported.
+      </para>
+    </sect2>
+  </sect1>
+
+  <sect1 xml:id="sect.gpio_switcher_devices.btacs82">
+    <title>BroadcastTools ACS8.2</title>
+    <variablelist>
+      <varlistentry>
+	<term>Driver Name:</term>
+	<listitem>
+	  <para>
+	    BroadcastTools ACS8.2
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term>Supported RML Commands:</term>
+	<listitem>
+	  <para>
+	    <simplelist>
+	      <member>GPI Enable ['<command>GE</command>']</member>
+	      <member>GPI Set ['<command>GI</command>']</member>
+	      <member>GPO Set ['<command>GO</command>']</member>
+	      <member>Switch Add ['<command>SA</command>']</member>
+	      <member>Switch Level ['<command>SL</command>']
+	      [output #1 only]</member>
+	      <member>Switch Remove ['<command>SR</command>']</member>
+	      <member>Switch Take ['<command>ST</command>']</member>
+	    </simplelist>
+	  </para>
+	</listitem>
+      </varlistentry>
+    </variablelist>
+    <sect2>
+      <title>General Notes</title>
+      <para>
+	Control is done by means of an RS-232C connection to a four pin RJ11
+	modular jack on the back of the unit (an adapter to a standard DB9
+	connector is supplied by Broadcast Tools with the unit).  Serial port
+	speed on the ACS 8.2 should be set to 9600.  Serial port parameters 
+	should be set to 9600 baud rate, no parity, 8 data bits, 1 stop bit, 
+	no termination.
+      </para>
+      <para>
+	The ACS 8.2 should be configured to use 'Mix' mode --i.e. DIP switches
+	SW17-5 and SW17-6 should both be 'on', and the unit ID should be
+	'0', with DIP switches SW17-1 and SW17-2 both 'off'.
+      </para>
+      <para>
+	Operation in 'multidrop' mode is not supported.  If you wish to use
+	GPI (referred to as 'PIP', for 'Parallel Input Port' in the Broadcast 
+	Tools documentation), then you will also need to be sure that DIP
+	switch SW17-10 is ON.
+      </para>
+      <para>
+	The ACS 8.2 supports the Switch Level [SL] RML for connections to
+	Output 1.  Six different gain levels are supported:  0 dB, -3 dB, 
+	-6 dB, -10 dB, -15 dB and -20 dB.  For for a specified gain level of
+	greater than or equal to -20, the applied gain will be rounded down 
+	to the next supported level.  For gain levels of less than -20 dB, the
+	minimum supported gain (-20 dB) will be applied.
+      </para>
+    </sect2>
+  </sect1>
+
+  <sect1 xml:id="sect.gpio_switcher_devices.btadms4422">
+    <title>BroadcastTools ADMS 44.22 Analog/AES Digital Matrix Switcher</title>
+    <variablelist>
+      <varlistentry>
+	<term>Driver Name:</term>
+	<listitem>
+	  <para>
+	    BroadcastTools ADMS 44.22
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term>Supported RML Commands:</term>
+	<listitem>
+	  <para>
+	    <simplelist>
+	      <member>GPI Enable ['<command>GE</command>']</member>
+	      <member>GPI Set ['<command>GI</command>']</member>
+	      <member>GPO Set ['<command>GO</command>']</member>
+	      <member>Switch Add ['<command>SA</command>']</member>
+	      <member>Switch Level ['<command>SL</command>']</member>
+	      <member>Switch Remove ['<command>SR</command>']</member>
+	      <member>Switch Take ['<command>ST</command>']</member>
+	    </simplelist>
+	  </para>
+	</listitem>
+      </varlistentry>
+    </variablelist>
+    <sect2>
+      <title>General Notes</title>
+      <para>
+	Control is done by means of a serial connection to the unit's integrated
+	serial port.  The 'OPTIONS' switches on the back of the unit should
+	be set as follows:
+      </para>
+      <simplelist>
+	<member>1: OFF (UP)</member>
+	<member>2: OFF (UP)</member>
+	<member>3: OFF (UP)</member>
+	<member>4: OFF (UP)</member>
+	<member>5: OFF (UP)</member>
+	<member>6: OFF (UP)</member>
+	<member>7: ON  (DOWN)</member>
+	<member>8: ON  (DOWN)</member>
+	<member>9: OFF (UP)</member>
+	<member>10: OFF (UP)</member>
+      </simplelist>
+      <para>
+	The Rivendell serial interface should be set to use 9600 bits/sec,
+	8 bits, 1 stop bit and no flow control.
+      </para>
+    </sect2>
+  </sect1>
+
+  <sect1 xml:id="sect.gpio_switcher_devices.btgpi16">
+    <title>BroadcastTools GPI-16 General Purpose Input Module</title>
+    <variablelist>
+      <varlistentry>
+	<term>Driver Name:</term>
+	<listitem>
+	  <para>
+	    BroadcastTools GPI-16
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term>Supported RML Commands:</term>
+	<listitem>
+	  <para>
+	    <simplelist>
+	      <member>GPI Enable ['<command>GE</command>']</member>
+	      <member>GPI Set ['<command>GI</command>']</member>
+	    </simplelist>
+	  </para>
+	</listitem>
+      </varlistentry>
+    </variablelist>
+    <sect2>
+      <title>General Notes</title>
+      <para>
+	Control is done by means of a serial connection to the unit's
+	integrated serial port.  There is also a 'plus' version that
+	features an integrated type B USB interface that simulates a serial
+	port.
+      </para>
+      <para>
+	The unit should work correctly with factory default settings.
+	The Rivendell serial interface should be set to use 9600 bits/sec,
+	8 bits, 1 stop bit and no flow control.
+      </para>
+    </sect2>
+  </sect1>
+
+  <sect1 xml:id="sect.gpio_switcher_devices.btsentinel4web">
+    <title>BroadcastTools Sentinel 4 Web AES Switcher</title>
+    <variablelist>
+      <varlistentry>
+	<term>Driver Name:</term>
+	<listitem>
+	  <para>
+	    BroadcastTools Sentinel 4 Web
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term>Supported RML Commands:</term>
+	<listitem>
+	  <para>
+	    <simplelist>
+	      <member>Switch Take ['<command>ST</command>']</member>
+	    </simplelist>
+	  </para>
+	</listitem>
+      </varlistentry>
+    </variablelist>
+    <sect2>
+      <title>General Notes</title>
+      <para>
+	Control is done by means of a TCP/IP connection to the unit's
+	integrated Ethernet port.
+      </para>
+      <para>
+	On the <computeroutput>Email/Network Setup</computeroutput>
+	page of the unit, be sure that the
+	<computeroutput>TCP Enabled</computeroutput> box is checked and
+	that <computeroutput>TCP Listen Port</computeroutput> is set to
+	the same number as is used in the
+	<computeroutput>IP Port</computeroutput> setting in Rivendell's
+	driver configuration (<userinput>56</userinput> by default).
+      </para>
+    </sect2>
+  </sect1>
+
+  <sect1 xml:id="sect.gpio_switcher_devices.btsrc16">
+    <title>BroadcastTools SRC-16</title>
+    <variablelist>
+      <varlistentry>
+	<term>Driver Name:</term>
+	<listitem>
+	  <para>
+	    BroadcastTools SRC-16
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term>Supported RML Commands:</term>
+	<listitem>
+	  <para>
+	    <simplelist>
+	      <member>GPI Enable ['<command>GE</command>']</member>
+	      <member>GPI Set ['<command>GI</command>']</member>
+	    </simplelist>
+	  </para>
+	</listitem>
+      </varlistentry>
+    </variablelist>
+    <sect2>
+      <title>General Notes</title>
+      <para>
+	Control is done by means of a serial connection to the unit's integrated
+	serial port.
+      </para>
+      <para>
+	The unit should work correctly with factory default settings.
+	The Rivendell serial interface should be set to use 9600 bits/sec,
+	8 bits, 1 stop bit and no flow control.
+      </para>
+    </sect2>
+  </sect1>
+
+  <sect1 xml:id="sect.gpio_switcher_devices.btss124">
+    <title>BroadcastTools SS 12.4</title>
+    <variablelist>
+      <varlistentry>
+	<term>Driver Name:</term>
+	<listitem>
+	  <para>
+	    BroadcastTools SS 12.4
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term>Supported RML Commands:</term>
+	<listitem>
+	  <para>
+	    <simplelist>
+	      <member>Switch Add ['<command>SA</command>']</member>
+	      <member>Switch Remove ['<command>SR</command>']</member>
+	      <member>Switch Take ['<command>ST</command>']</member>
+	    </simplelist>
+	  </para>
+	</listitem>
+      </varlistentry>
+    </variablelist>
+    <sect2>
+      <title>General Notes</title>
+      <para>
+	Control is done by means of an RS-232C connection to a four pin RJ11
+	modular jack on the back of the unit (an adapter to a standard DB9
+	connector is supplied by Broadcast Tools with the unit).  Serial port
+	parameters should be set to 9600 baud rate, no parity, 8 data bits, 1
+	stop bit, CR/LF termination.
+      </para>
+      <para>
+	The SS 12.4 should be configured to use 'Mix' mode.  This can be done 
+	by setting DIP switches SW1-7 and SW-1-3 to OFF.
+      </para>
+      <para>
+	Operation in 'multidrop' mode is not supported.
+      </para>
+    </sect2>
+  </sect1>
+
+  <sect1 xml:id="sect.gpio_switcher_devices.btss164">
+    <title>BroadcastTools SS 16.4</title>
+    <variablelist>
+      <varlistentry>
+	<term>Driver Name:</term>
+	<listitem>
+	  <para>
+	    BroadcastTools SS 16.4
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term>Supported RML Commands:</term>
+	<listitem>
+	  <para>
+	    <simplelist>
+	      <member>GPI Enable ['<command>GE</command>']</member>
+	      <member>GPI Set ['<command>GI</command>']</member>
+	      <member>GPO Set ['<command>GO</command>']</member>
+	      <member>Switch Add ['<command>SA</command>']</member>
+	      <member>Switch Remove ['<command>SR</command>']</member>
+	      <member>Switch Take ['<command>ST</command>']</member>
+	    </simplelist>
+	  </para>
+	</listitem>
+      </varlistentry>
+    </variablelist>
+    <sect2>
+      <title>General Notes</title>
+      <para>
+	Control is done by means of an RS-232C connection to a four pin RJ11
+	modular jack on the back of the unit (an adapter to a standard DB9
+	connector is supplied by Broadcast Tools with the unit).  Serial port
+	parameters should be set to 9600 baud rate, no parity, 8 data bits, 1
+	stop bit, CR/LF termination.
+      </para>
+      <para>
+	A total of 24 GPO outputs are supported, with the relays appearing as
+	GPO lines 1-8 and the open collector outputs as lines 9-24.  All 24
+	'PIP' inputs are supported as GPI devices.
+      </para>
+      <para>
+	The SS 16.4 should be configured to use 'Mix' mode and to have 'PIP'
+	mode enabled.  This can be done by setting DIP switches SW24-5, SW24-6 
+	and SW24-8 to ON.
+      </para>
+      <para>
+	Operation in 'multidrop' mode is not supported.
+      </para>
+    </sect2>
+  </sect1>
+
+  <sect1 xml:id="sect.gpio_switcher_devices.btss41mlr">
+    <title>BroadcastTools SS 4.1 MLR Switcher/Router</title>
+    <variablelist>
+      <varlistentry>
+	<term>Driver Name:</term>
+	<listitem>
+	  <para>
+	    BroadcastTools SS4.1 MLR
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term>Supported RML Commands:</term>
+	<listitem>
+	  <para>
+	    <simplelist>
+	      <member>GPI Enable ['<command>GE</command>']</member>
+	      <member>GPI Set ['<command>GI</command>']</member>
+	      <member>Switch Take ['<command>ST</command>']</member>
+	    </simplelist>
+	  </para>
+	</listitem>
+      </varlistentry>
+    </variablelist>
+    <sect2>
+      <title>General Notes</title>
+      <para>
+	Control is done by means of an RS-232C connection to a four pin RJ11
+	modular jack on the back of the unit (an adapter to a standard DB9
+	connector is supplied by Broadcast Tools with the unit).  Serial port
+	speed on the SS 4.1 should be set to 9600 (DIP switches SW6-4 and
+	SW6-5 set to 'off').  Serial port parameters in RDAdmin should be set
+	to 9600 baud rate, no parity, 8 data bits, 1 stop bit, CR/LF
+ termination.
+      </para>
+      <para>
+	The SS 4.1 should be configured to use unit ID '0', with DIP switches
+	SW6-1, SW6-2 and SW6-3 all set to 'off'.
+      </para>
+      <para>
+	Operation in 'multidrop' mode is not supported.  If you wish to use
+	GPI (referred to as 'PIP', for 'Parallel Input Port' in the Broadcast 
+	Tools documentation), then you will also need to be sure that DIP
+	switch SW6-7 is ON.
+      </para>
+    </sect2>
+  </sect1>
+
+  <sect1 xml:id="sect.gpio_switcher_devices.btss42">
+    <title>BroadcastTools SS4.2</title>
+    <variablelist>
+      <varlistentry>
+	<term>Driver Name:</term>
+	<listitem>
+	  <para>
+	    BroadcastTools SS4.2
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term>Supported RML Commands:</term>
+	<listitem>
+	  <para>
+	    <simplelist>
+	      <member>GPI Enable ['<command>GE</command>']</member>
+	      <member>GPI Set ['<command>GI</command>']</member>
+	      <member>GPO Set ['<command>GO</command>']</member>
+	      <member>Switch Add ['<command>SA</command>']</member>
+	      <member>Switch Remove ['<command>SR</command>']</member>
+	      <member>Switch Take ['<command>ST</command>']</member>
+	    </simplelist>
+	  </para>
+	</listitem>
+      </varlistentry>
+    </variablelist>
+    <sect2>
+      <title>General Notes</title>
+      <para>
+	Control is done by means of an RS-232C connection to a four pin RJ11
+	modular jack on the back of the unit (an adapter to a standard DB9
+	connector is supplied by Broadcast Tools with the unit).  Serial port
+	speed on the SS 4.2 should be set to 9600 (DIP switches SW13-3 and
+	SW13-4 set to 'off').  Serial port parameters in RDAdmin should be set
+	to 9600 baud rate, no parity, 8 data bits, 1 stop bit, CR/LF
+	termination.
+      </para>
+      <para>
+	The SS 4.2 should be configured to use 'Mix' mode --i.e. DIP switches
+	SW13-5 and SW13-6 should both be 'on', and the unit ID should be set to
+	'0', with DIP switches SW13-1 and SW13-2 both 'off'.
+      </para>
+      <para>
+	Operation in 'multidrop' mode is not supported.  If you wish to use
+	GPI (referred to as 'PIP', for 'Parallel Input Port' in the Broadcast 
+	Tools documentation), then you will also need to be sure that DIP
+	switch SW13-7 is ON.
+      </para>
+    </sect2>
+  </sect1>
+
+  <sect1 xml:id="sect.gpio_switcher_devices.btss44">
+    <title>BroadcastTools SS4.4</title>
+    <variablelist>
+      <varlistentry>
+	<term>Driver Name:</term>
+	<listitem>
+	  <para>
+	    BroadcastTools SS4.4
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term>Supported RML Commands:</term>
+	<listitem>
+	  <para>
+	    <simplelist>
+	      <member>GPI Enable ['<command>GE</command>']</member>
+	      <member>GPI Set ['<command>GI</command>']</member>
+	      <member>GPO Set ['<command>GO</command>']</member>
+	      <member>Switch Add ['<command>SA</command>']</member>
+	      <member>Switch Remove ['<command>SR</command>']</member>
+	      <member>Switch Take ['<command>ST</command>']</member>
+	    </simplelist>
+	  </para>
+	</listitem>
+      </varlistentry>
+    </variablelist>
+    <sect2>
+      <title>General Notes</title>
+      <para>
+	Control is done by means of an RS-232C connection to a four pin RJ11
+	modular jack on the back of the unit (an adapter to a standard DB9
+	connector is supplied by Broadcast Tools with the unit).  Serial port
+	speed on the SS 4.4 should be set to 9600 (DIP switch SW3 set to 'off').
+	Serial port parameters in RDAdmin should be set to 9600 baud rate,
+	no parity, 8 data bits, 1 stop bit, CR/LF termination.
+      </para>
+      <para>
+	The SS 4.4 should be configured to use 'Mix' mode --i.e. DIP switches
+	SW4 and SW5 should both be 'on', and the unit ID should be set to
+	'0', with DIP switches SW1 and SW2 both 'off'.
+      </para>
+      <para>
+	Operation in 'multidrop' mode is not supported.  If you wish to use
+	GPI (referred to as 'PIP', for 'Parallel Input Port' in the Broadcast 
+	Tools documentation), then you will also need to be sure that DIP
+	switch SW8 is 'on'.  If you wish to use the open collector and relay
+	outputs as GPO, then you will also need to be sure that DIP switch
+	SW6 is 'off'.
+      </para>
+    </sect2>
+  </sect1>
+
+  <sect1 xml:id="sect.gpio_switcher_devices.btss82">
+    <title>BroadcastTools SS8.2</title>
+    <variablelist>
+      <varlistentry>
+	<term>Driver Name:</term>
+	<listitem>
+	  <para>
+	    BroadcastTools SS8.2
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term>Supported RML Commands:</term>
+	<listitem>
+	  <para>
+	    <simplelist>
+	      <member>GPI Enable ['<command>GE</command>']</member>
+	      <member>GPI Set ['<command>GI</command>']</member>
+	      <member>GPO Set ['<command>GO</command>']</member>
+	      <member>Switch Add ['<command>SA</command>']</member>
+	      <member>Switch Remove ['<command>SR</command>']</member>
+	      <member>Switch Take ['<command>ST</command>']</member>
+	    </simplelist>
+	  </para>
+	</listitem>
+      </varlistentry>
+    </variablelist>
+    <sect2>
+      <title>General Notes</title>
+      <para>
+	Control is done by means of an RS-232C connection to a four pin RJ11
+	modular jack on the back of the unit (an adapter to a standard DB9
+	connector is supplied by Broadcast Tools with the unit).  Serial port
+	speed on the SS 8.2 should be set to 19200 (some have found 9600 to work
+	instead).  Do *not* use 38400, as there are known bugs within the SS 8.2
+	when used with this speed!  Serial port parameters should be set to
+	19200 baud rate (or 9600 if that worked instead), No parity, 8 data
+	bits, 1 stop bit, CR/LF termination (or potentially no termination).
+      </para>
+      <para>
+	The SS 8.2 should be configured to use 'Mix' mode --i.e. DIP switches
+	SW-14-4 and SW-14-5 should both be 'on', and the unit ID should be
+	'0', with DIP switches SW-14-1, SW-14-2 and SW-14-3 all 'off'.
+      </para>
+      <para>
+	Operation in 'multidrop' mode is not supported.  If you wish to use
+	GPI (referred to as 'PIP', for 'Parallel Input Port' in the Broadcast 
+	Tools documentation), then you will also need to be sure that DIP
+	switch SW-14-10 is ON.
+      </para>
+    </sect2>
+  </sect1>
+
+  <sect1 xml:id="sect.gpio_switcher_devices.btu41mlrweb">
+    <title>BroadcastTools Universal 4.1MLR>>Web</title>
+    <variablelist>
+      <varlistentry>
+	<term>Driver Name:</term>
+	<listitem>
+	  <para>
+	    BroadcastTools 4.1 MLR>>Web
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term>Supported RML Commands:</term>
+	<listitem>
+	  <para>
+	    <simplelist>
+	      <member>GPI Enable ['<command>GE</command>']</member>
+	      <member>GPI Set ['<command>GI</command>']</member>
+	      <member>Switch Take ['<command>ST</command>']</member>
+	    </simplelist>
+	  </para>
+	</listitem>
+      </varlistentry>
+    </variablelist>
+    <sect2>
+      <title>General Notes</title>
+      <para>
+	Control is by means of a TCP/IP connection to port 5002.
+      </para>
+    </sect2>
+  </sect1>
+
+  <sect1 xml:id="sect.gpio_switcher_devices.harlond">
+    <title>Harlond Virtual Mixer</title>
+    <variablelist>
+      <varlistentry>
+	<term>Driver Name:</term>
+	<listitem>
+	  <para>
+	    Harlond Virtual Mixer
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term>Supported RML Commands:</term>
+	<listitem>
+	  <para>
+	    <simplelist>
+	      <member>Fire Salvo ['<command>FS</command>']</member>
+	      <member>GPI Enable ['<command>GE</command>']</member>
+	      <member>GPI Set ['<command>GI</command>']</member>
+	      <member>GPO Set ['<command>GO</command>']</member>
+	      <member>Switch Add ['<command>SA</command>']</member>
+	      <member>Switch Level ['<command>SL</command>']</member>
+	      <member>Switch Remove ['<command>SR</command>']</member>
+	      <member>Switch Take ['<command>ST</command>']</member>
+	    </simplelist>
+	  </para>
+	</listitem>
+      </varlistentry>
+    </variablelist>
+    <sect2>
+      <title>General Notes</title>
+      <para>
+	Control is by means of a TCP/IP connection to port 5002. Output
+	busses are mapped as follows:
+      </para>
+      <table frame="all">
+	<title>Harlond Output Buss Mappings</title>
+	<tgroup cols="2" align="left" colsep="1" rowsep="1">
+	  <colspec colname="Output" />
+	  <colspec colname="Buss" />
+	  <thead>
+	    <row><entry>Output</entry><entry>Buss</entry></row>
+	  </thead>
+	  <tbody>
+	    <row><entry>1</entry><entry>PGM</entry></row>
+	    <row><entry>2</entry><entry>AUD</entry></row>
+	    <row><entry>3</entry><entry>UTL</entry></row>
+	    <row><entry>4</entry><entry>CUE</entry></row>
+	  </tbody>
+	</tgroup>
+      </table>
+      <para>
+	Input channel ON/OFF is sensed/controlled by means of the
+	respective GPIO number using GE/GI/GO RMLs.
+      </para>
+    </sect2>
+  </sect1>
+
+  <sect1 xml:id="sect.gpio_switcher_devices.kernelgpio">
+    <title>Kernel GPIO</title>
+    <variablelist>
+      <varlistentry>
+	<term>Driver Name:</term>
+	<listitem>
+	  <para>
+	    Kernel GPIO
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term>Supported RML Commands:</term>
+	<listitem>
+	  <para>
+	    <simplelist>
+	      <member>GPI Enable ['<command>GE</command>']</member>
+	      <member>GPI Set ['<command>GI</command>']</member>
+	      <member>GPO Set ['<command>GO</command>']</member>
+	    </simplelist>
+	  </para>
+	</listitem>
+      </varlistentry>
+    </variablelist>
+    <sect2>
+      <title>General Notes</title>
+      <para>
+	This driver can be used to control kernel-based GPIO interfaces,
+	such as	the GPIO pins on a Raspberry Pi. Pins are allocated such that
+	inputs come first, followed by outputs.
+      </para>
+      <para>
+	Further information on kernel GPIO devices can be found at
+	https://www.kernel.org/doc/Documentation/gpio/sysfs.txt
+      </para>
+    </sect2>
+  </sect1>
+
+  <sect1 xml:id="sect.gpio_switcher_devices.livewire_lwrpaudio">
+    <title>Livewire LWRP Audio</title>
+    <variablelist>
+      <varlistentry>
+	<term>Driver Name:</term>
+	<listitem>
+	  <para>
+	    Livewire LWRP Audio
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term>Supported RML Commands:</term>
+	<listitem>
+	  <para>
+	    <simplelist>
+	      <member>Switch Take ['<command>ST</command>']</member>
+	    </simplelist>
+	  </para>
+	</listitem>
+      </varlistentry>
+    </variablelist>
+    <sect2>
+      <title>General Notes</title>
+      <para>
+	Livewire is a distributed audio router and control system, with the 
+	components (called 'nodes') configured and controled via TCP/IP.  More
+	information can be found at http://www.axiaaudio.com/.
+      </para>
+      <para>
+	This driver can be used to create and remove connections between audio
+	sources and destinations via Livewire Routing Protocol (LWRP).
+      </para>
+      <para>
+	Configuration is a matter of entering the IP address, password and base
+	output number for each node in 
+	<code>RDAdmin->ManageHosts->Switcher/GPIO->LivewireNodes</code>.
+	The driver
+	will autodetect all other parameters from the nodes themselves.  The
+	resulting constellation of nodes can be controled with the
+	'Switch Take' ['<command>ST</command>'] RML by specifying the
+	Livewire source stream number as the <replaceable>input</replaceable>
+	parameter and the the base output number+the slot number-1 for the
+	<replaceable>output</replaceable> parameter.
+      </para>
+    </sect2>
+  </sect1>
+
+  <sect1 xml:id="sect.gpio_switcher_devices.livewire_lwrpgpio">
+    <title>Livewire LWRP GPIO</title>
+    <variablelist>
+      <varlistentry>
+	<term>Driver Name:</term>
+	<listitem>
+	  <para>
+	    Livewire LWRP GPIO
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term>Supported RML Commands:</term>
+	<listitem>
+	  <para>
+	    <simplelist>
+	      <member>GPI Enable ['<command>GE</command>']</member>
+	      <member>GPI Set ['<command>GI</command>']</member>
+	      <member>GPO Set ['<command>GO</command>']</member>
+	    </simplelist>
+	  </para>
+	</listitem>
+      </varlistentry>
+    </variablelist>
+    <sect2>
+      <title>General Notes</title>
+      <para>
+	Livewire is a distributed audio router and control system, with the 
+	components (called 'nodes') configured and controled via TCP/IP.  More
+	information can be found at http://www.axiaaudio.com/.
+      </para>
+      <para>
+	This driver can be used to control Livewire's GPIO subsystem by means of
+	the Livewire Routing Protocol (LWRP) with both physical as well as
+	'virtual' GPIO devices.
+      </para>
+      <para>
+	Only two items need to be specified in the configuration: the
+	<computeroutput>IP address</computeroutput>
+	of the device to control and the
+	<computeroutput>'Layer</computeroutput>, with
+	<userinput>V</userinput> specifying a virtual
+	GPIO device and <userinput>D</userinput> specifying an actual
+	physical one.  The driver
+	will autodetect all other parameters (e.g. the number of input and
+	output lines) from the device itself.
+      </para>
+    </sect2>
+  </sect1>
+
+  <sect1 xml:id="sect.gpio_switcher_devices.livewire_mcastgpio">
+    <title>Livewire Multicast GPIO</title>
+    <variablelist>
+      <varlistentry>
+	<term>Driver Name:</term>
+	<listitem>
+	  <para>
+	    Livewire Multicast GPIO
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term>Supported RML Commands:</term>
+	<listitem>
+	  <para>
+	    <simplelist>
+	      <member>GPI Enable ['<command>GE</command>']</member>
+	      <member>GPI Set ['<command>GI</command>']</member>
+	      <member>GPO Set ['<command>GO</command>']</member>
+	    </simplelist>
+	  </para>
+	</listitem>
+      </varlistentry>
+    </variablelist>
+    <sect2>
+      <title>General Notes</title>
+      <para>
+	Livewire is a distributed audio router and control system, with the 
+	components (called 'nodes') configured and controled via TCP/IP.  More
+	information can be found at http://www.axiaaudio.com/.
+      </para>
+      <para>
+	This driver provides the ability to access GPIO functions from Livewire-
+	enabled control surfaces for setups that lack a virtual GPIO device
+	--e.g. when interfacing audio directly to a Livewire node without
+	using a native Livewire software audio driver or audio adapter.
+      </para>
+      <para>
+	When configuring it, the <computeroutput>IP Address</computeroutput>
+	field should contain the address
+	of the local interface to which the Livewire network is attached, while
+	the <computeroutput>Livewire GPIOs</computeroutput> list should be
+	populated with the stream
+	number - GPIO line associations to be used.
+      </para>
+    </sect2>
+  </sect1>
+
+  <sect1 xml:id="sect.gpio_switcher_devices.local_audio">
+    <title>Local Audio Adapter</title>
+    <variablelist>
+      <varlistentry>
+	<term>Driver Name:</term>
+	<listitem>
+	  <para>
+	    Local Audio Adapter
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term>Supported RML Commands:</term>
+	<listitem>
+	  <para>
+	    <simplelist>
+	      <member>Switch Add ['<command>SA</command>']</member>
+	      <member>Switch Add With Gain ['<command>SX</command>']</member>
+	      <member>Switch Remove ['<command>SR</command>']</member>
+	      <member>Switch Take ['<command>ST</command>']</member>
+	    </simplelist>
+	  </para>
+	</listitem>
+      </varlistentry>
+    </variablelist>
+    <sect2>
+      <title>General Notes</title>
+      <para>
+	It's possible to use one or more of the actual audio adapters as a
+	switcher device using this driver.  Doing so makes it possible to
+	route audio directly from the adapter inputs to outputs, while at the
+	same time using it for audio capture/playout in the usual manner.
+      </para>
+      <para>
+	To configure it, set <computeroutput>Card:</computeroutput> to the
+	number of the audio adapter to use and the
+	<computeroutput>Inputs:</computeroutput> and
+	<computeroutput>Outputs:</computeroutput> fields to the
+	number of inputs and outputs on the card (as found in
+	<code>RDADmin->ManageHosts->AudioResources</code>.
+      </para>
+    </sect2>
+  </sect1>
+
+  <sect1 xml:id="sect.gpio_switcher_devices.local_gpio">
+    <title>Local GPIO</title>
+    <variablelist>
+      <varlistentry>
+	<term>Driver Name:</term>
+	<listitem>
+	  <para>
+	    Local GPIO
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term>Supported RML Commands:</term>
+	<listitem>
+	  <para>
+	    <simplelist>
+	      <member>GPI Enable ['<command>GE</command>']</member>
+	      <member>GPI Set ['<command>GI</command>']</member>
+	      <member>GPO Set ['<command>GO</command>']</member>
+	    </simplelist>
+	  </para>
+	</listitem>
+      </varlistentry>
+    </variablelist>
+    <sect2>
+      <title>General Notes</title>
+      <para>
+	This driver supports a variety of GPIO devices, including:
+	<simplelist>
+	  <member>15 Pin Joystick Port</member>
+	  <member>USB HID Devices</member>
+	  <member>MeasurementComputing GPIO Cards</member>
+	</simplelist>
+      </para>
+      <sect3 xml:id="sect.gpio_switcher_devices.joysticks">
+	<title>15 Pin Joystick Port</title>
+	<para>
+	  Joystick support utilizes the Linux Input Device subsystem.  Inputs
+	  are active-low, and should be wired as follows:
+	</para>
+	<table frame="none">
+	  <title>15 Pin Joystick Port Wiring</title>
+	<tgroup cols="2" align="left" colsep="0" rowsep="0">
+	  <colspec colname="Pin" colwidth="1.0*"/>
+	  <colspec colname="Signal" colwidth="20.0*"/>
+	  <thead>
+	    <row><entry>Pin</entry><entry>Signal</entry></row>
+	  </thead>
+	  <tbody>
+	    <row><entry>2</entry><entry>Input 1</entry></row>
+	    <row><entry>4</entry><entry>Ground</entry></row>
+	    <row><entry></entry><entry></entry></row>
+	    <row><entry>7</entry><entry>Input 2</entry></row>
+	    <row><entry>5</entry><entry>Ground</entry></row>
+	    <row><entry></entry><entry></entry></row>
+	    <row><entry>10</entry><entry>Input 3</entry></row>
+	    <row><entry>12</entry><entry>Ground</entry></row>
+	    <row><entry></entry><entry></entry></row>
+	    <row><entry>14</entry><entry>Input 4</entry></row>
+	    <row><entry>12</entry><entry>Ground</entry></row>
+	  </tbody>
+	</tgroup>
+      </table>
+      <para>
+	In addition, you will need to connect 47 kohm resistors between the
+	following pins:  1-3, 6-8, 9-11 and 13-15.  While not strictly needed
+	for the GPI portion of the interface to work, the kernel's analog
+	joystick driver will refuse to initialize the port if these resistors
+	(or a real joystick) are not present.
+      </para>
+      <para>
+	The device name of the joystick will be one of the
+	<userinput>/dev/input/event<replaceable>n</replaceable></userinput>
+	devices.
+      </para>
+      <para>
+	NOTE: There have been reports that some port models do not internally 
+	connect pin 12 to ground.  The symptom of this situation will be that
+	Inputs 1 and 2 work, but not Inputs 3 and 4.  If this is the case, 
+	connecting the ground for Inputs 3 and 4 to pins 04 or 05 should remedy
+	the problem.
+	</para>
+      </sect3>
+      <sect3 xml:id="sect.gpio_switcher_devices.measurementcomputing">
+	<title>MeasurementComputing GPIO Cards</title>
+	<para>
+	  The following MeasurementComputing cards are supported:
+	</para>
+	<simplelist>
+	  <member><link endlink="sect.gpio_switcher_devices.measurementcomputing.pci_pdis08_and_pci_pdis16">PCI-PDIS08</link></member>
+	  <member><link endlink="sect.gpio_switcher_devices.measurementcomputing.pci_pdis08_and_pci_pdis16">PCI-PDIS16</link></member>
+	  <member><link endlink="sect.gpio_switcher_devices.measurementcomputing.pci_dio24">PCI-DIO24</link></member>
+	</simplelist>
+	<para>
+	  The device name for the card should be 
+	  <userinput>/dev/gpio<replaceable>n</replaceable></userinput>.
+	</para>
+	<sect4 xml:id="sect.gpio_switcher_devices.measurementcomputing.pci_pdis08_and_pci_pdis16">
+	  <title>PCI-PDIS08 and PCI-PDIS16</title>
+	  <para>
+	    The Measurement Computing PCI-PDIS08 and PCI-PDIS16 boards
+	    feature floating, opto-isolated inputs. The inputs are
+	    not polarity sensitive and may be driven by either AC or
+	    DC. The outputs are electro-mechanical relays with dry
+	    contacts.
+	  </para>
+	  <table frame="none">
+	    <title>PCI-PDIS08 and PCI-PDIS16 Connector Pinout (DB37F)</title>
+	    <tgroup cols="2" align="left" colsep="0" rowsep="0">
+	      <colspec colname="Pin" colwidth="1.0*"/>
+	      <colspec colname="Signal" colwidth="20.0*"/>
+	      <thead>
+		<row><entry>Pin</entry><entry>Signal</entry></row>
+	      </thead>
+	      <tbody>
+		<row><entry>1</entry><entry>Input 8/16</entry></row>
+		<row><entry>20</entry><entry>Input 8/16</entry></row>
+		<row><entry></entry><entry></entry></row>
+		<row><entry>2</entry><entry>Input 7/15</entry></row>
+		<row><entry>21</entry><entry>Input 7/15</entry></row>
+		<row><entry></entry><entry></entry></row>
+		<row><entry>3</entry><entry>Input 6/14</entry></row>
+		<row><entry>22</entry><entry>Input 6/14</entry></row>
+		<row><entry></entry><entry></entry></row>
+		<row><entry>4</entry><entry>Input 5/13</entry></row>
+		<row><entry>23</entry><entry>Input 5/13</entry></row>
+		<row><entry></entry><entry></entry></row>
+		<row><entry>5</entry><entry>Input 4/12</entry></row>
+		<row><entry>24</entry><entry>Input 4/12</entry></row>
+		<row><entry></entry><entry></entry></row>
+		<row><entry>6</entry><entry>Input 3/11</entry></row>
+		<row><entry>25</entry><entry>Input 3/11</entry></row>
+		<row><entry></entry><entry></entry></row>
+		<row><entry>7</entry><entry>Input 2/10</entry></row>
+		<row><entry>26</entry><entry>Input 2/10</entry></row>
+		<row><entry></entry><entry></entry></row>
+		<row><entry>8</entry><entry>Input 1/9</entry></row>
+		<row><entry>27</entry><entry>Input 1/9</entry></row>
+		<row><entry></entry><entry></entry></row>
+		<row><entry>9</entry><entry>Output 8/16 C</entry></row>
+		<row><entry>28</entry><entry>Output 8/16 N/O</entry></row>
+		<row><entry></entry><entry></entry></row>
+		<row><entry>10</entry><entry>Output 7/15 C</entry></row>
+		<row><entry>29</entry><entry>Output 7/15 N/O</entry></row>
+		<row><entry></entry><entry></entry></row>
+		<row><entry>11</entry><entry>Output 6/14 C</entry></row>
+		<row><entry>30</entry><entry>Output 6/14 N/O</entry></row>
+		<row><entry></entry><entry></entry></row>
+		<row><entry>12</entry><entry>Output 5/13 N/C</entry></row>
+		<row><entry>13</entry><entry>Output 5/13 N/O</entry></row>
+		<row><entry>31</entry><entry>Output 5/13 C</entry></row>
+		<row><entry></entry><entry></entry></row>
+		<row><entry>14</entry><entry>Output 4/12 N/C</entry></row>
+		<row><entry>32</entry><entry>Output 4/12 N/O</entry></row>
+		<row><entry>33</entry><entry>Output 4/12 C</entry></row>
+		<row><entry></entry><entry></entry></row>
+		<row><entry>15</entry><entry>Output 3/11 N/C</entry></row>
+		<row><entry>16</entry><entry>Output 3/11 N/O</entry></row>
+		<row><entry>34</entry><entry>Output 3/11 C</entry></row>
+		<row><entry></entry><entry></entry></row>
+		<row><entry>17</entry><entry>Output 2/10 N/C</entry></row>
+		<row><entry>35</entry><entry>Output 2/10 N/O</entry></row>
+		<row><entry>36</entry><entry>Output 2/10 C</entry></row>
+		<row><entry></entry><entry></entry></row>
+		<row><entry>18</entry><entry>Output 1/9 N/C</entry></row>
+		<row><entry>19</entry><entry>Output 1/9 N/O</entry></row>
+		<row><entry>37</entry><entry>Output 1/9 C</entry></row>
+	      </tbody>
+	    </tgroup>
+	  </table>
+	</sect4>
+	<sect4 xml:id="sect.gpio_switcher_devices.measurementcomputing.pci_dio24">
+	  <title>PCI-DIO24</title>
+	  <para>
+	    The Measurement Computing PCI-DIO24 board features 24
+	    bi-directional, TTL level signal lines, referenced to a
+	    common ground. The driver can be
+	    configured to use all of the lines as inputs or outputs
+	    (mixing inputs and outputs on the same board is not supported).
+	    When used as inputs, termination resistor packs should be
+	    installed.
+	  </para>
+	  <table frame="none">
+	    <title>PCI-DIO24 Connector Pinout (DB37F)</title>
+	    <tgroup cols="2" align="left" colsep="0" rowsep="0">
+	      <colspec colname="Pin" colwidth="1.0*"/>
+	      <colspec colname="Signal" colwidth="20.0*"/>
+	      <thead>
+		<row><entry>Pin</entry><entry>Signal</entry></row>
+	      </thead>
+	      <tbody>
+		<row><entry>37</entry><entry>Input 1</entry></row>
+		<row><entry>36</entry><entry>Input 2</entry></row>
+		<row><entry>35</entry><entry>Input 3</entry></row>
+		<row><entry>34</entry><entry>Input 4</entry></row>
+		<row><entry>33</entry><entry>Input 5</entry></row>
+		<row><entry>32</entry><entry>Input 6</entry></row>
+		<row><entry>31</entry><entry>Input 7</entry></row>
+		<row><entry>30</entry><entry>Input 8</entry></row>
+		<row><entry>10</entry><entry>Input 9</entry></row>
+		<row><entry>9</entry><entry>Input 10</entry></row>
+		<row><entry>8</entry><entry>Input 11</entry></row>
+		<row><entry>7</entry><entry>Input 12</entry></row>
+		<row><entry>6</entry><entry>Input 13</entry></row>
+		<row><entry>5</entry><entry>Input 14</entry></row>
+		<row><entry>4</entry><entry>Input 15</entry></row>
+		<row><entry>3</entry><entry>Input 16</entry></row>
+		<row><entry>29</entry><entry>Input 17</entry></row>
+		<row><entry>28</entry><entry>Input 18</entry></row>
+		<row><entry>27</entry><entry>Input 19</entry></row>
+		<row><entry>26</entry><entry>Input 20</entry></row>
+		<row><entry>25</entry><entry>Input 21</entry></row>
+		<row><entry>24</entry><entry>Input 22</entry></row>
+		<row><entry>23</entry><entry>Input 23</entry></row>
+		<row><entry>22</entry><entry>Input 24</entry></row>
+		<row><entry>11</entry><entry>Ground</entry></row>
+		<row><entry>13</entry><entry>Ground</entry></row>
+		<row><entry>15</entry><entry>Ground</entry></row>
+		<row><entry>17</entry><entry>Ground</entry></row>
+		<row><entry>19</entry><entry>Ground</entry></row>
+		<row><entry>21</entry><entry>Ground</entry></row>
+		<row><entry>18</entry><entry>+5 vdc</entry></row>
+		<row><entry>20</entry><entry>+5 vdc</entry></row>
+		<row><entry>16</entry><entry>+12 vdc</entry></row>
+		<row><entry>14</entry><entry>+-12 vdc</entry></row>
+	      </tbody>
+	    </tgroup>
+	  </table>
+	</sect4>
+      </sect3>
+    </sect2>
+  </sect1>
+
+  <sect1 xml:id="sect.gpio_switcher_devices.vguest">
+    <title>Logitek vGuest</title>
+    <variablelist>
+      <varlistentry>
+	<term>Driver Name:</term>
+	<listitem>
+	  <para>
+	    Logitek vGuest
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term>Supported RML Commands:</term>
+	<listitem>
+	  <para>
+	    <simplelist>
+	      <member>GPI Enable ['<command>GE</command>']</member>
+	      <member>GPI Set ['<command>GI</command>']</member>
+	      <member>GPO Set ['<command>GO</command>']</member>
+	      <member>Set Display ['<command>SD</command>']</member>
+	      <member>Switch Take ['<command>ST</command>']</member>
+	    </simplelist>
+	  </para>
+	</listitem>
+      </varlistentry>
+    </variablelist>
+    <sect2>
+      <title>General Notes</title>
+      <para>
+	Before using the driver, the resources within the Logitek Audio Engine
+	system that you wish to control must be made available in a 'vGuest'
+	account within the Logitek 'Supervisor' system.  Then, those same
+	resources must be mapped within the Rivendell driver.  For the
+	'<command>ST</command>'
+	RML, the Logitek Engine Numbers and Device Numbers are mapped to 
+	logical Rivendell <computeroutput>Inputs</computeroutput> and
+	<computeroutput>Outputs</computeroutput> within the
+	<computeroutput>Configure Inputs</computeroutput> 
+	and <computeroutput>Configure Outputs</computeroutput> dialogs.
+	For the GPO RMLs, various Logitek
+	'switches' (by which we mean anything that can be turned on and off,
+	such as faders feeds, not just GPIO) are mapped to logical Rivendell
+	GPIO lines by means of their Logitek Engine, Device and Buss numbers.
+      </para>
+    </sect2>
+  </sect1>
+
+  <sect1 xml:id="sect.gpio_switcher_devices.modbus">
+    <title>Modbus TCP</title>
+    <variablelist>
+      <varlistentry>
+	<term>Driver Name:</term>
+	<listitem>
+	  <para>
+	    Modbus TCP
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term>Supported RML Commands:</term>
+	<listitem>
+	  <para>
+	    <simplelist>
+	      <member>GPI Enable ['<command>GE</command>']</member>
+	      <member>GPI Set ['<command>GI</command>']</member>
+	      <member>GPO Set ['<command>GO</command>']</member>
+	    </simplelist>
+	  </para>
+	</listitem>
+      </varlistentry>
+    </variablelist>
+    <sect2>
+      <title>General Notes</title>
+      <para>
+	This driver supports GPI devices that use the industry-standard
+	Modbus TCP protocol at TCP port 502. The device to be controlled
+	should be configured to use Modbus ID #1. For more information on
+	Modbus, see http://www.modbus.org/.
+      </para>
+    </sect2>
+  </sect1>
+
+  <sect1 xml:id="sect.gpio_switcher_devices.quartz1">
+    <title>Quartz Electronics Type 1 Routing Protocol</title>
+    <variablelist>
+      <varlistentry>
+	<term>Driver Name:</term>
+	<listitem>
+	  <para>
+	    Quartz Type 1
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term>Supported RML Commands:</term>
+	<listitem>
+	  <para>
+	    <simplelist>
+	      <member>Fire Salvo ['<command>FS</command>']</member>
+	      <member>Switch Take ['<command>ST</command>']</member>
+	    </simplelist>
+	  </para>
+	</listitem>
+      </varlistentry>
+    </variablelist>
+    <sect2>
+      <title>General Notes</title>
+      <para>
+	Control can done either by means of an RS-232C connection or by means of
+	TCP/IP to TCP port 23.
+      </para>
+    </sect2>
+  </sect1>
+
+  <sect1 xml:id="sect.gpio_switcher_devices.rossnkscp">
+    <title>Ross NK Video Switchers (via SCP/A Serial Interface)</title>
+    <variablelist>
+      <varlistentry>
+	<term>Driver Name:</term>
+	<listitem>
+	  <para>
+	    Ross NK-SCP/A Interface
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term>Supported RML Commands:</term>
+	<listitem>
+	  <para>
+	    <simplelist>
+	      <member>Switch Take ['<command>ST</command>']</member>
+	    </simplelist>
+	  </para>
+	</listitem>
+      </varlistentry>
+    </variablelist>
+    <sect2>
+      <title>General Notes</title>
+      <para>
+	Control is done by means of an RS-232C connection to a NK-SCP/A serial
+	interface. Serial port parameters should be set to 9600 baud rate,
+	no parity, 8 data bits, 1 stop bit, CR termination. The Breakaway
+	to use is defined by setting the 'Card' parameter in the driver
+	configuration, with Card 0 = Breakaway 1, Card 1 = Breakaway 2, etc.
+      </para>
+    </sect2>
+  </sect1>
+
+  <sect1 xml:id="sect.gpio_switcher_devices.modemlines">
+    <title>Serial Port Modem Control Lines</title>
+    <variablelist>
+      <varlistentry>
+	<term>Driver Name:</term>
+	<listitem>
+	  <para>
+	    Serial Port Modem Control Lines
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term>Supported RML Commands:</term>
+	<listitem>
+	  <para>
+	    <simplelist>
+	      <member>GPI Enable ['<command>GE</command>']</member>
+	      <member>GPI Set ['<command>GI</command>']</member>
+	      <member>GPO Set ['<command>GO</command>']</member>
+	    </simplelist>
+	  </para>
+	</listitem>
+      </varlistentry>
+    </variablelist>
+    <sect2>
+      <title>General Notes</title>
+      <para>
+	This driver enables GPIO via the modem control lines on an RS-232C
+	serial device. The lines map as follows:
+      </para>
+      <table frame="all">
+	<title>Modem Serial Lines GPI Signal Mapping</title>
+	<tgroup cols="2" align="left" colsep="1" rowsep="1">
+	  <colspec colname="GPI" />
+	  <colspec colname="Signal" />
+	  <thead>
+	    <row><entry>Output</entry><entry>Buss</entry></row>
+	  </thead>
+	  <tbody>
+	    <row><entry>1</entry><entry>Data Set Ready (DSR)</entry></row>
+	    <row><entry>2</entry><entry>Clear To Send (CTS)</entry></row>
+	    <row><entry>3</entry><entry>Carrier Detect (CI)</entry></row>
+	    <row><entry>4</entry><entry>Ring Indicator (RI)</entry></row>
+	  </tbody>
+	</tgroup>
+      </table>
+      <table frame="all">
+	<title>Modem Serial Lines GPO Signal Mapping</title>
+	<tgroup cols="2" align="left" colsep="1" rowsep="1">
+	  <colspec colname="GPI" />
+	  <colspec colname="Signal" />
+	  <thead>
+	    <row><entry>Output</entry><entry>Buss</entry></row>
+	  </thead>
+	  <tbody>
+	    <row><entry>1</entry><entry>Data Terminal Ready (DTR)</entry></row>
+	    <row><entry>2</entry><entry>Ready To Send (RTS)</entry></row>
+	  </tbody>
+	</tgroup>
+      </table>
+    </sect2>
+  </sect1>
+
+  <sect1 xml:id="sect.gpio_switcher_devices.sas16000">
+    <title>Sierra Automated Systems 16000(D) Audio Router</title>
+    <variablelist>
+      <varlistentry>
+	<term>Driver Name:</term>
+	<listitem>
+	  <para>
+	    SAS 16000(D)
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term>Supported RML Commands:</term>
+	<listitem>
+	  <para>
+	    <simplelist>
+	      <member>Switch Take ['<command>ST</command>']</member>
+	    </simplelist>
+	  </para>
+	</listitem>
+      </varlistentry>
+    </variablelist>
+    <sect2>
+      <title>General Notes</title>
+      <para>
+	Both analog and AES3 digital (D) variants are supported. Control
+	can done by means of an RS-232C connection to the 'User Serial
+	Interface' port on the unit.  Serial port parameters should be:
+	9600,N,8,1.
+      </para>
+    </sect2>
+  </sect1>
+
+  <sect1 xml:id="sect.gpio_switcher_devices.sas32000">
+    <title>Sierra Automated Systems 32000 Audio Router</title>
+    <variablelist>
+      <varlistentry>
+	<term>Driver Name:</term>
+	<listitem>
+	  <para>
+	    SAS 32000
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term>Supported RML Commands:</term>
+	<listitem>
+	  <para>
+	    <simplelist>
+	      <member>Switch Add ['<command>SA</command>']</member>
+	      <member>Switch Level ['<command>SL</command>'] (requires appropriate SAS hardware support)</member>
+	      <member>Switch Remove ['<command>SR</command>']</member>
+	      <member>Switch Take ['<command>ST</command>']</member>
+	    </simplelist>
+	  </para>
+	</listitem>
+      </varlistentry>
+    </variablelist>
+    <sect2>
+      <title>General Notes</title>
+      <para>
+	Control is done by means of an RS-232C connection to the 'Computer
+	RS-232' port on the AXC-8 System Controller.  Serial port parameters
+	should be set to 9600 baud rate, no parity, 8 data bits, 1 stop bit
+	and no terminator.  The AXC-8 must be equipped with firmware built to
+	use the 'conventional' command protocol -- the 'enhanced' version will
+	not work!
+      </para>
+    </sect2>
+  </sect1>
+
+  <sect1 xml:id="sect.gpio_switcher_devices.sas64000">
+    <title>Sierra Automated Systems 64000 Audio Router</title>
+    <variablelist>
+      <varlistentry>
+	<term>Driver Name:</term>
+	<listitem>
+	  <para>
+	    SAS 64000
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term>Supported RML Commands:</term>
+	<listitem>
+	  <para>
+	    <simplelist>
+	      <member>Switch Take ['<command>ST</command>']</member>
+	    </simplelist>
+	  </para>
+	</listitem>
+      </varlistentry>
+    </variablelist>
+    <sect2>
+      <title>General Notes</title>
+      <para>
+	Control is done by means of an RS-232C connection to the 'Computer
+	RS-232' port on the AXC-8 System Controller.  Serial port parameters
+	should be set to 9600 baud rate, no parity, 8 data bits, 1 stop bit
+	and no terminator.  The AXC-8 must be equipped with firmware built to
+	use the 'conventional' command protocol -- the 'enhanced' version will
+	not work!
+      </para>
+    </sect2>
+  </sect1>
+
+  <sect1 xml:id="sect.gpio_switcher_devices.sas64000gpi">
+    <title>Sierra Automated Systems 64000 Audio Router</title>
+    <variablelist>
+      <varlistentry>
+	<term>Driver Name:</term>
+	<listitem>
+	  <para>
+	    SAS 64000-GPI
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term>Supported RML Commands:</term>
+	<listitem>
+	  <para>
+	    <simplelist>
+	      <member>GPO Set ['<command>GO</command>']</member>
+	      <member>Switch Take ['<command>ST</command>']</member>
+	    </simplelist>
+	  </para>
+	</listitem>
+      </varlistentry>
+    </variablelist>
+    <sect2>
+      <title>General Notes</title>
+      <para>
+	Control is done by means of an RS-232C connection to the 'Computer
+	RS-232' port on a GPI-1600 GPIO interface.  Serial port parameters
+	should be set to 19200 baud rate, no parity, 8 data bits, 1 stop bit
+	and no terminator.  This driver allows control of the system's GPO
+	outputs as well as audio crosspoints.
+      </para>
+    </sect2>
+  </sect1>
+
+  <sect1 xml:id="sect.gpio_switcher_devices.sasusi">
+    <title>Sierra Automated Systems User Serial Interface (USI)</title>
+    <variablelist>
+      <varlistentry>
+	<term>Driver Name:</term>
+	<listitem>
+	  <para>
+	    SAS USI
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term>Supported RML Commands:</term>
+	<listitem>
+	  <para>
+	    <simplelist>
+	      <member>Console Label ['<command>CL</command>']</member>
+	      <member>Fire Salvo ['<command>FS</command>']</member>
+	      <member>GPO Set ['<command>GO</command>']</member>
+	      <member>Switch Add ['<command>SA</command>']</member>
+	      <member>Switch Crosspoint Gain ['<command>SX</command>']</member>
+	      <member>Switch Level ['<command>SL</command>']</member>
+	      <member>Switch Remove ['<command>SR</command>']</member>
+	      <member>Switch Take ['<command>ST</command>']</member>
+	      <member>Switch Take With Gain ['<command>SG</command>']</member>
+	    </simplelist>
+	  </para>
+	</listitem>
+      </varlistentry>
+    </variablelist>
+    <sect2>
+      <title>General Notes</title>
+      <para>
+	Control can done either by means of an RS-232C connection to one of
+	the serial ports on a DRC-16E card or by means of TCP/IP to a PC
+	running SAS's Server Module software. TCP connections are normally
+	made to port 1350 on the Server Module system.
+      </para>
+    </sect2>
+  </sect1>
+
+  <sect1 xml:id="sect.gpio_switcher_devices.acu1p">
+    <title>Sine Systems ACU-1 (Prophet Version)</title>
+    <variablelist>
+      <varlistentry>
+	<term>Driver Name:</term>
+	<listitem>
+	  <para>
+	    Sine ACU-1 (Prophet)
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term>Supported RML Commands:</term>
+	<listitem>
+	  <para>
+	    <simplelist>
+	      <member>Switch Add ['<command>SA</command>']</member>
+	      <member>Switch Remove ['<command>SR</command>']</member>
+	      <member>Switch Take ['<command>ST</command>']</member>
+	    </simplelist>
+	  </para>
+	</listitem>
+      </varlistentry>
+    </variablelist>
+    <sect2>
+      <title>General Notes</title>
+      <para>
+	Control is done by means of an RS-232C connection to the RS-232
+	port on the unit.  Serial port parameters in RDAdmin should be set
+	to 57600 baud rate, even parity, 8 data bits, 1 stop bit and no
+	terminator.
+      </para>
+      <para>
+	The ACU-1 should be set to use factory default settings. This can
+	be done by simultaneously pressing buttons 1 and 8 on the front
+	panel of the unit for at least one second.
+      </para>
+    </sect2>
+  </sect1>
+
+  <sect1 xml:id="sect.gpio_switcher_devices.swauthority">
+    <title>Software Authority Protocol</title>
+    <variablelist>
+      <varlistentry>
+	<term>Driver Name:</term>
+	<listitem>
+	  <para>
+	    Software Authority Protocol
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term>Supported RML Commands:</term>
+	<listitem>
+	  <para>
+	    <simplelist>
+	      <member>GPI Enable ['<command>GE</command>']</member>
+	      <member>GPI Set ['<command>GI</command>']</member>
+	      <member>GPO Set ['<command>GO</command>']</member>
+	      <member>Switch Take ['<command>ST</command>']</member>
+	    </simplelist>
+	  </para>
+	</listitem>
+      </varlistentry>
+    </variablelist>
+    <sect2>
+      <title>General Notes</title>
+      <para>
+	Used to control devices (such as the Axia 'PathFinder' system)
+	by means of the 'Software Authority' protocol. Control is by
+	means of a TCP/IP connection (typically to port 9500) on the
+	controled system.  The <computeroutput>Card</computeroutput>
+	parameter should be set to the 'Router Number' of the router
+	to be controlled.
+      </para>
+      <para>
+	Most parameters, including the number of inputs and outputs as
+	well as the endpoint names, are autodetected by the driver.
+      </para>
+    </sect2>
+  </sect1>
+
+  <sect1 xml:id="sect.gpio_switcher_devices.starguide3">
+    <title>Starguide III Satellite Receiver</title>
+    <variablelist>
+      <varlistentry>
+	<term>Driver Name:</term>
+	<listitem>
+	  <para>
+	    StarGuide III
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term>Supported RML Commands:</term>
+	<listitem>
+	  <para>
+	    <simplelist>
+	      <member>Switch Take ['<command>ST</command>']</member>
+	    </simplelist>
+	  </para>
+	</listitem>
+      </varlistentry>
+    </variablelist>
+    <sect2>
+      <title>General Notes</title>
+      <para>
+	Control is done by means of an RS-232C connection to the
+	RS-232 port on the unit. The port should be configured on the
+	receiver to use a speed of 9600. Serial port parameters in RDAdmin
+	should be set to 9600 baud rate, no parity, 8 data bits, 1 stop bit
+	and no terminator. Once configured, use RDAdmin to create inputs that
+	correspond to the StarGuide Provider and Source IDs available on the 
+	selected DVB carrier. Provider and Source ID data is available from
+	the provider network.
+      </para>
+    </sect2>
+  </sect1>
+
+  <sect1 xml:id="sect.gpio_switcher_devices.unity4000">
+    <title>Wegener Unity4000 DVB Satellite Receiver</title>
+    <variablelist>
+      <varlistentry>
+	<term>Driver Name:</term>
+	<listitem>
+	  <para>
+	    Wegener Unity 4000
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term>Supported RML Commands:</term>
+	<listitem>
+	  <para>
+	    <simplelist>
+	      <member>Switch Take ['<command>ST</command>']</member>
+	    </simplelist>
+	  </para>
+	</listitem>
+      </varlistentry>
+    </variablelist>
+    <sect2>
+      <title>General Notes</title>
+      <para>
+	Control is done by means of an RS-232C connection to one of the two
+	RS-232 ports on the unit. If possible, use serial port number one,
+	as the reciever uses a larger data buffer with that port. The
+	selected port should be configured in the reciever to be of type
+	"Terminal" with a speed of 19200. Serial port parameters should be
+	set to 19200 baud rate, no parity, 8 data bits, 1 stop bit
+	and no terminator. Once configured, use RDAdmin to create inputs that
+	correspond to the DVB stream names available on the selected DVB
+	carrier.
+      </para>
+      <para>
+	Caution is needed when scheduling record events from the Unity4000, as
+	the unit is capable of outputting a given DVB stream to only a single 
+	output at a time. Commanding a stream to an output will cause that 
+	stream to be silently deselected from a previously selected output.
+      </para>
+    </sect2>
+  </sect1>
+
+  <sect1 xml:id="sect.gpio_switcher_devices.wheatnet_lio">
+    <title>Wheatnet Blade LIO</title>
+    <variablelist>
+      <varlistentry>
+	<term>Driver Name:</term>
+	<listitem>
+	  <para>
+	    WheatNet LIO
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term>Supported RML Commands:</term>
+	<listitem>
+	  <para>
+	    <simplelist>
+	      <member>GPI Enable ['<command>GE</command>']</member>
+	      <member>GPI Set ['<command>GI</command>']</member>
+	      <member>GPO Set ['<command>GO</command>']</member>
+	    </simplelist>
+	  </para>
+	</listitem>
+      </varlistentry>
+    </variablelist>
+    <sect2>
+      <title>General Notes</title>
+      <para>
+	Control is done by means of a TCP/IP connection to port 55776 on a
+	blade. The only required configuration parameters are
+	<computeroutput>IP Address</computeroutput> and
+	<computeroutput>IP Port</computeroutput>. The number of pins is
+	auto-detected at driver startup.
+      </para>
+    </sect2>
+  </sect1>
+
+  <sect1 xml:id="sect.gpio_switcher_devices.wheatnet_slio">
+    <title>Wheatnet Blade SLIO</title>
+    <variablelist>
+      <varlistentry>
+	<term>Driver Name:</term>
+	<listitem>
+	  <para>
+	    WheatNet SLIO
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term>Supported RML Commands:</term>
+	<listitem>
+	  <para>
+	    <simplelist>
+	      <member>GPI Enable ['<command>GE</command>']</member>
+	      <member>GPI Set ['<command>GI</command>']</member>
+	      <member>GPO Set ['<command>GO</command>']</member>
+	    </simplelist>
+	  </para>
+	</listitem>
+      </varlistentry>
+    </variablelist>
+    <sect2>
+      <title>General Notes</title>
+      <para>
+	Control is done by means of a TCP/IP connection to port 55776 on a
+	blade. The only required configuration parameters are
+	<computeroutput>IP Address</computeroutput> and
+	<computeroutput>IP Port</computeroutput>. The number of pins is
+	auto-detected at driver startup.
+      </para>
+    </sect2>
+  </sect1>
+</appendix>

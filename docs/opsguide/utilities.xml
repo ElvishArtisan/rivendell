@@ -1,0 +1,129 @@
+<chapter xmlns="http://docbook.org/ns/docbook" xml:id="chapter.utilities">
+  <title>Interfacing with the Linux Ecosystem: Command-Line Utilities</title>
+  <para>
+    Rivendell includes a number of command-line utilities. Some of these
+    can be used to perform efficient &quot;bulk&quot; operations --e.g.
+    import thousands of audio files in one command -- while others are
+    useful in various aspects of system maintenance. This section provides
+    a brief overview of the available utilities; full documentation for each
+    is available via the Linux man page facility.
+  </para>
+  <sect1 xml:id="sect.utilities.rdclilogedit">
+    <title>rdclilogedit(1)</title>
+    <para>
+      <command>rdclilogedit</command><manvolnum>1</manvolnum> is a
+      command-line interface (CLI) program that can be used to edit
+      Rivendell logs. It is loosely modeled after the venerable
+      <command>ed</command><manvolnum>1</manvolnum> command-line editor
+      and so is particularly well suited for use in scripting
+      environments.
+    </para>
+    <para>
+      Full documentation is available by doing
+      <userinput>man 1 rdclilogedit</userinput>.
+    </para>
+  </sect1>
+  <sect1 xml:id="sect.utilities.rdconvert">
+    <title>rdconvert(1)</title>
+    <para>
+      <command>rdconvert</command><manvolnum>1</manvolnum> is a command-line
+      interface (CLI) program that can be used to convert an audio file
+      into a different format.
+    </para>
+    <para>
+      Full documentation is available by doing
+      <userinput>man 1 rdconvert</userinput>.
+    </para>
+  </sect1>
+  <sect1 xml:id="sect.utilities.rddbcheck">
+    <title>rddbcheck(8)</title>
+    <para>
+      <command>rddbcheck</command><manvolnum>8</manvolnum> is a
+      command-line interface (CLI) program that can be used to check a
+      Rivendell database for consistency and correct errors found.
+    </para>
+    <para>
+      Full documentation is available by doing
+      <userinput>man 8 rddbcheck</userinput>.
+    </para>
+  </sect1>
+  <sect1 xml:id="sect.utilities.rdexport">
+    <title>rdexport(1)</title>
+    <para>
+      <command>rdexport</command><manvolnum>1</manvolnum> is a command-line
+      interface (CLI) program that can be used to
+      export audio material from the Rivendell Library. It is particularly
+      useful in situations where a large number of audio files need to be
+      exported in an automated fashion, and is capable of exporting
+      thousands of files with a single command-line invocation.
+    </para>
+    <para>
+      Full documentation is available by doing
+      <userinput>man 1 rdexport</userinput>.
+    </para>
+  </sect1>
+  <sect1 xml:id="sect.utilities.rdimport">
+    <title>rdimport(1)</title>
+    <para>
+      <command>rdimport</command><manvolnum>1</manvolnum> is a command-line
+      interface (CLI) program that can be used to
+      import audio material into the Rivendell Library. It is particularly
+      useful in situations where a large number of audio files need to be
+      imported in an automated fashion, and is capable of importing
+      thousands of files with a single command-line invocation.
+    </para>
+    <para>
+      Full documentation is available by doing
+      <userinput>man 1 rdimport</userinput>.
+    </para>
+  </sect1>
+  <sect1 xml:id="sect.utilities.rdmarkerset">
+    <title>rdmarkerset(8)</title>
+    <para>
+      <command>rdmarkerset</command><manvolnum>8</manvolnum> is a
+      command-line interface (CLI) program that can be used to set or
+      alter audio cut markers in the Rivendell Radio Automation System.
+      It is capable of altering multiple cuts in a single operation.
+    </para>
+    <para>
+      Full documentation is available by doing
+      <userinput>man 8 rdmarkerset</userinput>.
+    </para>
+  </sect1>
+  <sect1 xml:id="sect.utilities.rdrevert">
+    <title>rdrevert(8)</title>
+    <para>
+      <command>rdrevert</command><manvolnum>8</manvolnum> is a
+      command-line interface (CLI) program that can be used to revert a
+      Rivendell database to a previous schema version.
+    </para>
+    <para>
+      Full documentation is available by doing
+      <userinput>man 8 rdrevert</userinput>.
+    </para>
+  </sect1>
+  <sect1 xml:id="sect.utilities.mlsend_1_">
+    <title>rmlsend(1)</title>
+    <para>
+      <command>rmlsend</command><manvolnum>1</manvolnum> is a small
+      utility that can be used to send RML commands to a
+      local or remote Rivendell host. It can operate in two modes: GUI or
+      a command line interface (CLI).
+    </para>
+    <para>
+      If started with no arguments, RMLSend will come up in GUI mode.
+    </para>
+    <para>
+      <mediaobject>
+	<imageobject>
+	  <imagedata align="center" fileref="utilities.rmlsend_screenshot.png" scale="60"/>
+	</imageobject>
+	<caption><para>RMLSend in GUI Mode</para></caption>
+      </mediaobject>
+    </para>
+    <para>
+      Full documentation is available by doing
+      <userinput>man 1 rmlsend</userinput>.
+    </para>
+  </sect1>
+</chapter>
