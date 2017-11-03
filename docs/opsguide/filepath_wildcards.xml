@@ -1,4 +1,4 @@
-<appendix xmlns="http://docbook.org/ns/docbook" ml:id="appendix.filepath_wildcards">
+<appendix xmlns="http://docbook.org/ns/docbook" xml:id="appendix.filepath_wildcards">
   <title>Filepath Wildcards</title>
   <para>
     Filepath wildcards can be used in most places in RDAdmin where a filename
