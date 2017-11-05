@@ -211,7 +211,7 @@ EditStation::EditStation(QString sname,QWidget *parent)
   station_stop_cart_button->setFont(small_font);
   connect(station_stop_cart_button,SIGNAL(clicked()),
 	  this,SLOT(stopCartClickedData()));
-  caeStationActivatedData(station_station->caeStation());
+  
 
   //
   // Heartbeat Checkbox
@@ -458,6 +458,8 @@ EditStation::EditStation(QString sname,QWidget *parent)
   station_cancel_button->setText(tr("&Cancel"));
   connect(station_cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
 
+  caeStationActivatedData(station_station->caeStation());
+
   //
   // Populate Fields
   //
@@ -633,6 +635,7 @@ void EditStation::caeStationActivatedData(const QString &station_name)
     for(int i=0;i<station_cue_sel->maxCards();i++) {
       station_cue_sel->setMaxPorts(i,station_cae_station->cardOutputs(i));
     }
+    station_cue_sel->setDisabled(false);
   }
   else {
     QMessageBox::information(this,tr("RDAdmin - No Audio Configuration Data"),
@@ -640,7 +643,6 @@ void EditStation::caeStationActivatedData(const QString &station_name)
     station_cue_sel->setDisabled(true);
     station_cue_sel->setDisabled(true);
   }
-
 }
 
 
