@@ -720,7 +720,7 @@ bool RDStation::create(const QString &name,QString *err_msg,
     //
     // RDAirPlay/RDPanel Channel Data
     //
-    for(unsigned i=0;i<10;i++) {
+    for(unsigned i=0;i<12;i++) {
       sql=QString("insert into RDAIRPLAY_CHANNELS set ")+
 	"STATION_NAME=\""+RDEscapeString(name)+"\","+
 	QString().sprintf("INSTANCE=%u",i);
