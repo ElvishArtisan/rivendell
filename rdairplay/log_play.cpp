@@ -2497,7 +2497,7 @@ int LogPlay::GetNextChannel(int mport,int *card,int *port)
       next_channel=0;
     }
   }
-  if (play_card[next_channel]<0){
+  if (play_card[next_channel]<0||play_port[next_channel]<0){
     next_channel=0;
   }
   return chan;
