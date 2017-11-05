@@ -92,7 +92,6 @@ EditStation::EditStation(QString sname,QWidget *parent)
   RDTextValidator *validator=new RDTextValidator(this);
   QIntValidator *macro_validator=new QIntValidator(1,RD_MAX_CART_NUMBER,this);
 
-
   //
   // Station Name
   //
@@ -211,7 +210,6 @@ EditStation::EditStation(QString sname,QWidget *parent)
   station_stop_cart_button->setFont(small_font);
   connect(station_stop_cart_button,SIGNAL(clicked()),
 	  this,SLOT(stopCartClickedData()));
-  
 
   //
   // Heartbeat Checkbox
@@ -321,7 +319,7 @@ EditStation::EditStation(QString sname,QWidget *parent)
   station_cae_station_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
 
   //
-  //  RDLibrary Configuration Button
+  // RDLibrary Configuration Button
   //
   station_rdlibrary_button=new QPushButton(this);
   station_rdlibrary_button->setFont(font);
@@ -329,7 +327,7 @@ EditStation::EditStation(QString sname,QWidget *parent)
   connect(station_rdlibrary_button,SIGNAL(clicked()),this,SLOT(editLibraryData()));
 
   //
-  //  RDCatch Configuration Button
+  // RDCatch Configuration Button
   //
   station_rdcatch_button=new QPushButton(this);
   station_rdcatch_button->setFont(font);
@@ -337,7 +335,7 @@ EditStation::EditStation(QString sname,QWidget *parent)
   connect(station_rdcatch_button,SIGNAL(clicked()),this,SLOT(editDeckData()));
 
   //
-  //  RDAirPlay Configuration Button
+  // RDAirPlay Configuration Button
   //
   station_rdairplay_button=new QPushButton(this);
   station_rdairplay_button->setFont(font);
@@ -346,7 +344,7 @@ EditStation::EditStation(QString sname,QWidget *parent)
 	  this,SLOT(editAirPlayData()));
 
   //
-  //  RDPanel Configuration Button
+  // RDPanel Configuration Button
   //
   station_rdpanel_button=new QPushButton(this);
   station_rdpanel_button->setFont(font);
@@ -354,7 +352,7 @@ EditStation::EditStation(QString sname,QWidget *parent)
   connect(station_rdpanel_button,SIGNAL(clicked()),this,SLOT(editPanelData()));
 
   //
-  //  RDLogEdit Configuration Button
+  // RDLogEdit Configuration Button
   //
   station_rdlogedit_button=new QPushButton(this);
   station_rdlogedit_button->setFont(font);
@@ -363,7 +361,7 @@ EditStation::EditStation(QString sname,QWidget *parent)
 	  this,SLOT(editLogEditData()));
 
   //
-  //  RDCartSlots Configuration Button
+  // RDCartSlots Configuration Button
   //
   station_rdcartslots_button=new QPushButton(this);
   station_rdcartslots_button->setFont(font);
@@ -381,7 +379,7 @@ EditStation::EditStation(QString sname,QWidget *parent)
 	  this,SLOT(editDropboxesData()));
 
   //
-  //  Switcher Configuration Button
+  // Switcher Configuration Button
   //
   station_switchers_button=new QPushButton(this);
   station_switchers_button->setFont(font);
@@ -390,7 +388,7 @@ EditStation::EditStation(QString sname,QWidget *parent)
 	  this,SLOT(editSwitcherData()));
 
   //
-  //  Host Variables Configuration Button
+  // Host Variables Configuration Button
   //
   station_hostvars_button=new QPushButton(this);
   station_hostvars_button->setFont(font);
@@ -399,7 +397,7 @@ EditStation::EditStation(QString sname,QWidget *parent)
 	  this,SLOT(editHostvarsData()));
 
   //
-  //  Audio Ports Configuration Button
+  // Audio Ports Configuration Button
   //
   station_audioports_button=new QPushButton(this);
   station_audioports_button->setFont(font);
@@ -408,7 +406,7 @@ EditStation::EditStation(QString sname,QWidget *parent)
 	  this,SLOT(editAudioData()));
 
   //
-  //  TTY Configuration Button
+  // TTY Configuration Button
   //
   station_ttys_button=new QPushButton(this);
   station_ttys_button->setFont(font);
@@ -416,7 +414,7 @@ EditStation::EditStation(QString sname,QWidget *parent)
   connect(station_ttys_button,SIGNAL(clicked()),this,SLOT(editTtyData()));
 
   //
-  //  View Adapters (Audio Resources) Configuration Button
+  // View Adapters (Audio Resources) Configuration Button
   //
   station_adapters_button=new QPushButton(this);
   station_adapters_button->setFont(font);
@@ -442,7 +440,7 @@ EditStation::EditStation(QString sname,QWidget *parent)
 	  this,SLOT(editBackupsData()));
 
   //
-  //  Ok Button
+  // Ok Button
   //
   station_ok_button=new QPushButton(this);
   station_ok_button->setDefault(true);
@@ -451,18 +449,17 @@ EditStation::EditStation(QString sname,QWidget *parent)
   connect(station_ok_button,SIGNAL(clicked()),this,SLOT(okData()));
 
   //
-  //  Cancel Button
+  // Cancel Button
   //
   station_cancel_button=new QPushButton(this);
   station_cancel_button->setFont(font);
   station_cancel_button->setText(tr("&Cancel"));
   connect(station_cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
 
-  caeStationActivatedData(station_station->caeStation());
-
   //
   // Populate Fields
   //
+  caeStationActivatedData(station_station->caeStation());
   station_name_edit->setText(station_station->name());
   station_short_name_edit->setText(station_station->shortName());
   station_description_edit->setText(station_station->description());
