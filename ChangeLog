@@ -16254,3 +16254,6 @@
 	* Fixed a typo in 'docs/opsguide/filepath_wildcards.xml'.
 2017-11-05 Fred Gleason <fredg@paravelsystems.com>
 	* Added DocBook stylesheets for books in 'docs/stylesheets/'.
+2017-11-05 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the 'Genmeral Notes' section titles from the
+	'Supported GPIO/Switcher Devices' appendix in the Operations Guide.
