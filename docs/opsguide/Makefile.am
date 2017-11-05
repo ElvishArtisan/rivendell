@@ -104,10 +104,10 @@ OPSGUIDE_DEPS = filepath_wildcards.xml\
                 voicetracking.xml
 
 opsguide.html:	$(OPSGUIDE_DEPS) frontspiece.xml
-	xsltproc -o opsguide.html $(DOCBOOK_STYLESHEETS)/xhtml/docbook.xsl opsguide.xml
+	xsltproc ../stylesheets/book-xhtml.xml opsguide.xml
 
 opsguide.pdf:	$(OPSGUIDE_DEPS) frontspiece.xml
-	xsltproc $(DOCBOOK_STYLESHEETS)/fo/docbook.xsl opsguide.xml | fop - -pdf opsguide.pdf
+	xsltproc ../stylesheets/book-fo.xml opsguide.xml | fop - -pdf opsguide.pdf
 
 all-local:	opsguide.html\
                 opsguide.pdf

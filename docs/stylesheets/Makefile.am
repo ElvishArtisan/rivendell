@@ -1,8 +1,8 @@
-## automake.am
+## Makefile.am
 ##
-## docs/automake.am for Rivendell
+## docs/stylesheets/Makefile.am for Rivendell
 ##
-## (C) Copyright 2002-2017 Fred Gleason <fredg@paravelsystems.com>
+## (C) Copyright 2017 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -19,35 +19,12 @@
 ##
 ## Use automake to process this into a Makefile.in
 
-if DOCBOOK_AM
-  DOCBOOK_AM_OPT = apis manpages opsguide stylesheets
-endif
-
-SUBDIRS = $(DOCBOOK_AM_OPT) examples\
-          tables
-
-EXTRA_DIST = ALSA.txt\
-             ando_interface.odt\
-             asound.conf-sample\
-             catchd.txt\
-             colors\
-             copy_split_format.odt\
-             MESSAGE_BOX.txt\
-             NEXGEN_FILTER.txt\
-             NOW+NEXT.txt\
-             pam_rd.txt\
-             PODCASTING.txt\
-             RDMONITOR.txt\
-             reports.txt\
-             ripc.txt\
-             RIVENDELL_FILTER.txt\
-             SAGE_ENDEC.txt\
-             scheduler_formats.ods\
-             WIN32.txt\
-	     WINGS_FILTER.txt
-
+EXTRA_DIST = book-common.xml.in\
+             book-fo.xml.in\
+             book-xhtml.xml.in
 
 CLEANFILES = *~
+DISTCLEANFILES = *.xml
 MAINTAINERCLEANFILES = *~\
                        aclocal.m4\
                        configure\

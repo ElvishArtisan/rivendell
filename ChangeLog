@@ -16252,3 +16252,5 @@
 	per-chapter files.
 2017-11-03 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a typo in 'docs/opsguide/filepath_wildcards.xml'.
+2017-11-05 Fred Gleason <fredg@paravelsystems.com>
+	* Added DocBook stylesheets for books in 'docs/stylesheets/'.
