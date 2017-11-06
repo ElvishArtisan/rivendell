@@ -242,7 +242,11 @@ if test -z $DOCBOOK_DISABLED ; then
   USING_DOCBOOK=yes
 fi
 AM_CONDITIONAL([DOCBOOK_AM], [test "$USING_DOCBOOK" = yes])
-AC_SUBST(DOCBOOK_STYLESHEETS,$DOCBOOK_STYLESHEETS)
+if test $DOCBOOK_STYLESHEETS ; then
+   ln -s $DOCBOOK_STYLESHEETS helpers/docbook
+fi
+
+#AC_SUBST(DOCBOOK_STYLESHEETS,$DOCBOOK_STYLESHEETS)
 
 #
 # RDXport Debug
@@ -507,9 +511,6 @@ AC_CONFIG_FILES([rivendell.spec \
     docs/manpages/Makefile \
     docs/opsguide/frontspiece.xml \
     docs/opsguide/Makefile \
-    docs/stylesheets/book-common.xml \
-    docs/stylesheets/book-fo.xml \
-    docs/stylesheets/book-xhtml.xml \
     docs/stylesheets/Makefile \
     docs/tables/Makefile \
     debian/Makefile \

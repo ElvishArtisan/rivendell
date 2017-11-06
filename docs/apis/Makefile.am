@@ -33,17 +33,12 @@
 
 all-local:	cae.html\
                 cae.pdf\
-                rml.html\
-                rml.pdf\
                 web_api.html\
                 web_api.pdf
 
 EXTRA_DIST = cae.html\
              cae.pdf\
              cae.xml\
-             rml.html\
-             rml.pdf\
-             rml.xml\
              web_api.html\
              web_api.pdf\
              web_api.xml

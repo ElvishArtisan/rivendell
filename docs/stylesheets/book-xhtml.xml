@@ -1,9 +1,9 @@
 <?xml version='1.0'?>
 
 <!--
-  book-fo.xml
+  book-xhtml.xml
 
-  FO stylesheet customizations for Rivendell books
+  XHTML stylesheet customizations for Rivendell books
 
   (C) Copyright 2017 Fred Gleason <fredg@paravelsystems.com>
 
@@ -24,13 +24,10 @@
 <xsl:stylesheet
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
 
-<xsl:import href="/usr/share/sgml/docbook/xsl-ns-stylesheets-1.78.1/fo/docbook.xsl" />
-<xsl:import href="book-fo-titlepages.xsl" />
+<xsl:import href="../../helpers/docbook/xhtml/chunk.xsl" />
 <xsl:include href="book-common.xml" />
 
-<!--
 <xsl:param name="use.id.as.filename">1</xsl:param>
--->
 
 </xsl:stylesheet>
 

@@ -22,18 +22,16 @@
 all-local:	book-fo-titlepages.xsl
 
 book-fo-titlepages.xsl:	book-fo-titlepages-spec.xml
-	xsltproc -o book-fo-titlepages.xsl @DOCBOOK_STYLESHEETS@/template/titlepage.xsl book-fo-titlepages-spec.xml
+	xsltproc -o book-fo-titlepages.xsl ../../helpers/docbook/template/titlepage.xsl book-fo-titlepages-spec.xml
 
-EXTRA_DIST = book-common.xml.in\
-             book-fo.xml.in\
+EXTRA_DIST = book-common.xml\
+             book-fo-titlepages.xsl\
+             book-fo.xml\
              book-fo-titlepages-spec.xml\
-             book-xhtml.xml.in
+             book-xhtml.xml
 
 CLEANFILES = *~\
              *.xsl
-DISTCLEANFILES =  book-common.xml\
-                  book-fo.xml\
-                  book-xhtml.xml
 MAINTAINERCLEANFILES = *~\
                        aclocal.m4\
                        configure\

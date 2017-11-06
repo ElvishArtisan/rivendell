@@ -44,6 +44,8 @@ CLEANFILES = *~\
              *.tar.gz\
              moc_*
 
+DISTCLEANFILES = docbook
+
 MAINTAINERCLEANFILES = *~\
                        *.tar.gz\
                        aclocal.m4\

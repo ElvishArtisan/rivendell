@@ -107,7 +107,12 @@ if test "@WIN32_SOURCE@" ; then
   mkdir -p $RPM_BUILD_ROOT/var/win32
   cp @WIN32_SOURCE@ $RPM_BUILD_ROOT/var/win32/
 fi
-
+mkdir -p $RPM_BUILD_ROOT/%{_datadir}/doc/rivendell-%{version}/opsguide/html
+cp docs/opsguide/*.pdf $RPM_BUILD_ROOT/%{_datadir}/doc/rivendell-%{version}/opsguide/
+cp docs/opsguide/*.html $RPM_BUILD_ROOT/%{_datadir}/doc/rivendell-%{version}/opsguide/html/
+cp docs/opsguide/*.png $RPM_BUILD_ROOT/%{_datadir}/doc/rivendell-%{version}/opsguide/html
+mkdir -p $RPM_BUILD_ROOT/%{_datadir}/doc/rivendell-%{version}/apis
+cp docs/apis/*.pdf $RPM_BUILD_ROOT/%{_datadir}/doc/rivendell-%{version}/apis/
 
 %post
 ldconfig
@@ -379,9 +384,6 @@ rm -rf $RPM_BUILD_ROOT
 %doc docs/ripc.txt 
 %doc docs/pam_rd.txt
 %doc docs/MESSAGE_BOX.txt
-%doc docs/docbook/cae.pdf
-%doc docs/docbook/rml.pdf
-%doc docs/docbook/web_api.pdf
 %doc docs/tables/audio_perms.txt 
 %doc docs/tables/audio_ports.txt 
 %doc docs/tables/cart.txt 
@@ -439,6 +441,9 @@ rm -rf $RPM_BUILD_ROOT
 %doc scripts/rd_mysql_enable_host.sh
 %doc scripts/rd_backup_system.sh
 %doc scripts/rd_restore_system.sh
+%{_datadir}/doc/rivendell-%{version}/apis/*.pdf
+%{_datadir}/doc/rivendell-%{version}/opsguide/*.pdf
+%{_datadir}/doc/rivendell-%{version}/opsguide/html/*
 
 
 %files base

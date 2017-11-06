@@ -32,12 +32,9 @@ configure
 depcomp
 docs/apis/*.html
 docs/apis/*.pdf
+docs/opsguide/frontspiece.xml
 docs/opsguide/*.html
 docs/opsguide/*.pdf
-docs/opsguide/frontspiece.xml
-docs/stylesheets/book-common.xml
-docs/stylesheets/book-fo.xml
-docs/stylesheets/book-xhtml.xml
 helpers/cwrap
 helpers/jsmin
 importers/nexgen_filter
