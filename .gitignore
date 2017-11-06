@@ -36,6 +36,7 @@ docs/opsguide/frontspiece.xml
 docs/opsguide/*.html
 docs/opsguide/*.pdf
 helpers/cwrap
+helpers/docbook
 helpers/jsmin
 importers/nexgen_filter
 importers/panel_copy

@@ -29,7 +29,6 @@ SUBDIRS = $(DOCBOOK_AM_OPT) examples\
 EXTRA_DIST = ALSA.txt\
              ando_interface.odt\
              asound.conf-sample\
-             catchd.txt\
              colors\
              copy_split_format.odt\
              MESSAGE_BOX.txt\

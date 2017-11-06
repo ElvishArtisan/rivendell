@@ -16261,3 +16261,5 @@
 	* Added a logo to the title page of the Operations Guide.
 2017-11-06 Fred Gleason <fredg@paravelsystems.com>
 	* Added the Operations Guide to 'rivendell.spec.in'.
+2017-11-06 Fred Gleason <fredg@paravelsystems.com>
+	* Moved the contents of 'docs/catchd.txt' to 'docs/apis/catchd.xml.'
