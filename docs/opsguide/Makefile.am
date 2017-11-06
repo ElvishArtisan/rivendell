@@ -23,6 +23,7 @@ OPSGUIDE_HTML = appendix.filepath_wildcards.html\
                 appendix.gpio_switcher_devices.html\
                 appendix.gplv2.html\
                 appendix.metadata_wildcards.html\
+                appendix.rivendell_filter.html\
                 chapter.overview.html\
                 chapter.rdairplay.html\
                 chapter.rdcatch.html\
@@ -197,6 +198,7 @@ OPSGUIDE_DEPS = $(OPSGUIDE_IMAGES) \
                 rdlogedit.xml\
                 rdlogin.xml\
                 rdlogmanager.xml\
+                rivendell_filter.xml\
                 rml.xml\
                 utilities.rmlsend_screenshot.png\
                 utilities.xml\

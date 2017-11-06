@@ -16270,3 +16270,6 @@
 	* Moved the contents of 'docs/ripc.txt' to 'docs/apis/ripc.xml.'
 2017-11-06 Fred Gleason <fredg@paravelsystems.com>
 	* Removed 'docs/NEXGEN_FILTER.txt'.
+2017-11-06 Fred Gleason <fredg@paravelsystems.com>
+	* Moved the contents of 'docs/RIVENDELL_FILTER.txt' to the
+	Operation Guide.
