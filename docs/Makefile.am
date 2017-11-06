@@ -37,7 +37,6 @@ EXTRA_DIST = ALSA.txt\
              PODCASTING.txt\
              RDMONITOR.txt\
              reports.txt\
-             ripc.txt\
              RIVENDELL_FILTER.txt\
              SAGE_ENDEC.txt\
              scheduler_formats.ods\

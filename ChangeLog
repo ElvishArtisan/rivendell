@@ -16266,3 +16266,5 @@
 2017-11-06 Fred Gleason <fredg@paravelsystems.com>
 	* Moved the contents of 'docs/MESSAGE_BOX.txt' to the
 	Operation Guide.
+2017-11-06 Fred Gleason <fredg@paravelsystems.com>
+	* Moved the contents of 'docs/ripc.txt' to 'docs/apis/ripc.xml.'

@@ -1,0 +1,613 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<article xmlns="http://docbook.org/ns/docbook" version="5.0">
+<info>
+  <title>Rivendell Interprocess Communication Protocol</title>
+  <author>
+    <personname>
+      <firstname>Fred</firstname>
+      <surname>Gleason</surname>
+      <email>fredg@paravelsystems.com</email>
+    </personname>
+  </author>
+</info>
+
+<sect1 xml:id="overview">
+  <title>Overview</title>
+  <para>
+    This defines the IP protocol used for communication between different
+    modules of Rivendell and the
+    <command>ripcd</command><manvolnum>8</manvolnum> daemon.
+  </para>
+  <para>
+    Connection to ripcd is by means of a TCP SOCK_STREAM connection to TCP
+    port <userinput>5006</userinput>. The format of a message is as follows:
+  </para>
+  <para>
+    <replaceable>cmd-code</replaceable> [<replaceable>arg</replaceable>] [<replaceable>...</replaceable>]!
+  </para>
+  <variablelist>
+    <varlistentry>
+      <term>
+	<replaceable>cmd-code</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  A two letter command code, describing the generic action to be
+	  performed
+	</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>
+	<replaceable>arg</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  Zero or more arguments, delimited by spaces or, if the last
+	  argument, by ! (see below)
+	</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>
+	!
+      </term>
+      <listitem>
+	<para>
+	  The ASCII character  33, indicating the end of the command sequence.
+	</para>
+      </listitem>
+    </varlistentry>
+  </variablelist>
+</sect1>
+
+<sect1 xml:id="sect.unprivileged_commands">
+  <title>Unprivileged Commands</title>
+  <para>
+    No authentication is required to execute these.
+  </para>
+  <sect2 xml:id="sect.unprivileged_commands.drop_connection">
+    <title>Drop Connection</title>
+    <para>
+      End the session and drop the TCP connection.
+    </para>
+    <para>
+      <userinput>DC!</userinput>
+    </para>
+  </sect2>
+
+  <sect2 xml:id="sect.unprivileged_commands.send_password">
+    <title>Send Password</title>
+    <para>
+      Send a password to the server for authentication.
+    </para>
+    <para>
+      <userinput>PW <replaceable>passwd</replaceable>!</userinput>
+    </para>
+    <variablelist>
+      <varlistentry>
+	<term>
+	  <replaceable>passwd</replaceable>
+	</term>
+	<listitem>
+	  A password to be supplied before granting the client access.
+	</listitem>
+      </varlistentry>
+    </variablelist>
+    <para>
+      <command>ripcd</command><manvolnum>8</manvolnum> will respond
+      with <computeroutput>PW +!</computeroutput> or
+      <computeroutput>PW -!</computeroutput>, indicating the success or
+      failure of the authentication.
+    </para>
+  </sect2>
+</sect1>
+
+<sect1 xml:id="sect.privileged_commands">
+  <title>Privileged Commands</title>
+  <para>
+     A connection must be authenticated before these can be executed.
+  </para>
+
+  <sect2 xml:id="privileged_commands.request_user">
+    <title>Request User</title>
+    <para>
+      Request the LOGIN_NAME of the user currently logged in.
+    </para>
+    <para>
+      <userinput>RU!</userinput>
+    </para>
+    <para>
+      <command>ripcd</command><manvolnum>8</manvolnum> will respond with
+      <computeroutput>RU <replaceable>user-name</replaceable>!</computeroutput>.
+    </para>
+    <variablelist>
+      <varlistentry>
+	<term><replaceable>user-name</replaceable></term>
+	<listitem>
+	  <para>
+	    The LOGIN_NAME of the user currently logged in.
+	  </para>
+	</listitem>
+      </varlistentry>
+    </variablelist>
+  </sect2>
+
+  <sect2 xml:id="privileged_commands.set_user">
+    <title>Set User</title>
+    <para>
+      Login in a user.
+    </para>
+    <para>
+      <userinput>SU <replaceable>user-name</replaceable>!</userinput>
+    </para>
+    <para>
+      <command>ripcd</command><manvolnum>8</manvolnum> will respond with
+      <computeroutput>RU <replaceable>user-name</replaceable>!</computeroutput>.
+    </para>
+    <variablelist>
+      <varlistentry>
+	<term><replaceable>user-name</replaceable></term>
+	<listitem>
+	  <para>
+	    The LOGIN_NAME of the user to log in.
+	  </para>
+	</listitem>
+      </varlistentry>
+    </variablelist>
+  </sect2>
+
+  <sect2 xml:id="privileged_commands.rml_send">
+    <title>RML Send</title>
+    <para>
+      Send an RML command to a specified host.
+    </para>
+    <para>
+      <userinput>MS <replaceable>ip-addr</replaceable>
+      <replaceable>echo</replaceable>
+      <replaceable>rml</replaceable>!</userinput>
+    </para>
+    <variablelist>
+      <varlistentry>
+	<term><replaceable>ip-addr</replaceable></term>
+	<listitem>
+	  <para>
+	    IPv4 address of the destination, indotted-quad notation.
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term><replaceable>echo</replaceable></term>
+	<listitem>
+	  <para>
+	    <userinput>1</userinput> = Request echo,
+	    <userinput>0</userinput> = Request no echo.
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term><replaceable>rml</replaceable></term>
+	<listitem>
+	  <para>
+	    The RML command to send.
+	  </para>
+	</listitem>
+      </varlistentry>
+    </variablelist>
+  </sect2>
+
+  <sect2 xml:id="privileged_commands.rml_echo">
+    <title>RML Echo</title>
+    <para>
+      Echo an RML command to a specified host.
+    </para>
+    <para>
+      <userinput>ME <replaceable>ip-addr</replaceable>
+      <replaceable>echo</replaceable>
+      <replaceable>rml</replaceable>!</userinput>
+    </para>
+    <variablelist>
+      <varlistentry>
+	<term><replaceable>ip-addr</replaceable></term>
+	<listitem>
+	  <para>
+	    IPv4 address of the destination, indotted-quad notation.
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term><replaceable>echo</replaceable></term>
+	<listitem>
+	  <para>
+	    <userinput>1</userinput> = Request echo,
+	    <userinput>0</userinput> = Request no echo.
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term><replaceable>rml</replaceable></term>
+	<listitem>
+	  <para>
+	    The RML command to send.
+	  </para>
+	</listitem>
+      </varlistentry>
+    </variablelist>
+  </sect2>
+
+  <sect2 xml:id="privileged_commands.get_gpi_carts">
+    <title>Get GPI Carts</title>
+    <para>
+      Return current GPI line cart numbers.
+    </para>
+    <para>
+      <userinput>GC <replaceable>matrix</replaceable>!</userinput>
+    </para>
+    <para>
+      Request the list of macro carts currently assigned for
+      <replaceable>matrix</replaceable>. The following record will
+      be returned for each line in the matrix:
+    </para>
+    <para>
+      <computeroutput>GC
+      <replaceable>matrix</replaceable>
+      <replaceable>gpi-line</replaceable>
+      <replaceable>off-cart-num</replaceable>
+      <replaceable>on-cart-num</replaceable>!</computeroutput>
+    </para>
+    <variablelist>
+      <varlistentry>
+	<term><replaceable>matrix</replaceable></term>
+	<listitem>
+	  <para>
+	    The specified matrix number.
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term><replaceable>gpi-line</replaceable></term>
+	<listitem>
+	  <para>
+	    The GPI line number.
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term><replaceable>off-cart-num</replaceable></term>
+	<listitem>
+	  <para>
+	    The number for the cart to be activated when
+	    <replaceable>gpi-line</replaceable> transitions to an OFF
+	    state. <computeroutput>0</computeroutput> indicates that no
+	    cart is currently set.
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term><replaceable>on-cart-num</replaceable></term>
+	<listitem>
+	  <para>
+	    The number for the cart to be activated when
+	    <replaceable>gpi-line</replaceable> transitions to an ON
+	    state. <computeroutput>0</computeroutput> indicates that no
+	    cart is currently set.
+	  </para>
+	</listitem>
+      </varlistentry>
+    </variablelist>
+  </sect2>
+
+  <sect2 xml:id="privileged_commands.get_gpo_carts">
+    <title>Get GPO Carts</title>
+    <para>
+      Return current GPO line cart numbers.
+    </para>
+    <para>
+      <userinput>GD <replaceable>matrix</replaceable>!</userinput>
+    </para>
+    <para>
+      Request the list of macro carts currently assigned for
+      <replaceable>matrix</replaceable>. The following record will
+      be returned for each line in the matrix:
+    </para>
+    <para>
+      <computeroutput>GC
+      <replaceable>matrix</replaceable>
+      <replaceable>gpo-line</replaceable>
+      <replaceable>off-cart-num</replaceable>
+      <replaceable>on-cart-num</replaceable>!</computeroutput>
+    </para>
+    <variablelist>
+      <varlistentry>
+	<term><replaceable>matrix</replaceable></term>
+	<listitem>
+	  <para>
+	    The specified matrix number.
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term><replaceable>gpo-line</replaceable></term>
+	<listitem>
+	  <para>
+	    The GPO line number.
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term><replaceable>off-cart-num</replaceable></term>
+	<listitem>
+	  <para>
+	    The number for the cart to be activated when
+	    <replaceable>gpo-line</replaceable> transitions to an OFF
+	    state. <computeroutput>0</computeroutput> indicates that no
+	    cart is currently set.
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term><replaceable>on-cart-num</replaceable></term>
+	<listitem>
+	  <para>
+	    The number for the cart to be activated when
+	    <replaceable>gpo-line</replaceable> transitions to an ON
+	    state. <computeroutput>0</computeroutput> indicates that no
+	    cart is currently set.
+	  </para>
+	</listitem>
+      </varlistentry>
+    </variablelist>
+  </sect2>
+
+  <sect2 xml:id="privileged_commands.get_gpi_states">
+    <title>Get GPI States</title>
+    <para>
+      Return current GPI states.
+    </para>
+    <para>
+      <userinput>GI <replaceable>matrix</replaceable>!</userinput>
+    </para>
+    <para>
+      Request the list of current GPI states for
+      <replaceable>matrix</replaceable>. The following record will
+      be returned for each line in the matrix:
+    </para>
+    <para>
+      <computeroutput>GI
+      <replaceable>matrix</replaceable>
+      <replaceable>gpi-line</replaceable>
+      <replaceable>state</replaceable>
+      <replaceable>mask</replaceable>!</computeroutput>
+    </para>
+    <variablelist>
+      <varlistentry>
+	<term><replaceable>matrix</replaceable></term>
+	<listitem>
+	  <para>
+	    The specified matrix number.
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term><replaceable>gpi-line</replaceable></term>
+	<listitem>
+	  <para>
+	    The GPI line number.
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term><replaceable>state</replaceable></term>
+	<listitem>
+	  <para>
+	    <computeroutput>1</computeroutput> = GPI is ON,
+	    <computeroutput>0</computeroutput> = GPI is OFF.
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term><replaceable>mask</replaceable></term>
+	<listitem>
+	  <para>
+	    <computeroutput>1</computeroutput> = GPI is ENABLED,
+	    <computeroutput>0</computeroutput> = GPI is DISABLED.
+	  </para>
+	</listitem>
+      </varlistentry>
+    </variablelist>
+  </sect2>
+
+  <sect2 xml:id="privileged_commands.get_gpo_states">
+    <title>Get GPO States</title>
+    <para>
+      Return current GPO states.
+    </para>
+    <para>
+      <userinput>GO <replaceable>matrix</replaceable>!</userinput>
+    </para>
+    <para>
+      Request the list of current GPO states for
+      <replaceable>matrix</replaceable>. The following record will
+      be returned for each line in the matrix:
+    </para>
+    <para>
+      <computeroutput>GI
+      <replaceable>matrix</replaceable>
+      <replaceable>gpo-line</replaceable>
+      <replaceable>state</replaceable>
+      <replaceable>mask</replaceable>!</computeroutput>
+    </para>
+    <variablelist>
+      <varlistentry>
+	<term><replaceable>matrix</replaceable></term>
+	<listitem>
+	  <para>
+	    The specified matrix number.
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term><replaceable>gpo-line</replaceable></term>
+	<listitem>
+	  <para>
+	    The GPO line number.
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term><replaceable>state</replaceable></term>
+	<listitem>
+	  <para>
+	    <computeroutput>1</computeroutput> = GPO is ON,
+	    <computeroutput>0</computeroutput> = GPO is OFF.
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term><replaceable>mask</replaceable></term>
+	<listitem>
+	  <para>
+	    <computeroutput>1</computeroutput> = GPO is ENABLED,
+	    <computeroutput>0</computeroutput> = GPO is DISABLED.
+	  </para>
+	</listitem>
+      </varlistentry>
+    </variablelist>
+  </sect2>
+
+  <sect2 xml:id="privileged_commands.get_gpi_mask_states">
+    <title>Get GPI Mask States</title>
+    <para>
+      Return current GPI mask states.
+    </para>
+    <para>
+      <userinput>GM <replaceable>matrix</replaceable>!</userinput>
+    </para>
+    <para>
+      Request the list of current GPI mask states for
+      <replaceable>matrix</replaceable>. The following record will
+      be returned for each line in the matrix:
+    </para>
+    <para>
+      <computeroutput>GI
+      <replaceable>matrix</replaceable>
+      <replaceable>gpi-line</replaceable>
+      <replaceable>mask</replaceable>!</computeroutput>
+    </para>
+    <variablelist>
+      <varlistentry>
+	<term><replaceable>matrix</replaceable></term>
+	<listitem>
+	  <para>
+	    The specified matrix number.
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term><replaceable>gpi-line</replaceable></term>
+	<listitem>
+	  <para>
+	    The GPI line number.
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term><replaceable>mask</replaceable></term>
+	<listitem>
+	  <para>
+	    <computeroutput>1</computeroutput> = GPI is ENABLED,
+	    <computeroutput>0</computeroutput> = GPI is DISABLED.
+	  </para>
+	</listitem>
+      </varlistentry>
+    </variablelist>
+  </sect2>
+
+  <sect2 xml:id="privileged_commands.get_gpo_mask_states">
+    <title>Get GPO Mask States</title>
+    <para>
+      Return current GPO mask states.
+    </para>
+    <para>
+      <userinput>GM <replaceable>matrix</replaceable>!</userinput>
+    </para>
+    <para>
+      Request the list of current GPO mask states for
+      <replaceable>matrix</replaceable>. The following record will
+      be returned for each line in the matrix:
+    </para>
+    <para>
+      <computeroutput>GN
+      <replaceable>matrix</replaceable>
+      <replaceable>gpo-line</replaceable>
+      <replaceable>mask</replaceable>!</computeroutput>
+    </para>
+    <variablelist>
+      <varlistentry>
+	<term><replaceable>matrix</replaceable></term>
+	<listitem>
+	  <para>
+	    The specified matrix number.
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term><replaceable>gpo-line</replaceable></term>
+	<listitem>
+	  <para>
+	    The GPO line number.
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term><replaceable>mask</replaceable></term>
+	<listitem>
+	  <para>
+	    <computeroutput>1</computeroutput> = GPO is ENABLED,
+	    <computeroutput>0</computeroutput> = GPO is DISABLED.
+	  </para>
+	</listitem>
+      </varlistentry>
+    </variablelist>
+  </sect2>
+
+  <sect2 xml:id="privileged_commands.reload_gpi_table">
+    <title>Reload GPI Table</title>
+    <para>
+      Reload the GPI table in <command>ripcd</command><manvolnum>8</manvolnum>.
+    </para>
+    <para>
+      <userinput>RG!</userinput>
+    </para>
+  </sect2>
+
+  <sect2 xml:id="privileged_commands.get_onair_flag">
+    <title>Get OnAir Flag</title>
+    <para>
+      Request the state of the OnAir flag.
+    </para>
+    <para>
+      <userinput>TA!</userinput>
+    </para>
+    <para>
+      The following record will be returned:
+    </para>
+    <para>
+      <computeroutput>TA<replaceable>state</replaceable>!</computeroutput>
+    </para>
+    <variablelist>
+      <varlistentry>
+	<term><replaceable>state</replaceable></term>
+	<listitem>
+	  <para>
+	    <computeroutput>1</computeroutput> = Active,
+	    <computeroutput>0</computeroutput> = Disabled.
+	  </para>
+	</listitem>
+      </varlistentry>
+    </variablelist>
+  </sect2>
+
+</sect1>
+
+</article>

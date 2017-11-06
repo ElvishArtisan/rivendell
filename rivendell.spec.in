@@ -380,7 +380,6 @@ rm -rf $RPM_BUILD_ROOT
 %doc conf/my.cnf-master
 %doc conf/my.cnf-standby
 %doc docs/colors 
-%doc docs/ripc.txt 
 %doc docs/pam_rd.txt
 %doc docs/tables/audio_perms.txt 
 %doc docs/tables/audio_ports.txt 
