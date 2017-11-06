@@ -31,7 +31,6 @@ EXTRA_DIST = ALSA.txt\
              asound.conf-sample\
              colors\
              copy_split_format.odt\
-             NEXGEN_FILTER.txt\
              NOW+NEXT.txt\
              pam_rd.txt\
              PODCASTING.txt\

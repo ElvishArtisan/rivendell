@@ -483,7 +483,6 @@ rm -rf $RPM_BUILD_ROOT
 @LOCAL_PREFIX@/share/applications/rivendell-rddiscimport.desktop
 %doc docs/WINGS_FILTER.txt
 %doc docs/RIVENDELL_FILTER.txt
-%doc docs/NEXGEN_FILTER.txt
 %doc scripts/engine_conv.py
 
 
