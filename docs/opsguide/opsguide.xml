@@ -17,6 +17,7 @@
   <!ENTITY filepath_wildcards SYSTEM "filepath_wildcards.xml">
   <!ENTITY metadata_wildcards SYSTEM "metadata_wildcards.xml">
   <!ENTITY rivendell_filter SYSTEM "rivendell_filter.xml">
+  <!ENTITY wings_filter SYSTEM "wings_filter.xml">
 ]>
 
 <book xmlns="http://docbook.org/ns/docbook" version="5.0">
@@ -36,6 +37,7 @@
   &filepath_wildcards;
   &metadata_wildcards;
   &rivendell_filter;
+  &wings_filter;
 </book>
 
 <!--

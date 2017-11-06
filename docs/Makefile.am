@@ -38,8 +38,7 @@ EXTRA_DIST = ALSA.txt\
              reports.txt\
              SAGE_ENDEC.txt\
              scheduler_formats.ods\
-             WIN32.txt\
-	     WINGS_FILTER.txt
+             WIN32.txt
 
 
 CLEANFILES = *~
