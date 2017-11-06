@@ -103,18 +103,20 @@ OPSGUIDE_DEPS = filepath_wildcards.xml\
                 voicetracking.voice_tracker_dialog_track_selected.png\
                 voicetracking.xml
 
-opsguide.html:	$(OPSGUIDE_DEPS) frontspiece.xml
+index.html:	$(OPSGUIDE_DEPS) frontspiece.xml
 	xsltproc ../stylesheets/book-xhtml.xml opsguide.xml
 
-opsguide.pdf:	$(OPSGUIDE_DEPS) frontspiece.xml
+opsguide.pdf:	$(OPSGUIDE_DEPS) frontspiece.xml\
+                ../stylesheets/book-fo.xml\
+                ../stylesheets/book-fo-titlepages.xsl
 	xsltproc ../stylesheets/book-fo.xml opsguide.xml | fop - -pdf opsguide.pdf
 
-all-local:	opsguide.html\
+all-local:	index.html\
                 opsguide.pdf
 
 EXTRA_DIST = $(OPSGUIDE_DEPS)\
              frontspiece.xml.in\
-             opsguide.html\
+             index.html\
              opsguide.pdf
 
 CLEANFILES = *~\

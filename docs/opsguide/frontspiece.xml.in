@@ -10,11 +10,9 @@
     @VERSION@
   </edition>
   <copyright><year>-2003-2017</year><holder>Fred Gleason</holder></copyright>
-  <cover>
-    <mediaobject>
-      <imageobject>
-	<imagedata fileref="rdairplay.rdairplay_screenshot.png" scale="20"/>
-      </imageobject>
-    </mediaobject>
-  </cover>
+  <mediaobject>
+    <imageobject>
+      <imagedata fileref="../../icons/rivendell-512x512.png" scale="80"/>
+    </imageobject>
+  </mediaobject>
 </info>

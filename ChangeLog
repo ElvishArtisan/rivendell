@@ -16257,3 +16257,5 @@
 2017-11-05 Fred Gleason <fredg@paravelsystems.com>
 	* Removed the 'Genmeral Notes' section titles from the
 	'Supported GPIO/Switcher Devices' appendix in the Operations Guide.
+2017-11-06 Fred Gleason <fredg@paravelsystems.com>
+	* Added a logo to the title page of the Operations Guide.

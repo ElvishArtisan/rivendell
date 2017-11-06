@@ -13,6 +13,7 @@
 *.rlm
 *.rpm
 *.so
+*.xsl
 rivendell-*.tar.gz
 rivendell-*.zip
 .AppleDouble
@@ -34,7 +35,9 @@ docs/apis/*.pdf
 docs/opsguide/*.html
 docs/opsguide/*.pdf
 docs/opsguide/frontspiece.xml
-docs/stylesheets/*.xml
+docs/stylesheets/book-common.xml
+docs/stylesheets/book-fo.xml
+docs/stylesheets/book-xhtml.xml
 helpers/cwrap
 helpers/jsmin
 importers/nexgen_filter
