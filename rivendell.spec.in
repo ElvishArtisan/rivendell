@@ -382,7 +382,6 @@ rm -rf $RPM_BUILD_ROOT
 %doc docs/colors 
 %doc docs/ripc.txt 
 %doc docs/pam_rd.txt
-%doc docs/MESSAGE_BOX.txt
 %doc docs/tables/audio_perms.txt 
 %doc docs/tables/audio_ports.txt 
 %doc docs/tables/cart.txt 

@@ -1210,6 +1210,19 @@
 	<listitem>Critical</listitem>
       </varlistentry>
     </variablelist>
+    <para>
+      When using the 'Message Box' ['<userinput>MB</userinput>'] RML,
+      it may be necessary to configure the X server to allow local
+      connections from other processes.  One way to
+      do this is to execute the following command as the local Rivendell user:
+    </para>
+    <para>
+      <userinput>xhost +local:</userinput>
+    </para>
+    <para>	
+      For more information, see the
+      <command>xhost</command><manvolnum>1</manvolnum> man page.
+    </para>
   </sect2>
 
   <sect2 xml:id="sect.rml.pause_panel__pu_">
