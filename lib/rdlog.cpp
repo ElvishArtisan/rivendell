@@ -370,13 +370,11 @@ bool RDLog::remove(RDStation *station,RDUser *user,RDConfig *config) const
 {
   QString sql;
   RDSqlQuery *q;
-  QString name=log_name;
 
-  name.replace(" ","_");
   if(removeTracks(station,user,config)<0) {
     return false;
   }
-  sql=QString().sprintf("drop table `%s_LOG`",(const char *)name);
+  sql=QString("drop table `")+RDLog::tableName(log_name)+"`";
   q=new RDSqlQuery(sql);
   delete q;
   sql=QString().sprintf("delete from LOGS where (NAME=\"%s\" && TYPE=0)",

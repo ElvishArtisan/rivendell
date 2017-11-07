@@ -16317,3 +16317,6 @@
 	* Removed 'docs/WIN32.txt'.
 	* Removed 'docs/copy_split_format.odt'.
 	* Moved remaining unformatted notes to 'docs/misc/.
+2017-11-07 Fred Gleason <fredg@paravelsystems.com>
+	* Added the ability to delete multiple logs simultaneously in
+	rdlogedit(1).

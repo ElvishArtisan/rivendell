@@ -62,6 +62,7 @@ class MainWidget : public QMainWindow
   void reportData();
   void filterChangedData(const QString &str);
   void filterClearedData();
+  void logSelectionChangedData();
   void logDoubleclickedData(QListViewItem *item,const QPoint &pt,int col);
   void quitMainWidget();
 
@@ -71,6 +72,8 @@ class MainWidget : public QMainWindow
  private:
   void RefreshItem(ListListViewItem *item);
   void RefreshList();
+  unsigned SelectedLogs(std::vector<ListListViewItem *> *items,
+			int *tracks=NULL) const;
   QSqlDatabase *log_db;
   QString log_filename;
   QString log_import_path;

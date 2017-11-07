@@ -839,7 +839,7 @@ Report</source>
     <message>
         <source>voice tracks associated with this log.
 Continue?</source>
-        <translation>faixas de voz associadas a esta Lista.
+        <translation type="obsolete">faixas de voz associadas a esta Lista.
 Continuar?</translation>
     </message>
     <message>
@@ -856,11 +856,7 @@ Continuar?</translation>
     </message>
     <message>
         <source>RDLogEdit</source>
-        <translation type="unfinished">RDListas</translation>
-    </message>
-    <message>
-        <source>Unable to delete log, audio deletion error!</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">RDListas</translation>
     </message>
     <message>
         <source>RDLogEdit -- Database Skew</source>
@@ -897,6 +893,46 @@ See your system administrator for an update!</source>
     </message>
     <message>
         <source>Show Only Recent Logs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete the</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>log?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>voice tracks associated with this log.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Continue?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete these</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>logs?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>voice tracks associated with these logs.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to delete log</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>audio deletion error!</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

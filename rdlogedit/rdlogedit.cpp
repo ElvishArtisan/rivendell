@@ -290,7 +290,10 @@ MainWidget::MainWidget(QWidget *parent)
   log_log_list=new QListView(this);
   log_log_list->setFont(default_font);
   log_log_list->setAllColumnsShowFocus(true);
+  log_log_list->setSelectionMode(QListView::Extended);
   log_log_list->setItemMargin(5);
+  connect(log_log_list,SIGNAL(selectionChanged()),
+	  this,SLOT(logSelectionChangedData()));
   connect(log_log_list,
 	  SIGNAL(doubleClicked(QListViewItem *,const QPoint &,int)),
 	  this,
@@ -321,8 +324,6 @@ MainWidget::MainWidget(QWidget *parent)
   log_log_list->setColumnAlignment(11,Qt::AlignLeft);
   log_log_list->addColumn(tr("LAST MODIFIED"));
   log_log_list->setColumnAlignment(12,Qt::AlignLeft);
-
-  RefreshList();
 
   //
   // Add Button
@@ -374,6 +375,8 @@ MainWidget::MainWidget(QWidget *parent)
   log_close_button->setFont(button_font);
   log_close_button->setText(tr("&Close"));
   connect(log_close_button,SIGNAL(clicked()),this,SLOT(quitMainWidget()));
+
+  RefreshList();
 
 #ifndef WIN32
   // 
@@ -486,19 +489,20 @@ void MainWidget::addData()
 
 void MainWidget::editData()
 {
-  ListListViewItem *item=(ListListViewItem *)log_log_list->selectedItem();
-  std::vector<QString> newlogs;
-
-  if(item==NULL) {
+  //  ListListViewItem *item=(ListListViewItem *)log_log_list->selectedItem();
+  std::vector<ListListViewItem *> items;
+  if(SelectedLogs(&items)!=1) {
     return;
   }
-  EditLog *log=new EditLog(item->text(1),&log_filter,&log_group,&log_schedcode,
+
+  std::vector<QString> newlogs;
+  EditLog *log=new EditLog(items.at(0)->text(1),&log_filter,&log_group,&log_schedcode,
 			   &log_clipboard,&newlogs,this);
   log->exec();
   delete log;
-  RefreshItem(item);
+  RefreshItem(items.at(0));
   for(unsigned i=0;i<newlogs.size();i++) {
-    item=new ListListViewItem(log_log_list);
+    ListListViewItem *item=new ListListViewItem(log_log_list);
     item->setText(1,newlogs[i]);
     RefreshItem(item);
   }
@@ -511,42 +515,74 @@ void MainWidget::deleteData()
   QString str1;
   QString str2;
   unsigned tracks=0;
-  QListViewItem *item=log_log_list->selectedItem();
+  ListListViewItem *item=(ListListViewItem *)log_log_list->firstChild();
+  std::vector<ListListViewItem *> items;
 
-  if(item==NULL) {
-    return;
-  }
   if(rduser->deleteLog()) {
-    if(QMessageBox::question(this,tr("Delete Log"),
-     tr(QString().sprintf("Are you sure you want to delete the \"%s\" log?",
-			  (const char *)item->text(1))),
-			     QMessageBox::Yes,
-			     QMessageBox::No)!=QMessageBox::Yes) {
-      return;
-    }
-    RDLog *log=new RDLog(item->text(1));
-    if((tracks=log->completedTracks())>0) {
-      str1=QString(tr("This will also delete the"));
-      str2=QString(tr("voice tracks associated with this log.\nContinue?"));
-      if(QMessageBox::question(this,tr("Tracks Exist"),
-			       QString().sprintf("%s %u %s",
-						 (const char *)str1,
-						 tracks,
-						 (const char *)str2),
-			       QMessageBox::Yes,QMessageBox::No)!=
-	 QMessageBox::Yes) {
+    while(item!=NULL) {
+      if(item->isSelected()) {
+	items.push_back(item);
+	RDLog *log=new RDLog(items.at(0)->text(1));
+	tracks+=log->completedTracks();
 	delete log;
+      }
+      item=(ListListViewItem *)item->nextSibling();
+    }
+    if(items.size()==1) {
+      if(QMessageBox::question(this,"RDLogEdit - "+tr("Delete Log"),
+			       tr("Are you sure you want to delete the")+" \""+
+			       items.at(0)->text(1)+"\" "+tr("log?"),
+			       QMessageBox::Yes,
+			       QMessageBox::No)!=QMessageBox::Yes) {
 	return;
       }
+      if(tracks>0) {
+	if(QMessageBox::question(this,"RDLogEdit - "+tr("Tracks Exist"),
+				 tr("This will also delete the")+
+			       QString().sprintf(" %u ",tracks)+
+				 tr("voice tracks associated with this log.")+
+				 "\n"+tr("Continue?"),
+				 QMessageBox::Yes,QMessageBox::No)!=
+	   QMessageBox::Yes) {
+	  return;
+	}
+      }
     }
-    if(!log->remove(rdstation_conf,rduser,log_config)) {
-      QMessageBox::warning(this,tr("RDLogEdit"),
-			   tr("Unable to delete log, audio deletion error!"));
+    else {
+      if(QMessageBox::question(this,"RDLogEdit - "+tr("Delete Log"),
+			       tr("Are you sure you want to delete these")+
+			       QString().sprintf(" %lu ",items.size())+
+			       tr("logs?"),
+			       QMessageBox::Yes,
+			       QMessageBox::No)!=QMessageBox::Yes) {
+	return;
+      }
+      if(tracks>0) {
+	if(QMessageBox::question(this,"RDLogEdit - "+tr("Tracks Exist"),
+				 tr("This will also delete the")+
+			       QString().sprintf(" %u ",tracks)+
+				 tr("voice tracks associated with these logs.")+
+				 "\n"+tr("Continue?"),
+				 QMessageBox::Yes,QMessageBox::No)!=
+	   QMessageBox::Yes) {
+	  return;
+	}
+      }
+    }
+
+    for(unsigned i=0;i<items.size();i++) {
+      RDLog *log=new RDLog(items.at(i)->text(1));
+      if(log->remove(rdstation_conf,rduser,log_config)) {
+	delete items.at(i);
+      }
+      else {
+	QMessageBox::warning(this,"RDLogEdit - "+tr("Error"),
+			     tr("Unable to delete log")+" \""+
+			     items.at(i)->text(1)+"\", "+
+			     tr("audio deletion error!"));
+      }
       delete log;
-      return;
     }
-    delete log;
-    delete item;
   }
 }
 
@@ -554,14 +590,14 @@ void MainWidget::deleteData()
 void MainWidget::trackData()
 {
 #ifndef WIN32
-  ListListViewItem *item=(ListListViewItem *)log_log_list->selectedItem();
-  if(item==NULL) {
+  std::vector<ListListViewItem *> items;
+  if(SelectedLogs(&items)!=1) {
     return;
   }
-  VoiceTracker *dialog=new VoiceTracker(item->text(1),&log_import_path);
+  VoiceTracker *dialog=new VoiceTracker(items.at(0)->text(1),&log_import_path);
   dialog->exec();
   delete dialog;
-  RefreshItem(item);
+  RefreshItem(items.at(0));
 #endif  // WIN32
 }
 
@@ -698,6 +734,22 @@ void MainWidget::filterClearedData()
 {
   log_filter_edit->clear();
   filterChangedData("");
+}
+
+
+void MainWidget::logSelectionChangedData()
+{
+  int count=0;
+  ListListViewItem *item=(ListListViewItem *)log_log_list->firstChild();
+  while(item!=NULL) {
+    if(item->isSelected()) {
+      count++;
+    }
+    item=(ListListViewItem *)item->nextSibling();
+  }
+  log_edit_button->setEnabled(count==1);
+  log_delete_button->setEnabled(count>0);
+  log_track_button->setEnabled(count==1);
 }
 
 
@@ -839,6 +891,28 @@ void MainWidget::RefreshList()
     RefreshItem(item);
   }
   delete q;
+  logSelectionChangedData();
+}
+
+
+unsigned MainWidget::SelectedLogs(std::vector<ListListViewItem *> *items,
+				  int *tracks) const
+{
+  ListListViewItem *item=(ListListViewItem *)log_log_list->firstChild();
+
+  items->clear();
+  while(item!=NULL) {
+    if(item->isSelected()) {
+      items->push_back(item);
+      if(tracks!=NULL) {
+	RDLog *log=new RDLog(item->text(1));
+	(*tracks)+=log->completedTracks();
+	delete log;
+      }
+    }
+    item=(ListListViewItem *)item->nextSibling();
+  }
+  return items->size();
 }
 
 
