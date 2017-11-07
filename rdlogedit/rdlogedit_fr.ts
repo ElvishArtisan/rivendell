@@ -839,26 +839,6 @@ See your system administrator for an update!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Service</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>ALL</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Filter</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Clear</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Show Only Recent Logs</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Are you sure you want to delete the</source>
         <translation type="unfinished"></translation>
     </message>

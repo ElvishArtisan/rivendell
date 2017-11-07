@@ -112,9 +112,10 @@ MainWidget::MainWidget(QWidget *parent)
   log_log_list=NULL;
   bool skip_db_check=false;
   unsigned schema=0;
+  /*
   QString sql;
   RDSqlQuery *q;
-
+  */
   //
   // Read Command Options
   //
@@ -244,45 +245,11 @@ MainWidget::MainWidget(QWidget *parent)
 #endif  // WIN32
 
   //
-  // Service Selector
+  // Log Filter
   //
-  log_service_box=new QComboBox(this);
-  log_service_box->setFont(default_font);
-  connect(log_service_box,SIGNAL(activated(const QString &)),
+  log_filter_widget=new RDLogFilter(this);
+  connect(log_filter_widget,SIGNAL(filterChanged(const QString &)),
 	  this,SLOT(filterChangedData(const QString &)));
-  log_service_box->insertItem(tr("ALL"));
-  sql="select NAME from SERVICES order by NAME";
-  q=new RDSqlQuery(sql);
-  while(q->next()) {
-    log_service_box->insertItem(q->value(0).toString());
-  }
-  delete q;
-  log_service_label=new QLabel(log_service_box,tr("Service")+":",this);
-  log_service_label->setFont(button_font);
-  log_service_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
-
-  //
-  // Filter
-  //
-  log_filter_edit=new QLineEdit(this);
-  log_filter_edit->setFont(default_font);
-  connect(log_filter_edit,SIGNAL(textChanged(const QString &)),
-	  this,SLOT(filterChangedData(const QString &)));
-  log_filter_label=new QLabel(log_filter_edit,tr("Filter")+":",this);
-  log_filter_label->setFont(button_font);
-  log_filter_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
-  log_filter_button=new QPushButton(tr("Clear"),this);
-  log_filter_button->setFont(button_font);
-  connect(log_filter_button,SIGNAL(clicked()),this,SLOT(filterClearedData()));
-
-  //
-  // Show Recent Checkbox
-  //
-  log_recent_check=new QCheckBox(this);
-  connect(log_recent_check,SIGNAL(toggled(bool)),this,SLOT(recentData(bool)));
-  log_recent_label=
-    new QLabel(log_recent_check,tr("Show Only Recent Logs"),this);
-  log_recent_label->setFont(button_font);
 
   //
   // Log List
@@ -489,7 +456,6 @@ void MainWidget::addData()
 
 void MainWidget::editData()
 {
-  //  ListListViewItem *item=(ListListViewItem *)log_log_list->selectedItem();
   std::vector<ListListViewItem *> items;
   if(SelectedLogs(&items)!=1) {
     return;
@@ -729,14 +695,6 @@ void MainWidget::filterChangedData(const QString &str)
   RefreshList();
 }
 
-
-void MainWidget::filterClearedData()
-{
-  log_filter_edit->clear();
-  filterChangedData("");
-}
-
-
 void MainWidget::logSelectionChangedData()
 {
   int count=0;
@@ -771,14 +729,12 @@ void MainWidget::resizeEvent(QResizeEvent *e)
   if(log_log_list==NULL) {
     return;
   }
-  log_service_label->setGeometry(10,10,70,20);
-  log_service_box->setGeometry(85,10,140,20);
-  log_filter_label->setGeometry(230,10,50,20);
-  log_filter_edit->setGeometry(285,10,size().width()-360,20);
-  log_filter_button->setGeometry(size().width()-60,8,50,25);
-  log_recent_check->setGeometry(285,35,15,15);
-  log_recent_label->setGeometry(305,33,200,20);
-  log_log_list->setGeometry(10,57,size().width()-20,size().height()-127);
+  log_filter_widget->setGeometry(10,10,size().width()-10,
+				 log_filter_widget->sizeHint().height());
+
+  log_log_list->setGeometry(10,log_filter_widget->sizeHint().height(),
+			    size().width()-20,size().height()-
+			    log_filter_widget->sizeHint().height()-65);
   log_add_button->setGeometry(10,size().height()-55,80,50);
   log_edit_button->setGeometry(100,size().height()-55,80,50);
   log_delete_button->setGeometry(190,size().height()-55,80,50);
@@ -869,21 +825,8 @@ void MainWidget::RefreshList()
 
   log_log_list->clear(); // Note: clear here, in case user has no perms.
 
-  sql="select NAME from LOGS where (TYPE=0)&&(LOG_EXISTS=\"Y\")";
-
-  if(log_service_box->currentItem()!=0) {
-    sql+="&&(SERVICE=\""+RDEscapeString(log_service_box->currentText())+"\")";
-  }
-  QString filter=log_filter_edit->text();
-  if(!filter.isEmpty()) {
-    sql+="&&((NAME like \"%%"+RDEscapeString(filter)+"%%\")||";
-    sql+="(DESCRIPTION like \"%%"+RDEscapeString(filter)+"%%\")||";
-    sql+="(SERVICE like \"%%"+RDEscapeString(filter)+"%%\"))";
-  }
-  if(log_recent_check->isChecked()) {
-    sql+=QString().sprintf("order by ORIGIN_DATETIME desc limit %d",
-			   RDLOGEDIT_LIMIT_QUAN);
-  }
+  sql="select NAME from LOGS where (TYPE=0)&&(LOG_EXISTS=\"Y\")"+
+    log_filter_widget->whereSql();
   q=new RDSqlQuery(sql);
   while(q->next()) {
     item=new ListListViewItem(log_log_list);

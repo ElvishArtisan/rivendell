@@ -550,11 +550,6 @@
 #define RDCARTSLOTS_MAX_COLUMNS 4
 
 /*
- * RDLogEdit Log Listing Limit Quantity
- */
-#define RDLOGEDIT_LIMIT_QUAN 14
-
-/*
  * Custom MIME Types (for Drag and Drop)
  */
 #define RDMIMETYPE_CART "application/rivendell-cart"
@@ -564,5 +559,9 @@
  */
 #define RD_CUT_EVENT_ID_QUAN 16
 
+/*
+ * Log Filter Listing Limit Quantity
+ */
+#define RD_LOGFILTER_LIMIT_QUAN 14
 
 #endif  // RD_H

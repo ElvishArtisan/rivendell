@@ -1752,6 +1752,29 @@ Do you want to overwrite it?</source>
     </message>
 </context>
 <context>
+    <name>RDLogFilter</name>
+    <message>
+        <source>Service</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Filter</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Clear</source>
+        <translation type="unfinished">Effacer</translation>
+    </message>
+    <message>
+        <source>Show Only Recent Logs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ALL</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>RDLogLine</name>
     <message>
         <source>Panel</source>

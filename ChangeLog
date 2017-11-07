@@ -16325,3 +16325,5 @@
 	in the 'Record' dialog in rdlibrary(1).
 	* Added a 'SOURCE' column to the  cut list widget in the 'Record'
 	dialog in rdlibrary(1).
+2017-11-07 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'RDLogFilter' widget.

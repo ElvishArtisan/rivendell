@@ -1923,6 +1923,29 @@ Bitte Kofiguration prüfen und erneut versuchen.</translation>
     </message>
 </context>
 <context>
+    <name>RDLogFilter</name>
+    <message>
+        <source>Service</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Filter</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Clear</source>
+        <translation type="unfinished">Löschen</translation>
+    </message>
+    <message>
+        <source>Show Only Recent Logs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ALL</source>
+        <translation type="unfinished">ALLE</translation>
+    </message>
+</context>
+<context>
     <name>RDLogLine</name>
     <message>
         <source>Unknown</source>
