@@ -509,6 +509,7 @@ AC_CONFIG_FILES([rivendell.spec \
     docs/apis/Makefile \
     docs/examples/Makefile \
     docs/manpages/Makefile \
+    docs/misc/Makefile \
     docs/opsguide/frontspiece.xml \
     docs/opsguide/Makefile \
     docs/stylesheets/Makefile \

@@ -16276,3 +16276,8 @@
 2017-11-06 Fred Gleason <fredg@paravelsystems.com>
 	* Moved the contents of 'docs/WINGS_FILTER.txt' to the
 	Operation Guide.
+2017-11-07 Fred Gleason <fredg@paravelsystems.com>
+	* Removed 'docs/NOW+NEXT.txt'.
+	* Removed 'docs/WIN32.txt'.
+	* Removed 'docs/copy_split_format.odt'.
+	* Moved remaining unformatted notes to 'docs/misc/.

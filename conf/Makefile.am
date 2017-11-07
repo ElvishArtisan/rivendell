@@ -30,7 +30,8 @@ uninstall:
 	rm -f $(DESTDIR)/$(sysconfdir)/rd-bin.conf
 	rm -f $(DESTDIR)/etc/pam.d/rivendell
 
-EXTRA_DIST = my.cnf-master\
+EXTRA_DIST = asound.conf-sample\
+             my.cnf-master\
              my.cnf-standby\
              rd-bin.conf.in\
              rd.conf-sample\
