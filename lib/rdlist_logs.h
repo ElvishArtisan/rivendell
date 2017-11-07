@@ -30,21 +30,13 @@
 #include <qdialog.h>
 #include <qlistview.h>
 #include <qpushbutton.h>
-#include <rduser.h>
 
 class RDListLogs : public QDialog
 {
   Q_OBJECT
 
  public:
-  /**
-   * Constructor for the RDListLogs object.
-   *
-   * NOTE: the presence of the optional rduser parameter is used to flag if
-   * user security should be used instead of host based security.
-   */
-  RDListLogs(QString *logname,const QString &stationname,
-	     QWidget *parent=0,RDUser *rduser=0);
+  RDListLogs(QString *logname,const QString &stationname,QWidget *parent=0);
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
 
@@ -59,7 +51,6 @@ class RDListLogs : public QDialog
   QListView *list_log_list;
   QString *list_logname;
   QString list_stationname;
-  RDUser *list_user;
 };
 
 

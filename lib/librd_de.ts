@@ -1876,7 +1876,7 @@ Bitte Kofiguration prüfen und erneut versuchen.</translation>
     <name>RDListLogs</name>
     <message>
         <source>Select Log - User: </source>
-        <translation>Logbenutzer auswählen:</translation>
+        <translation type="obsolete">Logbenutzer auswählen:</translation>
     </message>
     <message>
         <source>Select Log</source>

@@ -1880,7 +1880,7 @@ Por Favor, cheque suas configurações e tenbte outra vez.</translation>
     <name>RDListLogs</name>
     <message>
         <source>Select Log - User: </source>
-        <translation>Selecionar Lista - Usuario: </translation>
+        <translation type="obsolete">Selecionar Lista - Usuario: </translation>
     </message>
     <message>
         <source>Select Log</source>

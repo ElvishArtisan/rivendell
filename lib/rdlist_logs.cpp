@@ -21,15 +21,15 @@
 #include <qpushbutton.h>
 #include <qdatetime.h>
 #include <rddb.h>
+#include <rdescape_string.h>
 #include <rdlist_logs.h>
 
 RDListLogs::RDListLogs(QString *logname,const QString &stationname,
-		       QWidget *parent,RDUser *rduser)
+		       QWidget *parent)
   : QDialog(parent,"",true)
 {
   list_stationname=stationname;
   list_logname=logname;
-  list_user=rduser;
 
   //
   // Fix the Window Size
@@ -45,12 +45,7 @@ RDListLogs::RDListLogs(QString *logname,const QString &stationname,
   QFont button_font("Helvetica",12,QFont::Bold);
   button_font.setPixelSize(12);
 
-  if (list_user != 0) { // RDStation::UserSec
-    setCaption(QString().sprintf("%s%s",(const char *)tr("Select Log - User: "),
-                                 (const char *)list_user->name() ));
-  } else { // RDStation::HostSec
-    setCaption(tr("Select Log"));
-  }
+  setCaption(tr("Select Log"));
 
   //
   // Log List
@@ -147,18 +142,14 @@ void RDListLogs::RefreshList()
 
   list_log_list->clear();
 
-  if (list_user != 0) { // RDStation::UserSec
-    services_list = list_user->services();
-  } else { // RDStation::HostSec
-    sql=QString().sprintf("select SERVICE_NAME from SERVICE_PERMS \
-                           where STATION_NAME=\"%s\"",
-    		          (const char *)list_stationname);
-    RDSqlQuery *q=new RDSqlQuery(sql);
-    while(q->next()) {
-      services_list.append( q->value(0).toString() );
-    }
-    delete q;
+  sql=QString("select ")+
+    "SERVICE_NAME from SERVICE_PERMS where "+
+    "STATION_NAME=\""+RDEscapeString(list_stationname)+"\"";
+  q=new RDSqlQuery(sql);
+  while(q->next()) {
+    services_list.append( q->value(0).toString() );
   }
+  delete q;
 
   if(services_list.size()==0) {
     return;

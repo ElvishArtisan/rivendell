@@ -1885,7 +1885,7 @@ Bitte Kofiguration prüfen und erneut versuchen.</translation>
     <name>RDListLogs</name>
     <message>
         <source>Select Log - User: </source>
-        <translation>Vybrat zápis - uživatel:</translation>
+        <translation type="obsolete">Vybrat zápis - uživatel:</translation>
     </message>
     <message>
         <source>Select Log</source>

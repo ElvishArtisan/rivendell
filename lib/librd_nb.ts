@@ -1877,10 +1877,6 @@ Sjekk eksportoppsettet ditt og prøv att.</translation>
 <context>
     <name>RDListLogs</name>
     <message>
-        <source>Select Log - User: </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Select Log</source>
         <translation type="unfinished"></translation>
     </message>

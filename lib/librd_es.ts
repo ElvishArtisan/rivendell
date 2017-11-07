@@ -1882,7 +1882,7 @@ Do you still want to proceed?</source>
     <name>RDListLogs</name>
     <message>
         <source>Select Log - User: </source>
-        <translation>Seleccionar Playlist - Usuario: </translation>
+        <translation type="obsolete">Seleccionar Playlist - Usuario: </translation>
     </message>
     <message>
         <source>Select Log</source>
