@@ -43,7 +43,7 @@
     </message>
     <message>
         <source>ORIGIN</source>
-        <translation>ORIGEM</translation>
+        <translation type="obsolete">ORIGEM</translation>
     </message>
     <message>
         <source>OUTCUE</source>
@@ -226,6 +226,18 @@ Do you still want to delete?</source>
     </message>
     <message>
         <source>not available</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>INGEST</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>SOURCE</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>unknown</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

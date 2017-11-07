@@ -16320,3 +16320,8 @@
 2017-11-07 Fred Gleason <fredg@paravelsystems.com>
 	* Added the ability to delete multiple logs simultaneously in
 	rdlogedit(1).
+2017-11-07 Fred Gleason <fredg@paravelsystems.com>
+	* Renamed the 'ORIGIN' column to 'INGEST' in the cut list widget
+	in the 'Record' dialog in rdlibrary(1).
+	* Added a 'SOURCE' column to the  cut list widget in the 'Record'
+	dialog in rdlibrary(1).

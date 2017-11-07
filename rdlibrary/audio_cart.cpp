@@ -2,7 +2,7 @@
 //
 // The audio cart editor for RDLibrary.
 //
-//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2004,2016-2017 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -153,29 +153,34 @@ AudioCart::AudioCart(AudioControls *controls,RDCart *cart,QString *path,
   rdcart_cut_list->addColumn(tr("# OF PLAYS"));
   rdcart_cut_list->setColumnAlignment(4,Qt::AlignHCenter);
 
-  rdcart_cut_list->addColumn(tr("ORIGIN"));
+
+  rdcart_cut_list->addColumn(tr("SOURCE"));
   rdcart_cut_list->setColumnAlignment(5,Qt::AlignHCenter);
 
-  rdcart_cut_list->addColumn(tr("OUTCUE"));
-  rdcart_cut_list->setColumnAlignment(6,Qt::AlignLeft);
 
-  rdcart_cut_list->addColumn(tr("START DATE"));
+  rdcart_cut_list->addColumn(tr("INGEST"));
+  rdcart_cut_list->setColumnAlignment(6,Qt::AlignHCenter);
+
+  rdcart_cut_list->addColumn(tr("OUTCUE"));
   rdcart_cut_list->setColumnAlignment(7,Qt::AlignLeft);
 
-  rdcart_cut_list->addColumn(tr("END DATE"));
+  rdcart_cut_list->addColumn(tr("START DATE"));
   rdcart_cut_list->setColumnAlignment(8,Qt::AlignLeft);
 
-  rdcart_cut_list->addColumn(tr("DAYPART START"));
+  rdcart_cut_list->addColumn(tr("END DATE"));
   rdcart_cut_list->setColumnAlignment(9,Qt::AlignLeft);
 
-  rdcart_cut_list->addColumn(tr("DAYPART END"));
+  rdcart_cut_list->addColumn(tr("DAYPART START"));
   rdcart_cut_list->setColumnAlignment(10,Qt::AlignLeft);
 
-  rdcart_cut_list->addColumn(tr("NAME"));
+  rdcart_cut_list->addColumn(tr("DAYPART END"));
   rdcart_cut_list->setColumnAlignment(11,Qt::AlignLeft);
 
-  rdcart_cut_list->addColumn(tr("SHA1"));
+  rdcart_cut_list->addColumn(tr("NAME"));
   rdcart_cut_list->setColumnAlignment(12,Qt::AlignLeft);
+
+  rdcart_cut_list->addColumn(tr("SHA1"));
+  rdcart_cut_list->setColumnAlignment(13,Qt::AlignLeft);
 
   RefreshList();
 
@@ -284,7 +289,7 @@ void AudioCart::changeCutScheduling(int sched)
   RDListViewItem *item=(RDListViewItem *)rdcart_cut_list->firstChild();
   while(item!=NULL) {
     sql=QString("select PLAY_ORDER,WEIGHT from CUTS where ")+
-      "CUT_NAME=\""+item->text(11)+"\"";
+      "CUT_NAME=\""+item->text(12)+"\"";
     q=new RDSqlQuery(sql);
     if(q->first()) {
       item->setText(0,QString().sprintf("%d",q->value(sched).toInt()));
@@ -314,7 +319,7 @@ void AudioCart::addCutData()
   }
   rdcart_cut_list->clearSelection();
   RDListViewItem *item=new RDListViewItem(rdcart_cut_list);
-  item->setText(11,next_name);
+  item->setText(12,next_name);
   RefreshLine(item);
   rdcart_cut_list->setSelected(item,true);
   rdcart_cut_list->ensureItemVisible(item);
@@ -383,7 +388,7 @@ void AudioCart::deleteCutData()
   // Check Clipboard
   //
   if(cut_clipboard!=NULL) {
-    if(item->text(11)==cut_clipboard->cutName()) {
+    if(item->text(12)==cut_clipboard->cutName()) {
       if(QMessageBox::question(this,tr("Empty Clipboard"),
 			      tr("Deleting this cut will also empty the clipboard.\nDo you still want to proceed?"),QMessageBox::Yes,QMessageBox::No)==
 	 QMessageBox::No) {
@@ -447,7 +452,7 @@ void AudioCart::copyCutData()
   if(cut_clipboard!=NULL) {
     delete cut_clipboard;
   }
-  cut_clipboard=new RDCut(item->text(11));
+  cut_clipboard=new RDCut(item->text(12));
   paste_cut_button->setEnabled(rdcart_modification_allowed);
 }
 
@@ -462,7 +467,7 @@ void AudioCart::extEditorCutData()
   }
 
   QString cmd=rdstation_conf->editorPath();
-  cmd.replace("%f",RDCut::pathName(rdcart_cut_list->currentItem()->text(11)));
+  cmd.replace("%f",RDCut::pathName(rdcart_cut_list->currentItem()->text(12)));
   // FIXME: other replace commands to match: lib/rdcart_dialog.cpp editorData()
   //        These substitions should be documented (maybe a text file),
   //            ex: %f = cart_cut filename
@@ -492,7 +497,7 @@ void AudioCart::pasteCutData()
     paste_cut_button->setDisabled(true);
     return;
   }
-  if(QFile::exists(RDCut::pathName(item->text(11)))) {
+  if(QFile::exists(RDCut::pathName(item->text(12)))) {
     if(QMessageBox::warning(this,tr("Audio Exists"),
 			    tr("This will overwrite the existing recording.\nDo you want to proceed?"),
 			    QMessageBox::Yes,
@@ -501,7 +506,7 @@ void AudioCart::pasteCutData()
     }
   }
   cut_clipboard->connect(this,SLOT(copyProgressData(const QVariant &)));
-  cut_clipboard->copyTo(rdstation_conf,lib_user,item->text(11),lib_config);
+  cut_clipboard->copyTo(rdstation_conf,lib_user,item->text(12),lib_config);
   cut_clipboard->disconnect(this,SLOT(copyProgressData(const QVariant &)));
   rdcart_cart->updateLength(rdcart_controls->enforce_length_box->isChecked(),
 			    QTime().msecsTo(rdcart_controls->
@@ -520,7 +525,7 @@ void AudioCart::editCutData()
   if((item=SelectedCuts(&cutnames))==NULL) {
     return;
   }
-  QString cutname=item->text(11);
+  QString cutname=item->text(12);
   if(!RDAudioExists(cutname)) {
     QMessageBox::information(this,"RDLibrary",
 			     tr("No audio is present in the cut!"));
@@ -549,7 +554,7 @@ void AudioCart::recordCutData()
   if((item=SelectedCuts(&cutnames))==NULL) {
     return;
   }
-  QString cutname=item->text(11);
+  QString cutname=item->text(12);
   RecordCut *cut=new RecordCut(rdcart_cart,cutname,rdcart_use_weighting,this);
   cut->exec();
   delete cut;
@@ -578,7 +583,7 @@ void AudioCart::ripCutData()
   if((item=SelectedCuts(&cutnames))==NULL) {
     return;
   }
-  cutname=item->text(11);
+  cutname=item->text(12);
   RDCddbRecord *rec=new RDCddbRecord();
   CdRipper *ripper=new CdRipper(cutname,rec,rdlibrary_conf,rdcart_profile_rip);
   if((track=ripper->exec(&title,&artist,&album))>=0) {
@@ -616,7 +621,7 @@ void AudioCart::importCutData()
   if((item=SelectedCuts(&cutnames))==NULL) {
     return;
   }
-  cutname=item->text(11);
+  cutname=item->text(12);
   RDSettings settings;
   rdlibrary_conf->getSettings(&settings);
   RDImportAudio *import=new RDImportAudio(cutname,rdcart_import_path,
@@ -702,7 +707,7 @@ RDListViewItem *AudioCart::SelectedCuts(std::vector<QString> *cutnames)
   RDListViewItem *item=(RDListViewItem *)rdcart_cut_list->firstChild();
   while(item!=NULL) {
     if(item->isSelected()) {
-      cutnames->push_back(item->text(11));
+      cutnames->push_back(item->text(12));
       ret=item;
     }
     item=(RDListViewItem *)item->nextSibling();
@@ -741,7 +746,7 @@ void AudioCart::RefreshList()
       }
     } 
     else {
-      switch(ValidateCut(q,10,RDCart::NeverValid,current_datetime)) {
+      switch(ValidateCut(q,12,RDCart::NeverValid,current_datetime)) {
       case RDCart::NeverValid:
 	l->setBackgroundColor(RD_CART_ERROR_COLOR);
 	if(pass==0) {
@@ -750,8 +755,8 @@ void AudioCart::RefreshList()
 	break;
 	
       case RDCart::ConditionallyValid:
-	if((!q->value(11).isNull())&&
-	   (q->value(11).toDateTime()<current_datetime)) {
+	if((!q->value(13).isNull())&&
+	   (q->value(13).toDateTime()<current_datetime)) {
 	  l->setBackgroundColor(RD_CART_ERROR_COLOR);
 	}
 	else {
@@ -787,37 +792,47 @@ void AudioCart::RefreshList()
       l->setText(3,tr("Never"));
     }
     l->setText(4,q->value(5).toString());
-    if(!q->value(6).toDateTime().isNull()) {
-      l->setText(5,q->value(7).toString()+" - "+
-		 q->value(6).toDateTime().toString("M/d/yy hh:mm:ss"));
+    QString user=q->value(8).toString()+"@";
+    if(q->value(8).toString().isEmpty()) {
+      user="";
     }
-    l->setText(6,q->value(8).toString());
-    if(!q->value(12).toDateTime().isNull()) {
-      l->setText(7,q->value(12).toDateTime().toString("M/d/yyyy hh:mm:ss"));
+    if(q->value(9).toString().isEmpty()) {
+      l->setText(5,"["+tr("unknown")+"]");
     }
     else {
-      l->setText(7,tr("None"));
+      l->setText(5,user+q->value(9).toString());
     }
-    if(!q->value(13).toDateTime().isNull()) {
-      l->setText(8,q->value(13).toDateTime().toString("M/d/yyyy hh:mm:ss"));
+    if(!q->value(6).toDateTime().isNull()) {
+      l->setText(6,q->value(7).toString()+" - "+
+		 q->value(6).toDateTime().toString("M/d/yy hh:mm:ss"));
+    }
+    l->setText(7,q->value(10).toString());
+    if(!q->value(14).toDateTime().isNull()) {
+      l->setText(8,q->value(14).toDateTime().toString("M/d/yyyy hh:mm:ss"));
     }
     else {
       l->setText(8,tr("None"));
     }
-    if(!q->value(15).isNull()) {
-      l->setText(9,q->value(14).toTime().toString("hh:mm:ss"));
-      l->setText(10,q->value(15).toTime().toString("hh:mm:ss"));
+    if(!q->value(15).toDateTime().isNull()) {
+      l->setText(9,q->value(15).toDateTime().toString("M/d/yyyy hh:mm:ss"));
     }
     else {
       l->setText(9,tr("None"));
-      l->setText(10,tr("None"));
     }
-    l->setText(11,q->value(9).toString());
-    if(q->value(23).toString().isEmpty()) {
-      l->setText(12,"["+tr("not available")+"]");
+    if(!q->value(17).isNull()) {
+      l->setText(10,q->value(16).toTime().toString("hh:mm:ss"));
+      l->setText(11,q->value(17).toTime().toString("hh:mm:ss"));
     }
     else {
-      l->setText(12,q->value(23).toString());
+      l->setText(10,tr("None"));
+      l->setText(11,tr("None"));
+    }
+    l->setText(12,q->value(11).toString());
+    if(q->value(25).toString().isEmpty()) {
+      l->setText(13,"["+tr("not available")+"]");
+    }
+    else {
+      l->setText(13,q->value(25).toString());
     }
     total_length+=q->value(3).toUInt();
     pass++;
@@ -843,7 +858,7 @@ void AudioCart::RefreshLine(RDListViewItem *item)
   unsigned total_length=0;
   QDateTime current_datetime=
     QDateTime(QDate::currentDate(),QTime::currentTime());
-  QString cut_name=item->text(11);
+  QString cut_name=item->text(12);
   sql=ValidateCutFields()+
     QString().sprintf(" where (CART_NUMBER=%u)&&",rdcart_cart->number())+
     "(CUT_NAME=\""+RDEscapeString(cut_name)+"\")";
@@ -856,14 +871,14 @@ void AudioCart::RefreshLine(RDListViewItem *item)
       item->setBackgroundColor(RD_CART_ERROR_COLOR);
     } 
     else {
-      switch(ValidateCut(q,10,RDCart::NeverValid,current_datetime)) {
+      switch(ValidateCut(q,12,RDCart::NeverValid,current_datetime)) {
       case RDCart::NeverValid:
 	item->setBackgroundColor(RD_CART_ERROR_COLOR);
 	break;
 	
       case RDCart::ConditionallyValid:
-	if((!q->value(12).isNull())&&
-	   (q->value(12).toDateTime()<current_datetime)) {
+	if((!q->value(14).isNull())&&
+	   (q->value(14).toDateTime()<current_datetime)) {
 	  item->setBackgroundColor(RD_CART_ERROR_COLOR);
 	}
 	else {
@@ -892,36 +907,46 @@ void AudioCart::RefreshLine(RDListViewItem *item)
     }
     item->setText(4,q->value(5).toString());
     if(!q->value(6).toDateTime().isNull()) {
-      item->setText(5,q->value(7).toString()+" - "+
+      item->setText(6,q->value(7).toString()+" - "+
 		 q->value(6).toDateTime().toString("M/d/yy hh:mm:ss"));
     }
-    item->setText(6,q->value(8).toString());
-    if(!q->value(12).toDateTime().isNull()) {
-      item->setText(7,q->value(12).toDateTime().toString("M/d/yyyy hh:mm:ss"));
+    QString user=q->value(8).toString()+"@";
+    if(q->value(8).toString().isEmpty()) {
+      user="";
+    }
+    if(q->value(9).toString().isEmpty()) {
+      item->setText(5,"["+tr("unknown")+"]");
     }
     else {
-      item->setText(7,tr("None"));
+      item->setText(5,user+q->value(9).toString());
     }
-    if(!q->value(13).toDateTime().isNull()) {
-      item->setText(8,q->value(13).toDateTime().toString("M/d/yyyy hh:mm:ss"));
+    item->setText(7,q->value(10).toString());
+    if(!q->value(14).toDateTime().isNull()) {
+      item->setText(8,q->value(14).toDateTime().toString("M/d/yyyy hh:mm:ss"));
     }
     else {
       item->setText(8,tr("None"));
     }
-    if(!q->value(15).isNull()) {
-      item->setText(9,q->value(14).toTime().toString("hh:mm:ss"));
-      item->setText(10,q->value(15).toTime().toString("hh:mm:ss"));
+    if(!q->value(15).toDateTime().isNull()) {
+      item->setText(9,q->value(15).toDateTime().toString("M/d/yyyy hh:mm:ss"));
     }
     else {
       item->setText(9,tr("None"));
-      item->setText(10,tr("None"));
     }
-    item->setText(11,q->value(9).toString());
-    if(q->value(23).toString().isEmpty()) {
-      item->setText(12,"["+tr("not available")+"]");
+    if(!q->value(17).isNull()) {
+      item->setText(10,q->value(16).toTime().toString("hh:mm:ss"));
+      item->setText(11,q->value(17).toTime().toString("hh:mm:ss"));
     }
     else {
-      item->setText(12,q->value(23).toString());
+      item->setText(10,tr("None"));
+      item->setText(11,tr("None"));
+    }
+    item->setText(12,q->value(11).toString());
+    if(q->value(25).toString().isEmpty()) {
+      item->setText(13,"["+tr("not available")+"]");
+    }
+    else {
+      item->setText(13,q->value(25).toString());
     }
     total_length+=q->value(3).toUInt();
   }
