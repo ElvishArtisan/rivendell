@@ -1,10 +1,8 @@
-## automake.am
+## Makefile.am
 ##
-## helper/ Automake.am for Rivendell
+## docs/stylesheets/Makefile.am for Rivendell
 ##
-## (C) Copyright 2003-2005,2016 Fred Gleason <fredg@paravelsystems.com>
-##
-## Use automake to process this into a Makefile.in
+## (C) Copyright 2017 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -19,36 +17,22 @@
 ##   License along with this program; if not, write to the Free Software
 ##   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
+## Use automake to process this into a Makefile.in
 
+all-local:	book-fo-titlepages.xsl
 
-AM_CFLAGS = -Wall
+book-fo-titlepages.xsl:	book-fo-titlepages-spec.xml
+	xsltproc -o book-fo-titlepages.xsl ../../helpers/docbook/template/titlepage.xsl book-fo-titlepages-spec.xml
 
-noinst_PROGRAMS = cwrap\
-                  jsmin
-
-noinst_SCRIPTS = rdpack.sh\
-                 rdtrans.sh
-
-dist_cwrap_SOURCES = cwrap.cpp cwrap.h
-
-dist_jsmin_SOURCES = jsmin.c
-
-EXTRA_DIST = rdpack.sh\
-             rdtrans.sh\
-             rdtransgui.sh\
-             setenvvar.sh\
-             win32_frag1.txt\
-             win32_frag2.txt
+EXTRA_DIST = book-common.xml\
+             book-fo-titlepages.xsl\
+             book-fo.xml\
+             book-fo-titlepages-spec.xml\
+             book-xhtml.xml
 
 CLEANFILES = *~\
-             *.tar.gz\
-             moc_*
-
-DISTCLEANFILES = docbook
-
+             *.xsl
 MAINTAINERCLEANFILES = *~\
-                       *.tar.gz\
                        aclocal.m4\
                        configure\
-                       Makefile.in\
-                       moc_*
+                       Makefile.in

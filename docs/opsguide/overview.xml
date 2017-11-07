@@ -1,0 +1,327 @@
+<chapter xmlns="http://docbook.org/ns/docbook" xml:id="chapter.overview">
+  <title>System Overview</title>
+<!--
+  <mediaobject>
+    <imageobject>
+      <imagedata fileref="manual-outputdefault.png" scale="30"/>
+    </imageobject>
+  </mediaobject>
+-->
+  <sect1 xml:id="sect.overview.introducting_rivendell">
+    <title>Introducing Rivendell</title>
+    <para>
+      Rivendell is a digital audio content management and delivery system
+      that is targeted for use in professional radio broadcast environments.
+      It includes robust tools for the acquisition, organization, management
+      and play out of audio material from and to a diverse array of sources
+      and destinations.  Support for a wide variety of external third party
+      hardware devices and software packages commonly used in the radio
+      industry is featured, including interfaces for:
+    </para>
+    <para>
+      <itemizedlist>
+	<listitem>Audio Routing Switchers</listitem>
+	<listitem>Satellite Downlink Receivers</listitem>
+	<listitem>Audio Mixing Consoles</listitem>
+	<listitem>Commercial Traffic and Music Scheduling Systems</listitem>
+      </itemizedlist>
+    </para>
+    <para>
+      Rivendell is made available under the terms of the
+      <link linkend="appendix.gplv2">GNU General Public License,
+      version 2</link>.
+      As such, it comes with <emphasis>absolutely no warranty</emphasis>,
+      not even the implied
+      warranties of merchantability or fitness for a particular purpose.
+      See the full text of the GPLv2 for details.
+    </para>
+    <para>
+      Rivendell has been designed and developed from the ground up to run
+      on the popular and highly stable <trademark>GNU/Linux</trademark>
+      operating system.
+      Selected tools (mostly having to do with log generation) have also
+      been ported to run in the Microsoft <trademark>Windows</trademark>
+      environment as well.
+      Full source code as well as binary installation packages for Windows
+      and select Linux distributions are available on line.
+    </para>
+    <para>
+      Rivendell has been designed to be able to operate in a wide variety
+      of roles, ranging from single, self-contained workstations to large,
+      multi-station clusters consisting of multiple workstations and
+      centralized servers.  Also included are redundancy and hot-standby
+      capabilities to allow for reliable operation even in the presence of
+      hardware faults.
+    </para>
+    <para>
+      Rivendell is implemented as a set of interactive tools or 'modules'
+      that collectively provide the complete functionality of the system.
+      Briefly, these modules and their functions are:
+    </para>
+    <para>
+      <variablelist>
+	<varlistentry>
+	  <term>RDAdmin</term>
+	  <listitem>
+	    System wide configuration
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term><link linkend="chapter.rdlibrary">RDLibrary</link></term>
+	  <listitem>
+	    Library content management
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term><link linkend="chapter.rdcatch">RDCatch</link></term>
+	  <listitem>
+	    Automatic event scheduler
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term><link linkend="chapter.rdairplay">RDAirPlay</link></term>
+	  <listitem>
+	    On-air play out application
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term><link linkend="chapter.rdlogedit">RDLogEdit</link></term>
+	  <listitem>
+	    Log editing and voicetracking tool
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term><link linkend="chapter.rdlogmanager">RDLogManager</link></term>
+	  <listitem>
+	    Automated log generation and interface utility
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term><link linkend="chapter.rdlogin">RDLogin</link></term>
+	  <listitem>
+	    Set the current user on a Rivendell host
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>RDCartSlots</term>
+	  <listitem>
+	    Emulate a traditional broadcast cart machine
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>RDPanel</term>
+	  <listitem>
+	    Large &quot;cart wall&quot; application
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>RDCastManager</term>
+	  <listitem>
+	    Podcast feed manager
+	  </listitem>
+	</varlistentry>
+      </variablelist>
+    </para>
+    <para>
+      The operation of each of these modules is explained in detail in the
+      chapters that follow.  However, we first need to cover some basic
+      concepts common to all Rivendell modules.
+    </para>
+    <sect2 xml:id="sect.overview.the_rivendell_object_paradigm">
+      <title>The Rivendell Object Paradigm</title>
+      <para>
+	All Rivendell modules make use of the following four classes of
+	system resources:
+      </para>
+      <para>
+	<itemizedlist>
+	  <listitem>
+	    <link linkend="sect.overview.hosts">Hosts</link>
+	  </listitem>
+	  <listitem>
+	    <link linkend="sect.overview.users">Users</link>
+	  </listitem>
+	  <listitem>
+	    <link linkend="sect.overview.groups">Groups</link>
+	  </listitem>
+	  <listitem>
+	    <link linkend="sect.overview.services">Services</link>
+	  </listitem>
+	</itemizedlist>
+      </para>
+      <para>
+	We'll cover each of these concepts in turn.
+      </para>
+      <sect3 xml:id="sect.overview.hosts">
+	<title>Hosts</title>
+	<para>
+	  Every physical computer within a given network that is running
+	  Rivendell software is referred to as a <emphasis>host</emphasis>.
+	  Any host in a
+	  Rivendell network can be individually configured and controlled
+	  from any other host (provided the system administrator has enabled
+	  this capability).  Hosts can be used for a wide variety of
+	  applications, including content ingestion and management,
+	  automatic recording (sometimes referred to as netcatching),
+	  on-air play out or log (sometimes also referred to as playlist)
+	  generation.  It is also possible for a single host to perform all
+	  of these functions.
+	</para>
+      </sect3>
+      <sect3 xml:id="sect.overview.users">
+	<title>Users</title>
+	<para>
+	  Every host on a Rivendell network has one or more
+	  <emphasis>users</emphasis> available
+	  to it.  In this context, a 'user' is merely a set of access
+	  policies established by the system administrator that defines what
+	  tasks a given host is or is not allowed to perform.  Every host
+	  has at least one user, called the <emphasis>default user</emphasis>.
+	  As the name
+	  suggests, this is the set of user policies that are loaded by
+	  default when the system starts up.  It is also possible to change
+	  the user currently in use on a given host by running the RDLogin
+	  module. 
+	</para>
+      </sect3>
+      <sect3 xml:id="sect.overview.groups">
+	<title>Groups</title>
+	<para>
+	  A Rivendell <emphasis>group</emphasis> is a system of categories
+	  that is used by the
+	  audio library to classify and organize the audio within the library.
+	  Groups are a very powerful capability, and many operations within
+	  Rivendell can be specified on the basis of group membership.
+	  The actual classification scheme, including the number of available
+	  groups and their names, is completely arbitrary so as to allow each
+	  facility to tailor a schema that best fits its own operational
+	  requirements. Designing and implementing the group schema is one
+	  of the most important tasks facing the Rivendell system
+	  administrator, as a well-designed schema can make long-term
+	  maintenance and management of the system substantially easier
+	  vis-a-vis a poorly thought out one.  We will cover groups in
+	  detail in the chapters devoted to the RDLibrary and RDAdmin modules.
+	</para>
+      </sect3>
+      <sect3 xml:id="sect.overview.services">
+	<title>Services</title>
+	<para>
+	  Every facility at which Rivendell is deployed is presumed to have 
+	  one or more ultimate destinations for which audio is intended.
+	  These could be radio stations (e.g. WAVA), satellite uplink
+	  channels, live Internet audio streams, or any mix of the above.
+	  Each of these sorts of destinations is referred to in Rivendell
+	  as a <emphasis>service</emphasis>, and certain parameters,
+	  particularly as regards
+	  audio play out and log (playlist) creation, can be configured on
+	  the basis of what particular service is being referenced.
+	</para>
+      </sect3>
+    </sect2>
+    <sect2 xml:id="sect.overview.the_rivendell_hardware_paradigm">
+      <title>The Rivendell Hardware Paradigm</title>
+      <para>
+	In addition to the core computer hardware (CPU, motherboard, etc),
+	each Rivendell host typically interacts with specialized hardware
+	required to accomplish the task at hand.  Three main categories of
+	such 'special' hardware are of interest to us here, the three being
+	audio adapters, serial ports and GPIO/switcher devices.  We'll
+	cover each below.
+      </para>
+      <sect3 xml:id="sect.overview.audio_adapters">
+	<title>Audio Adapters</title>
+	<para>
+	  An <emphasis>audio adapter</emphasis> in Rivendell is simply a
+	  device or facility for
+	  getting audio into and/or out of a host on a realtime basis.
+	  Most commonly this will be a sound card, although other, more
+	  exotic possibilities (using TCP/IP networking or direct routing
+	  to other audio applications) also exist.  The three main classes
+	  of audio adapters supported by Rivendell are:
+	</para>
+	<para>
+	  <variablelist>
+	    <varlistentry>
+	      <term>Advanced Linux Sound Architecture (ALSA)</term>
+	      <listitem>
+		<para>
+		  The standard Linux sound card driver starting with the 2.6.x
+		  kernel series, ALSA supports a huge array of commercially
+		  available sound cards, ranging from entry level 'game' cards
+		  to high-end cards aimed at professional audio uses.
+		  More information, including a current list of supported
+		  cards, is available at the ALSA web site,
+		  http://www.alsa-project.org/.
+		</para>
+	      </listitem>
+	    </varlistentry>
+	    <varlistentry>
+	      <term>HPI Adapters</term>
+	      <listitem>
+		<para>
+		  These are high-performance sound cards manufactured by
+		  AudioScience Corporation.  Designed and built specifically
+		  for broadcast automation applications, many feature advanced
+		  capabilities (such as on-board MPEG codecs and AES3 i/o)
+		  specially aimed for use in that setting.  They are so-called
+		  because Rivendell uses AudioScience's special 'HPI' driver
+		  to access and control them.  More information is available
+		  at AudioScience's web site, http://www.audioscience.com/.
+		</para>
+	      </listitem>
+	    </varlistentry>
+	    <varlistentry>
+	      <term>JACK Audio Interconnect Kit</term>
+	      <listitem>
+		<para>
+		  JACK is not a particular set of hardware devices, but rather
+		  an audio 'framework' that allows compliant applications to
+		  share audio resources and route audio in realtime amongst
+		  themselves.  JACK is different from similar efforts within
+		  the Linux realm in that it was designed from the ground up
+		  for professional audio work, with particular focus upon
+		  low-latency operation and synchronous  execution of all
+		  clients.  More information can be found at the JACK web
+		  site, http://jackit.sourceforge.net/.
+		</para>
+	      </listitem>
+	    </varlistentry>
+	  </variablelist>
+	</para>
+      </sect3>
+      <sect3 xml:id="sect.overview.serial_ports">
+	<title>Serial Ports</title>
+	<para>
+	  Commonly known in the DOS/Windows world as 'COM ports', 
+	  <emphasis>serial ports</emphasis> are often used to communicate
+	  with outboard gear, such as
+	  satellite receivers and audio switchers.  Up to eight serial ports
+	  can be accessed simultaneously by each Rivendell host.
+	</para>
+      </sect3>
+      <sect3 xml:id="sect.overview.gpio_switcher_devices">
+	<title>GPIO/Switcher Devices</title>
+	<para>
+	  Because these capabilities are often (although not always)
+	  bundled together in the same device, Rivendell lumps GPIO and
+	  switcher devices together within the same class.
+	  <emphasis>GPIO</emphasis> stands
+	  for 'General Purpose Input Output'.  As the name implies, these
+	  devices can be used to interface to a huge variety of outboard
+	  equipment by means of control lines. <emphasis>GPI</emphasis>
+	  (General Purpose Input)
+	  lines can be used to sense changes in an outboard system's state
+	  (and Rivendell programmed to take various actions on the basis of
+	  that), while <emphasis>GPO</emphasis> (General Purpose Output)
+	  lines can be used to
+	  send commands to an outboard system.  The actual physical
+	  interfacing of GPIO devices is complex and generally beyond
+	  the scope of this document.  Readers are encouraged to consult
+	  a good handbook on radio engineering for more information. 
+	  A current list of GPIO/Switcher devices supported by Rivendell
+	  can be found in 'docs/GPIO.txt' file in the Rivendell sources.
+	</para>
+      </sect3>
+    </sect2>
+  </sect1>
+</chapter>

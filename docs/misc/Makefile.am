@@ -1,10 +1,8 @@
-## automake.am
+## Makefile.am
 ##
-## helper/ Automake.am for Rivendell
+## docs/misc/Makefile.am for Rivendell
 ##
-## (C) Copyright 2003-2005,2016 Fred Gleason <fredg@paravelsystems.com>
-##
-## Use automake to process this into a Makefile.in
+## (C) Copyright 2017 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -19,36 +17,20 @@
 ##   License along with this program; if not, write to the Free Software
 ##   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
+## Use automake to process this into a Makefile.in
 
+EXTRA_DIST = ALSA.txt\
+             ando_interface.odt\
+             colors\
+             pam_rd.txt\
+             PODCASTING.txt\
+             RDMONITOR.txt\
+             reports.txt\
+             SAGE_ENDEC.txt\
+             scheduler_formats.ods
 
-AM_CFLAGS = -Wall
-
-noinst_PROGRAMS = cwrap\
-                  jsmin
-
-noinst_SCRIPTS = rdpack.sh\
-                 rdtrans.sh
-
-dist_cwrap_SOURCES = cwrap.cpp cwrap.h
-
-dist_jsmin_SOURCES = jsmin.c
-
-EXTRA_DIST = rdpack.sh\
-             rdtrans.sh\
-             rdtransgui.sh\
-             setenvvar.sh\
-             win32_frag1.txt\
-             win32_frag2.txt
-
-CLEANFILES = *~\
-             *.tar.gz\
-             moc_*
-
-DISTCLEANFILES = docbook
-
+CLEANFILES = *~
 MAINTAINERCLEANFILES = *~\
-                       *.tar.gz\
                        aclocal.m4\
                        configure\
-                       Makefile.in\
-                       moc_*
+                       Makefile.in

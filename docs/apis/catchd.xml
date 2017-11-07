@@ -1,0 +1,550 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<article xmlns="http://docbook.org/ns/docbook" version="5.0">
+<info>
+  <title>Rivendell RDCatch Monitor Protocol</title>
+  <author>
+    <personname>
+      <firstname>Fred</firstname>
+      <surname>Gleason</surname>
+      <email>fredg@paravelsystems.com</email>
+    </personname>
+  </author>
+</info>
+
+<sect1 xml:id="overview">
+  <title>Overview</title>
+  <para>
+    This defines the IP protocol used for communication between different
+    modules of Rivendell and the
+    <command>rdcatchd</command><manvolnum>8</manvolnum> daemon.
+  </para>
+  <para>
+    Connection to ripcd is by means of a TCP SOCK_STREAM connection to TCP
+    port <userinput>6006</userinput>. The format of a message is as follows:
+  </para>
+  <para>
+    <replaceable>cmd-code</replaceable> [<replaceable>arg</replaceable>] [<replaceable>...</replaceable>]!
+  </para>
+  <variablelist>
+    <varlistentry>
+      <term>
+	<replaceable>cmd-code</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  A two letter command code, describing the generic action to be
+	  performed
+	</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>
+	<replaceable>arg</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  Zero or more arguments, delimited by spaces or, if the last
+	  argument, by ! (see below)
+	</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>
+	!
+      </term>
+      <listitem>
+	<para>
+	  The ASCII character  33, indicating the end of the command sequence.
+	</para>
+      </listitem>
+    </varlistentry>
+  </variablelist>
+</sect1>
+
+<sect1 xml:id="sect.unprivileged_commands">
+  <title>Unprivileged Commands</title>
+  <para>
+    No authentication is required to execute these.
+  </para>
+  <sect2 xml:id="sect.unprivileged_commands.drop_connection">
+    <title>Drop Connection</title>
+    <para>
+      End the session and drop the TCP connection.
+    </para>
+    <para>
+      <userinput>DC!</userinput>
+    </para>
+  </sect2>
+
+  <sect2 xml:id="sect.unprivileged_commands.send_password">
+    <title>Send Password</title>
+    <para>
+      Send a password to the server for authentication.
+    </para>
+    <para>
+      <userinput>PW <replaceable>passwd</replaceable>!</userinput>
+    </para>
+    <variablelist>
+      <varlistentry>
+	<term>
+	  <replaceable>passwd</replaceable>
+	</term>
+	<listitem>
+	  A password to be supplied before granting the client access.
+	</listitem>
+      </varlistentry>
+    </variablelist>
+    <para>
+      <command>rdcatchd</command><manvolnum>8</manvolnum> will respond
+      with <computeroutput>PW +!</computeroutput> or
+      <computeroutput>PW -!</computeroutput>, indicating the success or
+      failure of the authentication.
+    </para>
+  </sect2>
+</sect1>
+
+<sect1 xml:id="sect.privileged_commands">
+  <title>Privileged Commands</title>
+  <para>
+     A connection must be authenticated before these can be executed.
+  </para>
+
+  <sect2 xml:id="sect.privileged_commands.deck_event_processed">
+    <title>Deck Event Processed</title>
+    <para>
+      Sent by RDCatchd whenever a deck event is processed.
+    </para>
+    <para>
+      <userinput>DE <replaceable>deck-num</replaceable>
+      <replaceable>event-num</replaceable>!</userinput>
+    </para>
+    <variablelist>
+      <varlistentry>
+	<term><replaceable>deck-num</replaceable></term>
+	<listitem>
+	  <para>
+	    The number of the deck originating the event. Record decks have
+	    numbers in the range <computeroutput>1</computeroutput> through
+	    <computeroutput>127</computeroutput>, while Play decks have
+	    numbers in the range <computeroutput>128</computeroutput> through
+	    <computeroutput>254</computeroutput>.
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term><replaceable>event-num</replaceable></term>
+	<listitem>
+	  <para>
+	    The new event state of the specified deck.
+	  </para>
+	</listitem>
+      </varlistentry>
+    </variablelist>
+    <para>
+      See <xref linkend="sect.privileged_commands.request_deck_status" /> for
+      the list of possible deck event states.
+    </para>
+  </sect2>
+  <sect2 xml:id="sect.privileged_commands.reload_deck_list">
+    <title>Reload Deck List</title>
+    <para>
+      Reload the record/play deck configuration.
+    </para>
+    <para>
+      <userinput>RD!</userinput>
+    </para>
+    <para>
+      <command>rdcatchd</command><manvolnum>8</manvolnum> will respond with
+      <computeroutput>RS +!</computeroutput>.
+    </para>
+  </sect2>
+  <sect2 xml:id="sect.privileged_commands.reload_event_list">
+    <title>Reload Event List</title>
+    <para>
+      Reload the list of scheduled events.
+    </para>
+    <para>
+      <userinput>RS!</userinput>
+    </para>
+    <para>
+      <command>rdcatchd</command><manvolnum>8</manvolnum> will respond with
+      <computeroutput>RS +!</computeroutput>.
+    </para>
+  </sect2>
+  <sect2 xml:id="sect.privileged_commands.add_event">
+    <title>Add Event</title>
+    <para>
+      Add event to the event list.
+    </para>
+    <para>
+      <userinput>RA <replaceable>event-num</replaceable>!</userinput>
+    </para>
+    <variablelist>
+      <varlistentry>
+	<term><replaceable>event-num</replaceable></term>
+	<listitem>
+	  <para>
+	    The number of the event to add.
+	  </para>
+	</listitem>
+      </varlistentry>
+    </variablelist>
+    <para>
+      <command>rdcatchd</command><manvolnum>8</manvolnum>
+      will respond with
+      <computeroutput>RA <replaceable>event-num</replaceable>+!</computeroutput>.
+    </para>
+  </sect2>
+  <sect2 xml:id="sect.privileged_commands.remove_event">
+    <title>Remove Event</title>
+    <para>
+      Remove event from the event list.
+    </para>
+    <para>
+      <userinput>RR <replaceable>event-num</replaceable>!</userinput>
+    </para>
+    <variablelist>
+      <varlistentry>
+	<term><replaceable>event-num</replaceable></term>
+	<listitem>
+	  <para>
+	    The number of the event to remove.
+	  </para>
+	</listitem>
+      </varlistentry>
+    </variablelist>
+    <para>
+      <command>rdcatchd</command><manvolnum>8</manvolnum>
+      will respond with
+      <computeroutput>RR <replaceable>event-num</replaceable>+!</computeroutput>.
+    </para>
+  </sect2>
+  <sect2 xml:id="sect.privileged_commands.update_event">
+    <title>Update Event</title>
+    <para>
+      Update event from the event list.
+    </para>
+    <para>
+      <userinput>RU <replaceable>event-num</replaceable>!</userinput>
+    </para>
+    <variablelist>
+      <varlistentry>
+	<term><replaceable>event-num</replaceable></term>
+	<listitem>
+	  <para>
+	    The number of the event to update.
+	  </para>
+	</listitem>
+      </varlistentry>
+    </variablelist>
+    <para>
+      <command>rdcatchd</command><manvolnum>8</manvolnum>
+      will respond with
+      <computeroutput>RU <replaceable>event-num</replaceable>+!</computeroutput>.
+    </para>
+  </sect2>
+  <sect2 xml:id="sect.privileged_commands.request_deck_status">
+    <title>Request Deck Status</title>
+    <para>
+      Request the current deck status.
+    </para>
+    <para>
+      <userinput>RE <replaceable>deck-num</replaceable>!</userinput>
+    </para>
+    <variablelist>
+      <varlistentry>
+	<term><replaceable>deck-num</replaceable></term>
+	<listitem>
+	  <para>
+	    The number of the deck for which to return status.
+	  </para>
+	</listitem>
+      </varlistentry>
+    </variablelist>
+    <para>
+      If <replaceable>deck-num</replaceable> is greater than zero,
+      <command>rdcatchd</command><manvolnum>8</manvolnum> will respond with 
+      <computeroutput>RE <replaceable>deck-num</replaceable> 
+      <replaceable>status</replaceable> <replaceable>id</replaceable>
+      <replaceable>cutname</replaceable>!</computeroutput>
+    </para>
+    <variablelist>
+      <varlistentry>
+	<term><replaceable>deck-num</replaceable></term>
+	<listitem>
+	  <para>
+	    Channel number
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term><replaceable>status</replaceable></term>
+	<listitem>
+	  <para>
+	    The current status of the deck. Possible values are:
+	  </para>
+	  <para>
+	    <table frame="all">
+	      <title>Deck Status Codes</title>
+	      <tgroup cols="2" align="left" colsep="1" rowsep="1">
+		<colspec colname="Code"  colwidth="1.0*" />
+		<colspec colname="Meaning" colwidth="10.0*" />
+		<thead>
+		  <row><entry>Code</entry><entry>Meaning</entry></row>
+		</thead>
+		<tbody>
+		  <row><entry>0</entry><entry>Offline</entry></row>
+		  <row><entry>1</entry><entry>Idle</entry></row>
+		  <row><entry>2</entry><entry>Ready</entry></row>
+		  <row><entry>3</entry><entry>Active (playing or recording)</entry></row>
+		  <row><entry>4</entry><entry>Waiting (for a GPI)</entry></row>
+		</tbody>
+	      </tgroup>
+	    </table>
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term><replaceable>event-id</replaceable></term>
+	<listitem>
+	  <para>
+	    ID number of current event (from RECORDINGS table)
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term><replaceable>cutname</replaceable></term>
+	<listitem>
+	  <para>
+	    The cutname of the event (present only for
+	    <replaceable>status</replaceable>==<computeroutput>3</computeroutput>).
+	  </para>
+	</listitem>
+      </varlistentry>
+    </variablelist>
+    <para>
+      If <replaceable>channel</replaceable> is zero,
+      <command>rdcatchd</command><manvolnum>8</manvolnum> will respond for
+      every event whose status is non-idle.
+    </para>
+    <para>
+      An <computeroutput>RE</computeroutput> packet will also be sent
+      automatically to all active connections upon any change of deck status.
+    </para>
+  </sect2>
+  <sect2 xml:id="sect.privileged_commands.enable_metering">
+    <title>Enable Metering</title>
+    <para>
+      Enable/Disable Audio Metering
+    </para>
+    <para>
+      <userinput>RM <replaceable>state</replaceable>!</userinput>
+    </para>
+    <variablelist>
+      <varlistentry>
+	<term><replaceable>state</replaceable></term>
+	<listitem>
+	  <para>
+	    <computeroutput>1</computeroutput> = Enabled,
+	    <computeroutput>0</computeroutput> = Disabled.
+	  </para>
+	</listitem>
+      </varlistentry>
+    </variablelist>
+    <para>
+      When metering is active, meter data packets will be periodically sent,
+      as follows:
+    </para>
+    <para>
+      <computeroutput>RM <replaceable>deck</replaceable>
+      <replaceable>chan</replaceable>
+      <replaceable>level</replaceable>!</computeroutput>
+    </para>
+    <variablelist>
+      <varlistentry>
+	<term><replaceable>deck</replaceable></term>
+	<listitem>
+	  <para>
+	    Deck number
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term><replaceable>chan</replaceable></term>
+	<listitem>
+	  <para>
+	    Channel, <computeroutput>0</computeroutput> = Left,
+	    <computeroutput>1</computeroutput> = Right
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term><replaceable>level</replaceable></term>
+	<listitem>
+	  <para>
+	    Left audio level, in 1/100 of dbFS
+	  </para>
+	</listitem>
+      </varlistentry>
+    </variablelist>
+  </sect2>
+  
+  <sect2 xml:id="sect.privileged_commands.stop_deck">
+    <title>Stop Deck</title>
+    <para>
+      Stop active event.
+    </para>
+    <para>
+      <userinput>SR <replaceable>deck-num</replaceable>!</userinput>
+    </para>
+    <variablelist>
+      <varlistentry>
+	<term><replaceable>deck-num</replaceable></term>
+	<listitem>
+	  <para>
+	    The number of the deck to stop.
+	  </para>
+	</listitem>
+      </varlistentry>
+    </variablelist>
+  </sect2>
+
+  <sect2 xml:id="sect.privileged_commands.purge_event">
+    <title>Purge Event</title>
+    <para>
+      Report purging of one-shot event.
+    </para>
+    <para>
+      <userinput>PE <replaceable>event-num</replaceable>!</userinput>
+    </para>
+    <variablelist>
+      <varlistentry>
+	<term><replaceable>event-num</replaceable></term>
+	<listitem>
+	  <para>
+	    The number of the purged event.
+	  </para>
+	</listitem>
+      </varlistentry>
+    </variablelist>
+    <para>
+      Received upon completion of a one-shot event by
+      <command>rdcatchd</command><manvolnum>8</manvolnum> to indicate that
+      the event has been purged.
+    </para>
+  </sect2>
+
+  <sect2 xml:id="sect.privileged_commands.reload_time_offset">
+    <title>Reload Time Offset</title>
+    <para>
+      Reload the time offset value from the database.
+    </para>
+    <para>
+      <userinput>RO!</userinput>
+    </para>
+  </sect2>
+
+  <sect2 xml:id="sect.privileged_commands.reload_heartbeat_configuration">
+    <title>Reload Heartbeat Configuration</title>
+    <para>
+      Reload the heartbeat configuration from the database.
+    </para>
+    <para>
+      <userinput>RH!</userinput>
+    </para>
+  </sect2>
+
+  <sect2 xml:id="sect.privileged_commands.heartbeat_pulse">
+    <title>Heartbeat Pulse</title>
+    <para>
+      Heartbeat Pulse, for connection keep-alive.
+    </para>
+    <para>
+      <userinput>HB!</userinput>
+    </para>
+  </sect2>
+
+  <sect2 xml:id="sect.privileged_commands.restart_dropbox_instances">
+    <title>Restart Dropbox Instances</title>
+    <para>
+      Restart all <command>rdimport</command><manvolnum>1</manvolnum>
+      instances for running dropboxes.
+    </para>
+    <para>
+      <userinput>RX!</userinput>
+    </para>
+  </sect2>
+
+  <sect2 xml:id="sect.privileged_commands.input_monitor_state">
+    <title>Input Monitor State</title>
+    <para>
+      Turn the input monitor on or off.
+    </para>
+    <para>
+      <userinput>MN <replaceable>deck-num</replaceable>
+      <replaceable>state</replaceable>!</userinput>
+    </para>
+    <variablelist>
+      <varlistentry>
+	<term><replaceable>deck-num</replaceable></term>
+	<listitem>
+	  <para>
+	    The number of the deck.
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term><replaceable>state</replaceable></term>
+	<listitem>
+	  <para>
+	    <computeroutput>1</computeroutput> = Enabled,
+	    <computeroutput>0</computeroutput> = Disabled.
+	  </para>
+	</listitem>
+      </varlistentry>
+    </variablelist>
+  </sect2>
+
+  <sect2 xml:id="sect.privileged_commands.set_exit_code">
+    <title>Set Exit Code</title>
+    <para>
+      Set the exit code of an event.
+    </para>
+    <para>
+      <userinput>SC <replaceable>event-num</replaceable>
+      <replaceable>code</replaceable>
+      <replaceable>msg</replaceable>!</userinput>
+    </para>
+    <variablelist>
+      <varlistentry>
+	<term><replaceable>event-num</replaceable></term>
+	<listitem>
+	  <para>
+	    The number of the event.
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term><replaceable>code</replaceable></term>
+	<listitem>
+	  <para>
+	    The numeric code to set.
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term><replaceable>msg</replaceable></term>
+	<listitem>
+	  <para>
+	    The text message to set.
+	  </para>
+	</listitem>
+      </varlistentry>
+    </variablelist>
+  </sect2>
+
+
+
+</sect1>
+
+</article>

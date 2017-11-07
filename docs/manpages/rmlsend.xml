@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<refentry id="stdin" xmlns="http://docbook.org/ns/docbook" version="5.0">
+  <!--
+      Header
+  -->
+  <refmeta>
+    <refentrytitle>rmlsend</refentrytitle>
+    <manvolnum>1</manvolnum>
+    <refmiscinfo class='source'>November 2017</refmiscinfo>
+    <refmiscinfo class='manual'>Linux Audio Manual</refmiscinfo>
+  </refmeta>
+  <refnamediv>
+    <refname>rmlsend</refname>
+    <refpurpose>Send Rivendell Macro Language (RML) commands</refpurpose>
+  </refnamediv>
+  <info>
+    <author>
+      <personname>
+	<firstname>Fred</firstname>
+	<surname>Gleason</surname>
+	<email>fredg@paravelsystems.com</email>
+      </personname>
+      <contrib>Application Author</contrib>
+    </author>
+  </info>
+
+  <!--
+      Body
+  -->
+  <refsynopsisdiv id='synopsis'>
+    <cmdsynopsis>
+      <command>rmlsend</command>
+      <arg choice='opt'><userinput>--from-file=</userinput><replaceable>filename</replaceable></arg>
+      <arg choice='opt'><userinput>--to-host=</userinput><replaceable>hostname</replaceable></arg>
+      <arg choice='opt'><userinput>--to-port=</userinput><replaceable>port</replaceable></arg>
+      <arg choice='opt'><replaceable>rml</replaceable></arg>
+      <sbr/>
+    </cmdsynopsis>
+  </refsynopsisdiv>
+
+  <refsect1 id='description'><title>Description</title>
+  <para>
+    <command>rmlsend</command><manvolnum>1</manvolnum> is a small
+    utility that can be used to send RML commands to a
+    local or remote Rivendell host. It can operate in two modes: GUI or
+    a command line interface (CLI).
+  </para>
+  <para>
+    If started with no arguments,
+    <command>rmlsend</command><manvolnum>1</manvolnum> will come up in GUI
+    mode, otherwise it will attempt to perform the specified operation and
+    then exit.
+  </para>
+  </refsect1>
+
+  <refsect1 id='options'><title>Options</title>
+  <variablelist remap='TP'>
+    <varlistentry>
+      <term>
+	<option>--from-file=</option><replaceable>filename</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  Take the command(s) to send from <replaceable>filename</replaceable>,
+	  rather than specifying them on the command-line. If
+	  <userinput>-</userinput> is specified as
+	  <replaceable>filename</replaceable>, the commands will be read
+	  from standard input.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
+	<option>--to-host=</option><replaceable>host</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  Send the specified command(s) to <replaceable>host</replaceable>.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
+	<option>--set-port=</option><replaceable>port</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  Send the specified command(s) to UDP port
+	  <replaceable>port</replaceable>. Default value is
+	  <userinput>5858</userinput>.
+	</para>
+      </listitem>
+    </varlistentry>
+
+  </variablelist>
+</refsect1>
+
+</refentry>
+

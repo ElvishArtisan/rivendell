@@ -1,0 +1,47 @@
+<?xml version='1.0'?>
+
+<!DOCTYPE book [
+  <!ENTITY frontspiece SYSTEM "frontspiece.xml">
+  <!ENTITY overview SYSTEM "overview.xml">
+  <!ENTITY rdlogin SYSTEM "rdlogin.xml">
+  <!ENTITY rdlibrary SYSTEM "rdlibrary.xml">
+  <!ENTITY rdcatch SYSTEM "rdcatch.xml">
+  <!ENTITY rdlogedit SYSTEM "rdlogedit.xml">
+  <!ENTITY rdairplay SYSTEM "rdairplay.xml">
+  <!ENTITY rdlogmanager SYSTEM "rdlogmanager.xml">
+  <!ENTITY voicetracking SYSTEM "voicetracking.xml">
+  <!ENTITY rml SYSTEM "rml.xml">
+  <!ENTITY utilities SYSTEM "utilities.xml">
+  <!ENTITY gplv2 SYSTEM "gplv2.xml">
+  <!ENTITY gpio_switcher_devices SYSTEM "gpio_switcher_devices.xml">
+  <!ENTITY filepath_wildcards SYSTEM "filepath_wildcards.xml">
+  <!ENTITY metadata_wildcards SYSTEM "metadata_wildcards.xml">
+  <!ENTITY rivendell_filter SYSTEM "rivendell_filter.xml">
+  <!ENTITY wings_filter SYSTEM "wings_filter.xml">
+]>
+
+<book xmlns="http://docbook.org/ns/docbook" version="5.0">
+  &frontspiece;
+  &overview;
+  &rdlogin;
+  &rdlibrary;
+  &rdcatch;
+  &rdlogedit;
+  &rdairplay;
+  &rdlogmanager;
+  &voicetracking;
+  &rml;
+  &utilities;
+  &gplv2;
+  &gpio_switcher_devices;
+  &filepath_wildcards;
+  &metadata_wildcards;
+  &rivendell_filter;
+  &wings_filter;
+</book>
+
+<!--
+<structure xml:id="manual">
+  <output renderas="book"/>
+</structure>
+-->

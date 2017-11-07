@@ -107,7 +107,12 @@ if test "@WIN32_SOURCE@" ; then
   mkdir -p $RPM_BUILD_ROOT/var/win32
   cp @WIN32_SOURCE@ $RPM_BUILD_ROOT/var/win32/
 fi
-
+mkdir -p $RPM_BUILD_ROOT/%{_datadir}/doc/rivendell-%{version}/opsguide/html
+cp docs/opsguide/*.pdf $RPM_BUILD_ROOT/%{_datadir}/doc/rivendell-%{version}/opsguide/
+cp docs/opsguide/*.html $RPM_BUILD_ROOT/%{_datadir}/doc/rivendell-%{version}/opsguide/html/
+cp docs/opsguide/*.png $RPM_BUILD_ROOT/%{_datadir}/doc/rivendell-%{version}/opsguide/html
+mkdir -p $RPM_BUILD_ROOT/%{_datadir}/doc/rivendell-%{version}/apis
+cp docs/apis/*.pdf $RPM_BUILD_ROOT/%{_datadir}/doc/rivendell-%{version}/apis/
 
 %post
 ldconfig
@@ -359,6 +364,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/rdexport.1.gz
 %{_mandir}/man1/rdimport.1.gz
 %{_mandir}/man1/rdrender.1.gz
+%{_mandir}/man1/rmlsend.1.gz
 %{_mandir}/man8/rddbcheck.8.gz
 %{_mandir}/man8/rdmarkerset.8.gz
 %{_mandir}/man8/rdrevert.8.gz
@@ -373,18 +379,6 @@ rm -rf $RPM_BUILD_ROOT
 %doc conf/rd.conf-sample
 %doc conf/my.cnf-master
 %doc conf/my.cnf-standby
-%doc docs/catchd.txt 
-%doc docs/colors 
-%doc docs/GPIO.txt 
-%doc docs/ripc.txt 
-%doc docs/SWITCHERS.txt
-%doc docs/JACK.txt
-%doc docs/ENCODERS.txt
-%doc docs/pam_rd.txt
-%doc docs/MESSAGE_BOX.txt
-%doc docs/docbook/cae.pdf
-%doc docs/docbook/rml.pdf
-%doc docs/docbook/web_api.pdf
 %doc docs/tables/audio_perms.txt 
 %doc docs/tables/audio_ports.txt 
 %doc docs/tables/cart.txt 
@@ -409,7 +403,7 @@ rm -rf $RPM_BUILD_ROOT
 %doc docs/tables/ttys.txt 
 %doc docs/tables/users.txt 
 %doc docs/tables/version.txt 
-%doc docs/asound.conf-sample
+%doc conf/asound.conf-sample
 %doc conf/rlm_walltime.conf
 %doc conf/rlm_serial.conf
 %doc conf/rlm_udp.conf
@@ -428,23 +422,22 @@ rm -rf $RPM_BUILD_ROOT
 %doc conf/rlm_urlwrite.conf
 %doc conf/rlm_spinitron_plus.conf
 %doc conf/rlm_tagstation.conf
-%doc docs/implemented_macros.txt
 %doc utils/sas_shim/rc.sas_shim
-%doc docs/datetime_wildcards.txt
-%doc docs/reports.txt
-%doc docs/NOW+NEXT.txt
-%doc docs/WIN32.txt
-%doc docs/ALSA.txt
-%doc docs/RDMONITOR.txt
-%doc docs/scheduler_formats.ods
-%doc docs/copy_split_format.odt
-%doc docs/ando_interface.odt
-%doc docs/metadata_wildcards.txt
+%doc docs/misc/colors 
+%doc docs/misc/pam_rd.txt
+%doc docs/misc/reports.txt
+%doc docs/misc/ALSA.txt
+%doc docs/misc/RDMONITOR.txt
+%doc docs/misc/scheduler_formats.ods
+%doc docs/misc/ando_interface.odt
 %doc scripts/rd_backup
 %doc scripts/start_traverso.sh
 %doc scripts/rd_mysql_enable_host.sh
 %doc scripts/rd_backup_system.sh
 %doc scripts/rd_restore_system.sh
+%{_datadir}/doc/rivendell-%{version}/apis/*.pdf
+%{_datadir}/doc/rivendell-%{version}/opsguide/*.pdf
+%{_datadir}/doc/rivendell-%{version}/opsguide/html/*
 
 
 %files base
@@ -485,9 +478,6 @@ rm -rf $RPM_BUILD_ROOT
 @LOCAL_PREFIX@/bin/rddiscimport
 @LOCAL_PREFIX@/share/applications/rivendell-rddgimport.desktop
 @LOCAL_PREFIX@/share/applications/rivendell-rddiscimport.desktop
-%doc docs/WINGS_FILTER.txt
-%doc docs/RIVENDELL_FILTER.txt
-%doc docs/NEXGEN_FILTER.txt
 %doc scripts/engine_conv.py
 
 

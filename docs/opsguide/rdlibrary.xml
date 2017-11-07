@@ -1,0 +1,1043 @@
+<chapter xmlns="http://docbook.org/ns/docbook" xml:id="chapter.rdlibrary">
+  <title>Content Management with RDLibrary</title>
+  <sect1 xml:id="sect.rdlibrary.the_rivendell_library_structure_and_rdlibrary">
+    <title>The Rivendell Library Structure and RDLibrary</title>
+    <sect2 xml:id="sect2_rdlibrary_carts">
+      <title>Carts</title>
+      <para>
+	The Rivendell Library consists of a set of objects called
+	<emphasis>carts</emphasis>.
+	A cart is a data container that holds either one or more pieces
+	of audio (called an <emphasis>audio cart</emphasis>), or macro
+	commands to the system
+	(called a <emphasis>macro cart</emphasis>). The cart is the
+	fundamental schedule
+	building block in Rivendell, in that it is the smallest object or
+	'atom' that the outside world (like a traffic or music scheduler)
+	can see.
+      </para>
+      <para>
+	RDLibrary, upon startup, will show the current list of all carts
+	on the system (see below).
+      </para>
+      <para>
+	<mediaobject>
+	  <imageobject>
+	    <imagedata align="center" fileref="rdlibrary.rdlibrary_screenshot.png" scale="50"/>
+	  </imageobject>
+	  <caption>
+	    <para>RDLibrary Main Window</para>
+	  </caption>
+	</mediaobject>
+      </para>
+      <para>
+	A number of important attributes of carts can be seen from this
+	illustration.  First is the cart's number.  Each cart in the Library
+	gets assigned a unique number when it is created.  This number can
+	range between 000001 and 999999, and is the primary 'handle' by which
+	both Rivendell and external systems (like traffic or music schedulers)
+	refer to the cart.  Very often, sites have specific rules concerning
+	which types of audio (commercials, promos, music, etc) and macros get
+	assigned which numbers.  We'll cover this area in some detail when
+	we discuss groups.
+      </para>
+      <para>
+	Immediately to the left of the cart number is an icon indicating
+	the type of cart. Just to the right of the cart number is the
+	average length of the cart.  Except in the case of where
+	timescaling is in use (in which case it will be indicated in
+	blue numerals), this value is calculated automatically by the system.
+      </para>
+      <para>
+	Next comes various columns showing information from the cart
+	label – Title, Artist, Client and Agency data, etc.  This
+	information can be edited by opening RDLibrary's Edit Cart dialog,
+	either by double-clicking on the desired cart
+	entry in the list, or by touching the desired cart entry and then
+	touching the Edit button.  In either case, you should get a dialog
+	similar to that shown in the illustration.
+      </para>
+      <para>
+	<mediaobject>
+	  <imageobject>
+	    <imagedata align="center" fileref="rdlibrary.edit_cart_dialog.png" scale="50"/>
+	  </imageobject>
+	  <caption>
+	    <para>The Edit Cart Dialog</para>
+	  </caption>
+	</mediaobject>
+      </para>
+      <para>
+	Near the center of the dialog will be a dropdown box labeled
+	<computeroutput>Schedule Cuts</computeroutput>. When set to
+	<computeroutput>By Weight</computeroutput> (the default), this will
+	allow cut rotation to be managed by means of daypart settings (see
+	<xref linkend="sect.rdlibrary.cut_dayparting"/>). When set to
+	<computeroutput>By Specified Order</computeroutput>, the precise
+	rotation of the cuts within the cart can be set manually.
+      </para>
+      <para>
+	This is how an audio cart looks when loaded into the Edit Cart dialog.
+	The upper half of the dialog is the cart label data.  The meaning
+	of most of these fields should be fairly self-evident, but a few
+	call for special comment:
+      </para>
+      <para>
+	<variablelist>
+	  <varlistentry>
+	    <term>Enforce Length</term>
+	    <listitem>
+	      <para>
+		When checked, this indicates that timescaling should be
+		applied to this cart when it is played in RDAirPlay,
+		meaning that the cart will air at the length indicated by
+		the Forced Length field, rather than the native length of
+		the audio.  Care is needed when implementing timescaling
+		within a facility, as there are limits to how much the
+		length can be altered, while only certain types of audio
+		adapters support it at all.  See the Rivendell Technical
+		Guide for more information.
+	      </para>
+	    </listitem>
+	  </varlistentry>
+	  <varlistentry>
+	    <term>Group</term>
+	    <listitem>
+	      <para>
+		This is a pull down menu by which the group ownership for
+		the cart can be set.  The system administrator configures
+		the list of available groups for each user in RDAdmin.
+	      </para>
+	    </listitem>
+	  </varlistentry>
+	  <varlistentry>
+	    <term>User Defined</term>
+	    <listitem>
+	      <para>
+		As the name implies, this field has no dedicated meaning
+		to Rivendell itself, but is provided for each site to use
+		as is seen fit.
+	      </para>
+	    </listitem>
+	  </varlistentry>
+	</variablelist>
+      </para>
+      <para>
+	The example in the illustration above shows an audio cart. As such,
+	the bottom half of the dialog displays the lists of cuts contained
+	within the cart.  
+      </para>
+    </sect2>
+    <sect2 xml:id="sect.rdlibrary.cuts">
+      <title>Cuts</title>
+      <para>
+	Each audio cart can contain one or more <emphasis>cuts</emphasis>.
+	A Rivendell cut is
+	an actual piece of audio, somewhat analogous to a 'track' on a CD.
+	Up to 999 such cuts can exist within a single cart.  Each line in
+	the cut list contains information about the cut, including:
+      </para>
+      <variablelist>
+	<varlistentry>
+	  <term><computeroutput>WT</computeroutput></term>
+	  <listitem>
+	    <para>
+	      The <emphasis>weighting</emphasis> value for the cut. see
+	      <xref linkend="sect.rdlibrary.cut_dayparting"/> for discussion.
+	    </para>
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term><computeroutput>ORDER</computeroutput></term>
+	  <listitem>
+	    <para>
+	      The <emphasis>order</emphasis> value for the cut. see
+	      <xref linkend="sect.rdlibrary.cut_dayparting"/> for discussion.
+	    </para>
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term><computeroutput>DESCRIPTION</computeroutput></term>
+	  <listitem>
+	    <para>
+	      n arbitrary name, assignable by the user as an aid in keeping
+	      track of the content, it is roughly analogous to the 'Title'
+	      field in the cart label.
+	    </para>
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term><computeroutput>LENGTH</computeroutput></term>
+	  <listitem>
+	    <para>
+	      The actual, measured play out length of the cut audio.
+	      This field is calculated automatically by the system.
+	    </para>
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term><computeroutput>LAST PLAYED</computeroutput></term>
+	  <listitem>
+	    <para>
+	      he last date and time that the cut was aired by one of the
+	      on-air modules.  Useful for keeping track of stale inventory.
+	    </para>
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term><computeroutput># OF PLAYS</computeroutput></term>
+	  <listitem>
+	    <para>
+	      The total number of times the cut has been aired by the
+	      one of the on-air modules.
+	    </para>
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term><computeroutput>ORIGIN</computeroutput></term>
+	  <listitem>
+	    <para>
+	      The name of the host upon which the audio in the cut was last
+	      recorded, along with the date and time.
+	    </para>
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term><computeroutput>OUTCUE</computeroutput></term>
+	  <listitem>
+	    <para>
+	      A user settable field. This line shows up in the RDAirPlay
+	      log when the cut is played.
+	    </para>
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term><computeroutput>START DATE</computeroutput></term>
+	  <listitem>
+	    <para>
+	      The effective start date/time of the cut.
+	    </para>
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term><computeroutput>END DATE</computeroutput></term>
+	  <listitem>
+	    <para>
+	      The effective end date/time of the cut.
+	    </para>
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term><computeroutput>START DAYPART</computeroutput></term>
+	  <listitem>
+	    <para>
+	      The start time of the cut's daypart.
+	    </para>
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term><computeroutput>END DAYPART</computeroutput></term>
+	  <listitem>
+	    <para>
+	      The start time of the cut's daypart.
+	    </para>
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term><computeroutput>NAME</computeroutput></term>
+	  <listitem>
+	    <para>
+	      The internal CUTNAME of the cut as used in Rivendell's
+	      database.
+	    </para>
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term><computeroutput>SHA1</computeroutput></term>
+	  <listitem>
+	    <para>
+	      The SHA-1 hash value of the cut's file in Rivendell's audio
+	      store.
+	    </para>
+	  </listitem>
+	</varlistentry>
+      </variablelist>
+      <sect3 xml:id="sect.rdlibrary.multiple_cuts_in_a_cart">
+	<title>Multiple Cuts in a Cart</title>
+	<para>
+	  What happens when more than one cut is placed into a cart? The
+	  answer, in a word, is <emphasis>rotation</emphasis>. Rotation is
+	  the ability to
+	  schedule a single cart in a log, but to have that cart play out
+	  different material at different times. This capability has a
+	  myriad of uses.  One of the simplest, common in commercial radio
+	  facilities, is to allow multiple versions of a spot to be placed
+	  into the system, while still allowing the traffic department to
+	  have to track and schedule only one cart number. A more
+	  sophisticated use involves use of the cut's
+	  <emphasis>dayparting</emphasis> settings,
+	  forcing different cuts to play based upon certain date/time
+	  criteria, such as day of the week or time of day. Cut dayparting
+	  is a very powerful feature in Rivendell, and is something we
+	  will discuss shortly.
+	</para>
+	<para>
+	  To edit the properties of a cut, either double-click its entry
+	  in the cut list, or touch it once to highlight and then touch
+	  the <computeroutput>Cut Info/Record</computeroutput> button.
+	  The Record Dialog will now open up.
+	</para>
+	<para>
+	  <mediaobject>
+	    <imageobject>
+	      <imagedata align="center" fileref="rdlibrary.edit_cut_info_dialog.png" scale="50"/>
+	    </imageobject>
+	    <caption>
+	      <para>The Record Dialog</para>
+	    </caption>
+	  </mediaobject>
+	</para>
+	<para>
+	  Roughly the upper third of the dialog is for editing the various
+	  cut parameters, the middle section is for  configuring the cut's
+	  daypart settings, and the bottom third is a record machine that
+	  can be used both to record new audio into the system and to
+	  audition any recording already made.
+	</para>
+      </sect3>
+      <sect3 xml:id="sect.rdlibrary.cut_dayparting">
+	<title>Cut Dayparting</title>
+	<para>
+	  For carts for which <computeroutput>Schedule Cuts</computeroutput>
+	  is set to <computeroutput>By Weight</computeroutput>,each cut in
+	  can be dayparted on the basis of these parameters:
+	</para>
+	<para>
+	  <itemizedlist>
+	    <listitem>
+	      Weight
+	    </listitem>
+	    <listitem>
+	      Absolute Start and End Date-Time
+	    </listitem>
+	    <listitem>
+	      Relative Start and End Time
+	    </listitem>
+	    <listitem>
+	      Day of the Week
+	    </listitem>
+	  </itemizedlist>
+	</para>
+	<para>
+	  While not strictly a dayparting parameter, the
+	  <computeroutput>WEIGHT</computeroutput> setting of a cut can
+	  strongly influence
+	  the order (and hence placement) of when a particular cut will play.
+	  The weight value of each cut in a cart consistutes the numerator
+	  of a fraction, the denominator of which is the sum of the weight
+	  values of every cut in the cart. Rivendell's cut selection
+	  algorithm will seek to play each cut in like proportion. If it is
+	  important in some cases to be able to specify the precise order
+	  of each cut play-out, consider changing the
+	  <computeroutput>Schedule Cuts</computeroutput> dropdown to
+	  <computeroutput>By Specified Order</computeroutput>.
+	</para>
+	<para>
+	  By default, each newly created cut in a
+	  <computeroutput>By Weight</computeroutput> cart starts out with
+	  dayparting
+	  disabled, meaning that it will be 'eligible to play' at all times.
+	  By clicking the <computeroutput>Enabled</computeroutput> radio
+	  button in the <computeroutput>Air Date/Time</computeroutput> box, an
+	  absolute start and end date for the cut can be entered, meaning
+	  that the cut will be prevented from airing in the on-air modules
+	  at any time outside the range of those date-times. Likewise, by
+	  selecting the <computeroutput>Enabled</computeroutput> radio button
+	  in the <computeroutput>Daypart</computeroutput> box, start and end
+	  times (relative to the day the cut is to air) can be entered.
+	  Cuts designated in this way will be allowed to air only within
+	  the specified range of times. Finally, by ticking or clearing
+	  the appropriate boxes in the 
+	  <computeroutput>Day of the Week</computeroutput> box, a cut can be
+	  constrained to air only on certain days of the week.
+	</para>
+	<para>
+	  All of the dayparting parameters can be used either singly or in
+	  combination with each other.  When combined, the resulting
+	  'eligibility' is calculated as the logical AND of the applied
+	  dayparting limits.  For example, a cut with the 'Monday' box
+	  cleared will refuse to air on Mondays, regardless of whether
+	  any of the other daypart rules match.
+	</para>
+	<para>
+	  It's important to remember that dayparting rules affect audio
+	  play out only within the on-air modules. You will still be
+	  able to audition and play the audio without limitation in the
+	  other Rivendell modules.
+	</para>
+      </sect3>
+      <sect3 xml:id="sect.rdlibrary.cart_and_cut_color_coding">
+	<title>Cart and Cut Color Coding</title>
+	<para>
+	  Each cart or cut in RDLibrary is assigned a color to indicate
+	  it's 'playability' for air, as follows:
+	</para>
+	<para>
+	  <variablelist>
+	    <varlistentry>
+	      <term>NO COLOR</term>
+	      <listitem>
+		<para>
+		  Event will play normally
+		</para>
+	      </listitem>
+	    </varlistentry>
+	    <varlistentry>
+	      <term>CYAN</term>
+	      <listitem>
+		<para>
+		  Event will not play (cut datetime is in the future)
+		</para>
+	      </listitem>
+	    </varlistentry>
+	    <varlistentry>
+	      <term>RED</term>
+	      <listitem>
+		<para>
+		  Event will not play (outside of dayparting limits or audio
+		  is not available)
+		</para>
+	      </listitem>
+	    </varlistentry>
+	    <varlistentry>
+	      <term>GREEN</term>
+	      <listitem>
+		<para>
+		  Event will play an Evergreen
+		</para>
+	      </listitem>
+	    </varlistentry>
+	  </variablelist>
+	</para>
+	<para>
+	  It's important to remember that the color displayed for each
+	  event indicates playability <emphasis>at the instant that the event
+	  is being viewed</emphasis>.
+	</para>
+      </sect3>
+      <sect3 xml:id="sect.rdlibrary.recording_and_auditioning_a_cut_in_the_record_dialog">
+	<title>Recording and Auditioning a Cut in the Record Dialog</title>
+	<para>
+	  The lower third of the Record Dialog is used both to audition and
+	  record audio.  To audition the cut, simply press the play button
+	  (the one with the triangular symbol). The button will
+	  illuminate, audio will show on the bar meter and start playing
+	  immediately. The audio will play to completion, unless either 
+	  the stop button (square symbol) is pressed, or the Record Dialog
+	  is closed.
+	</para>
+	<para>
+	  To record new material into a cut, first ensure that the
+	  <computeroutput>Channels</computeroutput>
+	  drop-down menu is set to record the appropriate number of channels,
+	  then touch the <computeroutput>Record</computeroutput> button
+	  (round symbol).  If the cut contains
+	  audio that was recorded previously, a warning box will pop up at
+	  this point to inform you of this and to give you a chance to abort
+	  the recording without erasing what was previously recorded.  If
+	  <computeroutput>Yes</computeroutput> is selected here, the
+	  previous recording will be overwritten
+	  and no longer accessible.
+	  The <computeroutput>Record</computeroutput> button will now be
+	  illuminated steadily, while the
+	  <computeroutput>Play</computeroutput> button will be flashing,
+	  indicating that the record machine is in 'ready' mode.  The bar
+	  meter will also be active to indicate input levels, and this is
+	  the point where you want to verify that your levels are correct,
+	  with peaks just into the yellow area being optimal.  Nothing is
+	  actually being recorded just yet.
+	</para>
+	<para>
+	  We have two options for actually starting the record machine.
+	  We can start it manually by pressing the
+	  <computeroutput>Play</computeroutput> button, at which
+	  point the machine will immediately begin recording, or we can set
+	  the <computeroutput>Record Mode</computeroutput> drop-down menu
+	  to the <computeroutput>VOX</computeroutput> (short for voice
+	  activated) setting. When in <computeroutput>VOX</computeroutput>
+	  mode, the record machine will
+	  start automatically as soon as it senses the presence of audio
+	  at the input.
+	</para>
+	<para>
+	  Once started, recording will continue until either the
+	  <computeroutput>Stop</computeroutput> button
+	  is pushed, or the maximum allowed length for a manual recording
+	  (set by the system administrator) has been reached. Once stopped,
+	  if the <computeroutput>AutoTrim</computeroutput> drop-down menu
+	  has been set to <computeroutput>On</computeroutput>, the Start and
+	  End markers will be automatically set to the beginning and end of
+	  detected audio within the cut. (We will discuss Markers in detail
+	  when we get to the section on the Edit Markers dialog).
+	</para>
+      </sect3>
+    </sect2>
+  </sect1>
+  <sect1 xml:id="sect.rdlibrary.alternative_methods_of_audio_ingestion">
+    <title>Alternative Methods of Audio Ingestion</title>
+    <para>
+      In addition to manually recording material in realtime, RDLibrary
+      supports two alternative methods for audio ingestion:
+    </para>
+    <para>
+      <itemizedlist>
+	<listitem>
+	  Importing from a File
+	</listitem>
+	<listitem>
+	  Ripping from a CD
+	</listitem>
+      </itemizedlist>
+    </para>
+    <sect2 xml:id="sect2_rdlibrary_importing_audio_from_a_file">
+      <title>Importing Audio from a File</title>
+      <para>
+	To import audio from a file directly into a cut, we start by
+	opening the cut's parent cart in the Edit Cart Dialog.  Next,
+	touch the cut's entry in the cut list and then touch the
+	<computeroutput>Import/Export</computeroutput> button to open the
+	Import/Export Audio Dialog.
+      </para>
+      <para>
+	<mediaobject>
+	  <imageobject>
+	    <imagedata align="center" fileref="rdlibrary.import_export_dialog.png" scale="50"/>
+	  </imageobject>
+	  <caption>
+	    <para>The Import/Export Audio Dialog</para>
+	  </caption>
+	</mediaobject>
+      </para>
+      <para>
+	Select the file you wish to import, either by entering the path
+	and filename to it in the <computeroutput>Filename</computeroutput>
+	field or by clicking the <computeroutput>Select</computeroutput>
+	button to open a file browsing dialog.  Rivendell is capable of
+	importing the following types of audio files:
+      </para>
+      <para>
+	<itemizedlist>
+	  <listitem>
+	    Microsoft WAV (*.wav) – PCM16, PCM24 and MPEG are supported
+	  </listitem>
+	  <listitem>
+	    MPEG (*.mp1, *.mp2, *.mp3)
+	  </listitem>
+	  <listitem>
+	    OggVorbis (*.ogg)
+	  </listitem>
+	  <listitem>
+	    Free Lossless Audio Codec [FLAC] (*.flac)
+	  </listitem>
+	</itemizedlist>
+      </para>
+      <para>
+	Next, set the <computeroutput>Channels</computeroutput> drop-down
+	menu to the appropriate number of
+	channels. You may also wish to adjust the
+	<computeroutput>Normalize</computeroutput> or
+	<computeroutput>Autotrim</computeroutput>
+	controls, although these will normally be set to reasonable default
+	values by the system administrator and should seldom have to be
+	altered.  If <computeroutput>Normalize</computeroutput> is selected,
+	then the imported audio will
+	be peak normalized to the level indicated. The
+	<computeroutput>Autotrim</computeroutput> does the
+	same thing as in the Record Dialog (see section 2.0.1.2, 'Recording
+	and Auditioning a Cut in the Record Dialog' above for details).
+      </para>
+      <para>
+	Finally, touch the <computeroutput>Import</computeroutput> button.
+	A progress bar will indicate
+	percentage completion of the import, followed by a popup box to
+	announce completion.  The Import Audio Dialog will automatically
+	close after acknowledging completion.  The audio is now imported,
+	and can now be auditioned and otherwise processed in the usual way.
+      </para>
+    </sect2>
+    <sect2 xml:id="sect.rdlibrary.importing_audio_from_a_cd_track">
+      <title>Ripping Audio from a CD Track</title>
+      <para>
+	To rip audio directly off of a CD into a cut, we again start by
+	opening the cut's parent cart in the Edit Cart Dialog.  Next,
+	select the cut's by touching the cut's entry in the cut list,
+	and then touch the <computeroutput>Rip</computeroutput> button
+	to open the Rip CD Dialog.
+      </para>
+     <para>
+	<mediaobject>
+	  <imageobject>
+	    <imagedata align="center" fileref="rdlibrary.cd_ripper_dialog.png" scale="50"/>
+	  </imageobject>
+	  <caption>
+	    <para>The Rip CD Dialog</para>
+	  </caption>
+	</mediaobject>
+      </para>
+      <para>
+	Load a CD into the CD drive.  After a few seconds, list of tracks
+	should appear in the Tracks area.  If the system administrator has
+	enabled the FreeDB CD Lookup Service, the names of the various
+	tracks may appear as well.  
+      </para>
+      <para>
+	Set the <computeroutput>Channels</computeroutput>,
+	<computeroutput>Normalize</computeroutput> and 
+	<computeroutput>Autotrim</computeroutput> controls appropriately (see
+	section 2.1.0 for more details on using the
+	<computeroutput>Normalize</computeroutput> and
+	<computeroutput>Autotrim</computeroutput>
+	controls).  Next, touch the track you wish to rip and then press
+	the <computeroutput>Rip Track</computeroutput> button. The track will
+	now be ripped into the cut,
+	with a progress bar keeping you informed of progress.  When the
+	rip is complete, a message box will pop up to inform you of this.
+      </para>
+      <para>
+	If FreeDB data was found for the CD, you can have the FreeDB track,
+	artist and album names be automatically placed on the cart label
+	for the cart by checking
+	<computeroutput>Apply FreeDB Values to Cart</computeroutput> before
+	closing the Dialog.
+      </para>
+    </sect2>
+    <sect2 xml:id="sect.rdlibrary.ripping_multiple_cd_tracks_at_a_time">
+      <title>Ripping Multiple CD Tracks at a Time</title>
+      <para>
+	Sometimes, when transferring multiple audio tracks from CD,
+	it's more convenient to be able to set up the entire transfer at
+	once and then let the rip run in a 'batch' mode. RDLibrary is
+	capable of ripping audio in this manner as well. To do this, click
+	the <computeroutput>Rip CD</computeroutput> button near the bottom of
+	the main RDLibrary screen, bringing up the Rip Disk Dialog.
+      </para>
+      <para>
+	<mediaobject>
+	  <imageobject>
+	    <imagedata align="center" fileref="rdlibrary.rip_disk_dialog.png" scale="50"/>
+	  </imageobject>
+	  <caption>
+	    <para>The Rip Disk Dialog</para>
+	  </caption>
+	</mediaobject>
+      </para>
+      <para>
+	This dialog is similar in many ways to the Rip CD Dialog described
+	above, except that each track can be assigned to transfer to a
+	different cut by double clicking on its listing, or by touching
+	the listing and then the Set Cut button, bringing up the Select
+	Cart/Cut Dialog.
+      </para>
+      <para>
+	<mediaobject>
+	  <imageobject>
+	    <imagedata align="center" fileref="rdlibrary.set_cart_cut_dialog.png" scale="50"/>
+	  </imageobject>
+	  <caption>
+	    <para>The Set Cart/Cut Dialog</para>
+	  </caption>
+	</mediaobject>
+      </para>
+      <para>
+	The destination cut is selected by first choosing the cart from the
+	left-hand pane, followed by the desired cut within that cart on the
+	right-hand pane.  The complete set of library filtering tools are
+	available to you here – see section 2.2, 'Navigating the Audio
+	Library' for details on their function, just as in the main
+	RDLibrary screen.
+      </para>
+      <para>
+	Once all of the desired tracks have been assigned to cuts, be sure
+	that the <computeroutput>Normalize</computeroutput>, 
+	<computeroutput>Autotrim</computeroutput>, 
+	<computeroutput>Channels</computeroutput> and
+	<computeroutput>Apply FreeDB Values to Cart</computeroutput>
+	controls have been set as desired, then click the
+	<computeroutput>Rip Disk</computeroutput>
+	button.  A set of progress bars will keep you informed of the
+	progress of each track, as well as overall progress.  When, the
+	rip is finished, a message box will let you know.
+      </para>
+    </sect2>
+  </sect1>
+  <sect1 xml:id="sect.rdlibrary.macro_carts">
+    <title>Macro Carts</title>
+    <para>
+      A macro cart is a cart that contains one or more commands written in
+      Rivendell Macro Language (or 'RML' for short). The Edit Cart dialog
+      for a macro cart is similar in many ways to that for an audio cart
+      with the exception of the lower half, which contains a list of RML
+      commands to be executed rather than a list of cuts. (NOTE: for a
+      complete description of Rivendell Macro Language,
+      including a breakdown of available commands, see 
+      <xref linkend="chapter.rml"/>).
+    </para>
+    <para>
+      To add a new line of RML, select the desired location in the list
+      and touch the <computeroutput>Add button</computeroutput>.
+      Similarly, a line can be deleted by
+      selecting it and then touching the
+      <computeroutput>Delete</computeroutput> button, or modified by
+      touching the <computeroutput>Edit</computeroutput> button. The RML
+      can be tested, eight line-by-line
+      or as a whole by touching the <computeroutput>Run Line</computeroutput>
+      or <computeroutput>Run Cart</computeroutput> button
+      respectively. It is also possible to
+      <computeroutput>Copy</computeroutput> and
+      <computeroutput>Paste</computeroutput> individual
+      lines both within a given cart or between carts.
+    </para>
+    <para>
+      <mediaobject>
+	<imageobject>
+	  <imagedata align="center" fileref="rdlibrary.edit_macro_cart_dialog.png" scale="50"/>
+	</imageobject>
+	<caption>
+	  <para>The Edit Macro Cart Dialog</para>
+	</caption>
+      </mediaobject>
+    </para>
+  </sect1>
+  <sect1 xml:id="sect.rdlibrary.navigating_the_audio_library">
+    <title>Navigating the Audio Library</title>
+    <para>
+      The uppermost section of RDLibrary's main window contains tools
+      designed to allow for fast searching of the entire audio library,
+      making locating a particular piece of audio easy even in a library
+      containing thousands of carts.  It's possible to  control what carts
+      are listed, as well as how they are sorted.
+    </para>
+    <sect2 xml:id="sect.rdlibrary.changing_the_cart_sort_order">
+      <title>Changing the Cart Sort Order</title>
+      <para>
+	The order in which carts are displayed in the cart list can be
+	changed by simply clicking on the header of the column by which
+	you want them sorted by.  By default, the carts are sorted by Cart
+	Number.  To instead sort them alphabetically by Title, simply click
+	the <computeroutput>TITLE</computeroutput> header once.
+	To sort them by Title in reverse –i.e.
+	from 'Z' to 'A' – click the <computeroutput>TITLE</computeroutput>
+	header once again.  Clicking the
+	<computeroutput>TITLE</computeroutput> header a third time restores
+	the sort to normal 'A' to 'Z' again. And so on for all of the columns
+	in the cart list – it's
+	possible to sort the Library by
+	<computeroutput>ARTIST</computeroutput>,
+	<computeroutput>LENGTH</computeroutput>, or any other
+	parameter shown in the cart list.
+      </para>
+    </sect2>
+    <sect2 xml:id="sect.rdlibrary.selecting_carts_by_the_filter_field">
+      <title>Selecting Carts by the Filter Field</title>
+      <para>
+	Very often, one will want to find a cart or set of carts whose
+	label(s) contains a particular word or phrase.  It's possible to
+	narrow the list of displayed carts to this set by simply entering
+	the desired word or phrase into the
+	<computeroutput>Filter</computeroutput> field at the top of the
+	main RDLibrary screen. The full list can be restored by clearing
+	the <computeroutput>Filter</computeroutput> field or by clicking
+	the Clear button.
+      </para>
+    </sect2>
+    <sect2 xml:id="sect.rdlibrary.selecting_carts_by_group">
+      <title>Selecting Carts by Group</title>
+      <para>
+	It's possible to limit the list of carts to only those in a
+	particular group by setting the <computeroutput>Group</computeroutput>
+	drop-down menu to the
+	desired group name.
+      </para>
+    </sect2>
+    <sect2 xml:id="sect.rdlibrary.selecting_carts_by_type">
+      <title>Selecting Carts by Type</title>
+      <para>
+	You can tell RDLibrary what type of carts to list by checking the
+	<computeroutput>Show Audio Carts</computeroutput> and 
+	<computeroutput>Show Macro Carts</computeroutput> boxes. Clearing
+	both boxes
+	obviously results in no carts at all being displayed.
+      </para>
+      <para>
+	It's also possible to combine all four of the above search and
+	sorting methods.
+      </para>
+    </sect2>
+    <sect2 xml:id="sect.rdlibrary.selecting_and_opening_carts">
+      <title>Selecting and Opening Carts</title>
+      <para>
+	Once the desired cart has been located on the cart list, load it
+	into the Edit Cart Dialog by either double
+	clicking its list entry, or by touching its list entry and then
+	touching the <computeroutput>Edit</computeroutput> button.
+      </para>
+    </sect2>
+  </sect1>
+  <sect1 xml:id="sect.rdlibrary.library_maintenance">
+    <title>Library Maintenance</title>
+    <sect2 xml:id="rdlibrary.editing_markers">
+      <title>Editing Markers</title>
+      <para>
+	Rivendell uses a system of cue points within audio cuts, referred
+	to as <emphasis>markers</emphasis>. Markers can be used to specify
+	a number of
+	parameters for a piece of audio.
+	Consult <xref linkend="table.rdlibrary.marker_types"/> to see what
+	markers are available, their purpose and their corresponding color.
+      </para>
+      <para>
+	Markers are set in the Edit Markers Dialog.
+	To access the Dialog, open an audio cart, select the cut to open
+	on the cut list and then touch the
+	<computeroutput>Edit</computeroutput> button.
+      </para>
+      <para>
+	The Dialog is divided into three areas:  the waveform area in the
+	upper half, consisting of the waveform display and
+	<computeroutput>Amplitude</computeroutput> and
+	<computeroutput>Time</computeroutput> buttons; the transport
+	controls area in the center, consisting
+	of <computeroutput>Start</computeroutput>,
+	<computeroutput>Pause</computeroutput>, 
+	<computeroutput>Stop</computeroutput> and
+	<computeroutput>Loop</computeroutput> buttons along with an
+	audio meter;
+	and the marker button area in the lower third of the window,
+	consisting of controls for selecting and positioning markers.  
+      </para>
+      <para>
+	<mediaobject>
+	  <imageobject>
+	    <imagedata align="center" fileref="rdlibrary.edit_marker_dialog.png" scale="50"/>
+	  </imageobject>
+	  <caption>
+	    <para>The Edit Marker Dialog</para>
+	  </caption>
+	</mediaobject>
+      </para>
+      <para>
+	It's possible to 'zoom-in' on the waveform in various ways by
+	clicking the <computeroutput>Amplitude</computeroutput>
+	and <computeroutput>Time</computeroutput> buttons.
+	By default, the waveform
+	is displayed fully 'zoomed-out', thus showing the entire length of
+	the audio cut.  The <computeroutput>GoTo</computeroutput> buttons
+	can be used to jump directly to
+	the current play out cursor position, start or end of the waveform.
+      </para>
+      <para>
+	Audio can be played one of two ways:  either by clicking on the
+	waveform to indicate where play out should start and then clicking
+	the left-hand <computeroutput>Play</computeroutput> button,
+	causing play out to start from the
+	selected position, or by clicking the right-hand 
+	<computeroutput>Play</computeroutput> button, which
+	will cause play out to start from the Start Marker (just as it
+	would in RDAirPlay).  Clicking the
+	<computeroutput>Pause</computeroutput> button while playing will
+	cause audio to stop and the play out cursor (a thin vertical black
+	line in the waveform area) to freeze at its current position, while
+	pressing the <computeroutput>Stop</computeroutput> button will stop
+	the audio while resetting the
+	play out cursor to the position it was in when
+	<computeroutput>Play</computeroutput> was started.
+	Clicking the <computeroutput>Loop</computeroutput> button will
+	cause the audio to play out
+	continuously, looping from end back to start, until either the
+	<computeroutput>Stop</computeroutput>, 
+	<computeroutput>Pause</computeroutput>, 
+	<computeroutput>Save</computeroutput> or
+	<computeroutput>Cancel</computeroutput> buttons are clicked.
+      </para>
+      <para>
+	To set a marker, click on the corresponding marker button and then
+	left-click on the waveform area to indicate where on the audio
+	the marker should be placed.  (NOTE:  With the exception of the
+	FadeUp and FadeDown markers, all markers in Rivendell are assigned
+	in pairs. For example, placing a TalkStart marker will also cause
+	a TalkEnd marker to be placed.)  Markers that have already been
+	placed can be moved by selecting the appropriate marker button and
+	then dragging the marker to the desired location.  It's also possible
+	to specify the position of a marker in the form of hh:mm:ss.s
+	(relative to time after the Start marker) by entering the desired
+	value next to a selected marker button.  It is also possible to
+	remove a set of markers that have already been placed, either by
+	accessing the marker menu by doing a right-click on the waveform
+	display, or by touching the
+	<computeroutput>Remove Marker</computeroutput> button and then touch
+	the marker button corresponding to the marker to be removed.
+	(NOTE: the exceptions to this are the Start / End markers, which
+	are always present and hence cannot be removed.)
+      </para>
+      <table xml:id="table.rdlibrary.marker_types" frame="all">
+	<title>Rivendell Marker Types</title>
+	<tgroup cols="3" align="left" colsep="1" rowsep="1">
+	  <colspec colname="Marker Type" />
+	  <colspec colname="Function" />
+	  <colspec colname="Color" />
+	  <thead>
+	    <row>
+	      <entry>
+		Marker Type
+	      </entry>
+	      <entry>
+		Function
+	      </entry>
+	      <entry>
+		Color
+	      </entry>
+	    </row>
+	  </thead>
+	  <tbody>
+	    <row>
+	      <entry>
+		Start / Stop
+	      </entry>
+	      <entry>
+		Indicates start and end points of audio.
+	      </entry>
+	      <entry>
+		RED
+	      </entry>
+	    </row>
+	    <row>
+	      <entry>
+		TalkStart / Talk Stop
+	      </entry>
+	      <entry>
+		Indicates point to start and stop the Talk Counter in RDAirPlay.
+	      </entry>
+	      <entry>
+		BLUE
+	      </entry>
+	    </row>
+	    <row>
+	      <entry>
+		SegueStart / SegueEnd
+	      </entry>
+	      <entry>
+		Indicates the start and end of the audio overlap during
+		Segue transitions in RDAirPlay.
+	      </entry>
+	      <entry>
+		CYAN
+	      </entry>
+	    </row>
+	    <row>
+	      <entry>
+		HookStart / HookEnd
+	      </entry>
+	      <entry>
+		Indicates &quot;highlighted&quot; audio, used by button
+		panels and RDCartSlots when placed in Hook Mode.
+	      </entry>
+	      <entry>
+		VIOLET
+	      </entry>
+	    </row>
+	    <row>
+	      <entry>
+		FadeUp
+	      </entry>
+	      <entry>
+		Indicates the point at which audio should be faded up to
+		full level after starting in RDAirPlay.
+	      </entry>
+	      <entry>
+		YELLOW
+	      </entry>
+	    </row>
+	    <row>
+	      <entry>
+		FadeDown
+	      </entry>
+	      <entry>
+		Indicates the point at which audio should start fading
+		down to off before ending in RDAirPlay.
+	      </entry>
+	      <entry>
+		YELLOW
+	      </entry>
+	    </row>
+	  </tbody>
+	</tgroup>
+      </table>
+      <para>
+	As an aid for accurately setting the Start and End markers, it's
+	possible to use the <computeroutput>Trim Start</computeroutput>
+	and <computeroutput>Trim End</computeroutput> buttons to automatically
+	set the markers to the first and last instances of the level
+	specified by the <computeroutput>Threshold</computeroutput> field,
+	respectively.
+      </para>
+    </sect2>
+    <sect2 xml:id="sect.rdlibrary.copying_and_pasting_audio_from_cut_to_cut">
+      <title>Copying and Pasting Audio from Cut to Cut</title>
+      <para>
+	It's possible to make copies of existing an audio cut on the system
+	by opening up the cut's parent cart in the Edit Cart Dialog,
+	selecting it on the cut list and clicking the
+	<computeroutput>Copy</computeroutput> button. To
+	paste the copied audio, simply select the desired destination
+	cut (within the same cart or a different one) and press
+	<computeroutput>Paste</computeroutput>.
+      </para>
+    </sect2>
+  </sect1>
+  <sect1 xml:id="sect.rdlibrary.generating_library_reports">
+    <title>Generating Library Reports</title>
+    <para>
+      Various Library reports can be generated by touching the
+      <computeroutput>Reports</computeroutput>
+      button on the main RDLibrary screen and then selecting the desired
+      report and touching the <computeroutput>Generate</computeroutput>
+      button. The following reports are available:
+    </para>
+    <sect2 xml:id="sect.rdlibrary.the_cart_report">
+      <title>The Cart Report</title>
+      <para>
+	The cart report consists of a list of all selected carts on the
+	system, with their attributes.
+      </para>
+    </sect2>
+    <sect2 xml:id="sect.rdlibrary.the_cut_report">
+      <title>The Cut Report</title>
+      <para>
+	The cut report consists of a list of all cuts contained by the
+	selected carts on the system, with their attributes.
+      </para>
+    </sect2>
+    <sect2 xml:id="sect.rdlibrary.the_cart_data_dump__fixed_width_">
+      <title>The Cart Data Dump (fixed width)</title>
+      <para>
+	The fixed-width cart data dump is a special type of report that
+	consists of column-aligned data elements, one line per cut for the
+	selected
+	carts on the system.  It is intended for use where a 'dump' of
+	available carts in the system is desired for import into an
+	external system (such as a music scheduling system).
+      </para>
+    </sect2>
+    <sect2 xml:id="sect.rdlibrary.the_cart_data_dump__csv_">
+      <title>The Cart Data Dump (CSV)</title>
+      <para>
+	The CSV cart data dump is a special type of report that
+	consists of CSV formatted data elements, one line per cut for the
+	selected
+	carts on the system.  It is intended for use where a 'dump' of
+	available carts in the system is desired for import into an
+	external system (such as a music scheduling system).
+      </para>
+    </sect2>
+  </sect1>
+</chapter>

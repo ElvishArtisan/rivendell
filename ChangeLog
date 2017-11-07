@@ -16174,6 +16174,28 @@
 	* Updated 'NEWS'.
 2017-10-17 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 2.17.0int00.
+2017-10-17 Fred Gleason <fredg@paravelsystems.com>
+	* Moved the man pages to 'docs/manpages/'.
+	* Stubbed out a Rivendell Operations Guide in 'docs/opsguide/'.
+2017-10-17 Fred Gleason <fredg@paravelsystems.com>
+	* Added the text of the 'Generating and Maintaining Logs with
+	RDLogEdit' chapter to the Ops Guide.
+2017-10-18 Fred Gleason <fredg@paravelsystems.com>
+	* Finished transcribing previous text into the Ops Guide.
+2017-10-19 Fred Gleason <fredg@paravelsystems.com>
+	* Applied structural markup to the first three chapters of the
+	Operations Guide.
+2017-10-19 Fred Gleason <fredg@paravelsystems.com>
+	* Added sectionalized id tags to the Ops Guide.
+2017-10-19 Fred Gleason <fredg@paravelsystems.com>
+	* Applied structural markup to the first 'rdcatch' chapter of the
+	Operations Guide.
+2017-10-19 Fred Gleason <fredg@paravelsystems.com>
+	* Applied structural markup to the 'rdlogedit' chapter of the
+	Operations Guide.
+2017-10-19 Fred Gleason <fredg@paravelsystems.com>
+	* Applied structural markup to the 'rdairplay' chapter of the
+	Operations Guide.
 2017-10-19 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'Show Event Type' filter to rdcatch(1).
 2017-10-19 Fred Gleason <fredg@paravelsystems.com>
@@ -16198,6 +16220,11 @@
 2017-10-19 Fred Gleason <fredg@paravelsystems.com>
 	* Updated 'NEWS'.
 	* Incremented the package version to 2.17.0int02.
+2017-10-23 Fred Gleason <fredg@paravelsystems.com>
+	* Applied structural markup to the 'rdlogedit' chapter of the
+	Operations Guide.
+	* Applied structural markup to the 'voicetracking' chapter of the
+	Operations Guide.
 2017-10-25 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in rdadmin(1) that caused a segfault when opening the
 	'Edit Host' dialog.
@@ -16210,3 +16237,83 @@
 2017-10-25 Fred Gleason <fredg@paravelsystems.com>
 	* Updated 'NEWS'.
 	* Incremented the package version to 2.17.0int03.
+2017-11-01 Fred Gleason <fredg@paravelsystems.com>
+	* Added an rmlsend(1) man page.
+	* Revised the "Interfacing with the Linux Ecosystem" chapter in the
+	Operations Guide to include all command-line utilities.
+2017-11-01 Fred Gleason <fredg@paravelsystems.com>
+	* Cleaned up title formatting in the Operations Guide.
+2017-11-01 Fred Gleason <fredg@paravelsystems.com>
+	* Added screenshots for the 'System Overview' chapter of the
+	Operations Guide.
+	* Added screenshots for the 'Managing the Current User with RDLogin'
+	chapter of the Operations Guide.
+	* Added screenshots for the 'Content Management with RDLibrary'
+	chapter of the Operations Guide.
+	* Added screenshots for the 'Automating Tasks with RDCatch'
+	chapter of the Operations Guide.
+	* Added screenshots for the 'Generating and Maintaining Logs with
+	RDLogEdit' chapter of the Operations Guide.
+	* Added screenshots for the 'Running Logs with RDAirPlay' chapter
+	of the Operations Guide.
+2017-11-02 Fred Gleason <fredg@paravelsystems.com>
+	* Added screenshots for the 'Generating Logs with RDLogManager'
+	chapter of the Operations Guide.
+2017-11-02 Fred Gleason <fredg@paravelsystems.com>
+	* Added screenshots for the 'VoiceTracking' chapter of the
+	Operations Guide.
+2017-11-02 Fred Gleason <fredg@paravelsystems.com>
+	* Removed FIXME clauses from the Operations Guide.
+	* Added a screenshot for RMLSend to the Operations Guide.
+2017-11-02 Fred Gleason <fredg@paravelsystems.com>
+	* Moved the contents of 'docs/SWITCHERS.txt' to the Operations Guide.
+2017-11-03 Fred Gleason <fredg@paravelsystems.com>
+	* Moved the contents of 'docs/GPIO.txt' to the Operations Guide.
+2017-11-03 Fred Gleason <fredg@paravelsystems.com>
+	* Removed 'docs/ENCODERS.txt'.
+	* Removed 'docs/implemented_macros.txt'.
+	* Removed 'docs/JACK.txt'.
+2017-11-03 Fred Gleason <fredg@paravelsystems.com>
+	* Renamed 'docs/docbook/' to 'docs/apis/'.
+	* Qualified all 'id=' tag attributes as 'xml:id=' in the Operations
+	Guide.
+2017-11-03 Fred Gleason <fredg@paravelsystems.com>
+	* Moved the contents of 'docs/datetime_wildcards.txt' to an
+	appendix in the	Operations Guide.
+2017-11-03 Fred Gleason <fredg@paravelsystems.com>
+	* Moved the contents of 'docs/metadata_wildcards.txt' to an
+	appendix in the	Operations Guide.
+2017-11-03 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored the XML source for the Operations Guide up into
+	per-chapter files.
+2017-11-03 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a typo in 'docs/opsguide/filepath_wildcards.xml'.
+2017-11-05 Fred Gleason <fredg@paravelsystems.com>
+	* Added DocBook stylesheets for books in 'docs/stylesheets/'.
+2017-11-05 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the 'Genmeral Notes' section titles from the
+	'Supported GPIO/Switcher Devices' appendix in the Operations Guide.
+2017-11-06 Fred Gleason <fredg@paravelsystems.com>
+	* Added a logo to the title page of the Operations Guide.
+2017-11-06 Fred Gleason <fredg@paravelsystems.com>
+	* Added the Operations Guide to 'rivendell.spec.in'.
+2017-11-06 Fred Gleason <fredg@paravelsystems.com>
+	* Moved the contents of 'docs/catchd.txt' to 'docs/apis/catchd.xml.'
+2017-11-06 Fred Gleason <fredg@paravelsystems.com>
+	* Moved the contents of 'docs/MESSAGE_BOX.txt' to the
+	Operation Guide.
+2017-11-06 Fred Gleason <fredg@paravelsystems.com>
+	* Moved the contents of 'docs/ripc.txt' to 'docs/apis/ripc.xml.'
+2017-11-06 Fred Gleason <fredg@paravelsystems.com>
+	* Removed 'docs/NEXGEN_FILTER.txt'.
+2017-11-06 Fred Gleason <fredg@paravelsystems.com>
+	* Moved the contents of 'docs/RIVENDELL_FILTER.txt' to the
+	Operation Guide.
+2017-11-06 Fred Gleason <fredg@paravelsystems.com>
+	* Moved the contents of 'docs/WINGS_FILTER.txt' to the
+	Operation Guide.
+2017-11-07 Fred Gleason <fredg@paravelsystems.com>
+	* Removed 'docs/NOW+NEXT.txt'.
+	* Removed 'docs/WIN32.txt'.
+	* Removed 'docs/copy_split_format.odt'.
+	* Moved remaining unformatted notes to 'docs/misc/.

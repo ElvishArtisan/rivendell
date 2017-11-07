@@ -1,4 +1,7 @@
 *~
+*.1
+*.5
+*.8
 *.cgi
 *.exe
 *.la
@@ -10,6 +13,7 @@
 *.rlm
 *.rpm
 *.so
+*.xsl
 rivendell-*.tar.gz
 rivendell-*.zip
 .AppleDouble
@@ -26,12 +30,13 @@ config.status
 config.sub
 configure
 depcomp
-docs/docbook/*.1
-docs/docbook/*.5
-docs/docbook/*.8
-docs/docbook/*.html
-docs/docbook/*.pdf
+docs/apis/*.html
+docs/apis/*.pdf
+docs/opsguide/frontspiece.xml
+docs/opsguide/*.html
+docs/opsguide/*.pdf
 helpers/cwrap
+helpers/docbook
 helpers/jsmin
 importers/nexgen_filter
 importers/panel_copy

@@ -1,0 +1,747 @@
+<chapter xmlns="http://docbook.org/ns/docbook" xml:id="chapter.rdcatch">
+  <title>Automating Tasks with RDCatch</title>
+  <sect1 xml:id="sect.rdcatch.automating_tasks_with_rdcatch">
+    <title>Choosing the Correct Automation Tool</title>
+    <para>
+      Rivendell includes two modules specially optimized for performing
+      automatic operations: the RDCatch and RDAirPlay modules. However,
+      these two
+      modules take radically different approaches in how they go about
+      organizing and controlling operations, so a few words regarding
+      each may be in order here.
+    </para>
+    <para>
+      RDCatch is aimed at executing actions on the basis of a strict
+      time-based schedule, referred to as an event list.  Each action
+      (which can be a <emphasis>recording</emphasis>, a
+      <emphasis>play out</emphasis>, an
+      <emphasis>upload</emphasis> or <emphasis>download</emphasis>,
+      a <emphasis>macro</emphasis> execution or an operation on an audio
+      <emphasis>switcher</emphasis> device) executes on
+      the basis of its scheduled time in the event list, independently of
+      all other actions.  As such, RDCatch is often best suited for use in
+      settings such as network head end operations or 'auxiliary' roles at
+      broadcast stations, where the transitions between events are 
+      generally not an important part of the presentation.
+    </para>
+    <para>
+      RDAirPlay takes a very different approach, in that most events are
+      organized into one or more playlists or logs. A Rivendell log is a
+      list of one or more carts, organized in chronological order.  As the
+      name implies, RDAirPlay is optimized for use in situations where the
+      transitions between the various program elements are a key part of
+      the delivery and presentation of the content, such as in live air
+      play environments.
+    </para>
+    <para>
+      Of course, it's entirely possible to use both modules, even together
+      on the same machine at the same time – the Linux OS makes for a very
+      robust and capable multitasking system. In this chapter, we will
+      take a look at the capabilities of RDCatch.
+    </para>
+  </sect1>
+  <sect1 xml:id="sect.rdcatch.the_rdcatch_main_window">
+    <title>The RDCatch Main Window</title>
+    <para>
+      After starting up RDCatch, you will see the
+      <xref endterm="para.rdcatch.the_rdcatch_main_window" endlink="mediaobject.rdcatch.rdcatch_screenshot"/>. The window consists of four
+      areas:  the record / play out decks at the top, the filter areas just
+      below the decks, the events list and the audition buttons and other
+      buttons at the bottom. We'll cover each of these in turn.
+    </para>
+    <sect2 xml:id="sect.rdcatch.the_record___play_out_deck_area">
+      <title>The Record / Play Out Deck Area</title>
+      <para>
+	If the system administrator has configured one or more RDCatch
+	record or play out decks, they will be visible at the top of the
+	RDCatch main window.  A record deck is a virtual 'recorder' that
+	can be used to make automated recordings, while a play out deck
+	can be used to automatically play out audio. It does not matter
+	on which particular host a particular deck resides – all
+	Rivendell decks throughout the system are visible in RDCatch,
+	regardless of which host it is run upon.
+      </para>
+      <para>
+	Starting at the left-hand edge of each deck, there is the deck's
+	name, consisting of the name of the deck's host machine followed
+	by a number and a letter, an <computeroutput>R</computeroutput>
+	to indicate a record deck and a
+	<computeroutput>P</computeroutput> to indicate a play out deck.
+	Next, for record decks, there is
+	a <computeroutput>MON</computeroutput> button, used to monitor the
+	audio present at the deck input,
+	followed by an <computeroutput>ABORT</computeroutput> button, used
+	to manually stop an event
+	running in the deck.  A description of the currently running event
+	next appears (this area will be blank if no event is currently
+	active), followed by the deck's status, which could be any of the 
+	values in <xref linkend="table.rdcatch.rdcatch_event_states"/>.
+    </para>
+    <table xml:id="table.rdcatch.rdcatch_event_states" frame="all">
+      <title>RDCatch Event States</title>
+      <tgroup cols="2" align="left" colsep="1" rowsep="1">
+	<colspec colname="Status" />
+	<colspec colname="Meaning" />
+	<thead>
+	  <row>
+	    <entry>
+	      Status
+	    </entry>
+	    <entry>
+	      Meaning
+	    </entry>
+	  </row>
+	</thead>
+	<tbody>
+	  <row>
+	    <entry>
+	      IDLE
+	    </entry>
+	    <entry>
+	      The deck is available for events
+	    </entry>
+	  </row>
+	  <row>
+	    <entry>
+	      READY
+	    </entry>
+	    <entry>
+	      The deck has started monitoring audio but the transport is
+	      not yet rolling (record decks only).
+	    </entry>
+	  </row>
+	  <row>
+	    <entry>
+	      WAITING
+	    </entry>
+	    <entry>
+	      The deck is waiting for a GPI event (record decks only)
+	    </entry>
+	  </row>
+	  <row>
+	    <entry>
+	      RECORDING
+	    </entry>
+	    <entry>
+	      The deck is recording (record decks only)
+	    </entry>
+	  </row>
+	  <row>
+	    <entry>
+	      PLAYING
+	    </entry>
+	    <entry>
+	      The deck is playing out (play out decks only)
+	    </entry>
+	  </row>
+	  <row>
+	    <entry>
+	      OFFLINE
+	    </entry>
+	    <entry>
+	      The deck is configured but not available
+	    </entry>
+	  </row>
+	</tbody>
+      </tgroup>
+    </table>
+      <para>
+	<mediaobject xml:id="mediaobject.rdcatch.rdcatch_screenshot">
+	  <imageobject>
+	    <imagedata align="center" fileref="rdcatch.rdcatch_screenshot.png" scale="45"/>
+	  </imageobject>
+	  <caption>
+	    <para xml:id="para.rdcatch.the_rdcatch_main_window">The RDCatch Main Window</para>
+	  </caption>
+	</mediaobject>
+      </para>
+    <para>
+      Finally, each deck has an audio meter on its right-hand end, used
+      to verify audio levels in realtime.
+    </para>
+    </sect2>
+    <sect2 xml:id="sect.rdcatch.the_filter_area">
+      <title>The Filter Area</title>
+      <para>
+	Immediately below the decks is the filter area, consisting of the
+	<computeroutput>Show Only Active Events</computeroutput>,
+	<computeroutput>Show Only Today's Events</computeroutput>
+	<computeroutput>Show DayOfWeek</computeroutput> and
+	<computeroutput>Show Event Type</computeroutput>
+	controls, which are used to select which events will be
+	visible in the events list area immediately below.
+      </para>
+    </sect2>
+    <sect2 xml:id="sect.rdcatch.the_event_list">
+      <title>The Event List</title>
+      <para>
+	The event list is a system wide list of all events to be executed
+	by RDCatch on all of the various hosts on the Rivendell network,
+	with each event occupying a single line.  The status of each event
+	is indicated by its background color, as shown in
+	<xref linkend="table.rdcatch.rdcatch_event_state_colors"/>
+      </para>
+      <table xml:id="table.rdcatch.rdcatch_event_state_colors" frame="all">
+	<title>RDCatch Event State Colors</title>
+	<tgroup cols="2" align="left" colsep="1" rowsep="1">
+	  <colspec colname="Color" />
+	  <colspec colname="Meaning" />
+	  <thead>
+	    <row>
+	      <entry>
+		Color
+	      </entry>
+	      <entry>
+		Meaning
+	      </entry>
+	    </row>
+	  </thead>
+	  <tbody>
+	    <row>
+	      <entry>
+		YELLOW
+	      </entry>
+	      <entry>
+		The event is next to be executed.
+	      </entry>
+	    </row>
+	    <row>
+	      <entry>
+		GREEN
+	      </entry>
+	      <entry>
+		The event is active.
+	      </entry>
+	    </row>
+	    <row>
+	      <entry>
+		CYAN
+	      </entry>
+	      <entry>
+		The event is in the READY state.
+	      </entry>
+	    </row>
+	    <row>
+	      <entry>
+		VIOLET
+	      </entry>
+	      <entry>
+		The event is in the WAITING state.
+	      </entry>
+	    </row>
+	    <row>
+	      <entry>
+		RED/PINK
+	      </entry>
+	      <entry>
+		The event is reporting an error.
+	      </entry>
+	    </row>
+	  </tbody>
+	</tgroup>
+      </table>
+      <para>
+	Each entry in the event list starts with an icon that indicates
+	the type of the event, as shown in
+	<xref linkend="table.rdcatch.rdcatch_event_icons"/>
+      </para>
+      <table xml:id="table.rdcatch.rdcatch_event_icons" frame="all">
+	<title>RDCatch Event Icons</title>
+	<tgroup cols="2" align="left" colsep="1" rowsep="1">
+	  <colspec colname="Color" />
+	  <colspec colname="Meaning" />
+	  <tbody>
+	    <row>
+	      <entry>
+		[RECORD_ICON]
+	      </entry>
+	      <entry>
+		Record Event
+	      </entry>
+	    </row>
+	    <row>
+	      <entry>
+		[PLAYOUT ICON]
+	      </entry>
+	      <entry>
+		Play Out Event
+	      </entry>
+	    </row>
+	    <row>
+	      <entry>
+		[SWITCH ICON]
+	      </entry>
+	      <entry>
+		Switch Event
+	      </entry>
+	    </row>
+	    <row>
+	      <entry>
+		[MACRO ICON]
+	      </entry>
+	      <entry>
+		Macro Event
+	      </entry>
+	    </row>
+	    <row>
+	      <entry>
+		[UPLOAD ICON]
+	      </entry>
+	      <entry>
+		Upload Event
+	      </entry>
+	    </row>
+	    <row>
+	      <entry>
+		[DOWNLOAD ICON]
+	      </entry>
+	      <entry>
+		Download Event
+	      </entry>
+	    </row>
+	  </tbody>
+	</tgroup>
+      </table>
+      <para>
+	Next on each line comes the
+	<computeroutput>Description</computeroutput> (settable by the user) and
+	<computeroutput>Location</computeroutput> for the event, the
+	location being the name of the host/deck
+	where the event will run. Then comes the
+	<computeroutput>Start</computeroutput> and
+	<computeroutput>End</computeroutput> parameters.
+	These time-based parameters come in one of three different forms:
+	a hard time, which is simply an absolute time (in twenty-four hour
+	'military' format), a length (in HH:MM format, relative to an
+	earlier start time), or a GPI start.  The GPI parameters can be
+	somewhat involved.  They are specified in the following format:
+      </para>
+      <para>
+	Gpi: &lt;start-time&gt;,&lt;end-time&gt;,&lt;gpi-num&gt;,&lt;wait-time&gt;
+      </para>
+      <para>
+	Where:
+      </para>
+      <para>
+	<variablelist>
+	  <varlistentry>
+	    <term>&lt;start-time&gt;</term>
+	    <listitem>
+	      <para>
+		The time, in HH:MM:SS format, when RDCatch will start looking
+		for a GPI event (also sometimes referred to as the window
+		start time).
+	      </para>
+	    </listitem>
+	  </varlistentry>
+	  <varlistentry>
+	    <term>&lt;end-time&gt;</term>
+	    <listitem>
+	      <para>
+		The time, in HH:MM:SS format, when RDCatch will stop looking
+		for a GPI event (also sometime referred to as the window end
+		time). 
+	      </para>
+	    </listitem>
+	  </varlistentry>
+	  <varlistentry>
+	    <term>&lt;gpi-num&gt;</term>
+	    <listitem>
+	      <para>
+		The number of the GPI event to wait for, in the format
+		MATRIX:LINE.  We will deal with GPI matrix and line numbers
+		in detail when we cover RDAdmin.
+	      </para>
+	    </listitem>
+	  </varlistentry>
+	  <varlistentry>
+	    <term>&lt;wait-time&gt;</term>
+	    <listitem>
+	      <para>
+		The amount of time to wait, in MM:SS format, between the
+		reception of the GPI event and the actual start of the event
+		(used only for Start parameters).
+	      </para>
+	    </listitem>
+	  </varlistentry>
+	</variablelist>
+      </para>
+      <para>
+	For example, the start parameter 'Gpi: 14:00:00,14:05:59,0:1,01:00'
+	has a window start time of 14:00:00 [2:00:00 PM], a window end time
+	of 14:05:59, looks for a GPI event on line 0:1 and will wait one
+	minute [01:00] after receiving the GPI before starting the event.
+      </para>
+      <para>
+	Next come the <computeroutput>Source</computeroutput> and
+	<computeroutput>Destination</computeroutput> fields.
+	The uses of these will
+	vary depending upon what type of event is being listed, but should
+	normally be fairly self-evident. For example, for a record event,
+	the source field indicates the audio source from which the recording
+	is to be made, while the destination indicates the cat/cut combo to
+	which the recording should be made. Some events may leave one or the
+	other of these fields blank.
+      </para>
+      <para>
+	Now come the day of the week fields. These indicate on which days
+	of the week the listed event should be executed, followed by the
+	<computeroutput>Origin</computeroutput> field, which is simply a
+	readout of the Origin data of the
+	events underlying cut. There are a number of other fields which
+	follow, but these are less important for understanding the
+	operation of RDCatch.
+      </para>
+    </sect2>
+    <sect2 xml:id="sect.rdcatch_the_button_area">
+      <title>The Button Area</title>
+      <para>
+	At the bottom of the main window are various buttons. On the
+	left-hand side, the <computeroutput>Add</computeroutput>,
+	<computeroutput>Edit</computeroutput> and
+	<computeroutput>Delete</computeroutput> buttons are used to manage
+	events in the event list. Clicking the
+	<computeroutput>Scroll</computeroutput> button toggles
+	RDCatch into and out of 'scroll mode'. In this mode, the event
+	list display will be advanced automatically so as to keep the first
+	actively running event centered within the event list area.
+      </para>
+      <para>
+	On the right hand side, in addition to
+	<computeroutput>Close</computeroutput>, are three audition
+	buttons. These buttons can be used to audition the head and tail
+	of each cut referenced by an event, thus making it possible to
+	quickly verify that a set of automatic recordings were properly
+	executed.
+      </para>
+    </sect2>
+  </sect1>
+  <sect1 xml:id="sect.rdcatch.adding_new_events">
+    <title>Adding New Events</title>
+    <para>
+      A new event can be added to the event list by simply clicking the
+      <computeroutput>Add</computeroutput> button to bring up the Add
+      Event Dialog (see <xref endterm="para.the_add_event_dialog" endlinl="mediaobject.rdcatch.add_event_dialog"/>).
+      Simply clicking the button that correspond to the desired type of
+      event will create it.
+    </para>
+      <para>
+	<mediaobject xml:id="mediaobject.rdcatch.add_event_dialog">
+	  <imageobject>
+	    <imagedata align="center" fileref="rdcatch.add_event_dialog.png" scale="50"/>
+	  </imageobject>
+	  <caption>
+	    <para xml:id="para.the_add_event_dialog">The Add Event Dialog</para>
+	  </caption>
+	</mediaobject>
+      </para>
+  </sect1>
+  <sect1 xml:id="sect.rdcatch.automating_recordings">
+    <title>Automating Recordings</title>
+    <para>
+      Automated recordings are configured by means of the Edit Recording
+      dialog (see <xref endterm="the_edit_recording_dialog" endlink="mediaobject.rdcatch.edit_recording_dialog"/>), which can be accessed either by clicking
+      the <computeroutput>Recording</computeroutput> button in the Add Event
+      dialog to create a new record
+      event or by touching the <computeroutput>Edit</computeroutput> button
+      to modify an existing event.
+    </para>
+    <sect2 xml:id="sect.rdcatch.the__start_parameters__section">
+      <title>The 'Start Parameters' Section</title>
+      <para>
+	The start parameters of each recording are configured in the
+	'Start Parameters' section.  A recording can be programmed to start
+	on the basis of the wall clock time, referred to the hard start
+	time, or upon reception of a general-purpose input, or GPI event
+	originated by a satellite receiver, tone decoder or other external
+	device. Programming a hard start time is merely a matter of
+	entering the desired start time, in 24 hour 'military' format.
+	Programming a GPI start involves, in addition to entry of the GPI
+	parameters themselves (matrix and GPI line numbers) that
+	<computeroutput>Window Start</computeroutput> and
+	<computeroutput>Windows End</computeroutput> times be entered,
+	that define the 'window'
+	during which reception of  the appropriate GPI event will be
+	'recognized' by RDCatch. It is also optionally possible to specify
+	a <computeroutput>Start Delay</computeroutput> between reception of
+	the GPI event and the actual start of the recording.
+      </para>
+      <para>
+	<mediaobject xml:id="mediaobject.rdcatch.edit_recording_dialog">
+	  <imageobject>
+	    <imagedata align="center" fileref="rdcatch.edit_recording_dialog.png" scale="50"/>
+	  </imageobject>
+	  <caption>
+	    <para xml:id="the_edit_recording_dialog">The Edit Recording Dialog</para>
+	  </caption>
+	</mediaobject>
+      </para>
+    </sect2>
+    <sect2 xml:id="sect.rdcatch_the__end_parameters__section">
+      <title>The 'End Parameters' Section</title>
+      <para>
+	The end parameters of each recording are configured in the
+	'End Parameters' section. A recording can be programmed to end on
+	the basis of a hard time, its absolute length or in response to a
+	GPI event. Programming of the
+	<computeroutput>Hard Time</computeroutput> and 
+	<computeroutput>Length</computeroutput> parameters
+	should be fairly self-explanatory, while the parameters needed to
+	program a GPI event are similar to those used for the start
+	parameters, with the exception of the
+	<computeroutput>Max Record Length</computeroutput> setting,
+	which limits the maximum length of the recording in the event that
+	the expected GPI event is never received.
+      </para>
+    </sect2>
+    <sect2 xml:id="sect.rdcatch.programming_multiple_recordings_in_a_single_event">
+      <title>Programming Multiple Recordings in a Single Event</title>
+      <para>
+	If a record event is configured to use GPI for its start and Length
+	or GPI for its end parameter, then it is possible to configure the
+	event to make repeated, multiple recordings within a single event
+	by checking the
+	<computeroutput>Allow Multiple Recordings Within This Window</computeroutput>
+	box in the 'Start Parameters' section. This can significantly reduce
+	the amount of required record events when capturing material with
+	high on-air turnover, such as newscasts or traffic reports.
+      </para>
+    </sect2>
+    <sect2 xml:id="sect.rdcatch.selecting_a_record_source">
+      <title>Selecting a Record Source</title>
+      <para>
+	If the selected record deck (chosen in the
+	<computeroutput>Location</computeroutput> drop-down menu
+	at the top of the dialog) as been configured to operate with an
+	audio switcher device, the appropriate audio input can be chosen
+	from the <computeroutput>Source</computeroutput> drop-down menu.
+      </para>
+    </sect2>
+    <sect2 xml:id="sect.rdcatch.selecting_a_record_destination">
+      <title>Selecting a Record Destination</title>
+      <para>
+	Each programmed recording must have a 'destination', a designated
+	Cart/Cut which will hold the audio.  The currently programmed
+	destination is shown in the Destination field, and can be changed
+	by clicking the <computeroutput>Select</computeroutput> button.
+      </para>
+    </sect2>
+    <sect2 xml:id="sect.rdcatch.setting_the_active_days_for_a_recording">
+      <title>Setting the Active Days for a Recording</title>
+      <para>
+	A check should be placed next to each day of the week for which a
+	recording should be made in the
+	<computeroutput>Active Days</computeroutput> box.  If no days are
+	checked, then no recordings at all will be made. 
+      </para>
+    </sect2>
+    <sect2 xml:id="sect.rdcatch.record_list_management_with_event_active_and_make_oneshot">
+      <title>Record List Management with Event Active and Make OneShot</title>
+      <para>
+	The record event will be actually executed only if
+	<computeroutput>Event Active</computeroutput> check box
+	(in the upper left corner of the dialog box) is ticked. By
+	clearing this box, it's possible to 'bank' a record event without
+	actually having it run, useful for events that are only used
+	sporadically.
+      </para>
+      <para>
+	For events that need to be executed only once, the
+	<computeroutput>Make OneShot</computeroutput>
+	box can be ticked. Such an event will execute just once, and
+	then automatically delete itself from the event list.
+      </para>
+    </sect2>
+  </sect1>
+  <sect1 xml:id="sect.rdcatch.automating_playouts">
+    <title>Automating Playouts</title>
+    <para>
+      Automated playouts are configured by means of the Edit Playout
+      dialog (see <xref endterm="the_edit_playout_dialog" endlink="mediaobject.rdcatch.edit_playout_dialog"/>), which can be accessed either by
+      clicking the <computeroutput>Playout</computeroutput> button in
+      the Add Event dialog to create a new
+      record event or by touching the
+      <computeroutput>Edit</computeroutput> button to modify an existing
+      event. The process of configuring a playout is very similar to that
+      for configuring a recording – see the
+      <xref linkend="sect.rdcatch.automating_recordings"/>
+      above for details.
+    </para>
+      <para>
+	<mediaobject xml:id="mediaobject.rdcatch.edit_playout_dialog">
+	  <imageobject>
+	    <imagedata align="center" fileref="rdcatch.edit_playout_dialog.png" scale="50"/>
+	  </imageobject>
+	  <caption>
+	    <para xml:id="the_edit_playout_dialog">The Edit Playout Dialog</para>
+	  </caption>
+	</mediaobject>
+      </para>
+  </sect1>
+  <sect1 xml:id="sect.rdcatch.automating_uploads_downloads">
+    <title>Automating Uploads/Downloads</title>
+    <para>
+      It's possible to use RDCatch to automatically upload and download
+      material from both local and Internet-based servers. Automated
+      downloads are configured by means of the Edit Download dialog, which
+      can be accessed either by clicking the
+      <computeroutput>Download</computeroutput> button in the Add
+      Event dialog (see <xref endterm="para.rdcatch.the_edit_download_dialog" endlink="mediaobject.rdcatch.edit_download_dialog"/>) to create a new record event or
+      by touching the <computeroutput>Edit</computeroutput> button to
+      modify an existing event.
+    </para>
+    <para>
+      <mediaobject xml:id="mediaobject.rdcatch.edit_download_dialog">
+	<imageobject>
+	  <imagedata align="center" fileref="rdcatch.edit_download_dialog.png" scale="50"/>
+	</imageobject>
+	<caption>
+	  <para xml:id="para.rdcatch.the_edit_download_dialog">The Edit Download Dialog</para>
+	</caption>
+      </mediaobject>
+    </para>
+    <para>
+      With the exception of the <computeroutput>Url</computeroutput>,
+      <computeroutput>Username</computeroutput> and
+      <computeroutput>Password</computeroutput> controls,
+      the process of configuring a download is very similar to that for
+      configuring a recording – see the
+      <xref linkend="sect.rdcatch.automating_recordings"/> above for
+      details.
+    </para>
+    <para>
+      The <computeroutput>Url</computeroutput> control is used to specify
+      the Uniform Resource Locater for
+      the material to be downloaded. The following download types are
+      supported: <userinput>http:</userinput>,
+      <userinput>ftp:</userinput>, <userinput>sftp:</userinput> and
+      <userinput>file:</userinput>. The <computeroutput>Url</computeroutput>
+      field can also include
+      wildcard characters that can be used to construct date-based URLs.
+    </para>
+    <para>
+      The <computeroutput>Username</computeroutput> and
+      <computeroutput>Password</computeroutput> fields are used to
+      indicate the username
+      and password required for access to the server referenced in the
+      <computeroutput>Url</computeroutput>.
+      For public web pages and anonymous FTP servers, these fields can be
+      left blank.
+    </para>
+    <para>
+      Automated uploads are configured by means of the Edit Upload dialog
+      (see <xref endterm="para.rdcatch.the_edit_upload_dialog" endlink="metaobject.rdcatch.edit_upload_dialog"/>), which can be accessed either by clicking the
+      <computeroutput>Upload</computeroutput> button in the Add Event
+      dialog to create a new record event or
+      by touching the <computeroutput>Edit</computeroutput> button to
+      modify an existing event. The
+      following upload types are supported: <userinput>ftp:</userinput>,
+      <userinput>sftp:</userinput> and <userinput>file:</userinput>.  As with
+      downloads, the <computeroutput>Url</computeroutput> field can also
+      include wildcard characters that
+      can be used to construct date-based URLs.
+    </para>
+    <para>
+      <mediaobject xml:id="metaobject.rdcatch.edit_upload_dialog">
+	<imageobject>
+	  <imagedata align="center" fileref="rdcatch.edit_upload_dialog.png" scale="50"/>
+	</imageobject>
+	<caption>
+	  <para xml:id="para.rdcatch.the_edit_upload_dialog">The Edit Upload Dialog</para>
+	</caption>
+      </mediaobject>
+    </para>
+    <para>
+      Configuration of an upload event is very similar to that of a download,
+      with the addition of the
+      <computeroutput>Export Format</computeroutput> control.
+      This is used to set
+      what file format should be used for the upload. Depending upon what
+      software encoders have been installed by the system administrator,
+      the following export types may be available: 
+    </para>
+    <para>
+      <itemizedlist>
+	<listitem>
+	  PCM16 Linear (*.wav)
+	</listitem>
+	<listitem>
+	  Free Lossless Audio Codec [FLAC] (*.flac)
+	</listitem>
+	<listitem>
+	  MPEG Layer 2 (*.mp2)
+	</listitem>
+	<listitem>
+	  MPEG Layer 3 (*.mp3)
+	</listitem>
+	<listitem>
+	  OggVorbis (*.ogg)
+	</listitem>
+      </itemizedlist>
+    </para>
+    <para>
+      The desired upload format and parameters are set by clicking the
+      <computeroutput>Set</computeroutput> button.
+    </para>
+  </sect1>
+  <sect1 xml:id="sect.rdcatch_automating_macro_execution">
+    <title>Automating Macro Execution</title>
+    <para>
+      It's possible to configure the automatic execution of a Macro Cart
+      by means of the Edit Cart Event dialog (see <xref endterm="para.rdcatch.the_edit_cart_event_dialog" endlink="mediaobject.dcatch.edit_cart_event_dialog"/>), which
+      can be accessed either by clicking the
+      <computeroutput>Macro Cart</computeroutput> button in the Add
+      Event dialog to create a new Macro Cart event or by touching the
+      <computeroutput>Edit</computeroutput> button to modify an existing
+      event.  The process of configuring
+      a macro cart event is very similar to that for configuring a
+      recording – see <xref linkend="sect.rdcatch.automating_recordings"/>
+      above for details.
+    </para>
+    <para>
+      <mediaobject xml:id="mediaobject.dcatch.edit_cart_event_dialog">
+	<imageobject>
+	  <imagedata align="center" fileref="rdcatch.edit_cart_event_dialog.png" scale="50"/>
+	</imageobject>
+	<caption>
+	  <para xml:id="para.rdcatch.the_edit_cart_event_dialog">The Edit Cart Event Dialog</para>
+	</caption>
+      </mediaobject>
+    </para>
+  </sect1>
+  <sect1 xml:id="sect.rdcatch.automating_switcher_operations">
+    <title>Automating Switcher Operations</title>
+    <para>
+      It's possible to configure an automatic operation on a switcher
+      device by means of the Edit Switcher Event dialog (see 
+      <xref endterm="para.rdcatch.the_edit_switcher_event_dialog" endlink="mediaobject.rdcatch.edit_switcher_event_dialog"/>), which can be accessed either by clicking the
+      <computeroutput>Switch Event</computeroutput> button
+      in the Add Event dialog to create a new switch event or by touching
+      the <computeroutput>Edit</computeroutput> button to modify an
+      existing event.
+    </para>
+    <para>
+      <mediaobject xml:id="mediaobject.rdcatch.edit_switcher_event_dialog">
+	<imageobject>
+	  <imagedata align="center" fileref="rdcatch.edit_switcher_event_dialog.png" scale="50"/>
+	</imageobject>
+	<caption>
+	  <para xml:id="para.rdcatch.the_edit_switcher_event_dialog">The Edit Switcher Event Dialog</para>
+	</caption>
+      </mediaobject>
+    </para>
+    <para>
+      In addition to the usual fields, a switch event has
+      <computeroutput>Switch Matrix</computeroutput>
+      (the name of one of the switch matrices associated with the selected
+      <computeroutput>Location</computeroutput>),
+      <computeroutput>Switch Input</computeroutput> and
+      <computeroutput>Switch Output</computeroutput> controls.
+      When executed, a
+      switch events causes a take operation to be performed on the specified
+      switcher device between the specified input and output.  It is
+      possible to specify the input and output either by their alphanumeric
+      names (assigned in RDAdmin) or by their absolute numbers.
+    </para>
+  </sect1>
+</chapter>

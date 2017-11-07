@@ -1,0 +1,157 @@
+<appendix xmlns="http://docbook.org/ns/docbook" xml:id="appendix.rivendell_filter">
+  <title>Rivendell Filter</title>
+  <sect1 xml:id="rivendell_filter.overview">
+    <title>Overview</title>
+    <para>
+      Rivendell_filter is a script designed to be used to import existing audio
+      and meta-data from another Rivendell system.
+    </para>
+  </sect1>
+
+  <sect1 xml:id="rivendell_filter.usage">
+    <title>Usage</title>
+    <para>
+      <command>rivendell_filter
+      <arg choice="req">-h <replaceable>hostname</replaceable></arg>
+      <arg choice="req">-u <replaceable>username</replaceable></arg>
+      <arg choice="req">-p <replaceable>password</replaceable></arg>
+      <arg choice="req">-A <replaceable>audio-dir</replaceable></arg>
+      <arg choice="req">-g <replaceable>default-group</replaceable></arg>
+      <arg choice="req">-s <replaceable>start-cartnum</replaceable></arg>
+      <arg choice="req">-e <replaceable>end-cartnum</replaceable></arg>
+      </command>
+    </para>
+    <variablelist>
+      <varlistentry>
+	<term>-h <replaceable>hostname</replaceable></term>
+	<listitem>
+	  <para>
+	    The MySQL hostname of the source Rivendell database.
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term>-u <replaceable>username</replaceable></term>
+	<listitem>
+	  <para>
+	    The MySQL username of the source Rivendell database.
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term>-p <replaceable>password</replaceable></term>
+	<listitem>
+	  <para>
+	    The MySQL password of the source Rivendell database.
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term>-A <replaceable>audio-dir</replaceable></term>
+	<listitem>
+	  <para>
+	    The path to the directory containing the source
+            Rivendell audio files.
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term>-g <replaceable>default-group</replaceable></term>
+	<listitem>
+	  <para>
+	    The name of the group in which to place carts
+            belonging to a source Group for which there
+            is no corresponding destination Group.
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term>-s <replaceable>start-cartnum</replaceable></term>
+	<listitem>
+	  <para>
+	    The first cart in the range of those to be transferred.
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term>-e <replaceable>hostname</replaceable></term>
+	<listitem>
+	  <para>
+	    The last cart in the range of those to be transferred.
+	  </para>
+	</listitem>
+      </varlistentry>
+    </variablelist>
+  </sect1>
+
+  <sect1 xml:id="rivendell_filter.procedure">
+    <title>Procedure</title>
+    <para>
+      In order transfer carts from an external Rivendell system, proceed as
+      follows:
+    </para>
+    <sect2 xml:id="rivendell_filter.procedure.create_rivendell_groups">
+      <title>Create Rivendell Groups</title>
+      <para>
+	In RDAdmin->ManageGroups, create a Group to correspond to each Rivendell
+	Group that exists in the library to be imported, and an additional
+	group to catch any carts that may not have a corresponding Group.
+      </para>
+    </sect2>
+    <sect2 xml:id="rivendell_filter.procedure.locate_the_external_rivendell_database_and_files">
+      <title>Locate the External Rivendell Database and Audio Files</title>
+      <para>
+	The directory containing the audio files can be mounted from a remote
+	system if needs be.  Read-only access is adequate (and in fact
+	recommended), as the script does not modify these items in any way.
+      </para>
+    </sect2>
+    <sect2 xml:id="rivendell_filter.procedure.verify_available_disk_space">
+      <title>Verify Available Disk Space</title>
+      <para>
+	Verify that enough disk space is available in the '/var/snd/'
+	directory of the destination system to accomodate the audio to be 
+	imported.  You should have at least the amount of space currently
+	occupied by the source files, plus 5 percent additional.  
+      </para>
+    </sect2>
+    <sect2 xml:id="rivendell_filter.procedure.invoke_script">
+      <title>Invoke Script</title>
+      <para>
+	Start up the script, as described in the USAGE section above.  The
+	script will print progress reports as it proceeds, or notify you of
+	error conditions as required.
+      </para>
+    </sect2>
+    <warning>
+      <title>Duplicate Cart Numbers</title>
+      <para>
+	If a cart from the source system has the same number as one one the
+	destination, the destination cart (data and *all* audio) will be
+	overwritten!
+      </para>
+    </warning>
+    <caution>
+      <title>Note on Audio Processing</title>
+      <para>
+	Rivendell_filter does not alter or reencode the audio sample data in any
+	way, and thus does *not* incurr any generation or transcoding loss of
+	quality.  At the same time, this means that the incoming audio will be
+	brought into the new Rivendell system *exactly* as it exists in the 
+	source system, with all parameters (e.g. sample rate, bit rate, level,
+	etc) unaltered.  If you need to alter one or more of these parameters as
+	part of the import process, we suggest you use the RDImport script
+	instead.
+      </para>
+    </caution>
+    <caution>
+      <title>Note on Group Assignments</title>
+      <para>
+	Rivendell_filter makes no attempt to enforce group numbering
+	rules! If a group to which a given source cart belongs exists on the
+	destination system, the cart will be placed in that group, regardless
+	of numbering rules.
+      </para>
+    </caution>
+  </sect1>
+</appendix>

@@ -236,12 +236,17 @@ if test -z $MP4V2_DISABLED ; then
 fi
 
 #
-# Build DocBook Items?
+# DocBook
 #
 if test -z $DOCBOOK_DISABLED ; then
   USING_DOCBOOK=yes
 fi
 AM_CONDITIONAL([DOCBOOK_AM], [test "$USING_DOCBOOK" = yes])
+if test $DOCBOOK_STYLESHEETS ; then
+   ln -s $DOCBOOK_STYLESHEETS helpers/docbook
+fi
+
+#AC_SUBST(DOCBOOK_STYLESHEETS,$DOCBOOK_STYLESHEETS)
 
 #
 # RDXport Debug
@@ -501,8 +506,13 @@ AC_CONFIG_FILES([rivendell.spec \
     web/tests/Makefile \
     conf/Makefile \
     docs/Makefile \
-    docs/docbook/Makefile \
+    docs/apis/Makefile \
     docs/examples/Makefile \
+    docs/manpages/Makefile \
+    docs/misc/Makefile \
+    docs/opsguide/frontspiece.xml \
+    docs/opsguide/Makefile \
+    docs/stylesheets/Makefile \
     docs/tables/Makefile \
     debian/Makefile \
     debian/patches/Makefile \
