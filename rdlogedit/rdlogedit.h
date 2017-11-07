@@ -62,9 +62,6 @@ class MainWidget : public QMainWindow
   void trackData();
   void reportData();
   void filterChangedData(const QString &str);
-  /*
-  void filterClearedData();
-  */
   void logSelectionChangedData();
   void logDoubleclickedData(QListViewItem *item,const QPoint &pt,int col);
   void quitMainWidget();
@@ -83,15 +80,6 @@ class MainWidget : public QMainWindow
   QLabel *log_user_label;
   int log_card_no;
   int log_stream_no;
-  /*
-  QLabel *log_service_label;
-  QComboBox *log_service_box;
-  QLabel *log_filter_label;
-  QLineEdit *log_filter_edit;
-  QPushButton *log_filter_button;
-  QCheckBox *log_recent_check;
-  QLabel *log_recent_label;
-  */
   RDLogFilter *log_filter_widget;
   QListView *log_log_list;
   std::vector<RDLogLine> log_clipboard;
