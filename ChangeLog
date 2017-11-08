@@ -16351,3 +16351,6 @@
 	obscured.
 2017-11-08 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in 'lib/lib.pro' that broke the build under Windows.
+2017-11-08 Fred Gleason <fredg@paravelsystems.com>
+	* Updated 'NEWS'.
+	* Incremented the package version to 2.17.0int04.

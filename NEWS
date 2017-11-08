@@ -1,9 +1,14 @@
 The NEWS file for the Rivendell package.
 
 -------------------------------------------------------------------------------
-v2.17.0int03 -- 10/25/2017
+v2.17.0int04 -- 11/08/2017
 
 Changes:
+   Documentation Changes. The Rivendell Operations Guide has been
+   incorporated as part of the base Rivendell source in 'docs/opsguide.
+   Most of text notes previously located in 'docs/' added as appendices. 
+   Remaining unconverted text notes can now be found in 'docs/misc/'.
+
    Group Cut Expiration Policy. Added the ability to set a default
    End Date/Time for new cuts on a per-group basis. See the
    'Set End Date/Time' control in RDAdmin->ManageGroups.
@@ -30,6 +35,13 @@ Changes:
 
    RDCatch Event Filtering. Added the ability to filter by event type in
    RDCatch.
+
+   Log Searching. A search filter (similar to that employed for seaching
+   for carts) has been added to the List Logs dialogs.
+
+   Web API Changes. Added 'FILTER' and 'RECENT' call parameters to the
+   'ListLogs' Web API call. See the API documentation in
+   'docs/apis/web_api.pdf' for details.
 
    Various other bug fixes.  See the ChangeLog for details.   
 
