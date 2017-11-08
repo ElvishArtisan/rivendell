@@ -38,7 +38,6 @@ SOURCES += edit_logline.cpp
 SOURCES += edit_marker.cpp
 SOURCES += edit_track.cpp
 SOURCES += list_listviewitem.cpp
-SOURCES += list_logs.cpp
 SOURCES += list_reports.cpp
 SOURCES += rdlogedit.cpp
 x11 {
@@ -55,7 +54,6 @@ HEADERS += edit_marker.h
 HEADERS += edit_track.h
 HEADERS += globals.h
 HEADERS += list_listviewitem.h
-HEADERS += list_logs.h
 HEADERS += list_reports.h
 HEADERS += rdlogedit.h
 x11 {

@@ -20,9 +20,13 @@
 
 #include <qpushbutton.h>
 #include <qmessagebox.h>
+
 #include <rddb.h>
+#include <rdlist_logs.h>
+
 #include <edit_chain.h>
-#include <list_logs.h>
+
+#include "globals.h"
 
 EditChain::EditChain(RDLogLine *line,QWidget *parent)
   : QDialog(parent,"",true)
@@ -285,12 +289,12 @@ void EditChain::selectLogData()
 {
   QString logname;
 
-  ListLogs *list=new ListLogs(&logname,this);
-  if(list->exec()<0) {
-    delete list;
+  RDListLogs *d=new RDListLogs(&logname,log_config->stationName(),this);
+  if(d->exec()!=0) {
+    delete d;
     return;
   }
-  delete list;
+  delete d;
   edit_label_edit->setText(logname);
   labelChangedData(logname);
 }

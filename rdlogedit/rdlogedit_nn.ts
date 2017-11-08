@@ -673,27 +673,27 @@ som er skrudd av for denne tenesta!</translation>
     <name>ListLogs</name>
     <message>
         <source>Select a Log</source>
-        <translation>Vel ein logg</translation>
+        <translation type="obsolete">Vel ein logg</translation>
     </message>
     <message>
         <source>NAME</source>
-        <translation>NAMN</translation>
+        <translation type="obsolete">NAMN</translation>
     </message>
     <message>
         <source>DESCRIPTION</source>
-        <translation>SKILDRING</translation>
+        <translation type="obsolete">SKILDRING</translation>
     </message>
     <message>
         <source>SERVICE</source>
-        <translation>TENEST</translation>
+        <translation type="obsolete">TENEST</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Avbryt</translation>
+        <translation type="obsolete">&amp;Avbryt</translation>
     </message>
 </context>
 <context>

@@ -16331,3 +16331,6 @@
 	* Removed vestigal remnants of Host Security mode.
 2017-11-08 Fred Gleason <fredg@paravelsystems.com>
 	* Added a filter widget to the 'RDListLog' dialog.
+2017-11-08 Fred Gleason <fredg@paravelsystems.com>
+	* Replaced the custom 'List Logs' dialog in rdlogedit(1) with
+	RDListLog.

@@ -52,7 +52,6 @@ dist_rdlogedit_SOURCES = add_meta.cpp add_meta.h\
                          import_track.cpp import_track.h\
                          list_listviewitem.cpp list_listviewitem.h\
                          list_reports.cpp list_reports.h\
-                         list_logs.cpp list_logs.h\
                          log_listview.cpp log_listview.h\
                          rdlogedit.cpp rdlogedit.h globals.h\
                          render_dialog.cpp render_dialog.h\
@@ -66,7 +65,6 @@ nodist_rdlogedit_SOURCES = moc_add_meta.cpp\
                            moc_edit_marker.cpp\
                            moc_edit_track.cpp\
                            moc_import_track.cpp\
-                           moc_list_logs.cpp\
                            moc_list_reports.cpp\
                            moc_log_listview.cpp\
                            moc_rdlogedit.cpp\
