@@ -116,6 +116,15 @@ RDLogFilter::RDLogFilter(QWidget *parent)
  }
 
 
+void RDLogFilter::setServices(const QStringList &svc_names)
+{
+   filter_service_box->clear();
+   for(unsigned i=0;i<svc_names.size();i++) {
+     filter_service_box->insertItem(svc_names[i]);
+   }
+}
+
+
  void RDLogFilter::filterChangedData(const QString &str)
  {
    emit filterChanged(whereSql());

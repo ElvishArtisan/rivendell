@@ -48,11 +48,27 @@ RDListLogs::RDListLogs(QString *logname,const QString &stationname,
   setCaption(tr("Select Log"));
 
   //
+  // Log Filter
+  //
+  list_filter_widget=new RDLogFilter(this);
+  QString sql=QString("select ")+
+    "SERVICE_NAME from SERVICE_PERMS where "+
+    "STATION_NAME=\""+RDEscapeString(list_stationname)+"\"";
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  QStringList services_list;
+  services_list.push_back(tr("ALL"));
+  while(q->next()) {
+    services_list.push_back(q->value(0).toString());
+  }
+  delete q;
+  list_filter_widget->setServices(services_list);
+  connect(list_filter_widget,SIGNAL(filterChanged(const QString &)),
+	  this,SLOT(filterChangedData(const QString &)));
+
+  //
   // Log List
   //
-  list_log_list=new QListView(this,"list_log_list");
-  list_log_list->setGeometry(10,10,
-			    sizeHint().width()-20,sizeHint().height()-80);
+  list_log_list=new QListView(this);
   list_log_list->setAllColumnsShowFocus(true);
   list_log_list->setItemMargin(5);
   list_log_list->setSelectionMode(QListView::Single);
@@ -70,21 +86,19 @@ RDListLogs::RDListLogs(QString *logname,const QString &stationname,
   //
   // OK Button
   //
-  QPushButton *button=new QPushButton(this,"load_button");
-  button->setGeometry(sizeHint().width()-190,sizeHint().height()-60,80,50);
-  button->setFont(button_font);
-  button->setText(tr("OK"));
-  connect(button,SIGNAL(clicked()),this,SLOT(okButtonData()));
+  list_ok_button=new QPushButton(this);
+  list_ok_button->setFont(button_font);
+  list_ok_button->setText(tr("OK"));
+  connect(list_ok_button,SIGNAL(clicked()),this,SLOT(okButtonData()));
 
   //
   // Cancel Button
   //
-  button=new QPushButton(this,"cancel_button");
-  button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,80,50);
-  button->setFont(button_font);
-  button->setText(tr("Cancel"));
-  button->setDefault(true);
-  connect(button,SIGNAL(clicked()),this,SLOT(cancelButtonData()));
+  list_cancel_button=new QPushButton(this);
+  list_cancel_button->setFont(button_font);
+  list_cancel_button->setText(tr("Cancel"));
+  list_cancel_button->setDefault(true);
+  connect(list_cancel_button,SIGNAL(clicked()),this,SLOT(cancelButtonData()));
 
   RefreshList();
 }
@@ -105,6 +119,12 @@ QSizePolicy RDListLogs::sizePolicy() const
 void RDListLogs::closeEvent(QCloseEvent *e)
 {
   done(1);
+}
+
+
+void RDListLogs::filterChangedData(const QString &where_sql)
+{
+  RefreshList();
 }
 
 
@@ -131,6 +151,22 @@ void RDListLogs::cancelButtonData()
 }
 
 
+void RDListLogs::resizeEvent(QResizeEvent *e)
+{
+  list_filter_widget->
+    setGeometry(10,10,size().width()-10,
+		list_filter_widget->sizeHint().height());
+  list_log_list->
+    setGeometry(10,list_filter_widget->sizeHint().height(),
+		size().width()-20,
+		size().height()-list_filter_widget->sizeHint().height()-70);
+  list_ok_button->
+    setGeometry(size().width()-190,size().height()-60,80,50);
+  list_cancel_button->
+    setGeometry(size().width()-90,size().height()-60,80,50);
+}
+
+
 void RDListLogs::RefreshList()
 {
   RDSqlQuery *q;
@@ -138,22 +174,8 @@ void RDListLogs::RefreshList()
   QListViewItem *l;
   QListViewItem *view_item=NULL;
   QDate current_date=QDate::currentDate();
-  QStringList services_list;
 
   list_log_list->clear();
-
-  sql=QString("select ")+
-    "SERVICE_NAME from SERVICE_PERMS where "+
-    "STATION_NAME=\""+RDEscapeString(list_stationname)+"\"";
-  q=new RDSqlQuery(sql);
-  while(q->next()) {
-    services_list.append( q->value(0).toString() );
-  }
-  delete q;
-
-  if(services_list.size()==0) {
-    return;
-  }
   sql=QString("select NAME,DESCRIPTION,SERVICE from LOGS ")+
     "where (TYPE=0)&&(LOG_EXISTS=\"Y\")&&"+
     "((START_DATE<=\""+current_date.toString("yyyy-MM-dd")+"\")||"+
@@ -161,14 +183,9 @@ void RDListLogs::RefreshList()
     "(START_DATE is null))&&"+
     "((END_DATE>=\""+current_date.toString("yyyy-MM-dd")+"\")||"+
     "(END_DATE=\"0000-00-00\")||"+
-    "(END_DATE is null))&&(";
-  for ( QStringList::Iterator it = services_list.begin();
-        it != services_list.end(); ++it ) {
-    sql+=QString().sprintf("SERVICE=\"%s\"||",
-               (const char *)*it);
-  }
-  sql=sql.left(sql.length()-2);
-  sql+=")";
+    "(END_DATE is null))"+
+    list_filter_widget->whereSql();
+
   q=new RDSqlQuery(sql);
   while(q->next()) {
     l=new QListViewItem(list_log_list);

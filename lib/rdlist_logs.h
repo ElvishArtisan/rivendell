@@ -31,6 +31,8 @@
 #include <qlistview.h>
 #include <qpushbutton.h>
 
+#include <rdlogfilter.h>
+
 class RDListLogs : public QDialog
 {
   Q_OBJECT
@@ -41,16 +43,23 @@ class RDListLogs : public QDialog
   QSizePolicy sizePolicy() const;
 
  private slots:
+  void filterChangedData(const QString &where_sql);
   void doubleClickedData(QListViewItem *,const QPoint &,int);
   void closeEvent(QCloseEvent *);
   void okButtonData();
   void cancelButtonData();
+
+ protected:
+  void resizeEvent(QResizeEvent *e);
 
  private:
   void RefreshList();
   QListView *list_log_list;
   QString *list_logname;
   QString list_stationname;
+  QPushButton *list_ok_button;
+  QPushButton *list_cancel_button;
+  RDLogFilter *list_filter_widget;
 };
 
 

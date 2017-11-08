@@ -1877,10 +1877,6 @@ Sjekk eksportoppsettet ditt og prøv att.</translation>
 <context>
     <name>RDListLogs</name>
     <message>
-        <source>Select Log</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>NAME</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1899,6 +1895,14 @@ Sjekk eksportoppsettet ditt og prøv att.</translation>
     <message>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select Log</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ALL</source>
+        <translation type="unfinished">ALLE</translation>
     </message>
 </context>
 <context>

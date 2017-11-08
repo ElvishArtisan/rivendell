@@ -1886,7 +1886,7 @@ Do you still want to proceed?</source>
     </message>
     <message>
         <source>Select Log</source>
-        <translation>Seleccionar Playlist</translation>
+        <translation type="unfinished">Seleccionar Playlist</translation>
     </message>
     <message>
         <source>NAME</source>
@@ -1907,6 +1907,10 @@ Do you still want to proceed?</source>
     <message>
         <source>Cancel</source>
         <translation>Cancelar</translation>
+    </message>
+    <message>
+        <source>ALL</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

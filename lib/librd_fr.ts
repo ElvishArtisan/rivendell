@@ -1704,10 +1704,6 @@ Do you want to overwrite it?</source>
 <context>
     <name>RDListLogs</name>
     <message>
-        <source>Select Log</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>NAME</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1725,6 +1721,14 @@ Do you want to overwrite it?</source>
     </message>
     <message>
         <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select Log</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ALL</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

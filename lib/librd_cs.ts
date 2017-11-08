@@ -1889,7 +1889,7 @@ Bitte Kofiguration prüfen und erneut versuchen.</translation>
     </message>
     <message>
         <source>Select Log</source>
-        <translation>Vybrat zápis</translation>
+        <translation type="unfinished">Vybrat zápis</translation>
     </message>
     <message>
         <source>NAME</source>
@@ -1910,6 +1910,10 @@ Bitte Kofiguration prüfen und erneut versuchen.</translation>
     <message>
         <source>Cancel</source>
         <translation>Zrušit</translation>
+    </message>
+    <message>
+        <source>ALL</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

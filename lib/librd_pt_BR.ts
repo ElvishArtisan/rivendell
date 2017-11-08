@@ -1884,7 +1884,7 @@ Por Favor, cheque suas configurações e tenbte outra vez.</translation>
     </message>
     <message>
         <source>Select Log</source>
-        <translation>Selecione Lista</translation>
+        <translation type="unfinished">Selecione Lista</translation>
     </message>
     <message>
         <source>NAME</source>
@@ -1905,6 +1905,10 @@ Por Favor, cheque suas configurações e tenbte outra vez.</translation>
     <message>
         <source>Cancel</source>
         <translation>Cancelar</translation>
+    </message>
+    <message>
+        <source>ALL</source>
+        <translation type="unfinished">TODOS</translation>
     </message>
 </context>
 <context>

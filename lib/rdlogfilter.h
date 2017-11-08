@@ -26,6 +26,7 @@
 #include <qlineedit.h>
 #include <qlabel.h>
 #include <qpushbutton.h>
+#include <qstringlist.h>
 #include <qwidget.h>
 
 class RDLogFilter : public QWidget
@@ -37,6 +38,7 @@ class RDLogFilter : public QWidget
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
   QString whereSql() const;
+  void setServices(const QStringList &svc_names);
 
  signals:
   void filterChanged(const QString &where_sql);

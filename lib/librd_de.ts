@@ -1880,7 +1880,7 @@ Bitte Kofiguration prüfen und erneut versuchen.</translation>
     </message>
     <message>
         <source>Select Log</source>
-        <translation>Log auswählen</translation>
+        <translation type="unfinished">Log auswählen</translation>
     </message>
     <message>
         <source>NAME</source>
@@ -1901,6 +1901,10 @@ Bitte Kofiguration prüfen und erneut versuchen.</translation>
     <message>
         <source>Cancel</source>
         <translation>Abbrechen</translation>
+    </message>
+    <message>
+        <source>ALL</source>
+        <translation type="unfinished">ALLE</translation>
     </message>
 </context>
 <context>
