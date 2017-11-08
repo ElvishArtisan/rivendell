@@ -16336,3 +16336,6 @@
 	RDListLog.
 2017-11-08 Fred Gleason <fredg@paravelsystems.com>
 	* Added a filter widget to the 'List Logs' dialog in rdairplay(1).
+2017-11-08 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'FILTER' and 'RECENT' call parameters to the 'ListLogs' Web
+	API call.

@@ -2463,7 +2463,7 @@
 	    SERVICE_NAME
 	  </entry>
 	  <entry>
-	    Limits returns to logs that are owned by specified service
+	    Limit returns to logs that are owned by specified service
 	  </entry>
 	  <entry>
 	    Optional.  Default is to return all logs.
@@ -2485,10 +2485,35 @@
 	    TRACKABLE
 	  </entry>
 	  <entry>
-	    Limits returns to logs that contain one or more voicetrack slots
+	    Limit returns to logs that contain one or more voicetrack slots
 	  </entry>
 	  <entry>
-	    Optional, valid values 0=no, 1=yes.  Default is to return all logs
+	    Optional, valid values 0=no, 1=yes.  Default is to return all logs.
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    FILTER
+	  </entry>
+	  <entry>
+	    Limit returns to logs that contain the specified string in
+	    the <computeroutput>Name</computeroutput>,
+	    <computeroutput>Description</computeroutput> or
+	    <computeroutput>Service</computeroutput> fields.
+	  </entry>
+	  <entry>
+	    Optional.  Default is to return all logs.
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    RECENT
+	  </entry>
+	  <entry>
+	    Limit returns to the 14 most recently created logs.
+	  </entry>
+	  <entry>
+	    Optional, valid values 0=no, 1=yes.  Default is to return all logs.
 	  </entry>
 	</row>
       </tbody>

@@ -122,6 +122,8 @@ void Xport::ListLogs()
   QString service_name="";
   QString log_name="";
   QString trackable;
+  QString filter="";
+  QString recent="";
 
   //
   // Get Options
@@ -129,12 +131,15 @@ void Xport::ListLogs()
   xport_post->getValue("SERVICE_NAME",&service_name);
   xport_post->getValue("LOG_NAME",&log_name);
   xport_post->getValue("TRACKABLE",&trackable);
+  xport_post->getValue("FILTER",&filter);
+  xport_post->getValue("RECENT",&recent);
 
   //
   // Generate Log List
   //
   sql="select NAME from LOGS";
-  if((!service_name.isEmpty())||(!log_name.isEmpty())||(trackable=="1")) {
+  if((!service_name.isEmpty())||(!log_name.isEmpty())||(trackable=="1")||
+     (!filter.isEmpty())||(recent=="1")) {
     sql+=" where";
     if(!log_name.isEmpty()) {
       sql+=" (NAME=\""+RDEscapeString(log_name)+"\")&&";
@@ -145,9 +150,23 @@ void Xport::ListLogs()
     if(trackable=="1") {
       sql+=" (SCHEDULED_TRACKS>0)&&";
     }
+    if(!filter.isEmpty()) {
+      if(service_name.isEmpty()) {
+	sql+=" ((LOGS.NAME like \"%%"+RDEscapeString(filter)+"%%\")||";
+	sql+="(LOGS.DESCRIPTION like \"%%"+RDEscapeString(filter)+"%%\")||";
+	sql+="(LOGS.SERVICE like \"%%"+RDEscapeString(filter)+"%%\"))&&";
+      }
+      else {
+	sql+=" ((LOGS.NAME like \"%%"+RDEscapeString(filter)+"%%\")||";
+	sql+="(LOGS.DESCRIPTION like \"%%"+RDEscapeString(filter)+"%%\"))&&";
+      }
+    }
     sql=sql.left(sql.length()-2);
   }
   sql+=" order by NAME";
+  if(recent=="1") {
+    sql+=QString().sprintf(" limit %d",RD_LOGFILTER_LIMIT_QUAN);
+  }
   q=new RDSqlQuery(sql);
 
   //
