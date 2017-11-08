@@ -16342,3 +16342,6 @@
 2017-11-08 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in the 'RDLogFilter' widget that caused excluded
 	services to be included when specifying a filter string.
+2017-11-08 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in the 'List Logs' Web API call that broke searches
+	when the 'RECENT' parameter was set.

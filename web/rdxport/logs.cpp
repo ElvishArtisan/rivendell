@@ -138,34 +138,41 @@ void Xport::ListLogs()
   // Generate Log List
   //
   sql="select NAME from LOGS";
-  if((!service_name.isEmpty())||(!log_name.isEmpty())||(trackable=="1")||
-     (!filter.isEmpty())||(recent=="1")) {
-    sql+=" where";
-    if(!log_name.isEmpty()) {
-      sql+=" (NAME=\""+RDEscapeString(log_name)+"\")&&";
+  sql+=" where";
+  if(!log_name.isEmpty()) {
+    sql+=" (NAME=\""+RDEscapeString(log_name)+"\")&&";
+  }
+  if(!service_name.isEmpty()) {
+    sql+=" (SERVICE=\""+RDEscapeString(service_name)+"\")&&";
+  }
+  if(trackable=="1") {
+    sql+=" (SCHEDULED_TRACKS>0)&&";
+  }
+  if(!filter.isEmpty()) {
+    if(service_name.isEmpty()) {
+      sql+=" ((LOGS.NAME like \"%%"+RDEscapeString(filter)+"%%\")||";
+      sql+="(LOGS.DESCRIPTION like \"%%"+RDEscapeString(filter)+"%%\")||";
+      sql+="(LOGS.SERVICE like \"%%"+RDEscapeString(filter)+"%%\"))&&";
     }
-    if(!service_name.isEmpty()) {
-      sql+=" (SERVICE=\""+RDEscapeString(service_name)+"\")&&";
+    else {
+      sql+=" ((LOGS.NAME like \"%%"+RDEscapeString(filter)+"%%\")||";
+      sql+="(LOGS.DESCRIPTION like \"%%"+RDEscapeString(filter)+"%%\"))&&";
     }
-    if(trackable=="1") {
-      sql+=" (SCHEDULED_TRACKS>0)&&";
-    }
-    if(!filter.isEmpty()) {
-      if(service_name.isEmpty()) {
-	sql+=" ((LOGS.NAME like \"%%"+RDEscapeString(filter)+"%%\")||";
-	sql+="(LOGS.DESCRIPTION like \"%%"+RDEscapeString(filter)+"%%\")||";
-	sql+="(LOGS.SERVICE like \"%%"+RDEscapeString(filter)+"%%\"))&&";
-      }
-      else {
-	sql+=" ((LOGS.NAME like \"%%"+RDEscapeString(filter)+"%%\")||";
-	sql+="(LOGS.DESCRIPTION like \"%%"+RDEscapeString(filter)+"%%\"))&&";
-      }
-    }
+  }
+  sql=sql.stripWhiteSpace();
+  if(sql.right(2)=="&&") {
     sql=sql.left(sql.length()-2);
   }
-  sql+=" order by NAME";
+  sql=sql.stripWhiteSpace();
+  if(sql.right(5)=="where") {
+    sql=sql.left(sql.length()-5);
+  }
   if(recent=="1") {
-    sql+=QString().sprintf(" limit %d",RD_LOGFILTER_LIMIT_QUAN);
+    sql+=QString().sprintf(" order by LOGS.ORIGIN_DATETIME desc limit %d",
+			   RD_LOGFILTER_LIMIT_QUAN);
+  }
+  else {
+    sql+=" order by NAME";
   }
   q=new RDSqlQuery(sql);
 
