@@ -402,7 +402,7 @@ vorhören</translation>
     <name>ListLogs</name>
     <message>
         <source>Select a Log</source>
-        <translation>Log auswählen</translation>
+        <translation type="obsolete">Log auswählen</translation>
     </message>
     <message>
         <source>NAME</source>
@@ -430,7 +430,7 @@ vorhören</translation>
     </message>
     <message>
         <source>Save &amp;As</source>
-        <translation>Speichern &amp;Als</translation>
+        <translation type="obsolete">Speichern &amp;Als</translation>
     </message>
     <message>
         <source>Cancel</source>
@@ -439,6 +439,18 @@ vorhören</translation>
     <message>
         <source>Rename Log</source>
         <translation>Log umbenennen</translation>
+    </message>
+    <message>
+        <source>ALL</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select Log</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save As</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

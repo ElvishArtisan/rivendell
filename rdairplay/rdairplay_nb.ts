@@ -408,7 +408,7 @@ Tail</source>
     <name>ListLogs</name>
     <message>
         <source>Select a Log</source>
-        <translation>Vel ein logg</translation>
+        <translation type="obsolete">Vel ein logg</translation>
     </message>
     <message>
         <source>NAME</source>
@@ -436,7 +436,7 @@ Tail</source>
     </message>
     <message>
         <source>Save &amp;As</source>
-        <translation>Lagre &amp;som</translation>
+        <translation type="obsolete">Lagre &amp;som</translation>
     </message>
     <message>
         <source>Cancel</source>
@@ -445,6 +445,18 @@ Tail</source>
     <message>
         <source>Rename Log</source>
         <translation>Døyp om loggen</translation>
+    </message>
+    <message>
+        <source>ALL</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select Log</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save As</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

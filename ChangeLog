@@ -16334,3 +16334,5 @@
 2017-11-08 Fred Gleason <fredg@paravelsystems.com>
 	* Replaced the custom 'List Logs' dialog in rdlogedit(1) with
 	RDListLog.
+2017-11-08 Fred Gleason <fredg@paravelsystems.com>
+	* Added a filter widget to the 'List Logs' dialog in rdairplay(1).

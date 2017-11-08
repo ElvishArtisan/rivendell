@@ -402,7 +402,7 @@ poslechu</translation>
     <name>ListLogs</name>
     <message>
         <source>Select a Log</source>
-        <translation>Vybrat zápis</translation>
+        <translation type="obsolete">Vybrat zápis</translation>
     </message>
     <message>
         <source>NAME</source>
@@ -430,7 +430,7 @@ poslechu</translation>
     </message>
     <message>
         <source>Save &amp;As</source>
-        <translation>Uložit &amp;jako</translation>
+        <translation type="obsolete">Uložit &amp;jako</translation>
     </message>
     <message>
         <source>Cancel</source>
@@ -439,6 +439,18 @@ poslechu</translation>
     <message>
         <source>Rename Log</source>
         <translation>Přejmenovat zápis</translation>
+    </message>
+    <message>
+        <source>ALL</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select Log</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save As</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

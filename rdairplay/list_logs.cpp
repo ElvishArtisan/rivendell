@@ -22,8 +22,10 @@
 
 #include <rdadd_log.h>
 #include <rddb.h>
-#include <list_logs.h>
+#include <rdescape_string.h>
+
 #include <globals.h>
+#include <list_logs.h>
 
 ListLogs::ListLogs(LogPlay *log,QWidget *parent)
   : QDialog(parent,"",true)
@@ -31,10 +33,7 @@ ListLogs::ListLogs(LogPlay *log,QWidget *parent)
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
 
   //
   // Generate Fonts
@@ -43,14 +42,19 @@ ListLogs::ListLogs(LogPlay *log,QWidget *parent)
   button_font.setPixelSize(12);
 
   list_log=log;
-  setCaption(tr("Select a Log"));
+  setCaption(tr("Select Log"));
+
+  //
+  // Filter Widget
+  //
+  list_filter_widget=new RDLogFilter(this);
+  connect(list_filter_widget,SIGNAL(filterChanged(const QString &)),
+	  this,SLOT(filterChangedData(const QString &)));
 
   //
   // Log List
   //
-  list_log_list=new QListView(this,"list_log_list");
-  list_log_list->setGeometry(10,10,
-                            sizeHint().width()-20,sizeHint().height()-80);
+  list_log_list=new QListView(this);
   list_log_list->setAllColumnsShowFocus(true);
   list_log_list->setItemMargin(5);
   connect(list_log_list,
@@ -67,48 +71,38 @@ ListLogs::ListLogs(LogPlay *log,QWidget *parent)
   //
   // Load Button
   //
-  QPushButton *button=new QPushButton(this,"load_button");
-  button->setGeometry(10,sizeHint().height()-60,80,50);
-  button->setFont(button_font);
-  button->setText(tr("Load"));
-  connect(button,SIGNAL(clicked()),this,SLOT(loadButtonData()));
+  list_load_button=new QPushButton(tr("Load"),this);
+  list_load_button->setFont(button_font);
+  connect(list_load_button,SIGNAL(clicked()),this,SLOT(loadButtonData()));
 
   //
   // Unload Button
   //
-  list_unload_button=new QPushButton(this,"list_unload_button");
-  list_unload_button->setGeometry(100,sizeHint().height()-60,80,50);
+  list_unload_button=new QPushButton(tr("Unload"),this);
   list_unload_button->setFont(button_font);
-  list_unload_button->setText(tr("Unload"));
   connect(list_unload_button,SIGNAL(clicked()),this,SLOT(unloadButtonData()));
 
   //
   // Save Button
   //
-  button=new QPushButton(this,"save_button");
-  button->setGeometry(210,sizeHint().height()-60,80,50);
-  button->setFont(button_font);
-  button->setText(tr("Save"));
-  connect(button,SIGNAL(clicked()),this,SLOT(saveButtonData()));
+  list_save_button=new QPushButton(tr("Save"),this);
+  list_save_button->setFont(button_font);
+  connect(list_save_button,SIGNAL(clicked()),this,SLOT(saveButtonData()));
 
   //
   // Save As Button
   //
-  list_saveas_button=new QPushButton(this,"list_saveas_button");
-  list_saveas_button->setGeometry(300,sizeHint().height()-60,80,50);
+  list_saveas_button=new QPushButton(tr("Save As"),this);
   list_saveas_button->setFont(button_font);
-  list_saveas_button->setText(tr("Save &As"));
   connect(list_saveas_button,SIGNAL(clicked()),this,SLOT(saveAsButtonData()));
 
   //
   // Cancel Button
   //
-  button=new QPushButton(this,"cancel_button");
-  button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,80,50);
-  button->setFont(button_font);
-  button->setText(tr("Cancel"));
-  button->setDefault(true);
-  connect(button,SIGNAL(clicked()),this,SLOT(cancelButtonData()));
+  list_cancel_button=new QPushButton(tr("Cancel"),this);
+  list_cancel_button->setFont(button_font);
+  list_cancel_button->setDefault(true);
+  connect(list_cancel_button,SIGNAL(clicked()),this,SLOT(cancelButtonData()));
 
   RefreshList();
 }
@@ -116,7 +110,7 @@ ListLogs::ListLogs(LogPlay *log,QWidget *parent)
 
 QSize ListLogs::sizeHint() const
 {
-  return QSize(500,300);
+  return QSize(500,400);
 }
 
 
@@ -131,8 +125,25 @@ int ListLogs::exec(QString *logname,QString *svcname)
   list_logname=logname;
   list_svcname=svcname;
   list_saveas_button->setEnabled(rduser->createLog());
+  QStringList services_list;
+  QString sql=QString("select SERVICE_NAME from SERVICE_PERMS where ")+
+    "STATION_NAME=\""+RDEscapeString(rdstation_conf->name())+"\"";
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  services_list.push_back(tr("ALL"));
+  while(q->next()) {
+    services_list.push_back(q->value(0).toString());
+  }
+  list_filter_widget->setServices(services_list);
+  delete q;
   RefreshList();
+
   return QDialog::exec();
+}
+
+
+void ListLogs::filterChangedData(const QString &where_sql)
+{
+  RefreshList();
 }
 
 
@@ -200,6 +211,19 @@ void ListLogs::cancelButtonData()
 }
 
 
+void ListLogs::resizeEvent(QResizeEvent *e)
+{
+  list_filter_widget->setGeometry(10,10,size().width()-20,
+				  list_filter_widget->sizeHint().height());
+  list_log_list->setGeometry(10,list_filter_widget->sizeHint().height(),size().width()-20,size().height()-list_filter_widget->sizeHint().height()-80);
+  list_load_button->setGeometry(10,size().height()-60,80,50);
+  list_unload_button->setGeometry(100,size().height()-60,80,50);
+  list_save_button->setGeometry(210,size().height()-60,80,50);
+  list_saveas_button->setGeometry(300,size().height()-60,80,50);
+  list_cancel_button->setGeometry(size().width()-90,size().height()-60,80,50);
+}
+
+
 void ListLogs::RefreshList()
 {
   RDSqlQuery *q;
@@ -209,18 +233,6 @@ void ListLogs::RefreshList()
   QStringList services_list;
 
   list_log_list->clear();
-
-  sql=QString().sprintf("select SERVICE_NAME from SERVICE_PERMS \
-                           where STATION_NAME=\"%s\"",
-			(const char *)rdstation_conf->name());
-  q=new RDSqlQuery(sql);
-  while(q->next()) {
-    services_list.append( q->value(0).toString() );
-  }
-  delete q;
-  if(services_list.size()==0) {
-    return;
-  }
   sql=QString("select NAME,DESCRIPTION,SERVICE from LOGS ")+
     "where (TYPE=0)&&(LOG_EXISTS=\"Y\")&&"+
     "((START_DATE<=\""+current_date.toString("yyyy-MM-dd")+"\")||"+
@@ -228,15 +240,8 @@ void ListLogs::RefreshList()
     "(START_DATE is null))&&"+
     "((END_DATE>=\""+current_date.toString("yyyy-MM-dd")+"\")||"+
     "(END_DATE=\"0000-00-00\")||"+
-    "(END_DATE is null))&&(";
-  for ( QStringList::Iterator it = services_list.begin(); 
-        it != services_list.end(); ++it ) {
-    sql+=QString().sprintf("SERVICE=\"%s\"||",
-                           (const char *)*it);
-  }
-  sql=sql.left(sql.length()-2);
-  sql+=")";
-
+    "(END_DATE is null))"+
+    list_filter_widget->whereSql();
   q=new RDSqlQuery(sql);
   while(q->next()) {
     l=new QListViewItem(list_log_list);

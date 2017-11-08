@@ -403,7 +403,7 @@ Log</source>
     <name>ListLogs</name>
     <message>
         <source>Select a Log</source>
-        <translation>Sel uma Lista</translation>
+        <translation type="obsolete">Sel uma Lista</translation>
     </message>
     <message>
         <source>NAME</source>
@@ -431,7 +431,7 @@ Log</source>
     </message>
     <message>
         <source>Save &amp;As</source>
-        <translation>Salvar &amp;Como</translation>
+        <translation type="obsolete">Salvar &amp;Como</translation>
     </message>
     <message>
         <source>Cancel</source>
@@ -440,6 +440,18 @@ Log</source>
     <message>
         <source>Rename Log</source>
         <translation>Renomear lista</translation>
+    </message>
+    <message>
+        <source>ALL</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select Log</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save As</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
