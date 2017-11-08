@@ -477,7 +477,7 @@ void EditGroup::resizeEvent(QResizeEvent *e)
   group_nownext_check->setGeometry(20,263,15,15);
   group_nownext_label->setGeometry(40,262,size().width()-50,19);
 
-  group_svcs_sel->setGeometry(10,261,401,130);
+  group_svcs_sel->setGeometry(10,285,401,130);
 
   group_color_button->setGeometry(10,size().height()-60,80,50);
 
