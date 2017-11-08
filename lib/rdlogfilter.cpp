@@ -103,9 +103,15 @@ RDLogFilter::RDLogFilter(QWidget *parent)
    }
    QString filter=filter_filter_edit->text();
    if(!filter.isEmpty()) {
-     sql+="&&((LOGS.NAME like \"%%"+RDEscapeString(filter)+"%%\")||";
-     sql+="(LOGS.DESCRIPTION like \"%%"+RDEscapeString(filter)+"%%\")||";
-     sql+="(LOGS.SERVICE like \"%%"+RDEscapeString(filter)+"%%\"))";
+     if(filter_service_box->currentItem()==0) {
+       sql+="&&((LOGS.NAME like \"%%"+RDEscapeString(filter)+"%%\")||";
+       sql+="(LOGS.DESCRIPTION like \"%%"+RDEscapeString(filter)+"%%\")||";
+       sql+="(LOGS.SERVICE like \"%%"+RDEscapeString(filter)+"%%\"))";
+     }
+     else {
+       sql+="&&((LOGS.NAME like \"%%"+RDEscapeString(filter)+"%%\")||";
+       sql+="(LOGS.DESCRIPTION like \"%%"+RDEscapeString(filter)+"%%\"))";
+     }
    }
    if(filter_recent_check->isChecked()) {
      sql+=QString().sprintf("order by LOGS.ORIGIN_DATETIME desc limit %d",

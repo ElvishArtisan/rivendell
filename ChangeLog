@@ -16339,3 +16339,6 @@
 2017-11-08 Fred Gleason <fredg@paravelsystems.com>
 	* Added 'FILTER' and 'RECENT' call parameters to the 'ListLogs' Web
 	API call.
+2017-11-08 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in the 'RDLogFilter' widget that caused excluded
+	services to be included when specifying a filter string.
