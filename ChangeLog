@@ -16354,3 +16354,6 @@
 2017-11-08 Fred Gleason <fredg@paravelsystems.com>
 	* Updated 'NEWS'.
 	* Incremented the package version to 2.17.0int04.
+2017-11-08 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored the layout of the contents of the RPM package
+	documentation in 'rivendell.spec.in'.

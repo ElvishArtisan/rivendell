@@ -107,12 +107,46 @@ if test "@WIN32_SOURCE@" ; then
   mkdir -p $RPM_BUILD_ROOT/var/win32
   cp @WIN32_SOURCE@ $RPM_BUILD_ROOT/var/win32/
 fi
+mkdir -p $RPM_BUILD_ROOT/%{_datadir}/doc/rivendell-%{version}
+cp AUTHORS $RPM_BUILD_ROOT/%{_datadir}/doc/rivendell-%{version}/
+cp ChangeLog $RPM_BUILD_ROOT/%{_datadir}/doc/rivendell-%{version}/
+cp COPYING $RPM_BUILD_ROOT/%{_datadir}/doc/rivendell-%{version}/
+cp INSTALL $RPM_BUILD_ROOT/%{_datadir}/doc/rivendell-%{version}/
+cp NEWS $RPM_BUILD_ROOT/%{_datadir}/doc/rivendell-%{version}/
+cp README $RPM_BUILD_ROOT/%{_datadir}/doc/rivendell-%{version}/
+cp UPGRADING $RPM_BUILD_ROOT/%{_datadir}/doc/rivendell-%{version}/
+cp CODINGSTYLE $RPM_BUILD_ROOT/%{_datadir}/doc/rivendell-%{version}/
+cp conf/*.conf $RPM_BUILD_ROOT/%{_datadir}/doc/rivendell-%{version}/
+cp conf/rd.conf-sample $RPM_BUILD_ROOT/%{_datadir}/doc/rivendell-%{version}/
+cp conf/my.cnf-master $RPM_BUILD_ROOT/%{_datadir}/doc/rivendell-%{version}/
+cp conf/my.cnf-standby $RPM_BUILD_ROOT/%{_datadir}/doc/rivendell-%{version}/
+cp conf/asound.conf-sample $RPM_BUILD_ROOT/%{_datadir}/doc/rivendell-%{version}/
+cp utils/sas_shim/rc.sas_shim $RPM_BUILD_ROOT/%{_datadir}/doc/rivendell-%{version}/
+mkdir -p $RPM_BUILD_ROOT/%{_datadir}/doc/rivendell-%{version}/misc
+cp docs/misc/colors $RPM_BUILD_ROOT/%{_datadir}/doc/rivendell-%{version}/misc/
+cp docs/misc/pam_rd.txt $RPM_BUILD_ROOT/%{_datadir}/doc/rivendell-%{version}/misc/
+cp docs/misc/reports.txt $RPM_BUILD_ROOT/%{_datadir}/doc/rivendell-%{version}/misc/
+cp docs/misc/ALSA.txt $RPM_BUILD_ROOT/%{_datadir}/doc/rivendell-%{version}/misc/
+cp docs/misc/RDMONITOR.txt $RPM_BUILD_ROOT/%{_datadir}/doc/rivendell-%{version}/misc/
+cp docs/misc/scheduler_formats.ods $RPM_BUILD_ROOT/%{_datadir}/doc/rivendell-%{version}/misc/
+cp docs/misc/ando_interface.odt $RPM_BUILD_ROOT/%{_datadir}/doc/rivendell-%{version}/misc/
 mkdir -p $RPM_BUILD_ROOT/%{_datadir}/doc/rivendell-%{version}/opsguide/html
 cp docs/opsguide/*.pdf $RPM_BUILD_ROOT/%{_datadir}/doc/rivendell-%{version}/opsguide/
 cp docs/opsguide/*.html $RPM_BUILD_ROOT/%{_datadir}/doc/rivendell-%{version}/opsguide/html/
 cp docs/opsguide/*.png $RPM_BUILD_ROOT/%{_datadir}/doc/rivendell-%{version}/opsguide/html
 mkdir -p $RPM_BUILD_ROOT/%{_datadir}/doc/rivendell-%{version}/apis
 cp docs/apis/*.pdf $RPM_BUILD_ROOT/%{_datadir}/doc/rivendell-%{version}/apis/
+mkdir -p $RPM_BUILD_ROOT/%{_datadir}/doc/rivendell-%{version}/tables
+cp docs/tables/*.txt $RPM_BUILD_ROOT/%{_datadir}/doc/rivendell-%{version}/tables/
+mkdir -p $RPM_BUILD_ROOT/%{_datadir}/doc/rivendell-%{version}/scripts
+cp scripts/rd_backup $RPM_BUILD_ROOT/%{_datadir}/doc/rivendell-%{version}/scripts/
+cp scripts/start_traverso.sh $RPM_BUILD_ROOT/%{_datadir}/doc/rivendell-%{version}/scripts/
+cp scripts/rd_mysql_enable_host.sh $RPM_BUILD_ROOT/%{_datadir}/doc/rivendell-%{version}/scripts/
+cp scripts/rd_backup_system.sh $RPM_BUILD_ROOT/%{_datadir}/doc/rivendell-%{version}/scripts/
+cp scripts/rd_restore_system.sh $RPM_BUILD_ROOT/%{_datadir}/doc/rivendell-%{version}/scripts/
+mkdir -p $RPM_BUILD_ROOT/%{_datadir}/doc/rivendell-importers-%{version}
+cp scripts/engine_conv.py $RPM_BUILD_ROOT/%{_datadir}/doc/rivendell-importers-%{version}/
+
 
 %post
 ldconfig
@@ -368,76 +402,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man8/rddbcheck.8.gz
 %{_mandir}/man8/rdmarkerset.8.gz
 %{_mandir}/man8/rdrevert.8.gz
-%doc AUTHORS
-%doc ChangeLog
-%doc COPYING 
-%doc INSTALL 
-%doc NEWS 
-%doc README 
-%doc UPGRADING
-%doc CODINGSTYLE
-%doc conf/rd.conf-sample
-%doc conf/my.cnf-master
-%doc conf/my.cnf-standby
-%doc docs/tables/audio_perms.txt 
-%doc docs/tables/audio_ports.txt 
-%doc docs/tables/cart.txt 
-%doc docs/tables/cartslots.txt 
-%doc docs/tables/clipboard.txt 
-%doc docs/tables/cuts.txt 
-%doc docs/tables/decks.txt 
-%doc docs/tables/groups.txt 
-%doc docs/tables/isci_xreference.txt
-%doc docs/tables/log_format.txt 
-%doc docs/tables/logs.txt 
-%doc docs/tables/panels.txt 
-%doc docs/tables/rd_airplay.txt 
-%doc docs/tables/rd_library.txt 
-%doc docs/tables/rd_logedit.txt 
-%doc docs/tables/recordings.txt 
-%doc docs/tables/services.txt 
-%doc docs/tables/sources.txt 
-%doc docs/tables/svc_rec_format.txt
-%doc docs/tables/stations.txt 
-%doc docs/tables/triggers.txt 
-%doc docs/tables/ttys.txt 
-%doc docs/tables/users.txt 
-%doc docs/tables/version.txt 
-%doc conf/asound.conf-sample
-%doc conf/rlm_walltime.conf
-%doc conf/rlm_serial.conf
-%doc conf/rlm_udp.conf
-%doc conf/rlm_twitter.conf
-%doc conf/rlm_facebook.conf
-%doc conf/rlm_xmpad.conf
-%doc conf/rlm_ando.conf
-%doc conf/rlm_liqcomp.conf
-%doc conf/rlm_padpoint.conf
-%doc conf/rlm_inno713.conf
-%doc conf/rlm_xds.conf
-%doc conf/rlm_icecast2.conf
-%doc conf/rlm_shoutcast1.conf
-%doc conf/rlm_spottrap.conf
-%doc conf/rlm_filewrite.conf
-%doc conf/rlm_urlwrite.conf
-%doc conf/rlm_spinitron_plus.conf
-%doc conf/rlm_tagstation.conf
-%doc utils/sas_shim/rc.sas_shim
-%doc docs/misc/colors 
-%doc docs/misc/pam_rd.txt
-%doc docs/misc/reports.txt
-%doc docs/misc/ALSA.txt
-%doc docs/misc/RDMONITOR.txt
-%doc docs/misc/scheduler_formats.ods
-%doc docs/misc/ando_interface.odt
-%doc scripts/rd_backup
-%doc scripts/start_traverso.sh
-%doc scripts/rd_mysql_enable_host.sh
-%doc scripts/rd_backup_system.sh
-%doc scripts/rd_restore_system.sh
-%{_datadir}/doc/rivendell-%{version}/apis/*.pdf
-%{_datadir}/doc/rivendell-%{version}/opsguide/*.pdf
-%{_datadir}/doc/rivendell-%{version}/opsguide/html/*
+%{_docdir}/rivendell-%{version}/*
 
 
 %files base
@@ -478,7 +443,7 @@ rm -rf $RPM_BUILD_ROOT
 @LOCAL_PREFIX@/bin/rddiscimport
 @LOCAL_PREFIX@/share/applications/rivendell-rddgimport.desktop
 @LOCAL_PREFIX@/share/applications/rivendell-rddiscimport.desktop
-%doc scripts/engine_conv.py
+%{_docdir}/rivendell-importers-%{version}/*
 
 
 %files devel
