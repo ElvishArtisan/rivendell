@@ -16357,3 +16357,6 @@
 2017-11-08 Fred Gleason <fredg@paravelsystems.com>
 	* Refactored the layout of the contents of the RPM package
 	documentation in 'rivendell.spec.in'.
+2017-11-09 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed bugs in rivendell.ism' that broke the installer build
+	under Windows.
