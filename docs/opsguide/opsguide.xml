@@ -8,6 +8,7 @@
   <!ENTITY rdcatch SYSTEM "rdcatch.xml">
   <!ENTITY rdlogedit SYSTEM "rdlogedit.xml">
   <!ENTITY rdairplay SYSTEM "rdairplay.xml">
+  <!ENTITY rdcartslots SYSTEM "rdcartslots.xml">
   <!ENTITY rdlogmanager SYSTEM "rdlogmanager.xml">
   <!ENTITY voicetracking SYSTEM "voicetracking.xml">
   <!ENTITY rml SYSTEM "rml.xml">
@@ -28,6 +29,7 @@
   &rdcatch;
   &rdlogedit;
   &rdairplay;
+  &rdcartslots;
   &rdlogmanager;
   &voicetracking;
   &rml;

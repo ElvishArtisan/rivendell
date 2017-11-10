@@ -16364,3 +16364,6 @@
 	* Fixed a bug in rdcatchd(8) that caused the cut start and end
 	datetime values to be reset when running a record event even when
 	no datetime offsets were specified.
+2017-11-10 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'Playing Audio with RDCartSlots' chapter to the
+	Operations Guide.

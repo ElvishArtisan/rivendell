@@ -27,6 +27,7 @@ OPSGUIDE_HTML = appendix.filepath_wildcards.html\
                 appendix.wings_filter.html\
                 chapter.overview.html\
                 chapter.rdairplay.html\
+                chapter.rdcartslots.html\
                 chapter.rdcatch.html\
                 chapter.rdlibrary.html\
                 chapter.rdlogedit.html\
@@ -80,6 +81,9 @@ OPSGUIDE_HTML = appendix.filepath_wildcards.html\
                 sect.rdairplay.editing_a_log.html\
                 sect.rdairplay.layout.html\
                 sect.rdairplay.log_machines.html\
+                sect.rdcartslots.operation_in_breakaway_mode.html\
+                sect.rdcartslots.operation_in_cart_deck_mode.html\
+                sect.rdcartslots.setting_the_slot_options.html\
                 sect.rdcatch.adding_new_events.html\
                 sect.rdcatch_automating_macro_execution.html\
                 sect.rdcatch.automating_playouts.html\
@@ -136,6 +140,10 @@ OPSGUIDE_IMAGES = rdairplay.audio_meter.png\
                  rdairplay.soundpanel_widget.png\
                  rdairplay.wallclock_widget.png\
                  rdairplay.where_to.png\
+                 rdcartslots.rdcartslots.edit_slot_options_dialog.png\
+                 rdcartslots.rdcartslots_screenshot.png\
+                 rdcartslots.rivendell_services_dialog.png\
+                 rdcartslots.select_cart_dialog.png\
                  rdcatch.add_event_dialog.png\
                  rdcatch.edit_cart_event_dialog.png\
                  rdcatch.edit_download_dialog.png\
@@ -194,6 +202,7 @@ OPSGUIDE_DEPS = $(OPSGUIDE_IMAGES) \
                 overview.xml\
                 metadata_wildcards.xml\
                 rdairplay.xml\
+                rdcartslots.xml\
                 rdcatch.xml\
                 rdlibrary.xml\
                 rdlogedit.xml\

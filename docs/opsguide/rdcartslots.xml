@@ -1,0 +1,159 @@
+<chapter xmlns="http://docbook.org/ns/docbook" xml:id="chapter.rdcartslots">
+  <title>Playing Audio with RDCartSlots</title>
+  <sect1 xml:id="sect.rdcartslots.overview">
+    <title>Overview</title>
+    <para>
+      RDCartSlots is a Rivendell module designed for use in fast-paced
+      live or &quot;live-assist&quot; environments, with facilities for
+      quickly locating carts and getting them on the air.
+    </para>
+    <para>
+      <mediaobject>
+	<imageobject>
+	  <imagedata align="center" fileref="rdcartslots.rdcartslots_screenshot.png" scale="45"/>
+	</imageobject>
+	<caption>
+	  <para>The RDCartSlots Main Window</para>
+	</caption>
+      </mediaobject>
+    </para>
+    <para>
+      RDCartSlots can be configured to display one or more
+      <emphasis>slots</emphasis>,
+      each of which can be thought of as an independent audio player. In
+      its default <computeroutput>Cart Deck</computeroutput> mode, a slot
+      behaves much like a traditional analog &quot;cart deck&quot;; with the
+      ability for the user to load and play carts from the Rivendell library.
+      <computeroutput>Breakaway</computeroutput> mode allows the slot
+      to be used for automated play-out and replacement of upstream content
+      by means of the &quot;Execute Breakaway&quot; [<userinput>DX</userinput>]
+      RML.
+    </para>
+  </sect1>
+  <sect1 xml:id="sect.rdcartslots.setting_the_slot_options">
+    <title>Setting the Slot Options</title>
+    <para>
+      The options for a particular slot, including its mode, can be set
+      by touch its <computeroutput>Options</computeroutput> button,
+      bringing  up the Edit Slot Options dialog.
+    </para>
+    <mediaobject>
+      <imageobject>
+	<imagedata align="center" fileref="rdcartslots.rdcartslots.edit_slot_options_dialog.png" scale="70"/>
+      </imageobject>
+      <caption>
+	<para>The Edit Slot Options Dialog</para>
+      </caption>
+    </mediaobject>
+    <para>
+      The slot mode is set by selecting either
+      <computeroutput>Cart Deck</computeroutput> or
+      <computeroutput>Breakaway</computeroutput> from the
+      <computeroutput>Slot Mode:</computeroutput> dropdown box.
+    </para>
+    <sect2 xml:id="sect.rdcartslots.cart_deck_slot_options">
+      <title>Cart Deck Slot Options</title>
+      <para>
+	When set for <computeroutput>Cart Deck</computeroutput> mode,
+	the following additional options are available:
+      </para>
+      <variablelist>
+	<varlistentry>
+	  <term><computeroutput>Play Mode</computeroutput></term>
+	  <listitem>
+	    <para>
+	      When set to <computeroutput>Full Cart</computeroutput>,
+	      the slot will play audio from the Start marker to the End
+	      Marker of cuts (as set in RDLibrary).
+	    </para>
+	    <para>
+	      When set to <computeroutput>Hook</computeroutput>, the slot
+	      will play audio from the HookStart marker to the HookEnd marker
+	      of cuts.
+	    </para>
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term><computeroutput>At Playout End</computeroutput></term>
+	  <listitem>
+	    <para>
+	      When set to <computeroutput>Unload Slot</computeroutput>,
+	      the slot will automatically unload when play-out reaches its
+	      end.
+	    </para>
+	    <para>
+	      When set to <computeroutput>Recue to Start</computeroutput>,
+	      the slot will retain the previously loaded cart when play-out
+	      reaches its end. Touching the
+	      numbered start button will cause play-out to be repeated.
+	    </para>
+	    <para>
+	      When set to
+	      <computeroutput>Restart Playout (Loop></computeroutput>, the
+	      the slot will retain the previously loaded cart and automatally
+	      repeat play-out from the begining when play-out reaches its
+	      end.
+	    </para>
+	  </listitem>
+	</varlistentry>
+      </variablelist>
+    </sect2>
+  </sect1>
+  <sect1 xml:id="sect.rdcartslots.operation_in_cart_deck_mode">
+    <title>Operation in Cart Deck Mode</title>
+    <para>
+      When set to be in <computeroutput>Cart Deck</computeroutput> mode,
+      an empty slot can be loaded by touching the
+      <computeroutput>Load</computeroutput> button, bringing up the
+      Select Cart dialog.
+    </para>
+    <mediaobject>
+      <imageobject>
+	<imagedata align="center" fileref="rdcartslots.select_cart_dialog.png" scale="60"/>
+      </imageobject>
+      <caption>
+	<para>The Select Cart Dialog</para>
+      </caption>
+    </mediaobject>
+    <para>
+      To load a cart, touch the desired cart on the list (using the filter
+      tools as necessary) and then touch the <computeroutput>OK</computeroutput>
+      button. To load a file directly, touch the
+      <computeroutput>Load From File</computeroutput> button and select
+      the desired audio file. Touching <computeroutput>Cancel</computeroutput>
+      will abandon the load operation.
+    </para>
+    <para>
+      After loading a cart or file, the <computeroutput>Load</computeroutput>
+      button will change to say <computeroutput>Unload</computeroutput>.
+      Touching this button will now cause the slot to be unloaded.
+    </para>
+    <para>
+      To start play-out of a loaded slot, touch its numbered button at the
+      left-hand end. The button will turn RED and the play-out will start.
+      Touching the button while the play-out is active will stop the
+      play-out and cause the loaded cart to be re-cued to its start.
+    </para>
+  </sect1>
+  <sect1 xml:id="sect.rdcartslots.operation_in_breakaway_mode">
+    <title>Operation in Breakaway Mode</title>
+    <para>
+      When set to be in <computeroutput>Breakaway</computeroutput> mode,
+      an empty slot can be loaded by touching the
+      <computeroutput>Load</computeroutput> button, bringing up the
+      Rivendell Services dialog.
+    </para>
+    <mediaobject>
+      <imageobject>
+	<imagedata align="center" fileref="rdcartslots.rivendell_services_dialog.png" scale="60"/>
+      </imageobject>
+      <caption>
+	<para>The Rivendell Services Dialog</para>
+      </caption>
+    </mediaobject>
+    <para>
+      Touch the desired Rivendell service on ths list, then touch the
+      <computeroutput>OK</computeroutput> button.
+    </para>
+  </sect1>
+</chapter>
