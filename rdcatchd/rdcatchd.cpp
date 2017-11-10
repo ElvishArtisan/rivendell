@@ -1358,13 +1358,17 @@ bool MainObject::StartRecording(int event)
   bool valid;
   QDateTime datetime=cut->startDatetime(&valid);
   if(valid) {
-    datetime.setDate(QDate::currentDate().
-		     addDays(catch_events[event].startdateOffset()));
-    cut->setStartDatetime(datetime,true);
-    datetime=cut->endDatetime(&valid);
-    datetime.setDate(QDate::currentDate().
-		     addDays(catch_events[event].enddateOffset()));
-    cut->setEndDatetime(datetime,true);
+    if(catch_events[event].startdateOffset()!=0) {
+      datetime.setDate(QDate::currentDate().
+		       addDays(catch_events[event].startdateOffset()));
+      cut->setStartDatetime(datetime,true);
+    }
+    if(catch_events[event].enddateOffset()!=0) {
+      datetime=cut->endDatetime(&valid);
+      datetime.setDate(QDate::currentDate().
+		       addDays(catch_events[event].enddateOffset()));
+      cut->setEndDatetime(datetime,true);
+    }
   }
   delete cut;
 

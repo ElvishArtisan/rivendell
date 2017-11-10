@@ -16360,3 +16360,7 @@
 2017-11-09 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed bugs in rivendell.ism' that broke the installer build
 	under Windows.
+2017-11-10 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdcatchd(8) that caused the cut start and end
+	datetime values to be reset when running a record event even when
+	no datetime offsets were specified.
