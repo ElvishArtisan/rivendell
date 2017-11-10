@@ -13,6 +13,7 @@
   <!ENTITY voicetracking SYSTEM "voicetracking.xml">
   <!ENTITY rml SYSTEM "rml.xml">
   <!ENTITY utilities SYSTEM "utilities.xml">
+  <!ENTITY rdadmin SYSTEM "rdadmin.xml">
   <!ENTITY gplv2 SYSTEM "gplv2.xml">
   <!ENTITY gpio_switcher_devices SYSTEM "gpio_switcher_devices.xml">
   <!ENTITY filepath_wildcards SYSTEM "filepath_wildcards.xml">
@@ -23,23 +24,32 @@
 
 <book xmlns="http://docbook.org/ns/docbook" version="5.0">
   &frontspiece;
-  &overview;
-  &rdlogin;
-  &rdlibrary;
-  &rdcatch;
-  &rdlogedit;
-  &rdairplay;
-  &rdcartslots;
-  &rdlogmanager;
-  &voicetracking;
-  &rml;
-  &utilities;
-  &gplv2;
-  &gpio_switcher_devices;
-  &filepath_wildcards;
-  &metadata_wildcards;
-  &rivendell_filter;
-  &wings_filter;
+  <part xml:id="part.rivendell_operations" xmlns="http://docbook.org/ns/docbook" version="5.0">
+    <title>Rivendell Operations</title>
+    &overview;
+    &rdlogin;
+    &rdlibrary;
+    &rdcatch;
+    &rdlogedit;
+    &rdairplay;
+    &rdcartslots;
+    &rdlogmanager;
+    &voicetracking;
+    &rml;
+    &utilities;
+  </part>
+  <part xml:id="part.rivendell_administration" xmlns="http://docbook.org/ns/docbook" version="5.0">
+    <title>Rivendell Administration</title>
+    &rdadmin;
+  </part>
+  <part xml:id="part.appendices" xmlns="http://docbook.org/ns/docbook" version="5.0">
+    &gplv2;
+    &gpio_switcher_devices;
+    &filepath_wildcards;
+    &metadata_wildcards;
+    &rivendell_filter;
+    &wings_filter;
+  </part>
 </book>
 
 <!--

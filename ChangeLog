@@ -16367,3 +16367,9 @@
 2017-11-10 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'Playing Audio with RDCartSlots' chapter to the
 	Operations Guide.
+2017-11-10 Fred Gleason <fredg@paravelsystems.com>
+	* Retitled the Operations Guide to 'Operations and Administration
+	Guide'.
+	* Split the Operations Guide into three parts.
+	* Added a 'Configuring Rivendell with RDAdmin' chapter to part 2
+	of the Operations Guide.

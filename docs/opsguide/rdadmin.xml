@@ -1,0 +1,259 @@
+<chapter xmlns="http://docbook.org/ns/docbook" xml:id="chapter.rdadmin">
+  <title>Configuring Rivendell with RDAdmin</title>
+  <sect1 xml:id="sect.rdadmin.overview">
+    <title>Overview</title>
+    <para>
+      RDAdmin is the Rivendell module designed for the comprehensive
+      configuration of the Rivendell system.
+    </para>
+    <para>
+      <mediaobject>
+	<imageobject>
+	  <imagedata align="center" fileref="rdadmin.rdadmin_screenshot.png" scale="45"/>
+	</imageobject>
+	<caption>
+	  <para>The RDAdmin Main Window</para>
+	</caption>
+      </mediaobject>
+    </para>
+    <para>
+      When starting up RDAdmin, you will be prompted to login in. For a
+      freshly created Rivendell database, the default login parameters are
+      a <computeroutput>User Name:</computeroutput> of
+      <userinput>admin</userinput> with no
+      <computeroutput>Password:</computeroutput>.
+    </para>
+    <para>
+      <mediaobject>
+	<imageobject>
+	  <imagedata align="center" fileref="rdadmin.login_dialog.png" scale="45"/>
+	</imageobject>
+	<caption>
+	  <para>The Login Dialog</para>
+	</caption>
+      </mediaobject>
+    </para>
+  </sect1>
+  <sect1 xml:id="sect.rdadmin.managing_users">
+    <title>Managing Users</title>
+    <para>
+      To manage users in RDAdmin, touch the
+      <computeroutput>Manage Users</computeroutput> to open the
+      Rivendell User List dialog.
+    </para>
+    <para>
+      <mediaobject>
+	<imageobject>
+	  <imagedata align="center" fileref="rdadmin.rivendell_user_list_dialog.png" scale="45"/>
+	</imageobject>
+	<caption>
+	  <para>The Rivendell User List Dialog</para>
+	</caption>
+      </mediaobject>
+    </para>
+    <para>
+      Two different types of user exist within Rivendell: 
+      <emphasis>administrator</emphasis> users (those which have the
+      <computeroutput>Administer System</computeroutput> right set), who
+      are allowed to login into RDAdmin, and
+      <emphasis>operational</emphasis> users, who are configured to have
+      rights to operate specific portions of the Rivendell system but do
+      not have access to RDAdmin. It is not possible for a single user to
+      act in both roles.
+    </para>
+    <para>
+      A newly created Rivendell database will have one user of each type
+      populated automatically, called &quot;admin&quot; and
+      &quot;user&quot; respectively. To see the attributes of an existing
+      user, select its entry on the <computeroutput>Users</computeroutput>
+      list and touch the <computeroutput>Edit</computeroutput> button to
+      open the User Dialog.
+    </para>
+    <para>
+      <mediaobject>
+	<imageobject>
+	  <imagedata align="center" fileref="rdadmin.user_dialog.png" scale="45"/>
+	</imageobject>
+	<caption>
+	  <para>The Rivendell User Dialog</para>
+	</caption>
+      </mediaobject>
+    </para>
+    <para>
+      The upper third of the the dialog provides fields for basic information
+      regarding the user as well as authentication settings. If the
+      <computeroutput>Authenticate This User Locally</computeroutput> box
+      is ticked, then the login password for this use can be set by touching
+      the <computeroutput>Change Password</computeroutput> button. If
+      unticked, then authentication is delegated to the Pluggable
+      Authentication Module (PAM) specified in the
+      <computeroutput>PAM Service:</computeroutput> field.
+    </para>
+    <para>
+      The <computeroutput>WebAPI Timeout:</computeroutput> field sets the
+      timeout (in seconds) when connecting to Rivendell's WebAPI
+      component, while the <computeroutput>Allow Web Logins</computeroutput>
+      box, if ticked, permits this user to use the web comonent of
+      RDCastManager.
+    </para>
+    <para>
+      The middle section of the dialog is where individual user rights
+      are assigned for this user. The
+      <computeroutput>Administer System</computeroutput> box, if ticked,
+      will make this user an administrative user while disallowing the
+      selection of any other rights. The other listed rights should be
+      self-explanatory.
+    </para>
+    <para>
+      The bottom of the dialog contains two large buttons. The
+      <computeroutput>Assign Group Permissions</computeroutput> button
+      allows assignment of the specific groups which this user will be
+      allowed to access in RDLibrary, while the
+      <computeroutput>Assign Podcast Feed Permissions</computeroutput>
+      does the same for Podcast Feeds.
+    </para>
+    <para>
+      Touch the <computeroutput>OK</computeroutput> button to commit any
+      changes made, or <computeroutput>Cancel</computeroutput> to
+      abandon them.
+    </para>
+  </sect1>
+  <sect1 xml:id="sect.rdadmin.manage_groups">
+    <title>Managing Groups</title>
+    <para>
+      To manage groups in RDAdmin, touch the
+      <computeroutput>Manage Groups</computeroutput> button to open
+      the Rivendell Group List dialog.
+    </para>
+    <para>
+      <mediaobject>
+	<imageobject>
+	  <imagedata align="center" fileref="rdadmin.rivendell_group_list_dialog.png" scale="45"/>
+	</imageobject>
+	<caption>
+	  <para>The Rivendell Group List Dialog</para>
+	</caption>
+      </mediaobject>
+    </para>
+    <sect2 xml:id="sect.rdadmin.manage_groups.editing_group_information">
+      <title>Editing Group Information</title>
+      <para>
+	To examine and modify an existing group, touch its entry in the
+	<computeroutput>Groups</computeroutput> list and then touch the
+	<computeroutput>Edit</computeroutput> button to open the
+	Group Dialog.
+      </para>
+      <para>
+	<mediaobject>
+	  <imageobject>
+	    <imagedata align="center" fileref="rdadmin.group_dialog.png" scale="45"/>
+	  </imageobject>
+	  <caption>
+	    <para>The Rivendell Group Dialog</para>
+	  </caption>
+	</mediaobject>
+      </para>
+      <para>
+	The <computeroutput>Default Import Title</computeroutput> is the
+	title string that will be assigned to carts created by dropboxes or
+	<command>rdimport</command><manvolnum>1</manvolnum> when no 
+	file-specific title metadata is found. This field recognizes
+	the following wildcards:
+      </para>
+      <table xml:id="table.rdadmin.default_import_title_wildcards" frame="all" pgwide="0">
+	<title>Default Import Title Wildcards</title>
+	<tgroup cols="2" align="left" colsep="1" rowsep="1">
+	  <colspec colname="Wildcard" colwidth="1.0*"/>
+	  <colspec colname="Value" colwidth="10.0*"/>
+	  <tbody>
+	    <row><entry>%f</entry><entry>Body part of the filename</entry></row>
+	    <row><entry>%e</entry><entry>Extension part of the filename</entry></row>
+	  </tbody>
+	</tgroup>
+      </table>
+      <para>
+	The <computeroutput>Default Cart Type:</computeroutput> controls
+	which type of cart (<computeroutput>Audio</computeroutput> or
+	<computeroutput>Macro</computeroutput> RDLibrary will default to
+	when creating a new cart in this group.
+      </para>
+      <para>
+	The <computeroutput>Default Cart Number:</computeroutput> fields
+	define a range of cart numbers to use by default for this group
+	--i.e. by RDLibrary or
+	<command>rdimport</command><manvolnum>1</manvolnum>. If the
+	<computeroutput>Enforce Cart Range</computeroutput> box is ticked,
+	Rivendell will not permit carts to be created in or moved to this
+	group whose cart number does not fall within this range.
+      </para>
+      <para>
+	If the 
+	<computeroutput>Include this group in Traffic reports</computeroutput> or
+	<computeroutput>Include this group in Music reports</computeroutput> box
+	is ticked, play-outs of carts belonging to this group in a log will
+	be included in traffic or music reports, respectively.
+      </para>
+      <para>
+	If this <computeroutput>Set End Date/Time</computeroutput> box is ticked,
+	then new cuts that belong to this group will have their end date/time
+	automatically set to the specified number of days after the date of
+	creation.
+      </para>
+      <para>
+	If the <computeroutput>Purge expired cuts</computeroutput> box is
+	ticked, then cuts in the group will be purged --i.e. deleted --
+	the specified number of days after they expire. If
+	<computeroutput>Delete cart if empty</computeroutput> is also ticked,
+	then the cart containing the deleted cut will also be deleted if it
+	contains no other cuts.
+      </para>
+      <para>
+	If the <computeroutput>Transmit Now &apos; Next</computeroutput> box
+	is ticked, then carts in this group will generate an RLM event when
+	played in a log.
+      </para>
+      <para>
+	Carts in this group will be allowed to play only on those services
+	that are shown in the <computeroutput>Active Services</computeroutput>
+	list.
+      </para>
+      <para>
+	To set a color for the group (used when the group name is displayed
+	elsewhere in Rivendell, touch the <computeroutput>Color</computeroutput>
+	button.
+      </para>
+      <para>
+	Touch the <computeroutput>OK</computeroutput> button to commit any
+	changes made, or <computeroutput>Cancel</computeroutput> to
+	abandon them.
+      </para>
+    </sect2>
+    <sect2 xml:id="rdadmin.manage_groups.renaming_groups">
+      <title>Renaming Groups</title>
+      <para>
+	A group can be renamed by touching the
+	<computeroutput>Rename</computeroutput> button. If the
+	<computeroutput>New Group Name:</computeroutput> given already exists,
+	then the carts in this group will be moved into that group.
+      </para>
+      <para>
+	<mediaobject>
+	  <imageobject>
+	    <imagedata align="center" fileref="rdadmin.rename_group_dialog.png" scale="60"/>
+	  </imageobject>
+	  <caption>
+	    <para>The Rename Group Dialog</para>
+	  </caption>
+	</mediaobject>
+      </para>
+    </sect2>
+    <sect2 xml:id="rdadmin.manage_groups.group_reports">
+      <title>Group Report</title>
+      <para>
+	A printable report listing the defined groups and their attributes
+	can be generated by touching the
+	<computeroutput>Generate Report</computeroutput> button.
+      </para>
+    </sect2>
+  </sect1>
+</chapter>

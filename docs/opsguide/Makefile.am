@@ -26,6 +26,7 @@ OPSGUIDE_HTML = appendix.filepath_wildcards.html\
                 appendix.rivendell_filter.html\
                 appendix.wings_filter.html\
                 chapter.overview.html\
+                chapter.rdadmin.html\
                 chapter.rdairplay.html\
                 chapter.rdcartslots.html\
                 chapter.rdcatch.html\
@@ -37,6 +38,9 @@ OPSGUIDE_HTML = appendix.filepath_wildcards.html\
                 chapter.utilities.html\
                 chapter.voicetracking.html\
                 index.html\
+                part.appendices.html\
+                part.rivendell_administration.html\
+                part.rivendell_operations.html\
                 sect.filepath_wildcards.examples.html\
                 sect.gpio_switcher_devices.8x2.html\
                 sect.gpio_switcher_devices.acu1p.html\
@@ -78,6 +82,8 @@ OPSGUIDE_HTML = appendix.filepath_wildcards.html\
                 sect.gpio_switcher_devices.wheatnet_lio.html\
                 sect.gpio_switcher_devices.wheatnet_slio.html\
                 sect.gplv2.how_to_apply_these_terms_to_your_new_programs.html\
+                sect.rdadmin.manage_groups.html\
+                sect.rdadmin.managing_users.html\
                 sect.rdairplay.editing_a_log.html\
                 sect.rdairplay.layout.html\
                 sect.rdairplay.log_machines.html\
@@ -121,77 +127,85 @@ OPSGUIDE_HTML = appendix.filepath_wildcards.html\
                 sect.utilities.rdrevert.html\
                 sect.voicetracking.using_the_voicetracker_dialog.html
 
-OPSGUIDE_IMAGES = rdairplay.audio_meter.png\
-                 rdairplay.button_log_widget.png\
-                 rdairplay.delete_from.png\
-                 rdairplay.edit_button_dialog.png\
-                 rdairplay.edit_buttons.png\
-                 rdairplay.edit_event_dialog.png\
-                 rdairplay.full_log_widget.png\
-                 rdairplay.label_widget.png\
-                 rdairplay.mode_widget.png\
-                 rdairplay.next_stop_widget.png\
-                 rdairplay.piewedge_widget.png\
-                 rdairplay.postpoint_early_widget.png\
-                 rdairplay.postpoint_late_widget.png\
-                 rdairplay.postpoint_ontime_widget.png\
-                 rdairplay.rdairplay_screenshot.png\
-                 rdairplay.select_a_log_dialog.png\
-                 rdairplay.soundpanel_widget.png\
-                 rdairplay.wallclock_widget.png\
-                 rdairplay.where_to.png\
-                 rdcartslots.rdcartslots.edit_slot_options_dialog.png\
-                 rdcartslots.rdcartslots_screenshot.png\
-                 rdcartslots.rivendell_services_dialog.png\
-                 rdcartslots.select_cart_dialog.png\
-                 rdcatch.add_event_dialog.png\
-                 rdcatch.edit_cart_event_dialog.png\
-                 rdcatch.edit_download_dialog.png\
-                 rdcatch.edit_playout_dialog.png\
-                 rdcatch.edit_recording_dialog.png\
-                 rdcatch.edit_switcher_event_dialog.png\
-                 rdcatch.edit_upload_dialog.png\
-                 rdcatch.rdcatch_screenshot.png\
-                 rdlibrary.cd_ripper_dialog.png\
-                 rdlibrary.edit_cart_dialog.png\
-                 rdlibrary.edit_cut_info_dialog.png\
-                 rdlibrary.edit_macro_cart_dialog.png\
-                 rdlibrary.edit_marker_dialog.png\
-                 rdlibrary.import_export_dialog.png\
-                 rdlibrary.rdlibrary_screenshot.png\
-                 rdlibrary.rip_disk_dialog.png\
-                 rdlibrary.set_cart_cut_dialog.png\
-                 rdlogedit.edit_log_chain_dialog.png\
-                 rdlogedit.edit_log_dialog.png\
-                 rdlogedit.edit_log_entry_dialog.png\
-                 rdlogedit.edit_log_marker_dialog.png\
-                 rdlogedit.edit_voice_track_marker_dialog.png\
-                 rdlogedit.rdlogedit_screenshot.png\
-                 rdlogedit.select_cart_dialog.png\
-                 rdlogin.rdlogin_screenshot.png\
-                 rdlogmanager.edit_clock_dialog.png\
-                 rdlogmanager.edit_event_assignment_dialog.png\
-                 rdlogmanager.edit_grid_dialog.png\
-                 rdlogmanager.editing_event.png\
-                 rdlogmanager.generate_log_dialog.png\
-                 rdlogmanager.generate_log_dialog_fully_merged.png\
-                 rdlogmanager.generate_log_dialog_music_merge_required.png\
-                 rdlogmanager.generate_log_dialog_traffic_merge_required.png\
-                 rdlogmanager.log_clock_list.png\
-                 rdlogmanager.log_clocks.png\
-                 rdlogmanager.log_events_dialog.png\
-                 rdlogmanager.log_grids_dialog.png\
-                 rdlogmanager.rdlogmanager_screenshot.png\
-                 rdlogmanager.rivendell_services_dialog.png\
-                 rdlogmanager.select_date_dialog.png\
-                 rdlogmanager.select_report_dates_dialog.png\
-                 rdlogmanager.service_association_dialog.png\
-                 voicetracking.voice_tracker_dialog.png\
-                 voicetracking.voice_tracker_dialog_recording.png\
-                 voicetracking.voice_tracker_dialog_track_1_playing.png\
-                 voicetracking.voice_tracker_dialog_track_2_playing.png\
-                 voicetracking.voice_tracker_dialog_track_completed.png\
-                 voicetracking.voice_tracker_dialog_track_selected.png
+OPSGUIDE_IMAGES = rdadmin.group_dialog.png\
+                  rdadmin.login_dialog.png\
+                  rdadmin.rdadmin_screenshot.png\
+                  rdadmin.rename_group_dialog.png\
+                  rdadmin.rivendell_group_list_dialog.png\
+                  rdadmin.rivendell_user_list_dialog.png\
+                  rdadmin.user_dialog.png\
+                  rdairplay.audio_meter.png\
+                  rdairplay.button_log_widget.png\
+                  rdairplay.delete_from.png\
+                  rdairplay.edit_button_dialog.png\
+                  rdairplay.edit_buttons.png\
+                  rdairplay.edit_event_dialog.png\
+                  rdairplay.full_log_widget.png\
+                  rdairplay.label_widget.png\
+                  rdairplay.mode_widget.png\
+                  rdairplay.next_stop_widget.png\
+                  rdairplay.piewedge_widget.png\
+                  rdairplay.postpoint_early_widget.png\
+                  rdairplay.postpoint_late_widget.png\
+                  rdairplay.postpoint_ontime_widget.png\
+                  rdairplay.rdairplay_screenshot.png\
+                  rdairplay.select_a_log_dialog.png\
+                  rdairplay.soundpanel_widget.png\
+                  rdairplay.wallclock_widget.png\
+                  rdairplay.where_to.png\
+                  rdcartslots.rdcartslots.edit_slot_options_dialog.png\
+                  rdcartslots.rdcartslots_screenshot.png\
+                  rdcartslots.rivendell_services_dialog.png\
+                  rdcartslots.select_cart_dialog.png\
+                  rdcatch.add_event_dialog.png\
+                  rdcatch.edit_cart_event_dialog.png\
+                  rdcatch.edit_download_dialog.png\
+                  rdcatch.edit_playout_dialog.png\
+                  rdcatch.edit_recording_dialog.png\
+                  rdcatch.edit_switcher_event_dialog.png\
+                  rdcatch.edit_upload_dialog.png\
+                  rdcatch.rdcatch_screenshot.png\
+                  rdlibrary.cd_ripper_dialog.png\
+                  rdlibrary.edit_cart_dialog.png\
+                  rdlibrary.edit_cut_info_dialog.png\
+                  rdlibrary.edit_macro_cart_dialog.png\
+                  rdlibrary.edit_marker_dialog.png\
+                  rdlibrary.import_export_dialog.png\
+                  rdlibrary.rdlibrary_screenshot.png\
+                  rdlibrary.rip_disk_dialog.png\
+                  rdlibrary.set_cart_cut_dialog.png\
+                  rdlogedit.edit_log_chain_dialog.png\
+                  rdlogedit.edit_log_dialog.png\
+                  rdlogedit.edit_log_entry_dialog.png\
+                  rdlogedit.edit_log_marker_dialog.png\
+                  rdlogedit.edit_voice_track_marker_dialog.png\
+                  rdlogedit.rdlogedit_screenshot.png\
+                  rdlogedit.select_cart_dialog.png\
+                  rdlogin.rdlogin_screenshot.png\
+                  rdlogmanager.edit_clock_dialog.png\
+                  rdlogmanager.edit_event_assignment_dialog.png\
+                  rdlogmanager.edit_grid_dialog.png\
+                  rdlogmanager.editing_event.png\
+                  rdlogmanager.generate_log_dialog.png\
+                  rdlogmanager.generate_log_dialog_fully_merged.png\
+                  rdlogmanager.generate_log_dialog_music_merge_required.png\
+                  rdlogmanager.generate_log_dialog_traffic_merge_required.png\
+                  rdlogmanager.log_clock_list.png\
+                  rdlogmanager.log_clocks.png\
+                  rdlogmanager.log_events_dialog.png\
+                  rdlogmanager.log_grids_dialog.png\
+                  rdlogmanager.rdlogmanager_screenshot.png\
+                  rdlogmanager.rivendell_services_dialog.png\
+                  rdlogmanager.select_date_dialog.png\
+                  rdlogmanager.select_report_dates_dialog.png\
+                  rdlogmanager.service_association_dialog.png\
+                  utilities.rmlsend_screenshot.png\
+                  voicetracking.voice_tracker_dialog.png\
+                  voicetracking.voice_tracker_dialog_recording.png\
+                  voicetracking.voice_tracker_dialog_track_1_playing.png\
+                  voicetracking.voice_tracker_dialog_track_2_playing.png\
+                  voicetracking.voice_tracker_dialog_track_completed.png\
+                  voicetracking.voice_tracker_dialog_track_selected.png
 
 
 OPSGUIDE_DEPS = $(OPSGUIDE_IMAGES) \
@@ -201,6 +215,7 @@ OPSGUIDE_DEPS = $(OPSGUIDE_IMAGES) \
                 opsguide.xml\
                 overview.xml\
                 metadata_wildcards.xml\
+                rdadmin.xml\
                 rdairplay.xml\
                 rdcartslots.xml\
                 rdcatch.xml\
@@ -211,7 +226,6 @@ OPSGUIDE_DEPS = $(OPSGUIDE_IMAGES) \
                 rivendell_filter.xml\
                 wings_filter.xml\
                 rml.xml\
-                utilities.rmlsend_screenshot.png\
                 utilities.xml\
                 voicetracking.xml
 
