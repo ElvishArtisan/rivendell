@@ -16373,3 +16373,5 @@
 	* Split the Operations Guide into three parts.
 	* Added a 'Configuring Rivendell with RDAdmin' chapter to part 2
 	of the Operations Guide.
+2017-11-13 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'Managing Services' section to the Operations Guide.

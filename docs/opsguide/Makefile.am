@@ -127,12 +127,17 @@ OPSGUIDE_HTML = appendix.filepath_wildcards.html\
                 sect.utilities.rdrevert.html\
                 sect.voicetracking.using_the_voicetracker_dialog.html
 
-OPSGUIDE_IMAGES = rdadmin.group_dialog.png\
+OPSGUIDE_IMAGES = rdadmin.autofill_carts_dialog.png\
+                  rdadmin.edit_service_dialog.png\
+                  rdadmin.group_dialog.png\
+                  rdadmin.hosts_dialog.png\
+                  rdadmin.log_importation_string_fields.png\
                   rdadmin.login_dialog.png\
                   rdadmin.rdadmin_screenshot.png\
                   rdadmin.rename_group_dialog.png\
                   rdadmin.rivendell_group_list_dialog.png\
                   rdadmin.rivendell_user_list_dialog.png\
+                  rdadmin.services_dialog.png\
                   rdadmin.user_dialog.png\
                   rdairplay.audio_meter.png\
                   rdairplay.button_log_widget.png\
