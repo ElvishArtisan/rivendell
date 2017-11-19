@@ -134,7 +134,7 @@ bool RDCart::selectCut(QString *cut,const QTime &time) const
              LAST_PLAY_DATETIME ASC";
     }
     else {
-      sql+=" order by LAST_PLAY_DATETIME desc";
+      sql+=" order by LAST_PLAY_DATETIME desc, PLAY_ORDER desc";
     }
     q=new RDSqlQuery(sql);
     cutname=GetNextCut(q);

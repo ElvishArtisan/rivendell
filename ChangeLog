@@ -16375,3 +16375,6 @@
 	of the Operations Guide.
 2017-11-13 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'Managing Services' section to the Operations Guide.
+2017-11-20 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug that caused the initial playable cut in a cart set
+	for 'By Order' scheduling to be skipped.
