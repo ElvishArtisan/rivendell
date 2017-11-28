@@ -144,7 +144,7 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   //
   // Log Header
   //
-  edit_log=new RDLog(edit_logname,false);
+  edit_log=new RDLog(edit_logname);
 
   //
   // Log Events
@@ -1089,9 +1089,8 @@ void EditLog::saveasData()
   }
   QString logname;
   QString svcname=edit_service_box->currentText();
-  RDSqlQuery *q;
-  QString sql;
   RDAddLog *log=NULL;
+  QString err_msg;
 
   if(rduser->createLog()) {
     log=new RDAddLog(&logname,&svcname,RDLogFilter::UserFilter,rduser,
@@ -1099,27 +1098,15 @@ void EditLog::saveasData()
     if(log->exec()<0) {
       return;
     }
-    sql=QString().sprintf("insert into LOGS set \
-NAME=\"%s\",TYPE=0,DESCRIPTION=\"%s log\",ORIGIN_USER=\"%s\",\
-ORIGIN_DATETIME=NOW(),LINK_DATETIME=NOW(),SERVICE=\"%s\"",
-			  (const char *)logname,
-			  (const char *)logname,
-			  (const char *)rdripc->user(),
-			  (const char *)svcname);
-    q=new RDSqlQuery(sql);
-    if(!q->isActive()) {
-      QMessageBox::warning(this,tr("Log Exists"),tr("Log Already Exists!"));
-      delete q;
+    if(!RDLog::create(logname,svcname,rdripc->user(),&err_msg)) {
+      QMessageBox::warning(this,"RDLogEdit - "+tr("Error"),err_msg);
       return;
     }
-    delete q;
     delete edit_log;
     edit_newlogs->push_back(logname);
-    edit_log=new RDLog(logname,true);
-    QString logtable=logname;
-    logtable.replace(" ","_");
-    RDCreateLogTable(RDLog::tableName(logtable));
-    edit_log_event->setLogName(RDLog::tableName(logtable));
+    edit_log=new RDLog(logname);
+    RDCreateLogTable(RDLog::tableName(logname));
+    edit_log_event->setLogName(RDLog::tableName(logname));
     for(int i=0;i<edit_service_box->count();i++) {
       if(edit_service_box->text(i)==svcname) {
 	edit_service_box->setCurrentItem(i);

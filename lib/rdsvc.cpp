@@ -708,11 +708,13 @@ bool RDSvc::import(ImportSource src,const QDate &date,const QString &break_str,
 
 
 bool RDSvc::generateLog(const QDate &date,const QString &logname,
-			const QString &nextname,QString *report)
+			const QString &nextname,QString *report,RDUser *user)
 {
   QString sql;
   RDSqlQuery *q;
   RDClock clock;
+  QString err_msg;
+  RDLog *log=NULL;
 
   if((!date.isValid()||logname.isEmpty())) {
     return false;
@@ -723,50 +725,14 @@ bool RDSvc::generateLog(const QDate &date,const QString &logname,
   //
   // Generate Log Structure
   //
-  QDate purge_date;
-  if(defaultLogShelflife()>=0) {
-    purge_date=date.addDays(defaultLogShelflife());
+  if(RDLog::exists(logname)) {
+    RDLog::remove(logname,svc_station,user,svc_config);
   }
-  sql=QString().sprintf("select NAME from LOGS where NAME=\"%s\"",
-			(const char *)RDEscapeString(logname));
-  q=new RDSqlQuery(sql);
-  if(q->first()) {   // Already Exists
-    delete q;
-    sql=QString().sprintf("update LOGS set SERVICE=\"%s\",\
-                           DESCRIPTION=\"%s\",ORIGIN_USER=\"%s\",\
-                           ORIGIN_DATETIME=now(),LINK_DATETIME=now(),\
-                           MODIFIED_DATETIME=now(),START_DATE=null,\
-                           END_DATE=null,NEXT_ID=0",
-			  (const char *)RDEscapeString(svc_name),
-			  (const char *)RDEscapeString(RDDateDecode(descriptionTemplate(),date,svc_station,svc_config,svc_name)),
-			  "RDLogManager");
-    if(!purge_date.isValid()) {
-      sql+=(",PURGE_DATE=\""+purge_date.toString("yyyy-MM-dd")+"\"");
-    }
-    sql+=(" where NAME=\""+RDEscapeString(logname)+"\"");
+  RDLog::create(logname,svc_name,"RDLogManager",&err_msg);
+  log=new RDLog(logname);
+  log->setDescription(RDDateDecode(descriptionTemplate(),date,svc_station,
+				   svc_config,svc_name));
 
-    q=new RDSqlQuery(sql);
-    delete q;
-    sql=QString("drop table `")+RDLog::tableName(logname)+"`";
-    q=new RDSqlQuery(sql);
-    delete q;
-  }
-  else {             // Doesn't exist
-    delete q;
-    sql=QString().sprintf("insert into LOGS set NAME=\"%s\",\
-                           SERVICE=\"%s\",DESCRIPTION=\"%s\",\
-                           ORIGIN_USER=\"%s\",ORIGIN_DATETIME=now(),\
-                           LINK_DATETIME=now(),MODIFIED_DATETIME=now(),\
-                           PURGE_DATE=%s",
-			  (const char *)RDEscapeString(logname),
-			  (const char *)RDEscapeString(svc_name),
-			  (const char *)RDEscapeString(RDDateDecode(descriptionTemplate(),date,svc_station,svc_config,svc_name)),
-			  "RDLogManager",
-			  (const char *)RDCheckDateTime(purge_date,"yyyy-MM-dd"));
-    q=new RDSqlQuery(sql);
-    delete q;
-  }
-  RDCreateLogTable(RDLog::tableName(logname));
   emit generationProgress(1);
 
   //
@@ -817,7 +783,6 @@ bool RDSvc::generateLog(const QDate &date,const QString &logname,
     count ++;
   }
 
-  RDLog *log=new RDLog(logname);
   log->updateLinkQuantity(RDLog::SourceMusic);
   log->setLinkState(RDLog::SourceMusic,false);
   log->updateLinkQuantity(RDLog::SourceTraffic);
@@ -1050,6 +1015,18 @@ void RDSvc::create(const QString exemplar) const
 void RDSvc::remove() const
 {
   RDSvc::remove(svc_name);
+}
+
+
+bool RDSvc::exists(const QString &name)
+{
+  bool ret=false;
+  QString sql=QString("select NAME from SERVICES where ")+
+    "NAME=\""+RDEscapeString(name)+"\"";
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  ret=q->first();
+  delete q;
+  return ret;
 }
 
 

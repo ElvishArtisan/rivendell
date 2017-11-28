@@ -281,11 +281,11 @@ Lista</translation>
     </message>
     <message>
         <source>Log Exists</source>
-        <translation>La lista ya existe</translation>
+        <translation type="obsolete">La lista ya existe</translation>
     </message>
     <message>
         <source>Log Already Exists!</source>
-        <translation>¡La lista de reproducción ya existe!</translation>
+        <translation type="obsolete">¡La lista de reproducción ya existe!</translation>
     </message>
     <message>
         <source>--- end of log ---</source>
@@ -395,6 +395,10 @@ Final</translation>
     </message>
     <message>
         <source>ALBUM</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

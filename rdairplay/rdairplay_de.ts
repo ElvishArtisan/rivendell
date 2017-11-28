@@ -291,11 +291,11 @@ auswählen</translation>
     </message>
     <message>
         <source>Log Exists</source>
-        <translation>Log existiert</translation>
+        <translation type="obsolete">Log existiert</translation>
     </message>
     <message>
         <source>Log Already Exists!</source>
-        <translation>Log existiert bereits!</translation>
+        <translation type="obsolete">Log existiert bereits!</translation>
     </message>
     <message>
         <source>--- end of log ---</source>
@@ -395,6 +395,10 @@ vorhören</translation>
     </message>
     <message>
         <source>ALBUM</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

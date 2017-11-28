@@ -3747,15 +3747,15 @@ de Preenchimento</translation>
     </message>
     <message>
         <source>Purge Logs after</source>
-        <translation>Remover Lista após</translation>
+        <translation type="obsolete">Remover Lista após</translation>
     </message>
     <message>
         <source>days</source>
-        <translation>dias</translation>
+        <translation type="obsolete">dias</translation>
     </message>
     <message>
         <source>Purge ELR Data after</source>
-        <translation>Remover Dados ELR após</translation>
+        <translation type="obsolete">Remover Dados ELR após</translation>
     </message>
     <message>
         <source>Enable &amp;Hosts</source>
@@ -3901,6 +3901,22 @@ deve ser salva.  Salvar Agora?</translation>
     </message>
     <message>
         <source>Log &amp;Description Template:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set Logs to auto-delete</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>days after creation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Purge ELR Data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>days after airing</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -34,7 +34,7 @@ class RDLog
    enum Type {Log=0,Event=1,Clock=2,Grid=3};
    enum Source {SourceTraffic=0,SourceMusic=1};
    enum LinkState {LinkMissing=0,LinkDone=1,LinkNotPresent=2};
-   RDLog(const QString &name,bool create=false);
+   RDLog(const QString &name);
    QString name() const;
    bool exists() const;
    bool logExists() const;
@@ -78,7 +78,11 @@ class RDLog
    int removeTracks(RDStation *station,RDUser *user,RDConfig *config) const;
    RDLogEvent *createLogEvent() const;
    QString xml() const;
+   static bool create(const QString &name,const QString &svc_name,
+		      const QString &user_name,QString *err_msg);
    static bool exists(const QString &name);
+   static bool remove(const QString &name,RDStation *station,RDUser *user,
+		      RDConfig *config);
    static QString tableName(const QString &log_name);
 
   private:

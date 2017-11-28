@@ -295,11 +295,11 @@ logg</translation>
     </message>
     <message>
         <source>Log Exists</source>
-        <translation>Loggen eksisterer</translation>
+        <translation type="obsolete">Loggen eksisterer</translation>
     </message>
     <message>
         <source>Log Already Exists!</source>
-        <translation>Loggen finst frå før!</translation>
+        <translation type="obsolete">Loggen finst frå før!</translation>
     </message>
     <message>
         <source>--- end of log ---</source>
@@ -401,6 +401,10 @@ Tail</source>
     </message>
     <message>
         <source>ALBUM</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

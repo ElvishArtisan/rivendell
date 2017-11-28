@@ -854,59 +854,36 @@ void ListLog::loadButtonData()
 {
   QString name=list_log->logName().left(list_log->logName().length()-4);
   QString svcname=list_log->serviceName();
-
+  QString err_msg;
   RDLog *edit_log;
-  QString sql;
-  RDSqlQuery *q;
 
   switch(list_logs_dialog->exec(&name,&svcname)) {
-      case 0:
-	list_log->setLogName(RDLog::tableName(name));
-	list_log->load();
-	break;
+  case 0:
+    list_log->setLogName(RDLog::tableName(name));
+    list_log->load();
+    break;
 
-      case 2:
-	list_log->save();
-	edit_log=new RDLog(list_log->logName().
-			   left(list_log->logName().length()-4));
-	delete edit_log;
-	break;
+  case 2:
+    list_log->save();
+    edit_log=
+      new RDLog(list_log->logName().left(list_log->logName().length()-4));
+    delete edit_log;
+    break;
+    
+  case 3:
+    if(!RDLog::create(name,svcname,rdripc->user(),&err_msg)) {
+      QMessageBox::warning(this,"RDAirPlay - "+tr("Error"),err_msg);
+      return;
+    }
+    list_log->setServiceName(svcname);
+    list_log->setLogName(RDLog::tableName(name));
+    list_log->save();
+    break;
 
-      case 3:
-        sql=QString().sprintf("insert into LOGS set \
-                                       NAME=\"%s\",TYPE=0,\
-                                       DESCRIPTION=\"%s log\",\
-                                       ORIGIN_USER=\"%s\",\
-                                       ORIGIN_DATETIME=NOW(),\
-                                       LINK_DATETIME=NOW(),\
-                                       MODIFIED_DATETIME=NOW(),\
-                                       SERVICE=\"%s\"",
-			      (const char *)name,
-			      (const char *)name,
-			      (const char *)rdripc->user(),
-			      (const char *)svcname);
-	q=new RDSqlQuery(sql);
-	if(!q->isActive()) {
-	  QMessageBox::warning(this,tr("Log Exists"),
-			       tr("Log Already Exists!"));
-	  delete q;
-	  return;
-	}
-	delete q;
-	edit_log=new RDLog(name,true);
-	RDCreateLogTable(RDLog::tableName(name));
-	list_log->setServiceName(svcname);
-	list_log->setLogName(RDLog::tableName(name));
-	list_log->save();
-	edit_log->setModifiedDatetime(QDateTime(QDate::currentDate(),
-						QTime::currentTime()));
-	delete edit_log;
-	break;
-
-      case -1:
-	list_log->clear();
-	break;
-  } 
+  case -1:
+    list_log->clear();
+    break;
+  }
 }
 
 

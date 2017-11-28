@@ -112,7 +112,7 @@ int RunLogOperation(int argc,char *argv[],const QString &svcname,
 				      rdstation_conf,config,svc->name()),
 			 RDDateDecode(svc->nameTemplate(),start_date.addDays(1),
 				      rdstation_conf,config,svc->name()),
-			 &unused_report)) {
+			 &unused_report,rduser)) {
       fprintf(stderr,"rdlogmanager: unable to generate log\n");
       return 256;
     }

@@ -183,27 +183,27 @@ EditSvc::EditSvc(QString svc,QWidget *parent)
   //
   // Autofill Button
   //
-  QPushButton *button=new QPushButton(this,"autofill_button");
+  QPushButton *button=new QPushButton(this);
   button->setGeometry(455,31,150,50);
   button->setFont(font);
   button->setText(tr("Configure \n&Autofill Carts"));
   connect(button,SIGNAL(clicked()),this,SLOT(autofillData()));
 
   //
-  // Purge Expired Logs
+  // Default Log Deletion Date
   //
-  svc_loglife_box=new QCheckBox(this,"svc_loglife_box");
+  svc_loglife_box=new QCheckBox(this);
   svc_loglife_box->setGeometry(460,95,15,15);
-  label=new QLabel(svc_loglife_box,tr("Purge Logs after"),this);
-  label->setGeometry(480,95,200,19);
+  label=new QLabel(svc_loglife_box,tr("Set Logs to auto-delete"),this);
+  label->setGeometry(480,95,240,19);
   label->setAlignment(AlignLeft|ShowPrefix);
   svc_loglife_spin=new QSpinBox(this);
-  svc_loglife_spin->setGeometry(585,93,50,19);
+  svc_loglife_spin->setGeometry(625,93,50,19);
   svc_loglife_spin->setRange(0,365);
   connect(svc_loglife_box,SIGNAL(toggled(bool)),
 	  svc_loglife_spin,SLOT(setEnabled(bool)));
-  label=new QLabel(svc_loglife_box,tr("days"),this);
-  label->setGeometry(645,95,40,19);
+  label=new QLabel(svc_loglife_box,tr("days after creation"),this);
+  label->setGeometry(685,95,200,19);
   label->setAlignment(AlignLeft|ShowPrefix);
 
   //
@@ -211,16 +211,16 @@ EditSvc::EditSvc(QString svc,QWidget *parent)
   //
   svc_shelflife_box=new QCheckBox(this);
   svc_shelflife_box->setGeometry(460,117,15,15);
-  label=new QLabel(svc_shelflife_box,tr("Purge ELR Data after"),this);
-  label->setGeometry(480,117,200,19);
+  label=new QLabel(svc_shelflife_box,tr("Purge ELR Data"),this);
+  label->setGeometry(480,117,170,19);
   label->setAlignment(AlignLeft|ShowPrefix);
   svc_shelflife_spin=new QSpinBox(this);
-  svc_shelflife_spin->setGeometry(610,115,50,19);
+  svc_shelflife_spin->setGeometry(580,115,50,19);
   svc_shelflife_spin->setRange(0,365);
   connect(svc_shelflife_box,SIGNAL(toggled(bool)),
 	  svc_shelflife_spin,SLOT(setEnabled(bool)));
-  label=new QLabel(svc_shelflife_box,tr("days"),this);
-  label->setGeometry(670,117,40,19);
+  label=new QLabel(svc_shelflife_box,tr("days after airing"),this);
+  label->setGeometry(640,117,200,19);
   label->setAlignment(AlignLeft|ShowPrefix);
 
   //

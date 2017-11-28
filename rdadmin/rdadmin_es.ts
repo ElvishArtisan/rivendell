@@ -3856,15 +3856,15 @@ debe guardarse.  ¿Hacerlo ahora?</translation>
     </message>
     <message>
         <source>Purge ELR Data after</source>
-        <translation>Borrar datos ELR tras</translation>
+        <translation type="obsolete">Borrar datos ELR tras</translation>
     </message>
     <message>
         <source>days</source>
-        <translation>días</translation>
+        <translation type="obsolete">días</translation>
     </message>
     <message>
         <source>Purge Logs after</source>
-        <translation>Borrar Listas tras </translation>
+        <translation type="obsolete">Borrar Listas tras </translation>
     </message>
     <message>
         <source>Import Template:</source>
@@ -3896,6 +3896,22 @@ debe guardarse.  ¿Hacerlo ahora?</translation>
     </message>
     <message>
         <source>Log &amp;Description Template:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set Logs to auto-delete</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>days after creation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Purge ELR Data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>days after airing</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

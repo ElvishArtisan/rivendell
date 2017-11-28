@@ -279,11 +279,11 @@ Přesto chcete uložit?</translation>
     </message>
     <message>
         <source>Log Exists</source>
-        <translation>Zápis existuje</translation>
+        <translation type="obsolete">Zápis existuje</translation>
     </message>
     <message>
         <source>Log Already Exists!</source>
-        <translation>Zápis již existuje!</translation>
+        <translation type="obsolete">Zápis již existuje!</translation>
     </message>
     <message>
         <source>RDLogEdit</source>
@@ -419,6 +419,10 @@ jež jsou pro vybranou službu zakázány!</translation>
     </message>
     <message>
         <source>Render</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -821,11 +825,11 @@ o zápisu</translation>
     </message>
     <message>
         <source>Log Exists</source>
-        <translation>Zápis existuje</translation>
+        <translation type="obsolete">Zápis existuje</translation>
     </message>
     <message>
         <source>Log Already Exists!</source>
-        <translation>Zápis již existuje!</translation>
+        <translation type="obsolete">Zápis již existuje!</translation>
     </message>
     <message>
         <source>Delete Log</source>

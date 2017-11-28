@@ -3868,15 +3868,15 @@ gespeichert werden. Jetzt speichern?</translation>
     </message>
     <message>
         <source>Purge ELR Data after</source>
-        <translation>lösche ELR-Daten nach</translation>
+        <translation type="obsolete">lösche ELR-Daten nach</translation>
     </message>
     <message>
         <source>days</source>
-        <translation>Tagen</translation>
+        <translation type="obsolete">Tagen</translation>
     </message>
     <message>
         <source>Purge Logs after</source>
-        <translation>Lösche Logs nach</translation>
+        <translation type="obsolete">Lösche Logs nach</translation>
     </message>
     <message>
         <source>Import Template:</source>
@@ -3908,6 +3908,22 @@ gespeichert werden. Jetzt speichern?</translation>
     </message>
     <message>
         <source>Log &amp;Description Template:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set Logs to auto-delete</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>days after creation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Purge ELR Data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>days after airing</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

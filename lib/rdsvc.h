@@ -26,8 +26,9 @@
 #include <qobject.h>
 #include <qsqldatabase.h>
 
-#include <rdstation.h>
-#include <rdconfig.h>
+#include "rdconfig.h"
+#include "rdstation.h"
+#include "rduser.h"
 
 class RDSvc : public QObject
 {
@@ -85,7 +86,7 @@ class RDSvc : public QObject
 	      const QString &track_str,const QString &dest_table) 
     const;
   bool generateLog(const QDate &date,const QString &logname,
-		   const QString &nextname,QString *report);
+		   const QString &nextname,QString *report,RDUser *user);
   bool linkLog(RDSvc::ImportSource src,const QDate &date,
 	       const QString &logname,QString *report);
   void clearLogLinks(RDSvc::ImportSource src,const QDate &date,
@@ -96,6 +97,7 @@ class RDSvc : public QObject
   static bool create(const QString &name,QString *err_msg,
 		     const QString &exemplar);
   static void remove(const QString &name);
+  static bool exists(const QString &name);
   static QString timeString(int hour,int secs);
   static QString svcTableName(const QString &svc_name);
 

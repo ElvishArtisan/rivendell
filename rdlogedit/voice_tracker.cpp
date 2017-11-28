@@ -248,7 +248,7 @@ VoiceTracker::VoiceTracker(const QString &logname,QString *import_path,
   //
   // Log Machine
   //
-  track_log=new RDLog(edit_log_name,false);
+  track_log=new RDLog(edit_log_name);
   track_log_event=new RDLogEvent(RDLog::tableName(edit_log_name));
   track_log_event->load();
 

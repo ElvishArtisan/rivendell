@@ -266,14 +266,6 @@ Do you still want to save?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Log Exists</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Log Already Exists!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>RDLogEdit</source>
         <translation type="unfinished"></translation>
     </message>
@@ -405,6 +397,10 @@ for the selected service!</source>
     </message>
     <message>
         <source>Render</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -764,14 +760,6 @@ Report</source>
     </message>
     <message>
         <source>Add Log</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Log Exists</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Log Already Exists!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

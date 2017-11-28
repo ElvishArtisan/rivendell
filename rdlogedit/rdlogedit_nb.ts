@@ -282,11 +282,11 @@ Vil du lagra likevel?</translation>
     </message>
     <message>
         <source>Log Exists</source>
-        <translation>Loggen eksisterer</translation>
+        <translation type="obsolete">Loggen eksisterer</translation>
     </message>
     <message>
         <source>Log Already Exists!</source>
-        <translation>Loggen finst frå før!</translation>
+        <translation type="obsolete">Loggen finst frå før!</translation>
     </message>
     <message>
         <source>RDLogEdit</source>
@@ -426,6 +426,10 @@ skrudd av for denne tenesta!</translation>
     </message>
     <message>
         <source>Render</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -843,11 +847,11 @@ rapport</translation>
     </message>
     <message>
         <source>Log Exists</source>
-        <translation>Loggen eksisterer</translation>
+        <translation type="obsolete">Loggen eksisterer</translation>
     </message>
     <message>
         <source>Log Already Exists!</source>
-        <translation>Loggen finst frå før!</translation>
+        <translation type="obsolete">Loggen finst frå før!</translation>
     </message>
     <message>
         <source>Delete Log</source>

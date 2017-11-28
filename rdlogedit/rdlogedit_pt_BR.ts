@@ -301,11 +301,11 @@ Você ainda quer salvar?</translation>
     </message>
     <message>
         <source>Log Exists</source>
-        <translation>Lista Existente</translation>
+        <translation type="obsolete">Lista Existente</translation>
     </message>
     <message>
         <source>Log Already Exists!</source>
-        <translation>Lista já Existe!</translation>
+        <translation type="obsolete">Lista já Existe!</translation>
     </message>
     <message>
         <source>RDLogEdit</source>
@@ -421,6 +421,10 @@ para o serviço selecionado!</translation>
     </message>
     <message>
         <source>Render</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -822,11 +826,11 @@ Report</source>
     </message>
     <message>
         <source>Log Exists</source>
-        <translation>Lista Existente</translation>
+        <translation type="obsolete">Lista Existente</translation>
     </message>
     <message>
         <source>Log Already Exists!</source>
-        <translation>Lista já Existe!</translation>
+        <translation type="obsolete">Lista já Existe!</translation>
     </message>
     <message>
         <source>Delete Log</source>

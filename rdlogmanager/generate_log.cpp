@@ -364,7 +364,7 @@ void GenerateLog::createData()
 		   RDDateDecode(svc->nameTemplate(),gen_date_edit->date().
 				addDays(1),rdstation_conf,log_config,
 				svc->name()),
-		   &unused_report);
+		   &unused_report,rduser);
   log->updateTracks();
   delete log;
   delete svc;

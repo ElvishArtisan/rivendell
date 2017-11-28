@@ -3911,15 +3911,15 @@ uloženo. Uložit nyní?</translation>
     </message>
     <message>
         <source>Purge ELR Data after</source>
-        <translation>Smazat data ELR po</translation>
+        <translation type="obsolete">Smazat data ELR po</translation>
     </message>
     <message>
         <source>days</source>
-        <translation>dnů</translation>
+        <translation type="obsolete">dnů</translation>
     </message>
     <message>
         <source>Purge Logs after</source>
-        <translation>Smazat zápisy po</translation>
+        <translation type="obsolete">Smazat zápisy po</translation>
     </message>
     <message>
         <source>Import Template:</source>
@@ -3951,6 +3951,22 @@ uloženo. Uložit nyní?</translation>
     </message>
     <message>
         <source>Log &amp;Description Template:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set Logs to auto-delete</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>days after creation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Purge ELR Data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>days after airing</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

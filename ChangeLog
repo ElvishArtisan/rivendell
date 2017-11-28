@@ -16388,3 +16388,9 @@
 2017-11-28 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in the 'Add Log' dialog that allowed creation of a log
 	with a blank name.
+2017-11-28 Fred Gleason <fredg@paravelsystems.com>
+	* Implemented application of the 'Purge Logs' setting when creating
+	logs manually.
+	* Changed the wording of the 'Purge Logs' and 'Purge ELR Data'
+	control in the Edit Service dialog in rdadmin(1).
+	* Added 'RDLog::create()' and 'RDLog::remove()' static methods.

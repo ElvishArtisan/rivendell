@@ -291,11 +291,11 @@ zápis</translation>
     </message>
     <message>
         <source>Log Exists</source>
-        <translation>Zápis existuje</translation>
+        <translation type="obsolete">Zápis existuje</translation>
     </message>
     <message>
         <source>Log Already Exists!</source>
-        <translation>Zápis již existuje!</translation>
+        <translation type="obsolete">Zápis již existuje!</translation>
     </message>
     <message>
         <source>--- end of log ---</source>
@@ -395,6 +395,10 @@ poslechu</translation>
     </message>
     <message>
         <source>ALBUM</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

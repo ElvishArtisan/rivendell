@@ -3845,16 +3845,8 @@ must be saved.  Save now?</source>
 Lagre no?</translation>
     </message>
     <message>
-        <source>Purge Logs after</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>days</source>
-        <translation type="unfinished">dagar</translation>
-    </message>
-    <message>
-        <source>Purge ELR Data after</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">dagar</translation>
     </message>
     <message>
         <source>Import Template:</source>
@@ -3886,6 +3878,22 @@ Lagre no?</translation>
     </message>
     <message>
         <source>Log &amp;Description Template:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set Logs to auto-delete</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>days after creation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Purge ELR Data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>days after airing</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

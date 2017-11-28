@@ -291,11 +291,11 @@ un Log</translation>
     </message>
     <message>
         <source>Log Exists</source>
-        <translation>Ce Log existe</translation>
+        <translation type="obsolete">Ce Log existe</translation>
     </message>
     <message>
         <source>Log Already Exists!</source>
-        <translation>Ce Log existe déjà !</translation>
+        <translation type="obsolete">Ce Log existe déjà !</translation>
     </message>
     <message>
         <source>--- end of log ---</source>
@@ -396,6 +396,10 @@ la Fin</translation>
     <message>
         <source>ALBUM</source>
         <translation>ALBUM</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

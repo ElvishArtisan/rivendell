@@ -18,40 +18,20 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <rddb.h>
-#include <rdconf.h>
-#include <rdlog.h>
-#include <rdlog_line.h>
-#include <rdescape_string.h>
-#include <rdweb.h>
+#include <qobject.h>
 
-//
-// Global Classes
-//
-RDLog::RDLog(const QString &name,bool create)
+#include "rddb.h"
+#include "rdconf.h"
+#include "rdcreate_log.h"
+#include "rdescape_string.h"
+#include "rdlog.h"
+#include "rdlog_line.h"
+#include "rdsvc.h"
+#include "rdweb.h"
+
+RDLog::RDLog(const QString &name)
 {
-  RDSqlQuery *q;
-  QString sql;
-
   log_name=name;
-
-  if(create) {
-    sql=QString("select NAME from LOGS where ")+
-      "(NAME=\""+RDEscapeString(log_name)+"\")";
-    q=new RDSqlQuery(sql);
-    if(q->size()!=1) {
-      delete q;
-      sql=QString().
-        sprintf("INSERT INTO LOGS SET NAME=\"%s\",ORIGIN_DATETIME=NOW(),\
-                 LINK_DATETIME=NOW(),MODIFIED_DATETIME=now()",
-		(const char *)RDEscapeString(log_name));
-      q=new RDSqlQuery(sql);
-      delete q;
-    }
-    else {
-      delete q;
-    }
-  }
 }
 
 
@@ -506,6 +486,55 @@ QString RDLog::xml() const
 }
 
 
+bool RDLog::create(const QString &name,const QString &svc_name,
+		   const QString &user_name,QString *err_msg)
+{
+  QString sql;
+  RDSqlQuery *q;
+  int shelflife=-1;
+  QString desc_tmpl;
+
+  sql=QString("select ")+
+    "DEFAULT_LOG_SHELFLIFE,"+  // 00
+    "DESCRIPTION_TEMPLATE "+   // 01
+    "from SERVICES where "+
+    "NAME=\""+RDEscapeString(svc_name)+"\"";
+  q=new RDSqlQuery(sql);
+  if(q->first()) {
+    shelflife=q->value(0).toInt();
+    desc_tmpl=q->value(1).toString();
+  }
+  else {
+    *err_msg=QObject::tr("No such service!");
+    delete q;
+    return false;
+  }
+  delete q;
+  sql=QString("insert into LOGS set ")+
+    "NAME=\""+RDEscapeString(name)+"\","+
+    "TYPE=0,"+
+    "DESCRIPTION=\""+RDEscapeString(name)+" log \","+
+    "ORIGIN_USER=\""+RDEscapeString(user_name)+"\","+
+    "ORIGIN_DATETIME=now(),"+
+    "LINK_DATETIME=now(),"+
+    "SERVICE=\""+RDEscapeString(svc_name)+"\"";
+  if(shelflife>=0) {
+    sql+=",PURGE_DATE=\""+
+      QDate::currentDate().addDays(shelflife).toString("yyyy-MM-dd")+"\"";
+  }
+  q=new RDSqlQuery(sql);
+  if(!q->isActive()) {
+    *err_msg=QObject::tr("Log already exists!");
+    delete q;
+    return false;
+  }
+  delete q;
+  RDCreateLogTable(RDLog::tableName(name));
+  *err_msg=QObject::tr("OK");
+  return true;
+}
+
+
 bool RDLog::exists(const QString &name)
 {
   QString sql;
@@ -518,6 +547,18 @@ bool RDLog::exists(const QString &name)
   ret=q->first();
   delete q;
 
+  return ret;
+}
+
+
+bool RDLog::remove(const QString &name,RDStation *station,RDUser *user,
+		   RDConfig *config)
+{
+  RDLog *log=new RDLog(name);
+  bool ret=false;
+
+  ret=log->remove(station,user,config);
+  delete log;
   return ret;
 }
 

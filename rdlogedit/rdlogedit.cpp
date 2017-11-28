@@ -2,7 +2,7 @@
 //
 // The Log Editor Utility for Rivendell.
 //
-//   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2017 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -45,7 +45,7 @@
 #include <rdripc.h>
 #include <rdstation.h>
 #include <rdcheck_daemons.h>
-#include <rdcreate_log.h>
+//#include <rdcreate_log.h>
 #include <rdadd_log.h>
 #include <rdcmd_switch.h>
 #include <rddb.h>
@@ -407,8 +407,6 @@ void MainWidget::addData()
 {
   QString logname;
   QString svcname;
-  RDSqlQuery *q;
-  QString sql;
   std::vector<QString> newlogs;
   RDAddLog *log;
 
@@ -420,26 +418,16 @@ void MainWidget::addData()
       return;
     }
     delete log;
-    sql=QString().sprintf("INSERT INTO LOGS SET NAME=\"%s\",TYPE=0,\
-                           DESCRIPTION=\"%s log\",ORIGIN_USER=\"%s\",\
-                           ORIGIN_DATETIME=NOW(),LINK_DATETIME=NOW(),\
-                           SERVICE=\"%s\"",
-			  (const char *)logname,
-			  (const char *)logname,
 #ifdef WIN32
-			  RD_USER_LOGIN_NAME,
+    QString username(RD_USER_LOGIN_NAME);
 #else
-			  (const char *)rdripc->user(),
+    QString username(rdripc->user());
 #endif  // WIN32
-			  (const char *)svcname);
-    q=new RDSqlQuery(sql);
-    if(!q->isActive()) {
-      QMessageBox::warning(this,tr("Log Exists"),tr("Log Already Exists!"));
-      delete q;
+    QString err_msg;
+    if(!RDLog::create(logname,svcname,username,&err_msg)) {
+      QMessageBox::warning(this,"RDLogEdit - "+tr("Error"),err_msg);
       return;
     }
-    delete q;
-    RDCreateLogTable(RDLog::tableName(logname));
     EditLog *editlog=new EditLog(logname,&log_filter,&log_group,&log_schedcode,
 				 &log_clipboard,&newlogs,this);
     editlog->exec();

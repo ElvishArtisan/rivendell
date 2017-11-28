@@ -60,21 +60,10 @@ void Xport::AddLog()
     XmlExit("Unauthorized",404,"logs.cpp",LINE_NUMBER);
   }
 
-  RDLog *log=new RDLog(log_name);
-  if(!log->exists()) {
-    delete log;
-    log=new RDLog(log_name,true);
-    if(!log->exists()) {
-      delete log;
-      XmlExit("Unable to create log",500,"logs.cpp",LINE_NUMBER);
-    }
-    log->setOriginUser(xport_user->name());
-    log->setDescription("[new log]");
-    log->setService(service_name);
+  QString err_msg;
+  if(!RDLog::create(log_name,service_name,xport_user->name(),&err_msg)) {
+    XmlExit(err_msg,500,"logs.cpp",LINE_NUMBER);
   }
-  delete log;
-  RDCreateLogTable(RDLog::tableName(log_name));
-
   XmlExit("OK",200,"logs.cpp",LINE_NUMBER);
 }
 

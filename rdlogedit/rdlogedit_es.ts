@@ -247,11 +247,11 @@ desactivados para el dispositivo seleccionado!</translation>
     </message>
     <message>
         <source>Log Exists</source>
-        <translation>La Lista ya existe</translation>
+        <translation type="obsolete">La Lista ya existe</translation>
     </message>
     <message>
         <source>Log Already Exists!</source>
-        <translation>¡El playlist o Lista ya existe!</translation>
+        <translation type="obsolete">¡El playlist o Lista ya existe!</translation>
     </message>
     <message>
         <source>RDLogEdit</source>
@@ -419,6 +419,10 @@ desactivados para el servicio actual!
     </message>
     <message>
         <source>Render</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -785,11 +789,11 @@ desactivado para el servicio especificado!</translation>
     </message>
     <message>
         <source>Log Exists</source>
-        <translation>La Lista ya existe</translation>
+        <translation type="obsolete">La Lista ya existe</translation>
     </message>
     <message>
         <source>Log Already Exists!</source>
-        <translation>¡La lista de reproducción ya existe!</translation>
+        <translation type="obsolete">¡La lista de reproducción ya existe!</translation>
     </message>
     <message>
         <source>Always</source>

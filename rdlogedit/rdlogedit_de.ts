@@ -279,11 +279,11 @@ Wollen Sie trotzdem speichern?</translation>
     </message>
     <message>
         <source>Log Exists</source>
-        <translation>Log existiert</translation>
+        <translation type="obsolete">Log existiert</translation>
     </message>
     <message>
         <source>Log Already Exists!</source>
-        <translation>Log existiert bereits!</translation>
+        <translation type="obsolete">Log existiert bereits!</translation>
     </message>
     <message>
         <source>RDLogEdit</source>
@@ -419,6 +419,10 @@ die für den gewählten Service ungültig sind!</translation>
     </message>
     <message>
         <source>Render</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -821,11 +825,11 @@ Report</translation>
     </message>
     <message>
         <source>Log Exists</source>
-        <translation>Log existiert</translation>
+        <translation type="obsolete">Log existiert</translation>
     </message>
     <message>
         <source>Log Already Exists!</source>
-        <translation>Log existiert bereits!</translation>
+        <translation type="obsolete">Log existiert bereits!</translation>
     </message>
     <message>
         <source>Delete Log</source>

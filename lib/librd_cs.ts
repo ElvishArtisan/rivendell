@@ -519,6 +519,18 @@
         <source>Cut</source>
         <translation type="unfinished">Záběr</translation>
     </message>
+    <message>
+        <source>Log already exists!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished">OK</translation>
+    </message>
+    <message>
+        <source>No such service!</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RDAddCart</name>
