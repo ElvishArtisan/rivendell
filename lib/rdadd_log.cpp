@@ -94,6 +94,7 @@ RDAddLog::RDAddLog(QString *logname,QString *svcname,
   add_ok_button->setDefault(true);
   add_ok_button->setFont(button_font);
   add_ok_button->setText(tr("&OK"));
+  add_ok_button->setDisabled(true);
   connect(add_ok_button,SIGNAL(clicked()),this,SLOT(okData()));
 
   //
