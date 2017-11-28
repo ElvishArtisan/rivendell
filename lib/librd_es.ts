@@ -1908,10 +1908,6 @@ Do you still want to proceed?</source>
         <source>Cancel</source>
         <translation>Cancelar</translation>
     </message>
-    <message>
-        <source>ALL</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>RDListSelector</name>

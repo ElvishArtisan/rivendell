@@ -4128,13 +4128,13 @@ debe guardarse.  ¿Hacerlo ahora?</translation>
     <message>
         <source>Assign Group
 Permissions</source>
-        <translation>Asignar Permisos
+        <translation type="obsolete">Asignar Permisos
 de Grupo</translation>
     </message>
     <message>
         <source>Assign Podcast Feed
 Permissions</source>
-        <translation>Asignar permisos de
+        <translation type="obsolete">Asignar permisos de
 Feeds para Podcasts</translation>
     </message>
     <message>
@@ -4155,6 +4155,21 @@ Feeds para Podcasts</translation>
     </message>
     <message>
         <source>PAM Service</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Group
+Permissions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Service
+Permissions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Podcast Feed
+Permissions</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

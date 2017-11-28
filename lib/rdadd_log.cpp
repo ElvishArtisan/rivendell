@@ -2,7 +2,7 @@
 //
 // Create a Rivendell Log
 //
-//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2004,2016-2017 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,27 +20,21 @@
 
 #include <math.h>
 
-#include <qdialog.h>
-#include <qstring.h>
-#include <qlistbox.h>
-#include <qtextedit.h>
-#include <qlabel.h>
-#include <qpainter.h>
-#include <qevent.h>
 #include <qmessagebox.h>
-#include <qcheckbox.h>
-#include <qbuttongroup.h>
-#include <qsqldatabase.h>
-#include <rddb.h>
-#include <rdidvalidator.h>
-#include <rdadd_log.h>
 
+#include "rddb.h"
+#include "rdescape_string.h"
+#include "rdidvalidator.h"
+#include "rdadd_log.h"
 
-RDAddLog::RDAddLog(QString *logname,QString *svcname,RDStation *station,
-		   QString caption,QWidget *parent,RDUser *rduser)
+RDAddLog::RDAddLog(QString *logname,QString *svcname,
+		   RDLogFilter::FilterMode mode,RDUser *user,RDStation *station,
+		   const QString &caption,QWidget *parent)
   : QDialog(parent,"",true)
 {
   QStringList services_list;
+  QString sql;
+  RDSqlQuery *q;
   log_name=logname;
   log_svc=svcname;
   log_station=station;
@@ -115,32 +109,27 @@ RDAddLog::RDAddLog(QString *logname,QString *svcname,RDStation *station,
   //
   // Populate Data
   //
-  if (rduser != 0) { // RDStation::UserSec
-    services_list = rduser->services();
-  } else { // RDStation::HostSec
-    QString sql;
-    if(station==NULL) {
-      sql="select NAME from SERVICES order by NAME";
-    }
-    else {
-      sql=QString().sprintf("select SERVICE_NAME from SERVICE_PERMS \
-                             where STATION_NAME=\"%s\" order by SERVICE_NAME",
-  			    (const char *)station->name());
-    }
-    RDSqlQuery *q=new RDSqlQuery(sql);
-    while(q->next()) {
-      services_list.append( q->value(0).toString() );
-    }
-    delete q;
-  }
+  switch(mode) {
+  case RDLogFilter::NoFilter:
+    sql=QString("select NAME from SERVICES order by NAME");
+    break;
 
-  for ( QStringList::Iterator it = services_list.begin(); 
-        it != services_list.end();
-        ++it ) {
-    add_service_box->insertItem(*it);
-    if(*svcname==*it) {
-      add_service_box->setCurrentItem(add_service_box->count()-1);
+  case RDLogFilter::UserFilter:
+    if(user!=NULL) {
+      sql=QString("select SERVICE_NAME from USER_SERVICE_PERMS where ")+
+	"USER_NAME=\""+RDEscapeString(user->name())+"\" order by SERVICE_NAME";
     }
+    break;
+
+  case RDLogFilter::StationFilter:
+    sql=QString("select SERVICE_NAME from SERVICE_PERMS where ")+
+      "STATION_NAME=\""+RDEscapeString(station->name())+"\" "+
+      "order by SERVICE_NAME";
+    break;
+  }
+  q=new RDSqlQuery(sql);
+  while(q->next()) {
+    add_service_box->insertItem(q->value(0).toString());
   }
 }
 

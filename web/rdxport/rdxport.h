@@ -28,6 +28,7 @@
 #include <rdconfig.h>
 #include <rdformpost.h>
 #include <rdstation.h>
+#include <rdsvc.h>
 #include <rdsystem.h>
 #include <rduser.h>
 
@@ -69,6 +70,8 @@ class Xport : public QObject
   void DeleteLog();
   void ListLogs();
   void ListLog();
+  RDSvc *GetLogService(const QString &svc_name);
+  bool ServiceUserValid(const QString &svc_name);
   void Rehash();
   void SaveLog();
   void ListSchedCodes();

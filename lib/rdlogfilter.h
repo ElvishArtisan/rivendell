@@ -29,16 +29,20 @@
 #include <qstringlist.h>
 #include <qwidget.h>
 
+#include <rdconfig.h>
+#include <rduser.h>
+
 class RDLogFilter : public QWidget
 {
   Q_OBJECT;
  public:
-  RDLogFilter(QWidget *parent=0);
+  enum FilterMode {NoFilter=0,UserFilter=1,StationFilter=2};
+  RDLogFilter(FilterMode mode,RDUser *user,RDConfig *config,QWidget *parent=0);
   ~RDLogFilter();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
   QString whereSql() const;
-  void setServices(const QStringList &svc_names);
+  void setUser(RDUser *user);
 
  signals:
   void filterChanged(const QString &where_sql);
@@ -52,6 +56,7 @@ class RDLogFilter : public QWidget
   void resizeEvent(QResizeEvent *e);
 
  private:
+  FilterMode filter_filter_mode;
   QLabel *filter_service_label;
   QComboBox *filter_service_box;
   QLabel *filter_filter_label;

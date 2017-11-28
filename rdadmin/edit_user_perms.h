@@ -1,6 +1,6 @@
 // edit_user_perms.h
 //
-// Edit Rivendell Service Permissions
+// Edit Rivendell User/Group Permissions
 //
 //   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
@@ -22,7 +22,6 @@
 #define EDIT_USER_PERMS_H
 
 #include <qdialog.h>
-#include <qsqldatabase.h>
 #include <rdlistselector.h>
 
 #include <rduser.h>

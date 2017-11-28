@@ -1727,10 +1727,6 @@ Do you want to overwrite it?</source>
         <source>Select Log</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>ALL</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>RDListSelector</name>

@@ -4114,13 +4114,13 @@ Lagre no?</translation>
     <message>
         <source>Assign Group
 Permissions</source>
-        <translation>Styr gruppe-
+        <translation type="obsolete">Styr gruppe-
 tilgang</translation>
     </message>
     <message>
         <source>Assign Podcast Feed
 Permissions</source>
-        <translation>Styr podkastsraum-
+        <translation type="obsolete">Styr podkastsraum-
 tilgangsrettar</translation>
     </message>
     <message>
@@ -4145,6 +4145,21 @@ tilgangsrettar</translation>
     </message>
     <message>
         <source>PAM Service</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Group
+Permissions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Service
+Permissions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Podcast Feed
+Permissions</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

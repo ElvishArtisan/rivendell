@@ -1911,10 +1911,6 @@ Bitte Kofiguration prüfen und erneut versuchen.</translation>
         <source>Cancel</source>
         <translation>Zrušit</translation>
     </message>
-    <message>
-        <source>ALL</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>RDListSelector</name>

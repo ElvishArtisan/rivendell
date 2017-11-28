@@ -247,7 +247,8 @@ MainWidget::MainWidget(QWidget *parent)
   //
   // Log Filter
   //
-  log_filter_widget=new RDLogFilter(this);
+  log_filter_widget=
+    new RDLogFilter(RDLogFilter::UserFilter,rduser,log_config,this);
   connect(log_filter_widget,SIGNAL(filterChanged(const QString &)),
 	  this,SLOT(filterChangedData(const QString &)));
 
@@ -343,7 +344,7 @@ MainWidget::MainWidget(QWidget *parent)
   log_close_button->setText(tr("&Close"));
   connect(log_close_button,SIGNAL(clicked()),this,SLOT(quitMainWidget()));
 
-  RefreshList();
+  //  RefreshList();
 
 #ifndef WIN32
   // 
@@ -384,6 +385,8 @@ void MainWidget::userData()
     delete rduser;
   }
   rduser=new RDUser(rdripc->user());
+  log_filter_widget->setUser(rduser);
+  RefreshList();
 
   //
   // Set Control Perms
@@ -410,7 +413,8 @@ void MainWidget::addData()
   RDAddLog *log;
 
   if(rduser->createLog()) {
-    log=new RDAddLog(&logname,&svcname,NULL,tr("Add Log"),this);
+    log=new RDAddLog(&logname,&svcname,RDLogFilter::UserFilter,rduser,
+		     rdstation_conf,tr("Add Log"),this);
     if(log->exec()!=0) {
       delete log;
       return;

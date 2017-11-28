@@ -1,4 +1,4 @@
-// edit_user_perms.cpp
+// edit_user_service_perms.cpp
 //
 // Edit Rivendell User/Group Permissions
 //
@@ -23,9 +23,9 @@
 #include <rddb.h>
 #include <rdescape_string.h>
 
-#include "edit_user_perms.h"
+#include "edit_user_service_perms.h"
 
-EditUserPerms::EditUserPerms(RDUser *user,QWidget *parent)
+EditUserServicePerms::EditUserServicePerms(RDUser *user,QWidget *parent)
   : QDialog(parent,"",true)
 {
   QString sql;
@@ -53,8 +53,8 @@ EditUserPerms::EditUserPerms(RDUser *user,QWidget *parent)
   // Groups Selector
   //
   user_host_sel=new RDListSelector(this);
-  user_host_sel->sourceSetLabel(tr("Available Groups"));
-  user_host_sel->destSetLabel(tr("Enabled Groups"));
+  user_host_sel->sourceSetLabel(tr("Available Services"));
+  user_host_sel->destSetLabel(tr("Enabled Services"));
   user_host_sel->setGeometry(10,10,380,130);
 
   //
@@ -80,7 +80,7 @@ EditUserPerms::EditUserPerms(RDUser *user,QWidget *parent)
   //
   // Populate Fields
   //
-  sql=QString("select GROUP_NAME from USER_PERMS where ")+
+  sql=QString("select SERVICE_NAME from USER_SERVICE_PERMS  where ")+
     "USER_NAME=\""+RDEscapeString(user_user->name())+"\"";
   q=new RDSqlQuery(sql);
   while(q->next()) {
@@ -88,7 +88,7 @@ EditUserPerms::EditUserPerms(RDUser *user,QWidget *parent)
   }
   delete q;
 
-  sql=QString("select NAME from GROUPS");
+  sql=QString().sprintf("select NAME from SERVICES");
   q=new RDSqlQuery(sql);
   while(q->next()) {
     if(user_host_sel->destFindItem(q->value(0).toString())==0) {
@@ -99,24 +99,24 @@ EditUserPerms::EditUserPerms(RDUser *user,QWidget *parent)
 }
 
 
-EditUserPerms::~EditUserPerms()
+EditUserServicePerms::~EditUserServicePerms()
 {
 }
 
 
-QSize EditUserPerms::sizeHint() const
+QSize EditUserServicePerms::sizeHint() const
 {
   return QSize(400,212);
 } 
 
 
-QSizePolicy EditUserPerms::sizePolicy() const
+QSizePolicy EditUserServicePerms::sizePolicy() const
 {
   return QSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed);
 }
 
 
-void EditUserPerms::okData()
+void EditUserServicePerms::okData()
 {
   RDSqlQuery *q;
   QString sql;
@@ -125,15 +125,16 @@ void EditUserPerms::okData()
   // Add New Groups
   //
   for(unsigned i=0;i<user_host_sel->destCount();i++) {
-    sql=QString("select GROUP_NAME from USER_PERMS where ")+
-      "USER_NAME=\""+RDEscapeString(user_user->name())+"\" && "
-      "GROUP_NAME=\""+RDEscapeString(user_host_sel->destText(i))+"\"";
+    sql=QString().sprintf("select SERVICE_NAME from USER_SERVICE_PERMS \
+                           where USER_NAME=\"%s\" && SERVICE_NAME=\"%s\"",
+			  (const char *)user_user->name(),
+			  (const char *)user_host_sel->destText(i));
     q=new RDSqlQuery(sql);
     if(q->size()==0) {
       delete q;
-      sql=QString("insert into USER_PERMS (USER_NAME,GROUP_NAME) ")+
-	"values (\""+RDEscapeString(user_user->name())+
-	"\",\""+RDEscapeString(user_host_sel->destText(i))+"\")";
+      sql=QString("insert into USER_SERVICE_PERMS (USER_NAME,SERVICE_NAME) ")+
+	"values (\""+RDEscapeString(user_user->name())+"\","+
+	"\""+RDEscapeString(user_host_sel->destText(i))+"\")";
       q=new RDSqlQuery(sql);
     }
     delete q;
@@ -142,10 +143,10 @@ void EditUserPerms::okData()
   //
   // Delete Old Groups
   //
-  sql=QString("delete from USER_PERMS where ")+
+  sql=QString("delete from USER_SERVICE_PERMS where ")+
     "USER_NAME=\""+RDEscapeString(user_user->name())+"\"";
   for(unsigned i=0;i<user_host_sel->destCount();i++) {
-    sql+=QString(" && GROUP_NAME<>\"")+
+    sql+=QString(" && SERVICE_NAME<>\"")+
       RDEscapeString(user_host_sel->destText(i))+"\"";
   }
   q=new RDSqlQuery(sql);
@@ -154,7 +155,7 @@ void EditUserPerms::okData()
 }
 
 
-void EditUserPerms::cancelData()
+void EditUserServicePerms::cancelData()
 {
   done(1);
 }

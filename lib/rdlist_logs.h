@@ -32,13 +32,15 @@
 #include <qpushbutton.h>
 
 #include <rdlogfilter.h>
+#include <rduser.h>
 
 class RDListLogs : public QDialog
 {
   Q_OBJECT
 
  public:
-  RDListLogs(QString *logname,const QString &stationname,QWidget *parent=0);
+  RDListLogs(QString *logname,RDLogFilter::FilterMode mode,
+	     RDUser *user,RDConfig *config,QWidget *parent=0);
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
 
@@ -56,7 +58,7 @@ class RDListLogs : public QDialog
   void RefreshList();
   QListView *list_log_list;
   QString *list_logname;
-  QString list_stationname;
+  RDConfig *list_config;
   QPushButton *list_ok_button;
   QPushButton *list_cancel_button;
   RDLogFilter *list_filter_widget;

@@ -28,7 +28,6 @@
 #include <rddb.h>
 #include <rdformpost.h>
 #include <rdweb.h>
-#include <rdsvc.h>
 #include <rduser.h>
 #include <rdlog.h>
 #include <rdlog_event.h>
@@ -52,10 +51,7 @@ void Xport::AddLog()
   if(!xport_post->getValue("SERVICE_NAME",&service_name)) {
     XmlExit("Missing SERVICE_NAME",400,"logs.cpp",LINE_NUMBER);
   }
-  RDSvc *svc=new RDSvc(service_name,xport_station,xport_config);
-  if(!svc->exists()) {
-    XmlExit("No such service",404,"logs.cpp",LINE_NUMBER);
-  }
+  GetLogService(service_name);
 
   //
   // Verify User Perms
@@ -129,6 +125,9 @@ void Xport::ListLogs()
   // Get Options
   //
   xport_post->getValue("SERVICE_NAME",&service_name);
+  if(!service_name.isEmpty()) {
+    GetLogService(service_name);
+  }
   xport_post->getValue("LOG_NAME",&log_name);
   xport_post->getValue("TRACKABLE",&trackable);
   xport_post->getValue("FILTER",&filter);
@@ -142,7 +141,19 @@ void Xport::ListLogs()
   if(!log_name.isEmpty()) {
     sql+=" (NAME=\""+RDEscapeString(log_name)+"\")&&";
   }
-  if(!service_name.isEmpty()) {
+  if(service_name.isEmpty()) {
+    QString sql2=QString("select SERVICE_NAME from USER_SERVICE_PERMS where ")+
+      "USER_NAME=\""+RDEscapeString(xport_user->name())+"\"";
+    q=new RDSqlQuery(sql2);
+    sql+="(";
+    while(q->next()) {
+      sql+="(SERVICE=\""+RDEscapeString(q->value(0).toString())+"\")||";
+    }
+    sql=sql.left(sql.length()-2);
+    sql+=")&&";
+    delete q;
+  }
+  else {
     sql+=" (SERVICE=\""+RDEscapeString(service_name)+"\")&&";
   }
   if(trackable=="1") {
@@ -209,7 +220,7 @@ void Xport::ListLog()
   // Verify that log exists
   //
   log=new RDLog(name);
-  if(!log->exists()) {
+  if((!ServiceUserValid(log->service()))||(!log->exists())) {
     delete log;
     XmlExit("No such log",404,"logs.cpp",LINE_NUMBER);
   }
@@ -259,6 +270,7 @@ void Xport::SaveLog()
   if(!xport_post->getValue("SERVICE_NAME",&service_name)) {
     XmlExit("Missing SERVICE_NAME",400,"logs.cpp",LINE_NUMBER);
   }
+  GetLogService(service_name);
   if(!xport_post->getValue("DESCRIPTION",&description)) {
     XmlExit("Missing DESCRIPTION",400,"logs.cpp",LINE_NUMBER);
   }
@@ -503,4 +515,38 @@ void Xport::SaveLog()
 
   XmlExit(QString().sprintf("OK Saved %d events",logevt->size()),
 	  200,"logs.cpp",LINE_NUMBER);
+}
+
+
+RDSvc *Xport::GetLogService(const QString &svc_name)
+{
+  QString sql=QString("select SERVICE_NAME from USER_SERVICE_PERMS where ")+
+    "(USER_NAME=\""+RDEscapeString(xport_user->name())+"\")&&"+
+    "(SERVICE_NAME=\""+RDEscapeString(svc_name)+"\")";
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  if(!q->first()) {
+    XmlExit("No such service",404,"logs.cpp",LINE_NUMBER);
+  }
+  delete q;
+  RDSvc *svc=new RDSvc(svc_name,xport_station,xport_config);
+  if(!svc->exists()) {
+    XmlExit("No such service",404,"logs.cpp",LINE_NUMBER);
+  }
+
+  return svc;
+}
+
+
+bool Xport::ServiceUserValid(const QString &svc_name)
+{
+  bool ret=false;
+
+  QString sql=QString("select SERVICE_NAME from USER_SERVICE_PERMS where ")+
+    "(SERVICE_NAME=\""+RDEscapeString(svc_name)+"\")&&"+
+    "(USER_NAME=\""+RDEscapeString(xport_user->name())+"\")";
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  ret=q->first();
+  delete q;
+
+  return ret;
 }

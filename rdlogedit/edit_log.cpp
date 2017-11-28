@@ -1094,7 +1094,8 @@ void EditLog::saveasData()
   RDAddLog *log=NULL;
 
   if(rduser->createLog()) {
-    log=new RDAddLog(&logname,&svcname,NULL,tr("Add Log"),this);
+    log=new RDAddLog(&logname,&svcname,RDLogFilter::UserFilter,rduser,
+		     rdstation_conf,tr("Add Log"),this);
     if(log->exec()<0) {
       return;
     }

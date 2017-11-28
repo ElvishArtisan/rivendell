@@ -24,11 +24,11 @@
 #include <rdescape_string.h>
 #include <rdlist_logs.h>
 
-RDListLogs::RDListLogs(QString *logname,const QString &stationname,
-		       QWidget *parent)
+RDListLogs::RDListLogs(QString *logname,RDLogFilter::FilterMode mode,
+		       RDUser *user,RDConfig *config,QWidget *parent)
   : QDialog(parent,"",true)
 {
-  list_stationname=stationname;
+  list_config=config;
   list_logname=logname;
 
   //
@@ -50,18 +50,7 @@ RDListLogs::RDListLogs(QString *logname,const QString &stationname,
   //
   // Log Filter
   //
-  list_filter_widget=new RDLogFilter(this);
-  QString sql=QString("select ")+
-    "SERVICE_NAME from SERVICE_PERMS where "+
-    "STATION_NAME=\""+RDEscapeString(list_stationname)+"\"";
-  RDSqlQuery *q=new RDSqlQuery(sql);
-  QStringList services_list;
-  services_list.push_back(tr("ALL"));
-  while(q->next()) {
-    services_list.push_back(q->value(0).toString());
-  }
-  delete q;
-  list_filter_widget->setServices(services_list);
+  list_filter_widget=new RDLogFilter(mode,user,config,this);
   connect(list_filter_widget,SIGNAL(filterChanged(const QString &)),
 	  this,SLOT(filterChangedData(const QString &)));
 

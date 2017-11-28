@@ -16380,3 +16380,8 @@
 	for 'By Order' scheduling to be skipped.
 2017-11-20 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 2.17.0int05.
+2017-11-28 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'USER_SERVICE_PERMS' table to the database.
+	* Incremented the database version to 272.
+	* Added a 'Service Permissions' button to the Edit User dialog in
+	rdadmin(1).

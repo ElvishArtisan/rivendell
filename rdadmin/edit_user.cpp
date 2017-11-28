@@ -37,6 +37,7 @@
 #include <rdtextvalidator.h>
 
 #include <edit_user_perms.h>
+#include <edit_user_service_perms.h>
 #include <edit_feed_perms.h>
 #include <globals.h>
 
@@ -378,19 +379,28 @@ EditUser::EditUser(const QString &user,QWidget *parent)
   //  Group Permissions Button
   //
   user_assign_perms_button=new QPushButton(this);
-  user_assign_perms_button->setGeometry(10,582,sizeHint().width()/2-20,50);
+  user_assign_perms_button->setGeometry(10,582,sizeHint().width()/3-20,50);
   user_assign_perms_button->setFont(font);
-  user_assign_perms_button->setText(tr("Assign Group\nPermissions"));
+  user_assign_perms_button->setText(tr("Group\nPermissions"));
   connect(user_assign_perms_button,SIGNAL(clicked()),this,SLOT(groupsData()));
+
+  //
+  //  Services Permissions Button
+  //
+  user_assign_svcs_button=new QPushButton(this);
+  user_assign_svcs_button->setGeometry(sizeHint().width()/3+10,582,sizeHint().width()/3-20,50);
+  user_assign_svcs_button->setFont(font);
+  user_assign_svcs_button->setText(tr("Service\nPermissions"));
+  connect(user_assign_svcs_button,SIGNAL(clicked()),this,SLOT(servicesData()));
 
   //
   //  Feeds Permissions Button
   //
   user_assign_feeds_button=new QPushButton(this);
   user_assign_feeds_button->
-    setGeometry(sizeHint().width()/2+10,582,sizeHint().width()/2-20,50);
+    setGeometry(2*sizeHint().width()/3+10,582,sizeHint().width()/3-20,50);
   user_assign_feeds_button->setFont(font);
-  user_assign_feeds_button->setText(tr("Assign Podcast Feed\nPermissions"));
+  user_assign_feeds_button->setText(tr("Podcast Feed\nPermissions"));
   connect(user_assign_feeds_button,SIGNAL(clicked()),this,SLOT(feedsData()));
 
   //
@@ -512,6 +522,14 @@ void EditUser::passwordData()
 void EditUser::groupsData()
 {
   EditUserPerms *dialog=new EditUserPerms(user_user,this);
+  dialog->exec();
+  delete dialog;
+}
+
+
+void EditUser::servicesData()
+{
+  EditUserServicePerms *dialog=new EditUserServicePerms(user_user,this);
   dialog->exec();
   delete dialog;
 }

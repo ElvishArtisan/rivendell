@@ -74,6 +74,7 @@ EXTRA_DIST = audio_perms.txt\
              triggers.txt\
              ttys.txt\
              user_perms.txt\
+             user_service_perms.txt\
              users.txt\
              version.txt\
              vguest_resources.txt\

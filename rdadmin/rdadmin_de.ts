@@ -4136,13 +4136,13 @@ gespeichert werden. Jetzt speichern?</translation>
     <message>
         <source>Assign Group
 Permissions</source>
-        <translation>Gruppenerlaubnisse
+        <translation type="obsolete">Gruppenerlaubnisse
 zuweisen</translation>
     </message>
     <message>
         <source>Assign Podcast Feed
 Permissions</source>
-        <translation>Podcastfeed-Erlaubnisse
+        <translation type="obsolete">Podcastfeed-Erlaubnisse
 zuweisen</translation>
     </message>
     <message>
@@ -4167,6 +4167,21 @@ zuweisen</translation>
     </message>
     <message>
         <source>PAM Service</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Group
+Permissions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Service
+Permissions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Podcast Feed
+Permissions</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

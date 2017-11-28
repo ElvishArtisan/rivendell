@@ -1908,7 +1908,7 @@ Por Favor, cheque suas configurações e tenbte outra vez.</translation>
     </message>
     <message>
         <source>ALL</source>
-        <translation type="unfinished">TODOS</translation>
+        <translation type="obsolete">TODOS</translation>
     </message>
 </context>
 <context>

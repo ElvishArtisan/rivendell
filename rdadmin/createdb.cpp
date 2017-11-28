@@ -2439,6 +2439,18 @@ bool CreateDb(QString name,QString pwd)
      return false;
   }
 
+  //
+  // Create USER_SERVICE_PERMS table
+  //
+  sql=QString("create table if not exists USER_SERVICE_PERMS (")+
+    "ID int auto_increment not null primary key,"+
+    "USER_NAME char(255) not null,"+
+    "SERVICE_NAME char(10) not null,"+
+    "index USER_NAME_IDX(USER_NAME))";
+  if(!RunQuery(sql)) {
+     return false;
+  }
+
   return true;
 }
 
@@ -2595,11 +2607,16 @@ bool InitDb(QString name,QString pwd,QString station_name)
   svc->create("");
   svc->setDescription(RD_SERVICE_DESCRIPTION);
   delete svc;
+  sql=QString("insert into USER_SERVICE_PERMS set ")+
+    "USER_NAME=\""+RDEscapeString(RD_USER_LOGIN_NAME)+"\","+
+    "SERVICE_NAME=\""+RDEscapeString(RD_SERVICE_NAME)+"\"";
+  if(!RunQuery(sql)) {
+    return false;
+  }
 
   //
   // Create Default Groups
   //
-
   struct Group
   {
     const char *group;
@@ -8509,6 +8526,32 @@ int UpdateDb(int ver)
       "add column SEGUE_LENGTH int(11) default 0 after SEGUE_LEVEL";
     q=new RDSqlQuery(sql);
     delete q;
+  }
+
+  if(ver<272) {
+    sql=QString("create table if not exists USER_SERVICE_PERMS (")+
+      "ID int auto_increment not null primary key,"+
+      "USER_NAME char(255) not null,"+
+      "SERVICE_NAME char(10) not null,"+
+      "index USER_NAME_IDX(USER_NAME))";
+    q=new QSqlQuery(sql);
+    delete q;
+
+    sql=QString("select LOGIN_NAME from USERS");
+     q=new QSqlQuery(sql);
+     while(q->next()) {
+       sql=QString("select NAME from SERVICES");
+       q1=new QSqlQuery(sql);
+       while(q1->next()) {
+	 sql=QString("insert into USER_SERVICE_PERMS set ")+
+	   "USER_NAME=\""+RDEscapeString(q->value(0).toString())+"\","+
+	   "SERVICE_NAME=\""+RDEscapeString(q1->value(0).toString())+"\"";
+	 q2=new QSqlQuery(sql);
+	 delete q2;
+       }
+       delete q1;
+     }
+     delete q;
   }
 
 

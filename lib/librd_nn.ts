@@ -1902,7 +1902,7 @@ Sjekk eksportoppsettet ditt og prøv att.</translation>
     </message>
     <message>
         <source>ALL</source>
-        <translation type="unfinished">ALLE</translation>
+        <translation type="obsolete">ALLE</translation>
     </message>
 </context>
 <context>

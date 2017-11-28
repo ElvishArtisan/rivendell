@@ -4129,13 +4129,13 @@ deve ser salva.  Salvar Agora?</translation>
     <message>
         <source>Assign Group
 Permissions</source>
-        <translation>Determinar Permissões
+        <translation type="obsolete">Determinar Permissões
 de Grupo</translation>
     </message>
     <message>
         <source>Assign Podcast Feed
 Permissions</source>
-        <translation>Determinar Permissões de 
+        <translation type="obsolete">Determinar Permissões de 
 Feeds de Podcasts </translation>
     </message>
     <message>
@@ -4160,6 +4160,21 @@ Feeds de Podcasts </translation>
     </message>
     <message>
         <source>PAM Service</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Group
+Permissions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Service
+Permissions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Podcast Feed
+Permissions</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

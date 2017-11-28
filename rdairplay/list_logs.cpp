@@ -47,7 +47,8 @@ ListLogs::ListLogs(LogPlay *log,QWidget *parent)
   //
   // Filter Widget
   //
-  list_filter_widget=new RDLogFilter(this);
+  list_filter_widget=
+    new RDLogFilter(RDLogFilter::StationFilter,rduser,air_config,this);
   connect(list_filter_widget,SIGNAL(filterChanged(const QString &)),
 	  this,SLOT(filterChangedData(const QString &)));
 
@@ -133,7 +134,6 @@ int ListLogs::exec(QString *logname,QString *svcname)
   while(q->next()) {
     services_list.push_back(q->value(0).toString());
   }
-  list_filter_widget->setServices(services_list);
   delete q;
   RefreshList();
 
@@ -186,7 +186,8 @@ void ListLogs::saveAsButtonData()
   QString logname;
   QString svcname=*list_svcname;
   RDAddLog *log;
-  log=new RDAddLog(&logname,&svcname,rdstation_conf,tr("Rename Log"),this);
+  log=new RDAddLog(&logname,&svcname,RDLogFilter::StationFilter,rduser,
+		   rdstation_conf,tr("Rename Log"),this);
 
   if(log->exec()<0) {
     delete log;

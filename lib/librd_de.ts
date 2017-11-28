@@ -1904,7 +1904,7 @@ Bitte Kofiguration prüfen und erneut versuchen.</translation>
     </message>
     <message>
         <source>ALL</source>
-        <translation type="unfinished">ALLE</translation>
+        <translation type="obsolete">ALLE</translation>
     </message>
 </context>
 <context>

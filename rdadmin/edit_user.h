@@ -47,6 +47,7 @@ class EditUser : public QDialog
   void localAuthToggledData(bool state);
   void passwordData();
   void groupsData();
+  void servicesData();
   void feedsData();
   void adminToggledData(bool state);
   void okData();
@@ -90,6 +91,7 @@ class EditUser : public QDialog
   QCheckBox *user_edit_podcast_button;
   QCheckBox *user_delete_podcast_button;
   QPushButton *user_assign_perms_button;
+  QPushButton *user_assign_svcs_button;
   QPushButton *user_assign_feeds_button;
   QLabel *user_create_carts_label;
   QLabel *user_delete_carts_label;

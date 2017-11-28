@@ -4179,13 +4179,13 @@ uloženo. Uložit nyní?</translation>
     <message>
         <source>Assign Group
 Permissions</source>
-        <translation>Přiřadit povolení
+        <translation type="obsolete">Přiřadit povolení
 pro skupinu</translation>
     </message>
     <message>
         <source>Assign Podcast Feed
 Permissions</source>
-        <translation>Přiřadit povolení
+        <translation type="obsolete">Přiřadit povolení
 pro přívod pro podcast</translation>
     </message>
     <message>
@@ -4210,6 +4210,21 @@ pro přívod pro podcast</translation>
     </message>
     <message>
         <source>PAM Service</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Group
+Permissions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Service
+Permissions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Podcast Feed
+Permissions</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

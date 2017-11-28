@@ -94,6 +94,7 @@ dist_rdadmin_SOURCES = add_aux_field.cpp add_aux_field.h\
                        edit_ttys.cpp edit_ttys.h\
                        edit_user.cpp edit_user.h\
                        edit_user_perms.cpp edit_user_perms.h\
+                       edit_user_service_perms.cpp edit_user_service_perms.h\
                        edit_vguest_resource.cpp edit_vguest_resource.h\
                        globals.h\
                        help_audios.cpp help_audios.h\
@@ -178,6 +179,7 @@ nodist_rdadmin_SOURCES = moc_add_aux_field.cpp\
                          moc_edit_ttys.cpp\
                          moc_edit_user.cpp\
                          moc_edit_user_perms.cpp\
+                         moc_edit_user_service_perms.cpp\
                          moc_edit_vguest_resource.cpp\
                          moc_help_audios.cpp\
                          moc_importfields.cpp\

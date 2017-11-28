@@ -1,0 +1,11 @@
+             USER_SERVICE_PERMS Table Layout for Rivendell
+
+The USER_SERVICE_PERMS table holds data concerning which services are 
+are allowed to be accessed by which users.
+
+
+FIELD NAME           TYPE              REMARKS
+---------------------------------------------------------------
+ID                   int(11) signed    Primary key, auto increment
+USER_NAME            char(255)         From USERS.LOGIN_NAME
+SERVICE_NAME         char(10)          From SERVICES.NAME
