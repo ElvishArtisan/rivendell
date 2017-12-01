@@ -187,6 +187,18 @@ QString RDConfig::mysqlEngine() const
 }
 
 
+QString RDConfig::mysqlCharset() const
+{
+  return conf_mysql_charset;
+}
+
+
+QString RDConfig::mysqlCollation() const
+{
+  return conf_mysql_collation;
+}
+
+
 QString RDConfig::createTablePostfix() const
 {
   return conf_create_table_postfix;
@@ -571,12 +583,13 @@ void RDConfig::load()
 		      DEFAULT_MYSQL_HEARTBEAT_INTERVAL);
   conf_mysql_engine=
     profile->stringValue("mySQL","Engine",DEFAULT_MYSQL_ENGINE);
-  if(conf_mysql_engine.lower()=="default") {
-    conf_create_table_postfix="";
-  }
-  else {
-    conf_create_table_postfix=QString(" engine ")+conf_mysql_engine;
-  }
+  conf_mysql_charset=
+    profile->stringValue("mySQL","Charset",DEFAULT_MYSQL_CHARSET);
+  conf_mysql_collation=
+    profile->stringValue("mySQL","Collation",DEFAULT_MYSQL_COLLATION);
+  conf_create_table_postfix=QString(" engine ")+conf_mysql_engine+" "+
+    "character set "+conf_mysql_charset+" "+
+    "collate "+conf_mysql_collation;
 
   facility=profile->stringValue("Logs","Facility",DEFAULT_LOG_FACILITY).lower();
   if(facility=="syslog") {
@@ -683,6 +696,8 @@ void RDConfig::clear()
   conf_mysql_driver="";
   conf_mysql_heartbeat_interval=DEFAULT_MYSQL_HEARTBEAT_INTERVAL;
   conf_mysql_engine=DEFAULT_MYSQL_ENGINE;
+  conf_mysql_charset=DEFAULT_MYSQL_CHARSET;
+  conf_mysql_collation=DEFAULT_MYSQL_COLLATION;
   conf_create_table_postfix="";
   conf_log_facility=RDConfig::LogSyslog;
   conf_log_directory="";

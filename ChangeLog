@@ -16399,3 +16399,8 @@
 	rd.conf(5).
 	* Refactored the schema update code to use standard form
 	in rdadmin(1).
+2017-12-01 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'Charset=' directive to the [MySQL] section of
+	rd.conf(5).
+	* Added an 'Collation=' directive to the [MySQL] section of
+	rd.conf(5).
