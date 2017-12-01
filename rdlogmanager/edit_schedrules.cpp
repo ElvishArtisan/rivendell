@@ -31,11 +31,11 @@
 #include <rddb.h>
 #include <rdlistviewitem.h>
 
-#include <edit_schedrules.h>
-#include <edit_schedcoderules.h>
-#include <schedruleslist.h>
-#include <list_clocks.h>
-
+#include "edit_schedrules.h"
+#include "edit_schedcoderules.h"
+#include "globals.h"
+#include "list_clocks.h"
+#include "schedruleslist.h"
 
 EditSchedRules::EditSchedRules(QString clock,unsigned *artistsep,SchedRulesList *schedruleslist,bool *rules_modified,QWidget *parent)
   : QDialog(parent,"",true)
@@ -221,7 +221,7 @@ void EditSchedRules::importData()
     return;
   }
   delete listclocks;
-  SchedRulesList *import_list=new SchedRulesList(clockname); 
+  SchedRulesList *import_list=new SchedRulesList(clockname,log_config); 
 
   list_schedCodes_view->clear();
   for (int i=0; i<import_list->getNumberOfItems(); i++)  

@@ -525,7 +525,8 @@ bool RDSvc::import(ImportSource src,const QDate &date,const QString &break_str,
     "LINK_START_TIME time default NULL,"+
     "LINK_LENGTH int default NULL,"+
     "EVENT_USED enum('N','Y') default 'N',"+
-    "INDEX START_TIME_IDX (START_HOUR,START_SECS))";
+    "INDEX START_TIME_IDX (START_HOUR,START_SECS)) "+
+    svc_config->createTablePostfix();
   q=new RDSqlQuery(sql);
   delete q;
 
@@ -728,7 +729,7 @@ bool RDSvc::generateLog(const QDate &date,const QString &logname,
   if(RDLog::exists(logname)) {
     RDLog::remove(logname,svc_station,user,svc_config);
   }
-  RDLog::create(logname,svc_name,"RDLogManager",&err_msg);
+  RDLog::create(logname,svc_name,"RDLogManager",&err_msg,svc_config);
   log=new RDLog(logname);
   log->setDescription(RDDateDecode(descriptionTemplate(),date,svc_station,
 				   svc_config,svc_name));
@@ -867,7 +868,7 @@ bool RDSvc::linkLog(RDSvc::ImportSource src,const QDate &date,
       dest_event->logLine(dest_event->size()-1)->setId(dest_event->nextId());
     }
   }
-  dest_event->save();
+  dest_event->save(svc_config);
 
   //
   // Update the Log Link Status
@@ -999,16 +1000,9 @@ void RDSvc::clearLogLinks(RDSvc::ImportSource src,const QDate &date,
       dest_event->logLine(dest_event->size()-1)->setId(dest_event->nextId());
     }
   }
-  dest_event->save();
+  dest_event->save(svc_config);
   delete src_event;
   delete dest_event;
-}
-
-
-void RDSvc::create(const QString exemplar) const
-{
-  QString err_msg;
-  RDSvc::create(svc_name,&err_msg,exemplar);
 }
 
 
@@ -1053,7 +1047,7 @@ QString RDSvc::xml() const
 
 
 bool RDSvc::create(const QString &name,QString *err_msg,
-		   const QString &exemplar)
+		   const QString &exemplar,RDConfig *config)
 {
   QString sql;
   RDSqlQuery *q;
@@ -1335,7 +1329,7 @@ bool RDSvc::create(const QString &name,QString *err_msg,
   //
   // Create Service Reconciliation Table
   //
-  sql=RDCreateReconciliationTableSql(RDSvc::svcTableName(name));
+  sql=RDCreateReconciliationTableSql(RDSvc::svcTableName(name),config);
   q=new RDSqlQuery(sql);
   delete q;
 

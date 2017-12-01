@@ -329,8 +329,7 @@ nodist_librd_la_SOURCES = moc_rdadd_cart.cpp\
                           moc_rdtrimaudio.cpp\
                           moc_rdupload.cpp\
                           moc_rdwavedata_dialog.cpp\
-                          moc_schedcartlist.cpp\
-                          moc_schedruleslist.cpp
+                          moc_schedcartlist.cpp
 
 librd_la_LDFLAGS = -release $(VERSION)
 

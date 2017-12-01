@@ -148,7 +148,7 @@ QString format_remote_host(const char *hostname) {
 
 
 bool OpenDb(QString dbname,QString login,QString pwd,
-	    QString host,QString stationname,bool interactive)
+	    QString host,QString stationname,bool interactive,RDConfig *config)
 {
   // 
   // Yeesh, this whole method really needs a rewrite!
@@ -263,7 +263,7 @@ and we will try to get this straightened out.");
 	  db->removeDatabase(dbname);
 	  return false;
 	}
-	if(!CreateDb(login,pwd)) {   // Can't create tables.
+	if(!CreateDb(login,pwd,config)) {   // Can't create tables.
 	  PrintError(QObject::tr("Unable to create Rivendell Database!"),
 		     interactive);
 	  db->removeDatabase(dbname);
@@ -279,7 +279,7 @@ and we will try to get this straightened out.");
 	  db->removeDatabase(dbname);
 	  return false;
 	}	  
-	if(!InitDb(login,pwd,stationname)) {  // Can't initialize tables.
+	if(!InitDb(login,pwd,stationname,config)) {  // Can't initialize tables.
 	  PrintError(QObject::tr("Unable to initialize Rivendell Database!"),
 		     interactive);
 	  db->removeDatabase(dbname);
@@ -360,7 +360,7 @@ with administrative privledges, otherwise hit cancel.");
 	db->removeDatabase(dbname);
 	return false;
       }
-      if(!CreateDb(login,pwd)) {   // Can't create tables.
+      if(!CreateDb(login,pwd,config)) {   // Can't create tables.
 	PrintError(QObject::tr("Unable to create Rivendell Database!"),
 		   interactive);
 	db->removeDatabase(dbname);
@@ -376,7 +376,7 @@ with administrative privledges, otherwise hit cancel.");
 	db->removeDatabase(dbname);
 	return false;
       }	  
-      if(!InitDb(login,pwd,stationname)) {   // Can't initialize tables.
+      if(!InitDb(login,pwd,stationname,config)) {   // Can't initialize tables.
 	PrintError(QObject::tr("Unable to initialize Rivendell Database!"),
 		   interactive);
 	db->removeDatabase(dbname);
@@ -397,7 +397,7 @@ on this machine for a few seconds.  Continue?"),
 	}      
       }
       RDKillDaemons();
-      if((err=UpdateDb(db_ver))!=UPDATEDB_SUCCESS) {
+      if((err=UpdateDb(db_ver,config))!=UPDATEDB_SUCCESS) {
 	err_str=QObject::tr("Unable to update Rivendell Database:");
 	switch(err) {
 	case UPDATEDB_BACKUP_FAILED:

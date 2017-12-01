@@ -41,13 +41,13 @@
 #include <rdconf.h>
 #include <rddatedialog.h>
 
-#include <globals.h>
-#include <add_meta.h>
-#include <edit_log.h>
-#include <edit_logline.h>
-#include <edit_marker.h>
-#include <edit_track.h>
-#include <edit_chain.h>
+#include "globals.h"
+#include "add_meta.h"
+#include "edit_chain.h"
+#include "edit_log.h"
+#include "edit_logline.h"
+#include "edit_marker.h"
+#include "edit_track.h"
 
 //
 // Icons
@@ -1098,14 +1098,14 @@ void EditLog::saveasData()
     if(log->exec()<0) {
       return;
     }
-    if(!RDLog::create(logname,svcname,rdripc->user(),&err_msg)) {
+    if(!RDLog::create(logname,svcname,rdripc->user(),&err_msg,log_config)) {
       QMessageBox::warning(this,"RDLogEdit - "+tr("Error"),err_msg);
       return;
     }
     delete edit_log;
     edit_newlogs->push_back(logname);
     edit_log=new RDLog(logname);
-    RDCreateLogTable(RDLog::tableName(logname));
+    RDCreateLogTable(RDLog::tableName(logname),log_config);
     edit_log_event->setLogName(RDLog::tableName(logname));
     for(int i=0;i<edit_service_box->count();i++) {
       if(edit_service_box->text(i)==svcname) {
@@ -1372,7 +1372,7 @@ void EditLog::SaveLog()
     edit_log->setEndDate(QDate());
   }
   edit_log->setAutoRefresh(edit_autorefresh_box->currentItem()==0);
-  edit_log_event->save();
+  edit_log_event->save(log_config);
   edit_log->
     setModifiedDatetime(QDateTime(QDate::currentDate(),QTime::currentTime()));
 }

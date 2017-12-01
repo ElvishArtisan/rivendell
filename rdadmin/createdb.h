@@ -2,7 +2,7 @@
 //
 // Create a Rivendell Database
 //
-//   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2017 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -23,6 +23,8 @@
 
 #include <qstring.h>
 
+#include <rdconfig.h>
+
 //
 // UpdateDB return codes
 //
@@ -30,10 +32,10 @@
 #define UPDATEDB_BACKUP_FAILED -1
 #define UPDATEDB_QUERY_FAILED -2
 
-bool CreateDb(QString name,QString pwd);
-bool InitDb(QString name,QString pwd,QString stationname);
-int UpdateDb(int ver);
+bool CreateDb(QString name,QString pwd,RDConfig *config);
+bool InitDb(QString name,QString pwd,QString stationname,RDConfig *config);
+int UpdateDb(int ver,RDConfig *config);
 
 
-#endif
+#endif  // CREATEDB_H
 

@@ -18,23 +18,26 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
+#include <rdclock.h>
 #include <rddb.h>
 #include <schedruleslist.h>
 #include <qmessagebox.h>
 
-SchedRulesList::SchedRulesList(QString clockname)
+SchedRulesList::SchedRulesList(QString clockname,RDConfig *config)
 {
   QString sql;
   RDSqlQuery *q;
   RDSqlQuery *q1;
 
-  sql=QString().sprintf("create table if not exists `%s_RULES` (\
-      CODE varchar(10) not null primary key,\
-      MAX_ROW int unsigned,\
-      MIN_WAIT int unsigned,\
-      NOT_AFTER varchar(10),\
-      OR_AFTER varchar(10),\
-      OR_AFTER_II varchar(10))",(const char*)clockname.replace(" ","_")); 
+  sql=QString("create table if not exists `")+
+    RDClock::tableName(clockname)+"_RULES` ("+
+    "CODE varchar(10) not null primary key,"+
+    "MAX_ROW int unsigned,"+
+    "MIN_WAIT int unsigned,"+
+    "NOT_AFTER varchar(10),"+
+    "OR_AFTER varchar(10),"+
+    "OR_AFTER_II varchar(10)) "+
+    config->createTablePostfix();
   q=new RDSqlQuery(sql);
   delete q;
 

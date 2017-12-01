@@ -26,6 +26,16 @@ Password=letmein
 Database=Rivendell
 Driver=QMYSQL3
 
+; Specify the type of DB storage engine to use when creating new tables.
+; To get a list of supported engine types, use the 'SHOW ENGINES;' command
+; in mysql(1).
+;
+; It is also possible to specify 'default', in which case Rivendell will
+; use whatever default engine type is configured in MySQL.
+;
+; The default value is 'default'.
+Engine=MyISAM
+
 [AudioStore]
 MountSource=
 MountType=

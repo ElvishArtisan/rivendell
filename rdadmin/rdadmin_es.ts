@@ -583,11 +583,15 @@ y un respaldo de la base de datos se guardó en </translation>
     </message>
     <message>
         <source>Service Exists</source>
-        <translation>El servicio ya existe</translation>
+        <translation type="obsolete">El servicio ya existe</translation>
     </message>
     <message>
         <source>Service Already Exists!</source>
-        <translation>¡El servicio ya existe!</translation>
+        <translation type="obsolete">¡El servicio ya existe!</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

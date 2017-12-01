@@ -38,13 +38,14 @@
 #include <rdcreate_log.h>
 #include <rdescape_string.h>
 
-#include <edit_clock.h>
-#include <add_clock.h>
-#include <edit_eventline.h>
-#include <edit_perms.h>
-#include <edit_event.h>
-#include <list_clocks.h>
-#include <edit_schedrules.h>
+#include "edit_clock.h"
+#include "add_clock.h"
+#include "edit_eventline.h"
+#include "edit_perms.h"
+#include "edit_event.h"
+#include "globals.h"
+#include "list_clocks.h"
+#include "edit_schedrules.h"
 
 
 EditClock::EditClock(QString clockname,bool new_clock,
@@ -240,7 +241,7 @@ EditClock::EditClock(QString clockname,bool new_clock,
   //
   // Populate Data
   //
-  sched_rules_list = new SchedRulesList(clockname);
+  sched_rules_list = new SchedRulesList(clockname,log_config);
   edit_clock=new RDClock();
   edit_clock->setName(clockname);
   edit_clock->load();
@@ -498,7 +499,7 @@ void EditClock::saveAsData()
   }
   delete q;
   edit_clock->setName(clockname);
-  sql=RDCreateClockTableSql(RDClock::tableName(clockname));
+  sql=RDCreateClockTableSql(RDClock::tableName(clockname),log_config);
   q=new RDSqlQuery(sql);
   delete q;
 

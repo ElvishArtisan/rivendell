@@ -60,6 +60,8 @@ class RDConfig
   QString mysqlPassword() const;
   QString mysqlDriver() const;
   int mysqlHeartbeatInterval() const;
+  QString mysqlEngine() const;
+  QString createTablePostfix() const;
   RDConfig::LogFacility logFacility() const;
   QString logDirectory() const;
   QString logCoreDumpDirectory() const;
@@ -124,6 +126,8 @@ class RDConfig
   QString conf_mysql_dbname;
   QString conf_mysql_password;
   QString conf_mysql_driver;
+  QString conf_mysql_engine;
+  QString conf_create_table_postfix;
   int conf_mysql_heartbeat_interval;
   RDConfig::LogFacility conf_log_facility;
   QString conf_log_directory;

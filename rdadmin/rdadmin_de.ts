@@ -549,11 +549,15 @@ worden. Aktuelle Version</translation>
     </message>
     <message>
         <source>Service Exists</source>
-        <translation>Service existiert</translation>
+        <translation type="obsolete">Service existiert</translation>
     </message>
     <message>
         <source>Service Already Exists!</source>
-        <translation>Service existiert bereits!</translation>
+        <translation type="obsolete">Service existiert bereits!</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

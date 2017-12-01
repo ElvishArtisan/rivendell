@@ -531,11 +531,15 @@ oppdatert til versjon </translation>
     </message>
     <message>
         <source>Service Exists</source>
-        <translation>Tenesta eksisterer</translation>
+        <translation type="obsolete">Tenesta eksisterer</translation>
     </message>
     <message>
         <source>Service Already Exists!</source>
-        <translation>Tenesta finst frå før!</translation>
+        <translation type="obsolete">Tenesta finst frå før!</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

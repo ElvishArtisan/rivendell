@@ -141,12 +141,23 @@ QSizePolicy AddSvc::sizePolicy() const
 
 void AddSvc::okData()
 {
+  QString err_msg;
+  QString exemplar="";
+
   if(svc_name_edit->text().isEmpty()) {
     QMessageBox::warning(this,tr("Invalid Name"),
 			 tr("You must give the service a name!"));
     return;
   }
 
+  if(svc_exemplar_box->currentItem()>0) {
+    exemplar=svc_exemplar_box->currentText();
+  }
+  if(!RDSvc::create(svc_name_edit->text(),&err_msg,exemplar,admin_config)) {
+    QMessageBox::warning(this,"RDAdmin - "+tr("Error"),err_msg);
+    return;
+  }
+  /*
   RDSvc *svc=new RDSvc(svc_name_edit->text(),admin_station,admin_config,this);
   if(svc->exists()) {
     QMessageBox::warning(this,tr("Service Exists"),
@@ -155,12 +166,13 @@ void AddSvc::okData()
     return;
   }
   if(svc_exemplar_box->currentItem()==0) {  // Create Empty Service
-    svc->create("");
+    svc->create("",admin_config);
   }
   else {
-    svc->create(svc_exemplar_box->currentText());
+    svc->create(svc_exemplar_box->currentText(),admin_config);
   }
   delete svc;
+  */
   *svc_name=svc_name_edit->text();
 
   EditSvc *edit_svc=new EditSvc(svc_name_edit->text(),this);

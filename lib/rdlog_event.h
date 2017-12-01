@@ -23,6 +23,7 @@
 #include <qdatetime.h>
 #include <qsqldatabase.h>
 
+#include <rdconfig.h>
 #include <rdlog_line.h>
 
 #ifndef RDLOG_EVENT_H
@@ -42,8 +43,8 @@ class RDLogEvent
    void setLogName(QString logname);
    QString serviceName() const;
    int load(bool track_ptrs=false);
-   void saveModified(bool update_tracks=true);
-   void save(bool update_tracks=true,int line=-1);
+   void saveModified(RDConfig *config,bool update_tracks=true);
+   void save(RDConfig *config,bool update_tracks=true,int line=-1);
    int append(const QString &logname,bool track_ptrs=false);
    int validate(QString *report,const QDate &date);
    void clear();

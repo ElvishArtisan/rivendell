@@ -755,7 +755,7 @@ bool LogPlay::refresh()
 
 void LogPlay::save(int line)
 {
-  RDLogEvent::save(line);
+  RDLogEvent::save(air_config,line);
   if(play_log!=NULL) {
     delete play_log;
   }

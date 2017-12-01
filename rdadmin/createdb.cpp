@@ -50,14 +50,16 @@
 
 //
 // NOTE TO MAINTAINERS:
-// Be sure to use the QSqlQuery class to run queries throughout this file, 
-// *not* RDSqlQuery!  RDSqlQuery will kill outer sql 'select' loops when 
-// schema updates are reapplied!
+//
+// Be sure to invoke RDSqlQuery with automatic DB reconnection
+// disabled throughout this file (by providing 'false' as the second argument
+// to the constructor), otherwise the automatic reconnects will kill outer
+// sql 'select' loops when schema updates are reapplied!
 //
 
 bool RunQuery(QString sql)
 {
-  QSqlQuery *q=new QSqlQuery(sql);
+  RDSqlQuery *q=new RDSqlQuery(sql,false);
   if(!q->isActive()) {
     fprintf(stderr,"SQL: %s\n",(const char *)sql);
     fprintf(stderr,"SQL Error: %s\n",(const char *)q->lastError().databaseText());
@@ -72,1168 +74,934 @@ bool RunQuery(QString sql)
 bool UpdateRDAirplayHotkeys(QString current_station)
 {
   QString sql;
+  QStringList labels;
 
-  sql=QString().sprintf("insert into RDHOTKEYS set STATION_NAME=\"%s\",\
-      MODULE_NAME=\"airplay\",\
-      KEY_ID=1,\
-      KEY_LABEL=\"%s\" ",
-			(const char *)current_station,
-			(const char *)QObject::tr("Start Line 1"));
-  
-  if(!RunQuery(sql)) {
-    return false;
-  }
+  labels.push_back(QObject::tr("Start Line 1"));
+  labels.push_back(QObject::tr("Stop Line 1"));
+  labels.push_back(QObject::tr("Pause Line 1"));
+  labels.push_back(QObject::tr("Start Line 2"));
+  labels.push_back(QObject::tr("Stop Line 2"));
+  labels.push_back(QObject::tr("Pause Line 2"));
+  labels.push_back(QObject::tr("Start Line 3"));
+  labels.push_back(QObject::tr("Stop Line 3"));
+  labels.push_back(QObject::tr("Pause Line 3"));
+  labels.push_back(QObject::tr("Start Line 4"));
+  labels.push_back(QObject::tr("Stop Line 4"));
+  labels.push_back(QObject::tr("Pause Line 4"));
+  labels.push_back(QObject::tr("Start Line 5"));
+  labels.push_back(QObject::tr("Stop Line 5"));
+  labels.push_back(QObject::tr("Pause Line 5"));
+  labels.push_back(QObject::tr("Start Line 6"));
+  labels.push_back(QObject::tr("Stop Line 6"));
+  labels.push_back(QObject::tr("Pause Line 6"));
+  labels.push_back(QObject::tr("Start Line 7"));
+  labels.push_back(QObject::tr("Stop Line 7"));
+  labels.push_back(QObject::tr("Pause Line 7"));
+  labels.push_back(QObject::tr("Add"));
+  labels.push_back(QObject::tr("Delete"));
+  labels.push_back(QObject::tr("Copy"));
+  labels.push_back(QObject::tr("Move"));
+  labels.push_back(QObject::tr("Sound Panel"));
+  labels.push_back(QObject::tr("Main Log"));
+  labels.push_back(QObject::tr("Aux Log 1"));
+  labels.push_back(QObject::tr("Aux Log 2"));
 
-  sql=QString().sprintf("insert into RDHOTKEYS set STATION_NAME=\"%s\",\
-      MODULE_NAME=\"airplay\",					       \
-      KEY_ID=2,\
-      KEY_LABEL=\"%s\" ",
-			(const char *)current_station,
-			(const char *)QObject::tr("Stop Line 1"));
-  if(!RunQuery(sql)) {
-    return false;
+  for(unsigned i=0;i<labels.size();i++) {
+    sql=QString("insert into RDHOTKEYS set ")+
+      "STATION_NAME=\""+RDEscapeString(current_station)+"\","+
+      "MODULE_NAME=\"airplay\","+
+      QString().sprintf("KEY_ID=%u,",i+1)+
+      "KEY_LABEL=\""+RDEscapeString(labels[i])+"\"";
+    if(!RunQuery(sql)) {
+      return false;
+    }
   }
-      
-  sql=QString().sprintf("insert into RDHOTKEYS set STATION_NAME=\"%s\",\
-      MODULE_NAME=\"airplay\",\
-      KEY_ID=3,\
-      KEY_LABEL=\"%s\" ",
-			(const char *)current_station,
-			(const char *)QObject::tr("Pause Line 1"));
-  if(!RunQuery(sql)) {
-    return false;
-  }
-      
-  sql=QString().sprintf("insert into RDHOTKEYS set STATION_NAME=\"%s\",\
-      MODULE_NAME=\"airplay\",\
-      KEY_ID=4,\
-      KEY_LABEL=\"%s\" ",
-			(const char *)current_station,
-			(const char *)QObject::tr("Start Line 2"));
-  if(!RunQuery(sql)) {
-    return false;
-  }
-      
-  sql=QString().sprintf("insert into RDHOTKEYS set STATION_NAME=\"%s\",\
-      MODULE_NAME=\"airplay\",\
-      KEY_ID=5,\
-      KEY_LABEL=\"%s\" ",
-			(const char *)current_station,
-			(const char *)QObject::tr("Stop Line 2"));
-  if(!RunQuery(sql)) {
-    return false;
-  }
-      
-  sql=QString().sprintf("insert into RDHOTKEYS set STATION_NAME=\"%s\",\
-      MODULE_NAME=\"airplay\",\
-      KEY_ID=6,\
-      KEY_LABEL=\"%s\" ",
-			(const char *)current_station,
-			(const char *)QObject::tr("Pause Line 2"));
-  if(!RunQuery(sql)) {
-    return false;
-  }
-  
-  sql=QString().sprintf("insert into RDHOTKEYS set STATION_NAME=\"%s\",\
-      MODULE_NAME=\"airplay\",\
-      KEY_ID=7,\
-      KEY_LABEL=\"%s\" ",
-			(const char *)current_station,
-			(const char *)QObject::tr("Start Line 3"));
-  if(!RunQuery(sql)) {
-    return false;
-  }
-      
-  sql=QString().sprintf("insert into RDHOTKEYS set STATION_NAME=\"%s\",\
-      MODULE_NAME=\"airplay\",\
-      KEY_ID=8,\
-      KEY_LABEL=\"%s\" ",
-			(const char *)current_station,
-			(const char *)QObject::tr("Stop Line 3"));
-  if(!RunQuery(sql)) {
-    return false;
-  }
-      
-  sql=QString().sprintf("insert into RDHOTKEYS set STATION_NAME=\"%s\",\
-      MODULE_NAME=\"airplay\",\
-      KEY_ID=9,\
-      KEY_LABEL=\"%s\" ",
-			(const char *)current_station,
-			(const char *)QObject::tr("Pause Line 3"));
-  if(!RunQuery(sql)) {
-    return false;
-  }
-      
-  sql=QString().sprintf("insert into RDHOTKEYS set STATION_NAME=\"%s\",\
-      MODULE_NAME=\"airplay\",\
-      KEY_ID=10,\
-      KEY_LABEL=\"%s\" ",
-			(const char *)current_station,
-			(const char *)QObject::tr("Start Line 4"));
-  if(!RunQuery(sql)) {
-    return false;
-  }
-      
-  sql=QString().sprintf("insert into RDHOTKEYS set STATION_NAME=\"%s\",\
-      MODULE_NAME=\"airplay\",\
-      KEY_ID=11,\
-      KEY_LABEL=\"%s\" ",
-			(const char *)current_station,
-			(const char *)QObject::tr("Stop Line 4"));
-  if(!RunQuery(sql)) {
-    return false;
-  }
-      
-  sql=QString().sprintf("insert into RDHOTKEYS set STATION_NAME=\"%s\",\
-      MODULE_NAME=\"airplay\",\
-      KEY_ID=12,\
-      KEY_LABEL=\"%s\" ",
-			(const char *)current_station,
-			(const char *)QObject::tr("Pause Line 4"));
-  if(!RunQuery(sql)) {
-    return false;
-  }
-      
-  sql=QString().sprintf("insert into RDHOTKEYS set STATION_NAME=\"%s\",\
-      MODULE_NAME=\"airplay\",\
-      KEY_ID=13,\
-      KEY_LABEL=\"%s\" ",
-			(const char *)current_station,
-			(const char *)QObject::tr("Start Line 5"));
-  if(!RunQuery(sql)) {
-    return false;
-  }
-      
-  sql=QString().sprintf("insert into RDHOTKEYS set STATION_NAME=\"%s\",\
-      MODULE_NAME=\"airplay\",\
-      KEY_ID=14,\
-      KEY_LABEL=\"%s\" ",
-			(const char *)current_station,
-			(const char *)QObject::tr("Stop Line 5"));
-  if(!RunQuery(sql)) {
-    return false;
-  }
-      
-  sql=QString().sprintf("insert into RDHOTKEYS set STATION_NAME=\"%s\",\
-      MODULE_NAME=\"airplay\",\
-      KEY_ID=15,\
-      KEY_LABEL=\"%s\" ",
-			(const char *)current_station,
-			(const char *)QObject::tr("Pause Line 5"));
-  if(!RunQuery(sql)) {
-    return false;
-  }
- 
-  sql=QString().sprintf("insert into RDHOTKEYS set STATION_NAME=\"%s\",\
-      MODULE_NAME=\"airplay\",\
-      KEY_ID=16,\
-      KEY_LABEL=\"%s\" ",
-			(const char *)current_station,
-			(const char *)QObject::tr("Start Line 6"));
-  if(!RunQuery(sql)) {
-    return false;
-  }
-      
-  sql=QString().sprintf("insert into RDHOTKEYS set STATION_NAME=\"%s\",\
-      MODULE_NAME=\"airplay\",\
-      KEY_ID=17,\
-      KEY_LABEL=\"%s\" ",
-			(const char *)current_station,
-			(const char *)QObject::tr("Stop Line 6"));
-  if(!RunQuery(sql)) {
-    return false;
-  }
- 
-  sql=QString().sprintf("insert into RDHOTKEYS set STATION_NAME=\"%s\",\
-      MODULE_NAME=\"airplay\",\
-      KEY_ID=18,\
-      KEY_LABEL=\"%s\" ",
-			(const char *)current_station,
-			(const char *)QObject::tr("Pause Line 6"));
-  if(!RunQuery(sql)) {
-    return false;
-  }
- 
-  sql=QString().sprintf("insert into RDHOTKEYS set STATION_NAME=\"%s\",\
-      MODULE_NAME=\"airplay\",\
-      KEY_ID=19,\
-      KEY_LABEL=\"%s\" ",
-			(const char *)current_station,
-			(const char *)QObject::tr("Start Line 7"));
-  if(!RunQuery(sql)) {
-    return false;
-  }
- 
-  sql=QString().sprintf("insert into RDHOTKEYS set STATION_NAME=\"%s\",\
-      MODULE_NAME=\"airplay\",\
-      KEY_ID=20,\
-      KEY_LABEL=\"%s\" ",
-			(const char *)current_station,
-			(const char *)QObject::tr("Stop Line 7"));
-  if(!RunQuery(sql)) {
-    return false;
-  }
- 
-  sql=QString().sprintf("insert into RDHOTKEYS set STATION_NAME=\"%s\",\
-      MODULE_NAME=\"airplay\",\
-      KEY_ID=21,\
-      KEY_LABEL=\"%s\" ",
-			(const char *)current_station,
-			(const char *)QObject::tr("Pause Line 7"));
-  if(!RunQuery(sql)) {
-    return false;
-  }
- 
-  sql=QString().sprintf("insert into RDHOTKEYS set STATION_NAME=\"%s\",\
-      MODULE_NAME=\"airplay\",\
-      KEY_ID=22,\
-      KEY_LABEL=\"%s\" ",
-			(const char *)current_station,
-			(const char *)QObject::tr("Add"));
-  if(!RunQuery(sql)) {
-    return false;
-  }
- 
-  sql=QString().sprintf("insert into RDHOTKEYS set STATION_NAME=\"%s\",\
-      MODULE_NAME=\"airplay\",\
-      KEY_ID=23,\
-      KEY_LABEL=\"%s\" ",
-			(const char *)current_station,
-			(const char *)QObject::tr("Delete"));
-  if(!RunQuery(sql)) {
-    return false;
-  }
- 
-  sql=QString().sprintf("insert into RDHOTKEYS set STATION_NAME=\"%s\",\
-      MODULE_NAME=\"airplay\",\
-      KEY_ID=24,\
-      KEY_LABEL=\"%s\" ",
-			(const char *)current_station,
-			(const char *)QObject::tr("Copy"));
-  if(!RunQuery(sql)) {
-    return false;
-  }
- 
-  sql=QString().sprintf("insert into RDHOTKEYS set STATION_NAME=\"%s\",\
-      MODULE_NAME=\"airplay\",\
-      KEY_ID=25,\
-      KEY_LABEL=\"%s\" ",
-			(const char *)current_station,
-			(const char *)QObject::tr("Move"));
-  if(!RunQuery(sql)) {
-    return false;
-  }
- 
-  sql=QString().sprintf("insert into RDHOTKEYS set STATION_NAME=\"%s\",\
-      MODULE_NAME=\"airplay\",\
-      KEY_ID=26,\
-      KEY_LABEL=\"%s\" ",
-			(const char *)current_station,
-			(const char *)QObject::tr("Sound Panel"));
-  if(!RunQuery(sql)) {
-    return false;
-  }
- 
-  sql=QString().sprintf("insert into RDHOTKEYS set STATION_NAME=\"%s\",\
-      MODULE_NAME=\"airplay\",\
-      KEY_ID=27,\
-      KEY_LABEL=\"%s\" ",
-			(const char *)current_station,
-			(const char *)QObject::tr("Main Log"));
-  if(!RunQuery(sql)) {
-    return false;
-  }
- 
-  sql=QString().sprintf("insert into RDHOTKEYS set STATION_NAME=\"%s\",\
-      MODULE_NAME=\"airplay\",\
-      KEY_ID=28,\
-      KEY_LABEL=\"%s\" ",
-			(const char *)current_station,
-			(const char *)QObject::tr("Aux Log 1"));
-  if(!RunQuery(sql)) {
-    return false;
-  }
- 
-  sql=QString().sprintf("insert into RDHOTKEYS set STATION_NAME=\"%s\",\
-      MODULE_NAME=\"airplay\",\
-      KEY_ID=29,\
-      KEY_LABEL=\"%s\" ",
-			(const char *)current_station,
-			(const char *)QObject::tr("Aux Log 2"));
-  if(!RunQuery(sql)) {
-    return false;
-  }
-return true;
+  return true;
 }
 
 void UpdateImportFormats()
 {
   QString sql;
-  QSqlQuery *q;
+  RDSqlQuery *q;
 
-  sql="insert into IMPORT_TEMPLATES set\
-         NAME=\"Rivendell Standard Import\",\
-         CART_OFFSET=10,\
-         CART_LENGTH=6,\
-         TITLE_OFFSET=25,\
-         TITLE_LENGTH=34,\
-         HOURS_OFFSET=0,\
-         HOURS_LENGTH=2,\
-         MINUTES_OFFSET=3,\
-         MINUTES_LENGTH=2,\
-         SECONDS_OFFSET=6,\
-         SECONDS_LENGTH=2,\
-         LEN_HOURS_OFFSET=60,\
-         LEN_HOURS_LENGTH=2,\
-         LEN_MINUTES_OFFSET=63,\
-         LEN_MINUTES_LENGTH=2,\
-         LEN_SECONDS_OFFSET=66,\
-         LEN_SECONDS_LENGTH=2,\
-         DATA_OFFSET=69,\
-         DATA_LENGTH=32";
-  q=new QSqlQuery(sql);
+  sql=QString("insert into IMPORT_TEMPLATES set ")+
+    "NAME=\"Rivendell Standard Import\","+
+    "CART_OFFSET=10,"+
+    "CART_LENGTH=6,"+
+    "TITLE_OFFSET=25,"+
+    "TITLE_LENGTH=34,"+
+    "HOURS_OFFSET=0,"+
+    "HOURS_LENGTH=2,"+
+    "MINUTES_OFFSET=3,"+
+    "MINUTES_LENGTH=2,"+
+    "SECONDS_OFFSET=6,"+
+    "SECONDS_LENGTH=2,"+
+    "LEN_HOURS_OFFSET=60,"+
+    "LEN_HOURS_LENGTH=2,"+
+    "LEN_MINUTES_OFFSET=63,"+
+    "LEN_MINUTES_LENGTH=2,"+
+    "LEN_SECONDS_OFFSET=66,"+
+    "LEN_SECONDS_LENGTH=2,"+
+    "DATA_OFFSET=69,"+
+    "DATA_LENGTH=32";
+  q=new RDSqlQuery(sql,false);
   delete q;
 
-  sql="insert into IMPORT_TEMPLATES set\
-         NAME=\"PowerGold Music Scheduling\",\
-         CART_OFFSET=10,\
-         CART_LENGTH=6,\
-         TITLE_OFFSET=25,\
-         TITLE_LENGTH=34,\
-         HOURS_OFFSET=0,\
-         HOURS_LENGTH=2,\
-         MINUTES_OFFSET=3,\
-         MINUTES_LENGTH=2,\
-         SECONDS_OFFSET=6,\
-         SECONDS_LENGTH=2,\
-         LEN_HOURS_OFFSET=60,\
-         LEN_HOURS_LENGTH=2,\
-         LEN_MINUTES_OFFSET=63,\
-         LEN_MINUTES_LENGTH=2,\
-         LEN_SECONDS_OFFSET=66,\
-         LEN_SECONDS_LENGTH=2,\
-         DATA_OFFSET=69,\
-         DATA_LENGTH=32";
-  q=new QSqlQuery(sql);
+  sql=QString("insert into IMPORT_TEMPLATES set ")+
+    "NAME=\"PowerGold Music Scheduling\","+
+    "CART_OFFSET=10,"+
+    "CART_LENGTH=6,"+
+    "TITLE_OFFSET=25,"+
+    "TITLE_LENGTH=34,"+
+    "HOURS_OFFSET=0,"+
+    "HOURS_LENGTH=2,"+
+    "MINUTES_OFFSET=3,"+
+    "MINUTES_LENGTH=2,"+
+    "SECONDS_OFFSET=6,"+
+    "SECONDS_LENGTH=2,"+
+    "LEN_HOURS_OFFSET=60,"+
+    "LEN_HOURS_LENGTH=2,"+
+    "LEN_MINUTES_OFFSET=63,"+
+    "LEN_MINUTES_LENGTH=2,"+
+    "LEN_SECONDS_OFFSET=66,"+
+    "LEN_SECONDS_LENGTH=2,"+
+    "DATA_OFFSET=69,"+
+    "DATA_LENGTH=32";
+  q=new RDSqlQuery(sql,false);
   delete q;
 
-  sql="insert into IMPORT_TEMPLATES set\
-         NAME=\"RadioTraffic.com\",\
-         CART_OFFSET=10,\
-         CART_LENGTH=6,\
-         TITLE_OFFSET=25,\
-         TITLE_LENGTH=34,\
-         HOURS_OFFSET=0,\
-         HOURS_LENGTH=2,\
-         MINUTES_OFFSET=3,\
-         MINUTES_LENGTH=2,\
-         SECONDS_OFFSET=6,\
-         SECONDS_LENGTH=2,\
-         LEN_HOURS_OFFSET=60,\
-         LEN_HOURS_LENGTH=2,\
-         LEN_MINUTES_OFFSET=63,\
-         LEN_MINUTES_LENGTH=2,\
-         LEN_SECONDS_OFFSET=66,\
-         LEN_SECONDS_LENGTH=2,\
-         DATA_OFFSET=69,\
-         DATA_LENGTH=32";
-  q=new QSqlQuery(sql);
+  sql=QString("insert into IMPORT_TEMPLATES set ")+
+    "NAME=\"RadioTraffic.com\","+
+    "CART_OFFSET=10,"+
+    "CART_LENGTH=6,"+
+    "TITLE_OFFSET=25,"+
+    "TITLE_LENGTH=34,"+
+    "HOURS_OFFSET=0,"+
+    "HOURS_LENGTH=2,"+
+    "MINUTES_OFFSET=3,"+
+    "MINUTES_LENGTH=2,"+
+    "SECONDS_OFFSET=6,"+
+    "SECONDS_LENGTH=2,"+
+    "LEN_HOURS_OFFSET=60,"+
+    "LEN_HOURS_LENGTH=2,"+
+    "LEN_MINUTES_OFFSET=63,"+
+    "LEN_MINUTES_LENGTH=2,"+
+    "LEN_SECONDS_OFFSET=66,"+
+    "LEN_SECONDS_LENGTH=2,"+
+    "DATA_OFFSET=69,"+
+    "DATA_LENGTH=32";
+  q=new RDSqlQuery(sql,false);
   delete q;
 
-  sql="insert into IMPORT_TEMPLATES set\
-         NAME=\"CounterPoint Traffic\",\
-         CART_OFFSET=10,\
-         CART_LENGTH=6,\
-         TITLE_OFFSET=25,\
-         TITLE_LENGTH=34,\
-         HOURS_OFFSET=0,\
-         HOURS_LENGTH=2,\
-         MINUTES_OFFSET=3,\
-         MINUTES_LENGTH=2,\
-         SECONDS_OFFSET=6,\
-         SECONDS_LENGTH=2,\
-         LEN_HOURS_OFFSET=60,\
-         LEN_HOURS_LENGTH=2,\
-         LEN_MINUTES_OFFSET=63,\
-         LEN_MINUTES_LENGTH=2,\
-         LEN_SECONDS_OFFSET=66,\
-         LEN_SECONDS_LENGTH=2,\
-         EVENT_ID_OFFSET=69,\
-         EVENT_ID_LENGTH=32,\
-         DATA_OFFSET=102,\
-         DATA_LENGTH=32";
-  q=new QSqlQuery(sql);
+  sql=QString("insert into IMPORT_TEMPLATES set ")+
+    "NAME=\"CounterPoint Traffic\","+
+    "CART_OFFSET=10,"+
+    "CART_LENGTH=6,"+
+    "TITLE_OFFSET=25,"+
+    "TITLE_LENGTH=34,"+
+    "HOURS_OFFSET=0,"+
+    "HOURS_LENGTH=2,"+
+    "MINUTES_OFFSET=3,"+
+    "MINUTES_LENGTH=2,"+
+    "SECONDS_OFFSET=6,"+
+    "SECONDS_LENGTH=2,"+
+    "LEN_HOURS_OFFSET=60,"+
+    "LEN_HOURS_LENGTH=2,"+
+    "LEN_MINUTES_OFFSET=63,"+
+    "LEN_MINUTES_LENGTH=2,"+
+    "LEN_SECONDS_OFFSET=66,"+
+    "LEN_SECONDS_LENGTH=2,"+
+    "EVENT_ID_OFFSET=69,"+
+    "EVENT_ID_LENGTH=32,"+
+    "DATA_OFFSET=102,"+
+    "DATA_LENGTH=32";
+  q=new RDSqlQuery(sql,false);
   delete q;
 
-  sql="insert into IMPORT_TEMPLATES set\
-         NAME=\"WideOrbit Traffic\",\
-         CART_OFFSET=10,\
-         CART_LENGTH=6,\
-         TITLE_OFFSET=25,\
-         TITLE_LENGTH=34,\
-         HOURS_OFFSET=0,\
-         HOURS_LENGTH=2,\
-         MINUTES_OFFSET=3,\
-         MINUTES_LENGTH=2,\
-         SECONDS_OFFSET=6,\
-         SECONDS_LENGTH=2,\
-         LEN_HOURS_OFFSET=60,\
-         LEN_HOURS_LENGTH=2,\
-         LEN_MINUTES_OFFSET=63,\
-         LEN_MINUTES_LENGTH=2,\
-         LEN_SECONDS_OFFSET=66,\
-         LEN_SECONDS_LENGTH=2,\
-         EVENT_ID_OFFSET=69,\
-         EVENT_ID_LENGTH=32,\
-         DATA_OFFSET=102,\
-         DATA_LENGTH=32";
-  q=new QSqlQuery(sql);
+  sql=QString("insert into IMPORT_TEMPLATES set ")+
+    "NAME=\"WideOrbit Traffic\","+
+    "CART_OFFSET=10,"+
+    "CART_LENGTH=6,"+
+    "TITLE_OFFSET=25,"+
+    "TITLE_LENGTH=34,"+
+    "HOURS_OFFSET=0,"+
+    "HOURS_LENGTH=2,"+
+    "MINUTES_OFFSET=3,"+
+    "MINUTES_LENGTH=2,"+
+    "SECONDS_OFFSET=6,"+
+    "SECONDS_LENGTH=2,"+
+    "LEN_HOURS_OFFSET=60,"+
+    "LEN_HOURS_LENGTH=2,"+
+    "LEN_MINUTES_OFFSET=63,"+
+    "LEN_MINUTES_LENGTH=2,"+
+    "LEN_SECONDS_OFFSET=66,"+
+    "LEN_SECONDS_LENGTH=2,"+
+    "EVENT_ID_OFFSET=69,"+
+    "EVENT_ID_LENGTH=32,"+
+    "DATA_OFFSET=102,"+
+    "DATA_LENGTH=32";
+  q=new RDSqlQuery(sql,false);
   delete q;
 
-  sql="insert into IMPORT_TEMPLATES set\
-         NAME=\"Visual Traffic\",\
-         CART_OFFSET=14,\
-         CART_LENGTH=6,\
-         TITLE_OFFSET=25,\
-         TITLE_LENGTH=39,\
-         HOURS_OFFSET=5,\
-         HOURS_LENGTH=2,\
-         MINUTES_OFFSET=8,\
-         MINUTES_LENGTH=2,\
-         SECONDS_OFFSET=11,\
-         SECONDS_LENGTH=2,\
-         LEN_HOURS_OFFSET=0,\
-         LEN_HOURS_LENGTH=0,\
-         LEN_MINUTES_OFFSET=97,\
-         LEN_MINUTES_LENGTH=2,\
-         LEN_SECONDS_OFFSET=99,\
-         LEN_SECONDS_LENGTH=2,\
-         EVENT_ID_OFFSET=0,\
-         EVENT_ID_LENGTH=0,\
-         DATA_OFFSET=0,\
-         DATA_LENGTH=0";
-  q=new QSqlQuery(sql);
+  sql=QString("insert into IMPORT_TEMPLATES set ")+
+    "NAME=\"Visual Traffic\","+
+    "CART_OFFSET=14,"+
+    "CART_LENGTH=6,"+
+    "TITLE_OFFSET=25,"+
+    "TITLE_LENGTH=39,"+
+    "HOURS_OFFSET=5,"+
+    "HOURS_LENGTH=2,"+
+    "MINUTES_OFFSET=8,"+
+    "MINUTES_LENGTH=2,"+
+    "SECONDS_OFFSET=11,"+
+    "SECONDS_LENGTH=2,"+
+    "LEN_HOURS_OFFSET=0,"+
+    "LEN_HOURS_LENGTH=0,"+
+    "LEN_MINUTES_OFFSET=97,"+
+    "LEN_MINUTES_LENGTH=2,"+
+    "LEN_SECONDS_OFFSET=99,"+
+    "LEN_SECONDS_LENGTH=2,"+
+    "EVENT_ID_OFFSET=0,"+
+    "EVENT_ID_LENGTH=0,"+
+    "DATA_OFFSET=0,"+
+    "DATA_LENGTH=0";
+  q=new RDSqlQuery(sql,false);
   delete q;
 
-  sql="insert into IMPORT_TEMPLATES set\
-         NAME=\"Music 1\",\
-         CART_OFFSET=10,\
-         CART_LENGTH=6,\
-         TITLE_OFFSET=25,\
-         TITLE_LENGTH=34,\
-         HOURS_OFFSET=0,\
-         HOURS_LENGTH=2,\
-         MINUTES_OFFSET=3,\
-         MINUTES_LENGTH=2,\
-         SECONDS_OFFSET=6,\
-         SECONDS_LENGTH=2,\
-         LEN_HOURS_OFFSET=60,\
-         LEN_HOURS_LENGTH=2,\
-         LEN_MINUTES_OFFSET=63,\
-         LEN_MINUTES_LENGTH=2,\
-         LEN_SECONDS_OFFSET=66,\
-         LEN_SECONDS_LENGTH=2,\
-         DATA_OFFSET=69,\
-         DATA_LENGTH=32";
-  q=new QSqlQuery(sql);
+  sql=QString("insert into IMPORT_TEMPLATES set ")+
+    "NAME=\"Music 1\","+
+    "CART_OFFSET=10,"+
+    "CART_LENGTH=6,"+
+    "TITLE_OFFSET=25,"+
+    "TITLE_LENGTH=34,"+
+    "HOURS_OFFSET=0,"+
+    "HOURS_LENGTH=2,"+
+    "MINUTES_OFFSET=3,"+
+    "MINUTES_LENGTH=2,"+
+    "SECONDS_OFFSET=6,"+
+    "SECONDS_LENGTH=2,"+
+    "LEN_HOURS_OFFSET=60,"+
+    "LEN_HOURS_LENGTH=2,"+
+    "LEN_MINUTES_OFFSET=63,"+
+    "LEN_MINUTES_LENGTH=2,"+
+    "LEN_SECONDS_OFFSET=66,"+
+    "LEN_SECONDS_LENGTH=2,"+
+    "DATA_OFFSET=69,"+
+    "DATA_LENGTH=32";
+  q=new RDSqlQuery(sql,false);
   delete q;
 
-  sql="insert into IMPORT_TEMPLATES set\
-         NAME=\"NaturalLog\",\
-         CART_OFFSET=9,\
-         CART_LENGTH=6,\
-         TITLE_OFFSET=19,\
-         TITLE_LENGTH=40,\
-         HOURS_OFFSET=0,\
-         HOURS_LENGTH=2,\
-         MINUTES_OFFSET=3,\
-         MINUTES_LENGTH=2,\
-         SECONDS_OFFSET=6,\
-         SECONDS_LENGTH=2,\
-         LEN_HOURS_OFFSET=61,\
-         LEN_HOURS_LENGTH=2,\
-         LEN_MINUTES_OFFSET=64,\
-         LEN_MINUTES_LENGTH=2,\
-         LEN_SECONDS_OFFSET=67,\
-         LEN_SECONDS_LENGTH=2,\
-         DATA_OFFSET=0,\
-         DATA_LENGTH=0";
-  q=new QSqlQuery(sql);
+  sql=QString("insert into IMPORT_TEMPLATES set ")+
+    "NAME=\"NaturalLog\","+
+    "CART_OFFSET=9,"+
+    "CART_LENGTH=6,"+
+    "TITLE_OFFSET=19,"+
+    "TITLE_LENGTH=40,"+
+    "HOURS_OFFSET=0,"+
+    "HOURS_LENGTH=2,"+
+    "MINUTES_OFFSET=3,"+
+    "MINUTES_LENGTH=2,"+
+    "SECONDS_OFFSET=6,"+
+    "SECONDS_LENGTH=2,"+
+    "LEN_HOURS_OFFSET=61,"+
+    "LEN_HOURS_LENGTH=2,"+
+    "LEN_MINUTES_OFFSET=64,"+
+    "LEN_MINUTES_LENGTH=2,"+
+    "LEN_SECONDS_OFFSET=67,"+
+    "LEN_SECONDS_LENGTH=2,"+
+    "DATA_OFFSET=0,"+
+    "DATA_LENGTH=0";
+  q=new RDSqlQuery(sql,false);
   delete q;
 }
 
 
-bool CreateDb(QString name,QString pwd)
+bool CreateDb(QString name,QString pwd,RDConfig *config)
 {
   QString sql;
 
-//
-// Create USERS table
-//
-  sql=QString("CREATE TABLE IF NOT EXISTS USERS (\
-    LOGIN_NAME CHAR(255) NOT NULL PRIMARY KEY,\
-    FULL_NAME CHAR(255),\
-    PHONE_NUMBER CHAR(20),\
-    DESCRIPTION CHAR(255),\
-    PASSWORD CHAR(32),\
-    WEBAPI_AUTH_TIMEOUT int not null default 3600,\
-    ENABLE_WEB enum('N','Y') default 'N',\
-    LOCAL_AUTH enum('N','Y') default 'Y',\
-    PAM_SERVICE char(32) default \"rivendell\",\
-    ADMIN_USERS_PRIV ENUM('N','Y') NOT NULL DEFAULT 'N',\
-    ADMIN_CONFIG_PRIV ENUM('N','Y') NOT NULL DEFAULT 'N',\
-    CREATE_CARTS_PRIV ENUM('N','Y') NOT NULL DEFAULT 'N',\
-    DELETE_CARTS_PRIV ENUM('N','Y') NOT NULL DEFAULT 'N',\
-    MODIFY_CARTS_PRIV ENUM('N','Y') NOT NULL DEFAULT 'N',\
-    EDIT_AUDIO_PRIV ENUM('N','Y') NOT NULL DEFAULT 'N',\
-    ASSIGN_CART_PRIV ENUM('N','Y') NOT NULL DEFAULT 'N',\
-    CREATE_LOG_PRIV ENUM('N','Y') NOT NULL DEFAULT 'N',\
-    DELETE_LOG_PRIV ENUM('N','Y') NOT NULL DEFAULT 'N',\
-    DELETE_REC_PRIV ENUM('N','Y') NOT NULL DEFAULT 'N',\
-    PLAYOUT_LOG_PRIV ENUM('N','Y') NOT NULL DEFAULT 'N',\
-    ARRANGE_LOG_PRIV ENUM('N','Y') NOT NULL DEFAULT 'N',\
-    MODIFY_TEMPLATE_PRIV ENUM('N','Y') NOT NULL DEFAULT 'N',\
-    ADDTO_LOG_PRIV ENUM('N','Y') NOT NULL DEFAULT 'N',\
-    REMOVEFROM_LOG_PRIV ENUM('N','Y') NOT NULL DEFAULT 'N',\
-    CONFIG_PANELS_PRIV enum('N','Y') not null default 'N',\
-    VOICETRACK_LOG_PRIV enum('N','Y') not null default 'N',\
-    EDIT_CATCHES_PRIV ENUM('N','Y') NOT NULL DEFAULT 'N',\
-    ADD_PODCAST_PRIV enum('N','Y') not null default 'N',\
-    EDIT_PODCAST_PRIV enum('N','Y') not null default 'N',\
-    DELETE_PODCAST_PRIV enum('N','Y') not null default 'N',\
-    INDEX FULL_NAME_IDX (FULL_NAME))");
+  //
+  // Create USERS table
+  //
+  sql=QString("create table if not exists USERS (")+
+    "LOGIN_NAME char(255) not null primary key,"+
+    "FULL_NAME char(255),"+
+    "PHONE_NUMBER char(20),"+
+    "DESCRIPTION char(255),"+
+    "PASSWORD char(32),"+
+    "WEBAPI_AUTH_TIMEOUT int not null default 3600,"+
+    "ENABLE_WEB enum('N','Y') default 'N',"+
+    "LOCAL_AUTH enum('N','Y') default 'Y',"+
+    "PAM_SERVICE char(32) default \"rivendell\","+
+    "ADMIN_USERS_PRIV enum('N','Y') not null default 'N',"+
+    "ADMIN_CONFIG_PRIV enum('N','Y') not null default 'N',"+
+    "CREATE_CARTS_PRIV enum('N','Y') not null default 'N',"+
+    "DELETE_CARTS_PRIV enum('N','Y') not null default 'N',"+
+    "MODIFY_CARTS_PRIV enum('N','Y') not null default 'N',"+
+    "EDIT_AUDIO_PRIV enum('N','Y') not null default 'N',"+
+    "ASSIGN_CART_PRIV enum('N','Y') not null default 'N',"+
+    "CREATE_LOG_PRIV enum('N','Y') not null default 'N',"+
+    "DELETE_LOG_PRIV enum('N','Y') not null default 'N',"+
+    "DELETE_REC_PRIV enum('N','Y') not null default 'N',"+
+    "PLAYOUT_LOG_PRIV enum('N','Y') not null default 'N',"+
+    "ARRANGE_LOG_PRIV enum('N','Y') not null default 'N',"+
+    "MODIFY_TEMPLATE_PRIV enum('N','Y') not null default 'N',"+
+    "ADDTO_LOG_PRIV enum('N','Y') not null default 'N',"+
+    "REMOVEFROM_LOG_PRIV enum('N','Y') not null default 'N',"+
+    "CONFIG_PANELS_PRIV enum('N','Y') not null default 'N',"+
+    "VOICETRACK_LOG_PRIV enum('N','Y') not null default 'N',"+
+    "EDIT_CATCHES_PRIV enum('N','Y') not null default 'N',"+
+    "ADD_PODCAST_PRIV enum('N','Y') not null default 'N',"+
+    "EDIT_PODCAST_PRIV enum('N','Y') not null default 'N',"+
+    "DELETE_PODCAST_PRIV enum('N','Y') not null default 'N',"+
+    "INDEX FULL_NAME_IDX (FULL_NAME))"+
+    config->createTablePostfix();
   if(!RunQuery(sql)) {
     return false;
   }
 
-//
-// Create STATIONS table
-//
-  sql=QString("CREATE TABLE IF NOT EXISTS STATIONS (\
-      NAME CHAR(64) PRIMARY KEY NOT NULL,\
-      SHORT_NAME char(64),\
-      DESCRIPTION CHAR(64),\
-      USER_NAME CHAR(255),\
-      DEFAULT_NAME CHAR(255),\
-      IPV4_ADDRESS CHAR(15) default \"127.0.0.2\",\
-      HTTP_STATION char(64) default \"localhost\",\
-      CAE_STATION char(64) default \"localhost\",\
-      TIME_OFFSET int default 0,\
-      BACKUP_DIR char(255),\
-      BACKUP_LIFE int default 0,\
-      BROADCAST_SECURITY int unsigned default 0,\
-      HEARTBEAT_CART int unsigned default 0,\
-      HEARTBEAT_INTERVAL int unsigned default 0,\
-      STARTUP_CART int unsigned default 0,\
-      EDITOR_PATH char(255) default \"\",\
-      FILTER_MODE int default 0,\
-      START_JACK enum('N','Y') default 'N',\
-      JACK_SERVER_NAME char(64),\
-      JACK_COMMAND_LINE char(255),\
-      CUE_CARD int default 0,\
-      CUE_PORT int default 0,\
-      CUE_START_CART int unsigned,\
-      CUE_STOP_CART int unsigned,\
-      CARTSLOT_COLUMNS int default 1,\
-      CARTSLOT_ROWS int default 8,\
-      ENABLE_DRAGDROP enum('N','Y') default 'Y',\
-      ENFORCE_PANEL_SETUP enum('N','Y') default 'N',\
-      SYSTEM_MAINT enum('N','Y') default 'Y',\
-      STATION_SCANNED enum('N','Y') default 'N',\
-      HAVE_OGGENC enum('N','Y') default 'N',\
-      HAVE_OGG123 enum('N','Y') default 'N',\
-      HAVE_FLAC enum('N','Y') default 'N',\
-      HAVE_TWOLAME enum('N','Y') default 'N',\
-      HAVE_LAME enum('N','Y') default 'N',\
-      HAVE_MPG321 enum('N','Y') default 'N',\
-      HAVE_MP4_DECODE enum('N','Y') default 'N',\
-      HPI_VERSION char(16),\
-      JACK_VERSION char(16),\
-      ALSA_VERSION char(16),\
-      CARD0_DRIVER int(11) default 0,\
-      CARD0_NAME char(64),\
-      CARD0_INPUTS int default -1,\
-      CARD0_OUTPUTS int default -1,\
-      CARD1_DRIVER int(11) default 0,\
-      CARD1_NAME char(64),\
-      CARD1_INPUTS int default -1,\
-      CARD1_OUTPUTS int default -1,\
-      CARD2_DRIVER int(11) default 0,\
-      CARD2_NAME char(64),\
-      CARD2_INPUTS int default -1,\
-      CARD2_OUTPUTS int default -1,\
-      CARD3_DRIVER int(11) default 0,\
-      CARD3_NAME char(64),\
-      CARD3_INPUTS int default -1,\
-      CARD3_OUTPUTS int default -1,\
-      CARD4_DRIVER int(11) default 0,\
-      CARD4_NAME char(64),\
-      CARD4_INPUTS int default -1,\
-      CARD4_OUTPUTS int default -1,\
-      CARD5_DRIVER int(11) default 0,\
-      CARD5_NAME char(64),\
-      CARD5_INPUTS int default -1,\
-      CARD5_OUTPUTS int default -1,\
-      CARD6_DRIVER int(11) default 0,\
-      CARD6_NAME char(64),\
-      CARD6_INPUTS int default -1,\
-      CARD6_OUTPUTS int default -1,\
-      CARD7_DRIVER int(11) default 0,\
-      CARD7_NAME char(64),\
-      CARD7_INPUTS int default -1,\
-      CARD7_OUTPUTS int default -1,\
-      INDEX DESCRIPTION_IDX (DESCRIPTION),\
-      index IPV4_ADDRESS_IDX (IPV4_ADDRESS))");
+  //
+  // Create STATIONS table
+  //
+  sql=QString("create table if not exists STATIONS (")+
+    "NAME char(64) primary key not null,"+
+    "SHORT_NAME char(64),"+
+    "DESCRIPTION char(64),"+
+    "USER_NAME char(255),"+
+    "DEFAULT_NAME char(255),"+
+    "IPV4_ADDRESS char(15) default \"127.0.0.2\","+
+    "HTTP_STATION char(64) default \"localhost\","+
+    "CAE_STATION char(64) default \"localhost\","+
+    "TIME_OFFSET int default 0,"+
+    "BACKUP_DIR char(255),"+
+    "BACKUP_LIFE int default 0,"+
+    "BROADCAST_SECURITY int unsigned default 0,"+
+    "HEARTBEAT_CART int unsigned default 0,"+
+    "HEARTBEAT_INTERVAL int unsigned default 0,"+
+    "STARTUP_CART int unsigned default 0,"+
+    "EDITOR_PATH char(255) default \"\","+
+    "FILTER_MODE int default 0,"+
+    "START_JACK enum('N','Y') default 'N',"+
+    "JACK_SERVER_NAME char(64),"+
+    "JACK_COMMAND_LINE char(255),"+
+    "CUE_CARD int default 0,"+
+    "CUE_PORT int default 0,"+
+    "CUE_START_CART int unsigned,"+
+    "CUE_STOP_CART int unsigned,"+
+    "CARTSLOT_COLUMNS int default 1,"+
+    "CARTSLOT_ROWS int default 8,"+
+    "ENABLE_DRAGDROP enum('N','Y') default 'Y',"+
+    "ENFORCE_PANEL_SETUP enum('N','Y') default 'N',"+
+    "SYSTEM_MAINT enum('N','Y') default 'Y',"+
+    "STATION_SCANNED enum('N','Y') default 'N',"+
+    "HAVE_OGGENC enum('N','Y') default 'N',"+
+    "HAVE_OGG123 enum('N','Y') default 'N',"+
+    "HAVE_FLAC enum('N','Y') default 'N',"+
+    "HAVE_TWOLAME enum('N','Y') default 'N',"+
+    "HAVE_LAME enum('N','Y') default 'N',"+
+    "HAVE_MPG321 enum('N','Y') default 'N',"+
+    "HAVE_MP4_DECODE enum('N','Y') default 'N',"+
+    "HPI_VERSION char(16),"+
+    "JACK_VERSION char(16),"+
+    "ALSA_VERSION char(16),"+
+    "CARD0_DRIVER int(11) default 0,"+
+    "CARD0_NAME char(64),"+
+    "CARD0_INPUTS int default -1,"+
+    "CARD0_OUTPUTS int default -1,"+
+    "CARD1_DRIVER int(11) default 0,"+
+    "CARD1_NAME char(64),"+
+    "CARD1_INPUTS int default -1,"+
+    "CARD1_OUTPUTS int default -1,"+
+    "CARD2_DRIVER int(11) default 0,"+
+    "CARD2_NAME char(64),"+
+    "CARD2_INPUTS int default -1,"+
+    "CARD2_OUTPUTS int default -1,"+
+    "CARD3_DRIVER int(11) default 0,"+
+    "CARD3_NAME char(64),"+
+    "CARD3_INPUTS int default -1,"+
+    "CARD3_OUTPUTS int default -1,"+
+    "CARD4_DRIVER int(11) default 0,"+
+    "CARD4_NAME char(64),"+
+    "CARD4_INPUTS int default -1,"+
+    "CARD4_OUTPUTS int default -1,"+
+    "CARD5_DRIVER int(11) default 0,"+
+    "CARD5_NAME char(64),"+
+    "CARD5_INPUTS int default -1,"+
+    "CARD5_OUTPUTS int default -1,"+
+    "CARD6_DRIVER int(11) default 0,"+
+    "CARD6_NAME char(64),"+
+    "CARD6_INPUTS int default -1,"+
+    "CARD6_OUTPUTS int default -1,"+
+    "CARD7_DRIVER int(11) default 0,"+
+    "CARD7_NAME char(64),"+
+    "CARD7_INPUTS int default -1,"+
+    "CARD7_OUTPUTS int default -1,"+
+    "INDEX DESCRIPTION_IDX (DESCRIPTION),"+
+    "index IPV4_ADDRESS_IDX (IPV4_ADDRESS))"+
+    config->createTablePostfix();
   if(!RunQuery(sql)) {
     return false;
   }
 
-//
-// Create CART table
-//
-  sql=QString("CREATE TABLE IF NOT EXISTS CART (\
-      NUMBER INT UNSIGNED NOT NULL PRIMARY KEY,\
-      TYPE INT UNSIGNED NOT NULL,\
-      GROUP_NAME CHAR(10) NOT NULL,\
-      TITLE CHAR(255),\
-      ARTIST CHAR(255),\
-      ALBUM CHAR(255),\
-      YEAR DATE,\
-      ISRC CHAR(12),\
-      CONDUCTOR CHAR(64),\
-      LABEL CHAR(64),\
-      CLIENT CHAR(64),\
-      AGENCY CHAR(64),\
-      PUBLISHER CHAR(64),\
-      COMPOSER CHAR(64),\
-      USER_DEFINED CHAR(255),\
-      SONG_ID CHAR(32),\
-      BPM int unsigned default 0,\
-      USAGE_CODE int default 0,\
-      FORCED_LENGTH INT UNSIGNED,\
-      AVERAGE_LENGTH int unsigned,\
-      LENGTH_DEVIATION int unsigned default 0,\
-      AVERAGE_SEGUE_LENGTH int unsigned,\
-      AVERAGE_HOOK_LENGTH int unsigned default 0,\
-      CUT_QUANTITY INT UNSIGNED,\
-      LAST_CUT_PLAYED INT UNSIGNED,\
-      PLAY_ORDER INT UNSIGNED,\
-      VALIDITY int unsigned default 2,\
-      START_DATETIME DATETIME,\
-      END_DATETIME DATETIME,\
-      ENFORCE_LENGTH ENUM('N','Y') DEFAULT 'N',\
-      PRESERVE_PITCH ENUM('N','Y') DEFAULT 'N',\
-      USE_WEIGHTING enum('N','Y') default 'Y',\
-      ASYNCRONOUS enum('N','Y') default 'N',\
-      OWNER char(64),\
-      MACROS text,\
-      SCHED_CODES VARCHAR( 255 ) NULL DEFAULT NULL,\
-      NOTES text,\
-      METADATA_DATETIME datetime,\
-      USE_EVENT_LENGTH enum('N','Y') default 'N',\
-      PENDING_STATION char(64),\
-      PENDING_PID int,\
-      PENDING_DATETIME datetime,\
-      INDEX GROUP_NAME_IDX (GROUP_NAME),\
-      INDEX TITLE_IDX (TITLE),\
-      INDEX ARTIST_IDX (ARTIST),\
-      INDEX ALBUM_IDX (ALBUM),\
-      INDEX CONDUCTOR_IDX (CONDUCTOR),\
-      INDEX LABEL_IDX (LABEL),\
-      INDEX CLIENT_IDX (CLIENT),\
-      INDEX AGENCY_IDX (AGENCY),\
-      INDEX PUBLISHER_IDX (PUBLISHER),\
-      INDEX COMPOSER_IDX (COMPOSER),\
-      INDEX USER_DEFINED_IDX (USER_DEFINED),\
-      INDEX SONG_ID_IDX (SONG_ID),\
-      INDEX OWNER_IDX (OWNER),\
-      index METADATA_DATETIME_IDX (METADATA_DATETIME),\
-      index PENDING_STATION_IDX(PENDING_STATION),\
-      index PENDING_PID_IDX(PENDING_STATION,PENDING_PID),\
-      index PENDING_DATETIME_IDX(PENDING_DATETIME))");
+  //
+  // Create CART table
+  //
+  sql=QString("create table if not exists CART (")+
+    "NUMBER int unsigned not null primary key,"+
+    "TYPE int unsigned not null,"+
+    "GROUP_NAME char(10) not null,"+
+    "TITLE char(255),"+
+    "ARTIST char(255),"+
+    "ALBUM char(255),"+
+    "YEAR date,"+
+    "ISRC char(12),"+
+    "CONDUCTOR char(64),"+
+    "LABEL char(64),"+
+    "CLIENT char(64),"+
+    "AGENCY char(64),"+
+    "PUBLISHER char(64),"+
+    "COMPOSER char(64),"+
+    "USER_DEFINED char(255),"+
+    "SONG_ID char(32),"+
+    "BPM int unsigned default 0,"+
+    "USAGE_CODE int default 0,"+
+    "FORCED_LENGTH int unsigned,"+
+    "AVERAGE_LENGTH int unsigned,"+
+    "LENGTH_DEVIATION int unsigned default 0,"+
+    "AVERAGE_SEGUE_LENGTH int unsigned,"+
+    "AVERAGE_HOOK_LENGTH int unsigned default 0,"+
+    "CUT_QUANTITY int unsigned,"+
+    "LAST_CUT_PLAYED int unsigned,"+
+    "PLAY_ORDER int unsigned,"+
+    "VALIDITY int unsigned default 2,"+
+    "START_DATETIME datetime,"+
+    "END_DATETIME datetime,"+
+    "ENFORCE_LENGTH enum('N','Y') default 'N',"+
+    "PRESERVE_PITCH enum('N','Y') default 'N',"+
+    "USE_WEIGHTING enum('N','Y') default 'Y',"+
+    "ASYNCRONOUS enum('N','Y') default 'N',"+
+    "OWNER char(64),"+
+    "MACROS text,"+
+    "SCHED_CODES VARCHAR( 255 ) NULL default NULL,"+
+    "NOTES text,"+
+    "METADATA_DATETIME datetime,"+
+    "USE_EVENT_LENGTH enum('N','Y') default 'N',"+
+    "PENDING_STATION char(64),"+
+    "PENDING_PID int,"+
+    "PENDING_DATETIME datetime,"+
+    "index GROUP_NAME_IDX (GROUP_NAME),"+
+    "index TITLE_IDX (TITLE),"+
+    "index ARTIST_IDX (ARTIST),"+
+    "index ALBUM_IDX (ALBUM),"+
+    "index CONDUCTOR_IDX (CONDUCTOR),"+
+    "index LABEL_IDX (LABEL),"+
+    "index CLIENT_IDX (CLIENT),"+
+    "index AGENCY_IDX (AGENCY),"+
+    "index PUBLISHER_IDX (PUBLISHER),"+
+    "index COMPOSER_IDX (COMPOSER),"+
+    "index USER_DEFINED_IDX (USER_DEFINED),"+
+    "index SONG_ID_IDX (SONG_ID),"+
+    "index OWNER_IDX (OWNER),"+
+    "index METADATA_DATETIME_IDX (METADATA_DATETIME),"+
+    "index PENDING_STATION_IDX(PENDING_STATION),"+
+    "index PENDING_PID_IDX(PENDING_STATION,PENDING_PID),"+
+    "index PENDING_DATETIME_IDX(PENDING_DATETIME))"+
+    config->createTablePostfix();
   if(!RunQuery(sql)) {
     return false;
   }
 
-//
-// Create CUTS table
-//
-  sql=QString().sprintf("CREATE TABLE IF NOT EXISTS CUTS (\
-      CUT_NAME CHAR(12) PRIMARY KEY NOT NULL,\
-      CART_NUMBER INT UNSIGNED NOT NULL,\
-      EVERGREEN enum('N','Y') default 'N',\
-      DESCRIPTION CHAR(64),\
-      OUTCUE CHAR(64),\
-      ISRC char(12),\
-      ISCI char(32),\
-      LENGTH INT UNSIGNED,\
-      SHA1_HASH char(40),\
-      ORIGIN_DATETIME DATETIME,\
-      START_DATETIME DATETIME,\
-      END_DATETIME DATETIME,\
-      SUN enum('N','Y') default 'Y',\
-      MON enum('N','Y') default 'Y',\
-      TUE enum('N','Y') default 'Y',\
-      WED enum('N','Y') default 'Y',\
-      THU enum('N','Y') default 'Y',\
-      FRI enum('N','Y') default 'Y',\
-      SAT enum('N','Y') default 'Y',\
-      START_DAYPART TIME,\
-      END_DAYPART TIME,\
-      ORIGIN_NAME CHAR(64),\
-      ORIGIN_LOGIN_NAME char(255),\
-      SOURCE_HOSTNAME char(255),\
-      WEIGHT INT UNSIGNED DEFAULT 1,\
-      PLAY_ORDER int,\
-      LAST_PLAY_DATETIME DATETIME,\
-      UPLOAD_DATETIME datetime,\
-      PLAY_COUNTER INT UNSIGNED DEFAULT 0,\
-      LOCAL_COUNTER int unsigned default 0,\
-      VALIDITY int unsigned default 2,\
-      CODING_FORMAT INT UNSIGNED,\
-      SAMPLE_RATE INT UNSIGNED,\
-      BIT_RATE INT UNSIGNED,\
-      CHANNELS INT UNSIGNED,\
-      PLAY_GAIN INT DEFAULT 0,\
-      START_POINT INT DEFAULT -1,\
-      END_POINT INT DEFAULT -1,\
-      FADEUP_POINT INT DEFAULT -1,\
-      FADEDOWN_POINT INT DEFAULT -1,\
-      SEGUE_START_POINT INT DEFAULT -1,\
-      SEGUE_END_POINT INT DEFAULT -1,\
-      SEGUE_GAIN INT DEFAULT %d,\
-      HOOK_START_POINT INT DEFAULT -1,\
-      HOOK_END_POINT INT DEFAULT -1,\
-      TALK_START_POINT INT DEFAULT -1,\
-      TALK_END_POINT INT DEFAULT -1,\
-      index CART_NUMBER_IDX (CART_NUMBER),\
-      index DESCRIPTION_IDX (DESCRIPTION),\
-      index OUTCUE_IDX (OUTCUE),\
-      index ORIGIN_DATETIME_IDX (ORIGIN_DATETIME),\
-      index START_DATETIME_IDX (START_DATETIME),\
-      index END_DATETIME_IDX (END_DATETIME),\
-      index ISCI_IDX (ISCI),\
-      index ISRC_IDX (ISRC))",RD_FADE_DEPTH);
+  //
+  // Create CUTS table
+  //
+  sql=QString("create table if not exists CUTS (")+
+    "CUT_NAME char(12) primary key not null,"+
+    "CART_NUMBER int unsigned not null,"+
+    "EVERGREEN enum('N','Y') default 'N',"+
+    "DESCRIPTION char(64),"+
+    "OUTCUE char(64),"+
+    "ISRC char(12),"+
+    "ISCI char(32),"+
+    "LENGTH int unsigned,"+
+    "SHA1_HASH char(40),"+
+    "ORIGIN_DATETIME datetime,"+
+    "START_DATETIME datetime,"+
+    "END_DATETIME datetime,"+
+    "SUN enum('N','Y') default 'Y',"+
+    "MON enum('N','Y') default 'Y',"+
+    "TUE enum('N','Y') default 'Y',"+
+    "WED enum('N','Y') default 'Y',"+
+    "THU enum('N','Y') default 'Y',"+
+    "FRI enum('N','Y') default 'Y',"+
+    "SAT enum('N','Y') default 'Y',"+
+    "START_DAYPART time,"+
+    "END_DAYPART time,"+
+    "ORIGIN_NAME char(64),"+
+    "ORIGIN_LOGIN_NAME char(255),"+
+    "SOURCE_HOSTNAME char(255),"+
+    "WEIGHT int unsigned default 1,"+
+    "PLAY_ORDER int,"+
+    "LAST_PLAY_DATETIME datetime,"+
+    "UPLOAD_DATETIME datetime,"+
+    "PLAY_COUNTER int unsigned default 0,"+
+    "LOCAL_COUNTER int unsigned default 0,"+
+    "VALIDITY int unsigned default 2,"+
+    "CODING_FORMAT int unsigned,"+
+    "SAMPLE_RATE int unsigned,"+
+    "BIT_RATE int unsigned,"+
+    "CHANNELS int unsigned,"+
+    "PLAY_GAIN int default 0,"+
+    "START_POINT int default -1,"+
+    "END_POINT int default -1,"+
+    "FADEUP_POINT int default -1,"+
+    "FADEDOWN_POINT int default -1,"+
+    "SEGUE_START_POINT int default -1,"+
+    "SEGUE_END_POINT int default -1,"+
+    QString().sprintf("SEGUE_GAIN int default %d,",RD_FADE_DEPTH)+
+    "HOOK_START_POINT int default -1,"+
+    "HOOK_END_POINT int default -1,"+
+    "TALK_START_POINT int default -1,"+
+    "TALK_END_POINT int default -1,"+
+    "index CART_NUMBER_IDX (CART_NUMBER),"+
+    "index DESCRIPTION_IDX (DESCRIPTION),"+
+    "index OUTCUE_IDX (OUTCUE),"+
+    "index ORIGIN_DATETIME_IDX (ORIGIN_DATETIME),"+
+    "index START_DATETIME_IDX (START_DATETIME),"+
+    "index END_DATETIME_IDX (END_DATETIME),"+
+    "index ISCI_IDX (ISCI),"+
+    "index ISRC_IDX (ISRC))"+
+    config->createTablePostfix();
   if(!RunQuery(sql)) {
     return false;
   }
 
-//
-// Create CLIPBOARD table
-//
-  sql=QString("CREATE TABLE IF NOT EXISTS CLIPBOARD (\
-      CUT_NAME CHAR(12) PRIMARY KEY NOT NULL,\
-      CART_NUMBER INT UNSIGNED NOT NULL,\
-      DESCRIPTION CHAR(64),\
-      OUTCUE CHAR(64),\
-      LENGTH INT UNSIGNED,\
-      ORIGIN_DATETIME DATETIME,\
-      ORIGIN_NAME CHAR(64),\
-      WEIGHT INT UNSIGNED DEFAULT 1,\
-      LAST_PLAY_DATETIME DATETIME,\
-      PLAY_COUNTER INT UNSIGNED DEFAULT 0,\
-      CODING_FORMAT INT UNSIGNED,\
-      SAMPLE_RATE INT UNSIGNED,\
-      BIT_RATE INT UNSIGNED,\
-      CHANNELS INT UNSIGNED,\
-      PLAY_GAIN INT DEFAULT 0,\
-      START_POINT INT DEFAULT -1,\
-      END_POINT INT DEFAULT -1,\
-      FADEUP_POINT INT DEFAULT -1,\
-      FADEDOWN_POINT INT DEFAULT -1,\
-      SEGUE_START_POINT INT DEFAULT -1,\
-      SEGUE_END_POINT INT DEFAULT -1,\
-      HOOK_START_POINT INT DEFAULT -1,\
-      HOOK_END_POINT INT DEFAULT -1,\
-      TALK_START_POINT INT DEFAULT -1,\
-      TALK_END_POINT INT DEFAULT -1,\
-      INDEX CART_NUMBER_IDX (CART_NUMBER),\
-      INDEX DESCRIPTION_IDX (DESCRIPTION),\
-      INDEX OUTCUE_IDX (OUTCUE))");
+  //
+  // Create CLIPBOARD table
+  //
+  sql=QString("create table if not exists CLIPBOARD (")+
+    "CUT_NAME char(12) primary key not null,"+
+    "CART_NUMBER int unsigned not null,"+
+    "DESCRIPTION char(64),"+
+    "OUTCUE char(64),"+
+    "LENGTH int unsigned,"+
+    "ORIGIN_DATETIME datetime,"+
+    "ORIGIN_NAME char(64),"+
+    "WEIGHT int unsigned default 1,"+
+    "LAST_PLAY_DATETIME datetime,"+
+    "PLAY_COUNTER int unsigned default 0,"+
+    "CODING_FORMAT int unsigned,"+
+    "SAMPLE_RATE int unsigned,"+
+    "BIT_RATE int unsigned,"+
+    "CHANNELS int unsigned,"+
+    "PLAY_GAIN int default 0,"+
+    "START_POINT int default -1,"+
+    "END_POINT int default -1,"+
+    "FADEUP_POINT int default -1,"+
+    "FADEDOWN_POINT int default -1,"+
+    "SEGUE_START_POINT int default -1,"+
+    "SEGUE_END_POINT int default -1,"+
+    "HOOK_START_POINT int default -1,"+
+    "HOOK_END_POINT int default -1,"+
+    "TALK_START_POINT int default -1,"+
+    "TALK_END_POINT int default -1,"+
+    "index CART_NUMBER_IDX (CART_NUMBER),"+
+    "index DESCRIPTION_IDX (DESCRIPTION),"+
+    "index OUTCUE_IDX (OUTCUE))"+
+    config->createTablePostfix();
   if(!RunQuery(sql)) {
     return false;
   }
 
-//
-// Create SERVICES table
-//
-  sql=QString("CREATE TABLE IF NOT EXISTS SERVICES (\
-      NAME CHAR(10) NOT NULL PRIMARY KEY,\
-      DESCRIPTION CHAR(255),\
-      NAME_TEMPLATE char(255),\
-      DESCRIPTION_TEMPLATE char(255),\
-      PROGRAM_CODE char(255),\
-      CHAIN_LOG enum('N','Y') default 'N',\
-      TRACK_GROUP char(10),\
-      AUTOSPOT_GROUP char(10),\
-      AUTO_REFRESH enum('N','Y') default 'N',\
-      DEFAULT_LOG_SHELFLIFE int default -1,\
-      ELR_SHELFLIFE int default -1,\
-      TFC_PATH char(255),\
-      TFC_PREIMPORT_CMD text,\
-      TFC_WIN_PATH char(255),\
-      TFC_WIN_PREIMPORT_CMD text,\
-      TFC_IMPORT_TEMPLATE char(64) default \"Rivendell Standard Import\",\
-      TFC_LABEL_CART char(32),\
-      TFC_TRACK_CART char(32),\
-      TFC_BREAK_STRING char(64),\
-      TFC_TRACK_STRING char(64),\
-      TFC_CART_OFFSET int,\
-      TFC_CART_LENGTH int,\
-      TFC_TITLE_OFFSET int,\
-      TFC_TITLE_LENGTH int,\
-      TFC_START_OFFSET int,\
-      TFC_START_LENGTH int,\
-      TFC_HOURS_OFFSET int,\
-      TFC_HOURS_LENGTH int,\
-      TFC_MINUTES_OFFSET int,\
-      TFC_MINUTES_LENGTH int,\
-      TFC_SECONDS_OFFSET int,\
-      TFC_SECONDS_LENGTH int,\
-      TFC_LEN_HOURS_OFFSET int,\
-      TFC_LEN_HOURS_LENGTH int,\
-      TFC_LEN_MINUTES_OFFSET int,\
-      TFC_LEN_MINUTES_LENGTH int,\
-      TFC_LEN_SECONDS_OFFSET int,\
-      TFC_LEN_SECONDS_LENGTH int,\
-      TFC_LENGTH_OFFSET int,\
-      TFC_LENGTH_LENGTH int,\
-      TFC_DATA_OFFSET int,\
-      TFC_DATA_LENGTH int,\
-      TFC_EVENT_ID_OFFSET int,\
-      TFC_EVENT_ID_LENGTH int,\
-      TFC_ANNC_TYPE_OFFSET int,\
-      TFC_ANNC_TYPE_LENGTH int,\
-      MUS_PATH char(255),\
-      MUS_PREIMPORT_CMD text,\
-      MUS_WIN_PATH char(255),\
-      MUS_WIN_PREIMPORT_CMD text,\
-      MUS_IMPORT_TEMPLATE char(64) default \"Rivendell Standard Import\",\
-      MUS_LABEL_CART char(32),\
-      MUS_TRACK_CART char(32),\
-      MUS_BREAK_STRING char(64),\
-      MUS_TRACK_STRING char(64),\
-      MUS_CART_OFFSET int,\
-      MUS_CART_LENGTH int,\
-      MUS_TITLE_OFFSET int,\
-      MUS_TITLE_LENGTH int,\
-      MUS_START_OFFSET int,\
-      MUS_START_LENGTH int,\
-      MUS_HOURS_OFFSET int,\
-      MUS_HOURS_LENGTH int,\
-      MUS_MINUTES_OFFSET int,\
-      MUS_MINUTES_LENGTH int,\
-      MUS_SECONDS_OFFSET int,\
-      MUS_SECONDS_LENGTH int,\
-      MUS_LEN_HOURS_OFFSET int,\
-      MUS_LEN_HOURS_LENGTH int,\
-      MUS_LEN_MINUTES_OFFSET int,\
-      MUS_LEN_MINUTES_LENGTH int,\
-      MUS_LEN_SECONDS_OFFSET int,\
-      MUS_LEN_SECONDS_LENGTH int,\
-      MUS_LENGTH_OFFSET int,\
-      MUS_LENGTH_LENGTH int,\
-      MUS_DATA_OFFSET int,\
-      MUS_DATA_LENGTH int,\
-      MUS_EVENT_ID_OFFSET int,\
-      MUS_EVENT_ID_LENGTH int,\
-      MUS_ANNC_TYPE_OFFSET int,\
-      MUS_ANNC_TYPE_LENGTH int)");
+  //
+  // Create SERVICES table
+  //
+  sql=QString("create table if not exists SERVICES (")+
+    "NAME char(10) not null primary key,"+
+    "DESCRIPTION char(255),"+
+    "NAME_TEMPLATE char(255),"+
+    "DESCRIPTION_TEMPLATE char(255),"+
+    "PROGRAM_CODE char(255),"+
+    "CHAIN_LOG enum('N','Y') default 'N',"+
+    "TRACK_GROUP char(10),"+
+    "AUTOSPOT_GROUP char(10),"+
+    "AUTO_REFRESH enum('N','Y') default 'N',"+
+    "DEFAULT_LOG_SHELFLIFE int default -1,"+
+    "ELR_SHELFLIFE int default -1,"+
+    "TFC_PATH char(255),"+
+    "TFC_PREIMPORT_CMD text,"+
+    "TFC_WIN_PATH char(255),"+
+    "TFC_WIN_PREIMPORT_CMD text,"+
+    "TFC_IMPORT_TEMPLATE char(64) default \"Rivendell Standard Import\","+
+    "TFC_LABEL_CART char(32),"+
+    "TFC_TRACK_CART char(32),"+
+    "TFC_BREAK_STRING char(64),"+
+    "TFC_TRACK_STRING char(64),"+
+    "TFC_CART_OFFSET int,"+
+    "TFC_CART_LENGTH int,"+
+    "TFC_TITLE_OFFSET int,"+
+    "TFC_TITLE_LENGTH int,"+
+    "TFC_START_OFFSET int,"+
+    "TFC_START_LENGTH int,"+
+    "TFC_HOURS_OFFSET int,"+
+    "TFC_HOURS_LENGTH int,"+
+    "TFC_MINUTES_OFFSET int,"+
+    "TFC_MINUTES_LENGTH int,"+
+    "TFC_SECONDS_OFFSET int,"+
+    "TFC_SECONDS_LENGTH int,"+
+    "TFC_LEN_HOURS_OFFSET int,"+
+    "TFC_LEN_HOURS_LENGTH int,"+
+    "TFC_LEN_MINUTES_OFFSET int,"+
+    "TFC_LEN_MINUTES_LENGTH int,"+
+    "TFC_LEN_SECONDS_OFFSET int,"+
+    "TFC_LEN_SECONDS_LENGTH int,"+
+    "TFC_LENGTH_OFFSET int,"+
+    "TFC_LENGTH_LENGTH int,"+
+    "TFC_DATA_OFFSET int,"+
+    "TFC_DATA_LENGTH int,"+
+    "TFC_EVENT_ID_OFFSET int,"+
+    "TFC_EVENT_ID_LENGTH int,"+
+    "TFC_ANNC_TYPE_OFFSET int,"+
+    "TFC_ANNC_TYPE_LENGTH int,"+
+    "MUS_PATH char(255),"+
+    "MUS_PREIMPORT_CMD text,"+
+    "MUS_WIN_PATH char(255),"+
+    "MUS_WIN_PREIMPORT_CMD text,"+
+    "MUS_IMPORT_TEMPLATE char(64) default \"Rivendell Standard Import\","+
+    "MUS_LABEL_CART char(32),"+
+    "MUS_TRACK_CART char(32),"+
+    "MUS_BREAK_STRING char(64),"+
+    "MUS_TRACK_STRING char(64),"+
+    "MUS_CART_OFFSET int,"+
+    "MUS_CART_LENGTH int,"+
+    "MUS_TITLE_OFFSET int,"+
+    "MUS_TITLE_LENGTH int,"+
+    "MUS_START_OFFSET int,"+
+    "MUS_START_LENGTH int,"+
+    "MUS_HOURS_OFFSET int,"+
+    "MUS_HOURS_LENGTH int,"+
+    "MUS_MINUTES_OFFSET int,"+
+    "MUS_MINUTES_LENGTH int,"+
+    "MUS_SECONDS_OFFSET int,"+
+    "MUS_SECONDS_LENGTH int,"+
+    "MUS_LEN_HOURS_OFFSET int,"+
+    "MUS_LEN_HOURS_LENGTH int,"+
+    "MUS_LEN_MINUTES_OFFSET int,"+
+    "MUS_LEN_MINUTES_LENGTH int,"+
+    "MUS_LEN_SECONDS_OFFSET int,"+
+    "MUS_LEN_SECONDS_LENGTH int,"+
+    "MUS_LENGTH_OFFSET int,"+
+    "MUS_LENGTH_LENGTH int,"+
+    "MUS_DATA_OFFSET int,"+
+    "MUS_DATA_LENGTH int,"+
+    "MUS_EVENT_ID_OFFSET int,"+
+    "MUS_EVENT_ID_LENGTH int,"+
+    "MUS_ANNC_TYPE_OFFSET int,"+
+    "MUS_ANNC_TYPE_LENGTH int)"+
+    config->createTablePostfix();
   if(!RunQuery(sql)) {
     return false;
   }
 
-
-//
-// Create GROUPS table
-//
-  sql=QString("CREATE TABLE IF NOT EXISTS GROUPS (\
-      NAME CHAR(10) NOT NULL PRIMARY KEY,\
-      DESCRIPTION CHAR(255),\
-      DEFAULT_CART_TYPE int unsigned default 1,\
-      DEFAULT_LOW_CART int unsigned default 0,\
-      DEFAULT_HIGH_CART int unsigned default 0,\
-      DEFAULT_CUT_LIFE int default -1,\
-      CUT_SHELFLIFE int default -1,\
-      DELETE_EMPTY_CARTS enum('N','Y') default 'N',\
-      DEFAULT_TITLE char(255) default \"Imported from %f.%e\",\
-      ENFORCE_CART_RANGE enum('N','Y') default 'N',\
-      REPORT_TFC enum('N','Y') default 'Y',\
-      REPORT_MUS enum('N','Y') default 'Y',\
-      ENABLE_NOW_NEXT enum('N','Y') default 'N',\
-      COLOR char(7),\
-      index IDX_REPORT_TFC (REPORT_TFC),\
-      index IDX_REPORT_MUS (REPORT_MUS))");
+  //
+  // Create GROUPS table
+  //
+  sql=QString("create table if not exists GROUPS (")+
+    "NAME char(10) not null primary key,"+
+    "DESCRIPTION char(255),"+
+    "DEFAULT_CART_TYPE int unsigned default 1,"+
+    "DEFAULT_LOW_CART int unsigned default 0,"+
+    "DEFAULT_HIGH_CART int unsigned default 0,"+
+    "DEFAULT_CUT_LIFE int default -1,"+
+    "CUT_SHELFLIFE int default -1,"+
+    "DELETE_EMPTY_CARTS enum('N','Y') default 'N',"+
+    "DEFAULT_TITLE char(255) default \"Imported from %f.%e\","+
+    "ENFORCE_CART_RANGE enum('N','Y') default 'N',"+
+    "REPORT_TFC enum('N','Y') default 'Y',"+
+    "REPORT_MUS enum('N','Y') default 'Y',"+
+    "ENABLE_NOW_NEXT enum('N','Y') default 'N',"+
+    "COLOR char(7),"+
+    "index IDX_REPORT_TFC (REPORT_TFC),"+
+    "index IDX_REPORT_MUS (REPORT_MUS))"+
+    config->createTablePostfix();
   if(!RunQuery(sql)) {
     return false;
   }
 
-//
-// Create AUDIO_PERMS table
-//
-  sql=QString("CREATE TABLE IF NOT EXISTS AUDIO_PERMS (\
-      ID INT UNSIGNED AUTO_INCREMENT NOT NULL PRIMARY KEY,\
-      GROUP_NAME CHAR(10),\
-      SERVICE_NAME CHAR(10),\
-      INDEX GROUP_IDX (GROUP_NAME),\
-      INDEX SERVICE_IDX (SERVICE_NAME))");
+  //
+  // Create AUDIO_PERMS table
+  //
+  sql=QString("create table if not exists AUDIO_PERMS (")+
+    "ID int unsigned AUTO_INCREMENT not null primary key,"+
+    "GROUP_NAME char(10),"+
+    "SERVICE_NAME char(10),"+
+    "index GROUP_IDX (GROUP_NAME),"+
+    "index SERVICE_IDX (SERVICE_NAME))"+
+    config->createTablePostfix();
   if(!RunQuery(sql)) {
     return false;
   }
 
-//
-// Create RDLIBRARY table
-//
-  sql=QString("CREATE TABLE IF NOT EXISTS RDLIBRARY (\
-      ID INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,\
-      STATION CHAR(40) NOT NULL,\
-      INSTANCE INT UNSIGNED NOT NULL,\
-      INPUT_CARD INT DEFAULT 0,\
-      INPUT_STREAM INT DEFAULT 0,\
-      INPUT_PORT INT DEFAULT 0,\
-      INPUT_TYPE ENUM('A','D') DEFAULT 'A',\
-      OUTPUT_CARD INT DEFAULT 0,\
-      OUTPUT_STREAM INT DEFAULT 0,\
-      OUTPUT_PORT INT DEFAULT 0,\
-      VOX_THRESHOLD INT DEFAULT -5000,\
-      TRIM_THRESHOLD INT DEFAULT 0,\
-      RECORD_GPI INT DEFAULT -1,\
-      PLAY_GPI INT DEFAULT -1,\
-      STOP_GPI INT DEFAULT -1,\
-      DEFAULT_FORMAT INT UNSIGNED DEFAULT 0,\
-      DEFAULT_CHANNELS INT UNSIGNED DEFAULT 2,\
-      DEFAULT_SAMPRATE INT UNSIGNED DEFAULT 44100,\
-      DEFAULT_LAYER INT UNSIGNED DEFAULT 0,\
-      DEFAULT_BITRATE INT UNSIGNED DEFAULT 0,\
-      DEFAULT_RECORD_MODE INT UNSIGNED DEFAULT 0,\
-      DEFAULT_TRIM_STATE ENUM('N','Y') DEFAULT 'N',\
-      MAXLENGTH INT,\
-      TAIL_PREROLL INT UNSIGNED DEFAULT 1500,\
-      RIPPER_DEVICE CHAR(64) DEFAULT \"/dev/cdrom\",\
-      PARANOIA_LEVEL INT DEFAULT 0,\
-      RIPPER_LEVEL INT DEFAULT -1300,\
-      CDDB_SERVER CHAR(64) DEFAULT \"freedb.freedb.org\",\
-      READ_ISRC enum('N','Y') default 'Y',\
-      ENABLE_EDITOR enum('N','Y') default 'N',\
-      SRC_CONVERTER int default 1,\
-      LIMIT_SEARCH int default 1,\
-      SEARCH_LIMITED enum('N','Y') default 'Y',\
-      INDEX STATION_IDX (STATION,INSTANCE))");
+  //
+  // Create RDLIBRARY table
+  //
+  sql=QString("create table if not exists RDLIBRARY (")+
+    "ID int unsigned primary key AUTO_INCREMENT,"+
+    "STATION char(40) not null,"+
+    "INSTANCE int unsigned not null,"+
+    "INPUT_CARD int default 0,"+
+    "INPUT_STREAM int default 0,"+
+    "INPUT_PORT int default 0,"+
+    "INPUT_TYPE enum('A','D') default 'A',"+
+    "OUTPUT_CARD int default 0,"+
+    "OUTPUT_STREAM int default 0,"+
+    "OUTPUT_PORT int default 0,"+
+    "VOX_THRESHOLD int default -5000,"+
+    "TRIM_THRESHOLD int default 0,"+
+    "RECORD_GPI int default -1,"+
+    "PLAY_GPI int default -1,"+
+    "STOP_GPI int default -1,"+
+    "DEFAULT_FORMAT int unsigned default 0,"+
+    "DEFAULT_CHANNELS int unsigned default 2,"+
+    "DEFAULT_SAMPRATE int unsigned default 44100,"+
+    "DEFAULT_LAYER int unsigned default 0,"+
+    "DEFAULT_BITRATE int unsigned default 0,"+
+    "DEFAULT_RECORD_MODE int unsigned default 0,"+
+    "DEFAULT_TRIM_STATE enum('N','Y') default 'N',"+
+    "MAXLENGTH int,"+
+    "TAIL_PREROLL int unsigned default 1500,"+
+    "RIPPER_DEVICE char(64) default "+"/dev/cdrom"+","+
+    "PARANOIA_LEVEL int default 0,"+
+    "RIPPER_LEVEL int default -1300,"+
+    "CDDB_SERVER char(64) default \"freedb.freedb.org\","+
+    "READ_ISRC enum('N','Y') default 'Y',"+
+    "ENABLE_EDITOR enum('N','Y') default 'N',"+
+    "SRC_CONVERTER int default 1,"+
+    "LIMIT_SEARCH int default 1,"+
+    "SEARCH_LIMITED enum('N','Y') default 'Y',"+
+    "index STATION_IDX (STATION,INSTANCE))"+
+    config->createTablePostfix();
   if(!RunQuery(sql)) {
     return false;
   }
 
-//
-// Create TRIGGERS table
-//
-  sql=QString("CREATE TABLE IF NOT EXISTS TRIGGERS (\
-      ID INT UNSIGNED AUTO_INCREMENT NOT NULL PRIMARY KEY,\
-      CUT_NAME CHAR(12),\
-      TRIGGER_CODE INT UNSIGNED,\
-      OFFSET INT UNSIGNED,\
-      INDEX CUT_NAME_IDX (CUT_NAME))");
+  //
+  // Create TRIGGERS table
+  //
+  sql=QString("create table if not exists TRIGGERS (")+
+    "ID int unsigned AUTO_INCREMENT not null primary key,"+
+    "CUT_NAME char(12),"+
+    "TRIGGER_CODE int unsigned,"+
+    "OFFSET int unsigned,"+
+    "index CUT_NAME_IDX (CUT_NAME))"+
+    config->createTablePostfix();
   if(!RunQuery(sql)) {
     return false;
   }
 
-//
-// Create TTYS table
-//
-  sql=QString("CREATE TABLE IF NOT EXISTS TTYS (\
-      ID INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,\
-      PORT_ID INT UNSIGNED NOT NULL,\
-      ACTIVE ENUM('N','Y') NOT NULL DEFAULT 'N',\
-      STATION_NAME CHAR(64) NOT NULL,\
-      PORT CHAR(20),\
-      BAUD_RATE INT DEFAULT 9600,\
-      DATA_BITS INT DEFAULT 8,\
-      STOP_BITS INT DEFAULT 1,\
-      PARITY INT DEFAULT 0,\
-      TERMINATION INT DEFAULT 0,\
-      INDEX STATION_NAME_IDX (STATION_NAME),\
-      INDEX ACTIVE_IDX (ACTIVE),\
-      INDEX PORT_ID_IDX (PORT_ID))");
+  //
+  // Create TTYS table
+  //
+  sql=QString("create table if not exists TTYS (")+
+    "ID int unsigned not null primary key AUTO_INCREMENT,"+
+    "PORT_ID int unsigned not null,"+
+    "ACTIVE enum('N','Y') not null default 'N',"+
+    "STATION_NAME char(64) not null,"+
+    "PORT char(20),"+
+    "BAUD_RATE int default 9600,"+
+    "DATA_BITS int default 8,"+
+    "STOP_BITS int default 1,"+
+    "PARITY int default 0,"+
+    "TERMINATION int default 0,"+
+    "index STATION_NAME_IDX (STATION_NAME),"+
+    "index ACTIVE_IDX (ACTIVE),"+
+    "index PORT_ID_IDX (PORT_ID))"+
+    config->createTablePostfix();
   if(!RunQuery(sql)) {
     return false;
   }
 
-//
-// Create DECKS table
-//
-  sql=QString("CREATE TABLE IF NOT EXISTS DECKS (\
-      ID INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,\
-      STATION_NAME CHAR(64) NOT NULL,\
-      CHANNEL INT UNSIGNED NOT NULL,\
-      CARD_NUMBER INT DEFAULT -1,\
-      STREAM_NUMBER INT DEFAULT -1,\
-      PORT_NUMBER INT DEFAULT -1,\
-      MON_PORT_NUMBER int default -1,\
-      DEFAULT_MONITOR_ON enum('N','Y') default 'N',\
-      PORT_TYPE ENUM('A','D') DEFAULT 'A',\
-      DEFAULT_FORMAT INT DEFAULT 0,\
-      DEFAULT_CHANNELS INT DEFAULT 2,\
-      DEFAULT_SAMPRATE INT DEFAULT 44100,\
-      DEFAULT_BITRATE INT DEFAULT 0,\
-      DEFAULT_THRESHOLD INT DEFAULT 0,\
-      SWITCH_STATION char(64),\
-      SWITCH_MATRIX int default -1,\
-      SWITCH_OUTPUT int default -1,\
-      SWITCH_DELAY int default 0,\
-      INDEX STATION_NAME_IDX (STATION_NAME),\
-      INDEX CHANNEL_IDX (CHANNEL))");
+  //
+  // Create DECKS table
+  //
+  sql=QString("create table if not exists DECKS (")+
+    "ID int unsigned not null primary key AUTO_INCREMENT,"+
+    "STATION_NAME char(64) not null,"+
+    "CHANNEL int unsigned not null,"+
+    "CARD_NUMBER int default -1,"+
+    "STREAM_NUMBER int default -1,"+
+    "PORT_NUMBER int default -1,"+
+    "MON_PORT_NUMBER int default -1,"+
+    "DEFAULT_MONITOR_ON enum('N','Y') default 'N',"+
+    "PORT_TYPE enum('A','D') default 'A',"+
+    "DEFAULT_FORMAT int default 0,"+
+    "DEFAULT_CHANNELS int default 2,"+
+    "DEFAULT_SAMPRATE int default 44100,"+
+    "DEFAULT_BITRATE int default 0,"+
+    "DEFAULT_THRESHOLD int default 0,"+
+    "SWITCH_STATION char(64),"+
+    "SWITCH_MATRIX int default -1,"+
+    "SWITCH_OUTPUT int default -1,"+
+    "SWITCH_DELAY int default 0,"+
+    "index STATION_NAME_IDX (STATION_NAME),"+
+    "index CHANNEL_IDX (CHANNEL))"+
+    config->createTablePostfix();
   if(!RunQuery(sql)) {
     return false;
   }
 
-//
-// Create RECORDINGS table
-//
-  sql=QString("CREATE TABLE IF NOT EXISTS RECORDINGS (\
-      ID INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,\
-      IS_ACTIVE enum('N','Y') default 'Y',\
-      STATION_NAME CHAR(64) NOT NULL,\
-      TYPE int default 0,\
-      CHANNEL INT UNSIGNED NOT NULL,\
-      CUT_NAME CHAR(12) NOT NULL,\
-      SUN ENUM('N','Y') DEFAULT 'N',\
-      MON ENUM('N','Y') DEFAULT 'N',\
-      TUE ENUM('N','Y') DEFAULT 'N',\
-      WED ENUM('N','Y') DEFAULT 'N',\
-      THU ENUM('N','Y') DEFAULT 'N',\
-      FRI ENUM('N','Y') DEFAULT 'N',\
-      SAT ENUM('N','Y') DEFAULT 'N',\
-      DESCRIPTION CHAR(64),\
-      START_TYPE int unsigned default 0,\
-      START_TIME time,\
-      START_LENGTH int default 0,\
-      START_MATRIX int default -1,\
-      START_LINE int default -1,\
-      START_OFFSET int default 0,\
-      END_TYPE int default 0,\
-      END_TIME time,\
-      END_LENGTH int default 0,\
-      END_MATRIX int default -1,\
-      END_LINE int default -1,\
-      LENGTH INT UNSIGNED,\
-      START_GPI INT DEFAULT -1,\
-      END_GPI INT DEFAULT -1,\
-      ALLOW_MULT_RECS enum('N','Y') default 'N',\
-      MAX_GPI_REC_LENGTH int unsigned default 3600000,\
-      TRIM_THRESHOLD int,\
-      NORMALIZE_LEVEL int default -1300,\
-      STARTDATE_OFFSET INT UNSIGNED DEFAULT 0,\
-      ENDDATE_OFFSET INT UNSIGNED DEFAULT 0,\
-      EVENTDATE_OFFSET int default 0,\
-      FORMAT INT DEFAULT 0,\
-      CHANNELS INT DEFAULT 2,\
-      SAMPRATE INT DEFAULT 44100,\
-      BITRATE INT DEFAULT 0,\
-      QUALITY int default 0,\
-      MACRO_CART int default -1,\
-      SWITCH_INPUT int default -1,\
-      SWITCH_OUTPUT int default -1,\
-      EXIT_CODE int default 0,\
-      EXIT_TEXT text,\
-      ONE_SHOT enum('N','Y') default 'N',\
-      URL char(255),\
-      URL_USERNAME char(64),\
-      URL_PASSWORD char(64),\
-      ENABLE_METADATA enum('N','Y') default 'N',\
-      FEED_ID int default -1,\
-      INDEX STATION_NAME_IDX (STATION_NAME))");
+  //
+  // Create RECORDINGS table
+  //
+  sql=QString("create table if not exists RECORDINGS (")+
+    "ID int unsigned not null primary key AUTO_INCREMENT,"+
+    "IS_ACTIVE enum('N','Y') default 'Y',"+
+    "STATION_NAME char(64) not null,"+
+    "TYPE int default 0,"+
+    "CHANNEL int unsigned not null,"+
+    "CUT_NAME char(12) not null,"+
+    "SUN enum('N','Y') default 'N',"+
+    "MON enum('N','Y') default 'N',"+
+    "TUE enum('N','Y') default 'N',"+
+    "WED enum('N','Y') default 'N',"+
+    "THU enum('N','Y') default 'N',"+
+    "FRI enum('N','Y') default 'N',"+
+    "SAT enum('N','Y') default 'N',"+
+    "DESCRIPTION char(64),"+
+    "START_TYPE int unsigned default 0,"+
+    "START_TIME time,"+
+    "START_LENGTH int default 0,"+
+    "START_MATRIX int default -1,"+
+    "START_LINE int default -1,"+
+    "START_OFFSET int default 0,"+
+    "END_TYPE int default 0,"+
+    "END_TIME time,"+
+    "END_LENGTH int default 0,"+
+    "END_MATRIX int default -1,"+
+    "END_LINE int default -1,"+
+    "LENGTH int unsigned,"+
+    "START_GPI int default -1,"+
+    "END_GPI int default -1,"+
+    "ALLOW_MULT_RECS enum('N','Y') default 'N',"+
+    "MAX_GPI_REC_LENGTH int unsigned default 3600000,"+
+    "TRIM_THRESHOLD int,"+
+    "NORMALIZE_LEVEL int default -1300,"+
+    "STARTDATE_OFFSET int unsigned default 0,"+
+    "ENDDATE_OFFSET int unsigned default 0,"+
+    "EVENTDATE_OFFSET int default 0,"+
+    "FORMAT int default 0,"+
+    "CHANNELS int default 2,"+
+    "SAMPRATE int default 44100,"+
+    "BITRATE int default 0,"+
+    "QUALITY int default 0,"+
+    "MACRO_CART int default -1,"+
+    "SWITCH_INPUT int default -1,"+
+    "SWITCH_OUTPUT int default -1,"+
+    "EXIT_CODE int default 0,"+
+    "EXIT_TEXT text,"+
+    "ONE_SHOT enum('N','Y') default 'N',"+
+    "URL char(255),"+
+    "URL_USERNAME char(64),"+
+    "URL_PASSWORD char(64),"+
+    "ENABLE_METADATA enum('N','Y') default 'N',"+
+    "FEED_ID int default -1,"+
+    "index STATION_NAME_IDX (STATION_NAME))"+
+    config->createTablePostfix();
   if(!RunQuery(sql)) {
     return false;
   }
 
-//
-// Create AUDIO_PORTS table
-//
-  sql=QString("CREATE TABLE IF NOT EXISTS AUDIO_PORTS (\
-      ID INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,\
-      STATION_NAME CHAR(64) NOT NULL,\
-      CARD_NUMBER INT NOT NULL,\
-      CLOCK_SOURCE INT DEFAULT 0,\
-      INPUT_0_LEVEL INT DEFAULT 0,\
-      INPUT_0_TYPE INT DEFAULT 0,\
-      INPUT_0_MODE INT DEFAULT 0,\
-      INPUT_1_LEVEL INT DEFAULT 0,\
-      INPUT_1_TYPE INT DEFAULT 0,\
-      INPUT_1_MODE INT DEFAULT 0,\
-      INPUT_2_LEVEL INT DEFAULT 0,\
-      INPUT_2_TYPE INT DEFAULT 0,\
-      INPUT_2_MODE INT DEFAULT 0,\
-      INPUT_3_LEVEL INT DEFAULT 0,\
-      INPUT_3_TYPE INT DEFAULT 0,\
-      INPUT_3_MODE INT DEFAULT 0,\
-      INPUT_4_LEVEL INT DEFAULT 0,\
-      INPUT_4_TYPE INT DEFAULT 0,\
-      INPUT_4_MODE INT DEFAULT 0,\
-      INPUT_5_LEVEL INT DEFAULT 0,\
-      INPUT_5_TYPE INT DEFAULT 0,\
-      INPUT_5_MODE INT DEFAULT 0,\
-      INPUT_6_LEVEL INT DEFAULT 0,\
-      INPUT_6_TYPE INT DEFAULT 0,\
-      INPUT_6_MODE INT DEFAULT 0,\
-      INPUT_7_LEVEL INT DEFAULT 0,\
-      INPUT_7_TYPE INT DEFAULT 0,\
-      INPUT_7_MODE INT DEFAULT 0,\
-      OUTPUT_0_LEVEL INT DEFAULT 0,\
-      OUTPUT_1_LEVEL INT DEFAULT 0,\
-      OUTPUT_2_LEVEL INT DEFAULT 0,\
-      OUTPUT_3_LEVEL INT DEFAULT 0,\
-      OUTPUT_4_LEVEL INT DEFAULT 0,\
-      OUTPUT_5_LEVEL INT DEFAULT 0,\
-      OUTPUT_6_LEVEL INT DEFAULT 0,\
-      OUTPUT_7_LEVEL INT DEFAULT 0,\
-      INDEX STATION_NAME_IDX (STATION_NAME),\
-      INDEX CARD_NUMBER_IDX (CARD_NUMBER))");
+  //
+  // Create AUDIO_PORTS table
+  //
+  sql=QString("create table if not exists AUDIO_PORTS (")+
+    "ID int unsigned not null primary key AUTO_INCREMENT,"+
+    "STATION_NAME char(64) not null,"+
+    "CARD_NUMBER int not null,"+
+    "CLOCK_SOURCE int default 0,"+
+    "INPUT_0_LEVEL int default 0,"+
+    "INPUT_0_TYPE int default 0,"+
+    "INPUT_0_MODE int default 0,"+
+    "INPUT_1_LEVEL int default 0,"+
+    "INPUT_1_TYPE int default 0,"+
+    "INPUT_1_MODE int default 0,"+
+    "INPUT_2_LEVEL int default 0,"+
+    "INPUT_2_TYPE int default 0,"+
+    "INPUT_2_MODE int default 0,"+
+    "INPUT_3_LEVEL int default 0,"+
+    "INPUT_3_TYPE int default 0,"+
+    "INPUT_3_MODE int default 0,"+
+    "INPUT_4_LEVEL int default 0,"+
+    "INPUT_4_TYPE int default 0,"+
+    "INPUT_4_MODE int default 0,"+
+    "INPUT_5_LEVEL int default 0,"+
+    "INPUT_5_TYPE int default 0,"+
+    "INPUT_5_MODE int default 0,"+
+    "INPUT_6_LEVEL int default 0,"+
+    "INPUT_6_TYPE int default 0,"+
+    "INPUT_6_MODE int default 0,"+
+    "INPUT_7_LEVEL int default 0,"+
+    "INPUT_7_TYPE int default 0,"+
+    "INPUT_7_MODE int default 0,"+
+    "OUTPUT_0_LEVEL int default 0,"+
+    "OUTPUT_1_LEVEL int default 0,"+
+    "OUTPUT_2_LEVEL int default 0,"+
+    "OUTPUT_3_LEVEL int default 0,"+
+    "OUTPUT_4_LEVEL int default 0,"+
+    "OUTPUT_5_LEVEL int default 0,"+
+    "OUTPUT_6_LEVEL int default 0,"+
+    "OUTPUT_7_LEVEL int default 0,"+
+    "index STATION_NAME_IDX (STATION_NAME),"+
+    "index CARD_NUMBER_IDX (CARD_NUMBER))"+
+    config->createTablePostfix();
   if(!RunQuery(sql)) {
     return false;
   }
 
-//
-// Create LOGS table
-//
-  sql=QString("CREATE TABLE IF NOT EXISTS LOGS (\
-      NAME CHAR(64) NOT NULL PRIMARY KEY,\
-      LOG_EXISTS enum('N','Y') default 'Y',\
-      TYPE int not null default 0,\
-      SERVICE CHAR(10) NOT NULL,\
-      DESCRIPTION CHAR(64),\
-      ORIGIN_USER CHAR(255) NOT NULL,\
-      ORIGIN_DATETIME DATETIME NOT NULL,\
-      LINK_DATETIME DATETIME,\
-      MODIFIED_DATETIME DATETIME NOT NULL,\
-      AUTO_REFRESH enum('N','Y') default 'N',\
-      START_DATE DATE,\
-      END_DATE DATE,\
-      PURGE_DATE date,\
-      IMPORT_DATE date,\
-      SCHEDULED_TRACKS int unsigned default 0,\
-      COMPLETED_TRACKS int unsigned default 0,\
-      MUSIC_LINKS int default 0,\
-      MUSIC_LINKED enum('N','Y') default 'N',\
-      TRAFFIC_LINKS int default 0,\
-      TRAFFIC_LINKED enum('N','Y') default 'N',\
-      NEXT_ID int default 0,\
-      index NAME_IDX (NAME,LOG_EXISTS),\
-      INDEX SERVICE_IDX (SERVICE),\
-      INDEX DESCRIPTION_IDX (DESCRIPTION),\
-      INDEX ORIGIN_USER_IDX (ORIGIN_USER),\
-      INDEX START_DATE_IDX (START_DATE),\
-      INDEX END_DATE_IDX (END_DATE),\
-      index TYPE_IDX(TYPE,LOG_EXISTS))");
+  //
+  // Create LOGS table
+  //
+  sql=QString("create table if not exists LOGS (")+
+    "NAME char(64) not null primary key,"+
+    "LOG_EXISTS enum('N','Y') default 'Y',"+
+    "TYPE int not null default 0,"+
+    "SERVICE char(10) not null,"+
+    "DESCRIPTION char(64),"+
+    "ORIGIN_USER char(255) not null,"+
+    "ORIGIN_DATETIME datetime not null,"+
+    "LINK_DATETIME datetime,"+
+    "MODIFIED_DATETIME datetime not null,"+
+    "AUTO_REFRESH enum('N','Y') default 'N',"+
+    "START_DATE date,"+
+    "END_DATE date,"+
+    "PURGE_DATE date,"+
+    "IMPORT_DATE date,"+
+    "SCHEDULED_TRACKS int unsigned default 0,"+
+    "COMPLETED_TRACKS int unsigned default 0,"+
+    "MUSIC_LINKS int default 0,"+
+    "MUSIC_LINKED enum('N','Y') default 'N',"+
+    "TRAFFIC_LINKS int default 0,"+
+    "TRAFFIC_LINKED enum('N','Y') default 'N',"+
+    "NEXT_ID int default 0,"+
+    "index NAME_IDX (NAME,LOG_EXISTS),"+
+    "index SERVICE_IDX (SERVICE),"+
+    "index DESCRIPTION_IDX (DESCRIPTION),"+
+    "index ORIGIN_USER_IDX (ORIGIN_USER),"+
+    "index START_DATE_IDX (START_DATE),"+
+    "index END_DATE_IDX (END_DATE),"+
+    "index TYPE_IDX(TYPE,LOG_EXISTS))"+
+    config->createTablePostfix();
   if(!RunQuery(sql)) {
     return false;
   }
 
-//
-// Create VERSION table
-//
-  sql="create table if not exists VERSION (\
-       DB INT NOT NULL PRIMARY KEY,\
-       LAST_MAINT_DATETIME datetime default \"1970-01-01 00:00:00\",\
-       LAST_ISCI_XREFERENCE datetime default \"1970-01-01 00:00:00\")";
+  //
+  // Create VERSION table
+  //
+  sql=QString("create table if not exists VERSION (")+
+    "DB int not null primary key,"+
+    "LAST_MAINT_DATETIME datetime default \"1970-01-01 00:00:00\","+
+    "LAST_ISCI_XREFERENCE datetime default \"1970-01-01 00:00:00\")"+
+    config->createTablePostfix();
   if(!RunQuery(sql)) {
     return false;
   }
@@ -1241,121 +1009,121 @@ bool CreateDb(QString name,QString pwd)
   //
   // Create RDAIRPLAY Table
   //
-  sql="create table if not exists RDAIRPLAY (\
-      ID int not null primary key auto_increment,\
-      STATION char(40) not null,\
-      CARD0 int default 0,\
-      PORT0 int default 0,\
-      START_RML0 char(255),\
-      STOP_RML0 char(255),\
-      CARD1 int default 0,\
-      PORT1 int default 0,\
-      START_RML1 char(255),\
-      STOP_RML1 char(255),\
-      CARD2 int default 0,\
-      PORT2 int default 0,\
-      START_RML2 char(255),\
-      STOP_RML2 char(255),\
-      CARD3 int default 0,\
-      PORT3 int default 0,\
-      START_RML3 char(255),\
-      STOP_RML3 char(255),\
-      CARD4 int default 0,\
-      PORT4 int default 0,\
-      START_RML4 char(255),\
-      STOP_RML4 char(255),\
-      CARD5 int default 0,\
-      PORT5 int default 0,\
-      START_RML5 char(255),\
-      STOP_RML5 char(255),\
-      CARD6 int default 0,\
-      PORT6 int default 0,\
-      START_RML6 char(255),\
-      STOP_RML6 char(255),\
-      CARD7 int default 0,\
-      PORT7 int default 0,\
-      START_RML7 char(255),\
-      STOP_RML7 char(255),\
-      CARD8 int default 0,\
-      PORT8 int default 0,\
-      START_RML8 char(255),\
-      STOP_RML8 char(255),\
-      CARD9 int default 0,\
-      PORT9 int default 0,\
-      START_RML9 char(255),\
-      STOP_RML9 char(255),\
-      SEGUE_LENGTH int default 250,\
-      TRANS_LENGTH int default 50,\
-      OP_MODE int default 2,\
-      START_MODE int default 0,\
-      LOG_MODE_STYLE int default 0,\
-      PIE_COUNT_LENGTH int default 15000,\
-      PIE_COUNT_ENDPOINT int default 0,\
-      CHECK_TIMESYNC enum('N','Y') default 'N',\
-      STATION_PANELS int default 3,\
-      USER_PANELS int default 3,\
-      SHOW_AUX_1 enum('N','Y') default 'Y',\
-      SHOW_AUX_2 enum('N','Y') default 'Y',\
-      CLEAR_FILTER enum('N','Y') default 'N',\
-      DEFAULT_TRANS_TYPE int default 0,\
-      BAR_ACTION int unsigned default 0,\
-      FLASH_PANEL enum('N','Y') default 'N',\
-      PANEL_PAUSE_ENABLED enum('N','Y') default 'N',\
-      BUTTON_LABEL_TEMPLATE char(32) default \"%t\",\
-      PAUSE_ENABLED enum('N','Y'),\
-      DEFAULT_SERVICE char(10),\
-      HOUR_SELECTOR_ENABLED enum('N','Y') default 'N',\
-      TITLE_TEMPLATE char(64) default '%t',\
-      ARTIST_TEMPLATE char(64) default '%a',\
-      OUTCUE_TEMPLATE char(64) default '%o',\
-      DESCRIPTION_TEMPLATE char(64) default '%i',\
-      UDP_ADDR0 char(255),\
-      UDP_PORT0 int unsigned,\
-      UDP_STRING0 char(255),\
-      LOG_RML0 char(255),\
-      UDP_ADDR1 char(255),\
-      UDP_PORT1 int unsigned,\
-      UDP_STRING1 char(255),\
-      LOG_RML1 char(255),\
-      UDP_ADDR2 char(255),\
-      UDP_PORT2 int unsigned,\
-      UDP_STRING2 char(255),\
-      LOG_RML2 char(255),\
-      EXIT_CODE int default 0,\
-      EXIT_PASSWORD char(41) default \"\",\
-      SKIN_PATH char(255) default \"";
-  sql+=RD_DEFAULT_RDAIRPLAY_SKIN;
-  sql+="\",\
-      SHOW_COUNTERS enum('N','Y') default 'N',\
-      AUDITION_PREROLL int default 10000,\
-      LOG0_START_MODE int default 0,\
-      LOG0_AUTO_RESTART enum('N','Y') default 'N',\
-      LOG0_LOG_NAME char(64),\
-      LOG0_CURRENT_LOG char(64),\
-      LOG0_RUNNING enum('N','Y') default 'N',\
-      LOG0_LOG_ID int default -1,\
-      LOG0_LOG_LINE int default -1,\
-      LOG0_NOW_CART int unsigned default 0,\
-      LOG0_NEXT_CART int unsigned default 0,\
-      LOG1_START_MODE int default 0,\
-      LOG1_AUTO_RESTART enum('N','Y') default 'N',\
-      LOG1_LOG_NAME char(64),\
-      LOG1_CURRENT_LOG char(64),\
-      LOG1_RUNNING enum('N','Y') default 'N',\
-      LOG1_LOG_ID int default -1,\
-      LOG1_LOG_LINE int default -1,\
-      LOG1_NOW_CART int unsigned default 0,\
-      LOG1_NEXT_CART int unsigned default 0,\
-      LOG2_START_MODE int default 0,\
-      LOG2_AUTO_RESTART enum('N','Y') default 'N',\
-      LOG2_LOG_NAME char(64),\
-      LOG2_CURRENT_LOG char(64),\
-      LOG2_RUNNING enum('N','Y') default 'N',\
-      LOG2_LOG_ID int default -1,\
-      LOG2_LOG_LINE int default -1,\
-      LOG2_NOW_CART int unsigned default 0,\
-      LOG2_NEXT_CART int unsigned default 0,\
-      index STATION_IDX (STATION))"; 
+  sql=QString("create table if not exists RDAIRPLAY (")+
+    "ID int not null primary key auto_increment,"+
+    "STATION char(40) not null,"+
+    "CARD0 int default 0,"+
+    "PORT0 int default 0,"+
+    "START_RML0 char(255),"+
+    "STOP_RML0 char(255),"+
+    "CARD1 int default 0,"+
+    "PORT1 int default 0,"+
+    "START_RML1 char(255),"+
+    "STOP_RML1 char(255),"+
+    "CARD2 int default 0,"+
+    "PORT2 int default 0,"+
+    "START_RML2 char(255),"+
+    "STOP_RML2 char(255),"+
+    "CARD3 int default 0,"+
+    "PORT3 int default 0,"+
+    "START_RML3 char(255),"+
+    "STOP_RML3 char(255),"+
+    "CARD4 int default 0,"+
+    "PORT4 int default 0,"+
+    "START_RML4 char(255),"+
+    "STOP_RML4 char(255),"+
+    "CARD5 int default 0,"+
+    "PORT5 int default 0,"+
+    "START_RML5 char(255),"+
+    "STOP_RML5 char(255),"+
+    "CARD6 int default 0,"+
+    "PORT6 int default 0,"+
+    "START_RML6 char(255),"+
+    "STOP_RML6 char(255),"+
+    "CARD7 int default 0,"+
+    "PORT7 int default 0,"+
+    "START_RML7 char(255),"+
+    "STOP_RML7 char(255),"+
+    "CARD8 int default 0,"+
+    "PORT8 int default 0,"+
+    "START_RML8 char(255),"+
+    "STOP_RML8 char(255),"+
+    "CARD9 int default 0,"+
+    "PORT9 int default 0,"+
+    "START_RML9 char(255),"+
+    "STOP_RML9 char(255),"+
+    "SEGUE_LENGTH int default 250,"+
+    "TRANS_LENGTH int default 50,"+
+    "OP_MODE int default 2,"+
+    "START_MODE int default 0,"+
+    "LOG_MODE_STYLE int default 0,"+
+    "PIE_COUNT_LENGTH int default 15000,"+
+    "PIE_COUNT_ENDPOINT int default 0,"+
+    "CHECK_TIMESYNC enum('N','Y') default 'N',"+
+    "STATION_PANELS int default 3,"+
+    "USER_PANELS int default 3,"+
+    "SHOW_AUX_1 enum('N','Y') default 'Y',"+
+    "SHOW_AUX_2 enum('N','Y') default 'Y',"+
+    "CLEAR_FILTER enum('N','Y') default 'N',"+
+    "DEFAULT_TRANS_TYPE int default 0,"+
+    "BAR_ACTION int unsigned default 0,"+
+    "FLASH_PANEL enum('N','Y') default 'N',"+
+    "PANEL_PAUSE_ENABLED enum('N','Y') default 'N',"+
+    "BUTTON_LABEL_TEMPLATE char(32) default "+"%t"+","+
+    "PAUSE_ENABLED enum('N','Y'),"+
+    "DEFAULT_SERVICE char(10),"+
+    "HOUR_SELECTOR_ENABLED enum('N','Y') default 'N',"+
+    "TITLE_TEMPLATE char(64) default '%t',"+
+    "ARTIST_TEMPLATE char(64) default '%a',"+
+    "OUTCUE_TEMPLATE char(64) default '%o',"+
+    "DESCRIPTION_TEMPLATE char(64) default '%i',"+
+    "UDP_ADDR0 char(255),"+
+    "UDP_PORT0 int unsigned,"+
+    "UDP_STRING0 char(255),"+
+    "LOG_RML0 char(255),"+
+    "UDP_ADDR1 char(255),"+
+    "UDP_PORT1 int unsigned,"+
+    "UDP_STRING1 char(255),"+
+    "LOG_RML1 char(255),"+
+    "UDP_ADDR2 char(255),"+
+    "UDP_PORT2 int unsigned,"+
+    "UDP_STRING2 char(255),"+
+    "LOG_RML2 char(255),"+
+    "EXIT_CODE int default 0,"+
+    "EXIT_PASSWORD char(41) default \"\","+
+    "SKIN_PATH char(255) default \""+
+    RDEscapeString(RD_DEFAULT_RDAIRPLAY_SKIN)+"\","+
+    "SHOW_COUNTERS enum('N','Y') default 'N',"+
+    "AUDITION_PREROLL int default 10000,"+
+    "LOG0_START_MODE int default 0,"+
+    "LOG0_AUTO_RESTART enum('N','Y') default 'N',"+
+    "LOG0_LOG_NAME char(64),"+
+    "LOG0_CURRENT_LOG char(64),"+
+    "LOG0_RUNNING enum('N','Y') default 'N',"+
+    "LOG0_LOG_ID int default -1,"+
+    "LOG0_LOG_LINE int default -1,"+
+    "LOG0_NOW_CART int unsigned default 0,"+
+    "LOG0_NEXT_CART int unsigned default 0,"+
+    "LOG1_START_MODE int default 0,"+
+    "LOG1_AUTO_RESTART enum('N','Y') default 'N',"+
+    "LOG1_LOG_NAME char(64),"+
+    "LOG1_CURRENT_LOG char(64),"+
+    "LOG1_RUNNING enum('N','Y') default 'N',"+
+    "LOG1_LOG_ID int default -1,"+
+    "LOG1_LOG_LINE int default -1,"+
+    "LOG1_NOW_CART int unsigned default 0,"+
+    "LOG1_NEXT_CART int unsigned default 0,"+
+    "LOG2_START_MODE int default 0,"+
+    "LOG2_AUTO_RESTART enum('N','Y') default 'N',"+
+    "LOG2_LOG_NAME char(64),"+
+    "LOG2_CURRENT_LOG char(64),"+
+    "LOG2_RUNNING enum('N','Y') default 'N',"+
+    "LOG2_LOG_ID int default -1,"+
+    "LOG2_LOG_LINE int default -1,"+
+    "LOG2_NOW_CART int unsigned default 0,"+
+    "LOG2_NEXT_CART int unsigned default 0,"+
+    "index STATION_IDX (STATION))"+
+    config->createTablePostfix();
   if(!RunQuery(sql)) {
     return false;
   }
@@ -1363,18 +1131,19 @@ bool CreateDb(QString name,QString pwd)
   //
   // Create PANELS Table
   //
-  sql="create table if not exists PANELS (\
-      ID int auto_increment not null primary key,\
-      TYPE int not null,\
-      OWNER char(64) not null,\
-      PANEL_NO int not null,\
-      ROW_NO int not null,\
-      COLUMN_NO int not null,\
-      LABEL char(64),\
-      CART int,\
-      DEFAULT_COLOR char(7),\
-      index LOAD_IDX (TYPE,OWNER,PANEL_NO),\
-      index SAVE_IDX (TYPE,OWNER,PANEL_NO,ROW_NO,COLUMN_NO))"; 
+  sql=QString("create table if not exists PANELS (")+
+    "ID int auto_increment not null primary key,"+
+    "TYPE int not null,"+
+    "OWNER char(64) not null,"+
+    "PANEL_NO int not null,"+
+    "ROW_NO int not null,"+
+    "COLUMN_NO int not null,"+
+    "LABEL char(64),"+
+    "CART int,"+
+    "DEFAULT_COLOR char(7),"+
+    "index LOAD_IDX (TYPE,OWNER,PANEL_NO),"+
+    "index SAVE_IDX (TYPE,OWNER,PANEL_NO,ROW_NO,COLUMN_NO))"+
+    config->createTablePostfix();
   if(!RunQuery(sql)) {
     return false;
   }
@@ -1382,38 +1151,39 @@ bool CreateDb(QString name,QString pwd)
   //
   // Create MATRICES Table
   //
-  sql="create table if not exists MATRICES (\
-      ID int auto_increment not null primary key,\
-      STATION_NAME char(64) not null,\
-      NAME char(64),\
-      MATRIX int not null,\
-      TYPE int not null,\
-      LAYER int default 86,\
-      PORT_TYPE int default 0,\
-      PORT_TYPE_2 int default 0,\
-      CARD int default -1,\
-      PORT int not null,\
-      PORT_2 int not null,\
-      IP_ADDRESS char(16),\
-      IP_ADDRESS_2 char(16),\
-      IP_PORT int,\
-      IP_PORT_2 int,\
-      USERNAME char(32),\
-      USERNAME_2 char(32),\
-      PASSWORD char(32),\
-      PASSWORD_2 char(32),\
-      START_CART int unsigned,\
-      STOP_CART int unsigned,\
-      START_CART_2 int unsigned,\
-      STOP_CART_2 int unsigned,\
-      GPIO_DEVICE char(255),\
-      INPUTS int not null,\
-      OUTPUTS int not null,\
-      GPIS int not null,\
-      GPOS int not null,\
-      FADERS int default 0,\
-      DISPLAYS int default 0,\
-      index MATRIX_IDX (STATION_NAME,MATRIX))";
+  sql=QString("create table if not exists MATRICES (")+
+    "ID int auto_increment not null primary key,"+
+    "STATION_NAME char(64) not null,"+
+    "NAME char(64),"+
+    "MATRIX int not null,"+
+    "TYPE int not null,"+
+    "LAYER int default 86,"+
+    "PORT_TYPE int default 0,"+
+    "PORT_TYPE_2 int default 0,"+
+    "CARD int default -1,"+
+    "PORT int not null,"+
+    "PORT_2 int not null,"+
+    "IP_ADDRESS char(16),"+
+    "IP_ADDRESS_2 char(16),"+
+    "IP_PORT int,"+
+    "IP_PORT_2 int,"+
+    "USERNAME char(32),"+
+    "USERNAME_2 char(32),"+
+    "PASSWORD char(32),"+
+    "PASSWORD_2 char(32),"+
+    "START_CART int unsigned,"+
+    "STOP_CART int unsigned,"+
+    "START_CART_2 int unsigned,"+
+    "STOP_CART_2 int unsigned,"+
+    "GPIO_DEVICE char(255),"+
+    "INPUTS int not null,"+
+    "OUTPUTS int not null,"+
+    "GPIS int not null,"+
+    "GPOS int not null,"+
+    "FADERS int default 0,"+
+    "DISPLAYS int default 0,"+
+    "index MATRIX_IDX (STATION_NAME,MATRIX))"+
+    config->createTablePostfix();
   if(!RunQuery(sql)) {
     return false;
   }
@@ -1421,21 +1191,22 @@ bool CreateDb(QString name,QString pwd)
   //
   // Create INPUTS Table
   //
-  sql="create table if not exists INPUTS (\
-      ID int auto_increment not null primary key,\
-      STATION_NAME char(64) not null,\
-      MATRIX int not null,\
-      NUMBER int not null,\
-      NAME char(64),\
-      FEED_NAME char(8),\
-      CHANNEL_MODE int,\
-      ENGINE_NUM int default -1,\
-      DEVICE_NUM int default -1,\
-      NODE_HOSTNAME char(255),\
-      NODE_TCP_PORT int,\
-      NODE_SLOT int,\
-      index MATRIX_IDX (STATION_NAME,MATRIX,NUMBER),\
-      index NODE_IDX (STATION_NAME,MATRIX,NUMBER,NODE_HOSTNAME,NODE_TCP_PORT))";
+  sql=QString("create table if not exists INPUTS (")+
+    "ID int auto_increment not null primary key,"+
+    "STATION_NAME char(64) not null,"+
+    "MATRIX int not null,"+
+    "NUMBER int not null,"+
+    "NAME char(64),"+
+    "FEED_NAME char(8),"+
+    "CHANNEL_MODE int,"+
+    "ENGINE_NUM int default -1,"+
+    "DEVICE_NUM int default -1,"+
+    "NODE_HOSTNAME char(255),"+
+    "NODE_TCP_PORT int,"+
+    "NODE_SLOT int,"+
+    "index MATRIX_IDX (STATION_NAME,MATRIX,NUMBER),"+
+    "index NODE_IDX (STATION_NAME,MATRIX,NUMBER,NODE_HOSTNAME,NODE_TCP_PORT))"+
+    config->createTablePostfix();
   if(!RunQuery(sql)) {
     return false;
   }
@@ -1443,19 +1214,20 @@ bool CreateDb(QString name,QString pwd)
   //
   // Create OUTPUTS Table
   //
-  sql="create table if not exists OUTPUTS (\
-      ID int auto_increment not null primary key,\
-      STATION_NAME char(64) not null,\
-      MATRIX int not null,\
-      NUMBER int not null,\
-      NAME char(64),\
-      ENGINE_NUM int default -1,\
-      DEVICE_NUM int default -1,\
-      NODE_HOSTNAME char(255),\
-      NODE_TCP_PORT int,\
-      NODE_SLOT int,\
-      index MATRIX_IDX (STATION_NAME,MATRIX,NUMBER),\
-      index NODE_IDX (STATION_NAME,MATRIX,NUMBER,NODE_HOSTNAME,NODE_TCP_PORT))";
+  sql=QString("create table if not exists OUTPUTS (")+
+    "ID int auto_increment not null primary key,"+
+    "STATION_NAME char(64) not null,"+
+    "MATRIX int not null,"+
+    "NUMBER int not null,"+
+    "NAME char(64),"+
+    "ENGINE_NUM int default -1,"+
+    "DEVICE_NUM int default -1,"+
+    "NODE_HOSTNAME char(255),"+
+    "NODE_TCP_PORT int,"+
+    "NODE_SLOT int,"+
+    "index MATRIX_IDX (STATION_NAME,MATRIX,NUMBER),"+
+    "index NODE_IDX (STATION_NAME,MATRIX,NUMBER,NODE_HOSTNAME,NODE_TCP_PORT))"+
+    config->createTablePostfix();
   if(!RunQuery(sql)) {
     return false;
   }
@@ -1463,86 +1235,91 @@ bool CreateDb(QString name,QString pwd)
   //
   // Create GPIS Table
   //
-  sql="create table if not exists GPIS (\
-      ID int auto_increment not null primary key,\
-      STATION_NAME char(64) not null,\
-      MATRIX int not null,\
-      NUMBER int not null,\
-      MACRO_CART int default 0,\
-      OFF_MACRO_CART int default 0,\
-      index MATRIX_IDX (STATION_NAME,MATRIX,NUMBER))";
+  sql=QString("create table if not exists GPIS (")+
+    "ID int auto_increment not null primary key,"+
+    "STATION_NAME char(64) not null,"+
+    "MATRIX int not null,"+
+    "NUMBER int not null,"+
+    "MACRO_CART int default 0,"+
+    "OFF_MACRO_CART int default 0,"+
+    "index MATRIX_IDX (STATION_NAME,MATRIX,NUMBER))"+
+    config->createTablePostfix();
   if(!RunQuery(sql)) {
     return false;
   }
 
-//
-// Create EVENTS table
-//
-  sql=QString("create table if not exists EVENTS (\
-      NAME char(64) not null primary key,\
-      PROPERTIES char(64),\
-      DISPLAY_TEXT char(64),\
-      NOTE_TEXT char(255),\
-      PREPOSITION int default -1,\
-      TIME_TYPE int default 0,\
-      GRACE_TIME int default 0,\
-      POST_POINT enum('N','Y') default 'N',\
-      USE_AUTOFILL enum('N','Y') default 'N',\
-      AUTOFILL_SLOP int default -1,\
-      USE_TIMESCALE enum('N','Y') default 'N',\
-      IMPORT_SOURCE int default 0,\
-      START_SLOP int default 0,\
-      END_SLOP int default 0,\
-      FIRST_TRANS_TYPE int default 0,\
-      DEFAULT_TRANS_TYPE int default 0,\
-      COLOR char(7),\
-      SCHED_GROUP VARCHAR(10),\
-      TITLE_SEP INT(10) UNSIGNED,\
-      HAVE_CODE VARCHAR(10),\
-      HAVE_CODE2 VARCHAR(10),\
-      HOR_SEP INT(10) UNSIGNED,\
-      HOR_DIST INT(10) UNSIGNED,\
-      NESTED_EVENT char(64),\
-      REMARKS char(255))");
+  //
+  // Create EVENTS table
+  //
+  sql=QString("create table if not exists EVENTS (")+
+    "NAME char(64) not null primary key,"+
+    "PROPERTIES char(64),"+
+    "DISPLAY_TEXT char(64),"+
+    "NOTE_TEXT char(255),"+
+    "PREPOSITION int default -1,"+
+    "TIME_TYPE int default 0,"+
+    "GRACE_TIME int default 0,"+
+    "POST_POINT enum('N','Y') default 'N',"+
+    "USE_AUTOFILL enum('N','Y') default 'N',"+
+    "AUTOFILL_SLOP int default -1,"+
+    "USE_TIMESCALE enum('N','Y') default 'N',"+
+    "IMPORT_SOURCE int default 0,"+
+    "START_SLOP int default 0,"+
+    "END_SLOP int default 0,"+
+    "FIRST_TRANS_TYPE int default 0,"+
+    "DEFAULT_TRANS_TYPE int default 0,"+
+    "COLOR char(7),"+
+    "SCHED_GROUP VARCHAR(10),"+
+    "TITLE_SEP INT(10) unsigned,"+
+    "HAVE_CODE VARCHAR(10),"+
+    "HAVE_CODE2 VARCHAR(10),"+
+    "HOR_SEP INT(10) unsigned,"+
+    "HOR_DIST INT(10) unsigned,"+
+    "NESTED_EVENT char(64),"+
+    "REMARKS char(255))"+
+    config->createTablePostfix();
   if(!RunQuery(sql)) {
     return false;
   }
 
-//
-// Create CLOCKS table
-//
-  sql=QString("create table if not exists CLOCKS (\
-      NAME char(64) not null primary key,\
-      SHORT_NAME char(8),\
-      ARTISTSEP int(10) unsigned,\
-      COLOR char(7),\
-      REMARKS char(255))");
+  //
+  // Create CLOCKS table
+  //
+  sql=QString("create table if not exists CLOCKS (")+
+    "NAME char(64) not null primary key,"+
+    "SHORT_NAME char(8),"+
+    "ARTISTSEP int(10) unsigned,"+
+    "COLOR char(7),"+
+    "REMARKS char(255))"+
+    config->createTablePostfix();
   if(!RunQuery(sql)) {
     return false;
   }
 
-//
-// Create AUTOFILLS table
-//
-  sql=QString("create table if not exists AUTOFILLS (\
-      ID int not null primary key auto_increment,\
-      SERVICE char(10),\
-      CART_NUMBER int unsigned,\
-      index SERVICE_IDX (SERVICE))");
+  //
+  // Create AUTOFILLS table
+  //
+  sql=QString("create table if not exists AUTOFILLS (")+
+    "ID int not null primary key auto_increment,"+
+    "SERVICE char(10),"+
+    "CART_NUMBER int unsigned,"+
+    "index SERVICE_IDX (SERVICE))"+
+    config->createTablePostfix();
   if(!RunQuery(sql)) {
     return false;
   }
 
-//
-// Create HOSTVARS table
-//
-  sql=QString("create table if not exists HOSTVARS (\
-      ID int not null primary key auto_increment,\
-      STATION_NAME char(64) not null,\
-      NAME char(32) not null,\
-      VARVALUE char(255),\
-      REMARK char(255),\
-      index NAME_IDX (STATION_NAME))");
+  //
+  // Create HOSTVARS table
+  //
+  sql=QString("create table if not exists HOSTVARS (")+
+    "ID int not null primary key auto_increment,"+
+    "STATION_NAME char(64) not null,"+
+    "NAME char(32) not null,"+
+    "VARVALUE char(255),"+
+    "REMARK char(255),"+
+    "index NAME_IDX (STATION_NAME))"+
+    config->createTablePostfix();
   if(!RunQuery(sql)) {
     return false;
   }
@@ -1550,12 +1327,13 @@ bool CreateDb(QString name,QString pwd)
   //
   // Create SERVICE_PERMS Table
   //
-  sql=QString("create table if not exists SERVICE_PERMS (\
-      ID int unsigned auto_increment not null primary key,\
-      STATION_NAME char(64),\
-      SERVICE_NAME char(10),\
-      index STATION_IDX (STATION_NAME),\
-      index SERVICE_IDX (SERVICE_NAME))");
+  sql=QString("create table if not exists SERVICE_PERMS (")+
+    "ID int unsigned auto_increment not null primary key,"+
+    "STATION_NAME char(64),"+
+    "SERVICE_NAME char(10),"+
+    "index STATION_IDX (STATION_NAME),"+
+    "index SERVICE_IDX (SERVICE_NAME))"+
+    config->createTablePostfix();
   if(!RunQuery(sql)) {
     return false;
   }
@@ -1563,32 +1341,33 @@ bool CreateDb(QString name,QString pwd)
   //
   // Create REPORTS Table
   //
-  sql=QString("create table if not exists REPORTS (\
-               ID int unsigned auto_increment not null primary key,\
-               NAME char(64) not null unique,\
-               DESCRIPTION char(64),\
-               EXPORT_FILTER int,\
-               EXPORT_PATH char(255),\
-               POST_EXPORT_CMD text,\
-               WIN_EXPORT_PATH char(255),\
-               WIN_POST_EXPORT_CMD text,\
-               EXPORT_TFC enum('N','Y') default 'N',\
-               FORCE_TFC enum('N','Y') default 'N',\
-               EXPORT_MUS enum('N','Y') default 'N',\
-               FORCE_MUS enum('N','Y') default 'N',\
-               EXPORT_GEN enum('N','Y') default 'N',\
-               STATION_ID char(16),\
-               CART_DIGITS int unsigned default 6,\
-               USE_LEADING_ZEROS enum('N','Y') default 'N',\
-               LINES_PER_PAGE int default 66,\
-               SERVICE_NAME char(64),\
-               STATION_TYPE int default 0,\
-               STATION_FORMAT char(64),\
-               FILTER_ONAIR_FLAG enum('N','Y') default 'N',\
-               FILTER_GROUPS enum('N','Y') default 'N',\
-               START_TIME time,\
-               END_TIME time,\
-               index IDX_NAME (NAME))");
+  sql=QString("create table if not exists REPORTS (")+
+    "ID int unsigned auto_increment not null primary key,"+
+    "NAME char(64) not null unique,"+
+    "DESCRIPTION char(64),"+
+    "EXPORT_FILTER int,"+
+    "EXPORT_PATH char(255),"+
+    "POST_EXPORT_CMD text,"+
+    "WIN_EXPORT_PATH char(255),"+
+    "WIN_POST_EXPORT_CMD text,"+
+    "EXPORT_TFC enum('N','Y') default 'N',"+
+    "FORCE_TFC enum('N','Y') default 'N',"+
+    "EXPORT_MUS enum('N','Y') default 'N',"+
+    "FORCE_MUS enum('N','Y') default 'N',"+
+    "EXPORT_GEN enum('N','Y') default 'N',"+
+    "STATION_ID char(16),"+
+    "CART_DIGITS int unsigned default 6,"+
+    "USE_LEADING_ZEROS enum('N','Y') default 'N',"+
+    "LINES_PER_PAGE int default 66,"+
+    "SERVICE_NAME char(64),"+
+    "STATION_TYPE int default 0,"+
+    "STATION_FORMAT char(64),"+
+    "FILTER_ONAIR_FLAG enum('N','Y') default 'N',"+
+    "FILTER_GROUPS enum('N','Y') default 'N',"+
+    "START_TIME time,"+
+    "END_TIME time,"+
+    "index IDX_NAME (NAME))"+
+    config->createTablePostfix();
   if(!RunQuery(sql)) {
     return false;
   }
@@ -1596,11 +1375,12 @@ bool CreateDb(QString name,QString pwd)
   //
   // Create REPORT_SERVICES Table
   //
-  sql=QString("create table if not exists REPORT_SERVICES (\
-               ID int unsigned auto_increment not null primary key,\
-               REPORT_NAME char(64) not null,\
-               SERVICE_NAME char(10),\
-               index IDX_REPORT_NAME (REPORT_NAME))");
+  sql=QString("create table if not exists REPORT_SERVICES (")+
+    "ID int unsigned auto_increment not null primary key,"+
+    "REPORT_NAME char(64) not null,"+
+    "SERVICE_NAME char(10),"+
+    "index IDX_REPORT_NAME (REPORT_NAME))"+
+    config->createTablePostfix();
   if(!RunQuery(sql)) {
     return false;
   }
@@ -1608,11 +1388,12 @@ bool CreateDb(QString name,QString pwd)
   //
   // Create REPORT_STATIONS Table
   //
-  sql=QString("create table if not exists REPORT_STATIONS (\
-               ID int unsigned auto_increment not null primary key,\
-               REPORT_NAME char(64) not null,\
-               STATION_NAME char(64),\
-               index IDX_REPORT_NAME (REPORT_NAME))");
+  sql=QString("create table if not exists REPORT_STATIONS (")+
+    "ID int unsigned auto_increment not null primary key,"+
+    "REPORT_NAME char(64) not null,"+
+    "STATION_NAME char(64),"+
+    "index IDX_REPORT_NAME (REPORT_NAME))"+
+    config->createTablePostfix();
   if(!RunQuery(sql)) {
     return false;
   }
@@ -1620,11 +1401,12 @@ bool CreateDb(QString name,QString pwd)
   //
   // Create REPORT_GROUPS Table
   //
-  sql=QString("create table if not exists REPORT_GROUPS (\
-               ID int unsigned auto_increment not null primary key,\
-               REPORT_NAME char(64) not null,\
-               GROUP_NAME char(10),\
-               index IDX_REPORT_NAME (REPORT_NAME))");
+  sql=QString("create table if not exists REPORT_GROUPS (")+
+    "ID int unsigned auto_increment not null primary key,"+
+    "REPORT_NAME char(64) not null,"+
+    "GROUP_NAME char(10),"+
+    "index IDX_REPORT_NAME (REPORT_NAME))"+
+    config->createTablePostfix();
   if(!RunQuery(sql)) {
     return false;
   }
@@ -1632,12 +1414,13 @@ bool CreateDb(QString name,QString pwd)
   //
   // Create CLOCK_PERMS Table
   //
-  sql=QString("create table if not exists CLOCK_PERMS (\
-      ID int unsigned auto_increment not null primary key,\
-      CLOCK_NAME char(64),\
-      SERVICE_NAME char(10),\
-      index STATION_IDX (CLOCK_NAME),\
-      index SERVICE_IDX (SERVICE_NAME))");
+  sql=QString("create table if not exists CLOCK_PERMS (")+
+    "ID int unsigned auto_increment not null primary key,"+
+    "CLOCK_NAME char(64),"+
+    "SERVICE_NAME char(10),"+
+    "index STATION_IDX (CLOCK_NAME),"+
+    "index SERVICE_IDX (SERVICE_NAME))"+
+    config->createTablePostfix();
   if(!RunQuery(sql)) {
     return false;
   }
@@ -1645,12 +1428,13 @@ bool CreateDb(QString name,QString pwd)
   //
   // Create EVENT_PERMS Table
   //
-  sql=QString("create table if not exists EVENT_PERMS (\
-      ID int unsigned auto_increment not null primary key,\
-      EVENT_NAME char(64),\
-      SERVICE_NAME char(10),\
-      index STATION_IDX (EVENT_NAME),\
-      index SERVICE_IDX (SERVICE_NAME))");
+  sql=QString("create table if not exists EVENT_PERMS (")+
+    "ID int unsigned auto_increment not null primary key,"+
+    "EVENT_NAME char(64),"+
+    "SERVICE_NAME char(10),"+
+    "index STATION_IDX (EVENT_NAME),"+
+    "index SERVICE_IDX (SERVICE_NAME))"+
+    config->createTablePostfix();
   if(!RunQuery(sql)) {
     return false;
   }
@@ -1658,12 +1442,13 @@ bool CreateDb(QString name,QString pwd)
   //
   // Create USER_PERMS table
   //
-  sql=QString("create table if not exists USER_PERMS (\
-      ID int unsigned auto_increment not null primary key,\
-      USER_NAME char(255),\
-      GROUP_NAME char(10),\
-      index USER_IDX (USER_NAME),\
-      index GROUP_IDX (GROUP_NAME))");
+  sql=QString("create table if not exists USER_PERMS (")+
+    "ID int unsigned auto_increment not null primary key,"+
+    "USER_NAME char(255),"+
+    "GROUP_NAME char(10),"+
+    "index USER_IDX (USER_NAME),"+
+    "index GROUP_IDX (GROUP_NAME))"+
+    config->createTablePostfix();
   if(!RunQuery(sql)) {
     return false;
   }
@@ -1671,60 +1456,63 @@ bool CreateDb(QString name,QString pwd)
   //
   // Create VGUEST_RESOURCES Table
   //
-  sql="create table if not exists VGUEST_RESOURCES (\
-       ID int unsigned auto_increment not null primary key,\
-       STATION_NAME char(64) not null,\
-       MATRIX_NUM int not null,\
-       VGUEST_TYPE int not null,\
-       NUMBER int not null,\
-       ENGINE_NUM int default -1,\
-       DEVICE_NUM int default -1,\
-       SURFACE_NUM int default 0,\
-       RELAY_NUM int default -1,\
-       BUSS_NUM int default -1,\
-       index STATION_MATRIX_IDX (STATION_NAME,MATRIX_NUM,VGUEST_TYPE))";
+  sql=QString("create table if not exists VGUEST_RESOURCES (")+
+    "ID int unsigned auto_increment not null primary key,"+
+    "STATION_NAME char(64) not null,"+
+    "MATRIX_NUM int not null,"+
+    "VGUEST_TYPE int not null,"+
+    "NUMBER int not null,"+
+    "ENGINE_NUM int default -1,"+
+    "DEVICE_NUM int default -1,"+
+    "SURFACE_NUM int default 0,"+
+    "RELAY_NUM int default -1,"+
+    "BUSS_NUM int default -1,"+
+    "index STATION_MATRIX_IDX (STATION_NAME,MATRIX_NUM,VGUEST_TYPE))"+
+    config->createTablePostfix();
   if(!RunQuery(sql)) {
     return false;
   }
 
-//
-// Create RDLOGEDIT table
-//
-  sql=QString("create table if not exists RDLOGEDIT (\
-      ID int unsigned primary key auto_increment,\
-      STATION char(64) not null,\
-      INPUT_CARD int default -1,\
-      INPUT_PORT int default 0,\
-      OUTPUT_CARD int default -1,\
-      OUTPUT_PORT int default 0,\
-      FORMAT int unsigned default 0,\
-      SAMPRATE int unsigned default 44100,\
-      LAYER int unsigned default 0,\
-      BITRATE int unsigned default 0,\
-      ENABLE_SECOND_START enum('N','Y') default 'Y',\
-      DEFAULT_CHANNELS int unsigned default 2,\
-      MAXLENGTH int default 0,\
-      TAIL_PREROLL int unsigned default 2000,\
-      START_CART int unsigned default 0,\
-      END_CART int unsigned default 0,\
-      REC_START_CART int unsigned default 0,\
-      REC_END_CART int unsigned default 0,\
-      TRIM_THRESHOLD int default -3000,\
-      RIPPER_LEVEL int default -1300,\
-      DEFAULT_TRANS_TYPE int default 0,\
-      index STATION_IDX (STATION))");
+  //
+  // Create RDLOGEDIT table
+  //
+  sql=QString("create table if not exists RDLOGEDIT (")+
+    "ID int unsigned primary key auto_increment,"+
+    "STATION char(64) not null,"+
+    "INPUT_CARD int default -1,"+
+    "INPUT_PORT int default 0,"+
+    "OUTPUT_CARD int default -1,"+
+    "OUTPUT_PORT int default 0,"+
+    "FORMAT int unsigned default 0,"+
+    "SAMPRATE int unsigned default 44100,"+
+    "LAYER int unsigned default 0,"+
+    "BITRATE int unsigned default 0,"+
+    "ENABLE_SECOND_START enum('N','Y') default 'Y',"+
+    "DEFAULT_CHANNELS int unsigned default 2,"+
+    "MAXLENGTH int default 0,"+
+    "TAIL_PREROLL int unsigned default 2000,"+
+    "START_CART int unsigned default 0,"+
+    "END_CART int unsigned default 0,"+
+    "REC_START_CART int unsigned default 0,"+
+    "REC_END_CART int unsigned default 0,"+
+    "TRIM_THRESHOLD int default -3000,"+
+    "RIPPER_LEVEL int default -1300,"+
+    "DEFAULT_TRANS_TYPE int default 0,"+
+    "index STATION_IDX (STATION))"+
+    config->createTablePostfix();
   if(!RunQuery(sql)) {
     return false;
   }
 
-//
-// Create RDCATCH table
-//
-  sql="create table if not exists RDCATCH (\
-       ID int unsigned primary key auto_increment,\
-       STATION char(64) not null,\
-       ERROR_RML char(255),\
-       index STATION_IDX (STATION))";
+  //
+  // Create RDCATCH table
+  //
+  sql=QString("create table if not exists RDCATCH (")+
+    "ID int unsigned primary key auto_increment,"+
+    "STATION char(64) not null,"+
+    "ERROR_RML char(255),"+
+    "index STATION_IDX (STATION))"+
+    config->createTablePostfix();
   if(!RunQuery(sql)) {
     return false;
   }
@@ -1732,88 +1520,90 @@ bool CreateDb(QString name,QString pwd)
   //
   // Create SCHED_CODES Table
   //
-  sql="create table if not exists SCHED_CODES\
-		  (CODE varchar(10) not null primary key,\
-		  DESCRIPTION varchar(255))";
+  sql=QString("create table if not exists SCHED_CODES")+
+    "(CODE varchar(10) not null primary key,"+
+    "DESCRIPTION varchar(255))"+
+    config->createTablePostfix();
   if(!RunQuery(sql)) {
-	  return false;
+    return false;
   }
 
   //
   // Create DROPBOXES Table
   //
-  sql="create table if not exists DROPBOXES \
-       (ID int auto_increment not null primary key,\
-        STATION_NAME char(64),\
-        GROUP_NAME char(10),\
-        PATH char(255),\
-        NORMALIZATION_LEVEL int default 1,\
-        AUTOTRIM_LEVEL int default 1,\
-        SINGLE_CART enum('N','Y') default 'N',\
-        TO_CART int unsigned default 0,\
-        FORCE_TO_MONO enum('N','Y') default 'N',\
-        SEGUE_LEVEL int(11) default 1,\
-        SEGUE_LENGTH int(11) default 0,\
-        USE_CARTCHUNK_ID enum('N','Y') default 'N',\
-        TITLE_FROM_CARTCHUNK_ID enum('N','Y') default 'N',\
-        DELETE_CUTS enum('N','Y') default 'N',\
-        DELETE_SOURCE enum('N','Y') default 'Y',\
-        METADATA_PATTERN char(64),\
-        STARTDATE_OFFSET int default 0,\
-        ENDDATE_OFFSET int default 0,\
-        FIX_BROKEN_FORMATS enum('N','Y') default 'N',\
-        LOG_PATH char(255),\
-        IMPORT_CREATE_DATES enum('N','Y') default 'N',\
-        CREATE_STARTDATE_OFFSET int default 0,\
-        CREATE_ENDDATE_OFFSET int default 0,\
-        SET_USER_DEFINED char(255),\
-        index STATION_NAME_IDX (STATION_NAME))";
+  sql=QString("create table if not exists DROPBOXES ")+
+    "(ID int auto_increment not null primary key,"+
+    "STATION_NAME char(64),"+
+    "GROUP_NAME char(10),"+
+    "PATH char(255),"+
+    "NORMALIZATION_LEVEL int default 1,"+
+    "AUTOTRIM_LEVEL int default 1,"+
+    "SINGLE_CART enum('N','Y') default 'N',"+
+    "TO_CART int unsigned default 0,"+
+    "FORCE_TO_MONO enum('N','Y') default 'N',"+
+    "SEGUE_LEVEL int(11) default 1,"+
+    "SEGUE_LENGTH int(11) default 0,"+
+    "USE_CARTCHUNK_ID enum('N','Y') default 'N',"+
+    "TITLE_FROM_CARTCHUNK_ID enum('N','Y') default 'N',"+
+    "DELETE_CUTS enum('N','Y') default 'N',"+
+    "DELETE_SOURCE enum('N','Y') default 'Y',"+
+    "METADATA_PATTERN char(64),"+
+    "STARTDATE_OFFSET int default 0,"+
+    "ENDDATE_OFFSET int default 0,"+
+    "FIX_BROKEN_FORMATS enum('N','Y') default 'N',"+
+    "LOG_PATH char(255),"+
+    "IMPORT_CREATE_DATES enum('N','Y') default 'N',"+
+    "CREATE_STARTDATE_OFFSET int default 0,"+
+    "CREATE_ENDDATE_OFFSET int default 0,"+
+    "SET_USER_DEFINED char(255),"+
+    "index STATION_NAME_IDX (STATION_NAME))"+
+    config->createTablePostfix();
   if(!RunQuery(sql)) {
-	  return false;
+    return false;
   }
 
   //
   // Create RDPANEL Table
   //
-  sql="create table if not exists RDPANEL (\
-      ID int not null primary key auto_increment,\
-      STATION char(40) not null,\
-      INSTANCE int unsigned not null,\
-      CARD2 int default 0,\
-      PORT2 int default 0,\
-      START_RML2 char(255),\
-      STOP_RML2 char(255),\
-      CARD3 int default 0,\
-      PORT3 int default 0,\
-      START_RML3 char(255),\
-      STOP_RML3 char(255),\
-      CARD6 int default 0,\
-      PORT6 int default 0,\
-      START_RML6 char(255),\
-      STOP_RML6 char(255),\
-      CARD7 int default 0,\
-      PORT7 int default 0,\
-      START_RML7 char(255),\
-      STOP_RML7 char(255),\
-      CARD8 int default 0,\
-      PORT8 int default 0,\
-      START_RML8 char(255),\
-      STOP_RML8 char(255),\
-      CARD9 int default 0,\
-      PORT9 int default 0,\
-      START_RML9 char(255),\
-      STOP_RML9 char(255),\
-      STATION_PANELS int default 3,\
-      USER_PANELS int default 3,\
-      CLEAR_FILTER enum('N','Y') default 'N',\
-      FLASH_PANEL enum('N','Y') default 'N',\
-      PANEL_PAUSE_ENABLED enum('N','Y') default 'N',\
-      BUTTON_LABEL_TEMPLATE char(32) default \"%t\",\
-      DEFAULT_SERVICE char(10),\
-      SKIN_PATH char(255) default \"";
-  sql+=RD_DEFAULT_RDPANEL_SKIN;
-  sql+="\",\
-      index STATION_IDX (STATION,INSTANCE))"; 
+  sql=QString("create table if not exists RDPANEL (")+
+    "ID int not null primary key auto_increment,"+
+    "STATION char(40) not null,"+
+    "INSTANCE int unsigned not null,"+
+    "CARD2 int default 0,"+
+    "PORT2 int default 0,"+
+    "START_RML2 char(255),"+
+    "STOP_RML2 char(255),"+
+    "CARD3 int default 0,"+
+    "PORT3 int default 0,"+
+    "START_RML3 char(255),"+
+    "STOP_RML3 char(255),"+
+    "CARD6 int default 0,"+
+    "PORT6 int default 0,"+
+    "START_RML6 char(255),"+
+    "STOP_RML6 char(255),"+
+    "CARD7 int default 0,"+
+    "PORT7 int default 0,"+
+    "START_RML7 char(255),"+
+    "STOP_RML7 char(255),"+
+    "CARD8 int default 0,"+
+    "PORT8 int default 0,"+
+    "START_RML8 char(255),"+
+    "STOP_RML8 char(255),"+
+    "CARD9 int default 0,"+
+    "PORT9 int default 0,"+
+    "START_RML9 char(255),"+
+    "STOP_RML9 char(255),"+
+    "STATION_PANELS int default 3,"+
+    "USER_PANELS int default 3,"+
+    "CLEAR_FILTER enum('N','Y') default 'N',"+
+    "FLASH_PANEL enum('N','Y') default 'N',"+
+    "PANEL_PAUSE_ENABLED enum('N','Y') default 'N',"+
+    "BUTTON_LABEL_TEMPLATE char(32) default \"%t\","+
+    "DEFAULT_SERVICE char(10),"+
+    "SKIN_PATH char(255) default \""+
+    RDEscapeString(RD_DEFAULT_RDPANEL_SKIN)+"\","+
+    "index STATION_IDX (STATION,INSTANCE))"+
+    config->createTablePostfix();
   if(!RunQuery(sql)) {
     return false;
   }
@@ -1821,18 +1611,19 @@ bool CreateDb(QString name,QString pwd)
   //
   // Create EXTENDED_PANELS Table
   //
-  sql="create table if not exists EXTENDED_PANELS (\
-      ID int auto_increment not null primary key,\
-      TYPE int not null,\
-      OWNER char(64) not null,\
-      PANEL_NO int not null,\
-      ROW_NO int not null,\
-      COLUMN_NO int not null,\
-      LABEL char(64),\
-      CART int,\
-      DEFAULT_COLOR char(7),\
-      index LOAD_IDX (TYPE,OWNER,PANEL_NO),\
-      index SAVE_IDX (TYPE,OWNER,PANEL_NO,ROW_NO,COLUMN_NO))"; 
+  sql=QString("create table if not exists EXTENDED_PANELS (")+
+    "ID int auto_increment not null primary key,"+
+    "TYPE int not null,"+
+    "OWNER char(64) not null,"+
+    "PANEL_NO int not null,"+
+    "ROW_NO int not null,"+
+    "COLUMN_NO int not null,"+
+    "LABEL char(64),"+
+    "CART int,"+
+    "DEFAULT_COLOR char(7),"+
+    "index LOAD_IDX (TYPE,OWNER,PANEL_NO),"+
+    "index SAVE_IDX (TYPE,OWNER,PANEL_NO,ROW_NO,COLUMN_NO))"+
+    config->createTablePostfix();
   if(!RunQuery(sql)) {
     return false;
   }
@@ -1840,13 +1631,14 @@ bool CreateDb(QString name,QString pwd)
   //
   // Create PANEL_NAMES Table
   //
-  sql="create table if not exists PANEL_NAMES (\
-      ID int auto_increment not null primary key,\
-      TYPE int not null,\
-      OWNER char(64) not null,\
-      PANEL_NO int not null,\
-      NAME char(64),\
-      index LOAD_IDX (TYPE,OWNER,PANEL_NO))"; 
+  sql=QString("create table if not exists PANEL_NAMES (")+
+    "ID int auto_increment not null primary key,"+
+    "TYPE int not null,"+
+    "OWNER char(64) not null,"+
+    "PANEL_NO int not null,"+
+    "NAME char(64),"+
+    "index LOAD_IDX (TYPE,OWNER,PANEL_NO))"+
+    config->createTablePostfix();
   if(!RunQuery(sql)) {
     return false;
   }
@@ -1854,13 +1646,14 @@ bool CreateDb(QString name,QString pwd)
   //
   // Create EXTENDED_PANEL_NAMES Table
   //
-  sql="create table if not exists EXTENDED_PANEL_NAMES (\
-      ID int auto_increment not null primary key,\
-      TYPE int not null,\
-      OWNER char(64) not null,\
-      PANEL_NO int not null,\
-      NAME char(64),\
-      index LOAD_IDX (TYPE,OWNER,PANEL_NO))"; 
+  sql=QString("create table if not exists EXTENDED_PANEL_NAMES (")+
+    "ID int auto_increment not null primary key,"+
+    "TYPE int not null,"+
+    "OWNER char(64) not null,"+
+    "PANEL_NO int not null,"+
+    "NAME char(64),"+
+    "index LOAD_IDX (TYPE,OWNER,PANEL_NO))"+
+    config->createTablePostfix();
   if(!RunQuery(sql)) {
     return false;
   }
@@ -1868,40 +1661,41 @@ bool CreateDb(QString name,QString pwd)
   //
   // Create FEEDS Table
   //
-    sql="create table if not exists FEEDS (\
-         ID int unsigned auto_increment not null primary key,\
-         KEY_NAME char(8) unique not null,\
-         CHANNEL_TITLE char(255),\
-         CHANNEL_DESCRIPTION text,\
-         CHANNEL_CATEGORY char(64),\
-         CHANNEL_LINK char(255),\
-         CHANNEL_COPYRIGHT char(64),\
-         CHANNEL_WEBMASTER char(64),\
-         CHANNEL_LANGUAGE char(5) default \"en-us\",\
-         BASE_URL char(255),\
-         BASE_PREAMBLE char(255),\
-         PURGE_URL char(255),\
-         PURGE_USERNAME char(64),\
-         PURGE_PASSWORD char(64),\
-         HEADER_XML text,\
-         CHANNEL_XML text,\
-         ITEM_XML text,\
-         CAST_ORDER enum('N','Y') default 'N',\
-         MAX_SHELF_LIFE int,\
-         LAST_BUILD_DATETIME datetime,\
-         ORIGIN_DATETIME datetime,\
-         ENABLE_AUTOPOST enum('N','Y') default 'N',\
-         KEEP_METADATA enum('N','Y') default 'Y',\
-         UPLOAD_FORMAT int default 2,\
-         UPLOAD_CHANNELS int default 2,\
-         UPLOAD_SAMPRATE int default 44100,\
-         UPLOAD_BITRATE int default 32000,\
-         UPLOAD_QUALITY int default 0,\
-         UPLOAD_EXTENSION char(16) default \"mp3\",\
-         NORMALIZE_LEVEL int default -100,\
-         REDIRECT_PATH char(255),\
-         MEDIA_LINK_MODE int default 0,\
-         index KEY_NAME_IDX(KEY_NAME))";
+  sql=QString("create table if not exists FEEDS (")+
+    "ID int unsigned auto_increment not null primary key,"+
+    "KEY_NAME char(8) unique not null,"+
+    "CHANNEL_TITLE char(255),"+
+    "CHANNEL_DESCRIPTION text,"+
+    "CHANNEL_CATEGORY char(64),"+
+    "CHANNEL_LINK char(255),"+
+    "CHANNEL_COPYRIGHT char(64),"+
+    "CHANNEL_WEBMASTER char(64),"+
+    "CHANNEL_LANGUAGE char(5) default \"en-us\","+
+    "BASE_URL char(255),"+
+    "BASE_PREAMBLE char(255),"+
+    "PURGE_URL char(255),"+
+    "PURGE_USERNAME char(64),"+
+    "PURGE_PASSWORD char(64),"+
+    "HEADER_XML text,"+
+    "CHANNEL_XML text,"+
+    "ITEM_XML text,"+
+    "CAST_ORDER enum('N','Y') default 'N',"+
+    "MAX_SHELF_LIFE int,"+
+    "LAST_BUILD_DATETIME datetime,"+
+    "ORIGIN_DATETIME datetime,"+
+    "ENABLE_AUTOPOST enum('N','Y') default 'N',"+
+    "KEEP_METADATA enum('N','Y') default 'Y',"+
+    "UPLOAD_FORMAT int default 2,"+
+    "UPLOAD_CHANNELS int default 2,"+
+    "UPLOAD_SAMPRATE int default 44100,"+
+    "UPLOAD_BITRATE int default 32000,"+
+    "UPLOAD_QUALITY int default 0,"+
+    "UPLOAD_EXTENSION char(16) default \"mp3\","+
+    "NORMALIZE_LEVEL int default -100,"+
+    "REDIRECT_PATH char(255),"+
+    "MEDIA_LINK_MODE int default 0,"+
+    "index KEY_NAME_IDX(KEY_NAME))"+
+    config->createTablePostfix();
   if(!RunQuery(sql)) {
     return false;
   }
@@ -1909,25 +1703,26 @@ bool CreateDb(QString name,QString pwd)
   //
   // Create PODCASTS Table
   //
-  sql="create table if not exists PODCASTS (\
-       ID int unsigned auto_increment not null primary key,\
-       FEED_ID int unsigned not null,\
-       STATUS int unsigned default 1,\
-       ITEM_TITLE char(255),\
-       ITEM_DESCRIPTION text,\
-       ITEM_CATEGORY char(64),\
-       ITEM_LINK char(255),\
-       ITEM_COMMENTS char(255),\
-       ITEM_AUTHOR char(255),\
-       ITEM_SOURCE_TEXT char(64),\
-       ITEM_SOURCE_URL char(255),\
-       AUDIO_FILENAME char(255),\
-       AUDIO_LENGTH int unsigned,\
-       AUDIO_TIME int unsigned,\
-       SHELF_LIFE int,\
-       ORIGIN_DATETIME datetime,\
-       EFFECTIVE_DATETIME datetime,\
-       index FEED_ID_IDX(FEED_ID,ORIGIN_DATETIME))";
+  sql=QString("create table if not exists PODCASTS (")+
+    "ID int unsigned auto_increment not null primary key,"+
+    "FEED_ID int unsigned not null,"+
+    "STATUS int unsigned default 1,"+
+    "ITEM_TITLE char(255),"+
+    "ITEM_DESCRIPTION text,"+
+    "ITEM_CATEGORY char(64),"+
+    "ITEM_LINK char(255),"+
+    "ITEM_COMMENTS char(255),"+
+    "ITEM_AUTHOR char(255),"+
+    "ITEM_SOURCE_TEXT char(64),"+
+    "ITEM_SOURCE_URL char(255),"+
+    "AUDIO_FILENAME char(255),"+
+    "AUDIO_LENGTH int unsigned,"+
+    "AUDIO_TIME int unsigned,"+
+    "SHELF_LIFE int,"+
+    "ORIGIN_DATETIME datetime,"+
+    "EFFECTIVE_DATETIME datetime,"+
+    "index FEED_ID_IDX(FEED_ID,ORIGIN_DATETIME))"+
+    config->createTablePostfix();
   if(!RunQuery(sql)) {
     return false;
   }
@@ -1935,12 +1730,13 @@ bool CreateDb(QString name,QString pwd)
   //
   // Create AUX_METADATA Table
   //
-  sql="create table if not exists AUX_METADATA (\
-       ID int unsigned auto_increment not null primary key,\
-       FEED_ID int unsigned,\
-       VAR_NAME char(16),\
-       CAPTION char(64),\
-       index FEED_ID_IDX(FEED_ID))";
+  sql=QString("create table if not exists AUX_METADATA (")+
+    "ID int unsigned auto_increment not null primary key,"+
+    "FEED_ID int unsigned,"+
+    "VAR_NAME char(16),"+
+    "CAPTION char(64),"+
+    "index FEED_ID_IDX(FEED_ID))"+
+    config->createTablePostfix();
   if(!RunQuery(sql)) {
     return false;
   }
@@ -1948,12 +1744,13 @@ bool CreateDb(QString name,QString pwd)
   //
   // Create FEED_PERMS table
   //
-  sql=QString("create table if not exists FEED_PERMS (\
-      ID int unsigned auto_increment not null primary key,\
-      USER_NAME char(255),\
-      KEY_NAME char(8),\
-      index USER_IDX (USER_NAME),\
-      index KEYNAME_IDX (KEY_NAME))");
+  sql=QString("create table if not exists FEED_PERMS (")+
+    "ID int unsigned auto_increment not null primary key,"+
+    "USER_NAME char(255),"+
+    "KEY_NAME char(8),"+
+    "index USER_IDX (USER_NAME),"+
+    "index KEYNAME_IDX (KEY_NAME))"+
+    config->createTablePostfix();
   if(!RunQuery(sql)) {
     return false;
   }
@@ -1961,11 +1758,12 @@ bool CreateDb(QString name,QString pwd)
   //
   // Create WEB_CONNECTIONS Table
   //
-  sql=QString("create table if not exists WEB_CONNECTIONS (\
-      SESSION_ID int unsigned not null primary key,\
-      LOGIN_NAME char(255),\
-      IP_ADDRESS char(16),\
-      TIME_STAMP datetime)");
+  sql=QString("create table if not exists WEB_CONNECTIONS (")+
+    "SESSION_ID int unsigned not null primary key,"+
+    "LOGIN_NAME char(255),"+
+    "IP_ADDRESS char(16),"+
+    "TIME_STAMP datetime)"+
+    config->createTablePostfix();
   if(!RunQuery(sql)) {
     return false;
   }
@@ -1973,16 +1771,17 @@ bool CreateDb(QString name,QString pwd)
   //
   // Create SWITCHER_NODES Table
   //
-  sql="create table if not exists SWITCHER_NODES (\
-       ID int not null auto_increment primary key,\
-       STATION_NAME char(64),\
-       MATRIX int,\
-       BASE_OUTPUT int default 0,\
-       HOSTNAME char(64),\
-       PASSWORD char(64),\
-       TCP_PORT int,\
-       DESCRIPTION char(255),\
-       index STATION_IDX (STATION_NAME,MATRIX))";
+  sql=QString("create table if not exists SWITCHER_NODES (")+
+    "ID int not null auto_increment primary key,"+
+    "STATION_NAME char(64),"+
+    "MATRIX int,"+
+    "BASE_OUTPUT int default 0,"+
+    "HOSTNAME char(64),"+
+    "PASSWORD char(64),"+
+    "TCP_PORT int,"+
+    "DESCRIPTION char(255),"+
+    "index STATION_IDX (STATION_NAME,MATRIX))"+
+    config->createTablePostfix();
   if(!RunQuery(sql)) {
     return false;
   }
@@ -1990,22 +1789,23 @@ bool CreateDb(QString name,QString pwd)
   //
   // Create ENCODERS Table
   //
-  sql="create table if not exists ENCODERS (\
-       ID int not null auto_increment primary key,\
-       NAME char(32) not null,\
-       STATION_NAME char(64),\
-       COMMAND_LINE char(255),\
-       DEFAULT_EXTENSION char(16),\
-       index NAME_IDX(NAME,STATION_NAME))";
+  sql=QString("create table if not exists ENCODERS (")+
+    "ID int not null auto_increment primary key,"+
+    "NAME char(32) not null,"+
+    "STATION_NAME char(64),"+
+    "COMMAND_LINE char(255),"+
+    "DEFAULT_EXTENSION char(16),"+
+    "index NAME_IDX(NAME,STATION_NAME))"+
+    config->createTablePostfix();
   if(!RunQuery(sql)) {
     return false;
   }
   // Ensure that dynamic format IDs start after 100
-  sql="insert into ENCODERS set ID=100,NAME=\"dummy\"";
+  sql=QString("insert into ENCODERS set ID=100,NAME=\"dummy\"");
   if(!RunQuery(sql)) {
     return false;
   }
-  sql="delete from ENCODERS where ID=100";
+  sql=QString("delete from ENCODERS where ID=100");
   if(!RunQuery(sql)) {
     return false;
   }
@@ -2013,11 +1813,12 @@ bool CreateDb(QString name,QString pwd)
   //
   // Create ENCODER_BITRATES Table
   //
-  sql="create table if not exists ENCODER_BITRATES (\
-       ID int not null auto_increment primary key,\
-       ENCODER_ID int not null,\
-       BITRATES int not null,\
-       index ENCODER_ID_IDX(ENCODER_ID))";
+  sql=QString("create table if not exists ENCODER_BITRATES (")+
+    "ID int not null auto_increment primary key,"+
+    "ENCODER_ID int not null,"+
+    "BITRATES int not null,"+
+    "index ENCODER_ID_IDX(ENCODER_ID))"+
+    config->createTablePostfix();
   if(!RunQuery(sql)) {
     return false;
   }
@@ -2025,11 +1826,12 @@ bool CreateDb(QString name,QString pwd)
   //
   // Create ENCODER_CHANNELS Table
   //
-  sql="create table if not exists ENCODER_CHANNELS (\
-       ID int not null auto_increment primary key,\
-       ENCODER_ID int not null,\
-       CHANNELS int not null,\
-       index ENCODER_ID_IDX(ENCODER_ID))";
+  sql=QString("create table if not exists ENCODER_CHANNELS (")+
+    "ID int not null auto_increment primary key,"+
+    "ENCODER_ID int not null,"+
+    "CHANNELS int not null,"+
+    "index ENCODER_ID_IDX(ENCODER_ID))"+
+    config->createTablePostfix();
   if(!RunQuery(sql)) {
     return false;
   }
@@ -2037,11 +1839,12 @@ bool CreateDb(QString name,QString pwd)
   //
   // Create ENCODER_SAMPLERATES Table
   //
-  sql="create table if not exists ENCODER_SAMPLERATES (\
-       ID int not null auto_increment primary key,\
-       ENCODER_ID int not null,\
-       SAMPLERATES int not null,\
-       index ENCODER_ID_IDX(ENCODER_ID))";
+  sql=QString("create table if not exists ENCODER_SAMPLERATES (")+
+    "ID int not null auto_increment primary key,"+
+    "ENCODER_ID int not null,"+
+    "SAMPLERATES int not null,"+
+    "index ENCODER_ID_IDX(ENCODER_ID))"+
+    config->createTablePostfix();
   if(!RunQuery(sql)) {
     return false;
   }
@@ -2049,14 +1852,15 @@ bool CreateDb(QString name,QString pwd)
   //
   // Create GPOS Table
   //
-  sql="create table if not exists GPOS (\
-      ID int auto_increment not null primary key,\
-      STATION_NAME char(64) not null,\
-      MATRIX int not null,\
-      NUMBER int not null,\
-      MACRO_CART int default 0,\
-      OFF_MACRO_CART int default 0,\
-      index MATRIX_IDX (STATION_NAME,MATRIX,NUMBER))";
+  sql=QString("create table if not exists GPOS (")+
+    "ID int auto_increment not null primary key,"+
+    "STATION_NAME char(64) not null,"+
+    "MATRIX int not null,"+
+    "NUMBER int not null,"+
+    "MACRO_CART int default 0,"+
+    "OFF_MACRO_CART int default 0,"+
+    "index MATRIX_IDX (STATION_NAME,MATRIX,NUMBER))"+
+    config->createTablePostfix();
   if(!RunQuery(sql)) {
     return false;
   }
@@ -2064,12 +1868,13 @@ bool CreateDb(QString name,QString pwd)
   //
   // DROPBOX_PATHS Table
   //
-  sql="create table if not exists DROPBOX_PATHS (\
-      ID int auto_increment not null primary key,\
-      DROPBOX_ID int not null,\
-      FILE_PATH char(255) not null,\
-      FILE_DATETIME datetime,\
-      index FILE_PATH_IDX (DROPBOX_ID,FILE_PATH))";
+  sql=QString("create table if not exists DROPBOX_PATHS (")+
+    "ID int auto_increment not null primary key,"+
+    "DROPBOX_ID int not null,"+
+    "FILE_PATH char(255) not null,"+
+    "FILE_DATETIME datetime,"+
+    "index FILE_PATH_IDX (DROPBOX_ID,FILE_PATH))"+
+    config->createTablePostfix();
   if(!RunQuery(sql)) {
     return false;
   }
@@ -2077,13 +1882,14 @@ bool CreateDb(QString name,QString pwd)
   //
   // Create NOWNEXT_PLUGINS Table
   //
-  sql="create table if not exists NOWNEXT_PLUGINS (\
-      ID int auto_increment not null primary key,\
-      STATION_NAME char(64) not null,\
-      LOG_MACHINE int unsigned not null default 0,\
-      PLUGIN_PATH char(255),\
-      PLUGIN_ARG char(255),\
-      index STATION_IDX (STATION_NAME,LOG_MACHINE))";
+  sql=QString("create table if not exists NOWNEXT_PLUGINS (")+
+    "ID int auto_increment not null primary key,"+
+    "STATION_NAME char(64) not null,"+
+    "LOG_MACHINE int unsigned not null default 0,"+
+    "PLUGIN_PATH char(255),"+
+    "PLUGIN_ARG char(255),"+
+    "index STATION_IDX (STATION_NAME,LOG_MACHINE))"+
+    config->createTablePostfix();
   if(!RunQuery(sql)) {
     return false;
   }
@@ -2091,17 +1897,18 @@ bool CreateDb(QString name,QString pwd)
   //
   // Create SYSTEM Table
   //
-  sql=QString().sprintf("create table if not exists SYSTEM (\
-                         ID int auto_increment not null primary key,\
-                         SAMPLE_RATE int unsigned default %d,\
-                         DUP_CART_TITLES enum('N','Y') not null default 'Y',\
-                         FIX_DUP_CART_TITLES enum('N','Y') not null default 'Y',\
-                         MAX_POST_LENGTH int unsigned default %u,\
-                         ISCI_XREFERENCE_PATH char(255),\
-                         TEMP_CART_GROUP char(10),\
-                         SHOW_USER_LIST enum('N','Y') not null default 'Y')",
-			RD_DEFAULT_SAMPLE_RATE,
-			RD_DEFAULT_MAX_POST_LENGTH);
+  sql=QString("create table if not exists SYSTEM (")+
+    "ID int auto_increment not null primary key,"+
+    QString().sprintf("SAMPLE_RATE int unsigned default %d,",
+		      RD_DEFAULT_SAMPLE_RATE)+
+    "DUP_CART_TITLES enum('N','Y') not null default 'Y',"+
+    "FIX_DUP_CART_TITLES enum('N','Y') not null default 'Y',"+
+    QString().sprintf("MAX_POST_LENGTH int unsigned default %u,",
+		      RD_DEFAULT_MAX_POST_LENGTH)+
+    "ISCI_XREFERENCE_PATH char(255),"+
+    "TEMP_CART_GROUP char(10),"+
+    "SHOW_USER_LIST enum('N','Y') not null default 'Y')"+
+    config->createTablePostfix();
   if(!RunQuery(sql)) {
     return false;
   }
@@ -2109,32 +1916,33 @@ bool CreateDb(QString name,QString pwd)
   //
   // Create IMPORT_TEMPLATES table
   //
-  sql="create table if not exists IMPORT_TEMPLATES (\
-       NAME char(64) not null primary key,\
-       CART_OFFSET int,\
-       CART_LENGTH int,\
-       TITLE_OFFSET int,\
-       TITLE_LENGTH int,\
-       HOURS_OFFSET int,\
-       HOURS_LENGTH int,\
-       MINUTES_OFFSET int,\
-       MINUTES_LENGTH int,\
-       SECONDS_OFFSET int,\
-       SECONDS_LENGTH int,\
-       LEN_HOURS_OFFSET int,\
-       LEN_HOURS_LENGTH int,\
-       LEN_MINUTES_OFFSET int,\
-       LEN_MINUTES_LENGTH int,\
-       LEN_SECONDS_OFFSET int,\
-       LEN_SECONDS_LENGTH int,\
-       LENGTH_OFFSET int,\
-       LENGTH_LENGTH int,\
-       DATA_OFFSET int,\
-       DATA_LENGTH int,\
-       EVENT_ID_OFFSET int,\
-       EVENT_ID_LENGTH int,\
-       ANNC_TYPE_OFFSET int,\
-       ANNC_TYPE_LENGTH int)";
+  sql=QString("create table if not exists IMPORT_TEMPLATES (")+
+    "NAME char(64) not null primary key,"+
+    "CART_OFFSET int,"+
+    "CART_LENGTH int,"+
+    "TITLE_OFFSET int,"+
+    "TITLE_LENGTH int,"+
+    "HOURS_OFFSET int,"+
+    "HOURS_LENGTH int,"+
+    "MINUTES_OFFSET int,"+
+    "MINUTES_LENGTH int,"+
+    "SECONDS_OFFSET int,"+
+    "SECONDS_LENGTH int,"+
+    "LEN_HOURS_OFFSET int,"+
+    "LEN_HOURS_LENGTH int,"+
+    "LEN_MINUTES_OFFSET int,"+
+    "LEN_MINUTES_LENGTH int,"+
+    "LEN_SECONDS_OFFSET int,"+
+    "LEN_SECONDS_LENGTH int,"+
+    "LENGTH_OFFSET int,"+
+    "LENGTH_LENGTH int,"+
+    "DATA_OFFSET int,"+
+    "DATA_LENGTH int,"+
+    "EVENT_ID_OFFSET int,"+
+    "EVENT_ID_LENGTH int,"+
+    "ANNC_TYPE_OFFSET int,"+
+    "ANNC_TYPE_LENGTH int)"+
+    config->createTablePostfix();
   if(!RunQuery(sql)) {
     return false;
   }
@@ -2143,23 +1951,24 @@ bool CreateDb(QString name,QString pwd)
   //
   // Create REPLICATORS Table
   //
-  sql=QString().sprintf("create table if not exists REPLICATORS (\
-                         NAME char(32) not null primary key,\
-                         DESCRIPTION char(64),\
-                         TYPE_ID int unsigned not null,\
-                         STATION_NAME char(64),\
-                         FORMAT int unsigned default 0,\
-                         CHANNELS int unsigned default 2,\
-                         SAMPRATE int unsigned default %u,\
-                         BITRATE int unsigned default 0,\
-                         QUALITY int unsigned default 0,\
-                         URL char(255),\
-                         URL_USERNAME char(64),\
-                         URL_PASSWORD char(64),\
-                         ENABLE_METADATA enum('N','Y') default 'N',\
-                         NORMALIZATION_LEVEL int default 0,\
-                         index TYPE_ID_IDX (TYPE_ID))",
-			RD_DEFAULT_SAMPLE_RATE);
+  sql=QString("create table if not exists REPLICATORS (")+
+    "NAME char(32) not null primary key,"+
+    "DESCRIPTION char(64),"+
+    "TYPE_ID int unsigned not null,"+
+    "STATION_NAME char(64),"+
+    "FORMAT int unsigned default 0,"+
+    "CHANNELS int unsigned default 2,"+
+    QString().sprintf("SAMPRATE int unsigned default %u,",
+		      RD_DEFAULT_SAMPLE_RATE)+
+    "BITRATE int unsigned default 0,"+
+    "QUALITY int unsigned default 0,"+
+    "URL char(255),"+
+    "URL_USERNAME char(64),"+
+    "URL_PASSWORD char(64),"+
+    "ENABLE_METADATA enum('N','Y') default 'N',"+
+    "NORMALIZATION_LEVEL int default 0,"+
+    "index TYPE_ID_IDX (TYPE_ID))"+
+    config->createTablePostfix();
   if(!RunQuery(sql)) {
     return false;
   }
@@ -2167,12 +1976,13 @@ bool CreateDb(QString name,QString pwd)
   //
   // Create REPLICATOR_MAP Table
   //
-    sql="create table if not exists REPLICATOR_MAP (\
-        ID int unsigned not null auto_increment primary key,\
-        REPLICATOR_NAME char(32) not null,\
-        GROUP_NAME char(10) not null,\
-        index REPLICATOR_NAME_IDX(REPLICATOR_NAME),\
-        index GROUP_NAME_IDX(GROUP_NAME))";
+  sql=QString("create table if not exists REPLICATOR_MAP (")+
+    "ID int unsigned not null auto_increment primary key,"+
+    "REPLICATOR_NAME char(32) not null,"+
+    "GROUP_NAME char(10) not null,"+
+    "index REPLICATOR_NAME_IDX(REPLICATOR_NAME),"+
+    "index GROUP_NAME_IDX(GROUP_NAME))"+
+    config->createTablePostfix();
   if(!RunQuery(sql)) {
     return false;
   }
@@ -2180,14 +1990,15 @@ bool CreateDb(QString name,QString pwd)
   //
   // Create REPL_CART_STATE Table
   //
-  sql="create table if not exists REPL_CART_STATE (\
-       ID int unsigned not null auto_increment primary key,	\
-       REPLICATOR_NAME char(32) not null,\
-       CART_NUMBER int unsigned not null,\
-       POSTED_FILENAME char(255),\
-       ITEM_DATETIME datetime not null,\
-       REPOST enum('N','Y') default 'N',\
-       unique REPLICATOR_NAME_IDX(REPLICATOR_NAME,CART_NUMBER,POSTED_FILENAME))";
+  sql=QString("create table if not exists REPL_CART_STATE (")+
+    "ID int unsigned not null auto_increment primary key,"+
+    "REPLICATOR_NAME char(32) not null,"+
+    "CART_NUMBER int unsigned not null,"+
+    "POSTED_FILENAME char(255),"+
+    "ITEM_DATETIME datetime not null,"+
+    "REPOST enum('N','Y') default 'N',"+
+    "unique REPLICATOR_NAME_IDX(REPLICATOR_NAME,CART_NUMBER,POSTED_FILENAME))"+
+    config->createTablePostfix();
   if(!RunQuery(sql)) {
     return false;
   }
@@ -2195,12 +2006,13 @@ bool CreateDb(QString name,QString pwd)
   //
   // Create REPL_CUT_STATE Table
   //
-  sql="create table if not exists REPL_CUT_STATE (\
-       ID int unsigned not null auto_increment primary key,\
-       REPLICATOR_NAME char(32) not null,\
-       CUT_NAME char(12) not null,\
-       ITEM_DATETIME datetime not null,\
-       unique REPLICATOR_NAME_IDX(REPLICATOR_NAME,CUT_NAME))";
+  sql=QString("create table if not exists REPL_CUT_STATE (")+
+    "ID int unsigned not null auto_increment primary key,"+
+    "REPLICATOR_NAME char(32) not null,"+
+    "CUT_NAME char(12) not null,"+
+    "ITEM_DATETIME datetime not null,"+
+    "unique REPLICATOR_NAME_IDX(REPLICATOR_NAME,CUT_NAME))"+
+    config->createTablePostfix();
   if(!RunQuery(sql)) {
     return false;
   }
@@ -2208,20 +2020,21 @@ bool CreateDb(QString name,QString pwd)
   //
   // Create ISCI_XREFERENCE Table
   //
-    sql="create table if not exists ISCI_XREFERENCE (\
-        ID int unsigned not null auto_increment primary key,\
-        CART_NUMBER int unsigned not null,\
-        ISCI char(32) not null,\
-        FILENAME char(64) not null,\
-        LATEST_DATE date not null,\
-        TYPE char(1) not null,\
-        ADVERTISER_NAME char(30),\
-        PRODUCT_NAME char(35),\
-        CREATIVE_TITLE char(30),\
-        REGION_NAME char(80),\
-        index CART_NUMBER_IDX(CART_NUMBER),\
-        index TYPE_IDX(TYPE,LATEST_DATE),\
-        index LATEST_DATE_IDX(LATEST_DATE))";
+  sql=QString("create table if not exists ISCI_XREFERENCE (")+
+    "ID int unsigned not null auto_increment primary key,"+
+    "CART_NUMBER int unsigned not null,"+
+    "ISCI char(32) not null,"+
+    "FILENAME char(64) not null,"+
+    "LATEST_DATE date not null,"+
+    "TYPE char(1) not null,"+
+    "ADVERTISER_NAME char(30),"+
+    "PRODUCT_NAME char(35),"+
+    "CREATIVE_TITLE char(30),"+
+    "REGION_NAME char(80),"+
+    "index CART_NUMBER_IDX(CART_NUMBER),"+
+    "index TYPE_IDX(TYPE,LATEST_DATE),"+
+    "index LATEST_DATE_IDX(LATEST_DATE))"+
+    config->createTablePostfix();
   if(!RunQuery(sql)) {
     return false;
   }
@@ -2229,13 +2042,14 @@ bool CreateDb(QString name,QString pwd)
   //
   // Create RDHOTKEYS table
   //
-  sql=QString("CREATE TABLE IF NOT EXISTS RDHOTKEYS (\
-      ID int unsigned not null auto_increment primary key,	\
-      STATION_NAME         CHAR(64),   \
-      MODULE_NAME          CHAR(64),   \
-      KEY_ID               int,        \
-      KEY_VALUE            CHAR(64),   \
-      KEY_LABEL            CHAR(64)) ");
+  sql=QString("create table if not exists RDHOTKEYS (")+
+    "ID int unsigned not null auto_increment primary key,"+
+    "STATION_NAME         char(64),"+
+    "MODULE_NAME          char(64),"+
+    "KEY_ID               int,"+
+    "KEY_VALUE            char(64),"+
+    "KEY_LABEL            char(64))"+
+    config->createTablePostfix();
   if(!RunQuery(sql)) {
      return false;
   }
@@ -2243,12 +2057,13 @@ bool CreateDb(QString name,QString pwd)
   //
   // Create JACK_CLIENTS Table
   //
-  sql=QString("create table if not exists JACK_CLIENTS (\
-               ID int unsigned auto_increment not null primary key,	\
-               STATION_NAME char(64) not null,\
-               DESCRIPTION char(64),\
-               COMMAND_LINE text not null,\
-               index IDX_STATION_NAME (STATION_NAME))");
+  sql=QString("create table if not exists JACK_CLIENTS (")+
+    "ID int unsigned auto_increment not null primary key,"+
+    "STATION_NAME char(64) not null,"+
+    "DESCRIPTION char(64),"+
+    "COMMAND_LINE text not null,"+
+    "index IDX_STATION_NAME (STATION_NAME))"+
+    config->createTablePostfix();
   if(!RunQuery(sql)) {
      return false;
   }
@@ -2272,7 +2087,8 @@ bool CreateDb(QString name,QString pwd)
     "CARD int not null default 0,"+
     "INPUT_PORT int not null default 0,"+
     "OUTPUT_PORT int not null default 0,"+
-    "index STATION_NAME_IDX(STATION_NAME,SLOT_NUMBER))";
+    "index STATION_NAME_IDX(STATION_NAME,SLOT_NUMBER))"+
+    config->createTablePostfix();
   if(!RunQuery(sql)) {
      return false;
   }
@@ -2287,7 +2103,8 @@ bool CreateDb(QString name,QString pwd)
     "SLOT int not null,"+
     "IP_ADDRESS char(15),"+
     "SOURCE_NUMBER int,"+
-    "index STATION_NAME_IDX(STATION_NAME,MATRIX))";
+    "index STATION_NAME_IDX(STATION_NAME,MATRIX))"+
+    config->createTablePostfix();
   if(!RunQuery(sql)) {
      return false;
   }
@@ -2312,7 +2129,8 @@ bool CreateDb(QString name,QString pwd)
     "STOP_GPI_LINE int not null default -1,"+
     "STOP_GPO_MATRIX int not null default -1,"+
     "STOP_GPO_LINE int not null default -1,"+
-    "index STATION_NAME_IDX(STATION_NAME,INSTANCE))";
+    "index STATION_NAME_IDX(STATION_NAME,INSTANCE))"+
+    config->createTablePostfix();
   if(!RunQuery(sql)) {
      return false;
   }
@@ -2337,7 +2155,8 @@ bool CreateDb(QString name,QString pwd)
     "STOP_GPI_LINE int not null default -1,"+
     "STOP_GPO_MATRIX int not null default -1,"+
     "STOP_GPO_LINE int not null default -1,"+
-    "index STATION_NAME_IDX(STATION_NAME,INSTANCE))";
+    "index STATION_NAME_IDX(STATION_NAME,INSTANCE))"+
+    config->createTablePostfix();
   if(!RunQuery(sql)) {
      return false;
   }
@@ -2351,7 +2170,8 @@ bool CreateDb(QString name,QString pwd)
     "MACHINE int unsigned not null,"+
     "START_MODE int not null default 0,"+
     "OP_MODE int not null default 2,"+
-    "index STATION_NAME_IDX(STATION_NAME,MACHINE))";
+    "index STATION_NAME_IDX(STATION_NAME,MACHINE))"+
+    config->createTablePostfix();
   if(!RunQuery(sql)) {
      return false;
   }
@@ -2364,7 +2184,8 @@ bool CreateDb(QString name,QString pwd)
     "DROPBOX_ID int not null,"+
     "SCHED_CODE char(11) not null,"
     "index DROPBOX_ID_IDX(DROPBOX_ID),"+
-    "index SCHED_CODE_IDX(SCHED_CODE))";
+    "index SCHED_CODE_IDX(SCHED_CODE))"+
+    config->createTablePostfix();
   if(!RunQuery(sql)) {
      return false;
   }
@@ -2380,7 +2201,8 @@ bool CreateDb(QString name,QString pwd)
     "TYPE int not null,"+
     "EDGE int not null,"+
     "EVENT_DATETIME datetime not null,"+
-    "index STATION_NAME_IDX(STATION_NAME,MATRIX,TYPE,EVENT_DATETIME,EDGE))";
+    "index STATION_NAME_IDX(STATION_NAME,MATRIX,TYPE,EVENT_DATETIME,EDGE))"+
+    config->createTablePostfix();
   if(!RunQuery(sql)) {
      return false;
   }
@@ -2393,7 +2215,8 @@ bool CreateDb(QString name,QString pwd)
     "CUT_NAME char(12) not null,"+
     "NUMBER int not null,"+
     "POINT int not null,"+
-    "index CUT_NAME_IDX(CUT_NAME))";
+    "index CUT_NAME_IDX(CUT_NAME))"+
+    config->createTablePostfix();
   if(!RunQuery(sql)) {
      return false;
   }
@@ -2407,7 +2230,8 @@ bool CreateDb(QString name,QString pwd)
     "CHANNEL int unsigned not null,"+
     "NUMBER int not null,"+
     "CART_NUMBER int unsigned not null default 0,"+
-    "index STATION_NAME_IDX(STATION_NAME,CHANNEL))";
+    "index STATION_NAME_IDX(STATION_NAME,CHANNEL))"+
+    config->createTablePostfix();
   if(!RunQuery(sql)) {
      return false;
   }
@@ -2421,7 +2245,8 @@ bool CreateDb(QString name,QString pwd)
     "HOUR int not null,"+
     "CLOCK_NAME char(64) default null,"+
     "index SERVICE_NAME_IDX(SERVICE_NAME,HOUR),"+
-    "index CLOCK_NAME_IDX(CLOCK_NAME))";
+    "index CLOCK_NAME_IDX(CLOCK_NAME))"+
+    config->createTablePostfix();
   if(!RunQuery(sql)) {
      return false;
   }
@@ -2434,7 +2259,8 @@ bool CreateDb(QString name,QString pwd)
     "LOGIN_NAME char(255) not null,"+
     "IPV4_ADDRESS char(16) not null,"+
     "EXPIRATION_DATETIME datetime not null,"+
-    "index TICKET_IDX(TICKET,IPV4_ADDRESS,EXPIRATION_DATETIME))";
+    "index TICKET_IDX(TICKET,IPV4_ADDRESS,EXPIRATION_DATETIME))"+
+    config->createTablePostfix();
   if(!RunQuery(sql)) {
      return false;
   }
@@ -2446,7 +2272,8 @@ bool CreateDb(QString name,QString pwd)
     "ID int auto_increment not null primary key,"+
     "USER_NAME char(255) not null,"+
     "SERVICE_NAME char(10) not null,"+
-    "index USER_NAME_IDX(USER_NAME))";
+    "index USER_NAME_IDX(USER_NAME))"+
+    config->createTablePostfix();
   if(!RunQuery(sql)) {
      return false;
   }
@@ -2455,21 +2282,21 @@ bool CreateDb(QString name,QString pwd)
 }
 
 
-bool InitDb(QString name,QString pwd,QString station_name)
+bool InitDb(QString name,QString pwd,QString station_name,RDConfig *config)
 {
   QString sql;
+  QString err_msg;
 
   //
   // Create Default Admin Account
   //
-  sql=QString().sprintf("insert into USERS \
-     (LOGIN_NAME,PASSWORD,FULL_NAME,DESCRIPTION,ADMIN_USERS_PRIV,\
-      ADMIN_CONFIG_PRIV)\
-     values (\"%s\",PASSWORD(\"%s\"),\"%s\",\"%s\",\"Y\",\"Y\")",
-			RDA_LOGIN_NAME,
-			RDA_PASSWORD,
-			RDA_FULLNAME,
-			RDA_DESCRIPTION);
+  sql=QString("insert into USERS set ")+
+    "LOGIN_NAME=\""+RDEscapeString(RDA_LOGIN_NAME)+"\","+
+    "PASSWORD=\""+RDEscapeString(RDA_PASSWORD)+"\","+
+    "FULL_NAME=\""+RDEscapeString(RDA_FULLNAME)+"\","+
+    "DESCRIPTION=\""+RDEscapeString(RDA_DESCRIPTION)+"\","+
+    "ADMIN_USERS_PRIV=\"Y\","+
+    "ADMIN_CONFIG_PRIV=\"Y\"";
   if(!RunQuery(sql)) {
     return false;
   }
@@ -2477,19 +2304,30 @@ bool InitDb(QString name,QString pwd,QString station_name)
   //
   // Create Default User Account
   //
-  sql=QString().sprintf("insert into USERS (LOGIN_NAME,PASSWORD,FULL_NAME,\
-      DESCRIPTION,CREATE_CARTS_PRIV,DELETE_CARTS_PRIV,MODIFY_CARTS_PRIV,\
-      EDIT_AUDIO_PRIV,ASSIGN_CART_PRIV,CREATE_LOG_PRIV,DELETE_LOG_PRIV,\
-      DELETE_REC_PRIV,PLAYOUT_LOG_PRIV,ARRANGE_LOG_PRIV,ADDTO_LOG_PRIV,\
-      REMOVEFROM_LOG_PRIV,CONFIG_PANELS_PRIV,VOICETRACK_LOG_PRIV,\
-      EDIT_CATCHES_PRIV,MODIFY_TEMPLATE_PRIV,\
-      ADD_PODCAST_PRIV,EDIT_PODCAST_PRIV,DELETE_PODCAST_PRIV)\
-      values (\"%s\",PASSWORD(\"%s\"),\"%s\",\"%s\",\
-      'Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y')",
-			RD_USER_LOGIN_NAME,
-			RD_USER_PASSWORD,
-			RD_USER_FULL_NAME,
-			RD_USER_DESCRIPTION);
+  sql=QString("insert into USERS set ")+
+    "LOGIN_NAME=\""+RDEscapeString(RD_USER_LOGIN_NAME)+"\","+
+    "PASSWORD=\""+RDEscapeString(RD_USER_PASSWORD)+"\","+
+    "FULL_NAME=\""+RDEscapeString(RD_USER_FULL_NAME)+"\","+
+    "DESCRIPTION=\""+RDEscapeString(RD_USER_DESCRIPTION)+"\","+
+    "CREATE_CARTS_PRIV=\"Y\","+
+    "DELETE_CARTS_PRIV=\"Y\","+
+    "MODIFY_CARTS_PRIV=\"Y\","+
+    "EDIT_AUDIO_PRIV=\"Y\","+
+    "ASSIGN_CART_PRIV=\"Y\","+
+    "CREATE_LOG_PRIV=\"Y\","+
+    "DELETE_LOG_PRIV=\"Y\","+
+    "DELETE_REC_PRIV=\"Y\","+
+    "PLAYOUT_LOG_PRIV=\"Y\","+
+    "ARRANGE_LOG_PRIV=\"Y\","+
+    "MODIFY_TEMPLATE_PRIV=\"Y\","+
+    "ADDTO_LOG_PRIV=\"Y\","+
+    "REMOVEFROM_LOG_PRIV=\"Y\","+
+    "CONFIG_PANELS_PRIV=\"Y\","+
+    "VOICETRACK_LOG_PRIV=\"Y\","+
+    "EDIT_CATCHES_PRIV=\"Y\","+
+    "ADD_PODCAST_PRIV=\"Y\","+
+    "EDIT_PODCAST_PRIV=\"Y\","+
+    "DELETE_PODCAST_PRIV=\"Y\"";
   if(!RunQuery(sql)) {
     return false;
   }
@@ -2502,30 +2340,19 @@ bool InitDb(QString name,QString pwd,QString station_name)
     return false;
   }
 
-
   //
   // Create Default Workstation
   //
+  sql=QString("insert into STATIONS set ")+
+    "NAME=\""+RDEscapeString(station_name)+"\","+
+    "DESCRIPTION=\""+RDEscapeString(RD_STATION_DESCRIPTION)+"\","+
+    "USER_NAME=\""+RDEscapeString(RD_USER_LOGIN_NAME)+"\","+
+    "DEFAULT_NAME=\""+RDEscapeString(RD_USER_LOGIN_NAME)+"\"";
   struct hostent *hostent=gethostbyname((const char *)station_name);
-  if(hostent==NULL) {
-    sql=QString().sprintf("insert into STATIONS \
-     (NAME,DESCRIPTION,USER_NAME,DEFAULT_NAME) \
-     VALUES (\"%s\",\"%s\",\"%s\",\"%s\")",
-			  (const char *)RDEscapeString(station_name),
-			  RD_STATION_DESCRIPTION,
-			  RD_USER_LOGIN_NAME,
-			  RD_USER_LOGIN_NAME);
-  }
-  else {
-    sql=QString().sprintf("insert into STATIONS \
-     (NAME,DESCRIPTION,USER_NAME,DEFAULT_NAME,IPV4_ADDRESS) \
-     VALUES (\"%s\",\"%s\",\"%s\",\"%s\",\"%d.%d.%d.%d\")",
-			  (const char *)RDEscapeString(station_name),
-			  RD_STATION_DESCRIPTION,
-			  RD_USER_LOGIN_NAME,
-			  RD_USER_LOGIN_NAME,
-			  0xFF&hostent->h_addr[0],0xFF&hostent->h_addr[1],
-			  0xFF&hostent->h_addr[2],0xFF&hostent->h_addr[3]);
+  if(hostent!=NULL) {
+    sql+=QString().sprintf(",IPV4_ADDRESS=\"%d.%d.%d.%d\"",
+			   0xFF&hostent->h_addr[0],0xFF&hostent->h_addr[1],
+			   0xFF&hostent->h_addr[2],0xFF&hostent->h_addr[3]);
   }
   if(!RunQuery(sql)) {
     return false;
@@ -2569,9 +2396,15 @@ bool InitDb(QString name,QString pwd,QString station_name)
   //
   // Create Test Tone Cart
   //
-  sql="insert into CART(TYPE,NUMBER,GROUP_NAME,TITLE,ARTIST,CUT_QUANTITY,\
-      FORCED_LENGTH,METADATA_DATETIME)\
-     values (1,999999,\"TEST\",\"Test Tone\",\"Rivendell Radio Automation\",1,10000,now())";
+  sql=QString("insert into CART set ")+
+    QString().sprintf("TYPE=%u,",RDCart::Audio)+
+    "NUMBER=999999,"+
+    "GROUP_NAME=\"TEST\","+
+    "TITLE=\"Test Tone\","+
+    "ARTIST=\"Rivendell Radio Automation\","+
+    "CUT_QUANTITY=1,"+
+    "FORCED_LENGTH=10000,"+
+    "METADATA_DATETIME=now()";
   if(!RunQuery(sql)) {
     return false;
   }
@@ -2579,14 +2412,20 @@ bool InitDb(QString name,QString pwd,QString station_name)
   //
   // Create Default Audio Cut
   //
-  sql=QString().sprintf("insert into CUTS set CUT_NAME=\"999999_001\",\
-                         CART_NUMBER=999999,\
-                         DESCRIPTION=\"1 kHz at Reference Level [-16 dBFS]\",\
-                         OUTCUE=\"[tone]\",CODING_FORMAT=0,\
-                         SAMPLE_RATE=%d,BIT_RATE=0,\
-                         CHANNELS=2,LENGTH=10000,START_POINT=0,END_POINT=10000,\
-                         ORIGIN_DATETIME=NOW(),ORIGIN_NAME=\"RDGen\"",
-			RD_DEFAULT_SAMPLE_RATE);
+  sql=QString("insert into CUTS set ")+
+    "CUT_NAME=\""+RDCut::cutName(999999,1)+"\","+
+    "CART_NUMBER=999999,"+
+    "CART_NUMBER=999999,"+
+    "DESCRIPTION=\"1 kHz at Reference Level [-16 dBFS]\","+
+    "OUTCUE=\"[tone]\","+
+    "CODING_FORMAT=0,"+
+    "BIT_RATE=0,"+
+    "CHANNELS=2,"+
+    "LENGTH=10000,"+
+    "START_POINT=0,"+
+    "END_POINT=10000,"+
+    "ORIGIN_DATETIME=now(),"+
+    "ORIGIN_NAME=\"+RDGen\"";
   if(!RunQuery(sql)) {
     return false;
   }
@@ -2594,8 +2433,10 @@ bool InitDb(QString name,QString pwd,QString station_name)
   //
   // Create Clipboard Entry
   //
-  sql="insert into CLIPBOARD set CUT_NAME=\"clip\",CART_NUMBER=0,\
-      DESCRIPTION=\"Default Clipboard\"";
+  sql=QString("insert into CLIPBOARD set ")+
+    "CUT_NAME=\"clip\","+
+    "CART_NUMBER=0,"+
+    "DESCRIPTION=\""+RDEscapeString("Default Clipboard")+"\"";
   if(!RunQuery(sql)) {
     return false;
   }
@@ -2603,8 +2444,10 @@ bool InitDb(QString name,QString pwd,QString station_name)
   //
   // Create Default Service
   //
+  if(!RDSvc::create(RD_SERVICE_NAME,&err_msg,"",config)) {
+    return false;
+  }
   RDSvc *svc=new RDSvc(RD_SERVICE_NAME,admin_station,admin_config);
-  svc->create("");
   svc->setDescription(RD_SERVICE_DESCRIPTION);
   delete svc;
   sql=QString("insert into USER_SERVICE_PERMS set ")+
@@ -2643,31 +2486,30 @@ bool InitDb(QString name,QString pwd,QString station_name)
   };
 
   for (const struct Group *g = group; g->group != NULL; g++){
-
     // Create the group
-    sql=QString().sprintf ("insert into GROUPS (NAME,DESCRIPTION,DEFAULT_CART_TYPE,\
-      DEFAULT_LOW_CART,DEFAULT_HIGH_CART,REPORT_TFC,REPORT_MUS,ENABLE_NOW_NEXT) \
-      values (\"%s\",\"%s\",%d,%d,%d,\'%s\',\'%s\',\'%s\')",
-			   g->group,
-			   g->description, 
-			   g->macro ? 2:1,
-			   g->start, 
-			   g->end,
-			   g->rpt_traffic ? "Y" :"N",
-			   g->rpt_music ? "Y" :"N",
-			   g->now_next ? "Y" :"N");
+    sql=QString("insert into GROUPS set ")+
+      "NAME=\""+RDEscapeString(g->group)+"\","+
+      "DESCRIPTION=\""+RDEscapeString(g->description)+"\","+
+      QString().sprintf("DEFAULT_CART_TYPE=%d,",g->macro?2:1)+
+      QString().sprintf("DEFAULT_LOW_CART=%d,",g->start)+
+      QString().sprintf("DEFAULT_HIGH_CART=%d,",g->end)+
+      "RPT_TFC=\""+RDYesNo(g->rpt_traffic)+"\","+
+      "RPT_MUS=\""+RDYesNo(g->rpt_music)+"\","+
+      "ENABLE_NOW_NEXT=\""+RDYesNo(g->now_next)+"\"";
     if(!RunQuery(sql)) {
       return false;
     }
     // Add it to the user permissions table for the default user
-    sql=QString().sprintf("insert into USER_PERMS (USER_NAME,GROUP_NAME) \
-                         values (\"%s\",\"%s\")",RD_USER_LOGIN_NAME,g->group);
+    sql=QString("insert into USER_PERMS set ")+
+      "USER_NAME=\""+RDEscapeString(RD_USER_LOGIN_NAME)+"\","+
+      "GROUP_NAME=\""+RDEscapeString(g->group)+"\"";
     if(!RunQuery(sql)) {
       return false;
     }
     // Add it to the audio permsmissions table
-    sql=QString().sprintf("insert into AUDIO_PERMS (GROUP_NAME,SERVICE_NAME) \
-                         values (\"%s\",\"%s\")",g->group,RD_SERVICE_NAME);
+    sql=QString("insert into AUDIO_PERMS set ")+
+      "GROUP_NAME=\""+RDEscapeString(g->group)+"\","+
+      "SERVICE_NAME=\""+RDEscapeString(RD_SERVICE_NAME)+"\"";
     if(!RunQuery(sql)) {
       return false;
     }
@@ -2676,13 +2518,17 @@ bool InitDb(QString name,QString pwd,QString station_name)
   //
   // Create Sample Log
   //
-  sql=RDCreateLogTableSql("SAMPLE_LOG");
+  sql=RDCreateLogTableSql("SAMPLE_LOG",config);
   if(!RunQuery(sql)) {
     return false;
   }
-  sql=QString("insert into LOGS ")+
-    "(NAME,SERVICE,DESCRIPTION,ORIGIN_USER,ORIGIN_DATETIME,MODIFIED_DATETIME) "+
-    "values (\"SAMPLE\",\"Production\",\"Sample Log\",\"user\",now(),now())";
+  sql=QString("insert into LOGS set ")+
+    "NAME=\"SAMPLE\","+
+    "SERVICE=\""+RDEscapeString(RD_SERVICE_NAME)+"\","+
+    "DESCRIPTION=\"Sample Log\","+
+    "ORIGIN_USER=\""+RDEscapeString(RD_USER_LOGIN_NAME)+"\","+
+    "ORIGIN_DATETIME=now(),"
+    "MODIFIED_DATETIME=now()";
   if(!RunQuery(sql)) {
     return false;
   }
@@ -2690,8 +2536,8 @@ bool InitDb(QString name,QString pwd,QString station_name)
   //
   // Generate Hotkey Definitions
   //
-  if (!UpdateRDAirplayHotkeys(station_name)) {
-      return false;
+  if(!UpdateRDAirplayHotkeys(station_name)) {
+    return false;
   }
 
   //
@@ -2729,8 +2575,8 @@ bool InitDb(QString name,QString pwd,QString station_name)
 void ConvertTimeField(const QString &table,const QString &field)
 {
   QString sql;
-  QSqlQuery *q;
-  QSqlQuery *q1;
+  RDSqlQuery *q;
+  RDSqlQuery *q1;
 
   //
   // Create temporary field
@@ -2739,7 +2585,7 @@ void ConvertTimeField(const QString &table,const QString &field)
 			(const char *)table,
 			(const char *)field,
 			(const char *)field);
-  q=new QSqlQuery(sql);
+  q=new RDSqlQuery(sql,false);
   delete q;
 
   //
@@ -2748,7 +2594,7 @@ void ConvertTimeField(const QString &table,const QString &field)
   sql=QString().sprintf("select ID,%s from %s",
 			(const char *)field,
 			(const char *)table);
-  q=new QSqlQuery(sql);
+  q=new RDSqlQuery(sql,false);
   while(q->next()) {
     if(!q->value(1).isNull()) {
       sql=QString().sprintf("update %s set %s_TEMP=%d where ID=%d",
@@ -2756,7 +2602,7 @@ void ConvertTimeField(const QString &table,const QString &field)
 			    (const char *)field,
 			    QTime().msecsTo(q->value(1).toTime()),
 			    q->value(0).toInt());
-      q1=new QSqlQuery(sql);
+      q1=new RDSqlQuery(sql,false);
       delete q1;
     }
   }
@@ -2768,7 +2614,7 @@ void ConvertTimeField(const QString &table,const QString &field)
   sql=QString().sprintf("alter table %s modify column %s int",
 			(const char *)table,
 			(const char *)field);
-  q=new QSqlQuery(sql);
+  q=new RDSqlQuery(sql,false);
   delete q;
 
   //
@@ -2777,7 +2623,7 @@ void ConvertTimeField(const QString &table,const QString &field)
   sql=QString().sprintf("select ID,%s_TEMP from %s",
 			(const char *)field,
 			(const char *)table);
-  q=new QSqlQuery(sql);
+  q=new RDSqlQuery(sql,false);
   while(q->next()) {
     if(!q->value(1).isNull()) {
       sql=QString().sprintf("update %s set %s=%d where ID=%d",
@@ -2785,7 +2631,7 @@ void ConvertTimeField(const QString &table,const QString &field)
 			    (const char *)field,
 			    q->value(1).toInt(),
 			    q->value(0).toInt());
-      q1=new QSqlQuery(sql);
+      q1=new RDSqlQuery(sql,false);
       delete q1;
     }
   }
@@ -2797,7 +2643,7 @@ void ConvertTimeField(const QString &table,const QString &field)
   sql=QString().sprintf("alter table %s drop column %s_TEMP",
 			(const char *)table,
 			(const char *)field);
-  q=new QSqlQuery(sql);
+  q=new RDSqlQuery(sql,false);
   delete q;
 }
 
@@ -2805,14 +2651,14 @@ void ConvertTimeField(const QString &table,const QString &field)
 void UpdateLogTable(const QString &table)
 {
   QString sql;
-  QSqlQuery *q;
+  RDSqlQuery *q;
 
   //
   // Drop POST_TIME
   //
   sql=QString().sprintf("alter table %s drop column POST_TIME",
 			(const char *)table);
-  q=new QSqlQuery(sql);
+  q=new RDSqlQuery(sql,false);
   delete q;
 
   //
@@ -2826,14 +2672,14 @@ void UpdateLogTable(const QString &table)
 //
 // Main Schema Update Routine
 //
-int UpdateDb(int ver)
+int UpdateDb(int ver,RDConfig *config)
 {
   QString cmd;
   QString sql;
-  QSqlQuery *q;
-  QSqlQuery *q1;
-  QSqlQuery *q2;
-  QSqlQuery *q3;
+  RDSqlQuery *q;
+  RDSqlQuery *q1;
+  RDSqlQuery *q2;
+  RDSqlQuery *q3;
   RDCart *cart;
   unsigned dev;
   QString tablename;
@@ -2868,26 +2714,27 @@ int UpdateDb(int ver)
   // **** Start of version updates ****
 
   if(ver<3) {
-  //
-  // Create RDAIRPLAY Table
-  //
-    sql="create table if not exists RDAIRPLAY (\
-      ID int not null primary key,\
-      STATION char(40) not null,\
-      INSTANCE int unsigned not null,\
-      AUTO_CARD0 int default -1,\
-      AUTO_STREAM0 int default -1,\
-      AUTO_PORT0 int default -1,\
-      AUTO_CARD1 int default -1,\
-      AUTO_STREAM1 int default -1,\
-      AUTO_PORT1 int default -1,\
-      PANEL_CARD0 int default -1,\
-      PANEL_STREAM0 int default -1,\
-      PANEL_PORT0 int default -1,\
-      PANEL_CARD1 int default -1,\
-      PANEL_STREAM1 int default -1,\
-      PANEL_PORT1 int default -1,\
-      index STATION_IDX (STATION,INSTANCE))"; 
+    //
+    // Create RDAIRPLAY Table
+    //
+    sql=QString("create table if not exists RDAIRPLAY (")+
+      "ID int not null primary key,"+
+      "STATION char(40) not null,"+
+      "INSTANCE int unsigned not null,"+
+      "AUTO_CARD0 int default -1,"+
+      "AUTO_STREAM0 int default -1,"+
+      "AUTO_PORT0 int default -1,"+
+      "AUTO_CARD1 int default -1,"+
+      "AUTO_STREAM1 int default -1,"+
+      "AUTO_PORT1 int default -1,"+
+      "PANEL_CARD0 int default -1,"+
+      "PANEL_STREAM0 int default -1,"+
+      "PANEL_PORT0 int default -1,"+
+      "PANEL_CARD1 int default -1,"+
+      "PANEL_STREAM1 int default -1,"+
+      "PANEL_PORT1 int default -1,"+
+      "index STATION_IDX (STATION,INSTANCE))"+
+      config->createTablePostfix();
     if(!RunQuery(sql)) {
       return UPDATEDB_QUERY_FAILED;
     }
@@ -2895,8 +2742,8 @@ int UpdateDb(int ver)
     //
     // Create Default RDAirPlay Configuration
     //
-    sql="insert into RDAIRPLAY (STATION,INSTANCE) \
-      values (\"DEFAULT\",0)";
+    sql=QString("insert into RDAIRPLAY (STATION,INSTANCE) ")+
+      "values (\"DEFAULT\",0)";
     if(!RunQuery(sql)) {
       return UPDATEDB_QUERY_FAILED;
     }
@@ -2910,11 +2757,12 @@ int UpdateDb(int ver)
   }
 
   if(ver<5) {
-    q=new QSqlQuery("select NAME from LOGS");
+    q=new RDSqlQuery("select NAME from LOGS",false);
     while(q->next()) {
-      RunQuery(QString().
-	      sprintf("alter table %s_LOG add SOURCE int not null after COUNT",
-		     (const char *)q->value(0).toString()));
+      sql=QString("alter table `")+q->value(0).toString()+"_LOG` "+
+	"add SOURCE int not null after COUNT";
+      q1=new RDSqlQuery(sql,false);
+      delete q1;
     }
     delete q;
   }
@@ -2923,97 +2771,114 @@ int UpdateDb(int ver)
     // 
     // Update RDAIRPLAY Structure
     //
-    q=new QSqlQuery("alter table RDAIRPLAY add column CARD int default -1");
+    q=new RDSqlQuery("alter table RDAIRPLAY add column CARD int default -1",
+		     false);
     delete q;
-    q=new QSqlQuery("alter table RDAIRPLAY add column PORT0 int default -1");
+    q=new RDSqlQuery("alter table RDAIRPLAY add column PORT0 int default -1",
+		     false);
     delete q;
-    q=new QSqlQuery("alter table RDAIRPLAY add column PORT1 int default -1");
+    q=new RDSqlQuery("alter table RDAIRPLAY add column PORT1 int default -1",
+		     false);
     delete q;
-    q=new QSqlQuery("alter table RDAIRPLAY add column PORT2 int default -1");
-    delete q;
-    q=new 
-      QSqlQuery("alter table RDAIRPLAY add column STREAM0 int default -1");
-    delete q;
-    q=new 
-      QSqlQuery("alter table RDAIRPLAY add column STREAM1 int default -1");
+    q=new RDSqlQuery("alter table RDAIRPLAY add column PORT2 int default -1",
+		     false);
     delete q;
     q=new 
-      QSqlQuery("alter table RDAIRPLAY add column STREAM2 int default -1");
+      RDSqlQuery("alter table RDAIRPLAY add column STREAM0 int default -1",
+		 false);
     delete q;
     q=new 
-      QSqlQuery("alter table RDAIRPLAY add column STREAM3 int default -1");
+      RDSqlQuery("alter table RDAIRPLAY add column STREAM1 int default -1",
+		 false);
     delete q;
     q=new 
-      QSqlQuery("alter table RDAIRPLAY add column STREAM4 int default -1");
+      RDSqlQuery("alter table RDAIRPLAY add column STREAM2 int default -1",
+		 false);
     delete q;
     q=new 
-      QSqlQuery("alter table RDAIRPLAY add column STREAM5 int default -1");
+      RDSqlQuery("alter table RDAIRPLAY add column STREAM3 int default -1",
+		 false);
     delete q;
     q=new 
-      QSqlQuery("alter table RDAIRPLAY add column STREAM6 int default -1");
+      RDSqlQuery("alter table RDAIRPLAY add column STREAM4 int default -1",
+		 false);
     delete q;
     q=new 
-      QSqlQuery("alter table RDAIRPLAY add column STREAM7 int default -1");
+      RDSqlQuery("alter table RDAIRPLAY add column STREAM5 int default -1",
+		 false);
     delete q;
-    q=new QSqlQuery("alter table RDAIRPLAY drop column AUTO_CARD0");
+    q=new 
+      RDSqlQuery("alter table RDAIRPLAY add column STREAM6 int default -1",
+		 false);
     delete q;
-    q=new QSqlQuery("alter table RDAIRPLAY drop column AUTO_CARD1");
+    q=new 
+      RDSqlQuery("alter table RDAIRPLAY add column STREAM7 int default -1",
+		 false);
     delete q;
-    q=new QSqlQuery("alter table RDAIRPLAY drop column AUTO_STREAM0");
+    q=new RDSqlQuery("alter table RDAIRPLAY drop column AUTO_CARD0",false);
     delete q;
-    q=new QSqlQuery("alter table RDAIRPLAY drop column AUTO_STREAM1");
+    q=new RDSqlQuery("alter table RDAIRPLAY drop column AUTO_CARD1",false);
     delete q;
-    q=new QSqlQuery("alter table RDAIRPLAY drop column AUTO_PORT0");
+    q=new RDSqlQuery("alter table RDAIRPLAY drop column AUTO_STREAM0",false);
     delete q;
-    q=new QSqlQuery("alter table RDAIRPLAY drop column AUTO_PORT1");
+    q=new RDSqlQuery("alter table RDAIRPLAY drop column AUTO_STREAM1",false);
     delete q;
-    q=new QSqlQuery("alter table RDAIRPLAY drop column PANEL_CARD0");
+    q=new RDSqlQuery("alter table RDAIRPLAY drop column AUTO_PORT0",false);
     delete q;
-    q=new QSqlQuery("alter table RDAIRPLAY drop column PANEL_CARD1");
+    q=new RDSqlQuery("alter table RDAIRPLAY drop column AUTO_PORT1",false);
     delete q;
-    q=new QSqlQuery("alter table RDAIRPLAY drop column PANEL_STREAM0");
+    q=new RDSqlQuery("alter table RDAIRPLAY drop column PANEL_CARD0",false);
     delete q;
-    q=new QSqlQuery("alter table RDAIRPLAY drop column PANEL_STREAM1");
+    q=new RDSqlQuery("alter table RDAIRPLAY drop column PANEL_CARD1",false);
     delete q;
-    q=new QSqlQuery("alter table RDAIRPLAY drop column PANEL_PORT0");
+    q=new RDSqlQuery("alter table RDAIRPLAY drop column PANEL_STREAM0",false);
     delete q;
-    q=new QSqlQuery("alter table RDAIRPLAY drop column PANEL_PORT1");
+    q=new RDSqlQuery("alter table RDAIRPLAY drop column PANEL_STREAM1",false);
+    delete q;
+    q=new RDSqlQuery("alter table RDAIRPLAY drop column PANEL_PORT0",false);
+    delete q;
+    q=new RDSqlQuery("alter table RDAIRPLAY drop column PANEL_PORT1",false);
     delete q;
   }
 
   if(ver<7) {
     q=new 
-      QSqlQuery("alter table RDAIRPLAY add column SEGUE_LENGTH int default 0");
+      RDSqlQuery("alter table RDAIRPLAY add column SEGUE_LENGTH int default 0",
+		 false);
     delete q;
   }
 
   if(ver<8) {
     q=new 
-      QSqlQuery("alter table RDAIRPLAY add column PORT3 int default -1");
+      RDSqlQuery("alter table RDAIRPLAY add column PORT3 int default -1",false);
     delete q;
     q=new 
-      QSqlQuery("alter table RDAIRPLAY add column OP_MODE int default 0");
+      RDSqlQuery("alter table RDAIRPLAY add column OP_MODE int default 0",
+		 false);
     delete q;
     q=new 
-      QSqlQuery("alter table RDAIRPLAY add column START_MODE int default 0");
+      RDSqlQuery("alter table RDAIRPLAY add column START_MODE int default 0",
+		 false);
     delete q;
     q=new 
-      QSqlQuery("alter table RDAIRPLAY add column PIE_COUNT_LENGTH int default 15000");
+      RDSqlQuery("alter table RDAIRPLAY add column PIE_COUNT_LENGTH int default 15000",false);
     delete q;
     q=new 
-      QSqlQuery("alter table RDAIRPLAY add column PIE_COUNT_ENDPOINT int default 0");
+      RDSqlQuery("alter table RDAIRPLAY add column PIE_COUNT_ENDPOINT int default 0",false);
     delete q;
   }
 
   if(ver<9) {
-    q=new QSqlQuery("alter table RDAIRPLAY add column PORT4 int default -1");
+    q=new RDSqlQuery("alter table RDAIRPLAY add column PORT4 int default -1",
+		     false);
     delete q;
-    q=new QSqlQuery("alter table RDAIRPLAY add column PORT5 int default -1");
+    q=new RDSqlQuery("alter table RDAIRPLAY add column PORT5 int default -1",
+		     false);
     delete q;
   }
 
   if(ver<10) {
-    q=new QSqlQuery("select NAME from LOGS");
+    q=new RDSqlQuery("select NAME from LOGS",false);
     while(q->next()) {
       RunQuery(QString().
 	      sprintf("alter table %s_LOG add TYPE int default 0 after COUNT",
@@ -3036,81 +2901,85 @@ int UpdateDb(int ver)
 
 
   if(ver<11) {
-    q=new QSqlQuery("alter table RDAIRPLAY add column CHECK_TIMESYNC enum('N','Y') default 'N'");
+    q=new RDSqlQuery("alter table RDAIRPLAY add column CHECK_TIMESYNC enum('N','Y') default 'N'",false);
     delete q;    
 
   //
   // Create PANELS Table
   //
-  sql="create table if not exists PANELS (\
-      ID int not null primary key,\
-      TYPE int not null,\
-      OWNER char(64) not null,\
-      PANEL_NO int not null,\
-      ROW_NO int not null,\
-      COLUMN_NO int not null,\
-      LABEL char(64),\
-      CART int,\
-      DEFAULT_COLOR char(6),\
-      index OWNER_IDX (OWNER))"; 
-    q=new QSqlQuery(sql);
+    sql=QString("create table if not exists PANELS (")+
+      "ID int not null primary key,"+
+      "TYPE int not null,"+
+      "OWNER char(64) not null,"+
+      "PANEL_NO int not null,"+
+      "ROW_NO int not null,"+
+      "COLUMN_NO int not null,"+
+      "LABEL char(64),"+
+      "CART int,"+
+      "DEFAULT_COLOR char(6),"+
+      "index OWNER_IDX (OWNER))"+
+      config->createTablePostfix();
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<12) {
-    q=new QSqlQuery("alter table RDAIRPLAY add column STATION_PANELS int default 3");
+    q=new RDSqlQuery("alter table RDAIRPLAY add column STATION_PANELS int default 3",false);
     delete q;
 
-    q=new QSqlQuery("alter table RDAIRPLAY add column USER_PANELS int default 3");
+    q=new RDSqlQuery("alter table RDAIRPLAY add column USER_PANELS int default 3",false);
     delete q;
   }
 
   if(ver<13) {
     sql="drop table PANELS";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="create table if not exists PANELS (\
-      ID int auto_increment not null primary key,\
-      TYPE int not null,\
-      OWNER char(64) not null,\
-      PANEL_NO int not null,\
-      ROW_NO int not null,\
-      COLUMN_NO int not null,\
-      LABEL char(64),\
-      CART int,\
-      DEFAULT_COLOR char(6),\
-      index OWNER_IDX (OWNER))"; 
-    q=new QSqlQuery(sql);
+    sql=QString("create table if not exists PANELS (")+
+      "ID int auto_increment not null primary key,"+
+      "TYPE int not null,"+
+      "OWNER char(64) not null,"+
+      "PANEL_NO int not null,"+
+      "ROW_NO int not null,"+
+      "COLUMN_NO int not null,"+
+      "LABEL char(64),"+
+      "CART int,"+
+      "DEFAULT_COLOR char(6),"+
+      "index OWNER_IDX (OWNER))"+
+      config->createTablePostfix();
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
     
   if(ver<14) {
     sql="drop table PANELS";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="create table if not exists PANELS (\
-      ID int auto_increment not null primary key,\
-      TYPE int not null,\
-      OWNER char(64) not null,\
-      PANEL_NO int not null,\
-      ROW_NO int not null,\
-      COLUMN_NO int not null,\
-      LABEL char(64),\
-      CART int,\
-      DEFAULT_COLOR char(6),\
-      index LOAD_IDX (TYPE,OWNER,PANEL_NO),\
-      index SAVE_IDX (TYPE,OWNER,PANEL_NO,ROW_NO,COLUMN_NO))"; 
-    q=new QSqlQuery(sql);
+    sql=QString("create table if not exists PANELS (")+
+      "ID int auto_increment not null primary key,"+
+      "TYPE int not null,"+
+      "OWNER char(64) not null,"+
+      "PANEL_NO int not null,"+
+      "ROW_NO int not null,"+
+      "COLUMN_NO int not null,"+
+      "LABEL char(64),"+
+      "CART int,"+
+      "DEFAULT_COLOR char(6),"+
+      "index LOAD_IDX (TYPE,OWNER,PANEL_NO),"+
+      "index SAVE_IDX (TYPE,OWNER,PANEL_NO,ROW_NO,COLUMN_NO))"+
+      config->createTablePostfix();
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<15) {
-    q=new QSqlQuery("alter table PANELS drop column DEFAULT_COLOR");
+    q=new RDSqlQuery("alter table PANELS drop column DEFAULT_COLOR",false);
     delete q;
 
-    q=new QSqlQuery("alter table PANELS add column DEFAULT_COLOR char(7)");
+    q=new RDSqlQuery("alter table PANELS add column DEFAULT_COLOR char(7)",
+		     false);
     delete q;
   }
 
@@ -3118,19 +2987,20 @@ int UpdateDb(int ver)
     //
     // Create MATRICES Table
     //
-    sql="create table if not exists MATRICES (\
-      ID int auto_increment not null primary key,\
-      STATION_NAME char(64) not null,\
-      NAME char(64),\
-      MATRIX int not null,\
-      TYPE int not null,\
-      PORT int not null,\
-      GPIO_DEVICE char(255),\
-      INPUTS int not null,\
-      OUTPUTS int not null,\
-      GPIS int not null,\
-      GPOS int not null,\
-      index MATRIX_IDX (STATION_NAME,MATRIX))";
+    sql=QString("create table if not exists MATRICES (")+
+      "ID int auto_increment not null primary key,"+
+      "STATION_NAME char(64) not null,"+
+      "NAME char(64),"+
+      "MATRIX int not null,"+
+      "TYPE int not null,"+
+      "PORT int not null,"+
+      "GPIO_DEVICE char(255),"+
+      "INPUTS int not null,"+
+      "OUTPUTS int not null,"+
+      "GPIS int not null,"+
+      "GPOS int not null,"+
+      "index MATRIX_IDX (STATION_NAME,MATRIX))"+
+      config->createTablePostfix();
     if(!RunQuery(sql)) {
       return UPDATEDB_QUERY_FAILED;
     }
@@ -3138,14 +3008,15 @@ int UpdateDb(int ver)
     //
     // Create INPUTS Table
     //
-    sql="create table if not exists INPUTS (\
-      ID int auto_increment not null primary key,\
-      STATION_NAME char(64) not null,\
-      MATRIX int not null,\
-      NUMBER int not null,\
-      NAME char(64),\
-      FEED_NAME char(8),\
-      index MATRIX_IDX (STATION_NAME,MATRIX,NUMBER))";
+    sql=QString("create table if not exists INPUTS (")+
+      "ID int auto_increment not null primary key,"+
+      "STATION_NAME char(64) not null,"+
+      "MATRIX int not null,"+
+      "NUMBER int not null,"+
+      "NAME char(64),"+
+      "FEED_NAME char(8),"+
+      "index MATRIX_IDX (STATION_NAME,MATRIX,NUMBER))"+
+      config->createTablePostfix();
     if(!RunQuery(sql)) {
       return UPDATEDB_QUERY_FAILED;
     }
@@ -3153,156 +3024,154 @@ int UpdateDb(int ver)
     //
     // Create OUTPUTS Table
     //
-    sql="create table if not exists OUTPUTS (\
-      ID int auto_increment not null primary key,\
-      STATION_NAME char(64) not null,\
-      MATRIX int not null,\
-      NUMBER int not null,\
-      NAME char(64),\
-      index MATRIX_IDX (STATION_NAME,MATRIX,NUMBER))";
+    sql=QString("create table if not exists OUTPUTS (")+
+      "ID int auto_increment not null primary key,"+
+      "STATION_NAME char(64) not null,"+
+      "MATRIX int not null,"+
+      "NUMBER int not null,"+
+      "NAME char(64),"+
+      "index MATRIX_IDX (STATION_NAME,MATRIX,NUMBER))"+
+      config->createTablePostfix();
     if(!RunQuery(sql)) {
       return UPDATEDB_QUERY_FAILED;
     }
   }
-  
+
   if(ver<17) {
-    q=new QSqlQuery("alter table INPUTS add column CHANNEL_MODE int");
+    q=new RDSqlQuery("alter table INPUTS add column CHANNEL_MODE int",false);
     delete q;
   }
 
   if(ver<18) {
-    q=new QSqlQuery("alter table STATIONS add column IPV4_ADDRESS char(15)");
+    q=new RDSqlQuery("alter table STATIONS add column IPV4_ADDRESS char(15)",
+		     false);
     delete q;
   }
 
   if(ver<19) {
-    q=new QSqlQuery("create table if not exists EVENTS (\
-      ID int auto_increment not null primary key,\
-      STATION_NAME char(64) not null,\
-      SUN enum('N','Y') not null,\
-      MON enum('N','Y') not null,\
-      TUE enum('N','Y') not null,\
-      WED enum('N','Y') not null,\
-      THU enum('N','Y') not null,\
-      FRI enum('N','Y') not null,\
-      SAT enum('N','Y') not null,\
-      TIME time not null,\
-      DESCRIPTION char(64),\
-      COMMAND char(255),\
-      index STATION_IDX (STATION_NAME),\
-      index SUN_IDX (STATION_NAME,SUN),\
-      index MON_IDX (STATION_NAME,MON),\
-      index TUE_IDX (STATION_NAME,TUE),\
-      index WED_IDX (STATION_NAME,WED),\
-      index THU_IDX (STATION_NAME,THU),\
-      index FRI_IDX (STATION_NAME,FRI),\
-      index SAT_IDX (STATION_NAME,SAT))");
+    sql=QString("create table if not exists EVENTS (")+
+      "ID int auto_increment not null primary key,"+
+      "STATION_NAME char(64) not null,"+
+      "SUN enum('N','Y') not null,"+
+      "MON enum('N','Y') not null,"+
+      "TUE enum('N','Y') not null,"+
+      "WED enum('N','Y') not null,"+
+      "THU enum('N','Y') not null,"+
+      "FRI enum('N','Y') not null,"+
+      "SAT enum('N','Y') not null,"+
+      "TIME time not null,"+
+      "DESCRIPTION char(64),"+
+      "COMMAND char(255),"+
+      "index STATION_IDX (STATION_NAME),"+
+      "index SUN_IDX (STATION_NAME,SUN),"+
+      "index MON_IDX (STATION_NAME,MON),"+
+      "index TUE_IDX (STATION_NAME,TUE),"+
+      "index WED_IDX (STATION_NAME,WED),"+
+      "index THU_IDX (STATION_NAME,THU),"+
+      "index FRI_IDX (STATION_NAME,FRI),"+
+      "index SAT_IDX (STATION_NAME,SAT))"+
+      config->createTablePostfix();
+  q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<20) {
-    q=new QSqlQuery("alter table CART add column MACROS text");
+    q=new RDSqlQuery("alter table CART add column MACROS text",false);
     delete q;
   }
 
   if(ver<21) {
     q=new 
-      QSqlQuery("alter table RECORDINGS add column MACRO_CART int default -1");
+      RDSqlQuery("alter table RECORDINGS add column MACRO_CART int default -1",
+		 false);
     delete q;
     q=new 
-      QSqlQuery("drop table EVENTS");
+      RDSqlQuery("drop table EVENTS",false);
     delete q;
   }
 
   if(ver<22) {
-    q=new QSqlQuery("alter table DECKS drop column SWITCH_TYPE");
+    q=new RDSqlQuery("alter table DECKS drop column SWITCH_TYPE",false);
     delete q;
-    q=new QSqlQuery("alter table DECKS drop column TTY_ID");
+    q=new RDSqlQuery("alter table DECKS drop column TTY_ID",false);
     delete q;
-    q=new QSqlQuery("alter table DECKS add column SWITCH_STATION char(64)");
-    delete q;
-    q=new
-      QSqlQuery("alter table DECKS add column SWITCH_MATRIX int default -1");
+    q=new RDSqlQuery("alter table DECKS add column SWITCH_STATION char(64)",
+		     false);
     delete q;
     q=new
-      QSqlQuery("alter table DECKS add column SWITCH_OUTPUT int default -1");
+      RDSqlQuery("alter table DECKS add column SWITCH_MATRIX int default -1",
+		 false);
     delete q;
     q=new
-      QSqlQuery("alter table DECKS add column SWITCH_DELAY int default 0");
+      RDSqlQuery("alter table DECKS add column SWITCH_OUTPUT int default -1",
+		 false);
+    delete q;
+    q=new
+      RDSqlQuery("alter table DECKS add column SWITCH_DELAY int default 0",
+		 false);
     delete q;
   }
 
   if(ver<23) {
-    q=new QSqlQuery("alter table RECORDINGS drop column SOURCE_NAME");
+    q=new RDSqlQuery("alter table RECORDINGS drop column SOURCE_NAME",false);
     delete q;
     q=new 
-      QSqlQuery("alter table RECORDINGS add column \
-                 SWITCH_INPUT int default -1");
+      RDSqlQuery("alter table RECORDINGS add column SWITCH_INPUT int default -1",false);
     delete q;
-    q=new QSqlQuery("drop table SOURCES");
+    q=new RDSqlQuery("drop table SOURCES",false);
     delete q;
   }
 
   if(ver<24) {
-    q=new QSqlQuery("alter table RECORDINGS add column \
-                     TYPE int default 0 after STATION_NAME");
+    q=new RDSqlQuery("alter table RECORDINGS add column TYPE int default 0 after STATION_NAME",false);
     delete q;
-    q=new QSqlQuery("alter table RECORDINGS add column \
-                     SWITCH_OUTPUT int default -1");
+    q=new RDSqlQuery("alter table RECORDINGS add column SWITCH_OUTPUT int default -1",false);
     delete q;
-    q=new QSqlQuery("update RECORDINGS set TYPE=1 where MACRO_CART!=-1");
+    q=new RDSqlQuery("update RECORDINGS set TYPE=1 where MACRO_CART!=-1",false);
     delete q;
   }
 
   if(ver<25) {
-    q=new QSqlQuery("alter table RECORDINGS drop index SUN_IDX");
+    q=new RDSqlQuery("alter table RECORDINGS drop index SUN_IDX",false);
     delete q;
-    q=new QSqlQuery("alter table RECORDINGS drop index MON_IDX");
+    q=new RDSqlQuery("alter table RECORDINGS drop index MON_IDX",false);
     delete q;
-    q=new QSqlQuery("alter table RECORDINGS drop index TUE_IDX");
+    q=new RDSqlQuery("alter table RECORDINGS drop index TUE_IDX",false);
     delete q;
-    q=new QSqlQuery("alter table RECORDINGS drop index WED_IDX");
+    q=new RDSqlQuery("alter table RECORDINGS drop index WED_IDX",false);
     delete q;
-    q=new QSqlQuery("alter table RECORDINGS drop index THU_IDX");
+    q=new RDSqlQuery("alter table RECORDINGS drop index THU_IDX",false);
     delete q;
-    q=new QSqlQuery("alter table RECORDINGS drop index FRI_IDX");
+    q=new RDSqlQuery("alter table RECORDINGS drop index FRI_IDX",false);
     delete q;
-    q=new QSqlQuery("alter table RECORDINGS drop index SAT_IDX");
+    q=new RDSqlQuery("alter table RECORDINGS drop index SAT_IDX",false);
     delete q;
-    q=new QSqlQuery("alter table RECORDINGS add column IS_ACTIVE \
-                     enum('N','Y') default 'Y' after ID");
+    q=new RDSqlQuery("alter table RECORDINGS add column IS_ACTIVE enum('N','Y') default 'Y' after ID",false);
     delete q;
-    q=new QSqlQuery("alter table RECORDINGS add index \
-                     SUN_IDX (STATION_NAME,SUN,IS_ACTIVE)");
-    q=new QSqlQuery("alter table RECORDINGS add index \
-                     MON_IDX (STATION_NAME,MON,IS_ACTIVE)");
-    q=new QSqlQuery("alter table RECORDINGS add index \
-                     TUE_IDX (STATION_NAME,TUE,IS_ACTIVE)");
-    q=new QSqlQuery("alter table RECORDINGS add index \
-                     WED_IDX (STATION_NAME,WED,IS_ACTIVE)");
-    q=new QSqlQuery("alter table RECORDINGS add index \
-                     THU_IDX (STATION_NAME,THU,IS_ACTIVE)");
-    q=new QSqlQuery("alter table RECORDINGS add index \
-                     FRI_IDX (STATION_NAME,FRI,IS_ACTIVE)");
-    q=new QSqlQuery("alter table RECORDINGS add index \
-                     SAT_IDX (STATION_NAME,SAT,IS_ACTIVE)");
+    q=new RDSqlQuery("alter table RECORDINGS add index SUN_IDX (STATION_NAME,SUN,IS_ACTIVE)",false);
+    q=new RDSqlQuery("alter table RECORDINGS add index MON_IDX (STATION_NAME,MON,IS_ACTIVE)",false);
+    q=new RDSqlQuery("alter table RECORDINGS add index TUE_IDX (STATION_NAME,TUE,IS_ACTIVE)",false);
+    q=new RDSqlQuery("alter table RECORDINGS add index WED_IDX (STATION_NAME,WED,IS_ACTIVE)",false);
+    q=new RDSqlQuery("alter table RECORDINGS add index THU_IDX (STATION_NAME,THU,IS_ACTIVE)",false);
+    q=new RDSqlQuery("alter table RECORDINGS add index FRI_IDX (STATION_NAME,FRI,IS_ACTIVE)",false);
+    q=new RDSqlQuery("alter table RECORDINGS add index SAT_IDX (STATION_NAME,SAT,IS_ACTIVE)",false);
     delete q;
   }
 
   if(ver<26) {
-    q=new QSqlQuery("alter table RECORDINGS drop index SUN_IDX");
+    q=new RDSqlQuery("alter table RECORDINGS drop index SUN_IDX",false);
     delete q;
-    q=new QSqlQuery("alter table RECORDINGS drop index MON_IDX");
+    q=new RDSqlQuery("alter table RECORDINGS drop index MON_IDX",false);
     delete q;
-    q=new QSqlQuery("alter table RECORDINGS drop index TUE_IDX");
+    q=new RDSqlQuery("alter table RECORDINGS drop index TUE_IDX",false);
     delete q;
-    q=new QSqlQuery("alter table RECORDINGS drop index WED_IDX");
+    q=new RDSqlQuery("alter table RECORDINGS drop index WED_IDX",false);
     delete q;
-    q=new QSqlQuery("alter table RECORDINGS drop index THU_IDX");
+    q=new RDSqlQuery("alter table RECORDINGS drop index THU_IDX",false);
     delete q;
-    q=new QSqlQuery("alter table RECORDINGS drop index FRI_IDX");
+    q=new RDSqlQuery("alter table RECORDINGS drop index FRI_IDX",false);
     delete q;
-    q=new QSqlQuery("alter table RECORDINGS drop index SAT_IDX");
+    q=new RDSqlQuery("alter table RECORDINGS drop index SAT_IDX",false);
     delete q;
   }
 
@@ -3310,278 +3179,242 @@ int UpdateDb(int ver)
   // Create GPIS Table
   //
   if(ver<27) {
-    sql="create table if not exists GPIS (\
-         ID int auto_increment not null primary key,\
-         STATION_NAME char(64) not null,\
-         MATRIX int not null,\
-         NUMBER int not null,\
-         MACRO_CART int default -1,\
-         index MATRIX_IDX (STATION_NAME,MATRIX,NUMBER))";
-    q=new QSqlQuery(sql);
+    sql=QString("create table if not exists GPIS (")+
+      "ID int auto_increment not null primary key,"+
+      "STATION_NAME char(64) not null,"+
+      "MATRIX int not null,"+
+      "NUMBER int not null,"+
+      "MACRO_CART int default -1,"+
+      "index MATRIX_IDX (STATION_NAME,MATRIX,NUMBER))"+
+      config->createTablePostfix();
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<28) {
     sql="alter table CUTS alter column ORIGIN_DATETIME set default NULL";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
     sql="alter table CUTS alter column START_DATETIME set default NULL";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
     sql="alter table CUTS alter column END_DATETIME set default NULL";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
     sql="alter table CUTS alter column START_DAYPART set default NULL";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
     sql="alter table CUTS alter column END_DAYPART set default NULL";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
-    sql="update CUTS set ORIGIN_DATETIME=NULL where \
-         ORIGIN_DATETIME=\"0000-00-00 00:00:00\"";
-    q=new QSqlQuery(sql);
+    sql="update CUTS set ORIGIN_DATETIME=NULL where ORIGIN_DATETIME=\"0000-00-00 00:00:00\"";
+    q=new RDSqlQuery(sql,false);
     delete q;
-    sql="update CUTS set START_DATETIME=NULL where \
-         START_DATETIME=\"0000-00-00 00:00:00\"";
-    q=new QSqlQuery(sql);
+    sql="update CUTS set START_DATETIME=NULL where START_DATETIME=\"0000-00-00 00:00:00\"";
+    q=new RDSqlQuery(sql,false);
     delete q;
-    sql="update CUTS set END_DATETIME=NULL where \
-         END_DATETIME=\"0000-00-00 00:00:00\"";
-    q=new QSqlQuery(sql);
+    sql="update CUTS set END_DATETIME=NULL where END_DATETIME=\"0000-00-00 00:00:00\"";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
     sql="select NAME from LOGS";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     while(q->next()) {
-      sql=QString().sprintf("alter table %s_LOG drop index START_TIME_IDX",
-			    (const char *)q->value(0).toString());
-      q1=new QSqlQuery(sql);
+      sql=QString("alter table `")+q->value(0).toString()+"_LOG` "+
+	"drop index START_TIME_IDX";
+      q1=new RDSqlQuery(sql,false);
       delete q1;
-      sql=QString().sprintf("alter table %s_LOG alter column START_TIME \
-                             set default NULL",
-			    (const char *)q->value(0).toString());
-      q1=new QSqlQuery(sql);
+      sql=QString("alter table `")+q->value(0).toString()+"_LOG` "+
+	"alter column START_TIME set default NULL";
+      q1=new RDSqlQuery(sql,false);
       delete q1;
-      sql=QString().sprintf("alter table %s_LOG modify column START_TIME int",
-			    (const char *)q->value(0).toString());
-      q1=new QSqlQuery(sql);
+      sql=QString("alter table `")+q->value(0).toString()+"_LOG` "+
+	"modify column START_TIME int";
+      q1=new RDSqlQuery(sql,false);
       delete q1;
-      sql=QString().sprintf("alter table %s_LOG alter column POST_TIME \
-                             set default NULL",
-			    (const char *)q->value(0).toString());
-      q1=new QSqlQuery(sql);
+      sql=QString("alter table `")+q->value(0).toString()+"_LOG` "+
+	"alter column POST_TIME set default NULL";
+      q1=new RDSqlQuery(sql,false);
       delete q1;
-      sql=QString().sprintf("update %s_LOG set START_TIME=NULL where \
-                             START_TIME=\"00:00:00\"",
-			    (const char *)q->value(0).toString());
-      q1=new QSqlQuery(sql);
+      sql=QString("update `")+q->value(0).toString()+"_LOG` "+
+	"set START_TIME=NULL where START_TIME=\"00:00:00\"";
+      q1=new RDSqlQuery(sql,false);
       delete q1;
-      sql=QString().sprintf("update %s_LOG set POST_TIME=NULL where \
-                             POST_TIME=\"00:00:00\"",
-			    (const char *)q->value(0).toString());
-      q1=new QSqlQuery(sql);
+      sql=QString("update `")+q->value(0).toString()+"_LOG` "+
+	"set POST_TIME=NULL where POST_TIME=\"00:00:00\"";
+      q1=new RDSqlQuery(sql,false);
       delete q1;
     }
     delete q;
   }
 
   if(ver<29) {
-    q=new QSqlQuery("alter table RECORDINGS add column \
-                     EXIT_CODE int default 0");
+    q=new RDSqlQuery("alter table RECORDINGS add column EXIT_CODE int default 0",false);
     delete q;
   }
 
   if(ver<30) {
-    q=new QSqlQuery("alter table RECORDINGS add column \
-                     ONE_SHOT enum('N','Y') default 'N'");
+    q=new RDSqlQuery("alter table RECORDINGS add column ONE_SHOT enum('N','Y') default 'N'",false);
     delete q;
   }
 
   if(ver<31) {
-    q=new QSqlQuery("alter table STATIONS add column \
-                     TIME_OFFSET int default 0");
+    q=new RDSqlQuery("alter table STATIONS add column TIME_OFFSET int default 0",false);
     delete q;
   }
 
   if(ver<32) {
-    q=new QSqlQuery("alter table GROUPS add column \
-                     DEFAULT_LOW_CART int unsigned default 0");
-    q=new QSqlQuery("alter table GROUPS add column \
-                     DEFAULT_HIGH_CART int unsigned default 0");
+    q=new RDSqlQuery("alter table GROUPS add column DEFAULT_LOW_CART int unsigned default 0",false);
+    q=new RDSqlQuery("alter table GROUPS add column DEFAULT_HIGH_CART int unsigned default 0",false);
     delete q;
   }
 
   if(ver<33) {
-    q=new QSqlQuery("alter table CUTS add column \
-                     SUN enum('N','Y') default 'Y' after END_DAYPART");
-    q=new QSqlQuery("alter table CUTS add column \
-                     MON enum('N','Y') default 'Y' after END_DAYPART");
-    q=new QSqlQuery("alter table CUTS add column \
-                     TUE enum('N','Y') default 'Y' after END_DAYPART");
-    q=new QSqlQuery("alter table CUTS add column \
-                     WED enum('N','Y') default 'Y' after END_DAYPART");
-    q=new QSqlQuery("alter table CUTS add column \
-                     THU enum('N','Y') default 'Y' after END_DAYPART");
-    q=new QSqlQuery("alter table CUTS add column \
-                     FRI enum('N','Y') default 'Y' after END_DAYPART");
-    q=new QSqlQuery("alter table CUTS add column \
-                     SAT enum('N','Y') default 'Y' after END_DAYPART");
+    q=new RDSqlQuery("alter table CUTS add column SUN enum('N','Y') default 'Y' after END_DAYPART",false);
+    q=new RDSqlQuery("alter table CUTS add column MON enum('N','Y') default 'Y' after END_DAYPART",false);
+    q=new RDSqlQuery("alter table CUTS add column TUE enum('N','Y') default 'Y' after END_DAYPART",false);
+    q=new RDSqlQuery("alter table CUTS add column WED enum('N','Y') default 'Y' after END_DAYPART",false);
+    q=new RDSqlQuery("alter table CUTS add column THU enum('N','Y') default 'Y' after END_DAYPART",false);
+    q=new RDSqlQuery("alter table CUTS add column FRI enum('N','Y') default 'Y' after END_DAYPART",false);
+    q=new RDSqlQuery("alter table CUTS add column SAT enum('N','Y') default 'Y' after END_DAYPART",false);
   }
 
   if(ver<34) {
-    q=new QSqlQuery("select NAME from LOGS");
+    q=new RDSqlQuery("select NAME from LOGS",false);
     while(q->next()) {
-      RunQuery(QString().sprintf("alter table %s_LOG \
-                      add GRACE_TIME int default 0 after START_TIME",
-		     (const char *)q->value(0).toString()));
+      sql=QString("alter table `")+q->value(0).toString()+"_LOG "+
+	"add GRACE_TIME int default 0 after START_TIME";
+      q1=new RDSqlQuery(sql,false);
+      delete q1;
     }
     delete q;
   }
 
   if(ver<35) {
-    q=new QSqlQuery("alter table RDAIRPLAY add column \
-                     TRANS_LENGTH int default 0 after SEGUE_LENGTH");
+    q=new RDSqlQuery("alter table RDAIRPLAY add column TRANS_LENGTH int default 0 after SEGUE_LENGTH",false);
   }
 
   if(ver<36) {
-    q=new QSqlQuery("select NAME from LOGS");
+    q=new RDSqlQuery("select NAME from LOGS",false);
     while(q->next()) {
-      RunQuery(QString().sprintf("alter table %s_LOG \
-                      add POST_POINT enum('N','Y') default 'N'\
-                      after TIME_TYPE",
-		     (const char *)q->value(0).toString()));
+      sql=QString("alter table `")+q->value(0).toString()+"_LOG` "+
+	"add POST_POINT enum('N','Y') default 'N' after TIME_TYPE";
+      q1=new RDSqlQuery(sql,false);
+      delete q1;
     }
     delete q;
   }
 
   if(ver<37) {
-    q=new QSqlQuery("alter table LOGS add column \
-                     TYPE int not null default 0 after NAME");
+    q=new RDSqlQuery("alter table LOGS add column TYPE int not null default 0 after NAME",false);
     delete q;
   }
 
   if(ver<38) {
-    sql=QString("create table if not exists EVENTS (\
-      NAME char(64) not null primary key,\
-      PROPERTIES char(64),\
-      DISPLAY_TEXT char(64),\
-      NOTE_TEXT char(255),\
-      PREPOSITION int default -1,\
-      TIME_TYPE int default 0,\
-      GRACE_TIME int default 0,\
-      POST_POINT enum('N','Y') default 'N',\
-      USE_AUTOFILL enum('N','Y') default 'N',\
-      USE_TIMESCALE enum('N','Y') default 'N',\
-      IMPORT_SOURCE int default 0,\
-      START_SLOP int default 0,\
-      END_SLOP int default 0,\
-      FIRST_TRANS_TYPE int default 0,\
-      DEFAULT_TRANS_TYPE int default 0,\
-      COLOR char(7))");
-    q=new QSqlQuery(sql);
+    sql=QString("create table if not exists EVENTS (")+
+      "NAME char(64) not null primary key,"+
+      "PROPERTIES char(64),"+
+      "DISPLAY_TEXT char(64),"+
+      "NOTE_TEXT char(255),"+
+      "PREPOSITION int default -1,"+
+      "TIME_TYPE int default 0,"+
+      "GRACE_TIME int default 0,"+
+      "POST_POINT enum('N','Y') default 'N',"+
+      "USE_AUTOFILL enum('N','Y') default 'N',"+
+      "USE_TIMESCALE enum('N','Y') default 'N',"+
+      "IMPORT_SOURCE int default 0,"+
+      "START_SLOP int default 0,"+
+      "END_SLOP int default 0,"+
+      "FIRST_TRANS_TYPE int default 0,"+
+      "DEFAULT_TRANS_TYPE int default 0,"+
+      "COLOR char(7))"+
+      config->createTablePostfix();
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<39) {   // Transpose RDLogLine::Stop and RDLogLine::Segue
     sql="select NAME from LOGS";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     while(q->next()) {
-      sql=QString().
-	sprintf("update %s_LOG set TRANS_TYPE=100 where TRANS_TYPE=1",
-		(const char *)q->value(0).toString());
-      q1=new QSqlQuery(sql);
+      sql=QString("update `")+q->value(0).toString()+"_LOG` set "+
+	"TRANS_TYPE=100 where TRANS_TYPE=1";
+      q1=new RDSqlQuery(sql,false);
       delete q1;
-      sql=QString().
-	sprintf("update %s_LOG set TRANS_TYPE=1 where TRANS_TYPE=2",
-		(const char *)q->value(0).toString());
-      q1=new QSqlQuery(sql);
+      sql=QString("update `")+q->value(0).toString()+"_LOG` set "+
+	"TRANS_TYPE=1 where TRANS_TYPE=2";
+      q1=new RDSqlQuery(sql,false);
       delete q1;
-      sql=QString().
-	sprintf("update %s_LOG set TRANS_TYPE=2 where TRANS_TYPE=100",
-		(const char *)q->value(0).toString());
-      q1=new QSqlQuery(sql);
+      sql=QString("update `")+q->value(0).toString()+"_LOG` set "+
+	"TRANS_TYPE=2 where TRANS_TYPE=100";
+      q1=new RDSqlQuery(sql,false);
       delete q1;
     }
     delete q;
   }
 
   if(ver<40) {
-    sql=QString("create table if not exists CLOCKS (\
-      NAME char(64) not null primary key,\
-      SHORT_NAME char(8),\
-      COLOR char(7))");
-    q=new QSqlQuery(sql);
+    sql=QString("create table if not exists CLOCKS (")+
+      "NAME char(64) not null primary key,"+
+      "SHORT_NAME char(8),"+
+      "COLOR char(7))"+
+      config->createTablePostfix();
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<41) {
-    q=new QSqlQuery("alter table RDAIRPLAY add column \
-                     CARD0 int default -1 after INSTANCE");
+    q=new RDSqlQuery("alter table RDAIRPLAY add column CARD0 int default -1 after INSTANCE",false);
     delete q;
 
-    q=new QSqlQuery("alter table RDAIRPLAY add column \
-                     CARD1 int default -1 after PORT0");
+    q=new RDSqlQuery("alter table RDAIRPLAY add column CARD1 int default -1 after PORT0",false);
     delete q;
 
-    q=new QSqlQuery("alter table RDAIRPLAY add column \
-                     CARD2 int default -1 after PORT1");
+    q=new RDSqlQuery("alter table RDAIRPLAY add column CARD2 int default -1 after PORT1",false);
     delete q;
 
-    q=new QSqlQuery("alter table RDAIRPLAY add column \
-                     CARD3 int default -1 after PORT2");
+    q=new RDSqlQuery("alter table RDAIRPLAY add column CARD3 int default -1 after PORT2",false);
     delete q;
 
-    q=new QSqlQuery("alter table RDAIRPLAY add column \
-                     CARD4 int default -1 after PORT3");
+    q=new RDSqlQuery("alter table RDAIRPLAY add column CARD4 int default -1 after PORT3",false);
     delete q;
 
-    q=new QSqlQuery("alter table RDAIRPLAY add column \
-                     CARD5 int default -1 after PORT4");
+    q=new RDSqlQuery("alter table RDAIRPLAY add column CARD5 int default -1 after PORT4",false);
     delete q;
   }
 
   if(ver<42) {
-    q=new QSqlQuery("alter table SERVICES add column CLOCK0 char(64) \
-                     after DESCRIPTION");
+    q=new RDSqlQuery("alter table SERVICES add column CLOCK0 char(64) after DESCRIPTION",false);
     delete q;
     for(int i=1;i<168;i++) {
-      q=new QSqlQuery(QString().sprintf("alter table SERVICES \
-                   add column CLOCK%d char(64) after CLOCK%d",i,i-1));
+      sql=QString("alter table SERVICES add column ")+
+	QString().sprintf("CLOCK%d char(64) after CLOCK%d",i,i-1);
+      q=new RDSqlQuery(sql,false);
       delete q;
     }
   }
 
   if(ver<43) {
-    q=new QSqlQuery("alter table RDAIRPLAY \
-                     add column SHOW_AUX_1 enum('N','Y') default 'Y' \
-                     after USER_PANELS");
+    q=new RDSqlQuery("alter table RDAIRPLAY add column SHOW_AUX_1 enum('N','Y') default 'Y' after USER_PANELS",false);
     delete q;
-    q=new QSqlQuery("alter table RDAIRPLAY \
-                     add column SHOW_AUX_2 enum('N','Y') default 'Y' \
-                     after SHOW_AUX_1");
+    q=new RDSqlQuery("alter table RDAIRPLAY add column SHOW_AUX_2 enum('N','Y') default 'Y' after SHOW_AUX_1",false);
     delete q;
   }
 
   if(ver<44) {
-    q=new QSqlQuery("alter table CUTS \
-                     add column LOCAL_COUNTER int unsigned default 0 \
-                     after PLAY_COUNTER");
+    q=new RDSqlQuery("alter table CUTS add column LOCAL_COUNTER int unsigned default 0 after PLAY_COUNTER",false);
     delete q;
   }
 
   if(ver<45) {
-    q=new QSqlQuery("alter table CUTS \
-                     add column EVERGREEN enum('N','Y') default 'N' \
-                     after CART_NUMBER");
+    q=new RDSqlQuery("alter table CUTS add column EVERGREEN enum('N','Y') default 'N' after CART_NUMBER",false);
     delete q;
   }
 
   if(ver<46) {
-    q=new QSqlQuery("alter table CART \
-                     add column LENGTH_DEVIATION int unsigned default 0 \
-                     after FORCED_LENGTH");
+    q=new RDSqlQuery("alter table CART add column LENGTH_DEVIATION int unsigned default 0 after FORCED_LENGTH",false);
     delete q;
-    q=new QSqlQuery("select NUMBER from CART where TYPE=1");
+    q=new RDSqlQuery("select NUMBER from CART where TYPE=1",false);
     while(q->next()) {
       cart=new RDCart(q->value(0).toUInt());
       cart->calculateAverageLength(&dev);
@@ -3592,166 +3425,132 @@ int UpdateDb(int ver)
   }
 
   if(ver<47) {
-    q=new QSqlQuery("alter table SERVICES \
-                     add column NAME_TEMPLATE char(255)\
-                     after DESCRIPTION");
+    q=new RDSqlQuery("alter table SERVICES add column NAME_TEMPLATE char(255) after DESCRIPTION",false);
     delete q;
-    q=new QSqlQuery("alter table SERVICES \
-                     add column TFC_PATH char(255)\
-                     after NAME_TEMPLATE");
+    q=new RDSqlQuery("alter table SERVICES add column TFC_PATH char(255) after NAME_TEMPLATE",false);
     delete q;
-    q=new QSqlQuery("alter table SERVICES \
-                     add column TFC_WIN_PATH char(255)\
-                     after TFC_PATH");
+    q=new RDSqlQuery("alter table SERVICES add column TFC_WIN_PATH char(255) after TFC_PATH",false);
     delete q;
-    q=new QSqlQuery("alter table SERVICES \
-                     add column TFC_CART_OFFSET int\
-                     after TFC_WIN_PATH");
+    q=new RDSqlQuery("alter table SERVICES add column TFC_CART_OFFSET int after TFC_WIN_PATH",false);
     delete q;
-    q=new QSqlQuery("alter table SERVICES \
-                     add column TFC_CART_LENGTH int\
-                     after TFC_CART_OFFSET");
+    q=new RDSqlQuery("alter table SERVICES add column TFC_CART_LENGTH int after TFC_CART_OFFSET",false);
     delete q;
-    q=new QSqlQuery("alter table SERVICES \
-                     add column TFC_START_OFFSET int\
-                     after TFC_CART_LENGTH");
+    q=new RDSqlQuery("alter table SERVICES add column TFC_START_OFFSET int after TFC_CART_LENGTH",false);
     delete q;
-    q=new QSqlQuery("alter table SERVICES \
-                     add column TFC_START_LENGTH int\
-                     after TFC_START_OFFSET");
+    q=new RDSqlQuery("alter table SERVICES add column TFC_START_LENGTH int after TFC_START_OFFSET",false);
     delete q;
-    q=new QSqlQuery("alter table SERVICES \
-                     add column MUS_PATH char(255)\
-                     after TFC_START_LENGTH");
+    q=new RDSqlQuery("alter table SERVICES add column MUS_PATH char(255) after TFC_START_LENGTH",false);
     delete q;
-    q=new QSqlQuery("alter table SERVICES \
-                     add column MUS_WIN_PATH char(255)\
-                     after MUS_PATH");
+    q=new RDSqlQuery("alter table SERVICES add column MUS_WIN_PATH char(255) after MUS_PATH",false);
     delete q;
-    q=new QSqlQuery("alter table SERVICES \
-                     add column MUS_CART_OFFSET int\
-                     after MUS_PATH");
+    q=new RDSqlQuery("alter table SERVICES add column MUS_CART_OFFSET int after MUS_PATH",false);
     delete q;
-    q=new QSqlQuery("alter table SERVICES \
-                     add column MUS_CART_LENGTH int\
-                     after MUS_CART_OFFSET");
+    q=new RDSqlQuery("alter table SERVICES add column MUS_CART_LENGTH int after MUS_CART_OFFSET",false);
     delete q;
-    q=new QSqlQuery("alter table SERVICES \
-                     add column MUS_START_OFFSET int\
-                     after MUS_CART_LENGTH");
+    q=new RDSqlQuery("alter table SERVICES add column MUS_START_OFFSET int after MUS_CART_LENGTH",false);
     delete q;
-    q=new QSqlQuery("alter table SERVICES \
-                     add column MUS_START_LENGTH int\
-                     after MUS_START_OFFSET");
+    q=new RDSqlQuery("alter table SERVICES add column MUS_START_LENGTH int after MUS_START_OFFSET",false);
     delete q;
   }
 
   if(ver<48) {
-    q=new QSqlQuery("alter table SERVICES \
-                     add column TFC_LENGTH_OFFSET int\
-                     after TFC_START_LENGTH");
+    q=new RDSqlQuery("alter table SERVICES add column TFC_LENGTH_OFFSET int after TFC_START_LENGTH",false);
     delete q;
 
-    q=new QSqlQuery("alter table SERVICES \
-                     add column TFC_LENGTH_LENGTH int\
-                     after TFC_LENGTH_OFFSET");
+    q=new RDSqlQuery("alter table SERVICES add column TFC_LENGTH_LENGTH int after TFC_LENGTH_OFFSET",false);
     delete q;
 
-    q=new QSqlQuery("alter table SERVICES \
-                     add column MUS_LENGTH_OFFSET int\
-                     after MUS_START_LENGTH");
+    q=new RDSqlQuery("alter table SERVICES add column MUS_LENGTH_OFFSET int after MUS_START_LENGTH",false);
     delete q;
 
-    q=new QSqlQuery("alter table SERVICES \
-                     add column MUS_LENGTH_LENGTH int\
-                     after MUS_LENGTH_OFFSET");
+    q=new RDSqlQuery("alter table SERVICES add column MUS_LENGTH_LENGTH int after MUS_LENGTH_OFFSET",false);
     delete q;
   }
 
   if(ver<49) {
-    q=new QSqlQuery("create table if not exists AUTOFILLS (\
-                     ID int not null primary key auto_increment,\
-                     SERVICE char(10),\
-                     CART_NUMBER int unsigned,\
-                     index SERVICE_IDX (SERVICE))");
+    sql=QString("create table if not exists AUTOFILLS (")+
+      "ID int not null primary key auto_increment,"+
+      "SERVICE char(10),"+
+      "CART_NUMBER int unsigned,"+
+      "index SERVICE_IDX (SERVICE))"+
+      config->createTablePostfix();
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<50) {
-    q=new QSqlQuery("alter table SERVICES \
-                     add column CHAIN_LOG enum('N','Y') default 'N'\
-                     after NAME_TEMPLATE");
+    sql=QString("alter table SERVICES ")+
+      "add column CHAIN_LOG enum('N','Y') default 'N'"+
+      "after NAME_TEMPLATE";
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<51) {
-    q=new QSqlQuery("alter table USERS \
-                     modify column PASSWORD char(32)\
-                     after DESCRIPTION");
+    sql=QString("alter table USERS ")+
+      "modify column PASSWORD char(32)"+
+      "after DESCRIPTION";
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<52) {
-    q=new QSqlQuery("create table if not exists HOSTVARS (\
-      ID int not null primary key auto_increment,\
-      STATION_NAME char(64) not null,\
-      NAME char(32) not null,\
-      VARVALUE char(255),\
-      REMARK char(255),\
-      index NAME_IDX (STATION_NAME))");
+    sql=QString("create table if not exists HOSTVARS (")+
+      "ID int not null primary key auto_increment,"+
+      "STATION_NAME char(64) not null,"+
+      "NAME char(32) not null,"+
+      "VARVALUE char(255),"+
+      "REMARK char(255),"+
+      "index NAME_IDX (STATION_NAME))"+
+      config->createTablePostfix();
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<53) {
-    q=new QSqlQuery("alter table STATIONS add column BACKUP_DIR char(255)");
+    q=new RDSqlQuery("alter table STATIONS add column BACKUP_DIR char(255)",false);
     delete q;
-    q=new QSqlQuery("alter table STATIONS\
-                       add column BACKUP_LIFE int default 0");
+    q=new RDSqlQuery("alter table STATIONS add column BACKUP_LIFE int default 0",false);
     delete q;
   }
   
   if(ver<54) {
-    q=new QSqlQuery("alter table RDAIRPLAY add column \
-                       CLEAR_FILTER enum(\'N\',\'Y\') default \'N\'");
+    q=new RDSqlQuery("alter table RDAIRPLAY add column CLEAR_FILTER enum(\'N\',\'Y\') default \'N\'",false);
     delete q;
-    q=new QSqlQuery("alter table RDAIRPLAY add column \
-                       BAR_ACTION int unsigned default 0");
+    q=new RDSqlQuery("alter table RDAIRPLAY add column BAR_ACTION int unsigned default 0",false);
     delete q;
   }
 
   if(ver<55) {
-    q=new QSqlQuery("alter table RDAIRPLAY add column \
-                       FLASH_PANEL enum(\'N\',\'Y\') default \'N\'");
+    q=new RDSqlQuery("alter table RDAIRPLAY add column FLASH_PANEL enum(\'N\',\'Y\') default \'N\'",false);
     delete q;
   }
 
   if(ver<56) {
-    q=new QSqlQuery("alter table STATIONS add column \
-                       HEARTBEAT_CART int unsigned default 0");
+    q=new RDSqlQuery("alter table STATIONS add column HEARTBEAT_CART int unsigned default 0",false);
     delete q;
-    q=new QSqlQuery("alter table STATIONS add column \
-                       HEARTBEAT_INTERVAL int unsigned default 0");
+    q=new RDSqlQuery("alter table STATIONS add column HEARTBEAT_INTERVAL int unsigned default 0",false);
     delete q;
   }
 
   if(ver<57) {
-    q=new QSqlQuery("create table if not exists SERVICE_PERMS (\
-                     ID int unsigned auto_increment not null primary key,\
-                     STATION_NAME char(64),\
-                     SERVICE_NAME char(10),\
-                     index STATION_IDX (STATION_NAME),\
-                     index SERVICE_IDX (SERVICE_NAME))");
+    sql=QString("create table if not exists SERVICE_PERMS (")+
+      "ID int unsigned auto_increment not null primary key,"+
+      "STATION_NAME char(64),"+
+      "SERVICE_NAME char(10),"+
+      "index STATION_IDX (STATION_NAME),"+
+      "index SERVICE_IDX (SERVICE_NAME))"+
+      config->createTablePostfix();
+    q=new RDSqlQuery(sql,false);
     delete q;
-    q=new QSqlQuery("select NAME from STATIONS");
+    q=new RDSqlQuery("select NAME from STATIONS",false);
     while(q->next()) {
-      q1=new QSqlQuery("select NAME from SERVICES");
+      q1=new RDSqlQuery("select NAME from SERVICES",false);
       while(q1->next()) {
-	q2=new 
-	  QSqlQuery(QString().sprintf("insert into SERVICE_PERMS set \
-                                       STATION_NAME=\"%s\",\
-                                       SERVICE_NAME=\"%s\"",
-				      (const char *)q->value(0).toString(),
-				      (const char *)q1->value(0).toString()));
+	sql=QString("insert into SERVICE_PERMS set ")+
+	  "STATION_NAME=\""+RDEscapeString(q->value(0).toString())+"\","+
+	  "SERVICE_NAME=\""+RDEscapeString(q1->value(0).toString())+"\"";
+	q2=new RDSqlQuery(sql,false);
 	delete q2;
       }
       delete q1;
@@ -3760,56 +3559,44 @@ int UpdateDb(int ver)
   }
 
   if(ver<58) {
-    q=new QSqlQuery("select NAME from LOGS");
+    q=new RDSqlQuery("select NAME from LOGS",false);
     while(q->next()) {
-      q1=new 
-	QSqlQuery(QString().sprintf("alter table %s_LOG add column\
-                                     EXT_START_TIME time",
-				    (const char *)q->value(0).toString()));
+      sql=QString("alter table `")+q->value(0).toString()+"_LOG` "+
+	"add column EXT_START_TIME time";
+      q1=new RDSqlQuery(sql,false);
       delete q1;
-      q1=new 
-	QSqlQuery(QString().sprintf("alter table %s_LOG add column\
-                                     EXT_LENGTH int",
-				    (const char *)q->value(0).toString()));
+      sql=QString("alter table `")+q->value(0).toString()+"_LOG` "+
+	"add column EXT_LENGTH int";
+      q1=new RDSqlQuery(sql,false);
       delete q1;
-      q1=new 
-	QSqlQuery(QString().sprintf("alter table %s_LOG add column\
-                                     EXT_DATA char(32)",
-				    (const char *)q->value(0).toString()));
+      sql=QString("alter table '")+q->value(0).toString()+"_LOG` "+
+	"add column EXT_DATA char(32)";
+      q1=new RDSqlQuery(sql,false);
       delete q1;
-      q1=new 
-	QSqlQuery(QString().sprintf("alter table %s_LOG add column\
-                                     EXT_EVENT_ID char(8)",
-				    (const char *)q->value(0).toString()));
+      sql=QString("alter table `")+q->value(0).toString()+"_LOG` "+
+	"add column EXT_EVENT_ID char(8)";
+      q1=new RDSqlQuery(sql,false);
       delete q1;
     }
     delete q;
   }
 
   if(ver<59) {
-    q=new QSqlQuery("alter table SERVICES add column TFC_DATA_OFFSET int\
-                     after TFC_LENGTH_LENGTH");
+    q=new RDSqlQuery("alter table SERVICES add column TFC_DATA_OFFSET int after TFC_LENGTH_LENGTH",false);
     delete q;
-    q=new QSqlQuery("alter table SERVICES add column TFC_DATA_LENGTH int\
-                     after TFC_DATA_OFFSET");
+    q=new RDSqlQuery("alter table SERVICES add column TFC_DATA_LENGTH int after TFC_DATA_OFFSET",false);
     delete q;
-    q=new QSqlQuery("alter table SERVICES add column TFC_EVENT_ID_OFFSET int\
-                     after TFC_DATA_LENGTH");
+    q=new RDSqlQuery("alter table SERVICES add column TFC_EVENT_ID_OFFSET int after TFC_DATA_LENGTH",false);
     delete q;
-    q=new QSqlQuery("alter table SERVICES add column TFC_EVENT_ID_LENGTH int\
-                     after TFC_EVENT_ID_OFFSET");
+    q=new RDSqlQuery("alter table SERVICES add column TFC_EVENT_ID_LENGTH int after TFC_EVENT_ID_OFFSET",false);
     delete q;
-    q=new QSqlQuery("alter table SERVICES add column MUS_DATA_OFFSET int\
-                     after MUS_LENGTH_LENGTH");
+    q=new RDSqlQuery("alter table SERVICES add column MUS_DATA_OFFSET int after MUS_LENGTH_LENGTH",false);
     delete q;
-    q=new QSqlQuery("alter table SERVICES add column MUS_DATA_LENGTH int\
-                     after MUS_DATA_OFFSET");
+    q=new RDSqlQuery("alter table SERVICES add column MUS_DATA_LENGTH int after MUS_DATA_OFFSET",false);
     delete q;
-    q=new QSqlQuery("alter table SERVICES add column MUS_EVENT_ID_OFFSET int\
-                     after MUS_DATA_LENGTH");
+    q=new RDSqlQuery("alter table SERVICES add column MUS_EVENT_ID_OFFSET int after MUS_DATA_LENGTH",false);
     delete q;
-    q=new QSqlQuery("alter table SERVICES add column MUS_EVENT_ID_LENGTH int\
-                     after MUS_EVENT_ID_OFFSET");
+    q=new RDSqlQuery("alter table SERVICES add column MUS_EVENT_ID_LENGTH int after MUS_EVENT_ID_OFFSET",false);
     delete q;
   }
 
@@ -3819,184 +3606,156 @@ int UpdateDb(int ver)
   //
 
   if(ver<62) {
-    q=new QSqlQuery("alter table GROUPS add column \
-                     REPORT_TFC enum('N','Y') default 'N'");
+    q=new RDSqlQuery("alter table GROUPS add column REPORT_TFC enum('N','Y') default 'N'",false);
     delete q;
-    q=new QSqlQuery("alter table GROUPS add column \
-                     REPORT_MUS enum('N','Y') default 'N'");
+    q=new RDSqlQuery("alter table GROUPS add column REPORT_MUS enum('N','Y') default 'N'",false);
     delete q;
-    q=new QSqlQuery("alter table GROUPS add index \
-                     IDX_REPORT_TFC (REPORT_TFC)");
+    q=new RDSqlQuery("alter table GROUPS add index IDX_REPORT_TFC (REPORT_TFC)",false);
     delete q;
-    q=new QSqlQuery("alter table GROUPS add index \
-                     IDX_REPORT_MUS (REPORT_MUS)");
+    q=new RDSqlQuery("alter table GROUPS add index IDX_REPORT_MUS (REPORT_MUS)",false);
     delete q;
   }
 
   if(ver<63) {
-    sql=QString("create table if not exists REPORTS (\
-                 ID int unsigned auto_increment not null primary key,\
-                 NAME char(64) not null unique,\
-                 DESCRIPTION char(64),\
-                 EXPORT_FILTER int,\
-                 EXPORT_PATH char(255),\
-                 WIN_EXPORT_PATH char(255),\
-                 index IDX_NAME (NAME))");
-    q=new QSqlQuery(sql);
+    sql=QString("create table if not exists REPORTS (")+
+      "ID int unsigned auto_increment not null primary key,"+
+      "NAME char(64) not null unique,"+
+      "DESCRIPTION char(64),"+
+      "EXPORT_FILTER int,"+
+      "EXPORT_PATH char(255),"+
+      "WIN_EXPORT_PATH char(255),"+
+      "index IDX_NAME (NAME))"+
+      config->createTablePostfix();
+    q=new RDSqlQuery(sql,false);
     delete q;
-    sql=QString("create table if not exists REPORT_SERVICES (\
-                 ID int unsigned auto_increment not null primary key,\
-                 REPORT_NAME char(64) not null,\
-                 SERVICE_NAME char(10),\
-                 index IDX_REPORT_NAME (REPORT_NAME))");
-    q=new QSqlQuery(sql);
+    sql=QString("create table if not exists REPORT_SERVICES (")+
+      "ID int unsigned auto_increment not null primary key,"+
+      "REPORT_NAME char(64) not null,"+
+      "SERVICE_NAME char(10),"+
+      "index IDX_REPORT_NAME (REPORT_NAME))"+
+      config->createTablePostfix();
+    q=new RDSqlQuery(sql,false);
     delete q;
-    sql=QString("create table if not exists REPORT_STATIONS (\
-                 ID int unsigned auto_increment not null primary key,\
-                 REPORT_NAME char(64) not null,\
-                 STATION_NAME char(64),\
-                 index IDX_REPORT_NAME (REPORT_NAME))");
-    q=new QSqlQuery(sql);
+    sql=QString("create table if not exists REPORT_STATIONS (")+
+      "ID int unsigned auto_increment not null primary key,"+
+      "REPORT_NAME char(64) not null,"+
+      "STATION_NAME char(64),"+
+      "index IDX_REPORT_NAME (REPORT_NAME))"+
+      config->createTablePostfix();
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<64) {
-    q=new QSqlQuery("alter table REPORTS add column\
-                     EXPORT_TFC enum('N','Y') default 'N'");
+    q=new RDSqlQuery("alter table REPORTS add column EXPORT_TFC enum('N','Y') default 'N'",false);
     delete q;
-    q=new QSqlQuery("alter table REPORTS add column\
-                     EXPORT_MUS enum('N','Y') default 'N'");
+    q=new RDSqlQuery("alter table REPORTS add column EXPORT_MUS enum('N','Y') default 'N'",false);
     delete q;
-    q=new QSqlQuery("alter table REPORTS add column\
-                     EXPORT_GEN enum('N','Y') default 'N'");
+    q=new RDSqlQuery("alter table REPORTS add column EXPORT_GEN enum('N','Y') default 'N'",false);
     delete q;
   }
 
   if(ver<65) {
-    q=new QSqlQuery("alter table REPORTS add column STATION_ID char(16)");
+    q=new RDSqlQuery("alter table REPORTS add column STATION_ID char(16)",false);
     delete q;
   }
 
   if(ver<66) {
     q=new 
-      QSqlQuery("alter table RDAIRPLAY alter column OP_MODE set default 2");
+      RDSqlQuery("alter table RDAIRPLAY alter column OP_MODE set default 2",false);
     delete q;
   }
 
   if(ver<67) {
     q=new 
-      QSqlQuery("alter table RDAIRPLAY \
-                 add column PAUSE_ENABLED enum('N','Y') default 'N'");
+      RDSqlQuery("alter table RDAIRPLAY add column PAUSE_ENABLED enum('N','Y') default 'N'",false);
     delete q;
   }
 
   if(ver<68) {
-    q=new QSqlQuery("alter table RDAIRPLAY add column UDP_ADDR0 char(255)");
+    q=new RDSqlQuery("alter table RDAIRPLAY add column UDP_ADDR0 char(255)",false);
     delete q;
-    q=new QSqlQuery("alter table RDAIRPLAY add column UDP_PORT0 int unsigned");
+    q=new RDSqlQuery("alter table RDAIRPLAY add column UDP_PORT0 int unsigned",false);
     delete q;
-    q=new QSqlQuery("alter table RDAIRPLAY add column UDP_STRING0 char(255)");
+    q=new RDSqlQuery("alter table RDAIRPLAY add column UDP_STRING0 char(255)",false);
     delete q;
-    q=new QSqlQuery("alter table RDAIRPLAY add column UDP_ADDR1 char(255)");
+    q=new RDSqlQuery("alter table RDAIRPLAY add column UDP_ADDR1 char(255)",false);
     delete q;
-    q=new QSqlQuery("alter table RDAIRPLAY add column UDP_PORT1 int unsigned");
+    q=new RDSqlQuery("alter table RDAIRPLAY add column UDP_PORT1 int unsigned",false);
     delete q;
-    q=new QSqlQuery("alter table RDAIRPLAY add column UDP_STRING1 char(255)");
+    q=new RDSqlQuery("alter table RDAIRPLAY add column UDP_STRING1 char(255)",false);
     delete q;
-    q=new QSqlQuery("alter table RDAIRPLAY add column UDP_ADDR2 char(255)");
+    q=new RDSqlQuery("alter table RDAIRPLAY add column UDP_ADDR2 char(255)",false);
     delete q;
-    q=new QSqlQuery("alter table RDAIRPLAY add column UDP_PORT2 int unsigned");
+    q=new RDSqlQuery("alter table RDAIRPLAY add column UDP_PORT2 int unsigned",false);
     delete q;
-    q=new QSqlQuery("alter table RDAIRPLAY add column UDP_STRING2 char(255)");
+    q=new RDSqlQuery("alter table RDAIRPLAY add column UDP_STRING2 char(255)",false);
     delete q;
-    q=new QSqlQuery("alter table GROUPS \
-                     add column ENABLE_NOW_NEXT enum('N','Y') default 'N'");
+    q=new RDSqlQuery("alter table GROUPS add column ENABLE_NOW_NEXT enum('N','Y') default 'N'",false);
     delete q;
   }
 
   if(ver<69) {
-    q=new QSqlQuery("alter table MATRICES add column PORT_TYPE int default 0\
-                     after TYPE");
+    q=new RDSqlQuery("alter table MATRICES add column PORT_TYPE int default 0 after TYPE",false);
     delete q;
-    q=new QSqlQuery("alter table MATRICES add column IP_ADDRESS char(16)\
-                     after PORT");
+    q=new RDSqlQuery("alter table MATRICES add column IP_ADDRESS char(16) after PORT",false);
     delete q;
-    q=new QSqlQuery("alter table MATRICES add column IP_PORT int\
-                     after IP_ADDRESS");
+    q=new RDSqlQuery("alter table MATRICES add column IP_PORT int after IP_ADDRESS",false);
     delete q;
   }
 
   if(ver<70) {
-    q=new QSqlQuery("select NAME from LOGS");
+    q=new RDSqlQuery("select NAME from LOGS",false);
     while(q->next()) {
-      q1=new 
-	QSqlQuery(QString().sprintf("alter table %s_REC\
-                                     add column PLAY_SOURCE int default 0\
-                                     after EVENT_TYPE",
-				    (const char *)q->value(0).toString()));
+      sql=QString("alter table `")+q->value(0).toString()+"_REC`"+
+	"add column PLAY_SOURCE int default 0 after EVENT_TYPE";
+      q1=new RDSqlQuery(sql,false);
       delete q1;
-      q1=new 
-	QSqlQuery(QString().sprintf("alter table %s_REC\
-                                     add column CUT_NUMBER int default 0\
-                                     after CART_NUMBER",
-				    (const char *)q->value(0).toString()));
+      sql=QString("alter table `")+q->value(0).toString()+"_REC` "+
+	"add column CUT_NUMBER int default 0 after CART_NUMBER";
       delete q1;
     }
     delete q;
   }
 
   if(ver<71) {
-    q=new QSqlQuery("alter table RECORDINGS add column END_LINE int default -1\
-                     after START_TIME");
+    q=new RDSqlQuery("alter table RECORDINGS add column END_LINE int default -1 after START_TIME",false);
     delete q;
     q=new 
-      QSqlQuery("alter table RECORDINGS add column END_MATRIX int default -1\
-                     after START_TIME");
+      RDSqlQuery("alter table RECORDINGS add column END_MATRIX int default -1 after START_TIME",false);
     delete q;
     q=new 
-      QSqlQuery("alter table RECORDINGS add column END_LENGTH int default 0\
-                     after START_TIME");
+      RDSqlQuery("alter table RECORDINGS add column END_LENGTH int default 0 after START_TIME",false);
     delete q;
-    q=new QSqlQuery("alter table RECORDINGS add column END_TIME time\
-                     after START_TIME");
+    q=new RDSqlQuery("alter table RECORDINGS add column END_TIME time after START_TIME",false);
     delete q;
     q=new 
-      QSqlQuery("alter table RECORDINGS add \
-                 column END_TYPE int unsigned default 2 after START_TIME");
+      RDSqlQuery("alter table RECORDINGS add column END_TYPE int unsigned default 2 after START_TIME",false);
     delete q;
     q=new 
-      QSqlQuery("alter table RECORDINGS add column START_OFFSET int default 0\
-                     after START_TIME");
+      RDSqlQuery("alter table RECORDINGS add column START_OFFSET int default 0 after START_TIME",false);
     delete q;
     q=new 
-      QSqlQuery("alter table RECORDINGS add column START_LINE int default -1\
-                     after START_TIME");
+      RDSqlQuery("alter table RECORDINGS add column START_LINE int default -1 after START_TIME",false);
     delete q;
     q=new 
-      QSqlQuery("alter table RECORDINGS add column START_MATRIX int default -1\
-                     after START_TIME");
+      RDSqlQuery("alter table RECORDINGS add column START_MATRIX int default -1 after START_TIME",false);
     delete q;
     q=new 
-      QSqlQuery("alter table RECORDINGS add column START_LENGTH int default 0\
-                     after START_TIME");
+      RDSqlQuery("alter table RECORDINGS add column START_LENGTH int default 0 after START_TIME",false);
     delete q;
     q=new 
-      QSqlQuery("alter table RECORDINGS add column START_TYPE int default 0\
-                     after DESCRIPTION");
+      RDSqlQuery("alter table RECORDINGS add column START_TYPE int default 0 after DESCRIPTION",false);
     delete q;
   }
 
   if(ver<72) {
-    q=new QSqlQuery("alter table GROUPS add column \
-                     DEFAULT_CART_TYPE int unsigned default 1\
-                     after DESCRIPTION");
+    q=new RDSqlQuery("alter table GROUPS add column DEFAULT_CART_TYPE int unsigned default 1 after DESCRIPTION",false);
     delete q;
   }
 
   if(ver<73) {
-    q=new QSqlQuery("alter table RDAIRPLAY add column \
-                     DEFAULT_TRANS_TYPE int unsigned default 0\
-                     after CLEAR_FILTER");
+    q=new RDSqlQuery("alter table RDAIRPLAY add column DEFAULT_TRANS_TYPE int unsigned default 0 after CLEAR_FILTER",false);
     delete q;
   }
 
@@ -4004,27 +3763,26 @@ int UpdateDb(int ver)
     //
     // Create CLOCK_PERMS Table
     //
-    sql=QString("create table if not exists CLOCK_PERMS (\
-      ID int unsigned auto_increment not null primary key,\
-      CLOCK_NAME char(64),\
-      SERVICE_NAME char(10),\
-      index CLOCK_IDX (CLOCK_NAME),\
-      index SERVICE_IDX (SERVICE_NAME))");
-    printf("SQL: %s\n",(const char *)sql);
+    sql=QString("create table if not exists CLOCK_PERMS (")+
+      "ID int unsigned auto_increment not null primary key,"+
+      "CLOCK_NAME char(64),"+
+      "SERVICE_NAME char(10),"+
+      "index CLOCK_IDX (CLOCK_NAME),"+
+      "index SERVICE_IDX (SERVICE_NAME))"+
+      config->createTablePostfix();
     if(!RunQuery(sql)) {
       return UPDATEDB_QUERY_FAILED;
     }
     sql="select NAME from CLOCKS";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     while(q->next()) {
       sql="select NAME from SERVICES";
-      q1=new QSqlQuery(sql);
+      q1=new RDSqlQuery(sql,false);
       while(q1->next()) {
-	sql=QString().sprintf("insert into CLOCK_PERMS set CLOCK_NAME=\"%s\",\
-                               SERVICE_NAME=\"%s\"",
-			      (const char *)q->value(0).toString(),
-			      (const char *)q1->value(0).toString());
-	q2=new QSqlQuery(sql);
+	sql=QString("insert into CLOCK_PERMS set ")+
+	  "CLOCK_NAME=\""+RDEscapeString(q->value(0).toString())+"\","+
+	  "SERVICE_NAME=\""+RDEscapeString(q1->value(0).toString())+"\"";
+	q2=new RDSqlQuery(sql,false);
 	delete q2;
       }
       delete q1;
@@ -4034,26 +3792,26 @@ int UpdateDb(int ver)
     //
     // Create EVENT_PERMS Table
     //
-    sql=QString("create table if not exists EVENT_PERMS (\
-      ID int unsigned auto_increment not null primary key,\
-      EVENT_NAME char(64),\
-      SERVICE_NAME char(10),\
-      index EVENT_IDX (EVENT_NAME),\
-      index SERVICE_IDX (SERVICE_NAME))");
+    sql=QString("create table if not exists EVENT_PERMS (")+
+      "ID int unsigned auto_increment not null primary key,"+
+      "EVENT_NAME char(64),"+
+      "SERVICE_NAME char(10),"+
+      "index EVENT_IDX (EVENT_NAME),"+
+      "index SERVICE_IDX (SERVICE_NAME))"+
+      config->createTablePostfix();
     if(!RunQuery(sql)) {
       return UPDATEDB_QUERY_FAILED;
     }
     sql="select NAME from EVENTS";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     while(q->next()) {
       sql="select NAME from SERVICES";
-      q1=new QSqlQuery(sql);
+      q1=new RDSqlQuery(sql,false);
       while(q1->next()) {
-	sql=QString().sprintf("insert into EVENT_PERMS set EVENT_NAME=\"%s\",\
-                               SERVICE_NAME=\"%s\"",
-			      (const char *)q->value(0).toString(),
-			      (const char *)q1->value(0).toString());
-	q2=new QSqlQuery(sql);
+	sql=QString("insert into EVENT_PERMS set ")+
+	  "EVENT_NAME=\""+RDEscapeString(q->value(0).toString())+"\","+
+	  "SERVICE_NAME=\""+RDEscapeString(q1->value(0).toString())+"\"";
+	q2=new RDSqlQuery(sql,false);
 	delete q2;
       }
       delete q1;
@@ -4062,14 +3820,12 @@ int UpdateDb(int ver)
   }
 
   if(ver<75) {
-    q=new QSqlQuery("alter table MATRICES add column \
-                     CARD int default -1 after PORT_TYPE");
+    q=new RDSqlQuery("alter table MATRICES add column CARD int default -1 after PORT_TYPE",false);
     delete q;
   }
 
   if(ver<76) {
-    q=new QSqlQuery("alter table DECKS add column \
-                     MON_PORT_NUMBER int default -1 after PORT_NUMBER");
+    q=new RDSqlQuery("alter table DECKS add column MON_PORT_NUMBER int default -1 after PORT_NUMBER",false);
     delete q;
   }
 
@@ -4077,27 +3833,27 @@ int UpdateDb(int ver)
     //
     // Create USER_PERMS table
     //
-    sql=QString("create table if not exists USER_PERMS (\
-      ID int unsigned auto_increment not null primary key,\
-      USER_NAME char(8),\
-      GROUP_NAME char(10),\
-      index USER_IDX (USER_NAME),\
-      index GROUP_IDX (GROUP_NAME))");
+    sql=QString("create table if not exists USER_PERMS (")+
+      "ID int unsigned auto_increment not null primary key,"+
+      "USER_NAME char(8),"+
+      "GROUP_NAME char(10),"+
+      "index USER_IDX (USER_NAME),"+
+      "index GROUP_IDX (GROUP_NAME))"+
+      config->createTablePostfix();
     if(!RunQuery(sql)) {
       return UPDATEDB_QUERY_FAILED;
     }
     sql=QString("select LOGIN_NAME from USERS");
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     sql=QString("select NAME from GROUPS");
-    q1=new QSqlQuery(sql);
+    q1=new RDSqlQuery(sql,false);
     while(q->next()) {
       q1->seek(-1);
       while(q1->next()) {
-	sql=QString().sprintf("insert into USER_PERMS set USER_NAME=\"%s\",\
-                               GROUP_NAME=\"%s\"",
-			      (const char *)q->value(0).toString(),
-			      (const char *)q1->value(0).toString());
-	q2=new QSqlQuery(sql);
+	sql=QString("insert into USER_PERMS set ")+
+	  "USER_NAME=\""+RDEscapeString(q->value(0).toString())+"\","+
+	  "GROUP_NAME=\""+RDEscapeString(q1->value(0).toString())+"\"";
+	q2=new RDSqlQuery(sql,false);
 	delete q2;
       }
     }
@@ -4107,431 +3863,400 @@ int UpdateDb(int ver)
   }
 
   if(ver<78) {
-    sql="alter table USERS add column \
-         MODIFY_TEMPLATE_PRIV enum('N','Y') not null default 'N'\
-         after ARRANGE_LOG_PRIV";
-    q=new QSqlQuery(sql);
+    sql="alter table USERS add column MODIFY_TEMPLATE_PRIV enum('N','Y') not null default 'N' after ARRANGE_LOG_PRIV";
+    q=new RDSqlQuery(sql,false);
     delete q;
-    sql="update USERS set MODIFY_TEMPLATE_PRIV=\"Y\" where \
-         CREATE_LOG_PRIV=\"Y\"";
-    q=new QSqlQuery(sql);
+    sql="update USERS set MODIFY_TEMPLATE_PRIV=\"Y\" where CREATE_LOG_PRIV=\"Y\"";
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<79) {
-    sql="alter table GROUPS add column \
-         ENFORCE_CART_RANGE enum('N','Y') default 'N'\
-         after DEFAULT_HIGH_CART";
-    q=new QSqlQuery(sql);
+    sql="alter table GROUPS add column ENFORCE_CART_RANGE enum('N','Y') default 'N' after DEFAULT_HIGH_CART";
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<80) {
-    sql="alter table SERVICES add column\
-         TFC_ANNC_TYPE_OFFSET int after TFC_EVENT_ID_LENGTH";
-    q=new QSqlQuery(sql);
+    sql="alter table SERVICES add column TFC_ANNC_TYPE_OFFSET int after TFC_EVENT_ID_LENGTH";
+    q=new RDSqlQuery(sql,false);
     delete q;
-    sql="alter table SERVICES add column\
-         TFC_ANNC_TYPE_LENGTH int after TFC_ANNC_TYPE_OFFSET";
-    q=new QSqlQuery(sql);
+    sql="alter table SERVICES add column TFC_ANNC_TYPE_LENGTH int after TFC_ANNC_TYPE_OFFSET";
+    q=new RDSqlQuery(sql,false);
     delete q;
-    sql="alter table SERVICES add column\
-         MUS_ANNC_TYPE_OFFSET int after MUS_EVENT_ID_LENGTH";
-    q=new QSqlQuery(sql);
+    sql="alter table SERVICES add column MUS_ANNC_TYPE_OFFSET int after MUS_EVENT_ID_LENGTH";
+    q=new RDSqlQuery(sql,false);
     delete q;
-    sql="alter table SERVICES add column\
-         MUS_ANNC_TYPE_LENGTH int after MUS_ANNC_TYPE_OFFSET";
-    q=new QSqlQuery(sql);
+    sql="alter table SERVICES add column MUS_ANNC_TYPE_LENGTH int after MUS_ANNC_TYPE_OFFSET";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="alter table REPORTS add column\
-         FORCE_TFC enum('N','Y') default 'N' after EXPORT_TFC";
-    q=new QSqlQuery(sql);
+    sql="alter table REPORTS add column FORCE_TFC enum('N','Y') default 'N' after EXPORT_TFC";
+    q=new RDSqlQuery(sql,false);
     delete q;
-    sql="alter table REPORTS add column\
-         FORCE_MUS enum('N','Y') default 'N' after EXPORT_MUS";
-    q=new QSqlQuery(sql);
+    sql="alter table REPORTS add column FORCE_MUS enum('N','Y') default 'N' after EXPORT_MUS";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
     sql="alter table GROUPS alter column REPORT_TFC set default 'Y'";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
     sql="alter table GROUPS alter column REPORT_MUS set default 'Y'";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
    }
 
   if(ver<81) {
     sql="select NAME from LOGS";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     while(q->next()) {
       tablename=q->value(0).toString();
       tablename.replace(" ","_");
-      sql=QString().sprintf("alter table %s_LOG add column\
-                             EXT_ANNC_TYPE char(8) after EXT_EVENT_ID",
-			    (const char *)tablename);
-      q1=new QSqlQuery(sql);
+      sql=QString("alter table `")+tablename+"_LOG` "+
+	"add column EXT_ANNC_TYPE char(8) after EXT_EVENT_ID";
+      q1=new RDSqlQuery(sql,false);
       delete q1;
-      sql=QString().sprintf("alter table %s_REC add column\
-                             EVENT_SOURCE int default 0 after EVENT_TYPE",
-			    (const char *)tablename);
-      q1=new QSqlQuery(sql);
+      sql=QString("alter table `")+tablename+"_REC` "+
+	"add column EVENT_SOURCE int default 0 after EVENT_TYPE";
+      q1=new RDSqlQuery(sql,false);
       delete q1;
-      sql=QString().sprintf("alter table %s_REC add column\
-                             EXT_ANNC_TYPE char(8) after EXT_EVENT_ID",
-			    (const char *)tablename);
-      q1=new QSqlQuery(sql);
+      sql=QString("alter table `")+tablename+"_REC` "+
+	"add column EXT_ANNC_TYPE char(8) after EXT_EVENT_ID";
+      q1=new RDSqlQuery(sql,false);
       delete q1;
     }
     delete q; 
 
    sql="select NAME from EVENTS";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     while(q->next()) {
       tablename=q->value(0).toString();
       tablename.replace(" ","_");
-      sql=QString().sprintf("alter table %s_PRE add column\
-                             EXT_ANNC_TYPE char(8) after EXT_EVENT_ID",
-			    (const char *)tablename);
-      q1=new QSqlQuery(sql);
+      sql=QString("alter table `")+tablename+"_PRE` "+
+	"add column EXT_ANNC_TYPE char(8) after EXT_EVENT_ID";
+      q1=new RDSqlQuery(sql,false);
       delete q1;
-      sql=QString().sprintf("alter table %s_PRE add column\
-                             EVENT_SOURCE int default 0 after EVENT_TYPE",
-			    (const char *)tablename);
-      q1=new QSqlQuery(sql);
+      sql=QString("alter table `")+tablename+"_PRE` "+
+	"add column EVENT_SOURCE int default 0 after EVENT_TYPE";
+      q1=new RDSqlQuery(sql,false);
       delete q1;
-      sql=QString().sprintf("alter table %s_PRE add column\
-                             EXT_ANNC_TYPE char(8) after EXT_EVENT_ID",
-			    (const char *)tablename);
-      q1=new QSqlQuery(sql);
+      sql=QString("alter table `")+tablename+"_PRE` "+
+	"add column EXT_ANNC_TYPE char(8) after EXT_EVENT_ID";
+      q1=new RDSqlQuery(sql,false);
       delete q1;
-      sql=QString().sprintf("alter table %s_POST add column\
-                             EXT_ANNC_TYPE char(8) after EXT_EVENT_ID",
-			    (const char *)q->value(0).toString());
-      q1=new QSqlQuery(sql);
+      sql=QString("alter table `")+q->value(0).toString()+"_POST` "+
+	"add column EXT_ANNC_TYPE char(8) after EXT_EVENT_ID";
+      q1=new RDSqlQuery(sql,false);
       delete q1;
-      sql=QString().sprintf("alter table %s_POST add column\
-                             EVENT_SOURCE int default 0 after EVENT_TYPE",
-			    (const char *)q->value(0).toString());
-      q1=new QSqlQuery(sql);
+      sql=QString("alter table `")+q->value(0).toString()+"_POST` "+
+	"add column EVENT_SOURCE int default 0 after EVENT_TYPE";
+      q1=new RDSqlQuery(sql,false);
       delete q1;
-      sql=QString().sprintf("alter table %s_POST add column\
-                             EXT_ANNC_TYPE char(8) after EXT_EVENT_ID",
-			    (const char *)q->value(0).toString());
-      q1=new QSqlQuery(sql);
+      sql=QString("alter table `")+q->value(0).toString()+"_POST` "+
+	"add column EXT_ANNC_TYPE char(8) after EXT_EVENT_ID";
+      q1=new RDSqlQuery(sql,false);
       delete q1;
     }
     delete q;
   }
 
   if(ver<82) {
-    sql="alter table INPUTS add column ENGINE_NUM int default -1\
-         after CHANNEL_MODE";
-    q=new QSqlQuery(sql);
+    sql="alter table INPUTS add column ENGINE_NUM int default -1 after CHANNEL_MODE";
+    q=new RDSqlQuery(sql,false);
     delete q;
-    sql="alter table INPUTS add column DEVICE_NUM int default -1\
-         after ENGINE_NUM";
-    q=new QSqlQuery(sql);
+    sql="alter table INPUTS add column DEVICE_NUM int default -1 after ENGINE_NUM";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="alter table OUTPUTS add column ENGINE_NUM int default -1\
-         after NAME";
-    q=new QSqlQuery(sql);
+    sql="alter table OUTPUTS add column ENGINE_NUM int default -1 after NAME";
+    q=new RDSqlQuery(sql,false);
     delete q;
-    sql="alter table OUTPUTS add column DEVICE_NUM int default -1\
-         after ENGINE_NUM";
-    q=new QSqlQuery(sql);
+    sql="alter table OUTPUTS add column DEVICE_NUM int default -1 after ENGINE_NUM";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
     sql="alter table MATRICES add column USERNAME char(32) after IP_PORT";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
     sql="alter table MATRICES add column PASSWORD char(32) after USERNAME";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="create table if not exists VGUEST_RESOURCES (\
-         ID int unsigned auto_increment not null primary key,\
-         STATION_NAME char(64) not null,\
-         MATRIX_NUM int not null,\
-         VGUEST_TYPE int not null,\
-         NUMBER int not null,\
-         ENGINE_NUM int default -1,\
-         DEVICE_NUM int default -1,\
-         SURFACE_NUM int default -1,\
-         RELAY_NUM int default -1,\
-         BUSS_NUM int default -1,\
-         index STATION_MATRIX_IDX (STATION_NAME,MATRIX_NUM,VGUEST_TYPE))";
-    q=new QSqlQuery(sql);
+    sql=QString("create table if not exists VGUEST_RESOURCES (")+
+      "ID int unsigned auto_increment not null primary key,"+
+      "STATION_NAME char(64) not null,"+
+      "MATRIX_NUM int not null,"+
+      "VGUEST_TYPE int not null,"+
+      "NUMBER int not null,"+
+      "ENGINE_NUM int default -1,"+
+      "DEVICE_NUM int default -1,"+
+      "SURFACE_NUM int default -1,"+
+      "RELAY_NUM int default -1,"+
+      "BUSS_NUM int default -1,"+
+      "index STATION_MATRIX_IDX (STATION_NAME,MATRIX_NUM,VGUEST_TYPE))"+
+      config->createTablePostfix();
+    q=new RDSqlQuery(sql,false);
     delete q;
 
     sql="alter table MATRICES add column FADERS int default 0 after GPOS";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
     sql="alter table MATRICES add column DISPLAYS int default 0 after FADERS";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<83) {
     sql="alter table RECORDINGS add column URL char(255) after ONE_SHOT";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
     sql="alter table RECORDINGS add column URL_USERNAME char(64) after URL";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
-    sql="alter table RECORDINGS add column URL_PASSWORD char(64)\
-         after URL_USERNAME";
-    q=new QSqlQuery(sql);
+    sql="alter table RECORDINGS add column URL_PASSWORD char(64) after URL_USERNAME";
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<84) {
     sql=
-      "alter table STATIONS add column STATION_SCANNED enum('N','Y')\
-       default 'N'";
-    q=new QSqlQuery(sql);
+      "alter table STATIONS add column STATION_SCANNED enum('N','Y') default 'N'";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
     sql="alter table STATIONS add column HPI_VERSION char(16)";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
     sql="alter table STATIONS add column JACK_VERSION char(16)";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
     sql="alter table STATIONS add column ALSA_VERSION char(16)";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
 
     sql=
       "alter table STATIONS add column HAVE_OGGENC enum('N','Y') default 'N'";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
     sql=
       "alter table STATIONS add column HAVE_OGG123 enum('N','Y') default 'N'";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
     sql=
       "alter table STATIONS add column HAVE_FLAC enum('N','Y') default 'N'";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
     sql=
       "alter table STATIONS add column HAVE_LAME enum('N','Y') default 'N'";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
     sql=
       "alter table STATIONS add column HAVE_MPG321 enum('N','Y') default 'N'";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
 
     sql="alter table STATIONS add column CARD0_DRIVER int default 0";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
     sql="alter table STATIONS add column CARD0_NAME char(64)";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
     sql="alter table STATIONS add column CARD0_INPUTS int default -1";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
     sql="alter table STATIONS add column CARD0_OUTPUTS int default -1";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
 
     sql="alter table STATIONS add column CARD1_DRIVER int default 0";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
     sql="alter table STATIONS add column CARD1_NAME char(64)";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
     sql="alter table STATIONS add column CARD1_INPUTS int default -1";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
     sql="alter table STATIONS add column CARD1_OUTPUTS int default -1";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
 
     sql="alter table STATIONS add column CARD2_DRIVER int default 0";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
     sql="alter table STATIONS add column CARD2_NAME char(64)";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
     sql="alter table STATIONS add column CARD2_INPUTS int default -1";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
     sql="alter table STATIONS add column CARD2_OUTPUTS int default -1";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
 
     sql="alter table STATIONS add column CARD3_DRIVER int default 0";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
     sql="alter table STATIONS add column CARD3_NAME char(64)";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
     sql="alter table STATIONS add column CARD3_INPUTS int default -1";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
     sql="alter table STATIONS add column CARD3_OUTPUTS int default -1";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
 
     sql="alter table STATIONS add column CARD4_DRIVER int default 0";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
     sql="alter table STATIONS add column CARD4_NAME char(64)";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
     sql="alter table STATIONS add column CARD4_INPUTS int default -1";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
     sql="alter table STATIONS add column CARD4_OUTPUTS int default -1";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
 
     sql="alter table STATIONS add column CARD5_DRIVER int default 0";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
     sql="alter table STATIONS add column CARD5_NAME char(64)";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
     sql="alter table STATIONS add column CARD5_INPUTS int default -1";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
     sql="alter table STATIONS add column CARD5_OUTPUTS int default -1";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
 
     sql="alter table STATIONS add column CARD6_DRIVER int default 0";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
     sql="alter table STATIONS add column CARD6_NAME char(64)";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
     sql="alter table STATIONS add column CARD6_INPUTS int default -1";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
     sql="alter table STATIONS add column CARD6_OUTPUTS int default -1";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
 
     sql="alter table STATIONS add column CARD7_DRIVER int default 0";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
     sql="alter table STATIONS add column CARD7_NAME char(64)";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
     sql="alter table STATIONS add column CARD7_INPUTS int default -1";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
     sql="alter table STATIONS add column CARD7_OUTPUTS int default -1";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<85) {
-    sql="alter table RECORDINGS add column NORMALIZE_LEVEL int default -1300\
-         after TRIM_THRESHOLD";
-    q=new QSqlQuery(sql);
+    sql="alter table RECORDINGS add column NORMALIZE_LEVEL int default -1300 after TRIM_THRESHOLD";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="alter table RECORDINGS add column QUALITY int default 0\
-         after BITRATE";
-    q=new QSqlQuery(sql);
+    sql="alter table RECORDINGS add column QUALITY int default 0 after BITRATE";
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<86) {
     sql="alter table RECORDINGS alter column END_TYPE set default 0";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<87) {
     sql="select NAME from LOGS";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     while(q->next()) {
       tablename=q->value(0).toString();
       tablename.replace(" ","_");
-      sql=QString().sprintf("alter table %s_LOG add column\
-                             EXT_CART_NAME char(32) after EXT_LENGTH",
-			    (const char *)tablename);
-      q1=new QSqlQuery(sql);
+      sql=QString("alter table `")+tablename+"_LOG` "+
+	"add column EXT_CART_NAME char(32) after EXT_LENGTH";
+      q1=new RDSqlQuery(sql,false);
       delete q1;
-      sql=QString().sprintf("alter table %s_REC add column\
-                             EXT_CART_NAME char(32) after EXT_LENGTH",
-			    (const char *)tablename);
-      q1=new QSqlQuery(sql);
+      sql=QString("alter table `")+tablename+"_REC` "+
+	"add column EXT_CART_NAME char(32) after EXT_LENGTH";
+      q1=new RDSqlQuery(sql,false);
       delete q1;
     }
     delete q; 
 
    sql="select NAME from EVENTS";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     while(q->next()) {
       tablename=q->value(0).toString();
       tablename.replace(" ","_");
-      sql=QString().sprintf("alter table %s_PRE add column\
-                             EXT_CART_NAME char(32) after EXT_LENGTH",
-			    (const char *)tablename);
-      q1=new QSqlQuery(sql);
+      sql=QString("alter table `")+tablename+"_PRE` "+
+	"add column EXT_CART_NAME char(32) after EXT_LENGTH";
+      q1=new RDSqlQuery(sql,false);
       delete q1;
-      sql=QString().sprintf("alter table %s_POST add column\
-                             EXT_CART_NAME char(32) after EXT_LENGTH",
-			    (const char *)q->value(0).toString());
-      q1=new QSqlQuery(sql);
+      sql=QString("alter table `")+q->value(0).toString()+"_POST` "+
+	"add column EXT_CART_NAME char(32) after EXT_LENGTH";
+      q1=new RDSqlQuery(sql,false);
       delete q1;
     }
     delete q;
   }
 
   if(ver<88) {
-    sql="alter table RECORDINGS add column\
-         ALLOW_MULT_RECS enum('N','Y') default 'N' after END_GPI";
-    q=new QSqlQuery(sql);
+    sql="alter table RECORDINGS add column ALLOW_MULT_RECS enum('N','Y') default 'N' after END_GPI";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="alter table RECORDINGS add column\
-         MAX_GPI_REC_LENGTH int unsigned default 3600000\
-         after ALLOW_MULT_RECS";
-    q=new QSqlQuery(sql);
+    sql="alter table RECORDINGS add column MAX_GPI_REC_LENGTH int unsigned default 3600000 after ALLOW_MULT_RECS";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql=QString().
-      sprintf("select ID,START_TIME,END_TIME,END_LENGTH from RECORDINGS\
-               where END_TYPE=%d",RDRecording::GpiEnd);
-    q=new QSqlQuery(sql);
+    sql=QString("select ")+
+      "ID,"+
+      "START_TIME,"+
+      "END_TIME,"+
+      "END_LENGTH "+
+      "from RECORDINGS where "+
+      QString().sprintf("END_TYPE=%d",RDRecording::GpiEnd);
+    q=new RDSqlQuery(sql,false);
     while(q->next()) {
       sql=QString().
 	sprintf("update RECORDINGS set MAX_GPI_REC_LENGTH=%u where ID=%u",
 		QTime().msecsTo(q->value(2).toTime())+q->value(3).toUInt()-
 		QTime().msecsTo(q->value(1).toTime()),q->value(0).toUInt());
-      q1=new QSqlQuery(sql);
+      q1=new RDSqlQuery(sql,false);
       delete q1;
     }
     delete q;
   }
 
   if(ver<89) {
-    sql="alter table CART add column AVERAGE_LENGTH int unsigned\
-         after FORCED_LENGTH";
-    q=new QSqlQuery(sql);
+    sql="alter table CART add column AVERAGE_LENGTH int unsigned after FORCED_LENGTH";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="alter table CART add column ASYNCRONOUS enum('N','Y') default 'N'\
-         after PRESERVE_PITCH";
-    q=new QSqlQuery(sql);
+    sql="alter table CART add column ASYNCRONOUS enum('N','Y') default 'N' after PRESERVE_PITCH";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
     sql=QString().sprintf("select NUMBER from CART where TYPE=%u",
 			  RDCart::Audio);
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     while(q->next()) {
       cart=new RDCart(q->value(0).toUInt());
-      sql=QString().sprintf("update CART set AVERAGE_LENGTH=%u\
-                             where NUMBER=%u",cart->calculateAverageLength(),
-			    cart->number());
-      q1=new QSqlQuery(sql);
+      sql=QString("update CART set ")+
+	QString().sprintf("AVERAGE_LENGTH=%u where ",
+			  cart->calculateAverageLength())+
+	QString().sprintf("NUMBER=%u",cart->number());
+      q1=new RDSqlQuery(sql,false);
       delete q1;
       delete cart;
     }
@@ -4540,16 +4265,15 @@ int UpdateDb(int ver)
     RDMacroEvent *macro_event;
     sql=QString().sprintf("select NUMBER from CART where TYPE=%u",
 			  RDCart::Macro);
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     while(q->next()) {
       macro_event=new RDMacroEvent();
       macro_event->load(q->value(0).toUInt());
-      sql=QString().sprintf("update CART set AVERAGE_LENGTH=%u,\
-                             FORCED_LENGTH=%u where NUMBER=%u",
-			    macro_event->length(),
-			    macro_event->length(),
-			    q->value(0).toUInt());
-      q1=new QSqlQuery(sql);
+      sql=QString("update CART set ")+
+	QString().sprintf("AVERAGE_LENGTH=%u,",macro_event->length())+
+	QString().sprintf("FORCED_LENGTH=%u ",macro_event->length())+
+	QString().sprintf("where NUMBER=%u",q->value(0).toUInt());
+      q1=new RDSqlQuery(sql,false);
       delete q1;
       delete macro_event;
     }
@@ -4557,124 +4281,123 @@ int UpdateDb(int ver)
   }
 
   if(ver<90) {
-    sql="alter table REPORTS add column CART_DIGITS int unsigned default 6\
-         after STATION_ID";
-    q=new QSqlQuery(sql);
+    sql="alter table REPORTS add column CART_DIGITS int unsigned default 6 after STATION_ID";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="alter table REPORTS add column USE_LEADING_ZEROS enum('N','Y')\
-         default 'N' after CART_DIGITS";
-    q=new QSqlQuery(sql);
+    sql="alter table REPORTS add column USE_LEADING_ZEROS enum('N','Y') default 'N' after CART_DIGITS";
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<91) {
-    sql="alter table DECKS add column DEFAULT_MONITOR_ON enum('N','Y')\
-         default 'N' after MON_PORT_NUMBER";
-    q=new QSqlQuery(sql);
+    sql="alter table DECKS add column DEFAULT_MONITOR_ON enum('N','Y') default 'N' after MON_PORT_NUMBER";
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<92) {
-    sql="alter table EVENTS add column AUTOFILL_SLOP int default -1\
-         after USE_AUTOFILL";
-    q=new QSqlQuery(sql);
+    sql="alter table EVENTS add column AUTOFILL_SLOP int default -1 after USE_AUTOFILL";
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<93) {
-    sql="alter table LOGS add column IMPORT_DATE DATE after END_DATE";
-    q=new QSqlQuery(sql);
+    sql="alter table LOGS add column IMPORT_DATE date after END_DATE";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
     sql="select NAME from LOGS";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     while(q->next()) {
       tablename=q->value(0).toString();
       tablename.replace(" ","_");
-      sql=QString().sprintf("alter table %s_LOG add column\
-                             FADEUP_POINT int default -1 after END_POINT",
-			    (const char *)tablename);
-      q1=new QSqlQuery(sql);
+      sql=QString("alter table `")+tablename+"_LOG` "+
+	"add column FADEUP_POINT int default -1 after END_POINT";
+      q1=new RDSqlQuery(sql,false);
       delete q1;
-      sql=QString().sprintf("alter table %s_LOG add column\
-                             FADEUP_GAIN int default %d after FADEUP_POINT",
-			    (const char *)tablename,RD_FADE_DEPTH);
-      q1=new QSqlQuery(sql);
+      sql=QString("alter table `")+tablename+"_LOG` "+
+	QString().sprintf("add column FADEUP_GAIN int default %d ",
+			  RD_FADE_DEPTH)+
+	"after FADEUP_POINT";
+      q1=new RDSqlQuery(sql,false);
       delete q1;
-      sql=QString().sprintf("alter table %s_LOG add column\
-                             FADEDOWN_POINT int default -1 after FADEUP_GAIN",
-			    (const char *)tablename);
-      q1=new QSqlQuery(sql);
+      sql=QString("alter table `")+tablename+"_LOG` "+
+	"add column FADEDOWN_POINT int default -1 after FADEUP_GAIN";
+      q1=new RDSqlQuery(sql,false);
       delete q1;
-      sql=QString().sprintf("alter table %s_LOG add column\
-                            FADEDOWN_GAIN int default %d after FADEDOWN_POINT",
-			    (const char *)tablename,RD_FADE_DEPTH);
-      q1=new QSqlQuery(sql);
+      sql=QString("alter table `")+tablename+"_LOG` "+
+	QString().sprintf("add column FADEDOWN_GAIN int default %d ",
+			  RD_FADE_DEPTH)+
+	"after FADEDOWN_POINT";
+      q1=new RDSqlQuery(sql,false);
       delete q1;
-      sql=QString().sprintf("alter table %s_LOG add column\
-                             SEGUE_GAIN int default %d after SEGUE_END_POINT",
-			    (const char *)tablename,RD_FADE_DEPTH);
-      q1=new QSqlQuery(sql);
+      sql=QString("alter table `")+tablename+"_LOG` "+
+	QString().sprintf("add column SEGUE_GAIN int default %d ",
+			  RD_FADE_DEPTH)+
+	"after SEGUE_END_POINT",
+      q1=new RDSqlQuery(sql,false);
       delete q1;
     }
     delete q; 
 
    sql="select NAME from EVENTS";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     while(q->next()) {
       tablename=q->value(0).toString();
       tablename.replace(" ","_");
 
-      sql=QString().sprintf("alter table %s_PRE add column\
-                             FADEUP_POINT int default -1 after END_POINT",
-			    (const char *)tablename);
-      q1=new QSqlQuery(sql);
+      sql=QString("alter table `")+tablename+"_PRE` "+
+	"add column FADEUP_POINT int default -1 after END_POINT";
+      q1=new RDSqlQuery(sql,false);
       delete q1;
-      sql=QString().sprintf("alter table %s_PRE add column\
-                             FADEUP_GAIN int default %d after FADEUP_POINT",
-			    (const char *)tablename,RD_FADE_DEPTH);
-      q1=new QSqlQuery(sql);
+      sql=QString("alter table `")+tablename+"_PRE` "+
+	QString().sprintf("add column FADEUP_GAIN int default %d ",
+			  RD_FADE_DEPTH)+
+	"after FADEUP_POINT",
+      q1=new RDSqlQuery(sql,false);
       delete q1;
-      sql=QString().sprintf("alter table %s_PRE add column\
-                             FADEDOWN_POINT int default -1 after FADEUP_GAIN",
-			    (const char *)tablename);
-      q1=new QSqlQuery(sql);
+      sql=QString("alter table `")+tablename+"_PRE` "+
+	"add column FADEDOWN_POINT int default -1 after FADEUP_GAIN";
+      q1=new RDSqlQuery(sql,false);
       delete q1;
-      sql=QString().sprintf("alter table %s_PRE add column\
-                            FADEDOWN_GAIN int default %d after FADEDOWN_POINT",
-			    (const char *)tablename,RD_FADE_DEPTH);
-      q1=new QSqlQuery(sql);
+      sql=QString("alter table '")+tablename+"_PRE' "+
+	QString().sprintf("add column FADEDOWN_GAIN int default %d ",
+			  RD_FADE_DEPTH)+
+	"after FADEDOWN_POINT",
+      q1=new RDSqlQuery(sql,false);
       delete q1;
-      sql=QString().sprintf("alter table %s_PRE add column\
-                             SEGUE_GAIN int default %d after SEGUE_END_POINT",
-			    (const char *)tablename,RD_FADE_DEPTH);
-      q1=new QSqlQuery(sql);
+      sql=QString("alter table `")+tablename+"_PRE` "+
+	QString().sprintf("add column SEGUE_GAIN int default %d ",
+			  RD_FADE_DEPTH)+
+	"after SEGUE_END_POINT",
+	q1=new RDSqlQuery(sql,false);
       delete q1;
-      sql=QString().sprintf("alter table %s_POST add column\
-                             FADEUP_POINT int default -1 after END_POINT",
-			    (const char *)tablename);
-      q1=new QSqlQuery(sql);
+      sql=QString("alter table '")+tablename+"_POST' "+
+	"add column FADEUP_POINT int default -1 after END_POINT";
+      q1=new RDSqlQuery(sql,false);
       delete q1;
-      sql=QString().sprintf("alter table %s_POST add column\
-                             FADEUP_GAIN int default %d after FADEUP_POINT",
-			    (const char *)tablename,RD_FADE_DEPTH);
-      q1=new QSqlQuery(sql);
+      sql=QString("alter table '")+tablename+"_POST' "+
+	QString().sprintf("add column FADEUP_GAIN int default %d ",
+			  RD_FADE_DEPTH)+
+	"after FADEUP_POINT";
+      q1=new RDSqlQuery(sql,false);
       delete q1;
-      sql=QString().sprintf("alter table %s_POST add column\
-                             FADEDOWN_POINT int default -1 after FADEUP_GAIN",
-			    (const char *)tablename);
-      q1=new QSqlQuery(sql);
+      sql=QString("alter table `")+tablename+"_POST` "+
+	"add column FADEDOWN_POINT int default -1 after FADEUP_GAIN";
+      q1=new RDSqlQuery(sql,false);
       delete q1;
-      sql=QString().sprintf("alter table %s_POST add column\
-                            FADEDOWN_GAIN int default %d after FADEDOWN_POINT",
-			    (const char *)tablename,RD_FADE_DEPTH);
-      q1=new QSqlQuery(sql);
+      sql=QString("alter table `")+tablename+"_POST` "+
+	QString().sprintf("add column FADEDOWN_GAIN int default %d ",
+			  RD_FADE_DEPTH)+
+	"after FADEDOWN_POINT",
+      q1=new RDSqlQuery(sql,false);
       delete q1;
-      sql=QString().sprintf("alter table %s_POST add column\
-                             SEGUE_GAIN int default %d after SEGUE_END_POINT",
-			    (const char *)tablename,RD_FADE_DEPTH);
-      q1=new QSqlQuery(sql);
+      sql=QString("alter table `")+tablename+"_POST` "+
+	QString().sprintf("add column SEGUE_GAIN int default %d ",
+			  RD_FADE_DEPTH)+
+	"after SEGUE_END_POINT",
+      q1=new RDSqlQuery(sql,false);
       delete q1;
     }
     delete q;
@@ -4682,204 +4405,164 @@ int UpdateDb(int ver)
 
   if(ver<94) {
     sql="alter table CART add column OWNER char(64) after ASYNCRONOUS";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
 
     sql="alter table CART add index OWNER_IDX (OWNER)";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
 
     sql="alter table SERVICES add column TRACK_GROUP char(10) after CHAIN_LOG";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="alter table LOGS add column SCHEDULED_TRACKS int unsigned default 0\
-         after IMPORT_DATE";
-    q=new QSqlQuery(sql);
+    sql="alter table LOGS add column SCHEDULED_TRACKS int unsigned default 0 after IMPORT_DATE";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="alter table LOGS add column COMPLETED_TRACKS int unsigned default 0\
-         after SCHEDULED_TRACKS";
-    q=new QSqlQuery(sql);
+    sql="alter table LOGS add column COMPLETED_TRACKS int unsigned default 0 after SCHEDULED_TRACKS";
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<95) {
-    sql="alter table USERS add column VOICETRACK_LOG_PRIV enum('N','Y') \
-         not null default 'N' after ADDTO_LOG_PRIV";
-    q=new QSqlQuery(sql);
+    sql="alter table USERS add column VOICETRACK_LOG_PRIV enum('N','Y') not null default 'N' after ADDTO_LOG_PRIV";
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<96) {
-    sql=QString("create table if not exists RDLOGEDIT (\
-                 ID int unsigned primary key auto_increment,\
-                 STATION char(64) not null,\
-                 INPUT_CARD int default -1,\
-                 INPUT_PORT int default 0,\
-                 OUTPUT_CARD int default -1,\
-                 OUTPUT_PORT int default 0,\
-                 FORMAT int unsigned default 0,\
-                 SAMPRATE int unsigned default 44100,\
-                 LAYER int unsigned default 0,\
-                 BITRATE int unsigned default 0,\
-                 DEFAULT_CHANNELS int unsigned default 2,\
-                 MAXLENGTH int default 0,\
-                 TAIL_PREROLL int unsigned default 2000,\
-                 START_CART int unsigned default 0,\
-                 END_CART int unsigned default 0,\
-                 index STATION_IDX (STATION))");
-    q=new QSqlQuery(sql);
+    sql=QString("create table if not exists RDLOGEDIT (")+
+      "ID int unsigned primary key auto_increment,"+
+      "STATION char(64) not null,"+
+      "INPUT_CARD int default -1,"+
+      "INPUT_PORT int default 0,"+
+      "OUTPUT_CARD int default -1,"+
+      "OUTPUT_PORT int default 0,"+
+      "FORMAT int unsigned default 0,"+
+      "SAMPRATE int unsigned default 44100,"+
+      "LAYER int unsigned default 0,"+
+      "BITRATE int unsigned default 0,"+
+      "DEFAULT_CHANNELS int unsigned default 2,"+
+      "MAXLENGTH int default 0,"+
+      "TAIL_PREROLL int unsigned default 2000,"+
+      "START_CART int unsigned default 0,"+
+      "END_CART int unsigned default 0,"+
+      "index STATION_IDX (STATION))"+
+      config->createTablePostfix();
+    q=new RDSqlQuery(sql,false);
     delete q;
 
     sql="select NAME from STATIONS";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     while(q->next()) {
-      sql=QString().sprintf("insert into RDLOGEDIT set STATION=\"%s\"",
-			    (const char *)q->value(0).toString());
-      q1=new QSqlQuery(sql);
+      sql=QString("insert into RDLOGEDIT set ")+
+	"STATION=\""+RDEscapeString(q->value(0).toString())+"\"";
+      q1=new RDSqlQuery(sql,false);
       delete q1;
     }
     delete q;
   }
 
   if(ver<97) {
-    sql="alter table LOGS add column LOG_EXISTS enum('N','Y') default 'Y'\
-         after NAME";
-    q=new QSqlQuery(sql);
+    sql="alter table LOGS add column LOG_EXISTS enum('N','Y') default 'Y' after NAME";
+    q=new RDSqlQuery(sql,false);
     delete q;
     sql="alter table LOGS add index NAME_IDX (NAME,LOG_EXISTS)";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="alter table USERS add column DELETE_REC_PRIV enum('N','Y')\
-         default 'N' after DELETE_LOG_PRIV";
-    q=new QSqlQuery(sql);
+    sql="alter table USERS add column DELETE_REC_PRIV enum('N','Y') default 'N' after DELETE_LOG_PRIV";
+    q=new RDSqlQuery(sql,false);
     delete q;
     sql="update USERS set DELETE_REC_PRIV=\"Y\" where DELETE_LOG_PRIV=\"Y\"";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<98) {
     QString tablename;
     sql="select NAME from SERVICES";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     while(q->next()) {
-      sql=QString().sprintf("create table %s_SRT (\
-                             ID int unsigned auto_increment primary key,\
-                             LENGTH int,\
-                             LOG_NAME char(64),\
-                             LOG_ID int,\
-                             CART_NUMBER int unsigned,\
-                             CUT_NUMBER int,\
-                             TITLE char(255),\
-                             ARTIST char(255),\
-                             STATION_NAME char(64),\
-                             EVENT_DATETIME datetime,\
-                             SCHEDULED_TIME time,\
-                             EVENT_TYPE int,\
-                             EVENT_SOURCE int,\
-                             PLAY_SOURCE int,\
-                             START_SOURCE int default 0,\
-                             EXT_START_TIME time,\
-                             EXT_LENGTH int,\
-                             EXT_CART_NAME char(32),\
-                             EXT_DATA char(32),\
-                             EXT_EVENT_ID char(8),\
-                             EXT_ANNC_TYPE char(8),\
-                             index EVENT_DATETIME_IDX(EVENT_DATETIME))",
-			    (const char *)q->value(0).toString());
-      q1=new QSqlQuery(sql);
+      sql=QString("create table `")+q->value(0).toString()+"_SRT` ("+
+	"ID int unsigned auto_increment primary key,"+
+	"LENGTH int,"+
+	"LOG_NAME char(64),"+
+	"LOG_ID int,"+
+	"CART_NUMBER int unsigned,"+
+	"CUT_NUMBER int,"+
+	"TITLE char(255),"+
+	"ARTIST char(255),"+
+	"STATION_NAME char(64),"+
+	"EVENT_DATETIME datetime,"+
+	"SCHEDULED_TIME time,"+
+	"EVENT_TYPE int,"+
+	"EVENT_SOURCE int,"+
+	"PLAY_SOURCE int,"+
+	"START_SOURCE int default 0,"+
+	"EXT_START_TIME time,"+
+	"EXT_LENGTH int,"+
+	"EXT_CART_NAME char(32),"+
+	"EXT_DATA char(32),"+
+	"EXT_EVENT_ID char(8),"+
+	"EXT_ANNC_TYPE char(8),"+
+	"index EVENT_DATETIME_IDX(EVENT_DATETIME))"+
+	config->createTablePostfix();
+      q1=new RDSqlQuery(sql,false);
       delete q1;
 
-      sql=QString().sprintf("select NAME from LOGS where SERVICE=\"%s\"",
-			    (const char *)q->value(0).toString());
-      q1=new QSqlQuery(sql);
+      sql=QString("select NAME from LOGS where ")+
+	"SERVICE=\""+RDEscapeString(q->value(0).toString())+"\"";
+      q1=new RDSqlQuery(sql,false);
       while(q1->next()) {
 	tablename=q1->value(0).toString();
 	tablename.replace(" ","_");
-	sql=QString().sprintf("select %s_REC.LENGTH,\
-                               %s_REC.LOG_ID,\
-                               %s_REC.CART_NUMBER,\
-                               %s_REC.CUT_NUMBER,\
-                               %s_REC.STATION_NAME,\
-                               %s_REC.EVENT_DATETIME,\
-                               %s_REC.EVENT_TYPE,\
-                               %s_REC.EVENT_SOURCE,\
-                               %s_REC.PLAY_SOURCE,\
-                               %s_REC.EXT_START_TIME,\
-                               %s_REC.EXT_LENGTH,\
-                               %s_REC.EXT_CART_NAME,\
-                               %s_REC.EXT_DATA,\
-                               %s_REC.EXT_EVENT_ID,\
-                               %s_REC.EXT_ANNC_TYPE,\
-                               CART.TITLE,\
-                               CART.ARTIST \
-                               from CART right join %s_REC on \
-                               CART.NUMBER=%s_REC.CART_NUMBER",
-			      (const char *)tablename,
-			      (const char *)tablename,
-			      (const char *)tablename,
-			      (const char *)tablename,
-			      (const char *)tablename,
-			      (const char *)tablename,
-			      (const char *)tablename,
-			      (const char *)tablename,
-			      (const char *)tablename,
-			      (const char *)tablename,
-			      (const char *)tablename,
-			      (const char *)tablename,
-			      (const char *)tablename,
-			      (const char *)tablename,
-			      (const char *)tablename,
-			      (const char *)tablename,
-			      (const char *)tablename);
-	q2=new QSqlQuery(sql);
+	sql=QString("select ")+
+	  "`"+tablename+"_REC`.LENGTH,"+
+	  "`"+tablename+"_REC`.LOG_ID,"+
+	  "`"+tablename+"_REC`.CART_NUMBER,"+
+	  "`"+tablename+"_REC`.CUT_NUMBER,"+
+	  "`"+tablename+"_REC`.STATION_NAME,"+
+	  "`"+tablename+"_REC`.EVENT_DATETIME,"+
+	  "`"+tablename+"_REC`.EVENT_TYPE,"+
+	  "`"+tablename+"_REC`.EVENT_SOURCE,"+
+	  "`"+tablename+"_REC`.PLAY_SOURCE,"+
+	  "`"+tablename+"_REC`.EXT_START_TIME,"+
+	  "`"+tablename+"_REC`.EXT_LENGTH,"+
+	  "`"+tablename+"_REC`.EXT_CART_NAME,"+
+	  "`"+tablename+"_REC`.EXT_DATA,"+
+	  "`"+tablename+"_REC`.EXT_EVENT_ID,"+
+	  "`"+tablename+"_REC`.EXT_ANNC_TYPE,"+
+	  "CART.TITLE,"+
+	  "CART.ARTIST "+
+	  "from CART right join `"+tablename+"_REC` on "+
+	  "CART.NUMBER=`"+tablename+"_REC`.CART_NUMBER";
+	q2=new RDSqlQuery(sql,false);
 	while(q2->next()) {
-	  sql=QString().sprintf("insert into %s_SRT set\
-                                 LENGTH=%d,\
-                                 LOG_NAME=\"%s\",\
-                                 LOG_ID=%d,\
-                                 CART_NUMBER=%u,\
-                                 CUT_NUMBER=%d,\
-                                 TITLE=\"%s\",\
-                                 ARTIST=\"%s\",\
-                                 STATION_NAME=\"%s\",\
-                                 EVENT_DATETIME=\"%s\",\
-                                 SCHEDULED_TIME=\"%s\",\
-                                 EVENT_TYPE=%d,\
-                                 EVENT_SOURCE=%d,\
-                                 PLAY_SOURCE=%d,\
-                                 EXT_START_TIME=\"%s\",\
-                                 EXT_LENGTH=%d,\
-                                 EXT_CART_NAME=\"%s\",\
-                                 EXT_DATA=\"%s\",\
-                                 EXT_EVENT_ID=\"%s\",\
-                                 EXT_ANNC_TYPE=\"%s\"",
-				(const char *)q->value(0).toString(),
-				q2->value(0).toInt(),
-				(const char *)q1->value(0).toString(),
-				q2->value(1).toInt(),
-				q2->value(2).toUInt(),
-				q2->value(3).toInt(),
-				(const char *)q2->value(15).toString(),
-				(const char *)q2->value(16).toString(),
-				(const char *)q2->value(4).toString(),
-				(const char *)q2->value(5).toDateTime().
-				toString("yyyy-MM-dd hh:mm:ss"),
-				"00:00:00",
-				q2->value(6).toInt(),
-				q2->value(7).toInt(),
-				q2->value(8).toInt(),
-				(const char *)q2->value(9).toTime().
-				toString("hh:mm:ss"),
-				q2->value(10).toInt(),
-				(const char *)q2->value(11).toString(),
-				(const char *)q2->value(12).toString(),
-				(const char *)q2->value(13).toString(),
-				(const char *)q2->value(14).toString());
-	  q3=new QSqlQuery(sql);
+	  sql=QString("insert into `")+q->value(0).toString()+"_SRT` set "+
+	    QString().sprintf("LENGTH=%d,",q2->value(0).toInt())+
+	    "LOG_NAME=\""+RDEscapeString(q1->value(0).toString())+"\","+
+	    QString().sprintf("LOG_ID=%d,",q2->value(1).toInt())+
+	    QString().sprintf("CART_NUMBER=%u,",q2->value(2).toUInt())+
+	    QString().sprintf("CUT_NUMBER=%d,",q2->value(3).toInt())+
+	    "TITLE=\""+RDEscapeString(q2->value(15).toString())+"\","+
+	    "ARTIST=\""+RDEscapeString(q2->value(16).toString())+"\","+
+	    "STATION_NAME=\""+RDEscapeString(q2->value(4).toString())+"\","+
+	    "EVENT_DATETIME=\""+RDEscapeString(q2->value(5).toDateTime().
+					toString("yyyy-MM-dd hh:mm:ss"))+"\","+
+	    "SCHEDULED_TIME=\"00:00:00\","+
+	    QString().sprintf("EVENT_TYPE=%d,",q2->value(6).toInt())+
+	    QString().sprintf("EVENT_SOURCE=%d,",q2->value(7).toInt())+
+	    QString().sprintf("PLAY_SOURCE=%d,",q2->value(8).toInt())+
+	    "EXT_START_TIME=\""+RDEscapeString(q2->value(9).toTime().
+					       toString("hh:mm:ss"))+"\","+
+	    QString().sprintf("EXT_LENGTH=%d,",q2->value(10).toInt())+
+	    "EXT_CART_NAME=\""+RDEscapeString(q2->value(11).toString())+"\","+
+	    "EXT_DATA=\""+RDEscapeString(q2->value(12).toString())+"\","+
+	    "EXT_EVENT_ID=\""+RDEscapeString(q2->value(13).toString())+"\","+
+	    "EXT_ANNC_TYPE=\""+RDEscapeString(q2->value(14).toString())+"\"";
+	  q3=new RDSqlQuery(sql,false);
 	  delete q3;
 	}
 	delete q2;
@@ -4888,33 +4571,31 @@ int UpdateDb(int ver)
     }
     delete q;
 
-    sql="alter table RDAIRPLAY add column DEFAULT_SERVICE char(10)\
-         after PAUSE_ENABLED";
-    q=new QSqlQuery(sql);
+    sql="alter table RDAIRPLAY add column DEFAULT_SERVICE char(10) after PAUSE_ENABLED";
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<99) {
-    sql="alter table USERS add column CONFIG_PANELS_PRIV enum('N','Y')\
-         default 'N' after REMOVEFROM_LOG_PRIV";
-    q=new QSqlQuery(sql);
+    sql="alter table USERS add column CONFIG_PANELS_PRIV enum('N','Y') default 'N' after REMOVEFROM_LOG_PRIV";
+    q=new RDSqlQuery(sql,false);
     delete q;
     sql="update USERS set CONFIG_PANELS_PRIV=\"Y\"";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<100) {
     sql="alter table CUTS add column ISRC char(12) after OUTCUE";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
     sql="select NUMBER,ISRC from CART";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     while(q->next()) {
-      sql=QString().sprintf("update CUTS set ISRC=\"%s\" where CART_NUMBER=%u",
-			    (const char *)q->value(1).toString(),
-			    q->value(0).toUInt());
-      q1=new QSqlQuery(sql);
+      sql=QString("update CUTS set ")+
+	"ISRC=\""+RDEscapeString(q->value(1).toString())+"\" where "+
+	QString().sprintf("CART_NUMBER=%u",q->value(0).toUInt());
+      q1=new RDSqlQuery(sql,false);
       delete q1;
     }
     delete q;
@@ -4922,71 +4603,71 @@ int UpdateDb(int ver)
 
   if(ver<101) {
     for(int i=0;i<RD_MAX_CARDS;i++) {
-      sql=QString().sprintf("alter table AUDIO_PORTS \
-                             add column INPUT_%d_MODE INT DEFAULT 0 \
-                             after INPUT_%d_TYPE", i, i);
-      q=new QSqlQuery(sql);
+      sql=QString("alter table AUDIO_PORTS ")+
+	QString().sprintf("add column INPUT_%d_MODE int default 0 ",i)+
+	QString().sprintf("after INPUT_%d_TYPE",i);
+      q=new RDSqlQuery(sql,false);
       delete q;
     }
   }
 
   if(ver<102) {
     sql="alter table CART add column PUBLISHER char(64) after AGENCY";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
     sql="alter table CART add index PUBLISHER_IDX (PUBLISHER)";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
 
     sql="alter table CART add column COMPOSER char(64) after PUBLISHER";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
     sql="alter table CART add index COMPOSER_IDX (COMPOSER)";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<104) {
     sql="alter table CART add column USAGE_CODE int default 0\
          after USER_DEFINED";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
 
     sql="alter table REPORTS add column LINES_PER_PAGE int default 66\
          after USE_LEADING_ZEROS";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
 
     sql="alter table REPORTS add column STATION_TYPE int default 0\
          after LINES_PER_PAGE";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
 
     sql="alter table REPORTS add column STATION_FORMAT char(64)\
          after STATION_TYPE";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
 
     sql="select NAME from SERVICES";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     while(q->next()) {
       tablename=q->value(0).toString();
       tablename.replace(" ","_");
-      sql=QString().sprintf("alter table %s_SRT add column PUBLISHER char(64)\
-                             after ARTIST",(const char *)tablename);
-      q1=new QSqlQuery(sql);
+      sql=QString("alter table `")+tablename+"_SRT` "+
+	"add column PUBLISHER char(64) after ARTIST";
+      q1=new RDSqlQuery(sql,false);
       delete q1;
-      sql=QString().sprintf("alter table %s_SRT add column COMPOSER char(64)\
-                             after PUBLISHER",(const char *)tablename);
-      q1=new QSqlQuery(sql);
+      sql=QString("alter table `")+tablename+"_SRT` "+
+	"add column COMPOSER char(64) after PUBLISHER";
+      q1=new RDSqlQuery(sql,false);
       delete q1;
-      sql=QString().sprintf("alter table %s_SRT add column ISRC char(12)\
-                             after PUBLISHER",(const char *)tablename);
-      q1=new QSqlQuery(sql);
+      sql=QString("alter table `")+tablename+"_SRT` "+
+	"add column ISRC char(12) after PUBLISHER";
+      q1=new RDSqlQuery(sql,false);
       delete q1;
-      sql=QString().sprintf("alter table %s_SRT add column USAGE_CODE int\
-                             default 0 after ISRC",(const char *)tablename);
-      q1=new QSqlQuery(sql);
+      sql=QString("alter table `")+tablename+"_SRT` "+
+	"add column USAGE_CODE int default 0 after ISRC";
+      q1=new RDSqlQuery(sql,false);
       delete q1;
     }
     delete q;
@@ -4994,44 +4675,38 @@ int UpdateDb(int ver)
 
   if(ver<105) {
     for(int i=0;i<6;i++) {
-      sql=QString().sprintf("alter table RDAIRPLAY add column START_RML%d\
-                           char(255) after PORT%d",i,i);
-      q=new QSqlQuery(sql);
+      sql=QString().sprintf("alter table RDAIRPLAY add column START_RML%d char(255) after PORT%d",i,i);
+      q=new RDSqlQuery(sql,false);
       delete q;
-      sql=QString().sprintf("alter table RDAIRPLAY add column STOP_RML%d\
-                           char(255) after START_RML%d",i,i);
-      q=new QSqlQuery(sql);
+      sql=QString().sprintf("alter table RDAIRPLAY add column STOP_RML%d char(255) after START_RML%d",i,i);
+      q=new RDSqlQuery(sql,false);
       delete q;
     }
   }
 
   if(ver<106) {
     for(int i=0;i<3;i++) {
-      sql=QString().sprintf("alter table RDAIRPLAY add column LOG_RML%d\
-                           char(255) after UDP_STRING%d",i,i);
-      q=new QSqlQuery(sql);
+      sql=QString().sprintf("alter table RDAIRPLAY add column LOG_RML%d char(255) after UDP_STRING%d",i,i);
+      q=new RDSqlQuery(sql,false);
       delete q;
     }
   }
 
   if(ver<107) {
-    sql="alter table RDLOGEDIT add column REC_START_CART int unsigned\
-         default 0 after END_CART";
-    q=new QSqlQuery(sql);
+    sql="alter table RDLOGEDIT add column REC_START_CART int unsigned default 0 after END_CART";
+    q=new RDSqlQuery(sql,false);
     delete q;
-    sql="alter table RDLOGEDIT add column REC_END_CART int unsigned\
-         default 0 after REC_START_CART";
-    q=new QSqlQuery(sql);
+    sql="alter table RDLOGEDIT add column REC_END_CART int unsigned default 0 after REC_START_CART";
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<108) {
-    sql="alter table CART add column AVERAGE_SEGUE_LENGTH int unsigned\
-         after LENGTH_DEVIATION";
-    q=new QSqlQuery(sql);
+    sql="alter table CART add column AVERAGE_SEGUE_LENGTH int unsigned after LENGTH_DEVIATION";
+    q=new RDSqlQuery(sql,false);
     delete q;
     sql="select NUMBER from CART";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     while(q->next()) {
       cart=new RDCart(q->value(0).toUInt());
       cart->updateLength();
@@ -5042,75 +4717,69 @@ int UpdateDb(int ver)
 
   if(ver<109) {
     sql="alter table EVENTS add column NESTED_EVENT char(64) after COLOR";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<110) {
     for(unsigned i=6;i<10;i++) {
-      sql=QString().sprintf("alter table RDAIRPLAY add column CARD%d int\
-                             default -1 after STOP_RML%d",i,i-1);
-      q=new QSqlQuery(sql);
+      sql=QString().sprintf("alter table RDAIRPLAY add column CARD%d int default -1 after STOP_RML%d",i,i-1);
+      q=new RDSqlQuery(sql,false);
       delete q;
 
-      sql=QString().sprintf("alter table RDAIRPLAY add column PORT%d int\
-                             default -1 after CARD%d",i,i);
-      q=new QSqlQuery(sql);
+      sql=QString().sprintf("alter table RDAIRPLAY add column PORT%d int default -1 after CARD%d",i,i);
+      q=new RDSqlQuery(sql,false);
       delete q;
 
-      sql=QString().sprintf("alter table RDAIRPLAY add column START_RML%d\
-                             char(255) after PORT%d",i,i);
-      q=new QSqlQuery(sql);
+      sql=QString().sprintf("alter table RDAIRPLAY add column START_RML%d char(255) after PORT%d",i,i);
+      q=new RDSqlQuery(sql,false);
       delete q;
 
-      sql=QString().sprintf("alter table RDAIRPLAY add column STOP_RML%d\
-                             char(255) after START_RML%d",i,i);
-      q=new QSqlQuery(sql);
+      sql=QString().sprintf("alter table RDAIRPLAY add column STOP_RML%d char(255) after START_RML%d",i,i);
+      q=new RDSqlQuery(sql,false);
       delete q;
     }
-    sql="select ID,CARD2,PORT2,START_RML2,STOP_RML2 from RDAIRPLAY";
-    q=new QSqlQuery(sql);
+    sql=QString("select ")+
+      "ID,"+          // 00
+      "CARD2,"+       // 01
+      "PORT2,"+       // 02
+      "START_RML2,"+  // 03
+      "STOP_RML2 "+   // 04
+      "from RDAIRPLAY";
+    q=new RDSqlQuery(sql,false);
     while(q->next()) {
-      sql=QString().sprintf("update RDAIRPLAY set \
-                             CARD6=%d,PORT6=%d,\
-                             START_RML6=\"%s\",STOP_RML6=\"%s\",\
-                             CARD7=%d,PORT7=%d,\
-                             START_RML7=\"%s\",STOP_RML7=\"%s\",\
-                             CARD8=%d,PORT8=%d,\
-                             START_RML8=\"%s\",STOP_RML8=\"%s\",\
-                             CARD9=%d,PORT9=%d,\
-                             START_RML9=\"%s\",STOP_RML9=\"%s\"\
-                             where ID=%d",
-			    q->value(1).toInt(),q->value(2).toInt(),
-			    (const char *)q->value(3).toString(),
-			    (const char *)q->value(4).toString(),
-			    q->value(1).toInt(),q->value(2).toInt(),
-			    (const char *)q->value(3).toString(),
-			    (const char *)q->value(4).toString(),
-			    q->value(1).toInt(),q->value(2).toInt(),
-			    (const char *)q->value(3).toString(),
-			    (const char *)q->value(4).toString(),
-			    q->value(1).toInt(),q->value(2).toInt(),
-			    (const char *)q->value(3).toString(),
-			    (const char *)q->value(4).toString(),
-			    q->value(0).toInt());
-      q1=new QSqlQuery(sql);
+      sql=QString("update RDAIRPLAY set ")+
+	QString().sprintf("CARD6=%d,",q->value(1).toInt())+
+	QString().sprintf("PORT6=%d,",q->value(2).toInt())+
+	"START_RML6=\""+RDEscapeString(q->value(3).toString())+"\","+
+	"STOP_RML6=\""+RDEscapeString(q->value(4).toString())+"\","+
+	QString().sprintf("CARD7=%d,",q->value(1).toInt())+
+	QString().sprintf("PORT7=%d,",q->value(2).toInt())+
+	"START_RML7=\""+RDEscapeString(q->value(3).toString())+"\","+
+	"STOP_RML7=\""+RDEscapeString(q->value(4).toString())+"\","+
+	QString().sprintf("CARD8=%d,",q->value(1).toInt())+
+	QString().sprintf("PORT8=%d,",q->value(2).toInt())+
+	"START_RML8=\""+RDEscapeString(q->value(3).toString())+"\","+
+	"STOP_RML8=\""+RDEscapeString(q->value(4).toString())+"\","+
+	QString().sprintf("CARD9=%d,",q->value(1).toInt())+
+	QString().sprintf("PORT9=%d,",q->value(2).toInt())+
+	"START_RML9=\""+RDEscapeString(q->value(3).toString())+"\","+
+	"STOP_RML9=\""+RDEscapeString(q->value(4).toString())+"\"";
+      q1=new RDSqlQuery(sql,false);
       delete q1;
     }
     delete q;
   }
 
   if(ver<111) {
-    sql="alter table CART add column VALIDITY int unsigned default 2\
-         after PLAY_ORDER";
-    q=new QSqlQuery(sql);
+    sql="alter table CART add column VALIDITY int unsigned default 2 after PLAY_ORDER";
+    q=new RDSqlQuery(sql,false);
     delete q;
-    sql="alter table CUTS add column VALIDITY int unsigned default 2\
-         after LOCAL_COUNTER";
-    q=new QSqlQuery(sql);
+    sql="alter table CUTS add column VALIDITY int unsigned default 2 after LOCAL_COUNTER";
+    q=new RDSqlQuery(sql,false);
     delete q;
     sql="select NUMBER from CART";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     while(q->next()) {
       cart=new RDCart(q->value(0).toUInt());
       cart->updateLength();
@@ -5120,154 +4789,134 @@ int UpdateDb(int ver)
   }
 
   if(ver<112) {
-    sql="alter table RDLOGEDIT add column TRIM_THRESHOLD int default -3000 \
-         after REC_END_CART";
-    q=new QSqlQuery(sql);
+    sql="alter table RDLOGEDIT add column TRIM_THRESHOLD int default -3000 after REC_END_CART";
+    q=new RDSqlQuery(sql,false);
     delete q;
-    sql="alter table RDLOGEDIT add column RIPPER_LEVEL int default -1300 \
-         after TRIM_THRESHOLD";
-    q=new QSqlQuery(sql);
+    sql="alter table RDLOGEDIT add column RIPPER_LEVEL int default -1300 after TRIM_THRESHOLD";
+    q=new RDSqlQuery(sql,false);
     delete q;
     sql="select STATION,TRIM_THRESHOLD,RIPPER_LEVEL from RDLIBRARY";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     while(q->next()) {
-      sql=QString().sprintf("update RDLOGEDIT set TRIM_THRESHOLD=%d,\
-                             RIPPER_LEVEL=%d where STATION=\"%s\"",
-			    q->value(1).toInt(),q->value(2).toInt(),
-			    (const char *)q->value(0).toString());
-      q1=new QSqlQuery(sql);
+      sql=QString("update RDLOGEDIT set ")+
+	QString().sprintf("TRIM_THRESHOLD=%d,",q->value(1).toInt())+
+	QString().sprintf("RIPPER_LEVEL=%d where ",q->value(2).toInt())+
+	"STATION=\""+RDEscapeString(q->value(0).toString())+"\"";
+      q1=new RDSqlQuery(sql,false);
       delete q1;
     }
     delete q;
 
     sql="alter table RDLIBRARY modify RIPPER_LEVEL int default -1300";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
 
     sql="alter table RDLOGEDIT modify DEFAULT_CHANNELS int unsigned default 1";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<113) {
     sql="alter table VGUEST_RESOURCES modify SURFACE_NUM int default 0";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="alter table SERVICES add column MUS_BREAK_STRING char(64) \
-         after MUS_WIN_PATH";
-    q=new QSqlQuery(sql);
+    sql="alter table SERVICES add column MUS_BREAK_STRING char(64) after MUS_WIN_PATH";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="alter table SERVICES add column MUS_TRACK_STRING char(64) \
-         after MUS_BREAK_STRING";
-    q=new QSqlQuery(sql);
+    sql="alter table SERVICES add column MUS_TRACK_STRING char(64) after MUS_BREAK_STRING";
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<114) {
-    sql="alter table LOGS add column MUSIC_LINKS int default 0 \
-         after COMPLETED_TRACKS";
-    q=new QSqlQuery(sql);
+    sql="alter table LOGS add column MUSIC_LINKS int default 0 after COMPLETED_TRACKS";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="alter table LOGS add column MUSIC_LINKED enum('N','Y') default 'N' \
-         after MUSIC_LINKS";
-    q=new QSqlQuery(sql);
+    sql="alter table LOGS add column MUSIC_LINKED enum('N','Y') default 'N' after MUSIC_LINKS";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="alter table LOGS add column TRAFFIC_LINKS int default 0 \
-         after MUSIC_LINKED";
-    q=new QSqlQuery(sql);
+    sql="alter table LOGS add column TRAFFIC_LINKS int default 0 after MUSIC_LINKED";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="alter table LOGS add column TRAFFIC_LINKED enum('N','Y') default 'N' \
-         after TRAFFIC_LINKS";
-    q=new QSqlQuery(sql);
+    sql="alter table LOGS add column TRAFFIC_LINKED enum('N','Y') default 'N' after TRAFFIC_LINKS";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
     sql="select NAME from LOGS";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     while(q->next()) {
       tablename=q->value(0).toString();
       tablename.replace(" ","_");
-      sql=QString().sprintf("alter table %s_LOG add column\
-                             LINK_EVENT_NAME char(64) after POST_TIME",
-			    (const char *)tablename);
-      q1=new QSqlQuery(sql);
+      sql=QString("alter table `")+tablename+"_LOG` "+
+	"add column LINK_EVENT_NAME char(64) after POST_TIME";
+      q1=new RDSqlQuery(sql,false);
       delete q1;
 
-      sql=QString().sprintf("alter table %s_LOG add column\
-                             LINK_START_TIME time after LINK_EVENT_NAME",
-			    (const char *)tablename);
-      q1=new QSqlQuery(sql);
+      sql=QString("alter table `")+tablename+"_LOG` "+
+	"add column LINK_START_TIME time after LINK_EVENT_NAME";
+      q1=new RDSqlQuery(sql,false);
       delete q1;
 
-      sql=QString().sprintf("alter table %s_LOG add column\
-                             LINK_LENGTH int default 0 after LINK_START_TIME",
-			    (const char *)tablename);
-      q1=new QSqlQuery(sql);
+      sql=QString().sprintf("alter table `")+tablename+"_LOG` "+
+	"add column LINK_LENGTH int default 0 after LINK_START_TIME";
+      q1=new RDSqlQuery(sql,false);
       delete q1;
 
-      sql=QString().sprintf("alter table %s_LOG add column\
-                             LINK_ID int default -1 after LINK_LENGTH",
-			    (const char *)tablename);
-      q1=new QSqlQuery(sql);
+      sql=QString("alter table `")+tablename+"_LOG` "+
+	"add column LINK_ID int default -1 after LINK_LENGTH";
+      q1=new RDSqlQuery(sql,false);
       delete q1;
     }
     delete q; 
 
    sql="select NAME from EVENTS";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     while(q->next()) {
       tablename=q->value(0).toString();
       tablename.replace(" ","_");
-      sql=QString().sprintf("alter table %s_PRE add column\
-                             LINK_EVENT_NAME char(64) after POST_TIME",
-			    (const char *)tablename);
-      q1=new QSqlQuery(sql);
+      sql=QString("alter table `")+tablename+"_PRE` "+
+	"add column LINK_EVENT_NAME char(64) after POST_TIME";
+      q1=new RDSqlQuery(sql,false);
       delete q1;
 
-      sql=QString().sprintf("alter table %s_PRE add column\
-                             LINK_START_TIME time after LINK_EVENT_NAME",
-			    (const char *)tablename);
-      q1=new QSqlQuery(sql);
+      sql=QString("alter table `")+tablename+"_PRE` "+
+	"add column LINK_START_TIME time after LINK_EVENT_NAME";
+      q1=new RDSqlQuery(sql,false);
       delete q1;
 
-      sql=QString().sprintf("alter table %s_PRE add column\
-                             LINK_LENGTH int default 0 after LINK_START_TIME",
-			    (const char *)tablename);
-      q1=new QSqlQuery(sql);
+      sql=QString("alter table `")+tablename+"_PRE` "+
+	"add column LINK_LENGTH int default 0 after LINK_START_TIME";
+      q1=new RDSqlQuery(sql,false);
+      delete q1;
+      
+      sql=QString("alter table `")+tablename+"_PRE` "+
+	"add column LINK_ID int default -1 after LINK_LENGTH";
+      q1=new RDSqlQuery(sql,false);
       delete q1;
 
-      sql=QString().sprintf("alter table %s_PRE add column\
-                             LINK_ID int default -1 after LINK_LENGTH",
-			    (const char *)tablename);
-      q1=new QSqlQuery(sql);
+      sql=QString("alter table `")+tablename+"_POST` "+
+	"add column LINK_EVENT_NAME char(64) after POST_TIME";
+      q1=new RDSqlQuery(sql,false);
       delete q1;
 
-      sql=QString().sprintf("alter table %s_POST add column\
-                             LINK_EVENT_NAME char(64) after POST_TIME",
-			    (const char *)tablename);
-      q1=new QSqlQuery(sql);
+      sql=QString("alter table `")+tablename+"_POST` "+
+	"add column LINK_START_TIME time after LINK_EVENT_NAME";
+      q1=new RDSqlQuery(sql,false);
       delete q1;
 
-      sql=QString().sprintf("alter table %s_POST add column\
-                             LINK_START_TIME time after LINK_EVENT_NAME",
-			    (const char *)tablename);
-      q1=new QSqlQuery(sql);
+      sql=QString("alter table `")+tablename+"_POST` "+
+	"add column LINK_LENGTH int default 0 after LINK_START_TIME";
+      q1=new RDSqlQuery(sql,false);
       delete q1;
 
-      sql=QString().sprintf("alter table %s_POST add column\
-                             LINK_LENGTH int default 0 after LINK_START_TIME",
-			    (const char *)tablename);
-      q1=new QSqlQuery(sql);
-      delete q1;
-
-      sql=QString().sprintf("alter table %s_POST add column\
-                             LINK_ID int default -1 after LINK_LENGTH",
-			    (const char *)tablename);
-      q1=new QSqlQuery(sql);
+      sql=QString("alter table `")+tablename+"_POST` "+
+	"add column LINK_ID int default -1 after LINK_LENGTH";
+      q1=new RDSqlQuery(sql,false);
       delete q1;
     }
     delete q;
@@ -5275,69 +4924,65 @@ int UpdateDb(int ver)
 
   if(ver<115) {
     sql="select NAME from LOGS";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     while(q->next()) {
       tablename=q->value(0).toString();
       tablename.replace(" ","_");
-      sql=QString().sprintf("alter table %s_LOG modify column LABEL char(64)",
-			    (const char *)tablename);
-      q1=new QSqlQuery(sql);
+      sql=QString("alter table `")+tablename+"_LOG` "+
+	"modify column LABEL char(64)";
+      q1=new RDSqlQuery(sql,false);
       delete q1;
     }
     delete q;
 
     sql="select NAME from EVENTS";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     while(q->next()) {
       tablename=q->value(0).toString();
       tablename.replace(" ","_");
-      sql=QString().sprintf("alter table %s_PRE modify column LABEL char(64)",
-			    (const char *)tablename);
-      q1=new QSqlQuery(sql);
+      sql=QString("alter table `")+tablename+"_PRE` "+
+	"modify column LABEL char(64)";
+      q1=new RDSqlQuery(sql,false);
       delete q1;
 
-      sql=QString().sprintf("alter table %s_POST modify column LABEL char(64)",
-			    (const char *)tablename);
-      q1=new QSqlQuery(sql);
+      sql=QString("alter table `")+tablename+"_POST` "+
+	"modify column LABEL char(64)";
+      q1=new RDSqlQuery(sql,false);
       delete q1;
     }
     delete q;
 
-    sql="alter table SERVICES add column TRACK_GROUP char(10) \
-         after CHAIN_LOG";
-    q=new QSqlQuery(sql);
+    sql="alter table SERVICES add column TRACK_GROUP char(10) after CHAIN_LOG";
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<116) {
     sql="select NAME from LOGS";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     while(q->next()) {
       tablename=q->value(0).toString();
       tablename.replace(" ","_");
-      sql=QString().sprintf("alter table %s_LOG add column LINK_EMBEDDED \
-                             enum('N','Y') default 'N' after LINK_ID",
-			    (const char *)tablename);
-      q1=new QSqlQuery(sql);
+      sql=QString("alter table `")+tablename+"_LOG` "+
+	"add column LINK_EMBEDDED enum('N','Y') default 'N' after LINK_ID";
+      q1=new RDSqlQuery(sql,false);
       delete q1;
     }
     delete q;
 
     sql="select NAME from EVENTS";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     while(q->next()) {
       tablename=q->value(0).toString();
       tablename.replace(" ","_");
-      sql=QString().sprintf("alter table %s_PRE add column LINK_EMBEDDED \
-                             enum('N','Y') default 'N' after LINK_ID",
-			    (const char *)tablename);
-      q1=new QSqlQuery(sql);
+      sql=QString("alter table `")+tablename+"_PRE` "+
+	"add column LINK_EMBEDDED enum('N','Y') default 'N' after LINK_ID";
+      q1=new RDSqlQuery(sql,false);
       delete q1;
 
-      sql=QString().sprintf("alter table %s_POST add column LINK_EMBEDDED \
-                             enum('N','Y') default 'N' after LINK_ID",
-			    (const char *)tablename);
-      q1=new QSqlQuery(sql);
+      sql=QString("alter table `")+tablename+"_POST` "+
+	"add column LINK_EMBEDDED enum('N','Y') default 'N' after LINK_ID";
+      q1=new RDSqlQuery(sql,false);
       delete q1;
     }
     delete q;
@@ -5345,244 +4990,200 @@ int UpdateDb(int ver)
 
   if(ver<117) {
     sql="select NAME from LOGS";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     while(q->next()) {
       tablename=q->value(0).toString();
       tablename.replace(" ","_");
-      sql=QString().sprintf("alter table %s_LOG add column ORIGIN_USER char(8)\
-                             after POST_TIME",
-			    (const char *)tablename);
-      q1=new QSqlQuery(sql);
+      sql=QString("alter table `")+tablename+"_LOG` "+
+	"add column ORIGIN_USER char(8) after POST_TIME";
+      q1=new RDSqlQuery(sql,false);
       delete q1;
-      sql=QString().sprintf("alter table %s_LOG add column ORIGIN_DATETIME \
-                             datetime after ORIGIN_USER",
-			    (const char *)tablename);
-      q1=new QSqlQuery(sql);
+      sql=QString("alter table `")+tablename+"_LOG` "+
+	"add column ORIGIN_DATETIME datetime after ORIGIN_USER";
+      q1=new RDSqlQuery(sql,false);
       delete q1;
 
-
-      sql=QString().sprintf("alter table %s_LOG drop column ORIGIN_NAME",
-			    (const char *)tablename);
-      q1=new QSqlQuery(sql);
+      sql=QString("alter table `")+tablename+"_LOG` drop column ORIGIN_NAME";
+      q1=new RDSqlQuery(sql,false);
       delete q1;
-
-
     }
     delete q;
 
     sql="select NAME from EVENTS";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     while(q->next()) {
       tablename=q->value(0).toString();
       tablename.replace(" ","_");
-      sql=QString().sprintf("alter table %s_PRE add column ORIGIN_USER char(8)\
-                             after POST_TIME",
-			    (const char *)tablename);
-      q1=new QSqlQuery(sql);
+      sql=QString("alter table `")+tablename+"_PRE` "+
+	"add column ORIGIN_USER char(8) after POST_TIME";
+      q1=new RDSqlQuery(sql,false);
       delete q1;
-      sql=QString().sprintf("alter table %s_PRE add column ORIGIN_DATETIME \
-                             datetime after ORIGIN_USER",
-			    (const char *)tablename);
-      q1=new QSqlQuery(sql);
+      sql=QString("alter table `")+tablename+"_PRE` "+
+	"add column ORIGIN_DATETIME datetime after ORIGIN_USER";
+      q1=new RDSqlQuery(sql,false);
       delete q1;
 
-      sql=QString().sprintf("alter table %s_POST add column ORIGIN_USER \
-                             char(8) after POST_TIME",
-			    (const char *)tablename);
-      q1=new QSqlQuery(sql);
+      sql=QString("alter table `")+tablename+"_POST` "+
+	"add column ORIGIN_USER char(8) after POST_TIME";
+      q1=new RDSqlQuery(sql,false);
       delete q1;
-      sql=QString().sprintf("alter table %s_POST add column ORIGIN_DATETIME \
-                             datetime after ORIGIN_USER",
-			    (const char *)tablename);
-      q1=new QSqlQuery(sql);
+      sql=QString("alter table `")+tablename+"_POST` "+
+	"add column ORIGIN_DATETIME datetime after ORIGIN_USER";
+      q1=new RDSqlQuery(sql,false);
       delete q1;
 
-
-
-
-      sql=QString().sprintf("alter table %s_PRE drop column ORIGIN_NAME",
-			    (const char *)tablename);
-      q1=new QSqlQuery(sql);
+      sql=QString("alter table `")+tablename+"_PRE` "+
+	"drop column ORIGIN_NAME";
+      q1=new RDSqlQuery(sql,false);
       delete q1;
-      sql=QString().sprintf("alter table %s_POST drop column ORIGIN_NAME",
-			    (const char *)tablename);
-      q1=new QSqlQuery(sql);
+      sql=QString("alter table `")+tablename+"_POST` "+
+	"drop column ORIGIN_NAME";
+      q1=new RDSqlQuery(sql,false);
       delete q1;
-
-
     }
     delete q;
   }
 
   if(ver<118) {
-    sql="alter table SERVICES add column TFC_LABEL_CART char(32) \
-         after TFC_WIN_PATH";
-    q=new QSqlQuery(sql);
+    sql="alter table SERVICES add column TFC_LABEL_CART char(32) after TFC_WIN_PATH";
+    q=new RDSqlQuery(sql,false);
     delete q;
-    sql="alter table SERVICES add column TFC_TRACK_CART char(32) \
-         after TFC_LABEL_CART";
-    q=new QSqlQuery(sql);
+    sql="alter table SERVICES add column TFC_TRACK_CART char(32) after TFC_LABEL_CART";
+    q=new RDSqlQuery(sql,false);
     delete q;
-    sql="alter table SERVICES add column MUS_LABEL_CART char(32) \
-         after MUS_WIN_PATH";
-    q=new QSqlQuery(sql);
+    sql="alter table SERVICES add column MUS_LABEL_CART char(32) after MUS_WIN_PATH";
+    q=new RDSqlQuery(sql,false);
     delete q;
-    sql="alter table SERVICES add column MUS_TRACK_CART char(32) \
-         after MUS_LABEL_CART";
-    q=new QSqlQuery(sql);
+    sql="alter table SERVICES add column MUS_TRACK_CART char(32) after MUS_LABEL_CART";
+    q=new RDSqlQuery(sql,false);
     delete q;
-    sql="alter table SERVICES add column TFC_TITLE_OFFSET int \
-         after TFC_CART_LENGTH";
-    q=new QSqlQuery(sql);
+    sql="alter table SERVICES add column TFC_TITLE_OFFSET int after TFC_CART_LENGTH";
+    q=new RDSqlQuery(sql,false);
     delete q;
-    sql="alter table SERVICES add column TFC_TITLE_LENGTH int \
-         after TFC_TITLE_OFFSET";
-    q=new QSqlQuery(sql);
+    sql="alter table SERVICES add column TFC_TITLE_LENGTH int after TFC_TITLE_OFFSET";
+    q=new RDSqlQuery(sql,false);
     delete q;
-    sql="alter table SERVICES add column MUS_TITLE_OFFSET int \
-         after MUS_CART_LENGTH";
-    q=new QSqlQuery(sql);
+    sql="alter table SERVICES add column MUS_TITLE_OFFSET int after MUS_CART_LENGTH";
+    q=new RDSqlQuery(sql,false);
     delete q;
-    sql="alter table SERVICES add column MUS_TITLE_LENGTH int \
-         after MUS_TITLE_OFFSET";
-    q=new QSqlQuery(sql);
+    sql="alter table SERVICES add column MUS_TITLE_LENGTH int after MUS_TITLE_OFFSET";
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<119) {
-    sql="alter table SERVICES add column TFC_HOURS_OFFSET int \
-         after TFC_START_LENGTH";
-    q=new QSqlQuery(sql);
+    sql="alter table SERVICES add column TFC_HOURS_OFFSET int after TFC_START_LENGTH";
+    q=new RDSqlQuery(sql,false);
     delete q;
-    sql="alter table SERVICES add column TFC_HOURS_LENGTH int \
-         after TFC_HOURS_OFFSET";
-    q=new QSqlQuery(sql);
+    sql="alter table SERVICES add column TFC_HOURS_LENGTH int after TFC_HOURS_OFFSET";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="alter table SERVICES add column TFC_MINUTES_OFFSET int \
-         after TFC_HOURS_LENGTH";
-    q=new QSqlQuery(sql);
+    sql="alter table SERVICES add column TFC_MINUTES_OFFSET int after TFC_HOURS_LENGTH";
+    q=new RDSqlQuery(sql,false);
     delete q;
-    sql="alter table SERVICES add column TFC_MINUTES_LENGTH int \
-         after TFC_MINUTES_OFFSET";
-    q=new QSqlQuery(sql);
+    sql="alter table SERVICES add column TFC_MINUTES_LENGTH int after TFC_MINUTES_OFFSET";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="alter table SERVICES add column TFC_SECONDS_OFFSET int \
-         after TFC_MINUTES_LENGTH";
-    q=new QSqlQuery(sql);
+    sql="alter table SERVICES add column TFC_SECONDS_OFFSET int after TFC_MINUTES_LENGTH";
+    q=new RDSqlQuery(sql,false);
     delete q;
-    sql="alter table SERVICES add column TFC_SECONDS_LENGTH int \
-         after TFC_SECONDS_OFFSET";
-    q=new QSqlQuery(sql);
+    sql="alter table SERVICES add column TFC_SECONDS_LENGTH int after TFC_SECONDS_OFFSET";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
     sql="select NAME,TFC_START_OFFSET from SERVICES where TFC_START_LENGTH=8";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     while(q->next()) {
-      sql=QString().sprintf("update SERVICES set\
-                             TFC_HOURS_OFFSET=%d,TFC_HOURS_LENGTH=2,\
-                             TFC_MINUTES_OFFSET=%d,TFC_MINUTES_LENGTH=2,\
-                             TFC_SECONDS_OFFSET=%d,TFC_SECONDS_LENGTH=2 \
-                             where NAME=\"%s\"",
-			    q->value(1).toInt(),
-			    q->value(1).toInt()+3,
-			    q->value(1).toInt()+6,
-			    (const char *)q->value(0).toString());
-      q1=new QSqlQuery(sql);
+      sql=QString("update SERVICES set ")+
+	QString().sprintf("TFC_HOURS_OFFSET=%d,",q->value(1).toInt())+
+	"TFC_HOURS_LENGTH=2,"+
+	QString().sprintf("TFC_MINUTES_OFFSET=%d,",q->value(1).toInt()+3)+
+	"TFC_MINUTES_LENGTH=2,"+
+	QString().sprintf("TFC_SECONDS_OFFSET=%d,",q->value(1).toInt()+6)+
+	"TFC_SECONDS_LENGTH=2 where "+
+	"NAME=\""+RDEscapeString(q->value(0).toString())+"\"";
+      q1=new RDSqlQuery(sql,false);
       delete q1;
     }
     delete q;
 
-
-    sql="alter table SERVICES add column MUS_HOURS_OFFSET int \
-         after MUS_START_LENGTH";
-    q=new QSqlQuery(sql);
+    sql="alter table SERVICES add column MUS_HOURS_OFFSET int after MUS_START_LENGTH";
+    q=new RDSqlQuery(sql,false);
     delete q;
-    sql="alter table SERVICES add column MUS_HOURS_LENGTH int \
-         after MUS_HOURS_OFFSET";
-    q=new QSqlQuery(sql);
+    sql="alter table SERVICES add column MUS_HOURS_LENGTH int after MUS_HOURS_OFFSET";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="alter table SERVICES add column MUS_MINUTES_OFFSET int \
-         after MUS_HOURS_LENGTH";
-    q=new QSqlQuery(sql);
+    sql="alter table SERVICES add column MUS_MINUTES_OFFSET int after MUS_HOURS_LENGTH";
+    q=new RDSqlQuery(sql,false);
     delete q;
-    sql="alter table SERVICES add column MUS_MINUTES_LENGTH int \
-         after MUS_MINUTES_OFFSET";
-    q=new QSqlQuery(sql);
+    sql="alter table SERVICES add column MUS_MINUTES_LENGTH int after MUS_MINUTES_OFFSET";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="alter table SERVICES add column MUS_SECONDS_OFFSET int \
-         after MUS_MINUTES_LENGTH";
-    q=new QSqlQuery(sql);
+    sql="alter table SERVICES add column MUS_SECONDS_OFFSET int after MUS_MINUTES_LENGTH";
+    q=new RDSqlQuery(sql,false);
     delete q;
-    sql="alter table SERVICES add column MUS_SECONDS_LENGTH int \
-         after MUS_SECONDS_OFFSET";
-    q=new QSqlQuery(sql);
+    sql="alter table SERVICES add column MUS_SECONDS_LENGTH int after MUS_SECONDS_OFFSET";
+    q=new RDSqlQuery(sql,false);
     delete q;
-
 
     sql="select NAME,MUS_START_OFFSET from SERVICES where MUS_START_LENGTH=8";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     while(q->next()) {
-      sql=QString().sprintf("update SERVICES set\
-                             MUS_HOURS_OFFSET=%d,MUS_HOURS_LENGTH=2,\
-                             MUS_MINUTES_OFFSET=%d,MUS_MINUTES_LENGTH=2,\
-                             MUS_SECONDS_OFFSET=%d,MUS_SECONDS_LENGTH=2 \
-                             where NAME=\"%s\"",
-			    q->value(1).toInt(),
-			    q->value(1).toInt()+3,
-			    q->value(1).toInt()+6,
-			    (const char *)q->value(0).toString());
-      q1=new QSqlQuery(sql);
+      sql=QString("update SERVICES set ")+
+	QString().sprintf("MUS_HOURS_OFFSET=%d,",q->value(1).toInt())+
+	"MUS_HOURS_LENGTH=2,"+
+	QString().sprintf("MUS_MINUTES_OFFSET=%d,",q->value(1).toInt()+3)+
+	"MUS_MINUTES_LENGTH=2,"+
+	QString().sprintf("MUS_SECONDS_OFFSET=%d,",q->value(1).toInt()+6)+
+	"MUS_SECONDS_LENGTH=2 where "+
+	"NAME=\""+RDEscapeString(q->value(0).toString())+"\"";
+      q1=new RDSqlQuery(sql,false);
       delete q1;
     }
     delete q;
   }
 
   if(ver<120) {
-    sql="alter table GROUPS add column COLOR char(7) default \"#000000\" \
-         after ENABLE_NOW_NEXT";
-    q=new QSqlQuery(sql);
+    sql="alter table GROUPS add column COLOR char(7) default \"#000000\" after ENABLE_NOW_NEXT";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="alter table RDLOGEDIT add column DEFAULT_TRANS_TYPE int default 0 \
-         after RIPPER_LEVEL";
-    q=new QSqlQuery(sql);
+    sql="alter table RDLOGEDIT add column DEFAULT_TRANS_TYPE int default 0 after RIPPER_LEVEL";
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<121) {
-    sql="alter table LOGS add column LINK_DATETIME datetime not null \
-         after ORIGIN_DATETIME";
-    q=new QSqlQuery(sql);
+    sql="alter table LOGS add column LINK_DATETIME datetime not null after ORIGIN_DATETIME";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="alter table LOGS add column NEXT_ID int default 0 \
-         after TRAFFIC_LINKED";
-    q=new QSqlQuery(sql);
+    sql="alter table LOGS add column NEXT_ID int default 0 after TRAFFIC_LINKED";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
     sql="select NAME,ORIGIN_DATETIME from LOGS";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     while(q->next()) {
-      sql=QString().sprintf("update LOGS set LINK_DATETIME=\"%s\" \
-                             where NAME=\"%s\"",
-			    (const char *)q->value(1).toDateTime().
-			    toString("yyyy-MM-dd hh:mm:ss"),
-			    (const char *)q->value(0).toString());
-      q1=new QSqlQuery(sql);
+      sql=QString("update LOGS set ")+
+	"LINK_DATETIME=\""+q->value(1).toDateTime().
+	toString("yyyy-MM-dd hh:mm:ss")+"\" where "+
+	"NAME=\""+RDEscapeString(q->value(0).toString())+"\"";
+      q1=new RDSqlQuery(sql,false);
       delete q1;
 
-      sql=QString().sprintf("select ID from `%s_LOG` order by ID",
-			    (const char *)q->value(0).toString());
-      q1=new QSqlQuery(sql);
+      sql=QString("select ID from `")+q->value(0).toString()+"_LOG` "+
+	"order by ID";
+      q1=new RDSqlQuery(sql,false);
       if(q1->last()) {
-	sql=QString().sprintf("update LOGS set NEXT_ID=%d where NAME=\"%s\"",
-			      q1->value(0).toInt()+1,
-			      (const char *)q->value(0).toString());
-	q2=new QSqlQuery(sql);
+	sql=QString("update LOGS set ")+
+	  QString().sprintf("NEXT_ID=%d where ",q1->value(0).toInt()+1)+
+	  "NAME=\""+RDEscapeString(q->value(0).toString())+"\"";
+	q2=new RDSqlQuery(sql,false);
 	delete q2;
       }
       delete q1;
@@ -5591,171 +5192,152 @@ int UpdateDb(int ver)
   }
 
   if(ver<122) {
-    sql="alter table LOGS add column MODIFIED_DATETIME datetime not null \
-         after LINK_DATETIME";
-    q=new QSqlQuery(sql);
+    sql="alter table LOGS add column MODIFIED_DATETIME datetime not null after LINK_DATETIME";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="alter table LOGS add column AUTO_REFRESH enum('N','Y') default 'N' \
-         after MODIFIED_DATETIME";
-    q=new QSqlQuery(sql);
+    sql="alter table LOGS add column AUTO_REFRESH enum('N','Y') default 'N' after MODIFIED_DATETIME";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
     sql="select NAME,LINK_DATETIME from LOGS";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     while(q->next()) {
-      sql=QString().sprintf("update LOGS set MODIFIED_DATETIME=\"%s\" \
-                             where NAME=\"%s\"",
-			    (const char *)q->value(1).toDateTime().
-			    toString("yyyy-MM-dd hh:mm:ss"),
-			    (const char *)q->value(0).toString());
-      q1=new QSqlQuery(sql);
+      sql=QString("update LOGS set ")+
+	"MODIFIED_DATETIME=\""+RDEscapeString(q->value(1).toDateTime().
+			      toString("yyyy-MM-dd hh:mm:ss"))+"\" where "+
+	"NAME=\""+RDEscapeString(q->value(0).toString())+"\"";
+      q1=new RDSqlQuery(sql,false);
       delete q1;
     }
 
-    sql="alter table SERVICES add column AUTO_REFRESH enum('N','Y') \
-         default 'N' after TRACK_GROUP";
-    q=new QSqlQuery(sql);
+    sql="alter table SERVICES add column AUTO_REFRESH enum('N','Y') default 'N' after TRACK_GROUP";
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<123) {
-    sql="alter table REPORTS add column FILTER_ONAIR_FLAG enum('N','Y') \
-         default 'N' after STATION_FORMAT";
-    q=new QSqlQuery(sql);
+    sql="alter table REPORTS add column FILTER_ONAIR_FLAG enum('N','Y') default 'N' after STATION_FORMAT";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
     sql="select NAME from SERVICES";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     while(q->next()) {
-      sql=QString().sprintf("alter table `%s_SRT` add column ONAIR_FLAG \
-                             enum('N','Y') default 'N' after START_SOURCE",
-			    (const char *)q->value(0).toString());
-      q1=new QSqlQuery(sql);
+      sql=QString("alter table `")+q->value(0).toString()+"_SRT` "+
+	"add column ONAIR_FLAG enum('N','Y') default 'N' after START_SOURCE";
+      q1=new RDSqlQuery(sql,false);
       delete q1;
     }
     delete q;
   }
 
   if(ver<124) {
-    sql="alter table SERVICES add column TFC_LEN_HOURS_OFFSET int \
-         after TFC_SECONDS_LENGTH";
-    q=new QSqlQuery(sql);
+    sql="alter table SERVICES add column TFC_LEN_HOURS_OFFSET int after TFC_SECONDS_LENGTH";
+    q=new RDSqlQuery(sql,false);
     delete q;
-    sql="alter table SERVICES add column TFC_LEN_HOURS_LENGTH int \
-         after TFC_LEN_HOURS_OFFSET";
-    q=new QSqlQuery(sql);
+    sql="alter table SERVICES add column TFC_LEN_HOURS_LENGTH int after TFC_LEN_HOURS_OFFSET";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="alter table SERVICES add column TFC_LEN_MINUTES_OFFSET int \
-         after TFC_LEN_HOURS_LENGTH";
-    q=new QSqlQuery(sql);
+    sql="alter table SERVICES add column TFC_LEN_MINUTES_OFFSET int after TFC_LEN_HOURS_LENGTH";
+    q=new RDSqlQuery(sql,false);
     delete q;
-    sql="alter table SERVICES add column TFC_LEN_MINUTES_LENGTH int \
-         after TFC_LEN_MINUTES_OFFSET";
-    q=new QSqlQuery(sql);
+    sql="alter table SERVICES add column TFC_LEN_MINUTES_LENGTH int after TFC_LEN_MINUTES_OFFSET";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="alter table SERVICES add column TFC_LEN_SECONDS_OFFSET int \
-         after TFC_LEN_MINUTES_LENGTH";
-    q=new QSqlQuery(sql);
+    sql="alter table SERVICES add column TFC_LEN_SECONDS_OFFSET int after TFC_LEN_MINUTES_LENGTH";
+    q=new RDSqlQuery(sql,false);
     delete q;
-    sql="alter table SERVICES add column TFC_LEN_SECONDS_LENGTH int \
-         after TFC_LEN_SECONDS_OFFSET";
-    q=new QSqlQuery(sql);
+    sql="alter table SERVICES add column TFC_LEN_SECONDS_LENGTH int after TFC_LEN_SECONDS_OFFSET";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
     sql="select NAME,TFC_LENGTH_OFFSET,TFC_LENGTH_LENGTH from SERVICES";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     while(q->next()) {
       if(q->value(2).toInt()==5) {
-	sql=QString().sprintf("update SERVICES set TFC_LEN_MINUTES_OFFSET=%d,\
-                               TFC_LEN_MINUTES_LENGTH=2,\
-                               TFC_LEN_SECONDS_OFFSET=%d,\
-                               TFC_LEN_SECONDS_LENGTH=2 where NAME=\"%s\"",
-			      q->value(1).toInt(),q->value(1).toInt()+3,
-			      (const char *)q->value(0).toString());
+	sql=QString("update SERVICES set ")+
+	  QString().sprintf("TFC_LEN_MINUTES_OFFSET=%d,",q->value(1).toInt())+
+	  "TFC_LEN_MINUTES_LENGTH=2,"+
+	  QString().sprintf("TFC_LEN_SECONDS_OFFSET=%d,",q->value(1).toInt()+3)+
+	  "TFC_LEN_SECONDS_LENGTH=2 where "+
+	  "NAME=\""+RDEscapeString(q->value(0).toString())+"\"";
       }
       else {
-	sql=QString().sprintf("update SERVICES set TFC_LEN_SECONDS_OFFSET=%d,\
-                             TFC_LEN_SECONDS_LENGTH=%d where NAME=\"%s\"",
-			      q->value(1).toInt(),q->value(2).toInt(),
-			      (const char *)q->value(0).toString());
+	sql=QString("update SERVICES set ")+
+	  QString().sprintf("TFC_LEN_SECONDS_OFFSET=%d,",q->value(1).toInt())+
+	  QString().sprintf("TFC_LEN_SECONDS_LENGTH=%d where ",
+			    q->value(2).toInt())+
+	  "NAME=\""+RDEscapeString(q->value(0).toString())+"\"";
       }
-      q1=new QSqlQuery(sql);
+      q1=new RDSqlQuery(sql,false);
       delete q1;
     }
     delete q;
 
-    sql="alter table SERVICES add column MUS_LEN_HOURS_OFFSET int \
-         after MUS_SECONDS_LENGTH";
-    q=new QSqlQuery(sql);
+    sql="alter table SERVICES add column MUS_LEN_HOURS_OFFSET int after MUS_SECONDS_LENGTH";
+    q=new RDSqlQuery(sql,false);
     delete q;
-    sql="alter table SERVICES add column MUS_LEN_HOURS_LENGTH int \
-         after MUS_LEN_HOURS_OFFSET";
-    q=new QSqlQuery(sql);
+    sql="alter table SERVICES add column MUS_LEN_HOURS_LENGTH int after MUS_LEN_HOURS_OFFSET";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="alter table SERVICES add column MUS_LEN_MINUTES_OFFSET int \
-         after MUS_LEN_HOURS_LENGTH";
-    q=new QSqlQuery(sql);
+    sql="alter table SERVICES add column MUS_LEN_MINUTES_OFFSET int after MUS_LEN_HOURS_LENGTH";
+    q=new RDSqlQuery(sql,false);
     delete q;
-    sql="alter table SERVICES add column MUS_LEN_MINUTES_LENGTH int \
-         after MUS_LEN_MINUTES_OFFSET";
-    q=new QSqlQuery(sql);
+    sql="alter table SERVICES add column MUS_LEN_MINUTES_LENGTH int after MUS_LEN_MINUTES_OFFSET";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="alter table SERVICES add column MUS_LEN_SECONDS_OFFSET int \
-         after MUS_LEN_MINUTES_LENGTH";
-    q=new QSqlQuery(sql);
+    sql="alter table SERVICES add column MUS_LEN_SECONDS_OFFSET int after MUS_LEN_MINUTES_LENGTH";
+    q=new RDSqlQuery(sql,false);
     delete q;
-    sql="alter table SERVICES add column MUS_LEN_SECONDS_LENGTH int \
-         after MUS_LEN_SECONDS_OFFSET";
-    q=new QSqlQuery(sql);
+    sql="alter table SERVICES add column MUS_LEN_SECONDS_LENGTH int after MUS_LEN_SECONDS_OFFSET";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
     sql="select NAME,MUS_LENGTH_OFFSET,MUS_LENGTH_LENGTH from SERVICES";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     while(q->next()) {
       if(q->value(2).toInt()==5) {
-	sql=QString().sprintf("update SERVICES set MUS_LEN_MINUTES_OFFSET=%d,\
-                               MUS_LEN_MINUTES_LENGTH=2,\
-                               MUS_LEN_SECONDS_OFFSET=%d,\
-                               MUS_LEN_SECONDS_LENGTH=2 where NAME=\"%s\"",
-			      q->value(1).toInt(),q->value(1).toInt()+3,
-			      (const char *)q->value(0).toString());
+	sql=QString("update SERVICES set ")+
+	  QString().sprintf("MUS_LEN_MINUTES_OFFSET=%d,",q->value(1).toInt())+
+	  "MUS_LEN_MINUTES_LENGTH=2,"+
+	  QString().sprintf("MUS_LEN_SECONDS_OFFSET=%d,",q->value(1).toInt()+3)+
+	  "MUS_LEN_SECONDS_LENGTH=2 where "+
+	  "NAME=\""+RDEscapeString(q->value(0).toString())+"\"";
       }
       else {
-	sql=QString().sprintf("update SERVICES set MUS_LEN_SECONDS_OFFSET=%d,\
-                             MUS_LEN_SECONDS_LENGTH=%d where NAME=\"%s\"",
-			      q->value(1).toInt(),q->value(2).toInt(),
-			      (const char *)q->value(0).toString());
+	sql=QString("update SERVICES set ")+
+	  QString().sprintf("MUS_LEN_SECONDS_OFFSET=%d,",q->value(1).toInt())+
+	  QString().sprintf("MUS_LEN_SECONDS_LENGTH=%d where ",
+			    q->value(2).toInt())+
+	  "NAME=\""+RDEscapeString(q->value(0).toString())+"\"";
       }
-      q1=new QSqlQuery(sql);
+      q1=new RDSqlQuery(sql,false);
       delete q1;
     }
     delete q;
   }
 
   if(ver<125) {
-    sql="alter table REPORTS add column SERVICE_NAME char(64) \
-         after LINES_PER_PAGE";
-    q=new QSqlQuery(sql);
+    sql="alter table REPORTS add column SERVICE_NAME char(64) after LINES_PER_PAGE";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
     sql="select NAME from SERVICES";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     while(q->next()) {
-      sql=QString().sprintf("alter table `%s_SRT` add column ALBUM char(255) \
-                             after COMPOSER",
-			    (const char *)q->value(0).toString());
-      q1=new QSqlQuery(sql);
+      sql=QString("alter table `")+q->value(0).toString()+"_SRT` "+
+	"add column ALBUM char(255) after COMPOSER";
+      q1=new RDSqlQuery(sql,false);
       delete q1;
 
-      sql=QString().sprintf("alter table `%s_SRT` add column LABEL char(64) \
-                             after ALBUM",
-			    (const char *)q->value(0).toString());
-      q1=new QSqlQuery(sql);
+      sql=QString("alter table `")+q->value(0).toString()+"_SRT` "+
+	"add column LABEL char(64) after ALBUM";
+      q1=new RDSqlQuery(sql,false);
       delete q1;
     }
     delete q;
@@ -5763,397 +5345,358 @@ int UpdateDb(int ver)
 
   if(ver<126) {
     sql="select NAME from LOGS";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     while(q->next()) {
-      sql=QString().sprintf("alter table `%s_LOG` add column \
-                             LINK_START_SLOP int default 0 after LINK_LENGTH",
-			    (const char *)q->value(0).toString());
-      q1=new QSqlQuery(sql);
+      sql=QString("alter table `")+q->value(0).toString()+"_LOG` "+
+	"add column LINK_START_SLOP int default 0 after LINK_LENGTH";
+      q1=new RDSqlQuery(sql,false);
       delete q1;
 
-      sql=QString().sprintf("alter table `%s_LOG` add column \
-                            LINK_END_SLOP int default 0 after LINK_START_SLOP",
-			    (const char *)q->value(0).toString());
-      q1=new QSqlQuery(sql);
+      sql=QString("alter table `")+q->value(0).toString()+"_LOG` "+
+	"add column LINK_END_SLOP int default 0 after LINK_START_SLOP";
+      q1=new RDSqlQuery(sql,false);
       delete q1;
     }
     delete q;
   }
 
   if(ver<127) {
-    sql="alter table RDAIRPLAY add column \
-         PANEL_PAUSE_ENABLED enum('N','Y') default 'N' after FLASH_PANEL";
-    q=new QSqlQuery(sql);
+    sql="alter table RDAIRPLAY add column PANEL_PAUSE_ENABLED enum('N','Y') default 'N' after FLASH_PANEL";
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<128) {
     sql="select NAME from EVENTS";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     while(q->next()) {
       tablename=q->value(0).toString();
       tablename.replace(" ","_");
-      sql=QString().sprintf("alter table `%s_PRE` add column \
-                             LINK_START_SLOP int default 0 after LINK_LENGTH",
-			    (const char *)tablename);
-      q1=new QSqlQuery(sql);
+      sql=QString("alter table `")+tablename+"_PRE` "+
+	"add column LINK_START_SLOP int default 0 after LINK_LENGTH";
+      q1=new RDSqlQuery(sql,false);
       delete q1;
 
-      sql=QString().sprintf("alter table `%s_PRE` add column \
-                            LINK_END_SLOP int default 0 after LINK_START_SLOP",
-			    (const char *)tablename);
-      q1=new QSqlQuery(sql);
+      sql=QString("alter table `")+tablename+"_PRE` "+
+	"add column LINK_END_SLOP int default 0 after LINK_START_SLOP";
+      q1=new RDSqlQuery(sql,false);
       delete q1;
 
-      sql=QString().sprintf("alter table `%s_POST` add column \
-                             LINK_START_SLOP int default 0 after LINK_LENGTH",
-			    (const char *)tablename);
-      q1=new QSqlQuery(sql);
+      sql=QString("alter table `")+tablename+"_POST` "+
+	"add column LINK_START_SLOP int default 0 after LINK_LENGTH";
+      q1=new RDSqlQuery(sql,false);
       delete q1;
 
-      sql=QString().sprintf("alter table `%s_POST` add column \
-                            LINK_END_SLOP int default 0 after LINK_START_SLOP",
-			    (const char *)tablename);
-      q1=new QSqlQuery(sql);
+      sql=QString("alter table `")+tablename+"_POST` "+
+	"add column LINK_END_SLOP int default 0 after LINK_START_SLOP";
+      q1=new RDSqlQuery(sql,false);
       delete q1;
     }
     delete q;
   }
 
   if(ver<129) {
-    sql="alter table RDAIRPLAY add column EXIT_CODE int default 0 \
-         after LOG_RML2";
-    q=new QSqlQuery(sql);
+    sql="alter table RDAIRPLAY add column EXIT_CODE int default 0 after LOG_RML2";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="alter table RDAIRPLAY add column EXIT_PASSWORD char(41) default \"\" \
-         after EXIT_CODE";
-    q=new QSqlQuery(sql);
+    sql="alter table RDAIRPLAY add column EXIT_PASSWORD char(41) default \"\" after EXIT_CODE";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
 
-    sql="alter table RDAIRPLAY add column LOG0_START_MODE int default 0 \
-         after EXIT_PASSWORD";
-    q=new QSqlQuery(sql);
+    sql="alter table RDAIRPLAY add column LOG0_START_MODE int default 0 after EXIT_PASSWORD";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="alter table RDAIRPLAY add column LOG0_AUTO_RESTART enum('N','Y') \
-         default 'N' after LOG0_START_MODE";
-    q=new QSqlQuery(sql);
+    sql="alter table RDAIRPLAY add column LOG0_AUTO_RESTART enum('N','Y') default 'N' after LOG0_START_MODE";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="alter table RDAIRPLAY add column LOG0_LOG_NAME char(64) \
-         after LOG0_AUTO_RESTART";
-    q=new QSqlQuery(sql);
+    sql="alter table RDAIRPLAY add column LOG0_LOG_NAME char(64) after LOG0_AUTO_RESTART";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="alter table RDAIRPLAY add column LOG0_CURRENT_LOG char(64) \
-         after LOG0_LOG_NAME";
-    q=new QSqlQuery(sql);
+    sql="alter table RDAIRPLAY add column LOG0_CURRENT_LOG char(64) after LOG0_LOG_NAME";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="alter table RDAIRPLAY add column LOG0_RUNNING enum('N','Y') \
-         default 'N' after LOG0_CURRENT_LOG";
-    q=new QSqlQuery(sql);
+    sql="alter table RDAIRPLAY add column LOG0_RUNNING enum('N','Y') default 'N' after LOG0_CURRENT_LOG";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="alter table RDAIRPLAY add column LOG0_LOG_ID int default -1 \
-         after LOG0_RUNNING";
-    q=new QSqlQuery(sql);
+    sql="alter table RDAIRPLAY add column LOG0_LOG_ID int default -1 after LOG0_RUNNING";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="alter table RDAIRPLAY add column LOG0_LOG_LINE int default -1 \
-         after LOG0_LOG_ID";
-    q=new QSqlQuery(sql);
+    sql="alter table RDAIRPLAY add column LOG0_LOG_LINE int default -1 after LOG0_LOG_ID";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="alter table RDAIRPLAY add column LOG1_START_MODE int default 0 \
-         after LOG0_LOG_LINE";
-    q=new QSqlQuery(sql);
+    sql="alter table RDAIRPLAY add column LOG1_START_MODE int default 0 after LOG0_LOG_LINE";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="alter table RDAIRPLAY add column LOG1_AUTO_RESTART enum('N','Y') \
-         default 'N' after LOG1_START_MODE";
-    q=new QSqlQuery(sql);
+    sql="alter table RDAIRPLAY add column LOG1_AUTO_RESTART enum('N','Y') default 'N' after LOG1_START_MODE";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="alter table RDAIRPLAY add column LOG1_LOG_NAME char(64) \
-         after LOG1_AUTO_RESTART";
-    q=new QSqlQuery(sql);
+    sql="alter table RDAIRPLAY add column LOG1_LOG_NAME char(64) after LOG1_AUTO_RESTART";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="alter table RDAIRPLAY add column LOG1_CURRENT_LOG char(64) \
-         after LOG1_LOG_NAME";
-    q=new QSqlQuery(sql);
+    sql="alter table RDAIRPLAY add column LOG1_CURRENT_LOG char(64) after LOG1_LOG_NAME";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="alter table RDAIRPLAY add column LOG1_RUNNING enum('N','Y') \
-         default 'N' after LOG1_CURRENT_LOG";
-    q=new QSqlQuery(sql);
+    sql="alter table RDAIRPLAY add column LOG1_RUNNING enum('N','Y') default 'N' after LOG1_CURRENT_LOG";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="alter table RDAIRPLAY add column LOG1_LOG_ID int default -1 \
-         after LOG1_RUNNING";
-    q=new QSqlQuery(sql);
+    sql="alter table RDAIRPLAY add column LOG1_LOG_ID int default -1 after LOG1_RUNNING";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="alter table RDAIRPLAY add column LOG1_LOG_LINE int default -1 \
-         after LOG1_LOG_ID";
-    q=new QSqlQuery(sql);
+    sql="alter table RDAIRPLAY add column LOG1_LOG_LINE int default -1 after LOG1_LOG_ID";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="alter table RDAIRPLAY add column LOG2_START_MODE int default 0 \
-         after LOG1_LOG_LINE";
-    q=new QSqlQuery(sql);
+    sql="alter table RDAIRPLAY add column LOG2_START_MODE int default 0 after LOG1_LOG_LINE";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="alter table RDAIRPLAY add column LOG2_AUTO_RESTART enum('N','Y') \
-         default 'N' after LOG2_START_MODE";
-    q=new QSqlQuery(sql);
+    sql="alter table RDAIRPLAY add column LOG2_AUTO_RESTART enum('N','Y') default 'N' after LOG2_START_MODE";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="alter table RDAIRPLAY add column LOG2_LOG_NAME char(64) \
-         after LOG2_AUTO_RESTART";
-    q=new QSqlQuery(sql);
+    sql="alter table RDAIRPLAY add column LOG2_LOG_NAME char(64) after LOG2_AUTO_RESTART";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="alter table RDAIRPLAY add column LOG2_CURRENT_LOG char(64) \
-         after LOG2_LOG_NAME";
-    q=new QSqlQuery(sql);
+    sql="alter table RDAIRPLAY add column LOG2_CURRENT_LOG char(64) after LOG2_LOG_NAME";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="alter table RDAIRPLAY add column LOG2_RUNNING enum('N','Y') \
-         default 'N' after LOG2_CURRENT_LOG";
-    q=new QSqlQuery(sql);
+    sql="alter table RDAIRPLAY add column LOG2_RUNNING enum('N','Y') default 'N' after LOG2_CURRENT_LOG";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="alter table RDAIRPLAY add column LOG2_LOG_ID int default -1 \
-         after LOG2_RUNNING";
-    q=new QSqlQuery(sql);
+    sql="alter table RDAIRPLAY add column LOG2_LOG_ID int default -1 after LOG2_RUNNING";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="alter table RDAIRPLAY add column LOG2_LOG_LINE int default -1 \
-         after LOG2_LOG_ID";
-    q=new QSqlQuery(sql);
+    sql="alter table RDAIRPLAY add column LOG2_LOG_LINE int default -1 after LOG2_LOG_ID";
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<130) {
-    sql="create table if not exists RDCATCH (\
-         ID int unsigned primary key auto_increment,\
-         STATION char(64) not null,\
-         ERROR_RML char(255),\
-         index STATION_IDX (STATION))";
-    q=new QSqlQuery(sql);
+    sql=QString("create table if not exists RDCATCH (")+
+      "ID int unsigned primary key auto_increment,"+
+      "STATION char(64) not null,"+
+      "ERROR_RML char(255),"+
+      "index STATION_IDX (STATION))"+
+      config->createTablePostfix();
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if (ver<131) {
-    sql="ALTER TABLE `EVENTS` ADD `SCHED_GROUP` VARCHAR(10)";
-    q=new QSqlQuery(sql);
+    sql="alter table `EVENTS` add column `SCHED_GROUP` varchar(10)";
+    q=new RDSqlQuery(sql,false);
     delete q;
-    sql="ALTER TABLE `EVENTS` ADD `TITLE_SEP` INT(10) UNSIGNED";
-    q=new QSqlQuery(sql);
+    sql="alter table `EVENTS` add column `TITLE_SEP` int(10) unsigned";
+    q=new RDSqlQuery(sql,false);
     delete q;
-    sql="ALTER TABLE `EVENTS` ADD `HAVE_CODE` VARCHAR(10)";
-    q=new QSqlQuery(sql);
+    sql="alter table `EVENTS` add column `HAVE_CODE` varchar(10)";
+    q=new RDSqlQuery(sql,false);
     delete q;
-    sql="ALTER TABLE `EVENTS` ADD `HOR_SEP` INT(10) UNSIGNED";
-    q=new QSqlQuery(sql);
+    sql="alter table `EVENTS` add column `HOR_SEP` int(10) unsigned";
+    q=new RDSqlQuery(sql,false);
     delete q;
-    sql="ALTER TABLE `EVENTS` ADD `HOR_DIST` INT(10) UNSIGNED";
-    q=new QSqlQuery(sql);
+    sql="alter table `EVENTS` add column `HOR_DIST` int(10) unsigned";
+    q=new RDSqlQuery(sql,false);
     delete q;
-    sql="ALTER TABLE `CLOCKS` ADD `ARTISTSEP` INT(10) UNSIGNED";
-    q=new QSqlQuery(sql);
+    sql="alter table `CLOCKS` add column `ARTISTSEP` int(10) unsigned";
+    q=new RDSqlQuery(sql,false);
     delete q;
-    sql="ALTER TABLE `CART` ADD `SCHED_CODES` VARCHAR( 255 ) NULL DEFAULT NULL";
-    q=new QSqlQuery(sql);
+    sql="alter table `CART` add column `SCHED_CODES` varchar( 255 ) NULL default NULL";
+    q=new RDSqlQuery(sql,false);
     delete q;
-    sql="create table if not exists SCHED_CODES\
-    (CODE varchar(10) not null primary key,\
-    DESCRIPTION varchar(255))";
-    q=new QSqlQuery(sql);
+    sql=QString("create table if not exists SCHED_CODES (")+
+      "CODE varchar(10) not null primary key,"+
+      "DESCRIPTION varchar(255))"+
+      config->createTablePostfix();
+    q=new RDSqlQuery(sql,false);
     delete q;
     sql="drop table SCHED_STACK";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
     sql="select NAME from SERVICES";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     while(q->next()) {
       QString svc=q->value(0).toString();
-      sql=QString().sprintf("drop table %s_STACK",(const char *)svc.replace(" ","_"));
-      printf("%s\n",(const char*)sql);
-      q1=new QSqlQuery(sql);
+      sql=QString("drop table `")+svc.replace(" ","_")+"_STACK`";
+      q1=new RDSqlQuery(sql,false);
       delete q1;
       }
     delete q;
     sql="select NAME from LOGS";  
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     while(q->next()) {
-      sql=QString().sprintf("alter table `%s_LOG` add column \
-                             DUCK_UP_GAIN int default 0 after SEGUE_GAIN",
-			    (const char *)q->value(0).toString());
-      q1=new QSqlQuery(sql);
+      sql=QString("alter table `")+q->value(0).toString()+"_LOG` "+
+	"add column DUCK_UP_GAIN int default 0 after SEGUE_GAIN";
+      q1=new RDSqlQuery(sql,false);
       delete q1;
-      sql=QString().sprintf("alter table `%s_LOG` add column \
-                            DUCK_DOWN_GAIN int default 0 after DUCK_UP_GAIN",
-			    (const char *)q->value(0).toString());
-      q1=new QSqlQuery(sql);
+      sql=QString("alter table `")+q->value(0).toString()+"_LOG` "+
+	"add column DUCK_DOWN_GAIN int default 0 after DUCK_UP_GAIN";
+      q1=new RDSqlQuery(sql,false);
       delete q1;
     }
     delete q;
     sql="select NAME from EVENTS";  
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     while(q->next()) {
-      sql=QString().sprintf("alter table `%s_PRE` add column \
-                             DUCK_UP_GAIN int default 0 after SEGUE_GAIN",
-			    (const char *)q->value(0).toString());
-      q1=new QSqlQuery(sql);
+      sql=QString("alter table `")+q->value(0).toString()+"_PRE` "+
+	"add column DUCK_UP_GAIN int default 0 after SEGUE_GAIN";
+      q1=new RDSqlQuery(sql,false);
       delete q1;
-      sql=QString().sprintf("alter table `%s_PRE` add column \
-                            DUCK_DOWN_GAIN int default 0 after DUCK_UP_GAIN",
-			    (const char *)q->value(0).toString());
-      q1=new QSqlQuery(sql);
+      sql=QString("alter table `")+q->value(0).toString()+"_PRE` "+
+	"add column DUCK_DOWN_GAIN int default 0 after DUCK_UP_GAIN";
+      q1=new RDSqlQuery(sql,false);
       delete q1;
-      sql=QString().sprintf("alter table `%s_POST` add column \
-                             DUCK_UP_GAIN int default 0 after SEGUE_GAIN",
-			    (const char *)q->value(0).toString());
-      q1=new QSqlQuery(sql);
+      sql=QString("alter table `")+q->value(0).toString()+"_POST` "+
+	"add column DUCK_UP_GAIN int default 0 after SEGUE_GAIN";
+      q1=new RDSqlQuery(sql,false);
       delete q1;
-      sql=QString().sprintf("alter table `%s_POST` add column \
-                            DUCK_DOWN_GAIN int default 0 after DUCK_UP_GAIN",
-			    (const char *)q->value(0).toString());
-      q1=new QSqlQuery(sql);
+      sql=QString("alter table `")+q->value(0).toString()+"_POST` "+
+		  "add column DUCK_DOWN_GAIN int default 0 after DUCK_UP_GAIN";
+      q1=new RDSqlQuery(sql,false);
       delete q1;
     }
     delete q;
   }
 
   if (ver<132) {
-    sql="create table if not exists DROPBOXES \
-         (ID int auto_increment not null primary key,\
-          STATION_NAME char(64),\
-          GROUP_NAME char(10),\
-          PATH char(255),\
-          NORMALIZATION_LEVEL int default 1,\
-          AUTOTRIM_LEVEL int default 1,\
-          SINGLE_CART enum('N','Y') default 'N',\
-          TO_CART int unsigned default 0,\
-          USE_CARTCHUNK_ID enum('N','Y') default 'N',\
-          DELETE_CUTS enum('N','Y') default 'N',\
-          METADATA_PATTERN char(64),\
-          FIX_BROKEN_FORMATS enum('N','Y') default 'N',\
-          LOG_PATH char(255),\
-          index STATION_NAME_IDX (STATION_NAME))";
-    q=new QSqlQuery(sql);
+    sql=QString("create table if not exists DROPBOXES (")+
+      "ID int auto_increment not null primary key,"+
+      "STATION_NAME char(64),"+
+      "GROUP_NAME char(10),"+
+      "PATH char(255),"+
+      "NORMALIZATION_LEVEL int default 1,"+
+      "AUTOTRIM_LEVEL int default 1,"+
+      "SINGLE_CART enum('N','Y') default 'N',"+
+      "TO_CART int unsigned default 0,"+
+      "USE_CARTCHUNK_ID enum('N','Y') default 'N',"+
+      "DELETE_CUTS enum('N','Y') default 'N',"+
+      "METADATA_PATTERN char(64),"+
+      "FIX_BROKEN_FORMATS enum('N','Y') default 'N',"+
+      "LOG_PATH char(255),"+
+      "index STATION_NAME_IDX (STATION_NAME))"+
+      config->createTablePostfix();
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<133) {
     sql="select NAME from LOGS";  
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     while(q->next()) {
       tablename=q->value(0).toString();
       tablename.replace(" ","_");
-      sql=QString().sprintf("alter table `%s_LOG` add column \
-                             DUCK_UP_GAIN int default 0 after SEGUE_GAIN",
-			    (const char *)tablename);
-      q1=new QSqlQuery(sql);
+      sql=QString("alter table `")+tablename+"_LOG` "+
+	"add column DUCK_UP_GAIN int default 0 after SEGUE_GAIN";
+      q1=new RDSqlQuery(sql,false);
       delete q1;
-      sql=QString().sprintf("alter table `%s_LOG` add column \
-                            DUCK_DOWN_GAIN int default 0 after DUCK_UP_GAIN",
-			    (const char *)tablename);
-      q1=new QSqlQuery(sql);
+      sql=QString("alter table `")+tablename+"_LOG` "+
+	"add column DUCK_DOWN_GAIN int default 0 after DUCK_UP_GAIN";
+      q1=new RDSqlQuery(sql,false);
       delete q1;
     }
     delete q;
     sql="select NAME from EVENTS";  
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     while(q->next()) {
       tablename=q->value(0).toString();
       tablename.replace(" ","_");
-      sql=QString().sprintf("alter table `%s_PRE` add column \
-                             DUCK_UP_GAIN int default 0 after SEGUE_GAIN",
-			    (const char *)tablename);
-      q1=new QSqlQuery(sql);
+      sql=QString("alter table `")+tablename+"_PRE` "+
+	"add column DUCK_UP_GAIN int default 0 after SEGUE_GAIN";
+      q1=new RDSqlQuery(sql,false);
       delete q1;
-      sql=QString().sprintf("alter table `%s_PRE` add column \
-                            DUCK_DOWN_GAIN int default 0 after DUCK_UP_GAIN",
-			    (const char *)tablename);
-      q1=new QSqlQuery(sql);
+      sql=QString("alter table `")+tablename+"_PRE` "+
+	"add column DUCK_DOWN_GAIN int default 0 after DUCK_UP_GAIN";
+      q1=new RDSqlQuery(sql,false);
       delete q1;
-      sql=QString().sprintf("alter table `%s_POST` add column \
-                             DUCK_UP_GAIN int default 0 after SEGUE_GAIN",
-			    (const char *)tablename);
-      q1=new QSqlQuery(sql);
+      sql=QString("alter table `")+tablename+"_POST` "+
+	"add column DUCK_UP_GAIN int default 0 after SEGUE_GAIN";
+      q1=new RDSqlQuery(sql,false);
       delete q1;
-      sql=QString().sprintf("alter table `%s_POST` add column \
-                            DUCK_DOWN_GAIN int default 0 after DUCK_UP_GAIN",
-			    (const char *)tablename);
-      q1=new QSqlQuery(sql);
+      sql=QString("alter table `")+tablename+"_POST` "+
+	"add column DUCK_DOWN_GAIN int default 0 after DUCK_UP_GAIN";
+      q1=new RDSqlQuery(sql,false);
       delete q1;
     }
     delete q;
   }
 
   if(ver<134) {
-    sql="create table if not exists RDPANEL (\
-         ID int not null primary key auto_increment,\
-         STATION char(40) not null,\
-         CARD2 int default -1,\
-         PORT2 int default -1,\
-         START_RML2 char(255),\
-         STOP_RML2 char(255),\
-         CARD6 int default -1,\
-         PORT6 int default -1,\
-         START_RML6 char(255),\
-         STOP_RML6 char(255),\
-         CARD7 int default -1,\
-         PORT7 int default -1,\
-         START_RML7 char(255),\
-         STOP_RML7 char(255),\
-         CARD8 int default -1,\
-         PORT8 int default -1,\
-         START_RML8 char(255),\
-         STOP_RML8 char(255),\
-         CARD9 int default -1,\
-         PORT9 int default -1,\
-         START_RML9 char(255),\
-         STOP_RML9 char(255),\
-         STATION_PANELS int default 3,\
-         USER_PANELS int default 3,\
-         CLEAR_FILTER enum('N','Y') default 'N',\
-         FLASH_PANEL enum('N','Y') default 'N',\
-         PANEL_PAUSE_ENABLED enum('N','Y') default 'N',\
-         DEFAULT_SERVICE char(10),\
-         index STATION_IDX (STATION))"; 
-    q=new QSqlQuery(sql);
+    sql=QString("create table if not exists RDPANEL (")+
+      "ID int not null primary key auto_increment,"+
+      "STATION char(40) not null,"+
+      "CARD2 int default -1,"+
+      "PORT2 int default -1,"+
+      "START_RML2 char(255),"+
+      "STOP_RML2 char(255),"+
+      "CARD6 int default -1,"+
+      "PORT6 int default -1,"+
+      "START_RML6 char(255),"+
+      "STOP_RML6 char(255),"+
+      "CARD7 int default -1,"+
+      "PORT7 int default -1,"+
+      "START_RML7 char(255),"+
+      "STOP_RML7 char(255),"+
+      "CARD8 int default -1,"+
+      "PORT8 int default -1,"+
+      "START_RML8 char(255),"+
+      "STOP_RML8 char(255),"+
+      "CARD9 int default -1,"+
+      "PORT9 int default -1,"+
+      "START_RML9 char(255),"+
+      "STOP_RML9 char(255),"+
+      "STATION_PANELS int default 3,"+
+      "USER_PANELS int default 3,"+
+      "CLEAR_FILTER enum('N','Y') default 'N',"+
+      "FLASH_PANEL enum('N','Y') default 'N',"+
+      "PANEL_PAUSE_ENABLED enum('N','Y') default 'N',"+
+      "DEFAULT_SERVICE char(10),"+
+      "index STATION_IDX (STATION))"+
+      config->createTablePostfix();
+    q=new RDSqlQuery(sql,false);
     delete q;
 
     //
     // Create EXTENDED_PANELS Table
     //
-    sql="create table if not exists EXTENDED_PANELS (\
-        ID int auto_increment not null primary key,\
-        TYPE int not null,\
-        OWNER char(64) not null,\
-        PANEL_NO int not null,\
-        ROW_NO int not null,\
-        COLUMN_NO int not null,\
-        LABEL char(64),\
-        CART int,\
-        DEFAULT_COLOR char(7),\
-        index LOAD_IDX (TYPE,OWNER,PANEL_NO),\
-        index SAVE_IDX (TYPE,OWNER,PANEL_NO,ROW_NO,COLUMN_NO))"; 
-    q=new QSqlQuery(sql);
+    sql=QString("create table if not exists EXTENDED_PANELS (")+
+      "ID int auto_increment not null primary key,"+
+      "TYPE int not null,"+
+      "OWNER char(64) not null,"+
+      "PANEL_NO int not null,"+
+      "ROW_NO int not null,"+
+      "COLUMN_NO int not null,"+
+      "LABEL char(64),"+
+      "CART int,"+
+      "DEFAULT_COLOR char(7),"+
+      "index LOAD_IDX (TYPE,OWNER,PANEL_NO),"+
+      "index SAVE_IDX (TYPE,OWNER,PANEL_NO,ROW_NO,COLUMN_NO))"+
+      config->createTablePostfix();
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<135) {
-    sql="alter table STATIONS add column STARTUP_CART int unsigned default 0 \
-         after HEARTBEAT_INTERVAL";
-    q=new QSqlQuery(sql);
+    sql="alter table STATIONS add column STARTUP_CART int unsigned default 0 after HEARTBEAT_INTERVAL";
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
@@ -6161,13 +5704,14 @@ int UpdateDb(int ver)
     //
     // Create PANEL_NAMES Table
     //
-    sql="create table if not exists PANEL_NAMES (\
-      ID int auto_increment not null primary key,\
-      TYPE int not null,\
-      OWNER char(64) not null,\
-      PANEL_NO int not null,\
-      NAME char(64),\
-      index LOAD_IDX (TYPE,OWNER,PANEL_NO))"; 
+    sql=QString("create table if not exists PANEL_NAMES (")+
+      "ID int auto_increment not null primary key,"+
+      "TYPE int not null,"+
+      "OWNER char(64) not null,"+
+      "PANEL_NO int not null,"+
+      "NAME char(64),"+
+      "index LOAD_IDX (TYPE,OWNER,PANEL_NO))"+
+      config->createTablePostfix();
     if(!RunQuery(sql)) {
       return UPDATEDB_QUERY_FAILED;
     }
@@ -6175,27 +5719,27 @@ int UpdateDb(int ver)
     //
     // Create EXTENDED_PANEL_NAMES Table
     //
-    sql="create table if not exists EXTENDED_PANEL_NAMES (\
-      ID int auto_increment not null primary key,\
-      TYPE int not null,\
-      OWNER char(64) not null,\
-      PANEL_NO int not null,\
-      NAME char(64),\
-      index LOAD_IDX (TYPE,OWNER,PANEL_NO))"; 
+    sql=QString("create table if not exists EXTENDED_PANEL_NAMES (")+
+      "ID int auto_increment not null primary key,"+
+      "TYPE int not null,"+
+      "OWNER char(64) not null,"+
+      "PANEL_NO int not null,"+
+      "NAME char(64),"+
+      "index LOAD_IDX (TYPE,OWNER,PANEL_NO))"+
+      config->createTablePostfix();
     if(!RunQuery(sql)) {
       return UPDATEDB_QUERY_FAILED;
     }
   } 
 
   if(ver<137) {
-    sql="alter table CART add column AVERAGE_HOOK_LENGTH int unsigned \
-         default 0 after AVERAGE_SEGUE_LENGTH";
+    sql="alter table CART add column AVERAGE_HOOK_LENGTH int unsigned default 0 after AVERAGE_SEGUE_LENGTH";
     if(!RunQuery(sql)) {
       return UPDATEDB_QUERY_FAILED;
     }
 
     sql="select NUMBER from CART";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     while(q->next()) {
       cart=new RDCart(q->value(0).toUInt());
       cart->updateLength();
@@ -6205,183 +5749,171 @@ int UpdateDb(int ver)
   }
   
   if(ver<138) {
-    sql="alter table RDAIRPLAY add column BUTTON_LABEL_TEMPLATE char(32) \
-         default \"%t\" after PANEL_PAUSE_ENABLED";
-    q=new QSqlQuery(sql);
+    sql=QString("alter table RDAIRPLAY ")+
+      "add column BUTTON_LABEL_TEMPLATE char(32) "+
+      "default \"%t\" after PANEL_PAUSE_ENABLED";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="alter table RDPANEL add column BUTTON_LABEL_TEMPLATE char(32) \
-         default \"%t\" after PANEL_PAUSE_ENABLED";
-    q=new QSqlQuery(sql);
+    sql="alter table RDPANEL add column BUTTON_LABEL_TEMPLATE char(32) default \"%t\" after PANEL_PAUSE_ENABLED";
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<139) {
     sql="alter table RDAIRPLAY modify EXIT_PASSWORD char(41) default \"\""; 
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<140) {
-    sql="alter table SERVICES add column TFC_BREAK_STRING char(64) \
-         after TFC_TRACK_CART";
-    q=new QSqlQuery(sql);
+    sql="alter table SERVICES add column TFC_BREAK_STRING char(64) after TFC_TRACK_CART";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="alter table SERVICES add column TFC_TRACK_STRING char(64) \
-         after TFC_TRACK_CART";
-    q=new QSqlQuery(sql);
+    sql="alter table SERVICES add column TFC_TRACK_STRING char(64) after TFC_TRACK_CART";
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<141) {
-    sql="alter table DROPBOXES add column TITLE_FROM_CARTCHUNK_ID enum('N','Y') \
-         default 'N' after USE_CARTCHUNK_ID"; 
-    q=new QSqlQuery(sql);
+    sql="alter table DROPBOXES add column TITLE_FROM_CARTCHUNK_ID enum('N','Y') default 'N' after USE_CARTCHUNK_ID"; 
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<142) {
-    sql="create table if not exists FEEDS (\
-         ID int unsigned auto_increment not null primary key,\
-         KEY_NAME char(8) unique not null,\
-         CHANNEL_TITLE char(255),\
-         CHANNEL_DESCRIPTION text,\
-         CHANNEL_CATEGORY char(64),\
-         CHANNEL_LINK char(255),\
-         CHANNEL_COPYRIGHT char(64),\
-         CHANNEL_WEBMASTER char(64),\
-         CHANNEL_LANGUAGE char(5) default \"en-us\",\
-         BASE_URL char(255),\
-         PURGE_URL char(255),\
-         PURGE_USERNAME char(64),\
-         PURGE_PASSWORD char(64),\
-         HEADER_XML text,\
-         CHANNEL_XML text,\
-         ITEM_XML text,\
-         MAX_SHELF_LIFE int,\
-         LAST_BUILD_DATETIME datetime,\
-         ORIGIN_DATETIME datetime,\
-         ENABLE_AUTOPOST enum('N','Y') default 'N',\
-         index KEY_NAME_IDX(KEY_NAME))";
-    q=new QSqlQuery(sql);
+    sql=QString("create table if not exists FEEDS (")+
+      "ID int unsigned auto_increment not null primary key,"+
+      "KEY_NAME char(8) unique not null,"+
+      "CHANNEL_TITLE char(255),"+
+      "CHANNEL_DESCRIPTION text,"+
+      "CHANNEL_CATEGORY char(64),"+
+      "CHANNEL_LINK char(255),"+
+      "CHANNEL_COPYRIGHT char(64),"+
+      "CHANNEL_WEBMASTER char(64),"+
+      "CHANNEL_LANGUAGE char(5) default \"en-us\","+
+      "BASE_URL char(255),"+
+      "PURGE_URL char(255),"+
+      "PURGE_USERNAME char(64),"+
+      "PURGE_PASSWORD char(64),"+
+      "HEADER_XML text,"+
+      "CHANNEL_XML text,"+
+      "ITEM_XML text,"+
+      "MAX_SHELF_LIFE int,"+
+      "LAST_BUILD_DATETIME datetime,"+
+      "ORIGIN_DATETIME datetime,"+
+      "ENABLE_AUTOPOST enum('N','Y') default 'N',"+
+      "index KEY_NAME_IDX(KEY_NAME))"+
+      config->createTablePostfix();
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="create table if not exists PODCASTS (\
-         ID int unsigned auto_increment not null primary key,\
-         FEED_ID int unsigned not null,\
-         STATUS int unsigned default 0,\
-         ITEM_TITLE char(255),\
-         ITEM_DESCRIPTION text,\
-         ITEM_CATEGORY char(64),\
-         ITEM_LINK char(255),\
-         AUDIO_FILENAME char(255),\
-         AUDIO_LENGTH int unsigned,\
-         SHELF_LIFE int,\
-         ORIGIN_DATETIME datetime,\
-         index FEED_ID_IDX(FEED_ID,ORIGIN_DATETIME))";
-    q=new QSqlQuery(sql);
+    sql=QString("create table if not exists PODCASTS (")+
+      "ID int unsigned auto_increment not null primary key,"+
+      "FEED_ID int unsigned not null,"+
+      "STATUS int unsigned default 0,"+
+      "ITEM_TITLE char(255),"+
+      "ITEM_DESCRIPTION text,"+
+      "ITEM_CATEGORY char(64),"+
+      "ITEM_LINK char(255),"+
+      "AUDIO_FILENAME char(255),"+
+      "AUDIO_LENGTH int unsigned,"+
+      "SHELF_LIFE int,"+
+      "ORIGIN_DATETIME datetime,"+
+      "index FEED_ID_IDX(FEED_ID,ORIGIN_DATETIME))"+
+      config->createTablePostfix();
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="alter table RECORDINGS add column FEED_ID int default -1 \
-         after URL_PASSWORD";
-    q=new QSqlQuery(sql);
+    sql="alter table RECORDINGS add column FEED_ID int default -1 after URL_PASSWORD";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="alter table VERSION add column LAST_MAINT_DATETIME datetime \
-         default \"1970-01-01 00:00:00\" after DB";
-    q=new QSqlQuery(sql);
+    sql="alter table VERSION add column LAST_MAINT_DATETIME datetime default \"1970-01-01 00:00:00\" after DB";
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<143) {
-    sql="create table if not exists AUX_METADATA (\
-         ID int unsigned auto_increment not null primary key,\
-         FEED_ID int unsigned,\
-         VAR_NAME char(16),\
-         CAPTION char(64),\
-         index FEED_ID_IDX(FEED_ID))";
-    q=new QSqlQuery(sql);
+    sql=QString("create table if not exists AUX_METADATA (")+
+      "ID int unsigned auto_increment not null primary key,"+
+      "FEED_ID int unsigned,"+
+      "VAR_NAME char(16),"+
+      "CAPTION char(64),"+
+      "index FEED_ID_IDX(FEED_ID))"+
+      config->createTablePostfix();
+    q=new RDSqlQuery(sql,false);
     delete q;
 
     sql="select KEY_NAME from FEEDS"; 
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     while(q->next()) {
-      RDCreateAuxFieldsTable(q->value(0).toString());
+      RDCreateAuxFieldsTable(q->value(0).toString(),config);
     }
     delete q;
   }
 
   if(ver<144) {
-    sql="alter table FEEDS add column UPLOAD_FORMAT int default 2 \
-         after ENABLE_AUTOPOST";
-    q=new QSqlQuery(sql);
+    sql="alter table FEEDS add column UPLOAD_FORMAT int default 2 after ENABLE_AUTOPOST";
+    q=new RDSqlQuery(sql,false);
     delete q;
-    sql="alter table FEEDS add column UPLOAD_CHANNELS int default 2 \
-         after UPLOAD_FORMAT";
-    q=new QSqlQuery(sql);
+    sql="alter table FEEDS add column UPLOAD_CHANNELS int default 2 after UPLOAD_FORMAT";
+    q=new RDSqlQuery(sql,false);
     delete q;
-    sql="alter table FEEDS add column UPLOAD_SAMPRATE int default 44100 \
-         after UPLOAD_CHANNELS";
-    q=new QSqlQuery(sql);
+    sql="alter table FEEDS add column UPLOAD_SAMPRATE int default 44100 after UPLOAD_CHANNELS";
+    q=new RDSqlQuery(sql,false);
     delete q;
-    sql="alter table FEEDS add column UPLOAD_BITRATE int default 32000 \
-         after UPLOAD_CHANNELS";
-    q=new QSqlQuery(sql);
+    sql="alter table FEEDS add column UPLOAD_BITRATE int default 32000 after UPLOAD_CHANNELS";
+    q=new RDSqlQuery(sql,false);
     delete q;
-    sql="alter table FEEDS add column UPLOAD_QUALITY int default 0 \
-         after UPLOAD_BITRATE";
-    q=new QSqlQuery(sql);
+    sql="alter table FEEDS add column UPLOAD_QUALITY int default 0 after UPLOAD_BITRATE";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="alter table FEEDS add column NORMALIZE_LEVEL int default -100 \
-         after UPLOAD_QUALITY";
-    q=new QSqlQuery(sql);
+    sql="alter table FEEDS add column NORMALIZE_LEVEL int default -100 after UPLOAD_QUALITY";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="alter table PODCASTS add column ITEM_COMMENTS char(255) \
-         after ITEM_LINK";
-    q=new QSqlQuery(sql);
+    sql="alter table PODCASTS add column ITEM_COMMENTS char(255) after ITEM_LINK";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="alter table PODCASTS add column ITEM_AUTHOR char(255) \
-         after ITEM_COMMENTS";
-    q=new QSqlQuery(sql);
+    sql="alter table PODCASTS add column ITEM_AUTHOR char(255) after ITEM_COMMENTS";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="alter table PODCASTS add column ITEM_SOURCE_TEXT char(64) \
-         after ITEM_AUTHOR";
-    q=new QSqlQuery(sql);
+    sql="alter table PODCASTS add column ITEM_SOURCE_TEXT char(64) after ITEM_AUTHOR";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="alter table PODCASTS add column ITEM_SOURCE_URL char(255) \
-         after ITEM_SOURCE_TEXT";
-    q=new QSqlQuery(sql);
+    sql="alter table PODCASTS add column ITEM_SOURCE_URL char(255) after ITEM_SOURCE_TEXT";
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<145) {
-    sql=QString("create table if not exists FEED_PERMS (\
-        ID int unsigned auto_increment not null primary key,\
-        USER_NAME char(8),\
-        KEY_NAME char(8),\
-        index USER_IDX (USER_NAME),\
-        index KEYNAME_IDX (KEY_NAME))");
-    q=new QSqlQuery(sql);
+    sql=QString("create table if not exists FEED_PERMS (")+
+      "ID int unsigned auto_increment not null primary key,"+
+      "USER_NAME char(8),"+
+      "KEY_NAME char(8),"+
+      "index USER_IDX (USER_NAME),"+
+      "index KEYNAME_IDX (KEY_NAME))"+
+      config->createTablePostfix();
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="select LOGIN_NAME from USERS \
-         where (ADMIN_USERS_PRIV='N')&&(ADMIN_CONFIG_PRIV='N')";
-    q=new QSqlQuery(sql);
+    sql=QString("select LOGIN_NAME from USERS where ")+
+      "(ADMIN_USERS_PRIV='N')&&(ADMIN_CONFIG_PRIV='N')";
+    q=new RDSqlQuery(sql,false);
     sql="select KEY_NAME from FEEDS";
-    q1=new QSqlQuery(sql);
+    q1=new RDSqlQuery(sql,false);
     while(q->next()) {
       while(q1->next()) {
-	sql=QString().sprintf("insert into FEED_PERMS set USER_NAME=\"%s\",\
-                               KEY_NAME=\"%s\"",
-			      (const char *)q->value(0).toString(),
-			      (const char *)q1->value(0).toString());
-	q2=new QSqlQuery(sql);
+	sql=QString("insert into FEED_PERMS set ")+
+	  "USER_NAME=\""+RDEscapeString(q->value(0).toString())+"\","+
+	  "KEY_NAME=\""+RDEscapeString(q1->value(0).toString())+"\"";
+	q2=new RDSqlQuery(sql,false);
 	delete q2;
       }
       q1->seek(-1);
@@ -6390,178 +5922,159 @@ int UpdateDb(int ver)
     delete q;
 
 
-    sql="alter table USERS add column ADD_PODCAST_PRIV enum('N','Y') \
-         not null default 'N' after EDIT_CATCHES_PRIV";
-    q=new QSqlQuery(sql);
+    sql="alter table USERS add column ADD_PODCAST_PRIV enum('N','Y') not null default 'N' after EDIT_CATCHES_PRIV";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="alter table USERS add column EDIT_PODCAST_PRIV enum('N','Y') \
-         not null default 'N' after ADD_PODCAST_PRIV";
-    q=new QSqlQuery(sql);
+    sql="alter table USERS add column EDIT_PODCAST_PRIV enum('N','Y') not null default 'N' after ADD_PODCAST_PRIV";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="alter table USERS add column DELETE_PODCAST_PRIV enum('N','Y') \
-         not null default 'N' after EDIT_PODCAST_PRIV";
-    q=new QSqlQuery(sql);
+    sql="alter table USERS add column DELETE_PODCAST_PRIV enum('N','Y') not null default 'N' after EDIT_PODCAST_PRIV";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="update USERS set ADD_PODCAST_PRIV='Y',EDIT_PODCAST_PRIV='Y',\
-         DELETE_PODCAST_PRIV='Y' \
-         where (ADMIN_CONFIG_PRIV='N')&&(ADMIN_USERS_PRIV='N')";
-    q=new QSqlQuery(sql);
+    sql="update USERS set ADD_PODCAST_PRIV='Y',EDIT_PODCAST_PRIV='Y', DELETE_PODCAST_PRIV='Y' where (ADMIN_CONFIG_PRIV='N')&&(ADMIN_USERS_PRIV='N')";
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<146) {
    sql="select NAME from EVENTS";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     while(q->next()) {
       tablename=q->value(0).toString();
       tablename.replace(" ","_");
-      sql=QString().sprintf("alter table %s_POST add column\
-                             EXT_CART_NAME char(32) after EXT_LENGTH",
-			    (const char *)tablename);
-      q1=new QSqlQuery(sql);
+      sql=QString("alter table `")+tablename+"_POST` "+
+	"add column EXT_CART_NAME char(32) after EXT_LENGTH";
+      q1=new RDSqlQuery(sql,false);
       delete q1;
-      sql=QString().sprintf("alter table %s_POST add column\
-                             EXT_ANNC_TYPE char(8) after EXT_EVENT_ID",
-			    (const char *)tablename);
-      q1=new QSqlQuery(sql);
+      sql=QString("alter table `")+tablename+"_POST` "+
+	"add column EXT_ANNC_TYPE char(8) after EXT_EVENT_ID";
+      q1=new RDSqlQuery(sql,false);
       delete q1;
-      sql=QString().sprintf("alter table %s_POST add column\
-                             EVENT_SOURCE int default 0 after EVENT_TYPE",
-			    (const char *)tablename);
-      q1=new QSqlQuery(sql);
+      sql=QString("alter table `")+tablename+"_POST` "+
+	"add column EVENT_SOURCE int default 0 after EVENT_TYPE";
+      q1=new RDSqlQuery(sql,false);
       delete q1;
-      sql=QString().sprintf("alter table %s_POST add column\
-                             EXT_ANNC_TYPE char(8) after EXT_EVENT_ID",
-			    (const char *)tablename);
-      q1=new QSqlQuery(sql);
+      sql=QString("alter table `")+tablename+"_POST` "+
+	"add column EXT_ANNC_TYPE char(8) after EXT_EVENT_ID";
+      q1=new RDSqlQuery(sql,false);
       delete q1;
     }
     delete q;
   }
 
   if(ver<147) {
-    sql="alter table USERS add column ENABLE_WEB enum('N','Y') default 'N' \
-         after PASSWORD";
-    q=new QSqlQuery(sql);
+    sql="alter table USERS add column ENABLE_WEB enum('N','Y') default 'N' after PASSWORD";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql=QString("create table if not exists WEB_CONNECTIONS (\
-        SESSION_ID int unsigned not null primary key,\
-        LOGIN_NAME char(8),\
-        IP_ADDRESS char(16),\
-        TIME_STAMP datetime)");
-    q=new QSqlQuery(sql);
+    sql=QString("create table if not exists WEB_CONNECTIONS (")+
+      "SESSION_ID int unsigned not null primary key,"+
+      "LOGIN_NAME char(8),"+
+      "IP_ADDRESS char(16),"+
+      "TIME_STAMP datetime)"+
+      config->createTablePostfix();
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<148) {
-    sql=QString().sprintf("alter table CUTS add column\
-                           SEGUE_GAIN int default %d after SEGUE_END_POINT",RD_FADE_DEPTH);
-    q=new QSqlQuery(sql);
+    sql=QString("alter table CUTS add column ")+
+      QString().sprintf("SEGUE_GAIN int default %d after SEGUE_END_POINT",
+			RD_FADE_DEPTH);
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
   
   if(ver<148) {
-    sql="alter table PODCASTS add column AUDIO_TIME int unsigned \
-         after AUDIO_LENGTH";
-    q=new QSqlQuery(sql);
+    sql="alter table PODCASTS add column AUDIO_TIME int unsigned after AUDIO_LENGTH";
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<149) {
-  sql="create table if not exists SWITCHER_NODES (\
-       ID int not null auto_increment primary key,\
-       STATION_NAME char(64),\
-       MATRIX int,\
-       BASE_OUTPUT int default 0,\
-       HOSTNAME char(64),\
-       PASSWORD char(64),\
-       TCP_PORT int,\
-       DESCRIPTION char(255),\
-       index STATION_IDX (STATION_NAME,MATRIX))";
-    q=new QSqlQuery(sql);
+    sql=QString("create table if not exists SWITCHER_NODES (")+
+      "ID int not null auto_increment primary key,"+
+      "STATION_NAME char(64),"+
+      "MATRIX int,"+
+      "BASE_OUTPUT int default 0,"+
+      "HOSTNAME char(64),"+
+      "PASSWORD char(64),"+
+      "TCP_PORT int,"+
+      "DESCRIPTION char(255),"+
+      "index STATION_IDX (STATION_NAME,MATRIX))"+
+      config->createTablePostfix();
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="alter table INPUTS add column NODE_HOSTNAME char(255) \
-         after DEVICE_NUM";
-    q=new QSqlQuery(sql);
+    sql="alter table INPUTS add column NODE_HOSTNAME char(255) after DEVICE_NUM";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="alter table INPUTS add column NODE_TCP_PORT int \
-         after NODE_HOSTNAME";
-    q=new QSqlQuery(sql);
+    sql="alter table INPUTS add column NODE_TCP_PORT int after NODE_HOSTNAME";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="alter table INPUTS add column NODE_SLOT int \
-         after NODE_TCP_PORT";
-    q=new QSqlQuery(sql);
+    sql="alter table INPUTS add column NODE_SLOT int after NODE_TCP_PORT";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="alter table add index \
-         NODE_IDX(STATION_NAME,MATRIX,NUMBER,NODE_HOSTNAME,NODE_TCP_PORT)";
-    q=new QSqlQuery(sql);
+    sql="alter table add index NODE_IDX(STATION_NAME,MATRIX,NUMBER,NODE_HOSTNAME,NODE_TCP_PORT)";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="alter table OUTPUTS add column NODE_HOSTNAME char(255) \
-         after DEVICE_NUM";
-    q=new QSqlQuery(sql);
+    sql="alter table OUTPUTS add column NODE_HOSTNAME char(255) after DEVICE_NUM";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="alter table OUTPUTS add column NODE_TCP_PORT int \
-         after NODE_HOSTNAME";
-    q=new QSqlQuery(sql);
+    sql="alter table OUTPUTS add column NODE_TCP_PORT int after NODE_HOSTNAME";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="alter table OUTPUTS add column NODE_SLOT int \
-         after NODE_TCP_PORT";
-    q=new QSqlQuery(sql);
+    sql="alter table OUTPUTS add column NODE_SLOT int after NODE_TCP_PORT";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="alter table add index \
-         NODE_IDX(STATION_NAME,MATRIX,NUMBER,NODE_HOSTNAME,NODE_TCP_PORT)";
-    q=new QSqlQuery(sql);
+    sql="alter table add index NODE_IDX(STATION_NAME,MATRIX,NUMBER,NODE_HOSTNAME,NODE_TCP_PORT)";
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<150) {
     sql="alter table MATRICES add column PORT_2 int not null after PORT";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="alter table MATRICES add column PORT_TYPE_2 int default 0 \
-         after PORT_TYPE";
-    q=new QSqlQuery(sql);
+    sql="alter table MATRICES add column PORT_TYPE_2 int default 0 after PORT_TYPE";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="alter table MATRICES add column IP_ADDRESS_2 char(16) \
-         after IP_ADDRESS";
-    q=new QSqlQuery(sql);
+    sql="alter table MATRICES add column IP_ADDRESS_2 char(16) after IP_ADDRESS";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
     sql="alter table MATRICES add column IP_PORT_2 int after IP_PORT";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
 
     sql="alter table MATRICES add column USERNAME_2 char(32) after USERNAME";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
 
     sql="alter table MATRICES add column PASSWORD_2 char(32) after PASSWORD";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<151) {
-    sql="alter table FEEDS add column KEEP_METADATA enum('N','Y') default 'Y' \
-         after ENABLE_AUTOPOST";
-    q=new QSqlQuery(sql);
+    sql="alter table FEEDS add column KEEP_METADATA enum('N','Y') default 'Y' after ENABLE_AUTOPOST";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
     sql="select KEY_NAME from FEEDS";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     while(q->next()) {
       RDCreateFeedLog(q->value(0).toString());
     }
@@ -6571,92 +6084,80 @@ int UpdateDb(int ver)
   if(ver<152) {
     sql="alter table STATIONS add column EDITOR_PATH char(255) default \"\"\
          after STARTUP_CART";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="alter table RDPANEL add column CARD3 int default -1 \
-         after STOP_RML2";
-    q=new QSqlQuery(sql);
+    sql="alter table RDPANEL add column CARD3 int default -1 after STOP_RML2";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="alter table RDPANEL add column PORT3 int default -1 \
-         after CARD3";
-    q=new QSqlQuery(sql);
+    sql="alter table RDPANEL add column PORT3 int default -1 after CARD3";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="alter table RDPANEL add column START_RML3 char(255) \
-         after PORT3";
-    q=new QSqlQuery(sql);
+    sql="alter table RDPANEL add column START_RML3 char(255) after PORT3";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="alter table RDPANEL add column STOP_RML3 char(255) \
-         after START_RML3";
-    q=new QSqlQuery(sql);
+    sql="alter table RDPANEL add column STOP_RML3 char(255) after START_RML3";
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<153) {
-    sql="alter table STATIONS add column FILTER_MODE int default 0 \
-         after EDITOR_PATH";
-    q=new QSqlQuery(sql);
+    sql="alter table STATIONS add column FILTER_MODE int default 0 after EDITOR_PATH";
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<154) {
-    sql=QString().sprintf("alter table CUTS add column\
-                           SEGUE_GAIN int default %d after SEGUE_END_POINT",RD_FADE_DEPTH);
-    q=new QSqlQuery(sql);
+    sql=QString().sprintf("alter table CUTS add column SEGUE_GAIN int default %d after SEGUE_END_POINT",RD_FADE_DEPTH);
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<155) {
-    sql="alter table RDLIBRARY add column ENABLE_EDITOR enum('N','Y') \
-         default 'N' after CDDB_SERVER";
-    q=new QSqlQuery(sql);
+    sql="alter table RDLIBRARY add column ENABLE_EDITOR enum('N','Y') default 'N' after CDDB_SERVER";
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<156) {
     sql="alter table MATRICES add column LAYER int default 86 after TYPE";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<157) {
-    sql="alter table STATIONS \
-            add column BROADCAST_SECURITY int unsigned \
-            default 0 after BACKUP_LIFE";
-    q=new QSqlQuery(sql);
+    sql="alter table STATIONS add column BROADCAST_SECURITY int unsigned default 0 after BACKUP_LIFE";
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<158) {  // Convert OVERLAP to SEGUE
     sql="select NAME from LOGS;";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     while(q->next()) {
       tablename=q->value(0).toString();
       tablename.replace(" ","_");
-      sql=QString().sprintf("update %s_LOG set TRANS_TYPE=1,SEGUE_GAIN=0 \
-                             where TRANS_TYPE=3",(const char *)tablename);
-      q1=new QSqlQuery(sql);
+      sql=QString("update `")+tablename+"_LOG` set TRANS_TYPE=1,SEGUE_GAIN=0 where TRANS_TYPE=3";
+      q1=new RDSqlQuery(sql,false);
       delete q1;
     }
     delete q;
   }
 
   if(ver<159) {
-    sql="alter table RDAIRPLAY add column SKIN_PATH char(255) \
-         default \"";
+    sql="alter table RDAIRPLAY add column SKIN_PATH char(255) default \"";
     sql+=RD_DEFAULT_RDAIRPLAY_SKIN;
     sql+="\" after EXIT_PASSWORD";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="alter table RDPANEL add column SKIN_PATH char(255) \
-         default \"";
+    sql="alter table RDPANEL add column SKIN_PATH char(255) default \"";
     sql+=RD_DEFAULT_RDPANEL_SKIN;
     sql+="\" after DEFAULT_SERVICE";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
@@ -6664,13 +6165,14 @@ int UpdateDb(int ver)
     //
     // Create ENCODERS Table
     //
-    sql="create table if not exists ENCODERS (\
-         ID int not null auto_increment primary key,\
-         NAME char(32) not null,\
-         STATION_NAME char(64),\
-         COMMAND_LINE char(255),\
-         DEFAULT_EXTENSION char(16),\
-         index NAME_IDX(NAME,STATION_NAME))";
+    sql=QString("create table if not exists ENCODERS (")+
+      "ID int not null auto_increment primary key,"+
+      "NAME char(32) not null,"+
+      "STATION_NAME char(64),"+
+      "COMMAND_LINE char(255),"+
+      "DEFAULT_EXTENSION char(16),"+
+      "index NAME_IDX(NAME,STATION_NAME))"+
+      config->createTablePostfix();
     if(!RunQuery(sql)) {
       return UPDATEDB_QUERY_FAILED;
     }
@@ -6687,11 +6189,12 @@ int UpdateDb(int ver)
     //
     // Create ENCODER_BITRATES Table
     //
-    sql="create table if not exists ENCODER_BITRATES (\
-         ID int not null auto_increment primary key,\
-         ENCODER_ID int not null,\
-         BITRATES int not null,\
-         index ENCODER_ID_IDX(ENCODER_ID))";
+    sql=QString("create table if not exists ENCODER_BITRATES (")+
+      "ID int not null auto_increment primary key,"+
+      "ENCODER_ID int not null,"+
+      "BITRATES int not null,"+
+      "index ENCODER_ID_IDX(ENCODER_ID))"+
+      config->createTablePostfix();
     if(!RunQuery(sql)) {
       return UPDATEDB_QUERY_FAILED;
     }
@@ -6699,11 +6202,12 @@ int UpdateDb(int ver)
     //
     // Create ENCODER_CHANNELS Table
     //
-    sql="create table if not exists ENCODER_CHANNELS (\
-         ID int not null auto_increment primary key,\
-         ENCODER_ID int not null,\
-         CHANNELS int not null,\
-         index ENCODER_ID_IDX(ENCODER_ID))";
+    sql=QString("create table if not exists ENCODER_CHANNELS (")+
+      "ID int not null auto_increment primary key,"+
+      "ENCODER_ID int not null,"+
+      "CHANNELS int not null,"+
+      "index ENCODER_ID_IDX(ENCODER_ID))"+
+      config->createTablePostfix();
     if(!RunQuery(sql)) {
       return UPDATEDB_QUERY_FAILED;
     }
@@ -6711,19 +6215,19 @@ int UpdateDb(int ver)
     //
     // Create ENCODER_SAMPLERATES Table
     //
-    sql="create table if not exists ENCODER_SAMPLERATES (\
-         ID int not null auto_increment primary key,	  \
-         ENCODER_ID int not null,				  \
-         SAMPLERATES int not null,\
-         index ENCODER_ID_IDX(ENCODER_ID))";
+    sql=QString("create table if not exists ENCODER_SAMPLERATES (")+
+      "ID int not null auto_increment primary key,"+
+      "ENCODER_ID int not null,"+
+      "SAMPLERATES int not null,"+
+      "index ENCODER_ID_IDX(ENCODER_ID))"+
+      config->createTablePostfix();
     if(!RunQuery(sql)) {
       return UPDATEDB_QUERY_FAILED;
     }
   }
 
   if(ver<161) {
-    sql="alter table FEEDS add column UPLOAD_EXTENSION char(16) default \"mp3\"\
-         after UPLOAD_QUALITY";
+    sql="alter table FEEDS add column UPLOAD_EXTENSION char(16) default \"mp3\" after UPLOAD_QUALITY";
     if(!RunQuery(sql)) {
       return UPDATEDB_QUERY_FAILED;
     }
@@ -6731,32 +6235,30 @@ int UpdateDb(int ver)
 
   if(ver<162) {
     sql="alter table GPIS alter column MACRO_CART set default 0";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="create table if not exists GPOS (\
-        ID int auto_increment not null primary key,\
-        STATION_NAME char(64) not null,\
-        MATRIX int not null,\
-        NUMBER int not null,\
-        MACRO_CART int default 0,\
-        index MATRIX_IDX (STATION_NAME,MATRIX,NUMBER))";
-    q=new QSqlQuery(sql);
+    sql=QString("create table if not exists GPOS (")+
+      "ID int auto_increment not null primary key,"+
+      "STATION_NAME char(64) not null,"+
+      "MATRIX int not null,"+
+      "NUMBER int not null,"+
+      "MACRO_CART int default 0,"+
+      "index MATRIX_IDX (STATION_NAME,MATRIX,NUMBER))"+
+      config->createTablePostfix();
+    q=new RDSqlQuery(sql,false);
     delete q;
 
     sql="select STATION_NAME,MATRIX,GPOS from MATRICES";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     while(q->next()) {
       for(int i=0;i<q->value(2).toInt();i++) {
-	sql=QString().sprintf("insert into GPOS set \
-                               STATION_NAME=\"%s\",\
-                               MATRIX=%d,\
-                               NUMBER=%d,\
-                               MACRO_CART=0",
-			      (const char *)q->value(0).toString(),
-			      q->value(1).toInt(),
-			      i+1);
-	q1=new QSqlQuery(sql);
+	sql=QString("insert into GPOS set ")+
+	  "STATION_NAME=\""+RDEscapeString(q->value(0).toString())+"\","+
+	  QString().sprintf("MATRIX=%d,",q->value(1).toInt())+
+	  QString().sprintf("NUMBER=%d,",i+1)+
+	  "MACRO_CART=0";
+	q1=new RDSqlQuery(sql,false);
 	delete q1;
       }
     }
@@ -6764,320 +6266,293 @@ int UpdateDb(int ver)
   }
 
   if(ver<163) {
-    sql="alter table RECORDINGS add column EVENTDATE_OFFSET int default 0 \
-         after ENDDATE_OFFSET";
-    q=new QSqlQuery(sql);
+    sql="alter table RECORDINGS add column EVENTDATE_OFFSET int default 0 after ENDDATE_OFFSET";
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<164) {
-    sql="create table if not exists NOWNEXT_PLUGINS (\
-         ID int auto_increment not null primary key,    \
-         STATION_NAME char(64) not null,		     \
-         LOG_MACHINE int unsigned not null default 0,   \
-         PLUGIN_PATH char(255),\
-         PLUGIN_ARG char(255),\
-         index STATION_IDX (STATION_NAME,LOG_MACHINE))";
-    q=new QSqlQuery(sql);
+    sql=QString("create table if not exists NOWNEXT_PLUGINS (")+
+      "ID int auto_increment not null primary key,    "+
+      "STATION_NAME char(64) not null,		     "+
+      "LOG_MACHINE int unsigned not null default 0,   "+
+      "PLUGIN_PATH char(255),"+
+      "PLUGIN_ARG char(255),"+
+      "index STATION_IDX (STATION_NAME,LOG_MACHINE))"+
+      config->createTablePostfix();
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<165) {
-    sql="create table if not exists DROPBOX_PATHS (\
-        ID int auto_increment not null primary key,\
-        DROPBOX_ID int not null,\
-        FILE_PATH char(255) not null,\
-        FILE_DATETIME datetime,\
-        index FILE_PATH_IDX (DROPBOX_ID,FILE_PATH))";
-    q=new QSqlQuery(sql);
+    sql=QString("create table if not exists DROPBOX_PATHS (")+
+      "ID int auto_increment not null primary key,"+
+      "DROPBOX_ID int not null,"+
+      "FILE_PATH char(255) not null,"+
+      "FILE_DATETIME datetime,"+
+      "index FILE_PATH_IDX (DROPBOX_ID,FILE_PATH))"+
+      config->createTablePostfix();
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="alter table DROPBOXES add DELETE_SOURCE enum('N','Y') default 'Y' \
-         after DELETE_CUTS";
-    q=new QSqlQuery(sql);
+    sql="alter table DROPBOXES add DELETE_SOURCE enum('N','Y') default 'Y' after DELETE_CUTS";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="alter table DROPBOXES add column STARTDATE_OFFSET int default 0 \
-         after METADATA_PATTERN";
-    q=new QSqlQuery(sql);
+    sql="alter table DROPBOXES add column STARTDATE_OFFSET int default 0 after METADATA_PATTERN";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="alter table DROPBOXES add column ENDDATE_OFFSET int default 0 \
-         after STARTDATE_OFFSET";
-    q=new QSqlQuery(sql);
+    sql="alter table DROPBOXES add column ENDDATE_OFFSET int default 0 after STARTDATE_OFFSET";
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<166) {
-    sql="alter table GROUPS add column CUT_SHELFLIFE int default -1 \
-         after DEFAULT_HIGH_CART";
-    q=new QSqlQuery(sql);
+    sql="alter table GROUPS add column CUT_SHELFLIFE int default -1 after DEFAULT_HIGH_CART";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="alter table GROUPS add column DEFAULT_TITLE char(255) \
-         default \"Imported from %f.%e\" after CUT_SHELFLIFE";
-    q=new QSqlQuery(sql);
+    sql="alter table GROUPS add column DEFAULT_TITLE char(255) default \"Imported from %f.%e\" after CUT_SHELFLIFE";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="alter table STATIONS add column SYSTEM_MAINT enum('N','Y') \
-         default 'Y' after FILTER_MODE";
-    q=new QSqlQuery(sql);
+    sql="alter table STATIONS add column SYSTEM_MAINT enum('N','Y') default 'Y' after FILTER_MODE";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="alter table SERVICES add column ELR_SHELFLIFE int default -1 \
-         after AUTO_REFRESH";
-    q=new QSqlQuery(sql);
+    sql="alter table SERVICES add column ELR_SHELFLIFE int default -1 after AUTO_REFRESH";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
     sql="alter table EVENTS add column REMARKS char(255) after NESTED_EVENT";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
 
     sql="alter table CLOCKS add column REMARKS char(255) after COLOR";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<167) {
-    sql="alter table RDAIRPLAY add column LOG0_NOW_CART int unsigned default 0 \
-         after LOG0_LOG_LINE";
-    q=new QSqlQuery(sql);
+    sql="alter table RDAIRPLAY add column LOG0_NOW_CART int unsigned default 0 after LOG0_LOG_LINE";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="alter table RDAIRPLAY add column LOG0_NEXT_CART int unsigned default 0\
-         after LOG0_NOW_CART";
-    q=new QSqlQuery(sql);
+    sql="alter table RDAIRPLAY add column LOG0_NEXT_CART int unsigned default 0 after LOG0_NOW_CART";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="alter table RDAIRPLAY add column LOG1_NOW_CART int unsigned default 0 \
-         after LOG1_LOG_LINE";
-    q=new QSqlQuery(sql);
+    sql="alter table RDAIRPLAY add column LOG1_NOW_CART int unsigned default 0 after LOG1_LOG_LINE";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="alter table RDAIRPLAY add column LOG1_NEXT_CART int unsigned default 0\
-         after LOG1_NOW_CART";
-    q=new QSqlQuery(sql);
+    sql="alter table RDAIRPLAY add column LOG1_NEXT_CART int unsigned default 0 after LOG1_NOW_CART";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="alter table RDAIRPLAY add column LOG2_NOW_CART int unsigned default 0 \
-         after LOG2_LOG_LINE";
-    q=new QSqlQuery(sql);
+    sql="alter table RDAIRPLAY add column LOG2_NOW_CART int unsigned default 0 after LOG2_LOG_LINE";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="alter table RDAIRPLAY add column LOG2_NEXT_CART int unsigned default 0\
-         after LOG2_NOW_CART";
-    q=new QSqlQuery(sql);
+    sql="alter table RDAIRPLAY add column LOG2_NEXT_CART int unsigned default 0 after LOG2_NOW_CART";
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<168) {
-    sql="alter table GPIS add column OFF_MACRO_CART int default 0 \
-         after MACRO_CART";
-    q=new QSqlQuery(sql);
+    sql="alter table GPIS add column OFF_MACRO_CART int default 0 after MACRO_CART";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="alter table GPOS add column OFF_MACRO_CART int default 0 \
-         after MACRO_CART";
-    q=new QSqlQuery(sql);
+    sql="alter table GPOS add column OFF_MACRO_CART int default 0 after MACRO_CART";
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<169) {
-    sql="alter table SERVICES add column DEFAULT_LOG_SHELFLIFE int default -1 \
-         after AUTO_REFRESH";
-    q=new QSqlQuery(sql);
+    sql="alter table SERVICES add column DEFAULT_LOG_SHELFLIFE int default -1 after AUTO_REFRESH";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
     sql="alter table LOGS add column PURGE_DATE date after END_DATE";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<170) {
     sql="alter table USERS modify column LOGIN_NAME char(255) not null";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
 
     sql="alter table USERS modify column FULL_NAME char(255)";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
 
     sql="alter table FEED_PERMS modify column USER_NAME char(255)";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
 
     sql="alter table LOGS modify column ORIGIN_USER char(255) not null";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
 
     sql="select NAME from LOGS";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     while(q->next()) {
       tablename=q->value(0).toString();
       tablename.replace(" ","_");
       sql=QString().
 	sprintf("alter table %s_LOG modify column ORIGIN_USER char(255)",
 		(const char *)tablename);
-      q1=new QSqlQuery(sql);
+      q1=new RDSqlQuery(sql,false);
       delete q1;
     }
     delete q;
 
     sql="select NAME from EVENTS";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     while(q->next()) {
       tablename=q->value(0).toString();
       tablename.replace(" ","_");
       sql=QString().
 	sprintf("alter table %s_PRE modify column ORIGIN_USER char(255)",
 		(const char *)tablename);
-      q1=new QSqlQuery(sql);
+      q1=new RDSqlQuery(sql,false);
       delete q1;
       sql=QString().
 	sprintf("alter table %s_POST modify column ORIGIN_USER char(255)",
 		(const char *)tablename);
-      q1=new QSqlQuery(sql);
+      q1=new RDSqlQuery(sql,false);
       delete q1;
     }
     delete q;
 
     sql="alter table STATIONS modify column USER_NAME char(255)";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
 
     sql="alter table STATIONS modify column DEFAULT_NAME char(255)";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
 
     sql="alter table USER_PERMS modify column USER_NAME char(255)";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
 
     sql="alter table WEB_CONNECTIONS modify column LOGIN_NAME char(255)";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<171) {
-    sql="alter table FEEDS add column CAST_ORDER enum('N','Y') default 'N' \
-         after ITEM_XML";
-    q=new QSqlQuery(sql);
+    sql="alter table FEEDS add column CAST_ORDER enum('N','Y') default 'N' after ITEM_XML";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="alter table PODCASTS add column EFFECTIVE_DATETIME datetime \
-         after ORIGIN_DATETIME";
-    q=new QSqlQuery(sql);
+    sql="alter table PODCASTS add column EFFECTIVE_DATETIME datetime after ORIGIN_DATETIME";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
     sql="select ID,ORIGIN_DATETIME from PODCASTS";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     while(q->next()) {
-      sql=QString().sprintf("update PODCASTS set EFFECTIVE_DATETIME=\"%s\" \
-                             where ID=%u",
-			    (const char *)q->value(1).toDateTime().
-			    toString("yyyy-MM-dd hh:mm:ss"),
-			    q->value(0).toUInt());
-      q1=new QSqlQuery(sql);
+      sql=QString("update PODCASTS set ")+
+	"EFFECTIVE_DATETIME=\""+q->value(1).toDateTime().
+	toString("yyyy-MM-dd hh:mm:ss")+"\" where "+
+        QString().sprintf("ID=%u",q->value(0).toUInt());
+      q1=new RDSqlQuery(sql,false);
       delete q1;
     }
     delete q;
   }
 
   if(ver<172) {
-    sql="alter table FEEDS add column REDIRECT_PATH char(255) \
-         after NORMALIZE_LEVEL";
-    q=new QSqlQuery(sql);
+    sql="alter table FEEDS add column REDIRECT_PATH char(255) after NORMALIZE_LEVEL";
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<173) {
     sql="alter table FEEDS add column BASE_PREAMBLE char(255) after BASE_URL";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<174) {
-    sql="alter table MATRICES add column START_CART int unsigned \
-         after PASSWORD_2";
-    q=new QSqlQuery(sql);
+    sql="alter table MATRICES add column START_CART int unsigned after PASSWORD_2";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="alter table MATRICES add column STOP_CART int unsigned \
-         after START_CART";
-    q=new QSqlQuery(sql);
+    sql="alter table MATRICES add column STOP_CART int unsigned after START_CART";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="alter table MATRICES add column START_CART_2 int unsigned \
-         after STOP_CART";
-    q=new QSqlQuery(sql);
+    sql="alter table MATRICES add column START_CART_2 int unsigned after STOP_CART";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="alter table MATRICES add column STOP_CART_2 int unsigned \
-         after START_CART_2";
-    q=new QSqlQuery(sql);
+    sql="alter table MATRICES add column STOP_CART_2 int unsigned after START_CART_2";
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<175) {
-    sql="create table if not exists SYSTEM (\
-         ID int auto_increment not null primary key,		\
-         DUP_CART_TITLES enum('N','Y') not null default 'Y')";
-    q=new QSqlQuery(sql);
+    sql=QString("create table if not exists SYSTEM (")+
+      "ID int auto_increment not null primary key,"+
+      "DUP_CART_TITLES enum('N','Y') not null default 'Y')"+
+      config->createTablePostfix();
+    q=new RDSqlQuery(sql,false);
     delete q;
     sql="insert into SYSTEM set DUP_CART_TITLES=\"Y\"";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<176) {
-    sql="alter table RDAIRPLAY add column \
-         SHOW_COUNTERS enum('N','Y') default 'N' after SKIN_PATH";
-    q=new QSqlQuery(sql);
+    sql="alter table RDAIRPLAY add column SHOW_COUNTERS enum('N','Y') default 'N' after SKIN_PATH";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="alter table RDAIRPLAY add column AUDITION_PREROLL int default 10000 \
-         after SHOW_COUNTERS";
-    q=new QSqlQuery(sql);
+    sql="alter table RDAIRPLAY add column AUDITION_PREROLL int default 10000 after SHOW_COUNTERS";
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<177) {
-    sql="alter table RDPANEL add column SKIN_PATH char(255) \
-         default \"";
-    sql+=RD_DEFAULT_RDPANEL_SKIN;
-    sql+="\" after DEFAULT_SERVICE";
-    q=new QSqlQuery(sql);
+    sql=QString("alter table RDPANEL ")+
+      "add column SKIN_PATH char(255) default \""+RD_DEFAULT_RDPANEL_SKIN+"\" "+
+      "after DEFAULT_SERVICE";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
     sql="alter table PANELS drop column SKIN_PATH";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<178) {
     sql="alter table PODCASTS modify column STATUS int unsigned default 1";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql=QString().sprintf("alter table SYSTEM add column \
-                           MAX_POST_LENGTH int unsigned default %u \
-                           after DUP_CART_TITLES",
-			  RD_DEFAULT_MAX_POST_LENGTH);
-    q=new QSqlQuery(sql);
+    sql=QString("alter table SYSTEM ")+
+      "add column MAX_POST_LENGTH "+
+      QString().sprintf("int unsigned default %u after DUP_CART_TITLES",
+			RD_DEFAULT_MAX_POST_LENGTH);
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<179) {
-    sql="alter table FEEDS add column MEDIA_LINK_MODE int default 0 \
-         after REDIRECT_PATH";
-    q=new QSqlQuery(sql);
+    sql="alter table FEEDS add column MEDIA_LINK_MODE int default 0 after REDIRECT_PATH";
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<180) {
-    sql="alter table RDLIBRARY add column SRC_CONVERTER int default 1 \
-         after ENABLE_EDITOR";
-    q=new QSqlQuery(sql);
+    sql="alter table RDLIBRARY add column SRC_CONVERTER int default 1 after ENABLE_EDITOR";
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
@@ -7086,7 +6561,7 @@ int UpdateDb(int ver)
     /*
     sql=QString().sprintf("select NUMBER from CART where TYPE=%u",
 			  RDCart::Audio);
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     while(q->next()) {
       cart=new RDCart(q->value(0).toUInt());
       cart->updateLength();
@@ -7098,89 +6573,86 @@ int UpdateDb(int ver)
 
   if(ver<182) {
     sql="alter table CART add column NOTES text after MACROS";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<183) {
-    sql="create table if not exists IMPORT_TEMPLATES (\
-         NAME char(64) not null primary key,\
-         CART_OFFSET int,\
-         CART_LENGTH int,\
-         TITLE_OFFSET int,\
-         TITLE_LENGTH int,\
-         HOURS_OFFSET int,\
-         HOURS_LENGTH int,\
-         MINUTES_OFFSET int,\
-         MINUTES_LENGTH int,\
-         SECONDS_OFFSET int,\
-         SECONDS_LENGTH int,\
-         LEN_HOURS_OFFSET int,\
-         LEN_HOURS_LENGTH int,\
-         LEN_MINUTES_OFFSET int,\
-         LEN_MINUTES_LENGTH int,\
-         LEN_SECONDS_OFFSET int,\
-         LEN_SECONDS_LENGTH int,\
-         LENGTH_OFFSET int,\
-         LENGTH_LENGTH int,\
-         DATA_OFFSET int,\
-         DATA_LENGTH int,\
-         EVENT_ID_OFFSET int,\
-         EVENT_ID_LENGTH int,\
-         ANNC_TYPE_OFFSET int,\
-         ANNC_TYPE_LENGTH int)";
-    q=new QSqlQuery(sql);
+    sql=QString("create table if not exists IMPORT_TEMPLATES (")+
+      "NAME char(64) not null primary key,"+
+      "CART_OFFSET int,"+
+      "CART_LENGTH int,"+
+      "TITLE_OFFSET int,"+
+      "TITLE_LENGTH int,"+
+      "HOURS_OFFSET int,"+
+      "HOURS_LENGTH int,"+
+      "MINUTES_OFFSET int,"+
+      "MINUTES_LENGTH int,"+
+      "SECONDS_OFFSET int,"+
+      "SECONDS_LENGTH int,"+
+      "LEN_HOURS_OFFSET int,"+
+      "LEN_HOURS_LENGTH int,"+
+      "LEN_MINUTES_OFFSET int,"+
+      "LEN_MINUTES_LENGTH int,"+
+      "LEN_SECONDS_OFFSET int,"+
+      "LEN_SECONDS_LENGTH int,"+
+      "LENGTH_OFFSET int,"+
+      "LENGTH_LENGTH int,"+
+      "DATA_OFFSET int,"+
+      "DATA_LENGTH int,"+
+      "EVENT_ID_OFFSET int,"+
+      "EVENT_ID_LENGTH int,"+
+      "ANNC_TYPE_OFFSET int,"+
+      "ANNC_TYPE_LENGTH int)"+
+      config->createTablePostfix();
+    q=new RDSqlQuery(sql,false);
     delete q;
     UpdateImportFormats();
 
-    sql="alter table SERVICES add column TFC_IMPORT_TEMPLATE char(64)\
-         default \"Rivendell Standard Import\" after TFC_WIN_PATH";
-    q=new QSqlQuery(sql);
+    sql="alter table SERVICES add column TFC_IMPORT_TEMPLATE char(64) default \"Rivendell Standard Import\" after TFC_WIN_PATH";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="alter table SERVICES add column MUS_IMPORT_TEMPLATE char(64)\
-         default \"Rivendell Standard Import\" after MUS_WIN_PATH";
-    q=new QSqlQuery(sql);
+    sql="alter table SERVICES add column MUS_IMPORT_TEMPLATE char(64) default \"Rivendell Standard Import\" after MUS_WIN_PATH";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
     sql="update SERVICES set TFC_IMPORT_TEMPLATE=\"\"";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
 
     sql="update SERVICES set MUS_IMPORT_TEMPLATE=\"\"";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<184) {
-    UpdateImportFormats();
+    //
+    // Removed as redundant with update 183 [call to UpdateImportFormats()].
+    //
   }  
 
   if(ver<185) {
-    sql="alter table SERVICES add column TFC_PREIMPORT_CMD text \
-         after TFC_PATH";
-    q=new QSqlQuery(sql);
+    sql="alter table SERVICES add column TFC_PREIMPORT_CMD text after TFC_PATH";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="alter table SERVICES add column TFC_WIN_PREIMPORT_CMD text \
-         after TFC_WIN_PATH";
-    q=new QSqlQuery(sql);
+    sql="alter table SERVICES add column TFC_WIN_PREIMPORT_CMD text after TFC_WIN_PATH";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="alter table SERVICES add column MUS_PREIMPORT_CMD text \
-         after MUS_PATH";
-    q=new QSqlQuery(sql);
+    sql="alter table SERVICES add column MUS_PREIMPORT_CMD text after MUS_PATH";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="alter table SERVICES add column MUS_WIN_PREIMPORT_CMD text \
-         after MUS_WIN_PATH";
-    q=new QSqlQuery(sql);
+    sql="alter table SERVICES add column MUS_WIN_PREIMPORT_CMD text after MUS_WIN_PATH";
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<186) {
     sql="select NAME from LOGS";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     while(q->next()) {
       tablename=q->value(0).toString();
       tablename.replace(" ","_");
@@ -7189,7 +6661,7 @@ int UpdateDb(int ver)
     delete q;
     
     sql="select NAME from EVENTS";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     while(q->next()) {
       tablename=q->value(0).toString();
       tablename.replace(" ","_");
@@ -7200,7 +6672,7 @@ int UpdateDb(int ver)
     }
 
     sql="select NAME from CLOCKS";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     while(q->next()) {
       tablename=q->value(0).toString();
       tablename.replace(" ","_");
@@ -7211,17 +6683,17 @@ int UpdateDb(int ver)
 
   if(ver<187) {
     sql="alter table CUTS add column ISCI char(32) after ISRC";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
 
     sql="select NAME from SERVICES";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     while(q->next()) {
       tablename=q->value(0).toString();
       tablename.replace(" ","_");
-      sql=QString().sprintf("alter table `%s_SRT` add column ISCI char(32)\
-                             after ISRC",(const char *)tablename);
-      q1=new QSqlQuery(sql);
+      sql=QString("alter table `")+tablename+"_SRT` "+
+	"add column ISCI char(32) after ISRC";
+      q1=new RDSqlQuery(sql,false);
       delete q1;
     }
     delete q;
@@ -7231,174 +6703,170 @@ int UpdateDb(int ver)
   }
 
   if(ver<189) {
-    sql="alter table CUTS add column UPLOAD_DATETIME datetime \
-         after LAST_PLAY_DATETIME";
-    q=new QSqlQuery(sql);
+    sql="alter table CUTS add column UPLOAD_DATETIME datetime after LAST_PLAY_DATETIME";
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<190) {
-    sql="alter table STATIONS add column HAVE_TWOLAME enum('N','Y') default 'N'\
-         after HAVE_FLAC";
-    q=new QSqlQuery(sql);
+    sql="alter table STATIONS add column HAVE_TWOLAME enum('N','Y') default 'N' after HAVE_FLAC";
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<191) {
-    sql="alter table SERVICES add column PROGRAM_CODE char(255) \
-         after NAME_TEMPLATE";
-    q=new QSqlQuery(sql);
+    sql="alter table SERVICES add column PROGRAM_CODE char(255) after NAME_TEMPLATE";
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<192) {
     sql="alter table RECORDINGS add column EXIT_TEXT text after EXIT_CODE";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<193) {
-    sql="alter table STATIONS alter column IPV4_ADDRESS \
-         set default \"127.0.0.2\"";
-    q=new QSqlQuery(sql);
+    sql="alter table STATIONS alter column IPV4_ADDRESS set default \"127.0.0.2\"";
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<194) {
-    sql=QString().sprintf("alter table SYSTEM add column \
-                           SAMPLE_RATE int unsigned default %d after ID",
-			  RD_DEFAULT_SAMPLE_RATE);;
-    q=new QSqlQuery(sql);
+    sql=QString().sprintf("alter table SYSTEM ")+
+      "add column SAMPLE_RATE "+
+      QString().sprintf("int unsigned default %d after ID",
+			RD_DEFAULT_SAMPLE_RATE);
+    q=new RDSqlQuery(sql,false);
     delete q;
     sql="select DEFAULT_SAMPRATE from RDLIBRARY";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     if(q->first()) {
       sql=QString().sprintf("update SYSTEM set SAMPLE_RATE=%u",
 			    q->value(0).toUInt());
-      q1=new QSqlQuery(sql);
+      q1=new RDSqlQuery(sql,false);
       delete q1;
     }
     delete q;
   }
   if(ver<195) {
-    sql="alter table RECORDINGS add column ENABLE_METADATA enum('N','Y') \
-         default 'N' after URL_PASSWORD";
-    q=new QSqlQuery(sql);
+    sql="alter table RECORDINGS add column ENABLE_METADATA enum('N','Y') default 'N' after URL_PASSWORD";
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<196) {
-  sql="alter table DROPBOXES add column IMPORT_CREATE_DATES enum('N','Y') default 'N' \
-       after LOG_PATH";
-  q=new QSqlQuery(sql);
+  sql="alter table DROPBOXES add column IMPORT_CREATE_DATES enum('N','Y') default 'N' after LOG_PATH";
+  q=new RDSqlQuery(sql,false);
   delete q;
-  sql="alter table DROPBOXES add column CREATE_STARTDATE_OFFSET int default 0 \
-       after IMPORT_CREATE_DATES";
-  q=new QSqlQuery(sql);
+  sql="alter table DROPBOXES add column CREATE_STARTDATE_OFFSET int default 0 after IMPORT_CREATE_DATES";
+  q=new RDSqlQuery(sql,false);
   delete q;
-  sql="alter table DROPBOXES add column CREATE_ENDDATE_OFFSET int default 0 \
-       after CREATE_STARTDATE_OFFSET";
-  q=new QSqlQuery(sql);
+  sql="alter table DROPBOXES add column CREATE_ENDDATE_OFFSET int default 0 after CREATE_STARTDATE_OFFSET";
+  q=new RDSqlQuery(sql,false);
   delete q;
   }
 
   if(ver<197) {
-    sql=QString().sprintf("create table if not exists REPLICATORS (\
-                           NAME char(32) not null primary key,\
-                           DESCRIPTION char(64),\
-                           TYPE_ID int unsigned not null,\
-                           STATION_NAME char(64),\
-                           FORMAT int unsigned default 0,\
-                           CHANNELS int unsigned default 2,\
-                           SAMPRATE int unsigned default %u,\
-                           BITRATE int unsigned default 0,\
-                           QUALITY int unsigned default 0,\
-                           URL char(255),\
-                           URL_USERNAME char(64),\
-                           URL_PASSWORD char(64),\
-                           ENABLE_METADATA enum('N','Y') default 'N',\
-                           NORMALIZATION_LEVEL int unsigned default 0,\
-                           index TYPE_ID_IDX (TYPE_ID))",
-			  RD_DEFAULT_SAMPLE_RATE);
-    q=new QSqlQuery(sql);
+    sql=QString("create table if not exists REPLICATORS (")+
+      "NAME char(32) not null primary key,"+
+      "DESCRIPTION char(64),"+
+      "TYPE_ID int unsigned not null,"+
+      "STATION_NAME char(64),"+
+      "FORMAT int unsigned default 0,"+
+      "CHANNELS int unsigned default 2,"+
+      QString().sprintf("SAMPRATE int unsigned default %u,",
+			RD_DEFAULT_SAMPLE_RATE)+
+      "BITRATE int unsigned default 0,"+
+      "QUALITY int unsigned default 0,"+
+      "URL char(255),"+
+      "URL_USERNAME char(64),"+
+      "URL_PASSWORD char(64),"+
+      "ENABLE_METADATA enum('N','Y') default 'N',"+
+      "NORMALIZATION_LEVEL int unsigned default 0,"+
+      "index TYPE_ID_IDX (TYPE_ID))"+
+      config->createTablePostfix();
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="create table if not exists REPLICATOR_MAP (\
-        ID int unsigned not null auto_increment primary key,\
-        REPLICATOR_NAME char(32) not null,\
-        GROUP_NAME char(10) not null,\
-        index REPLICATOR_NAME_IDX(REPLICATOR_NAME),\
-        index GROUP_NAME_IDX(GROUP_NAME))";
-    q=new QSqlQuery(sql);
+    sql=QString("create table if not exists REPLICATOR_MAP (")+
+      "ID int unsigned not null auto_increment primary key,"+
+      "REPLICATOR_NAME char(32) not null,"+
+      "GROUP_NAME char(10) not null,"+
+      "index REPLICATOR_NAME_IDX(REPLICATOR_NAME),"+
+      "index GROUP_NAME_IDX(GROUP_NAME))"+
+      config->createTablePostfix();
+    q=new RDSqlQuery(sql,false);
     delete q;
 
     sql="alter table CART add column METADATA_DATETIME datetime after NOTES";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
     sql="update CART set METADATA_DATETIME=now()";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
 
     //
     // Create REPL_CART_STATE Table
     //
-    sql="create table if not exists REPL_CART_STATE (\
-         ID int unsigned not null auto_increment primary key,\
-         REPLICATOR_NAME char(32) not null,\
-         CART_NUMBER int unsigned not null,\
-         ITEM_DATETIME datetime not null,\
-         unique REPLICATOR_NAME_IDX(REPLICATOR_NAME,CART_NUMBER))";
-    q=new QSqlQuery(sql);
+    sql=QString("create table if not exists REPL_CART_STATE (")+
+      "ID int unsigned not null auto_increment primary key,"+
+      "REPLICATOR_NAME char(32) not null,"+
+      "CART_NUMBER int unsigned not null,"+
+      "ITEM_DATETIME datetime not null,"+
+      "unique REPLICATOR_NAME_IDX(REPLICATOR_NAME,CART_NUMBER))"+
+      config->createTablePostfix();
+    q=new RDSqlQuery(sql,false);
     delete q;
 
     //
     // Create REPL_CUT_STATE Table
     //
-    sql="create table if not exists REPL_CUT_STATE (\
-         ID int unsigned not null auto_increment primary key,\
-         REPLICATOR_NAME char(32) not null,\
-         CUT_NAME char(12) not null,\
-         ITEM_DATETIME datetime not null,\
-         index REPLICATOR_NAME_IDX(REPLICATOR_NAME),\
-         index CUT_NAME_IDX(CUT_NAME))";
-    q=new QSqlQuery(sql);
+    sql=QString("create table if not exists REPL_CUT_STATE (")+
+      "ID int unsigned not null auto_increment primary key,"+
+      "REPLICATOR_NAME char(32) not null,"+
+      "CUT_NAME char(12) not null,"+
+      "ITEM_DATETIME datetime not null,"+
+      "index REPLICATOR_NAME_IDX(REPLICATOR_NAME),"+
+      "index CUT_NAME_IDX(CUT_NAME))"+
+      config->createTablePostfix();
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<198) {
-    sql="create table if not exists ISCI_XREFERENCE (\
-         ID int unsigned not null auto_increment primary key,\
-         CART_NUMBER int unsigned not null,\
-         ISCI char(32) not null,\
-         FILENAME char(64) not null,\
-         LATEST_DATE date not null,\
-         TYPE char(1) not null,\
-         ADVERTISER_NAME char(30),\
-         PRODUCT_NAME char(35),\
-         CREATIVE_TITLE char(30),\
-         REGION_NAME char(80),\
-         index CART_NUMBER_IDX(CART_NUMBER))";
-    q=new QSqlQuery(sql);
+    sql=QString("create table if not exists ISCI_XREFERENCE (")+
+      "ID int unsigned not null auto_increment primary key,"+
+      "CART_NUMBER int unsigned not null,"+
+      "ISCI char(32) not null,"+
+      "FILENAME char(64) not null,"+
+      "LATEST_DATE date not null,"+
+      "TYPE char(1) not null,"+
+      "ADVERTISER_NAME char(30),"+
+      "PRODUCT_NAME char(35),"+
+      "CREATIVE_TITLE char(30),"+
+      "REGION_NAME char(80),"+
+      "index CART_NUMBER_IDX(CART_NUMBER))"+
+      config->createTablePostfix();
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="alter table VERSION add column LAST_ISCI_XREFERENCE datetime \
-         default \"1970-01-01 00:00:00\" after LAST_MAINT_DATETIME";
-    q=new QSqlQuery(sql);
+    sql="alter table VERSION add column LAST_ISCI_XREFERENCE datetime default \"1970-01-01 00:00:00\" after LAST_MAINT_DATETIME";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="alter table SYSTEM add column ISCI_XREFERENCE_PATH char(255) \
-         after MAX_POST_LENGTH";
-    q=new QSqlQuery(sql);
+    sql="alter table SYSTEM add column ISCI_XREFERENCE_PATH char(255) after MAX_POST_LENGTH";
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<199) {
     sql="create index TYPE_IDX on ISCI_XREFERENCE (TYPE,LATEST_DATE)";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
 
     sql="create index LATEST_DATE_IDX on ISCI_XREFERENCE (LATEST_DATE)";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
@@ -7406,30 +6874,30 @@ int UpdateDb(int ver)
   }
 
   if(ver<201) {
-    sql="alter table STATIONS add column HTTP_STATION char(64) \
-         default \"localhost\" after IPV4_ADDRESS";
-    q=new QSqlQuery(sql);
+    sql="alter table STATIONS add column HTTP_STATION char(64) default \"localhost\" after IPV4_ADDRESS";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
     sql="alter table STATIONS add column CAE_STATION char(64) \
          default \"localhost\" after HTTP_STATION";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<202) {
-    sql=QString("CREATE TABLE IF NOT EXISTS RDHOTKEYS (\
-          ID int unsigned not null auto_increment primary key,	\
-          STATION_NAME         CHAR(64),   \
-          MODULE_NAME          CHAR(64),   \
-          KEY_ID               int,        \
-          KEY_VALUE            CHAR(64),   \
-          KEY_LABEL            CHAR(64)) ");
-    q=new QSqlQuery(sql);
+    sql=QString("create table if not exists RDHOTKEYS (")+
+      "ID int unsigned not null auto_increment primary key,"+
+      "STATION_NAME char(64),"+
+      "MODULE_NAME char(64),"+
+      "KEY_ID int,"+
+      "KEY_VALUE char(64),"+
+      "KEY_LABEL char(64))"+
+      config->createTablePostfix();
+    q=new RDSqlQuery(sql,false);
     delete q;
 
     sql="select NAME from STATIONS";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     while(q->next()) {
       if (!UpdateRDAirplayHotkeys((const char *)q->value(0).toString())) {
 	return UPDATEDB_QUERY_FAILED;
@@ -7441,137 +6909,109 @@ int UpdateDb(int ver)
   if(ver<203) {
     sql=
       "alter table REPLICATORS drop column NORMALIZATION_LEVEL";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
     sql=
-      "alter table REPLICATORS add column NORMALIZATION_LEVEL int default 0 \
-       after ENABLE_METADATA";
-    q=new QSqlQuery(sql);
+      "alter table REPLICATORS add column NORMALIZATION_LEVEL int default 0 after ENABLE_METADATA";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="alter table REPL_CART_STATE add column REPOST enum('N','Y') \
-         default 'N' after ITEM_DATETIME";
-    q=new QSqlQuery(sql);
+    sql="alter table REPL_CART_STATE add column REPOST enum('N','Y') default 'N' after ITEM_DATETIME";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="alter table REPL_CART_STATE add column POSTED_FILENAME char(255) \
-         after CART_NUMBER";
-    q=new QSqlQuery(sql);
+    sql="alter table REPL_CART_STATE add column POSTED_FILENAME char(255) after CART_NUMBER";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
     sql="drop index REPLICATOR_NAME_IDX on REPL_CART_STATE";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="create unique index REPLICATOR_NAME_IDX on REPL_CART_STATE \
-         (REPLICATOR_NAME,CART_NUMBER,POSTED_FILENAME)";
-    q=new QSqlQuery(sql);
+    sql="create unique index REPLICATOR_NAME_IDX on REPL_CART_STATE (REPLICATOR_NAME,CART_NUMBER,POSTED_FILENAME)";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
     sql="delete from REPL_CART_STATE where POSTED_FILENAME is null";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<204) {
-    sql="insert into IMPORT_TEMPLATES set\
-         NAME=\"The Traffic Light\",\
-         CART_OFFSET=10,\
-         CART_LENGTH=6,\
-         TITLE_OFFSET=25,\
-         TITLE_LENGTH=34,\
-         HOURS_OFFSET=0,\
-         HOURS_LENGTH=2,\
-         MINUTES_OFFSET=3,\
-         MINUTES_LENGTH=2,\
-         SECONDS_OFFSET=6,\
-         SECONDS_LENGTH=2,\
-         LEN_HOURS_OFFSET=60,\
-         LEN_HOURS_LENGTH=2,\
-         LEN_MINUTES_OFFSET=63,\
-         LEN_MINUTES_LENGTH=2,\
-         LEN_SECONDS_OFFSET=66,\
-         LEN_SECONDS_LENGTH=2,\
-         DATA_OFFSET=69,\
-         DATA_LENGTH=32";
-    q=new QSqlQuery(sql);
+    sql=QString("insert into IMPORT_TEMPLATES set ")+
+      "NAME=\"The Traffic Light\","+
+      "CART_OFFSET=10,"+
+      "CART_LENGTH=6,"+
+      "TITLE_OFFSET=25,"+
+      "TITLE_LENGTH=34,"+
+      "HOURS_OFFSET=0,"+
+      "HOURS_LENGTH=2,"+
+      "MINUTES_OFFSET=3,"+
+      "MINUTES_LENGTH=2,"+
+      "SECONDS_OFFSET=6,"+
+      "SECONDS_LENGTH=2,"+
+      "LEN_HOURS_OFFSET=60,"+
+      "LEN_HOURS_LENGTH=2,"+
+      "LEN_MINUTES_OFFSET=63,"+
+      "LEN_MINUTES_LENGTH=2,"+
+      "LEN_SECONDS_OFFSET=66,"+
+      "LEN_SECONDS_LENGTH=2,"+
+      "DATA_OFFSET=69,"+
+      "DATA_LENGTH=32";
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<205) {
-    sql="alter table STATIONS add column START_JACK enum('N','Y') default 'N' \
-         after FILTER_MODE";
-    q=new QSqlQuery(sql);
+    sql="alter table STATIONS add column START_JACK enum('N','Y') default 'N' after FILTER_MODE";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="alter table STATIONS add column JACK_SERVER_NAME char(64) \
-         after START_JACK";
-    q=new QSqlQuery(sql);
+    sql="alter table STATIONS add column JACK_SERVER_NAME char(64) after START_JACK";
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<206) {
-    sql=QString("create table if not exists REPORT_GROUPS (\
-                 ID int unsigned auto_increment not null primary key,\
-                 REPORT_NAME char(64) not null,\
-                 GROUP_NAME char(10),\
-                 index IDX_REPORT_NAME (REPORT_NAME))");
-    q=new QSqlQuery(sql);
+    sql=QString("create table if not exists REPORT_GROUPS (")+
+      "ID int unsigned auto_increment not null primary key,"+
+      "REPORT_NAME char(64) not null,"+
+      "GROUP_NAME char(10),"+
+      "index IDX_REPORT_NAME (REPORT_NAME))"+
+      config->createTablePostfix();
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql="alter table REPORTS add column FILTER_GROUPS enum('N','Y') \
-         default 'N' after FILTER_ONAIR_FLAG";
-    q=new QSqlQuery(sql);
+    sql="alter table REPORTS add column FILTER_GROUPS enum('N','Y') default 'N' after FILTER_ONAIR_FLAG";
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<207) {
-    sql="insert into IMPORT_TEMPLATES set\
-         NAME=\"WideOrbit Traffic\",\
-         CART_OFFSET=10,\
-         CART_LENGTH=6,\
-         TITLE_OFFSET=25,\
-         TITLE_LENGTH=34,\
-         HOURS_OFFSET=0,\
-         HOURS_LENGTH=2,\
-         MINUTES_OFFSET=3,\
-         MINUTES_LENGTH=2,\
-         SECONDS_OFFSET=6,\
-         SECONDS_LENGTH=2,\
-         LEN_HOURS_OFFSET=60,\
-         LEN_HOURS_LENGTH=2,\
-         LEN_MINUTES_OFFSET=63,\
-         LEN_MINUTES_LENGTH=2,\
-         LEN_SECONDS_OFFSET=66,\
-         LEN_SECONDS_LENGTH=2,\
-         EVENT_ID_OFFSET=69,\
-         EVENT_ID_LENGTH=32,\
-         DATA_OFFSET=102,\
-         DATA_LENGTH=32";
-    q=new QSqlQuery(sql);
-    delete q;
+    //
+    // Removed as redundant with update 183 [call to UpdateImportFormats()].
+    //
   }
 
   if(ver<208) {
-    sql="alter table RDAIRPLAY add column HOUR_SELECTOR_ENABLED enum('N','Y') \
-         default 'N' after DEFAULT_SERVICE";
-    q=new QSqlQuery(sql);
+    sql="alter table RDAIRPLAY add column HOUR_SELECTOR_ENABLED enum('N','Y') default 'N' after DEFAULT_SERVICE";
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<209) {
-    sql="alter table STATIONS add column JACK_COMMAND_LINE char(255) \
-         after JACK_SERVER_NAME";
-    q=new QSqlQuery(sql);
+    sql="alter table STATIONS add column JACK_COMMAND_LINE char(255) after JACK_SERVER_NAME";
+    q=new RDSqlQuery(sql,false);
     delete q;
 
-    sql=QString("create table if not exists JACK_CLIENTS (\
-                 ID int unsigned auto_increment not null primary key,\
-                 STATION_NAME char(64) not null,\
-                 DESCRIPTION char(64),\
-                 COMMAND_LINE char(255) not null,\
-                 index IDX_STATION_NAME (STATION_NAME))");
-    q=new QSqlQuery(sql);
+    sql=QString("create table if not exists JACK_CLIENTS (")+
+      "ID int unsigned auto_increment not null primary key,"+
+      "STATION_NAME char(64) not null,"+
+      "DESCRIPTION char(64),"+
+      "COMMAND_LINE char(255) not null,"+
+      "index IDX_STATION_NAME (STATION_NAME))"+
+      config->createTablePostfix();
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
@@ -7590,60 +7030,61 @@ int UpdateDb(int ver)
       "CARD int not null default 0,"+
       "INPUT_PORT int not null default 0,"+
       "OUTPUT_PORT int not null default 0,"+
-      "index STATION_NAME_IDX(STATION_NAME,SLOT_NUMBER))";
-    q=new QSqlQuery(sql);
+      "index STATION_NAME_IDX(STATION_NAME,SLOT_NUMBER))"+
+      config->createTablePostfix();
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<211) {
     sql=QString("alter table SYSTEM add column TEMP_CART_GROUP char(10) ")+
       "default \"TEMP\" after ISCI_XREFERENCE_PATH";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<212) {
     sql=QString("alter table CARTSLOTS add column HOOK_MODE int default 0 ")+
       "after DEFAULT_CART_NUMBER";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
 
     sql=QString("alter table CARTSLOTS add column DEFAULT_HOOK_MODE int ")+
       "default -1 after HOOK_MODE";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<213) {
     sql=QString("alter table STATIONS add column CUE_CARD int default 0 ")+
       "after JACK_COMMAND_LINE";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
 
     sql=QString("alter table STATIONS add column CUE_PORT int default 0 ")+
       "after CUE_CARD";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
 
     sql=QString("alter table STATIONS add column CARTSLOT_COLUMNS int ")+
       "default 1 after CUE_PORT";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
 
     sql=QString("alter table STATIONS add column CARTSLOT_ROWS int ")+
       "default 8 after CARTSLOT_COLUMNS";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
 
     sql=QString("select STATION_NAME,CARD_NUMBER,PORT_NUMBER from DECKS ")+
       "where CHANNEL=0";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     while(q->next()) {
       sql=QString("update STATIONS set ")+
 	QString().sprintf("CUE_CARD=%d,",q->value(1).toInt())+
 	QString().sprintf("CUE_PORT=%d ",q->value(2).toInt())+
 	"where NAME=\""+RDEscapeString(q->value(0).toString())+"\"";
-      q1=new QSqlQuery(sql);
+      q1=new RDSqlQuery(sql,false);
       delete q1;
     }
     delete q;
@@ -7652,24 +7093,24 @@ int UpdateDb(int ver)
   if(ver<214) {
     sql=QString("alter table SERVICES add column AUTOSPOT_GROUP char(10) ")+
       "after TRACK_GROUP";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<215) {
     sql=QString("alter table GROUPS add column DELETE_EMPTY_CARTS ")+
       "enum('N','Y') default 'N' after CUT_SHELFLIFE";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<216) {
     sql="alter table CUTS add index ISCI_IDX(ISCI)";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
 
     sql="alter table CUTS add index ISRC_IDX(ISRC)";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
@@ -7680,15 +7121,16 @@ int UpdateDb(int ver)
       "MATRIX int not null,"+
       "SLOT int not null,"+
       "SOURCE_NUMBER int,"+
-      "index STATION_NAME_IDX(STATION_NAME,MATRIX))";
-    q=new QSqlQuery(sql);
+      "index STATION_NAME_IDX(STATION_NAME,MATRIX))"+
+      config->createTablePostfix();
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<218) {
     sql=QString("alter table LIVEWIRE_GPIO_SLOTS ")+
       "add column IP_ADDRESS char(15) after SLOT";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
@@ -7712,8 +7154,9 @@ int UpdateDb(int ver)
       "STOP_GPI_LINE int not null default -1,"+
       "STOP_GPO_MATRIX int not null default -1,"+
       "STOP_GPO_LINE int not null default -1,"+
-      "index STATION_NAME_IDX(STATION_NAME,INSTANCE))";
-    q=new QSqlQuery(sql);
+      "index STATION_NAME_IDX(STATION_NAME,INSTANCE))"+
+      config->createTablePostfix();
+    q=new RDSqlQuery(sql,false);
     delete q;
 
     for(unsigned i=0;i<10;i++) {
@@ -7721,7 +7164,7 @@ int UpdateDb(int ver)
 	sprintf("select STATION,CARD%u,PORT%u,START_RML%u,STOP_RML%u ",
 		i,i,i,i)+
 	"from RDAIRPLAY";
-      q=new QSqlQuery(sql);
+      q=new RDSqlQuery(sql,false);
       while(q->next()) {
 	sql=QString("insert into RDAIRPLAY_CHANNELS set ")+
 	  "STATION_NAME=\""+RDEscapeString(q->value(0).toString())+"\","+
@@ -7730,7 +7173,7 @@ int UpdateDb(int ver)
 	  QString().sprintf("PORT=%d,",q->value(2).toInt())+
 	  "START_RML=\""+RDEscapeString(q->value(3).toString())+"\","+
 	  "STOP_RML=\""+RDEscapeString(q->value(4).toString())+"\"";
-	q1=new QSqlQuery(sql);
+	q1=new RDSqlQuery(sql,false);
 	delete q1;
       }
       delete q;
@@ -7755,8 +7198,9 @@ int UpdateDb(int ver)
       "STOP_GPI_LINE int not null default -1,"+
       "STOP_GPO_MATRIX int not null default -1,"+
       "STOP_GPO_LINE int not null default -1,"+
-      "index STATION_NAME_IDX(STATION_NAME,INSTANCE))";
-    q=new QSqlQuery(sql);
+      "index STATION_NAME_IDX(STATION_NAME,INSTANCE))"+
+      config->createTablePostfix();
+    q=new RDSqlQuery(sql,false);
     delete q;
 
     for(unsigned i=0;i<10;i++) {
@@ -7765,7 +7209,7 @@ int UpdateDb(int ver)
 	  sprintf("select STATION,CARD%u,PORT%u,START_RML%u,STOP_RML%u ",
 		  i,i,i,i)+
 	  "from RDPANEL";
-	q=new QSqlQuery(sql);
+	q=new RDSqlQuery(sql,false);
 	while(q->next()) {
 	  sql=QString("insert into RDPANEL_CHANNELS set ")+
 	    "STATION_NAME=\""+RDEscapeString(q->value(0).toString())+"\","+
@@ -7774,7 +7218,7 @@ int UpdateDb(int ver)
 	    QString().sprintf("PORT=%d,",q->value(2).toInt())+
 	    "START_RML=\""+RDEscapeString(q->value(3).toString())+"\","+
 	    "STOP_RML=\""+RDEscapeString(q->value(4).toString())+"\"";
-	  q1=new QSqlQuery(sql);
+	  q1=new RDSqlQuery(sql,false);
 	  delete q1;
 	}
 	delete q;
@@ -7785,23 +7229,23 @@ int UpdateDb(int ver)
     // Clean Up RDAirPlay
     //
     sql="alter table RDAIRPLAY drop column INSTANCE";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
     for(unsigned i=0;i<10;i++) {
       sql=QString().sprintf("alter table RDAIRPLAY drop column CARD%u",i);
-      q=new QSqlQuery(sql);
+      q=new RDSqlQuery(sql,false);
       delete q;
 
       sql=QString().sprintf("alter table RDAIRPLAY drop column PORT%u",i);
-      q=new QSqlQuery(sql);
+      q=new RDSqlQuery(sql,false);
       delete q;
 
       sql=QString().sprintf("alter table RDAIRPLAY drop column START_RML%u",i);
-      q=new QSqlQuery(sql);
+      q=new RDSqlQuery(sql,false);
       delete q;
 
       sql=QString().sprintf("alter table RDAIRPLAY drop column STOP_RML%u",i);
-      q=new QSqlQuery(sql);
+      q=new RDSqlQuery(sql,false);
       delete q;
     }
     
@@ -7809,24 +7253,24 @@ int UpdateDb(int ver)
     // Clean Up RDPanel
     //
     sql="alter table RDPANEL drop column INSTANCE";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
     for(unsigned i=0;i<10;i++) {
       if((i==2)||(i==3)||(i==6)||(i==7)||(i==8)||(i==9)) {
 	sql=QString().sprintf("alter table RDPANEL drop column CARD%u",i);
-	q=new QSqlQuery(sql);
+	q=new RDSqlQuery(sql,false);
 	delete q;
 
 	sql=QString().sprintf("alter table RDPANEL drop column PORT%u",i);
-	q=new QSqlQuery(sql);
+	q=new RDSqlQuery(sql,false);
 	delete q;
 
 	sql=QString().sprintf("alter table RDPANEL drop column START_RML%u",i);
-	q=new QSqlQuery(sql);
+	q=new RDSqlQuery(sql,false);
 	delete q;
 
 	sql=QString().sprintf("alter table RDPANEL drop column STOP_RML%u",i);
-	q=new QSqlQuery(sql);
+	q=new RDSqlQuery(sql,false);
 	delete q;
       }
     }
@@ -7836,135 +7280,116 @@ int UpdateDb(int ver)
   if(ver<220) {
     sql=QString("alter table RDAIRPLAY_CHANNELS add column GPIO_TYPE ")+
       "int unsigned default 0 after STOP_RML";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
 
     sql=QString("alter table RDPANEL_CHANNELS add column GPIO_TYPE ")+
       "int unsigned default 0 after STOP_RML";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<221) {
     sql="alter table RDLIBRARY modify column TRIM_THRESHOLD int default 0";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<222) {
-    sql="insert into IMPORT_TEMPLATES set\
-         NAME=\"NaturalLog\",\
-         CART_OFFSET=9,\
-         CART_LENGTH=6,\
-         TITLE_OFFSET=19,\
-         TITLE_LENGTH=40,\
-         HOURS_OFFSET=0,\
-         HOURS_LENGTH=2,\
-         MINUTES_OFFSET=3,\
-         MINUTES_LENGTH=2,\
-         SECONDS_OFFSET=6,\
-         SECONDS_LENGTH=2,\
-         LEN_HOURS_OFFSET=61,\
-         LEN_HOURS_LENGTH=2,\
-         LEN_MINUTES_OFFSET=64,\
-         LEN_MINUTES_LENGTH=2,\
-         LEN_SECONDS_OFFSET=67,\
-         LEN_SECONDS_LENGTH=2,\
-         DATA_OFFSET=0,\
-         DATA_LENGTH=0";
-    q=new QSqlQuery(sql);
-    delete q;
+    //
+    // Removed as redundant with update 183 [call to UpdateImportFormats()].
+    //
   }
 
   if(ver<223) {
     sql="alter table CART add column CONDUCTOR char(64) after LABEL";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
 
     sql="alter table CART add index CONDUCTOR_IDX(CONDUCTOR)";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
 
     sql="alter table CART add column SONG_ID char(32) after USER_DEFINED";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
 
     sql="alter table CART add index SONG_ID_IDX(SONG_ID)";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
 
     sql="alter table CART add column BPM int unsigned default 0 after SONG_ID";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<224) {
     sql=QString("alter table DROPBOXES add column SET_USER_DEFINED char(255) ")+
       "after CREATE_ENDDATE_OFFSET";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<225) {
     sql=QString("alter table RDAIRPLAY add column TITLE_TEMPLATE char(64) ")+
       "default '%t' after HOUR_SELECTOR_ENABLED";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
 
     sql=QString("alter table RDAIRPLAY add column ARTIST_TEMPLATE char(64) ")+
       "default '%a' after TITLE_TEMPLATE";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
 
     sql=QString("alter table RDAIRPLAY add column OUTCUE_TEMPLATE char(64) ")+
       "default '%o' after ARTIST_TEMPLATE";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
 
     sql=QString("alter table RDAIRPLAY add column DESCRIPTION_TEMPLATE char(64) ")+
       "default '%i' after HOUR_SELECTOR_ENABLED";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<226) {
     sql=QString("alter table RDLOGEDIT add column ")+
       "ENABLE_SECOND_START enum('N','Y') default 'Y' after BITRATE";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<227) {
     sql="alter table LOGS add index TYPE_IDX(TYPE,LOG_EXISTS)";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<228) {
     sql=QString("alter table RDLIBRARY add column ")+
       "LIMIT_SEARCH int default 1 after SRC_CONVERTER";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
 
     sql=QString("alter table RDLIBRARY add column ")+
       "SEARCH_LIMITED enum('N','Y') default 'Y' after LIMIT_SEARCH";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<229) {
     sql=QString("alter table SERVICES add column ")+
       "DESCRIPTION_TEMPLATE char(255) after NAME_TEMPLATE";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
 
     sql=QString("select NAME from SERVICES");
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     while(q->next()) {
       sql=QString("update SERVICES set DESCRIPTION_TEMPLATE=\"")+
 	RDEscapeString(q->value(0).toString())+" log for %m/%d/%Y\" "+
 	"where NAME=\""+RDEscapeString(q->value(0).toString())+"\"";
-      q1=new QSqlQuery(sql);
+      q1=new RDSqlQuery(sql,false);
       delete q1;
     }
     delete q;
@@ -7972,26 +7397,26 @@ int UpdateDb(int ver)
 
   if(ver<230) { 
     sql="select NAME from LOGS";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     while(q->next()) {
       sql="alter table `"+RDLog::tableName(q->value(0).toString())+
 	"` add column EVENT_LENGTH int default -1 after ORIGIN_DATETIME";
-      q1=new QSqlQuery(sql);
+      q1=new RDSqlQuery(sql,false);
       delete q1;
     }
     delete q;
 
     sql="select NAME from EVENTS";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     while(q->next()) {
       sql="alter table `"+RDEvent::preimportTableName(q->value(0).toString())+
 	"` add column EVENT_LENGTH int default -1 after ORIGIN_DATETIME";
-      q1=new QSqlQuery(sql);
+      q1=new RDSqlQuery(sql,false);
       delete q1;
 
       sql="alter table `"+RDEvent::postimportTableName(q->value(0).toString())+
 	"` add column EVENT_LENGTH int default -1 after ORIGIN_DATETIME";
-      q1=new QSqlQuery(sql);
+      q1=new RDSqlQuery(sql,false);
       delete q1;
     }
     delete q;
@@ -8000,26 +7425,26 @@ int UpdateDb(int ver)
   if(ver<231) { 
     sql=QString("alter table CART add column ")+
       "USE_EVENT_LENGTH enum('N','Y') default 'N' after METADATA_DATETIME";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<232) { 
     sql=QString("alter table STATIONS add column ")+
       "ENABLE_DRAGDROP enum('N','Y') default 'Y' after CARTSLOT_ROWS";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
 
     sql=QString("alter table STATIONS add column ")+
       "ENFORCE_PANEL_SETUP enum('N','Y') default 'N' after ENABLE_DRAGDROP";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<233) { 
     sql=QString("alter table RDAIRPLAY add column ")+
       "LOG_MODE_STYLE int default 0 after START_MODE";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
 
     sql=QString("create table if not exists LOG_MODES (")+
@@ -8028,12 +7453,13 @@ int UpdateDb(int ver)
       "MACHINE int unsigned not null,"+
       "START_MODE int not null default 0,"+
       "OP_MODE int not null default 2,"+
-      "index STATION_NAME_IDX(STATION_NAME,MACHINE))";
-    q=new QSqlQuery(sql);
+      "index STATION_NAME_IDX(STATION_NAME,MACHINE))"+
+      config->createTablePostfix();
+    q=new RDSqlQuery(sql,false);
     delete q;
 
     sql=QString("select STATION,START_MODE,OP_MODE from RDAIRPLAY");
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     while(q->next()) {
       for(unsigned i=0;i<3;i++) {
 	sql=QString("insert into LOG_MODES set ")+
@@ -8041,7 +7467,7 @@ int UpdateDb(int ver)
 	  QString().sprintf("MACHINE=%u,",i)+
 	  QString().sprintf("START_MODE=%d,",q->value(1).toInt())+
 	  QString().sprintf("OP_MODE=%d",q->value(2).toInt());
-	q1=new QSqlQuery(sql);
+	q1=new RDSqlQuery(sql,false);
 	delete q1;
       }
     }
@@ -8051,12 +7477,12 @@ int UpdateDb(int ver)
   if(ver<234) { 
     sql=QString("alter table STATIONS add column ")+
       "CUE_START_CART int unsigned after CUE_PORT";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
 
     sql=QString("alter table STATIONS add column ")+
       "CUE_STOP_CART int unsigned after CUE_START_CART";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
@@ -8066,21 +7492,21 @@ int UpdateDb(int ver)
 
   if(ver<236) {
     sql=QString("select NAME from SERVICES");
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     while(q->next()) {
       sql=QString("alter table `")+RDSvc::svcTableName(q->value(0).toString())+
 	"` add column CONDUCTOR char(64) after LABEL";
-      q1=new QSqlQuery(sql);
+      q1=new RDSqlQuery(sql,false);
       delete q1;
 
       sql=QString("alter table `")+RDSvc::svcTableName(q->value(0).toString())+
 	"` add column USER_DEFINED char(255) after COMPOSER";
-      q1=new QSqlQuery(sql);
+      q1=new RDSqlQuery(sql,false);
       delete q1;
 
       sql=QString("alter table `")+RDSvc::svcTableName(q->value(0).toString())+
 	"` add column SONG_ID char(32) after USER_DEFINED";
-      q1=new QSqlQuery(sql);
+      q1=new RDSqlQuery(sql,false);
       delete q1;
     }
     delete q;
@@ -8089,44 +7515,44 @@ int UpdateDb(int ver)
   if(ver<237) {
     sql=QString("alter table REPORTS add column ")+
       "START_TIME time after FILTER_GROUPS";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
 
     sql=QString("alter table REPORTS add column ")+
       "END_TIME time after START_TIME";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<238) {
     sql=QString("alter table CART add column ")+
       "PENDING_STATION char(64) after USE_EVENT_LENGTH";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
 
     sql=QString("alter table CART add column ")+
       "PENDING_PID int after PENDING_STATION";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
 
     sql=QString("alter table CART add column ")+
       "PENDING_DATETIME datetime after PENDING_PID";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
 
     sql=QString("alter table CART add index ")+
       "PENDING_STATION_IDX(PENDING_STATION)";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
 
     sql=QString("alter table CART add index ")+
       "PENDING_PID_IDX(PENDING_STATION,PENDING_PID)";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
 
     sql=QString("alter table CART add index ")+
       "PENDING_DATETIME_IDX(PENDING_DATETIME)";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
@@ -8136,8 +7562,9 @@ int UpdateDb(int ver)
       "DROPBOX_ID int not null,"+
       "SCHED_CODE char(11) not null,"
       "index DROPBOX_ID_IDX(DROPBOX_ID),"+
-      "index SCHED_CODE_IDX(SCHED_CODE))";
-    q=new QSqlQuery(sql);
+      "index SCHED_CODE_IDX(SCHED_CODE))"+
+      config->createTablePostfix();
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
@@ -8150,48 +7577,49 @@ int UpdateDb(int ver)
       "TYPE int not null,"+
       "EDGE int not null,"+
       "EVENT_DATETIME datetime not null,"+
-      "index STATION_NAME_IDX(STATION_NAME,MATRIX,TYPE,EVENT_DATETIME,EDGE))";
-    q=new QSqlQuery(sql);
+      "index STATION_NAME_IDX(STATION_NAME,MATRIX,TYPE,EVENT_DATETIME,EDGE))"+
+      config->createTablePostfix();
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<241) {
     sql=QString("alter table EVENTS add column ")+
-      "HAVE_CODE2 VARCHAR(10) after HAVE_CODE";
-    q=new QSqlQuery(sql);
+      "HAVE_CODE2 varchar(10) after HAVE_CODE";
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<242) {
     sql=QString("alter table REPORTS add column ")+
       "POST_EXPORT_CMD text after EXPORT_PATH";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
 
     sql=QString("alter table REPORTS add column ")+
       "WIN_POST_EXPORT_CMD text after WIN_EXPORT_PATH";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<243) {
     sql=QString("alter table STATIONS add column ")+
       "HAVE_MP4_DECODE enum('N','Y') default 'N' after HAVE_MPG321";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<244) {
     sql=QString("alter table JACK_CLIENTS modify column ")+
       "COMMAND_LINE text not null";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<245) {
     sql=QString("alter table RDLIBRARY add column ")+
       "READ_ISRC enum('N','Y') default 'Y' after CDDB_SERVER";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
@@ -8202,20 +7630,20 @@ int UpdateDb(int ver)
   if(ver<254) {
     sql=QString("alter table CART add column ")+
       "USE_WEIGHTING enum('N','Y') default 'Y' after ENFORCE_LENGTH";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
 
     sql=QString("alter table CUTS add column PLAY_ORDER int after WEIGHT");
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
 
     sql=QString("select CUT_NAME from CUTS order by CUT_NAME");
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     while(q->next()) {
       sql=QString("update CUTS set ")+
 	"PLAY_ORDER="+q->value(0).toString().right(3)+" "+
 	"where CUT_NAME=\""+q->value(0).toString()+"\"";
-      q1=new QSqlQuery(sql);
+      q1=new RDSqlQuery(sql,false);
       delete q1;
     }
     delete q;
@@ -8223,16 +7651,16 @@ int UpdateDb(int ver)
 
   if(ver<255) {
     sql=QString("select NAME from SERVICES");
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     while(q->next()) {
       sql=QString("alter table `")+RDSvc::svcTableName(q->value(0).toString())+
 	"` add column DESCRIPTION char(64) after USAGE_CODE";
-      q1=new QSqlQuery(sql);
+      q1=new RDSqlQuery(sql,false);
       delete q1;
 
       sql=QString("alter table `")+RDSvc::svcTableName(q->value(0).toString())+
 	"` add column OUTCUE char(64) after DESCRIPTION";
-      q1=new QSqlQuery(sql);
+      q1=new RDSqlQuery(sql,false);
       delete q1;
     }
     delete q;
@@ -8244,8 +7672,9 @@ int UpdateDb(int ver)
       "CUT_NAME char(12) not null,"+
       "NUMBER int not null,"+
       "POINT int not null,"+
-      "index CUT_NAME_IDX(CUT_NAME))";
-    q=new QSqlQuery(sql);
+      "index CUT_NAME_IDX(CUT_NAME))"+
+      config->createTablePostfix();
+    q=new RDSqlQuery(sql,false);
     delete q;
 
     sql=QString("create table if not exists DECK_EVENTS(")+
@@ -8254,12 +7683,13 @@ int UpdateDb(int ver)
       "CHANNEL int unsigned not null,"+
       "NUMBER int not null,"+
       "CART_NUMBER int unsigned not null default 0,"+
-      "index STATION_NAME_IDX(STATION_NAME,CHANNEL))";
-    q=new QSqlQuery(sql);
+      "index STATION_NAME_IDX(STATION_NAME,CHANNEL))"+
+      config->createTablePostfix();
+    q=new RDSqlQuery(sql,false);
     delete q;
 
     sql=QString("select NAME from STATIONS");
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     while(q->next()) {
       for(unsigned i=0;i<RD_CUT_EVENT_ID_QUAN;i++) {
 	for(unsigned j=0;j<MAX_DECKS;j++) {
@@ -8267,7 +7697,7 @@ int UpdateDb(int ver)
 	    "STATION_NAME=\""+RDEscapeString(q->value(0).toString())+"\","+
 	    QString().sprintf("CHANNEL=%u,",j+129)+
 	    QString().sprintf("NUMBER=%u",i+1);
-	  q1=new QSqlQuery(sql);
+	  q1=new RDSqlQuery(sql,false);
 	  delete q1;
 	}
       }
@@ -8277,26 +7707,26 @@ int UpdateDb(int ver)
 
   if(ver<257) {
     sql=QString("alter table LOGS modify column LINK_DATETIME datetime");
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
 
     sql=QString("alter table LOGS modify column START_DATE date");
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
 
     sql=QString("alter table LOGS modify column END_DATE date");
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<258) {
     sql=QString("select NAME from LOGS");
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     while(q->next()) {
       sql=QString("alter table ")+
 	"`"+RDLog::tableName(q->value(0).toString())+"` "+
 	"modify column CART_NUMBER int unsigned not null default 0";
-      q1=new QSqlQuery(sql);
+      q1=new RDSqlQuery(sql,false);
       delete q1;
     }
     delete q;
@@ -8309,8 +7739,9 @@ int UpdateDb(int ver)
       "HOUR int not null,"+
       "CLOCK_NAME char(64) default null,"+
       "index SERVICE_NAME_IDX(SERVICE_NAME,HOUR),"+
-      "index CLOCK_NAME_IDX(CLOCK_NAME))";
-    q=new QSqlQuery(sql);
+      "index CLOCK_NAME_IDX(CLOCK_NAME))"+
+      config->createTablePostfix();
+    q=new RDSqlQuery(sql,false);
     delete q;
 
     sql=QString("select NAME,");
@@ -8319,7 +7750,7 @@ int UpdateDb(int ver)
     }
     sql=sql.left(sql.length()-1);
     sql+=" from SERVICES";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     while(q->next()) {
       for(int i=0;i<168;i++) {
 	sql=QString("insert into SERVICE_CLOCKS set ")+
@@ -8331,7 +7762,7 @@ int UpdateDb(int ver)
 	else {
 	  sql+="CLOCK_NAME=\""+RDEscapeString(q->value(i+1).toString())+"\"";
 	}
-	q1=new QSqlQuery(sql);
+	q1=new RDSqlQuery(sql,false);
 	delete q1;
       }
     }
@@ -8339,23 +7770,9 @@ int UpdateDb(int ver)
 
     for(int i=0;i<168;i++) {
       sql=QString().sprintf("alter table SERVICES drop column CLOCK%d",i);
-      q=new QSqlQuery(sql);
+      q=new RDSqlQuery(sql,false);
       delete q;
     }
-  }
-
-  // **** End of version updates ****
-
-  if(length_update_required) {
-    sql=QString().sprintf("select NUMBER from CART where TYPE=%u",
-			  RDCart::Audio);
-    q=new QSqlQuery(sql);
-    while(q->next()) {
-      cart=new RDCart(q->value(0).toUInt());
-      cart->updateLength();
-      delete cart;
-    }
-    delete q;
   }
 
   if(ver<260) {
@@ -8364,7 +7781,8 @@ int UpdateDb(int ver)
       "LOGIN_NAME char(255) not null,"+
       "IPV4_ADDRESS char(16) not null,"+
       "EXPIRATION_DATETIME datetime not null,"+
-      "index TICKET_IDX(TICKET,IPV4_ADDRESS,EXPIRATION_DATETIME))";
+      "index TICKET_IDX(TICKET,IPV4_ADDRESS,EXPIRATION_DATETIME))"+
+      config->createTablePostfix();
     if(!RunQuery(sql)) {
       return false;
     }
@@ -8410,18 +7828,18 @@ int UpdateDb(int ver)
 
   if(ver<263) {  // Add missing LOG_MODES records
     sql=QString("select NAME from STATIONS");
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     while(q->next()) {
       for(int i=0;i<3;i++) {
 	sql=QString("select ID from LOG_MODES where ")+
 	  "(STATION_NAME=\""+RDEscapeString(q->value(0).toString())+"\")&&"+
 	  QString().sprintf("(MACHINE=%d)",i);
-	q1=new QSqlQuery(sql);
+	q1=new RDSqlQuery(sql,false);
 	if(!q1->first()) {
 	  sql=QString("insert into LOG_MODES set ")+
 	    "STATION_NAME=\""+RDEscapeString(q->value(0).toString())+"\","+
 	    QString().sprintf("MACHINE=%d",i);
-	  q2=new QSqlQuery(sql);
+	  q2=new RDSqlQuery(sql,false);
 	  delete q2;
 	}
 	delete q1;
@@ -8434,7 +7852,7 @@ int UpdateDb(int ver)
     sql=QString("alter table SYSTEM add column ")+
       "FIX_DUP_CART_TITLES enum('N','Y') not null default 'Y' after "+
       "DUP_CART_TITLES";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
@@ -8442,13 +7860,13 @@ int UpdateDb(int ver)
     sql=QString("alter table SYSTEM add column ")+
       "SHOW_USER_LIST enum('N','Y') not null default 'Y' "+
       "after TEMP_CART_GROUP";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<266) {
     sql=QString("select NAME from LOGS");
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     while(q->next()) {
       sql=QString("select `")+RDLog::tableName(q->value(0).toString())+
 	"`.ID from "+
@@ -8456,13 +7874,13 @@ int UpdateDb(int ver)
 	"on `"+RDLog::tableName(q->value(0).toString())+
 	"`.CART_NUMBER=CART.NUMBER where "+
 	"CART.OWNER is not null";
-      q1=new QSqlQuery(sql);
+      q1=new RDSqlQuery(sql,false);
       int completed=q1->size();
       delete q1;
 
       sql=QString("select ID from `")+RDLog::tableName(q->value(0).toString())+
 	"` where "+QString().sprintf("TYPE=%d",RDLogLine::Track);
-      q1=new QSqlQuery(sql);
+      q1=new RDSqlQuery(sql,false);
       int scheduled=q1->size()+completed;
       delete q1;
 
@@ -8470,7 +7888,7 @@ int UpdateDb(int ver)
 	QString().sprintf("SCHEDULED_TRACKS=%d,",scheduled)+
 	QString().sprintf("COMPLETED_TRACKS=%u ",completed)+
 	"where NAME=\""+RDEscapeString(q->value(0).toString())+"\"";
-      q1=new QSqlQuery(sql);
+      q1=new RDSqlQuery(sql,false);
       delete q1;
     }
     delete q;
@@ -8479,42 +7897,42 @@ int UpdateDb(int ver)
   if(ver<267) {
     sql=QString("alter table CUTS add column ORIGIN_LOGIN_NAME char(255) ")+
       "after ORIGIN_NAME";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
 
     sql=QString("alter table CUTS add column SOURCE_HOSTNAME char(255) ")+
       "after ORIGIN_LOGIN_NAME";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<268) {
     sql=QString("alter table DROPBOXES add column ")+
       "FORCE_TO_MONO enum('N','Y') default 'N' after TO_CART";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<269) {
     sql=QString("alter table GROUPS add column ")+
       "DEFAULT_CUT_LIFE int default -1 after DEFAULT_HIGH_CART";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
   }
 
   if(ver<270) {
     sql=QString("alter table STATIONS add column ")+
       "SHORT_NAME char(64) after NAME";
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     delete q;
 
     sql=QString("select NAME from STATIONS");
-    q=new QSqlQuery(sql);
+    q=new RDSqlQuery(sql,false);
     while(q->next()) {
       sql=QString("update STATIONS set ")+
 	"SHORT_NAME=\""+RDEscapeString(q->value(0).toString())+"\" where "+
 	"NAME=\""+RDEscapeString(q->value(0).toString())+"\"";
-      q1=new QSqlQuery(sql);
+      q1=new RDSqlQuery(sql,false);
       delete q1;
     }
     delete q;
@@ -8533,20 +7951,21 @@ int UpdateDb(int ver)
       "ID int auto_increment not null primary key,"+
       "USER_NAME char(255) not null,"+
       "SERVICE_NAME char(10) not null,"+
-      "index USER_NAME_IDX(USER_NAME))";
-    q=new QSqlQuery(sql);
+      "index USER_NAME_IDX(USER_NAME))"+
+      config->createTablePostfix();
+    q=new RDSqlQuery(sql,false);
     delete q;
 
     sql=QString("select LOGIN_NAME from USERS");
-     q=new QSqlQuery(sql);
+     q=new RDSqlQuery(sql,false);
      while(q->next()) {
        sql=QString("select NAME from SERVICES");
-       q1=new QSqlQuery(sql);
+       q1=new RDSqlQuery(sql,false);
        while(q1->next()) {
 	 sql=QString("insert into USER_SERVICE_PERMS set ")+
 	   "USER_NAME=\""+RDEscapeString(q->value(0).toString())+"\","+
 	   "SERVICE_NAME=\""+RDEscapeString(q1->value(0).toString())+"\"";
-	 q2=new QSqlQuery(sql);
+	 q2=new RDSqlQuery(sql,false);
 	 delete q2;
        }
        delete q1;
@@ -8562,11 +7981,25 @@ int UpdateDb(int ver)
   // corresponding reversion in rdrevert(8)!
   //
   
+  // **** End of version updates ****
+
+  if(length_update_required) {
+    sql=QString().sprintf("select NUMBER from CART where TYPE=%u",
+			  RDCart::Audio);
+    q=new RDSqlQuery(sql,false);
+    while(q->next()) {
+      cart=new RDCart(q->value(0).toUInt());
+      cart->updateLength();
+      delete cart;
+    }
+    delete q;
+  }
+
   //
   // Update Version Field
   //
-  q=new QSqlQuery(QString().sprintf("update VERSION set DB=%d",
-				    RD_VERSION_DATABASE));
+  q=new RDSqlQuery(QString().sprintf("update VERSION set DB=%d",
+				     RD_VERSION_DATABASE),false);
   delete q;
   return UPDATEDB_SUCCESS;
 }

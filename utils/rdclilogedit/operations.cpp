@@ -368,7 +368,7 @@ void MainObject::Save()
     Saveas(edit_log->name());
   }
   else {
-    edit_log_event->save();
+    edit_log_event->save(edit_config);
     edit_log->setDescription(edit_description);
     edit_log->setStartDate(edit_start_date);
     edit_log->setEndDate(edit_end_date);
@@ -404,9 +404,9 @@ void MainObject::Saveas(const QString &logname)
       "SERVICE=\""+RDEscapeString(edit_service)+"\"";
     q=new RDSqlQuery(sql);
     delete q;
-    RDCreateLogTable(RDLog::tableName(logname));
+    RDCreateLogTable(RDLog::tableName(logname),edit_config);
     edit_log_event->setLogName(RDLog::tableName(logname));
-    edit_log_event->save();
+    edit_log_event->save(edit_config);
     delete edit_log;
     edit_log=log;
     edit_modified=false;

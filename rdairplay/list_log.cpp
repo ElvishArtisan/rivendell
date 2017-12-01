@@ -871,7 +871,7 @@ void ListLog::loadButtonData()
     break;
     
   case 3:
-    if(!RDLog::create(name,svcname,rdripc->user(),&err_msg)) {
+    if(!RDLog::create(name,svcname,rdripc->user(),&err_msg,air_config)) {
       QMessageBox::warning(this,"RDAirPlay - "+tr("Error"),err_msg);
       return;
     }

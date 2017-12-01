@@ -583,11 +583,15 @@ a záloha původní databáze uložena v </translation>
     </message>
     <message>
         <source>Service Exists</source>
-        <translation>Služba existuje</translation>
+        <translation type="obsolete">Služba existuje</translation>
     </message>
     <message>
         <source>Service Already Exists!</source>
-        <translation>Služba již existuje!</translation>
+        <translation type="obsolete">Služba již existuje!</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

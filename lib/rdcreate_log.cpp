@@ -26,15 +26,15 @@
 #include <rd.h>
 
 
-void RDCreateLogTable(const QString &name)
+void RDCreateLogTable(const QString &name,RDConfig *config)
 {
-  QString sql=RDCreateLogTableSql(name);
+  QString sql=RDCreateLogTableSql(name,config);
   RDSqlQuery *q=new RDSqlQuery(sql);
   delete q;
 }
 
 
-QString RDCreateLogTableSql(QString name)
+QString RDCreateLogTableSql(QString name,RDConfig *config)
 {
   return QString("create table if not exists `")+name+"`"+
     "(ID INT NOT NULL PRIMARY KEY,"+
@@ -78,22 +78,24 @@ QString RDCreateLogTableSql(QString name)
     "EXT_ANNC_TYPE char(8),"+
     "index COUNT_IDX (COUNT),"+
     "index CART_NUMBER_IDX (CART_NUMBER),"+
-    "index LABEL_IDX (LABEL))";
+    "index LABEL_IDX (LABEL))"+
+    config->createTablePostfix();
 }
 
 
-QString RDCreateClockTableSql(QString name)
+QString RDCreateClockTableSql(QString name,RDConfig *config)
 {
   return QString("create table `")+name+"` ("+
     "ID int unsigned auto_increment not null primary key,"+
     "EVENT_NAME char(64) not null,"+
     "START_TIME int not null,"+
     "LENGTH int not null,"+
-    "INDEX EVENT_NAME_IDX (EVENT_NAME))";
+    "INDEX EVENT_NAME_IDX (EVENT_NAME))"+
+    config->createTablePostfix();
 }
 
 
-QString RDCreateReconciliationTableSql(QString name)
+QString RDCreateReconciliationTableSql(QString name,RDConfig *config)
 {
   QString sql=QString("create table `")+name+"` ("+
     "ID int unsigned auto_increment primary key,"+
@@ -130,13 +132,14 @@ QString RDCreateReconciliationTableSql(QString name)
     "EXT_DATA char(32),"+
     "EXT_EVENT_ID char(8),"+
     "EXT_ANNC_TYPE char(8),"+
-    "index EVENT_DATETIME_IDX(EVENT_DATETIME))";
+    "index EVENT_DATETIME_IDX(EVENT_DATETIME))"+
+    config->createTablePostfix();
 
   return sql;
 }
 
 
-QString RDCreateStackTableSql(QString name)
+QString RDCreateStackTableSql(QString name,RDConfig *config)
 {
   QString sql;
   sql=QString().sprintf("create table if not exists `%s_STACK` (\
@@ -145,6 +148,7 @@ QString RDCreateStackTableSql(QString name)
                          ARTIST varchar(255),\
                          SCHED_CODES varchar(255),\
                          SCHEDULED_AT datetime default '1000-01-01 00:00:00')",
-			(const char *)name.replace(" ","_"));
+			(const char *)name.replace(" ","_"))+
+  config->createTablePostfix();
   return sql;
 }

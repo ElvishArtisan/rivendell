@@ -158,7 +158,7 @@ MainWidget::MainWidget(QWidget *parent)
   //
   if(!OpenDb(admin_config->mysqlDbname(),admin_config->mysqlUsername(),
 	     admin_config->mysqlPassword(),admin_config->mysqlHostname(),
-	     admin_config->stationName(),true)) {
+	     admin_config->stationName(),true,admin_config)) {
     exit(1);
   }
   new RDDbHeartbeat(admin_config->mysqlHeartbeatInterval());
@@ -483,7 +483,7 @@ void MainWidget::restoreData()
   }
   delete q;
   admin_skip_backup=true;
-  UpdateDb(ver);
+  UpdateDb(ver,admin_config);
   QMessageBox::information(this,tr("Restore Complete"),
 			   tr("Restore completed successfully."));
   RDStartDaemons();
@@ -604,7 +604,7 @@ int cmdline_main(int argc,char *argv[])
   }
   if(!OpenDb(admin_config->mysqlDbname(),admin_config->mysqlUsername(),
 	     admin_config->mysqlPassword(),admin_config->mysqlHostname(),
-	     station_name,false)) {
+	     station_name,false,admin_config)) {
     return 1;
   }
 

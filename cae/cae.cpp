@@ -624,7 +624,7 @@ void MainObject::InitProvisioning() const
       q=new RDSqlQuery(sql);
       if(!q->first()) {
 	if(RDSvc::create(svcname,&err_msg,
-			 rd_config->provisioningServiceTemplate())) {
+			 rd_config->provisioningServiceTemplate(),rd_config)) {
 	  syslog(LOG_INFO,"created new service entry \"%s\"",
 		 (const char *)svcname);
 	}

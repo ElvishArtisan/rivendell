@@ -1951,7 +1951,7 @@ void VoiceTracker::closeData()
   stopData();
   CheckChanges();
   if(track_size_altered) {
-    track_log_event->save();
+    track_log_event->save(log_config);
   }
   done(0);
 }
@@ -2318,10 +2318,10 @@ void VoiceTracker::SaveTrack(int line)
   }
 
   if(track_size_altered) {
-     track_log_event->save();
+     track_log_event->save(log_config);
   }
   else {
-     track_log_event->saveModified();
+     track_log_event->saveModified(log_config);
   }
 
   track_log->

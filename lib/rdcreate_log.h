@@ -18,15 +18,15 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qsqldatabase.h>
+#include "rdconfig.h"
 
 #ifndef RDCREATE_LOG_H
 #define RDCREATE_LOG_H
 
-void RDCreateLogTable(const QString &name);
-QString RDCreateLogTableSql(QString name);
-QString RDCreateClockTableSql(QString name);
-QString RDCreateReconciliationTableSql(QString name);
-QString RDCreateStackTableSql(QString name);
+void RDCreateLogTable(const QString &name,RDConfig *config);
+QString RDCreateLogTableSql(QString name,RDConfig *config);
+QString RDCreateClockTableSql(QString name,RDConfig *config);
+QString RDCreateReconciliationTableSql(QString name,RDConfig *config);
+QString RDCreateStackTableSql(QString name,RDConfig *config);
 
 #endif 

@@ -16394,3 +16394,8 @@
 	* Changed the wording of the 'Purge Logs' and 'Purge ELR Data'
 	control in the Edit Service dialog in rdadmin(1).
 	* Added 'RDLog::create()' and 'RDLog::remove()' static methods.
+2017-12-01 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'Engine=' directive to the [MySQL] section of
+	rd.conf(5).
+	* Refactored the schema update code to use standard form
+	in rdadmin(1).

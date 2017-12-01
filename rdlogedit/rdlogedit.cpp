@@ -424,7 +424,7 @@ void MainWidget::addData()
     QString username(rdripc->user());
 #endif  // WIN32
     QString err_msg;
-    if(!RDLog::create(logname,svcname,username,&err_msg)) {
+    if(!RDLog::create(logname,svcname,username,&err_msg,log_config)) {
       QMessageBox::warning(this,"RDLogEdit - "+tr("Error"),err_msg);
       return;
     }

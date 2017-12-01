@@ -18,15 +18,15 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
+#ifndef RDLOG_H
+#define RDLOG_H
+
 #include <qsqldatabase.h>
 
 #include <rdconfig.h>
 #include <rdlog_event.h>
 #include <rduser.h>
 #include <rdstation.h>
-
-#ifndef RDLOG_H
-#define RDLOG_H
 
 class RDLog
 {
@@ -79,7 +79,8 @@ class RDLog
    RDLogEvent *createLogEvent() const;
    QString xml() const;
    static bool create(const QString &name,const QString &svc_name,
-		      const QString &user_name,QString *err_msg);
+		      const QString &user_name,QString *err_msg,
+		      RDConfig *config);
    static bool exists(const QString &name);
    static bool remove(const QString &name,RDStation *station,RDUser *user,
 		      RDConfig *config);
@@ -100,4 +101,4 @@ class RDLog
 };
 
 
-#endif 
+#endif  // RDLOG_H

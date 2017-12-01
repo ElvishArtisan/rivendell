@@ -342,7 +342,8 @@ void MainObject::Revert251() const
     sql=QString("select NAME from CLOCKS");
     q=new QSqlQuery(sql);
     while(q->next()) {
-      sql=RDCreateClockTableSql(RDClock::tableName(q->value(0).toString()));
+      sql=RDCreateClockTableSql(RDClock::tableName(q->value(0).toString()),
+				rev_config);
       q1=new QSqlQuery(sql);
       delete q1;
       sql=QString("select EVENT_NAME,START_TIME,LENGTH from CLOCK_METADATA ")+
@@ -377,7 +378,8 @@ void MainObject::Revert252() const
     sql=QString("select NAME from EVENTS");
     q=new QSqlQuery(sql);
     while(q->next()) {
-      RDCreateLogTable(RDEvent::preimportTableName(q->value(0).toString()));
+      RDCreateLogTable(RDEvent::preimportTableName(q->value(0).toString()),
+		       rev_config);
       sql=QString("select COUNT,TYPE,TRANS_TYPE,CART_NUMBER,TEXT ")+
 	"from EVENT_METADATA where "+
 	"(EVENT_NAME=\""+RDEscapeString(q->value(0).toString())+"\")&&"+
@@ -396,7 +398,8 @@ void MainObject::Revert252() const
       }
       delete q1;
 
-      RDCreateLogTable(RDEvent::postimportTableName(q->value(0).toString()));
+      RDCreateLogTable(RDEvent::postimportTableName(q->value(0).toString()),
+		       rev_config);
       sql=QString("select COUNT,TYPE,TRANS_TYPE,CART_NUMBER,TEXT ")+
 	"from EVENT_METADATA where "+
 	"(EVENT_NAME=\""+RDEscapeString(q->value(0).toString())+"\")&&"+

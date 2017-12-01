@@ -441,7 +441,7 @@ bool RDReport::generateReport(const QDate &startdate,const QDate &enddate,
   QSqlQuery *p;
   p=new QSqlQuery(sql);
   delete p;
-  sql=RDCreateReconciliationTableSql(mixname+"_SRT");
+  sql=RDCreateReconciliationTableSql(mixname+"_SRT",report_config);
   q=new RDSqlQuery(sql);
   delete q;
 

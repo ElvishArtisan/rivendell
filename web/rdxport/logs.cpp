@@ -61,7 +61,8 @@ void Xport::AddLog()
   }
 
   QString err_msg;
-  if(!RDLog::create(log_name,service_name,xport_user->name(),&err_msg)) {
+  if(!RDLog::create(log_name,service_name,xport_user->name(),&err_msg,
+		    xport_config)) {
     XmlExit(err_msg,500,"logs.cpp",LINE_NUMBER);
   }
   XmlExit("OK",200,"logs.cpp",LINE_NUMBER);
@@ -500,7 +501,7 @@ void Xport::SaveLog()
   log->setEndDate(end_date);
   log->setModifiedDatetime(QDateTime::currentDateTime());
 
-  logevt->save();
+  logevt->save(xport_config);
 
   XmlExit(QString().sprintf("OK Saved %d events",logevt->size()),
 	  200,"logs.cpp",LINE_NUMBER);

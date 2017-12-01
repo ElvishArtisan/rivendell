@@ -79,7 +79,7 @@ class RDEventLine
   void setLength(int msecs);
   void clear();
   bool load();
-  bool save();
+  bool save(RDConfig *config);
   bool generateLog(QString logname,const QString &svcname,
 		   QString *errors, unsigned artistsep,QString clockname);
   bool linkLog(RDLogEvent *e,int next_id,const QString &svcname,

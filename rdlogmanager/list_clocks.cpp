@@ -32,11 +32,11 @@
 #include <rdevent.h>
 #include <rdcreate_log.h>
 
-#include <list_clocks.h>
-#include <add_clock.h>
-#include <edit_clock.h>
-#include <globals.h>
-#include <rename_item.h>
+#include "add_clock.h"
+#include "edit_clock.h"
+#include "globals.h"
+#include "list_clocks.h"
+#include "rename_item.h"
 
 ListClocks::ListClocks(QString *clockname,QWidget *parent)
   : QDialog(parent,"",true)
@@ -241,7 +241,7 @@ void ListClocks::addData()
 			(const char *)clockname);
   q=new RDSqlQuery(sql);
   delete q;
-  sql=RDCreateClockTableSql(RDClock::tableName(clockname));
+  sql=RDCreateClockTableSql(RDClock::tableName(clockname),log_config);
   q=new RDSqlQuery(sql);
   delete q;
   EditClock *clock_dialog=new EditClock(clockname,true,&new_clocks,this);

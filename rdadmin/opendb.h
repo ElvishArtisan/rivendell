@@ -23,8 +23,10 @@
 
 #include <qstring.h>
 
+#include <rdconfig.h>
+
 bool OpenDb(QString dbname,QString username,QString password,QString hostname,
-	    QString stationname,bool interactive);
+	    QString stationname,bool interactive,RDConfig *config);
 
 
 #endif  // OPENDB_H

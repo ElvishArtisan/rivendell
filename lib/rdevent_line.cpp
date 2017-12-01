@@ -378,7 +378,7 @@ bool RDEventLine::load()
 }
 
 
-bool RDEventLine::save()
+bool RDEventLine::save(RDConfig *config)
 {
   QString sql=QString().sprintf("select NAME from EVENTS where NAME=\"%s\"",
 				(const char *)event_name);
@@ -444,8 +444,8 @@ bool RDEventLine::save()
     return false;
   }
   delete q;
-  event_preimport_log->save();
-  event_postimport_log->save();
+  event_preimport_log->save(config);
+  event_postimport_log->save(config);
   return true;
 }
 

@@ -487,7 +487,7 @@ QString RDLog::xml() const
 
 
 bool RDLog::create(const QString &name,const QString &svc_name,
-		   const QString &user_name,QString *err_msg)
+		   const QString &user_name,QString *err_msg,RDConfig *config)
 {
   QString sql;
   RDSqlQuery *q;
@@ -529,7 +529,7 @@ bool RDLog::create(const QString &name,const QString &svc_name,
     return false;
   }
   delete q;
-  RDCreateLogTable(RDLog::tableName(name));
+  RDCreateLogTable(RDLog::tableName(name),config);
   *err_msg=QObject::tr("OK");
   return true;
 }

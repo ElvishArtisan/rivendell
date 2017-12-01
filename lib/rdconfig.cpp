@@ -2,7 +2,7 @@
 //
 // A container class for a Rivendell Base Configuration
 //
-//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2004,2016-2017 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -178,6 +178,18 @@ QString RDConfig::mysqlDriver() const
 int RDConfig::mysqlHeartbeatInterval() const
 {
   return conf_mysql_heartbeat_interval;
+}
+
+
+QString RDConfig::mysqlEngine() const
+{
+  return conf_mysql_engine;
+}
+
+
+QString RDConfig::createTablePostfix() const
+{
+  return conf_create_table_postfix;
 }
 
 
@@ -557,6 +569,14 @@ void RDConfig::load()
   conf_mysql_heartbeat_interval=
     profile->intValue("mySQL","HeartbeatInterval",
 		      DEFAULT_MYSQL_HEARTBEAT_INTERVAL);
+  conf_mysql_engine=
+    profile->stringValue("mySQL","Engine",DEFAULT_MYSQL_ENGINE);
+  if(conf_mysql_engine.lower()=="default") {
+    conf_create_table_postfix="";
+  }
+  else {
+    conf_create_table_postfix=QString(" engine ")+conf_mysql_engine;
+  }
 
   facility=profile->stringValue("Logs","Facility",DEFAULT_LOG_FACILITY).lower();
   if(facility=="syslog") {
@@ -662,6 +682,8 @@ void RDConfig::clear()
   conf_mysql_password="";
   conf_mysql_driver="";
   conf_mysql_heartbeat_interval=DEFAULT_MYSQL_HEARTBEAT_INTERVAL;
+  conf_mysql_engine=DEFAULT_MYSQL_ENGINE;
+  conf_create_table_postfix="";
   conf_log_facility=RDConfig::LogSyslog;
   conf_log_directory="";
   conf_log_core_dump_directory=DEFAULT_LOG_CORE_DUMP_DIRECTORY;

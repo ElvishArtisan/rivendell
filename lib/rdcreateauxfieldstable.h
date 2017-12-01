@@ -2,7 +2,7 @@
 //
 // Create a new, empty Rivendell log table.
 //
-//   (C) Copyright 2002-2003,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2003,2016-2017 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,12 +18,14 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qstring.h>
-
 #ifndef RDRDCREATEAUXFIELDSTABLE_H
 #define RDRDCREATEAUXFIELDSTABLE_H
 
-void RDCreateAuxFieldsTable(QString keyname);
+#include <qstring.h>
+
+#include <rdconfig.h>
+
+void RDCreateAuxFieldsTable(QString keyname,RDConfig *config);
 
 
 #endif  // RDRDCREATEAUXFIELDSTABLE_H

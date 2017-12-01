@@ -532,11 +532,15 @@ atualizada para a Versão</translation>
     </message>
     <message>
         <source>Service Exists</source>
-        <translation>Serviço existente</translation>
+        <translation type="obsolete">Serviço existente</translation>
     </message>
     <message>
         <source>Service Already Exists!</source>
-        <translation>Serviço já Existe!</translation>
+        <translation type="obsolete">Serviço já Existe!</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

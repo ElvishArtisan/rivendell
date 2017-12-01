@@ -786,9 +786,9 @@ EditEvent::EditEvent(QString eventname,bool new_event,
     event_color_button->setPalette(QPalette(color,backgroundColor()));
   }
   str=event_event->nestedEvent();
-  sql=QString().sprintf("select NAME from EVENTS where NAME!=\"%s\"\
-                         order by NAME",
-			(const char *)eventname);
+  sql=QString("select NAME from EVENTS where ")+
+    "NAME!=\""+RDEscapeString(eventname)+"\""+
+    "order by NAME";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     event_nestevent_box->insertItem(q->value(0).toString());
@@ -1507,10 +1507,10 @@ void EditEvent::Save()
   listname.replace(" ","_");
   event_preimport_list->logEvent()->
     setLogName(QString().sprintf("%s_PRE",(const char *)listname));
-  event_preimport_list->logEvent()->save(false);
+  event_preimport_list->logEvent()->save(log_config,false);
   event_postimport_list->logEvent()->
     setLogName(QString().sprintf("%s_POST",(const char *)listname));
-  event_postimport_list->logEvent()->save(false);
+  event_postimport_list->logEvent()->save(log_config,false);
   event_saved=true;
 }
 

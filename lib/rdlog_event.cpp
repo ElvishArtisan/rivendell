@@ -131,16 +131,16 @@ int RDLogEvent::load(bool track_ptrs)
   return log_line.size();
 }
 
-void RDLogEvent::saveModified(bool update_tracks)
+void RDLogEvent::saveModified(RDConfig *config,bool update_tracks)
 {
   for(unsigned i=0;i<log_line.size();i++) {
     if(log_line[i]->hasBeenModified()) {
-      save(update_tracks, i);
+      save(config,update_tracks, i);
     }
   }
 }
 
-void RDLogEvent::save(bool update_tracks,int line)
+void RDLogEvent::save(RDConfig *config,bool update_tracks,int line)
 {
   QString sql;
   RDSqlQuery *q;
@@ -154,7 +154,7 @@ void RDLogEvent::save(bool update_tracks,int line)
       q=new RDSqlQuery(sql);
       delete q;
     }
-    RDCreateLogTable(log_name);
+    RDCreateLogTable(log_name,config);
     if (log_line.size() > 0) {
        QString values = "";
        for(unsigned i=0;i<log_line.size();i++) {

@@ -357,11 +357,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Service Exists</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Service Already Exists!</source>
+        <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

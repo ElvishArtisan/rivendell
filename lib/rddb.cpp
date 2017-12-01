@@ -79,8 +79,9 @@ QSqlDatabase *RDInitDb (unsigned *schema,QString *error)
   return db;
 }
 
-RDSqlQuery::RDSqlQuery (const QString &query, QSqlDatabase *dbase):
-  QSqlQuery (query,dbase)
+//RDSqlQuery::RDSqlQuery (const QString &query, QSqlDatabase *dbase):
+RDSqlQuery::RDSqlQuery(const QString &query,bool reconnect):
+  QSqlQuery (query)
 {
   //printf("lastQuery: %s\n",(const char *)lastQuery());
 
@@ -94,23 +95,27 @@ RDSqlQuery::RDSqlQuery (const QString &query, QSqlDatabase *dbase):
 #ifndef WIN32
     syslog(LOG_ERR,(const char *)err);
 #endif  // WIN32
-    QSqlDatabase *ldb = QSqlDatabase::database();
-    // Something went wrong with the DB, trying a reconnect
-    ldb->removeDatabase(RDConfiguration()->mysqlDbname());
-    ldb->close();
-    db = NULL;
-    RDInitDb (&schema);
-    QSqlQuery::prepare (query);
-    QSqlQuery::exec ();
-    if (RDDbStatus()){
-      if (isActive()){
+    if(reconnect) {
+      QSqlDatabase *ldb = QSqlDatabase::database();
+      // Something went wrong with the DB, trying a reconnect
+      ldb->removeDatabase(RDConfiguration()->mysqlDbname());
+      ldb->close();
+      db = NULL;
+      RDInitDb (&schema);
+      QSqlQuery::prepare (query);
+      QSqlQuery::exec ();
+      if (RDDbStatus()){
+	if (isActive()){
+	  RDDbStatus()->sendRecon();
+	} 
+	else {
+	  RDDbStatus()->sendDiscon(query);
+	}
+      }
+      else {
 	RDDbStatus()->sendRecon();
-      } else {
-	RDDbStatus()->sendDiscon(query);
       }
     }
-  } else {
-    RDDbStatus()->sendRecon();
   }
 }
 void RDSqlDatabaseStatus::sendRecon()

@@ -48,7 +48,8 @@ class RDSqlDatabaseStatus : public QObject
 class RDSqlQuery : public QSqlQuery
 {
  public:
- RDSqlQuery ( const QString & query = QString::null, QSqlDatabase * db = 0 );
+  // RDSqlQuery(const QString &query=QString::null, QSqlDatabase * db = 0 );
+ RDSqlQuery(const QString &query=QString::null,bool reconnect=true);
 };
 
 // Setup the default database, returns true on success.

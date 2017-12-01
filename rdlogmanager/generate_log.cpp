@@ -37,9 +37,9 @@
 #include <rdtextfile.h>
 #include <rdcreate_log.h>
 
-#include <generate_log.h>
-#include <edit_grid.h>
-#include <globals.h>
+#include "edit_grid.h"
+#include "generate_log.h"
+#include "globals.h"
 
 //
 // Icons
@@ -345,7 +345,8 @@ void GenerateLog::createData()
   RDSqlQuery *q;
 
   srand(QTime::currentTime().msec());
-  sql=RDCreateStackTableSql(gen_service_box->currentText().replace(" ","_")); 
+  sql=RDCreateStackTableSql(gen_service_box->currentText().replace(" ","_"),
+			    log_config); 
 
   q=new RDSqlQuery(sql);
   if(!q->isActive()) {

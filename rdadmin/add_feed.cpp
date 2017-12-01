@@ -31,8 +31,9 @@
 #include <rdcreateauxfieldstable.h>
 #include <rdfeedlog.h>
 
-#include <edit_feed.h>
-#include <add_feed.h>
+#include "add_feed.h"
+#include "edit_feed.h"
+#include "globals.h"
 
 AddFeed::AddFeed(unsigned *id,QString *keyname,QWidget *parent)
   : QDialog(parent,"",true)
@@ -178,7 +179,7 @@ void AddFeed::okData()
   q=new RDSqlQuery(sql);
   delete q;
   RDCreateFeedLog(feed_keyname_edit->text());
-  RDCreateAuxFieldsTable(feed_keyname_edit->text());
+  RDCreateAuxFieldsTable(feed_keyname_edit->text(),admin_config);
   sql=QString().sprintf("select ID from FEEDS where KEY_NAME=\"%s\"",
 			(const char *)feed_keyname_edit->text());
   q=new RDSqlQuery(sql);
