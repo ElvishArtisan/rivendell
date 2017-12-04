@@ -16408,3 +16408,6 @@
 	* Removed a debugging statement.
 2017-12-04 Fred Gleason <fredg@paravelsystems.com>
 	* Updated the 'Load Log Dialog' screenshot.
+2017-12-04 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in the 'ListLogs' Web API call that caused inconsistent
+	results with filter strings with leading or trailing whitespace.

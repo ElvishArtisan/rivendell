@@ -121,6 +121,7 @@ void Xport::ListLogs()
   xport_post->getValue("LOG_NAME",&log_name);
   xport_post->getValue("TRACKABLE",&trackable);
   xport_post->getValue("FILTER",&filter);
+  filter=filter.stripWhiteSpace();
   xport_post->getValue("RECENT",&recent);
 
   //
