@@ -427,8 +427,8 @@ void GenerateLog::musicData()
       }
     }
     log->removeTracks(rdstation_conf,rduser,log_config);
-    svc->clearLogLinks(RDSvc::Traffic,gen_date_edit->date(),logname);
-    svc->clearLogLinks(RDSvc::Music,gen_date_edit->date(),logname);
+    svc->clearLogLinks(RDSvc::Traffic,logname);
+    svc->clearLogLinks(RDSvc::Music,logname);
   }
   connect(svc,SIGNAL(generationProgress(int)),
 	  gen_progress_dialog,SLOT(setProgress(int)));
@@ -462,7 +462,7 @@ void GenerateLog::trafficData()
       delete svc;
       return;
     }
-    svc->clearLogLinks(RDSvc::Traffic,gen_date_edit->date(),logname);
+    svc->clearLogLinks(RDSvc::Traffic,logname);
   }
   connect(svc,SIGNAL(generationProgress(int)),
 	  gen_progress_dialog,SLOT(setProgress(int)));

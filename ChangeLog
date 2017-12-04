@@ -16087,3 +16087,7 @@
 2017-10-11 Fred Gleason <fredg@paravelsystems.com>
 	* Updated the 'NEWS' file.
 	* Updated the package version to 2.17.0.
+2017-12-04 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'log_unlink_test' harness.
+	* Fixed a bug that caused a log's link status flags to fail to be
+	updated when the log was unlinked.
