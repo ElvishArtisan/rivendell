@@ -155,7 +155,6 @@ void ImportListView::refreshList(int line)
       item->setText(3,RDGetTimeLength(logline->forcedLength(),false,false));
       total_len+=logline->forcedLength();
       switch(logline->transType()) {
-	printf("line: %d  transtype: %d\n",line,logline->transType());
 	  case RDLogLine::Play:
 	    item->setText(5,tr("PLAY"));
 	    break;

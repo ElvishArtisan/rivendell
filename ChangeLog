@@ -16404,3 +16404,5 @@
 	rd.conf(5).
 	* Added an 'Collation=' directive to the [MySQL] section of
 	rd.conf(5).
+2017-12-04 Fred Gleason <fredg@paravelsystems.com>
+	* Removed a debugging statement.
