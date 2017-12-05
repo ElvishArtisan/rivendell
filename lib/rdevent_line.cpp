@@ -2,7 +2,7 @@
 //
 // Abstract a Rivendell Log Manager Event
 //
-//   (C) Copyright 2002-2006,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2006,2016-2017 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -914,6 +914,17 @@ bool RDEventLine::linkLog(RDLogEvent *e,int next_id,const QString &svcname,
   RDLogLine::TransType trans_type=link_logline->transType();
   int grace_time=link_logline->graceTime();
   QTime time=link_logline->startTime(RDLogLine::Logged);
+
+  //
+  // Insert Parent Link
+  //
+  e->insert(e->size(),1);
+  logline=new RDLogLine();
+  *logline=*link_logline;
+  logline->setId(e->nextId());
+  *(e->logLine(e->size()-1))=*logline;
+  delete logline;
+  logline=NULL;
 
   //
   // Calculate Event Time Boundaries

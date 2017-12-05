@@ -16091,3 +16091,8 @@
 	* Added a 'log_unlink_test' harness.
 	* Fixed a bug that caused a log's link status flags to fail to be
 	updated when the log was unlinked.
+2017-12-05 Fred Gleason <fredg@paravelsystems.com>
+	* Modified log linking to retain parent link events in linked logs.
+	* Fixed a bug where re-merging linked logs would generate an
+	'Event not placed' exception for avails that were previously
+	unpopulated.
