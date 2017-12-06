@@ -16417,3 +16417,6 @@
 	updated when the log was unlinked.
 2017-12-05 Fred Gleason <fredg@paravelsystems.com>
 	* Changed the default [mySQL] 'Engine=' directive value to 'MyISAM'.
+2017-12-06 Fred Gleason <fredg@paravelsystems.com>
+	* Added a note regrading package dependencies to the header of
+	'scripts/engine_conv.py'.

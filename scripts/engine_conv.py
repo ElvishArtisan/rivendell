@@ -4,6 +4,8 @@
 #
 # Convert a Rivendell database to use a different MySQL table engine
 #
+#   This script require the 'mysql-connector-python'
+#
 #   (C) Copyright 2017 Fred Gleason <fredg@paravelsystems.com>
 #
 #   This program is free software; you can redistribute it and/or modify
@@ -41,6 +43,7 @@ def GetDbCredentials():
 
 def OpenDb():
     creds=GetDbCredentials()
+    print('P/W: '+creds[1])
     return mysql.connector.connect(user=creds[0],password=creds[1],
                                    host=creds[2],database=creds[3],buffered=True)
 
