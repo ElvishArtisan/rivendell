@@ -147,8 +147,8 @@ int RunLogOperation(int argc,char *argv[],const QString &svcname,
     }
     report="";
     log->removeTracks(rdstation_conf,rduser,config);
-    svc->clearLogLinks(RDSvc::Traffic,start_date,logname);
-    svc->clearLogLinks(RDSvc::Music,start_date,logname);
+    svc->clearLogLinks(RDSvc::Traffic,logname);
+    svc->clearLogLinks(RDSvc::Music,logname);
     if(svc->linkLog(RDSvc::Music,start_date,logname,&report)) {
       printf("%s\n",(const char*)report);
     }
@@ -176,7 +176,7 @@ int RunLogOperation(int argc,char *argv[],const QString &svcname,
       return 256;
     }
     report="";
-    svc->clearLogLinks(RDSvc::Traffic,start_date,logname);
+    svc->clearLogLinks(RDSvc::Traffic,logname);
     if(svc->linkLog(RDSvc::Traffic,start_date,logname,&report)) {
       printf("%s\n",(const char*)report);
     }

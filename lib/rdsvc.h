@@ -89,8 +89,8 @@ class RDSvc : public QObject
 		   const QString &nextname,QString *report,RDUser *user);
   bool linkLog(RDSvc::ImportSource src,const QDate &date,
 	       const QString &logname,QString *report);
-  void clearLogLinks(RDSvc::ImportSource src,const QDate &date,
-		     const QString &logname);
+  void clearLogLinks(RDSvc::ImportSource src,const QString &logname);
+  void create(const QString exemplar) const;
   void remove() const;
   QString xml() const;
   static bool create(const QString &name,QString *err_msg,

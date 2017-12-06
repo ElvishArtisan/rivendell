@@ -16411,5 +16411,9 @@
 2017-12-04 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in the 'ListLogs' Web API call that caused inconsistent
 	results with filter strings with leading or trailing whitespace.
+2017-12-04 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'log_unlink_test' harness.
+	* Fixed a bug that caused a log's link status flags to fail to be
+	updated when the log was unlinked.
 2017-12-05 Fred Gleason <fredg@paravelsystems.com>
 	* Changed the default [mySQL] 'Engine=' directive value to 'MyISAM'.

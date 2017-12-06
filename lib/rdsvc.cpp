@@ -27,6 +27,7 @@
 #include <rdcreate_log.h>
 #include <rdclock.h>
 #include <rdlog.h>
+
 #include <rddb.h>
 #include <rdescape_string.h>
 #include <rdweb.h>
@@ -947,8 +948,7 @@ bool RDSvc::linkLog(RDSvc::ImportSource src,const QDate &date,
 }
 
 
-void RDSvc::clearLogLinks(RDSvc::ImportSource src,const QDate &date,
-			  const QString &logname)
+void RDSvc::clearLogLinks(RDSvc::ImportSource src,const QString &logname)
 {
   std::vector<int> cleared_ids;
   RDLogLine::Type event_type=RDLogLine::UnknownType;
@@ -1003,6 +1003,16 @@ void RDSvc::clearLogLinks(RDSvc::ImportSource src,const QDate &date,
   dest_event->save(svc_config);
   delete src_event;
   delete dest_event;
+
+  RDLog *log=new RDLog(logname);
+  if(src==RDSvc::Traffic) {
+    log->setLinkState(RDLog::SourceTraffic,false);
+  }
+  if(src==RDSvc::Music) {
+    log->setLinkState(RDLog::SourceMusic,false);
+  }
+  delete log;
+
 }
 
 
