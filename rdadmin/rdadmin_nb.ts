@@ -5809,7 +5809,7 @@ Vil du kombinera desse to?</translation>
     </message>
     <message>
         <source>Contract #</source>
-        <translation>Kontrakt #</translation>
+        <translation type="obsolete">Kontrakt #</translation>
     </message>
     <message>
         <source>Event ID</source>
@@ -5840,6 +5840,10 @@ Sjekk oppsettet ditt og prøv att.</translation>
     <message>
         <source>[spot break]</source>
         <translation>[spott-avbrot]</translation>
+    </message>
+    <message>
+        <source>GUID</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

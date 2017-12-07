@@ -118,7 +118,7 @@ TestImport::TestImport(RDSvc *svc,RDSvc::ImportSource src,QWidget *parent)
   test_events_list->setColumnAlignment(2,AlignRight);
   test_events_list->addColumn(tr("Title"));
   test_events_list->setColumnAlignment(3,AlignLeft);
-  test_events_list->addColumn(tr("Contract #"));
+  test_events_list->addColumn(tr("GUID"));
   test_events_list->setColumnAlignment(4,AlignCenter);
   test_events_list->addColumn(tr("Event ID"));
   test_events_list->setColumnAlignment(5,AlignCenter);

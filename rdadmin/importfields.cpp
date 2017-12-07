@@ -277,9 +277,9 @@ ImportFields::ImportFields(QWidget *parent)
 	  this,SLOT(valueChangedData(int)));
 
   //
-  // Traffic Contract # Parser Data Section
+  // Traffic GUID Parser Data Section
   //
-  label=new QLabel(tr("Contract #:"),this);
+  label=new QLabel(tr("Globally Unique ID:"),this);
   label->setGeometry(0,169,120,19);
   label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
 

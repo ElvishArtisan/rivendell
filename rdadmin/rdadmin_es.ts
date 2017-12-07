@@ -5850,7 +5850,7 @@ Do you want to combine the two?</source>
     </message>
     <message>
         <source>Contract #</source>
-        <translation>Contrato #</translation>
+        <translation type="obsolete">Contrato #</translation>
     </message>
     <message>
         <source>Event ID</source>
@@ -5881,6 +5881,10 @@ Revise los parámetros e intente de nuevo.</translation>
     <message>
         <source>[spot break]</source>
         <translation>[parada del spot]</translation>
+    </message>
+    <message>
+        <source>GUID</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

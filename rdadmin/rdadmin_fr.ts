@@ -5299,10 +5299,6 @@ Do you want to combine the two?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Contract #</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Event ID</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5329,6 +5325,10 @@ please check your settings and try again.</source>
     </message>
     <message>
         <source>[spot break]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>GUID</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -5823,7 +5823,7 @@ Do you want to combine the two?</source>
     </message>
     <message>
         <source>Contract #</source>
-        <translation>Contrato #:</translation>
+        <translation type="obsolete">Contrato #:</translation>
     </message>
     <message>
         <source>Event ID</source>
@@ -5854,6 +5854,10 @@ por favor, cheque suas configurações e tente novamente</translation>
     <message>
         <source>[spot break]</source>
         <translation>[spot break]</translation>
+    </message>
+    <message>
+        <source>GUID</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

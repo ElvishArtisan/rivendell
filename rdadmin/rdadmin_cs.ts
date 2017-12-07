@@ -5891,7 +5891,7 @@ Chcete obě spojit?</translation>
     </message>
     <message>
         <source>Contract #</source>
-        <translation>Číslo smlouvy</translation>
+        <translation type="obsolete">Číslo smlouvy</translation>
     </message>
     <message>
         <source>Event ID</source>
@@ -5922,6 +5922,10 @@ Prověřte, prosím, svá nastavení a zkuste to znovu.</translation>
     <message>
         <source>[spot break]</source>
         <translation>[přerušení místa]</translation>
+    </message>
+    <message>
+        <source>GUID</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

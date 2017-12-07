@@ -5842,7 +5842,7 @@ Wollen Sie die beiden kombinieren?</translation>
     </message>
     <message>
         <source>Contract #</source>
-        <translation>Vertragsnummer</translation>
+        <translation type="obsolete">Vertragsnummer</translation>
     </message>
     <message>
         <source>Event ID</source>
@@ -5873,6 +5873,10 @@ Bitte überprüfen Sie ihre Einstellungen und versuchen sie es erneut.</translat
     <message>
         <source>[spot break]</source>
         <translation>[spot break]</translation>
+    </message>
+    <message>
+        <source>GUID</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

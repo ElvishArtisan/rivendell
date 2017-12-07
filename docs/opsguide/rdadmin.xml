@@ -493,5 +493,98 @@
 	</para>
       </note>
     </sect2>
+    <sect2 xml:id="sect.rdadmin.manage_services.traffic_music_import_parser_settings">
+      <title>Traffic/Music Import Parser Settings</title>
+      <para>
+	<mediaobject>
+	  <imageobject>
+	    <imagedata align="center" fileref="rdadmin.import_parser_fields.png" scale="60"/>
+	  </imageobject>
+	  <caption>
+	    <para>The Log Parser Settings</para>
+	  </caption>
+	</mediaobject>
+      </para>
+      <para>
+	Rivendell includes the ability to import log schedule files from
+	a variety of third-party scheduling utilities. To configure an import
+	from one of these systems, all that is necessary is to select the
+	appropriate system in the
+	<computeroutput>Import Template</computeroutput> dropdown. If the
+	target scheduler system is not on this list, a custom parser can
+	be defined by selecting <computeroutput>[custom]</computeroutput>
+	from the dropdown.
+      </para>
+      <para>
+	Log schedule files for Rivendell are assumed to be in so-called
+	&quot;column-aligned&quot; format --i.e. each record occupies a single
+	line in a text file that is terminated by a single linefeed or a
+	carriage return, with each field occupying
+	a fixed	column position on the line. Each field takes two values:
+	<computeroutput>Offset:</computeroutput>, which is the starting
+	position of the field (starting from 0) on the line and
+	<computeroutput>Length:</computeroutput>, which is the number of
+	characters reserved for the field. Setting the
+	<computeroutput>Length:</computeroutput> value for field to
+	<userinput>0</userinput> disables the use of that field.
+      </para>
+      <para>
+	Most of the fields should be self-explanatory, but a few call for
+	some comment:
+      </para>
+      <variablelist>
+	<varlistentry>
+	  <term><computeroutput>Globally Unique ID</computeroutput></term>
+	  <listitem>
+	    <para>
+	      Many schedulers provide
+	      an opaque string with each scheduling record which they
+	      expect to be returned as part of the corresponding Electronic
+	      Log Reconciliation (ELR) feed back to the system. This field
+	      indicates where this &quot;GUID&quot; string should be found.
+	    </para>
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term><computeroutput>Event ID:</computeroutput> /
+	  <computeroutput>Annc. Type</computeroutput></term>
+	  <listitem>
+	    <para>
+	      Additional fields for GUID data. As of this writing, only
+	      scheduler products from Marketron require the use of these
+	      fields.
+	    </para>
+	  </listitem>
+	</varlistentry>
+      </variablelist>
+    </sect2>
+    <sect2 xml:id="sect.rdadmin.manage_services.testing_data_importation">
+      <title>Testing Data Importation</title>
+      <para>
+	Once the parameters have been configured, they can be tested
+	with a sample import file by touching the
+	<computeroutput>Test Music</computeroutput> or
+	<computeroutput>Test Music</computeroutput> buttons to bring up
+	the Test Import dialog.
+      </para>
+      <para>
+	<mediaobject>
+	  <imageobject>
+	    <imagedata align="center" fileref="rdadmin.test_import_dialog.png" scale="60"/>
+	  </imageobject>
+	  <caption>
+	    <para>The Test Import Dialog</para>
+	  </caption>
+	</mediaobject>
+      </para>
+      <para>
+	Select the date for the import to test, either by entering it in
+	the <computeroutput>Test Date:</computeroutput> control or by
+	touching the <computeroutput>Select</computeroutput> button. Then,
+	touch the <computeroutput>Import</computeroutput> button. The import
+	events for the day should appear in the
+	<computeroutput>Imported Events</computeroutput> list.
+      </para>
+    </sect2>
   </sect1>
 </chapter>
