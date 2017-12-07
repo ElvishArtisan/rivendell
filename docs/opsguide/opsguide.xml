@@ -35,12 +35,12 @@
     &rdcartslots;
     &rdlogmanager;
     &voicetracking;
-    &rml;
-    &utilities;
   </part>
   <part xml:id="part.rivendell_administration" xmlns="http://docbook.org/ns/docbook" version="5.0">
     <title>Rivendell Administration</title>
     &rdadmin;
+    &rml;
+    &utilities;
   </part>
   <part xml:id="part.appendices" xmlns="http://docbook.org/ns/docbook" version="5.0">
     &gplv2;

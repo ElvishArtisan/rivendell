@@ -16420,3 +16420,6 @@
 2017-12-06 Fred Gleason <fredg@paravelsystems.com>
 	* Added a note regrading package dependencies to the header of
 	'scripts/engine_conv.py'.
+2017-12-07 Fred Gleason <fredg@paravelsystems.com>
+	* Moved the 'RML' and 'Utilities' chapters of the Operations Guide
+	to the 'Rivendell Administration' section.
