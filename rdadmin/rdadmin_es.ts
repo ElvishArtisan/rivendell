@@ -4159,7 +4159,7 @@ Feeds para Podcasts</translation>
     </message>
     <message>
         <source>Allow Web Logins</source>
-        <translation>Permitir ingreso vía Web</translation>
+        <translation type="obsolete">Permitir ingreso vía Web</translation>
     </message>
     <message>
         <source>Disabled</source>
@@ -4190,6 +4190,10 @@ Permissions</source>
     <message>
         <source>Podcast Feed
 Permissions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Allow Web Login</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

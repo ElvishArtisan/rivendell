@@ -4042,7 +4042,7 @@ deve ser salva.  Salvar Agora?</translation>
     </message>
     <message>
         <source>Allow Web Logins</source>
-        <translation>Permitir Login Online</translation>
+        <translation type="obsolete">Permitir Login Online</translation>
     </message>
     <message>
         <source>Change
@@ -4195,6 +4195,10 @@ Permissions</source>
     <message>
         <source>Podcast Feed
 Permissions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Allow Web Login</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

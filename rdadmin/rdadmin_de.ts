@@ -4049,7 +4049,7 @@ gespeichert werden. Jetzt speichern?</translation>
     </message>
     <message>
         <source>Allow Web Logins</source>
-        <translation>Web-Logins erlauben</translation>
+        <translation type="obsolete">Web-Logins erlauben</translation>
     </message>
     <message>
         <source>Change
@@ -4202,6 +4202,10 @@ Permissions</source>
     <message>
         <source>Podcast Feed
 Permissions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Allow Web Login</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -4019,7 +4019,7 @@ Lagre no?</translation>
     </message>
     <message>
         <source>Allow Web Logins</source>
-        <translation>Gje høve til pålogging frå nettet</translation>
+        <translation type="obsolete">Gje høve til pålogging frå nettet</translation>
     </message>
     <message>
         <source>Change
@@ -4172,6 +4172,10 @@ Permissions</source>
     <message>
         <source>Podcast Feed
 Permissions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Allow Web Login</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

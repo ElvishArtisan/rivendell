@@ -3629,10 +3629,6 @@ must be saved.  Save now?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Allow Web Logins</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Change
 &amp;Password</source>
         <translation type="unfinished"></translation>
@@ -3770,6 +3766,10 @@ Permissions</source>
     <message>
         <source>Podcast Feed
 Permissions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Allow Web Login</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

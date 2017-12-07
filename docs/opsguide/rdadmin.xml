@@ -55,7 +55,7 @@
       Two different types of user exist within Rivendell: 
       <emphasis>administrator</emphasis> users (those which have the
       <computeroutput>Administer System</computeroutput> right set), who
-      are allowed to login into RDAdmin, and
+      are allowed to log into RDAdmin, and
       <emphasis>operational</emphasis> users, who are configured to have
       rights to operate specific portions of the Rivendell system but do
       not have access to RDAdmin. It is not possible for a single user to
@@ -83,7 +83,7 @@
       The upper third of the the dialog provides fields for basic information
       regarding the user as well as authentication settings. If the
       <computeroutput>Authenticate This User Locally</computeroutput> box
-      is ticked, then the login password for this use can be set by touching
+      is ticked, then the login password for this user can be set by touching
       the <computeroutput>Change Password</computeroutput> button. If
       unticked, then authentication is delegated to the Pluggable
       Authentication Module (PAM) specified in the
@@ -93,7 +93,7 @@
       The <computeroutput>WebAPI Timeout:</computeroutput> field sets the
       timeout (in seconds) when connecting to Rivendell's WebAPI
       component, while the <computeroutput>Allow Web Logins</computeroutput>
-      box, if ticked, permits this user to use the web comonent of
+      box, if ticked, permits this user to use the web component of
       RDCastManager.
     </para>
     <para>
@@ -105,12 +105,16 @@
       self-explanatory.
     </para>
     <para>
-      The bottom of the dialog contains two large buttons. The
+      The bottom of the dialog contains three large buttons. The
       <computeroutput>Assign Group Permissions</computeroutput> button
       allows assignment of the specific groups which this user will be
-      allowed to access in RDLibrary, while the
+      allowed to access in RDLibrary, 
+      the <computeroutput>Service Permissions</computeroutput> allows
+      assignment of the services which this user will be allowed to
+      access in RDLogEdit and the
       <computeroutput>Assign Podcast Feed Permissions</computeroutput>
-      does the same for Podcast Feeds.
+      allows the assignment of the podcast feeds which this user will
+      be allowed to manage in RDCastManager.
     </para>
     <para>
       Touch the <computeroutput>OK</computeroutput> button to commit any
