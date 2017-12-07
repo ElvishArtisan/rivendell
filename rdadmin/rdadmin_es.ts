@@ -2661,7 +2661,7 @@ GPIOs</source>
     <name>EditRDLibrary</name>
     <message>
         <source>RDLibrary config for </source>
-        <translation>Configuración de RDLibrary para </translation>
+        <translation type="obsolete">Configuración de RDLibrary para </translation>
     </message>
     <message>
         <source>INPUT</source>
@@ -2709,7 +2709,7 @@ GPIOs</source>
     </message>
     <message>
         <source>Ripper Level:</source>
-        <translation>Nivel de Ripper:</translation>
+        <translation type="obsolete">Nivel de Ripper:</translation>
     </message>
     <message>
         <source>&amp;FreeDB Server:</source>
@@ -2873,6 +2873,14 @@ equipo configurado para ejecutar CAE para obtener la información de audio.</tra
     </message>
     <message>
         <source>&amp;Read ISRCs from CD:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Configure RDLibrary</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Normalization Level:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

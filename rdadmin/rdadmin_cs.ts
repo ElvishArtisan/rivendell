@@ -2667,7 +2667,7 @@ GPIOs</source>
     <name>EditRDLibrary</name>
     <message>
         <source>RDLibrary config for </source>
-        <translation>Nastavení RDLibrary pro </translation>
+        <translation type="obsolete">Nastavení RDLibrary pro </translation>
     </message>
     <message>
         <source>INPUT</source>
@@ -2715,7 +2715,7 @@ GPIOs</source>
     </message>
     <message>
         <source>Ripper Level:</source>
-        <translation>Úroveň trhače:</translation>
+        <translation type="obsolete">Úroveň trhače:</translation>
     </message>
     <message>
         <source>&amp;FreeDB Server:</source>
@@ -2893,6 +2893,14 @@ nastaveném pro běh služby CAE pro naplnění databáze se zdroji zvuku.</tran
     </message>
     <message>
         <source>&amp;Read ISRCs from CD:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Configure RDLibrary</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Normalization Level:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -2361,10 +2361,6 @@ GPIOs</source>
 <context>
     <name>EditRDLibrary</name>
     <message>
-        <source>RDLibrary config for </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>INPUT</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2406,10 +2402,6 @@ GPIOs</source>
     </message>
     <message>
         <source>&amp;Paranoia Level:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Ripper Level:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2556,6 +2548,14 @@ configured to run the CAE service in order to populate the audio resources datab
     </message>
     <message>
         <source>&amp;Read ISRCs from CD:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Configure RDLibrary</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Normalization Level:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

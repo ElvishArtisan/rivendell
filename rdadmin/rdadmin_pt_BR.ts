@@ -2628,7 +2628,7 @@ GPIOs</source>
     <name>EditRDLibrary</name>
     <message>
         <source>RDLibrary config for </source>
-        <translation>Configuração do RDBiblio para </translation>
+        <translation type="obsolete">Configuração do RDBiblio para </translation>
     </message>
     <message>
         <source>INPUT</source>
@@ -2676,7 +2676,7 @@ GPIOs</source>
     </message>
     <message>
         <source>Ripper Level:</source>
-        <translation>Nível de Extração:</translation>
+        <translation type="obsolete">Nível de Extração:</translation>
     </message>
     <message>
         <source>&amp;FreeDB Server:</source>
@@ -2852,6 +2852,14 @@ configured to run the CAE service in order to populate the audio resources datab
     </message>
     <message>
         <source>&amp;Read ISRCs from CD:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Configure RDLibrary</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Normalization Level:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

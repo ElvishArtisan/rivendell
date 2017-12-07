@@ -16431,5 +16431,11 @@
 	rdadmin(1) to 'Globally Unique ID'.
 	* Completed the 'Managing Services' section of the Operations Guide.
 2017-12-07 Fred Gleason <fredg@paravelsystems.com>
-	* Changed the title of rdadmin(1)'s 'Rivendell Workstation List' to
-	'Rivendell Host List'.
+	* Changed the title of rdadmin(1)'s 'Rivendell Workstation List'
+	dialog to 'Rivendell Host List'.
+	* Changed the title of rdadmin(1)'s 'RDLibrary config' dialog to
+	'Configure RDLibrary'.
+	* Renamed the 'Ripper Level' control to 'Normalization Level'
+	and moved it to the 'Defaults' section of rdadmin(1)'s
+	'Configure RDLibrary' dialog.
+	* Added a 'Configuring RDLibrary' section to the Operations Guide.

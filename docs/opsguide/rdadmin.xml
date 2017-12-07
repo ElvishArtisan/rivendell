@@ -281,7 +281,7 @@
       To examine and modify an existing service, touch its entry in the
       <computeroutput>Services</computeroutput> list and then touch the
       <computeroutput>Edit</computeroutput> button to open the
-      Group Dialog.
+      Edit Service Dialog.
     </para>
     <para>
       <mediaobject>
@@ -584,6 +584,259 @@
 	touch the <computeroutput>Import</computeroutput> button. The import
 	events for the day should appear in the
 	<computeroutput>Imported Events</computeroutput> list.
+      </para>
+    </sect2>
+  </sect1>
+  <sect1 xml:id="sect.rdadmin.manage_hosts">
+    <title>Managing Hosts</title>
+    <para>
+      To manage hosts in RDAdmin, touch the
+      <computeroutput>Manage Hosts</computeroutput> button to open
+      the Rivendell Host List dialog.
+    </para>
+      <para>
+	<mediaobject>
+	  <imageobject>
+	    <imagedata align="center" fileref="rdadmin.rivendell_host_list_dialog.png" scale="60"/>
+	  </imageobject>
+	  <caption>
+	    <para>The Rivendell Host List Dialog</para>
+	  </caption>
+	</mediaobject>
+      </para>
+    <para>
+      To examine and modify an existing host, touch its entry in the
+      <computeroutput>Hosts</computeroutput> list and then touch the
+      <computeroutput>Edit</computeroutput> button to open the
+      Host Dialog.
+    </para>
+    <para>
+      <mediaobject>
+	<imageobject>
+	  <imagedata align="center" fileref="rdadmin.host_dialog.png" scale="50"/>
+	</imageobject>
+	<caption>
+	  <para>The Host Dialog</para>
+	</caption>
+      </mediaobject>
+    </para>
+    <para>
+      The dialog is divided into roughly two parts: the upper half, which
+      contains settings that pertain to the selected host overall, and the
+      lower half, which contains buttons that access settings specific to
+      a particular Rivendell module or subsystem.
+    </para>
+    <para>
+      The <computeroutput>Host Name:</computeroutput> (read-only),
+      <computeroutput>Short Name:</computeroutput> and
+      <computeroutput>Description:</computeroutput> fields are for
+      text strings. The value of these fields is accessible using
+      <link linkend="appendix.filepath_wildcards">filepath wildcards</link>.
+    </para>
+    <para>
+      The <computeroutput>Default User</computeroutput> sets the value of
+      the Rivendell user that will be logged in by default --i.e. when
+      the system is restarted or the
+      <computeroutput>Default User</computeroutput> button is touch in
+      rdlogin(1).
+    </para>
+    <para>
+      The <computeroutput>IP Address:</computeroutput> field should contain
+      the IPv4 address of the host. For multi-homed systems, an address that
+      is reachable from all other Rivendell hosts should be specified. If
+      this host is the sole host in the Rivendell database, then it is
+      acceptable to specify the loopback address
+      (<userinput>127.0.0.1</userinput>) here.
+    </para>
+    <para>
+      The <computeroutput>Editor Command:</computeroutput> can be used to
+      specify an external audio editor for use by rdlibrary(1). If desired,
+      the value should consist of the command invocation needed to start
+      the edit, with a <userinput>%f</userinput> wildcard to indicate the
+      name of the file to open.
+    </para>
+    <para>
+      The <computeroutput>Time Offset:</computeroutput> field can be used
+      to specify a static time offset in milliseconds to by applied to
+      events in rdcatch(1).
+    </para>
+    <para>
+      The <computeroutput>Startup Cart:</computeroutput> field takes the
+      number of a macro cart to be executed each time the Rivendell system
+      is restarted. This can be useful for initializing state --e.g. JACK
+      routes, etc.
+    </para>
+    <para>
+      The <computeroutput>Cue Output</computeroutput> controls specify the
+      audio output to be used for off-line &quot;audition&quot; uses. The
+      <computeroutput>Start Cart:</computeroutput> and
+      <computeroutput>Stop Cart:</computeroutput> fields take the number
+      of a macro cart that will be executed each time a cut play starts or
+      stops, respectively (useful for things such as dimming control room
+      audio monitors).
+    </para>
+    <para>
+      If the <computeroutput>Enable Heartbeat</computeroutput> box is ticked,
+      then the macro cart specified in the
+      <computeroutput>Cart:</computeroutput> will be executed at the specified
+      interval as a means to provide a system watchdog heartbeat.
+    </para>
+    <para>
+      If the <computeroutput>Use Realtime Filtering</computeroutput> box is
+      ticked, then the filter parameters when searching for carts will be
+      applied after each keystroke or parameter change. If unticked, then
+      the <computeroutput>Search</computeroutput> must be touched before
+      altered filter parameters will be applied.
+    </para>
+    <para>
+      If the <computeroutput>Include in System Maintenance Pool</computeroutput>
+      box is ticked, than this host will be included in the pool of systems
+      eligible to run automatic system maintenance routines in the background.
+    </para>
+    <para>
+      This setting should normally be left ticked unless the host in question
+      has a limited bandwidth connection to the Rivendell database or audio
+      store --e.g. is remotely located from the Rivendell server.
+    </para>
+    <para>
+      If the <computeroutput>Enable Drag &amp; Drop</computeroutput> box is
+      unticked, then Rivendell's drag and drop system will be disabled. If
+      ticked, then dropping carts on SoundPanels can be disabled by unticking
+      the
+      <computeroutput>Allow Drops on Panels not in Setup Mode</computeroutput>
+      box.
+    </para>
+    <para>
+      The <computeroutput>System Services</computeroutput> can be used
+      to allow this host to use the
+      <computeroutput>HTTP Xport:</computeroutput> or
+      <computeroutput>Core Audio Engine</computeroutput> services of another
+      host in the Rivendell network.
+    </para>
+    <sect2 xml:id="sect.rdadmin.manage_hosts.configuring_rdlibrary">
+      <title>Configuring RDLibrary</title>
+      <para>
+	To configure the rdlibrary(1) module, touch the
+	<computeroutput>RDLibrary</computeroutput> button to open the
+	Configure RDLibrary dialog.
+      </para>
+      <para>
+	<mediaobject>
+	  <imageobject>
+	    <imagedata align="center" fileref="rdadmin.configure_rdlibrary_dialog.png" scale="60"/>
+	  </imageobject>
+	  <caption>
+	    <para>The Configure RDLibrary Dialog</para>
+	  </caption>
+	</mediaobject>
+      </para>
+      <para>
+	The <computeroutput>INPUT</computeroutput> and
+	<computeroutput>OUTPUT</computeroutput> are used to specify
+	the audio input and output to be used.
+      </para>
+      <para>
+	The <computeroutput>Max Record Time</computeroutput> field sets
+	the maximum time that rdlibrary(1)'s Record widget will run in
+	record mode; when this time is reached, it will be automatically
+	stopped. To allow an unlimited record duration, set this to
+	<userinput>00:00:00</userinput>.
+      </para>
+      <para>
+	The <computeroutput>VOX Threshold</computeroutput> control sets
+	audio level at which to automatically begin recording when the
+	<computeroutput>Record Mode</computeroutput> control is set to
+	<computeroutput>VOX</computeroutput> in the Record dialog.
+      </para>
+      <para>
+	The <computeroutput>AutoTrim Threshold</computeroutput> control sets
+	audio level at which to trim the ends of the recorded audio when the
+	<computeroutput>AutoTrim</computeroutput> control is set to
+	<computeroutput>On</computeroutput> in the Record dialog.
+      </para>
+      <para>
+	The <computeroutput>Tail Preroll</computeroutput> control sets
+	how far before an end marker the audio cursor will be positioned
+	when auditioning a marker edit.
+      </para>
+      <para>
+	The <computeroutput>Ripper Device</computeroutput> field specifies
+	the CD-ROM device to be used for ripping audio CDs.
+      </para>
+      <para>
+	The <computeroutput>Paranoia Level</computeroutput> dropdown
+	specifies the amount of error checking/recovery to be applied
+	when ripping CDs, with <computeroutput>Normal</computeroutput> being
+	the maximum amount. With modern CD-ROM hardware, it is often possible
+	to obtain significantly faster ripper performance by setting this
+	control to <computeroutput>Low</computeroutput> or even
+	<computeroutput>None</computeroutput>.
+      </para>
+      <para>
+	For further information on the <computeroutput>Low</computeroutput>
+	and <computeroutput>None</computeroutput> options, see the
+	'-Y' and '-Z' options in the cdparanoia(1) man page or 
+	<link linkend="https://linux.die.net/man/1/cdparanoia">https://linux.die.net/man/1/cdparanoia</link>.
+      </para>
+      <para>
+	The <computeroutput>Read ISRC from CD:</computeroutput> dropdown
+	controls whether the ripper will attempt to read International
+	Standard Recording Code data from audio tracks when loading the disc.
+	Setting this
+	to <computeroutput>Yes</computeroutput> can cause CD-ROM drives
+	to take signficantly longer to read the table of contents of
+	newly inserted discs when the disc does not contain ISRC data.
+      </para>
+      <para>
+	The <computeroutput>FreeDB Server:</computeroutput> field takes the
+	URL of the server to be used for doing FreeDB lookups for CDs by
+	the CD ripper.
+      </para>
+      <para>
+	The <computeroutput>Format:</computeroutput> dropdown indicates the
+	audio encoding format to be used in Rivendell's audio store for
+	ingested material.
+      </para>
+      <para>
+	The <computeroutput>Bitrate:</computeroutput> dropdown indicates
+	the bitrate to be used when encoding ingested material to
+	<computeroutput>MPEG Layer 2</computeroutput>.
+      </para>
+      <para>
+	If set to <computeroutput>Yes</computeroutput>, the
+	<computeroutput>Allow External Editing</computeroutput> dropdown
+	will cause an <computeroutput>Edit Audio</computeroutput> button
+	to be displayed when editing audio carts.
+      </para>
+      <para>
+	The <computeroutput>Sample Rate Converter:</computeroutput> dropdown
+	controls which algorithm will be used when resampling ingested audio
+	to a different sample rate. For more information regarding the various
+	algorithms available, see
+	<link linkend="http://mega-nerd.com/SRC/api_misc.html#Converters">
+	  http://mega-nerd.com/SRC/api_misc.html#Converters</link>.
+      </para>
+      <para>
+	When ticked, the <computeroutput>Limit Searchs at Startup
+	</computeroutput> box will cause the
+	<computeroutput>Show Only First 100 Matches</computeroutput> box
+	to be ticked when starting a new instance of rdlibrary(1).
+      </para>
+      <para>
+	The <computeroutput>Channels:</computeroutput> dropdown sets the
+	default value of the <computeroutput>Channels:</computeroutput>
+	dropdowns in rdlibrary(1).
+      </para>
+      <para>
+	The<computeroutput>Record Mode</computeroutput> and
+	<computeroutput>AutoTrim</computeroutput> dropdowns set the
+	default value of the respective dropdowns in the Record dialog.
+      </para>
+      <para>
+	The <computeroutput>Normalization Level:</computeroutput> control
+	sets the default value of the
+	<computeroutput>Normalization Level:</computeroutput> controls in
+	rdlibrary(1).
       </para>
     </sect2>
   </sect1>
