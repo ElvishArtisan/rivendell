@@ -5173,7 +5173,7 @@ Cartuchos</translation>
     <name>ListStations</name>
     <message>
         <source>Rivendell Workstation List</source>
-        <translation>Lista de computadores usando Rivendell</translation>
+        <translation type="obsolete">Lista de computadores usando Rivendell</translation>
     </message>
     <message>
         <source>&amp;Add</source>
@@ -5202,6 +5202,10 @@ Cartuchos</translation>
     <message>
         <source>Delete Station</source>
         <translation>Eliminar equipo</translation>
+    </message>
+    <message>
+        <source>Rivendell Host List</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

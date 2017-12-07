@@ -4659,10 +4659,6 @@ Carts</source>
 <context>
     <name>ListStations</name>
     <message>
-        <source>Rivendell Workstation List</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;Add</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4688,6 +4684,10 @@ Carts</source>
     </message>
     <message>
         <source>Delete Station</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rivendell Host List</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

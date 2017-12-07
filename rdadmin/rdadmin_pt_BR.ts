@@ -5153,7 +5153,7 @@ Carts</source>
     <name>ListStations</name>
     <message>
         <source>Rivendell Workstation List</source>
-        <translation>Lista de Estações de Trabalho do Rivendell</translation>
+        <translation type="obsolete">Lista de Estações de Trabalho do Rivendell</translation>
     </message>
     <message>
         <source>&amp;Add</source>
@@ -5182,6 +5182,10 @@ Carts</source>
     <message>
         <source>Delete Station</source>
         <translation>Deletar Estação</translation>
+    </message>
+    <message>
+        <source>Rivendell Host List</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

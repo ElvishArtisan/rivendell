@@ -5215,7 +5215,7 @@ vozíky</translation>
     <name>ListStations</name>
     <message>
         <source>Rivendell Workstation List</source>
-        <translation>Seznam pracovních stanic Rivendell</translation>
+        <translation type="obsolete">Seznam pracovních stanic Rivendell</translation>
     </message>
     <message>
         <source>&amp;Add</source>
@@ -5244,6 +5244,10 @@ vozíky</translation>
     <message>
         <source>Delete Station</source>
         <translation>Smazat stanici</translation>
+    </message>
+    <message>
+        <source>Rivendell Host List</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

@@ -16430,3 +16430,6 @@
 	* Renamed the 'Contract #' field in the 'Edit Service' dialog in
 	rdadmin(1) to 'Globally Unique ID'.
 	* Completed the 'Managing Services' section of the Operations Guide.
+2017-12-07 Fred Gleason <fredg@paravelsystems.com>
+	* Changed the title of rdadmin(1)'s 'Rivendell Workstation List' to
+	'Rivendell Host List'.
