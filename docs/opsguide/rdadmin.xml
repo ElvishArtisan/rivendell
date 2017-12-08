@@ -839,5 +839,93 @@
 	rdlibrary(1).
       </para>
     </sect2>
+    <sect2 xml:id="sect.rdadmin.manage_hosts.configuring_rdcatch">
+      <title>Configuring RDCatch</title>
+      <para>
+	To configure the rdcatch(1) module, touch the
+	<computeroutput>RDCatch</computeroutput> button to open the
+	Configure RDCatch dialog.
+      </para>
+      <para>
+	<mediaobject>
+	  <imageobject>
+	    <imagedata align="center" fileref="rdadmin.configure_rdcatch_dialog.png" scale="60"/>
+	  </imageobject>
+	  <caption>
+	    <para>The Configure RDCatch Dialog</para>
+	  </caption>
+	</mediaobject>
+      </para>
+      <para>
+	The RDCatch Dialog consists of four sections: Record Deck, Play Deck,
+	Defaults and Host-Wide Settings.
+      </para>
+      <sect3 xml:id="rdadmin.manage_hosts.configuring_rdcatch.record_decks">
+	<title>Record Decks</title>
+	<para>
+	  The <computeroutput>Record Deck</computeroutput> dropdown selects
+	  the record deck to be configured.
+	</para>
+	<para>
+	  The <computeroutput>Card:</computeroutput> and
+	  <computeroutput>Port:</computeroutput> controls select which
+	  audio input will feed the deck, while
+	  <computeroutput>Monitor Port:</computeroutput> allows an
+	  audio output to be configured for monitoring audio during recording.
+	</para>
+	<para>
+	  The <computeroutput>Format:</computeroutput> and
+	  <computeroutput>Bit Rate:</computeroutput> dropdowns are used
+	  to specify the audio encoding format used in the Rivendell audio
+	  store with recordings from this deck.
+	  <computeroutput>Bit Rate:</computeroutput> is used only for a
+	  <computeroutput>Format:</computeroutput> setting of
+	  <computeroutput>MPEG Layer 2</computeroutput>.
+	</para>
+	<para>
+	  The <computeroutput>Switcher Host:</computeroutput>,
+	  <computeroutput>Switcher Matrix:</computeroutput> and
+	  <computeroutput>Switcher Output:</computeroutput> controls can
+	  be used to configure a switcher device for routing multiple audio
+	  signals into this record deck. The specified switcher output
+	  should be connected to the input specified by the
+	  <computeroutput>Card:</computeroutput> and
+	  <computeroutput>Port:</computeroutput> controls.
+	</para>
+	<para>
+	  The <computeroutput>Channels:</computeroutput> control sets
+	  the default value of the same control in rdcatch(1), while the
+	  <computeroutput>Trim Threshold</computeroutput> sets the default
+	  value of the autotrim <computeroutput>Level:</computeroutput>
+	  control.
+	</para>
+      </sect3>
+      <sect3 xml:id="rdadmin.manage_hosts.configuring_rdcatch.play_decks">
+	<title>Play Decks</title>
+	<para>
+	  The <computeroutput>Play Deck</computeroutput> dropdown selects the
+	  play deck to be configured.
+	</para>
+	<para>
+	  The <computeroutput>Card:</computeroutput> and
+	  <computeroutput>Port:</computeroutput> controls select which
+	  audio output will be used by the deck.
+	</para>
+	<para>
+	  The <computeroutput>Event Cart</computeroutput> take the number of
+	  the macro cart that will be executed each time the corresponding
+	  event marker (originally placed during recording by the Cut Event
+	  ['CE'] RML) is encountered during playback.
+	</para>
+      </sect3>
+      <sect3 xml:id="rdadmin.manage_hosts.configuring_rdcatch.host_wide_settings">
+	<title>Host-Wide Settings</title>
+	<para>
+	  The <computeroutput>Error RML:</computeroutput> field takes RML
+	  code that will be executed whenever rdcatch(1) encounters an error
+	  in operations --e.g. a file download failure.
+	</para>
+      </sect3>
+    </sect2>
   </sect1>
 </chapter>

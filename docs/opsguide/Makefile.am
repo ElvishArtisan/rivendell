@@ -83,6 +83,8 @@ OPSGUIDE_HTML = appendix.filepath_wildcards.html\
                 sect.gpio_switcher_devices.wheatnet_slio.html\
                 sect.gplv2.how_to_apply_these_terms_to_your_new_programs.html\
                 sect.rdadmin.manage_groups.html\
+                sect.rdadmin.manage_hosts.html\
+                sect.rdadmin.manage_services.html\
                 sect.rdadmin.managing_users.html\
                 sect.rdairplay.editing_a_log.html\
                 sect.rdairplay.layout.html\
@@ -128,6 +130,7 @@ OPSGUIDE_HTML = appendix.filepath_wildcards.html\
                 sect.voicetracking.using_the_voicetracker_dialog.html
 
 OPSGUIDE_IMAGES = rdadmin.autofill_carts_dialog.png\
+                  rdadmin.configure_rdcatch_dialog.png\
                   rdadmin.configure_rdlibrary_dialog.png\
                   rdadmin.edit_service_dialog.png\
                   rdadmin.group_dialog.png\

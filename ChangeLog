@@ -16439,3 +16439,5 @@
 	and moved it to the 'Defaults' section of rdadmin(1)'s
 	'Configure RDLibrary' dialog.
 	* Added a 'Configuring RDLibrary' section to the Operations Guide.
+2017-12-08 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'Configuring RDCatch' section to the Operations Guide.
