@@ -2270,7 +2270,7 @@ GPIOs</source>
     <name>EditRDAirPlay</name>
     <message>
         <source>RDAirPlay config for </source>
-        <translation>RDAirPlay-oppsett for</translation>
+        <translation type="obsolete">RDAirPlay-oppsett for</translation>
     </message>
     <message>
         <source>Channel Assignments</source>
@@ -2390,11 +2390,11 @@ GPIOs</source>
     </message>
     <message>
         <source>Host Panels:</source>
-        <translation>Vertspanel:</translation>
+        <translation type="obsolete">Vertspanel:</translation>
     </message>
     <message>
         <source>User Panels:</source>
-        <translation>Brukarpanel:</translation>
+        <translation type="unfinished">Brukarpanel:</translation>
     </message>
     <message>
         <source>Flash Active Buttons</source>
@@ -2629,6 +2629,14 @@ GPIOs</source>
     </message>
     <message>
         <source>Aux 2 Log Startup Mode:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Configure RDAirPlay</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>System Panels:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

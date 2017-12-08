@@ -130,8 +130,10 @@ OPSGUIDE_HTML = appendix.filepath_wildcards.html\
                 sect.voicetracking.using_the_voicetracker_dialog.html
 
 OPSGUIDE_IMAGES = rdadmin.autofill_carts_dialog.png\
+                  rdadmin.configure_rdairplay_dialog.png\
                   rdadmin.configure_rdcatch_dialog.png\
                   rdadmin.configure_rdlibrary_dialog.png\
+                  rdadmin.edit_channel_gpios_dialog.png\
                   rdadmin.edit_service_dialog.png\
                   rdadmin.group_dialog.png\
                   rdadmin.host_dialog.png\
@@ -140,6 +142,16 @@ OPSGUIDE_IMAGES = rdadmin.autofill_carts_dialog.png\
                   rdadmin.log_importation_string_fields.png\
                   rdadmin.login_dialog.png\
                   rdadmin.rdadmin_screenshot.png\
+                  rdadmin.rdairplay_channel_assignments.png\
+                  rdadmin.rdairplay_display_settings.png\
+                  rdadmin.rdairplay_edit_now___next_data_dialog.png\
+                  rdadmin.rdairplay_edit_plugin_dialog.png\
+                  rdadmin.rdairplay_hotkey_configuration_dialog.png\
+                  rdadmin.rdairplay_log_mode_control.png\
+                  rdadmin.rdairplay_log_settings.png\
+                  rdadmin.rdairplay_miscellaneous_settings.png\
+                  rdadmin.rdairplay_sound_panel_settings.png\
+                  rdadmin.rdairplay_start_stop_settings.png\
                   rdadmin.rename_group_dialog.png\
                   rdadmin.rivendell_group_list_dialog.png\
                   rdadmin.rivendell_host_list_dialog.png\

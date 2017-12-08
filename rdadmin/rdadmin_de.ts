@@ -2278,7 +2278,7 @@ GPIOs</source>
     <name>EditRDAirPlay</name>
     <message>
         <source>RDAirPlay config for </source>
-        <translation>RDAirPlay Konfiguration für</translation>
+        <translation type="obsolete">RDAirPlay Konfiguration für</translation>
     </message>
     <message>
         <source>Channel Assignments</source>
@@ -2394,11 +2394,11 @@ GPIOs</source>
     </message>
     <message>
         <source>Host Panels:</source>
-        <translation>Host-Panels:</translation>
+        <translation type="obsolete">Host-Panels:</translation>
     </message>
     <message>
         <source>User Panels:</source>
-        <translation>User-Panels:</translation>
+        <translation type="unfinished">User-Panels:</translation>
     </message>
     <message>
         <source>Flash Active Buttons</source>
@@ -2633,6 +2633,14 @@ GPIOs</source>
     </message>
     <message>
         <source>Aux 2 Log Startup Mode:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Configure RDAirPlay</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>System Panels:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

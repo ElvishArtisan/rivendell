@@ -2018,10 +2018,6 @@ GPIOs</source>
 <context>
     <name>EditRDAirPlay</name>
     <message>
-        <source>RDAirPlay config for </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Channel Assignments</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2127,14 +2123,6 @@ GPIOs</source>
     </message>
     <message>
         <source>None</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Host Panels:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>User Panels:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2355,6 +2343,18 @@ GPIOs</source>
     </message>
     <message>
         <source>Aux 2 Log Startup Mode:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Configure RDAirPlay</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>System Panels:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>User Panels:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

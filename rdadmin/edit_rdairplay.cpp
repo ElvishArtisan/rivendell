@@ -81,7 +81,7 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
   //
   // Dialog Name
   //
-  setCaption(tr("RDAirPlay config for ")+station->name());
+  setCaption(tr("Configure RDAirPlay"));
 
   //
   // Channel Assignments Section
@@ -499,8 +499,8 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
   air_station_box->setGeometry(895,204,50,20);
   air_station_box->setRange(0,MAX_PANELS);
   air_station_box->setSpecialValueText(tr("None"));
-  air_station_label=new QLabel(air_station_box,tr("Host Panels:"),this);
-  air_station_label->setGeometry(790,204,100,20);
+  air_station_label=new QLabel(air_station_box,tr("System Panels:"),this);
+  air_station_label->setGeometry(750,204,140,20);
   air_station_label->setAlignment(AlignRight|AlignVCenter);
 
   //
@@ -511,7 +511,7 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
   air_user_box->setRange(0,MAX_PANELS);
   air_user_box->setSpecialValueText(tr("None"));
   air_user_label=new QLabel(air_user_box,tr("User Panels:"),this);
-  air_user_label->setGeometry(790,226,100,20);
+  air_user_label->setGeometry(750,226,140,20);
   air_user_label->setAlignment(AlignRight|AlignVCenter);
 
   //

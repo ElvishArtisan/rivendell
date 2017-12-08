@@ -2303,7 +2303,7 @@ GPIOs</source>
     <name>EditRDAirPlay</name>
     <message>
         <source>RDAirPlay config for </source>
-        <translation>Nastavení RDAirPlay pro </translation>
+        <translation type="obsolete">Nastavení RDAirPlay pro </translation>
     </message>
     <message>
         <source>Channel Assignments</source>
@@ -2419,11 +2419,11 @@ GPIOs</source>
     </message>
     <message>
         <source>Host Panels:</source>
-        <translation>Panely serveru:</translation>
+        <translation type="obsolete">Panely serveru:</translation>
     </message>
     <message>
         <source>User Panels:</source>
-        <translation>Panely uživatele:</translation>
+        <translation type="unfinished">Panely uživatele:</translation>
     </message>
     <message>
         <source>Flash Active Buttons</source>
@@ -2660,6 +2660,14 @@ GPIOs</source>
     </message>
     <message>
         <source>Aux 2 Log Startup Mode:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Configure RDAirPlay</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>System Panels:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

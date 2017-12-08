@@ -620,6 +620,13 @@
 	</caption>
       </mediaobject>
     </para>
+    <note>
+      <para>
+	After changing the configuration of a Rivendell module, it is
+	generally necessary to restart that module for the changes to
+	take effect!
+      </para>
+    </note>
     <para>
       The dialog is divided into roughly two parts: the upper half, which
       contains settings that pertain to the selected host overall, and the
@@ -925,6 +932,424 @@
 	  code that will be executed whenever rdcatch(1) encounters an error
 	  in operations --e.g. a file download failure.
 	</para>
+      </sect3>
+    </sect2>
+    <sect2 xml:id="sect.rdadmin.manage_hosts.configuring_rdairplay">
+      <title>Configuring RDAirPlay</title>
+      <para>
+	To configure the rdairplay(1) module, touch the
+	<computeroutput>RDAirPlay</computeroutput> button to open the
+	Configure RDAirPlay dialog.
+      </para>
+      <para>
+	<mediaobject>
+	  <imageobject>
+	    <imagedata align="center" fileref="rdadmin.configure_rdairplay_dialog.png" scale="40"/>
+	  </imageobject>
+	  <caption>
+	    <para>The Configure RDAirPlay Dialog</para>
+	  </caption>
+	</mediaobject>
+      </para>
+      <sect3 xml:id="rdadmin.manage_hosts.configure_rdairplay.channel_assignments">
+	<title>Channel Assignments</title>
+	<para>
+	  The <computeroutput>Channel Assignments</computeroutput> section
+	  contains controls for configuring the audio outputs, along with
+	  associated fader metadata and automation.
+	</para>
+	<para>
+	  <mediaobject>
+	    <imageobject>
+	      <imagedata align="center" fileref="rdadmin.rdairplay_channel_assignments.png" scale="50"/>
+	    </imageobject>
+	    <caption>
+	      <para>Channel Assignments Section</para>
+	    </caption>
+	  </mediaobject>
+	</para>
+	<para>
+	  Audio outputs for the Main Log, both Aux Logs and the Sound Panel
+	  are configured by means of the
+	  <computeroutput>Card:</computeroutput> and 
+	  <computeroutput>Port:</computeroutput> controls. For the Main Log,
+	  if <emphasis>both</emphasis>
+	  <computeroutput>Output 1</computeroutput> and
+	  <computeroutput>Output 2</computeroutput> are set to different
+	  card and/or port values, rdairplay(1)'s output will alternate
+	  between the two outputs.
+	</para>
+	<para>
+	  Each of the corresponding
+	  <computeroutput>Start RML:</computeroutput> and
+	  <computeroutput>Stop RML:</computeroutput> fields can take
+	  RML code that will be executed each time the associated channel
+	  is started or stopped. <link linkend="appendix.metadata_wildcards">
+	  Metadata wildcards</link> can be used in these fields, which will
+	  reflect the values of the cart being started or stopped.
+	</para>
+	<para>
+	  To configure fader automation for a given channel, touch its
+	  <computeroutput>Edit GPIOs</computeroutput> button to
+	  open the Edit Channel GPIOs dialog.
+	</para>
+	<para>
+	  <mediaobject>
+	    <imageobject>
+	      <imagedata align="center" fileref="rdadmin.edit_channel_gpios_dialog.png" scale="50"/>
+	    </imageobject>
+	    <caption>
+	      <para>Edit Channel GPIOs Dialog</para>
+	    </caption>
+	  </mediaobject>
+	</para>
+	<para>
+	  The <computeroutput>GPI</computeroutput> fields specify a general
+	  input event coming into Rivendell (typically mapped from the
+	  fader ON or OFF status signal on the associated mixer desk).
+	  Reception of
+	  this signal will cause the corresponding RDAirPlay channel to be
+	  started or stopped.
+	  The <computeroutput>GPO</computeroutput> fields specify a general
+	  output event emitted by Rivendell each time the corresponding
+	  channel is started or stopped (typically mapped to the fader
+	  ON or OFF remote control on the associated mixer desk).
+	</para>
+      </sect3>
+      <sect3 xml:id="rdadmin.manage_hosts.configure_rdairplay.start_stop_settings">
+	<title>Start/Stop Settings</title>
+	<para>
+	  The <computeroutput>Start/Stop Settings</computeroutput> section
+	  controls the behavior of rdairplay(1) when the module is first
+	  opened and finally closed.
+	</para>
+	<para>
+	  <mediaobject>
+	    <imageobject>
+	      <imagedata align="center" fileref="rdadmin.rdairplay_start_stop_settings.png" scale="60"/>
+	    </imageobject>
+	    <caption>
+	      <para>Start/Stop Section</para>
+	    </caption>
+	  </mediaobject>
+	</para>
+	<para>
+	  The <computeroutput>Exit Password:</computeroutput> field can be
+	  used to specify a password that must be entered when exiting
+	  rdairplay(1) (useful for preventing inadvertent shutdowns).
+	</para>
+	<para>
+	  For each of the log machines (Main Log, Aux 1 Log and Aux 2 Log),
+	  it is possible to specify the action to take at startup by selecting
+	  the appropriate value in the
+	  <computeroutput>At Startup:</computeroutput> dropdown. If the
+	  <computeroutput>Restart Log After Unclean Shutdown</computeroutput>
+	  box is ticked, then rdairplay(1) will attempt to restart the log
+	  from the event which was playing when the unclean shutdown occurred.
+	</para>
+      </sect3>
+      <sect3 xml:id="rdadmin.manage_hosts.configure_rdairplay.display_settings">
+	<title>Display Settings</title>
+	<para>
+	  The <computeroutput>Display Settings</computeroutput> section
+	  controls the contents and formatting of the label areas of the
+	  button widget as well as the &quot;skin&quot; used for the
+	  overall rdairplay(1) window.
+	</para>
+	<para>
+	  <mediaobject>
+	    <imageobject>
+	      <imagedata align="center" fileref="rdadmin.rdairplay_display_settings.png" scale="60"/>
+	    </imageobject>
+	    <caption>
+	      <para>Display Settings</para>
+	    </caption>
+	  </mediaobject>
+	</para>
+	<para>
+	  The <computeroutput>Background Image:</computeroutput> field takes
+	  the full path to a bitmap file to use as the background
+	  &quot;skin&quot; for rdairplay(1)'s main window. The file should
+	  be 1024x738 resolution and be of type JPG or PNG.
+	</para>
+	<para>
+	  Each of the <computeroutput>Template:</computeroutput> fields
+	  define the formatting of one of the lines of the label areas in the
+	  button widget. <link linkend="appendix.metadata_wildcards">
+	  Metadata wildcards</link> are used to define the contents to be
+	  displayed.
+	</para>
+      </sect3>
+      <sect3 xml:id="rdadmin.manage_hosts.configure_rdairplay_start_stop_settings">
+	<title>Log Mode Control</title>
+	<para>
+	  The <computeroutput>Log Mode Control</computeroutput> section
+	  configures the behavior of rdairplay(1) mode controls.
+	</para>
+	<para>
+	  <mediaobject>
+	    <imageobject>
+	      <imagedata align="center" fileref="rdadmin.rdairplay_log_mode_control.png" scale="60"/>
+	    </imageobject>
+	    <caption>
+	      <para>Log Mode Control</para>
+	    </caption>
+	  </mediaobject>
+	</para>
+	<para>
+	  The <computeroutput>Mode Control Style</computeroutput> dropdown is
+	  used to specify whether operating mode of the log machines are
+	  always the same (<computeroutput>Unified</computeroutput> mode) or
+	  can be separately set (<computeroutput>Indepdendent</computeroutput>
+	  mode).
+	</para>
+	<para>
+	  The startup states of the log machines can be set by means of the
+	  <computeroutput>Start Mode:</computeroutput> dropdowns.
+	</para>
+      </sect3>
+      <sect3 xml:id="rdadmin.manage_hosts.configure_rdairplay_log_settings">
+	<title>Log Settings</title>
+	<para>
+	  The <computeroutput>Log Settings</computeroutput> section
+	  configures the behavior of log operations.
+	</para>
+	<para>
+	  <mediaobject>
+	    <imageobject>
+	      <imagedata align="center" fileref="rdadmin.rdairplay_log_settings.png" scale="60"/>
+	    </imageobject>
+	    <caption>
+	      <para>Log Settings</para>
+	    </caption>
+	  </mediaobject>
+	</para>
+	<para>
+	  The <computeroutput>Manual Segue:</computeroutput> field specifies
+	  the duration of the segue overlap to apply when manually starting
+	  a log event while one or more other events are currently playing.
+	</para>
+	<para>
+	  The <computeroutput>Forced Segue:</computeroutput> field specifies
+	  the duration of the segue overlap to apply when a hard time event
+	  starts while one or more other events are currently playing.
+	</para>
+	<para>
+	  The <computeroutput>Pie Counts Last:</computeroutput> field specifies
+	  when the pie widget begins its countdown, relative to the setting
+	  of the <computeroutput>Pie Counts To:</computeroutput> dropdown. If
+	  set to <computeroutput>Cart End</computeroutput>, countdown will
+	  always be relative to the end marker of the cut, whereas a setting
+	  of <computeroutput>Transition</computeroutput> will count down
+	  relative to the start of the transition to the following event.
+	</para>
+	<para>
+	  The <computeroutput>Default Trans. Type</computeroutput> dropdown
+	  determines what transition type will be applied by default when
+	  adding a new event to a log.
+	</para>
+	<para>
+	  The <computeroutput>Default Service:</computeroutput> dropdown
+	  determins what service will be associated with a newly created
+	  log.
+	</para>
+      </sect3>
+      <sect3 xml:id="rdadmin.manage_hosts.configure_rdairplay_sound_panel_settings">
+	<title>Sound Panel Settings</title>
+	<para>
+	  The <computeroutput>Sound Panel Settings</computeroutput> section
+	  configures the behavior of Sound Panel operations.
+	</para>
+	<para>
+	  <mediaobject>
+	    <imageobject>
+	      <imagedata align="center" fileref="rdadmin.rdairplay_sound_panel_settings.png" scale="60"/>
+	    </imageobject>
+	    <caption>
+	      <para>Sound Panel Settings</para>
+	    </caption>
+	  </mediaobject>
+	</para>
+	<para>
+	  The total number of system and User panels are set with the
+	  <computeroutput>System Panels:</computeroutput> and
+	  <computeroutput>User Panels:</computeroutput> fields respectively.
+	</para>
+	<para>
+	  If the <computeroutput>Flash Active Buttons</computeroutput> box
+	  is ticked, then the buttons in the button widget that correspond
+	  to playing events will flash.
+	</para>
+	<para>
+	  If the <computeroutput>Enable Button Pausing</computeroutput> box
+	  is ticked, then touching the button of an playing event will cause
+	  it to pause rather than stopping. A paused event can be restarted
+	  by pressing its button again.
+	</para>
+	<para>
+	  The <computeroutput>Label Template</computeroutput> control
+	  determines the default button legend for newly created Sound
+	  Panel buttons. <link linkend="appendix.metadata_wildcards">
+	  Metadata wildcards</link> can be used in this field.
+	</para>
+      </sect3>
+      <sect3 xml:id="rdadmin.manage_hosts.configure_rdairplay_miscellaneous_settings">
+	<title>Miscellaneous Settings</title>
+	<para>
+	  <mediaobject>
+	    <imageobject>
+	      <imagedata align="center" fileref="rdadmin.rdairplay_miscellaneous_settings.png" scale="60"/>
+	    </imageobject>
+	    <caption>
+	      <para>Miscellaneous Settings</para>
+	    </caption>
+	  </mediaobject>
+	</para>
+	<para>
+	  If the <computeroutput>Check Time Sync</computeroutput> box is
+	  ticked, the status of the kernel's time synchronization PLL lock
+	  will be check periodically. If not locked, the wall clock will
+	  flash red.
+	</para>
+	<para>
+	  Ticking <computeroutput>Show Auxlog 1</computeroutput> or
+	  <computeroutput>Show Auxlog 2</computeroutput> boxes will cause
+	  selector buttons for the respective log machines to be displayed.
+	</para>
+	<para>
+	  If the <computeroutput>Clear Cart Search Filter</computeroutput> box
+	  is ticked, the cart search dialog's filter will be cleared each
+	  time the dialog is redisplayed.
+	</para>
+	<para>
+	  If the <computeroutput>Enable Paused Events</computeroutput> box is
+	  ticked, touch the button for a playing event will cause that event
+	  to be paused rather than stopped. A stopped event can be restarted by
+	  touching it again, dismissed by deleting the event.
+	</para>
+	<para>
+	  Ticking the <computeroutput>Show Extra Buttons/Counters</computeroutput>
+	  box will cause <computeroutput>Audition Head</computeroutput>,
+	  <computeroutput>Audition Tail</computeroutput> buttons and the
+	  <computeroutput>Run Length</computeroutput> to be displayed as part
+	  of the List Log widget.
+	</para>
+	<para>
+	  Ticking the <computeroutput>Show Hour Selector</computeroutput> will
+	  cause the Hour Selector to be displ;ayed as part of the List Log
+	  widget.
+	</para>
+	<para>
+	  The <computeroutput>Audition Preroll</computeroutput> sets how far
+	  before the current play position an audition playout will begin.
+	</para>
+	<para>
+	  The <computeroutput>Space Bar Action</computeroutput> sets what
+	  action will taken when the space bar is pressed.
+	</para>
+      </sect3>
+      <sect3 xml:id="rdadmin.manage_hosts.configure_rdairplay_configuring_hotkeys">
+	<title>Configuring Hotkeys</title>
+	<para>
+	  Keyboard shortcuts (also known as &quot;hotkeys&quot;) can be
+	  configured by touch the
+	  <computeroutput>Configure Hotkeys</computeroutput> button, bringing
+	  up the Hot Key Configuration dialog.
+	</para>
+	<para>
+	  <mediaobject>
+	    <imageobject>
+	      <imagedata align="center" fileref="rdadmin.rdairplay_hotkey_configuration_dialog.png" scale="60"/>
+	    </imageobject>
+	    <caption>
+	      <para>The Hotkey Configuration Dialog</para>
+	    </caption>
+	  </mediaobject>
+	</para>
+	<para>
+	  A hotkey can be assigned to a particular function by selecting
+	  that function off of the
+	  <computeroutput>Host Hot Key Configuration</computeroutput> list,
+	  pressing and releasing the desired key, and then touching the
+	  <computeroutput>Set</computeroutput> button. To remove a hotkey
+	  assignment, select the desired function and then touch the
+	  <computeroutput>Clear</computeroutput> button. Touching the
+	  <computeroutput>Clear All Hotkeys</computeroutput> button will
+	  clear <emphasis>all</emphasis> hotkey assignments for this host.
+	  Hotkey assignments from a different host can be copied to this
+	  one by selecting the desired source host in the
+	  <computeroutput>Set From Host:</computeroutput> dropdown and
+	  then touching <computeroutput>Save</computeroutput>.
+	</para>
+	<note>
+	  <para>
+	    Not all keys may be mappable as a hotkey, as certain window
+	    managers &quot;steal&quot; keys for their own use!
+	  </para>
+	</note>
+      </sect3>
+      <sect3 xml:id="rdadmin.manage_hosts.configuring_now___next_parameters">
+	<title>Configuring Now &amp; Next Parameters</title>
+	<para>
+	  Transmission of program associated data (PAD) (also known as
+	  <emphasis>Now &amp; Next</emphasis> in Rivendell) can be configured
+	  by touching the
+	  <computeroutput>Configure Now &amp; Next Parameters</computeroutput>
+	  button, bringing up the Edit Now &amp; Next Data Dialog.
+	</para>
+	<para>
+	  <mediaobject>
+	    <imageobject>
+	      <imagedata align="center" fileref="rdadmin.rdairplay_edit_now___next_data_dialog.png" scale="60"/>
+	    </imageobject>
+	    <caption>
+	      <para>The Edit Now &amp; Next Data Dialog</para>
+	    </caption>
+	  </mediaobject>
+	</para>
+	<note>
+	  <para>
+	    Now &amp; Next data for Rivendell was originally transmitted by
+	    means of an integrated UDP packet transmitter. While currently
+	    still supported, this method has been deprecated in favor of the
+	    <emphasis>Rivendell Loadable Modules</emphasis> (RLMs), a far more
+	    powerful method that involves the use of plug-in code modules. RLM
+	    is the only method that is documented here.
+	  </para>
+	</note>
+	<para>
+	  RLMs can be added by touching the
+	  <computeroutput>Add</computeroutput> button to bring up the
+	  Edit Plugin Dialog.
+	</para>
+	<para>
+	  <mediaobject>
+	    <imageobject>
+	      <imagedata align="center" fileref="rdadmin.rdairplay_edit_plugin_dialog.png" scale="60"/>
+	    </imageobject>
+	    <caption>
+	      <para>The Edit Plugin Dialog</para>
+	    </caption>
+	  </mediaobject>
+	</para>
+	<para>
+	  The <computeroutput>Plugin Path:</computeroutput> field should
+	  contain the full path to the RLM plug-in binary. For all RLMs
+	  provided as part of stock Rivendell, the
+	  <computeroutput>Argument:</computeroutput> field should contain
+	  the full path to the configuration file for the plug-in, samples of
+	  which can be found in the Rivendell docuementation directory.
+	</para>
+	<warning>
+	  <para>
+	    When configuring a new plug-in, be sure to make a <emphasis>copy
+	    </emphasis> of the configuration file to the
+	    <userinput>/etc</userinput> directory
+	    and use it, rather than pointing to the original. Otherwise, any
+	    changes made to the file may be overwritten next time Rivendell
+	    is upgraded on the system!
+	  </para>
+	</warning>
       </sect3>
     </sect2>
   </sect1>
