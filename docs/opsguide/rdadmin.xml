@@ -1377,5 +1377,81 @@
 	  RDAirPlay configuration</link>. Please see that section for details.
       </para>
     </sect2>
+    <sect2 xml:id="sect.rdadmin.manage_hosts.configuring_rdlogedit">
+      <title>Configuring RDLogEdit</title>
+      <para>
+	To configure the rdlogedit(1) module, touch the
+	<computeroutput>RDLogEdit</computeroutput> button to open the
+	Configure RDLogEdit dialog.
+      </para>
+      <para>
+	<mediaobject>
+	  <imageobject>
+	    <imagedata align="center" fileref="rdadmin.configure_rdlogedit_dialog.png" scale="50"/>
+	  </imageobject>
+	  <caption>
+	    <para>The Configure RDLogEdit Dialog</para>
+	  </caption>
+	</mediaobject>
+      </para>
+      <para>
+	The <computeroutput>INPUT</computeroutput> and
+	<computeroutput>OUTPUT</computeroutput> are used to specify
+	the audio input and output to be used.
+      </para>
+      <para>
+	The <computeroutput>Max Record Time</computeroutput> field sets
+	the maximum time that rdlogedit(1)'s voice tracker will run in
+	record mode; when this time is reached, it will be automatically
+	stopped. To allow an unlimited record duration, set this to
+	<userinput>00:00:00</userinput>.
+      </para>
+      <para>
+	The <computeroutput>AutoTrim Threshold</computeroutput> control sets
+	audio level at which to trim the ends of the recorded audio in the
+	voice tracker.
+      </para>
+      <para>
+	The <computeroutput>Normalization Level</computeroutput> control sets
+	audio level at which to peak normalize the recorded audio in the
+	voice tracker.
+      </para>
+      <para>
+	The <computeroutput>Format:</computeroutput> and
+	<computeroutput>Bit Rate:</computeroutput> dropdowns are used
+	to specify the audio encoding format used in the Rivendell audio
+	store with the voice tracker.
+	<computeroutput>Bit Rate:</computeroutput> is used only for a
+	<computeroutput>Format:</computeroutput> setting of
+	<computeroutput>MPEG Layer 2</computeroutput>.
+      </para>
+      <para>
+	If the <computeroutput>Enable 2nd Start Button:</computeroutput>
+	dropdown is set to <computeroutput>No</computeroutput>, then
+	the voice tracker will not display the second
+	<computeroutput>Start</computeroutput> button (and hence, not
+	run the event that follows the recorded track), but wait for the
+	<computeroutput>Save</computeroutput> button to be touched after
+	starting the track recording.
+      </para>
+      <para>
+	The <computeroutput>Play Start Cart:</computeroutput>,
+	<computeroutput>Play End Cart:</computeroutput>,
+	The <computeroutput>Record Start Cart:</computeroutput> and
+	The <computeroutput>Record End Cart:</computeroutput> fields each
+	take the number of a macro cart to be executed when the respective
+	audio signal starts or ends. (Useful for automated external audio
+	paths changes to support voicetracking operations).
+      </para>
+      <para>
+	The <computeroutput>Channels:</computeroutput> dropdown indicates
+	the number of channels to use when recording voicetracks.
+      </para>
+      <para>
+	The <computeroutput>Default Transition</computeroutput> indicates
+	the transition type to use by default when adding a new log
+	event.
+      </para>
+    </sect2>
   </sect1>
 </chapter>

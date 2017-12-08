@@ -133,6 +133,7 @@ OPSGUIDE_IMAGES = rdadmin.autofill_carts_dialog.png\
                   rdadmin.configure_rdairplay_dialog.png\
                   rdadmin.configure_rdcatch_dialog.png\
                   rdadmin.configure_rdlibrary_dialog.png\
+                  rdadmin.configure_rdlogedit_dialog.png\
                   rdadmin.edit_channel_gpios_dialog.png\
                   rdadmin.edit_service_dialog.png\
                   rdadmin.group_dialog.png\

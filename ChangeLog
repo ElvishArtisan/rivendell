@@ -16449,3 +16449,7 @@
 	* Changed the title of the 'RDPanel configuration' dialog in
 	rdadmin(1) to 'Configure RDPanel'.
 	* Added a 'Configuring RDPanel' section to the Operations Guide.
+2017-12-08 Fred Gleason <fredg@paravelsystems.com>
+	* Changed the title of the 'RDLogEdit configuration' dialog in
+	rdadmin(1) to 'Configure RDLogEdit'.
+	* Added a 'Configuring RDLogEdit' section to the Operations Guide.

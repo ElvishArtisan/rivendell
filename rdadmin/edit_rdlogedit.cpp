@@ -64,7 +64,7 @@ EditRDLogedit::EditRDLogedit(RDStation *station,RDStation *cae_station,
   //
   // Dialog Name
   //
-  setCaption(tr("RDLogedit config for ")+station->name());
+  setCaption(tr("Configure RDLogedit"));
 
   //
   // Input Configuration

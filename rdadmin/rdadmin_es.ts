@@ -2896,7 +2896,7 @@ equipo configurado para ejecutar CAE para obtener la información de audio.</tra
     <name>EditRDLogedit</name>
     <message>
         <source>RDLogedit config for </source>
-        <translation>Configuración de RDLogEdit para </translation>
+        <translation type="obsolete">Configuración de RDLogEdit para </translation>
     </message>
     <message>
         <source>INPUT</source>
@@ -3081,6 +3081,10 @@ computador para obtener los recursos de audio de dicho equipo.</translation>
     <message>
         <source>PCM24</source>
         <translation type="unfinished">PCM24</translation>
+    </message>
+    <message>
+        <source>Configure RDLogedit</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

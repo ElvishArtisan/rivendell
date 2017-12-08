@@ -2916,7 +2916,7 @@ nastaveném pro běh služby CAE pro naplnění databáze se zdroji zvuku.</tran
     <name>EditRDLogedit</name>
     <message>
         <source>RDLogedit config for </source>
-        <translation>Nastavení RDLogedit pro </translation>
+        <translation type="obsolete">Nastavení RDLogedit pro </translation>
     </message>
     <message>
         <source>INPUT</source>
@@ -3101,6 +3101,10 @@ nastaveném pro běh služby CAE pro naplnění databáze se zdroji zvuku.</tran
     <message>
         <source>PCM24</source>
         <translation type="unfinished">PCM24</translation>
+    </message>
+    <message>
+        <source>Configure RDLogedit</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

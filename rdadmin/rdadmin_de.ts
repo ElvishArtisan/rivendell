@@ -2886,10 +2886,6 @@ configured to run the CAE service in order to populate the audio resources datab
 <context>
     <name>EditRDLogedit</name>
     <message>
-        <source>RDLogedit config for </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>INPUT</source>
         <translation type="unfinished">EINGANG</translation>
     </message>
@@ -3070,6 +3066,10 @@ configured to run the CAE service in order to populate the audio resources datab
     <message>
         <source>PCM24</source>
         <translation type="unfinished">PCM24</translation>
+    </message>
+    <message>
+        <source>Configure RDLogedit</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
