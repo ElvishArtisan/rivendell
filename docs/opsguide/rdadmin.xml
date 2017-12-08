@@ -1352,5 +1352,30 @@
 	</warning>
       </sect3>
     </sect2>
+    <sect2 xml:id="sect.rdadmin.manage_hosts.configuring_rdpanel">
+      <title>Configuring RDPanel</title>
+      <para>
+	To configure the rdpanel(1) module, touch the
+	<computeroutput>RDPanel</computeroutput> button to open the
+	Configure RDPanel dialog.
+      </para>
+      <para>
+	<mediaobject>
+	  <imageobject>
+	    <imagedata align="center" fileref="rdadmin.configure_rdpanel_dialog.png" scale="40"/>
+	  </imageobject>
+	  <caption>
+	    <para>The Configure RDPanel Dialog</para>
+	  </caption>
+	</mediaobject>
+      </para>
+      <para>
+	The rdpanel(1) application is merely a larger version of
+	the Sound Panel portion of rdairplay(1). As such, its configuration
+	closely mirrors that of the
+	<link linkend="sect.rdadmin.manage_hosts.configuring_rdairplay">
+	  RDAirPlay configuration</link>. Please see that section for details.
+      </para>
+    </sect2>
   </sect1>
 </chapter>

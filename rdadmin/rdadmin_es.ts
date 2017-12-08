@@ -3087,7 +3087,7 @@ computador para obtener los recursos de audio de dicho equipo.</translation>
     <name>EditRDPanel</name>
     <message>
         <source>RDPanel config for </source>
-        <translation>Configuración de RDPanel para </translation>
+        <translation type="obsolete">Configuración de RDPanel para </translation>
     </message>
     <message>
         <source>Channel Assignments</source>
@@ -3202,6 +3202,10 @@ para generar la base de datos con los recursos de audio disponibles.</translatio
     <message>
         <source>Select Image File</source>
         <translation>Seleccione una imagen</translation>
+    </message>
+    <message>
+        <source>Configure RDPanel</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

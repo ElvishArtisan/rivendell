@@ -3063,10 +3063,6 @@ configured to run the CAE service in order to populate the audio resources datab
 <context>
     <name>EditRDPanel</name>
     <message>
-        <source>RDPanel config for </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Channel Assignments</source>
         <translation type="unfinished">Configurações de Canais</translation>
     </message>
@@ -3179,6 +3175,10 @@ Isto para popular os recursos de áudio na Base de Dados.</translation>
     <message>
         <source>Select Image File</source>
         <translation type="unfinished">Selecionar Arquivo de Imagem</translation>
+    </message>
+    <message>
+        <source>Configure RDPanel</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

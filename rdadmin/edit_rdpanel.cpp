@@ -76,7 +76,7 @@ EditRDPanel::EditRDPanel(RDStation *station,RDStation *cae_station,
   //
   // Dialog Name
   //
-  setCaption(tr("RDPanel config for ")+station->name());
+  setCaption(tr("Configure RDPanel"));
 
   //
   // Channel Assignments Section

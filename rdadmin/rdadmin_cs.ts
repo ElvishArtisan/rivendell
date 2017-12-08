@@ -3107,7 +3107,7 @@ nastaveném pro běh služby CAE pro naplnění databáze se zdroji zvuku.</tran
     <name>EditRDPanel</name>
     <message>
         <source>RDPanel config for </source>
-        <translation>Nastavení RDPanel pro </translation>
+        <translation type="obsolete">Nastavení RDPanel pro </translation>
     </message>
     <message>
         <source>Channel Assignments</source>
@@ -3222,6 +3222,10 @@ pro naplnění databáze zdroji zvuku.</translation>
     <message>
         <source>Select Image File</source>
         <translation>Vybrat soubor s obrázkem</translation>
+    </message>
+    <message>
+        <source>Configure RDPanel</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
