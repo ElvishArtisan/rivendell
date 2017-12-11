@@ -1,7 +1,7 @@
 The NEWS file for the Rivendell package.
 
 -------------------------------------------------------------------------------
-v2.17.0int04 -- 11/08/2017
+v2.17.0int06 -- 12/11/2017
 
 Changes:
    Documentation Changes. The Rivendell Operations Guide has been
@@ -26,6 +26,13 @@ Changes:
 	NewServiceNameRegex=<regex>
 	NewServiceNameGroup=<num>
 
+   MySQL Configuration. Added the following parameters to the [mySQL]
+   section of rd.conf(5) to force use of a specified engine type, charset
+   and collation:
+        Engine=<engine-type>    [DEFAULT: MyISAM]
+        Charset=<charset>       [DEFAULT: latin1]
+	Collation=<collation>   [DEFAULT: latin1_swedish_ci]
+
    Dropbox Enhancements. Added the ability to specify creation of default
    Segue Markers when processing files via dropbox. See
    RDAdmin->ManageHosts->Dropbox.
@@ -39,6 +46,16 @@ Changes:
    Log Searching. A search filter (similar to that employed for seaching
    for carts) has been added to the List Logs dialogs.
 
+   Service Filtering in RDLogEdit. Added the ability to limit the visible
+   set of logs in RDLogEdit by user. Configured in RDAdmin->ManageUsers.
+
+   Log Purge/Deletion Changes. Logs created manually (in rdlogedit(1) or
+   rdairplay(1)) are now assigned a default purge/deletion date in accordance
+   with the setting in RDAdmin->ManageServices.
+
+   Log Importation Changes. Changed music and traffic importation so that
+   parent link events are still visible in linked logs.
+
    Web API Changes. Added 'FILTER' and 'RECENT' call parameters to the
    'ListLogs' Web API call. See the API documentation in
    'docs/apis/web_api.pdf' for details.
@@ -46,7 +63,7 @@ Changes:
    Various other bug fixes.  See the ChangeLog for details.   
 
 Database Update:
-   This version of Rivendell uses database schema version 271, and will
+   This version of Rivendell uses database schema version 272, and will
    automatically upgrade any earlier versions.  To see the current schema
    version prior to upgrade, see RDAdmin->SystemInfo.
 

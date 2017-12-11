@@ -16453,3 +16453,6 @@
 	* Changed the title of the 'RDLogEdit configuration' dialog in
 	rdadmin(1) to 'Configure RDLogEdit'.
 	* Added a 'Configuring RDLogEdit' section to the Operations Guide.
+2017-12-11 Fred Gleason <fredg@paravelsystems.com>
+	* Updated 'NEWS'.
+	* Incremented the package version to 2.17.0int06.
