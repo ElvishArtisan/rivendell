@@ -131,9 +131,11 @@ OPSGUIDE_HTML = appendix.filepath_wildcards.html\
 
 OPSGUIDE_IMAGES = rdadmin.autofill_carts_dialog.png\
                   rdadmin.configure_rdairplay_dialog.png\
+                  rdadmin.configure_rdcartslots_dialog.png\
                   rdadmin.configure_rdcatch_dialog.png\
                   rdadmin.configure_rdlibrary_dialog.png\
                   rdadmin.configure_rdlogedit_dialog.png\
+                  rdadmin.dropbox_configuration_dialog.png\
                   rdadmin.edit_channel_gpios_dialog.png\
                   rdadmin.edit_service_dialog.png\
                   rdadmin.group_dialog.png\
@@ -154,9 +156,11 @@ OPSGUIDE_IMAGES = rdadmin.autofill_carts_dialog.png\
                   rdadmin.rdairplay_sound_panel_settings.png\
                   rdadmin.rdairplay_start_stop_settings.png\
                   rdadmin.rename_group_dialog.png\
+                  rdadmin.rivendell_dropbox_configurations_dialog.png\
                   rdadmin.rivendell_group_list_dialog.png\
                   rdadmin.rivendell_host_list_dialog.png\
                   rdadmin.rivendell_user_list_dialog.png\
+                  rdadmin.select_scheduler_codes_dialog.png\
                   rdadmin.services_dialog.png\
                   rdadmin.test_import_dialog.png\
                   rdadmin.user_dialog.png\

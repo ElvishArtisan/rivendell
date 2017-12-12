@@ -16458,3 +16458,5 @@
 	* Incremented the package version to 2.17.0int06.
 2017-12-12 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'Configuring RDCartSlots' section to the Operations Guide.
+2017-12-12 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'Configuring Dropboxes' section to the Operations Guide.

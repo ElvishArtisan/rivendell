@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <chapter xmlns="http://docbook.org/ns/docbook" xml:id="chapter.rdadmin">
   <title>Configuring Rivendell with RDAdmin</title>
   <sect1 xml:id="sect.rdadmin.overview">
@@ -1497,6 +1498,372 @@
 	action when play-out finishes set in the
 	<computeroutput>At Playout End:</computeroutput> control.
       </para>
+    </sect2>
+    <sect2 xml:id="sect.rdadmin.manage_hosts.configuring_dropboxes">
+      <title>Configuring Dropboxes</title>
+      <sect3 xml:id="sect.rdadmin.manage_hosts.configuring_dropboxes.overview">
+	<title>Overview</title>
+	<para>
+	  A <emphasis>dropbox</emphasis> is a Rivendell process that runs
+	  in the background and performs automatic file importation. At its
+	  most basic level, each dropbox is configured to have a specific
+	  <emphasis>group</emphasis> (within whose carts audio is saved)
+	  and a <emphasis>path</emphasis> (a location in the
+	  filesystem whence the dropbox will obtain audio to import). When
+	  one or more audio files that match the path specification are
+	  copied to the path location, the dropbox will automatically import
+	  the file(s). There are a number of additional parameters which
+	  can be set to influence the way in which a particular dropbox
+	  will process audio, which will be covered below.
+	</para>
+	<para>
+	  The number of dropboxes capable of being configured on a given host
+	  is limited only by that host's hardware capabilities.
+	</para>
+      </sect3>
+      <sect3 xml:id="sect.rdadmin.manage_hosts.configuring_dropboxes.configuration">
+	<title>Configuration</title>
+	<para>
+	  To see the list of dropboxes currently configured on the system,
+	  touch the <computeroutput>Dropboxes</computeroutput> button to open
+	  the Rivendell Dropbox Configurations Dialog.
+	</para>
+	<para>
+	  <mediaobject>
+	    <imageobject>
+	      <imagedata align="center" fileref="rdadmin.rivendell_dropbox_configurations_dialog.png" scale="50"/>
+	    </imageobject>
+	    <caption>
+	      <para>The Rivendell Dropbox Configurations Dialog</para>
+	    </caption>
+	  </mediaobject>
+	</para>
+	<para>
+	  A new dropbox can be created by touching the
+	  <computeroutput>Add</computeroutput> button, opening the
+	  Dropbox Configuration dialog.
+	</para>
+	<para>
+	  <mediaobject>
+	    <imageobject>
+	      <imagedata align="center" fileref="rdadmin.dropbox_configuration_dialog.png" scale="50"/>
+	    </imageobject>
+	    <caption>
+	      <para>The Dropbox Configuration Dialog</para>
+	    </caption>
+	  </mediaobject>
+	</para>
+	<para>
+	  The group of the new dropbox is set with the
+	  <computeroutput>Default Group:</computeroutput> dropdown and the
+	  path with the <computeroutput>Path Spec:</computeroutput> field.
+	</para>
+	<important>
+	  <para>
+	    The <computeroutput>Path Spec:</computeroutput> field must match
+	    the <emphasis>full file path</emphasis> of the files to be
+	    processed, not just the sub-directory that contains those files.
+	  </para>
+	  <para>
+	    For example: say we have a directory called '/home/rd/dropbox',
+	    which contains the following files:
+	    <simplelist>
+	      <member><userinput>mysong.mp3</userinput></member>
+	      <member><userinput>mysong.wav</userinput></member>
+	      <member><userinput>yoursong.mp3</userinput></member>
+	    </simplelist>
+	  </para>
+	  <para>
+	    <link linkend="table.rdadmin.pathspec_examples">Table 10.2</link>
+	    shows the results using various example
+	    <computeroutput>PathSpec:</computeroutput> values.
+	  </para>
+	  <para>
+	    <table xml:id="table.rdadmin.pathspec_examples" frame="all">
+	      <title>Dropbox PathSpec Examples</title>
+	      <tgroup cols="3" align="left" colsep="1" rowsep="1">
+		<colspec colname="PathSpec" colwidth="2.0*"/>
+		<colspec colname="Matches" colwidth="1.0*"/>
+		<colspec colname="Comments" colwidth="2.0*"/>
+		<thead>
+		  <row>
+		    <entry>PathSpec</entry>
+		    <entry>Matches</entry>
+		    <entry>Comments</entry>
+		  </row>
+		</thead>
+		<tbody>
+		  <row>
+		    <entry><userinput>/home/rd/dropbox/*</userinput></entry>
+		    <entry>
+		      <simplelist>
+			<member><userinput>mysong.mp3</userinput></member>
+			<member><userinput>mysong.wav</userinput></member>
+			<member><userinput>yoursong.mp3</userinput></member>
+		      </simplelist>
+		    </entry>
+		    <entry>Matches <emphasis>all</emphasis> files in
+		    <userinput>/home/rd/dropbox</userinput></entry>
+		  </row>
+		  <row>
+		    <entry><userinput>/home/rd/dropbox/*.mp3</userinput></entry>
+		    <entry>
+		      <simplelist>
+			<member><userinput>mysong.mp3</userinput></member>
+			<member><userinput>yoursong.mp3</userinput></member>
+		      </simplelist>
+		    </entry>
+		    <entry>Matches every file in
+		    <userinput>/home/rd/dropbox</userinput> that ends
+		    with <userinput>.mp3</userinput></entry>
+		  </row>
+		  <row>
+		    <entry><userinput>/home/rd/dropbox/mysong.*</userinput></entry>
+		    <entry>
+		      <simplelist>
+			<member><userinput>mysong.mp3</userinput></member>
+			<member><userinput>mysong.wav</userinput></member>
+		      </simplelist>
+		    </entry>
+		    <entry>Matches every file in
+		    <userinput>/home/rd/dropbox</userinput> that begins
+		    with <userinput>mysong.</userinput></entry>
+		  </row>
+		  <row>
+		    <entry><userinput>/home/rd/dropbox</userinput></entry>
+		    <entry>
+		    </entry>
+		    <entry>Matches nothing. [No file part of the PathSpec].
+		    </entry>
+		  </row>
+		  <row>
+		    <entry><userinput>/home/rd/dropbox/</userinput></entry>
+		    <entry>
+		    </entry>
+		    <entry>Matches nothing. [No file part of the PathSpec].
+		    </entry>
+		  </row>
+		</tbody>
+	      </tgroup>
+	    </table>
+	  </para>
+	</important>
+	<para>
+	  A new dropbox created with just the
+	  <computeroutput>Default Group:</computeroutput> and
+	  <computeroutput>PathSpec:</computeroutput> fields set and no
+	  other parameters changed will detect any file that matches the
+	  <computeroutput>PathSpec:</computeroutput>, create a new cart in the
+	  <computeroutput>Default Group:</computeroutput> and then attempt
+	  to import the file into a new cut in the cart.
+	</para>
+	<important>
+	  <para>
+	    For this process to work, the specified group must also have
+	    its <computeroutput>Default Cart Number:</computeroutput>
+	    fields in the Group Dialog set to a valid range, and there
+	    must be a free number within that range available. If either
+	    of these conditions are not met, the dropbox will throw an
+	    error.
+	  </para>
+	</important>
+	<note>
+	  <para>
+	    The importation will only happen <emphasis>once</emphasis> for
+	    each file matched. To get a dropbox to re-process files
+	    that have already been imported, touch the
+	    <computeroutput>Reset</computeroutput> button.
+	  </para>
+	</note>
+	<para>
+	  The following controls can be utilized to influence how a
+	  dropbox will process a matched file:
+	</para>
+	<variablelist>
+	  <varlistentry>
+	    <term>
+	      <computeroutput>To Cart:</computeroutput>
+	    </term>
+	    <listitem>
+	      <para>
+		Add a new cut to the specified cart and import into that,
+		rather than creating a new cart. If the
+		<computeroutput>Delete cuts before importing</computeroutput>
+		box is also ticked, then any existing cuts in the specified
+		cart will be deleted before adding the new cut.
+	      </para>
+	    </listitem>
+	  </varlistentry>
+	  <varlistentry>
+	    <term>
+	      <computeroutput>Metadata Pattern:</computeroutput>
+	    </term>
+	    <listitem>
+	      <para>
+		Attempt to discern the title to give to the new cart from the
+		name of the matched file, using
+		<link linkend="appendix.metadata_wildcards">metadata
+		wildcards</link> as a template.
+	      </para>
+	    </listitem>
+	  </varlistentry>
+	  <varlistentry>
+	    <term>
+	      <computeroutput>User Defined:</computeroutput>
+	    </term>
+	    <listitem>
+	      <para>
+		Set the value of this field as the user defined field of
+		the new cart.
+	      </para>
+	    </listitem>
+	  </varlistentry>
+	  <varlistentry>
+	    <term>
+	      <computeroutput>Log File:</computeroutput>
+	    </term>
+	    <listitem>
+	      <para>
+		The full path to a file to which to write a log of dropbox
+		operations. Useful for troubleshooting problems.
+	      </para>
+	    </listitem>
+	  </varlistentry>
+	  <varlistentry>
+	    <term>
+	      <computeroutput>Delete source files after import</computeroutput>
+	    </term>
+	    <listitem>
+	      <para>
+		Delete the source file after successful importation.
+	      </para>
+	    </listitem>
+	  </varlistentry>
+	  <varlistentry>
+	    <term>
+	      <computeroutput>Force to Monaural</computeroutput>
+	    </term>
+	    <listitem>
+	      <para>
+		Import the matched file to a single channel (mixing multiple
+		channels together if necessary).
+	      </para>
+	    </listitem>
+	  </varlistentry>
+	  <varlistentry>
+	    <term>
+	      <computeroutput>Normalize Levels</computeroutput>
+	    </term>
+	    <listitem>
+	      <para>
+		Peak-normalize the matched file to the specified
+		<computeroutput>Level:</computeroutput> in dBFS.
+	      </para>
+	    </listitem>
+	  </varlistentry>
+	  <varlistentry>
+	    <term>
+	      <computeroutput>Autotrim Cuts</computeroutput>
+	    </term>
+	    <listitem>
+	      <para>
+		Autotrim the matched file, using a threshold of
+		<computeroutput>Level:</computeroutput> dBFS.
+	      </para>
+	    </listitem>
+	  </varlistentry>
+	  <varlistentry>
+	    <term>
+	      <computeroutput>Insert Segue Markers</computeroutput>
+	    </term>
+	    <listitem>
+	      <para>
+		If no segue marker information is found in the metadata
+		of the matched file, create segue markers, starting at the
+		last instance of <computeroutput>Segue Level:</computeroutput>
+		and lasting for <computeroutput>Segue Length:</computeroutput>
+		milliseconds.
+	      </para>
+	    </listitem>
+	  </varlistentry>
+	  <varlistentry>
+	    <term>
+	      <computeroutput>Get cart number from CartChunk CutID</computeroutput>
+	    </term>
+	    <listitem>
+	      <para>
+		Determine the number of the destination cart from the
+		matched file's CartChunk CutID field. If the cart does not
+		exist, it will be created. The destination cart must
+		lie within the valid range for the specified group.
+	      </para>
+	    </listitem>
+	  </varlistentry>
+	  <varlistentry>
+	    <term>
+	      <computeroutput>Get cart title from CartChunk CutID</computeroutput>
+	    </term>
+	    <listitem>
+	      <para>
+		Determine the title of the destination cart from the
+		matched file's CartChunk CutID field.
+	      </para>
+	    </listitem>
+	  </varlistentry>
+	  <varlistentry>
+	    <term>
+	      <computeroutput>Offset start date</computeroutput>
+	    </term>
+	    <listitem>
+	      <para>
+		If a start date is found in the matched file's metadata,
+		add the specified <computeroutput>days</computeroutput> to
+		it.
+	      </para>
+	    </listitem>
+	  </varlistentry>
+	  <varlistentry>
+	    <term>
+	      <computeroutput>Offset end date</computeroutput>
+	    </term>
+	    <listitem>
+	      <para>
+		If an end date is found in the matched file's metadata,
+		add the specified <computeroutput>days</computeroutput> to
+		it.
+	      </para>
+	    </listitem>
+	  </varlistentry>
+	  <varlistentry>
+	    <term>
+	      <computeroutput>Create Dates when no Dates Exist</computeroutput>
+	    </term>
+	    <listitem>
+	      <para>
+		If no start or end date is found in the matched file's metadata,
+		add such, adding the specified number of days to the current
+		date.
+	      </para>
+	    </listitem>
+	  </varlistentry>
+	</variablelist>
+	<para>
+	  Carts created by this dropbox can be assigned one or more existing
+	  scheduler codes by touching the
+	  <computeroutput>Scheduler Codes</computeroutput> button to open the
+	  Select Scheduler Codes dialog.
+	</para>
+	<para>
+	  <mediaobject>
+	    <imageobject>
+	      <imagedata align="center" fileref="rdadmin.select_scheduler_codes_dialog.png" scale="50"/>
+	    </imageobject>
+	    <caption>
+	      <para>The Select Scheduler Codes Dialog</para>
+	    </caption>
+	  </mediaobject>
+	</para>
+      </sect3>
     </sect2>
   </sect1>
 </chapter>
