@@ -1453,5 +1453,50 @@
 	event.
       </para>
     </sect2>
+    <sect2 xml:id="sect.rdadmin.manage_hosts.configuring_rdcartslots">
+      <title>Configuring RDCartSlots</title>
+      <para>
+	To configure the rdcartslots(1) module, touch the
+	<computeroutput>RDCartSlots</computeroutput> button to open the
+	Configure RDCartSlots dialog.
+      </para>
+      <para>
+	<mediaobject>
+	  <imageobject>
+	    <imagedata align="center" fileref="rdadmin.configure_rdcartslots_dialog.png" scale="50"/>
+	  </imageobject>
+	  <caption>
+	    <para>The Configure RDCartSlots Dialog</para>
+	  </caption>
+	</mediaobject>
+      </para>
+      <para>
+	The <computeroutput>Global Settings</computeroutput> section is used
+	to configure the number and arrangment of cart slots. The number of
+	supported slots is limited only by the available resolution of the
+	display monitor.
+      </para>
+      <para>
+	The <computeroutput>Slot Settings</computeroutput> is used to
+	configure each individual slot.
+	<computeroutput>Channel Assignments</computeroutput> settings are
+	used to specify the audio input and output to be used. (The
+	<computeroutput>Input Port</computeroutput> value is used only
+	when the slot is in <userinput>Breakaway</userinput> mode.)
+      </para>
+      <para>
+	The <computeroutput>Default Settings</computeroutput> settings are
+	used to configure the detailed behavior of the specified cart slot.
+	<computeroutput>Service:</computeroutput> defines the slot's default
+	service when in <userinput>Breakaway</userinput> mode.
+	<computeroutput>Slot Mode:</computeroutput> sets the mode of the
+	slot and <computeroutput>Play Mode</computeroutput> sets the default
+	state of the <userinput>Full</userinput> or <userinput>Hook</userinput>
+	play mode. The contents of the slot at startup can be set using the
+	<computeroutput>At Startup:</computeroutput> dropdown, and the
+	action when play-out finishes set in the
+	<computeroutput>At Playout End:</computeroutput> control.
+      </para>
+    </sect2>
   </sect1>
 </chapter>
