@@ -2158,5 +2158,76 @@
 	parameters can be set.
       </para>
     </sect2>
+    <sect2 xml:id="sect.rdadmin.manage_hosts.viewing_audio_resources">
+      <title>Viewing Audio Resources</title>
+      <para>
+	Touching the <computeroutput>Audio Resources</computeroutput> button
+	will bring up the Audio Resource Information dialog, a read-only
+	report detailing the current audio configuration and capabilities
+	of Rivendell.
+      </para>
+      <para>
+	<mediaobject>
+	  <imageobject>
+	    <imagedata align="center" fileref="rdadmin.audio_resource_information_dialog.png" scale="50"/>
+	  </imageobject>
+	  <caption>
+	    <para>The Audio Resource Information Dialog</para>
+	  </caption>
+	</mediaobject>
+      </para>
+    </sect2>
+    <sect2 xml:id="sect.rdadmin.manage_hosts.jack_integration">
+      <title>JACK Integration</title>
+      <para>
+	The JACK Audio Connection Kit is an audio integration system that
+	allows audio to be shared in real-time between multiple programs.
+	More information can be found at
+	<link linkend="http://jackaudio.org">http://jackaudio.org</link>.
+      </para>
+      <para>
+	Rivendell's JACK connectivity is handed by the caed(8) daemon,
+	and so both jackd(1) and caed(8) must operate under the same
+	Linux user in order to be able to communicate. Under stock
+	Rivendell, caed(8) is run as user 'root' [UID 0].
+      </para>
+      <para>
+	To configure Rivendell's integration with JACK, touch the
+	<computeroutput>JACK Settings</computeroutput> button to bring
+	up the JACK Configuration dialog.
+      </para>
+      <para>
+	<mediaobject>
+	  <imageobject>
+	    <imagedata align="center" fileref="rdadmin.jack_configuration_dialog.png" scale="50"/>
+	  </imageobject>
+	  <caption>
+	    <para>The JACK Configuration Dialog</para>
+	  </caption>
+	</mediaobject>
+      </para>
+      <para>
+	To have jackd(1) automatically [re]started whenever the Rivendell
+	service is [re]started, tick the
+	<computeroutput>Start JACK Server</computeroutput> box and enter
+	the appropriate command-line invocation in the
+	<computeroutput>JACK Command Line:</computeroutput> field. The name
+	of the JACK instance to connect to [the &quot;--name&quot; option
+	as provided to jackd(1)] can be entered in the
+	<computeroutput>JACK Server Name:</computeroutput> field.
+      </para>
+      <para>
+	Rivendell can also be configured to [re]start JACK clients
+	automatically each time the Rivendell service is [re]started by
+	adding the appropriate command-line invocation to the
+	<computeroutput>JACK Clients to Start</computeroutput> list.
+	The clients will be run under the same user as that of the
+	caed(8) daemon (user 'root' [UID 0] with sstock Rivendell).
+	Port connections between JACK clients can be managed by use
+	of the Jack Connect ['JC'] and Jack Disconnect ['JD'] RMLs.
+	See <xref linkend="sect.rml.connect_jack_ports__jc_" /> and
+	<xref linkend="sect.rml.disconnect_jack_ports__jd_" />.
+      </para>
+    </sect2>
   </sect1>
 </chapter>
