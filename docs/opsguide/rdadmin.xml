@@ -595,16 +595,16 @@
       <computeroutput>Manage Hosts</computeroutput> button to open
       the Rivendell Host List dialog.
     </para>
-      <para>
-	<mediaobject>
-	  <imageobject>
-	    <imagedata align="center" fileref="rdadmin.rivendell_host_list_dialog.png" scale="60"/>
-	  </imageobject>
-	  <caption>
-	    <para>The Rivendell Host List Dialog</para>
-	  </caption>
-	</mediaobject>
-      </para>
+    <para>
+      <mediaobject>
+	<imageobject>
+	  <imagedata align="center" fileref="rdadmin.rivendell_host_list_dialog.png" scale="60"/>
+	</imageobject>
+	<caption>
+	  <para>The Rivendell Host List Dialog</para>
+	</caption>
+      </mediaobject>
+    </para>
     <para>
       To examine and modify an existing host, touch its entry in the
       <computeroutput>Hosts</computeroutput> list and then touch the
@@ -2230,4 +2230,182 @@
       </para>
     </sect2>
   </sect1>
+  <sect1 xml:id="sect.rdadmin.manage_system_settings">
+    <title>Managing System Settings</title>
+    <para>
+      To manage system-wide settings --i.e. those settings that apply to
+      <emphasis>all</emphasis> Rivendell hosts -- in RDAdmin, touch the
+      <computeroutput>System Settings</computeroutput> button to open
+      the System-Wide Settings dialog.
+    </para>
+    <para>
+      <mediaobject>
+	<imageobject>
+	  <imagedata align="center" fileref="rdadmin.system_wide_settings_dialog.png" scale="60"/>
+	</imageobject>
+	<caption>
+	  <para>The System-Wide Settings Dialog</para>
+	</caption>
+      </mediaobject>
+    </para>
+    <para>
+      The <computeroutput>System Sample Rate:</computeroutput> dropdown sets
+      the global sample rate to be used for Rivendell's audio store. This
+      control should be set before ingesting any audio into a new Rivendell
+      system and not altered thereafter.
+    </para>
+    <warning>
+      <para>
+	Changing this setting on a system with existing audio in the
+	audio store may result in incorrect play-out of that audio!
+      </para>
+    </warning>
+    <para>
+      The <computeroutput>Allow Duplicate Cart Titles</computeroutput> box,
+      if not ticked, will force all carts to have a unique title. If
+      unticked, then ticking the
+      <computeroutput>Auto-Correct Duplicate Cart Titles</computeroutput>
+      box will cause duplicate cart titles to be automatically made unique
+      when imported. The unique name is constructed by appending
+      &quot;<userinput>[n]</userinput>&quot;, (where <userinput>n</userinput>
+      is an integer) to the end of the title string.
+    </para>
+    <para>
+      The <computeroutput>ISCI Cross Reference Path:</computeroutput> field
+      takes the full path to the ISCI cross reference file used by the
+      rdrepld(8) daemon (used only in conjunction with X-Digital copysplit
+      replication).
+    </para>
+    <para>
+      The <computeroutput>Maximum Reemote Post Length:</computeroutput> field
+      sets the maximum length POST submission that will be processed by the
+      RDXport service. It should seldom be necessary to change this value.
+    </para>
+    <para>
+      The <computeroutput>Temporary Cart Group:</computeroutput> dropdown
+      sets the Rivendell group to be used for storing temporary carts
+      --e.g. carts used for processing direct file play-outs in
+      rdcartslots(1).
+    </para>
+    <para>
+      If the <computeroutput>Show User List in RDLogin</computeroutput> box
+      is ticked, rdlogin(1) will require users to enter their user name as
+      well as their password when logging in (instead of providing all possible
+      user names in a dropdown).
+    </para>
+  </sect1>
+  <sect1 xml:id="sect.rdadmin.manage_scheduler_codes">
+    <title>Managing Scheduler Codes</title>
+    <para>
+      To manage scheduler codes, touch the
+      <computeroutput>Scheduler Codes</computeroutput> button to bring up
+      the Rivendell Scheduler Code dialog.
+    </para>
+    <para>
+      <mediaobject>
+	<imageobject>
+	  <imagedata align="center" fileref="rdadmin.rivendell_scheduler_code_list_dialog.png" scale="60"/>
+	</imageobject>
+	<caption>
+	  <para>The Rivendell Scheduler Codes List Dialog</para>
+	</caption>
+      </mediaobject>
+    </para>
+    <para>
+      A new scheduler code can be added by touching the
+      <computeroutput>Add</computeroutput> button to bring up the
+      Scheduler Code dialog.
+    </para>
+    <para>
+      <mediaobject>
+	<imageobject>
+	  <imagedata align="center" fileref="rdadmin.scheduler_code_dialog.png" scale="60"/>
+	</imageobject>
+	<caption>
+	  <para>The Scheduler Code Dialog</para>
+	</caption>
+      </mediaobject>
+    </para>
+  </sect1>
+  <sect1 xml:id="sect.rdadmin.manage_replicators">
+    <title>Managing Replicators</title>
+    <para>
+      A <emphasis>replicator</emphasis> is a Rivendell service that provides
+      the ability to move content automatically to different system on the
+      basis of predefined rules. At present, Rivendell includes one such
+      replicator, which can move audio material to an X-Digital satelite
+      head-end system.
+    </para>
+    <para>
+      To manage replicators, touch the
+      <computeroutput>Manage Replicators</computeroutput> button to bring up
+      the Rivendell Replicators dialog.
+    </para>
+    <para>
+      <mediaobject>
+	<imageobject>
+	  <imagedata align="center" fileref="rdadmin.rivendell_replicators_dialog.png" scale="60"/>
+	</imageobject>
+	<caption>
+	  <para>The Rivendell Replicators Dialog</para>
+	</caption>
+      </mediaobject>
+    </para>
+    <para>
+      To add a new replicator, touch the <computeroutput>Add</computeroutput>
+      button to bring up the Replicator dialog.
+    </para>
+    <para>
+      <mediaobject>
+	<imageobject>
+	  <imagedata align="center" fileref="rdadmin.replicator_dialog.png" scale="60"/>
+	</imageobject>
+	<caption>
+	  <para>The Replicator Dialog</para>
+	</caption>
+      </mediaobject>
+    </para>
+    <para>
+      The <computeroutput>Name:</computeroutput> is a read-only field giving
+      the name of the replicator.
+    </para>
+    <para>
+      The <computeroutput>Description</computeroutput> is a free-form text
+      string providing a description of the replicator.
+    </para>
+    <para>
+      The <computeroutput>Type:</computeroutput> dropdown should set to the
+      type of replicator. At present, only one type is supported,
+      <userinput>Citidel X-Digital Portal</userinput>.
+    </para>
+    <para>
+      The <computeroutput>Host System:</computeroutput> dropdown should be
+      set to the name of the Rivendell Host upon which the rdrepld(8)
+      daemon is run.
+    </para>
+    <para>
+      The <computeroutput>Audio Upload URL:</computeroutput> should be set
+      to the URL of the upload location for audio to be sent to the remote
+      system. It may also be necessary to set the
+      <computeroutput>Username:</computeroutput> and
+      <computeroutput>Password:</computeroutput> fields if that remote
+      system requires it.
+    </para>
+    <para>
+      The <computeroutput>Upload Format:</computeroutput> should be set
+      to provide the file and encoding format of the replicator uploads
+      as required by the remote system. This can be done by touching the
+      <computeroutput>Set</computeroutput> button. If the
+      <computeroutput>Normalize</computeroutput> box is ticked, then
+      audio will be peak-normalized to the level set by the
+      <computeroutput>Level:</computeroutput> control before being
+      uploaded.
+    </para>
+    <para>
+      The <computeroutput>Active Groups</computeroutput> list should be
+      populated with the names of the Rivendell Groups from which audio
+      to be replicated should be taken.
+    </para>
+  </sect1>
+
 </chapter>

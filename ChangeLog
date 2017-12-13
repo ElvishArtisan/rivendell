@@ -16473,3 +16473,7 @@
 	* Added a 'Configuring Serial Ports' section to the Operations Guide.
 2017-12-13 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'JACK Integration' section to the Operations Guide.
+2017-12-13 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'Managing System Settings' section to the Operations Guide.
+	* Added a 'Managing Scheduler Codes' section to the Operations Guide.
+	* Added a 'Managing Replicators' section to the Operations Guide.

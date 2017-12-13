@@ -165,13 +165,18 @@ OPSGUIDE_IMAGES = rdadmin.audio_resource_information_dialog.png\
                   rdadmin.rdairplay_sound_panel_settings.png\
                   rdadmin.rdairplay_start_stop_settings.png\
                   rdadmin.rename_group_dialog.png\
+                  rdadmin.replicator_dialog.png\
                   rdadmin.rivendell_dropbox_configurations_dialog.png\
                   rdadmin.rivendell_group_list_dialog.png\
                   rdadmin.rivendell_host_list_dialog.png\
+                  rdadmin.rivendell_replicators_dialog.png\
+                  rdadmin.rivendell_scheduler_code_list_dialog.png\
                   rdadmin.rivendell_switcher_list_dialog.png\
                   rdadmin.rivendell_user_list_dialog.png\
+                  rdadmin.scheduler_code_dialog.png\
                   rdadmin.select_scheduler_codes_dialog.png\
                   rdadmin.services_dialog.png\
+                  rdadmin.system_wide_settings_dialog.png\
                   rdadmin.test_import_dialog.png\
                   rdadmin.user_dialog.png\
                   rdairplay.audio_meter.png\
