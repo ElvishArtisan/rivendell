@@ -1865,5 +1865,159 @@
 	</para>
       </sect3>
     </sect2>
+    <sect2 xml:id="sect.rdadmin.manage_hosts.configuring_switcher_gpio_devices">
+      <title>Configuring Switcher/GPIO Devices</title>
+      <para>
+	To configure the Switcher/GPIO devices, touch the
+	<computeroutput>Switchers/GPIO</computeroutput> button to open the
+	Rivendell Switcher List dialog.
+      </para>
+      <para>
+	<mediaobject>
+	  <imageobject>
+	    <imagedata align="center" fileref="rdadmin.rivendell_switcher_list_dialog.png" scale="60"/>
+	  </imageobject>
+	  <caption>
+	    <para>The Rivendell Switcher List Dialog</para>
+	  </caption>
+	</mediaobject>
+      </para>
+      <para>
+	To add a new Switcher/GPIO device, touch the
+	<computeroutput>Add</computeroutput> button to open the Edit Switcher
+	dialog.
+      </para>
+      <para>
+	<mediaobject>
+	  <imageobject>
+	    <imagedata align="center" fileref="rdadmin.edit_switcher_dialog.png" scale="60"/>
+	  </imageobject>
+	  <caption>
+	    <para>The Edit Switcher Dialog</para>
+	  </caption>
+	</mediaobject>
+      </para>
+      <note>
+	<para>
+	  Rivendell supports a huge diversity of third-party switcher and
+	  GPIO devices, every one of which has its own unique operating
+	  requirements. The description which follows provides a broad
+	  overview of how these devices are configured, but be sure to consult
+	  the device-specific notes for the unit question in 
+	  <xref linkend="appendix.gpio_switcher_devices"/> as well!.
+	</para>
+      </note>
+      <sect3 xml:id="sect.rdadmin.manage_hosts.configuring_switcher_gpio_devices.connections">
+	<title>Connections</title>
+	<para>
+	  If the target device is controlled via some sort of
+	  <emphasis>connection</emphasis> (TCP/IP or serial), that connection
+	  is configured in the <computeroutput>Primary Connection</computeroutput>
+	  section of the dialog. (Certain devices support multiple, redundant
+	  connections, in which case the
+	  <computeroutput>Backup Connection</computeroutput> section will be
+	  available as well).
+	</para>
+	<para>
+	  The <computeroutput>Type:</computeroutput> dropdown is used to
+	  indicate if the connection is via <userinput>TCP/IP</userinput> or
+	  <userinput>serial</userinput>. If <userinput>serial</userinput> is
+	  selected, then the serial device to use can be selected by means of
+	  the <computeroutput>Serial Port:</computeroutput> dropdown. If
+	  <userinput>TCP/IP</userinput> is selected, then the
+	  <computeroutput>IP Address:</computeroutput> and
+	  <computeroutput>IP Port:</computeroutput> fields must be populated.
+	  Certain devices also require that the
+	  <computeroutput>Username:</computeroutput> and
+	  <computeroutput>Password:</computeroutput> fields be populated as
+	  well.
+	</para>
+	<para>
+	  The <computeroutput>Startup Cart:</computeroutput> and
+	  <computeroutput>Shutdown Cart:</computeroutput> fields take the
+	  number of a macro cart that will be run after the connection
+	  established or dropped, respectively.
+	</para>
+      </sect3>
+      <sect3 xml:id="sect.rdadmin.manage_hosts.configuring_switcher_gpio_devices.miscelaneous_settings">
+	<title>Miscellaneous Settings</title>
+	<para>
+	  Below the Connection settings are various miscellaneous controls
+	  and buttons. Not all of these are used for all supported devices.
+	</para>
+	<para>
+	  Use of the <computeroutput>Card:</computeroutput>,
+	  <computeroutput>Device:</computeroutput> and
+	  <computeroutput>Layer:</computeroutput> fields are specific to
+	  the type of device. See that device's entry in
+	  <xref linkend="appendix.gpio_switcher_devices"/> for more
+	  information.
+	</para>
+	<para>
+	  The <computeroutput>Inputs:</computeroutput>,
+	  <computeroutput>Outputs:</computeroutput>,
+	  <computeroutput>GPIs:</computeroutput>,
+	  <computeroutput>GPOs:</computeroutput> and
+	  <computeroutput>Displays:</computeroutput> controls should be
+	  set to the number of those resources the target device contains.
+	  In many cases, these fields will be auto-detected by Rivendell's
+	  driver.
+	</para>
+	<para>
+	  The <computeroutput>Configure Inputs</computeroutput> and
+	  <computeroutput>Configure Outputs</computeroutput> buttons
+	  can be used to assign names to each switcher input and output
+	  on the target device. These names will appear in rdcatch(1) when
+	  configuring record events.
+	</para>
+	<para>
+	  The <computeroutput>Configure GPIs</computeroutput> and
+	  <computeroutput>Configure GPOs</computeroutput> buttons
+	  can be used to configure the default action to be taken in response
+	  to reception of a GPIO event. Touching one of these buttons brings
+	  up the List GPIs Dialog.
+	</para>
+	<para>
+	  <mediaobject>
+	    <imageobject>
+	      <imagedata align="center" fileref="rdadmin.list_gpis_dialog.png" scale="60"/>
+	    </imageobject>
+	    <caption>
+	      <para>The List GPIs Dialog</para>
+	    </caption>
+	  </mediaobject>
+	</para>
+	<para>
+	  To edit a particular GPIO line, select its entry on the list and
+	  touch the <computeroutput>Edit</computeroutput> button to bring up
+	  the Edit GPI Dialog.
+	</para>
+	<para>
+	  <mediaobject>
+	    <imageobject>
+	      <imagedata align="center" fileref="rdadmin.edit_gpi_dialog.png" scale="60"/>
+	    </imageobject>
+	    <caption>
+	      <para>The Edit GPI Dialog</para>
+	    </caption>
+	  </mediaobject>
+	</para>
+	<para>
+	  Two macro carts may be associated with each event: one for the
+	  leading edge [<computeroutput>ON Transition</computeroutput>]
+	  and one for the trailing edge
+	  [<computeroutput>OFF Transition</computeroutput>].
+	</para>
+	<important>
+	  <para>
+	    The macro cart associations configured here are merely defaults,
+	    set when the Rivendell service is [re]started. They
+	    can subsequently be altered dynamically through use of the
+	    GPI Set ['GI'] command.
+	    (See <xref linkend="sect.rml.gpi_set__gi_" />).
+	  </para>
+	</important>
+      </sect3>
+    </sect2>
   </sect1>
 </chapter>

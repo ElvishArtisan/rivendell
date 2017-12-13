@@ -137,11 +137,14 @@ OPSGUIDE_IMAGES = rdadmin.autofill_carts_dialog.png\
                   rdadmin.configure_rdlogedit_dialog.png\
                   rdadmin.dropbox_configuration_dialog.png\
                   rdadmin.edit_channel_gpios_dialog.png\
+                  rdadmin.edit_gpi_dialog.png\
                   rdadmin.edit_service_dialog.png\
+                  rdadmin.edit_switcher_dialog.png\
                   rdadmin.group_dialog.png\
                   rdadmin.host_dialog.png\
                   rdadmin.hosts_dialog.png\
                   rdadmin.import_parser_fields.png\
+                  rdadmin.list_gpis_dialog.png\
                   rdadmin.log_importation_string_fields.png\
                   rdadmin.login_dialog.png\
                   rdadmin.rdadmin_screenshot.png\
@@ -159,6 +162,7 @@ OPSGUIDE_IMAGES = rdadmin.autofill_carts_dialog.png\
                   rdadmin.rivendell_dropbox_configurations_dialog.png\
                   rdadmin.rivendell_group_list_dialog.png\
                   rdadmin.rivendell_host_list_dialog.png\
+                  rdadmin.rivendell_switcher_list_dialog.png\
                   rdadmin.rivendell_user_list_dialog.png\
                   rdadmin.select_scheduler_codes_dialog.png\
                   rdadmin.services_dialog.png\

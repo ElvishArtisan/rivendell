@@ -16460,3 +16460,6 @@
 	* Added a 'Configuring RDCartSlots' section to the Operations Guide.
 2017-12-12 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'Configuring Dropboxes' section to the Operations Guide.
+2017-12-13 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'Configuring Switcher/GPIO Devices' section to the
+	Operations Guide.
