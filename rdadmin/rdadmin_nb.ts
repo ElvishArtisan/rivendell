@@ -3944,7 +3944,7 @@ Lagre no?</translation>
     <name>EditTtys</name>
     <message>
         <source>Edit TTYs</source>
-        <translation>Rediger TTYar</translation>
+        <translation type="obsolete">Rediger TTYar</translation>
     </message>
     <message>
         <source>Port ID:</source>
@@ -4009,6 +4009,10 @@ Lagre no?</translation>
     <message>
         <source>CR/LF</source>
         <translation>CR/LF</translation>
+    </message>
+    <message>
+        <source>Edit Serial Ports</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

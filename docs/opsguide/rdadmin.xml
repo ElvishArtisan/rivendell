@@ -1923,8 +1923,15 @@
 	  indicate if the connection is via <userinput>TCP/IP</userinput> or
 	  <userinput>serial</userinput>. If <userinput>serial</userinput> is
 	  selected, then the serial device to use can be selected by means of
-	  the <computeroutput>Serial Port:</computeroutput> dropdown. If
-	  <userinput>TCP/IP</userinput> is selected, then the
+	  the <computeroutput>Serial Port:</computeroutput> dropdown.
+	</para>
+	<important>
+	  If using a serial port, be sure that the selected port
+	  has also been configured! See
+	  <xref linkend="sect.rdadmin.manage_hosts.configuring_serial_ports" />.
+	</important>
+	<para>
+	  If <userinput>TCP/IP</userinput> is selected, then the
 	  <computeroutput>IP Address:</computeroutput> and
 	  <computeroutput>IP Port:</computeroutput> fields must be populated.
 	  Certain devices also require that the
@@ -2126,7 +2133,30 @@
 	  </tbody>
 	</tgroup>
       </table>
-
+    </sect2>
+    <sect2 xml:id="sect.rdadmin.manage_hosts.configuring_serial_ports">
+      <title>Configuring Serial Ports</title>
+      <para>
+	To configure serial (COM) ports, touch the
+	<computeroutput>Serial Ports</computeroutput> button to open the
+	Edit Serial Ports dialog.
+      </para>
+      <para>
+	<mediaobject>
+	  <imageobject>
+	    <imagedata align="center" fileref="rdadmin.edit_serial_ports_dialog.png" scale="50"/>
+	  </imageobject>
+	  <caption>
+	    <para>The Edit Serial Ports Dialog</para>
+	  </caption>
+	</mediaobject>
+      </para>
+      <para>
+	Select the desired Rivendell serial port to configure in the
+	<computeroutput>Port ID:</computeroutput> dropdown. The
+	<computeroutput>Enabled</computeroutput> box must be ticked before
+	parameters can be set.
+      </para>
     </sect2>
   </sect1>
 </chapter>

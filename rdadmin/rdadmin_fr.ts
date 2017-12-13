@@ -3538,10 +3538,6 @@ must be saved.  Save now?</source>
 <context>
     <name>EditTtys</name>
     <message>
-        <source>Edit TTYs</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Port ID:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3603,6 +3599,10 @@ must be saved.  Save now?</source>
     </message>
     <message>
         <source>CR/LF</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit Serial Ports</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

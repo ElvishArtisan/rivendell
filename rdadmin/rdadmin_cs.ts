@@ -4025,7 +4025,7 @@ uloženo. Uložit nyní?</translation>
     <name>EditTtys</name>
     <message>
         <source>Edit TTYs</source>
-        <translation>Upravit TTY</translation>
+        <translation type="obsolete">Upravit TTY</translation>
     </message>
     <message>
         <source>Port ID:</source>
@@ -4090,6 +4090,10 @@ uloženo. Uložit nyní?</translation>
     <message>
         <source>CR/LF</source>
         <translation>CR/LF</translation>
+    </message>
+    <message>
+        <source>Edit Serial Ports</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

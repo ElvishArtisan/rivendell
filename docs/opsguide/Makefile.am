@@ -140,6 +140,7 @@ OPSGUIDE_IMAGES = rdadmin.autofill_carts_dialog.png\
                   rdadmin.edit_channel_gpios_dialog.png\
                   rdadmin.edit_gpi_dialog.png\
                   rdadmin.edit_host_variable_dialog.png\
+                  rdadmin.edit_serial_ports_dialog.png\
                   rdadmin.edit_service_dialog.png\
                   rdadmin.edit_switcher_dialog.png\
                   rdadmin.group_dialog.png\

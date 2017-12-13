@@ -3967,7 +3967,7 @@ deve ser salva.  Salvar Agora?</translation>
     <name>EditTtys</name>
     <message>
         <source>Edit TTYs</source>
-        <translation>Editar TTYs</translation>
+        <translation type="obsolete">Editar TTYs</translation>
     </message>
     <message>
         <source>Port ID:</source>
@@ -4032,6 +4032,10 @@ deve ser salva.  Salvar Agora?</translation>
     <message>
         <source>CR/LF</source>
         <translation>CR/LF</translation>
+    </message>
+    <message>
+        <source>Edit Serial Ports</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

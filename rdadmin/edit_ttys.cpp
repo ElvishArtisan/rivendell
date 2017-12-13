@@ -51,7 +51,7 @@ EditTtys::EditTtys(QString station,QWidget *parent)
   for(int i=0;i<MAX_TTYS;i++) {
     edit_port_modified[i]=false;
   }
-  setCaption(tr("Edit TTYs"));
+  setCaption(tr("Edit Serial Ports"));
 
   //
   // Create Fonts

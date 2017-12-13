@@ -3974,7 +3974,7 @@ gespeichert werden. Jetzt speichern?</translation>
     <name>EditTtys</name>
     <message>
         <source>Edit TTYs</source>
-        <translation>TTYs editieren</translation>
+        <translation type="obsolete">TTYs editieren</translation>
     </message>
     <message>
         <source>Port ID:</source>
@@ -4039,6 +4039,10 @@ gespeichert werden. Jetzt speichern?</translation>
     <message>
         <source>CR/LF</source>
         <translation>CR/LF</translation>
+    </message>
+    <message>
+        <source>Edit Serial Ports</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

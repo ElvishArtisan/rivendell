@@ -16467,3 +16467,7 @@
 	* Added a 'Configuring Host Variables' section to the Operations Guide.
 2017-12-13 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'Configuring Audio Ports' section to the Operations Guide.
+2017-12-13 Fred Gleason <fredg@paravelsystems.com>
+	* Changed the title of the 'Edit TTYs' dialog in
+	rdadmin(1) to 'Edit Serial Ports'.
+	* Added a 'Configuring Serial Ports' section to the Operations Guide.

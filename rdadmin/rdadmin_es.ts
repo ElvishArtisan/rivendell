@@ -3970,7 +3970,7 @@ debe guardarse.  ¿Hacerlo ahora?</translation>
     <name>EditTtys</name>
     <message>
         <source>Edit TTYs</source>
-        <translation>Editar TTYs</translation>
+        <translation type="obsolete">Editar TTYs</translation>
     </message>
     <message>
         <source>Port ID:</source>
@@ -4035,6 +4035,10 @@ debe guardarse.  ¿Hacerlo ahora?</translation>
     <message>
         <source>CR/LF</source>
         <translation></translation>
+    </message>
+    <message>
+        <source>Edit Serial Ports</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
