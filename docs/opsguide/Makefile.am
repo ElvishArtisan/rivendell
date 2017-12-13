@@ -136,6 +136,7 @@ OPSGUIDE_IMAGES = rdadmin.autofill_carts_dialog.png\
                   rdadmin.configure_rdlibrary_dialog.png\
                   rdadmin.configure_rdlogedit_dialog.png\
                   rdadmin.dropbox_configuration_dialog.png\
+                  rdadmin.edit_audio_ports_dialog.png\
                   rdadmin.edit_channel_gpios_dialog.png\
                   rdadmin.edit_gpi_dialog.png\
                   rdadmin.edit_host_variable_dialog.png\

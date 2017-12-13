@@ -2066,5 +2066,67 @@
 	</para>
       </sect3>
     </sect2>
+    <sect2 xml:id="sect.rdadmin.manage_hosts.configuring_audio_ports">
+      <title>Configuring Audio Ports</title>
+      <para>
+	To configure audio ports, touch the
+	<computeroutput>Audio Ports</computeroutput> button to open the
+	Edit Audio Ports dialog.
+      </para>
+      <para>
+	<mediaobject>
+	  <imageobject>
+	    <imagedata align="center" fileref="rdadmin.edit_audio_ports_dialog.png" scale="50"/>
+	  </imageobject>
+	  <caption>
+	    <para>The Edit Audio Ports Dialog</para>
+	  </caption>
+	</mediaobject>
+      </para>
+      <note>
+	<para>
+	  As of this writing, settings made in this dialog will have effect
+	  only on audio devices using the AudioScience HPI driver.
+	</para>
+      </note>
+      <para>
+	The <computeroutput>Card:</computeroutput> dropdown is used to select
+	the audio card to which to apply settings.
+	<computeroutput>Clock Source:</computeroutput> is used to select the
+	source of the sample clock.
+      </para>
+      <para>
+	Each input and output port on a card can be set to be of a certain
+	type (<userinput>Analog</userinput>, <userinput>AES/EBU</userinput>
+	or <userinput>SP/DIFF</userinput>).
+	The <computeroutput>Mode:</computeroutput> dropdown controls the
+	routing of left/right signals (see table below), while the reference
+	level of the signal at each port can be set with the
+	<computeroutput>Ref. Level:</computeroutput> control.
+      </para>
+      <table xml:id="table.rdadmin.audio_port_mode_switch_settings" frame="all" pgwide="0">
+	<title>Audio Port Mode Switch Settings</title>
+	<tgroup cols="3" align="left" colsep="1" rowsep="1">
+	  <colspec colname="Channels" colwidth="3.0*"/>
+	  <colspec colname="Mode" colwidth="4.0*"/>
+	  <colspec colname="Effect" colwidth="20.0*"/>
+	  <thead>
+	    <row><entry>Channels</entry><entry>Mode</entry><entry>Effect</entry>
+	    </row>
+	  </thead>
+	  <tbody>
+	    <row><entry>1</entry><entry>Normal</entry><entry>Left+Right sum to mono</entry></row>
+	    <row><entry>1</entry><entry>Swap</entry><entry>Left+Right sum to mono</entry></row>
+	    <row><entry>1</entry><entry>Left Only</entry><entry>Left only to mono</entry></row>
+	    <row><entry>1</entry><entry>Right Only</entry><entry>Right only to mono</entry></row>
+	    <row><entry>2</entry><entry>Normal</entry><entry>Stereo</entry></row>
+	    <row><entry>2</entry><entry>Swap</entry><entry>Stereo, Left swapped with Right</entry></row>
+	    <row><entry>2</entry><entry>Left Only</entry><entry>Left only, Right muted</entry></row>
+	    <row><entry>2</entry><entry>Right Only</entry><entry>Right only, Left muted</entry></row>
+	  </tbody>
+	</tgroup>
+      </table>
+
+    </sect2>
   </sect1>
 </chapter>
