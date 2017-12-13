@@ -2019,5 +2019,52 @@
 	</important>
       </sect3>
     </sect2>
+    <sect2 xml:id="sect.rdadmin.manage_hosts.configuring_host_variables">
+      <title>Configuring Host Variables</title>
+      <sect3 xml:id="sec.rdadmin.manage_hosts.configuring_host_variables.overview">
+	<title>Overview</title>
+	<para>
+	  <emphasis>Host variables</emphasis> are alphanumeric tags bracketed
+	  by '%' characters --e.g. <userinput>%HOST_VAR%</userinput> -- that
+	  can be assigned string values on a per host basis. When used in
+	  the command list in a macro cart, the assigned string is
+	  automatically substituted for the variable name.
+	</para>
+      </sect3>
+      <sect3 xml:id="sec.rdadmin.manage_hosts.configuring_host_variables.editing_host_variables">
+	<title>Editing Host Variables</title>
+	<para>
+	  To add, edit or delete host variables, touch the
+	  <computeroutput>Host Variables</computeroutput> button to open the
+	  Host Variables dialog.
+	</para>
+	<para>
+	  <mediaobject>
+	    <imageobject>
+	      <imagedata align="center" fileref="rdadmin.host_variables_dialog.png" scale="60"/>
+	    </imageobject>
+	    <caption>
+	      <para>The Host Variables Dialog</para>
+	    </caption>
+	  </mediaobject>
+	</para>
+	<para>
+	  To edit the value of an host variable, select its entry on the
+	  <computeroutput>Host Variables</computeroutput> list and then touch
+	  the <computeroutput>Edit</computeroutput> button to bring up the
+	  Edit Host Variable dialog.
+	</para>
+	<para>
+	  <mediaobject>
+	    <imageobject>
+	      <imagedata align="center" fileref="rdadmin.edit_host_variable_dialog.png" scale="60"/>
+	    </imageobject>
+	    <caption>
+	      <para>The Edit Host Variable Dialog</para>
+	    </caption>
+	  </mediaobject>
+	</para>
+      </sect3>
+    </sect2>
   </sect1>
 </chapter>
