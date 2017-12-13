@@ -2407,5 +2407,25 @@
       to be replicated should be taken.
     </para>
   </sect1>
-
+  <sect1 xml:id="sect.rdadmin.backing_up_and_restoring_the_database">
+    <title>Backing Up and Restoring the Database</title>
+    <para>
+      To make a backup copy of the database, touch the
+      <computeroutput>Backup Database</computeroutput> button. You will
+      be prompted with a dialog to allow you to choose a location to save
+      the resulting backup.
+    </para>
+    <para>
+      To restore a previous backup, touch the
+      <computeroutput>Restore Database</computeroutput> button. You will
+      be prompted with a dialog to allow you to choose a location whence
+      to load the back file.
+    </para>
+    <warning>
+      <para>
+	Restoring a previous database will COMPLETELY OVERWRITE whatever
+	database is currently loaded!
+      </para>
+    </warning>
+  </sect1>
 </chapter>
