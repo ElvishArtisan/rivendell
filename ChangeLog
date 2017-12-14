@@ -16480,3 +16480,6 @@
 2017-12-13 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'Backing Up and Restoring the Database' section to the
 	Operations Guide.
+2017-12-14 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'RDTempDirectory' class.
+	* Fixed a race in the 'Export' Web API call.

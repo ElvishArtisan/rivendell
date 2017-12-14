@@ -219,6 +219,7 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdsvc.cpp rdsvc.h\
                         rdsystem.cpp rdsystem.h\
                         rdsystemuser.cpp rdsystemuser.h\
+                        rdtempdirectory.cpp rdtempdirectory.h\
                         rdtextfile.cpp rdtextfile.h\
                         rdtextvalidator.cpp rdtextvalidator.h\
                         rdtimeedit.cpp rdtimeedit.h\

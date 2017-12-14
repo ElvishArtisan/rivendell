@@ -2,7 +2,7 @@
 //
 // Rivendell web service portal -- Export service
 //
-//   (C) Copyright 2010-2015 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2010-2017 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -24,14 +24,15 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 
-#include <rdformpost.h>
-#include <rdweb.h>
-#include <rdcart.h>
 #include <rdaudioconvert.h>
-#include <rdsettings.h>
+#include <rdcart.h>
 #include <rdconf.h>
+#include <rdformpost.h>
+#include <rdsettings.h>
+#include <rdtempdirectory.h>
+#include <rdweb.h>
 
-#include <rdxport.h>
+#include "rdxport.h"
 
 void Xport::Export()
 {
@@ -138,8 +139,12 @@ void Xport::Export()
   int fd;
   ssize_t n;
   uint8_t data[2048];
-  QString tmpdir=RDTempDir();
-  QString tmpfile=tmpdir+"/exported_audio";
+  QString err_msg;
+  RDTempDirectory *tempdir=new RDTempDirectory("rdxport-export");
+  if(!tempdir->create(&err_msg)) {
+    XmlExit("unable to create temporary directory ["+err_msg+"]",500);
+  }
+  QString tmpfile=tempdir->path()+"/exported_audio";
   RDAudioConvert *conv=new RDAudioConvert(xport_config->stationName());
   conv->setSourceFile(RDCut::pathName(cartnum,cutnum));
   conv->setDestinationFile(tmpfile);
@@ -179,7 +184,8 @@ void Xport::Export()
     }
     close(fd);
     unlink(tmpfile);
-    rmdir(tmpdir);
+    //    rmdir(tmpdir);
+    delete tempdir;
     Exit(0);
     break;
 
@@ -208,8 +214,7 @@ void Xport::Export()
   if(wavedata!=NULL) {
     delete wavedata;
   }
-  unlink(tmpfile);
-  rmdir(tmpdir);
+  delete tempdir;
   if(resp_code==200) {
     Exit(200);
   }
