@@ -923,6 +923,10 @@ Vyhledejte svého správce systému kvůli aktualizaci!</translation>
         <source>audio deletion error!</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Windows</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RenderDialog</name>
