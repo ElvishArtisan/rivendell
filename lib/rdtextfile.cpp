@@ -2,7 +2,7 @@
 //
 // Spawn an external text file viewer.
 //
-//   (C) Copyright 2002-2006,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2006,2016-2017 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -27,8 +27,10 @@
 #include <qmessagebox.h>
 #include <qprocess.h>
 
-#include <rdconf.h>
-#include <rd.h>
+#include "rdconf.h"
+#include "rd.h"
+#include "rdtempdirectory.h"
+
 #include <rdtextfile.h>
 
 bool RDTextFile(const QString &data)
@@ -63,7 +65,7 @@ bool RDTextFile(const QString &data)
   proc->launch("");
   delete proc;
 #else
-  strcpy(tmpfile,RDTempDir()+"/rdreportXXXXXX");
+  strcpy(tmpfile,RDTempDirectory::basePath()+"/rdreportXXXXXX");
   int fd=mkstemp(tmpfile);
   if(fd<0) {
     QMessageBox::warning(NULL,"File Error","Unable to create temporary file");

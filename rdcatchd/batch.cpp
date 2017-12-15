@@ -2,7 +2,7 @@
 //
 // Batch Routines for the Rivendell netcatcher daemon
 //
-//   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2017 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -39,28 +39,29 @@
 #include <qsignalmapper.h>
 #include <qsessionmanager.h>
 
-#include <rddb.h>
-#include <rdconf.h>
-#include <rdurl.h>
-#include <rdwavefile.h>
-#include <rdcut.h>
+#include <rdaudioconvert.h>
 #include <rdcatchd_socket.h>
 #include <rdcatchd.h>
-#include <rdrecording.h>
-#include <rdttyout.h>
-#include <rdmixer.h>
 #include <rdcheck_daemons.h>
-#include <rddebug.h>
-#include <rddatedecode.h>
 #include <rdcmd_switch.h>
-#include <rdescape_string.h>
-#include <rdpodcast.h>
-#include <rdsettings.h>
-#include <rdlibrary_conf.h>
-#include <rdaudioconvert.h>
-#include <rdupload.h>
-#include <rdweb.h>
+#include <rdconf.h>
+#include <rdcut.h>
+#include <rddb.h>
+#include <rddatedecode.h>
+#include <rddebug.h>
 #include <rddownload.h>
+#include <rdescape_string.h>
+#include <rdlibrary_conf.h>
+#include <rdmixer.h>
+#include <rdpodcast.h>
+#include <rdrecording.h>
+#include <rdsettings.h>
+#include <rdtempdirectory.h>
+#include <rdttyout.h>
+#include <rdupload.h>
+#include <rdurl.h>
+#include <rdwavefile.h>
+#include <rdweb.h>
 
 void MainObject::catchConnectedData(int serial,bool state)
 {
@@ -131,7 +132,7 @@ void MainObject::RunBatch(RDCmdSwitch *cmd)
   //
   // Calculate Temporary Directory
   //
-  catch_temp_dir=RDTempDir();
+  catch_temp_dir=RDTempDirectory::basePath();
 
   //
   // Open Database

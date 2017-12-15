@@ -963,29 +963,6 @@ QString RDHomeDir()
 }
 
 
-QString RDTempDir()
-{
-  QString conf_temp_directory = RDConfiguration()->tempDirectory();
-  if (!conf_temp_directory.isEmpty()) {
-    return conf_temp_directory;
-  }
-#ifdef WIN32
-  if(getenv("TEMP")!=NULL) {
-    return QString(getenv("TEMP"));
-  }
-  if(getenv("TMP")!=NULL) {
-    return QString(getenv("TMP"));
-  }
-  return QString("C:\\");
-#else
-  if(getenv("TMPDIR")!=NULL) {
-    return QString(getenv("TMPDIR"));
-  }
-  return QString("/tmp");
-#endif  // WIN32
-}
-
-
 QString RDTempFile()
 {
 #ifndef WIN32

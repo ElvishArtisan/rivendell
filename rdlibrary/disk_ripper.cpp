@@ -2,7 +2,7 @@
 //
 // CD Ripper Dialog for Rivendell.
 //
-//   (C) Copyright 2002-2003,2010,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2003,2010,2016-2017 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -31,18 +31,19 @@
 #include <qmessagebox.h>
 #include <qcheckbox.h>
 
-#include <rddb.h>
 #include <rd.h>
-#include <rdconf.h>
-#include <rdwavefile.h>
+#include <rdaudioimport.h>
 #include <rdcart.h>
+#include <rdcdripper.h>
+#include <rdconf.h>
 #include <rdcut.h>
 #include <rdcut_dialog.h>
-#include <rdlist_groups.h>
-#include <rdgroup.h>
-#include <rdaudioimport.h>
-#include <rdcdripper.h>
+#include <rddb.h>
 #include <rdescape_string.h>
+#include <rdgroup.h>
+#include <rdlist_groups.h>
+#include <rdtempdirectory.h>
+#include <rdwavefile.h>
 
 #include <disk_ripper.h>
 #include <globals.h>
@@ -84,7 +85,7 @@ DiskRipper::DiskRipper(QString *filter,QString *group,QString *schedcode,
   // Create Temporary Directory
   //
   char path[PATH_MAX];
-  strncpy(path,RDTempDir(),PATH_MAX);
+  strncpy(path,RDTempDirectory::basePath(),PATH_MAX);
   strcat(path,"/XXXXXX");
   if(mkdtemp(path)==NULL) {
     QMessageBox::warning(this,"RDLibrary - "+tr("Ripper Error"),
@@ -1018,7 +1019,7 @@ void DiskRipper::RipTrack(int track,int end_track,QString cutname,QString title)
   RDAudioImport::ErrorCode conv_err;
   RDAudioConvert::ErrorCode audio_conv_err;
   RDCdRipper::ErrorCode ripper_err;
-  QString tmpdir=RDTempDir();
+  QString tmpdir=RDTempDirectory::basePath();
   QString tmpfile=tmpdir+"/"+RIPPER_TEMP_WAV;
   if(rip_profile_rip) {
     ripper=new RDCdRipper(stdout,this);

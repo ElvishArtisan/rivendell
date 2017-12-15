@@ -2,7 +2,7 @@
 //
 // Convert Audio File Formats
 //
-//   (C) Copyright 2010-2015 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2010-2017 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -48,11 +48,12 @@
 #include <id3/tag.h>
 #include <qfile.h>
 
-#include <rd.h>
 #include <rdaudioconvert.h>
-#include <rdlibrary_conf.h>
 #include <rdcart.h>
 #include <rdconf.h>
+#include <rd.h>
+#include <rdlibrary_conf.h>
+#include <rdtempdirectory.h>
 
 #define STAGE2_XFER_SIZE 2048
 #define STAGE2_BUFFER_SIZE 49152
@@ -143,10 +144,10 @@ void RDAudioConvert::setSpeedRatio(float ratio)
 
 RDAudioConvert::ErrorCode RDAudioConvert::convert()
 {
-  char tmpdir[PATH_MAX];
   RDAudioConvert::ErrorCode err;
   QString tmpfile1;
   QString tmpfile2;
+  RDTempDirectory *temp_dir=NULL;
 
   //
   // Make sure we're all set to go...
@@ -170,21 +171,21 @@ RDAudioConvert::ErrorCode RDAudioConvert::convert()
   //
   // Generate Temporary Filenames
   //
-  strcpy(tmpdir,RDTempDir());
-  strcat(tmpdir,"/rdaudioconvertXXXXXX");
-  if(mkdtemp(tmpdir)==NULL) {
+  temp_dir=new RDTempDirectory("rdaudioconvert");
+  QString err_msg;
+  if(!temp_dir->create(&err_msg)) {
+    delete temp_dir;
     return RDAudioConvert::ErrorInternal;
   }
-  tmpfile1=QString(tmpdir)+"/signed32_1.wav";
-  tmpfile2=QString(tmpdir)+"/signed32_2.wav";
+  tmpfile1=QString(temp_dir->path())+"/signed32_1.wav";
+  tmpfile2=QString(temp_dir->path())+"/signed32_2.wav";
 
   //
   // Stage One -- Convert Source Format to Signed 32 Bit Integer
   //
   if((err=Stage1Convert(conv_src_filename,tmpfile1))!=
      RDAudioConvert::ErrorOk) {
-    unlink(tmpfile1);
-    rmdir(tmpdir);
+    delete temp_dir;
     return err;
   }
 
@@ -193,9 +194,7 @@ RDAudioConvert::ErrorCode RDAudioConvert::convert()
   //
   if((err=Stage2Convert(tmpfile1,tmpfile2))!=
      RDAudioConvert::ErrorOk) {
-    unlink(tmpfile1);
-    unlink(tmpfile2);
-    rmdir(tmpdir);
+    delete temp_dir;
     return err;
   }
 
@@ -204,18 +203,14 @@ RDAudioConvert::ErrorCode RDAudioConvert::convert()
   //
   if((err=Stage3Convert(tmpfile2,conv_dst_filename))!=
      RDAudioConvert::ErrorOk) {
-    unlink(tmpfile1);
-    unlink(tmpfile2);
-    rmdir(tmpdir);
+    delete temp_dir;
     return err;
   }
 
   //
   // Clean Up
   //
-  unlink(tmpfile1);
-  unlink(tmpfile2);
-  rmdir(tmpdir);
+  delete temp_dir;
 
   return RDAudioConvert::ErrorOk;
 }

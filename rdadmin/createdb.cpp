@@ -28,25 +28,27 @@
 
 #include <qapplication.h>
 
-#include <rddb.h>
-#include <rd.h>
-#include <rdevent.h>
-#include <rdlog.h>
 #include <dbversion.h>
+#include <rd.h>
 #include <rdcart.h>
+#include <rdconf.h>
+#include <rdconfig.h>
 #include <rdcreate_log.h>
-#include <rdrecording.h>
+#include <rdcreateauxfieldstable.h>
+#include <rddb.h>
+#include <rdescape_string.h>
+#include <rdevent.h>
+#include <rdfeedlog.h>
+#include <rdlog.h>
+#include <rdlog_line.h>
 #include <rdmacro_event.h>
 #include <rdpaths.h>
+#include <rdrecording.h>
 #include <rdsvc.h>
-#include <rdlog_line.h>
-#include <rdcreateauxfieldstable.h>
-#include <rdfeedlog.h>
-#include <rdescape_string.h>
-#include "rdconfig.h"
-#include <createdb.h>
-#include <globals.h>
-#include <rdconf.h>
+#include <rdtempdirectory.h>
+
+#include "createdb.h"
+#include "globals.h"
 
 //
 // NOTE TO MAINTAINERS:
@@ -2693,7 +2695,7 @@ int UpdateDb(int ver,RDConfig *config)
       bool home_found = false;
       admin_backup_filename = RDGetHomeDir(&home_found);
       if (!home_found) {
-        admin_backup_filename = RDTempDir();
+        admin_backup_filename = RDTempDirectory::basePath();
       }
       admin_backup_filename+=
 	QString().sprintf("/rdbackup-%s-%d.sql.gz",

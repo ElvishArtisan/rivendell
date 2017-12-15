@@ -2,7 +2,7 @@
 //
 // A Batch Importer for Rivendell.
 //
-//   (C) Copyright 2002-2014,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2014,2016-2017 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -34,13 +34,14 @@
 #include <qstringlist.h>
 
 #include <rd.h>
-#include <rdcut.h>
+#include <rdaudioimport.h>
 #include <rdconf.h>
+#include <rdcut.h>
+#include <rddbheartbeat.h>
+#include <rdescape_string.h>
 #include <rdimport.h>
 #include <rdlibrary_conf.h>
-#include <rdescape_string.h>
-#include <rddbheartbeat.h>
-#include <rdaudioimport.h>
+#include <rdtempdirectory.h>
 
 volatile bool import_run=true;
 
@@ -1488,7 +1489,7 @@ RDWaveFile *MainObject::FixFile(const QString &filename,RDWaveData *wavedata)
   // Copy File
   //
   import_temp_fix_filename=
-    QString(tempnam(RDTempDir(),"rdfix"))+QString(".wav");
+    QString(tempnam(RDTempDirectory::basePath(),"rdfix"))+QString(".wav");
   if(import_temp_fix_filename.isNull()) {
     return NULL;
   }

@@ -2,7 +2,7 @@
 //
 // A Library import filter for the Prophet NexGen system
 //
-//   (C) Copyright 2012 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2012,2017 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -34,15 +34,15 @@
 #include <qfile.h>
 #include <qregexp.h>
 
-#include <rddb.h>
 #include <rd.h>
+#include <rdcart.h>
 #include <rdconfig.h>
 #include <rdconf.h>
 #include <rdcmd_switch.h>
 #include <rdcut.h>
+#include <rddb.h>
+#include <rdtempdirectory.h>
 #include <rdwavefile.h>
-#include <rdcart.h>
-#include <rdcut.h>
 #include <rdweb.h>
 
 #include <nexgen_filter.h>
@@ -210,7 +210,7 @@ MainObject::MainObject(QObject *parent)
   //
   // Create Temp Directory
   //
-  strncpy(tempdir,RDTempDir()+"/nexgen_filterXXXXXX",PATH_MAX);
+  strncpy(tempdir,RDTempDirectory::basePath()+"/nexgen_filterXXXXXX",PATH_MAX);
   filter_temp_dir=new QDir(mkdtemp(tempdir));
   filter_temp_audiofile=filter_temp_dir->canonicalPath()+"/audio.dat";
 
@@ -265,7 +265,7 @@ void MainObject::ProcessArchive(const QString &filename)
   //
   // Create temporary directory
   //
-  snprintf(tempdir,PATH_MAX,"%s/XXXXXX",(const char *)RDTempDir());
+  snprintf(tempdir,PATH_MAX,"%s/XXXXXX",(const char *)RDTempDirectory::basePath());
   if(mkdtemp(tempdir)==NULL) {
     return;
   }

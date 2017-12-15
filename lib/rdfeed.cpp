@@ -2,7 +2,7 @@
 //
 // Abstract a Rivendell RSS Feed
 //
-//   (C) Copyright 2002-2007,2010,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2007,2010,2016-2017 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -35,6 +35,7 @@
 #include <rdcut.h>
 #include <rdaudioexport.h>
 #include <rdaudioconvert.h>
+#include <rdtempdirectory.h>
 #include <rdupload.h>
 
 RDFeed::RDFeed(const QString &keyname,RDConfig *config,QObject *parent)
@@ -863,7 +864,7 @@ QString RDFeed::GetTempFilename() const
 {
   char tempname[PATH_MAX];
 
-  sprintf(tempname,"%s/podcastXXXXXX",(const char *)RDTempDir());
+  sprintf(tempname,"%s/podcastXXXXXX",(const char *)RDTempDirectory::basePath());
   if(mkstemp(tempname)<0) {
     return QString();
   }

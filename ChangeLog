@@ -16483,3 +16483,5 @@
 2017-12-14 Fred Gleason <fredg@paravelsystems.com>
 	* Added an 'RDTempDirectory' class.
 	* Fixed a race in the 'Export' Web API call.
+2017-12-15 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the 'RDTempDir()' function.

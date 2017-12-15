@@ -34,13 +34,13 @@
 RDFormPost::RDFormPost(RDFormPost::Encoding encoding,unsigned maxsize,
 		       bool auto_delete)
 {
-  char tempdir[PATH_MAX];
   bool ok=false;
 
   post_encoding=encoding;
   post_error=RDFormPost::ErrorNotInitialized;
   post_auto_delete=auto_delete;
   post_data=NULL;
+  post_tempdir=NULL;
 
   //
   // Client Info
@@ -82,12 +82,11 @@ RDFormPost::RDFormPost(RDFormPost::Encoding encoding,unsigned maxsize,
   }
 
   //
-  // Initialize Temp Directory Path
+  // Initialize Temp Directory
   //
-  strcpy(tempdir,RDTempDir());
-  strcat(tempdir,"/rivendellXXXXXX");
-  post_tempdir=mkdtemp(tempdir);
-  if(post_tempdir.isNull()) {
+  post_tempdir=new RDTempDirectory("rdformpost");
+  QString err_msg;
+  if(!post_tempdir->create(&err_msg)) {
     post_error=RDFormPost::ErrorNoTempDir;
     return;
   }
@@ -130,8 +129,8 @@ RDFormPost::~RDFormPost()
 	unlink(post_values.at(ci->first).toString());
       }
     }
-    if(!post_tempdir.isNull()) {
-      rmdir(post_tempdir);
+    if(post_tempdir!=NULL) {
+      delete post_tempdir;
     }
     if(post_data!=NULL) {
       delete post_data;
@@ -304,7 +303,7 @@ bool RDFormPost::isFile(const QString &name)
 
 QString RDFormPost::tempDir() const
 {
-  return post_tempdir;
+  return post_tempdir->path();
 }
 
 
@@ -584,7 +583,8 @@ void RDFormPost::LoadMultipartEncoding(char first)
 		  name.replace("\"","");
 		}
 		if(pairs[0].lower().simplifyWhiteSpace()=="filename") {
-		  filename=post_tempdir+"/"+pairs[1].simplifyWhiteSpace();
+		  filename=post_tempdir->path()+"/"+
+		    pairs[1].simplifyWhiteSpace();
 		  filename.replace("\"","");
 		  fd=open(filename,O_WRONLY|O_CREAT,S_IRUSR|S_IWUSR);
 		}

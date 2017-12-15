@@ -3,7 +3,7 @@
 // Functions for interfacing with web components using the
 // Common Gateway Interface (CGI) Standard 
 //
-//   (C) Copyright 1996-2007 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 1996-2007,2017 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -32,15 +32,16 @@
 #include <qdatetime.h>
 #include <qstringlist.h>
 
-#include <rdescape_string.h>
-#include <rduser.h>
-#include <rddb.h>
-#include <rdconf.h>
+#include "rdconf.h"
+#include "rddb.h"
+#include "rdescape_string.h"
+#include "rdtempdirectory.h"
+#include "rduser.h"
 #ifndef WIN32
-#include <rdwebresult.h>
+#include "rdwebresult.h"
 #endif  // WIN32
 
-#include <rdweb.h>
+#include "rdweb.h"
 
 #ifndef WIN32
 /* RDReadPost(char *cBuffer,int dSize) */
@@ -787,7 +788,7 @@ bool RDParsePost(std::map<QString,QString> *vars)
   //
   // Initialize Temp Directory Path
   //
-  tempdir = RDTempDir() + "/rivendellXXXXXX";
+  tempdir=RDTempDirectory::basePath()+"/rivendellXXXXXX";
 
   //
   // Get message part separator

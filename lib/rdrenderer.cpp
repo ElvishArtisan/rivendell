@@ -27,6 +27,7 @@
 #include "rdcart.h"
 #include "rdconf.h"
 #include "rdcut.h"
+#include "rdtempdirectory.h"
 
 #include "rdrenderer.h"
 
@@ -182,7 +183,7 @@ bool __RDRenderLogLine::GetCutFile(const QString &cutname,int start_pt,
   RDAudioExport::ErrorCode export_err;
   char tempdir[PATH_MAX];
   
-  strncpy(tempdir,RDTempDir()+"/rdrenderXXXXXX",PATH_MAX);
+  strncpy(tempdir,RDTempDirectory::basePath()+"/rdrenderXXXXXX",PATH_MAX);
   *dest_filename=QString(mkdtemp(tempdir))+"/"+cutname+".wav";
   RDAudioExport *conv=new RDAudioExport(ll_station,ll_config);
   conv->setDestinationFile(*dest_filename);
@@ -277,7 +278,7 @@ bool RDRenderer::renderToFile(const QString &outfile,RDLogEvent *log,
     //
     // Get Temporary File
     //
-    strncpy(tempdir,RDTempDir()+"/rdrenderXXXXXX",PATH_MAX);
+    strncpy(tempdir,RDTempDirectory::basePath()+"/rdrenderXXXXXX",PATH_MAX);
     temp_output_filename=QString(mkdtemp(tempdir))+"/log.wav";
     ProgressMessage(tr("Using temporary file")+" \""+temp_output_filename+"\".");
 
@@ -359,7 +360,7 @@ bool RDRenderer::renderToCart(unsigned cartnum,int cutnum,RDLogEvent *log,
   //
   // Get Temporary File
   //
-  strncpy(tempdir,RDTempDir()+"/rdrenderXXXXXX",PATH_MAX);
+  strncpy(tempdir,RDTempDirectory::basePath()+"/rdrenderXXXXXX",PATH_MAX);
   temp_output_filename=QString(mkdtemp(tempdir))+"/log.wav";
   ProgressMessage(tr("Using temporary file")+" \""+temp_output_filename+"\".");
 

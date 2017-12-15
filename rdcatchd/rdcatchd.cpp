@@ -2,7 +2,7 @@
 //
 // The Rivendell Netcatcher Daemon
 //
-//   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2017 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -41,26 +41,27 @@
 #include <qsignalmapper.h>
 #include <qsessionmanager.h>
 
-#include <rddb.h>
-#include <rdconf.h>
-#include <rdhash.h>
-#include <rdurl.h>
-#include <rdwavefile.h>
-#include <rdcut.h>
+#include <dbversion.h>
 #include <rdcatchd_socket.h>
 #include <rdcatchd.h>
-#include <rdrecording.h>
-#include <rdttyout.h>
-#include <rdmixer.h>
 #include <rdcheck_daemons.h>
-#include <rddebug.h>
+#include <rdconf.h>
+#include <rdcut.h>
 #include <rddatedecode.h>
+#include <rddb.h>
+#include <rddebug.h>
 #include <rdescape_string.h>
-#include <rdpodcast.h>
-#include <rdsettings.h>
+#include <rdhash.h>
 #include <rdlibrary_conf.h>
+#include <rdmixer.h>
 #include <rdpaths.h>
-#include <dbversion.h>
+#include <rdpodcast.h>
+#include <rdrecording.h>
+#include <rdsettings.h>
+#include <rdtempdirectory.h>
+#include <rdttyout.h>
+#include <rdurl.h>
+#include <rdwavefile.h>
 
 RDConfig *catch_config;
 
@@ -190,7 +191,7 @@ MainObject::MainObject(QObject *parent)
   //
   // Calculate Temporary Directory
   //
-  catch_temp_dir=RDTempDir();
+  catch_temp_dir=RDTempDirectory::basePath();
 
   //
   // Macro Event Handling

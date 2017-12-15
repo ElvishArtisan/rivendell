@@ -2,7 +2,7 @@
 //
 // The Rivendell Replicator Daemon
 //
-//   (C) Copyright 2010,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2010,2016-2017 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -24,12 +24,13 @@
 
 #include <qapplication.h>
 
-#include <rddb.h>
+#include <dbversion.h>
+#include <rdcart.h>
 #include <rdconf.h>
 #include <rdcmd_switch.h>
+#include <rddb.h>
 #include <rdescape_string.h>
-#include <rdcart.h>
-#include <dbversion.h>
+#include <rdtempdirectory.h>
 
 #include <globals.h>
 #include <citadelxds.h>
@@ -100,7 +101,7 @@ MainObject::MainObject(QObject *parent)
   //
   // Calculate Temporary Directory
   //
-  repl_temp_dir=RDTempDir();
+  repl_temp_dir=RDTempDirectory::basePath();
 
   //
   // Open Database

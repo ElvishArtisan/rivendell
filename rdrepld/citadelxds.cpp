@@ -2,7 +2,7 @@
 //
 // Replicator implementation for the Citadel XDS Portal
 //
-//   (C) Copyright 2010,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2010,2016-2017 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -26,15 +26,16 @@
 #include <qfileinfo.h>
 #include <qdatetime.h>
 
-#include <rddb.h>
-#include <rdconf.h>
 #include <rdaudioconvert.h>
-#include <rdupload.h>
-#include <rdcut.h>
 #include <rdcart.h>
+#include <rdcut.h>
+#include <rdconf.h>
+#include <rddb.h>
+#include <rddelete.h>
 #include <rdescape_string.h>
 #include <rdstringlist.h>
-#include <rddelete.h>
+#include <rdtempdirectory.h>
+#include <rdupload.h>
 
 #include <citadelxds.h>
 
@@ -345,7 +346,7 @@ bool CitadelXds::PostCut(const QString &cutname,const QString &filename)
     speed_ratio=(float)cut->length()/(float)cart->forcedLength();
   }
   RDSettings *settings=new RDSettings();
-  QString tempfile=RDTempDir()+"/"+filename;
+  QString tempfile=RDTempDirectory::basePath()+"/"+filename;
   RDAudioConvert *conv=new RDAudioConvert(rdconfig->stationName());
   conv->setSourceFile(RDCut::pathName(cutname));
   conv->setDestinationFile(tempfile);

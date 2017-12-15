@@ -2,7 +2,7 @@
 //
 // Convert Audio File Formats
 //
-//   (C) Copyright 2010-2015 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2010-2017 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -36,9 +36,9 @@
 
 #include <qobject.h>
 
-#include <rdwavedata.h>
-#include <rdsettings.h>
-#include <rdwavefile.h>
+#include "rdsettings.h"
+#include "rdwavedata.h"
+#include "rdwavefile.h"
 
 class RDAudioConvert : public QObject
 {

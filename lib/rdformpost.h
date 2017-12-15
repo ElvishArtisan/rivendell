@@ -28,6 +28,8 @@
 #include <qvariant.h>
 #include <qhostaddress.h>
 
+#include <rdtempdirectory.h>
+
 class RDFormPost
 {
  public:
@@ -67,7 +69,7 @@ class RDFormPost
   RDFormPost::Error post_error;
   std::map<QString,QVariant> post_values;
   std::map<QString,bool> post_filenames;
-  QString post_tempdir;
+  RDTempDirectory *post_tempdir;
   bool post_auto_delete;
   unsigned post_content_length;
   QString post_content_type;
