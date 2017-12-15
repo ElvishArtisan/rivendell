@@ -20,8 +20,11 @@
 
 #include <errno.h>
 #include <stdlib.h>
+#ifndef WIN32
 #include <unistd.h>
+#endif  // WIN32
 
+#include <qdatetime.h>
 #include <qstringlist.h>
 
 #include "rdconfig.h"
@@ -41,7 +44,7 @@ RDTempDirectory::~RDTempDirectory()
     for(unsigned i=0;i<files.size();i++) {
       temp_dir->remove(files[i]);
     }
-    rmdir(temp_dir->path());
+    temp_dir->rmdir(temp_dir->path());
     delete temp_dir;
   }
 }
@@ -58,6 +61,17 @@ QString RDTempDirectory::path() const
 
 bool RDTempDirectory::create(QString *err_msg)
 {
+#ifdef WIN32
+  QDateTime now=QDateTime::currentDateTime();
+  QString tempdir=RDTempDirectory::basePath()+"/"+temp_base_name+
+    QString().sprintf("%u",now.toTime_t());
+  temp_dir=new QDir(tempdir);
+  if(!temp_dir->mkdir(tempdir)) {
+    *err_msg="unable to create temp directory";
+    delete temp_dir;
+    return false;
+  }
+#else
   char tempdir[PATH_MAX];
 
   strncpy(tempdir,RDTempDirectory::basePath(),PATH_MAX);
@@ -69,6 +83,7 @@ bool RDTempDirectory::create(QString *err_msg)
     return false;
   }
   temp_dir=new QDir(tempdir);
+#endif  // WIN32
 
   return true;
 }

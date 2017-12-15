@@ -49,7 +49,7 @@ bool RDTextFile(const QString &data)
     editor=getenv("VISUAL");
   }
 #ifdef WIN32
-  QString tempfile=QString().sprintf("%s\\rd-%s",(const char *)RDTempDir(),
+  QString tempfile=QString().sprintf("%s\\rd-%s",(const char *)RDTempDirectory::basePath(),
 	           (const char *)QTime::currentTime().toString("hhmmsszzz"));
   FILE *f=fopen(tempfile,"w");
   if(f==NULL) {
