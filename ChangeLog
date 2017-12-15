@@ -16490,3 +16490,6 @@
 2017-12-15 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug that caused initial display of the log list to
 	fail in rdlogedit(1) under Windows.
+2017-12-15 Fred Gleason <fredg@paravelsystems.com>
+	* Updated 'NEWS'.
+	* Incremented the package version to 2.17.0int07.
