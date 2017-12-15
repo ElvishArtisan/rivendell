@@ -43,6 +43,15 @@ RDLogFilter::RDLogFilter(RDLogFilter::FilterMode mode,RDUser *user,
   filter_service_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   filter_service_box=new QComboBox(this);
   filter_service_label->setBuddy(filter_service_box);
+#ifdef WIN32
+  filter_service_box->insertItem(tr("ALL"));
+  sql=QString("select NAME from SERVICES order by NAME");
+  q=new RDSqlQuery(sql);
+  while(q->next()) {
+    filter_service_box->insertItem(q->value(0).toString());
+  }
+  delete q;
+#else
   switch(mode) {
   case RDLogFilter::NoFilter:
     filter_service_box->insertItem(tr("ALL"));
@@ -71,6 +80,7 @@ RDLogFilter::RDLogFilter(RDLogFilter::FilterMode mode,RDUser *user,
     delete q;
     break;
   }
+#endif  // WIN32
   connect(filter_service_box,SIGNAL(activated(int)),
  	  this,SLOT(serviceChangedData(int)));
 

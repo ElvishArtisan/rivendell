@@ -147,11 +147,6 @@ MainWidget::MainWidget(QWidget *parent)
   log_config->load();
   log_config->setModuleName("RDLogEdit");
 
-  str1=QString("RDLogEdit")+"v"+VERSION+" - "+tr("Host");
-  str2=tr("User")+": ["+tr("Unknown")+"]";
-  setCaption(QString().sprintf("%s: %s, %s",(const char *)str1,
-			       (const char *)log_config->stationName(),
-			       (const char *)str2));
   log_import_path=RDGetHomeDir();
 
   //
@@ -344,14 +339,20 @@ MainWidget::MainWidget(QWidget *parent)
   log_close_button->setText(tr("&Close"));
   connect(log_close_button,SIGNAL(clicked()),this,SLOT(quitMainWidget()));
 
-  //  RefreshList();
-
-#ifndef WIN32
+  str1=QString("RDLogEdit")+"v"+VERSION+" - "+tr("Host");
+#ifdef WIN32
+  RefreshList();
+  str2=tr("User")+": ["+tr("Windows")+"]";
+#else
   // 
   // Setup Signal Handling 
   //
   ::signal(SIGCHLD,SigHandler);
+  str2=tr("User")+": ["+tr("Unknown")+"]";
 #endif  // WIN32
+  setCaption(QString().sprintf("%s: %s, %s",(const char *)str1,
+			       (const char *)log_config->stationName(),
+			       (const char *)str2));
 }
 
 
