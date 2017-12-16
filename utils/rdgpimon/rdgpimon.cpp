@@ -113,9 +113,14 @@ MainWidget::MainWidget(QWidget *parent)
   new RDDbHeartbeat(gpi_config->mysqlHeartbeatInterval(),this);
 
   //
+  // RDStation
+  //
+  gpi_station=new RDStation(gpi_config->stationName());
+
+  //
   // RIPC Connection
   //
-  gpi_ripc=new RDRipc(gpi_config->stationName());
+  gpi_ripc=new RDRipc(gpi_station,gpi_config,this);
   gpi_ripc->setIgnoreMask(true);
   connect(gpi_ripc,SIGNAL(userChanged()),this,SLOT(userData()));
   connect(gpi_ripc,SIGNAL(gpiStateChanged(int,int,bool)),
@@ -131,11 +136,6 @@ MainWidget::MainWidget(QWidget *parent)
   connect(gpi_ripc,SIGNAL(gpoCartChanged(int,int,int,int)),
 	  this,SLOT(gpoCartChangedData(int,int,int,int)));
   gpi_ripc->connectHost("localhost",RIPCD_TCP_PORT,gpi_config->password());
-
-  //
-  // RDStation
-  //
-  gpi_station=new RDStation(gpi_config->stationName());
 
   //
   // RDMatrix;

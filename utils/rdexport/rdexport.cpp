@@ -248,17 +248,17 @@ MainObject::MainObject(QObject *parent)
   }
 
   //
-  // RIPC Connection
-  //
-  export_ripc=new RDRipc(export_config->stationName());
-  connect(export_ripc,SIGNAL(userChanged()),this,SLOT(userData()));
-  export_ripc->
-    connectHost("localhost",RIPCD_TCP_PORT,export_config->password());
-
-  //
   // Station Configuration
   //
   export_station=new RDStation(export_config->stationName());
+
+  //
+  // RIPC Connection
+  //
+  export_ripc=new RDRipc(export_station,export_config,this);
+  connect(export_ripc,SIGNAL(userChanged()),this,SLOT(userData()));
+  export_ripc->
+    connectHost("localhost",RIPCD_TCP_PORT,export_config->password());
 
   //
   // User

@@ -172,7 +172,7 @@ MainWidget::MainWidget(QWidget *parent)
   //
   // RIPC Connection
   //
-  rdripc=new RDRipc(panel_config->stationName());
+  rdripc=new RDRipc(rdstation_conf,panel_config,this);
   connect(rdripc,SIGNAL(userChanged()),this,SLOT(userData()));
   connect(rdripc,SIGNAL(rmlReceived(RDMacro *)),
 	  this,SLOT(rmlReceivedData(RDMacro *)));

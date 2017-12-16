@@ -365,5 +365,6 @@ QString RDDateTimeDecode(QString str,const QDateTime &datetime,
       string+=field;
     }
   }
+
   return string;
 }

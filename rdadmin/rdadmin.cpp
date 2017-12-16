@@ -178,10 +178,10 @@ MainWidget::MainWidget(QWidget *parent)
   char temp[256];
   GetPrivateProfileString(RD_CONF_FILE,"Identity","Password",
 			  temp,"",255);
-  rdripc=new RDRipc(admin_config->stationName(),this);
-  rdripc->connectHost("localhost",RIPCD_TCP_PORT,temp);
   admin_station=new RDStation(admin_config->stationName(),this);
   admin_system=new RDSystem();
+  rdripc=new RDRipc(admin_station,admin_config,this);
+  rdripc->connectHost("localhost",RIPCD_TCP_PORT,temp);
 
   //
   // Log In

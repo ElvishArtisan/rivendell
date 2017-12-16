@@ -448,17 +448,17 @@ MainObject::MainObject(QObject *parent)
   new RDDbHeartbeat(import_config->mysqlHeartbeatInterval(),this);
 
   //
-  // RIPC Connection
-  //
-  import_ripc=new RDRipc(import_config->stationName());
-  connect(import_ripc,SIGNAL(userChanged()),this,SLOT(userData()));
-  import_ripc->
-    connectHost("localhost",RIPCD_TCP_PORT,import_config->password());
-
-  //
   // Station Configuration
   //
   import_station=new RDStation(import_config->stationName());
+
+  //
+  // RIPC Connection
+  //
+  import_ripc=new RDRipc(import_station,import_config,this);
+  connect(import_ripc,SIGNAL(userChanged()),this,SLOT(userData()));
+  import_ripc->
+    connectHost("localhost",RIPCD_TCP_PORT,import_config->password());
 
   //
   // User

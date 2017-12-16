@@ -85,15 +85,15 @@ MainObject::MainObject(QObject *parent)
   }
 
   //
-  // RIPCD Connection
-  //
-  filter_ripc=new RDRipc("");
-  filter_ripc->connectHost("localhost",RIPCD_TCP_PORT,rdconfig->password());
-
-  //
   // Station Configuration
   //
   filter_rdstation=new RDStation(rdconfig->stationName());
+
+  //
+  // RIPCD Connection
+  //
+  filter_ripc=new RDRipc(filter_rdstation,rdconfig,this);
+  filter_ripc->connectHost("localhost",RIPCD_TCP_PORT,rdconfig->password());
 
   //
   // Read Arguments

@@ -2,7 +2,7 @@
 //
 // Connection to the Rivendell Interprocess Communication Daemon
 //
-//   (C) Copyright 2002-2003,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2003,2016-2017 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -22,14 +22,18 @@
 
 #include <qobject.h>
 #include <qapplication.h>
+#include <qdatetime.h>
 
+#include <rddatedecode.h>
 #include <rddb.h>
 #include <rdripc.h>
 
-RDRipc::RDRipc(QString stationname,QObject *parent)
+//RDRipc::RDRipc(QString stationname,QObject *parent)
+RDRipc::RDRipc(RDStation *station,RDConfig *config,QObject *parent)
   : QObject(parent)
 {
-  ripc_stationname=stationname;
+  ripc_station=station;
+  ripc_config=config;
   ripc_onair_flag=false;
   ripc_ignore_mask=false;
   debug=false;
@@ -62,7 +66,7 @@ QString RDRipc::user() const
 
 QString RDRipc::station() const
 {
-  return ripc_stationname;
+  return ripc_station->name();
 }
 
 
@@ -143,14 +147,8 @@ void RDRipc::sendRml(RDMacro *macro)
 {
   char buffer[RD_RML_MAX_LENGTH];
   char cmd[RD_RML_MAX_LENGTH+4];
-  /*
-  int echo=0;
-
-  if(macro->echoRequested()) {
-    echo=1;
-  }
-  */
   Q_UINT16 port=RD_RML_NOECHO_PORT;
+  QDateTime now=QDateTime::currentDateTime();
 
   if(macro->echoRequested()) {
     port=RD_RML_ECHO_PORT;
@@ -162,12 +160,13 @@ void RDRipc::sendRml(RDMacro *macro)
   QString rmlline(buffer);
   QString sql=QString().sprintf("select NAME,VARVALUE from HOSTVARS \
                                    where STATION_NAME=\"%s\"",
-				(const char *)ripc_stationname);
+				(const char *)ripc_station->name());
   RDSqlQuery *q=new RDSqlQuery(sql);
   while(q->next()) {
     rmlline.replace(q->value(0).toString(),q->value(1).toString());
   }
   delete q;
+  rmlline=RDDateTimeDecode(rmlline,now,ripc_station,ripc_config);
   switch(macro->role()) {
       case RDMacro::Cmd:
 	sprintf(cmd,"MS %s %d %s",(const char *)macro->address().toString(),

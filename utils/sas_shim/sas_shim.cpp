@@ -78,16 +78,16 @@ MainObject::MainObject(QObject *parent)
   new RDDbHeartbeat(rd_config->mysqlHeartbeatInterval(),this);
 
   //
-  // RIPCD Connection
-  //
-  shim_ripc=new RDRipc("");
-  shim_ripc->connectHost("localhost",RIPCD_TCP_PORT,rd_config->password());
-
-  //
   // Station Configuration
   //
   shim_rdstation=new RDStation(rd_config->stationName());
   shim_address=shim_rdstation->address();
+
+  //
+  // RIPCD Connection
+  //
+  shim_ripc=new RDRipc(shim_rdstation,rd_config,this);
+  shim_ripc->connectHost("localhost",RIPCD_TCP_PORT,rd_config->password());
 
   //
   // TTY Device

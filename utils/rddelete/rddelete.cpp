@@ -135,7 +135,7 @@ MainObject::MainObject(QObject *parent)
   //
   // RIPC Connection
   //
-  del_ripc=new RDRipc(del_config->stationName());
+  del_ripc=new RDRipc(del_station,del_config,this);
   connect(del_ripc,SIGNAL(userChanged()),this,SLOT(userData()));
   del_ripc->connectHost("localhost",RIPCD_TCP_PORT,del_config->password());
 

@@ -123,21 +123,21 @@ MainWidget::MainWidget(QWidget *parent)
   }
 
   //
+  // Station Configuration
+  //
+  rdstation_conf=new RDStation(config->stationName(),this);
+  cast_system=new RDSystem();
+
+  //
   // RIPC Connection
   //
 #ifndef WIN32
-  cast_ripc=new RDRipc(config->stationName());
+  cast_ripc=new RDRipc(rdstation_conf,config,this);
   connect(cast_ripc,SIGNAL(userChanged()),this,SLOT(userChangedData()));
   cast_ripc->connectHost("localhost",RIPCD_TCP_PORT,config->password());
 #else
   cast_ripc=NULL;
 #endif  // WIN32
-
-  //
-  // Station Configuration
-  //
-  rdstation_conf=new RDStation(config->stationName(),this);
-  cast_system=new RDSystem();
 
   //
   // User

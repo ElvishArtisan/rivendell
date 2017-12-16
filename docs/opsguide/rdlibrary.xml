@@ -698,6 +698,12 @@
       lines both within a given cart or between carts.
     </para>
     <para>
+      In addition to RML code, lines can also contain host variables
+      (see <xref linkend="sect.rdadmin.manage_hosts.configuring_host_variables" />)
+      and filepath wildcards
+      (see <xref linkend="appendix.filepath_wildcards" />).
+    </para>
+    <para>
       <mediaobject>
 	<imageobject>
 	  <imagedata align="center" fileref="rdlibrary.edit_macro_cart_dialog.png" scale="50"/>

@@ -16493,3 +16493,5 @@
 2017-12-15 Fred Gleason <fredg@paravelsystems.com>
 	* Updated 'NEWS'.
 	* Incremented the package version to 2.17.0int07.
+2017-12-16 Fred Gleason <fredg@paravelsystems.com>
+	* Added support for filepath wildcards in macro carts.

@@ -271,9 +271,14 @@ MainObject::MainObject(QObject *parent)
   new RDDbHeartbeat(render_config->mysqlHeartbeatInterval(),this);
 
   //
+  // Station Configuration
+  //
+  render_station=new RDStation(render_config->stationName());
+
+  //
   // RIPC Connection
   //
-  render_ripc=new RDRipc(render_config->stationName());
+  render_ripc=new RDRipc(render_station,render_config,this);
   connect(render_ripc,SIGNAL(userChanged()),this,SLOT(userData()));
   render_ripc->
     connectHost("localhost",RIPCD_TCP_PORT,render_config->password());
@@ -285,11 +290,6 @@ MainObject::MainObject(QObject *parent)
   if(render_settings.sampleRate()==0) {
     render_settings.setSampleRate(render_system->sampleRate());
   }
-
-  //
-  // Station Configuration
-  //
-  render_station=new RDStation(render_config->stationName());
 
   //
   // User

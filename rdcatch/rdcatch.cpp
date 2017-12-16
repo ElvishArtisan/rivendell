@@ -250,7 +250,7 @@ MainWidget::MainWidget(QWidget *parent)
   //
   // RIPC Connection
   //
-  catch_ripc=new RDRipc(catch_config->stationName());
+  catch_ripc=new RDRipc(rdstation_conf,catch_config,this);
   connect(catch_ripc,SIGNAL(connected(bool)),
 	  this,SLOT(ripcConnectedData(bool)));
   catch_user=NULL;

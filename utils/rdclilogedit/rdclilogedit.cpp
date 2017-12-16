@@ -93,7 +93,7 @@ MainObject::MainObject(QObject *parent)
   // RIPC Connection
   //
   edit_user=NULL;
-  edit_ripc=new RDRipc(edit_config->stationName());
+  edit_ripc=new RDRipc(edit_station,edit_config,this);
   connect(edit_ripc,SIGNAL(userChanged()),this,SLOT(userData()));
   edit_ripc->connectHost("localhost",RIPCD_TCP_PORT,edit_config->password());
 }

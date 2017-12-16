@@ -128,18 +128,18 @@ MainWidget::MainWidget(QWidget *parent)
   }
 
   //
+  // Station
+  //
+  login_station=new RDStation(login_config->stationName());
+
+  //
   // RIPC Connection
   //
-  login_ripc=new RDRipc(login_config->stationName());
+  login_ripc=new RDRipc(login_station,login_config,this);
   connect(login_ripc,SIGNAL(connected(bool)),this,SLOT(connectedData(bool)));
   connect(login_ripc,SIGNAL(userChanged()),this,SLOT(userData()));
   login_ripc->connectHost("localhost",RIPCD_TCP_PORT,
 			  login_config->password());
-
-  //
-  // Station
-  //
-  login_station=new RDStation(login_config->stationName());
 
   //
   // System

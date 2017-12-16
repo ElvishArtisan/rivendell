@@ -256,9 +256,14 @@ MainObject::MainObject(QObject *parent)
   connect(catch_xload_timer,SIGNAL(timeout()),this,SLOT(updateXloadsData()));
 
   //
+  // Station Configuration
+  //
+  catch_rdstation=new RDStation(catch_config->stationName());
+
+  //
   // RIPCD Connection
   //
-  catch_ripc=new RDRipc(catch_config->stationName());
+  catch_ripc=new RDRipc(catch_rdstation,catch_config,this);
   catch_ripc->connectHost("localhost",RIPCD_TCP_PORT,catch_config->password());
   connect(catch_ripc,SIGNAL(rmlReceived(RDMacro *)),
 	  this,SLOT(rmlReceivedData(RDMacro *)));
@@ -269,11 +274,6 @@ MainObject::MainObject(QObject *parent)
   // System Configuration
   //
   catch_system=new RDSystem();
-
-  //
-  // Station Configuration
-  //
-  catch_rdstation=new RDStation(catch_config->stationName());
 
   //
   // CAE Connection

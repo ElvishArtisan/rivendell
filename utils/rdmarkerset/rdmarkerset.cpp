@@ -189,7 +189,7 @@ MainObject::MainObject(QObject *parent)
   // RIPCD Connection
   //
   set_user=NULL;
-  set_ripc=new RDRipc(set_config->stationName(),this);
+  set_ripc=new RDRipc(set_station,set_config,this);
   connect(set_ripc,SIGNAL(userChanged()),this,SLOT(userChangedData()));
   set_ripc->connectHost("localhost",RIPCD_TCP_PORT,set_config->password());
 }

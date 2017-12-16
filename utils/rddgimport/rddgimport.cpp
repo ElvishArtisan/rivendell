@@ -107,7 +107,7 @@ MainWidget::MainWidget(QWidget *parent)
   //
   dg_station=new RDStation(dg_config->stationName(),this);
   dg_library_conf=new RDLibraryConf(dg_config->stationName(),0);
-  dg_ripc=new RDRipc(dg_config->stationName(),this);
+  dg_ripc=new RDRipc(dg_station,dg_config,this);
   connect(dg_ripc,SIGNAL(userChanged()),this,SLOT(userChangedData()));
   dg_ripc->connectHost("localhost",RIPCD_TCP_PORT,dg_config->password());
 

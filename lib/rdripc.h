@@ -25,7 +25,9 @@
 #include <qlabel.h>
 #include <qtimer.h>
 
+#include <rdconfig.h>
 #include <rdmacro.h>
+#include <rdstation.h>
 
 #ifndef RDRIPC_H
 #define RDRIPC_H
@@ -38,7 +40,8 @@ class RDRipc : public QObject
 {
   Q_OBJECT
  public:
-  RDRipc(QString stationname,QObject *parent=0);
+  //  RDRipc(QString stationname,QObject *parent=0);
+  RDRipc(RDStation *station,RDConfig *config,QObject *parent=0);
   ~RDRipc();
   QString user() const;
   QString station() const;
@@ -79,7 +82,9 @@ class RDRipc : public QObject
   QSocket *ripc_socket;
   QString ripc_user;
   QString ripc_password;
-  QString ripc_stationname;
+  //  QString ripc_stationname;
+  RDStation *ripc_station;
+  RDConfig *ripc_config;
   bool ripc_onair_flag;
   bool ripc_ignore_mask;
   bool debug;

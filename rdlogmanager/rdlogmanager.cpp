@@ -164,7 +164,7 @@ MainWidget::MainWidget(QWidget *parent)
   //
   // RIPC Connection
   //
-  rdripc=new RDRipc(log_config->stationName());
+  rdripc=new RDRipc(rdstation_conf,log_config,this);
   connect(rdripc,SIGNAL(userChanged()),this,SLOT(userData()));
   rdripc->connectHost("localhost",RIPCD_TCP_PORT,log_config->password());
 

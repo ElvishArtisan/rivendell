@@ -211,7 +211,7 @@ MainWidget::MainWidget(QWidget *parent)
   lib_filter_mode=rdstation_conf->filterMode();
   rdaudioport_conf=new RDAudioPort(lib_config->stationName(),
 				   rdlibrary_conf->inputCard());
-  rdripc=new RDRipc(lib_config->stationName());
+  rdripc=new RDRipc(rdstation_conf,lib_config,this);
   connect(rdripc,SIGNAL(connected(bool)),this,SLOT(connectedData(bool)));
   connect(rdripc,SIGNAL(userChanged()),this,SLOT(userData()));
   rdripc->connectHost("localhost",RIPCD_TCP_PORT,lib_config->password());
