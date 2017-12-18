@@ -26,7 +26,7 @@ License: GPL
 Packager: Fred Gleason <fredg@paravelsystems.com>
 Group: Productivity/Multimedia/Other
 Source: rivendell-@VERSION@.tar.gz
-Requires: @MYSQL_PKG@ @QT3_MYSQL_PKG@ @APACHE_PKG@ @QT3_DEVEL_PKG@ curl @USERMODE_PKG@ rivendell-base @CDDA2WAV_PKG@
+Requires: @MYSQL_PKG@, @QT3_MYSQL_PKG@, @APACHE_PKG@, @QT3_DEVEL_PKG@, curl, @USERMODE_PKG@, rivendell-base = @VERSION@, @CDDA2WAV_PKG@,
 BuildRoot: /var/tmp/rivendell-@VERSION@
 
 %package base
@@ -37,12 +37,12 @@ Requires: @QT3_MYSQL_PKG@
 %package importers
 Summary: Library importers for the Rivendell Broadcast Automation System
 Group: Productivity/Multimedia/Other
-Requires: rivendell madplay
+Requires: rivendell = @VERSION@, madplay
 
 %package opsguide
 Summary: The Rivendell Operations and Administration Guide
 Group: Productivity/Multimedia/Other
-Requires: evince firefox rivendell
+Requires: evince, firefox, rivendell = @VERSION@
 
 %package devel
 Summary: Header files and example code for developing Rivendell Loadable Modules
@@ -51,7 +51,7 @@ Group: Productivity/Multimedia/Other
 %package select
 Summary: The RDSelect system selector tool for Rivendell.
 Group: Productivity/Multimedia/Other
-Requires: rivendell
+Requires: rivendell = @VERSION@
 
 
 %description

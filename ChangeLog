@@ -16503,3 +16503,6 @@
 	* Cleaned up hanging files from the 'make uninstall' target.
 2017-12-18 Fred Gleason <fredg@paravelsystems.com>
 	* Added 'opsguide' subpackage.
+2017-12-18 Fred Gleason <fredg@paravelsystems.com>
+	* Added dependency information to 'rivendell.spec.in' to enforce
+	consistent Rivendell versioning across sub-packages.
