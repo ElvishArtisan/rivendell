@@ -27,6 +27,14 @@
     </Include>
   </Menu>
   <Menu>
+    <Name>Documentation</Name>
+    <Directory>rivendell-documentation.directory</Directory>
+    <Include>
+      <Filename>rivendell-opsguide-html.desktop</Filename>
+      <Filename>rivendell-opsguide-pdf.desktop</Filename>
+    </Include>
+  </Menu>
+  <Menu>
     <Name>Log Tools</Name>
     <Directory>rivendell-logtools.directory</Directory>
     <Include>

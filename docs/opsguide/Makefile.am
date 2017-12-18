@@ -261,8 +261,18 @@ OPSGUIDE_IMAGES = rdadmin.audio_resource_information_dialog.png\
                   voicetracking.voice_tracker_dialog_track_completed.png\
                   voicetracking.voice_tracker_dialog_track_selected.png
 
+OPSGUIDE_ICONS = chain.png\
+                 mic16.png\
+                 music.png\
+                 notemarker.png\
+                 play.png\
+                 rml5.png\
+                 track_cart.png\
+                 traffic.png\
+                 trashcan-32x32.png
 
 OPSGUIDE_DEPS = $(OPSGUIDE_IMAGES) \
+                $(OPSGUIDE_ICONS) \
                 filepath_wildcards.xml\
                 gpio_switcher_devices.xml\
                 gplv2.xml\
@@ -292,6 +302,17 @@ opsguide.pdf:	$(OPSGUIDE_DEPS) ../../PACKAGE_VERSION\
                 ../stylesheets/book-fo-titlepages.xsl
 	xsltproc ../stylesheets/book-fo.xml opsguide.xml | fop - -pdf opsguide.pdf
 
+install-exec-local:	
+	mkdir -p $(DESTDIR)$(prefix)/share/rivendell/html
+	cp opsguide.pdf $(DESTDIR)$(prefix)/share/rivendell/
+	cp $(OPSGUIDE_HTML) $(DESTDIR)$(prefix)/share/rivendell/html/
+	cp $(OPSGUIDE_IMAGES) $(DESTDIR)$(prefix)/share/rivendell/html/
+	cp $(OPSGUIDE_ICONS) $(DESTDIR)$(prefix)/share/rivendell/html/
+
+uninstall-local:
+	rm -rf $(DESTDIR)$(prefix)/share/rivendell/html
+	rm -rf $(DESTDIR)$(prefix)/share/rivendell/opsguide.pdf
+
 all-local:	$(OPSGUIDE_HTML) \
                 $(OPSGUIDE_IMAGES) \
                 opsguide.pdf
@@ -305,6 +326,16 @@ EXTRA_DIST = $(OPSGUIDE_DEPS)\
 CLEANFILES = *~\
              *.html\
              *.pdf
+
+DISTCLEANFILES = chain.png \
+                 mic16.png \
+                 music.png \
+                 notemarker.png \
+                 play.png \
+                 rml5.png \
+                 track_cart.png \
+                 traffic.png \
+                 trashcan-32x32.png
 
 MAINTAINERCLEANFILES = *~\
                        *.1\

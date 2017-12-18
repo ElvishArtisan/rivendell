@@ -130,7 +130,7 @@
 	    <entry align="center">
 	      <inlinemediaobject>
 		<imageobject>
-		  <imagedata fileref="../../icons/play.png" scale="100"/>
+		  <imagedata fileref="play.png" scale="100"/>
 		</imageobject>
 	      </inlinemediaobject>
 	    </entry>
@@ -142,7 +142,7 @@
 	    <entry align="center">
 	      <inlinemediaobject>
 		<imageobject>
-		  <imagedata fileref="../../icons/track_cart.png" scale="100"/>
+		  <imagedata fileref="track_cart.png" scale="100"/>
 		</imageobject>
 	      </inlinemediaobject>
 	    </entry>
@@ -154,7 +154,7 @@
 	    <entry align="center">
 	      <inlinemediaobject>
 		<imageobject>
-		  <imagedata fileref="../../icons/rml5.png" scale="100"/>
+		  <imagedata fileref="rml5.png" scale="100"/>
 		</imageobject>
 	      </inlinemediaobject>
 	    </entry>
@@ -166,7 +166,7 @@
 	    <entry align="center">
 	      <inlinemediaobject>
 		<imageobject>
-		  <imagedata fileref="../../icons/notemarker.png" scale="100"/>
+		  <imagedata fileref="notemarker.png" scale="100"/>
 		</imageobject>
 	      </inlinemediaobject>
 	    </entry>
@@ -178,7 +178,7 @@
 	    <entry align="center">
 	      <inlinemediaobject>
 		<imageobject>
-		  <imagedata fileref="../../icons/mic16.png" scale="100"/>
+		  <imagedata fileref="mic16.png" scale="100"/>
 		</imageobject>
 	      </inlinemediaobject>
 	    </entry>
@@ -190,7 +190,7 @@
 	    <entry align="center">
 	      <inlinemediaobject>
 		<imageobject>
-		  <imagedata fileref="../../icons/chain.png" scale="100"/>
+		  <imagedata fileref="chain.png" scale="100"/>
 		</imageobject>
 	      </inlinemediaobject>
 	    </entry>
@@ -202,7 +202,7 @@
 	    <entry align="center">
 	      <inlinemediaobject>
 		<imageobject>
-		  <imagedata fileref="../../icons/music.png" scale="100"/>
+		  <imagedata fileref="music.png" scale="100"/>
 		</imageobject>
 	      </inlinemediaobject>
 	    </entry>
@@ -214,7 +214,7 @@
 	    <entry align="center">
 	      <inlinemediaobject>
 		<imageobject>
-		  <imagedata fileref="../../icons/traffic.png" scale="100"/>
+		  <imagedata fileref="traffic.png" scale="100"/>
 		</imageobject>
 	      </inlinemediaobject>
 	    </entry>

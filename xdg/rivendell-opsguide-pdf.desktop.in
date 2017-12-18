@@ -1,0 +1,11 @@
+[Desktop Entry]
+Encoding=UTF-8
+Terminal=false
+Categories=Qt;KDE;Rivendell;
+Name=Rivendell Operations Guide (PDF)
+GenericName=Rivendell Operations Guide
+Exec=evince @prefix@/share/rivendell/opsguide.pdf
+Icon=rivendell
+Type=Application
+Terminal=false
+

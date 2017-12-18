@@ -16501,3 +16501,5 @@
 	* Added missing *.html files to 'docs/opsguide/Makefile.am'.
 2017-12-18 Fred Gleason <fredg@paravelsystems.com>
 	* Cleaned up hanging files from the 'make uninstall' target.
+2017-12-18 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'opsguide' subpackage.

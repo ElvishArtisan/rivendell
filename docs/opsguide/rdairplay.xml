@@ -359,7 +359,7 @@
      <para>
        <mediaobject>
 	 <imageobject>
-	   <imagedata align="left" fileref="../../icons/trashcan-32x32.png" scale="60"/>
+	   <imagedata align="left" fileref="trashcan-32x32.png" scale="60"/>
 	 </imageobject>
        </mediaobject>
      </para>

@@ -32,9 +32,18 @@ configure
 depcomp
 docs/apis/*.html
 docs/apis/*.pdf
-docs/opsguide/frontspiece.xml
 docs/opsguide/*.html
 docs/opsguide/*.pdf
+docs/opsguide/chain.png
+docs/opsguide/frontspiece.xml
+docs/opsguide/mic16.png
+docs/opsguide/music.png
+docs/opsguide/notemarker.png
+docs/opsguide/play.png
+docs/opsguide/rml5.png
+docs/opsguide/track_cart.png
+docs/opsguide/traffic.png
+docs/opsguide/trashcan-32x32.png
 helpers/cwrap
 helpers/docbook
 helpers/jsmin
@@ -117,3 +126,5 @@ utils/rdrender/rdrender
 utils/rdrevert/rdrevert
 utils/sas_shim/sas_shim
 web/rdfeed/rdfeed.xml
+xdg/rivendell-opsguide-html.desktop
+xdg/rivendell-opsguide-pdf.desktop

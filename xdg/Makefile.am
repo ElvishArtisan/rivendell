@@ -21,6 +21,8 @@
 
 install-exec-am:	
 	mkdir -p $(DESTDIR)@prefix@/share/applications
+	cp rivendell-opsguide-html.desktop $(DESTDIR)@prefix@/share/applications/
+	cp rivendell-opsguide-pdf.desktop $(DESTDIR)@prefix@/share/applications/
 	cp rivendell-rdadmin.desktop $(DESTDIR)@prefix@/share/applications/
 	cp rivendell-rdairplay.desktop $(DESTDIR)@prefix@/share/applications/
 	cp rivendell-rdcartslots.desktop $(DESTDIR)@prefix@/share/applications/
@@ -71,7 +73,10 @@ EXTRA_DIST = rdalsaconfig-root-consolehelper\
              rdhpiinfo-root-consolehelper\
              rdhpiinfo-root-pam\
              rivendell-configuration.directory\
+             rivendell-documentation.directory\
              rivendell-logtools.directory\
+             rivendell-opsguide-html.desktop.in\
+             rivendell-opsguide-pdf.desktop.in\
              rivendell-rdadmin.desktop\
              rivendell-rdairplay.desktop\
              rivendell-rdalsaconfig.desktop\
@@ -97,6 +102,9 @@ EXTRA_DIST = rdalsaconfig-root-consolehelper\
              rivendell-utilities.directory
 
 CLEANFILES = *~
+
+DISTCLEANFILES = rivendell-opsguide-html.desktop\
+                 rivendell-opsguide-pdf.desktop
 
 MAINTAINERCLEANFILES = *~\
                        Makefile.in

@@ -459,6 +459,36 @@ dnl  AC_SUBST(RPM_ROOT,/usr/src/packages)
 fi 
 AC_SUBST(RPM_DATESTAMP,`date +%a\ %b\ %d\ %Y`)
 
+#
+# Create icon symlinks for Operations Guide
+#
+rm -f docs/opsguide/chain.png
+ln -s ../../icons/chain.png docs/opsguide/chain.png
+
+rm -f docs/opsguide/mic16.png
+ln -s ../../icons/mic16.png docs/opsguide/mic16.png
+
+rm -f docs/opsguide/music.png
+ln -s ../../icons/music.png docs/opsguide/music.png
+
+rm -f docs/opsguide/notemarker.png
+ln -s ../../icons/notemarker.png docs/opsguide/notemarker.png
+
+rm -f docs/opsguide/play.png
+ln -s ../../icons/play.png docs/opsguide/play.png
+
+rm -f docs/opsguide/rml5.png
+ln -s ../../icons/rml5.png docs/opsguide/rml5.png
+
+rm -f docs/opsguide/track_cart.png
+ln -s ../../icons/track_cart.png docs/opsguide/track_cart.png
+
+rm -f docs/opsguide/traffic.png
+ln -s ../../icons/traffic.png docs/opsguide/traffic.png
+
+rm -f docs/opsguide/trashcan-32x32.png
+ln -s ../../icons/trashcan-32x32.png docs/opsguide/trashcan-32x32.png
+
 AC_CONFIG_FILES([rivendell.spec \
     Makefile \
     make_slack \
@@ -514,6 +544,8 @@ AC_CONFIG_FILES([rivendell.spec \
     docs/opsguide/Makefile \
     docs/stylesheets/Makefile \
     docs/tables/Makefile \
+    xdg/rivendell-opsguide-html.desktop \
+    xdg/rivendell-opsguide-pdf.desktop \
     debian/Makefile \
     debian/patches/Makefile \
     xdg/Makefile \

@@ -39,6 +39,10 @@ Summary: Library importers for the Rivendell Broadcast Automation System
 Group: Productivity/Multimedia/Other
 Requires: rivendell madplay
 
+%package opsguide
+Summary: The Rivendell Operations and Administration Guide
+Group: Productivity/Multimedia/Other
+Requires: evince firefox rivendell
 
 %package devel
 Summary: Header files and example code for developing Rivendell Loadable Modules
@@ -72,6 +76,11 @@ Automated Systems SASAuto systems, as well as from another Rivendell system
 initializing switcher matrices for the Christian Radio Consortium
 (CRC) Unity4000 network and copying RDCatch event lists between hosts
 are included.
+
+
+%description opsguide
+This package contains the Rivendell Operations and Administration Guide,
+in both HTML and PDF formats.
 
 
 %description devel
@@ -130,10 +139,7 @@ cp docs/misc/ALSA.txt $RPM_BUILD_ROOT/%{_datadir}/doc/rivendell-%{version}/misc/
 cp docs/misc/RDMONITOR.txt $RPM_BUILD_ROOT/%{_datadir}/doc/rivendell-%{version}/misc/
 cp docs/misc/scheduler_formats.ods $RPM_BUILD_ROOT/%{_datadir}/doc/rivendell-%{version}/misc/
 cp docs/misc/ando_interface.odt $RPM_BUILD_ROOT/%{_datadir}/doc/rivendell-%{version}/misc/
-mkdir -p $RPM_BUILD_ROOT/%{_datadir}/doc/rivendell-%{version}/opsguide/html
-cp docs/opsguide/*.pdf $RPM_BUILD_ROOT/%{_datadir}/doc/rivendell-%{version}/opsguide/
-cp docs/opsguide/*.html $RPM_BUILD_ROOT/%{_datadir}/doc/rivendell-%{version}/opsguide/html/
-cp docs/opsguide/*.png $RPM_BUILD_ROOT/%{_datadir}/doc/rivendell-%{version}/opsguide/html
+mkdir -p $RPM_BUILD_ROOT/%{_datadir}/doc/rivendell-%{version}
 mkdir -p $RPM_BUILD_ROOT/%{_datadir}/doc/rivendell-%{version}/apis
 cp docs/apis/*.pdf $RPM_BUILD_ROOT/%{_datadir}/doc/rivendell-%{version}/apis/
 mkdir -p $RPM_BUILD_ROOT/%{_datadir}/doc/rivendell-%{version}/tables
@@ -380,6 +386,7 @@ rm -rf $RPM_BUILD_ROOT
 @LOCAL_PREFIX@/share/applications/rivendell-rmlsend.desktop
 @LOCAL_PREFIX@/share/applications/rivendell-rdsoftkeys.desktop
 @LOCAL_PREFIX@/share/desktop-directories/rivendell-configuration.directory
+@LOCAL_PREFIX@/share/desktop-directories/rivendell-documentation.directory
 @LOCAL_PREFIX@/share/desktop-directories/rivendell-logtools.directory
 @LOCAL_PREFIX@/share/desktop-directories/rivendell-rivendell.directory
 @LOCAL_PREFIX@/share/desktop-directories/rivendell-utilities.directory
@@ -444,6 +451,13 @@ rm -rf $RPM_BUILD_ROOT
 @LOCAL_PREFIX@/share/applications/rivendell-rddgimport.desktop
 @LOCAL_PREFIX@/share/applications/rivendell-rddiscimport.desktop
 %{_docdir}/rivendell-importers-%{version}/*
+
+
+%files opsguide
+@LOCAL_PREFIX@/share/applications/rivendell-opsguide-html.desktop
+@LOCAL_PREFIX@/share/applications/rivendell-opsguide-pdf.desktop
+@LOCAL_PREFIX@/share/rivendell/opsguide.pdf
+@LOCAL_PREFIX@/share/rivendell/html/*
 
 
 %files devel
