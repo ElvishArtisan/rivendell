@@ -16509,3 +16509,6 @@
 2017-12-18 Fred Gleason <fredg@paravelsystems.com>
 	* Modified the PAM modules for rdalsaconfig(8) and rdhpiinfo(8)
 	to start correctly from the desktop menu.
+2017-12-18 Fred Gleason <fredg@paravelsystems.com>
+	* Updated 'NEWS'.
+	* Incremented the package version to 2.17.0int08.
