@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<chapter xmlns="http://docbook.org/ns/docbook" xml:id="chapter.rdadmin">
+<chapter xmlns="http://docbook.org/ns/docbook"  xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="chapter.rdadmin">
   <title>Configuring Rivendell with RDAdmin</title>
   <sect1 xml:id="sect.rdadmin.overview">
     <title>Overview</title>
@@ -784,7 +784,7 @@
 	For further information on the <computeroutput>Low</computeroutput>
 	and <computeroutput>None</computeroutput> options, see the
 	'-Y' and '-Z' options in the cdparanoia(1) man page or 
-	<link linkend="https://linux.die.net/man/1/cdparanoia">https://linux.die.net/man/1/cdparanoia</link>.
+	<link xlink:href="https://linux.die.net/man/1/cdparanoia">https://linux.die.net/man/1/cdparanoia</link>.
       </para>
       <para>
 	The <computeroutput>Read ISRC from CD:</computeroutput> dropdown
@@ -821,7 +821,7 @@
 	controls which algorithm will be used when resampling ingested audio
 	to a different sample rate. For more information regarding the various
 	algorithms available, see
-	<link linkend="http://mega-nerd.com/SRC/api_misc.html#Converters">
+	<link xlink:href="http://mega-nerd.com/SRC/api_misc.html#Converters">
 	  http://mega-nerd.com/SRC/api_misc.html#Converters</link>.
       </para>
       <para>
@@ -2183,7 +2183,7 @@
 	The JACK Audio Connection Kit is an audio integration system that
 	allows audio to be shared in real-time between multiple programs.
 	More information can be found at
-	<link linkend="http://jackaudio.org">http://jackaudio.org</link>.
+	<link xlink:href="http://jackaudio.org">http://jackaudio.org</link>.
       </para>
       <para>
 	Rivendell's JACK connectivity is handed by the caed(8) daemon,

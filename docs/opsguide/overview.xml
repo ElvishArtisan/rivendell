@@ -61,12 +61,6 @@
     <para>
       <variablelist>
 	<varlistentry>
-	  <term>RDAdmin</term>
-	  <listitem>
-	    System wide configuration
-	  </listitem>
-	</varlistentry>
-	<varlistentry>
 	  <term><link linkend="chapter.rdlibrary">RDLibrary</link></term>
 	  <listitem>
 	    Library content management
@@ -103,7 +97,7 @@
 	  </listitem>
 	</varlistentry>
 	<varlistentry>
-	  <term>RDCartSlots</term>
+	  <term><link linkend="chapter.rdcartslots">RDCartSlots</link></term>
 	  <listitem>
 	    Emulate a traditional broadcast cart machine
 	  </listitem>
@@ -118,6 +112,12 @@
 	  <term>RDCastManager</term>
 	  <listitem>
 	    Podcast feed manager
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term><link linkend="chapter.rdadmin">RDAdmin</link></term>
+	  <listitem>
+	    System wide configuration
 	  </listitem>
 	</varlistentry>
       </variablelist>

@@ -97,7 +97,7 @@
       <title>Invoke Script</title>
       <para>
 	Start up the script, as described in
-	<xref linkend="wings_filter.usage" />. The script will print progress
+	<xref linkend="sect.wings_filter.usage" />. The script will print progress
 	reports as it proceeds, or notify you of
 	error conditions as required.
       </para>
