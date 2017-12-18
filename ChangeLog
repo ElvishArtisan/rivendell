@@ -16506,3 +16506,6 @@
 2017-12-18 Fred Gleason <fredg@paravelsystems.com>
 	* Added dependency information to 'rivendell.spec.in' to enforce
 	consistent Rivendell versioning across sub-packages.
+2017-12-18 Fred Gleason <fredg@paravelsystems.com>
+	* Modified the PAM modules for rdalsaconfig(8) and rdhpiinfo(8)
+	to start correctly from the desktop menu.
