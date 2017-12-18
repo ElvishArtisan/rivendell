@@ -41,6 +41,8 @@ OPSGUIDE_HTML = appendix.filepath_wildcards.html\
                 part.appendices.html\
                 part.rivendell_administration.html\
                 part.rivendell_operations.html\
+                rivendell_filter.procedure.html\
+                rivendell_filter.usage.html\
                 sect.filepath_wildcards.examples.html\
                 sect.gpio_switcher_devices.8x2.html\
                 sect.gpio_switcher_devices.acu1p.html\
@@ -82,9 +84,13 @@ OPSGUIDE_HTML = appendix.filepath_wildcards.html\
                 sect.gpio_switcher_devices.wheatnet_lio.html\
                 sect.gpio_switcher_devices.wheatnet_slio.html\
                 sect.gplv2.how_to_apply_these_terms_to_your_new_programs.html\
+                sect.rdadmin.backing_up_and_restoring_the_database.html\
                 sect.rdadmin.manage_groups.html\
                 sect.rdadmin.manage_hosts.html\
+                sect.rdadmin.manage_replicators.html\
+                sect.rdadmin.manage_scheduler_codes.html\
                 sect.rdadmin.manage_services.html\
+                sect.rdadmin.manage_system_settings.html\
                 sect.rdadmin.managing_users.html\
                 sect.rdairplay.editing_a_log.html\
                 sect.rdairplay.layout.html\
@@ -127,6 +133,8 @@ OPSGUIDE_HTML = appendix.filepath_wildcards.html\
                 sect.utilities.rdimport.html\
                 sect.utilities.rdmarkerset.html\
                 sect.utilities.rdrevert.html\
+                sect.wings_filter.procedure.html\
+                sect.wings_filter.usage.html\
                 sect.voicetracking.using_the_voicetracker_dialog.html
 
 OPSGUIDE_IMAGES = rdadmin.audio_resource_information_dialog.png\
@@ -136,6 +144,7 @@ OPSGUIDE_IMAGES = rdadmin.audio_resource_information_dialog.png\
                   rdadmin.configure_rdcatch_dialog.png\
                   rdadmin.configure_rdlibrary_dialog.png\
                   rdadmin.configure_rdlogedit_dialog.png\
+                  rdadmin.configure_rdpanel_dialog.png\
                   rdadmin.dropbox_configuration_dialog.png\
                   rdadmin.edit_audio_ports_dialog.png\
                   rdadmin.edit_channel_gpios_dialog.png\

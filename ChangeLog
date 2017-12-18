@@ -16497,3 +16497,5 @@
 	* Added support for filepath wildcards in macro carts.
 2017-12-18 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed broken links in the Operations Guide.
+2017-12-18 Fred Gleason <fredg@paravelsystems.com>
+	* Added missing *.html files to 'docs/opsguide/Makefile.am'.
