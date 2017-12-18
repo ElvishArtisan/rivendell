@@ -34,7 +34,7 @@ install-exec-local:
 	cp rdcatch_*.qm $(DESTDIR)$(prefix)/share/rivendell
 
 uninstall-local:	
-	rm -f $(DESTDIR)$(prefix)/share/srlabs/rdcatch_*.qm
+	rm -f $(DESTDIR)$(prefix)/share/rivendell/rdcatch_*.qm
 
 all:	
 	@QT_BIN@/lupdate rdcatch.pro

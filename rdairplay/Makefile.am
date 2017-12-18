@@ -34,7 +34,7 @@ install-exec-local:
 	cp rdairplay_*.qm $(DESTDIR)$(prefix)/share/rivendell
 
 uninstall-local:	
-	rm -f $(DESTDIR)$(prefix)/share/srlabs/rdairplay_*.qm
+	rm -f $(DESTDIR)$(prefix)/share/rivendell/rdairplay_*.qm
 
 all:	
 	@QT_BIN@/lupdate rdairplay.pro
