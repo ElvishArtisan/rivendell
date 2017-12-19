@@ -33,12 +33,13 @@
 #include <qlabel.h>
 
 #include <rdcart_dialog.h>
-#include <rdtransportbutton.h>
+#include <rdgroup_list.h>
 #include <rdlog.h>
 #include <rdlog_event.h>
-#include <rduser.h>
-#include <rdgroup_list.h>
+#include <rdloglock.h>
 #include <rdsimpleplayer.h>
+#include <rdtransportbutton.h>
+#include <rduser.h>
 
 #include "drop_listview.h"
 #include "list_reports.h"
@@ -61,6 +62,9 @@ class EditLog : public QDialog
   ~EditLog();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
+
+ public slots:
+  int exec();
   
  private slots:
   void descriptionChangedData(const QString &);
@@ -187,6 +191,7 @@ class EditLog : public QDialog
   QLabel *edit_purgedate_label;
   QDateEdit *edit_purgedate_edit;
   QPushButton *edit_purgedate_button;
+  RDLogLock *edit_log_lock;
 #ifndef WIN32
   QPushButton *edit_renderas_button;
   RenderDialog *edit_render_dialog;

@@ -247,6 +247,10 @@ void MainObject::Revert(int schema) const
   case 272:
     Revert272();
     break;
+
+  case 273:
+    Revert273();
+    break;
   }
 }
 
@@ -758,6 +762,31 @@ void MainObject::Revert272() const
 }
 
 
+void MainObject::Revert273() const
+{
+  QString sql;
+  QSqlQuery *q;
+
+  sql=QString("alter table LOGS drop column LOCK_DATETIME");
+  q=new QSqlQuery(sql);
+  delete q;
+
+  sql=QString("alter table LOGS drop column LOCK_IPV4_ADDRESS");
+  q=new QSqlQuery(sql);
+  delete q;
+
+  sql=QString("alter table LOGS drop column LOCK_STATION_NAME");
+  q=new QSqlQuery(sql);
+  delete q;
+
+  sql=QString("alter table LOGS drop column LOCK_USER_NAME");
+  q=new QSqlQuery(sql);
+  delete q;
+
+  SetVersion(272);
+}
+
+
 int MainObject::GetVersion() const
 {
   QString sql;
@@ -803,6 +832,7 @@ int MainObject::MapSchema(const QString &ver)
   version_map["2.16"]=263;
   version_map["2.17"]=268;
   version_map["2.18"]=272;
+  version_map["2.19"]=273;
 
   //
   // Normalize String

@@ -166,10 +166,11 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdlivewiredestination.cpp rdlivewiredestination.h\
                         rdlivewiresource.cpp rdlivewiresource.h\
                         rdlog.cpp rdlog.h\
-                        rdlogfilter.cpp rdlogfilter.h\
-                        rdlogedit_conf.cpp rdlogedit_conf.h\
                         rdlog_event.cpp rdlog_event.h\
                         rdlog_line.cpp rdlog_line.h\
+                        rdlogedit_conf.cpp rdlogedit_conf.h\
+                        rdlogfilter.cpp rdlogfilter.h\
+                        rdloglock.cpp rdloglock.h\
                         rdmacro.cpp rdmacro.h\
                         rdmacro_event.cpp rdmacro_event.h\
                         rdmarker_bar.cpp rdmarker_bar.h\
@@ -302,6 +303,7 @@ nodist_librd_la_SOURCES = moc_rdadd_cart.cpp\
                           moc_rdlistview.cpp\
                           moc_rdlivewire.cpp\
                           moc_rdlogfilter.cpp\
+                          moc_rdloglock.cpp\
                           moc_rdmacro_event.cpp\
                           moc_rdmarker_bar.cpp\
                           moc_rdmarker_edit.cpp\

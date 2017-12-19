@@ -425,6 +425,18 @@ desactivados para el servicio actual!
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>User</source>
+        <translation type="obsolete">Usuario</translation>
+    </message>
+    <message>
+        <source>Log Locked</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Log already being edited by</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditLogLine</name>

@@ -26,3 +26,8 @@ MUSIC_LINKS          int
 MUSIC_LINKED         enum('N','Y')
 TRAFFIC_LINKS        int
 TRAFFIC_LINKED       enum('N','Y')
+NEXT_ID              int(11)
+LOCK_USER_NAME       char(255)        From USER.LOGIN_NAME
+LOCK_STATION_NAME    char(64)         From STATIONS.NAME
+LOCK_IPV4_ADDRESS    char(16)
+LOCK_DATETIME        datetime

@@ -432,6 +432,18 @@ skrudd av for denne tenesta!</translation>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>User</source>
+        <translation type="obsolete">Brukar</translation>
+    </message>
+    <message>
+        <source>Log Locked</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Log already being edited by</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditLogLine</name>

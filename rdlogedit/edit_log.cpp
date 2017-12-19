@@ -147,8 +147,9 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   edit_log=new RDLog(edit_logname);
 
   //
-  // Log Events
+  // Log Data Structures
   //
+  edit_log_lock=new RDLogLock(edit_logname,rduser,rdstation_conf,this);
   edit_log_event=new RDLogEvent(RDLog::tableName(edit_logname));
   edit_log_event->load(true);
 
@@ -636,6 +637,24 @@ QSize EditLog::sizeHint() const
 QSizePolicy EditLog::sizePolicy() const
 {
   return QSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed);
+}
+
+
+int EditLog::exec()
+{
+  QString username;
+  QString stationname;
+  QHostAddress addr;
+
+  if(!edit_log_lock->tryLock(&username,&stationname,&addr)) {
+    QMessageBox::warning(this,"RDLogEdit - "+tr("Log Locked"),
+			 tr("Log already being edited by")+" "+
+			 username+"@"+stationname+" ["+
+			 addr.toString()+"].");
+    return 1;
+  }
+
+  return QDialog::exec();
 }
 
 

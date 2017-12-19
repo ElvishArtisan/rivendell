@@ -567,4 +567,10 @@
  */
 #define RD_LOGFILTER_LIMIT_QUAN 14
 
+/*
+ * Log Locking Timeout
+ */
+#define RD_LOG_LOCK_TIMEOUT 30000
+
+
 #endif  // RD_H
