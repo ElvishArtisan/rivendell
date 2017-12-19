@@ -1262,5 +1262,13 @@ therefore only existing transitions will be editable.</source>
         <source>LABEL</source>
         <translation type="unfinished">ŠTÍTEK</translation>
     </message>
+    <message>
+        <source>Log Locked</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Log already being edited by</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 </TS>

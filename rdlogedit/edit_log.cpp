@@ -625,6 +625,8 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
 
 EditLog::~EditLog()
 {
+  delete edit_log_event;
+  delete edit_log_lock;
 }
 
 
@@ -651,7 +653,7 @@ int EditLog::exec()
 			 tr("Log already being edited by")+" "+
 			 username+"@"+stationname+" ["+
 			 addr.toString()+"].");
-    return 1;
+    return false;
   }
 
   return QDialog::exec();
@@ -1210,7 +1212,7 @@ void EditLog::okData()
   for(unsigned i=0;i<edit_clipboard->size();i++) {
     edit_clipboard->at(i).clearExternalData();
   }
-  done(0);
+  done(true);
 }
 
 
@@ -1243,7 +1245,7 @@ void EditLog::cancelData()
   for(unsigned i=0;i<edit_clipboard->size();i++) {
     edit_clipboard->at(i).clearExternalData();
   }
-  done(1);
+  done(false);
 }
 
 

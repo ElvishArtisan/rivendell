@@ -1265,5 +1265,13 @@ Assim sendo, somente transições existentes serão editáveis.</translation>
         <source>LABEL</source>
         <translation type="unfinished">SELO</translation>
     </message>
+    <message>
+        <source>Log Locked</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Log already being edited by</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 </TS>

@@ -455,8 +455,9 @@ void MainWidget::editData()
   }
 
   std::vector<QString> newlogs;
-  EditLog *log=new EditLog(items.at(0)->text(1),&log_filter,&log_group,&log_schedcode,
-			   &log_clipboard,&newlogs,this);
+  EditLog *log=
+    new EditLog(items.at(0)->text(1),&log_filter,&log_group,&log_schedcode,
+		&log_clipboard,&newlogs,this);
   log->exec();
   delete log;
   RefreshItem(items.at(0));

@@ -1264,5 +1264,13 @@ sólo podrás editar transiciones ya existentes.</translation>
         <source>LABEL</source>
         <translation type="unfinished">ETIQUETA</translation>
     </message>
+    <message>
+        <source>Log Locked</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Log already being edited by</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 </TS>

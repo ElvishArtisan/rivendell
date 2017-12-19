@@ -16519,3 +16519,5 @@
 	* Added a 'LOGS.LOCK_DATETIME' field to the database.
 	* Incremented the database version to 273.
 	* Added log locking logic to rdlogedit(1).
+2017-12-18 Fred Gleason <fredg@paravelsystems.com>
+	* Added log locking logic to the voice tracker in rdlogedit(1).

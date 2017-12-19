@@ -2,7 +2,7 @@
 //
 // A Rivendell Voice Tracker
 //
-//   (C) Copyright 2002-2006,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2006,2016-2017 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -34,18 +34,20 @@
 #include <qcursor.h>
 #include <qpopupmenu.h>
 
-#include <rdtransportbutton.h>
-#include <rdstereometer.h>
 #include <rdcart.h>
 #include <rdcut.h>
+#include <rdevent_player.h>
 #include <rdgroup.h>
 #include <rdlog.h>
 #include <rdlog_event.h>
+#include <rdloglock.h>
 #include <rdplay_deck.h>
-#include <log_listview.h>
-#include <rdevent_player.h>
-#include <rdwavepainter.h>
 #include <rdsettings.h>
+#include <rdstereometer.h>
+#include <rdtransportbutton.h>
+#include <rdwavepainter.h>
+
+#include "log_listview.h"
 
 //
 // Widget Settings
@@ -80,7 +82,10 @@ class VoiceTracker : public QDialog
   ~VoiceTracker();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
-  
+
+ public slots:
+  int exec();
+
  private slots:
   void updateMenuData();
   void hideMenuData();
@@ -199,7 +204,6 @@ class VoiceTracker : public QDialog
   QPixmap *edit_wave_map[3];
   QString edit_wave_name[3];
   RDWavePainter *wpg[3];
-  //int edit_wave_pos[3];
   int edit_scroll_pos[3];
   int edit_wave_origin[3];
   RDLogLine *edit_logline[3];
@@ -212,10 +216,7 @@ class VoiceTracker : public QDialog
   bool track_redraw[3];
   unsigned track_redraw_count;
   RDCart *edit_track_cart;
-
-  //RDCut *edit_track_cut;
   RDCut *edit_track_cuts[3];
-
   RDGroup *track_group;
   int edit_wave_width;
   int edit_cursor_pos;
@@ -284,7 +285,8 @@ class VoiceTracker : public QDialog
   int track_target_track[VoiceTracker::TargetSize];
   VoiceTracker::Target track_current_target;
   bool edit_shift_pressed;
+  RDLogLock *track_log_lock;
 };
 
 
-#endif
+#endif  // VOICE_TRACKER_H
