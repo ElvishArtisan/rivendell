@@ -153,11 +153,11 @@ bool MainObject::TryLock(RDLogLock *lock,const QString &logname)
 
   ret=lock->tryLock(&username,&stationname,&addr);
   if(!ret) {
-    fprintf(stderr,"log \"%s\" in use by %s@%s [%s]\n",
-	    (const char *)logname,
-	    (const char *)username,
-	    (const char *)stationname,
-	    (const char *)addr.toString());
+    QString msg="log \""+logname+"\" in use by "+username+"@"+stationname;
+    if(stationname!=addr.toString()) {
+      msg+=" ["+addr.toString()+"]";
+    }
+    fprintf(stderr,"%s\n",(const char *)msg);
   }
   return ret;
 }

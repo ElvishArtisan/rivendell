@@ -649,10 +649,12 @@ int EditLog::exec()
   QHostAddress addr;
 
   if(!edit_log_lock->tryLock(&username,&stationname,&addr)) {
-    QMessageBox::warning(this,"RDLogEdit - "+tr("Log Locked"),
-			 tr("Log already being edited by")+" "+
-			 username+"@"+stationname+" ["+
-			 addr.toString()+"].");
+    QString msg=tr("Log already being edited by")+" "+username+"@"+stationname;
+    if(stationname!=addr.toString()) {
+      msg+=" ["+addr.toString()+"]";
+    }
+    msg+=".";
+    QMessageBox::warning(this,"RDLogEdit - "+tr("Log Locked"),msg);
     return false;
   }
 

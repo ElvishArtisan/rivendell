@@ -16530,3 +16530,6 @@
 	* Added a 'LOGS.LOCK_GUID' field to the database.
 	* Incremented the database version to 274.
 	* Added a 'LockLog' call to the Web API.
+2017-12-20 Fred Gleason <fredg@paravelsystems.com>
+	* Cleaned up 'log in use" messages in rdlogedit(1) and
+	rdclilogedit(1).
