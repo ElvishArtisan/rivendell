@@ -62,6 +62,9 @@ void MainObject::DispatchCommand(QString cmd)
 
   if((verb=="exit")||(verb=="quit")||(verb=="bye")) {
     if(overwrite) {
+      if(edit_log_lock!=NULL) {
+	delete edit_log_lock;
+      }
       exit(0);
     }
     else {

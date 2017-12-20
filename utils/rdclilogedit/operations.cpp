@@ -208,6 +208,10 @@ void MainObject::Load(QString logname)
     delete edit_log_event;
     edit_log_event=NULL;
   }
+  if(edit_log_lock!=NULL) {
+    delete edit_log_lock;
+    edit_log_lock=NULL;
+  }
 
   //
   // Normalize log name case
@@ -222,6 +226,16 @@ void MainObject::Load(QString logname)
     logname=q->value(0).toString();
   }
   delete q;
+
+  QString username;
+  QString stationname;
+  QHostAddress addr;
+  edit_log_lock=new RDLogLock(logname,edit_user,edit_station,this);
+  if(!TryLock(edit_log_lock,logname)) {
+    delete edit_log_lock;
+    edit_log_lock=NULL;
+    return;
+  }
 
   edit_log=new RDLog(logname);
   if(edit_log->exists()) {
@@ -554,6 +568,10 @@ void MainObject::Unload()
   if(edit_log_event!=NULL) {
     delete edit_log_event;
     edit_log_event=NULL;
+  }
+  if(edit_log_lock!=NULL) {
+    delete edit_log_lock;
+    edit_log_lock=NULL;
   }
   edit_modified=false;
 }

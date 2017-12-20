@@ -2,7 +2,7 @@
 //
 // A Command-line log editor for Rivendell
 //
-//   (C) Copyright 2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2016-2017 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -29,6 +29,7 @@
 #include <rddb.h>
 #include <rdlog.h>
 #include <rdlog_event.h>
+#include <rdloglock.h>
 #include <rdripc.h>
 #include <rduser.h>
 
@@ -71,6 +72,7 @@ class MainObject : public QObject
   void Settime(int line,RDLogLine::TimeType type,const QTime &time=QTime());
   void Settrans(int line,RDLogLine::TransType type);
   void Unload();
+  bool TryLock(RDLogLock *lock,const QString &logname);
   void OverwriteError(const QString &cmd) const;
   void DispatchCommand(QString cmd);
   QString ListLine(RDLogEvent *evt,int line) const;
@@ -92,6 +94,7 @@ class MainObject : public QObject
   RDRipc *edit_ripc;
   RDAirPlayConf *edit_airplay_conf;
   RDConfig *edit_config;
+  RDLogLock *edit_log_lock;
 };
 
 

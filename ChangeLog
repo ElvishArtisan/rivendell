@@ -16521,3 +16521,5 @@
 	* Added log locking logic to rdlogedit(1).
 2017-12-19 Fred Gleason <fredg@paravelsystems.com>
 	* Added log locking logic to the voice tracker in rdlogedit(1).
+2017-12-20 Fred Gleason <fredg@paravelsystems.com>
+	* Added log locking logic to rdclilogedit(1).
