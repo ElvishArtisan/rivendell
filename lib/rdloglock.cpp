@@ -60,6 +60,43 @@ bool RDLogLock::isLocked() const
 bool RDLogLock::tryLock(QString *username,QString *stationname,
 			QHostAddress *addr)
 {
+  bool ret=false;
+  QString guid=RDLogLock::makeGuid(lock_station->name());
+
+  *username=lock_user->name();
+  *stationname=lock_station->name();
+  addr->setAddress(lock_station->address().toString());
+
+  if(RDLogLock::tryLock(username,stationname,addr,lock_log_name,guid)) {
+    lock_timer->start(RD_LOG_LOCK_TIMEOUT/2);
+    lock_guid=guid;
+    lock_locked=true;
+    ret=true;
+  }
+
+  return ret;
+}
+
+
+void RDLogLock::clearLock()
+{
+  RDLogLock::clearLock(lock_guid);
+  lock_guid=QString();
+  lock_timer->stop();
+  lock_locked=false;
+}
+
+
+void RDLogLock::updateLock()
+{
+  RDLogLock::updateLock(lock_log_name,lock_guid);
+}
+
+
+bool RDLogLock::tryLock(QString *username,QString *stationname,
+			QHostAddress *addr,const QString &log_name,
+			const QString &guid)
+{
   QString sql;
   RDSqlQuery *q;
   RDSqlQuery *q1;
@@ -67,18 +104,17 @@ bool RDLogLock::tryLock(QString *username,QString *stationname,
   QDateTime now=QDateTime::currentDateTime();
 
   sql=QString("update LOGS set ")+
-    "LOCK_USER_NAME=\""+RDEscapeString(lock_user->name())+"\","+
-    "LOCK_STATION_NAME=\""+RDEscapeString(lock_station->name())+"\","+
-    "LOCK_IPV4_ADDRESS=\""+RDEscapeString(lock_station->address().toString())+
+    "LOCK_USER_NAME=\""+RDEscapeString(*username)+"\","+
+    "LOCK_STATION_NAME=\""+RDEscapeString(*stationname)+"\","+
+    "LOCK_IPV4_ADDRESS=\""+RDEscapeString(addr->toString())+
     "\","+
+    "LOCK_GUID=\""+RDEscapeString(guid)+"\","+
     "LOCK_DATETIME=now() where "+
-    "(NAME=\""+RDEscapeString(lock_log_name)+"\")&&"+
+    "(NAME=\""+RDEscapeString(log_name)+"\")&&"+
     "((LOCK_DATETIME is null)||"+
     "(LOCK_DATETIME<\""+RDEscapeString(now.addSecs(-RD_LOG_LOCK_TIMEOUT/1000).toString("yyyy-MM-dd hh:mm:ss"))+"\"))";
   q=new RDSqlQuery(sql);
   if(q->numRowsAffected()>0) {
-    lock_timer->start(RD_LOG_LOCK_TIMEOUT/2);
-    lock_locked=true;
     ret=true;
   }
   else {
@@ -87,7 +123,7 @@ bool RDLogLock::tryLock(QString *username,QString *stationname,
       "LOCK_STATION_NAME,"+
       "LOCK_IPV4_ADDRESS "+
       "from LOGS where "+
-      "NAME=\""+RDEscapeString(lock_log_name)+"\"";
+      "NAME=\""+RDEscapeString(log_name)+"\"";
     q1=new RDSqlQuery(sql);
     if(q1->first()) {
       *username=q1->value(0).toString();
@@ -102,7 +138,26 @@ bool RDLogLock::tryLock(QString *username,QString *stationname,
 }
 
 
-void RDLogLock::clearLock()
+void RDLogLock::updateLock(const QString &log_name,const QString &guid)
+{
+  QString sql;
+  RDSqlQuery *q;
+
+  sql=QString("update LOGS set ")+
+    "LOCK_DATETIME=now() where "+
+    "LOCK_GUID=\""+RDEscapeString(guid)+"\"";
+  q=new RDSqlQuery(sql);
+#ifndef WIN32
+  if(q->numRowsAffected()==0) {
+    syslog(LOG_WARNING,"lock on log \"%s\" has evaporated!",
+	   (const char *)log_name);
+  }
+#endif  // WIN32
+  delete q;
+}
+
+
+void RDLogLock::clearLock(const QString &guid)
 {
   QString sql;
   RDSqlQuery *q;
@@ -111,37 +166,16 @@ void RDLogLock::clearLock()
     "LOCK_USER_NAME=null,"+
     "LOCK_STATION_NAME=null,"+
     "LOCK_IPV4_ADDRESS=null,"+
+    "LOCK_GUID=null,"+
     "LOCK_DATETIME=null where "+
-    "(NAME=\""+RDEscapeString(lock_log_name)+"\")&&"+
-    "(LOCK_USER_NAME=\""+RDEscapeString(lock_user->name())+"\")&&"+
-    "(LOCK_STATION_NAME=\""+RDEscapeString(lock_station->name())+"\")&&"+
-    "(LOCK_IPV4_ADDRESS=\""+RDEscapeString(lock_station->address().toString())+
-    "\")";
+    "LOCK_GUID=\""+RDEscapeString(guid)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
-  lock_timer->stop();
-  lock_locked=false;
 }
 
 
-void RDLogLock::updateLock()
+QString RDLogLock::makeGuid(const QString &stationname)
 {
-  QString sql;
-  RDSqlQuery *q;
-
-  sql=QString("update LOGS set ")+
-    "LOCK_DATETIME=now() where "+
-    "(NAME=\""+RDEscapeString(lock_log_name)+"\")&&"+
-    "(LOCK_USER_NAME=\""+RDEscapeString(lock_user->name())+"\")&&"+
-    "(LOCK_STATION_NAME=\""+RDEscapeString(lock_station->name())+"\")&&"+
-    "(LOCK_IPV4_ADDRESS=\""+RDEscapeString(lock_station->address().toString())+
-    "\")";
-  q=new RDSqlQuery(sql);
-#ifndef WIN32
-  if(q->numRowsAffected()==0) {
-    syslog(LOG_WARNING,"lock on log \"%s\" has gone stale",
-	   (const char *)lock_log_name);
-  }
-#endif  // WIN32
-  delete q;
+  return stationname+QDateTime::currentDateTime().
+    toString("yyyyMMddhhmmsszzz");
 }

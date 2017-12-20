@@ -251,6 +251,10 @@ void MainObject::Revert(int schema) const
   case 273:
     Revert273();
     break;
+
+  case 274:
+    Revert274();
+    break;
   }
 }
 
@@ -787,6 +791,23 @@ void MainObject::Revert273() const
 }
 
 
+void MainObject::Revert274() const
+{
+  QString sql;
+  RDSqlQuery *q;
+
+  sql=QString("alter table LOGS drop index LOCK_GUID_IDX");
+  q=new RDSqlQuery(sql,false);
+  delete q;
+
+  sql=QString("alter table LOGS drop column LOCK_GUID");
+  q=new RDSqlQuery(sql,false);
+  delete q;
+
+  SetVersion(273);
+}
+
+
 int MainObject::GetVersion() const
 {
   QString sql;
@@ -832,7 +853,7 @@ int MainObject::MapSchema(const QString &ver)
   version_map["2.16"]=263;
   version_map["2.17"]=268;
   version_map["2.18"]=272;
-  version_map["2.19"]=273;
+  version_map["2.19"]=274;
 
   //
   // Normalize String

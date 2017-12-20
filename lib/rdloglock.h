@@ -39,6 +39,11 @@ class RDLogLock : public QObject
   bool isLocked() const;
   bool tryLock(QString *username,QString *stationname,QHostAddress *addr);
   void clearLock();
+  static bool tryLock(QString *username,QString *stationname,QHostAddress *addr,
+		      const QString &log_name,const QString &guid);
+  static void updateLock(const QString &log_name,const QString &guid);
+  static void clearLock(const QString &guid);
+  static QString makeGuid(const QString &stationname);
 
  private slots:
   void updateLock();
@@ -49,6 +54,7 @@ class RDLogLock : public QObject
   RDStation *lock_station;
   QTimer *lock_timer;
   bool lock_locked;
+  QString lock_guid;
 };
 
 

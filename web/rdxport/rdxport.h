@@ -39,6 +39,7 @@
 class Xport : public QObject
 {
  public:
+  enum LockLogOperation {LockLogCreate=0,LockLogUpdate=1,LockLogClear=2};
   Xport(QObject *parent=0);
 
  private:
@@ -80,6 +81,10 @@ class Xport : public QObject
   void ListCartSchedCodes();
   void ListServices();
   void ListSystemSettings();
+  void LockLog();
+  QString LogLockXml(bool result,const QString &log_name,const QString &guid,
+		     const QString &username,const QString &stationname,
+		     const QHostAddress addr) const;
   void Exit(int code);
   void XmlExit(const QString &msg,int code,
 	       const QString &srcfile="",int line=-1,
@@ -89,6 +94,8 @@ class Xport : public QObject
   RDConfig *xport_config;
   RDSystem *xport_system;
   RDStation *xport_station;
+  QString xport_remote_hostname;
+  QHostAddress xport_remote_address;
 };
 
 

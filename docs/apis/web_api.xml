@@ -2670,6 +2670,63 @@
 </sect1>
 
 <sect1>
+  <title>LockLog</title>
+  <subtitle>Set / Update / Clear a log lock</subtitle>
+  <para>
+    Command Code: <code>RDXPORT_COMMAND_LOCKLOG</code>
+  </para>
+  <para>
+    Required User Permissions: none
+  </para>
+  <table xml:id="ex.locklog" frame="all">
+    <title>LockLog Call Fields</title>
+    <tgroup cols="3" align="left" colsep="1" rowsep="1">
+      <colspec colname="FIELD NAME" />
+      <colspec colname="MEANING" />
+      <colspec colname="REMARKS" />
+      <thead>
+	<row>
+	  <entry>FIELD NAME</entry>
+	  <entry>MEANING</entry>
+	  <entry>REMARKS</entry>
+	</row>
+      </thead>
+      <tbody>
+	<row>
+	  <entry>COMMAND</entry>
+	  <entry>34</entry>
+	  <entry>Mandatory</entry>
+	</row>
+	<row>
+	  <entry>OPERATION</entry>
+	  <entry>Operation to Perform</entry>
+	  <entry>
+	    <para>
+	      Mandatory. Possible values:
+	    </para>
+	    <simplelist>
+	      <member>CREATE</member>
+	      <member>UPDATE</member>
+	      <member>CLEAR</member>
+	    </simplelist>
+	  </entry>
+	</row>
+	<row>
+	  <entry>LOG_NAME</entry>
+	  <entry>Name of log</entry>
+	  <entry>Mandatory</entry>
+	</row>
+	<row>
+	  <entry>LOCK_GUID</entry>
+	  <entry>Opaque GUID string, returned by the CREATE operation.</entry>
+	  <entry>Mandatory. For CREATE, send an empty string.</entry>
+	</row>
+      </tbody>
+    </tgroup>
+  </table>
+</sect1>
+
+<sect1>
   <title>Rehash</title>
   <subtitle>Generate a SHA-1 hash for a cut and write it to the database</subtitle>
   <para>

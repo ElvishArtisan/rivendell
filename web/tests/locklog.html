@@ -1,0 +1,48 @@
+<html>
+<head>
+<title>Rivendell LOCKLOG Service Test Harness</title>
+<body>
+<form action="/rd-bin/rdxport.cgi" method="post" enctype="multipart/form-data">
+<input type="hidden" name="COMMAND" value="34">
+<table cellpadding="0" cellspacing="2" border="0">
+<tr>
+<td align="right">LOGIN NAME:</td>
+<td><input type="text" name="LOGIN_NAME" size="20" maxlength="255"></td>
+</tr>
+<tr>
+<td align="right">PASSWORD:</td>
+<td><input type="password" name="PASSWORD" size="20" maxlength="32"></td>
+</tr>
+<tr>
+<td align="right">TICKET:</td>
+<td><input type="text" name="TICKET" size="40" maxlength="40"></td>
+</tr>
+
+<tr>
+<td align="right">OPERATION:</td>
+<td>
+  <select name="OPERATION">
+    <option value="CREATE">CREATE</option>
+    <option value="UPDATE">UPDATE</option>
+    <option value="CLEAR">CLEAR</option>
+  </select>
+</td>
+</tr>
+<tr>
+<td align="right">LOG_NAME:</td>
+<td><input type="text" name="LOG_NAME" size="40" maxlength="64"></td>
+</tr>
+<tr>
+<td align="right">LOCK_GUID:</td>
+<td><input type="text" name="LOCK_GUID" size="40" maxlength="82"></td>
+</tr>
+<tr>
+<td colspan="2" align="right">&nbsp;</td>
+</tr>
+<tr>
+<td colspan="2" align="right"><input type="submit" value="OK"></td>
+</tr>
+</table>
+</form>
+</body>
+</html>

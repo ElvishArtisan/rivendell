@@ -119,6 +119,15 @@ Xport::Xport(QObject *parent)
     db->removeDatabase(xport_config->mysqlDbname());
     Exit(0);
   }
+  if(getenv("REMOTE_ADDR")!=NULL) {
+    xport_remote_address.setAddress(getenv("REMOTE_ADDR"));
+  }
+  if(getenv("REMOTE_HOST")!=NULL) {
+    xport_remote_hostname=getenv("REMOTE_HOST");
+  }
+  if(xport_remote_hostname.isEmpty()) {
+    xport_remote_hostname=xport_remote_address.toString();
+  }
 
   //
   // Load System Settings
@@ -270,6 +279,10 @@ Xport::Xport(QObject *parent)
 
   case RDXPORT_COMMAND_LISTSYSTEMSETTINGS:
     ListSystemSettings();
+    break;
+
+  case RDXPORT_COMMAND_LOCKLOG:
+    LockLog();
     break;
 
   case RDXPORT_COMMAND_REHASH:

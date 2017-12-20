@@ -16526,3 +16526,7 @@
 2017-12-20 Fred Gleason <fredg@paravelsystems.com>
 	* Modified the behavior of the 'new' command in rdclilogedit(1) to
 	match that of rdlogedit(1).
+2017-12-20 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'LOGS.LOCK_GUID' field to the database.
+	* Incremented the database version to 274.
+	* Added a 'LockLog' call to the Web API.
