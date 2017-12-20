@@ -346,6 +346,9 @@ void MainObject::New(const QString &logname)
   if(edit_log_event!=NULL) {
     delete edit_log_event;
   }
+  if(edit_log_lock!=NULL) {
+    delete edit_log_lock;
+  }
   edit_log=new RDLog(logname);
   if(!edit_log->exists()) {
     edit_log_event=new RDLogEvent(RDLog::tableName(logname));
@@ -360,8 +363,14 @@ void MainObject::New(const QString &logname)
     edit_end_date=QDate();
     edit_purge_date=QDate();
     edit_auto_refresh=false;
-    edit_new_log=true;
+    //    edit_new_log=true;
     edit_modified=false;
+    Saveas(edit_log->name());
+    edit_log_lock=new RDLogLock(edit_log->name(),edit_user,edit_station,this);
+    if(!TryLock(edit_log_lock,edit_log->name())) {
+      fprintf(stderr,"FATAL ERROR: unable to lock new log!\n");
+      exit(256);
+    }
   }
   else {
     fprintf(stderr,"new: log already exists\n");
@@ -378,21 +387,16 @@ void MainObject::Remove(int line)
 
 void MainObject::Save()
 {
-  if(edit_new_log) {
-    Saveas(edit_log->name());
-  }
-  else {
-    edit_log_event->save(edit_config);
-    edit_log->setDescription(edit_description);
-    edit_log->setStartDate(edit_start_date);
-    edit_log->setEndDate(edit_end_date);
-    edit_log->setPurgeDate(edit_purge_date);
-    edit_log->setAutoRefresh(edit_auto_refresh);
-    edit_log->setService(edit_service);
-    edit_log->
-      setModifiedDatetime(QDateTime(QDate::currentDate(),QTime::currentTime()));
-    edit_modified=false;
-  }
+  edit_log_event->save(edit_config);
+  edit_log->setDescription(edit_description);
+  edit_log->setStartDate(edit_start_date);
+  edit_log->setEndDate(edit_end_date);
+  edit_log->setPurgeDate(edit_purge_date);
+  edit_log->setAutoRefresh(edit_auto_refresh);
+  edit_log->setService(edit_service);
+  edit_log->
+    setModifiedDatetime(QDateTime(QDate::currentDate(),QTime::currentTime()));
+  edit_modified=false;
 }
 
 
@@ -424,7 +428,6 @@ void MainObject::Saveas(const QString &logname)
     delete edit_log;
     edit_log=log;
     edit_modified=false;
-    edit_new_log=false;
   }
   else {
     fprintf(stderr,"saveas: log already exists\n");

@@ -80,7 +80,7 @@ class MainObject : public QObject
   bool edit_quiet_option;
   QString edit_accum;
   bool edit_modified;
-  bool edit_new_log;
+  //  bool edit_new_log;
   RDLog *edit_log;
   RDLogEvent *edit_log_event;
   QString edit_description;

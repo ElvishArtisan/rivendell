@@ -43,7 +43,6 @@ MainObject::MainObject(QObject *parent)
   edit_log=NULL;
   edit_log_event=NULL;
   edit_modified=false;
-  edit_new_log=false;
   edit_log_lock=NULL;
 
   //
