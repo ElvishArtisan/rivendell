@@ -16512,12 +16512,12 @@
 2017-12-18 Fred Gleason <fredg@paravelsystems.com>
 	* Updated 'NEWS'.
 	* Incremented the package version to 2.17.0int08.
-2017-12-18 Fred Gleason <fredg@paravelsystems.com>
+2017-12-19 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'LOGS.LOCK_USER_NAME' field to the database.
 	* Added a 'LOGS.LOCK_STATION_NAME' field to the database.
 	* Added a 'LOGS.LOCK_IPV4_ADDRESS' field to the database.
 	* Added a 'LOGS.LOCK_DATETIME' field to the database.
 	* Incremented the database version to 273.
 	* Added log locking logic to rdlogedit(1).
-2017-12-18 Fred Gleason <fredg@paravelsystems.com>
+2017-12-19 Fred Gleason <fredg@paravelsystems.com>
 	* Added log locking logic to the voice tracker in rdlogedit(1).
