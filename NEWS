@@ -1,10 +1,10 @@
 The NEWS file for the Rivendell package.
 
 -------------------------------------------------------------------------------
-v2.17.0int08 -- 12/18/2017
+v2.18.0 -- 12/21/2017
 
 Changes:
-   Documentation Overall. The Rivendell Operations Guide has been
+   Documentation Overhaul. The Rivendell Operations Guide has been
    exapanded and incorporated as part of the base Rivendell source
    in 'docs/opsguide. Most of text notes previously located in 'docs/'
    added as appendices. Remaining unconverted text notes can now be found
@@ -15,6 +15,8 @@ Changes:
    'Set End Date/Time' control in RDAdmin->ManageGroups.
 
    Host Short Name. Added a 'Short Name' parameter to Host profiles.
+
+   Macro Carts. It is now possible to use filepath wildcards in macro carts.
 
    New Host Wildcards. Added the following new host wildcards:
       %r - Rivendell Host Name
