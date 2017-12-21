@@ -23,12 +23,25 @@
 
 #include <qobject.h>
 
+#include <rdripc.h>
+#include <rdstation.h>
+
 #define LOG_UNLINK_TEST_USAGE "[options]\n\nTest the Rivendell log unlinker methods\n\nOptions are:\n--log=<log-name>\n     Name of log to unlink.\n\n--source=music|traffic\n     Data source to unlink\n\n"
 
 class MainObject : public QObject
 {
  public:
   MainObject(QObject *parent=0);
+
+ private slots:
+   void userData();
+
+ private:
+   RDSvc::ImportSource test_import_source;
+  QString test_log_name;
+  RDStation *test_station;
+  RDRipc *test_ripc;
+  RDConfig *test_config;
 };
 
 

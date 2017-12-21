@@ -298,6 +298,7 @@ void GenerateLog::createData()
   QString str1;
   QString str2;
   unsigned tracks=0;
+  QString err_msg;
 
   //
   // Generate Log
@@ -359,13 +360,20 @@ void GenerateLog::createData()
 
   connect(svc,SIGNAL(generationProgress(int)),
 	  gen_progress_dialog,SLOT(setProgress(int)));
-  svc->generateLog(gen_date_edit->date(),
-		   RDDateDecode(svc->nameTemplate(),gen_date_edit->date(),
-				rdstation_conf,log_config,svc->name()),
-		   RDDateDecode(svc->nameTemplate(),gen_date_edit->date().
-				addDays(1),rdstation_conf,log_config,
-				svc->name()),
-		   &unused_report,rduser);
+  if(!svc->generateLog(gen_date_edit->date(),
+		       RDDateDecode(svc->nameTemplate(),gen_date_edit->date(),
+				    rdstation_conf,log_config,svc->name()),
+		       RDDateDecode(svc->nameTemplate(),gen_date_edit->date().
+				    addDays(1),rdstation_conf,log_config,
+				    svc->name()),
+		       &unused_report,rduser,&err_msg)) {
+    QMessageBox::warning(this,"RDLogManager - "+tr("Error"),
+			 tr("Unable to generate log")+": "+err_msg);
+    gen_progress_dialog->setProgress(gen_progress_dialog->totalSteps());
+    delete svc;
+    delete log;
+    return;
+  }
   log->updateTracks();
   delete log;
   delete svc;
@@ -392,6 +400,7 @@ void GenerateLog::createData()
 void GenerateLog::musicData()
 {
   unsigned tracks=0;
+  QString err_msg;
 
   RDSvc *svc=
     new RDSvc(gen_service_box->currentText(),rdstation_conf,log_config,this);
@@ -428,13 +437,33 @@ void GenerateLog::musicData()
       }
     }
     log->removeTracks(rdstation_conf,rduser,log_config);
-    svc->clearLogLinks(RDSvc::Traffic,logname);
-    svc->clearLogLinks(RDSvc::Music,logname);
+    if(!svc->clearLogLinks(RDSvc::Traffic,logname,rduser,&err_msg)) {
+      QMessageBox::warning(this,"RDLogManager - "+tr("Error"),
+			   tr("Unable to clear traffic links")+": "+err_msg);
+      delete log;
+      delete svc;
+      return;
+    }
+    if(!svc->clearLogLinks(RDSvc::Music,logname,rduser,&err_msg)) {
+      QMessageBox::warning(this,"RDLogManager - "+tr("Error"),
+			   tr("Unable to clear music links")+": "+err_msg);
+      delete log;
+      delete svc;
+      return;
+    }
   }
   connect(svc,SIGNAL(generationProgress(int)),
 	  gen_progress_dialog,SLOT(setProgress(int)));
   QString report;
-  svc->linkLog(RDSvc::Music,gen_date_edit->date(),logname,&report);
+  if(!svc->linkLog(RDSvc::Music,gen_date_edit->date(),logname,&report,rduser,
+		   &err_msg)) {
+    
+      QMessageBox::warning(this,"RDLogManager - "+tr("Error"),
+			   tr("Unable to link music log")+": "+err_msg);
+      delete log;
+      delete svc;
+      return;
+  }
   delete log;
   delete svc;
   if(!report.isEmpty()) {
@@ -446,6 +475,7 @@ void GenerateLog::musicData()
 
 void GenerateLog::trafficData()
 {
+  QString err_msg;
   RDSvc *svc=
     new RDSvc(gen_service_box->currentText(),rdstation_conf,log_config,this);
   QString logname=RDDateDecode(svc->nameTemplate(),gen_date_edit->date(),
@@ -464,13 +494,26 @@ void GenerateLog::trafficData()
       delete svc;
       return;
     }
-    svc->clearLogLinks(RDSvc::Traffic,logname);
+    if(!svc->clearLogLinks(RDSvc::Traffic,logname,rduser,&err_msg)) {
+      QMessageBox::warning(this,"RDLogManager - "+tr("Error"),
+			   tr("Unable to clear traffic links")+": "+err_msg);
+      delete log;
+      delete svc;
+      return;
+    }
   }
   connect(svc,SIGNAL(generationProgress(int)),
 	  gen_progress_dialog,SLOT(setProgress(int)));
 
   QString report;
-  svc->linkLog(RDSvc::Traffic,gen_date_edit->date(),logname,&report);
+  if(!svc->linkLog(RDSvc::Traffic,gen_date_edit->date(),logname,&report,rduser,
+		   &err_msg)) {
+    QMessageBox::warning(this,"RDLogManager - "+tr("Error"),
+			 tr("Unable to link traffic log")+": "+err_msg);
+    delete log;
+    delete svc;
+    return;
+  }
   delete log;
   delete svc;
   if(!report.isEmpty()) {

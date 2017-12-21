@@ -2019,5 +2019,13 @@ please try again!</source>
 </source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Log in use by</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Import failed</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 </TS>

@@ -16535,3 +16535,5 @@
 	rdclilogedit(1).
 2017-12-21 Fred Gleason <fredg@paravelsystems.com>
 	* Added log locking logic to the 'SaveLog' Web API call.
+2017-12-21 Fred Gleason <fredg@paravelsystems.com>
+	* Added log locking logic to rdlogmanager(1).

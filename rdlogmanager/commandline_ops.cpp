@@ -45,6 +45,7 @@ int RunLogOperation(int argc,char *argv[],const QString &svcname,
   QString svcname_table=svcname;
   svcname_table.replace(" ","_");
   unsigned schema=0;
+  QString err_msg;
 
   QApplication a(argc,argv,false);
 
@@ -112,8 +113,8 @@ int RunLogOperation(int argc,char *argv[],const QString &svcname,
 				      rdstation_conf,config,svc->name()),
 			 RDDateDecode(svc->nameTemplate(),start_date.addDays(1),
 				      rdstation_conf,config,svc->name()),
-			 &unused_report,rduser)) {
-      fprintf(stderr,"rdlogmanager: unable to generate log\n");
+			 &unused_report,rduser,&err_msg)) {
+      fprintf(stderr,"rdlogmanager: %s\n",(const char *)err_msg);
       return 256;
     }
     log->updateTracks();
@@ -147,15 +148,24 @@ int RunLogOperation(int argc,char *argv[],const QString &svcname,
     }
     report="";
     log->removeTracks(rdstation_conf,rduser,config);
-    svc->clearLogLinks(RDSvc::Traffic,logname);
-    svc->clearLogLinks(RDSvc::Music,logname);
-    if(svc->linkLog(RDSvc::Music,start_date,logname,&report)) {
+    if(!svc->clearLogLinks(RDSvc::Traffic,logname,rduser,&err_msg)) {
+      fprintf(stderr,"rdlogmanager: %s\n",(const char *)err_msg);
+      return 256;
+    }
+    if(!svc->clearLogLinks(RDSvc::Music,logname,rduser,&err_msg)) {
+      fprintf(stderr,"rdlogmanager: %s\n",(const char *)err_msg);
+      return 256;
+    }
+    if(svc->linkLog(RDSvc::Music,start_date,logname,&report,rduser,&err_msg)) {
       printf("%s\n",(const char*)report);
     }
     else {
+      fprintf(stderr,"rdlogmanager: %s\n",(const char *)err_msg);
+      /*
       fprintf(stderr,
 	      "rdlogmanager: unable to open music schedule file at \"%s\"\n",
 	      (const char *)svc->importFilename(RDSvc::Music,start_date));
+      */
       exit(256);
     }
   }
@@ -176,14 +186,21 @@ int RunLogOperation(int argc,char *argv[],const QString &svcname,
       return 256;
     }
     report="";
-    svc->clearLogLinks(RDSvc::Traffic,logname);
-    if(svc->linkLog(RDSvc::Traffic,start_date,logname,&report)) {
+    if(!svc->clearLogLinks(RDSvc::Traffic,logname,rduser,&err_msg)) {
+      fprintf(stderr,"rdlogmanager: %s\n",(const char *)err_msg);
+      return 256;
+    }
+    if(svc->linkLog(RDSvc::Traffic,start_date,logname,&report,rduser,
+		    &err_msg)) {
       printf("%s\n",(const char*)report);
     }
     else {
+      fprintf(stderr,"rdlogmanager: %s\n",(const char *)err_msg);
+      /*
       fprintf(stderr,
 	      "rdlogmanager: unable to open traffic schedule file at \"%s\"\n",
 	      (const char *)svc->importFilename(RDSvc::Traffic,start_date));
+      */
     }
   }
 

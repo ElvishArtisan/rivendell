@@ -855,6 +855,30 @@ Opětovné sloučení tato data smaže. Sloučit znovu?</translation>
         <source>Generate Log - User: </source>
         <translation>Vytvořit zápis - Uživatel: </translation>
     </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to generate log</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to clear traffic links</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to clear music links</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to link music log</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to link traffic log</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ImportListView</name>

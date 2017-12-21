@@ -27,6 +27,7 @@
 #include <qsqldatabase.h>
 
 #include "rdconfig.h"
+#include "rdloglock.h"
 #include "rdstation.h"
 #include "rduser.h"
 
@@ -86,10 +87,13 @@ class RDSvc : public QObject
 	      const QString &track_str,const QString &dest_table) 
     const;
   bool generateLog(const QDate &date,const QString &logname,
-		   const QString &nextname,QString *report,RDUser *user);
+		   const QString &nextname,QString *report,RDUser *user,
+		   QString *err_msg);
   bool linkLog(RDSvc::ImportSource src,const QDate &date,
-	       const QString &logname,QString *report);
-  void clearLogLinks(RDSvc::ImportSource src,const QString &logname);
+	       const QString &logname,QString *report,RDUser *user,
+	       QString *err_msg);
+  bool clearLogLinks(RDSvc::ImportSource src,const QString &logname,
+		     RDUser *user,QString *err_msg);
   void create(const QString exemplar) const;
   void remove() const;
   QString xml() const;
@@ -104,6 +108,7 @@ class RDSvc : public QObject
   void generationProgress(int step);
 
  private:
+  bool TryLock(RDLogLock *lock,QString *err_msg);
   QString SourceString(ImportSource src) const;
   QString OsString(ImportOs os) const;
   QString FieldString(ImportField field) const;
