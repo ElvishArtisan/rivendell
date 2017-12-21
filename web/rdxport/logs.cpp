@@ -246,6 +246,7 @@ void Xport::SaveLog()
 
   QString log_name;
   QString service_name;
+  QString lock_guid;
   QString description;
   QDate purge_date;
   bool auto_refresh;
@@ -263,6 +264,7 @@ void Xport::SaveLog()
     XmlExit("Missing SERVICE_NAME",400,"logs.cpp",LINE_NUMBER);
   }
   GetLogService(service_name);
+  xport_post->getValue("LOCK_GUID",&lock_guid);
   if(!xport_post->getValue("DESCRIPTION",&description)) {
     XmlExit("Missing DESCRIPTION",400,"logs.cpp",LINE_NUMBER);
   }
@@ -495,52 +497,43 @@ void Xport::SaveLog()
   if(!log->exists()) {
     XmlExit("No such log",404,"logs.cpp",LINE_NUMBER);
   }
-  log->setService(service_name);
-  log->setDescription(description);
-  log->setPurgeDate(purge_date);
-  log->setAutoRefresh(auto_refresh);
-  log->setStartDate(start_date);
-  log->setEndDate(end_date);
-  log->setModifiedDatetime(QDateTime::currentDateTime());
-
-  logevt->save(xport_config);
-
+  if(lock_guid.isEmpty()) {
+    QString username=xport_user->name();
+    QString stationname=xport_remote_hostname;
+    QHostAddress addr=xport_remote_address;
+    lock_guid=RDLogLock::makeGuid(stationname);
+    if(RDLogLock::tryLock(&username,&stationname,&addr,log_name,lock_guid)) {
+      log->setService(service_name);
+      log->setDescription(description);
+      log->setPurgeDate(purge_date);
+      log->setAutoRefresh(auto_refresh);
+      log->setStartDate(start_date);
+      log->setEndDate(end_date);
+      log->setModifiedDatetime(QDateTime::currentDateTime());
+      logevt->save(xport_config);
+      RDLogLock::clearLock(lock_guid);
+    }
+    else {
+      XmlExit("unable to get log lock",404);
+    }
+  }
+  else {
+    if(RDLogLock::validateLock(log_name,lock_guid)) {
+      log->setService(service_name);
+      log->setDescription(description);
+      log->setPurgeDate(purge_date);
+      log->setAutoRefresh(auto_refresh);
+      log->setStartDate(start_date);
+      log->setEndDate(end_date);
+      log->setModifiedDatetime(QDateTime::currentDateTime());
+      logevt->save(xport_config);
+    }
+    else {
+      XmlExit("invalid log lock",400);
+    }
+  }
   XmlExit(QString().sprintf("OK Saved %d events",logevt->size()),
 	  200,"logs.cpp",LINE_NUMBER);
-}
-
-
-RDSvc *Xport::GetLogService(const QString &svc_name)
-{
-  QString sql=QString("select SERVICE_NAME from USER_SERVICE_PERMS where ")+
-    "(USER_NAME=\""+RDEscapeString(xport_user->name())+"\")&&"+
-    "(SERVICE_NAME=\""+RDEscapeString(svc_name)+"\")";
-  RDSqlQuery *q=new RDSqlQuery(sql);
-  if(!q->first()) {
-    XmlExit("No such service",404,"logs.cpp",LINE_NUMBER);
-  }
-  delete q;
-  RDSvc *svc=new RDSvc(svc_name,xport_station,xport_config);
-  if(!svc->exists()) {
-    XmlExit("No such service",404,"logs.cpp",LINE_NUMBER);
-  }
-
-  return svc;
-}
-
-
-bool Xport::ServiceUserValid(const QString &svc_name)
-{
-  bool ret=false;
-
-  QString sql=QString("select SERVICE_NAME from USER_SERVICE_PERMS where ")+
-    "(SERVICE_NAME=\""+RDEscapeString(svc_name)+"\")&&"+
-    "(USER_NAME=\""+RDEscapeString(xport_user->name())+"\")";
-  RDSqlQuery *q=new RDSqlQuery(sql);
-  ret=q->first();
-  delete q;
-
-  return ret;
 }
 
 
@@ -625,6 +618,40 @@ void Xport::LockLog()
   }
 
   XmlExit("Unexpected exit",500);
+}
+
+
+RDSvc *Xport::GetLogService(const QString &svc_name)
+{
+  QString sql=QString("select SERVICE_NAME from USER_SERVICE_PERMS where ")+
+    "(USER_NAME=\""+RDEscapeString(xport_user->name())+"\")&&"+
+    "(SERVICE_NAME=\""+RDEscapeString(svc_name)+"\")";
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  if(!q->first()) {
+    XmlExit("No such service",404,"logs.cpp",LINE_NUMBER);
+  }
+  delete q;
+  RDSvc *svc=new RDSvc(svc_name,xport_station,xport_config);
+  if(!svc->exists()) {
+    XmlExit("No such service",404,"logs.cpp",LINE_NUMBER);
+  }
+
+  return svc;
+}
+
+
+bool Xport::ServiceUserValid(const QString &svc_name)
+{
+  bool ret=false;
+
+  QString sql=QString("select SERVICE_NAME from USER_SERVICE_PERMS where ")+
+    "(SERVICE_NAME=\""+RDEscapeString(svc_name)+"\")&&"+
+    "(USER_NAME=\""+RDEscapeString(xport_user->name())+"\")";
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  ret=q->first();
+  delete q;
+
+  return ret;
 }
 
 

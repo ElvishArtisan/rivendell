@@ -2982,6 +2982,18 @@
 	</row>
 	<row>
 	  <entry>
+	    LOCK_GUID
+	  </entry>
+	  <entry>
+	    The GUID string, obtained from the LockLog API call.
+	  </entry>
+	  <entry>
+	    Optional. If not provided, the service will attempt to acquire
+	    a lock before processing the save.
+	  </entry>
+	</row>
+	<row>
+	  <entry>
 	    DESCRIPTION
 	  </entry>
 	  <entry>

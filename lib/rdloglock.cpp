@@ -174,6 +174,26 @@ void RDLogLock::clearLock(const QString &guid)
 }
 
 
+bool RDLogLock::validateLock(const QString &log_name,const QString &guid)
+{
+  QString sql;
+  RDSqlQuery *q;
+  bool ret=false;
+  QDateTime now=QDateTime::currentDateTime();
+
+  sql=QString("select NAME from LOGS where ")+
+    "(NAME=\""+RDEscapeString(log_name)+"\")&&"+
+    "(LOCK_GUID=\""+RDEscapeString(guid)+"\")&&"+
+    "(LOCK_DATETIME>\""+RDEscapeString(now.addSecs(-RD_LOG_LOCK_TIMEOUT/1000).
+				       toString("yyyy-MM-dd hh:mm:ss"))+"\")";
+  q=new RDSqlQuery(sql);
+  ret=q->first();
+  delete q;
+
+  return ret;
+}
+
+
 QString RDLogLock::makeGuid(const QString &stationname)
 {
   return stationname+QDateTime::currentDateTime().

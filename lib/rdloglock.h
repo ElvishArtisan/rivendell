@@ -43,6 +43,7 @@ class RDLogLock : public QObject
 		      const QString &log_name,const QString &guid);
   static void updateLock(const QString &log_name,const QString &guid);
   static void clearLock(const QString &guid);
+  static bool validateLock(const QString &log_name,const QString &guid);
   static QString makeGuid(const QString &stationname);
 
  private slots:
