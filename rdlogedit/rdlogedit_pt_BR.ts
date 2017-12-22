@@ -935,6 +935,14 @@ See your system administrator for an update!</source>
         <source>Windows</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Log</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>is in use by</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RenderDialog</name>
