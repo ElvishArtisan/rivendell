@@ -771,7 +771,7 @@ bool CreateDb(QString name,QString pwd,RDConfig *config)
     "DEFAULT_TRIM_STATE enum('N','Y') default 'N',"+
     "MAXLENGTH int,"+
     "TAIL_PREROLL int unsigned default 1500,"+
-    "RIPPER_DEVICE char(64) default "+"/dev/cdrom"+","+
+    "RIPPER_DEVICE char(64) default \"/dev/cdrom\","+
     "PARANOIA_LEVEL int default 0,"+
     "RIPPER_LEVEL int default -1300,"+
     "CDDB_SERVER char(64) default \"freedb.freedb.org\","+
@@ -1071,7 +1071,7 @@ bool CreateDb(QString name,QString pwd,RDConfig *config)
     "BAR_ACTION int unsigned default 0,"+
     "FLASH_PANEL enum('N','Y') default 'N',"+
     "PANEL_PAUSE_ENABLED enum('N','Y') default 'N',"+
-    "BUTTON_LABEL_TEMPLATE char(32) default "+"%t"+","+
+    "BUTTON_LABEL_TEMPLATE char(32) default '%t',"+
     "PAUSE_ENABLED enum('N','Y'),"+
     "DEFAULT_SERVICE char(10),"+
     "HOUR_SELECTOR_ENABLED enum('N','Y') default 'N',"+
@@ -2417,7 +2417,6 @@ bool InitDb(QString name,QString pwd,QString station_name,RDConfig *config)
   sql=QString("insert into CUTS set ")+
     "CUT_NAME=\""+RDCut::cutName(999999,1)+"\","+
     "CART_NUMBER=999999,"+
-    "CART_NUMBER=999999,"+
     "DESCRIPTION=\"1 kHz at Reference Level [-16 dBFS]\","+
     "OUTCUE=\"[tone]\","+
     "CODING_FORMAT=0,"+
@@ -2495,8 +2494,8 @@ bool InitDb(QString name,QString pwd,QString station_name,RDConfig *config)
       QString().sprintf("DEFAULT_CART_TYPE=%d,",g->macro?2:1)+
       QString().sprintf("DEFAULT_LOW_CART=%d,",g->start)+
       QString().sprintf("DEFAULT_HIGH_CART=%d,",g->end)+
-      "RPT_TFC=\""+RDYesNo(g->rpt_traffic)+"\","+
-      "RPT_MUS=\""+RDYesNo(g->rpt_music)+"\","+
+      "REPORT_TFC=\""+RDYesNo(g->rpt_traffic)+"\","+
+      "REPORT_MUS=\""+RDYesNo(g->rpt_music)+"\","+
       "ENABLE_NOW_NEXT=\""+RDYesNo(g->now_next)+"\"";
     if(!RunQuery(sql)) {
       return false;

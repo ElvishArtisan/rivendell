@@ -16515,3 +16515,5 @@
 2017-12-21 Fred Gleason <fredg@paravelsystems.com>
 	* Updated 'NEWS'.
 	* Incremented the package version to 2.18.0.
+2017-12-22 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed bugs that caused creation of a new database to fail.
