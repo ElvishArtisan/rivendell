@@ -1,6 +1,21 @@
 The NEWS file for the Rivendell package.
 
 -------------------------------------------------------------------------------
+v2.18.1 -- 12/22/2017
+
+Changes:
+   Fixed a bug that caused creation and initialization of a new Rivendell
+   database to fail.
+
+Database Update:
+   This version of Rivendell uses database schema version 272, and will
+   automatically upgrade any earlier versions.  To see the current schema
+   version prior to upgrade, see RDAdmin->SystemInfo.
+
+   As always, be sure to run RDAdmin immediately after upgrading to allow 
+   any necessary changes to the database schema to be applied.
+
+-------------------------------------------------------------------------------
 v2.18.0 -- 12/21/2017
 
 Changes:

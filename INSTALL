@@ -118,6 +118,8 @@ package.
 xsltproc.  Command line XSLT processor.  Available at
 http://xmlsoft.org/XSLT/xsltproc2.html
 
+Apache FOP. Formatting Objects (FO) processor. Available at
+https://xmlgraphics.apache.org/fop/.
 
 INSTALLATION
 There are three major steps to getting a Rivendell system up and
