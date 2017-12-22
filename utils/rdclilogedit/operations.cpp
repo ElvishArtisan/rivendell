@@ -107,16 +107,24 @@ void MainObject::Deletelog(QString logname)
   delete q;
 
   if((edit_log==NULL)||(edit_log->name()!=logname)) {
+    RDLogLock *log_lock=new RDLogLock(logname,edit_user,edit_station,this);
+    QString err_msg;
     RDLog *log=new RDLog(logname);
     if(log->exists()) {
-      if(!log->remove(edit_station,edit_user,edit_config)) {
-	fprintf(stderr,"deletelog: audio deletion error, log not deleted\n");
+      if(TryLock(log_lock,logname)) {
+	if(!log->remove(edit_station,edit_user,edit_config)) {
+	  fprintf(stderr,
+		  "deletelog: audio deletion error, log not deleted\n");
+	}
       }
+      else {
+	delete log_lock;
+      }
+      delete log;
     }
     else {
       fprintf(stderr,"deletelog: no such log\n");
     }
-    delete log;
   }
   else {
     fprintf(stderr,"deletelog: log currently loaded (try \"unload\" first)\n");
