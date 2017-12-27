@@ -18,6 +18,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
+#include <qmessagebox.h>
 #include <qpushbutton.h>
 
 #include <rdadd_log.h>
@@ -121,10 +122,11 @@ QSizePolicy ListLogs::sizePolicy() const
 }
 
 
-int ListLogs::exec(QString *logname,QString *svcname)
+int ListLogs::exec(QString *logname,QString *svcname,RDLogLock **log_lock)
 {
   list_logname=logname;
   list_svcname=svcname;
+  list_log_lock=log_lock;
   list_saveas_button->setEnabled(rduser->createLog());
   QStringList services_list;
   QString sql=QString("select SERVICE_NAME from SERVICE_PERMS where ")+
@@ -149,7 +151,7 @@ void ListLogs::filterChangedData(const QString &where_sql)
 
 void ListLogs::closeEvent(QCloseEvent *e)
 {
-  done(1);
+  done(ListLogs::Cancel);
 }
 
 
@@ -166,7 +168,8 @@ void ListLogs::loadButtonData()
     return;
   }
   *list_logname=item->text(0);
-  done(0);
+  *list_log_lock=NULL;
+  done(ListLogs::Load);
 }
 
 
@@ -176,7 +179,20 @@ void ListLogs::saveButtonData()
     saveAsButtonData();
   }
   else {
-    done(2);
+    *list_log_lock=new RDLogLock(*list_logname,rduser,rdstation_conf,this);
+    if(!TryLock(*list_log_lock)) {
+      delete *list_log_lock;
+      *list_log_lock=NULL;
+      return;
+    }
+    if(list_log->isRefreshable()) {
+      QMessageBox::warning(this,"RDAirPlay - "+tr("Error"),
+		      tr("You must refresh the log before it can be saved."));
+      delete *list_log_lock;
+      *list_log_lock=NULL;
+      return;
+    }
+    done(ListLogs::Save);
   }
 }
 
@@ -188,7 +204,6 @@ void ListLogs::saveAsButtonData()
   RDAddLog *log;
   log=new RDAddLog(&logname,&svcname,RDLogFilter::StationFilter,rduser,
 		   rdstation_conf,tr("Rename Log"),this);
-
   if(log->exec()<0) {
     delete log;
     return;
@@ -196,19 +211,21 @@ void ListLogs::saveAsButtonData()
   delete log;
   *list_logname=logname;
   *list_svcname=svcname;
-  done(3);
+  done(ListLogs::SaveAs);
 }
 
 
 void ListLogs::unloadButtonData()
 {
-  done(-1);
+  *list_log_lock=NULL;
+  done(ListLogs::Unload);
 }
 
 
 void ListLogs::cancelButtonData()
 {
-  done(1);
+  *list_log_lock=NULL;
+  done(ListLogs::Cancel);
 }
 
 
@@ -251,4 +268,23 @@ void ListLogs::RefreshList()
     l->setText(2,q->value(2).toString());
   }
   delete q;
+}
+
+
+bool ListLogs::TryLock(RDLogLock *lock)
+{
+  QString username;
+  QString stationname;
+  QHostAddress addr;
+
+  if(!lock->tryLock(&username,&stationname,&addr)) {
+    QString msg=tr("Log already being edited by")+" "+username+"@"+stationname;
+    if(stationname!=addr.toString()) {
+      msg+=" ["+addr.toString()+"]";
+    }
+    msg+=".";
+    QMessageBox::warning(this,"RDAirPlay - "+tr("Log Locked"),msg);
+    return false;
+  }
+  return true;
 }

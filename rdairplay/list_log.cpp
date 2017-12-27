@@ -2,7 +2,7 @@
 //
 // The full log list for RDAirPlay
 //
-//   (C) Copyright 2002-2006,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2006,2016-2017 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -856,21 +856,22 @@ void ListLog::loadButtonData()
   QString svcname=list_log->serviceName();
   QString err_msg;
   RDLog *edit_log;
+  RDLogLock *log_lock=NULL;
 
-  switch(list_logs_dialog->exec(&name,&svcname)) {
-  case 0:
+  switch((ListLogs::Operation)list_logs_dialog->exec(&name,&svcname,&log_lock)) {
+  case ListLogs::Load:
     list_log->setLogName(RDLog::tableName(name));
     list_log->load();
     break;
 
-  case 2:
+  case ListLogs::Save:
     list_log->save();
     edit_log=
       new RDLog(list_log->logName().left(list_log->logName().length()-4));
     delete edit_log;
     break;
     
-  case 3:
+  case ListLogs::SaveAs:
     if(!RDLog::create(name,svcname,rdripc->user(),&err_msg,air_config)) {
       QMessageBox::warning(this,"RDAirPlay - "+tr("Error"),err_msg);
       return;
@@ -880,9 +881,15 @@ void ListLog::loadButtonData()
     list_log->save();
     break;
 
-  case -1:
+  case ListLogs::Unload:
     list_log->clear();
     break;
+
+  case ListLogs::Cancel:
+    break;
+  }
+  if(log_lock!=NULL) {
+    delete log_lock;
   }
 }
 

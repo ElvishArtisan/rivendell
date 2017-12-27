@@ -462,6 +462,22 @@ Tail</source>
         <source>Save As</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Log already being edited by</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Log Locked</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You must refresh the log before it can be saved.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>LogLineBox</name>
