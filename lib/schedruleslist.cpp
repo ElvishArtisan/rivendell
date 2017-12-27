@@ -28,9 +28,11 @@ SchedRulesList::SchedRulesList(QString clockname,RDConfig *config)
   QString sql;
   RDSqlQuery *q;
   RDSqlQuery *q1;
+  QString clkname=clockname;
 
+  clkname.replace(" ","_");
   sql=QString("create table if not exists `")+
-    RDClock::tableName(clockname)+"_RULES` ("+
+    clkname+"_RULES` ("+
     "CODE varchar(10) not null primary key,"+
     "MAX_ROW int unsigned,"+
     "MIN_WAIT int unsigned,"+

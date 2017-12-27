@@ -16521,3 +16521,6 @@
 	* Updated 'INSTALL'.
 	* Updated 'NEWS'.
 	* Incremented the package version to 2.18.1.
+2017-12-27 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug that broke generation of the 'RULES' table when creating
+	a new clock in rdlogmanager(1).
