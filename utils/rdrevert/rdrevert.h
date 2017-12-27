@@ -68,6 +68,8 @@ class MainObject : public QObject
   void Revert270() const;
   void Revert271() const;
   void Revert272() const;
+  void Revert273() const;
+  void Revert274() const;
   int GetVersion() const;
   void SetVersion(int schema) const;
   int MapSchema(const QString &ver);

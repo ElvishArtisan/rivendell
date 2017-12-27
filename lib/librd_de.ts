@@ -2433,5 +2433,13 @@ bitte erneut versuchen!</translation>
 </source>
         <translation>Event-Füllfehler</translation>
     </message>
+    <message>
+        <source>Log in use by</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Import failed</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 </TS>

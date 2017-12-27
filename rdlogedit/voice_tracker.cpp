@@ -246,8 +246,9 @@ VoiceTracker::VoiceTracker(const QString &logname,QString *import_path,
 	  this,SLOT(recordUnloadedData(int,int,unsigned)));
 
   //
-  // Log Machine
+  // Log Data Structures
   //
+  track_log_lock=new RDLogLock(edit_log_name,rduser,rdstation_conf,this);
   track_log=new RDLog(edit_log_name);
   track_log_event=new RDLogEvent(RDLog::tableName(edit_log_name));
   track_log_event->load();
@@ -522,6 +523,7 @@ VoiceTracker::~VoiceTracker()
     delete wpg[i];
     wpg[i]=NULL;
   }
+  delete track_log_lock;
 }
 
 
@@ -534,6 +536,24 @@ QSize VoiceTracker::sizeHint() const
 QSizePolicy VoiceTracker::sizePolicy() const
 {
   return QSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed);
+}
+
+
+int VoiceTracker::exec()
+{
+  QString username;
+  QString stationname;
+  QHostAddress addr;
+
+  if(!track_log_lock->tryLock(&username,&stationname,&addr)) {
+    QMessageBox::warning(this,"RDLogEdit - "+tr("Log Locked"),
+			 tr("Log already being edited by")+" "+
+			 username+"@"+stationname+" ["+
+			 addr.toString()+"].");
+    return false;
+  }
+
+  return QDialog::exec();
 }
 
 

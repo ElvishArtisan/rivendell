@@ -27,6 +27,7 @@
 #include <qpushbutton.h>
 
 #include <rdlogfilter.h>
+#include <rdloglock.h>
 
 #include <log_play.h>
 
@@ -35,12 +36,13 @@ class ListLogs : public QDialog
   Q_OBJECT
 
  public:
+  enum Operation {Load=0,Cancel=1,Save=2,SaveAs=3,Unload=4};
   ListLogs(LogPlay *log,QWidget *parent=0);
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
 
  public slots:
-  int exec(QString *logname,QString *svcname);
+   int exec(QString *logname,QString *svcname,RDLogLock **loglock);
 
  private slots:
   void filterChangedData(const QString &where_sql);
@@ -57,6 +59,7 @@ class ListLogs : public QDialog
 
  private:
   void RefreshList();
+  bool TryLock(RDLogLock *lock);
   RDLogFilter *list_filter_widget;
   QListView *list_log_list;
   QString *list_logname;
@@ -67,6 +70,7 @@ class ListLogs : public QDialog
   QPushButton *list_saveas_button;
   QPushButton *list_cancel_button;
   LogPlay *list_log;
+  RDLogLock **list_log_lock;
 };
 
 

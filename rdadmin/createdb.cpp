@@ -984,13 +984,19 @@ bool CreateDb(QString name,QString pwd,RDConfig *config)
     "TRAFFIC_LINKS int default 0,"+
     "TRAFFIC_LINKED enum('N','Y') default 'N',"+
     "NEXT_ID int default 0,"+
+    "LOCK_USER_NAME char(255),"+
+    "LOCK_STATION_NAME char(64),"+
+    "LOCK_IPV4_ADDRESS char(16),"+
+    "LOCK_DATETIME datetime,"+
+    "LOCK_GUID char(82),"+
     "index NAME_IDX (NAME,LOG_EXISTS),"+
     "index SERVICE_IDX (SERVICE),"+
     "index DESCRIPTION_IDX (DESCRIPTION),"+
     "index ORIGIN_USER_IDX (ORIGIN_USER),"+
     "index START_DATE_IDX (START_DATE),"+
     "index END_DATE_IDX (END_DATE),"+
-    "index TYPE_IDX(TYPE,LOG_EXISTS))"+
+    "index TYPE_IDX(TYPE,LOG_EXISTS),"+
+    "index LOCK_GUID_IDX(LOCK_GUID))"+
     config->createTablePostfix();
   if(!RunQuery(sql)) {
     return false;
@@ -7972,6 +7978,39 @@ int UpdateDb(int ver,RDConfig *config)
        delete q1;
      }
      delete q;
+  }
+
+  if(ver<273) {
+    sql=QString("alter table LOGS ")+
+      "add column LOCK_USER_NAME char(255) after NEXT_ID";
+    q=new RDSqlQuery(sql,false);
+    delete q;
+
+    sql=QString("alter table LOGS ")+
+      "add column LOCK_STATION_NAME char(64) after LOCK_USER_NAME";
+    q=new RDSqlQuery(sql,false);
+    delete q;
+
+    sql=QString("alter table LOGS ")+
+      "add column LOCK_IPV4_ADDRESS char(16) after LOCK_STATION_NAME";
+    q=new RDSqlQuery(sql,false);
+    delete q;
+
+    sql=QString("alter table LOGS ")+
+      "add column LOCK_DATETIME datetime after LOCK_IPV4_ADDRESS";
+    q=new RDSqlQuery(sql,false);
+    delete q;
+  }
+
+  if(ver<274) {
+    sql=QString("alter table LOGS ")+
+      "add column LOCK_GUID char(82) after LOCK_DATETIME";
+    q=new RDSqlQuery(sql,false);
+    delete q;
+
+    sql=QString("alter table LOGS add index LOCK_GUID_IDX(LOCK_GUID)");
+    q=new RDSqlQuery(sql,false);
+    delete q;
   }
 
 

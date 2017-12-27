@@ -20,16 +20,15 @@
 
 #include <qmessagebox.h>
 
-#include <rdconf.h>
-#include <rd.h>
-#include <rdsvc.h>
-#include <rddatedecode.h>
-#include <rdcreate_log.h>
 #include <rdclock.h>
-#include <rdlog.h>
-
+#include <rdconf.h>
+#include <rdcreate_log.h>
+#include <rddatedecode.h>
 #include <rddb.h>
+#include <rd.h>
 #include <rdescape_string.h>
+#include <rdlog.h>
+#include <rdsvc.h>
 #include <rdweb.h>
 
 //
@@ -710,13 +709,15 @@ bool RDSvc::import(ImportSource src,const QDate &date,const QString &break_str,
 
 
 bool RDSvc::generateLog(const QDate &date,const QString &logname,
-			const QString &nextname,QString *report,RDUser *user)
+			const QString &nextname,QString *report,RDUser *user,
+			QString *err_msg)
 {
   QString sql;
   RDSqlQuery *q;
   RDClock clock;
-  QString err_msg;
+  //  QString err_msg;
   RDLog *log=NULL;
+  RDLogLock *log_lock=NULL;
 
   if((!date.isValid()||logname.isEmpty())) {
     return false;
@@ -728,9 +729,20 @@ bool RDSvc::generateLog(const QDate &date,const QString &logname,
   // Generate Log Structure
   //
   if(RDLog::exists(logname)) {
+    log_lock=new RDLogLock(logname,user,svc_station,this);
+    if(!TryLock(log_lock,err_msg)) {
+      delete log_lock;
+      return false;
+    }
     RDLog::remove(logname,svc_station,user,svc_config);
+    delete log_lock;
   }
-  RDLog::create(logname,svc_name,"RDLogManager",&err_msg,svc_config);
+  RDLog::create(logname,svc_name,"RDLogManager",err_msg,svc_config);
+  log_lock=new RDLogLock(logname,user,svc_station,this);
+  if(!TryLock(log_lock,err_msg)) {
+    delete log_lock;
+    return false;
+  }
   log=new RDLog(logname);
   log->setDescription(RDDateDecode(descriptionTemplate(),date,svc_station,
 				   svc_config,svc_name));
@@ -792,17 +804,25 @@ bool RDSvc::generateLog(const QDate &date,const QString &logname,
   log->setNextId(count);
   log->setAutoRefresh(autoRefresh());
   delete log;
+  delete log_lock;
 
   return true;
 }
 
 
 bool RDSvc::linkLog(RDSvc::ImportSource src,const QDate &date,
-		    const QString &logname,QString *report)
+		    const QString &logname,QString *report,RDUser *user,
+		    QString *err_msg)
 {
   QString sql;
   RDSqlQuery *q;
   QString autofill_errors;
+
+  RDLogLock *log_lock=new RDLogLock(logname,user,svc_station,this);
+  if(!TryLock(log_lock,err_msg)) {
+    delete log_lock;
+    return false;
+  }
 
   emit generationProgress(0);
 
@@ -822,6 +842,8 @@ bool RDSvc::linkLog(RDSvc::ImportSource src,const QDate &date,
 
   import_name.replace(" ","_");
   if(!import(src,date,breakString(),trackString(src),import_name)) {
+    *err_msg=tr("Import failed");
+    delete log_lock;
     return false;
   }
 
@@ -943,13 +965,20 @@ bool RDSvc::linkLog(RDSvc::ImportSource src,const QDate &date,
   sql=QString().sprintf("drop table `%s`",(const char *)import_name);
   q=new RDSqlQuery(sql);
   delete q;
+  delete log_lock;
 
   return true;
 }
 
 
-void RDSvc::clearLogLinks(RDSvc::ImportSource src,const QString &logname)
+bool RDSvc::clearLogLinks(RDSvc::ImportSource src,const QString &logname,
+			  RDUser *user,QString *err_msg)
 {
+  RDLogLock *log_lock=new RDLogLock(logname,user,svc_station,this);
+  if(!TryLock(log_lock,err_msg)) {
+    delete log_lock;
+    return false;
+  }
   std::vector<int> cleared_ids;
   RDLogLine::Type event_type=RDLogLine::UnknownType;
   RDLogLine::Source event_source=RDLogLine::Manual;
@@ -1012,7 +1041,9 @@ void RDSvc::clearLogLinks(RDSvc::ImportSource src,const QString &logname)
     log->setLinkState(RDLog::SourceMusic,false);
   }
   delete log;
-
+  delete log_lock;
+  *err_msg="OK";
+  return true;
 }
 
 
@@ -1444,6 +1475,23 @@ QString RDSvc::svcTableName(const QString &svc_name)
 QString RDSvc::timeString(int hour,int secs)
 {
   return QString().sprintf("%02d:%02d:%02d",hour,secs/60,secs%60);
+}
+
+
+bool RDSvc::TryLock(RDLogLock *lock,QString *err_msg)
+{
+  QString username;
+  QString stationname;
+  QHostAddress addr;
+  
+  if(!lock->tryLock(&username,&stationname,&addr)) {
+    *err_msg=tr("Log in use by")+" "+username+"@"+stationname;
+    if(stationname!=addr.toString()) {
+      *err_msg+=" ["+addr.toString()+"]";
+    }
+    return false;
+  }
+  return true;
 }
 
 

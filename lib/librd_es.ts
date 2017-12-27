@@ -2425,5 +2425,13 @@ please try again!</source>
         <translation>Errores al llenar eventos
 </translation>
     </message>
+    <message>
+        <source>Log in use by</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Import failed</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 </TS>

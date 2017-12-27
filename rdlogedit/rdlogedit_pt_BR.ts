@@ -427,6 +427,18 @@ para o serviço selecionado!</translation>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>User</source>
+        <translation type="obsolete">Usuário</translation>
+    </message>
+    <message>
+        <source>Log Locked</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Log already being edited by</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditLogLine</name>
@@ -923,6 +935,14 @@ See your system administrator for an update!</source>
         <source>Windows</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Log</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>is in use by</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RenderDialog</name>
@@ -1252,6 +1272,14 @@ Assim sendo, somente transições existentes serão editáveis.</translation>
     <message>
         <source>LABEL</source>
         <translation type="unfinished">SELO</translation>
+    </message>
+    <message>
+        <source>Log Locked</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Log already being edited by</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

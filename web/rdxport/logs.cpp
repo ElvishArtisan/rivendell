@@ -24,18 +24,19 @@
 #include <fcntl.h>
 #include <errno.h>
 
+#include <rdconf.h>
 #include <rdcreate_log.h>
 #include <rddb.h>
+#include <rdescape_string.h>
 #include <rdformpost.h>
-#include <rdweb.h>
-#include <rduser.h>
 #include <rdlog.h>
 #include <rdlog_event.h>
 #include <rdlog_line.h>
-#include <rdconf.h>
-#include <rdescape_string.h>
+#include <rdloglock.h>
+#include <rduser.h>
+#include <rdweb.h>
 
-#include <rdxport.h>
+#include "rdxport.h"
 
 void Xport::AddLog()
 {
@@ -245,6 +246,7 @@ void Xport::SaveLog()
 
   QString log_name;
   QString service_name;
+  QString lock_guid;
   QString description;
   QDate purge_date;
   bool auto_refresh;
@@ -262,6 +264,7 @@ void Xport::SaveLog()
     XmlExit("Missing SERVICE_NAME",400,"logs.cpp",LINE_NUMBER);
   }
   GetLogService(service_name);
+  xport_post->getValue("LOCK_GUID",&lock_guid);
   if(!xport_post->getValue("DESCRIPTION",&description)) {
     XmlExit("Missing DESCRIPTION",400,"logs.cpp",LINE_NUMBER);
   }
@@ -494,18 +497,127 @@ void Xport::SaveLog()
   if(!log->exists()) {
     XmlExit("No such log",404,"logs.cpp",LINE_NUMBER);
   }
-  log->setService(service_name);
-  log->setDescription(description);
-  log->setPurgeDate(purge_date);
-  log->setAutoRefresh(auto_refresh);
-  log->setStartDate(start_date);
-  log->setEndDate(end_date);
-  log->setModifiedDatetime(QDateTime::currentDateTime());
-
-  logevt->save(xport_config);
-
+  if(lock_guid.isEmpty()) {
+    QString username=xport_user->name();
+    QString stationname=xport_remote_hostname;
+    QHostAddress addr=xport_remote_address;
+    lock_guid=RDLogLock::makeGuid(stationname);
+    if(RDLogLock::tryLock(&username,&stationname,&addr,log_name,lock_guid)) {
+      log->setService(service_name);
+      log->setDescription(description);
+      log->setPurgeDate(purge_date);
+      log->setAutoRefresh(auto_refresh);
+      log->setStartDate(start_date);
+      log->setEndDate(end_date);
+      log->setModifiedDatetime(QDateTime::currentDateTime());
+      logevt->save(xport_config);
+      RDLogLock::clearLock(lock_guid);
+    }
+    else {
+      XmlExit("unable to get log lock",404);
+    }
+  }
+  else {
+    if(RDLogLock::validateLock(log_name,lock_guid)) {
+      log->setService(service_name);
+      log->setDescription(description);
+      log->setPurgeDate(purge_date);
+      log->setAutoRefresh(auto_refresh);
+      log->setStartDate(start_date);
+      log->setEndDate(end_date);
+      log->setModifiedDatetime(QDateTime::currentDateTime());
+      logevt->save(xport_config);
+    }
+    else {
+      XmlExit("invalid log lock",400);
+    }
+  }
   XmlExit(QString().sprintf("OK Saved %d events",logevt->size()),
 	  200,"logs.cpp",LINE_NUMBER);
+}
+
+
+void Xport::LockLog()
+{
+  RDLog *log;
+  QString log_name="";
+  Xport::LockLogOperation op_type=Xport::LockLogClear;
+  QString op_string;
+  QString lock_guid;
+  QString username;
+  QString stationname;
+  QHostAddress addr;
+
+  //
+  // Get Options
+  //
+  if(!xport_post->getValue("LOG_NAME",&log_name)) {
+    XmlExit("Missing LOG_NAME",400,"logs.cpp",LINE_NUMBER);
+  }
+  if(!xport_post->getValue("OPERATION",&op_string)) {
+    XmlExit("Missing OPERATION",400,"logs.cpp",LINE_NUMBER);
+  }
+  if(op_string.lower()=="create") {
+    op_type=Xport::LockLogCreate;
+  }
+  else {
+    if(op_string.lower()=="update") {
+      op_type=Xport::LockLogUpdate;
+    }
+    else {
+      if(op_string.lower()=="clear") {
+	op_type=Xport::LockLogClear;
+      }
+      else {
+	XmlExit("Unrecognized OPERATION type",400,"logs.cpp",LINE_NUMBER);
+      }
+    }
+  }
+  if(!xport_post->getValue("LOCK_GUID",&lock_guid)) {
+    XmlExit("Missing LOCK_GUID",400,"logs.cpp",LINE_NUMBER);
+  }
+
+  //
+  // Verify that log exists
+  //
+  log=new RDLog(log_name);
+  if((!ServiceUserValid(log->service()))||(!log->exists())) {
+    delete log;
+    XmlExit("No such log",404,"logs.cpp",LINE_NUMBER);
+  }
+
+  printf("Content-type: application/xml\n");
+  printf("Status: 200\n\n");
+  switch(op_type) {
+  case Xport::LockLogCreate:
+    username=xport_user->name();
+    stationname=xport_remote_hostname;
+    addr=xport_remote_address;
+    lock_guid=RDLogLock::makeGuid(xport_remote_hostname);
+    if(RDLogLock::tryLock(&username,&stationname,&addr,log_name,lock_guid)) {
+      printf("%s",(const char *)LogLockXml(true,log_name,lock_guid,"","",addr));
+    }
+    else {
+      printf("%s",(const char *)LogLockXml(false,log_name,"",username,
+					   stationname,addr));
+    }
+    Exit(0);
+    break;
+
+  case Xport::LockLogUpdate:
+    RDLogLock::updateLock(log_name,lock_guid);
+    printf("%s",(const char *)LogLockXml(true,log_name,lock_guid,"","",addr));
+    Exit(0);
+    break;
+
+  case Xport::LockLogClear:
+    RDLogLock::clearLock(lock_guid);
+    printf("%s",(const char *)LogLockXml(true,log_name,lock_guid,"","",addr));
+    Exit(0);
+    break;
+  }
+
+  XmlExit("Unexpected exit",500);
 }
 
 
@@ -540,4 +652,32 @@ bool Xport::ServiceUserValid(const QString &svc_name)
   delete q;
 
   return ret;
+}
+
+
+QString Xport::LogLockXml(bool result,const QString &log_name,
+			  const QString &guid,const QString &username,
+			  const QString &stationname,
+			  const QHostAddress addr) const
+{
+  QString xml="";
+
+  xml+="<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n";
+  xml+="<logLock>\n";
+  xml+=RDXmlField("result",result);
+  xml+=RDXmlField("logName",log_name);
+  if(!guid.isEmpty()) {
+    xml+=RDXmlField("lockGuid",guid);
+  }
+  if(!username.isEmpty()) {
+    xml+=RDXmlField("userName",username);
+  }
+  if(!stationname.isEmpty()) {
+    xml+=RDXmlField("stationName",stationname);
+  }
+  xml+=RDXmlField("address",addr.toString());
+  xml+=RDXmlField("lockTimeout",RD_LOG_LOCK_TIMEOUT);
+  xml+="</logLock>\n";
+
+  return xml;
 }

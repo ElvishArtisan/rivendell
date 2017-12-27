@@ -115,6 +115,7 @@ class LogPlay : public QObject,public RDLogEvent
   QTime nextStop() const;
   bool running(bool include_paused=true);
   void resync();
+  bool isRefreshable() const;
 
  private slots:
   void transTimerData();

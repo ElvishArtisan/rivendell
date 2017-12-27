@@ -43,7 +43,7 @@ MainObject::MainObject(QObject *parent)
   edit_log=NULL;
   edit_log_event=NULL;
   edit_modified=false;
-  edit_new_log=false;
+  edit_log_lock=NULL;
 
   //
   // Read Command Options
@@ -137,7 +137,29 @@ void MainObject::userData()
   if(!edit_quiet_option) {
     printf("\n");
   }
+  if(edit_log_lock!=NULL) {
+    delete edit_log_lock;
+  }
   exit(0);
+}
+
+
+bool MainObject::TryLock(RDLogLock *lock,const QString &logname)
+{
+  QString username;
+  QString stationname;
+  QHostAddress addr;
+  bool ret;
+
+  ret=lock->tryLock(&username,&stationname,&addr);
+  if(!ret) {
+    QString msg="log \""+logname+"\" in use by "+username+"@"+stationname;
+    if(stationname!=addr.toString()) {
+      msg+=" ["+addr.toString()+"]";
+    }
+    fprintf(stderr,"%s\n",(const char *)msg);
+  }
+  return ret;
 }
 
 

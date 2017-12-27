@@ -432,6 +432,18 @@ skrudd av for denne tenesta!</translation>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>User</source>
+        <translation type="obsolete">Brukar</translation>
+    </message>
+    <message>
+        <source>Log Locked</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Log already being edited by</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditLogLine</name>
@@ -944,6 +956,14 @@ See your system administrator for an update!</source>
         <source>Windows</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Log</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>is in use by</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RenderDialog</name>
@@ -1266,6 +1286,14 @@ therefore only existing transitions will be editable.</source>
     <message>
         <source>LABEL</source>
         <translation type="unfinished">SELSKAP</translation>
+    </message>
+    <message>
+        <source>Log Locked</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Log already being edited by</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

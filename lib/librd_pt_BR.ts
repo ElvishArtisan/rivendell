@@ -2384,5 +2384,13 @@ por favor, tente novamente!</translation>
         <translation>Erros de Auto Preenchimento
 </translation>
     </message>
+    <message>
+        <source>Log in use by</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Import failed</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 </TS>

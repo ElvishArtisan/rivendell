@@ -1361,6 +1361,14 @@ void LogPlay::resync()
 }
 
 
+bool LogPlay::isRefreshable() const
+{
+  return (play_log->exists())&&
+    (play_log->linkDatetime()==play_link_datetime)&&
+    (play_log->modifiedDatetime()>play_modified_datetime);
+}
+  
+
 void LogPlay::transTimerData()
 {
   int lines[TRANSPORT_QUANTITY];

@@ -40,25 +40,25 @@
 #include <qpixmap.h>
 #include <qpainter.h>
 
+#include <dbversion.h>
 #include <rd.h>
+#include <rdadd_log.h>
+#include <rdcheck_daemons.h>
+#include <rdcmd_switch.h>
 #include <rdconf.h>
+#include <rddb.h>
+#include <rdescape_string.h>
+#include <rdloglock.h>
+#include <rdmixer.h>
 #include <rdripc.h>
 #include <rdstation.h>
-#include <rdcheck_daemons.h>
-//#include <rdcreate_log.h>
-#include <rdadd_log.h>
-#include <rdcmd_switch.h>
-#include <rddb.h>
 #include <rdtextfile.h>
-#include <rdmixer.h>
-#include <dbversion.h>
-#include <rdescape_string.h>
 
-#include <rdlogedit.h>
-#include <edit_log.h>
-#include <globals.h>
+#include "edit_log.h"
+#include "globals.h"
+#include "rdlogedit.h"
 #ifndef WIN32
-#include <voice_tracker.h>
+#include "voice_tracker.h"
 #endif  // WIN32
 
 //
@@ -455,8 +455,9 @@ void MainWidget::editData()
   }
 
   std::vector<QString> newlogs;
-  EditLog *log=new EditLog(items.at(0)->text(1),&log_filter,&log_group,&log_schedcode,
-			   &log_clipboard,&newlogs,this);
+  EditLog *log=
+    new EditLog(items.at(0)->text(1),&log_filter,&log_group,&log_schedcode,
+		&log_clipboard,&newlogs,this);
   log->exec();
   delete log;
   RefreshItem(items.at(0));
@@ -530,17 +531,33 @@ void MainWidget::deleteData()
     }
 
     for(unsigned i=0;i<items.size();i++) {
-      RDLog *log=new RDLog(items.at(i)->text(1));
-      if(log->remove(rdstation_conf,rduser,log_config)) {
-	delete items.at(i);
+      QString username;
+      QString stationname;
+      QHostAddress addr;
+      RDLogLock *log_lock=new RDLogLock(items.at(i)->text(1),rduser,
+					rdstation_conf,this);
+      if(log_lock->tryLock(&username,&stationname,&addr)) {
+	RDLog *log=new RDLog(items.at(i)->text(1));
+	if(log->remove(rdstation_conf,rduser,log_config)) {
+	  delete items.at(i);
+	}
+	else {
+	  QMessageBox::warning(this,"RDLogEdit - "+tr("Error"),
+			       tr("Unable to delete log")+" \""+
+			       items.at(i)->text(1)+"\", "+
+			       tr("audio deletion error!"));
+	}
+	delete log;
       }
       else {
-	QMessageBox::warning(this,"RDLogEdit - "+tr("Error"),
-			     tr("Unable to delete log")+" \""+
-			     items.at(i)->text(1)+"\", "+
-			     tr("audio deletion error!"));
+	QString msg=tr("Log")+" "+items.at(i)->text(1)+"\" "+
+	  tr("is in use by")+" "+username+"@"+stationname;
+	if(stationname!=addr.toString()) {
+	  msg+=" ["+addr.toString()+"]";
+	}
+	QMessageBox::warning(this,"RDLogEdit - "+tr("Error"),msg);
       }
-      delete log;
+      delete log_lock;
     }
   }
 }

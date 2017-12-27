@@ -16521,3 +16521,34 @@
 	* Updated 'INSTALL'.
 	* Updated 'NEWS'.
 	* Incremented the package version to 2.18.1.
+2017-12-27 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'LOGS.LOCK_USER_NAME' field to the database.
+	* Added a 'LOGS.LOCK_STATION_NAME' field to the database.
+	* Added a 'LOGS.LOCK_IPV4_ADDRESS' field to the database.
+	* Added a 'LOGS.LOCK_DATETIME' field to the database.
+	* Incremented the database version to 273.
+	* Added log locking logic to rdlogedit(1).
+2017-12-27 Fred Gleason <fredg@paravelsystems.com>
+	* Added log locking logic to the voice tracker in rdlogedit(1).
+2017-12-27 Fred Gleason <fredg@paravelsystems.com>
+	* Added log locking logic to rdclilogedit(1).
+2017-12-27 Fred Gleason <fredg@paravelsystems.com>
+	* Modified the behavior of the 'new' command in rdclilogedit(1) to
+	match that of rdlogedit(1).
+2017-12-27 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'LOGS.LOCK_GUID' field to the database.
+	* Incremented the database version to 274.
+	* Added a 'LockLog' call to the Web API.
+2017-12-27 Fred Gleason <fredg@paravelsystems.com>
+	* Cleaned up 'log in use" messages in rdlogedit(1) and
+	rdclilogedit(1).
+2017-12-27 Fred Gleason <fredg@paravelsystems.com>
+	* Added log locking logic to the 'SaveLog' Web API call.
+2017-12-27 Fred Gleason <fredg@paravelsystems.com>
+	* Added log locking logic to rdlogmanager(1).
+2017-12-27 Fred Gleason <fredg@paravelsystems.com>
+	* Added a lock check for before deleting logs in rdlogedit(1).
+2017-12-27 Fred Gleason <fredg@paravelsystems.com>
+	* Added a lock check for before deleting logs in rdclilogedit(1).
+2017-12-27 Fred Gleason <fredg@paravelsystems.com>
+	* Added log locking logic to rdairplay(1).

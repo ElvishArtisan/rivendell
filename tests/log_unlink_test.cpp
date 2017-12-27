@@ -37,10 +37,7 @@
 MainObject::MainObject(QObject *parent)
   :QObject(parent)
 {
-  QString log_name="";
-  RDSvc::ImportSource import_source=RDSvc::Traffic;
-  RDConfig *config=NULL;
-  RDStation *station=NULL;
+  test_import_source=RDSvc::Traffic;
   unsigned schema=0;
 
   //
@@ -51,16 +48,16 @@ MainObject::MainObject(QObject *parent)
 		    LOG_UNLINK_TEST_USAGE);
   for(unsigned i=0;i<cmd->keys();i++) {
     if(cmd->key(i)=="--log") {
-      log_name=cmd->value(i);
+      test_log_name=cmd->value(i);
       cmd->setProcessed(i,true);
     }
     if(cmd->key(i)=="--source") {
       if(cmd->value(i).lower()=="traffic") {
-	import_source=RDSvc::Traffic;
+	test_import_source=RDSvc::Traffic;
       }
       else {
 	if(cmd->value(i).lower()=="music") {
-	  import_source=RDSvc::Music;
+	  test_import_source=RDSvc::Music;
 	}
 	else {
 	  fprintf(stderr,
@@ -76,7 +73,7 @@ MainObject::MainObject(QObject *parent)
       exit(256);
     }
   }
-  if(log_name.isEmpty()) {
+  if(test_log_name.isEmpty()) {
     fprintf(stderr,"log_unlink_test: you must specify a log name with \"--log=\"\n");
     exit(1);
   }
@@ -84,9 +81,9 @@ MainObject::MainObject(QObject *parent)
   //
   // Load Configuration
   //
-  config=new RDConfig();
-  config->load();
-  config->setModuleName("reserve_carts_test");
+  test_config=new RDConfig();
+  test_config->load();
+  test_config->setModuleName("reserve_carts_test");
 
   //
   // Open Database
@@ -98,18 +95,31 @@ MainObject::MainObject(QObject *parent)
     delete cmd;
     exit(256);
   }
-  station=new RDStation(config->stationName());
+  test_station=new RDStation(test_config->stationName());
+  test_ripc=new RDRipc(test_station,test_config,this);
+  connect(test_ripc,SIGNAL(userChanged()),this,SLOT(userData()));
+  test_ripc->connectHost("localhost",RIPCD_TCP_PORT,test_config->password());
+}
+
+
+void MainObject::userData()
+{
+  QString err_msg;
 
   //
   // Run the Test
   //
-  if(!RDLog::exists(log_name)) {
+  if(!RDLog::exists(test_log_name)) {
     fprintf(stderr,"log_unlink_test: no such log\n");
     exit(1);
   }
-  RDLog *log=new RDLog(log_name);
-  RDSvc *svc=new RDSvc(log->service(),station,config,this);
-  svc->clearLogLinks(import_source,log_name);
+  RDLog *log=new RDLog(test_log_name);
+  RDSvc *svc=new RDSvc(log->service(),test_station,test_config,this);
+  if(!svc->clearLogLinks(test_import_source,test_log_name,
+			 new RDUser(test_ripc->user()),&err_msg)) {
+    fprintf(stderr,"log_unlink_test: %s\n",(const char *)err_msg);
+    exit(1);
+  }
 
   exit(0);
 }
