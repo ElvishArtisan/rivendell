@@ -16552,5 +16552,6 @@
 	* Added a lock check for before deleting logs in rdclilogedit(1).
 2017-12-27 Fred Gleason <fredg@paravelsystems.com>
 	* Added log locking logic to rdairplay(1).
+2017-12-27 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug that broke generation of the 'RULES' table when creating
 	a new clock in rdlogmanager(1).
