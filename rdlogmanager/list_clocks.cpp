@@ -226,8 +226,8 @@ void ListClocks::addData()
     return;
   }
   delete add_dialog;
-  sql=QString().sprintf("select NAME from CLOCKS where NAME=\"%s\"",
-			(const char *)clockname);
+  sql=QString("select NAME from CLOCKS where ")+
+    "NAME=\""+RDEscapeString(clockname)+"\"";
   q=new RDSqlQuery(sql);
   if(q->first()) {
     QMessageBox::
@@ -237,8 +237,9 @@ void ListClocks::addData()
     return;
   }
   delete q;
-  sql=QString().sprintf("insert into CLOCKS set NAME=\"%s\",ARTISTSEP=15",
-			(const char *)clockname);
+  sql=QString("insert into CLOCKS set ")+
+    "NAME=\""+RDEscapeString(clockname)+"\","+
+    "ARTISTSEP=15";
   q=new RDSqlQuery(sql);
   delete q;
   sql=RDCreateClockTableSql(RDClock::tableName(clockname),log_config);
