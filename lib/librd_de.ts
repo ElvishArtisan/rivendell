@@ -527,6 +527,14 @@
         <source>No such service!</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>No such group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No free cart available in group</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RDAddCart</name>
@@ -893,10 +901,6 @@ senden</translation>
     </message>
     <message>
         <source>Unable to create temporary cart for import!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unable to get temporary cart number for import!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

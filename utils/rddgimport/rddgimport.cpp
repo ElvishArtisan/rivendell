@@ -366,16 +366,16 @@ bool MainWidget::LoadEvents()
 
 bool MainWidget::ImportAudio()
 {
-  if(dg_group->freeCartQuantity()<(int)dg_carts.size()) {
-    QMessageBox::warning(this,tr("RDDgImport"),
-			 tr("Insufficient free carts in target group!"));
-    return false;
-  }
+  QString err_msg;
+
   for(std::map<QString,unsigned>::const_iterator it=dg_carts.begin();
       it!=dg_carts.end();it++) {
     Event *evt=GetEvent(it->first);
     if(!CheckSpot(evt->isci())) {
-      ImportSpot(evt);
+      if(!ImportSpot(evt,&err_msg)) {
+	QMessageBox::warning(this,"RDgImport - "+tr("Error"),err_msg);
+	return false;
+      }
     }
   }
   return true;
@@ -464,10 +464,11 @@ bool MainWidget::CheckSpot(const QString &isci)
 }
 
 
-bool MainWidget::ImportSpot(Event *evt)
+bool MainWidget::ImportSpot(Event *evt,QString *err_msg)
 {
   RDCart *cart;
   RDCut *cut;
+  unsigned cartnum;
   int cutnum;
   RDAudioImport *conv;
   RDAudioImport::ErrorCode conv_err;
@@ -507,8 +508,12 @@ bool MainWidget::ImportSpot(Event *evt)
 	       evt->isci()+"\".");
     return false;
   }
+  if((cartnum=RDCart::create(dg_group->name(),RDCart::Audio,err_msg,
+			     dg_carts[evt->isci()]))==0) {
+    return false;
+  }
   cart=new RDCart(dg_carts[evt->isci()]);
-  cart->create(dg_group->name(),RDCart::Audio);
+
   if((cutnum=cart->addCut(dg_library_conf->defaultLayer(),
 			  dg_library_conf->defaultBitrate(),
 			  dg_library_conf->defaultChannels(),

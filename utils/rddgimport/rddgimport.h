@@ -76,7 +76,7 @@ class MainWidget : public QWidget
   bool ImportAudio();
   bool WriteTrafficFile();
   bool CheckSpot(const QString &isci);
-  bool ImportSpot(Event *evt);
+  bool ImportSpot(Event *evt,QString *err_msg);
   void ActivateBar(bool state);
   Event *GetEvent(const QString &isci);
   QTime GetTime(const QString &str) const;

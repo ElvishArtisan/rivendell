@@ -35,13 +35,14 @@
 #include <rdconfig.h>
 #include <rdcart.h>
 #include <rdcut.h>
-#include <rdtextvalidator.h>
 #include <rdescape_string.h>
-#include <rdsystem.h>
-#include <rdxport_interface.h>
 #include <rdformpost.h>
-#include <rdweb.h>
+#include <rdgroup.h>
 #include <rdstation.h>
+#include <rdsystem.h>
+#include <rdtextvalidator.h>
+#include <rdxport_interface.h>
+#include <rdweb.h>
 
 //
 // CURL Callbacks
@@ -1271,26 +1272,57 @@ bool RDCart::removeCutAudio(RDStation *station,RDUser *user,
 }
 
 
-bool RDCart::create(const QString &groupname,RDCart::Type type)
-{
-  QString sql=QString().sprintf("insert into CART set NUMBER=%d,TYPE=%d,\
-                                 GROUP_NAME=\"%s\",TITLE=\"%s\"",
-				cart_number,type,
-				(const char *)RDEscapeString(groupname),
-				(const char *)
-				RDEscapeString(RDCart::uniqueCartTitle(cart_number)));
-  RDSqlQuery *q=new RDSqlQuery(sql);
-  bool ret=q->isActive();
-  delete q;
-  metadata_changed=true;
-
-  return ret;
-}
-
-
 bool RDCart::remove(RDStation *station,RDUser *user,RDConfig *config) const
 {
   return RDCart::removeCart(cart_number,station,user,config);
+}
+
+
+unsigned RDCart::create(const QString &groupname,RDCart::Type type,
+			QString *err_msg,unsigned cartnum)
+{
+  bool ok=false;
+
+  RDGroup *group=new RDGroup(groupname);
+  if(!group->exists()) {
+    *err_msg=QObject::tr("No such group");
+    delete group;
+    return 0;
+  }
+
+  if(cartnum==0) {
+    while(!ok) {
+      if((cartnum=group->nextFreeCart())==0) {
+	*err_msg=QObject::tr("No free cart available in group");
+	delete group;
+	return 0;
+      }
+      QString sql=QString("insert into CART set ")+
+	QString().sprintf("NUMBER=%d,",cartnum)+
+	QString().sprintf("TYPE=%d,",type)+
+	"GROUP_NAME=\""+RDEscapeString(groupname)+"\","+
+	"TITLE=\""+RDEscapeString(RDCart::uniqueCartTitle(cartnum))+"\"";
+      RDSqlQuery *q=new RDSqlQuery(sql);
+      ok=q->isActive();
+      delete q;
+    }
+    return cartnum;
+  }
+  else {
+    QString sql=QString("insert into CART set ")+
+      QString().sprintf("NUMBER=%d,",cartnum)+
+      QString().sprintf("TYPE=%d,",type)+
+      "GROUP_NAME=\""+RDEscapeString(groupname)+"\","+
+      "TITLE=\""+RDEscapeString(RDCart::uniqueCartTitle(cartnum))+"\"";
+    RDSqlQuery *q=new RDSqlQuery(sql);
+    ok=q->isActive();
+    delete q;
+  }
+  delete group;
+  if(!ok) {
+    return 0;
+  }
+  return cartnum;
 }
 
 

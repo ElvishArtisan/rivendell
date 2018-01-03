@@ -41,6 +41,7 @@ void Xport::Import()
   unsigned msecs=0;
   int resp_code=0;
   QString remote_host;
+  QString err_msg;
 
   if(getenv("REMOTE_HOST")==NULL) {
     if(getenv("REMOTE_ADDR")==NULL) {
@@ -147,7 +148,11 @@ void Xport::Import()
       XmlExit("No available carts for specified group",404,"import.cpp",LINE_NUMBER);
     }
     cart=new RDCart(cartnum);
-    cart->create(group_name,RDCart::Audio);
+    if(RDCart::create(group_name,RDCart::Audio,&err_msg,cartnum)==0) {
+      delete cart;
+      XmlExit("Unable to create cart ["+err_msg+"]",500,"import.cpp",
+	      LINE_NUMBER);
+    }
     cutnum=1;
     cut=new RDCut(cartnum,cutnum,true);
     delete group;

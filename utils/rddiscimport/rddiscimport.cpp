@@ -447,6 +447,7 @@ void MainWidget::ripData()
   unsigned cartnum;
   RDAudioImport::ErrorCode import_err;
   RDAudioConvert::ErrorCode conv_err;
+  QString err_msg;
 
   //
   // Sanity Checks
@@ -496,42 +497,44 @@ void MainWidget::ripData()
 	dg_track_label->setText(QString().sprintf("Track %d: ",i+1)+
 				r->title()+" - "+r->artist());
 	dg_ripper->rip(i);
-	if((cartnum=dg_group->nextFreeCart())>0) {
-	  cart=new RDCart(cartnum);
-	  cart->create(dg_group->name(),RDCart::Audio);
-	  cart->addCut(dg_library_conf->defaultFormat(),
-		       dg_library_conf->defaultBitrate(),
-		       dg_channels_box->currentItem()+1,"",r->discId());
-	  cut=new RDCut(cartnum,1);
-	  dg_importer->setCartNumber(cartnum);
-	  dg_importer->setCutNumber(1);
-	  if((import_err=dg_importer->
-	      runImport(dg_user->name(),dg_user->password(),&conv_err))==
-	     RDAudioImport::ErrorOk) {
-	    data=new RDWaveData();
-	    r->getMetadata(data,dg_player->trackLength(i+1));
-	    if(!dg_autotrim_box->isChecked()) {
-	      data->setStartPos(0);
-	      data->setEndPos(dg_player->trackLength(i+1));
-	    }
-	    data->setUserDefined(dg_userdef_edit->text().
-				 replace("%d",dg_discid_edit->text()).
-				 replace("%t",QString().sprintf("%d",i+1)));
-	    cart->setMetadata(data);
-	    cut->setMetadata(data);
-	    delete data;
-	  }
-	  else {
-	    QMessageBox::warning(this,"RDDiscImport - "+tr("Import Error"),
-				 tr("Unable to import track audio!")+"\n"+
-				 "["+
-				 RDAudioImport::errorText(import_err,conv_err)+
-				 "].");
-	    return;
-	  }
-	  delete cut;
-	  delete cart;
+	if((cartnum=RDCart::create(dg_group->name(),RDCart::Audio,
+				   &err_msg))==0) {
+	  QMessageBox::warning(this,"RDDiscImport - "+tr("Error"),err_msg);
+	  return;
 	}
+	cart=new RDCart(cartnum);
+	cart->addCut(dg_library_conf->defaultFormat(),
+		     dg_library_conf->defaultBitrate(),
+		     dg_channels_box->currentItem()+1,"",r->discId());
+	cut=new RDCut(cartnum,1);
+	dg_importer->setCartNumber(cartnum);
+	dg_importer->setCutNumber(1);
+	if((import_err=dg_importer->
+	    runImport(dg_user->name(),dg_user->password(),&conv_err))==
+	   RDAudioImport::ErrorOk) {
+	  data=new RDWaveData();
+	  r->getMetadata(data,dg_player->trackLength(i+1));
+	  if(!dg_autotrim_box->isChecked()) {
+	    data->setStartPos(0);
+	    data->setEndPos(dg_player->trackLength(i+1));
+	  }
+	  data->setUserDefined(dg_userdef_edit->text().
+			       replace("%d",dg_discid_edit->text()).
+			       replace("%t",QString().sprintf("%d",i+1)));
+	  cart->setMetadata(data);
+	  cut->setMetadata(data);
+	  delete data;
+	}
+	else {
+	  QMessageBox::warning(this,"RDDiscImport - "+tr("Import Error"),
+			       tr("Unable to import track audio!")+"\n"+
+			       "["+
+			       RDAudioImport::errorText(import_err,conv_err)+
+			       "].");
+	  return;
+	}
+	delete cut;
+	delete cart;
       }
     }
   }

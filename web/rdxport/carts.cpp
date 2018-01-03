@@ -43,6 +43,7 @@ void Xport::AddCart()
   QString type;
   RDCart::Type cart_type=RDCart::All;
   int cart_number=0;
+  QString err_msg;
 
   //
   // Verify Post
@@ -96,9 +97,9 @@ void Xport::AddCart()
     delete cart;
     XmlExit("Cart already exists",400,"carts.cpp",LINE_NUMBER);
   }
-  if(!cart->create(group_name,cart_type)) {
+  if(RDCart::create(group_name,cart_type,&err_msg,cart_number)==0) {
     delete cart;
-    XmlExit("Unable to create cart",500,"carts.cpp",LINE_NUMBER);
+    XmlExit("Unable to create cart ["+err_msg+"]",500,"carts.cpp",LINE_NUMBER);
   }
   printf("Content-type: application/xml\n");
   printf("Status: 200\n\n");

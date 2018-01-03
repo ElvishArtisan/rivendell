@@ -16555,3 +16555,5 @@
 2017-12-27 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug that broke generation of the 'RULES' table when creating
 	a new clock in rdlogmanager(1).
+2018-01-03 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed races in creation of new carts.

@@ -531,6 +531,14 @@
         <source>No such service!</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>No such group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No free cart available in group</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RDAddCart</name>
@@ -902,7 +910,7 @@ ze &amp;souboru</translation>
     </message>
     <message>
         <source>Unable to get temporary cart number for import!</source>
-        <translation>Nelze získat číslo dočasného vozík pro zavedení!</translation>
+        <translation type="obsolete">Nelze získat číslo dočasného vozík pro zavedení!</translation>
     </message>
     <message>
         <source>Import Error</source>

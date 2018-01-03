@@ -541,7 +541,6 @@ void RDCartDialog::loadFileData()
 {
 #ifndef WIN32
   QString filename;
-  RDGroup *group=NULL;
   RDCart *cart=NULL;
   RDCut *cut=NULL;
   RDAudioImport *conv;
@@ -552,34 +551,25 @@ void RDCartDialog::loadFileData()
   QString file_title="";
   RDWaveFile *wavefile=NULL;
   RDWaveData wavedata;
+  QString err_msg;
 
   filename=QFileDialog::getOpenFileName(cart_import_path,
 					cart_import_file_filter,this);
   if(!filename.isEmpty()) {
-
-    //
-    // Get Cart Number
-    //
     cart_import_path=RDGetPathPart(filename);
-    group=new RDGroup(cart_system->tempCartGroup());
-    if((!group->exists())||((cartnum=group->nextFreeCart())==0)) {
-      delete group;
-      QMessageBox::warning(this,tr("Cart Error"),
-		       tr("Unable to get temporary cart number for import!"));
-      return;
-    }
-    delete group;
 
     //
     // Create Cart
     //
-    cart=new RDCart(cartnum);
-    if(!cart->create(cart_system->tempCartGroup(),RDCart::Audio)) {
+    if((cartnum=RDCart::create(cart_system->tempCartGroup(),RDCart::Audio,
+			       &err_msg))==0) {
       delete cart;
       QMessageBox::warning(this,tr("Cart Error"),
-			   tr("Unable to create temporary cart for import!"));
+			   tr("Unable to create temporary cart for import!")+
+			   "["+err_msg+"]");
       return;
     }
+    cart=new RDCart(cartnum);
     cart->setOwner(cart_station->name());
     cut=new RDCut(cartnum,1,true);
 

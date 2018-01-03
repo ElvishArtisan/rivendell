@@ -149,8 +149,9 @@ class RDCart
 		 RDConfig *config);
   bool removeCutAudio(RDStation *station,RDUser *user,
 		      const QString &cutname,RDConfig *config);
-  bool create(const QString &groupname,RDCart::Type type);
   bool remove(RDStation *station,RDUser *user,RDConfig *config) const;
+  static unsigned create(const QString &groupname,RDCart::Type type,
+			 QString *err_msg,unsigned cartnum=0);
   static QString xmlSql(bool include_cuts);
   static QString xml(RDSqlQuery *q,bool include_cuts,bool absolute,
 		     RDSettings *settings=NULL,int cutnum=-1);

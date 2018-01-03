@@ -3933,6 +3933,7 @@ void VoiceTracker::LogLine(const QString &line)
 bool VoiceTracker::InitTrack()
 {
   int cutnum;
+  QString err_msg;
 
   track_recording=false;
   track_record_ran=false;
@@ -3945,14 +3946,11 @@ bool VoiceTracker::InitTrack()
   bool ok=false;
   unsigned next_cart=0;
   RDCart *cart=NULL;
-  while(!ok) {
-    if((next_cart=track_group->nextFreeCart())==0) {
-      return false;
-    }
-    cart=new RDCart(next_cart);
-    ok=cart->create(track_group->name(),RDCart::Audio);
-    delete cart;
+
+  if((next_cart=RDCart::create(track_group->name(),RDCart::Audio,&err_msg))==0) {
+    return false;
   }
+
   edit_track_cart=new RDCart(next_cart);
   edit_track_cart->setOwner(track_log->name());
   edit_track_cart->setTitle(edit_logline[1]->markerComment().stripWhiteSpace());
