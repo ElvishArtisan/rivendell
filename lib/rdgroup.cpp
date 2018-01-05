@@ -19,7 +19,9 @@
 //
 
 #include <sys/types.h>
+#ifndef WIN32
 #include <unistd.h>
+#endif  // WIN32
 
 #include <qobject.h>
 
@@ -230,7 +232,7 @@ void RDGroup::setColor(const QColor &color)
 }
 
 
-unsigned RDGroup::RDGroup::nextFreeCart(unsigned startcart) const
+unsigned RDGroup::nextFreeCart(unsigned startcart) const
 {
   return GetNextFreeCart(startcart);
 }
@@ -266,7 +268,7 @@ int RDGroup::freeCartQuantity() const
   return free;
 }
 
-
+#ifndef WIN32
 bool RDGroup::reserveCarts(std::vector<unsigned> *cart_nums,
 			   const QString &station_name,RDCart::Type type,
 			   unsigned quan) const
@@ -301,7 +303,7 @@ bool RDGroup::reserveCarts(std::vector<unsigned> *cart_nums,
 
   return false;
 }
-
+#endif  // WIN32
 
 bool RDGroup::cartNumberValid(unsigned cartnum) const
 {
@@ -423,6 +425,7 @@ unsigned RDGroup::GetNextFreeCart(unsigned startcart) const
 }
 
 
+#ifndef WIN32
 bool RDGroup::ReserveCart(const QString &station_name,RDCart::Type type,
 			  unsigned cart_num) const
 {
@@ -448,6 +451,7 @@ bool RDGroup::ReserveCart(const QString &station_name,RDCart::Type type,
   }
   return ret;
 }
+#endif  // WIN32
 
 
 void RDGroup::SetRow(const QString &param,int value) const

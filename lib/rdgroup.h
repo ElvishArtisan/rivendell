@@ -60,16 +60,20 @@ class RDGroup
   void setColor(const QColor &color);
   unsigned nextFreeCart(unsigned startcart=0) const;
   int freeCartQuantity() const;
+#ifndef WIN32
   bool reserveCarts(std::vector<unsigned> *cart_nums,
 		    const QString &station_name,RDCart::Type type,
 		    unsigned quan) const;
+#endif  // WIN32
   bool cartNumberValid(unsigned cartnum) const;
   QString xml() const;
   
  private:
   unsigned GetNextFreeCart(unsigned startcart) const;
+#ifndef WIN32
   bool ReserveCart(const QString &station_name,RDCart::Type type,
 		   unsigned cart_num) const;
+#endif  // WIN32
   void SetRow(const QString &param,int value) const;
   void SetRow(const QString &param,unsigned value) const;
   void SetRow(const QString &param,const QString &value) const;

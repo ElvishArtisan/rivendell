@@ -16557,3 +16557,5 @@
 	a new clock in rdlogmanager(1).
 2018-01-03 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed races in creation of new carts.
+2018-01-05 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed bugs that broke the build under Windows.
