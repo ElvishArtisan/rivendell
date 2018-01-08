@@ -16563,3 +16563,6 @@
 	* Fixed a bug that broke highlighting of evergreen cuts.
 2018-01-08 Fred Gleason <fredg@paravelsystems.com>
 	* Removed implicit ASCII casts from RDEventLine.
+2018-01-08 Fred Gleason <fredg@paravelsystems.com>
+	* Updated 'NEWS'.
+	* Incremented the package version to 2.18.2int00.
