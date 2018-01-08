@@ -16561,3 +16561,5 @@
 	* Fixed bugs that broke the build under Windows.
 2018-01-08 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug that broke highlighting of evergreen cuts.
+2018-01-08 Fred Gleason <fredg@paravelsystems.com>
+	* Removed implicit ASCII casts from RDEventLine.
