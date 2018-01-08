@@ -2,7 +2,7 @@
 //
 // Validate a Rivendell Audio Cut
 //
-//   (C) Copyright 2006,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2006,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -68,7 +68,7 @@ RDCart::Validity ValidateCut(RDSqlQuery *q,unsigned offset,
   if(q->value(offset).toInt()==0) {                   // Length
     return prev_validity;
   }
-  if(q->value(offset+1+2).toString()=="Y") {            // Evergreen
+  if(q->value(offset+1).toString()=="Y") {            // Evergreen
     return RDCart::EvergreenValid;
   }
   if(q->value(offset+5+datetime.date().dayOfWeek()).toString()!="Y") {
