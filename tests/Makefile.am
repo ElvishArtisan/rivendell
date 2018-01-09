@@ -61,6 +61,7 @@ dist_datedecode_test_SOURCES = datedecode_test.cpp datedecode_test.h
 datedecode_test_LDADD = @LIB_RDLIBS@ @LIBVORBIS@
 
 dist_log_unlink_test_SOURCES = log_unlink_test.cpp log_unlink_test.h
+nodist_log_unlink_test_SOURCES = moc_log_unlink_test.cpp
 log_unlink_test_LDADD = @LIB_RDLIBS@ @LIBVORBIS@
 
 dist_rdxml_parse_test_SOURCES = rdxml_parse_test.cpp rdxml_parse_test.h

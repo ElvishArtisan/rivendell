@@ -918,6 +918,17 @@ bool RDEventLine::linkLog(RDLogEvent *e,int next_id,const QString &svcname,
   QTime time=link_logline->startTime(RDLogLine::Logged);
 
   //
+  // Insert Parent Link
+  //
+  e->insert(e->size(),1);
+  logline=new RDLogLine();
+  *logline=*link_logline;
+  logline->setId(e->nextId());
+  *(e->logLine(e->size()-1))=*logline;
+  delete logline;
+  logline=NULL;
+
+  //
   // Calculate Event Time Boundaries
   //
   int start_start_hour=link_logline->linkStartTime().hour();

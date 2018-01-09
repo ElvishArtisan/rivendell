@@ -2,7 +2,7 @@
 //
 // Abstract a Rivendell Service.
 //
-//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2004,2016-2017 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -980,16 +980,13 @@ bool RDSvc::clearLogLinks(RDSvc::ImportSource src,const QString &logname,
     return false;
   }
   std::vector<int> cleared_ids;
-  RDLogLine::Type event_type=RDLogLine::UnknownType;
   RDLogLine::Source event_source=RDLogLine::Manual;
   switch(src) {
       case RDSvc::Music:
-	event_type=RDLogLine::MusicLink;
 	event_source=RDLogLine::Music;
 	break;
 
       case RDSvc::Traffic:
-	event_type=RDLogLine::TrafficLink;
 	event_source=RDLogLine::Traffic;
 	break;
   }
@@ -1000,30 +997,7 @@ bool RDSvc::clearLogLinks(RDSvc::ImportSource src,const QString &logname,
   RDLogLine *logline=NULL;
   for(int i=0;i<src_event->size();i++) {
     logline=src_event->logLine(i);
-    if((logline->linkId()>=0)&&(logline->source()==event_source)) {
-      if(CheckId(&cleared_ids,logline->linkId())) {
-	dest_event->insert(dest_event->size(),1);
-	RDLogLine *lline=dest_event->logLine(dest_event->size()-1);
-	lline->setId(dest_event->nextId());
-	lline->setStartTime(RDLogLine::Logged,logline->linkStartTime());
-	lline->setType(event_type);
-	if(logline->linkEmbedded()) {
-	  lline->setSource(RDLogLine::Music);
-	}
-	else {
-	  lline->setSource(RDLogLine::Template);
-	}
-	lline->setTransType(logline->transType());
-	lline->setLinkEventName(logline->linkEventName());
-	lline->setLinkStartTime(logline->linkStartTime());
-	lline->setLinkLength(logline->linkLength());
-	lline->setLinkStartSlop(logline->linkStartSlop());
-	lline->setLinkEndSlop(logline->linkEndSlop());
-	lline->setLinkId(logline->linkId());
-	lline->setLinkEmbedded(logline->linkEmbedded());
-      }
-    }
-    else {
+    if((logline->linkId()<0)||(logline->source()!=event_source)) {
       dest_event->insert(dest_event->size(),1);
       *(dest_event->logLine(dest_event->size()-1))=*logline;
       dest_event->logLine(dest_event->size()-1)->setId(dest_event->nextId());

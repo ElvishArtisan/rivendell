@@ -16416,6 +16416,7 @@
 	* Fixed a bug that caused a log's link status flags to fail to be
 	updated when the log was unlinked.
 2017-12-05 Fred Gleason <fredg@paravelsystems.com>
+<<<<<<< HEAD
 	* Changed the default [mySQL] 'Engine=' directive value to 'MyISAM'.
 2017-12-06 Fred Gleason <fredg@paravelsystems.com>
 	* Added a note regrading package dependencies to the header of
@@ -16569,3 +16570,8 @@
 2018-01-09 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug that caused rdlogmanager(1) to throw a SQL error when
 	deleting a clock.
+2018-01-09 Fred Gleason <fredg@paravelsystems.com>
+	* Modified log linking to retain parent link events in linked logs.
+	* Fixed a bug where re-merging linked logs would generate an
+	'Event not placed' exception for avails that were previously
+	unpopulated.
