@@ -584,7 +584,7 @@ int ListClocks::ActiveClocks(QString clockname,QString *svc_list)
   QStringList svcs;
 
   sql=QString("select SERVICE_NAME from SERVICE_CLOCKS where ")+
-    "CLOCK=\""+RDEscapeString(clockname)+"\" order by CLOCK";
+    "CLOCK_NAME=\""+RDEscapeString(clockname)+"\" order by CLOCK_NAME";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     if((svcs.size()==0)||(svcs.back()!=q->value(0).toString())) {
@@ -612,7 +612,7 @@ void ListClocks::DeleteClock(QString clockname)
   // Delete Active Clocks
   //
   sql=QString("delete from SERVICE_CLOCKS where ")+
-    "CLOCK=\""+RDEscapeString(clockname)+"\"";
+    "CLOCK_NAME=\""+RDEscapeString(clockname)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
 
