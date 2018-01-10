@@ -16580,3 +16580,6 @@
 	data to a log to remove voice track transitions.
 2018-01-10 Fred Gleason <fredg@paravelsystems.com>
 	* Cleaned up compiler warnings.
+2018-01-10 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed bugs in rdlogmanager(1) that caused segfaults under
+	Windows.
