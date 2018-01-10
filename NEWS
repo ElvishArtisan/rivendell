@@ -1,12 +1,15 @@
 The NEWS file for the Rivendell package.
 
 -------------------------------------------------------------------------------
-v2.18.2int00 -- 1/8/2018
+v2.18.2int01 -- 1/10/2018
 
 Changes:
    Log Locking. Implemented a system-wide protocol to prevent changes
    made to a log on one host from being inadvently overwritten from
    another host.
+
+   Log Importation Changes. Changed music and traffic importation so that
+   parent link events are still visible in linked logs.
 
    Fixed a bug in rdlibrary(1) that caused evergreen cart/cuts to fail
    to be highlight in the correct color.
@@ -104,9 +107,6 @@ Changes:
    Log Purge/Deletion Changes. Logs created manually (in rdlogedit(1) or
    rdairplay(1)) are now assigned a default purge/deletion date in accordance
    with the setting in RDAdmin->ManageServices.
-
-   Log Importation Changes. Changed music and traffic importation so that
-   parent link events are still visible in linked logs.
 
    Web API Changes. Added 'FILTER' and 'RECENT' call parameters to the
    'ListLogs' Web API call. See the API documentation in

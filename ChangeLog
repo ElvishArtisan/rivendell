@@ -16583,3 +16583,6 @@
 2018-01-10 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed bugs in rdlogmanager(1) that caused segfaults under
 	Windows.
+2018-01-10 Fred Gleason <fredg@paravelsystems.com>
+	* Updated 'NEWS'.
+	* Incremented the package version to 2.18.2int01.
