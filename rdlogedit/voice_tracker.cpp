@@ -3943,9 +3943,7 @@ bool VoiceTracker::InitTrack()
     delete edit_track_cart;
     edit_track_cart=NULL;
   }
-  bool ok=false;
   unsigned next_cart=0;
-  RDCart *cart=NULL;
 
   if((next_cart=RDCart::create(track_group->name(),RDCart::Audio,&err_msg))==0) {
     return false;

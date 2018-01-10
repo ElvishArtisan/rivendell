@@ -16578,3 +16578,5 @@
 2018-01-10 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in rdlogmanager(1) that caused remerging of traffic
 	data to a log to remove voice track transitions.
+2018-01-10 Fred Gleason <fredg@paravelsystems.com>
+	* Cleaned up compiler warnings.
