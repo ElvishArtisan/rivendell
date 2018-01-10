@@ -998,7 +998,7 @@ bool RDSvc::clearLogLinks(RDSvc::ImportSource src,const QString &logname,
   for(int i=0;i<src_event->size();i++) {
     logline=src_event->logLine(i);
     if((logline->linkId()<0)||(logline->source()!=event_source)) {
-      dest_event->insert(dest_event->size(),1);
+      dest_event->insert(dest_event->size(),1,true);
       *(dest_event->logLine(dest_event->size()-1))=*logline;
       dest_event->logLine(dest_event->size()-1)->setId(dest_event->nextId());
     }

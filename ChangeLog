@@ -16575,3 +16575,6 @@
 	* Fixed a bug where re-merging linked logs would generate an
 	'Event not placed' exception for avails that were previously
 	unpopulated.
+2018-01-10 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdlogmanager(1) that caused remerging of traffic
+	data to a log to remove voice track transitions.
