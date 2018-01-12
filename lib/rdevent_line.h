@@ -82,7 +82,7 @@ class RDEventLine
   bool save(RDConfig *config);
   bool generateLog(QString logname,const QString &svcname,
 		   QString *errors, unsigned artistsep,QString clockname);
-  bool linkLog(RDLogEvent *e,int next_id,const QString &svcname,
+  bool linkLog(RDLogEvent *e,const QString &svcname,
 	       RDLogLine *link_logline,const QString &track_str,
 	       const QString &label_cart,const QString &track_cart,
 	       const QString &import_table,QString *errors);

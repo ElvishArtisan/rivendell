@@ -880,8 +880,8 @@ bool RDSvc::linkLog(RDSvc::ImportSource src,const QDate &date,
       RDEventLine *e=new RDEventLine();
       e->setName(logline->linkEventName());
       e->load();
-      e->linkLog(dest_event,dest_event->nextId(),svc_name,logline,track_str,
-		 label_cart,track_cart,import_name,&autofill_errors);
+      e->linkLog(dest_event,svc_name,logline,track_str,label_cart,track_cart,
+		 import_name,&autofill_errors);
       delete e;
       emit generationProgress(1+(24*current_link++)/total_links);
     }

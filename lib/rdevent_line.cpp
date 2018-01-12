@@ -886,7 +886,7 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
 }
 
 
-bool RDEventLine::linkLog(RDLogEvent *e,int next_id,const QString &svcname,
+bool RDEventLine::linkLog(RDLogEvent *e,const QString &svcname,
 			  RDLogLine *link_logline,const QString &track_str,
 			  const QString &label_cart,const QString &track_cart,
 			  const QString &import_table,QString *errors)
@@ -951,7 +951,6 @@ bool RDEventLine::linkLog(RDLogEvent *e,int next_id,const QString &svcname,
   //
   // Load Matching Events and Insert into Log
   //
-  int id=-1;
   sql=QString("select ")+
     "CART_NUMBER,"+     // 00
     "START_SECS,"+      // 01
@@ -974,16 +973,13 @@ bool RDEventLine::linkLog(RDLogEvent *e,int next_id,const QString &svcname,
     "(EVENT_USED=\"N\") order by ID";
   q=new RDSqlQuery(sql);
   while(q->next()) {
-    if((id=e->nextId())>next_id) {
-      next_id=id;
-    }
     int length=GetLength(q->value(0).toUInt(),q->value(2).toInt());
     if(q->value(9).toUInt()==RDEventLine::InsertBreak) {
       if(q->value(7).toString()=="Y") {  // Insert Break
 	if((!event_nested_event.isEmpty()&&(event_nested_event!=event_name))) {
 	  e->insert(e->size(),1);
 	  logline=e->logLine(e->size()-1);
-	  logline->setId(next_id++);
+	  logline->setId(e->nextId());
 	  logline->setStartTime(RDLogLine::Logged,time);
 	  logline->setType(RDLogLine::TrafficLink);
 	  logline->setSource(event_src);
@@ -1007,7 +1003,7 @@ bool RDEventLine::linkLog(RDLogEvent *e,int next_id,const QString &svcname,
       if(q->value(8).toString()=="Y") {  // Insert Track
 	e->insert(e->size(),1);
 	logline=e->logLine(e->size()-1);
-	logline->setId(next_id++);
+	logline->setId(e->nextId());
 	logline->setStartTime(RDLogLine::Logged,time);
 	logline->setType(RDLogLine::Track);
 	logline->setSource(event_src);
@@ -1027,7 +1023,7 @@ bool RDEventLine::linkLog(RDLogEvent *e,int next_id,const QString &svcname,
       if(q->value(8).toString()=="Y") {  // Insert Track
 	e->insert(e->size(),1);
 	logline=e->logLine(e->size()-1);
-	logline->setId(next_id++);
+	logline->setId(e->nextId());
 	logline->setStartTime(RDLogLine::Logged,time);
 	logline->setType(RDLogLine::Track);
 	logline->setSource(event_src);
@@ -1046,7 +1042,7 @@ bool RDEventLine::linkLog(RDLogEvent *e,int next_id,const QString &svcname,
 	if((!event_nested_event.isEmpty()&&(event_nested_event!=event_name))) {
 	  e->insert(e->size(),1);
 	  logline=e->logLine(e->size()-1);
-	  logline->setId(next_id++);
+	  logline->setId(e->nextId());
 	  logline->setStartTime(RDLogLine::Logged,time);
 	  logline->setType(RDLogLine::TrafficLink);
 	  logline->setSource(event_src);
@@ -1071,7 +1067,7 @@ bool RDEventLine::linkLog(RDLogEvent *e,int next_id,const QString &svcname,
 
     e->insert(e->size(),1);
     logline=e->logLine(e->size()-1);
-    logline->setId(next_id++);
+    logline->setId(e->nextId());
     logline->setSource(event_src);
     logline->setStartTime(RDLogLine::Logged,time);
     logline->setGraceTime(grace_time);
@@ -1154,7 +1150,7 @@ bool RDEventLine::linkLog(RDLogEvent *e,int next_id,const QString &svcname,
 	   (time.addMSecs(q->value(1).toInt())>time)) {
 	  e->insert(e->size(),1);
 	  logline=e->logLine(e->size()-1);
-	  logline->setId(next_id++);
+	  logline->setId(e->nextId());
 	  logline->setStartTime(RDLogLine::Logged,time);
 	  logline->setType(RDLogLine::Cart);
 	  logline->setSource(event_src);

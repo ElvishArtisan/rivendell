@@ -16416,7 +16416,6 @@
 	* Fixed a bug that caused a log's link status flags to fail to be
 	updated when the log was unlinked.
 2017-12-05 Fred Gleason <fredg@paravelsystems.com>
-<<<<<<< HEAD
 	* Changed the default [mySQL] 'Engine=' directive value to 'MyISAM'.
 2017-12-06 Fred Gleason <fredg@paravelsystems.com>
 	* Added a note regrading package dependencies to the header of
@@ -16586,3 +16585,6 @@
 2018-01-10 Fred Gleason <fredg@paravelsystems.com>
 	* Updated 'NEWS'.
 	* Incremented the package version to 2.18.2int01.
+2018-01-12 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug that caused rdlogmanager(1) to throw SQL errors when
+	importing music/traffic data.
