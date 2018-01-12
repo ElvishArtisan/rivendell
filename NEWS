@@ -1,7 +1,7 @@
 The NEWS file for the Rivendell package.
 
 -------------------------------------------------------------------------------
-v2.18.2int01 -- 1/10/2018
+v2.18.2int02 -- 1/12/2018
 
 Changes:
    Log Locking. Implemented a system-wide protocol to prevent changes
