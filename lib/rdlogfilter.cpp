@@ -95,7 +95,7 @@ RDLogFilter::RDLogFilter(RDLogFilter::FilterMode mode,RDUser *user,
   filter_filter_label->setBuddy(filter_filter_edit);
   connect(filter_filter_edit,SIGNAL(textChanged(const QString &)),
  	  this,SLOT(filterChangedData(const QString &)));
-  connect(filter_clear_button,SIGNAL(clicked()),this,SLOT(filterChangedData()));
+  connect(filter_clear_button,SIGNAL(clicked()),this,SLOT(filterClearedData()));
   
   //
   // Show Recent
@@ -189,6 +189,13 @@ void RDLogFilter::filterChangedData(const QString &str)
 void RDLogFilter::filterChangedData()
 {
   emit filterChanged(whereSql());
+}
+
+
+void RDLogFilter::filterClearedData()
+{
+  filter_filter_edit->clear();
+  filterChangedData();
 }
 
 

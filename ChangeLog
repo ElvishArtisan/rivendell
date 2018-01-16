@@ -16591,3 +16591,5 @@
 2018-01-12 Fred Gleason <fredg@paravelsystems.com>
 	* Updated 'NEWS'.
 	* Incremented the package version to 2.18.2int02.
+2018-01-16 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdlogedit(1) that broke the 'Clear' button.

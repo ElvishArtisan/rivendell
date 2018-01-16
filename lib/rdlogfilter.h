@@ -50,6 +50,7 @@ class RDLogFilter : public QWidget
  private slots:
   void filterChangedData(const QString &str);
   void filterChangedData();
+  void filterClearedData();
   void serviceChangedData(int n);
 
  protected:
