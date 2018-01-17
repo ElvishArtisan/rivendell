@@ -35,6 +35,7 @@ RLM_MODULES=rlm_ando.rlm\
             rlm_spottrap.rlm\
             rlm_tagstation.rlm\
             rlm_test.rlm\
+            rlm_tunein.rlm\
             rlm_twitter.rlm\
             rlm_udp.rlm\
             rlm_urlwrite.rlm\
@@ -75,6 +76,7 @@ EXTRA_DIST = Makefile-example\
              rlm_spottrap.c\
              rlm_tagstation.c\
              rlm_test.c\
+             rlm_tunein.c\
              rlm_twitter.c\
              rlm_udp.c\
              rlm_urlwrite.c\
