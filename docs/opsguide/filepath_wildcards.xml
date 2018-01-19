@@ -119,7 +119,7 @@
 	      <term><userinput>D</userinput></term>
 	      <listitem>
 		<para>
-		  Date (mm/dd/yy)
+		  Date (mm-dd-yy)
 		</para>
 	      </listitem>
 	    </varlistentry>
@@ -554,7 +554,7 @@
 	<term><userinput>%D</userinput></term>
 	<listitem>
 	  <para>
-	    <code>02/03/17</code>
+	    <code>02-03-17</code>
 	  </para>
 	</listitem>
       </varlistentry>
