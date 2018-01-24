@@ -761,12 +761,13 @@ int RDHPIPlayStream::GetStream()
 #ifdef RDHPIPLAYSTREAM_USE_LOCAL_MUTEX
   for(int i=0;i<sound_card->getCardOutputStreams(card_number);i++) {
     if(++stream_mutex[card_number][i]==1) {
-      LogHpi(HPI_OutStreamOpen(NULL,card_index[card_number],i,&hpi_stream));
-      stream_number=i;
-      return stream_number;
-    }
-    else {
-      stream_mutex[card_number][i]--;
+      if (LogHpi(HPI_OutStreamOpen(NULL,card_index[card_number],i,&hpi_stream))==0) {
+        stream_number=i;
+        return stream_number;
+      }
+      else {
+        stream_mutex[card_number][i]--;
+      }
     }
   }
   return -1;
