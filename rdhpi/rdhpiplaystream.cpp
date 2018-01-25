@@ -765,10 +765,8 @@ int RDHPIPlayStream::GetStream()
         stream_number=i;
         return stream_number;
       }
-      else {
-        stream_mutex[card_number][i]--;
-      }
     }
+    stream_mutex[card_number][i]--;
   }
   return -1;
 #else
