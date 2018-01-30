@@ -18,7 +18,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Can&apos;t Connect</source>
+        <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
