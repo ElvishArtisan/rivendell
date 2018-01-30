@@ -1077,11 +1077,11 @@ korg</translation>
     </message>
     <message>
         <source>rdlibrary : </source>
-        <translation>rdlibrary : </translation>
+        <translation type="obsolete">rdlibrary : </translation>
     </message>
     <message>
         <source>Can&apos;t Connect</source>
-        <translation>Greier ikkje kopla til</translation>
+        <translation type="obsolete">Greier ikkje kopla til</translation>
     </message>
     <message>
         <source>Filter:</source>

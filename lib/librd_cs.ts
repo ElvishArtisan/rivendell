@@ -539,6 +539,18 @@
         <source>No free cart available in group</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Unable to open database</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>is</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Database version mismatch, should be</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RDAddCart</name>

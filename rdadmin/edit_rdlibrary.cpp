@@ -2,7 +2,7 @@
 //
 // Edit an RDLibrary Configuration
 //
-//   (C) Copyright 2002-2015 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -50,7 +50,7 @@ EditRDLibrary::EditRDLibrary(RDStation *station,RDStation *cae_station,
   setMinimumHeight(sizeHint().height());
   setMaximumHeight(sizeHint().height());
 
-  lib_lib=new RDLibraryConf(station->name(),0);
+  lib_lib=new RDLibraryConf(station->name());
 
   //
   // Create Fonts

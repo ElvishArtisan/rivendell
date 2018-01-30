@@ -167,7 +167,7 @@ void Xport::Import()
   if(!RDCut::exists(cartnum,cutnum)) {
     XmlExit("No such cut",404,"import.cpp",LINE_NUMBER);
   }
-  RDLibraryConf *conf=new RDLibraryConf(xport_config->stationName(),0);
+  RDLibraryConf *conf=new RDLibraryConf(xport_config->stationName());
   RDSettings *settings=new RDSettings();
   switch(conf->defaultFormat()) {
   case 0:

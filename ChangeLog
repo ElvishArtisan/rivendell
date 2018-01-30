@@ -16596,3 +16596,6 @@
 2018-01-19 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a typo regarding the %D filepath wildcard in the Operations
 	Guide.
+2018-01-30 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'RDApplication'class.
+	* Converted rdlibrary(1) to use RDApplication.

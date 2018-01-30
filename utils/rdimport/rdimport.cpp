@@ -509,7 +509,7 @@ MainObject::MainObject(QObject *parent)
   //
   // Get Audio Parameters
   //
-  RDLibraryConf *library_conf=new RDLibraryConf(import_config->stationName(),0);
+  RDLibraryConf *library_conf=new RDLibraryConf(import_config->stationName());
   import_system=new RDSystem();
   import_format=library_conf->defaultFormat();
   import_samprate=import_system->sampleRate();

@@ -2,7 +2,7 @@
 //
 // Record a Rivendell Cut
 //
-//   (C) Copyright 2002-2004,2014,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2004,2014-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -28,22 +28,21 @@
 #include <qbuttongroup.h>
 
 #include <rd.h>
+#include <rdapplication.h>
 #include <rdconf.h>
 #include <rdmixer.h>
 #include <rdrehash.h>
 
-#include <record_cut.h>
-#include <globals.h>
-#include <rdconfig.h>
+#include "globals.h"
+#include "record_cut.h"
 
-RecordCut::RecordCut(RDCart *cart,QString cut,bool use_weight,
-		     QWidget *parent)
+RecordCut::RecordCut(RDCart *cart,QString cut,bool use_weight,QWidget *parent)
   : QDialog(parent,"",true)
 {
   bool valid;
   bool is_track=cart->owner().isEmpty();
-  bool allow_modification=lib_user->modifyCarts()&&is_track;
-  bool allow_editing=lib_user->editAudio()&&is_track;
+  bool allow_modification=rda->user()->modifyCarts()&&is_track;
+  bool allow_editing=rda->user()->editAudio()&&is_track;
   rec_use_weighting=use_weight;
 
   //
@@ -79,33 +78,33 @@ RecordCut::RecordCut(RDCart *cart,QString cut,bool use_weight,
   //
   // Load Audio Assignments
   //
-  rec_card_no[0]=rdlibrary_conf->inputCard();
-  rec_port_no[0]=rdlibrary_conf->inputPort();
-  rec_card_no[1]=rdlibrary_conf->outputCard();
-  rec_port_no[1]=rdlibrary_conf->outputPort();
+  rec_card_no[0]=rda->libraryConf()->inputCard();
+  rec_port_no[0]=rda->libraryConf()->inputPort();
+  rec_card_no[1]=rda->libraryConf()->outputCard();
+  rec_port_no[1]=rda->libraryConf()->outputPort();
   rec_play_handle=-1;
 
   //
   // CAE Connection
   //
-  connect(rdcae,SIGNAL(isConnected(bool)),this,SLOT(initData(bool)));
-  connect(rdcae,SIGNAL(playing(int)),this,SLOT(playedData(int)));
-  connect(rdcae,SIGNAL(playStopped(int)),this,SLOT(playStoppedData(int)));
-  connect(rdcae,SIGNAL(recordLoaded(int,int)),
+  connect(rda->cae(),SIGNAL(isConnected(bool)),this,SLOT(initData(bool)));
+  connect(rda->cae(),SIGNAL(playing(int)),this,SLOT(playedData(int)));
+  connect(rda->cae(),SIGNAL(playStopped(int)),this,SLOT(playStoppedData(int)));
+  connect(rda->cae(),SIGNAL(recordLoaded(int,int)),
 	  this,SLOT(recordLoadedData(int,int)));
-  connect(rdcae,SIGNAL(recordUnloaded(int,int,unsigned)),
+  connect(rda->cae(),SIGNAL(recordUnloaded(int,int,unsigned)),
 	  this,SLOT(recordUnloadedData(int,int,unsigned)));
-  connect(rdcae,SIGNAL(recording(int,int)),this,SLOT(recordedData(int,int)));
-  connect(rdcae,SIGNAL(recordStopped(int,int)),
+  connect(rda->cae(),SIGNAL(recording(int,int)),this,SLOT(recordedData(int,int)));
+  connect(rda->cae(),SIGNAL(recordStopped(int,int)),
 	  this,SLOT(recordStoppedData(int,int)));
-  connect(rdcae,SIGNAL(inputStatusChanged(int,int,bool)),
+  connect(rda->cae(),SIGNAL(inputStatusChanged(int,int,bool)),
 	  this,SLOT(aesAlarmData(int,int,bool)));
 
   //
   // Audio Parameters
   //
-  rec_card_no[0]=rdlibrary_conf->inputCard();
-  rec_card_no[1]=rdlibrary_conf->outputCard();
+  rec_card_no[0]=rda->libraryConf()->inputCard();
+  rec_card_no[1]=rda->libraryConf()->outputCard();
   rec_name=rec_cut->cutName();
   switch(rec_cut->codingFormat()) {
       case 0:
@@ -472,7 +471,7 @@ RecordCut::RecordCut(RDCart *cart,QString cut,bool use_weight,
   rec_channels_edit->setText(QString().sprintf("%d",rec_cut->channels()));
   rec_mode_box->insertItem(tr("Manual"));
   rec_mode_box->insertItem(tr("VOX"));
-  switch(rdlibrary_conf->defaultRecordMode()) {
+  switch(rda->libraryConf()->defaultRecordMode()) {
       case RDLibraryConf::Manual:
 	rec_mode_box->setCurrentItem(0);
 	break;
@@ -483,14 +482,14 @@ RecordCut::RecordCut(RDCart *cart,QString cut,bool use_weight,
   }
   rec_trim_box->insertItem(tr("On"));
   rec_trim_box->insertItem(tr("Off"));
-  if(rdlibrary_conf->defaultTrimState()) {
+  if(rda->libraryConf()->defaultTrimState()) {
     rec_trim_box->setCurrentItem(0);
   }
   else {
     rec_trim_box->setCurrentItem(1);
   }
   aesAlarmData(rec_card_no[0],rec_port_no[0],
-	       rdcae->inputStatus(rec_card_no[0],rec_port_no[0]));
+	       rda->cae()->inputStatus(rec_card_no[0],rec_port_no[0]));
 
   //
   // Set Control Perms
@@ -649,9 +648,9 @@ void RecordCut::recordData()
       }
     }
     RDCart *cart=new RDCart(rec_cut->cartNumber());
-    cart->removeCutAudio(rdstation_conf,lib_user,rec_cut->cutName(),lib_config);
+    cart->removeCutAudio(rda->station(),rda->user(),rec_cut->cutName(),rda->config());
     delete cart;
-    switch(rdlibrary_conf->defaultFormat()) {
+    switch(rda->libraryConf()->defaultFormat()) {
 	case 0:
 	  rec_cut->setCodingFormat(0);
 	  rec_format=RDCae::Pcm16;
@@ -672,19 +671,19 @@ void RecordCut::recordData()
 	  rec_format=RDCae::Pcm16;
 	  break;
     }
-    rec_samprate=lib_system->sampleRate();
+    rec_samprate=rda->system()->sampleRate();
     rec_cut->setSampleRate(rec_samprate);
-    rec_bitrate=rdlibrary_conf->defaultBitrate();
+    rec_bitrate=rda->libraryConf()->defaultBitrate();
     rec_cut->setBitRate(rec_bitrate);
     rec_channels=rec_channels_box->currentItem()+1;
     rec_cut->setChannels(rec_channels);
     rec_cut->setOriginDatetime(QDateTime::currentDateTime());
-    rec_cut->setOriginName(rdstation_conf->name());
-    cut_origin_name=rdstation_conf->name();
+    rec_cut->setOriginName(rda->station()->name());
+    cut_origin_name=rda->station()->name();
     cut_origin_datetime=QDateTime::currentDateTime();
     cut_ingest_edit->setText(cut_origin_name+" - "+
 			    cut_origin_datetime.toString("M/d/yyyy hh:mm:ss"));
-    rdcae->loadRecord(rec_card_no[0],rec_port_no[0],rec_name,rec_format,
+    rda->cae()->loadRecord(rec_card_no[0],rec_port_no[0],rec_name,rec_format,
 			rec_channels,rec_samprate,rec_bitrate*rec_channels);
   }
 }
@@ -696,24 +695,24 @@ void RecordCut::playData()
   int end=rec_cut->endPoint(true);
 
   if((!is_recording)&&(!is_playing)&&(!is_ready)) {  // Start Play
-    rdcae->loadPlay(rec_card_no[1],rec_cut->cutName(),
+    rda->cae()->loadPlay(rec_card_no[1],rec_cut->cutName(),
 		    &rec_stream_no[1],&rec_play_handle);
-    RDSetMixerOutputPort(rdcae,rec_card_no[1],rec_stream_no[1],rec_port_no[1]);
-    rdcae->positionPlay(rec_play_handle,start);
-    rdcae->setPlayPortActive(rec_card_no[1],rec_port_no[1],rec_stream_no[1]);
-    rdcae->setOutputVolume(rec_card_no[1],rec_stream_no[1],rec_port_no[1],
+    RDSetMixerOutputPort(rda->cae(),rec_card_no[1],rec_stream_no[1],rec_port_no[1]);
+    rda->cae()->positionPlay(rec_play_handle,start);
+    rda->cae()->setPlayPortActive(rec_card_no[1],rec_port_no[1],rec_stream_no[1]);
+    rda->cae()->setOutputVolume(rec_card_no[1],rec_stream_no[1],rec_port_no[1],
            0+rec_cut->playGain());
-    rdcae->play(rec_play_handle,end-start,RD_TIMESCALE_DIVISOR,false);
+    rda->cae()->play(rec_play_handle,end-start,RD_TIMESCALE_DIVISOR,false);
   }
   if(is_ready&&(!is_recording)) {
     if(rec_mode_box->currentItem()==1) {
-      rdcae->
-	record(rec_card_no[0],rec_port_no[0],rdlibrary_conf->maxLength(),
-	       rdlibrary_conf->voxThreshold());
+      rda->cae()->
+	record(rec_card_no[0],rec_port_no[0],rda->libraryConf()->maxLength(),
+	       rda->libraryConf()->voxThreshold());
     }
     else {
-      rdcae->
-	record(rec_card_no[0],rec_port_no[0],rdlibrary_conf->maxLength(),0);
+      rda->cae()->
+	record(rec_card_no[0],rec_port_no[0],rda->libraryConf()->maxLength(),0);
     }
   }
 }
@@ -722,15 +721,15 @@ void RecordCut::playData()
 void RecordCut::stopData()
 {
   if(is_playing) {
-    rdcae->stopPlay(rec_play_handle);
+    rda->cae()->stopPlay(rec_play_handle);
     return;
   }
   if(is_recording) {
-    rdcae->stopRecord(rec_card_no[0],rec_port_no[0]);
+    rda->cae()->stopRecord(rec_card_no[0],rec_port_no[0]);
     return;
   }
   if(is_ready) {
-    rdcae->unloadRecord(rec_card_no[0],rec_port_no[0]);
+    rda->cae()->unloadRecord(rec_card_no[0],rec_port_no[0]);
     rec_record_button->off();
     rec_play_button->off();
     rec_stop_button->on();
@@ -774,7 +773,7 @@ void RecordCut::playedData(int handle)
 
 void RecordCut::playStoppedData(int handle)
 {
-  rdcae->unloadPlay(rec_play_handle);
+  rda->cae()->unloadPlay(rec_play_handle);
   rec_timer->stop();
   rec_play_button->off();
   rec_stop_button->on();
@@ -793,7 +792,7 @@ void RecordCut::playStoppedData(int handle)
 void RecordCut::recordStoppedData(int card,int stream)
 {
   //printf("recordStoppedData()\n");
-  rdcae->unloadRecord(rec_card_no[0],rec_port_no[0]);
+  rda->cae()->unloadRecord(rec_card_no[0],rec_port_no[0]);
   rec_timer->stop();
   rec_play_button->off();
   rec_stop_button->on();
@@ -817,12 +816,12 @@ void RecordCut::recordUnloadedData(int card,int stream,unsigned len)
   s->setBitRate(rec_bitrate);
   s->setChannels(rec_channels);
   s->setFormat((RDSettings::Format)rec_format);
-  rec_cut->checkInRecording(rdstation_conf->name(),lib_user->name(),
-			    rdstation_conf->name(),s,len);
-  RDRehash::rehash(rdstation_conf,lib_user,lib_config,rec_cut->cartNumber(),
+  rec_cut->checkInRecording(rda->station()->name(),rda->user()->name(),
+			    rda->station()->name(),s,len);
+  RDRehash::rehash(rda->station(),rda->user(),rda->config(),rec_cut->cartNumber(),
 		   rec_cut->cutNumber());
   if(rec_trim_box->currentItem()==0) {
-    rec_cut->autoTrim(RDCut::AudioBoth,rdlibrary_conf->trimThreshold());
+    rec_cut->autoTrim(RDCut::AudioBoth,rda->libraryConf()->trimThreshold());
   }
   rec_length=rec_cut->length();
   if(is_closing) {
@@ -969,9 +968,9 @@ void RecordCut::recTimerData()
 
 void RecordCut::aesAlarmData(int card,int port,bool state)
 {
-  if((card==rdlibrary_conf->inputCard())&&
-     (port==rdlibrary_conf->inputPort())) {
-    if(rdaudioport_conf->inputPortType(rdlibrary_conf->inputPort())!=
+  if((card==rda->libraryConf()->inputCard())&&
+     (port==rda->libraryConf()->inputPort())) {
+    if(rdaudioport_conf->inputPortType(rda->libraryConf()->inputPort())!=
        RDAudioPort::Analog) {
       if(state) {
 	rec_aes_alarm_label->hide();
@@ -989,12 +988,12 @@ void RecordCut::meterData()
   short levels[2];
 
   if(is_ready||is_recording) {
-    rdcae->inputMeterUpdate(rec_card_no[0],rec_port_no[0],levels);
+    rda->cae()->inputMeterUpdate(rec_card_no[0],rec_port_no[0],levels);
     rec_meter->setLeftSolidBar(levels[0]);
     rec_meter->setRightSolidBar(levels[1]);
   }
   if(is_playing) {
-    rdcae->outputMeterUpdate(rec_card_no[1],rec_port_no[1],levels);
+    rda->cae()->outputMeterUpdate(rec_card_no[1],rec_port_no[1],levels);
     rec_meter->setLeftSolidBar(levels[0]);
     rec_meter->setRightSolidBar(levels[1]);
   }
@@ -1158,7 +1157,7 @@ void RecordCut::closeEvent(QCloseEvent *e)
 void RecordCut::AutoTrim(RDWaveFile *name)
 {
   if(name->hasEnergy()) {
-    rec_cut->setStartPoint(name->startTrim(rdlibrary_conf->trimThreshold()));
-    rec_cut->setEndPoint(name->endTrim(rdlibrary_conf->trimThreshold()));
+    rec_cut->setStartPoint(name->startTrim(rda->libraryConf()->trimThreshold()));
+    rec_cut->setEndPoint(name->endTrim(rda->libraryConf()->trimThreshold()));
   }
 }

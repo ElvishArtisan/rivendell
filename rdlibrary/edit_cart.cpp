@@ -37,6 +37,7 @@
 #include <qvalidator.h>
 
 #include <rddb.h>
+#include <rdapplication.h>
 #include <rd.h>
 #include <rdconf.h>
 #include <rdaudio_exists.h>
@@ -45,11 +46,11 @@
 #include <rdaudioexport.h>
 #include <rdupload.h>
 
-#include <cdripper.h>
-#include <edit_cart.h>
-#include <record_cut.h>
-#include <edit_schedulercodes.h>
-#include <edit_notes.h>
+#include "cdripper.h"
+#include "edit_cart.h"
+#include "edit_notes.h"
+#include "edit_schedulercodes.h"
+#include "record_cut.h"
 
 EditCart::EditCart(unsigned number,QString *path,bool new_cart,bool profile_rip,
 		   QWidget *parent,const char *name,QListView *lib_cart_list)
@@ -85,7 +86,7 @@ EditCart::EditCart(unsigned number,QString *path,bool new_cart,bool profile_rip,
     setCaption(QString().sprintf("%06u",rdcart_cart->number())+" - "+
 	       rdcart_cart->title());
     modification_allowed=
-      lib_user->modifyCarts()&&rdcart_cart->owner().isEmpty();
+      rda->user()->modifyCarts()&&rdcart_cart->owner().isEmpty();
   }
   else {
     setCaption("Edit Carts");
@@ -96,9 +97,9 @@ EditCart::EditCart(unsigned number,QString *path,bool new_cart,bool profile_rip,
   // Create Default Audio Cut
   //
   if(new_cart&&((rdcart_cart->type()==RDCart::Audio))) {
-    if(rdcart_cart->addCut(rdlibrary_conf->defaultFormat(),
-			   rdlibrary_conf->defaultBitrate(),
-			   rdlibrary_conf->defaultChannels())<0) {
+    if(rdcart_cart->addCut(rda->libraryConf()->defaultFormat(),
+			   rda->libraryConf()->defaultBitrate(),
+			   rda->libraryConf()->defaultChannels())<0) {
       QMessageBox::warning(this,tr("RDLibrary - Edit Cart"),
 			   tr("This cart cannot contain any additional cuts!"));
     }
@@ -1102,7 +1103,7 @@ void EditCart::schedCodesData()
 void EditCart::PopulateGroupList()
 {
   QString sql=QString("select GROUP_NAME from USER_PERMS where ")+
-    "USER_NAME=\""+RDEscapeString(lib_user->name())+"\" "+
+    "USER_NAME=\""+RDEscapeString(rda->user()->name())+"\" "+
     "order by GROUP_NAME";
 
   RDSqlQuery *q=new RDSqlQuery(sql);

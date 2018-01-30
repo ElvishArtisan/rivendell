@@ -948,14 +948,6 @@ Cart</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>rdlibrary : </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Can&apos;t Connect</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Filter:</source>
         <translation type="unfinished"></translation>
     </message>

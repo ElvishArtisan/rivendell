@@ -41,6 +41,7 @@ SOURCES += export_soundex.cpp
 SOURCES += export_technical.cpp
 SOURCES += export_textlog.cpp
 SOURCES += rdadd_log.cpp
+SOURCES += rdapplication.cpp
 SOURCES += rdaudiosettings.cpp
 SOURCES += rdaudiosettings_dialog.cpp
 SOURCES += rdbusybar.cpp
@@ -181,6 +182,7 @@ x11 {
 HEADERS += schedcartlist.h
 HEADERS += schedruleslist.h
 HEADERS += rdadd_log.h
+HEADERS += rdapplication.h
 HEADERS += rdaudiosettings.h
 HEADERS += rdaudiosettings_dialog.h
 HEADERS += rdbusybar.h

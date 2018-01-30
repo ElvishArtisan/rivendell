@@ -1093,11 +1093,11 @@ vozík</translation>
     </message>
     <message>
         <source>rdlibrary : </source>
-        <translation>rdlibrary: </translation>
+        <translation type="obsolete">rdlibrary: </translation>
     </message>
     <message>
         <source>Can&apos;t Connect</source>
-        <translation>Nelze spojit</translation>
+        <translation type="obsolete">Nelze spojit</translation>
     </message>
     <message>
         <source>Filter:</source>

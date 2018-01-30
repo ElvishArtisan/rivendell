@@ -2,7 +2,7 @@
 //
 // A Rivendell Voice Tracker
 //
-//   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -205,7 +205,7 @@ VoiceTracker::VoiceTracker(const QString &logname,QString *import_path,
   conf->getSettings(edit_settings);
   delete conf;
 
-  RDLibraryConf *lconf=new RDLibraryConf(log_config->stationName(),0);
+  RDLibraryConf *lconf=new RDLibraryConf(log_config->stationName());
   edit_tail_preroll=lconf->tailPreroll();
   edit_threshold_level=lconf->trimThreshold();
   delete lconf;
