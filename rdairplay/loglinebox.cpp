@@ -2,7 +2,7 @@
 //
 // On Air Playout Utility for Rivendell.
 //
-//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2004,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,14 +20,14 @@
 
 #include <qpainter.h>
 
+#include <rdapplication.h>
 #include <rdconf.h>
 #include <rdplay_deck.h>
-#include <rdairplay_conf.h>
 #include <rdnownext.h>
 
-#include <loglinebox.h>
-#include <colors.h>
-#include <globals.h>
+#include "colors.h"
+#include "globals.h"
+#include "loglinebox.h"
 
 #include "../icons/play.xpm"
 #include "../icons/rml5.xpm"
@@ -882,7 +882,7 @@ void LogLineBox::SetColor(QColor color)
 
 void LogLineBox::UpdateCountdown()
 {
-  QTime current=QTime::currentTime().addMSecs(rdstation_conf->timeOffset());
+  QTime current=QTime::currentTime().addMSecs(rda->station()->timeOffset());
 
   if(current<line_end_time) {
     line_length_label->setText(RDGetTimeLength(current.msecsTo(line_end_time),

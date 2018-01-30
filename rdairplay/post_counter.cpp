@@ -2,7 +2,7 @@
 //
 // The post counter widget for Rivendell
 //
-//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2004,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,9 +21,11 @@
 #include <qpixmap.h>
 #include <qpainter.h>
 
-#include <post_counter.h>
-#include <colors.h>
-#include <globals.h>
+#include <rdapplication.h>
+
+#include "colors.h"
+#include "globals.h"
+#include "post_counter.h"
 
 PostCounter::PostCounter(QWidget *parent)
   : QPushButton(parent)
@@ -130,7 +132,7 @@ void PostCounter::UpdateDisplay()
   QString point;
   QString state;
   QTime current_time=
-    QTime::currentTime().addMSecs(rdstation_conf->timeOffset());
+    QTime::currentTime().addMSecs(rda->station()->timeOffset());
   int offset=post_offset;
   if(!post_running) {
     offset-=current_time.msecsTo(post_set_time);

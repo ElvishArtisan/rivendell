@@ -544,7 +544,7 @@ poslechu</translation>
     </message>
     <message>
         <source>Database Error</source>
-        <translation>Chyba databáze</translation>
+        <translation type="obsolete">Chyba databáze</translation>
     </message>
     <message>
         <source>ADD</source>
@@ -634,6 +634,10 @@ OBNOVEN</translation>
     </message>
     <message>
         <source>Unable to lock all memory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

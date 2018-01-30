@@ -544,7 +544,7 @@ vorhören</translation>
     </message>
     <message>
         <source>Database Error</source>
-        <translation>Datenbankfehler</translation>
+        <translation type="obsolete">Datenbankfehler</translation>
     </message>
     <message>
         <source>ADD</source>
@@ -634,6 +634,10 @@ AKTUALISIERT</translation>
     </message>
     <message>
         <source>Unable to lock all memory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

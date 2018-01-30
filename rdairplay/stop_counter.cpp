@@ -2,7 +2,7 @@
 //
 // The stop counter widget for Rivendell
 //
-//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2004,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,8 +21,10 @@
 #include <qpixmap.h>
 #include <qpainter.h>
 
-#include <stop_counter.h>
-#include <globals.h>
+#include <rdapplication.h>
+
+#include "globals.h"
+#include "stop_counter.h"
 
 StopCounter::StopCounter(QWidget *parent)
   : QPushButton(parent)
@@ -131,7 +133,7 @@ void StopCounter::UpdateTime()
   QString text;
   QColor system_button_text_color = palette().active().buttonText();
   int msecs=QTime::currentTime().
-    addMSecs(rdstation_conf->timeOffset()).msecsTo(stop_time);
+    addMSecs(rda->station()->timeOffset()).msecsTo(stop_time);
 
   if ((old_stop_running != stop_running) || (msecs/1000 != old_msecs/1000)){
 	  QPixmap pix(sizeHint().width(),sizeHint().height());

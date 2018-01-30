@@ -554,7 +554,7 @@ Tail</source>
     </message>
     <message>
         <source>Database Error</source>
-        <translation>Databasefeil</translation>
+        <translation type="obsolete">Databasefeil</translation>
     </message>
     <message>
         <source>ADD</source>
@@ -644,6 +644,10 @@ LASTAR PÅ NYTT</translation>
     </message>
     <message>
         <source>Unable to lock all memory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

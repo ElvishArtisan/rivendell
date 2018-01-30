@@ -2,7 +2,7 @@
 //
 // Select a Rivendell Log
 //
-//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2004,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -22,11 +22,12 @@
 #include <qpushbutton.h>
 
 #include <rdadd_log.h>
+#include <rdapplication.h>
 #include <rddb.h>
 #include <rdescape_string.h>
 
-#include <globals.h>
-#include <list_logs.h>
+#include "globals.h"
+#include "list_logs.h"
 
 ListLogs::ListLogs(LogPlay *log,QWidget *parent)
   : QDialog(parent,"",true)
@@ -49,7 +50,7 @@ ListLogs::ListLogs(LogPlay *log,QWidget *parent)
   // Filter Widget
   //
   list_filter_widget=
-    new RDLogFilter(RDLogFilter::StationFilter,rduser,air_config,this);
+    new RDLogFilter(RDLogFilter::StationFilter,rda->user(),rda->config(),this);
   connect(list_filter_widget,SIGNAL(filterChanged(const QString &)),
 	  this,SLOT(filterChangedData(const QString &)));
 
@@ -127,10 +128,10 @@ int ListLogs::exec(QString *logname,QString *svcname,RDLogLock **log_lock)
   list_logname=logname;
   list_svcname=svcname;
   list_log_lock=log_lock;
-  list_saveas_button->setEnabled(rduser->createLog());
+  list_saveas_button->setEnabled(rda->user()->createLog());
   QStringList services_list;
   QString sql=QString("select SERVICE_NAME from SERVICE_PERMS where ")+
-    "STATION_NAME=\""+RDEscapeString(rdstation_conf->name())+"\"";
+    "STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\"";
   RDSqlQuery *q=new RDSqlQuery(sql);
   services_list.push_back(tr("ALL"));
   while(q->next()) {
@@ -179,7 +180,7 @@ void ListLogs::saveButtonData()
     saveAsButtonData();
   }
   else {
-    *list_log_lock=new RDLogLock(*list_logname,rduser,rdstation_conf,this);
+    *list_log_lock=new RDLogLock(*list_logname,rda->user(),rda->station(),this);
     if(!TryLock(*list_log_lock)) {
       delete *list_log_lock;
       *list_log_lock=NULL;
@@ -202,8 +203,8 @@ void ListLogs::saveAsButtonData()
   QString logname;
   QString svcname=*list_svcname;
   RDAddLog *log;
-  log=new RDAddLog(&logname,&svcname,RDLogFilter::StationFilter,rduser,
-		   rdstation_conf,tr("Rename Log"),this);
+  log=new RDAddLog(&logname,&svcname,RDLogFilter::StationFilter,rda->user(),
+		   rda->station(),tr("Rename Log"),this);
   if(log->exec()<0) {
     delete log;
     return;

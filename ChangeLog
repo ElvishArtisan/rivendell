@@ -16599,3 +16599,5 @@
 2018-01-30 Fred Gleason <fredg@paravelsystems.com>
 	* Added an 'RDApplication'class.
 	* Converted rdlibrary(1) to use RDApplication.
+2018-01-31 Fred Gleason <fredg@paravelsystems.com>
+	* Converted rdairplay(1) to use RDApplication.

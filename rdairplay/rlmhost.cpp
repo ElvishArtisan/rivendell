@@ -2,7 +2,7 @@
 //
 // A container class for a Rivendell Loadable Module host.
 //
-//   (C) Copyright 2008,2016-2017 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2008,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,6 +21,7 @@
 #include <dlfcn.h>
 #include <iostream>
 
+#include <rdapplication.h>
 #include <rdconf.h>
 #include <rddatedecode.h>
 #include <rdnownext.h>
@@ -35,8 +36,8 @@ RLMHost::RLMHost(const QString &path,const QString &arg,
 		 QSocketDevice *udp_socket,QObject *parent)
   : QObject(parent)
 {
-  plugin_path=RDDateDecode(path,QDate::currentDate(),rdstation_conf,air_config);
-  plugin_arg=RDDateDecode(arg,QDate::currentDate(),rdstation_conf,air_config);
+  plugin_path=RDDateDecode(path,QDate::currentDate(),rda->station(),rda->config());
+  plugin_arg=RDDateDecode(arg,QDate::currentDate(),rda->station(),rda->config());
   plugin_udp_socket=udp_socket;
   plugin_handle=NULL;
   plugin_start_sym=NULL;
@@ -86,7 +87,7 @@ void RLMHost::sendEvent(const QString &svcname,const QString &logname,
     struct rlm_pad *now=new struct rlm_pad;
     struct rlm_pad *next=new struct rlm_pad;
     memset(svc,0,sizeof(struct rlm_svc));
-    RDSvc *service=new RDSvc(svcname,rdstation_conf,air_config);
+    RDSvc *service=new RDSvc(svcname,rda->station(),rda->config());
     if(!svcname.isEmpty()) {
       sprintf(svc->svc_name,"%s",(const char *)svcname.left(255));
       if(!service->programCode().isEmpty()) {

@@ -552,7 +552,7 @@ Final</translation>
     </message>
     <message>
         <source>Database Error</source>
-        <translation>Error en la base de datos</translation>
+        <translation type="obsolete">Error en la base de datos</translation>
     </message>
     <message>
         <source>ADD</source>
@@ -634,6 +634,10 @@ LISTA</translation>
     </message>
     <message>
         <source>Unable to lock all memory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
