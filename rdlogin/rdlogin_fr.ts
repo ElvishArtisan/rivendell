@@ -6,14 +6,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>rdlogin : </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Can&apos;t Connect</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Current User: unknown</source>
         <translation type="unfinished"></translation>
     </message>
@@ -48,6 +40,10 @@ User</source>
     </message>
     <message>
         <source>Invalid Username or Password!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -2,7 +2,7 @@
 //
 // The User Login/Logout Utility for Rivendell.
 //
-//   (C) Copyright 2002-2008,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2008,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -30,16 +30,15 @@
 #include <qtextcodec.h>
 #include <qtranslator.h>
 
+#include <dbversion.h>
 #include <rd.h>
-#include <rduser.h>
-#include <rdripc.h>
+#include <rdapplication.h>
 #include <rdcheck_daemons.h>
 #include <rdcmd_switch.h>
-#include <rddbheartbeat.h>
 #include <rddb.h>
-#include <dbversion.h>
+#include <rddbheartbeat.h>
 
-#include <rdlogin.h>
+#include "rdlogin.h"
 
 //
 // Icons
@@ -54,8 +53,7 @@ MainWidget::MainWidget(QWidget *parent)
   QString str;
   QString sql;
   RDSqlQuery *q;
-  bool skip_db_check=false;
-  unsigned schema=0;
+  QString err_msg;
 
   //
   // Read Command Options
@@ -63,7 +61,6 @@ MainWidget::MainWidget(QWidget *parent)
   RDCmdSwitch *cmd=new RDCmdSwitch(qApp->argc(),qApp->argv(),"rdlogin","\n");
   for(unsigned i=0;i<cmd->keys();i++) {
     if(cmd->key(i)=="--skip-db-check") {
-      skip_db_check=true;
     }
   }
   delete cmd;
@@ -101,50 +98,21 @@ MainWidget::MainWidget(QWidget *parent)
   //
   RDInitializeDaemons();
 
-  //
-  // Load Configs
-  //
-  login_config=new RDConfig();
-  login_config->load();
-  login_config->setModuleName("RDLogin");
-
+  rda=new RDApplication("RDLogin",this);
+  if(!rda->open(&err_msg)) {
+    QMessageBox::critical(this,"RDLogin - "+tr("Error"),err_msg);
+    exit(1);
+  }
   str=QString(tr("RDLogin - Station:"));
-  setCaption(QString().sprintf("%s %s",(const char *)str,
-			       (const char *)login_config->stationName()));
-
-  //
-  // Open Database
-  //
-  QString err(tr("rdlogin : "));
-  login_db = RDInitDb(&schema,&err);
-  if(!login_db) {
-    QMessageBox::warning(this,tr("Can't Connect"),err);
-    exit(0);
-  }
-  if((schema!=RD_VERSION_DATABASE)&&(!skip_db_check)) {
-    fprintf(stderr,"rdlogin: database version mismatch, should be %u, is %u\n",
-	    RD_VERSION_DATABASE,schema);
-    exit(256);
-  }
-
-  //
-  // Station
-  //
-  login_station=new RDStation(login_config->stationName());
+  setCaption(str+" "+rda->config()->stationName());
 
   //
   // RIPC Connection
   //
-  login_ripc=new RDRipc(login_station,login_config,this);
-  connect(login_ripc,SIGNAL(connected(bool)),this,SLOT(connectedData(bool)));
-  connect(login_ripc,SIGNAL(userChanged()),this,SLOT(userData()));
-  login_ripc->connectHost("localhost",RIPCD_TCP_PORT,
-			  login_config->password());
-
-  //
-  // System
-  //
-  login_system=new RDSystem();
+  connect(rda->ripc(),SIGNAL(connected(bool)),this,SLOT(connectedData(bool)));
+  connect(rda->ripc(),SIGNAL(userChanged()),this,SLOT(userData()));
+  rda->ripc()->connectHost("localhost",RIPCD_TCP_PORT,
+			  rda->config()->password());
 
   //
   // User Label
@@ -178,7 +146,7 @@ MainWidget::MainWidget(QWidget *parent)
   login_username_label=new QLabel(login_username_box,tr("&Username:"),this);
   login_username_label->setFont(small_label_font);
   login_username_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
-  if(login_system->showUserList()) {
+  if(rda->system()->showUserList()) {
     login_username_edit->hide();
   }
   else {
@@ -226,9 +194,6 @@ MainWidget::MainWidget(QWidget *parent)
 
 MainWidget::~MainWidget()
 {
-  delete login_db;
-  delete login_ripc;
-  delete login_station;
   delete login_label;
   delete login_username_box;
   delete login_password_edit;
@@ -258,7 +223,7 @@ void MainWidget::userData()
 
   str=QString(tr("Current User:"));
   login_label->setText(QString().sprintf("%s %s",(const char *)str,
-					 (const char *)login_ripc->user()));
+					 (const char *)rda->ripc()->user()));
   resizeEvent(NULL);
 }
 
@@ -267,18 +232,18 @@ void MainWidget::loginData()
 {
   RDUser *user;
 
-  if(login_system->showUserList()) {
+  if(rda->system()->showUserList()) {
     user=new RDUser(login_username_box->currentText());
   }
   else {
     user=new RDUser(login_username_edit->text());
   }
   if(user->exists()&&user->checkPassword(login_password_edit->text(),false)) {
-    if(login_system->showUserList()) {
-      login_ripc->setUser(login_username_box->currentText());
+    if(rda->system()->showUserList()) {
+      rda->ripc()->setUser(login_username_box->currentText());
     }
     else {
-      login_ripc->setUser(login_username_edit->text());
+      rda->ripc()->setUser(login_username_edit->text());
     }
     login_password_edit->clear();
     delete user;
@@ -294,8 +259,8 @@ void MainWidget::loginData()
 
 void MainWidget::logoutData()
 {
-  QString default_name=login_station->defaultName();
-  login_ripc->setUser(default_name);
+  QString default_name=rda->station()->defaultName();
+  rda->ripc()->setUser(default_name);
   login_password_edit->clear();
   for(int i=0;i<login_username_box->count();i++) {
     if(login_username_box->text(i)==default_name) {
@@ -316,7 +281,6 @@ void MainWidget::cancelData()
 
 void MainWidget::quitMainWidget()
 {
-  login_db->removeDatabase(login_config->mysqlDbname());
   qApp->quit();
 }
 
