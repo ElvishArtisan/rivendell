@@ -109,7 +109,10 @@ MainWidget::MainWidget(QWidget *parent)
   RDInitializeDaemons();
 #endif  // WIN32
 
-  rda=new RDApplication("RDLogManager",this);
+  //
+  // Open the Database
+  //
+  rda=new RDApplication("RDLogManager","rdlogmanager",RDLOGMANAGER_USAGE,this);
   if(!rda->open(&err_msg)) {
     QMessageBox::critical(this,"RDLogManager - "+tr("Error"),err_msg);
     exit(1);
@@ -387,7 +390,6 @@ int main(int argc,char *argv[])
       cmd->setProcessed(i,true);
     }
     if(cmd->key(i)=="--skip-db-check") {
-      skip_db_check=true;
       cmd->setProcessed(i,true);
     }
     if (cmd->key(i)=="-s") {
@@ -397,7 +399,7 @@ int main(int argc,char *argv[])
       }
       else {
 	fprintf(stderr,"rdlogmanager: missing argument to \"-s\"\n");
-	exit(256);
+	exit(2);
       }
     }
     if (cmd->key(i)=="-r") {
@@ -407,7 +409,7 @@ int main(int argc,char *argv[])
       }
       else {
 	fprintf(stderr,"rdlogmanager: missing argument to \"-r\"\n");
-	exit(256);
+	exit(2);
       }
     }
     if (cmd->key(i)=="-d") {
@@ -417,7 +419,7 @@ int main(int argc,char *argv[])
       }
       else {
 	fprintf(stderr,"rdlogmanager: missing argument to \"-d\"\n");
-	exit(256);
+	exit(2);
       }
     }
     if (cmd->key(i)=="-e") {
@@ -427,8 +429,13 @@ int main(int argc,char *argv[])
       }
       else {
 	fprintf(stderr,"rdlogmanager: missing argument to \"-e\"\n");
-	exit(256);
+	exit(2);
       }
+    }
+    if(!cmd->processed(i)) {
+      fprintf(stderr,"rdlogmanager: unknown command option \"%s\"\n",
+	      (const char *)cmd->key(i));
+      exit(2);
     }
   }
   delete cmd;

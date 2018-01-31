@@ -133,27 +133,40 @@ MainWidget::MainWidget(QWidget *parent)
   air_startup_datetime=QDateTime(QDate::currentDate(),QTime::currentTime());
 
   //
+  // Ensure that system daemons are running
+  //
+  RDInitializeDaemons();
+
+  //
+  // Open the Database
+  //
+  rda=new RDApplication("RDAirPlay","rdairplay",RDAIRPLAY_USAGE,this);
+  if(!rda->open(&err_msg)) {
+    QMessageBox::critical(this,"RDAirPlay - "+tr("Error"),err_msg);
+    exit(1);
+  }
+  connect(RDDbStatus(),SIGNAL(logText(RDConfig::LogPriority,const QString &)),
+	  this,SLOT(logLine(RDConfig::LogPriority,const QString &))); 
+
+
+  //
   // Read Command Options
   //
   QString lineno;
-  RDCmdSwitch *cmd=new RDCmdSwitch(qApp->argc(),qApp->argv(),"rdairplay",
-				   RDAIRPLAY_USAGE);
-  for(unsigned i=0;i<cmd->keys();i++) {
-    if(cmd->key(i)=="--skip-db-check") {
-    }
-  }
   for(unsigned i=0;i<RDAIRPLAY_LOG_QUANTITY;i++) {
     air_start_line[i]=0;
     air_start_start[i]=false;
-    for(unsigned j=0;j<cmd->keys();j++) {
-      if(cmd->key(j)==QString().sprintf("--log%u",i+1)) {
-	air_start_logname[i]=cmd->value(j);
-	for(unsigned k=0;k<cmd->value(j).length();k++) {
-	  if(cmd->value(j).at(k)==QChar(':')) {
+    for(unsigned j=0;j<rda->cmdSwitch()->keys();j++) {
+      if(rda->cmdSwitch()->key(j)==QString().sprintf("--log%u",i+1)) {
+	air_start_logname[i]=rda->cmdSwitch()->value(j);
+	for(unsigned k=0;k<rda->cmdSwitch()->value(j).length();k++) {
+	  if(rda->cmdSwitch()->value(j).at(k)==QChar(':')) {
 	    air_start_logname[i]=
-	      RDDateTimeDecode(cmd->value(j).left(k),air_startup_datetime,
+	      RDDateTimeDecode(rda->cmdSwitch()->value(j).left(k),
+			       air_startup_datetime,
 			       rda->station(),rda->config());
-	    lineno=cmd->value(j).right(cmd->value(j).length()-(k+1));
+	    lineno=rda->cmdSwitch()->value(j).right(rda->cmdSwitch()->value(j).
+						    length()-(k+1));
 	    if(lineno.right(1)=="+") {
 	      air_start_start[i]=true;
 	      lineno=lineno.left(lineno.length()-1);
@@ -161,10 +174,18 @@ MainWidget::MainWidget(QWidget *parent)
 	    air_start_line[i]=lineno.toInt();
 	  }
 	}
+	rda->cmdSwitch()->setProcessed(j,true);
       }
     }
   }
-  delete cmd;
+  for(unsigned i=0;i<rda->cmdSwitch()->keys();i++) {
+    if(!rda->cmdSwitch()->processed(i)) {
+      QMessageBox::critical(this,"RDAirPlay - "+tr("Error"),
+			    tr("Unknown command option")+": "+
+			    rda->cmdSwitch()->key(i));
+      exit(2);
+    }
+  }
 
   //
   // Fix the Window Size
@@ -203,27 +224,12 @@ MainWidget::MainWidget(QWidget *parent)
 
   air_start_next=false;
   air_next_button=0;
-
-  //
-  // Ensure that system daemons are running
-  //
-  RDInitializeDaemons();
-
   air_action_mode=StartButton::Play;
-
-  rda=new RDApplication("RDAirPlay",this);
-  if(!rda->open(&err_msg)) {
-    QMessageBox::critical(this,"RDAirPlay - "+tr("Error"),err_msg);
-    exit(1);
-  }
 
   logfile=rda->config()->airplayLogname();
 
   str=QString("RDAirPlay")+" v"+VERSION+" - "+tr("Host:");
   setCaption(str+" "+rda->config()->stationName());
-
-  connect (RDDbStatus(),SIGNAL(logText(RDConfig::LogPriority,const QString &)),
-	   this,SLOT(logLine(RDConfig::LogPriority,const QString &))); 
 
   //
   // Master Clock Timer

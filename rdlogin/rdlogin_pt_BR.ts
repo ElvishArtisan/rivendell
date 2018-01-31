@@ -60,5 +60,9 @@ Padrão</translation>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Unknown command option</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 </TS>

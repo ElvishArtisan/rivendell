@@ -25,6 +25,7 @@
 
 #include <rdairplay_conf.h>
 #include <rdcae.h>
+#include <rdcmd_switch.h>
 #include <rdconfig.h>
 #include <rddb.h>
 #include <rddbheartbeat.h>
@@ -39,11 +40,13 @@ class RDApplication : public QObject
 {
   Q_OBJECT;
  public:
-  RDApplication(const QString &module_name,QObject *parent=0);
+  RDApplication(const QString &module_name,const QString &cmdname,
+		const QString &usage,QObject *parent=0);
   ~RDApplication();
   bool open(QString *err_msg);
   RDAirPlayConf *airplayConf();
   RDCae *cae();
+  RDCmdSwitch *cmdSwitch();
   RDConfig *config();
   RDLibraryConf *libraryConf();
   RDLogeditConf *logeditConf();
@@ -57,6 +60,7 @@ class RDApplication : public QObject
   RDAirPlayConf *app_airplay_conf;
   RDAirPlayConf *app_panel_conf;
   RDCae *app_cae;
+  RDCmdSwitch *app_cmd_switch;
   RDConfig  *app_config;
   RDLibraryConf *app_library_conf;
   RDLogeditConf *app_logedit_conf;
@@ -65,8 +69,9 @@ class RDApplication : public QObject
   RDSystem *app_system;
   RDUser *app_user;
   RDDbHeartbeat *app_heartbeat;
-  QString app_command_name;
   QString app_module_name;
+  QString app_command_name;
+  QString app_usage;
 };
 
 extern RDApplication *rda;

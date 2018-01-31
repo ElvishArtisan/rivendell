@@ -42,7 +42,6 @@
 #include <rdaudio_port.h>
 #include <rdcatch.h>
 #include <rdcheck_daemons.h>
-#include <rdcmd_switch.h>
 #include <rdconf.h>
 #include <rdcut.h>
 #include <rdcut_path.h>
@@ -113,24 +112,42 @@ MainWidget::MainWidget(QWidget *parent)
 {
   QString str;
   QString err_msg;
+
+  catch_resize=false;
   catch_host_warnings=false;
   catch_audition_stream=-1;
 
   catch_scroll=false;
 
   //
+  // Ensure the system daemons are running
+  //
+  RDInitializeDaemons();
+
+  //
+  // Open the Database
+  //
+  rda=new RDApplication("RDCatch","rdcatch",RDCATCH_USAGE,this);
+  if(!rda->open(&err_msg)) {
+    QMessageBox::critical(this,"RDCatch - "+tr("Error"),err_msg);
+    exit(1);
+  }
+
+  //
   // Read Command Options
   //
-  RDCmdSwitch *cmd=new RDCmdSwitch(qApp->argc(),qApp->argv(),"rdcatch",
-				   RDCATCH_USAGE);
-  for(unsigned i=0;i<cmd->keys();i++) {
-    if(cmd->key(i)=="--offline-host-warnings") {
-      catch_host_warnings=RDBool(cmd->value(i));
+  for(unsigned i=0;i<rda->cmdSwitch()->keys();i++) {
+    if(rda->cmdSwitch()->key(i)=="--offline-host-warnings") {
+      catch_host_warnings=RDBool(rda->cmdSwitch()->value(i));
+      rda->cmdSwitch()->setProcessed(i,true);
     }
-    if(cmd->key(i)=="--skip-db-check") {
+    if(!rda->cmdSwitch()->processed(i)) {
+      QMessageBox::critical(this,"RDCatch - "+tr("Error"),
+			    tr("Unknown command option")+": "+
+			    rda->cmdSwitch()->key(i));
+      exit(2);
     }
   }
-  delete cmd;
 
   //
   // Fix the Window Size
@@ -183,22 +200,12 @@ MainWidget::MainWidget(QWidget *parent)
 			backgroundColor());
   catch_scroll_color[1]=QPalette(backgroundColor(),backgroundColor());
 
-  //
-  // Ensure the system daemons are running
-  //
-  RDInitializeDaemons();
-
-  rda=new RDApplication("RDCatch",this);
-  if(!rda->open(&err_msg)) {
-    QMessageBox::critical(this,"RDCatch - "+tr("Error"),err_msg);
-    exit(1);
-  }
-
   str=QString("RDCatch")+" v"+VERSION+" - "+tr("Host")+":";
   setCaption(str+" "+rda->config()->stationName());
 
   connect(RDDbStatus(),SIGNAL(logText(RDConfig::LogPriority,const QString &)),
 	  this,SLOT(log(RDConfig::LogPriority,const QString &)));
+
   //
   // Allocate Global Resources
   //
@@ -321,11 +328,6 @@ order by CHANNEL",(const char *)q->value(0).toString().lower());
   if(catch_monitor.size()==0) {
     catch_monitor_view->hide();
   }
-
-  //
-  // User
-  //
-  //  catch_user=NULL;
 
   //
   // Filter Selectors
@@ -577,6 +579,8 @@ order by CHANNEL",(const char *)q->value(0).toString().lower());
   QTimer *timer=new QTimer(this);
   connect(timer,SIGNAL(timeout()),this,SLOT(resizeData()));
   timer->start(1,true);
+
+  catch_resize=true;
 }
 
 void MainWidget::log(RDConfig::LogPriority prio,const QString &msg)
@@ -1388,6 +1392,9 @@ void MainWidget::closeEvent(QCloseEvent *e)
 
 void MainWidget::resizeEvent(QResizeEvent *e)
 {
+  if(!catch_resize) {
+    return;
+  }
   assert (e);
   assert (catch_monitor_view);
   if(catch_monitor.size()<=RDCATCH_MAX_VISIBLE_MONITORS) {

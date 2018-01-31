@@ -101,18 +101,10 @@ MainWidget::MainWidget(QWidget *parent)
 {
   QString str1;
   QString str2;
-  log_log_list=NULL;
   QString err_msg;
 
-  //
-  // Read Command Options
-  //
-  RDCmdSwitch *cmd=new RDCmdSwitch(qApp->argc(),qApp->argv(),"rdlogedit","\n");
-  for(unsigned i=0;i<cmd->keys();i++) {
-    if(cmd->key(i)=="--skip-db-check") {
-    }
-  }
-  delete cmd;
+  log_resize=false;
+  log_log_list=NULL;
 
   //
   // Fix the Window Size
@@ -127,12 +119,27 @@ MainWidget::MainWidget(QWidget *parent)
   RDInitializeDaemons();
 #endif  // WIN32
 
-  rda=new RDApplication("RDLogEdit",this);
+  //
+  // Open the Database
+  //
+  rda=new RDApplication("RDLogEdit","rdlogedit",RDLOGEDIT_USAGE,this);
   if(!rda->open(&err_msg)) {
     QMessageBox::critical(this,"RDLogEdit - "+tr("Error"),err_msg);
     exit(1);
   }
   log_import_path=RDGetHomeDir();
+
+  //
+  // Read Command Options
+  //
+  for(unsigned i=0;i<rda->cmdSwitch()->keys();i++) {
+    if(!rda->cmdSwitch()->processed(i)) {
+      QMessageBox::critical(this,"RDLogEdit - "+tr("Error"),
+			    tr("Unknown command option")+": "+
+			    rda->cmdSwitch()->key(i));
+      exit(2);
+    }
+  }
 
   //
   // CAE Connection
@@ -298,6 +305,8 @@ MainWidget::MainWidget(QWidget *parent)
   setCaption(QString().sprintf("%s: %s, %s",(const char *)str1,
 			       (const char *)rda->config()->stationName(),
 			       (const char *)str2));
+
+  log_resize=true;
 }
 
 
@@ -680,7 +689,7 @@ void MainWidget::quitMainWidget()
 
 void MainWidget::resizeEvent(QResizeEvent *e)
 {
-  if(log_log_list==NULL) {
+  if((log_log_list==NULL)||(!log_resize)) {
     return;
   }
   log_filter_widget->setGeometry(10,10,size().width()-10,

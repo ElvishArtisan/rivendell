@@ -26,12 +26,12 @@
 #include <qobject.h>
 #include <qtimer.h>
 
-#include <rdconfig.h>
 #include <rdcheck_daemons.h>
+#include <rdconfig.h>
 
 #include "replfactory.h"
 
-#define RDREPLD_USAGE "[-d][--event-id=<id>]\n\nOptions:\n\n-d\n     Set 'debug' mode, causing rdrepld(8) to stay in the foreground\n     and print debugging info on standard output.\n\n" 
+#define RDREPLD_USAGE "[-d]\n\nOptions:\n\n-d\n     Set 'debug' mode, causing rdrepld(8) to stay in the foreground\n     and print debugging info on standard output.\n\n" 
 #define RD_RDREPLD_PID "rdrepl.pid"
 #define RD_RDREPL_SCAN_INTERVAL 10000
 

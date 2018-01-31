@@ -30,6 +30,8 @@
 #include <qlabel.h>
 #include <qpushbutton.h>
 
+#define RDLOGIN_USAGE "\n"
+
 class MainWidget : public QWidget
 {
   Q_OBJECT
@@ -63,6 +65,7 @@ class MainWidget : public QWidget
   QPushButton *logout_button;
   QPushButton *cancel_button;
   int login_user_width;
+  bool login_resize;
 };
 
 

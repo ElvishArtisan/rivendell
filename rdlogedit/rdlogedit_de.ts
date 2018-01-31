@@ -937,6 +937,10 @@ Fortfahren?</translation>
         <source>is in use by</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Unknown command option</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RenderDialog</name>

@@ -2,7 +2,7 @@
 //
 // The Production Utility for Rivendell.
 //
-//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2004,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -147,7 +147,8 @@ class MainWidget : public QWidget
   bool lib_edit_pending;
   bool lib_user_changed;
   QTimer *lib_user_timer;
+  bool lib_resize;
 };
 
 
-#endif 
+#endif  // RDLIBRARY_H

@@ -46,7 +46,6 @@
 #include <rdaudio_port.h>
 #include <rdcart_search_text.h>
 #include <rdcheck_daemons.h>
-#include <rdcmd_switch.cpp>
 #include <rdconf.h>
 #include <rdescape_string.h>
 #include <rdmixer.h>
@@ -89,31 +88,10 @@ MainWidget::MainWidget(QWidget *parent)
 {
   QString err_msg;
 
+  lib_resize=false;
   profile_ripping=false;
   lib_edit_pending=false;
   lib_user_changed=false;
-
-  //
-  // Read Command Options
-  //
-  RDCmdSwitch *cmd=
-    new RDCmdSwitch(qApp->argc(),qApp->argv(),"rdlibrary",RDLIBRARY_USAGE);
-  for(unsigned i=0;i<cmd->keys();i++) {
-    if(cmd->key(i)=="--skip-db-check") {
-      cmd->setProcessed(i,true);
-    }
-    if(cmd->key(i)=="--profile-ripping") {
-      profile_ripping=true;
-      cmd->setProcessed(i,true);
-    }
-    if(!cmd->processed(i)) {
-      QMessageBox::warning(this,"RDLibrary - "+tr("Error"),
-			   tr("Unknown command-line option")+
-			   " \""+cmd->key(i)+"\".");
-      exit(256);
-    }
-  }
-  delete cmd;
 
   //
   // Fix the Window Size
@@ -166,11 +144,31 @@ MainWidget::MainWidget(QWidget *parent)
   //
   RDInitializeDaemons();
 
-  rda=new RDApplication("RDLibrary",this);
+  //
+  // Open the Database
+  //
+  rda=new RDApplication("RDLibrary","rdlibrary",RDLIBRARY_USAGE,this);
   if(!rda->open(&err_msg)) {
     QMessageBox::critical(this,"RDLibrary - "+tr("Error"),err_msg);
     exit(1);
   }
+
+  //
+  // Read Command Options
+  //
+  for(unsigned i=0;i<rda->cmdSwitch()->keys();i++) {
+    if(rda->cmdSwitch()->key(i)=="--profile-ripping") {
+      profile_ripping=true;
+      rda->cmdSwitch()->setProcessed(i,true);
+    }
+    if(!rda->cmdSwitch()->processed(i)) {
+      QMessageBox::critical(this,"RDLibrary - "+tr("Error"),
+			    tr("Unknown command option")+": "+
+			    rda->cmdSwitch()->key(i));
+      exit(2);
+    }
+  }
+
   SetCaption("");
   lib_import_path=RDGetHomeDir();
 
@@ -465,6 +463,8 @@ MainWidget::MainWidget(QWidget *parent)
     lib_showmatches_box->setChecked(rda->libraryConf()->searchLimited());
     break;
   }
+
+  lib_resize=true;
 
   LoadGeometry();
 }
@@ -910,7 +910,8 @@ void MainWidget::closeEvent(QCloseEvent *e)
 
 void MainWidget::resizeEvent(QResizeEvent *e)
 {
-  switch(lib_filter_mode) {
+  if(lib_resize) {
+    switch(lib_filter_mode) {
     case RDStation::FilterSynchronous:
       lib_filter_edit->setGeometry(70,10,e->size().width()-170,20);
       break;
@@ -919,37 +920,38 @@ void MainWidget::resizeEvent(QResizeEvent *e)
       lib_search_button->setGeometry(e->size().width()-180,10,80,50);
       lib_filter_edit->setGeometry(70,10,e->size().width()-260,20);
       break;
+    }
+    lib_clear_button->setGeometry(e->size().width()-90,10,80,50);
+    lib_filter_label->setGeometry(10,10,55,20);
+    lib_group_box->setGeometry(70,40,120,20);
+    lib_group_label->setGeometry(10,40,55,20);
+    lib_codes_box->setGeometry(330,40,120,20);
+    lib_codes_label->setGeometry(195,40,130,20);
+    lib_allowdrag_box->setGeometry(470,42,15,15);
+    lib_allowdrag_label->setGeometry(490,40,130,20);
+    lib_showaudio_box->setGeometry(70,67,15,15);
+    lib_showaudio_label->setGeometry(90,65,130,20);
+    lib_showmacro_box->setGeometry(230,67,15,15);
+    lib_showmacro_label->setGeometry(250,65,130,20);
+    lib_shownotes_box->setGeometry(390,67,15,15);
+    lib_shownotes_label->setGeometry(410,65,130,20);
+    lib_showmatches_box->setGeometry(550,67,15,15);
+    lib_showmatches_label->setGeometry(570,65,200,20);
+    lib_cart_list->
+      setGeometry(10,90,e->size().width()-20,e->size().height()-155);
+    lib_add_button->setGeometry(10,e->size().height()-60,80,50);
+    lib_edit_button->setGeometry(100,e->size().height()-60,80,50);
+    lib_delete_button->setGeometry(190,e->size().height()-60,80,50);
+    disk_gauge->setGeometry(285,e->size().height()-55,
+			    e->size().width()-585,
+			    disk_gauge->sizeHint().height());
+    lib_rip_button->
+      setGeometry(e->size().width()-290,e->size().height()-60,80,50);
+    lib_reports_button->
+      setGeometry(e->size().width()-200,e->size().height()-60,80,50);
+    lib_close_button->setGeometry(e->size().width()-90,e->size().height()-60,
+				  80,50);
   }
-  lib_clear_button->setGeometry(e->size().width()-90,10,80,50);
-  lib_filter_label->setGeometry(10,10,55,20);
-  lib_group_box->setGeometry(70,40,120,20);
-  lib_group_label->setGeometry(10,40,55,20);
-  lib_codes_box->setGeometry(330,40,120,20);
-  lib_codes_label->setGeometry(195,40,130,20);
-  lib_allowdrag_box->setGeometry(470,42,15,15);
-  lib_allowdrag_label->setGeometry(490,40,130,20);
-  lib_showaudio_box->setGeometry(70,67,15,15);
-  lib_showaudio_label->setGeometry(90,65,130,20);
-  lib_showmacro_box->setGeometry(230,67,15,15);
-  lib_showmacro_label->setGeometry(250,65,130,20);
-  lib_shownotes_box->setGeometry(390,67,15,15);
-  lib_shownotes_label->setGeometry(410,65,130,20);
-  lib_showmatches_box->setGeometry(550,67,15,15);
-  lib_showmatches_label->setGeometry(570,65,200,20);
-  lib_cart_list->
-    setGeometry(10,90,e->size().width()-20,e->size().height()-155);
-  lib_add_button->setGeometry(10,e->size().height()-60,80,50);
-  lib_edit_button->setGeometry(100,e->size().height()-60,80,50);
-  lib_delete_button->setGeometry(190,e->size().height()-60,80,50);
-  disk_gauge->setGeometry(285,e->size().height()-55,
-			  e->size().width()-585,
-			  disk_gauge->sizeHint().height());
-  lib_rip_button->
-    setGeometry(e->size().width()-290,e->size().height()-60,80,50);
-  lib_reports_button->
-    setGeometry(e->size().width()-200,e->size().height()-60,80,50);
-  lib_close_button->setGeometry(e->size().width()-90,e->size().height()-60,
-				80,50);
 }
 
 

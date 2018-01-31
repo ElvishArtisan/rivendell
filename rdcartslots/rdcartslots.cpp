@@ -36,7 +36,6 @@
 #include <rd.h>
 #include <rdapplication.h>
 #include <rdcheck_daemons.h>
-#include <rdcmd_switch.h>
 #include <rddbheartbeat.h>
 
 #include "rdcartslots.h"
@@ -58,19 +57,24 @@ MainWidget::MainWidget(QWidget *parent)
   mfont.setPixelSize(12);
   qApp->setFont(mfont);
 
-  rda=new RDApplication("RDCartSlots",this);
+  //
+  // Open the Database
+  //
+  rda=new RDApplication("RDCartSlots","rdcartslots",RDCARTSLOTS_USAGE,this);
   if(!rda->open(&err_msg)) {
     QMessageBox::critical(this,"RDCartSlots - "+tr("Error"),err_msg);
     exit(1);
   }
 
   //
-  // Load the command-line arguments
+  // Read Command Options
   //
-  RDCmdSwitch *cmd=new RDCmdSwitch(qApp->argc(),qApp->argv(),"rdcartslots",
-				   RDCARTSLOTS_USAGE);
-  for(unsigned i=0;i<cmd->keys();i++) {
-    if(cmd->key(i)=="--skip-db-check") {
+  for(unsigned i=0;i<rda->cmdSwitch()->keys();i++) {
+    if(!rda->cmdSwitch()->processed(i)) {
+      QMessageBox::critical(this,"RDCartSlots - "+tr("Error"),
+			    tr("Unknown command option")+": "+
+			    rda->cmdSwitch()->key(i));
+      exit(2);
     }
   }
 

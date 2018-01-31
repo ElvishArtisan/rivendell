@@ -63,15 +63,7 @@ MainObject::MainObject(QObject *parent)
 {
   QString err_msg;
 
-  //
-  // Read Command Options
-  //
-  RDCmdSwitch *cmd=
-    new RDCmdSwitch(qApp->argc(),qApp->argv(),"rdrepld",RDREPLD_USAGE);
-  for(unsigned i=0;i<cmd->keys();i++) {
-    if(cmd->key(i)=="--skip-db-check") {
-    }
-  }
+  debug=false;
 
   //
   // Make sure we're the only instance running
@@ -81,16 +73,29 @@ MainObject::MainObject(QObject *parent)
     exit(1);
   }
 
-  rda=new RDApplication("rdrepld",this);
+  //
+  // Open the Database
+  //
+  rda=new RDApplication("rdrepld","rdrepld",RDREPLD_USAGE,this);
   if(!rda->open(&err_msg)) {
     fprintf(stderr,"rdrepld: %s\n",(const char *)err_msg);
     exit(1);
   }
 
   //
-  // Initialize Data Structures
+  // Read Command Options
   //
-  debug=false;
+  for(unsigned i=0;i<rda->cmdSwitch()->keys();i++) {
+    if(rda->cmdSwitch()->key(i)=="-d") {
+      debug=true;
+      rda->cmdSwitch()->setProcessed(i,true);
+    }
+    if(!rda->cmdSwitch()->processed(i)) {
+      fprintf(stderr,"rdrepld: unknown command option \"%s\"\n",
+	      (const char *)rda->cmdSwitch()->key(i));
+      exit(2);
+    }
+  }
 
   //
   // Calculate Temporary Directory
@@ -115,7 +120,7 @@ MainObject::MainObject(QObject *parent)
   ::signal(SIGTERM,SigHandler);
   ::signal(SIGCHLD,SigHandler);
   if(!RDWritePid(RD_PID_DIR,"rdrepld.pid")) {
-    printf("rdrepld: aborting - can't write pid file\n");
+    fprintf(stderr,"rdrepld: aborting - can't write pid file\n");
     exit(1);
   }
 

@@ -29,14 +29,18 @@
 
 RDApplication *rda=NULL;
 
-RDApplication::RDApplication(const QString &module_name,QObject *parent)
+RDApplication::RDApplication(const QString &module_name,const QString &cmdname,
+			     const QString &usage,QObject *parent)
   : QObject(parent)
 {
   app_module_name=module_name;
+  app_command_name=cmdname;
+  app_usage=usage;
 
   app_heartbeat=NULL;
   app_airplay_conf=NULL;
   app_cae=NULL;
+  app_cmd_switch=NULL;
   app_config=NULL;
   app_library_conf=NULL;
   app_logedit_conf=NULL;
@@ -80,6 +84,9 @@ RDApplication::~RDApplication()
   if(app_cae!=NULL) {
     delete app_cae;
   }
+  if(app_cmd_switch!=NULL) {
+    delete app_cmd_switch;
+  }
   if(app_ripc!=NULL) {
     delete app_ripc;
   }
@@ -95,14 +102,14 @@ bool RDApplication::open(QString *err_msg)
   //
   // Read command switches
   //
-  RDCmdSwitch *cmd=new RDCmdSwitch(qApp->argc(),qApp->argv(),"","");
-  for(unsigned i=0;i<cmd->keys();i++) {
-    if(cmd->key(i)=="--skip-db-check") {
+  app_cmd_switch=new RDCmdSwitch(qApp->argc(),qApp->argv(),app_command_name,
+				 app_usage);
+  for(unsigned i=0;i<app_cmd_switch->keys();i++) {
+    if(app_cmd_switch->key(i)=="--skip-db-check") {
       skip_db_check=true;
-      cmd->setProcessed(i,true);
+      app_cmd_switch->setProcessed(i,true);
     }
   }
-  delete cmd;
 
   //
   // Open rd.conf(5)
@@ -154,6 +161,12 @@ RDAirPlayConf *RDApplication::airplayConf()
 RDCae *RDApplication::cae()
 {
   return app_cae;
+}
+
+
+RDCmdSwitch *RDApplication::cmdSwitch()
+{
+  return app_cmd_switch;
 }
 
 

@@ -49,7 +49,9 @@ int RunLogOperation(int argc,char *argv[],const QString &svcname,
 
   QApplication a(argc,argv,false);
 
-  rda=new RDApplication("RDLogManager");
+  //
+  // Open the Database
+  rda=new RDApplication("RDLogManager","rdlogmanager",RDLOGMANAGER_USAGE);
   if(!rda->open(&err_msg)) {
     fprintf(stderr,"rdlogmanager: %s\n",(const char *)err_msg);
     exit(1);
@@ -197,7 +199,7 @@ int RunReportOperation(int argc,char *argv[],const QString &rptname,
     return 256;
   }
 
-  rda=new RDApplication("RDLogManager");
+  rda=new RDApplication("RDLogManager","rdlogmanager",RDLOGMANAGER_USAGE);
   if(!rda->open(&err_msg)) {
     fprintf(stderr,"rdlogmanager: %s\n",(const char *)err_msg);
     exit(1);

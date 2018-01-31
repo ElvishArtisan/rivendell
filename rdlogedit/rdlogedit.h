@@ -2,7 +2,7 @@
 //
 // The Log Editor Utility for Rivendell.
 //
-//   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -36,13 +36,15 @@
 #include <qcombobox.h>
 #include <qlabel.h>
 
-#include <rdlogfilter.h>
-#include <rduser.h>
-#include <rdripc.h>
 #include <rdlibrary_conf.h>
 #include <rdlog_line.h>
+#include <rdlogfilter.h>
+#include <rdripc.h>
+#include <rduser.h>
 
-#include <list_listviewitem.h>
+#include "list_listviewitem.h"
+
+#define RDLOGEDIT_USAGE "\n"
 
 class MainWidget : public QMainWindow
 {
@@ -98,6 +100,7 @@ class MainWidget : public QMainWindow
   QString log_filter;
   QString log_group;
   QString log_schedcode;
+  bool log_resize;
 };
 
 

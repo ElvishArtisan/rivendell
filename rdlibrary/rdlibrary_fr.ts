@@ -1151,15 +1151,15 @@ Do you still want to delete it?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Unknown command-line option</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>ALBUM</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>LABEL</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unknown command option</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

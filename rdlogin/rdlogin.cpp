@@ -48,22 +48,13 @@
 MainWidget::MainWidget(QWidget *parent)
   :QWidget(parent)
 {
+  login_resize=false;
   login_user_width=160;
 
   QString str;
   QString sql;
   RDSqlQuery *q;
   QString err_msg;
-
-  //
-  // Read Command Options
-  //
-  RDCmdSwitch *cmd=new RDCmdSwitch(qApp->argc(),qApp->argv(),"rdlogin","\n");
-  for(unsigned i=0;i<cmd->keys();i++) {
-    if(cmd->key(i)=="--skip-db-check") {
-    }
-  }
-  delete cmd;
 
   //
   // Fix the Window Size
@@ -98,11 +89,24 @@ MainWidget::MainWidget(QWidget *parent)
   //
   RDInitializeDaemons();
 
-  rda=new RDApplication("RDLogin",this);
+  rda=new RDApplication("RDLogin","rdlogin",RDLOGIN_USAGE,this);
   if(!rda->open(&err_msg)) {
     QMessageBox::critical(this,"RDLogin - "+tr("Error"),err_msg);
     exit(1);
   }
+
+  //
+  // Read Command Options
+  //
+  for(unsigned i=0;i<rda->cmdSwitch()->keys();i++) {
+    if(!rda->cmdSwitch()->processed(i)) {
+      QMessageBox::critical(this,"RDLogin - "+tr("Error"),
+			    tr("Unknown command option")+": "+
+			    rda->cmdSwitch()->key(i));
+      exit(2);
+    }
+  }
+
   str=QString(tr("RDLogin - Station:"));
   setCaption(str+" "+rda->config()->stationName());
 
@@ -187,6 +191,8 @@ MainWidget::MainWidget(QWidget *parent)
   cancel_button->setFont(button_font);
   cancel_button->setText(tr("&Cancel"));
   connect(cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
+
+  login_resize=true;
 
   resizeEvent(NULL);
 }
@@ -287,15 +293,17 @@ void MainWidget::quitMainWidget()
 
 void MainWidget::resizeEvent(QResizeEvent *e)
 {
-  login_label->setGeometry(0,10,size().width(),21);
-  login_username_box->setGeometry(110,40,size().width()-120,19);
-  login_username_edit->setGeometry(110,40,size().width()-120,19);
-  login_username_label->setGeometry(10,40,85,19);
-  login_password_edit->setGeometry(110,61,size().width()-120,19);
-  login_password_label->setGeometry(10,61,85,19);
-  login_button->setGeometry(size().width()-270,size().height()-60,80,50);
-  logout_button->setGeometry(size().width()-180,size().height()-60,80,50);
-  cancel_button->setGeometry(size().width()-90,size().height()-60,80,50);
+  if(login_resize) {
+    login_label->setGeometry(0,10,size().width(),21);
+    login_username_box->setGeometry(110,40,size().width()-120,19);
+    login_username_edit->setGeometry(110,40,size().width()-120,19);
+    login_username_label->setGeometry(10,40,85,19);
+    login_password_edit->setGeometry(110,61,size().width()-120,19);
+    login_password_label->setGeometry(10,61,85,19);
+    login_button->setGeometry(size().width()-270,size().height()-60,80,50);
+    logout_button->setGeometry(size().width()-180,size().height()-60,80,50);
+    cancel_button->setGeometry(size().width()-90,size().height()-60,80,50);
+  }
 }
 
 

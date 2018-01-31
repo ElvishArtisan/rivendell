@@ -38,7 +38,6 @@
 #include <dbversion.h>
 #include <rd.h>
 #include <rdapplication.h>
-#include <rdcmd_switch.h>
 #include <rdconf.h>
 #include <rddb.h>
 #include <rdescape_string.h>
@@ -69,16 +68,7 @@ MainWidget::MainWidget(QWidget *parent)
   QString str2;
   QString err_msg;
 
-  //
-  // Read Command Options
-  //
-  RDCmdSwitch *cmd=
-    new RDCmdSwitch(qApp->argc(),qApp->argv(),"rdcastmanager","\n");
-  for(unsigned i=0;i<cmd->keys();i++) {
-    if(cmd->key(i)=="--skip-db-check") {
-    }
-  }
-  delete cmd;
+  cast_resize=false;
 
   //
   // Fix the Window Size
@@ -86,12 +76,28 @@ MainWidget::MainWidget(QWidget *parent)
   setMinimumWidth(sizeHint().width());
   setMinimumHeight(sizeHint().height());
 
-
-  rda=new RDApplication("RDCastManager",this);
+  //
+  // Open the Database/
+  //
+  rda=new RDApplication("RDCastManager","rdcastmanager",RDCASTMANAGER_USAGE,
+			this);
   if(!rda->open(&err_msg)) {
     QMessageBox::critical(this,"RDCastManager - "+tr("Error"),err_msg);
     exit(1);
   }
+
+  //
+  // Read Command Options
+  //
+  for(unsigned i=0;i<rda->cmdSwitch()->keys();i++) {
+    if(!rda->cmdSwitch()->processed(i)) {
+      QMessageBox::critical(this,"RDCastManager - "+tr("Error"),
+			    tr("Unknown command option")+": "+
+			    rda->cmdSwitch()->key(i));
+      exit(2);
+    }
+  }
+
   str1=QString("RDCastManager")+" v"+VERSION+" - "+tr("Host");
   str2=QString(tr("User: [Unknown]"));
   setCaption(str1+": "+rda->config()->stationName()+" "+str2);
@@ -165,6 +171,8 @@ MainWidget::MainWidget(QWidget *parent)
   cast_close_button->setFont(button_font);
   cast_close_button->setText(tr("&Close"));
   connect(cast_close_button,SIGNAL(clicked()),this,SLOT(quitMainWidget()));
+
+  cast_resize=true;
 }
 
 
@@ -220,9 +228,11 @@ void MainWidget::quitMainWidget()
 
 void MainWidget::resizeEvent(QResizeEvent *e)
 {
-  cast_feed_list->setGeometry(10,10,size().width()-20,size().height()-70);
-  cast_open_button->setGeometry(10,size().height()-55,80,50);
-  cast_close_button->setGeometry(size().width()-90,size().height()-55,80,50);
+  if(cast_resize) {
+    cast_feed_list->setGeometry(10,10,size().width()-20,size().height()-70);
+    cast_open_button->setGeometry(10,size().height()-55,80,50);
+    cast_close_button->setGeometry(size().width()-90,size().height()-55,80,50);
+  }
 }
 
 

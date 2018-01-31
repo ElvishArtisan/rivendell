@@ -1314,15 +1314,15 @@ verwendet. Trotzdem löschen?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Unknown command-line option</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>ALBUM</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>LABEL</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unknown command option</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -85,16 +85,6 @@ MainWidget::MainWidget(QWidget *parent)
 #endif  // RESIZABLE
 
   //
-  // Load the command-line arguments
-  //
-  RDCmdSwitch *cmd=new RDCmdSwitch(qApp->argc(),qApp->argv(),"rdpanel",
-				   RDPANEL_USAGE);
-  for(unsigned i=0;i<cmd->keys();i++) {
-    if(cmd->key(i)=="--skip-db-check") {
-    }
-  }
-
-  //
   // Generate Fonts
   //
   QFont button_font=QFont("Helvetica",16,QFont::Bold);
@@ -111,10 +101,25 @@ MainWidget::MainWidget(QWidget *parent)
   //
   RDInitializeDaemons();
 
-  rda=new RDApplication("RDPanel",this);
+  //
+  // Open the Database
+  //
+  rda=new RDApplication("RDPanel","rdpanel",RDPANEL_USAGE,this);
   if(!rda->open(&err_msg)) {
     QMessageBox::critical(this,"RDPanel - "+tr("Error"),err_msg);
     exit(1);
+  }
+
+  //
+  // Read Command Options
+  //
+  for(unsigned i=0;i<rda->cmdSwitch()->keys();i++) {
+    if(!rda->cmdSwitch()->processed(i)) {
+      QMessageBox::critical(this,"RDPanel - "+tr("Error"),
+			    tr("Unknown command option")+": "+
+			    rda->cmdSwitch()->key(i));
+      exit(2);
+    }
   }
 
   //

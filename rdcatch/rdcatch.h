@@ -178,6 +178,7 @@ class MainWidget : public QWidget
   int catch_time_offset;
   QPixmap *catch_rivendell_map;
   bool catch_host_warnings;
+  bool catch_resize;
 };
 
 
