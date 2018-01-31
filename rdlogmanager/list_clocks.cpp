@@ -2,7 +2,7 @@
 //
 // List Rivendell Log Clocks
 //
-//   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -26,11 +26,12 @@
 #include <qpixmap.h>
 #include <qpainter.h>
 
-#include <rddb.h>
 #include <rd.h>
+#include <rdapplication.h>
+#include <rdcreate_log.h>
+#include <rddb.h>
 #include <rdescape_string.h>
 #include <rdevent.h>
-#include <rdcreate_log.h>
 
 #include "add_clock.h"
 #include "edit_clock.h"
@@ -44,7 +45,7 @@ ListClocks::ListClocks(QString *clockname,QWidget *parent)
   QStringList services_list;
   QString str1=tr("Log Clocks - User: ");
   setCaption(QString().sprintf("%s%s",(const char *)str1,
-			       (const char *)rdripc->user()));
+			       (const char *)rda->ripc()->user()));
   edit_clockname=clockname;
 
   //
@@ -242,7 +243,7 @@ void ListClocks::addData()
     "ARTISTSEP=15";
   q=new RDSqlQuery(sql);
   delete q;
-  sql=RDCreateClockTableSql(RDClock::tableName(clockname),log_config);
+  sql=RDCreateClockTableSql(RDClock::tableName(clockname),rda->config());
   q=new RDSqlQuery(sql);
   delete q;
   EditClock *clock_dialog=new EditClock(clockname,true,&new_clocks,this);

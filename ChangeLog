@@ -16611,3 +16611,5 @@
 	* Converted rdlogedit(1) to use RDApplication.
 2018-01-31 Fred Gleason <fredg@paravelsystems.com>
 	* Converted rdlogin(1) to use RDApplication.
+2018-01-31 Fred Gleason <fredg@paravelsystems.com>
+	* Converted rdlogmanager(1) to use RDApplication.

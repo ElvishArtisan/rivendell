@@ -2,7 +2,7 @@
 //
 // Select a Set of Dates for a Rivendell Report
 //
-//   (C) Copyright 2002-2006,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2006,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -23,12 +23,14 @@
 #include <qmessagebox.h>
 #include <qfile.h>
 
-#include <rddatedialog.h>
-#include <rdreport.h>
-#include <rddatedecode.h>
 #include <rddb.h>
-#include <globals.h>
-#include <pick_report_dates.h>
+#include <rdapplication.h>
+#include <rddatedialog.h>
+#include <rddatedecode.h>
+#include <rdreport.h>
+
+#include "globals.h"
+#include "pick_report_dates.h"
 
 PickReportDates::PickReportDates(const QString &svcname,QWidget *parent)
   : QDialog(parent,"",true)
@@ -179,7 +181,7 @@ void PickReportDates::generateData()
     return;
   }
   RDReport *report=
-    new RDReport(edit_report_box->currentText(),rdstation_conf,log_config,this);
+    new RDReport(edit_report_box->currentText(),rda->station(),rda->config(),this);
   if((edit_startdate_edit->date()!=edit_enddate_edit->date())&&
      (!RDReport::multipleDaysAllowed(report->filter()))) {
     QMessageBox::warning(this,tr("Invalid Date Range"),
@@ -197,12 +199,12 @@ void PickReportDates::generateData()
 #ifdef WIN32
   QString filename=
     RDDateDecode(report->exportPath(RDReport::Windows),
-		 edit_startdate_edit->date(),rdstation_conf,log_config,
+		 edit_startdate_edit->date(),rda->station(),rda->config(),
 		 edit_svcname);
 #else
   QString filename=
     RDDateDecode(report->exportPath(RDReport::Linux),
-		 edit_startdate_edit->date(),rdstation_conf,log_config,
+		 edit_startdate_edit->date(),rda->station(),rda->config(),
 		 edit_svcname);
 #endif
   QFile file(filename);
@@ -217,7 +219,7 @@ void PickReportDates::generateData()
   }
   QString out_path;
   report->generateReport(edit_startdate_edit->date(),
-			 edit_enddate_edit->date(),rdstation_conf,&out_path);
+			 edit_enddate_edit->date(),rda->station(),&out_path);
   switch(report->errorCode()) {
       case RDReport::ErrorOk:
 	QMessageBox::information(this,tr("Report Complete"),

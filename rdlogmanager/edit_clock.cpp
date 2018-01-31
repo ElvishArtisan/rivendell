@@ -2,7 +2,7 @@
 //
 // Edit Rivendell Log Clock
 //
-//   (C) Copyright 2002-2015 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -31,22 +31,22 @@
 #include <qspinbox.h>
 #include <qcombobox.h>
 
-#include <rddb.h>
 #include <rd.h>
+#include <rdapplication.h>
 #include <rdconf.h>
-#include <rdevent.h>
 #include <rdcreate_log.h>
+#include <rddb.h>
 #include <rdescape_string.h>
+#include <rdevent.h>
 
-#include "edit_clock.h"
 #include "add_clock.h"
+#include "edit_clock.h"
+#include "edit_event.h"
 #include "edit_eventline.h"
 #include "edit_perms.h"
-#include "edit_event.h"
+#include "edit_schedrules.h"
 #include "globals.h"
 #include "list_clocks.h"
-#include "edit_schedrules.h"
-
 
 EditClock::EditClock(QString clockname,bool new_clock,
 		     std::vector<QString> *new_clocks,QWidget *parent)
@@ -241,7 +241,7 @@ EditClock::EditClock(QString clockname,bool new_clock,
   //
   // Populate Data
   //
-  sched_rules_list = new SchedRulesList(clockname,log_config);
+  sched_rules_list = new SchedRulesList(clockname,rda->config());
   edit_clock=new RDClock();
   edit_clock->setName(clockname);
   edit_clock->load();
@@ -499,7 +499,7 @@ void EditClock::saveAsData()
   }
   delete q;
   edit_clock->setName(clockname);
-  sql=RDCreateClockTableSql(RDClock::tableName(clockname),log_config);
+  sql=RDCreateClockTableSql(RDClock::tableName(clockname),rda->config());
   q=new RDSqlQuery(sql);
   delete q;
 

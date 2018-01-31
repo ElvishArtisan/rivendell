@@ -2,7 +2,7 @@
 //
 // Command Line Operations for RDLogManager
 //
-//   (C) Copyright 2012,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2012,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -23,13 +23,14 @@
 #include <qapplication.h>
 #include <qfile.h>
 
-#include <rdsvc.h>
+#include <dbversion.h>
+#include <rdapplication.h>
+#include <rdcreate_log.h>
 #include <rddatedecode.h>
 #include <rdlog.h>
-#include <rdreport.h>
-#include <rdcreate_log.h>
 #include <rdlog_event.h>
-#include <dbversion.h>
+#include <rdreport.h>
+#include <rdsvc.h>
 
 #include <rdlogmanager.h>
 #include <globals.h>
@@ -44,48 +45,27 @@ int RunLogOperation(int argc,char *argv[],const QString &svcname,
   QString unused_report;
   QString svcname_table=svcname;
   svcname_table.replace(" ","_");
-  unsigned schema=0;
   QString err_msg;
 
   QApplication a(argc,argv,false);
 
-  //
-  // Load Local Configs
-  //
-  RDConfig *config=new RDConfig();
-  config->load();
-
-  //
-  // Open Database
-  //
-  QString err;
-  QSqlDatabase *db=RDInitDb(&schema,&err);
-  if(!db) {
-    fprintf(stderr,"rdlogmanager: unable to connect to database\n");
-    return 256;
-  }
-  if((schema!=RD_VERSION_DATABASE)&&(!skip_db_check)) {
-    fprintf(stderr,
-	    "rdlogmanager: database version mismatch, should be %u, is %u\n",
-	    RD_VERSION_DATABASE,schema);
-    exit(256);
+  rda=new RDApplication("RDLogManager");
+  if(!rda->open(&err_msg)) {
+    fprintf(stderr,"rdlogmanager: %s\n",(const char *)err_msg);
+    exit(1);
   }
 
   //
   // Some Basic Structures
   //
-  rdstation_conf=new RDStation(config->stationName());
-#ifndef WIN32
-  rduser=new RDUser(rdstation_conf->defaultName());
-#endif  // WIN32
-  RDSvc *svc=new RDSvc(svcname,rdstation_conf,config);
+  RDSvc *svc=new RDSvc(svcname,rda->station(),rda->config());
   if(!svc->exists()) {
     fprintf(stderr,"rdlogmanager: no such service\n");
     return 256;
   }
   QDate start_date=QDate::currentDate().addDays(1+start_offset);
   QString logname=
-    RDDateDecode(svc->nameTemplate(),start_date,rdstation_conf,config,
+    RDDateDecode(svc->nameTemplate(),start_date,rda->station(),rda->config(),
 		 svc->name());
   RDLog *log=new RDLog(logname);
 
@@ -98,9 +78,9 @@ int RunLogOperation(int argc,char *argv[],const QString &svcname,
 	      (const char *)log->name().utf8());
       exit(256);
     }
-    log->removeTracks(rdstation_conf,rduser,config);
+    log->removeTracks(rda->station(),rda->user(),rda->config());
     srand(QTime::currentTime().msec());
-    sql=RDCreateStackTableSql(svcname_table,config);
+    sql=RDCreateStackTableSql(svcname_table,rda->config());
     q=new RDSqlQuery(sql);
     if(!q->isActive()) {
       fprintf(stderr,"SQL: %s\n",(const char *)sql);
@@ -110,10 +90,10 @@ int RunLogOperation(int argc,char *argv[],const QString &svcname,
     delete q;
     if(!svc->generateLog(start_date,
 			 RDDateDecode(svc->nameTemplate(),start_date,
-				      rdstation_conf,config,svc->name()),
+				      rda->station(),rda->config(),svc->name()),
 			 RDDateDecode(svc->nameTemplate(),start_date.addDays(1),
-				      rdstation_conf,config,svc->name()),
-			 &unused_report,rduser,&err_msg)) {
+				      rda->station(),rda->config(),svc->name()),
+			 &unused_report,rda->user(),&err_msg)) {
       fprintf(stderr,"rdlogmanager: %s\n",(const char *)err_msg);
       return 256;
     }
@@ -147,25 +127,20 @@ int RunLogOperation(int argc,char *argv[],const QString &svcname,
       return 256;
     }
     report="";
-    log->removeTracks(rdstation_conf,rduser,config);
-    if(!svc->clearLogLinks(RDSvc::Traffic,logname,rduser,&err_msg)) {
+    log->removeTracks(rda->station(),rda->user(),rda->config());
+    if(!svc->clearLogLinks(RDSvc::Traffic,logname,rda->user(),&err_msg)) {
       fprintf(stderr,"rdlogmanager: %s\n",(const char *)err_msg);
       return 256;
     }
-    if(!svc->clearLogLinks(RDSvc::Music,logname,rduser,&err_msg)) {
+    if(!svc->clearLogLinks(RDSvc::Music,logname,rda->user(),&err_msg)) {
       fprintf(stderr,"rdlogmanager: %s\n",(const char *)err_msg);
       return 256;
     }
-    if(svc->linkLog(RDSvc::Music,start_date,logname,&report,rduser,&err_msg)) {
+    if(svc->linkLog(RDSvc::Music,start_date,logname,&report,rda->user(),&err_msg)) {
       printf("%s\n",(const char*)report);
     }
     else {
       fprintf(stderr,"rdlogmanager: %s\n",(const char *)err_msg);
-      /*
-      fprintf(stderr,
-	      "rdlogmanager: unable to open music schedule file at \"%s\"\n",
-	      (const char *)svc->importFilename(RDSvc::Music,start_date));
-      */
       exit(256);
     }
   }
@@ -186,21 +161,16 @@ int RunLogOperation(int argc,char *argv[],const QString &svcname,
       return 256;
     }
     report="";
-    if(!svc->clearLogLinks(RDSvc::Traffic,logname,rduser,&err_msg)) {
+    if(!svc->clearLogLinks(RDSvc::Traffic,logname,rda->user(),&err_msg)) {
       fprintf(stderr,"rdlogmanager: %s\n",(const char *)err_msg);
       return 256;
     }
-    if(svc->linkLog(RDSvc::Traffic,start_date,logname,&report,rduser,
+    if(svc->linkLog(RDSvc::Traffic,start_date,logname,&report,rda->user(),
 		    &err_msg)) {
       printf("%s\n",(const char*)report);
     }
     else {
       fprintf(stderr,"rdlogmanager: %s\n",(const char *)err_msg);
-      /*
-      fprintf(stderr,
-	      "rdlogmanager: unable to open traffic schedule file at \"%s\"\n",
-	      (const char *)svc->importFilename(RDSvc::Traffic,start_date));
-      */
     }
   }
 
@@ -216,8 +186,8 @@ int RunLogOperation(int argc,char *argv[],const QString &svcname,
 int RunReportOperation(int argc,char *argv[],const QString &rptname,
 		       bool protect_existing,int start_offset,int end_offset)
 {
-  unsigned schema=0;
   QString out_path;
+  QString err_msg;
 
   QApplication a(argc,argv,false);
 
@@ -227,33 +197,16 @@ int RunReportOperation(int argc,char *argv[],const QString &rptname,
     return 256;
   }
 
-  //
-  // Load Local Configs
-  //
-  RDConfig *config=new RDConfig();
-  config->load();
-
-  //
-  // Open Database
-  //
-  QString err;
-  QSqlDatabase *db=RDInitDb(&schema,&err);
-  if(!db) {
-    fprintf(stderr,"rdlogmanager: unable to connect to database\n");
-    return 256;
+  rda=new RDApplication("RDLogManager");
+  if(!rda->open(&err_msg)) {
+    fprintf(stderr,"rdlogmanager: %s\n",(const char *)err_msg);
+    exit(1);
   }
-  if((schema!=RD_VERSION_DATABASE)&&(!skip_db_check)) {
-    fprintf(stderr,
-	    "rdlogmanager: database version mismatch, should be %u, is %u\n",
-	    RD_VERSION_DATABASE,schema);
-    exit(256);
-  }
-  rdstation_conf=new RDStation(config->stationName());
 
   //
   // Open Report Generator
   //
-  RDReport *report=new RDReport(rptname,rdstation_conf,config);
+  RDReport *report=new RDReport(rptname,rda->station(),rda->config());
   if(!report->exists()) {
     fprintf(stderr,"rdlogmanager: no such report\n");
     return 256;
@@ -270,7 +223,7 @@ int RunReportOperation(int argc,char *argv[],const QString &rptname,
     exit(256);
   }
   if(!report->generateReport(yesterday.addDays(start_offset),
-			     yesterday.addDays(end_offset),rdstation_conf,
+			     yesterday.addDays(end_offset),rda->station(),
 			     &out_path)) {
     fprintf(stderr,"rdlogmanager: report generation failed [%s]\n",
 	    (const char *)RDReport::errorText(report->errorCode()));
