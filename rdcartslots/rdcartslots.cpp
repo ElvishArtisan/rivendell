@@ -97,7 +97,7 @@ MainWidget::MainWidget(QWidget *parent)
   //
   // RIPC Connection
   //
-  connect(rda->ripc(),SIGNAL(userChanged()),this,SLOT(userData()));
+  connect(rda,SIGNAL(userChanged()),this,SLOT(userData()));
   connect(rda->ripc(),SIGNAL(rmlReceived(RDMacro *)),
 	  this,SLOT(rmlReceivedData(RDMacro *)));
 
@@ -182,7 +182,6 @@ QSizePolicy MainWidget::sizePolicy() const
 
 void MainWidget::userData()
 {
-  rda->user()->setName(rda->ripc()->user());
   for(unsigned i=0;i<panel_slots.size();i++) {
     panel_slots[i]->setUser(rda->user());
   }

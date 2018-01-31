@@ -16625,3 +16625,5 @@
 	* Converted rdclilogedit(1) to use RDApplication.
 2018-02-01 Fred Gleason <fredg@paravelsystems.com>
 	* Converted rddelete(1) to use RDApplication.
+2018-02-01 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'RDApplication::userChanged() signal.

@@ -153,7 +153,7 @@ MainWidget::MainWidget(QWidget *parent)
   //
 #ifndef WIN32
   connect(rda->ripc(),SIGNAL(connected(bool)),this,SLOT(connectedData(bool)));
-  connect(rda->ripc(),SIGNAL(userChanged()),this,SLOT(userData()));
+  connect(rda,SIGNAL(userChanged()),this,SLOT(userData()));
   rda->ripc()->connectHost("localhost",RIPCD_TCP_PORT,rda->config()->password());
 #else
   rdripc=NULL;
@@ -336,8 +336,6 @@ void MainWidget::userData()
   str2=QString(tr("User"));
   setCaption(str1+": "+rda->config()->stationName()+", "+str2+": "+
 	     rda->ripc()->user());
-  rda->user()->setName(rda->ripc()->user());
-
 
   log_filter_widget->setUser(rda->user());
   RefreshList();

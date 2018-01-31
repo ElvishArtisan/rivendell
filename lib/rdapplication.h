@@ -56,6 +56,12 @@ class RDApplication : public QObject
   RDSystem *system();
   RDUser *user();
 
+ private slots:
+  void userChangedData();
+
+ signals:
+  void userChanged();
+
  private:
   RDAirPlayConf *app_airplay_conf;
   RDAirPlayConf *app_panel_conf;

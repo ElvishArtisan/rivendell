@@ -179,7 +179,7 @@ MainWidget::MainWidget(QWidget *parent)
   rdaudioport_conf=new RDAudioPort(rda->config()->stationName(),
 				   rda->libraryConf()->inputCard());
   connect(rda->ripc(),SIGNAL(connected(bool)),this,SLOT(connectedData(bool)));
-  connect(rda->ripc(),SIGNAL(userChanged()),this,SLOT(userData()));
+  connect(rda,SIGNAL(userChanged()),this,SLOT(userData()));
   rda->ripc()->
     connectHost("localhost",RIPCD_TCP_PORT,rda->config()->password());
   cut_clipboard=NULL;
@@ -498,7 +498,6 @@ void MainWidget::userData()
   }
 
   SetCaption(rda->ripc()->user());
-  rda->user()->setName(rda->ripc()->user());
 
   lib_group_box->clear();
   lib_group_box->insertItem(tr("ALL"));

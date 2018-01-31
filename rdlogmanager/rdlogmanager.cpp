@@ -130,7 +130,7 @@ MainWidget::MainWidget(QWidget *parent)
   //
   // RIPC Connection
   //
-  connect(rda->ripc(),SIGNAL(userChanged()),this,SLOT(userData()));
+  connect(rda,SIGNAL(userChanged()),this,SLOT(userData()));
   rda->ripc()->connectHost("localhost",RIPCD_TCP_PORT,rda->config()->password());
 
   //
@@ -249,7 +249,6 @@ void MainWidget::userData()
   QString str1=tr("RDLogManager - User: ");
   setCaption(QString().sprintf("%s%s",(const char *)str1,
 			       (const char *)rda->ripc()->user()));
-  rda->user()->setName(rda->ripc()->user());
 
   //
   // Set Control Perms

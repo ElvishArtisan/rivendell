@@ -227,7 +227,7 @@ MainWidget::MainWidget(QWidget *parent)
   //
   connect(rda->ripc(),SIGNAL(connected(bool)),
 	  this,SLOT(ripcConnectedData(bool)));
-  connect(rda->ripc(),SIGNAL(userChanged()),this,SLOT(ripcUserData()));
+  connect(rda,SIGNAL(userChanged()),this,SLOT(ripcUserData()));
   rda->ripc()->connectHost("localhost",RIPCD_TCP_PORT,rda->config()->password());
 
   //
@@ -922,13 +922,6 @@ void MainWidget::ripcUserData()
   str=QString("RDCatch")+" v"+VERSION+" - "+tr("Host")+":";
   setCaption(str+" "+rda->config()->stationName()+", "+tr("User")+": "+
 	     rda->ripc()->user());
-  /*
-  if(catch_user!=NULL) {
-    delete catch_user;
-  }
-  catch_user=new RDUser(rda->ripc()->user());
-  */
-  rda->user()->setName(rda->ripc()->user());
 
   //
   // Set Control Perms

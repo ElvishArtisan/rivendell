@@ -110,7 +110,7 @@ MainObject::MainObject(QObject *parent)
   //
   // RIPC Connection
   //
-  connect(rda->ripc(),SIGNAL(userChanged()),this,SLOT(userData()));
+  connect(rda,SIGNAL(userChanged()),this,SLOT(userData()));
   rda->ripc()->connectHost("localhost",RIPCD_TCP_PORT,rda->config()->password());
 
   //
@@ -149,7 +149,6 @@ void MainObject::userData()
   // Get User Context
   //
   disconnect(rda->ripc(),SIGNAL(userChanged()),this,SLOT(userData()));
-  rda->user()->setName(rda->ripc()->user());
 
   //
   // Process Objects

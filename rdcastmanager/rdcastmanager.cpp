@@ -106,7 +106,7 @@ MainWidget::MainWidget(QWidget *parent)
   // RIPC Connection
   //
 #ifndef WIN32
-  connect(rda->ripc(),SIGNAL(userChanged()),this,SLOT(userChangedData()));
+  connect(rda,SIGNAL(userChanged()),this,SLOT(userChangedData()));
   rda->ripc()->connectHost("localhost",RIPCD_TCP_PORT,rda->config()->password());
 #endif  // WIN32
 
@@ -193,7 +193,6 @@ void MainWidget::userChangedData()
   QString str1;
   QString str2;
 
-  rda->user()->setName(rda->ripc()->user());
   str1=QString("RDCastManager")+" v"+VERSION+" - "+tr("Host");
   str2=QString(tr("User"));
   setCaption(str1+": "+rda->config()->stationName()+" "+str2+" "+rda->ripc()->user());

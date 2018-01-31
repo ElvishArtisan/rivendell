@@ -147,6 +147,7 @@ bool RDApplication::open(QString *err_msg)
   app_user=new RDUser();
   app_cae=new RDCae(app_station,app_config,this);
   app_ripc=new RDRipc(app_station,app_config,this);
+  connect(app_ripc,SIGNAL(userChanged()),this,SLOT(userChangedData()));
 
   return true; 
 }
@@ -215,4 +216,11 @@ RDSystem *RDApplication::system()
 RDUser *RDApplication::user()
 {
   return app_user;
+}
+
+
+void RDApplication::userChangedData()
+{
+  app_user->setName(app_ripc->user());
+  emit userChanged();
 }

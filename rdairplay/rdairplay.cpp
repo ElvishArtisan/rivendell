@@ -316,7 +316,7 @@ MainWidget::MainWidget(QWidget *parent)
   // RIPC Connection
   //
   connect(rda->ripc(),SIGNAL(connected(bool)),this,SLOT(ripcConnected(bool)));
-  connect(rda->ripc(),SIGNAL(userChanged()),this,SLOT(userData()));
+  connect(rda,SIGNAL(userChanged()),this,SLOT(userData()));
   connect(rda->ripc(),SIGNAL(rmlReceived(RDMacro *)),
 	  this,SLOT(rmlReceivedData(RDMacro *)));
   connect(rda->ripc(),SIGNAL(gpiStateChanged(int,int,bool)),
@@ -1434,13 +1434,6 @@ void MainWidget::logReloadedData(int log)
 
 void MainWidget::userData()
 {
-  /*
-  if(rduser!=NULL) {
-    delete rduser;
-  }
-  rduser=new RDUser(rda->ripc()->user());
-  */
-  rda->user()->setName(rda->ripc()->user());
   LogLine(RDConfig::LogInfo,QString().
 	  sprintf("user changed to '%s'",(const char *)rda->ripc()->user()));
   SetCaption();
