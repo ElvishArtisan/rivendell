@@ -16619,3 +16619,5 @@
 	* Converted rdrepld(8) to use RDApplication.
 2018-02-01 Fred Gleason <fredg@paravelsystems.com>
 	* Moved command-switch processing into RDApplication.
+2018-02-01 Fred Gleason <fredg@paravelsystems.com>
+	* Converted rdcheckcuts(1) to use RDApplication.

@@ -22,12 +22,11 @@
 
 #include <qapplication.h>
 
-#include <rddb.h>
-#include <rdcmd_switch.h>
-#include <rdstation.h>
+#include <rdapplication.h>
 #include <rdaudioinfo.h>
 #include <rdcart.h>
 #include <rdcut.h>
+#include <rddb.h>
 
 #include <rdcheckcuts.h>
 
@@ -38,36 +37,30 @@ MainObject::MainObject(QObject *parent)
   std::vector<QString> bad_cuts;
   QString sql;
   RDSqlQuery *q;
+  QString err_msg;
   
+  //
+  // Open the Database
+  //
+  rda=new RDApplication("rdcheckcuts","rdcheckcuts",RDCHECKCUTS_USAGE,this);
+  if(!rda->open(&err_msg)) {
+    fprintf(stderr,"rdcheckcuts: %s\n",(const char *)err_msg);
+    exit(1);
+  }
+
   //
   // Read Command Options
   //
-  RDCmdSwitch *cmd=
-    new RDCmdSwitch(qApp->argc(),qApp->argv(),"rdcheckcuts",RDCHECKCUTS_USAGE);
-  for(unsigned i=0;i<cmd->keys();i++) {
-    if(cmd->key(i)=="--group") {
-      group_names.push_back(cmd->value(i));
-      cmd->setProcessed(i,true);
+  for(unsigned i=0;i<rda->cmdSwitch()->keys();i++) {
+    if(rda->cmdSwitch()->key(i)=="--group") {
+      group_names.push_back(rda->cmdSwitch()->value(i));
+      rda->cmdSwitch()->setProcessed(i,true);
     }
-  }
-  if(!cmd->allProcessed()) {
-    fprintf(stderr,"rdcheckcuts: unknown option\n");
-    exit(256);
-  }
-
-  //
-  // Open Configuration
-  //
-  cut_config=new RDConfig();
-  cut_config->load();
-  cut_config->setModuleName("rdcheckcuts");
-
-  //
-  // Open Database
-  //
-  if(!OpenDb()) {
-    fprintf(stderr,"rdcheckcuts: unable to open database\n");
-    exit(256);
+    if(!rda->cmdSwitch()->processed(i)) {
+      fprintf(stderr,"rdcheckcuts: unknown command option \"%s\"\n",
+	      (const char *)rda->cmdSwitch()->key(i));
+      exit(2);
+    }
   }
 
   //
@@ -121,8 +114,8 @@ bool MainObject::ValidateGroup(const QString &groupname,
   bool ret=true;
   QString sql;
   RDSqlQuery *q;
-  RDStation *station=new RDStation(cut_config->stationName());
-  RDAudioInfo *info=new RDAudioInfo(station,cut_config);
+  //  RDStation *station=new RDStation(rda->config()->stationName());
+  RDAudioInfo *info=new RDAudioInfo(rda->station(),rda->config());
   RDAudioInfo::ErrorCode err_code;
   
   sql=QString("select CUTS.CUT_NAME,CUTS.CART_NUMBER,CUTS.LENGTH ")+
@@ -153,29 +146,8 @@ bool MainObject::ValidateGroup(const QString &groupname,
     }
   }
   delete info;
-  delete station;
   
   return ret;
-}
-
-
-bool MainObject::OpenDb()
-{
-  unsigned schema=0;
-
-  QString err(tr("rdcheckcuts: "));
-  QSqlDatabase *db=RDInitDb(&schema,&err);
-  if(!db) {
-    fprintf(stderr,err.ascii());
-    return false;
-  }
-  return true;
-}
-
-
-void MainObject::CloseDb()
-{
-  QSqlDatabase::removeDatabase(cut_config->mysqlDbname());
 }
 
 
