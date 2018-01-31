@@ -16623,3 +16623,5 @@
 	* Converted rdcheckcuts(1) to use RDApplication.
 2018-02-01 Fred Gleason <fredg@paravelsystems.com>
 	* Converted rdclilogedit(1) to use RDApplication.
+2018-02-01 Fred Gleason <fredg@paravelsystems.com>
+	* Converted rddelete(1) to use RDApplication.
