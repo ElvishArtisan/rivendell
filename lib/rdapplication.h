@@ -27,6 +27,7 @@
 #include <rdcae.h>
 #include <rdconfig.h>
 #include <rddb.h>
+#include <rddbheartbeat.h>
 #include <rdlibrary_conf.h>
 #include <rdlogedit_conf.h>
 #include <rdripc.h>
@@ -63,6 +64,7 @@ class RDApplication : public QObject
   RDStation *app_station;
   RDSystem *app_system;
   RDUser *app_user;
+  RDDbHeartbeat *app_heartbeat;
   QString app_command_name;
   QString app_module_name;
 };

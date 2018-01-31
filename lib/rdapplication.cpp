@@ -34,6 +34,7 @@ RDApplication::RDApplication(const QString &module_name,QObject *parent)
 {
   app_module_name=module_name;
 
+  app_heartbeat=NULL;
   app_airplay_conf=NULL;
   app_cae=NULL;
   app_config=NULL;
@@ -49,6 +50,9 @@ RDApplication::RDApplication(const QString &module_name,QObject *parent)
 
 RDApplication::~RDApplication()
 {
+  if(app_heartbeat!=NULL) {
+    delete app_heartbeat;
+  }
   if(app_config!=NULL) {
     delete app_config;
   }
@@ -122,6 +126,7 @@ bool RDApplication::open(QString *err_msg)
       QString().sprintf(" %u",schema);
     return false;
   }
+  app_heartbeat=new RDDbHeartbeat(app_config->mysqlHeartbeatInterval(),this);
 
   //
   // Open Accessors
