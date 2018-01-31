@@ -239,7 +239,7 @@ Suscripción</translation>
     </message>
     <message>
         <source>Can&apos;t Connect</source>
-        <translation>No puedo conectarme</translation>
+        <translation type="obsolete">No puedo conectarme</translation>
     </message>
     <message>
         <source>Key Name</source>
@@ -272,6 +272,10 @@ Feed</source>
     </message>
     <message>
         <source>Host</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

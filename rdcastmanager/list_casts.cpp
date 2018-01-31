@@ -2,7 +2,7 @@
 //
 // List Rivendell Casts
 //
-//   (C) Copyright 2002-2007,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2007,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -37,23 +37,24 @@
 #include <qapplication.h>
 #include <qfiledialog.h>
 
-#include <rddb.h>
-#include <rdpodcast.h>
-#include <rdtextfile.h>
-#include <rdcut_dialog.h>
+#include <rdapplication.h>
+#include <rdcastsearch.h>
 #include <rdconf.h>
 #include <rdcut.h>
-#include <rdwavefile.h>
+#include <rdcut_dialog.h>
+#include <rddb.h>
 #include <rdescape_string.h>
-#include <rdurl.h>
 #include <rdfeedlog.h>
+#include <rdpodcast.h>
 #include <rdsettings.h>
-#include <rdcastsearch.h>
+#include <rdtextfile.h>
+#include <rdwavefile.h>
+#include <rdurl.h>
 
-#include <list_casts.h>
-#include <edit_cast.h>
-#include <globals.h>
-#include <pick_report_dates.h>
+#include "edit_cast.h"
+#include "globals.h"
+#include "list_casts.h"
+#include "pick_report_dates.h"
 
 //
 // Icons
@@ -95,7 +96,7 @@ ListCasts::ListCasts(unsigned feed_id,QWidget *parent)
   //
   // The Feed
   //
-  list_feed=new RDFeed(feed_id,config,this);
+  list_feed=new RDFeed(feed_id,rda->config(),this);
 
   //
   // Progress Dialog
@@ -219,7 +220,7 @@ ListCasts::ListCasts(unsigned feed_id,QWidget *parent)
 
   RefreshList();
   GetEncoderId();
-  connect(cast_ripc,SIGNAL(userChanged()),this,SLOT(userChangedData()));
+  connect(rda->ripc(),SIGNAL(userChanged()),this,SLOT(userChangedData()));
   userChangedData();
 }
 
@@ -246,17 +247,17 @@ QSizePolicy ListCasts::sizePolicy() const
 void ListCasts::addCartData()
 {
   QString cutname;
-  RDCutDialog *cd=new RDCutDialog(&cutname,rdstation_conf,cast_system,
+  RDCutDialog *cd=new RDCutDialog(&cutname,rda->station(),rda->system(),
 				  &cast_filter,&cast_group,&cast_schedcode,
-				  cast_ripc->user());
+				  rda->ripc()->user());
   if(cd->exec()!=0) {
     delete cd;
     return;
   }
   delete cd;
   RDFeed::Error err;
-  unsigned cast_id=list_feed->postCut(cast_user,rdstation_conf,cutname,&err,
-				      config->logXloadDebugData(),config);
+  unsigned cast_id=list_feed->postCut(rda->user(),rda->station(),cutname,&err,
+				      rda->config()->logXloadDebugData(),rda->config());
   if(err!=RDFeed::ErrorOk) {
     QMessageBox::warning(this,tr("Posting Error"),RDFeed::errorString(err));
     return;
@@ -279,8 +280,8 @@ void ListCasts::addFileData()
     return;
   }
   RDFeed::Error err;
-  unsigned cast_id=list_feed->postFile(rdstation_conf,srcfile,&err,
-				       config->logXloadDebugData(),config);
+  unsigned cast_id=list_feed->postFile(rda->station(),srcfile,&err,
+				       rda->config()->logXloadDebugData(),rda->config());
   if(err!=RDFeed::ErrorOk) {
     QMessageBox::warning(this,tr("Posting Error"),RDFeed::errorString(err));
     return;
@@ -335,8 +336,8 @@ void ListCasts::deleteData()
   qApp->processEvents();
   sleep(1);
   qApp->processEvents();
-  RDPodcast *cast=new RDPodcast(config,item->id());
-  if(!cast->removeAudio(list_feed,&err_text,config->logXloadDebugData())) {
+  RDPodcast *cast=new RDPodcast(rda->config(),item->id());
+  if(!cast->removeAudio(list_feed,&err_text,rda->config()->logXloadDebugData())) {
     if(QMessageBox::warning(this,tr("Remote Error"),
 			    tr("Unable to delete remote audio!\n")+
 			    tr("The server said: \"")+err_text+"\".\n\n"+
@@ -384,10 +385,10 @@ void ListCasts::doubleClickedData(QListViewItem *item,const QPoint &pt,
 
 void ListCasts::userChangedData()
 {
-  list_cart_button->setEnabled(cast_user->addPodcast()&&(list_encoder_id>=0));
-  list_file_button->setEnabled(cast_user->addPodcast()&&(list_encoder_id>=0));
-  list_edit_button->setEnabled(cast_user->editPodcast());
-  list_delete_button->setEnabled(cast_user->deletePodcast());
+  list_cart_button->setEnabled(rda->user()->addPodcast()&&(list_encoder_id>=0));
+  list_file_button->setEnabled(rda->user()->addPodcast()&&(list_encoder_id>=0));
+  list_edit_button->setEnabled(rda->user()->editPodcast());
+  list_delete_button->setEnabled(rda->user()->deletePodcast());
 }
 
 
@@ -513,7 +514,7 @@ void ListCasts::GetEncoderId()
   RDSqlQuery *q;
 
   list_encoder_id=-1;
-  RDFeed *feed=new RDFeed(list_feed_id,config);
+  RDFeed *feed=new RDFeed(list_feed_id,rda->config());
   int format=feed->uploadFormat();
   delete feed;
   if((format>0)&&(format<100)) {  // Built-in format
@@ -526,7 +527,7 @@ void ListCasts::GetEncoderId()
     sql=QString().sprintf("select ID from ENCODERS \
                            where (NAME=\"%s\")&&(STATION_NAME=\"%s\")",
 			  (const char *)RDEscapeString(q->value(0).toString()),
-			  (const char *)RDEscapeString(rdstation_conf->name()));
+			  (const char *)RDEscapeString(rda->station()->name()));
     delete q;
     q=new RDSqlQuery(sql);
     if(q->first()) {

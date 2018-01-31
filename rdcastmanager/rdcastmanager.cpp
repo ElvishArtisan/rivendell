@@ -2,7 +2,7 @@
 //
 // A PodCast Management Utility for Rivendell.
 //
-//   (C) Copyright 2002-2005,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2005,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -35,18 +35,18 @@
 #include <qpainter.h>
 #include <qmessagebox.h>
 
-#include <rd.h>
-#include <rdconf.h>
-#include <rduser.h>
-#include <rdripc.h>
-#include <rdcastmanager.h>
-#include <rdcmd_switch.h>
-#include <rddb.h>
-#include <rdpodcast.h>
 #include <dbversion.h>
+#include <rd.h>
+#include <rdapplication.h>
+#include <rdcmd_switch.h>
+#include <rdconf.h>
+#include <rddb.h>
+#include <rdescape_string.h>
+#include <rdpodcast.h>
 
-#include <list_casts.h>
-#include <globals.h>
+#include "globals.h"
+#include "list_casts.h"
+#include "rdcastmanager.h"
 
 //
 // Icons
@@ -61,19 +61,13 @@
 QString cast_filter;
 QString cast_group;
 QString cast_schedcode;
-RDUser *cast_user;
-RDRipc *cast_ripc;
-RDStation *rdstation_conf;
-RDConfig *config;
-RDSystem *cast_system=NULL;
 
 MainWidget::MainWidget(QWidget *parent)
   :QMainWindow(parent)
 {
   QString str1;
   QString str2;
-  bool skip_db_check=false;
-  unsigned schema=0;
+  QString err_msg;
 
   //
   // Read Command Options
@@ -82,7 +76,6 @@ MainWidget::MainWidget(QWidget *parent)
     new RDCmdSwitch(qApp->argc(),qApp->argv(),"rdcastmanager","\n");
   for(unsigned i=0;i<cmd->keys();i++) {
     if(cmd->key(i)=="--skip-db-check") {
-      skip_db_check=true;
     }
   }
   delete cmd;
@@ -93,59 +86,29 @@ MainWidget::MainWidget(QWidget *parent)
   setMinimumWidth(sizeHint().width());
   setMinimumHeight(sizeHint().height());
 
-  //
-  // Load Local Configs
-  //
-  config=new RDConfig(RD_CONF_FILE);
-  config->load();
-  config->setModuleName("RDCastManager");
 
+  rda=new RDApplication("RDCastManager",this);
+  if(!rda->open(&err_msg)) {
+    QMessageBox::critical(this,"RDCastManager - "+tr("Error"),err_msg);
+    exit(1);
+  }
   str1=QString("RDCastManager")+" v"+VERSION+" - "+tr("Host");
   str2=QString(tr("User: [Unknown]"));
-  setCaption(QString().sprintf("%s: %s, %s",(const char *)str1,
-			       (const char *)config->stationName(),
-			       (const char *)str2));
-
-  //
-  // Open Database
-  //
-  QString err;
-  QSqlDatabase *db=RDInitDb(&schema,&err);
-  if(!db) {
-    QMessageBox::warning(this,tr("Can't Connect"),err);
-    exit(0);
-  }
-  if((schema!=RD_VERSION_DATABASE)&&(!skip_db_check)) {
-    fprintf(stderr,
-	    "rdcastmanager: database version mismatch, should be %u, is %u\n",
-	    RD_VERSION_DATABASE,schema);
-    exit(256);
-  }
-
-  //
-  // Station Configuration
-  //
-  rdstation_conf=new RDStation(config->stationName(),this);
-  cast_system=new RDSystem();
+  setCaption(str1+": "+rda->config()->stationName()+" "+str2);
 
   //
   // RIPC Connection
   //
 #ifndef WIN32
-  cast_ripc=new RDRipc(rdstation_conf,config,this);
-  connect(cast_ripc,SIGNAL(userChanged()),this,SLOT(userChangedData()));
-  cast_ripc->connectHost("localhost",RIPCD_TCP_PORT,config->password());
-#else
-  cast_ripc=NULL;
+  connect(rda->ripc(),SIGNAL(userChanged()),this,SLOT(userChangedData()));
+  rda->ripc()->connectHost("localhost",RIPCD_TCP_PORT,rda->config()->password());
 #endif  // WIN32
 
   //
   // User
   //
-#ifndef WIN32
-  cast_user=NULL;
-#else 
-  cast_user=new RDUser(RD_USER_LOGIN_NAME);
+#ifdef WIN32
+  rda->user()->setName(RD_USER_LOGIN_NAME);
 #endif  // WIN32
 
   // 
@@ -222,16 +185,10 @@ void MainWidget::userChangedData()
   QString str1;
   QString str2;
 
-  if(cast_user!=NULL) {
-    delete cast_user;
-  }
+  rda->user()->setName(rda->ripc()->user());
   str1=QString("RDCastManager")+" v"+VERSION+" - "+tr("Host");
   str2=QString(tr("User"));
-  setCaption(QString().sprintf("%s: %s, %s: %s",(const char *)str1,
-			       (const char *)config->stationName(),
-			       (const char *)str2,
-			       (const char *)cast_ripc->user()));
-  cast_user=new RDUser(cast_ripc->user());
+  setCaption(str1+": "+rda->config()->stationName()+" "+str2+" "+rda->ripc()->user());
   RefreshList();
 }
 
@@ -323,9 +280,8 @@ void MainWidget::RefreshList()
     id=item->id();
   }
   cast_feed_list->clear();
-  sql=QString().sprintf("select KEY_NAME from FEED_PERMS \
-                         where USER_NAME=\"%s\"",
-			(const char *)cast_user->name());
+  sql=QString("select KEY_NAME from FEED_PERMS where ")+
+    "USER_NAME=\""+RDEscapeString(rda->user()->name())+"\"";
   q=new RDSqlQuery(sql);
   if(q->size()<=0) {  // No valid feeds!
     delete q;
