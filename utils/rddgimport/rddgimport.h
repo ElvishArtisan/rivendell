@@ -2,7 +2,7 @@
 //
 // A Qt-based application for importing Dial Global CDN downloads
 //
-//   (C) Copyright 2012,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2012,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -35,17 +35,12 @@
 #include <qdatetimeedit.h>
 #include <qtextedit.h>
 
-#include <rdconfig.h>
+#include <rdbusybar.h>
 #include <rddb.h>
 #include <rdgroup.h>
-#include <rdlibrary_conf.h>
-#include <rdstation.h>
-#include <rdbusybar.h>
 #include <rdsvc.h>
-#include <rduser.h>
-#include <rdripc.h>
 
-#include <event.h>
+#include "event.h"
 
 #define RDDGIMPORT_USAGE "\n"
 #define RDDGIMPORT_KILLDATE_OFFSET 7
@@ -100,12 +95,6 @@ class MainWidget : public QWidget
   std::vector<Event *> dg_events;
   RDGroup *dg_group;
   RDSvc *dg_svc;
-  RDRipc *dg_ripc;
-  RDUser *dg_user;
-  RDStation *dg_station;
-  RDLibraryConf *dg_library_conf;
-  RDConfig *dg_config;
-  QSqlDatabase *dg_db;
 };
 
 
