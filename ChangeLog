@@ -16605,3 +16605,5 @@
 	* Converted rdcartslots(1) to use RDApplication.
 2018-01-31 Fred Gleason <fredg@paravelsystems.com>
 	* Converted rdcastmanager(1) to use RDApplication.
+2018-01-31 Fred Gleason <fredg@paravelsystems.com>
+	* Converted rdcatch(1) to use RDApplication.

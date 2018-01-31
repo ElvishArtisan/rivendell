@@ -2,7 +2,7 @@
 //
 // Global Variable Declarations for RDCatch
 //
-//   (C) Copyright 2002-2005,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2005,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,30 +21,16 @@
 #ifndef GLOBALS_H
 #define GLOBALS_H
 
-#include <rdconfig.h>
-#include <rdstation.h>
 #include <rdaudio_port.h>
-#include <rduser.h>
-#include <rdlibrary_conf.h>
-#include <rdcae.h>
-#include <rdripc.h>
 #include <rdcart_dialog.h>
-#include <rdsystem.h>
 
 //
 // Global Resources
 //
-extern RDConfig *catch_config;
-extern RDStation *rdstation_conf;
 extern RDAudioPort *rdaudioport_conf;
-extern RDUser *catch_user;
-extern RDLibraryConf *rdlibrary_conf;
-extern RDRipc *catch_ripc;
-extern RDCae *catch_cae;
 extern RDCartDialog *catch_cart_dialog;
 extern int catch_audition_card;
 extern int catch_audition_port;
-extern RDSystem *catch_system;
 
 
 #endif  // GLOBALS_H

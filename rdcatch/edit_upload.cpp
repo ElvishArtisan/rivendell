@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Upload Event
 //
-//   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -28,14 +28,15 @@
 #include <qmessagebox.h>
 #include <qcheckbox.h>
 
-#include <rddb.h>
-#include <rdurl.h>
 #include <rd.h>
+#include <rdapplication.h>
 #include <rdcut_dialog.h>
 #include <rdcut_path.h>
-#include <rdtextvalidator.h>
-#include <rdexport_settings_dialog.h>
+#include <rddb.h>
 #include <rdescape_string.h>
+#include <rdexport_settings_dialog.h>
+#include <rdtextvalidator.h>
+#include <rdurl.h>
 
 #include <edit_upload.h>
 #include <globals.h>
@@ -490,7 +491,7 @@ void EditUpload::selectCartData()
 {
   QString str;
 
-  RDCutDialog *cut=new RDCutDialog(&edit_cutname,rdstation_conf,catch_system,
+  RDCutDialog *cut=new RDCutDialog(&edit_cutname,rda->station(),rda->system(),
 				   edit_filter);
   switch(cut->exec()) {
       case 0:

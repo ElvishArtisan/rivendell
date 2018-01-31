@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Netcatch Cart Event
 //
-//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2004,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -28,14 +28,15 @@
 #include <qmessagebox.h>
 #include <qcheckbox.h>
 
-#include <rddb.h>
+#include <rdapplication.h>
 #include <rd.h>
 #include <rdcart_dialog.h>
 #include <rdcut_path.h>
+#include <rddb.h>
 #include <rdtextvalidator.h>
 
-#include <globals.h>
-#include <edit_cartevent.h>
+#include "edit_cartevent.h"
+#include "globals.h"
 
 EditCartEvent::EditCartEvent(int id,std::vector<int> *adds,QWidget *parent)
   : QDialog(parent,"",true)
@@ -317,7 +318,7 @@ void EditCartEvent::selectCartData()
     cartnum=edit_cart->number();
   }
   switch(catch_cart_dialog->exec(&cartnum,RDCart::Macro,NULL,0,
-				 catch_user->name(),catch_user->password())) {
+				 rda->user()->name(),rda->user()->password())) {
       case 0:
 	if(edit_cart!=NULL) {
 	  delete edit_cart;

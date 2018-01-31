@@ -962,10 +962,6 @@ New</source>
 <context>
     <name>MainWidget</name>
     <message>
-        <source>rdcatch : </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Show Only Active Events</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1263,6 +1259,10 @@ New</source>
     </message>
     <message>
         <source>All Types</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

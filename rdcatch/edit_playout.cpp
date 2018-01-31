@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell RDCatch Playout
 //
-//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2004,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -28,11 +28,12 @@
 #include <qmessagebox.h>
 #include <qcheckbox.h>
 
-#include <rddb.h>
 #include <rd.h>
+#include <rdapplication.h>
 #include <rdcut.h>
 #include <rdcut_dialog.h>
 #include <rdcut_path.h>
+#include <rddb.h>
 #include <rdtextvalidator.h>
 
 #include <edit_playout.h>
@@ -318,7 +319,7 @@ void EditPlayout::activateStationData(int id,bool use_temp)
 
 void EditPlayout::selectCutData()
 {
-  RDCutDialog *cut=new RDCutDialog(&edit_cutname,rdstation_conf,catch_system,
+  RDCutDialog *cut=new RDCutDialog(&edit_cutname,rda->station(),rda->system(),
 				   edit_filter,NULL,NULL,"",false,false,false,
 				   this);
   switch(cut->exec()) {
