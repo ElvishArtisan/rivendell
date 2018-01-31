@@ -29,8 +29,7 @@ moc_%.cpp:	%.h
 	$(MOC) $< -o $@
 
 bin_PROGRAMS = rdrepld
-dist_rdrepld_SOURCES = globals.h\
-                       rdrepld.cpp rdrepld.h \
+dist_rdrepld_SOURCES = rdrepld.cpp rdrepld.h \
                        replconfig.cpp replconfig.h\
                        replfactory.cpp replfactory.h\
                        citadelxds.cpp citadelxds.h
