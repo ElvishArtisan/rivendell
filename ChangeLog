@@ -16633,3 +16633,5 @@
 	* Converted rddiscimport(1) to use RDApplication.
 2018-02-01 Fred Gleason <fredg@paravelsystems.com>
 	* Converted rdexport(1) to use RDApplication.
+2018-02-01 Fred Gleason <fredg@paravelsystems.com>
+	* Converted rdgpimon(1) to use RDApplication.
