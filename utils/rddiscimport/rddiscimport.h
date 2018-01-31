@@ -2,7 +2,7 @@
 //
 // A Qt-based application for importing TM Century GoldDisc CDs
 //
-//   (C) Copyright 2013,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2013,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -35,18 +35,13 @@
 #include <qspinbox.h>
 #include <qprogressbar.h>
 
+#include <rdaudioimport.h>
 #include <rdcdplayer.h>
 #include <rdcdripper.h>
-#include <rdaudioimport.h>
 #include <rdconfig.h>
 #include <rddb.h>
 #include <rdgroup.h>
 #include <rdlistview.h>
-#include <rdlibrary_conf.h>
-#include <rdsystem.h>
-#include <rdstation.h>
-#include <rduser.h>
-#include <rdripc.h>
 #include <rdtransportbutton.h>
 
 #include <metalibrary.h>
@@ -113,16 +108,10 @@ class MainWidget : public QWidget
   RDCdRipper *dg_ripper;
   RDAudioImport *dg_importer;
   RDGroup *dg_group;
-  RDRipc *dg_ripc;
-  RDUser *dg_user;
-  RDSystem *dg_system;
-  RDStation *dg_station;
-  RDLibraryConf *dg_library_conf;
-  QSqlDatabase *dg_db;
-  RDConfig *dg_config;
   QString dg_group_name;
   QString dg_tempfile;
   std::vector<bool> dg_rip_enableds;
+  bool dg_resize;
 };
 
 
