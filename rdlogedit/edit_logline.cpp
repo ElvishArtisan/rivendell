@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Log Entry
 //
-//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2004,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -23,11 +23,12 @@
 #include <qradiobutton.h>
 
 #include <rd.h>
+#include <rdapplication.h>
 #include <rdcart.h>
 #include <rdcart_dialog.h>
 
-#include <globals.h>
-#include <edit_logline.h>
+#include "edit_logline.h"
+#include "globals.h"
 
 EditLogLine::EditLogLine(RDLogLine *line,QString *filter,QString *group,
 			 QString *schedcode,QString svcname,
@@ -76,12 +77,12 @@ EditLogLine::EditLogLine(RDLogLine *line,QString *filter,QString *group,
 				    log_config,this);
   */
   edit_cart_dialog=new RDCartDialog(edit_filter,edit_group,edit_schedcode,
-				    NULL,NULL,rdstation_conf,rdsystem,
-				    log_config,this);
+				    NULL,NULL,rda->station(),rda->system(),
+				    rda->config(),this);
 #else
   edit_cart_dialog=new RDCartDialog(edit_filter,edit_group,edit_schedcode,
-				    rdcae,rdripc,rdstation_conf,rdsystem,
-				    log_config,this);
+				    rda->cae(),rda->ripc(),rda->station(),rda->system(),
+				    rda->config(),this);
 #endif
 
   //
@@ -290,7 +291,7 @@ void EditLogLine::selectCartData()
     cartnum=-1;
   }
   if(edit_cart_dialog->exec(&cartnum,RDCart::All,&edit_service,1,
-			   rduser->name(),rduser->password())==0) {
+			   rda->user()->name(),rda->user()->password())==0) {
     FillCart(cartnum);
   }
 }

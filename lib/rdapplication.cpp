@@ -38,6 +38,7 @@ RDApplication::RDApplication(const QString &module_name,QObject *parent)
   app_cae=NULL;
   app_config=NULL;
   app_library_conf=NULL;
+  app_logedit_conf=NULL;
   app_panel_conf=NULL;
   app_ripc=NULL;
   app_station=NULL;
@@ -59,6 +60,9 @@ RDApplication::~RDApplication()
   }
   if(app_library_conf!=NULL) {
     delete app_library_conf;
+  }
+  if(app_logedit_conf!=NULL) {
+    delete app_logedit_conf;
   }
   if(app_airplay_conf!=NULL) {
     delete app_airplay_conf;
@@ -125,6 +129,7 @@ bool RDApplication::open(QString *err_msg)
   app_system=new RDSystem();
   app_station=new RDStation(app_config->stationName());
   app_library_conf=new RDLibraryConf(app_config->stationName());
+  app_logedit_conf=new RDLogeditConf(app_config->stationName());
   app_airplay_conf=new RDAirPlayConf(app_config->stationName(),"RDAIRPLAY");
   app_panel_conf=new RDAirPlayConf(app_config->stationName(),"RDPANEL");
   app_user=new RDUser();
@@ -156,6 +161,12 @@ RDConfig *RDApplication::config()
 RDLibraryConf *RDApplication::libraryConf()
 {
   return app_library_conf;
+}
+
+
+RDLogeditConf *RDApplication::logeditConf()
+{
+  return app_logedit_conf;
 }
 
 

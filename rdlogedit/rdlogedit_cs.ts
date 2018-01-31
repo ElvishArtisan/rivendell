@@ -749,7 +749,7 @@ vybrané služby!</translation>
     </message>
     <message>
         <source>Can&apos;t Connect</source>
-        <translation>Nelze spojit</translation>
+        <translation type="obsolete">Nelze spojit</translation>
     </message>
     <message>
         <source>LOG NAME</source>
@@ -879,12 +879,12 @@ Pokračovat?</translation>
     </message>
     <message>
         <source>RDLogEdit -- Database Skew</source>
-        <translation>RDLogEdit - Nesouměrnost v databázi</translation>
+        <translation type="obsolete">RDLogEdit - Nesouměrnost v databázi</translation>
     </message>
     <message>
         <source>This version of RDLogEdit is incompatible with the version installed on the server.
 See your system administrator for an update!</source>
-        <translation>Tato verze RDLogEdit je neslučitelná s verzí nainstalovanou na serveru.
+        <translation type="obsolete">Tato verze RDLogEdit je neslučitelná s verzí nainstalovanou na serveru.
 Vyhledejte svého správce systému kvůli aktualizaci!</translation>
     </message>
     <message>

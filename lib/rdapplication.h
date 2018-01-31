@@ -28,6 +28,7 @@
 #include <rdconfig.h>
 #include <rddb.h>
 #include <rdlibrary_conf.h>
+#include <rdlogedit_conf.h>
 #include <rdripc.h>
 #include <rdstation.h>
 #include <rdsystem.h>
@@ -44,6 +45,7 @@ class RDApplication : public QObject
   RDCae *cae();
   RDConfig *config();
   RDLibraryConf *libraryConf();
+  RDLogeditConf *logeditConf();
   RDAirPlayConf *panelConf();
   RDRipc *ripc();
   RDStation *station();
@@ -56,6 +58,7 @@ class RDApplication : public QObject
   RDCae *app_cae;
   RDConfig  *app_config;
   RDLibraryConf *app_library_conf;
+  RDLogeditConf *app_logedit_conf;
   RDRipc *app_ripc;
   RDStation *app_station;
   RDSystem *app_system;
