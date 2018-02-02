@@ -2,7 +2,7 @@
 //
 // A Utility for running periodic system maintenance.
 //
-//   (C) Copyright 2008-2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2008-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -32,23 +32,24 @@
 #include <qfile.h>
 
 #include <rd.h>
-#include <rdconf.h>
-#include <rdrehash.h>
-#include <rdmaint.h>
-#include <rdlibrary_conf.h>
-#include <rdescape_string.h>
-#include <rddb.h>
-#include <rdurl.h>
-#include <rdpodcast.h>
+#include <rdapplication.h>
 #include <rdcart.h>
+#include <rdconf.h>
+#include <rddb.h>
+#include <rdescape_string.h>
+#include <rdlibrary_conf.h>
 #include <rdlog.h>
+#include <rdmaint.h>
+#include <rdpodcast.h>
+#include <rdrehash.h>
+#include <rdurl.h>
 
 MainObject::MainObject(QObject *parent)
   :QObject(parent)
 {
   QString sql;
   RDSqlQuery *q;
-  unsigned schema=0;
+  QString err_msg;
 
   //
   // Initialize Data Structures
@@ -57,49 +58,38 @@ MainObject::MainObject(QObject *parent)
   maint_system=false;
 
   //
+  // Open the Database
+  //
+  rda=new RDApplication("rdmaint","rdmaint",RDMAINT_USAGE,this);
+  if(!rda->open(&err_msg)) {
+    fprintf(stderr,"rdmaint: %s\n",(const char *)err_msg);
+    exit(1);
+  }
+
+  //
   // Read Command Options
   //
-  maint_cmd=new RDCmdSwitch(qApp->argc(),qApp->argv(),
-			     "rdmaint",RDMAINT_USAGE);
-  if(maint_cmd->keys()>3) {
+  if(rda->cmdSwitch()->keys()>3) {
     fprintf(stderr,"\n");
     fprintf(stderr,"%s",RDMAINT_USAGE);
     fprintf(stderr,"\n");
-    delete maint_cmd;
-    exit(256);
+    exit(2);
   }
-  for(unsigned i=0;i<maint_cmd->keys();i++) {
-    if(maint_cmd->key(i)=="--verbose") {
+  for(unsigned i=0;i<rda->cmdSwitch()->keys();i++) {
+    if(rda->cmdSwitch()->key(i)=="--verbose") {
       maint_verbose=true;
+      rda->cmdSwitch()->setProcessed(i,true);
     }
-    if(maint_cmd->key(i)=="--system") {
+    if(rda->cmdSwitch()->key(i)=="--system") {
       maint_system=true;
+      rda->cmdSwitch()->setProcessed(i,true);
+    }
+    if(!rda->cmdSwitch()->processed(i)) {
+      fprintf(stderr,"rdmaint: unknown command option \"%s\"\n",
+	      (const char *)rda->cmdSwitch()->key(i));
+      exit(2);
     }
   }
-
-  //
-  // Read Configuration
-  //
-  maint_config=new RDConfig();
-  maint_config->load();
-  maint_config->setModuleName("rdmaint");
-
-  //
-  // Open Database
-  //
-  QString err (tr("rdmaint: "));
-  QSqlDatabase *db=RDInitDb(&schema,&err);
-  if(!db) {
-    fprintf(stderr,err.ascii());
-    delete maint_cmd;
-    exit(256);
-  }
-  delete maint_cmd;
-
-  //
-  // Get Station
-  //
-  maint_station=new RDStation(maint_config->stationName());
 
   //
   // Get User
@@ -110,7 +100,6 @@ MainObject::MainObject(QObject *parent)
     fprintf(stderr,"unable to find valid user\n");
     exit(256);
   }
-  maint_user=new RDUser(q->value(0).toString());
   delete q;
 
   if(maint_system) {
@@ -171,14 +160,14 @@ void MainObject::PurgeCuts()
     q1=new RDSqlQuery(sql);
     while(q1->next()) {
       RDCart *cart=new RDCart(q1->value(0).toUInt());
-      if(cart->removeCut(maint_station,maint_user,q1->value(1).toString(),
-			 maint_config)) {
-	maint_config->
+      if(cart->removeCut(rda->station(),rda->user(),q1->value(1).toString(),
+			 rda->config())) {
+	rda->config()->
 	  log("rdmaint",RDConfig::LogInfo,QString().sprintf("purged cut %s",
 			(const char *)q1->value(1).toString()));
       }
       else {
-	maint_config->
+	rda->config()->
 	  log("rdmaint",RDConfig::LogErr,QString().
 	      sprintf("unable to purge cut %s: audio deletion error",
 		      (const char *)q1->value(1).toString()));
@@ -188,8 +177,8 @@ void MainObject::PurgeCuts()
 			      q1->value(0).toUInt());
 	q2=new RDSqlQuery(sql);
 	if(!q2->first()) {
-	  cart->remove(maint_station,maint_user,maint_config);
-	  maint_config->
+	  cart->remove(rda->station(),rda->user(),rda->config());
+	  rda->config()->
 	    log("rdmaint",RDConfig::LogInfo,QString().
 		sprintf("deleted purged cart %06u",cart->number()));
 	}
@@ -215,11 +204,11 @@ void MainObject::PurgeLogs()
     "(PURGE_DATE<\""+dt.date().toString("yyyy-MM-dd")+"\")";
   q=new RDSqlQuery(sql);
   while(q->next()) {
-    maint_config->
+    rda->config()->
       log("rdmain",RDConfig::LogInfo,QString().sprintf("purged log %s",
 		       (const char *)q->value(0).toString()));
     RDLog *log=new RDLog(q->value(0).toString());
-    log->remove(maint_station,maint_user,maint_config);
+    log->remove(rda->station(),rda->user(),rda->config());
     delete log;
   }
   delete q;
@@ -258,7 +247,7 @@ void MainObject::PurgeDropboxes()
                          DROPBOXES left join DROPBOX_PATHS \
                          on (DROPBOXES.ID=DROPBOX_PATHS.DROPBOX_ID) \
                          where DROPBOXES.STATION_NAME=\"%s\"",
-			(const char *)RDEscapeString(maint_config->
+			(const char *)RDEscapeString(rda->config()->
 						     stationName()));
   q=new RDSqlQuery(sql);
   while(q->next()) {
@@ -307,10 +296,10 @@ void MainObject::RehashCuts()
   q=new RDSqlQuery(sql);
   while(q->next()) {
     printf("CUT: %s\n",(const char *)q->value(0).toString());
-    if((err=RDRehash::rehash(maint_station,maint_user,maint_config,
+    if((err=RDRehash::rehash(rda->station(),rda->user(),rda->config(),
 			     RDCut::cartNumber(q->value(0).toString()),
 			     RDCut::cutNumber(q->value(0).toString())))!=RDRehash::ErrorOk) {
-      maint_config->
+      rda->config()->
 	log("rdmaint",
 	    RDConfig::LogErr,QString().sprintf("failed to rehash cut %s [%s]",
 					       (const char *)q->value(0).toString(),

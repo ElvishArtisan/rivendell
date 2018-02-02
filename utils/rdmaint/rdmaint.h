@@ -2,7 +2,7 @@
 //
 // A Utility for running periodic system maintenance.
 //
-//   (C) Copyright 2008,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2008,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -22,12 +22,6 @@
 #define RDMAINT_H
 
 #include <qobject.h>
-#include <qsqldatabase.h>
-
-#include <rdconfig.h>
-#include <rduser.h>
-#include <rdstation.h>
-#include <rdcmd_switch.h>
 
 #define RDMAINT_USAGE "[--help] [--verbose] [--system]\n\nRun Rivendell maintenance routines.\n"
 
@@ -46,12 +40,8 @@ class MainObject : public QObject
   void PurgeGpioEvents();
   void PurgeWebapiAuths();
   void RehashCuts();
-  RDConfig *maint_config;
   bool maint_verbose;
   bool maint_system;
-  RDCmdSwitch *maint_cmd;
-  RDStation *maint_station;
-  RDUser *maint_user;
 };
 
 
