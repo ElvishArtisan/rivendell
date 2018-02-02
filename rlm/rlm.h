@@ -344,8 +344,8 @@ extern "C" {
   const char *RLMGetStringValue(void *ptr,const char *filename,
 				const char *section,const char *label,
 				const char *default_value);
-
-
+  const char *RLMDateTimeDecode(void *ptr, const char *format,
+				const char *svc_name);
 #ifdef __cplusplus
 }
 #endif
