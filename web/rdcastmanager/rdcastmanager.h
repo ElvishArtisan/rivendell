@@ -2,7 +2,7 @@
 //
 // Web-Based RSS Podcast Manager for Rivendell.
 //
-//   (C) Copyright 2002-2007,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2007,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -22,10 +22,11 @@
 #define RDCASTMANAGER_H
 
 #include <qobject.h>
-#include <qsqldatabase.h>
 #include <qhostaddress.h>
 
 #include <rdformpost.h>
+
+#define RDCASTMANAGER_CGI_USAGE "\n"
 
 //
 // CGI Values
@@ -84,7 +85,6 @@ class MainObject : public QObject
   bool cast_delete_priv;
   QDate cast_start_date;
   QDate cast_end_date;
-  RDConfig *cast_config;
 };
 
 

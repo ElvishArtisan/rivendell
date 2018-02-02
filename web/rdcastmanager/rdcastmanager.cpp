@@ -2,7 +2,7 @@
 //
 // An RSS Feed Generator for Rivendell.
 //
-//   (C) Copyright 2002-2009,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2009,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -28,25 +28,25 @@
 #include <qdatetime.h>
 
 #include <rd.h>
+#include <rdapplication.h>
+#include <rdcastsearch.h>
 #include <rdconf.h>
 #include <rdconfig.h>
-#include <rdpodcast.h>
 #include <rddb.h>
-#include <rdweb.h>
 #include <rdescape_string.h>
 #include <rdfeed.h>
-#include <rdcastsearch.h>
-#include <rdsystem.h>
-#include <rdstation.h>
-#include <dbversion.h>
+#include <rdpodcast.h>
+#include <rdweb.h>
 
-#include <rdcastmanager.h>
+#include "rdcastmanager.h"
 
 char server_name[PATH_MAX];
 
 MainObject::MainObject(QObject *parent)
   :QObject(parent)
 {
+  QString err_msg;
+
   //
   // Initialize Variables
   //
@@ -59,47 +59,30 @@ MainObject::MainObject(QObject *parent)
   cast_post=NULL;
 
   //
-  // Read Configuration
+  // Open the Database
   //
-  cast_config=new RDConfig();
-  cast_config->load();
-  cast_config->setModuleName("rdcastmanager.cgi");
+  rda=new RDApplication("rdcastmanager.cgi","rdcastmanager.cgi",RDCASTMANAGER_CGI_USAGE,this);
+  if(!rda->open(&err_msg)) {
+    printf("Content-type: text/html\n");
+    printf("Status: 500\n");
+    printf("\n");
+    printf("rdcastmanager.cgi: %s\n",(const char *)err_msg);
+    Exit(0);
+  }
 
   //
-  // Open Database
+  // Read Command Options
   //
-  QSqlDatabase *db=QSqlDatabase::addDatabase(cast_config->mysqlDriver());
-  if(!db) {
-    printf("Content-type: text/html\n\n");
-    printf("rdcastmanager: unable to initialize connection to database\n");
-    Exit(0);
+  for(unsigned i=0;i<rda->cmdSwitch()->keys();i++) {
+    if(!rda->cmdSwitch()->processed(i)) {
+      printf("Content-type: text/html\n");
+      printf("Status: 500\n");
+      printf("\n");
+      printf("rdcastmanager.cgi: unknown command option \"%s\"\n",
+	     (const char *)rda->cmdSwitch()->key(i));
+      Exit(0);
+    }
   }
-  db->setDatabaseName(cast_config->mysqlDbname());
-  db->setUserName(cast_config->mysqlUsername());
-  db->setPassword(cast_config->mysqlPassword());
-  db->setHostName(cast_config->mysqlHostname());
-  if(!db->open()) {
-    printf("Content-type: text/html\n\n");
-    printf("rdcastmanager: unable to connect to database\n");
-    db->removeDatabase(cast_config->mysqlDbname());
-    Exit(0);
-  }
-  RDSqlQuery *q=new RDSqlQuery("select DB from VERSION");
-  if(!q->first()) {
-    printf("Content-type: text/html\n");
-    printf("Status: 500\n\n");
-    printf("rdcastmanager: missing/invalid database version!\n");
-    db->removeDatabase(cast_config->mysqlDbname());
-    Exit(0);
-  }
-  if(q->value(0).toUInt()!=RD_VERSION_DATABASE) {
-    printf("Content-type: text/html\n");
-    printf("Status: 500\n\n");
-    printf("rdcastmanager: skewed database version!\n");
-    db->removeDatabase(cast_config->mysqlDbname());
-    Exit(0);
-  }
-  delete q;
 
   //
   // Determine Connection Type
@@ -107,7 +90,6 @@ MainObject::MainObject(QObject *parent)
   if(getenv("REQUEST_METHOD")==NULL) {
     printf("Content-type: text/html\n\n");
     printf("rdcastmanager: missing REQUEST_METHOD\n");
-    db->removeDatabase(cast_config->mysqlDbname());
     Exit(0);
   }
   if(QString(getenv("REQUEST_METHOD")).lower()!="post") {
@@ -137,65 +119,65 @@ MainObject::MainObject(QObject *parent)
     Exit(0);
   }
   switch(AuthenticatePost()) {
-    case RDCASTMANAGER_COMMAND_LOGIN:
-      ServeLogin();
-      break;
+  case RDCASTMANAGER_COMMAND_LOGIN:
+    ServeLogin();
+    break;
 
-    case RDCASTMANAGER_COMMAND_LOGOUT:
-      ServeLogout();
-      break;
+  case RDCASTMANAGER_COMMAND_LOGOUT:
+    ServeLogout();
+    break;
 
-    case RDCASTMANAGER_COMMAND_LIST_FEEDS:
-      ServeListFeeds();
-      break;
+  case RDCASTMANAGER_COMMAND_LIST_FEEDS:
+    ServeListFeeds();
+    break;
 
-    case RDCASTMANAGER_COMMAND_LIST_CASTS:
-      ServeListCasts();
-      break;
+  case RDCASTMANAGER_COMMAND_LIST_CASTS:
+    ServeListCasts();
+    break;
 
-    case RDCASTMANAGER_COMMAND_EDIT_CAST:
-      ServeEditCast();
-      break;
+  case RDCASTMANAGER_COMMAND_EDIT_CAST:
+    ServeEditCast();
+    break;
 
-    case RDCASTMANAGER_COMMAND_COMMIT_CAST:
-      CommitCast();
-      break;
+  case RDCASTMANAGER_COMMAND_COMMIT_CAST:
+    CommitCast();
+    break;
 
-    case RDCASTMANAGER_COMMAND_CONFIRM_DELETE_CAST:
-      ConfirmDeleteCast();
-      break;
+  case RDCASTMANAGER_COMMAND_CONFIRM_DELETE_CAST:
+    ConfirmDeleteCast();
+    break;
 
-    case RDCASTMANAGER_COMMAND_DELETE_CAST:
-      DeleteCast();
-      break;
+  case RDCASTMANAGER_COMMAND_DELETE_CAST:
+    DeleteCast();
+    break;
 
-    case RDCASTMANAGER_COMMAND_SUBSCRIPTION_PICK_DATES:
-      ServeDatePicker(RDCASTMANAGER_COMMAND_SUBSCRIPTION_REPORT);
-      break;
+  case RDCASTMANAGER_COMMAND_SUBSCRIPTION_PICK_DATES:
+    ServeDatePicker(RDCASTMANAGER_COMMAND_SUBSCRIPTION_REPORT);
+    break;
 
-    case RDCASTMANAGER_COMMAND_SUBSCRIPTION_REPORT:
-      ServeSubscriptionReport();
-      break;
+  case RDCASTMANAGER_COMMAND_SUBSCRIPTION_REPORT:
+    ServeSubscriptionReport();
+    break;
 
-    case RDCASTMANAGER_COMMAND_EPISODE_PICK_DATES:
-      ServeDatePicker(RDCASTMANAGER_COMMAND_EPISODE_REPORT);
-      break;
+  case RDCASTMANAGER_COMMAND_EPISODE_PICK_DATES:
+    ServeDatePicker(RDCASTMANAGER_COMMAND_EPISODE_REPORT);
+    break;
 
-    case RDCASTMANAGER_COMMAND_EPISODE_REPORT:
-      ServeEpisodeReport();
-      break;
+  case RDCASTMANAGER_COMMAND_EPISODE_REPORT:
+    ServeEpisodeReport();
+    break;
 
-    case RDCASTMANAGER_COMMAND_PLAY_CAST:
-      ServePlay();
-      break;
+  case RDCASTMANAGER_COMMAND_PLAY_CAST:
+    ServePlay();
+    break;
 
-    case RDCASTMANAGER_COMMAND_POST_EPISODE:
-      PostEpisode();
-      break;
+  case RDCASTMANAGER_COMMAND_POST_EPISODE:
+    PostEpisode();
+    break;
 
-    default:
-      RDCgiError("Invalid post data!");
-      break;
+  default:
+    RDCgiError("Invalid post data!");
+    break;
   }
 
   Exit(0);
@@ -804,7 +786,7 @@ void MainObject::ServeEditCast(int cast_id)
   QDateTime origin_datetime=RDUtcToLocal(q->value(10).toDateTime());
   QDateTime effective_datetime=RDUtcToLocal(q->value(12).toDateTime());
 
-  RDFeed *feed=new RDFeed(cast_feed_id,cast_config);
+  RDFeed *feed=new RDFeed(cast_feed_id,rda->config());
 
   printf("Content-type: text/html\n\n");
   printf("<html>\n");
@@ -1451,9 +1433,9 @@ void MainObject::DeleteCast()
     Exit(0);
   }
 
-  RDFeed *feed=new RDFeed(cast_feed_id,cast_config);
-  RDPodcast *cast=new RDPodcast(cast_config,cast_cast_id);
-  cast->removeAudio(feed,&errs,cast_config->logXloadDebugData());
+  RDFeed *feed=new RDFeed(cast_feed_id,rda->config());
+  RDPodcast *cast=new RDPodcast(rda->config(),cast_cast_id);
+  cast->removeAudio(feed,&errs,rda->config()->logXloadDebugData());
   delete cast;
   delete feed;
 
@@ -1483,7 +1465,7 @@ void MainObject::ServeSubscriptionReport()
     Exit(0);
   }
   cast_cast_id=-1;
-  RDFeed *feed=new RDFeed(cast_key_name,cast_config,this);
+  RDFeed *feed=new RDFeed(cast_key_name,rda->config(),this);
 
   printf("Content-type: text/html\n\n");
   printf("<html>\n");
@@ -1611,15 +1593,15 @@ void MainObject::PostEpisode()
     RDCgiError("No MEDIA_FILE submitted!");
     Exit(0);
   }
-  RDStation *station=new RDStation(cast_config->stationName(),0);
+  RDStation *station=new RDStation(rda->config()->stationName(),0);
   if(!station->exists()) {
     RDCgiError("Server station entry not found!");
     Exit(0);
   }
   RDFeed::Error err;
-  RDFeed *feed=new RDFeed(cast_feed_id,cast_config,this);
+  RDFeed *feed=new RDFeed(cast_feed_id,rda->config(),this);
   int cast_id=feed->postFile(station,media_file,&err,
-			     cast_config->logXloadDebugData(),cast_config);
+			     rda->config()->logXloadDebugData(),rda->config());
   delete feed;
   delete station;
   if(err!=RDFeed::ErrorOk) {
@@ -1651,7 +1633,7 @@ void MainObject::ServeEpisodeReport()
     RDCgiError("Missing CAST_ID");
     Exit(0);
   }
-  RDPodcast *cast=new RDPodcast(cast_config,cast_cast_id);
+  RDPodcast *cast=new RDPodcast(rda->config(),cast_cast_id);
 
   printf("Content-type: text/html\n\n");
   printf("<html>\n");
