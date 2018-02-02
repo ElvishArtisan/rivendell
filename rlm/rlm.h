@@ -346,6 +346,8 @@ extern "C" {
 				const char *default_value);
   const char *RLMDateTimeDecode(void *ptr, const char *format,
 				const char *svc_name);
+
+
 #ifdef __cplusplus
 }
 #endif
