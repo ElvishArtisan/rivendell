@@ -2,7 +2,7 @@
 //
 // Command-line tool for setting Rivendell Cut Markers
 //
-//   (C) Copyright 2014,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2014,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -30,26 +30,27 @@
 #include <qdir.h>
 #include <qfileinfo.h>
 
-#include <rddb.h>
 #include <rd.h>
-#include <rdmarkerset.h>
+#include <rdapplication.h>
+#include <rdaudioinfo.h>
+#include <rddb.h>
 #include <rdcart.h>
-#include <rdcut.h>
-#include <rdlog.h>
 #include <rdcreate_log.h>
+#include <rdcut.h>
 #include <rdescape_string.h>
 #include <rdgroup.h>
-#include <rdwavefile.h>
-#include <rdaudioinfo.h>
+#include <rdlog.h>
 #include <rdtrimaudio.h>
-#include <dbversion.h>
+#include <rdwavefile.h>
+
+#include "rdmarkerset.h"
 
 MainObject::MainObject(QObject *parent)
   :QObject(parent)
 {
   bool ok=false;
-  bool skip_db_check=false;
-  unsigned schema=0;
+  QString err_msg;
+
   set_all_groups=false;
   set_auto_trim=1;
   set_verbose=false;
@@ -57,46 +58,50 @@ MainObject::MainObject(QObject *parent)
   set_auto_segue=1;
 
   //
+  // Open the Database
+  //
+  rda=new RDApplication("rdmarkerset","rdmarkerset",RDMARKERSET_USAGE,this);
+  if(!rda->open(&err_msg)) {
+    fprintf(stderr,"rdmarkerset: %s\n",(const char *)err_msg);
+    exit(1);
+  }
+
+  //
   // Read Command Options
   //
-  RDCmdSwitch *cmd=
-    new RDCmdSwitch(qApp->argc(),qApp->argv(),"rdmarkerset",RDMARKERSET_USAGE);
-  for(unsigned i=0;i<cmd->keys();i++) {
-    if(cmd->key(i)=="--skip-db-check") {
-      skip_db_check=true;
-      cmd->setProcessed(i,true);
-    }
-    if(cmd->key(i)=="--all-groups") {
+  for(unsigned i=0;i<rda->cmdSwitch()->keys();i++) {
+    if(rda->cmdSwitch()->key(i)=="--all-groups") {
       set_all_groups=true;
-      cmd->setProcessed(i,true);
+      rda->cmdSwitch()->setProcessed(i,true);
     }
-    if(cmd->key(i)=="--group") {
-      set_group_names.push_back(cmd->value(i));
-      cmd->setProcessed(i,true);
+    if(rda->cmdSwitch()->key(i)=="--group") {
+      set_group_names.push_back(rda->cmdSwitch()->value(i));
+      rda->cmdSwitch()->setProcessed(i,true);
     }    
-    if(cmd->key(i)=="--auto-trim") {
-      set_auto_trim=cmd->value(i).toInt(&ok);
+    if(rda->cmdSwitch()->key(i)=="--auto-trim") {
+      set_auto_trim=rda->cmdSwitch()->value(i).toInt(&ok);
       if((!ok)||(set_auto_trim>0)) {
 	fprintf(stderr,
 		"rdmarkerset: invalid level value specified for --auto-trim\n");
       }
-      cmd->setProcessed(i,true);
+      rda->cmdSwitch()->setProcessed(i,true);
     }    
-    if(cmd->key(i)=="--auto-segue") {
-      set_auto_segue=cmd->value(i).toInt(&ok);
+    if(rda->cmdSwitch()->key(i)=="--auto-segue") {
+      set_auto_segue=rda->cmdSwitch()->value(i).toInt(&ok);
       if((!ok)||(set_auto_segue>0)) {
 	fprintf(stderr,
 	       "rdmarkerset: invalid level value specified for --auto-segue\n");
       }
-      cmd->setProcessed(i,true);
+      rda->cmdSwitch()->setProcessed(i,true);
     }    
-    if(cmd->key(i)=="--verbose") {
+    if(rda->cmdSwitch()->key(i)=="--verbose") {
       set_verbose=true;
-      cmd->setProcessed(i,true);
+      rda->cmdSwitch()->setProcessed(i,true);
     }
-    if(!cmd->processed(i)) {
-      fprintf(stderr,"rdmarkerset: unrecognized option \"%s\"\n",
-	      (const char *)cmd->key(i));
+    if(!rda->cmdSwitch()->processed(i)) {
+      fprintf(stderr,"rdmarkerset: unknown command option \"%s\"\n",
+	      (const char *)rda->cmdSwitch()->key(i));
+      exit(2);
     }
   }
 
@@ -125,36 +130,12 @@ MainObject::MainObject(QObject *parent)
   }
 
   //
-  // Read Configuration
-  //
-  set_config=new RDConfig();
-  set_config->load();
-  set_config->setModuleName("rdmarkerset");
-
-  //
-  // Open Database
-  //
-  QString err (tr("rdmarkerset: "));
-  QSqlDatabase *db=RDInitDb(&schema,&err);
-  if(!db) {
-    fprintf(stderr,err.ascii());
-    delete cmd;
-    exit(256);
-  }
-  if((schema!=RD_VERSION_DATABASE)&&(!skip_db_check)) {
-    fprintf(stderr,
-	    "rdmarkerset: database version mismatch, should be %u, is %u\n",
-	    RD_VERSION_DATABASE,schema);
-    exit(256);
-  }
-
-  //
   // Validate Station
   //
-  set_station=new RDStation(set_config->stationName());
-  if(!set_station->exists()) {
+  //  set_station=new RDStation(set_config->stationName());
+  if(!rda->station()->exists()) {
     fprintf(stderr,"rdmarkerset: no such host [\"%s\"]\n",
-	    (const char *)set_config->stationName());
+	    (const char *)rda->config()->stationName());
     exit(256);
   }  
 
@@ -188,21 +169,13 @@ MainObject::MainObject(QObject *parent)
   //
   // RIPCD Connection
   //
-  set_user=NULL;
-  set_ripc=new RDRipc(set_station,set_config,this);
-  connect(set_ripc,SIGNAL(userChanged()),this,SLOT(userChangedData()));
-  set_ripc->connectHost("localhost",RIPCD_TCP_PORT,set_config->password());
+  connect(rda,SIGNAL(userChanged()),this,SLOT(userChangedData()));
+  rda->ripc()->connectHost("localhost",RIPCD_TCP_PORT,rda->config()->password());
 }
 
 
 void MainObject::userChangedData()
 {
-  if(set_user!=NULL) {
-    fprintf(stderr,"rdmarkerset: change of user context ignored\n");
-    return;
-  }
-  set_user=new RDUser(set_ripc->user());
-
   for(unsigned i=0;i<set_group_names.size();i++) {
     Print("Processing group \""+set_group_names[i]+"\"...");
     ProcessGroup(set_group_names[i]);
@@ -260,11 +233,11 @@ void MainObject::SetAutoTrim(unsigned cartnum,int cutnum,const QString &title,
   RDTrimAudio::ErrorCode err;
   RDCart *cart=new RDCart(cartnum);
   RDCut *cut=new RDCut(cartnum,cutnum);
-  RDTrimAudio *trimmer=new RDTrimAudio(set_station,set_config,this);
+  RDTrimAudio *trimmer=new RDTrimAudio(rda->station(),rda->config(),this);
   trimmer->setCartNumber(cartnum);
   trimmer->setCutNumber(cutnum);
   trimmer->setTrimLevel(100*set_auto_trim);
-  if((err=trimmer->runTrim(set_user->name(),set_user->password()))==
+  if((err=trimmer->runTrim(rda->user()->name(),rda->user()->password()))==
      RDTrimAudio::ErrorOk) {
     int start=trimmer->startPoint();
     int end=trimmer->endPoint();
@@ -335,10 +308,10 @@ void MainObject::ClearAutoTrim(unsigned cartnum,int cutnum,const QString &title,
   RDAudioInfo::ErrorCode err;
   RDCart *cart=new RDCart(cartnum);
   RDCut *cut=new RDCut(cartnum,cutnum);
-  RDAudioInfo *info=new RDAudioInfo(set_station,set_config,this);
+  RDAudioInfo *info=new RDAudioInfo(rda->station(),rda->config(),this);
   info->setCartNumber(cartnum);
   info->setCutNumber(cutnum);
-  if((err=info->runInfo(set_user->name(),set_user->password()))==
+  if((err=info->runInfo(rda->user()->name(),rda->user()->password()))==
      RDAudioInfo::ErrorOk) {
     cut->setStartPoint(0);
     cut->setEndPoint(info->length());
@@ -366,11 +339,11 @@ void MainObject::SetAutoSegue(unsigned cartnum,int cutnum,const QString &title,
   RDTrimAudio::ErrorCode err;
   RDCart *cart=new RDCart(cartnum);
   RDCut *cut=new RDCut(cartnum,cutnum);
-  RDTrimAudio *trimmer=new RDTrimAudio(set_station,set_config,this);
+  RDTrimAudio *trimmer=new RDTrimAudio(rda->station(),rda->config(),this);
   trimmer->setCartNumber(cartnum);
   trimmer->setCutNumber(cutnum);
   trimmer->setTrimLevel(100*set_auto_segue);
-  if((err=trimmer->runTrim(set_user->name(),set_user->password()))==
+  if((err=trimmer->runTrim(rda->user()->name(),rda->user()->password()))==
      RDTrimAudio::ErrorOk) {
     int end=trimmer->endPoint();
     if(end<cut->endPoint()) {
