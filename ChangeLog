@@ -16649,3 +16649,5 @@
 	* Converted sas_shim(8) to use RDApplication.
 2018-02-03 Fred Gleason <fredg@paravelsystems.com>
 	* Converted rdcastmanager.cgi to use RDApplication.
+2018-02-03 Fred Gleason <fredg@paravelsystems.com>
+	* Converted rdfeed.xml to use RDApplication.

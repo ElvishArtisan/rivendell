@@ -2,7 +2,7 @@
 //
 // An RSS Feed Generator for Rivendell.
 //
-//   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -22,10 +22,10 @@
 #define RDFEED_SCRIPT_H
 
 #include <qobject.h>
-#include <qsqldatabase.h>
 
-#include <rdconfig.h>
 #include <rddb.h>
+
+#define RDFEED_XML_USAGE "\n"
 
 class MainObject : public QObject
 {
@@ -42,7 +42,6 @@ class MainObject : public QObject
 			      unsigned cast_id);
   bool ShouldCount(const QString &hdr);
   void Redirect(const QString &url);
-  RDConfig *config;
 };
 
 

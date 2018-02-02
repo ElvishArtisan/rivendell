@@ -2,7 +2,7 @@
 //
 // An RSS Feed Generator for Rivendell.
 //
-//   (C) Copyright 2002-2007,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2007,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -29,23 +29,25 @@
 #include <qdatetime.h>
 #include <qstringlist.h>
 
+#include <rdapplication.h>
 #include <rdconf.h>
-#include <rdconfig.h>
-#include <rdpodcast.h>
 #include <rddb.h>
-#include <rdweb.h>
+#include <rdfeed.h>
 #include <rdfeedlog.h>
 #include <rdformpost.h>
-#include <rdfeed.h>
+#include <rdpodcast.h>
 #include <dbversion.h>
+#include <rdweb.h>
 
-#include <rdfeed_script.h>
+#include "rdfeed_script.h"
 
 char server_name[PATH_MAX];
 
 MainObject::MainObject(QObject *parent)
   :QObject(parent)
 {
+  QString err_msg;
+
   char keyname[10];
   int cast_id=-1;
   bool count;
@@ -54,7 +56,9 @@ MainObject::MainObject(QObject *parent)
   // Validate Feed Key Name
   //
   if(getenv("QUERY_STRING")==NULL) {
-    printf("Content-type: text/html\n\n");
+    printf("Content-type: text/html\n");
+    printf("Status: 400\n");
+    printf("\n");
     printf("rdfeed: missing feed key name\n");
     exit(0);
   }
@@ -65,7 +69,9 @@ MainObject::MainObject(QObject *parent)
     arg++;
   }
   if(arg==9) {
-    printf("Content-type: text/html\n\n");
+    printf("Content-type: text/html\n");
+    printf("Status: 400\n");
+    printf("\n");
     printf("rdfeed: invalid feed key name\n");
     exit(0);
   }
@@ -76,18 +82,13 @@ MainObject::MainObject(QObject *parent)
   // Get the Server Name
   //
   if(getenv("SERVER_NAME")==NULL) {
-    printf("Content-type: text/html\n\n");
+    printf("Content-type: text/html\n");
+    printf("Status: 500\n");
+    printf("\n");
     printf("rdfeed: missing SERVER_NAME\n");
     exit(0);
   }
   strncpy(server_name,getenv("SERVER_NAME"),PATH_MAX);
-
-  //
-  // Read Configuration
-  //
-  config=new RDConfig();
-  config->load();
-  config->setModuleName("rdfeed.cgi");
 
   //
   // Determine Range
@@ -100,40 +101,30 @@ MainObject::MainObject(QObject *parent)
   }
 
   //
-  // Open Database
+  // Open the Database
   //
-  QSqlDatabase *db=QSqlDatabase::addDatabase(config->mysqlDriver());
-  if(!db) {
-    printf("Content-type: text/html\n\n");
-    printf("rdfeed: unable to initialize connection to database\n");
-    exit(0);
-  }
-  db->setDatabaseName(config->mysqlDbname());
-  db->setUserName(config->mysqlUsername());
-  db->setPassword(config->mysqlPassword());
-  db->setHostName(config->mysqlHostname());
-  if(!db->open()) {
-    printf("Content-type: text/html\n\n");
-    printf("rdfeed: unable to connect to database\n");
-    db->removeDatabase(config->mysqlDbname());
-    exit(0);
-  }
-  RDSqlQuery *q=new RDSqlQuery("select DB from VERSION");
-  if(!q->first()) {
+  rda=new RDApplication("rdfeed.xml","rdfeed.xml",RDFEED_XML_USAGE,this);
+  if(!rda->open(&err_msg)) {
     printf("Content-type: text/html\n");
-    printf("Status: 500\n\n");
-    printf("rdfeed: missing/invalid database version!\n");
-    db->removeDatabase(config->mysqlDbname());
+    printf("Status: 500\n");
+    printf("\n");
+    printf("rdfeed.xml: %s\n",(const char *)err_msg);
     exit(0);
   }
-  if(q->value(0).toUInt()!=RD_VERSION_DATABASE) {
-    printf("Content-type: text/html\n");
-    printf("Status: 500\n\n");
-    printf("rdfeed: skewed database version!\n");
-    db->removeDatabase(config->mysqlDbname());
-    exit(0);
+
+  //
+  // Read Command Options
+  //
+  for(unsigned i=0;i<rda->cmdSwitch()->keys();i++) {
+    if(!rda->cmdSwitch()->processed(i)) {
+      printf("Content-type: text/html\n");
+      printf("Status: 500\n");
+      printf("\n");
+      printf("rdfeed.xml: unknown command option \"%s\"\n",
+	     (const char *)rda->cmdSwitch()->key(i));
+      exit(0);
+    }
   }
-  delete q;
 
   if(cast_id<0) {
     ServeRss(keyname,count);
@@ -280,7 +271,7 @@ QString MainObject::ResolveChannelWildcards(RDSqlQuery *chan_q)
 QString MainObject::ResolveItemWildcards(const QString &keyname,
 					 RDSqlQuery *item_q,RDSqlQuery *chan_q)
 {
-  RDFeed *feed=new RDFeed(keyname,config);
+  RDFeed *feed=new RDFeed(keyname,rda->config());
   QString ret=chan_q->value(11).toString();
   ret.replace("%ITEM_TITLE%",RDXmlEscape(item_q->value(0).toString()));
   ret.replace("%ITEM_DESCRIPTION%",
