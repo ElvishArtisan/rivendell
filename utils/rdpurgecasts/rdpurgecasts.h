@@ -2,7 +2,7 @@
 //
 // A Utility to Purge Expired Podcasts.
 //
-//   (C) Copyright 2002-2007,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2007,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -22,10 +22,6 @@
 #define RDPURGECASTS_H
 
 #include <qobject.h>
-#include <qsqldatabase.h>
-
-#include <rdconfig.h>
-#include <rdcmd_switch.h>
 
 #define RDPURGECASTS_USAGE "[--help] [--verbose]\n\nPurge expired podcasts.\n"
 
@@ -36,9 +32,7 @@ class MainObject : public QObject
 
  private:
   void PurgeCast(unsigned id);
-  RDConfig *purge_config;
   bool purge_verbose;
-  RDCmdSwitch *purge_cmd;
 };
 
 

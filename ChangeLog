@@ -16641,3 +16641,5 @@
 	* Converted rdmaint(1) to use RDApplication.
 2018-02-03 Fred Gleason <fredg@paravelsystems.com>
 	* Converted rdmarkerset(8) to use RDApplication.
+2018-02-03 Fred Gleason <fredg@paravelsystems.com>
+	* Converted rdpurgecasts(1) to use RDApplication.

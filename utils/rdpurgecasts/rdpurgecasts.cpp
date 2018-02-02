@@ -2,7 +2,7 @@
 //
 // A Utility to Purge Expired Podcasts.
 //
-//   (C) Copyright 2007,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2007,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -31,22 +31,23 @@
 #include <qdir.h>
 
 #include <rd.h>
-#include <rdconf.h>
-#include <rdpurgecasts.h>
-#include <rdlibrary_conf.h>
-#include <rdescape_string.h>
 #include <rddb.h>
-#include <rdurl.h>
+#include <rdapplication.h>
+#include <rdconf.h>
+#include <rdescape_string.h>
 #include <rdfeed.h>
+#include <rdlibrary_conf.h>
 #include <rdpodcast.h>
+#include <rdurl.h>
 
+#include "rdpurgecasts.h"
 
 MainObject::MainObject(QObject *parent)
   :QObject(parent)
 {
   QString sql;
   RDSqlQuery *q;
-  unsigned schema=0;
+  QString err_msg;
 
   //
   // Initialize Data Structures
@@ -54,41 +55,35 @@ MainObject::MainObject(QObject *parent)
   purge_verbose=false;
 
   //
+  // Open the Database
+  //
+  rda=new RDApplication("rdpurgecasts","rdpurgecasts",RDPURGECASTS_USAGE,this);
+  if(!rda->open(&err_msg)) {
+    fprintf(stderr,"rdpurgecasts: %s\n",(const char *)err_msg);
+    exit(1);
+  }
+
+  //
   // Read Command Options
   //
-  purge_cmd=new RDCmdSwitch(qApp->argc(),qApp->argv(),
-			     "rdpurgecasts",RDPURGECASTS_USAGE);
-  if(purge_cmd->keys()>2) {
+  if(rda->cmdSwitch()->keys()>2) {
     fprintf(stderr,"\n");
     fprintf(stderr,"%s",RDPURGECASTS_USAGE);
     fprintf(stderr,"\n");
-    delete purge_cmd;
     exit(256);
   }
-  for(unsigned i=0;i<purge_cmd->keys();i++) {
-    if(purge_cmd->key(i)=="--verbose") {
+  for(unsigned i=0;i<rda->cmdSwitch()->keys();i++) {
+    if(rda->cmdSwitch()->key(i)=="--verbose") {
       purge_verbose=true;
+      rda->cmdSwitch()->setProcessed(i,true);
+    }
+
+    if(!rda->cmdSwitch()->processed(i)) {
+      fprintf(stderr,"rdpurgecasts: unknown command option \"%s\"\n",
+	      (const char *)rda->cmdSwitch()->key(i));
+      exit(2);
     }
   }
-
-  //
-  // Read Configuration
-  //
-  purge_config=new RDConfig();
-  purge_config->load();
-  purge_config->setModuleName("rdpurgecasts");
-
-  //
-  // Open Database
-  //
-  QString err (tr("rdpurgecasts: "));
-  QSqlDatabase *db=RDInitDb(&schema,&err);
-  if(!db) {
-    fprintf(stderr,err.ascii());
-    delete purge_cmd;
-    exit(256);
-  }
-  delete purge_cmd;
 
   //
   // Scan Podcasts
@@ -129,9 +124,9 @@ void MainObject::PurgeCast(unsigned id)
                          where PODCASTS.ID=%u",id);
   q=new RDSqlQuery(sql);
   while(q->next()) {
-    feed=new RDFeed(q->value(0).toUInt(),purge_config);
-    cast=new RDPodcast(purge_config,id);
-    cast->removeAudio(feed,&errs,purge_config->logXloadDebugData());
+    feed=new RDFeed(q->value(0).toUInt(),rda->config());
+    cast=new RDPodcast(rda->config(),id);
+    cast->removeAudio(feed,&errs,rda->config()->logXloadDebugData());
     if(purge_verbose) {
       printf("purging cast: ID=%d,cmd=\"%s\"\n",id,(const char *)cmd);
     }
