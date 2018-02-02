@@ -2,7 +2,7 @@
 //
 // Render a Rivendell log.
 //
-//   (C) Copyright 2017 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2017-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -27,6 +27,7 @@
 #include <qfile.h>
 
 #include <rd.h>
+#include <rdapplication.h>
 #include <rdaudioconvert.h>
 #include <rdaudioexport.h>
 #include <rdaudioimport.h>
@@ -45,6 +46,8 @@
 MainObject::MainObject(QObject *parent)
   :QObject(parent)
 {
+  QString err_msg;
+
   render_verbose=false;
   render_first_line=-1;
   render_last_line=-1;
@@ -64,40 +67,46 @@ MainObject::MainObject(QObject *parent)
   render_settings.setNormalizationLevel(RDRENDER_DEFAULT_NORMALIZATION_LEVEL);
 
   //
+  // Open the Database
+  //
+  rda=new RDApplication("rdrender","rdrender",RDRENDER_USAGE,this);
+  if(!rda->open(&err_msg)) {
+    fprintf(stderr,"rdrender: %s\n",(const char *)err_msg);
+    exit(1);
+  }
+
+  //
   // Read Command Options
   //
-  RDCmdSwitch *cmd=
-    new RDCmdSwitch(qApp->argc(),qApp->argv(),"rdimport",RDRENDER_USAGE);
-  if(cmd->keys()<1) {
-    fprintf(stderr,
-	    "rdrender: you must specify a logname\n");
+  if(rda->cmdSwitch()->keys()<1) {
+    fprintf(stderr,"rdrender: you must specify a logname\n");
     exit(256);
   }
-  for(int i=0;i<(int)cmd->keys()-1;i++) {
+  for(unsigned i=0;i<rda->cmdSwitch()->keys();i++) {
     bool ok=false;
-    if(cmd->key(i)=="--verbose") {
+    if(rda->cmdSwitch()->key(i)=="--verbose") {
       render_verbose=true;
-      cmd->setProcessed(i,true);
+      rda->cmdSwitch()->setProcessed(i,true);
     }
-    if(cmd->key(i)=="--bitrate") {
-      render_settings.setBitRate(cmd->value(i).toUInt(&ok));
+    if(rda->cmdSwitch()->key(i)=="--bitrate") {
+      render_settings.setBitRate(rda->cmdSwitch()->value(i).toUInt(&ok));
       if(!ok) {
 	fprintf(stderr,"rdrender: invalid --bitrate argument\n");
 	exit(1);
       }
-      cmd->setProcessed(i,true);
+      rda->cmdSwitch()->setProcessed(i,true);
     }
-    if(cmd->key(i)=="--channels") {
-      render_settings.setChannels(cmd->value(i).toUInt(&ok));
+    if(rda->cmdSwitch()->key(i)=="--channels") {
+      render_settings.setChannels(rda->cmdSwitch()->value(i).toUInt(&ok));
       if((!ok)||
 	 (render_settings.channels()>2)||(render_settings.channels()==0)) {
 	fprintf(stderr,"rdrender: invalid --channels argument\n");
 	exit(1);
       }
-      cmd->setProcessed(i,true);
+      rda->cmdSwitch()->setProcessed(i,true);
     }
-    if(cmd->key(i)=="--format") {
-      QString format=cmd->value(i);
+    if(rda->cmdSwitch()->key(i)=="--format") {
+      QString format=rda->cmdSwitch()->value(i);
       ok=false;
       if(format.lower()=="flac") {
 	render_settings.setFormat(RDSettings::Flac);
@@ -128,78 +137,78 @@ MainObject::MainObject(QObject *parent)
 		(const char *)format);
 	exit(1);
       }
-      cmd->setProcessed(i,true);
+      rda->cmdSwitch()->setProcessed(i,true);
     }
-    if(cmd->key(i)=="--first-line") {
-      render_first_line=cmd->value(i).toInt(&ok);
+    if(rda->cmdSwitch()->key(i)=="--first-line") {
+      render_first_line=rda->cmdSwitch()->value(i).toInt(&ok);
       if((!ok)|(render_first_line<0)) {
 	fprintf(stderr,"rdrender: invalid --first-line argument\n");
 	exit(1);
       }
-      cmd->setProcessed(i,true);
+      rda->cmdSwitch()->setProcessed(i,true);
     }
-    if(cmd->key(i)=="--first-time") {
-      render_first_time=QTime::fromString(cmd->value(i));
+    if(rda->cmdSwitch()->key(i)=="--first-time") {
+      render_first_time=QTime::fromString(rda->cmdSwitch()->value(i));
       if(!render_first_time.isValid()) {
 	fprintf(stderr,"rdrender: invalid --first-time argument\n");
 	exit(1);
       }
-      cmd->setProcessed(i,true);
+      rda->cmdSwitch()->setProcessed(i,true);
     }
-    if(cmd->key(i)=="--ignore-stops") {
+    if(rda->cmdSwitch()->key(i)=="--ignore-stops") {
       render_ignore_stops=true;
-      cmd->setProcessed(i,true);
+      rda->cmdSwitch()->setProcessed(i,true);
     }
-    if(cmd->key(i)=="--last-time") {
-      render_last_time=QTime::fromString(cmd->value(i));
+    if(rda->cmdSwitch()->key(i)=="--last-time") {
+      render_last_time=QTime::fromString(rda->cmdSwitch()->value(i));
       if(!render_last_time.isValid()) {
 	fprintf(stderr,"rdrender: invalid --last-time argument\n");
 	exit(1);
       }
-      cmd->setProcessed(i,true);
+      rda->cmdSwitch()->setProcessed(i,true);
     }
-    if(cmd->key(i)=="--last-line") {
-      render_last_line=cmd->value(i).toInt(&ok);
+    if(rda->cmdSwitch()->key(i)=="--last-line") {
+      render_last_line=rda->cmdSwitch()->value(i).toInt(&ok);
       if((!ok)||(render_last_line<0)) {
 	fprintf(stderr,"rdrender: invalid --last-line argument\n");
 	exit(1);
       }
-      cmd->setProcessed(i,true);
+      rda->cmdSwitch()->setProcessed(i,true);
     }
-    if(cmd->key(i)=="--normalization-level") {
-      render_settings.setNormalizationLevel(cmd->value(i).toInt(&ok));
+    if(rda->cmdSwitch()->key(i)=="--normalization-level") {
+      render_settings.setNormalizationLevel(rda->cmdSwitch()->value(i).toInt(&ok));
       if(!ok) {
 	fprintf(stderr,"rdrender: invalid --normalization-level argument\n");
 	exit(1);
       }
-      cmd->setProcessed(i,true);
+      rda->cmdSwitch()->setProcessed(i,true);
     }
-    if(cmd->key(i)=="--quality") {
-      render_settings.setQuality(cmd->value(i).toUInt(&ok));
+    if(rda->cmdSwitch()->key(i)=="--quality") {
+      render_settings.setQuality(rda->cmdSwitch()->value(i).toUInt(&ok));
       if(!ok) {
 	fprintf(stderr,"rdrender: invalid --quality argument\n");
 	exit(1);
       }
-      cmd->setProcessed(i,true);
+      rda->cmdSwitch()->setProcessed(i,true);
     }
-    if(cmd->key(i)=="--samplerate") {
-      render_settings.setSampleRate(cmd->value(i).toUInt(&ok));
+    if(rda->cmdSwitch()->key(i)=="--samplerate") {
+      render_settings.setSampleRate(rda->cmdSwitch()->value(i).toUInt(&ok));
       if(!ok) {
 	fprintf(stderr,"rdrender: invalid --samplerate argument\n");
 	exit(1);
       }
-      cmd->setProcessed(i,true);
+      rda->cmdSwitch()->setProcessed(i,true);
     }
-    if(cmd->key(i)=="--start-time") {
-      render_start_time=QTime::fromString(cmd->value(i));
+    if(rda->cmdSwitch()->key(i)=="--start-time") {
+      render_start_time=QTime::fromString(rda->cmdSwitch()->value(i));
       if(!render_start_time.isValid()) {
 	fprintf(stderr,"rdrender: invalid --start-time\n");
 	exit(1);
       }
-      cmd->setProcessed(i,true);
+      rda->cmdSwitch()->setProcessed(i,true);
     }
-    if(cmd->key(i)=="--to-cart") {
-      QStringList f0=f0.split(":",cmd->value(i));
+    if(rda->cmdSwitch()->key(i)=="--to-cart") {
+      QStringList f0=f0.split(":",rda->cmdSwitch()->value(i));
       if(f0.size()!=2) {
 	fprintf(stderr,"rdrender: invalid --to-cart argument\n");
 	exit(1);
@@ -214,17 +223,22 @@ MainObject::MainObject(QObject *parent)
 	fprintf(stderr,"rdrender: invalid cut number in --to-cart argument\n");
 	exit(1);
       }
-      cmd->setProcessed(i,true);
+      rda->cmdSwitch()->setProcessed(i,true);
     }
-    if(cmd->key(i)=="--to-file") {
-      render_to_file=cmd->value(i);
-      cmd->setProcessed(i,true);
+    if(rda->cmdSwitch()->key(i)=="--to-file") {
+      render_to_file=rda->cmdSwitch()->value(i);
+      rda->cmdSwitch()->setProcessed(i,true);
     }
-    if(!cmd->processed(i)) {
-      fprintf(stderr,"rdrender: unrecognized option\n");
-      exit(256);
+    if(!rda->cmdSwitch()->processed(i)) {
+      fprintf(stderr,"rdrepld: unknown command option \"%s\"\n",
+	      (const char *)rda->cmdSwitch()->key(i));
+      exit(2);
     }
   }
+
+  //
+  // Sanity Checks
+  //
   if((render_last_line>=0)&&(render_first_line>=0)&&
      (render_last_line<render_last_line)) {
     fprintf(stderr,"rdrender: --last-line must be greater than --first-line\n");
@@ -239,62 +253,24 @@ MainObject::MainObject(QObject *parent)
     fprintf(stderr,"rdrender: you must specify exactly one --to-cart or --to-file option\n");
     exit(1);
   }
-  render_logname=cmd->key(cmd->keys()-1);
+  render_logname=rda->cmdSwitch()->key(rda->cmdSwitch()->keys()-1);
   if(render_start_time.isNull()) {
     render_start_time=QTime(0,0,0,1);
   }
 
   //
-  // Read Configuration
-  //
-  render_config=new RDConfig();
-  render_config->load();
-  render_config->setModuleName("rdrender");
-
-  //
-  // Open Database
-  //
-  QSqlDatabase *db=QSqlDatabase::addDatabase(render_config->mysqlDriver());
-  if(!db) {
-    fprintf(stderr,"rdrender: unable to initialize connection to database\n");
-    exit(256);
-  }
-  db->setDatabaseName(render_config->mysqlDbname());
-  db->setUserName(render_config->mysqlUsername());
-  db->setPassword(render_config->mysqlPassword());
-  db->setHostName(render_config->mysqlHostname());
-  if(!db->open()) {
-    fprintf(stderr,"rdimport: unable to connect to database\n");
-    db->removeDatabase(render_config->mysqlDbname());
-    exit(256);
-  }
-  new RDDbHeartbeat(render_config->mysqlHeartbeatInterval(),this);
-
-  //
-  // Station Configuration
-  //
-  render_station=new RDStation(render_config->stationName());
-
-  //
   // RIPC Connection
   //
-  render_ripc=new RDRipc(render_station,render_config,this);
-  connect(render_ripc,SIGNAL(userChanged()),this,SLOT(userData()));
-  render_ripc->
-    connectHost("localhost",RIPCD_TCP_PORT,render_config->password());
+  connect(rda,SIGNAL(userChanged()),this,SLOT(userData()));
+  rda->ripc()->
+    connectHost("localhost",RIPCD_TCP_PORT,rda->config()->password());
 
   //
   // System Configuration
   //
-  render_system=new RDSystem();
   if(render_settings.sampleRate()==0) {
-    render_settings.setSampleRate(render_system->sampleRate());
+    render_settings.setSampleRate(rda->system()->sampleRate());
   }
-
-  //
-  // User
-  //
-  render_user=NULL;
 }
 
 
@@ -303,11 +279,7 @@ void MainObject::userData()
   //
   // Get User Context
   //
-  disconnect(render_ripc,SIGNAL(userChanged()),this,SLOT(userData()));
-  if(render_user!=NULL) {
-    delete render_user;
-  }
-  render_user=new RDUser(render_ripc->user());
+  disconnect(rda->ripc(),SIGNAL(userChanged()),this,SLOT(userData()));
 
   //
   // Open Log
@@ -324,8 +296,8 @@ void MainObject::userData()
   // Render It
   //
   QString err_msg;
-  RDRenderer *r=new RDRenderer(render_user,render_station,render_system,
-			       render_config,this);
+  RDRenderer *r=new RDRenderer(rda->user(),rda->station(),rda->system(),
+			       rda->config(),this);
   connect(r,SIGNAL(progressMessageSent(const QString &)),
 	  this,SLOT(printProgressMessage(const QString &)));
   if(render_to_file.isEmpty()) {
