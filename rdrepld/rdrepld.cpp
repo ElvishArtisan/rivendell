@@ -41,19 +41,19 @@ void SigHandler(int signum)
   pid_t local_pid;
 
   switch(signum) {
-      case SIGINT:
-      case SIGTERM:
-	RDDeletePid(RD_PID_DIR,"rdrepld.pid");
-	exit(0);
-	break;
+  case SIGINT:
+  case SIGTERM:
+    RDDeletePid(RD_PID_DIR,"rdrepld.pid");
+    exit(0);
+    break;
 
-      case SIGCHLD:
-	local_pid=waitpid(-1,NULL,WNOHANG);
-	while(local_pid>0) {
-	  local_pid=waitpid(-1,NULL,WNOHANG);
-	}
-	signal(SIGCHLD,SigHandler);
-	return;
+  case SIGCHLD:
+    local_pid=waitpid(-1,NULL,WNOHANG);
+    while(local_pid>0) {
+      local_pid=waitpid(-1,NULL,WNOHANG);
+    }
+    signal(SIGCHLD,SigHandler);
+    return;
   }
 }
 
