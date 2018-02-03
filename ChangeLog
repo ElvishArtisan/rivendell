@@ -16653,3 +16653,5 @@
 	* Converted rdfeed.xml to use RDApplication.
 2018-02-03 Fred Gleason <fredg@paravelsystems.com>
 	* Converted rdxport.cgi to use RDApplication.
+2018-02-03 Fred Gleason <fredg@paravelsystems.com>
+	* Converted nexgen_filter(1) to use RDApplication.

@@ -2,7 +2,7 @@
 //
 // A Library import filter for the Prophet NexGen system
 //
-//   (C) Copyright 2012 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2012,2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -23,14 +23,11 @@
 
 #include <stdio.h>
 
-#include <qobject.h>
 #include <qapplication.h>
-#include <qsqldatabase.h>
 #include <qdatetime.h>
 #include <qdir.h>
+#include <qobject.h>
 
-#include <rdstation.h>
-#include <rdripc.h>
 #include <rdgroup.h>
 #include <rdwavedata.h>
 
@@ -65,9 +62,6 @@ class MainObject : public QObject
   int filter_cart_offset;
   bool filter_delete_cuts;
   int filter_normalization_level;
-  RDStation *filter_rdstation;
-  RDRipc *filter_ripc;
-  QSqlDatabase *filter_db;
   bool filter_verbose;
 };
 
