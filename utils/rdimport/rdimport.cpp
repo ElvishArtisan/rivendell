@@ -114,64 +114,69 @@ MainObject::MainObject(QObject *parent)
   for(unsigned i=0;i<rda->cmdSwitch()->keys()-2;i++) {
     if(rda->cmdSwitch()->key(i)=="--verbose") {
       import_verbose=true;
+      rda->cmdSwitch()->setProcessed(i,true);
     }
     if(rda->cmdSwitch()->key(i)=="--log-mode") {
       import_verbose=true;
       import_log_mode=true;
+      rda->cmdSwitch()->setProcessed(i,true);
     }
     if(rda->cmdSwitch()->key(i)=="--to-cart") {
       import_cart_number=rda->cmdSwitch()->value(i).toUInt(&ok);
       if((!ok)||(import_cart_number<1)||(import_cart_number>999999)) {
 	fprintf(stderr,"rdimport: invalid cart number\n");
-	delete rda->cmdSwitch();
-	exit(256);
+	exit(2);
       }
       if(import_use_cartchunk_cutid) {
 	fprintf(stderr,"rdimport: '--to-cart' and '--use-cartchunk-cutid' are mutually exclusive\n");
-	delete rda->cmdSwitch();
-	exit(256);
+	exit(2);
       }
       import_single_cart=true;
+      rda->cmdSwitch()->setProcessed(i,true);
     }
     if(rda->cmdSwitch()->key(i)=="--use-cartchunk-cutid") {
       if(import_cart_number!=0) {
 	fprintf(stderr,"rdimport: '--to-cart' and '--use-cartchunk-cutid' are mutually exclusive\n");
-	delete rda->cmdSwitch();
-	exit(256);
+	exit(2);
       }
       import_use_cartchunk_cutid=true;
+      rda->cmdSwitch()->setProcessed(i,true);
     }
     if(rda->cmdSwitch()->key(i)=="--cart-number-offset") {
       import_cart_number_offset=rda->cmdSwitch()->value(i).toInt(&ok);
       if(!ok) {
 	fprintf(stderr,"rdimport: invalid --cart-number-offset\n");
-	exit(256);
+	exit(2);
       }
+      rda->cmdSwitch()->setProcessed(i,true);
     }
     if(rda->cmdSwitch()->key(i)=="--title-from-cartchunk-cutid") {
       import_title_from_cartchunk_cutid=true;
+      rda->cmdSwitch()->setProcessed(i,true);
     }
     if(rda->cmdSwitch()->key(i)=="--delete-source") {
       import_delete_source=true;
+      rda->cmdSwitch()->setProcessed(i,true);
     }
     if(rda->cmdSwitch()->key(i)=="--delete-cuts") {
       import_delete_cuts=true;
+      rda->cmdSwitch()->setProcessed(i,true);
     }
     if(rda->cmdSwitch()->key(i)=="--startdate-offset") {
       import_startdate_offset=rda->cmdSwitch()->value(i).toInt(&ok);
       if(!ok) {
 	fprintf(stderr,"rdimport: invalid startdate-offset\n");
-	delete rda->cmdSwitch();
-	exit(256);
+	exit(2);
       }
+      rda->cmdSwitch()->setProcessed(i,true);
     }
     if(rda->cmdSwitch()->key(i)=="--enddate-offset") {
       import_enddate_offset=rda->cmdSwitch()->value(i).toInt(&ok);
       if(!ok) {
 	fprintf(stderr,"rdimport: invalid enddate-offset\n");
-	delete rda->cmdSwitch();
-	exit(256);
+	exit(2);
       }
+      rda->cmdSwitch()->setProcessed(i,true);
     }
     if(rda->cmdSwitch()->key(i)=="--clear-datetimes") {
       import_clear_datetimes=true;
@@ -181,42 +186,42 @@ MainObject::MainObject(QObject *parent)
       QStringList f0=QStringList().split(",",rda->cmdSwitch()->value(i));
       if(f0.size()!=2) {
 	fprintf(stderr,"rdimport: invalid argument to --set-datetimes\n");
-	exit(256);
+	exit(2);
       }
       for(unsigned j=0;j<2;j++) {
 	if((f0[j].length()!=15)||(f0[j].mid(8,1)!="-")) {
 	  fprintf(stderr,"rdimport: invalid argument to --set-datetimes\n");
-	  exit(256);
+	  exit(2);
 	}
 	unsigned year=f0[j].left(4).toUInt(&ok);
 	if(!ok) {
 	  fprintf(stderr,"rdimport: invalid year argument to --set-datetimes\n");
-	  exit(256);
+	  exit(2);
 	}
 	unsigned month=f0[j].mid(4,2).toUInt(&ok);
 	if((!ok)||(month>12)) {
 	  fprintf(stderr,"rdimport: invalid month argument to --set-datetimes\n");
-	  exit(256);
+	  exit(2);
 	}
 	unsigned day=f0[j].mid(6,2).toUInt(&ok);
 	if((!ok)||(day>31)) {
 	  fprintf(stderr,"rdimport: invalid day argument to --set-datetimes\n");
-	  exit(256);
+	  exit(2);
 	}
 	unsigned hour=f0[j].mid(9,2).toUInt(&ok);
 	if((!ok)||(hour>23)) {
 	  fprintf(stderr,"rdimport: invalid hour argument to --set-datetimes\n");
-	  exit(256);
+	  exit(2);
 	}
 	unsigned min=f0[j].mid(11,2).toUInt(&ok);
 	if((!ok)||(min>59)) {
 	  fprintf(stderr,"rdimport: invalid minute argument to --set-datetimes\n");
-	  exit(256);
+	  exit(2);
 	}
 	unsigned sec=f0[j].right(2).toUInt(&ok);
 	if((!ok)||(sec>59)) {
 	  fprintf(stderr,"rdimport: invalid seconds argument to --set-datetimes\n");
-	  exit(256);
+	  exit(2);
 	}
 	import_datetimes[j]=QDateTime(QDate(year,month,day),
 				      QTime(hour,min,sec));
@@ -226,44 +231,47 @@ MainObject::MainObject(QObject *parent)
       }
       if(import_datetimes[0]>=import_datetimes[1]) {
 	fprintf(stderr,"rdimport: datetime cannot end before it begins\n");
-	exit(256);
+	exit(2);
       }
+      rda->cmdSwitch()->setProcessed(i,true);
     }
     if(rda->cmdSwitch()->key(i)=="--set-daypart-times") {
       QStringList f0=QStringList().split(",",rda->cmdSwitch()->value(i));
       if(f0.size()!=2) {
 	fprintf(stderr,"rdimport: invalid argument to --set-daypart-times\n");
-	exit(256);
+	exit(2);
       }
       for(unsigned j=0;j<2;j++) {
 	if(f0[j].length()!=6) {
 	  fprintf(stderr,"rdimport: invalid argument to --set-daypart-times\n");
-	  exit(256);
+	  exit(2);
 	}
 	unsigned hour=f0[j].left(2).toUInt(&ok);
 	if((!ok)||(hour>23)) {
 	  fprintf(stderr,"rdimport: invalid hour argument to --set-daypart-times\n");
-	  exit(256);
+	  exit(2);
 	}
 	unsigned min=f0[j].mid(2,2).toUInt(&ok);
 	if((!ok)||(min>59)) {
 	  fprintf(stderr,"rdimport: invalid minute argument to --set-daypart-times\n");
-	  exit(256);
+	  exit(2);
 	}
 	unsigned sec=f0[j].right(2).toUInt(&ok);
 	if((!ok)||(sec>59)) {
 	  fprintf(stderr,"rdimport: invalid seconds argument to --set-daypart-times\n");
-	  exit(256);
+	  exit(2);
 	}
 	import_dayparts[j].setHMS(hour,min,sec);
       }
       if(import_dayparts[0]>=import_dayparts[1]) {
 	fprintf(stderr,"rdimport: daypart cannot end before it begins\n");
-	exit(256);
+	exit(2);
       }
+      rda->cmdSwitch()->setProcessed(i,true);
     }
     if(rda->cmdSwitch()->key(i)=="--to-mono") {
       import_to_mono=true;
+      rda->cmdSwitch()->setProcessed(i,true);
     }
     if(rda->cmdSwitch()->key(i)=="--clear-daypart-times") {
       import_clear_dayparts=true;
@@ -274,50 +282,54 @@ MainObject::MainObject(QObject *parent)
       if(import_persistent_dropbox_id<0) {
 	import_delete_source=true;
       }
+      rda->cmdSwitch()->setProcessed(i,true);
     }
     if(rda->cmdSwitch()->key(i)=="--add-scheduler-code") {
       import_add_scheduler_codes.push_back(rda->cmdSwitch()->value(i));
+      rda->cmdSwitch()->setProcessed(i,true);
     }
     if(rda->cmdSwitch()->key(i)=="--set-user-defined") {
       import_set_user_defined=rda->cmdSwitch()->value(i);
+      rda->cmdSwitch()->setProcessed(i,true);
     }
     if(rda->cmdSwitch()->key(i)=="--metadata-pattern") {
       import_metadata_pattern=rda->cmdSwitch()->value(i);
       if(!VerifyPattern(import_metadata_pattern)) {
 	fprintf(stderr,"rdimport: invalid metadata pattern\n");
-	delete rda->cmdSwitch();
-	exit(256);
+	exit(2);
       }
+      rda->cmdSwitch()->setProcessed(i,true);
     }
     if(rda->cmdSwitch()->key(i)=="--fix-broken-formats") {
       import_fix_broken_formats=true;
+      rda->cmdSwitch()->setProcessed(i,true);
     }
     if(rda->cmdSwitch()->key(i)=="--persistent-dropbox-id") {
       import_persistent_dropbox_id=rda->cmdSwitch()->value(i).toInt(&ok);
       if(!ok) {
 	fprintf(stderr,"rdimport: invalid persistent dropbox id\n");
-	delete rda->cmdSwitch();
-	exit(256);
+	exit(2);
       }
+      rda->cmdSwitch()->setProcessed(i,true);
     }
     if(rda->cmdSwitch()->key(i)=="--create-startdate-offset") {
       import_create_startdate_offset=rda->cmdSwitch()->value(i).toInt(&ok);
       if(!ok) {
 	fprintf(stderr,"rdimport: invalid create-startddate-offset\n");
-	delete rda->cmdSwitch();
-	exit(256);
+	exit(2);
       }
       import_create_dates=true;
+      rda->cmdSwitch()->setProcessed(i,true);
     }
     if(rda->cmdSwitch()->key(i)=="--create-enddate-offset") {
       import_create_enddate_offset=rda->cmdSwitch()->value(i).toInt(&ok);
       if((!ok) || 
          (import_create_startdate_offset > import_create_enddate_offset )) {
 	fprintf(stderr,"rdimport: invalid create-enddate-offset\n");
-	delete rda->cmdSwitch();
-	exit(256);
+	exit(2);
       }
       import_create_dates=true;
+      rda->cmdSwitch()->setProcessed(i,true);
     }
     if(rda->cmdSwitch()->key(i)=="--set-string-agency") {
       import_string_agency=rda->cmdSwitch()->value(i);
@@ -395,12 +407,6 @@ MainObject::MainObject(QObject *parent)
       import_xml=true;
       rda->cmdSwitch()->setProcessed(i,true);
     }
-
-    if(!rda->cmdSwitch()->processed(i)) {
-      fprintf(stderr,"rdimport: unknown command option \"%s\"\n",
-	      (const char *)rda->cmdSwitch()->key(i));
-      exit(2);
-    }
   }
 
   //
@@ -448,8 +454,7 @@ MainObject::MainObject(QObject *parent)
       if(!import_group->exists()) {
 	fprintf(stderr,"rdimport: invalid group specified\n");
 	delete import_group;
-	delete rda->cmdSwitch();
-	exit(256);
+	exit(2);
       }
       import_file_key=i+1;
       i=rda->cmdSwitch()->keys();
@@ -457,15 +462,13 @@ MainObject::MainObject(QObject *parent)
   }
   if(import_group==NULL) {
     fprintf(stderr,"rdimport: invalid group specified\n");
-    delete rda->cmdSwitch();
-    exit(256);
+    exit(2);
   }
   if(import_cart_number>0) {
     if(!import_group->cartNumberValid(import_cart_number)) {
       fprintf(stderr,"rdimport: invalid cart number for group\n");
       delete import_group;
-      delete rda->cmdSwitch();
-      exit(256);
+      exit(2);
     }
   }
 
@@ -476,7 +479,7 @@ MainObject::MainObject(QObject *parent)
     if(!SchedulerCodeExists(import_add_scheduler_codes[i])) {
       fprintf(stderr,"scheduler code \"%s\" does not exist\n",
 	      (const char *)import_add_scheduler_codes[i].utf8());
-      exit(256);
+      exit(2);
     }
   }
 
@@ -493,7 +496,7 @@ MainObject::MainObject(QObject *parent)
   import_segue_level=0;
   import_segue_length=0;
 
-  for(unsigned i=0;i<rda->cmdSwitch()->keys();i++) {
+  for(unsigned i=0;i<rda->cmdSwitch()->keys()-2;i++) {
     if(rda->cmdSwitch()->key(i)=="--normalization-level") {
       n=rda->cmdSwitch()->value(i).toInt(&ok);
       if(ok&&(n<=0)) {
@@ -501,9 +504,9 @@ MainObject::MainObject(QObject *parent)
       }
       else {
 	fprintf(stderr,"rdimport: invalid normalization level\n");
-	delete rda->cmdSwitch();
-	exit(256);
+	exit(2);
       }
+      rda->cmdSwitch()->setProcessed(i,true);
     }
     if(rda->cmdSwitch()->key(i)=="--autotrim-level") {
       n=rda->cmdSwitch()->value(i).toInt(&ok);
@@ -512,9 +515,9 @@ MainObject::MainObject(QObject *parent)
       }
       else {
 	fprintf(stderr,"rdimport: invalid autotrim level\n");
-	delete rda->cmdSwitch();
-	exit(256);
+	exit(2);
       }
+      rda->cmdSwitch()->setProcessed(i,true);
     }
     if(rda->cmdSwitch()->key(i)=="--segue-level") {
       n=rda->cmdSwitch()->value(i).toInt(&ok);
@@ -523,10 +526,10 @@ MainObject::MainObject(QObject *parent)
       }
       else {
 	fprintf(stderr,"rdimport: invalid segue level\n");
-	delete rda->cmdSwitch();
-	exit(256);
-        }
+	exit(2);
       }
+      rda->cmdSwitch()->setProcessed(i,true);
+    }
     if(rda->cmdSwitch()->key(i)=="--segue-length") {
       n=rda->cmdSwitch()->value(i).toInt(&ok);
       if(ok&&(n>=0)) {
@@ -534,12 +537,19 @@ MainObject::MainObject(QObject *parent)
       }
       else {
 	fprintf(stderr,"rdimport: invalid segue length\n");
-	delete rda->cmdSwitch();
-	exit(256);
+	exit(2);
       }
+      rda->cmdSwitch()->setProcessed(i,true);
     }
     if(rda->cmdSwitch()->key(i)=="--single-cart") {
       import_single_cart=true;
+      rda->cmdSwitch()->setProcessed(i,true);
+    }
+    if((!rda->cmdSwitch()->processed(i))&&
+       (rda->cmdSwitch()->key(i).left(2)=="--")) {
+      fprintf(stderr,"rdimport: unknown command option \"%s\"\n",
+	      (const char *)rda->cmdSwitch()->key(i));
+      exit(2);
     }
   }
   if(import_to_mono) {
