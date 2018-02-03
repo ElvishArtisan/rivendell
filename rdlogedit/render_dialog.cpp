@@ -280,8 +280,7 @@ void RenderDialog::renderData()
   if(render_starttime_box->currentItem()) {
     start_time=render_starttime_edit->time();
   }
-  RDRenderer *r=
-    new RDRenderer(render_user,render_station,render_system,render_config,this);
+  RDRenderer *r=new RDRenderer(this);
   connect(r,SIGNAL(lineStarted(int,int)),
 	  render_progress_dialog,SLOT(setProgress(int,int)));
   connect(render_progress_dialog,SIGNAL(cancelled()),r,SLOT(abort()));

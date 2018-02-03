@@ -16661,3 +16661,5 @@
 	* Converted wings_filter(1) to use RDApplication.
 2018-02-03 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug that broke command processing in rdimport(1).
+2018-02-03 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored the RDRenderer class to use RDApplication.

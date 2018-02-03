@@ -82,7 +82,7 @@ MainObject::MainObject(QObject *parent)
     fprintf(stderr,"rdrender: you must specify a logname\n");
     exit(256);
   }
-  for(unsigned i=0;i<rda->cmdSwitch()->keys();i++) {
+  for(unsigned i=0;i<rda->cmdSwitch()->keys()-1;i++) {
     bool ok=false;
     if(rda->cmdSwitch()->key(i)=="--verbose") {
       render_verbose=true;
@@ -296,8 +296,7 @@ void MainObject::userData()
   // Render It
   //
   QString err_msg;
-  RDRenderer *r=new RDRenderer(rda->user(),rda->station(),rda->system(),
-			       rda->config(),this);
+  RDRenderer *r=new RDRenderer(this);
   connect(r,SIGNAL(progressMessageSent(const QString &)),
 	  this,SLOT(printProgressMessage(const QString &)));
   if(render_to_file.isEmpty()) {
