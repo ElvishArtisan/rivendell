@@ -24,6 +24,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 
+#include <rdapplication.h>
 #include <rdformpost.h>
 #include <rdweb.h>
 #include <rdcart.h>
@@ -51,7 +52,7 @@ void Xport::AudioInfo()
   //
   // Verify User Perms
   //
-  if(!xport_user->cartAuthorized(cartnum)) {
+  if(!rda->user()->cartAuthorized(cartnum)) {
     XmlExit("No such cart",404,"audioinfo.cpp",LINE_NUMBER);
   }
 

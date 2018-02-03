@@ -2,7 +2,7 @@
 //
 // Rivendell web service portal -- Log services
 //
-//   (C) Copyright 2013,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2013-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -24,6 +24,7 @@
 #include <fcntl.h>
 #include <errno.h>
 
+#include <rdapplication.h>
 #include <rdconf.h>
 #include <rdcreate_log.h>
 #include <rddb.h>
@@ -57,13 +58,13 @@ void Xport::AddLog()
   //
   // Verify User Perms
   //
-  if(!xport_user->createLog()) {
+  if(!rda->user()->createLog()) {
     XmlExit("Unauthorized",404,"logs.cpp",LINE_NUMBER);
   }
 
   QString err_msg;
-  if(!RDLog::create(log_name,service_name,xport_user->name(),&err_msg,
-		    xport_config)) {
+  if(!RDLog::create(log_name,service_name,rda->user()->name(),&err_msg,
+		    rda->config())) {
     XmlExit(err_msg,500,"logs.cpp",LINE_NUMBER);
   }
   XmlExit("OK",200,"logs.cpp",LINE_NUMBER);
@@ -84,13 +85,13 @@ void Xport::DeleteLog()
   //
   // Verify User Perms
   //
-  if(!xport_user->deleteLog()) {
+  if(!rda->user()->deleteLog()) {
     XmlExit("Unauthorized",404,"logs.cpp",LINE_NUMBER);
   }
 
   RDLog *log=new RDLog(log_name);
   if(log->exists()) {
-    if(!log->remove(xport_station,xport_user,xport_config)) {
+    if(!log->remove(rda->station(),rda->user(),rda->config())) {
       delete log;
       XmlExit("Unable to delete log",500,"logs.cpp",LINE_NUMBER);
     }
@@ -135,7 +136,7 @@ void Xport::ListLogs()
   }
   if(service_name.isEmpty()) {
     QString sql2=QString("select SERVICE_NAME from USER_SERVICE_PERMS where ")+
-      "USER_NAME=\""+RDEscapeString(xport_user->name())+"\"";
+      "USER_NAME=\""+RDEscapeString(rda->user()->name())+"\"";
     q=new RDSqlQuery(sql2);
     sql+="(";
     while(q->next()) {
@@ -240,7 +241,7 @@ void Xport::SaveLog()
   //
   // Verify User Perms
   //
-  if((!xport_user->addtoLog())||(!xport_user->removefromLog())||(!xport_user->arrangeLog())) {
+  if((!rda->user()->addtoLog())||(!rda->user()->removefromLog())||(!rda->user()->arrangeLog())) {
     XmlExit("No user privilege",404,"logs.cpp",LINE_NUMBER);
   }
 
@@ -498,7 +499,7 @@ void Xport::SaveLog()
     XmlExit("No such log",404,"logs.cpp",LINE_NUMBER);
   }
   if(lock_guid.isEmpty()) {
-    QString username=xport_user->name();
+    QString username=rda->user()->name();
     QString stationname=xport_remote_hostname;
     QHostAddress addr=xport_remote_address;
     lock_guid=RDLogLock::makeGuid(stationname);
@@ -510,7 +511,7 @@ void Xport::SaveLog()
       log->setStartDate(start_date);
       log->setEndDate(end_date);
       log->setModifiedDatetime(QDateTime::currentDateTime());
-      logevt->save(xport_config);
+      logevt->save(rda->config());
       RDLogLock::clearLock(lock_guid);
     }
     else {
@@ -526,7 +527,7 @@ void Xport::SaveLog()
       log->setStartDate(start_date);
       log->setEndDate(end_date);
       log->setModifiedDatetime(QDateTime::currentDateTime());
-      logevt->save(xport_config);
+      logevt->save(rda->config());
     }
     else {
       XmlExit("invalid log lock",400);
@@ -590,7 +591,7 @@ void Xport::LockLog()
   printf("Status: 200\n\n");
   switch(op_type) {
   case Xport::LockLogCreate:
-    username=xport_user->name();
+    username=rda->user()->name();
     stationname=xport_remote_hostname;
     addr=xport_remote_address;
     lock_guid=RDLogLock::makeGuid(xport_remote_hostname);
@@ -624,14 +625,14 @@ void Xport::LockLog()
 RDSvc *Xport::GetLogService(const QString &svc_name)
 {
   QString sql=QString("select SERVICE_NAME from USER_SERVICE_PERMS where ")+
-    "(USER_NAME=\""+RDEscapeString(xport_user->name())+"\")&&"+
+    "(USER_NAME=\""+RDEscapeString(rda->user()->name())+"\")&&"+
     "(SERVICE_NAME=\""+RDEscapeString(svc_name)+"\")";
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(!q->first()) {
     XmlExit("No such service",404,"logs.cpp",LINE_NUMBER);
   }
   delete q;
-  RDSvc *svc=new RDSvc(svc_name,xport_station,xport_config);
+  RDSvc *svc=new RDSvc(svc_name,rda->station(),rda->config());
   if(!svc->exists()) {
     XmlExit("No such service",404,"logs.cpp",LINE_NUMBER);
   }
@@ -646,7 +647,7 @@ bool Xport::ServiceUserValid(const QString &svc_name)
 
   QString sql=QString("select SERVICE_NAME from USER_SERVICE_PERMS where ")+
     "(SERVICE_NAME=\""+RDEscapeString(svc_name)+"\")&&"+
-    "(USER_NAME=\""+RDEscapeString(xport_user->name())+"\")";
+    "(USER_NAME=\""+RDEscapeString(rda->user()->name())+"\")";
   RDSqlQuery *q=new RDSqlQuery(sql);
   ret=q->first();
   delete q;

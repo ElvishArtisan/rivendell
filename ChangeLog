@@ -16651,3 +16651,5 @@
 	* Converted rdcastmanager.cgi to use RDApplication.
 2018-02-03 Fred Gleason <fredg@paravelsystems.com>
 	* Converted rdfeed.xml to use RDApplication.
+2018-02-03 Fred Gleason <fredg@paravelsystems.com>
+	* Converted rdxport.cgi to use RDApplication.

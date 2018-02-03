@@ -2,7 +2,7 @@
 //
 // Rivendell web service portal -- Export service
 //
-//   (C) Copyright 2010-2017 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2010-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -24,6 +24,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 
+#include <rdapplication.h>
 #include <rdaudioconvert.h>
 #include <rdcart.h>
 #include <rdconf.h>
@@ -96,7 +97,7 @@ void Xport::Export()
   //
   // Verify User Perms
   //
-  if(!xport_user->cartAuthorized(cartnum)) {
+  if(!rda->user()->cartAuthorized(cartnum)) {
     XmlExit("No such cart",404,"export.cpp",LINE_NUMBER);
   }
 
@@ -145,7 +146,7 @@ void Xport::Export()
     XmlExit("unable to create temporary directory ["+err_msg+"]",500);
   }
   QString tmpfile=tempdir->path()+"/exported_audio";
-  RDAudioConvert *conv=new RDAudioConvert(xport_config->stationName());
+  RDAudioConvert *conv=new RDAudioConvert(rda->config()->stationName());
   conv->setSourceFile(RDCut::pathName(cartnum,cutnum));
   conv->setDestinationFile(tmpfile);
   conv->setDestinationSettings(settings);

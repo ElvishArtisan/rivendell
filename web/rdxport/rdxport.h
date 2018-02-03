@@ -2,7 +2,7 @@
 //
 // Rivendell web service portal
 //
-//   (C) Copyright 2010,2014,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2010-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,20 +18,16 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-
 #ifndef RDXPORT_H
 #define RDXPORT_H
 
 #include <qobject.h>
 
 #include <rdaudioconvert.h>
-#include <rdconfig.h>
 #include <rdformpost.h>
-#include <rdstation.h>
 #include <rdsvc.h>
-#include <rdsystem.h>
-#include <rduser.h>
 
+#define RDXPORT_CGI_USAGE "\n"
 #define STRINGIZE(x) STRINGIZE2(x)
 #define STRINGIZE2(x) #x
 #define LINE_NUMBER QString(STRINGIZE(__LINE__)).toInt()
@@ -90,10 +86,6 @@ class Xport : public QObject
 	       const QString &srcfile="",int line=-1,
 	       RDAudioConvert::ErrorCode err=RDAudioConvert::ErrorOk);
   RDFormPost *xport_post;
-  RDUser *xport_user;
-  RDConfig *xport_config;
-  RDSystem *xport_system;
-  RDStation *xport_station;
   QString xport_remote_hostname;
   QHostAddress xport_remote_address;
 };

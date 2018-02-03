@@ -2,7 +2,7 @@
 //
 // Rivendell web service portal -- Service services
 //
-//   (C) Copyright 2010,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2010-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -24,15 +24,16 @@
 #include <fcntl.h>
 #include <errno.h>
 
-#include <rddb.h>
-#include <rdformpost.h>
-#include <rdweb.h>
-#include <rduser.h>
-#include <rdsvc.h>
+#include <rdapplication.h>
 #include <rdconf.h>
+#include <rddb.h>
 #include <rdescape_string.h>
+#include <rdformpost.h>
+#include <rdsvc.h>
+#include <rduser.h>
+#include <rdweb.h>
 
-#include <rdxport.h>
+#include "rdxport.h"
 
 void Xport::ListServices()
 {
@@ -52,7 +53,7 @@ void Xport::ListServices()
   //
   sql=QString("select NAME from SERVICES where ");
   sql2=QString("select SERVICE_NAME from USER_SERVICE_PERMS where ")+
-    "USER_NAME=\""+RDEscapeString(xport_user->name())+"\"";
+    "USER_NAME=\""+RDEscapeString(rda->user()->name())+"\"";
   q=new RDSqlQuery(sql2);
   sql+="(";
   while(q->next()) {
@@ -76,7 +77,7 @@ void Xport::ListServices()
   printf("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
   printf("<serviceList>\n");
   while(q->next()) {
-    svc=new RDSvc(q->value(0).toString(),xport_station,xport_config);
+    svc=new RDSvc(q->value(0).toString(),rda->station(),rda->config());
     printf("%s",(const char *)svc->xml());
     delete svc;
   }

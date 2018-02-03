@@ -2,7 +2,7 @@
 //
 // Rivendell web service portal
 //
-//   (C) Copyright 2015 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2015-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,9 +20,11 @@
 
 #include <qstringlist.h>
 
-#include "rdcart.h"
-#include "rddb.h"
-#include "rdschedcode.h"
+#include <rdapplication.h>
+#include <rdcart.h>
+#include <rddb.h>
+#include <rdschedcode.h>
+
 #include "rdxport.h"
 
 void Xport::ListSchedCodes()
@@ -77,7 +79,7 @@ void Xport::AssignSchedCode()
   //
   // Verify User Perms
   //
-  if(!xport_user->cartAuthorized(cart_number)) {
+  if(!rda->user()->cartAuthorized(cart_number)) {
     XmlExit("No such cart",404,"schedcodes.cpp",LINE_NUMBER);
   }
 
@@ -122,7 +124,7 @@ void Xport::UnassignSchedCode()
   //
   // Verify User Perms
   //
-  if(!xport_user->cartAuthorized(cart_number)) {
+  if(!rda->user()->cartAuthorized(cart_number)) {
     XmlExit("No such cart",404,"schedcodes.cpp",LINE_NUMBER);
   }
 
@@ -158,7 +160,7 @@ void Xport::ListCartSchedCodes()
   //
   // Verify User Perms
   //
-  if(!xport_user->cartAuthorized(cart_number)) {
+  if(!rda->user()->cartAuthorized(cart_number)) {
     XmlExit("No such cart",404,"schedcodes.cpp",LINE_NUMBER);
   }
   //

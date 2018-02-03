@@ -2,7 +2,7 @@
 //
 // Rivendell web service portal
 //
-//   (C) Copyright 2010,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2010,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -33,6 +33,7 @@
 #include <qdatetime.h>
 #include <qstringlist.h>
 
+#include <rdapplication.h>
 #include <rddb.h>
 #include <rdescape_string.h>
 #include <rdweb.h>
@@ -40,27 +41,46 @@
 #include <rdxport_interface.h>
 #include <dbversion.h>
 
-#include <rdxport.h>
+#include "rdxport.h"
 
 Xport::Xport(QObject *parent)
   :QObject(parent)
 {
-  xport_user=NULL;
+  QString err_msg;
 
   //
-  // Read Configuration
+  // Open the Database
   //
-  xport_config=new RDConfig();
-  xport_config->load();
-  xport_config->setModuleName("rdxport.cgi");
+  rda=new RDApplication("rdxport.cgi","rdxport.cgi",RDXPORT_CGI_USAGE,this);
+  if(!rda->open(&err_msg)) {
+    printf("Content-type: text/html\n");
+    printf("Status: 500\n");
+    printf("\n");
+    printf("rdxport.cgi: %s\n",(const char *)err_msg);
+    Exit(0);
+  }
+
+  //
+  // Read Command Options
+  //
+  for(unsigned i=0;i<rda->cmdSwitch()->keys();i++) {
+    if(!rda->cmdSwitch()->processed(i)) {
+      printf("Content-type: text/html\n");
+      printf("Status: 500\n");
+      printf("\n");
+      printf("rdxport.cgi: unknown command option \"%s\"\n",
+	     (const char *)rda->cmdSwitch()->key(i));
+      Exit(0);
+    }
+  }
 
   //
   // Drop root permissions
   //
-  if(setgid(xport_config->gid())<0) {
+  if(setgid(rda->config()->gid())<0) {
     XmlExit("Unable to set Rivendell group",500,"rdxport.cpp",LINE_NUMBER);
   }
-  if(setuid(xport_config->uid())<0) {
+  if(setuid(rda->config()->uid())<0) {
     XmlExit("Unable to set Rivendell user",500,"rdxport.cpp",LINE_NUMBER);
   }
   if(getuid()==0) {
@@ -69,54 +89,16 @@ Xport::Xport(QObject *parent)
   }
 
   //
-  // Open Database
-  //
-  QSqlDatabase *db=QSqlDatabase::addDatabase(xport_config->mysqlDriver());
-  if(!db) {
-    printf("Content-type: text/html\n\n");
-    printf("rdfeed: unable to initialize connection to database\n");
-    Exit(0);
-  }
-  db->setDatabaseName(xport_config->mysqlDbname());
-  db->setUserName(xport_config->mysqlUsername());
-  db->setPassword(xport_config->mysqlPassword());
-  db->setHostName(xport_config->mysqlHostname());
-  if(!db->open()) {
-    printf("Content-type: text/html\n\n");
-    printf("rdxport: unable to connect to database\n");
-    db->removeDatabase(xport_config->mysqlDbname());
-    Exit(0);
-  }
-  RDSqlQuery *q=new RDSqlQuery("select DB from VERSION");
-  if(!q->first()) {
-    printf("Content-type: text/html\n");
-    printf("Status: 500\n\n");
-    printf("rdxport: missing/invalid database version!\n");
-    db->removeDatabase(xport_config->mysqlDbname());
-    Exit(0);
-  }
-  if(q->value(0).toUInt()!=RD_VERSION_DATABASE) {
-    printf("Content-type: text/html\n");
-    printf("Status: 500\n\n");
-    printf("rdxport: skewed database version!\n");
-    db->removeDatabase(xport_config->mysqlDbname());
-    Exit(0);
-  }
-  delete q;
-
-  //
   // Determine Connection Type
   //
   if(getenv("REQUEST_METHOD")==NULL) {
     printf("Content-type: text/html\n\n");
     printf("rdxport: missing REQUEST_METHOD\n");
-    db->removeDatabase(xport_config->mysqlDbname());
     Exit(0);
   }
   if(QString(getenv("REQUEST_METHOD")).lower()!="post") {
     printf("Content-type: text/html\n\n");
     printf("rdxport: invalid web method\n");
-    db->removeDatabase(xport_config->mysqlDbname());
     Exit(0);
   }
   if(getenv("REMOTE_ADDR")!=NULL) {
@@ -128,12 +110,6 @@ Xport::Xport(QObject *parent)
   if(xport_remote_hostname.isEmpty()) {
     xport_remote_hostname=xport_remote_address.toString();
   }
-
-  //
-  // Load System Settings
-  //
-  xport_system=new RDSystem();
-  xport_station=new RDStation(xport_config->stationName());
 
   //
   // Generate Post
@@ -292,7 +268,6 @@ Xport::Xport(QObject *parent)
   default:
     printf("Content-type: text/html\n\n");
     printf("rdxport: missing/invalid command\n");
-    db->removeDatabase(xport_config->mysqlDbname());
     Exit(0);
     break;
   }
@@ -319,7 +294,7 @@ bool Xport::Authenticate()
       "(EXPIRATION_DATETIME>now())";
     q=new RDSqlQuery(sql);
     if(q->first()) {
-      xport_user=new RDUser(q->value(0).toString());
+      rda->user()->setName(q->value(0).toString());
       delete q;
       return true;
     }
@@ -335,8 +310,8 @@ bool Xport::Authenticate()
   if(!xport_post->getValue("PASSWORD",&passwd)) {
     return false;
   }
-  xport_user=new RDUser(name);
-  if(!xport_user->exists()) {
+  rda->user()->setName(name);
+  if(!rda->user()->exists()) {
     return false;
   }
   if((xport_post->clientAddress().toIPv4Address()>>24)==127) {  // Localhost
@@ -356,7 +331,7 @@ bool Xport::Authenticate()
   //
   // Finally, try password
   //
-  if(!xport_user->checkPassword(passwd,false)) {
+  if(!rda->user()->checkPassword(passwd,false)) {
     return false;
   }
   TryCreateTicket(name);
@@ -401,7 +376,7 @@ void Xport::TryCreateTicket(const QString &name)
 	"LOGIN_NAME=\""+RDEscapeString(name)+"\","+
 	"IPV4_ADDRESS=\""+xport_post->clientAddress().toString()+"\","+
 	"EXPIRATION_DATETIME=\""+
-	now.addSecs(xport_user->webapiAuthTimeout()).
+	now.addSecs(rda->user()->webapiAuthTimeout()).
 	toString("yyyy-MM-dd hh:mm:ss")+"\"";
       q=new RDSqlQuery(sql);
       delete q;
@@ -410,7 +385,7 @@ void Xport::TryCreateTicket(const QString &name)
       printf("<ticketInfo>\n");
       printf("  %s\n",(const char *)RDXmlField("ticket",ticket));
       printf("  %s\n",(const char *)
-	  RDXmlField("expires",now.addSecs(xport_user->webapiAuthTimeout())));
+	  RDXmlField("expires",now.addSecs(rda->user()->webapiAuthTimeout())));
       printf("</ticketInfo>\n");
       exit(0);
     }
