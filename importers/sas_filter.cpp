@@ -2,7 +2,7 @@
 //
 // An RDCatch event import filter for the SAS64000
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2004,2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -27,76 +27,38 @@
 #include <unistd.h>
 
 #include <qapplication.h>
-#include <rddb.h>
+
 #include <rd.h>
-#include <rdcmd_switch.h>
-#include <dbversion.h>
+#include <rdapplication.h>
+#include <rddb.h>
 
-#include <sas_filter.h>
-
-//
-// Global Variables
-//
-
+#include "sas_filter.h"
 
 MainObject::MainObject(QObject *parent)
   : QObject(parent)
 {
-  bool skip_db_check=false;
-  unsigned schema=0;
+  QString err_msg;
 
   //
-  // Read Command Options
+  // Open the Database
   //
-  RDCmdSwitch *cmd=
-    new RDCmdSwitch(qApp->argc(),qApp->argv(),"sas_filter",SAS_FILTER_USAGE);
-  for(unsigned i=0;i<cmd->keys();i++) {
-    if(cmd->key(i)=="--skip-db-check") {
-      skip_db_check=true;
-    }
-  }
-  delete cmd;
-
-  rd_config=new RDConfig(RD_CONF_FILE);
-  rd_config->load();
-  rd_config->setModuleName("sas_filter");
-
-  filter_switch_count=0;
-  filter_macro_count=0;
-
-  //
-  // Open Database
-  //
-  QString err(tr("sas_filter: "));
-  filter_db=RDInitDb(&schema,&err);
-  if(!filter_db) {
-    fprintf(stderr,"%s\n",err.ascii());
+  rda=new RDApplication("sas_filter","sas_filter",SAS_FILTER_USAGE,this);
+  if(!rda->open(&err_msg)) {
+    fprintf(stderr,"sas_filter: %s\n",(const char *)err_msg);
     exit(1);
   }
-  if((schema!=RD_VERSION_DATABASE)&&(!skip_db_check)) {
-    fprintf(stderr,
-	    "sas_filter: database version mismatch, should be %u, is %u\n",
-	    RD_VERSION_DATABASE,schema);
-    exit(256);
-  }
-
-  //
-  // Station Configuration
-  //
-  filter_rdstation=new RDStation(rd_config->stationName());
 
   //
   // RIPCD Connection
   //
-  filter_ripc=new RDRipc(filter_rdstation,rd_config,this);
-  filter_ripc->connectHost("localhost",RIPCD_TCP_PORT,rd_config->password());
+  rda->ripc()->connectHost("localhost",RIPCD_TCP_PORT,rda->config()->password());
 
   //
   // RDCatchd Connection
   //
   filter_connect=new RDCatchConnect(0,this);
   filter_connect->connectHost("localhost",RDCATCHD_TCP_PORT,
-			     rd_config->password());
+			      rda->config()->password());
 
   //
   // Read Switches
@@ -164,8 +126,8 @@ void MainObject::InjectLine(char *line)
   //
   QString base_sql=QString().sprintf("insert into RECORDINGS set\
                                       STATION_NAME=\"%s\",CHANNEL=%d,",
-				     (const char *)rd_config->sasStation(),
-				     rd_config->sasMatrix());
+				     (const char *)rda->config()->sasStation(),
+				     rda->config()->sasMatrix());
 
   //
   // Day of the week fields
@@ -266,7 +228,7 @@ void MainObject::InjectCartEvent(QString sql,int gpo)
   //
   // Macro Cart
   //
-  sql+=QString().sprintf("MACRO_CART=%d",gpo+rd_config->sasBaseCart());
+  sql+=QString().sprintf("MACRO_CART=%d",gpo+rda->config()->sasBaseCart());
   filter_macro_count++;
   RDSqlQuery *q=new RDSqlQuery(sql);
   delete q;
