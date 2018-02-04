@@ -556,7 +556,7 @@ unsigned RDFeed::postCut(RDUser *user,RDStation *station,
     *err=RDFeed::ErrorCannotOpenFile;
     return 0;
   }
-  RDAudioExport *conv=new RDAudioExport(station,config,this);
+  RDAudioExport *conv=new RDAudioExport(this);
   conv->setCartNumber(cut->cartNumber());
   conv->setCutNumber(cut->cutNumber());
   conv->setDestinationFile(tmpfile);

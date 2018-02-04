@@ -618,7 +618,7 @@ void RDImportAudio::Export()
   StartBar();
   RDCut *cut=new RDCut(import_cutname);
   import_settings->setNormalizationLevel(import_normalize_spin->value());
-  import_export_conv=new RDAudioExport(import_station,import_config,this);
+  import_export_conv=new RDAudioExport(this);
   import_export_conv->setCartNumber(cut->cartNumber());
   import_export_conv->setCutNumber(cut->cutNumber());
   import_export_conv->setDestinationFile(import_dest_filename);

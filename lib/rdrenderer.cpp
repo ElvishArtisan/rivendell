@@ -184,7 +184,7 @@ bool __RDRenderLogLine::GetCutFile(const QString &cutname,int start_pt,
   
   strncpy(tempdir,RDTempDirectory::basePath()+"/rdrenderXXXXXX",PATH_MAX);
   *dest_filename=QString(mkdtemp(tempdir))+"/"+cutname+".wav";
-  RDAudioExport *conv=new RDAudioExport(rda->station(),rda->config());
+  RDAudioExport *conv=new RDAudioExport();
   conv->setDestinationFile(*dest_filename);
   conv->setCartNumber(RDCut::cartNumber(cutname));
   conv->setCutNumber(RDCut::cutNumber(cutname));

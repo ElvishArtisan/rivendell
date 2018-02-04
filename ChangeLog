@@ -16666,3 +16666,5 @@
 2018-02-04 Fred Gleason <fredg@paravelsystems.com>
 	* Refactored the RDAudioConvert class to use RDApplication.
 	* Converted rdcatchd(8) to use RDApplication.
+2018-02-04 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored the RDAudioExport class to use RDApplication.

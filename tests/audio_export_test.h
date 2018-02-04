@@ -2,7 +2,7 @@
 //
 // Test the Rivendell file format converter.
 //
-//   (C) Copyright 2010,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2010,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -24,19 +24,10 @@
 #include <list>
 
 #include <qobject.h>
-#include <qsqldatabase.h>
 
-#include <rdconfig.h>
 #include <rdsettings.h>
-#include <rdcmd_switch.cpp>
 
 #define AUDIO_EXPORT_TEST_USAGE "[options]\n\nTest the Rivendell audio exporter routines\n\nOptions are:\n--username=<username>\n\n--password=<password>\n\n--cart-number=<cartnum>\n\n--cut-number=<cutnum>\n\n--destination-file=<filename>\n\n--start-point=<msecs>\n\n--end-point=<msecs>\n\n--destination-format=<fmt>\n     Supported formats are:\n        0 - PCM16 WAV\n        2 - MPEG Layer 2\n        3 - MPEG Layer 3\n        4 - FLAC\n        5 - OggVorbis\n        6 - MPEG Layer 2 WAV\n\n--destination-channels=<chans>\n\n--destination-sample-rate=<rate>\n\n--destination-bit-rate=<rate>\n\n--destination-quality=<qual>\n\n--normalization-level=<dbfs>\n\n"
-
-//
-// Global Variables
-//
-RDConfig *rdconfig;
-
 
 class MainObject : public QObject
 {

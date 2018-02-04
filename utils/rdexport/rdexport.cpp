@@ -344,7 +344,7 @@ void MainObject::ExportCart(unsigned cartnum)
 
 void MainObject::ExportCut(RDCart *cart,RDCut *cut)
 {
-  RDAudioExport *conv=new RDAudioExport(rda->station(),rda->config(),this);
+  RDAudioExport *conv=new RDAudioExport(this);
   RDAudioExport::ErrorCode export_err;
   RDAudioConvert::ErrorCode conv_err;
   RDAudioInfo::ErrorCode info_err;
