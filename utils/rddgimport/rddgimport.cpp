@@ -508,7 +508,7 @@ bool MainWidget::ImportSpot(Event *evt,QString *err_msg)
 				addDays(RDDGIMPORT_KILLDATE_OFFSET),
 				QTime(23,59,59)),true);
   
-  conv=new RDAudioImport(rda->station(),rda->config(),this);
+  conv=new RDAudioImport(this);
   conv->setCartNumber(dg_carts[evt->isci()]);
   conv->setCutNumber(cutnum);
   conv->setSourceFile(audiofile);

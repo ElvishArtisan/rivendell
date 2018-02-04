@@ -577,7 +577,7 @@ void RDCartDialog::loadFileData()
     // Import Audio
     //
     cart_busy_dialog->show(tr("Importing"),tr("Importing..."));
-    conv=new RDAudioImport(cart_station,cart_config,this);
+    conv=new RDAudioImport(this);
     conv->setCartNumber(cartnum);
     conv->setCutNumber(1);
     conv->setSourceFile(filename);

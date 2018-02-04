@@ -118,7 +118,7 @@ MainWidget::MainWidget(QWidget *parent)
   dg_ripper=new RDCdRipper(NULL,this);
   dg_ripper->setDevice(rda->libraryConf()->ripperDevice());
   dg_ripper->setDestinationFile(dg_tempfile);
-  dg_importer=new RDAudioImport(rda->station(),rda->config(),this);
+  dg_importer=new RDAudioImport(this);
   dg_importer->setSourceFile(dg_tempfile);
   dg_importer->setUseMetadata(false);
   

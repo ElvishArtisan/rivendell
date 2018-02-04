@@ -499,7 +499,7 @@ void CdRipper::ripTrackButtonData()
   }
   switch((ripper_err=ripper->rip(rip_track[0],rip_track[1]))) {
   case RDCdRipper::ErrorOk:
-    conv=new RDAudioImport(rda->station(),rda->config(),this);
+    conv=new RDAudioImport(this);
     conv->setSourceFile(tmpfile);
     conv->setCartNumber(rip_cut->cartNumber());
     conv->setCutNumber(rip_cut->cutNumber());

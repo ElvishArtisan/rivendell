@@ -544,7 +544,7 @@ void RDImportAudio::Import()
   //
   StartBar();
   RDCut *cut=new RDCut(import_cutname);
-  import_import_conv=new RDAudioImport(import_station,import_config,this);
+  import_import_conv=new RDAudioImport(this);
   import_import_conv->setCartNumber(cut->cartNumber());
   import_import_conv->setCutNumber(cut->cutNumber());
   import_import_conv->setSourceFile(import_in_filename_edit->text());

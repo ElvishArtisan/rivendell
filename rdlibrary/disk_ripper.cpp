@@ -1038,7 +1038,7 @@ void DiskRipper::RipTrack(int track,int end_track,QString cutname,QString title)
   ripper->setDestinationFile(tmpfile);
   switch((ripper_err=ripper->rip(rip_track_number-1,end_track-1))) {
   case RDCdRipper::ErrorOk:
-    conv=new RDAudioImport(rda->station(),rda->config(),this);
+    conv=new RDAudioImport(this);
     conv->setSourceFile(tmpfile);
     conv->setCartNumber(cut->cartNumber());
     conv->setCutNumber(cut->cutNumber());

@@ -1101,7 +1101,7 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
     return MainObject::NoCut;
   }
   RDCut *cut=new RDCut(*cartnum,cutnum);
-  RDAudioImport *conv=new RDAudioImport(rda->station(),rda->config(),this);
+  RDAudioImport *conv=new RDAudioImport(this);
   conv->setCartNumber(cart->number());
   conv->setCutNumber(cutnum);
   conv->setSourceFile(wavefile->getName());

@@ -602,7 +602,7 @@ bool RDRenderer::ImportCart(const QString &srcfile,unsigned cartnum,int cutnum,
   settings.setChannels(chans);
   settings.setNormalizationLevel(0);
 
-  RDAudioImport *conv=new RDAudioImport(rda->station(),rda->config(),this);
+  RDAudioImport *conv=new RDAudioImport(this);
   conv->setCartNumber(cartnum);
   conv->setCutNumber(cutnum);
   conv->setSourceFile(srcfile);
