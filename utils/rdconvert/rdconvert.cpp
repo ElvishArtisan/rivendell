@@ -186,7 +186,7 @@ MainObject::MainObject(QObject *parent)
     exit(256);
   }
 
-  RDAudioConvert *conv=new RDAudioConvert(rdconfig->stationName(),this);
+  RDAudioConvert *conv=new RDAudioConvert(this);
   conv->setSourceFile(source_filename);
   conv->setDestinationFile(destination_filename);
   conv->setDestinationSettings(destination_settings);

@@ -580,7 +580,7 @@ bool RDRenderer::ConvertAudio(const QString &srcfile,const QString &dstfile,
 {
   RDAudioConvert::ErrorCode err_code;
 
-  RDAudioConvert *conv=new RDAudioConvert(rda->station()->name(),this);
+  RDAudioConvert *conv=new RDAudioConvert(this);
   conv->setSourceFile(srcfile);
   conv->setDestinationFile(dstfile);
   conv->setDestinationSettings(s);

@@ -201,7 +201,7 @@ void Xport::Import()
       XmlExit("Duplicate Cart Title Not Allowed",404,"import.cpp",LINE_NUMBER);
     }
   }
-  RDAudioConvert *conv=new RDAudioConvert(rda->config()->stationName());
+  RDAudioConvert *conv=new RDAudioConvert(this);
   conv->setSourceFile(filename);
   conv->setDestinationFile(RDCut::pathName(cartnum,cutnum));
   conv->setDestinationSettings(settings);

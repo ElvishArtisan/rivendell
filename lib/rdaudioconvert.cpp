@@ -48,17 +48,19 @@
 #include <id3/tag.h>
 #include <qfile.h>
 
+#include <rdapplication.h>
 #include <rdaudioconvert.h>
 #include <rdcart.h>
 #include <rdconf.h>
 #include <rd.h>
-#include <rdlibrary_conf.h>
+//#include <rdlibrary_conf.h>
 #include <rdtempdirectory.h>
 
 #define STAGE2_XFER_SIZE 2048
 #define STAGE2_BUFFER_SIZE 49152
 
-RDAudioConvert::RDAudioConvert(const QString &station_name,QObject *parent)
+//RDAudioConvert::RDAudioConvert(const QString &station_name,QObject *parent)
+RDAudioConvert::RDAudioConvert(QObject *parent)
   : QObject(parent)
 {
   conv_start_point=-1;
@@ -68,9 +70,9 @@ RDAudioConvert::RDAudioConvert(const QString &station_name,QObject *parent)
   conv_settings=NULL;
   conv_src_wavedata=new RDWaveData();
   conv_dst_wavedata=NULL;
-  RDLibraryConf *conf=new RDLibraryConf(station_name);
-  conv_src_converter=conf->srcConverter();
-  delete conf;
+  //  RDLibraryConf *conf=new RDLibraryConf(station_name);
+  conv_src_converter=rda->libraryConf()->srcConverter();
+  //  delete conf;
 
   //
   // Load MPEG Libraries

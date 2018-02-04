@@ -48,7 +48,8 @@ class RDAudioConvert : public QObject
 		  ErrorNoDestination=3,ErrorInvalidSource=4,ErrorInternal=5,
 		  ErrorFormatNotSupported=6,ErrorNoDisc=7,ErrorNoTrack=8,
 		  ErrorInvalidSpeed=9,ErrorFormatError=10,ErrorNoSpace=11};
-  RDAudioConvert(const QString &station_name,QObject *parent=0);
+  //  RDAudioConvert(const QString &station_name,QObject *parent=0);
+  RDAudioConvert(QObject *parent=0);
   ~RDAudioConvert();
   void setSourceFile(const QString &filename);
   void setDestinationFile(const QString &filename);
