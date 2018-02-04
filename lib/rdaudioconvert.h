@@ -2,7 +2,7 @@
 //
 // Convert Audio File Formats
 //
-//   (C) Copyright 2010-2017 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2010-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -48,7 +48,6 @@ class RDAudioConvert : public QObject
 		  ErrorNoDestination=3,ErrorInvalidSource=4,ErrorInternal=5,
 		  ErrorFormatNotSupported=6,ErrorNoDisc=7,ErrorNoTrack=8,
 		  ErrorInvalidSpeed=9,ErrorFormatError=10,ErrorNoSpace=11};
-  //  RDAudioConvert(const QString &station_name,QObject *parent=0);
   RDAudioConvert(QObject *parent=0);
   ~RDAudioConvert();
   void setSourceFile(const QString &filename);

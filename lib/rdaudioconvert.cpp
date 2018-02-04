@@ -2,7 +2,7 @@
 //
 // Convert Audio File Formats
 //
-//   (C) Copyright 2010-2017 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2010-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -53,13 +53,11 @@
 #include <rdcart.h>
 #include <rdconf.h>
 #include <rd.h>
-//#include <rdlibrary_conf.h>
 #include <rdtempdirectory.h>
 
 #define STAGE2_XFER_SIZE 2048
 #define STAGE2_BUFFER_SIZE 49152
 
-//RDAudioConvert::RDAudioConvert(const QString &station_name,QObject *parent)
 RDAudioConvert::RDAudioConvert(QObject *parent)
   : QObject(parent)
 {
@@ -70,9 +68,7 @@ RDAudioConvert::RDAudioConvert(QObject *parent)
   conv_settings=NULL;
   conv_src_wavedata=new RDWaveData();
   conv_dst_wavedata=NULL;
-  //  RDLibraryConf *conf=new RDLibraryConf(station_name);
   conv_src_converter=rda->libraryConf()->srcConverter();
-  //  delete conf;
 
   //
   // Load MPEG Libraries
