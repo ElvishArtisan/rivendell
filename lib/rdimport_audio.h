@@ -2,7 +2,7 @@
 //
 // Audio File Importation Dialog for Rivendell.
 //
-//   (C) Copyright 2002-2015 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -37,15 +37,13 @@
 #include <qbuttongroup.h>
 #include <qradiobutton.h>
 
-#include <rdbusybar.h>
-#include <rdwavedata.h>
-#include <rdconfig.h>
-#include <rdsettings.h>
-#include <rdexport_settings_dialog.h>
-#include <rdcut.h>
-#include <rduser.h>
 #include <rdaudioexport.h>
 #include <rdaudioimport.h>
+#include <rdbusybar.h>
+#include <rdcut.h>
+#include <rdexport_settings_dialog.h>
+#include <rdsettings.h>
+#include <rdwavedata.h>
 
 //
 // Widget Settings
@@ -53,15 +51,13 @@
 #define IMPORT_BAR_INTERVAL 500
 #define IMPORT_TEMP_BASENAME "rdlib"
 
-
 class RDImportAudio : public QDialog
 {
  Q_OBJECT
  public:
  RDImportAudio(QString cutname,QString *path,RDSettings *settings,
 	       bool *import_metadata,RDWaveData *wavedata,
-	       RDCut *clipboard,RDStation *station,RDUser *user,bool *running,
-	       RDConfig *config,QWidget *parent=0);
+	       RDCut *clipboard,bool *running,QWidget *parent=0);
   ~RDImportAudio();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
@@ -94,10 +90,7 @@ class RDImportAudio : public QDialog
   void Export();
   void StartBar();
   void StopBar();
-  RDConfig *import_config;
   RDSettings *import_default_settings;
-  RDStation *import_station;
-  RDUser *import_user;
   RDCut *import_clipboard;
   bool *import_running;
   QButtonGroup *import_mode_group;

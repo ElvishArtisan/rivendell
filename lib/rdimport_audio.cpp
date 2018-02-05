@@ -2,7 +2,7 @@
 //
 // Audio File Importation Dialog for Rivendell.
 //
-//   (C) Copyright 2002-2015 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -33,24 +33,19 @@
 #include <qpainter.h>
 
 #include <rd.h>
-#include <rdconf.h>
-#include <rdwavefile.h>
+#include <rdapplication.h>
 #include <rdcart.h>
+#include <rdconf.h>
 #include <rdcut.h>
 #include <rdescape_string.h>
-#include <rdstation.h>
 #include <rdimport_audio.h>
-#include <rdlibrary_conf.h>
 
 RDImportAudio::RDImportAudio(QString cutname,QString *path,
 			     RDSettings *settings,bool *import_metadata,
 			     RDWaveData *wavedata,RDCut *clipboard,
-			     RDStation *station,RDUser *user,
-			     bool *running,RDConfig *config,
-			     QWidget *parent) 
+			     bool *running,QWidget *parent) 
   : QDialog(parent)
 {
-  import_config=config;
   import_default_settings=settings;
   import_path=path;
   import_settings=settings;
@@ -59,8 +54,6 @@ RDImportAudio::RDImportAudio(QString cutname,QString *path,
   import_wavedata=wavedata;
   import_clipboard=clipboard;
   import_running=running;
-  import_station=station;
-  import_user=user;
   import_file_filter=RD_AUDIO_FILE_FILTER;
   import_import_conv=NULL;
   import_export_conv=NULL;
@@ -440,7 +433,7 @@ void RDImportAudio::selectOutputFileData()
 {
   QString filename;
   QString filter=import_settings->formatName()+" (*."+
-    RDSettings::defaultExtension(import_station->name(),
+    RDSettings::defaultExtension(rda->station()->name(),
 				 import_settings->format())+")";
 
   if(import_out_filename_edit->text().isEmpty()) {
@@ -453,7 +446,7 @@ void RDImportAudio::selectOutputFileData()
   }
   if(!filename.isEmpty()) {
     import_out_filename_edit->
-      setText(RDSettings::pathName(import_station->name(),filename,
+      setText(RDSettings::pathName(rda->station()->name(),filename,
 				   import_settings->format()));
     *import_path=RDGetPathPart(import_out_filename_edit->text());
   }
@@ -463,12 +456,12 @@ void RDImportAudio::selectOutputFileData()
 void RDImportAudio::selectOutputFormatData()
 {
   RDExportSettingsDialog *dialog=
-    new RDExportSettingsDialog(import_settings,import_station,this);
+    new RDExportSettingsDialog(import_settings,rda->station(),this);
   dialog->exec();
   delete dialog;
   import_format_edit->setText(import_settings->description());
   import_out_filename_edit->
-    setText(RDSettings::pathName(import_station->name(),
+    setText(RDSettings::pathName(rda->station()->name(),
 				 import_out_filename_edit->text(),
 				 import_settings->format()));
 }
@@ -559,7 +552,7 @@ void RDImportAudio::Import()
   import_import_conv->setUseMetadata(import_in_metadata_box->isChecked());
   *import_running=true;
   import_import_aborted=false;
-  conv_err=import_import_conv->runImport(import_user->name(),import_user->password(),&audio_conv_err);
+  conv_err=import_import_conv->runImport(rda->user()->name(),rda->user()->password(),&audio_conv_err);
   *import_running=false;
   StopBar();
   switch(conv_err) {
@@ -570,7 +563,7 @@ void RDImportAudio::Import()
       wave->closeWave();
       delete wave;
     }
-    cut->setOriginName(import_station->name());
+    cut->setOriginName(rda->station()->name());
     cut->
       setOriginDatetime(QDateTime(QDate::currentDate(),QTime::currentTime()));
     QMessageBox::information(this,tr("Import Complete"),
@@ -627,8 +620,8 @@ void RDImportAudio::Export()
   import_export_conv->setEnableMetadata(import_out_metadata_box->isChecked());
   *import_running=true;
   import_import_aborted=false;
-  conv_err=import_export_conv->runExport(import_user->name(),
-					 import_user->password(),
+  conv_err=import_export_conv->runExport(rda->user()->name(),
+					 rda->user()->password(),
 					 &audio_conv_err);
   *import_running=false;
   StopBar();
