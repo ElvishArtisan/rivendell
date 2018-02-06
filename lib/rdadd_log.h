@@ -5,7 +5,7 @@
 // This class creates a basic dialog requesting from the user a name and
 // corresponding service that is later used to create a new log.
 //
-//   (C) Copyright 2002-2003,2016-2017 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2003,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -29,19 +29,15 @@
 #include <qlineedit.h>
 #include <qpushbutton.h>
 
-#include <rdstation.h>
 #include <rdlog.h>
 #include <rdlogfilter.h>
-#include <rduser.h>
-
 
 class RDAddLog : public QDialog
 {
   Q_OBJECT
  public:
   RDAddLog(QString *logname,QString *svcname,RDLogFilter::FilterMode mode,
-	   RDUser *user,RDStation *station,const QString &caption,
-	   QWidget *parent=0);
+	   const QString &caption,QWidget *parent=0);
   ~RDAddLog();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
@@ -61,9 +57,8 @@ class RDAddLog : public QDialog
   QPushButton *add_cancel_button;
   QString *log_name;
   QString *log_svc;
-  RDStation *log_station;
 };
 
 
-#endif
+#endif  // RDADD_LOG_H
 

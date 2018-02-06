@@ -363,8 +363,8 @@ void MainWidget::addData()
   RDAddLog *log;
 
   if(rda->user()->createLog()) {
-    log=new RDAddLog(&logname,&svcname,RDLogFilter::UserFilter,rda->user(),
-		     rda->station(),tr("Add Log"),this);
+    log=new RDAddLog(&logname,&svcname,RDLogFilter::UserFilter,
+		     tr("Add Log"),this);
     if(log->exec()!=0) {
       delete log;
       return;

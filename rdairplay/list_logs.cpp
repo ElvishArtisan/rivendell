@@ -203,8 +203,8 @@ void ListLogs::saveAsButtonData()
   QString logname;
   QString svcname=*list_svcname;
   RDAddLog *log;
-  log=new RDAddLog(&logname,&svcname,RDLogFilter::StationFilter,rda->user(),
-		   rda->station(),tr("Rename Log"),this);
+  log=new RDAddLog(&logname,&svcname,RDLogFilter::StationFilter,
+		   tr("Rename Log"),this);
   if(log->exec()<0) {
     delete log;
     return;
