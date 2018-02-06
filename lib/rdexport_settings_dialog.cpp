@@ -1,8 +1,8 @@
 // rdexport_settings_dialog.cpp
 //
-// Edit RDLibrary Settings
+// Edit Audio Export Settings
 //
-//   (C) Copyright 2002-2015 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,27 +18,22 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qdialog.h>
-#include <qstring.h>
-#include <qpushbutton.h>
-#include <qlistbox.h>
-#include <qtextedit.h>
-#include <qevent.h>
-#include <qmessagebox.h>
-#include <qcheckbox.h>
-#include <qbuttongroup.h>
 #include <math.h>
 
-#include <rdexport_settings_dialog.h>
+#include <qbuttongroup.h>
+#include <qcheckbox.h>
+#include <qevent.h>
+#include <qmessagebox.h>
+#include <qpushbutton.h>
 
+#include "rdapplication.h"
+#include "rdexport_settings_dialog.h"
 
 RDExportSettingsDialog::RDExportSettingsDialog(RDSettings *settings,
-					       RDStation *station,
 					       QWidget *parent)
   : QDialog(parent,"",true)
 {
   lib_settings=settings;
-  lib_station=station;
 
   //
   // Generate Fonts
@@ -54,7 +49,7 @@ RDExportSettingsDialog::RDExportSettingsDialog(RDSettings *settings,
   //
   // Custom Encoders
   //
-  lib_encoders=new RDEncoderList(station->name());
+  lib_encoders=new RDEncoderList(rda->station()->name());
 
   //
   // Default Format
@@ -141,7 +136,7 @@ RDExportSettingsDialog::RDExportSettingsDialog(RDSettings *settings,
   if(settings->format()==RDSettings::Pcm24) {
     lib_format_box->setCurrentItem(lib_format_box->count()-1);
   }
-  if(station->haveCapability(RDStation::HaveFlac)) {
+  if(rda->station()->haveCapability(RDStation::HaveFlac)) {
     lib_format_box->insertItem(tr("FLAC"));
     if(settings->format()==RDSettings::Flac) {
       lib_format_box->setCurrentItem(lib_format_box->count()-1);
@@ -151,13 +146,13 @@ RDExportSettingsDialog::RDExportSettingsDialog(RDSettings *settings,
   if(settings->format()==RDSettings::MpegL2) {
     lib_format_box->setCurrentItem(lib_format_box->count()-1);
   }
-  if(station->haveCapability(RDStation::HaveLame)) {
+  if(rda->station()->haveCapability(RDStation::HaveLame)) {
     lib_format_box->insertItem(tr("MPEG Layer 3"));
     if(settings->format()==RDSettings::MpegL3) {
       lib_format_box->setCurrentItem(lib_format_box->count()-1);
     }
   }
-  if(station->haveCapability(RDStation::HaveOggenc)) {
+  if(rda->station()->haveCapability(RDStation::HaveOggenc)) {
     lib_format_box->insertItem(tr("OggVorbis"));
     if(settings->format()==RDSettings::OggVorbis) {
       lib_format_box->setCurrentItem(lib_format_box->count()-1);

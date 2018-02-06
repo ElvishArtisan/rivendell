@@ -507,12 +507,10 @@ void EditUpload::selectCartData()
 
 void EditUpload::setFormatData()
 {
-  RDStation *station=new RDStation(edit_station_box->currentText());
   RDExportSettingsDialog *dialog=
-    new RDExportSettingsDialog(&edit_settings,station,this);
+    new RDExportSettingsDialog(&edit_settings,this);
   dialog->exec();
   delete dialog;
-  delete station;
   edit_format_edit->setText(edit_settings.description());
 }
 

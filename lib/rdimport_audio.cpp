@@ -32,13 +32,13 @@
 #include <qcheckbox.h>
 #include <qpainter.h>
 
-#include <rd.h>
-#include <rdapplication.h>
-#include <rdcart.h>
-#include <rdconf.h>
-#include <rdcut.h>
-#include <rdescape_string.h>
-#include <rdimport_audio.h>
+#include "rd.h"
+#include "rdapplication.h"
+#include "rdcart.h"
+#include "rdconf.h"
+#include "rdcut.h"
+#include "rdescape_string.h"
+#include "rdimport_audio.h"
 
 RDImportAudio::RDImportAudio(QString cutname,QString *path,
 			     RDSettings *settings,bool *import_metadata,
@@ -456,7 +456,7 @@ void RDImportAudio::selectOutputFileData()
 void RDImportAudio::selectOutputFormatData()
 {
   RDExportSettingsDialog *dialog=
-    new RDExportSettingsDialog(import_settings,rda->station(),this);
+    new RDExportSettingsDialog(import_settings,this);
   dialog->exec();
   delete dialog;
   import_format_edit->setText(import_settings->description());

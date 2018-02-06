@@ -292,12 +292,9 @@ QSizePolicy EditReplicator::sizePolicy() const
 
 void EditReplicator::setFormatData()
 {
-  RDStation *station=new RDStation(rda->config()->stationName());
-  RDExportSettingsDialog *dialog=
-    new RDExportSettingsDialog(repl_settings,station,this);
+  RDExportSettingsDialog *dialog=new RDExportSettingsDialog(repl_settings,this);
   dialog->exec();
   delete dialog;
-  delete station;
   repl_format_edit->setText(repl_settings->description());
 }
 

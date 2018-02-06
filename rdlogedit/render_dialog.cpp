@@ -256,8 +256,7 @@ void RenderDialog::starttimeSourceData(int item)
 
 void RenderDialog::audiosettingsData()
 {
-  RDExportSettingsDialog *d=
-    new RDExportSettingsDialog(render_settings,render_station);
+  RDExportSettingsDialog *d=new RDExportSettingsDialog(render_settings);
   if(d->exec()==0) {
     render_audiosettings_edit->setText(render_settings->description());
   }

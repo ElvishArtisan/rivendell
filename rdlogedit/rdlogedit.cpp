@@ -680,7 +680,6 @@ void MainWidget::logDoubleclickedData(QListViewItem *,const QPoint &,int)
 
 void MainWidget::quitMainWidget()
 {
-  log_db->removeDatabase(rda->config()->mysqlDbname());
   exit(0);
 }
 

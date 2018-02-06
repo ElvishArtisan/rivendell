@@ -535,7 +535,7 @@ void EditFeed::purgeUsernameChangedData(const QString &username)
 void EditFeed::setFormatData()
 {
   RDExportSettingsDialog *dialog=
-    new RDExportSettingsDialog(&feed_settings,rda->station(),this);
+    new RDExportSettingsDialog(&feed_settings,this);
   dialog->exec();
   delete dialog;
   feed_format_edit->setText(feed_settings.description());
