@@ -533,8 +533,7 @@ void AudioCart::editCutData()
     return;
   }
   RDEditAudio *edit=
-    new RDEditAudio(rdcart_cart,cutname,rda->cae(),rda->user(),rda->station(),
-		    rda->config(),rda->libraryConf()->outputCard(),
+    new RDEditAudio(rdcart_cart,cutname,rda->libraryConf()->outputCard(),
 		    rda->libraryConf()->outputPort(),rda->libraryConf()->tailPreroll(),
 		    rda->libraryConf()->trimThreshold(),this);
   if(edit->exec()!=-1) {

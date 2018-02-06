@@ -53,9 +53,8 @@ void CatchListView::editAudioMenuData()
 {
   RDCart *rdcart=new RDCart(catch_cutname.left(6).toUInt());
   RDEditAudio *edit=
-    new RDEditAudio(rdcart,catch_cutname,rda->cae(),rda->user(),rda->station(),
-		    rda->config(),catch_audition_card,catch_audition_port,
-		    1500,-400,this);
+    new RDEditAudio(rdcart,catch_cutname,catch_audition_card,
+		    catch_audition_port,1500,-400,this);
   if(edit->exec()!=-1) {
     rdcart->updateLength();
   }

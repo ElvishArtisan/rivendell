@@ -16685,3 +16685,5 @@
 	* Refactored the RDAddLog class to use RDApplication.
 2018-02-06 Fred Gleason <fredg@paravelsystems.com>
 	* Refactored the RDAudioInfo class to use RDApplication.
+2018-02-06 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored the RDEditAudio class to use RDApplication.

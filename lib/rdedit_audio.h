@@ -2,7 +2,7 @@
 //
 // Edit Rivendell Audio
 //
-//   (C) Copyright 2002-2006,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2006,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -35,7 +35,6 @@
 #include <qnamespace.h>
 #include <qcheckbox.h>
 
-#include <rdconfig.h>
 #include <rdmarker_edit.h>
 #include <rdtransportbutton.h>
 #include <rdstereometer.h>
@@ -44,9 +43,6 @@
 #include <rdmarker_button.h>
 #include <rdcart.h>
 #include <rdcut.h>
-#include <rdcae.h>
-#include <rduser.h>
-#include <rdstation.h>
 #include <rdpeaksexport.h>
 
 //
@@ -74,8 +70,7 @@ class RDEditAudio : public QDialog
 {
   Q_OBJECT
  public:
-  RDEditAudio(RDCart *cart,QString cut_name,RDCae *cae,RDUser *user,
-	      RDStation *station,RDConfig *config,int card,int port,
+  RDEditAudio(RDCart *cart,QString cut_name,int card,int port,
 	      int preroll,int trim_level,QWidget *parent=0);
   ~RDEditAudio();
   QSize sizeHint() const;
@@ -218,10 +213,6 @@ class RDEditAudio : public QDialog
   int edit_stream;
   int edit_port;
   int edit_preroll;
-  RDCae *edit_cae;
-  RDStation *edit_station;
-  RDUser *edit_user;
-  RDConfig *edit_config;
 };
 
 

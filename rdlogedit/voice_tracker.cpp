@@ -1260,8 +1260,7 @@ void VoiceTracker::editAudioData()
   RDCart *rdcart=new RDCart(edit_logline[edit_rightclick_track]->cartNumber());
   RDEditAudio *edit=
     new RDEditAudio(rdcart,edit_logline[edit_rightclick_track]->cutName(),
-		    rda->cae(),rda->user(),rda->station(),rda->config(),edit_output_card,
-		    edit_output_port,edit_tail_preroll,
+		    edit_output_card,edit_output_port,edit_tail_preroll,
 		    edit_threshold_level,this);
   if(edit->exec()!=-1) {
     rdcart->updateLength();
