@@ -2,7 +2,7 @@
 //
 // A widget to select a Rivendell Cart.
 //
-//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2004,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -28,16 +28,10 @@
 #include <qprogressdialog.h>
 #include <qcheckbox.h>
 
-#include <rdcae.h>
-#include <rdconfig.h>
-#include <rdripc.h>
-#include <rdsystem.h>
 #include <rdsimpleplayer.h>
 #include <rdlistviewitem.h>
 #include <rdcart.h>
-#include <rdstation.h>
 #include <rdcombobox.h>
-#include <rduser.h>
 #include <rdbusydialog.h>
 
 #define RDCART_DIALOG_STEP_SIZE 1000
@@ -47,9 +41,7 @@ class RDCartDialog : public QDialog
  Q_OBJECT
  public:
   RDCartDialog(QString *filter,QString *group,QString *schedcode,
-	       RDCae *cae,RDRipc *ripc,RDStation *station,RDSystem *system,
-	       RDConfig *config,QWidget *parent=0);
-
+	       QWidget *parent=0);
   ~RDCartDialog();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
@@ -116,9 +108,6 @@ class RDCartDialog : public QDialog
   QString cart_import_path;
   QString cart_import_file_filter;
   bool *cart_temp_allowed;
-  RDStation *cart_station;
-  RDSystem *cart_system;
-  RDConfig *cart_config;
   QString cart_user_name;
   QString cart_user_password;
   RDBusyDialog *cart_busy_dialog;

@@ -378,10 +378,8 @@ order by CHANNEL",(const char *)q->value(0).toString().lower());
   //
   // Cart Picker
   //
-  catch_cart_dialog=new RDCartDialog(&catch_filter,&catch_group,
-				     &catch_schedcode,rda->cae(),rda->ripc(),
-				     rda->station(),rda->system(),rda->config(),
-				     this);
+  catch_cart_dialog=
+    new RDCartDialog(&catch_filter,&catch_group,&catch_schedcode,this);
 
   //
   // Cart List

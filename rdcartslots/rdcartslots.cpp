@@ -114,10 +114,8 @@ MainWidget::MainWidget(QWidget *parent)
   //
   // Dialogs
   //
-  panel_cart_dialog=new RDCartDialog(&panel_filter,&panel_group,
-				     &panel_schedcode,rda->cae(),rda->ripc(),
-				     rda->station(),rda->system(),rda->config(),
-				     this);
+  panel_cart_dialog=
+    new RDCartDialog(&panel_filter,&panel_group,&panel_schedcode,this);
   panel_slot_dialog=new RDSlotDialog(tr("RDCartSlots"),this);
   panel_cue_dialog=new RDCueEditDialog(rda->cae(),rda->station()->cueCard(),
 				       rda->station()->cuePort(),

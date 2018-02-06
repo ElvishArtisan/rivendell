@@ -405,8 +405,7 @@ MainWidget::MainWidget(QWidget *parent)
   // Cart Picker
   //
   rdcart_dialog=
-    new RDCartDialog(&air_add_filter,&air_add_group,&air_add_schedcode,
-		     rda->cae(),rda->ripc(),rda->station(),rda->system(),rda->config(),this);
+    new RDCartDialog(&air_add_filter,&air_add_group,&air_add_schedcode,this);
 
   //
   // Wall Clock

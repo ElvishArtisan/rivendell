@@ -196,8 +196,7 @@ MainWidget::MainWidget(QWidget *parent)
   // Cart Dialog
   //
   admin_cart_dialog=
-    new RDCartDialog(&admin_filter,&admin_group,&admin_schedcode,NULL,
-		     rda->ripc(),rda->station(),rda->system(),rda->config(),this);
+    new RDCartDialog(&admin_filter,&admin_group,&admin_schedcode,this);
 
   //
   // User Labels
