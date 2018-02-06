@@ -2,7 +2,7 @@
 //
 // The sound panel widget for RDAirPlay
 //
-//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2004,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -30,16 +30,13 @@
 
 #include <rdpushbutton.h>
 
-#include <rdcart_dialog.h>
-#include <rdcart.h>
-#include <rduser.h>
-#include <rdairplay_conf.h>
-#include <rdpanel_button.h>
 #include <rdbutton_dialog.h>
 #include <rdbutton_panel.h>
-#include <rdripc.h>
-#include <rdevent_player.h>
+#include <rdcart.h>
+#include <rdcart_dialog.h>
 #include <rdcombobox.h>
+#include <rdevent_player.h>
+#include <rdpanel_button.h>
 
 //
 // Widget Settings
@@ -55,8 +52,8 @@ class RDSoundPanel : public QWidget
  public:
   RDSoundPanel(int cols,int rows,int station_panels,int user_panels,bool flash,
 	       const QString &label_template,bool extended,
-	       RDEventPlayer *player,RDRipc *ripc,RDCae *cae,
-	       RDStation *station,RDCartDialog *cart_dialog,QWidget *parent=0);
+	       RDEventPlayer *player,RDCartDialog *cart_dialog,
+	       QWidget *parent=0);
   ~RDSoundPanel();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
@@ -147,8 +144,6 @@ class RDSoundPanel : public QWidget
   QString PanelTag(int index);
   QString PanelOwner(RDAirPlayConf::PanelType type);
   std::vector<RDButtonPanel *> panel_buttons;
-  RDCae *panel_cae;
-  RDUser *panel_user;
   RDComboBox *panel_selector_box;
   QComboBox *panel_playmode_box;
   RDPushButton *panel_setup_button;
@@ -166,8 +161,6 @@ class RDSoundPanel : public QWidget
   bool panel_setup_mode;
   bool panel_reset_mode;
   QWidget *panel_parent;
-  RDRipc *panel_ripc;
-  RDStation *panel_station;
   int panel_card[PANEL_MAX_OUTPUTS];
   int panel_port[PANEL_MAX_OUTPUTS];
   int panel_cue_card;

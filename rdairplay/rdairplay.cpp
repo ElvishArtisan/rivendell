@@ -608,8 +608,7 @@ MainWidget::MainWidget(QWidget *parent)
 		       rda->airplayConf()->panels(RDAirPlayConf::UserPanel),
 		       rda->airplayConf()->flashPanel(),
 		       rda->airplayConf()->buttonLabelTemplate(),false,
-		       rdevent_player,rda->ripc(),rda->cae(),rda->station(),
-		       rdcart_dialog,this);
+		       rdevent_player,rdcart_dialog,this);
     air_panel->setLogfile(rda->config()->airplayLogname());
     air_panel->setGeometry(510,140,air_panel->sizeHint().width(),
 			 air_panel->sizeHint().height());
