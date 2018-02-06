@@ -746,7 +746,7 @@ RDEditAudio::RDEditAudio(RDCart *cart,QString cut_name,int card,
   //
   // The Wave Forms
   //
-  edit_peaks=new RDPeaksExport(rda->station(),rda->config(),this);
+  edit_peaks=new RDPeaksExport(this);
   RDPeaksExport::ErrorCode conv_err;
   edit_peaks->setCartNumber(RDCut::cartNumber(cut_name));
   edit_peaks->setCutNumber(RDCut::cutNumber(cut_name));

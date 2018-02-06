@@ -236,7 +236,7 @@ void RDWavePainter::LoadWave()
   if(wave_peaks!=NULL) {
     delete wave_peaks;
   }
-  wave_peaks=new RDPeaksExport(wave_station,wave_config);
+  wave_peaks=new RDPeaksExport();
   wave_peaks->setCartNumber(wave_cut->cartNumber());
   wave_peaks->setCutNumber(wave_cut->cutNumber());
   wave_peaks->runExport(wave_user->name(),wave_user->password());
