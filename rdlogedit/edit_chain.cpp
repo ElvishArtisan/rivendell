@@ -291,7 +291,7 @@ void EditChain::selectLogData()
   QString logname;
 
   RDListLogs *d=
-    new RDListLogs(&logname,RDLogFilter::UserFilter,rda->user(),rda->config(),this);
+    new RDListLogs(&logname,RDLogFilter::UserFilter,this);
   if(d->exec()!=0) {
     delete d;
     return;

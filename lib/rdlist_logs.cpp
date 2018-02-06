@@ -2,7 +2,7 @@
 //
 // Select a Rivendell Log
 //
-//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2004,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,15 +20,16 @@
 
 #include <qpushbutton.h>
 #include <qdatetime.h>
-#include <rddb.h>
-#include <rdescape_string.h>
-#include <rdlist_logs.h>
+
+#include "rdapplication.h"
+#include "rddb.h"
+#include "rdescape_string.h"
+#include "rdlist_logs.h"
 
 RDListLogs::RDListLogs(QString *logname,RDLogFilter::FilterMode mode,
-		       RDUser *user,RDConfig *config,QWidget *parent)
+		       QWidget *parent)
   : QDialog(parent,"",true)
 {
-  list_config=config;
   list_logname=logname;
 
   //
@@ -50,7 +51,7 @@ RDListLogs::RDListLogs(QString *logname,RDLogFilter::FilterMode mode,
   //
   // Log Filter
   //
-  list_filter_widget=new RDLogFilter(mode,user,config,this);
+  list_filter_widget=new RDLogFilter(mode,this);
   connect(list_filter_widget,SIGNAL(filterChanged(const QString &)),
 	  this,SLOT(filterChangedData(const QString &)));
 

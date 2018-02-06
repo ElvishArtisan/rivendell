@@ -2,7 +2,7 @@
 //
 // The Administrator Utility for Rivendell.
 //
-//   (C) Copyright 2002-2006,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2006,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -17,7 +17,6 @@
 //   License along with this program; if not, write to the Free Software
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
-
 
 #include <stdlib.h>
 #include <unistd.h>
@@ -36,32 +35,30 @@
 #include <qtextcodec.h>
 #include <qtranslator.h>
 
-#include <rdconf.h>
-#include <rduser.h>
-#include <rd.h>
 #include <dbversion.h>
+#include <rd.h>
+#include <rdapplication.h>
 #include <rdcheck_daemons.h>
-#include <rdcmd_switch.h>
+#include <rdconf.h>
 #include <rddb.h>
 #include <rddbheartbeat.h>
-
-#include <globals.h>
-#include <login.h>
-#include <list_users.h>
-#include <list_groups.h>
-#include <list_svcs.h>
-#include <list_stations.h>
-#include <list_reports.h>
-#include <list_feeds.h>
-#include <list_schedcodes.h>
-#include <list_replicators.h>
-#include <edit_settings.h>
-#include <rdadmin.h>
-#include <opendb.h>
-#include <info_dialog.h>
-#include <createdb.h>
-
 #include <rdescape_string.h>
+
+#include "createdb.h"
+#include "edit_settings.h"
+#include "globals.h"
+#include "info_dialog.h"
+#include "list_feeds.h"
+#include "list_groups.h"
+#include "list_replicators.h"
+#include "list_reports.h"
+#include "list_schedcodes.h"
+#include "list_svcs.h"
+#include "list_stations.h"
+#include "list_users.h"
+#include "login.h"
+#include "opendb.h"
+#include "rdadmin.h"
 
 //
 // Icons
@@ -71,11 +68,6 @@
 //
 // Global Classes
 //
-RDRipc *rdripc;
-RDConfig *admin_config;
-RDUser *admin_user;
-RDStation *admin_station;
-RDSystem *admin_system;
 RDCartDialog *admin_cart_dialog;
 bool exiting=false;
 QString admin_admin_username;
@@ -144,24 +136,24 @@ MainWidget::MainWidget(QWidget *parent)
   //
   // Load Configs
   //
-  admin_config=new RDConfig(RD_CONF_FILE);
-  admin_config->load();
-  admin_config->setModuleName("RDAdmin");
+  RDConfig *config=new RDConfig(RD_CONF_FILE);
+  config->load();
+  config->setModuleName("RDAdmin");
 
   str=QString(tr("RDAdmin")+" v"+VERSION+" - Host:");
   setCaption(QString().
 	     sprintf("%s %s",(const char *)str,
-		     (const char *)admin_config->stationName()));
+		     (const char *)config->stationName()));
 
   //
   // Open Database
   //
-  if(!OpenDb(admin_config->mysqlDbname(),admin_config->mysqlUsername(),
-	     admin_config->mysqlPassword(),admin_config->mysqlHostname(),
-	     admin_config->stationName(),true,admin_config)) {
+  if(!OpenDb(config->mysqlDbname(),config->mysqlUsername(),
+	     config->mysqlPassword(),config->mysqlHostname(),
+	     config->stationName(),true,config)) {
     exit(1);
   }
-  new RDDbHeartbeat(admin_config->mysqlHeartbeatInterval());
+  new RDDbHeartbeat(rda->config()->mysqlHeartbeatInterval());
 
   //
   // Check (and possibly start) daemons
@@ -178,10 +170,7 @@ MainWidget::MainWidget(QWidget *parent)
   char temp[256];
   GetPrivateProfileString(RD_CONF_FILE,"Identity","Password",
 			  temp,"",255);
-  admin_station=new RDStation(admin_config->stationName(),this);
-  admin_system=new RDSystem();
-  rdripc=new RDRipc(admin_station,admin_config,this);
-  rdripc->connectHost("localhost",RIPCD_TCP_PORT,temp);
+  rda->ripc()->connectHost("localhost",RIPCD_TCP_PORT,temp);
 
   //
   // Log In
@@ -190,13 +179,13 @@ MainWidget::MainWidget(QWidget *parent)
   if(login->exec()!=0) {
     exit(0);
   }
-  admin_user=new RDUser(admin_username);
-  if(!admin_user->checkPassword(admin_password,false)) {
+  rda->user()->setName(admin_username);
+  if(!rda->user()->checkPassword(admin_password,false)) {
     QMessageBox::warning(this,"Login Failed","Login Failed!.\n");
     exiting=true;
   }
   else {
-    if(!admin_user->adminConfig()) {
+    if(!rda->user()->adminConfig()) {
       QMessageBox::warning(this,tr("Insufficient Priviledges"),
          tr("This account has insufficient priviledges for this operation."));
       exiting=true;
@@ -208,7 +197,7 @@ MainWidget::MainWidget(QWidget *parent)
   //
   admin_cart_dialog=
     new RDCartDialog(&admin_filter,&admin_group,&admin_schedcode,NULL,
-		     rdripc,admin_station,admin_system,admin_config,this);
+		     rda->ripc(),rda->station(),rda->system(),rda->config(),this);
 
   //
   // User Labels
@@ -217,13 +206,13 @@ MainWidget::MainWidget(QWidget *parent)
   name_label->setGeometry(0,5,sizeHint().width(),20);
   name_label->setAlignment(Qt::AlignVCenter|Qt::AlignCenter);
   name_label->setFont(font);
-  name_label->setText(QString().sprintf("USER: %s",(const char *)admin_user->name()));
+  name_label->setText(QString().sprintf("USER: %s",(const char *)rda->user()->name()));
 
   QLabel *description_label=new QLabel(this);
   description_label->setGeometry(0,24,sizeHint().width(),14);
   description_label->setAlignment(Qt::AlignVCenter|Qt::AlignCenter);
   name_label->setFont(font);
-  description_label->setText(admin_user->description());
+  description_label->setText(rda->user()->description());
 
   //
   // Manage Users Button
@@ -346,12 +335,6 @@ MainWidget::MainWidget(QWidget *parent)
 }
 
 
-MainWidget::~MainWidget()
-{
-  delete admin_user;
-}
-
-
 QSize MainWidget::sizeHint() const
 {
   return QSize(370,330);
@@ -366,7 +349,7 @@ QSizePolicy MainWidget::sizePolicy() const
 
 void MainWidget::manageUsersData()
 {
-  ListUsers *list_users=new ListUsers(admin_user->name(),this);
+  ListUsers *list_users=new ListUsers(rda->user()->name(),this);
   list_users->exec();
   delete list_users;
 }
@@ -426,10 +409,10 @@ void MainWidget::backupData()
     filename+=".sql";
   }
   cmd=QString().sprintf("mysqldump -c %s -h %s -u %s -p%s > %s",
-			(const char *)admin_config->mysqlDbname(),
-			(const char *)admin_config->mysqlHostname(),
-			(const char *)admin_config->mysqlUsername(),
-			(const char *)admin_config->mysqlPassword(),
+			(const char *)rda->config()->mysqlDbname(),
+			(const char *)rda->config()->mysqlHostname(),
+			(const char *)rda->config()->mysqlUsername(),
+			(const char *)rda->config()->mysqlPassword(),
 			(const char *)filename);
   status=system((const char *)cmd);
   if(WEXITSTATUS(status)!=0) {
@@ -467,10 +450,10 @@ void MainWidget::restoreData()
   ClearTables();
   cmd=QString().sprintf("cat %s | mysql %s -h %s -u %s -p%s",
 			(const char *)filename,
-			(const char *)admin_config->mysqlDbname(),
-			(const char *)admin_config->mysqlHostname(),
-			(const char *)admin_config->mysqlUsername(),
-			(const char *)admin_config->mysqlPassword());
+			(const char *)rda->config()->mysqlDbname(),
+			(const char *)rda->config()->mysqlHostname(),
+			(const char *)rda->config()->mysqlUsername(),
+			(const char *)rda->config()->mysqlPassword());
   status=system((const char *)cmd);
   if(WEXITSTATUS(status)!=0) {
     QMessageBox::warning(this,tr("Restore Error"),
@@ -483,7 +466,7 @@ void MainWidget::restoreData()
   }
   delete q;
   admin_skip_backup=true;
-  UpdateDb(ver,admin_config);
+  UpdateDb(ver,rda->config());
   QMessageBox::information(this,tr("Restore Complete"),
 			   tr("Restore completed successfully."));
   RDStartDaemons();
@@ -592,19 +575,19 @@ int cmdline_main(int argc,char *argv[])
   //
   // Load Configs
   //
-  admin_config=new RDConfig();
-  admin_config->load();
+  RDConfig *config=new RDConfig();
+  config->load();
 
   //
   // Open Database
   //
-  QString station_name=admin_config->stationName();
+  QString station_name=config->stationName();
   if(!admin_create_db_hostname.isEmpty()) {
     station_name=admin_create_db_hostname;
   }
-  if(!OpenDb(admin_config->mysqlDbname(),admin_config->mysqlUsername(),
-	     admin_config->mysqlPassword(),admin_config->mysqlHostname(),
-	     station_name,false,admin_config)) {
+  if(!OpenDb(config->mysqlDbname(),config->mysqlUsername(),
+	     config->mysqlPassword(),config->mysqlHostname(),
+	     station_name,false,config)) {
     return 1;
   }
 

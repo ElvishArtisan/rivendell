@@ -50,7 +50,7 @@ ListLogs::ListLogs(LogPlay *log,QWidget *parent)
   // Filter Widget
   //
   list_filter_widget=
-    new RDLogFilter(RDLogFilter::StationFilter,rda->user(),rda->config(),this);
+    new RDLogFilter(RDLogFilter::StationFilter,this);
   connect(list_filter_widget,SIGNAL(filterChanged(const QString &)),
 	  this,SLOT(filterChangedData(const QString &)));
 

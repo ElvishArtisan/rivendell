@@ -195,7 +195,7 @@ MainWidget::MainWidget(QWidget *parent)
   // Log Filter
   //
   log_filter_widget=
-    new RDLogFilter(RDLogFilter::UserFilter,rda->user(),rda->config(),this);
+    new RDLogFilter(RDLogFilter::UserFilter,this);
   connect(log_filter_widget,SIGNAL(filterChanged(const QString &)),
 	  this,SLOT(filterChangedData(const QString &)));
 
@@ -337,7 +337,7 @@ void MainWidget::userData()
   setCaption(str1+": "+rda->config()->stationName()+", "+str2+": "+
 	     rda->ripc()->user());
 
-  log_filter_widget->setUser(rda->user());
+  log_filter_widget->changeUser();
   RefreshList();
 
   //

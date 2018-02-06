@@ -2,7 +2,7 @@
 //
 // List Rivendell Groups
 //
-//   (C) Copyright 2002,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -30,17 +30,18 @@
 #include <qevent.h>
 #include <qmessagebox.h>
 #include <qbuttongroup.h>
-#include <rddb.h>
 
+#include <rdapplication.h>
 #include <rdcart.h>
-#include <rdtextfile.h>
+#include <rddb.h>
 #include <rdescape_string.h>
+#include <rdtextfile.h>
 
-#include <globals.h>
-#include <list_groups.h>
-#include <edit_group.h>
-#include <add_group.h>
-#include <rename_group.h>
+#include "add_group.h"
+#include "globals.h"
+#include "edit_group.h"
+#include "list_groups.h"
+#include "rename_group.h"
 
 ListGroups::ListGroups(QWidget *parent)
   : QDialog(parent,"",true)
@@ -259,7 +260,7 @@ void ListGroups::deleteData()
   RDCart *cart;
   while(q->next()) {
     cart=new RDCart(q->value(0).toUInt());
-    cart->remove(admin_station,admin_user,admin_config);
+    cart->remove(rda->station(),rda->user(),rda->config());
     delete cart;
   }
   delete q;

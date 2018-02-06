@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Gpi
 //
-//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2004,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,11 +21,12 @@
 #include <qmessagebox.h>
 #include <qpainter.h>
 
+#include <rdapplication.h>
 #include <rdcart_dialog.h>
 #include <rdtextvalidator.h>
 
-#include <globals.h>
-#include <edit_gpi.h>
+#include "edit_gpi.h"
+#include "globals.h"
 
 EditGpi::EditGpi(int gpi,int *oncart,QString *ondesc,
 		 int *offcart,QString *offdesc,QWidget *parent)
@@ -218,7 +219,7 @@ void EditGpi::selectOnData()
 {
   int oncart=edit_onmacro_edit->text().toInt();
   if(admin_cart_dialog->exec(&oncart,RDCart::Macro,NULL,0,
-			     admin_user->name(),admin_user->password())==0) {
+			     rda->user()->name(),rda->user()->password())==0) {
     if(oncart>0) {
       RDCart *rdcart=new RDCart(oncart);
       edit_onmacro_edit->setText(QString().sprintf("%06d",oncart));
@@ -244,7 +245,7 @@ void EditGpi::selectOffData()
 {
   int offcart=edit_offmacro_edit->text().toInt();
   if(admin_cart_dialog->exec(&offcart,RDCart::Macro,NULL,0,
-			     admin_user->name(),admin_user->password())==0) {
+			     rda->user()->name(),rda->user()->password())==0) {
     if(offcart>0) {
       RDCart *rdcart=new RDCart(offcart);
       edit_offmacro_edit->setText(QString().sprintf("%06d",offcart));

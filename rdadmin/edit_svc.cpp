@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Service
 //
-//   (C) Copyright 2002-2004,2008,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2004,2008,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -30,11 +30,12 @@
 #include <qcheckbox.h>
 #include <qbuttongroup.h>
 
-#include <rddb.h>
 #include <rd.h>
-#include <rduser.h>
-#include <rdpasswd.h>
+#include <rdapplication.h>
+#include <rddb.h>
+//#include <rduser.h>
 #include <rdidvalidator.h>
+#include <rdpasswd.h>
 #include <rdtextvalidator.h>
 
 #include "autofill_carts.h"
@@ -59,7 +60,7 @@ EditSvc::EditSvc(QString svc,QWidget *parent)
   setMinimumHeight(sizeHint().height());
   setMaximumHeight(sizeHint().height());
 
-  svc_svc=new RDSvc(svc,admin_station,admin_config);
+  svc_svc=new RDSvc(svc,rda->station(),rda->config());
 
   setCaption(tr("Edit Service"));
 

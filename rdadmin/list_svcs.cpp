@@ -2,7 +2,7 @@
 //
 // List Rivendell Services
 //
-//   (C) Copyright 2002-2003,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2003,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -28,6 +28,8 @@
 #include <qevent.h>
 #include <qmessagebox.h>
 #include <qbuttongroup.h>
+
+#include <rdapplication.h>
 #include <rddb.h>
 
 #include "add_svc.h"
@@ -185,7 +187,7 @@ void ListSvcs::deleteData()
     }
   }
   delete q;
-  RDSvc *svc=new RDSvc(list_box->currentText(),admin_station,admin_config);
+  RDSvc *svc=new RDSvc(list_box->currentText(),rda->station(),rda->config());
   svc->remove();
   delete svc;
   list_box->removeItem(list_box->currentItem());

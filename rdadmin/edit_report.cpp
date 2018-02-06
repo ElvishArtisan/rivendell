@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Report
 //
-//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2004,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -30,8 +30,9 @@
 #include <qcheckbox.h>
 #include <qbuttongroup.h>
 
-#include <rddb.h>
 #include <rd.h>
+#include <rdapplication.h>
+#include <rddb.h>
 #include <rdtextvalidator.h>
 
 #include "autofill_carts.h"
@@ -56,7 +57,7 @@ EditReport::EditReport(QString rptname,QWidget *parent)
   setMinimumHeight(sizeHint().height());
   setMaximumHeight(sizeHint().height());
 
-  edit_report=new RDReport(rptname,admin_station,admin_config);
+  edit_report=new RDReport(rptname,rda->station(),rda->config());
   str=QString(tr("Edit Report"));
   setCaption(QString().sprintf("%s - %s",(const char *)str,
 			       (const char *)rptname));

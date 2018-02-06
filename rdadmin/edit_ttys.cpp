@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell TTY Configuration
 //
-//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2004,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -27,12 +27,14 @@
 #include <qcheckbox.h>
 #include <qbuttongroup.h>
 
+#include <rdapplication.h>
 #include <rddb.h>
-#include <edit_ttys.h>
+#include <rdmacro.h>
 #include <rdstation.h>
 #include <rdtextvalidator.h>
-#include <rdmacro.h>
-#include <globals.h>
+
+#include "edit_ttys.h"
+#include "globals.h"
 
 EditTtys::EditTtys(QString station,QWidget *parent)
   : QDialog(parent,"",true)
@@ -291,7 +293,7 @@ void EditTtys::closeData()
 	macro.setArg(0,i);
       }
       macro.setAddress(rmt_station->address());
-      rdripc->sendRml(&macro);
+      rda->ripc()->sendRml(&macro);
       delete q;
     }
   }

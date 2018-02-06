@@ -2,7 +2,7 @@
 //
 // Edit Rivendell CartSlot Configuration
 //
-//   (C) Copyright 2012,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2012,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,12 +21,13 @@
 #include <qmessagebox.h>
 
 #include <rd.h>
-#include <rdslotoptions.h>
+#include <rdapplication.h>
 #include <rdcart_dialog.h>
 #include <rdescape_string.h>
+#include <rdslotoptions.h>
 
-#include <globals.h>
-#include <edit_cartslots.h>
+#include "edit_cartslots.h"
+#include "globals.h"
 
 EditCartSlots::EditCartSlots(RDStation *station,RDStation *cae_station,
 			     QWidget *parent)
@@ -361,7 +362,7 @@ void EditCartSlots::cartSelectData()
   int cartnum=edit_cart_edit->text().toInt();
 
   if(admin_cart_dialog->exec(&cartnum,RDCart::All,NULL,0,
-			     admin_user->name(),admin_user->password())==0) {
+			     rda->user()->name(),rda->user()->password())==0) {
     edit_cart_edit->setText(QString().sprintf("%06d",cartnum));
   }
 }

@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell User
 //
-//   (C) Copyright 2002-2003,2016-2017 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2003,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -29,17 +29,18 @@
 #include <qmessagebox.h>
 #include <qcheckbox.h>
 #include <qbuttongroup.h>
-#include <qsqldatabase.h>
+//#include <qsqldatabase.h>
 
-#include <edit_user.h>
-#include <rduser.h>
+#include <rdapplication.h>
 #include <rdpasswd.h>
 #include <rdtextvalidator.h>
+#include <rduser.h>
 
-#include <edit_user_perms.h>
-#include <edit_user_service_perms.h>
-#include <edit_feed_perms.h>
-#include <globals.h>
+#include "edit_user.h"
+#include "edit_user_perms.h"
+#include "edit_user_service_perms.h"
+#include "edit_feed_perms.h"
+#include "globals.h"
 
 EditUser::EditUser(const QString &user,QWidget *parent)
   : QDialog(parent,"",true)
@@ -476,7 +477,7 @@ EditUser::EditUser(const QString &user,QWidget *parent)
   //
   // Don't Allow an Administrator to Disable Himself!
   //
-  if(user_user->name()==admin_user->name()) {
+  if(user_user->name()==rda->user()->name()) {
     user_admin_config_label->setDisabled(true);
     user_admin_config_button->setDisabled(true);
   }

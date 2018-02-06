@@ -2,7 +2,7 @@
 //
 // Filter widget for picking Rivendell logs.
 //
-//   (C) Copyright 2017 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2017-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,13 +18,13 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
+#include "rdapplication.h"
 #include "rddb.h"
 #include "rd.h"
 #include "rdescape_string.h"
 #include "rdlogfilter.h"
 
-RDLogFilter::RDLogFilter(RDLogFilter::FilterMode mode,RDUser *user,
-			 RDConfig *config,QWidget *parent)
+RDLogFilter::RDLogFilter(RDLogFilter::FilterMode mode,QWidget *parent)
    : QWidget(parent)
 {
   QString sql;
@@ -64,15 +64,13 @@ RDLogFilter::RDLogFilter(RDLogFilter::FilterMode mode,RDUser *user,
     break;
 
   case RDLogFilter::UserFilter:
-    if(user!=NULL) {
-      setUser(user);
-    }
+    changeUser();
     break;
 
   case RDLogFilter::StationFilter:
     filter_service_box->insertItem(tr("ALL"));
     sql=QString("select SERVICE_NAME from SERVICE_PERMS where ")+
-      "STATION_NAME=\""+RDEscapeString(config->stationName())+"\"";
+      "STATION_NAME=\""+RDEscapeString(rda->config()->stationName())+"\"";
     q=new RDSqlQuery(sql);
     while(q->next()) {
       filter_service_box->insertItem(q->value(0).toString());
@@ -167,18 +165,21 @@ QString RDLogFilter::whereSql() const
 }
 
 
-void RDLogFilter::setUser(RDUser *user)
+void RDLogFilter::changeUser()
 {
-  filter_service_box->clear();
-  filter_service_box->insertItem(tr("ALL"));
-  QString sql=QString("select SERVICE_NAME from USER_SERVICE_PERMS where ")+
-      "USER_NAME=\""+RDEscapeString(user->name())+"\"";
-  RDSqlQuery *q=new RDSqlQuery(sql);
-  while(q->next()) {
-    filter_service_box->insertItem(q->value(0).toString());
+  if(filter_filter_mode==RDLogFilter::UserFilter) {
+    filter_service_box->clear();
+    filter_service_box->insertItem(tr("ALL"));
+    QString sql=QString("select SERVICE_NAME from USER_SERVICE_PERMS where ")+
+      "USER_NAME=\""+RDEscapeString(rda->user()->name())+"\"";
+    RDSqlQuery *q=new RDSqlQuery(sql);
+    while(q->next()) {
+      filter_service_box->insertItem(q->value(0).toString());
+    }
+    delete q;
   }
-  delete q;
 }
+
 
 void RDLogFilter::filterChangedData(const QString &str)
 {

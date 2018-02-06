@@ -2,7 +2,7 @@
 //
 // Edit a List of Autofill Carts
 //
-//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2004,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -30,14 +30,15 @@
 #include <qcheckbox.h>
 #include <qbuttongroup.h>
 
+#include <rd.h>
+#include <rdapplication.h>
+#include <rdcart_dialog.h>
 #include <rddb.h>
 #include <rdconf.h>
-#include <rd.h>
 #include <rduser.h>
-#include <rdcart_dialog.h>
 
-#include <globals.h>
-#include <autofill_carts.h>
+#include "autofill_carts.h"
+#include "globals.h"
 
 AutofillCarts::AutofillCarts(RDSvc *svc,QWidget *parent)
   : QDialog(parent,"",true)
@@ -147,7 +148,7 @@ void AutofillCarts::addData()
 {
   int cart=0;
   if(admin_cart_dialog->exec(&cart,RDCart::Audio,NULL,0,
-			     admin_user->name(),admin_user->password())<0) {
+			     rda->user()->name(),rda->user()->password())<0) {
     return;
   }
   RDCart *rdcart=new RDCart(cart);

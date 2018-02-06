@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Dropbox Configuration
 //
-//   (C) Copyright 2002-2007,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2007,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -34,11 +34,13 @@
 #include <qvalidator.h>
 #include <qfiledialog.h>
 
-#include <globals.h>
+#include <rdapplication.h>
 #include <rdcart_dialog.h>
 #include <rddb.h>
 #include <rdescape_string.h>
-#include <edit_dropbox.h>
+
+#include "globals.h"
+#include "edit_dropbox.h"
 
 EditDropbox::EditDropbox(int id,QWidget *parent)
   : QDialog(parent,"",true)
@@ -497,7 +499,7 @@ void EditDropbox::selectCartData()
 {
   int cartnum=box_to_cart_edit->text().toInt();
   admin_cart_dialog->exec(&cartnum,RDCart::Audio,NULL,0,
-			  admin_user->name(),admin_user->password());
+			  rda->user()->name(),rda->user()->password());
   if(cartnum>0) {
     box_to_cart_edit->setText(QString().sprintf("%06d",cartnum));
   }
