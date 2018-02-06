@@ -308,7 +308,7 @@ void MainObject::ClearAutoTrim(unsigned cartnum,int cutnum,const QString &title,
   RDAudioInfo::ErrorCode err;
   RDCart *cart=new RDCart(cartnum);
   RDCut *cut=new RDCut(cartnum,cutnum);
-  RDAudioInfo *info=new RDAudioInfo(rda->station(),rda->config(),this);
+  RDAudioInfo *info=new RDAudioInfo(this);
   info->setCartNumber(cartnum);
   info->setCutNumber(cutnum);
   if((err=info->runInfo(rda->user()->name(),rda->user()->password()))==

@@ -352,7 +352,7 @@ void MainObject::ExportCut(RDCart *cart,RDCut *cut)
   //
   // Get Audio Parameters
   //
-  RDAudioInfo *info=new RDAudioInfo(rda->station(),rda->config());
+  RDAudioInfo *info=new RDAudioInfo(this);
   info->setCartNumber(cart->number());
   info->setCutNumber(RDCut::cutNumber(cut->cutName()));
   if((info_err=info->runInfo(rda->user()->name(),rda->user()->password()))!=

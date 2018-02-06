@@ -114,8 +114,7 @@ bool MainObject::ValidateGroup(const QString &groupname,
   bool ret=true;
   QString sql;
   RDSqlQuery *q;
-  //  RDStation *station=new RDStation(rda->config()->stationName());
-  RDAudioInfo *info=new RDAudioInfo(rda->station(),rda->config());
+  RDAudioInfo *info=new RDAudioInfo(this);
   RDAudioInfo::ErrorCode err_code;
   
   sql=QString("select CUTS.CUT_NAME,CUTS.CART_NUMBER,CUTS.LENGTH ")+

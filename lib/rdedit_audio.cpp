@@ -109,7 +109,7 @@ RDEditAudio::RDEditAudio(RDCart *cart,QString cut_name,RDCae *cae,RDUser *user,
 	  this,SLOT(positionData(int,unsigned)));
   edit_cae->loadPlay(edit_card,edit_cut->cutName(),&edit_stream,&edit_handle);
   RDSetMixerOutputPort(edit_cae,edit_card,edit_stream,edit_port);
-  RDAudioInfo *info=new RDAudioInfo(station,edit_config,this);
+  RDAudioInfo *info=new RDAudioInfo(this);
   RDAudioInfo::ErrorCode audio_err;
   info->setCartNumber(RDCut::cartNumber(cut_name));
   info->setCutNumber(RDCut::cutNumber(cut_name));
