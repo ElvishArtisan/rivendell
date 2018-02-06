@@ -381,7 +381,7 @@ bool CitadelXds::PostCut(const QString &cutname,const QString &filename)
   //
   // Upload File
   //
-  RDUpload *upload=new RDUpload(rda->config());
+  RDUpload *upload=new RDUpload();
   upload->setSourceFile(tempfile);
   upload->setDestinationUrl(config()->url()+"/"+filename);
   switch(upload_err=upload->runUpload(config()->urlUsername(),

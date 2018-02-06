@@ -16693,3 +16693,5 @@
 	* Refactored the RDPeaksExport class to use RDApplication.
 2018-02-06 Fred Gleason <fredg@paravelsystems.com>
 	* Refactored the RDSoundPanel class to use RDApplication.
+2018-02-06 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored the RDUpload class to use RDApplication.

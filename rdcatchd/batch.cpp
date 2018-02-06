@@ -310,7 +310,7 @@ void MainObject::RunUpload(CatchEvent *evt)
 		  (const char *)evt->
 		  resolvedUrl(),
 		  evt->id()));
-  RDUpload *conv=new RDUpload(rda->config(),this);
+  RDUpload *conv=new RDUpload(this);
   conv->setSourceFile(evt->tempName());
   conv->setDestinationUrl(evt->resolvedUrl());
   QString url_username=evt->urlUsername();

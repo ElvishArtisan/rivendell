@@ -2,7 +2,7 @@
 //
 // Upload a File
 //
-//   (C) Copyright 2010,2016-2017 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2010,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -24,8 +24,6 @@
 #include <qobject.h>
 #include <qurl.h>
 
-#include <rdconfig.h>
-
 class RDUpload : public QObject
 {
   Q_OBJECT;
@@ -36,7 +34,7 @@ class RDUpload : public QObject
 		  ErrorUnspecified=8,ErrorInvalidUser=9,ErrorAborted=10,
 		  ErrorInvalidLogin=11,ErrorRemoteAccess=12,
 		  ErrorRemoteConnection=13};
-  RDUpload(RDConfig *config,QObject *parent=0);
+  RDUpload(QObject *parent=0);
   void setSourceFile(const QString &filename);
   void setDestinationUrl(const QString &url);
   int totalSteps() const;
@@ -60,7 +58,6 @@ class RDUpload : public QObject
   QUrl conv_dst_url;
   bool conv_aborting;
   uint conv_src_size;
-  RDConfig *conv_config;
 };
 
 
