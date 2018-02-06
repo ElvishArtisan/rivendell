@@ -2,7 +2,7 @@
 //
 // Render Log Dialog for Rivendell.
 //
-//   (C) Copyright 2017 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2017-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -235,8 +235,8 @@ void RenderDialog::selectData()
   }
   else {
     QString cutname;
-    RDCutDialog *d=new RDCutDialog(&cutname,render_station,render_system,
-				   NULL,NULL,NULL,"",false,true,true,this);
+    RDCutDialog *d=
+      new RDCutDialog(&cutname,NULL,NULL,NULL,false,true,true,this);
     if(d->exec()==0) {
       render_to_cartnum=RDCut::cartNumber(cutname);
       render_to_cutnum=RDCut::cutNumber(cutname);

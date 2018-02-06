@@ -319,9 +319,8 @@ void EditPlayout::activateStationData(int id,bool use_temp)
 
 void EditPlayout::selectCutData()
 {
-  RDCutDialog *cut=new RDCutDialog(&edit_cutname,rda->station(),rda->system(),
-				   edit_filter,NULL,NULL,"",false,false,false,
-				   this);
+  RDCutDialog *cut=
+    new RDCutDialog(&edit_cutname,edit_filter,NULL,NULL,false,false,false,this);
   switch(cut->exec()) {
       case 0:
 	edit_destination_edit->setText(edit_cutname);

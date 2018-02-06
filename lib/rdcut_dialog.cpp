@@ -2,7 +2,7 @@
 //
 // A widget to select a Rivendell Cut.
 //
-//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2004,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -27,13 +27,15 @@
 #include <qapplication.h>
 #include <qeventloop.h>
 
-#include <rdcut_dialog.h>
-#include <rdcart_search_text.h>
-#include <rdtextvalidator.h>
-#include <rdadd_cart.h>
-#include <rdprofile.h>
-#include <rddb.h>
-#include <rdconf.h>
+#include "rdadd_cart.h"
+#include "rdapplication.h"
+#include "rdcart_search_text.h"
+#include "rdconf.h"
+#include "rdcut_dialog.h"
+#include "rddb.h"
+#include "rdescape_string.h"
+#include "rdprofile.h"
+#include "rdtextvalidator.h"
 
 //
 // Icons
@@ -42,9 +44,8 @@
 #include "../icons/rml5.xpm"
 
 
-RDCutDialog::RDCutDialog(QString *cutname,RDStation *station,RDSystem *system,
-			 QString *filter,QString *group,QString *schedcode,
-			 QString username,bool show_clear,bool allow_add,
+RDCutDialog::RDCutDialog(QString *cutname,QString *filter,QString *group,
+			 QString *schedcode,bool show_clear,bool allow_add,
 			 bool exclude_tracks,QWidget *parent)
   : QDialog(parent,"",true)
 {
@@ -52,10 +53,7 @@ RDCutDialog::RDCutDialog(QString *cutname,RDStation *station,RDSystem *system,
   cut_exclude_tracks=exclude_tracks;
   cut_group=group;
   cut_schedcode=schedcode;
-  cut_username=username;
   cut_allow_clear=show_clear;
-  cut_filter_mode=station->filterMode();
-  cut_system=system;
 
   if(filter==NULL) {
     cut_filter=new QString();
@@ -269,7 +267,7 @@ RDCutDialog::RDCutDialog(QString *cutname,RDStation *station,RDSystem *system,
   if(cut_cutname->isEmpty()) {
     cut_ok_button->setDisabled(true);
   }
-  switch(cut_filter_mode) {
+  switch(rda->station()->filterMode()) {
     case RDStation::FilterAsynchronous:
       cut_search_button->setDefault(true);
       cut_filter_edit->setGeometry(100,10,sizeHint().width()-250,20);
@@ -318,7 +316,7 @@ int RDCutDialog::exec()
 void RDCutDialog::filterChangedData(const QString &str)
 {
   cut_search_button->setEnabled(true);
-  switch(cut_filter_mode) {
+  switch(rda->station()->filterMode()) {
     case RDStation::FilterSynchronous:
       searchButtonData();
       break;
@@ -396,7 +394,7 @@ void RDCutDialog::addButtonData()
   int cart_num=-1;
 
   RDAddCart *add_cart=new RDAddCart(&cart_group,&cart_type,&cart_title,
-				    cut_username,cut_system,this);
+				    rda->user()->name(),rda->system(),this);
   if((cart_num=add_cart->exec())<0) {
     delete add_cart;
     return;
@@ -582,13 +580,13 @@ void RDCutDialog::BuildGroupList()
   
   cut_group_box->clear();
   cut_group_box->insertItem(tr("ALL"));
-  if(cut_username.isEmpty()) {
+  if(rda->user()->name().isEmpty()) {
     sql="select NAME from GROUPS order by NAME desc";
   }
   else {
-    sql=QString().sprintf("select GROUP_NAME from USER_PERMS\
-                           where USER_NAME=\"%s\" order by GROUP_NAME desc",
-			  (const char *)cut_username);
+    sql=QString("select GROUP_NAME from USER_PERMS where ")+
+      "USER_NAME=\""+RDEscapeString(rda->user()->name())+"\" "+
+      "order by GROUP_NAME desc";
   }
   q=new RDSqlQuery(sql);
   while(q->next()) {

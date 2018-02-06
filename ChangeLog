@@ -16679,3 +16679,5 @@
 	* Converted rdadmin(1) to use RDApplication.
 2018-02-06 Fred Gleason <fredg@paravelsystems.com>
 	* Refactored the RDCartDialog class to use RDApplication.
+2018-02-06 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored the RDCutDialog class to use RDApplication.
