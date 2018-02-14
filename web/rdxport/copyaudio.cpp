@@ -74,9 +74,6 @@ void Xport::CopyAudio()
   unlink(RDCut::pathName(destination_cartnum,destination_cutnum));
   if(link(RDCut::pathName(source_cartnum,source_cutnum),
 	  RDCut::pathName(destination_cartnum,destination_cutnum))!=0) {
-    XmlExit("dst: "+RDCut::pathName(source_cartnum,source_cutnum)+"  src: "+
-	    RDCut::pathName(destination_cartnum,destination_cutnum),400,
-	    "copyaudio.cpp",LINE_NUMBER);
     XmlExit(strerror(errno),400,"copyaudio.cpp",LINE_NUMBER);
   }
   XmlExit("OK",200,"copyaudio.cpp",LINE_NUMBER);

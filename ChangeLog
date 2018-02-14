@@ -16596,3 +16596,5 @@
 2018-01-19 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a typo regarding the %D filepath wildcard in the Operations
 	Guide.
+2018-02-14 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a typo in an error message for the 'CopyAudio' web API call.
