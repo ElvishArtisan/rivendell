@@ -1,7 +1,7 @@
 The NEWS file for the Rivendell package.
 
 -------------------------------------------------------------------------------
-v2.18.2int02 -- 1/12/2018
+v2.18.2int03 -- 2/15/2018
 
 Changes:
    Log Locking. Implemented a system-wide protocol to prevent changes
@@ -11,11 +11,14 @@ Changes:
    Log Importation Changes. Changed music and traffic importation so that
    parent link events are still visible in linked logs.
 
+   Added the ability to specify automatic log deletion on the basis of
+   either the Creation Date or Air Date of the log.
+
    Fixed a bug in rdlibrary(1) that caused evergreen cart/cuts to fail
    to be highlight in the correct color.
    
 Database Update:
-   This version of Rivendell uses database schema version 274, and will
+   This version of Rivendell uses database schema version 275, and will
    automatically upgrade any earlier versions.  To see the current schema
    version prior to upgrade, see RDAdmin->SystemInfo.
 

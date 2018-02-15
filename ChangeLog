@@ -16604,3 +16604,6 @@
 	* Added a drop-down control to the 'Set Logs to auto-delete' control
 	to allow origin to be specified in the 'Edit Service' dialog in
 	rdadmin(1).
+2018-02-15 Fred Gleason <fredg@paravelsystems.com>
+	* Updated 'NEWS'.
+	* Incremented the package version to 2.18.2int03.
