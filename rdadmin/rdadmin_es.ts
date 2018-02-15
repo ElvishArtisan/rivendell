@@ -3931,15 +3931,23 @@ debe guardarse.  ¿Hacerlo ahora?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>days after creation</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Purge ELR Data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>days after airing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>days after</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>air date</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>creation</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

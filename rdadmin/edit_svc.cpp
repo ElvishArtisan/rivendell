@@ -202,9 +202,17 @@ EditSvc::EditSvc(QString svc,QWidget *parent)
   svc_loglife_spin->setRange(0,365);
   connect(svc_loglife_box,SIGNAL(toggled(bool)),
 	  svc_loglife_spin,SLOT(setEnabled(bool)));
-  label=new QLabel(svc_loglife_box,tr("days after creation"),this);
-  label->setGeometry(685,95,200,19);
-  label->setAlignment(AlignLeft|ShowPrefix);
+  svc_loglifeorigin_label=new QLabel(svc_loglife_box,tr("days after"),this);
+  svc_loglifeorigin_label->setGeometry(685,95,100,19);
+  svc_loglifeorigin_label->setAlignment(AlignLeft|ShowPrefix);
+  connect(svc_loglife_box,SIGNAL(toggled(bool)),
+	  svc_loglifeorigin_label,SLOT(setEnabled(bool)));
+  svc_loglifeorigin_box=new QComboBox(this);
+  svc_loglifeorigin_box->insertItem(tr("air date"));
+  svc_loglifeorigin_box->insertItem(tr("creation"));
+  svc_loglifeorigin_box->setGeometry(750,93,100,19);
+  connect(svc_loglife_box,SIGNAL(toggled(bool)),
+	  svc_loglifeorigin_box,SLOT(setEnabled(bool)));
 
   //
   // Purge Expired ELR Data
@@ -231,8 +239,6 @@ EditSvc::EditSvc(QString svc,QWidget *parent)
   button->setFont(font);
   button->setText(tr("Enable &Hosts"));
   connect(button,SIGNAL(clicked()),this,SLOT(enableHostsData()));
-
-
 
   //
   // Traffic Import Section
@@ -516,9 +522,13 @@ EditSvc::EditSvc(QString svc,QWidget *parent)
   if(svc_svc->defaultLogShelflife()>=0) {
     svc_loglife_box->setChecked(true);
     svc_loglife_spin->setValue(svc_svc->defaultLogShelflife());
-  }
+    svc_loglifeorigin_box->setCurrentItem(svc_svc->logShelflifeOrigin());
+    svc_loglifeorigin_label->setEnabled(true); 
+ }
   else {
     svc_loglife_spin->setDisabled(true);
+    svc_loglifeorigin_label->setDisabled(true);
+    svc_loglifeorigin_box->setDisabled(true);
   }
   if(svc_svc->elrShelflife()>=0) {
     svc_shelflife_box->setChecked(true);
@@ -686,6 +696,8 @@ void EditSvc::Save()
   svc_svc->setAutoRefresh(svc_autorefresh_box->isChecked());
   if(svc_loglife_box->isChecked()) {
     svc_svc->setDefaultLogShelflife(svc_loglife_spin->value());
+    svc_svc->setLogShelflifeOrigin((RDSvc::ShelflifeOrigin)
+				   svc_loglifeorigin_box->currentItem());
   }
   else {
     svc_svc->setDefaultLogShelflife(-1);

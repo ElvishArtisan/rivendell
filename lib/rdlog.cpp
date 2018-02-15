@@ -487,22 +487,26 @@ QString RDLog::xml() const
 
 
 bool RDLog::create(const QString &name,const QString &svc_name,
-		   const QString &user_name,QString *err_msg,RDConfig *config)
+		   const QDate &air_date,const QString &user_name,
+		   QString *err_msg,RDConfig *config)
 {
   QString sql;
   RDSqlQuery *q;
   int shelflife=-1;
+  RDSvc::ShelflifeOrigin shelforigin;
   QString desc_tmpl;
 
   sql=QString("select ")+
     "DEFAULT_LOG_SHELFLIFE,"+  // 00
-    "DESCRIPTION_TEMPLATE "+   // 01
+    "LOG_SHELFLIFE_ORIGIN,"+   // 01
+    "DESCRIPTION_TEMPLATE "+   // 02
     "from SERVICES where "+
     "NAME=\""+RDEscapeString(svc_name)+"\"";
   q=new RDSqlQuery(sql);
   if(q->first()) {
     shelflife=q->value(0).toInt();
-    desc_tmpl=q->value(1).toString();
+    shelforigin=(RDSvc::ShelflifeOrigin)q->value(1).toInt();
+    desc_tmpl=q->value(2).toString();
   }
   else {
     *err_msg=QObject::tr("No such service!");
@@ -519,8 +523,19 @@ bool RDLog::create(const QString &name,const QString &svc_name,
     "LINK_DATETIME=now(),"+
     "SERVICE=\""+RDEscapeString(svc_name)+"\"";
   if(shelflife>=0) {
-    sql+=",PURGE_DATE=\""+
-      QDate::currentDate().addDays(shelflife).toString("yyyy-MM-dd")+"\"";
+    switch(shelforigin) {
+    case RDSvc::OriginCreationDate:
+      sql+=",PURGE_DATE=\""+
+	QDate::currentDate().addDays(shelflife).toString("yyyy-MM-dd")+"\"";
+      break;
+
+    case RDSvc::OriginAirDate:
+      if(air_date.isValid()) {
+	sql+=",PURGE_DATE=\""+
+	  air_date.addDays(shelflife).toString("yyyy-MM-dd")+"\"";
+      }
+      break;
+    }
   }
   q=new RDSqlQuery(sql);
   if(!q->isActive()) {

@@ -62,7 +62,7 @@ void Xport::AddLog()
   }
 
   QString err_msg;
-  if(!RDLog::create(log_name,service_name,xport_user->name(),&err_msg,
+  if(!RDLog::create(log_name,service_name,QDate(),xport_user->name(),&err_msg,
 		    xport_config)) {
     XmlExit(err_msg,500,"logs.cpp",LINE_NUMBER);
   }

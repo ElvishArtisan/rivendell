@@ -40,6 +40,7 @@ class RDSvc : public QObject
   enum ImportField {CartNumber=0,ExtData=3,ExtEventId=4,ExtAnncType=5,
 		    Title=6,StartHours=7,StartMinutes=8,StartSeconds=9,
 		    LengthHours=10,LengthMinutes=11,LengthSeconds=12};
+  enum ShelflifeOrigin {OriginAirDate=0,OriginCreationDate=1};
   RDSvc(QString svcname,RDStation *station,RDConfig *config,QObject *parent=0);
   QString name() const;
   bool exists() const;
@@ -59,6 +60,8 @@ class RDSvc : public QObject
   void setAutoRefresh(bool state);
   int defaultLogShelflife() const;
   void setDefaultLogShelflife(int days) const;
+  ShelflifeOrigin logShelflifeOrigin() const;
+  void setLogShelflifeOrigin(ShelflifeOrigin orig);
   int elrShelflife() const;
   void setElrShelflife(int days) const;
   bool chainto() const;

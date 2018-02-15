@@ -16598,3 +16598,9 @@
 	Guide.
 2018-02-14 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a typo in an error message for the 'CopyAudio' web API call.
+2018-02-15 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'SERVICES.LOG_SHELFLIFE_ORIGIN' field to the database.
+	* Incremented the database version to 275.
+	* Added a drop-down control to the 'Set Logs to auto-delete' control
+	to allow origin to be specified in the 'Edit Service' dialog in
+	rdadmin(1).

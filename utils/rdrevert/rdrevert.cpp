@@ -255,6 +255,10 @@ void MainObject::Revert(int schema) const
   case 274:
     Revert274();
     break;
+
+  case 275:
+    Revert275();
+    break;
   }
 }
 
@@ -808,6 +812,19 @@ void MainObject::Revert274() const
 }
 
 
+void MainObject::Revert275() const
+{
+  QString sql;
+  RDSqlQuery *q;
+
+  sql=QString("alter table SERVICES drop column LOG_SHELFLIFE_ORIGIN");
+  q=new RDSqlQuery(sql,false);
+  delete q;
+
+  SetVersion(274);
+}
+
+
 int MainObject::GetVersion() const
 {
   QString sql;
@@ -853,7 +870,7 @@ int MainObject::MapSchema(const QString &ver)
   version_map["2.16"]=263;
   version_map["2.17"]=268;
   version_map["2.18"]=272;
-  version_map["2.19"]=274;
+  version_map["2.19"]=275;
 
   //
   // Normalize String

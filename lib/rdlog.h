@@ -79,8 +79,8 @@ class RDLog
    RDLogEvent *createLogEvent() const;
    QString xml() const;
    static bool create(const QString &name,const QString &svc_name,
-		      const QString &user_name,QString *err_msg,
-		      RDConfig *config);
+		      const QDate &air_date,const QString &user_name,
+		      QString *err_msg,RDConfig *config);
    static bool exists(const QString &name);
    static bool remove(const QString &name,RDStation *station,RDUser *user,
 		      RDConfig *config);

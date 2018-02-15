@@ -872,7 +872,8 @@ void ListLog::loadButtonData()
     break;
     
   case ListLogs::SaveAs:
-    if(!RDLog::create(name,svcname,rdripc->user(),&err_msg,air_config)) {
+    if(!RDLog::create(name,svcname,QDate(),rdripc->user(),&err_msg,
+		      air_config)) {
       QMessageBox::warning(this,"RDAirPlay - "+tr("Error"),err_msg);
       return;
     }

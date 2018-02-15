@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Service
 //
-//   (C) Copyright 2002-2010,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2010,2016-2017 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -23,6 +23,7 @@
 
 #include <qdialog.h>
 #include <qsqldatabase.h>
+#include <qlabel.h>
 #include <qlineedit.h>
 #include <qspinbox.h>
 #include <qcheckbox.h>
@@ -83,6 +84,8 @@ class EditSvc : public QDialog
   QCheckBox *svc_autorefresh_box;
   QCheckBox *svc_loglife_box;
   QSpinBox *svc_loglife_spin;
+  QLabel *svc_loglifeorigin_label;
+  QComboBox *svc_loglifeorigin_box;
   QCheckBox *svc_shelflife_box;
   QSpinBox *svc_shelflife_spin;
   bool import_changed;

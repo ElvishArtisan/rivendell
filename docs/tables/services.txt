@@ -16,6 +16,7 @@ TRACK_GROUP             char(10)           From GROUPS.NAME
 AUTOSPOT_GROUP          char(10)           From GROUPS.NAME
 AUTO_REFRESH            enum('N','Y')
 DEFAULT_LOG_SHELFLIFE   int(11)
+LOG_SHELFLIFE_ORIGIN    int(11)            0=Air Date, 1=Log Creation
 ELR_SHELFLIFE           int(11)
 TFC_PATH                char(255)
 TFC_PREIMPORT_CMD       text

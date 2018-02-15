@@ -628,6 +628,7 @@ bool CreateDb(QString name,QString pwd,RDConfig *config)
     "AUTOSPOT_GROUP char(10),"+
     "AUTO_REFRESH enum('N','Y') default 'N',"+
     "DEFAULT_LOG_SHELFLIFE int default -1,"+
+    "LOG_SHELFLIFE_ORIGIN int default 0,"+
     "ELR_SHELFLIFE int default -1,"+
     "TFC_PATH char(255),"+
     "TFC_PREIMPORT_CMD text,"+
@@ -8009,6 +8010,14 @@ int UpdateDb(int ver,RDConfig *config)
     delete q;
 
     sql=QString("alter table LOGS add index LOCK_GUID_IDX(LOCK_GUID)");
+    q=new RDSqlQuery(sql,false);
+    delete q;
+  }
+
+  if(ver<275) {
+    sql=QString("alter table SERVICES ")+
+      "add column LOG_SHELFLIFE_ORIGIN int default 0 "+
+      "after DEFAULT_LOG_SHELFLIFE";
     q=new RDSqlQuery(sql,false);
     delete q;
   }

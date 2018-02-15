@@ -158,6 +158,19 @@ void RDSvc::setDefaultLogShelflife(int days) const
 }
 
 
+RDSvc::ShelflifeOrigin RDSvc::logShelflifeOrigin() const
+{
+  return (RDSvc::ShelflifeOrigin)RDGetSqlValue("SERVICES","NAME",svc_name,
+					       "LOG_SHELFLIFE_ORIGIN").toInt();
+}
+
+
+void RDSvc::setLogShelflifeOrigin(RDSvc::ShelflifeOrigin orig)
+{
+  SetRow("LOG_SHELFLIFE_ORIGIN",(int)orig);
+}
+
+
 int RDSvc::elrShelflife() const
 {
   return RDGetSqlValue("SERVICES","NAME",svc_name,"ELR_SHELFLIFE").toInt();
@@ -737,7 +750,7 @@ bool RDSvc::generateLog(const QDate &date,const QString &logname,
     RDLog::remove(logname,svc_station,user,svc_config);
     delete log_lock;
   }
-  RDLog::create(logname,svc_name,"RDLogManager",err_msg,svc_config);
+  RDLog::create(logname,svc_name,date,"RDLogManager",err_msg,svc_config);
   log_lock=new RDLogLock(logname,user,svc_station,this);
   if(!TryLock(log_lock,err_msg)) {
     delete log_lock;

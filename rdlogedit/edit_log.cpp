@@ -1121,7 +1121,8 @@ void EditLog::saveasData()
     if(log->exec()<0) {
       return;
     }
-    if(!RDLog::create(logname,svcname,rdripc->user(),&err_msg,log_config)) {
+    if(!RDLog::create(logname,svcname,QDate(),rdripc->user(),&err_msg,
+		      log_config)) {
       QMessageBox::warning(this,"RDLogEdit - "+tr("Error"),err_msg);
       return;
     }
