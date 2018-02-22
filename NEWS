@@ -1,11 +1,11 @@
 The NEWS file for the Rivendell package.
 
 -------------------------------------------------------------------------------
-v2.18.2int03 -- 2/15/2018
+v2.19.0 -- 2/22/2018
 
 Changes:
    Log Locking. Implemented a system-wide protocol to prevent changes
-   made to a log on one host from being inadvently overwritten from
+   made to a log on one host from being inadvertently overwritten from
    another host.
 
    Log Importation Changes. Changed music and traffic importation so that
@@ -15,7 +15,7 @@ Changes:
    either the Creation Date or Air Date of the log.
 
    Fixed a bug in rdlibrary(1) that caused evergreen cart/cuts to fail
-   to be highlight in the correct color.
+   to be highlighted in the correct color.
    
 Database Update:
    This version of Rivendell uses database schema version 275, and will
