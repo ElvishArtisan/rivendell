@@ -135,6 +135,9 @@ Channels=2
 ; the following line:
 ; UseStreamMeters=Yes
 
+; Enable/disable cart rescanning in RDAirPlay.
+; LogplayCartRescan=No
+
 ; Completely disable maintenance checks on this host.
 ; DisableMaintChecks=Yes
 

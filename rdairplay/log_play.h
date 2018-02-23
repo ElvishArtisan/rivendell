@@ -182,7 +182,8 @@ class LogPlay : public QObject,public RDLogEvent
   void FreePlayDeck(RDPlayDeck *);
   bool GetNextPlayable(int *line,bool skip_meta,bool forced_start=false);
   void LogPlayEvent(RDLogLine *logline);
-  void RefreshEvents(int line,int line_quan,bool force_update=false);
+  void RefreshEvents(int line,int line_quan,bool force_update,
+		     bool refresh_carts);
   void Playing(int id);
   void Paused(int id);
   void Stopping(int id);

@@ -95,6 +95,7 @@ class RDConfig
   int jackConnections() const;
   QString jackPort(int num,int endpt) const;
   bool useStreamMeters() const;
+  bool logplayCartRescan() const;
   bool disableMaintChecks() const;
   bool lockRdairplayMemory() const;
   QString caeLogfile() const;
@@ -158,6 +159,7 @@ class RDConfig
   QString conf_airplay_logname;
   QString conf_catchd_logname;
   bool conf_use_stream_meters;
+  bool conf_logplay_cart_rescan;
   bool conf_disable_maint_checks;
   bool conf_lock_rdairplay_memory;
   std::vector<QString> conf_jack_ports[2];

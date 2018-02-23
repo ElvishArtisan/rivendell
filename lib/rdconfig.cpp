@@ -388,6 +388,12 @@ bool RDConfig::useStreamMeters() const
 }
 
 
+bool RDConfig::logplayCartRescan() const
+{
+  return conf_logplay_cart_rescan;
+}
+
+
 bool RDConfig::disableMaintChecks() const
 {
   return conf_disable_maint_checks;
@@ -583,6 +589,8 @@ void RDConfig::load()
   conf_airplay_logname=profile->stringValue("RDAirPlay","Logfile","");
   conf_catchd_logname=profile->stringValue("RDCatchd","Logfile","");
   conf_use_stream_meters=profile->boolValue("Hacks","UseStreamMeters",false);
+  conf_logplay_cart_rescan=
+    profile->boolValue("Hacks","LogplayCartRescan",false);
   conf_disable_maint_checks=
     profile->boolValue("Hacks","DisableMaintChecks",false);
   conf_lock_rdairplay_memory=
@@ -695,6 +703,7 @@ void RDConfig::clear()
   conf_jack_ports[0].clear();
   conf_jack_ports[1].clear();
   conf_use_stream_meters=false;
+  conf_logplay_cart_rescan=false;
   conf_disable_maint_checks=false;
   conf_lock_rdairplay_memory=false;
   conf_channels=RD_DEFAULT_CHANNELS;

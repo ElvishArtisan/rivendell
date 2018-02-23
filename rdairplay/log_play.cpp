@@ -484,7 +484,7 @@ void LogPlay::makeNext(int line,bool refresh_status)
 {
   play_next_line=line;
   if(refresh_status) {
-    RefreshEvents(line,LOGPLAY_LOOKAHEAD_EVENTS);
+    RefreshEvents(line,LOGPLAY_LOOKAHEAD_EVENTS,false,true);
   }
   SendNowNext();
   SetTransTimer();
@@ -536,7 +536,7 @@ void LogPlay::load()
       logLine(i)->setTimescalingActive(logLine(i)->enforceLength());
     }
   }
-  RefreshEvents(0,size());
+  RefreshEvents(0,size(),false,true);
   RDLog *log=new RDLog(logName().left(logName().length()-4));
   play_svc_name=log->service();
   delete log;
@@ -583,7 +583,7 @@ void LogPlay::append(const QString &log_name)
       logLine(i)->setTimescalingActive(logLine(i)->enforceLength());
     }
   }
-  RefreshEvents(old_size,size()-old_size);
+  RefreshEvents(old_size,size()-old_size,false,true);
   UpdateStartTimes(old_size);
   emit reloaded();
   SetTransTimer();
@@ -736,7 +736,7 @@ bool LogPlay::refresh()
   for(int i=0;i<size();i++) {
     logLine(i)->clearPass();
   }
-  RefreshEvents(0,size());
+  RefreshEvents(0,size(),false,true);
   UpdateStartTimes(next_line);
   UpdatePostPoint();
   SetTransTimer();
@@ -1674,7 +1674,7 @@ void LogPlay::rescanEventsData()
   else {
     play_rescan_pos+=LOGPLAY_RESCAN_SIZE;
   }
-  RefreshEvents(start_pos,start_size);
+  RefreshEvents(start_pos,start_size,false,air_config->logplayCartRescan());
 }
 
 
@@ -2591,7 +2591,8 @@ void LogPlay::LogPlayEvent(RDLogLine *logline)
 }
 
 
-void LogPlay::RefreshEvents(int line,int line_quan,bool force_update)
+void LogPlay::RefreshEvents(int line,int line_quan,bool force_update,
+			    bool refresh_carts)
 {
   //QTime st=QTime::currentTime();
 
@@ -2602,32 +2603,34 @@ void LogPlay::RefreshEvents(int line,int line_quan,bool force_update)
   RDLogLine *next_logline;
   RDLogLine::State state=RDLogLine::Ok;
 
-  for(int i=line;i<(line+line_quan);i++) {
-    if((logline=logLine(i))!=NULL) {
-      if(logline->type()==RDLogLine::Cart) {
-	switch(logline->state()) {
-	    case RDLogLine::Ok:
-	    case RDLogLine::NoCart:
-	    case RDLogLine::NoCut:
-	      if(logline->status()==RDLogLine::Scheduled) {
-		state=logline->state();
-		if((next_logline=logLine(i+1))!=NULL) {
-		  logline->
-		    loadCart(logline->cartNumber(),next_logline->transType(),
-			     play_id,logline->timescalingActive());
-		}
-		else {
-		  logline->loadCart(logline->cartNumber(),RDLogLine::Play,
-				    play_id,logline->timescalingActive());
-		}
-		if(force_update||(state!=logline->state())) {
-		  emit modified(i);
-		}
+  if(refresh_carts) {
+    for(int i=line;i<(line+line_quan);i++) {
+      if((logline=logLine(i))!=NULL) {
+	if(logline->type()==RDLogLine::Cart) {
+	  switch(logline->state()) {
+	  case RDLogLine::Ok:
+	  case RDLogLine::NoCart:
+	  case RDLogLine::NoCut:
+	    if(logline->status()==RDLogLine::Scheduled) {
+	      state=logline->state();
+	      if((next_logline=logLine(i+1))!=NULL) {
+		logline->
+		  loadCart(logline->cartNumber(),next_logline->transType(),
+			   play_id,logline->timescalingActive());
 	      }
-	      break;
-
-	    default:
-	      break;
+	      else {
+		logline->loadCart(logline->cartNumber(),RDLogLine::Play,
+				  play_id,logline->timescalingActive());
+	      }
+	      if(force_update||(state!=logline->state())) {
+		emit modified(i);
+	      }
+	    }
+	    break;
+	    
+	  default:
+	    break;
+	  }
 	}
       }
     }
@@ -2656,13 +2659,6 @@ void LogPlay::RefreshEvents(int line,int line_quan,bool force_update)
       }
     }
   }
-
-/*
-  if(play_id==0) {
-    printf("LogPlay::RefreshEvents(%d,%d) took: %d msec\n",line,line_quan,
-	   st.msecsTo(QTime::currentTime()));
-  }
-*/
 }
 
 
@@ -2679,7 +2675,7 @@ void LogPlay::Playing(int id)
   AdvanceActiveEvent();
   UpdatePostPoint();
   // TEST
-  RefreshEvents(line,LOGPLAY_LOOKAHEAD_EVENTS);
+  RefreshEvents(line,LOGPLAY_LOOKAHEAD_EVENTS,false,true);
   //
   LogPlayEvent(logline);
   emit transportChanged();

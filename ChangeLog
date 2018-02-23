@@ -16380,3 +16380,6 @@
 	for 'By Order' scheduling to be skipped.
 2017-11-20 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 2.17.0int05.
+2018-02-23 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'LogplayCartRescan=' directive to the [Hacks]
+	section of rd.conf(5).
