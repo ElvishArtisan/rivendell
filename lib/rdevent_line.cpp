@@ -27,7 +27,6 @@
 #include <schedcartlist.h>
 #include <rddb.h>
 #include <rdescape_string.h>
-#include <syslog.h>
 
 RDEventLine::RDEventLine()
 {
