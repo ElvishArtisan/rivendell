@@ -27,6 +27,7 @@
 #include <schedcartlist.h>
 #include <rddb.h>
 #include <rdescape_string.h>
+#include <syslog.h>
 
 RDEventLine::RDEventLine()
 {
@@ -838,6 +839,7 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
       count++;
 
       sql=QString("insert into `")+svcname_rp+"_STACK` set "+
+	"SCHEDULED_AT=now(),"+
 	QString().sprintf("SCHED_STACK_ID=%u,",stackid)+
 	QString().sprintf("CART=%u,",schedCL->getItemCartnumber(schedpos))+
 	"ARTIST=\""+RDEscapeString(schedCL->getItemArtist(schedpos))+"\","+
