@@ -2,7 +2,7 @@
 //
 // Rivendell Log Playout Machine
 //
-//   (C) Copyright 2002-2009,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2009,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,13 +21,15 @@
 #include <unistd.h>
 #include <syslog.h>
 
-#include <rdmixer.h>
+#include <rdapplication.h>
+#include <rddb.h>
 #include <rddebug.h>
 #include <rdlog.h>
-#include <rddb.h>
-#include <log_play.h>
-#include <log_traffic.h>
-#include <globals.h>
+#include <rdmixer.h>
+
+#include "globals.h"
+#include "log_play.h"
+#include "log_traffic.h"
 
 LogPlay::LogPlay(int id,QSocketDevice *nn_sock,QString logname,
 		 std::vector<RLMHost *> *rlm_hosts,QObject *parent)
@@ -40,8 +42,8 @@ LogPlay::LogPlay(int id,QSocketDevice *nn_sock,QString logname,
   play_id=id;
   play_rlm_hosts=rlm_hosts;
   play_onair_flag=false;
-  play_segue_length=rdairplay_conf->segueLength()+1;
-  play_trans_length=rdairplay_conf->transLength()+1;
+  play_segue_length=rda->airplayConf()->segueLength()+1;
+  play_trans_length=rda->airplayConf()->transLength()+1;
   play_duck_volume_port1=0;
   play_duck_volume_port2=0;
   play_start_next=false;
@@ -58,7 +60,7 @@ LogPlay::LogPlay(int id,QSocketDevice *nn_sock,QString logname,
   play_timescaling_available=false;
   play_rescan_pos=0;
   play_refreshable=false;
-  play_audition_preroll=rdairplay_conf->auditionPreroll();
+  play_audition_preroll=rda->airplayConf()->auditionPreroll();
   for(int i=0;i<LOGPLAY_MAX_PLAYS;i++) {
     play_slot_id[i]=i;
   }
@@ -66,7 +68,7 @@ LogPlay::LogPlay(int id,QSocketDevice *nn_sock,QString logname,
   //
   // CAE Connection
   //
-  play_cae=new RDCae(rdstation_conf,air_config,parent);
+  play_cae=new RDCae(rda->station(),rda->config(),parent);
   play_cae->connectHost();
 
   for(int i=0;i<2;i++) {
@@ -83,10 +85,10 @@ LogPlay::LogPlay(int id,QSocketDevice *nn_sock,QString logname,
   }
   play_macro_running=false;
   play_refresh_pending=false;
-  play_nownext_string=rdairplay_conf->udpString(id);
-  play_nownext_address=rdairplay_conf->udpAddress(id);
-  play_nownext_port=rdairplay_conf->udpPort(id);
-  play_nownext_rml=rdairplay_conf->logRml(id);
+  play_nownext_string=rda->airplayConf()->udpString(id);
+  play_nownext_address=rda->airplayConf()->udpAddress(id);
+  play_nownext_port=rda->airplayConf()->udpPort(id);
+  play_nownext_rml=rda->airplayConf()->logRml(id);
   play_now_cartnum=0;
   play_next_cartnum=0;
   play_prevnow_cartnum=0;
@@ -96,7 +98,7 @@ LogPlay::LogPlay(int id,QSocketDevice *nn_sock,QString logname,
   //
   // Macro Cart Decks
   //
-  play_macro_deck=new RDMacroEvent(rdstation_conf->address(),rdripc,this);
+  play_macro_deck=new RDMacroEvent(rda->station()->address(),rda->ripc(),this);
   connect(play_macro_deck,SIGNAL(started()),this,SLOT(macroStartedData()));
   connect(play_macro_deck,SIGNAL(finished()),this,SLOT(macroFinishedData()));
   connect(play_macro_deck,SIGNAL(stopped()),this,SLOT(macroStoppedData()));
@@ -110,18 +112,18 @@ LogPlay::LogPlay(int id,QSocketDevice *nn_sock,QString logname,
   //
   // RIPC Signals
   //
-  connect(rdripc,SIGNAL(onairFlagChanged(bool)),
+  connect(rda->ripc(),SIGNAL(onairFlagChanged(bool)),
 	  this,SLOT(onairFlagChangedData(bool)));
 
   //
   // Audition Player
   //
   play_audition_line=-1;
-  if((rdstation_conf->cueCard()>=0)&&
-     (rdstation_conf->cuePort()>=0)) {
+  if((rda->station()->cueCard()>=0)&&
+     (rda->station()->cuePort()>=0)) {
     play_audition_player=
-      new RDSimplePlayer(play_cae,rdripc,rdstation_conf->cueCard(),
-			 rdstation_conf->cuePort(),0,0);
+      new RDSimplePlayer(play_cae,rda->ripc(),rda->station()->cueCard(),
+			 rda->station()->cuePort(),0,0);
     play_audition_player->playButton()->hide();
     play_audition_player->stopButton()->hide();
     connect(play_audition_player,SIGNAL(played()),
@@ -212,7 +214,7 @@ void LogPlay::setLogName(QString name)
   if(logName()!=name) {
     RDLogEvent::setLogName(name);
     emit renamed();
-    rdairplay_conf->setCurrentLog(play_id,name.left(name.length()-4));
+    rda->airplayConf()->setCurrentLog(play_id,name.left(name.length()-4));
   }
 }
 
@@ -755,7 +757,7 @@ bool LogPlay::refresh()
 
 void LogPlay::save(int line)
 {
-  RDLogEvent::save(air_config,line);
+  RDLogEvent::save(rda->config(),line);
   if(play_log!=NULL) {
     delete play_log;
   }
@@ -834,7 +836,7 @@ void LogPlay::insert(int line,int cartnum,RDLogLine::TransType next_type,
     play_next_line=line;
   }
   logline->loadCart(cartnum,next_type,play_id,play_timescaling_available,
-		    rdairplay_conf->defaultTransType());
+		    rda->airplayConf()->defaultTransType());
   logline->
     setTimescalingActive(play_timescaling_available&&logline->enforceLength());
   UpdateStartTimes(line);
@@ -1601,7 +1603,7 @@ void LogPlay::macroStartedData()
   logline->setStatus(RDLogLine::Playing);
   logline->
     setStartTime(RDLogLine::Initial,
-		 QTime::currentTime().addMSecs(rdstation_conf->timeOffset()));
+		 QTime::currentTime().addMSecs(rda->station()->timeOffset()));
   UpdateStartTimes(line);
   emit played(line);
   UpdatePostPoint();
@@ -1803,7 +1805,7 @@ bool LogPlay::StartEvent(int line,RDLogLine::TransType trans_type,
   switch(logline->type()) {
       case RDLogLine::Cart:
 	if(!StartAudioEvent(line)) {
-	  rdairplay_conf->setLogCurrentLine(play_id,nextLine());
+	  rda->airplayConf()->setLogCurrentLine(play_id,nextLine());
 	  return false;
 	}
 	aport=GetNextChannel(mport,&card,&port);
@@ -1832,7 +1834,7 @@ bool LogPlay::StartEvent(int line,RDLogLine::TransType trans_type,
 	  LogLine(RDConfig::LogErr,QString().
 		  sprintf("LogPlay::StartEvent(): no audio,CUT=%s",
 			  (const char *)logline->cutName()));
-	  rdairplay_conf->setLogCurrentLine(play_id,nextLine());
+	  rda->airplayConf()->setLogCurrentLine(play_id,nextLine());
 	  return false;
 	}
 	emit modified(line);
@@ -1918,7 +1920,7 @@ bool LogPlay::StartEvent(int line,RDLogLine::TransType trans_type,
 	  rml->setEchoRequested(false);
 	  rml->setArgQuantity(1);
 	  rml->setArg(0,logline->cartNumber());
-	  rdripc->sendRml(rml);
+	  rda->ripc()->sendRml(rml);
 	  delete rml;
 	  emit played(line);
 	  logline->setStartTime(RDLogLine::Actual,QTime::currentTime());
@@ -2013,13 +2015,13 @@ bool LogPlay::StartEvent(int line,RDLogLine::TransType trans_type,
     if((logline->state()==RDLogLine::Ok)||
        (logline->state()==RDLogLine::NoCart)||
        (logline->state()==RDLogLine::NoCut)) {
-      rdairplay_conf->setLogCurrentLine(play_id,nextLine());
+      rda->airplayConf()->setLogCurrentLine(play_id,nextLine());
       return true;
     }
     play_next_line++;
   }
   play_next_line=-1;
-  rdairplay_conf->setLogCurrentLine(play_id,nextLine());
+  rda->airplayConf()->setLogCurrentLine(play_id,nextLine());
   return true;
 }
 

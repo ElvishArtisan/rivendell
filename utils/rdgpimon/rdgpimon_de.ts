@@ -3,20 +3,20 @@
     <name>MainWidget</name>
     <message>
         <source>Database Error</source>
-        <translation>Datenbankfehler</translation>
+        <translation type="obsolete">Datenbankfehler</translation>
     </message>
     <message>
         <source>Can&apos;t Connect</source>
         <comment>Unable to connect to mySQL Server!</comment>
-        <translation>Kann keine Verbindung zum mySQL-Server herstellen</translation>
+        <translation type="obsolete">Kann keine Verbindung zum mySQL-Server herstellen</translation>
     </message>
     <message>
         <source>Can&apos;t Connect</source>
-        <translation>Kann keine Verbindung herstellen</translation>
+        <translation type="obsolete">Kann keine Verbindung herstellen</translation>
     </message>
     <message>
         <source>Unable to connect to mySQL Server!</source>
-        <translation>Kann keine Verbindung zum mySQL-Server herstellen!</translation>
+        <translation type="obsolete">Kann keine Verbindung zum mySQL-Server herstellen!</translation>
     </message>
     <message>
         <source>Matrix:</source>
@@ -96,6 +96,14 @@
     </message>
     <message>
         <source>OFF</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unknown command option</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

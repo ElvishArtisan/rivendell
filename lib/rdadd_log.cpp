@@ -2,7 +2,7 @@
 //
 // Create a Rivendell Log
 //
-//   (C) Copyright 2002-2004,2016-2017 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2004,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -22,14 +22,15 @@
 
 #include <qmessagebox.h>
 
+#include "rdapplication.h"
 #include "rddb.h"
 #include "rdescape_string.h"
 #include "rdidvalidator.h"
 #include "rdadd_log.h"
 
 RDAddLog::RDAddLog(QString *logname,QString *svcname,
-		   RDLogFilter::FilterMode mode,RDUser *user,RDStation *station,
-		   const QString &caption,QWidget *parent)
+		   RDLogFilter::FilterMode mode,const QString &caption,
+		   QWidget *parent)
   : QDialog(parent,"",true)
 {
   QStringList services_list;
@@ -37,7 +38,6 @@ RDAddLog::RDAddLog(QString *logname,QString *svcname,
   RDSqlQuery *q;
   log_name=logname;
   log_svc=svcname;
-  log_station=station;
 
   //
   // Fix the Window Size
@@ -116,15 +116,14 @@ RDAddLog::RDAddLog(QString *logname,QString *svcname,
     break;
 
   case RDLogFilter::UserFilter:
-    if(user!=NULL) {
-      sql=QString("select SERVICE_NAME from USER_SERVICE_PERMS where ")+
-	"USER_NAME=\""+RDEscapeString(user->name())+"\" order by SERVICE_NAME";
-    }
+    sql=QString("select SERVICE_NAME from USER_SERVICE_PERMS where ")+
+      "USER_NAME=\""+RDEscapeString(rda->user()->name())+"\" "+
+      "order by SERVICE_NAME";
     break;
 
   case RDLogFilter::StationFilter:
     sql=QString("select SERVICE_NAME from SERVICE_PERMS where ")+
-      "STATION_NAME=\""+RDEscapeString(station->name())+"\" "+
+      "STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\" "+
       "order by SERVICE_NAME";
     break;
   }

@@ -2,7 +2,7 @@
 //
 // A Command-line log editor for Rivendell
 //
-//   (C) Copyright 2016-2017 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -23,15 +23,11 @@
 
 #include <qobject.h>
 
-#include <rdairplay_conf.h>
-#include <rdconfig.h>
 #include <rdcut.h>
 #include <rddb.h>
 #include <rdlog.h>
 #include <rdlog_event.h>
 #include <rdloglock.h>
-#include <rdripc.h>
-#include <rduser.h>
 
 #define RDCLILOGEDIT_USAGE "[options]\n"
 
@@ -80,7 +76,6 @@ class MainObject : public QObject
   bool edit_quiet_option;
   QString edit_accum;
   bool edit_modified;
-  //  bool edit_new_log;
   RDLog *edit_log;
   RDLogEvent *edit_log_event;
   QString edit_description;
@@ -89,11 +84,6 @@ class MainObject : public QObject
   QDate edit_end_date;
   QDate edit_purge_date;
   bool edit_auto_refresh;
-  RDUser *edit_user;
-  RDStation *edit_station;
-  RDRipc *edit_ripc;
-  RDAirPlayConf *edit_airplay_conf;
-  RDConfig *edit_config;
   RDLogLock *edit_log_lock;
 };
 

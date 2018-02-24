@@ -2,7 +2,7 @@
 //
 // The Rivendell Netcatcher Daemon Dropbox methods
 //
-//   (C) Copyright 2017 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2017-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,6 +20,7 @@
 
 #include <stdlib.h>
 
+#include <rdapplication.h>
 #include <rddb.h>
 #include <rdescape_string.h>
 
@@ -64,7 +65,7 @@ void MainObject::StartDropboxes()
     "SEGUE_LEVEL,"+              // 21
     "SEGUE_LENGTH "+             // 22
     "from DROPBOXES where "+
-    "STATION_NAME=\""+RDEscapeString(catch_config->stationName())+"\"";
+    "STATION_NAME=\""+RDEscapeString(rda->config()->stationName())+"\"";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     QString cmd=QString().

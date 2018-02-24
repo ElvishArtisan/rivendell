@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Download Event
 //
-//   (C) Copyright 2002-2005,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2005,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -29,16 +29,17 @@
 #include <qcheckbox.h>
 #include <qurl.h>
 
-#include <rdurl.h>
-#include <rddb.h>
 #include <rd.h>
+#include <rdapplication.h>
 #include <rdcut_dialog.h>
 #include <rdcut_path.h>
-#include <rdtextvalidator.h>
+#include <rddb.h>
 #include <rddeck.h>
+#include <rdtextvalidator.h>
+#include <rdurl.h>
 
-#include <edit_download.h>
-#include <globals.h>
+#include "edit_download.h"
+#include "globals.h"
 
 EditDownload::EditDownload(int id,std::vector<int> *adds,QString *filter,
 			   QWidget *parent)
@@ -405,7 +406,7 @@ EditDownload::EditDownload(int id,std::vector<int> *adds,QString *filter,
   }
   else {
     edit_autotrim_box->setChecked(false);
-    edit_autotrim_spin->setValue(rdlibrary_conf->trimThreshold()/100);
+    edit_autotrim_spin->setValue(rda->libraryConf()->trimThreshold()/100);
   }
   autotrimToggledData(edit_autotrim_box->isChecked());
   if(edit_recording->normalizationLevel()<0) {
@@ -414,7 +415,7 @@ EditDownload::EditDownload(int id,std::vector<int> *adds,QString *filter,
   }
   else {
     edit_normalize_box->setChecked(false);
-    edit_normalize_spin->setValue(rdlibrary_conf->ripperLevel()/100);
+    edit_normalize_spin->setValue(rda->libraryConf()->ripperLevel()/100);
   }
   normalizeToggledData(edit_normalize_box->isChecked());
   edit_metadata_box->setChecked(edit_recording->enableMetadata());
@@ -475,9 +476,8 @@ void EditDownload::selectCartData()
 {
   QString str;
 
-  RDCutDialog *cut=new RDCutDialog(&edit_cutname,rdstation_conf,catch_system,
-				   edit_filter,NULL,NULL,catch_user->name(),
-				   false,true);
+  RDCutDialog *cut=
+    new RDCutDialog(&edit_cutname,edit_filter,NULL,NULL,false,true);
   switch(cut->exec()) {
       case 0:
 	edit_description_edit->setText(RDCutPath(edit_cutname));

@@ -33,9 +33,10 @@
 #include <qbuttongroup.h>
 #include <qapplication.h>
 
+#include <rdapplication.h>
 #include <rdcut.h>
 #include <rdcddbrecord.h>
-#include <rddb.h>
+//#include <rddb.h>
 #include <rdwavedata.h>
 #include <rd.h>
 #include <rdconf.h>
@@ -64,7 +65,7 @@ AudioCart::AudioCart(AudioControls *controls,RDCart *cart,QString *path,
   rdcart_import_path=path;
   rdcart_select_cut=select_cut;
   rdcart_profile_rip=profile_rip;
-  rdcart_modification_allowed=lib_user->editAudio()&&cart->owner().isEmpty();
+  rdcart_modification_allowed=rda->user()->editAudio()&&cart->owner().isEmpty();
 
   setCaption(QString().sprintf("%u",rdcart_cart->number())+" - "+
     rdcart_cart->title());
@@ -213,8 +214,8 @@ AudioCart::AudioCart(AudioControls *controls,RDCart *cart,QString *path,
   connect(ext_editor_cut_button,SIGNAL(clicked()),
 	  this,SLOT(extEditorCutData()));
   int yoffset=60;
-  if((!rdlibrary_conf->enableEditor())||
-     rdstation_conf->editorPath().isEmpty()) {
+  if((!rda->libraryConf()->enableEditor())||
+     rda->station()->editorPath().isEmpty()) {
     ext_editor_cut_button->hide();
     yoffset=0;
   }
@@ -309,9 +310,9 @@ void AudioCart::changeCutScheduling(int sched)
 void AudioCart::addCutData()
 {
   QString next_name=RDCut::cutName(rdcart_cart->number(),
-		 rdcart_cart->addCut(rdlibrary_conf->defaultFormat(),
-				     rdlibrary_conf->defaultBitrate(),
-				     rdlibrary_conf->defaultChannels()));
+		 rdcart_cart->addCut(rda->libraryConf()->defaultFormat(),
+				     rda->libraryConf()->defaultBitrate(),
+				     rda->libraryConf()->defaultChannels()));
   if(next_name.isEmpty()) {
     QMessageBox::warning(this,tr("RDLibrary - Edit Cart"),
 			 tr("This cart cannot contain any additional cuts!"));
@@ -404,8 +405,8 @@ void AudioCart::deleteCutData()
   // Delete Cuts
   //
   for(unsigned i=0;i<cutnames.size();i++) {
-    if(!rdcart_cart->removeCut(rdstation_conf,lib_user,cutnames[i],
-			       lib_config)) {
+    if(!rdcart_cart->removeCut(rda->station(),rda->user(),cutnames[i],
+			       rda->config())) {
       QMessageBox::warning(this,tr("RDLibrary"),
 			   tr("Unable to delete audio for cut")+
 			   QString().sprintf(" %d!",RDCut::cutNumber(cutnames[i])));
@@ -466,7 +467,7 @@ void AudioCart::extEditorCutData()
     return;
   }
 
-  QString cmd=rdstation_conf->editorPath();
+  QString cmd=rda->station()->editorPath();
   cmd.replace("%f",RDCut::pathName(rdcart_cut_list->currentItem()->text(12)));
   // FIXME: other replace commands to match: lib/rdcart_dialog.cpp editorData()
   //        These substitions should be documented (maybe a text file),
@@ -506,7 +507,7 @@ void AudioCart::pasteCutData()
     }
   }
   cut_clipboard->connect(this,SLOT(copyProgressData(const QVariant &)));
-  cut_clipboard->copyTo(rdstation_conf,lib_user,item->text(12),lib_config);
+  cut_clipboard->copyTo(rda->station(),rda->user(),item->text(12),rda->config());
   cut_clipboard->disconnect(this,SLOT(copyProgressData(const QVariant &)));
   rdcart_cart->updateLength(rdcart_controls->enforce_length_box->isChecked(),
 			    QTime().msecsTo(rdcart_controls->
@@ -532,10 +533,9 @@ void AudioCart::editCutData()
     return;
   }
   RDEditAudio *edit=
-    new RDEditAudio(rdcart_cart,cutname,rdcae,lib_user,rdstation_conf,
-		    lib_config,rdlibrary_conf->outputCard(),
-		    rdlibrary_conf->outputPort(),rdlibrary_conf->tailPreroll(),
-		    rdlibrary_conf->trimThreshold(),this);
+    new RDEditAudio(rdcart_cart,cutname,rda->libraryConf()->outputCard(),
+		    rda->libraryConf()->outputPort(),rda->libraryConf()->tailPreroll(),
+		    rda->libraryConf()->trimThreshold(),this);
   if(edit->exec()!=-1) {
     emit cartDataChanged();
     rdcart_cart->updateLength(rdcart_controls->enforce_length_box->isChecked(),
@@ -585,7 +585,7 @@ void AudioCart::ripCutData()
   }
   cutname=item->text(12);
   RDCddbRecord *rec=new RDCddbRecord();
-  CdRipper *ripper=new CdRipper(cutname,rec,rdlibrary_conf,rdcart_profile_rip);
+  CdRipper *ripper=new CdRipper(cutname,rec,rda->libraryConf(),rdcart_profile_rip);
   if((track=ripper->exec(&title,&artist,&album))>=0) {
     if((rdcart_controls->title_edit->text().isEmpty()||
 	(rdcart_controls->title_edit->text()==tr("[new cart]")))&&
@@ -623,16 +623,15 @@ void AudioCart::importCutData()
   }
   cutname=item->text(12);
   RDSettings settings;
-  rdlibrary_conf->getSettings(&settings);
+  rda->libraryConf()->getSettings(&settings);
   RDImportAudio *import=new RDImportAudio(cutname,rdcart_import_path,
 					  &settings,&rdcart_import_metadata,
 					  &wavedata,cut_clipboard,
-					  rdstation_conf,lib_user,
-					  &import_active,lib_config);
-  import->enableAutotrim(rdlibrary_conf->defaultTrimState());
-  import->setAutotrimLevel(rdlibrary_conf->trimThreshold());
-  import->enableNormalization(rdlibrary_conf->ripperLevel()!=0);
-  import->setNormalizationLevel(rdlibrary_conf->ripperLevel());
+					  &import_active);
+  import->enableAutotrim(rda->libraryConf()->defaultTrimState());
+  import->setAutotrimLevel(rda->libraryConf()->trimThreshold());
+  import->enableNormalization(rda->libraryConf()->ripperLevel()!=0);
+  import->setNormalizationLevel(rda->libraryConf()->ripperLevel());
   if(import->exec(true,true)==0) {
     if(rdcart_controls->title_edit->text().isEmpty()||
        (rdcart_controls->title_edit->text()==tr("[new cart]"))) {

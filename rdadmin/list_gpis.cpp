@@ -2,7 +2,7 @@
 //
 // List Rivendell GPIOs
 //
-//   (C) Copyright 2002-2008,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2008,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -25,14 +25,15 @@
 #include <qmessagebox.h>
 
 #include <rd.h>
-#include <rdpasswd.h>
-#include <rdmacro.h>
-#include <rdstation.h>
+#include <rdapplication.h>
 #include <rddb.h>
+#include <rdmacro.h>
+#include <rdpasswd.h>
+#include <rdstation.h>
 
-#include <list_gpis.h>
-#include <edit_gpi.h>
-#include <globals.h>
+#include "edit_gpi.h"
+#include "globals.h"
+#include "list_gpis.h"
 
 ListGpis::ListGpis(RDMatrix *matrix,RDMatrix::GpioType type,QWidget *parent)
   : QDialog(parent,"",true)
@@ -327,10 +328,10 @@ void ListGpis::okData()
     rml.setArg(2,item->text(0).toInt());
     rml.setArg(3,true);
     rml.setArg(4,item->text(1).toInt());
-    rdripc->sendRml(&rml);
+    rda->ripc()->sendRml(&rml);
     rml.setArg(3,false);
     rml.setArg(4,item->text(3).toInt());
-    rdripc->sendRml(&rml);
+    rda->ripc()->sendRml(&rml);
     item=item->nextSibling();
   }
   done(0);

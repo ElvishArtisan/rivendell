@@ -1079,11 +1079,11 @@ Cartão</translation>
     </message>
     <message>
         <source>rdlibrary : </source>
-        <translation>RDBiblio: </translation>
+        <translation type="obsolete">RDBiblio: </translation>
     </message>
     <message>
         <source>Can&apos;t Connect</source>
-        <translation>Sem conexão</translation>
+        <translation type="obsolete">Sem conexão</translation>
     </message>
     <message>
         <source>Filter:</source>
@@ -1312,15 +1312,15 @@ Você ainda quer deletá-lo?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Unknown command-line option</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>ALBUM</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>LABEL</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unknown command option</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

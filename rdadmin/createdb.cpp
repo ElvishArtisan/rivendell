@@ -2455,9 +2455,12 @@ bool InitDb(QString name,QString pwd,QString station_name,RDConfig *config)
   if(!RDSvc::create(RD_SERVICE_NAME,&err_msg,"",config)) {
     return false;
   }
-  RDSvc *svc=new RDSvc(RD_SERVICE_NAME,admin_station,admin_config);
-  svc->setDescription(RD_SERVICE_DESCRIPTION);
-  delete svc;
+  sql=QString("update SERVICES set ")+
+    "DESCRIPTION=\""+RDEscapeString(RD_SERVICE_DESCRIPTION)+"\" where "+
+    "NAME=\""+RDEscapeString(RD_SERVICE_NAME)+"\"";
+  if(!RunQuery(sql)) {
+    return false;
+  }
   sql=QString("insert into USER_SERVICE_PERMS set ")+
     "USER_NAME=\""+RDEscapeString(RD_USER_LOGIN_NAME)+"\","+
     "SERVICE_NAME=\""+RDEscapeString(RD_SERVICE_NAME)+"\"";
@@ -2709,10 +2712,10 @@ int UpdateDb(int ver,RDConfig *config)
 			  toString("yyyyMMdd"),ver);
     }
     cmd=QString().sprintf("mysqldump -h %s -u %s -p%s %s | gzip -q -c - > %s",
-			  (const char *)admin_config->mysqlHostname(),
-			  (const char *)admin_config->mysqlUsername(),
-			  (const char *)admin_config->mysqlPassword(),
-			  (const char *)admin_config->mysqlDbname(),
+			  (const char *)config->mysqlHostname(),
+			  (const char *)config->mysqlUsername(),
+			  (const char *)config->mysqlPassword(),
+			  (const char *)config->mysqlDbname(),
 			  (const char *)admin_backup_filename);
     if(system(cmd)!=0) {
       return UPDATEDB_BACKUP_FAILED;
@@ -8050,5 +8053,6 @@ int UpdateDb(int ver,RDConfig *config)
   q=new RDSqlQuery(QString().sprintf("update VERSION set DB=%d",
 				     RD_VERSION_DATABASE),false);
   delete q;
+
   return UPDATEDB_SUCCESS;
 }

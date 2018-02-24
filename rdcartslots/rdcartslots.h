@@ -2,7 +2,7 @@
 //
 // A Dedicated Cart Slot Utility for Rivendell.
 //
-//   (C) Copyright 2012,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2012,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -66,12 +66,12 @@ class MainWidget : public QWidget
  private:
   void RunLocalMacros(RDMacro *rml);
   void SetCaption();
-  RDConfig *panel_config;
-  RDCae *panel_cae;
-  RDRipc *panel_ripc;
-  RDUser *panel_user;
-  RDStation *panel_station;
-  RDSystem *panel_system;
+  //  RDConfig *panel_config;
+  //  RDCae *panel_cae;
+  //  RDRipc *panel_ripc;
+  //  RDUser *panel_user;
+  //  RDStation *panel_station;
+  //  RDSystem *panel_system;
   RDEventPlayer *panel_player;
   QPixmap *lib_rivendell_map;
   QString panel_filter;
@@ -82,7 +82,7 @@ class MainWidget : public QWidget
   RDSlotDialog *panel_slot_dialog;
   RDCueEditDialog *panel_cue_dialog;
   RDListSvcs *panel_svcs_dialog;
-  RDAirPlayConf *panel_airplay_conf;
+  //  RDAirPlayConf *panel_airplay_conf;
 };
 
 

@@ -37,6 +37,8 @@
 #include <rdlog_line.h>
 #include <rdconfig.h>
 
+#define RDCASTMANAGER_USAGE "\n"
+
 class MainWidget : public QMainWindow
 {
  Q_OBJECT
@@ -63,6 +65,7 @@ class MainWidget : public QMainWindow
   QPixmap *cast_redx_map;
   QPushButton *cast_open_button;
   QPushButton *cast_close_button;
+  bool cast_resize;
 };
 
 

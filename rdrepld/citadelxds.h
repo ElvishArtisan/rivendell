@@ -21,7 +21,6 @@
 #ifndef CITADELXDS_H
 #define CITADELXDS_H
 
-#include "globals.h"
 #include "replfactory.h"
 
 class CitadelXds : public ReplFactory

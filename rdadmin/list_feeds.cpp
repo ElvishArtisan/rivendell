@@ -2,7 +2,7 @@
 //
 // List Rivendell Feeds
 //
-//   (C) Copyright 2002-2007,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2007,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -35,16 +35,17 @@
 #include <qprogressdialog.h>
 #include <qapplication.h>
 
-#include <rddb.h>
+#include <rdapplication.h>
 #include <rdcart.h>
-#include <rdtextfile.h>
-#include <rdpodcast.h>
+#include <rddb.h>
 #include <rdfeedlog.h>
+#include <rdpodcast.h>
+#include <rdtextfile.h>
 
-#include <list_feeds.h>
-#include <edit_feed.h>
-#include <add_feed.h>
-#include <globals.h>
+#include "add_feed.h"
+#include "edit_feed.h"
+#include "globals.h"
+#include "list_feeds.h"
 
 ListFeeds::ListFeeds(QWidget *parent)
   : QDialog(parent,"",true)
@@ -232,7 +233,7 @@ void ListFeeds::deleteData()
       default:
 	break;
   }
-  feed=new RDFeed(feedname,admin_config);
+  feed=new RDFeed(feedname,rda->config());
 
   //
   // Delete Casts
@@ -251,8 +252,8 @@ void ListFeeds::deleteData()
   while(q->next()) {
     pd->setProgress(pd->progress()+1);
     qApp->processEvents();
-    cast=new RDPodcast(admin_config,q->value(0).toUInt());
-    cast->removeAudio(feed,&errs,admin_config->logXloadDebugData());
+    cast=new RDPodcast(rda->config(),q->value(0).toUInt());
+    cast->removeAudio(feed,&errs,rda->config()->logXloadDebugData());
     delete cast;
   }
   delete q;

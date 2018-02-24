@@ -20,25 +20,25 @@
 
 #include <stdlib.h>
 #include <unistd.h>
-#include <qsqldriver.h>
-#include <qmessagebox.h>
-#include <opendb.h>
-#include <createdb.h>
-#include <rd.h>
-#include <rddb.h>
-#include <dbversion.h>
-#include <rdcheck_version.h>
-#include <rdcheck_daemons.h>
-#include <mysql_login.h>
-#include <globals.h>
-
-// Includes used for netmask and remote server detection.
 #include <net/if.h>
 #include <sys/ioctl.h>
 #include <netdb.h>
 #include <arpa/inet.h>
 
+#include <qmessagebox.h>
 #include <qobject.h>
+
+#include <rd.h>
+#include <rdapplication.h>
+#include <rddb.h>
+#include <dbversion.h>
+#include <rdcheck_version.h>
+#include <rdcheck_daemons.h>
+
+#include "globals.h"
+#include "mysql_login.h"
+#include "opendb.h"
+#include "createdb.h"
 
 /**
  * Get the netmask of an interface and return it via an in_addr struct pointer.
@@ -169,7 +169,7 @@ bool OpenDb(QString dbname,QString login,QString pwd,
   //
   // Open Database
   //
-  QSqlDatabase *db=QSqlDatabase::addDatabase(admin_config->mysqlDriver());
+  QSqlDatabase *db=QSqlDatabase::addDatabase(config->mysqlDriver());
   if(!db) {
     return false;
   }
@@ -429,6 +429,14 @@ on this machine for a few seconds.  Continue?"),
 	QMessageBox::information(NULL,QObject::tr("Database Updated"),msg);
       }
     }
+  }
+
+  db->removeDatabase(dbname);
+
+  QString err_msg;
+  rda=new RDApplication("RDAdmin","rdadmin","");
+  if(!rda->open(&err_msg)) {
+    return false;
   }
 
   return true;

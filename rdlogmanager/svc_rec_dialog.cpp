@@ -2,7 +2,7 @@
 //
 // A Services/Reports Management Dialog.
 //
-//   (C) Copyright 2002-2005,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2005,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -31,11 +31,12 @@
 #include <qsignalmapper.h>
 #include <qfile.h>
 
-#include <rdreport.h>
+#include <rdapplication.h>
 #include <rddatedecode.h>
+#include <rdreport.h>
 
-#include <globals.h>
-#include <svc_rec_dialog.h>
+#include "globals.h"
+#include "svc_rec_dialog.h"
 
 //
 // Global Classes
@@ -71,7 +72,7 @@ SvcRecDialog::SvcRecDialog(const QString &svcname,QWidget *parent)
   date_delete_button->setText(tr("&Purge\nData"));
   connect(date_delete_button,SIGNAL(clicked()),this,SLOT(deleteData()));
 #ifndef WIN32
-  date_delete_button->setEnabled(rduser->deleteRec()&&
+  date_delete_button->setEnabled(rda->user()->deleteRec()&&
     date_picker->dayActive(date_picker->date().day()));
 #endif  // WIN32
 
@@ -111,7 +112,7 @@ void SvcRecDialog::dateSelectedData(const QDate &,bool active)
   date_delete_button->
     setEnabled(date_picker->dayActive(date_picker->date().day()));
 #else
-  date_delete_button->setEnabled(rduser->deleteRec()&&
+  date_delete_button->setEnabled(rda->user()->deleteRec()&&
     date_picker->dayActive(date_picker->date().day()));
 #endif  // WIN32
 }

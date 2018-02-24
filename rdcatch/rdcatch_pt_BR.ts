@@ -973,7 +973,7 @@ Novo</translation>
     </message>
     <message>
         <source>rdcatch : </source>
-        <translation>rdcaptura : </translation>
+        <translation type="obsolete">rdcaptura : </translation>
     </message>
     <message>
         <source>Show Only Active Events</source>
@@ -1329,6 +1329,14 @@ Novo</translation>
     </message>
     <message>
         <source>All Types</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unknown command option</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

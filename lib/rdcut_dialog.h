@@ -2,7 +2,7 @@
 //
 // A widget to select a Rivendell Cut.
 //
-//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2004,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -30,8 +30,6 @@
 #include <qcheckbox.h>
 
 #include <rdlistviewitem.h>
-#include <rdstation.h>
-#include <rdsystem.h>
 
 #define RDCUT_DIALOG_STEP_SIZE 1000
 
@@ -39,10 +37,9 @@ class RDCutDialog : public QDialog
 {
  Q_OBJECT
  public:
-  RDCutDialog(QString *cutname,RDStation *station,RDSystem *system,
-	      QString *filter=0,QString *group=0,QString *schedcode=NULL,
-	      QString username="",bool show_clear=false,bool allow_add=false,
-	      bool exclude_tracks=false,QWidget *parent=0);
+  RDCutDialog(QString *cutname,QString *filter=0,QString *group=0,
+	      QString *schedcode=NULL,bool show_clear=false,
+	      bool allow_add=false,bool exclude_tracks=false,QWidget *parent=0);
   ~RDCutDialog();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
@@ -92,11 +89,8 @@ class RDCutDialog : public QDialog
   bool local_filter;
   QPixmap *cut_playout_map;
   QPixmap *cut_macro_map;
-  QString cut_username;
   bool cut_allow_clear;
   bool cut_exclude_tracks;
-  RDStation::FilterMode cut_filter_mode;
-  RDSystem *cut_system;
   QProgressDialog *cut_progress_dialog;
 };
 

@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Workstation Configuration
 //
-//   (C) Copyright 2002-2010,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2010,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -29,30 +29,31 @@
 #include <qbuttongroup.h>
 #include <qvalidator.h>
 
-#include <rddb.h>
-#include <rdconf.h>
+#include <rdapplication.h>
 #include <rdcatch_connect.h>
 #include <rdcart_dialog.h>
-#include <rdtextvalidator.h>
+#include <rdconf.h>
+#include <rddb.h>
 #include <rdescape_string.h>
+#include <rdtextvalidator.h>
 
-#include <edit_station.h>
-#include <edit_rdlibrary.h>
-#include <edit_rdairplay.h>
-#include <edit_rdpanel.h>
-#include <edit_rdlogedit.h>
-#include <edit_cartslots.h>
-#include <edit_decks.h>
-#include <edit_audios.h>
-#include <edit_ttys.h>
-#include <list_matrices.h>
-#include <list_hostvars.h>
-#include <edit_backup.h>
-#include <view_adapters.h>
-#include <list_dropboxes.h>
-#include <list_encoders.h>
-#include <edit_jack.h>
-#include <globals.h>
+#include "view_adapters.h"
+#include "edit_audios.h"
+#include "edit_backup.h"
+#include "edit_cartslots.h"
+#include "edit_decks.h"
+#include "list_dropboxes.h"
+#include "list_encoders.h"
+#include "list_hostvars.h"
+#include "edit_jack.h"
+#include "list_matrices.h"
+#include "edit_rdairplay.h"
+#include "edit_rdlibrary.h"
+#include "edit_rdlogedit.h"
+#include "edit_rdpanel.h"
+#include "edit_station.h"
+#include "edit_ttys.h"
+#include "globals.h"
 
 EditStation::EditStation(QString sname,QWidget *parent)
   : QDialog(parent,"",true)
@@ -588,7 +589,7 @@ void EditStation::selectClicked()
   int cartnum=station_startup_cart_edit->text().toInt();
 
   if(admin_cart_dialog->exec(&cartnum,RDCart::Macro,NULL,0,
-			     admin_user->name(),admin_user->password())==0) {
+			     rda->user()->name(),rda->user()->password())==0) {
     station_startup_cart_edit->setText(QString().sprintf("%06d",cartnum));
   }
 }
@@ -610,7 +611,7 @@ void EditStation::heartbeatClickedData()
   int cartnum=station_hbcart_edit->text().toInt();
 
   if(admin_cart_dialog->exec(&cartnum,RDCart::Macro,NULL,0,
-			     admin_user->name(),admin_user->password())==0) {
+			     rda->user()->name(),rda->user()->password())==0) {
     station_hbcart_edit->setText(QString().sprintf("%06d",cartnum));
   }
 }
@@ -867,7 +868,7 @@ void EditStation::startCartClickedData()
   int cartnum=station_start_cart_edit->text().toUInt();
 
   if(admin_cart_dialog->exec(&cartnum,RDCart::Macro,NULL,0,
-			     admin_user->name(),admin_user->password())==0) {
+			     rda->user()->name(),rda->user()->password())==0) {
     station_start_cart_edit->setText(QString().sprintf("%06d",cartnum));
   }
 }
@@ -878,7 +879,7 @@ void EditStation::stopCartClickedData()
   int cartnum=station_stop_cart_edit->text().toUInt();
 
   if(admin_cart_dialog->exec(&cartnum,RDCart::Macro,NULL,0,
-			     admin_user->name(),admin_user->password())==0) {
+			     rda->user()->name(),rda->user()->password())==0) {
     station_stop_cart_edit->setText(QString().sprintf("%06d",cartnum));
   }
 }

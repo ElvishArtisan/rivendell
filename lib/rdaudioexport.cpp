@@ -2,7 +2,7 @@
 //
 // Export an Audio File using the RdXport Web Service
 //
-//   (C) Copyright 2010,2016-2017 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2010,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -31,6 +31,7 @@
 #include <qapplication.h>
 
 #include <rd.h>
+#include <rdapplication.h>
 #include <rdxport_interface.h>
 #include <rdformpost.h>
 #include <rdaudioexport.h>
@@ -51,12 +52,9 @@ int ExportProgressCallback(void *clientp,double dltotal,double dlnow,
 }
 
 
-RDAudioExport::RDAudioExport(RDStation *station,RDConfig *config,
-			     QObject *parent)
+RDAudioExport::RDAudioExport(QObject *parent)
   : QObject(parent)
 {
-  conv_station=station;
-  conv_config=config;
   conv_cart_number=0;
   conv_cut_number=0;
   conv_start_point=-1;
@@ -170,13 +168,13 @@ RDAudioExport::ErrorCode RDAudioExport::runExport(const QString &username,
   // otherwise some versions of LibCurl will throw a 'bad/illegal format' 
   // error.
   //
-  strncpy(url,conv_station->webServiceUrl(conv_config),1024);
+  strncpy(url,rda->station()->webServiceUrl(rda->config()),1024);
   curl_easy_setopt(curl,CURLOPT_URL,url);
   curl_easy_setopt(curl,CURLOPT_WRITEDATA,f);
   curl_easy_setopt(curl,CURLOPT_POST,1);
   curl_easy_setopt(curl,CURLOPT_POSTFIELDS,(const char *)post);
   curl_easy_setopt(curl,CURLOPT_USERAGENT,
-		   (const char *)conv_config->userAgent());
+		   (const char *)rda->config()->userAgent());
   curl_easy_setopt(curl,CURLOPT_TIMEOUT,RD_CURL_TIMEOUT);
   curl_easy_setopt(curl,CURLOPT_PROGRESSFUNCTION,ExportProgressCallback);
   curl_easy_setopt(curl,CURLOPT_PROGRESSDATA,this);

@@ -32,10 +32,11 @@
 #include <qapplication.h>
 
 #include <rd.h>
-#include <rdxport_interface.h>
-#include <rdformpost.h>
+#include <rdapplication.h>
 #include <rdaudioimport.h>
+#include <rdformpost.h>
 #include <rdwebresult.h>
+#include <rdxport_interface.h>
 
 //
 // CURL Callbacks
@@ -62,12 +63,9 @@ int ImportProgressCallback(void *clientp,double dltotal,double dlnow,
 }
 
 
-RDAudioImport::RDAudioImport(RDStation *station,RDConfig *config,
-			     QObject *parent)
+RDAudioImport::RDAudioImport(QObject *parent)
   : QObject(parent)
 {
-  conv_station=station;
-  conv_config=config;
   conv_cart_number=0;
   conv_cut_number=0;
   conv_settings=NULL;
@@ -170,7 +168,7 @@ RDAudioImport::ErrorCode RDAudioImport::runImport(const QString &username,
   curl_easy_setopt(curl,CURLOPT_WRITEDATA,stdout);
   curl_easy_setopt(curl,CURLOPT_HTTPPOST,first);
   curl_easy_setopt(curl,CURLOPT_USERAGENT,
-		   (const char *)conv_config->userAgent());
+		   (const char *)rda->config()->userAgent());
   curl_easy_setopt(curl,CURLOPT_TIMEOUT,RD_CURL_TIMEOUT);
   curl_easy_setopt(curl,CURLOPT_PROGRESSFUNCTION,ImportProgressCallback);
   curl_easy_setopt(curl,CURLOPT_PROGRESSDATA,this);
@@ -182,7 +180,7 @@ RDAudioImport::ErrorCode RDAudioImport::runImport(const QString &username,
   // otherwise some versions of LibCurl will throw a 'bad/illegal format' 
   // error.
   //
-  strncpy(url,conv_station->webServiceUrl(conv_config),1024);
+  strncpy(url,rda->station()->webServiceUrl(rda->config()),1024);
   curl_easy_setopt(curl,CURLOPT_URL,url);
 
   //

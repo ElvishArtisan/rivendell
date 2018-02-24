@@ -2,7 +2,7 @@
 //
 // List Rivendell Matrices
 //
-//   (C) Copyright 2002-2003,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2003,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -29,12 +29,14 @@
 #include <qmessagebox.h>
 #include <qbuttongroup.h>
 
-#include <rdstation.h>
+//#include <rdstation.h>
+#include <rdapplication.h>
 #include <rddb.h>
-#include <globals.h>
-#include <list_matrices.h>
-#include <edit_matrix.h>
-#include <add_matrix.h>
+
+#include "add_matrix.h"
+#include "edit_matrix.h"
+#include "globals.h"
+#include "list_matrices.h"
 
 ListMatrices::ListMatrices(QString station,QWidget *parent)
   : QDialog(parent,"",true)
@@ -239,7 +241,7 @@ void ListMatrices::closeData()
     if(list_matrix_modified[i]) {
       macro.setAddress(rmt_station->address());
       macro.setArg(0,i);
-      rdripc->sendRml(&macro);
+      rda->ripc()->sendRml(&macro);
     }
   }
   delete rmt_station;

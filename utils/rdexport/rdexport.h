@@ -2,7 +2,7 @@
 //
 // A Batch Exporter for Rivendell.
 //
-//   (C) Copyright 2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -26,12 +26,8 @@
 #include <qobject.h>
 
 #include <rdcart.h>
-#include <rdconfig.h>
 #include <rdcut.h>
 #include <rddb.h>
-#include <rdripc.h>
-#include <rdstation.h>
-#include <rduser.h>
 
 #define RDEXPORT_USAGE "[options] <output-dir>\n"
 
@@ -65,10 +61,6 @@ class MainObject : public QObject
   unsigned export_channels;
   int export_quality;
   bool export_xml;
-  RDConfig *export_config;
-  RDRipc *export_ripc;
-  RDStation *export_station;
-  RDUser *export_user;
   bool export_verbose;
   QString export_escape_string;
   bool export_continue_after_error;

@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Matrix
 //
-//   (C) Copyright 2002-2012,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2012,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -23,14 +23,15 @@
 #include <qtextedit.h>
 #include <qpainter.h>
 #include <qmessagebox.h>
-#include <qsqldatabase.h>
+//#include <qsqldatabase.h>
 
 #include <rd.h>
+#include <rdapplication.h>
+#include <rdcart_dialog.h>
+#include <rddb.h>
+#include <rdescape_string.h>
 #include <rdmatrix.h>
 #include <rdtextvalidator.h>
-#include <rddb.h>
-#include <rdcart_dialog.h>
-#include <rdescape_string.h>
 
 #include "globals.h"
 #include "edit_user.h"
@@ -1123,7 +1124,7 @@ void EditMatrix::startCartData()
 {
   int cartnum=edit_start_cart_edit->text().toUInt();
   if(admin_cart_dialog->exec(&cartnum,RDCart::Macro,NULL,0,
-			     admin_user->name(),admin_user->password())==0) {
+			     rda->user()->name(),rda->user()->password())==0) {
     if(cartnum>0) {
       edit_start_cart_edit->setText(QString().sprintf("%06u",cartnum));
     }
@@ -1138,7 +1139,7 @@ void EditMatrix::stopCartData()
 {
   int cartnum=edit_stop_cart_edit->text().toUInt();
   if(admin_cart_dialog->exec(&cartnum,RDCart::Macro,NULL,0,
-			     admin_user->name(),admin_user->password())==0) {
+			     rda->user()->name(),rda->user()->password())==0) {
     if(cartnum>0) {
       edit_stop_cart_edit->setText(QString().sprintf("%06u",cartnum));
     }
@@ -1153,7 +1154,7 @@ void EditMatrix::startCart2Data()
 {
   int cartnum=edit_start_cart2_edit->text().toUInt();
   if(admin_cart_dialog->exec(&cartnum,RDCart::Macro,NULL,0,
-			     admin_user->name(),admin_user->password())==0) {
+			     rda->user()->name(),rda->user()->password())==0) {
     if(cartnum>0) {
       edit_start_cart2_edit->setText(QString().sprintf("%06u",cartnum));
     }
@@ -1168,7 +1169,7 @@ void EditMatrix::stopCart2Data()
 {
   int cartnum=edit_stop_cart2_edit->text().toUInt();
   if(admin_cart_dialog->exec(&cartnum,RDCart::Macro,NULL,0,
-			     admin_user->name(),admin_user->password())==0) {
+			     rda->user()->name(),rda->user()->password())==0) {
     if(cartnum>0) {
       edit_stop_cart2_edit->setText(QString().sprintf("%06u",cartnum));
     }

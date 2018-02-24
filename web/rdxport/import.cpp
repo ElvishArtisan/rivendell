@@ -2,7 +2,7 @@
 //
 // Rivendell web service portal -- Import service
 //
-//   (C) Copyright 2010,2016-2017 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2010-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -23,17 +23,18 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 
-#include <rdformpost.h>
-#include <rdweb.h>
-#include <rdcart.h>
+#include <rdapplication.h>
 #include <rdaudioconvert.h>
-#include <rdsettings.h>
+#include <rdcart.h>
 #include <rdconf.h>
+#include <rdformpost.h>
 #include <rdgroup.h>
 #include <rdhash.h>
 #include <rdlibrary_conf.h>
+#include <rdsettings.h>
+#include <rdweb.h>
 
-#include <rdxport.h>
+#include "rdxport.h"
 
 void Xport::Import()
 {
@@ -102,13 +103,13 @@ void Xport::Import()
   // Verify User Perms
   //
   if(RDCart::exists(cartnum)) {
-    if(!xport_user->cartAuthorized(cartnum)) {
+    if(!rda->user()->cartAuthorized(cartnum)) {
       XmlExit("No such cart",404,"import.cpp",LINE_NUMBER);
     }
   }
   else {
     if(create) {
-      if(!xport_user->groupAuthorized(group_name)) {
+      if(!rda->user()->groupAuthorized(group_name)) {
 	XmlExit("No such group",404,"import.cpp",LINE_NUMBER);
       }
     }
@@ -116,10 +117,10 @@ void Xport::Import()
       XmlExit("No such cart",404,"import.cpp",LINE_NUMBER);
     }
   }
-  if(!xport_user->editAudio()) {
+  if(!rda->user()->editAudio()) {
     XmlExit("Forbidden",404,"import.cpp",LINE_NUMBER);
   }
-  if(create&&(!xport_user->createCarts())) {
+  if(create&&(!rda->user()->createCarts())) {
     XmlExit("Forbidden",404,"import.cpp",LINE_NUMBER);
   }
 
@@ -127,8 +128,8 @@ void Xport::Import()
   // Verify Title Uniqueness
   //
   if(!title.isEmpty()) {
-    if((!xport_system->allowDuplicateCartTitles())&&
-       (!xport_system->fixDuplicateCartTitles())&&
+    if((!rda->system()->allowDuplicateCartTitles())&&
+       (!rda->system()->fixDuplicateCartTitles())&&
        (!RDCart::titleIsUnique(cartnum,title))) {
       XmlExit("Duplicate Cart Title Not Allowed",404,"import.cpp",LINE_NUMBER);
     }
@@ -167,7 +168,7 @@ void Xport::Import()
   if(!RDCut::exists(cartnum,cutnum)) {
     XmlExit("No such cut",404,"import.cpp",LINE_NUMBER);
   }
-  RDLibraryConf *conf=new RDLibraryConf(xport_config->stationName(),0);
+  RDLibraryConf *conf=new RDLibraryConf(rda->config()->stationName());
   RDSettings *settings=new RDSettings();
   switch(conf->defaultFormat()) {
   case 0:
@@ -183,7 +184,7 @@ void Xport::Import()
     break;
   }
   settings->setChannels(channels);
-  settings->setSampleRate(xport_system->sampleRate());
+  settings->setSampleRate(rda->system()->sampleRate());
   settings->setBitRate(channels*conf->defaultBitrate());
   settings->setNormalizationLevel(normalization_level);
   RDWaveData wavedata;
@@ -194,13 +195,13 @@ void Xport::Import()
   }
   delete wave;
   if(use_metadata) {
-    if((!xport_system->allowDuplicateCartTitles())&&
-       (!xport_system->fixDuplicateCartTitles())&&
+    if((!rda->system()->allowDuplicateCartTitles())&&
+       (!rda->system()->fixDuplicateCartTitles())&&
        (!RDCart::titleIsUnique(cartnum,wavedata.title()))) {
       XmlExit("Duplicate Cart Title Not Allowed",404,"import.cpp",LINE_NUMBER);
     }
   }
-  RDAudioConvert *conv=new RDAudioConvert(xport_config->stationName());
+  RDAudioConvert *conv=new RDAudioConvert(this);
   conv->setSourceFile(filename);
   conv->setDestinationFile(RDCut::pathName(cartnum,cutnum));
   conv->setDestinationSettings(settings);
@@ -216,7 +217,7 @@ void Xport::Import()
       XmlExit("Unable to access imported file",500,"import.cpp",LINE_NUMBER);
     }
     delete wave;
-    cut->checkInRecording(xport_config->stationName(),xport_user->name(),
+    cut->checkInRecording(rda->config()->stationName(),rda->user()->name(),
 			  remote_host,settings,msecs);
     if(use_metadata>0) {
       cart->setMetadata(conv->sourceWaveData());

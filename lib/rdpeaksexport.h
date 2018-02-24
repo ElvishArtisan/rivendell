@@ -2,7 +2,7 @@
 //
 // Export peak data using the RdXport Web Service
 //
-//   (C) Copyright 2010,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2010,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -23,8 +23,6 @@
 
 #include <qobject.h>
 
-#include <rdconfig.h>
-#include <rdstation.h>
 #include <rdsettings.h>
 
 class RDPeaksExport
@@ -33,7 +31,7 @@ class RDPeaksExport
   enum ErrorCode {ErrorOk=0,ErrorNoSource=2,
 		  ErrorInternal=5,ErrorUrlInvalid=7,
 		  ErrorService=8,ErrorInvalidUser=9,ErrorAborted=10};
-  RDPeaksExport(RDStation *station,RDConfig *config,QObject *parent=0);
+  RDPeaksExport(QObject *parent=0);
   ~RDPeaksExport();
   void setCartNumber(unsigned cartnum);
   void setCutNumber(unsigned cutnum);
@@ -45,8 +43,6 @@ class RDPeaksExport
   static QString errorText(RDPeaksExport::ErrorCode err);
 
  private:
-  RDStation *conv_station;
-  RDConfig *conv_config;
   unsigned conv_cart_number;
   unsigned conv_cut_number;
   unsigned short *conv_energy_data;

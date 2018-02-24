@@ -2,7 +2,7 @@
 //
 // Edit Rivendell Audio Settings
 //
-//   (C) Copyright 2002-2015 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -22,22 +22,19 @@
 #define RDEXPORT_SETTINGS_DIALOG_H
 
 #include <qdialog.h>
-#include <qsqldatabase.h>
 #include <qlineedit.h>
 #include <qcombobox.h>
 #include <qspinbox.h>
 #include <qlabel.h>
 
 #include <rdsettings.h>
-#include <rdstation.h>
 #include <rdencoderlist.h>
 
 class RDExportSettingsDialog : public QDialog
 {
   Q_OBJECT
   public:
-  RDExportSettingsDialog(RDSettings *settings,RDStation *station,
-			 QWidget *parent=0);
+  RDExportSettingsDialog(RDSettings *settings,QWidget *parent=0);
    ~RDExportSettingsDialog();
    QSize sizeHint() const;
    QSizePolicy sizePolicy() const;
@@ -55,7 +52,6 @@ class RDExportSettingsDialog : public QDialog
    RDSettings::Format GetFormat(QString str);
    RDEncoderList *lib_encoders;
    RDSettings *lib_settings;
-   RDStation *lib_station;
    QComboBox *lib_format_box;
    QComboBox *lib_channels_box;
    QLabel *lib_bitrate_label;
@@ -66,5 +62,4 @@ class RDExportSettingsDialog : public QDialog
 };
 
 
-#endif
-
+#endif  // RDEXPORT_SETTINGS_DIALOG_H

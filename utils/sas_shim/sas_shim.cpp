@@ -2,7 +2,7 @@
 //
 // An RDCatch event import shim for the SAS64000
 //
-//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2004,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -26,21 +26,19 @@
 #include <qapplication.h>
 #include <qtimer.h>
 
-#include <rdconf.h>
 #include <rd.h>
-#include <rdcmd_switch.h>
-#include <rddbheartbeat.h>
+#include <rdapplication.h>
+#include <rdconf.h>
 
-#include <sas_shim.h>
-
+#include "sas_shim.h"
 
 void SigHandler(int signo)
 {
   switch(signo) {
-      case SIGTERM:
-	unlink("/var/run/sas_shim.pid");
-	exit(0);
-	break;
+  case SIGTERM:
+    unlink("/var/run/sas_shim.pid");
+    exit(0);
+    break;
   }
 }
 
@@ -48,52 +46,43 @@ void SigHandler(int signo)
 MainObject::MainObject(QObject *parent)
   : QObject(parent)
 {
+  QString err_msg;
+
+  //
+  // Open the Database
+  //
+  rda=new RDApplication("sas_shim","sas_shim",SAS_SHIM_USAGE,this);
+  if(!rda->open(&err_msg)) {
+    fprintf(stderr,"sas_shim: %s\n",(const char *)err_msg);
+    exit(1);
+  }
+
   //
   // Read Command Options
   //
-  RDCmdSwitch *cmd=new RDCmdSwitch(qApp->argc(),qApp->argv(),"sas_shim","\n");
-  delete cmd;
-
-  rd_config=new RDConfig(RD_CONF_FILE);
-  rd_config->load();
-  rd_config->setModuleName("sas_shim");
-
-  //
-  // Open Database
-  //
-  shim_db=QSqlDatabase::addDatabase(rd_config->mysqlDriver());
-  if(!shim_db) {
-    fprintf(stderr,"sas_shim: can't open mySQL database\n");
-    exit(1);
+  for(unsigned i=0;i<rda->cmdSwitch()->keys();i++) {
+    if(!rda->cmdSwitch()->processed(i)) {
+      fprintf(stderr,"sas_shim: unknown command option \"%s\"\n",
+	      (const char *)rda->cmdSwitch()->key(i));
+      exit(2);
+    }
   }
-  shim_db->setDatabaseName(rd_config->mysqlDbname());
-  shim_db->setUserName(rd_config->mysqlUsername());
-  shim_db->setPassword(rd_config->mysqlPassword());
-  shim_db->setHostName(rd_config->mysqlHostname());
-  if(!shim_db->open()) {
-    fprintf(stderr,"sas_shim: unable to connect to mySQL Server");
-    shim_db->removeDatabase(rd_config->mysqlDbname());
-    exit(1);
-  }
-  new RDDbHeartbeat(rd_config->mysqlHeartbeatInterval(),this);
 
   //
   // Station Configuration
   //
-  shim_rdstation=new RDStation(rd_config->stationName());
-  shim_address=shim_rdstation->address();
+  shim_address=rda->station()->address();
 
   //
   // RIPCD Connection
   //
-  shim_ripc=new RDRipc(shim_rdstation,rd_config,this);
-  shim_ripc->connectHost("localhost",RIPCD_TCP_PORT,rd_config->password());
+  rda->ripc()->connectHost("localhost",RIPCD_TCP_PORT,rda->config()->password());
 
   //
   // TTY Device
   //
   shim_tty=new RDTTYDevice();
-  shim_tty->setName(rd_config->sasTtyDevice());
+  shim_tty->setName(rda->config()->sasTtyDevice());
   if(!shim_tty->open(IO_ReadOnly)) {
     fprintf(stderr,"sas_shim: unabled to open tty device\n");
     exit(1);
@@ -112,7 +101,7 @@ MainObject::MainObject(QObject *parent)
   //
   // Detach
   //
-  RDDetach(rd_config->logCoreDumpDirectory());
+  RDDetach(rda->config()->logCoreDumpDirectory());
   FILE *pidfile=fopen("/var/run/sas_shim.pid","w");
   fprintf(pidfile,"%d",getpid());
   fclose(pidfile);
@@ -132,75 +121,74 @@ void MainObject::readTtyData()
   while((n=shim_tty->readBlock(buf,255))>0) {
     for(int i=0;i<n;i++) {
       switch(istate) {
-	  case 0:   // Start of Command
-	    if(buf[i]=='D') {
-	      istate=1;
-	    }
-	    break;
+      case 0:   // Start of Command
+	if(buf[i]=='D') {
+	  istate=1;
+	}
+	break;
 
-	  case 1:   // Type Identifier
-	    if(buf[i]=='T') {
-	      istate=2;
-	    }
-	    else {
-	      istate=0;
-	    }
-	    break;
+      case 1:   // Type Identifier
+	if(buf[i]=='T') {
+	  istate=2;
+	}
+	else {
+	  istate=0;
+	}
+	break;
 
-	  case 2:   // Crosspoint State Byte
-	    if(buf[i]=='1') {
-	      istate=3;
-	    }
-	    else {
-	      istate=0;
-	    }
-	    break;
+      case 2:   // Crosspoint State Byte
+	if(buf[i]=='1') {
+	  istate=3;
+	}
+	else {
+	  istate=0;
+	}
+	break;
 
-	  case 3:   // First Input Digit
-	    if((buf[i]>='0')&&(buf[i]<='9')) {
-	      cmd[0]=buf[i];
-	      istate=4;
-	    }
-	    else {
-	      istate=0;
-	    }
-	    break;
+      case 3:   // First Input Digit
+	if((buf[i]>='0')&&(buf[i]<='9')) {
+	  cmd[0]=buf[i];
+	  istate=4;
+	}
+	else {
+	  istate=0;
+	}
+	break;
 
-	  case 4:   // Second Input Digit
-	    if((buf[i]>='0')&&(buf[i]<='9')) {
-	      cmd[1]=buf[i];
-	      cmd[2]=0;
-	      sscanf(cmd,"%d",&input);
-	      istate=5;
-	    }
-	    else {
-	      istate=0;
-	    }
-	    break;
+      case 4:   // Second Input Digit
+	if((buf[i]>='0')&&(buf[i]<='9')) {
+	  cmd[1]=buf[i];
+	  cmd[2]=0;
+	  sscanf(cmd,"%d",&input);
+	  istate=5;
+	}
+	else {
+	  istate=0;
+	}
+	break;
 
-	  case 5:   // First Output Digit
-	    if((buf[i]>='0')&&(buf[i]<='9')) {
-	      cmd[0]=buf[i];
-	      istate=6;
-	    }
-	    else {
-	      istate=0;
-	    }
-	    break;
+      case 5:   // First Output Digit
+	if((buf[i]>='0')&&(buf[i]<='9')) {
+	  cmd[0]=buf[i];
+	  istate=6;
+	}
+	else {
+	  istate=0;
+	}
+	break;
 
-	  case 6:   // Second Output Digit
-	    if((buf[i]>='0')&&(buf[i]<='9')) {
-	      cmd[1]=buf[i];
-	      cmd[2]=0;
-	      sscanf(cmd,"%d",&output);
-	      DispatchRml(input,output);
-	      istate=0;
-	    }
-	    else {
-	      istate=0;
-	    }
-	    break;
-
+      case 6:   // Second Output Digit
+	if((buf[i]>='0')&&(buf[i]<='9')) {
+	  cmd[1]=buf[i];
+	  cmd[2]=0;
+	  sscanf(cmd,"%d",&output);
+	  DispatchRml(input,output);
+	  istate=0;
+	}
+	else {
+	  istate=0;
+	}
+	break;
       }
     }
   }
@@ -216,10 +204,10 @@ void MainObject::DispatchRml(int input,int output)
   rml.setAddress(shim_address);
   rml.setEchoRequested(false);
   rml.setArgQuantity(3);
-  rml.setArg(0,rd_config->sasMatrix());
+  rml.setArg(0,rda->config()->sasMatrix());
   rml.setArg(1,input);
   rml.setArg(2,output);
-  shim_ripc->sendRml(&rml);
+  rda->ripc()->sendRml(&rml);
 }
 
 

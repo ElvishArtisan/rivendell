@@ -2,7 +2,7 @@
 //
 // Get information about a cut in the audio store.
 //
-//   (C) Copyright 2011,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2011,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -23,9 +23,7 @@
 
 #include <qobject.h>
 
-#include <rdconfig.h>
 #include <rdwavefile.h>
-#include <rdstation.h>
 
 class RDAudioInfo : public QObject
 {
@@ -33,7 +31,7 @@ class RDAudioInfo : public QObject
  public:
   enum ErrorCode {ErrorOk=0,ErrorInternal=5,ErrorUrlInvalid=7,
 		  ErrorService=8,ErrorInvalidUser=9,ErrorNoAudio=10};
-  RDAudioInfo(RDStation *station,RDConfig *config,QObject *parent=0);
+  RDAudioInfo(QObject *parent=0);
   RDWaveFile::Format format() const;
   unsigned channels() const;
   unsigned sampleRate() const;
@@ -48,8 +46,6 @@ class RDAudioInfo : public QObject
 
  private:
   int ParseInt(const QString &tag,const QString &xml);
-  RDStation *conv_station;
-  RDConfig *conv_config;
   unsigned conv_cart_number;
   unsigned conv_cut_number;
   RDWaveFile::Format conv_format;

@@ -32,6 +32,7 @@
 #include <qcheckbox.h>
 
 #include <rd.h>
+#include <rdapplication.h>
 #include <rdaudioimport.h>
 #include <rdcart.h>
 #include <rdcdripper.h>
@@ -45,8 +46,8 @@
 #include <rdtempdirectory.h>
 #include <rdwavefile.h>
 
-#include <disk_ripper.h>
-#include <globals.h>
+#include "disk_ripper.h"
+#include "globals.h"
 
 
 DiskRipper::DiskRipper(QString *filter,QString *group,QString *schedcode,
@@ -108,7 +109,7 @@ DiskRipper::DiskRipper(QString *filter,QString *group,QString *schedcode,
   connect(rip_cdrom,SIGNAL(mediaChanged()),this,SLOT(mediaChangedData()));
   connect(rip_cdrom,SIGNAL(played(int)),this,SLOT(playedData(int)));
   connect(rip_cdrom,SIGNAL(stopped()),this,SLOT(stoppedData()));
-  rip_cdrom->setDevice(rdlibrary_conf->ripperDevice());
+  rip_cdrom->setDevice(rda->libraryConf()->ripperDevice());
   rip_cdrom->open();
 
   //
@@ -341,11 +342,11 @@ DiskRipper::DiskRipper(QString *filter,QString *group,QString *schedcode,
   //
   // Populate Data
   //
-  rip_normalize_spin->setValue(rdlibrary_conf->ripperLevel()/100);
-  rip_autotrim_spin->setValue(rdlibrary_conf->trimThreshold()/100);
+  rip_normalize_spin->setValue(rda->libraryConf()->ripperLevel()/100);
+  rip_autotrim_spin->setValue(rda->libraryConf()->trimThreshold()/100);
   rip_channels_box->insertItem("1");
   rip_channels_box->insertItem("2");
-  rip_channels_box->setCurrentItem(rdlibrary_conf->defaultChannels()-1);
+  rip_channels_box->setCurrentItem(rda->libraryConf()->defaultChannels()-1);
   rip_done=false;
 }
 
@@ -432,9 +433,9 @@ void DiskRipper::ripDiskButtonData()
   // Read ISRCs
   //
   if(!rip_isrc_read) {
-    if(rdlibrary_conf->readIsrc()) {
+    if(rda->libraryConf()->readIsrc()) {
       rip_cddb_lookup->
-	readIsrc(rip_cdda_dir.path(),rdlibrary_conf->ripperDevice());
+	readIsrc(rip_cdda_dir.path(),rda->libraryConf()->ripperDevice());
     }
     rip_isrc_read=true;
   }
@@ -535,10 +536,9 @@ void DiskRipper::setCutButtonData()
     return;
   }
   QString cutname=rip_cutnames[item->text(0).toUInt()-1];
-  RDCutDialog *dialog=new RDCutDialog(&cutname,rdstation_conf,lib_system,
-				      rip_filter_text,
-				      rip_group_text,rip_schedcode_text,
-				      lib_user->name(),true,true,true,this);
+  RDCutDialog *dialog=
+    new RDCutDialog(&cutname,rip_filter_text,rip_group_text,rip_schedcode_text,
+		    true,true,true,this);
   if(dialog->exec()==0) {
     if(cutname.isEmpty()) {
       rip_cutnames[item->text(0).toUInt()-1]="";
@@ -617,7 +617,7 @@ void DiskRipper::setMultiButtonData()
   //
   // Get Destination Group
   //
-  RDListGroups *list_groups=new RDListGroups(rip_group_text,lib_user->name(),
+  RDListGroups *list_groups=new RDListGroups(rip_group_text,rda->user()->name(),
 					     this);
   if(list_groups->exec()<0) {
     delete list_groups;
@@ -638,7 +638,7 @@ void DiskRipper::setMultiButtonData()
     }
     item=(RDListViewItem *)item->nextSibling();
   }
-  if(!group->reserveCarts(&cart_nums,rdstation_conf->name(),RDCart::Audio,
+  if(!group->reserveCarts(&cart_nums,rda->station()->name(),RDCart::Audio,
 			  count)) {
     QMessageBox::warning(this,"RDLibrary - "+tr("Error"),
 			 tr("Unable to allocate carts in group")+" \""+
@@ -677,7 +677,7 @@ void DiskRipper::setSingleButtonData()
   //
   // Get Destination Group
   //
-  RDListGroups *list_groups=new RDListGroups(rip_group_text,lib_user->name(),
+  RDListGroups *list_groups=new RDListGroups(rip_group_text,rda->user()->name(),
 					     this);
   if(list_groups->exec()<0) {
     delete list_groups;
@@ -692,7 +692,7 @@ void DiskRipper::setSingleButtonData()
   //
   // Reserve Cart
   //
-  if(!group->reserveCarts(&cart_nums,rdstation_conf->name(),RDCart::Audio,1)) {
+  if(!group->reserveCarts(&cart_nums,rda->station()->name(),RDCart::Audio,1)) {
     QMessageBox::warning(this,"RDLibrary - "+tr("Error"),
 			 tr("Unable to allocate cart in group")+" \""+
 			 group->name()+"\".");
@@ -807,8 +807,8 @@ void DiskRipper::mediaChangedData()
   rip_cdrom->setCddbRecord(&rip_cddb_record);
   rip_cddb_lookup->setCddbRecord(&rip_cddb_record);
   rip_cddb_lookup->
-    lookupRecord(rip_cdda_dir.path(),rdlibrary_conf->ripperDevice(),
-		 rdlibrary_conf->cddbServer(),8880,
+    lookupRecord(rip_cdda_dir.path(),rda->libraryConf()->ripperDevice(),
+		 rda->libraryConf()->cddbServer(),8880,
 		 RIPPER_CDDB_USER,PACKAGE_NAME,VERSION);
 }
 
@@ -921,7 +921,7 @@ void DiskRipper::doubleClickedData(QListViewItem *item,const QPoint &pt,
 
 void DiskRipper::closeData()
 {
-  RDCart::removePending(rdstation_conf,lib_user,lib_config);
+  RDCart::removePending(rda->station(),rda->user(),rda->config());
   if(rip_done&&rip_apply_box->isChecked()) {
     done(0);
   }
@@ -1033,25 +1033,25 @@ void DiskRipper::RipTrack(int track,int end_track,QString cutname,QString title)
   connect(rip_rip_button,SIGNAL(clicked()),ripper,SLOT(abort()));
   RDAudioImport *conv=NULL;
   RDSettings *settings=NULL;
-  ripper->setDevice(rdlibrary_conf->ripperDevice());
+  ripper->setDevice(rda->libraryConf()->ripperDevice());
   ripper->setDestinationFile(tmpfile);
   switch((ripper_err=ripper->rip(rip_track_number-1,end_track-1))) {
   case RDCdRipper::ErrorOk:
-    conv=new RDAudioImport(rdstation_conf,lib_config,this);
+    conv=new RDAudioImport(this);
     conv->setSourceFile(tmpfile);
     conv->setCartNumber(cut->cartNumber());
     conv->setCutNumber(cut->cutNumber());
     conv->setUseMetadata(false);
     settings=new RDSettings();
-    if(rdlibrary_conf->defaultFormat()==1) {
+    if(rda->libraryConf()->defaultFormat()==1) {
       settings->setFormat(RDSettings::MpegL2Wav);
     }
     else {
       settings->setFormat(RDSettings::Pcm16);
     }
     settings->setChannels(rip_channels_box->currentText().toInt());
-    settings->setSampleRate(lib_system->sampleRate());
-    settings->setBitRate(rdlibrary_conf->defaultBitrate());
+    settings->setSampleRate(rda->system()->sampleRate());
+    settings->setBitRate(rda->libraryConf()->defaultBitrate());
     if(rip_normalize_box->isChecked()) {
       settings->setNormalizationLevel(rip_normalize_spin->value());
     }
@@ -1060,7 +1060,7 @@ void DiskRipper::RipTrack(int track,int end_track,QString cutname,QString title)
     }
     conv->setDestinationSettings(settings);
     switch((conv_err=conv->
-	    runImport(lib_user->name(),lib_user->password(),
+	    runImport(rda->user()->name(),rda->user()->password(),
 		      &audio_conv_err))) {
     case RDAudioImport::ErrorOk:
       cart->setMetadata(rip_wave_datas[track-1]);
@@ -1070,7 +1070,7 @@ void DiskRipper::RipTrack(int track,int end_track,QString cutname,QString title)
       break;
 
     default:
-      cart->remove(rdstation_conf,lib_user,lib_config);
+      cart->remove(rda->station(),rda->user(),rda->config());
       QMessageBox::warning(this,tr("RDLibrary - Importer Error"),
 			   RDAudioImport::errorText(conv_err,audio_conv_err));
       break;
@@ -1084,14 +1084,14 @@ void DiskRipper::RipTrack(int track,int end_track,QString cutname,QString title)
   case RDCdRipper::ErrorInternal:
   case RDCdRipper::ErrorNoDisc:
   case RDCdRipper::ErrorNoTrack:
-    cart->remove(rdstation_conf,lib_user,lib_config);
+    cart->remove(rda->station(),rda->user(),rda->config());
     QMessageBox::warning(this,tr("RDLibrary - Ripper Error"),
 			 RDCdRipper::errorText(ripper_err));
     break;
 
   case RDCdRipper::ErrorAborted:
     rip_aborting=true;
-    cart->remove(rdstation_conf,lib_user,lib_config);
+    cart->remove(rda->station(),rda->user(),rda->config());
     break;
   }
   delete ripper;

@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Cast
 //
-//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2004,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -27,15 +27,16 @@
 #include <qdatetime.h>
 #include <qradiobutton.h>
 
+#include <rdapplication.h>
 #include <rddb.h>
 #include <rddatedialog.h>
 #include <rdfeed.h>
 #include <rdescape_string.h>
-#include <pick_report_dates.h>
 #include <rdconf.h>
 
-#include <globals.h>
-#include <edit_cast.h>
+#include "edit_cast.h"
+#include "globals.h"
+#include "pick_report_dates.h"
 
 EditCast::EditCast(unsigned cast_id,QWidget *parent)
   : QDialog(parent,"",true)
@@ -45,8 +46,8 @@ EditCast::EditCast(unsigned cast_id,QWidget *parent)
   RDSqlQuery *q1;
   int ypos=0;
 
-  cast_cast=new RDPodcast(config,cast_id);
-  cast_feed=new RDFeed(cast_cast->feedId(),config);
+  cast_cast=new RDPodcast(rda->config(),cast_id);
+  cast_feed=new RDFeed(cast_cast->feedId(),rda->config());
   cast_status=cast_cast->status();
   setCaption(tr("Editing PodCast"));
 

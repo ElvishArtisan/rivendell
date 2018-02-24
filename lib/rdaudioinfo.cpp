@@ -2,7 +2,7 @@
 //
 // Get information about a cut in the audio store.
 //
-//   (C) Copyright 2011,2016-2017 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2011,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -30,10 +30,11 @@
 
 #include <qstringlist.h>
 
-#include <rd.h>
-#include <rdxport_interface.h>
-#include <rdformpost.h>
-#include <rdaudioinfo.h>
+#include "rd.h"
+#include "rdapplication.h"
+#include "rdxport_interface.h"
+#include "rdformpost.h"
+#include "rdaudioinfo.h"
 
 size_t RDAudioInfoCallback(void *ptr,size_t size,size_t nmemb,void *userdata)
 {
@@ -45,11 +46,9 @@ size_t RDAudioInfoCallback(void *ptr,size_t size,size_t nmemb,void *userdata)
 }
 
 
-RDAudioInfo::RDAudioInfo(RDStation *station,RDConfig *config,QObject *parent)
+RDAudioInfo::RDAudioInfo(QObject *parent)
   : QObject(parent)
 {
-  conv_station=station;
-  conv_config=config;
   conv_cart_number=0;
   conv_cut_number=0;
   conv_format=RDWaveFile::Pcm16;
@@ -135,14 +134,14 @@ RDAudioInfo::ErrorCode RDAudioInfo::runInfo(const QString &username,
   // otherwise some versions of LibCurl will throw a 'bad/illegal format' 
   // error.
   //
-  strncpy(url,conv_station->webServiceUrl(conv_config),1024);
+  strncpy(url,rda->station()->webServiceUrl(rda->config()),1024);
   curl_easy_setopt(curl,CURLOPT_URL,url);
   curl_easy_setopt(curl,CURLOPT_WRITEFUNCTION,RDAudioInfoCallback);
   curl_easy_setopt(curl,CURLOPT_WRITEDATA,&conv_xml);
   curl_easy_setopt(curl,CURLOPT_POST,1);
   curl_easy_setopt(curl,CURLOPT_POSTFIELDS,(const char *)post);
   curl_easy_setopt(curl,CURLOPT_USERAGENT,
-		   (const char *)conv_config->userAgent());
+		   (const char *)rda->config()->userAgent());
   curl_easy_setopt(curl,CURLOPT_TIMEOUT,RD_CURL_TIMEOUT);
 
   switch(curl_err=curl_easy_perform(curl)) {

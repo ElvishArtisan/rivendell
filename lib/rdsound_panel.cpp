@@ -2,7 +2,7 @@
 //
 // The sound panel widget for RDAirPlay
 //
-//   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -19,21 +19,22 @@
 //
 
 #include <qsignalmapper.h>
-#include <rddb.h>
-#include <rdlog_line.h>
-#include <rdsound_panel.h>
-#include <rdbutton_dialog.h>
-#include <rdmacro.h>
-#include <rdcut.h>
-#include <rdedit_panel_name.h>
-#include <rdescape_string.h>
-#include <rdconf.h>
+
+#include "rdapplication.h"
+#include "rdbutton_dialog.h"
+#include "rdcut.h"
+#include "rdconf.h"
+#include "rddb.h"
+#include "rdedit_panel_name.h"
+#include "rdescape_string.h"
+#include "rdlog_line.h"
+#include "rdmacro.h"
+#include "rdsound_panel.h"
 
 RDSoundPanel::RDSoundPanel(int cols,int rows,int station_panels,
 			   int user_panels,bool flash,
 			   const QString &label_template,bool extended,
-			   RDEventPlayer *player,RDRipc *ripc,RDCae *cae,
-			   RDStation *station,RDCartDialog *cart_dialog,
+			   RDEventPlayer *player,RDCartDialog *cart_dialog,
 			   QWidget *parent)
   : QWidget(parent)
 {
@@ -56,10 +57,6 @@ RDSoundPanel::RDSoundPanel(int cols,int rows,int station_panels,
   panel_setup_mode=false;
   panel_reset_mode=false;
   panel_parent=parent;
-  panel_cae=cae;
-  panel_user=NULL;
-  panel_ripc=ripc;
-  panel_station=station;
   panel_station_panels=station_panels;
   panel_user_panels=user_panels;
   panel_event_player=player;
@@ -188,19 +185,19 @@ RDSoundPanel::RDSoundPanel(int cols,int rows,int station_panels,
   // Button Dialog Box
   //
   panel_button_dialog=
-    new RDButtonDialog(panel_station->name(),panel_label_template,
+    new RDButtonDialog(rda->station()->name(),panel_label_template,
 		       panel_cart_dialog,panel_svcname,this);
 
   //
   // CAE Setup
   //
-  connect(panel_cae,SIGNAL(timescalingSupported(int,bool)),
+  connect(rda->cae(),SIGNAL(timescalingSupported(int,bool)),
 	  this,SLOT(timescalingSupportedData(int,bool)));
 
   //
   // RIPC Setup
   //
-  connect(panel_ripc,SIGNAL(onairFlagChanged(bool)),
+  connect(rda->ripc(),SIGNAL(onairFlagChanged(bool)),
 	  this,SLOT(onairFlagChangedData(bool)));
 
   //
@@ -210,7 +207,7 @@ RDSoundPanel::RDSoundPanel(int cols,int rows,int station_panels,
   QString sql;
   sql=QString("select PANEL_NO,NAME from ")+panel_name_tablename+" where "+
     QString().sprintf("(TYPE=%d)&&",RDAirPlayConf::StationPanel)+
-    "(OWNER=\""+RDEscapeString(panel_station->name())+"\") "+
+    "(OWNER=\""+RDEscapeString(rda->station()->name())+"\") "+
     "order by PANEL_NO";
   RDSqlQuery *q=new RDSqlQuery(sql);
   q->first();
@@ -268,7 +265,7 @@ int RDSoundPanel::card(int outnum) const
 void RDSoundPanel::setCard(int outnum,int card)
 {
   panel_card[outnum]=card;
-  panel_cae->requestTimescale(card);
+  rda->cae()->requestTimescale(card);
 }
 
 
@@ -572,11 +569,13 @@ void RDSoundPanel::acceptCartDrop(int row,int col,unsigned cartnum,
 
 void RDSoundPanel::changeUser()
 {
+  /*
   if(panel_user!=NULL) {
     delete panel_user;
   }
-  panel_user=new RDUser(panel_ripc->user());
-  panel_config_panels=panel_user->configPanels();
+  panel_user=new RDUser(rda->ripc->user());
+  */
+  panel_config_panels=rda->user()->configPanels();
   LoadPanels();
   panel_buttons[PanelOffset(panel_type,panel_number)]->show();
 
@@ -594,7 +593,7 @@ void RDSoundPanel::changeUser()
   QString sql;
   sql=QString("select PANEL_NO,NAME from ")+panel_name_tablename+" where "+
     QString().sprintf("(TYPE=%d)&&",RDAirPlayConf::UserPanel)+
-    "(OWNER=\""+RDEscapeString(panel_user->name())+"\") "+
+    "(OWNER=\""+RDEscapeString(rda->user()->name())+"\") "+
     "order by PANEL_NO";
   RDSqlQuery *q=new RDSqlQuery(sql);
   q->first();
@@ -685,7 +684,7 @@ void RDSoundPanel::setupClickedData()
     panel_reset_button->setDisabled(true);
     panel_playmode_box->setDisabled(true);
   }
-  if(panel_station->enableDragdrop()&&(panel_station->enforcePanelSetup())) {
+  if(rda->station()->enableDragdrop()&&(rda->station()->enforcePanelSetup())) {
     for(unsigned i=0;i<panel_buttons.size();i++) {
       if(panel_buttons[i]!=NULL) {
 	panel_buttons[i]->setAcceptDrops(panel_setup_mode);
@@ -747,7 +746,7 @@ void RDSoundPanel::buttonMapperData(int id)
 	  if(panel_button_dialog->
 	     exec(panel_buttons[PanelOffset(panel_type,panel_number)]->
 		  panelButton(row,col),panel_playmode_box->currentItem()==1,
-		  panel_user->name(),panel_user->password())
+		  rda->user()->name(),rda->user()->password())
 	     ==0) {
 	    SaveButton(panel_type,panel_number,row,col);
 	  }
@@ -842,7 +841,7 @@ void RDSoundPanel::timescalingSupportedData(int card,bool state)
 
 void RDSoundPanel::panelSetupData()
 {
-  if(panel_user->configPanels()||(panel_type==RDAirPlayConf::UserPanel)) {
+  if(rda->user()->configPanels()||(panel_type==RDAirPlayConf::UserPanel)) {
     QString sql;
     RDSqlQuery *q;
     int cutpt=panel_selector_box->currentText().find(" ");
@@ -922,13 +921,13 @@ void RDSoundPanel::PlayButton(RDAirPlayConf::PanelType type,int panel,
     deck->play(deck->currentPosition());
     if(button->hookMode()) {
       button->setStartTime(QTime::currentTime().
-			   addMSecs(panel_station->timeOffset()).
+			   addMSecs(rda->station()->timeOffset()).
 			   addMSecs(-deck->currentPosition()+
 				    deck->cut()->hookStartPoint()));
     }
     else {
       button->setStartTime(QTime::currentTime().
-			   addMSecs(panel_station->timeOffset()).
+			   addMSecs(rda->station()->timeOffset()).
 			   addMSecs(-deck->currentPosition()));
     }
     return;
@@ -990,7 +989,7 @@ bool RDSoundPanel::PlayAudio(RDPanelButton *button,RDCart *cart,bool hookmode,in
     }
   button->setOutputText(panel_output_text[button->output()]);
   button->setHookMode(hookmode);
-  button->setPlayDeck(new RDPlayDeck(panel_cae,button_deck,this));
+  button->setPlayDeck(new RDPlayDeck(rda->cae(),button_deck,this));
   button->playDeck()->setCard(panel_card[button->output()]);
   button->playDeck()->setPort(panel_port[button->output()]);
   button->playDeck()->duckVolume(button->duckVolume(),0);
@@ -1035,7 +1034,7 @@ bool RDSoundPanel::PlayAudio(RDPanelButton *button,RDCart *cart,bool hookmode,in
   // Start Playout
   //
   button->
-    setStartTime(QTime::currentTime().addMSecs(panel_station->timeOffset()));
+    setStartTime(QTime::currentTime().addMSecs(rda->station()->timeOffset()));
   if(hookmode&&(button->playDeck()->cut()->hookStartPoint()>=0)) {
     button->setActiveLength(button->playDeck()->cut()->hookEndPoint()-
       button->playDeck()->cut()->hookStartPoint());
@@ -1061,12 +1060,12 @@ void RDSoundPanel::PlayMacro(RDPanelButton *button,RDCart *cart)
 {
   RDMacro rml;
   rml.setRole(RDMacro::Cmd);
-  rml.setAddress(panel_station->address());
+  rml.setAddress(rda->station()->address());
   rml.setEchoRequested(false);
   rml.setCommand(RDMacro::EX);
   rml.setArgQuantity(1);
   rml.setArg(0,cart->number());
-  panel_ripc->sendRml(&rml);
+  rda->ripc()->sendRml(&rml);
   if(!panel_svcname.isEmpty()) {
     LogTrafficMacro(button);
   }
@@ -1197,7 +1196,7 @@ void RDSoundPanel::LoadPanels()
   for(int i=0;i<panel_station_panels;i++) {
     panel_buttons.push_back(new RDButtonPanel(panel_type,i,panel_button_columns,
 					      panel_button_rows,
-					      panel_station,panel_flash,this));
+					      rda->station(),panel_flash,this));
     for(int j=0;j<panel_button_rows;j++) {
       for(int k=0;k<panel_button_columns;k++) {
 	connect(panel_buttons.back()->panelButton(j,k),SIGNAL(clicked()),
@@ -1207,12 +1206,12 @@ void RDSoundPanel::LoadPanels()
       }
     }
     LoadPanel(RDAirPlayConf::StationPanel,i);
-    panel_buttons.back()->setAllowDrags(panel_station->enableDragdrop());
+    panel_buttons.back()->setAllowDrags(rda->station()->enableDragdrop());
   }
   for(int i=0;i<panel_user_panels;i++) {
     panel_buttons.push_back(new RDButtonPanel(panel_type,i,panel_button_columns,
 					      panel_button_rows,
-					      panel_station,panel_flash,this));
+					      rda->station(),panel_flash,this));
     for(int j=0;j<panel_button_rows;j++) {
       for(int k=0;k<panel_button_columns;k++) {
 	connect(panel_buttons.back()->panelButton(j,k),SIGNAL(clicked()),
@@ -1221,7 +1220,7 @@ void RDSoundPanel::LoadPanels()
 			   j*panel_button_columns+k);
       }
     }
-    panel_buttons.back()->setAllowDrags(panel_station->enableDragdrop());
+    panel_buttons.back()->setAllowDrags(rda->station()->enableDragdrop());
     LoadPanel(RDAirPlayConf::UserPanel,i);
   }
 }
@@ -1234,15 +1233,12 @@ void RDSoundPanel::LoadPanel(RDAirPlayConf::PanelType type,int panel)
 
   switch(type) {
       case RDAirPlayConf::UserPanel:
-	if(panel_user==NULL) {
-	  return;
-	}
-	owner=panel_user->name();
+	owner=rda->user()->name();
 	offset=panel_station_panels+panel;
 	break;
 
       case RDAirPlayConf::StationPanel:
-	owner=panel_station->name();
+	owner=rda->station()->name();
 	offset=panel;
 	break;
   }
@@ -1332,12 +1328,12 @@ void RDSoundPanel::SaveButton(RDAirPlayConf::PanelType type,
 
   switch(type) {
       case RDAirPlayConf::UserPanel:
-	owner=panel_user->name();
+	owner=rda->user()->name();
 	offset=panel_station_panels+panel;
 	break;
 
       case RDAirPlayConf::StationPanel:
-	owner=panel_station->name();
+	owner=rda->station()->name();
 	offset=panel;
 	break;
   }
@@ -1496,7 +1492,7 @@ void RDSoundPanel::LogTraffic(RDPanelButton *button)
       QString().sprintf("LENGTH=%d,",button->startTime().
 			msecsTo(datetime.time()))+
       QString().sprintf("CART_NUMBER=%u,",button->cart())+
-      "STATION_NAME=\""+RDEscapeString(panel_station->name().utf8())+"\","+
+      "STATION_NAME=\""+RDEscapeString(rda->station()->name().utf8())+"\","+
       "EVENT_DATETIME="+eventDateTimeSQL+","+
       QString().sprintf("EVENT_TYPE=%d,",RDAirPlayConf::TrafficStop)+
       QString().sprintf("EVENT_SOURCE=%d,",RDLogLine::SoundPanel)+
@@ -1539,7 +1535,7 @@ void RDSoundPanel::LogTrafficMacro(RDPanelButton *button)
     sql=QString("insert into `")+panel_svcname+"_SRT` set "+
       QString().sprintf("LENGTH=%d,",q->value(5).toUInt())+
       QString().sprintf("CART_NUMBER=%u,",button->cart())+
-      "STATION_NAME=\""+RDEscapeString(panel_station->name().utf8())+"\","+
+      "STATION_NAME=\""+RDEscapeString(rda->station()->name().utf8())+"\","+
       "EVENT_DATETIME=\""+datetime.toString("yyyy-MM-dd hh:mm:ss")+"\","+
       QString().sprintf("EVENT_TYPE=%d,",RDAirPlayConf::TrafficMacro)+
       QString().sprintf("EVENT_SOURCE=%d,",RDLogLine::SoundPanel)+
@@ -1653,7 +1649,7 @@ void RDSoundPanel::Stopped(int id)
 void RDSoundPanel::ClearChannel(int id)
 {
   RDPlayDeck *playdeck=panel_active_buttons[id]->playDeck();
-  if(panel_cae->
+  if(rda->cae()->
      playPortActive(playdeck->card(),playdeck->port(),playdeck->stream())) {
     return;
   }
@@ -1684,12 +1680,10 @@ QString RDSoundPanel::PanelOwner(RDAirPlayConf::PanelType type)
 {
   switch(type) {
       case RDAirPlayConf::StationPanel:
-	return panel_station->name();
+	return rda->station()->name();
 
       case RDAirPlayConf::UserPanel:
-	if(panel_user!=NULL) {
-	  return panel_user->name();
-	}
+	return rda->user()->name();
   }
   return QString();
 }

@@ -2,7 +2,7 @@
 //
 // Add a Rivendell Service
 //
-//   (C) Copyright 2002,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -30,6 +30,7 @@
 #include <qcheckbox.h>
 #include <qbuttongroup.h>
 
+#include <rdapplication.h>
 #include <rddb.h>
 #include <rdpasswd.h>
 #include <rdtextvalidator.h>
@@ -153,7 +154,7 @@ void AddSvc::okData()
   if(svc_exemplar_box->currentItem()>0) {
     exemplar=svc_exemplar_box->currentText();
   }
-  if(!RDSvc::create(svc_name_edit->text(),&err_msg,exemplar,admin_config)) {
+  if(!RDSvc::create(svc_name_edit->text(),&err_msg,exemplar,rda->config())) {
     QMessageBox::warning(this,"RDAdmin - "+tr("Error"),err_msg);
     return;
   }

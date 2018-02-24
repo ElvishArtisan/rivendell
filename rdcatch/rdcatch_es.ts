@@ -1249,7 +1249,7 @@ como Nuevo</translation>
     </message>
     <message>
         <source>rdcatch : </source>
-        <translation>rdcatch : </translation>
+        <translation type="obsolete">rdcatch : </translation>
     </message>
     <message>
         <source>Unknown</source>
@@ -1273,6 +1273,14 @@ como Nuevo</translation>
     </message>
     <message>
         <source>All Types</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unknown command option</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

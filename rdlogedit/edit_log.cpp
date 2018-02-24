@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Log
 //
-//   (C) Copyright 2002-2017 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -30,24 +30,25 @@
 #include <qmessagebox.h>
 #include <qbuttongroup.h>
 
-#include <rddb.h>
-#include <rdcreate_log.h>
-#include <rddebug.h>
-#include <rdadd_log.h>
-#include <rdtextvalidator.h>
-#include <rdtextfile.h>
-#include <rdlogedit_conf.h>
 #include <rd.h>
+#include <rdadd_log.h>
+#include <rdapplication.h>
 #include <rdconf.h>
+#include <rdcreate_log.h>
 #include <rddatedialog.h>
+#include <rddb.h>
+#include <rddebug.h>
+#include <rdlogedit_conf.h>
+#include <rdtextfile.h>
+#include <rdtextvalidator.h>
 
-#include "globals.h"
 #include "add_meta.h"
 #include "edit_chain.h"
 #include "edit_log.h"
 #include "edit_logline.h"
 #include "edit_marker.h"
 #include "edit_track.h"
+#include "globals.h"
 
 //
 // Icons
@@ -80,21 +81,21 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   edit_clipboard=clipboard;
   edit_newlogs=new_logs;
   edit_default_trans=RDLogLine::Play;
-  bool adding_allowed=rduser->addtoLog();
-  bool deleting_allowed=rduser->removefromLog();
-  bool editing_allowed=rduser->arrangeLog();
-  bool saveas_allowed=rduser->createLog();
+  bool adding_allowed=rda->user()->addtoLog();
+  bool deleting_allowed=rda->user()->removefromLog();
+  bool editing_allowed=rda->user()->arrangeLog();
+  bool saveas_allowed=rda->user()->createLog();
 
   setCaption(tr("Edit Log"));
 
   //
   // Config Data
   //
-  edit_default_trans=rdlogedit_conf->defaultTransType();
-  edit_output_card=rdlogedit_conf->outputCard();
-  edit_output_port=rdlogedit_conf->outputPort();
-  edit_start_macro=rdlogedit_conf->startCart();
-  edit_end_macro=rdlogedit_conf->endCart();
+  edit_default_trans=rda->logeditConf()->defaultTransType();
+  edit_output_card=rda->logeditConf()->outputCard();
+  edit_output_port=rda->logeditConf()->outputPort();
+  edit_start_macro=rda->logeditConf()->startCart();
+  edit_end_macro=rda->logeditConf()->endCart();
 
   //
   // Fix the Window Size
@@ -133,7 +134,7 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   // Dialogs
   //
 #ifndef WIN32
-  edit_render_dialog=new RenderDialog(rdstation_conf,rdsystem,log_config,this);
+  edit_render_dialog=new RenderDialog(rda->station(),rda->system(),rda->config(),this);
 #endif  // WIN32
 
   //
@@ -149,7 +150,7 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   //
   // Log Data Structures
   //
-  edit_log_lock=new RDLogLock(edit_logname,rduser,rdstation_conf,this);
+  edit_log_lock=new RDLogLock(edit_logname,rda->user(),rda->station(),this);
   edit_log_event=new RDLogEvent(RDLog::tableName(edit_logname));
   edit_log_event->load(true);
 
@@ -493,7 +494,7 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   edit_player=NULL;
 #else
   edit_player=
-    new RDSimplePlayer(rdcae,rdripc,edit_output_card,edit_output_port,
+    new RDSimplePlayer(rda->cae(),rda->ripc(),edit_output_card,edit_output_port,
 		       edit_start_macro,edit_end_macro,this);
   edit_player->stopButton()->setOnColor(red);
 #endif  // WIN32
@@ -1115,21 +1116,21 @@ void EditLog::saveasData()
   RDAddLog *log=NULL;
   QString err_msg;
 
-  if(rduser->createLog()) {
-    log=new RDAddLog(&logname,&svcname,RDLogFilter::UserFilter,rduser,
-		     rdstation_conf,tr("Add Log"),this);
+  if(rda->user()->createLog()) {
+    log=new RDAddLog(&logname,&svcname,RDLogFilter::UserFilter,
+		     tr("Add Log"),this);
     if(log->exec()<0) {
       return;
     }
-    if(!RDLog::create(logname,svcname,QDate(),rdripc->user(),&err_msg,
-		      log_config)) {
+    if(!RDLog::create(logname,svcname,QDate(),rda->ripc()->user(),&err_msg,
+		      rda->config())) {
       QMessageBox::warning(this,"RDLogEdit - "+tr("Error"),err_msg);
       return;
     }
     delete edit_log;
     edit_newlogs->push_back(logname);
     edit_log=new RDLog(logname);
-    RDCreateLogTable(RDLog::tableName(logname),log_config);
+    RDCreateLogTable(RDLog::tableName(logname),rda->config());
     edit_log_event->setLogName(RDLog::tableName(logname));
     for(int i=0;i<edit_service_box->count();i++) {
       if(edit_service_box->text(i)==svcname) {
@@ -1168,10 +1169,10 @@ void EditLog::renderasData()
     next=next->nextSibling();
   }
   if(first_line<0) {
-    edit_render_dialog->exec(rduser,edit_log_event,0,0);
+    edit_render_dialog->exec(rda->user(),edit_log_event,0,0);
   }
   else {
-    edit_render_dialog->exec(rduser,edit_log_event,first_line,last_line+1);
+    edit_render_dialog->exec(rda->user(),edit_log_event,first_line,last_line+1);
   }
 #endif  // WIN32
 }
@@ -1396,7 +1397,7 @@ void EditLog::SaveLog()
     edit_log->setEndDate(QDate());
   }
   edit_log->setAutoRefresh(edit_autorefresh_box->currentItem()==0);
-  edit_log_event->save(log_config);
+  edit_log_event->save(rda->config());
   edit_log->
     setModifiedDatetime(QDateTime(QDate::currentDate(),QTime::currentTime()));
 }
@@ -1819,7 +1820,7 @@ bool EditLog::DeleteTracks()
   RDCart *cart;
   for(unsigned i=0;i<edit_deleted_tracks.size();i++) {
     cart=new RDCart(edit_deleted_tracks[i]);
-    if(!cart->remove(rdstation_conf,rduser,log_config)) {
+    if(!cart->remove(rda->station(),rda->user(),rda->config())) {
       delete cart;
       return false;
     }

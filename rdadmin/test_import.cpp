@@ -2,7 +2,7 @@
 //
 // Test a Rivendell Log Import
 //
-//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2004,2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -22,16 +22,16 @@
 #include <qpainter.h>
 #include <qmessagebox.h>
 
-#include "globals.h"
-#include "rdconf.h"
-#include "rddatedecode.h"
-#include "rddatedialog.h"
-#include "rddb.h"
-#include "rdevent_line.h"
-#include "rdlistviewitem.h"
-#include "rdpasswd.h"
-#include "rduser.h"
+#include <rdapplication.h>
+#include <rdconf.h>
+#include <rddatedecode.h>
+#include <rddatedialog.h>
+#include <rddb.h>
+#include <rdevent_line.h>
+#include <rdlistviewitem.h>
+#include <rdpasswd.h>
 
+#include "globals.h"
 #include "test_import.h"
 
 TestImport::TestImport(RDSvc *svc,RDSvc::ImportSource src,QWidget *parent)
@@ -256,7 +256,7 @@ void TestImport::dateChangedData(const QDate &date)
 {
   test_filename_edit->
     setText(RDDateDecode(test_svc->importPath(test_src,RDSvc::Linux),date,
-			 admin_station,admin_config,test_svc->name()));
+			 rda->station(),rda->config(),test_svc->name()));
 }
 
 

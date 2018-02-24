@@ -2,7 +2,7 @@
 //
 // Edit Rivendell Audio
 //
-//   (C) Copyright 2002-2003,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2003,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -24,28 +24,24 @@
 #include <qsignalmapper.h>
 #include <qmessagebox.h>
 
-#include <rdconf.h>
-#include <rd.h>
-#include <rdmixer.h>
-#include <rdcut.h>
-#include <rdedit_audio.h>
-#include <rdaudioinfo.h>
-#include <rdtrimaudio.h>
+#include "rd.h"
+#include "rdapplication.h"
+#include "rdaudioinfo.h"
+#include "rdconf.h"
+#include "rdcut.h"
+#include "rdedit_audio.h"
+#include "rdmixer.h"
+#include "rdtrimaudio.h"
 
-RDEditAudio::RDEditAudio(RDCart *cart,QString cut_name,RDCae *cae,RDUser *user,
-			 RDStation *station,RDConfig *config,int card,
+RDEditAudio::RDEditAudio(RDCart *cart,QString cut_name,int card,
 			 int port,int preroll,int trim_level,QWidget *parent)
   : QDialog(parent,"",true)
 {
-  edit_cae=cae;
-  edit_station=station;
-  edit_user=user;
-  edit_config=config;
   edit_card=card;
   edit_port=port;
   edit_stream=-1;
   
-  bool editing_allowed=user->editAudio()&&cart->owner().isEmpty();
+  bool editing_allowed=rda->user()->editAudio()&&cart->owner().isEmpty();
 
   //
   // Fix the Window Size
@@ -103,18 +99,18 @@ RDEditAudio::RDEditAudio(RDCart *cart,QString cut_name,RDCae *cae,RDUser *user,
   //
   // The Audio
   //
-  connect(edit_cae,SIGNAL(playing(int)),this,SLOT(playedData(int)));
-  connect(edit_cae,SIGNAL(playStopped(int)),this,SLOT(pausedData(int)));
-  connect(edit_cae,SIGNAL(playPositionChanged(int,unsigned)),
+  connect(rda->cae(),SIGNAL(playing(int)),this,SLOT(playedData(int)));
+  connect(rda->cae(),SIGNAL(playStopped(int)),this,SLOT(pausedData(int)));
+  connect(rda->cae(),SIGNAL(playPositionChanged(int,unsigned)),
 	  this,SLOT(positionData(int,unsigned)));
-  edit_cae->loadPlay(edit_card,edit_cut->cutName(),&edit_stream,&edit_handle);
-  RDSetMixerOutputPort(edit_cae,edit_card,edit_stream,edit_port);
-  RDAudioInfo *info=new RDAudioInfo(station,edit_config,this);
+  rda->cae()->loadPlay(edit_card,edit_cut->cutName(),&edit_stream,&edit_handle);
+  RDSetMixerOutputPort(rda->cae(),edit_card,edit_stream,edit_port);
+  RDAudioInfo *info=new RDAudioInfo(this);
   RDAudioInfo::ErrorCode audio_err;
   info->setCartNumber(RDCut::cartNumber(cut_name));
   info->setCutNumber(RDCut::cutNumber(cut_name));
 
-  if((audio_err=info->runInfo(user->name(),user->password()))==
+  if((audio_err=info->runInfo(rda->user()->name(),rda->user()->password()))==
      RDAudioInfo::ErrorOk) {
     edit_sample_rate=info->sampleRate();
     edit_sample_length=info->frames();
@@ -750,11 +746,11 @@ RDEditAudio::RDEditAudio(RDCart *cart,QString cut_name,RDCae *cae,RDUser *user,
   //
   // The Wave Forms
   //
-  edit_peaks=new RDPeaksExport(station,config,this);
+  edit_peaks=new RDPeaksExport(this);
   RDPeaksExport::ErrorCode conv_err;
   edit_peaks->setCartNumber(RDCut::cartNumber(cut_name));
   edit_peaks->setCutNumber(RDCut::cutNumber(cut_name));
-  if((conv_err=edit_peaks->runExport(user->name(),user->password()))!=
+  if((conv_err=edit_peaks->runExport(rda->user()->name(),rda->user()->password()))!=
      RDPeaksExport::ErrorOk) {
     QMessageBox::warning(this,tr("Rivendell Web Service"),
 			 tr("Unable to download peak data, error was:\n\"")+
@@ -924,8 +920,8 @@ QSizePolicy RDEditAudio::sizePolicy() const
 
 void RDEditAudio::saveData()
 {
-  edit_cae->stopPlay(edit_handle);
-  edit_cae->unloadPlay(edit_handle);
+  rda->cae()->stopPlay(edit_handle);
+  rda->cae()->unloadPlay(edit_handle);
   if(!SaveMarkers()) {
     return;
   }
@@ -935,8 +931,8 @@ void RDEditAudio::saveData()
 
 void RDEditAudio::cancelData()
 {
-  edit_cae->stopPlay(edit_handle);
-  edit_cae->unloadPlay(edit_handle);
+  rda->cae()->stopPlay(edit_handle);
+  rda->cae()->unloadPlay(edit_handle);
   done(1);
 }
 
@@ -1057,7 +1053,7 @@ void RDEditAudio::playStartData()
   if(is_playing) {
     return;
   }
-  edit_cae->
+  rda->cae()->
     positionPlay(edit_handle,GetTime(edit_cursors[RDEditAudio::Start]*1152));
   switch(edit_cue_point) {
       case RDEditAudio::End:
@@ -1072,10 +1068,10 @@ void RDEditAudio::playStartData()
 	break;
   }
   if(!is_playing) {
-    edit_cae->setPlayPortActive(edit_card,edit_port,edit_stream);
-    edit_cae->
+    rda->cae()->setPlayPortActive(edit_card,edit_port,edit_stream);
+    rda->cae()->
       setOutputVolume(edit_card,edit_stream,edit_port,0+edit_gain_control->value());
-    edit_cae->play(edit_handle,(int)(1000.0*(double)
+    rda->cae()->play(edit_handle,(int)(1000.0*(double)
 				     ((edit_cursors[RDEditAudio::End]-
 			    edit_cursors[RDEditAudio::Start])*1152)/
 				     (double)edit_sample_rate),
@@ -1142,10 +1138,10 @@ void RDEditAudio::playCursorData()
 
   pause_mode=false;
   if(!is_playing) {
-    edit_cae->setPlayPortActive(edit_card,edit_port,edit_stream);
-    edit_cae->
+    rda->cae()->setPlayPortActive(edit_card,edit_port,edit_stream);
+    rda->cae()->
       setOutputVolume(edit_card,edit_stream,edit_port,0+edit_gain_control->value());
-    edit_cae->play(edit_handle,length,RD_TIMESCALE_DIVISOR,0);
+    rda->cae()->play(edit_handle,length,RD_TIMESCALE_DIVISOR,0);
   }
   if(use_looping) {
     is_looping=true;
@@ -1162,7 +1158,7 @@ void RDEditAudio::pauseData()
   if(!is_paused) {
     is_looping=false;
     pause_mode=true;
-    edit_cae->stopPlay(edit_handle);
+    rda->cae()->stopPlay(edit_handle);
   }
 }
 
@@ -1172,7 +1168,7 @@ void RDEditAudio::stopData()
   if(!is_paused) {
     is_looping=false;
     pause_mode=false;
-    edit_cae->stopPlay(edit_handle);
+    rda->cae()->stopPlay(edit_handle);
   }
 }
 
@@ -1269,7 +1265,7 @@ void RDEditAudio::pausedData(int handle)
     }
     else {
       edit_stop_button->on();
-      edit_cae->positionPlay(edit_handle,GetTime(played_cursor*1152));
+      rda->cae()->positionPlay(edit_handle,GetTime(played_cursor*1152));
     }
     is_playing=false;
     is_paused=true;
@@ -1351,7 +1347,7 @@ void RDEditAudio::cuePointData(int id)
 	  case RDEditAudio::TalkStart:
 	  case RDEditAudio::HookStart:
 	  case RDEditAudio::FadeDown:
-	    edit_cae->positionPlay(edit_handle,GetTime(edit_cursors[id]*1152));
+	    rda->cae()->positionPlay(edit_handle,GetTime(edit_cursors[id]*1152));
 	    break;
 
 	  case RDEditAudio::End:
@@ -1366,7 +1362,7 @@ void RDEditAudio::cuePointData(int id)
     else {
       edit_cue_button[id]->setFlashingEnabled(false);
       edit_cue_point=RDEditAudio::Play;
-      edit_cae->positionPlay(edit_handle,0);
+      rda->cae()->positionPlay(edit_handle,0);
     }
   }
   UpdateCounters();
@@ -1502,11 +1498,11 @@ void RDEditAudio::trimHeadData()
 {
   RDEditAudio::CuePoints point;
   RDTrimAudio::ErrorCode conv_err;
-  RDTrimAudio *conv=new RDTrimAudio(edit_station,edit_config,this);
+  RDTrimAudio *conv=new RDTrimAudio(rda->station(),rda->config(),this);
   conv->setCartNumber(edit_cut->cartNumber());
   conv->setCutNumber(edit_cut->cutNumber());
   conv->setTrimLevel(100*edit_trim_box->value());
-  switch(conv_err=conv->runTrim(edit_user->name(),edit_user->password())) {
+  switch(conv_err=conv->runTrim(rda->user()->name(),rda->user()->password())) {
   case RDTrimAudio::ErrorOk:
     if(conv->startPoint()>=0) {
       point=edit_cue_point;
@@ -1531,11 +1527,11 @@ void RDEditAudio::trimTailData()
 {
   RDEditAudio::CuePoints point;
   RDTrimAudio::ErrorCode conv_err;
-  RDTrimAudio *conv=new RDTrimAudio(edit_station,edit_config,this);
+  RDTrimAudio *conv=new RDTrimAudio(rda->station(),rda->config(),this);
   conv->setCartNumber(edit_cut->cartNumber());
   conv->setCutNumber(edit_cut->cutNumber());
   conv->setTrimLevel(100*edit_trim_box->value());
-  switch(conv_err=conv->runTrim(edit_user->name(),edit_user->password())) {
+  switch(conv_err=conv->runTrim(rda->user()->name(),rda->user()->password())) {
   case RDTrimAudio::ErrorOk:
     if(conv->endPoint()>=0) {
       point=edit_cue_point;
@@ -1656,7 +1652,7 @@ void RDEditAudio::meterData()
 {
   short levels[2];
 
-  edit_cae->outputMeterUpdate(edit_card,edit_port,levels);
+  rda->cae()->outputMeterUpdate(edit_card,edit_port,levels);
   edit_meter->setLeftPeakBar(levels[0]);
   edit_meter->setRightPeakBar(levels[1]);
 }
@@ -1721,7 +1717,7 @@ void RDEditAudio::mouseMoveEvent(QMouseEvent *e)
       }
       else {
 	ignore_pause=true;
-	edit_cae->positionPlay(edit_handle,GetTime(cursor));
+	rda->cae()->positionPlay(edit_handle,GetTime(cursor));
 	ignore_pause=false;
       }
     }
@@ -1729,7 +1725,7 @@ void RDEditAudio::mouseMoveEvent(QMouseEvent *e)
       cursor=(int)((((double)e->x()-10.0)*edit_factor_x+
 		    (double)edit_hscroll->value())*1152.0);
       ignore_pause=true;
-      edit_cae->positionPlay(edit_handle,GetTime(cursor));
+      rda->cae()->positionPlay(edit_handle,GetTime(cursor));
       ignore_pause=false;
     }
   }
@@ -1756,7 +1752,7 @@ void RDEditAudio::mousePressEvent(QMouseEvent *e)
 	  }
 	  else {
 	    ignore_pause=true;
-	    edit_cae->positionPlay(edit_handle,GetTime(cursor));
+	    rda->cae()->positionPlay(edit_handle,GetTime(cursor));
 	    ignore_pause=false;
 	  }
 	  break;
@@ -1764,7 +1760,7 @@ void RDEditAudio::mousePressEvent(QMouseEvent *e)
 	case QMouseEvent::MidButton:
 	  center_button_pressed=true;
 	  ignore_pause=true;
-	  edit_cae->positionPlay(edit_handle,GetTime(cursor));
+	  rda->cae()->positionPlay(edit_handle,GetTime(cursor));
 	  ignore_pause=false;
 	  break;
 
@@ -1903,37 +1899,37 @@ void RDEditAudio::PreRoll(int cursor,RDEditAudio::CuePoints point)
   switch(point) {
       case RDEditAudio::SegueEnd:
 	if(prepoint>1152*edit_cursors[RDEditAudio::SegueStart]) {
-	  edit_cae->positionPlay(edit_handle,GetTime(prepoint));
+	  rda->cae()->positionPlay(edit_handle,GetTime(prepoint));
 	}
 	else {
-	  edit_cae->positionPlay(edit_handle,
+	  rda->cae()->positionPlay(edit_handle,
 			   GetTime(1152*edit_cursors[RDEditAudio::SegueStart]));
 	}
 	break;
       case RDEditAudio::End:
 	if(prepoint>1152*edit_cursors[RDEditAudio::Start]) {
-	  edit_cae->positionPlay(edit_handle,GetTime(prepoint));
+	  rda->cae()->positionPlay(edit_handle,GetTime(prepoint));
 	}
 	else {
-	  edit_cae->positionPlay(edit_handle,
+	  rda->cae()->positionPlay(edit_handle,
 			      GetTime(1152*edit_cursors[RDEditAudio::Start]));
 	}
 	break;
       case RDEditAudio::TalkEnd:
 	if(prepoint>1152*edit_cursors[RDEditAudio::TalkStart]) {
-	  edit_cae->positionPlay(edit_handle,GetTime(prepoint));
+	  rda->cae()->positionPlay(edit_handle,GetTime(prepoint));
 	}
 	else {
-	  edit_cae->positionPlay(edit_handle,
+	  rda->cae()->positionPlay(edit_handle,
 			     GetTime(1152*edit_cursors[RDEditAudio::TalkStart]));
 	}
 	break;
       case RDEditAudio::HookEnd:
 	if(prepoint>1152*edit_cursors[RDEditAudio::HookStart]) {
-	  edit_cae->positionPlay(edit_handle,GetTime(prepoint));
+	  rda->cae()->positionPlay(edit_handle,GetTime(prepoint));
 	}
 	else {
-	  edit_cae->positionPlay(edit_handle,
+	  rda->cae()->positionPlay(edit_handle,
 			     GetTime(1152*edit_cursors[RDEditAudio::HookStart]));
 	}
 	break;
@@ -1984,7 +1980,7 @@ bool RDEditAudio::PositionCursor(int cursor,bool relative)
 	edit_cursor_edit[edit_cue_point]->
 	  setText(RDGetTimeLength((int)(1000.0*(double)cursor/
 			       (double)edit_sample_rate),true));
-	edit_cae->positionPlay(edit_handle,GetTime(cursor));
+	rda->cae()->positionPlay(edit_handle,GetTime(cursor));
 	break;
 	
       case RDEditAudio::End:
@@ -2072,7 +2068,7 @@ bool RDEditAudio::PositionCursor(int cursor,bool relative)
 	edit_cursor_edit[RDEditAudio::FadeUp]->
 	  setText(RDGetTimeLength((int)(1000.0*(double)cursor/
 			       (double)edit_sample_rate),true));
-	edit_cae->positionPlay(edit_handle,
+	rda->cae()->positionPlay(edit_handle,
 			    GetTime(edit_cursors[RDEditAudio::Start]*1152));
 	break;
 	
@@ -2104,7 +2100,7 @@ bool RDEditAudio::PositionCursor(int cursor,bool relative)
 	edit_cursor_edit[RDEditAudio::FadeDown]->
 	  setText(RDGetTimeLength((int)(1000.0*(double)cursor/
 			       (double)edit_sample_rate),true));
-	edit_cae->positionPlay(edit_handle,GetTime(cursor));
+	rda->cae()->positionPlay(edit_handle,GetTime(cursor));
 	break;	
 
       default:
@@ -2295,16 +2291,16 @@ void RDEditAudio::LoopRegion(int cursor0,int cursor1)
 				 1152)/(double)edit_sample_rate);
   }
   if(cursor0==-1) {
-    edit_cae->positionPlay(edit_handle,0);
-    edit_cae->
+    rda->cae()->positionPlay(edit_handle,0);
+    rda->cae()->
       setOutputVolume(edit_card,edit_stream,edit_port,0+edit_gain_control->value());
-    edit_cae->play(edit_handle,length,RD_TIMESCALE_DIVISOR,0);
+    rda->cae()->play(edit_handle,length,RD_TIMESCALE_DIVISOR,0);
   }
   else {
-    edit_cae->positionPlay(edit_handle,GetTime(cursor0*1152));
-    edit_cae->
+    rda->cae()->positionPlay(edit_handle,GetTime(cursor0*1152));
+    rda->cae()->
       setOutputVolume(edit_card,edit_stream,edit_port,0+edit_gain_control->value());
-    edit_cae->play(edit_handle,length,RD_TIMESCALE_DIVISOR,0);
+    rda->cae()->play(edit_handle,length,RD_TIMESCALE_DIVISOR,0);
   }
 }
 

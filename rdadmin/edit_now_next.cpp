@@ -2,7 +2,7 @@
 //
 // Edit the Now & Next Configuration for a Rivendell Workstation.
 //
-//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2004,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,14 +21,15 @@
 #include <qmessagebox.h>
 #include <qsignalmapper.h>
 
+#include <rdapplication.h>
 #include <rdescape_string.h>
-#include <rdtextvalidator.h>
 #include <rdlistviewitem.h>
 #include <rdcart_dialog.h>
+#include <rdtextvalidator.h>
 
-#include <edit_now_next.h>
-#include <edit_nownextplugin.h>
-#include <globals.h>
+#include "edit_now_next.h"
+#include "edit_nownextplugin.h"
+#include "globals.h"
 
 EditNowNext::EditNowNext(RDAirPlayConf *conf,QWidget *parent)
   : QDialog(parent,"",true)
@@ -487,7 +488,7 @@ void EditNowNext::editNowcartData(int lognum)
 {
   int cartnum=nownext_nowcart_edit[lognum]->text().toInt();
   if(admin_cart_dialog->exec(&cartnum,RDCart::All,NULL,0,
-			     admin_user->name(),admin_user->password())==0) {
+			     rda->user()->name(),rda->user()->password())==0) {
     nownext_nowcart_edit[lognum]->setText(QString().sprintf("%06d",cartnum));
   }
 }
@@ -497,7 +498,7 @@ void EditNowNext::editNextcartData(int lognum)
 {
   int cartnum=nownext_nextcart_edit[lognum]->text().toInt();
   if(admin_cart_dialog->exec(&cartnum,RDCart::All,NULL,0,
-			     admin_user->name(),admin_user->password())==0) {
+			     rda->user()->name(),rda->user()->password())==0) {
     nownext_nextcart_edit[lognum]->setText(QString().sprintf("%06d",cartnum));
   }
 }

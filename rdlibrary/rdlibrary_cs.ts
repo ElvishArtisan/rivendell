@@ -1093,11 +1093,11 @@ vozík</translation>
     </message>
     <message>
         <source>rdlibrary : </source>
-        <translation>rdlibrary: </translation>
+        <translation type="obsolete">rdlibrary: </translation>
     </message>
     <message>
         <source>Can&apos;t Connect</source>
-        <translation>Nelze spojit</translation>
+        <translation type="obsolete">Nelze spojit</translation>
     </message>
     <message>
         <source>Filter:</source>
@@ -1337,15 +1337,15 @@ Přesto smazat?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Unknown command-line option</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>ALBUM</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>LABEL</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unknown command option</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

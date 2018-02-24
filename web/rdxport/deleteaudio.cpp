@@ -2,7 +2,7 @@
 //
 // Rivendell web service portal -- DeleteAudio service
 //
-//   (C) Copyright 2010,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2010-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -24,10 +24,11 @@
 #include <fcntl.h>
 #include <errno.h>
 
-#include <rdformpost.h>
-#include <rdweb.h>
+#include <rdapplication.h>
 #include <rdcart.h>
 #include <rdconf.h>
+#include <rdformpost.h>
+#include <rdweb.h>
 
 #include <rdxport.h>
 
@@ -48,7 +49,7 @@ void Xport::DeleteAudio()
   //
   // Process Request
   //
-  if((!xport_user->deleteCarts())&&(!xport_user->adminConfig())) {
+  if((!rda->user()->deleteCarts())&&(!rda->user()->adminConfig())) {
     XmlExit("User not authorized",404,"deleteaudio.cpp",LINE_NUMBER);
   }
   RDCut *cut=new RDCut(cartnum,cutnum);

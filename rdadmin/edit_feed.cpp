@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Feed
 //
-//   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -28,11 +28,12 @@
 #include <qdatetime.h>
 #include <qurl.h>
 
+#include <rdapplication.h>
 #include <rdexport_settings_dialog.h>
 
-#include <edit_feed.h>
-#include <list_aux_fields.h>
-#include <globals.h>
+#include "edit_feed.h"
+#include "globals.h"
+#include "list_aux_fields.h"
 
 EditFeed::EditFeed(const QString &feed,QWidget *parent)
   : QDialog(parent,"",true)
@@ -45,7 +46,7 @@ EditFeed::EditFeed(const QString &feed,QWidget *parent)
   setMinimumHeight(sizeHint().height());
   setMaximumHeight(sizeHint().height());
 
-  feed_feed=new RDFeed(feed,admin_config,this);
+  feed_feed=new RDFeed(feed,rda->config(),this);
 
   setCaption(tr("Feed: ")+feed);
 
@@ -533,12 +534,10 @@ void EditFeed::purgeUsernameChangedData(const QString &username)
 
 void EditFeed::setFormatData()
 {
-  RDStation *station=new RDStation(admin_config->stationName());
   RDExportSettingsDialog *dialog=
-    new RDExportSettingsDialog(&feed_settings,station,this);
+    new RDExportSettingsDialog(&feed_settings,this);
   dialog->exec();
   delete dialog;
-  delete station;
   feed_format_edit->setText(feed_settings.description());
 }
 

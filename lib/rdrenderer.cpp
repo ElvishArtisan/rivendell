@@ -21,6 +21,7 @@
 #include <errno.h>
 #include <math.h>
 
+#include "rdapplication.h"
 #include "rdaudioconvert.h"
 #include "rdaudioexport.h"
 #include "rdaudioimport.h"
@@ -31,18 +32,16 @@
 
 #include "rdrenderer.h"
 
-__RDRenderLogLine::__RDRenderLogLine(RDLogLine *ll,RDUser *user,
-				     RDStation *station,RDSystem *sys,
-				     RDConfig *config,unsigned chans)
+__RDRenderLogLine::__RDRenderLogLine(RDLogLine *ll,unsigned chans)
   : RDLogLine(*ll)
 {
   ll_cart=NULL;
   ll_cut=NULL;
   ll_handle=NULL;
-  ll_user=user;
-  ll_station=station;
-  ll_system=sys;
-  ll_config=config;
+  //  ll_user=user;
+  //  ll_station=station;
+  //  ll_system=sys;
+  //  ll_config=config;
   ll_channels=chans;
   ll_ramp_level=0.0;
   ll_ramp_rate=0.0;
@@ -185,20 +184,20 @@ bool __RDRenderLogLine::GetCutFile(const QString &cutname,int start_pt,
   
   strncpy(tempdir,RDTempDirectory::basePath()+"/rdrenderXXXXXX",PATH_MAX);
   *dest_filename=QString(mkdtemp(tempdir))+"/"+cutname+".wav";
-  RDAudioExport *conv=new RDAudioExport(ll_station,ll_config);
+  RDAudioExport *conv=new RDAudioExport();
   conv->setDestinationFile(*dest_filename);
   conv->setCartNumber(RDCut::cartNumber(cutname));
   conv->setCutNumber(RDCut::cutNumber(cutname));
   RDSettings s;
   s.setFormat(RDSettings::Pcm16);
-  s.setSampleRate(ll_system->sampleRate());
+  s.setSampleRate(rda->system()->sampleRate());
   s.setChannels(ll_channels);
   s.setNormalizationLevel(0);
   conv->setDestinationSettings(&s);
   conv->setRange(start_pt,end_pt);
   conv->setEnableMetadata(false);
-  switch(export_err=conv->runExport(ll_user->name(),
-				    ll_user->password(),&conv_err)) {
+  switch(export_err=conv->runExport(rda->user()->name(),
+				    rda->user()->password(),&conv_err)) {
   case RDAudioExport::ErrorOk:
     ret=true;
     break;
@@ -226,20 +225,19 @@ void __RDRenderLogLine::DeleteCutFile(const QString &dest_filename) const
 
 uint64_t __RDRenderLogLine::FramesFromMsec(uint64_t msec)
 {
-  return msec*ll_system->sampleRate()/1000;
+  return msec*rda->system()->sampleRate()/1000;
 }
 
 
 
 
-RDRenderer::RDRenderer(RDUser *user,RDStation *station,RDSystem *system,
-		       RDConfig *config,QObject *parent)
+RDRenderer::RDRenderer(QObject *parent)
   : QObject(parent)
 {
-  render_user=user;
-  render_station=station;
-  render_system=system;
-  render_config=config;
+  //  render_user=user;
+  //  render_station=station;
+  //  render_system=system;
+  //  render_config=config;
   render_total_passes=0;
 }
 
@@ -419,7 +417,7 @@ bool RDRenderer::Render(const QString &outfile,RDLogEvent *log,RDSettings *s,
   SNDFILE *sf_out;
 
   memset(&sf_info,0,sizeof(sf_info));
-  sf_info.samplerate=render_system->sampleRate();
+  sf_info.samplerate=rda->system()->sampleRate();
   sf_info.channels=s->channels();
   if(s->format()==RDSettings::Pcm16) {
     sf_info.format=SF_FORMAT_WAV|SF_FORMAT_PCM_16;
@@ -439,9 +437,7 @@ bool RDRenderer::Render(const QString &outfile,RDLogEvent *log,RDSettings *s,
   //
   std::vector<__RDRenderLogLine *> lls;
   for(int i=0;i<log->size();i++) {
-    lls.push_back(new __RDRenderLogLine(log->logLine(i),render_user,
-					render_station,render_system,
-					render_config,s->channels()));
+    lls.push_back(new __RDRenderLogLine(log->logLine(i),s->channels()));
     if(ignore_stops&&(lls.back()->transType()==RDLogLine::Stop)) {
       lls.back()->setTransType(RDLogLine::Play);
     }
@@ -470,9 +466,7 @@ bool RDRenderer::Render(const QString &outfile,RDLogEvent *log,RDSettings *s,
   if(!err_msg->isEmpty()) {
     return false;
   }
-  lls.push_back(new __RDRenderLogLine(new RDLogLine(),render_user,
-				      render_station,render_system,
-				      render_config,s->channels()));
+  lls.push_back(new __RDRenderLogLine(new RDLogLine(),s->channels()));
   lls.back()->setTransType(RDLogLine::Play);
   if((!first_time.isNull())&&(first_line==-1)) {
     first_line=log->size();
@@ -586,7 +580,7 @@ bool RDRenderer::ConvertAudio(const QString &srcfile,const QString &dstfile,
 {
   RDAudioConvert::ErrorCode err_code;
 
-  RDAudioConvert *conv=new RDAudioConvert(render_station->name(),this);
+  RDAudioConvert *conv=new RDAudioConvert(this);
   conv->setSourceFile(srcfile);
   conv->setDestinationFile(dstfile);
   conv->setDestinationSettings(s);
@@ -608,14 +602,14 @@ bool RDRenderer::ImportCart(const QString &srcfile,unsigned cartnum,int cutnum,
   settings.setChannels(chans);
   settings.setNormalizationLevel(0);
 
-  RDAudioImport *conv=new RDAudioImport(render_station,render_config,this);
+  RDAudioImport *conv=new RDAudioImport(this);
   conv->setCartNumber(cartnum);
   conv->setCutNumber(cutnum);
   conv->setSourceFile(srcfile);
   conv->setUseMetadata(false);
   conv->setDestinationSettings(&settings);
   err_import_code=
-    conv->runImport(render_user->name(),render_user->password(),&err_conv_code);
+    conv->runImport(rda->user()->name(),rda->user()->password(),&err_conv_code);
   *err_msg=RDAudioImport::errorText(err_import_code,err_conv_code);
   delete conv;
   return err_import_code==RDAudioImport::ErrorOk;
@@ -633,7 +627,7 @@ void RDRenderer::DeleteTempFile(const QString &filename) const
 
 uint64_t RDRenderer::FramesFromMsec(uint64_t msec) const
 {
-  return msec*render_system->sampleRate()/1000;
+  return msec*rda->system()->sampleRate()/1000;
 }
 
 

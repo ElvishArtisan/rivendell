@@ -2,7 +2,7 @@
 //
 // A Batch Exporter for Rivendell.
 //
-//   (C) Copyright 2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -27,20 +27,21 @@
 #include <qfile.h>
 
 #include <rd.h>
+#include <rdapplication.h>
 #include <rdaudioconvert.h>
 #include <rdaudioexport.h>
 #include <rdaudioinfo.h>
 #include <rdcart.h>
-#include <rdcmd_switch.h>
 #include <rdescape_string.h>
 #include <rdgroup.h>
-#include <rddbheartbeat.h>
 
 #include "rdexport.h"
 
 MainObject::MainObject(QObject *parent)
   :QObject(parent)
 {
+  QString err_msg;
+
   export_metadata_pattern="%n_%j";
   export_escape_string="_";
   export_continue_after_error=false;
@@ -52,32 +53,39 @@ MainObject::MainObject(QObject *parent)
   export_xml=false;
 
   //
+  // Open the Database
+  //
+  rda=new RDApplication("rdexport","rdexport",RDEXPORT_USAGE,this);
+  if(!rda->open(&err_msg)) {
+    fprintf(stderr,"rdexport: %s\n",(const char *)err_msg);
+    exit(1);
+  }
+
+  //
   // Read Command Options
   //
-  RDCmdSwitch *cmd=
-    new RDCmdSwitch(qApp->argc(),qApp->argv(),"rdimport",RDEXPORT_USAGE);
-  if(cmd->keys()<1) {
+  if(rda->cmdSwitch()->keys()<1) {
     fprintf(stderr,"rdexport: you must specify an output directory\n");
-    exit(256);
+    exit(2);
   }
-  for(int i=0;i<(int)cmd->keys()-1;i++) {
-    if(cmd->key(i)=="--allow-clobber") {
+  for(unsigned i=0;i<rda->cmdSwitch()->keys()-1;i++) {
+    if(rda->cmdSwitch()->key(i)=="--allow-clobber") {
       export_allow_clobber=true;
-      cmd->setProcessed(i,true);
+      rda->cmdSwitch()->setProcessed(i,true);
     }
-    if(cmd->key(i)=="--bitrate") {
+    if(rda->cmdSwitch()->key(i)=="--bitrate") {
       bool ok=false;
-      export_bitrate=cmd->value(i).toUInt(&ok);
+      export_bitrate=rda->cmdSwitch()->value(i).toUInt(&ok);
       if(!ok) {
 	fprintf(stderr,"rdexport: invalid bitrate\n");
 	exit(256);
       }
-      cmd->setProcessed(i,true);
+      rda->cmdSwitch()->setProcessed(i,true);
     }
-    if(cmd->key(i)=="--carts") {
+    if(rda->cmdSwitch()->key(i)=="--carts") {
       bool ok=false;
       bool valid=false;
-      QStringList f0=f0.split(":",cmd->value(i));
+      QStringList f0=f0.split(":",rda->cmdSwitch()->value(i));
       if(f0.size()==2) {
 	int start=f0[0].toUInt(&valid);
 	if(valid&&(start>0)&&(valid<=RD_MAX_CART_NUMBER)) {
@@ -93,31 +101,31 @@ MainObject::MainObject(QObject *parent)
 	fprintf(stderr,"rdexport: invalid --carts argument\n");
 	exit(256);
       }
-      cmd->setProcessed(i,true);
+      rda->cmdSwitch()->setProcessed(i,true);
     }
-    if(cmd->key(i)=="--channels") {
+    if(rda->cmdSwitch()->key(i)=="--channels") {
       bool ok=false;
-      export_channels=cmd->value(i).toUInt(&ok);
+      export_channels=rda->cmdSwitch()->value(i).toUInt(&ok);
       if((export_channels<1)||(export_channels>2)||(!ok)) {
 	fprintf(stderr,"rdexport: invalid --channels argument\n");
 	exit(256);
       }
-      cmd->setProcessed(i,true);
+      rda->cmdSwitch()->setProcessed(i,true);
     }
-    if(cmd->key(i)=="--continue-after-error") {
+    if(rda->cmdSwitch()->key(i)=="--continue-after-error") {
       export_continue_after_error=true;
-      cmd->setProcessed(i,true);
+      rda->cmdSwitch()->setProcessed(i,true);
     }
-    if(cmd->key(i)=="--escape-string") {
-      if(cmd->value(i)!=SanitizePath(cmd->value(i))) {
+    if(rda->cmdSwitch()->key(i)=="--escape-string") {
+      if(rda->cmdSwitch()->value(i)!=SanitizePath(rda->cmdSwitch()->value(i))) {
 	fprintf(stderr,"rdxport: illegal character(s) in escape string\n");
 	exit(256);
       }
-      export_escape_string=cmd->value(i);
-      cmd->setProcessed(i,true);
+      export_escape_string=rda->cmdSwitch()->value(i);
+      rda->cmdSwitch()->setProcessed(i,true);
     }
-    if(cmd->key(i)=="--format") {
-      export_format=cmd->value(i);
+    if(rda->cmdSwitch()->key(i)=="--format") {
+      export_format=rda->cmdSwitch()->value(i);
       bool ok=false;
       if(export_format.lower()=="flac") {
 	export_set_format=RDSettings::Flac;
@@ -148,83 +156,59 @@ MainObject::MainObject(QObject *parent)
 		(const char *)export_format);
 	exit(256);
       }
-      cmd->setProcessed(i,true);
+      rda->cmdSwitch()->setProcessed(i,true);
     }
-    if(cmd->key(i)=="--group") {
-      export_groups.push_back(cmd->value(i));
-      cmd->setProcessed(i,true);
+    if(rda->cmdSwitch()->key(i)=="--group") {
+      export_groups.push_back(rda->cmdSwitch()->value(i));
+      rda->cmdSwitch()->setProcessed(i,true);
     }
-    if(cmd->key(i)=="--metadata-pattern") {
-      export_metadata_pattern=cmd->value(i);
-      cmd->setProcessed(i,true);
+    if(rda->cmdSwitch()->key(i)=="--metadata-pattern") {
+      export_metadata_pattern=rda->cmdSwitch()->value(i);
+      rda->cmdSwitch()->setProcessed(i,true);
     }
-    if(cmd->key(i)=="--quality") {
+    if(rda->cmdSwitch()->key(i)=="--quality") {
       bool ok=false;
-      export_quality=cmd->value(i).toInt(&ok);
+      export_quality=rda->cmdSwitch()->value(i).toInt(&ok);
       if((export_quality<-1)||(export_quality>10)||(!ok)) {
 	fprintf(stderr,"rdexport: invalid --quality value\n");
 	exit(256);
       }
-      cmd->setProcessed(i,true);
+      rda->cmdSwitch()->setProcessed(i,true);
     }
-    if(cmd->key(i)=="--samplerate") {
+    if(rda->cmdSwitch()->key(i)=="--samplerate") {
       bool ok=false;
-      export_samplerate=cmd->value(i).toUInt(&ok);
+      export_samplerate=rda->cmdSwitch()->value(i).toUInt(&ok);
       if(!ok) {
 	fprintf(stderr,"rdexport: invalid samplerate\n");
 	exit(256);
       }
-      cmd->setProcessed(i,true);
+      rda->cmdSwitch()->setProcessed(i,true);
     }
-    if(cmd->key(i)=="--title") {
-      export_titles.push_back(cmd->value(i));
-      cmd->setProcessed(i,true);
+    if(rda->cmdSwitch()->key(i)=="--title") {
+      export_titles.push_back(rda->cmdSwitch()->value(i));
+      rda->cmdSwitch()->setProcessed(i,true);
     }
-    if(cmd->key(i)=="--verbose") {
+    if(rda->cmdSwitch()->key(i)=="--verbose") {
       export_verbose=true;
-      cmd->setProcessed(i,true);
+      rda->cmdSwitch()->setProcessed(i,true);
     }
-    if(cmd->key(i)=="--xml") {
+    if(rda->cmdSwitch()->key(i)=="--xml") {
       export_xml=true;
-      cmd->setProcessed(i,true);
+      rda->cmdSwitch()->setProcessed(i,true);
     }
-    if(!cmd->processed(i)) {
-      fprintf(stderr,"rdexport: unrecognized option\n");
-      qApp->exit(256);
+    if(!rda->cmdSwitch()->processed(i)) {
+      fprintf(stderr,"rdrepld: unknown command option \"%s\"\n",
+	      (const char *)rda->cmdSwitch()->key(i));
+      exit(2);
     }
   }
-  export_output_to=cmd->key(cmd->keys()-1);
+  export_output_to=rda->cmdSwitch()->key(rda->cmdSwitch()->keys()-1);
+
   QDir dir;
   if(!dir.exists(export_output_to)) {
     fprintf(stderr,"rdexport: no such output directory\n");
     exit(256);
   }
-
-  //
-  // Read Configuration
-  //
-  export_config=new RDConfig();
-  export_config->load();
-  export_config->setModuleName("rdexport");
-
-  //
-  // Open Database
-  //
-  QSqlDatabase *db=QSqlDatabase::addDatabase(export_config->mysqlDriver());
-  if(!db) {
-    fprintf(stderr,"rdexport: unable to initialize connection to database\n");
-    exit(256);
-  }
-  db->setDatabaseName(export_config->mysqlDbname());
-  db->setUserName(export_config->mysqlUsername());
-  db->setPassword(export_config->mysqlPassword());
-  db->setHostName(export_config->mysqlHostname());
-  if(!db->open()) {
-    fprintf(stderr,"rdimport: unable to connect to database\n");
-    db->removeDatabase(export_config->mysqlDbname());
-    exit(256);
-  }
-  new RDDbHeartbeat(export_config->mysqlHeartbeatInterval(),this);
 
   //
   // Validate Group List
@@ -248,22 +232,11 @@ MainObject::MainObject(QObject *parent)
   }
 
   //
-  // Station Configuration
-  //
-  export_station=new RDStation(export_config->stationName());
-
-  //
   // RIPC Connection
   //
-  export_ripc=new RDRipc(export_station,export_config,this);
-  connect(export_ripc,SIGNAL(userChanged()),this,SLOT(userData()));
-  export_ripc->
-    connectHost("localhost",RIPCD_TCP_PORT,export_config->password());
-
-  //
-  // User
-  //
-  export_user=NULL;
+  connect(rda,SIGNAL(userChanged()),this,SLOT(userData()));
+  rda->ripc()->
+    connectHost("localhost",RIPCD_TCP_PORT,rda->config()->password());
 }
 
 
@@ -272,18 +245,14 @@ void MainObject::userData()
   //
   // Get User Context
   //
-  disconnect(export_ripc,SIGNAL(userChanged()),this,SLOT(userData()));
-  if(export_user!=NULL) {
-    delete export_user;
-  }
-  export_user=new RDUser(export_ripc->user());
+  disconnect(rda->ripc(),SIGNAL(userChanged()),this,SLOT(userData()));
 
   //
   // Verify Permissions
   //
-  if(!export_user->editAudio()) {
+  if(!rda->user()->editAudio()) {
     fprintf(stderr,"rdexport: user \"%s\" has no edit audio permission\n",
-	    (const char *)export_user->name());
+	    (const char *)rda->user()->name());
     exit(256);
   }
 
@@ -375,7 +344,7 @@ void MainObject::ExportCart(unsigned cartnum)
 
 void MainObject::ExportCut(RDCart *cart,RDCut *cut)
 {
-  RDAudioExport *conv=new RDAudioExport(export_station,export_config,this);
+  RDAudioExport *conv=new RDAudioExport(this);
   RDAudioExport::ErrorCode export_err;
   RDAudioConvert::ErrorCode conv_err;
   RDAudioInfo::ErrorCode info_err;
@@ -383,10 +352,10 @@ void MainObject::ExportCut(RDCart *cart,RDCut *cut)
   //
   // Get Audio Parameters
   //
-  RDAudioInfo *info=new RDAudioInfo(export_station,export_config);
+  RDAudioInfo *info=new RDAudioInfo(this);
   info->setCartNumber(cart->number());
   info->setCutNumber(RDCut::cutNumber(cut->cutName()));
-  if((info_err=info->runInfo(export_user->name(),export_user->password()))!=
+  if((info_err=info->runInfo(rda->user()->name(),rda->user()->password()))!=
      RDAudioInfo::ErrorOk) {
     fprintf(stderr,"rdexport: error getting cut info [%s]\n",
 	    (const char *)RDAudioInfo::errorText(info_err));
@@ -456,10 +425,10 @@ void MainObject::ExportCut(RDCart *cart,RDCut *cut)
   conv->setCutNumber(RDCut::cutNumber(cut->cutName()));
   conv->setDestinationSettings(&settings);
   conv->setDestinationFile(ResolveOutputName(cart,cut,
-      RDSettings::defaultExtension(export_station->name(),settings.format())));
+      RDSettings::defaultExtension(rda->station()->name(),settings.format())));
   conv->setEnableMetadata(true);
 
-  if((export_err=conv->runExport(export_user->name(),export_user->password(),
+  if((export_err=conv->runExport(rda->user()->name(),rda->user()->password(),
 				 &conv_err))==RDAudioExport::ErrorOk) {
     QStringList f0=f0.split("/",conv->destinationFile());
     printf("%s\n",(const char *)f0[f0.size()-1]);

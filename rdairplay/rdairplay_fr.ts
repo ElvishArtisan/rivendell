@@ -544,7 +544,7 @@ la Fin</translation>
     </message>
     <message>
         <source>Database Error</source>
-        <translation>Erreur de base de données</translation>
+        <translation type="obsolete">Erreur de base de données</translation>
     </message>
     <message>
         <source>ADD</source>
@@ -634,6 +634,14 @@ DU LOG</translation>
     </message>
     <message>
         <source>Unable to lock all memory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unknown command option</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -2,7 +2,7 @@
 //
 // A Library import filter for the Airforce Wings system
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2004,2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -26,31 +26,17 @@
 
 #include <qapplication.h>
 
-#include <rddb.h>
 #include <rd.h>
-#include <rdconfig.h>
-#include <rdcmd_switch.h>
+#include <rdapplication.h>
+#include <rddb.h>
 #include <rdcut.h>
 #include <rdescape_string.h>
-#include <wings_filter.h>
 
-//
-// Global Variables
-//
-RDConfig *rdconfig;
-
+#include "wings_filter.h"
 
 MainObject::MainObject(QObject *parent)
   : QObject(parent)
 {
-  //
-  // Read Command Options
-  //
-  RDCmdSwitch *cmd=
-    new RDCmdSwitch(qApp->argc(),qApp->argv(),"wings_filter",
-		    WINGS_FILTER_USAGE);
-  delete cmd;
-
   WingsRecord wr;
   QString audioname;
   bool found;
@@ -59,41 +45,21 @@ MainObject::MainObject(QObject *parent)
   QString audio_extension=WINGS_DEFAULT_AUDIO_EXT;
   QString groupname;
   RDWaveFile *wavefile=NULL;
-
-  rdconfig=new RDConfig(RD_CONF_FILE);
-  rdconfig->load();
-  rdconfig->setModuleName("wings_filter");
+  QString err_msg;
 
   //
-  // Open Database
+  // Open the Database
   //
-
-
-  filter_db=QSqlDatabase::addDatabase(rdconfig->mysqlDriver());
-  if(!filter_db) {
-    fprintf(stderr,"wings_filter: can't open mySQL database\n");
+  rda=new RDApplication("wings_filter","wings_filter",WINGS_FILTER_USAGE,this);
+  if(!rda->open(&err_msg)) {
+    fprintf(stderr,"wings_filter: %s\n",(const char *)err_msg);
     exit(1);
   }
-  filter_db->setDatabaseName(rdconfig->mysqlDbname());
-  filter_db->setUserName(rdconfig->mysqlUsername());
-  filter_db->setPassword(rdconfig->mysqlPassword());
-  filter_db->setHostName(rdconfig->mysqlHostname());
-  if(!filter_db->open()) {
-    fprintf(stderr,"wings_filter: unable to connect to mySQL Server\n");
-    filter_db->removeDatabase(rdconfig->mysqlDbname());
-    exit(1);
-  }
-
-  //
-  // Station Configuration
-  //
-  filter_rdstation=new RDStation(rdconfig->stationName());
 
   //
   // RIPCD Connection
   //
-  filter_ripc=new RDRipc(filter_rdstation,rdconfig,this);
-  filter_ripc->connectHost("localhost",RIPCD_TCP_PORT,rdconfig->password());
+  rda->ripc()->connectHost("localhost",RIPCD_TCP_PORT,rda->config()->password());
 
   //
   // Read Arguments
@@ -251,7 +217,7 @@ bool MainObject::ImportCut(RDGroup *group,struct WingsRecord *rec,
   sql=QString("update CUTS set ")+
     "DESCRIPTION=\""+RDEscapeString(rec->title)+"\","+
     "ORIGIN_DATETIME=now(),"+
-    "ORIGIN_NAME=\""+RDEscapeString(rdconfig->stationName())+"\","+
+    "ORIGIN_NAME=\""+RDEscapeString(rda->config()->stationName())+"\","+
     QString().sprintf("CODING_FORMAT=%d,",format)+
     QString().sprintf("SAMPLE_RATE=%u,",wavefile->getSamplesPerSec())+
     QString().sprintf("CHANNELS=%d,",wavefile->getChannels())+

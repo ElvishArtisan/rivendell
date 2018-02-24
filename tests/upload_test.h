@@ -2,7 +2,7 @@
 //
 // Test Rivendell file uploading
 //
-//   (C) Copyright 2010,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2010,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -24,18 +24,8 @@
 #include <list>
 
 #include <qobject.h>
-#include <qsqldatabase.h>
-
-#include <rdconfig.h>
-#include <rdcmd_switch.cpp>
 
 #define UPLOAD_TEST_USAGE "[options]\n\nTest the Rivendell upload routines\n\nOptions are:\n--username=<username>\n\n--password=<password>\n\n--source-file=<filename>\n\n--destination-url=<url>\n\n"
-
-//
-// Global Variables
-//
-RDConfig *rdconfig;
-
 
 class MainObject : public QObject
 {

@@ -30,23 +30,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Database Error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Can&apos;t Connect</source>
-        <comment>Unable to connect to mySQL Server!</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Can&apos;t Connect</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unable to connect to mySQL Server!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Unable to find event for ISCI code</source>
         <translation type="unfinished"></translation>
     </message>
@@ -108,6 +91,10 @@
     </message>
     <message>
         <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unknown command option</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

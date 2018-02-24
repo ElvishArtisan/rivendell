@@ -545,7 +545,7 @@ Log</source>
     </message>
     <message>
         <source>Database Error</source>
-        <translation>Erro na Base de Dados</translation>
+        <translation type="obsolete">Erro na Base de Dados</translation>
     </message>
     <message>
         <source>ADD</source>
@@ -640,6 +640,14 @@ LISTA</translation>
     </message>
     <message>
         <source>Unable to lock all memory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unknown command option</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

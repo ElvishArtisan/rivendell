@@ -2,7 +2,7 @@
 //
 // Edit an RDLogedit Configuration
 //
-//   (C) Copyright 2002-2015 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -32,11 +32,12 @@
 #include <qsqldatabase.h>
 
 #include <rd.h>
-
-#include <globals.h>
-#include <edit_rdlogedit.h>
-#include <rdtextvalidator.h>
+#include <rdapplication.h>
 #include <rdcart_dialog.h>
+#include <rdtextvalidator.h>
+
+#include "edit_rdlogedit.h"
+#include "globals.h"
 
 
 EditRDLogedit::EditRDLogedit(RDStation *station,RDStation *cae_station,
@@ -388,7 +389,7 @@ void EditRDLogedit::selectStartData()
   int cartnum=lib_startcart_edit->text().toInt();
 
   if(admin_cart_dialog->exec(&cartnum,RDCart::Macro,NULL,0,
-			     admin_user->name(),admin_user->password())==0) {
+			     rda->user()->name(),rda->user()->password())==0) {
     lib_startcart_edit->setText(QString().sprintf("%d",cartnum));
   }
 }
@@ -398,7 +399,7 @@ void EditRDLogedit::selectEndData()
 {
   int cartnum=lib_endcart_edit->text().toInt();
   if(admin_cart_dialog->exec(&cartnum,RDCart::Macro,NULL,0,
-			     admin_user->name(),admin_user->password())==0) {
+			     rda->user()->name(),rda->user()->password())==0) {
     lib_endcart_edit->setText(QString().sprintf("%d",cartnum));
   }
 }
@@ -408,7 +409,7 @@ void EditRDLogedit::selectRecordStartData()
 {
   int cartnum=lib_recstartcart_edit->text().toInt();
   if(admin_cart_dialog->exec(&cartnum,RDCart::Macro,NULL,0,
-			     admin_user->name(),admin_user->password())==0) {
+			     rda->user()->name(),rda->user()->password())==0) {
     lib_recstartcart_edit->setText(QString().sprintf("%d",cartnum));
   }
 }
@@ -418,7 +419,7 @@ void EditRDLogedit::selectRecordEndData()
 {
   int cartnum=lib_recendcart_edit->text().toInt();
   if(admin_cart_dialog->exec(&cartnum,RDCart::Macro,NULL,0,
-			     admin_user->name(),admin_user->password())==0) {
+			     rda->user()->name(),rda->user()->password())==0) {
     lib_recendcart_edit->setText(QString().sprintf("%d",cartnum));
   }
 }

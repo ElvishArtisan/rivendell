@@ -2,7 +2,7 @@
 //
 // The Log Editor Utility for Rivendell.
 //
-//   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,7 +18,6 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-
 #ifndef RDLOGEDIT_H
 #define RDLOGEDIT_H
 
@@ -27,7 +26,6 @@
 #include <qmainwindow.h>
 #include <qsize.h>
 #include <qsizepolicy.h>
-#include <qsqldatabase.h>
 #include <qcheckbox.h>
 #include <qlineedit.h>
 #include <qlistview.h>
@@ -36,13 +34,12 @@
 #include <qcombobox.h>
 #include <qlabel.h>
 
-#include <rdlogfilter.h>
-#include <rduser.h>
-#include <rdripc.h>
-#include <rdlibrary_conf.h>
 #include <rdlog_line.h>
+#include <rdlogfilter.h>
 
-#include <list_listviewitem.h>
+#include "list_listviewitem.h"
+
+#define RDLOGEDIT_USAGE "\n"
 
 class MainWidget : public QMainWindow
 {
@@ -74,7 +71,7 @@ class MainWidget : public QMainWindow
   void RefreshList();
   unsigned SelectedLogs(std::vector<ListListViewItem *> *items,
 			int *tracks=NULL) const;
-  QSqlDatabase *log_db;
+  //  QSqlDatabase *log_db;
   QString log_filename;
   QString log_import_path;
   QLabel *log_user_label;
@@ -98,6 +95,7 @@ class MainWidget : public QMainWindow
   QString log_filter;
   QString log_group;
   QString log_schedcode;
+  bool log_resize;
 };
 
 

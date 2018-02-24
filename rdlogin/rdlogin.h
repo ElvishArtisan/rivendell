@@ -2,7 +2,7 @@
 //
 // The User Login/Logout Utility for Rivendell.
 //
-//   (C) Copyright 2002-2005,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2005,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -27,13 +27,10 @@
 #include <qsqldatabase.h>
 #include <qcombobox.h>
 #include <qlineedit.h>
+#include <qlabel.h>
 #include <qpushbutton.h>
 
-#include <rduser.h>
-#include <rdstation.h>
-#include <rdripc.h>
-#include <rdconfig.h>
-#include <rdsystem.h>
+#define RDLOGIN_USAGE "\n"
 
 class MainWidget : public QWidget
 {
@@ -56,11 +53,6 @@ class MainWidget : public QWidget
   void resizeEvent(QResizeEvent *e);
 
  private:
-  RDConfig *login_config;
-  QSqlDatabase *login_db;
-  RDStation *login_station;
-  RDSystem *login_system;
-  RDRipc *login_ripc;
   Q_UINT16 login_ripc_hostport;
   QLabel *login_label;
   QLabel *login_username_label;
@@ -73,6 +65,7 @@ class MainWidget : public QWidget
   QPushButton *logout_button;
   QPushButton *cancel_button;
   int login_user_width;
+  bool login_resize;
 };
 
 

@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Replicator
 //
-//   (C) Copyright 2002-2015 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -28,12 +28,13 @@
 #include <qdatetime.h>
 #include <qurl.h>
 
-#include <rdexport_settings_dialog.h>
+#include <rdapplication.h>
 #include <rdescape_string.h>
+#include <rdexport_settings_dialog.h>
 
-#include <edit_replicator.h>
-#include <list_aux_fields.h>
-#include <globals.h>
+#include "edit_replicator.h"
+#include "globals.h"
+#include "list_aux_fields.h"
 
 EditReplicator::EditReplicator(const QString &repl_name,QWidget *parent)
   : QDialog(parent,"",true)
@@ -291,12 +292,9 @@ QSizePolicy EditReplicator::sizePolicy() const
 
 void EditReplicator::setFormatData()
 {
-  RDStation *station=new RDStation(admin_config->stationName());
-  RDExportSettingsDialog *dialog=
-    new RDExportSettingsDialog(repl_settings,station,this);
+  RDExportSettingsDialog *dialog=new RDExportSettingsDialog(repl_settings,this);
   dialog->exec();
   delete dialog;
-  delete station;
   repl_format_edit->setText(repl_settings->description());
 }
 

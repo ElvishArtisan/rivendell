@@ -35,9 +35,21 @@ RDUser::RDUser(const QString &name)
 }
 
 
+RDUser::RDUser()
+{
+  user_name="";
+}
+
+
 QString RDUser::name() const
 {
   return user_name;
+}
+
+
+void RDUser::setName(const QString &name)
+{
+  user_name=name;
 }
 
 

@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Upload Event
 //
-//   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -28,14 +28,15 @@
 #include <qmessagebox.h>
 #include <qcheckbox.h>
 
-#include <rddb.h>
-#include <rdurl.h>
 #include <rd.h>
+#include <rdapplication.h>
 #include <rdcut_dialog.h>
 #include <rdcut_path.h>
-#include <rdtextvalidator.h>
-#include <rdexport_settings_dialog.h>
+#include <rddb.h>
 #include <rdescape_string.h>
+#include <rdexport_settings_dialog.h>
+#include <rdtextvalidator.h>
+#include <rdurl.h>
 
 #include <edit_upload.h>
 #include <globals.h>
@@ -490,8 +491,7 @@ void EditUpload::selectCartData()
 {
   QString str;
 
-  RDCutDialog *cut=new RDCutDialog(&edit_cutname,rdstation_conf,catch_system,
-				   edit_filter);
+  RDCutDialog *cut=new RDCutDialog(&edit_cutname,edit_filter);
   switch(cut->exec()) {
       case 0:
 	edit_description_edit->setText(RDCutPath(edit_cutname));
@@ -507,12 +507,10 @@ void EditUpload::selectCartData()
 
 void EditUpload::setFormatData()
 {
-  RDStation *station=new RDStation(edit_station_box->currentText());
   RDExportSettingsDialog *dialog=
-    new RDExportSettingsDialog(&edit_settings,station,this);
+    new RDExportSettingsDialog(&edit_settings,this);
   dialog->exec();
   delete dialog;
-  delete station;
   edit_format_edit->setText(edit_settings.description());
 }
 

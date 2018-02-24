@@ -2,7 +2,7 @@
 //
 // A container class for a Rivendell replication configuration
 //
-//   (C) Copyright 2010,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2010,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,7 +20,7 @@
 
 #include <rd.h>
 
-#include <replconfig.h>
+#include "replconfig.h"
 
 ReplConfig::ReplConfig()
 {

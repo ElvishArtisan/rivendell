@@ -2,7 +2,7 @@
 //
 // A wall-clock widget with date.
 //
-//   (C) Copyright 2002-2003,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2003,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -28,16 +28,17 @@
 #include <stdio.h>
 #include <string.h>
 
+#include <rdapplication.h>
 #include <rdconf.h>
 
-#include <colors.h>
-#include <wall_clock.h>
-#include <globals.h>
+#include "colors.h"
+#include "globals.h"
+#include "wall_clock.h"
 
 WallClock::WallClock(QWidget *parent)
   :QPushButton(parent)
 {
-  time_offset=rdstation_conf->timeOffset();
+  time_offset=rda->station()->timeOffset();
   previous_time=QTime::currentTime().addMSecs(time_offset);
   time_mode=RDAirPlayConf::TwentyFourHour;
   previous_time_mode = RDAirPlayConf::TwentyFourHour;

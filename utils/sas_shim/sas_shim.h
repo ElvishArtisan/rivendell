@@ -2,7 +2,7 @@
 //
 // An RDCatch event import shim for the SAS64000
 //
-//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2004,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,16 +21,13 @@
 #ifndef SAS_SHIM_H
 #define SAS_SHIM_H
 
-#include <qobject.h>
 #include <qapplication.h>
-#include <qsqldatabase.h>
+#include <qhostaddress.h>
+#include <qobject.h>
 
 #include <rdttydevice.h>
 
-#include <rdstation.h>
-#include <rdripc.h>
-#include <rdconfig.h>
-
+#define SAS_SHIM_USAGE "\n"
 #define POLL_INTERVAL 100
 
 class MainObject : public QObject
@@ -45,13 +42,9 @@ class MainObject : public QObject
  private:
   void DispatchRml(int input,int output);
   QString shim_station;
-  RDStation *shim_rdstation;
   QHostAddress shim_address;
-  RDRipc *shim_ripc;
-  QSqlDatabase *shim_db;
   RDTTYDevice *shim_tty;
-  RDConfig *rd_config;
 };
 
 
-#endif 
+#endif  // SAS_SHIM_H

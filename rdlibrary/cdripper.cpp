@@ -33,6 +33,7 @@
 #include <qstringlist.h>
 
 #include <rd.h>
+#include <rdapplication.h>
 #include <rdaudioimport.h>
 #include <rdconf.h>
 #include <rdcdripper.h>
@@ -454,7 +455,7 @@ void CdRipper::ripTrackButtonData()
   // Read ISRCs
   //
   if(!rip_isrc_read) {
-    if(rdlibrary_conf->readIsrc()) {
+    if(rda->libraryConf()->readIsrc()) {
       rip_cddb_lookup->readIsrc(rip_cdda_dir.path(),rip_conf->ripperDevice());
     }
     rip_isrc_read=true;
@@ -498,21 +499,21 @@ void CdRipper::ripTrackButtonData()
   }
   switch((ripper_err=ripper->rip(rip_track[0],rip_track[1]))) {
   case RDCdRipper::ErrorOk:
-    conv=new RDAudioImport(rdstation_conf,lib_config,this);
+    conv=new RDAudioImport(this);
     conv->setSourceFile(tmpfile);
     conv->setCartNumber(rip_cut->cartNumber());
     conv->setCutNumber(rip_cut->cutNumber());
     conv->setUseMetadata(false);
     settings=new RDSettings();
-    if(rdlibrary_conf->defaultFormat()==1) {
+    if(rda->libraryConf()->defaultFormat()==1) {
       settings->setFormat(RDSettings::MpegL2Wav);
     }
     else {
       settings->setFormat(RDSettings::Pcm16);
     }
     settings->setChannels(rip_channels_box->currentText().toInt());
-    settings->setSampleRate(lib_system->sampleRate());
-    settings->setBitRate(rdlibrary_conf->defaultBitrate());
+    settings->setSampleRate(rda->system()->sampleRate());
+    settings->setBitRate(rda->libraryConf()->defaultBitrate());
     if(rip_normalize_box->isChecked()) {
       settings->setNormalizationLevel(rip_normalize_spin->value());
     }
@@ -521,7 +522,7 @@ void CdRipper::ripTrackButtonData()
     }
     conv->setDestinationSettings(settings);
     switch((conv_err=conv->
-	  runImport(lib_user->name(),lib_user->password(),&audio_conv_err))) {
+	  runImport(rda->user()->name(),rda->user()->password(),&audio_conv_err))) {
     case RDAudioImport::ErrorOk:
       QMessageBox::information(this,tr("Rip Complete"),tr("Rip complete!"));
       break;

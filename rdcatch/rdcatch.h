@@ -2,7 +2,7 @@
 //
 // The Event Schedule Manager for Rivendell.
 //
-//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2004,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -34,20 +34,17 @@
 #include <qpixmap.h>
 #include <qscrollview.h>
 
-#include <rdtransportbutton.h>
-#include <rdlistviewitem.h>
 #include <rd.h>
-#include <rduser.h>
-#include <rdripc.h>
-#include <rdcae.h>
-#include <rddeck.h>
-#include <rdconfig.h>
 #include <rdcatch_connect.h>
+#include <rdconfig.h>
+#include <rddeck.h>
+#include <rdlistviewitem.h>
+#include <rdtransportbutton.h>
 
-#include <catch_listview.h>
-#include <deckmon.h>
-#include <catch_monitor.h>
-#include <vbox.h>
+#include "catch_listview.h"
+#include "catch_monitor.h"
+#include "deckmon.h"
+#include "vbox.h"
 
 /*
  * Widget Settings
@@ -181,6 +178,7 @@ class MainWidget : public QWidget
   int catch_time_offset;
   QPixmap *catch_rivendell_map;
   bool catch_host_warnings;
+  bool catch_resize;
 };
 
 

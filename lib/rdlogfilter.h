@@ -2,7 +2,7 @@
 //
 // Filter widget for picking Rivendell logs.
 //
-//   (C) Copyright 2017 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2017-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -29,20 +29,19 @@
 #include <qstringlist.h>
 #include <qwidget.h>
 
-#include <rdconfig.h>
-#include <rduser.h>
-
 class RDLogFilter : public QWidget
 {
   Q_OBJECT;
  public:
   enum FilterMode {NoFilter=0,UserFilter=1,StationFilter=2};
-  RDLogFilter(FilterMode mode,RDUser *user,RDConfig *config,QWidget *parent=0);
+  RDLogFilter(FilterMode mode,QWidget *parent=0);
   ~RDLogFilter();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
   QString whereSql() const;
-  void setUser(RDUser *user);
+
+ public slots:
+  void changeUser();
 
  signals:
   void filterChanged(const QString &where_sql);

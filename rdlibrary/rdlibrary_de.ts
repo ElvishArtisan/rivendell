@@ -1081,11 +1081,11 @@ starten</translation>
     </message>
     <message>
         <source>rdlibrary : </source>
-        <translation>rdlibrary : </translation>
+        <translation type="obsolete">rdlibrary : </translation>
     </message>
     <message>
         <source>Can&apos;t Connect</source>
-        <translation>Kann nicht verbinden</translation>
+        <translation type="obsolete">Kann nicht verbinden</translation>
     </message>
     <message>
         <source>Filter:</source>
@@ -1314,15 +1314,15 @@ verwendet. Trotzdem löschen?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Unknown command-line option</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>ALBUM</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>LABEL</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unknown command option</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

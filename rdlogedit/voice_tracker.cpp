@@ -2,7 +2,7 @@
 //
 // A Rivendell Voice Tracker
 //
-//   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -28,22 +28,21 @@
 #include <qdatetime.h>
 #include <qapplication.h>
 
+#include <rdapplication.h>
 #include <rdconf.h>
 #include <rdcart.h>
 #include <rd.h>
 #include <rdlog.h>
 #include <rdsvc.h>
-#include <rdlogedit_conf.h>
-#include <rdlibrary_conf.h>
 #include <rdedit_audio.h>
 #include <rdimport_audio.h>
 #include <rdrehash.h>
 #include <rdwavedata.h>
 
-#include <globals.h>
-#include <voice_tracker.h>
-#include <import_track.h>
-#include <edit_track.h>
+#include "edit_track.h"
+#include "globals.h"
+#include "import_track.h"
+#include "voice_tracker.h"
 
 //
 // Icons
@@ -163,7 +162,7 @@ VoiceTracker::VoiceTracker(const QString &logname,QString *import_path,
   //
   // Macro Event Player
   //
-  track_event_player=new RDEventPlayer(rdripc,this);
+  track_event_player=new RDEventPlayer(rda->ripc(),this);
 
   //
   // Waveform Pixmaps
@@ -186,13 +185,13 @@ VoiceTracker::VoiceTracker(const QString &logname,QString *import_path,
   //
   // Audio Parameters
   //
-  RDLogeditConf *conf=new RDLogeditConf(log_config->stationName());
+  RDLogeditConf *conf=new RDLogeditConf(rda->config()->stationName());
   edit_input_card=conf->inputCard();
   edit_input_port=conf->inputPort();
   edit_output_card=conf->outputCard();
   edit_output_port=conf->outputPort();
   edit_format=conf->format();
-  edit_samprate=rdsystem->sampleRate();
+  edit_samprate=rda->system()->sampleRate();
   edit_bitrate=conf->bitrate();
   edit_chans=conf->defaultChannels();
   play_start_macro=conf->startCart();
@@ -205,7 +204,7 @@ VoiceTracker::VoiceTracker(const QString &logname,QString *import_path,
   conf->getSettings(edit_settings);
   delete conf;
 
-  RDLibraryConf *lconf=new RDLibraryConf(log_config->stationName(),0);
+  RDLibraryConf *lconf=new RDLibraryConf(rda->config()->stationName());
   edit_tail_preroll=lconf->tailPreroll();
   edit_threshold_level=lconf->trimThreshold();
   delete lconf;
@@ -214,7 +213,7 @@ VoiceTracker::VoiceTracker(const QString &logname,QString *import_path,
   // Voicetrack Group
   //
   RDLog *log=new RDLog(logname);
-  RDSvc *svc=new RDSvc(log->service(),rdstation_conf,log_config);
+  RDSvc *svc=new RDSvc(log->service(),rda->station(),rda->config());
   track_group=new RDGroup(svc->trackGroup());
   track_tracks=log->scheduledTracks()-log->completedTracks();
   delete svc;
@@ -224,7 +223,7 @@ VoiceTracker::VoiceTracker(const QString &logname,QString *import_path,
   // Play Decks
   //
   for(int i=0;i<3;i++) {
-    edit_deck[i]=new RDPlayDeck(rdcae,i);
+    edit_deck[i]=new RDPlayDeck(rda->cae(),i);
     edit_deck[i]->setCard(edit_output_card);
     edit_deck[i]->setPort(edit_output_port);
     connect(edit_deck[i],SIGNAL(stateChanged(int,RDPlayDeck::State)),
@@ -236,19 +235,19 @@ VoiceTracker::VoiceTracker(const QString &logname,QString *import_path,
   //
   // Record Slot Connections
   //
-  connect(rdcae,SIGNAL(recordLoaded(int,int)),
+  connect(rda->cae(),SIGNAL(recordLoaded(int,int)),
 	  this,SLOT(recordLoadedData(int,int)));
-  connect(rdcae,SIGNAL(recording(int,int)),
+  connect(rda->cae(),SIGNAL(recording(int,int)),
 	  this,SLOT(recordingData(int,int)));
-  connect(rdcae,SIGNAL(recordStopped(int,int)),
+  connect(rda->cae(),SIGNAL(recordStopped(int,int)),
 	  this,SLOT(recordStoppedData(int,int)));
-  connect(rdcae,SIGNAL(recordUnloaded(int,int,unsigned)),
+  connect(rda->cae(),SIGNAL(recordUnloaded(int,int,unsigned)),
 	  this,SLOT(recordUnloadedData(int,int,unsigned)));
 
   //
   // Log Data Structures
   //
-  track_log_lock=new RDLogLock(edit_log_name,rduser,rdstation_conf,this);
+  track_log_lock=new RDLogLock(edit_log_name,rda->user(),rda->station(),this);
   track_log=new RDLog(edit_log_name);
   track_log_event=new RDLogEvent(RDLog::tableName(edit_log_name));
   track_log_event->load();
@@ -299,7 +298,7 @@ VoiceTracker::VoiceTracker(const QString &logname,QString *import_path,
   track_track2_button->setFont(font);
   track_track2_button->setText(tr("Start"));
   connect(track_track2_button,SIGNAL(clicked()),this,SLOT(track2Data()));
-  if(!rdlogedit_conf->enableSecondStart()) {
+  if(!rda->logeditConf()->enableSecondStart()) {
     track_track2_button->hide();
   }
 
@@ -307,7 +306,7 @@ VoiceTracker::VoiceTracker(const QString &logname,QString *import_path,
   // Finished Button
   //
   track_finished_button=new QPushButton(this);
-  if(rdlogedit_conf->enableSecondStart()) {
+  if(rda->logeditConf()->enableSecondStart()) {
     track_finished_button->setGeometry(sizeHint().width()-90,255,70,70);
   }
   else {
@@ -818,7 +817,7 @@ void VoiceTracker::track1Data()
 			 tr("Unable to create new cart for voice track!"));
     return;
   }
-  rdcae->loadRecord(edit_input_card,edit_input_port,
+  rda->cae()->loadRecord(edit_input_card,edit_input_port,
 		    edit_track_cuts[1]->cutName(),
 		    edit_coding,edit_chans,edit_samprate,edit_bitrate);
   playData();
@@ -848,7 +847,7 @@ void VoiceTracker::recordData()
 			   tr("Unable to create new cart for voice track!"));
       return;
     }
-    rdcae->loadRecord(edit_input_card,edit_input_port,
+    rda->cae()->loadRecord(edit_input_card,edit_input_port,
 		      edit_track_cuts[1]->cutName(),
 		      edit_coding,edit_chans,edit_samprate,edit_bitrate);
     edit_sliding=true;
@@ -865,9 +864,9 @@ void VoiceTracker::recordData()
   track_event_player->exec(record_start_macro);
   edit_wave_name[1]=RDCut::pathName(edit_track_cuts[1]->cutName());
   wpg[1]=new RDWavePainter(edit_wave_map[1],edit_track_cuts[1],
-			   rdstation_conf,rduser,log_config);
+			   rda->station(),rda->user(),rda->config());
   wpg[1]->end();
-  rdcae->record(edit_input_card,edit_input_port,0,0);
+  rda->cae()->record(edit_input_card,edit_input_port,0,0);
   track_record_ran=true;
   track_record_start_time=GetCurrentTime();
   if(edit_deck_state==VoiceTracker::DeckTrack1) {
@@ -948,13 +947,13 @@ void VoiceTracker::finishedData()
       case VoiceTracker::DeckTrack1:
 	track_aborting=true;
 	stopData();
-	rdcae->unloadRecord(edit_input_card,edit_input_port);
+	rda->cae()->unloadRecord(edit_input_card,edit_input_port);
 	edit_deck_state=VoiceTracker::DeckIdle;
 	resetData();
 	break;
 	
       case VoiceTracker::DeckTrack2:
-	if(rdlogedit_conf->enableSecondStart()) {
+	if(rda->logeditConf()->enableSecondStart()) {
 	  if(edit_wave_name[2].isEmpty()||
 	     ((edit_logline[2]->transType()!=RDLogLine::Segue))) {
 	    FinishTrack();
@@ -962,7 +961,7 @@ void VoiceTracker::finishedData()
 	  else {
 	    track_aborting=true;
 	    stopData();
-	    rdcae->stopRecord(edit_input_card,edit_input_port);
+	    rda->cae()->stopRecord(edit_input_card,edit_input_port);
 	    edit_deck_state=VoiceTracker::DeckIdle;
 	    resetData();
 	  }
@@ -1036,7 +1035,7 @@ void VoiceTracker::resetData()
     edit_logline[1]->setForcedLength(0);
     edit_logline[1]->clearTrackData(RDLogLine::AllTrans);
     track_log_event->removeCustomTransition(edit_track_line[1]);
-    if(!edit_track_cart->remove(rdstation_conf,rduser,log_config)) {
+    if(!edit_track_cart->remove(rda->station(),rda->user(),rda->config())) {
       QMessageBox::warning(this,tr("RDLogEdit"),tr("Audio Deletion Error!"));
     }
     delete edit_track_cart;
@@ -1261,8 +1260,7 @@ void VoiceTracker::editAudioData()
   RDCart *rdcart=new RDCart(edit_logline[edit_rightclick_track]->cartNumber());
   RDEditAudio *edit=
     new RDEditAudio(rdcart,edit_logline[edit_rightclick_track]->cutName(),
-		    rdcae,rduser,rdstation_conf,log_config,edit_output_card,
-		    edit_output_port,edit_tail_preroll,
+		    edit_output_card,edit_output_port,edit_tail_preroll,
 		    edit_threshold_level,this);
   if(edit->exec()!=-1) {
     rdcart->updateLength();
@@ -1822,14 +1820,14 @@ void VoiceTracker::meterData()
     if((edit_deck[i]->state()==RDPlayDeck::Playing)||
        (edit_deck[i]->state()==RDPlayDeck::Stopping)) {
 	positionData(i,edit_deck[i]->currentPosition());
-      rdcae->
+      rda->cae()->
 	outputMeterUpdate(edit_deck[i]->card(),edit_deck[i]->port(),level);
       for(int j=0;j<2;j++) {
 	ratio[j]+=pow(10.0,((double)level[j])/1000.0);
       }
     }
     if(track_recording) {
-      rdcae->
+      rda->cae()->
 	inputMeterUpdate(edit_input_card,edit_input_port,level);
       for(int j=0;j<2;j++) {
 	ratio[j]+=pow(10.0,((double)level[j])/1000.0);
@@ -1879,7 +1877,7 @@ void VoiceTracker::recordStoppedData(int card,int stream)
   if((card!=edit_input_card)||(stream!=edit_input_port)) {
     return;
   }
-  rdcae->unloadRecord(edit_input_card,edit_input_port);
+  rda->cae()->unloadRecord(edit_input_card,edit_input_port);
   track_event_player->exec(record_end_macro);
 }
 
@@ -1893,12 +1891,12 @@ void VoiceTracker::recordUnloadedData(int card,int stream,unsigned msecs)
   track_recording=false;
   if(!track_aborting) {
     edit_track_cuts[1]->
-      checkInRecording(rdstation_conf->name(),rduser->name(),
-		       rdstation_conf->name(),edit_settings,msecs);
-    RDRehash::rehash(rdstation_conf,rduser,log_config,
+      checkInRecording(rda->station()->name(),rda->user()->name(),
+		       rda->station()->name(),edit_settings,msecs);
+    RDRehash::rehash(rda->station(),rda->user(),rda->config(),
 		     edit_track_cuts[1]->cartNumber(),
 		     edit_track_cuts[1]->cutNumber());
-    edit_track_cuts[1]->setSampleRate(rdsystem->sampleRate());
+    edit_track_cuts[1]->setSampleRate(rda->system()->sampleRate());
     edit_track_cart->updateLength();
     edit_track_cart->resetRotation();
     edit_logline[1]->
@@ -1906,7 +1904,7 @@ void VoiceTracker::recordUnloadedData(int card,int stream,unsigned msecs)
     edit_logline[1]->setEvent(0,RDLogLine::Segue,false);
     edit_logline[1]->setType(RDLogLine::Cart);
     edit_logline[1]->setSource(RDLogLine::Tracker);
-    edit_logline[1]->setOriginUser(rduser->name());
+    edit_logline[1]->setOriginUser(rda->user()->name());
     edit_logline[1]->setOriginDateTime(QDateTime(QDate::currentDate(),
 						 QTime::currentTime()));
     edit_logline[1]->
@@ -1971,7 +1969,7 @@ void VoiceTracker::closeData()
   stopData();
   CheckChanges();
   if(track_size_altered) {
-    track_log_event->save(log_config);
+    track_log_event->save(rda->config());
   }
   done(0);
 }
@@ -2235,7 +2233,7 @@ void VoiceTracker::LoadTrack(int line)
            delete wpg[i];
         }
 	wpg[i]=new RDWavePainter(edit_wave_map[i],edit_track_cuts[i],
-				 rdstation_conf,rduser,log_config);
+				 rda->station(),rda->user(),rda->config());
 	wpg[i]->end();
       }
     }
@@ -2338,10 +2336,10 @@ void VoiceTracker::SaveTrack(int line)
   }
 
   if(track_size_altered) {
-     track_log_event->save(log_config);
+     track_log_event->save(rda->config());
   }
   else {
-     track_log_event->saveModified(log_config);
+     track_log_event->saveModified(rda->config());
   }
 
   track_log->
@@ -2361,8 +2359,7 @@ bool VoiceTracker::ImportTrack(RDListViewItem *item)
   RDWaveData *wdata=new RDWaveData();
   RDImportAudio *import=
     new RDImportAudio(edit_track_cuts[1]->cutName(),edit_import_path,
-		      edit_settings,&metadata,wdata,NULL,rdstation_conf,rduser,
-		      &import_running,log_config,this);
+		      edit_settings,&metadata,wdata,NULL,&import_running,this);
   if(import->exec(true,false)<0) {
     delete import;
     delete wdata;
@@ -2394,7 +2391,7 @@ bool VoiceTracker::ImportTrack(RDListViewItem *item)
   edit_logline[1]->setEvent(0,RDLogLine::Segue,false);
   edit_logline[1]->setType(RDLogLine::Cart);
   edit_logline[1]->setSource(RDLogLine::Tracker);
-  edit_logline[1]->setOriginUser(rduser->name());
+  edit_logline[1]->setOriginUser(rda->user()->name());
   edit_logline[1]->setOriginDateTime(QDateTime(QDate::currentDate(),
 					       QTime::currentTime()));
   edit_logline[1]->setFadeupPoint(edit_track_cuts[1]->startPoint(),
@@ -3785,7 +3782,7 @@ void VoiceTracker::UpdateControls()
 	    }
 	    else {
 	      if((edit_logline[2]->transType()==RDLogLine::Segue)) {
-		if(rdlogedit_conf->enableSecondStart()) {
+		if(rda->logeditConf()->enableSecondStart()) {
 		  track_finished_button->setPalette(track_abort_palette);
 		  track_finished_button->setText(tr("Abort"));
 		}
@@ -3962,21 +3959,21 @@ bool VoiceTracker::InitTrack()
   }
   edit_track_cuts[1]=new RDCut(edit_track_cart->number(),cutnum);
   switch(edit_format) {
-      case 0:
-	edit_coding=RDCae::Pcm16;
-	break;
+  case 0:
+    edit_coding=RDCae::Pcm16;
+    break;
 	
-      case 1:
-	edit_coding=RDCae::MpegL2;
-	break;
+  case 1:
+    edit_coding=RDCae::MpegL2;
+    break;
 	
-      case 2:
-	edit_coding=RDCae::Pcm24;
-	break;
+  case 2:
+    edit_coding=RDCae::Pcm24;
+    break;
 	
-      default:
-	edit_coding=RDCae::Pcm16;
-	break;
+  default:
+    edit_coding=RDCae::Pcm16;
+    break;
   }
   edit_deck_state=VoiceTracker::DeckTrack1;
   edit_sliding=false;
@@ -4004,7 +4001,7 @@ void VoiceTracker::FinishTrack()
     setAverageSegueLength(edit_logline[0]->segueStartPoint()-
 			  edit_logline[0]->startPoint());
   if(!edit_wave_name[1].isEmpty()) {
-    rdcae->stopRecord(edit_input_card,edit_input_port);
+    rda->cae()->stopRecord(edit_input_card,edit_input_port);
     edit_logline[1]->setEndPoint(-1,RDLogLine::LogPointer);
   }
   stopData();

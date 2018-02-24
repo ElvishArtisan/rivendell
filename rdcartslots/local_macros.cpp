@@ -2,7 +2,7 @@
 //
 // A Dedicated Cart Slot Utility for Rivendell.
 //
-//   (C) Copyright 2012,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2012,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -17,6 +17,8 @@
 //   License along with this program; if not, write to the Free Software
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
+
+#include <rdapplication.h>
 
 #include "rdcartslots.h"
 
@@ -36,7 +38,7 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
     if(rml->argQuantity()!=2) {
       if(rml->echoRequested()) {
 	rml->acknowledge(false);
-	panel_ripc->sendRml(rml);
+	rda->ripc()->sendRml(rml);
       }
       return;
     }
@@ -44,7 +46,7 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
     if((!ok)||(slotnum>=panel_slots.size())) {
       if(rml->echoRequested()) {
 	rml->acknowledge(false);
-	panel_ripc->sendRml(rml);
+	rda->ripc()->sendRml(rml);
       }
       return;
     }
@@ -52,7 +54,7 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
        RDSlotOptions::CartDeckMode) {
       if(rml->echoRequested()) {
 	rml->acknowledge(false);
-	panel_ripc->sendRml(rml);
+	rda->ripc()->sendRml(rml);
       }
       return;
     }
@@ -60,7 +62,7 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
     if((!ok)||(cartnum>999999)) {
       if(rml->echoRequested()) {
 	rml->acknowledge(false);
-	panel_ripc->sendRml(rml);
+	rda->ripc()->sendRml(rml);
       }
       return;
     }
@@ -71,14 +73,14 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
       if(!panel_slots[slotnum]->load(cartnum)) {
 	if(rml->echoRequested()) {
 	  rml->acknowledge(false);
-	  panel_ripc->sendRml(rml);
+	  rda->ripc()->sendRml(rml);
 	}
 	return;
       }
     }
     if(rml->echoRequested()) {
       rml->acknowledge(true);
-      panel_ripc->sendRml(rml);
+      rda->ripc()->sendRml(rml);
     }
     break;
 
@@ -86,7 +88,7 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
     if(rml->argQuantity()!=1) {
       if(rml->echoRequested()) {
 	rml->acknowledge(false);
-	panel_ripc->sendRml(rml);
+	rda->ripc()->sendRml(rml);
       }
       return;
     }
@@ -94,7 +96,7 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
     if((!ok)||(slotnum>=panel_slots.size())) {
       if(rml->echoRequested()) {
 	rml->acknowledge(false);
-	panel_ripc->sendRml(rml);
+	rda->ripc()->sendRml(rml);
       }
       return;
     }
@@ -102,20 +104,20 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
        RDSlotOptions::CartDeckMode) {
       if(rml->echoRequested()) {
 	rml->acknowledge(false);
-	panel_ripc->sendRml(rml);
+	rda->ripc()->sendRml(rml);
       }
       return;
     }
     if(!panel_slots[slotnum]->play()) {
       if(rml->echoRequested()) {
 	rml->acknowledge(false);
-	panel_ripc->sendRml(rml);
+	rda->ripc()->sendRml(rml);
       }
       return;
     }
     if(rml->echoRequested()) {
       rml->acknowledge(true);
-      panel_ripc->sendRml(rml);
+      rda->ripc()->sendRml(rml);
     }
     break;
 
@@ -123,7 +125,7 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
     if(rml->argQuantity()!=1) {
       if(rml->echoRequested()) {
 	rml->acknowledge(false);
-	panel_ripc->sendRml(rml);
+	rda->ripc()->sendRml(rml);
       }
       return;
     }
@@ -131,7 +133,7 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
     if((!ok)||(slotnum>=panel_slots.size())) {
       if(rml->echoRequested()) {
 	rml->acknowledge(false);
-	panel_ripc->sendRml(rml);
+	rda->ripc()->sendRml(rml);
       }
       return;
     }
@@ -139,20 +141,20 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
        RDSlotOptions::CartDeckMode) {
       if(rml->echoRequested()) {
 	rml->acknowledge(false);
-	panel_ripc->sendRml(rml);
+	rda->ripc()->sendRml(rml);
       }
       return;
     }
     if(!panel_slots[slotnum]->stop()) {
       if(rml->echoRequested()) {
 	rml->acknowledge(false);
-	panel_ripc->sendRml(rml);
+	rda->ripc()->sendRml(rml);
       }
       return;
     }
     if(rml->echoRequested()) {
       rml->acknowledge(true);
-      panel_ripc->sendRml(rml);
+      rda->ripc()->sendRml(rml);
     }
     break;
 
@@ -160,7 +162,7 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
     if(rml->argQuantity()!=2) {
       if(rml->echoRequested()) {
 	rml->acknowledge(false);
-	panel_ripc->sendRml(rml);
+	rda->ripc()->sendRml(rml);
       }
       return;
     }
@@ -168,7 +170,7 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
     if((!ok)||(slotnum>=panel_slots.size())) {
       if(rml->echoRequested()) {
 	rml->acknowledge(false);
-	panel_ripc->sendRml(rml);
+	rda->ripc()->sendRml(rml);
       }
       return;
     }
@@ -176,20 +178,20 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
     if(!ok) {
       if(rml->echoRequested()) {
 	rml->acknowledge(false);
-	panel_ripc->sendRml(rml);
+	rda->ripc()->sendRml(rml);
       }
       return;
     }
     if(!panel_slots[slotnum]->breakAway(len)) {
       if(rml->echoRequested()) {
 	rml->acknowledge(false);
-	panel_ripc->sendRml(rml);
+	rda->ripc()->sendRml(rml);
       }
       return;
     }
     if(rml->echoRequested()) {
       rml->acknowledge(true);
-      panel_ripc->sendRml(rml);
+      rda->ripc()->sendRml(rml);
     }
     break;
 

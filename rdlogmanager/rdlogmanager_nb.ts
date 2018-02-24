@@ -1216,7 +1216,7 @@ data</translation>
     <name>MainWidget</name>
     <message>
         <source>Can&apos;t Connect</source>
-        <translation>Greier ikkje kopla til</translation>
+        <translation type="obsolete">Greier ikkje kopla til</translation>
     </message>
     <message>
         <source>RDLogManager</source>
@@ -1255,12 +1255,7 @@ data</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>RDLogEdit -- Database Skew</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>This version of RDLogManager is incompatible with the version installed on the server.
-See your system administrator for an update!</source>
+        <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

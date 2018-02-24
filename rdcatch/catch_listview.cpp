@@ -2,7 +2,7 @@
 //
 //   Events List Widget for RDCatch
 //
-//   (C) Copyright 2002-2006,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2006,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,12 +20,13 @@
 
 #include <qheader.h>
 
+#include <rdapplication.h>
 #include <rdcart.h>
-#include <rdrecording.h>
 #include <rdedit_audio.h>
+#include <rdrecording.h>
 
-#include <globals.h>
-#include <catch_listview.h>
+#include "catch_listview.h"
+#include "globals.h"
 
 CatchListView::CatchListView(QWidget *parent)
   : RDListView(parent)
@@ -52,9 +53,8 @@ void CatchListView::editAudioMenuData()
 {
   RDCart *rdcart=new RDCart(catch_cutname.left(6).toUInt());
   RDEditAudio *edit=
-    new RDEditAudio(rdcart,catch_cutname,catch_cae,catch_user,rdstation_conf,
-		    catch_config,catch_audition_card,catch_audition_port,
-		    1500,-400,this);
+    new RDEditAudio(rdcart,catch_cutname,catch_audition_card,
+		    catch_audition_port,1500,-400,this);
   if(edit->exec()!=-1) {
     rdcart->updateLength();
   }

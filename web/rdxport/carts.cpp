@@ -2,7 +2,7 @@
 //
 // Rivendell web service portal -- Cart services
 //
-//   (C) Copyright 2010-2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2010-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -24,16 +24,17 @@
 #include <fcntl.h>
 #include <errno.h>
 
-#include <rdformpost.h>
-#include <rdlog_line.h>
-#include <rdweb.h>
-#include <rduser.h>
-#include <rdgroup.h>
+#include <rdapplication.h>
+#include <rdcart_search_text.h>
 #include <rdconf.h>
 #include <rdescape_string.h>
-#include <rdcart_search_text.h>
+#include <rdformpost.h>
+#include <rdgroup.h>
+#include <rdlog_line.h>
+#include <rduser.h>
+#include <rdweb.h>
 
-#include <rdxport.h>
+#include "rdxport.h"
 
 void Xport::AddCart()
 {
@@ -70,7 +71,7 @@ void Xport::AddCart()
   //
   // Verify User Perms
   //
-  if(!xport_user->groupAuthorized(group_name)) {
+  if(!rda->user()->groupAuthorized(group_name)) {
     XmlExit("No such group",404,"carts.cpp",LINE_NUMBER);
   }
   group=new RDGroup(group_name);
@@ -85,7 +86,7 @@ void Xport::AddCart()
     XmlExit("Cart number out of range for group",404,"carts.cpp",LINE_NUMBER);
   }
   delete group;
-  if(!xport_user->createCarts()) {
+  if(!rda->user()->createCarts()) {
     XmlExit("Forbidden",404,"carts.cpp",LINE_NUMBER);
   }
 
@@ -145,14 +146,14 @@ void Xport::ListCarts()
   // Generate Cart List
   //
   if(group_name.isEmpty()||(group_name==tr("ALL"))) {
-    where=RDAllCartSearchText(filter,"",xport_user->name(),false);
+    where=RDAllCartSearchText(filter,"",rda->user()->name(),false);
   }
   else {
     sql=QString().
       sprintf("select GROUP_NAME from USER_PERMS \
                where (GROUP_NAME=\"%s\")&&(USER_NAME=\"%s\")",
 	      (const char *)RDEscapeString(group_name),
-	      (const char *)RDEscapeString(xport_user->name()));
+	      (const char *)RDEscapeString(rda->user()->name()));
     q=new RDSqlQuery(sql);
     if(!q->first()) {
       delete q;
@@ -200,7 +201,7 @@ void Xport::ListCart()
   //
   // Verify User Perms
   //
-  if(!xport_user->cartAuthorized(cart_number)) {
+  if(!rda->user()->cartAuthorized(cart_number)) {
     XmlExit("No such cart",404,"carts.cpp",LINE_NUMBER);
   }
 
@@ -246,14 +247,14 @@ void Xport::EditCart()
   //
   // Verify User Perms
   //
-  if(!xport_user->cartAuthorized(cart_number)) {
+  if(!rda->user()->cartAuthorized(cart_number)) {
     XmlExit("No such cart",404,"carts.cpp",LINE_NUMBER);
   }
-  if(!xport_user->modifyCarts()) {
+  if(!rda->user()->modifyCarts()) {
     XmlExit("Unauthorized",404,"carts.cpp",LINE_NUMBER);
   }
   if(xport_post->getValue("GROUP_NAME",&group_name)) {
-    if(!xport_user->groupAuthorized(group_name)) {
+    if(!rda->user()->groupAuthorized(group_name)) {
       XmlExit("No such group",404,"carts.cpp",LINE_NUMBER);
     }
     group=new RDGroup(group_name);
@@ -314,8 +315,8 @@ void Xport::EditCart()
     cart->setGroupName(group_name);
   }
   if(xport_post->getValue("TITLE",&value)) {
-    if((!xport_system->allowDuplicateCartTitles())&&
-       (!xport_system->fixDuplicateCartTitles())&&
+    if((!rda->system()->allowDuplicateCartTitles())&&
+       (!rda->system()->fixDuplicateCartTitles())&&
        (!RDCart::titleIsUnique(cart_number,value))) {
       XmlExit("Duplicate Cart Title Not Allowed",404,"carts.cpp",LINE_NUMBER);
     }
@@ -415,10 +416,10 @@ void Xport::RemoveCart()
   //
   // Verify User Perms
   //
-  if(!xport_user->cartAuthorized(cart_number)) {
+  if(!rda->user()->cartAuthorized(cart_number)) {
     XmlExit("No such cart",404,"carts.cpp",LINE_NUMBER);
   }
-  if(!xport_user->deleteCarts()) {
+  if(!rda->user()->deleteCarts()) {
     XmlExit("Unauthorized",404,"carts.cpp",LINE_NUMBER);
   }
 
@@ -430,7 +431,7 @@ void Xport::RemoveCart()
     delete cart;
     XmlExit("No such cart",404,"carts.cpp",LINE_NUMBER);
   }
-  if(!cart->remove(NULL,NULL,xport_config)) {
+  if(!cart->remove(NULL,NULL,rda->config())) {
     delete cart;
     XmlExit("Unable to delete cart",500,"carts.cpp",LINE_NUMBER);
   }
@@ -456,10 +457,10 @@ void Xport::AddCut()
   //
   // Verify User Perms
   //
-  if(!xport_user->cartAuthorized(cart_number)) {
+  if(!rda->user()->cartAuthorized(cart_number)) {
     XmlExit("No such cart",404);
   }
-  if(!xport_user->editAudio()) {
+  if(!rda->user()->editAudio()) {
     XmlExit("Forbidden",404);
   }
 
@@ -507,7 +508,7 @@ void Xport::ListCuts()
   //
   // Verify User Perms
   //
-  if(!xport_user->cartAuthorized(cart_number)) {
+  if(!rda->user()->cartAuthorized(cart_number)) {
     XmlExit("No such cart",404);
   }
 
@@ -550,7 +551,7 @@ void Xport::ListCut()
   //
   // Verify User Perms
   //
-  if(!xport_user->cartAuthorized(cart_number)) {
+  if(!rda->user()->cartAuthorized(cart_number)) {
     XmlExit("No such cart",404);
   }
 
@@ -622,10 +623,10 @@ void Xport::EditCut()
   //
   // Verify User Perms
   //
-  if(!xport_user->cartAuthorized(cart_number)) {
+  if(!rda->user()->cartAuthorized(cart_number)) {
     XmlExit("No such cart",404);
   }
-  if(!xport_user->editAudio()) {
+  if(!rda->user()->editAudio()) {
     XmlExit("Forbidden",404);
   }
 
@@ -913,10 +914,10 @@ void Xport::RemoveCut()
   //
   // Verify User Perms
   //
-  if(!xport_user->cartAuthorized(cart_number)) {
+  if(!rda->user()->cartAuthorized(cart_number)) {
     XmlExit("No such cart",404);
   }
-  if(!xport_user->editAudio()) {
+  if(!rda->user()->editAudio()) {
     XmlExit("Forbidden",404);
   }
 
@@ -929,7 +930,7 @@ void Xport::RemoveCut()
     XmlExit("No such cart",404);
   }
   if(!cart->removeCut(NULL,NULL,RDCut::cutName(cart_number,cut_number),
-		      xport_config)) {
+		      rda->config())) {
     delete cart;
     XmlExit("No such cut",404);
   }

@@ -2,7 +2,7 @@
 //
 // The Event Schedule Manager for Rivendell.
 //
-//   (C) Copyright 2002-2017 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,6 +18,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
+#include <assert.h>
 #include <unistd.h>
 
 #include <qapplication.h>
@@ -36,51 +37,43 @@
 #include <qlayout.h>
 
 #include <rdprofile.h>
-#include <rddb.h>
-#include <rdconf.h>
 #include <rd.h>
-#include <rduser.h>
-#include <rdripc.h>
-#include <rdcut.h>
-#include <rdcatch.h>
-#include <rdstation.h>
-#include <rddeck.h>
+#include <rdapplication.h>
 #include <rdaudio_port.h>
-#include <rdcut_path.h>
-#include <rdmixer.h>
+#include <rdcatch.h>
 #include <rdcheck_daemons.h>
-#include <rdsettings.h>
-#include <rdcmd_switch.h>
+#include <rdconf.h>
+#include <rdcut.h>
+#include <rdcut_path.h>
+#include <rddb.h>
+#include <rddeck.h>
 #include <rdedit_audio.h>
+#include <rdmixer.h>
+#include <rdripc.h>
+#include <rdsettings.h>
+#include <rdstation.h>
+#include <rduser.h>
 #include <dbversion.h>
 
-#include <add_recording.h>
-#include <edit_recording.h>
-#include <edit_playout.h>
-#include <edit_cartevent.h>
-#include <edit_switchevent.h>
-#include <edit_download.h>
-#include <edit_upload.h>
-#include <list_reports.h>
-#include <deckmon.h>
-#include <colors.h>
-#include <globals.h>
-#include <assert.h>
+#include "add_recording.h"
+#include "colors.h"
+#include "deckmon.h"
+#include "edit_cartevent.h"
+#include "edit_download.h"
+#include "edit_playout.h"
+#include "edit_recording.h"
+#include "globals.h"
+#include "list_reports.h"
+#include "edit_switchevent.h"
+#include "edit_upload.h"
 
 //
 // Global Resources
 //
-RDConfig *catch_config;
-RDStation *rdstation_conf;
 RDAudioPort *rdaudioport_conf;
-RDUser *catch_user;
-RDLibraryConf *rdlibrary_conf;
-RDRipc *catch_ripc;
-RDCae *catch_cae;
 RDCartDialog *catch_cart_dialog;
 int catch_audition_card=-1;
 int catch_audition_port=-1;
-RDSystem *catch_system=NULL;
 
 //
 // Icons
@@ -118,27 +111,43 @@ MainWidget::MainWidget(QWidget *parent)
   :QWidget(parent)
 {
   QString str;
+  QString err_msg;
+
+  catch_resize=false;
   catch_host_warnings=false;
   catch_audition_stream=-1;
-  bool skip_db_check=false;
-  unsigned schema=0;
 
   catch_scroll=false;
 
   //
+  // Ensure the system daemons are running
+  //
+  RDInitializeDaemons();
+
+  //
+  // Open the Database
+  //
+  rda=new RDApplication("RDCatch","rdcatch",RDCATCH_USAGE,this);
+  if(!rda->open(&err_msg)) {
+    QMessageBox::critical(this,"RDCatch - "+tr("Error"),err_msg);
+    exit(1);
+  }
+
+  //
   // Read Command Options
   //
-  RDCmdSwitch *cmd=new RDCmdSwitch(qApp->argc(),qApp->argv(),"rdcatch",
-				   RDCATCH_USAGE);
-  for(unsigned i=0;i<cmd->keys();i++) {
-    if(cmd->key(i)=="--offline-host-warnings") {
-      catch_host_warnings=RDBool(cmd->value(i));
+  for(unsigned i=0;i<rda->cmdSwitch()->keys();i++) {
+    if(rda->cmdSwitch()->key(i)=="--offline-host-warnings") {
+      catch_host_warnings=RDBool(rda->cmdSwitch()->value(i));
+      rda->cmdSwitch()->setProcessed(i,true);
     }
-    if(cmd->key(i)=="--skip-db-check") {
-      skip_db_check=true;
+    if(!rda->cmdSwitch()->processed(i)) {
+      QMessageBox::critical(this,"RDCatch - "+tr("Error"),
+			    tr("Unknown command option")+": "+
+			    rda->cmdSwitch()->key(i));
+      exit(2);
     }
   }
-  delete cmd;
 
   //
   // Fix the Window Size
@@ -191,86 +200,49 @@ MainWidget::MainWidget(QWidget *parent)
 			backgroundColor());
   catch_scroll_color[1]=QPalette(backgroundColor(),backgroundColor());
 
-  //
-  // Ensure the system daemons are running
-  //
-  RDInitializeDaemons();
-
-  //
-  // Load Local Configs
-  //
-  catch_config=new RDConfig();
-  catch_config->load();
-  catch_config->setModuleName("RDCatch");
-
   str=QString("RDCatch")+" v"+VERSION+" - "+tr("Host")+":";
-  setCaption(QString().sprintf("%s %s",(const char *)str,
-			       (const char *)catch_config->stationName()));
-
-  //
-  // Open Database
-  //
-  QString err (tr("rdcatch : "));
-  catch_db=RDInitDb(&schema,&err);
-  if(!catch_db) {
-    log(RDConfig::LogErr,err);
-    exit(0);
-  }
-  if((schema!=RD_VERSION_DATABASE)&&(!skip_db_check)) {
-    fprintf(stderr,"rdcatch: database version mismatch, should be %u, is %u\n",
-	    RD_VERSION_DATABASE,schema);
-    exit(256);
-  }
+  setCaption(str+" "+rda->config()->stationName());
 
   connect(RDDbStatus(),SIGNAL(logText(RDConfig::LogPriority,const QString &)),
 	  this,SLOT(log(RDConfig::LogPriority,const QString &)));
+
   //
   // Allocate Global Resources
   //
-  rdstation_conf=new RDStation(catch_config->stationName());
-  catch_audition_card=rdstation_conf->cueCard();
-  catch_audition_port=rdstation_conf->cuePort();
-  catch_time_offset=rdstation_conf->timeOffset();
-  catch_system=new RDSystem();
+  catch_audition_card=rda->station()->cueCard();
+  catch_audition_port=rda->station()->cuePort();
+  catch_time_offset=rda->station()->timeOffset();
 
   //
   // Load Audio Settings
   //
-  RDDeck *deck=new RDDeck(catch_config->stationName(),0);
+  RDDeck *deck=new RDDeck(rda->config()->stationName(),0);
   delete deck;
   head_playing=false;
   tail_playing=false;
-  rdaudioport_conf=new RDAudioPort(rdstation_conf->name(),catch_audition_card);
-
-  //
-  // Library Config
-  //
-  rdlibrary_conf=new RDLibraryConf(catch_config->stationName(),0);
+  rdaudioport_conf=new RDAudioPort(rda->station()->name(),catch_audition_card);
 
   //
   // RIPC Connection
   //
-  catch_ripc=new RDRipc(rdstation_conf,catch_config,this);
-  connect(catch_ripc,SIGNAL(connected(bool)),
+  connect(rda->ripc(),SIGNAL(connected(bool)),
 	  this,SLOT(ripcConnectedData(bool)));
-  catch_user=NULL;
-  connect(catch_ripc,SIGNAL(userChanged()),this,SLOT(ripcUserData()));
-  catch_ripc->connectHost("localhost",RIPCD_TCP_PORT,catch_config->password());
+  connect(rda,SIGNAL(userChanged()),this,SLOT(ripcUserData()));
+  rda->ripc()->connectHost("localhost",RIPCD_TCP_PORT,rda->config()->password());
 
   //
   // CAE Connection
   //
-  catch_cae=new RDCae(rdstation_conf,catch_config,this);
-  connect(catch_cae,SIGNAL(isConnected(bool)),this,SLOT(initData(bool)));
-  connect(catch_cae,SIGNAL(playing(int)),this,SLOT(playedData(int)));
-  connect(catch_cae,SIGNAL(playStopped(int)),
+  connect(rda->cae(),SIGNAL(isConnected(bool)),this,SLOT(initData(bool)));
+  connect(rda->cae(),SIGNAL(playing(int)),this,SLOT(playedData(int)));
+  connect(rda->cae(),SIGNAL(playStopped(int)),
 	  this,SLOT(playStoppedData(int)));
-  catch_cae->connectHost();
+  rda->cae()->connectHost();
 
   //
   // Set Audio Assignments
   //
-  RDSetMixerPorts(rdstation_conf->name(),catch_cae);
+  RDSetMixerPorts(rda->station()->name(),rda->cae());
 
   //
   // Deck Monitors
@@ -318,7 +290,7 @@ MainWidget::MainWidget(QWidget *parent)
 	    this,SLOT(heartbeatFailedData(int)));
     catch_connect.back()->connector()->
       connectHost(q->value(1).toString(),RDCATCHD_TCP_PORT,
-		  catch_config->password());
+		  rda->config()->password());
     sql=QString().sprintf("select CHANNEL,MON_PORT_NUMBER from DECKS \
 where (CARD_NUMBER!=-1)&&(PORT_NUMBER!=-1)&&(CHANNEL>0)&&(STATION_NAME=\"%s\") \
 order by CHANNEL",(const char *)q->value(0).toString().lower());
@@ -338,7 +310,7 @@ order by CHANNEL",(const char *)q->value(0).toString().lower());
 
       catch_monitor.back()->deckMon()->
 	enableMonitorButton((q1->value(1).toInt()>=0)&&
-			    (catch_config->stationName().lower()==
+			    (rda->config()->stationName().lower()==
 			     q->value(0).toString().lower()));
       catch_monitor.back()->deckMon()->show();
       mapper->setMapping(catch_monitor.back()->deckMon(),
@@ -356,11 +328,6 @@ order by CHANNEL",(const char *)q->value(0).toString().lower());
   if(catch_monitor.size()==0) {
     catch_monitor_view->hide();
   }
-
-  //
-  // User
-  //
-  catch_user=NULL;
 
   //
   // Filter Selectors
@@ -411,10 +378,8 @@ order by CHANNEL",(const char *)q->value(0).toString().lower());
   //
   // Cart Picker
   //
-  catch_cart_dialog=new RDCartDialog(&catch_filter,&catch_group,
-				     &catch_schedcode,catch_cae,catch_ripc,
-				     rdstation_conf,catch_system,catch_config,
-				     this);
+  catch_cart_dialog=
+    new RDCartDialog(&catch_filter,&catch_group,&catch_schedcode,this);
 
   //
   // Cart List
@@ -612,11 +577,13 @@ order by CHANNEL",(const char *)q->value(0).toString().lower());
   QTimer *timer=new QTimer(this);
   connect(timer,SIGNAL(timeout()),this,SLOT(resizeData()));
   timer->start(1,true);
+
+  catch_resize=true;
 }
 
 void MainWidget::log(RDConfig::LogPriority prio,const QString &msg)
 {
-  catch_config->log("RDCatch",prio,msg);
+  rda->config()->log("RDCatch",prio,msg);
 }
 
 QSize MainWidget::sizeHint() const
@@ -706,7 +673,7 @@ void MainWidget::addData()
   RDListViewItem *item;
   int conn;
 
-  if(!catch_user->editCatches()) {
+  if(!rda->user()->editCatches()) {
     return;
   }
   EnableScroll(false);
@@ -758,7 +725,7 @@ void MainWidget::editData()
   EditDownload *download;
   EditUpload *upload;
 
-  if(!catch_user->editCatches()) {
+  if(!rda->user()->editCatches()) {
     return;
   }
   if(item==NULL) {
@@ -898,7 +865,7 @@ void MainWidget::deleteData()
   RDListViewItem *item=(RDListViewItem *)catch_recordings_list->selectedItem();
   int conn;
 
-  if(!catch_user->editCatches()||(item==NULL)) {
+  if(!rda->user()->editCatches()||(item==NULL)) {
     return;
   }
   EnableScroll(false);
@@ -951,17 +918,13 @@ void MainWidget::ripcUserData()
   QString str;
 
   str=QString("RDCatch")+" v"+VERSION+" - "+tr("Host")+":";
-  setCaption(str+" "+catch_config->stationName()+", "+tr("User")+": "+
-	     catch_ripc->user());
-  if(catch_user!=NULL) {
-    delete catch_user;
-  }
-  catch_user=new RDUser(catch_ripc->user());
+  setCaption(str+" "+rda->config()->stationName()+", "+tr("User")+": "+
+	     rda->ripc()->user());
 
   //
   // Set Control Perms
   //
-  bool modification_allowed=catch_user->editCatches();
+  bool modification_allowed=rda->user()->editCatches();
   catch_add_button->setEnabled(modification_allowed);
   catch_edit_button->setEnabled(modification_allowed);
   catch_delete_button->setEnabled(modification_allowed);
@@ -1097,18 +1060,18 @@ void MainWidget::headButtonData()
   EnableScroll(false);
   if((!head_playing)&&(!tail_playing)) {  // Start Head Play
     RDCut *cut=new RDCut(item->text(26));
-    catch_cae->loadPlay(catch_audition_card,item->text(26),
+    rda->cae()->loadPlay(catch_audition_card,item->text(26),
 			&catch_audition_stream,&catch_play_handle);
     if(catch_audition_stream<0) {
       return;
     }
-    RDSetMixerOutputPort(catch_cae,catch_audition_card,catch_audition_stream,
+    RDSetMixerOutputPort(rda->cae(),catch_audition_card,catch_audition_stream,
 			 catch_audition_port);
-    catch_cae->positionPlay(catch_play_handle,cut->startPoint());
-    catch_cae->setPlayPortActive(catch_audition_card,catch_audition_port,catch_audition_stream);
-    catch_cae->setOutputVolume(catch_audition_card,catch_audition_stream,catch_audition_port,
+    rda->cae()->positionPlay(catch_play_handle,cut->startPoint());
+    rda->cae()->setPlayPortActive(catch_audition_card,catch_audition_port,catch_audition_stream);
+    rda->cae()->setOutputVolume(catch_audition_card,catch_audition_stream,catch_audition_port,
            0+cut->playGain());
-    catch_cae->play(catch_play_handle,RDCATCH_AUDITION_LENGTH,
+    rda->cae()->play(catch_play_handle,RDCATCH_AUDITION_LENGTH,
 		    RD_TIMESCALE_DIVISOR,false);
     head_playing=true;
     delete cut;
@@ -1125,24 +1088,24 @@ void MainWidget::tailButtonData()
   EnableScroll(false);
   if((!head_playing)&&(!tail_playing)) {  // Start Tail Play
     RDCut *cut=new RDCut(item->text(26));
-    catch_cae->loadPlay(catch_audition_card,item->text(26),
+    rda->cae()->loadPlay(catch_audition_card,item->text(26),
 			&catch_audition_stream,&catch_play_handle);
     if(catch_audition_stream<0) {
       return;
     }
-    RDSetMixerOutputPort(catch_cae,catch_audition_card,catch_audition_stream,
+    RDSetMixerOutputPort(rda->cae(),catch_audition_card,catch_audition_stream,
 			 catch_audition_port);
     if((cut->endPoint()-cut->startPoint()-RDCATCH_AUDITION_LENGTH)>0) {
-      catch_cae->positionPlay(catch_play_handle,
+      rda->cae()->positionPlay(catch_play_handle,
 			      cut->endPoint()-RDCATCH_AUDITION_LENGTH);
     }
     else {
-      catch_cae->positionPlay(catch_play_handle,cut->startPoint());
+      rda->cae()->positionPlay(catch_play_handle,cut->startPoint());
     }
-    catch_cae->setPlayPortActive(catch_audition_card,catch_audition_port,catch_audition_stream);
-    catch_cae->setOutputVolume(catch_audition_card,catch_audition_stream,catch_audition_port,
+    rda->cae()->setPlayPortActive(catch_audition_card,catch_audition_port,catch_audition_stream);
+    rda->cae()->setOutputVolume(catch_audition_card,catch_audition_stream,catch_audition_port,
            0+cut->playGain());
-    catch_cae->play(catch_play_handle,RDCATCH_AUDITION_LENGTH,
+    rda->cae()->play(catch_play_handle,RDCATCH_AUDITION_LENGTH,
 		    RD_TIMESCALE_DIVISOR,false);
     tail_playing=true;
     delete cut;
@@ -1153,8 +1116,8 @@ void MainWidget::tailButtonData()
 void MainWidget::stopButtonData()
 {
   if(head_playing||tail_playing) {  // Stop Play
-    catch_cae->stopPlay(catch_play_handle);
-    catch_cae->unloadPlay(catch_play_handle);
+    rda->cae()->stopPlay(catch_play_handle);
+    rda->cae()->unloadPlay(catch_play_handle);
   }
 }
 
@@ -1188,7 +1151,7 @@ void MainWidget::playStoppedData(int handle)
   catch_head_button->off();
   catch_tail_button->off();
   catch_stop_button->on();
-  catch_cae->unloadPlay(catch_play_handle);
+  rda->cae()->unloadPlay(catch_play_handle);
 }
 
 
@@ -1297,7 +1260,7 @@ void MainWidget::heartbeatFailedData(int id)
 
 void MainWidget::quitMainWidget()
 {
-  catch_db->removeDatabase(catch_config->mysqlDbname());
+  catch_db->removeDatabase(rda->config()->mysqlDbname());
   SaveGeometry();
   exit(0);
 }
@@ -1420,6 +1383,9 @@ void MainWidget::closeEvent(QCloseEvent *e)
 
 void MainWidget::resizeEvent(QResizeEvent *e)
 {
+  if(!catch_resize) {
+    return;
+  }
   assert (e);
   assert (catch_monitor_view);
   if(catch_monitor.size()<=RDCATCH_MAX_VISIBLE_MONITORS) {

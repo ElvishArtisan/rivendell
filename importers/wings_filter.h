@@ -2,7 +2,7 @@
 //
 // A Library import filter for the Crown Wings system
 //
-//   (C) Copyright 2002-2005 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2005,2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -24,15 +24,10 @@
 #include <stdio.h>
 
 #include <qobject.h>
-#include <qapplication.h>
-#include <qsqldatabase.h>
 
-#include <rdwavefile.h>
-#include <rdstation.h>
-#include <rdripc.h>
 #include <rdcatch_connect.h>
-#include <rdcae.h>
 #include <rdgroup.h>
+#include <rdwavefile.h>
 
 #define WINGS_RECORD_LENGTH 613
 #define WINGS_FILTER_USAGE "-g <default-group> -d <db-file> -A <audio-dir> [-e <audio-ext>]\n"
@@ -59,10 +54,7 @@ class MainObject : public QObject
   bool ImportCut(RDGroup *group,struct WingsRecord *rec,RDWaveFile *wavefile);
   bool ReadLine(FILE *fp,struct WingsRecord *rec);
   void TrimSpaces(char *str);
-  RDStation *filter_rdstation;
-  RDRipc *filter_ripc;
-  QSqlDatabase *filter_db;
 };
 
 
-#endif 
+#endif  // WINGS_FILTER_H

@@ -7,11 +7,11 @@
     </message>
     <message>
         <source>rdlogin : </source>
-        <translation>rdlogin :</translation>
+        <translation type="obsolete">rdlogin :</translation>
     </message>
     <message>
         <source>Can&apos;t Connect</source>
-        <translation>Kann nicht verbinden</translation>
+        <translation type="obsolete">Kann nicht verbinden</translation>
     </message>
     <message>
         <source>Current User: unknown</source>
@@ -52,6 +52,14 @@ User</source>
     </message>
     <message>
         <source>Invalid Username or Password!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unknown command option</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

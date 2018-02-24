@@ -2,7 +2,7 @@
 //
 // Add a Rivendell Service
 //
-//   (C) Copyright 2002,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -26,10 +26,11 @@
 #include <qdatetime.h>
 
 #include <rddb.h>
-#include <rdtextvalidator.h>
-#include <rdescape_string.h>
+#include <rdapplication.h>
 #include <rdcreateauxfieldstable.h>
+#include <rdescape_string.h>
 #include <rdfeedlog.h>
+#include <rdtextvalidator.h>
 
 #include "add_feed.h"
 #include "edit_feed.h"
@@ -179,7 +180,7 @@ void AddFeed::okData()
   q=new RDSqlQuery(sql);
   delete q;
   RDCreateFeedLog(feed_keyname_edit->text());
-  RDCreateAuxFieldsTable(feed_keyname_edit->text(),admin_config);
+  RDCreateAuxFieldsTable(feed_keyname_edit->text(),rda->config());
   sql=QString().sprintf("select ID from FEEDS where KEY_NAME=\"%s\"",
 			(const char *)feed_keyname_edit->text());
   q=new RDSqlQuery(sql);

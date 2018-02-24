@@ -18,22 +18,64 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
+#include <stdlib.h>
+
 #include <qapplication.h>
 
+#include <rdapplication.h>
 #include <rddb.h>
-#include <rdcmd_switch.h>
+//#include <rdcmd_switch.h>
 #include <rdupload.h>
 
-#include <upload_test.h>
+#include "upload_test.h"
 
 MainObject::MainObject(QObject *parent)
   :QObject(parent)
 {
+  QString err_msg;
+
   username="";
   password="";
   RDUpload::ErrorCode conv_err;
   unsigned schema=0;
 
+  //
+  // Open the Database
+  //
+  rda=new RDApplication("upload_test","upload_test",UPLOAD_TEST_USAGE,this);
+  if(!rda->open(&err_msg)) {
+    fprintf(stderr,"upload_test: %s\n",(const char *)err_msg);
+    exit(1);
+  }
+
+  //
+  // Read Command Options
+  //
+  for(unsigned i=0;i<rda->cmdSwitch()->keys();i++) {
+    if(rda->cmdSwitch()->key(i)=="--username") {
+      username=rda->cmdSwitch()->value(i);
+      rda->cmdSwitch()->setProcessed(i,true);
+    }
+    if(rda->cmdSwitch()->key(i)=="--password") {
+      password=rda->cmdSwitch()->value(i);
+      rda->cmdSwitch()->setProcessed(i,true);
+    }
+    if(rda->cmdSwitch()->key(i)=="--source-file") {
+      source_filename=rda->cmdSwitch()->value(i);
+      rda->cmdSwitch()->setProcessed(i,true);
+    }
+    if(rda->cmdSwitch()->key(i)=="--destination-url") {
+      destination_url=rda->cmdSwitch()->value(i);
+      rda->cmdSwitch()->setProcessed(i,true);
+    }
+    if(!rda->cmdSwitch()->processed(i)) {
+      fprintf(stderr,"rdrepld: unknown command option \"%s\"\n",
+	      (const char *)rda->cmdSwitch()->key(i));
+      exit(2);
+    }
+  }
+
+  /*
   //
   // Read Command Options
   //
@@ -58,6 +100,11 @@ MainObject::MainObject(QObject *parent)
       cmd->setProcessed(i,true);
     }
   }
+  */
+
+  //
+  // Sanity Checks
+  //
   if(source_filename.isEmpty()) {
     fprintf(stderr,"upload_test: missing source-file\n");
     exit(256);
@@ -66,7 +113,7 @@ MainObject::MainObject(QObject *parent)
     fprintf(stderr,"upload_test: missing destination-url\n");
     exit(256);
   }
-
+  /*
   //
   // Read Configuration
   //
@@ -84,12 +131,16 @@ MainObject::MainObject(QObject *parent)
     delete cmd;
     exit(256);
   }
-
-  RDUpload *conv=new RDUpload(rdconfig,this);
+  */
+  //
+  // Run the Test
+  //
+  RDUpload *conv=new RDUpload(this);
   conv->setSourceFile(source_filename);
   conv->setDestinationUrl(destination_url);
   printf("Uploading...\n");
-  conv_err=conv->runUpload(username,password,rdconfig->logXloadDebugData());
+  conv_err=conv->
+    runUpload(username,password,rda->config()->logXloadDebugData());
   printf("Result: %s\n",(const char *)RDUpload::errorText(conv_err));
   delete conv;
 

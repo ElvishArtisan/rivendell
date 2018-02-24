@@ -2,7 +2,7 @@
 //
 // The Log Editor Utility for Rivendell.
 //
-//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2004,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -29,7 +29,6 @@
 #include <qwindowsstyle.h>
 #include <qwidget.h>
 #include <qpainter.h>
-#include <qsqldatabase.h>
 #include <qsqlpropertymap.h>
 #include <qmessagebox.h>
 #include <qpushbutton.h>
@@ -40,27 +39,25 @@
 #include <qtextcodec.h>
 #include <qtranslator.h>
 
+#include <dbversion.h>
 #include <rd.h>
-#include <rduser.h>
-#include <rdripc.h>
-#include <rdstation.h>
-#include <rdsvc.h>
+#include <rdapplication.h>
 #include <rdcheck_daemons.h>
 #include <rdcreate_log.h>
 #include <rdcmd_switch.h>
-#include <rddbheartbeat.h>
 #include <rddatedecode.h>
+#include <rddbheartbeat.h>
 #include <rdlog.h>
 #include <rdlog_event.h>
-#include <dbversion.h>
+#include <rdsvc.h>
 
-#include <rdlogmanager.h>
-#include <globals.h>
-#include <list_events.h>
-#include <list_clocks.h>
-#include <list_grids.h>
-#include <generate_log.h>
-#include <list_svcs.h>
+#include "generate_log.h"
+#include "globals.h"
+#include "list_clocks.h"
+#include "list_events.h"
+#include "list_grids.h"
+#include "list_svcs.h"
+#include "rdlogmanager.h"
 
 //
 // Icons
@@ -70,11 +67,6 @@
 //
 // Global Resources
 //
-RDStation *rdstation_conf;
-RDUser *rduser;
-RDRipc *rdripc;
-RDCae *rdcae;
-RDConfig *log_config;
 QString *event_filter;
 QString *clock_filter;
 bool skip_db_check=false;
@@ -100,7 +92,7 @@ void SigHandler(int signo)
 MainWidget::MainWidget(QWidget *parent)
   :QWidget(parent)
 {
-  unsigned schema=0;
+  QString err_msg;
 
   //
   // Fix the Window Size
@@ -118,60 +110,28 @@ MainWidget::MainWidget(QWidget *parent)
 #endif  // WIN32
 
   //
-  // Load Local Configs
+  // Open the Database
   //
-  log_config=new RDConfig();
-  log_config->load();
-  log_config->setModuleName("RDLogManager");
+  rda=new RDApplication("RDLogManager","rdlogmanager",RDLOGMANAGER_USAGE,this);
+  if(!rda->open(&err_msg)) {
+    QMessageBox::critical(this,"RDLogManager - "+tr("Error"),err_msg);
+    exit(1);
+  }
 
   setCaption(tr("RDLogManager"));
 
   //
-  // Open Database
-  //
-  QString err;
-  log_db=RDInitDb(&schema,&err);
-  if(!log_db) {
-    QMessageBox::warning(this,tr("Can't Connect"),err);
-    exit(0);
-  }
-  if((schema!=RD_VERSION_DATABASE)&&(!skip_db_check)) {
-#ifdef WIN32
-	    QMessageBox::warning(this,tr("RDLogEdit -- Database Skew"),
-				 tr("This version of RDLogManager is incompatible with the version installed on the server.\nSee your system administrator for an update!"));
-#else
-    fprintf(stderr,
-	    "rdlogmanager: database version mismatch, should be %u, is %u\n",
-	    RD_VERSION_DATABASE,schema);
-#endif  // WIN32
-    exit(256);
-  }
-  new RDDbHeartbeat(log_config->mysqlHeartbeatInterval(),this);
-
-  //
-  // Allocate Global Resources
-  //
-  rdstation_conf=new RDStation(log_config->stationName());
-   
-  //
   // CAE Connection
   //
 #ifndef WIN32
-  rdcae=new RDCae(rdstation_conf,log_config,parent);
-  rdcae->connectHost();
+  rda->cae()->connectHost();
 #endif  // WIN32
 
   //
   // RIPC Connection
   //
-  rdripc=new RDRipc(rdstation_conf,log_config,this);
-  connect(rdripc,SIGNAL(userChanged()),this,SLOT(userData()));
-  rdripc->connectHost("localhost",RIPCD_TCP_PORT,log_config->password());
-
-  //
-  // User
-  //
-  rduser=NULL;
+  connect(rda,SIGNAL(userChanged()),this,SLOT(userData()));
+  rda->ripc()->connectHost("localhost",RIPCD_TCP_PORT,rda->config()->password());
 
   //
   // Generate Fonts
@@ -288,19 +248,14 @@ void MainWidget::userData()
 {
   QString str1=tr("RDLogManager - User: ");
   setCaption(QString().sprintf("%s%s",(const char *)str1,
-			       (const char *)rdripc->user()));
-
-  if(rduser!=NULL) {
-    delete rduser;
-  }
-  rduser=new RDUser(rdripc->user());
+			       (const char *)rda->ripc()->user()));
 
   //
   // Set Control Perms
   //
-  bool templates_allowed=rduser->modifyTemplate();
-  bool creation_allowed=rduser->createLog();
-  bool rec_allowed=rduser->deleteRec();
+  bool templates_allowed=rda->user()->modifyTemplate();
+  bool creation_allowed=rda->user()->createLog();
+  bool rec_allowed=rda->user()->deleteRec();
   log_events_button->setEnabled(templates_allowed);
   log_clocks_button->setEnabled(templates_allowed);
   log_grids_button->setEnabled(templates_allowed);
@@ -351,7 +306,6 @@ void MainWidget::reportsData()
 
 void MainWidget::quitMainWidget()
 {
-  log_db->removeDatabase(log_config->mysqlDbname());
   exit(0);
 }
 
@@ -435,7 +389,6 @@ int main(int argc,char *argv[])
       cmd->setProcessed(i,true);
     }
     if(cmd->key(i)=="--skip-db-check") {
-      skip_db_check=true;
       cmd->setProcessed(i,true);
     }
     if (cmd->key(i)=="-s") {
@@ -445,7 +398,7 @@ int main(int argc,char *argv[])
       }
       else {
 	fprintf(stderr,"rdlogmanager: missing argument to \"-s\"\n");
-	exit(256);
+	exit(2);
       }
     }
     if (cmd->key(i)=="-r") {
@@ -455,7 +408,7 @@ int main(int argc,char *argv[])
       }
       else {
 	fprintf(stderr,"rdlogmanager: missing argument to \"-r\"\n");
-	exit(256);
+	exit(2);
       }
     }
     if (cmd->key(i)=="-d") {
@@ -465,7 +418,7 @@ int main(int argc,char *argv[])
       }
       else {
 	fprintf(stderr,"rdlogmanager: missing argument to \"-d\"\n");
-	exit(256);
+	exit(2);
       }
     }
     if (cmd->key(i)=="-e") {
@@ -475,8 +428,13 @@ int main(int argc,char *argv[])
       }
       else {
 	fprintf(stderr,"rdlogmanager: missing argument to \"-e\"\n");
-	exit(256);
+	exit(2);
       }
+    }
+    if(!cmd->processed(i)) {
+      fprintf(stderr,"rdlogmanager: unknown command option \"%s\"\n",
+	      (const char *)cmd->key(i));
+      exit(2);
     }
   }
   delete cmd;

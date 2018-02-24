@@ -27,7 +27,9 @@ class RDUser
 {
  public:
   RDUser(const QString &name);
+  RDUser();
   QString name() const;
+  void setName(const QString &name);
   bool exists() const;
   bool authenticated(bool webuser) const;
   bool checkPassword(const QString &password,bool webuser);

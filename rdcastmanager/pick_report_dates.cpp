@@ -2,7 +2,7 @@
 //
 // Select a Set of Dates for a Rivendell Report
 //
-//   (C) Copyright 2002-2006,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2006,2016-2017 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -23,16 +23,17 @@
 #include <qmessagebox.h>
 #include <qfile.h>
 
-#include <rddatedialog.h>
-#include <rdreport.h>
-#include <rddatedecode.h>
+#include <rdapplication.h>
 #include <rddb.h>
-#include <rdtextfile.h>
+#include <rddatedecode.h>
+#include <rddatedialog.h>
 #include <rdfeed.h>
 #include <rdpodcast.h>
+#include <rdreport.h>
+#include <rdtextfile.h>
 
-#include <globals.h>
-#include <pick_report_dates.h>
+#include "globals.h"
+#include "pick_report_dates.h"
 
 PickReportDates::PickReportDates(unsigned feed_id,unsigned cast_id,
 				 QWidget *parent)
@@ -191,7 +192,7 @@ void PickReportDates::GenerateSubscriptionReport(const QString &keyname,
   QString sql;
   RDSqlQuery *q;
 
-  RDFeed *feed=new RDFeed(keyname,config,this);
+  RDFeed *feed=new RDFeed(keyname,rda->config(),this);
   unsigned total=0;
   unsigned rss_total=0;
   unsigned audio_total=0;
@@ -253,8 +254,8 @@ void PickReportDates::GenerateEpisodeReport(const QString &keyname,
   QString sql;
   RDSqlQuery *q;
 
-  RDFeed *feed=new RDFeed(keyname,config,this);
-  RDPodcast *cast=new RDPodcast(config,cast_id);
+  RDFeed *feed=new RDFeed(keyname,rda->config(),this);
+  RDPodcast *cast=new RDPodcast(rda->config(),cast_id);
 
   //
   // Header

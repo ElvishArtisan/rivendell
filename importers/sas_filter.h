@@ -2,7 +2,7 @@
 //
 // An RDCatch event import filter for the SAS64000
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2004,2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -22,14 +22,8 @@
 #define SAS_FILTER_H
 
 #include <qobject.h>
-#include <qapplication.h>
-#include <qsqldatabase.h>
 
-#include <rdstation.h>
-#include <rdripc.h>
 #include <rdcatch_connect.h>
-#include <rdstation.h>
-#include <rdconfig.h>
 
 #define SAS_FILTER_USAGE "-d|-i <insert-list>\n"
 
@@ -45,13 +39,9 @@ class MainObject : public QObject
   void InjectLine(char *line);
   void InjectSwitchEvent(QString sql,int input,int output);
   void InjectCartEvent(QString sql,int gpo);
-  RDStation *filter_rdstation;
-  RDRipc *filter_ripc;
   RDCatchConnect *filter_connect;
-  QSqlDatabase *filter_db;
   int filter_switch_count;
   int filter_macro_count;
-  RDConfig *rd_config;
 };
 
 

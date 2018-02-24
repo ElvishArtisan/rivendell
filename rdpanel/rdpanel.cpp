@@ -2,7 +2,7 @@
 //
 // A Dedicated Cart Wall Utility for Rivendell.
 //
-//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2004,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -31,24 +31,20 @@
 #include <qtextcodec.h>
 #include <qpainter.h>
 
-#include <rdpanel.h>
-#include <rd.h>
-#include <rdcheck_daemons.h>
-#include <rddbheartbeat.h>
 #include <dbversion.h>
+#include <rd.h>
+#include <rdapplication.h>
+#include <rdcheck_daemons.h>
+#include <rdcmd_switch.h>
+#include <rddbheartbeat.h>
 
-#include <globals.h>
+#include "globals.h"
+#include "rdpanel.h"
 
 //
 // Global Resources
 //
-RDStation *rdstation_conf;
-RDSystem *rdsystem_conf;
-RDAirPlayConf *rdairplay_conf;
 RDAudioPort *rdaudioport_conf;
-RDUser *rduser;
-RDRipc *rdripc;
-#include <rdcmd_switch.h>
 RDCartDialog *panel_cart_dialog;
 
 //
@@ -76,8 +72,7 @@ MainWidget::MainWidget(QWidget *parent)
 {
   QPixmap *pm;
   QPainter *pd;
-  bool skip_db_check=false;
-  unsigned schema=0;
+  QString err_msg;
 
   //
   // Fix the Window Size
@@ -88,17 +83,6 @@ MainWidget::MainWidget(QWidget *parent)
   setMinimumHeight(sizeHint().height());
   setMaximumHeight(sizeHint().height());
 #endif  // RESIZABLE
-
-  //
-  // Load the command-line arguments
-  //
-  RDCmdSwitch *cmd=new RDCmdSwitch(qApp->argc(),qApp->argv(),"rdpanel",
-				   RDPANEL_USAGE);
-  for(unsigned i=0;i<cmd->keys();i++) {
-    if(cmd->key(i)=="--skip-db-check") {
-      skip_db_check=true;
-    }
-  }
 
   //
   // Generate Fonts
@@ -118,27 +102,25 @@ MainWidget::MainWidget(QWidget *parent)
   RDInitializeDaemons();
 
   //
-  // Load Local Configs
+  // Open the Database
   //
-  panel_config=new RDConfig();
-  panel_config->load();
-  panel_config->setModuleName("RDPanel");
+  rda=new RDApplication("RDPanel","rdpanel",RDPANEL_USAGE,this);
+  if(!rda->open(&err_msg)) {
+    QMessageBox::critical(this,"RDPanel - "+tr("Error"),err_msg);
+    exit(1);
+  }
 
   //
-  // Open Database
+  // Read Command Options
   //
-  QString err(tr("rdpanel : "));
-  QSqlDatabase *login_db=RDInitDb(&schema,&err);
-  if(!login_db) {
-    QMessageBox::warning(this,tr("Can't Connect"),err);
-    exit(0);
+  for(unsigned i=0;i<rda->cmdSwitch()->keys();i++) {
+    if(!rda->cmdSwitch()->processed(i)) {
+      QMessageBox::critical(this,"RDPanel - "+tr("Error"),
+			    tr("Unknown command option")+": "+
+			    rda->cmdSwitch()->key(i));
+      exit(2);
+    }
   }
-  if((schema!=RD_VERSION_DATABASE)&&(!skip_db_check)) {
-    fprintf(stderr,"rdlogin: database version mismatch, should be %u, is %u\n",
-	    RD_VERSION_DATABASE,schema);
-    exit(256);
-  }
-  new RDDbHeartbeat(panel_config->mysqlHeartbeatInterval(),this);
 
   //
   // Master Clock Timer
@@ -150,10 +132,7 @@ MainWidget::MainWidget(QWidget *parent)
   //
   // Allocate Global Resources
   //
-  rdstation_conf=new RDStation(panel_config->stationName());
-  rdsystem_conf=new RDSystem();
-  rdairplay_conf=new RDAirPlayConf(panel_config->stationName(),"RDPANEL");
-  panel_skin_pixmap=new QPixmap(rdairplay_conf->skinPath());
+  panel_skin_pixmap=new QPixmap(rda->panelConf()->skinPath());
   if(panel_skin_pixmap->isNull()||(panel_skin_pixmap->width()<1024)||
      (panel_skin_pixmap->height()<738)) {
     delete panel_skin_pixmap;
@@ -166,22 +145,14 @@ MainWidget::MainWidget(QWidget *parent)
   //
   // CAE Connection
   //
-  panel_cae=new RDCae(rdstation_conf,panel_config,parent);
-  panel_cae->connectHost();
+  rda->cae()->connectHost();
 
   //
   // RIPC Connection
   //
-  rdripc=new RDRipc(rdstation_conf,panel_config,this);
-  connect(rdripc,SIGNAL(userChanged()),this,SLOT(userData()));
-  connect(rdripc,SIGNAL(rmlReceived(RDMacro *)),
+  connect(rda,SIGNAL(userChanged()),this,SLOT(userData()));
+  connect(rda->ripc(),SIGNAL(rmlReceived(RDMacro *)),
 	  this,SLOT(rmlReceivedData(RDMacro *)));
-//  rdripc->connectHost("localhost",RIPCD_TCP_PORT,panel_config->password());
-
-  //
-  // User
-  //
-  rduser=NULL;
 
   //
   // Meter Timer
@@ -193,29 +164,28 @@ MainWidget::MainWidget(QWidget *parent)
   //
   // Macro Player
   //
-  panel_player=new RDEventPlayer(rdripc,this);
+  panel_player=new RDEventPlayer(rda->ripc(),this);
 
   //
   // Cart Picker
   //
   panel_cart_dialog=
-    new RDCartDialog(&panel_filter,&panel_group,&panel_schedcode,panel_cae,
-		     rdripc,rdstation_conf,rdsystem_conf,panel_config,this);
+    new RDCartDialog(&panel_filter,&panel_group,&panel_schedcode,this);
 
   //
   // Sound Panel Array
   //
-  if (rdairplay_conf->panels(RDAirPlayConf::StationPanel) || 
-      rdairplay_conf->panels(RDAirPlayConf::UserPanel)){
+  if (rda->panelConf()->panels(RDAirPlayConf::StationPanel) || 
+      rda->panelConf()->panels(RDAirPlayConf::UserPanel)){
     int card=-1;
     panel_panel=
       new RDSoundPanel(RDPANEL_PANEL_BUTTON_COLUMNS,RDPANEL_PANEL_BUTTON_ROWS,
-		       rdairplay_conf->panels(RDAirPlayConf::StationPanel),
-		       rdairplay_conf->panels(RDAirPlayConf::UserPanel),
-		       rdairplay_conf->flashPanel(),
-		       rdairplay_conf->buttonLabelTemplate(),true,panel_player,
-		       rdripc,panel_cae,rdstation_conf,panel_cart_dialog,this);
-    panel_panel->setLogfile(panel_config->airplayLogname());
+		       rda->panelConf()->panels(RDAirPlayConf::StationPanel),
+		       rda->panelConf()->panels(RDAirPlayConf::UserPanel),
+		       rda->panelConf()->flashPanel(),
+		       rda->panelConf()->buttonLabelTemplate(),true,
+		       panel_player,panel_cart_dialog,this);
+    panel_panel->setLogfile(rda->config()->airplayLogname());
     panel_panel->setGeometry(10,10,panel_panel->sizeHint().width(),
 			 panel_panel->sizeHint().height());
     if(panel_skin_pixmap!=NULL) {
@@ -227,41 +197,41 @@ MainWidget::MainWidget(QWidget *parent)
       delete pd;
       delete pm;
     }
-    panel_panel->setPauseEnabled(rdairplay_conf->panelPauseEnabled());
-    panel_panel->setCard(0,rdairplay_conf->card(RDAirPlayConf::SoundPanel1Channel));
-    panel_panel->setPort(0,rdairplay_conf->port(RDAirPlayConf::SoundPanel1Channel));
+    panel_panel->setPauseEnabled(rda->panelConf()->panelPauseEnabled());
+    panel_panel->setCard(0,rda->panelConf()->card(RDAirPlayConf::SoundPanel1Channel));
+    panel_panel->setPort(0,rda->panelConf()->port(RDAirPlayConf::SoundPanel1Channel));
     panel_panel->setFocusPolicy(QWidget::NoFocus);
-    if((card=rdairplay_conf->card(RDAirPlayConf::SoundPanel2Channel))<0) {
+    if((card=rda->panelConf()->card(RDAirPlayConf::SoundPanel2Channel))<0) {
       panel_panel->setCard(1,panel_panel->card(RDAirPlayConf::MainLog1Channel));
       panel_panel->setPort(1,panel_panel->port(RDAirPlayConf::MainLog1Channel));
     }
     else {
       panel_panel->setCard(1,card);
-      panel_panel->setPort(1,rdairplay_conf->port(RDAirPlayConf::SoundPanel2Channel));
+      panel_panel->setPort(1,rda->panelConf()->port(RDAirPlayConf::SoundPanel2Channel));
     }
-    if((card=rdairplay_conf->card(RDAirPlayConf::SoundPanel3Channel))<0) {
+    if((card=rda->panelConf()->card(RDAirPlayConf::SoundPanel3Channel))<0) {
       panel_panel->setCard(2,panel_panel->card(RDAirPlayConf::MainLog2Channel));
       panel_panel->setPort(2,panel_panel->port(RDAirPlayConf::MainLog2Channel));
     }
     else {
       panel_panel->setCard(2,card);
-      panel_panel->setPort(2,rdairplay_conf->port(RDAirPlayConf::SoundPanel3Channel));
+      panel_panel->setPort(2,rda->panelConf()->port(RDAirPlayConf::SoundPanel3Channel));
     }
-    if((card=rdairplay_conf->card(RDAirPlayConf::SoundPanel4Channel))<0) {
+    if((card=rda->panelConf()->card(RDAirPlayConf::SoundPanel4Channel))<0) {
       panel_panel->setCard(3,panel_panel->card(RDAirPlayConf::SoundPanel1Channel));
       panel_panel->setPort(3,panel_panel->port(RDAirPlayConf::SoundPanel1Channel));
     }
     else {
       panel_panel->setCard(3,card);
-      panel_panel->setPort(3,rdairplay_conf->port(RDAirPlayConf::SoundPanel4Channel));
+      panel_panel->setPort(3,rda->panelConf()->port(RDAirPlayConf::SoundPanel4Channel));
     }
-    if((card=rdairplay_conf->card(RDAirPlayConf::SoundPanel5Channel))<0) {
+    if((card=rda->panelConf()->card(RDAirPlayConf::SoundPanel5Channel))<0) {
       panel_panel->setCard(4,panel_panel->card(RDAirPlayConf::CueChannel));
       panel_panel->setPort(4,panel_panel->port(RDAirPlayConf::CueChannel));
     }
     else {
       panel_panel->setCard(4,card);
-      panel_panel->setPort(4,rdairplay_conf->port(RDAirPlayConf::SoundPanel5Channel));
+      panel_panel->setPort(4,rda->panelConf()->port(RDAirPlayConf::SoundPanel5Channel));
     }
 
     //
@@ -301,22 +271,22 @@ MainWidget::MainWidget(QWidget *parent)
     // Set RML Strings
     //
     panel_panel->
-      setRmls(0,rdairplay_conf->startRml(RDAirPlayConf::SoundPanel1Channel),
-	      rdairplay_conf->stopRml(RDAirPlayConf::SoundPanel1Channel));
+      setRmls(0,rda->panelConf()->startRml(RDAirPlayConf::SoundPanel1Channel),
+	      rda->panelConf()->stopRml(RDAirPlayConf::SoundPanel1Channel));
     panel_panel->
-      setRmls(1,rdairplay_conf->startRml(RDAirPlayConf::SoundPanel2Channel),
-	      rdairplay_conf->stopRml(RDAirPlayConf::SoundPanel2Channel));
+      setRmls(1,rda->panelConf()->startRml(RDAirPlayConf::SoundPanel2Channel),
+	      rda->panelConf()->stopRml(RDAirPlayConf::SoundPanel2Channel));
     panel_panel->
-      setRmls(2,rdairplay_conf->startRml(RDAirPlayConf::SoundPanel3Channel),
-	      rdairplay_conf->stopRml(RDAirPlayConf::SoundPanel3Channel));
+      setRmls(2,rda->panelConf()->startRml(RDAirPlayConf::SoundPanel3Channel),
+	      rda->panelConf()->stopRml(RDAirPlayConf::SoundPanel3Channel));
     panel_panel->
-      setRmls(3,rdairplay_conf->startRml(RDAirPlayConf::SoundPanel4Channel),
-	      rdairplay_conf->stopRml(RDAirPlayConf::SoundPanel4Channel));
+      setRmls(3,rda->panelConf()->startRml(RDAirPlayConf::SoundPanel4Channel),
+	      rda->panelConf()->stopRml(RDAirPlayConf::SoundPanel4Channel));
     panel_panel->
-      setRmls(4,rdairplay_conf->startRml(RDAirPlayConf::SoundPanel5Channel),
-	      rdairplay_conf->stopRml(RDAirPlayConf::SoundPanel5Channel));
-    panel_panel->setSvcName(rdairplay_conf->defaultSvc());
-    connect(rdripc,SIGNAL(userChanged()),panel_panel,SLOT(changeUser()));
+      setRmls(4,rda->panelConf()->startRml(RDAirPlayConf::SoundPanel5Channel),
+	      rda->panelConf()->stopRml(RDAirPlayConf::SoundPanel5Channel));
+    panel_panel->setSvcName(rda->panelConf()->defaultSvc());
+    connect(rda->ripc(),SIGNAL(userChanged()),panel_panel,SLOT(changeUser()));
     connect(panel_master_timer,SIGNAL(timeout()),
 	    panel_panel,SLOT(tickClock()));
   }
@@ -332,7 +302,7 @@ MainWidget::MainWidget(QWidget *parent)
 		panel_stereo_meter->sizeHint().height());
   panel_stereo_meter->setMode(RDSegMeter::Peak);
   panel_stereo_meter->setFocusPolicy(QWidget::NoFocus);
-  if(panel_config->useStreamMeters()) {
+  if(rda->config()->useStreamMeters()) {
     panel_stereo_meter->hide();
   }
 
@@ -341,11 +311,11 @@ MainWidget::MainWidget(QWidget *parent)
   //
   panel_empty_cart=new RDEmptyCart(this);
   panel_empty_cart->setGeometry(373,sizeHint().height()-52,32,32);
-  if(!rdstation_conf->enableDragdrop()) {
+  if(!rda->station()->enableDragdrop()) {
     panel_empty_cart->hide();
   }
 
-  rdripc->connectHost("localhost",RIPCD_TCP_PORT,panel_config->password());
+  rda->ripc()->connectHost("localhost",RIPCD_TCP_PORT,rda->config()->password());
 
   //
   // Signal Handlers
@@ -374,12 +344,8 @@ QSizePolicy MainWidget::sizePolicy() const
 
 void MainWidget::userData()
 {
-  if(rduser!=NULL) {
-    delete rduser;
-  }
-  rduser=new RDUser(rdripc->user());
   SetCaption();
-  rdripc->sendOnairFlag();
+  rda->ripc()->sendOnairFlag();
 }
 
 
@@ -393,7 +359,7 @@ void MainWidget::meterData()
 
   for(int i=0;i<PANEL_MAX_OUTPUTS;i++) {
     if(meter_data_valid[i]) {
-      panel_cae->
+      rda->cae()->
 	outputMeterUpdate(panel_panel->card(i),panel_panel->port(i),level);
       for(int j=0;j<2;j++) {
 	ratio[j]+=pow(10.0,((double)level[j])/1000.0);
@@ -412,7 +378,7 @@ void MainWidget::masterTimerData()
 
 void MainWidget::closeEvent(QCloseEvent *e)
 {
-  panel_db->removeDatabase(panel_config->mysqlDbname());
+  panel_db->removeDatabase(rda->config()->mysqlDbname());
   exit(0);
 }
 
@@ -425,8 +391,8 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
 void MainWidget::SetCaption()
 {
   setCaption(QString("RDPanel")+" v"+VERSION+" - "+tr("Station")+": "+
-	     panel_config->stationName()+", "+tr("User")+": "+
-	     rdripc->user());
+	     rda->config()->stationName()+", "+tr("User")+": "+
+	     rda->ripc()->user());
 }
 
 

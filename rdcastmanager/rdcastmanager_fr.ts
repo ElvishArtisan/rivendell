@@ -229,10 +229,6 @@ Car&amp;t/Cut</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Can&apos;t Connect</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Key Name</source>
         <translation type="unfinished"></translation>
     </message>
@@ -263,6 +259,14 @@ Feed</source>
     </message>
     <message>
         <source>Host</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unknown command option</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

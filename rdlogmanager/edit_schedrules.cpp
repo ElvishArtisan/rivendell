@@ -28,6 +28,7 @@
 #include <qcombobox.h>
 
 #include <rd.h>
+#include <rdapplication.h>
 #include <rddb.h>
 #include <rdlistviewitem.h>
 
@@ -221,7 +222,7 @@ void EditSchedRules::importData()
     return;
   }
   delete listclocks;
-  SchedRulesList *import_list=new SchedRulesList(clockname,log_config); 
+  SchedRulesList *import_list=new SchedRulesList(clockname,rda->config()); 
 
   list_schedCodes_view->clear();
   for (int i=0; i<import_list->getNumberOfItems(); i++)  

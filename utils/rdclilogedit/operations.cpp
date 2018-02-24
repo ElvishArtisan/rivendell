@@ -2,7 +2,7 @@
 //
 // A command-line log editor for Rivendell
 //
-//   (C) Copyright 2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,6 +18,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
+#include <rdapplication.h>
 #include <rdconf.h>
 #include <rdcreate_log.h>
 #include <rdescape_string.h>
@@ -32,7 +33,7 @@ void MainObject::Addcart(int line,unsigned cartnum)
   }
   edit_log_event->insert(line,1);
   edit_log_event->logLine(line)->
-    setTransType(edit_airplay_conf->defaultTransType());
+    setTransType(rda->airplayConf()->defaultTransType());
   edit_log_event->logLine(line)->setFadeupGain(-3000);
   edit_log_event->logLine(line)->setFadedownGain(-3000);
   edit_log_event->logLine(line)->setCartNumber(cartnum);
@@ -49,7 +50,7 @@ void MainObject::Addchain(int line,const QString &logname)
   edit_log_event->insert(line,1);
   edit_log_event->logLine(line)->setType(RDLogLine::Chain);
   edit_log_event->logLine(line)->
-    setTransType(edit_airplay_conf->defaultTransType());
+    setTransType(rda->airplayConf()->defaultTransType());
   edit_log_event->logLine(line)->setMarkerLabel(logname);
   edit_log_event->refresh(line);
   edit_modified=true;
@@ -64,7 +65,7 @@ void MainObject::Addmarker(int line)
   edit_log_event->insert(line,1);
   edit_log_event->logLine(line)->setType(RDLogLine::Marker);
   edit_log_event->logLine(line)->
-    setTransType(edit_airplay_conf->defaultTransType());
+    setTransType(rda->airplayConf()->defaultTransType());
   edit_log_event->logLine(line)->setMarkerLabel(tr("Label"));
   edit_log_event->logLine(line)->setMarkerComment(tr("Marker Comment"));
   edit_log_event->refresh(line);
@@ -80,7 +81,7 @@ void MainObject::Addtrack(int line)
   edit_log_event->insert(line,1);
   edit_log_event->logLine(line)->setType(RDLogLine::Track);
   edit_log_event->logLine(line)->
-    setTransType(edit_airplay_conf->defaultTransType());
+    setTransType(rda->airplayConf()->defaultTransType());
   edit_log_event->logLine(line)->setMarkerComment(tr("Voice Track"));
   edit_log_event->refresh(line);
   edit_modified=true;
@@ -107,12 +108,12 @@ void MainObject::Deletelog(QString logname)
   delete q;
 
   if((edit_log==NULL)||(edit_log->name()!=logname)) {
-    RDLogLock *log_lock=new RDLogLock(logname,edit_user,edit_station,this);
+    RDLogLock *log_lock=new RDLogLock(logname,rda->user(),rda->station(),this);
     QString err_msg;
     RDLog *log=new RDLog(logname);
     if(log->exists()) {
       if(TryLock(log_lock,logname)) {
-	if(!log->remove(edit_station,edit_user,edit_config)) {
+	if(!log->remove(rda->station(),rda->user(),rda->config())) {
 	  fprintf(stderr,
 		  "deletelog: audio deletion error, log not deleted\n");
 	}
@@ -238,7 +239,7 @@ void MainObject::Load(QString logname)
   QString username;
   QString stationname;
   QHostAddress addr;
-  edit_log_lock=new RDLogLock(logname,edit_user,edit_station,this);
+  edit_log_lock=new RDLogLock(logname,rda->user(),rda->station(),this);
   if(!TryLock(edit_log_lock,logname)) {
     delete edit_log_lock;
     edit_log_lock=NULL;
@@ -374,7 +375,7 @@ void MainObject::New(const QString &logname)
     //    edit_new_log=true;
     edit_modified=false;
     Saveas(edit_log->name());
-    edit_log_lock=new RDLogLock(edit_log->name(),edit_user,edit_station,this);
+    edit_log_lock=new RDLogLock(edit_log->name(),rda->user(),rda->station(),this);
     if(!TryLock(edit_log_lock,edit_log->name())) {
       fprintf(stderr,"FATAL ERROR: unable to lock new log!\n");
       exit(256);
@@ -395,7 +396,7 @@ void MainObject::Remove(int line)
 
 void MainObject::Save()
 {
-  edit_log_event->save(edit_config);
+  edit_log_event->save(rda->config());
   edit_log->setDescription(edit_description);
   edit_log->setStartDate(edit_start_date);
   edit_log->setEndDate(edit_end_date);
@@ -419,7 +420,7 @@ void MainObject::Saveas(const QString &logname)
       "NAME=\""+RDEscapeString(logname)+"\","+
       "TYPE=0,"+
       "DESCRIPTION=\""+RDEscapeString(edit_description)+"\","+
-      "ORIGIN_USER=\""+RDEscapeString(edit_user->name())+"\","+
+      "ORIGIN_USER=\""+RDEscapeString(rda->user()->name())+"\","+
       "ORIGIN_DATETIME=now(),"+
       "LINK_DATETIME=now(),"+
       "MODIFIED_DATETIME=now(),"+
@@ -430,9 +431,9 @@ void MainObject::Saveas(const QString &logname)
       "SERVICE=\""+RDEscapeString(edit_service)+"\"";
     q=new RDSqlQuery(sql);
     delete q;
-    RDCreateLogTable(RDLog::tableName(logname),edit_config);
+    RDCreateLogTable(RDLog::tableName(logname),rda->config());
     edit_log_event->setLogName(RDLog::tableName(logname));
-    edit_log_event->save(edit_config);
+    edit_log_event->save(rda->config());
     delete edit_log;
     edit_log=log;
     edit_modified=false;
@@ -534,7 +535,7 @@ void MainObject::Setpurgedate(const QDate &date)
 
 void MainObject::Setservice(const QString &str)
 {
-  RDSvc *svc=new RDSvc(str,edit_station,edit_config);
+  RDSvc *svc=new RDSvc(str,rda->station(),rda->config());
   if(svc->exists()) {
     edit_service=str;
     edit_modified=true;

@@ -2,7 +2,7 @@
 //
 // List a Rivendell Log Event
 //
-//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2004,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -26,10 +26,11 @@
 #include <qpainter.h>
 #include <qmessagebox.h>
 
-#include <rddb.h>
 #include <rd.h>
-#include <rdevent.h>
+#include <rdapplication.h>
 #include <rdcreate_log.h>
+#include <rddb.h>
+#include <rdevent.h>
 
 #include <list_events.h>
 #include <add_event.h>
@@ -43,7 +44,7 @@ ListEvents::ListEvents(QString *eventname,QWidget *parent)
   QStringList services_list;
   QString str1=tr("Log Events - User: ");
   setCaption(QString().sprintf("%s%s",(const char *)str1,
-			       (const char *)rdripc->user()));
+			       (const char *)rda->ripc()->user()));
   edit_eventname=eventname;
 
   //

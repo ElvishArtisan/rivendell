@@ -287,7 +287,7 @@ Vil du halda fram med å sletta podkasten?</translation>
     </message>
     <message>
         <source>Can&apos;t Connect</source>
-        <translation>Greier ikkje kopla til</translation>
+        <translation type="obsolete">Greier ikkje kopla til</translation>
     </message>
     <message>
         <source>Key Name</source>
@@ -321,6 +321,14 @@ straum</translation>
     </message>
     <message>
         <source>Host</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unknown command option</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

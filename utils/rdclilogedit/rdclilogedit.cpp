@@ -2,7 +2,7 @@
 //
 // A command-line log editor for Rivendell
 //
-//   (C) Copyright 2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -28,7 +28,7 @@
 #include <qfile.h>
 #include <qstringlist.h>
 
-#include <rdcmd_switch.h>
+#include <rdapplication.h>
 #include <rdconf.h>
 #include <rddbheartbeat.h>
 #include <rdweb.h>
@@ -38,6 +38,8 @@
 MainObject::MainObject(QObject *parent)
   :QObject(parent)
 {
+  QString err_msg;
+
   edit_quiet_option=false;
 
   edit_log=NULL;
@@ -46,56 +48,36 @@ MainObject::MainObject(QObject *parent)
   edit_log_lock=NULL;
 
   //
+  // Open the Database
+  //
+  rda=new RDApplication("rdclilogedit","rdclilogedit",RDCLILOGEDIT_USAGE,this);
+  if(!rda->open(&err_msg)) {
+    fprintf(stderr,"rdclilogedit: %s\n",(const char *)err_msg);
+    exit(1);
+  }
+
+  //
   // Read Command Options
   //
-  RDCmdSwitch *cmd=new RDCmdSwitch(qApp->argc(),qApp->argv(),"rdclilogedit",
-				   RDCLILOGEDIT_USAGE);
-  for(int i=0;i<(int)cmd->keys();i++) {
-    if((cmd->key(i)=="-n")||(cmd->key(i)=="--quiet")||
-       (cmd->key(i)=="--silent")) {
+  for(unsigned i=0;i<rda->cmdSwitch()->keys();i++) {
+    if((rda->cmdSwitch()->key(i)=="-n")||(rda->cmdSwitch()->key(i)=="--quiet")||
+       (rda->cmdSwitch()->key(i)=="--silent")) {
       edit_quiet_option=true;
+      rda->cmdSwitch()->setProcessed(i,true);
+    }
+    if(!rda->cmdSwitch()->processed(i)) {
+      fprintf(stderr,"rdclilogedit: unknown command option \"%s\"\n",
+	      (const char *)rda->cmdSwitch()->key(i));
+      exit(2);
     }
   }
 
   //
-  // Read Configuration
-  //
-  edit_config=new RDConfig();
-  edit_config->load();
-  edit_config->setModuleName("rdclilogedit");
-
-  //
-  // Open Database
-  //
-  QSqlDatabase *db=QSqlDatabase::addDatabase(edit_config->mysqlDriver());
-  if(!db) {
-    fprintf(stderr,"rdclilogedit: unable to initialize connection to database\n");
-    exit(256);
-  }
-  db->setDatabaseName(edit_config->mysqlDbname());
-  db->setUserName(edit_config->mysqlUsername());
-  db->setPassword(edit_config->mysqlPassword());
-  db->setHostName(edit_config->mysqlHostname());
-  if(!db->open()) {
-    fprintf(stderr,"rdclilogedit: unable to connect to database\n");
-    db->removeDatabase(edit_config->mysqlDbname());
-    exit(256);
-  }
-  new RDDbHeartbeat(edit_config->mysqlHeartbeatInterval(),this);
-
-  //
-  // Configuration Objects
-  //
-  edit_station=new RDStation(edit_config->stationName());
-  edit_airplay_conf=new RDAirPlayConf(edit_config->stationName(),"RDAIRPLAY");
-
-  //
   // RIPC Connection
   //
-  edit_user=NULL;
-  edit_ripc=new RDRipc(edit_station,edit_config,this);
-  connect(edit_ripc,SIGNAL(userChanged()),this,SLOT(userData()));
-  edit_ripc->connectHost("localhost",RIPCD_TCP_PORT,edit_config->password());
+  connect(rda,SIGNAL(userChanged()),this,SLOT(userData()));
+  rda->ripc()->
+    connectHost("localhost",RIPCD_TCP_PORT,rda->config()->password());
 }
 
 
@@ -107,11 +89,7 @@ void MainObject::userData()
   //
   // Get User Context
   //
-  disconnect(edit_ripc,SIGNAL(userChanged()),this,SLOT(userData()));
-  if(edit_user!=NULL) {
-    delete edit_user;
-  }
-  edit_user=new RDUser(edit_ripc->user());
+  disconnect(rda->ripc(),SIGNAL(userChanged()),this,SLOT(userData()));
 
   //
   // Start up command processor

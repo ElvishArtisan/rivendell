@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Log Event
 //
-//   (C) Copyright 2002-2004,2008,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2004,2008,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -25,17 +25,18 @@
 #include <qmessagebox.h>
 #include <qcolordialog.h>
 
-#include <rddb.h>
 #include <rd.h>
-#include <rdconf.h>
+#include <rdapplication.h>
 #include <rdcart.h>
 #include <rdcart_search_text.h>
+#include <rdconf.h>
+#include <rddb.h>
 #include <rdescape_string.h>
 
-#include <globals.h>
-#include <add_event.h>
-#include <edit_event.h>
-#include <edit_perms.h>
+#include "add_event.h"
+#include "edit_event.h"
+#include "edit_perms.h"
+#include "globals.h"
 
 //
 // Icons
@@ -175,16 +176,14 @@ EditEvent::EditEvent(QString eventname,bool new_event,
 #ifndef WIN32
   sql=QString().sprintf("select OUTPUT_CARD,OUTPUT_PORT,START_CART,END_CART \
                        from RDLOGEDIT where STATION=\"%s\"",
-			(const char *)rdstation_conf->name());
+			(const char *)rda->station()->name());
   q=new RDSqlQuery(sql);
   if(q->first()) {
     event_player=
-      new RDSimplePlayer(rdcae,rdripc,q->value(0).toInt(),q->value(1).toInt(),
+      new RDSimplePlayer(rda->cae(),rda->ripc(),q->value(0).toInt(),q->value(1).toInt(),
 			 q->value(2).toUInt(),q->value(3).toUInt(),this);
     event_player->playButton()->
       setGeometry(CENTER_LINE-180,sizeHint().height()-210,80,50);
-//    event_player->stopButton()->
-//      setPalette(QPalette(backgroundColor(),QColor(lightGray)));
     event_player->stopButton()->setGeometry(CENTER_LINE-90,sizeHint().height()-210,80,50);
     event_player->stopButton()->setOnColor(red);
   }
@@ -1507,10 +1506,10 @@ void EditEvent::Save()
   listname.replace(" ","_");
   event_preimport_list->logEvent()->
     setLogName(QString().sprintf("%s_PRE",(const char *)listname));
-  event_preimport_list->logEvent()->save(log_config,false);
+  event_preimport_list->logEvent()->save(rda->config(),false);
   event_postimport_list->logEvent()->
     setLogName(QString().sprintf("%s_POST",(const char *)listname));
-  event_postimport_list->logEvent()->save(log_config,false);
+  event_postimport_list->logEvent()->save(rda->config(),false);
   event_saved=true;
 }
 

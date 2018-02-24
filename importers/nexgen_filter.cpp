@@ -30,10 +30,11 @@
 #include <errno.h>
 
 #include <qapplication.h>
-#include <qstringlist.h>
 #include <qfile.h>
 #include <qregexp.h>
+#include <qstringlist.h>
 
+#include <rdapplication.h>
 #include <rd.h>
 #include <rdcart.h>
 #include <rdconfig.h>
@@ -45,13 +46,7 @@
 #include <rdwavefile.h>
 #include <rdweb.h>
 
-#include <nexgen_filter.h>
-
-//
-// Global Variables
-//
-RDConfig *rdconfig;
-
+#include "nexgen_filter.h"
 
 MainObject::MainObject(QObject *parent)
   : QObject(parent)
@@ -62,6 +57,7 @@ MainObject::MainObject(QObject *parent)
   QStringList xml_files;
   bool ok=false;
   char tempdir[PATH_MAX];
+  QString err_msg;
 
   filter_cart_offset=0;
   filter_delete_cuts=false;
@@ -69,47 +65,53 @@ MainObject::MainObject(QObject *parent)
   filter_verbose=false;
 
   //
+  // Open the Database
+  //
+  rda=new RDApplication("nexgen_filter","nexgen_filter",NEXGEN_FILTER_USAGE,this);
+  if(!rda->open(&err_msg)) {
+    fprintf(stderr,"nexgen_filter: %s\n",(const char *)err_msg);
+    exit(1);
+  }
+
+  //
   // Read Command Options
   //
-  RDCmdSwitch *cmd=
-    new RDCmdSwitch(qApp->argc(),qApp->argv(),"nexgen_filter",
-		    NEXGEN_FILTER_USAGE);
   bool options=true;
-  for(unsigned i=0;i<cmd->keys();i++) {
+  for(unsigned i=0;i<rda->cmdSwitch()->keys();i++) {
     if(!options) {
-      xml_files.push_back(cmd->key(i));
+      xml_files.push_back(rda->cmdSwitch()->key(i));
     }
     else {
-      if(cmd->key(i)=="--verbose") {
+      if(rda->cmdSwitch()->key(i)=="--verbose") {
 	filter_verbose=true;
-	cmd->setProcessed(i,true);
+	rda->cmdSwitch()->setProcessed(i,true);
       }
-      if(cmd->key(i)=="--group") {
-	group_name=cmd->value(i);
-	cmd->setProcessed(i,true);
+      if(rda->cmdSwitch()->key(i)=="--group") {
+	group_name=rda->cmdSwitch()->value(i);
+	rda->cmdSwitch()->setProcessed(i,true);
       }
-      if(cmd->key(i)=="--audio-dir") {
-	audio_dir=cmd->value(i);
-	cmd->setProcessed(i,true);
+      if(rda->cmdSwitch()->key(i)=="--audio-dir") {
+	audio_dir=rda->cmdSwitch()->value(i);
+	rda->cmdSwitch()->setProcessed(i,true);
       }
-      if(cmd->key(i)=="--reject-dir") {
-	reject_dir=cmd->value(i);
-	cmd->setProcessed(i,true);
+      if(rda->cmdSwitch()->key(i)=="--reject-dir") {
+	reject_dir=rda->cmdSwitch()->value(i);
+	rda->cmdSwitch()->setProcessed(i,true);
       }
-      if(cmd->key(i)=="--cart-offset") {
-	filter_cart_offset=cmd->value(i).toInt(&ok);
+      if(rda->cmdSwitch()->key(i)=="--cart-offset") {
+	filter_cart_offset=rda->cmdSwitch()->value(i).toInt(&ok);
 	if(!ok) {
 	  fprintf(stderr,"nexgen_filter: --cart-offset must be an integer\n");
 	  exit(256);
 	}
-	cmd->setProcessed(i,true);
+	rda->cmdSwitch()->setProcessed(i,true);
       }
-      if(cmd->key(i)=="--delete-cuts") {
+      if(rda->cmdSwitch()->key(i)=="--delete-cuts") {
 	filter_delete_cuts=true;
-	cmd->setProcessed(i,true);
+	rda->cmdSwitch()->setProcessed(i,true);
       }
-      if(cmd->key(i)=="--normalization-level") {
-	filter_normalization_level=cmd->value(i).toInt(&ok);
+      if(rda->cmdSwitch()->key(i)=="--normalization-level") {
+	filter_normalization_level=rda->cmdSwitch()->value(i).toInt(&ok);
 	if(!ok) {
 	  fprintf(stderr,"nexgen_filter: --cart-offset must be an integer\n");
 	  exit(256);
@@ -119,51 +121,19 @@ MainObject::MainObject(QObject *parent)
 		  "nexgen_filter: positive --normalization-level is invalid\n");
 	  exit(256);
 	}
-	cmd->setProcessed(i,true);
+	rda->cmdSwitch()->setProcessed(i,true);
       }
-      if(!cmd->processed(i)) {
+      if(!rda->cmdSwitch()->processed(i)) {
 	options=false;
-	xml_files.push_back(cmd->key(i));
+	xml_files.push_back(rda->cmdSwitch()->key(i));
       }
     }
   }
-  delete cmd;
-
-  //
-  // Open Config
-  //
-  rdconfig=new RDConfig(RD_CONF_FILE);
-  rdconfig->load();
-  rdconfig->setModuleName("nexgen_filter");
-
-  //
-  // Open Database
-  //
-  filter_db=QSqlDatabase::addDatabase(rdconfig->mysqlDriver());
-  if(!filter_db) {
-    fprintf(stderr,"nexgen_filter: can't open mySQL database\n");
-    exit(1);
-  }
-  filter_db->setDatabaseName(rdconfig->mysqlDbname());
-  filter_db->setUserName(rdconfig->mysqlUsername());
-  filter_db->setPassword(rdconfig->mysqlPassword());
-  filter_db->setHostName(rdconfig->mysqlHostname());
-  if(!filter_db->open()) {
-    fprintf(stderr,"nexgen_filter: unable to connect to mySQL Server\n");
-    filter_db->removeDatabase(rdconfig->mysqlDbname());
-    exit(1);
-  }
-
-  //
-  // Station Configuration
-  //
-  filter_rdstation=new RDStation(rdconfig->stationName());
 
   //
   // RIPCD Connection
   //
-  filter_ripc=new RDRipc(filter_rdstation,rdconfig,this);
-  filter_ripc->connectHost("localhost",RIPCD_TCP_PORT,rdconfig->password());
+  rda->ripc()->connectHost("localhost",RIPCD_TCP_PORT,rda->config()->password());
 
   //
   // Validate Arguments

@@ -556,7 +556,7 @@ unsigned RDFeed::postCut(RDUser *user,RDStation *station,
     *err=RDFeed::ErrorCannotOpenFile;
     return 0;
   }
-  RDAudioExport *conv=new RDAudioExport(station,config,this);
+  RDAudioExport *conv=new RDAudioExport(this);
   conv->setCartNumber(cut->cartNumber());
   conv->setCutNumber(cut->cutNumber());
   conv->setDestinationFile(tmpfile);
@@ -605,7 +605,7 @@ unsigned RDFeed::postCut(RDUser *user,RDStation *station,
   unsigned cast_id=CreateCast(&destfile,length,cut->length());
   delete cut;
   cast=new RDPodcast(feed_config,cast_id);
-  upload=new RDUpload(feed_config,this);
+  upload=new RDUpload(this);
   upload->setSourceFile(tmpfile);
   upload->setDestinationUrl(purgeUrl()+"/"+cast->audioFilename());
   switch((upload_err=upload->runUpload(purgeUsername(),purgePassword(),
@@ -660,7 +660,7 @@ unsigned RDFeed::postFile(RDStation *station,const QString &srcfile,Error *err,
   // Convert Cut
   //
   tmpfile=GetTempFilename();
-  RDAudioConvert *conv=new RDAudioConvert(station->name(),this);
+  RDAudioConvert *conv=new RDAudioConvert(this);
   conv->setSourceFile(srcfile);
   conv->setDestinationFile(tmpfile);
   RDSettings *settings=new RDSettings();
@@ -718,7 +718,7 @@ unsigned RDFeed::postFile(RDStation *station,const QString &srcfile,Error *err,
 
   unsigned cast_id=CreateCast(&destfile,length,time_length);
   RDPodcast *cast=new RDPodcast(feed_config,cast_id);
-  upload=new RDUpload(feed_config,this);
+  upload=new RDUpload(this);
   upload->setSourceFile(tmpfile);
   upload->setDestinationUrl(purgeUrl()+"/"+cast->audioFilename());
   switch((upload_err=upload->runUpload(purgeUsername(),purgePassword(),
