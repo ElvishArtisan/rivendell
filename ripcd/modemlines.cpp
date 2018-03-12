@@ -2,7 +2,7 @@
 //
 // A Rivendell switcher driver for using TTY modem lines for GPIO
 //
-//   (C) Copyright 2015-2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2015-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,15 +18,17 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
+#include <fcntl.h>
+#include <stdlib.h>
+#include <termios.h>
+#include <sys/ioctl.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <fcntl.h>
-#include <termios.h>
-#include <stdlib.h>
-#include <sys/ioctl.h>
 
-#include <globals.h>
-#include <modemlines.h>
+#include <rdapplication.h>
+
+#include "globals.h"
+#include "modemlines.h"
 
 ModemLines::ModemLines(RDMatrix *matrix,QObject *parent)
   : Switcher(matrix,parent)
@@ -54,7 +56,7 @@ ModemLines::ModemLines(RDMatrix *matrix,QObject *parent)
   //
   // Open TTY
   //
-  gpio_tty=new RDTty(rdstation->name(),matrix->port(RDMatrix::Primary));
+  gpio_tty=new RDTty(rda->station()->name(),matrix->port(RDMatrix::Primary));
   if((gpio_fd=open(gpio_tty->port(),O_RDONLY))<0) {
     syslog(LOG_ERR,"unable to open tty \"%s\"",(const char *)gpio_tty->port());
     return;

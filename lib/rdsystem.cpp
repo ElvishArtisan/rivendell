@@ -174,6 +174,18 @@ void RDSystem::setShowUserList(bool state) const
 }
 
 
+QHostAddress RDSystem::notificationAddress() const
+{
+  return QHostAddress(GetValue("NOTIFICATION_ADDRESS").toString());
+}
+
+
+void RDSystem::setNotificationAddress(const QHostAddress &addr)
+{
+  SetRow("NOTIFICATION_ADDRESS",addr.toString());
+}
+
+
 QString RDSystem::xml() const
 {
   QString xml="<systemSettings>\n";

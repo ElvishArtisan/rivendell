@@ -2,7 +2,7 @@
 ##
 ## Automake.am for rivendell/lib
 ##
-## (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
+## (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -182,6 +182,8 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdmixer.cpp rdmixer.h\
                         rdmonitor_config.cpp rdmonitor_config.h\
 			rdmp4.cpp rdmp4.h\
+                        rdmulticaster.cpp rdmulticaster.h\
+                        rdnotification.cpp rdnotification.h\
                         rdnownext.cpp rdnownext.h\
                         rdoneshot.cpp rdoneshot.h\
                         rdpam.cpp rdpam.h\
@@ -309,6 +311,7 @@ nodist_librd_la_SOURCES = moc_rdadd_cart.cpp\
                           moc_rdmacro_event.cpp\
                           moc_rdmarker_bar.cpp\
                           moc_rdmarker_edit.cpp\
+                          moc_rdmulticaster.cpp\
                           moc_rdoneshot.cpp\
                           moc_rdpanel_button.cpp\
                           moc_rdpasswd.cpp\

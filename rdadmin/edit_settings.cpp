@@ -118,17 +118,27 @@ EditSettings::EditSettings(QWidget *parent)
   label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
 
   //
-  // Maximum POST Size
+  // Notification Address
   //
-  edit_maxpost_spin=new QSpinBox(this);
-  edit_maxpost_spin->setGeometry(200,98,60,20);
-  edit_maxpost_spin->setRange(1,1000);
-  label=new QLabel(edit_maxpost_spin,tr("Maximum Remote Post Length:"),this);
+  edit_notification_address_edit=new QLineEdit(this);
+  edit_notification_address_edit->setGeometry(200,98,150,20);
+  label=new QLabel(edit_notification_address_edit,tr("Mcast Address for Notifications"),this);
   label->setGeometry(10,98,185,20);
   label->setFont(font);
   label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+
+  //
+  // Maximum POST Size
+  //
+  edit_maxpost_spin=new QSpinBox(this);
+  edit_maxpost_spin->setGeometry(200,120,60,20);
+  edit_maxpost_spin->setRange(1,1000);
+  label=new QLabel(edit_maxpost_spin,tr("Maximum Remote Post Length:"),this);
+  label->setGeometry(10,120,185,20);
+  label->setFont(font);
+  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
   label=new QLabel(tr("Mbytes"),this);
-  label->setGeometry(265,98,60,20);
+  label->setGeometry(265,120,60,20);
   label->setFont(font);
   label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
 
@@ -136,7 +146,7 @@ EditSettings::EditSettings(QWidget *parent)
   // Temporary Cart Group
   //
   edit_temp_cart_group_box=new QComboBox(this);
-  edit_temp_cart_group_box->setGeometry(200,119,100,20);
+  edit_temp_cart_group_box->setGeometry(200,141,100,20);
   sql="select NAME from GROUPS order by NAME";
   q=new RDSqlQuery(sql);
   while(q->next()) {
@@ -144,7 +154,7 @@ EditSettings::EditSettings(QWidget *parent)
   }
   delete q;
   label=new QLabel(edit_temp_cart_group_box,tr("Temporary Cart Group:"),this);
-  label->setGeometry(10,119,185,20);
+  label->setGeometry(10,141,185,20);
   label->setFont(font);
   label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
 
@@ -152,12 +162,12 @@ EditSettings::EditSettings(QWidget *parent)
   // Show User List
   //
   edit_show_user_list_box=new QCheckBox(this);
-  edit_show_user_list_box->setGeometry(20,143,15,15);
+  edit_show_user_list_box->setGeometry(20,165,15,15);
   connect(edit_show_user_list_box,SIGNAL(toggled(bool)),
 	  this,SLOT(duplicatesCheckedData(bool)));
   label=
     new QLabel(edit_show_user_list_box,tr("Show User List in RDLogin"),this);
-  label->setGeometry(40,141,sizeHint().width()-50,20);
+  label->setGeometry(40,163,sizeHint().width()-50,20);
   label->setFont(font);
   label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
 
@@ -167,11 +177,11 @@ EditSettings::EditSettings(QWidget *parent)
   edit_duplicate_label=new RDLabel(this);
   edit_duplicate_label->setText(tr("The following duplicate titles must be corrected before \"Allow Duplicate Values\" can be turned off."));
   edit_duplicate_label->setWordWrapEnabled(true);
-  edit_duplicate_label->setGeometry(15,164,sizeHint().width()-30,50);
+  edit_duplicate_label->setGeometry(15,186,sizeHint().width()-30,50);
   edit_duplicate_label->setFont(normal_font);
   edit_duplicate_label->hide();
   edit_duplicate_list=new QListView(this);
-  edit_duplicate_list->setGeometry(10,187,sizeHint().width()-20,200);
+  edit_duplicate_list->setGeometry(10,209,sizeHint().width()-20,200);
   edit_duplicate_list->setItemMargin(5);
   edit_duplicate_list->setAllColumnsShowFocus(true);
   edit_duplicate_list->addColumn(tr("CART"));
@@ -181,7 +191,7 @@ EditSettings::EditSettings(QWidget *parent)
   edit_duplicate_list->hide();
   edit_save_button=new QPushButton(this);
   edit_save_button->
-    setGeometry(sizeHint().width()-85,392,70,25);
+    setGeometry(sizeHint().width()-85,414,70,25);
   edit_save_button->setFont(normal_font);
   edit_save_button->setText(tr("&Save List"));
   connect(edit_save_button,SIGNAL(clicked()),this,SLOT(saveData()));
@@ -213,6 +223,8 @@ EditSettings::EditSettings(QWidget *parent)
   duplicatesCheckedData(edit_system->allowDuplicateCartTitles());
   edit_maxpost_spin->setValue(edit_system->maxPostLength()/1000000);
   edit_isci_path_edit->setText(edit_system->isciXreferencePath());
+  edit_notification_address_edit->
+    setText(edit_system->notificationAddress().toString());
   edit_show_user_list_box->setChecked(edit_system->showUserList());
 
   for(int i=0;i<edit_sample_rate_box->count();i++) {
@@ -239,7 +251,7 @@ EditSettings::~EditSettings()
 
 QSize EditSettings::sizeHint() const
 {
-  return QSize(500,240+y_pos);
+  return QSize(500,262+y_pos);
 } 
 
 
@@ -398,6 +410,8 @@ void EditSettings::okData()
   edit_system->setSampleRate(edit_sample_rate_box->currentText().toUInt());
   edit_system->setMaxPostLength(edit_maxpost_spin->value()*1000000);
   edit_system->setIsciXreferencePath(edit_isci_path_edit->text());
+  edit_system->
+    setNotificationAddress(QHostAddress(edit_notification_address_edit->text()));
   edit_system->setTempCartGroup(edit_temp_cart_group_box->currentText());
   edit_system->setShowUserList(edit_show_user_list_box->isChecked());
 

@@ -2,7 +2,7 @@
 //
 // Local RML Macros for the Rivendell Interprocess Communication Daemon
 //
-//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2004,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -23,13 +23,13 @@
 #include <sys/wait.h>
 
 #include <rd.h>
+#include <rdapplication.h>
 #include <rdconf.h>
+#include <rdescape_string.h>
 #include <rdmatrix.h>
 #include <rdtty.h>
-#include <rduser.h>
-#include <rddb.h>
-#include <ripcd.h>
-#include <rdescape_string.h>
+
+#include "ripcd.h"
 
 void MainObject::gpiChangedData(int matrix,int line,bool state)
 {
@@ -117,7 +117,7 @@ void MainObject::ExecCart(int cartnum)
   RDMacro rml;
   rml.setRole(RDMacro::Cmd);
   rml.setCommand(RDMacro::EX);
-  rml.setAddress(rdstation->address());
+  rml.setAddress(rda->station()->address());
   rml.setEchoRequested(false);
   rml.setArgQuantity(1);
   rml.setArg(0,cartnum);
@@ -132,7 +132,7 @@ void MainObject::LogGpioEvent(int matrix,int line,RDMatrix::GpioType type,
   RDSqlQuery *q;
 
   sql=QString("insert into GPIO_EVENTS set ")+
-    "STATION_NAME=\""+RDEscapeString(rdstation->name())+"\","+
+    "STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\","+
     QString().sprintf("MATRIX=%d,",matrix)+
     QString().sprintf("NUMBER=%d,",line+1)+
     QString().sprintf("TYPE=%d,",type)+
@@ -163,7 +163,7 @@ void MainObject::LoadLocalMacros()
   //
   sql=QString().sprintf("select MATRIX,TYPE,PORT,INPUTS,OUTPUTS from MATRICES \
                          where STATION_NAME=\"%s\"",
-			(const char *)rdstation->name());
+			(const char *)rda->station()->name());
   q=new RDSqlQuery(sql);
   while(q->next()) {
     if(!LoadSwitchDriver(q->value(0).toInt())) {
@@ -180,7 +180,7 @@ void MainObject::LoadLocalMacros()
   sql=QString().sprintf("select PORT_ID,PORT,BAUD_RATE,DATA_BITS,PARITY,\
                          TERMINATION from TTYS where (STATION_NAME=\"%s\")&&\
                          (ACTIVE=\"Y\")",
-			(const char *)rdstation->name());
+			(const char *)rda->station()->name());
   q=new RDSqlQuery(sql);
   while(q->next()) {
     tty_port=q->value(0).toUInt();
@@ -270,9 +270,9 @@ void MainObject::RunLocalMacros(RDMacro *rml)
     }
     if(fork()==0) {
       cmd=QString().sprintf("mysqldump -c Rivendell -h %s -u %s -p%s > %s",
-			    (const char *)ripcd_config->mysqlHostname(),
-			    (const char *)ripcd_config->mysqlUsername(),
-			    (const char *)ripcd_config->mysqlPassword(),
+			    (const char *)rda->config()->mysqlHostname(),
+			    (const char *)rda->config()->mysqlUsername(),
+			    (const char *)rda->config()->mysqlPassword(),
 			    (const char *)rml->arg(0).toString());
       system((const char *)cmd);
       exit(0);
@@ -416,7 +416,7 @@ void MainObject::RunLocalMacros(RDMacro *rml)
       }
       return;
     }
-    rdcae->connectJackPorts(rml->arg(0).toString(),rml->arg(1).toString());
+    rda->cae()->connectJackPorts(rml->arg(0).toString(),rml->arg(1).toString());
     if(rml->echoRequested()) {
       rml->acknowledge(true);
       sendRml(rml);
@@ -431,7 +431,7 @@ void MainObject::RunLocalMacros(RDMacro *rml)
       }
       return;
     }
-    rdcae->disconnectJackPorts(rml->arg(0).toString(),rml->arg(1).toString());
+    rda->cae()->disconnectJackPorts(rml->arg(0).toString(),rml->arg(1).toString());
     if(rml->echoRequested()) {
       rml->acknowledge(true);
       sendRml(rml);
@@ -447,7 +447,7 @@ void MainObject::RunLocalMacros(RDMacro *rml)
       return;
     }
     if(rml->argQuantity()==0) {
-      rduser=new RDUser(rdstation->defaultName());
+      rduser=new RDUser(rda->station()->defaultName());
     }
     else {
       rduser=new RDUser(rml->arg(0).toString());
@@ -494,19 +494,19 @@ void MainObject::RunLocalMacros(RDMacro *rml)
     }
     if(fork()==0) {
       if(getuid()==0) {
-	if(setegid(ripcd_config->gid())<0) {
+	if(setegid(rda->config()->gid())<0) {
 	  LogLine(RDConfig::LogWarning,QString().
 		  sprintf("unable to set group id %d for RDPopup",
-			  ripcd_config->gid()));
+			  rda->config()->gid()));
 	  if(rml->echoRequested()) {
 	    rml->acknowledge(false);
 	    sendRml(rml);
 	  }
 	}
-	if(seteuid(ripcd_config->uid())<0) {
+	if(seteuid(rda->config()->uid())<0) {
 	  LogLine(RDConfig::LogWarning,QString().
 		  sprintf("unable to set user id %d for RDPopup",
-			  ripcd_config->uid()));
+			  rda->config()->uid()));
 	  if(rml->echoRequested()) {
 	    rml->acknowledge(false);
 	    sendRml(rml);
@@ -579,19 +579,19 @@ void MainObject::RunLocalMacros(RDMacro *rml)
 	cmd+=" "+rml->arg(i).toString();
       }
       if(getuid()==0) {
-	if(setgid(ripcd_config->gid())<0) {
+	if(setgid(rda->config()->gid())<0) {
 	  LogLine(RDConfig::LogWarning,QString().
 		  sprintf("unable to set group id %d for RN",
-			  ripcd_config->gid()));
+			  rda->config()->gid()));
 	  if(rml->echoRequested()) {
 	    rml->acknowledge(false);
 	    sendRml(rml);
 	  }
 	}
-	if(setuid(ripcd_config->uid())<0) {
+	if(setuid(rda->config()->uid())<0) {
 	  LogLine(RDConfig::LogWarning,QString().
 		  sprintf("unable to set user id %d for RN",
-			  ripcd_config->uid()));
+			  rda->config()->uid()));
 	  if(rml->echoRequested()) {
 	    rml->acknowledge(false);
 	    sendRml(rml);
@@ -781,7 +781,7 @@ void MainObject::RunLocalMacros(RDMacro *rml)
     sql=QString().sprintf("select PORT_ID,PORT,BAUD_RATE,DATA_BITS,PARITY,\
                          TERMINATION from TTYS where (STATION_NAME=\"%s\")&& \
                          (ACTIVE=\"Y\")&&(PORT_ID=%d)",
-			  (const char *)rdstation->name(),tty_port);
+			  (const char *)rda->station()->name(),tty_port);
     q=new RDSqlQuery(sql);
     if(q->first()) {
       if(!ripcd_tty_inuse[tty_port]) {

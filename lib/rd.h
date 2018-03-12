@@ -572,5 +572,15 @@
  */
 #define RD_LOG_LOCK_TIMEOUT 30000
 
+/*
+ * Default multicast address for sending state updates
+ */
+#define RD_NOTIFICATION_ADDRESS "239.192.255.72"
+
+/*
+ * UDP port for sending state updates
+ */
+#define RD_NOTIFICATION_PORT 20539
+
 
 #endif  // RD_H

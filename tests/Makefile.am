@@ -34,6 +34,7 @@ noinst_PROGRAMS = audio_convert_test\
                   audio_peaks_test\
                   datedecode_test\
                   log_unlink_test\
+                  mcast_recv_test\
                   rdxml_parse_test\
                   reserve_carts_test\
                   sas_switch_torture\
@@ -63,6 +64,10 @@ datedecode_test_LDADD = @LIB_RDLIBS@ @LIBVORBIS@
 dist_log_unlink_test_SOURCES = log_unlink_test.cpp log_unlink_test.h
 nodist_log_unlink_test_SOURCES = moc_log_unlink_test.cpp
 log_unlink_test_LDADD = @LIB_RDLIBS@ @LIBVORBIS@
+
+dist_mcast_recv_test_SOURCES = mcast_recv_test.cpp mcast_recv_test.h
+nodist_mcast_recv_test_SOURCES = moc_mcast_recv_test.cpp
+mcast_recv_test_LDADD = @LIB_RDLIBS@ @LIBVORBIS@
 
 dist_rdxml_parse_test_SOURCES = rdxml_parse_test.cpp rdxml_parse_test.h
 rdxml_parse_test_LDADD = @LIB_RDLIBS@ @LIBVORBIS@

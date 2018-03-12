@@ -259,6 +259,10 @@ void MainObject::Revert(int schema) const
   case 275:
     Revert275();
     break;
+
+  case 276:
+    Revert276();
+    break;
   }
 }
 
@@ -825,6 +829,19 @@ void MainObject::Revert275() const
 }
 
 
+void MainObject::Revert276() const
+{
+  QString sql;
+  RDSqlQuery *q;
+
+  sql=QString("alter table SYSTEM drop column NOTIFICATION_ADDRESS");
+  q=new RDSqlQuery(sql,false);
+  delete q;
+
+  SetVersion(275);
+}
+
+
 int MainObject::GetVersion() const
 {
   QString sql;
@@ -871,6 +888,7 @@ int MainObject::MapSchema(const QString &ver)
   version_map["2.17"]=268;
   version_map["2.18"]=272;
   version_map["2.19"]=275;
+  version_map["2.20"]=276;
 
   //
   // Normalize String

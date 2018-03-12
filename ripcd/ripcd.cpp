@@ -38,24 +38,15 @@
 #include <sys/stat.h>
 #include <sys/wait.h>
 
-#include <rd.h>
+#include <rdapplication.h>
 #include <rdconf.h>
-#include <rdstation.h>
 #include <rdcheck_daemons.h>
-#include <rdcmd_switch.h>
-#include <rddb.h>
-#include <dbversion.h>
+#include <rdnotification.h>
 
-#include <globals.h>
-#include <ripcd_socket.h>
-#include <ripcd.h>
+#include "globals.h"
+#include "ripcd_socket.h"
+#include "ripcd.h"
 
-//
-// Global Objects
-//
-RDConfig *ripcd_config;
-RDCae *rdcae;
-RDStation *rdstation;
 bool global_exiting=false;
 
 void SigHandler(int signo)
@@ -84,26 +75,13 @@ void SigHandler(int signo)
 MainObject::MainObject(QObject *parent)
   :QObject(parent)
 {
-  bool skip_db_check=false;
+  QString err_msg;
 
-  //
-  // Read Command Options
-  //
-  RDCmdSwitch *cmd=
-    new RDCmdSwitch(qApp->argc(),qApp->argv(),"ripcd",RIPCD_USAGE);
-  for(unsigned i=0;i<cmd->keys();i++) {
-    if(cmd->key(i)=="--skip-db-check") {
-      skip_db_check=true;
-    }
+  rda=new RDApplication("ripcd","ripcd",RIPCD_USAGE,this);
+  if(!rda->open(&err_msg)) {
+    fprintf(stderr,"ripcd: %s\n",(const char *)err_msg);
+    exit(1);
   }
-  delete cmd;
-
-  //
-  // Load Local Configs
-  //
-  ripcd_config=new RDConfig(RD_CONF_FILE);
-  ripcd_config->load();
-  ripcd_config->setModuleName("ripcd");
 
   //
   // Make sure we're the only instance running
@@ -145,39 +123,15 @@ MainObject::MainObject(QObject *parent)
     connect(ripc_macro_timer[i],SIGNAL(timeout()),mapper,SLOT(map()));
   }
 
-  //
-  // Open Database
-  //
-  unsigned schema=0;
-  QString err (tr("ripcd: "));
-  ripcd_db = RDInitDb (&schema,&err);
-  if(!ripcd_db) {
-    printf ("%s\n",err.ascii());
-    exit (1);
-  }
-  if((schema!=RD_VERSION_DATABASE)&&(!skip_db_check)) {
-    fprintf(stderr,"database version mismatch, should be %u, is %u",
-	    RD_VERSION_DATABASE,schema);
-    exit(256);
-  }
-  connect (RDDbStatus(),SIGNAL(logText(RDConfig::LogPriority,const QString &)),
-	   this,SLOT(log(RDConfig::LogPriority,const QString &)));
-
-  //
-  // Station 
-  //
-  rdstation=new RDStation(ripcd_config->stationName());
-  rdstation->setUserName(rdstation->defaultName());
-  ripcd_host_addr=rdstation->address();
+  ripcd_host_addr=rda->station()->address();
 
   //
   // CAE Connection
   //
-  rdcae=new RDCae(rdstation,ripcd_config,parent);
-  rdcae->connectHost();
+  rda->cae()->connectHost();
 
   if(qApp->argc()==1) {
-    RDDetach(ripcd_config->logCoreDumpDirectory());
+    RDDetach(rda->config()->logCoreDumpDirectory());
   }
   else {
     debug=true;
@@ -185,7 +139,7 @@ MainObject::MainObject(QObject *parent)
   ::signal(SIGCHLD,SigHandler);
   ::signal(SIGTERM,SigHandler);
   ::signal(SIGINT,SigHandler);
-  if(!RDWritePid(RD_PID_DIR,"ripcd.pid",ripcd_config->uid())) {
+  if(!RDWritePid(RD_PID_DIR,"ripcd.pid",rda->config()->uid())) {
     printf("ripcd: can't write pid file\n");
     exit(1);
   }
@@ -215,6 +169,18 @@ MainObject::MainObject(QObject *parent)
   LoadLocalMacros();
 
   //
+  // Initialize Notifications
+  //
+  ripcd_notification_mcaster=new RDMulticaster(this);
+  ripcd_notification_mcaster->enableLoopback(false);
+  connect(ripcd_notification_mcaster,
+	  SIGNAL(received(const QString &,const QHostAddress &)),
+	  this,
+	  SLOT(notificationReceivedData(const QString &,const QHostAddress &)));
+  ripcd_notification_mcaster->bind(RD_NOTIFICATION_PORT);
+  ripcd_notification_mcaster->subscribe(rda->system()->notificationAddress());
+
+  //
   // Start RML Polling
   //
   QTimer *timer=new QTimer(this);
@@ -237,7 +203,7 @@ MainObject::MainObject(QObject *parent)
   ripcd_maint_timer=new QTimer(this);
   connect(ripcd_maint_timer,SIGNAL(timeout()),this,SLOT(checkMaintData()));
   int interval=GetMaintInterval();
-  if(!ripcd_config->disableMaintChecks()) {
+  if(!rda->config()->disableMaintChecks()) {
     ripcd_maint_timer->start(interval);
   }
   else {
@@ -287,6 +253,21 @@ void MainObject::newConnection(int fd)
 }
 
 
+void MainObject::notificationReceivedData(const QString &msg,
+					  const QHostAddress &addr)
+{
+  RDNotification *notify=new RDNotification();
+  if(!notify->read(msg)) {
+    LogLine(RDConfig::LogWarning,
+	    "Invalid notification received from "+addr.toString());
+    delete notify;
+    return;
+  }
+  BroadcastCommand("ON "+msg+"!");
+  delete notify;
+}
+
+
 void MainObject::sendRml(RDMacro *rml)
 {
   char buf[RD_RML_MAX_LENGTH];
@@ -327,20 +308,20 @@ void MainObject::databaseBackup()
   QDateTime datetime=QDateTime::currentDateTime();
   int life;
 
-  if((life=rdstation->backupLife())<=0) {
+  if((life=rda->station()->backupLife())<=0) {
     return;
   }
   if(fork()==0) {
     cmd=QString().sprintf("find %s -name *.sql -ctime +%d -exec rm \\{\\} \\;",
-			  (const char *)rdstation->backupPath(),
-			  rdstation->backupLife());
+			  (const char *)rda->station()->backupPath(),
+			  rda->station()->backupLife());
     system((const char *)cmd);
     cmd=QString().
 	sprintf("mysqldump -c Rivendell -h %s -u %s -p%s > %s/%s.sql",
-		(const char *)ripcd_config->mysqlHostname(),
-		(const char *)ripcd_config->mysqlUsername(),
-		(const char *)ripcd_config->mysqlPassword(),
-		(const char *)rdstation->backupPath(),
+		(const char *)rda->config()->mysqlHostname(),
+		(const char *)rda->config()->mysqlUsername(),
+		(const char *)rda->config()->mysqlPassword(),
+		(const char *)rda->station()->backupPath(),
 		(const char *)datetime.date().toString("yyyyMMdd"));
     system((const char *)cmd);
     exit(0);
@@ -373,7 +354,7 @@ void MainObject::checkMaintData()
   //
   // Should we try to run system maintenance?
   //
-  if(!rdstation->systemMaint()) {
+  if(!rda->station()->systemMaint()) {
     return;
   }
 
@@ -427,7 +408,7 @@ void MainObject::exitTimerData()
 
 void MainObject::SetUser(QString username)
 {
-    rdstation->setUserName(username);
+    rda->station()->setUserName(username);
     BroadcastCommand(QString().sprintf("RU %s!",(const char *)username));
 }
 
@@ -500,7 +481,7 @@ void MainObject::DispatchCommand(int ch)
     return;
   }
   if(!strcmp(conn->args[0],"PW")) {  // Password Authenticate
-    if(!strcmp(conn->args[1],ripcd_config->password())) {
+    if(!strcmp(conn->args[1],rda->config()->password())) {
       conn->auth=true;
       EchoCommand(ch,"PW +!");
       return;
@@ -523,7 +504,7 @@ void MainObject::DispatchCommand(int ch)
 
   if(!strcmp(conn->args[0],"RU")) {  // Request User
     EchoCommand(ch,(const char *)QString().
-		sprintf("RU %s!",(const char *)rdstation->userName()));
+		sprintf("RU %s!",(const char *)rda->station()->userName()));
     return;
   }
 
@@ -556,7 +537,7 @@ void MainObject::DispatchCommand(int ch)
 */
 
     if(!macro.address().isNull()) {
-      if(macro.address()==rdstation->address()&&
+      if(macro.address()==rda->station()->address()&&
 	 ((macro.port()==RD_RML_ECHO_PORT)||
 	  (macro.port()==RD_RML_NOECHO_PORT))) {  // Local Loopback
 	macro.generateString(buffer,RD_RML_MAX_LENGTH);
@@ -590,7 +571,7 @@ void MainObject::DispatchCommand(int ch)
     addr.setAddress(conn->args[1]);
     macro.setAddress(addr);
     macro.setRole(RDMacro::Reply); 
-    if(macro.address()==rdstation->address()) {  // Local Loopback
+    if(macro.address()==rda->station()->address()) {  // Local Loopback
       macro.generateString(buffer,RD_RML_MAX_LENGTH);
       sprintf(cmd,"ME %s 0 %s",(const char *)macro.address().toString(),
 	      buffer);
@@ -641,6 +622,24 @@ void MainObject::DispatchCommand(int ch)
     SendGpoCart(ch,matrix);
   }
 
+  if(!strcmp(conn->args[0],"ON")) {  // Send Notification
+    QString msg;
+    for(int i=1;i<conn->argnum;i++) {
+      msg+=QString(conn->args[i])+" ";
+    }
+    msg=msg.left(msg.length()-1);
+    RDNotification *notify=new RDNotification();
+    if(!notify->read(msg)) {
+      LogLine(RDConfig::LogWarning,"invalid notification processed");
+      delete notify;
+      return;
+    }
+    BroadcastCommand("ON "+msg+"!",ch);
+    ripcd_notification_mcaster->
+      send(msg,rda->system()->notificationAddress(),RD_NOTIFICATION_PORT);
+    delete notify;
+  }
+
   if(!strcmp(conn->args[0],"TA")) {  // Send Onair Flag State
     EchoCommand(ch,QString().sprintf("TA %d!",ripc_onair_flag));
   }
@@ -662,11 +661,13 @@ void MainObject::EchoCommand(int ch,const char *command)
 }
 
 
-void MainObject::BroadcastCommand(const char *command)
+void MainObject::BroadcastCommand(const char *command,int except_ch)
 {
   for(unsigned i=0;i<ripcd_conns.size();i++) {
-    if(ripcd_conns[i]!=NULL) {
-      EchoCommand(i,command);
+    if((int)i!=except_ch) {
+      if(ripcd_conns[i]!=NULL) {
+	EchoCommand(i,command);
+      }
     }
   }
 }
@@ -774,7 +775,7 @@ void MainObject::LoadGpiTable()
   QString sql=QString().sprintf("select MATRIX,NUMBER,OFF_MACRO_CART,\
                                  MACRO_CART from GPIS \
                                  where STATION_NAME=\"%s\"",
-				(const char *)ripcd_config->stationName());
+				(const char *)rda->config()->stationName());
   RDSqlQuery *q=new RDSqlQuery(sql);
   while(q->next()) {
     ripcd_gpi_macro[q->value(0).toInt()][q->value(1).toInt()-1][0]=
@@ -786,7 +787,7 @@ void MainObject::LoadGpiTable()
 
   sql=QString().sprintf("select MATRIX,NUMBER,OFF_MACRO_CART,MACRO_CART \
                          from GPOS where STATION_NAME=\"%s\"",
-			(const char *)ripcd_config->stationName());
+			(const char *)rda->config()->stationName());
   q=new RDSqlQuery(sql);
   while(q->next()) {
     ripcd_gpo_macro[q->value(0).toInt()][q->value(1).toInt()-1][0]=
@@ -878,18 +879,18 @@ void LogLine(RDConfig::LogPriority prio,const QString &line)
 {
   FILE *logfile;
 
-  ripcd_config->log("ripcd",prio,line);
+  rda->config()->log("ripcd",prio,line);
 
-  if((!ripcd_config) || ripcd_config->ripcdLogname().isEmpty()) {
+  if((!rda->config()) || rda->config()->ripcdLogname().isEmpty()) {
     return;
   }
 
   QDateTime current=QDateTime::currentDateTime();
-  logfile=fopen(ripcd_config->ripcdLogname(),"a");
+  logfile=fopen(rda->config()->ripcdLogname(),"a");
   if(logfile==NULL) {
     return;
   }
-  chmod(ripcd_config->ripcdLogname(),S_IRUSR|S_IWUSR|S_IRGRP|S_IWGRP|S_IROTH);
+  chmod(rda->config()->ripcdLogname(),S_IRUSR|S_IWUSR|S_IRGRP|S_IWGRP|S_IROTH);
   fprintf(logfile,"%02d/%02d/%4d - %02d:%02d:%02d.%03d : %s\n",
 	  current.date().month(),
 	  current.date().day(),

@@ -2,7 +2,7 @@
 //
 // A Rivendell switcher driver for the BroadcastTools 10x1
 //
-//   (C) Copyright 2002-2003,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2003,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,9 +21,10 @@
 #include <stdlib.h>
 
 #include <rd.h>
+#include <rdapplication.h>
 
-#include <globals.h>
-#include <local_audio.h>
+#include "globals.h"
+#include "local_audio.h"
 
 LocalAudio::LocalAudio(RDMatrix *matrix,QObject *parent)
   : Switcher(matrix,parent)
@@ -84,19 +85,19 @@ void LocalAudio::processCommand(RDMacro *cmd)
 	}
 	if(cmd->arg(1).toInt()==0) {
 	  for(int i=0;i<bt_inputs;i++) {
-	    rdcae->
+	    rda->cae()->
 	      setPassthroughVolume(bt_card,i,cmd->arg(2).toInt()-1,-10000);
 	  }
 	}
 	else {
-	  rdcae->setPassthroughVolume(bt_card,cmd->arg(1).toInt()-1,
+	  rda->cae()->setPassthroughVolume(bt_card,cmd->arg(1).toInt()-1,
 				      cmd->arg(2).toInt()-1,0);
 	  for(int i=0;i<(cmd->arg(1).toInt()-1);i++) {
-	    rdcae->
+	    rda->cae()->
 	      setPassthroughVolume(bt_card,i,cmd->arg(2).toInt()-1,-10000);
 	  }
 	  for(int i=cmd->arg(1).toInt();i<bt_inputs;i++) {
-	    rdcae->
+	    rda->cae()->
 	      setPassthroughVolume(bt_card,i,cmd->arg(2).toInt()-1,-10000);
 	  }
 	}
@@ -111,7 +112,7 @@ void LocalAudio::processCommand(RDMacro *cmd)
 	  emit rmlEcho(cmd);
 	  return;
 	}
-	rdcae->setPassthroughVolume(bt_card,cmd->arg(1).toInt()-1,
+	rda->cae()->setPassthroughVolume(bt_card,cmd->arg(1).toInt()-1,
 				    cmd->arg(2).toInt()-1,0);
 	cmd->acknowledge(true);
 	emit rmlEcho(cmd);
@@ -124,7 +125,7 @@ void LocalAudio::processCommand(RDMacro *cmd)
 	  emit rmlEcho(cmd);
 	  return;
 	}
-	rdcae->setPassthroughVolume(bt_card,cmd->arg(1).toInt()-1,
+	rda->cae()->setPassthroughVolume(bt_card,cmd->arg(1).toInt()-1,
 				    cmd->arg(2).toInt()-1,RD_MUTE_DEPTH);
 	cmd->acknowledge(true);
 	emit rmlEcho(cmd);
@@ -138,7 +139,7 @@ void LocalAudio::processCommand(RDMacro *cmd)
 	  emit rmlEcho(cmd);
 	  return;
 	}
-	rdcae->setPassthroughVolume(bt_card,cmd->arg(1).toInt()-1,
+	rda->cae()->setPassthroughVolume(bt_card,cmd->arg(1).toInt()-1,
 				    cmd->arg(2).toInt()-1,cmd->arg(3).toInt());
 	cmd->acknowledge(true);
 	emit rmlEcho(cmd);

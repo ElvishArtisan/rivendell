@@ -38,6 +38,7 @@
 #include <rdstation.h>
 #include <rdmatrix.h>
 #include <rdmacro.h>
+#include <rdmulticaster.h>
 #include <rdtty.h>
 
 #include <ripcd_connection.h>
@@ -63,6 +64,7 @@ class MainObject : public QObject
   void newConnection(int fd);
 
  private slots:
+  void notificationReceivedData(const QString &msg,const QHostAddress &addr);
   void log(RDConfig::LogPriority prio,const QString &msg);
   void sendRml(RDMacro *rml);
   void readRml();
@@ -87,7 +89,7 @@ class MainObject : public QObject
   void DispatchCommand(int);
   void KillSocket(int);
   void EchoCommand(int,const char *);
-  void BroadcastCommand(const char *);
+  void BroadcastCommand(const char *,int except_ch=-1);
   void EchoArgs(int,const char);
   void ReadRmlSocket(QSocketDevice *dev,RDMacro::Role role,bool echo);
   QString StripPoint(QString);
@@ -132,6 +134,7 @@ class MainObject : public QObject
   QTimer *ripc_macro_timer[RD_MAX_MACRO_TIMERS];
   unsigned ripc_macro_cart[RD_MAX_MACRO_TIMERS];
   QTimer *ripcd_maint_timer;
+  RDMulticaster *ripcd_notification_mcaster;
 };
 
 

@@ -2,7 +2,7 @@
 //
 // Rivendell switcher driver for the BroadcastTools Sentinel4Web AES switcher
 //
-//   (C) Copyright 2002-2013,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2013,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -19,9 +19,12 @@
 //
 
 #include <stdlib.h>
+
+#include <rdapplication.h>
 #include <rddb.h>
-#include <globals.h>
-#include <btsentinel4web.h>
+
+#include "btsentinel4web.h"
+#include "globals.h"
 
 BtSentinel4Web::BtSentinel4Web(RDMatrix *matrix,QObject *parent)
   : Switcher(matrix,parent)
@@ -130,7 +133,7 @@ void BtSentinel4Web::processCommand(RDMacro *cmd)
 void BtSentinel4Web::connectedData()
 {
   bt_socket->writeBlock("*0U",3);
-  ripcd_config->log("ripcd",RDConfig::LogInfo,"connected to BT Sentinel4Web device at "+
+  rda->config()->log("ripcd",RDConfig::LogInfo,"connected to BT Sentinel4Web device at "+
 		    bt_socket->peerAddress().toString());
 }
 
@@ -154,7 +157,7 @@ void BtSentinel4Web::readyReadData()
 
 void BtSentinel4Web::watchdogData()
 {
-  ripcd_config->log("ripcd",RDConfig::LogWarning,"lost connection to BT Sentinel4Web device at "+
+  rda->config()->log("ripcd",RDConfig::LogWarning,"lost connection to BT Sentinel4Web device at "+
 		    bt_socket->peerAddress().toString());
   bt_watchdog_reset_timer->start(BTSENTINEL4WEB_WATCHDOG_INTERVAL,true);
 }

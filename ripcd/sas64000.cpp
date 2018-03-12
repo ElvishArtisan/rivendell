@@ -2,7 +2,7 @@
 //
 // A Rivendell switcher driver for the SAS64000
 //
-//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2004,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,8 +20,10 @@
 
 #include <stdlib.h>
 
-#include <globals.h>
-#include <sas64000.h>
+#include <rdapplication.h>
+
+#include "globals.h"
+#include "sas64000.h"
 
 Sas64000::Sas64000(RDMatrix *matrix,QObject *parent)
   : Switcher(matrix,parent)
@@ -35,7 +37,7 @@ Sas64000::Sas64000(RDMatrix *matrix,QObject *parent)
   //
   // Initialize the TTY Port
   //
-  RDTty *tty=new RDTty(rdstation->name(),matrix->port(RDMatrix::Primary));
+  RDTty *tty=new RDTty(rda->station()->name(),matrix->port(RDMatrix::Primary));
   sas_device=new RDTTYDevice();
   if(tty->active()) {
     sas_device->setName(tty->port());

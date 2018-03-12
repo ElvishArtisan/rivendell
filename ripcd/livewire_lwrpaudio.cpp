@@ -2,7 +2,7 @@
 //
 // A Rivendell LWRP audio switcher driver for LiveWire networks.
 //
-//   (C) Copyright 2002-2013,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2013,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -19,9 +19,12 @@
 //
 
 #include <stdlib.h>
+
+#include <rdapplication.h>
 #include <rddb.h>
-#include <globals.h>
-#include <livewire_lwrpaudio.h>
+
+#include "globals.h"
+#include "livewire_lwrpaudio.h"
 
 LiveWireLwrpAudio::LiveWireLwrpAudio(RDMatrix *matrix,QObject *parent)
   : Switcher(matrix,parent)
@@ -32,7 +35,7 @@ LiveWireLwrpAudio::LiveWireLwrpAudio(RDMatrix *matrix,QObject *parent)
   //
   // Get Matrix Parameters
   //
-  livewire_stationname=rdstation->name();
+  livewire_stationname=rda->station()->name();
   livewire_matrix=matrix->matrix();
 
   //

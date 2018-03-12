@@ -1916,7 +1916,8 @@ bool CreateDb(QString name,QString pwd,RDConfig *config)
 		      RD_DEFAULT_MAX_POST_LENGTH)+
     "ISCI_XREFERENCE_PATH char(255),"+
     "TEMP_CART_GROUP char(10),"+
-    "SHOW_USER_LIST enum('N','Y') not null default 'Y')"+
+    "SHOW_USER_LIST enum('N','Y') not null default 'Y',"+
+    "NOTIFICATION_ADDRESS char(15) default \""+RD_NOTIFICATION_ADDRESS+"\")"+
     config->createTablePostfix();
   if(!RunQuery(sql)) {
     return false;
@@ -8021,6 +8022,14 @@ int UpdateDb(int ver,RDConfig *config)
     sql=QString("alter table SERVICES ")+
       "add column LOG_SHELFLIFE_ORIGIN int default 0 "+
       "after DEFAULT_LOG_SHELFLIFE";
+    q=new RDSqlQuery(sql,false);
+    delete q;
+  }
+
+  if(ver<276) {
+    sql=QString("alter table SYSTEM ")+
+      "add column NOTIFICATION_ADDRESS char(15) default \""+
+      RD_NOTIFICATION_ADDRESS+"\" after SHOW_USER_LIST";
     q=new RDSqlQuery(sql,false);
     delete q;
   }

@@ -2,7 +2,7 @@
 //
 // A Rivendell multicast GPIO driver for LiveWire networks.
 //
-//   (C) Copyright 2013,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2013,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,19 +18,20 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <stdlib.h>
-#include <syslog.h>
 #include <errno.h>
 #include <fcntl.h>
+#include <stdlib.h>
+#include <syslog.h>
 #include <time.h>
 #include <netinet/in.h>
 #include <netinet/ip.h>
 
+#include <rdapplication.h>
 #include <rddb.h>
 #include <rdescape_string.h>
 
-#include <globals.h>
-#include <livewire_mcastgpio.h>
+#include "globals.h"
+#include "livewire_mcastgpio.h"
 
 LiveWireMcastGpio::LiveWireMcastGpio(RDMatrix *matrix,QObject *parent)
   : Switcher(matrix,parent)
@@ -45,7 +46,7 @@ LiveWireMcastGpio::LiveWireMcastGpio(RDMatrix *matrix,QObject *parent)
   //
   // Get Matrix Parameters
   //
-  livewire_stationname=rdstation->name();
+  livewire_stationname=rda->station()->name();
   livewire_matrix=matrix->matrix();
   livewire_gpios=matrix->gpis();
   livewire_interface_addr=matrix->ipAddress(RDMatrix::Primary);

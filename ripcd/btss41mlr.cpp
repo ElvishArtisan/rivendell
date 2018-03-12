@@ -2,7 +2,7 @@
 //
 // A Rivendell switcher driver for the BroadcastTools SS 4.1 MLR
 //
-//   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,14 +18,15 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
+#include <stdlib.h>
+
 #include <qstringlist.h>
 #include <qtimer.h>
 
-#include <stdlib.h>
+#include <rdapplication.h>
 
-#include <globals.h>
-#include <btss41mlr.h>
-
+#include "btss41mlr.h"
+#include "globals.h"
 
 BtSs41Mlr::BtSs41Mlr(RDMatrix *matrix,QObject *parent)
   : Switcher(matrix,parent)
@@ -51,7 +52,7 @@ BtSs41Mlr::BtSs41Mlr(RDMatrix *matrix,QObject *parent)
   //
   // Initialize the TTY Port
   //
-  RDTty *tty=new RDTty(rdstation->name(),matrix->port(RDMatrix::Primary));
+  RDTty *tty=new RDTty(rda->station()->name(),matrix->port(RDMatrix::Primary));
   bt_device=new RDTTYDevice();
   if(tty->active()) {
     bt_device->setName(tty->port());

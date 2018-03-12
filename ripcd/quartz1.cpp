@@ -2,7 +2,7 @@
 //
 // A Rivendell switcher driver for the Quartz Type 1 Switcher Protocol
 //
-//   (C) Copyright 2002-2004,2008,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2004,2008,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -22,9 +22,11 @@
 
 #include <qsignalmapper.h>
 
+#include <rdapplication.h>
 #include <rddb.h>
-#include <globals.h>
-#include <quartz1.h>
+
+#include "globals.h"
+#include "quartz1.h"
 
 Quartz1::Quartz1(RDMatrix *matrix,QObject *parent)
   : Switcher(matrix,parent)
@@ -71,7 +73,7 @@ Quartz1::Quartz1(RDMatrix *matrix,QObject *parent)
   for(int i=0;i<2;i++) {
       switch(sas_porttype[i]) {
 	  case RDMatrix::TtyPort:
-	      tty=new RDTty(rdstation->name(),sas_port[i]);
+	      tty=new RDTty(rda->station()->name(),sas_port[i]);
 	      sas_device[i]=new RDTTYDevice();
 	      if(tty->active()) {
 		  sas_device[i]->setName(tty->port());

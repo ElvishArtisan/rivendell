@@ -3499,6 +3499,10 @@ Overwrite?</source>
         <source>Show User List in RDLogin</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Mcast Address for Notifications</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditStation</name>

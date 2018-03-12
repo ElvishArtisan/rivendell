@@ -2,7 +2,7 @@
 //
 // Connection to the Rivendell Interprocess Communication Daemon
 //
-//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2004,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -27,6 +27,7 @@
 
 #include <rdconfig.h>
 #include <rdmacro.h>
+#include <rdnotification.h>
 #include <rdstation.h>
 
 #ifndef RDRIPC_H
@@ -40,8 +41,7 @@ class RDRipc : public QObject
 {
   Q_OBJECT
  public:
-  //  RDRipc(QString stationname,QObject *parent=0);
-  RDRipc(RDStation *station,RDConfig *config,QObject *parent=0);
+ RDRipc(RDStation *station,RDConfig *config,QObject *parent=0);
   ~RDRipc();
   QString user() const;
   QString station() const;
@@ -55,6 +55,7 @@ class RDRipc : public QObject
   void sendGpoMask(int matrix);
   void sendGpiCart(int matrix);
   void sendGpoCart(int matrix);
+  void sendNotification(const RDNotification &notify);
   void sendOnairFlag();
   void sendRml(RDMacro *macro);
   void reloadHeartbeat();
@@ -68,6 +69,7 @@ class RDRipc : public QObject
   void gpoMaskChanged(int matrix,int line,bool state);
   void gpiCartChanged(int matrix,int line,int off_cartnum,int on_cartnum);
   void gpoCartChanged(int matrix,int line,int off_cartnum,int on_cartnum);
+  void notificationReceived(RDNotification *notify);
   void onairFlagChanged(bool state);
   void rmlReceived(RDMacro *rml);
   

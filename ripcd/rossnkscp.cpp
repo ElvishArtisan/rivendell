@@ -2,7 +2,7 @@
 //
 // A Rivendell switcher driver for the Ross NK switchers via the SCP/A
 //
-//   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,9 +20,10 @@
 
 #include <stdlib.h>
 
-#include <globals.h>
-#include <rossnkscp.h>
+#include <rdapplication.h>
 
+#include "globals.h"
+#include "rossnkscp.h"
 
 RossNkScp::RossNkScp(RDMatrix *matrix,QObject *parent)
   : Switcher(matrix,parent)
@@ -37,7 +38,7 @@ RossNkScp::RossNkScp(RDMatrix *matrix,QObject *parent)
   //
   // Initialize the TTY Port
   //
-  RDTty *tty=new RDTty(rdstation->name(),matrix->port(RDMatrix::Primary));
+  RDTty *tty=new RDTty(rda->station()->name(),matrix->port(RDMatrix::Primary));
   ross_device=new RDTTYDevice();
   if(tty->active()) {
     ross_device->setName(tty->port());

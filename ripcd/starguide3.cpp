@@ -2,7 +2,7 @@
 //
 // A Rivendell switcher driver for the StarGuide III Satellite Receiver
 //
-//   (C) Copyright 2002-2005,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2005,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,10 +20,10 @@
 
 #include <stdlib.h>
 
-#include <qsqldatabase.h>
-#include <rddb.h>
-#include <globals.h>
-#include <starguide3.h>
+#include <rdapplication.h>
+
+#include "globals.h"
+#include "starguide3.h"
 
 StarGuide3::StarGuide3(RDMatrix *matrix,QObject *parent)
   : Switcher(matrix,parent)
@@ -43,7 +43,7 @@ StarGuide3::StarGuide3(RDMatrix *matrix,QObject *parent)
   sql=QString().sprintf("select NUMBER,ENGINE_NUM,DEVICE_NUM,CHANNEL_MODE\
                          from INPUTS  where STATION_NAME=\"%s\" && MATRIX=%d \
                          order by NUMBER",
-			(const char *)rdstation->name(),
+			(const char *)rda->station()->name(),
 			matrix->matrix());
   q=new RDSqlQuery(sql);
   q->first();
@@ -61,7 +61,7 @@ StarGuide3::StarGuide3(RDMatrix *matrix,QObject *parent)
   //
   // Initialize the TTY Port
   //
-  RDTty *tty=new RDTty(rdstation->name(),matrix->port(RDMatrix::Primary));
+  RDTty *tty=new RDTty(rda->station()->name(),matrix->port(RDMatrix::Primary));
   sg_device=new RDTTYDevice();
   if(tty->active()) {
     sg_device->setName(tty->port());

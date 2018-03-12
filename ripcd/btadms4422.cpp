@@ -2,7 +2,7 @@
 //
 // A Rivendell switcher driver for the BroadcastTools ADMS 44.22
 //
-//   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,12 +18,14 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qtimer.h>
-
 #include <stdlib.h>
 
-#include <globals.h>
-#include <btadms4422.h>
+#include <qtimer.h>
+
+#include <rdapplication.h>
+
+#include "btadms4422.h"
+#include "globals.h"
 
 BtAdms4422::BtAdms4422(RDMatrix *matrix,QObject *parent)
   : Switcher(matrix,parent)
@@ -49,7 +51,7 @@ BtAdms4422::BtAdms4422(RDMatrix *matrix,QObject *parent)
   //
   // Initialize the TTY Port
   //
-  RDTty *tty=new RDTty(rdstation->name(),matrix->port(RDMatrix::Primary));
+  RDTty *tty=new RDTty(rda->station()->name(),matrix->port(RDMatrix::Primary));
   bt_device=new RDTTYDevice();
   if(tty->active()) {
     bt_device->setName(tty->port());
@@ -62,8 +64,8 @@ BtAdms4422::BtAdms4422(RDMatrix *matrix,QObject *parent)
 	writeBlock(QString().sprintf("*%uUM0\r\n",BTADMS4422_UNIT_ID),7);
     }
     else {
-      ripcd_config->log("ripcd",RDConfig::LogWarning,
-			"failed to open port \""+tty->port()+"\"");
+      rda->config()->log("ripcd",RDConfig::LogWarning,
+			 "failed to open port \""+tty->port()+"\"");
     }
   }
   delete tty;

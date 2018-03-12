@@ -2,7 +2,7 @@
 //
 // A Rivendell switcher driver for the Logitek vGuest Protocol
 //
-//   (C) Copyright 2002-2005,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2005,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -22,10 +22,10 @@
 
 #include <qsignalmapper.h>
 
-#include <rddb.h>
-#include <globals.h>
-#include <vguest.h>
+#include <rdapplication.h>
 
+#include "globals.h"
+#include "vguest.h"
 
 VGuest::VGuest(RDMatrix *matrix,QObject *parent)
   : Switcher(matrix,parent)
@@ -208,7 +208,7 @@ VGuest::VGuest(RDMatrix *matrix,QObject *parent)
   //
   for(int i=0;i<2;i++) {
     if(vguest_porttype[i]==RDMatrix::TtyPort) {
-      tty=new RDTty(rdstation->name(),matrix->port((RDMatrix::Role)i));
+      tty=new RDTty(rda->station()->name(),matrix->port((RDMatrix::Role)i));
       vguest_device[i]=new RDTTYDevice();
       if(tty->active()) {
 	vguest_device[i]->setName(tty->port());
@@ -806,7 +806,7 @@ void VGuest::ExecuteMacroCart(unsigned cartnum)
   RDMacro rml;
   rml.setRole(RDMacro::Cmd);
   rml.setCommand(RDMacro::EX);
-  rml.setAddress(rdstation->address());
+  rml.setAddress(rda->station()->address());
   rml.setEchoRequested(false);
   rml.setArgQuantity(1);
   rml.setArg(0,cartnum);

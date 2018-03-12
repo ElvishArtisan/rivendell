@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<article xmlns="http://docbook.org/ns/docbook" version="5.0">
+<info>
+  <title>Rivendell Notification Protocol</title>
+  <author>
+    <personname>
+      <firstname>Fred</firstname>
+      <surname>Gleason</surname>
+      <email>fredg@paravelsystems.com</email>
+    </personname>
+  </author>
+</info>
+
+<sect1 xml:id="overview">
+  <title>Overview</title>
+  <para>
+    This defines the IP protocol used to notify Rivendell components of
+    changes to the state of database objects. Messages are send by means
+    of multicast UDP packets to port 20539.
+  </para>
+  <para>
+    The format of a message is as follows:
+  </para>
+  <para>
+    NOTIFY <replaceable choice='req'>obj-type</replaceable>
+    <replaceable choice='req'>action</replaceable>
+    <replaceable choice='req'>id</replaceable>
+    [<replaceable choice='opt'>args</replaceable>]
+  </para>
+  <variablelist>
+    <varlistentry>
+      <term>
+	<replaceable>obj-type</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  The object type to which the message pertains.
+	</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>
+	<replaceable>action</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  The action being reported. The following actions are defined:
+	</para>
+	<variablelist>
+	  <varlistentry>
+	    <term>
+	      ADD
+	    </term>
+	    <listitem>
+	      <para>
+		The referenced object has just been added to the database.
+	      </para>
+	    </listitem>
+	  </varlistentry>
+	  <varlistentry>
+	    <term>
+	      DELETE
+	    </term>
+	    <listitem>
+	      <para>
+		The referenced object has just been deleted from the database.
+	      </para>
+	    </listitem>
+	  </varlistentry>
+	  <varlistentry>
+	    <term>
+	      MODIFY
+	    </term>
+	    <listitem>
+	      <para>
+		The reference object has just been modified in the database.
+	      </para>
+	    </listitem>
+	  </varlistentry>
+	</variablelist>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>
+	<replaceable>id</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  Unique id of the object.
+	</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>
+	<replaceable>args</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  Zero or more additional arguments. Varies by
+	  <replaceable>obj-type</replaceable>.
+	</para>
+      </listitem>
+    </varlistentry>
+  </variablelist>
+</sect1>
+
+<sect1 xml:id="sect.object_types">
+  <title>Object Types</title>
+  <para>
+    The following object types are defined:
+  </para>
+  <sect2 xml:id="sect.object_types.cart">
+    <title>Carts</title>
+    <para>
+      <userinput>CART</userinput>
+    </para>
+    <table xml:id="table.object_types.carts" frame="all" pgwide="0">
+      <title>Cart Fields</title>
+      <tgroup cols="2" align="left" colsep="1" rowsep="1">
+	<colspec colname="Field" colwidth="2.0*"/>
+	<colspec colname="Value" colwidth="10.0*"/>
+	<tbody>
+	  <row><entry>Field</entry><entry>Value</entry></row>
+	  <row><entry>obj-type</entry><entry>CART</entry></row>
+	  <row><entry>id</entry><entry>Cart number</entry></row>
+	</tbody>
+      </tgroup>
+    </table>
+  </sect2>
+
+</sect1>
+
+</article>

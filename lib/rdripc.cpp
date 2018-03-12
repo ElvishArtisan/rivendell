@@ -137,6 +137,12 @@ void RDRipc::sendGpoCart(int matrix)
 }
 
 
+void RDRipc::sendNotification(const RDNotification &notify)
+{
+  SendCommand("ON "+notify.write()+"!");
+}
+
+
 void RDRipc::sendOnairFlag()
 {
   SendCommand("TA!");
@@ -424,5 +430,23 @@ void RDRipc::DispatchCommand()
     }
     ripc_onair_flag=args[1][0]=='1';
     emit onairFlagChanged(ripc_onair_flag);
+  }
+
+  if(!strcmp(args[0],"ON")) {   // Notification Received
+    if(argnum<4) {
+      return;
+    }
+    QString msg;
+    for(int i=1;i<argnum;i++) {
+      msg+=QString(args[i])+" ";
+    }
+    msg=msg.left(msg.length()-1);
+    RDNotification *notify=new RDNotification();
+    if(!notify->read(msg)) {
+      delete notify;
+      return;
+    }
+    emit notificationReceived(notify);
+    delete notify;
   }
 }

@@ -35,6 +35,8 @@ all-local:	cae.html\
                 cae.pdf\
                 catchd.html\
                 catchd.pdf\
+                notification.html\
+                notification.pdf\
                 ripc.html\
                 ripc.pdf\
                 web_api.html\
@@ -46,6 +48,9 @@ EXTRA_DIST = cae.html\
              catchd.html\
              catchd.pdf\
              catchd.xml\
+             notifcation.html\
+             notifcation.pdf\
+             notifcation.xml\
              ripc.html\
              ripc.pdf\
              ripc.xml\

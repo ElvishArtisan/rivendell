@@ -2,7 +2,7 @@
 //
 // A Rivendell switcher driver for the BroadcastTools 16x1
 //
-//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2004,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,8 +20,10 @@
 
 #include <stdlib.h>
 
-#include <globals.h>
-#include <bt16x1.h>
+#include <rdapplication.h>
+
+#include "bt16x1.h"
+#include "globals.h"
 
 Bt16x1::Bt16x1(RDMatrix *matrix,QObject *parent)
   : Switcher(matrix,parent)
@@ -35,7 +37,7 @@ Bt16x1::Bt16x1(RDMatrix *matrix,QObject *parent)
   //
   // Initialize the TTY Port
   //
-  RDTty *tty=new RDTty(rdstation->name(),matrix->port(RDMatrix::Primary));
+  RDTty *tty=new RDTty(rda->station()->name(),matrix->port(RDMatrix::Primary));
   bt_device=new RDTTYDevice();
   if(tty->active()) {
     bt_device->setName(tty->port());

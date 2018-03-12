@@ -608,6 +608,26 @@
     </variablelist>
   </sect2>
 
+  <sect2 xml:id="privileged_commands.process_notification">
+    <title>Process Notification</title>
+    <para>
+      Send or Receive an Object Notification
+    </para>
+    <para>
+      <userinput>ON <replaceable>notify</replaceable>!</userinput>
+    </para>
+    <para>
+      Send the <replaceable>notify</replaceable> to all other active
+      Rivendell modules.
+    </para>
+    <note>
+      <para>
+	See the Rivendell Notification Protocol API document for a description
+	of the contents of <replaceable>notify</replaceable>.
+      </para>
+    </note>
+  </sect2>
+
 </sect1>
 
 </article>

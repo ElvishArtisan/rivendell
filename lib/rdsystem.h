@@ -21,6 +21,7 @@
 #ifndef RDSYSTEM_H
 #define RDSYSTEM_H
 
+#include <qhostaddress.h>
 #include <qvariant.h>
 
 class RDSystem
@@ -41,6 +42,8 @@ class RDSystem
   void setTempCartGroup(const QString &str) const;
   bool showUserList() const;
   void setShowUserList(bool state) const;
+  QHostAddress notificationAddress() const;
+  void setNotificationAddress(const QHostAddress &addr);
   QString xml() const;
 
  private:
