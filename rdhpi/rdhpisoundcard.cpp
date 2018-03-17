@@ -170,14 +170,15 @@ bool RDHPISoundCard::setClockSource(int card,RDHPISoundCard::ClockSource src)
 	break;
       case RDHPISoundCard::AesEbu:
       case RDHPISoundCard::SpDiff:
-	hpi_err=HPI_SampleClock_SetSource(NULL,
-					  clock_source_control[card],
-					  HPI_SAMPLECLOCK_SOURCE_AESEBU_SYNC);
+	hpi_err=LogHpi(HPI_SampleClock_SetSource(NULL,
+						 clock_source_control[card],
+						 HPI_SAMPLECLOCK_SOURCE_AESEBU_SYNC),__LINE__);
 	break;
       case RDHPISoundCard::WordClock:
-	hpi_err=HPI_SampleClock_SetSource(NULL,
-					  clock_source_control[card],
-					  HPI_SAMPLECLOCK_SOURCE_WORD);
+	hpi_err=LogHpi(HPI_SampleClock_SetSource(NULL,
+						 clock_source_control[card],
+						 HPI_SAMPLECLOCK_SOURCE_WORD),
+		       __LINE__);
 	break;
   }
   return hpi_err==0;
@@ -226,7 +227,7 @@ RDHPISoundCard::SourceNode RDHPISoundCard::getInputPortMux(int card,int port)
   uint16_t index;
 
   LogHpi(HPI_Multiplexer_GetSource(NULL,input_mux_control[card][port],
-				   &type,&index));
+				   &type,&index),__LINE__);
   return (RDHPISoundCard::SourceNode)type;
 }
 
@@ -236,15 +237,15 @@ bool RDHPISoundCard::setInputPortMux(int card,int port,RDHPISoundCard::SourceNod
   switch(node) {
       case RDHPISoundCard::LineIn:
 	if(HPI_Multiplexer_SetSource(NULL,
-				     input_mux_control[card][port],
-				     node,0)!=0) {
+				     input_mux_control[card][port],node,0)!=0) {
 	  return false;
 	}
 	break;
       case RDHPISoundCard::AesEbuIn:
-	if(HPI_Multiplexer_SetSource(NULL,
-				     input_mux_control[card][port],node,
-				     input_mux_index[card][port][1])!=0) {
+	if(LogHpi(HPI_Multiplexer_SetSource(NULL,
+					    input_mux_control[card][port],node,
+					    input_mux_index[card][port][1]),
+		  __LINE__)!=0) {
 	  return false;
 	}
 	break;
@@ -263,7 +264,7 @@ unsigned short RDHPISoundCard::getInputPortError(int card,int port)
   if(input_port_aesebu[card][port]) {
     LogHpi(HPI_AESEBU_Receiver_GetErrorStatus(NULL,
 					input_port_aesebu_control[card][port],
-					      &error_word));
+					      &error_word),__LINE__);
   }
   return error_word;
 }
@@ -366,7 +367,8 @@ bool RDHPISoundCard::inputStreamMeter(int card,int stream,short *level)
     return false;
   }
   LogHpi(HPI_MeterGetPeak(NULL,
-			  input_stream_meter_control[card][stream],level));
+			  input_stream_meter_control[card][stream],level),
+	 __LINE__);
   return true;
 }
 
@@ -379,8 +381,8 @@ bool RDHPISoundCard::outputStreamMeter(int card,int stream,short *level)
   if(stream>=card_output_streams[card]) {
     return false;
   }
-  LogHpi(HPI_MeterGetPeak(NULL,
-			  output_stream_meter_control[card][stream],level));
+  LogHpi(HPI_MeterGetPeak(NULL,output_stream_meter_control[card][stream],
+			  level),__LINE__);
   return true;
 }
 
@@ -393,8 +395,8 @@ bool RDHPISoundCard::inputPortMeter(int card,int port,short *level)
   if(port>=card_input_ports[card]) {
     return false;
   }
-  LogHpi(HPI_MeterGetPeak(NULL,
-			  input_port_meter_control[card][port],level));
+  LogHpi(HPI_MeterGetPeak(NULL,input_port_meter_control[card][port],level),
+	 __LINE__);
   return true;
 }
 
@@ -407,7 +409,8 @@ bool RDHPISoundCard::outputPortMeter(int card,int port,short *level)
   if(port>=card_output_ports[card]) {
     return false;
   }
-  LogHpi(HPI_MeterGetPeak(NULL,output_port_meter_control[card][port],level));
+  LogHpi(HPI_MeterGetPeak(NULL,output_port_meter_control[card][port],level),
+	 __LINE__);
   return true;
 }
 
@@ -456,8 +459,8 @@ int RDHPISoundCard::getInputVolume(int card,int stream,int port)
 {
   short gain[2];
 
-  LogHpi(HPI_VolumeGetGain(NULL,
-			input_stream_volume_control[card][stream][port],gain));
+  LogHpi(HPI_VolumeGetGain(NULL,input_stream_volume_control[card][stream][port],
+			   gain),__LINE__);
   return gain[0];
 }
 
@@ -466,8 +469,7 @@ int RDHPISoundCard::getOutputVolume(int card,int stream,int port)
 {
   short gain[2];
 
-  LogHpi(HPI_VolumeGetGain(NULL,
-			output_stream_volume_control[card][stream][port],gain));
+  LogHpi(HPI_VolumeGetGain(NULL,output_stream_volume_control[card][stream][port],gain),__LINE__);
   return gain[0];
 }
 
@@ -476,7 +478,8 @@ int RDHPISoundCard::getInputLevel(int card,int port)
 {
   short gain[2];
 
-  LogHpi(HPI_VolumeGetGain(NULL,input_port_level_control[card][port],gain));
+  LogHpi(HPI_VolumeGetGain(NULL,input_port_level_control[card][port],gain),
+	 __LINE__);
   return gain[0];
 }
 
@@ -485,7 +488,8 @@ int RDHPISoundCard::getOutputLevel(int card,int port)
 {
   short gain[2];
 
-  LogHpi(HPI_VolumeGetGain(NULL,output_port_level_control[card][port],gain));
+  LogHpi(HPI_VolumeGetGain(NULL,output_port_level_control[card][port],gain),
+	 __LINE__);
   return gain[0];
 }
 
@@ -499,8 +503,8 @@ void RDHPISoundCard::setInputVolume(int card,int stream,int level)
   short gain[2];
   gain[0]=level;
   gain[1]=level;
-  LogHpi(HPI_VolumeSetGain(NULL,
-			   input_stream_volume_control[card][stream][0],gain));
+  LogHpi(HPI_VolumeSetGain(NULL,input_stream_volume_control[card][stream][0],
+			   gain),__LINE__);
 }
 
 
@@ -514,7 +518,7 @@ void RDHPISoundCard::setOutputVolume(int card,int stream,int port,int level)
   gain[1]=level;
   LogHpi(HPI_VolumeSetGain(NULL,
 			   output_stream_volume_control[card][stream][port],
-			   gain));
+			   gain),__LINE__);
 }
 
 
@@ -531,7 +535,7 @@ void RDHPISoundCard::fadeOutputVolume(int card,int stream,int port,
   gain[1]=level;
   LogHpi(HPI_VolumeAutoFadeProfile(NULL,
 			      output_stream_volume_control[card][stream][port],
-				   gain,length,hpi_fade_type));
+				   gain,length,hpi_fade_type),__LINE__);
 }
 
 
@@ -545,7 +549,8 @@ void RDHPISoundCard::setInputLevel(int card,int port,int level)
   for(unsigned i=0;i<HPI_MAX_CHANNELS;i++) {
     gain[i]=level;
   }
-  LogHpi(HPI_LevelSetGain(NULL,input_port_level_control[card][port],gain));
+  LogHpi(HPI_LevelSetGain(NULL,input_port_level_control[card][port],gain),
+	 __LINE__);
 }
 
 
@@ -559,7 +564,8 @@ void RDHPISoundCard::setOutputLevel(int card,int port,int level)
   for(unsigned i=0;i<HPI_MAX_CHANNELS;i++) {
     gain[i]=level;
   }
-  LogHpi(HPI_LevelSetGain(NULL,output_port_level_control[card][port],gain));
+  LogHpi(HPI_LevelSetGain(NULL,output_port_level_control[card][port],gain),
+	 __LINE__);
 }
 
 
@@ -569,7 +575,8 @@ void RDHPISoundCard::setInputMode(int card,int port,
   if(!haveInputMode(card,port)) {
     return;
   }
-  LogHpi(HPI_ChannelModeSet(NULL,input_port_mode_control[card][port],mode+1));
+  LogHpi(HPI_ChannelModeSet(NULL,input_port_mode_control[card][port],mode+1),
+	 __LINE__);
 }
 
 
@@ -580,13 +587,14 @@ void RDHPISoundCard::setOutputMode(int card,int stream,
     return;
   }
   LogHpi(HPI_ChannelModeSet(NULL,output_stream_mode_control[card][stream],
-			    mode+1));
+			    mode+1),__LINE__);
 }
 
 
 void RDHPISoundCard::setInputStreamVOX(int card,int stream,short gain)
 {
-  LogHpi(HPI_VoxSetThreshold(NULL,input_stream_vox_control[card][stream],gain));
+  LogHpi(HPI_VoxSetThreshold(NULL,input_stream_vox_control[card][stream],gain),
+	 __LINE__);
 }
 
 
@@ -607,7 +615,7 @@ bool RDHPISoundCard::setPassthroughVolume(int card,int in_port,int out_port,
   gain[1]=level;
   LogHpi(HPI_VolumeSetGain(NULL,
 		       passthrough_port_volume_control[card][in_port][out_port],
-			   gain));
+			   gain),__LINE__);
   return true;
 }
 
@@ -644,18 +652,19 @@ void RDHPISoundCard::HPIProbe()
 
   hpi_fade_type=HPI_VOLUME_AUTOFADE_LOG;
 #if HPI_VER < 0x00030600
-  LogHpi(HPI_SubSysGetVersion(NULL,&dummy_hpi));
-  HPI_SubSysFindAdapters(NULL,(uint16_t *)&card_quantity,
-			 hpi_adapter_list,HPI_MAX_ADAPTERS);  
+  LogHpi(HPI_SubSysGetVersion(NULL,&dummy_hpi),__LINE__);
+  LogHpi(HPI_SubSysFindAdapters(NULL,(uint16_t *)&card_quantity,
+				hpi_adapter_list,HPI_MAX_ADAPTERS),__LINE__);  
 #else
-  LogHpi(HPI_SubSysGetVersionEx(NULL,&dummy_hpi));
-  LogHpi(HPI_SubSysGetNumAdapters(NULL,&card_quantity));
+  LogHpi(HPI_SubSysGetVersionEx(NULL,&dummy_hpi),__LINE__);
+  LogHpi(HPI_SubSysGetNumAdapters(NULL,&card_quantity),__LINE__);
 #endif  // HPI_VER
   for(int i=0;i<card_quantity;i++) {
 #if HPI_VER < 0x00030600
     card_index[i]=i;
 #else
-    LogHpi(HPI_SubSysGetAdapter(NULL,i,card_index+i,hpi_adapter_list+i));
+    LogHpi(HPI_SubSysGetAdapter(NULL,i,card_index+i,hpi_adapter_list+i),
+	   __LINE__);
 #endif  // HPI_VER
     if((hpi_adapter_list[i]&0xF000)==0x6000) { 
       timescale_support[i]=true;
@@ -677,19 +686,19 @@ void RDHPISoundCard::HPIProbe()
     card_output_ports[i]=0;
     card_description[i]=QString().sprintf("AudioScience %04X [%d]",
 					  hpi_adapter_list[i],i+1);
-    LogHpi(HPI_AdapterOpen(NULL,card_index[i]));
+    LogHpi(HPI_AdapterOpen(NULL,card_index[i]),__LINE__);
     LogHpi(HPI_AdapterGetInfo(NULL,card_index[i],
 			      &card_output_streams[i],
 			      &card_input_streams[i],
 			      &dummy_version,(uint32_t *)&dummy_serial,
-			      &dummy_type));
+			      &dummy_type),__LINE__);
     hpi_info[i].setSerialNumber(dummy_serial);
     hpi_info[i].setHpiVersion(dummy_hpi);
     hpi_info[i].setDspMajorVersion((dummy_version>>13)&7);
     hpi_info[i].setDspMinorVersion((dummy_version>>7)&63);
     hpi_info[i].setPcbVersion((char)(((dummy_version>>3)&7)+'A'));
     hpi_info[i].setAssemblyVersion(dummy_version&7);
-    LogHpi(HPI_AdapterClose(NULL,card_index[i]));
+    LogHpi(HPI_AdapterClose(NULL,card_index[i]),__LINE__);
     str=QString(tr("Input Stream"));
     for(int j=0;j<card_input_streams[i];j++) {
       input_stream_description[i][j]=
@@ -708,7 +717,7 @@ void RDHPISoundCard::HPIProbe()
   // Mixer Initialization
   //
   for(int i=0;i<card_quantity;i++) {
-    LogHpi(HPI_MixerOpen(NULL,card_index[i],&hpi_mixer[i]));
+    LogHpi(HPI_MixerOpen(NULL,card_index[i],&hpi_mixer[i]),__LINE__);
 
     //
     // Get Input Ports
@@ -744,9 +753,9 @@ void RDHPISoundCard::HPIProbe()
     str=QString(tr("Output Port"));
     for(int k=0;k<HPI_MAX_NODES;k++) {
       if((HPI_MixerGetControl(NULL,hpi_mixer[i],
-			     HPI_SOURCENODE_OSTREAM,0,
-			     HPI_DESTNODE_LINEOUT,k,
-			     HPI_CONTROL_VOLUME,
+			      HPI_SOURCENODE_OSTREAM,0,
+			      HPI_DESTNODE_LINEOUT,k,
+			      HPI_CONTROL_VOLUME,
 			      &output_stream_volume_control[i][0][k])==0)||
 	 (HPI_MixerGetControl(NULL,hpi_mixer[i],
 			      HPI_SOURCENODE_OSTREAM,0,
@@ -765,13 +774,14 @@ void RDHPISoundCard::HPIProbe()
 			       HPI_SOURCENODE_CLOCK_SOURCE,0,
 			       0,0,
 			       HPI_CONTROL_SAMPLECLOCK,
-			       &clock_source_control[i]));
+			       &clock_source_control[i]),__LINE__);
     for(int j=0;j<card_input_streams[i];j++) {
-      if(HPI_MixerGetControl(NULL,hpi_mixer[i],  // VOX Controls
-			     0,0,
-			     HPI_DESTNODE_ISTREAM,j,
-			     HPI_CONTROL_VOX,
-			     &input_stream_vox_control[i][j])==0) {
+      if(LogHpi(HPI_MixerGetControl(NULL,hpi_mixer[i],  // VOX Controls
+				    0,0,
+				    HPI_DESTNODE_ISTREAM,j,
+				    HPI_CONTROL_VOX,
+				    &input_stream_vox_control[i][j]),
+		__LINE__)==0) {
 	input_stream_vox[i][j]=true;
       }
       else {
@@ -779,18 +789,19 @@ void RDHPISoundCard::HPIProbe()
       }
 
       if(input_mux_type[i]) {
-	if(HPI_MixerGetControl(NULL,hpi_mixer[i],  // MUX Controls
-			       0,0,
-			       HPI_DESTNODE_ISTREAM,j,
-			       HPI_CONTROL_MULTIPLEXER,
-			       &input_mux_control[i][j])==0) {
+	if(LogHpi(HPI_MixerGetControl(NULL,hpi_mixer[i],  // MUX Controls
+				      0,0,
+				      HPI_DESTNODE_ISTREAM,j,
+				      HPI_CONTROL_MULTIPLEXER,
+				      &input_mux_control[i][j]),__LINE__)==0) {
 	  input_stream_mux[i][j]=true;
 	  l=0;
 	  input_port_mux_type[i][j][0]=false;
 	  input_port_mux_type[i][j][1]=false;
-	  while(HPI_Multiplexer_QuerySource(NULL,
-					    input_mux_control[i][j],
-					    l++,&type,&index)==0) {
+	  while(LogHpi(HPI_Multiplexer_QuerySource(NULL,
+						   input_mux_control[i][j],
+						   l++,&type,&index),
+		       __LINE__)==0) {
 	    switch(type) {
 		case HPI_SOURCENODE_LINEIN:
 		  input_port_mux_type[i][j][0]=true;
@@ -836,21 +847,23 @@ void RDHPISoundCard::HPIProbe()
 	  output_stream_volume[i][j][k]=false;
 	}
       }
-      if(HPI_MixerGetControl(NULL,hpi_mixer[i],
-			     0,0,
-			     HPI_DESTNODE_ISTREAM,j,
-			     HPI_CONTROL_METER,
-			     &input_stream_meter_control[i][j])==0) {
+      if(LogHpi(HPI_MixerGetControl(NULL,hpi_mixer[i],
+				    0,0,
+				    HPI_DESTNODE_ISTREAM,j,
+				    HPI_CONTROL_METER,
+				    &input_stream_meter_control[i][j]),
+		__LINE__)==0) {
 	input_stream_meter[i][j]=true;
       }
       else {
 	input_stream_meter[i][j]=false;
       }
-      if(HPI_MixerGetControl(NULL,hpi_mixer[i],
-			     HPI_SOURCENODE_OSTREAM,j,
-			     0,0,
-			     HPI_CONTROL_METER,
-			     &output_stream_meter_control[i][j])==0) {
+      if(LogHpi(HPI_MixerGetControl(NULL,hpi_mixer[i],
+				    HPI_SOURCENODE_OSTREAM,j,
+				    0,0,
+				    HPI_CONTROL_METER,
+				    &output_stream_meter_control[i][j]),
+		__LINE__)==0) {
 	output_stream_meter[i][j]=true;
       }
       else {
@@ -870,8 +883,8 @@ void RDHPISoundCard::HPIProbe()
       }
       if((HPI_MixerGetControl(NULL,hpi_mixer[i],  // Output Level Controls
 			      0,0,
-			     HPI_DESTNODE_LINEOUT,j,
-			     HPI_CONTROL_LEVEL,
+			      HPI_DESTNODE_LINEOUT,j,
+			      HPI_CONTROL_LEVEL,
 			      &output_port_level_control[i][j])==0)||
 	 (HPI_MixerGetControl(NULL,hpi_mixer[i],
 			      0,0,
@@ -894,10 +907,10 @@ void RDHPISoundCard::HPIProbe()
 	input_port_meter[i][j]=false;
       }
       if((HPI_MixerGetControl(NULL,hpi_mixer[i],  // Output Port Meter
-			      0,0,
-			      HPI_DESTNODE_LINEOUT,j,
-			      HPI_CONTROL_METER,
-			      &output_port_meter_control[i][j])==0)||
+			     0,0,
+			     HPI_DESTNODE_LINEOUT,j,
+			     HPI_CONTROL_METER,
+			     &output_port_meter_control[i][j])==0)||
 	 (HPI_MixerGetControl(NULL,hpi_mixer[i],
 			      0,0,
 			      HPI_DESTNODE_AESEBU_OUT,j,
@@ -928,9 +941,10 @@ void RDHPISoundCard::HPIProbe()
 	  l=0;
 	  input_port_mux_type[i][j][0]=false;
 	  input_port_mux_type[i][j][1]=false;
-	  while(HPI_Multiplexer_QuerySource(NULL,
-					    input_mux_control[i][j],
-					    l++,&type,&index)==0) {
+	  while(LogHpi(HPI_Multiplexer_QuerySource(NULL,
+						   input_mux_control[i][j],
+						   l++,&type,&index),
+		       __LINE__)==0) {
 	    switch(type) {
 		case HPI_SOURCENODE_LINEIN:
 		  input_port_mux_type[i][j][0]=true;
@@ -978,13 +992,13 @@ void RDHPISoundCard::HPIProbe()
 }
 
 
-hpi_err_t RDHPISoundCard::LogHpi(hpi_err_t err)
+hpi_err_t RDHPISoundCard::LogHpi(hpi_err_t err,int lineno)
 {
   char err_txt[200];
 
   if(err!=0) {
     HPI_GetErrorText(err,err_txt);
-    syslog(LOG_NOTICE,"HPI Error: %s",err_txt);
+    syslog(LOG_NOTICE,"HPI Error: %s, %s line %d",err_txt,__FILE__,lineno);
   }
   return err;
 }

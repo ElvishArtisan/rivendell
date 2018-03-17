@@ -87,7 +87,7 @@ class RDHPIPlayStream : public QObject,public RDWaveFile
   void Drained();
   int GetStream();
   void FreeStream();
-  hpi_err_t LogHpi(hpi_err_t err);
+  hpi_err_t LogHpi(hpi_err_t err,int lineno);
   RDHPISoundCard *sound_card;
   RDHPIPlayStream::State stream_state;
   QString wave_name;
@@ -130,6 +130,7 @@ class RDHPIPlayStream : public QObject,public RDWaveFile
   bool restart_transport;
   int samples_pending;
   unsigned current_position;
+  uint32_t dma_buffer_size;
 };
 
 
