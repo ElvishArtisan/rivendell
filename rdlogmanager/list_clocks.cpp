@@ -609,9 +609,10 @@ void ListClocks::DeleteClock(QString clockname)
   base_name.replace(" ","_");
 
   //
-  // Delete Active Clocks
+  // Clear Active Clocks
   //
-  sql=QString("delete from SERVICE_CLOCKS where ")+
+  sql=QString("update SERVICE_CLOCKS set ")+
+    "CLOCK_NAME=null where "+
     "CLOCK_NAME=\""+RDEscapeString(clockname)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
