@@ -16612,3 +16612,5 @@
 	* Incremented the package version to 2.19.0.
 2018-03-17 Fred Gleason <fredg@paravelsystems.com>
 	* Added support for DMA bus-mastering to the HPI driver.
+2018-03-18 Fred Gleason <fredg@paravelsystems.com>
+	* Updated switch() statement formatting in 'rdhpi/'.

@@ -115,26 +115,26 @@ QString RDHPIRecordStream::errorString(RDHPIRecordStream::Error err)
   QString str;
 
   switch(err) {
-      case RDHPIRecordStream::Ok:
-	return QString(tr("Ok"));
-	break;
+  case RDHPIRecordStream::Ok:
+    return QString(tr("Ok"));
+    break;
 
-      case RDHPIRecordStream::NoFile:
-	return QString(tr("Unable to create/open file"));
-	break;
+  case RDHPIRecordStream::NoFile:
+    return QString(tr("Unable to create/open file"));
+    break;
 
-      case RDHPIRecordStream::NoStream:
-	return QString(tr("Input stream unavailable"));
-	break;
+  case RDHPIRecordStream::NoStream:
+    return QString(tr("Input stream unavailable"));
+    break;
 
-      case RDHPIRecordStream::AlreadyOpen:
-	return QString(tr("Stream is already open"));
-	break;
+  case RDHPIRecordStream::AlreadyOpen:
+    return QString(tr("Stream is already open"));
+    break;
 
-      default:
-	str=QString(tr("Unknown Error:"));
-	return QString().sprintf("%s %d\n",(const char *)str,err);
-	break;
+  default:
+    str=QString(tr("Unknown Error:"));
+    return QString().sprintf("%s %d\n",(const char *)str,err);
+    break;
   }
 }
 
@@ -221,54 +221,45 @@ bool RDHPIRecordStream::formatSupported(RDWaveFile::Format format)
     histream=hpi_stream;
   }
   switch(format) {
-      case RDWaveFile::Pcm8:
-	LogHpi(HPI_FormatCreate(&hformat,getChannels(),
-				HPI_FORMAT_PCM8_UNSIGNED,
-				getSamplesPerSec(),getHeadBitRate(),0),
-	       __LINE__);
-	state=LogHpi(HPI_InStreamQueryFormat(NULL,histream,&hformat),__LINE__);
-	break;
+  case RDWaveFile::Pcm8:
+    LogHpi(HPI_FormatCreate(&hformat,getChannels(),HPI_FORMAT_PCM8_UNSIGNED,
+			    getSamplesPerSec(),getHeadBitRate(),0),__LINE__);
+    state=LogHpi(HPI_InStreamQueryFormat(NULL,histream,&hformat),__LINE__);
+    break;
 
-      case RDWaveFile::Pcm16:
-	LogHpi(HPI_FormatCreate(&hformat,getChannels(),
-				HPI_FORMAT_PCM16_SIGNED,
-				getSamplesPerSec(),getHeadBitRate(),0),
-	       __LINE__);
-	state=LogHpi(HPI_InStreamQueryFormat(NULL,histream,&hformat),__LINE__);
-	break;
+  case RDWaveFile::Pcm16:
+    LogHpi(HPI_FormatCreate(&hformat,getChannels(),HPI_FORMAT_PCM16_SIGNED,
+			    getSamplesPerSec(),getHeadBitRate(),0),__LINE__);
+    state=LogHpi(HPI_InStreamQueryFormat(NULL,histream,&hformat),__LINE__);
+    break;
 
-      case RDWaveFile::Pcm24:
-	LogHpi(HPI_FormatCreate(&hformat,getChannels(),
-				HPI_FORMAT_PCM24_SIGNED,
-				getSamplesPerSec(),getHeadBitRate(),0),
-	       __LINE__);
-	state=LogHpi(HPI_InStreamQueryFormat(NULL,histream,&hformat),__LINE__);
-	break;
+  case RDWaveFile::Pcm24:
+    LogHpi(HPI_FormatCreate(&hformat,getChannels(),HPI_FORMAT_PCM24_SIGNED,
+			    getSamplesPerSec(),getHeadBitRate(),0),__LINE__);
+    state=LogHpi(HPI_InStreamQueryFormat(NULL,histream,&hformat),__LINE__);
+    break;
 
-      case RDWaveFile::MpegL1:
-	LogHpi(HPI_FormatCreate(&hformat,getChannels(),HPI_FORMAT_MPEG_L1,
-				getSamplesPerSec(),getHeadBitRate(),0),
-	       __LINE__);
-	state=LogHpi(HPI_InStreamQueryFormat(NULL,histream,&hformat),__LINE__);
-	break;
+  case RDWaveFile::MpegL1:
+    LogHpi(HPI_FormatCreate(&hformat,getChannels(),HPI_FORMAT_MPEG_L1,
+			    getSamplesPerSec(),getHeadBitRate(),0),__LINE__);
+    state=LogHpi(HPI_InStreamQueryFormat(NULL,histream,&hformat),__LINE__);
+    break;
 
-      case RDWaveFile::MpegL2:
-	LogHpi(HPI_FormatCreate(&hformat,getChannels(),HPI_FORMAT_MPEG_L2,
-				getSamplesPerSec(),getHeadBitRate(),0),
-	       __LINE__);
-	state=LogHpi(HPI_InStreamQueryFormat(NULL,histream,&hformat),__LINE__);
-	break;
+  case RDWaveFile::MpegL2:
+    LogHpi(HPI_FormatCreate(&hformat,getChannels(),HPI_FORMAT_MPEG_L2,
+			    getSamplesPerSec(),getHeadBitRate(),0),__LINE__);
+    state=LogHpi(HPI_InStreamQueryFormat(NULL,histream,&hformat),__LINE__);
+    break;
 
-      case RDWaveFile::MpegL3:
-	LogHpi(HPI_FormatCreate(&hformat,getChannels(),HPI_FORMAT_MPEG_L3,
-				getSamplesPerSec(),getHeadBitRate(),0),
-	       __LINE__);
-	state=LogHpi(HPI_InStreamQueryFormat(NULL,histream,&hformat),__LINE__);
-	break;
+  case RDWaveFile::MpegL3:
+    LogHpi(HPI_FormatCreate(&hformat,getChannels(),HPI_FORMAT_MPEG_L3,
+			    getSamplesPerSec(),getHeadBitRate(),0),__LINE__);
+    state=LogHpi(HPI_InStreamQueryFormat(NULL,histream,&hformat),__LINE__);
+    break;
 
-      default:
-	state=1;
-	break;
+  default:
+    state=1;
+    break;
   }
   if(!is_open) {
     LogHpi(HPI_InStreamHostBufferFree(NULL,histream),__LINE__);
@@ -284,46 +275,46 @@ bool RDHPIRecordStream::formatSupported(RDWaveFile::Format format)
 bool RDHPIRecordStream::formatSupported()
 {
   switch(getFormatTag()) {
-      case WAVE_FORMAT_PCM:
-	switch(getBitsPerSample()) {
-	    case 8:
-	      return formatSupported(RDWaveFile::Pcm8);
-	      break;
+  case WAVE_FORMAT_PCM:
+    switch(getBitsPerSample()) {
+    case 8:
+      return formatSupported(RDWaveFile::Pcm8);
+      break;
 
-	    case 16:
-	      return formatSupported(RDWaveFile::Pcm16);
-	      break;
+    case 16:
+      return formatSupported(RDWaveFile::Pcm16);
+      break;
 
-	    case 24:
-	      return formatSupported(RDWaveFile::Pcm24);
-	      break;
+    case 24:
+      return formatSupported(RDWaveFile::Pcm24);
+      break;
 
-	    default:
-	      return false;
-	}
-	break;
+    default:
+      return false;
+    }
+    break;
 
-      case WAVE_FORMAT_MPEG:
-	switch(getHeadLayer()) {
-	    case 1:
-	      return formatSupported(RDWaveFile::MpegL1);
-	      break;
+  case WAVE_FORMAT_MPEG:
+    switch(getHeadLayer()) {
+    case 1:
+      return formatSupported(RDWaveFile::MpegL1);
+      break;
 
-	    case 2:
-	      return formatSupported(RDWaveFile::MpegL2);
-	      break;
+    case 2:
+      return formatSupported(RDWaveFile::MpegL2);
+      break;
 
-	    case 3:
-	      return formatSupported(RDWaveFile::MpegL3);
-	      break;
+    case 3:
+      return formatSupported(RDWaveFile::MpegL3);
+      break;
 
-	    default:
-	      return false;
-	}
-	break;
+    default:
+      return false;
+    }
+    break;
 
-      default:
-	return false;
+  default:
+    return false;
   }
 }
 

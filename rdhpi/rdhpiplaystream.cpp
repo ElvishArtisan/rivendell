@@ -141,26 +141,26 @@ QString RDHPIPlayStream::errorString(RDHPIPlayStream::Error err)
   QString str;
 
   switch(err) {
-      case RDHPIPlayStream::Ok:
-	return QString(tr("Ok"));
-	break;
+  case RDHPIPlayStream::Ok:
+    return QString(tr("Ok"));
+    break;
 
-      case RDHPIPlayStream::NoFile:
-	return QString(tr("No such file or directory"));
-	break;
+  case RDHPIPlayStream::NoFile:
+    return QString(tr("No such file or directory"));
+    break;
 
-      case RDHPIPlayStream::NoStream:
-	return QString(tr("No output stream available"));
-	break;
+  case RDHPIPlayStream::NoStream:
+    return QString(tr("No output stream available"));
+    break;
 
-      case RDHPIPlayStream::AlreadyOpen:
-	return QString(tr("Stream is already open"));
-	break;
+  case RDHPIPlayStream::AlreadyOpen:
+    return QString(tr("Stream is already open"));
+    break;
 
-      default:
-	str=QString(tr("Unknown Error:"));
-	return QString().sprintf("%s %d\n",(const char *)str,err);
-	break;
+  default:
+    str=QString(tr("Unknown Error:"));
+    return QString().sprintf("%s %d\n",(const char *)str,err);
+    break;
   }
 }
 
@@ -206,54 +206,44 @@ bool RDHPIPlayStream::formatSupported(RDWaveFile::Format format)
     hostream=hpi_stream;
   }
   switch(format) {
-      case RDWaveFile::Pcm16:
-	LogHpi(HPI_FormatCreate(&hpi_format,getChannels(),
-				HPI_FORMAT_PCM16_SIGNED,
-				getSamplesPerSec(),getHeadBitRate(),0),
-	       __LINE__);
-	state=LogHpi(HPI_OutStreamQueryFormat(NULL,hostream,&hpi_format),
-		     __LINE__);
-	break;
+  case RDWaveFile::Pcm16:
+    LogHpi(HPI_FormatCreate(&hpi_format,getChannels(),
+			    HPI_FORMAT_PCM16_SIGNED,
+			    getSamplesPerSec(),getHeadBitRate(),0),__LINE__);
+    state=LogHpi(HPI_OutStreamQueryFormat(NULL,hostream,&hpi_format),__LINE__);
+    break;
 
-      case RDWaveFile::Pcm24:
-	LogHpi(HPI_FormatCreate(&hpi_format,getChannels(),
-				HPI_FORMAT_PCM24_SIGNED,
-				getSamplesPerSec(),getHeadBitRate(),0),
-	       __LINE__);
-	state=LogHpi(HPI_OutStreamQueryFormat(NULL,hostream,&hpi_format),
-		     __LINE__);
-	break;
+  case RDWaveFile::Pcm24:
+    LogHpi(HPI_FormatCreate(&hpi_format,getChannels(),
+			    HPI_FORMAT_PCM24_SIGNED,
+			    getSamplesPerSec(),getHeadBitRate(),0),__LINE__);
+    state=LogHpi(HPI_OutStreamQueryFormat(NULL,hostream,&hpi_format),__LINE__);
+    break;
 
-      case RDWaveFile::MpegL1:
-	LogHpi(HPI_FormatCreate(&hpi_format,getChannels(),
-				HPI_FORMAT_MPEG_L1,
-				getSamplesPerSec(),getHeadBitRate(),0),
-	       __LINE__);
-	state=LogHpi(HPI_OutStreamQueryFormat(NULL,hostream,&hpi_format),
-		     __LINE__);
-	break;
+  case RDWaveFile::MpegL1:
+    LogHpi(HPI_FormatCreate(&hpi_format,getChannels(),
+			    HPI_FORMAT_MPEG_L1,
+			    getSamplesPerSec(),getHeadBitRate(),0),__LINE__);
+    state=LogHpi(HPI_OutStreamQueryFormat(NULL,hostream,&hpi_format),__LINE__);
+    break;
 
-      case RDWaveFile::MpegL2:
-	LogHpi(HPI_FormatCreate(&hpi_format,getChannels(),
-				HPI_FORMAT_MPEG_L2,
-				getSamplesPerSec(),getHeadBitRate(),0),
-	       __LINE__);
-	state=LogHpi(HPI_OutStreamQueryFormat(NULL,hostream,&hpi_format),
-		     __LINE__);
-	break;;
+  case RDWaveFile::MpegL2:
+    LogHpi(HPI_FormatCreate(&hpi_format,getChannels(),
+			    HPI_FORMAT_MPEG_L2,
+			    getSamplesPerSec(),getHeadBitRate(),0),__LINE__);
+    state=LogHpi(HPI_OutStreamQueryFormat(NULL,hostream,&hpi_format),__LINE__);
+    break;
 
-      case RDWaveFile::MpegL3:
-	LogHpi(HPI_FormatCreate(&hpi_format,getChannels(),
-				HPI_FORMAT_MPEG_L3,
-				getSamplesPerSec(),getHeadBitRate(),0),
-	       __LINE__);
-	state=LogHpi(HPI_OutStreamQueryFormat(NULL,hostream,&hpi_format),
-		     __LINE__);
-	break;
+  case RDWaveFile::MpegL3:
+    LogHpi(HPI_FormatCreate(&hpi_format,getChannels(),
+			    HPI_FORMAT_MPEG_L3,
+			    getSamplesPerSec(),getHeadBitRate(),0),__LINE__);
+    state=LogHpi(HPI_OutStreamQueryFormat(NULL,hostream,&hpi_format),__LINE__);
+    break;
 
-      default:
-	state=1;
-	break;
+  default:
+    state=1;
+    break;
   }
   if(!is_open) {
     LogHpi(HPI_OutStreamHostBufferFree(NULL,hostream),__LINE__);
@@ -269,46 +259,46 @@ bool RDHPIPlayStream::formatSupported(RDWaveFile::Format format)
 bool RDHPIPlayStream::formatSupported()
 {
   switch(getFormatTag()) {
-      case WAVE_FORMAT_PCM:
-	switch(getBitsPerSample()) {
-	    case 8:
-	      return formatSupported(RDWaveFile::Pcm8);
-	      break;
+  case WAVE_FORMAT_PCM:
+    switch(getBitsPerSample()) {
+    case 8:
+      return formatSupported(RDWaveFile::Pcm8);
+      break;
 
-	    case 16:
-	      return formatSupported(RDWaveFile::Pcm16);
-	      break;
+    case 16:
+      return formatSupported(RDWaveFile::Pcm16);
+      break;
 
-	    case 24:
-	      return formatSupported(RDWaveFile::Pcm24);
-	      break;
+    case 24:
+      return formatSupported(RDWaveFile::Pcm24);
+      break;
 
-	    default:
-	      return false;
-	}
-	break;
+    default:
+      return false;
+    }
+    break;
 
-      case WAVE_FORMAT_MPEG:
-	switch(getHeadLayer()) {
-	    case 1:
-	      return formatSupported(RDWaveFile::MpegL1);
-	      break;
+  case WAVE_FORMAT_MPEG:
+    switch(getHeadLayer()) {
+    case 1:
+      return formatSupported(RDWaveFile::MpegL1);
+      break;
 
-	    case 2:
-	      return formatSupported(RDWaveFile::MpegL2);
-	      break;
+    case 2:
+      return formatSupported(RDWaveFile::MpegL2);
+      break;
 
-	    case 3:
-	      return formatSupported(RDWaveFile::MpegL3);
-	      break;
+    case 3:
+      return formatSupported(RDWaveFile::MpegL3);
+      break;
 
-	    default:
-	      return false;
-	}
-	break;
+    default:
+      return false;
+    }
+    break;
 
-      default:
-	return false;
+  default:
+    return false;
   }
 }
 
@@ -447,62 +437,62 @@ bool RDHPIPlayStream::play()
       return false;
     }
     switch(getFormatTag()) {
-	case WAVE_FORMAT_PCM:
-	case WAVE_FORMAT_VORBIS:
-	  switch(getBitsPerSample()) {
-	      case 8:
-		LogHpi(HPI_FormatCreate(&format,getChannels(),
-					HPI_FORMAT_PCM8_UNSIGNED,
-					getSamplesPerSec(),0,0),__LINE__);
-		break;
-	      case 16:
-		LogHpi(HPI_FormatCreate(&format,getChannels(),
-					HPI_FORMAT_PCM16_SIGNED,
-					getSamplesPerSec(),0,0),__LINE__);
-		break;
-	      case 24:
-		LogHpi(HPI_FormatCreate(&format,getChannels(),
-					HPI_FORMAT_PCM24_SIGNED,
-					getSamplesPerSec(),0,0),__LINE__);
-		break;
-	      case 32:
-		LogHpi(HPI_FormatCreate(&format,getChannels(),
-					HPI_FORMAT_PCM32_SIGNED,
-					getSamplesPerSec(),0,0),__LINE__);
-		break;
-	      default:
-		LogHpi(HPI_AdapterClose(NULL,card_index[card_number]),__LINE__);
-		return false;
-		break;
-	  }
-	  break;
-	case WAVE_FORMAT_MPEG:
-	  switch(getHeadLayer()) {
-	      case 1:
-		LogHpi(HPI_FormatCreate(&format,getChannels(),
-					HPI_FORMAT_MPEG_L1,getSamplesPerSec(),
-					getHeadBitRate(),getHeadFlags()),
-		       __LINE__);
-		break;
-	      case 2:
-		LogHpi(HPI_FormatCreate(&format,getChannels(),
-					HPI_FORMAT_MPEG_L2,getSamplesPerSec(),
-					getHeadBitRate(),getHeadFlags()),
-		       __LINE__);
-		break;
-	      case 3:
-		LogHpi(HPI_FormatCreate(&format,getChannels(),
-					HPI_FORMAT_MPEG_L3,getSamplesPerSec(),
-					getHeadBitRate(),getHeadFlags()),
-		       __LINE__);
-		break;
-	      default:
-		LogHpi(HPI_AdapterClose(NULL,card_index[card_number]),__LINE__);
-		return false;
-	  }
-	  break;
-	default:
-	  return false;
+    case WAVE_FORMAT_PCM:
+    case WAVE_FORMAT_VORBIS:
+      switch(getBitsPerSample()) {
+      case 8:
+	LogHpi(HPI_FormatCreate(&format,getChannels(),HPI_FORMAT_PCM8_UNSIGNED,
+				getSamplesPerSec(),0,0),__LINE__);
+	break;
+ 
+     case 16:
+	LogHpi(HPI_FormatCreate(&format,getChannels(),HPI_FORMAT_PCM16_SIGNED,
+				getSamplesPerSec(),0,0),__LINE__);
+	break;
+
+      case 24:
+	LogHpi(HPI_FormatCreate(&format,getChannels(),HPI_FORMAT_PCM24_SIGNED,
+				getSamplesPerSec(),0,0),__LINE__);
+	break;
+
+      case 32:
+	LogHpi(HPI_FormatCreate(&format,getChannels(),HPI_FORMAT_PCM32_SIGNED,
+				getSamplesPerSec(),0,0),__LINE__);
+	break;
+
+      default:
+	LogHpi(HPI_AdapterClose(NULL,card_index[card_number]),__LINE__);
+	return false;
+      }
+      break;
+    case WAVE_FORMAT_MPEG:
+      switch(getHeadLayer()) {
+      case 1:
+	LogHpi(HPI_FormatCreate(&format,getChannels(),HPI_FORMAT_MPEG_L1,
+				getSamplesPerSec(),getHeadBitRate(),
+				getHeadFlags()),__LINE__);
+	break;
+
+      case 2:
+	LogHpi(HPI_FormatCreate(&format,getChannels(),HPI_FORMAT_MPEG_L2,
+				getSamplesPerSec(),getHeadBitRate(),
+				getHeadFlags()),__LINE__);
+	break;
+
+      case 3:
+	LogHpi(HPI_FormatCreate(&format,getChannels(),
+				HPI_FORMAT_MPEG_L3,getSamplesPerSec(),
+				getHeadBitRate(),getHeadFlags()),__LINE__);
+	break;
+
+      default:
+	LogHpi(HPI_AdapterClose(NULL,card_index[card_number]),__LINE__);
+	return false;
+      }
+      break;
+
+    default:
+      return false;
     }
 #if HPI_VER < 0x00030500
     if(LogHpi(HPI_DataCreate(&hpi_data,&format,pdata,fragment_size),__LINE__)!=
@@ -586,14 +576,14 @@ void RDHPIPlayStream::pause()
 				  &data_to_play,&samples_played,&reserved),
 	   __LINE__);
     switch(getFormatTag()) {
-	case WAVE_FORMAT_PCM:
-	  samples_pending=data_to_play/(getChannels()*getBitsPerSample()/8);
-	  break;
+    case WAVE_FORMAT_PCM:
+      samples_pending=data_to_play/(getChannels()*getBitsPerSample()/8);
+      break;
 
-	case WAVE_FORMAT_MPEG:
-	  samples_pending=
-	    1152*data_to_play/(144*getHeadBitRate()/getSamplesPerSec());
-	  break;
+    case WAVE_FORMAT_MPEG:
+      samples_pending=
+	1152*data_to_play/(144*getHeadBitRate()/getSamplesPerSec());
+      break;
     }
     playing=false;
     is_paused=true;
@@ -673,23 +663,24 @@ bool RDHPIPlayStream::setPosition(unsigned samples)
     LogHpi(HPI_OutStreamReset(NULL,hpi_stream),__LINE__);
     samples_played=0;
     switch(getFormatTag()) {
-	case WAVE_FORMAT_PCM:
-	case WAVE_FORMAT_VORBIS:
-	  samples_skipped=
-	    (unsigned)((double)getBlockAlign()*
-		       ((double)samples/(double)getBlockAlign()));
-	  seekWave((int)((double)samples_skipped*(double)getBlockAlign()),
-		   SEEK_SET);
-	  break;
-	case WAVE_FORMAT_MPEG:
-	  samples_skipped=
-	    (unsigned)((double)getBlockAlign()*
-		       ((double)samples/(double)getBlockAlign()));
-	  seekWave((int)((double)(getAvgBytesPerSec())*
-			   ((double)(samples_skipped)/
-			    ((double)getSamplesPerSec()))),
-		   SEEK_SET);
-	  break;
+    case WAVE_FORMAT_PCM:
+    case WAVE_FORMAT_VORBIS:
+      samples_skipped=
+	(unsigned)((double)getBlockAlign()*
+		   ((double)samples/(double)getBlockAlign()));
+      seekWave((int)((double)samples_skipped*(double)getBlockAlign()),
+	       SEEK_SET);
+      break;
+
+    case WAVE_FORMAT_MPEG:
+      samples_skipped=
+	(unsigned)((double)getBlockAlign()*
+		   ((double)samples/(double)getBlockAlign()));
+      seekWave((int)((double)(getAvgBytesPerSec())*
+		     ((double)(samples_skipped)/
+		      ((double)getSamplesPerSec()))),
+	       SEEK_SET);
+      break;
     }
     emit position(samples);
   }

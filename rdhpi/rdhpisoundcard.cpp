@@ -163,23 +163,25 @@ bool RDHPISoundCard::setClockSource(int card,RDHPISoundCard::ClockSource src)
   hpi_err_t hpi_err=0;
 
   switch(src) {
-      case RDHPISoundCard::Internal:
-	hpi_err=HPI_SampleClock_SetSource(NULL,
-					  clock_source_control[card],
-					  HPI_SAMPLECLOCK_SOURCE_LOCAL);
-	break;
-      case RDHPISoundCard::AesEbu:
-      case RDHPISoundCard::SpDiff:
-	hpi_err=LogHpi(HPI_SampleClock_SetSource(NULL,
-						 clock_source_control[card],
-						 HPI_SAMPLECLOCK_SOURCE_AESEBU_SYNC),__LINE__);
-	break;
-      case RDHPISoundCard::WordClock:
-	hpi_err=LogHpi(HPI_SampleClock_SetSource(NULL,
-						 clock_source_control[card],
-						 HPI_SAMPLECLOCK_SOURCE_WORD),
-		       __LINE__);
-	break;
+  case RDHPISoundCard::Internal:
+    hpi_err=HPI_SampleClock_SetSource(NULL,
+				      clock_source_control[card],
+				      HPI_SAMPLECLOCK_SOURCE_LOCAL);
+    break;
+
+  case RDHPISoundCard::AesEbu:
+  case RDHPISoundCard::SpDiff:
+    hpi_err=LogHpi(HPI_SampleClock_SetSource(NULL,
+					     clock_source_control[card],
+					     HPI_SAMPLECLOCK_SOURCE_AESEBU_SYNC),__LINE__);
+    break;
+
+  case RDHPISoundCard::WordClock:
+    hpi_err=LogHpi(HPI_SampleClock_SetSource(NULL,
+					     clock_source_control[card],
+					     HPI_SAMPLECLOCK_SOURCE_WORD),
+		   __LINE__);
+    break;
   }
   return hpi_err==0;
 }
@@ -235,23 +237,25 @@ RDHPISoundCard::SourceNode RDHPISoundCard::getInputPortMux(int card,int port)
 bool RDHPISoundCard::setInputPortMux(int card,int port,RDHPISoundCard::SourceNode node)
 {
   switch(node) {
-      case RDHPISoundCard::LineIn:
-	if(HPI_Multiplexer_SetSource(NULL,
-				     input_mux_control[card][port],node,0)!=0) {
-	  return false;
-	}
-	break;
-      case RDHPISoundCard::AesEbuIn:
-	if(LogHpi(HPI_Multiplexer_SetSource(NULL,
-					    input_mux_control[card][port],node,
-					    input_mux_index[card][port][1]),
-		  __LINE__)!=0) {
-	  return false;
-	}
-	break;
-      default:
-	return false;
-	break;
+  case RDHPISoundCard::LineIn:
+    if(HPI_Multiplexer_SetSource(NULL,
+				 input_mux_control[card][port],node,0)!=0) {
+      return false;
+    }
+    break;
+
+  case RDHPISoundCard::AesEbuIn:
+    if(LogHpi(HPI_Multiplexer_SetSource(NULL,
+					input_mux_control[card][port],node,
+					input_mux_index[card][port][1]),
+	      __LINE__)!=0) {
+      return false;
+    }
+    break;
+
+  default:
+    return false;
+    break;
   }
   return true;
 }
@@ -280,12 +284,13 @@ void RDHPISoundCard::setFadeProfile(RDHPISoundCard::FadeProfile profile)
 {
   fade_type=profile;
   switch(fade_type) {
-      case RDHPISoundCard::Linear:
-	hpi_fade_type=HPI_VOLUME_AUTOFADE_LINEAR;
-	break;
-      case RDHPISoundCard::Log:
-	hpi_fade_type=HPI_VOLUME_AUTOFADE_LOG;
-	break;
+  case RDHPISoundCard::Linear:
+    hpi_fade_type=HPI_VOLUME_AUTOFADE_LINEAR;
+    break;
+
+  case RDHPISoundCard::Log:
+    hpi_fade_type=HPI_VOLUME_AUTOFADE_LOG;
+    break;
   }
 }
 
@@ -436,15 +441,17 @@ bool RDHPISoundCard::haveInputPortMux(int card,int port) const
 bool RDHPISoundCard::queryInputPortMux(int card,int port,SourceNode node) const
 {
   switch(node) {
-      case RDHPISoundCard::LineIn:
-	return input_port_mux_type[card][port][0];
-	break;
-      case RDHPISoundCard::AesEbuIn:
-	return input_port_mux_type[card][port][1];
-	break;
-      default:
-	return false;
-	break;
+  case RDHPISoundCard::LineIn:
+    return input_port_mux_type[card][port][0];
+    break;
+
+  case RDHPISoundCard::AesEbuIn:
+    return input_port_mux_type[card][port][1];
+    break;
+
+  default:
+    return false;
+    break;
   }
 }
 
@@ -673,14 +680,14 @@ void RDHPISoundCard::HPIProbe()
       timescale_support[i]=false;
     }
     switch(hpi_adapter_list[i]) {
-	case 0x5111:
-	case 0x5211:
-	  input_mux_type[i]=true;
-	  break;
+    case 0x5111:
+    case 0x5211:
+      input_mux_type[i]=true;
+      break;
 
-	default:
-	  input_mux_type[i]=false;
-	  break;
+    default:
+      input_mux_type[i]=false;
+      break;
     }
     card_input_ports[i]=0;
     card_output_ports[i]=0;
@@ -803,14 +810,15 @@ void RDHPISoundCard::HPIProbe()
 						   l++,&type,&index),
 		       __LINE__)==0) {
 	    switch(type) {
-		case HPI_SOURCENODE_LINEIN:
-		  input_port_mux_type[i][j][0]=true;
-		  input_mux_index[i][j][0]=index;
-		  break;
-		case HPI_SOURCENODE_AESEBU_IN:
-		  input_port_mux_type[i][j][1]=true;
-		  input_mux_index[i][j][1]=index;
-		  break;
+	    case HPI_SOURCENODE_LINEIN:
+	      input_port_mux_type[i][j][0]=true;
+	      input_mux_index[i][j][0]=index;
+	      break;
+
+	    case HPI_SOURCENODE_AESEBU_IN:
+	      input_port_mux_type[i][j][1]=true;
+	      input_mux_index[i][j][1]=index;
+	      break;
 	    }
 	  }
 	}
