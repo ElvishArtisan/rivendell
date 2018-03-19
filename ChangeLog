@@ -16617,3 +16617,5 @@
 2018-03-18 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in rdlogmanager(1) that caused DB corruption when
 	a clock was deleted while still being assigned to a grid.
+2018-03-19 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.19.0int00.

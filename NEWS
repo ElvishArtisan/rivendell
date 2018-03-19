@@ -1,6 +1,23 @@
 The NEWS file for the Rivendell package.
 
 -------------------------------------------------------------------------------
+v2.19.1int00 -- 3/19/2018
+
+Changes:
+   HPI Support. Implemented support for DMA bus-mastering in the AudioScience
+   HPI driver.
+
+   RDLogManager. Fixed a bug in rdlogmanager(1) that caused DB corruption
+   when	a clock was deleted while still being assigned to a grid.
+   
+Database Update:
+   This version of Rivendell uses database schema version 275, and will
+   automatically upgrade any earlier versions.  To see the current schema
+   version prior to upgrade, see RDAdmin->SystemInfo.
+
+   As always, be sure to run RDAdmin immediately after upgrading to allow 
+   any necessary changes to the database schema to be applied.
+-------------------------------------------------------------------------------
 v2.19.0 -- 2/22/2018
 
 Changes:
