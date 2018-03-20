@@ -126,7 +126,7 @@ InfoDialog::InfoDialog(QWidget *parent)
   //
   // Signature
   //
-  str=QString(tr("Copyright 2002-2014"));
+  str=QString(tr("Copyright 2002-2018"));
   label=new QLabel(QString().sprintf("%s %s",(const char *)str,
 				     PACKAGE_BUGREPORT),this);
   label->setGeometry(10,87,sizeHint().width()-20,14);
