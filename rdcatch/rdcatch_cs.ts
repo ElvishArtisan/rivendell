@@ -432,11 +432,11 @@ nové</translation>
     </message>
     <message>
         <source>Duplicate Event</source>
-        <translation>Zdvojená událost</translation>
+        <translation type="obsolete">Zdvojená událost</translation>
     </message>
     <message>
         <source>An event with these parameters already exists!</source>
-        <translation>Událost s těmito parametry již existuje!</translation>
+        <translation type="obsolete">Událost s těmito parametry již existuje!</translation>
     </message>
 </context>
 <context>

@@ -429,11 +429,11 @@ New</source>
     </message>
     <message>
         <source>Duplicate Event</source>
-        <translation>Kopier hending</translation>
+        <translation type="obsolete">Kopier hending</translation>
     </message>
     <message>
         <source>An event with these parameters already exists!</source>
-        <translation>Det finst alt ei hending med dette oppsettet!</translation>
+        <translation type="obsolete">Det finst alt ei hending med dette oppsettet!</translation>
     </message>
 </context>
 <context>

@@ -16621,3 +16621,5 @@
 	* Incremented the package version to 2.19.0int00.
 2018-03-20 Fred Gleason <fredg@paravelsystems.com>
 	* Removed rdhpiinfo(8).
+2018-03-20 Fred Gleason <fredg@paravelsystems.com>
+	* Removed event checks when update Playout events in rdcatch(1).
