@@ -16625,3 +16625,6 @@
 	* Removed event checks when update Playout events in rdcatch(1).
 2018-03-20 Fred Gleason <fredg@paravelsystems.com>
 	* Updated the date in the copyright notice in rdadmin(1).
+2018-03-20 Fred Gleason <fredg@paravelsystems.com>
+	* Updated 'NEWS'.
+	* Incremented the package version to 2.19.0int01.

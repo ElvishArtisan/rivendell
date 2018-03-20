@@ -1,11 +1,18 @@
 The NEWS file for the Rivendell package.
 
 -------------------------------------------------------------------------------
-v2.19.1int00 -- 3/19/2018
+v2.19.1int01 -- 3/20/2018
 
 Changes:
    HPI Support. Implemented support for DMA bus-mastering in the AudioScience
    HPI driver.
+
+   RDHpiInfo. Removed rdhpiinfo(8). Replaced by the stand-alone 'hpiinfo'
+   package.
+
+   RDCatch Play Events. Removed the event time check for Playout events in
+   rdcatch(1), as there is no sane way to determine a 'free' playout time
+   in the face of shifting cut lengths.
 
    RDLogManager. Fixed a bug in rdlogmanager(1) that caused DB corruption
    when	a clock was deleted while still being assigned to a grid.
