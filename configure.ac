@@ -303,21 +303,17 @@ if test $HPI_FOUND ; then
     AC_SUBST(HPI_FILE2,$LIB_PATH/librdhpi.a)
     AC_SUBST(HPI_FILE3,$LIB_PATH/librdhpi.la)
     AC_SUBST(HPI_FILE4,$LIB_PATH/librdhpi.so)
-    AC_SUBST(HPI_FILE5,$PREFIX/bin/rdhpiinfo)
-    if test $ar_gcc_distro = suse ; then
-      AC_SUBST(HPI_FILE6,"")
-    else
-      AC_SUBST(HPI_FILE6,$PREFIX/bin/rdhpiinfo-root)
-    fi
+    AC_SUBST(HPI_FILE5,"")
+    AC_SUBST(HPI_FILE6,"")
     AC_SUBST(HPI_FILE7,$PREFIX/share/rivendell/rdhpi_es.qm)
     AC_SUBST(HPI_FILE8,$PREFIX/share/rivendell/rdhpi_cs.qm)
     AC_SUBST(HPI_FILE9,$PREFIX/share/rivendell/rdhpi_de.qm)
     AC_SUBST(HPI_FILE10,$PREFIX/share/rivendell/rdhpi_nn.qm)
     AC_SUBST(HPI_FILE11,$PREFIX/share/rivendell/rdhpi_nb.qm)
     AC_SUBST(HPI_FILE12,$PREFIX/share/rivendell/rdhpi_pt_BR.qm)
-    AC_SUBST(HPI_FILE13,$PREFIX/share/applications/rivendell-rdhpiinfo-root.desktop)
-    AC_SUBST(HPI_FILE14,/etc/pam.d/rdhpiinfo-root)
-    AC_SUBST(HPI_FILE15,/etc/security/console.apps/rdhpiinfo-root)
+    AC_SUBST(HPI_FILE13,"")
+    AC_SUBST(HPI_FILE14,"")
+    AC_SUBST(HPI_FILE15,"")
   else 
     AC_SUBST(LIBHPI,"")
     AC_SUBST(HPI_FILE1,"")
@@ -518,7 +514,6 @@ AC_CONFIG_FILES([rivendell.spec \
     utils/rdexport/Makefile \
     utils/rdgen/Makefile \
     utils/rdgpimon/Makefile \
-    utils/rdhpiinfo/Makefile \
     utils/rdimport/Makefile \
     utils/rdmaint/Makefile \
     utils/rdmarkerset/Makefile \

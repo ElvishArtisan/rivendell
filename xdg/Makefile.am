@@ -31,7 +31,6 @@ install-exec-am:
 	cp rivendell-rddgimport.desktop $(DESTDIR)@prefix@/share/applications/
 	cp rivendell-rddiscimport.desktop $(DESTDIR)@prefix@/share/applications/
 	cp rivendell-rdgpimon.desktop $(DESTDIR)@prefix@/share/applications/
-	if test -f ../rdhpi/.libs/librdhpi-@VERSION@.so ; then cp rivendell-rdhpiinfo-root.desktop $(DESTDIR)@prefix@/share/applications/ ; fi
 	cp rivendell-rdlibrary.desktop $(DESTDIR)@prefix@/share/applications/
 	cp rivendell-rdlogedit.desktop $(DESTDIR)@prefix@/share/applications/
 	cp rivendell-rdlogin.desktop $(DESTDIR)@prefix@/share/applications/
@@ -48,30 +47,21 @@ install-exec-am:
 	cp *.menu $(DESTDIR)/etc/xdg/menus/applications-merged/
 	mkdir -p $(DESTDIR)/etc/pam.d
 	cp rdalsaconfig-root-pam $(DESTDIR)/etc/pam.d/rdalsaconfig-root
-	if test -f ../rdhpi/.libs/librdhpi-@VERSION@.so ; then cp rdhpiinfo-root-pam $(DESTDIR)/etc/pam.d/rdhpiinfo-root ; fi
 	mkdir -p $(DESTDIR)/etc/security/console.apps
 	cp rdalsaconfig-root-consolehelper $(DESTDIR)/etc/security/console.apps/rdalsaconfig-root
-	if test -f ../rdhpi/.libs/librdhpi-@VERSION@.so ; then cp rdhpiinfo-root-consolehelper $(DESTDIR)/etc/security/console.apps/rdhpiinfo-root ; fi
 	rm -f $(DESTDIR)$(prefix)/bin/rdalsaconfig-root
 	ln -s /usr/bin/consolehelper $(DESTDIR)$(prefix)/bin/rdalsaconfig-root
-	rm -f $(DESTDIR)$(prefix)/bin/rdhpiinfo-root
-	if test -f ../rdhpi/.libs/librdhpi-@VERSION@.so ; then ln -s /usr/bin/consolehelper $(DESTDIR)$(prefix)/bin/rdhpiinfo-root ; fi
 
 uninstall-local:	
 	rm -f $(DESTDIR)@prefix@/share/applications/rivendell-*.desktop
 	rm -f $(DESTDIR)@prefix@/share/desktop-directories/rivendell-*.directory
 	rm -f $(DESTDIR)/etc/xdg/menus/applications-merged/rivendell-*.menu
 	rm -f $(DESTDIR)/etc/pam.d/rdalsaconfig-root
-	rm -f $(DESTDIR)/etc/pam.d/rdhpiinfo-root
 	rm -f $(DESTDIR)/etc/security/console.apps/rdalsaconfig-root
-	rm -f $(DESTDIR)/etc/security/console.apps/rdhpiinfo-root
 	rm -f $(DESTDIR)$(prefix)/bin/rdalsaconfig-root
-	rm -f $(DESTIDR)$(prefix)/bin/rdhpiinfo-root
 
 EXTRA_DIST = rdalsaconfig-root-consolehelper\
              rdalsaconfig-root-pam\
-             rdhpiinfo-root-consolehelper\
-             rdhpiinfo-root-pam\
              rivendell-configuration.directory\
              rivendell-documentation.directory\
              rivendell-logtools.directory\
@@ -87,8 +77,6 @@ EXTRA_DIST = rdalsaconfig-root-consolehelper\
              rivendell-rddgimport.desktop\
              rivendell-rddiscimport.desktop\
              rivendell-rdgpimon.desktop\
-             rivendell-rdhpiinfo.desktop\
-             rivendell-rdhpiinfo-root.desktop\
              rivendell-rdlibrary.desktop\
              rivendell-rdlogedit.desktop\
              rivendell-rdlogin.desktop\

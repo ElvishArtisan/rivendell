@@ -16619,3 +16619,5 @@
 	a clock was deleted while still being assigned to a grid.
 2018-03-19 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 2.19.0int00.
+2018-03-20 Fred Gleason <fredg@paravelsystems.com>
+	* Removed rdhpiinfo(8).
