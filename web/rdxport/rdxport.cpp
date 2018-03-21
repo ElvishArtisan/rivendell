@@ -129,6 +129,23 @@ Xport::Xport(QObject *parent)
   }
 
   //
+  // Connect to ripcd(8)
+  //
+  connect(rda->ripc(),SIGNAL(connected(bool)),
+	  this,SLOT(ripcConnectedData(bool)));
+  rda->ripc()->
+    connectHost("localhost",RIPCD_TCP_PORT,rda->config()->password());
+}
+
+
+void Xport::ripcConnectedData(bool state)
+{
+  if(!state) {
+    XmlExit("unable to connect to ripc service",500,"rdxport.cpp",LINE_NUMBER);
+    Exit(0);
+  }
+
+  //
   // Read Command Variable and Dispatch 
   //
   int command=xport_post->value("COMMAND").toInt();
@@ -390,6 +407,16 @@ void Xport::TryCreateTicket(const QString &name)
       exit(0);
     }
   }
+}
+
+
+void Xport::SendNotification(RDNotification::Type type,
+			     RDNotification::Action action,const QVariant &id)
+{
+  RDNotification *notify=new RDNotification(type,action,id);
+  rda->ripc()->sendNotification(*notify);
+  qApp->processEvents();
+  delete notify;
 }
 
 

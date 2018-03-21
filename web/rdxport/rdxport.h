@@ -25,6 +25,7 @@
 
 #include <rdaudioconvert.h>
 #include <rdformpost.h>
+#include <rdnotification.h>
 #include <rdsvc.h>
 
 #define RDXPORT_CGI_USAGE "\n"
@@ -34,9 +35,13 @@
 
 class Xport : public QObject
 {
+  Q_OBJECT;
  public:
   enum LockLogOperation {LockLogCreate=0,LockLogUpdate=1,LockLogClear=2};
   Xport(QObject *parent=0);
+
+ private slots:
+  void ripcConnectedData(bool state);
 
  private:
   bool Authenticate();
@@ -81,6 +86,8 @@ class Xport : public QObject
   QString LogLockXml(bool result,const QString &log_name,const QString &guid,
 		     const QString &username,const QString &stationname,
 		     const QHostAddress addr) const;
+  void SendNotification(RDNotification::Type type,RDNotification::Action action,
+			const QVariant &id);
   void Exit(int code);
   void XmlExit(const QString &msg,int code,
 	       const QString &srcfile="",int line=-1,

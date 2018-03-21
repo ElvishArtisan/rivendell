@@ -1339,6 +1339,12 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
     cut->setFadeupPoint(import_fadeup_marker->fadeValue(lo,hi));
   }
   cart->updateLength();
+  if(cart_created) {
+    SendNotification(RDNotification::AddAction,cart->number());
+  }
+  else {
+    SendNotification(RDNotification::ModifyAction,cart->number());
+  }
   delete settings;
   delete conv;
   delete cut;
@@ -2015,6 +2021,17 @@ void MainObject::ReadXmlFile(const QString &basename,RDWaveData *wavedata) const
   if(RDCart::readXml(&wavedatas,xml)>0) {
     *wavedata=wavedatas[1];
   }
+}
+
+
+void MainObject::SendNotification(RDNotification::Action action,
+				  unsigned cartnum)
+{
+  RDNotification *notify=
+    new RDNotification(RDNotification::CartType,action,QVariant(cartnum));
+  rda->ripc()->sendNotification(*notify);
+  qApp->processEvents();
+  delete notify;
 }
 
 

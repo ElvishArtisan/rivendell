@@ -29,6 +29,14 @@ RDNotification::RDNotification(RDNotification::Type type,
 }
 
 
+RDNotification::RDNotification(Type type,Action action,const QVariant &id)
+{
+  notify_type=type;
+  notify_action=action;
+  notify_id=id;
+}
+
+
 RDNotification::RDNotification()
 {
   notify_type=RDNotification::NullType;

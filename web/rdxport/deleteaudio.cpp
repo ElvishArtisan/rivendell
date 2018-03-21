@@ -63,6 +63,8 @@ void Xport::DeleteAudio()
     "CUT_NAME=\""+RDCut::cutName(cartnum,cutnum)+"\"";
   RDSqlQuery *q=new RDSqlQuery(sql);
   delete q;
+  SendNotification(RDNotification::CartType,RDNotification::ModifyAction,
+		   QVariant(cartnum));
   syslog(LOG_NOTICE,"unlink(%s): %s",(const char *)RDCut::pathName(cartnum,cutnum),strerror(errno));
   delete cut;
   XmlExit("OK",200,"deleteaudio.cpp",LINE_NUMBER);

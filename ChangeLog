@@ -16725,3 +16725,6 @@
 	* Added an 'RDRipc::notificationReceived()' signal.
 2018-03-21 Fred Gleason <fredg@paravelsystems.com>
 	* Added support for notifications to rdlibrary(1).
+2018-03-21 Fred Gleason <fredg@paravelsystems.com>
+	* Added support for cart notifications to the RDXport service.
+	* Added support for notifications to rdimport(1).

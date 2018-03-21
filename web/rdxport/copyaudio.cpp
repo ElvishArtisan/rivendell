@@ -77,5 +77,7 @@ void Xport::CopyAudio()
 	  RDCut::pathName(destination_cartnum,destination_cutnum))!=0) {
     XmlExit(strerror(errno),400,"copyaudio.cpp",LINE_NUMBER);
   }
+  SendNotification(RDNotification::CartType,RDNotification::ModifyAction,
+		   QVariant(destination_cartnum));
   XmlExit("OK",200,"copyaudio.cpp",LINE_NUMBER);
 }

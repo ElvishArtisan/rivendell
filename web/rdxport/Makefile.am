@@ -23,6 +23,10 @@ AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" -DQTDIR=\"@QT_DIR@\" @QT_CXXFLAGS@ -I
 LIBS = @QT_LIBS@ -L$(top_srcdir)/lib
 MOC = @QT_MOC@
 
+# The dependency for qt's Meta Object Compiler (moc)
+moc_%.cpp:	%.h
+	$(MOC) $< -o $@
+
 libexec_PROGRAMS = rdxport.cgi
 
 install-exec-hook:	
@@ -44,6 +48,8 @@ dist_rdxport_cgi_SOURCES = audioinfo.cpp\
                            services.cpp\
                            systemsettings.cpp\
                            trimaudio.cpp
+
+nodist_rdxport_cgi_SOURCES = moc_rdxport.cpp
 
 rdxport_cgi_LDADD = @LIB_RDLIBS@ -lsndfile @LIBVORBIS@
 

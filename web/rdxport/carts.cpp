@@ -108,6 +108,8 @@ void Xport::AddCart()
   printf("<cartAdd>\n");
   if(cart->exists()) {
     printf("%s",(const char *)cart->xml(false,true));
+    SendNotification(RDNotification::CartType,RDNotification::AddAction,
+		     QVariant(cart->number()));
   }
   delete cart;
   printf("</cartAdd>\n");
@@ -394,6 +396,8 @@ void Xport::EditCart()
   printf("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
   printf("<cartList>\n");
   printf("%s",(const char *)cart->xml(include_cuts,true));
+  SendNotification(RDNotification::CartType,RDNotification::ModifyAction,
+		   QVariant(cart->number()));
   delete cart;
   printf("</cartList>\n");
 
@@ -435,6 +439,8 @@ void Xport::RemoveCart()
     delete cart;
     XmlExit("Unable to delete cart",500,"carts.cpp",LINE_NUMBER);
   }
+  SendNotification(RDNotification::CartType,RDNotification::DeleteAction,
+		   QVariant(cart->number()));
   delete cart;
   XmlExit("OK",200,"carts.cpp",LINE_NUMBER);
 }
@@ -483,6 +489,8 @@ void Xport::AddCut()
   cut=new RDCut(cart_number,cut_number);
   if(cut->exists()) {
     printf("%s",(const char *)RDCart::cutXml(cart_number,cut_number,true));
+    SendNotification(RDNotification::CartType,RDNotification::ModifyAction,
+		     QVariant(cart->number()));
   }
   delete cut;
   delete cart;
@@ -843,6 +851,8 @@ void Xport::EditCut()
   printf("<cutList>\n");
   printf("%s",(const char *)RDCart::cutXml(cart_number,cut_number,true));
   printf("</cutList>\n");
+  SendNotification(RDNotification::CartType,RDNotification::ModifyAction,
+		   QVariant(cut->cartNumber()));
   delete cut;
 
   Exit(0);
@@ -934,6 +944,8 @@ void Xport::RemoveCut()
     delete cart;
     XmlExit("No such cut",404);
   }
+  SendNotification(RDNotification::CartType,RDNotification::ModifyAction,
+		   QVariant(cart->number()));
   delete cart;
   XmlExit("OK",200);
 }

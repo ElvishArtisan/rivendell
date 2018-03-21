@@ -93,5 +93,7 @@ void Xport::TrimAudio()
   }
   printf("  <endTrimPoint>%d</endTrimPoint>\n",point);
   printf("</trimPoint>\n");
+  SendNotification(RDNotification::CartType,RDNotification::ModifyAction,
+		   QVariant(cartnum));
   Exit(0);
 }

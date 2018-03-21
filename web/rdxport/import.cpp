@@ -154,6 +154,8 @@ void Xport::Import()
       XmlExit("Unable to create cart ["+err_msg+"]",500,"import.cpp",
 	      LINE_NUMBER);
     }
+    SendNotification(RDNotification::CartType,RDNotification::AddAction,
+		     QVariant(cartnum));
     cutnum=1;
     cut=new RDCut(cartnum,cutnum,true);
     delete group;
@@ -267,6 +269,8 @@ void Xport::Import()
     printf("  <CartNumber>%d</CartNumber>\r\n",cartnum);
     printf("  <CutNumber>%d</CutNumber>\r\n",cutnum);
     printf("</RDWebResult>\r\n");
+    SendNotification(RDNotification::CartType,RDNotification::ModifyAction,
+		     QVariant(cartnum));
     unlink(filename);
     rmdir(xport_post->tempDir());
     exit(0);
