@@ -30,6 +30,7 @@ class RDNotification
   enum Type {NullType=0,CartType=1,LastType=2};
   enum Action {NoAction=0,AddAction=1,DeleteAction=2,ModifyAction=3,
 	       LastAction=4};
+  RDNotification(Type type,Action action,unsigned cartnum);
   RDNotification();
   Type type() const;
   void setType(Type type);

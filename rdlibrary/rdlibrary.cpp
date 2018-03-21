@@ -178,8 +178,9 @@ MainWidget::MainWidget(QWidget *parent)
   lib_filter_mode=rda->station()->filterMode();
   rdaudioport_conf=new RDAudioPort(rda->config()->stationName(),
 				   rda->libraryConf()->inputCard());
-  connect(rda->ripc(),SIGNAL(connected(bool)),this,SLOT(connectedData(bool)));
   connect(rda,SIGNAL(userChanged()),this,SLOT(userData()));
+  connect(rda->ripc(),SIGNAL(notificationReceived(RDNotification *)),
+	  this,SLOT(notificationReceivedData(RDNotification *)));
   rda->ripc()->
     connectHost("localhost",RIPCD_TCP_PORT,rda->config()->password());
   cut_clipboard=NULL;
@@ -482,11 +483,6 @@ QSizePolicy MainWidget::sizePolicy() const
 }
 
 
-void MainWidget::connectedData(bool state)
-{
-}
-
-
 void MainWidget::userData()
 {
   QString sql;
@@ -610,6 +606,7 @@ void MainWidget::addData()
     RDListViewItem *item=new RDListViewItem(lib_cart_list);
     item->setText(1,QString().sprintf("%06u",cart_num));
     RefreshLine(item);
+    SendNotification(RDNotification::AddAction,cart_num);
     QListViewItemIterator it(lib_cart_list);
     while(it.current()) {
       lib_cart_list->setSelected(it.current(),false);
@@ -657,6 +654,7 @@ void MainWidget::editData()
     edit_cart->exec();
     RefreshLine(item);
     cartOnItemData(item);
+    SendNotification(RDNotification::ModifyAction,item->text(1).toUInt());
     delete edit_cart;
     delete it;
   }
@@ -673,6 +671,8 @@ void MainWidget::editData()
       while(it->current()) {
         if (it->current()->isSelected()) {
           RefreshLine((RDListViewItem *)it->current());
+	  SendNotification(RDNotification::ModifyAction,
+			   it->current()->text(1).toUInt());
         }
         ++(*it);
       }
@@ -757,6 +757,7 @@ Do you still want to delete it?"),item->text(1).toUInt());
       QMessageBox::warning(this,tr("RDLibrary"),tr("Unable to delete audio!"));
       return;
     }
+    SendNotification(RDNotification::DeleteAction,rdcart->number());
     delete rdcart;
     delete item;
   } 
@@ -894,6 +895,54 @@ void MainWidget::dragsChangedData(int state)
 }
 
 
+void MainWidget::notificationReceivedData(RDNotification *notify)
+{
+  RDListViewItem *item=NULL;
+  QString sql;
+  RDSqlQuery *q;
+
+  if(notify->type()==RDNotification::CartType) {
+    switch(notify->action()) {
+    case RDNotification::AddAction:
+      sql=QString("select CART.NUMBER from CART ")+
+	"left join CUTS on CART.NUMBER=CUTS.CART_NUMBER "+
+	WhereClause()+
+	QString().sprintf(" && CART.NUMBER=%u ",notify->id().toUInt());
+      q=new RDSqlQuery(sql);
+      if(q->first()) {
+	item=new RDListViewItem(lib_cart_list);
+	item->setText(1,QString().sprintf("%06u",notify->id().toUInt()));
+	RefreshLine(item);
+      }
+      delete q;
+      break;
+
+    case RDNotification::ModifyAction:
+      if((item=(RDListViewItem *)lib_cart_list->
+	  findItem(QString().sprintf("%06u",notify->id().toUInt()),1))!=NULL) {
+	RefreshLine(item);
+      }
+      break;
+
+    case RDNotification::DeleteAction:
+      if(lib_edit_pending) {
+	lib_deleted_carts.push_back(notify->id().toUInt());
+      }
+      else {
+	if((item=(RDListViewItem *)lib_cart_list->findItem(QString().sprintf("%06u",notify->id().toUInt()),1))!=NULL) {
+	  delete item;
+	}
+      }
+      break;
+
+    case RDNotification::NoAction:
+    case RDNotification::LastAction:
+      break;
+    }
+  }
+}
+
+
 void MainWidget::quitMainWidget()
 {
   SaveGeometry();
@@ -1011,21 +1060,7 @@ void MainWidget::RefreshList()
     "CUTS.SUN "+                // 36
     "from CART left join GROUPS on CART.GROUP_NAME=GROUPS.NAME "+
     "left join CUTS on CART.NUMBER=CUTS.CART_NUMBER";
-  QString schedcode="";
-  if(lib_codes_box->currentText()!=tr("ALL")) {
-    schedcode=lib_codes_box->currentText();
-  }
-  if(lib_group_box->currentText()==QString(tr("ALL"))) {
-    sql+=QString(" where ")+
-      RDAllCartSearchText(lib_filter_edit->text(),schedcode,
-			  rda->user()->name(),true)+" && "+type_filter;
-
-  }
-  else {
-    sql+=QString(" where ")+
-      RDCartSearchText(lib_filter_edit->text(),lib_group_box->currentText(),
-		       schedcode,true)+" && "+type_filter;      
-  }
+  sql+=WhereClause();
   sql+=" order by CART.NUMBER";
   if(lib_showmatches_box->isChecked()) {
     sql+=QString().sprintf(" limit %d",RD_LIMITED_CART_SEARCH_QUANTITY);
@@ -1138,6 +1173,31 @@ void MainWidget::RefreshList()
   UpdateItemColor(l,validity,end_datetime,current_datetime);
   lib_progress_dialog->reset();
   delete q;
+}
+
+
+QString MainWidget::WhereClause() const
+{
+  QString sql="";
+  QString type_filter=GetTypeFilter();
+
+  QString schedcode="";
+  if(lib_codes_box->currentText()!=tr("ALL")) {
+    schedcode=lib_codes_box->currentText();
+  }
+  if(lib_group_box->currentText()==QString(tr("ALL"))) {
+    sql+=QString(" where ")+
+      RDAllCartSearchText(lib_filter_edit->text(),schedcode,
+			  rda->user()->name(),true)+" && "+type_filter;
+
+  }
+  else {
+    sql+=QString(" where ")+
+      RDCartSearchText(lib_filter_edit->text(),lib_group_box->currentText(),
+		       schedcode,true)+" && "+type_filter;      
+  }
+
+  return sql;
 }
 
 
@@ -1321,7 +1381,7 @@ void MainWidget::SetCaption(QString user)
 }
 
 
-QString MainWidget::GetTypeFilter()
+QString MainWidget::GetTypeFilter() const
 {
   QString type_filter;
 
@@ -1410,13 +1470,39 @@ void MainWidget::LockUser()
 
 bool MainWidget::UnlockUser()
 {
+
+  RDListViewItem *item=NULL;
+
+  //
+  // Process Deleted Carts
+  //
+  for(unsigned i=0;i<lib_deleted_carts.size();i++) {
+    if((item=(RDListViewItem *)lib_cart_list->findItem(QString().sprintf("%06u",lib_deleted_carts.at(i)),1))!=NULL) {
+      delete item;
+    }
+  }
+
+  //
+  // Process User Change
+  //
   bool ret=lib_user_changed;
   lib_edit_pending=false;
   if(lib_user_changed) {
     lib_user_timer->start(0,true);
     lib_user_changed=false;
   }
+
   return ret;
+}
+
+
+void MainWidget::SendNotification(RDNotification::Action action,
+				  unsigned cartnum)
+{
+  RDNotification *notify=
+    new RDNotification(RDNotification::CartType,action,cartnum);
+  rda->ripc()->sendNotification(*notify);
+  delete notify;
 }
 
 

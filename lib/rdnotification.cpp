@@ -20,6 +20,15 @@
 
 #include "rdnotification.h"
 
+RDNotification::RDNotification(RDNotification::Type type,
+			       RDNotification::Action action,unsigned cartnum)
+{
+  notify_type=type;
+  notify_action=action;
+  notify_id=QVariant(cartnum);
+}
+
+
 RDNotification::RDNotification()
 {
   notify_type=RDNotification::NullType;
@@ -84,7 +93,7 @@ bool RDNotification::read(const QString &str)
       RDNotification::Type type=(RDNotification::Type)i;
       if(args[1]==RDNotification::typeString(type)) {
 	notify_type=type;
-	notify_id=QVariant(args[2].toUInt());
+	notify_id=QVariant(args[3].toUInt());
       }
     }
     if(notify_type==RDNotification::NullType) {

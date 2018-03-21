@@ -70,7 +70,6 @@ class MainWidget : public QWidget
   QSizePolicy sizePolicy() const;
 
  private slots:
-  void connectedData(bool state);
   void userData();
   void filterChangedData(const QString &str);
   void searchClickedData();
@@ -88,6 +87,7 @@ class MainWidget : public QWidget
   void macroChangedData(int state);
   void searchLimitChangedData(int state);
   void dragsChangedData(int state);
+  void notificationReceivedData(RDNotification *notify);
   void quitMainWidget();
 
  protected:
@@ -96,17 +96,19 @@ class MainWidget : public QWidget
   
  private:
   void RefreshList();
+  QString WhereClause() const;
   void RefreshLine(RDListViewItem *item);
   void UpdateItemColor(RDListViewItem *item,RDCart::Validity validity,
 		       const QDateTime &end_datetime,
 		       const QDateTime &current_datetime); 
   void SetCaption(QString user);
-  QString GetTypeFilter();
+  QString GetTypeFilter() const;
   QString GeometryFile();
   void LoadGeometry();
   void SaveGeometry();
   void LockUser();
   bool UnlockUser();
+  void SendNotification(RDNotification::Action action,unsigned cartnum);
   LibListView *lib_cart_list;
   CartTip *lib_cart_tip;
   QString lib_filter_text;
@@ -148,6 +150,7 @@ class MainWidget : public QWidget
   bool lib_user_changed;
   QTimer *lib_user_timer;
   bool lib_resize;
+  std::vector<unsigned> lib_deleted_carts;
 };
 
 
