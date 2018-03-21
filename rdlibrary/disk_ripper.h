@@ -37,11 +37,12 @@
 #include <qcheckbox.h>
 #include <qtextedit.h>
 
-#include <rdlistviewitem.h>
-#include <rdtransportbutton.h>
 #include <rdcdplayer.h>
 #include <rdcddbrecord.h>
 #include <rdcddblookup.h>
+#include <rdlistviewitem.h>
+#include <rdnotification.h>
+#include <rdtransportbutton.h>
 #include <rdwavedata_dialog.h>
 
 #include <rdlibrary_conf.h>
@@ -87,6 +88,7 @@ class DiskRipper : public QDialog
   void RipTrack(int track,int end_track,QString cutname,QString title);
   void UpdateRipButton();
   QString BuildTrackName(int start_track,int end_track) const;
+  void SendNotification(RDNotification::Action action,unsigned cartnum);
   RDCdPlayer *rip_cdrom;
   RDCddbRecord rip_cddb_record;
   RDCddbLookup *rip_cddb_lookup;

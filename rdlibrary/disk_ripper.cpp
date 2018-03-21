@@ -2,7 +2,7 @@
 //
 // CD Ripper Dialog for Rivendell.
 //
-//   (C) Copyright 2002-2003,2010,2016-2017 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2003,2010,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -26,10 +26,12 @@
 #include <unistd.h>
 #include <math.h>
 #include <linux/cdrom.h>
-#include <qpushbutton.h>
+
+#include <qapplication.h>
+#include <qcheckbox.h>
 #include <qfiledialog.h>
 #include <qmessagebox.h>
-#include <qcheckbox.h>
+#include <qpushbutton.h>
 
 #include <rd.h>
 #include <rdapplication.h>
@@ -997,7 +999,7 @@ void DiskRipper::RipTrack(int track,int end_track,QString cutname,QString title)
   // Create Cut
   //
   RDCut::create(cutname);
-  
+
   rip_done=false;
   rip_rip_aborted=false;
   rip_track_number=track;
@@ -1067,6 +1069,7 @@ void DiskRipper::RipTrack(int track,int end_track,QString cutname,QString title)
       cut->setDescription(rip_wave_datas[track-1]->title());
       cut->setIsrc(rip_cddb_record.isrc(rip_track_number-1));
       cart->clearPending();
+      SendNotification(RDNotification::AddAction,cart->number());
       break;
 
     default:
@@ -1142,4 +1145,15 @@ QString DiskRipper::BuildTrackName(int start_track,int end_track) const
     item=(RDListViewItem *)item->nextSibling();
   }
   return ret;
+}
+
+
+void DiskRipper::SendNotification(RDNotification::Action action,
+				  unsigned cartnum)
+{
+  RDNotification *notify=
+    new RDNotification(RDNotification::CartType,action,QVariant(cartnum));
+  rda->ripc()->sendNotification(*notify);
+  qApp->processEvents();
+  delete notify;
 }

@@ -1500,7 +1500,7 @@ void MainWidget::SendNotification(RDNotification::Action action,
 				  unsigned cartnum)
 {
   RDNotification *notify=
-    new RDNotification(RDNotification::CartType,action,cartnum);
+    new RDNotification(RDNotification::CartType,action,QVariant(cartnum));
   rda->ripc()->sendNotification(*notify);
   delete notify;
 }

@@ -20,15 +20,6 @@
 
 #include "rdnotification.h"
 
-RDNotification::RDNotification(RDNotification::Type type,
-			       RDNotification::Action action,unsigned cartnum)
-{
-  notify_type=type;
-  notify_action=action;
-  notify_id=QVariant(cartnum);
-}
-
-
 RDNotification::RDNotification(Type type,Action action,const QVariant &id)
 {
   notify_type=type;
