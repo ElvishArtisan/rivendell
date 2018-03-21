@@ -2,7 +2,7 @@
 //
 // Rivendell Log Playout Machine
 //
-//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2004,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -31,12 +31,12 @@
 
 #include <rd.h>
 #include <rdairplay_conf.h>
+#include <rdapplication.h>
+#include <rdevent_player.h>
+#include <rdlog.h>
 #include <rdlog_event.h>
 #include <rdmacro_event.h>
 #include <rdplay_deck.h>
-#include <rdcae.h>
-#include <rdevent_player.h>
-#include <rdlog.h>
 #include <rdsimpleplayer.h>
 
 #include <rlmhost.h>
@@ -134,6 +134,7 @@ class LogPlay : public QObject,public RDLogEvent
   void rescanEventsData();
   void auditionStartedData();
   void auditionStoppedData();
+  void notificationReceivedData(RDNotification *notify);
 
  signals:
   void renamed();

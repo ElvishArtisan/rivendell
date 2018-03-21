@@ -16731,3 +16731,5 @@
 2018-03-21 Fred Gleason <fredg@paravelsystems.com>
 	* Added support for cart notifications to Full Disc Ripper in
 	rdlibrary(1).
+2018-03-21 Fred Gleason <fredg@paravelsystems.com>
+	* Added support for cart notifications to rdairplay(1).

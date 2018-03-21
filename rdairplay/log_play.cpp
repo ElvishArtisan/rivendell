@@ -114,6 +114,8 @@ LogPlay::LogPlay(int id,QSocketDevice *nn_sock,QString logname,
   //
   connect(rda->ripc(),SIGNAL(onairFlagChanged(bool)),
 	  this,SLOT(onairFlagChangedData(bool)));
+  connect(rda->ripc(),SIGNAL(notificationReceived(RDNotification *)),
+	  this,SLOT(notificationReceivedData(RDNotification *)));
 
   //
   // Audition Player
@@ -1707,6 +1709,42 @@ void LogPlay::auditionStoppedData()
 }
 
 
+void LogPlay::notificationReceivedData(RDNotification *notify)
+{
+  RDLogLine *ll=NULL;
+  RDLogLine *next_ll=NULL;
+
+  if(notify->type()==RDNotification::CartType) {
+    unsigned cartnum=notify->id().toUInt();
+    for(int i=0;i<size();i++) {
+      if((ll=logLine(i))!=NULL) {
+	if((ll->cartNumber()==cartnum)&&(ll->status()==RDLogLine::Scheduled)&&
+	   ((ll->type()==RDLogLine::Cart)||(ll->type()==RDLogLine::Macro))) {
+	  switch(ll->state()) {
+	  case RDLogLine::Ok:
+	  case RDLogLine::NoCart:
+	  case RDLogLine::NoCut:
+	    if((next_ll=logLine(i+1))!=NULL) {
+	      ll->loadCart(ll->cartNumber(),next_ll->transType(),play_id,
+			   ll->timescalingActive());
+	    }
+	    else {
+	      ll->loadCart(ll->cartNumber(),RDLogLine::Play,play_id,
+			   ll->timescalingActive());
+	    }
+	    emit modified(i);
+	    break;
+	    
+	  default:
+	    break;
+	  }
+	}
+      }
+    }
+  }
+}
+
+
 bool LogPlay::StartEvent(int line,RDLogLine::TransType trans_type,
 			 int trans_length,RDLogLine::StartSource src,int mport,int duck_length)
 {
@@ -2616,28 +2654,28 @@ void LogPlay::RefreshEvents(int line,int line_quan,bool force_update)
     if((logline=logLine(i))!=NULL) {
       if(logline->type()==RDLogLine::Cart) {
 	switch(logline->state()) {
-	    case RDLogLine::Ok:
-	    case RDLogLine::NoCart:
-	    case RDLogLine::NoCut:
-	      if(logline->status()==RDLogLine::Scheduled) {
-		state=logline->state();
-		if((next_logline=logLine(i+1))!=NULL) {
-		  logline->
-		    loadCart(logline->cartNumber(),next_logline->transType(),
-			     play_id,logline->timescalingActive());
-		}
-		else {
-		  logline->loadCart(logline->cartNumber(),RDLogLine::Play,
-				    play_id,logline->timescalingActive());
-		}
-		if(force_update||(state!=logline->state())) {
-		  emit modified(i);
-		}
-	      }
-	      break;
-
-	    default:
-	      break;
+	case RDLogLine::Ok:
+	case RDLogLine::NoCart:
+	case RDLogLine::NoCut:
+	  if(logline->status()==RDLogLine::Scheduled) {
+	    state=logline->state();
+	    if((next_logline=logLine(i+1))!=NULL) {
+	      logline->
+		loadCart(logline->cartNumber(),next_logline->transType(),
+			 play_id,logline->timescalingActive());
+	    }
+	    else {
+	      logline->loadCart(logline->cartNumber(),RDLogLine::Play,
+				play_id,logline->timescalingActive());
+	    }
+	    if(force_update||(state!=logline->state())) {
+	      emit modified(i);
+	    }
+	  }
+	  break;
+	  
+	default:
+	  break;
 	}
       }
     }
