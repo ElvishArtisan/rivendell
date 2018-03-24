@@ -184,12 +184,12 @@ void ImportTrack::cancelData()
 void ImportTrack::keyPressEvent(QKeyEvent *e)
 {
   switch(e->key()) {
-      case Qt::Key_Escape:
-	cancelData();
-	break;
+  case Qt::Key_Escape:
+    cancelData();
+    break;
 
-      default:
-	QWidget::keyPressEvent(e);
-	break;
+  default:
+    QWidget::keyPressEvent(e);
+    break;
   }
 }

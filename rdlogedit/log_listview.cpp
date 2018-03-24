@@ -87,23 +87,16 @@ void LogListView::contentsMousePressEvent(QMouseEvent *e)
   QListView::contentsMousePressEvent(e);
   log_menu_item=(RDListViewItem *)selectedItem();
   switch(e->button()) {
-      case QMouseEvent::RightButton:
-	//log_menu->setGeometry(log_parent->geometry().x()+
-	//			 geometry().x()+e->pos().x()+2,
-	//			 log_parent->geometry().y()+
-	//			 geometry().y()+e->pos().y()+
-	//			 header()->geometry().height()+2,
-	//			 log_menu->sizeHint().width(),
-	//			 log_menu->sizeHint().height());
-        log_menu->setGeometry(e->globalX(),e->globalY(),
-				 log_menu->sizeHint().width(),
-				 log_menu->sizeHint().height());
+  case QMouseEvent::RightButton:
+    log_menu->setGeometry(e->globalX(),e->globalY(),
+			  log_menu->sizeHint().width(),
+			  log_menu->sizeHint().height());
+    
+    log_menu->exec();
+    break;
 
-	log_menu->exec();
-	break;
-
-      default:
-	e->ignore();
-	break;
+  default:
+    e->ignore();
+    break;
   }
 }

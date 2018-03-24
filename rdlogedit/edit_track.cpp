@@ -151,22 +151,21 @@ EditTrack::EditTrack(RDLogLine *line,QWidget *parent)
   }
   timeChangedData(edit_time_edit->time());
   switch(edit_logline->graceTime()) {
-      case -1:
-	edit_grace_group->setButton(1);
-	graceClickedData(1);
-	break;
+  case -1:
+    edit_grace_group->setButton(1);
+    graceClickedData(1);
+    break;
 
-      case 0:
-	edit_grace_group->setButton(0);
-	graceClickedData(0);
-	break;
+  case 0:
+    edit_grace_group->setButton(0);
+    graceClickedData(0);
+    break;
 
-      default:
-	edit_grace_group->setButton(2);
-	edit_grace_box->setTime(QTime().addMSecs(edit_logline->graceTime()));
-	//edit_grace_box->setValue(edit_logline->graceTime());
-	graceClickedData(2);
-	break;
+  default:
+    edit_grace_group->setButton(2);
+    edit_grace_box->setTime(QTime().addMSecs(edit_logline->graceTime()));
+    graceClickedData(2);
+    break;
   }
   edit_transtype_box->setCurrentItem(edit_logline->transType());
   edit_comment_edit->setText(edit_logline->markerComment());
@@ -228,17 +227,17 @@ void EditTrack::timeToggledData(bool state)
 void EditTrack::graceClickedData(int id)
 {
   switch(id) {
-      case 0:
-	edit_grace_box->setDisabled(true);
-	break;
+  case 0:
+    edit_grace_box->setDisabled(true);
+    break;
 
-      case 1:
-	edit_grace_box->setDisabled(true);
-	break;
+  case 1:
+    edit_grace_box->setDisabled(true);
+    break;
 
-      case 2:
-	edit_grace_box->setEnabled(true);
-	break;
+  case 2:
+    edit_grace_box->setEnabled(true);
+    break;
   }
 }
 
@@ -263,18 +262,17 @@ void EditTrack::okData()
     edit_logline->setTimeType(RDLogLine::Hard);
     edit_logline->setStartTime(RDLogLine::Logged,edit_time_edit->time());
     switch(edit_grace_group->selectedId()) {
-	case 0:
-	  edit_logline->setGraceTime(0);
-	  break;
+    case 0:
+      edit_logline->setGraceTime(0);
+      break;
 
-	case 1:
-	  edit_logline->setGraceTime(-1);
-	  break;
+    case 1:
+      edit_logline->setGraceTime(-1);
+      break;
 
-	case 2:
-	  edit_logline->setGraceTime(QTime().msecsTo(edit_grace_box->time()));
-	  //edit_logline->setGraceTime(edit_grace_box->value());
-	  break;
+    case 2:
+      edit_logline->setGraceTime(QTime().msecsTo(edit_grace_box->time()));
+      break;
     }
   }
   else {

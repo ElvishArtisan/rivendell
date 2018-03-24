@@ -797,55 +797,55 @@ void EditLog::insertMarkerButtonData()
   id=item->text(13).toInt();
   AddMeta *meta=new AddMeta(this);
   switch((RDLogLine::Type)meta->exec()) {
-      case RDLogLine::Marker:
-	edit_log_event->insert(line,1);
-	edit_log_event->logLine(line)->setType(RDLogLine::Marker);
-	edit_marker=new EditMarker(edit_log_event->logLine(line),this);
-	ret=edit_marker->exec();
-	if(ret>=0) {
-	  edit_log_event->refresh(line);
-	  SetLogModified(true);
-	}
-	else {
-	  edit_log_event->remove(line,1);
-	}
-	delete edit_marker;
-	break;
+  case RDLogLine::Marker:
+    edit_log_event->insert(line,1);
+    edit_log_event->logLine(line)->setType(RDLogLine::Marker);
+    edit_marker=new EditMarker(edit_log_event->logLine(line),this);
+    ret=edit_marker->exec();
+    if(ret>=0) {
+      edit_log_event->refresh(line);
+      SetLogModified(true);
+    }
+    else {
+      edit_log_event->remove(line,1);
+    }
+    delete edit_marker;
+    break;
 
-      case RDLogLine::Track:
-	edit_log_event->insert(line,1);
-	edit_log_event->logLine(line)->setType(RDLogLine::Track);
-	edit_log_event->logLine(line)->setTransType(RDLogLine::Segue);
-	edit_log_event->logLine(line)->setMarkerComment(tr("Voice Track"));
-	edit_track=new EditTrack(edit_log_event->logLine(line),this);
-	ret=edit_track->exec();
-	if(ret>=0) {
-	  edit_log_event->refresh(line);
-	  SetLogModified(true);
-	}
-	else {
-	  edit_log_event->remove(line,1);
-	}
-	delete edit_track;
-	break;
+  case RDLogLine::Track:
+    edit_log_event->insert(line,1);
+    edit_log_event->logLine(line)->setType(RDLogLine::Track);
+    edit_log_event->logLine(line)->setTransType(RDLogLine::Segue);
+    edit_log_event->logLine(line)->setMarkerComment(tr("Voice Track"));
+    edit_track=new EditTrack(edit_log_event->logLine(line),this);
+    ret=edit_track->exec();
+    if(ret>=0) {
+      edit_log_event->refresh(line);
+      SetLogModified(true);
+    }
+    else {
+      edit_log_event->remove(line,1);
+    }
+    delete edit_track;
+    break;
 
-      case RDLogLine::Chain:
-	edit_log_event->insert(line,1);
-	edit_log_event->logLine(line)->setType(RDLogLine::Chain);
-	edit_chain=new EditChain(edit_log_event->logLine(line),this);
-	ret=edit_chain->exec();
-	if(ret>=0) {
-	  edit_log_event->refresh(line);
-	  SetLogModified(true);
-	}
-	else {
-	  edit_log_event->remove(line,1);
-	}
-	delete edit_chain;
-	break;
+  case RDLogLine::Chain:
+    edit_log_event->insert(line,1);
+    edit_log_event->logLine(line)->setType(RDLogLine::Chain);
+    edit_chain=new EditChain(edit_log_event->logLine(line),this);
+    ret=edit_chain->exec();
+    if(ret>=0) {
+      edit_log_event->refresh(line);
+      SetLogModified(true);
+    }
+    else {
+      edit_log_event->remove(line,1);
+    }
+    delete edit_chain;
+    break;
 
-      default:
-	break;
+  default:
+    break;
   }
   RefreshList();
   UpdateTracks();
@@ -903,45 +903,45 @@ void EditLog::editButtonData()
     return;
   }
   switch(edit_log_event->logLine(line)->type()) {
-      case RDLogLine::Cart:
-      case RDLogLine::Macro:
-	edit_cart=
-	  new EditLogLine(edit_log_event->logLine(line),edit_filter,edit_group,
-			  edit_schedcode,edit_service_box->currentText(),
-			  &edit_group_list,edit_log_event,line,this);
-	if(edit_cart->exec()>=0) {
-	  edit_log_event->refresh(item->text(14).toInt());
-	  SetLogModified(true);
-	}
-	delete edit_cart;
-	break;
+  case RDLogLine::Cart:
+  case RDLogLine::Macro:
+    edit_cart=
+      new EditLogLine(edit_log_event->logLine(line),edit_filter,edit_group,
+		      edit_schedcode,edit_service_box->currentText(),
+		      &edit_group_list,edit_log_event,line,this);
+    if(edit_cart->exec()>=0) {
+      edit_log_event->refresh(item->text(14).toInt());
+      SetLogModified(true);
+    }
+    delete edit_cart;
+    break;
 
-      case RDLogLine::Marker:
-	edit_marker=new EditMarker(edit_log_event->logLine(line),this);
-	if(edit_marker->exec()>=0) {
-	  SetLogModified(true);
-	}
-	delete edit_marker;
-	break;
+  case RDLogLine::Marker:
+    edit_marker=new EditMarker(edit_log_event->logLine(line),this);
+    if(edit_marker->exec()>=0) {
+      SetLogModified(true);
+    }
+    delete edit_marker;
+    break;
 
-      case RDLogLine::Track:
-	edit_track=new EditTrack(edit_log_event->logLine(line),this);
-	if(edit_track->exec()>=0) {
-	  SetLogModified(true);
-	}
-	delete edit_track;
-	break;
+  case RDLogLine::Track:
+    edit_track=new EditTrack(edit_log_event->logLine(line),this);
+    if(edit_track->exec()>=0) {
+      SetLogModified(true);
+    }
+    delete edit_track;
+    break;
 
-      case RDLogLine::Chain:
-	edit_chain=new EditChain(edit_log_event->logLine(line),this);
-	if(edit_chain->exec()>=0) {
-	  SetLogModified(true);
-	}
-	delete edit_chain;
-	break;
+  case RDLogLine::Chain:
+    edit_chain=new EditChain(edit_log_event->logLine(line),this);
+    if(edit_chain->exec()>=0) {
+      SetLogModified(true);
+    }
+    delete edit_chain;
+    break;
 
-      default:
-	break;
+  default:
+    break;
   }
   RefreshList();
   SelectRecord(id);
@@ -1252,23 +1252,23 @@ void EditLog::cancelData()
 {
   if(edit_changed) {
     switch(QMessageBox::question(this,
-     tr("RDLogEdit"),
-     tr("The log has been modified.\nDo you want to save your changes?"),
+	   tr("RDLogEdit"),
+	   tr("The log has been modified.\nDo you want to save your changes?"),
 				 QMessageBox::Yes,QMessageBox::No,
 				 QMessageBox::Cancel)) {
-	case QMessageBox::Yes:
-	  if(!ValidateSvc()) {
-	    QMessageBox::warning(this,tr("Invalid Carts"),
-				 tr("The log contains carts that are disabled\nfor the selected service!"));
+    case QMessageBox::Yes:
+      if(!ValidateSvc()) {
+	QMessageBox::warning(this,tr("Invalid Carts"),
+			     tr("The log contains carts that are disabled\nfor the selected service!"));
 	    return;
-	  }
-	  SaveLog();
-	  break;
+      }
+      SaveLog();
+      break;
 
-	case QMessageBox::Cancel:
-	case QMessageBox::NoButton:
-	  return;
-	  break;
+    case QMessageBox::Cancel:
+    case QMessageBox::NoButton:
+      return;
+      break;
     }
   }
 #ifndef WIN32
@@ -1441,198 +1441,186 @@ void EditLog::RefreshLine(RDListViewItem *item)
   edit_log_event->refresh(line);
   RDLogLine *logline=edit_log_event->logLine(line);
   switch(logline->timeType()) {
-      case RDLogLine::Hard:
-	item->setText(1,QString("T")+edit_log_event->
-		   logLine(line)->startTime(RDLogLine::Logged).
-		      toString("hh:mm:ss.zzz").left(10));
-	break;
+  case RDLogLine::Hard:
+    item->setText(1,QString("T")+edit_log_event->
+		  logLine(line)->startTime(RDLogLine::Logged).
+		  toString("hh:mm:ss.zzz").left(10));
+    break;
 
-      default:
-	if(logline->
-	   startTime(RDLogLine::Predicted).isNull()) {
-	  item->setText(1,edit_log_event->
-			blockStartTime(line).
-			toString("hh:mm:ss.zzz").left(10));
-	}
-	else {
-	  item->setText(1,edit_log_event->
-			logLine(line)->startTime(RDLogLine::Predicted).
-			toString("hh:mm:ss.zzz").left(10));
-	}
-	/*
-	if(logline->
-	   startTime(RDLogLine::Logged).isNull()) {
-	  item->setText(1,edit_log_event->
-			blockStartTime(line).
-			toString("hh:mm:ss.zzz").left(10));
-	}
-	else {
-	  item->setText(1,edit_log_event->
-			logLine(line)->startTime(RDLogLine::Logged).
-			toString("hh:mm:ss.zzz").left(10));
-	}
-	*/
-	break;
+  default:
+    if(logline->
+       startTime(RDLogLine::Predicted).isNull()) {
+      item->setText(1,edit_log_event->
+		    blockStartTime(line).
+		    toString("hh:mm:ss.zzz").left(10));
+    }
+    else {
+      item->setText(1,edit_log_event->
+		    logLine(line)->startTime(RDLogLine::Predicted).
+		    toString("hh:mm:ss.zzz").left(10));
+    }
+    break;
   }
   switch(logline->transType()) {
-      case RDLogLine::Play:
-	item->setText(2,tr("PLAY"));
-	item->setTextColor(2,item->textColor(1),QFont::Normal);
-	break;
-      case RDLogLine::Stop:
-	item->setText(2,tr("STOP"));
-	item->setTextColor(2,item->textColor(1),QFont::Normal);
-	break;
-      case RDLogLine::Segue:
-	item->setText(2,tr("SEGUE"));
-	if(logline->hasCustomTransition()) {
-	  item->setTextColor(2,RD_CUSTOM_TRANSITION_COLOR,QFont::Bold);
-	}
-	else {
-	  item->setTextColor(2,item->textColor(1),QFont::Normal);
-	}
-	break;
+  case RDLogLine::Play:
+    item->setText(2,tr("PLAY"));
+    item->setTextColor(2,item->textColor(1),QFont::Normal);
+    break;
 
-      default:
-	break;
+  case RDLogLine::Stop:
+    item->setText(2,tr("STOP"));
+    item->setTextColor(2,item->textColor(1),QFont::Normal);
+    break;
+
+  case RDLogLine::Segue:
+    item->setText(2,tr("SEGUE"));
+    if(logline->hasCustomTransition()) {
+      item->setTextColor(2,RD_CUSTOM_TRANSITION_COLOR,QFont::Bold);
+    }
+    else {
+      item->setTextColor(2,item->textColor(1),QFont::Normal);
+    }
+    break;
+
+  default:
+    break;
   }
   switch(logline->type()) {
-      case RDLogLine::Cart:
-	switch(logline->source()) {
-	    case RDLogLine::Tracker:
-	      item->setPixmap(0,*edit_track_cart_map);
-	      break;
+  case RDLogLine::Cart:
+    switch(logline->source()) {
+    case RDLogLine::Tracker:
+      item->setPixmap(0,*edit_track_cart_map);
+      break;
 
-	    default:
-	      item->setPixmap(0,*edit_playout_map);
-	      break;
-	}
-	item->setText(3,QString().
-		 sprintf("%06u",logline->cartNumber()));
-	if(logline->title().isEmpty()) {
-	  item->setText(4,"");
-	  item->setText(5,tr("[cart not found]"));
-	}
-	else {
-	  item->setText(4,logline->groupName());
-	  item->setTextColor(4,logline->groupColor(),QFont::Bold);
-	  if((logline->source()!=RDLogLine::Tracker)||
-	     logline->originUser().isEmpty()||
-	     (!logline->originDateTime().isValid())) {
-	    item->setText(6,logline->title());
-	  }
-	  else {
-	    item->setText(6,QString().
-			  sprintf("%s -- %s %s",
-				  (const char *)logline->title(),
-				  (const char *)logline->originUser(),
-				  (const char *)logline->originDateTime().
-				  toString("M/d hh:mm")));
-	  }
-	}
-	item->
-	  setText(5,RDGetTimeLength(logline->forcedLength(),false,false));
-	item->setText(7,logline->artist());
-	item->setText(8,logline->client());
-	item->setText(9,logline->agency());
-	item->setText(12,logline->extData());
-	break;
+    default:
+      item->setPixmap(0,*edit_playout_map);
+      break;
+    }
+    item->setText(3,QString().
+		  sprintf("%06u",logline->cartNumber()));
+    if(logline->title().isEmpty()) {
+      item->setText(4,"");
+      item->setText(5,tr("[cart not found]"));
+    }
+    else {
+      item->setText(4,logline->groupName());
+      item->setTextColor(4,logline->groupColor(),QFont::Bold);
+      if((logline->source()!=RDLogLine::Tracker)||
+	 logline->originUser().isEmpty()||
+	 (!logline->originDateTime().isValid())) {
+	item->setText(6,logline->title());
+      }
+      else {
+	item->setText(6,QString().
+		      sprintf("%s -- %s %s",
+			      (const char *)logline->title(),
+			      (const char *)logline->originUser(),
+			      (const char *)logline->originDateTime().
+			      toString("M/d hh:mm")));
+      }
+    }
+    item->
+      setText(5,RDGetTimeLength(logline->forcedLength(),false,false));
+    item->setText(7,logline->artist());
+    item->setText(8,logline->client());
+    item->setText(9,logline->agency());
+    item->setText(12,logline->extData());
+    break;
 	
-      case RDLogLine::Macro:
-	item->setPixmap(0,*edit_macro_map);
-	item->setText(3,QString().
-		sprintf("%06u",logline->cartNumber()));
-	if(logline->title().isEmpty()) {
-	  item->setText(4,"");
-	  item->setText(6,tr("[cart not found]"));
-	}
-	else {
-	  item->setText(4,logline->groupName());
-	  item->setTextColor(4,logline->groupColor(),QFont::Bold);
-	  item->setText(6,logline->title());
-	}
-	item->
-	  setText(5,RDGetTimeLength(logline->forcedLength(),false,false));
-	item->setText(7,logline->artist());
-	item->setText(8,logline->client());
-	item->setText(9,logline->agency());
-	item->setText(12,logline->extData());
-	break;
+  case RDLogLine::Macro:
+    item->setPixmap(0,*edit_macro_map);
+    item->setText(3,QString().
+		  sprintf("%06u",logline->cartNumber()));
+    if(logline->title().isEmpty()) {
+      item->setText(4,"");
+      item->setText(6,tr("[cart not found]"));
+    }
+    else {
+      item->setText(4,logline->groupName());
+      item->setTextColor(4,logline->groupColor(),QFont::Bold);
+      item->setText(6,logline->title());
+    }
+    item->setText(5,RDGetTimeLength(logline->forcedLength(),false,false));
+    item->setText(7,logline->artist());
+    item->setText(8,logline->client());
+    item->setText(9,logline->agency());
+    item->setText(12,logline->extData());
+    break;
 	
-      case RDLogLine::Marker:
-	item->setPixmap(0,*edit_notemarker_map);
-	item->setText(3,tr("MARKER"));
-	item->setText(4,"");
-	item->setText(6,RDTruncateAfterWord(edit_log_event->
-				  logLine(line)->markerComment(),5,true));
-	item->setText(10,logline->markerLabel());
-	item->setText(12,logline->extData());
-	break;
+  case RDLogLine::Marker:
+    item->setPixmap(0,*edit_notemarker_map);
+    item->setText(3,tr("MARKER"));
+    item->setText(4,"");
+    item->setText(6,RDTruncateAfterWord(edit_log_event->
+					logLine(line)->markerComment(),5,true));
+    item->setText(10,logline->markerLabel());
+    item->setText(12,logline->extData());
+    break;
 
-      case RDLogLine::Track:
-	item->setPixmap(0,*edit_mic16_map);
-	item->setText(3,tr("TRACK"));
-	item->setText(4,"");
-	item->setText(6,RDTruncateAfterWord(edit_log_event->
-				  logLine(line)->markerComment(),5,true));
-	item->setText(12,logline->extData());
-	break;
+  case RDLogLine::Track:
+    item->setPixmap(0,*edit_mic16_map);
+    item->setText(3,tr("TRACK"));
+    item->setText(4,"");
+    item->setText(6,RDTruncateAfterWord(edit_log_event->
+					logLine(line)->markerComment(),5,true));
+    item->setText(12,logline->extData());
+    break;
 
-      case RDLogLine::Chain:
-	item->setPixmap(0,*edit_chain_map);
-	item->setText(3,tr("LOG CHAIN"));
-	item->setText(4,"");
-	item->setText(6,logline->markerLabel());
-	item->setText(7,RDTruncateAfterWord(edit_log_event->
-				  logLine(line)->markerComment(),5,true));
-	item->setText(12,logline->extData());
-	break;
+  case RDLogLine::Chain:
+    item->setPixmap(0,*edit_chain_map);
+    item->setText(3,tr("LOG CHAIN"));
+    item->setText(4,"");
+    item->setText(6,logline->markerLabel());
+    item->setText(7,RDTruncateAfterWord(edit_log_event->
+					logLine(line)->markerComment(),5,true));
+    item->setText(12,logline->extData());
+    break;
 
-      case RDLogLine::MusicLink:
-	item->setPixmap(0,*edit_music_map);
-	item->setText(3,tr("LINK"));
-	item->setText(4,"");
-	item->setText(6,tr("[music import]"));
-	item->setText(12,tr("Link Start")+": "+
-		      logline->linkStartTime().toString("hh:mm:ss")+", "+
-		      tr("Len")+": "+
-		      RDGetTimeLength(logline->linkLength(),false,false));
-	break;
+  case RDLogLine::MusicLink:
+    item->setPixmap(0,*edit_music_map);
+    item->setText(3,tr("LINK"));
+    item->setText(4,"");
+    item->setText(6,tr("[music import]"));
+    item->setText(12,tr("Link Start")+": "+
+		  logline->linkStartTime().toString("hh:mm:ss")+", "+
+		  tr("Len")+": "+
+		  RDGetTimeLength(logline->linkLength(),false,false));
+    break;
 
-      case RDLogLine::TrafficLink:
-	item->setPixmap(0,*edit_traffic_map);
-	item->setText(3,tr("LINK"));
-	item->setText(4,"");
-	item->setText(6,tr("[traffic import]"));
-	item->setText(12,tr("Link Start")+": "+
-		      logline->linkStartTime().toString("hh:mm:ss")+", "+
-		      tr("Len")+": "+
-		      RDGetTimeLength(logline->linkLength(),false,false));
-	break;
+  case RDLogLine::TrafficLink:
+    item->setPixmap(0,*edit_traffic_map);
+    item->setText(3,tr("LINK"));
+    item->setText(4,"");
+    item->setText(6,tr("[traffic import]"));
+    item->setText(12,tr("Link Start")+": "+
+		  logline->linkStartTime().toString("hh:mm:ss")+", "+
+		  tr("Len")+": "+
+		  RDGetTimeLength(logline->linkLength(),false,false));
+    break;
 
-      default:
-	break;
+  default:
+    break;
   }
   switch(logline->source()) {
-      case RDLogLine::Manual:
-	item->setText(11,tr("Manual"));
-	break;
+  case RDLogLine::Manual:
+    item->setText(11,tr("Manual"));
+    break;
 
-      case RDLogLine::Traffic:
-	item->setText(11,tr("Traffic"));
-	break;
+  case RDLogLine::Traffic:
+    item->setText(11,tr("Traffic"));
+    break;
 
-      case RDLogLine::Music:
-	item->setText(11,tr("Music"));
-	break;
+  case RDLogLine::Music:
+    item->setText(11,tr("Music"));
+    break;
 
-      case RDLogLine::Template:
-	item->setText(11,tr("RDLogManager"));
-	break;
+  case RDLogLine::Template:
+    item->setText(11,tr("RDLogManager"));
+    break;
 
-      case RDLogLine::Tracker:
-	item->setText(11,tr("Voice Tracker"));
-	break;
+  case RDLogLine::Tracker:
+    item->setText(11,tr("Voice Tracker"));
+    break;
   }
   item->setText(13,QString().sprintf("%d",logline->id()));
   UpdateColor(item,logline);
@@ -1707,50 +1695,50 @@ bool EditLog::UpdateColor(RDListViewItem *item,RDLogLine *logline)
   QDateTime now=QDateTime(QDate::currentDate(),QTime::currentTime());
 
   switch(logline->type()) {
-      case RDLogLine::Cart:
-	switch(logline->validity(now)) {
-	    case RDCart::AlwaysValid:
- 	      if(edit_group_list.isGroupValid(item->text(4))||
-		 item->text(4).isEmpty()) {
-		item->setBackgroundColor(palette().color(QPalette::Active,
-							 QColorGroup::Base));
-	      }
-	      else {
-		item->setBackgroundColor(RD_CART_INVALID_SERVICE_COLOR);
-		ret=false;
-	      }
-	      break;
+  case RDLogLine::Cart:
+    switch(logline->validity(now)) {
+    case RDCart::AlwaysValid:
+      if(edit_group_list.isGroupValid(item->text(4))||
+	 item->text(4).isEmpty()) {
+	item->setBackgroundColor(palette().color(QPalette::Active,
+						 QColorGroup::Base));
+      }
+      else {
+	item->setBackgroundColor(RD_CART_INVALID_SERVICE_COLOR);
+	ret=false;
+      }
+      break;
 	      
-	    case RDCart::ConditionallyValid:
-	      item->setBackgroundColor(RD_CART_CONDITIONAL_COLOR);
-	      break;
+    case RDCart::ConditionallyValid:
+      item->setBackgroundColor(RD_CART_CONDITIONAL_COLOR);
+      break;
 	      
-	    case RDCart::FutureValid:
-	      item->setBackgroundColor(RD_CART_FUTURE_COLOR);
-	      break;
+    case RDCart::FutureValid:
+      item->setBackgroundColor(RD_CART_FUTURE_COLOR);
+      break;
 	      
-	    case RDCart::EvergreenValid:
-	      item->setBackgroundColor(RD_CART_EVERGREEN_COLOR);
-	      break;
+    case RDCart::EvergreenValid:
+      item->setBackgroundColor(RD_CART_EVERGREEN_COLOR);
+      break;
 	      
-	    case RDCart::NeverValid:
-	      item->setBackgroundColor(RD_CART_ERROR_COLOR);
-	      item->setText(6,tr("[INVALID CART]"));
-	      break;
-	}
-	break;
+    case RDCart::NeverValid:
+      item->setBackgroundColor(RD_CART_ERROR_COLOR);
+      item->setText(6,tr("[INVALID CART]"));
+      break;
+    }
+    break;
 
-      default:
-	if(edit_group_list.isGroupValid(item->text(4))||
-	   item->text(4).isEmpty()) {
-	  item->setBackgroundColor(palette().color(QPalette::Active,
-						   QColorGroup::Base));
-	}
-	else {
-	  item->setBackgroundColor(RD_CART_INVALID_SERVICE_COLOR);
-	  ret=false;
-	}
-	break;
+  default:
+    if(edit_group_list.isGroupValid(item->text(4))||
+       item->text(4).isEmpty()) {
+      item->setBackgroundColor(palette().color(QPalette::Active,
+					       QColorGroup::Base));
+    }
+    else {
+      item->setBackgroundColor(RD_CART_INVALID_SERVICE_COLOR);
+      ret=false;
+    }
+    break;
   }
   return ret;
 }

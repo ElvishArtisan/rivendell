@@ -214,21 +214,21 @@ EditLogLine::EditLogLine(RDLogLine *line,QString *filter,QString *group,
   }
   timeChangedData(edit_time_edit->time());
   switch(edit_logline->graceTime()) {
-      case -1:
-	edit_grace_group->setButton(1);
-	graceClickedData(1);
-	break;
+  case -1:
+    edit_grace_group->setButton(1);
+    graceClickedData(1);
+    break;
 
-      case 0:
-	edit_grace_group->setButton(0);
-	graceClickedData(0);
-	break;
+  case 0:
+    edit_grace_group->setButton(0);
+    graceClickedData(0);
+    break;
 
-      default:
-	edit_grace_group->setButton(2);
-	graceClickedData(2);
-	edit_grace_edit->setTime(QTime().addMSecs(edit_logline->graceTime()));
-	break;
+  default:
+    edit_grace_group->setButton(2);
+    graceClickedData(2);
+    edit_grace_edit->setTime(QTime().addMSecs(edit_logline->graceTime()));
+    break;
   }
   edit_transtype_box->setCurrentItem(edit_logline->transType());
   if(edit_logline->segueStartPoint(RDLogLine::LogPointer)<0
@@ -322,17 +322,17 @@ void EditLogLine::timeToggledData(bool state)
 void EditLogLine::graceClickedData(int id)
 {
   switch(id) {
-      case 0:
-	edit_grace_edit->setDisabled(true);
-	break;
+  case 0:
+    edit_grace_edit->setDisabled(true);
+    break;
 
-      case 1:
-	edit_grace_edit->setDisabled(true);
-	break;
+  case 1:
+    edit_grace_edit->setDisabled(true);
+    break;
 
-      case 2:
-	edit_grace_edit->setEnabled(true);
-	break;
+  case 2:
+    edit_grace_edit->setEnabled(true);
+    break;
   }
 }
 
@@ -364,17 +364,17 @@ void EditLogLine::okData()
     edit_logline->setTimeType(RDLogLine::Hard);
     edit_logline->setStartTime(RDLogLine::Logged,edit_time_edit->time());
     switch(edit_grace_group->selectedId()) {
-	case 0:
-	  edit_logline->setGraceTime(0);
-	  break;
+    case 0:
+      edit_logline->setGraceTime(0);
+      break;
 
-	case 1:
-	  edit_logline->setGraceTime(-1);
-	  break;
+    case 1:
+      edit_logline->setGraceTime(-1);
+      break;
 
-	case 2:
-	  edit_logline->setGraceTime(QTime().msecsTo(edit_grace_edit->time()));
-	  break;
+    case 2:
+      edit_logline->setGraceTime(QTime().msecsTo(edit_grace_edit->time()));
+      break;
     }
   }
   else {

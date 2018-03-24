@@ -147,16 +147,16 @@ void ListReports::generateData()
   QString report;
 
   switch(list_reports_box->currentItem()) {
-      case 0:  // Event Report
-	GenerateLogReport(&report);
-	break;
+  case 0:  // Event Report
+    GenerateLogReport(&report);
+    break;
 
-      case 1:  // XLoad Report
-	GenerateExceptionReport(&report,list_date_edit->date());
-	break;
+  case 1:  // XLoad Report
+    GenerateExceptionReport(&report,list_date_edit->date());
+    break;
 
-      default:
-	return;
+  default:
+    return;
   }
   if(!report.isEmpty()) {
     RDTextFile(report);
@@ -241,65 +241,64 @@ void ListReports::GenerateLogReport(QString *report)
 	  (const char *)RDLogLine::transText(logline->transType()).left(5));
 
     switch(logline->type()) {
-	case RDLogLine::Cart:
-	case RDLogLine::Macro:
-	  *report+=QString().sprintf("%06u ",logline->cartNumber());
-	  *report+=QString().sprintf("%-10s ",
-				     (const char *)logline->groupName());
-	  *report+=QString().sprintf("%8s ",(const char *)
-				     RDGetTimeLength(logline->forcedLength(),
-						    false,false));
-	  *report+=
-	    QString().sprintf("%-33s ",
-			      (const char *)logline->title().left(33));
-	  *report+=
-	    QString().sprintf("%-30s ",
-			      (const char *)logline->artist().left(30));
-	  break;
+    case RDLogLine::Cart:
+    case RDLogLine::Macro:
+      *report+=QString().sprintf("%06u ",logline->cartNumber());
+      *report+=QString().sprintf("%-10s ",
+				 (const char *)logline->groupName());
+      *report+=QString().sprintf("%8s ",(const char *)
+				 RDGetTimeLength(logline->forcedLength(),
+						 false,false));
+      *report+=
+	QString().sprintf("%-33s ",
+			  (const char *)logline->title().left(33));
+      *report+=
+	QString().sprintf("%-30s ",
+			  (const char *)logline->artist().left(30));
+      break;
 
-	case RDLogLine::Marker:
-	case RDLogLine::Track:
-	  *report+="       ";
-	  *report+="           ";
-	  *report+="     :00 ";
-	  *report+=
-	    QString().sprintf("%-30s ",
-			      (const char *)logline->markerComment().left(30));
-	  *report+="                               ";
-	  break;
+    case RDLogLine::Marker:
+    case RDLogLine::Track:
+      *report+="       ";
+      *report+="           ";
+      *report+="     :00 ";
+      *report+=
+	QString().sprintf("%-30s ",
+			  (const char *)logline->markerComment().left(30));
+      *report+="                               ";
+      break;
 
-	case RDLogLine::TrafficLink:
-	  *report+="       ";
-	  *report+="           ";
-	  *report+="     :00 ";
-	  *report+="Traffic Import                 ";
-	  *report+="                               ";
-	  break;
+    case RDLogLine::TrafficLink:
+      *report+="       ";
+      *report+="           ";
+      *report+="     :00 ";
+      *report+="Traffic Import                 ";
+      *report+="                               ";
+      break;
 
-	case RDLogLine::MusicLink:
-	  *report+="       ";
-	  *report+="           ";
-	  *report+="     :00 ";
-	  *report+="Music Import                 ";
-	  *report+="                               ";
-	  break;
+    case RDLogLine::MusicLink:
+      *report+="       ";
+      *report+="           ";
+      *report+="     :00 ";
+      *report+="Music Import                 ";
+      *report+="                               ";
+      break;
 
 
-	case RDLogLine::Chain:
-	  *report+="       ";
-	  *report+="           ";
-	  *report+="         ";
-	  *report+=
-	    QString().sprintf("%-30s ",
-			      (const char *)logline->markerLabel().left(30));
-	  *report+="                               ";
-	  break;
-	  break;
+    case RDLogLine::Chain:
+      *report+="       ";
+      *report+="           ";
+      *report+="         ";
+      *report+=
+	QString().sprintf("%-30s ",
+			  (const char *)logline->markerLabel().left(30));
+      *report+="                               ";
+      break;
 
-	case RDLogLine::OpenBracket:
-	case RDLogLine::CloseBracket:
-	case RDLogLine::UnknownType:
-	  break;
+    case RDLogLine::OpenBracket:
+    case RDLogLine::CloseBracket:
+    case RDLogLine::UnknownType:
+      break;
     }
 
     //

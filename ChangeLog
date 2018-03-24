@@ -16737,3 +16737,6 @@
 	* Added a 'LogType' value to the 'RDNotification::Type
 	enumeration.
 	* Added support for notifications to rdlogedit(1).
+2018-03-24 Fred Gleason <fredg@paravelsystems.com>
+	* Regularized code formatting for switch() statements in
+	'rdlogedit/'.
