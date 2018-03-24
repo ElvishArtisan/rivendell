@@ -36,6 +36,7 @@
 
 #include <rdlog_line.h>
 #include <rdlogfilter.h>
+#include <rdnotification.h>
 
 #include "list_listviewitem.h"
 
@@ -61,6 +62,7 @@ class MainWidget : public QMainWindow
   void filterChangedData(const QString &str);
   void logSelectionChangedData();
   void logDoubleclickedData(QListViewItem *item,const QPoint &pt,int col);
+  void notificationReceivedData(RDNotification *notify);
   void quitMainWidget();
 
  protected:
@@ -71,7 +73,9 @@ class MainWidget : public QMainWindow
   void RefreshList();
   unsigned SelectedLogs(std::vector<ListListViewItem *> *items,
 			int *tracks=NULL) const;
-  //  QSqlDatabase *log_db;
+  void SendNotification(RDNotification::Action action,const QString &logname);
+  void LockList();
+  void UnlockList();
   QString log_filename;
   QString log_import_path;
   QLabel *log_user_label;
@@ -96,6 +100,8 @@ class MainWidget : public QMainWindow
   QString log_group;
   QString log_schedcode;
   bool log_resize;
+  bool log_list_locked;
+  QStringList log_deleted_logs;
 };
 
 

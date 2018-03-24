@@ -92,7 +92,19 @@ bool RDNotification::read(const QString &str)
       RDNotification::Type type=(RDNotification::Type)i;
       if(args[1]==RDNotification::typeString(type)) {
 	notify_type=type;
-	notify_id=QVariant(args[3].toUInt());
+	switch(type) {
+	case RDNotification::CartType:
+	  notify_id=QVariant(args[3].toUInt());
+	  break;
+
+	case RDNotification::LogType:
+	  notify_id=QVariant(args[3]);
+	  break;
+
+	case RDNotification::NullType:
+	case RDNotification::LastType:
+	  break;
+	}
       }
     }
     if(notify_type==RDNotification::NullType) {
@@ -124,6 +136,10 @@ QString RDNotification::write() const
     ret+=QString().sprintf("%u",notify_id.toUInt());
     break;
 
+  case RDNotification::LogType: 
+    ret+=notify_id.toString();
+    break;
+
   case RDNotification::NullType:
   case RDNotification::LastType:
     break;
@@ -139,6 +155,10 @@ QString RDNotification::typeString(RDNotification::Type type)
   switch(type) {
   case RDNotification::CartType:
     ret="CART";
+    break;
+
+  case RDNotification::LogType:
+    ret="LOG";
     break;
 
   case RDNotification::NullType:

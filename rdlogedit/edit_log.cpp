@@ -155,6 +155,12 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   edit_log_event->load(true);
 
   //
+  // Notifications
+  //
+  connect(rda->ripc(),SIGNAL(notificationReceived(RDNotification *)),
+	  this,SLOT(notificationReceivedData(RDNotification *)));
+
+  //
   // Log Name
   //
   edit_modified_label=new QLabel(this);
@@ -1082,6 +1088,27 @@ void EditLog::cartDroppedData(int line,RDLogLine *ll)
 }
 
 
+void EditLog::notificationReceivedData(RDNotification *notify)
+{
+  RDListViewItem *item=NULL;
+
+  if(notify->type()==RDNotification::CartType) {
+    unsigned cartnum=notify->id().toUInt();
+    item=(RDListViewItem *)edit_log_list->firstChild();
+    while(item!=NULL) {
+      if(item->text(3).toUInt()==cartnum) {
+	int line=item->text(14).toInt();
+	if(line>=0) {
+	  edit_log_event->refresh(line);
+	  RefreshLine(item);
+	}
+      }
+      item=(RDListViewItem *)item->nextSibling();
+    }
+  }
+}
+
+
 void EditLog::saveData()
 {
   if(!ValidateSvc()) {
@@ -1127,6 +1154,7 @@ void EditLog::saveasData()
       QMessageBox::warning(this,"RDLogEdit - "+tr("Error"),err_msg);
       return;
     }
+    SendNotification(RDNotification::AddAction,logname);
     delete edit_log;
     edit_newlogs->push_back(logname);
     edit_log=new RDLog(logname);
@@ -1400,6 +1428,7 @@ void EditLog::SaveLog()
   edit_log_event->save(rda->config());
   edit_log->
     setModifiedDatetime(QDateTime(QDate::currentDate(),QTime::currentTime()));
+  SendNotification(RDNotification::ModifyAction,edit_log->name());
 }
 
 
@@ -1409,6 +1438,7 @@ void EditLog::RefreshLine(RDListViewItem *item)
   if(line<0) {
     return;
   }
+  edit_log_event->refresh(line);
   RDLogLine *logline=edit_log_event->logLine(line);
   switch(logline->timeType()) {
       case RDLogLine::Hard:
@@ -1861,4 +1891,14 @@ void EditLog::SetLogModified(bool state)
     edit_save_button->setEnabled(state);
     edit_changed=state;
   }
+}
+
+
+void EditLog::SendNotification(RDNotification::Action action,
+			       const QString &log_name)
+{
+  RDNotification *notify=new RDNotification(RDNotification::LogType,
+					    action,QVariant(log_name));
+  rda->ripc()->sendNotification(*notify);
+  delete notify;
 }

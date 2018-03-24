@@ -2,7 +2,7 @@
 //
 // Create a Rivendell Log
 //
-//   (C) Copyright 2002-2017 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -37,6 +37,7 @@
 #include <rdlog.h>
 #include <rdlog_event.h>
 #include <rdloglock.h>
+#include <rdnotification.h>
 #include <rdsimpleplayer.h>
 #include <rdtransportbutton.h>
 #include <rduser.h>
@@ -89,6 +90,7 @@ class EditLog : public QDialog
   void copyButtonData();
   void pasteButtonData();
   void cartDroppedData(int line,RDLogLine *ll);
+  void notificationReceivedData(RDNotification *notify);
   void saveData();
   void saveasData();
   void renderasData();
@@ -116,6 +118,7 @@ class EditLog : public QDialog
   void LoadClipboard(bool clear_ext);
   RDListViewItem *SingleSelection();
   void SetLogModified(bool state);
+  void SendNotification(RDNotification::Action action,const QString &log_name);
   RDLog *edit_log;
   RDLogEvent *edit_log_event;
   std::vector<RDLogLine> *edit_clipboard;

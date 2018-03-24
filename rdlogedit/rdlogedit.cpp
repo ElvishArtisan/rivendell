@@ -105,6 +105,7 @@ MainWidget::MainWidget(QWidget *parent)
 
   log_resize=false;
   log_log_list=NULL;
+  log_list_locked=false;
 
   //
   // Fix the Window Size
@@ -153,6 +154,8 @@ MainWidget::MainWidget(QWidget *parent)
   //
 #ifndef WIN32
   connect(rda->ripc(),SIGNAL(connected(bool)),this,SLOT(connectedData(bool)));
+  connect(rda->ripc(),SIGNAL(notificationReceived(RDNotification *)),
+	  this,SLOT(notificationReceivedData(RDNotification *)));
   connect(rda,SIGNAL(userChanged()),this,SLOT(userData()));
   rda->ripc()->connectHost("localhost",RIPCD_TCP_PORT,rda->config()->password());
 #else
@@ -376,11 +379,13 @@ void MainWidget::addData()
     QString username(rda->ripc()->user());
 #endif  // WIN32
     QString err_msg;
-      if(!RDLog::create(logname,svcname,QDate(),username,&err_msg,
-			rda->config())) {
+    if(!RDLog::create(logname,svcname,QDate(),username,&err_msg,
+		      rda->config())) {
       QMessageBox::warning(this,"RDLogEdit - "+tr("Error"),err_msg);
       return;
     }
+    LockList();
+    SendNotification(RDNotification::AddAction,logname);
     EditLog *editlog=new EditLog(logname,&log_filter,&log_group,&log_schedcode,
 				 &log_clipboard,&newlogs,this);
     editlog->exec();
@@ -395,6 +400,7 @@ void MainWidget::addData()
       item->setText(1,newlogs[i]);
       RefreshItem(item);
     }
+    UnlockList();
   }
 }
 
@@ -405,19 +411,22 @@ void MainWidget::editData()
   if(SelectedLogs(&items)!=1) {
     return;
   }
-
+  QString logname=items.at(0)->text(1);
   std::vector<QString> newlogs;
+  LockList();
   EditLog *log=
-    new EditLog(items.at(0)->text(1),&log_filter,&log_group,&log_schedcode,
+    new EditLog(logname,&log_filter,&log_group,&log_schedcode,
 		&log_clipboard,&newlogs,this);
-  log->exec();
-  delete log;
-  RefreshItem(items.at(0));
-  for(unsigned i=0;i<newlogs.size();i++) {
-    ListListViewItem *item=new ListListViewItem(log_log_list);
-    item->setText(1,newlogs[i]);
-    RefreshItem(item);
+  if(log->exec()) {
+    RefreshItem(items.at(0));
+    for(unsigned i=0;i<newlogs.size();i++) {
+      ListListViewItem *item=new ListListViewItem(log_log_list);
+      item->setText(1,newlogs[i]);
+      RefreshItem(item);
+    }
   }
+  UnlockList();
+  delete log;
 }
 
 
@@ -482,6 +491,7 @@ void MainWidget::deleteData()
       }
     }
 
+    LockList();
     for(unsigned i=0;i<items.size();i++) {
       QString username;
       QString stationname;
@@ -491,6 +501,7 @@ void MainWidget::deleteData()
       if(log_lock->tryLock(&username,&stationname,&addr)) {
 	RDLog *log=new RDLog(items.at(i)->text(1));
 	if(log->remove(rda->station(),rda->user(),rda->config())) {
+	  SendNotification(RDNotification::DeleteAction,log->name());
 	  delete items.at(i);
 	}
 	else {
@@ -511,6 +522,7 @@ void MainWidget::deleteData()
       }
       delete log_lock;
     }
+    UnlockList();
   }
 }
 
@@ -522,10 +534,12 @@ void MainWidget::trackData()
   if(SelectedLogs(&items)!=1) {
     return;
   }
+  LockList();
   VoiceTracker *dialog=new VoiceTracker(items.at(0)->text(1),&log_import_path);
   dialog->exec();
   delete dialog;
   RefreshItem(items.at(0));
+  UnlockList();
 #endif  // WIN32
 }
 
@@ -679,6 +693,53 @@ void MainWidget::logDoubleclickedData(QListViewItem *,const QPoint &,int)
 }
 
 
+void MainWidget::notificationReceivedData(RDNotification *notify)
+{
+  QString sql;
+  RDSqlQuery *q;
+  ListListViewItem *item=NULL;
+
+  if(notify->type()==RDNotification::LogType) {
+    QString logname=notify->id().toString();
+    switch(notify->action()) {
+    case RDNotification::AddAction:
+      sql=QString("select NAME from LOGS where (TYPE=0)&&(LOG_EXISTS=\"Y\")&&")+
+	"(NAME=\""+RDEscapeString(logname)+"\") "+
+	log_filter_widget->whereSql();
+      q=new RDSqlQuery(sql);
+      if(q->first()) {
+	item=new ListListViewItem(log_log_list);
+	item->setText(1,logname);
+	RefreshItem(item);
+      }
+      delete q;
+      break;
+
+    case RDNotification::ModifyAction:
+      if((item=(ListListViewItem *)log_log_list->findItem(logname,1))!=NULL) {
+	RefreshItem(item);
+      }
+      break;
+
+    case RDNotification::DeleteAction:
+      if(log_list_locked) {
+	log_deleted_logs.push_back(logname);
+      }
+      else {
+	if((item=(ListListViewItem *)log_log_list->findItem(logname,1))!=NULL) {
+	  delete item;
+	}
+      }
+      break;
+
+    case RDNotification::NoAction:
+    case RDNotification::LastAction:
+      break;
+    }
+  }
+}
+
+
 void MainWidget::quitMainWidget()
 {
   exit(0);
@@ -817,6 +878,37 @@ unsigned MainWidget::SelectedLogs(std::vector<ListListViewItem *> *items,
     item=(ListListViewItem *)item->nextSibling();
   }
   return items->size();
+}
+
+
+void MainWidget::SendNotification(RDNotification::Action action,
+				  const QString &logname)
+{
+  RDNotification *notify=new RDNotification(RDNotification::LogType,action,
+					    QVariant(logname));
+  rda->ripc()->sendNotification(*notify);
+  delete notify;
+}
+
+
+void MainWidget::LockList()
+{
+  log_list_locked=true;
+}
+
+
+void MainWidget::UnlockList()
+{
+  ListListViewItem *item=NULL;
+
+  for(unsigned i=0;i<log_deleted_logs.size();i++) {
+    if((item=(ListListViewItem *)log_log_list->
+	findItem(log_deleted_logs[i],1))!=NULL) {
+      delete item;
+    }
+  }
+  log_deleted_logs.clear();
+  log_list_locked=false;
 }
 
 

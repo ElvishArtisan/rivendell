@@ -16733,3 +16733,7 @@
 	rdlibrary(1).
 2018-03-21 Fred Gleason <fredg@paravelsystems.com>
 	* Added support for cart notifications to rdairplay(1).
+2018-03-24 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'LogType' value to the 'RDNotification::Type
+	enumeration.
+	* Added support for notifications to rdlogedit(1).

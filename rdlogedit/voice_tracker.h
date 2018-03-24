@@ -2,7 +2,7 @@
 //
 // A Rivendell Voice Tracker
 //
-//   (C) Copyright 2002-2006,2016-2017 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2006,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -41,6 +41,7 @@
 #include <rdlog.h>
 #include <rdlog_event.h>
 #include <rdloglock.h>
+#include <rdnotification.h>
 #include <rdplay_deck.h>
 #include <rdsettings.h>
 #include <rdstereometer.h>
@@ -121,6 +122,7 @@ class VoiceTracker : public QDialog
   void recordingData(int card,int stream);
   void recordStoppedData(int card,int stream);
   void recordUnloadedData(int cart,int stream,unsigned msecs);
+  void notificationReceivedData(RDNotification *notify);
   void closeData();
 
  protected:
@@ -170,6 +172,7 @@ class VoiceTracker : public QDialog
   void CheckChanges();
   void PushSegues();
   void PopSegues();
+  void SendNotification(RDNotification::Action action,const QString &log_name);
   RDStereoMeter *track_meter;
   QTimer *track_meter_timer;
   RDTransportButton *track_play_button;

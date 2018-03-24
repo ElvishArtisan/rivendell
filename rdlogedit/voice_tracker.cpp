@@ -165,6 +165,12 @@ VoiceTracker::VoiceTracker(const QString &logname,QString *import_path,
   track_event_player=new RDEventPlayer(rda->ripc(),this);
 
   //
+  // Notifications
+  //
+  connect(rda->ripc(),SIGNAL(notificationReceived(RDNotification *)),
+	  this,SLOT(notificationReceivedData(RDNotification *)));
+
+  //
   // Waveform Pixmaps
   //
   for(int i=0;i<3;i++) {
@@ -1964,6 +1970,24 @@ void VoiceTracker::recordUnloadedData(int card,int stream,unsigned msecs)
 }
 
 
+void VoiceTracker::notificationReceivedData(RDNotification *notify)
+{
+  RDListViewItem *item=NULL;
+
+  if(notify->type()==RDNotification::CartType) {
+    unsigned cartnum=notify->id().toUInt();
+    item=(RDListViewItem *)track_log_list->firstChild();
+    while(item!=NULL) {
+      if(item->text(3).toUInt()==cartnum) {
+	track_log_event->refresh(item->line());
+	RefreshLine(item);
+      }
+      item=(RDListViewItem *)item->nextSibling();
+    }
+  }
+}
+
+
 void VoiceTracker::closeData()
 {
   stopData();
@@ -2346,6 +2370,7 @@ void VoiceTracker::SaveTrack(int line)
     setModifiedDatetime(QDateTime(QDate::currentDate(),QTime::currentTime()));
   track_changed=false;
   track_size_altered=false;
+  SendNotification(RDNotification::ModifyAction,track_log->name());
 }
 
 
@@ -4134,4 +4159,14 @@ void VoiceTracker::PopSegues()
       *(edit_logline[i])=*(edit_saved_logline[i]);
     }
   }
+}
+
+
+void VoiceTracker::SendNotification(RDNotification::Action action,
+				    const QString &log_name)
+{
+  RDNotification *notify=new RDNotification(RDNotification::LogType,
+					    action,QVariant(log_name));
+  rda->ripc()->sendNotification(*notify);
+  delete notify;
 }

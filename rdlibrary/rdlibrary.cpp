@@ -902,16 +902,17 @@ void MainWidget::notificationReceivedData(RDNotification *notify)
   RDSqlQuery *q;
 
   if(notify->type()==RDNotification::CartType) {
+    unsigned cartnum=notify->id().toUInt();
     switch(notify->action()) {
     case RDNotification::AddAction:
       sql=QString("select CART.NUMBER from CART ")+
 	"left join CUTS on CART.NUMBER=CUTS.CART_NUMBER "+
 	WhereClause()+
-	QString().sprintf(" && CART.NUMBER=%u ",notify->id().toUInt());
+	QString().sprintf(" && CART.NUMBER=%u ",cartnum);
       q=new RDSqlQuery(sql);
       if(q->first()) {
 	item=new RDListViewItem(lib_cart_list);
-	item->setText(1,QString().sprintf("%06u",notify->id().toUInt()));
+	item->setText(1,QString().sprintf("%06u",cartnum));
 	RefreshLine(item);
       }
       delete q;
@@ -919,17 +920,17 @@ void MainWidget::notificationReceivedData(RDNotification *notify)
 
     case RDNotification::ModifyAction:
       if((item=(RDListViewItem *)lib_cart_list->
-	  findItem(QString().sprintf("%06u",notify->id().toUInt()),1))!=NULL) {
+	  findItem(QString().sprintf("%06u",cartnum),1))!=NULL) {
 	RefreshLine(item);
       }
       break;
 
     case RDNotification::DeleteAction:
       if(lib_edit_pending) {
-	lib_deleted_carts.push_back(notify->id().toUInt());
+	lib_deleted_carts.push_back(cartnum);
       }
       else {
-	if((item=(RDListViewItem *)lib_cart_list->findItem(QString().sprintf("%06u",notify->id().toUInt()),1))!=NULL) {
+	if((item=(RDListViewItem *)lib_cart_list->findItem(QString().sprintf("%06u",cartnum),1))!=NULL) {
 	  delete item;
 	}
       }
