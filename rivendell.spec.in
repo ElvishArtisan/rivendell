@@ -150,8 +150,7 @@ cp scripts/start_traverso.sh $RPM_BUILD_ROOT/@DOC_PATH@/scripts/
 cp scripts/rd_mysql_enable_host.sh $RPM_BUILD_ROOT/@DOC_PATH@/scripts/
 cp scripts/rd_backup_system.sh $RPM_BUILD_ROOT/@DOC_PATH@/scripts/
 cp scripts/rd_restore_system.sh $RPM_BUILD_ROOT/@DOC_PATH@/scripts/
-mkdir -p $RPM_BUILD_ROOT/%{_datadir}/doc/rivendell-importers-%{version}
-cp scripts/engine_conv.py $RPM_BUILD_ROOT/%{_datadir}/doc/rivendell-importers-%{version}/
+cp scripts/engine_conv.py $RPM_BUILD_ROOT/@DOC_PATH@
 
 
 %post
@@ -266,7 +265,7 @@ rm -rf $RPM_BUILD_ROOT
 @LOCAL_PREFIX@/bin/rdsoftkeys
 @LOCAL_PREFIX@/bin/rdpopup
 @LOCAL_PREFIX@/bin/rdalsaconfig
-@CONSOLEHELPER_RDALSACONFIG@
+@LOCAL_PREFIX@/bin/rdalsaconfig-root
 @LOCAL_PREFIX@/bin/rdgpimon
 @LOCAL_PREFIX@/bin/rdclilogedit
 @LOCAL_PREFIX@/bin/rddelete
@@ -403,7 +402,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man8/rddbcheck.8.gz
 %{_mandir}/man8/rdmarkerset.8.gz
 %{_mandir}/man8/rdrevert.8.gz
-%{_docdir}/rivendell-%{version}/*
+@DOC_PATH@/*
 
 
 %files base
@@ -444,7 +443,6 @@ rm -rf $RPM_BUILD_ROOT
 @LOCAL_PREFIX@/bin/rddiscimport
 @LOCAL_PREFIX@/share/applications/rivendell-rddgimport.desktop
 @LOCAL_PREFIX@/share/applications/rivendell-rddiscimport.desktop
-%{_docdir}/rivendell-importers-%{version}/*
 
 
 %files opsguide

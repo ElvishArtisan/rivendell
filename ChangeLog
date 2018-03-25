@@ -16754,3 +16754,6 @@
 2018-03-25 Fred Gleason <fredg@paravelsystems.com>
 	* Refactored the RPM spec file to determine target distro at
 	build time.
+2018-03-25 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the conditional installation of 'rdalsaconfig-root'
+	when building RPMs.
