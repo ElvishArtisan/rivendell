@@ -16749,3 +16749,5 @@
 	* Added support for notifications to rdclilogedit(1).
 2018-03-25 Fred Gleason <fredg@paravelsystems.com>
 	* Added support for log notifications to the RDXport service.
+2018-03-25 Fred Gleason <fredg@paravelsystems.com>
+	* Added support for log notifications to rdairplay(1).

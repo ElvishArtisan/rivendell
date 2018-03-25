@@ -146,13 +146,6 @@ LogPlay::LogPlay(int id,QSocketDevice *nn_sock,QString logname,
   play_grace_timer=new QTimer(this);
   connect(play_grace_timer,SIGNAL(timeout()),
 	  this,SLOT(graceTimerData()));
-
-  //
-  // Rescan Timer
-  //
-  play_rescan_timer=new QTimer(this);
-  connect(play_rescan_timer,SIGNAL(timeout()),this,SLOT(rescanEventsData()));
-  play_rescan_timer->start(LOGPLAY_RESCAN_INTERVAL);
 }
 
 
@@ -487,9 +480,6 @@ void LogPlay::duckVolume(int level,int fade,int mport)
 void LogPlay::makeNext(int line,bool refresh_status)
 {
   play_next_line=line;
-  if(refresh_status) {
-    RefreshEvents(line,LOGPLAY_LOOKAHEAD_EVENTS);
-  }
   SendNowNext();
   SetTransTimer();
   UpdatePostPoint();
@@ -597,7 +587,7 @@ void LogPlay::append(const QString &log_name)
 
 
 bool LogPlay::refresh()            
-{                                  
+{
   RDLogLine *s;
   RDLogLine *d;
   int prev_line;
@@ -616,6 +606,7 @@ bool LogPlay::refresh()
   emit refreshStatusChanged(true);
   if((size()==0)||(play_log==NULL)) {
     emit refreshStatusChanged(false);
+    emit refreshabilityChanged(false);
     return true;
   }
 
@@ -746,7 +737,7 @@ bool LogPlay::refresh()
   SetTransTimer();
   emit transportChanged();
   emit reloaded();
-  if(!play_refreshable) {
+  if(play_refreshable) {
     play_refreshable=false;
     emit refreshabilityChanged(play_refreshable);
   }
@@ -1675,21 +1666,6 @@ void LogPlay::timescalingSupportedData(int card,bool state)
 }
 
 
-void LogPlay::rescanEventsData()
-{
-  int start_pos=play_rescan_pos;
-  int start_size=LOGPLAY_RESCAN_SIZE;
-  if((start_pos+start_size)>=size()) {
-    start_size=size()-start_pos;
-    play_rescan_pos=0;
-  }
-  else {
-    play_rescan_pos+=LOGPLAY_RESCAN_SIZE;
-  }
-  RefreshEvents(start_pos,start_size);
-}
-
-
 void LogPlay::auditionStartedData()
 {
   if(play_audition_head_played) {
@@ -1737,6 +1713,32 @@ void LogPlay::notificationReceivedData(RDNotification *notify)
 	    
 	  default:
 	    break;
+	  }
+	}
+      }
+    }
+  }
+
+  if(notify->type()==RDNotification::LogType) {
+    //
+    // Check Refreshability
+    //
+    if((play_log!=NULL)&&(notify->id().toString()==play_log->name())) {
+      if((!play_log->exists())||(play_log->linkDatetime()!=play_link_datetime)||
+	 (play_log->modifiedDatetime()<=play_modified_datetime)) {
+	if(play_refreshable) {
+	  play_refreshable=false;
+	  emit refreshabilityChanged(play_refreshable);
+	}
+      }
+      else {
+	if(play_log->autoRefresh()) {
+	  refresh();
+	}
+	else {
+	  if(!play_refreshable) {
+	    play_refreshable=true;
+	    emit refreshabilityChanged(play_refreshable);
 	  }
 	}
       }
@@ -2680,37 +2682,6 @@ void LogPlay::RefreshEvents(int line,int line_quan,bool force_update)
       }
     }
   }
-
-  //
-  // Check Refreshability
-  //
-  if(play_log!=NULL) {
-    if((!play_log->exists())||(play_log->linkDatetime()!=play_link_datetime)||
-       (play_log->modifiedDatetime()<=play_modified_datetime)) {
-      if(play_refreshable) {
-	play_refreshable=false;
-	emit refreshabilityChanged(play_refreshable);
-      }
-    }
-    else {
-      if(play_log->autoRefresh()) {
-	refresh();
-      }
-      else {
-	if(!play_refreshable) {
-	  play_refreshable=true;
-	  emit refreshabilityChanged(play_refreshable);
-	}
-      }
-    }
-  }
-
-/*
-  if(play_id==0) {
-    printf("LogPlay::RefreshEvents(%d,%d) took: %d msec\n",line,line_quan,
-	   st.msecsTo(QTime::currentTime()));
-  }
-*/
 }
 
 
@@ -2726,9 +2697,6 @@ void LogPlay::Playing(int id)
   emit played(line);
   AdvanceActiveEvent();
   UpdatePostPoint();
-  // TEST
-  RefreshEvents(line,LOGPLAY_LOOKAHEAD_EVENTS);
-  //
   LogPlayEvent(logline);
   emit transportChanged();
 }

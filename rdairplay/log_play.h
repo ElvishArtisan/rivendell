@@ -131,7 +131,7 @@ class LogPlay : public QObject,public RDLogEvent
   void macroFinishedData();
   void macroStoppedData();
   void timescalingSupportedData(int card,bool state);
-  void rescanEventsData();
+  //  void rescanEventsData();
   void auditionStartedData();
   void auditionStoppedData();
   void notificationReceivedData(RDNotification *notify);
@@ -232,7 +232,6 @@ class LogPlay : public QObject,public RDLogEvent
   bool play_timescaling_supported[RD_MAX_CARDS];
   QString play_svc_name;
   QString play_defaultsvc_name;
-  QTimer *play_rescan_timer;
   int play_rescan_pos;
   RDLog *play_log;
   QDateTime play_link_datetime;
