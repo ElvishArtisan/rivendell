@@ -116,52 +116,46 @@ if test "@WIN32_SOURCE@" ; then
   mkdir -p $RPM_BUILD_ROOT/var/win32
   cp @WIN32_SOURCE@ $RPM_BUILD_ROOT/var/win32/
 fi
-mkdir -p $RPM_BUILD_ROOT/%{_datadir}/doc/rivendell-%{version}
-cp AUTHORS $RPM_BUILD_ROOT/%{_datadir}/doc/rivendell-%{version}/
-cp ChangeLog $RPM_BUILD_ROOT/%{_datadir}/doc/rivendell-%{version}/
-cp COPYING $RPM_BUILD_ROOT/%{_datadir}/doc/rivendell-%{version}/
-cp INSTALL $RPM_BUILD_ROOT/%{_datadir}/doc/rivendell-%{version}/
-cp NEWS $RPM_BUILD_ROOT/%{_datadir}/doc/rivendell-%{version}/
-cp README $RPM_BUILD_ROOT/%{_datadir}/doc/rivendell-%{version}/
-cp UPGRADING $RPM_BUILD_ROOT/%{_datadir}/doc/rivendell-%{version}/
-cp CODINGSTYLE $RPM_BUILD_ROOT/%{_datadir}/doc/rivendell-%{version}/
-cp conf/*.conf $RPM_BUILD_ROOT/%{_datadir}/doc/rivendell-%{version}/
-cp conf/rd.conf-sample $RPM_BUILD_ROOT/%{_datadir}/doc/rivendell-%{version}/
-cp conf/my.cnf-master $RPM_BUILD_ROOT/%{_datadir}/doc/rivendell-%{version}/
-cp conf/my.cnf-standby $RPM_BUILD_ROOT/%{_datadir}/doc/rivendell-%{version}/
-cp conf/asound.conf-sample $RPM_BUILD_ROOT/%{_datadir}/doc/rivendell-%{version}/
-cp utils/sas_shim/rc.sas_shim $RPM_BUILD_ROOT/%{_datadir}/doc/rivendell-%{version}/
-mkdir -p $RPM_BUILD_ROOT/%{_datadir}/doc/rivendell-%{version}/misc
-cp docs/misc/colors $RPM_BUILD_ROOT/%{_datadir}/doc/rivendell-%{version}/misc/
-cp docs/misc/pam_rd.txt $RPM_BUILD_ROOT/%{_datadir}/doc/rivendell-%{version}/misc/
-cp docs/misc/reports.txt $RPM_BUILD_ROOT/%{_datadir}/doc/rivendell-%{version}/misc/
-cp docs/misc/ALSA.txt $RPM_BUILD_ROOT/%{_datadir}/doc/rivendell-%{version}/misc/
-cp docs/misc/RDMONITOR.txt $RPM_BUILD_ROOT/%{_datadir}/doc/rivendell-%{version}/misc/
-cp docs/misc/scheduler_formats.ods $RPM_BUILD_ROOT/%{_datadir}/doc/rivendell-%{version}/misc/
-cp docs/misc/ando_interface.odt $RPM_BUILD_ROOT/%{_datadir}/doc/rivendell-%{version}/misc/
-mkdir -p $RPM_BUILD_ROOT/%{_datadir}/doc/rivendell-%{version}
-mkdir -p $RPM_BUILD_ROOT/%{_datadir}/doc/rivendell-%{version}/apis
-cp docs/apis/*.pdf $RPM_BUILD_ROOT/%{_datadir}/doc/rivendell-%{version}/apis/
-mkdir -p $RPM_BUILD_ROOT/%{_datadir}/doc/rivendell-%{version}/tables
-cp docs/tables/*.txt $RPM_BUILD_ROOT/%{_datadir}/doc/rivendell-%{version}/tables/
-mkdir -p $RPM_BUILD_ROOT/%{_datadir}/doc/rivendell-%{version}/scripts
-cp scripts/rd_backup $RPM_BUILD_ROOT/%{_datadir}/doc/rivendell-%{version}/scripts/
-cp scripts/start_traverso.sh $RPM_BUILD_ROOT/%{_datadir}/doc/rivendell-%{version}/scripts/
-cp scripts/rd_mysql_enable_host.sh $RPM_BUILD_ROOT/%{_datadir}/doc/rivendell-%{version}/scripts/
-cp scripts/rd_backup_system.sh $RPM_BUILD_ROOT/%{_datadir}/doc/rivendell-%{version}/scripts/
-cp scripts/rd_restore_system.sh $RPM_BUILD_ROOT/%{_datadir}/doc/rivendell-%{version}/scripts/
+mkdir -p $RPM_BUILD_ROOT/@DOC_PATH@
+cp AUTHORS $RPM_BUILD_ROOT/@DOC_PATH@/
+cp ChangeLog $RPM_BUILD_ROOT/@DOC_PATH@/
+cp COPYING $RPM_BUILD_ROOT/@DOC_PATH@/
+cp INSTALL $RPM_BUILD_ROOT/@DOC_PATH@/
+cp NEWS $RPM_BUILD_ROOT/@DOC_PATH@/
+cp README $RPM_BUILD_ROOT/@DOC_PATH@/
+cp UPGRADING $RPM_BUILD_ROOT/@DOC_PATH@/
+cp CODINGSTYLE $RPM_BUILD_ROOT/@DOC_PATH@/
+cp conf/*.conf $RPM_BUILD_ROOT/@DOC_PATH@/
+cp conf/rd.conf-sample $RPM_BUILD_ROOT/@DOC_PATH@/
+cp conf/my.cnf-master $RPM_BUILD_ROOT/@DOC_PATH@/
+cp conf/my.cnf-standby $RPM_BUILD_ROOT/@DOC_PATH@/
+cp conf/asound.conf-sample $RPM_BUILD_ROOT/@DOC_PATH@/
+cp utils/sas_shim/rc.sas_shim $RPM_BUILD_ROOT/@DOC_PATH@/
+mkdir -p $RPM_BUILD_ROOT/@DOC_PATH@/misc
+cp docs/misc/colors $RPM_BUILD_ROOT/@DOC_PATH@/misc/
+cp docs/misc/pam_rd.txt $RPM_BUILD_ROOT/@DOC_PATH@/misc/
+cp docs/misc/reports.txt $RPM_BUILD_ROOT/@DOC_PATH@/misc/
+cp docs/misc/ALSA.txt $RPM_BUILD_ROOT/@DOC_PATH@/misc/
+cp docs/misc/RDMONITOR.txt $RPM_BUILD_ROOT/@DOC_PATH@/misc/
+cp docs/misc/scheduler_formats.ods $RPM_BUILD_ROOT/@DOC_PATH@/misc/
+cp docs/misc/ando_interface.odt $RPM_BUILD_ROOT/@DOC_PATH@/misc/
+mkdir -p $RPM_BUILD_ROOT/@DOC_PATH@
+mkdir -p $RPM_BUILD_ROOT/@DOC_PATH@/apis
+cp docs/apis/*.pdf $RPM_BUILD_ROOT/@DOC_PATH@/apis/
+mkdir -p $RPM_BUILD_ROOT/@DOC_PATH@/tables
+cp docs/tables/*.txt $RPM_BUILD_ROOT/@DOC_PATH@/tables/
+mkdir -p $RPM_BUILD_ROOT/@DOC_PATH@/scripts
+cp scripts/rd_backup $RPM_BUILD_ROOT/@DOC_PATH@/scripts/
+cp scripts/start_traverso.sh $RPM_BUILD_ROOT/@DOC_PATH@/scripts/
+cp scripts/rd_mysql_enable_host.sh $RPM_BUILD_ROOT/@DOC_PATH@/scripts/
+cp scripts/rd_backup_system.sh $RPM_BUILD_ROOT/@DOC_PATH@/scripts/
+cp scripts/rd_restore_system.sh $RPM_BUILD_ROOT/@DOC_PATH@/scripts/
 mkdir -p $RPM_BUILD_ROOT/%{_datadir}/doc/rivendell-importers-%{version}
 cp scripts/engine_conv.py $RPM_BUILD_ROOT/%{_datadir}/doc/rivendell-importers-%{version}/
 
 
 %post
 ldconfig
-if test "@DISTRO@" = "suse" ; then
-  PACKAGE_DOC_DIR=%_docdir/%{name}
-fi
-if test "@DISTRO@" = "redhat" ; then
-  PACKAGE_DOC_DIR=%_docdir/%{name}-@VERSION@
-fi
 /usr/sbin/groupadd -r -g 150 %{name} &>/dev/null || :
 /usr/sbin/useradd -o -u 150 -g %{name} -s /bin/false -r -c "Rivendell radio automation system" -d /var/snd %{name} &>/dev/null || :
 if test ! -e /var/snd ; then
@@ -175,7 +169,7 @@ if test ! -d /etc/rivendell.d ; then
   chmod 775 /etc/rivendell.d
 fi
 if test ! -e /etc/rd.conf ; then
-  cp $PACKAGE_DOC_DIR/rd.conf-sample /etc/rivendell.d/rd-default.conf
+  cp @DOC_PATH@/rd.conf-sample /etc/rivendell.d/rd-default.conf
   ln -s /etc/rivendell.d/rd-default.conf /etc/rd.conf
 fi
 if test ! -h /etc/rd.conf ; then
@@ -183,7 +177,7 @@ if test ! -h /etc/rd.conf ; then
   ln -s /etc/rivendell.d/rd-default.conf /etc/rd.conf
 fi
 if test ! -e /etc/asound.conf ; then
-  cp $PACKAGE_DOC_DIR/asound.conf-sample /etc/asound.conf
+  cp @DOC_PATH@/asound.conf-sample /etc/asound.conf
 fi
 if test -f /etc/init.d/mysql ; then
   /etc/init.d/mysql start

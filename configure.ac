@@ -24,6 +24,7 @@ AM_INIT_AUTOMAKE
 AC_SUBST(RPM_RELEASE,1)
 m4_ifdef([AM_SILENT_RULES],[AM_SILENT_RULES([yes])])
 AC_CONFIG_MACRO_DIR([m4])
+PKG_VERSION=m4_esyscmd(cat PACKAGE_VERSION)
 
 #
 # Some Fully Resolved Install Paths
@@ -120,10 +121,12 @@ if test $ar_gcc_distro = suse ; then
   AC_SUBST(MYSQL_PKG,"mysql")
   AC_SUBST(QT3_MYSQL_PKG,"qt3-mysql")
   AC_SUBST(QT3_DEVEL_PKG,"qt3-devel")
+  AC_SUBST(DOC_PATH,"/usr/share/doc")
 else
   AC_SUBST(APACHE_PKG,"httpd")
   AC_SUBST(APACHE_CONFIG_DIR,"/etc/httpd/conf.d")
   AC_SUBST(CONSOLEHELPER_RDALSACONFIG,"/usr/bin/rdalsaconfig-root")
+  AC_SUBST(DOC_PATH,"/usr/share/doc/rivendell-$PKG_VERSION")
   if test $ar_distro_major -ge 7 ; then
     AC_SUBST(USERMODE_PKG,"usermode usermode-gtk")
     AC_SUBST(MYSQL_PKG,"mariadb")
