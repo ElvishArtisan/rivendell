@@ -67,6 +67,8 @@ void Xport::AddLog()
 		    rda->config())) {
     XmlExit(err_msg,500,"logs.cpp",LINE_NUMBER);
   }
+  SendNotification(RDNotification::LogType,RDNotification::AddAction,
+		   QVariant(log_name));
   XmlExit("OK",200,"logs.cpp",LINE_NUMBER);
 }
 
@@ -95,6 +97,8 @@ void Xport::DeleteLog()
       delete log;
       XmlExit("Unable to delete log",500,"logs.cpp",LINE_NUMBER);
     }
+    SendNotification(RDNotification::LogType,RDNotification::DeleteAction,
+		     QVariant(log->name()));
   }
   delete log;
 
@@ -528,6 +532,8 @@ void Xport::SaveLog()
       log->setEndDate(end_date);
       log->setModifiedDatetime(QDateTime::currentDateTime());
       logevt->save(rda->config());
+      SendNotification(RDNotification::LogType,RDNotification::ModifyAction,
+		       QVariant(log->name()));
     }
     else {
       XmlExit("invalid log lock",400);
