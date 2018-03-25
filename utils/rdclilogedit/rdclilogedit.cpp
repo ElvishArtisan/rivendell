@@ -167,6 +167,17 @@ void MainObject::PrintPrompt() const
 }
 
 
+void MainObject::SendNotification(RDNotification::Action action,
+				  const QString &logname)
+{
+  RDNotification *notify=new RDNotification(RDNotification::LogType,
+					    action,QVariant(logname));
+  rda->ripc()->sendNotification(*notify);
+  qApp->processEvents();
+  delete notify;
+}
+
+
 int main(int argc,char *argv[])
 {
   QApplication a(argc,argv,false);

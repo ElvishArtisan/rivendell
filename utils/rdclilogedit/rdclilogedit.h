@@ -28,6 +28,7 @@
 #include <rdlog.h>
 #include <rdlog_event.h>
 #include <rdloglock.h>
+#include <rdnotification.h>
 
 #define RDCLILOGEDIT_USAGE "[options]\n"
 
@@ -73,6 +74,7 @@ class MainObject : public QObject
   void DispatchCommand(QString cmd);
   QString ListLine(RDLogEvent *evt,int line) const;
   void PrintPrompt() const;
+  void SendNotification(RDNotification::Action action,const QString &logname);
   bool edit_quiet_option;
   QString edit_accum;
   bool edit_modified;

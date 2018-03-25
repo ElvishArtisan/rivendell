@@ -16745,3 +16745,5 @@
 	'make dist' target.
 2018-03-25 Fred Gleason <fredg@paravelsystems.com>
 	* Added support for notifications to rdlogmanager(1).
+2018-03-25 Fred Gleason <fredg@paravelsystems.com>
+	* Added support for notifications to rdclilogedit(1).

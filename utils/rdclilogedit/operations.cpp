@@ -113,7 +113,10 @@ void MainObject::Deletelog(QString logname)
     RDLog *log=new RDLog(logname);
     if(log->exists()) {
       if(TryLock(log_lock,logname)) {
-	if(!log->remove(rda->station(),rda->user(),rda->config())) {
+	if(log->remove(rda->station(),rda->user(),rda->config())) {
+	  SendNotification(RDNotification::DeleteAction,log->name());
+	}
+	else {
 	  fprintf(stderr,
 		  "deletelog: audio deletion error, log not deleted\n");
 	}
@@ -406,6 +409,7 @@ void MainObject::Save()
   edit_log->
     setModifiedDatetime(QDateTime(QDate::currentDate(),QTime::currentTime()));
   edit_modified=false;
+  SendNotification(RDNotification::ModifyAction,edit_log->name());
 }
 
 
@@ -437,6 +441,7 @@ void MainObject::Saveas(const QString &logname)
     delete edit_log;
     edit_log=log;
     edit_modified=false;
+    SendNotification(RDNotification::AddAction,edit_log->name());
   }
   else {
     fprintf(stderr,"saveas: log already exists\n");
