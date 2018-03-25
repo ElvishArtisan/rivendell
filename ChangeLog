@@ -16740,3 +16740,6 @@
 2018-03-24 Fred Gleason <fredg@paravelsystems.com>
 	* Regularized code formatting for switch() statements in
 	'rdlogedit/'.
+2018-03-25 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed typos in 'docs/apis/Makefile.am' that broke the
+	'make dist' target.

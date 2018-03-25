@@ -48,9 +48,9 @@ EXTRA_DIST = cae.html\
              catchd.html\
              catchd.pdf\
              catchd.xml\
-             notifcation.html\
-             notifcation.pdf\
-             notifcation.xml\
+             notification.html\
+             notification.pdf\
+             notification.xml\
              ripc.html\
              ripc.pdf\
              ripc.xml\
