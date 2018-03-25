@@ -16743,3 +16743,5 @@
 2018-03-25 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed typos in 'docs/apis/Makefile.am' that broke the
 	'make dist' target.
+2018-03-25 Fred Gleason <fredg@paravelsystems.com>
+	* Added support for notifications to rdlogmanager(1).

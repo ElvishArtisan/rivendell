@@ -58,6 +58,7 @@
 #include "list_grids.h"
 #include "list_svcs.h"
 #include "rdlogmanager.h"
+#include "logobject.h"
 
 //
 // Icons
@@ -377,12 +378,16 @@ int main(int argc,char *argv[])
   for(unsigned i=0;i<cmd->keys();i++) {
     if (cmd->key(i)=="-P") {
       cmd_protect_existing = true;
+      cmd->setProcessed(i,true);
     }
     if (cmd->key(i)=="-g") {
+      printf("generate\n");
       cmd_generate = true;
+      cmd->setProcessed(i,true);
     }
     if (cmd->key(i)=="-m") {
       cmd_merge_music = true;
+      cmd->setProcessed(i,true);
     }
     if (cmd->key(i)=="-t") {
       cmd_merge_traffic = true;
@@ -391,8 +396,8 @@ int main(int argc,char *argv[])
     if(cmd->key(i)=="--skip-db-check") {
       cmd->setProcessed(i,true);
     }
-    if (cmd->key(i)=="-s") {
-      if (i+1<cmd->keys()) {
+    if(cmd->key(i)=="-s") {
+      if((i+1)<cmd->keys()) {
 	i++;
 	cmd_service = cmd->key(i);
       }
@@ -400,9 +405,10 @@ int main(int argc,char *argv[])
 	fprintf(stderr,"rdlogmanager: missing argument to \"-s\"\n");
 	exit(2);
       }
+      cmd->setProcessed(i,true);
     }
-    if (cmd->key(i)=="-r") {
-      if (i+1<cmd->keys()) {
+    if(cmd->key(i)=="-r") {
+      if(i+1<cmd->keys()) {
 	i++;
 	cmd_report = cmd->key(i);
       }
@@ -410,6 +416,7 @@ int main(int argc,char *argv[])
 	fprintf(stderr,"rdlogmanager: missing argument to \"-r\"\n");
 	exit(2);
       }
+      cmd->setProcessed(i,true);
     }
     if (cmd->key(i)=="-d") {
       if (i+1<cmd->keys()) {
@@ -420,6 +427,7 @@ int main(int argc,char *argv[])
 	fprintf(stderr,"rdlogmanager: missing argument to \"-d\"\n");
 	exit(2);
       }
+      cmd->setProcessed(i,true);
     }
     if (cmd->key(i)=="-e") {
       if (i+1<cmd->keys()) {
@@ -430,6 +438,7 @@ int main(int argc,char *argv[])
 	fprintf(stderr,"rdlogmanager: missing argument to \"-e\"\n");
 	exit(2);
       }
+      cmd->setProcessed(i,true);
     }
     if(!cmd->processed(i)) {
       fprintf(stderr,"rdlogmanager: unknown command option \"%s\"\n",
@@ -446,10 +455,11 @@ int main(int argc,char *argv[])
   }
 
   if(cmd_generate||cmd_merge_traffic||cmd_merge_music) {
-    return RunLogOperation(argc,argv,cmd_service,cmd_start_offset,
-			   cmd_protect_existing,cmd_generate,
-			   cmd_merge_music,cmd_merge_traffic);
-  }
+    QApplication a(argc,argv,false);
+    new LogObject(cmd_service,cmd_start_offset,cmd_protect_existing,
+		  cmd_generate,cmd_merge_music,cmd_merge_traffic);
+    return a.exec();
+ }
   if(!cmd_report.isEmpty()) {
     return RunReportOperation(argc,argv,cmd_report,cmd_protect_existing,
 			      cmd_start_offset,cmd_end_offset);

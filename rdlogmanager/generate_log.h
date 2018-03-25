@@ -21,14 +21,15 @@
 #ifndef GENERATE_LOG_H
 #define GENERATE_LOG_H
 
-#include <qdialog.h>
-#include <qsqldatabase.h>
-#include <qlabel.h>
-#include <qpushbutton.h>
-#include <qdatetimeedit.h>
 #include <qcombobox.h>
-#include <qprogressdialog.h>
+#include <qdatetimeedit.h>
+#include <qdialog.h>
+#include <qlabel.h>
 #include <qpixmap.h>
+#include <qprogressdialog.h>
+#include <qpushbutton.h>
+
+#include <rdnotification.h>
 
 #define GENERATE_LOG_FILESCAN_INTERVAL 5000
 
@@ -55,6 +56,7 @@ class GenerateLog : public QDialog
 
  private:
   void UpdateControls();
+  void SendNotification(RDNotification::Action action,const QString &logname);
   QLabel *gen_service_label;
   QComboBox *gen_service_box;
   QLabel *gen_date_label;

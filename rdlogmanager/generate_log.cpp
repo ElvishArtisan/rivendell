@@ -338,6 +338,7 @@ void GenerateLog::createData()
       }
     }
   }
+  SendNotification(RDNotification::DeleteAction,log->name());
   log->removeTracks(rda->station(),rda->user(),rda->config());
 
   //
@@ -376,6 +377,7 @@ void GenerateLog::createData()
     return;
   }
   log->updateTracks();
+  SendNotification(RDNotification::AddAction,log->name());
   delete log;
   delete svc;
 
@@ -465,6 +467,7 @@ void GenerateLog::musicData()
       delete svc;
       return;
   }
+  SendNotification(RDNotification::ModifyAction,log->name());
   delete log;
   delete svc;
   if(!report.isEmpty()) {
@@ -515,6 +518,7 @@ void GenerateLog::trafficData()
     delete svc;
     return;
   }
+  SendNotification(RDNotification::ModifyAction,log->name());
   delete log;
   delete svc;
   if(!report.isEmpty()) {
@@ -640,4 +644,14 @@ void GenerateLog::UpdateControls()
   delete log;
   delete svc;
   fileScanData();
+}
+
+
+void GenerateLog::SendNotification(RDNotification::Action action,
+				   const QString &logname)
+{
+  RDNotification *notify=new RDNotification(RDNotification::LogType,
+					    action,QVariant(logname));
+  rda->ripc()->sendNotification(*notify);
+  delete notify;
 }

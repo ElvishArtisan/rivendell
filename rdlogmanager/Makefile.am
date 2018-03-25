@@ -62,6 +62,7 @@ dist_rdlogmanager_SOURCES = add_clock.cpp add_clock.h\
                             list_events.cpp list_events.h\
                             list_grids.cpp list_grids.h\
                             list_svcs.cpp list_svcs.h\
+                            logobject.cpp logobject.h\
                             pick_report_dates.cpp pick_report_dates.h\
                             rdlogmanager.cpp rdlogmanager.h\
                             rename_item.cpp rename_item.h\
@@ -87,6 +88,7 @@ nodist_rdlogmanager_SOURCES = moc_add_clock.cpp\
                               moc_list_events.cpp\
                               moc_list_grids.cpp\
                               moc_list_svcs.cpp\
+                              moc_logobject.cpp\
                               moc_pick_report_dates.cpp\
                               moc_rdlogmanager.cpp\
                               moc_rename_item.cpp\
