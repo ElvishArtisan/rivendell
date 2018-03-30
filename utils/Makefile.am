@@ -20,14 +20,10 @@
 ##
 ## Use automake to process this into a Makefile.in
 
-if HPI_RD_AM
-  HPIINFO_RD_OPT = rdhpiinfo
-endif
 if ALSA_RD_AM
   ALSACONFIG_RD_OPT = rdalsaconfig
 endif
 SUBDIRS = $(ALSACONFIG_RD_OPT)\
-          $(HPIINFO_RD_OPT)\
           rddbcheck\
           rddgimport\
           rdcheckcuts\

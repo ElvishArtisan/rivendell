@@ -427,14 +427,6 @@ New</source>
         <source>&amp;Cancel</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>Duplicate Event</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>An event with these parameters already exists!</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>EditRecording</name>

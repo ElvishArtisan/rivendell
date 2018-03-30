@@ -16757,3 +16757,16 @@
 2018-03-25 Fred Gleason <fredg@paravelsystems.com>
 	* Removed the conditional installation of 'rdalsaconfig-root'
 	when building RPMs.
+2018-03-30 Fred Gleason <fredg@paravelsystems.com>
+	* Added support for DMA bus-mastering to the HPI driver.
+2018-03-30 Fred Gleason <fredg@paravelsystems.com>
+	* Updated switch() statement formatting in 'rdhpi/'.
+2018-03-30 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdlogmanager(1) that caused DB corruption when
+	a clock was deleted while still being assigned to a grid.
+2018-03-30 Fred Gleason <fredg@paravelsystems.com>
+	* Removed rdhpiinfo(8).
+2018-03-30 Fred Gleason <fredg@paravelsystems.com>
+	* Removed event checks when update Playout events in rdcatch(1).
+2018-03-30 Fred Gleason <fredg@paravelsystems.com>
+	* Updated the date in the copyright notice in rdadmin(1).

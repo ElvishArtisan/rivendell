@@ -3901,7 +3901,7 @@ PARTICULAR PURPOSE.  Touch the &quot;View License&quot; button for details.</sou
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Copyright 2002-2014</source>
+        <source>Copyright 2002-2018</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

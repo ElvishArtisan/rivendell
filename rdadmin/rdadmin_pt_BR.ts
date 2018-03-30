@@ -4362,7 +4362,11 @@ FINALIDADE PARTICULAR.  Aperte o botão VER LICENÇA para mais detalhes.</transl
     </message>
     <message>
         <source>Copyright 2002-2014</source>
-        <translation type="unfinished">Copyright 2002-2009 {2002-2014?}</translation>
+        <translation type="obsolete">Copyright 2002-2009 {2002-2014?}</translation>
+    </message>
+    <message>
+        <source>Copyright 2002-2018</source>
+        <translation type="unfinished">Copyright 2002-2009 {2002-2018?}</translation>
     </message>
 </context>
 <context>

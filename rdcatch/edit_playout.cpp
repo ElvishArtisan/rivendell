@@ -333,11 +333,6 @@ void EditPlayout::selectCutData()
 
 void EditPlayout::saveasData()
 {
-  if(!CheckEvent(true)) {
-    QMessageBox::warning(this,tr("Duplicate Event"),
-		     tr("An event with these parameters already exists!"));
-    return;
-  }
   delete edit_recording;
   edit_recording=new RDRecording(-1,true);
   edit_added_events->push_back(edit_recording->id());
@@ -347,11 +342,6 @@ void EditPlayout::saveasData()
 
 void EditPlayout::okData()
 {
-  if(!CheckEvent(false)) {
-    QMessageBox::warning(this,tr("Duplicate Event"),
-		     tr("An event with these parameters already exists!"));
-    return;
-  }
   Save();
   done(0);
 }
@@ -450,73 +440,4 @@ void EditPlayout::Save()
   edit_recording->setSat(edit_sat_button->isChecked());
   edit_recording->setSun(edit_sun_button->isChecked());
   edit_recording->setOneShot(edit_oneshot_box->isChecked());
-}
-
-
-bool EditPlayout::CheckEvent(bool include_myself)
-{
-  char station[65];
-  char gunk[3];
-  int chan;
-  QTime test_start_time;
-  QTime test_end_time;
-
-  RDCut *cut=new RDCut(edit_cutname);
-  QTime start_time=edit_starttime_edit->time();
-  QTime end_time=edit_starttime_edit->time().addMSecs(cut->length());
-  delete cut;
-
-  sscanf((const char *)edit_station_box->currentText(),"%s%s%d",
-	 station,gunk,&chan);
-  QString sql=
-    QString().sprintf("select RECORDINGS.START_TIME,CUTS.LENGTH\
-                       from RECORDINGS left join CUTS\
-                       on(RECORDINGS.CUT_NAME=CUTS.CUT_NAME)\
-                       where (RECORDINGS.STATION_NAME=\"%s\")&&\
-                       (RECORDINGS.TYPE=%d)&&(RECORDINGS.CHANNEL=%d)",
-		      station,RDRecording::Playout,chan+128);
-  if(edit_sun_button->isChecked()) {
-    sql+="&&(RECORDINGS.SUN=\"Y\")";
-  }
-  if(edit_mon_button->isChecked()) {
-    sql+="&&(RECORDINGS.MON=\"Y\")";
-  }
-  if(edit_tue_button->isChecked()) {
-    sql+="&&(RECORDINGS.TUE=\"Y\")";
-  }
-  if(edit_wed_button->isChecked()) {
-    sql+="&&(RECORDINGS.WED=\"Y\")";
-  }
-  if(edit_thu_button->isChecked()) {
-    sql+="&&(RECORDINGS.THU=\"Y\")";
-  }
-  if(edit_fri_button->isChecked()) {
-    sql+="&&(RECORDINGS.FRI=\"Y\")";
-  }
-  if(edit_sat_button->isChecked()) {
-    sql+="&&(RECORDINGS.SAT=\"Y\")";
-  }
-  if(!include_myself) {
-    sql+=QString().sprintf("&&(RECORDINGS.ID!=%d)",edit_recording->id());
-  }
-  RDSqlQuery *q=new RDSqlQuery(sql);
-  while(q->next()) {
-    test_start_time=q->value(0).toTime();
-    test_end_time=q->value(0).toTime().addMSecs(q->value(1).toUInt());
-    if(test_end_time<test_start_time) {
-      test_end_time=QTime(23,59,59);
-    }
-    if(((start_time<test_start_time)&&(start_time<test_end_time)&&
-	(end_time<test_start_time)&&(end_time<test_end_time))||
-       ((start_time>test_start_time)&&(start_time>test_end_time)&&
-	(end_time>test_start_time)&&(end_time>test_end_time))) {
-    }
-    else {
-      delete q;
-      return false;
-    }
-  }
-  delete q;
-
-  return true;
 }

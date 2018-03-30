@@ -44,7 +44,6 @@
 #define AUDIO_SIZE 32768
 #define RDHPIRECORDSTREAM_CLOCK_INTERVAL 100
 
-
 class RDHPIRecordStream : public QObject,public RDWaveFile
 {
   Q_OBJECT
@@ -94,7 +93,7 @@ class RDHPIRecordStream : public QObject,public RDWaveFile
  private:
   bool GetStream();
   void FreeStream();
-  hpi_err_t LogHpi(hpi_err_t err);
+  hpi_err_t LogHpi(hpi_err_t err,int lineno);
   RDHPISoundCard *sound_card;
   bool debug;
   bool xrun;
@@ -130,6 +129,7 @@ class RDHPIRecordStream : public QObject,public RDWaveFile
   HPI_DATA hpi_data;
 #endif
   bool is_open;
+  uint32_t dma_buffer_size;
 };
 
 

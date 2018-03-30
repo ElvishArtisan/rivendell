@@ -432,11 +432,11 @@ Neu</translation>
     </message>
     <message>
         <source>Duplicate Event</source>
-        <translation>Doppeltes Event</translation>
+        <translation type="obsolete">Doppeltes Event</translation>
     </message>
     <message>
         <source>An event with these parameters already exists!</source>
-        <translation>Ein Event mit diesen Parametern existiert bereits!</translation>
+        <translation type="obsolete">Ein Event mit diesen Parametern existiert bereits!</translation>
     </message>
 </context>
 <context>

@@ -426,11 +426,11 @@ como Nuevo</translation>
     </message>
     <message>
         <source>Duplicate Event</source>
-        <translation>Evento duplicado</translation>
+        <translation type="obsolete">Evento duplicado</translation>
     </message>
     <message>
         <source>An event with these parameters already exists!</source>
-        <translation>¡Un evento con esos parámetros ya existe!</translation>
+        <translation type="obsolete">¡Un evento con esos parámetros ya existe!</translation>
     </message>
     <message>
         <source>&amp;Save As
