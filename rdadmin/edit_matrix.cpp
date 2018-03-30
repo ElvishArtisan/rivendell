@@ -330,8 +330,8 @@ EditMatrix::EditMatrix(RDMatrix *matrix,QWidget *parent)
   // Card Number
   //
   edit_card_box=new QSpinBox(this);
-  edit_card_box->setGeometry(75,371,50,19);
-  edit_card_box->setRange(0,RD_MAX_CARDS-1);
+  edit_card_box->setGeometry(75,371,60,19);
+  edit_card_box->setRange(0,9999);
   edit_card_label=new QLabel(edit_card_box,tr("Card:"),this);
   edit_card_label->setGeometry(10,371,60,19);
   edit_card_label->setFont(bold_font);

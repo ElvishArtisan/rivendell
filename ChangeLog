@@ -16770,3 +16770,6 @@
 	* Removed event checks when update Playout events in rdcatch(1).
 2018-03-30 Fred Gleason <fredg@paravelsystems.com>
 	* Updated the date in the copyright notice in rdadmin(1).
+2018-03-30 Fred Gleason <fredg@paravelsystems.com>
+	* Increased the maximum value of the 'Card' control in the
+	'Edit Switcher' dialog in rdamin(1) to 9999.
