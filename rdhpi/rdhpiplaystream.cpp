@@ -196,11 +196,7 @@ bool RDHPIPlayStream::formatSupported(RDWaveFile::Format format)
     if(!found) {
       return false;
     }
-    if(LogHpi(HPI_OutStreamHostBufferAllocate(NULL,hostream,dma_buffer_size),
-	      __LINE__)!=0) {
-      LogHpi(HPI_OutStreamClose(NULL,hostream),__LINE__);
-      return false;
-    }
+    if(HPI_OutStreamHostBufferAllocate(NULL,hostream,dma_buffer_size));
   }
   else {
     hostream=hpi_stream;
@@ -246,7 +242,7 @@ bool RDHPIPlayStream::formatSupported(RDWaveFile::Format format)
     break;
   }
   if(!is_open) {
-    LogHpi(HPI_OutStreamHostBufferFree(NULL,hostream),__LINE__);
+    if(HPI_OutStreamHostBufferFree(NULL,hostream));
     LogHpi(HPI_OutStreamClose(NULL,hostream),__LINE__);
   }
   if(state!=0) {
@@ -759,7 +755,7 @@ void RDHPIPlayStream::tickClock()
   else {
     if(state==HPI_STATE_DRAINED) {
       LogHpi(HPI_OutStreamStop(NULL,hpi_stream),__LINE__);
-      LogHpi(HPI_OutStreamHostBufferFree(NULL,hpi_stream),__LINE__);
+      if(HPI_OutStreamHostBufferFree(NULL,hpi_stream));
       LogHpi(HPI_OutStreamClose(NULL,hpi_stream),__LINE__);
       hpi_err=LogHpi(HPI_AdapterClose(NULL,card_index[card_number]),__LINE__);
       clock->stop();
@@ -795,8 +791,7 @@ int RDHPIPlayStream::GetStream()
     if(++stream_mutex[card_number][i]==1) {
       LogHpi(HPI_OutStreamOpen(NULL,card_index[card_number],i,&hpi_stream),
 	     __LINE__);
-      LogHpi(HPI_OutStreamHostBufferAllocate(NULL,hpi_stream,dma_buffer_size),
-	     __LINE__);
+      if(HPI_OutStreamHostBufferAllocate(NULL,hpi_stream,dma_buffer_size));
       stream_number=i;
       return stream_number;
     }
@@ -823,13 +818,12 @@ void RDHPIPlayStream::FreeStream()
 {
 #ifdef RDHPIPLAYSTREAM_USE_LOCAL_MUTEX
   stream_mutex[card_number][stream_number]--;
-  LogHpi(HPI_OutStreamHostBufferFree(NULL,hpi_stream),__LINE__);
+  if(HPI_OutStreamHostBufferFree(NULL,hpi_stream));
   LogHpi(HPI_OutStreamClose(NULL,hpi_stream),__LINE__);
   stream_number=-1;
 #else
-  LogHpi(HPI_OutStreamHostBufferFree(NULL,hpi_stream),__LINE__);
+  if(HPI_OutStreamHostBufferFree(NULL,hpi_stream));
   LogHpi(HPI_OutStreamClose(NULL,hpi_stream),__LINE__);
-//  syslog(LOG_ERR,"HPI closing ostream: %d",stream_number);
   stream_number=-1;
 #endif
 }

@@ -210,12 +210,7 @@ bool RDHPIRecordStream::formatSupported(RDWaveFile::Format format)
     if(!found) {
       return false;
     }
-    if(LogHpi(HPI_InStreamHostBufferAllocate(NULL,histream,dma_buffer_size),
-	      __LINE__)!=0) {
-      LogHpi(HPI_InStreamHostBufferFree(NULL,histream),__LINE__);
-      LogHpi(HPI_InStreamClose(NULL,histream),__LINE__);
-      return false;
-    }
+    if(HPI_InStreamHostBufferAllocate(NULL,histream,dma_buffer_size));
   }
   else {
     histream=hpi_stream;
@@ -262,7 +257,7 @@ bool RDHPIRecordStream::formatSupported(RDWaveFile::Format format)
     break;
   }
   if(!is_open) {
-    LogHpi(HPI_InStreamHostBufferFree(NULL,histream),__LINE__);
+    if(HPI_InStreamHostBufferFree(NULL,histream));
     LogHpi(HPI_InStreamClose(NULL,histream),__LINE__);
   }
   if(state!=0) {
@@ -724,7 +719,7 @@ bool RDHPIRecordStream::GetStream()
     }
     return false;
   }
-  hpi_err=HPI_InStreamHostBufferAllocate(NULL,hpi_stream,dma_buffer_size);
+  if(HPI_InStreamHostBufferAllocate(NULL,hpi_stream,dma_buffer_size));
 
   return true;
 }
@@ -732,9 +727,7 @@ bool RDHPIRecordStream::GetStream()
 
 void RDHPIRecordStream::FreeStream()
 {
-  hpi_err_t hpi_err;
-
-  hpi_err=HPI_InStreamHostBufferFree(NULL,hpi_stream);
+  if(HPI_InStreamHostBufferFree(NULL,hpi_stream));
   LogHpi(HPI_InStreamClose(NULL,hpi_stream),__LINE__);
 }
 
