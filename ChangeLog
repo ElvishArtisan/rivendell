@@ -16773,3 +16773,8 @@
 2018-03-30 Fred Gleason <fredg@paravelsystems.com>
 	* Increased the maximum value of the 'Card' control in the
 	'Edit Switcher' dialog in rdamin(1) to 9999.
+2018-04-14 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in the HPI audio interface that broke capture
+	on adapters lacking DMA bus-mastering support.
+2018-04-14 Fred Gleason <fredg@paravelsystems.com>
+	* Cleaned up spurious HPI error messages being sent to the syslog.
