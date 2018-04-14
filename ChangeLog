@@ -16631,3 +16631,6 @@
 2018-03-28 Fred Gleason <fredg@paravelsystems.com>
 	* Updated 'NEWS'.
 	* Incremented the package version to 2.19.1.
+2018-04-14 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in the HPI audio interface that broke capture
+	on adapters lacking DMA bus-mastering support.
