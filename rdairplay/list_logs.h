@@ -2,7 +2,7 @@
 //
 // Select a Rivendell Log
 //
-//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2004,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -28,8 +28,7 @@
 
 #include <rdlogfilter.h>
 #include <rdloglock.h>
-
-#include <log_play.h>
+#include <rdlogplay.h>
 
 class ListLogs : public QDialog
 {
@@ -37,7 +36,7 @@ class ListLogs : public QDialog
 
  public:
   enum Operation {Load=0,Cancel=1,Save=2,SaveAs=3,Unload=4};
-  ListLogs(LogPlay *log,QWidget *parent=0);
+  ListLogs(RDLogPlay *log,QWidget *parent=0);
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
 
@@ -69,9 +68,9 @@ class ListLogs : public QDialog
   QPushButton *list_save_button;
   QPushButton *list_saveas_button;
   QPushButton *list_cancel_button;
-  LogPlay *list_log;
+  RDLogPlay *list_log;
   RDLogLock **list_log_lock;
 };
 
 
-#endif 
+#endif  // LIST_LOGS_H

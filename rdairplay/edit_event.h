@@ -2,7 +2,7 @@
 //
 // Event Editor for RDAirPlay
 //
-//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2004,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -32,22 +32,21 @@
 #include <qtextedit.h>
 #include <qtimer.h>
 
-#include <rdtransportbutton.h>
-#include <rdslider.h>
 #include <rdcae.h>
-#include <rdplay_deck.h>
-#include <rdmarker_edit.h>
-#include <rdpushbutton.h>
-#include <rdtimeedit.h>
 #include <rdcueedit.h>
-
-#include <log_play.h>
+#include <rdlogplay.h>
+#include <rdmarker_edit.h>
+#include <rdplay_deck.h>
+#include <rdpushbutton.h>
+#include <rdslider.h>
+#include <rdtimeedit.h>
+#include <rdtransportbutton.h>
 
 class EditEvent : public QDialog
 {
   Q_OBJECT
  public:
-  EditEvent(LogPlay *log,RDCae *cae,QWidget *parent=0);
+  EditEvent(RDLogPlay *log,RDCae *cae,QWidget *parent=0);
   ~EditEvent();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
@@ -67,7 +66,7 @@ class EditEvent : public QDialog
   void closeEvent(QCloseEvent *e);
 
  private:
-  LogPlay *edit_log;
+  RDLogPlay *edit_log;
   RDLogLine *edit_logline;
   int edit_line;
   RDTimeEdit *edit_time_edit;

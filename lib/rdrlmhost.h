@@ -1,8 +1,8 @@
-// rlmhost.h
+// rdrlmhost.h
 //
 // A container class for a Rivendell Loadable Module host.
 //
-//   (C) Copyright 2008,2016-2017 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2008,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,8 +18,8 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#ifndef RLMHOST_H
-#define RLMHOST_H
+#ifndef RDRLMHOST_H
+#define RDRLMHOST_H
 
 #include <vector>
 
@@ -35,13 +35,13 @@
 
 #include "../rlm/rlm.h"
 
-class RLMHost : public QObject
+class RDRLMHost : public QObject
 {
   Q_OBJECT
  public:
-  RLMHost(const QString &path,const QString &arg,QSocketDevice *udp_socket,
+  RDRLMHost(const QString &path,const QString &arg,QSocketDevice *udp_socket,
 	  QObject *parent=0);
-  ~RLMHost();
+  ~RDRLMHost();
   QString pluginPath() const;
   QString pluginArg() const;
   void sendEvent(const QString &svcname,const QString &logname,
@@ -102,4 +102,4 @@ class RLMHost : public QObject
 };
 
 
-#endif  // RLMHOST_H
+#endif  // RDRLMHOST_H

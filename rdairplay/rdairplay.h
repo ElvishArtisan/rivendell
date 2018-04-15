@@ -37,32 +37,32 @@
 #include <qsplashscreen.h>
 #include <qfontmetrics.h>
 
-#include <rdpushbutton.h>
-#include <rdstereometer.h>
-#include <rdlabel.h>
-#include <rdinstancelock.h>
-#include <rduser.h>
-#include <rdripc.h>
-#include <rdplay_deck.h>
-#include <rdmacro.h>
-#include <rdconfig.h>
 #include <rd.h>
-#include <rdttydevice.h>
 #include <rdemptycart.h>
-
-#include <log_play.h>
-#include <loglinebox.h>
-#include <post_counter.h>
-#include <pie_counter.h>
-#include <stop_counter.h>
-#include <mode_display.h>
-#include <start_button.h>
-#include <list_log.h>
-#include <button_log.h>
-#include <colors.h>
-#include <rdsound_panel.h>
 #include <rdhotkeylist.h>
 #include <rdhotkeys.h>
+#include <rdinstancelock.h>
+#include <rdlabel.h>
+#include <rdlogplay.h>
+#include <rdmacro.h>
+#include <rdplay_deck.h>
+#include <rdpushbutton.h>
+#include <rdripc.h>
+#include <rdrlmhost.h>
+#include <rdsound_panel.h>
+#include <rdstereometer.h>
+#include <rdttydevice.h>
+#include <rduser.h>
+
+#include "button_log.h"
+#include "colors.h"
+#include "list_log.h"
+#include "loglinebox.h"
+#include "mode_display.h"
+#include "post_counter.h"
+#include "pie_counter.h"
+#include "stop_counter.h"
+#include "start_button.h"
 
 //
 // Debug Settings
@@ -145,7 +145,7 @@ class MainWidget : public QWidget
   bool AssertChannelLock(int dir,int achan);
   int AudioChannel(int card,int port) const;
   RDAirPlayConf::Channel PanelChannel(int mport) const;
-  LogPlay *air_log[RDAIRPLAY_LOG_QUANTITY];
+  RDLogPlay *air_log[RDAIRPLAY_LOG_QUANTITY];
   RDSoundPanel *air_panel;
   PostCounter *air_post_counter;
   PieCounter *air_pie_counter;
@@ -199,7 +199,7 @@ class MainWidget : public QWidget
   QPixmap *air_refresh_pixmap;
   QString air_editor_cmd;
   QSocketDevice *air_nownext_socket;
-  std::vector<RLMHost *> air_plugin_hosts;
+  std::vector<RDRLMHost *> air_plugin_hosts;
   QSplashScreen *air_splash_screen;
   int  keystrokecount;
   bool AltKeyHit ;

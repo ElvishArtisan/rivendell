@@ -46,7 +46,7 @@
 #include "../icons/music.xpm"
 
 
-ListLog::ListLog(LogPlay *log,RDCae *cae,int id,bool allow_pause,
+ListLog::ListLog(RDLogPlay *log,RDCae *cae,int id,bool allow_pause,
 		 QWidget *parent)
   : QWidget(parent)
 {

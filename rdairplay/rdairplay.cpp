@@ -346,7 +346,8 @@ MainWidget::MainWidget(QWidget *parent)
   connect(rename_mapper,SIGNAL(mapped(int)),this,SLOT(logRenamedData(int)));
   QString default_svcname=rda->airplayConf()->defaultSvc();
   for(int i=0;i<RDAIRPLAY_LOG_QUANTITY;i++) {
-    air_log[i]=new LogPlay(i,air_nownext_socket,"",&air_plugin_hosts);
+    air_log[i]=new RDLogPlay(i,rdevent_player,air_nownext_socket,"",
+			     &air_plugin_hosts);
     air_log[i]->setDefaultServiceName(default_svcname);
     air_log[i]->setNowCart(rda->airplayConf()->logNowCart(i));
     air_log[i]->setNextCart(rda->airplayConf()->logNextCart(i));
@@ -854,8 +855,8 @@ MainWidget::MainWidget(QWidget *parent)
   q=new RDSqlQuery(sql);
   while(q->next()) {
     air_plugin_hosts.
-      push_back(new RLMHost(q->value(0).toString(),q->value(1).toString(),
-			    air_nownext_socket,this));
+      push_back(new RDRLMHost(q->value(0).toString(),q->value(1).toString(),
+			      air_nownext_socket,this));
     LogLine(RDConfig::LogInfo,QString().
 	    sprintf("Loading RLM \"%s\"",
 		    (const char *)q->value(0).toString()));

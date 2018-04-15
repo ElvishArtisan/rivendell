@@ -172,6 +172,7 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdlogedit_conf.cpp rdlogedit_conf.h\
                         rdlogfilter.cpp rdlogfilter.h\
                         rdloglock.cpp rdloglock.h\
+                        rdlogplay.cpp rdlogplay.h\
                         rdmacro.cpp rdmacro.h\
                         rdmacro_event.cpp rdmacro_event.h\
                         rdmarker_bar.cpp rdmarker_bar.h\
@@ -205,6 +206,7 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdreport.cpp rdreport.h\
                         rdringbuffer.cpp rdringbuffer.h\
                         rdripc.cpp rdripc.h\
+                        rdrlmhost.cpp rdrlmhost.h\
                         rdschedcode.cpp rdschedcode.h\
                         rdschedcodes_dialog.cpp rdschedcodes_dialog.h\
                         rdsegmeter.cpp rdsegmeter.h\
@@ -308,6 +310,7 @@ nodist_librd_la_SOURCES = moc_rdadd_cart.cpp\
                           moc_rdlivewire.cpp\
                           moc_rdlogfilter.cpp\
                           moc_rdloglock.cpp\
+                          moc_rdlogplay.cpp\
                           moc_rdmacro_event.cpp\
                           moc_rdmarker_bar.cpp\
                           moc_rdmarker_edit.cpp\
@@ -319,7 +322,8 @@ nodist_librd_la_SOURCES = moc_rdadd_cart.cpp\
                           moc_rdplaymeter.cpp\
                           moc_rdpushbutton.cpp\
                           moc_rdripc.cpp\
-                          moc_rdschedcodes_dialog.cpp\
+                          moc_rdrlmhost.cpp\
+                         moc_rdschedcodes_dialog.cpp\
                           moc_rdsegmeter.cpp\
                           moc_rdsimpleplayer.cpp\
                           moc_rdrehash.cpp\

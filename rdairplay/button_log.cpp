@@ -29,7 +29,7 @@
 #include "colors.h"
 #include "globals.h"
 
-ButtonLog::ButtonLog(LogPlay *log,RDCae *cae,int id,RDAirPlayConf *conf,
+ButtonLog::ButtonLog(RDLogPlay *log,RDCae *cae,int id,RDAirPlayConf *conf,
 		     bool allow_pause,QWidget *parent)
   : QWidget(parent)
 {

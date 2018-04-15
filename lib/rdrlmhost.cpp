@@ -1,4 +1,4 @@
-// rlmhost.cpp
+// rdrlmhost.cpp
 //
 // A container class for a Rivendell Loadable Module host.
 //
@@ -21,18 +21,20 @@
 #include <dlfcn.h>
 #include <iostream>
 
-#include <rdapplication.h>
-#include <rdconf.h>
-#include <rddatedecode.h>
-#include <rdnownext.h>
-#include <rdprofile.h>
-#include <rdsvc.h>
+#include <qsignalmapper.h>
 
-#include "globals.h"
-#include "rlmhost.h"
+#include "rdapplication.h"
+#include "rdconf.h"
+#include "rddatedecode.h"
+#include "rdnownext.h"
+#include "rdprofile.h"
+#include "rdrlmhost.h"
+#include "rdsvc.h"
+
+//#include "globals.h"
 
 
-RLMHost::RLMHost(const QString &path,const QString &arg,
+RDRLMHost::RDRLMHost(const QString &path,const QString &arg,
 		 QSocketDevice *udp_socket,QObject *parent)
   : QObject(parent)
 {
@@ -59,24 +61,24 @@ RLMHost::RLMHost(const QString &path,const QString &arg,
 }
 
 
-RLMHost::~RLMHost()
+RDRLMHost::~RDRLMHost()
 {
 }
 
 
-QString RLMHost::pluginPath() const
+QString RDRLMHost::pluginPath() const
 {
   return plugin_path;
 }
 
 
-QString RLMHost::pluginArg() const
+QString RDRLMHost::pluginArg() const
 {
   return plugin_arg;
 }
 
 
-void RLMHost::sendEvent(const QString &svcname,const QString &logname,
+void RDRLMHost::sendEvent(const QString &svcname,const QString &logname,
 			int lognum,RDLogLine **loglines,bool onair,
 			RDAirPlayConf::OpMode mode)
 {
@@ -112,8 +114,8 @@ void RLMHost::sendEvent(const QString &svcname,const QString &logname,
     log->log_mach=lognum;
     log->log_onair=onair;
     log->log_mode=mode;
-    RLMHost::loadMetadata(loglines[0],now,now_dt);
-    RLMHost::loadMetadata(loglines[1],next); 
+    RDRLMHost::loadMetadata(loglines[0],now,now_dt);
+    RDRLMHost::loadMetadata(loglines[1],next); 
     plugin_pad_data_sent_sym(this,svc,log,now,next);
     delete next;
     delete now;
@@ -123,7 +125,7 @@ void RLMHost::sendEvent(const QString &svcname,const QString &logname,
 }
 
 
-bool RLMHost::load()
+bool RDRLMHost::load()
 {
   QString basename=RDGetBasePart(plugin_path);
   basename=basename.left(basename.findRev("."));
@@ -146,7 +148,7 @@ bool RLMHost::load()
 }
 
 
-void RLMHost::unload()
+void RDRLMHost::unload()
 {
   if(plugin_free_sym!=NULL) {
     plugin_free_sym(this);
@@ -154,7 +156,7 @@ void RLMHost::unload()
 }
 
 
-void RLMHost::loadMetadata(const RDLogLine *logline,struct rlm_pad *pad,
+void RDRLMHost::loadMetadata(const RDLogLine *logline,struct rlm_pad *pad,
 			   const QDateTime &start_datetime)
 {
   QDateTime now(QDate::currentDate(),QTime::currentTime());
@@ -284,7 +286,7 @@ void RLMHost::loadMetadata(const RDLogLine *logline,struct rlm_pad *pad,
 }
 
 
-void RLMHost::saveMetadata(const struct rlm_pad *pad,RDLogLine *logline)
+void RDRLMHost::saveMetadata(const struct rlm_pad *pad,RDLogLine *logline)
 {
   if(logline==NULL) {
     return;
@@ -325,7 +327,7 @@ void RLMHost::saveMetadata(const struct rlm_pad *pad,RDLogLine *logline)
 }
 
 
-void RLMHost::timerData(int timernum)
+void RDRLMHost::timerData(int timernum)
 {
   if(plugin_timer_expired_sym!=NULL) {
     plugin_timer_expired_sym(this,timernum);
@@ -333,7 +335,7 @@ void RLMHost::timerData(int timernum)
 }
 
 
-void RLMHost::ttyReceiveReadyData(int fd)
+void RDRLMHost::ttyReceiveReadyData(int fd)
 {
   char data[1024];
   int n;
@@ -358,7 +360,7 @@ void RLMHost::ttyReceiveReadyData(int fd)
 void RLMSendUdp(void *ptr,const char *ipaddr,uint16_t port,
 		const char *data,int len)
 {
-  RLMHost *host=(RLMHost *)ptr;
+  RDRLMHost *host=(RDRLMHost *)ptr;
   QHostAddress addr;
   addr.setAddress(ipaddr);
   if(!addr.isNull()) {
@@ -370,7 +372,7 @@ void RLMSendUdp(void *ptr,const char *ipaddr,uint16_t port,
 int RLMOpenSerial(void *ptr,const char *port,int speed,int parity,
 		  int word_length)
 {
-  RLMHost *host=(RLMHost *)ptr;
+  RDRLMHost *host=(RDRLMHost *)ptr;
   host->plugin_tty_devices.push_back(new RDTTYDevice);
   host->plugin_tty_devices.back()->setName(port);
   host->plugin_tty_devices.back()->setSpeed(speed);
@@ -391,7 +393,7 @@ int RLMOpenSerial(void *ptr,const char *port,int speed,int parity,
 
 void RLMSendSerial(void *ptr,int handle,const char *data,int len)
 {
-  RLMHost *host=(RLMHost *)ptr;
+  RDRLMHost *host=(RDRLMHost *)ptr;
   if((handle<0)||(handle>=(int)host->plugin_tty_devices.size())) {
     return;
   }
@@ -401,7 +403,7 @@ void RLMSendSerial(void *ptr,int handle,const char *data,int len)
 
 void RLMCloseSerial(void *ptr,int handle)
 {
-  RLMHost *host=(RLMHost *)ptr;
+  RDRLMHost *host=(RDRLMHost *)ptr;
 
   //
   // FIXME: We really ought to take out the trash here!
@@ -414,7 +416,7 @@ void RLMCloseSerial(void *ptr,int handle)
 
 const char *RLMDateTime(void *ptr,int offset_msecs,const char *format)
 {
-  RLMHost *host=(RLMHost *)ptr;
+  RDRLMHost *host=(RDRLMHost *)ptr;
   QDateTime datetime=QDateTime(QDate::currentDate(),QTime::currentTime().
 			       addMSecs(offset_msecs));
   strncpy(host->plugin_value_string,datetime.toString(format),1024);
@@ -426,14 +428,14 @@ const char *RLMResolveNowNextEncoded(void *ptr,const struct rlm_pad *now,
 				     const struct rlm_pad *next,
 				     const char *format,int encoding)
 {
-  RLMHost *host=(RLMHost *)ptr;
+  RDRLMHost *host=(RDRLMHost *)ptr;
   RDLogLine *loglines[2];
   QString str=format;
 
   loglines[0]=new RDLogLine();
   loglines[1]=new RDLogLine();
-  RLMHost::saveMetadata(now,loglines[0]);
-  RLMHost::saveMetadata(next,loglines[1]);
+  RDRLMHost::saveMetadata(now,loglines[0]);
+  RDRLMHost::saveMetadata(next,loglines[1]);
   RDResolveNowNext(&str,loglines,encoding);
   strncpy(host->plugin_value_string,str,1024);
   delete loglines[1];
@@ -452,13 +454,13 @@ const char *RLMResolveNowNext(void *ptr,const struct rlm_pad *now,
 
 void RLMLog(void *ptr,int prio,const char *msg)
 {
-  LogLine((RDConfig::LogPriority)prio,msg);
+  rda->config()->log("log machine",(RDConfig::LogPriority)prio,msg);
 }
 
 
 void RLMStartTimer(void *ptr,int timernum,int msecs,int mode)
 {
-  RLMHost *host=(RLMHost *)ptr;
+  RDRLMHost *host=(RDRLMHost *)ptr;
   if((timernum<0)||(timernum>=RLM_MAX_TIMERS)) {
     return;
   }
@@ -471,7 +473,7 @@ void RLMStartTimer(void *ptr,int timernum,int msecs,int mode)
 
 void RLMStopTimer(void *ptr,int timernum)
 {
-  RLMHost *host=(RLMHost *)ptr;
+  RDRLMHost *host=(RDRLMHost *)ptr;
   if((timernum<0)||(timernum>=RLM_MAX_TIMERS)) {
     return;
   }
@@ -518,7 +520,7 @@ const char *RLMGetStringValue(void *ptr,const char *filename,
 			      const char *section,const char *label,
 			      const char *default_value)
 {
-  RLMHost *host=(RLMHost *)ptr;
+  RDRLMHost *host=(RDRLMHost *)ptr;
   RDProfile *p=new RDProfile();
   p->setSource(filename);
   strncpy(host->plugin_value_string,

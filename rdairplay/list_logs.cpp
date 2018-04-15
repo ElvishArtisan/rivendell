@@ -29,7 +29,7 @@
 #include "globals.h"
 #include "list_logs.h"
 
-ListLogs::ListLogs(LogPlay *log,QWidget *parent)
+ListLogs::ListLogs(RDLogPlay *log,QWidget *parent)
   : QDialog(parent,"",true)
 {
   //

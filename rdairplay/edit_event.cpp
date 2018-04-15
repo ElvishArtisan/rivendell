@@ -29,7 +29,7 @@
 #include "edit_event.h"
 #include "globals.h"
 
-EditEvent::EditEvent(LogPlay *log,RDCae *cae,QWidget *parent)
+EditEvent::EditEvent(RDLogPlay *log,RDCae *cae,QWidget *parent)
   : QDialog(parent,"",true)
 {
   edit_log=log;

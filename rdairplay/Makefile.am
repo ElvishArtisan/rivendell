@@ -50,15 +50,11 @@ dist_rdairplay_SOURCES = button_log.cpp button_log.h\
                          list_log.cpp list_log.h\
                          list_logs.cpp list_logs.h\
                          local_macros.cpp colors.h\
-                         log_play.cpp log_play.h\
-                         log_traffic.cpp log_traffic.h\
                          loglinebox.cpp loglinebox.h\
                          mode_display.cpp mode_display.h\
-                         nownext.cpp\
                          pie_counter.cpp pie_counter.h\
                          post_counter.cpp post_counter.h\
                          rdairplay.cpp rdairplay.h\
-                         rlmhost.cpp rlmhost.h\
                          start_button.cpp start_button.h\
                          stop_counter.cpp stop_counter.h\
                          wall_clock.cpp wall_clock.h
@@ -70,13 +66,11 @@ nodist_rdairplay_SOURCES = moc_button_log.cpp\
                            moc_lib_listview.cpp\
                            moc_list_log.cpp\
                            moc_list_logs.cpp\
-                           moc_log_play.cpp\
                            moc_loglinebox.cpp\
                            moc_mode_display.cpp\
                            moc_pie_counter.cpp\
                            moc_post_counter.cpp\
                            moc_rdairplay.cpp\
-                           moc_rlmhost.cpp\
                            moc_start_button.cpp\
                            moc_stop_counter.cpp\
                            moc_wall_clock.cpp

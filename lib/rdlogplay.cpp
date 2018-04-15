@@ -1,4 +1,4 @@
-// log_play.cpp
+// rdlogplay.cpp
 //
 // Rivendell Log Playout Machine
 //
@@ -21,18 +21,20 @@
 #include <unistd.h>
 #include <syslog.h>
 
-#include <rdapplication.h>
-#include <rddb.h>
-#include <rddebug.h>
-#include <rdlog.h>
-#include <rdmixer.h>
+#include "rdapplication.h"
+#include "rdconf.h"
+#include "rddb.h"
+#include "rddebug.h"
+#include "rdescape_string.h"
+#include "rdlog.h"
+#include "rdlogplay.h"
+#include "rdmixer.h"
+#include "rdnownext.h"
+#include "rdsvc.h"
 
-#include "globals.h"
-#include "log_play.h"
-#include "log_traffic.h"
-
-LogPlay::LogPlay(int id,QSocketDevice *nn_sock,QString logname,
-		 std::vector<RLMHost *> *rlm_hosts,QObject *parent)
+RDLogPlay::RDLogPlay(int id,RDEventPlayer *player,QSocketDevice *nn_sock,
+		 QString logname,std::vector<RDRLMHost *> *rlm_hosts,
+		 QObject *parent)
   : QObject(parent),RDLogEvent(logname)
 {
   //
@@ -40,6 +42,7 @@ LogPlay::LogPlay(int id,QSocketDevice *nn_sock,QString logname,
   //
   play_log=NULL;
   play_id=id;
+  play_event_player=player;
   play_rlm_hosts=rlm_hosts;
   play_onair_flag=false;
   play_segue_length=rda->airplayConf()->segueLength()+1;
@@ -149,7 +152,7 @@ LogPlay::LogPlay(int id,QSocketDevice *nn_sock,QString logname,
 }
 
 
-QString LogPlay::serviceName() const
+QString RDLogPlay::serviceName() const
 {
   if(play_svc_name.isEmpty()) {
     return play_defaultsvc_name;
@@ -158,43 +161,43 @@ QString LogPlay::serviceName() const
 }
 
 
-void LogPlay::setServiceName(const QString &svcname)
+void RDLogPlay::setServiceName(const QString &svcname)
 {
   play_svc_name=svcname;
 }
 
 
-QString LogPlay::defaultServiceName() const
+QString RDLogPlay::defaultServiceName() const
 {
   return play_defaultsvc_name;
 }
 
 
-void LogPlay::setDefaultServiceName(const QString &svcname)
+void RDLogPlay::setDefaultServiceName(const QString &svcname)
 {
   play_defaultsvc_name=svcname;
 }
 
 
-int LogPlay::card(int channum) const
+int RDLogPlay::card(int channum) const
 {
   return play_card[channum];
 }
 
 
-int LogPlay::port(int channum) const
+int RDLogPlay::port(int channum) const
 {
   return play_port[channum];
 }
 
 
-RDAirPlayConf::OpMode LogPlay::mode() const
+RDAirPlayConf::OpMode RDLogPlay::mode() const
 {
   return play_op_mode;
 }
 
 
-void LogPlay::setOpMode(RDAirPlayConf::OpMode mode)
+void RDLogPlay::setOpMode(RDAirPlayConf::OpMode mode)
 {
   if(mode==play_op_mode) {
     return;
@@ -204,7 +207,7 @@ void LogPlay::setOpMode(RDAirPlayConf::OpMode mode)
 }
 
 
-void LogPlay::setLogName(QString name)
+void RDLogPlay::setLogName(QString name)
 {
   if(logName()!=name) {
     RDLogEvent::setLogName(name);
@@ -214,7 +217,7 @@ void LogPlay::setLogName(QString name)
 }
 
 
-void LogPlay::setChannels(int cards[2],int ports[2],
+void RDLogPlay::setChannels(int cards[2],int ports[2],
 			  const QString start_rml[2],const QString stop_rml[2])
 {
   for(int i=0;i<2;i++) {
@@ -227,25 +230,25 @@ void LogPlay::setChannels(int cards[2],int ports[2],
 }
 
 
-void LogPlay::setSegueLength(int len)
+void RDLogPlay::setSegueLength(int len)
 {
   play_segue_length=len;
 }
 
 
-void LogPlay::setNowCart(unsigned cartnum)
+void RDLogPlay::setNowCart(unsigned cartnum)
 {
   play_now_cartnum=cartnum;
 }
 
 
-void LogPlay::setNextCart(unsigned cartnum)
+void RDLogPlay::setNextCart(unsigned cartnum)
 {
   play_next_cartnum=cartnum;
 }
 
 
-void LogPlay::auditionHead(int line)
+void RDLogPlay::auditionHead(int line)
 {
   RDLogLine *logline=logLine(line);
   if((play_audition_player==NULL)||(logline==NULL)) {
@@ -261,7 +264,7 @@ void LogPlay::auditionHead(int line)
 }
 
 
-void LogPlay::auditionTail(int line)
+void RDLogPlay::auditionTail(int line)
 {
   RDLogLine *logline=logLine(line);
   if((play_audition_player==NULL)||(logline==NULL)) {
@@ -281,7 +284,7 @@ void LogPlay::auditionTail(int line)
 }
 
 
-void LogPlay::auditionStop()
+void RDLogPlay::auditionStop()
 {
   if(play_audition_player==NULL) {
     return;
@@ -292,7 +295,7 @@ void LogPlay::auditionStop()
 }
 
 
-bool LogPlay::play(int line,RDLogLine::StartSource src,
+bool RDLogPlay::play(int line,RDLogLine::StartSource src,
 		   int mport,bool skip_meta)
 {
   QTime current_time=QTime::currentTime();
@@ -346,7 +349,7 @@ bool LogPlay::play(int line,RDLogLine::StartSource src,
 }
 
 
-bool LogPlay::channelPlay(int mport)
+bool RDLogPlay::channelPlay(int mport)
 {
   if(nextLine()<0) {
     return false;
@@ -355,7 +358,7 @@ bool LogPlay::channelPlay(int mport)
 }
 
 
-bool LogPlay::stop(bool all,int port,int fade)
+bool RDLogPlay::stop(bool all,int port,int fade)
 {
   RDLogLine *logline;
   int lines[TRANSPORT_QUANTITY];
@@ -381,7 +384,7 @@ bool LogPlay::stop(bool all,int port,int fade)
 }
 
 
-bool LogPlay::stop(int line,int fade)
+bool RDLogPlay::stop(int line,int fade)
 {
   RDLogLine *logline;
 
@@ -408,7 +411,7 @@ bool LogPlay::stop(int line,int fade)
 }
 
 
-bool LogPlay::channelStop(int mport)
+bool RDLogPlay::channelStop(int mport)
 {
   RDLogLine *logline;
   int lines[TRANSPORT_QUANTITY];
@@ -429,7 +432,7 @@ bool LogPlay::channelStop(int mport)
 }
 
 
-bool LogPlay::pause(int line)
+bool RDLogPlay::pause(int line)
 {
   RDLogLine *logline;
   
@@ -453,7 +456,7 @@ bool LogPlay::pause(int line)
 }
 
 
-void LogPlay::duckVolume(int level,int fade,int mport)
+void RDLogPlay::duckVolume(int level,int fade,int mport)
 {
   RDLogLine *logline;
   int lines[TRANSPORT_QUANTITY];
@@ -477,7 +480,7 @@ void LogPlay::duckVolume(int level,int fade,int mport)
 		
 
 
-void LogPlay::makeNext(int line,bool refresh_status)
+void RDLogPlay::makeNext(int line,bool refresh_status)
 {
   play_next_line=line;
   SendNowNext();
@@ -488,7 +491,7 @@ void LogPlay::makeNext(int line,bool refresh_status)
 }
 
 
-void LogPlay::load()
+void RDLogPlay::load()
 {
   int lines[TRANSPORT_QUANTITY];
   int running=0;
@@ -561,7 +564,7 @@ void LogPlay::load()
 }
 
 
-void LogPlay::append(const QString &log_name)
+void RDLogPlay::append(const QString &log_name)
 {
   int old_size=size();
 
@@ -586,7 +589,7 @@ void LogPlay::append(const QString &log_name)
 }
 
 
-bool LogPlay::refresh()            
+bool RDLogPlay::refresh()            
 {
   RDLogLine *s;
   RDLogLine *d;
@@ -748,7 +751,7 @@ bool LogPlay::refresh()
 }
 
 
-void LogPlay::save(int line)
+void RDLogPlay::save(int line)
 {
   RDLogEvent::save(rda->config(),line);
   if(play_log!=NULL) {
@@ -766,7 +769,7 @@ void LogPlay::save(int line)
 }
 
 
-void LogPlay::clear()
+void RDLogPlay::clear()
 {
   setLogName("");
   int start_line=0;
@@ -789,7 +792,7 @@ void LogPlay::clear()
 }
 
 
-void LogPlay::insert(int line,int cartnum,RDLogLine::TransType next_type,
+void RDLogPlay::insert(int line,int cartnum,RDLogLine::TransType next_type,
 		     RDLogLine::TransType type)
 {
   RDLogLine *logline;
@@ -844,7 +847,7 @@ void LogPlay::insert(int line,int cartnum,RDLogLine::TransType next_type,
 }
 
 
-void LogPlay::insert(int line,RDLogLine *l,bool update,bool preserv_custom_transition)
+void RDLogPlay::insert(int line,RDLogLine *l,bool update,bool preserv_custom_transition)
 {
   RDLogLine *logline;
   int lines[TRANSPORT_QUANTITY];
@@ -899,7 +902,7 @@ void LogPlay::insert(int line,RDLogLine *l,bool update,bool preserv_custom_trans
 }
 
 
-void LogPlay::remove(int line,int num_lines,bool update,bool preserv_custom_transition)
+void RDLogPlay::remove(int line,int num_lines,bool update,bool preserv_custom_transition)
 {
   RDPlayDeck *playdeck;
   RDLogLine *logline;
@@ -962,7 +965,7 @@ void LogPlay::remove(int line,int num_lines,bool update,bool preserv_custom_tran
 }
 
 
-void LogPlay::move(int from_line,int to_line)
+void RDLogPlay::move(int from_line,int to_line)
 {
   int offset=0;
   int lines[TRANSPORT_QUANTITY];
@@ -1055,7 +1058,7 @@ void LogPlay::move(int from_line,int to_line)
 }
 
 
-void LogPlay::copy(int from_line,int to_line,RDLogLine::TransType type)
+void RDLogPlay::copy(int from_line,int to_line,RDLogLine::TransType type)
 {
   RDLogLine *logline;
 
@@ -1066,7 +1069,7 @@ void LogPlay::copy(int from_line,int to_line,RDLogLine::TransType type)
 }
 
 
-int LogPlay::topLine()
+int RDLogPlay::topLine()
 {
   for(int i=0;i<size();i++) {
     if((logLine(i)->status()==RDLogLine::Playing)||
@@ -1079,19 +1082,19 @@ int LogPlay::topLine()
 }
 
 
-int LogPlay::currentLine() const
+int RDLogPlay::currentLine() const
 {
   return play_line_counter;
 }
 
 
-int LogPlay::nextLine() const
+int RDLogPlay::nextLine() const
 {
   return play_next_line;
 }
 
 
-int LogPlay::nextLine(int line)
+int RDLogPlay::nextLine(int line)
 {
   int lines[TRANSPORT_QUANTITY];
 
@@ -1120,7 +1123,7 @@ int LogPlay::nextLine(int line)
 }
 
 
-RDLogLine *LogPlay::nextEvent()
+RDLogLine *RDLogPlay::nextEvent()
 {
   if(play_next_line<0) {
     return NULL;
@@ -1129,7 +1132,7 @@ RDLogLine *LogPlay::nextEvent()
 }
 
 
-RDLogLine::TransType LogPlay::nextTrans()
+RDLogLine::TransType RDLogPlay::nextTrans()
 {
   RDLogLine *logline=nextEvent();
   if(logline==NULL) {
@@ -1139,7 +1142,7 @@ RDLogLine::TransType LogPlay::nextTrans()
 }
 
 
-RDLogLine::TransType LogPlay::nextTrans(int line)
+RDLogLine::TransType RDLogPlay::nextTrans(int line)
 {
   RDLogLine *logline;
 
@@ -1155,7 +1158,7 @@ RDLogLine::TransType LogPlay::nextTrans(int line)
 }
 
 
-void LogPlay::transportEvents(int line[])
+void RDLogPlay::transportEvents(int line[])
 {
   int count=0;
   int start=topLine();
@@ -1197,7 +1200,7 @@ void LogPlay::transportEvents(int line[])
 }
 
 
-int LogPlay::runningEvents(int *lines, bool include_paused)
+int RDLogPlay::runningEvents(int *lines, bool include_paused)
 {
   int count=0;
   int events[TRANSPORT_QUANTITY];
@@ -1270,7 +1273,7 @@ int LogPlay::runningEvents(int *lines, bool include_paused)
 }
 
 
-void LogPlay::lineModified(int line)
+void RDLogPlay::lineModified(int line)
 {
   RDLogLine *logline;
   RDLogLine *next_logline;
@@ -1300,7 +1303,7 @@ void LogPlay::lineModified(int line)
 }
 
 
-RDLogLine::Status LogPlay::status(int line)
+RDLogLine::Status RDLogPlay::status(int line)
 {
   RDLogLine *logline;
 
@@ -1311,7 +1314,7 @@ RDLogLine::Status LogPlay::status(int line)
 }
 
 
-QTime LogPlay::startTime(int line)
+QTime RDLogPlay::startTime(int line)
 {
   RDLogLine *logline;
 
@@ -1335,13 +1338,13 @@ QTime LogPlay::startTime(int line)
 }
 
 
-QTime LogPlay::nextStop() const
+QTime RDLogPlay::nextStop() const
 {
   return play_next_stop;
 }
 
 
-bool LogPlay::running(bool include_paused)
+bool RDLogPlay::running(bool include_paused)
 {
   if(runningEvents(NULL,include_paused)==0) {
     return false;
@@ -1350,13 +1353,13 @@ bool LogPlay::running(bool include_paused)
 }
 
 
-void LogPlay::resync()
+void RDLogPlay::resync()
 {
   SetTransTimer();
 }
 
 
-bool LogPlay::isRefreshable() const
+bool RDLogPlay::isRefreshable() const
 {
   return (play_log->exists())&&
     (play_log->linkDatetime()==play_link_datetime)&&
@@ -1364,7 +1367,7 @@ bool LogPlay::isRefreshable() const
 }
   
 
-void LogPlay::transTimerData()
+void RDLogPlay::transTimerData()
 {
   int lines[TRANSPORT_QUANTITY];
   RDLogLine *logline=NULL;
@@ -1391,7 +1394,7 @@ void LogPlay::transTimerData()
     }
     else {
       if(logline==NULL) {
-	LogLine(RDConfig::LogNotice,"  invalid logline");
+	rda->config()->log("log engine",RDConfig::LogNotice,"  invalid logline");
 	SetTransTimer();
 	return;
       }
@@ -1428,7 +1431,7 @@ void LogPlay::transTimerData()
 }
 
 
-void LogPlay::graceTimerData()
+void RDLogPlay::graceTimerData()
 {
   int lines[TRANSPORT_QUANTITY];
   int line=play_grace_line;
@@ -1459,7 +1462,7 @@ void LogPlay::graceTimerData()
 }
 
 
-void LogPlay::playStateChangedData(int id,RDPlayDeck::State state)
+void RDLogPlay::playStateChangedData(int id,RDPlayDeck::State state)
 {
 #ifdef SHOW_SLOTS
   printf("playStateChangedData(%d,%d), log: %s\n",id,state,(const char *)logName());
@@ -1488,13 +1491,13 @@ void LogPlay::playStateChangedData(int id,RDPlayDeck::State state)
 }
 
 
-void LogPlay::onairFlagChangedData(bool state)
+void RDLogPlay::onairFlagChangedData(bool state)
 {
   play_onair_flag=state;
 }
 
 
-void LogPlay::segueStartData(int id)
+void RDLogPlay::segueStartData(int id)
 {
 #ifdef SHOW_SLOTS
   printf("segueStartData(%d)\n",id);
@@ -1524,7 +1527,7 @@ void LogPlay::segueStartData(int id)
 }
 
 
-void LogPlay::segueEndData(int id)
+void RDLogPlay::segueEndData(int id)
 {
 #ifdef SHOW_SLOTS
   printf("segueEndData(%d)\n",id);
@@ -1549,7 +1552,7 @@ void LogPlay::segueEndData(int id)
 }
 
 
-void LogPlay::talkStartData(int id)
+void RDLogPlay::talkStartData(int id)
 {
 #ifdef SHOW_SLOTS
   printf("talkStartData(%d)\n",id);
@@ -1557,7 +1560,7 @@ void LogPlay::talkStartData(int id)
 }
 
 
-void LogPlay::talkEndData(int id)
+void RDLogPlay::talkEndData(int id)
 {
 #ifdef SHOW_SLOTS
   printf("talkEndData(%d)\n",id);
@@ -1565,7 +1568,7 @@ void LogPlay::talkEndData(int id)
 }
 
 
-void LogPlay::positionData(int id,int pos)
+void RDLogPlay::positionData(int id,int pos)
 {
   int line=GetLineById(id);
 
@@ -1574,7 +1577,7 @@ void LogPlay::positionData(int id,int pos)
     return;
   }
   if(pos>logline->effectiveLength()) {
-    LogLine(RDConfig::LogWarning,QString().sprintf("*** position out of bounds on signal: Line: %d  Cart: %d  Pos: %d ***",line,logline->cartNumber(),logline->playPosition()));
+    rda->config()->log("log engine",RDConfig::LogWarning,QString().sprintf("*** position out of bounds on signal: Line: %d  Cart: %d  Pos: %d ***",line,logline->cartNumber(),logline->playPosition()));
     return;
   }
   logline->setPlayPosition(pos);
@@ -1582,7 +1585,7 @@ void LogPlay::positionData(int id,int pos)
 }
 
 
-void LogPlay::macroStartedData()
+void RDLogPlay::macroStartedData()
 {
 #ifdef SHOW_SLOTS
   printf("macroStartedData()\n");
@@ -1604,7 +1607,7 @@ void LogPlay::macroStartedData()
 }
 
 
-void LogPlay::macroFinishedData()
+void RDLogPlay::macroFinishedData()
 {
 #ifdef SHOW_SLOTS
   printf("macroFinishedData()\n");
@@ -1629,7 +1632,7 @@ void LogPlay::macroFinishedData()
 }
 
 
-void LogPlay::macroStoppedData()
+void RDLogPlay::macroStoppedData()
 {
 #ifdef SHOW_SLOTS
   printf("macroStoppedData()\n");
@@ -1648,7 +1651,7 @@ void LogPlay::macroStoppedData()
 }
 
 
-void LogPlay::timescalingSupportedData(int card,bool state)
+void RDLogPlay::timescalingSupportedData(int card,bool state)
 {
   if(card>=0) {
     play_timescaling_supported[card]=state;
@@ -1666,7 +1669,7 @@ void LogPlay::timescalingSupportedData(int card,bool state)
 }
 
 
-void LogPlay::auditionStartedData()
+void RDLogPlay::auditionStartedData()
 {
   if(play_audition_head_played) {
     emit auditionHeadPlayed(play_audition_line);
@@ -1677,7 +1680,7 @@ void LogPlay::auditionStartedData()
 }
 
 
-void LogPlay::auditionStoppedData()
+void RDLogPlay::auditionStoppedData()
 {
   int line=play_audition_line;
   play_audition_line=-1;
@@ -1685,7 +1688,7 @@ void LogPlay::auditionStoppedData()
 }
 
 
-void LogPlay::notificationReceivedData(RDNotification *notify)
+void RDLogPlay::notificationReceivedData(RDNotification *notify)
 {
   RDLogLine *ll=NULL;
   RDLogLine *next_ll=NULL;
@@ -1747,7 +1750,7 @@ void LogPlay::notificationReceivedData(RDNotification *notify)
 }
 
 
-bool LogPlay::StartEvent(int line,RDLogLine::TransType trans_type,
+bool RDLogPlay::StartEvent(int line,RDLogLine::TransType trans_type,
 			 int trans_length,RDLogLine::StartSource src,int mport,int duck_length)
 {
   int running;
@@ -1871,8 +1874,8 @@ bool LogPlay::StartEvent(int line,RDLogLine::TransType trans_type,
 	  logline->setStatus(RDLogLine::Playing);
 	  playStateChangedData(playdeck->id(),RDPlayDeck::Finished);
 	  logline->setStatus(RDLogLine::Finished);
-	  LogLine(RDConfig::LogErr,QString().
-		  sprintf("LogPlay::StartEvent(): no audio,CUT=%s",
+	  rda->config()->log("log engine",RDConfig::LogErr,QString().
+		  sprintf("RDLogPlay::StartEvent(): no audio,CUT=%s",
 			  (const char *)logline->cutName()));
 	  rda->airplayConf()->setLogCurrentLine(play_id,nextLine());
 	  return false;
@@ -1887,7 +1890,7 @@ bool LogPlay::StartEvent(int line,RDLogLine::TransType trans_type,
 			     playdeck->stream(),
 			     playdeck->port());
 	if((int)logline->playPosition()>logline->effectiveLength()) {
-	  LogLine(RDConfig::LogWarning,QString().sprintf("*** position out of bounds: Line: %d  Cart: %d  Pos: %d ***",line,logline->cartNumber(),logline->playPosition()));
+	  rda->config()->log("log engine",RDConfig::LogWarning,QString().sprintf("*** position out of bounds: Line: %d  Cart: %d  Pos: %d ***",line,logline->cartNumber(),logline->playPosition()));
 	  logline->setPlayPosition(0);
 	}
 	playdeck->play(logline->playPosition(),-1,-1,duck_length);
@@ -1902,7 +1905,7 @@ bool LogPlay::StartEvent(int line,RDLogLine::TransType trans_type,
 	}
 	logline->setStatus(RDLogLine::Playing);
 	if(!play_start_rml[aport].isEmpty()) {
-	  rdevent_player->
+	  play_event_player->
 	    exec(logline->resolveWildcards(play_start_rml[aport]));
 	}
 	/*
@@ -1912,7 +1915,7 @@ bool LogPlay::StartEvent(int line,RDLogLine::TransType trans_type,
 	*/
 	emit channelStarted(play_id,playdeck->channel(),
 			    playdeck->card(),playdeck->port());
-	LogLine(RDConfig::LogInfo,QString().sprintf(
+	rda->config()->log("log engine",RDConfig::LogInfo,QString().sprintf(
 		  "started audio cart: Line: %d  Cart: %u  Cut: %u Pos: %d  Card: %d  Stream: %d  Port: %d",
 		  line,logline->cartNumber(),
 		  playdeck->cut()->cutNumber(),
@@ -1970,14 +1973,14 @@ bool LogPlay::StartEvent(int line,RDLogLine::TransType trans_type,
 		     RDAirPlayConf::TrafficMacro,play_onair_flag);
 	  FinishEvent(line);
 	  emit transportChanged();
-	  LogLine(RDConfig::LogInfo,QString().
+	  rda->config()->log("log engine",RDConfig::LogInfo,QString().
 	     sprintf("asynchronously executed macro cart: Line: %d  Cart: %u",
 		     line,logline->cartNumber()));
 	}
 	else {
 	  play_macro_deck->load(logline->cartNumber());
 	  play_macro_deck->setLine(line);
-	  LogLine(RDConfig::LogInfo,QString().
+	  rda->config()->log("log engine",RDConfig::LogInfo,QString().
 		  sprintf("started macro cart: Line: %d  Cart: %u",
 			  line,logline->cartNumber()));
 	  play_macro_deck->exec();
@@ -2042,7 +2045,7 @@ bool LogPlay::StartEvent(int line,RDLogLine::TransType trans_type,
 	}
 	play_macro_deck->setLine(line);
 	play_macro_deck->exec();
-	LogLine(RDConfig::LogInfo,QString().
+	rda->config()->log("log engine",RDConfig::LogInfo,QString().
 		sprintf("chained to log: Line: %d  Log: %s",
 			line,
 			(const char *)logline->markerLabel()));
@@ -2066,7 +2069,7 @@ bool LogPlay::StartEvent(int line,RDLogLine::TransType trans_type,
 }
 
 
-bool LogPlay::StartAudioEvent(int line)
+bool RDLogPlay::StartAudioEvent(int line)
 {
   RDLogLine *logline;
   RDPlayDeck *playdeck=NULL;
@@ -2110,7 +2113,7 @@ bool LogPlay::StartAudioEvent(int line)
 }
 
 
-void LogPlay::CleanupEvent(int id)
+void RDLogPlay::CleanupEvent(int id)
 {
   int line=GetLineById(id);
   bool top_changed=false;
@@ -2121,12 +2124,12 @@ void LogPlay::CleanupEvent(int id)
   }
   playdeck=(RDPlayDeck *)logline->playDeck();
   if(playdeck->cut()==NULL) {
-    LogLine(RDConfig::LogErr,QString().
+    rda->config()->log("log engine",RDConfig::LogErr,QString().
 	    sprintf("event failed: Line: %d  Cart: %u",line,
 		    logline->cartNumber()));
   }
   else {
-    LogLine(RDConfig::LogInfo,QString().
+    rda->config()->log("log engine",RDConfig::LogInfo,QString().
 	    sprintf("finished event: Line: %d  Cart: %u  Cut: %u Card: %d  Stream: %d  Port: %d",
 		    line,logline->cartNumber(),
 		    playdeck->cut()->cutNumber(),
@@ -2152,7 +2155,7 @@ void LogPlay::CleanupEvent(int id)
 }
 
 
-void LogPlay::UpdateStartTimes(int line)
+void RDLogPlay::UpdateStartTimes(int line)
 {
   QTime time;
   QTime new_time;
@@ -2242,7 +2245,7 @@ void LogPlay::UpdateStartTimes(int line)
 }
 
 
-void LogPlay::FinishEvent(int line)
+void RDLogPlay::FinishEvent(int line)
 {
   int prev_next_line=play_next_line;
   if(GetNextPlayable(&play_next_line,false)) {
@@ -2271,7 +2274,7 @@ void LogPlay::FinishEvent(int line)
 }
 
 
-QTime LogPlay::GetStartTime(QTime sched_time,
+QTime RDLogPlay::GetStartTime(QTime sched_time,
 			    RDLogLine::TransType trans_type,
 			    RDLogLine::TimeType time_type,QTime prev_time,
 			    int prev_total_length,int prev_segue_length,
@@ -2334,7 +2337,7 @@ QTime LogPlay::GetStartTime(QTime sched_time,
 }
 
 
-QTime LogPlay::GetNextStop(int line)
+QTime RDLogPlay::GetNextStop(int line)
 {
   bool running=false;
   QTime time;
@@ -2386,7 +2389,7 @@ QTime LogPlay::GetNextStop(int line)
   return time;
 }
 
-void LogPlay::UpdatePostPoint()
+void RDLogPlay::UpdatePostPoint()
 {
   int lines[TRANSPORT_QUANTITY] = {-1};
   int count = runningEvents(lines,false);
@@ -2398,7 +2401,7 @@ void LogPlay::UpdatePostPoint()
   UpdatePostPoint(lines[0]);
 }
 
-void LogPlay::UpdatePostPoint(int line)
+void RDLogPlay::UpdatePostPoint(int line)
 {
   int post_line=-1;
   QTime post_time;
@@ -2424,7 +2427,7 @@ void LogPlay::UpdatePostPoint(int line)
 }
 
 
-void LogPlay::AdvanceActiveEvent()
+void RDLogPlay::AdvanceActiveEvent()
 {
   int line=-1;
   RDLogLine::TransType trans=RDLogLine::Play;
@@ -2462,7 +2465,7 @@ void LogPlay::AdvanceActiveEvent()
 }
 
 
-QString LogPlay::GetPortName(int card,int port)
+QString RDLogPlay::GetPortName(int card,int port)
 {
   for(int i=0;i<2;i++) {
     for(int j=0;j<2;j++) {
@@ -2475,7 +2478,7 @@ QString LogPlay::GetPortName(int card,int port)
 }
 
 
-void LogPlay::SetTransTimer(QTime current_time,bool stop)
+void RDLogPlay::SetTransTimer(QTime current_time,bool stop)
 {
   int next_line=-1;
   QTime next_time=QTime(23,59,59);
@@ -2511,7 +2514,7 @@ void LogPlay::SetTransTimer(QTime current_time,bool stop)
 }
 
 
-int LogPlay::GetNextChannel(int mport,int *card,int *port)
+int RDLogPlay::GetNextChannel(int mport,int *card,int *port)
 {
   int chan=next_channel;
   if(mport<0) {
@@ -2534,13 +2537,13 @@ int LogPlay::GetNextChannel(int mport,int *card,int *port)
 }
 
 
-int LogPlay::GetLineById(int id)
+int RDLogPlay::GetLineById(int id)
 {
   return id;
 }
 
 
-RDPlayDeck *LogPlay::GetPlayDeck()
+RDPlayDeck *RDLogPlay::GetPlayDeck()
 {
   for(int i=0;i<RD_MAX_STREAMS;i++) {
     if(!play_deck_active[i]) {
@@ -2552,7 +2555,7 @@ RDPlayDeck *LogPlay::GetPlayDeck()
 }
 
 
-void LogPlay::FreePlayDeck(RDPlayDeck *deck)
+void RDLogPlay::FreePlayDeck(RDPlayDeck *deck)
 {
   for(int i=0;i<RD_MAX_STREAMS;i++) {
     if(play_deck[i]==deck) {
@@ -2566,7 +2569,7 @@ void LogPlay::FreePlayDeck(RDPlayDeck *deck)
 }
 
 
-bool LogPlay::GetNextPlayable(int *line,bool skip_meta,bool forced_start)
+bool RDLogPlay::GetNextPlayable(int *line,bool skip_meta,bool forced_start)
 {
   RDLogLine *logline;
   RDLogLine *next_logline;
@@ -2631,7 +2634,7 @@ bool LogPlay::GetNextPlayable(int *line,bool skip_meta,bool forced_start)
 }
 
 
-void LogPlay::LogPlayEvent(RDLogLine *logline)
+void RDLogPlay::LogPlayEvent(RDLogLine *logline)
 {
   RDCut *cut=new RDCut(QString().sprintf("%06u_%03d",
 					 logline->cartNumber(),
@@ -2641,7 +2644,7 @@ void LogPlay::LogPlayEvent(RDLogLine *logline)
 }
 
 
-void LogPlay::RefreshEvents(int line,int line_quan,bool force_update)
+void RDLogPlay::RefreshEvents(int line,int line_quan,bool force_update)
 {
   //QTime st=QTime::currentTime();
 
@@ -2685,7 +2688,7 @@ void LogPlay::RefreshEvents(int line,int line_quan,bool force_update)
 }
 
 
-void LogPlay::Playing(int id)
+void RDLogPlay::Playing(int id)
 {
   RDLogLine *logline;
 
@@ -2702,7 +2705,7 @@ void LogPlay::Playing(int id)
 }
 
 
-void LogPlay::Paused(int id)
+void RDLogPlay::Paused(int id)
 {
   int line=GetLineById(id);
   RDLogLine *logline=logLine(line);
@@ -2721,12 +2724,12 @@ void LogPlay::Paused(int id)
 }
 
 
-void LogPlay::Stopping(int id)
+void RDLogPlay::Stopping(int id)
 {
 }
 
 
-void LogPlay::Stopped(int id)
+void RDLogPlay::Stopped(int id)
 {
   int line=GetLineById(id);
   int lines[TRANSPORT_QUANTITY];
@@ -2745,7 +2748,7 @@ void LogPlay::Stopped(int id)
 }
 
 
-void LogPlay::Finished(int id)
+void RDLogPlay::Finished(int id)
 {
   int line=GetLineById(id);
   RDLogLine *logline;
@@ -2776,7 +2779,7 @@ void LogPlay::Finished(int id)
 }
 
 
-void LogPlay::ClearChannel(int deckid)
+void RDLogPlay::ClearChannel(int deckid)
 {
   if(play_deck[deckid]->channel()<0) {
     return;
@@ -2788,7 +2791,7 @@ void LogPlay::ClearChannel(int deckid)
   }
 
   if(play_deck[deckid]->channel()>=0) {
-    rdevent_player->exec(play_stop_rml[play_deck[deckid]->channel()]);
+    play_event_player->exec(play_stop_rml[play_deck[deckid]->channel()]);
     /*
     printf("Deck: %d  channelStopped(%d,%d,%d,%d\n",deckid,
 	   play_id,play_deck[deckid]->channel(),
@@ -2803,7 +2806,7 @@ void LogPlay::ClearChannel(int deckid)
 }
 
 
-RDLogLine::TransType LogPlay::GetTransType(const QString &logname,int line)
+RDLogLine::TransType RDLogPlay::GetTransType(const QString &logname,int line)
 {
   RDLogLine::TransType trans=RDLogLine::Stop;
   QString sql=QString("select TRANS_TYPE from `")+
@@ -2817,7 +2820,7 @@ RDLogLine::TransType LogPlay::GetTransType(const QString &logname,int line)
 }
 
 
-bool LogPlay::ClearBlock(int start_line)
+bool RDLogPlay::ClearBlock(int start_line)
 {
   RDLogLine::Status status;
 
@@ -2830,4 +2833,184 @@ bool LogPlay::ClearBlock(int start_line)
   }
   remove(start_line,size()-start_line);
   return false;
+}
+
+
+void RDLogPlay::SendNowNext()
+{
+  QTime end_time;
+  QTime time;
+  int now_line=-1;
+  RDLogLine *logline[2];
+  RDLogLine *ll;
+  RDLogLine *default_now_logline=NULL;
+  RDLogLine *default_next_logline=NULL;
+
+  //
+  // Get NOW PLAYING Event
+  //
+  if(play_nownext_address.isNull()&&play_nownext_rml.isEmpty()&&
+     (play_rlm_hosts->size()==0)) {
+    return;
+  }
+  QString cmd=play_nownext_string;
+  int lines[TRANSPORT_QUANTITY];
+  int running=runningEvents(lines,false);
+  for(int i=0;i<running;i++) {
+    if((time=logLine(lines[i])->startTime(RDLogLine::Actual).
+	addMSecs(logLine(lines[i])->effectiveLength()))>end_time) {
+      end_time=time;
+      now_line=lines[i];
+    }
+  }
+  if((now_line>=0)&&(logLine(now_line)->nowNextEnabled())) {
+    logline[0]=logLine(now_line);
+  }
+  else {
+    if(play_now_cartnum==0) {
+      logline[0]=NULL;
+    }
+    else {
+      default_now_logline=new RDLogLine(play_now_cartnum);
+      logline[0]=default_now_logline;
+    }
+  }
+
+  //
+  // Get NEXT Event
+  //
+  logline[1]=NULL;
+  for(int i=nextLine();i<size();i++) {
+    if((ll=logLine(i))!=NULL) {
+      if((ll->status()==RDLogLine::Scheduled)&&
+	 logLine(i)->nowNextEnabled()&&(!logLine(i)->asyncronous())) {
+	logline[1]=logLine(i);
+	i=size();
+      }
+    }
+  }
+  if((logline[1]==NULL)&&(play_next_cartnum!=0)) {
+    default_next_logline=new RDLogLine(play_next_cartnum);
+    logline[1]=default_next_logline;
+  }
+
+  //
+  // Process and Send It
+  //
+  unsigned nowcart=0;
+  unsigned nextcart=0;
+  if(logline[0]!=NULL) {
+    if(!logline[0]->asyncronous()) {
+      nowcart=logline[0]->cartNumber();
+    }
+  }
+  if(logline[1]!=NULL) {
+    nextcart=logline[1]->cartNumber();
+  }
+  if((nowcart==play_prevnow_cartnum)&&(nextcart==play_prevnext_cartnum)) {
+    return;
+  }
+  if(logline[0]==NULL) {
+    play_prevnow_cartnum=0;
+  }
+  else {
+    play_prevnow_cartnum=logline[0]->cartNumber();
+  }
+  if(logline[1]==NULL) {
+    play_prevnext_cartnum=0;
+  }
+  else {
+    play_prevnext_cartnum=logline[1]->cartNumber();
+  }
+  QString svcname=play_svc_name;
+  if(svcname.isEmpty()) {
+    svcname=play_defaultsvc_name;
+  }
+  for(unsigned i=0;i<play_rlm_hosts->size();i++) {
+    play_rlm_hosts->at(i)->
+      sendEvent(svcname,logName().left(logName().length()-4),play_id,logline,
+		play_onair_flag,play_op_mode);
+  }
+  RDResolveNowNext(&cmd,logline,0);
+  play_nownext_socket->
+    writeBlock(cmd,cmd.length(),play_nownext_address,play_nownext_port);
+
+  cmd=play_nownext_rml;
+  RDResolveNowNext(&cmd,logline,0);
+  play_event_player->exec(cmd);
+
+  //
+  // Clean up
+  //
+  if(default_now_logline!=NULL) {
+    delete default_now_logline;
+  }
+  if(default_next_logline!=NULL) {
+    delete default_next_logline;
+  }
+}
+
+
+void RDLogPlay::LogTraffic(const QString &svcname,const QString &logname,
+			   RDLogLine *logline,RDLogLine::PlaySource src,
+			   RDAirPlayConf::TrafficAction action,bool onair_flag)
+  const
+{
+  QString sql;
+  RDSqlQuery *q;
+  QDateTime datetime=QDateTime(QDate::currentDate(),QTime::currentTime());
+  int length=logline->startTime(RDLogLine::Actual).msecsTo(datetime.time());
+  if(length<0) {  // Event crossed midnight!
+    length+=86400000;
+    datetime.setDate(datetime.date().addDays(-1));
+  }
+
+  if((logline==NULL)||(svcname.isEmpty())) {
+    return;
+  }
+
+  QString eventDateTimeSQL = "NULL";
+
+  if(datetime.isValid() && logline->startTime(RDLogLine::Actual).isValid())
+    eventDateTimeSQL = RDCheckDateTime(QDateTime(datetime.date(),
+          logline->startTime(RDLogLine::Actual)), "yyyy-MM-dd hh:mm:ss");
+
+  sql=QString("insert into `")+RDSvc::svcTableName(svcname)+"` set "+
+    QString().sprintf("LENGTH=%d,",length)+
+    "LOG_NAME=\""+RDEscapeString(logname.utf8())+"\","+
+    QString().sprintf("LOG_ID=%d,",logline->id())+
+    QString().sprintf("CART_NUMBER=%u,",logline->cartNumber())+
+    "STATION_NAME=\""+RDEscapeString(rda->station()->name().utf8())+"\","+
+    "EVENT_DATETIME="+eventDateTimeSQL+","+
+    QString().sprintf("EVENT_TYPE=%d,",action)+
+    QString().sprintf("EVENT_SOURCE=%d,",logline->source())+
+    "EXT_START_TIME="+RDCheckDateTime(logline->extStartTime(),"hh:mm:ss")+","+
+    QString().sprintf("EXT_LENGTH=%d,",logline->extLength())+
+    "EXT_DATA=\""+RDEscapeString(logline->extData())+"\","+
+    "EXT_EVENT_ID=\""+RDEscapeString(logline->extEventId())+"\","+
+    "EXT_ANNC_TYPE=\""+RDEscapeString(logline->extAnncType())+"\","+
+    QString().sprintf("PLAY_SOURCE=%d,",src)+
+    QString().sprintf("CUT_NUMBER=%d,",logline->cutNumber())+
+    "EXT_CART_NAME=\""+RDEscapeString(logline->extCartName().utf8())+"\","+
+    "TITLE=\""+RDEscapeString(logline->title().utf8())+"\","+
+    "ARTIST=\""+RDEscapeString(logline->artist().utf8())+"\","+
+    "SCHEDULED_TIME="+RDCheckDateTime(logline->startTime(RDLogLine::Logged),
+				       "hh:mm:ss")+","+
+    "ISRC=\""+RDEscapeString(logline->isrc().utf8())+"\","+
+    "PUBLISHER=\""+RDEscapeString(logline->publisher().utf8())+"\","+
+    "COMPOSER=\""+RDEscapeString(logline->composer().utf8())+"\","+
+    QString().sprintf("USAGE_CODE=%d,",logline->usageCode())+
+    QString().sprintf("START_SOURCE=%d,",logline->startSource())+
+    "ONAIR_FLAG=\""+RDYesNo(onair_flag)+"\","+
+    "ALBUM=\""+RDEscapeString(logline->album().utf8())+"\","+
+    "LABEL=\""+RDEscapeString(logline->label().utf8())+"\","+
+    "USER_DEFINED=\""+RDEscapeString(logline->userDefined().utf8())+"\","+
+    "CONDUCTOR=\""+RDEscapeString(logline->conductor().utf8())+"\","+
+    "SONG_ID=\""+RDEscapeString(logline->songId().utf8())+"\","+
+    "DESCRIPTION=\""+RDEscapeString(logline->description().utf8())+"\","+
+    "OUTCUE=\""+RDEscapeString(logline->outcue().utf8())+"\","+
+    "ISCI=\""+RDEscapeString(logline->isci().utf8())+"\"";
+
+  q=new RDSqlQuery(sql);
+  delete q;
 }

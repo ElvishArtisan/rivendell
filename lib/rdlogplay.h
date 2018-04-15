@@ -1,4 +1,4 @@
-// log_play.h
+// rdlogplay.h
 //
 // Rivendell Log Playout Machine
 //
@@ -18,8 +18,8 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#ifndef LOG_PLAY_H
-#define LOG_PLAY_H
+#ifndef RDLOGPLAY_H
+#define RDLOGPLAY_H
 
 #include <vector>
 
@@ -37,9 +37,8 @@
 #include <rdlog_event.h>
 #include <rdmacro_event.h>
 #include <rdplay_deck.h>
+#include <rdrlmhost.h>
 #include <rdsimpleplayer.h>
-
-#include <rlmhost.h>
 
 //
 // Widget Settings
@@ -56,12 +55,12 @@
 //#define SHOW_SLOTS
 //#define SHOW_METER_SLOTS
 
-class LogPlay : public QObject,public RDLogEvent
+class RDLogPlay : public QObject,public RDLogEvent
 {
  Q_OBJECT
  public:
-  LogPlay(int id,QSocketDevice *nn_sock,QString logname,
-	  std::vector<RLMHost *> *rlm_hosts,QObject *parent=0);
+  RDLogPlay(int id,RDEventPlayer *player,QSocketDevice *nn_sock,QString logname,
+	  std::vector<RDRLMHost *> *rlm_hosts,QObject *parent=0);
   QString serviceName() const;
   void setServiceName(const QString &svcname);
   QString defaultServiceName() const;
@@ -194,6 +193,9 @@ class LogPlay : public QObject,public RDLogEvent
   RDLogLine::TransType GetTransType(const QString &logname,int line);
   bool ClearBlock(int start_line);
   void SendNowNext();
+  void LogTraffic(const QString &svcname,const QString &logname,
+		  RDLogLine *logline,RDLogLine::PlaySource src,
+		  RDAirPlayConf::TrafficAction action,bool onair_flag) const;
   RDCae *play_cae;
   RDAirPlayConf::OpMode play_op_mode;
   int play_slot_id[LOGPLAY_MAX_PLAYS];
@@ -240,7 +242,7 @@ class LogPlay : public QObject,public RDLogEvent
   bool play_onair_flag;
   int play_duck_volume_port1;
   int play_duck_volume_port2;
-  std::vector<RLMHost *> *play_rlm_hosts;
+  std::vector<RDRLMHost *> *play_rlm_hosts;
   unsigned play_now_cartnum;
   unsigned play_next_cartnum;
   unsigned play_prevnow_cartnum;
@@ -249,7 +251,8 @@ class LogPlay : public QObject,public RDLogEvent
   int play_audition_line;
   bool play_audition_head_played;
   int play_audition_preroll;
+  RDEventPlayer *play_event_player;
 };
 
 
-#endif 
+#endif  //  RDLOGPLAY_H

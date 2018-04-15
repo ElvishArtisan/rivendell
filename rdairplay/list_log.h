@@ -2,7 +2,7 @@
 //
 // The full log list widget for RDAirPlay.
 //
-//   (C) Copyright 2002-2003,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2003,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -27,15 +27,15 @@
 #include <qpixmap.h>
 #include <qpushbutton.h>
 
+#include <rdairplay_conf.h>
 #include <rdlistview.h>
 #include <rdlistviewitem.h>
-#include <rdairplay_conf.h>
+#include <rdlogplay.h>
 
-#include <lib_listview.h>
-#include <list_logs.h>
-#include <log_play.h>
-#include <edit_event.h>
-#include <hourselector.h>
+#include "edit_event.h"
+#include "hourselector.h"
+#include "lib_listview.h"
+#include "list_logs.h"
 
 #define END_MARKER_ID -2
 
@@ -43,7 +43,7 @@ class ListLog : public QWidget
 {
  Q_OBJECT
  public:
-  ListLog(LogPlay *log,RDCae *cae,int id,bool allow_pause=false,
+  ListLog(RDLogPlay *log,RDCae *cae,int id,bool allow_pause=false,
 	  QWidget *parent=0);
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
@@ -111,7 +111,7 @@ class ListLog : public QWidget
   int PredictedStartHour(RDListViewItem *item);
   HourSelector *list_hour_selector;
   LibListView *list_log_list;
-  LogPlay *list_log;
+  RDLogPlay *list_log;
   ListLogs *list_logs_dialog;
   RDAirPlayConf::ActionMode list_action_mode;
   ListLog::PlayButtonMode list_playbutton_mode;

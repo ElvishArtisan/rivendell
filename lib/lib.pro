@@ -159,6 +159,7 @@ x11 {
   SOURCES += rdimport_audio.cpp
   SOURCES += rdkernelgpio.cpp
   SOURCES += rdlist_groups.cpp
+  SOURCES += rdlogplay.cpp
   SOURCES += rdmarker_button.cpp
   SOURCES += rdmarker_edit.cpp
   SOURCES += rdmatrix.cpp
@@ -169,6 +170,7 @@ x11 {
   SOURCES += rdrecording.cpp
   SOURCES += rdrehash.cpp
   SOURCES += rdrenderer.cpp
+  SOURCES += rdrlmhost.cpp
   SOURCES += rdsimpleplayer.cpp
   SOURCES += rdsound_panel.cpp
   SOURCES += rdstatus.cpp
@@ -301,6 +303,7 @@ x11 {
   HEADERS += rdimport_audio.h
   HEADERS += rdkernelgpio.h
   HEADERS += rdlist_groups.h
+  HEADERS += rdlogplay.h
   HEADERS += rdmarker_button.h
   HEADERS += rdmarker_edit.h
   HEADERS += rdmatrix.h
@@ -312,6 +315,7 @@ x11 {
   HEADERS += rdrecording.h
   HEADERS += rdrehash.h
   HEADERS += rdrenderer.h
+  HEADERS += rdrlmhost.h
   HEADERS += rdsimpleplayer.h
   HEADERS += rdsound_panel.h
   HEADERS += rdstatus.h

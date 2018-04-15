@@ -3,7 +3,7 @@
 //
 // The button play widget for RDAirPlay.
 //
-//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2004,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -32,12 +32,12 @@
 #include <rdairplay_conf.h>
 
 #include <rdairplay_conf.h>
-#include <log_play.h>
-#include <list_log.h>
-#include <edit_event.h>
-#include <start_button.h>
-#include <loglinebox.h>
-#include <edit_event.h>
+#include <rdlogplay.h>
+
+#include "edit_event.h"
+#include "list_log.h"
+#include "loglinebox.h"
+#include "start_button.h"
 
 //
 // Widget Settings
@@ -50,7 +50,7 @@ class ButtonLog : public QWidget
 {
  Q_OBJECT
  public:
-  ButtonLog(LogPlay *log,RDCae *cae,int id,RDAirPlayConf *conf,
+  ButtonLog(RDLogPlay *log,RDCae *cae,int id,RDAirPlayConf *conf,
 	    bool allow_pause=false,QWidget *parent=0);
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
@@ -82,7 +82,7 @@ class ButtonLog : public QWidget
  private:
   void UpdateEvents();
   void UpdateButtons();
-  LogPlay *log_log;
+  RDLogPlay *log_log;
   int log_id;
   int *log_cart;
   RDAirPlayConf::OpMode log_op_mode;
